@@ -1,0 +1,203 @@
+Processing command-line options.
+allocmem(): allocating 415744 bytes for scroll buffer...OK
+allocmem(): allocating 73600 bytes for blit buffer...OK
+Starting graphics driver...
+blitsurface = creatergbsurfacefrom
+Graphics_Start(): configuring palette.
+Starting sound driver...
+SDL_AudioSpec:
+  freq: 48000
+  channels: 2
+  audio buffer size: 2048
+Using audio driver: dsound
+SoundDrv_Start(): SDL sound system initialized.
+Starting input driver...
+JoyDrv_Start()
+1 joystick(s) were found.
+
+The names of the joysticks are:
+    THRUSTMASTER FireStorm Dual Pow
+Game data of Episode 1 is complete.
+Game data of Episode 1 is complete.
+Game data of Episode 2 is complete.
+Game data of Episode 3 is complete.
+Game data of Episode 1 is complete.
+Game data of Episode 3 is complete.
+Game data of Episode 3 is complete.
+Game data of Episode 1 is complete.
+latch_loadheader(): reading main header from 'data/egahead.ck1'...
+   LatchPlaneSize = 0x74e0
+   SpritePlaneSize = 0x18b0
+   OffBitmapTable = 0x0030
+   OffSpriteTable = 0x0150
+   Num8Tiles = 256
+   Off8Tiles = 0x0000
+   Num32Tiles = 0
+   Off32Tiles = 0x0000
+   Num16Tiles = 611
+   Off16Tiles = 0x0800
+   NumBitmaps = 18
+   OffBitmaps = 0x5460
+   NumSprites = 119
+   OffSprites = 0x0000
+   Compressed = 3
+latch_loadheader(): Allocating 3840 bytes for sprite table.
+latch_loadheader(): Reading sprite table from 'data/egahead.ck1'...
+latch_loadheader(): Allocating 304 bytes for bitmap table.
+latch_loadheader(): reading bitmap table from 'data/egahead.ck1'...
+   Bitmap 'TITLE': 264x112 at offset 0000. RAMAllocSize=0x7380
+   Bitmap 'IDLOGO': 112x40 at offset 0e70. RAMAllocSize=0x8500
+   Bitmap 'F1HELP': 64x16 at offset 10a0. RAMAllocSize=0x8900
+   Bitmap 'HIGHSCOR': 136x24 at offset 1120. RAMAllocSize=0x95c0
+   Bitmap 'NAME': 48x16 at offset 12b8. RAMAllocSize=0x98c0
+   Bitmap 'SCORE': 48x16 at offset 1318. RAMAllocSize=0x9bc0
+   Bitmap 'PARTS': 48x16 at offset 1378. RAMAllocSize=0x9ec0
+   Bitmap 'GAMEOVER': 112x24 at offset 13d8. RAMAllocSize=0xa940
+   Bitmap 'AN': 16x8 at offset 1528. RAMAllocSize=0xa9c0
+   Bitmap 'PRESENT': 88x16 at offset 1538. RAMAllocSize=0xaf40
+   Bitmap 'APOGEE': 120x32 at offset 15e8. RAMAllocSize=0xbe40
+   Bitmap 'KEENSHIP': 120x40 at offset 17c8. RAMAllocSize=0xd100
+   Bitmap 'WINDON': 56x32 at offset 1a20. RAMAllocSize=0xd800
+   Bitmap 'WINDOFF': 56x32 at offset 1b00. RAMAllocSize=0xdf00
+   Bitmap 'ONEMOMEN': 88x48 at offset 1be0. RAMAllocSize=0xef80
+   Bitmap 'OFAN': 40x16 at offset 1df0. RAMAllocSize=0xf200
+   Bitmap 'PRODUCT': 72x16 at offset 1e40. RAMAllocSize=0xf680
+   Bitmap 'IDSOFT': 72x48 at offset 1ed0. RAMAllocSize=0x10400
+latch_loadlatch(): Opening file 'data/egalatch.ck1'.
+latch_loadlatch(): Decompressing...
+latch_loadlatch(): Decoding 8x8 tiles...
+latch_loadlatch(): Decoding 16x16 tiles...
+latch_loadlatch(): Allocating 66561 bytes for bitmap data...
+latch_loadlatch(): Decoding bitmaps...
+latch_loadsprites(): Opening file 'data/egasprit.ck1'.
+latch_loadsprites(): Decompressing...
+latch_loadsprites(): Decoding sprites...
+loadtileattributes() : Trying to read the tiles from "data/tiles.tli"
+loadtileattributes() : Extracting tile attributes from the exe file "data/keen1.exe"
+Commander Keen Episode 1 (Version 1.31) was detected.
+showmapatpos(90, 1008, 28, 0);
+loadmap(): file data/level90.ck1 opened. Loading...
+latch_loadheader(): reading main header from 'data/egahead.ck1'...
+   LatchPlaneSize = 0x74e0
+   SpritePlaneSize = 0x18b0
+   OffBitmapTable = 0x0030
+   OffSpriteTable = 0x0150
+   Num8Tiles = 256
+   Off8Tiles = 0x0000
+   Num32Tiles = 0
+   Off32Tiles = 0x0000
+   Num16Tiles = 611
+   Off16Tiles = 0x0800
+   NumBitmaps = 18
+   OffBitmaps = 0x5460
+   NumSprites = 119
+   OffSprites = 0x0000
+   Compressed = 3
+latch_loadheader(): Allocating 3840 bytes for sprite table.
+latch_loadheader(): Reading sprite table from 'data/egahead.ck1'...
+latch_loadheader(): Allocating 304 bytes for bitmap table.
+latch_loadheader(): reading bitmap table from 'data/egahead.ck1'...
+   Bitmap 'TITLE': 264x112 at offset 0000. RAMAllocSize=0x7380
+   Bitmap 'IDLOGO': 112x40 at offset 0e70. RAMAllocSize=0x8500
+   Bitmap 'F1HELP': 64x16 at offset 10a0. RAMAllocSize=0x8900
+   Bitmap 'HIGHSCOR': 136x24 at offset 1120. RAMAllocSize=0x95c0
+   Bitmap 'NAME': 48x16 at offset 12b8. RAMAllocSize=0x98c0
+   Bitmap 'SCORE': 48x16 at offset 1318. RAMAllocSize=0x9bc0
+   Bitmap 'PARTS': 48x16 at offset 1378. RAMAllocSize=0x9ec0
+   Bitmap 'GAMEOVER': 112x24 at offset 13d8. RAMAllocSize=0xa940
+   Bitmap 'AN': 16x8 at offset 1528. RAMAllocSize=0xa9c0
+   Bitmap 'PRESENT': 88x16 at offset 1538. RAMAllocSize=0xaf40
+   Bitmap 'APOGEE': 120x32 at offset 15e8. RAMAllocSize=0xbe40
+   Bitmap 'KEENSHIP': 120x40 at offset 17c8. RAMAllocSize=0xd100
+   Bitmap 'WINDON': 56x32 at offset 1a20. RAMAllocSize=0xd800
+   Bitmap 'WINDOFF': 56x32 at offset 1b00. RAMAllocSize=0xdf00
+   Bitmap 'ONEMOMEN': 88x48 at offset 1be0. RAMAllocSize=0xef80
+   Bitmap 'OFAN': 40x16 at offset 1df0. RAMAllocSize=0xf200
+   Bitmap 'PRODUCT': 72x16 at offset 1e40. RAMAllocSize=0xf680
+   Bitmap 'IDSOFT': 72x48 at offset 1ed0. RAMAllocSize=0x10400
+latch_loadlatch(): Opening file 'data/egalatch.ck1'.
+latch_loadlatch(): Decompressing...
+latch_loadlatch(): Decoding 8x8 tiles...
+latch_loadlatch(): Decoding 16x16 tiles...
+latch_loadlatch(): Allocating 66561 bytes for bitmap data...
+latch_loadlatch(): Decoding bitmaps...
+latch_loadsprites(): Opening file 'data/egasprit.ck1'.
+latch_loadsprites(): Decompressing...
+latch_loadsprites(): Decoding sprites...
+loadstrings(): Opening string file 'strings.dat'.
+loadstrings(): loaded 69 strings from 'strings.dat'.
+sound_load_all(): loading all sounds...
+Wave file could not be opened: "data/hqp/snd/KEENWALKSND.WAV". Trying to load the classical sound
+sound_load(): loaded sound KEENWALKSND, 2 bytes.
+Wave file could not be opened: "data/hqp/snd/KEENWLK2SND.WAV". Trying to load the classical sound
+sound_load(): loaded sound KEENWLK2SND, 3 bytes.
+File "data/hqp/snd/KEENJUMPSND.OGG" opened successfully!
+File "data/hqp/snd/KEENPOGOSND.OGG" opened successfully!
+File "data/hqp/snd/KEENLANDSND.OGG" opened successfully!
+Wave file could not be opened: "data/hqp/snd/KEENBLOKSND.WAV". Trying to load the classical sound
+sound_load(): loaded sound KEENBLOKSND, 9 bytes.
+Wave file could not be opened: "data/hqp/snd/KEENDIESND.WAV". Trying to load the classical sound
+sound_load(): loaded sound KEENDIESND, 222 bytes.
+File "data/hqp/snd/PLUMMETSND.OGG" opened successfully!
+OGG file could not be opened: "BUMPHEADSND". The file was detected, but appears to be damaged. Trying to load the classical sound
+sound_load(): loaded sound BUMPHEADSND, 14 bytes.
+File "data/hqp/snd/WLDENTERSND.OGG" opened successfully!
+File "data/hqp/snd/keensleft.OGG" opened successfully!
+File "data/hqp/snd/KEENFIRESND.OGG" opened successfully!
+File "data/hqp/snd/GUNCLICK.OGG" opened successfully!
+File "data/hqp/snd/SHOTHIT.OGG" opened successfully!
+File "data/hqp/snd/GOTITEMSND.OGG" opened successfully!
+File "data/hqp/snd/GOTBONUSSND.OGG" opened successfully!
+File "data/hqp/snd/GOTPARTSND.OGG" opened successfully!
+File "data/hqp/snd/LVLDONESND.OGG" opened successfully!
+Wave file could not be opened: "data/hqp/snd/GAMEOVERSND.WAV". Trying to load the classical sound
+sound_load(): loaded sound GAMEOVERSND, 280 bytes.
+File "data/hqp/snd/TELEPORTSND.OGG" opened successfully!
+File "data/hqp/snd/EXTRAMANSND.OGG" opened successfully!
+Wave file could not be opened: "data/hqp/snd/CHUNKSMASH.WAV". Trying to load the classical sound
+sound_load(): loaded sound CHUNKSMASH, 172 bytes.
+Wave file could not be opened: "data/hqp/snd/GOINDOORSND.WAV". Trying to load the classical sound
+sound_load(): loaded sound GOINDOORSND, 76 bytes.
+File "data/hqp/snd/GETCARDSND.OGG" opened successfully!
+Wave file could not be opened: "data/hqp/snd/USEKEYSND.WAV". Trying to load the classical sound
+sound_load(): loaded sound USEKEYSND, 120 bytes.
+Wave file could not be opened: "data/hqp/snd/CLICKSND.WAV". Trying to load the classical sound
+sound_load(): loaded sound CLICKSND, 11 bytes.
+Wave file could not be opened: "data/hqp/snd/DOOROPENSND.WAV". Trying to load the classical sound
+sound_load(): loaded sound DOOROPENSND, 136 bytes.
+Wave file could not be opened: "data/hqp/snd/YORPBUMPSND.WAV". Trying to load the classical sound
+sound_load(): loaded sound YORPBUMPSND, 11 bytes.
+Wave file could not be opened: "data/hqp/snd/YORPBOPSND.WAV". Trying to load the classical sound
+sound_load(): loaded sound YORPBOPSND, 76 bytes.
+Wave file could not be opened: "data/hqp/snd/YORPSCREAM.WAV". Trying to load the classical sound
+sound_load(): loaded sound YORPSCREAM, 74 bytes.
+Wave file could not be opened: "data/hqp/snd/GARGSCREAM.WAV". Trying to load the classical sound
+sound_load(): loaded sound GARGSCREAM, 97 bytes.
+Wave file could not be opened: "data/hqp/snd/vortscream.WAV". Trying to load the classical sound
+sound_load(): loaded sound vortscream, 194 bytes.
+Wave file could not be opened: "data/hqp/snd/TANKFIRE.WAV". Trying to load the classical sound
+sound_load(): loaded sound TANKFIRE, 46 bytes.
+loadtileattributes() : Trying to read the tiles from "data/tiles.tli"
+loadtileattributes() : Extracting tile attributes from the exe file "data/keen1.exe"
+Commander Keen Episode 1 (Version 1.31) was detected.
+Game starting...
+showmapatpos(90, 1664, 32, 0);
+loadmap(): file data/level90.ck1 opened. Loading...
+calling mainmenu()
+showmapatpos(90, 32, 32, 0);
+loadmap(): file data/level90.ck1 opened. Loading...
+gcl: opt = 7
+bottom of game control loop opt=7 crashflag=0
+  * Bitmap data released to system.
+  * Freed 69 strings.
+  * Joystick driver shut down.
+SoundDrv_Stop(): shut down.
+  * Sound driver shut down.
+freed screen
+freed scrollsurface
+freed blitsurface
+  * Graphics driver shut down.
+  * Scrollbuffer memory released to system.
+  * Blitbuffer memory released to system.
+
+freed screen

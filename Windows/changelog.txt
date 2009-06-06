@@ -1,0 +1,238 @@
+Commander Genius v0.2.6 Alpha (Commander Genius):
+-------------------------------------------------
+
+19-03-2009: After a long time
+- Ported to Windows
+
+18-03-2009: After a long time
+- This version is ported to C++
+- More Resolutions are now supported
+
+04-03-2009: Save me
+- fixed some memory leaks
+- improved joystick support
+- menus can be controlled by the joystick again
+- added analog feature which can be turned off
+
+03-03-2009: And once again!
+- removed some useless code to save memory
+- Items in all episodes are now processed together
+  in one function.
+- Updated Scale2x functions. Added special SDL_scale2x
+  which boosts the performance a bit.
+
+02-03-2009: More and more!
+- Changed SDL_SetTimer by SDL_AddTimer which improves
+  the programming flexibility and bit of performance.
+- Added bump sound when you players try to walk into a wall
+- Fixed a tile bug with the Vorticon Elder
+- Fixed masked tile problem (Iv4n)
+
+01-03-2009: Improved Configuration!
+- Now all the settings except game data are stored in ckp.cfg, 
+  which also need less space.
+- New-old feature "two-button-firing"
+- New feature "keycard-stacking". Some mods need that 
+  if there are multiple doors
+- Some odd object bugs are fixed now. 
+  (Objects which go out of the screen)
+
+21-02-2009: No Filter2x, please!
+- 2x Scaling support without Filter is now supported
+- Minor bug fixes
+
+20-02-2009: Other tiles, why not?
+- Better Keyboard+Joystick Handling
+- Changed the jump physics a bit again(Ceilik)
+- Added the ability to load tiles.tli files.
+
+19-02-2009: hey cheater (or modder)
+- LShift+Tab implemented (Ceilik)
+- Less ingame inertia when jumping (Ceilik)
+
+18-02-2009: Same day, two versions
+- CTSpace fix (Genius)
+- walking in godmode on world now possible (Ceilik)
+
+17-02-2009: Same day, two versions
+- more bugs resolved (Tulip)
+- recovered and improved cheat mode (Tulip)
+
+16-02-2009: Same day, two versions
+- improved physics and controls (Genius314)
+
+16-02-2009: More bugs fixed!
+- improved physics (Genius314)
+
+15-02-2009: Axis at last!
+- improved physics (Genius314)
+- Support for axis mapping of joystick and analog sensitivity. Try it out!
+
+12-02-2009: Bugs and Beetles!
+- Fixed wrong sprite positioning in some levels (Tulip)
+- Some uncompressed mods exe-files are now supported. 
+  Tested with yorpius II. (Tulip)
+
+12-02-2009: Now try it!
+- imrproved jump/pogo physics! At least! (Forum-Team)
+
+09-02-2009: Bugs to eat!
+- Fixed sound bug, when no card is detected
+- Fixed a pogo problem
+- Fixed Story bug, when mods are used
+
+08-02-2009: Jump it on!
+- Implemented Story board. Isn't it nice?
+
+06-02-2009: Jump it on!
+- Improved jump and walk physics
+
+05-02-2009: A small update!
+- Improved Butlers AI (Tulip)
+- Extrem loud gun sounds are removed! (Tulip)
+- Gargs were too fast, when they saw you! (Tulip)
+- Extra fix for undefined level start positions of the player (Tulip)
+- Fixed stopping player animation, when Vorticon dies in Ep. 1 (Tulip)
+- A small platform bug has been removed (Tulip)
+
+04-02-2009: More, more!
+- Fixed Sounds playing in classical mode. Less memory is used now, and higher quality is achieved!
+- Door animations are fixed now. (Tulip) 
+- Fixed some menu bugs. (Sciz CT)
+
+03-02-2009: It's coming! It's coming
+- There was no sound effect for collecting the pogo. (Sciz CT)
+- Yorp collision needed work. Walking directly into one just halted
+ your progress and played the sound effect repeatedly, rather than
+ bouncing you back as it should. (Sciz CT)
+- Vortimoms needed 4 shots to kill. Now they need 5 like in the original game (Tulip)
+
+02-02-2009: Yorp don't do that!
+- The ceiling height was too high, fixed (Sciz CT)
+- Pogoing Problems fixed (Sciz CT)
+
+01-02-2009: Gonna be a remake!
+
+31-01-2009: Bug fixes and more!
+- Now "controls" menu won't crash anymore in Windows
+- Now all the Vorticons are more intelligent now (Tulip)
+- Butlers can fall (Tulip)
+- You can walk into butler from behind (Tulip)
+- Vortimom shoots more often now
+- Improved tile detection
+- Imrpoved memory managment
+
+30-01-2009: More intelligence!
+- Improved memory managment
+- Keen dies when falling off the screen now! (Tulip)
+- Keen cannot go out of maps anymore (Tulip)
+- Keen can stand again on Vortacola in Episode 2 (Tulip)
+
+
+28-01-2009: Isn't it hard enough?
+- More intelligent tileset loading
+- New Level loading and RLEW decompression. Now Mr. Blacks Levelpack of Keen 3 works very well!
+- Fixed some memory problems under Windows (fixes 1 and 2 integrated)
+
+
+28-01-2009: Isn't it hard enough?
+- Now you can choose difficulty level when starting a new game
+- Fixed Vortimom bug, when she fires to its left (Tulip)
+- Reduced size of tile attributes file. They are only used for the change of tiles. 
+  Everyone can now mod the tileinfo, load it with CKP and have fun
+- Fixed more memory leaks and remove some obsolete variables
+- Fixed other minor game bugs
+
+
+27-01-2009: More new engine functions!
+- Controls Config crash fixed for Windows Users!
+- Tile properties are now read  from the exe file, which make them shown behaved correctly
+- Fixed some memory leaks
+- Improved stereo sound when picking up items
+
+24-01-2009: Getting stable new engine!
+- Now the old options work again. Some new options are shown, but still don't work!
+- Fixed some segfault bugs
+
+23-01-2009: 3rd Prerelease of a new engine!
+- Fixed reading keen?.exe problem in Windows (Thanks to Tulip for his support!!)
+- Added fflush, so no more trimmed outputs under Windows (Thanks to Napalm)
+- Improved dying animation speed and synchro with the sound
+- Added some option menus, but they can't be seen. Please wait until next version.
+
+20-01-2009: 3rd Prerelease of a new engine!
+- Fixed some bugs when load startmenu and crashes in Windows (Especially XP)
+- Improved folder scanning
+- Keen now walks at constant speed on the map
+- "ckp.log" is the new log file. Useful for Windows users, when they want to report bugs
+
+19-01-2009: 2nd Prerelease of a new engine!
+- Fixed bug when loading game sounds from other directories than "data/", being Ep 2 and 3
+- Improved consistency check. You really don't need ctlpanel.ck?, but keen?.exe. (Thanks to Tulip!)
+- Games that will not run are marked gray now in the start menu
+- Startmenu has the stars background from your episode 1
+- "New Game" added to Main Menu. Now you can switch back to the Start Menu
+- Fullscreen bug fixed!
+- Their was a bug with keycards which are removed now, when a level is exited (Thanks to Tulip!)
+
+18-01-2009: Prerelease of a new engine!
+- Smoother scrolling
+- Added 48Khz Sound. It hears nice!
+- New driver engine. Should be more stable and no sounds are required to run the game
+- Note: Some options are disabled. They will be enabled again, in the next release with better menus
+- Files detection from the beginning
+- Startmenu marks error if your games or mods are incomplete
+- Fixed teleporting sound
+
+13-01-2009: Cross-compiling here we come!
+- Separation of HQ Sounds. You now must download the extra package, 
+  to use them. (Thanks to Hans de Goede for that idea)
+- for the people who have to rename the data files caused by the new
+  convention. There is a renamer script in the data directory.  
+- lower-case naming convention (Thanks to Hans de Goede for that idea)
+- Improved sound effects (Malvineous and Tulip)
+- Windows version will be released in future as binary  
+- Cleaned a bit more the source code, but there are still bugs left.
+
+
+09-01-2009: Only a small change!
+- Games can be separated in directories and are shown with "games.cfg"
+  in a startmenu. (Commander Spleen)
+- Cleaned a bit the source code.
+
+07-01-2009: Only a small change!
+- You can choose between Stereo and Mono Sound now.
+
+06-01-2009: Play it louder!
+- OGG File format supported. which makes the download file a bit smaller
+- Better sound managment: Needs less memory for buffering.
+
+05-01-2009: Play it loud!
+- Now CloneKeenPlus uses 8 internal sound channels, instead of 4.  
+- Cleaned up a bit more the source code. This still must be done. I will do it for every release
+- High Quality Sounds! Now you can enjoy more your Sound Blaster playing Keen instead of hearing all the old choppy PC Speaker Sounds.
+  More of them will be implemented in the next version. The wave files are in the "data/hq/snd" directory.
+
+
+03-01-2009: Mapping support finally!
+- Now you can map your keyboard and joystick buttons for the first player. The support is limited to the actions, so movements
+  (up, down, right, left) cannot be mapped though.  
+- Cleaned up a bit the source code. Now the polled events memory is not reallocated anymore, which makes the game a bit faster (1 %).
+
+01-01-2009: Happy New year to all of you! We also have released a more promising version od CKP
+- Better memory management. More unused variables are deallocated now and new type of variables organisation has been
+  implemented. 
+
+31-12-2008: Code has been cleaned, ClonekeenPlus is even more stable now
+- Early implementation of key and button mapping. However it is still unusable
+
+29-12-2008: First released version of the interpreter. It is nearly the same programme as CloneKeen 0.83 Beta with following exceptions:
+
+- Cleaned up the code. Many warnings won't appear anymore!
+- Fixes that were written by Hans van de Goede (For Fedora Core) are implemented. Thank you very much!
+- Hans van de Goede had created a program for extracting SOUNDS.CK2 and .CK3. This Code is implemented here.
+  When clonekeenplus is launched, these files are extracted from KEEN2.EXE or KEEN3.EXE  
+- Configuration settings are now saved automatically. 
+- When exiting, the program will not crash anymore! SDL_Double_Free problem fixed!
+- Video memory instead of system memory will be used, when -ogl switch is used
+- Early Joystick support implemented. Test it! It works very nice!

@@ -1,0 +1,18 @@
+Here are the features that I still want to implement:
+-----------------------------------------------------
+
+until 0.3:
+- alt+enter for fullscreen, alt+F4 and/or alt+Q can be used to quickly close the application?
+- Controls selection for player 2
+- OpenGL new effects
+
+until 0.4:
+- User folder detection and save the files there!
+- Ubuntu debs
+- New Games Menu. Should run without the need of an episode!
+- Commander Keen 4-6
+
+until 0.5:
+- Maybe Keen Dreams
+- No plans for now!
+
