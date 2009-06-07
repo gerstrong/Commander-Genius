@@ -488,6 +488,7 @@ short saveDriverConfiguration(stCloneKeenPlus *pCKP)
 	Parser.saveIntValue("scale","Video",g_pVideoDriver->getZoomValue());
 	Parser.saveIntValue("OGLfilter","Video",g_pVideoDriver->getOGLFilter());
 	Parser.saveIntValue("filter","Video",g_pVideoDriver->getFiltermode());
+	Parser.saveIntValue("autoframeskip","Video",g_pVideoDriver->getTargetFPS());
 
 	Parser.saveIntValue("channels","Audio",(g_pSound->getAudioSpec()).channels);
 	Parser.saveIntValue("format","Audio",(g_pSound->getAudioSpec()).format);
@@ -528,6 +529,7 @@ short loadDriverConfiguration(stCloneKeenPlus *pCKP)
 
 		g_pVideoDriver->setOGLFilter(Parser.getIntValue("OGLfilter","Video"));
 		g_pVideoDriver->setZoom(Parser.getIntValue("scale","Video"));
+		g_pVideoDriver->setTargetFPS(Parser.getIntValue("autoframeskip","Video"));
 
 		g_pVideoDriver->setFilter(Parser.getIntValue("filter","Video"));
 

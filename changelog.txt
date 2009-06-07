@@ -1,8 +1,13 @@
-Commander Genius v0.2.9.0a Beta (CloneKeenPlus):
-------------------------------------------------
+Commander Genius v0.2.9.1 Beta (CloneKeenPlus):
+-----------------------------------------------
+
+07-06-2009
+- Improved the timer
+- Improved blit-speed at resolution of 320x200
+- Added automatic-frameskip
 
 05-06-2009
-- Fixed OpenGL slowdowns and bugs
+- Fixed some OpenGL slowdowns and bugs
 
 04-06-2009
 - Fixed a crash when loading game with Fullscreen settings

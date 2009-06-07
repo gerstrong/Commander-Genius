@@ -643,6 +643,7 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 	bool fsmode;
 	char buf[256];
 	short retval = 0;
+	unsigned char autoframeskip = 0;
 
 	showmapatpos(90, MAINMENU_X, MENUS_Y, 0, pCKP);
 
@@ -717,6 +718,24 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 		DisplayMenu->addOptionText("OpenGL Acceleration");
 	else
 		DisplayMenu->addOptionText("Software Rendering");
+
+	autoframeskip = g_pVideoDriver->getTargetFPS();
+	switch(autoframeskip)
+	{
+	case 60:
+		DisplayMenu->addOptionText("Auto-Frameskip : 60 fps"); break;
+	case 50:
+		DisplayMenu->addOptionText("Auto-Frameskip : 50 fps"); break;
+	case 40:
+		DisplayMenu->addOptionText("Auto-Frameskip : 40 fps"); break;
+	case 30:
+		DisplayMenu->addOptionText("Auto-Frameskip : 30 fps"); break;
+	case 20:
+		DisplayMenu->addOptionText("Auto-Frameskip : 20 fps"); break;
+	default:
+		DisplayMenu->addOptionText("Auto-Frameskip disabled"); break;
+	};
+
 
 	DisplayMenu->addSeparator();
 	DisplayMenu->addOptionText("Save and return");
@@ -843,7 +862,32 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 				else
 					DisplayMenu->setOptionText(5,"Software Rendering");
 			}
-			else if(selection == 7)
+			else if(selection == 6)
+			{
+				if(autoframeskip < 60 && autoframeskip >= 0)
+					autoframeskip += 10;
+				else
+					autoframeskip = 0;
+
+				switch(autoframeskip)
+				{
+				case 60:
+					DisplayMenu->setOptionText(6,"Auto-Frameskip : 60 fps"); break;
+				case 50:
+					DisplayMenu->setOptionText(6,"Auto-Frameskip : 50 fps"); break;
+				case 40:
+					DisplayMenu->setOptionText(6,"Auto-Frameskip : 40 fps"); break;
+				case 30:
+					DisplayMenu->setOptionText(6,"Auto-Frameskip : 30 fps"); break;
+				case 20:
+					DisplayMenu->setOptionText(6,"Auto-Frameskip : 20 fps"); break;
+				case 10:
+					DisplayMenu->setOptionText(6,"Auto-Frameskip : 10 fps"); break;
+				default:
+					DisplayMenu->setOptionText(6,"Auto-Frameskip disabled"); break;
+				};
+			}
+			else if(selection == 8)
 			{
 				g_pVideoDriver->stop();
 
@@ -858,6 +902,7 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 				g_pVideoDriver->setZoom(zoom);
 				g_pVideoDriver->setFilter(filter);
 				g_pVideoDriver->setFrameskip(frameskip);
+				g_pVideoDriver->setTargetFPS(autoframeskip);
 				saveDriverConfiguration(pCKP);
 				g_pGraphics->allocScrollBufmem();
 

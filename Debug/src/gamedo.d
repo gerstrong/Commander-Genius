@@ -18,11 +18,12 @@ src/gamedo.d src/gamedo.o: ../src/gamedo.cpp ../src/keen.h \
   ../src/include/gamepdo.h ../src/include/misc.h \
   ../src/sdl/CVideoDriver.h ../src/sdl/../CSingleton.h \
   ../src/sdl/COpenGL.h /usr/include/SDL/SDL_opengl.h \
-  ../src/sdl/../scale2x/scalebit.h ../src/sdl/sound/CSound.h \
+  ../src/sdl/../scale2x/scalebit.h ../src/sdl/CTimer.h \
+  ../src/sdl/CInput.h ../src/sdl/sound/CSound.h \
   ../src/sdl/sound/../../CSingleton.h ../src/sdl/sound/CSoundChannel.h \
   ../src/sdl/sound/CSoundSlot.h ../src/sdl/sound/../../hqp/hq_sound.h \
   ../src/CGraphics.h ../src/CSingleton.h ../src/hqp/CHQBitmap.h \
-  ../src/sdl/CInput.h ../src/vorticon/CPlayer.h ../src/include/enemyai.h
+  ../src/vorticon/CPlayer.h ../src/include/enemyai.h
 
 ../src/keen.h:
 
@@ -110,6 +111,10 @@ src/gamedo.d src/gamedo.o: ../src/gamedo.cpp ../src/keen.h \
 
 ../src/sdl/../scale2x/scalebit.h:
 
+../src/sdl/CTimer.h:
+
+../src/sdl/CInput.h:
+
 ../src/sdl/sound/CSound.h:
 
 ../src/sdl/sound/../../CSingleton.h:
@@ -125,8 +130,6 @@ src/gamedo.d src/gamedo.o: ../src/gamedo.cpp ../src/keen.h \
 ../src/CSingleton.h:
 
 ../src/hqp/CHQBitmap.h:
-
-../src/sdl/CInput.h:
 
 ../src/vorticon/CPlayer.h:
 

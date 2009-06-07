@@ -11,9 +11,10 @@
 #include "include/gamepdo.h"
 #include "include/misc.h"
 #include "sdl/CVideoDriver.h"
+#include "sdl/CTimer.h"
+#include "sdl/CInput.h"
 #include "sdl/sound/CSound.h"
 #include "CGraphics.h"
-#include "sdl/CInput.h"
 #include "vorticon/CPlayer.h"
 #include "keenext.h"
 

@@ -55,6 +55,7 @@ CVideoDriver::CVideoDriver() {
 	  Filtermode=1;
 	  Zoom=2;
 	  FrameSkip=2;
+	  m_targetfps = 0;	// Disable automatic frameskipping by default
 	  m_opengl = false;
 	  m_opengl_filter = GL_NEAREST;
 	  mp_OpenGL = NULL;
@@ -220,7 +221,7 @@ bool CVideoDriver::createSurfaces(void)
 	//Set surface alpha
 	SDL_SetAlpha( FGLayerSurface, SDL_SRCALPHA, 225 );
 
-    if(Width == 320)
+    if(Width == 320 && !m_opengl)
     {
     	g_pLogFile->textOut("Blitsurface = Screen<br>");
     	BlitSurface = screen;
@@ -243,10 +244,6 @@ bool CVideoDriver::createSurfaces(void)
     dstrect.x = 0; dstrect.y = 0;
 	dstrect.w = GAME_STD_WIDTH;
 	dstrect.h = GAME_STD_HEIGHT;
-
-
-
-	// TODO: If OpenGL used, do we still need this?
 
 	if(m_opengl) // If OpenGL could be set, initialize the matrices
 	{

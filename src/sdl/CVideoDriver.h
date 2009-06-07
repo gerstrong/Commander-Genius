@@ -66,6 +66,9 @@ public:
 	void enableOpenGL(bool value) { m_opengl = value; }
 	void setOGLFilter(unsigned char value) { m_opengl_filter = (value==1) ? GL_LINEAR : GL_NEAREST ; }
 
+	void setTargetFPS(unsigned char targetfps){ if( targetfps >= 0 && targetfps <= 60 ) m_targetfps = targetfps; }
+	unsigned char getTargetFPS(void){ return m_targetfps; }
+
 	void showFPS(bool value);
 
 private:
@@ -79,6 +82,7 @@ private:
 	  short Filtermode;
 	  unsigned short Zoom;
 	  unsigned short FrameSkip;
+	  unsigned char m_targetfps;	// Used for automatic frame skipping
 	  bool showfps;
 	  bool m_opengl;
 	  int m_opengl_filter;

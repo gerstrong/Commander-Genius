@@ -16,7 +16,9 @@ src/sdl/CTimer.d src/sdl/CTimer.o: ../src/sdl/CTimer.cpp \
   /usr/include/SDL/SDL_loadso.h /usr/include/SDL/SDL_timer.h \
   /usr/include/SDL/SDL_version.h ../src/sdl/../include/declarations.h \
   ../src/sdl/../keenext.h ../src/sdl/../keenext.h ../src/sdl/CTimer.h \
-  ../src/sdl/../CSingleton.h
+  ../src/sdl/../CSingleton.h ../src/sdl/CVideoDriver.h \
+  ../src/sdl/COpenGL.h /usr/include/SDL/SDL_opengl.h \
+  ../src/sdl/../scale2x/scalebit.h
 
 ../src/sdl/../keen.h:
 
@@ -91,3 +93,11 @@ src/sdl/CTimer.d src/sdl/CTimer.o: ../src/sdl/CTimer.cpp \
 ../src/sdl/CTimer.h:
 
 ../src/sdl/../CSingleton.h:
+
+../src/sdl/CVideoDriver.h:
+
+../src/sdl/COpenGL.h:
+
+/usr/include/SDL/SDL_opengl.h:
+
+../src/sdl/../scale2x/scalebit.h:

@@ -5,18 +5,21 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/sdl/CInput.cpp \
+../src/sdl/COpenGL.cpp \
 ../src/sdl/CTimer.cpp \
 ../src/sdl/CVideoDriver.cpp \
 ../src/sdl/joydrv.cpp 
 
 OBJS += \
 ./src/sdl/CInput.o \
+./src/sdl/COpenGL.o \
 ./src/sdl/CTimer.o \
 ./src/sdl/CVideoDriver.o \
 ./src/sdl/joydrv.o 
 
 CPP_DEPS += \
 ./src/sdl/CInput.d \
+./src/sdl/COpenGL.d \
 ./src/sdl/CTimer.d \
 ./src/sdl/CVideoDriver.d \
 ./src/sdl/joydrv.d 

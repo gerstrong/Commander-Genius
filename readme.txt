@@ -6,9 +6,10 @@
 *                                   *
 *    (c)2008-2009  Gerstrong        *
 *    (c)2003-2005  Caitlin Shaw     *
+*         (c)2009  Pickle           *
 *      Released under GNU/GPL       *
 *                                   *
-*          Beta v0.2.9.0            *
+*          Beta v0.2.9.1            *
 *                                   *
 *************************************
 Welcome to CloneKeenPlus (Commander Genius)!
@@ -82,8 +83,11 @@ Setting up the data of the game:
    You only have to modify the "games.cfg".
  * Only Linux/Unix Users: If you have many data files which upper-case, 
    use the "./data/renlower.sh" shell script to rename them. 
- * Go into the "Release" folder and start the interpreter.
- * If you want better sounds and music, please download the high quality pack.
+ * Go into the Release folder and start the interpreter. If you have downloaded 
+   the binary version of Commander Genius (for Windows, Linux32/64), then you 
+   will find the executable in the root directory of the extracted game.
+   Under Linux it is called "CommanderGenius", under Windows "CGenius.exe".    
+ * If you want better sounds and music, please download the high quality pack (HQP).
    Extract its contents to the "data" directory together with your game data.
  
 Howto use CloneKeenPlus (If you didn't compile it):
@@ -142,6 +146,27 @@ allowed save at the map).
 
 Wait a while at the tile screen and the game will cycle through several
 demos, an added feature not found on the original game.
+
+- FAQ -
+Q: When I change to opengl-mode, the screen gets white and I can't do anything! I have to kill the program.
+   What can I do to restore the normal mode?
+
+A: You can delete "cgenius.cfg" or change it the way you need it! Just put "opengl = 0" and it should normal
+   with your previous settings. I'm going to fix that soon! The white screen means, that your graphic card
+   doesn't support NPOT Textures, which is required. A video card with OpenGL 2.0 or later support should not
+   have that problem anymore.
+   
+Q: Why not to use POT-Textures?
+A: Because it requires more memory to write, and the game would get slower than with software rendering.
+   I'm working on a new method to get it working with POT Textures and faster, but for now I cannot
+   support it. 
+
+Q: Commander Genius is slow? Please help!
+A: You can increase the frameskip under settings->video or you can enable automatic frameskip, what is very
+   recommended for any system. OpenGL may also help, but you must have a gfx-card that support NPOT-Textures.
+   (OpenGL 2.0 or later). Try to lower the resolution, a lower filter, or decrease some stuff in the sound section.
+   Stereo sound requires additional calculations than mono sound. There are many things you can do, to speed up
+   the program.
 
 - BUG! -
 

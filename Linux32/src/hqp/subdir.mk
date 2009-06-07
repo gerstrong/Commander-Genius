@@ -6,20 +6,17 @@
 CPP_SRCS += \
 ../src/hqp/CHQBitmap.cpp \
 ../src/hqp/CMusic.cpp \
-../src/hqp/hq_sound.cpp \
-../src/hqp/musicdrv.cpp 
+../src/hqp/hq_sound.cpp 
 
 OBJS += \
 ./src/hqp/CHQBitmap.o \
 ./src/hqp/CMusic.o \
-./src/hqp/hq_sound.o \
-./src/hqp/musicdrv.o 
+./src/hqp/hq_sound.o 
 
 CPP_DEPS += \
 ./src/hqp/CHQBitmap.d \
 ./src/hqp/CMusic.d \
-./src/hqp/hq_sound.d \
-./src/hqp/musicdrv.d 
+./src/hqp/hq_sound.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
