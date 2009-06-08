@@ -9,9 +9,6 @@
  *
  */
 
-#ifndef COPENGL_H_
-#define COPENGL_H_
-
 #include <SDL.h>
 #include <SDL_opengl.h>
 #include "../scale2x/scalebit.h"
@@ -35,4 +32,3 @@ private:
 	unsigned int	m_texparam;
 };
 
-#endif /* COPENGL_H_ */

@@ -17,7 +17,7 @@ public:
 
 	void setScrollposition(unsigned int xpos, unsigned int ypos);
 	void updateHQBitmap(SDL_Surface *m_surface, unsigned int x, unsigned int y);
-	bool loadImage(const char *pFilename);
+	bool loadImage(const char *pFilename, int wsize, int hsize);
 	void setAlphaBlend(Uint8 alpha);
 	void offsetAlphaBlend(Uint8 alpha);
 

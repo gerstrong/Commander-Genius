@@ -1,5 +1,10 @@
-Commander Genius v0.2.9.1 Beta (CloneKeenPlus):
+Commander Genius v0.2.9.2 Beta (CloneKeenPlus):
 -----------------------------------------------
+
+08-06-2009
+- Added Doublebuffering support
+- Detection of Bitmapsize in HQBitmap implemented
+- Added Wiz-code and some fixed bugs (Thanks to Pickle)
 
 07-06-2009
 - Improved the timer

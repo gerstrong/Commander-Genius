@@ -11,7 +11,9 @@
 #include "../CSingleton.h"
 #define g_pVideoDriver CVideoDriver::Get()
 
+#ifdef USE_OPENGL
 #include "COpenGL.h"
+#endif
 
 #include <SDL.h>
 
@@ -56,23 +58,33 @@ public:
 	unsigned int getHeight(void);
 	unsigned short getDepth(void);
 	bool isOpenGL(void) { return m_opengl; }
+#ifdef USE_OPENGL
 	unsigned char getOGLFilter(void) { return (m_opengl_filter==GL_LINEAR); }
+#else
+	unsigned char getOGLFilter(void) { return 0; }
+#endif
 	SDL_Surface *getScrollSurface(void);
 	SDL_Surface *getBGLayerSurface(void);
 
 	void setFrameskip(unsigned short value);
 	void setFilter(short value);
-	void setZoom(short value);
+	void setZoom(short vale);
+#ifdef USE_OPENGL
 	void enableOpenGL(bool value) { m_opengl = value; }
 	void setOGLFilter(unsigned char value) { m_opengl_filter = (value==1) ? GL_LINEAR : GL_NEAREST ; }
-
-	void setTargetFPS(unsigned char targetfps){ if( targetfps >= 0 && targetfps <= 60 ) m_targetfps = targetfps; }
+#else
+	void enableOpenGL(bool value) { m_opengl = false; }
+	void setOGLFilter(unsigned char value) { m_opengl_filter = 0; }
+#endif
+	void setTargetFPS(unsigned int targetfps){ if( targetfps >= 0 && targetfps <= 60 ) m_targetfps = targetfps; }
 	unsigned char getTargetFPS(void){ return m_targetfps; }
 
 	void showFPS(bool value);
 
 private:
+#ifdef USE_OPENGL
 	COpenGL	*mp_OpenGL;
+#endif
 
 	  unsigned int Width;
 	  unsigned int Height;
@@ -82,7 +94,7 @@ private:
 	  short Filtermode;
 	  unsigned short Zoom;
 	  unsigned short FrameSkip;
-	  unsigned char m_targetfps;	// Used for automatic frame skipping
+	  unsigned int m_targetfps;	// Used for automatic frame skipping
 	  bool showfps;
 	  bool m_opengl;
 	  int m_opengl_filter;

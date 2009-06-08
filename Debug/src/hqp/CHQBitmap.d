@@ -12,7 +12,8 @@ src/hqp/CHQBitmap.d src/hqp/CHQBitmap.o: ../src/hqp/CHQBitmap.cpp \
   /usr/include/SDL/SDL_mouse.h /usr/include/SDL/SDL_video.h \
   /usr/include/SDL/SDL_joystick.h /usr/include/SDL/SDL_quit.h \
   /usr/include/SDL/SDL_loadso.h /usr/include/SDL/SDL_timer.h \
-  /usr/include/SDL/SDL_version.h
+  /usr/include/SDL/SDL_version.h ../src/hqp/../CLogFile.h \
+  ../src/hqp/../CSingleton.h
 
 ../src/hqp/CHQBitmap.h:
 
@@ -67,3 +68,7 @@ src/hqp/CHQBitmap.d src/hqp/CHQBitmap.o: ../src/hqp/CHQBitmap.cpp \
 /usr/include/SDL/SDL_timer.h:
 
 /usr/include/SDL/SDL_version.h:
+
+../src/hqp/../CLogFile.h:
+
+../src/hqp/../CSingleton.h:

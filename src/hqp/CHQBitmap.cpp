@@ -6,6 +6,7 @@
  */
 
 #include "CHQBitmap.h"
+#include "../CLogFile.h"
 #include <stdlib.h>
 
 CHQBitmap::CHQBitmap(SDL_Rect screenrect) {
@@ -21,21 +22,29 @@ CHQBitmap::~CHQBitmap() {
 	if(m_blackscreen){ SDL_FreeSurface(m_blackscreen); m_blackscreen = NULL;}
 }
 
-bool CHQBitmap::loadImage(const char *pFilename)
+bool CHQBitmap::loadImage(const char *pFilename, int wsize, int hsize)
 {
 	m_scrimg = SDL_LoadBMP(pFilename);
 
-	// TODO: Resolution detection and comparison with the tilesize must be performed
+	m_active = false;
 
-	m_active = true;
-	if(!m_scrimg)
-		m_active = false;
-	else
+	if(m_scrimg)
 	{
-		m_active = true;
-		// Create a empty black surface for alpha blending with black
-		m_blackscreen = SDL_CreateRGBSurface(SDL_SWSURFACE,
-							320,240,32,0,0,0,0);
+
+		if( ((m_scrimg->h>>4) > hsize) || ((m_scrimg->w>>4) > wsize) )
+		{
+			g_pLogFile->textOut(PURPLE,"HQBitmapLoader : The dimensions of the bitmap don't match to the dimensions of the level.<br>");
+			g_pLogFile->ftextOut("Please use a proper bitmap with %dx%d dimensions.<br>", m_scrimg->w, m_scrimg->h);
+			g_pLogFile->ftextOut("Your bitmap is of %dx%d.<br>", wsize, hsize);
+			g_pLogFile->textOut(BLUE,"HQBitmapLoader : Loading the level without HQBitmap.<br>");
+		}
+		else
+		{
+			m_active = true;
+			// Create a empty black surface for alpha blending with black
+			m_blackscreen = SDL_CreateRGBSurface(SDL_SWSURFACE,
+								320,240,32,0,0,0,0);
+		}
 	}
 	return m_active;
 }

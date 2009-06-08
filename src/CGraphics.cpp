@@ -20,6 +20,7 @@
 CGraphics::CGraphics() {
 	HQBitmap = NULL;
 	scrollbuffer=NULL;
+	blitbuffer=NULL;
 	scrollbuf_memsize = 0;
 	blitbuf_memsize = 0;
 }
@@ -704,7 +705,7 @@ void CGraphics::loadHQGraphics(unsigned char episode, unsigned char level, char 
 	screen_rect.h = g_pVideoDriver->getHeight();
 
 	HQBitmap = new CHQBitmap(screen_rect);
-	if(!HQBitmap->loadImage(buf2))
+	if(!HQBitmap->loadImage(buf2, (int) map.xsize, (int) map.ysize))
 	{
 		delete HQBitmap;
 		HQBitmap = NULL;

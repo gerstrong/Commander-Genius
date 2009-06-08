@@ -103,7 +103,6 @@ void CLogFile::textOut(int Color, bool List, const char *Text)
 		textOut("<br>");
 	else
 		textOut("</li>");
-
 }
 
 

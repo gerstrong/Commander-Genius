@@ -1535,7 +1535,6 @@ char ShowPressF10;
     }*/
   } while(!g_pInput->getExitEvent());
 
-  // TODO: This invokes Segfault. Please check, where!
   if(g_pInput->getExitEvent())
 	  return 1;
 

@@ -57,8 +57,10 @@ CVideoDriver::CVideoDriver() {
 	  FrameSkip=2;
 	  m_targetfps = 0;	// Disable automatic frameskipping by default
 	  m_opengl = false;
+#ifdef USE_OPENGL
 	  m_opengl_filter = GL_NEAREST;
 	  mp_OpenGL = NULL;
+#endif
 
 	  screenrect.x=0;
 	  screenrect.y=0;
@@ -80,7 +82,10 @@ void CVideoDriver::stop(void)
 	if(screen) { SDL_FreeSurface(screen); g_pLogFile->textOut("freed screen<br>"); }
 	if(ScrollSurface && (ScrollSurface->map != NULL)) { SDL_FreeSurface(ScrollSurface); g_pLogFile->textOut("freed scrollsurface<br>"); }
 	if(blitsurface_alloc) { blitsurface_alloc = 0; SDL_FreeSurface(BlitSurface); g_pLogFile->textOut("freed blitsurface<br>"); }
+#ifdef USE_OPENGL
 	if(mp_OpenGL) { delete mp_OpenGL; mp_OpenGL = NULL; }
+#endif
+	g_pLogFile->textOut(GREEN,"CVideoDriver Close%s<br>", SDL_GetError());
 }
 
 
@@ -121,12 +126,18 @@ bool CVideoDriver::applyMode(void)
 	// Grab a surface on the screen
 	Mode = SDL_HWPALETTE;
 
+	// Support for doublebuffering
+	Mode |= SDL_DOUBLEBUF;
+
 	// Enable OpenGL
+#ifdef USE_OPENGL
 	if(m_opengl)
 	{
 		SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
+		SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 1);
 		Mode |= SDL_OPENGL;
 	}
+#endif
 
 	// Now we decide if it will be fullscreen or windowed mode.
 	if(Fullscreen)
@@ -245,6 +256,7 @@ bool CVideoDriver::createSurfaces(void)
 	dstrect.w = GAME_STD_WIDTH;
 	dstrect.h = GAME_STD_HEIGHT;
 
+#ifdef USE_OPENGL
 	if(m_opengl) // If OpenGL could be set, initialize the matrices
 	{
 		mp_OpenGL = new COpenGL();
@@ -257,6 +269,7 @@ bool CVideoDriver::createSurfaces(void)
 		else
 			mp_OpenGL->setSurface(BlitSurface);
 	}
+#endif
 
 	return true;
 }
@@ -384,6 +397,7 @@ void CVideoDriver::blitBGLayer(void)
 
 void CVideoDriver::update_screen(void)
 {
+#ifdef USE_OPENGL
    if(m_opengl)
    {
 	   SDL_BlitSurface(FGLayerSurface, NULL, BlitSurface, NULL);
@@ -398,6 +412,7 @@ void CVideoDriver::update_screen(void)
    }
    else // No OpenGL but Software Rendering
    {
+#endif
 	   SDL_BlitSurface(FGLayerSurface, NULL, BlitSurface, NULL);
 
 	   // if we're doing zoom then we have copied the scroll buffer into
@@ -471,16 +486,19 @@ void CVideoDriver::update_screen(void)
 		   }
 		   SDL_UnlockSurface(screen);
 		   SDL_UnlockSurface(BlitSurface);
-
 	   }
-	   SDL_UpdateRect(screen, screenrect.x, screenrect.y, screenrect.w, screenrect.h);
+
+	   SDL_Flip(screen);
+	   //SDL_UpdateRect(screen, screenrect.x, screenrect.y, screenrect.w, screenrect.h);
 
 	   SDL_LockSurface(FGLayerSurface);
 	   // Flush the layers
 	   memset(FGLayerSurface->pixels,SDL_MapRGB(FGLayerSurface->format, 0, 0, 0),
 			   GAME_STD_WIDTH*GAME_STD_HEIGHT*FGLayerSurface->format->BytesPerPixel);
 	   SDL_UnlockSurface(FGLayerSurface);
+#ifdef USE_OPENGL
    }
+#endif
 }
 
 void CVideoDriver::noscale(char *dest, char *src, short bbp)

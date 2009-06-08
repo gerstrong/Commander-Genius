@@ -4,7 +4,6 @@
  *  Created on: 04.06.2009
  *      Author: gerstrong
  */
-
 #include "COpenGL.h"
 #include "../CLogFile.h"
 
@@ -101,8 +100,6 @@ bool COpenGL::initGL(unsigned Width, unsigned Height, unsigned char Depth,
 	{
 		g_pLogFile->ftextOut("OpenGL Init(): Interface succesfully opened!<br>");
 	}
-
-	// TODO: Find out where crashes, when OpenGL init failed!
 
 	return true;
 }
