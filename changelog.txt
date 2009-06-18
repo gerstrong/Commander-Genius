@@ -1,6 +1,24 @@
 Commander Genius v0.2.9.2 Beta (CloneKeenPlus):
 -----------------------------------------------
 
+18-06-2009
+- restored 2-Player support and added mapping
+- fixed some minor bugs!
+
+17-06-2009
+- 1280x1024 Resolution added
+- Added LAlt+Enter(Fullscreen), LAlt+Q and LAlt+F4(Quit) 
+
+15-06-2009
+- reduced the source code
+- added some new messages
+- added the aspect ratio correction for OpenGL who don't want streched screens.
+
+09-06-2009
+- removed "player seen a while in the mainmenu" bug
+- also added Auto-Frameskip for 70 FPS. Have fun!
+- CSettings class created and taken some functions out of the main file! 
+
 08-06-2009
 - Added Doublebuffering support
 - Detection of Bitmapsize in HQBitmap implemented

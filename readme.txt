@@ -5,13 +5,15 @@
 *       (Commander Genius)          *
 *                                   *
 *    (c)2008-2009  Gerstrong        *
+*    (c)2009       Pickle           *
+*    (c)2009       Tulip            *
 *    (c)2003-2005  Caitlin Shaw     *
-*         (c)2009  Pickle           *
 *      Released under GNU/GPL       *
 *                                   *
-*          Beta v0.2.9.1            *
+*          Beta v0.2.9.5            *
 *                                   *
 *************************************
+
 Welcome to CloneKeenPlus (Commander Genius)!
 
 CloneKeenPlus is an almost complete open-source clone of
@@ -27,36 +29,38 @@ CloneKeenPlus tries to mostly replicate the original game,
 however there are also a number of improvements like:
 - smoother scrolling
 - MMX Support
-- OpenGL Acceleration (through Hardware on many systems)
+- OpenGL Acceleration (through Hardware on some systems)
 - better graphic effects (transparency, fading)
 - 2-player support (still incomplete)
-- high quality packs (for better sound and music)
+- high quality packs (for better sounds and music)
 - games menu
-- gamepad support (More than two joystick buttons)
+- gamepad support (More than just two joystick buttons for playing)
 
 and much more!
 
 To my knowledge this is the only released attempt at
 writing a third-party Keen game that has reached this
-stage of completedness.
+stage of completeness.
 
 Commander Genius is a new edition of CloneKeenPlus.
-The reason I call it that is because this version is compiled
-with GNU C++ (Before it was C). Some functions are 
-now classes. The idea behind that, is to provide a faster
-and more stable program. Features like resolution changes
-implementation were achieved through classes. Although it looks
-very similar, the structure of the program is a lot different 
-than in CloneKeen. 
+The reason I call it is because this version is compiled
+with GNU C++ (previously GNU C). Some functions are 
+now classes. The idea behind that is to provide a faster
+and more stable program. Features like the implementation
+of resolution changes was achieved through classes. 
+Although it looks very similar, 
+the skeleton of the program is very 
+different to the one in CloneKeen. 
 
 The CloneKeenPlus source code may be freely distributed and
 modified as per the GPL, just please remember to give
 credit to the original authors.
 
-CloneKeenPlus has been developed by Gerstrong implementing 
-mayor improvements basing on the original 
-source code of CloneKeen by Caitlin Shaw. Many 
-thanks to him, for bringing us this great program.
+CloneKeenPlus has been developed by Gerstrong togther 
+with Pickle and Tulip implementing mayor improvements 
+basing on the original source code of CloneKeen 
+by Caitlin Shaw. Many thanks to him, 
+for bringing us this great program.
 
 Obviously it is not the original version of CloneKeen 
 or any update. It is another version from a different
@@ -118,6 +122,22 @@ Compiling CKP on Linux/UNIX (other than Ubuntu):
  * Then, you can run "CommanderGenius". Copy the files, 
    wherever you want them together with the data directory. 
    "make install" does not work though.
+   
+- GAME PLAY -
+Before you play the game, you should take a look at the controls. Normally RAlt, Ctrl, Space and Enter
+are the action keys. On some systems (specially Windows) it may be different. So check it out!
+
+There are some keys, which cannot be changed and are part of the game
+
+KEY        	ACTION             DESCRIPTION
+LALT+Q	   				       Both Keys make you quit the game. Depending where you are in the game
+LALT+F4		quit			   it will ask you, if you really want that
+C+T+SPACE  	All Items          Gives all items, similar to the original.
+LSHIFT+TAB 	Skip Level         Holding down this key you can skip levels and walk through tiles
+							   on the map.
+TAB			No clipping		   If you hold down this key you will disable clipping.
+							   However, you cannot fall though floors. 
+   
 
 HINTS & SECRETS
 
@@ -144,8 +164,13 @@ allowed save at the map).
 
 - DEMO -
 
-Wait a while at the tile screen and the game will cycle through several
-demos, an added feature not found on the original game.
+Demo doesn't work until you record some. If you want to do that start the interpreter with "-rec" as argument.
+For example: "CGenius.exe -rec -game1 -level01" and you should be off to go recording in game 1 level 1.
+
+When you exit, the demo should be recorded. Restart the interpreter/game and wait a while at 
+the tile screen and the game will cycle through several demos, an added feature not found on the original game.
+
+You can also see them using the demo option in the main menu. Have fun!
 
 - FAQ -
 Q: When I change to opengl-mode, the screen gets white and I can't do anything! I have to kill the program.
