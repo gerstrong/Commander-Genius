@@ -267,13 +267,11 @@ void gameloop(stCloneKeenPlus *pCKP)
 //       if (numplayers>1) net_senddata();
      #endif
 
-    if (g_pInput->getPressedKey(KQUIT))
+     if (g_pInput->getPressedKey(KQUIT))
      {
        VerifyQuit(pCKP);
      }
-
      if (QuitState != NO_QUIT) return;
-
 
      // limit frame rate
      if (!acceleratemode)

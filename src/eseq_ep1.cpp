@@ -396,7 +396,7 @@ int dlgX, dlgY, dlgW, dlgH;
       return 0;
 
     gamedo_fades();
-    gamedo_frameskipping_blitonly(pCKP);
+    gamedo_frameskipping_blitonly();
 
     lastenterstate = enter;
 

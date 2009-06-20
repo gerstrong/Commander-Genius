@@ -5,25 +5,7 @@
 #define MAX_STRING_LENGTH	  256
 
 
-#define OPT_FULLYAUTOMATIC      0
-#define OPT_SUPERPOGO           1
-#define OPT_ALLOWPKING          2
-#define OPT_CHEATS              3
-#define OPT_TWOBUTTON           4
-#define OPT_KEYCARDSTACK        5
-#define OPT_ANALOGJOYSTICK      6
-
-#define NUM_OPTIONS    7
-
-#define OPT_MEAN 7 // This isn't part of the options menu anymore
-
 #define MAX_NUMBER_OF_FILES     100
-
-typedef struct stOption
-{
-  char *name;
-  char value;
-} stOption;
 
 typedef struct stDisplay
 {

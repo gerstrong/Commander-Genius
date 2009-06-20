@@ -531,6 +531,8 @@ unsigned char *bmdataptr;
 
 int CGraphics::getBitmapNumberFromName(const char *bmname)
 {
+
+	// TODO: Implement Code for Introduction Screen
 int i;
   for(i=0;i<MAX_BITMAPS;i++)
   {

@@ -74,12 +74,10 @@ char doFall;
           }
 
        	  gamepdo_JumpAndPogo(cp, pCKP);
-          //gamepdo_Jump(cp, pCKP);
 
           // decide if player should fall
           doFall = 1;
           if (player[cp].inhibitfall) doFall = 0;
-          //else if (pCKP->Option[OPT_CHEATS].value) doFall = 0;
 
           if (doFall)
           {
@@ -290,7 +288,7 @@ void gamepdo_ProcessInput(unsigned int cp, stCloneKeenPlus *pCKP)
 		   gamedo_render_drawobjects(pCKP);
 		   gamedo_AnimatedTiles();
 		   PauseDialog->renderDialog();
-		   gamedo_frameskipping_blitonly(pCKP);
+		   gamedo_frameskipping_blitonly();
 		} while(!g_pInput->getPressedAnyKey());
 
 	   delete PauseDialog;
@@ -672,7 +670,7 @@ void gamepdo_InertiaAndFriction_X(unsigned int cp, stCloneKeenPlus *pCKP)
 	   {
 		   if(player[cp].ppogostick)
 		   {
-			   player[cp].pinertia_x += player[cp].pboost_x/PJUMPINERTIA;
+			   player[cp].pinertia_x += 3*player[cp].pboost_x/(PJUMPINERTIA*2);
 		   }
 		   else
 		   {

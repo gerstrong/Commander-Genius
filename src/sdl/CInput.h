@@ -72,6 +72,7 @@
 #define KTAB          48
 
 #define KBCKSPCE      49
+#define KLALT      	  50
 
 // New keys
 #define KA			54
@@ -114,6 +115,7 @@
 #define IC_DOWN		7
 
 #define NUMBER_OF_COMMANDS	8
+#define NUM_INPUTS			2
 
 #define ETYPE_NO_JOYSTICK 	0
 #define ETYPE_JOYAXIS 		1
@@ -126,7 +128,9 @@ typedef struct stInputCommand
 	//int value;
 
 	SDLKey 	keysym;
+
 	unsigned int joyeventtype;
+	Uint8 which;
 	int joyaxis;
 	unsigned short joybutton;
 	int joyvalue;
@@ -147,12 +151,15 @@ public:
 
 	bool getHoldedCommand(int command);
 	bool getPressedCommand(int command);
-	bool getPressedAnyCommand(void);
+	bool getPressedAnyCommand();
+	bool getHoldedCommand(Uint8 player, int command);
+	bool getPressedCommand(Uint8 player, int command);
+	bool getPressedAnyCommand(Uint8 player);
 	bool getExitEvent(void);
 	void cancelExitEvent(void);
 
-	void getEventName(int position, char *buf);
-	bool readNewEvent(int position);
+	void getEventName(int position, unsigned char input, char *buf);
+	bool readNewEvent(Uint8 device, int position);
 
 	short loadControlconfig(void);
 	short saveControlconfig(void);
@@ -161,7 +168,7 @@ public:
 
 private:
 	SDL_Event Event;
-	stInputCommand InputCommand[NUMBER_OF_COMMANDS];
+	stInputCommand InputCommand[NUM_INPUTS][NUMBER_OF_COMMANDS];
 	bool m_exit;
 
 	bool immediate_keytable[KEYTABLE_SIZE];

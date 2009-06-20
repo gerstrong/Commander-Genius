@@ -6,6 +6,7 @@
 CPP_SRCS += \
 ../src/sdl/CInput.cpp \
 ../src/sdl/COpenGL.cpp \
+../src/sdl/CSettings.cpp \
 ../src/sdl/CTimer.cpp \
 ../src/sdl/CVideoDriver.cpp \
 ../src/sdl/joydrv.cpp 
@@ -13,6 +14,7 @@ CPP_SRCS += \
 OBJS += \
 ./src/sdl/CInput.o \
 ./src/sdl/COpenGL.o \
+./src/sdl/CSettings.o \
 ./src/sdl/CTimer.o \
 ./src/sdl/CVideoDriver.o \
 ./src/sdl/joydrv.o 
@@ -20,6 +22,7 @@ OBJS += \
 CPP_DEPS += \
 ./src/sdl/CInput.d \
 ./src/sdl/COpenGL.d \
+./src/sdl/CSettings.d \
 ./src/sdl/CTimer.d \
 ./src/sdl/CVideoDriver.d \
 ./src/sdl/joydrv.d 

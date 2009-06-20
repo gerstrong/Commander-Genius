@@ -240,7 +240,11 @@ char buffer[256];
     else
     {
       g_pLogFile->ftextOut("latch_loadlatch(): Reading %d bytes...<br>", RawDataSize);
-      fread(RawData, RawDataSize, 1, latchfile);
+      if(!fread(RawData, 1, RawDataSize, latchfile))
+      {
+    	  g_pLogFile->ftextOut(RED,"latch_loadlatch(): Error reading the file...<br>");
+    	  return 1;
+      }
     }
     fclose(latchfile);
 
@@ -480,7 +484,11 @@ char buffer[256];
     else
     {
       g_pLogFile->ftextOut("latch_loadsprites(): Reading %d bytes...<br>", RawDataSize);
-      fread(RawData, RawDataSize, 1, spritfile);
+      if(!fread(RawData, 1, RawDataSize,  spritfile))
+      {
+    	  g_pLogFile->ftextOut(RED,"latch_loadsprites(): Error reading the file...<br>");
+    	  return 1;
+      }
     }
     fclose(spritfile);
 

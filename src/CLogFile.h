@@ -8,7 +8,7 @@
 #ifndef CLOGFILE_H_
 #define CLOGFILE_H_
 
-#define REVISION        "CloneKeenPlus Beta v0.2.9.2 (Commander Genius)"
+#define REVISION        "CloneKeenPlus Beta v0.2.9.5 (Commander Genius)"
 
 #include <stdio.h>
 #include "CSingleton.h"

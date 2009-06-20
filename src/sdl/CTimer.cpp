@@ -27,7 +27,7 @@ Uint32 FPSCallback(Uint32 interval, void* param)
   unsigned char targetfps;
   targetfps = g_pVideoDriver->getTargetFPS();
 
-  if(targetfps > 0)
+  if(targetfps > 0 && fps > 0)
   {
 	  if(fps > targetfps + 10)
 	  {

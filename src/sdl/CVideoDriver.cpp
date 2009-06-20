@@ -47,6 +47,17 @@ CVideoDriver::CVideoDriver() {
 	// Default values
 
 	  showfps=true;
+#ifdef WIZ
+	  Width=320;
+	  Height=240;
+	  Depth=16;
+	  Mode=0;
+	  Fullscreen=true;
+	  Filtermode=0;
+	  Zoom=1;
+	  FrameSkip=0;
+	  m_targetfps = 30;	// Enable automatic frameskipping by default at 30
+#else
 	  Width=640;
 	  Height=480;
 	  Depth=0;
@@ -56,11 +67,13 @@ CVideoDriver::CVideoDriver() {
 	  Zoom=2;
 	  FrameSkip=2;
 	  m_targetfps = 0;	// Disable automatic frameskipping by default
+#endif
 	  m_opengl = false;
 #ifdef USE_OPENGL
 	  m_opengl_filter = GL_NEAREST;
 	  mp_OpenGL = NULL;
 #endif
+	  m_aspect_correction = true;
 
 	  screenrect.x=0;
 	  screenrect.y=0;
@@ -79,9 +92,9 @@ CVideoDriver::~CVideoDriver() {
 
 void CVideoDriver::stop(void)
 {
-	if(screen) { SDL_FreeSurface(screen); g_pLogFile->textOut("freed screen<br>"); }
-	if(ScrollSurface && (ScrollSurface->map != NULL)) { SDL_FreeSurface(ScrollSurface); g_pLogFile->textOut("freed scrollsurface<br>"); }
-	if(blitsurface_alloc) { blitsurface_alloc = 0; SDL_FreeSurface(BlitSurface); g_pLogFile->textOut("freed blitsurface<br>"); }
+	if(screen) { SDL_FreeSurface(screen); g_pLogFile->textOut("freed screen<br>"); screen = NULL; }
+	if(ScrollSurface && (ScrollSurface->map != NULL)) { SDL_FreeSurface(ScrollSurface); g_pLogFile->textOut("freed scrollsurface<br>"); ScrollSurface = NULL; }
+	if(blitsurface_alloc) { blitsurface_alloc = 0; SDL_FreeSurface(BlitSurface); g_pLogFile->textOut("freed blitsurface<br>"); BlitSurface=NULL; }
 #ifdef USE_OPENGL
 	if(mp_OpenGL) { delete mp_OpenGL; mp_OpenGL = NULL; }
 #endif
@@ -91,32 +104,53 @@ void CVideoDriver::stop(void)
 
 bool CVideoDriver::start(void)
 {
+	bool retval = false;
+
 	  if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO) < 0)
 	  {
 		  g_pLogFile->textOut(RED,"Could not initialize SDL: %s<br>", SDL_GetError());
 		  return false;
 	  }
-	  if (is_server)
-	  {
-	    SDL_WM_SetCaption("CloneKeenPlus [host]", NULL);
-	  }
-	  else if (is_client)
-	  {
-	    SDL_WM_SetCaption("CloneKeenPlus [multiplayer]", NULL);
-	  }
 	  else
-	  {
-	    SDL_WM_SetCaption("CloneKeenPlus", NULL);
-	  }
+		  g_pLogFile->textOut(GREEN,"SDL was successfully initialized!<br>");
 
+	  SDL_WM_SetCaption("Commander Genius (CKP)", NULL);
 	  // When the program is through executing, call SDL_Quit
 	  atexit(SDL_Quit);
 
 	  if(!applyMode())
+	  {
+		  g_pLogFile->textOut(RED,"VideoDriver: Error applying mode! Your Videocard doesn't seem to work on CKP<br>");
+		  g_pLogFile->textOut(RED,"Check, if you have the most recent drivers installed!<br>");
 		  return false;
+	  }
 
-	  return createSurfaces();
+	  retval = createSurfaces();
+	  initOpenGL();
+
+	  return retval;
 }
+
+bool CVideoDriver::initOpenGL()
+{
+#ifdef USE_OPENGL
+	if(m_opengl) // If OpenGL could be set, initialize the matrices
+	{
+		mp_OpenGL = new COpenGL();
+		if(!(mp_OpenGL->initGL(Width, Height, Depth, m_opengl_filter, Filtermode+1, m_aspect_correction)))
+		{
+			delete mp_OpenGL;
+			mp_OpenGL = NULL;
+			m_opengl = false;
+		}
+		else
+			mp_OpenGL->setSurface(BlitSurface);
+	}
+#endif
+
+	return m_opengl;
+}
+
 bool CVideoDriver::applyMode(void)
 {
 	// Check if some zoom/filter modes are illogical
@@ -255,21 +289,6 @@ bool CVideoDriver::createSurfaces(void)
     dstrect.x = 0; dstrect.y = 0;
 	dstrect.w = GAME_STD_WIDTH;
 	dstrect.h = GAME_STD_HEIGHT;
-
-#ifdef USE_OPENGL
-	if(m_opengl) // If OpenGL could be set, initialize the matrices
-	{
-		mp_OpenGL = new COpenGL();
-		if(!(mp_OpenGL->initGL(Width, Height, Depth, m_opengl_filter, Filtermode+1)))
-		{
-			delete mp_OpenGL;
-			mp_OpenGL = NULL;
-			m_opengl = false;
-		}
-		else
-			mp_OpenGL->setSurface(BlitSurface);
-	}
-#endif
 
 	return true;
 }
@@ -635,37 +654,8 @@ void CVideoDriver::showFPS(bool value){ showfps = value; }
 
 void CVideoDriver::isFullscreen(bool value)
 {
-	//SDL_Rect** Modes;
-	//int i;
-
-	//if(value == false)
-	//{
-		Fullscreen = value;
-		return;
-	//}
-
-	/*Modes = SDL_ListModes(NULL, SDL_FULLSCREEN);
-
-	// Check if there are any modes available
-	if (Modes == (SDL_Rect**)0) {
-		g_pLogFile->textOut(PURPLE,"No modes for Fullscreen available!<br>");
-	}
-
-	// Print valid modes
-	for (i=0; Modes[i]; ++i)
-	{
-		if(Modes[i]->w == Width)
-		{
-			if(Modes[i]->h == Height)
-			{
-				Fullscreen = value;
-				return;
-			}
-		}
-	}
-	g_pLogFile->textOut(PURPLE,"This mode doesn't exist for Fullscreen!<br>");
-
-	Fullscreen = value;*/
+	Fullscreen = value;
+	return;
 }
 
 unsigned short CVideoDriver::getFrameskip(void)

@@ -773,10 +773,11 @@ typedef struct stShipQueue
 	#define MAINMNU_OPTIONS      5
     #define MAINMNU_DEMO         6
 	#define MAINMNU_NEW_GAME     7
-	#define MAINMNU_QUIT         8
-    #define MAINMNU_TIMEOUT      10     // going to demo due to timeout
-    #define RESTART_GAME         11
-	#define BACK2MAINMENU		 12
+	#define MAINMNU_ABOUT        8
+	#define MAINMNU_QUIT         9
+    #define MAINMNU_TIMEOUT      11     // going to demo due to timeout
+    #define RESTART_GAME         12
+	#define BACK2MAINMENU		 13
 
     #define MAINMENU_NUM_OPTIONS        MAINMNU_QUIT
 
@@ -848,6 +849,7 @@ typedef struct stShipQueue
 #include <SDL.h>
 #include "include/declarations.h"
 #include "keenext.h"
+#include "sdl/CSettings.h"
 
 typedef struct stCloneKeenPlus
 {

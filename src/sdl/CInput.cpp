@@ -10,6 +10,7 @@
 
 #include "CInput.h"
 #include "../CLogFile.h"
+#include "CVideoDriver.h"
 
 #ifdef WIZ
 #include "gp2x.h"
@@ -26,42 +27,54 @@ CInput::CInput() {
 
 	for(i=0 ; i<NUMBER_OF_COMMANDS ; i++)
 	{
-		InputCommand[i].active = false;
+		for(Uint8 player=0 ; player<NUM_INPUTS ; player++)
+			InputCommand[player][i].active = false;
 	}
 
-	// These are the default keyboard commands
-	InputCommand[IC_LEFT].keysym = SDLK_LEFT;
-	InputCommand[IC_UP].keysym = SDLK_UP;
-	InputCommand[IC_RIGHT].keysym = SDLK_RIGHT;
-	InputCommand[IC_DOWN].keysym = SDLK_DOWN;
+	for(i=0 ; i<NUM_INPUTS ; i++)
+	{
+		// These are the default keyboard commands
+		InputCommand[i][IC_LEFT].keysym = SDLK_LEFT;
+		InputCommand[i][IC_UP].keysym = SDLK_UP;
+		InputCommand[i][IC_RIGHT].keysym = SDLK_RIGHT;
+		InputCommand[i][IC_DOWN].keysym = SDLK_DOWN;
 
-	InputCommand[IC_JUMP].keysym = SDLK_RCTRL;
-	InputCommand[IC_POGO].keysym = SDLK_MODE;
-	InputCommand[IC_FIRE].keysym = SDLK_SPACE;
-	InputCommand[IC_STATUS].keysym = SDLK_RETURN;
+		InputCommand[i][IC_JUMP].keysym = SDLK_RCTRL;
+		InputCommand[i][IC_POGO].keysym = SDLK_MODE;
+		InputCommand[i][IC_FIRE].keysym = SDLK_SPACE;
+		InputCommand[i][IC_STATUS].keysym = SDLK_RETURN;
 
-	// And those are the default joystick handlings
-	InputCommand[IC_LEFT].joyeventtype = ETYPE_JOYAXIS;
-	InputCommand[IC_LEFT].joyaxis = 0;
-	InputCommand[IC_LEFT].joyvalue = -32767;
-	InputCommand[IC_UP].joyeventtype = ETYPE_JOYAXIS;
-	InputCommand[IC_UP].joyaxis = 1;
-	InputCommand[IC_UP].joyvalue = -32767;
-	InputCommand[IC_RIGHT].joyeventtype = ETYPE_JOYAXIS;
-	InputCommand[IC_RIGHT].joyaxis = 0;
-	InputCommand[IC_RIGHT].joyvalue = 32767;
-	InputCommand[IC_DOWN].joyeventtype = ETYPE_JOYAXIS;
-	InputCommand[IC_DOWN].joyaxis = 1;
-	InputCommand[IC_DOWN].joyvalue = 32767;
+		// And those are the default joystick handlings
+		InputCommand[i][IC_LEFT].joyeventtype = ETYPE_JOYAXIS;
+		InputCommand[i][IC_LEFT].joyaxis = 0;
+		InputCommand[i][IC_LEFT].joyvalue = -32767;
+		InputCommand[i][IC_LEFT].which = 0;
+		InputCommand[i][IC_UP].joyeventtype = ETYPE_JOYAXIS;
+		InputCommand[i][IC_UP].joyaxis = 1;
+		InputCommand[i][IC_UP].joyvalue = -32767;
+		InputCommand[i][IC_UP].which = 0;
+		InputCommand[i][IC_RIGHT].joyeventtype = ETYPE_JOYAXIS;
+		InputCommand[i][IC_RIGHT].joyaxis = 0;
+		InputCommand[i][IC_RIGHT].joyvalue = 32767;
+		InputCommand[i][IC_RIGHT].which = 0;
+		InputCommand[i][IC_DOWN].joyeventtype = ETYPE_JOYAXIS;
+		InputCommand[i][IC_DOWN].joyaxis = 1;
+		InputCommand[i][IC_DOWN].joyvalue = 32767;
+		InputCommand[i][IC_DOWN].which = 0;
 
-	InputCommand[IC_JUMP].joyeventtype = ETYPE_JOYBUTTON;
-	InputCommand[IC_JUMP].joybutton = 0;
-	InputCommand[IC_POGO].joyeventtype = ETYPE_JOYBUTTON;
-	InputCommand[IC_POGO].joybutton = 1;
-	InputCommand[IC_FIRE].joyeventtype = ETYPE_JOYBUTTON;
-	InputCommand[IC_FIRE].joybutton = 2;
-	InputCommand[IC_STATUS].joyeventtype = ETYPE_JOYBUTTON;
-	InputCommand[IC_STATUS].joybutton = 3;
+		InputCommand[i][IC_JUMP].joyeventtype = ETYPE_JOYBUTTON;
+		InputCommand[i][IC_JUMP].joybutton = 0;
+		InputCommand[i][IC_JUMP].which = 0;
+		InputCommand[i][IC_POGO].joyeventtype = ETYPE_JOYBUTTON;
+		InputCommand[i][IC_POGO].joybutton = 1;
+		InputCommand[i][IC_POGO].which = 0;
+		InputCommand[i][IC_FIRE].joyeventtype = ETYPE_JOYBUTTON;
+		InputCommand[i][IC_FIRE].joybutton = 2;
+		InputCommand[i][IC_FIRE].which = 0;
+		InputCommand[i][IC_STATUS].joyeventtype = ETYPE_JOYBUTTON;
+		InputCommand[i][IC_STATUS].joybutton = 3;
+		InputCommand[i][IC_STATUS].which = 0;
+	}
 }
 
 CInput::~CInput() {
@@ -72,7 +85,7 @@ short CInput::loadControlconfig(void)
 	FILE *fp;
 	if((fp=fopen("controls.dat","rb")) != NULL)
 	{
-		if(fread(InputCommand, sizeof(stInputCommand),NUMBER_OF_COMMANDS, fp) == 0 )
+		if(fread(InputCommand, sizeof(stInputCommand),NUMBER_OF_COMMANDS*NUM_INPUTS, fp) == 0 )
 		{
 			fclose(fp);
 			return 1;
@@ -88,45 +101,45 @@ short CInput::saveControlconfig(void)
 	FILE *fp;
 	if((fp=fopen("controls.dat","wb")) != NULL)
 	{
-		fwrite(InputCommand, sizeof(stInputCommand),NUMBER_OF_COMMANDS, fp);
+		fwrite(InputCommand, sizeof(stInputCommand),NUMBER_OF_COMMANDS*NUM_INPUTS, fp);
 		fclose(fp);
 		return 0;
 	}
 
 	return 1;
 }
-void CInput::getEventName(int position, char *buf)
+void CInput::getEventName(int position, unsigned char input, char *buf)
 {
 	char buf2[256];
 	memset(buf,0,256);
 
-	strcat(buf,SDL_GetKeyName(InputCommand[position].keysym));
-	if(InputCommand[position].joyeventtype == ETYPE_JOYAXIS)
+	strcat(buf,SDL_GetKeyName(InputCommand[input][position].keysym));
+	if(InputCommand[input][position].joyeventtype == ETYPE_JOYAXIS)
 	{
 		strcat(buf,", ");
-		sprintf(buf2,"Joy-A%d",InputCommand[position].joyaxis);
+		sprintf(buf2,"Joy%d-A%d",InputCommand[input][position].which, InputCommand[input][position].joyaxis);
 		strcat(buf,buf2);
-		if(InputCommand[position].joyvalue < 0)
+		if(InputCommand[input][position].joyvalue < 0)
 			strcat(buf,"-");
 		else
 			strcat(buf,"+");
 	}
-	if(InputCommand[position].joyeventtype == ETYPE_JOYBUTTON)
+	if(InputCommand[input][position].joyeventtype == ETYPE_JOYBUTTON)
 	{
 		strcat(buf,", ");
-		sprintf(buf2,"Joy-B%d",InputCommand[position].joybutton);
+		sprintf(buf2,"Joy%d-B%d",InputCommand[input][position].which, InputCommand[input][position].joybutton);
 		strcat(buf,buf2);
 	}
 }
 
-bool CInput::readNewEvent(int position)
+bool CInput::readNewEvent(Uint8 device, int position)
 {
 	while( SDL_PollEvent( &Event ) )
 	{
 		switch ( Event.type )
 		{
 		 case SDL_KEYDOWN:
-			 InputCommand[position].keysym = Event.key.keysym.sym;
+			 InputCommand[device][position].keysym = Event.key.keysym.sym;
 			 return true;
 			 break;
 		 case SDL_JOYBUTTONDOWN:
@@ -134,15 +147,17 @@ bool CInput::readNewEvent(int position)
 			 WIZ_EmuKeyboard( Event.jbutton.button, 1 );
 			 return false;
 #else
-			 InputCommand[position].joyeventtype = ETYPE_JOYBUTTON;
-			 InputCommand[position].joybutton = Event.jbutton.button;
+			 InputCommand[device][position].joyeventtype = ETYPE_JOYBUTTON;
+			 InputCommand[device][position].joybutton = Event.jbutton.button;
+			 InputCommand[device][position].which = Event.jbutton.which;
 			 return true;
 #endif
 			 break;
 		 case SDL_JOYAXISMOTION:
-			 InputCommand[position].joyeventtype = ETYPE_JOYAXIS;
-			 InputCommand[position].joyaxis = Event.jaxis.axis;
-			 InputCommand[position].joyvalue = Event.jaxis.value;
+			 InputCommand[device][position].joyeventtype = ETYPE_JOYAXIS;
+			 InputCommand[device][position].joyaxis = Event.jaxis.axis;
+			 InputCommand[device][position].which = Event.jaxis.which;
+			 InputCommand[device][position].joyvalue = Event.jaxis.value;
 			 return true;
 			 break;
 		}
@@ -155,13 +170,12 @@ void CInput::cancelExitEvent(void) { m_exit=false; }
 
 void CInput::pollEvents()
 {
-	Uint8 i;
-
 	// copy all the input of the last poll to a space for checking pressing or holding a button
 	memcpy(last_immediate_keytable, immediate_keytable, KEYTABLE_SIZE*sizeof(char));
 
-	for(i=0 ; i<NUMBER_OF_COMMANDS ; i++)
-		InputCommand[i].lastactive = InputCommand[i].active;
+	for(Uint8 i=0 ; i<NUMBER_OF_COMMANDS ; i++)
+		for(Uint8 j=0 ; j<NUM_INPUTS ; j++)
+		InputCommand[j][i].lastactive = InputCommand[j][i].active;
 
 	//While there's an event to handle
 	while( SDL_PollEvent( &Event ) )
@@ -190,27 +204,62 @@ void CInput::pollEvents()
 	   }
 	}
 
+	// Check, if LALT+ENTER was pressed
+	if(getHoldedKey(KLALT) && getPressedKey(KENTER))
+	{
+		bool value;
+		value = g_pVideoDriver->getFullscreen();
+		value = !value;
+		g_pLogFile->textOut(GREEN,"Fullscreen mode triggered by user!<br>");
+		g_pVideoDriver->isFullscreen(value);
+
+		// initialize/activate all drivers
+		g_pLogFile->ftextOut("Restarting graphics driver...<br>");
+		if (!g_pVideoDriver->applyMode())
+		{
+			value = !value;
+			g_pLogFile->ftextOut(PURPLE, "Couldn't change the resolution, Rolling back...<br>");
+			if(g_pVideoDriver->applyMode()) g_pVideoDriver->initOpenGL();
+		}
+		else
+			g_pVideoDriver->initOpenGL();
+
+
+		if(value) g_pVideoDriver->AddConsoleMsg("Fullscreen enabled");
+		else g_pVideoDriver->AddConsoleMsg("Fullscreen disabled");
+	}
+
+	// Check, if LALT+Q or LALT+F4 was pressed
+	if(getHoldedKey(KLALT) && (getPressedKey(KF4) || getPressedKey(KQ)) )
+	{
+		g_pLogFile->textOut("User exit request!");
+		m_exit = true;
+	}
+
+
 #ifdef WIZ
-	WIZ_AdjustVolume( volume_direction ); 
+	WIZ_AdjustVolume( volume_direction );
 #endif
 }
 
 void CInput::processJoystickAxis(void)
 {
-	unsigned int i;
-	for(i=0 ; i<NUMBER_OF_COMMANDS ; i++)
+	for(Uint8 j=0 ; j<NUM_INPUTS ; j++)
 	{
-		if(InputCommand[i].joyeventtype == ETYPE_JOYAXIS)
+		for(Uint8 i=0 ; i<NUMBER_OF_COMMANDS ; i++)
 		{
-			// Axis are configured for this commmand
-			if(Event.jaxis.axis == InputCommand[i].joyaxis)
+			if(InputCommand[j][i].joyeventtype == ETYPE_JOYAXIS)
 			{
-				// Deadzone
-				if((Event.jaxis.value > 3200 && InputCommand[i].joyvalue > 0) ||
-					(Event.jaxis.value < -3200 && InputCommand[i].joyvalue < 0))
-					InputCommand[i].active = true;
-				else
-					InputCommand[i].active = false;
+				// Axis are configured for this commmand
+				if(Event.jaxis.axis == InputCommand[j][i].joyaxis && Event.jaxis.which == InputCommand[j][i].which )
+				{
+					// Deadzone
+					if((Event.jaxis.value > 3200 && InputCommand[0][i].joyvalue > 0) ||
+						(Event.jaxis.value < -3200 && InputCommand[0][i].joyvalue < 0))
+						InputCommand[j][i].active = true;
+					else
+						InputCommand[j][i].active = false;
+				}
 			}
 		}
 	}
@@ -220,14 +269,17 @@ void CInput::processJoystickButton(int value)
 #ifdef WIZ
 	WIZ_EmuKeyboard( Event.jbutton.button, value );
 #else
-	unsigned int i;
-	for(i=0 ; i<NUMBER_OF_COMMANDS ; i++)
+	for(Uint8 j=0 ; j<NUM_INPUTS ; j++)
 	{
-		if(InputCommand[i].joyeventtype == ETYPE_JOYBUTTON)
+		for(Uint8 i=0 ; i<NUMBER_OF_COMMANDS ; i++)
 		{
-			// Joystick buttons are configured for this event !!
-			if(Event.jbutton.button == InputCommand[i].joybutton)
-				InputCommand[i].active = value;
+		// TODO: Check all NUM_INPUTS, if they can be reduced to another variable
+			if(InputCommand[j][i].joyeventtype == ETYPE_JOYBUTTON)
+			{
+				// Joystick buttons are configured for this event !!
+				if(Event.jbutton.button == InputCommand[j][i].joybutton && Event.jbutton.which == InputCommand[j][i].which )
+					InputCommand[j][i].active = value;
+			}
 		}
 	}
 #endif
@@ -237,17 +289,17 @@ void CInput::sendKey(int key){	immediate_keytable[key] = true;	}
 
 void CInput::processKeys(int value)
 {
-
-	unsigned short i;
-
-	for(i=0 ; i<NUMBER_OF_COMMANDS ; i++)
+	for(Uint8 i=0 ; i<NUMBER_OF_COMMANDS ; i++)
 	{
-		if(InputCommand[i].keysym == Event.key.keysym.sym)
+		for(Uint8 j=0 ; j<NUM_INPUTS ; j++)
 		{
-			if(value)
-				InputCommand[i].active = true;
-			else
-				InputCommand[i].active = false;
+			if(InputCommand[j][i].keysym == Event.key.keysym.sym)
+			{
+				if(value)
+					InputCommand[j][i].active = true;
+				else
+					InputCommand[j][i].active = false;
+			}
 		}
 	}
 
@@ -266,6 +318,7 @@ void CInput::processKeys(int value)
        case SDLK_TAB:immediate_keytable[KTAB]		= value;  break;
        case SDLK_LSHIFT:immediate_keytable[KLSHIFT]	= value;  break;
        case SDLK_ESCAPE:immediate_keytable[KQUIT]	= value;  break;
+       case SDLK_LALT:immediate_keytable[KLALT]	= value;  break;
 
        case SDLK_BACKSPACE:immediate_keytable[KBCKSPCE] = value; break;
 
@@ -317,7 +370,6 @@ void CInput::processKeys(int value)
        case SDLK_8:immediate_keytable[KNUM8] = value;  break;
        case SDLK_9:immediate_keytable[KNUM9] = value;  break;
 
-
        default: break;
      }
 }
@@ -325,9 +377,7 @@ void CInput::processKeys(int value)
 bool CInput::getHoldedKey(int key)
 {
 	if(immediate_keytable[key])
-	{
 		return true;
-	}
 
 	return false;
 }
@@ -353,36 +403,57 @@ bool CInput::getPressedAnyKey(void)
 	}
 	return false;
 }
-
 bool CInput::getHoldedCommand(int command)
 {
-	if(InputCommand[command].active)
-	{
-		return true;
-	}
+	bool retval = true;
+	for( Uint8 player=0; player<NUM_INPUTS ; player++ )
+		retval &= getHoldedCommand(player, command);
+	return retval;
+}
 
-	return false;
+bool CInput::getHoldedCommand(Uint8 player, int command)
+{
+	if(InputCommand[player][command].active)
+		return true;
+	else
+		return false;
 }
 
 bool CInput::getPressedCommand(int command)
 {
-	if(InputCommand[command].active && !InputCommand[command].lastactive)
+	bool retval = false;
+	for(Uint8 player=0; player<NUM_INPUTS ; player++ )
+		retval |= getPressedCommand(player, command);
+	return retval;
+}
+
+bool CInput::getPressedCommand(Uint8 player, int command)
+{
+	if(InputCommand[player][command].active && !InputCommand[player][command].lastactive)
 	{
-		InputCommand[command].active = false;
+		InputCommand[player][command].active = false;
 		return true;
 	}
 
 	return false;
 }
-bool CInput::getPressedAnyCommand(void)
+
+bool CInput::getPressedAnyCommand()
+{
+	bool retval = true;
+	for(Uint8 player=0 ; player<NUM_INPUTS ; player++)
+		retval &= getPressedAnyCommand(player);
+	return retval;
+}
+
+bool CInput::getPressedAnyCommand(Uint8 player)
 {
 	int i;
 
 	for(i=0 ; i<4 ; i++)
-	{
-		if(getPressedCommand(i))
+		if(getPressedCommand(player,i))
 			return true;
-	}
+
 	return false;
 }
 
@@ -482,12 +553,12 @@ void CInput::WIZ_EmuKeyboard( int button, int value )
 
 	if( fakeevent1.key.keysym.sym != SDLK_UNKNOWN )
 	{
-		SDL_PushEvent (&fakeevent1);	
+		SDL_PushEvent (&fakeevent1);
 	}
 
 	if( fakeevent2.key.keysym.sym != SDLK_UNKNOWN )
 	{
-		SDL_PushEvent (&fakeevent2);	
+		SDL_PushEvent (&fakeevent2);
 	}
 }
 

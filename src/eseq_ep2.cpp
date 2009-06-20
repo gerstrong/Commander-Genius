@@ -383,7 +383,7 @@ int cancel, lastcancelstate;
     sb_dialogbox(boxleft,boxtop,boxwidth,boxheight);
     g_pGraphics->sb_font_draw( (unsigned char*)tempbuf, (boxleft+1)*8, (boxtop+1+textline)*8);
 
-    gamedo_frameskipping_blitonly(pCKP);
+    gamedo_frameskipping_blitonly();
     gamedo_render_eraseobjects();
 
     if (showtimer > LETTER_SHOW_SPD)

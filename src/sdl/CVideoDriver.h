@@ -71,15 +71,19 @@ public:
 	void setZoom(short vale);
 #ifdef USE_OPENGL
 	void enableOpenGL(bool value) { m_opengl = value; }
+	bool initOpenGL();
 	void setOGLFilter(unsigned char value) { m_opengl_filter = (value==1) ? GL_LINEAR : GL_NEAREST ; }
 #else
 	void enableOpenGL(bool value) { m_opengl = false; }
 	void setOGLFilter(unsigned char value) { m_opengl_filter = 0; }
 #endif
-	void setTargetFPS(unsigned int targetfps){ if( targetfps >= 0 && targetfps <= 60 ) m_targetfps = targetfps; }
+	void setTargetFPS(unsigned int targetfps){ if( targetfps >= 0 && targetfps <= 70 ) m_targetfps = targetfps; }
 	unsigned char getTargetFPS(void){ return m_targetfps; }
 
 	void showFPS(bool value);
+
+	void setAspectCorrection(bool value) { m_aspect_correction = value; }
+	bool getAspectCorrection(void) { return m_aspect_correction; }
 
 private:
 #ifdef USE_OPENGL
@@ -98,6 +102,7 @@ private:
 	  bool showfps;
 	  bool m_opengl;
 	  int m_opengl_filter;
+	  bool m_aspect_correction;
 
 	  SDL_Rect screenrect;
 	  SDL_Rect blitrect;

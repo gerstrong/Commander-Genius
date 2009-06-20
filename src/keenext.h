@@ -1,9 +1,10 @@
+#include "sdl/CSettings.h"
+
 extern char PlatExtending;
 extern stFade fade;
 extern stMap map;
 extern unsigned int AnimTileInUse[ATILEINUSE_SIZEX][ATILEINUSE_SIZEY];
 extern stTile tiles[MAX_TILES+1];
-extern char localmp;
 extern unsigned char tiledata[MAX_TILES+1][16][16];
 extern stSprite sprites[MAX_SPRITES+1];
 extern stBitmap bitmaps[MAX_BITMAPS+1];

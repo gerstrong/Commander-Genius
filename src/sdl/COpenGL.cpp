@@ -20,7 +20,7 @@ COpenGL::~COpenGL() {
 }
 
 bool COpenGL::initGL(unsigned Width, unsigned Height, unsigned char Depth,
-									GLint oglfilter, unsigned char scalex)
+									GLint oglfilter, unsigned char scalex, bool aspect)
 {
 	m_Depth = Depth;
 	m_ScaleX = scalex;
@@ -28,7 +28,10 @@ bool COpenGL::initGL(unsigned Width, unsigned Height, unsigned char Depth,
 	m_texparam = GL_TEXTURE_2D;
 
 	// Set the proper resolution for OpenGL. Very important, when user changes the resolution
-	glViewport(0,0,Width, Height);
+	if(aspect)
+		glViewport(0,(Height-(Height*200)/240)/2,Width, (Height*200)/240);
+	else
+		glViewport(0,0,Width, Height);
 	//glViewport(0,0,1024, 1024);
 
 	// Set clear colour

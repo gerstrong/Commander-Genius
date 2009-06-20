@@ -16,14 +16,16 @@ public:
 	CGame();
 	virtual ~CGame();
 
-	void runCycle(void);
 	int loadResources(unsigned short Episode, char *DataDirectory);
+	short runCycle(stCloneKeenPlus *pCKP);
+	void preallocateCKP(stCloneKeenPlus *pCKP);
 	CLatch *getLatch(void);
 
 private:
 	static const unsigned short MAX_TEXT_LENGTH = 256;
 	unsigned short m_Episode;
 	char m_DataDirectory[MAX_TEXT_LENGTH];
+	int current_demo;
 
 	CLatch *Latch;
 };

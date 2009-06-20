@@ -43,7 +43,6 @@ void gamedo_getInput(stCloneKeenPlus *pCKP)
 int i;
 int byt;
 unsigned int msb, lsb;
-int p/*, keysdirty*/;
 
      if (demomode==DEMO_PLAYBACK)
      {
@@ -56,17 +55,19 @@ int p/*, keysdirty*/;
           demo_RLERunLen = (msb<<8) | lsb;
           byt = demo_data[demo_data_index++];         // get keys down
 
-          player[0].keytable[KLEFT] = 0;
-          player[0].keytable[KRIGHT] = 0;
-          player[0].keytable[KCTRL] = 0;
-          player[0].keytable[KALT] = 0;
+          player[0].playcontrol[PA_X] = 0;
+          player[0].playcontrol[PA_POGO] = 0;
+          player[0].playcontrol[PA_JUMP] = 0;
+          player[0].playcontrol[PA_FIRE] = 0;
+          player[0].playcontrol[PA_STATUS] = 0;
 
-
-          if (byt & 1) player[0].keytable[KLEFT] = 1;
-          if (byt & 2) player[0].keytable[KRIGHT] = 1;
-          if (byt & 4) player[0].keytable[KCTRL] = 1;
-          if (byt & 8) player[0].keytable[KALT] = 1;
-          if (byt & 16)
+          if (byt & 1) player[0].playcontrol[PA_X] -= 100;
+          if (byt & 2) player[0].playcontrol[PA_X] += 100;
+          if (byt & 4) player[0].playcontrol[PA_POGO] = 1;
+          if (byt & 8) player[0].playcontrol[PA_JUMP] = 1;
+          if (byt & 16)player[0].playcontrol[PA_FIRE] = 1;
+          if (byt & 32)player[0].playcontrol[PA_STATUS] = 1;
+          if (byt & 64)
           {  // demo STOP command
             if (fade.mode!=FADE_GO) endlevel(1, pCKP);
           }
@@ -93,94 +94,49 @@ int p/*, keysdirty*/;
         return;
      }
 
-     if (is_server) return;
-
-     p = primaryplayer;
-     //player[p].keytable[KQUIT] = immediate_keytable[KQUIT];
-
-     memcpy(player[p].lastplaycontrol,player[p].playcontrol,PA_MAX_ACTIONS);
-
-     // Entry for the primary player
-     for(i=0 ; i<PA_MAX_ACTIONS ; i++)
+     for(Uint8 p=0 ; p<numplayers ; p++)
      {
-    	 player[p].playcontrol[i] = 0;
+    	 memcpy(player[p].lastplaycontrol,player[p].playcontrol,PA_MAX_ACTIONS);
+
+    	 // Entry for every player
+    	 for(Uint8 j=0 ; j<PA_MAX_ACTIONS ; j++)
+    		 player[p].playcontrol[j] = 0;
+
+    	 if(g_pInput->getHoldedCommand(p, IC_LEFT))
+    		 player[p].playcontrol[PA_X] -= 100;
+    	 if(g_pInput->getHoldedCommand(p, IC_RIGHT))
+    		 player[p].playcontrol[PA_X] += 100;
+
+    	 if(g_pInput->getHoldedCommand(p, IC_UP))
+    		 player[p].playcontrol[PA_Y] -= 100;
+    	 if(g_pInput->getHoldedCommand(p, IC_DOWN))
+    		 player[p].playcontrol[PA_Y] += 100;
+
+    	 if(g_pInput->getHoldedCommand(p, IC_JUMP))
+    		 player[p].playcontrol[PA_JUMP] = 1;
+    	 if(g_pInput->getHoldedCommand(p, IC_POGO))
+    		 player[p].playcontrol[PA_POGO] = 1;
+    	 if(g_pInput->getHoldedCommand(p, IC_FIRE))
+    		 player[p].playcontrol[PA_FIRE] = 1;
+    	 if(g_pInput->getHoldedCommand(p, IC_STATUS))
+    		 player[p].playcontrol[PA_STATUS] = 1;
+
+    	 if (demomode==DEMO_RECORD)
+    	 {
+    	   if(i) player[p].playcontrol[PA_X] += 100;
+    	   fputc(i, demofile);
+    	   if(i) player[p].playcontrol[PA_X] -= 100;
+    	   fputc(i, demofile);
+    	   if(i) player[p].playcontrol[PA_POGO] = 1;
+    	   fputc(i, demofile);
+    	   if(i) player[p].playcontrol[PA_JUMP] = 1;
+    	   fputc(i, demofile);
+    	   if(i) player[p].playcontrol[PA_FIRE] = 1;
+    	   fputc(i, demofile);
+    	   if(i) player[p].playcontrol[PA_STATUS] = 1;
+    	   fputc(i, demofile);
+    	 }
      }
-
-     if(g_pInput->getHoldedCommand(IC_LEFT))
-    	 player[p].playcontrol[PA_X] -= 100;
-     if(g_pInput->getHoldedCommand(IC_RIGHT))
-    	 player[p].playcontrol[PA_X] += 100;
-
-     if(g_pInput->getHoldedCommand(IC_UP))
-    	 player[p].playcontrol[PA_Y] -= 100;
-     if(g_pInput->getHoldedCommand(IC_DOWN))
-    	 player[p].playcontrol[PA_Y] += 100;
-
-     if(g_pInput->getHoldedCommand(IC_JUMP))
-    	 player[p].playcontrol[PA_JUMP] = 1;
-     if(g_pInput->getHoldedCommand(IC_POGO))
-    	 player[p].playcontrol[PA_POGO] = 1;
-     if(g_pInput->getHoldedCommand(IC_FIRE))
-    	 player[p].playcontrol[PA_FIRE] = 1;
-     if(g_pInput->getHoldedCommand(IC_STATUS))
-    	 player[p].playcontrol[PA_STATUS] = 1;
-
-
-     #ifdef NETWORK_PLAY
-//       if (numplayers>1)
-       if (is_client)
-       {
-         if (player[p].keytable[KLEFT] != oldleftkey) keysdirty = 1;
-         else if (player[p].keytable[KRIGHT] != oldrightkey) keysdirty = 1;
-         else if (player[p].keytable[KUP] != oldupkey) keysdirty = 1;
-         else if (player[p].keytable[KDOWN] != olddownkey) keysdirty = 1;
-         else if (player[p].keytable[KCTRL] != oldctrlkey) keysdirty = 1;
-         else if (player[p].keytable[KALT] != oldaltkey) keysdirty = 1;
-         else keysdirty = 0;
-         if (keysdirty)
-         {
-           net_sendkeys();
-           oldleftkey = player[p].keytable[KLEFT];
-           oldrightkey = player[p].keytable[KRIGHT];
-           oldupkey = player[p].keytable[KUP];
-           olddownkey = player[p].keytable[KDOWN];
-           oldctrlkey = player[p].keytable[KCTRL];
-           oldaltkey = player[p].keytable[KALT];
-         }
-       }
-    #endif
-
-    if (numplayers>1 && localmp)
-    {
-      /* player[1].keytable[KQUIT] = 0;
-       player[1].keytable[KLEFT] = immediate_keytable[KLEFT2];
-       player[1].keytable[KRIGHT] = immediate_keytable[KRIGHT2];
-       player[1].keytable[KUP] = immediate_keytable[KUP2];
-       player[1].keytable[KDOWN] = immediate_keytable[KDOWN2];
-       player[1].keytable[KCTRL] = immediate_keytable[KCTRL2];
-       player[1].keytable[KALT] = immediate_keytable[KALT2];
-       player[1].keytable[KENTER] = 0;
-       player[1].keytable[KSPACE] = 0;
-
-       player[2].keytable[KQUIT] = 0;
-       player[2].keytable[KLEFT] = immediate_keytable[KLEFT3];
-       player[2].keytable[KRIGHT] = immediate_keytable[KRIGHT3];
-       player[2].keytable[KUP] = immediate_keytable[KUP3];
-       player[2].keytable[KDOWN] = immediate_keytable[KDOWN3];
-       player[2].keytable[KCTRL] = immediate_keytable[KCTRL3];
-       player[2].keytable[KALT] = immediate_keytable[KALT3];
-       player[2].keytable[KENTER] = 0;
-       player[2].keytable[KSPACE] = 0;*/
-    }
-
-    if (demomode==DEMO_RECORD)
-    {
-       /*fputc(player[0].keytable[KLEFT], demofile);
-       fputc(player[0].keytable[KRIGHT], demofile);
-       fputc(player[0].keytable[KCTRL], demofile);
-       fputc(player[0].keytable[KALT], demofile);
-       fputc(immediate_keytable[KF1], demofile);*/
-    }
 }
 
 // handles scrolling, for player cp
@@ -553,7 +509,6 @@ void gamedo_RenderScreen(stCloneKeenPlus *pCKP)
    g_pGraphics->renderHQBitmap();
 
    gamedo_render_drawobjects(pCKP);
-   //gamedo_render_drawdebug();
 
    if(pCKP != NULL)
    {
@@ -571,30 +526,6 @@ void gamedo_RenderScreen(stCloneKeenPlus *pCKP)
 
    gamedo_render_erasedebug();
    gamedo_render_eraseobjects();
-
-   /*if (framebyframe)
-   {
-     while(!immediate_keytable[KF8] && !immediate_keytable[KQUIT])
-     {
-       if (immediate_keytable[KF7])
-       {
-         while(immediate_keytable[KF7] && !immediate_keytable[KQUIT])
-         {
-           poll_events(pCKP);
-         }
-         framebyframe = 0;
-         #ifdef BUILD_SDL
-           NumConsoleMessages = 0;
-         #endif
-         return;
-       }
-       poll_events(pCKP);
-     }
-     while(immediate_keytable[KF8] && !immediate_keytable[KQUIT])
-     {
-       poll_events(pCKP);
-     }
-   }*/
 
    curfps++;
 }
@@ -799,7 +730,7 @@ void gamedo_frameskipping(stCloneKeenPlus *pCKP)
 
 // same as above but only does a sb_blit, not the full RenderScreen.
 // used for intros etc.
-void gamedo_frameskipping_blitonly(stCloneKeenPlus *pCKP)
+void gamedo_frameskipping_blitonly(void)
 {
     if (framebyframe)
     {

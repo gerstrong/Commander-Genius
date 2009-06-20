@@ -5,9 +5,6 @@
  *      Author: gerstrong
  */
 
-short loadDriverConfiguration(stCloneKeenPlus *pCKP);
-short saveDriverConfiguration(stCloneKeenPlus *pCKP);
-void startTheWholeGame(stCloneKeenPlus *pCKP);
 short readCommandLine(int argc, char *argv[], stCloneKeenPlus *pCKP);
 void preallocateCKP(stCloneKeenPlus *pCKP);
 short loadGamesConfig(stOption *Option);

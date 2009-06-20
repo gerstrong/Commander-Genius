@@ -502,7 +502,12 @@ char CSound::extractOfExeFile(char *inputpath, int episode)
 				  if (get_bit(&bit_count, &fin))
 				  {
 					  unsigned char tmp[2];
-					  fread(tmp, 1, 2, fin);
+					  if(fread(tmp, 1, 2, fin))
+					  {
+						  g_pLogFile->ftextOut(RED,"Read-Error!");
+				    	  return 1;
+					  }
+
 					  repeat = (tmp[1] & 0x07);
 
 					  offset = ((tmp[1] & ~0x07) << 5) | tmp[0] | 0xE000;

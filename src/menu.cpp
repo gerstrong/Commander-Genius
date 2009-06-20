@@ -1,4 +1,4 @@
-/* MENU.C
+ /* MENU.C
   The main menu, intro, and other such stuff.
 */
 
@@ -22,6 +22,7 @@
 #include "sdl/CInput.h"
 #include "vorticon/CDialog.h"
 #include "CLogFile.h"
+#include "sdl/CSettings.h"
 #include <SDL.h>
 #include <iostream>
 #include <fstream>
@@ -42,7 +43,6 @@ g_pLogFile->ftextOut("showmapatpos(%d, %d, %d, %d);<br>",level,xoff,yoff,wm);
   initgame(pCKP);           // reset scroll
   memset(levelname,0,MAX_STRING_LENGTH*sizeof(char));
   sprintf(levelname, "level%02d.ck%d", level, pCKP->Control.levelcontrol.episode);
-
 
   short numsel;
   if(pCKP->Resources.GameSelected == 0 ) // First time startup. No game has been chosen
@@ -182,13 +182,13 @@ short loadStartMenu(stCloneKeenPlus *pCKP)
 		gamedo_AnimatedTiles();
 
 		// Check the Input
-		if(g_pInput->getPressedCommand(IC_DOWN))
+		if(g_pInput->getPressedCommand(0, IC_DOWN))
 			GamesMenu->setNextSelection();
 
-		if(g_pInput->getPressedCommand(IC_UP))
+		if(g_pInput->getPressedCommand(0, IC_UP))
 			GamesMenu->setPrevSelection();
 
-		if(g_pInput->getPressedCommand(IC_STATUS))
+		if(g_pInput->getPressedCommand(0, IC_STATUS))
 		{
 			fade.dir = FADE_OUT;
 			fade.curamt = PAL_FADE_SHADES;
@@ -204,7 +204,7 @@ short loadStartMenu(stCloneKeenPlus *pCKP)
 		GamesMenu->renderDialog();
 
 		// blit the scrollbuffer to the display
-		gamedo_frameskipping_blitonly(pCKP);
+		gamedo_frameskipping_blitonly();
 	} while(!g_pInput->getExitEvent());
 
 	delete GamesMenu;
@@ -230,7 +230,7 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 	// Prepare the Games Menu
 	MainMenu = new CDialog();
 
-	MainMenu->setDimensions(11,9,18,11);
+	MainMenu->setDimensions(11,8,18,12);
 
 	// Load the Title Bitmap
 	bmnum = g_pGraphics->getBitmapNumberFromName("TITLE");
@@ -243,6 +243,7 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 	MainMenu->addOptionText("Options");
 	MainMenu->addOptionText("Demo");
 	MainMenu->addOptionText("Change Game");
+	MainMenu->addOptionText("About CG");
 	MainMenu->addOptionText("Quit");
 
 	x = (320/2)-(bitmaps[bmnum].xsize/2);
@@ -282,7 +283,7 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 		MainMenu->renderDialog();
 
 		// blit the scrollbuffer to the display
-		gamedo_frameskipping_blitonly(pCKP);
+		gamedo_frameskipping_blitonly();
 
 		if(g_pInput->getExitEvent())
 			return MAINMNU_QUIT;
@@ -414,7 +415,7 @@ int getDifficulty(stCloneKeenPlus *pCKP)
 		DifficultyMenu->renderDialog();
 
 		// blit the scrollbuffer to the display
-		gamedo_frameskipping_blitonly(pCKP);
+		gamedo_frameskipping_blitonly();
 
 		g_pInput->pollEvents();
 	    g_pTimer->SpeedThrottle();
@@ -509,7 +510,10 @@ int AudioDlg(stCloneKeenPlus *pCKP)
 			{
 				g_pSound->destroy();
 				g_pSound->setSoundmode(rate, mode ? true : false);
-				saveDriverConfiguration(pCKP);
+				CSettings *Settings;
+				Settings = new CSettings();
+				Settings->saveDrvCfg();
+				delete Settings; Settings = NULL;
 				g_pSound->init();
 				ok = g_pSound->loadSoundData(pCKP->Control.levelcontrol.episode,
 						pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory);
@@ -524,7 +528,7 @@ int AudioDlg(stCloneKeenPlus *pCKP)
 		AudioMenu->renderDialog();
 
 		// blit the scrollbuffer to the display
-		gamedo_frameskipping_blitonly(pCKP);
+		gamedo_frameskipping_blitonly();
 
 		g_pInput->pollEvents();
 	    g_pTimer->SpeedThrottle();
@@ -608,7 +612,8 @@ void OptionsDlg(stCloneKeenPlus *pCKP)
 			}
 			else
 			{
-			    SaveConfig(pCKP->Option);
+				CSettings Settings;
+				Settings.saveGameCfg(pCKP->Option);
 				break;
 			}
 		}
@@ -616,7 +621,7 @@ void OptionsDlg(stCloneKeenPlus *pCKP)
 		OptionsMenu->renderDialog();
 
 		// blit the scrollbuffer to the display
-		gamedo_frameskipping_blitonly(pCKP);
+		gamedo_frameskipping_blitonly();
 
 		g_pInput->pollEvents();
 	    g_pTimer->SpeedThrottle();
@@ -644,6 +649,7 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 	char buf[256];
 	short retval = 0;
 	unsigned char autoframeskip = 0;
+	bool aspect;
 
 	showmapatpos(90, MAINMENU_X, MENUS_Y, 0, pCKP);
 
@@ -654,7 +660,7 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 
 	// Prepare the Games Menu
 	DisplayMenu = new CDialog();
-	DisplayMenu->setDimensions(4,4,32,11);
+	DisplayMenu->setDimensions(4,3,32,13);
 
 	width  = g_pVideoDriver->getWidth();
 	height = g_pVideoDriver->getHeight();
@@ -720,27 +726,24 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 		DisplayMenu->addOptionText("Software Rendering");
 
 	autoframeskip = g_pVideoDriver->getTargetFPS();
-	switch(autoframeskip)
-	{
-	case 60:
-		DisplayMenu->addOptionText("Auto-Frameskip : 60 fps"); break;
-	case 50:
-		DisplayMenu->addOptionText("Auto-Frameskip : 50 fps"); break;
-	case 40:
-		DisplayMenu->addOptionText("Auto-Frameskip : 40 fps"); break;
-	case 30:
-		DisplayMenu->addOptionText("Auto-Frameskip : 30 fps"); break;
-	case 20:
-		DisplayMenu->addOptionText("Auto-Frameskip : 20 fps"); break;
-	default:
-		DisplayMenu->addOptionText("Auto-Frameskip disabled"); break;
-	};
 
+	if(autoframeskip)
+		sprintf(buf,"Auto-Frameskip : %d fps",autoframeskip);
+	else
+		sprintf(buf,"Auto-Frameskip disabled");
+
+	DisplayMenu->addOptionText(buf);
+
+	aspect = g_pVideoDriver->getAspectCorrection();
+
+	if(aspect)
+		DisplayMenu->addOptionText("Aspect Ratio Enabled");
+	else
+		DisplayMenu->addOptionText("Aspect Ratio Disabled");
 
 	DisplayMenu->addSeparator();
 	DisplayMenu->addOptionText("Save and return");
 	DisplayMenu->addOptionText("Cancel");
-
 	DisplayMenu->animateDialogBox(true);
 
 	do
@@ -764,28 +767,33 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 			if(selection == 0)
 			{
 				// Now the part of the resolution list
-				if(width == 1024)
+				switch(width)
 				{
-					width  = 320;
-					height = 240;
-				}
-				else if(width == 320)
-				{
+				case 320:
 					width  = 640;
 					height = 480;
-				}
-				else if(width == 640)
-				{
+					break;
+				case 640:
 					width  = 800;
 					height = 600;
-				}
-				else if(width == 800)
-				{
+					break;
+				case 800:
 					width  = 1024;
 					height = 768;
+					break;
+				case 1024:
+					width  = 1280;
+					height = 1024;
+					break;
+				case 1280:
+					width  = 1680;
+					height = 1050;
+					break;
+				default:
+					width  = 320;
+					height = 240;
+					break;
 				}
-
-				// TODO: Replace this by the available modes list!
 
 				sprintf(buf,"Resolution: %dx%dx%d",width,height,depth);
 				DisplayMenu->setOptionText(selection,buf);
@@ -864,30 +872,30 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 			}
 			else if(selection == 6)
 			{
-				if(autoframeskip < 60 && autoframeskip >= 0)
-					autoframeskip += 10;
-				else
-					autoframeskip = 0;
-
-				switch(autoframeskip)
+				if(autoframeskip < 70 && autoframeskip >= 0)
 				{
-				case 60:
-					DisplayMenu->setOptionText(6,"Auto-Frameskip : 60 fps"); break;
-				case 50:
-					DisplayMenu->setOptionText(6,"Auto-Frameskip : 50 fps"); break;
-				case 40:
-					DisplayMenu->setOptionText(6,"Auto-Frameskip : 40 fps"); break;
-				case 30:
-					DisplayMenu->setOptionText(6,"Auto-Frameskip : 30 fps"); break;
-				case 20:
-					DisplayMenu->setOptionText(6,"Auto-Frameskip : 20 fps"); break;
-				case 10:
-					DisplayMenu->setOptionText(6,"Auto-Frameskip : 10 fps"); break;
-				default:
-					DisplayMenu->setOptionText(6,"Auto-Frameskip disabled"); break;
-				};
+					autoframeskip += 10;
+					sprintf(buf,"Auto-Frameskip : %d fps", autoframeskip);
+				}
+				else
+				{
+					autoframeskip = 0;
+					sprintf(buf,"Auto-Frameskip disabled");
+				}
+
+				DisplayMenu->setOptionText(6, buf);
 			}
-			else if(selection == 8)
+			else if(selection == 7)
+			{
+				aspect = !aspect;
+
+				if(aspect)
+					DisplayMenu->setOptionText(7,"Aspect Ratio Enabled");
+				else
+					DisplayMenu->setOptionText(7,"Aspect Ratio Disabled");
+
+			}
+			else if(selection == 9)
 			{
 				g_pVideoDriver->stop();
 
@@ -903,11 +911,15 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 				g_pVideoDriver->setFilter(filter);
 				g_pVideoDriver->setFrameskip(frameskip);
 				g_pVideoDriver->setTargetFPS(autoframeskip);
-				saveDriverConfiguration(pCKP);
-				g_pGraphics->allocScrollBufmem();
+				g_pVideoDriver->setAspectCorrection(aspect);
+
+				CSettings *Settings;
+				Settings = new CSettings();
+				Settings->saveDrvCfg();
+				delete Settings; Settings = NULL;
 
 				// initialize/activate all drivers
-				g_pLogFile->ftextOut("Starting graphics driver...<br>");
+				g_pLogFile->ftextOut("Restarting graphics driver... (Menu)<br>");
 				if (g_pVideoDriver->start())
 					retval = 1;
 
@@ -928,7 +940,7 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 		DisplayMenu->renderDialog();
 
 		// blit the scrollbuffer to the display
-		gamedo_frameskipping_blitonly(pCKP);
+		gamedo_frameskipping_blitonly();
 
 		g_pInput->pollEvents();
 	    g_pTimer->SpeedThrottle();
@@ -947,10 +959,8 @@ void showPage(char *text, stCloneKeenPlus *pCKP, int textsize)
 	unsigned int i, j, k;
 	int exit=0;
 	int textpos;
-	//char lastupstate, lastdnstate;
-	int enter;
+	bool enter;
 	unsigned int dlgX,dlgY,dlgW,dlgH;
-	//unsigned char lastkeytable[KEYTABLE_SIZE+1];
 	unsigned int scroll, maxscroll;
 	char buffer[200][40];
 
@@ -1059,20 +1069,20 @@ void showPage(char *text, stCloneKeenPlus *pCKP, int textsize)
 	    g_pGraphics->sb_font_draw((unsigned char*) coverline, (dlgX+1)<<3, (dlgY+dlgH-1)<<3);
 
 	    // If user presses up or down
-	    if (g_pInput->getHoldedCommand(IC_DOWN))
+	    if (g_pInput->getHoldedCommand(0,IC_DOWN) || g_pInput->getHoldedCommand(1,IC_DOWN))
 	    {
 			if(scroll < (totnumline-dlgH)<<3)
 				scroll++;
 			SDL_Delay(2);
 	    }
-		else if (g_pInput->getHoldedCommand(IC_UP))
+		else if (g_pInput->getHoldedCommand(0,IC_UP) || g_pInput->getHoldedCommand(1,IC_UP))
 		{
 			if(scroll > 0)
 				scroll--;
 			SDL_Delay(2);
 		}
 
-	    enter = (g_pInput->getPressedCommand(IC_STATUS));//||g_pInput->getPressedCommand(KCTRL)||g_pInput->getPressedCommand(KALT));
+	    enter = (g_pInput->getPressedCommand(0,IC_STATUS) || g_pInput->getPressedCommand(1,IC_STATUS));
 	    if (enter)
 	    {
 	    	exit=1;
@@ -1152,7 +1162,7 @@ char configmenu(stCloneKeenPlus *pCKP)
 		OptionsMenu->renderDialog();
 
 		// blit the scrollbuffer to the display
-		gamedo_frameskipping_blitonly(pCKP);
+		gamedo_frameskipping_blitonly();
 
 		g_pInput->pollEvents();
 	    g_pTimer->SpeedThrottle();
@@ -1207,31 +1217,56 @@ char controlsmenu(stCloneKeenPlus *pCKP)
 	// Prepare the Games Menu
 	ControlsMenu = new CDialog();
 
-	ControlsMenu->setDimensions(1,1,38,24);
+	ControlsMenu->setDimensions(1,3,38,20);
 
-	g_pInput->getEventName(IC_LEFT,buf2);
-	sprintf(buf,"Left:   %s",buf2);
+	g_pInput->getEventName(IC_LEFT, 0, buf2);
+	sprintf(buf,"P1 Left:   %s",buf2);
 	ControlsMenu->addOptionText(buf);
-	g_pInput->getEventName(IC_UP,buf2);
-	sprintf(buf,"Up:     %s",buf2);
+	g_pInput->getEventName(IC_UP, 0, buf2);
+	sprintf(buf,"P1 Up:     %s",buf2);
 	ControlsMenu->addOptionText(buf);
-	g_pInput->getEventName(IC_RIGHT,buf2);
-	sprintf(buf,"Right:  %s",buf2);
+	g_pInput->getEventName(IC_RIGHT, 0, buf2);
+	sprintf(buf,"P1 Right:  %s",buf2);
 	ControlsMenu->addOptionText(buf);
-	g_pInput->getEventName(IC_DOWN,buf2);
-	sprintf(buf,"Down:   %s",buf2);
+	g_pInput->getEventName(IC_DOWN, 0, buf2);
+	sprintf(buf,"P1 Down:   %s",buf2);
 	ControlsMenu->addOptionText(buf);
-	g_pInput->getEventName(IC_JUMP,buf2);
-	sprintf(buf,"Jump:   %s",buf2);
+	g_pInput->getEventName(IC_JUMP, 0, buf2);
+	sprintf(buf,"P1 Jump:   %s",buf2);
 	ControlsMenu->addOptionText(buf);
-	g_pInput->getEventName(IC_POGO,buf2);
-	sprintf(buf,"Pogo:   %s",buf2);
+	g_pInput->getEventName(IC_POGO, 0, buf2);
+	sprintf(buf,"P1 Pogo:   %s",buf2);
 	ControlsMenu->addOptionText(buf);
-	g_pInput->getEventName(IC_FIRE,buf2);
-	sprintf(buf,"Fire:   %s",buf2);
+	g_pInput->getEventName(IC_FIRE, 0, buf2);
+	sprintf(buf,"P1 Fire:   %s",buf2);
 	ControlsMenu->addOptionText(buf);
-	g_pInput->getEventName(IC_STATUS,buf2);
-	sprintf(buf,"Status: %s",buf2);
+	g_pInput->getEventName(IC_STATUS, 0, buf2);
+	sprintf(buf,"P1 Status: %s",buf2);
+	ControlsMenu->addOptionText(buf);
+
+	g_pInput->getEventName(IC_LEFT, 1, buf2);
+	sprintf(buf,"P2 Left:   %s",buf2);
+	ControlsMenu->addOptionText(buf);
+	g_pInput->getEventName(IC_UP, 1, buf2);
+	sprintf(buf,"P2 Up:     %s",buf2);
+	ControlsMenu->addOptionText(buf);
+	g_pInput->getEventName(IC_RIGHT, 1, buf2);
+	sprintf(buf,"P2 Right:  %s",buf2);
+	ControlsMenu->addOptionText(buf);
+	g_pInput->getEventName(IC_DOWN, 1, buf2);
+	sprintf(buf,"P2 Down:   %s",buf2);
+	ControlsMenu->addOptionText(buf);
+	g_pInput->getEventName(IC_JUMP, 1, buf2);
+	sprintf(buf,"P2 Jump:   %s",buf2);
+	ControlsMenu->addOptionText(buf);
+	g_pInput->getEventName(IC_POGO, 1, buf2);
+	sprintf(buf,"P2 Pogo:   %s",buf2);
+	ControlsMenu->addOptionText(buf);
+	g_pInput->getEventName(IC_FIRE, 1, buf2);
+	sprintf(buf,"P2 Fire:   %s",buf2);
+	ControlsMenu->addOptionText(buf);
+	g_pInput->getEventName(IC_STATUS, 1, buf2);
+	sprintf(buf,"P2 Status: %s",buf2);
 	ControlsMenu->addOptionText(buf);
 	ControlsMenu->addSeparator();
 	ControlsMenu->addOptionText("Return");
@@ -1266,27 +1301,61 @@ char controlsmenu(stCloneKeenPlus *pCKP)
 
 				switch(selection)
 				{
-				 case 0: sprintf(buf,"Left:   "); break;
-				 case 1: sprintf(buf,"Up:     "); break;
-				 case 2: sprintf(buf,"Right:  "); break;
-				 case 3: sprintf(buf,"Down:   "); break;
-				 case 4: sprintf(buf,"Jump:   "); break;
-				 case 5: sprintf(buf,"Pogo:   "); break;
-				 case 6: sprintf(buf,"Fire:   "); break;
-				 case 7: sprintf(buf,"Status: "); break;
+				 case 0: sprintf(buf,"P1 Left:   "); break;
+				 case 1: sprintf(buf,"P1 Up:     "); break;
+				 case 2: sprintf(buf,"P1 Right:  "); break;
+				 case 3: sprintf(buf,"P1 Down:   "); break;
+				 case 4: sprintf(buf,"P1 Jump:   "); break;
+				 case 5: sprintf(buf,"P1 Pogo:   "); break;
+				 case 6: sprintf(buf,"P1 Fire:   "); break;
+				 case 7: sprintf(buf,"P1 Status: "); break;
 				}
 
 				strcpy(buf2,buf);
 				strcat(buf2,"*Waiting for Input*");
 				ControlsMenu->setOptionText(selection,buf2);
 
-				while(!g_pInput->readNewEvent(item))
+				while(!g_pInput->readNewEvent(0,item))
 				{
 					ControlsMenu->renderDialog();
-					gamedo_frameskipping_blitonly(pCKP);
+					gamedo_frameskipping_blitonly();
 				}
 
-				g_pInput->getEventName(item,buf2);
+				g_pInput->getEventName(item, 0, buf2);
+				strcat(buf,buf2);
+				ControlsMenu->setOptionText(selection,buf);
+			}
+			else if(selection >= MAX_COMMANDS && selection < MAX_COMMANDS*2)
+			{
+				int item=0;
+				if(selection < (4 + MAX_COMMANDS))
+					item = selection + 4 - MAX_COMMANDS;
+				else
+					item = selection - 4 - MAX_COMMANDS;
+
+				switch(selection)
+				{
+				 case 0+ MAX_COMMANDS: sprintf(buf,"P2 Left:   "); break;
+				 case 1+ MAX_COMMANDS: sprintf(buf,"P2 Up:     "); break;
+				 case 2+ MAX_COMMANDS: sprintf(buf,"P2 Right:  "); break;
+				 case 3+ MAX_COMMANDS: sprintf(buf,"P2 Down:   "); break;
+				 case 4+ MAX_COMMANDS: sprintf(buf,"P2 Jump:   "); break;
+				 case 5+ MAX_COMMANDS: sprintf(buf,"P2 Pogo:   "); break;
+				 case 6+ MAX_COMMANDS: sprintf(buf,"P2 Fire:   "); break;
+				 case 7+ MAX_COMMANDS: sprintf(buf,"P2 Status: "); break;
+				}
+
+				strcpy(buf2,buf);
+				strcat(buf2,"*Waiting for Input*");
+				ControlsMenu->setOptionText(selection,buf2);
+
+				while(!g_pInput->readNewEvent(1,item))
+				{
+					ControlsMenu->renderDialog();
+					gamedo_frameskipping_blitonly();
+				}
+
+				g_pInput->getEventName(item, 1, buf2);
 				strcat(buf,buf2);
 				ControlsMenu->setOptionText(selection,buf);
 			}
@@ -1300,7 +1369,7 @@ char controlsmenu(stCloneKeenPlus *pCKP)
 		ControlsMenu->renderDialog();
 
 		// blit the scrollbuffer to the display
-		gamedo_frameskipping_blitonly(pCKP);
+		gamedo_frameskipping_blitonly();
 
 		g_pInput->pollEvents();
 	    g_pTimer->SpeedThrottle();
@@ -1309,446 +1378,6 @@ char controlsmenu(stCloneKeenPlus *pCKP)
 
 	delete ControlsMenu;
 	return 0;
-}
-
-int intro(stCloneKeenPlus *pCKP)
-{
-int x,y;
-unsigned int i;
-int yb;
-
-int curPage, changedPage;
-int textVisible;
-char stStringName[40];
-char *stStringData;
-char stTextLine1[80];
-char stTextLine2[80];
-char stTextLine3[80];
-char SlowPrintBuffer[80];
-int x1,x2,x3,x4,x5;
-int y1,y2,y3,y4,y5;
-char *copyPtr, copyIndex;
-
-int ontime, offtime, textTimer;
-int y1adj, y2adj, y3adj;
-int lastpage;
-int SlowPrint, SlowPrintTimer, SlowPrintIndex;
-int SlowPrintSpeed;
-char keypressed;
-char lastkeypressed;
-char *SlowPrintPtr;
-
-const char *ScrollText1      = "Presenting";
-const char *ScrollTextErase  = "               ";
-const char *ScrollText2      = "CloneKeenPlus";
-const char *ScrollText4      = "by Caitlin Shaw";
-const char *ScrollText5      = "and Gerstrong";
-char ScrollText3[20];
-char ScrollTextTimer;
-int STimer;
-char SState;
-char ShowPressF10;
-#define PRESSF10_X      (160 - (PRESSF10_WIDTH/2))
-#define PRESSF10_Y      3
-//#define PRESSF10_X      (315 - PRESSF10_WIDTH)
-//#define PRESSF10_Y      (195 - PRESSF10_HEIGHT)
-
-  if (!g_pVideoDriver->getFullscreen())
-    ShowPressF10 = 0;           // 0 = mask hide all
-  else
-    ShowPressF10 = 15;          // 15 = mask show all
-
-  // display the starry background and initiate a fade-in
-  showmapatpos(90, 104<<4, 32, 0, pCKP);
-  fade.mode = FADE_GO;
-  fade.rate = FADE_NORM;
-  fade.dir = FADE_IN;
-  fade.curamt = 0;
-  fade.fadetimer = 0;
-
-  player[0].hideplayer = 1;
-
-  #define SCROLL_STOP_Y          75
-  #define F10_STOP_Y             210
-
-  /* move "Presenting" up the screen */
-  g_pGraphics->setFadeBlack(1);
-  sprintf(ScrollText3, "Episode %d", pCKP->Control.levelcontrol.episode);
-  x1 = (320/2) - ((strlen(ScrollText1)*8)/2);
-  y1 = 235;
-  x2 = (320/2) - ((strlen(ScrollText2)*8)/2);
-  y2 = SCROLL_STOP_Y+16;
-  x3 = (320/2) - ((strlen(ScrollText3)*8)/2);
-  y3 = y2+24;
-  x4 = (320/2) - ((strlen(ScrollText4)*8)/2);
-  y4 = y3+16;
-  x5 = (320/2) - ((strlen(ScrollText5)*8)/2);
-  y5 = y4+16;
-  SState = 0;
-  STimer = 0;
-  ScrollTextTimer = 0;
-
-  lastkeypressed = 1;
-  do
-  {
-    // do fades
-    gamedo_fades();
-    gamedo_AnimatedTiles();
-
-    if (fade.dir != FADE_OUT)
-    {
-       // if user pressed a key cancel the intro
-       keypressed = 0;
-       for(i=0;i<KEYTABLE_SIZE;i++)
-       {
-          if (g_pInput->getPressedKey(i))
-          {
-             keypressed = i;
-             break;
-          }
-       }
-       if (keypressed && !lastkeypressed)
-       {
-             fade.dir = FADE_OUT;
-             fade.curamt = PAL_FADE_SHADES;
-             fade.fadetimer = 0;
-             fade.rate = FADE_NORM;
-             fade.mode = FADE_GO;
-             IntroCanceled = 1;
-       }
-       if (keypressed) lastkeypressed = 1; else lastkeypressed = 0;
-
-    }  // end if(fade.dir!=FADE_OUT)
-
-    g_pGraphics->sb_font_draw_inverse( (unsigned char*) ScrollText1, x1, y1);
-
-    if (SState >= 1)
-    {
-    	g_pGraphics->sb_font_draw_inverse( (unsigned char*) ScrollText2, x2, y2);
-    	if (SState==1)
-    	{
-    		if (STimer > 200)
-    		{
-    			SState = 2;
-    			STimer = 0;
-    		}
-    		else STimer++;
-    	}
-    }
-
-    if (SState >= 2)
-    {
-    	g_pGraphics->sb_font_draw_inverse( (unsigned char*) ScrollText3, x3, y3);
-    	if (SState==2)
-    	{
-    		if (STimer > 200)
-    		{
-    			SState = 3;
-    			STimer = 0;
-    		}
-    		else STimer++;
-    	}
-    }
-
-    if (SState >= 3)
-    {
-    	g_pGraphics->sb_font_draw_inverse( (unsigned char*) ScrollText4, x4, y4);
-      if (SState==3)
-      {
-         if (STimer > 200)
-         {
-            SState = 4;
-            STimer = 0;
-         }
-         else STimer++;
-      }
-    }
-
-    if (SState >= 4)
-    {
-    	g_pGraphics->sb_font_draw_inverse( (unsigned char*) ScrollText5, x5, y5);
-      if (STimer > 1000)
-      {
-    	  g_pGraphics->setFadeBlack(0);
-        break;
-      }
-      else STimer++;
-    }
-
-    // if Press F10 message is still visible, display it
-    if (ShowPressF10)
-    {
-      if (y1 <= F10_STOP_Y) ShowPressF10 = 0;
-      if (g_pVideoDriver->getFullscreen()) ShowPressF10 = 0;
-
-      i = 0;
-      for(y=0;y<PRESSF10_HEIGHT;y++)
-      {
-        yb = ((PRESSF10_Y+y+scrolly_buf)&511)<<9;
-        for(x=0;x<PRESSF10_WIDTH;x++)
-        {
-          g_pGraphics->getScrollbuffer()[yb+((PRESSF10_X+x+scrollx_buf)&511)] = (pressf10_image[i++] & ShowPressF10);
-        }
-      }
-    }
-
-    // blit the scrollbuffer to the display
-    gamedo_frameskipping_blitonly(pCKP);
-
-    if (SState==0)
-    {
-    	g_pGraphics->sb_font_draw_inverse( (unsigned char*) ScrollTextErase, x1, y1);
-
-       if (y1 > SCROLL_STOP_Y)
-       {
-          if (ScrollTextTimer > 10)
-          {
-            y1--;
-            ScrollTextTimer = 0;
-          }
-          else ScrollTextTimer++;
-       }
-       else
-       {
-          if (STimer > 200)
-          {
-            SState = 1;
-            STimer = 0;
-          }
-          else STimer++;
-       }
-    }
-
-    // when fade is complete we're done!
-    if (fade.dir==FADE_OUT && fade.mode==FADE_COMPLETE)
-    {
-    	g_pGraphics->setFadeBlack(0);
-      return 0;
-    }
-
-    g_pInput->pollEvents();
-    g_pTimer->SpeedThrottle();
-    /*if (immediate_keytable[KQUIT] || crashflag)
-    {
-       fade_black = 0;
-       return 1;
-    }*/
-  } while(!g_pInput->getExitEvent());
-
-  if(g_pInput->getExitEvent())
-	  return 1;
-
-  g_pGraphics->sb_font_draw_inverse( (unsigned char*) ScrollTextErase, x1, y1);
-  g_pGraphics->sb_font_draw_inverse( (unsigned char*) ScrollTextErase, x2, y2);
-  g_pGraphics->sb_font_draw_inverse( (unsigned char*) ScrollTextErase, x3, y3);
-  g_pGraphics->sb_font_draw_inverse( (unsigned char*) ScrollTextErase, x4, y4);
-  g_pGraphics->sb_font_draw_inverse( (unsigned char*) ScrollTextErase, x5, y5);
-
-  /* the appearing/disapearing text */
-  curPage = 1;
-  changedPage = 1;
-  do
-  {
-    // do fades
-    gamedo_fades();
-    gamedo_AnimatedTiles();
-
-       // need to load a new page from the strings file?
-       if (changedPage)
-       {
-          // load the data for the new page
-          sprintf(stStringName, "Tribute_Page_%d", curPage);
-          stStringData = getstring(stStringName);
-          ontime = GetStringAttribute(stStringName, "ONTIME");
-          offtime = GetStringAttribute(stStringName, "OFFTIME");
-          y1adj = GetStringAttribute(stStringName, "Y1ADJ");
-          y2adj = GetStringAttribute(stStringName, "Y2ADJ");
-          y3adj = GetStringAttribute(stStringName, "Y3ADJ");
-          lastpage = GetStringAttribute(stStringName, "LASTPAGE");
-          SlowPrint = GetStringAttribute(stStringName, "SLOWPRINT");
-
-          // if no SLOWPRINT attribute disable slowprinting
-          if (SlowPrint==-1)
-          {
-            SlowPrint = 0;
-          }
-          else
-          {
-            SlowPrintSpeed = GetStringAttribute(stStringName, "SLOWPRINTSPD");
-          }
-
-          // for y adjustments that weren't specified use 0
-          if (y1adj==-1) y1adj = 0;
-          if (y2adj==-1) y2adj = 0;
-          if (y3adj==-1) y3adj = 0;
-
-          stTextLine1[0] = stTextLine2[0] = stTextLine3[0] = 0;
-
-          // we have the text as three CR-terminated lines, now split it
-          // up into the 3 buffers
-          copyIndex = 0;
-          copyPtr = stTextLine1;
-          for(i=0;i<strlen(stStringData);i++)
-          {
-            if (stStringData[i] != 13)
-            {
-              *copyPtr = stStringData[i];
-              copyPtr++;
-            }
-            else
-            {  // hit a CR
-              // null-terminate
-              *copyPtr = 0;
-              // start copying to next buffer
-              if (copyIndex==0) copyPtr = stTextLine2;
-              else if (copyIndex==1) copyPtr = stTextLine3;
-              else if (copyIndex==2) break;
-              copyIndex++;
-            }
-          }
-          *copyPtr = 0;    // null-terminate
-
-          // figure out what X position these lines to be drawn in order
-          // to be centered.
-          x1 = (320/2)-((strlen(stTextLine1)*8)/2);
-          x2 = (320/2)-((strlen(stTextLine2)*8)/2);
-          x3 = (320/2)-((strlen(stTextLine3)*8)/2);
-          // figure out their Y positions
-          y1 = 90 + y1adj;
-          y2 = 98 + y2adj;
-          y3 = 106 + y3adj;
-
-          // if we're going to do slowprinting then copy the line we're going
-          // to slowprint into the slowprint buffer and fill it with spaces
-          if (SlowPrint)
-          {
-            // set up a pointer to the line we're going to slowprint
-            if (SlowPrint==1) SlowPrintPtr = &stTextLine1[0];
-            else if (SlowPrint==2) SlowPrintPtr = &stTextLine2[0];
-            else SlowPrintPtr = &stTextLine3[0];
-
-            // copy the text line into the slow print buffer.
-            // replace '@''s with the episode number
-            for(i=0;i<strlen(SlowPrintBuffer)+1;i++)
-            {
-              if (SlowPrintPtr[i]=='@')
-              {
-                SlowPrintBuffer[i] = pCKP->Control.levelcontrol.episode + '0';
-              }
-              else
-              {
-                SlowPrintBuffer[i] = SlowPrintPtr[i];
-              }
-            }
-
-            // clear out the text line
-            for(i=0;i<strlen(SlowPrintPtr);i++) SlowPrintPtr[i] = ' ';
-          }
-
-          // set up some variables
-          textVisible = 1;
-          textTimer = ontime;
-          changedPage = 0;
-          SlowPrintTimer = 0;
-          SlowPrintIndex = 0;
-       }
-
-       // handle slowprinting
-       if (SlowPrint)
-       {
-          if (SlowPrintTimer > SlowPrintSpeed)
-          {  // time to print the next character of the line we're slowprinting
-             if (SlowPrintBuffer[SlowPrintIndex])
-             {
-               SlowPrintPtr[SlowPrintIndex] = SlowPrintBuffer[SlowPrintIndex];
-               SlowPrintIndex++;
-             }
-             else
-             { // reached the NULL (slowprint complete)
-               SlowPrint = 0;
-             }
-
-             SlowPrintTimer = 0;
-          }
-          else SlowPrintTimer++;
-       }
-
-    if (fade.dir != FADE_OUT)
-    {
-       if (!textTimer)
-       {  // time to either invisibilize the text, or go to the next page
-         if (textVisible)
-         {
-           // erase the text
-           for(i=0;i<strlen(stTextLine1);i++) stTextLine1[i] = ' ';
-           for(i=0;i<strlen(stTextLine2);i++) stTextLine2[i] = ' ';
-           for(i=0;i<strlen(stTextLine3);i++) stTextLine3[i] = ' ';
-           textVisible = 0;
-           textTimer = offtime;
-         }
-         else
-         {
-           // time for more text
-           if (lastpage != 1)
-           {
-             curPage++;
-             changedPage = 1;
-           }
-           else
-           {  // reached last page...initiate fadeout
-             fade.dir = FADE_OUT;
-             fade.curamt = PAL_FADE_SHADES;
-             fade.fadetimer = 0;
-             fade.rate = FADE_NORM;
-             fade.mode = FADE_GO;
-             IntroCanceled = 0;
-           }
-         }
-       }
-       else textTimer--;
-
-       // if user pressed a key cancel the intro
-       keypressed = 0;
-       for(i=0;i<KEYTABLE_SIZE;i++)
-       {
-          if (g_pInput->getPressedKey(i))
-          {
-             keypressed = 1;
-             break;
-          }
-       }
-       if (keypressed && !lastkeypressed)
-       {
-             fade.dir = FADE_OUT;
-             fade.curamt = PAL_FADE_SHADES;
-             fade.fadetimer = 0;
-             fade.rate = FADE_NORM;
-             fade.mode = FADE_GO;
-             IntroCanceled = 1;
-       }
-       lastkeypressed = keypressed;
-
-
-    }  // end if(fade.dir!=FADE_OUT)
-
-    // draw/erase all three lines of text
-    g_pGraphics->sb_font_draw_inverse( (unsigned char*) stTextLine1, x1, y1);
-    g_pGraphics->sb_font_draw_inverse( (unsigned char*) stTextLine2, x2, y2);
-    g_pGraphics->sb_font_draw_inverse( (unsigned char*) stTextLine3, x3, y3);
-
-    // blit the scrollbuffer to the display
-    gamedo_frameskipping_blitonly(pCKP);
-
-    // when fade is complete we're done!
-    if (fade.dir==FADE_OUT && fade.mode==FADE_COMPLETE)
-    {
-      return 0;
-    }
-
-    g_pInput->pollEvents();
-    g_pTimer->SpeedThrottle();
-  } while(!g_pInput->getPressedCommand(KQUIT) && !crashflag);
-  return 1;
 }
 
 void keensleft(stCloneKeenPlus *pCKP)

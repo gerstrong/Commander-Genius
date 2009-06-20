@@ -49,14 +49,13 @@
 #include "CLogFile.h"
 #include "CGame.h"
 #include "CGraphics.h"
-
+#include "sdl/CSettings.h"
 
 int IntroCanceled;
 int NessieObjectHandle;
 int DemoObjectHandle;
 int BlankSprite;
 int DemoSprite;
-int current_demo;
 int framebyframe;
 int fps=0, curfps=0;
 
@@ -113,61 +112,9 @@ char frameskiptimer=0;
 int thisplayer;
 unsigned int primaryplayer;
 unsigned int numplayers;
-char is_client;
-char is_server;
-char localmp;
 
 int crashflag,crashflag2,crashflag3;
 const char *why_term_ptr = "No reason given.";
-
-void setoption(stOption *options, int opt, const char *name, char value)
-{
-  if (name != NULL)
-    options[opt].name = (char*) name;
-
-  options[opt].value = value;
-}
-
-short loadGamesConfig(stOption *Option)
-{
-	short retval = 0;
-	int i;
-	CParser Parser;
-
-	if(!Parser.loadParseFile())
-		return 1;
-
-	  for (i = 0; i < NUM_OPTIONS; i++)
-	  {
-		  Option[i].value = Parser.getIntValue(Option[i].name,"Game");
-		  if(Option[i].value == -1)
-		  {
-			  createDefaultSettings(Option);
-			  break;
-		  }
-	  }
-
-	return retval;
-
-  g_pLogFile->ftextOut("<br>Your personal settings were loaded successfully...<br>");
-  return 0;
-}
-
-void SaveConfig(stOption *Option)
-{
-	int i;
-	CParser Parser;
-
-	if(Parser.loadParseFile())
-	{
-		for (i = 0; i < NUM_OPTIONS; i++)
-			Parser.saveIntValue(Option[i].name,"Game",Option[i].value);
-
-		Parser.saveParseFile();
-	}
-
-	return;
-}
 
 int main(int argc, char *argv[])
 {
@@ -179,14 +126,19 @@ int main(int argc, char *argv[])
 
 	banner(); // Intro on the text-console.
 
-	preallocateCKP(&CKP);
+	CGame* Game;
+	Game = new CGame();
 
-	if(loadDriverConfiguration(&CKP) != 0) // Always return 0 if no ERROR
+	Game->preallocateCKP(&CKP);
+
+	CSettings *Settings;
+	Settings = new CSettings;
+
+	if(Settings->loadDrvCfg() != 0) // Always return 0 if no ERROR
 	{
 		g_pLogFile->textOut(RED,"First time message: CKP didn't find the driver config file. However, it is going to generate one basing on default configurations.<br>");
-		saveDriverConfiguration(&CKP);
+		Settings->saveDrvCfg();
 	}
-	// TODO: Implement Driver Configuration as class
 
 	if(readCommandLine(argc, argv, &CKP) != 0)
 	{
@@ -200,15 +152,13 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	createDefaultSettings(CKP.Option);
-	if(loadGamesConfig(CKP.Option) != 0)
+	Settings->loadDefaultGameCfg(CKP.Option);
+	if(Settings->loadGameCfg(CKP.Option) != 0)
 	{
 		g_pLogFile->textOut(PURPLE,"There are no settings! CKP is going to use the default options. You can change them later in the game.<br>");
-		SaveConfig(CKP.Option);
+		Settings->saveGameCfg(CKP.Option);
 	}
-
-	CGame* Game;
-	Game = new CGame();
+	delete Settings; Settings = NULL;
 
 	if(loadResourcesforStartMenu(&CKP, Game) != 0)
 	{
@@ -240,7 +190,7 @@ int main(int argc, char *argv[])
 		while( CKP.shutdown == SHUTDOWN_RESTART || CKP.shutdown == SHUTDOWN_BOOTUP )
 		{
 			CKP.shutdown = SHUTDOWN_NONE; // Game is runnning
-			runGameCycle(&CKP, Game);
+			Game->runCycle(&CKP);
 		}
 	}
 
@@ -253,192 +203,10 @@ int main(int argc, char *argv[])
 	return 0;
 }
 
-short runGameCycle(stCloneKeenPlus *pCKP, CGame *Game)
-{
-  int opt = MAINMNU_1PLAYER;
-  int retval;
-  int eseq = 0;
-  int defaultopt = 0;
-
-  initgamefirsttime(pCKP, Game->getLatch()->getLatchHeader()->NumSprites);
-  initgame(pCKP);
-
-  g_pLogFile->ftextOut("Game starting...<br>");
-
-  if (eseq)
-  {
-	  endsequence(pCKP);
-	  closeCKP(pCKP);
-  }
-
-  if(!pCKP->Control.skipstarting)
-  {
-	  if (intro(pCKP)){ pCKP->shutdown=SHUTDOWN_EXIT; return 0;	}
-	  pCKP->Control.skipstarting=0;
-  }
-
-  do
-  {
-    if (QuitState==QUIT_TO_TITLE) QuitState = NO_QUIT;
-
-    if(pCKP->Control.storyboard == 1) // Show the story of the game
-    {
-    	char *text;
-    	int textsize;
-
-    	textsize = readStoryText(&text,
-				pCKP->GameData[pCKP->Resources.GameSelected-1].Episode,
-				pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory); // Read text from
-																			   // and store it at the text pointer
-
-    	if(textsize > 0)
-    	{
-				showPage(text,pCKP,textsize);
-				free(text);
-		}
-    	else if(textsize == 0)
-    	{
-    		g_pLogFile->ftextOut("readStoryText(): Error reading story text. Are you sure that there is any story text?");
-    	}
-    	else if(textsize == 0)
-    	{
-    		g_pLogFile->ftextOut("readStoryText(): Error reading story text. The version appears to be incompatible");
-    	}
-    	pCKP->Control.storyboard = 0;
-    }
-
-    if(pCKP->Control.levelcontrol.command != LVLC_START_LEVEL)
-    {
-    	g_pLogFile->ftextOut("calling mainmenu()<br>");
-
-		opt = mainmenu(pCKP, defaultopt); // Read option from the main menu
-										  // of the game.
-
-		pCKP->Control.skipstarting=0;
-
-		g_pLogFile->ftextOut("gcl: opt = %d<br>", opt);
-    }
-
-    defaultopt = 0;
-    IntroCanceled = 0;
-    switch(opt)
-      {
-      case MAINMNU_1PLAYER:
-        numplayers = 1;
-        defaultopt = 0;
-        current_demo = 1;
-        initgamefirsttime(pCKP, Game->getLatch()->getLatchHeader()->NumSprites);
-        loadinggame = 0;
-        playgame_levelmanager(pCKP);
-        break;
-      case MAINMNU_2PLAYER:
-        defaultopt = 0;
-        current_demo = 1;
-        numplayers = 2;
-        initgamefirsttime(pCKP, Game->getLatch()->getLatchHeader()->NumSprites);
-        loadinggame = 0;
-        playgame_levelmanager(pCKP);
-        break;
-      case MAINMNU_LOADGAME:
-        if (loadslot)
-        {
-           loadinggame = 1;
-           defaultopt = 0;
-           current_demo = 1;
-           numplayers = 1; // here was 2. Why was that? I don't understand
-           initgamefirsttime(pCKP, Game->getLatch()->getLatchHeader()->NumSprites);
-           playgame_levelmanager(pCKP);
-        }
-        break;
-
-      case MAINMNU_STORY:
-          pCKP->Control.storyboard=1;
-          break;
-
-      case MAINMNU_HIGHSCORES:
-    	  CHighScores *pHighscores;
-    	  pHighscores = new CHighScores(pCKP);
-    	  if(pHighscores->showHighScore())
-    	  {
-    		  g_pLogFile->ftextOut("Error processing Highscore!!<br>");
-    	  }
-    	  delete pHighscores;
-    	  break;
-
-      case MAINMNU_NEW_GAME:
-    	  if(loadStartMenu(pCKP) == 1)
-    	  {
-    			pCKP->shutdown = SHUTDOWN_EXIT;
-    			break;
-    	  }
-    	  //loadResourcesforGame(pCKP);
-    	  Game->loadResources(pCKP->Control.levelcontrol.episode, pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory);
-
-
-    	  pCKP->shutdown = SHUTDOWN_RESTART;
-    	break;
-
-      case MAINMNU_TIMEOUT:
-      case MAINMNU_DEMO:
-        retval = play_demo(current_demo, pCKP, Game->getLatch()->getLatchHeader()->NumSprites);
-
-        if (retval==DEMO_RESULT_FILE_BAD)
-        {
-           // we tried to play a demo that did not exist--assume we
-           // reached the last demo and go back to the intro
-           intro(pCKP);
-           current_demo = 0;
-        }
-        else if (retval==DEMO_RESULT_CANCELED)
-        { // user hit a key to cancel demo
-           IntroCanceled = 1;            // pop up menu
-        }
-
-        if (IntroCanceled)
-        { // user canceled out of demo (or intro if at end of demos)
-           // if user selected "demo" have it selected when he comes back
-           if (opt==MAINMNU_DEMO)
-           {
-             defaultopt = MAINMNU_DEMO;
-           }
-        }
-
-        current_demo++;
-      break;
-      case RESTART_GAME:
-        g_pLogFile->ftextOut("********************<br>");
-        g_pLogFile->ftextOut(" Restarting game...<br>");
-        g_pLogFile->ftextOut("********************<br>\n");
-        cleanup(pCKP);
-        pCKP->shutdown = SHUTDOWN_RESTART;
-        return 0;
-      break;
-      case BACK2MAINMENU:
-
-      default: break;
-      }
-      g_pLogFile->ftextOut("bottom of game control loop opt=%d crashflag=%d<br>", opt, crashflag);
-      if(pCKP->shutdown == SHUTDOWN_EXIT) break;
-    } while(opt != MAINMNU_QUIT && opt != MAINMNU_NEW_GAME && !crashflag);
-
-	return 0;
-}
-
 void cleanupResources(stCloneKeenPlus *pCKP)
 {
 	cleanup(pCKP);
 	return;
-}
-
-void createDefaultSettings(stOption *Option)
-{
-	setoption(Option,OPT_FULLYAUTOMATIC, "autogun", 0);
-	setoption(Option,OPT_SUPERPOGO, "superpogo", 0);
-	setoption(Option,OPT_ALLOWPKING, "pking", 1);
-	setoption(Option,OPT_CHEATS, "allcheats", 0);
-	setoption(Option,OPT_TWOBUTTON, "two-button-firing", 0);
-	setoption(Option,OPT_KEYCARDSTACK, "keycard-stacking", 0);
-	setoption(Option,OPT_ANALOGJOYSTICK, "analog-joystick", 1);
 }
 
 short loadCKPDrivers(stCloneKeenPlus *pCKP)
@@ -447,10 +215,9 @@ short loadCKPDrivers(stCloneKeenPlus *pCKP)
 
 	// initialize/activate all drivers
 	g_pLogFile->ftextOut("Starting graphics driver...<br>");
+
 	if (!g_pVideoDriver->start())
-	{
 		return abortCKP(pCKP);
-	}
 
 	g_pLogFile->ftextOut("Starting sound driver...<br>");
 
@@ -461,90 +228,6 @@ short loadCKPDrivers(stCloneKeenPlus *pCKP)
 	g_pInput->loadControlconfig();
 
 	return 0;
-}
-
-short saveDriverConfiguration(stCloneKeenPlus *pCKP)
-{
-	short retval = 0;
-
-	CParser Parser;
-
-	Parser.saveIntValue("bpp","Video",g_pVideoDriver->getDepth());
-	Parser.saveIntValue("frameskip","Video",g_pVideoDriver->getFrameskip());
-
-	if(g_pVideoDriver->getFullscreen())
-		Parser.saveIntValue("fullscreen","Video",1);
-	else
-		Parser.saveIntValue("fullscreen","Video",0);
-
-	if(g_pVideoDriver->isOpenGL())
-		Parser.saveIntValue("OpenGL","Video",1);
-	else
-		Parser.saveIntValue("OpenGL","Video",0);
-
-
-	Parser.saveIntValue("width","Video",g_pVideoDriver->getWidth());
-	Parser.saveIntValue("height","Video",g_pVideoDriver->getHeight());
-	Parser.saveIntValue("scale","Video",g_pVideoDriver->getZoomValue());
-	Parser.saveIntValue("OGLfilter","Video",g_pVideoDriver->getOGLFilter());
-	Parser.saveIntValue("filter","Video",g_pVideoDriver->getFiltermode());
-	Parser.saveIntValue("autoframeskip","Video",g_pVideoDriver->getTargetFPS());
-
-	Parser.saveIntValue("channels","Audio",(g_pSound->getAudioSpec()).channels);
-	Parser.saveIntValue("format","Audio",(g_pSound->getAudioSpec()).format);
-	Parser.saveIntValue("rate","Audio",(g_pSound->getAudioSpec()).freq);
-	Parser.saveIntValue("mixerch","Audio",(g_pSound->getMixingchannels()));
-
-	Parser.saveParseFile();
-
-	return retval;
-}
-
-short loadDriverConfiguration(stCloneKeenPlus *pCKP)
-{
-	short retval = 0;
-	CParser Parser;
-
-	if(!Parser.loadParseFile())
-	{
-		retval = 1;
-	}
-	else
-	{
-		int width, height, depth;
-
-		depth  = Parser.getIntValue("bpp","Video");
-		width  = Parser.getIntValue("width","Video");
-		height = Parser.getIntValue("height","Video");
-
-		if(depth*width*height < 0)
-			g_pLogFile->ftextOut(RED,"Error reading the configuration file. It appears to be damaged!");
-
-		g_pVideoDriver->setMode(width, height, depth);
-
-		g_pVideoDriver->setFrameskip(Parser.getIntValue("frameskip","Video"));
-
-		if((Parser.getIntValue("fullscreen","Video")) == 1)
-			g_pVideoDriver->isFullscreen(true);
-
-		g_pVideoDriver->setOGLFilter(Parser.getIntValue("OGLfilter","Video"));
-		g_pVideoDriver->setZoom(Parser.getIntValue("scale","Video"));
-		g_pVideoDriver->setTargetFPS(Parser.getIntValue("autoframeskip","Video"));
-
-		g_pVideoDriver->setFilter(Parser.getIntValue("filter","Video"));
-
-		if(Parser.getIntValue("OpenGL","Video") == 1)
-			g_pVideoDriver->enableOpenGL(true);
-		else
-			g_pVideoDriver->enableOpenGL(false);
-
-		if(Parser.getIntValue("channels","Audio") == 2)
-			g_pSound->setSoundmode(Parser.getIntValue("rate","Audio"), true);
-		else
-			g_pSound->setSoundmode(Parser.getIntValue("rate","Audio"), false);
-	}
-
-	return retval;
 }
 
 short abortCKP(stCloneKeenPlus *pCKP)
@@ -559,20 +242,26 @@ short closeCKP(stCloneKeenPlus *pCKP)
 {
 	int count;
 	int i;
-	  banner();
-	  SaveConfig(pCKP->Option);
-	  g_pLogFile->ftextOut("<br>Thanks for playing!<br><br>");
-	  cleanup(pCKP);
-	  if (crashflag)
-	  {
-	    if (crashflag != QUIT_NONFATAL) g_pLogFile->ftextOut("\a");
-	    g_pLogFile->ftextOut("abnormal program termination, error code %d/%d/%d<br>explanation: %s<br>", crashflag,crashflag2,crashflag3, why_term_ptr);
+	CSettings Settings;
 
-	    g_pLogFile->ftextOut("numplayers: %d<br>", numplayers);
-	    for(count=0,i=0;i<MAX_PLAYERS;i++) if (player[i].isPlaying) count++;
-	    g_pLogFile->ftextOut("# of player instances with isPlaying set: %d<br>", count);
-	  }
-	  return 0;
+	banner();
+
+	Settings.saveGameCfg(pCKP->Option);
+
+	g_pLogFile->ftextOut("<br>Thanks for playing!<br><br>");
+	cleanup(pCKP);
+	if (crashflag)
+	{
+		if (crashflag != QUIT_NONFATAL) g_pLogFile->ftextOut("\a");
+		g_pLogFile->ftextOut("abnormal program termination, error code %d/%d/%d<br>explanation: %s<br>", crashflag,crashflag2,crashflag3, why_term_ptr);
+
+		g_pLogFile->ftextOut("numplayers: %d<br>", numplayers);
+
+		for(count=0,i=0;i<MAX_PLAYERS;i++) if (player[i].isPlaying) count++;
+
+		g_pLogFile->ftextOut("# of player instances with isPlaying set: %d<br>", count);
+	}
+	return 0;
 }
 
 void playgame_levelmanager(stCloneKeenPlus *pCKP)
@@ -755,6 +444,12 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
     	break;
     }
     g_pGraphics->unloadHQGraphics();
+
+    for(unsigned int i=0;i<numplayers;i++)
+    {
+    	player[i].x = 0;
+    	player[i].y = 0;
+    }
 
   } while(p_levelcontrol->command==LVLC_CHANGE_LEVEL && !crashflag);
 
@@ -959,16 +654,6 @@ short readCommandLine(int argc, char *argv[], stCloneKeenPlus *pCKP)
 	      {
 	        g_pVideoDriver->showFPS(true);
 	      }
-	      else if (strcmp(tempbuf, "-host")==0)     // start network server
-	      {
-	        is_server = 1;
-	        localmp = 0;
-	      }
-	      else if (strcmp(tempbuf, "-join")==0)     // connect to a server
-	      {
-	        is_client = 1;
-	        localmp = 0;
-	      }
 	      else if (strncmp(tempbuf, "-level",strlen("-level"))==0)      // select the game
 	      {
 	    	int g;
@@ -988,35 +673,3 @@ short readCommandLine(int argc, char *argv[], stCloneKeenPlus *pCKP)
 	  }
 	  return 0;
 }
-void preallocateCKP(stCloneKeenPlus *pCKP)
-{
-	// This function prepares the CKP Structure so that the it is allocated in the memory.
-	pCKP->numGames = 0;
-	pCKP->Resources.GameSelected = 0;
-
-	TileProperty = NULL;
-
-	pCKP->GameData = NULL;
-	pCKP->GameData = new stGameData[1];
-
-	memset(pCKP->GameData, 0, sizeof(stGameData));
-
-	framebyframe = 0;
-
-	demomode = DEMO_NODEMO;
-	current_demo = 1;
-
-	memset(&pCKP->Control, 0, sizeof(stControl));
-
-	pCKP->Joystick = NULL;
-
-	acceleratemode = 0;
-	is_client = 0;
-	is_server = 0;
-	localmp = 1;
-	g_pVideoDriver->showFPS(false);
-
-	player[0].x = player[0].y = 0;
-}
-
-
