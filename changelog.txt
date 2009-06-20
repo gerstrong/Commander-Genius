@@ -1,5 +1,12 @@
-Commander Genius v0.2.9.2 Beta (CloneKeenPlus):
+Commander Genius v0.2.9.5 Beta (CloneKeenPlus):
 -----------------------------------------------
+
+20-06-2009
+- Intro has been replaced and now is part of the About CG Option
+- The original Intro screen is now included in the interpreter
+- Fullscreen bug has been fixed (Thanks to Tulip)
+- Patches by Pickle has been added. Performance for the wiz
+- Added 1680x1050 as Resolution for HD-Fans ;-) 
 
 18-06-2009
 - restored 2-Player support and added mapping

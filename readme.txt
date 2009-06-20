@@ -132,11 +132,8 @@ There are some keys, which cannot be changed and are part of the game
 KEY        	ACTION             DESCRIPTION
 LALT+Q	   				       Both Keys make you quit the game. Depending where you are in the game
 LALT+F4		quit			   it will ask you, if you really want that
-C+T+SPACE  	All Items          Gives all items, similar to the original.
-LSHIFT+TAB 	Skip Level         Holding down this key you can skip levels and walk through tiles
-							   on the map.
-TAB			No clipping		   If you hold down this key you will disable clipping.
-							   However, you cannot fall though floors. 
+LALT+Enter	fullscreen/        This will change between fullscreen and window-mode
+            windows			   
    
 
 HINTS & SECRETS

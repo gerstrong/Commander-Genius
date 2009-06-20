@@ -2,9 +2,8 @@ Here are the features that I still want to implement:
 -----------------------------------------------------
 
 until 0.3:
-- alt+enter for fullscreen, alt+F4 and/or alt+Q can be used to quickly close the application?
-- Controls selection for player 2
-- OpenGL new effects
+- Write a instruction keys manual in the readme file
+- tie up the code
 
 until 0.4:
 - User folder detection and save the files there!
@@ -13,6 +12,7 @@ until 0.4:
 - Commander Keen 4-6
 
 until 0.5:
+- OpenGL new effects
 - Maybe Keen Dreams
-- No plans for now!
+- No more plans for now!
 
