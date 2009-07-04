@@ -159,7 +159,7 @@ short loadStartMenu(stCloneKeenPlus *pCKP)
 	// Prepare the Games Menu
 	GamesMenu = new CDialog();
 
-	GamesMenu->setDimensions(2,2,36,5);
+	GamesMenu->setDimensions(2,2,36,15);
 
 	// Show me the games you detected!
 	for( i=0 ; i < pCKP->numGames ; i++ )
@@ -182,10 +182,9 @@ short loadStartMenu(stCloneKeenPlus *pCKP)
 		gamedo_AnimatedTiles();
 
 		// Check the Input
-		if(g_pInput->getPressedCommand(0, IC_DOWN))
+		if(g_pInput->getPulsedCommand(IC_DOWN, 80))
 			GamesMenu->setNextSelection();
-
-		if(g_pInput->getPressedCommand(0, IC_UP))
+		if(g_pInput->getPulsedCommand(IC_UP, 80))
 			GamesMenu->setPrevSelection();
 
 		if(g_pInput->getPressedCommand(0, IC_STATUS))
@@ -219,6 +218,12 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 	int bmnum;
 	int x;
 	int selection;
+
+	for(unsigned int cp=0 ; cp<numplayers ; cp++)	// in some situations. the player is shown for a short time.
+	{
+		player[cp].x = 0;
+		player[cp].y = 0;
+	}
 
 	fade.mode = FADE_GO;
 	fade.rate = FADE_NORM;
@@ -266,10 +271,9 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 		gamedo_AnimatedTiles();
 
 		// Check the Input
-		if(g_pInput->getPressedCommand(IC_DOWN))
+		if(g_pInput->getPulsedCommand(IC_DOWN, 80))
 			MainMenu->setNextSelection();
-
-		if(g_pInput->getPressedCommand(IC_UP))
+		if(g_pInput->getPulsedCommand(IC_UP, 80))
 			MainMenu->setPrevSelection();
 
 		if(g_pInput->getPressedCommand(IC_STATUS))
@@ -286,7 +290,10 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 		gamedo_frameskipping_blitonly();
 
 		if(g_pInput->getExitEvent())
+		{
+			delete MainMenu;
 			return MAINMNU_QUIT;
+		}
 
 	} while(1);
 
@@ -299,7 +306,7 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
     		return BACK2MAINMENU;
     	}
 
-    	options[OPT_MEAN].value = diff;
+    	pCKP->Control.levelcontrol.hardmode = (diff == 1) ? true : false;
 
       loadslot = save_slot_box(0, pCKP);
       if (loadslot)
@@ -325,15 +332,16 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
     {
     	if(selection==MAINMNU_1PLAYER || selection==MAINMNU_2PLAYER)
     	{
+
         	int diff;
         	diff = getDifficulty(pCKP);
+
         	if(diff>2)
         	{
         		delete MainMenu;
         		return BACK2MAINMENU;
         	}
-
-        	options[OPT_MEAN].value = diff;
+        	pCKP->Control.levelcontrol.hardmode = (diff == 1) ? true : false;
     	}
 
     	fade.dir = FADE_OUT;
@@ -400,10 +408,9 @@ int getDifficulty(stCloneKeenPlus *pCKP)
 		gamedo_AnimatedTiles();
 
 		// Check the Input
-		if(g_pInput->getPressedCommand(IC_DOWN))
+		if(g_pInput->getPulsedCommand(IC_DOWN, 80))
 			DifficultyMenu->setNextSelection();
-
-		if(g_pInput->getPressedCommand(IC_UP))
+		if(g_pInput->getPulsedCommand(IC_UP, 80))
 			DifficultyMenu->setPrevSelection();
 
 		if(g_pInput->getPressedCommand(IC_STATUS))
@@ -473,10 +480,9 @@ int AudioDlg(stCloneKeenPlus *pCKP)
 		gamedo_AnimatedTiles();
 
 		// Check the Input
-		if(g_pInput->getPressedCommand(IC_DOWN))
+		if(g_pInput->getPulsedCommand(IC_DOWN, 80))
 			AudioMenu->setNextSelection();
-
-		if(g_pInput->getPressedCommand(IC_UP))
+		if(g_pInput->getPulsedCommand(IC_UP, 80))
 			AudioMenu->setPrevSelection();
 
 		if(g_pInput->getPressedCommand(IC_STATUS))
@@ -584,9 +590,9 @@ void OptionsDlg(stCloneKeenPlus *pCKP)
 		gamedo_AnimatedTiles();
 
 		// Check the Input
-		if(g_pInput->getPressedCommand(IC_DOWN))
+		if(g_pInput->getPulsedCommand(IC_DOWN, 80))
 			OptionsMenu->setNextSelection();
-		if(g_pInput->getPressedCommand(IC_UP))
+		if(g_pInput->getPulsedCommand(IC_UP, 80))
 			OptionsMenu->setPrevSelection();
 
 		if(g_pInput->getPressedCommand(IC_STATUS))
@@ -737,9 +743,9 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 	aspect = g_pVideoDriver->getAspectCorrection();
 
 	if(aspect)
-		DisplayMenu->addOptionText("Aspect Ratio Enabled");
+		DisplayMenu->addOptionText("OGL Aspect Ratio Enabled");
 	else
-		DisplayMenu->addOptionText("Aspect Ratio Disabled");
+		DisplayMenu->addOptionText("OGL Aspect Ratio Disabled");
 
 	DisplayMenu->addSeparator();
 	DisplayMenu->addOptionText("Save and return");
@@ -755,9 +761,9 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 		gamedo_AnimatedTiles();
 
 		// Check the Input
-		if(g_pInput->getPressedCommand(IC_DOWN))
+		if(g_pInput->getPulsedCommand(IC_DOWN, 80))
 			DisplayMenu->setNextSelection();
-		if(g_pInput->getPressedCommand(IC_UP))
+		if(g_pInput->getPulsedCommand(IC_UP, 80))
 			DisplayMenu->setPrevSelection();
 
 		if(g_pInput->getPressedCommand(IC_STATUS))
@@ -821,7 +827,7 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 				}
 				else
 				{
-					if(zoom >= 3)
+					if(zoom >= 4)
 						zoom = 1;
 					else
 						zoom++;
@@ -849,7 +855,7 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 				else if(filter == 2)
 					DisplayMenu->setOptionText(3,"Scale3x Filter");
 				else if(filter == 3)
-					DisplayMenu->setOptionText(3,"Scale4x Filter (OpenGL)");
+					DisplayMenu->setOptionText(3,"Scale4x Filter");
 			}
 			else if(selection == 4)
 			{
@@ -890,9 +896,9 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 				aspect = !aspect;
 
 				if(aspect)
-					DisplayMenu->setOptionText(7,"Aspect Ratio Enabled");
+					DisplayMenu->setOptionText(7,"OGL Aspect Ratio Enabled");
 				else
-					DisplayMenu->setOptionText(7,"Aspect Ratio Disabled");
+					DisplayMenu->setOptionText(7,"OGL Aspect Ratio Disabled");
 
 			}
 			else if(selection == 9)
@@ -1147,10 +1153,9 @@ char configmenu(stCloneKeenPlus *pCKP)
 		gamedo_AnimatedTiles();
 
 		// Check the Input
-		if(g_pInput->getPressedCommand(IC_DOWN))
+		if(g_pInput->getPulsedCommand(IC_DOWN, 80))
 			OptionsMenu->setNextSelection();
-
-		if(g_pInput->getPressedCommand(IC_UP))
+		if(g_pInput->getPulsedCommand(IC_UP, 80))
 			OptionsMenu->setPrevSelection();
 
 		if(g_pInput->getPressedCommand(IC_STATUS))
@@ -1282,9 +1287,9 @@ char controlsmenu(stCloneKeenPlus *pCKP)
 		gamedo_AnimatedTiles();
 
 		// Check the Input
-		if(g_pInput->getPressedCommand(IC_DOWN))
+		if(g_pInput->getPulsedCommand(IC_DOWN, 80))
 			ControlsMenu->setNextSelection();
-		if(g_pInput->getPressedCommand(IC_UP))
+		if(g_pInput->getPulsedCommand(IC_UP, 80))
 			ControlsMenu->setPrevSelection();
 
 		if(g_pInput->getPressedCommand(IC_STATUS))

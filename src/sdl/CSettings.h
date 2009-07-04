@@ -15,9 +15,8 @@
 #define OPT_TWOBUTTON           4
 #define OPT_KEYCARDSTACK        5
 #define OPT_ANALOGJOYSTICK      6
-#define OPT_MEAN 7
 
-#define NUM_OPTIONS    8
+#define NUM_OPTIONS    7
 
 typedef struct stOption
 {

@@ -838,7 +838,8 @@ typedef struct stShipQueue
 #define SHUTDOWN_NO_ERRORS		 0
 #define SHUTDOWN_BOOTUP			 1
 #define SHUTDOWN_RESTART		 2
-#define SHUTDOWN_EXIT		 	 3
+#define SHUTDOWN_NEW_GAME		 3
+#define SHUTDOWN_EXIT		 	 4
 
 
 // Video Modes

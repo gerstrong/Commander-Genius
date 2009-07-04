@@ -96,7 +96,7 @@ unsigned int ep3;
   // got hit?
   if (objects[o].zapped)
   {
-       if (objects[o].zapped > 1 || !options[OPT_MEAN].value)
+       if (objects[o].zapped > 1 || !levelcontrol.hardmode)
        {  // we're fried!!
          if (objects[o].ai.baby.state != BABY_DYING)
          {

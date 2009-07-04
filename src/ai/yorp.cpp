@@ -126,7 +126,7 @@ char numlooks;
                  {
                    bump_left: ;
                    player[objects[o].touchedBy].playpushed_x = -pushamt;
-                   if (options[OPT_MEAN].value) player[objects[o].touchedBy].playpushed_x -= YORPPUSHAMOUNT_FAST;
+                   if (levelcontrol.hardmode) player[objects[o].touchedBy].playpushed_x -= YORPPUSHAMOUNT_FAST;
                    player[objects[o].touchedBy].playpushed_decreasetimer = 0;
                    if (!player[objects[o].touchedBy].pjumping)
                    {
@@ -137,7 +137,7 @@ char numlooks;
                  {
                    bump_right: ;
                    player[objects[o].touchedBy].playpushed_x = pushamt;
-                   if (options[OPT_MEAN].value) player[objects[o].touchedBy].playpushed_x += YORPPUSHAMOUNT_FAST;
+                   if (levelcontrol.hardmode) player[objects[o].touchedBy].playpushed_x += YORPPUSHAMOUNT_FAST;
                    player[objects[o].touchedBy].playpushed_decreasetimer = 0;
                    if (!player[objects[o].touchedBy].pjumping)
                    {
@@ -185,7 +185,7 @@ char numlooks;
          }
      break;
      case YORP_LOOK:
-       if (options[OPT_MEAN].value) numlooks = YORP_NUM_LOOKS_FAST; else numlooks = YORP_NUM_LOOKS;
+       if (levelcontrol.hardmode) numlooks = YORP_NUM_LOOKS_FAST; else numlooks = YORP_NUM_LOOKS;
        if (objects[o].ai.yorp.looktimes>numlooks &&\
            objects[o].ai.yorp.timer==YORP_LOOK_TIME-(YORP_LOOK_TIME/4))
        {
@@ -251,7 +251,7 @@ char numlooks;
          objects[o].sprite = YORP_WALK_LEFT + objects[o].ai.yorp.walkframe;
          if (!objects[o].blockedl)
          {
-           if (options[OPT_MEAN].value)
+           if (levelcontrol.hardmode)
              objects[o].x -= YORP_WALK_SPEED_FAST;
            else
              objects[o].x -= YORP_WALK_SPEED;
@@ -271,7 +271,7 @@ char numlooks;
          objects[o].sprite = YORP_WALK_RIGHT + objects[o].ai.yorp.walkframe;
          if (!objects[o].blockedr)
          {
-           if (options[OPT_MEAN].value)
+           if (levelcontrol.hardmode)
              objects[o].x += YORP_WALK_SPEED_FAST;
            else
              objects[o].x += YORP_WALK_SPEED;
@@ -287,7 +287,7 @@ char numlooks;
        }
        // walk animation
        if (objects[o].ai.yorp.timer > YORP_WALK_ANIM_TIME || \
-          (objects[o].ai.yorp.timer > YORP_WALK_ANIM_TIME_FAST && options[OPT_MEAN].value))
+          (objects[o].ai.yorp.timer > YORP_WALK_ANIM_TIME_FAST && levelcontrol.hardmode))
        {
          objects[o].ai.yorp.walkframe ^= 1;
          objects[o].ai.yorp.timer = 0;
@@ -297,7 +297,7 @@ char numlooks;
        objects[o].sprite = YORP_STUNFRAME + objects[o].ai.yorp.walkframe;
        if (objects[o].ai.yorp.timer > YORP_STUN_ANIM_TIME)
        {
-         if (options[OPT_MEAN].value) numlooks = YORP_STUNTIME_FAST; else numlooks = YORP_STUNTIME;
+         if (levelcontrol.hardmode) numlooks = YORP_STUNTIME_FAST; else numlooks = YORP_STUNTIME;
          if (objects[o].ai.yorp.looktimes>numlooks)
          {
            objects[o].ai.yorp.looktimes = 0;

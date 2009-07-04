@@ -38,7 +38,7 @@
 char tank_CanMoveLeft(int o);
 char tank_CanMoveRight(int o);
 
-void tank_ai(int o)
+void tank_ai(int o, bool hardmode)
 {
 int newobject;
 unsigned int i;
@@ -150,11 +150,11 @@ unsigned int i;
          if (objects[o].ai.tank.detectedPlayer)
          {
            objects[o].ai.tank.ponsameleveltime++;
-           if (objects[o].ai.tank.ponsameleveltime > TANK_SAME_LEVEL_TIME_FAST && options[OPT_MEAN].value)
+           if (objects[o].ai.tank.ponsameleveltime > TANK_SAME_LEVEL_TIME_FAST && hardmode)
            {   // keen would be a good target now. (hard mode)
               if (!objects[o].ai.tank.alreadyfiredcauseonsamelevel ||\
                   objects[o].ai.tank.ponsameleveltime > TANK_REPEAT_FIRE_TIME || \
-                  (objects[o].ai.tank.ponsameleveltime > TANK_REPEAT_FIRE_TIME_FAST && options[OPT_MEAN].value))
+                  (objects[o].ai.tank.ponsameleveltime > TANK_REPEAT_FIRE_TIME_FAST && hardmode))
               {
                 // facing keen?
                 objects[o].ai.tank.alreadyfiredcauseonsamelevel = 1;
@@ -232,7 +232,7 @@ unsigned int i;
     break;
      case TANK_FIRE:
       if (objects[o].ai.tank.timer > TANK_PREPAREFIRE_TIME || \
-          (objects[o].ai.tank.timer > TANK_PREPAREFIRE_TIME_FAST && options[OPT_MEAN].value))
+          (objects[o].ai.tank.timer > TANK_PREPAREFIRE_TIME_FAST && hardmode))
       {
          if (objects[o].onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, objects[o].scrx);
          if (objects[o].ai.tank.movedir==RIGHT)

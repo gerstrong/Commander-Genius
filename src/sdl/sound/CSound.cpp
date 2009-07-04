@@ -27,7 +27,6 @@ void CCallback(void *unused, Uint8 *stream, int len)
 
 CSound::CSound() {
 	m_active = false;
-	m_volume = 0;
 	m_mixing_channels = 0;
 	m_soundchannel = NULL;
 	m_soundslot = NULL;
@@ -46,32 +45,39 @@ CSound::~CSound() {
 bool CSound::init(void)
 {
   char name[MAX_STRING_LENGTH];
+  SDL_AudioSpec *desired, *obtained;
+
+  desired = &AudioSpec;
+  obtained = new SDL_AudioSpec;
 
   // now start up the SDL sound system
   AudioSpec.silence = 0;
-  AudioSpec.samples = 1024;
+
+  switch (AudioSpec.freq)
+  {
+  case 11000: AudioSpec.samples = 256; break;
+  case 22000: AudioSpec.samples = 512; break;
+  default: AudioSpec.samples = 1024; break;
+
+  }
+
   AudioSpec.callback = CCallback;
   AudioSpec.userdata = NULL;
 
-  /* Initialize fillerup() variables */
-  if( SDL_OpenAudio(&AudioSpec, NULL) < 0 )
+  /* Initialize variables */
+  if( SDL_OpenAudio(desired, obtained) < 0 )
   {
-	  g_pLogFile->ftextOut("SoundDrv_Start(): The Sound settings don't work! Going into Failsafemode!<br>");
-
-	  AudioSpec.channels = 1;
-	  AudioSpec.freq = 11000;
-
-	  if( SDL_OpenAudio(&AudioSpec, NULL) < 0 )
-	  {
-		  g_pLogFile->ftextOut("SoundDrv_Start(): Couldn't open audio: %s<br>", SDL_GetError());
-		  g_pLogFile->ftextOut("Sound will be disabled.<br>");
-		  AudioSpec.channels = 0;
-		  AudioSpec.format = 0;
-		  AudioSpec.freq = 0;
-		  m_active = false;
-		  return false;
-	  }
+	  g_pLogFile->ftextOut("SoundDrv_Start(): Couldn't open audio: %s<br>", SDL_GetError());
+	  g_pLogFile->ftextOut("Sound will be disabled.<br>");
+	  AudioSpec.channels = 0;
+	  AudioSpec.format = 0;
+	  AudioSpec.freq = 0;
+	  m_active = false;
+	  return false;
   }
+
+  memcpy(&AudioSpec,obtained,sizeof(SDL_AudioSpec));
+  delete obtained;
 
   m_MixedForm = new Uint8[AudioSpec.size];
 
@@ -82,16 +88,6 @@ bool CSound::init(void)
   g_pLogFile->ftextOut("Using audio driver: %s<br>", SDL_AudioDriverName(name, 32));
 
   m_mixing_channels = 7;
-
-  switch(m_mixing_channels)
-  {
-  case 15: m_mixing_channels_base = 4; break;
-  case 7: m_mixing_channels_base = 3; break;
-  case 3: m_mixing_channels_base = 2;
-  default: break;
-  }
-
-  m_volume = 2; // Max Value!;
 
   if(m_soundchannel) delete[] m_soundchannel; m_soundchannel = NULL;
   m_soundchannel = new CSoundChannel[m_mixing_channels];
@@ -502,7 +498,7 @@ char CSound::extractOfExeFile(char *inputpath, int episode)
 				  if (get_bit(&bit_count, &fin))
 				  {
 					  unsigned char tmp[2];
-					  if(fread(tmp, 1, 2, fin))
+					  if(!fread(tmp, 1, 2, fin))
 					  {
 						  g_pLogFile->ftextOut(RED,"Read-Error!");
 				    	  return 1;

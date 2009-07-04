@@ -43,6 +43,8 @@ public:
 	uint8 getFrameskip(void){ return m_frameskip; }
 	void setFrameskip(uint8 frameskip){ m_frameskip = frameskip; }
 
+	uint64 getTime(void) { return ltime; }
+
 private:
 
 	uint64 ttime;

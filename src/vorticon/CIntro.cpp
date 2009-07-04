@@ -54,6 +54,8 @@ void CIntro::Render(stCloneKeenPlus *pCKP)
 	for(int j=0 ; j<7 ; j++)
 		mid[j] = (320/2)-(bitmaps[bmnum[j]].xsize/2);
 
+	g_pInput->flushAll();
+
 	do
 	{
 		// do fades
@@ -63,13 +65,13 @@ void CIntro::Render(stCloneKeenPlus *pCKP)
 		// blit the scrollbuffer to the display
 		gamedo_frameskipping_blitonly();
 
-		g_pGraphics->drawBitmap(mid[0], scrolly, bmnum[0]);
-		g_pGraphics->drawBitmap(mid[1], scrolly+9, bmnum[1]);
-		g_pGraphics->drawBitmap(mid[2], scrolly+43, bmnum[2]);
-		g_pGraphics->drawBitmap(mid[3], scrolly+56, bmnum[3]);
-		g_pGraphics->drawBitmap(mid[4], scrolly+77, bmnum[4]);
-		g_pGraphics->drawBitmap(mid[5], scrolly+87, bmnum[5]);
-		g_pGraphics->drawBitmap(mid[6], scrolly+120, bmnum[6]);
+		g_pGraphics->drawBitmap2FG(mid[0], scrolly, bmnum[0]);
+		g_pGraphics->drawBitmap2FG(mid[1], scrolly+9, bmnum[1]);
+		g_pGraphics->drawBitmap2FG(mid[2], scrolly+43, bmnum[2]);
+		g_pGraphics->drawBitmap2FG(mid[3], scrolly+56, bmnum[3]);
+		g_pGraphics->drawBitmap2FG(mid[4], scrolly+77, bmnum[4]);
+		g_pGraphics->drawBitmap2FG(mid[5], scrolly+87, bmnum[5]);
+		g_pGraphics->drawBitmap2FG(mid[6], scrolly+120, bmnum[6]);
 
 		gamedo_AnimatedTiles();
 
@@ -83,7 +85,7 @@ void CIntro::Render(stCloneKeenPlus *pCKP)
 			if(scrolly>35)	scrolly--;
 		}
 
-		if( g_pInput->getPressedAnyCommand() )
+		if( g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand() )
 		{
 			cancel = true;
 			fade.dir = FADE_OUT;

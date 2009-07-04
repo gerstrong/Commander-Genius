@@ -42,6 +42,7 @@ public:
 	void noscale(char *dest, char *src, short bbp);
 	void scale2xnofilter(char *dest, char *src, short bbp);
 	void scale3xnofilter(char *dest, char *src, short bbp);
+	void scale4xnofilter(char *dest, char *src, short bbp);
 
 	void setpixel(unsigned int x, unsigned int y, unsigned char c);
 	unsigned char getpixel(int x, int y);
@@ -69,9 +70,9 @@ public:
 	void setFrameskip(unsigned short value);
 	void setFilter(short value);
 	void setZoom(short vale);
+	bool initOpenGL();
 #ifdef USE_OPENGL
 	void enableOpenGL(bool value) { m_opengl = value; }
-	bool initOpenGL();
 	void setOGLFilter(unsigned char value) { m_opengl_filter = (value==1) ? GL_LINEAR : GL_NEAREST ; }
 #else
 	void enableOpenGL(bool value) { m_opengl = false; }

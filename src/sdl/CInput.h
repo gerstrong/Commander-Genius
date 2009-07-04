@@ -149,10 +149,12 @@ public:
 	bool getPressedAnyKey(void);
 	void sendKey(int key);
 
+	bool getPressedAnyCommand();
+	bool getPulsedCommand(int command, int msec);
+	bool getPulsedCommand(Uint8 player, int command, int msec);
+	bool getHoldedCommand(Uint8 player, int command);
 	bool getHoldedCommand(int command);
 	bool getPressedCommand(int command);
-	bool getPressedAnyCommand();
-	bool getHoldedCommand(Uint8 player, int command);
 	bool getPressedCommand(Uint8 player, int command);
 	bool getPressedAnyCommand(Uint8 player);
 	bool getExitEvent(void);
@@ -165,11 +167,15 @@ public:
 	short saveControlconfig(void);
 
 	void flushKeys(void);
+	void flushCommands(void);
+	void flushAll(void);
 
 private:
 	SDL_Event Event;
 	stInputCommand InputCommand[NUM_INPUTS][NUMBER_OF_COMMANDS];
 	bool m_exit;
+	int m_cmdpulse;
+	short m_joydeadzone;
 
 	bool immediate_keytable[KEYTABLE_SIZE];
 	bool last_immediate_keytable[KEYTABLE_SIZE];

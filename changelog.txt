@@ -1,5 +1,11 @@
-Commander Genius v0.2.9.5 Beta (CloneKeenPlus):
+Commander Genius v0.2.9.6 Beta (CloneKeenPlus):
 -----------------------------------------------
+
+21-06-2009
+- Crash of scale4x and hi-resolutions has been fixed! (Iv4n)
+- Added scale4x in software rendering mode (Iv4n)
+- Fixed Crash when loading keen2 or 3 fixed! (Iv4n)
+- Cixed some issues (Thanks to Iv4n!)
 
 20-06-2009
 - Intro has been replaced and now is part of the About CG Option

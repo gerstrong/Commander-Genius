@@ -30,7 +30,7 @@
 #define BUTLER_TURNLEFT_FRAME    96
 #define BUTLER_TURNRIGHT_FRAME   97
 
-void butler_ai(int o)
+void butler_ai(int o, bool hardmode)
 {
 char not_about_to_fall;
    if (objects[o].needinit)
@@ -58,14 +58,14 @@ char not_about_to_fall;
           if (player[primaryplayer].x < objects[o].x)
           {
             player[objects[o].touchedBy].playpushed_x = -butlerpushamount;
-            if (options[OPT_MEAN].value) player[objects[o].touchedBy].playpushed_x -= BUTLERPUSHAMOUNTFAST;
+            if (hardmode) player[objects[o].touchedBy].playpushed_x -= BUTLERPUSHAMOUNTFAST;
             player[objects[o].touchedBy].playpushed_decreasetimer = 0;
             player[objects[o].touchedBy].pdir = player[objects[o].touchedBy].pshowdir = LEFT;
           }
           else
           {
             player[objects[o].touchedBy].playpushed_x = butlerpushamount;
-            if (options[OPT_MEAN].value) player[objects[o].touchedBy].playpushed_x += BUTLERPUSHAMOUNTFAST;
+            if (hardmode) player[objects[o].touchedBy].playpushed_x += BUTLERPUSHAMOUNTFAST;
             player[objects[o].touchedBy].playpushed_decreasetimer = 0;
             player[objects[o].touchedBy].pdir = player[objects[o].touchedBy].pshowdir = RIGHT;
           }
@@ -91,7 +91,7 @@ char not_about_to_fall;
          objects[o].sprite = BUTLER_WALK_LEFT_FRAME + objects[o].ai.butler.frame;
          if (!objects[o].blockedl && not_about_to_fall)
          {
-            if (options[OPT_MEAN].value)
+            if (hardmode)
               objects[o].x -= BUTLER_WALK_SPEED_FAST;
             else
               objects[o].x -= BUTLER_WALK_SPEED;
@@ -113,7 +113,7 @@ char not_about_to_fall;
          objects[o].sprite = BUTLER_WALK_RIGHT_FRAME + objects[o].ai.butler.frame;
          if (!objects[o].blockedr && not_about_to_fall)
          {
-            if (options[OPT_MEAN].value)
+            if (hardmode)
               objects[o].x += BUTLER_WALK_SPEED_FAST;
             else
               objects[o].x += BUTLER_WALK_SPEED;
@@ -129,7 +129,7 @@ char not_about_to_fall;
        }
        // walk animation
        if (objects[o].ai.butler.animtimer > BUTLER_WALK_ANIM_TIME || \
-           (objects[o].ai.butler.animtimer > BUTLER_WALK_ANIM_TIME_FAST && options[OPT_MEAN].value))
+           (objects[o].ai.butler.animtimer > BUTLER_WALK_ANIM_TIME_FAST && hardmode))
        {
          if (objects[o].ai.butler.frame>=3) objects[o].ai.butler.frame=0;
                                      else objects[o].ai.butler.frame++;

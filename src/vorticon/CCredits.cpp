@@ -24,14 +24,11 @@ CCredits::~CCredits() {
 
 void CCredits::Render(stCloneKeenPlus *pCKP)
 {
-	// TODO: Now that the new intro function works, the old one must become
-	// a credits class
-
-	int mid[7];
-	char scrolltext[7][80];
+	int mid[51];
+	char scrolltext[51][80];
 	unsigned char pagenumber = 0;
 	int timer = 8;
-	int scrolly = 0;
+	int scrolly = -51*8;
 	bool cancel = false;
 
 	fade.mode = FADE_GO;
@@ -42,7 +39,7 @@ void CCredits::Render(stCloneKeenPlus *pCKP)
 
 	showmapatpos(90, 104<<4, 32, 0, pCKP);
 
-	memset(scrolltext,0,7*80);
+	memset(scrolltext,0,51*80);
 
 	do
 	{
@@ -61,11 +58,10 @@ void CCredits::Render(stCloneKeenPlus *pCKP)
 		else
 		{
 			timer=0;
-			if(scrolly>-7*8) scrolly--;
+			if(scrolly>-51*8) scrolly--;
 			else
 			{
 				scrolly = 200;
-				memset(scrolltext,0,7*80);
 
 				switch(pagenumber)
 				{
@@ -74,71 +70,67 @@ void CCredits::Render(stCloneKeenPlus *pCKP)
 					strcpy(scrolltext[1],"Interpreter of");
 					strcpy(scrolltext[2],"Commander Keen 1-3");
 					strcpy(scrolltext[3],"Credits");
-					break;
-				case 1:
-					strcpy(scrolltext[0],"based on the engine of");
-					strcpy(scrolltext[1],"CloneKeen by Shaw");
-					strcpy(scrolltext[2],"and");
-					strcpy(scrolltext[3],"CloneKeenPlus by Gerstrong");
-					break;
-
-				case 2:
-					strcpy(scrolltext[0],"Developers");
-					strcpy(scrolltext[1],"of");
-					strcpy(scrolltext[2],"Commander Genius");
-					strcpy(scrolltext[3],"");
-					strcpy(scrolltext[4],"Aka CloneKeenPlus");
-					break;
-
-				case 3:
-					strcpy(scrolltext[0],"Main Developer:");
-					strcpy(scrolltext[1],"         Gerstrong");
-					strcpy(scrolltext[2],"Handheld Devices (Wiz):");
-					strcpy(scrolltext[3],"         Pickle");
-					strcpy(scrolltext[4],"Resources:");
-					strcpy(scrolltext[5],"         Tulip");
-					break;
-
-				case 4:
-					strcpy(scrolltext[0],"Thanks to ID Software");
-					strcpy(scrolltext[1],"for the wonderful");
-					strcpy(scrolltext[2],"\"Commander Keen\" series.");
-					strcpy(scrolltext[3],"");
-					strcpy(scrolltext[4],"\"As a child, I spent way too");
-					strcpy(scrolltext[5],"much time playing these games.");
-					break;
-
-
-				case 5:
-					strcpy(scrolltext[0],"And now I have spent way");
-					strcpy(scrolltext[1],"too much time programming");
-					strcpy(scrolltext[2],"this game.");
-					strcpy(scrolltext[3],"");
-					strcpy(scrolltext[4],"...");
-					strcpy(scrolltext[5],"Hmmm... Does history repeat itself?");
-					strcpy(scrolltext[6],":)");
-					break;
-
-				case 6:
-					strcpy(scrolltext[0],"This is my tribute to");
-					strcpy(scrolltext[1],"the \"Keen legacy\".");
-					strcpy(scrolltext[2],"");
-					strcpy(scrolltext[3],"Enjoy the Game.\"");
 					strcpy(scrolltext[4],"");
-					strcpy(scrolltext[5],"               -Katy");
+					strcpy(scrolltext[5],"");
+					strcpy(scrolltext[6],"");
+					strcpy(scrolltext[7],"");
+					strcpy(scrolltext[8],"based on the engine of");
+					strcpy(scrolltext[9],"CloneKeen by Shaw");
+					strcpy(scrolltext[10],"and");
+					strcpy(scrolltext[11],"CloneKeenPlus by Gerstrong");
+					strcpy(scrolltext[12],"");
+					strcpy(scrolltext[13],"");
+					strcpy(scrolltext[14],"");
+					strcpy(scrolltext[15],"");
+					strcpy(scrolltext[16],"Developers");
+					strcpy(scrolltext[17],"of");
+					strcpy(scrolltext[18],"Commander Genius");
+					strcpy(scrolltext[19],"");
+					strcpy(scrolltext[20],"Aka CloneKeenPlus");
+					strcpy(scrolltext[21],"");
+					strcpy(scrolltext[22],"Main Developer:");
+					strcpy(scrolltext[23],"         Gerstrong");
+					strcpy(scrolltext[24],"Handheld Devices (Wiz):");
+					strcpy(scrolltext[25],"         Pickle");
+					strcpy(scrolltext[26],"Resources:");
+					strcpy(scrolltext[27],"         Tulip");
+					strcpy(scrolltext[28],"");
+					strcpy(scrolltext[29],"");
+					strcpy(scrolltext[30],"");
+					strcpy(scrolltext[31],"");
+					strcpy(scrolltext[32],"\"As a child, I spent way too");
+					strcpy(scrolltext[33],"much time playing these games.");
+					strcpy(scrolltext[34],"Thanks to ID Software");
+					strcpy(scrolltext[35],"for the wonderful");
+					strcpy(scrolltext[36],"\"Commander Keen\" series.");
+					strcpy(scrolltext[37],"");
+					strcpy(scrolltext[38],"And now I have spent way");
+					strcpy(scrolltext[39],"too much time programming");
+					strcpy(scrolltext[40],"this game.");
+					strcpy(scrolltext[41],"");
+					strcpy(scrolltext[42],"...");
+					strcpy(scrolltext[43],"Hmmm... Does history repeat itself?");
+					strcpy(scrolltext[44],":)");
+					strcpy(scrolltext[45],"");
+					strcpy(scrolltext[46],"This is my tribute to");
+					strcpy(scrolltext[47],"the \"Keen legacy\".");
+					strcpy(scrolltext[48],"");
+					strcpy(scrolltext[49],"Enjoy the Game.\"");
+					strcpy(scrolltext[50],"               -Katy");
 					break;
 
 				default: cancel = true; break;
 				}
 
-				for(int j=0 ; j<7 ; j++)
+				for(int j=0 ; j<51 ; j++)
 					mid[j] = (320-(strlen(scrolltext[j])<<3))>>1;
 				pagenumber++;
 			}
 		}
 
-		for(int j=0 ; j<7 ; j++)
-			g_pGraphics->sb_font_draw_inverse( (unsigned char*) scrolltext[j], mid[j], scrolly+(j<<3));
+		for(int j=0 ; j<51 ; j++)
+			if(scrolly+(j<<3) > -8 && scrolly+(j<<3) < 200)
+				g_pGraphics->sb_font_draw_inverse( (unsigned char*) scrolltext[j], mid[j], scrolly+(j<<3));
 
 		if( g_pInput->getPressedAnyCommand() )
 		{

@@ -191,6 +191,22 @@ int main(int argc, char *argv[])
 		{
 			CKP.shutdown = SHUTDOWN_NONE; // Game is runnning
 			Game->runCycle(&CKP);
+
+			if(CKP.shutdown == SHUTDOWN_NEW_GAME)
+			{
+	    	  if(loadStartMenu(&CKP) == 1)
+	    	  {
+	    		  CKP.shutdown = SHUTDOWN_EXIT;
+	    		  break;
+	    	  }
+	    	  else
+	    	  {
+	    		  //loadResourcesforGame(pCKP);
+	    		  Game->loadResources(CKP.Control.levelcontrol.episode, CKP.GameData[CKP.Resources.GameSelected-1].DataDirectory);
+
+	    		  CKP.shutdown = SHUTDOWN_RESTART;
+	    	  }
+			}
 		}
 	}
 
@@ -293,7 +309,7 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
     initgame(pCKP);
 
     newlevel = p_levelcontrol->chglevelto;
-    if (p_levelcontrol->episode==1 && p_option[OPT_MEAN].value)
+    if (p_levelcontrol->episode==1 && p_levelcontrol->hardmode)
     {
         // in high-difficulity mode switch levels 5 & 9 so
         // you can't get the pogo stick until you make it
@@ -610,7 +626,7 @@ short readCommandLine(int argc, char *argv[], stCloneKeenPlus *pCKP)
 	      }
 	      else if (strcmp(tempbuf, "-mean")==0)     // increase difficulty
 	      {
-	    	  pCKP->Option[OPT_MEAN].value = 1;
+			  pCKP->Control.levelcontrol.hardmode = true;
 	      }
 	      else if (strcmp(tempbuf, "-cheat")==0)    // enable cheat codes
 	      {

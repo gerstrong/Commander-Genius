@@ -409,7 +409,7 @@ void gamepdo_setblockedlru(unsigned int cp, stCloneKeenPlus *pCKP)
 
       for( i=2 ; i < PLAYERHEIGHT ; i++ )
       {
-    	  if (checkissolidl((player[cp].x>>CSF)+PLAYERWIDTH, (player[cp].y>>CSF)+i,cp, pCKP))
+    	  if (checkissolidl((player[cp].x>>CSF)+PLAYERWIDTH+1, (player[cp].y>>CSF)+i,cp, pCKP))
     	  {
     		  player[cp].blockedr = 1;
     		  player[cp].widejump = false;
@@ -419,7 +419,7 @@ void gamepdo_setblockedlru(unsigned int cp, stCloneKeenPlus *pCKP)
 
       for( i=2 ; i < PLAYERHEIGHT ; i++ )
       {
-    	  if (checkissolidr((player[cp].x>>CSF)+4, (player[cp].y>>CSF)+i,cp, pCKP))
+    	  if (checkissolidr((player[cp].x>>CSF)+2, (player[cp].y>>CSF)+i,cp, pCKP))
     	  {
     		  player[cp].blockedl = 1;
     		  player[cp].widejump = false;
@@ -1645,7 +1645,6 @@ void gamepdo_walking(int cp, stCloneKeenPlus *pCKP)
       }
       else if (player[cp].playcontrol[PA_X] < 0)
       {
-
           // quickly reach PFASTINCMAXSPEED
           if (player[cp].pwalkincreasetimer>=cur_pfastincrate && player[cp].pinertia_x>-PFASTINCMAXSPEED)
           {

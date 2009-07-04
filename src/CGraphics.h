@@ -41,6 +41,7 @@ public:
 	void initPalette(int dark);
 	void fadePalette(int fadeamt);
 	void drawBitmap(int xa, int ya, int b);
+	void drawBitmap2FG(int xa, int ya, int b);
 	int  getBitmapNumberFromName(const char *bmname);
 	void sb_drawCharacterinverse(int x, int y, int f);
 	void drawFont(unsigned char *text, int xoff, int yoff, int highlight);

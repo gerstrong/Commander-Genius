@@ -11,6 +11,7 @@
 #include "CInput.h"
 #include "../CLogFile.h"
 #include "CVideoDriver.h"
+#include "CTimer.h"
 
 #ifdef WIZ
 #include "gp2x.h"
@@ -21,6 +22,8 @@ CInput::CInput() {
 	Uint8 i;
 
 	m_exit = false;
+	m_cmdpulse = 0;
+	m_joydeadzone = 6400;
 
 	memset(immediate_keytable,false,KEYTABLE_SIZE);
 	memset(last_immediate_keytable,false,KEYTABLE_SIZE);
@@ -40,7 +43,7 @@ CInput::CInput() {
 		InputCommand[i][IC_DOWN].keysym = SDLK_DOWN;
 
 		InputCommand[i][IC_JUMP].keysym = SDLK_RCTRL;
-		InputCommand[i][IC_POGO].keysym = SDLK_MODE;
+		InputCommand[i][IC_POGO].keysym = SDLK_RALT;
 		InputCommand[i][IC_FIRE].keysym = SDLK_SPACE;
 		InputCommand[i][IC_STATUS].keysym = SDLK_RETURN;
 
@@ -254,8 +257,8 @@ void CInput::processJoystickAxis(void)
 				if(Event.jaxis.axis == InputCommand[j][i].joyaxis && Event.jaxis.which == InputCommand[j][i].which )
 				{
 					// Deadzone
-					if((Event.jaxis.value > 3200 && InputCommand[0][i].joyvalue > 0) ||
-						(Event.jaxis.value < -3200 && InputCommand[0][i].joyvalue < 0))
+					if((Event.jaxis.value > m_joydeadzone && InputCommand[0][i].joyvalue > 0) ||
+						(Event.jaxis.value < -m_joydeadzone && InputCommand[0][i].joyvalue < 0))
 						InputCommand[j][i].active = true;
 					else
 						InputCommand[j][i].active = false;
@@ -314,7 +317,7 @@ void CInput::processKeys(int value)
        case SDLK_RETURN:immediate_keytable[KENTER]	= value;  break;
        case SDLK_RCTRL:immediate_keytable[KCTRL]	= value;  break;
        case SDLK_SPACE:immediate_keytable[KSPACE]	= value;  break;
-       case SDLK_MODE:immediate_keytable[KALT]		= value;  break;
+       case SDLK_RALT:immediate_keytable[KALT]		= value;  break;
        case SDLK_TAB:immediate_keytable[KTAB]		= value;  break;
        case SDLK_LSHIFT:immediate_keytable[KLSHIFT]	= value;  break;
        case SDLK_ESCAPE:immediate_keytable[KQUIT]	= value;  break;
@@ -392,6 +395,7 @@ bool CInput::getPressedKey(int key)
 
 	return false;
 }
+
 bool CInput::getPressedAnyKey(void)
 {
 	int i;
@@ -438,6 +442,33 @@ bool CInput::getPressedCommand(Uint8 player, int command)
 	return false;
 }
 
+bool CInput::getPulsedCommand(int command, int msec)
+{
+	bool retval = false;
+	for(Uint8 player=0; player<NUM_INPUTS ; player++ )
+		retval |= getPulsedCommand(player, command, msec);
+	return retval;
+}
+
+bool CInput::getPulsedCommand(Uint8 player, int command, int msec)
+{
+	if(InputCommand[player][command].active)
+	{
+		bool value = true;
+
+		if(m_cmdpulse % msec != 0)
+		{
+			value = false;
+		}
+		m_cmdpulse++;
+		return value;
+	}
+	if(!InputCommand[player][command].active && InputCommand[player][command].lastactive )
+		m_cmdpulse = 0;
+
+	return false;
+}
+
 bool CInput::getPressedAnyCommand()
 {
 	bool retval = true;
@@ -457,11 +488,19 @@ bool CInput::getPressedAnyCommand(Uint8 player)
 	return false;
 }
 
+void CInput::flushCommands(void)
+{
+	for(int i=0 ; i<NUM_INPUTS ; i++)
+		for(int j=0 ; j<NUMBER_OF_COMMANDS ; j++)
+			InputCommand[i][j].active = InputCommand[i][j].lastactive = false;
+}
+
 void CInput::flushKeys(void)
 {
 	memset(immediate_keytable,false,KEYTABLE_SIZE);
 	memset(last_immediate_keytable,false,KEYTABLE_SIZE);
 }
+void CInput::flushAll(void){ flushKeys(); flushCommands(); }
 
 #ifdef WIZ
 void CInput::WIZ_EmuKeyboard( int button, int value )

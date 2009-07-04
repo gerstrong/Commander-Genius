@@ -71,7 +71,7 @@ int readStoryText(char **ptext, int episode, char *path)
 			}
 			else
 			{
-				*ptext = (char*) malloc((endflag-startflag)*sizeof(char));
+				*ptext = (char*) malloc((endflag-startflag+10)*sizeof(char));
 				strncpy((*ptext),(char*)filebuf+startflag,(endflag-startflag)*sizeof(char));
 			}
 
@@ -94,7 +94,7 @@ int readStoryText(char **ptext, int episode, char *path)
 
 		pos = 0;
 
-		*ptext = (char*) malloc(filesize*sizeof(char));
+		*ptext = (char*) malloc((filesize+10)*sizeof(char));
 
 		while(!feof(fp))
 		{

@@ -4,6 +4,8 @@ Here are the features that I still want to implement:
 until 0.3:
 - Write a instruction keys manual in the readme file
 - tie up the code
+- New Resolutions system
+- Add 1920x1200, 1280x800, 1600x1200
 
 until 0.4:
 - User folder detection and save the files there!

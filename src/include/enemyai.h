@@ -10,8 +10,8 @@
 void yorp_ai(int o, stLevelControl levelcontrol);
 void garg_ai(int o, stCloneKeenPlus *pCKP);
 void vort_ai(int o, stCloneKeenPlus *pCKP, stLevelControl levelcontrol);
-void butler_ai(int o);
-void tank_ai(int o);
+void butler_ai(int o, bool hardmode);
+void tank_ai(int o, bool hardmode);
 void ray_ai(int o, stCloneKeenPlus *pCKP, stLevelControl levelcontrol);
 void door_ai(int o);
 void icechunk_ai(int o);

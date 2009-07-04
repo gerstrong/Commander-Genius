@@ -45,7 +45,7 @@
 // PFASTINCMAXSPEED. keen can, at a slower rate,
 // reach up to PMAXSPEED (increased every walk anim frame)
 #define PFASTINCMAXSPEED  9
-#define PMAXSPEED        13
+#define PMAXSPEED        14
 #define PJUMPINERTIA     30		// The higher, the value, the more difficult it is to jump or pogo
 #define PFASTINCRATE     16        // accel delay rate up to PFASTINCMAXSPEED
 #define PFASTINCRATE_POGO  50      // rate when pogo stick is out

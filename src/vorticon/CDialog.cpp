@@ -332,6 +332,8 @@ bool CDialog::setNextSelection()
 
 		selection += i;
 	}
+	else if(selection >= number_of_options-1)
+		selection = -1;
 
 	return setSelection(selection+1);
 }
@@ -346,6 +348,8 @@ bool CDialog::setPrevSelection()
 
 		selection -= i;
 	}
+	else if(selection-1 < 0)
+		selection = number_of_options;
 
 	return setSelection(selection-1);
 }

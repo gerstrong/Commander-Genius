@@ -52,10 +52,8 @@ private:
 
 	SDL_AudioSpec AudioSpec;
 
-	unsigned short m_volume;
 	bool m_active;
 	unsigned short m_mixing_channels;
-	unsigned short m_mixing_channels_base;
 
     Uint8 *m_MixedForm;			// Mainly used by the callback function. Declared once and allocated
 };

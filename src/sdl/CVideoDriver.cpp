@@ -154,14 +154,18 @@ bool CVideoDriver::initOpenGL()
 bool CVideoDriver::applyMode(void)
 {
 	// Check if some zoom/filter modes are illogical
+	// TODO: Make this call clearer to understand
 	if( (Zoom == 3 && Filtermode == 1) && !m_opengl )
 		Zoom = 2;
 
 	// Grab a surface on the screen
 	Mode = SDL_HWPALETTE;
 
+
+#ifndef WIZ
 	// Support for doublebuffering
 	Mode |= SDL_DOUBLEBUF;
+#endif
 
 	// Enable OpenGL
 #ifdef USE_OPENGL
@@ -506,6 +510,39 @@ void CVideoDriver::update_screen(void)
 		   SDL_UnlockSurface(screen);
 		   SDL_UnlockSurface(BlitSurface);
 	   }
+	   else if (Zoom == 4)
+	   {
+		   SDL_LockSurface(BlitSurface);
+		   SDL_LockSurface(screen);
+
+		   if(Filtermode == 0)
+		   {
+			   scale4xnofilter((char*)VRAMPtr, (char*)BlitSurface->pixels, (Depth>>3));
+		   }
+		   else if(Filtermode == 1)
+		   {
+			   scale(2, VRAMPtr, Width*(Depth>>3), BlitSurface->pixels,
+					   GAME_STD_WIDTH*(Depth>>3), (Depth>>3), GAME_STD_WIDTH, GAME_STD_HEIGHT);
+		   }
+		   else if(Filtermode == 2)
+		   {
+			   scale(3, VRAMPtr, Width*(Depth>>3), BlitSurface->pixels,
+					   GAME_STD_WIDTH*(Depth>>3), (Depth>>3), GAME_STD_WIDTH, GAME_STD_HEIGHT);
+		   }
+		   else if(Filtermode == 3)
+		   {
+			   scale(4, VRAMPtr, Width*(Depth>>3), BlitSurface->pixels,
+					   GAME_STD_WIDTH*(Depth>>3), (Depth>>3), GAME_STD_WIDTH, GAME_STD_HEIGHT);
+		   }
+		   else
+		   {
+			   g_pLogFile->textOut(PURPLE,"Sorry, but this filter doesn't work at that zoom mode<br>");
+			   g_pLogFile->textOut(PURPLE,"Try to use a higher zoom factor. Switching to no-filter<br>");
+			   Filtermode = 0;
+		   }
+		   SDL_UnlockSurface(screen);
+		   SDL_UnlockSurface(BlitSurface);
+	   }
 
 	   SDL_Flip(screen);
 	   //SDL_UpdateRect(screen, screenrect.x, screenrect.y, screenrect.w, screenrect.h);
@@ -569,10 +606,44 @@ void CVideoDriver::scale3xnofilter(char *dest, char *src, short bbp)
 	}
 }
 
+void CVideoDriver::scale4xnofilter(char *dest, char *src, short bbp)
+{
+	// workaround for copying correctly stuff to the screen, so the screen is scaled normally
+    // to 2x (without filter). This applies to 16 and 32-bit colour depth.
+	// use bit shifting method for faster blit!
+	bbp >>= 1;
+
+	char *srctemp;
+	char *desttemp;
+	int size;
+
+	int i,j;
+	for(i=0 ; i < GAME_STD_HEIGHT ; i++)
+	{
+		for(j = 0; j < GAME_STD_WIDTH ; j++)
+		{
+			// j*4 = (j<<2)
+			srctemp = src+((j+(i*GAME_STD_WIDTH))<<bbp);
+			desttemp = dest+((4*(j+(i*Width)))<<bbp);
+			memcpy(desttemp,srctemp,bbp<<1);
+			memcpy(desttemp+(1<<bbp),srctemp,bbp<<1);
+			memcpy(desttemp+(2<<bbp),srctemp,bbp<<1);
+			memcpy(desttemp+(3<<bbp),srctemp,bbp<<1);
+		}
+		srctemp = dest+(((i<<2)*Width)<<bbp);
+		desttemp = dest+((((i<<2)+1)*Width)<<bbp);
+		size = GAME_STD_WIDTH*(bbp<<1<<2);
+
+		memcpy(desttemp,srctemp,size);
+		memcpy(desttemp+(Width<<bbp),srctemp,size);
+		memcpy(desttemp+((Width<<bbp)<<1),srctemp,size);
+	}
+}
+
 // functions to directly set and retrieve pixels from the VGA display
 void CVideoDriver::setpixel(unsigned int x, unsigned int y, unsigned char c)
 {
-	if( x > Width || y > Height )
+	if( x >= GAME_STD_WIDTH || y >= GAME_STD_HEIGHT ) // out of Bonds!!!
 		return;
 
 

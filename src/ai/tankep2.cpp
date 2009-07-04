@@ -141,7 +141,7 @@ unsigned int i;
               else
               {
                  // no we're not facing him, on hard difficulty turn around
-                 if (options[OPT_MEAN].value)
+                 if (pCKP->Control.levelcontrol.hardmode)
                  {
                     objects[o].ai.tank.frame = 0;
                     objects[o].ai.tank.timer = 0;

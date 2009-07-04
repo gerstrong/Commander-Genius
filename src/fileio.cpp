@@ -1064,7 +1064,7 @@ g_pLogFile->ftextOut("loadstrings(): Opening string file '%s'.<br>", fname);
         // into it. We'll need room for both the name and the string, plus
         // null-terminators for each.
         RAMSize = strlen( (char*) stName) + strlen((char*)stString) + 2;
-	RAMPtr = (char*) malloc(RAMSize);
+        RAMPtr = (char*) malloc(RAMSize);
         if (!RAMPtr)
         {
           g_pLogFile->ftextOut(RED,"loadstrings(): Could not allocate memory for string '%s'<br>", stName);

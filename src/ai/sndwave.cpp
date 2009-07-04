@@ -57,7 +57,7 @@ void sndwave_ai(int o, stCloneKeenPlus *pCKP)
      }
      else
      {
-        if (options[OPT_MEAN].value)
+        if (pCKP->Control.levelcontrol.hardmode)
           objects[o].x += SNDWAVE_SPEED_FAST;
         else
           objects[o].x += SNDWAVE_SPEED;
@@ -72,7 +72,7 @@ void sndwave_ai(int o, stCloneKeenPlus *pCKP)
      }
      else
      {
-        if (options[OPT_MEAN].value)
+        if (pCKP->Control.levelcontrol.hardmode)
           objects[o].x -= SNDWAVE_SPEED_FAST;
         else
           objects[o].x -= SNDWAVE_SPEED;

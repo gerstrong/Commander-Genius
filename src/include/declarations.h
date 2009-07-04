@@ -41,6 +41,7 @@ typedef struct stLevelControl
  char dark;                   // 1 if level is currently dark (lights are out)
 
  int episode;                 // which episode we're playing (1-3)
+ bool hardmode;
 
  // array of which levels have been completed (have "Done" tiles over them
  // on the world map)

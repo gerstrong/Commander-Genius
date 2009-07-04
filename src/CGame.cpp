@@ -54,7 +54,6 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 	  {
 		  CIntro Intro;
 		  Intro.Render(pCKP);
-		  //if (intro(pCKP)){ pCKP->shutdown=SHUTDOWN_EXIT; return 0;	}
 		  pCKP->Control.skipstarting=0;
 	  }
 
@@ -147,16 +146,7 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 	    	  break;
 
 	      case MAINMNU_NEW_GAME:
-	    	  if(loadStartMenu(pCKP) == 1)
-	    	  {
-	    			pCKP->shutdown = SHUTDOWN_EXIT;
-	    			break;
-	    	  }
-	    	  //loadResourcesforGame(pCKP);
-	    	  loadResources(pCKP->Control.levelcontrol.episode, pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory);
-
-
-	    	  pCKP->shutdown = SHUTDOWN_RESTART;
+	    	  pCKP->shutdown = SHUTDOWN_NEW_GAME;
 	    	break;
 
 	      case MAINMNU_ABOUT:
@@ -210,6 +200,9 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 
 	      default: break;
 	      }
+
+		  if(pCKP->shutdown == SHUTDOWN_NEW_GAME) return 0;
+
 	      g_pLogFile->ftextOut("bottom of game control loop opt=%d crashflag=%d<br>", opt, crashflag);
 	      if(pCKP->shutdown == SHUTDOWN_EXIT) break;
 	    } while(opt != MAINMNU_QUIT && opt != MAINMNU_NEW_GAME && !crashflag);

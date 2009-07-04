@@ -529,6 +529,27 @@ unsigned char *bmdataptr;
   }
 }
 
+void CGraphics::drawBitmap2FG(int xa, int ya, int b)
+{
+int x,y;
+unsigned char *bmdataptr;
+
+  // for "b" arguments passed from GetBitmapNumberFromName(),
+  // in case the specified name was not found
+  if (b==-1) return;
+
+  bmdataptr = bitmaps[b].bmptr;
+  for(y=0;y<bitmaps[b].ysize;y++)
+  {
+   for(x=0;x<bitmaps[b].xsize;x++)
+   {
+	 g_pVideoDriver->setpixel((x+xa+scrollx_buf-130)&511,(y+ya+scrolly_buf-30)&511,*bmdataptr);
+     bmdataptr++;
+   }
+  }
+}
+
+
 int CGraphics::getBitmapNumberFromName(const char *bmname)
 {
 

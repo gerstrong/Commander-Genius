@@ -205,7 +205,7 @@ unsigned int i;
 
          if (garg_CanWalkLeft(o))
          {
-           if (options[OPT_MEAN].value)
+           if (pCKP->Control.levelcontrol.hardmode)
              objects[o].x -= GARG_WALK_SPEED_FAST;
            else
              objects[o].x -= GARG_WALK_SPEED;
@@ -223,7 +223,7 @@ unsigned int i;
          objects[o].sprite = GARG_WALK_RIGHT + objects[o].ai.garg.walkframe;
          if (garg_CanWalkRight(o))
          {
-           if (options[OPT_MEAN].value)
+           if (pCKP->Control.levelcontrol.hardmode)
              objects[o].x += GARG_WALK_SPEED_FAST;
            else
              objects[o].x += GARG_WALK_SPEED;
@@ -239,7 +239,7 @@ unsigned int i;
 
        /* walk animation */
        if (objects[o].ai.garg.timer > GARG_WALK_ANIM_TIME || \
-           (objects[o].ai.garg.timer > GARG_WALK_ANIM_TIME && options[OPT_MEAN].value))
+           (objects[o].ai.garg.timer > GARG_WALK_ANIM_TIME && pCKP->Control.levelcontrol.hardmode))
        {
          objects[o].ai.garg.walkframe ^= 1;
          objects[o].ai.garg.timer = 0;

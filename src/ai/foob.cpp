@@ -54,7 +54,7 @@ unsigned int i;
       objects[o].ai.foob.state = FOOB_EXPLODE;
       objects[o].canbezapped = 0;
       if (objects[o].onscreen) g_pSound->playStereofromCoord(SOUND_YORP_DIE, PLAY_NOW, objects[o].scrx);
-      if (options[OPT_MEAN].value && objects[o].touchPlayer)
+      if (pCKP->Control.levelcontrol.hardmode && objects[o].touchPlayer)
       {
         killplayer(objects[o].touchedBy, pCKP);
       }

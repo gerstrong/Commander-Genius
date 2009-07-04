@@ -35,7 +35,7 @@ int onsamelevel;
   {
     objects[o].ai.ninja.state = NINJA_STAND;
     objects[o].ai.ninja.timetillkick = (rand()%(NINJA_MAX_TIME_TILL_KICK-NINJA_MIN_TIME_TILL_KICK))+NINJA_MIN_TIME_TILL_KICK;
-    if (options[OPT_MEAN].value) objects[o].ai.ninja.timetillkick /= 3;
+    if (pCKP->Control.levelcontrol.hardmode) objects[o].ai.ninja.timetillkick /= 3;
 
     if (player[primaryplayer].x < objects[o].x)
       { objects[o].ai.ninja.dir = LEFT; }

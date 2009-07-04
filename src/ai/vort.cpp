@@ -44,7 +44,7 @@ int bonk,kill;
      objects[o].canbezapped = 1;
      objects[o].needinit = 0;
 
-     if (options[OPT_MEAN].value)
+     if (pCKP->Control.levelcontrol.hardmode)
      {
        objects[o].ai.vort.ep1style = 1;
      }
@@ -118,7 +118,7 @@ int bonk,kill;
        else
        {
          objects[o].ai.vort.state = VORT2_DYING;
-         if (options[OPT_MEAN].value)
+         if (pCKP->Control.levelcontrol.hardmode)
          {
             fade.mode = FADE_GO;
             fade.dir = FADE_IN;
