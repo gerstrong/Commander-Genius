@@ -1,0 +1,227 @@
+// !$*UTF8*$!
+{
+	20286C28FDCF999611CA2CEA /* Project object */ = {
+		activeBuildConfigurationName = Debug;
+		activeExecutable = 23D3E9631013AB17001643FA /* CommanderGenius */;
+		activeTarget = 8D0C4E890486CD37000505A6 /* CommanderGenius */;
+		addToTargets = (
+			8D0C4E890486CD37000505A6 /* CommanderGenius */,
+		);
+		codeSenseManager = 23D3E96D1013AB1D001643FA /* Code sense */;
+		executables = (
+			23D3E9631013AB17001643FA /* CommanderGenius */,
+		);
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXErrorsWarningsDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXErrorsWarningsDataSource_LocationID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					300,
+					362,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXErrorsWarningsDataSource_TypeID,
+					PBXErrorsWarningsDataSource_MessageID,
+					PBXErrorsWarningsDataSource_LocationID,
+				);
+			};
+			PBXConfiguration.PBXFileTableDataSource3.PBXExecutablesDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXExecutablesDataSource_NameID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					22,
+					300,
+					360,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXExecutablesDataSource_ActiveFlagID,
+					PBXExecutablesDataSource_NameID,
+					PBXExecutablesDataSource_CommentsID,
+				);
+			};
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					341,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXConfiguration.PBXTargetDataSource.PBXTargetDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					432,
+					60,
+					20,
+					48,
+					43,
+					43,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXTargetDataSource_PrimaryAttribute,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 269724487;
+			PBXWorkspaceStateSaveDate = 269724487;
+		};
+		perUserProjectItems = {
+			23D3EA611013AC5F001643FA /* PBXTextBookmark */ = 23D3EA611013AC5F001643FA /* PBXTextBookmark */;
+			23D3EA621013AC5F001643FA /* PBXTextBookmark */ = 23D3EA621013AC5F001643FA /* PBXTextBookmark */;
+			23D3EA881013AEC5001643FA /* PBXTextBookmark */ = 23D3EA881013AEC5001643FA /* PBXTextBookmark */;
+			23D3EA891013AEC5001643FA /* PBXTextBookmark */ = 23D3EA891013AEC5001643FA /* PBXTextBookmark */;
+			23D3EA8F1013AF06001643FA /* PBXTextBookmark */ = 23D3EA8F1013AF06001643FA /* PBXTextBookmark */;
+			23D3EA901013AF06001643FA /* PBXTextBookmark */ = 23D3EA901013AF06001643FA /* PBXTextBookmark */;
+		};
+		sourceControlManager = 23D3E96C1013AB1D001643FA /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	23D3E9631013AB17001643FA /* CommanderGenius */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+			"PBXLSLaunchAction-0" = {
+				PBXLSLaunchAction = 0;
+				PBXLSLaunchStartAction = 1;
+				PBXLSLaunchStdioStyle = 2;
+				PBXLSLaunchStyle = 0;
+				class = PBXLSRunLaunchConfig;
+				commandLineArgs = (
+				);
+				displayName = "Executable Runner";
+				environment = {
+				};
+				identifier = com.apple.Xcode.launch.runConfig;
+				remoteHostInfo = "";
+				startActionInfo = "";
+			};
+		};
+		customDataFormattersEnabled = 1;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = CommanderGenius;
+		sourceDirectories = (
+		);
+		startupPath = /Users/az/Programmierung/CommanderGenius/data;
+	};
+	23D3E96C1013AB1D001643FA /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+		};
+	};
+	23D3E96D1013AB1D001643FA /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	23D3E9D61013ABCA001643FA /* misc.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {710, 18284}}";
+			sepNavSelRange = "{258, 9}";
+			sepNavVisRange = "{0, 432}";
+		};
+	};
+	23D3E9F31013ABCA001643FA /* CSound.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {439, 1022}}";
+			sepNavSelRange = "{175, 17}";
+			sepNavVisRange = "{75, 231}";
+		};
+	};
+	23D3EA611013AC5F001643FA /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "error: SDL.h: No such file or directory";
+		fRef = 23D3E9F31013ABCA001643FA /* CSound.h */;
+		rLen = 1;
+		rLoc = 13;
+		rType = 1;
+	};
+	23D3EA621013AC5F001643FA /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 23D3E9F31013ABCA001643FA /* CSound.h */;
+		name = "CSound.h: 14";
+		rLen = 17;
+		rLoc = 175;
+		rType = 0;
+		vrLen = 231;
+		vrLoc = 75;
+	};
+	23D3EA881013AEC5001643FA /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "error: 'JoyDrv_Stop' was not declared in this scope";
+		fRef = 23D3E9D61013ABCA001643FA /* misc.cpp */;
+		rLen = 1;
+		rLoc = 54;
+		rType = 1;
+	};
+	23D3EA891013AEC5001643FA /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 23D3E9D61013ABCA001643FA /* misc.cpp */;
+		name = "misc.cpp: 55";
+		rLen = 33;
+		rLoc = 1446;
+		rType = 0;
+		vrLen = 0;
+		vrLoc = 0;
+	};
+	23D3EA8F1013AF06001643FA /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "error: 'JoyDrv_Stop' was not declared in this scope";
+		fRef = 23D3E9D61013ABCA001643FA /* misc.cpp */;
+		rLen = 1;
+		rLoc = 54;
+		rType = 1;
+	};
+	23D3EA901013AF06001643FA /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 23D3E9D61013ABCA001643FA /* misc.cpp */;
+		name = "misc.cpp: 10";
+		rLen = 9;
+		rLoc = 258;
+		rType = 0;
+		vrLen = 432;
+		vrLoc = 0;
+	};
+	8D0C4E890486CD37000505A6 /* CommanderGenius */ = {
+		activeExec = 0;
+		executables = (
+			23D3E9631013AB17001643FA /* CommanderGenius */,
+		);
+	};
+}
