@@ -207,7 +207,7 @@ void gameloop(stCloneKeenPlus *pCKP)
      {
        if (enter)
        {
-    	 int cities;
+    	 int cities = 0;
       	 CHighScores *HighScoreTable;
 
      	 if (pCKP->Control.levelcontrol.levels_completed[4]) cities++;
@@ -221,10 +221,9 @@ void gameloop(stCloneKeenPlus *pCKP)
 
       	 HighScoreTable = new CHighScores(pCKP);
 
-      	 bool extras[4];
+		   bool extras[4] = {false,false,false,false};
 
       	 // check inventory or saved cities
-      	 memset(extras,false,4*sizeof(bool));
       	 if(pCKP->Control.levelcontrol.episode == 1)
       	 {
       		 if(player[0].inventory.HasJoystick)

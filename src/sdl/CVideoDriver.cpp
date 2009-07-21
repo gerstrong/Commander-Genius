@@ -427,11 +427,11 @@ void CVideoDriver::update_screen(void)
 
 	   mp_OpenGL->render();
 
-	   SDL_LockSurface(FGLayerSurface);
+	   LockSurface(FGLayerSurface);
 	   // Flush the layers
 	   memset(FGLayerSurface->pixels,SDL_MapRGB(FGLayerSurface->format, 0, 0, 0),
 			   GAME_STD_WIDTH*GAME_STD_HEIGHT*FGLayerSurface->format->BytesPerPixel);
-	   SDL_UnlockSurface(FGLayerSurface);
+	   UnlockSurface(FGLayerSurface);
    }
    else // No OpenGL but Software Rendering
    {
@@ -442,8 +442,8 @@ void CVideoDriver::update_screen(void)
 	   // another offscreen buffer, and must now stretchblit it to the screen
 	   if (Zoom == 1 && Width != 320 )
 	   {
-		   SDL_LockSurface(BlitSurface);
-		   SDL_LockSurface(screen);
+		   LockSurface(BlitSurface);
+		   LockSurface(screen);
 
 		   if(Filtermode == 0)
 		   {
@@ -455,13 +455,13 @@ void CVideoDriver::update_screen(void)
 			   g_pLogFile->textOut(PURPLE,"Try to use a higher zoom factor. Switching to no-filter<br>");
 			   Filtermode = 0;
 		   }
-		   SDL_UnlockSurface(screen);
-		   SDL_UnlockSurface(BlitSurface);
+		   UnlockSurface(screen);
+		   UnlockSurface(BlitSurface);
 	   }
 	   if (Zoom == 2)
 	   {
-		   SDL_LockSurface(BlitSurface);
-		   SDL_LockSurface(screen);
+		   LockSurface(BlitSurface);
+		   LockSurface(screen);
 
 		   if(Filtermode == 0)
 		   {
@@ -479,13 +479,13 @@ void CVideoDriver::update_screen(void)
 			   Filtermode = 0;
 		   }
 
-		   SDL_UnlockSurface(screen);
-		   SDL_UnlockSurface(BlitSurface);
+		   UnlockSurface(screen);
+		   UnlockSurface(BlitSurface);
 	   }
 	   else if (Zoom == 3)
 	   {
-		   SDL_LockSurface(BlitSurface);
-		   SDL_LockSurface(screen);
+		   LockSurface(BlitSurface);
+		   LockSurface(screen);
 
 		   if(Filtermode == 0)
 		   {
@@ -507,13 +507,13 @@ void CVideoDriver::update_screen(void)
 			   g_pLogFile->textOut(PURPLE,"Try to use a higher zoom factor. Switching to no-filter<br>");
 			   Filtermode = 0;
 		   }
-		   SDL_UnlockSurface(screen);
-		   SDL_UnlockSurface(BlitSurface);
+		   UnlockSurface(screen);
+		   UnlockSurface(BlitSurface);
 	   }
 	   else if (Zoom == 4)
 	   {
-		   SDL_LockSurface(BlitSurface);
-		   SDL_LockSurface(screen);
+		   LockSurface(BlitSurface);
+		   LockSurface(screen);
 
 		   if(Filtermode == 0)
 		   {
@@ -540,18 +540,18 @@ void CVideoDriver::update_screen(void)
 			   g_pLogFile->textOut(PURPLE,"Try to use a higher zoom factor. Switching to no-filter<br>");
 			   Filtermode = 0;
 		   }
-		   SDL_UnlockSurface(screen);
-		   SDL_UnlockSurface(BlitSurface);
+		   UnlockSurface(screen);
+		   UnlockSurface(BlitSurface);
 	   }
 
 	   SDL_Flip(screen);
 	   //SDL_UpdateRect(screen, screenrect.x, screenrect.y, screenrect.w, screenrect.h);
 
-	   SDL_LockSurface(FGLayerSurface);
+	   LockSurface(FGLayerSurface);
 	   // Flush the layers
 	   memset(FGLayerSurface->pixels,SDL_MapRGB(FGLayerSurface->format, 0, 0, 0),
 			   GAME_STD_WIDTH*GAME_STD_HEIGHT*FGLayerSurface->format->BytesPerPixel);
-	   SDL_UnlockSurface(FGLayerSurface);
+	   UnlockSurface(FGLayerSurface);
 #ifdef USE_OPENGL
    }
 #endif

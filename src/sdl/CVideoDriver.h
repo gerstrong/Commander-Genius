@@ -17,6 +17,17 @@
 
 #include <SDL.h>
 
+inline bool LockSurface(SDL_Surface * bmp)  {
+	if (SDL_MUSTLOCK(bmp))
+		return SDL_LockSurface(bmp) != -1;
+	return true;
+}
+
+inline void UnlockSurface(SDL_Surface * bmp)  {
+	if (SDL_MUSTLOCK(bmp))
+		SDL_UnlockSurface(bmp);
+}
+
 class CVideoDriver : public CSingleton<CVideoDriver>
 {
 public:
