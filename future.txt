@@ -1,16 +1,16 @@
 Here are the features that I still want to implement:
 -----------------------------------------------------
 
-until 0.3:
-- Write a instruction keys manual in the readme file
-- tie up the code
-- New Resolutions system
-- Add 1920x1200, 1280x800, 1600x1200
-
 until 0.4:
+- Read all the text out of EXE-files. This should provide better support for mods!
+- Update the Dialog Class. It should support more controls, and be easier to manage
+- New Games Menu. Should run without the need of an episode!
+- Improve the logic of Keen.exe reading for a better mod compatibility
+- Implement the patch reading of pat files.
+- Implement Audio Control
+- improve the physics using floats
 - User folder detection and save the files there!
 - Ubuntu debs
-- New Games Menu. Should run without the need of an episode!
 - Commander Keen 4-6
 
 until 0.5:
