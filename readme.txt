@@ -6,11 +6,12 @@
 *    (c)2008-2009  Gerstrong        *
 *    (c)2009       Pickle           *
 *    (c)2009       Tulip            *
-*    (c)2009       DaVince
+*    (c)2009       DaVince          *
+*    (c)2009       Albert Zeyer     *
 *    (c)2003-2005  Caitlin Shaw     *
 *      Released under GNU/GPL       *
 *                                   *
-*        Prerelease v0.3            *
+*        Pre-release v0.3           *
 *                                   *
 *************************************
 
