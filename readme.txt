@@ -1,31 +1,32 @@
 *************************************
 *                                   *
-*        C L O N E K E E N          *
-*             PLUS                  * 
-*       (Commander Genius)          *
+*        Commander Genius           * 
+*         (CloneKeenPlus)           *
 *                                   *
 *    (c)2008-2009  Gerstrong        *
 *    (c)2009       Pickle           *
 *    (c)2009       Tulip            *
+*    (c)2009       DaVince
 *    (c)2003-2005  Caitlin Shaw     *
 *      Released under GNU/GPL       *
 *                                   *
-*          Beta v0.2.9.6            *
+*        Prerelease v0.3            *
 *                                   *
 *************************************
 
-Welcome to CloneKeenPlus (Commander Genius)!
+Welcome to Commander Genius (aka CloneKeenPlus)
 
-CloneKeenPlus is an almost complete open-source clone of
+Commander Genius is an almost complete open-source clone of
 the old classic DOS game, Commander Keen: Invasion of the
-Vorticons by ID Software. CloneKeenPlus requires the original game
+Vorticons by ID Software. Commander Genius requires the original game
 data files to work. You can play all three episodes of the game and
 some fanmade mods.
 
-CloneKeenPlus currently runs under Linux/X11 and Windows with SDL. 
-In Mac OS X it also might run, but this has not been tested yet.
+Commander Genius currently runs under Linux/X11 and Windows with SDL. 
+In Mac OS X it also runs, but we are still looking for a distributor.
+Check our website to get CG running on MacOs X Systems.
 
-CloneKeenPlus tries to mostly replicate the original game,
+Commander Genius tries to mostly replicate the original game,
 however there are also a number of improvements like:
 - smoother scrolling
 - MMX Support
@@ -34,7 +35,7 @@ however there are also a number of improvements like:
 - 2-player support (still incomplete)
 - high quality packs (for better sounds and music)
 - games menu
-- gamepad support (More than just two joystick buttons for playing)
+- gamepad support (Assing your input devices as you want)
 
 and much more!
 
@@ -48,15 +49,14 @@ with GNU C++ (previously GNU C). Some functions are
 now classes. The idea behind that is to provide a faster
 and more stable program. Features like the implementation
 of resolution changes was achieved through classes. 
-Although it looks very similar, 
-the skeleton of the program is very 
-different to the one in CloneKeen. 
+Although it looks very similar the skeleton of the 
+program is very different to the one in CloneKeen. 
 
-The CloneKeenPlus source code may be freely distributed and
+The Commander Genius source code may be freely distributed and
 modified as per the GPL, just please remember to give
 credit to the original authors.
 
-CloneKeenPlus has been developed by Gerstrong togther 
+Commander Genius has been developed by Gerstrong togther 
 with Pickle and Tulip implementing mayor improvements 
 basing on the original source code of CloneKeen 
 by Caitlin Shaw. Many thanks to him, 
@@ -84,9 +84,7 @@ Setting up the data of the game:
    otherwise download the shareware version and copy the data from it.
    You also can use mods.
  * If you want to use some patched mods, you can put them into subdirectories.
-   You only have to modify the "games.cfg".
- * Only Linux/Unix Users: If you have many data files which upper-case, 
-   use the "./data/renlower.sh" shell script to rename them. 
+   You only have to modify the "games.cfg". 
  * Go into the Release folder and start the interpreter. If you have downloaded 
    the binary version of Commander Genius (for Windows, Linux32/64), then you 
    will find the executable in the root directory of the extracted game.
@@ -94,7 +92,7 @@ Setting up the data of the game:
  * If you want better sounds and music, please download the high quality pack (HQP).
    Extract its contents to the "data" directory together with your game data.
  
-Howto use CloneKeenPlus (If you didn't compile it):
+Howto use Commander Genius (If you didn't compile it):
  * Under Windows you start "cgenius.exe", under Linux "./CommanderGenius"
 
 Howto compile it under Ubuntu (testet on Intrepid):
@@ -110,7 +108,7 @@ Howto compile it under Ubuntu (testet on Intrepid):
  * Then, you can run "CommanderGenius". Copy the files, wherever you want them together 
    with the data directory. "make install" does not work though.
 
-Compiling CKP on Linux/UNIX (other than Ubuntu):
+Compiling CG on Linux/UNIX (other than Ubuntu):
  * If you want to compile the game, you need to have all the standard .
    development libraries and GNU C Compiler (at least version 4) installed 
    on your system.
@@ -122,6 +120,18 @@ Compiling CKP on Linux/UNIX (other than Ubuntu):
  * Then, you can run "CommanderGenius". Copy the files, 
    wherever you want them together with the data directory. 
    "make install" does not work though.
+   
+- VIDEO SYSTEM -
+Being cross-platform, there are many methods to detect different resolutions on a system.
+SDL uses one function to detect them but it doesn't seem to work properly on any system.
+
+Gernerally it is not necessary, because many resolutions are already supported, but if 
+you want to support other resolutions that you don't find in the options list just modify the
+"resolutions.cfg" file by hand.
+
+Caution: This is recommended for advanced users who now what they do. The team won't take responsabilities 
+if you use a wrong configuration.
+
    
 - GAME PLAY -
 Before you play the game, you should take a look at the controls. Normally RAlt, Ctrl, Space and Enter
@@ -203,10 +213,10 @@ suggestions:
 
 
 Sciz CT
+DaVince
 Commander Spleen
 Malvineous
 Tulip
-DaVince
 Hans de Goede
 Levelass (Keen EXE-Information)
 ZidaneA (For his music tracks!)
