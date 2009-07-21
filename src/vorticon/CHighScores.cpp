@@ -38,8 +38,8 @@ CHighScores::CHighScores(stCloneKeenPlus *poutsideCKP) {
 	for(i=0 ; i<7 ; i++)
 		sprintf(Score[i],"100");
 
-	memset(Extra, false, 7*4*sizeof(unsigned char));
-	memset(Cities, false, 7*sizeof(unsigned int));
+	memset(Extra, 0, 7*4*sizeof(unsigned char));
+	memset(Cities, 0, 7*sizeof(unsigned int));
 
 	pCKP = poutsideCKP;
 

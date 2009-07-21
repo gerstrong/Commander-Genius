@@ -9,89 +9,68 @@
 
 #include <vorbis/codec.h>
 #include <vorbis/vorbisfile.h>
+#include <cstdio>
+#include <iostream>
+#include <vector>
 
 #define MAX_LEVELS     100 // Stupid! But you need it!
+#define BUFFER_SIZE   32768     // 32 KB buffers
 
 #include "../include/declarations.h"
 #include "../hqp/hq_sound.h"
 #include "../sdl/CVideoDriver.h"
 #include "../CLogFile.h"
 
-short openOGGSound(FILE *fp, SDL_AudioSpec *pspec, stHQSound *psound)
+short openOGGSound(FILE *fp, SDL_AudioSpec *pspec, Uint16 format, stHQSound *psound)
 {
-	// it is an ogg file
-	// If Ogg detected, decode it into the stream psound->sound_buffer. It must fit to Audio_cvt structure, so that
-	// it can be converted
+	// If Ogg detected, decode it into the stream psound->sound_buffer.
+	// It must fit into the Audio_cvt structure, so that it can be converted
 
 	int result;
     OggVorbis_File  oggStream;     // stream handle
-    vorbis_info*    vorbisInfo;    // some formatting data
-    vorbis_comment* vorbisComment; // user comments
 
-    if((result = ov_open(fp, &oggStream, NULL, 0)) < 0)
+    if((result = ov_open_callbacks(fp, &oggStream, NULL, 0, OV_CALLBACKS_DEFAULT)) < 0)
     {
         fclose(fp);
         return 1;
     }
     else
     {
+    	long bytes;
+    	char array[BUFFER_SIZE];
+    	vector<char> buffer;
+        vorbis_info*    vorbisInfo;    // some formatting data
+        vorbis_comment* vorbisComment; // user comments
+
+    	int bitStream;
         vorbisInfo = ov_info(&oggStream, -1);
         vorbisComment = ov_comment(&oggStream, -1);
 
-        pspec->format = 32784; // Not sure, if this works with any ogg file
+        pspec->format = AUDIO_S16LSB; // Ogg Audio seems to always use this format
+        //pspec->format = (AUDIO_S16LSB*147)/160; // Ogg Audio seems to always use this format
+
         pspec->channels = vorbisInfo->channels;
         pspec->freq = vorbisInfo->rate;
+
+        psound->sound_len = 0;
+        do {
+          // Read up to a buffer's worth of decoded sound data
+          bytes = ov_read(&oggStream, array, BUFFER_SIZE, 0, 2, 1, &bitStream);
+          // Append to end of buffer
+          buffer.insert(buffer.end(), array, array + bytes);
+        } while (bytes > 0);
+
+        ov_clear(&oggStream);
+
+        psound->sound_len = buffer.size();
+
+        psound->sound_buffer = new Uint8[psound->sound_len];
+        for(Uint32 i=0; i<psound->sound_len ; i++ )
+        {
+        	memcpy( &(psound->sound_buffer[i]), &(buffer[i]), 1);
+        }
+
+		return 0;
     }
-
-    long length;
-    int  section;
-    long pos=0;
-    long ret;
-    char *stream;
-
-    length = 4 * (long)ov_pcm_total(&oggStream,-1);
-
-    stream = (char*) malloc(length*sizeof(char));
-
-    if(stream == NULL)
-    {
-    	g_pLogFile->textOut(RED,"Error! Out of memory! in Loading the Ogg file<br>");
-    	return 1;
-    }
-
-    int eof=0;
-
-    while(!eof){
-       ret=ov_read(&oggStream,stream + pos,sizeof(stream),0,2,1,&section);
-      if (ret == 0) {
-        /* EOF */
-        eof=1;
-      } else if (ret < 0) {
-        /* error in the stream.  Not a problem, just reporting it in
-		 case we (the app) cares.  In this case, we don't. */
-      } else {
-        /* we don't bother dealing with sample rate changes, etc, but
-		 you'll have to*/
-    	  if(pos > length)
-    	  {
-    		// Something went wrong here! Stream is already full!
-    		  g_pLogFile->ftextOut("WARNING: Stream overflow while reading the ogg-file!<br>");
-    		  ret = 0;
-    		  break;
-    	  }
-    	  pos += ret;
-      }
-    }
-
-    psound->sound_buffer = (Uint8*) malloc(length);
-    psound->sound_len = pos;
-
-    memcpy( psound->sound_buffer, stream, psound->sound_len);
-
-    free(stream);
-
-    ov_clear(&oggStream); // This also closes fp
-
-    return 0;
 }
 #endif

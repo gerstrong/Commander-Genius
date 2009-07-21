@@ -11,11 +11,17 @@
 #include "../CSingleton.h"
 #define g_pVideoDriver CVideoDriver::Get()
 
+struct st_resolution
+{ short width,height,depth; };
+
 #ifdef USE_OPENGL
 #include "COpenGL.h"
 #endif
 
 #include <SDL.h>
+#include <iostream>
+#include <list>
+using namespace std;
 
 inline bool LockSurface(SDL_Surface * bmp)  {
 	if (SDL_MUSTLOCK(bmp))
@@ -38,11 +44,9 @@ public:
 	bool createSurfaces(void);
 	void stop(void);
 	bool start(void);
-	void setMode(unsigned int srcW, unsigned int srcH,
-			  unsigned short srcD);
 	void isFullscreen(bool value);
-	//void reset(void);
 	void drawConsoleMessages(void);
+	void initResolutionList();
 
 	void pal_set(short colour, char red, char green, char blue);
 	void pal_apply(void);
@@ -78,6 +82,7 @@ public:
 	SDL_Surface *getScrollSurface(void);
 	SDL_Surface *getBGLayerSurface(void);
 
+	void setMode(int width, int height,int depth);
 	void setFrameskip(unsigned short value);
 	void setFilter(short value);
 	void setZoom(short vale);
@@ -91,6 +96,7 @@ public:
 #endif
 	void setTargetFPS(unsigned int targetfps){ if( targetfps >= 0 && targetfps <= 70 ) m_targetfps = targetfps; }
 	unsigned char getTargetFPS(void){ return m_targetfps; }
+	st_resolution setNextResolution();
 
 	void showFPS(bool value);
 
@@ -102,33 +108,37 @@ private:
 	COpenGL	*mp_OpenGL;
 #endif
 
-	  unsigned int Width;
-	  unsigned int Height;
-	  unsigned short Depth;
-	  unsigned int Mode;
-	  bool Fullscreen;
-	  short Filtermode;
-	  unsigned short Zoom;
-	  unsigned short FrameSkip;
-	  unsigned int m_targetfps;	// Used for automatic frame skipping
-	  bool showfps;
-	  bool m_opengl;
-	  int m_opengl_filter;
-	  bool m_aspect_correction;
+	st_resolution m_Resolution;
 
-	  SDL_Rect screenrect;
-	  SDL_Rect blitrect;
+	list<st_resolution> m_Resolutionlist;
+	list<st_resolution> :: iterator m_Resolution_pos;
 
-	  SDL_Color MyPalette[256];
+	unsigned int Mode;
+	bool Fullscreen;
+	short Filtermode;
+	unsigned short Zoom;
+	unsigned short FrameSkip;
+	unsigned int m_targetfps;	// Used for automatic frame skipping
+	bool showfps;
+	bool m_opengl;
+	int m_opengl_filter;
+	bool m_aspect_correction;
 
-	  SDL_Surface *screen;                   // the actual video memory/window
-	  SDL_Surface *BGLayerSurface;           // Special surface which support more colors than the scrollsurface
+	SDL_Rect screenrect;
+	SDL_Rect blitrect;
+
+	SDL_Color MyPalette[256];
+
+	SDL_Surface *FGLayerSurface;       // Scroll buffer for Messages
+	// This one is not allowed here! Used only for tests!
+	SDL_Surface *screen;                   // the actual video memory/window
+	SDL_Surface *BGLayerSurface;           // Special surface which support more colors than the scrollsurface
 											 //for (Ex. HQ-Images)
-	  SDL_Surface *ScrollSurface;       // 512x512 scroll buffer
-	  SDL_Surface *FGLayerSurface;       // Scroll buffer for Messages
-	  // pointer to the surface that sb_blit is to assemble the scroll buffer into.
-	  // if zoom=1 this is the same as "screen", else it's allocated as it's own
-	  // buffer of 320x200.
-	  SDL_Surface *BlitSurface;
+	SDL_Surface *ScrollSurface;       // 512x512 scroll buffer
+	// pointer to the surface that sb_blit is to assemble the scroll buffer into.
+	// if zoom=1 this is the same as "screen", else it's allocated as it's own
+	// buffer of 320x200.
+	SDL_Surface *BlitSurface;
+
 };
 #endif /* CVIDEODRIVER_H_ */

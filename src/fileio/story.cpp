@@ -9,8 +9,8 @@
  */
 
 #include "../keen.h"
-#include "../include/fileio/lzexe.h"
 #include "../include/fileio.h"
+#include "../fileio/CExeFile.h"
 #include "../CLogFile.h"
 
 int readStoryText(char **ptext, int episode, char *path)
@@ -32,27 +32,11 @@ int readStoryText(char **ptext, int episode, char *path)
 		if((fp=fopen(buf,"rb"))!=NULL)
 		{
 			unsigned char *filebuf;
-			int bufsize;
+			int startflag=0, endflag=0; // where story begins and ends!
 
-			filebuf = (unsigned char*) malloc(500000*sizeof(unsigned char));
-
-			bufsize = unlzexe(fp, filebuf);
-
-			rewind(fp);
-
-			if ( bufsize == 0 ) // Program was not unpacked, so read it normally
-			{
-				while(!feof(fp))
-				{
-					filebuf[bufsize] = getc(fp);
-					bufsize++;
-				}
-			}
-			fclose(fp);
-
-			int startflag=0, endflag=0, version=0; // where story begins and ends!
-
-			version = getEXEVersion(episode, bufsize);
+			CExeFile *ExeFile = new CExeFile(episode, buf2);
+			ExeFile->readData();
+			filebuf = ExeFile->getData();
 
 			if(episode == 2)
 			{
@@ -74,8 +58,7 @@ int readStoryText(char **ptext, int episode, char *path)
 				*ptext = (char*) malloc((endflag-startflag+10)*sizeof(char));
 				strncpy((*ptext),(char*)filebuf+startflag,(endflag-startflag)*sizeof(char));
 			}
-
-			free(filebuf);
+			delete ExeFile;
 
 			return (endflag-startflag);
 		}

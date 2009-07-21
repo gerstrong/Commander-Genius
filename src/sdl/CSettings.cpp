@@ -40,7 +40,6 @@ short CSettings::saveDrvCfg(void)
 	else
 		Parser.saveIntValue("OpenGL","Video",0);
 
-
 	Parser.saveIntValue("width","Video",g_pVideoDriver->getWidth());
 	Parser.saveIntValue("height","Video",g_pVideoDriver->getHeight());
 	Parser.saveIntValue("scale","Video",g_pVideoDriver->getZoomValue());
@@ -79,8 +78,7 @@ short CSettings::loadDrvCfg(void)
 		if(depth*width*height < 0)
 			g_pLogFile->ftextOut(RED,"Error reading the configuration file. It appears to be damaged!");
 
-		g_pVideoDriver->setMode(width, height, depth);
-
+		g_pVideoDriver->setMode(width,height,depth);
 		g_pVideoDriver->setFrameskip(Parser.getIntValue("frameskip","Video"));
 
 		if((Parser.getIntValue("fullscreen","Video")) == 1)
@@ -123,6 +121,7 @@ void CSettings::loadDefaultGameCfg(stOption *Option)
 	setOption(Option,OPT_TWOBUTTON, "two-button-firing", 0);
 	setOption(Option,OPT_KEYCARDSTACK, "keycard-stacking", 0);
 	setOption(Option,OPT_ANALOGJOYSTICK, "analog-joystick", 1);
+	setOption(Option,OPT_LVLREPLAYABILITY, "level replayability", 0);
 }
 
 short CSettings::loadGameCfg(stOption *Option)

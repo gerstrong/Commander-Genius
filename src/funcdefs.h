@@ -19,7 +19,7 @@ void gamedo_fades(void);
 //void gamepdo_wm_HandlePlayer(int cp);
 //void gamepdo_InertiaAndFriction_Y(int cp);
 //void gamepdo_wm_AllowEnterLevel(int cp);
-char wm_issolid(int xb, int yb);
+char wm_issolid(int xb, int yb, int *levels_completed);
 
 // game.c
 //void SetGameOver(void);
@@ -110,11 +110,8 @@ void sb_font_draw_inverse(unsigned char *text, int xoff, int yoff);
 //unsigned long fgetl(FILE *fp);
 //unsigned int loadmap(char *filename, char *path, int lvlnum, int isworldmap);
 #include "fileio.h"
-char loadtiles(char *fname);
-char loadsprites(char *spritename);
-char loadfont(char *fontname);
-//char loadstrings(const char *fname);
-char loadtileattributes(int episode, char *extrapath);
+
+bool loadtileattributes(int episode, int version, unsigned char *filebuf);
 int freestrings(void);
 char* getstring(const char *name);
 int GetStringAttribute(const char *stringName, const char *attrName);

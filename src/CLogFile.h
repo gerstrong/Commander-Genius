@@ -8,9 +8,7 @@
 #ifndef CLOGFILE_H_
 #define CLOGFILE_H_
 
-#define REVISION        "CloneKeenPlus Beta v0.2.9.7 (Commander Genius)"
-
-#include <stdio.h>
+#define REVISION        "Commander Genius Prerelease v0.3"
 #include "CSingleton.h"
 #define g_pLogFile	CLogFile::Get()
 

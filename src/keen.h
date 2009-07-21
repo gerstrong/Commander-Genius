@@ -16,7 +16,7 @@
 
 #include "vorticon/sounds.h"
 #include "funcdefs.h"
-#include "CLatch.h"
+#include "fileio/CTileLoader.h"
 
 #include "include/playeraction.h"
 
@@ -35,7 +35,6 @@
 
 #define WM_MAP_NUM      80
 
-#define MAX_TILES    700
 #define MAX_SPRITES  300
 #define MAX_FONT     256
 #define MAX_BITMAPS  20
@@ -110,13 +109,6 @@ typedef struct stMap
  unsigned int objectlayer[256][256];
  char firsttime;  // used when generating multiplayer positions on world map
 } stMap;
-typedef struct stTile
-{
- int masktile;        // if nonzero, specifies a mask for this tile
- int chgtile;         // tile to change to when level completed (for wm)
-					 // or tile to change to when picked up (in-level)
- unsigned int animOffset;   // starting offset from the base frame
-} stTile;
 
 
 // Tile information planes
@@ -134,6 +126,7 @@ typedef struct stBitmap
  unsigned char *bmptr;
  char name[9];
 } stBitmap;
+
 typedef struct stSprite
 {
  char xsize, ysize;
@@ -712,7 +705,7 @@ typedef struct stPlayer
    int psupportingtile, psupportingobject, lastsupportingobject;
    char psliding;
    char psemisliding;
-   char ppogostick;
+   bool ppogostick;
    int pfrozentime,pfrozenframe,pfrozenanimtimer;
 
    unsigned char keytable[50];

@@ -24,39 +24,50 @@ CHQBitmap::~CHQBitmap() {
 
 bool CHQBitmap::loadImage(const char *pFilename, int wsize, int hsize)
 {
-	m_scrimg = SDL_LoadBMP(pFilename);
+	SDL_Surface *BitmapSurface = SDL_LoadBMP(pFilename);
 
 	m_active = false;
 
-	if(m_scrimg)
+	if(BitmapSurface)
 	{
-
-		if( ((m_scrimg->h>>4) > hsize) || ((m_scrimg->w>>4) > wsize) )
+		if((m_scrimg = SDL_DisplayFormat(BitmapSurface)))
 		{
-			g_pLogFile->textOut(PURPLE,"HQBitmapLoader : The dimensions of the bitmap don't match to the dimensions of the level.<br>");
-			g_pLogFile->ftextOut("Please use a proper bitmap with %dx%d dimensions.<br>", m_scrimg->w, m_scrimg->h);
-			g_pLogFile->ftextOut("Your bitmap is of %dx%d.<br>", wsize, hsize);
-			g_pLogFile->textOut(BLUE,"HQBitmapLoader : Loading the level without HQBitmap.<br>");
+			SDL_FreeSurface(BitmapSurface);
+
+			if( ((m_scrimg->h>>4) > hsize) || ((m_scrimg->w>>4) > wsize) )
+			{
+				g_pLogFile->textOut(PURPLE,"HQBitmapLoader : The dimensions of the bitmap don't match to the dimensions of the level.<br>");
+				g_pLogFile->ftextOut("Please use a proper bitmap with %dx%d dimensions.<br>", m_scrimg->w, m_scrimg->h);
+				g_pLogFile->ftextOut("Your bitmap is of %dx%d.<br>", wsize, hsize);
+				g_pLogFile->textOut(BLUE,"HQBitmapLoader : Loading the level without HQBitmap.<br>");
+			}
+			else
+			{
+				m_active = true;
+				// Create a empty black surface for alpha blending with black
+				SDL_Surface *BlackScreenCreation = SDL_CreateRGBSurface(0, 320,240,32,0,0,0,0);
+				m_blackscreen = SDL_DisplayFormat(BlackScreenCreation);
+				SDL_FreeSurface(BlackScreenCreation);
+			}
 		}
 		else
 		{
-			m_active = true;
-			// Create a empty black surface for alpha blending with black
-			m_blackscreen = SDL_CreateRGBSurface(SDL_SWSURFACE,
-								320,240,32,0,0,0,0);
+			g_pLogFile->textOut(PURPLE,"Error: The HQBitmap could not be loaded to the memory!");
+			return m_active;
 		}
+
 	}
+	else
+	{
+
+	}
+
 	return m_active;
 }
 
-void CHQBitmap::updateHQBitmap(SDL_Surface *m_surface, unsigned int x, unsigned int y)
+void CHQBitmap::updateHQBitmap(SDL_Surface *m_surface, SDL_Rect *p_srcrect, SDL_Rect *p_dstrect)
 {
-	m_imagerect.x = x;
-	m_imagerect.y = y;
-	m_imagerect.w = m_surface->w;
-	m_imagerect.h = m_surface->h;
-
-	SDL_BlitSurface(m_scrimg, &m_imagerect, m_surface, NULL);
+	SDL_BlitSurface(m_scrimg, p_srcrect, m_surface, p_dstrect);
 
 	if(m_alpha == 255)
 		return;

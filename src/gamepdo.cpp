@@ -59,7 +59,6 @@ char doFall;
 
           gamepdo_keencicle(cp, pCKP);
 
-
           if(!player[cp].pjumping && !player[cp].pfalling)
           {
         	  gamepdo_walking(cp, pCKP);
@@ -373,7 +372,7 @@ void gamepdo_setblockedlru(unsigned int cp, stCloneKeenPlus *pCKP)
       }
 
       // set psliding if we're on ice
-      if (TileProperty[getmaptileat(tx,ty+PLAYERHEIGHT)][BUP] == 3)
+      if (TileProperty[getmaptileat(tx,ty+PLAYERHEIGHT)][BUP] == 3 && !player[cp].ppogostick)
       {
         player[cp].psliding = 1;
         player[cp].pshowdir = player[cp].pdir;
@@ -520,7 +519,7 @@ void gamepdo_walkinganim(int cp, stCloneKeenPlus *pCKP)
           // make walk noise
           if (!player[cp].pjumping && !player[cp].pfalling)
           {
-            if (!player[cp].pfrozentime)
+            if (!player[cp].pfrozentime && player[cp].pwalking)
             {
                if (player[cp].pwalkframea&1)
                  {
@@ -620,7 +619,6 @@ void gamepdo_playpushed(int cp, stCloneKeenPlus *pCKP)
 // (this is where the inertia/playpushed_x is actually applied to playx)
 void gamepdo_InertiaAndFriction_X(unsigned int cp, stCloneKeenPlus *pCKP)
 {
-
 	stLevelControl *p_levelcontrol;
 	int friction_rate;
 
@@ -640,7 +638,7 @@ void gamepdo_InertiaAndFriction_X(unsigned int cp, stCloneKeenPlus *pCKP)
    // Check walking boost and pogoing. It is similar to inertia
    if(player[cp].pjumping || player[cp].pfalling)
    {
-	   if (player[cp].playcontrol[PA_X] < 0)
+	   if (player[cp].playcontrol[PA_X] < 0 && !player[cp].pfrozentime)
 	   {
 		   if(player[cp].pboost_x > 0 && !player[cp].ppogostick)
 		   {
@@ -649,10 +647,10 @@ void gamepdo_InertiaAndFriction_X(unsigned int cp, stCloneKeenPlus *pCKP)
 		   }
 		   else
 		   {
-			   player[cp].pboost_x--;
+			   player[cp].pboost_x-= player[cp].ppogostick ? 2 : 1;
 		   }
 	   }
-	   if (player[cp].playcontrol[PA_X] > 0)
+	   if (player[cp].playcontrol[PA_X] > 0 && !player[cp].pfrozentime)
 	   {
 		   if(player[cp].pboost_x < 0 && !player[cp].ppogostick)
 		   {
@@ -661,7 +659,7 @@ void gamepdo_InertiaAndFriction_X(unsigned int cp, stCloneKeenPlus *pCKP)
 		   }
 		   else
 		   {
-			   player[cp].pboost_x++;
+			   player[cp].pboost_x+= player[cp].ppogostick ? 2 : 1;
 		   }
 	   }
 
@@ -696,7 +694,8 @@ void gamepdo_InertiaAndFriction_X(unsigned int cp, stCloneKeenPlus *pCKP)
    }
 
    // Calculate Threshold of your analog device for walking animation speed!
-   player[cp].treshold = player[cp].playcontrol[PA_X];
+   if(!player[cp].pfrozentime)
+	   player[cp].treshold = player[cp].playcontrol[PA_X];
 
   int pmaxspeed = 0;
 
@@ -818,7 +817,7 @@ void gamepdo_InertiaAndFriction_X(unsigned int cp, stCloneKeenPlus *pCKP)
    }
 
 }
-void gamepdo_Jump(int cp, stCloneKeenPlus *pCKP)
+void gamepdo_Jump(int cp)
 {
 	   // handle the JUMP key, both for normal jumps and (high) pogo jumps
 	   if (!player[cp].pjumping && !player[cp].pfalling && !player[cp].pfiring)
@@ -907,87 +906,80 @@ p_levelcontrol = &(pCKP->Control.levelcontrol);
    // toggle pogo when KPOGO key is pressed
    if (player[cp].playcontrol[PA_POGO] && !player[cp].lastplaycontrol[PA_POGO] && !player[cp].pfrozentime)
    {
-       if (p_levelcontrol->episode==2)
-       {
-               // if we are at a switch hit the switch instead
-               mx = (player[cp].x>>CSF)+8;
-               my = (player[cp].y>>CSF)+9;
-               try2 = 0;
-               retry: ;
-               t = getmaptileat(mx, my);
-               if (player[cp].ppogostick==0 && (t==TILE_SWITCH_UP || t==TILE_SWITCH_DOWN))
-               { // switch to extend platform
+	   // if we are at a switch hit the switch instead
+	   mx = (player[cp].x>>CSF)+8;
+	   my = (player[cp].y>>CSF)+9;
+	   try2 = 0;
+	   retry: ;
+	   t = getmaptileat(mx, my);
+	   if (!player[cp].ppogostick && (t==TILE_SWITCH_UP || t==TILE_SWITCH_DOWN))
+	   { // switch to extend platform
 
-                 // figure out where the platform is supposed to extend
-                 // (this is coded in the object layer...high byte is the Y offset
-                 //  and the low byte is the X offset)
-                 l = getlevelat(mx, my);
-                 // if zero it's the switch on a tantalus ray!
-                 if (l==0)
-                 {
-                	 g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, objects[player[cp].useObject].scrx);
+		 // figure out where the platform is supposed to extend
+		 // (this is coded in the object layer...high byte is the Y offset
+		 //  and the low byte is the X offset)
+		 l = getlevelat(mx, my);
+		 // if zero it's the switch on a tantalus ray!
+		 if (l==0)
+		 {
+			 g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, objects[player[cp].useObject].scrx);
 
-                   map_chgtile(mx>>4,my>>4,TILE_SWITCH_DOWN);
-                   p_levelcontrol->success = 0;
-                   p_levelcontrol->command = LVLC_TANTALUS_RAY;
-                   return;
-                 }
-                 pxoff = (l & 0x00ff);
-                 pyoff = (l & 0xff00) >> 8;
-                 platx = (mx >> 4) + pxoff;
-                 platy = (my >> 4) + pyoff;
+		   map_chgtile(mx>>4,my>>4,TILE_SWITCH_DOWN);
+		   p_levelcontrol->success = 0;
+		   p_levelcontrol->command = LVLC_TANTALUS_RAY;
+		   return;
+		 }
+		 pxoff = (l & 0x00ff);
+		 pyoff = (l & 0xff00) >> 8;
+		 platx = (mx >> 4) + pxoff;
+		 platy = (my >> 4) + pyoff;
 
-                 if (PlatExtending)       // don't allow player to hit switch again while
-                 {                        // plat is moving as this will glitch the plat
-                   return;
-                 }
-                 else PlatExtending = 1;
+		 if (PlatExtending)       // don't allow player to hit switch again while
+		 {                        // plat is moving as this will glitch the plat
+		   return;
+		 }
+		 else PlatExtending = 1;
 
-                 g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, objects[player[cp].useObject].scrx);
+		 g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, objects[player[cp].useObject].scrx);
 
-                 if (t==TILE_SWITCH_UP)
-                 {  // switch toggled from up to down--extend platform
-                   map_chgtile(mx>>4,my>>4,TILE_SWITCH_DOWN);
-                   o = spawn_object((mx>>4<<4)<<CSF,(my>>4<<4)<<CSF,OBJ_SECTOREFFECTOR);
-                   objects[o].ai.se.type = SE_EXTEND_PLATFORM;
-                   objects[o].ai.se.platx = platx;
-                   objects[o].ai.se.platy = platy;
-                 }
-                 else
-                 {  // switch toggled from down to up--remove platform
-                   map_chgtile(mx>>4,my>>4,TILE_SWITCH_UP);
-                   o = spawn_object((mx>>4<<4)<<CSF,(my>>4<<4)<<CSF,OBJ_SECTOREFFECTOR);
-                   objects[o].ai.se.type = SE_RETRACT_PLATFORM;
-                   objects[o].ai.se.platx = platx;
-                   objects[o].ai.se.platy = platy;
-                 }
-             }
-             else if (player[cp].ppogostick==0 && t==TILE_LIGHTSWITCH)
-             { // lightswitch
-               p_levelcontrol->dark ^= 1;
-               g_pGraphics->initPalette(p_levelcontrol->dark);
-               g_pGraphics->fadePalette(PAL_FADE_SHADES);
-               g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, objects[player[cp].useObject].scrx);
-             }
-             else
-             { // toggle pogo stick
-               if (!try2)
-               {
-                 my = (player[cp].y>>CSF)+1;
-                 try2 = 1;
-                 goto retry;
-               }
-
-               player[cp].ppogostick = 1 - player[cp].ppogostick;
-             }
-       }
-       else
-       {        // not episode 2...don't bother with all of this
-          if (player[cp].inventory.HasPogo)
-          {
-            player[cp].ppogostick = 1 - player[cp].ppogostick;
-          }
-       }
+		 if (t==TILE_SWITCH_UP)
+		 {  // switch toggled from up to down--extend platform
+		   map_chgtile(mx>>4,my>>4,TILE_SWITCH_DOWN);
+		   o = spawn_object((mx>>4<<4)<<CSF,(my>>4<<4)<<CSF,OBJ_SECTOREFFECTOR);
+		   objects[o].ai.se.type = SE_EXTEND_PLATFORM;
+		   objects[o].ai.se.platx = platx;
+		   objects[o].ai.se.platy = platy;
+		 }
+		 else
+		 {  // switch toggled from down to up--remove platform
+		   map_chgtile(mx>>4,my>>4,TILE_SWITCH_UP);
+		   o = spawn_object((mx>>4<<4)<<CSF,(my>>4<<4)<<CSF,OBJ_SECTOREFFECTOR);
+		   objects[o].ai.se.type = SE_RETRACT_PLATFORM;
+		   objects[o].ai.se.platx = platx;
+		   objects[o].ai.se.platy = platy;
+		 }
+	 }
+	 else if (!player[cp].ppogostick && t==TILE_LIGHTSWITCH)
+	 { // lightswitch
+	   p_levelcontrol->dark ^= 1;
+	   g_pGraphics->initPalette(p_levelcontrol->dark);
+	   g_pGraphics->fadePalette(PAL_FADE_SHADES);
+	   g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, objects[player[cp].useObject].scrx);
+	 }
+	 else
+	 {
+		if (!try2)
+		{
+			my = (player[cp].y>>CSF)+1;
+			try2 = 1;
+			goto retry;
+		}
+		 // toggle pogo
+		 if (player[cp].inventory.HasPogo)
+		 {
+		   player[cp].ppogostick = !player[cp].ppogostick;
+		 }
+	 }
    }
 
    // handle the JUMP key, both for normal jumps and (high) pogo jumps
@@ -1036,7 +1028,7 @@ p_levelcontrol = &(pCKP->Control.levelcontrol);
              }
              else
              {
-               if(player[cp].ppogostick != 0)
+               if(player[cp].ppogostick)
                {
             	   player[cp].pjumpupspeed = PJUMPUP_SPEED;
 				   player[cp].pjumptime = PJUMP_NORMALTIME_POGO_SHORT;
@@ -1053,10 +1045,20 @@ p_levelcontrol = &(pCKP->Control.levelcontrol);
       case PPREPAREJUMP:
 			 player[cp].widejump = true;
 
-   			 if(g_pInput->getHoldedCommand(IC_LEFT))
-   				 player[cp].chargedjump-=2;
-   			 else if(g_pInput->getHoldedCommand(IC_RIGHT))
-   				 player[cp].chargedjump+=2;
+   			 if(player[cp].psliding)
+   			 {
+   				 if(player[cp].pdir == LEFT)
+   					 player[cp].chargedjump-=2;
+   				 else if(player[cp].pdir == RIGHT)
+   					player[cp].chargedjump+=2;
+   			 }
+   			 else
+   			 {
+   	   			 if(g_pInput->getHoldedCommand(IC_LEFT))
+   	   				 player[cp].chargedjump-=2;
+   	   			 else if(g_pInput->getHoldedCommand(IC_RIGHT))
+   	   				 player[cp].chargedjump+=2;
+   			 }
 
              player[cp].pinertia_x = 0;     // prevent moving while preparing to jump
              if (player[cp].pjumpanimtimer > PJUMP_PREPARE_ANIM_RATE)
@@ -1070,31 +1072,31 @@ p_levelcontrol = &(pCKP->Control.levelcontrol);
                        case PPREPAREJUMPFRAME:
                             player[cp].pjumptime = PJUMP_NORMALTIME_6;
                             player[cp].pjumpupdecreaserate = PJUMP_UPDECREASERATE_6;
-                            player[cp].pjumpupspeed = 6;
+                            player[cp].pjumpupspeed = 1;
                             player[cp].chargedjump = player[cp].chargedjump >> 5;
                             break;
                        case PPREPAREJUMPFRAME+1:
                             player[cp].pjumptime = PJUMP_NORMALTIME_5;
                             player[cp].pjumpupdecreaserate = PJUMP_UPDECREASERATE_5;
-                            player[cp].pjumpupspeed = 8;
+                            player[cp].pjumpupspeed = 2;
                             player[cp].chargedjump = player[cp].chargedjump >> 4;
                             break;
                        case PPREPAREJUMPFRAME+2:
                             player[cp].pjumptime = PJUMP_NORMALTIME_4;
                             player[cp].pjumpupdecreaserate = PJUMP_UPDECREASERATE_4;
-                            player[cp].pjumpupspeed = 10;
+                            player[cp].pjumpupspeed = 4;
                             player[cp].chargedjump = player[cp].chargedjump >> 3;
                             break;
                        case PPREPAREJUMPFRAME+3:
                             player[cp].pjumptime = PJUMP_NORMALTIME_3;
                             player[cp].pjumpupdecreaserate = PJUMP_UPDECREASERATE_3;
-                            player[cp].pjumpupspeed = 14;
+                            player[cp].pjumpupspeed = 8;
                             player[cp].chargedjump = player[cp].chargedjump >> 2;
                             break;
                        case PPREPAREJUMPFRAME+4:
                             player[cp].pjumptime = PJUMP_NORMALTIME_2;
                             player[cp].pjumpupdecreaserate = PJUMP_UPDECREASERATE_2;
-                            player[cp].pjumpupspeed = 18;
+                            player[cp].pjumpupspeed = 16;
                             player[cp].chargedjump = player[cp].chargedjump >> 1;
                             break;
                        default:
@@ -1349,7 +1351,7 @@ int canRefire;
    {
      player[cp].inhibitwalking = 1;    // prevent moving
      player[cp].pfiring = 1;           // flag that we're firing
-     player[cp].ppogostick = 0;        // put away pogo stick if out
+     player[cp].ppogostick = false;        // put away pogo stick if out
 
      if (!player[cp].lastplaycontrol[PA_FIRE] || pCKP->Option[OPT_FULLYAUTOMATIC].value)
      { // fire is newly pressed
@@ -1509,7 +1511,7 @@ void gamepdo_walking(int cp, stCloneKeenPlus *pCKP)
       }
 
       // if we fall onto a semislide tile with no inertia
-      // start moving a little
+      // don't move!.
       if (player[cp].pjustfell && player[cp].psemisliding)
       {
         if (player[cp].pdir==RIGHT)
@@ -1521,7 +1523,6 @@ void gamepdo_walking(int cp, stCloneKeenPlus *pCKP)
           }
           else
           {
-            if (!player[cp].pinertia_x) player[cp].pinertia_x = 1;
             player[cp].pshowdir = player[cp].pdir;
           }
         }
@@ -1534,7 +1535,6 @@ void gamepdo_walking(int cp, stCloneKeenPlus *pCKP)
           }
           else
           {
-            if (!player[cp].pinertia_x) player[cp].pinertia_x = -1;
             player[cp].pshowdir = player[cp].pdir;
           }
         }

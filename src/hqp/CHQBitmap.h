@@ -16,7 +16,7 @@ public:
 	virtual ~CHQBitmap();
 
 	void setScrollposition(unsigned int xpos, unsigned int ypos);
-	void updateHQBitmap(SDL_Surface *m_surface, unsigned int x, unsigned int y);
+	void updateHQBitmap(SDL_Surface *m_surface, SDL_Rect *p_srcrect, SDL_Rect *p_dstrect);
 	bool loadImage(const char *pFilename, int wsize, int hsize);
 	void setAlphaBlend(Uint8 alpha);
 	void offsetAlphaBlend(Uint8 alpha);

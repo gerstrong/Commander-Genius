@@ -84,35 +84,35 @@ void gamepdo_wm_setblockedlrud(int cp, stCloneKeenPlus *pCKP)
    if ((pCKP->Option[OPT_CHEATS].value && g_pInput->getHoldedKey(KTAB)) || player[cp].godmode) return;
 
    // R
-   if (wm_issolid((player[cp].x>>CSF)+8, (player[cp].y>>CSF)+1))
+   if (wm_issolid((player[cp].x>>CSF)+8, (player[cp].y>>CSF)+1, pCKP->Control.levelcontrol.levels_completed))
       { player[cp].blockedr = 1; }
-   else if (wm_issolid((player[cp].x>>CSF)+8, (player[cp].y>>CSF)+8))
+   else if (wm_issolid((player[cp].x>>CSF)+8, (player[cp].y>>CSF)+8, pCKP->Control.levelcontrol.levels_completed))
       { player[cp].blockedr = 1; }
-   else if (wm_issolid((player[cp].x>>CSF)+8, (player[cp].y>>CSF)+13))
+   else if (wm_issolid((player[cp].x>>CSF)+8, (player[cp].y>>CSF)+13, pCKP->Control.levelcontrol.levels_completed))
       { player[cp].blockedr = 1; }
 
    // L
-   if (wm_issolid((player[cp].x>>CSF)+0, (player[cp].y>>CSF)+1))
+   if (wm_issolid((player[cp].x>>CSF)+0, (player[cp].y>>CSF)+1, pCKP->Control.levelcontrol.levels_completed))
       { player[cp].blockedl = 1; }
-   else if (wm_issolid((player[cp].x>>CSF)+0, (player[cp].y>>CSF)+8))
+   else if (wm_issolid((player[cp].x>>CSF)+0, (player[cp].y>>CSF)+8, pCKP->Control.levelcontrol.levels_completed))
       { player[cp].blockedl = 1; }
-   else if (wm_issolid((player[cp].x>>CSF)+0, (player[cp].y>>CSF)+13))
+   else if (wm_issolid((player[cp].x>>CSF)+0, (player[cp].y>>CSF)+13, pCKP->Control.levelcontrol.levels_completed))
       { player[cp].blockedl = 1; }
 
    // U
-   if (wm_issolid((player[cp].x>>CSF)+1, (player[cp].y>>CSF)-1))
+   if (wm_issolid((player[cp].x>>CSF)+1, (player[cp].y>>CSF)-1, pCKP->Control.levelcontrol.levels_completed))
       { player[cp].blockedu = 1; }
-   else if (wm_issolid((player[cp].x>>CSF)+4, (player[cp].y>>CSF)-1))
+   else if (wm_issolid((player[cp].x>>CSF)+4, (player[cp].y>>CSF)-1, pCKP->Control.levelcontrol.levels_completed))
       { player[cp].blockedu = 1; }
-   else if (wm_issolid((player[cp].x>>CSF)+7, (player[cp].y>>CSF)-1))
+   else if (wm_issolid((player[cp].x>>CSF)+7, (player[cp].y>>CSF)-1, pCKP->Control.levelcontrol.levels_completed))
       { player[cp].blockedu = 1; }
 
    // D
-   if (wm_issolid((player[cp].x>>CSF)+1, (player[cp].y>>CSF)+14))
+   if (wm_issolid((player[cp].x>>CSF)+1, (player[cp].y>>CSF)+14, pCKP->Control.levelcontrol.levels_completed))
       { player[cp].blockedd = 1; }
-   else if (wm_issolid((player[cp].x>>CSF)+4, (player[cp].y>>CSF)+14))
+   else if (wm_issolid((player[cp].x>>CSF)+4, (player[cp].y>>CSF)+14, pCKP->Control.levelcontrol.levels_completed))
       { player[cp].blockedd = 1; }
-   else if (wm_issolid((player[cp].x>>CSF)+7, (player[cp].y>>CSF)+14))
+   else if (wm_issolid((player[cp].x>>CSF)+7, (player[cp].y>>CSF)+14, pCKP->Control.levelcontrol.levels_completed))
       { player[cp].blockedd = 1; }
 
 }
@@ -314,7 +314,7 @@ p_levelcontrol = &(pCKP->Control.levelcontrol);
                 break;
 
               default:      // a regular level
-            	  p_levelcontrol->chglevelto = (lvl & 0x7fff);
+            	p_levelcontrol->chglevelto = (lvl & 0x7fff);
                 endlevel(1, pCKP);
                 g_pMusicPlayer->stop();
                 g_pSound->playStereofromCoord(SOUND_ENTER_LEVEL, PLAY_NOW, objects[player[cp].useObject].scrx);
@@ -329,14 +329,22 @@ p_levelcontrol = &(pCKP->Control.levelcontrol);
     player[cp].wm_lastenterstate = (player[cp].playcontrol[PA_JUMP] || player[cp].playcontrol[PA_POGO]);
 }
 
-char wm_issolid(int xb, int yb)
+char wm_issolid(int xb, int yb, int *levels_completed)
 {
+
   // for map tiles solidl and solidr are always gonna be the same...
   // so we can get away with this.
   if ( TileProperty[getmaptileat(xb, yb)][BLEFT] ) return 1;
   //if (tiles[getmaptileat(xb, yb)].solidl) return 1;
-  if (getlevelat(xb, yb) & 0x8000)
+
+  unsigned int level;
+  level = getlevelat(xb, yb);
+
+  if (level & 0x8000)
   {
+	  if(levels_completed[map.objectlayer[xb>>4][yb>>4] & 0x7fff] && options[OPT_LVLREPLAYABILITY].value) // check if level is done, but can be replayed
+		  return 0;
+
 	  if(g_pInput->getHoldedKey(KTAB) && g_pInput->getHoldedKey(KLSHIFT))
 	  {
 		  return 0;
@@ -392,19 +400,19 @@ int objmarker;
       // is he trying to mount?
       if (player[cp].y>>CSF>>4 < map.ysize>>2)
       {  // at mortimer's castle mount point
-          /*if ( (player[cp].keytable[KRIGHT] && player[cp].blockedr) || \
-              (player[cp].keytable[KDOWN] && player[cp].blockedd))
+          if ( (player[cp].playcontrol[PA_X] > 0 && player[cp].blockedr) ||
+              (player[cp].playcontrol[PA_Y] > 0 && player[cp].blockedd))
           {
             // YES! if nessie is at that mount point, mount her!!
               MountNessieIfAvailable(cp);
-          }*/
+          }
       }
       else
       {  // at secret island mount point
-          /*if (player[cp].keytable[KUP] && player[cp].blockedu)
+          if (player[cp].playcontrol[PA_Y] < 0 && player[cp].blockedu)
           {
              MountNessieIfAvailable(cp);
-          }*/
+          }
       }
    }
    else
@@ -413,17 +421,17 @@ int objmarker;
       {  // nessie is paused
          if (objects[NessieObjectHandle].y>>CSF>>4 < map.ysize>>2)
          {  // nessie is at mortimer's castle mount point
-            /*if (player[cp].keytable[KUP])
+            if (player[cp].playcontrol[PA_Y] < 0)
             {
                // unmount nessie
                objects[NessieObjectHandle].ai.nessie.mounted[cp] = 0;
                player[cp].mounted = 0;
                player[cp].hideplayer = 0;
-            }*/
+            }
          }
          else if (objects[NessieObjectHandle].y>>CSF>>4 > map.ysize>>1)
          {  // nessie is at secret island mount point
-            /*if (player[cp].keytable[KDOWN])
+            if (player[cp].playcontrol[PA_Y] > 0)
             {
                // unmount nessie
                objects[NessieObjectHandle].ai.nessie.mounted[cp] = 0;
@@ -431,7 +439,7 @@ int objmarker;
                player[cp].hideplayer = 0;
                player[cp].y += (18<<CSF);
                player[cp].x += (8<<CSF);
-            }*/
+            }
          }
       }
 

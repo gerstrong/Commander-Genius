@@ -81,7 +81,7 @@ char numlooks;
                // half of the yorp
                if ((player[objects[o].touchedBy].y>>CSF)+16 < (objects[o].y>>CSF)+12)
                {
-            	  player[objects[o].touchedBy].ppogostick = 0; // No pogo, You get it disabled at this point
+            	  player[objects[o].touchedBy].ppogostick = false; // No pogo, You get it disabled at this point
             	  g_pSound->playStereofromCoord(SOUND_YORP_STUN, PLAY_NOW, objects[o].scrx);
                   objects[o].ai.yorp.state = YORP_STUNNED;
                   objects[o].ai.yorp.looktimes = 0;

@@ -14,8 +14,6 @@
 #include "../include/gamedo.h"
 
 CCredits::CCredits() {
-	// TODO Auto-generated constructor stub
-
 }
 
 CCredits::~CCredits() {
@@ -94,7 +92,7 @@ void CCredits::Render(stCloneKeenPlus *pCKP)
 					strcpy(scrolltext[25],"         Pickle");
 					strcpy(scrolltext[26],"Resources:");
 					strcpy(scrolltext[27],"         Tulip");
-					strcpy(scrolltext[28],"");
+					strcpy(scrolltext[28],"         DaVince");
 					strcpy(scrolltext[29],"");
 					strcpy(scrolltext[30],"");
 					strcpy(scrolltext[31],"");

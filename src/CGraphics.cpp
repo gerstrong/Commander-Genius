@@ -115,6 +115,9 @@ void CGraphics::drawTile(int x, int y, unsigned int t)
 				memset(offset, COLOUR_MASK, 16);
 				offset+=512;
 			}
+
+			//HQBitmap->updateHQBitmap(g_pVideoDriver->getScrollSurface(),x,y);
+
 		}
 		else
 		{
@@ -161,7 +164,7 @@ unsigned int xstart,ystart;
     {
       if (tiledata[tmask][ya][xa] != 15)
       {
-        //scrollbuffer[bufoffY+bufoffX] = tiledata[til][ya][xa];
+        scrollbuffer[bufoffY+bufoffX] = tiledata[til][ya][xa];
       }
       bufoffX = (bufoffX+1)&511;
     }
@@ -552,9 +555,7 @@ unsigned char *bmdataptr;
 
 int CGraphics::getBitmapNumberFromName(const char *bmname)
 {
-
-	// TODO: Implement Code for Introduction Screen
-int i;
+	int i;
   for(i=0;i<MAX_BITMAPS;i++)
   {
     bitmaps[i].name[8] = 0;     // ensure null-terminated
@@ -563,6 +564,11 @@ int i;
       return i;
     }
   }
+
+  // If the Bitmap was not found,
+  // try to take one basing on the position
+  // where it should be
+
   return -1;
 }
 
@@ -706,7 +712,17 @@ Uint8 *CGraphics::getScrollbuffer(void)
 void CGraphics::renderHQBitmap()
 {
 	if(HQBitmap)
-		HQBitmap->updateHQBitmap(g_pVideoDriver->getBGLayerSurface(),scroll_x-32,scroll_y-32);
+	{
+		SDL_Rect srcrect;
+		//SDL_Rect dstrect;
+
+		srcrect.x = scroll_x-32;
+		srcrect.y = scroll_y-32;
+		srcrect.w = g_pVideoDriver->getBGLayerSurface()->w;
+		srcrect.h = g_pVideoDriver->getBGLayerSurface()->h;
+
+		HQBitmap->updateHQBitmap(g_pVideoDriver->getBGLayerSurface(), &srcrect, NULL);
+	}
 }
 
 void CGraphics::loadHQGraphics(unsigned char episode, unsigned char level, char *datadir)

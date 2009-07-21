@@ -16,7 +16,7 @@ void gamepdo_walkinganim(int cp, stCloneKeenPlus *pCKP);
 void gamepdo_walking(int cp, stCloneKeenPlus *pCKP);
 void gamepdo_playpushed(int cp, stCloneKeenPlus *pCKP);
 void gamepdo_JumpAndPogo(int cp, stCloneKeenPlus *pCKP);
-void gamepdo_Jump(int cp, stCloneKeenPlus *pCKP);
+void gamepdo_Jump(int cp);
 //void gamepdo_falling(int cp, stCommand command[MAX_COMMANDS]);
 void gamepdo_raygun(int cp, stCloneKeenPlus *pCKP);
 void gamepdo_special(int cp, stCloneKeenPlus *pCKP);

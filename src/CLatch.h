@@ -58,9 +58,6 @@ private:
 
 	unsigned long BitmapBufferRAMSize;
 
-	unsigned long getbit_bytepos[5];
-	unsigned char getbit_bitmask[5];
-
 	EgaHead LatchHeader;
 	SpriteHead *SpriteTable;
 	BitmapHead *BitmapTable;

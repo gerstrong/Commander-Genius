@@ -58,6 +58,8 @@ int x, y, t, o, i;
 int tantalus_animframe, tantalus_animtimer;
 int state, timer, spawnedcount;
 
+	o=0;
+
   fade.mode = FADE_GO;
   fade.rate = FADE_NORM;
   fade.dir = FADE_OUT;

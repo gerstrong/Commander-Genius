@@ -223,13 +223,10 @@ int y;
 // changes the tile at (x,y) in real time
 void map_chgtile(unsigned int x, unsigned int y, int newtile)
 {
-/*char buf[80];*/
    map.mapdata[x][y] = newtile;
 
    if (x>=mapx && y>=mapy && x<mapx+64 && y<mapy+64)
-   {
 	   g_pGraphics->drawTile(((mapxstripepos+((x-mapx)<<4))&511), ((mapystripepos+((y-mapy)<<4))&511), newtile);
-   }
 }
 
 // searches for animated tiles at the map position (X,Y) and
@@ -241,6 +238,8 @@ int i;
       // figure out pixel position of map tile (x,y)
       px = ((mapxstripepos+((x-mapx)<<4))&511);
       py = ((mapystripepos+((y-mapy)<<4))&511);
+
+      TileProperty[map.mapdata[x][y]][ANIMATION] = 1;
 
       // find it!
       for(i=1;i<MAX_ANIMTILES-1;i++)
@@ -294,21 +293,22 @@ int c, i;
       px = ((mapxstripepos+((x-mapx)<<4))&511);
       py = ((mapystripepos+((y-mapy)<<4))&511);
       c = map.mapdata[x][y];
-      //if (tiles[c].isAnimated)
-      if ( TileProperty[c][ANIMATION] > 1 )
+      if ( TileProperty[c][ANIMATION] == 1 ) // In case the tile mustn't be animated
       {
-        /*crashflag = 1;
-        crashflag2 = x;
-        crashflag3 = y;
-        why_term_ptr = "map_animate(): you told me to animate x/y=crashflag1/2 but that tile isn't supposed to be animated!";*/
+          crashflag = x;
+          crashflag2 = y;
+    	  why_term_ptr = "sorry, but tile at x/y=crashflag1/2 isn't supposed to be animated!";
+          crashflag = 0;
+          crashflag2 = 0;
+          // TODO: Try to remove the crashflags. They really mess up the system!
+
         return;
       }
+
       // don't reanimate a tile that's already registered--then we'd
       // have multiple entries for it in animtiles[] (that's not good).
       if (AnimTileInUse[px>>4][py>>4])
-      {
         return;
-      }
 
       // find an unused slot in animtiles
       for(i=1;i<MAX_ANIMTILES-1;i++)

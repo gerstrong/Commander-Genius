@@ -128,7 +128,8 @@ short loadResourcesforStartMenu(stCloneKeenPlus *pCKP, CGame *Game)
 		pCKP->Control.levelcontrol.episode = pCKP->GameData[pCKP->Resources.GameSelected-1].Episode;
 
     //if (latch_loadgraphics(pCKP->Control.levelcontrol.episode, pCKP->GameData[0].DataDirectory)) return abortCKP(pCKP);
-	if (Game->getLatch()->loadGraphics(pCKP->Control.levelcontrol.episode, pCKP->GameData[0].DataDirectory)) return abortCKP(pCKP);
+	//if (Game->getLatch()->loadGraphics(pCKP->Control.levelcontrol.episode, pCKP->GameData[0].DataDirectory)) return abortCKP(pCKP);
+	Game->loadResources(pCKP->Control.levelcontrol.episode, pCKP->GameData[0].DataDirectory);
 
 	player[0].x = player[0].y = 0;
 	if(initgamefirsttime(pCKP, 0) != 0)
@@ -563,7 +564,7 @@ void OptionsDlg(stCloneKeenPlus *pCKP)
 
 	// Prepare the Games Menu
 	OptionsMenu = new CDialog();
-	OptionsMenu->setDimensions(4,4,32,11);
+	OptionsMenu->setDimensions(3,3,34,12);
 
 	for( i = 0 ; i < NUM_OPTIONS ; i++ )
 	{
@@ -773,35 +774,10 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 			if(selection == 0)
 			{
 				// Now the part of the resolution list
-				switch(width)
-				{
-				case 320:
-					width  = 640;
-					height = 480;
-					break;
-				case 640:
-					width  = 800;
-					height = 600;
-					break;
-				case 800:
-					width  = 1024;
-					height = 768;
-					break;
-				case 1024:
-					width  = 1280;
-					height = 1024;
-					break;
-				case 1280:
-					width  = 1680;
-					height = 1050;
-					break;
-				default:
-					width  = 320;
-					height = 240;
-					break;
-				}
+				st_resolution Resolution;
+				Resolution = g_pVideoDriver->setNextResolution();
 
-				sprintf(buf,"Resolution: %dx%dx%d",width,height,depth);
+				sprintf(buf,"Resolution: %dx%dx%d", Resolution.width, Resolution.height, Resolution.depth);
 				DisplayMenu->setOptionText(selection,buf);
 			}
 			else if(selection == 1)
@@ -878,7 +854,7 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 			}
 			else if(selection == 6)
 			{
-				if(autoframeskip < 70 && autoframeskip >= 0)
+				if(autoframeskip < 70)
 				{
 					autoframeskip += 10;
 					sprintf(buf,"Auto-Frameskip : %d fps", autoframeskip);
@@ -912,22 +888,22 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 
 				g_pVideoDriver->enableOpenGL(opengl);
 				g_pVideoDriver->setOGLFilter(gl_filter);
-				g_pVideoDriver->setMode(width,height,depth);
 				g_pVideoDriver->setZoom(zoom);
 				g_pVideoDriver->setFilter(filter);
 				g_pVideoDriver->setFrameskip(frameskip);
 				g_pVideoDriver->setTargetFPS(autoframeskip);
 				g_pVideoDriver->setAspectCorrection(aspect);
 
-				CSettings *Settings;
-				Settings = new CSettings();
-				Settings->saveDrvCfg();
-				delete Settings; Settings = NULL;
-
 				// initialize/activate all drivers
 				g_pLogFile->ftextOut("Restarting graphics driver... (Menu)<br>");
 				if (g_pVideoDriver->start())
 					retval = 1;
+
+				CSettings *Settings;
+				Settings = new CSettings();
+
+				Settings->saveDrvCfg();
+				delete Settings; Settings = NULL;
 
 				showmapatpos(90, MAINMENU_X, MENUS_Y, 0, pCKP);
 

@@ -6,12 +6,12 @@
  */
 
 #include "../../keen.h"
-#include "../../include/fileio/lzexe.h"
 #include "CSound.h"
 #include "../../include/fileio.h"
 #include "../../CLogFile.h"
 #include "../../hqp/CMusic.h"
 #include "../../vorticon/sounds.h"
+#include "../../fileio/CExeFile.h"
 
 #define SAFE_DELETE_ARRAY(x) if(x) delete[] x; x=NULL
 
@@ -398,34 +398,22 @@ char CSound::loadSoundData(unsigned short Episode, char *DataDirectory)
     Utility to extract the embedded sounds from Commander Keen
     Episode 2 (keen2.exe) and Episode 3 (keen3.exe)
 
-    Implemented by Gerhard Stein  <gerstrong@gmail.com> (2008)
+    Implemented by Gerhard Stein  <gerstrong@gmail.com> (2008,2009)
     Copyright (C) 2007 Hans de Goede  <j.w.r.degoede@hhs.nl>
 
     Many thanks to Mitugu(Kou) Kurizono for the decompression algorithm.
 
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    Modification by Gerstrong 2009
+    The new version uses a class named CExeFile which is able to manage compressed or
+    uncompressed files. The function simply let the class do its job and then copy
+    the sound data.
 */
 
 char CSound::extractOfExeFile(char *inputpath, int episode)
 {
 	  const char *outputfname;
 	  int bit_count;
-	  FILE *fin, *fout;
-	  unsigned char buf[131072];
-	  short offset;
-	  int pos, repeat, sounds_start, sounds_end, ret = 0;
+	  int pos, sounds_start, sounds_end, ret = 0;
 	  char buffer[MAX_STRING_LENGTH];
 	  char inputfname[MAX_STRING_LENGTH];
 
@@ -434,6 +422,7 @@ char CSound::extractOfExeFile(char *inputpath, int episode)
 	  memset(buffer,0, MAX_STRING_LENGTH*sizeof(char));
 	  memset(inputfname,0, MAX_STRING_LENGTH*sizeof(char));
 
+	  // Set Offsets. Episode 1 already provides this
 	  if (episode == 2)
 	  {
 	    outputfname = "sounds.ck2";
@@ -452,111 +441,20 @@ char CSound::extractOfExeFile(char *inputpath, int episode)
 	    return 1;
 	  }
 
-	  strcpy(buffer,inputpath);
-	  sprintf(inputfname,"%skeen%d.exe", inputpath, episode);
-
-	  fin = fopen(inputfname, "rb");
-
-	  if (!fin)
-	  {
-		  g_pLogFile->ftextOut( "Error opening input file %s: ", inputfname);
-	    perror(NULL);
-	    return 2;
-	  }
+	  CExeFile *ExeFile = new CExeFile(episode, inputfname);
+	  if(!ExeFile->readData()) ret = 1;
 	  else
 	  {
-		  sprintf(buffer,"%s%s", inputpath, outputfname);
-
-		  fout = fopen(buffer, "wb");
-		  if (!fout)
+		  FILE *fout;
+		  if(!(fout = fopen(outputfname,"wb"))) ret = 1;
+		  else
 		  {
-			  g_pLogFile->ftextOut( "Error opening output file %s: ", outputfname);
-			  perror(NULL);
-			  fclose(fin);
+			  fwrite( ExeFile->getData()+sounds_start, 1, (sounds_end-sounds_start), fout);
+			  fclose(fout);
 		  }
-
-		  /* skip header */
-		  fseek(fin, 32, SEEK_SET);
-
-		  while (1)
-		  {
-			  if (ferror(fin))
-			  {
-				  g_pLogFile->ftextOut( "Error reading from input file %s:", inputfname);
-				  perror(NULL);
-				  fclose(fin);
-				  fclose(fout);
-				  return 1;
-			  }
-
-			  if (get_bit(&bit_count, &fin))
-			  {
-				  buf[pos++] = getc(fin);
-			  }
-			  else
-			  {
-				  if (get_bit(&bit_count, &fin))
-				  {
-					  unsigned char tmp[2];
-					  if(!fread(tmp, 1, 2, fin))
-					  {
-						  g_pLogFile->ftextOut(RED,"Read-Error!");
-				    	  return 1;
-					  }
-
-					  repeat = (tmp[1] & 0x07);
-
-					  offset = ((tmp[1] & ~0x07) << 5) | tmp[0] | 0xE000;
-
-					  if (repeat == 0)
-					  {
-						  repeat = getc (fin);
-
-
-						  if (repeat == 0)
-							  break;
-						  else if (repeat == 1)
-							  continue;
-						  else
-							  repeat++;
-					  }
-					  else
-						  repeat += 2;
-				  }
-				  else
-				  {
-					  repeat = ((get_bit(&bit_count, &fin) << 1) | get_bit(&bit_count, &fin)) + 2;
-					  offset = getc(fin) | 0xFF00;
-				  }
-
-				  while (repeat > 0)
-				  {
-					  buf[pos] = buf[pos + offset];
-					  pos++;
-					  repeat--;
-				  }
-			}
-		  }
-		  g_pLogFile->ftextOut("Decompression (unlzexe) of %s done<br>", inputfname);
-
-		  if (strcmp((char *)(&buf[sounds_start]), "SND"))
-		  {
-			  g_pLogFile->ftextOut( "Error: Beginning of sound data not found at expected offset<br>");
-			ret = 1;
-		  }
-		  else if ((int)fwrite(&buf[sounds_start], 1, sounds_end - sounds_start, fout) !=
-			  (sounds_end - sounds_start))
-		  {
-			  g_pLogFile->ftextOut( "error writing to output file %s: ", outputfname);
-			perror(NULL);
-			ret = 1;
-		  }
-		  g_pLogFile->ftextOut("%s has been successfully written<br>", outputfname);
-
-		  fclose(fin);
-		  fclose(fout);
-
 	  }
+
+	  delete ExeFile;
 
 	  return ret;
 }

@@ -10,3 +10,5 @@ void addmaptile(unsigned int t);
 void addenemytile(unsigned int t, stCloneKeenPlus *pCKP);
 short checkConsistencyofGameData(stGameData *p_GameData);
 void formatPathString(char *output, const char *path);
+bool renameFilenamesLowerCase(const char *dir_name);
+void assignChangeTileAttribute(stTile *tile, int episode);

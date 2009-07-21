@@ -6,7 +6,7 @@ extern stMap map;
 extern unsigned int AnimTileInUse[ATILEINUSE_SIZEX][ATILEINUSE_SIZEY];
 extern stTile tiles[MAX_TILES+1];
 extern unsigned char tiledata[MAX_TILES+1][16][16];
-extern stSprite sprites[MAX_SPRITES+1];
+extern stSprite *sprites;
 extern stBitmap bitmaps[MAX_BITMAPS+1];
 extern stAnimTile animtiles[MAX_ANIMTILES+1];
 extern char font[MAX_FONT+1][8][8];
@@ -68,17 +68,10 @@ extern int blockedby;
 extern int gunfiretimer, gunfirefreq;
 extern char cheatmode;
 
-extern int numtiles;
-extern int **TileProperty; // This version will replace the old stTile Structure and save memory
-
-extern short usedinfobox;	  // If statue was used...
-
-
 extern int NessieObjectHandle;
 extern int DemoObjectHandle;
 extern int BlankSprite;
 extern int DemoSprite;
-//extern EgaHead LatchHeader;
 
 extern stShipQueue shipqueue[32];
 extern int ShipQueuePtr;

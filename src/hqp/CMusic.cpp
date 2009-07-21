@@ -41,7 +41,7 @@ int CMusic::load(SDL_AudioSpec AudioSpec, char *musicfile)
 		return -1;
 	}
 
-	if(openOGGSound(fp, &AudioFileSpec, &pOggAudio) != 0)
+	if(openOGGSound(fp, &AudioFileSpec, AudioSpec.format, &pOggAudio) != 0)
 	{
 		g_pLogFile->textOut(PURPLE,"Music Driver(): OGG file could not be opened: \"%s\". File is damaged or something is wrong with your soundcard!<br>", musicfile);
 		return 1;
@@ -50,7 +50,8 @@ int CMusic::load(SDL_AudioSpec AudioSpec, char *musicfile)
 	g_pLogFile->ftextOut("Music Driver(): File \"%s\" opened successfully!<br>", musicfile);
 
     int ret;
-    ret = SDL_BuildAudioCVT(&Audio_cvt,
+
+   	ret = SDL_BuildAudioCVT(&Audio_cvt,
 							  AudioFileSpec.format, AudioFileSpec.channels, AudioFileSpec.freq,
 	                          AudioSpec.format, AudioSpec.channels, AudioSpec.freq);
 
@@ -65,8 +66,7 @@ int CMusic::load(SDL_AudioSpec AudioSpec, char *musicfile)
 		}
 
 		music_len = pOggAudio.sound_len;
-
-		Audio_cvt.buf = (Uint8*) malloc(music_len * Audio_cvt.len_mult * sizeof(Uint8));
+		Audio_cvt.buf = (Uint8*) malloc(music_len * (Audio_cvt.len_mult) * sizeof(Uint8));
 		Audio_cvt.len = music_len;
 		memcpy(Audio_cvt.buf, pOggAudio.sound_buffer, music_len*sizeof(Uint8));
 

@@ -60,7 +60,7 @@ bool CParser::loadParseFile(void) // Open, read the list and close the file
 		while(!feof(fp))
 		{
 			line = (char*) calloc(256,sizeof(char));
-			fgets(line,256,fp);
+			fgets(line,256,fp); // No return value assigned. Be careful!
 			//fscanf(fp,"%s\n",line);
 			m_filebuffer.push_back(line);
 			m_isOpen = true;

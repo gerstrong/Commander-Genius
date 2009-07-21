@@ -11,8 +11,8 @@
 #define MOTHER_HURT     2
 #define MOTHER_DEAD     3
 
-#define MOTHER_WALK_ANIM_RATE     40
-#define MOTHER_WALK_SPD           4
+#define MOTHER_WALK_ANIM_RATE     30
+#define MOTHER_WALK_SPD           3
 
 #define MOTHER_SPIT_PROB          1000
 #define MOTHER_SPIT_SHOW_TIME     100

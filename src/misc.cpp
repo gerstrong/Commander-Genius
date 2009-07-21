@@ -39,7 +39,7 @@ char buf[80];
   printf("%s", buf);
   printf(" (%d bit)", static_cast<int> (sizeof(int*)*8));
 
-  printf("\nby Caitlin Shaw, 2003-2005\nand Gerstrong 2008-2009\n");
+  printf("\nby The CloneKeenPlus Team 2009\n");
   printf("\n");
   printf("BY A FAN, FOR FANS. ALL \"COMMANDER KEEN\" GRAPHICS,\n");
   printf("SOUND, AND LEVEL FILES ARE THE PROPERTY OF ID SOFTWARE.\n");
@@ -165,11 +165,6 @@ int i;
 	if(map.mapdata[mpx][mpy] >= 435 && map.mapdata[mpx][mpy] <= 438)
 		isgarg = true;
 
-	for(i=0; i < 4 ; i++)
-	{
-		player[0].playcontrol[PA_JUMP+i] = 0;
-	}
-
     if (!isgarg)
     {
     	if(!map_isanimated(mpx, mpy))
@@ -181,10 +176,12 @@ int i;
     		return;
     }
 
-    #define TWIRL_SPEED        50
+	for(i=0; i < 4 ; i++)
+	{
+		player[0].playcontrol[PA_JUMP+i] = 0;
+	}
 
-
-    //sound_pause();
+    const int twirl_speed = 100;
 
     // get the name of the string we need to display
     sprintf(strname, "EP1_YSIYM_LVL%d", pCKP->Control.levelcontrol.curlevel);
@@ -200,14 +197,11 @@ int i;
     g_pGraphics->drawFont((unsigned char*) getstring(strname), (dlgX+1)<<3, (dlgY+1)<<3,0);
 
     twirlframe = 0;
-    twirltimer = TWIRL_SPEED+1;
+    twirltimer = twirl_speed+1;
     // wait for enter
     do
     {
-
-
-
-      if (twirltimer>TWIRL_SPEED)
+      if (twirltimer>twirl_speed)
       {
     	  g_pGraphics->drawCharacter((dlgX+twirlX)<<3, (dlgY+twirlY)<<3, 9+twirlframe);
         g_pVideoDriver->update_screen();
@@ -232,27 +226,19 @@ int i;
     	map_chgtile(mpx, mpy, 434);
         map_deanimate(mpx, mpy);
     }
-
-    //sound_resume();
-
 }
 
 void VorticonElder(int mpx, int mpy, stCloneKeenPlus *pCKP)
 {
-int twirlframe, twirltimer;
-int dlgX,dlgY,dlgW,dlgH,twirlX,twirlY;
-const char *strName;
+	int twirlframe, twirltimer;
+	int dlgX,dlgY,dlgW,dlgH,twirlX,twirlY;
+	const char *strName;
+	const int twirl_speed = 100;
 
-int i;
-for(i=0; i < 4 ; i++)
-{
-	player[0].playcontrol[PA_JUMP+i] = 0;
-}
-
-    #define TWIRL_SPEED        50
-
-	if(usedinfobox == 1)
-		return;
+	for(int i=0; i < 4 ; i++)
+	{
+		player[0].playcontrol[PA_JUMP+i] = 0;
+	}
 
     g_pSound->pauseSound();
 
@@ -282,11 +268,11 @@ for(i=0; i < 4 ; i++)
     g_pGraphics->drawFont( (unsigned char*) getstring(strName), (dlgX+1)<<3, (dlgY+1)<<3,0);
 
     twirlframe = 0;
-    twirltimer = TWIRL_SPEED+1;
+    twirltimer = twirl_speed+1;
   // wait for enter
     do
     {
-      if (twirltimer>TWIRL_SPEED)
+      if (twirltimer>twirl_speed)
       {
     	  g_pGraphics->drawCharacter((dlgX+twirlX)<<3, (dlgY+twirlY)<<3, 9+twirlframe);
         g_pVideoDriver->update_screen();
@@ -297,17 +283,14 @@ for(i=0; i < 4 ; i++)
       g_pInput->pollEvents();
       g_pTimer->SpeedThrottle();
       g_pVideoDriver->update_screen();
-    } while(!g_pInput->getPressedKey(KENTER) /*&& !immediate_keytable[KQUIT] && !getanyevent(pCKP)*/);
+    } while(!g_pInput->getPressedKey(KENTER) );
 
     // make the switch stop glowing
     map_chgtile(mpx, mpy+1, 432);
 
-    //tiles[432].isAnimated = 0;
     map_deanimate(mpx, mpy+1);
 
     g_pSound->resumeSounds();
-
-    usedinfobox = 1;
 }
 
 
@@ -335,10 +318,47 @@ int dlgX,dlgY,dlgW,dlgH;
   // pogo
   if (player[p].inventory.HasPogo) g_pGraphics->drawTile_direct(((dlgX+12)<<3)+4, ((dlgY+9)<<3)+3, 415);
   // cards
-  if (player[p].inventory.HasCardYellow) g_pGraphics->drawTile_direct((dlgX+21)<<3, ((dlgY+8)<<3)+3, 424);
-  if (player[p].inventory.HasCardRed) g_pGraphics->drawTile_direct((dlgX+25)<<3, ((dlgY+8)<<3)+3, 425);
-  if (player[p].inventory.HasCardGreen) g_pGraphics->drawTile_direct((dlgX+21)<<3, ((dlgY+10)<<3)+4, 426);
-  if (player[p].inventory.HasCardBlue) g_pGraphics->drawTile_direct((dlgX+25)<<3, ((dlgY+10)<<3)+4, 427);
+  if (player[p].inventory.HasCardYellow)
+  {
+	  g_pGraphics->drawTile_direct((dlgX+21)<<3, ((dlgY+8)<<3)+3, 424);
+	  if(player[p].inventory.HasCardYellow > 1)
+	  {
+		  char buf[10];
+		  sprintf(buf,"%d",player[p].inventory.HasCardYellow);
+		  g_pGraphics->drawFont((unsigned char*)buf,(dlgX+20)<<3,((dlgY+8)<<3)+3,0);
+	  }
+  }
+  if (player[p].inventory.HasCardRed)
+  {
+	  g_pGraphics->drawTile_direct((dlgX+25)<<3, ((dlgY+8)<<3)+3, 425);
+	  if(player[p].inventory.HasCardRed > 1)
+	  {
+		  char buf[10];
+		  sprintf(buf,"%d",player[p].inventory.HasCardRed);
+		  g_pGraphics->drawFont((unsigned char*) buf,(dlgX+24)<<3,((dlgY+8)<<3)+3,0);
+	  }
+  }
+  if (player[p].inventory.HasCardGreen)
+  {
+	  g_pGraphics->drawTile_direct((dlgX+21)<<3, ((dlgY+10)<<3)+4, 426);
+
+	  if (player[p].inventory.HasCardGreen > 1)
+	  {
+		  char buf[10];
+		  sprintf(buf,"%d",player[p].inventory.HasCardGreen);
+		  g_pGraphics->drawFont((unsigned char*) buf,(dlgX+20)<<3,((dlgY+10)<<3)+3,0);
+	  }
+  }
+  if (player[p].inventory.HasCardBlue)
+  {
+	  g_pGraphics->drawTile_direct((dlgX+25)<<3, ((dlgY+10)<<3)+4, 427);
+	  if(player[p].inventory.HasCardBlue > 1)
+	  {
+		  char buf[10];
+		  sprintf(buf,"%d",player[p].inventory.HasCardBlue);
+		  g_pGraphics->drawFont((unsigned char*) buf,(dlgX+24)<<3,((dlgY+10)<<3)+3,0);
+	  }
+  }
   // ship parts
   if (player[p].inventory.HasJoystick) t=448; else t=321;
   g_pGraphics->drawTile_direct((dlgX+18)<<3, ((dlgY+4)<<3)+3, t);
@@ -392,10 +412,46 @@ int dlgX,dlgY,dlgW,dlgH;
   g_pGraphics->drawFont( (unsigned char*) getstring("EP2_StatusBox"), (dlgX+1)<<3, (dlgY+1)<<3, 0);
 
   // cards
-  if (player[p].inventory.HasCardYellow) g_pGraphics->drawTile_direct(((dlgX+21)<<3)-4, ((dlgY+8)<<3)+3, 424);
-  if (player[p].inventory.HasCardRed) g_pGraphics->drawTile_direct(((dlgX+25)<<3)-4, ((dlgY+8)<<3)+3, 425);
-  if (player[p].inventory.HasCardGreen) g_pGraphics->drawTile_direct(((dlgX+21)<<3)-4, ((dlgY+10)<<3)+4, 426);
-  if (player[p].inventory.HasCardBlue) g_pGraphics->drawTile_direct(((dlgX+25)<<3)-4, ((dlgY+10)<<3)+4, 427);
+  if (player[p].inventory.HasCardYellow)
+  {
+	  g_pGraphics->drawTile_direct(((dlgX+21)<<3)-4, ((dlgY+8)<<3)+3, 424);
+	  if(player[p].inventory.HasCardYellow > 1)
+	  {
+		  char buf[10];
+		  sprintf(buf,"%d",player[p].inventory.HasCardYellow);
+		  g_pGraphics->drawFont((unsigned char*)buf,(dlgX+20)<<3,((dlgY+8)<<3)+3,0);
+	  }
+  }
+  if (player[p].inventory.HasCardRed)
+  {
+	  g_pGraphics->drawTile_direct(((dlgX+25)<<3)-4, ((dlgY+8)<<3)+3, 425);
+	  if(player[p].inventory.HasCardRed > 1)
+	  {
+		  char buf[10];
+		  sprintf(buf,"%d",player[p].inventory.HasCardRed);
+		  g_pGraphics->drawFont((unsigned char*)buf,(dlgX+24)<<3,((dlgY+8)<<3)+3,0);
+	  }
+  }
+  if (player[p].inventory.HasCardGreen)
+  {
+	  g_pGraphics->drawTile_direct(((dlgX+21)<<3)-4, ((dlgY+10)<<3)+4, 426);
+	  if(player[p].inventory.HasCardGreen > 1)
+	  {
+		  char buf[10];
+		  sprintf(buf,"%d",player[p].inventory.HasCardGreen);
+		  g_pGraphics->drawFont((unsigned char*)buf,(dlgX+20)<<3,((dlgY+10)<<3)+3,0);
+	  }
+  }
+  if (player[p].inventory.HasCardBlue)
+  {
+	  g_pGraphics->drawTile_direct(((dlgX+25)<<3)-4, ((dlgY+10)<<3)+4, 427);
+	  if(player[p].inventory.HasCardBlue > 1)
+	  {
+		  char buf[10];
+		  sprintf(buf,"%d",player[p].inventory.HasCardBlue);
+		  g_pGraphics->drawFont((unsigned char*)buf,(dlgX+24)<<3,((dlgY+10)<<3)+3,0);
+	  }
+  }
   // cities saved
   if (p_levelcontrol->levels_completed[4]) g_pGraphics->drawFont( (unsigned char*) getstring("EP2_LVL4_TargetName"), (dlgX+1)<<3, (dlgY+8)<<3, 0);
   if (p_levelcontrol->levels_completed[6]) g_pGraphics->drawFont( (unsigned char*) getstring("EP2_LVL6_TargetName"), (dlgX+8)<<3, (dlgY+8)<<3, 0);
@@ -468,10 +524,46 @@ int dlgX,dlgY,dlgW,dlgH;
   g_pGraphics->drawFont( (unsigned char*) tempbuf, (dlgX+26)<<3, ((dlgY+5)<<3)-1, 0);
 
   // cards
-  if (player[p].inventory.HasCardYellow) g_pGraphics->drawTile_direct(((dlgX+14)<<3)+4, ((dlgY+8)<<3)+4, 217);
-  if (player[p].inventory.HasCardRed) g_pGraphics->drawTile_direct(((dlgX+18)<<3)+4, ((dlgY+8)<<3)+4, 218);
-  if (player[p].inventory.HasCardGreen) g_pGraphics->drawTile_direct(((dlgX+22)<<3)+4, ((dlgY+8)<<3)+4, 219);
-  if (player[p].inventory.HasCardBlue) g_pGraphics->drawTile_direct(((dlgX+26)<<3)+4, ((dlgY+8)<<3)+4, 220);
+  if (player[p].inventory.HasCardYellow)
+  {
+	  g_pGraphics->drawTile_direct(((dlgX+14)<<3)+4, ((dlgY+8)<<3)+4, 217);
+	  if(player[p].inventory.HasCardYellow > 1)
+	  {
+		  char buf[10];
+		  sprintf(buf,"%d",player[p].inventory.HasCardYellow);
+		  g_pGraphics->drawFont((unsigned char*)buf,(dlgX+13)<<3,((dlgY+8)<<3)+3,0);
+	  }
+  }
+  if (player[p].inventory.HasCardRed)
+  {
+	  g_pGraphics->drawTile_direct(((dlgX+18)<<3)+4, ((dlgY+8)<<3)+4, 218);
+	  if(player[p].inventory.HasCardRed > 1)
+	  {
+		  char buf[10];
+		  sprintf(buf,"%d",player[p].inventory.HasCardRed);
+		  g_pGraphics->drawFont((unsigned char*)buf,(dlgX+17)<<3,((dlgY+8)<<3)+3,0);
+	  }
+  }
+  if (player[p].inventory.HasCardGreen)
+  {
+	  g_pGraphics->drawTile_direct(((dlgX+22)<<3)+4, ((dlgY+8)<<3)+4, 219);
+	  if(player[p].inventory.HasCardGreen > 1)
+	  {
+		  char buf[10];
+		  sprintf(buf,"%d",player[p].inventory.HasCardGreen);
+		  g_pGraphics->drawFont((unsigned char*)buf,(dlgX+21)<<3,((dlgY+8)<<3)+3,0);
+	  }
+  }
+  if (player[p].inventory.HasCardBlue)
+  {
+	  g_pGraphics->drawTile_direct(((dlgX+26)<<3)+4, ((dlgY+8)<<3)+4, 220);
+	  if(player[p].inventory.HasCardBlue > 1)
+	  {
+		  char buf[10];
+		  sprintf(buf,"%d",player[p].inventory.HasCardBlue);
+		  g_pGraphics->drawFont((unsigned char*)buf,(dlgX+25)<<3,((dlgY+8)<<3)+3,0);
+	  }
+  }
 
   // score
   i = player[p].inventory.score;
@@ -565,15 +657,13 @@ int x,y;
 
 void YourShipNeedsTheseParts(stCloneKeenPlus *pCKP)
 {
-int cp;
+int cp = 0;
 int dlgX,dlgY,dlgW,dlgH;
 
   dlgX = GetStringAttribute("EP1_SHIP", "LEFT");
   dlgY = GetStringAttribute("EP1_SHIP", "TOP");
   dlgW = GetStringAttribute("EP1_SHIP", "WIDTH");
   dlgH = GetStringAttribute("EP1_SHIP", "HEIGHT");
-
-  cp = 0; // Fixme
 
   dialogbox(dlgX,dlgY,dlgW,dlgH);
 
@@ -610,8 +700,7 @@ void ShipEp3(stCloneKeenPlus *pCKP)
 char strname[80];
 int twirlframe, twirltimer;
 int dlgX,dlgY,dlgW,dlgH,twirlX,twirlY;
-
-	g_pSound->pauseSound();
+const int twirlspeed = 100;
 
   // display one of four random strings
   sprintf(strname, "EP3_SHIP%d", (rand()%4)+1);
@@ -628,14 +717,15 @@ int dlgX,dlgY,dlgW,dlgH,twirlX,twirlY;
 
   g_pVideoDriver->update_screen();
 
-    // wait for ctrl/space/enter released then pressed again then released
+  g_pInput->flushAll();
+
     twirlframe = 0;
-    twirltimer = TWIRL_SPEED+1;
+    twirltimer = twirlspeed+1;
     g_pInput->flushKeys();
-    // wait for any key
+    // wait for any command or key
     do
     {
-      if (twirltimer>TWIRL_SPEED)
+      if (twirltimer>twirlspeed)
       {
     	  g_pGraphics->drawCharacter((dlgX+twirlX)<<3, (dlgY+twirlY)<<3, twirlframe+9);
     	  g_pVideoDriver->update_screen();
@@ -647,8 +737,6 @@ int dlgX,dlgY,dlgW,dlgH,twirlX,twirlY;
       g_pInput->pollEvents();
     g_pTimer->SpeedThrottle();
     } while(!g_pInput->getPressedAnyKey());
-
-  g_pSound->resumeSounds();
 }
 
 void game_save(char *fname, stCloneKeenPlus *pCKP)
@@ -1265,15 +1353,7 @@ void showTextMB(int lines, char **text, stCloneKeenPlus *pCKP)
 	    twirlframe = 0;
 	    twirltimer = TWIRL_SPEED+1;
 
-	    while(g_pInput->getPressedKey(KENTER))
-	    {
-	      //poll_events(pCKP);
-
-	      /*if (immediate_keytable[KQUIT])
-	      {
-	        return;
-	      }*/
-	    }
+	    g_pInput->flushAll();
 
 	    // wait for enter
 	    do
@@ -1289,5 +1369,5 @@ void showTextMB(int lines, char **text, stCloneKeenPlus *pCKP)
 	      g_pInput->pollEvents();
 	      g_pTimer->SpeedThrottle();
 	      g_pVideoDriver->update_screen();
-	    } while(!g_pInput->getPressedKey(KENTER)/* && !immediate_keytable[KQUIT]*/);
+	    } while(!g_pInput->getPressedKey(KENTER));
 }

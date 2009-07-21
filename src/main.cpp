@@ -7,10 +7,6 @@
   the original author, Caitlin Shaw and to the new author
   Gerstrong.
 
-  Please go ahead and port this game to other platforms.
-  I would love to see it on Linux, Mac, or CE but I do
-  not have the platforms/knowledge to port to these platforms.
-
   If you make any changes or improvements to the code that
   you feel merit inclusion in the source tree email them
   to me at gerstrong@gmail.com or get my latest email
@@ -19,15 +15,16 @@
   Thanks to ID Software for the "Commander Keen: Invasion of
   the Vorticons" games. "Commander Keen" and it's associated
   graphics, level, and sound files are the property of ID
-  Software. CloneKeen requires the original version of a
+  Software. Commander Genius requires the original version of a
   Commander Keen game in order to be able to emulate that
   episode.
 
   Enjoy the Code
-         -Caitlin and Gerstrong
+         - The Commander Genius Team
 
-  CloneKeen 	2003-2005 Caitlin Shaw
-  CloneKeenPlus 2008-2009 Gerstrong
+  CloneKeen 		2003-2005 Caitlin Shaw
+  CloneKeenPlus 	2008-2009 Gerstrong
+  Commander Genius 	2009	  Tulip, Pickle and DaVince
 */
 
 #include "keen.h"
@@ -96,8 +93,10 @@ stFade fade;
 stMap map;
 unsigned int AnimTileInUse[ATILEINUSE_SIZEX][ATILEINUSE_SIZEY];
 stTile tiles[MAX_TILES+1];
+int numtiles;
+int **TileProperty; // This version will replace the old stTile Structure and save memory
 unsigned char tiledata[MAX_TILES+1][16][16];
-stSprite sprites[MAX_SPRITES+1];
+stSprite *sprites;
 stBitmap bitmaps[MAX_BITMAPS+1];
 stObject objects[MAX_OBJECTS+1];
 char font[MAX_FONT+1][8][8];
@@ -302,8 +301,6 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
   p_levelcontrol->success = 0;
   map.firsttime = 1;
 
-  usedinfobox = 0;
-
   do
   {
     initgame(pCKP);
@@ -382,6 +379,7 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
     // Now load HQ Stuff, because the game could have been loaded too.
 	g_pGraphics->loadHQGraphics(p_levelcontrol->episode,p_levelcontrol->chglevelto,pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory);
 
+	g_pInput->flushAll();
 
     if (wm)
     {  // entering map from normal level, or first time around
@@ -653,14 +651,6 @@ short readCommandLine(int argc, char *argv[], stCloneKeenPlus *pCKP)
 	      else if (strcmp(tempbuf, "-dbl")==0)       // 2x
 	      {
 	        g_pVideoDriver->setZoom(2);
-	      }
-	      else if (strcmp(tempbuf, "-acc")==0)       // Hardware Acceleration
-	      {
-	        //pCKP->Device.Display.Mode = VIDEO_MODE_SOFTWARE;
-	      }
-	      else if (strcmp(tempbuf, "-ogl")==0)       // Early OpenGL Support
-	      {
-	        //pCKP->Device.Display.Mode = VIDEO_MODE_OPENGL;
 	      }
 	      else if (strcmp(tempbuf, "-stereo")==0)       // Enable Stereo Sound
 	      {

@@ -9,11 +9,13 @@
 #include <string.h>
 #include <stdio.h>
 #include "CLatch.h"
+#include "vorticon/CPlanes.h"
 #include "fileio.h"
 #include "keen.h"
 #include "keenext.h"
 
 #include "CLogFile.h"
+//#include "vorticon/CEGAGraphics.h"
 
 CLatch::CLatch() {
 	SpriteTable = NULL;
@@ -70,6 +72,13 @@ char CLatch::loadHeader(int episode, const char *path)
 
     sprintf(fname, "%s%d", buffer,episode);
 
+    /*CEGAGraphics *EGAGraphics;
+
+    EGAGraphics = new CEGAGraphics(episode);
+
+    EGAGraphics->loadData();
+
+    delete EGAGraphics;*/
 
     headfile = fopen(fname, "rb");
     if (!headfile)
@@ -142,6 +151,7 @@ char CLatch::loadHeader(int episode, const char *path)
       for(j=0;j<16;j++) SpriteTable[i].Name[j] = fgetc(headfile);
       // for some reason each sprite occurs 4 times in the table.
       // we're only interested in the first occurance.
+      // These are copies for smoother rendering. Not needed since SDL and HW_SURFACE
       for(j=0;j<3;j++)
       {
         for(k=0;k < static_cast<int>(sizeof(SpriteHead));k++) fgetc(headfile);
@@ -190,7 +200,7 @@ char CLatch::loadHeader(int episode, const char *path)
 }
 
 
-// load the EGAHEAD file
+// load the EGALATCH file
 
 char CLatch::load(int episode, const char *path)
 {
@@ -203,7 +213,6 @@ unsigned long RawDataSize;
 //unsigned char ch;
 
 char buffer[256];
-
 
 	formatPathString(buffer,path);
 
@@ -234,7 +243,6 @@ char buffer[256];
     if (LatchHeader.Compressed)
     {
       g_pLogFile->ftextOut("latch_loadlatch(): Decompressing...<br>");
-      fseek(latchfile, 6, SEEK_SET);
       if (lz_decompress(latchfile, (unsigned char*) RawData)) return 1;
     }
     else
@@ -261,7 +269,8 @@ char buffer[256];
     g_pLogFile->ftextOut("latch_loadlatch(): Decoding 8x8 tiles...<br>", fname);
 
     // set up the getbit() function
-    setplanepositions(plane1 + LatchHeader.Off8Tiles, \
+
+    CPlanes *Planes = new CPlanes(plane1 + LatchHeader.Off8Tiles, \
                       plane2 + LatchHeader.Off8Tiles, \
                       plane3 + LatchHeader.Off8Tiles, \
                       plane4 + LatchHeader.Off8Tiles, \
@@ -287,7 +296,7 @@ char buffer[256];
             }
             // read a bit out of the current plane, shift it into the
             // correct position and merge it
-            c |= (getbit(RawData, p) << p);
+            c |= (Planes->getbit(RawData, p) << p);
             // map black pixels to color 16 because of the way the
             // vorticon death sequence works in ep1
             if (p==3 && c==0) c = 16;
@@ -297,11 +306,13 @@ char buffer[256];
       }
     }
 
+    delete Planes;
+
     // ** read the 16x16 tiles **
     g_pLogFile->ftextOut("latch_loadlatch(): Decoding 16x16 tiles...<br>", fname);
 
     // set up the getbit() function
-    setplanepositions(plane1 + LatchHeader.Off16Tiles, \
+    Planes = new CPlanes(plane1 + LatchHeader.Off16Tiles, \
                       plane2 + LatchHeader.Off16Tiles, \
                       plane3 + LatchHeader.Off16Tiles, \
                       plane4 + LatchHeader.Off16Tiles, \
@@ -323,7 +334,7 @@ char buffer[256];
             {
               c = tiledata[t][y][x];
             }
-            c |= (getbit(RawData, p) << p);
+            c |= (Planes->getbit(RawData, p) << p);
             if (p==3 && c==0) c = 16;
 
            	tiledata[t][y][x] = c;
@@ -331,6 +342,8 @@ char buffer[256];
         }
       }
     }
+
+    delete Planes;
 
     // ** read the bitmaps **
     g_pLogFile->ftextOut("latch_loadlatch(): Allocating %d bytes for bitmap data...<br>", BitmapBufferRAMSize);
@@ -344,7 +357,7 @@ char buffer[256];
     g_pLogFile->ftextOut("latch_loadlatch(): Decoding bitmaps...<br>", fname);
 
     // set up the getbit() function
-    setplanepositions(plane1 + LatchHeader.OffBitmaps, \
+    Planes = new CPlanes(plane1 + LatchHeader.OffBitmaps, \
                       plane2 + LatchHeader.OffBitmaps, \
                       plane3 + LatchHeader.OffBitmaps, \
                       plane4 + LatchHeader.OffBitmaps, \
@@ -380,7 +393,7 @@ char buffer[256];
             {
               c = *bmdataptr;
             }
-            c |= (getbit(RawData, p) << p);
+            c |= (Planes->getbit(RawData, p) << p);
             if (p==3 && c==0) c = 16;
             *bmdataptr = c;
             bmdataptr++;
@@ -389,55 +402,17 @@ char buffer[256];
       }
     }
 
+    delete Planes;
+
     if(RawData){ delete[] RawData; RawData = NULL;}
 
     return 0;
 }
 
-// initilizes the positions getbit will retrieve data from
-void CLatch::setplanepositions(unsigned long p1, unsigned long p2, unsigned long p3,\
-                       unsigned long p4, unsigned long p5)
-{
-int i;
-  getbit_bytepos[0] = p1;
-  getbit_bytepos[1] = p2;
-  getbit_bytepos[2] = p3;
-  getbit_bytepos[3] = p4;
-  getbit_bytepos[4] = p5;
 
-  for(i=0;i<=4;i++)
-  {
-    getbit_bitmask[i] = 128;
-  }
-}
 
 // retrieves a bit from plane "plane". the positions of the planes
 // should have been previously initilized with setplanepositions()
-unsigned char CLatch::getbit(char *buf, unsigned char plane)
-{
-int retval;
-int byt;
-  if (!getbit_bitmask[plane])
-  {
-    getbit_bitmask[plane] = 128;
-    getbit_bytepos[plane]++;
-  }
-
-  byt = buf[getbit_bytepos[plane]];
-
-  if (byt & getbit_bitmask[plane])
-  {
-    retval = 1;
-  }
-  else
-  {
-    retval = 0;
-  }
-
-  getbit_bitmask[plane] >>= 1;
-
-  return retval;
-}
 
 
 char CLatch::loadSprites(int episode, const char *path)
@@ -447,10 +422,8 @@ unsigned long plane1, plane2, plane3, plane4, plane5;
 char fname[80];
 int x,y,s,c,p;
 unsigned long RawDataSize;
-/*int i;
-unsigned char ch;*/
-
 char buffer[256];
+CPlanes *Planes;
 
 	formatPathString(buffer,path);
 
@@ -478,7 +451,6 @@ char buffer[256];
     if (LatchHeader.Compressed)
     {
       g_pLogFile->ftextOut("latch_loadsprites(): Decompressing...<br>");
-      fseek(spritfile, 6, SEEK_SET);
       if (lz_decompress(spritfile, (unsigned char*) RawData)) return 1;
     }
     else
@@ -506,7 +478,7 @@ char buffer[256];
     g_pLogFile->ftextOut("latch_loadsprites(): Decoding sprites...<br>", fname);
 
     // set up the getbit() function
-    setplanepositions(plane1 + LatchHeader.OffSprites, \
+    Planes = new CPlanes(plane1 + LatchHeader.OffSprites, \
                       plane2 + LatchHeader.OffSprites, \
                       plane3 + LatchHeader.OffSprites, \
                       plane4 + LatchHeader.OffSprites, \
@@ -535,7 +507,7 @@ char buffer[256];
             {
               c = sprites[s].imgdata[y][x];
             }
-            c |= (getbit(RawData, p) << p);
+            c |= (Planes->getbit(RawData, p) << p);
             if (p==3 && c==0) c = 16;
             sprites[s].imgdata[y][x] = c;
           }
@@ -552,11 +524,12 @@ char buffer[256];
       {
         for(x=0;x<sprites[s].xsize;x++)
         {
-           sprites[s].maskdata[y][x] = (1 - getbit(RawData, 4));
+           sprites[s].maskdata[y][x] = (1 - Planes->getbit(RawData, 4));
         }
       }
     }
 
+    delete Planes;
 
     return 0;
 }

@@ -10,17 +10,15 @@
 #include "sdl/sound/CSound.h"
 #include "hqp/CMusic.h"
 #include "include/fileio.h"
-#include "include/fileio/lzexe.h"
 #include "include/fileio/rle.h"
 #include "vorticon/CPlayer.h"
 #include "CLogFile.h"
 #include "CGraphics.h"
 #include <unistd.h>
+#include <sys/types.h>
+#include <dirent.h>
 
 extern CPlayer *Player;
-
-int numtiles;
-int **TileProperty; // This version will replace the old stTile Structure and save memory
 
 unsigned int curmapx, curmapy;
 unsigned char mapdone;
@@ -35,6 +33,56 @@ void addmaptile(unsigned int t)
 
     if (curmapy >= map.ysize) mapdone = 1;
   }
+}
+
+bool renameFilenamesLowerCase(const char *dir_name)
+{
+#ifdef TARGET_WIN32
+	return true;
+#else
+	DIR *p_Dir;
+	char newname[256];
+	char buf[256];
+	struct dirent *dp;
+
+	memset(newname,0,256);
+	strcpy(buf,dir_name);
+
+	if(buf[0] == '\0')
+		strcpy(buf,"./");
+
+	chdir("data");
+
+	if((p_Dir = opendir(buf))==NULL)
+		return false;
+
+	bool retval = true;
+	// This function checks if all the files in the directory are lower case.
+	// If they aren't rename them
+	while((dp = readdir(p_Dir)) != NULL)
+	{
+        if(dp->d_type == DT_REG)
+        {
+        	strcpy(newname,dp->d_name);
+
+        	int len = strlen(newname);
+        	for(int pos=0 ; pos < len ; pos++ )
+        		if(newname[pos] >= 'A' && newname[pos] <= 'Z')
+        			newname[pos] += ('a'-'A');
+
+        	if(strncmp(newname,dp->d_name,strlen(dp->d_name)) != 0)
+        		if(rename(dp->d_name,newname) != -1)
+        			retval &= true;
+        }
+    }
+
+	closedir(p_Dir);
+
+	chdir("../");
+
+	return retval;
+
+#endif
 }
 
 short checkConsistencyofGameData(stGameData *p_GameData)
@@ -79,7 +127,14 @@ short checkConsistencyofGameData(stGameData *p_GameData)
 			sprintf(p_GameData->FileList[24],"sounds.ck%d",p_GameData->Episode);
 	}
 
-	// Now check if they really exist!
+	// Rename all the the files in the directory to lower case
+	if(!renameFilenamesLowerCase(p_GameData->DataDirectory))
+	{
+		g_pLogFile->ftextOut(PURPLE,"WARNING: There was an error while trying to format correctly the game data.");
+		g_pLogFile->ftextOut(PURPLE,"Please check, if you have write permissions on the game data directory and it is accessible<br>");
+	}
+
+	// Finally check if they really exist!
 	char buf[MAX_STRING_LENGTH];
 	int c=0;
 	for(c = 0 ; c < MAX_NUMBER_OF_FILES ; c++)
@@ -93,7 +148,6 @@ short checkConsistencyofGameData(stGameData *p_GameData)
 		if(*(p_GameData->DataDirectory) != 0)
 			strcat(buf,"/");
 		strcat(buf,p_GameData->FileList[c]);
-
 
 		if((fp = fopen(buf,"r")) != NULL)
 		{
@@ -145,8 +199,50 @@ int o;
 levelmarker: ;
      if ((t&0x7fff) < 256 && pCKP->Control.levelcontrol.levels_completed[t&0x00ff])
      {
-       map.objectlayer[curmapx][curmapy] = 0;
-       map.mapdata[curmapx][curmapy] = tiles[map.mapdata[curmapx][curmapy]].chgtile;
+    	 if(!options[OPT_LVLREPLAYABILITY].value)
+    		map.objectlayer[curmapx][curmapy] = 0;
+    	 else
+    		 map.objectlayer[curmapx][curmapy] = t;
+
+    	 int newtile = tiles[map.mapdata[curmapx][curmapy]].chgtile;
+
+    	 // Consistency check! Some Mods have issues with that.
+    	 if(pCKP->Control.levelcontrol.episode == 1 || pCKP->Control.levelcontrol.episode == 2)
+    	 {
+    		 if(newtile<77 || newtile>81)
+    			 // something went wrong. Use default tile
+    			 newtile = 77;
+
+    		 // try to guess, if it is a 32x32 (4 16x16) Tile
+    		 if(map.mapdata[curmapx-1][curmapy-1] == (unsigned int) newtile &&
+    				 map.mapdata[curmapx][curmapy-1] == (unsigned int) newtile  &&
+    				 map.mapdata[curmapx-1][curmapy] == (unsigned int) newtile)
+    		 {
+    			 map.mapdata[curmapx-1][curmapy-1] = 78; //ul
+    			 map.mapdata[curmapx][curmapy-1] = 79; //ur
+    			 map.mapdata[curmapx-1][curmapy] = 80; //bl
+    			 newtile = 81; // br. this one
+    		 }
+    	 }
+    	 else if(pCKP->Control.levelcontrol.episode == 3)
+    	 {
+    		 if(newtile<52 || newtile>56)
+    			 // something went wrong. Use default tile
+    			 newtile = 56;
+    		 // try to guess, if it is a 32x32 (4 16x16) Tile
+    		 if(map.mapdata[curmapx-1][curmapy-1] == (unsigned int) newtile &&
+    				 map.mapdata[curmapx][curmapy-1] == (unsigned int) newtile  &&
+    				 map.mapdata[curmapx-1][curmapy] == (unsigned int) newtile)
+    		 {
+    			 map.mapdata[curmapx-1][curmapy-1] = 52; //bl
+    			 map.mapdata[curmapx][curmapy-1] = 53; //ur
+    			 map.mapdata[curmapx-1][curmapy] = 54; //ul
+    			 newtile = 55; // br. this one
+    		 }
+    	 }
+
+ 		map.mapdata[curmapx][curmapy] = newtile;
+
      }
      else
      {
@@ -196,7 +292,6 @@ int o,x;
               x = curmapx;
 
               if (TileProperty[map.mapdata[x][curmapy+1]][BLEFT]) x--;
-              //if (tiles[map.mapdata[x][curmapy+1]].solidl) x--;
               spawn_object(x<<4<<CSF, ((curmapy<<4)+8)<<CSF, OBJ_YORP);
            }
            else
@@ -204,7 +299,6 @@ int o,x;
               // in ep2 level 16 there a vorticon embedded in the floor for
               // some reason! that's what the if() is for--to fix it.
         	  if (TileProperty[map.mapdata[curmapx][curmapy+1]][BLEFT])
-              //if (tiles[map.mapdata[curmapx][curmapy+1]].solidl)
               {
                 spawn_object(curmapx<<4<<CSF, ((curmapy<<4)-16)<<CSF, OBJ_VORT);
               }
@@ -277,7 +371,6 @@ int o,x;
            else if (pCKP->Control.levelcontrol.episode==3)
            {
         	  if(TileProperty[map.mapdata[curmapx][curmapy+1]][BLEFT])
-              //if (tiles[map.mapdata[curmapx][curmapy+1]].solidl)
               {
                 spawn_object(curmapx<<4<<CSF, (curmapy-1)<<4<<CSF, OBJ_NINJA);
               }
@@ -501,7 +594,6 @@ int resetcnt, resetpt;
 
   c=18;
 
-  //while(!mapdone)
   while(c < ((filebuf[9] / 2)+18)) // Check against Tilesize
   {
 	  t = filebuf[c];
@@ -607,245 +699,6 @@ int resetcnt, resetpt;
  }
 
   return 0;
-}
-
-char loadtileattributes(int episode, char *extrapath)
-{
-FILE *fp;
-int t,a,b;
-char fname[MAX_STRING_LENGTH];
-char buf[MAX_STRING_LENGTH];
-int bufsize;
-
-	unsigned char *filebuf;
-	int i,j; // standard counters
-
-	FILE *fin;
-
-	filebuf = (unsigned char*) malloc(500000*sizeof(unsigned char));
-
-	// We need a function that autodetects tli files in a directory...
-	sprintf(buf,"tiles.tli");
-
-	formatPathString(fname,extrapath);
-
-	strcat(fname,buf);
-
-	g_pLogFile->ftextOut("loadtileattributes() : Trying to read the tiles from \"%s\"<br>", fname);
-
-	if( (fin = fopen(fname,"rb")) == NULL )
-	{
-		// No, try to read it from the exe-file
-
-		sprintf(buf,"keen%d.exe",episode);
-
-		formatPathString(fname,extrapath);
-
-		strcat(fname,buf);
-
-		g_pLogFile->ftextOut("loadtileattributes() : Extracting tile attributes from the exe file \"%s\"<br>", fname);
-
-		if( (fin = fopen(fname,"rb")) != NULL )
-		{
-			int version;
-			int offset;
-
-			bufsize = unlzexe(fin, filebuf);
-
-			rewind(fin);
-
-			if ( bufsize == 0 ) // Program was not unpacked, so read it normally
-			{
-				for(i = 0; i < 512 ; i++)	// I don't why this value (512), but it makes read mods correctly. At last Yorpius II
-					getc(fin);
-
-				while(!feof(fin))
-				{
-					filebuf[bufsize] = getc(fin);
-					bufsize++;
-				}
-
-				bufsize--;
-			}
-
-
-			fclose(fin);
-
-			version = getEXEVersion(episode, bufsize);
-
-			g_pLogFile->ftextOut("Commander Keen Episode %d (Version %d.%d) was detected.<br>",episode,version/100,version%100);
-
-			if(version < 0)
-			{
-				why_term_ptr = "loadtileattributes(): Unknown EXE-File. It is possible, that the exe-file is a mod. Please use an original exe-file.\nNot all Mods work with CKP";
-			}
-			else if(version == 134)
-			{
-				why_term_ptr = "loadtileattributes(): Sorry, but version 1.34 isn't supported! please use version 1.31";
-			}
-
-			if( episode == 1 && version == 110 )
-			{
-				offset = 0x131F8;
-				numtiles = 611;
-			}
-			else if( episode == 1 && version == 131 )
-			{
-				offset = 0x130F8;
-				numtiles = 611;
-			}
-			else if( episode == 1 && version == 134 )
-			{
-				offset = 0x00000;
-				numtiles = 611;
-				return -1;
-			}
-			else if( episode == 2 && version == 100 )
-			{
-				offset = 0x17938;
-				numtiles = 689;
-			}
-			else if( episode == 2 && version == 131 )
-			{
-				offset = 0x17828;
-				numtiles = 689;
-			}
-			else if( episode == 3 && version == 100 )
-			{
-				offset = 0x199F8;
-				numtiles = 715;
-			}
-			else if( episode == 3 && version == 131 )
-			{
-				offset = 0x198C8;
-				numtiles = 715;
-			}
-			else
-			{
-				crashflag = 1;
-				why_term_ptr = "loadtileattributes(): Algorithm for extracting tiles is not supported for this version!";
-				return 1;
-			}
-
-			memcpy(filebuf, filebuf + offset, 6*2*numtiles);
-		}
-		else
-		{
-			crashflag = 1;
-			why_term_ptr = "loadtileattributes(): Error reading tiles!";
-			return 1;
-		}
-	}
-	else
-	{
-		// read from the tli file
-		int bufsize;
-
-		bufsize = 0;
-
-		while(!feof(fin))
-		{
-			filebuf[bufsize] = getc(fin);
-			bufsize++;
-		}
-		fclose(fin);
-	}
-
-	// Here we really start reading the tiles
-	if(TileProperty != NULL)
-	{
-		for(i = 0 ; i < 1000 ; i++)
-		{
-			if(TileProperty[i] != NULL)
-				free(TileProperty[i]);
-		}
-		free(TileProperty);
-	}
-
-	TileProperty = (int**) malloc(1000*sizeof(int*));
-
-	for(i = 0 ; i < 1000 ; i++)
-	{
-		TileProperty[i] = NULL;
-		TileProperty[i] = (int*) malloc(6*sizeof(int));
-	}
-
-	for(j=0 ; j < 1000 ; j++ )
-	{
-		for(i=0; i < 6 ; i++)
-			TileProperty[j][i]=0;
-	}
-
-	if(TileProperty == NULL)
-	{
-	     crashflag = 1;
-	     why_term_ptr = "loadtileattributes(): The memory couldn't be allocated for this version of game!";
-	     return 1;
-	}
-
-	for(i=0 ; i < 6 ; i++)
-	{
-		for(j=0 ; j < numtiles ; j++)
-		{
-			TileProperty[j][i] = filebuf[i*2*(numtiles)+2*j];
-			TileProperty[j][i] += 256*filebuf[i*2*(numtiles)+2*j+1];
-		}
-	}
-
-	free(filebuf);
-
-	int value;
-
-	for( j=0 ; j < (numtiles) ; j++ )
-	{
-		value = TileProperty[j][0];
-
-		// stuff for animated tiles
-		if(value == 1)
-		{
-		    tiles[j].animOffset = 0;   // starting offset from the base frame
-		}
-		else if( value == 2 )
-		{
-			 tiles[j].animOffset = 0;   // starting offset from the base frame
-			 j++;
-			 tiles[j].animOffset = 1;   // starting offset from the base frame
-		}
-		else
-		{
-			 tiles[j].animOffset = 0;   // starting offset from the base frame
-			 j++;
-			 tiles[j].animOffset = 1;   // starting offset from the base frame
-			 j++;
-			 tiles[j].animOffset = 2;   // starting offset from the base frame
-			 j++;
-			 tiles[j].animOffset = 3;   // starting offset from the base frame
-		}
-	}
-
-   sprintf(fname, "ep%dattr.dat", episode);
-
-
-	  fp = fopen(fname, "rb");
-	  if (!fp)
-	  {
-	    crashflag = 1;
-	    crashflag2 = episode;
-	    why_term_ptr = "loadtileattributes(): Cannot open tile attribute file! Episode in flag2.";
-	    return 1;
-	  }
-
-	  // load in the tile attributes
-	  for(t=0;t<numtiles-1;t++)
-	  {
-		a = fgetc(fp); b = fgetc(fp);
-	    tiles[t].chgtile = (a*256)+b;
-	    if(tiles[t].chgtile > numtiles)
-			    	tiles[t].chgtile = 0;
-	  }
-	  fclose(fp);
-
-	  return 0;
 }
 
 char loadstrings_AddAttr(char *attr, int stringIndex)

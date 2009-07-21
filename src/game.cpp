@@ -22,7 +22,6 @@
 #include "vorticon/CHighScores.h"
 #include "hqp/CHQBitmap.h"
 char otherplayer;
-short usedinfobox;
 
 // TODO: seperate status boxes for the different players
 // TODO: Your Ship Needs These Parts in multiplayer
@@ -35,14 +34,14 @@ char debugmode=0,acceleratemode=0;
 // and this is where the magic happens
 void gameloop(stCloneKeenPlus *pCKP)
 {
-	unsigned int i/*,o,x,y,c*/;
+	unsigned int i;
 
   int enter,lastquit;
-  //char buf[256];
-  /*unsigned long oldtimer;
-  unsigned int temp;
-  char spacedownlasttime=0;
-  char mpskiptimer=0,mpskip=200;*/
+
+  // Enable the yorp/garg statues elders switches animations
+  for(int i=0 ; i<numtiles ; i++)
+	  if(TileProperty[i][BEHAVIOR] == 22)
+		  TileProperty[i][ANIMATION] = 4;
 
   if (player[0].x==0 || player[0].y==0)
 
@@ -172,10 +171,10 @@ void gameloop(stCloneKeenPlus *pCKP)
             { // exiting a level, going back to world map
                 for(i=0;i<numplayers;i++)
                 {
-                	player[i].inventory.HasCardYellow = 0;
-                	player[i].inventory.HasCardBlue = 0;
-                	player[i].inventory.HasCardGreen = 0;
-                	player[i].inventory.HasCardRed = 0;
+               		player[i].inventory.HasCardYellow = 0;
+               		player[i].inventory.HasCardBlue = 0;
+               		player[i].inventory.HasCardGreen = 0;
+               		player[i].inventory.HasCardRed = 0;
                 }
 
               if (pCKP->Control.levelcontrol.success==1)
@@ -195,7 +194,6 @@ void gameloop(stCloneKeenPlus *pCKP)
      // the door frame (so it looks like he walks "through" the door)
      if (pCKP->Control.levelcontrol.level_done==LEVEL_DONE_WALK)
      {
-    	usedinfobox = 0;
         gamepdo_walkbehindexitdoor(pCKP->Control.levelcontrol.level_finished_by, pCKP);
      }
 
@@ -207,7 +205,7 @@ void gameloop(stCloneKeenPlus *pCKP)
      {
        if (enter)
        {
-    	 int cities = 0;
+    	 int cities=0;
       	 CHighScores *HighScoreTable;
 
      	 if (pCKP->Control.levelcontrol.levels_completed[4]) cities++;
@@ -221,9 +219,10 @@ void gameloop(stCloneKeenPlus *pCKP)
 
       	 HighScoreTable = new CHighScores(pCKP);
 
-		   bool extras[4] = {false,false,false,false};
+      	 bool extras[4];
 
       	 // check inventory or saved cities
+      	 memset(extras,false,4*sizeof(bool));
       	 if(pCKP->Control.levelcontrol.episode == 1)
       	 {
       		 if(player[0].inventory.HasJoystick)
@@ -297,12 +296,13 @@ void gameloop(stCloneKeenPlus *pCKP)
 // gives keycard for door doortile to player p
 void give_keycard(int doortile, int p)
 {
-/*int i;*/
+	bool keystack = options[OPT_KEYCARDSTACK].value; // True if set
 	g_pSound->playSound(SOUND_GET_CARD, PLAY_NOW);
-	if (doortile==DOOR_YELLOW) player[p].inventory.HasCardYellow = 1;
-	else if (doortile==DOOR_RED) player[p].inventory.HasCardRed = 1;
-	else if (doortile==DOOR_GREEN) player[p].inventory.HasCardGreen = 1;
-	else if (doortile==DOOR_BLUE) player[p].inventory.HasCardBlue = 1;
+
+	if (doortile==DOOR_YELLOW) player[p].inventory.HasCardYellow = keystack ? player[p].inventory.HasCardYellow + 1 : 1;
+	else if (doortile==DOOR_RED) player[p].inventory.HasCardRed = keystack ? player[p].inventory.HasCardRed + 1 : 1;
+	else if (doortile==DOOR_GREEN) player[p].inventory.HasCardGreen = keystack ? player[p].inventory.HasCardGreen + 1 : 1;
+	else if (doortile==DOOR_BLUE) player[p].inventory.HasCardBlue = keystack ? player[p].inventory.HasCardBlue + 1 : 1;
 	else
 	{
 		crashflag = 1;
@@ -314,11 +314,15 @@ void give_keycard(int doortile, int p)
 // take away the specified keycard from player p
 void take_keycard(int doortile, int p)
 {
-/*int i;*/
-   if (doortile==DOOR_YELLOW) player[p].inventory.HasCardYellow = 0;
-   else if (doortile==DOOR_RED) player[p].inventory.HasCardRed = 0;
-   else if (doortile==DOOR_GREEN) player[p].inventory.HasCardGreen = 0;
-   else if (doortile==DOOR_BLUE) player[p].inventory.HasCardBlue = 0;
+	if (doortile==DOOR_YELLOW) player[p].inventory.HasCardYellow--;
+	else if (doortile==DOOR_RED) player[p].inventory.HasCardRed--;
+	else if (doortile==DOOR_GREEN) player[p].inventory.HasCardGreen--;
+	else if (doortile==DOOR_BLUE) player[p].inventory.HasCardBlue--;
+
+	if(player[p].inventory.HasCardYellow > 9) player[p].inventory.HasCardYellow = 0;
+	if(player[p].inventory.HasCardRed > 9) player[p].inventory.HasCardRed = 0;
+	if(player[p].inventory.HasCardGreen > 9) player[p].inventory.HasCardGreen = 0;
+	if(player[p].inventory.HasCardBlue > 9) player[p].inventory.HasCardBlue = 0;
 }
 
 // unregisters all animated tiles with baseframe tile
@@ -341,8 +345,7 @@ short tilefix=0;
 
 	g_pSound->playSound(SOUND_DOOR_OPEN, PLAY_NOW);
 
-   if(options[OPT_KEYCARDSTACK].value != 1)
-	   take_keycard(doortile, cp);
+	take_keycard(doortile, cp);
 
    /* erase door from map */
    if (pCKP->Control.levelcontrol.episode==3)
@@ -533,7 +536,7 @@ unsigned int i;
     player[i].dpadcount = player[i].dpadlastcount = 0;
     player[i].hideplayer = 0;
     player[i].mounted = 0;
-    player[i].ppogostick = 0;
+    player[i].ppogostick = false;
     player[i].pjumping = 0;
     player[i].pfalling = 0;
     player[i].pwalking = player[i].playspeed = 0;
@@ -543,6 +546,7 @@ unsigned int i;
     player[i].pfiring = 0;
     player[i].psliding = player[i].psemisliding = 0;
     player[i].pdie = 0;
+
     player[i].pfrozentime = 0;
     player[i].ankhtime = 0;
     player[i].keyprocstate = 0;         // KPROC_IDLE
@@ -584,26 +588,17 @@ unsigned int i;
 
 int initgamefirsttime(stCloneKeenPlus *pCKP, int s)
 {
-int i;
+	int i;
 
-   if(pCKP->Resources.GameSelected == 0)
-   {
-	   if (loadtileattributes(pCKP->Control.levelcontrol.episode, pCKP->GameData[0].DataDirectory)) return 1;
-   }
-   else
-   {
-	   if (loadtileattributes(pCKP->Control.levelcontrol.episode, pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory)) return 1;
-   }
+	map.firsttime = 1;
 
-   map.firsttime = 1;
+	memset(player, 0, sizeof(player));
 
-   memset(player, 0, sizeof(player));
-
-   for(i=0;i<MAX_LEVELS;i++)
+	for(i=0;i<MAX_LEVELS;i++)
 	   pCKP->Control.levelcontrol.levels_completed[i] = 0;
 
-   for(i=0;i<MAX_PLAYERS;i++)
-   {
+	for(i=0;i<MAX_PLAYERS;i++)
+	{
        player[i].inventory.extralifeat = 20000;
        player[i].inventory.lives = 4;
        player[i].godmode = 0;
@@ -882,7 +877,7 @@ void freezeplayer(int theplayer)
    player[theplayer].pfrozentime = PFROZEN_TIME;
    player[theplayer].pfrozenframe = 0;
    player[theplayer].pfrozenanimtimer = 0;
-   player[theplayer].ppogostick = 0;
+   player[theplayer].ppogostick = false;
 }
 
 
@@ -907,7 +902,7 @@ void PlayerTouchedExit(int theplayer, stCloneKeenPlus *pCKP)
               objects[player[theplayer].ankhshieldobject].exists = 0;
             }
 
-            player[theplayer].ppogostick = 0;
+            player[theplayer].ppogostick = false;
 
             g_pMusicPlayer->stop();
             g_pSound->playSound(SOUND_LEVEL_DONE, PLAY_NOW);
@@ -1170,7 +1165,6 @@ int x,y,i,indx;
 
 
     // create BLANKSPRITE
-    //s = LatchHeader.NumSprites;
     BlankSprite = s;
     sprites[BlankSprite].xsize = sprites[BlankSprite].ysize = 0;
 
@@ -1358,10 +1352,9 @@ void procgoodie(int t, int mpx, int mpy, int theplayer, stCloneKeenPlus *pCKP)
       }
       break;
 
-    default: //crashflag = 1;
-             //crashflag2 = t;
-             why_term_ptr = "procgoodie_ep1: Unknown goodie-- value given in flag2.";
-             break;
+    default:
+    	why_term_ptr = "procgoodie_ep1: Unknown goodie-- value given in flag2.";
+        break;
    }
 
 

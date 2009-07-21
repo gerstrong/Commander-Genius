@@ -19,17 +19,25 @@
 #include "vorticon/CCredits.h"
 #include "CLogFile.h"
 #include "fileio.h"
+#include "fileio/CExeFile.h"
+#include "fileio/CTileLoader.h"
+#include "fileio/CPatcher.h"
 #include "sdl/sound/CSound.h"
 #include "sdl/CVideoDriver.h"
 
 CGame::CGame() {
 	m_Episode = 0;
 	memset(m_DataDirectory,0,256);
-	Latch = new CLatch();
+
+	TileLoader = NULL;
+    EGAGraphics = NULL;
+    m_Messages = NULL;
 }
 
 CGame::~CGame() {
-	if(Latch){ delete Latch; Latch = NULL;}
+	if(EGAGraphics) delete EGAGraphics;
+	if(TileLoader) delete TileLoader;
+	if(m_Messages) delete m_Messages;
 }
 
 short CGame::runCycle(stCloneKeenPlus *pCKP)
@@ -39,7 +47,7 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 	  int eseq = 0;
 	  int defaultopt = 0;
 
-	  initgamefirsttime(pCKP, Latch->getLatchHeader()->NumSprites);
+	  initgamefirsttime(pCKP, EGAGraphics->getNumSprites());
 	  initgame(pCKP);
 
 	  g_pLogFile->ftextOut("Game starting...<br>");
@@ -107,7 +115,7 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 	        numplayers = 1;
 	        defaultopt = 0;
 	        current_demo = 1;
-	        initgamefirsttime(pCKP, Latch->getLatchHeader()->NumSprites);
+	        initgamefirsttime(pCKP, EGAGraphics->getNumSprites());
 	        loadinggame = 0;
 	        playgame_levelmanager(pCKP);
 	        break;
@@ -115,7 +123,7 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 	        defaultopt = 0;
 	        current_demo = 1;
 	        numplayers = 2;
-	        initgamefirsttime(pCKP, Latch->getLatchHeader()->NumSprites);
+	        initgamefirsttime(pCKP, EGAGraphics->getNumSprites());
 	        loadinggame = 0;
 	        playgame_levelmanager(pCKP);
 	        break;
@@ -126,7 +134,7 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 	           defaultopt = 0;
 	           current_demo = 1;
 	           numplayers = 1; // here was 2. Why was that? I don't understand
-	           initgamefirsttime(pCKP, Latch->getLatchHeader()->NumSprites);
+	           initgamefirsttime(pCKP, EGAGraphics->getNumSprites());
 	           playgame_levelmanager(pCKP);
 	        }
 	        break;
@@ -159,7 +167,7 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 
 	      case MAINMNU_TIMEOUT:
 	      case MAINMNU_DEMO:
-	        retval = play_demo(current_demo, pCKP, Latch->getLatchHeader()->NumSprites);
+	        retval = play_demo(current_demo, pCKP, EGAGraphics->getNumSprites());
 
 	        if (retval==DEMO_RESULT_FILE_BAD)
 	        {
@@ -215,10 +223,38 @@ int CGame::loadResources(unsigned short Episode, char *DataDirectory)
 	m_Episode = Episode;
 	memcpy(m_DataDirectory, DataDirectory, 256);
 
-	// Decode the graphics for the game (EGALATCH, EGASPRIT)
-	if (Latch->loadGraphics(Episode, DataDirectory)) return 1;
+	if( ( *(DataDirectory+strlen(DataDirectory)-1) != '/' ) && strlen(DataDirectory) > 0)
+		strcat(DataDirectory,"/");
 
+	// Decode the entire graphics for the game (EGALATCH, EGASPRIT)
+    EGAGraphics = new CEGAGraphics(Episode, DataDirectory); // Path is relative to the data dir
+    if(!EGAGraphics) return 1;
+
+    EGAGraphics->loadData();
+
+    // Get the EXE of the game and decompress it if needed.
+    CExeFile *ExeFile = new CExeFile(Episode, DataDirectory);
+    ExeFile->readData();
+    int version = ExeFile->getEXEVersion();
+	g_pLogFile->ftextOut("Commander Keen Episode %d (Version %d.%d) was detected.<br>", Episode, version/100,version%100);
+	if(version == 134) g_pLogFile->ftextOut("This version of the game is not supported!<br>");
+
+    // Patch the EXE-File-Data directly in the memory.
+	CPatcher *Patcher = new CPatcher(Episode, ExeFile->getEXEVersion(), ExeFile->getData(), DataDirectory);
+	Patcher->patchMemory();
+	delete Patcher;
+
+    // Load tile attributes.
+	if(TileLoader) delete TileLoader;
+	TileLoader = new CTileLoader(Episode, ExeFile->getEXEVersion(), ExeFile->getData());
+	if(!TileLoader->load()) return 1;
+
+    // load the strings. TODO: After that this one will replace loadstrings
+    //m_Messages = new CMessages();    delete ExeFile;
+    //m_Messages->readData(char *buf, int episode, int version);
 	loadstrings("strings.dat");
+
+    delete ExeFile;
 
 	// Load the sound data
 	int ok;
@@ -227,13 +263,16 @@ int CGame::loadResources(unsigned short Episode, char *DataDirectory)
 	return 0;
 }
 
+void CGame::freeResources(void)
+{
+	if(EGAGraphics) { delete EGAGraphics; EGAGraphics = NULL; }
+}
+
 void CGame::preallocateCKP(stCloneKeenPlus *pCKP)
 {
 	// This function prepares the CKP Structure so that the it is allocated in the memory.
 	pCKP->numGames = 0;
 	pCKP->Resources.GameSelected = 0;
-
-	TileProperty = NULL;
 
 	pCKP->GameData = NULL;
 	pCKP->GameData = new stGameData[1];
@@ -254,9 +293,3 @@ void CGame::preallocateCKP(stCloneKeenPlus *pCKP)
 
 	player[0].x = player[0].y = 0;
 }
-
-
-
-
-CLatch *CGame::getLatch(void)
-{	return Latch;	}
