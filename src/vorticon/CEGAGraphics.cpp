@@ -12,11 +12,14 @@
 #endif
 #include <fstream>
 #include <vector>
+#include "../StringUtils.h"
+
+
 using namespace std;
 
-CEGAGraphics::CEGAGraphics(short episode, const char *path) {
+CEGAGraphics::CEGAGraphics(short episode, const std::string& path) {
 	   m_episode = episode;
-	   strcpy(m_path, path);
+	   m_path = path;
 
 	   // EGAHEAD Structure
 	   LatchPlaneSize = 0;
@@ -51,15 +54,15 @@ CEGAGraphics::~CEGAGraphics() {
 
 bool CEGAGraphics::loadData()
 {
-	char buf[256];
+	std::string buf;
 	vector<char> databuf;
 
 	chdir("data"); // TODO: You must be able to use another directory
-	if(m_path[0] == 0)
-		sprintf(buf,"egahead.ck%hd",m_episode);
+	if(m_path == "")
+		buf = "egahead.ck" + itoa(m_episode);
 	else
-		sprintf(buf,"%s/egahead.ck%hd",m_path,m_episode);
-	ifstream HeadFile(buf,ios::binary);
+		buf = m_path + "/egahead.ck" + itoa(m_episode);
+	std::ifstream HeadFile(buf.c_str(),ios::binary);
 
 	if(!HeadFile)
 		return false;
@@ -72,9 +75,7 @@ bool CEGAGraphics::loadData()
 	}
 	HeadFile.close();
 
-	char *data;
-	data = new char[databuf.size()];
-
+	char *data = new char[databuf.size()];
 	memcpy(data, &databuf[0], databuf.size());
 
 	// Now copy the data to the EGAHEAD Structure
@@ -108,10 +109,10 @@ bool CEGAGraphics::loadData()
 
     m_Latch->loadHead(data);
 
-	if(m_path[0] == 0)
-		sprintf(buf,"egalatch.ck%hd",m_episode);
+	if(m_path == "")
+		buf = "egalatch.ck" + itoa(m_episode);
 	else
-		sprintf(buf,"%s/egalatch.ck%hd",m_path,m_episode);
+		buf = m_path + "/egalatch.ck" + itoa(m_episode);
     m_Latch->loadData(buf,(compressed>>1)); // The second bit tells, if latch is compressed.
 
 
@@ -121,15 +122,13 @@ bool CEGAGraphics::loadData()
 							SpriteLocation);
     m_Sprit->loadHead(data);
 
-    if(m_path[0] == 0)
-		sprintf(buf,"egasprit.ck%hd",m_episode);
+    if(m_path == "")
+		buf = "egasprit.ck" + itoa(m_episode);
 	else
-		sprintf(buf,"%s/egasprit.ck%hd",m_path,m_episode);
+		buf = m_path + "/egasprit.ck" + itoa(m_episode);
     m_Sprit->loadData(buf,(compressed>>1));
 
     chdir("../");
-
-    delete [] data;
 
     return true;
 }

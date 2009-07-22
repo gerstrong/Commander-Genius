@@ -8,6 +8,8 @@
 #ifndef CEGASPRIT_H_
 #define CEGASPRIT_H_
 
+#include <string>
+
 class CEGASprit {
 public:
 	CEGASprit(int planesize,
@@ -17,7 +19,7 @@ public:
 	virtual ~CEGASprit();
 
 	bool loadHead(char *data);
-	bool loadData(const char *filename, bool compresseddata);
+	bool loadData(const std::string& filename, bool compresseddata);
 
 private:
 	int m_numsprites;

@@ -6,29 +6,31 @@
  */
 
 #include "CExeFile.h"
-#include <string.h>
+#include <cstring>
 #include <iostream>
 #include <fstream>
+#include "../StringUtils.h"
+
+
 using namespace std;
 
-CExeFile::CExeFile(int episode, char *datadirectory) {
+CExeFile::CExeFile(int episode, const std::string& datadirectory) {
 	m_episode = episode;
 	m_datadirectory = datadirectory;
 	m_data = NULL;
 }
 
 CExeFile::~CExeFile() {
-	if(m_data) delete [] m_data;
+	if(m_data) delete m_data;
 }
 
 bool CExeFile::readData()
 {
-	char filename[256];
 	unsigned char *m_data_temp;
 
-	sprintf(filename, "data/%skeen%d.exe", m_datadirectory, m_episode);
+	std::string filename = "data/" + m_datadirectory + "keen" + itoa(m_episode) + ".exe";
 
-	ifstream File(filename,ios::binary);
+	std::ifstream File(filename.c_str(),ios::binary);
 
 	if(!File) return false;
 
@@ -55,7 +57,7 @@ bool CExeFile::readData()
 		m_data = new unsigned char[m_datasize];
 		memcpy(m_data, m_data_temp+512,m_datasize);
 	}
-	delete [] m_data_temp;
+	delete m_data_temp;
 
 	return true;
 }

@@ -13,6 +13,7 @@
 #include "fileio.h"
 #include "keen.h"
 #include "keenext.h"
+#include "StringUtils.h"
 
 #include "CLogFile.h"
 //#include "vorticon/CEGAGraphics.h"
@@ -58,19 +59,15 @@ char CLatch::loadHeader(int episode, const char *path)
 	FILE *headfile;
 	unsigned long SpriteTableRAMSize;
 	unsigned long BitmapTableRAMSize;
-	char buf[12];
+	std::string buf;
 	int i,j,k;
-	char fname[80];
-	char buffer[256];
+	std::string fname;
+	std::string buffer;
 
-	memset(buffer,0,256);
-	memset(fname,0,80);
+	buffer = formatPathString(path);
+	buffer += "egahead.ck";
 
-	formatPathString(buffer,path);
-
-	strcat(buffer,"egahead.ck");
-
-    sprintf(fname, "%s%d", buffer,episode);
+    fname = buffer + itoa(episode);
 
     /*CEGAGraphics *EGAGraphics;
 
@@ -80,14 +77,14 @@ char CLatch::loadHeader(int episode, const char *path)
 
     delete EGAGraphics;*/
 
-    headfile = fopen(fname, "rb");
+    headfile = fopen(fname.c_str(), "rb");
     if (!headfile)
     {
-    	g_pLogFile->ftextOut("latch_loadheader(): unable to open '%s'.<br>", fname);
+    	g_pLogFile->ftextOut("latch_loadheader(): unable to open '%s'.<br>", fname.c_str());
     	return 1;
     }
 
-    g_pLogFile->ftextOut("latch_loadheader(): reading main header from '%s'...<br>", fname);
+    g_pLogFile->ftextOut("latch_loadheader(): reading main header from '%s'...<br>", fname.c_str());
 
     // read the main header data from EGAHEAD
     LatchHeader.LatchPlaneSize = fgetl(headfile);
@@ -135,7 +132,7 @@ char CLatch::loadHeader(int episode, const char *path)
       return 1;
     }
 
-    g_pLogFile->ftextOut("latch_loadheader(): Reading sprite table from '%s'...<br>", fname);
+    g_pLogFile->ftextOut("latch_loadheader(): Reading sprite table from '%s'...<br>", fname.c_str());
 
     fseek(headfile, LatchHeader.OffSpriteTable, SEEK_SET);
     for(i=0;i<LatchHeader.NumSprites;i++)
@@ -172,7 +169,7 @@ char CLatch::loadHeader(int episode, const char *path)
       return 1;
     }
 
-    g_pLogFile->ftextOut("latch_loadheader(): reading bitmap table from '%s'...<br>", fname);
+    g_pLogFile->ftextOut("latch_loadheader(): reading bitmap table from '%s'...<br>", fname.c_str());
 
     fseek(headfile, LatchHeader.OffBitmapTable, SEEK_SET);
 
@@ -191,7 +188,7 @@ char CLatch::loadHeader(int episode, const char *path)
       // print the bitmap info to the console for debug
       for(j=0;j<8;j++) buf[j] = BitmapTable[i].Name[j];
       buf[j] = 0;
-      g_pLogFile->ftextOut("   Bitmap '%s': %dx%d at offset %04x. RAMAllocSize=0x%04x<br>", buf,BitmapTable[i].Width,BitmapTable[i].Height,BitmapTable[i].Offset,BitmapBufferRAMSize);
+      g_pLogFile->ftextOut("   Bitmap '%s': %dx%d at offset %04x. RAMAllocSize=0x%04x<br>", buf.c_str(),BitmapTable[i].Width,BitmapTable[i].Height,BitmapTable[i].Offset,BitmapBufferRAMSize);
     }
     BitmapBufferRAMSize++;
 
@@ -206,26 +203,24 @@ char CLatch::load(int episode, const char *path)
 {
 FILE *latchfile;
 unsigned long plane1, plane2, plane3, plane4;
-char fname[80];
+	std::string fname;
 int x,y,t,b,c,p;
 char *bmdataptr;
 unsigned long RawDataSize;
 //unsigned char ch;
 
-char buffer[256];
+	std::string buffer;
 
-	formatPathString(buffer,path);
+	buffer = formatPathString(path);
+	buffer += "egalatch.ck";
+	fname = buffer + itoa(episode);
 
-	strcat(buffer,"egalatch.ck");
+    g_pLogFile->ftextOut("latch_loadlatch(): Opening file '%s'.<br>", fname.c_str());
 
-    sprintf(fname, "%s%c", buffer,episode + '0');
-
-    g_pLogFile->ftextOut("latch_loadlatch(): Opening file '%s'.<br>", fname);
-
-    latchfile = fopen(fname, "rb");
+    latchfile = fopen(fname.c_str(), "rb");
     if (!latchfile)
     {
-      g_pLogFile->ftextOut("latch_loadlatch(): Unable to open '%s'!<br>", fname);
+      g_pLogFile->ftextOut("latch_loadlatch(): Unable to open '%s'!<br>", fname.c_str());
       return 1;
     }
 
@@ -266,7 +261,7 @@ char buffer[256];
     plane4 = (LatchHeader.LatchPlaneSize * 3);
 
     // ** read the 8x8 tiles **
-    g_pLogFile->ftextOut("latch_loadlatch(): Decoding 8x8 tiles...<br>", fname);
+    g_pLogFile->ftextOut("latch_loadlatch(): Decoding 8x8 tiles...<br>", fname.c_str());
 
     // set up the getbit() function
 
@@ -309,7 +304,7 @@ char buffer[256];
     delete Planes;
 
     // ** read the 16x16 tiles **
-    g_pLogFile->ftextOut("latch_loadlatch(): Decoding 16x16 tiles...<br>", fname);
+    g_pLogFile->ftextOut("latch_loadlatch(): Decoding 16x16 tiles...<br>", fname.c_str());
 
     // set up the getbit() function
     Planes = new CPlanes(plane1 + LatchHeader.Off16Tiles, \
@@ -354,7 +349,7 @@ char buffer[256];
       return 1;
     }
 
-    g_pLogFile->ftextOut("latch_loadlatch(): Decoding bitmaps...<br>", fname);
+    g_pLogFile->ftextOut("latch_loadlatch(): Decoding bitmaps...<br>", fname.c_str());
 
     // set up the getbit() function
     Planes = new CPlanes(plane1 + LatchHeader.OffBitmaps, \
@@ -419,24 +414,22 @@ char CLatch::loadSprites(int episode, const char *path)
 {
 FILE *spritfile;
 unsigned long plane1, plane2, plane3, plane4, plane5;
-char fname[80];
+	std::string fname;
 int x,y,s,c,p;
 unsigned long RawDataSize;
-char buffer[256];
+	std::string buffer;
 CPlanes *Planes;
 
-	formatPathString(buffer,path);
+	buffer = formatPathString(path);
+	buffer += "egasprit.ck";
+	fname = buffer + itoa(episode);
 
-	strcat(buffer,"egasprit.ck");
+    g_pLogFile->ftextOut("latch_loadsprites(): Opening file '%s'.<br>", fname.c_str());
 
-    sprintf(fname, "%s%c", buffer,episode + '0');
-
-    g_pLogFile->ftextOut("latch_loadsprites(): Opening file '%s'.<br>", fname);
-
-    spritfile = fopen(fname, "rb");
+    spritfile = fopen(fname.c_str(), "rb");
     if (!spritfile)
     {
-      g_pLogFile->ftextOut("latch_loadsprites(): Unable to open '%s'!<br>", fname);
+      g_pLogFile->ftextOut("latch_loadsprites(): Unable to open '%s'!<br>", fname.c_str());
       return 1;
     }
 
@@ -475,7 +468,7 @@ CPlanes *Planes;
     plane5 = (LatchHeader.SpritePlaneSize * 4);
 
     // ** read the sprites **
-    g_pLogFile->ftextOut("latch_loadsprites(): Decoding sprites...<br>", fname);
+    g_pLogFile->ftextOut("latch_loadsprites(): Decoding sprites...<br>", fname.c_str());
 
     // set up the getbit() function
     Planes = new CPlanes(plane1 + LatchHeader.OffSprites, \

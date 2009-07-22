@@ -27,7 +27,6 @@
 
 CGame::CGame() {
 	m_Episode = 0;
-	memset(m_DataDirectory,0,256);
 
 	TileLoader = NULL;
     EGAGraphics = NULL;
@@ -218,15 +217,13 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 		return 0;
 }
 
-bool CGame::loadResources(unsigned short Episode, char *DataDirectory)
+bool CGame::loadResources(unsigned short Episode, const std::string& DataDirectory)
 {
 	m_Episode = Episode;
-	memcpy(m_DataDirectory, DataDirectory, 256);
+	m_DataDirectory = DataDirectory;
 
-	int pos = strlen(DataDirectory)-1;
-	if(pos == -1) pos =0;
-	if( ( *(DataDirectory+pos) != '/' ) && strlen(DataDirectory) > 0)
-		strcat(DataDirectory,"/");
+	if( m_DataDirectory.size() > 0 && m_DataDirectory[m_DataDirectory.size()-1] != '/' )
+		m_DataDirectory += "/";
 
 	// Decode the entire graphics for the game (EGALATCH, EGASPRIT)
     EGAGraphics = new CEGAGraphics(Episode, DataDirectory); // Path is relative to the data dir
@@ -288,8 +285,6 @@ void CGame::preallocateCKP(stCloneKeenPlus *pCKP)
 
 	pCKP->GameData = NULL;
 	pCKP->GameData = new stGameData[1];
-
-	memset(pCKP->GameData, 0, sizeof(stGameData));
 
 	framebyframe = 0;
 

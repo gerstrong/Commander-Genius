@@ -34,7 +34,7 @@ CSoundSlot::~CSoundSlot() {
 
 // loads sound searchname from file fname, into sounds[] entry loadnum
 // return value is false on failure
-bool CSoundSlot::loadSound(const char *fname, const char *searchname, unsigned int loadnum)
+bool CSoundSlot::loadSound(const std::string& fname, const std::string& searchname, unsigned int loadnum)
 {
 	// Unload the sound if any was previously loaded
 	if(m_sounddata){ delete[] m_sounddata; m_sounddata = NULL; }
@@ -57,10 +57,10 @@ bool CSoundSlot::loadSound(const char *fname, const char *searchname, unsigned i
 		for(i=0;i<12;i++)
 			name[i] = 0;
 
-		fp = fopen(fname, "rb");
+		fp = fopen(fname.c_str(), "rb");
 		if (!fp)
 		{
-			g_pLogFile->ftextOut("loadSound : Sounds file '%s' unopenable attempting load of '%s'<br>", fname, searchname);
+			g_pLogFile->ftextOut("loadSound : Sounds file '%s' unopenable attempting load of '%s'<br>", fname.c_str(), searchname.c_str());
 			return false;
 		}
 
@@ -75,12 +75,12 @@ bool CSoundSlot::loadSound(const char *fname, const char *searchname, unsigned i
 			priority = fgetc(fp);
 			garbage = fgetc(fp);
 			for(i=0;i<12;i++) name[i] = fgetc(fp);
-			if (!strcmp(name, searchname)) goto sound_found;
+			if (name == searchname) goto sound_found;
 
 			curheader += 0x10;
 		}
 		// sound could not be found
-		g_pLogFile->ftextOut("loadSound : sound %s could not be found in %s.<br>", searchname, fname);
+		g_pLogFile->ftextOut("loadSound : sound %s could not be found in %s.<br>", searchname.c_str(), fname.c_str());
 		fclose(fp);
 		return false;
 
@@ -115,7 +115,7 @@ bool CSoundSlot::loadSound(const char *fname, const char *searchname, unsigned i
 
 		memcpy(m_sounddata, tempstack, m_soundlength*sizeof(unsigned int));
 
-		g_pLogFile->ftextOut("loadSound : loaded sound %s of %d bytes.<br>", searchname, m_soundlength);
+		g_pLogFile->ftextOut("loadSound : loaded sound %s of %d bytes.<br>", searchname.c_str(), m_soundlength);
 		m_hqsound.enabled = false;
 
 		fclose(fp);

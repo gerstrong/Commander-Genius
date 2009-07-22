@@ -8,7 +8,8 @@
 #ifndef CEGALATCH_H_
 #define CEGALATCH_H_
 
-#include <SDL/SDL.h>
+#include <SDL.h>
+#include <string>
 
 class CEGALatch {
 public:
@@ -25,7 +26,7 @@ public:
 	virtual ~CEGALatch();
 
 	bool loadHead(char *data );
-	bool loadData(const char *filename, bool compresseddata);
+	bool loadData(const std::string& filename, bool compresseddata);
 
 	char *RawData;
 

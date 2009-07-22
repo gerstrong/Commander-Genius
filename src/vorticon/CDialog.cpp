@@ -77,10 +77,9 @@ void CDialog::addSeparator(void)
 	addOptionText("");
 }
 
-void CDialog::addOptionText(const char *text)
+void CDialog::addOptionText(const std::string& text)
 {
-	char buf[TEXT_LENGTH];
-	memset(buf,0,TEXT_LENGTH);
+	std::string buf;
 	// This algorithm is similar to one pointer session and
 	// list implementation. TextList is the head.
 	if(OptionTextList == NULL)
@@ -88,22 +87,21 @@ void CDialog::addOptionText(const char *text)
 		OptionTextList = new stTextList;
 		OptionTextList->nextElement = NULL;
 
-		memset(OptionTextList->text,0,TEXT_LENGTH);
+		OptionTextList->text = "";
 
-		strcpy(buf,text);
+		buf = text;
 
-		unsigned int length;
-		length = strlen(buf);
+		size_t length = buf.length();
 
 		// before the text is copied, check if that string is too long.
 		if(length > w-4)
 		{
-			copy(text,text+w-7,OptionTextList->text);
-			strcat(OptionTextList->text,"...");
+			OptionTextList->text = text.substr(0, w-7);
+			OptionTextList->text += "...";
 		}
 		else
 		{
-			strcpy(OptionTextList->text,text);
+			OptionTextList->text = text;
 		}
 
 		number_of_options = 1;
@@ -124,41 +122,41 @@ void CDialog::addOptionText(const char *text)
 
 		curTextList = (stTextList*) curTextList->nextElement;
 
-		memset(curTextList->text,0, TEXT_LENGTH);
+		curTextList->text = "";
 
 		number_of_options++;
 
-		strcpy(buf,text);
+		buf = text;
 
-		unsigned int length;
-		length = strlen(buf);
+		size_t length = buf.length();
 
 		// before the text is copied, check if that string is too long.
 		if(length > w-4)
 		{
-			copy(text,text+w-7,curTextList->text);
-			strcat(curTextList->text,"...");
+			curTextList->text = text.substr(0, w-7);
+			curTextList->text += "...";
 		}
 		else
 		{
-			strcpy(curTextList->text,text);
+			curTextList->text = text;
 		}
 		curTextList->nextElement = NULL;
 	}
 }
 
-void CDialog::setOptionText(unsigned int pos, const char *text)
+void CDialog::setOptionText(unsigned int pos, const std::string& text)
 {
 	unsigned int i;
-	stTextList *curTextList;
+	stTextList *curTextList = OptionTextList;
 
-	curTextList = OptionTextList;
-
-	for(i=0 ; i<pos ; i++)
-		curTextList = (stTextList*) curTextList->nextElement;
-
-	memset(curTextList->text,0,TEXT_LENGTH);
-	strcpy(curTextList->text,text);
+	for(i=0 ; i<pos ; i++) {
+		if(!curTextList)
+			// TODO: print error
+			return;
+		curTextList = curTextList->nextElement;
+	}
+	
+	curTextList->text = text;
 }
 
 void CDialog::setDimensions(int rectx, int recty, int rectw, int recth)
@@ -197,7 +195,7 @@ void CDialog::renderDialog()
 
 	while(curTextList != NULL)
 	{
-		g_pGraphics->sb_font_draw((unsigned char*)(curTextList->text), (x+3)<<3, (y+i+1)<<3);
+		g_pGraphics->sb_font_draw(curTextList->text, (x+3)<<3, (y+i+1)<<3);
 		curTextList = (stTextList*) curTextList->nextElement;
 		i++;
 		if(i >= h-2)
@@ -287,7 +285,7 @@ void CDialog::renderOpenDialogAnimation(int x,int y, int w, int h)
 	isanimated = false;
 }
 
-char *CDialog::getOptionString(unsigned int pos)
+std::string CDialog::getOptionString(unsigned int pos)
 {
 	unsigned int i;
 	stTextList *curTextList;
@@ -327,7 +325,7 @@ bool CDialog::setNextSelection()
 	int i=0;
 	if(selection+1 < number_of_options)
 	{
-		while(strcmp(getOptionString(selection+i+1),"") == 0)
+		while(getOptionString(selection+i+1) == "")
 			i++;
 
 		selection += i;
@@ -343,7 +341,7 @@ bool CDialog::setPrevSelection()
 	int i=0;
 	if(selection-1 > 0)
 	{
-		while(strcmp(getOptionString(selection-i-1),"") == 0)
+		while(getOptionString(selection-i-1) == "")
 			i++;
 
 		selection -= i;
