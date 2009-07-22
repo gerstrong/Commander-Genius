@@ -602,7 +602,6 @@ int c;
    for(i=0;i<text.size();i++)
    {
      c = text[i];
-     if (!c) break;
      if (c!=13)
      {
        if (highlight) c|=128;
