@@ -43,12 +43,11 @@ bool CExeFile::readData()
 
 	File.close();
 
-	vector<unsigned char> *decdata;
-	decdata = new vector<unsigned char>;
+	vector<unsigned char> decdata;
 
-	if(unlzexe(m_data_temp, decdata))
+	if(unlzexe(m_data_temp, &decdata))
 	{
-		m_datasize = decdata->size();
+		m_datasize = decdata.size();
 		m_data = new unsigned char[m_datasize];
 		memcpy(m_data, &decdata[0], m_datasize);
 	}
@@ -59,9 +58,6 @@ bool CExeFile::readData()
 		memcpy(m_data, m_data_temp+512,m_datasize);
 	}
 	delete m_data_temp;
-
-	if(!decdata->empty()) decdata->clear();
-	delete decdata;
 
 	return true;
 }
