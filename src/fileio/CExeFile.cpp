@@ -47,7 +47,7 @@ bool CExeFile::readData()
 	{
 		m_datasize = decdata.size();
 		m_data = new unsigned char[m_datasize];
-		memcpy(m_data, decdata->data(), m_datasize);
+		memcpy(m_data, &decdata[0], m_datasize);
 	}
 	else
 	{
