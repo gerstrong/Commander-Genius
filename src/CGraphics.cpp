@@ -300,6 +300,7 @@ unsigned int xstart,ystart;
 
 void CGraphics::drawCharacter(int x, int y, int f)
 {
+	assert(f >= 0 && f < 256);
 unsigned char xa,ya;
 
   for(ya=0;ya<8;ya++)
@@ -596,12 +597,11 @@ int c;
 void CGraphics::drawFont(const std::string& text, int xoff, int yoff, int highlight)
 {
 unsigned int i,x=xoff,y;
-int c;
 
    y = yoff;
    for(i=0;i<text.size();i++)
    {
-     c = text[i];
+     unsigned char c = text[i];
      if (c!=13)
      {
        if (highlight) c|=128;

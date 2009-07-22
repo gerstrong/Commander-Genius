@@ -18,6 +18,7 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include "StringUtils.h"
+#include "Debug.h"
 
 extern CPlayer *Player;
 
@@ -751,15 +752,14 @@ unsigned int i;
 }
 
 // load strings from file *fname ("strings.dat")
-char loadstrings(const char *fname)
+char loadstrings(const std::string& fname)
 {
 FILE *fp;
 char state;
-char stName[80];
-char stString[1024];
+	std::string stName;
+	std::string stString;
 char stAttr[80];
 int i,c;
-int nameIndex, stringIndex;
 int attrIndex=0;
 int waitChar, gotoState;
 char highlight;
@@ -769,8 +769,8 @@ char highlight;
   #define STSTATE_READSTRING    2
   #define STSTATE_READATTR      3
 
-g_pLogFile->ftextOut("loadstrings(): Opening string file '%s'.<br>", fname);
-  fp = fopen(fname, "rb");
+g_pLogFile->ftextOut("loadstrings(): Opening string file '%s'.<br>", fname.c_str());
+  fp = fopen(fname.c_str(), "rb");
   if (!fp)
   {
 	  g_pLogFile->ftextOut("loadstrings(): String file unable to open.<br>");
@@ -786,8 +786,6 @@ g_pLogFile->ftextOut("loadstrings(): Opening string file '%s'.<br>", fname);
     strings[i].numAttributes = 0;
   }
 
-  nameIndex = 0;
-  stringIndex = 0;
   numStrings = 0;
   highlight = 0;
 
@@ -844,13 +842,11 @@ g_pLogFile->ftextOut("loadstrings(): Opening string file '%s'.<br>", fname);
       // read in the string name until we get to ']'
       if (c != ']')
       {
-        stName[nameIndex] = c;
-        nameIndex++;
+		  stName += (char)c;
       }
       else
       {
-        stName[nameIndex] = 0;  //null-terminate
-	highlight = 0;
+		  highlight = 0;
         // read any attributes until the CR
         state = STSTATE_READATTR;
         attrIndex = 0;
@@ -864,63 +860,59 @@ g_pLogFile->ftextOut("loadstrings(): Opening string file '%s'.<br>", fname);
         // you can put [ and ] in the string by using \( and \).
         // set a highlight (change font color to the +128 font) with \H
         // stop highlighting with \h
-        if (stringIndex>0 && stString[stringIndex-1]=='\\'+(highlight*128))
+        if (stString.size()>0 && stString[stString.size()-1]==char('\\'+(highlight*128)))
         {  // delimiter detected
           if (c=='(')
           {
-            stString[stringIndex - 1] = '[' + (highlight*128);
+            stString[stString.size()-1] = '[' + (highlight*128);
           }
           else if (c==')')
           {
-            stString[stringIndex - 1] = ']' + (highlight*128);
+            stString[stString.size()-1] = ']' + (highlight*128);
           }
           else if (c=='H')
           {
             highlight = 1;
-            stringIndex--;
+            stString.erase(stString.size()-1);
           }
           else if (c=='h')
           {
             highlight = 0;
-            stringIndex--;
+			stString.erase(stString.size()-1);
           }
           else if (c=='\\')
           {
-            stString[stringIndex - 1] = '\\' + (highlight*128);
+            stString[stString.size() - 1] = '\\' + (highlight*128);
           }
         }
         else
         { // normal non-delimited char
-          stString[stringIndex] = c;
-          if (highlight && c!=0 && c!=13)
-          {
-            stString[stringIndex] += 128;
-          }
-          stringIndex++;
+			stString += (char)c + ((highlight && c!=0 && c!=13) ? 128 : 0);
         }
       }
       else
       {
-        stString[stringIndex-1] = 0;  //null-terminate (cutting off final CR)
-
+//		  HexDump(GetConstIterator(stName), printOnLogger<notes>, 0);
+//		  HexDump(GetConstIterator(stString), printOnLogger<notes>, 0);
+//		  notes.flush();
         /* save the string to the strings[] structure */
 
         // copy the string info to the newly malloc()'d memory area
 		  strings[numStrings].name = stName;
 		  strings[numStrings].stringptr = stString;
-
+		  stName = "";
+		  stString = "";
+		  
         numStrings++;
         // read the name of the next string
         state = STSTATE_READNAME;
-        nameIndex = 0;
-        stringIndex = 0;
       }
       break;
     }
 
   } while(1);
 
-  g_pLogFile->ftextOut("loadstrings(): loaded %d strings from '%s'.<br>", numStrings, fname);
+  g_pLogFile->ftextOut("loadstrings(): loaded %d strings from '%s'.<br>", numStrings, fname.c_str());
   fclose(fp);
   return 0;
 }
@@ -949,13 +941,17 @@ int NumStringsFreed;
   return NumStringsFreed;
 }
 
-const char *MissingString = "MISSING STRING!";
+static void dumpstrings() {
+	notes << "Available strings: ";
+	for(int i=0;i<numStrings;i++)
+		notes << strings[i].name << ", ";
+	notes << endl;
+}
 
 // returns a pointer to the string with name 'name'
 std::string getstring(const std::string& name)
 {
-int i;
-  for(i=0;i<numStrings;i++)
+  for(int i=0;i<numStrings;i++)
   {
 	  if (name == strings[i].name)
     {
@@ -963,7 +959,9 @@ int i;
     }
   }
 
-  return MissingString;
+	//dumpstrings();
+	
+  return "UNKNOWN '" + name + "' STRING";
 }
 
 // because windows and linux read files differently, these is to function to get them correctly
