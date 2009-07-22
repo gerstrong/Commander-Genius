@@ -26,6 +26,9 @@
 #include <SDL.h>
 #include <iostream>
 #include <fstream>
+#include "StringUtils.h"
+
+
 using namespace std;
 
 #define SELMOVE_SPD         3
@@ -35,14 +38,13 @@ short openDlgStruct(stDlgStruct *pDlgStruct, stCloneKeenPlus *pCKP);
 void showmapatpos(int level, int xoff, int yoff, int wm, stCloneKeenPlus *pCKP)
 {
 int i;
-char levelname[MAX_STRING_LENGTH];
+	std::string levelname;
 g_pLogFile->ftextOut("showmapatpos(%d, %d, %d, %d);<br>",level,xoff,yoff,wm);
   pCKP->Control.levelcontrol.dark = 0;
   g_pGraphics->initPalette(pCKP->Control.levelcontrol.dark);
 
   initgame(pCKP);           // reset scroll
-  memset(levelname,0,MAX_STRING_LENGTH*sizeof(char));
-  sprintf(levelname, "level%02d.ck%d", level, pCKP->Control.levelcontrol.episode);
+	levelname = "level" + FixedWidthStr_LeftFill(itoa(level), 2, '0') + ".ck" + itoa(pCKP->Control.levelcontrol.episode);
 
   short numsel;
   if(pCKP->Resources.GameSelected == 0 ) // First time startup. No game has been chosen
@@ -77,8 +79,8 @@ short loadResourcesforStartMenu(stCloneKeenPlus *pCKP, CGame *Game)
 
 			 pCKP->numGames++;
 			 NewGameData = new stGameData[pCKP->numGames];
-			 memset(NewGameData,0,pCKP->numGames*sizeof(stGameData));
-			 memcpy(NewGameData,pCKP->GameData,(pCKP->numGames-1)*sizeof(stGameData));
+			 for(int i = 0; i < pCKP->numGames-1; ++i)
+				 NewGameData[i] = pCKP->GameData[i];
 
 			 delete[] pCKP->GameData;
 
@@ -86,7 +88,7 @@ short loadResourcesforStartMenu(stCloneKeenPlus *pCKP, CGame *Game)
 		 }
 		 if(strncmp(line.data(),"Name=",strlen("Name=")) == 0)
 		 {
-			 line.copy(pCKP->GameData[pCKP->numGames-1].Name,line.length()-strlen("Name="),strlen("Name="));
+			 pCKP->GameData[pCKP->numGames-1].Name = line.substr(strlen("Name="));
 		 }
 		 if(strncmp(line.data(),"Episode=",strlen("Episode=")) == 0)
 		 {
@@ -95,7 +97,7 @@ short loadResourcesforStartMenu(stCloneKeenPlus *pCKP, CGame *Game)
 		 if(strncmp(line.data(),"Path=",strlen("Path=")) == 0)
 		 {
 			 unsigned short l = strlen("Path=");
-			 line.copy(pCKP->GameData[pCKP->numGames-1].DataDirectory,line.length()-l,l);
+			 pCKP->GameData[pCKP->numGames-1].DataDirectory = line.substr(l);
  		 }
 	   }
 	   gamescfg.close();
@@ -1036,19 +1038,17 @@ void showPage(char *text, stCloneKeenPlus *pCKP, int textsize)
 	    {
 	    	if(buffer[i+(scroll>>3)][0]=='~') // Special Background Colour
 	    	{
-		    	char temp[39];
-		    	memset(temp,' ',38*sizeof(char));
-		    	temp[38]=0;
-		    	g_pGraphics->sb_color_font_draw((unsigned char*) temp, (dlgX+1)<<3, (((dlgY+i+1)<<3) -(scroll%8)),COLOUR_DARKRED,COLOUR_GREY);
-		    	g_pGraphics->sb_color_font_draw((unsigned char*) buffer[i+(scroll>>3)]+1, (dlgX+1)<<3, (((dlgY+i+1)<<3) -(scroll%8)),COLOUR_DARKRED,COLOUR_GREY);
+				std::string temp(38, ' ');
+		    	g_pGraphics->sb_color_font_draw(temp, (dlgX+1)<<3, (((dlgY+i+1)<<3) -(scroll%8)),COLOUR_DARKRED,COLOUR_GREY);
+		    	g_pGraphics->sb_color_font_draw(buffer[i+(scroll>>3)]+1, (dlgX+1)<<3, (((dlgY+i+1)<<3) -(scroll%8)),COLOUR_DARKRED,COLOUR_GREY);
 	    	}
 	    	else
 	    	{
-	    		g_pGraphics->sb_font_draw((unsigned char*) buffer[i+(scroll>>3)], (dlgX+1)<<3, (((dlgY+i+1)<<3) -(scroll%8)));
+	    		g_pGraphics->sb_font_draw(buffer[i+(scroll>>3)], (dlgX+1)<<3, (((dlgY+i+1)<<3) -(scroll%8)));
 	    	}
 	    }
-	    g_pGraphics->sb_font_draw((unsigned char*) coverline, (dlgX+1)<<3, dlgY); // Upper and lower edge Update
-	    g_pGraphics->sb_font_draw((unsigned char*) coverline, (dlgX+1)<<3, (dlgY+dlgH-1)<<3);
+	    g_pGraphics->sb_font_draw(coverline, (dlgX+1)<<3, dlgY); // Upper and lower edge Update
+	    g_pGraphics->sb_font_draw(coverline, (dlgX+1)<<3, (dlgY+dlgH-1)<<3);
 
 	    // If user presses up or down
 	    if (g_pInput->getHoldedCommand(0,IC_DOWN) || g_pInput->getHoldedCommand(1,IC_DOWN))
@@ -1400,8 +1400,8 @@ stLevelControl *p_levelcontrol;
   boxH = KEENSLEFT_H + (numplayers * 2);
 
   dialogbox(KEENSLEFT_X,boxY,KEENSLEFT_W,boxH);
-  g_pGraphics->drawFont( (unsigned char*) getstring("LIVES_LEFT_BACKGROUND"),(KEENSLEFT_X+1)*8,(boxY+1)*8,0);
-  g_pGraphics->drawFont( (unsigned char*) getstring("LIVES_LEFT"),((KEENSLEFT_X+7)*8)+4,(boxY+1)*8,0);
+  g_pGraphics->drawFont( getstring("LIVES_LEFT_BACKGROUND"),(KEENSLEFT_X+1)*8,(boxY+1)*8,0);
+  g_pGraphics->drawFont( getstring("LIVES_LEFT"),((KEENSLEFT_X+7)*8)+4,(boxY+1)*8,0);
   y = ((boxY+2)*8)+4;
   if (numplayers>1) y--;
   for(p=0;p<numplayers;p++)

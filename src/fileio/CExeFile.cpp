@@ -6,12 +6,15 @@
  */
 
 #include "CExeFile.h"
-#include <string.h>
+#include <cstring>
 #include <iostream>
 #include <fstream>
+#include "../StringUtils.h"
+
+
 using namespace std;
 
-CExeFile::CExeFile(int episode, char *datadirectory) {
+CExeFile::CExeFile(int episode, const std::string& datadirectory) {
 	m_episode = episode;
 	m_datadirectory = datadirectory;
 	m_data = NULL;
@@ -23,12 +26,11 @@ CExeFile::~CExeFile() {
 
 bool CExeFile::readData()
 {
-	char filename[256];
 	unsigned char *m_data_temp;
 
-	sprintf(filename, "data/%skeen%d.exe", m_datadirectory, m_episode);
+	std::string filename = "data/" + m_datadirectory + "keen" + itoa(m_episode) + ".exe";
 
-	ifstream File(filename,ios::binary);
+	std::ifstream File(filename.c_str(),ios::binary);
 
 	if(!File) return false;
 

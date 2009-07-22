@@ -9,9 +9,7 @@
 #include <fstream>
 #include <string>
 
-using namespace std;
-
-#include <string.h>
+#include <cstring>
 
 #include "../keen.h"
 #include "../include/menu.h"
@@ -20,9 +18,13 @@ using namespace std;
 #include "../sdl/CInput.h"
 #include "../sdl/CTimer.h"
 #include "../CGraphics.h"
+#include "../StringUtils.h"
 
 #define HIGHSCORETABLE_X			1344
 #define HIGHSCORETABLE_Y			32
+
+using namespace std;
+
 
 CHighScores::CHighScores(stCloneKeenPlus *poutsideCKP) {
 	// Set default Scores
@@ -124,8 +126,8 @@ char CHighScores::showHighScore(void)
 
 			for( i=0 ; i<7 ; i++ )
 			{
-				g_pGraphics->sb_color_font_draw((unsigned char*) Name[i],40,64+(i<<4),4,7);
-				g_pGraphics->sb_color_font_draw((unsigned char*) Score[i],200-(strlen(Score[i])<<3),64+(i<<4),4,7);
+				g_pGraphics->sb_color_font_draw(Name[i],40,64+(i<<4),4,7);
+				g_pGraphics->sb_color_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4),4,7);
 				if(Extra[i][0] == true)
 					g_pGraphics->drawTile(32,90+(i<<4),ItemTiles[0]);
 				if(Extra[i][1] == true)
@@ -140,19 +142,19 @@ char CHighScores::showHighScore(void)
 		{
 			for( i=0 ; i<7 ; i++ )
 			{
-				char buf[2];
-				g_pGraphics->sb_color_font_draw((unsigned char*) Name[i],40,64+(i<<4),4,7);
-				g_pGraphics->sb_color_font_draw((unsigned char*) Score[i],200-(strlen(Score[i])<<3),64+(i<<4),4,7);
-				sprintf(buf,"%d",Cities[i]);
-				g_pGraphics->sb_color_font_draw((unsigned char*) buf,250,64+(i<<4),4,7);
+				std::string buf;
+				g_pGraphics->sb_color_font_draw(Name[i],40,64+(i<<4),4,7);
+				g_pGraphics->sb_color_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4),4,7);
+				buf = itoa(Cities[i]);
+				g_pGraphics->sb_color_font_draw(buf,250,64+(i<<4),4,7);
 			}
 		}
 		else
 		{
 			for( i=0 ; i<7 ; i++ )
 			{
-				g_pGraphics->sb_color_font_draw((unsigned char*) Name[i],40,64+(i<<4),4,7);
-				g_pGraphics->sb_color_font_draw((unsigned char*) Score[i],200-(strlen(Score[i])<<3),64+(i<<4),4,7);
+				g_pGraphics->sb_color_font_draw(Name[i],40,64+(i<<4),4,7);
+				g_pGraphics->sb_color_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4),4,7);
 			}
 		}
 
@@ -245,19 +247,19 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 	{
 		for( i=0 ; i<7 ; i++ )
 		{
-			char buf[2];
-			g_pGraphics->sb_color_font_draw((unsigned char*) Name[i],40,64+(i<<4),4,7);
-			g_pGraphics->sb_color_font_draw((unsigned char*) Score[i],200-(strlen(Score[i])<<3),64+(i<<4),4,7);
-			sprintf(buf,"%d",Cities[i]);
-			g_pGraphics->sb_color_font_draw((unsigned char*) buf,250,64+(i<<4),4,7);
+			std::string buf;
+			g_pGraphics->sb_color_font_draw(Name[i],40,64+(i<<4),4,7);
+			g_pGraphics->sb_color_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4),4,7);
+			buf = itoa(Cities[i]);
+			g_pGraphics->sb_color_font_draw(buf,250,64+(i<<4),4,7);
 		}
 	}
 	else
 	{
 		for( i=0 ; i<7 ; i++ )
 		{
-			g_pGraphics->sb_color_font_draw((unsigned char*) Name[i],40,64+(i<<4),4,7);
-			g_pGraphics->sb_color_font_draw((unsigned char*) Score[i],200-(strlen(Score[i])<<3),64+(i<<4),4,7);
+			g_pGraphics->sb_color_font_draw(Name[i],40,64+(i<<4),4,7);
+			g_pGraphics->sb_color_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4),4,7);
 		}
 	}
 
@@ -311,7 +313,7 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 		if(g_pInput->getPressedKey(KBCKSPCE) && (WrittenName.length() > 0))
 		{
 			memset(buf,0,256);
-			g_pGraphics->sb_color_font_draw((unsigned char*) "              ",40,64+(place<<4),4,7);
+			g_pGraphics->sb_color_font_draw("              ",40,64+(place<<4),4,7);
 			WrittenName.erase(WrittenName.length()-1);
 			WrittenName.copy(buf,WrittenName.length(),0);
 			memset(Name[place],0,16);
@@ -329,10 +331,10 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 		for( i=0 ; i<7 ; i++ )
 		{
 			if(i != place)
-				g_pGraphics->sb_color_font_draw((unsigned char*) Name[i],40,64+(i<<4),4,7);
+				g_pGraphics->sb_color_font_draw(Name[i],40,64+(i<<4),4,7);
 			else
-				g_pGraphics->sb_color_font_draw((unsigned char*) buf,40,64+(i<<4),4,7);
-			g_pGraphics->sb_color_font_draw((unsigned char*) Score[i],200-(strlen(Score[i])<<3),64+(i<<4),4,7);
+				g_pGraphics->sb_color_font_draw(buf,40,64+(i<<4),4,7);
+			g_pGraphics->sb_color_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4),4,7);
 
 			if(pCKP->Control.levelcontrol.episode == 1)
 			{
@@ -364,9 +366,7 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 char CHighScores::loadHighScoreTable(void)
 {
 	string sBuf;
-	char chBuf[256];
-
-	sprintf(chBuf,"%d",Episode);
+	std::string chBuf = itoa(Episode);
 
 	sBuf.append("data/");
 	sBuf.append(DataDirectory);

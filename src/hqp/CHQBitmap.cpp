@@ -22,9 +22,9 @@ CHQBitmap::~CHQBitmap() {
 	if(m_blackscreen){ SDL_FreeSurface(m_blackscreen); m_blackscreen = NULL;}
 }
 
-bool CHQBitmap::loadImage(const char *pFilename, int wsize, int hsize)
+bool CHQBitmap::loadImage(const std::string& pFilename, int wsize, int hsize)
 {
-	SDL_Surface *BitmapSurface = SDL_LoadBMP(pFilename);
+	SDL_Surface *BitmapSurface = SDL_LoadBMP(pFilename.c_str());
 
 	m_active = false;
 

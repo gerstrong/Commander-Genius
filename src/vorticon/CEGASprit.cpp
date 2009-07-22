@@ -71,12 +71,11 @@ bool CEGASprit::loadHead(char *data)
     return true;
 }
 
-bool CEGASprit::loadData(const char *filename, bool compresseddata)
+bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 {
-	FILE* latchfile;
 	char *RawData;
 
-	latchfile = fopen(filename,"rb");
+	FILE* latchfile = fopen(filename.c_str(),"rb");
 
 	if(!latchfile)
 		return false;

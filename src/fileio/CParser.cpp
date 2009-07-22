@@ -83,7 +83,7 @@ bool CParser::saveParseFile(void) // open, write on the file and close
 
 	if((fp=fopen(CONFIGFILENAME,"wt")))
 	{
-		list<char*>::iterator i;
+		std::list<char*>::iterator i;
 
 		for(i=m_filebuffer.begin() ; i != m_filebuffer.end() ; ++i )
 			fprintf(fp,"%s",*i);
@@ -104,7 +104,7 @@ bool CParser::saveParseFile(void) // open, write on the file and close
 int CParser::getIntValue(const char *keyword, const char *category)
 {
 	// The getter will search for category and than for keyword. After that, read the value and return it!
-	list<char*>::iterator i;
+	std::list<char*>::iterator i;
 
 	char *line;
 
@@ -152,7 +152,7 @@ void CParser::saveIntValue(const char *keyword, const char *category,int value)
 	// 2.- category exists, but keyword not
 	// 3.- category and keyword exist, only the value must be changed
 
-	list<char*>::iterator i;
+	std::list<char*>::iterator i;
 
 
 	char *line;

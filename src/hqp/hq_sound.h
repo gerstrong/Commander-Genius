@@ -5,15 +5,21 @@
  *      Author: gerstrong
  */
 
-#include <SDL.h>
+#ifndef __CG_HQ_SOUND_H__
+#define __CG_HQ_SOUND_H__
 
-typedef struct stHQSound
+#include <SDL.h>
+#include <string>
+
+struct stHQSound
 {
 	Uint8 *sound_buffer;
 	Uint32 sound_len;
 	int sound_pos;
 	bool enabled;
-} stHQSound;
+};
 
-short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const char *soundfile);
+short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::string& soundfile);
 void HQSndDrv_Unload(stHQSound *psound);
+
+#endif

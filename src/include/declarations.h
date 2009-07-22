@@ -1,8 +1,12 @@
+#ifndef __CG_DECLARATIONS_H__
+#define __CG_DECLARATIONS_H__
+
+#include <string>
+#include <SDL.h>
 
 #define MAX_COMMANDS 8
 #define MAX_SOUND_LENGTH      1024
 #define MAX_SOUNDS            50
-#define MAX_STRING_LENGTH	  256
 
 
 #define MAX_NUMBER_OF_FILES     100
@@ -68,10 +72,11 @@ typedef struct stControl
 
 typedef struct stGameData
 {
-  char DataDirectory[MAX_STRING_LENGTH];
-  short Episode;
-  char Name[MAX_STRING_LENGTH];
-  char FileList[MAX_NUMBER_OF_FILES][MAX_STRING_LENGTH];
+	std::string DataDirectory;
+	short Episode;
+	std::string Name;
+	std::string FileList[MAX_NUMBER_OF_FILES];
+	stGameData() : Episode(0) {}
 } stGameData;
 
 
@@ -106,3 +111,5 @@ typedef struct stNewPlayer
 {
 	stCommand Command;
 } stNewPlayer;
+
+#endif

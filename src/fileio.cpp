@@ -17,6 +17,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <dirent.h>
+#include "StringUtils.h"
 
 extern CPlayer *Player;
 
@@ -35,7 +36,7 @@ void addmaptile(unsigned int t)
   }
 }
 
-bool renameFilenamesLowerCase(const char *dir_name)
+bool renameFilenamesLowerCase(const std::string& dir_name)
 {
 #ifdef TARGET_WIN32
 	return true;
@@ -46,7 +47,7 @@ bool renameFilenamesLowerCase(const char *dir_name)
 	struct dirent *dp;
 
 	memset(newname,0,256);
-	strcpy(buf,dir_name);
+	strcpy(buf,dir_name.c_str());
 
 	if(buf[0] == '\0')
 		strcpy(buf,"./");
@@ -92,39 +93,38 @@ short checkConsistencyofGameData(stGameData *p_GameData)
 	FILE *fp;
 
 	// Let's define which files need to be read!
-	memset(p_GameData->FileList,0,MAX_NUMBER_OF_FILES*MAX_STRING_LENGTH);
 	if(p_GameData->Episode >= 1 && p_GameData->Episode <= 3)
 	{
-		sprintf(p_GameData->FileList[1],"keen%d.exe",p_GameData->Episode);
-		sprintf(p_GameData->FileList[2],"egahead.ck%d",p_GameData->Episode);
-		sprintf(p_GameData->FileList[3],"egasprit.ck%d",p_GameData->Episode);
-		sprintf(p_GameData->FileList[4],"egalatch.ck%d",p_GameData->Episode);
-		sprintf(p_GameData->FileList[5],"finale.ck%d",p_GameData->Episode);
+		p_GameData->FileList[1] = "keen" + itoa(p_GameData->Episode) + ".exe";
+		p_GameData->FileList[2] = "egahead.ck" + itoa(p_GameData->Episode);
+		p_GameData->FileList[3] = "egasprit.ck" + itoa(p_GameData->Episode);
+		p_GameData->FileList[4] = "egalatch.ck" + itoa(p_GameData->Episode);
+		p_GameData->FileList[5] = "finale.ck" + itoa(p_GameData->Episode);
 
 		// Levels!
-		sprintf(p_GameData->FileList[6],"level01.ck%d",p_GameData->Episode);
-		sprintf(p_GameData->FileList[7],"level02.ck%d",p_GameData->Episode);
-		sprintf(p_GameData->FileList[8],"level03.ck%d",p_GameData->Episode);
-		sprintf(p_GameData->FileList[9],"level04.ck%d",p_GameData->Episode);
-		sprintf(p_GameData->FileList[10],"level05.ck%d",p_GameData->Episode);
-		sprintf(p_GameData->FileList[11],"level06.ck%d",p_GameData->Episode);
-		sprintf(p_GameData->FileList[12],"level07.ck%d",p_GameData->Episode);
-		sprintf(p_GameData->FileList[13],"level08.ck%d",p_GameData->Episode);
-		sprintf(p_GameData->FileList[14],"level09.ck%d",p_GameData->Episode);
-		sprintf(p_GameData->FileList[15],"level10.ck%d",p_GameData->Episode);
-		sprintf(p_GameData->FileList[16],"level11.ck%d",p_GameData->Episode);
-		sprintf(p_GameData->FileList[17],"level12.ck%d",p_GameData->Episode);
-		sprintf(p_GameData->FileList[18],"level13.ck%d",p_GameData->Episode);
-		sprintf(p_GameData->FileList[19],"level14.ck%d",p_GameData->Episode);
-		sprintf(p_GameData->FileList[20],"level15.ck%d",p_GameData->Episode);
-		sprintf(p_GameData->FileList[21],"level16.ck%d",p_GameData->Episode);
-		sprintf(p_GameData->FileList[22],"level80.ck%d",p_GameData->Episode);
-		sprintf(p_GameData->FileList[23],"level81.ck%d",p_GameData->Episode);
-		sprintf(p_GameData->FileList[24],"level90.ck%d",p_GameData->Episode);
+		p_GameData->FileList[6] = "level01.ck" + itoa(p_GameData->Episode);
+		p_GameData->FileList[7] = "level02.ck" + itoa(p_GameData->Episode);
+		p_GameData->FileList[8] = "level03.ck" + itoa(p_GameData->Episode);
+		p_GameData->FileList[9] = "level04.ck" + itoa(p_GameData->Episode);
+		p_GameData->FileList[10] = "level05.ck" + itoa(p_GameData->Episode);
+		p_GameData->FileList[11] = "level06.ck" + itoa(p_GameData->Episode);
+		p_GameData->FileList[12] = "level07.ck" + itoa(p_GameData->Episode);
+		p_GameData->FileList[13] = "level08.ck" + itoa(p_GameData->Episode);
+		p_GameData->FileList[14] = "level09.ck" + itoa(p_GameData->Episode);
+		p_GameData->FileList[15] = "level10.ck" + itoa(p_GameData->Episode);
+		p_GameData->FileList[16] = "level11.ck" + itoa(p_GameData->Episode);
+		p_GameData->FileList[17] = "level12.ck" + itoa(p_GameData->Episode);
+		p_GameData->FileList[18] = "level13.ck" + itoa(p_GameData->Episode);
+		p_GameData->FileList[19] = "level14.ck" + itoa(p_GameData->Episode);
+		p_GameData->FileList[20] = "level15.ck" + itoa(p_GameData->Episode);
+		p_GameData->FileList[21] = "level16.ck" + itoa(p_GameData->Episode);
+		p_GameData->FileList[22] = "level80.ck" + itoa(p_GameData->Episode);
+		p_GameData->FileList[23] = "level81.ck" + itoa(p_GameData->Episode);
+		p_GameData->FileList[24] = "level90.ck" + itoa(p_GameData->Episode);
 
 		// Other
 		if(p_GameData->Episode == 1)
-			sprintf(p_GameData->FileList[24],"sounds.ck%d",p_GameData->Episode);
+			p_GameData->FileList[24] = "sounds.ck" + itoa(p_GameData->Episode);
 	}
 
 	// Rename all the the files in the directory to lower case
@@ -135,27 +135,24 @@ short checkConsistencyofGameData(stGameData *p_GameData)
 	}
 
 	// Finally check if they really exist!
-	char buf[MAX_STRING_LENGTH];
 	int c=0;
 	for(c = 0 ; c < MAX_NUMBER_OF_FILES ; c++)
 	{
 		if(p_GameData->FileList[c][0] == 0) // If there are no more files!
 			break;
 
-		memset(buf,0,MAX_STRING_LENGTH*sizeof(char));
-		strcat(buf,"data/");
-		strcat(buf,p_GameData->DataDirectory);
-		if(*(p_GameData->DataDirectory) != 0)
-			strcat(buf,"/");
-		strcat(buf,p_GameData->FileList[c]);
+		std::string buf = "data/" + p_GameData->DataDirectory;
+		if(p_GameData->DataDirectory != "")
+			buf += "/";
+		buf += p_GameData->FileList[c];
 
-		if((fp = fopen(buf,"r")) != NULL)
+		if((fp = fopen(buf.c_str(),"r")) != NULL)
 		{
 			fclose(fp);
 		}
 		else
 		{
-			g_pLogFile->ftextOut("Error! File \"%s\" was not found! Please add it to the configured directory.<br>", p_GameData->FileList[c]);
+			g_pLogFile->ftextOut("Error! File \"%s\" was not found! Please add it to the configured directory.<br>", p_GameData->FileList[c].c_str());
 			p_GameData->Episode = -1;
 			ok++;
 		}
@@ -526,10 +523,9 @@ unsigned int temp1, temp2, temp3, temp4;
   return (temp4<<24) | (temp3<<16) | (temp2<<8) | temp1;
 }
 
-unsigned int loadmap(char filename[MAX_STRING_LENGTH], char *path, int lvlnum, int isworldmap, stCloneKeenPlus *pCKP)
+unsigned int loadmap(const std::string& filename, const std::string& path, int lvlnum, int isworldmap, stCloneKeenPlus *pCKP)
 {
 FILE *fp;
-char fname[256];
 int t;
 unsigned int c;
 int numruns = 0;
@@ -539,20 +535,17 @@ int resetcnt, resetpt;
   NessieAlreadySpawned = 0;
   map.isworldmap = isworldmap;
 
-  char buffer[256];
-
-  formatPathString(buffer, path);
-
-  sprintf(fname, "%s%s", buffer, filename);
-  fp = fopen(fname, "rb");
+	std::string buffer = formatPathString(path);
+	std::string fname = buffer + filename;
+  fp = fopen(fname.c_str(), "rb");
   if (!fp)
   {
     // only record this error message on build platforms that log errors
     // to a file and not to the screen.
-	  g_pLogFile->ftextOut("loadmap(): unable to open file %s<br>", fname);
+	  g_pLogFile->ftextOut("loadmap(): unable to open file %s<br>", fname.c_str());
     return 1;
   }
-  g_pLogFile->ftextOut("loadmap(): file %s opened. Loading...<br>", fname);
+  g_pLogFile->ftextOut("loadmap(): file %s opened. Loading...<br>", fname.c_str());
 
     // decompress map RLEW data
   curmapx = curmapy = mapdone = 0;
@@ -562,7 +555,7 @@ int resetcnt, resetpt;
 
  if(filebuf == NULL)
  {
-	 g_pLogFile->ftextOut("loadmap(): unable to allocate memory for unpacking the level file<br>", fname);
+	 g_pLogFile->ftextOut("loadmap(): unable to allocate memory for unpacking the level file<br>", fname.c_str());
 	    return 1;
  }
 
@@ -640,6 +633,7 @@ int resetcnt, resetpt;
 
     if((fp=fopen("data/hqp/music/table.cfg","rt")) != NULL)
     {
+		static const int MAX_STRING_LENGTH = 256;
     	char buf1[MAX_STRING_LENGTH];
     	char buf2[MAX_STRING_LENGTH];
 
@@ -650,7 +644,7 @@ int resetcnt, resetpt;
     	{
     		fscanf(fp,"%s",buf1);
 
-    		if(strcmp(buf1,filename) == 0)
+    		if(strcmp(buf1,filename.c_str()) == 0)
     		{
     			fscanf(fp,"%s",buf2);
     			break;
@@ -761,16 +755,14 @@ char loadstrings(const char *fname)
 {
 FILE *fp;
 char state;
-unsigned char stName[80];
-unsigned char stString[1024];
-unsigned char stAttr[80];
+char stName[80];
+char stString[1024];
+char stAttr[80];
 int i,c;
 int nameIndex, stringIndex;
 int attrIndex=0;
 int waitChar, gotoState;
 char highlight;
-int RAMSize;
-char *RAMPtr;
 
   #define STSTATE_WAITCHAR      0
   #define STSTATE_READNAME      1
@@ -789,8 +781,8 @@ g_pLogFile->ftextOut("loadstrings(): Opening string file '%s'.<br>", fname);
   // let us know which ones are in use (and need to be free()d at shutdown)
   for(i=0;i<MAX_STRINGS;i++)
   {
-    strings[i].name = NULL;
-    strings[i].stringptr = NULL;
+    strings[i].name = "";
+    strings[i].stringptr = "";
     strings[i].numAttributes = 0;
   }
 
@@ -913,24 +905,9 @@ g_pLogFile->ftextOut("loadstrings(): Opening string file '%s'.<br>", fname);
 
         /* save the string to the strings[] structure */
 
-        // we're going to malloc() an area and copy the name, then the string,
-        // into it. We'll need room for both the name and the string, plus
-        // null-terminators for each.
-        RAMSize = strlen( (char*) stName) + strlen((char*)stString) + 2;
-        RAMPtr = (char*) malloc(RAMSize);
-        if (!RAMPtr)
-        {
-          g_pLogFile->ftextOut(RED,"loadstrings(): Could not allocate memory for string '%s'<br>", stName);
-          return 1;
-        }
-
-        // assign our pointers
-        strings[numStrings].name = (unsigned char*) &RAMPtr[0];
-        strings[numStrings].stringptr = (unsigned char*) &RAMPtr[strlen((char*)stName)+1];
-
         // copy the string info to the newly malloc()'d memory area
-        memcpy(strings[numStrings].name, stName, strlen((char*)stName)+1);
-        memcpy(strings[numStrings].stringptr, stString, strlen((char*)stString)+1);
+		  strings[numStrings].name = stName;
+		  strings[numStrings].stringptr = stString;
 
         numStrings++;
         // read the name of the next string
@@ -956,11 +933,8 @@ int NumStringsFreed;
   NumStringsFreed = 0;
   for(i=0;i<MAX_STRINGS;i++)
   {
-    if (strings[i].name)
+    if (strings[i].name != "")
     {
-      // free the string name
-      free(strings[i].name);
-      strings[i].name = strings[i].stringptr = NULL;
       // free all attribute names
       for(j=0;j<strings[i].numAttributes;j++)
       {
@@ -978,49 +952,34 @@ int NumStringsFreed;
 const char *MissingString = "MISSING STRING!";
 
 // returns a pointer to the string with name 'name'
-char* getstring(const char *name)
+std::string getstring(const std::string& name)
 {
 int i;
   for(i=0;i<numStrings;i++)
   {
-    if (!strcmp((char*) name, (char*) strings[i].name))
+	  if (name == strings[i].name)
     {
-      return (char*) strings[i].stringptr;
+      return strings[i].stringptr;
     }
   }
 
-  return (char*) MissingString;
+  return MissingString;
 }
 
 // because windows and linux read files differently, these is to function to get them correctly
-void formatPathString(char *output, const char *path)
+std::string formatPathString(const std::string& path)
 {
-	char *buf;
-
-	strcpy(output,"data");
-
-	strcat(output,"/");
-
-	buf = strchr(path,'\r');
-
-	if(buf)
-		*buf=0; // Trim return caret
-
-	if(path[0] != 0 )
-	{
-		strcat(output,path);
-		strcat(output,"/");
-	}
-
+	size_t p = path.find('\r');
+	return "data/" + path.substr(0,p) + "/";
 }
 
 // returns attribute attrname of string stringname, or -1 if it doesn't exist.
-int GetStringAttribute(const char *stringName, const char *attrName)
+int GetStringAttribute(const std::string& stringName, const char *attrName)
 {
 int i,j;
   for(i=0;i<numStrings;i++)
   {
-    if (!strcmp((char*) stringName, (char*) strings[i].name))
+    if (stringName == strings[i].name)
     {
       // we found the string, now find the requested attribute
       for(j=0;j<strings[i].numAttributes;j++)

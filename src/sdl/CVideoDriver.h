@@ -21,7 +21,6 @@ struct st_resolution
 #include <SDL.h>
 #include <iostream>
 #include <list>
-using namespace std;
 
 inline bool LockSurface(SDL_Surface * bmp)  {
 	if (SDL_MUSTLOCK(bmp))
@@ -110,8 +109,8 @@ private:
 
 	st_resolution m_Resolution;
 
-	list<st_resolution> m_Resolutionlist;
-	list<st_resolution> :: iterator m_Resolution_pos;
+	std::list<st_resolution> m_Resolutionlist;
+	std::list<st_resolution> :: iterator m_Resolution_pos;
 
 	unsigned int Mode;
 	bool Fullscreen;

@@ -1,6 +1,6 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstring>
+#include <cstdlib>
 
 #ifdef TARGET_DOS
   #include <dpmi.h>
@@ -158,15 +158,15 @@ typedef struct stInventory
 // for strings loaded from "strings.dat"
 #define MAX_STRINGS             100
 #define MAX_ATTRIBUTES          16
-typedef struct stString
+struct stString
 {
-  unsigned char *name;    // pointer to malloc'd area containing string name
-  unsigned char *stringptr;    // pointer to malloc'd area containing string
+	std::string name;    // pointer to malloc'd area containing string name
+	std::string stringptr;    // pointer to malloc'd area containing string
 
   int numAttributes;
   unsigned char *attrnames[MAX_ATTRIBUTES+1];
   unsigned int attrvalues[MAX_ATTRIBUTES+1];
-} stString;
+};
 
 /* Structs used for different enemies data, these are in a union */
 typedef struct stYorpData

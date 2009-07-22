@@ -572,6 +572,7 @@ demoHeaderCorrupt: ;
 short readCommandLine(int argc, char *argv[], stCloneKeenPlus *pCKP)
 {
 	int i;
+	static const int MAX_STRING_LENGTH = 256;
 	char tempbuf[MAX_STRING_LENGTH];
 
 

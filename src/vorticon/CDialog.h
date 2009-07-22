@@ -8,13 +8,13 @@
 #ifndef CDIALOG_H_
 #define CDIALOG_H_
 
-#define TEXT_LENGTH 256
+#include <string>
 
-typedef struct stTextList
+struct stTextList
 {
-	char text[TEXT_LENGTH];
-	void *nextElement;
-}stTextList;
+	std::string text;
+	stTextList *nextElement;
+};
 
 class CDialog {
 public:
@@ -25,8 +25,8 @@ public:
 	void drawDialogbox(int x1, int y1, int w, int h);
 	void setDimensions(int rectx, int recty, int rectw, int recth);
 
-	void addOptionText(const char *text);
-	void setOptionText(unsigned int pos, const char *text);
+	void addOptionText(const std::string& text);
+	void setOptionText(unsigned int pos, const std::string& text);
 	void addSeparator(void);
 
 	bool setSelection(int value);
@@ -34,7 +34,7 @@ public:
 	bool setPrevSelection();
 
 	int getSelection(void);
-	char *getOptionString(unsigned int pos);
+	std::string getOptionString(unsigned int pos);
 
 	void renderOpenDialogAnimation(int x,int y, int w, int h);
 	void animateDialogBox(bool value);
