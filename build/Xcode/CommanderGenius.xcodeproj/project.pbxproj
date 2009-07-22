@@ -88,6 +88,14 @@
 		23D3EA841013AEB5001643FA /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D3EA831013AEB5001643FA /* OpenGL.framework */; };
 		23D3EA8D1013AEF3001643FA /* MacMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 23D3EA8C1013AEF3001643FA /* MacMain.m */; };
 		23D3EA921013AF1D001643FA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D3EA911013AF1D001643FA /* Cocoa.framework */; };
+		23D3EC40101696DF001643FA /* CExeFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3EC3A101696DF001643FA /* CExeFile.cpp */; };
+		23D3EC41101696DF001643FA /* CPatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3EC3C101696DF001643FA /* CPatcher.cpp */; };
+		23D3EC42101696DF001643FA /* CTileLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3EC3E101696DF001643FA /* CTileLoader.cpp */; };
+		23D3EC4D1016973A001643FA /* CEGAGraphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3EC431016973A001643FA /* CEGAGraphics.cpp */; };
+		23D3EC4E1016973A001643FA /* CEGALatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3EC451016973A001643FA /* CEGALatch.cpp */; };
+		23D3EC4F1016973A001643FA /* CEGASprit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3EC471016973A001643FA /* CEGASprit.cpp */; };
+		23D3EC501016973A001643FA /* CMessages.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3EC491016973A001643FA /* CMessages.cpp */; };
+		23D3EC511016973A001643FA /* CPlanes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3EC4B1016973A001643FA /* CPlanes.cpp */; };
 		8D0C4E8D0486CD37000505A6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0867D6AAFE840B52C02AAC07 /* InfoPlist.strings */; };
 		8D0C4E920486CD37000505A6 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20286C33FDCF999611CA2CEA /* Carbon.framework */; };
 /* End PBXBuildFile section */
@@ -238,8 +246,24 @@
 		23D3EA0C1013ABCA001643FA /* sounds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sounds.h; sourceTree = "<group>"; };
 		23D3EA691013AC7B001643FA /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = Library/Frameworks/SDL.framework; sourceTree = SDKROOT; };
 		23D3EA831013AEB5001643FA /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
-		23D3EA8C1013AEF3001643FA /* MacMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MacMain.m; sourceTree = "<group>"; };
+		23D3EA8C1013AEF3001643FA /* MacMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MacMain.m; path = ../build/Xcode/MacMain.m; sourceTree = "<group>"; };
 		23D3EA911013AF1D001643FA /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		23D3EC3A101696DF001643FA /* CExeFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CExeFile.cpp; sourceTree = "<group>"; };
+		23D3EC3B101696DF001643FA /* CExeFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CExeFile.h; sourceTree = "<group>"; };
+		23D3EC3C101696DF001643FA /* CPatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPatcher.cpp; sourceTree = "<group>"; };
+		23D3EC3D101696DF001643FA /* CPatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPatcher.h; sourceTree = "<group>"; };
+		23D3EC3E101696DF001643FA /* CTileLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CTileLoader.cpp; sourceTree = "<group>"; };
+		23D3EC3F101696DF001643FA /* CTileLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTileLoader.h; sourceTree = "<group>"; };
+		23D3EC431016973A001643FA /* CEGAGraphics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CEGAGraphics.cpp; sourceTree = "<group>"; };
+		23D3EC441016973A001643FA /* CEGAGraphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGAGraphics.h; sourceTree = "<group>"; };
+		23D3EC451016973A001643FA /* CEGALatch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CEGALatch.cpp; sourceTree = "<group>"; };
+		23D3EC461016973A001643FA /* CEGALatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGALatch.h; sourceTree = "<group>"; };
+		23D3EC471016973A001643FA /* CEGASprit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CEGASprit.cpp; sourceTree = "<group>"; };
+		23D3EC481016973A001643FA /* CEGASprit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGASprit.h; sourceTree = "<group>"; };
+		23D3EC491016973A001643FA /* CMessages.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMessages.cpp; sourceTree = "<group>"; };
+		23D3EC4A1016973A001643FA /* CMessages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMessages.h; sourceTree = "<group>"; };
+		23D3EC4B1016973A001643FA /* CPlanes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlanes.cpp; sourceTree = "<group>"; };
+		23D3EC4C1016973A001643FA /* CPlanes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPlanes.h; sourceTree = "<group>"; };
 		5048396D09E3307300765E4B /* CommanderGeniusProj.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = CommanderGeniusProj.xcconfig; sourceTree = "<group>"; };
 		5048396E09E3307300765E4B /* CommanderGeniusTarget.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = CommanderGeniusTarget.xcconfig; sourceTree = "<group>"; };
 		508344B209E5C41E0093A071 /* CommanderGenius.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CommanderGenius.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -273,7 +297,7 @@
 			isa = PBXGroup;
 			children = (
 				5048396909E3304600765E4B /* Configuration Files */,
-				20286C2AFDCF999611CA2CEA /* Sources */,
+				20286C2AFDCF999611CA2CEA /* src */,
 				20286C2CFDCF999611CA2CEA /* Resources */,
 				20286C32FDCF999611CA2CEA /* External Frameworks and Libraries */,
 				195DF8CFFE9D517E11CA2CBB /* Products */,
@@ -284,7 +308,7 @@
 			name = CommanderGenius;
 			sourceTree = "<group>";
 		};
-		20286C2AFDCF999611CA2CEA /* Sources */ = {
+		20286C2AFDCF999611CA2CEA /* src */ = {
 			isa = PBXGroup;
 			children = (
 				23D3EA8C1013AEF3001643FA /* MacMain.m */,
@@ -331,7 +355,8 @@
 				23D3E9FD1013ABCA001643FA /* vorbis */,
 				23D3E9FF1013ABCA001643FA /* vorticon */,
 			);
-			name = Sources;
+			name = src;
+			path = ../../src;
 			sourceTree = "<group>";
 		};
 		20286C2CFDCF999611CA2CEA /* Resources */ = {
@@ -392,6 +417,12 @@
 		23D3E9A11013ABCA001643FA /* fileio */ = {
 			isa = PBXGroup;
 			children = (
+				23D3EC3A101696DF001643FA /* CExeFile.cpp */,
+				23D3EC3B101696DF001643FA /* CExeFile.h */,
+				23D3EC3C101696DF001643FA /* CPatcher.cpp */,
+				23D3EC3D101696DF001643FA /* CPatcher.h */,
+				23D3EC3E101696DF001643FA /* CTileLoader.cpp */,
+				23D3EC3F101696DF001643FA /* CTileLoader.h */,
 				23D3E9A21013ABCA001643FA /* CParser.cpp */,
 				23D3E9A31013ABCA001643FA /* CParser.h */,
 				23D3E9A41013ABCA001643FA /* lzexe.cpp */,
@@ -544,6 +575,16 @@
 		23D3E9FF1013ABCA001643FA /* vorticon */ = {
 			isa = PBXGroup;
 			children = (
+				23D3EC431016973A001643FA /* CEGAGraphics.cpp */,
+				23D3EC441016973A001643FA /* CEGAGraphics.h */,
+				23D3EC451016973A001643FA /* CEGALatch.cpp */,
+				23D3EC461016973A001643FA /* CEGALatch.h */,
+				23D3EC471016973A001643FA /* CEGASprit.cpp */,
+				23D3EC481016973A001643FA /* CEGASprit.h */,
+				23D3EC491016973A001643FA /* CMessages.cpp */,
+				23D3EC4A1016973A001643FA /* CMessages.h */,
+				23D3EC4B1016973A001643FA /* CPlanes.cpp */,
+				23D3EC4C1016973A001643FA /* CPlanes.h */,
 				23D3EA001013ABCA001643FA /* CCredits.cpp */,
 				23D3EA011013ABCA001643FA /* CCredits.h */,
 				23D3EA021013ABCA001643FA /* CDialog.cpp */,
@@ -703,6 +744,14 @@
 				23D3EA571013ABCA001643FA /* CObject.cpp in Sources */,
 				23D3EA581013ABCA001643FA /* CPlayer.cpp in Sources */,
 				23D3EA8D1013AEF3001643FA /* MacMain.m in Sources */,
+				23D3EC40101696DF001643FA /* CExeFile.cpp in Sources */,
+				23D3EC41101696DF001643FA /* CPatcher.cpp in Sources */,
+				23D3EC42101696DF001643FA /* CTileLoader.cpp in Sources */,
+				23D3EC4D1016973A001643FA /* CEGAGraphics.cpp in Sources */,
+				23D3EC4E1016973A001643FA /* CEGALatch.cpp in Sources */,
+				23D3EC4F1016973A001643FA /* CEGASprit.cpp in Sources */,
+				23D3EC501016973A001643FA /* CMessages.cpp in Sources */,
+				23D3EC511016973A001643FA /* CPlanes.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -742,6 +791,7 @@
 					"_GLIBCXX_DEBUG_PEDANTIC=1",
 				);
 				HEADER_SEARCH_PATHS = /Library/Frameworks/SDL.framework/Headers;
+				OTHER_CFLAGS = "-DBUILD_SDL";
 			};
 			name = Debug;
 		};
@@ -756,6 +806,7 @@
 				GCC_PREFIX_HEADER = "";
 				HEADER_SEARCH_PATHS = /Library/Frameworks/SDL.framework/Headers;
 				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_CFLAGS = "-DBUILD_SDL";
 				PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES;
 			};
 			name = Release;
@@ -769,7 +820,6 @@
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "-DBUILD_SDL";
 				SDKROOT = macosx10.5;
 			};
 			name = Debug;
@@ -780,7 +830,6 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
-				OTHER_CFLAGS = "-DBUILD_SDL";
 				SDKROOT = macosx10.5;
 				SEPARATE_STRIP = YES;
 			};
