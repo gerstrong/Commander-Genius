@@ -70,14 +70,14 @@ typedef struct stControl
 	stLevelControl levelcontrol;
 } stControl;
 
-typedef struct stGameData
+struct stGameData
 {
 	std::string DataDirectory;
 	short Episode;
 	std::string Name;
 	std::string FileList[MAX_NUMBER_OF_FILES];
 	stGameData() : Episode(0) {}
-} stGameData;
+};
 
 
 typedef struct stResources

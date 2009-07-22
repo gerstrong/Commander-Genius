@@ -72,12 +72,10 @@ short loadResourcesforStartMenu(stCloneKeenPlus *pCKP, CGame *Game)
 	   {
 	     getline (gamescfg,line);
 
-		 if(strncmp(line.data(),"[",strlen("[")) == 0)
+		 if(line != "" && line[0] == '[')
 		 {
-			 stGameData *NewGameData;
-
 			 pCKP->numGames++;
-			 NewGameData = new stGameData[pCKP->numGames];
+			 stGameData* NewGameData = new stGameData[pCKP->numGames];
 			 for(int i = 0; i < pCKP->numGames-1; ++i)
 				 NewGameData[i] = pCKP->GameData[i];
 
@@ -85,15 +83,15 @@ short loadResourcesforStartMenu(stCloneKeenPlus *pCKP, CGame *Game)
 
 			 pCKP->GameData = NewGameData;
 		 }
-		 if(strncmp(line.data(),"Name=",strlen("Name=")) == 0)
+		 if(strncmp(line.c_str(),"Name=",strlen("Name=")) == 0)
 		 {
 			 pCKP->GameData[pCKP->numGames-1].Name = line.substr(strlen("Name="));
 		 }
-		 if(strncmp(line.data(),"Episode=",strlen("Episode=")) == 0)
+		 if(strncmp(line.c_str(),"Episode=",strlen("Episode=")) == 0)
 		 {
-		 	sscanf(line.data(),"Episode=%hd", &(pCKP->GameData[pCKP->numGames-1].Episode));
+		 	sscanf(line.c_str(),"Episode=%hd", &(pCKP->GameData[pCKP->numGames-1].Episode));
 		 }
-		 if(strncmp(line.data(),"Path=",strlen("Path=")) == 0)
+		 if(strncmp(line.c_str(),"Path=",strlen("Path=")) == 0)
 		 {
 			 unsigned short l = strlen("Path=");
 			 pCKP->GameData[pCKP->numGames-1].DataDirectory = line.substr(l);
