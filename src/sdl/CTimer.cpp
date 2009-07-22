@@ -81,9 +81,8 @@ void CTimer::SpeedThrottle(void)
 	 if( (ttime-ltime) < (tfreq/desiredfps) )
 	 {
 		 delay=(tfreq/desiredfps)-(ttime-ltime);
-		 if(delay>0)
-			 //SDL_Delay(delay/10000);
-			 SDL_Delay(MAX(Uint32(delay>>14),Uint32(1)));
+		 Uint32 d = delay >> 14;
+		 if(d>0) SDL_Delay(d);
 		 goto waiter;
 	 }
 	 if( (ttime-ltime) >= ((tfreq<<2)/desiredfps) )
