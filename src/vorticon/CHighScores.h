@@ -8,8 +8,6 @@
 #ifndef CHIGHSCORES_H_
 #define CHIGHSCORES_H_
 
-#include <string>
-
 class CHighScores {
 public:
 	CHighScores(stCloneKeenPlus *poutsideCKP);
@@ -27,7 +25,7 @@ private:
 	int				ItemTiles[4];
 
 	char			Episode;
-	std::string		DataDirectory;
+	char			*DataDirectory;
 
 	stCloneKeenPlus *pCKP;
 

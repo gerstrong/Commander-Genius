@@ -69,22 +69,24 @@ int mask;
 }
 
 // draws a finale.ck? file into the upper-left corner of the scrollbuffer
-void finale_draw(const std::string& filename, const std::string& path)
+void finale_draw(const char *filename, const char *path)
 {
+char fname[256];
 FILE *fp;
 int cmdbyte;
 int bytecount;
 int repeatbyte;
 int i;
+char buffer[256];
 
 
-	std::string buffer = formatPathString(path);
+	formatPathString(buffer,path);
 
 
    map_unregister_all_animtiles();
 
-	std::string fname = buffer + filename;
-   fp = fopen(fname.c_str(), "rb");
+   sprintf(fname, "%s%s", buffer,filename);
+   fp = fopen(fname, "rb");
    if (!fp)
    {
      crashflag = 1;

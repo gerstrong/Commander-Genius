@@ -10,14 +10,12 @@
  * not platform-specific).
  */
 
-#include "keen.h"
-#include "keenext.h"
 #include "CGraphics.h"
+#include "keen.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/video/colourtable.h"
 #include "sdl/CVideoDriver.h"
 #include "CLogFile.h"
-#include "StringUtils.h"
 
 CGraphics::CGraphics() {
 	HQBitmap = NULL;
@@ -593,13 +591,13 @@ int c;
 }
 
 // font drawing functions
-void CGraphics::drawFont(const std::string& text, int xoff, int yoff, int highlight)
+void CGraphics::drawFont(unsigned char *text, int xoff, int yoff, int highlight)
 {
 unsigned int i,x=xoff,y;
 int c;
 
    y = yoff;
-   for(i=0;i<text.size();i++)
+   for(i=0;i<strlen( (char*) text);i++)
    {
      c = text[i];
      if (!c) break;
@@ -616,14 +614,15 @@ int c;
      }
    }
 }
-void CGraphics::sb_font_draw(const std::string& text, int xoff, int yoff)
+void CGraphics::sb_font_draw(const unsigned char *text, int xoff, int yoff)
 {
    unsigned int i,x,y;
 
    x=xoff;
    y=yoff;
-   for(i=0;i<text.size();i++)
+   for(i=0;i<strlen( (char*) text);i++)
    {
+     if (!text[i]) break;
      if (text[i]!=13)
      {
        sb_drawCharacter(x, y, text[i]);
@@ -637,13 +636,13 @@ void CGraphics::sb_font_draw(const std::string& text, int xoff, int yoff)
    }
 }
 
-void CGraphics::sb_mask_font_draw(const std::string& text, int xoff, int yoff, char mask)
+void CGraphics::sb_mask_font_draw(unsigned char *text, int xoff, int yoff, char mask)
 {
 unsigned int i,x,y;
 
    x=xoff;
    y=yoff;
-   for(i=0;i<text.size();i++)
+   for(i=0;i<strlen( (char*) text);i++)
    {
      if (text[i]!=13)
      {
@@ -659,14 +658,15 @@ unsigned int i,x,y;
 }
 
 
-void CGraphics::sb_color_font_draw(const std::string& text, int xoff, int yoff, unsigned int colour, unsigned short bgcolour)
+void CGraphics::sb_color_font_draw(unsigned char *text, int xoff, int yoff, unsigned int colour, unsigned short bgcolour)
 {
 unsigned int i,x,y;
 
    x=xoff;
    y=yoff;
-   for(i=0;i< text.size(); i++)
+   for(i=0;i<strlen( (char*) text);i++)
    {
+     if (!text[i]) break;
      if (text[i]!=13)
      {
        sb_drawColorcharacter(x, y, text[i], colour, bgcolour);
@@ -680,13 +680,14 @@ unsigned int i,x,y;
    }
 }
 
-void CGraphics::sb_font_draw_inverse(const std::string& text, int xoff, int yoff)
+void CGraphics::sb_font_draw_inverse(unsigned char *text, int xoff, int yoff)
 {
 unsigned int i,x=xoff,y;
 
    y=yoff;
-   for(i=0;i< text.size();i++)
+   for(i=0;i<strlen( (char*) text);i++)
    {
+     if (!text[i]) break;
      if (text[i]!=13)
      {
        sb_drawCharacterinverse(x, y, text[i]);
@@ -723,12 +724,18 @@ void CGraphics::renderHQBitmap()
 	}
 }
 
-void CGraphics::loadHQGraphics(unsigned char episode, unsigned char level, const std::string& datadir)
+void CGraphics::loadHQGraphics(unsigned char episode, unsigned char level, char *datadir)
 {
+	char buf[256];
+	char buf2[256];
 	SDL_Rect screen_rect;
 
-	std::string buf = formatPathString(datadir);
-	std::string buf2 = buf + "level" + itoa(level) + "ep" + itoa(episode) + ".bmp";
+	memset(buf,0,256);
+	memset(buf2,0,256);
+
+	formatPathString(buf,datadir);
+
+	sprintf(buf2,"%slevel%dep%d.bmp",buf,level,episode);
 
 	screen_rect.x = 0;
 	screen_rect.y = 0;

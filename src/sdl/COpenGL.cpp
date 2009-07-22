@@ -5,7 +5,6 @@
  *      Author: gerstrong
  */
 #include "COpenGL.h"
-#include "CVideoDriver.h"
 #include "../CLogFile.h"
 
 #define GAME_STD_WIDTH            320
@@ -116,7 +115,7 @@ void COpenGL::render(void)
 	   //Clear the screen
 	   glClear(GL_COLOR_BUFFER_BIT);		// Clear The Screen
 
-	   LockSurface(m_blitsurface);
+	   SDL_LockSurface(m_blitsurface);
 
 	   if(m_ScaleX == 2) //Scale 2x
 	   {
@@ -158,7 +157,7 @@ void COpenGL::render(void)
 		   glVertex3f (0.0, 1.0, 0.0);
 	   glEnd();
 
-	   UnlockSurface(m_blitsurface);
+	   SDL_UnlockSurface(m_blitsurface);
 
 	   // Reset (Position?)
 	   glLoadIdentity();

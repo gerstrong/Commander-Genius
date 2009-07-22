@@ -9,15 +9,15 @@
 #define CPATCHER_H_
 
 #include <list>
-#include <string>
+using namespace std;
 
 class CPatcher {
 public:
-	CPatcher(int episode, int version,unsigned char *data, const std::string& datadir);
+	CPatcher(int episode, int version,unsigned char *data, char *datadir);
 	virtual ~CPatcher();
 
 	void patchMemory();
-	void patchMemfromFile(const std::string& patch_file_name, int offset);
+	void patchMemfromFile(const char *patch_file_name, int offset);
 
 private:
 
@@ -26,9 +26,9 @@ private:
 	int m_episode;
 	int m_version;
 	unsigned char *m_data;
-	std::string m_datadirectory;
-	
-	std::list<char*> m_TextList;
+	char m_datadirectory[256];
+
+	list<char*> m_TextList;
 
 };
 

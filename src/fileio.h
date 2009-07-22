@@ -1,12 +1,14 @@
-#ifndef __CG_FILEIO2_H__
-#define __CG_FILEIO2_H__
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-#include <string>
-#include <cstdio>
+#include <stdio.h>
 
 char loadstrings(const char *fname);
 unsigned int fgeti(FILE *fp);
 unsigned long fgetl(FILE *fp);
-	std::string formatPathString(const std::string& path);
+void formatPathString(char *output, const char *path);
 
+#ifdef __cplusplus
+}
 #endif

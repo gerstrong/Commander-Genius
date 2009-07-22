@@ -10,11 +10,11 @@
 #include <string.h>
 #include <fstream>
 
-CPatcher::CPatcher(int episode, int version,unsigned char *data, const std::string& datadir) {
+CPatcher::CPatcher(int episode, int version,unsigned char *data, char *datadir) {
 	m_episode = episode;
 	m_version = version;
 	m_data = data;
-	m_datadirectory = datadir;
+	strcpy(m_datadirectory, datadir);
 }
 
 CPatcher::~CPatcher() {
@@ -35,7 +35,7 @@ void CPatcher::patchMemory()
 
 	// change to the proper directory
 	chdir("data");
-	chdir(m_datadirectory.c_str());
+	chdir(m_datadirectory);
 
 	// TODO: Extend this part further with more commands
 	while(!m_TextList.empty())
@@ -80,6 +80,7 @@ void CPatcher::patchMemory()
 					}
 				}
 			}
+
 		}
 
 		if(!m_TextList.empty())
@@ -108,7 +109,7 @@ bool CPatcher::loadPatchfile()
 {
 	bool ret = false;
 	chdir("data");
-	chdir(m_datadirectory.c_str());
+	chdir(m_datadirectory);
 	// Detect the patchfile
 	DIR *dir = opendir(".");
 	struct dirent *dp;
@@ -120,9 +121,8 @@ bool CPatcher::loadPatchfile()
 			if(strstr(dp->d_name,".pat"))
 			{
 				// The file was found! now read it into the memory!
-
 				char* buf;
-				std::ifstream Patchfile(dp->d_name);
+				ifstream Patchfile(dp->d_name);
 
 				while(!Patchfile.eof())
 				{
@@ -157,12 +157,12 @@ bool CPatcher::loadPatchfile()
 	return ret;
 }
 
-void CPatcher::patchMemfromFile(const std::string& patch_file_name, int offset)
+void CPatcher::patchMemfromFile(const char *patch_file_name, int offset)
 {
 	unsigned char *buf_to_patch;
 	unsigned char byte;
 
-	std::ifstream Patchfile(patch_file_name.c_str(), std::ios::binary);
+	ifstream Patchfile(patch_file_name, ios::binary);
 
 	if(!Patchfile) return;
 

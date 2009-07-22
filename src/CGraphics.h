@@ -11,7 +11,6 @@
 #include "CSingleton.h"
 #define g_pGraphics CGraphics::Get()
 
-#include <string>
 #include <SDL.h>
 #include "hqp/CHQBitmap.h"
 
@@ -45,18 +44,18 @@ public:
 	void drawBitmap2FG(int xa, int ya, int b);
 	int  getBitmapNumberFromName(const char *bmname);
 	void sb_drawCharacterinverse(int x, int y, int f);
-	void drawFont(const std::string& text, int xoff, int yoff, int highlight);
-	void sb_font_draw(const std::string& text, int xoff, int yoff);
-	void sb_mask_font_draw(const std::string& text, int xoff, int yoff, char mask);
-	void sb_color_font_draw(const std::string& text, int xoff, int yoff, unsigned int colour, unsigned short bgcolour);
-	void sb_font_draw_inverse(const std::string& text, int xoff, int yoff);
+	void drawFont(unsigned char *text, int xoff, int yoff, int highlight);
+	void sb_font_draw(const unsigned char *text, int xoff, int yoff);
+	void sb_mask_font_draw(unsigned char *text, int xoff, int yoff, char mask);
+	void sb_color_font_draw(unsigned char *text, int xoff, int yoff, unsigned int colour, unsigned short bgcolour);
+	void sb_font_draw_inverse(unsigned char *text, int xoff, int yoff);
 	void drawTile_direct(int x, int y, unsigned int t);
 	void setFadeBlack(bool value);
 
 	Uint8 *getScrollbuffer(void);
 
 	void renderHQBitmap();
-	void loadHQGraphics(unsigned char episode, unsigned char level, const std::string& datadir);
+	void loadHQGraphics(unsigned char episode, unsigned char level, char *datadir);
 	void unloadHQGraphics();
 
 private:

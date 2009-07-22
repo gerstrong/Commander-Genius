@@ -17,7 +17,6 @@
 #include "CGraphics.h"
 #include "vorticon/CPlayer.h"
 #include "keenext.h"
-#include "StringUtils.h"
 
 #include "include/enemyai.h"
 
@@ -402,7 +401,7 @@ void gamedo_render_drawdebug(void)
 {
 int tl,y;
 /*int h;*/
-	std::string debugmsg;
+char debugmsg[80];
 
    if (debugmode)
    {
@@ -412,23 +411,23 @@ int tl,y;
         saveh = 80;
         g_pGraphics->saveArea(4,4,savew,saveh);
         y = 5-8;
-		  debugmsg = "p1x/y: " + itoa(player[0].x) + "/" + itoa(player[0].y);
-        g_pGraphics->sb_font_draw( debugmsg, 5, y+=8);
-		  debugmsg = "p2x/y: " + itoa(player[1].x) + "/" + itoa(player[1].y);
-        g_pGraphics->sb_font_draw( debugmsg, 5, y+=8);
-		  debugmsg = "scroll_x/y = " + itoa(scroll_x) + "/" + itoa(scroll_y);
-        g_pGraphics->sb_font_draw( debugmsg, 5, y+=8);
-        debugmsg = "scrollbuf_x/y: " + itoa(scrollx_buf) + "/" + itoa(scrolly_buf);
-        g_pGraphics->sb_font_draw( debugmsg, 5, y+=8);
-        debugmsg = "iw,pw: " + itoa(player[0].inhibitwalking) + "/" + itoa(player[0].pwalking);
-        g_pGraphics->sb_font_draw( debugmsg, 5, y+=8);
-        debugmsg = "pinertia_x: " + itoa(player[0].pinertia_x);
-        g_pGraphics->sb_font_draw( debugmsg, 5, y+=8);
-        debugmsg = "psupt: (" + itoa(player[0].psupportingtile) + "," + itoa(player[0].psupportingobject) + ")";
-        g_pGraphics->sb_font_draw( debugmsg, 5, y+=8);
+        sprintf(debugmsg, "p1x/y: %ld/%d", player[0].x, player[0].y);
+        g_pGraphics->sb_font_draw( (unsigned char*) debugmsg, 5, y+=8);
+        sprintf(debugmsg, "p2x/y: %ld/%d", player[1].x, player[1].y);
+        g_pGraphics->sb_font_draw( (unsigned char*) debugmsg, 5, y+=8);
+        sprintf(debugmsg, "scroll_x/y = %d/%d", (unsigned int)scroll_x, (unsigned int)scroll_y);
+        g_pGraphics->sb_font_draw( (unsigned char*) debugmsg, 5, y+=8);
+        sprintf(debugmsg, "scrollbuf_x/y: %d/%d", scrollx_buf, scrolly_buf);
+        g_pGraphics->sb_font_draw( (unsigned char*) debugmsg, 5, y+=8);
+        sprintf(debugmsg, "iw,pw: %d/%d", player[0].inhibitwalking, player[0].pwalking);
+        g_pGraphics->sb_font_draw( (unsigned char*) debugmsg, 5, y+=8);
+        sprintf(debugmsg, "pinertia_x: %d", player[0].pinertia_x);
+        g_pGraphics->sb_font_draw( (unsigned char*) debugmsg, 5, y+=8);
+        sprintf(debugmsg, "psupt: (%d,%d)", player[0].psupportingtile, player[0].psupportingobject);
+        g_pGraphics->sb_font_draw( (unsigned char*) debugmsg, 5, y+=8);
 
-        debugmsg = "lvl,tile = " + itoa(getlevelat((player[0].x>>CSF)+4, (player[0].y>>CSF)+9)) + "," + itoa(tl);
-        g_pGraphics->sb_font_draw( debugmsg, 5, y+=8);
+        sprintf(debugmsg, "lvl,tile = %d,%d", getlevelat((player[0].x>>CSF)+4, (player[0].y>>CSF)+9), tl);
+        g_pGraphics->sb_font_draw( (unsigned char*) debugmsg, 5, y+=8);
 
 /*
         sprintf(debugmsg, "NOH=%d", NessieObjectHandle);
@@ -567,7 +566,6 @@ int i;
 
           		    for(i=0;i<4;i++)
           		    {
-						static const int MAX_STRING_LENGTH = 256;
           		    	text[i]= (char*) malloc(MAX_STRING_LENGTH*sizeof(char));
           		    }
 
@@ -610,7 +608,6 @@ int i;
 
  		    text = (char**) malloc(sizeof(char*));
 
-		   static const int MAX_STRING_LENGTH = 256;
 	    	text[0]= (char*) malloc(MAX_STRING_LENGTH*sizeof(char));
 
  		    if (player[0].godmode)

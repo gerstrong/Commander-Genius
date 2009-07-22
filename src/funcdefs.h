@@ -1,8 +1,7 @@
-
-#ifndef __CG_FUNCDEFS_H__
-#define __CG_FUNCDEFS_H__
-
-#include <string>
+/*check if the compiler is of C++*/
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 // gamedo.c
 int gamedo_ScrollTriggers(int theplayer);
@@ -114,8 +113,8 @@ void sb_font_draw_inverse(unsigned char *text, int xoff, int yoff);
 
 bool loadtileattributes(int episode, int version, unsigned char *filebuf);
 int freestrings(void);
-std::string getstring(const std::string& name);
-int GetStringAttribute(const std::string& stringName, const char *attrName);
+char* getstring(const char *name);
+int GetStringAttribute(const char *stringName, const char *attrName);
 
 // keydrv.c
 char KeyDrv_Start(void);
@@ -153,10 +152,12 @@ unsigned char sgrle_get_next_byte(FILE *fp);
 char lz_decompress(FILE *lzfile, unsigned char *outbuffer);
 
 // finale.c
-void finale_draw(const std::string& filename, const std::string& path);
+void finale_draw(const char *filename, const char *path);
 
 // scalerx.c
 //void scale2x(void* void_dst, unsigned dst_slice, const void* void_src, unsigned src_slice, unsigned pixel, unsigned width, unsigned height);
 
+/*check if the compiler is of C++*/
+#ifdef __cplusplus
+}
 #endif
-

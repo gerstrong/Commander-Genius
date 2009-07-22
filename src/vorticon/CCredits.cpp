@@ -128,7 +128,7 @@ void CCredits::Render(stCloneKeenPlus *pCKP)
 
 		for(int j=0 ; j<51 ; j++)
 			if(scrolly+(j<<3) > -8 && scrolly+(j<<3) < 200)
-				g_pGraphics->sb_font_draw_inverse( scrolltext[j], mid[j], scrolly+(j<<3));
+				g_pGraphics->sb_font_draw_inverse( (unsigned char*) scrolltext[j], mid[j], scrolly+(j<<3));
 
 		if( g_pInput->getPressedAnyCommand() )
 		{

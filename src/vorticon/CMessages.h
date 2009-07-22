@@ -12,6 +12,8 @@
 #include <string>
 #include <iostream>
 
+using namespace std;
+
 // TODO: Make the strings a class, but it must read from the exe-files basing on uncompressed buffer
 
 class CMessages {
@@ -23,8 +25,8 @@ public:
 	char *getString(const char *IDtext);
 
 private:
-	std::list<std::string> StringList;
-	std::list<std::string> StringIDList;
+	list<string> StringList;
+	list<string> StringIDList;
 };
 
 #endif /* CMESSAGES_H_ */

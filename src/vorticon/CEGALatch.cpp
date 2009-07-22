@@ -65,11 +65,12 @@ bool CEGALatch::loadHead( char *data )
 	return true;
 }
 
-bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
+bool CEGALatch::loadData(const char *filename, bool compresseddata)
 {
+	FILE* latchfile;
 	char *RawData;
 
-	FILE* latchfile = fopen(filename.c_str(),"rb");
+	latchfile = fopen(filename,"rb");
 
 	if(!latchfile)
 		return false;

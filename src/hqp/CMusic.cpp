@@ -12,6 +12,7 @@
 
 CMusic::CMusic() {
 	playmode = PLAY_MODE_STOP;
+	music_buffer = NULL;
 }
 
 CMusic::~CMusic() {
@@ -20,6 +21,8 @@ CMusic::~CMusic() {
 
 int CMusic::load(SDL_AudioSpec AudioSpec, char *musicfile)
 {
+	FILE *fp;
+
 	if(AudioSpec.format != 0)
 	{
 
@@ -33,10 +36,10 @@ int CMusic::load(SDL_AudioSpec AudioSpec, char *musicfile)
 	pOggAudio.sound_len=0;
 	pOggAudio.sound_pos=0;
 
-	FILE *fp;
 	if((fp = fopen(musicfile,"rb")) == NULL)
 	{
 		g_pLogFile->textOut(PURPLE,"Music Driver(): \"%s\". File does not exist!<br>", musicfile);
+
 		return -1;
 	}
 
@@ -101,7 +104,8 @@ void CMusic::unload(void)
 
 void CMusic::play(void)
 {
-	playmode = PLAY_MODE_PLAY;
+	if(music_buffer)
+		playmode = PLAY_MODE_PLAY;
 }
 
 void CMusic::stop(void)

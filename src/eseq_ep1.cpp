@@ -12,7 +12,6 @@
 #include "include/eseq_ep2.h"
 #include "include/menu.h"
 #include "CGraphics.h"
-#include "StringUtils.h"
 
 #define CMD_MOVE                0
 #define CMD_WAIT                1
@@ -281,9 +280,9 @@ int eseq1_BackAtHome(stCloneKeenPlus *pCKP)
 {
 /*int draw;*/
 int i;
-	std::string text[10];
-	std::string strname;
-	std::string tempbuf;
+char *text[10];
+char strname[40];
+char tempbuf[200];
 short textline, showtimer;
 unsigned short amountshown;
 signed int waittimer;
@@ -298,7 +297,7 @@ int dlgX, dlgY, dlgW, dlgH;
   // get pointers to all the strings we're going to be using
   for(i=0;i<8;i++)
   {
-    strname = "EP1_ESEQ_PART2_PAGE" + itoa(i+1);
+    sprintf(strname, "EP1_ESEQ_PART2_PAGE%d", i+1);
     text[i] = getstring(strname);
   }
 
@@ -335,9 +334,9 @@ int dlgX, dlgY, dlgW, dlgH;
 	sb_dialogbox(dlgX, dlgY, dlgW, dlgH);
 
     // draw the current text line up to the amount currently shown
-	  tempbuf = text[textline];
-	  tempbuf.erase(amountshown);
-    g_pGraphics->sb_font_draw( tempbuf, (dlgX+1)*8, (dlgY+1)*8);
+    strcpy(tempbuf, text[textline]);
+    tempbuf[amountshown] = 0;
+    g_pGraphics->sb_font_draw( (unsigned char*) tempbuf, (dlgX+1)*8, (dlgY+1)*8);
 
     if (state==STATE_TEXTAPPEARING)
     {
@@ -345,7 +344,7 @@ int dlgX, dlgY, dlgW, dlgH;
       if (showtimer > LETTER_SHOW_SPD)
       {  // it's time to show a new letter
         amountshown++;
-        if (amountshown > text[textline].size())
+        if (amountshown > strlen(text[textline]))
         {  // reached end of line
           state = STATE_WAITASEC;
 //          if (textline==8)
@@ -360,7 +359,7 @@ int dlgX, dlgY, dlgW, dlgH;
             text[textline][amountshown-1]=='-')
         {
           fullshow: ;
-          amountshown = text[textline].size();
+          amountshown = strlen(text[textline]);
           state = STATE_WAITASEC;
           waittimer = -BACKHOME_SHORT_WAIT_TIME*3;
         }
@@ -414,7 +413,7 @@ int dlgX, dlgY, dlgW, dlgH;
 void eseq_ToBeContinued(stCloneKeenPlus *pCKP)
 {
 int i;
-	std::string text;
+char *text;
 int dlgX, dlgY, dlgW, dlgH;
 
   // remove all objects because eseq_showmsg will call drawobjects

@@ -11,17 +11,17 @@
 #include "../include/vorbis/oggsupport.h"
 #include "../CLogFile.h"
 
-short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::string& soundfile)
+short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const char *soundfile)
 {
 	SDL_AudioSpec AudioFileSpec;
 	SDL_AudioCVT  Audio_cvt;
 
 	psound->sound_buffer = NULL;
-	std::string buf;
+	char buf[80];
 	FILE *fp;
 
-	buf = "data/hqp/snd/" + soundfile + ".OGG"; // Start with OGG
-	if((fp = fopen(buf.c_str(),"rb")) != NULL)
+	sprintf(buf,"data/hqp/snd/%s.OGG",soundfile); // Start with OGG
+	if((fp = fopen(buf,"rb")) != NULL)
 	{
 		#ifdef BUILD_WITH_OGG
 		if(openOGGSound(fp, &AudioFileSpec, AudioSpec->format, psound) != 0)
@@ -29,37 +29,38 @@ short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::stri
 			g_pLogFile->textOut(PURPLE,"OGG file could not be opened: \"%s\". The file was detected, but appears to be damaged. Trying to load the classical sound<br>", soundfile);
 			return 1;
 		}
-		psound->enabled = true;
 
 		#endif
 
 		#ifndef BUILD_WITH_OGG
 		g_pLogFile->textOut(PURPLE,"Sorry, OGG-Support is disabled!<br>");
-		  buf = "data/hqp/snd/"+ soundfile + ".WAV";
+		  sprintf(buf,"data/hqp/snd/%s.WAV",soundfile);
 
 		  // Check, if it is a wav file or go back to classic sounds
-		  if (SDL_LoadWAV (buf.c_str(), &AudioFileSpec, &(psound->sound_buffer), &(psound->sound_len)) == NULL)
+		  if (SDL_LoadWAV (buf, &AudioFileSpec, &(psound->sound_buffer), &(psound->sound_len)) == NULL)
 		  {
-			  g_pLogFile->textOut(PURPLE,"Wave file could not be opened: \"%s\". Trying to load the classical sound<br>", buf.c_str());
+			  g_pLogFile->textOut(PURPLE,"Wave file could not be opened: \"%s\". Trying to load the classical sound<br>", buf);
 		      return 1;
 		  }
 
 		#endif
+
+		  psound->enabled = true;
 	}
 	else
 	{
-	  buf = "data/hqp/snd/" + soundfile + ".WAV";
+	  sprintf(buf,"data/hqp/snd/%s.WAV",soundfile);
 
 	  // Check, if it is a wav file or go back to classic sounds
-	  if (SDL_LoadWAV (buf.c_str(), &AudioFileSpec, &(psound->sound_buffer), &(psound->sound_len)) == NULL)
+	  if (SDL_LoadWAV (buf, &AudioFileSpec, &(psound->sound_buffer), &(psound->sound_len)) == NULL)
 	  {
-		  g_pLogFile->textOut(PURPLE,"Wave file could not be opened: \"%s\". Trying to load the classical sounds<br>", buf.c_str());
+		  g_pLogFile->textOut(PURPLE,"Wave file could not be opened: \"%s\". Trying to load the classical sounds<br>", buf);
 	      return 1;
 	  }
 	}
 
 	psound->sound_pos = 0;
-	g_pLogFile->textOut(PURPLE,"File \"%s\" opened successfully!<br>", buf.c_str());
+	g_pLogFile->textOut(PURPLE,"File \"%s\" opened successfully!<br>", buf);
 
 	int ret;
 	/* Build AudioCVT (This is needed for the conversion from one format to the one used in the game)*/

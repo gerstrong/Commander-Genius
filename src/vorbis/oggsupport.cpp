@@ -64,11 +64,14 @@ short openOGGSound(FILE *fp, SDL_AudioSpec *pspec, Uint16 format, stHQSound *pso
 
         psound->sound_len = buffer.size();
 
-        psound->sound_buffer = new Uint8[psound->sound_len];
-        for(Uint32 i=0; i<psound->sound_len ; i++ )
+        //psound->sound_buffer = new Uint8[psound->sound_len];
+        psound->sound_buffer = (Uint8*) malloc(psound->sound_len);
+        /*for(Uint32 i=0; i<psound->sound_len ; i++ )
         {
         	memcpy( &(psound->sound_buffer[i]), &(buffer[i]), 1);
-        }
+        }*/
+        memcpy( psound->sound_buffer, buffer.data(), psound->sound_len );
+        buffer.clear();
 
 		return 0;
     }

@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <list>
+using namespace std;
 
 
 class CParser {
@@ -42,7 +43,7 @@ public:
 private:
 	bool m_isOpen;
 
-	std::list<char*> m_filebuffer;
+	list<char*> m_filebuffer;
 
 };
 

@@ -11,11 +11,9 @@
 #include "../../CSingleton.h"
 #define g_pSound CSound::Get()
 
-#include <string>
 #include <SDL.h>
 #include "CSoundChannel.h"
 #include "CSoundSlot.h"
-
 
 class CSound : public CSingleton<CSound>
 {
@@ -25,11 +23,11 @@ public:
 
 	bool init(void);
 	void stop(void);
-	char loadSoundData(unsigned short Episode, const std::string& DataDirectory);
+	char loadSoundData(unsigned short Episode, char *DataDirectory);
 	void stopAllSounds(void);
 
 	bool forcedisPlaying(void);
-	char sound_load_all(const std::string& path);
+	char sound_load_all(const char *path);
 	void transform_into_logaritmic_sound(int *pcmstream, int len);
 	void callback(void *unused, Uint8 *stream, int len);
 	void pauseSound(void);
@@ -46,7 +44,7 @@ public:
 
 	void setSoundmode(int freq, bool stereo);
 
-	char extractOfExeFile(const std::string& inputpath, int episode); // This is a special funktion. It doesn't belong here!
+	char extractOfExeFile(char *inputpath, int episode); // This is a special funktion. It doesn't belong here!
 
 private:
 	CSoundChannel	*m_soundchannel;

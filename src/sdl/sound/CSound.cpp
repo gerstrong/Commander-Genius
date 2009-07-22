@@ -12,7 +12,6 @@
 #include "../../hqp/CMusic.h"
 #include "../../vorticon/sounds.h"
 #include "../../fileio/CExeFile.h"
-#include "../../StringUtils.h"
 
 #define SAFE_DELETE_ARRAY(x) if(x) delete[] x; x=NULL
 
@@ -45,7 +44,7 @@ CSound::~CSound() {
 
 bool CSound::init(void)
 {
-  char name[256];
+  char name[MAX_STRING_LENGTH];
   SDL_AudioSpec *desired, *obtained;
 
   desired = &AudioSpec;
@@ -298,14 +297,14 @@ playsound: ;
   m_soundchannel[chnl].setupSound((unsigned short)snd, 0, true, WAVE_IN, 0, (mode==PLAY_FORCE) ? true : false );
 }
 
-char CSound::loadSoundData(unsigned short Episode, const std::string& DataDirectory)
+char CSound::loadSoundData(unsigned short Episode, char *DataDirectory)
 {
   if(!m_active) return false;
 
-	std::string path;
+  char *path;
   int ok;
-	std::string soundfile;
-	std::string buf;
+  char soundfile[80];
+  char buf[256];
 
   if(m_soundslot) delete[] m_soundslot;
   m_soundslot = new CSoundSlot[MAX_SOUNDS];
@@ -319,16 +318,21 @@ char CSound::loadSoundData(unsigned short Episode, const std::string& DataDirect
 
   g_pLogFile->ftextOut("sound_load_all(): loading all sounds...<br>");
 
-  soundfile = formatPathString(path) + "sounds.ck" + itoa(Episode);
+  char buffer[256];
+
+  formatPathString(buffer,path);
+
+  sprintf(soundfile, "%ssounds.ck%d", buffer,Episode);
 
   FILE *p_file;
 
-  if( ( p_file = fopen(soundfile.c_str(),"rb") ) == NULL )
+  if( ( p_file = fopen(soundfile,"rb") ) == NULL )
   {
-	  
-	buf = "keen" + itoa(Episode) + ".exe";
-	g_pLogFile->ftextOut("sound_load_all(): \"%s\" was not found in the data directory. Looking for \"%s\" in \"%s\" and trying to extract this file<br>", soundfile.c_str(), buf.c_str(), formatPathString(path).c_str());
-	extractOfExeFile(formatPathString(path), Episode);
+	formatPathString(buffer,path);
+
+	sprintf(buf,"keen%d.exe",Episode);
+	g_pLogFile->ftextOut("sound_load_all(): \"%s\" was not found in the data directory. Looking for \"%s\" in \"%s\" and trying to extract this file<br>", soundfile, buf, buffer);
+	extractOfExeFile(buffer, Episode);
   }
   else
 	 fclose(p_file);
@@ -372,7 +376,7 @@ char CSound::loadSoundData(unsigned short Episode, const std::string& DataDirect
 
   if (Episode == 2)
   {
-    ok |= m_soundslot[33].loadSound(soundfile, "EARTHPOW", SOUND_EARTHPOW);
+    ok |= m_soundslot[SOUND_KEEN_BLOK].loadSound(soundfile, "EARTHPOW", SOUND_EARTHPOW);
   }
   else if (Episode == 3)
   {
@@ -405,16 +409,18 @@ char CSound::loadSoundData(unsigned short Episode, const std::string& DataDirect
     the sound data.
 */
 
-char CSound::extractOfExeFile(const std::string& inputpath, int episode)
+char CSound::extractOfExeFile(char *inputpath, int episode)
 {
-	std::string outputfname;
+	  const char *outputfname;
 	  int bit_count;
 	  int pos, sounds_start, sounds_end, ret = 0;
-	std::string buffer;
-	std::string inputfname;
+	  char buffer[MAX_STRING_LENGTH];
+	  char inputfname[MAX_STRING_LENGTH];
 
 	  pos = 0;
 	  bit_count = 0;
+	  memset(buffer,0, MAX_STRING_LENGTH*sizeof(char));
+	  memset(inputfname,0, MAX_STRING_LENGTH*sizeof(char));
 
 	  // Set Offsets. Episode 1 already provides this
 	  if (episode == 2)
@@ -431,7 +437,7 @@ char CSound::extractOfExeFile(const std::string& inputpath, int episode)
 	  }
 	  else
 	  {
-		  g_pLogFile->ftextOut("Error: Unknown keen executable name: %s<br>", inputfname.c_str());
+		  g_pLogFile->ftextOut("Error: Unknown keen executable name: %s<br>", inputfname);
 	    return 1;
 	  }
 
@@ -440,7 +446,7 @@ char CSound::extractOfExeFile(const std::string& inputpath, int episode)
 	  else
 	  {
 		  FILE *fout;
-		  if(!(fout = fopen(outputfname.c_str(),"wb"))) ret = 1;
+		  if(!(fout = fopen(outputfname,"wb"))) ret = 1;
 		  else
 		  {
 			  fwrite( ExeFile->getData()+sounds_start, 1, (sounds_end-sounds_start), fout);

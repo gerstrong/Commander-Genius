@@ -14,8 +14,6 @@
 #include "include/menu.h"
 #include "include/enemyai.h"
 #include "CGraphics.h"
-#include "StringUtils.h"
-
 
 #define CMD_MOVE                0
 #define CMD_WAIT                1
@@ -356,12 +354,12 @@ int x,y,w,h;
 #define HEADSFOREARTH_W        33
 #define HEADSFOREARTH_H        8
 
-void eseq_showmsg(const std::string& text, int boxleft, int boxtop, int boxwidth, int boxheight, char autodismiss, stCloneKeenPlus *pCKP)
+void eseq_showmsg(char *text, int boxleft, int boxtop, int boxwidth, int boxheight, char autodismiss, stCloneKeenPlus *pCKP)
 {
 //int draw;
 //int i;
 
-	std::string tempbuf;
+char tempbuf[1024];
 char textline, showtimer;
 unsigned int amountshown;
 int waittimer;
@@ -382,17 +380,17 @@ int cancel, lastcancelstate;
     cancel = (g_pInput->getPressedCommand(KENTER) || g_pInput->getPressedCommand(KCTRL) || g_pInput->getPressedCommand(KALT));
 
     // draw the text up to the amount currently shown
-    tempbuf = text;
-	  tempbuf.erase(amountshown);
+    strcpy(tempbuf, text);
+    tempbuf[amountshown] = 0;
     sb_dialogbox(boxleft,boxtop,boxwidth,boxheight);
-    g_pGraphics->sb_font_draw( tempbuf, (boxleft+1)*8, (boxtop+1+textline)*8);
+    g_pGraphics->sb_font_draw( (unsigned char*)tempbuf, (boxleft+1)*8, (boxtop+1+textline)*8);
 
     gamedo_frameskipping_blitonly();
     gamedo_render_eraseobjects();
 
     if (showtimer > LETTER_SHOW_SPD)
     {  // it's time to show a new letter
-      if (amountshown < text.size())
+      if (amountshown < strlen(text))
       {
         amountshown++;
       }
@@ -402,9 +400,9 @@ int cancel, lastcancelstate;
     // user pressed enter or some other key
     if (cancel && !lastcancelstate)
     {
-      if (amountshown < text.size())
+      if (amountshown < strlen(text))
       {
-         amountshown = text.size();
+         amountshown = strlen(text);
       }
       else return;
     }
@@ -412,7 +410,7 @@ int cancel, lastcancelstate;
     // when all text is shown wait a sec then return
     if (autodismiss)
     {
-      if (amountshown >= text.size())
+      if (amountshown >= strlen(text))
       {
         if (waittimer > HEADFOREARTH_WAIT_TIME) return;
         waittimer++;
@@ -673,8 +671,8 @@ int eseq2_SnowedOutside(stCloneKeenPlus *pCKP)
 {
 int curpage;
 int lastpage;
-	std::string tempstr;
-	std::string text;
+char tempstr[80];
+char *text;
 //int enter, lastenterstate;
 int dlgX, dlgY, dlgW, dlgH;
 
@@ -695,7 +693,7 @@ int dlgX, dlgY, dlgW, dlgH;
 
   do
   {
-	  tempstr = "EP2_ESEQ_PART3_PAGE" + itoa(curpage);
+     sprintf(tempstr, "EP2_ESEQ_PART3_PAGE%d", curpage);
      text = getstring(tempstr);
      dlgX = GetStringAttribute(tempstr, "LEFT");
      dlgY = GetStringAttribute(tempstr, "TOP");

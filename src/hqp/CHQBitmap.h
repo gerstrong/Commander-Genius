@@ -9,7 +9,6 @@
 #define CHQBITMAP_H_
 
 #include <SDL.h>
-#include <string>
 
 class CHQBitmap {
 public:
@@ -18,7 +17,7 @@ public:
 
 	void setScrollposition(unsigned int xpos, unsigned int ypos);
 	void updateHQBitmap(SDL_Surface *m_surface, SDL_Rect *p_srcrect, SDL_Rect *p_dstrect);
-	bool loadImage(const std::string& pFilename, int wsize, int hsize);
+	bool loadImage(const char *pFilename, int wsize, int hsize);
 	void setAlphaBlend(Uint8 alpha);
 	void offsetAlphaBlend(Uint8 alpha);
 

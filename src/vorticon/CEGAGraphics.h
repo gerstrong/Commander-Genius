@@ -14,13 +14,12 @@
 #ifndef CEGAGRAPHICS_H_
 #define CEGAGRAPHICS_H_
 
-#include <string>
 #include "CEGALatch.h"
 #include "CEGASprit.h"
 
 class CEGAGraphics {
 public:
-	CEGAGraphics(short episode, const std::string& path);
+	CEGAGraphics(short episode, const char *path);
 	virtual ~CEGAGraphics();
 
 	bool loadData();
@@ -29,7 +28,7 @@ public:
 
 private:
 	short m_episode;
-	std::string m_path;
+	char m_path[256];
 
 	// Part of the EGAHEAD Data Structure
 	// Section 1:

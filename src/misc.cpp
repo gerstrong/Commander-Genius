@@ -24,7 +24,6 @@
 #include "include/gamedo.h"
 #include "CLogFile.h"
 #include "CGraphics.h"
-#include "StringUtils.h"
 
 void banner(void)
 {
@@ -195,7 +194,7 @@ int i;
     twirlY = GetStringAttribute(strname, "TWIRLY");
 
     dialogbox(dlgX,dlgY,dlgW,dlgH);
-    g_pGraphics->drawFont(getstring(strname), (dlgX+1)<<3, (dlgY+1)<<3,0);
+    g_pGraphics->drawFont((unsigned char*) getstring(strname), (dlgX+1)<<3, (dlgY+1)<<3,0);
 
     twirlframe = 0;
     twirltimer = twirl_speed+1;
@@ -266,7 +265,7 @@ void VorticonElder(int mpx, int mpy, stCloneKeenPlus *pCKP)
     twirlY = GetStringAttribute(strName, "TWIRLY");
 
     dialogbox(dlgX, dlgY, dlgW, dlgH);
-    g_pGraphics->drawFont( getstring(strName), (dlgX+1)<<3, (dlgY+1)<<3,0);
+    g_pGraphics->drawFont( (unsigned char*) getstring(strName), (dlgX+1)<<3, (dlgY+1)<<3,0);
 
     twirlframe = 0;
     twirltimer = twirl_speed+1;
@@ -298,7 +297,7 @@ void VorticonElder(int mpx, int mpy, stCloneKeenPlus *pCKP)
 void inventory_draw_ep1(int p)
 {
 int x,t,i,j;
-	std::string tempbuf;
+char tempbuf[40];
 int dlgX,dlgY,dlgW,dlgH;
 
   dlgX = GetStringAttribute("EP1_StatusBox", "LEFT");
@@ -307,7 +306,7 @@ int dlgX,dlgY,dlgW,dlgH;
   dlgH = GetStringAttribute("EP1_StatusBox", "HEIGHT");
 
   dialogbox(dlgX,dlgY,dlgW,dlgH);
-  g_pGraphics->drawFont( getstring("EP1_StatusBox"), (dlgX+1)<<3, (dlgY+1)<<3, 0);
+  g_pGraphics->drawFont( (unsigned char*) getstring("EP1_StatusBox"), (dlgX+1)<<3, (dlgY+1)<<3, 0);
 
 // fill in what we have
   // 321: joystick/battery/vacuum/fuel not gotten
@@ -324,8 +323,9 @@ int dlgX,dlgY,dlgW,dlgH;
 	  g_pGraphics->drawTile_direct((dlgX+21)<<3, ((dlgY+8)<<3)+3, 424);
 	  if(player[p].inventory.HasCardYellow > 1)
 	  {
-		  std::string buf = itoa(player[p].inventory.HasCardYellow);
-		  g_pGraphics->drawFont(buf,(dlgX+20)<<3,((dlgY+8)<<3)+3,0);
+		  char buf[10];
+		  sprintf(buf,"%d",player[p].inventory.HasCardYellow);
+		  g_pGraphics->drawFont((unsigned char*)buf,(dlgX+20)<<3,((dlgY+8)<<3)+3,0);
 	  }
   }
   if (player[p].inventory.HasCardRed)
@@ -333,8 +333,9 @@ int dlgX,dlgY,dlgW,dlgH;
 	  g_pGraphics->drawTile_direct((dlgX+25)<<3, ((dlgY+8)<<3)+3, 425);
 	  if(player[p].inventory.HasCardRed > 1)
 	  {
-		  std::string buf = itoa(player[p].inventory.HasCardRed);
-		  g_pGraphics->drawFont(buf,(dlgX+24)<<3,((dlgY+8)<<3)+3,0);
+		  char buf[10];
+		  sprintf(buf,"%d",player[p].inventory.HasCardRed);
+		  g_pGraphics->drawFont((unsigned char*) buf,(dlgX+24)<<3,((dlgY+8)<<3)+3,0);
 	  }
   }
   if (player[p].inventory.HasCardGreen)
@@ -343,8 +344,9 @@ int dlgX,dlgY,dlgW,dlgH;
 
 	  if (player[p].inventory.HasCardGreen > 1)
 	  {
-		  std::string buf = itoa(player[p].inventory.HasCardGreen);
-		  g_pGraphics->drawFont(buf,(dlgX+20)<<3,((dlgY+10)<<3)+3,0);
+		  char buf[10];
+		  sprintf(buf,"%d",player[p].inventory.HasCardGreen);
+		  g_pGraphics->drawFont((unsigned char*) buf,(dlgX+20)<<3,((dlgY+10)<<3)+3,0);
 	  }
   }
   if (player[p].inventory.HasCardBlue)
@@ -352,8 +354,9 @@ int dlgX,dlgY,dlgW,dlgH;
 	  g_pGraphics->drawTile_direct((dlgX+25)<<3, ((dlgY+10)<<3)+4, 427);
 	  if(player[p].inventory.HasCardBlue > 1)
 	  {
-		  std::string buf = itoa(player[p].inventory.HasCardBlue);
-		  g_pGraphics->drawFont(buf,(dlgX+24)<<3,((dlgY+10)<<3)+3,0);
+		  char buf[10];
+		  sprintf(buf,"%d",player[p].inventory.HasCardBlue);
+		  g_pGraphics->drawFont((unsigned char*) buf,(dlgX+24)<<3,((dlgY+10)<<3)+3,0);
 	  }
   }
   // ship parts
@@ -368,17 +371,17 @@ int dlgX,dlgY,dlgW,dlgH;
   // ray gun charges
   i = player[p].inventory.charges;
   if (i>999) i=999;
-  tempbuf = itoa(i);
-  g_pGraphics->drawFont( tempbuf, (dlgX+4)<<3, (dlgY+12)<<3, 0);
+  sprintf(tempbuf, "%d", i);
+  g_pGraphics->drawFont( (unsigned char*) tempbuf, (dlgX+4)<<3, (dlgY+12)<<3, 0);
 
   // score
   i = player[p].inventory.score;
-  tempbuf = itoa(i);
-  g_pGraphics->drawFont( tempbuf, (dlgX+12-tempbuf.size())<<3, (dlgY+2)<<3, 0);
+  sprintf(tempbuf, "%d", i);
+  g_pGraphics->drawFont( (unsigned char*) tempbuf, (dlgX+12-strlen(tempbuf))<<3, (dlgY+2)<<3, 0);
   // extra life at
   i = player[p].inventory.extralifeat;
-  tempbuf = itoa(i);
-  g_pGraphics->drawFont( tempbuf, (dlgX+28-tempbuf.size())<<3, (dlgY+2)<<3, 0);
+  sprintf(tempbuf, "%d", i);
+  g_pGraphics->drawFont( (unsigned char*) tempbuf, (dlgX+28-strlen(tempbuf))<<3, (dlgY+2)<<3, 0);
   // lives
   i = player[p].inventory.lives;
   x = ((dlgX+1)<<3)+4;
@@ -393,7 +396,7 @@ int dlgX,dlgY,dlgW,dlgH;
 void inventory_draw_ep2(int p, stCloneKeenPlus *pCKP)
 {
 int x,/*y,t,*/i,j;
-	std::string tempbuf;
+char tempbuf[40];
 int dlgX,dlgY,dlgW,dlgH;
 
   stLevelControl *p_levelcontrol;
@@ -406,7 +409,7 @@ int dlgX,dlgY,dlgW,dlgH;
   dlgH = GetStringAttribute("EP2_StatusBox", "HEIGHT");
 
   dialogbox(dlgX,dlgY,dlgW,dlgH);
-  g_pGraphics->drawFont( getstring("EP2_StatusBox"), (dlgX+1)<<3, (dlgY+1)<<3, 0);
+  g_pGraphics->drawFont( (unsigned char*) getstring("EP2_StatusBox"), (dlgX+1)<<3, (dlgY+1)<<3, 0);
 
   // cards
   if (player[p].inventory.HasCardYellow)
@@ -414,8 +417,9 @@ int dlgX,dlgY,dlgW,dlgH;
 	  g_pGraphics->drawTile_direct(((dlgX+21)<<3)-4, ((dlgY+8)<<3)+3, 424);
 	  if(player[p].inventory.HasCardYellow > 1)
 	  {
-		  std::string buf = itoa(player[p].inventory.HasCardYellow);
-		  g_pGraphics->drawFont(buf,(dlgX+20)<<3,((dlgY+8)<<3)+3,0);
+		  char buf[10];
+		  sprintf(buf,"%d",player[p].inventory.HasCardYellow);
+		  g_pGraphics->drawFont((unsigned char*)buf,(dlgX+20)<<3,((dlgY+8)<<3)+3,0);
 	  }
   }
   if (player[p].inventory.HasCardRed)
@@ -423,8 +427,9 @@ int dlgX,dlgY,dlgW,dlgH;
 	  g_pGraphics->drawTile_direct(((dlgX+25)<<3)-4, ((dlgY+8)<<3)+3, 425);
 	  if(player[p].inventory.HasCardRed > 1)
 	  {
-		  std::string buf = itoa(player[p].inventory.HasCardRed);
-		  g_pGraphics->drawFont(buf,(dlgX+24)<<3,((dlgY+8)<<3)+3,0);
+		  char buf[10];
+		  sprintf(buf,"%d",player[p].inventory.HasCardRed);
+		  g_pGraphics->drawFont((unsigned char*)buf,(dlgX+24)<<3,((dlgY+8)<<3)+3,0);
 	  }
   }
   if (player[p].inventory.HasCardGreen)
@@ -432,8 +437,9 @@ int dlgX,dlgY,dlgW,dlgH;
 	  g_pGraphics->drawTile_direct(((dlgX+21)<<3)-4, ((dlgY+10)<<3)+4, 426);
 	  if(player[p].inventory.HasCardGreen > 1)
 	  {
-		  std::string buf = itoa(player[p].inventory.HasCardGreen);
-		  g_pGraphics->drawFont(buf,(dlgX+20)<<3,((dlgY+10)<<3)+3,0);
+		  char buf[10];
+		  sprintf(buf,"%d",player[p].inventory.HasCardGreen);
+		  g_pGraphics->drawFont((unsigned char*)buf,(dlgX+20)<<3,((dlgY+10)<<3)+3,0);
 	  }
   }
   if (player[p].inventory.HasCardBlue)
@@ -441,19 +447,20 @@ int dlgX,dlgY,dlgW,dlgH;
 	  g_pGraphics->drawTile_direct(((dlgX+25)<<3)-4, ((dlgY+10)<<3)+4, 427);
 	  if(player[p].inventory.HasCardBlue > 1)
 	  {
-		  std::string buf = itoa(player[p].inventory.HasCardBlue);
-		  g_pGraphics->drawFont(buf,(dlgX+24)<<3,((dlgY+10)<<3)+3,0);
+		  char buf[10];
+		  sprintf(buf,"%d",player[p].inventory.HasCardBlue);
+		  g_pGraphics->drawFont((unsigned char*)buf,(dlgX+24)<<3,((dlgY+10)<<3)+3,0);
 	  }
   }
   // cities saved
-  if (p_levelcontrol->levels_completed[4]) g_pGraphics->drawFont( getstring("EP2_LVL4_TargetName"), (dlgX+1)<<3, (dlgY+8)<<3, 0);
-  if (p_levelcontrol->levels_completed[6]) g_pGraphics->drawFont( getstring("EP2_LVL6_TargetName"), (dlgX+8)<<3, (dlgY+8)<<3, 0);
-  if (p_levelcontrol->levels_completed[7]) g_pGraphics->drawFont( getstring("EP2_LVL7_TargetName"), (dlgX+1)<<3, (dlgY+9)<<3, 0);
-  if (p_levelcontrol->levels_completed[13]) g_pGraphics->drawFont( getstring("EP2_LVL13_TargetName"), (dlgX+8)<<3, (dlgY+9)<<3, 0);
-  if (p_levelcontrol->levels_completed[11]) g_pGraphics->drawFont( getstring("EP2_LVL11_TargetName"), (dlgX+1)<<3, (dlgY+10)<<3, 0);
-  if (p_levelcontrol->levels_completed[9]) g_pGraphics->drawFont( getstring("EP2_LVL9_TargetName"), (dlgX+8)<<3, (dlgY+10)<<3, 0);
-  if (p_levelcontrol->levels_completed[15]) g_pGraphics->drawFont( getstring("EP2_LVL15_TargetName"), (dlgX+1)<<3, (dlgY+11)<<3, 0);
-  if (p_levelcontrol->levels_completed[16]) g_pGraphics->drawFont( getstring("EP2_LVL16_TargetName"), (dlgX+8)<<3, (dlgY+11)<<3, 0);
+  if (p_levelcontrol->levels_completed[4]) g_pGraphics->drawFont( (unsigned char*) getstring("EP2_LVL4_TargetName"), (dlgX+1)<<3, (dlgY+8)<<3, 0);
+  if (p_levelcontrol->levels_completed[6]) g_pGraphics->drawFont( (unsigned char*) getstring("EP2_LVL6_TargetName"), (dlgX+8)<<3, (dlgY+8)<<3, 0);
+  if (p_levelcontrol->levels_completed[7]) g_pGraphics->drawFont( (unsigned char*) getstring("EP2_LVL7_TargetName"), (dlgX+1)<<3, (dlgY+9)<<3, 0);
+  if (p_levelcontrol->levels_completed[13]) g_pGraphics->drawFont( (unsigned char*) getstring("EP2_LVL13_TargetName"), (dlgX+8)<<3, (dlgY+9)<<3, 0);
+  if (p_levelcontrol->levels_completed[11]) g_pGraphics->drawFont( (unsigned char*) getstring("EP2_LVL11_TargetName"), (dlgX+1)<<3, (dlgY+10)<<3, 0);
+  if (p_levelcontrol->levels_completed[9]) g_pGraphics->drawFont( (unsigned char*) getstring("EP2_LVL9_TargetName"), (dlgX+8)<<3, (dlgY+10)<<3, 0);
+  if (p_levelcontrol->levels_completed[15]) g_pGraphics->drawFont( (unsigned char*) getstring("EP2_LVL15_TargetName"), (dlgX+1)<<3, (dlgY+11)<<3, 0);
+  if (p_levelcontrol->levels_completed[16]) g_pGraphics->drawFont( (unsigned char*) getstring("EP2_LVL16_TargetName"), (dlgX+8)<<3, (dlgY+11)<<3, 0);
 
   // raygun icon
   g_pGraphics->drawTile_direct((dlgX+20)<<3, ((dlgY+5)<<3)-5, 414);
@@ -461,17 +468,17 @@ int dlgX,dlgY,dlgW,dlgH;
   // ray gun charges text
   i = player[p].inventory.charges;
   if (i>999) i=999;
-  tempbuf = itoa(i);
-  g_pGraphics->drawFont( tempbuf, (dlgX+27-tempbuf.size())<<3, ((dlgY+5)<<3)-1, 0);
+  sprintf(tempbuf, "%d", i);
+  g_pGraphics->drawFont( (unsigned char*) tempbuf, (dlgX+27-strlen( (char*) tempbuf))<<3, ((dlgY+5)<<3)-1, 0);
 
   // score
   i = player[p].inventory.score;
-  tempbuf = itoa(i);
-  g_pGraphics->drawFont( tempbuf, (dlgX+12-tempbuf.size())<<3, (dlgY+2)<<3, 0);
+  sprintf(tempbuf, "%d", i);
+  g_pGraphics->drawFont( (unsigned char*) tempbuf, (dlgX+12-strlen( (char*) tempbuf))<<3, (dlgY+2)<<3, 0);
   // extra life at
   i = player[p].inventory.extralifeat;
-  tempbuf = itoa(i);
-  g_pGraphics->drawFont( tempbuf, (dlgX+28-tempbuf.size())<<3, (dlgY+2)<<3, 0);
+  sprintf(tempbuf, "%d", i);
+  g_pGraphics->drawFont( (unsigned char*) tempbuf, (dlgX+28-strlen( (char*) tempbuf))<<3, (dlgY+2)<<3, 0);
   // lives
   i = player[p].inventory.lives;
   x = ((dlgX + 1)<<3)+4;
@@ -489,7 +496,7 @@ void inventory_draw_ep3(int p)
 //int x,y,t,i,j;
 int i,j,x;
 int ankhtimepercent;
-	std::string tempbuf;
+char tempbuf[40];
 int dlgX,dlgY,dlgW,dlgH;
 
   dlgX = GetStringAttribute("EP3_StatusBox", "LEFT");
@@ -498,14 +505,14 @@ int dlgX,dlgY,dlgW,dlgH;
   dlgH = GetStringAttribute("EP3_StatusBox", "HEIGHT");
 
   dialogbox(dlgX,dlgY,dlgW,dlgH);
-  g_pGraphics->drawFont( getstring("EP3_StatusBox"), (dlgX+1)<<3, (dlgY+1)<<3, 0);
+  g_pGraphics->drawFont( (unsigned char*) getstring("EP3_StatusBox"), (dlgX+1)<<3, (dlgY+1)<<3, 0);
 
   // calculate % ankh time left
   ankhtimepercent = (int)((float)player[p].ankhtime / (PLAY_ANKH_TIME/100));
   // ankh time
   g_pGraphics->drawTile_direct((dlgX+4)<<3, ((dlgY+8)<<3)+3, 214);
-  tempbuf = itoa(ankhtimepercent);
-  g_pGraphics->drawFont( tempbuf, (dlgX+8)<<3, ((dlgY+8)<<3)+7, 0);
+  sprintf(tempbuf, "%d", ankhtimepercent);
+  g_pGraphics->drawFont( (unsigned char*) tempbuf, (dlgX+8)<<3, ((dlgY+8)<<3)+7, 0);
 
   // raygun icon
   g_pGraphics->drawTile_direct((dlgX+23)<<3, ((dlgY+5)<<3)-5, 216);
@@ -513,8 +520,8 @@ int dlgX,dlgY,dlgW,dlgH;
   // ray gun charges text
   i = player[p].inventory.charges;
   if (i>999) i=999;
-  tempbuf = itoa(i);
-  g_pGraphics->drawFont( tempbuf, (dlgX+26)<<3, ((dlgY+5)<<3)-1, 0);
+  sprintf(tempbuf, "%d", i);
+  g_pGraphics->drawFont( (unsigned char*) tempbuf, (dlgX+26)<<3, ((dlgY+5)<<3)-1, 0);
 
   // cards
   if (player[p].inventory.HasCardYellow)
@@ -522,8 +529,9 @@ int dlgX,dlgY,dlgW,dlgH;
 	  g_pGraphics->drawTile_direct(((dlgX+14)<<3)+4, ((dlgY+8)<<3)+4, 217);
 	  if(player[p].inventory.HasCardYellow > 1)
 	  {
-		  std::string buf = itoa(player[p].inventory.HasCardYellow);
-		  g_pGraphics->drawFont(buf,(dlgX+13)<<3,((dlgY+8)<<3)+3,0);
+		  char buf[10];
+		  sprintf(buf,"%d",player[p].inventory.HasCardYellow);
+		  g_pGraphics->drawFont((unsigned char*)buf,(dlgX+13)<<3,((dlgY+8)<<3)+3,0);
 	  }
   }
   if (player[p].inventory.HasCardRed)
@@ -531,8 +539,9 @@ int dlgX,dlgY,dlgW,dlgH;
 	  g_pGraphics->drawTile_direct(((dlgX+18)<<3)+4, ((dlgY+8)<<3)+4, 218);
 	  if(player[p].inventory.HasCardRed > 1)
 	  {
-		  std::string buf = itoa(player[p].inventory.HasCardRed);
-		  g_pGraphics->drawFont(buf,(dlgX+17)<<3,((dlgY+8)<<3)+3,0);
+		  char buf[10];
+		  sprintf(buf,"%d",player[p].inventory.HasCardRed);
+		  g_pGraphics->drawFont((unsigned char*)buf,(dlgX+17)<<3,((dlgY+8)<<3)+3,0);
 	  }
   }
   if (player[p].inventory.HasCardGreen)
@@ -540,8 +549,9 @@ int dlgX,dlgY,dlgW,dlgH;
 	  g_pGraphics->drawTile_direct(((dlgX+22)<<3)+4, ((dlgY+8)<<3)+4, 219);
 	  if(player[p].inventory.HasCardGreen > 1)
 	  {
-		  std::string buf = itoa(player[p].inventory.HasCardGreen);
-		  g_pGraphics->drawFont(buf,(dlgX+21)<<3,((dlgY+8)<<3)+3,0);
+		  char buf[10];
+		  sprintf(buf,"%d",player[p].inventory.HasCardGreen);
+		  g_pGraphics->drawFont((unsigned char*)buf,(dlgX+21)<<3,((dlgY+8)<<3)+3,0);
 	  }
   }
   if (player[p].inventory.HasCardBlue)
@@ -549,19 +559,20 @@ int dlgX,dlgY,dlgW,dlgH;
 	  g_pGraphics->drawTile_direct(((dlgX+26)<<3)+4, ((dlgY+8)<<3)+4, 220);
 	  if(player[p].inventory.HasCardBlue > 1)
 	  {
-		  std::string buf = itoa(player[p].inventory.HasCardBlue);
-		  g_pGraphics->drawFont(buf,(dlgX+25)<<3,((dlgY+8)<<3)+3,0);
+		  char buf[10];
+		  sprintf(buf,"%d",player[p].inventory.HasCardBlue);
+		  g_pGraphics->drawFont((unsigned char*)buf,(dlgX+25)<<3,((dlgY+8)<<3)+3,0);
 	  }
   }
 
   // score
   i = player[p].inventory.score;
-  tempbuf = itoa(i);
-  g_pGraphics->drawFont( tempbuf, (dlgX+12-tempbuf.size())<<3, (dlgY+2)<<3, 0);
+  sprintf(tempbuf, "%d", i);
+  g_pGraphics->drawFont( (unsigned char*) tempbuf, (dlgX+12-strlen(tempbuf))<<3, (dlgY+2)<<3, 0);
   // extra life at
   i = player[p].inventory.extralifeat;
-  tempbuf = itoa(i);
-  g_pGraphics->drawFont( tempbuf, (dlgX+28-tempbuf.size())<<3, (dlgY+2)<<3, 0);
+  sprintf(tempbuf, "%d", i);
+  g_pGraphics->drawFont( (unsigned char*) tempbuf, (dlgX+28-strlen(tempbuf))<<3, (dlgY+2)<<3, 0);
   // lives
   i = player[p].inventory.lives;
   x = ((dlgX+1)<<3)+4;
@@ -656,7 +667,7 @@ int dlgX,dlgY,dlgW,dlgH;
 
   dialogbox(dlgX,dlgY,dlgW,dlgH);
 
-  g_pGraphics->drawFont( getstring("EP1_SHIP"), (dlgX+1)<<3, (dlgY+1)<<3,0);
+  g_pGraphics->drawFont( (unsigned char*) getstring("EP1_SHIP"), (dlgX+1)<<3, (dlgY+1)<<3,0);
 
   // draw needed parts
   if (!player[cp].inventory.HasJoystick)
@@ -702,7 +713,7 @@ const int twirlspeed = 100;
   twirlY = GetStringAttribute(strname, "TWIRLY");
 
   dialogbox(dlgX,dlgY,dlgW,dlgH);
-  g_pGraphics->drawFont( getstring(strname), (dlgX+1)<<3, (dlgY+1)<<3,0);
+  g_pGraphics->drawFont( (unsigned char*) getstring(strname), (dlgX+1)<<3, (dlgY+1)<<3,0);
 
   g_pVideoDriver->update_screen();
 
@@ -871,7 +882,7 @@ char save_slot_box(int issave, stCloneKeenPlus *pCKP)
 {
 char saveslot;
 FILE *fp;
-	std::string fname;
+char fname[40];
 char slotexists;
 int x, bmnum;
 int dlgX,dlgY,dlgW,dlgH;
@@ -908,11 +919,11 @@ top: ;
     sb_dialogbox(dlgX,dlgY,dlgW,dlgH);
     if (issave)
     {
-    	g_pGraphics->sb_font_draw( getstring("WhichSlotSave"),(dlgX+1)<<3,(dlgY+1)<<3);
+    	g_pGraphics->sb_font_draw( (unsigned char*) getstring("WhichSlotSave"),(dlgX+1)<<3,(dlgY+1)<<3);
     }
     else
     {
-    	g_pGraphics->sb_font_draw( getstring("WhichSlotLoad"),(dlgX+1)<<3,(dlgY+1)<<3);
+    	g_pGraphics->sb_font_draw( (unsigned char*) getstring("WhichSlotLoad"),(dlgX+1)<<3,(dlgY+1)<<3);
     	gamedo_AnimatedTiles();
     }
 
@@ -930,13 +941,9 @@ top: ;
   } while(!g_pInput->getPressedKey(KQUIT) && !saveslot);
 
   /* check if the selected save file exists */
-	fname = "ep";
-	fname += p_levelcontrol->episode+'0';
-	fname += "save";
-	fname += saveslot+'0';
-	fname += ".dat";
+  sprintf(fname, "ep%csave%c.dat", p_levelcontrol->episode+'0', saveslot+'0');
   slotexists = 0;
-  fp = fopen(fname.c_str(), "rb");
+  fp = fopen(fname, "rb");
   if (fp)
   {
     fclose(fp);
@@ -974,7 +981,7 @@ top: ;
     sb_dialogbox(dlgX,dlgY,dlgW,dlgH);
     if (issave)
     {
-      g_pGraphics->sb_font_draw( getstring("SaveSlotOverwrite"),(dlgX+1)<<3,(dlgY+1)<<3);
+      g_pGraphics->sb_font_draw( (unsigned char*) getstring("SaveSlotOverwrite"),(dlgX+1)<<3,(dlgY+1)<<3);
       if (g_pInput->getPressedKey(KN))
       {
         map_redraw();
@@ -988,7 +995,7 @@ top: ;
    }
     else
     {
-    	g_pGraphics->sb_font_draw( getstring("LoadNoSuchSlot"),(dlgX+1)<<3,(dlgY+1)<<3);
+    	g_pGraphics->sb_font_draw( (unsigned char*) getstring("LoadNoSuchSlot"),(dlgX+1)<<3,(dlgY+1)<<3);
 
     	if (g_pInput->getPressedAnyKey())
     	{
@@ -1039,7 +1046,7 @@ int dlgX,dlgY,dlgW,dlgH;
     gamedo_render_drawobjects(pCKP);
 
     sb_dialogbox(dlgX,dlgY,dlgW,dlgH);
-    g_pGraphics->sb_font_draw( getstring("GameSaveSuccess"),(dlgX+1)<<3,(dlgY+1)<<3);
+    g_pGraphics->sb_font_draw( (unsigned char*) getstring("GameSaveSuccess"),(dlgX+1)<<3,(dlgY+1)<<3);
 
     g_pVideoDriver->sb_blit();
     gamedo_render_eraseobjects();
@@ -1054,7 +1061,7 @@ int dlgX,dlgY,dlgW,dlgH;
 int VerifyQuit(stCloneKeenPlus *pCKP)
 {
 int dlgX,dlgY,dlgW,dlgH;
-	std::string text;
+char *text;
 
   if (fade.mode==FADE_GO) return NO_QUIT;
 
@@ -1072,7 +1079,7 @@ int dlgX,dlgY,dlgW,dlgH;
     gamedo_AnimatedTiles();
 
     sb_dialogbox(dlgX, dlgY, dlgW, dlgH);
-    g_pGraphics->sb_font_draw( text, (dlgX+1)<<3, (dlgY+1)<<3);
+    g_pGraphics->sb_font_draw( (unsigned char*) text, (dlgX+1)<<3, (dlgY+1)<<3);
     if (g_pInput->getPressedKey(KQ))
     {
       map_redraw();
@@ -1340,7 +1347,7 @@ void showTextMB(int lines, char **text, stCloneKeenPlus *pCKP)
 
 	    for(i=0;i<lines;i++)
 	    {
-	    	g_pGraphics->drawFont(text[i], (dlgX+1)<<3, (dlgY+1+i)<<3,0);
+	    	g_pGraphics->drawFont((unsigned char*) text[i], (dlgX+1)<<3, (dlgY+1+i)<<3,0);
 	    }
 
 	    twirlframe = 0;

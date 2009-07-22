@@ -12,19 +12,24 @@
 #include "../include/fileio.h"
 #include "../fileio/CExeFile.h"
 #include "../CLogFile.h"
-#include "../StringUtils.h"
 
-int readStoryText(char **ptext, int episode, const std::string& path)
+int readStoryText(char **ptext, int episode, char *path)
 {
-	std::string buf2 = formatPathString(path);
-	std::string buf = buf2 + "storytxt.ck" + itoa(episode);
-
 	FILE *fp;
-	if((fp=fopen(buf.c_str(),"rt"))==NULL)
-	{
-		buf = buf2 + "keen" + itoa(episode) + ".exe";
+	char buf[256];
+	char buf2[256];
 
-		if((fp=fopen(buf.c_str(),"rb"))!=NULL)
+	memset(buf,0,256*sizeof(char));
+
+	formatPathString(buf2,path);
+
+	sprintf(buf,"%sstorytxt.ck%d",buf2,episode);
+
+	if((fp=fopen(buf,"rt"))==NULL)
+	{
+		sprintf(buf,"%skeen%d.exe",buf2,episode);
+
+		if((fp=fopen(buf,"rb"))!=NULL)
 		{
 			unsigned char *filebuf;
 			int startflag=0, endflag=0; // where story begins and ends!

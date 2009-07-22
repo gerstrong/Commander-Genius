@@ -55,7 +55,7 @@ bool CMessages::readData(char *buf, int episode, int version)
 	// Now read the stuff and store it to a list
 	for(int pos=offset_start ; pos<offset_end ; pos++)
 	{
-		std::string Text;
+		string Text;
 
 		while(buf[pos] != 0)
 		{
@@ -68,7 +68,7 @@ bool CMessages::readData(char *buf, int episode, int version)
 			StringList.push_back(Text);
 	}
 
-	std::list<std::string> :: iterator i;
+	list<string> :: iterator i;
 
 #include <iostream>
 	for(i=StringList.begin() ; i!=StringList.end() ; i++)
