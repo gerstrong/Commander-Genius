@@ -1198,7 +1198,7 @@ char controlsmenu(stCloneKeenPlus *pCKP)
 	// Prepare the Games Menu
 	ControlsMenu = new CDialog();
 	
-	ControlsMenu->setDimensions(1,3,38,20);
+	ControlsMenu->setDimensions(1,2,38,21);
 	
 	g_pInput->getEventName(IC_LEFT, 0, buf2);
 	sprintf(buf,"P1 Left:   %s",buf2);
@@ -1250,6 +1250,7 @@ char controlsmenu(stCloneKeenPlus *pCKP)
 	sprintf(buf,"P2 Status: %s",buf2);
 	ControlsMenu->addOptionText(buf);
 	ControlsMenu->addSeparator();
+	ControlsMenu->addOptionText("Reset Controls");
 	ControlsMenu->addOptionText("Return");
 	
 	ControlsMenu->animateDialogBox(true);
@@ -1339,6 +1340,13 @@ char controlsmenu(stCloneKeenPlus *pCKP)
 				g_pInput->getEventName(item, 1, buf2);
 				strcat(buf,buf2);
 				ControlsMenu->setOptionText(selection,buf);
+			}
+			else if(selection == MAX_COMMANDS*2+1)
+			{
+				// Reset Controls here!
+				g_pInput->resetControls();
+				g_pInput->saveControlconfig();
+				break;
 			}
 			else
 			{
