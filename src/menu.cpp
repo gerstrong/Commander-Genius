@@ -1368,15 +1368,12 @@ unsigned int p;
 int x,y,i;
 int boxY, boxH;
 int boxtimer;
-int ep3;
 
-stLevelControl *p_levelcontrol;
-
-	p_levelcontrol = &(pCKP->Control.levelcontrol);
+stLevelControl *p_levelcontrol = &pCKP->Control.levelcontrol;
 
   // on episode 3 we have to subtract one from the map tiles
   // because the tiles start at 31, not 32 like on the other eps
-  ep3 = 0;
+  int ep3 = 0;
   if (p_levelcontrol->episode==3) ep3 = 1;
 
   #define KEENSLEFT_TIME        400

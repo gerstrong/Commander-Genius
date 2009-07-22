@@ -645,7 +645,6 @@ unsigned int i,x,y;
    y=yoff;
    for(i=0;i<text.size();i++)
    {
-     if (!text[i]) break;
      if (text[i]!=13)
      {
        sb_drawCharacterwithmask(x, y, text[i], mask);
