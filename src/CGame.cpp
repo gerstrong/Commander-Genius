@@ -218,7 +218,7 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 		return 0;
 }
 
-int CGame::loadResources(unsigned short Episode, char *DataDirectory)
+bool CGame::loadResources(unsigned short Episode, char *DataDirectory)
 {
 	m_Episode = Episode;
 	memcpy(m_DataDirectory, DataDirectory, 256);
@@ -251,12 +251,17 @@ int CGame::loadResources(unsigned short Episode, char *DataDirectory)
 	
 	if(ExeFile->getData() == NULL) {
 		g_pLogFile->textOut(RED, "CGame::loadResources: Could not load data out of EXE<br>");
-		return 1;
+		delete ExeFile;
+		return false;
 	}
 	
 	TileLoader = new CTileLoader(Episode, ExeFile->getEXEVersion(), ExeFile->getData());
-	if(!TileLoader->load()) return 1;
-
+	if(!TileLoader->load()) {
+		g_pLogFile->textOut(RED, "CGame::loadResources: Could not load data with TileLoader<br>");
+		delete ExeFile;
+		return false;
+	}
+	
     // load the strings. TODO: After that this one will replace loadstrings
     //m_Messages = new CMessages();    delete ExeFile;
     //m_Messages->readData(char *buf, int episode, int version);
@@ -265,10 +270,9 @@ int CGame::loadResources(unsigned short Episode, char *DataDirectory)
     delete ExeFile;
 
 	// Load the sound data
-	int ok;
-	ok = g_pSound->loadSoundData(m_Episode, DataDirectory);
-	if( ok ) return ok;
-	return 0;
+	bool ok = g_pSound->loadSoundData(m_Episode, DataDirectory);
+	if( !ok ) return false;
+	return true;
 }
 
 void CGame::freeResources(void)

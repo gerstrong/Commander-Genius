@@ -17,7 +17,7 @@ public:
 	CGame();
 	virtual ~CGame();
 
-	int loadResources(unsigned short Episode, char *DataDirectory);
+	bool loadResources(unsigned short Episode, char *DataDirectory);
 	void freeResources(void);
 	short runCycle(stCloneKeenPlus *pCKP);
 	void preallocateCKP(stCloneKeenPlus *pCKP);

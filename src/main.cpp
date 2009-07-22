@@ -180,17 +180,18 @@ int main(int argc, char *argv[])
 		CKP.Control.levelcontrol.episode = CKP.GameData[CKP.Resources.GameSelected-1].Episode; // Assign the correct Episode
 
 		options = CKP.Option;
-		Game->loadResources(CKP.Control.levelcontrol.episode, CKP.GameData[CKP.Resources.GameSelected-1].DataDirectory);
+		if(Game->loadResources(CKP.Control.levelcontrol.episode, CKP.GameData[CKP.Resources.GameSelected-1].DataDirectory))
+			CKP.shutdown = SHUTDOWN_BOOTUP; // Prepare game for starting
+		else
+			CKP.shutdown = SHUTDOWN_NEW_GAME;
 
-		//Game->runCycle();
-
-		CKP.shutdown = SHUTDOWN_BOOTUP; // Prepare game for starting
-
-		while( CKP.shutdown == SHUTDOWN_RESTART || CKP.shutdown == SHUTDOWN_BOOTUP )
+		while( CKP.shutdown == SHUTDOWN_RESTART || CKP.shutdown == SHUTDOWN_BOOTUP || CKP.shutdown == SHUTDOWN_NEW_GAME )
 		{
-			CKP.shutdown = SHUTDOWN_NONE; // Game is runnning
-			Game->runCycle(&CKP);
-
+			if(CKP.shutdown != SHUTDOWN_NEW_GAME) {
+				CKP.shutdown = SHUTDOWN_NONE; // Game is runnning
+				Game->runCycle(&CKP);
+			}
+			
 			if(CKP.shutdown == SHUTDOWN_NEW_GAME)
 			{
 	    	  if(loadStartMenu(&CKP) == 1)
@@ -201,9 +202,10 @@ int main(int argc, char *argv[])
 	    	  else
 	    	  {
 	    		  //loadResourcesforGame(pCKP);
-	    		  Game->loadResources(CKP.Control.levelcontrol.episode, CKP.GameData[CKP.Resources.GameSelected-1].DataDirectory);
-
-	    		  CKP.shutdown = SHUTDOWN_RESTART;
+	    		  if(Game->loadResources(CKP.Control.levelcontrol.episode, CKP.GameData[CKP.Resources.GameSelected-1].DataDirectory))
+					  CKP.shutdown = SHUTDOWN_RESTART;
+				  else
+					  CKP.shutdown = SHUTDOWN_NEW_GAME;
 	    	  }
 			}
 		}

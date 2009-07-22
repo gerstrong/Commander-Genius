@@ -297,12 +297,12 @@ playsound: ;
   m_soundchannel[chnl].setupSound((unsigned short)snd, 0, true, WAVE_IN, 0, (mode==PLAY_FORCE) ? true : false );
 }
 
-char CSound::loadSoundData(unsigned short Episode, char *DataDirectory)
+bool CSound::loadSoundData(unsigned short Episode, char *DataDirectory)
 {
   if(!m_active) return false;
 
   char *path;
-  int ok;
+  bool ok = true;
   char soundfile[80];
   char buf[256];
 
@@ -338,52 +338,52 @@ char CSound::loadSoundData(unsigned short Episode, char *DataDirectory)
 	 fclose(p_file);
 
   ok  = m_soundslot[SOUND_KEEN_WALK].loadSound(soundfile, "KEENWALKSND", SOUND_KEEN_WALK);
-  ok |= m_soundslot[SOUND_KEEN_WALK2].loadSound(soundfile, "KEENWLK2SND", SOUND_KEEN_WALK2);
-  ok |= m_soundslot[SOUND_KEEN_JUMP].loadSound(soundfile, "KEENJUMPSND", SOUND_KEEN_JUMP);
-  ok |= m_soundslot[SOUND_KEEN_POGO].loadSound(soundfile, "KEENPOGOSND", SOUND_KEEN_POGO);
-  ok |= m_soundslot[SOUND_KEEN_LAND].loadSound(soundfile, "KEENLANDSND", SOUND_KEEN_LAND);
-  ok |= m_soundslot[SOUND_KEEN_BLOK].loadSound(soundfile, "KEENBLOKSND", SOUND_KEEN_BLOK);
-  ok |= m_soundslot[SOUND_KEEN_DIE].loadSound(soundfile, "KEENDIESND", SOUND_KEEN_DIE);
-  ok |= m_soundslot[SOUND_KEEN_FALL].loadSound(soundfile, "PLUMMETSND", SOUND_KEEN_FALL);
-  ok |= m_soundslot[SOUND_KEEN_BUMPHEAD].loadSound(soundfile, "BUMPHEADSND", SOUND_KEEN_BUMPHEAD);
-  ok |= m_soundslot[SOUND_ENTER_LEVEL].loadSound(soundfile, "WLDENTERSND", SOUND_ENTER_LEVEL);
-  ok |= m_soundslot[SOUND_KEENSLEFT].loadSound(soundfile, "keensleft", SOUND_KEENSLEFT);
+  ok &= m_soundslot[SOUND_KEEN_WALK2].loadSound(soundfile, "KEENWLK2SND", SOUND_KEEN_WALK2);
+  ok &= m_soundslot[SOUND_KEEN_JUMP].loadSound(soundfile, "KEENJUMPSND", SOUND_KEEN_JUMP);
+  ok &= m_soundslot[SOUND_KEEN_POGO].loadSound(soundfile, "KEENPOGOSND", SOUND_KEEN_POGO);
+  ok &= m_soundslot[SOUND_KEEN_LAND].loadSound(soundfile, "KEENLANDSND", SOUND_KEEN_LAND);
+  ok &= m_soundslot[SOUND_KEEN_BLOK].loadSound(soundfile, "KEENBLOKSND", SOUND_KEEN_BLOK);
+  ok &= m_soundslot[SOUND_KEEN_DIE].loadSound(soundfile, "KEENDIESND", SOUND_KEEN_DIE);
+  ok &= m_soundslot[SOUND_KEEN_FALL].loadSound(soundfile, "PLUMMETSND", SOUND_KEEN_FALL);
+  ok &= m_soundslot[SOUND_KEEN_BUMPHEAD].loadSound(soundfile, "BUMPHEADSND", SOUND_KEEN_BUMPHEAD);
+  ok &= m_soundslot[SOUND_ENTER_LEVEL].loadSound(soundfile, "WLDENTERSND", SOUND_ENTER_LEVEL);
+  ok &= m_soundslot[SOUND_KEENSLEFT].loadSound(soundfile, "keensleft", SOUND_KEENSLEFT);
 
-  ok |= m_soundslot[SOUND_KEEN_FIRE].loadSound(soundfile, "KEENFIRESND", SOUND_KEEN_FIRE);
-  ok |= m_soundslot[SOUND_GUN_CLICK].loadSound(soundfile, "GUNCLICK", SOUND_GUN_CLICK);
-  ok |= m_soundslot[SOUND_SHOT_HIT].loadSound(soundfile, "SHOTHIT", SOUND_SHOT_HIT);
+  ok &= m_soundslot[SOUND_KEEN_FIRE].loadSound(soundfile, "KEENFIRESND", SOUND_KEEN_FIRE);
+  ok &= m_soundslot[SOUND_GUN_CLICK].loadSound(soundfile, "GUNCLICK", SOUND_GUN_CLICK);
+  ok &= m_soundslot[SOUND_SHOT_HIT].loadSound(soundfile, "SHOTHIT", SOUND_SHOT_HIT);
 
-  ok |= m_soundslot[SOUND_GET_ITEM].loadSound(soundfile, "GOTITEMSND", SOUND_GET_ITEM);
-  ok |= m_soundslot[SOUND_GET_BONUS].loadSound(soundfile, "GOTBONUSSND", SOUND_GET_BONUS);
-  ok |= m_soundslot[SOUND_GET_PART].loadSound(soundfile, "GOTPARTSND", SOUND_GET_PART);
-  ok |= m_soundslot[SOUND_LEVEL_DONE].loadSound(soundfile, "LVLDONESND", SOUND_LEVEL_DONE);
-  ok |= m_soundslot[SOUND_GAME_OVER].loadSound(soundfile, "GAMEOVERSND", SOUND_GAME_OVER);
-  ok |= m_soundslot[SOUND_TELEPORT].loadSound(soundfile, "TELEPORTSND", SOUND_TELEPORT);
-  ok |= m_soundslot[SOUND_EXTRA_LIFE].loadSound(soundfile, "EXTRAMANSND", SOUND_EXTRA_LIFE);
-  ok |= m_soundslot[SOUND_CHUNKSMASH].loadSound(soundfile, "CHUNKSMASH", SOUND_CHUNKSMASH);
-  ok |= m_soundslot[SOUND_GOINDOOR].loadSound(soundfile, "GOINDOORSND", SOUND_GOINDOOR);
-  ok |= m_soundslot[SOUND_GET_CARD].loadSound(soundfile, "GETCARDSND", SOUND_GET_CARD);
-  ok |= m_soundslot[SOUND_USE_KEY].loadSound(soundfile, "USEKEYSND", SOUND_USE_KEY);
-  ok |= m_soundslot[SOUND_SWITCH_TOGGLE].loadSound(soundfile, "CLICKSND", SOUND_SWITCH_TOGGLE);
-  ok |= m_soundslot[SOUND_DOOR_OPEN].loadSound(soundfile, "DOOROPENSND", SOUND_DOOR_OPEN);
+  ok &= m_soundslot[SOUND_GET_ITEM].loadSound(soundfile, "GOTITEMSND", SOUND_GET_ITEM);
+  ok &= m_soundslot[SOUND_GET_BONUS].loadSound(soundfile, "GOTBONUSSND", SOUND_GET_BONUS);
+  ok &= m_soundslot[SOUND_GET_PART].loadSound(soundfile, "GOTPARTSND", SOUND_GET_PART);
+  ok &= m_soundslot[SOUND_LEVEL_DONE].loadSound(soundfile, "LVLDONESND", SOUND_LEVEL_DONE);
+  ok &= m_soundslot[SOUND_GAME_OVER].loadSound(soundfile, "GAMEOVERSND", SOUND_GAME_OVER);
+  ok &= m_soundslot[SOUND_TELEPORT].loadSound(soundfile, "TELEPORTSND", SOUND_TELEPORT);
+  ok &= m_soundslot[SOUND_EXTRA_LIFE].loadSound(soundfile, "EXTRAMANSND", SOUND_EXTRA_LIFE);
+  ok &= m_soundslot[SOUND_CHUNKSMASH].loadSound(soundfile, "CHUNKSMASH", SOUND_CHUNKSMASH);
+  ok &= m_soundslot[SOUND_GOINDOOR].loadSound(soundfile, "GOINDOORSND", SOUND_GOINDOOR);
+  ok &= m_soundslot[SOUND_GET_CARD].loadSound(soundfile, "GETCARDSND", SOUND_GET_CARD);
+  ok &= m_soundslot[SOUND_USE_KEY].loadSound(soundfile, "USEKEYSND", SOUND_USE_KEY);
+  ok &= m_soundslot[SOUND_SWITCH_TOGGLE].loadSound(soundfile, "CLICKSND", SOUND_SWITCH_TOGGLE);
+  ok &= m_soundslot[SOUND_DOOR_OPEN].loadSound(soundfile, "DOOROPENSND", SOUND_DOOR_OPEN);
 
-  ok |= m_soundslot[SOUND_YORP_BUMP].loadSound(soundfile, "YORPBUMPSND", SOUND_YORP_BUMP);
-  ok |= m_soundslot[SOUND_YORP_STUN].loadSound(soundfile, "YORPBOPSND", SOUND_YORP_STUN);
-  ok |= m_soundslot[SOUND_YORP_DIE].loadSound(soundfile, "YORPSCREAM", SOUND_YORP_DIE);
-  ok |= m_soundslot[SOUND_GARG_DIE].loadSound(soundfile, "GARGSCREAM", SOUND_GARG_DIE);
-  ok |= m_soundslot[SOUND_VORT_DIE].loadSound(soundfile, "vortscream", SOUND_VORT_DIE);
-  ok |= m_soundslot[SOUND_TANK_FIRE].loadSound(soundfile, "TANKFIRE", SOUND_TANK_FIRE);
+  ok &= m_soundslot[SOUND_YORP_BUMP].loadSound(soundfile, "YORPBUMPSND", SOUND_YORP_BUMP);
+  ok &= m_soundslot[SOUND_YORP_STUN].loadSound(soundfile, "YORPBOPSND", SOUND_YORP_STUN);
+  ok &= m_soundslot[SOUND_YORP_DIE].loadSound(soundfile, "YORPSCREAM", SOUND_YORP_DIE);
+  ok &= m_soundslot[SOUND_GARG_DIE].loadSound(soundfile, "GARGSCREAM", SOUND_GARG_DIE);
+  ok &= m_soundslot[SOUND_VORT_DIE].loadSound(soundfile, "vortscream", SOUND_VORT_DIE);
+  ok &= m_soundslot[SOUND_TANK_FIRE].loadSound(soundfile, "TANKFIRE", SOUND_TANK_FIRE);
 
   if (Episode == 2)
   {
-    ok |= m_soundslot[SOUND_KEEN_BLOK].loadSound(soundfile, "EARTHPOW", SOUND_EARTHPOW);
+    ok &= m_soundslot[SOUND_KEEN_BLOK].loadSound(soundfile, "EARTHPOW", SOUND_EARTHPOW);
   }
   else if (Episode == 3)
   {
-    ok |= m_soundslot[SOUND_MEEP].loadSound(soundfile, "MEEP", SOUND_MEEP);
-    ok |= m_soundslot[SOUND_ANKH].loadSound(soundfile, "ANKH", SOUND_ANKH);
-    ok |= m_soundslot[SOUND_MORTIMER].loadSound(soundfile, "MORTIMER", SOUND_MORTIMER);
-    ok |= m_soundslot[SOUND_FOOTSLAM].loadSound(soundfile, "FOOTSLAM", SOUND_FOOTSLAM);
+    ok &= m_soundslot[SOUND_MEEP].loadSound(soundfile, "MEEP", SOUND_MEEP);
+    ok &= m_soundslot[SOUND_ANKH].loadSound(soundfile, "ANKH", SOUND_ANKH);
+    ok &= m_soundslot[SOUND_MORTIMER].loadSound(soundfile, "MORTIMER", SOUND_MORTIMER);
+    ok &= m_soundslot[SOUND_FOOTSLAM].loadSound(soundfile, "FOOTSLAM", SOUND_FOOTSLAM);
   }
 
   for( unsigned short i=0 ; i<m_mixing_channels ; i++ )

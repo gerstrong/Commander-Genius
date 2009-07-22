@@ -33,7 +33,7 @@ CSoundSlot::~CSoundSlot() {
 }
 
 // loads sound searchname from file fname, into sounds[] entry loadnum
-// return value is nonzero on failure
+// return value is false on failure
 bool CSoundSlot::loadSound(const char *fname, const char *searchname, unsigned int loadnum)
 {
 	// Unload the sound if any was previously loaded

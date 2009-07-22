@@ -23,7 +23,7 @@ public:
 
 	bool init(void);
 	void stop(void);
-	char loadSoundData(unsigned short Episode, char *DataDirectory);
+	bool loadSoundData(unsigned short Episode, char *DataDirectory);
 	void stopAllSounds(void);
 
 	bool forcedisPlaying(void);
