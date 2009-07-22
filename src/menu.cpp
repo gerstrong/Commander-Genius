@@ -50,7 +50,8 @@ void showmapatpos(int level, int xoff, int yoff, int wm, stCloneKeenPlus *pCKP)
 	else
 		numsel = pCKP->Resources.GameSelected-1;
 	
-	loadmap(levelname, pCKP->GameData[numsel].DataDirectory, level, wm, pCKP);
+	if(loadmap(levelname, pCKP->GameData[numsel].DataDirectory, level, wm, pCKP) != 0)
+		return;
 	
 	drawmap();
 	for(i=0;i<xoff;i++) map_scroll_right();
