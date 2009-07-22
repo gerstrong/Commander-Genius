@@ -96,6 +96,10 @@
 		23D3EC4F1016973A001643FA /* CEGASprit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3EC471016973A001643FA /* CEGASprit.cpp */; };
 		23D3EC501016973A001643FA /* CMessages.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3EC491016973A001643FA /* CMessages.cpp */; };
 		23D3EC511016973A001643FA /* CPlanes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3EC4B1016973A001643FA /* CPlanes.cpp */; };
+		23D3ED72101759C8001643FA /* StringUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3ED70101759C8001643FA /* StringUtils.cpp */; };
+		23D3EE4310175FC9001643FA /* StringBuf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3EE4210175FC9001643FA /* StringBuf.cpp */; };
+		23D3EE581017602E001643FA /* Debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3EE571017602E001643FA /* Debug.cpp */; };
+		23D3EE5B10176098001643FA /* CrashHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3EE5910176098001643FA /* CrashHandler.cpp */; };
 		8D0C4E8D0486CD37000505A6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0867D6AAFE840B52C02AAC07 /* InfoPlist.strings */; };
 		8D0C4E920486CD37000505A6 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20286C33FDCF999611CA2CEA /* Carbon.framework */; };
 /* End PBXBuildFile section */
@@ -264,6 +268,29 @@
 		23D3EC4A1016973A001643FA /* CMessages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMessages.h; sourceTree = "<group>"; };
 		23D3EC4B1016973A001643FA /* CPlanes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlanes.cpp; sourceTree = "<group>"; };
 		23D3EC4C1016973A001643FA /* CPlanes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPlanes.h; sourceTree = "<group>"; };
+		23D3ED70101759C8001643FA /* StringUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtils.cpp; sourceTree = "<group>"; };
+		23D3ED71101759C8001643FA /* StringUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringUtils.h; sourceTree = "<group>"; };
+		23D3ED7310175A17001643FA /* Color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
+		23D3ED7410175A17001643FA /* Iterator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Iterator.h; sourceTree = "<group>"; };
+		23D3ED7510175A97001643FA /* FindFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindFile.h; sourceTree = "<group>"; };
+		23D3ED7610175A97001643FA /* MathLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MathLib.h; sourceTree = "<group>"; };
+		23D3ED7710175A97001643FA /* Ref.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ref.h; sourceTree = "<group>"; };
+		23D3ED7810175A97001643FA /* StringBuf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringBuf.h; sourceTree = "<group>"; };
+		23D3ED7910175B24001643FA /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Debug.h; sourceTree = "<group>"; };
+		23D3ED7A10175B24001643FA /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
+		23D3ED7B10175B24001643FA /* Mutex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mutex.h; sourceTree = "<group>"; };
+		23D3ED7C10175B24001643FA /* RefCounter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RefCounter.h; sourceTree = "<group>"; };
+		23D3ED7D10175B24001643FA /* Unicode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Unicode.h; sourceTree = "<group>"; };
+		23D3ED7E10175BA7001643FA /* EventQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventQueue.h; sourceTree = "<group>"; };
+		23D3ED7F10175BA7001643FA /* SmartPointer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SmartPointer.h; sourceTree = "<group>"; };
+		23D3ED8010175BA7001643FA /* Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
+		23D3EDA210175CEF001643FA /* CVec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVec.h; sourceTree = "<group>"; };
+		23D3EDA310175CEF001643FA /* Functors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Functors.h; sourceTree = "<group>"; };
+		23D3EDA410175CEF001643FA /* ThreadPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThreadPool.h; sourceTree = "<group>"; };
+		23D3EE4210175FC9001643FA /* StringBuf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringBuf.cpp; sourceTree = "<group>"; };
+		23D3EE571017602E001643FA /* Debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Debug.cpp; sourceTree = "<group>"; };
+		23D3EE5910176098001643FA /* CrashHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CrashHandler.cpp; sourceTree = "<group>"; };
+		23D3EE5A10176098001643FA /* CrashHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CrashHandler.h; sourceTree = "<group>"; };
 		5048396D09E3307300765E4B /* CommanderGeniusProj.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = CommanderGeniusProj.xcconfig; sourceTree = "<group>"; };
 		5048396E09E3307300765E4B /* CommanderGeniusTarget.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = CommanderGeniusTarget.xcconfig; sourceTree = "<group>"; };
 		508344B209E5C41E0093A071 /* CommanderGenius.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CommanderGenius.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -311,6 +338,29 @@
 		20286C2AFDCF999611CA2CEA /* src */ = {
 			isa = PBXGroup;
 			children = (
+				23D3EE5910176098001643FA /* CrashHandler.cpp */,
+				23D3EE5A10176098001643FA /* CrashHandler.h */,
+				23D3EE571017602E001643FA /* Debug.cpp */,
+				23D3EE4210175FC9001643FA /* StringBuf.cpp */,
+				23D3EDA210175CEF001643FA /* CVec.h */,
+				23D3EDA310175CEF001643FA /* Functors.h */,
+				23D3EDA410175CEF001643FA /* ThreadPool.h */,
+				23D3ED7E10175BA7001643FA /* EventQueue.h */,
+				23D3ED7F10175BA7001643FA /* SmartPointer.h */,
+				23D3ED8010175BA7001643FA /* Utils.h */,
+				23D3ED7910175B24001643FA /* Debug.h */,
+				23D3ED7A10175B24001643FA /* Event.h */,
+				23D3ED7B10175B24001643FA /* Mutex.h */,
+				23D3ED7C10175B24001643FA /* RefCounter.h */,
+				23D3ED7D10175B24001643FA /* Unicode.h */,
+				23D3ED7510175A97001643FA /* FindFile.h */,
+				23D3ED7610175A97001643FA /* MathLib.h */,
+				23D3ED7710175A97001643FA /* Ref.h */,
+				23D3ED7810175A97001643FA /* StringBuf.h */,
+				23D3ED7310175A17001643FA /* Color.h */,
+				23D3ED7410175A17001643FA /* Iterator.h */,
+				23D3ED70101759C8001643FA /* StringUtils.cpp */,
+				23D3ED71101759C8001643FA /* StringUtils.h */,
 				23D3EA8C1013AEF3001643FA /* MacMain.m */,
 				23D3E9741013ABC9001643FA /* ai */,
 				23D3E9921013ABCA001643FA /* CCGenius.cpp */,
@@ -752,6 +802,10 @@
 				23D3EC4F1016973A001643FA /* CEGASprit.cpp in Sources */,
 				23D3EC501016973A001643FA /* CMessages.cpp in Sources */,
 				23D3EC511016973A001643FA /* CPlanes.cpp in Sources */,
+				23D3ED72101759C8001643FA /* StringUtils.cpp in Sources */,
+				23D3EE4310175FC9001643FA /* StringBuf.cpp in Sources */,
+				23D3EE581017602E001643FA /* Debug.cpp in Sources */,
+				23D3EE5B10176098001643FA /* CrashHandler.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
