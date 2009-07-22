@@ -24,7 +24,7 @@
 
   CloneKeen 		2003-2005 Caitlin Shaw
   CloneKeenPlus 	2008-2009 Gerstrong
-  Commander Genius 	2009	  Tulip, Pickle and DaVince
+  Commander Genius 	2009	  Tulip, Pickle, DaVince and Albert
 */
 
 #include "keen.h"
