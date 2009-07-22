@@ -163,8 +163,9 @@ public:
 	void getEventName(int position, unsigned char input, char *buf);
 	bool readNewEvent(Uint8 device, int position);
 
-	short loadControlconfig(void);
-	short saveControlconfig(void);
+	short loadControlconfig();
+	void resetControls();
+	short saveControlconfig();
 
 	void flushKeys(void);
 	void flushCommands(void);

@@ -18,7 +18,13 @@
 #endif
 
 CInput::CInput() {
+	resetControls();
+}
 
+CInput::~CInput() {
+}
+
+void CInput::resetControls() {
 	Uint8 i;
 
 	m_exit = false;
@@ -78,9 +84,6 @@ CInput::CInput() {
 		InputCommand[i][IC_STATUS].joybutton = 3;
 		InputCommand[i][IC_STATUS].which = 0;
 	}
-}
-
-CInput::~CInput() {
 }
 
 short CInput::loadControlconfig(void)
