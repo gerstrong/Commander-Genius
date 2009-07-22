@@ -248,6 +248,12 @@ int CGame::loadResources(unsigned short Episode, char *DataDirectory)
 
     // Load tile attributes.
 	if(TileLoader) delete TileLoader;
+	
+	if(ExeFile->getData() == NULL) {
+		g_pLogFile->textOut(RED, "CGame::loadResources: Could not load data out of EXE<br>");
+		return 1;
+	}
+	
 	TileLoader = new CTileLoader(Episode, ExeFile->getEXEVersion(), ExeFile->getData());
 	if(!TileLoader->load()) return 1;
 
