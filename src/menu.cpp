@@ -649,7 +649,6 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 	unsigned short zoom = 1;
 	unsigned short filter = 0;
 	unsigned short frameskip = 0;
-	bool opengl = false;
 	unsigned char gl_filter = 0;
 	bool fsmode;
 	char buf[256];
@@ -689,7 +688,7 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 		fsmode = false;
 	}
 
-	opengl = g_pVideoDriver->isOpenGL();
+	bool opengl = g_pVideoDriver->isOpenGL();
 	if(!opengl)
 	{
 		zoom = g_pVideoDriver->getZoomValue();
@@ -844,7 +843,7 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 			}
 			else if(selection == 5)
 			{
-				opengl = opengl ? false : true; // switch the mode!!
+				opengl = !opengl; // switch the mode!!
 
 				if(opengl)
 					DisplayMenu->setOptionText(5,"OpenGL Acceleration");
