@@ -8,9 +8,10 @@
 #include "CTileLoader.h"
 #include "../CLogFile.h"
 
-#include <stdlib.h>
+#include <cstdlib>
+#include <string>
+#include "../StringUtils.h"
 
-#define MAX_STRING_LENGTH 256
 extern stTile tiles[MAX_TILES+1];
 
 CTileLoader::CTileLoader(int episode, int version, unsigned char *data) {
@@ -90,7 +91,7 @@ bool CTileLoader::setProperOffset()
 bool CTileLoader::load()
 {
 	int t,a,b;
-	char fname[MAX_STRING_LENGTH];
+	std::string fname;
 	int i,j; // standard counters
 
 	if(!setProperOffset()) return false;
@@ -150,10 +151,10 @@ bool CTileLoader::load()
 		}
 	}
 
-   sprintf(fname, "ep%dattr.dat", m_episode);
+   fname = "ep" + itoa(m_episode) + "attr.dat";
 
    FILE *fp;
-	  fp = fopen(fname, "rb");
+	  fp = fopen(fname.c_str(), "rb");
 	  if (!fp)
 	  {
 		g_pLogFile->textOut(RED,"TileLoader: Cannot open tile attribute file!<br>");
