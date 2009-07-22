@@ -8,6 +8,7 @@
 
 #include "../keen.h"
 #include "../keenext.h"
+#include "../MathLib.h"
 
 #include "CTimer.h"
 #include "CVideoDriver.h"
@@ -82,7 +83,7 @@ void CTimer::SpeedThrottle(void)
 		 delay=(tfreq/desiredfps)-(ttime-ltime);
 		 if(delay>0)
 			 //SDL_Delay(delay/10000);
-			 SDL_Delay(delay>>14);
+			 SDL_Delay(MAX(Uint32(delay>>14),Uint32(1)));
 		 goto waiter;
 	 }
 	 if( (ttime-ltime) >= ((tfreq<<2)/desiredfps) )
