@@ -72,10 +72,8 @@ bool CEGAGraphics::loadData()
 	}
 	HeadFile.close();
 
-	char *data;
-	data = new char[databuf.size()];
-
-	memcpy(data, databuf.data(), databuf.size());
+	char *data = new char[databuf.size()];
+	memcpy(data, &databuf[0], databuf.size());
 
 	// Now copy the data to the EGAHEAD Structure
     memcpy(&LatchPlaneSize,data,4);
