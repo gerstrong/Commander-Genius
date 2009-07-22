@@ -22,4 +22,4 @@ void keensleft(stCloneKeenPlus *pCKP);
 void showmapatpos(int level, int xoff, int yoff, int wm, stCloneKeenPlus *pCKP);
 short loadResourcesforStartMenu(stCloneKeenPlus *pCKP, CGame *Game);
 int getDifficulty(stCloneKeenPlus *pCKP);
-void showPage(char *text, stCloneKeenPlus *pCKP, int textsize);
+void showPage(const std::string& text, stCloneKeenPlus *pCKP, int textsize);

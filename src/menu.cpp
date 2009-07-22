@@ -935,7 +935,7 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 
 
 // This function shows the Story of Commander Keen!
-void showPage(char *text, stCloneKeenPlus *pCKP, int textsize)
+void showPage(const std::string& text, stCloneKeenPlus *pCKP, int textsize)
 {
 	unsigned int i, j, k;
 	int exit=0;
@@ -970,16 +970,16 @@ void showPage(char *text, stCloneKeenPlus *pCKP, int textsize)
 	  memset(buffer,0,200*40*sizeof(char));
 	  // Prepare the buffer
 
-	  char sbuf[256];
+	std::string sbuf;
 	  unsigned int totnumline=0;
 
 	  for(i=0;i<200;i++)
 	  {
 	  	for(j=0;j<dlgW-1;j++)
 	   	{
-	   		sscanf(text+textpos,"%s",sbuf);
+			sbuf = text.substr(textpos);
 
-	   		if(((strlen(sbuf) + j) > dlgW-2))
+	   		if((sbuf.size() + j) > dlgW-2)
 	   		{
 	   			if(text[textpos] == ' ')
 	   			{
@@ -994,14 +994,14 @@ void showPage(char *text, stCloneKeenPlus *pCKP, int textsize)
 				break;
 	   		}
 
+			buffer[i][j] = text[textpos];
+			
 	   		if(text[textpos]==31 ) 	// I don't know, what they do,
 									//but original version seems to ignore them!
 	   		{
-	   			text[textpos]=' ';
+	   			buffer[i][j]=' ';
 	   		}
 
-
-    		buffer[i][j]=text[textpos];
     		textpos++;
     		if(textpos >= textsize)
     			break;
@@ -1016,9 +1016,7 @@ void showPage(char *text, stCloneKeenPlus *pCKP, int textsize)
 	  }
 	  buffer[i][j] = ' '; // Last character is empty!
 
-	  char coverline[39];
-	  memset(coverline,2,38*sizeof(char)); // for the upper and lower edges
-	  coverline[38]=0;
+	std::string coverline(37, (char)2);
 
 	  do
 	  {
@@ -1035,7 +1033,7 @@ void showPage(char *text, stCloneKeenPlus *pCKP, int textsize)
 	    {
 	    	if(buffer[i+(scroll>>3)][0]=='~') // Special Background Colour
 	    	{
-				std::string temp(38, ' ');
+				std::string temp(37, ' ');
 		    	g_pGraphics->sb_color_font_draw(temp, (dlgX+1)<<3, (((dlgY+i+1)<<3) -(scroll%8)),COLOUR_DARKRED,COLOUR_GREY);
 		    	g_pGraphics->sb_color_font_draw(buffer[i+(scroll>>3)]+1, (dlgX+1)<<3, (((dlgY+i+1)<<3) -(scroll%8)),COLOUR_DARKRED,COLOUR_GREY);
 	    	}
