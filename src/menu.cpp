@@ -144,10 +144,11 @@ short loadResourcesforStartMenu(stCloneKeenPlus *pCKP, CGame *Game)
 #define MAINMENU_GOTO_DEMO_TIME      4000
 
 extern char fade_black;
-short loadStartMenu(stCloneKeenPlus *pCKP)
+bool loadStartMenu(stCloneKeenPlus *pCKP)
 {
 	CDialog *GamesMenu;
 	int i;
+	bool ret;
 
 	fade.mode = FADE_GO;
 	fade.rate = FADE_NORM;
@@ -194,8 +195,14 @@ short loadStartMenu(stCloneKeenPlus *pCKP)
 			fade.fadetimer = 0;
 			fade.rate = FADE_NORM;
 			fade.mode = FADE_GO;
-			pCKP->Resources.GameSelected = GamesMenu->getSelection()+1;
-			pCKP->Control.levelcontrol.episode = pCKP->GameData[pCKP->Resources.GameSelected-1].Episode;
+
+			if( GamesMenu->getSelection()+1 < pCKP->numGames )
+			{
+				ret = true;
+				pCKP->Resources.GameSelected = GamesMenu->getSelection()+1;
+				pCKP->Control.levelcontrol.episode = pCKP->GameData[pCKP->Resources.GameSelected-1].Episode;
+			}
+			else ret = false;
 			break;
 		}
 
@@ -208,7 +215,7 @@ short loadStartMenu(stCloneKeenPlus *pCKP)
 
 	delete GamesMenu;
 
-	return 0;
+	return ret;
 }
 
 int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)

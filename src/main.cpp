@@ -167,10 +167,11 @@ int main(int argc, char *argv[])
 
 	if(!CKP.Control.skipstarting)
 	{
-		if(loadStartMenu(&CKP) == 1)
+		while(!loadStartMenu(&CKP))
 		{
-			cleanupResources(&CKP);
-			return 0;
+			g_pLogFile->textOut(PURPLE,"Error! You have chosen a Game that doesn't exist. Please correct the \"games.cfg\" File under \"data\" and choose another game.<br>");
+			//cleanupResources(&CKP);
+			//return 0;
 		}
 	}
 

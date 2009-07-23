@@ -17,7 +17,7 @@
 char controlsmenu(stCloneKeenPlus *pCKP);
 int mainmenu(stCloneKeenPlus *pCKP,int defaultopt);
 char configmenu(stCloneKeenPlus *pCKP);
-short loadStartMenu(stCloneKeenPlus *pCKP);
+bool  loadStartMenu(stCloneKeenPlus *pCKP);
 void keensleft(stCloneKeenPlus *pCKP);
 void showmapatpos(int level, int xoff, int yoff, int wm, stCloneKeenPlus *pCKP);
 short loadResourcesforStartMenu(stCloneKeenPlus *pCKP, CGame *Game);
