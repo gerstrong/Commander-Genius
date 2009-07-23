@@ -195,19 +195,18 @@ int main(int argc, char *argv[])
 			
 			if(CKP.shutdown == SHUTDOWN_NEW_GAME)
 			{
-	    	  if(!loadStartMenu(&CKP))
-	    	  {
-	    		  CKP.shutdown = SHUTDOWN_EXIT;
-	    		  break;
-	    	  }
-	    	  else
-	    	  {
-	    		  //loadResourcesforGame(pCKP);
-	    		  if(Game->loadResources(CKP.Control.levelcontrol.episode, CKP.GameData[CKP.Resources.GameSelected-1].DataDirectory))
-					  CKP.shutdown = SHUTDOWN_RESTART;
-				  else
-					  CKP.shutdown = SHUTDOWN_NEW_GAME;
-	    	  }
+				while(!loadStartMenu(&CKP))
+				{
+					g_pLogFile->textOut(PURPLE,"Error! You have chosen a Game that doesn't exist. Please correct the \"games.cfg\" File under \"data\" and choose another game.<br>");
+					//cleanupResources(&CKP);
+					//return 0;
+				}
+
+				//loadResourcesforGame(pCKP);
+				if(Game->loadResources(CKP.Control.levelcontrol.episode, CKP.GameData[CKP.Resources.GameSelected-1].DataDirectory))
+				  CKP.shutdown = SHUTDOWN_RESTART;
+				else
+				  CKP.shutdown = SHUTDOWN_NEW_GAME;
 			}
 		}
 	}
