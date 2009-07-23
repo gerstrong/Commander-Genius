@@ -12,10 +12,13 @@
 
 CMusic::CMusic() {
 	playmode = PLAY_MODE_STOP;
+	music_buffer = NULL;
+	music_pos = 0;
+	music_len = 0;
 }
 
 CMusic::~CMusic() {
-	// TODO Auto-generated destructor stub
+	unload();
 }
 
 int CMusic::load(SDL_AudioSpec AudioSpec, char *musicfile)
@@ -101,7 +104,8 @@ void CMusic::unload(void)
 
 void CMusic::play(void)
 {
-	playmode = PLAY_MODE_PLAY;
+	if(music_buffer)
+		playmode = PLAY_MODE_PLAY;
 }
 
 void CMusic::stop(void)
@@ -111,10 +115,13 @@ void CMusic::stop(void)
 
 Uint8 *CMusic::passBuffer(int length) // length only refers to the part(buffer) that has to be played
 {
-	if(length < music_len-music_pos)
+	if(!music_buffer)
+		return NULL;
+	
+	if(length < music_len - music_pos)
 	{
 		music_pos += length;
-		return music_buffer+music_pos-length;
+		return music_buffer + music_pos - length;
 	}
 	else
 	{

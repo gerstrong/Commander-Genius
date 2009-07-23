@@ -179,8 +179,7 @@ void CSound::callback(void *unused, Uint8 *stream, int len)
 
     if (g_pMusicPlayer->playing() == PLAY_MODE_PLAY)
     {
-		// TODO: this crashes for me
-		//SDL_MixAudio(stream, g_pMusicPlayer->passBuffer(len), len, SDL_MIX_MAXVOLUME);
+		SDL_MixAudio(stream, g_pMusicPlayer->passBuffer(len), len, SDL_MIX_MAXVOLUME);
     }
 
     for( i=0 ; i < m_mixing_channels ; i++ )
