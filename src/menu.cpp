@@ -147,8 +147,7 @@ extern char fade_black;
 bool loadStartMenu(stCloneKeenPlus *pCKP)
 {
 	CDialog *GamesMenu;
-	int i;
-	bool ret;
+	bool ret = true;
 
 	fade.mode = FADE_GO;
 	fade.rate = FADE_NORM;
@@ -163,7 +162,7 @@ bool loadStartMenu(stCloneKeenPlus *pCKP)
 	GamesMenu->setDimensions(2,2,36,15);
 
 	// Show me the games you detected!
-	for( i=0 ; i < pCKP->numGames ; i++ )
+	for( int i=0 ; i < pCKP->numGames ; i++ )
 	{
 		GamesMenu->addOptionText(pCKP->GameData[i].Name);
 	}

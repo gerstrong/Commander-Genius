@@ -195,7 +195,7 @@ int main(int argc, char *argv[])
 			
 			if(CKP.shutdown == SHUTDOWN_NEW_GAME)
 			{
-	    	  if(loadStartMenu(&CKP) == 1)
+	    	  if(!loadStartMenu(&CKP))
 	    	  {
 	    		  CKP.shutdown = SHUTDOWN_EXIT;
 	    		  break;
