@@ -26,7 +26,7 @@ short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::stri
 		#ifdef BUILD_WITH_OGG
 		if(openOGGSound(fp, &AudioFileSpec, AudioSpec->format, psound) != 0)
 		{
-			g_pLogFile->textOut(PURPLE,"OGG file could not be opened: \"%s\". The file was detected, but appears to be damaged. Trying to load the classical sound<br>", soundfile);
+			g_pLogFile->ftextOut(PURPLE,"OGG file could not be opened: \"%s\". The file was detected, but appears to be damaged. Trying to load the classical sound<br>", soundfile);
 			return 1;
 		}
 		psound->enabled = true;
