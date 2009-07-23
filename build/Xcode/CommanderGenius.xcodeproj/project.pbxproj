@@ -845,7 +845,10 @@
 					"_GLIBCXX_DEBUG_PEDANTIC=1",
 				);
 				HEADER_SEARCH_PATHS = /Library/Frameworks/SDL.framework/Headers;
-				OTHER_CFLAGS = "-DBUILD_SDL";
+				OTHER_CFLAGS = (
+					"-DBUILD_SDL",
+					"-DUSE_OPENGL",
+				);
 			};
 			name = Debug;
 		};
@@ -860,7 +863,10 @@
 				GCC_PREFIX_HEADER = "";
 				HEADER_SEARCH_PATHS = /Library/Frameworks/SDL.framework/Headers;
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_CFLAGS = "-DBUILD_SDL";
+				OTHER_CFLAGS = (
+					"-DBUILD_SDL",
+					"-DUSE_OPENGL",
+				);
 				PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES;
 			};
 			name = Release;
