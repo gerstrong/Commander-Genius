@@ -21,13 +21,11 @@ CExeFile::CExeFile(int episode, const std::string& datadirectory) {
 }
 
 CExeFile::~CExeFile() {
-	if(m_data) delete m_data;
+	if(m_data) delete[] m_data; m_data = NULL;
 }
 
 bool CExeFile::readData()
 {
-	unsigned char *m_data_temp;
-
 	std::string filename = "data/" + m_datadirectory + "keen" + itoa(m_episode) + ".exe";
 
 	std::ifstream File(filename.c_str(),ios::binary);
@@ -38,7 +36,7 @@ bool CExeFile::readData()
 	m_datasize = File.tellg();
 	File.seekg(0,ios::beg);
 
-	m_data_temp = new unsigned char[m_datasize];
+	unsigned char * m_data_temp = new unsigned char[m_datasize];
 	File.read((char*)m_data_temp, m_datasize);
 
 	File.close();
@@ -57,17 +55,15 @@ bool CExeFile::readData()
 		m_data = new unsigned char[m_datasize];
 		memcpy(m_data, m_data_temp+512,m_datasize);
 	}
-	delete m_data_temp;
+	delete[] m_data_temp;
 
 	return true;
 }
 
 int CExeFile::get_bit(int *p_bit_count, unsigned char *fin, int *posin)
 {
-  static unsigned short bits;
-  int bit;
-
-  bit = bits & 1;
+  static unsigned short bits = 0;
+  int bit = bits & 1;
   (*p_bit_count)--;
 
   if ((*p_bit_count) <= 0)
@@ -94,13 +90,12 @@ int CExeFile::get_bit(int *p_bit_count, unsigned char *fin, int *posin)
 // return how much was unpacked or zero if nothing was unpacked
 int CExeFile::unlzexe(unsigned char *fin, vector<unsigned char> *outbuffer)
 {
-	  int bit_count;
 	  short offset;
-	  int pos, repeat;
+	  int repeat;
 	  int posin = 0;	// position of input
 
-	  pos = 0;
-	  bit_count = 0;
+	  int pos = 0;
+	  int bit_count = 0;
 
       /* skip header */
 	  posin = 32;
