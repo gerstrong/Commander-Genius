@@ -362,7 +362,6 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 
 int getDifficulty(stCloneKeenPlus *pCKP)
 {
-	CDialog *DifficultyMenu;
 	int bmnum;
 	int selection;
 	int x;
@@ -383,39 +382,39 @@ int getDifficulty(stCloneKeenPlus *pCKP)
 	g_pGraphics->drawBitmap(x, 0, bmnum);
 
 	// Prepare the Games Menu
-	DifficultyMenu = new CDialog();
+	CDialog DifficultyMenu;
 
-	DifficultyMenu->setDimensions(15,4,14,6);
+	DifficultyMenu.setDimensions(15,4,14,6);
 
-	DifficultyMenu->addOptionText("Normal");
-	DifficultyMenu->addOptionText("Hard");
-	DifficultyMenu->addSeparator();
-	DifficultyMenu->addOptionText("Cancel");
+	DifficultyMenu.addOptionText("Normal");
+	DifficultyMenu.addOptionText("Hard");
+	DifficultyMenu.addSeparator();
+	DifficultyMenu.addOptionText("Cancel");
 
-	DifficultyMenu->animateDialogBox(true);
+	DifficultyMenu.animateDialogBox(true);
 
 	do
 	{
 		// do fades
 		gamedo_fades();
 		if(fade.mode == FADE_COMPLETE)
-			DifficultyMenu->setVisible(true);
+			DifficultyMenu.setVisible(true);
 
 		gamedo_AnimatedTiles();
 
 		// Check the Input
 		if(g_pInput->getPulsedCommand(IC_DOWN, 80))
-			DifficultyMenu->setNextSelection();
+			DifficultyMenu.setNextSelection();
 		if(g_pInput->getPulsedCommand(IC_UP, 80))
-			DifficultyMenu->setPrevSelection();
+			DifficultyMenu.setPrevSelection();
 
 		if(g_pInput->getPressedCommand(IC_STATUS))
 		{
-			selection = DifficultyMenu->getSelection();
+			selection = DifficultyMenu.getSelection();
 			break;
 		}
 		// Render the Games-Menu
-		DifficultyMenu->renderDialog();
+		DifficultyMenu.renderDialog();
 
 		// blit the scrollbuffer to the display
 		gamedo_frameskipping_blitonly();
@@ -423,9 +422,7 @@ int getDifficulty(stCloneKeenPlus *pCKP)
 		g_pInput->pollEvents();
 	    g_pTimer->SpeedThrottle();
 
-	} while(1);
-
-	delete DifficultyMenu;
+	} while(true);
 
 	return selection;
 }
