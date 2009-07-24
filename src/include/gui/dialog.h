@@ -8,50 +8,52 @@
  *      Author: gerstrong
  */
 
+#ifndef __CG_DIALIG_H__
+#define __CG_DIALIG_H__
+
+#include <vector>
+#include <string>
+
 #define STARTER_SAVE 1
 #define STARTER_ESCAPE 2
 #define STARTER_SOUNDOPT 3
 #define STARTER_DISPLAYOPT 4
 #define STARTER_GAMEOPT 5
 
-typedef struct stTextLine
+struct stTextLine
 {
-	char *Text;
+	std::string Text;
 	short ID; // items are orded by ID
-} stTextLine;
+};
 
-typedef struct stSeparator
+struct stSeparator
 {
 	short ID; // items are orded by ID
-} stSeparator;
+};
 
 
-typedef struct stOptionSwitch
+struct stOptionSwitch
 {
 	char *Name;
 	char **Option;
 	short selected;
 	short numSel;
 	short ID; // items are orded by ID
-} stOptionSwitch;
+};
 
-typedef struct stStarterSwitch
+struct stStarterSwitch
 {
-	char *Name;
+	std::string Name;
 	int numFunctionToLaunch;
 	short ID; // items are sorted by IDs
-} stStarterSwitch;
+};
 
-typedef struct stDlgStruct // imagine every substructure as typical control
+struct stDlgStruct // imagine every substructure as typical control
 {
-	stTextLine *TextLine;
-	stOptionSwitch *OptionSwitch;
-	stStarterSwitch *StarterSwitch;
-	stSeparator	*Separator;
+	std::vector<std::string> TextLine;
+	std::vector<stOptionSwitch> OptionSwitch;
+	std::vector<stStarterSwitch> StarterSwitch;
+	std::vector<stSeparator> Separator;
+};
 
-	short num_TextLines;
-	short num_OptionSwitches;
-	short num_StarterSwitch;
-	short num_Separators;
-
-} stDlgStruct;
+#endif

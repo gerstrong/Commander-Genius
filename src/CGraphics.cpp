@@ -48,7 +48,7 @@ bool CGraphics::allocScrollBufmem(void)
 	if (g_pVideoDriver->getZoomValue() > 1)
 	{
 		g_pLogFile->ftextOut("allocmem(): allocating %d bytes for blit buffer...", blitbuf_memsize);
-		blitbuffer = (unsigned char*) malloc(blitbuf_memsize);
+		blitbuffer = new unsigned char[blitbuf_memsize];
 		if (!blitbuffer)
 		{
 			g_pLogFile->ftextOut(RED,"Failure<br>");
@@ -63,12 +63,12 @@ void CGraphics::freemem(void)
 {
   if (scrollbuffer)
   {
-     delete[] scrollbuffer;
+	  delete[] scrollbuffer; scrollbuffer = NULL;
      g_pLogFile->ftextOut(BLACK,true," Scrollbuffer memory released to system.<br>");
   }
   if (blitbuffer)
   {
-     free(blitbuffer);
+     delete[] blitbuffer; blitbuffer = NULL;
      g_pLogFile->ftextOut(BLACK,true," Blitbuffer memory released to system.<br>");
   }
 }

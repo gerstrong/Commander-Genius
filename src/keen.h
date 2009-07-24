@@ -119,15 +119,15 @@ typedef struct stMap
 #define BDOWN			4
 #define BLEFT			5
 
-typedef struct stBitmap
+struct stBitmap
 {
  int xsize;
  int ysize;
  unsigned char *bmptr;
  char name[9];
-} stBitmap;
+};
 
-typedef struct stSprite
+struct stSprite
 {
  char xsize, ysize;
  unsigned char imgdata[64][64];
@@ -135,9 +135,9 @@ typedef struct stSprite
  // bounding box for hit detection
  unsigned int bboxX1, bboxY1;
  unsigned int bboxX2, bboxY2;
-} stSprite;
+};
 
-typedef struct stInventory
+struct stInventory
 {
  unsigned long score;
  unsigned long extralifeat;
@@ -153,7 +153,7 @@ typedef struct stInventory
  unsigned char HasFuel;
  unsigned char HasBattery;
  unsigned char HasVacuum;
-} stInventory;
+};
 
 // for strings loaded from "strings.dat"
 #define MAX_STRINGS             100
@@ -169,7 +169,7 @@ struct stString
 };
 
 /* Structs used for different enemies data, these are in a union */
-typedef struct stYorpData
+struct stYorpData
 {
   unsigned char state;
 
@@ -180,8 +180,9 @@ typedef struct stYorpData
   signed int yorpdie_inertia_y;
 
   unsigned char movedir;
-} stYorpData;
-typedef struct stGargData
+};
+
+struct stGargData
 {
   unsigned char state;
 
@@ -194,8 +195,9 @@ typedef struct stGargData
 
   unsigned char movedir;
   unsigned char detectedPlayer, detectedPlayerIndex;
-} stGargData;
-typedef struct stVortData
+};
+
+struct stVortData
 {
   unsigned char state;
 
@@ -218,8 +220,9 @@ typedef struct stVortData
   int JumpLeftFrame;
   int DyingFrame;
   int DeadFrame;
-} stVortData;
-typedef struct stBearData
+};
+
+struct stBearData
 {
   unsigned char state;
 
@@ -232,8 +235,9 @@ typedef struct stBearData
   unsigned int running;
 
   int dist_traveled;
-} stBearData;
-typedef struct stButlerData
+};
+
+struct stButlerData
 {
   unsigned char state;
   unsigned char timer,animtimer;
@@ -241,8 +245,9 @@ typedef struct stButlerData
   unsigned int dist_traveled;
 
   unsigned char movedir;
-} stButlerData;
-typedef struct stTankData
+};
+
+struct stTankData
 {
   unsigned char state;
 
@@ -264,8 +269,9 @@ typedef struct stTankData
   unsigned int firetimes;
   unsigned int timetillcanfire;
   unsigned int timetillcanfirecauseonsamelevel;
-} stTankData;
-typedef struct stRayData
+};
+
+struct stRayData
 {
   char state;
   char direction;
@@ -280,20 +286,23 @@ typedef struct stRayData
 
   // for earth chunks
   int baseframe;
-} stRayData;
-typedef struct stDoorData
+};
+
+struct stDoorData
 {
   char timer;
   char distance_traveled;
-} stDoorData;
-typedef struct stIceChunk
+};
+
+struct stIceChunk
 {
   char movedir;
   char state;
   unsigned int originalX, originalY;
   int timer;
-} stIceChunk;
-typedef struct stTeleportData
+};
+
+struct stTeleportData
 {
   char animtimer;
   char animframe;
@@ -312,17 +321,18 @@ typedef struct stTeleportData
 
   char fadeamt;
   char fadetimer;
-} stTeleportData;
-typedef struct stRopeData
+};
+
+struct stRopeData
 {
   char state;
   int droptimer;
   int droptimes;
   int stoneX, stoneY;
   int vortboss;
-} stRopeData;
+};
 
-typedef struct stWalkerData
+struct stWalkerData
 {
   unsigned char state;
 
@@ -333,9 +343,9 @@ typedef struct stWalkerData
 
   unsigned char walkdir;
   unsigned char kickedplayer[MAX_PLAYERS];
-} stWalkerData;
+};
 
-typedef struct stPlatformData
+struct stPlatformData
 {
   unsigned char state;
   unsigned char animframe;
@@ -344,9 +354,9 @@ typedef struct stPlatformData
 
   unsigned char movedir;
   unsigned char kickedplayer[MAX_PLAYERS];
-} stPlatformData;
+};
 
-typedef struct stSEData
+struct stSEData
 {
   unsigned int type;
 
@@ -360,9 +370,9 @@ typedef struct stSEData
   unsigned int frame;
   int mx,my;
   int blowx,blowy;
-} stSEData;
+};
 
-typedef struct stBabyData
+struct stBabyData
 {
   char state;
   char dir;
@@ -373,9 +383,9 @@ typedef struct stBabyData
 
   char walkframe;
   int walktimer;
-} stBabyData;
+};
 
-typedef struct stFoobData
+struct stFoobData
 {
   char state;
   char dir;
@@ -385,9 +395,9 @@ typedef struct stFoobData
   int OffOfSameLevelTime;
   int spooktimer;
   int SpookedByWho;
-} stFoobData;
+};
 
-typedef struct stNinjaData
+struct stNinjaData
 {
   char state;
   char dir;
@@ -401,7 +411,7 @@ typedef struct stNinjaData
   int KickMoveTimer;
   int isdying;
   int dietimer;
-} stNinjaData;
+};
 
 typedef struct stMotherData
 {
@@ -644,7 +654,7 @@ typedef struct stAnimTile
 #define SCROLLTRIGGERDOWN      114
 
 // this structure contains all the variables used by a player
-typedef struct stPlayer
+struct stPlayer
 {
    // these coordinates are CSFed
    unsigned long x;
@@ -726,7 +736,9 @@ typedef struct stPlayer
    unsigned int ankhtime, ankhshieldobject;
 
    stInventory inventory;
-} stPlayer;
+	
+	stPlayer() { memset(this, 0, sizeof(stPlayer)); }
+};
 
 typedef struct stShipQueue
 {
@@ -845,7 +857,7 @@ typedef struct stShipQueue
 #include "keenext.h"
 #include "sdl/CSettings.h"
 
-typedef struct stCloneKeenPlus
+struct stCloneKeenPlus
 {
 	stCommand Command[MAX_COMMANDS];
 	SDL_Joystick *Joystick;
@@ -857,7 +869,11 @@ typedef struct stCloneKeenPlus
 	stOption Option[NUM_OPTIONS];
 	unsigned short numGames;
 	unsigned short shutdown;
-}stCloneKeenPlus;
+	
+	stCloneKeenPlus() : Joystick(NULL), GameData(NULL), numGames(0), shutdown(SHUTDOWN_NONE) {
+		memset(&Event, 0, sizeof(Event));
+	}
+};
 
 // keen.c
 void playgame_levelmanager(stCloneKeenPlus *pCKP);

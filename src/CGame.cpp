@@ -291,8 +291,6 @@ void CGame::preallocateCKP(stCloneKeenPlus *pCKP)
 	demomode = DEMO_NODEMO;
 	current_demo = 1;
 
-	memset(&pCKP->Control, 0, sizeof(stControl));
-
 	pCKP->Joystick = NULL;
 
 	acceleratemode = 0;

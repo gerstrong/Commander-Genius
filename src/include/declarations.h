@@ -3,6 +3,7 @@
 
 #include <string>
 #include <SDL.h>
+#include <cstdlib>
 
 #define MAX_COMMANDS 8
 #define MAX_SOUND_LENGTH      1024
@@ -11,7 +12,7 @@
 
 #define MAX_NUMBER_OF_FILES     100
 
-typedef struct stDisplay
+struct stDisplay
 {
   unsigned int Width;
   unsigned int Height;
@@ -21,15 +22,18 @@ typedef struct stDisplay
   short Filtermode;
   short Zoom;
   unsigned short FrameSkip;
-} stDisplay;
+	
+	// as long as we only have POD
+	stDisplay() { memset(this, 0, sizeof(stDisplay)); }	
+};
 
-typedef struct stDevice
+struct stDevice
 {
   SDL_Joystick *Joystick;
   SDL_Event Event;
-} stDevice;
+};
 
-typedef struct stLevelControl
+struct stLevelControl
 {
  // level control
  int command;                 // used to give a command to playgame_levelmanager()
@@ -57,18 +61,23 @@ typedef struct stLevelControl
  unsigned int level_done, level_done_timer;
  unsigned int level_finished_by;      // index of player that finished level
  unsigned int exitXpos;
-} stLevelControl;
+	
+	// as long as we only have POD
+	stLevelControl() { memset(this, 0, sizeof(stLevelControl)); }
+};
 
 
-typedef struct stControl
+struct stControl
 {
-	short eseq; 		// see only the ending sequence
-	short dtm; 			// go direct to map.
-	short storyboard; 	// go to storyboard
-	short skipstarting;	// Skip Startmenu, Intro and Mainmenu.
+	bool eseq; 		// see only the ending sequence
+	bool dtm; 			// go direct to map.
+	bool storyboard; 	// go to storyboard
+	bool skipstarting;	// Skip Startmenu, Intro and Mainmenu.
 
 	stLevelControl levelcontrol;
-} stControl;
+	
+	stControl() : eseq(false), dtm(false), storyboard(false), skipstarting(false) {}
+};
 
 struct stGameData
 {

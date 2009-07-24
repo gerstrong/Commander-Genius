@@ -360,14 +360,6 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 	return selection;
 }
 
-void initialiazeDlgStruct(stDlgStruct *pDlgStruct)
-{
-	pDlgStruct->OptionSwitch = (stOptionSwitch*) malloc(pDlgStruct->num_OptionSwitches*sizeof(stOptionSwitch));
-	pDlgStruct->Separator = (stSeparator*) malloc(pDlgStruct->num_Separators*sizeof(stSeparator));
-	pDlgStruct->StarterSwitch = (stStarterSwitch*) malloc(pDlgStruct->num_StarterSwitch*sizeof(stStarterSwitch));
-	pDlgStruct->TextLine = (stTextLine*) malloc(pDlgStruct->num_TextLines*sizeof(stTextLine));
-}
-
 int getDifficulty(stCloneKeenPlus *pCKP)
 {
 	CDialog *DifficultyMenu;
