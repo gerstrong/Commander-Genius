@@ -125,8 +125,7 @@ int main(int argc, char *argv[])
 
 	banner(); // Intro on the text-console.
 
-	CGame* Game;
-	Game = new CGame();
+	CGame* Game = new CGame();
 
 	Game->preallocateCKP(&CKP);
 
