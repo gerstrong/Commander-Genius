@@ -125,12 +125,10 @@ int main(int argc, char *argv[])
 
 	banner(); // Intro on the text-console.
 
-	CGame* Game = new CGame();
-
-	Game->preallocateCKP(&CKP);
+	CGame Game;
+	Game.preallocateCKP(&CKP);
 
 	CSettings Settings;
-
 	if(Settings.loadDrvCfg() != 0) // Always return 0 if no ERROR
 	{
 		g_pLogFile->textOut(RED,"First time message: CKP didn't find the driver config file. However, it is going to generate one basing on default configurations.<br>");
@@ -156,7 +154,7 @@ int main(int argc, char *argv[])
 		Settings.saveGameCfg(CKP.Option);
 	}
 
-	if(loadResourcesforStartMenu(&CKP, Game) != 0)
+	if(loadResourcesforStartMenu(&CKP, &Game) != 0)
 	{
 		g_pLogFile->textOut(RED,"Error! Resources for start menu cannot be loaded! Maybe you need to copy the data files!<br>");
 		return 1;
@@ -178,7 +176,7 @@ int main(int argc, char *argv[])
 		CKP.Control.levelcontrol.episode = CKP.GameData[CKP.Resources.GameSelected-1].Episode; // Assign the correct Episode
 
 		options = CKP.Option;
-		if(Game->loadResources(CKP.Control.levelcontrol.episode, CKP.GameData[CKP.Resources.GameSelected-1].DataDirectory))
+		if(Game.loadResources(CKP.Control.levelcontrol.episode, CKP.GameData[CKP.Resources.GameSelected-1].DataDirectory))
 			CKP.shutdown = SHUTDOWN_BOOTUP; // Prepare game for starting
 		else
 			CKP.shutdown = SHUTDOWN_NEW_GAME;
@@ -187,7 +185,7 @@ int main(int argc, char *argv[])
 		{
 			if(CKP.shutdown != SHUTDOWN_NEW_GAME) {
 				CKP.shutdown = SHUTDOWN_NONE; // Game is runnning
-				Game->runCycle(&CKP);
+				Game.runCycle(&CKP);
 			}
 			
 			if(CKP.shutdown == SHUTDOWN_NEW_GAME)
@@ -200,15 +198,13 @@ int main(int argc, char *argv[])
 				}
 
 				//loadResourcesforGame(pCKP);
-				if(Game->loadResources(CKP.Control.levelcontrol.episode, CKP.GameData[CKP.Resources.GameSelected-1].DataDirectory))
+				if(Game.loadResources(CKP.Control.levelcontrol.episode, CKP.GameData[CKP.Resources.GameSelected-1].DataDirectory))
 				  CKP.shutdown = SHUTDOWN_RESTART;
 				else
 				  CKP.shutdown = SHUTDOWN_NEW_GAME;
 			}
 		}
 	}
-
-	if(Game){ delete Game; Game = NULL; }
 
 	cleanupResources(&CKP);
 
