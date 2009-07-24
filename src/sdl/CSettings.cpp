@@ -137,12 +137,13 @@ void CSettings::loadDefaultGameCfg(stOption *Option)
 
 short CSettings::loadGameCfg(stOption *Option)
 {
-	short retval = 0;
 	int i;
 	CParser Parser;
 
-	if(!Parser.loadParseFile())
+	if(!Parser.loadParseFile()) {
+		loadDefaultGameCfg(Option);
 		return 1;
+	}
 
 	  for (i = 0; i < NUM_OPTIONS; i++)
 	  {
@@ -150,11 +151,10 @@ short CSettings::loadGameCfg(stOption *Option)
 		  if(Option[i].value == -1)
 		  {
 			  loadDefaultGameCfg(Option);
-			  break;
+			  return 1;
 		  }
 	  }
 
-	return retval;
 
   g_pLogFile->ftextOut("<br>Your personal settings were loaded successfully...<br>");
   return 0;

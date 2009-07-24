@@ -219,10 +219,12 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	Settings.saveGameCfg(CKP.Option);
+
 	cleanupResources(&CKP);
 
 	Settings.saveDrvCfg();
-
+	
 	printf("Thank you very much for playing this wonderful game!");
 
 	return 0;
