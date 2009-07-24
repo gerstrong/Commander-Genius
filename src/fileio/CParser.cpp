@@ -7,61 +7,45 @@
 
 #include "CParser.h"
 #include "../CLogFile.h"
-
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#include "../StringUtils.h"
+#include <cstdio>
+#include <cstdlib>
 
 #define CONFIGFILENAME "genius.cfg"
-#define MAX_STRING_LENGTH	  256
 
 
 CParser::CParser() {
 	m_isOpen = false;
 }
 
-CParser::~CParser() {
-
-	while(!m_filebuffer.empty())
-	{
-		free(m_filebuffer.front());
-		m_filebuffer.pop_front();
-	}
-}
+CParser::~CParser() {}
 
 // replaced by sscanf, since that function is slower and leaks memory
-void CParser::parseline(char *p_input,char *p_output, int pos, int size)
+std::string CParser::parseline(FILE *fp)
 {
-	char buf;
-	int i=0;
-
-	while( (pos+i) < size )
+	int c = 0;
+	std::string line;
+	while( (c = fgetc(fp)) >= 0 )
 	{
-		buf = p_input[pos+i];
-		if(buf == '\n')
+		if(c == '\n')
 			break;
 		else
-			p_output[i]=buf;
-
-		i++;
+			line += (char)c;
 	}
+	return line;
 }
 
 
 // Opens the text which can be parsed. This will read all the stuff in to the memory.
-bool CParser::loadParseFile(void) // Open, read the list and close the file
+bool CParser::loadParseFile() // Open, read the list and close the file
 {
 	FILE *fp;
 
 	if((fp=fopen(CONFIGFILENAME,"rt")))
 	{
-		char *line;
-
 		while(!feof(fp))
 		{
-			line = (char*) calloc(256,sizeof(char));
-			fgets(line,256,fp); // No return value assigned. Be careful!
-			//fscanf(fp,"%s\n",line);
+			std::string line = parseline(fp);
 			m_filebuffer.push_back(line);
 			m_isOpen = true;
 		}
@@ -77,16 +61,14 @@ bool CParser::loadParseFile(void) // Open, read the list and close the file
 }
 
 // Close the text which was parsed. This will also copy all stuff of the memory to the file.
-bool CParser::saveParseFile(void) // open, write on the file and close
+bool CParser::saveParseFile() // open, write on the file and close
 {
 	FILE *fp;
 
 	if((fp=fopen(CONFIGFILENAME,"wt")))
 	{
-		std::list<char*>::iterator i;
-
-		for(i=m_filebuffer.begin() ; i != m_filebuffer.end() ; ++i )
-			fprintf(fp,"%s",*i);
+		for(std::list<std::string>::iterator i=m_filebuffer.begin() ; i != m_filebuffer.end() ; ++i )
+			fprintf(fp,"%s\n",i->c_str());
 
 		fclose(fp);
 		return true;
@@ -101,42 +83,29 @@ bool CParser::saveParseFile(void) // open, write on the file and close
 // read the value of the to be seeked keyword and returns it as an int.
 // If no value was detected, it returns -1;
 // If something was detected, the file is also rewinded!
-int CParser::getIntValue(const char *keyword, const char *category)
+int CParser::getIntValue(const std::string& keyword, const std::string& category)
 {
 	// The getter will search for category and than for keyword. After that, read the value and return it!
-	std::list<char*>::iterator i;
-
-	char *line;
-
-	for(i=m_filebuffer.begin() ; i != m_filebuffer.end() ; ++i )
+	for(std::list<std::string>::iterator line = m_filebuffer.begin() ; line != m_filebuffer.end() ; ++line )
 	{
-		line = *i;
-		if(line[0]=='[')	// found category
+		if(*line == "") continue;
+		if((*line)[0]=='[')	// found category
 		{
-			if(strncmp(line+1,category,strlen(category)) == 0) // is it the category we are looking for?
+			// category found !! let's see if the keyword exists
+			if(stringcaseequal(*line, "[" + category + "]")) // is it the category we are looking for?
 			{
-				++i;
-				line = *i;
+				for(line++; line != m_filebuffer.end(); line++) {
+					if(*line == "") continue;
+					if((*line)[0] == '[') break;
 
-				// category found !! let's see if the keyword exists
-				while(line[0]!='[')
-				{
-					if(strncmp(line,keyword,strlen(keyword)) == 0)
+					if(subStrCaseEqual(*line, keyword + " =", keyword.size() + 2))
 					{
-						int value;
-						// keyword also found!! set the new value!! case 3
-						sscanf(line+strlen(keyword)+2,"%d",&value);
+						int value = from_string<int>(line->substr(keyword.size() + 2));
 						return value;
 					}
-
-					++i;
-
-					if(i == m_filebuffer.end())
-						break;
-
-					line = *i;
 				}
 			}
+			break;
 		}
 	}
 	return -1;
@@ -145,80 +114,52 @@ int CParser::getIntValue(const char *keyword, const char *category)
 // This function saves the value of a keyword. If the value already exists in the file
 // it will be overwritten.
 // If something was written the file is also rewinded!
-void CParser::saveIntValue(const char *keyword, const char *category,int value)
+void CParser::saveIntValue(const std::string& keyword, const std::string& category,int value)
 {
 	// Three cases:
 	// 1.- category doesn't exist
 	// 2.- category exists, but keyword not
 	// 3.- category and keyword exist, only the value must be changed
 
-	std::list<char*>::iterator i;
+	std::string newline = keyword + " = " + itoa(value);
 
-
-	char *line;
-
-	for(i=m_filebuffer.begin() ; i != m_filebuffer.end() ; ++i )
+	for(std::list<std::string>::iterator line = m_filebuffer.begin() ; line != m_filebuffer.end() ; ++line )
 	{
-		line = *i;
-		if(line[0]=='[')	// found category
-		{
-			if(strncmp(line+1,category,strlen(category)) == 0) // is it the category we are looking for?
+		if(*line == "") continue;
+		if((*line)[0]=='[')	// found category
+		{			
+			// category found !! let's see if the keyword exists
+			if(stringcaseequal(*line, "[" + category + "]")) // is it the category we are looking for?
 			{
-				++i;
-				line = *i;
+				std::list<std::string>::iterator lastnonempty = line;
 
-				// category found !! let's see if, the keyword exists
-				while(line[0]!='[')
-				{
-					if(strncmp(line,keyword,strlen(keyword)) == 0)
+				for(line++; line != m_filebuffer.end(); line++) {
+					if(*line == "") continue;
+					if((*line)[0] == '[') break;
+					
+					lastnonempty = line;
+					if(subStrCaseEqual(*line, keyword + " =", keyword.size() + 2))
 					{
-						// keyword also found!! set the new value!! case 3
-						i = m_filebuffer.erase(i);
-						char *newline;
-						newline = (char*) calloc(256,sizeof(char));
-						sprintf(newline,"%s = %d\n",keyword,value);
-						m_filebuffer.insert(i,newline);
+						*line = newline;
 						return;
 					}
-					++i;
-
-					if(i == m_filebuffer.end())
-						break;
-
-					line = *i;
-
 				}
 
 				// not found! case 2: category found, but no keyword
-				char *newline;
-				newline = (char*) calloc(256,sizeof(char));
-				sprintf(newline,"%s = %d\n",keyword,value);
-
-				if(i != m_filebuffer.end())
-				{
-					--i;
-					m_filebuffer.insert(i,newline);
-				}
-				else
-				{
-					m_filebuffer.push_back(newline);
-				}
+				
+				lastnonempty++;
+				m_filebuffer.insert(lastnonempty, newline);
 				return;
+
 			}
 		}
 	}
+	
+	
 	// First case: Category doesn't exist! Create a new one, and as the keyword also cannot exist, create it too!
-	char *newline;
-	newline = (char*) calloc(256,sizeof(char));
-	sprintf(newline,"\n");
-	m_filebuffer.insert(m_filebuffer.end(),newline);
-	newline = (char*) calloc(256,sizeof(char));
-	sprintf(newline,"[%s]\n",category);
-	m_filebuffer.insert(m_filebuffer.end(),newline);
-	newline = (char*) calloc(256,sizeof(char));
-	sprintf(newline,"%s = %d\n",keyword,value);
-	m_filebuffer.insert(m_filebuffer.end(),newline);
-	return;
+	m_filebuffer.push_back("[" + category + "]");
+	m_filebuffer.push_back(newline);
+	m_filebuffer.push_back("");
 }
 
 
