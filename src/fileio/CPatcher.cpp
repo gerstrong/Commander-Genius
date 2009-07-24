@@ -11,6 +11,7 @@
 #include <fstream>
 #include "../FindFile.h"
 #include "../StringUtils.h"
+#include "../CLogFile.h"
 
 CPatcher::CPatcher(int episode, int version,unsigned char *data, const std::string& datadir) {
 	m_episode = episode;
@@ -36,11 +37,11 @@ void CPatcher::patchMemory()
 
 		if(strCaseStartsWith(line,"\%version"))
 		{
-			std::string verstring = line.substr(strlen("\%version"));
+			std::string verstring = line.substr(strlen("\%version "));
 
-			if((stringcaseequal(verstring,"1.31") && m_version == 131 )
-				|| (stringcaseequal(verstring,"1.1") && m_version == 110 )
-				|| stringcaseequal(verstring,"ALL"))
+			if((strCaseStartsWith(verstring,"1.31") && m_version == 131 )
+				|| (strCaseStartsWith(verstring,"1.1") && m_version == 110 )
+				|| strCaseStartsWith(verstring,"ALL"))
 			{
 				while(!m_TextList.empty())
 				{
@@ -55,8 +56,9 @@ void CPatcher::patchMemory()
 						std::string newbuf = line.substr(strlen("\%patchfile"));
 						size_t p = newbuf.find(' ');
 						if(p != std::string::npos) {
-							sscanf(newbuf.substr(0,p).c_str(), "%lx", &offset); // Only hexadecimal numbers supported
-							patch_file_name = newbuf.substr(p+1);
+							char temp[256];
+							sscanf(newbuf.c_str(), "%lx %s", &offset, temp); // Only hexadecimal numbers supported
+							patch_file_name.append(temp);
 							patchMemfromFile("data/" + m_datadirectory + "/" + patch_file_name,offset);
 						}
 					}
@@ -77,46 +79,50 @@ void CPatcher::patchMemory()
 
 }
 
+struct PatchListFiller {
+	std::set<std::string> list;
+
+	bool operator() (const std::string& filename) {
+		std::string ext = GetFileExtension(filename);
+		if (stringcaseequal(ext, "pat"))
+			list.insert(filename);
+
+			return true;
+		}
+};
+
 bool CPatcher::loadPatchfile()
 {
-	std::string fullfname = GetFullFileName("data/" + m_datadirectory);
-	if(fullfname.size() == 0)
+	std::string path = "data/" + m_datadirectory;
+
+	//Get the list of ".pat" files
+	PatchListFiller patchlist;
+	FindFiles(patchlist, path, false, FM_REG);
+
+	// Nothing to play, just quit
+	if (!patchlist.list.size())
 		return false;
-		
-	// Detect the patchfile
-	DIR *dir = opendir(Utf8ToSystemNative(fullfname).c_str());
-	
-	bool ret = false;
-	if(dir)
+
+	if (patchlist.list.size() > 1)
+		g_pLogFile->textOut(PURPLE,"Multiple Patch are not yet supported! Please remove a file. Taking one File.<br>");
+
+	while(!patchlist.list.empty())
 	{
-		struct dirent *dp;
-		while( ( dp = readdir(dir) ) )
+		std::string buf = *patchlist.list.begin();
+		std::ifstream Patchfile; OpenGameFileR(Patchfile, buf);
+
+		while(!Patchfile.eof())
 		{
-			if(strstr(dp->d_name,".pat"))
-			{
-				// The file was found! now read it into the memory!
-
-				std::ifstream Patchfile; OpenGameFileR(Patchfile, dp->d_name);
-
-				while(!Patchfile.eof())
-				{
-					char buf[256];
-					Patchfile.getline(buf,sizeof(buf));
-					fix_markend(buf);
-					m_TextList.push_back(buf);
-				}
-
-				Patchfile.close();
-
-				ret = true;
-				break;
-			}
+			char buf[256];
+			Patchfile.getline(buf, sizeof(buf));
+			fix_markend(buf);
+			m_TextList.push_back(buf);
 		}
+		Patchfile.close();
+		patchlist.list.clear();
 	}
 
-	closedir(dir);
-
-	return ret;
+	return true;
 }
 
 void CPatcher::patchMemfromFile(const std::string& patch_file_name, int offset)
