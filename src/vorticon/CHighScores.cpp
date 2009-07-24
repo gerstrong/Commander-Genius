@@ -374,7 +374,7 @@ char CHighScores::loadHighScoreTable(void)
 	sBuf.append(chBuf);
 	sBuf.append(".dat");
 
-	ifstream ScoreTableFile (sBuf.data(), ios::binary);
+	ifstream ScoreTableFile (sBuf.c_str(), ios::binary);
 
 	if(ScoreTableFile == NULL)
 	{

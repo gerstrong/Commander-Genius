@@ -20,7 +20,7 @@
 #ifndef __FINDFILE_H__
 #define __FINDFILE_H__
 
-#include <fstream>
+#include <iomanip>
 #include <string>
 #include <list>
 #include <vector>
@@ -80,9 +80,10 @@ extern	std::string		binary_dir;
 #endif
 
 
-class drive_t { public:
+struct drive_t {
 	std::string name;
 	unsigned int type;
+	drive_t() : type(0) {}
 };
 
 typedef std::vector<drive_t> drive_list;
@@ -183,7 +184,9 @@ FILE*	OpenGameFile(const std::string& path, const char *mode);
 
 FILE*	OpenAbsFile(const std::string& path, const char *mode);
 
-std::ifstream* OpenGameFileR(const std::string& path);
+bool OpenGameFileR(std::ifstream& f, const std::string& path, std::ios_base::openmode mode = std::ios_base::in);
+bool OpenGameFileW(std::ofstream& f, const std::string& path, std::ios_base::openmode mode = std::ios_base::in);
+
 
 std::string GetFileContents(const std::string& path, bool absolute = false);
 std::string ExtractDirectory(const std::string& path);

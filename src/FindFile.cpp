@@ -23,6 +23,7 @@
 #pragma warning(disable: 4503)  // WARNING: decorated name length exceeded, name was truncated
 #endif
 
+#include <fstream>
 #include "FindFile.h"
 #include "StringUtils.h"
 #include "Debug.h"
@@ -647,30 +648,37 @@ FILE *OpenGameFile(const std::string& path, const char *mode) {
 }
 
 
-
-std::ifstream* OpenGameFileR(const std::string& path) {
-	// TODO: unicode support! (?)
-
+bool OpenGameFileR(std::ifstream& f, const std::string& path, std::ios_base::openmode mode) {
 	if(path.size() == 0)
-		return NULL;
+		return false;
 
 	std::string fullfn = GetFullFileName(path);
 	if(fullfn.size() != 0) {
 		try {
-			std::ifstream* f = new std::ifstream(fullfn.c_str(), std::ios::in | std::ios::binary);
-			if (f->is_open())
-				return f;
-			else {
-				delete f;
-				return NULL;
-			}
+			f.open(Utf8ToSystemNative(fullfn).c_str(), mode);
+			return f.is_open();
 		} catch(...) {}
-		return NULL;
+		return false;
 	}
 
-	return NULL;
+	return false;
 }
 
+bool OpenGameFileW(std::ofstream& f, const std::string& path, std::ios_base::openmode mode) {
+	if(path.size() == 0)
+		return false;
+	
+	std::string fullfn = GetWriteFullFileName(path, true);
+	if(fullfn.size() != 0) {
+		try {
+			f.open(Utf8ToSystemNative(fullfn).c_str(), mode);
+			return f.is_open();
+		} catch(...) {}
+		return false;
+	}
+	
+	return false;	
+}
 
 
 void AddToFileList(searchpathlist* l, const std::string& f) {
