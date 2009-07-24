@@ -10,22 +10,16 @@
 #include <string.h>
 #include <fstream>
 #include "../FindFile.h"
+#include "../StringUtils.h"
 
 CPatcher::CPatcher(int episode, int version,unsigned char *data, const std::string& datadir) {
 	m_episode = episode;
 	m_version = version;
 	m_data = data;
 	m_datadirectory = datadir;
-	if(m_datadirectory != "") m_datadirectory += "/";
 }
 
-CPatcher::~CPatcher() {
-	while(!m_TextList.empty())
-	{
-		delete *(m_TextList.begin());
-		m_TextList.pop_front();
-	}
-}
+CPatcher::~CPatcher() {}
 
 void CPatcher::patchMemory()
 {
@@ -35,49 +29,40 @@ void CPatcher::patchMemory()
 	// then read out of the list the patch commands and apply them to the
 	// Exe-file data m_data
 
-	// change to the proper directory
-	chdir("data");
-	chdir(m_datadirectory.c_str());
-
 	// TODO: Extend this part further with more commands
 	while(!m_TextList.empty())
 	{
-		char line[256];
+		std::string line = *m_TextList.begin();
 
-		strcpy(line,*(m_TextList.begin()));
-
-		if(strncmp(line,"\%version",strlen("\%version")) == 0)
+		if(strCaseStartsWith(line,"\%version"))
 		{
-			char *verstring;
-			char detected_version[5];
+			std::string verstring = line.substr(strlen("\%version"));
 
-			verstring = line + strlen("\%version");
-
-			sscanf(verstring,"%s",detected_version);
-
-			if((!strcmp(detected_version,"1.31") && m_version == 131 )
-				|| (!strcmp(detected_version,"1.1") && m_version == 110 )
-				|| !strcmp(detected_version,"ALL"))
+			if((stringcaseequal(verstring,"1.31") && m_version == 131 )
+				|| (stringcaseequal(verstring,"1.1") && m_version == 110 )
+				|| stringcaseequal(verstring,"ALL"))
 			{
 				while(!m_TextList.empty())
 				{
 					// Get the next line
-					strcpy(line,*(m_TextList.begin()));
+					line = *m_TextList.begin();
 
 					// Now we really start to process the commands
-					if( strncmp(line,"\%patchfile",strlen("\%patchfile")) == 0 )
+					if( strCaseStartsWith(line,"\%patchfile") )
 					{
-						unsigned long offset;
-						char *newbuf;
-						char patch_file_name[256];
-						newbuf = line + strlen("\%patchfile");
-						sscanf(newbuf,"%lx %s",&offset,patch_file_name); // Only hexadecimal numbers supported
-						patchMemfromFile((const char*)patch_file_name,offset);
+						size_t offset = 0;
+						std::string patch_file_name;
+						std::string newbuf = line.substr(strlen("\%patchfile"));
+						size_t p = newbuf.find(' ');
+						if(p != std::string::npos) {
+							sscanf(newbuf.substr(0,p).c_str(), "%lx", &offset); // Only hexadecimal numbers supported
+							patch_file_name = newbuf.substr(p+1);
+							patchMemfromFile("data/" + m_datadirectory + "/" + patch_file_name,offset);
+						}
 					}
 
 					if(!m_TextList.empty())
 					{
-						delete *(m_TextList.begin());
 						m_TextList.pop_front();
 					}
 				}
@@ -86,50 +71,38 @@ void CPatcher::patchMemory()
 
 		if(!m_TextList.empty())
 		{
-			delete *(m_TextList.begin());
 			m_TextList.pop_front();
 		}
 	}
 
-	// change back to "data" dir
-	char curdir[256];
-	while(1)
-	{
-		char *reldir;
-		getcwd(curdir,256);
-		reldir = curdir+strlen(curdir)-strlen("data");
-		if(strcmp(reldir,"data"))
-			chdir("..");
-		else
-			break;
-	}
-	chdir("..");
 }
 
 bool CPatcher::loadPatchfile()
 {
-	bool ret = false;
-	chdir("data");
-	chdir(m_datadirectory.c_str());
+	std::string fullfname = GetFullFileName("data/" + m_datadirectory);
+	if(fullfname.size() == 0)
+		return false;
+		
 	// Detect the patchfile
-	DIR *dir = opendir(".");
-	struct dirent *dp;
-
+	DIR *dir = opendir(Utf8ToSystemNative(fullfname).c_str());
+	
+	bool ret = false;
 	if(dir)
 	{
+		struct dirent *dp;
 		while( ( dp = readdir(dir) ) )
 		{
 			if(strstr(dp->d_name,".pat"))
 			{
 				// The file was found! now read it into the memory!
 
-				char* buf;
 				std::ifstream Patchfile; OpenGameFileR(Patchfile, dp->d_name);
 
 				while(!Patchfile.eof())
 				{
-					buf = new char[256];
-					Patchfile.getline(buf,256);
+					char buf[256];
+					Patchfile.getline(buf,sizeof(buf));
+					fix_markend(buf);
 					m_TextList.push_back(buf);
 				}
 
@@ -141,19 +114,6 @@ bool CPatcher::loadPatchfile()
 		}
 	}
 
-	char curdir[256];
-	while(1)
-	{
-		char *reldir;
-		getcwd(curdir,256);
-		reldir = curdir+strlen(curdir)-strlen("data");
-		if(strcmp(reldir,"data"))
-			chdir("..");
-		else
-			break;
-	}
-
-	chdir("..");
 	closedir(dir);
 
 	return ret;

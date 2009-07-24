@@ -38,55 +38,6 @@ void addmaptile(unsigned int t)
   }
 }
 
-bool renameFilenamesLowerCase(const std::string& dir_name)
-{
-#ifdef TARGET_WIN32
-	return true;
-#else
-	DIR *p_Dir;
-	char newname[256];
-	char buf[256];
-	struct dirent *dp;
-
-	memset(newname,0,256);
-	strcpy(buf,dir_name.c_str());
-
-	if(buf[0] == '\0')
-		strcpy(buf,"./");
-
-	chdir("data");
-
-	if((p_Dir = opendir(buf))==NULL)
-		return false;
-
-	bool retval = true;
-	// This function checks if all the files in the directory are lower case.
-	// If they aren't rename them
-	while((dp = readdir(p_Dir)) != NULL)
-	{
-        if(dp->d_type == DT_REG)
-        {
-        	strcpy(newname,dp->d_name);
-
-        	int len = strlen(newname);
-        	for(int pos=0 ; pos < len ; pos++ )
-        		if(newname[pos] >= 'A' && newname[pos] <= 'Z')
-        			newname[pos] += ('a'-'A');
-
-        	if(strncmp(newname,dp->d_name,strlen(dp->d_name)) != 0)
-        		if(rename(dp->d_name,newname) != -1)
-        			retval &= true;
-        }
-    }
-
-	closedir(p_Dir);
-
-	chdir("../");
-
-	return retval;
-
-#endif
-}
 
 short checkConsistencyofGameData(stGameData *p_GameData)
 {
@@ -129,12 +80,6 @@ short checkConsistencyofGameData(stGameData *p_GameData)
 			p_GameData->FileList[24] = "sounds.ck" + itoa(p_GameData->Episode);
 	}
 
-	// Rename all the the files in the directory to lower case
-	if(!renameFilenamesLowerCase(p_GameData->DataDirectory))
-	{
-		g_pLogFile->ftextOut(PURPLE,"WARNING: There was an error while trying to format correctly the game data.");
-		g_pLogFile->ftextOut(PURPLE,"Please check, if you have write permissions on the game data directory and it is accessible<br>");
-	}
 
 	// Finally check if they really exist!
 	int c=0;

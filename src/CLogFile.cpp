@@ -11,6 +11,8 @@
 #include "CLogFile.h"
 #include <fstream>
 #include "FindFile.h"
+#include "Debug.h"
+
 
 CLogFile::CLogFile() {}
 
@@ -109,6 +111,7 @@ void CLogFile::textOut(int Color, bool List, const char *Text)
 
 void CLogFile::textOut(const char *Text)
 {
+	notes << Text << endl;
 	fprintf(m_Logfile,"%s",Text);
 	fflush(m_Logfile);
 }

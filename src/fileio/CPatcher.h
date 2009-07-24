@@ -28,7 +28,7 @@ private:
 	unsigned char *m_data;
 	std::string m_datadirectory;
 	
-	std::list<char*> m_TextList;
+	std::list<std::string> m_TextList;
 
 };
 

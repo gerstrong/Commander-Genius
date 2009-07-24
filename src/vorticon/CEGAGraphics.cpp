@@ -57,12 +57,11 @@ bool CEGAGraphics::loadData()
 	std::string buf;
 	vector<char> databuf;
 
-	chdir("data"); // TODO: You must be able to use another directory
 	if(m_path == "")
 		buf = "egahead.ck" + itoa(m_episode);
 	else
 		buf = m_path + "/egahead.ck" + itoa(m_episode);
-	std::ifstream HeadFile; OpenGameFileR(HeadFile, buf, ios::binary);
+	std::ifstream HeadFile; OpenGameFileR(HeadFile, "data/" + buf, ios::binary);
 
 	if(!HeadFile)
 		return false;
@@ -113,7 +112,7 @@ bool CEGAGraphics::loadData()
 		buf = "egalatch.ck" + itoa(m_episode);
 	else
 		buf = m_path + "/egalatch.ck" + itoa(m_episode);
-    m_Latch->loadData(buf,(compressed>>1)); // The second bit tells, if latch is compressed.
+    m_Latch->loadData("data/" + buf,(compressed>>1)); // The second bit tells, if latch is compressed.
 
 
     m_Sprit = new CEGASprit(SpritePlaneSize,
@@ -126,9 +125,7 @@ bool CEGAGraphics::loadData()
 		buf = "egasprit.ck" + itoa(m_episode);
 	else
 		buf = m_path + "/egasprit.ck" + itoa(m_episode);
-    m_Sprit->loadData(buf,(compressed>>1));
-
-    chdir("../");
+    m_Sprit->loadData("data/" + buf,(compressed>>1));
 
     return true;
 }
