@@ -96,7 +96,6 @@ bool CTileLoader::load()
 
 	if(!setProperOffset()) return false;
 
-	//TileProperty = (int**) malloc(1000*sizeof(int*));
 	TileProperty = new int*[1000];
 
 	for(i = 0 ; i < 1000 ; i++)

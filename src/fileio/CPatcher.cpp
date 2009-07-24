@@ -15,6 +15,7 @@ CPatcher::CPatcher(int episode, int version,unsigned char *data, const std::stri
 	m_version = version;
 	m_data = data;
 	m_datadirectory = datadir;
+	if(m_datadirectory != "") m_datadirectory += "/";
 }
 
 CPatcher::~CPatcher() {

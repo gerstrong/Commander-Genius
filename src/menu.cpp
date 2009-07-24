@@ -163,9 +163,7 @@ bool loadStartMenu(stCloneKeenPlus *pCKP)
 
 	// Show me the games you detected!
 	for( int i=0 ; i < pCKP->numGames ; i++ )
-	{
 		GamesMenu->addOptionText(pCKP->GameData[i].Name);
-	}
 
 	GamesMenu->animateDialogBox(true);
 

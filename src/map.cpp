@@ -149,7 +149,6 @@ int i,x,c;
         animtiles[AnimTileInUse[(((x<<4)+mapxstripepos)&511)>>4][y>>4]].slotinuse = 0;
         AnimTileInUse[(((x<<4)+mapxstripepos)&511)>>4][y>>4] = 0;
       }
-      //if (tiles[c].isAnimated)
       if ( TileProperty[c][ANIMATION] > 1 )
       { // we just drew an animated tile which we will now register
 
