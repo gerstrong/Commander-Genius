@@ -54,13 +54,13 @@ void CPatcher::patchMemory()
 						size_t offset = 0;
 						std::string patch_file_name;
 						std::string newbuf = line.substr(strlen("\%patchfile"));
+						TrimSpaces(newbuf);
 						size_t p = newbuf.find(' ');
 						if(p != std::string::npos) {
-							char temp[256];
-							sscanf(newbuf.c_str(), "%lx %s", &offset, temp); // Only hexadecimal numbers supported
-							patch_file_name.append(temp);
+							sscanf(newbuf.substr(0,p).c_str(), "%lx", &offset); // Only hexadecimal numbers supported
+							patch_file_name = newbuf.substr(p+1);
 							patchMemfromFile("data/" + m_datadirectory + "/" + patch_file_name,offset);
-						}
+						}						
 					}
 
 					if(!m_TextList.empty())
