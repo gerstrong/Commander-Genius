@@ -328,7 +328,7 @@ bool CSound::loadSoundData(unsigned short Episode, const std::string& DataDirect
 	  
 	buf = "keen" + itoa(Episode) + ".exe";
 	g_pLogFile->ftextOut("sound_load_all(): \"%s\" was not found in the data directory. Looking for \"%s\" in \"%s\" and trying to extract this file<br>", soundfile.c_str(), buf.c_str(), formatPathString(path).c_str());
-	extractOfExeFile(formatPathString(path), Episode);
+	extractOfExeFile(path, Episode);
   }
   else
 	 fclose(p_file);
@@ -411,7 +411,6 @@ char CSound::extractOfExeFile(const std::string& inputpath, int episode)
 	  int bit_count;
 	  int pos, sounds_start, sounds_end, ret = 0;
 	std::string buffer;
-	std::string inputfname;
 
 	  pos = 0;
 	  bit_count = 0;
@@ -431,19 +430,25 @@ char CSound::extractOfExeFile(const std::string& inputpath, int episode)
 	  }
 	  else
 	  {
-		  g_pLogFile->ftextOut("Error: Unknown keen executable name: %s<br>", inputfname.c_str());
+		  g_pLogFile->ftextOut("Error: Unknown episode: %d<br>", episode);
 	    return 1;
 	  }
 
-	  CExeFile *ExeFile = new CExeFile(episode, inputfname);
+	  CExeFile *ExeFile = new CExeFile(episode, inputpath);
 	  if(!ExeFile->readData()) ret = 1;
 	  else
 	  {
 		  FILE *fout;
-		  if(!(fout = fopen(outputfname.c_str(),"wb"))) ret = 1;
+
+		  buffer = "data/" + inputpath;
+		  if( *(buffer.end()) != '/') buffer  += "/";
+		  buffer += outputfname;
+
+		  if(!(fout = fopen(buffer.c_str(),"wb"))) ret = 1;
 		  else
 		  {
 			  fwrite( ExeFile->getData()+sounds_start, 1, (sounds_end-sounds_start), fout);
+			  g_pLogFile->ftextOut(GREEN,"Sounds extraction completed successfully<br>");
 			  fclose(fout);
 		  }
 	  }

@@ -17,7 +17,7 @@ using namespace std;
 CExeFile::CExeFile(int episode, const std::string& datadirectory) {
 	m_episode = episode;
 	m_datadirectory = datadirectory;
-	if(m_datadirectory != "") m_datadirectory += "/";
+	if( m_datadirectory != "" && *(m_datadirectory.end()) != '/') m_datadirectory += "/";
 	m_data = NULL;
 }
 

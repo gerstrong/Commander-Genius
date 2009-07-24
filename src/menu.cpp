@@ -193,7 +193,7 @@ bool loadStartMenu(stCloneKeenPlus *pCKP)
 			fade.rate = FADE_NORM;
 			fade.mode = FADE_GO;
 
-			if( GamesMenu->getSelection()+1 < pCKP->numGames )
+			if( GamesMenu->getSelection() < pCKP->numGames )
 			{
 				ret = true;
 				pCKP->Resources.GameSelected = GamesMenu->getSelection()+1;
