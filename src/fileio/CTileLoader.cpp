@@ -7,10 +7,10 @@
 
 #include "CTileLoader.h"
 #include "../CLogFile.h"
-
+#include "../StringUtils.h"
+#include "../FindFile.h"
 #include <cstdlib>
 #include <string>
-#include "../StringUtils.h"
 
 extern stTile tiles[MAX_TILES+1];
 
@@ -153,7 +153,7 @@ bool CTileLoader::load()
    fname = "ep" + itoa(m_episode) + "attr.dat";
 
    FILE *fp;
-	  fp = fopen(fname.c_str(), "rb");
+	  fp = OpenGameFile(fname.c_str(), "rb");
 	  if (!fp)
 	  {
 		g_pLogFile->textOut(RED,"TileLoader: Cannot open tile attribute file!<br>");

@@ -13,6 +13,7 @@
 #include "../../vorticon/sounds.h"
 #include "../../fileio/CExeFile.h"
 #include "../../StringUtils.h"
+#include "../../FindFile.h"
 
 #define SAFE_DELETE_ARRAY(x) if(x) delete[] x; x=NULL
 
@@ -323,7 +324,7 @@ bool CSound::loadSoundData(unsigned short Episode, const std::string& DataDirect
 
   FILE *p_file;
 
-  if( ( p_file = fopen(soundfile.c_str(),"rb") ) == NULL )
+  if( ( p_file = OpenGameFile(soundfile.c_str(),"rb") ) == NULL )
   {
 	  
 	buf = "keen" + itoa(Episode) + ".exe";
@@ -444,7 +445,7 @@ char CSound::extractOfExeFile(const std::string& inputpath, int episode)
 		  if( *(buffer.end()) != '/') buffer  += "/";
 		  buffer += outputfname;
 
-		  if(!(fout = fopen(buffer.c_str(),"wb"))) ret = 1;
+		  if(!(fout = OpenGameFile(buffer.c_str(),"wb"))) ret = 1;
 		  else
 		  {
 			  fwrite( ExeFile->getData()+sounds_start, 1, (sounds_end-sounds_start), fout);

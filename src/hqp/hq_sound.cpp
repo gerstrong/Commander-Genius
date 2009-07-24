@@ -10,6 +10,7 @@
 #include "../sdl/CVideoDriver.h"
 #include "../include/vorbis/oggsupport.h"
 #include "../CLogFile.h"
+#include "../FindFile.h"
 
 short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::string& soundfile)
 {
@@ -21,7 +22,7 @@ short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::stri
 	FILE *fp;
 
 	buf = "data/hqp/snd/" + soundfile + ".OGG"; // Start with OGG
-	if((fp = fopen(buf.c_str(),"rb")) != NULL)
+	if((fp = OpenGameFile(buf.c_str(),"rb")) != NULL)
 	{
 		#ifdef BUILD_WITH_OGG
 		if(openOGGSound(fp, &AudioFileSpec, AudioSpec->format, psound) != 0)
@@ -52,8 +53,12 @@ short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::stri
 	{
 	  buf = "data/hqp/snd/" + soundfile + ".WAV";
 
-	  // Check, if it is a wav file or go back to classic sounds
-	  if (SDL_LoadWAV (buf.c_str(), &AudioFileSpec, &(psound->sound_buffer), &(psound->sound_len)) == NULL)
+		std::string fullfname = GetFullFileName(buf);
+		if(fullfname.size() == 0)
+			return 1;
+		
+		// Check, if it is a wav file or go back to classic sounds
+	  if (SDL_LoadWAV (Utf8ToSystemNative(fullfname).c_str(), &AudioFileSpec, &(psound->sound_buffer), &(psound->sound_len)) == NULL)
 	  {
 		  g_pLogFile->textOut(PURPLE,"Wave file could not be opened: \"%s\". Trying to load the classical sounds<br>", buf.c_str());
 	      return 1;

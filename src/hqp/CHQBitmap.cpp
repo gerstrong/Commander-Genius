@@ -7,7 +7,8 @@
 
 #include "CHQBitmap.h"
 #include "../CLogFile.h"
-#include <stdlib.h>
+#include "../FindFile.h"
+#include <cstdlib>
 
 CHQBitmap::CHQBitmap(SDL_Rect screenrect) {
 	m_scrimg = NULL;
@@ -24,9 +25,13 @@ CHQBitmap::~CHQBitmap() {
 
 bool CHQBitmap::loadImage(const std::string& pFilename, int wsize, int hsize)
 {
-	SDL_Surface *BitmapSurface = SDL_LoadBMP(pFilename.c_str());
-
 	m_active = false;
+
+	std::string fullfname = GetFullFileName(pFilename);
+	if(fullfname.size() == 0)
+		return false;
+	
+	SDL_Surface *BitmapSurface = SDL_LoadBMP(Utf8ToSystemNative(fullfname).c_str());
 
 	if(BitmapSurface)
 	{

@@ -12,6 +12,7 @@
 #include "CEGASprit.h"
 #include "CPlanes.h"
 #include "../keen.h"
+#include "../FindFile.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -75,7 +76,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 {
 	char *RawData;
 
-	FILE* latchfile = fopen(filename.c_str(),"rb");
+	FILE* latchfile = OpenGameFile(filename.c_str(),"rb");
 
 	if(!latchfile)
 		return false;

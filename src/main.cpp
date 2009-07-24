@@ -510,7 +510,7 @@ char SaveOptions[NUM_OPTIONS];
 
    // open the demo file
    sprintf(filename, "ep%ddemo%d.dat", p_levelcontrol->episode, demonum);
-   demofile = fopen(filename, "rb");
+   demofile = OpenGameFile(filename, "rb");
    if (!demofile)
    {
      return DEMO_RESULT_FILE_BAD;

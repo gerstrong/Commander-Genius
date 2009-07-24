@@ -9,6 +9,7 @@
 #include "../CLogFile.h"
 #include "../StringUtils.h"
 #include "../sdl/CSettings.h"
+#include "../FindFile.h"
 #include <cstdio>
 #include <cstdlib>
 
@@ -41,7 +42,7 @@ bool CParser::loadParseFile() // Open, read the list and close the file
 {
 	FILE *fp;
 
-	if((fp=fopen(m_configfile.c_str(),"rt")))
+	if((fp=OpenGameFile(m_configfile.c_str(),"rt")))
 	{
 		while(!feof(fp))
 		{
@@ -62,7 +63,7 @@ bool CParser::saveParseFile() // open, write on the file and close
 {
 	FILE *fp;
 
-	if((fp=fopen(m_configfile.c_str(),"wt")))
+	if((fp=OpenGameFile(m_configfile.c_str(),"wt")))
 	{
 		for(std::list<std::string>::iterator i=m_filebuffer.begin() ; i != m_filebuffer.end() ; ++i )
 			fprintf(fp,"%s\n",i->c_str());

@@ -16,6 +16,7 @@
 #include "CSoundSlot.h"
 #include "../../CLogFile.h"
 #include "../../fileio.h"
+#include "../../FindFile.h"
 
 CSoundSlot::CSoundSlot() {
 	m_priority = 0;
@@ -57,7 +58,7 @@ bool CSoundSlot::loadSound(const std::string& fname, const std::string& searchna
 		for(i=0;i<12;i++)
 			name[i] = 0;
 
-		fp = fopen(fname.c_str(), "rb");
+		fp = OpenGameFile(fname.c_str(), "rb");
 		if (!fp)
 		{
 			g_pLogFile->ftextOut("loadSound : Sounds file '%s' unopenable attempting load of '%s'<br>", fname.c_str(), searchname.c_str());

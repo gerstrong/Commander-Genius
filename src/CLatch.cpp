@@ -14,7 +14,7 @@
 #include "keen.h"
 #include "keenext.h"
 #include "StringUtils.h"
-
+#include "FindFile.h"
 #include "CLogFile.h"
 //#include "vorticon/CEGAGraphics.h"
 
@@ -77,7 +77,7 @@ char CLatch::loadHeader(int episode, const char *path)
 
     delete EGAGraphics;*/
 
-    headfile = fopen(fname.c_str(), "rb");
+    headfile = OpenGameFile(fname.c_str(), "rb");
     if (!headfile)
     {
     	g_pLogFile->ftextOut("latch_loadheader(): unable to open '%s'.<br>", fname.c_str());
@@ -217,7 +217,7 @@ unsigned long RawDataSize;
 
     g_pLogFile->ftextOut("latch_loadlatch(): Opening file '%s'.<br>", fname.c_str());
 
-    latchfile = fopen(fname.c_str(), "rb");
+    latchfile = OpenGameFile(fname.c_str(), "rb");
     if (!latchfile)
     {
       g_pLogFile->ftextOut("latch_loadlatch(): Unable to open '%s'!<br>", fname.c_str());
@@ -426,7 +426,7 @@ CPlanes *Planes;
 
     g_pLogFile->ftextOut("latch_loadsprites(): Opening file '%s'.<br>", fname.c_str());
 
-    spritfile = fopen(fname.c_str(), "rb");
+    spritfile = OpenGameFile(fname.c_str(), "rb");
     if (!spritfile)
     {
       g_pLogFile->ftextOut("latch_loadsprites(): Unable to open '%s'!<br>", fname.c_str());

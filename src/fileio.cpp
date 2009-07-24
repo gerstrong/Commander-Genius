@@ -19,6 +19,7 @@
 #include <dirent.h>
 #include "StringUtils.h"
 #include "Debug.h"
+#include "FindFile.h"
 
 extern CPlayer *Player;
 
@@ -147,7 +148,7 @@ short checkConsistencyofGameData(stGameData *p_GameData)
 			buf += "/";
 		buf += p_GameData->FileList[c];
 
-		if((fp = fopen(buf.c_str(),"r")) != NULL)
+		if((fp = OpenGameFile(buf.c_str(),"r")) != NULL)
 		{
 			fclose(fp);
 		}
@@ -538,7 +539,7 @@ int resetcnt, resetpt;
 
 	std::string buffer = formatPathString(path);
 	std::string fname = buffer + filename;
-  fp = fopen(fname.c_str(), "rb");
+  fp = OpenGameFile(fname.c_str(), "rb");
   if (!fp)
   {
     // only record this error message on build platforms that log errors
@@ -632,7 +633,7 @@ int resetcnt, resetpt;
     // HQ Sounds. Load Music for a level if you have HQP
     g_pMusicPlayer->stop();
 
-    if((fp=fopen("data/hqp/music/table.cfg","rt")) != NULL)
+    if((fp=OpenGameFile("data/hqp/music/table.cfg","rt")) != NULL)
     {
 		static const int MAX_STRING_LENGTH = 256;
     	char buf1[MAX_STRING_LENGTH];
@@ -770,7 +771,7 @@ char highlight;
   #define STSTATE_READATTR      3
 
 g_pLogFile->ftextOut("loadstrings(): Opening string file '%s'.<br>", fname.c_str());
-  fp = fopen(fname.c_str(), "rb");
+  fp = OpenGameFile(fname.c_str(), "rb");
   if (!fp)
   {
 	  g_pLogFile->ftextOut("loadstrings(): String file unable to open.<br>");

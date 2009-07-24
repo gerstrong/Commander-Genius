@@ -13,6 +13,8 @@
 #include "../fileio/CExeFile.h"
 #include "../CLogFile.h"
 #include "../StringUtils.h"
+#include "../FindFile.h"
+
 
 int readStoryText(char **ptext, int episode, const std::string& path)
 {
@@ -20,11 +22,11 @@ int readStoryText(char **ptext, int episode, const std::string& path)
 	std::string buf = buf2 + "storytxt.ck" + itoa(episode);
 
 	FILE *fp;
-	if((fp=fopen(buf.c_str(),"rt"))==NULL)
+	if((fp=OpenGameFile(buf.c_str(),"rt"))==NULL)
 	{
 		buf = buf2 + "keen" + itoa(episode) + ".exe";
 
-		if((fp=fopen(buf.c_str(),"rb"))!=NULL)
+		if((fp=OpenGameFile(buf.c_str(),"rb"))!=NULL)
 		{
 			unsigned char *filebuf;
 			int startflag=0, endflag=0; // where story begins and ends!
@@ -84,5 +86,7 @@ int readStoryText(char **ptext, int episode, const std::string& path)
 
 		return filesize;
 	}
+	
+	return -1;
 }
 

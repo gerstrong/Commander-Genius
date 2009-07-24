@@ -10,6 +10,7 @@
 #include <string.h>
 #include "CLogFile.h"
 #include <fstream>
+#include "FindFile.h"
 
 CLogFile::CLogFile() {}
 
@@ -22,7 +23,7 @@ CLogFile::~CLogFile() {
 void CLogFile::CreateLogfile(const char *LogName)
 {
 	// Open and empty the log file
-	m_Logfile = fopen(LogName, "wt");
+	m_Logfile = OpenGameFile(LogName, "wt");
 
 	// Write the head
 	textOut("<html><head><title>LogFile</title></head>");
@@ -50,7 +51,7 @@ void CLogFile::CreateLogfile(const char *LogName)
 	textOut("Send E-Mail to me</a><br><br>");
 
 	fclose(m_Logfile);
-	m_Logfile = fopen(LogName, "at");
+	m_Logfile = OpenGameFile(LogName, "at");
 }
 
 // Function for writing the topic

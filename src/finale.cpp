@@ -7,6 +7,7 @@
 #include "keen.h"
 #include "include/fileio.h"
 #include "CGraphics.h"
+#include "FindFile.h"
 
 int finale_x;
 int finale_y;
@@ -84,7 +85,7 @@ int i;
    map_unregister_all_animtiles();
 
 	std::string fname = buffer + filename;
-   fp = fopen(fname.c_str(), "rb");
+   fp = OpenGameFile(fname.c_str(), "rb");
    if (!fp)
    {
      crashflag = 1;

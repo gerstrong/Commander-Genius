@@ -25,6 +25,8 @@
 #include "CLogFile.h"
 #include "CGraphics.h"
 #include "StringUtils.h"
+#include "FindFile.h"
+
 
 void banner(void)
 {
@@ -625,7 +627,7 @@ void showinventory(int p, stCloneKeenPlus *pCKP)
 FILE *fp;
 int x,y;
 
-  fp = fopen(visiblefile, "wb");
+  fp = OpenGameFile(visiblefile, "wb");
   if (!fp) return;<
 
   for(y=0;y<200;y++)
@@ -634,7 +636,7 @@ int x,y;
 
   fclose(fp);
 
-  fp = fopen(scrollfile, "wb");
+  fp = OpenGameFile(scrollfile, "wb");
   if (!fp) return;
 
   for(y=0;y<512;y++)
@@ -733,7 +735,7 @@ void game_save(char *fname, stCloneKeenPlus *pCKP)
 	unsigned int i;
 	FILE *fp;
 
-   fp = fopen(fname, "wb");
+   fp = OpenGameFile(fname, "wb");
 
    // save the header/version check
    fputc('S', fp);
@@ -766,7 +768,7 @@ int savegameiswm(char *fname)
 FILE *fp;
 int i;
 
-   fp = fopen(fname, "rb");
+   fp = OpenGameFile(fname, "rb");
    if (!fp) return 0;          // file didn't exist, don't try to go further
 
    fgetc(fp); fgetc(fp);
@@ -785,7 +787,7 @@ long i;
 unsigned long scrx;
 int scry;
 
-   fp = fopen(fname, "rb");
+   fp = OpenGameFile(fname, "rb");
    if (!fp) return 1;
 
    // do the header and version check
@@ -828,7 +830,7 @@ unsigned int scry;
 stLevelControl *p_levelcontrol;
 p_levelcontrol = &(pCKP->Control.levelcontrol);
 
-   fp = fopen(fname, "rb");
+   fp = OpenGameFile(fname, "rb");
    if (!fp) return 1;
 
    // do the header and version check
@@ -936,7 +938,7 @@ top: ;
 	fname += saveslot+'0';
 	fname += ".dat";
   slotexists = 0;
-  fp = fopen(fname.c_str(), "rb");
+  fp = OpenGameFile(fname.c_str(), "rb");
   if (fp)
   {
     fclose(fp);

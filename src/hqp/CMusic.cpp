@@ -9,6 +9,7 @@
 #include "../hqp/hq_sound.h"
 #include "../CLogFile.h"
 #include "../include/vorbis/oggsupport.h"
+#include "../FindFile.h"
 
 CMusic::CMusic() {
 	playmode = PLAY_MODE_STOP;
@@ -37,7 +38,7 @@ int CMusic::load(SDL_AudioSpec AudioSpec, char *musicfile)
 	pOggAudio.sound_pos=0;
 
 	FILE *fp;
-	if((fp = fopen(musicfile,"rb")) == NULL)
+	if((fp = OpenGameFile(musicfile,"rb")) == NULL)
 	{
 		g_pLogFile->textOut(PURPLE,"Music Driver(): \"%s\". File does not exist!<br>", musicfile);
 		return -1;

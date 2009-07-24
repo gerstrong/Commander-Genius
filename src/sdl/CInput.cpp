@@ -9,9 +9,10 @@
 #include <stdio.h>
 
 #include "CInput.h"
-#include "../CLogFile.h"
 #include "CVideoDriver.h"
 #include "CTimer.h"
+#include "../CLogFile.h"
+#include "../FindFile.h"
 
 #ifdef WIZ
 #include "gp2x.h"
@@ -89,7 +90,7 @@ void CInput::resetControls() {
 short CInput::loadControlconfig(void)
 {
 	FILE *fp;
-	if((fp=fopen("controls.dat","rb")) != NULL)
+	if((fp=OpenGameFile("controls.dat","rb")) != NULL)
 	{
 		if(fread(InputCommand, sizeof(stInputCommand),NUMBER_OF_COMMANDS*NUM_INPUTS, fp) == 0 )
 		{
@@ -105,7 +106,7 @@ short CInput::loadControlconfig(void)
 short CInput::saveControlconfig(void)
 {
 	FILE *fp;
-	if((fp=fopen("controls.dat","wb")) != NULL)
+	if((fp=OpenGameFile("controls.dat","wb")) != NULL)
 	{
 		fwrite(InputCommand, sizeof(stInputCommand),NUMBER_OF_COMMANDS*NUM_INPUTS, fp);
 		fclose(fp);
