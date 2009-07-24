@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		1DDD57E40DA1CFC700B32029 /* main.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD57E20DA1CFC700B32029 /* main.xib */; };
+		235742421019BD3E00275638 /* Ogg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 235742401019BD3E00275638 /* Ogg.framework */; };
+		235742431019BD3E00275638 /* Vorbis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 235742411019BD3E00275638 /* Vorbis.framework */; };
+		235742621019BE4900275638 /* Ogg.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 235742401019BD3E00275638 /* Ogg.framework */; };
+		235742631019BE4900275638 /* Vorbis.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 235742411019BD3E00275638 /* Vorbis.framework */; };
+		235742641019BE4D00275638 /* SDL.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 23D3EA691013AC7B001643FA /* SDL.framework */; };
 		23D3EA0D1013ABCA001643FA /* baby.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9751013ABC9001643FA /* baby.cpp */; };
 		23D3EA0E1013ABCA001643FA /* balljack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9761013ABC9001643FA /* balljack.cpp */; };
 		23D3EA0F1013ABCA001643FA /* bear.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9771013ABC9001643FA /* bear.cpp */; };
@@ -104,10 +109,28 @@
 		8D0C4E920486CD37000505A6 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20286C33FDCF999611CA2CEA /* Carbon.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		235742611019BE4700275638 /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				235742641019BE4D00275638 /* SDL.framework in Copy Frameworks */,
+				235742621019BE4900275638 /* Ogg.framework in Copy Frameworks */,
+				235742631019BE4900275638 /* Vorbis.framework in Copy Frameworks */,
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		0867D6ABFE840B52C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1DDD57E30DA1CFC700B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/main.xib; sourceTree = "<group>"; };
 		20286C33FDCF999611CA2CEA /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
+		235742401019BD3E00275638 /* Ogg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Ogg.framework; sourceTree = "<group>"; };
+		235742411019BD3E00275638 /* Vorbis.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Vorbis.framework; sourceTree = "<group>"; };
 		23D3E9751013ABC9001643FA /* baby.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = baby.cpp; sourceTree = "<group>"; };
 		23D3E9761013ABC9001643FA /* balljack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = balljack.cpp; sourceTree = "<group>"; };
 		23D3E9771013ABC9001643FA /* bear.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bear.cpp; sourceTree = "<group>"; };
@@ -306,6 +329,8 @@
 				23D3EA6A1013AC7B001643FA /* SDL.framework in Frameworks */,
 				23D3EA841013AEB5001643FA /* OpenGL.framework in Frameworks */,
 				23D3EA921013AF1D001643FA /* Cocoa.framework in Frameworks */,
+				235742421019BD3E00275638 /* Ogg.framework in Frameworks */,
+				235742431019BD3E00275638 /* Vorbis.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -331,6 +356,8 @@
 				23D3EA691013AC7B001643FA /* SDL.framework */,
 				23D3EA831013AEB5001643FA /* OpenGL.framework */,
 				23D3EA911013AF1D001643FA /* Cocoa.framework */,
+				235742401019BD3E00275638 /* Ogg.framework */,
+				235742411019BD3E00275638 /* Vorbis.framework */,
 			);
 			name = CommanderGenius;
 			sourceTree = "<group>";
@@ -672,6 +699,7 @@
 				8D0C4E8C0486CD37000505A6 /* Resources */,
 				8D0C4E8F0486CD37000505A6 /* Sources */,
 				8D0C4E910486CD37000505A6 /* Frameworks */,
+				235742611019BE4700275638 /* Copy Frameworks */,
 			);
 			buildRules = (
 			);
@@ -837,6 +865,10 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
@@ -848,6 +880,7 @@
 				OTHER_CFLAGS = (
 					"-DBUILD_SDL",
 					"-DUSE_OPENGL",
+					"-DBUILD_WITH_OGG",
 				);
 			};
 			name = Debug;
@@ -859,6 +892,10 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				HEADER_SEARCH_PATHS = /Library/Frameworks/SDL.framework/Headers;
@@ -866,6 +903,7 @@
 				OTHER_CFLAGS = (
 					"-DBUILD_SDL",
 					"-DUSE_OPENGL",
+					"-DBUILD_WITH_OGG",
 				);
 				PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES;
 			};
