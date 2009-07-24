@@ -13,6 +13,8 @@
 #include <string>
 #include <cstdio>
 
+extern std::string CONFIGFILENAME;
+
 class CParser {
 public:
 	CParser();

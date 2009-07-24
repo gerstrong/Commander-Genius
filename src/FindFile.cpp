@@ -18,7 +18,6 @@
 
 
 
-
 #ifdef _MSC_VER
 #pragma warning(disable: 4786)  // WARNING: identifier XXX was truncated to 255 characters in the debug info
 #pragma warning(disable: 4503)  // WARNING: decorated name length exceeded, name was truncated
@@ -423,19 +422,19 @@ bool GetExactFileName(const std::string& abs_searchname, std::string& filename) 
 searchpathlist	basesearchpaths;
 void InitBaseSearchPaths() {
 	basesearchpaths.clear();
-#if defined(MACOSX)
-	AddToFileList(&basesearchpaths, "${HOME}/Library/Application Support/OpenLieroX");
+#if defined(__APPLE__)
+	AddToFileList(&basesearchpaths, "${HOME}/Library/Application Support/Commander Genius");
 	AddToFileList(&basesearchpaths, ".");
-	AddToFileList(&basesearchpaths, "${BIN}/../Resources/gamedir");
-	AddToFileList(&basesearchpaths, SYSTEM_DATA_DIR"/OpenLieroX");
+	AddToFileList(&basesearchpaths, "${BIN}/../Resources/data");
+	AddToFileList(&basesearchpaths, SYSTEM_DATA_DIR"/commandergenius");
 #elif defined(WIN32)
-	AddToFileList(&basesearchpaths, "${HOME}/OpenLieroX");
+	AddToFileList(&basesearchpaths, "${HOME}/Commander Genius");
 	AddToFileList(&basesearchpaths, ".");
 	AddToFileList(&basesearchpaths, "${BIN}");
 #else // all other systems (Linux, *BSD, OS/2, ...)
-	AddToFileList(&basesearchpaths, "${HOME}/.OpenLieroX");
+	AddToFileList(&basesearchpaths, "${HOME}/.CommanderGenius");
 	AddToFileList(&basesearchpaths, ".");
-	AddToFileList(&basesearchpaths, SYSTEM_DATA_DIR"/OpenLieroX"); // no use of ${SYSTEM_DATA}, because it is uncommon and could cause confusion to the user
+	AddToFileList(&basesearchpaths, SYSTEM_DATA_DIR"/commandergenius"); // no use of ${SYSTEM_DATA}, because it is uncommon and could cause confusion to the user
 #endif
 }
 

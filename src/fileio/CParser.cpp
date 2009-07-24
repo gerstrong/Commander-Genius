@@ -11,7 +11,7 @@
 #include <cstdio>
 #include <cstdlib>
 
-#define CONFIGFILENAME "genius.cfg"
+std::string CONFIGFILENAME = "genius.cfg";
 
 
 CParser::CParser() {
@@ -41,7 +41,7 @@ bool CParser::loadParseFile() // Open, read the list and close the file
 {
 	FILE *fp;
 
-	if((fp=fopen(CONFIGFILENAME,"rt")))
+	if((fp=fopen(CONFIGFILENAME.c_str(),"rt")))
 	{
 		while(!feof(fp))
 		{
@@ -52,12 +52,9 @@ bool CParser::loadParseFile() // Open, read the list and close the file
 		fclose(fp);
 		return true;
 	}
-	else
-	{
-		g_pLogFile->ftextOut(GREEN,"Parser : The file has not been found. When CKP is trying to save the file it will create a new one.");
-		return false;
-	}
 
+	g_pLogFile->ftextOut(GREEN,"Parser : The file has not been found. When CKP is trying to save the file it will create a new one.");
+	return false;
 }
 
 // Close the text which was parsed. This will also copy all stuff of the memory to the file.
@@ -65,7 +62,7 @@ bool CParser::saveParseFile() // open, write on the file and close
 {
 	FILE *fp;
 
-	if((fp=fopen(CONFIGFILENAME,"wt")))
+	if((fp=fopen(CONFIGFILENAME.c_str(),"wt")))
 	{
 		for(std::list<std::string>::iterator i=m_filebuffer.begin() ; i != m_filebuffer.end() ; ++i )
 			fprintf(fp,"%s\n",i->c_str());
@@ -73,11 +70,9 @@ bool CParser::saveParseFile() // open, write on the file and close
 		fclose(fp);
 		return true;
 	}
-	else
-	{
-		g_pLogFile->ftextOut(RED,"Parser : Error opening the file for write operations. Check your permissions or if the disk is full");
-		return false;
-	}
+
+	g_pLogFile->ftextOut(RED,"Parser : Error opening the file for write operations. Check your permissions or if the disk is full");
+	return false;
 }
 
 // read the value of the to be seeked keyword and returns it as an int.
