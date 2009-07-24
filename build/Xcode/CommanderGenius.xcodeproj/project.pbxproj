@@ -14,6 +14,7 @@
 		235742631019BE4900275638 /* Vorbis.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 235742411019BD3E00275638 /* Vorbis.framework */; };
 		235742641019BE4D00275638 /* SDL.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 23D3EA691013AC7B001643FA /* SDL.framework */; };
 		235751F01019D0C000275638 /* FindFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 235751EF1019D0C000275638 /* FindFile.cpp */; };
+		235752081019DFFF00275638 /* CLatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 235752061019DFFF00275638 /* CLatch.cpp */; };
 		23D3EA0D1013ABCA001643FA /* baby.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9751013ABC9001643FA /* baby.cpp */; };
 		23D3EA0E1013ABCA001643FA /* balljack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9761013ABC9001643FA /* balljack.cpp */; };
 		23D3EA0F1013ABCA001643FA /* bear.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9771013ABC9001643FA /* bear.cpp */; };
@@ -132,6 +133,8 @@
 		235742401019BD3E00275638 /* Ogg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Ogg.framework; sourceTree = "<group>"; };
 		235742411019BD3E00275638 /* Vorbis.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Vorbis.framework; sourceTree = "<group>"; };
 		235751EF1019D0C000275638 /* FindFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FindFile.cpp; sourceTree = "<group>"; };
+		235752061019DFFF00275638 /* CLatch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CLatch.cpp; sourceTree = "<group>"; };
+		235752071019DFFF00275638 /* CLatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLatch.h; sourceTree = "<group>"; };
 		23D3E9751013ABC9001643FA /* baby.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = baby.cpp; sourceTree = "<group>"; };
 		23D3E9761013ABC9001643FA /* balljack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = balljack.cpp; sourceTree = "<group>"; };
 		23D3E9771013ABC9001643FA /* bear.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bear.cpp; sourceTree = "<group>"; };
@@ -364,6 +367,8 @@
 		20286C2AFDCF999611CA2CEA /* src */ = {
 			isa = PBXGroup;
 			children = (
+				235752061019DFFF00275638 /* CLatch.cpp */,
+				235752071019DFFF00275638 /* CLatch.h */,
 				235751EF1019D0C000275638 /* FindFile.cpp */,
 				23D3EE5910176098001643FA /* CrashHandler.cpp */,
 				23D3EE5A10176098001643FA /* CrashHandler.h */,
@@ -832,6 +837,7 @@
 				23D3EE581017602E001643FA /* Debug.cpp in Sources */,
 				23D3EE5B10176098001643FA /* CrashHandler.cpp in Sources */,
 				235751F01019D0C000275638 /* FindFile.cpp in Sources */,
+				235752081019DFFF00275638 /* CLatch.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
