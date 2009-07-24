@@ -33,11 +33,11 @@ public:
 	void CreateLogfile	(const char *LogName);
 	void WriteTopic		(const char *Topic, int Size);
 	void textOut		(const char *Text);
-	void textOut		(int Color, const char *Text);
-	void textOut		(int Color, bool List, const char *Text);
+	void textOut		(FONTCOLORS Color, const char *Text);
+	void textOut		(FONTCOLORS Color, bool List, const char *Text);
 	void ftextOut		(const char *Text, ...);
-	void ftextOut		(int Color, const char *Text, ...);
-	void ftextOut		(int Color, bool List, const char *Text, ...);
+	void ftextOut		(FONTCOLORS Color, const char *Text, ...);
+	void fltextOut		(FONTCOLORS Color, bool List, const char *Text, ...);
 	void FunctionResult	(const char *Name, bool Result);
 
 private:

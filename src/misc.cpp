@@ -53,7 +53,7 @@ void cleanup(stCloneKeenPlus *CKP)
 {
 	if(CKP->GameData){ delete[] CKP->GameData; CKP->GameData = NULL; }
 
-	g_pLogFile->ftextOut(BLACK,true," Freed %d strings.<br>", freestrings());
+	g_pLogFile->fltextOut(BLACK,true," Freed %d strings.<br>", freestrings());
 
 	JoyDrv_Stop(&(CKP->Joystick));
 	g_pLogFile->textOut(BLACK,true," Joystick driver shut down.<br>");
@@ -77,11 +77,11 @@ void cleanup(stCloneKeenPlus *CKP)
     if (demofile)
     {
     	fclose(demofile);
-    	g_pLogFile->ftextOut(BLACK,true," Demo file closed.<br>");
+    	g_pLogFile->fltextOut(BLACK,true," Demo file closed.<br>");
     }
 
     g_pGraphics->stopGraphics();
-    g_pLogFile->ftextOut(BLACK,true," Graphics driver shut down.<br>");
+    g_pLogFile->fltextOut(BLACK,true," Graphics driver shut down.<br>");
 
     g_pGraphics->freemem();
 

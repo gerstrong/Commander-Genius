@@ -64,7 +64,7 @@ bool CHQBitmap::loadImage(const std::string& pFilename, int wsize, int hsize)
 	}
 	else
 	{
-
+		SDL_GetError();
 	}
 
 	return m_active;

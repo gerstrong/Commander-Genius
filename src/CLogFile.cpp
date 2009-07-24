@@ -72,13 +72,13 @@ void CLogFile::WriteTopic(const char *Topic, int Size)
 
 
 // Now with colors
-void CLogFile::textOut(int Color, const char *Text)
+void CLogFile::textOut(FONTCOLORS Color, const char *Text)
 {
 	textOut(Color, false, Text);
 }
 
 // Now the entire definition (with list and color)
-void CLogFile::textOut(int Color, bool List, const char *Text)
+void CLogFile::textOut(FONTCOLORS Color, bool List, const char *Text)
 {
 	if(List == true)
 		textOut("<li>");
@@ -128,7 +128,7 @@ void CLogFile::ftextOut(const char *Text, ...)
 	textOut(buffer);
 }
 
-void CLogFile::ftextOut(int Color, bool List, const char *Text, ...)
+void CLogFile::fltextOut(FONTCOLORS Color, bool List, const char *Text, ...)
 {
 	char buffer[MAX_BUFFER];
 	va_list pArgList;
@@ -140,7 +140,7 @@ void CLogFile::ftextOut(int Color, bool List, const char *Text, ...)
 	textOut(Color, List, buffer);
 }
 
-void CLogFile::ftextOut(int Color, const char *Text, ...)
+void CLogFile::ftextOut(FONTCOLORS Color, const char *Text, ...)
 {
 	char buffer[MAX_BUFFER];
 	va_list pArgList;

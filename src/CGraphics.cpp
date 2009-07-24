@@ -64,12 +64,12 @@ void CGraphics::freemem(void)
   if (scrollbuffer)
   {
 	  delete[] scrollbuffer; scrollbuffer = NULL;
-     g_pLogFile->ftextOut(BLACK,true," Scrollbuffer memory released to system.<br>");
+     g_pLogFile->fltextOut(BLACK,true," Scrollbuffer memory released to system.<br>");
   }
   if (blitbuffer)
   {
      delete[] blitbuffer; blitbuffer = NULL;
-     g_pLogFile->ftextOut(BLACK,true," Blitbuffer memory released to system.<br>");
+     g_pLogFile->fltextOut(BLACK,true," Blitbuffer memory released to system.<br>");
   }
 }
 
