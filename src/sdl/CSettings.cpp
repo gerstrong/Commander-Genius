@@ -18,10 +18,10 @@ void InitSearchPaths() {
 	// have to set to find the config at some of the default places
 	InitBaseSearchPaths();
 	
-	std::string value;
 	int i = 1;
 	while(true) {
-		if(!ReadString(CONFIGFILENAME, "FileHandling", "SearchPath" + itoa(i,10), value, ""))
+		std::string value;
+		if(!ReadString(CONFIGFILENAME, "FileHandling", "SearchPath" + itoa(i), value, ""))
 			break;
 		
 		AddToFileList(&tSearchPaths, value);
