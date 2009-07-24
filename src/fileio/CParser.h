@@ -25,15 +25,17 @@ public:
 	bool saveParseFile();
 
 	// read the value of the to be seeked keyword and returns it as an int.
-	// If no value was detected, it returns -1;
-	// If something was detected, the file is also rewinded!
-	int getIntValue(const std::string& keyword, const std::string& category);
+	// If no value was detected, it returns def;
+	int getIntValue(const std::string& keyword, const std::string& category, int def = -1);
 
 	// This function saves the value of a keyword. If the value already exists in the file
 	// it will be overwritten.
 	// If something was written the file is also rewinded!
 	void saveIntValue(const std::string& keyword, const std::string& category, int value);
 
+	std::string getValue(const std::string& keyword, const std::string& category, const std::string& def = "");
+	void saveValue(const std::string& keyword, const std::string& category, const std::string& value);
+	
 	bool isOpen() {return m_isOpen;}
 
 private:

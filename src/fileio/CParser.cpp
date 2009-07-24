@@ -79,7 +79,7 @@ bool CParser::saveParseFile() // open, write on the file and close
 // read the value of the to be seeked keyword and returns it as an int.
 // If no value was detected, it returns -1;
 // If something was detected, the file is also rewinded!
-int CParser::getIntValue(const std::string& keyword, const std::string& category)
+std::string CParser::getValue(const std::string& keyword, const std::string& category, const std::string& def)
 {
 	// The getter will search for category and than for keyword. After that, read the value and return it!
 	for(std::list<std::string>::iterator line = m_filebuffer.begin() ; line != m_filebuffer.end() ; ++line )
@@ -95,29 +95,26 @@ int CParser::getIntValue(const std::string& keyword, const std::string& category
 					if((*line)[0] == '[') break;
 
 					if(subStrCaseEqual(*line, keyword + " =", keyword.size() + 2))
-					{
-						int value = from_string<int>(line->substr(keyword.size() + 2));
-						return value;
-					}
+						return line->substr(keyword.size() + 2);
 				}
 			}
 			break;
 		}
 	}
-	return -1;
+	return def;
 }
 
 // This function saves the value of a keyword. If the value already exists in the file
 // it will be overwritten.
 // If something was written the file is also rewinded!
-void CParser::saveIntValue(const std::string& keyword, const std::string& category,int value)
+void CParser::saveValue(const std::string& keyword, const std::string& category, const std::string& value)
 {
 	// Three cases:
 	// 1.- category doesn't exist
 	// 2.- category exists, but keyword not
 	// 3.- category and keyword exist, only the value must be changed
 
-	std::string newline = keyword + " = " + itoa(value);
+	std::string newline = keyword + " = " + value;
 
 	for(std::list<std::string>::iterator line = m_filebuffer.begin() ; line != m_filebuffer.end() ; ++line )
 	{
@@ -159,3 +156,17 @@ void CParser::saveIntValue(const std::string& keyword, const std::string& catego
 }
 
 
+int CParser::getIntValue(const std::string& keyword, const std::string& category, int def) {
+	std::string str = getValue(keyword, category);
+	if(str == "") return def;
+
+	bool fail = false;
+	int v = from_string<int>(str, fail);
+	if(fail) return def;
+
+	return v;
+}
+
+void CParser::saveIntValue(const std::string& keyword, const std::string& category,int value) {
+	saveValue(keyword, category, itoa(value));
+}
