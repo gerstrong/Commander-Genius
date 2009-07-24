@@ -51,14 +51,14 @@ void CPatcher::patchMemory()
 					// Now we really start to process the commands
 					if( strCaseStartsWith(line,"\%patchfile") )
 					{
-						size_t offset = 0;
-						std::string patch_file_name;
 						std::string newbuf = line.substr(strlen("\%patchfile"));
 						TrimSpaces(newbuf);
 						size_t p = newbuf.find(' ');
 						if(p != std::string::npos) {
+							size_t offset = 0;
 							sscanf(newbuf.substr(0,p).c_str(), "%lx", &offset); // Only hexadecimal numbers supported
-							patch_file_name = newbuf.substr(p+1);
+							std::string patch_file_name = newbuf.substr(p+1);
+							TrimSpaces(patch_file_name);
 							patchMemfromFile("data/" + m_datadirectory + "/" + patch_file_name,offset);
 						}						
 					}
