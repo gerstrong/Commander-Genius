@@ -19,6 +19,7 @@
 #include "../sdl/CTimer.h"
 #include "../CGraphics.h"
 #include "../StringUtils.h"
+#include "../FindFile.h"
 
 #define HIGHSCORETABLE_X			1344
 #define HIGHSCORETABLE_Y			32
@@ -374,7 +375,7 @@ char CHighScores::loadHighScoreTable(void)
 	sBuf.append(chBuf);
 	sBuf.append(".dat");
 
-	ifstream ScoreTableFile (sBuf.c_str(), ios::binary);
+	ifstream ScoreTableFile; OpenGameFileR(ScoreTableFile, sBuf, ios::binary);
 
 	if(ScoreTableFile == NULL)
 	{
@@ -407,7 +408,7 @@ char CHighScores::saveHighScoreTable(void)
 	sBuf.append(chBuf);
 	sBuf.append(".dat");
 
-	ofstream ScoreTableFile (sBuf.data(), ios::binary);
+	ofstream ScoreTableFile; OpenGameFileW(ScoreTableFile, sBuf, ios::binary);
 
 	if(ScoreTableFile == NULL)
 	{

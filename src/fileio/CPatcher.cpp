@@ -9,6 +9,7 @@
 #include <dirent.h>
 #include <string.h>
 #include <fstream>
+#include "../FindFile.h"
 
 CPatcher::CPatcher(int episode, int version,unsigned char *data, const std::string& datadir) {
 	m_episode = episode;
@@ -123,7 +124,7 @@ bool CPatcher::loadPatchfile()
 				// The file was found! now read it into the memory!
 
 				char* buf;
-				std::ifstream Patchfile(dp->d_name);
+				std::ifstream Patchfile; OpenGameFileR(Patchfile, dp->d_name);
 
 				while(!Patchfile.eof())
 				{
@@ -163,7 +164,7 @@ void CPatcher::patchMemfromFile(const std::string& patch_file_name, int offset)
 	unsigned char *buf_to_patch;
 	unsigned char byte;
 
-	std::ifstream Patchfile(patch_file_name.c_str(), std::ios::binary);
+	std::ifstream Patchfile; OpenGameFileR(Patchfile, patch_file_name, std::ios::binary);
 
 	if(!Patchfile) return;
 

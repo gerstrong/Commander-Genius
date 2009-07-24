@@ -13,7 +13,7 @@
 #include <fstream>
 #include <vector>
 #include "../StringUtils.h"
-
+#include "../FindFile.h"
 
 using namespace std;
 
@@ -62,7 +62,7 @@ bool CEGAGraphics::loadData()
 		buf = "egahead.ck" + itoa(m_episode);
 	else
 		buf = m_path + "/egahead.ck" + itoa(m_episode);
-	std::ifstream HeadFile(buf.c_str(),ios::binary);
+	std::ifstream HeadFile; OpenGameFileR(HeadFile, buf, ios::binary);
 
 	if(!HeadFile)
 		return false;

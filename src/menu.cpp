@@ -27,6 +27,7 @@
 #include <iostream>
 #include <fstream>
 #include "StringUtils.h"
+#include "FindFile.h"
 
 
 #define SELMOVE_SPD         3
@@ -64,7 +65,7 @@ short loadResourcesforStartMenu(stCloneKeenPlus *pCKP, CGame *Game)
 {
 	std::string line;
 
-	std::ifstream gamescfg("data/games.cfg");
+	std::ifstream gamescfg; OpenGameFileR(gamescfg, "data/games.cfg");
 
     if (gamescfg.is_open())
 	{

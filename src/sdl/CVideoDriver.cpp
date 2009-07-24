@@ -14,6 +14,7 @@
 #include "../scale2x/scalebit.h"
 #include "../CLogFile.h"
 #include "../CGraphics.h"
+#include "../FindFile.h"
 #include <iostream>
 #include <fstream>
 using namespace std;
@@ -102,7 +103,7 @@ void CVideoDriver::initResolutionList()
 	  st_resolution resolution;
 	  char buf[256];
 
-	  ifstream ResolutionFile("resolutions.cfg");
+	ifstream ResolutionFile; OpenGameFileR(ResolutionFile, "resolutions.cfg");
 	  if(!ResolutionFile)
 	  {
 		  g_pLogFile->textOut(PURPLE,"Warning: resolutions.cfg could not be read! Maybe your files weren't extracted correctly!<br>");

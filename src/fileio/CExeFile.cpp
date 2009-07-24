@@ -10,7 +10,7 @@
 #include <iostream>
 #include <fstream>
 #include "../StringUtils.h"
-
+#include "../FindFile.h"
 
 using namespace std;
 
@@ -29,7 +29,7 @@ bool CExeFile::readData()
 {
 	std::string filename = "data/" + m_datadirectory + "keen" + itoa(m_episode) + ".exe";
 
-	std::ifstream File(filename.c_str(),ios::binary);
+	std::ifstream File; OpenGameFileR(File, filename, ios::binary);
 	// TODO: If Exe-file wasn't detected, make the program quit somehow, or it crashes
 
 	if(!File) return false;
