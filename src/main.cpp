@@ -130,13 +130,12 @@ int main(int argc, char *argv[])
 
 	Game->preallocateCKP(&CKP);
 
-	CSettings *Settings;
-	Settings = new CSettings;
+	CSettings Settings;
 
-	if(Settings->loadDrvCfg() != 0) // Always return 0 if no ERROR
+	if(Settings.loadDrvCfg() != 0) // Always return 0 if no ERROR
 	{
 		g_pLogFile->textOut(RED,"First time message: CKP didn't find the driver config file. However, it is going to generate one basing on default configurations.<br>");
-		Settings->saveDrvCfg();
+		Settings.saveDrvCfg();
 	}
 
 	if(readCommandLine(argc, argv, &CKP) != 0)
@@ -151,13 +150,12 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	Settings->loadDefaultGameCfg(CKP.Option);
-	if(Settings->loadGameCfg(CKP.Option) != 0)
+	Settings.loadDefaultGameCfg(CKP.Option);
+	if(Settings.loadGameCfg(CKP.Option) != 0)
 	{
 		g_pLogFile->textOut(PURPLE,"There are no settings! CKP is going to use the default options. You can change them later in the game.<br>");
-		Settings->saveGameCfg(CKP.Option);
+		Settings.saveGameCfg(CKP.Option);
 	}
-	delete Settings; Settings = NULL;
 
 	if(loadResourcesforStartMenu(&CKP, Game) != 0)
 	{
