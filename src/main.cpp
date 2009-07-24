@@ -221,6 +221,8 @@ int main(int argc, char *argv[])
 
 	cleanupResources(&CKP);
 
+	Settings.saveDrvCfg();
+
 	printf("Thank you very much for playing this wonderful game!");
 
 	return 0;

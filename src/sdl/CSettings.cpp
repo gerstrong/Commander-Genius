@@ -18,13 +18,11 @@ std::string CONFIGFILENAME = "genius.cfg";
 
 
 CSettings::CSettings() {
-	// TODO Auto-generated constructor stub
-
+	notes << "Reading game options from " << GetFullFileName(CONFIGFILENAME) << endl;
+	notes << "Will write game options to " << GetWriteFullFileName(CONFIGFILENAME, true) << endl;
 }
 
-CSettings::~CSettings() {
-	// TODO Auto-generated destructor stub
-}
+CSettings::~CSettings() {}
 
 
 short CSettings::saveDrvCfg(void)
@@ -32,7 +30,14 @@ short CSettings::saveDrvCfg(void)
 	short retval = 0;
 
 	CParser Parser;
+	Parser.loadParseFile();
 
+	{
+		int i = 1;
+		for(searchpathlist::const_iterator p = tSearchPaths.begin(); p != tSearchPaths.end(); p++, i++)
+			Parser.saveValue("SearchPath" + itoa(i), "FileHandling", *p);
+	}
+	
 	Parser.saveIntValue("bpp","Video",g_pVideoDriver->getDepth());
 	Parser.saveIntValue("frameskip","Video",g_pVideoDriver->getFrameskip());
 
@@ -157,16 +162,13 @@ short CSettings::loadGameCfg(stOption *Option)
 
 void CSettings::saveGameCfg(stOption *Option)
 {
-	int i;
 	CParser Parser;
+	Parser.loadParseFile();
+	
+	for (int i = 0; i < NUM_OPTIONS; i++)
+		Parser.saveIntValue(Option[i].name,"Game",Option[i].value);
 
-	if(Parser.loadParseFile())
-	{
-		for (i = 0; i < NUM_OPTIONS; i++)
-			Parser.saveIntValue(Option[i].name,"Game",Option[i].value);
-
-		Parser.saveParseFile();
-	}
+	Parser.saveParseFile();
 
 	return;
 }

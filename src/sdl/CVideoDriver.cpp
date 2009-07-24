@@ -275,15 +275,14 @@ bool CVideoDriver::applyMode(void)
 	// And Display can be setup.
 	screen = SDL_SetVideoMode(m_Resolution.width,m_Resolution.height,m_Resolution.depth,Mode);
 
-	m_Resolution.depth = screen->format->BitsPerPixel;
-
-
 	if( !screen )
 	{
 		g_pLogFile->textOut(RED,"VidDrv_Start(): Couldn't create a SDL surface: %s<br>", SDL_GetError());
 		return false;
 	}
 
+	m_Resolution.depth = screen->format->BitsPerPixel;
+	
 	if(!Fullscreen)
 		SDL_ShowCursor(SDL_ENABLE);
 	else

@@ -65,7 +65,7 @@ bool CParser::saveParseFile() // open, write on the file and close
 
 	if((fp=OpenGameFile(m_configfile.c_str(),"wt")))
 	{
-		for(std::list<std::string>::iterator i=m_filebuffer.begin() ; i != m_filebuffer.end() ; ++i )
+		for(std::list<std::string>::iterator i = m_filebuffer.begin() ; i != m_filebuffer.end() ; ++i )
 			fprintf(fp,"%s\n",i->c_str());
 
 		fclose(fp);
@@ -97,8 +97,8 @@ std::string CParser::getValue(const std::string& keyword, const std::string& cat
 					if(subStrCaseEqual(*line, keyword + " =", keyword.size() + 2))
 						return line->substr(keyword.size() + 2);
 				}
+				break;
 			}
-			break;
 		}
 	}
 	return def;
@@ -163,7 +163,7 @@ int CParser::getIntValue(const std::string& keyword, const std::string& category
 	bool fail = false;
 	int v = from_string<int>(str, fail);
 	if(fail) return def;
-
+	
 	return v;
 }
 
