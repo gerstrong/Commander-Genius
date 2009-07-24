@@ -13,6 +13,7 @@
 		235742621019BE4900275638 /* Ogg.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 235742401019BD3E00275638 /* Ogg.framework */; };
 		235742631019BE4900275638 /* Vorbis.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 235742411019BD3E00275638 /* Vorbis.framework */; };
 		235742641019BE4D00275638 /* SDL.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 23D3EA691013AC7B001643FA /* SDL.framework */; };
+		235751F01019D0C000275638 /* FindFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 235751EF1019D0C000275638 /* FindFile.cpp */; };
 		23D3EA0D1013ABCA001643FA /* baby.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9751013ABC9001643FA /* baby.cpp */; };
 		23D3EA0E1013ABCA001643FA /* balljack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9761013ABC9001643FA /* balljack.cpp */; };
 		23D3EA0F1013ABCA001643FA /* bear.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9771013ABC9001643FA /* bear.cpp */; };
@@ -43,7 +44,6 @@
 		23D3EA281013ABCA001643FA /* CCGenius.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9921013ABCA001643FA /* CCGenius.cpp */; };
 		23D3EA291013ABCA001643FA /* CGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9941013ABCA001643FA /* CGame.cpp */; };
 		23D3EA2A1013ABCA001643FA /* CGraphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9961013ABCA001643FA /* CGraphics.cpp */; };
-		23D3EA2B1013ABCA001643FA /* CLatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9981013ABCA001643FA /* CLatch.cpp */; };
 		23D3EA2C1013ABCA001643FA /* CLogFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E99A1013ABCA001643FA /* CLogFile.cpp */; };
 		23D3EA2D1013ABCA001643FA /* eseq_ep1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E99E1013ABCA001643FA /* eseq_ep1.cpp */; };
 		23D3EA2E1013ABCA001643FA /* eseq_ep2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E99F1013ABCA001643FA /* eseq_ep2.cpp */; };
@@ -131,6 +131,7 @@
 		20286C33FDCF999611CA2CEA /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 		235742401019BD3E00275638 /* Ogg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Ogg.framework; sourceTree = "<group>"; };
 		235742411019BD3E00275638 /* Vorbis.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Vorbis.framework; sourceTree = "<group>"; };
+		235751EF1019D0C000275638 /* FindFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FindFile.cpp; sourceTree = "<group>"; };
 		23D3E9751013ABC9001643FA /* baby.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = baby.cpp; sourceTree = "<group>"; };
 		23D3E9761013ABC9001643FA /* balljack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = balljack.cpp; sourceTree = "<group>"; };
 		23D3E9771013ABC9001643FA /* bear.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bear.cpp; sourceTree = "<group>"; };
@@ -166,8 +167,6 @@
 		23D3E9951013ABCA001643FA /* CGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CGame.h; path = ../../src/CGame.h; sourceTree = SOURCE_ROOT; };
 		23D3E9961013ABCA001643FA /* CGraphics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CGraphics.cpp; path = ../../src/CGraphics.cpp; sourceTree = SOURCE_ROOT; };
 		23D3E9971013ABCA001643FA /* CGraphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CGraphics.h; path = ../../src/CGraphics.h; sourceTree = SOURCE_ROOT; };
-		23D3E9981013ABCA001643FA /* CLatch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CLatch.cpp; path = ../../src/CLatch.cpp; sourceTree = SOURCE_ROOT; };
-		23D3E9991013ABCA001643FA /* CLatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CLatch.h; path = ../../src/CLatch.h; sourceTree = SOURCE_ROOT; };
 		23D3E99A1013ABCA001643FA /* CLogFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CLogFile.cpp; path = ../../src/CLogFile.cpp; sourceTree = SOURCE_ROOT; };
 		23D3E99B1013ABCA001643FA /* CLogFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CLogFile.h; path = ../../src/CLogFile.h; sourceTree = SOURCE_ROOT; };
 		23D3E99C1013ABCA001643FA /* CSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CSingleton.h; path = ../../src/CSingleton.h; sourceTree = SOURCE_ROOT; };
@@ -365,6 +364,7 @@
 		20286C2AFDCF999611CA2CEA /* src */ = {
 			isa = PBXGroup;
 			children = (
+				235751EF1019D0C000275638 /* FindFile.cpp */,
 				23D3EE5910176098001643FA /* CrashHandler.cpp */,
 				23D3EE5A10176098001643FA /* CrashHandler.h */,
 				23D3EE571017602E001643FA /* Debug.cpp */,
@@ -396,8 +396,6 @@
 				23D3E9951013ABCA001643FA /* CGame.h */,
 				23D3E9961013ABCA001643FA /* CGraphics.cpp */,
 				23D3E9971013ABCA001643FA /* CGraphics.h */,
-				23D3E9981013ABCA001643FA /* CLatch.cpp */,
-				23D3E9991013ABCA001643FA /* CLatch.h */,
 				23D3E99A1013ABCA001643FA /* CLogFile.cpp */,
 				23D3E99B1013ABCA001643FA /* CLogFile.h */,
 				23D3E99C1013ABCA001643FA /* CSingleton.h */,
@@ -775,7 +773,6 @@
 				23D3EA281013ABCA001643FA /* CCGenius.cpp in Sources */,
 				23D3EA291013ABCA001643FA /* CGame.cpp in Sources */,
 				23D3EA2A1013ABCA001643FA /* CGraphics.cpp in Sources */,
-				23D3EA2B1013ABCA001643FA /* CLatch.cpp in Sources */,
 				23D3EA2C1013ABCA001643FA /* CLogFile.cpp in Sources */,
 				23D3EA2D1013ABCA001643FA /* eseq_ep1.cpp in Sources */,
 				23D3EA2E1013ABCA001643FA /* eseq_ep2.cpp in Sources */,
@@ -834,6 +831,7 @@
 				23D3EE4310175FC9001643FA /* StringBuf.cpp in Sources */,
 				23D3EE581017602E001643FA /* Debug.cpp in Sources */,
 				23D3EE5B10176098001643FA /* CrashHandler.cpp in Sources */,
+				235751F01019D0C000275638 /* FindFile.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
