@@ -8,6 +8,8 @@
 #ifndef CSETTINGS_H_
 #define CSETTINGS_H_
 
+extern std::string CONFIGFILENAME;
+
 enum e_OptionKeywords
 { OPT_FULLYAUTOMATIC, OPT_SUPERPOGO,
   OPT_ALLOWPKING, OPT_CHEATS,

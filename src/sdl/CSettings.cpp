@@ -14,35 +14,7 @@
 #include "../ConfigHandler.h"
 
 
-void InitSearchPaths() {
-	// have to set to find the config at some of the default places
-	InitBaseSearchPaths();
-	
-	int i = 1;
-	while(true) {
-		std::string value;
-		if(!ReadString(CONFIGFILENAME, "FileHandling", "SearchPath" + itoa(i), value, ""))
-			break;
-		
-		AddToFileList(&tSearchPaths, value);
-		i++;
-	}
-	
-	// add the basesearchpaths to the searchpathlist as they should be saved in the end
-	for(searchpathlist::const_iterator p1 = basesearchpaths.begin(); p1 != basesearchpaths.end(); i++,p1++)  {
-		AddToFileList(&tSearchPaths, *p1);
-	}
-	
-	// print the searchpaths, this may be very usefull for the user
-	notes << "I have now the following searchpaths (in this order):\n";
-	for(searchpathlist::const_iterator p2 = tSearchPaths.begin(); p2 != tSearchPaths.end(); p2++) {
-		std::string path = *p2;
-		ReplaceFileVariables(path);
-		notes << "  " << path << "\n";
-	}
-	notes << " And that's all." << endl;
-}
-
+std::string CONFIGFILENAME = "genius.cfg";
 
 
 CSettings::CSettings() {
@@ -92,8 +64,8 @@ short CSettings::saveDrvCfg(void)
 	return retval;
 }
 
-short CSettings::loadDrvCfg(void)
-{
+short CSettings::loadDrvCfg()
+{	
 	short retval = 0;
 	CParser Parser;
 

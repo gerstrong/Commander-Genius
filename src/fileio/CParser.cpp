@@ -8,13 +8,13 @@
 #include "CParser.h"
 #include "../CLogFile.h"
 #include "../StringUtils.h"
+#include "../sdl/CSettings.h"
 #include <cstdio>
 #include <cstdlib>
 
-std::string CONFIGFILENAME = "genius.cfg";
-
 
 CParser::CParser() {
+	m_configfile = CONFIGFILENAME;
 	m_isOpen = false;
 }
 
@@ -41,7 +41,7 @@ bool CParser::loadParseFile() // Open, read the list and close the file
 {
 	FILE *fp;
 
-	if((fp=fopen(CONFIGFILENAME.c_str(),"rt")))
+	if((fp=fopen(m_configfile.c_str(),"rt")))
 	{
 		while(!feof(fp))
 		{
@@ -62,7 +62,7 @@ bool CParser::saveParseFile() // open, write on the file and close
 {
 	FILE *fp;
 
-	if((fp=fopen(CONFIGFILENAME.c_str(),"wt")))
+	if((fp=fopen(m_configfile.c_str(),"wt")))
 	{
 		for(std::list<std::string>::iterator i=m_filebuffer.begin() ; i != m_filebuffer.end() ; ++i )
 			fprintf(fp,"%s\n",i->c_str());

@@ -47,6 +47,8 @@
 #include "CGame.h"
 #include "CGraphics.h"
 #include "sdl/CSettings.h"
+#include "FindFile.h"
+
 
 int IntroCanceled;
 int NessieObjectHandle;
@@ -56,7 +58,7 @@ int DemoSprite;
 int framebyframe;
 int fps=0, curfps=0;
 
-stOption *options;
+stOption *options = NULL;
 
 
 unsigned int demo_RLERunLen;
@@ -66,10 +68,10 @@ unsigned int demo_data_index;
 char QuitState = NO_QUIT;
 
 stString strings[MAX_STRINGS+1];
-int numStrings;
+int numStrings = 0;
 
 int demomode;
-FILE *demofile;
+FILE *demofile = NULL;
 
 char ScreenIsScrolling;
 int gunfiretimer, gunfirefreq;
@@ -94,9 +96,9 @@ stMap map;
 unsigned int AnimTileInUse[ATILEINUSE_SIZEX][ATILEINUSE_SIZEY];
 stTile tiles[MAX_TILES+1];
 int numtiles;
-int **TileProperty; // This version will replace the old stTile Structure and save memory
+int **TileProperty = NULL; // This version will replace the old stTile Structure and save memory
 unsigned char tiledata[MAX_TILES+1][16][16];
-stSprite *sprites;
+stSprite *sprites = NULL;
 stBitmap bitmaps[MAX_BITMAPS+1];
 stObject objects[MAX_OBJECTS+1];
 char font[MAX_FONT+1][8][8];
@@ -117,13 +119,24 @@ const char *why_term_ptr = "No reason given.";
 
 int main(int argc, char *argv[])
 {
+	banner(); // Intro on the text-console.
 
+	if(argc >= 1) {
+		size_t slashpos = findLastPathSep(binary_dir);
+		if(slashpos != std::string::npos)  {
+			binary_dir.erase(slashpos);
+			binary_dir = SystemNativeToUtf8(binary_dir);
+		} else
+			binary_dir = ".";		
+	} else
+		binary_dir = ".";
+	
+	InitSearchPaths();
+	
 	stCloneKeenPlus CKP; // This is the future main structure of CloneKeen. It will be one variable which controls all
 						 // the program instead of having global variables around somewhere.
 
 	g_pLogFile->CreateLogfile("CGLog.html");
-
-	banner(); // Intro on the text-console.
 
 	CGame Game;
 	Game.preallocateCKP(&CKP);

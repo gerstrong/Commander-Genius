@@ -13,8 +13,6 @@
 #include <string>
 #include <cstdio>
 
-extern std::string CONFIGFILENAME;
-
 class CParser {
 public:
 	CParser();
@@ -39,6 +37,7 @@ public:
 	bool isOpen() {return m_isOpen;}
 
 private:
+	std::string m_configfile;
 	bool m_isOpen;
 
 	std::list<std::string> m_filebuffer;

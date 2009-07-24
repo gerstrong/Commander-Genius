@@ -163,6 +163,7 @@ inline bool GetExactFileName(const std::string& abs_searchname, std::string& fil
 
 extern searchpathlist	basesearchpaths;
 void	InitBaseSearchPaths();
+void	InitSearchPaths();
 
 // this does a search on all searchpaths for the file and returns the first one found
 // if none was found, NULL will be returned
