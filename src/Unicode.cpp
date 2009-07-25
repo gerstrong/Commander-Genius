@@ -1056,6 +1056,11 @@ UnicodeString Utf8ToUnicode(const std::string& str)
 
 #include <windows.h>
 
+#ifndef WC_NO_BEST_FIT_CHARS
+#  define WC_NO_BEST_FIT_CHARS 0x00000400
+#endif
+
+
 //////////////////////////
 // Convert a UTF-8 string to system native encoding
 std::string Utf8ToSystemNative(const std::string& utf8str)

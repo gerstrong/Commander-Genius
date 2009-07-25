@@ -156,8 +156,8 @@ void *ReadGameStateForReport(char *buffer, size_t bufsize)
 void *ReadGameInfoForReport(char *buffer, size_t bufsize)
 {
 	memset(buffer, 0, bufsize);
-	if (!tLXOptions || !tLX)
-		return buffer;
+	/*if (!tLXOptions || !tLX)
+		return buffer;*/
 	char tmp[32];
 	/*__try  {
 
@@ -278,6 +278,7 @@ void *ReadGameInfoForReport(char *buffer, size_t bufsize)
 	return buffer;
 }
 
+/*
 // This function also used in CrashHandler.cpp
 void OlxWriteCoreDump_Win32(const char* fileName, PEXCEPTION_POINTERS pExInfo )
 {
@@ -331,10 +332,11 @@ void OlxWriteCoreDump_Win32(const char* fileName, PEXCEPTION_POINTERS pExInfo )
 	// Close the file
 	CloseHandle(hFile);
 }
+*/
 
 void OlxWriteCoreDump(const char* fileName)
 {
-	OlxWriteCoreDump_Win32(fileName, NULL);
+	//OlxWriteCoreDump_Win32(fileName, NULL);
 }
 
 #else
@@ -441,7 +443,7 @@ void DumpCallstack(void (*PrintOutFct) (const std::string&)) {
 //#include "StackWalker.h"  // Call Luke Stackwalker for help
 
 typedef void (*PrintOutFct) (const std::string&);
-
+/*
 // Override the default stackwalker with our own print functions
 class PrintStackWalker : public StackWalker  {
 private:
@@ -474,7 +476,7 @@ void DumpCallstack(void (*LineOutFct) (const std::string&))
 {
 	PrintStackWalker sw(LineOutFct);
 	sw.ShowCallstack();
-}
+}*/
 
 #else
 
