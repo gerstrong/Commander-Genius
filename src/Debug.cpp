@@ -121,25 +121,14 @@ void RaiseDebugger() {
 
 #ifdef WIN32
 
-#include "AuxLib.h" // for Windows.h
-
-#include <DbgHelp.h>
-#include <ShlObj.h>
-
-#include "LieroX.h"
-#include "CClient.h"
-#include "CServer.h"
-#include "DedicatedControl.h"
 #include "StringUtils.h"
-#include "ConversationLogger.h"
-#include "CGameMode.h"
 
 #define itoa _itoa
 
 void *ReadGameStateForReport(char *buffer, size_t bufsize)
 {
 	memset(buffer, 0, bufsize);
-	__try {
+	/*__try {
 		if (cClient)  {
 			strncat(buffer, "Game state:\n", bufsize);
 			if (cClient->getStatus() == NET_CONNECTED)  {
@@ -159,7 +148,7 @@ void *ReadGameStateForReport(char *buffer, size_t bufsize)
 		}
 		buffer[bufsize - 1] = '\0';
 	} __except (EXCEPTION_EXECUTE_HANDLER)
-	{ return buffer; }
+	{ return buffer; }*/
 
 	return buffer;
 }
@@ -170,7 +159,7 @@ void *ReadGameInfoForReport(char *buffer, size_t bufsize)
 	if (!tLXOptions || !tLX)
 		return buffer;
 	char tmp[32];
-	__try  {
+	/*__try  {
 
 		// Game type
 		strncat(buffer, "iGameType = ", bufsize);
@@ -285,7 +274,7 @@ void *ReadGameInfoForReport(char *buffer, size_t bufsize)
 		buffer[bufsize - 1] = '\0';
 	} __except (EXCEPTION_EXECUTE_HANDLER) {
 		return buffer;
-	}
+	}*/
 	return buffer;
 }
 
@@ -343,7 +332,7 @@ void OlxWriteCoreDump_Win32(const char* fileName, PEXCEPTION_POINTERS pExInfo )
 	CloseHandle(hFile);
 }
 
-void OlxWriteCoreDump(const char* fileName) 
+void OlxWriteCoreDump(const char* fileName)
 {
 	OlxWriteCoreDump_Win32(fileName, NULL);
 }
@@ -449,7 +438,7 @@ void DumpCallstack(void (*PrintOutFct) (const std::string&)) {
 
 #elif defined(WIN32)
 
-#include "StackWalker.h"  // Call Luke Stackwalker for help
+//#include "StackWalker.h"  // Call Luke Stackwalker for help
 
 typedef void (*PrintOutFct) (const std::string&);
 
@@ -465,7 +454,7 @@ public:
 
 	}
 
-	void OnOutput(LPCSTR szText)  
+	void OnOutput(LPCSTR szText)
 	{
 		if (m_print == NULL)
 			printf(szText);
@@ -475,14 +464,14 @@ public:
 	}
 };
 
-void DumpCallstackPrintf(void* callpnt) 
+void DumpCallstackPrintf(void* callpnt)
 {
 	PrintStackWalker sw;
 	sw.ShowCallstack();
-	
+
 }
-void DumpCallstack(void (*LineOutFct) (const std::string&)) 
-{  
+void DumpCallstack(void (*LineOutFct) (const std::string&))
+{
 	PrintStackWalker sw(LineOutFct);
 	sw.ShowCallstack();
 }
