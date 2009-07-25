@@ -465,14 +465,14 @@ public:
 		StackWalker::OnOutput(szText);
 	}
 };
-
+*/
 void DumpCallstackPrintf(void* callpnt)
 {
-	PrintStackWalker sw;
-	sw.ShowCallstack();
+	/*PrintStackWalker sw;
+	sw.ShowCallstack();*/
 
 }
-void DumpCallstack(void (*LineOutFct) (const std::string&))
+/*void DumpCallstack(void (*LineOutFct) (const std::string&))
 {
 	PrintStackWalker sw(LineOutFct);
 	sw.ShowCallstack();
@@ -562,6 +562,7 @@ static bool logger_output(Logger& log, const std::string& buf) {
 	}
 	if(Logger_Verbosity >= log.minCallstackVerb) {
 		DumpCallstackPrintf();
+		// TODO: Check wether that call with NULL is correct
 	}
 	return ret;
 }
