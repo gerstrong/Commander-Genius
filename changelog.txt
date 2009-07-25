@@ -1,5 +1,99 @@
-Commander Genius v0.2.9.6 Beta (CloneKeenPlus):
------------------------------------------------
+Commander Genius Pre-Release v0.3 (CloneKeenPlus):
+--------------------------------------------------
+
+25-07-2009
+Changes by Albert:
+- Implementation of Searchpath
+- Crash fixes
+- Improved memory managment of strings. No more chars
+- HTML code is printed to the console
+
+Changes by Gerstrong:
+- changed pogo physics a bit (Ceilick)
+- improved Patch Class for mods
+- changed physics of Vorticon Elite. Also has a new filenames (Tulip)
+- reduced some flags in some functions which are obsolete
+- implemented reset controls (Iv4n)
+
+18-07-2009
+- Dynamic loading of the EXE-File and special class for its manipulation. 
+  (including UNLZEXE and version retrieval)
+  This also improves the memory management in Story and Sounds extraction
+- Added basic support of pat-files. Only %patchfile entries are detected for now.
+
+17-07-2009
+- Tiles are now loaded once when the game starts, instead in every level
+- Implemented a class which is able to read strings out of exe-files
+  of the game. Sorry, but It still doesn't work and is disabled.
+  So no effects for now.
+- For Windows users: The Package should be much smaller now.
+
+16-07-2009
+- Improved Mod Support in reading tiles and bitmaps (Tulip)
+- Improved intro screen. More accurate to the original game now.
+
+15-07-2009
+- Improved Pogo physics (Ceilick)
+- Collision was broken. Fixed (Ceilick)
+- wrong version bug fixed (Tulip)
+- minor issues
+
+12-07-2009
+- Improved latch and spritefile decoder 
+- Improved physics on ice (thanks to Tulip)
+- Removed some bugs with Mortimer McMire (Ep3)
+
+11-07-2009
+- Fixed another Oggfile-leak and some crashes
+- Fixed the dialog problem when using Ship in Ep3
+
+10-07-2009
+- Improved Pogo behaviour and switch toggling (Tulip)
+- Level 12 Ep2 at last playable. Tile are correctly changed now
+- Animations of static image in Episode 2 works again!
+- Score table (Cities saved) was incorrect. Fixed
+- Improve performance of graphic elements (Especially HQBitmap)
+- Yorp and Garg Statue (Yes, again!)
+- Mounting Nessie works again!
+- Improved Keystacking feature
+
+09-07-2009
+- Added a more intelligent resolution system basing on 
+  resolutions.cfg, so anyone can add exotic resolutions
+- No cheating Pogo activation bug resolved
+- No more upper-case/lower-case Problems under Linux!
+  Automatic renaming where needed
+
+08-07-2009
+- Added Switch features for episode 1 and 3 (Mods need that) (Tulip)
+- Reduced a bit of source code.
+- Added 3 new resolution for wide-screeners
+- improved the resolution system.
+
+06-07-2009
+- Suggestion of the "Done" signs in "Level replayability" accepted (DaVince)
+
+04-07-2009
+- fixed some other bugs, especially difficulty bugs
+- fixed crash under windows, while choosing a another game (Tulip and others)
+- Intro can be skipped with any key again.
+- Improved the sound classes a bit (Less code)
+- Shooting through thin walls isn't possible anymore
+- improved the jump physics a bit
+- Enemy AI Improved, vortimom walks now faster (Tulip)
+- Replayability has been added!
+
+27-06-2009
+- Fixed a big memory leak in HQP Music
+- Fixed an item bug in level12 Episode 2. That level seems to be broken
+  in some versions. It wasn't playable. Now it is...
+ 
+26-06-2009
+- Fixed minor bugs (physics mainly) (Tulip)
+
+24-06-2009
+- Fixed story bugs (allocations) (Iv4n)
+- Pulsing choose enabled in most of the menus (Iv4n)
 
 21-06-2009
 - Crash of scale4x and hi-resolutions has been fixed! (Iv4n)

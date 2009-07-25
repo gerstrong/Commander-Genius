@@ -7,9 +7,8 @@ until 0.4:
 - New Games Menu. Should run without the need of an episode!
 - Improve the logic of Keen.exe reading for a better mod compatibility
 - Implement the patch reading of pat files.
-- Implement Audio Control
+- Implement a better Audio Control. Volume, mute, etc.
 - improve the physics using floats
-- User folder detection and save the files there!
 - Ubuntu debs
 - Commander Keen 4-6
 
