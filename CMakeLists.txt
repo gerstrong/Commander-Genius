@@ -186,7 +186,7 @@ ELSE(WIN32)
 	ENDIF(SDL)
 
 	IF(OGG)
-		TARGET_LINK_LIBRARIES(commandergenius ogg vorbis)
+		TARGET_LINK_LIBRARIES(commandergenius ogg vorbis vorbisfile)
 	ENDIF(OGG)
 
 	IF (STLPORT)
