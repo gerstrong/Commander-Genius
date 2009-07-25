@@ -109,6 +109,7 @@
 		2357564F101A5F8F00275638 /* Vorbis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564D101A5F8F00275638 /* Vorbis.framework */; };
 		23575696101A6BE600275638 /* Ogg.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564C101A5F8F00275638 /* Ogg.framework */; };
 		23575697101A6BE600275638 /* Vorbis.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564D101A5F8F00275638 /* Vorbis.framework */; };
+		235756C2101B766800275638 /* Unicode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 235756C1101B766800275638 /* Unicode.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -140,6 +141,7 @@
 		2357564C101A5F8F00275638 /* Ogg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Ogg.framework; sourceTree = "<group>"; };
 		2357564D101A5F8F00275638 /* Vorbis.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Vorbis.framework; sourceTree = "<group>"; };
 		23575688101A6AE600275638 /* Commander Genius.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Commander Genius.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		235756C1101B766800275638 /* Unicode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Unicode.cpp; sourceTree = "<group>"; };
 		23D3E9751013ABC9001643FA /* baby.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = baby.cpp; sourceTree = "<group>"; };
 		23D3E9761013ABC9001643FA /* balljack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = balljack.cpp; sourceTree = "<group>"; };
 		23D3E9771013ABC9001643FA /* bear.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bear.cpp; sourceTree = "<group>"; };
@@ -371,6 +373,7 @@
 		20286C2AFDCF999611CA2CEA /* src */ = {
 			isa = PBXGroup;
 			children = (
+				235756C1101B766800275638 /* Unicode.cpp */,
 				235752D51019F83800275638 /* ConfigHandler.cpp */,
 				235752D61019F83800275638 /* ConfigHandler.h */,
 				235752061019DFFF00275638 /* CLatch.cpp */,
@@ -846,6 +849,7 @@
 				2357562D101A5E5900275638 /* FindFile.cpp in Sources */,
 				2357562E101A5E5900275638 /* CLatch.cpp in Sources */,
 				2357562F101A5E5900275638 /* ConfigHandler.cpp in Sources */,
+				235756C2101B766800275638 /* Unicode.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
