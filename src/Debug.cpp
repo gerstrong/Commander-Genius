@@ -14,7 +14,7 @@
 
 #include <time.h>
 
-#ifdef WIN32__
+#ifdef WIN32
 
 void RaiseDebugger() {
 #ifdef DEBUG
@@ -119,7 +119,7 @@ void RaiseDebugger() {
 #endif
 
 
-#ifdef WIN32__
+#ifdef WIN32
 
 #include "AuxLib.h" // for Windows.h
 
@@ -447,7 +447,7 @@ void DumpCallstack(void (*PrintOutFct) (const std::string&)) {
 	free(strs);
 }
 
-#elif defined(WIN32__)
+#elif defined(WIN32)
 
 #include "StackWalker.h"  // Call Luke Stackwalker for help
 
