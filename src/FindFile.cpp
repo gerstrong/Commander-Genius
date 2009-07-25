@@ -507,6 +507,7 @@ size_t FileSize(const std::string& path)
 	return size;
 }
 
+#define uchar unsigned char
 // Checks if the given path is absolute
 bool IsAbsolutePath(const std::string& path)
 {

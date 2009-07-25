@@ -3,8 +3,6 @@ char spawn_object(int x, int y, int otype);
 
 unsigned int getmaptileat(unsigned int x, unsigned int y);
 
-uint rnd(void);
-
 void vortelite_ai(int o);
 void vortelite_initiatejump(int o);
 

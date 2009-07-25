@@ -1102,15 +1102,6 @@ int dlgX,dlgY,dlgW,dlgH;
   } while(1);
 }
 
-// a random number generator
-ulong random_seed;
-void srnd(ulong newseed) { random_seed = newseed; }
-uint rnd(void)
-{
-  random_seed = random_seed * 1103515245 + 12345;
-  return (uint)(random_seed / 65536) % 32768;
-}
-
 int endsequence(stCloneKeenPlus *pCKP)
 {
 

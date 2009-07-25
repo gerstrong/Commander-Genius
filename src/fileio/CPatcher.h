@@ -17,7 +17,7 @@ public:
 	virtual ~CPatcher();
 
 	void patchMemory();
-	void patchMemfromFile(const std::string& patch_file_name, int offset);
+	void patchMemfromFile(const std::string& patch_file_name, long offset);
 
 private:
 

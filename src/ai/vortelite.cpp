@@ -111,10 +111,10 @@ reprocess: ;
 		{
 			if (objects[o].ai.vortelite.timesincefire > VORTELITE_MIN_TIME_BETWEEN_FIRE)
 			{
-			   if (rnd()%VORTELITE_FIRE_PROB == (VORTELITE_FIRE_PROB/2))
+			   if (rand()%VORTELITE_FIRE_PROB == (VORTELITE_FIRE_PROB/2))
 			   {  // let's fire
 				  // usually shoot toward keen
-				  if (rnd()%5 != 0)
+				  if (rand()%5 != 0)
 				  {
 					if (objects[o].x < player[primaryplayer].x)
 					{
@@ -295,7 +295,7 @@ void vortelite_initiatejump(int o)
            objects[o].ai.vortelite.frame = 0;
            objects[o].ai.vortelite.animtimer = 0;
            objects[o].ai.vortelite.inertiay = \
-             -((rnd()%(VORTELITE_MAX_JUMP_HEIGHT-VORTELITE_MIN_JUMP_HEIGHT))+VORTELITE_MIN_JUMP_HEIGHT);
+             -((rand()%(VORTELITE_MAX_JUMP_HEIGHT-VORTELITE_MIN_JUMP_HEIGHT))+VORTELITE_MIN_JUMP_HEIGHT);
 
            if (objects[o].ai.vortelite.movedir==RIGHT)
            {

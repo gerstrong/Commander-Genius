@@ -55,7 +55,7 @@ void CPatcher::patchMemory()
 						TrimSpaces(newbuf);
 						size_t p = newbuf.find(' ');
 						if(p != std::string::npos) {
-							size_t offset = 0;
+							long offset = 0;
 							sscanf(newbuf.substr(0,p).c_str(), "%lx", &offset); // Only hexadecimal numbers supported
 							std::string patch_file_name = newbuf.substr(p+1);
 							TrimSpaces(patch_file_name);
@@ -125,7 +125,7 @@ bool CPatcher::loadPatchfile()
 	return true;
 }
 
-void CPatcher::patchMemfromFile(const std::string& patch_file_name, int offset)
+void CPatcher::patchMemfromFile(const std::string& patch_file_name, long offset)
 {
 	unsigned char *buf_to_patch;
 	unsigned char byte;

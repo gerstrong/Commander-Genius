@@ -14,7 +14,7 @@
 
 #include <time.h>
 
-#ifdef WIN32
+#ifdef WIN32__
 
 void RaiseDebugger() {
 #ifdef DEBUG
@@ -119,7 +119,7 @@ void RaiseDebugger() {
 #endif
 
 
-#ifdef WIN32
+#ifdef WIN32__
 
 #include "AuxLib.h" // for Windows.h
 
@@ -355,7 +355,7 @@ void OlxWriteCoreDump(const char* fileName)
 #endif
 #include <unistd.h>
 #include <sys/types.h>
-#include <sys/wait.h>
+//#include <sys/wait.h>
 #include <cstring>
 #include <cstdio>
 
@@ -373,7 +373,7 @@ static void GdbWriteCoreDump(const char* fname) {
 	if(p) {
 		fprintf(p, "%s", gdbparam);
 		fflush(p);
-		int status = 0; wait(&status);
+		//int status = 0; wait(&status);
 		pclose(p);
 	}
 }
@@ -447,7 +447,7 @@ void DumpCallstack(void (*PrintOutFct) (const std::string&)) {
 	free(strs);
 }
 
-#elif defined(WIN32)
+#elif defined(WIN32__)
 
 #include "StackWalker.h"  // Call Luke Stackwalker for help
 
@@ -489,7 +489,7 @@ void DumpCallstack(void (*LineOutFct) (const std::string&))
 
 #else
 
-#warning No DumpCallstack implementation for this arch/sys
+//#warning No DumpCallstack implementation for this arch/sys
 
 void DumpCallstackPrintf(void* callpnt) {
 	printf("DumpCallstackPrintf not implemented\n");
