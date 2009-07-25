@@ -75,7 +75,7 @@ void gameloop(stCloneKeenPlus *pCKP)
   {
      for(i=0;i<MAX_PLAYERS;i++)
      {
-       if (player[i].isPlaying) gamepdo_SelectFrame(i, pCKP);
+       if (player[i].isPlaying) gamepdo_SelectFrame(i);
      }
 
      do
@@ -415,7 +415,7 @@ int mpx,mpy,t;
    else if (TileProperty[t][BEHAVIOR] == 1)
    //else if (tiles[t].lethal)
    {  // whoah, this "goodie" isn't so good...
-      killplayer(theplayer, pCKP);
+      killplayer(theplayer);
       return;
    }
 
@@ -491,7 +491,7 @@ unsigned int i;
   {
     objdefsprites[OBJ_WALKER] = OBJ_WALKER_DEFSPRITE;
     objdefsprites[OBJ_TANKEP2] = OBJ_TANKEP2_DEFSPRITE;
-    objdefsprites[OBJ_BEAR] = OBJ_BEAR_DEFSPRITE;
+    objdefsprites[OBJ_VORTELITE] = OBJ_VORTELITE_DEFSPRITE;
 
     objdefsprites[OBJ_RAY] = OBJ_RAY_DEFSPRITE_EP2;
     objdefsprites[OBJ_VORT] = OBJ_VORT_DEFSPRITE_EP2;
@@ -837,11 +837,10 @@ unsigned int rect2x1, rect2y1, rect2x2, rect2y2;
   return 1;
 }
 
-void killplayer(int theplayer, stCloneKeenPlus *pCKP)
+void killplayer(int theplayer)
 {
    if (player[theplayer].godmode || g_pInput->getHoldedKey(KTAB)) return;
    if (player[theplayer].ankhtime) return;
-   if (pCKP->Control.levelcontrol.level_done) return;
    if (!player[theplayer].pdie)
    {
       player[theplayer].pdie = PDIE_DYING;
@@ -852,7 +851,7 @@ void killplayer(int theplayer, stCloneKeenPlus *pCKP)
       player[theplayer].pdie_xvect -= DIE_MAX_XVECT;
       player[theplayer].inventory.lives--;
       player[theplayer].y += (8<<CSF);
-      gamepdo_SelectFrame(theplayer, pCKP);
+      gamepdo_SelectFrame(theplayer);
       g_pMusicPlayer->stop();
       g_pSound->playSound(SOUND_KEEN_DIE, PLAY_NOW);
    }

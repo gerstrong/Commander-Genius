@@ -22,7 +22,7 @@ void rope_ai(int o);
 void walker_ai(int o, stLevelControl levelcontrol);
 void tankep2_ai(int o, stCloneKeenPlus *pCKP);
 void platform_ai(int o, stLevelControl levelcontrol);
-void bear_ai(int o, stLevelControl levelcontrol, stCloneKeenPlus *pCKP);
+void vortelite_ai(int o, bool darkness);
 void se_ai(int o, stCloneKeenPlus *pCKP);
 void baby_ai(int o, stLevelControl levelcontrol);
 void explosion_ai(int o);

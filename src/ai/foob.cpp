@@ -56,7 +56,7 @@ unsigned int i;
       if (objects[o].onscreen) g_pSound->playStereofromCoord(SOUND_YORP_DIE, PLAY_NOW, objects[o].scrx);
       if (pCKP->Control.levelcontrol.hardmode && objects[o].touchPlayer)
       {
-        killplayer(objects[o].touchedBy, pCKP);
+        killplayer(objects[o].touchedBy);
       }
     }
   }

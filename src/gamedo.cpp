@@ -266,7 +266,7 @@ int i;
           case OBJ_WALKER: walker_ai(i, pCKP->Control.levelcontrol); break;
           case OBJ_TANKEP2: tankep2_ai(i, pCKP); break;
           case OBJ_PLATFORM: platform_ai(i, pCKP->Control.levelcontrol); break;
-          case OBJ_BEAR: bear_ai(i, pCKP->Control.levelcontrol, pCKP); break;
+          case OBJ_VORTELITE: vortelite_ai(i, pCKP->Control.levelcontrol.dark); break;
           case OBJ_SECTOREFFECTOR: se_ai(i, pCKP); break;
           case OBJ_BABY: baby_ai(i, pCKP->Control.levelcontrol); break;
           case OBJ_EXPLOSION: explosion_ai(i); break;

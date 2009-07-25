@@ -563,7 +563,7 @@ int newobject;
         // deadly to the touch
         if (objects[o].touchPlayer)
         {
-           killplayer(objects[o].touchedBy, pCKP);
+           killplayer(objects[o].touchedBy);
         }
 
         if (objects[o].ai.se.timer > SPARK_ANIMRATE)
@@ -959,7 +959,7 @@ void se_mortimer_leg_right(int o, stCloneKeenPlus *pCKP)
 int mx,my;
   if (objects[o].touchPlayer)
   {
-     killplayer(objects[o].touchedBy, pCKP);
+     killplayer(objects[o].touchedBy);
   }
    if (objects[o].needinit)
    {

@@ -57,7 +57,7 @@ void ballandjack_ai(int o, stCloneKeenPlus *pCKP)
           player[objects[o].touchedBy].playpushed_decreasetimer = 0;
         }
       }
-      else killplayer(objects[o].touchedBy, pCKP);
+      else killplayer(objects[o].touchedBy);
   }
 
   switch(objects[o].ai.bj.dir)

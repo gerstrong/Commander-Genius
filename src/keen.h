@@ -1,14 +1,9 @@
+#ifndef __KEEN_H__
+#define __KEEN_H__
+
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
-
-#ifdef TARGET_DOS
-  #include <dpmi.h>
-  #include <sys/farptr.h>
-  #include <go32.h>
-  #include <dos.h>
-  #include "dos\timer.h"
-#endif
 
 #ifdef TARGET_WIN32
   #include <windows.h>
@@ -222,7 +217,7 @@ struct stVortData
   int DeadFrame;
 };
 
-struct stBearData
+struct stVortEliteData
 {
   unsigned char state;
 
@@ -517,7 +512,7 @@ typedef struct stObject
    // ep2
    stWalkerData walker;
    stPlatformData platform;
-   stBearData bear;
+   stVortEliteData vortelite;
    stSEData se;
    stBabyData baby;
    // ep3
@@ -562,7 +557,7 @@ typedef struct stAnimTile
 #define OBJ_WALKER               13
 #define OBJ_TANKEP2              14
 #define OBJ_PLATFORM             15
-#define OBJ_BEAR                 16
+#define OBJ_VORTELITE            16
 #define OBJ_SECTOREFFECTOR       17
 #define OBJ_BABY                 18
 #define OBJ_EXPLOSION            19
@@ -608,7 +603,7 @@ typedef struct stAnimTile
 #define OBJ_PLATFORM_DEFSPRITE_EP3   107
 #define OBJ_WALKER_DEFSPRITE     102
 #define OBJ_TANKEP2_DEFSPRITE    112
-#define OBJ_BEAR_DEFSPRITE       88
+#define OBJ_VORTELITE_DEFSPRITE  88
 
 #define OBJ_FOOB_DEFSPRITE       95
 #define OBJ_NINJA_DEFSPRITE      77
@@ -878,3 +873,5 @@ struct stCloneKeenPlus
 // keen.c
 void playgame_levelmanager(stCloneKeenPlus *pCKP);
 char play_demo(int demonum, stCloneKeenPlus *pCKP, int s);
+
+#endif

@@ -133,7 +133,7 @@ int bonk,kill;
    // deadly to the touch
    if (objects[o].touchPlayer && objects[o].canbezapped)
    {
-     killplayer(objects[o].touchedBy, pCKP);
+     killplayer(objects[o].touchedBy);
    }
 
 vort_reprocess: ;

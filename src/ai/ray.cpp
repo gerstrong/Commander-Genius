@@ -72,7 +72,7 @@ int hitlethal;
          {
             if (objects[o].ai.ray.dontHitEnable==0 || objects[o].ai.ray.dontHit!=OBJ_PLAYER)
             {
-              killplayer(objects[o].touchedBy, pCKP);
+              killplayer(objects[o].touchedBy);
               objects[o].ai.ray.state = RAY_STATE_SETZAPZOT;
             }
          }

@@ -218,7 +218,7 @@ void initgame(stCloneKeenPlus *pCKP);
 int initgamefirsttime(stCloneKeenPlus *pCKP, int s);
 
 void open_door(int doortile, int doorsprite, int mpx, int mpy, int cp, stCloneKeenPlus *pCKP);
-void killplayer(int theplayer, stCloneKeenPlus *pCKP);
+void killplayer(int theplayer);
 void PlayerTouchedExit(int theplayer, stCloneKeenPlus *pCKP);
 
 void endlevel(int success, stCloneKeenPlus *pCKP);

@@ -53,7 +53,7 @@ void fireball_ai(int o, stCloneKeenPlus *pCKP)
   // check if it hit keen
   if (objects[o].touchPlayer)
   {
-     killplayer(objects[o].touchedBy, pCKP);
+     killplayer(objects[o].touchedBy);
      objects[o].type = OBJ_RAY;
      objects[o].ai.ray.state = RAY_STATE_SETZAPZOT;
      objects[o].inhibitfall = 1;

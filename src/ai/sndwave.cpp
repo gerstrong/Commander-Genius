@@ -29,7 +29,7 @@ void sndwave_ai(int o, stCloneKeenPlus *pCKP)
   // check if it hit keen
   if (objects[o].touchPlayer)
   {
-     killplayer(objects[o].touchedBy, pCKP);
+     killplayer(objects[o].touchedBy);
   }
 
   // destroy the sound wave if it's been offscreen for a good amount

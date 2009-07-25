@@ -54,7 +54,7 @@ int onsamelevel;
   if (objects[o].touchPlayer && !player[objects[o].touchedBy].pdie && \
       objects[o].ai.ninja.state != NINJA_DYING)
   {
-     killplayer(objects[o].touchedBy, pCKP);
+     killplayer(objects[o].touchedBy);
   }
 
   if (objects[o].zapped >= 4)

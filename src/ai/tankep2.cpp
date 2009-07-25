@@ -64,7 +64,7 @@ unsigned int i;
    // touched player?
    if (objects[o].touchPlayer && !player[objects[o].touchedBy].pdie)
    {
-        killplayer(objects[o].touchedBy, pCKP);
+        killplayer(objects[o].touchedBy);
    }
 
    switch(objects[o].ai.tank.state)

@@ -285,7 +285,7 @@ int o,x;
            }
            else if (pCKP->Control.levelcontrol.episode==2)
            {
-             spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_BEAR);
+             spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_VORTELITE);
            }
            else if (pCKP->Control.levelcontrol.episode==3)
            {

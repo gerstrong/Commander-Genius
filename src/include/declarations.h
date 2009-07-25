@@ -46,7 +46,7 @@ struct stLevelControl
  char canexit;                // 1 if player is allowed to use the exit door
  char gameovermode;           // 1 if "Game Over" is displayed
  char dokeensleft;            // 1 if we need to do the "Keens Left"
- char dark;                   // 1 if level is currently dark (lights are out)
+ bool dark;                   // true if level is currently dark (lights are out)
 
  int episode;                 // which episode we're playing (1-3)
  bool hardmode;

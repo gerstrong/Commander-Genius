@@ -60,7 +60,7 @@ unsigned int i;
    // kill player on touch
    if (objects[o].ai.garg.state!=GARG_DYING && objects[o].touchPlayer)
    {
-     killplayer(objects[o].touchedBy, pCKP);
+     killplayer(objects[o].touchedBy);
    }
 
    // did the garg get shot?

@@ -20,7 +20,7 @@ void gamepdo_Jump(int cp);
 //void gamepdo_falling(int cp, stCommand command[MAX_COMMANDS]);
 void gamepdo_raygun(int cp, stCloneKeenPlus *pCKP);
 void gamepdo_special(int cp, stCloneKeenPlus *pCKP);
-void gamepdo_SelectFrame(int cp, stCloneKeenPlus *pCKP);
+void gamepdo_SelectFrame(int cp);
 void gamepdo_checkcollision(int cp, stCloneKeenPlus *pCKP);
 void gamepdo_moveplayer(int cp, stCloneKeenPlus *pCKP);
 void gamepdo_ankh(int cp);

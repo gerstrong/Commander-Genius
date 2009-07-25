@@ -97,7 +97,7 @@ char doFall;
        }
     }
 
-    gamepdo_SelectFrame(cp, pCKP);
+    gamepdo_SelectFrame(cp);
 }
 
 void gamepdo_walkbehindexitdoor(int cp, stCloneKeenPlus *pCKP)
@@ -131,7 +131,7 @@ void gamepdo_dieanim(int cp, stCloneKeenPlus *pCKP)
      if (!g_pSound->isPlaying(SOUND_KEEN_FALL))
      {
         player[cp].pdie = 0;
-        killplayer(cp, pCKP);
+        killplayer(cp);
      }
      else return;
    }
@@ -368,7 +368,7 @@ void gamepdo_setblockedlru(unsigned int cp, stCloneKeenPlus *pCKP)
 
       if((TileProperty[getmaptileat(tx,ty)][BUP] == 1) && (TileProperty[getmaptileat(tx,ty)][BEHAVIOR] == 1))
       {
-    	  killplayer(cp,pCKP); // Whines
+    	  killplayer(cp); // Whines
       }
 
       // set psliding if we're on ice
@@ -647,7 +647,7 @@ void gamepdo_InertiaAndFriction_X(unsigned int cp, stCloneKeenPlus *pCKP)
 		   }
 		   else
 		   {
-			   player[cp].pboost_x-= player[cp].ppogostick ? 2 : 1;
+			   player[cp].pboost_x-= player[cp].ppogostick ? 3 : 1;
 		   }
 	   }
 	   if (player[cp].playcontrol[PA_X] > 0 && !player[cp].pfrozentime)
@@ -659,7 +659,7 @@ void gamepdo_InertiaAndFriction_X(unsigned int cp, stCloneKeenPlus *pCKP)
 		   }
 		   else
 		   {
-			   player[cp].pboost_x+= player[cp].ppogostick ? 2 : 1;
+			   player[cp].pboost_x+= player[cp].ppogostick ? 3 : 1;
 		   }
 	   }
 
@@ -1321,7 +1321,6 @@ short tilsupport;
           // before you land turn around and as you hit the ground
           // you're starting to move the other direction
           // (set inertia to 0 if it's contrary to player's current dir)
-
        }
 
 
@@ -1438,7 +1437,7 @@ int canRefire;
 }
 
 // select the appropriate player frame based on what he's doing
-void gamepdo_SelectFrame(int cp, stCloneKeenPlus *pCKP)
+void gamepdo_SelectFrame(int cp)
 {
     player[cp].playframe = 0;      // basic standing
 
