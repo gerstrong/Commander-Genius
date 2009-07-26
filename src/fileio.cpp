@@ -887,12 +887,12 @@ int NumStringsFreed;
   return NumStringsFreed;
 }
 
-static void dumpstrings() {
+/*static void dumpstrings() {
 	notes << "Available strings: ";
 	for(int i=0;i<numStrings;i++)
 		notes << strings[i].name << ", ";
 	notes << endl;
-}
+}*/
 
 // returns a pointer to the string with name 'name'
 std::string getstring(const std::string& name)

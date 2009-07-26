@@ -10,6 +10,14 @@
 
 #define MAX_TILES    800
 
+// Tile information planes
+#define ANIMATION		0
+#define BEHAVIOR		1
+#define BUP				2
+#define BRIGHT			3
+#define BDOWN			4
+#define BLEFT			5
+
 extern int numtiles;
 extern int **TileProperty; // This version will replace the old stTile Structure and save memory
 

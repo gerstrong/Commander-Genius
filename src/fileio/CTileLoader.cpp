@@ -90,7 +90,6 @@ bool CTileLoader::setProperOffset()
 
 bool CTileLoader::load()
 {
-	int t,a,b;
 	std::string fname;
 	int i,j; // standard counters
 
@@ -150,31 +149,8 @@ bool CTileLoader::load()
 		}
 	}
 
-   fname = "ep" + itoa(m_episode) + "attr.dat";
-
-   FILE *fp;
-	  fp = OpenGameFile(fname.c_str(), "rb");
-	  if (!fp)
-	  {
-		g_pLogFile->textOut(RED,"TileLoader: Cannot open tile attribute file!<br>");
-	    return false;
-	  }
-
-	  // load additional information the tiles
-	  for(t=0;t<numtiles-1;t++)
-	  {
-		a = fgetc(fp); b = fgetc(fp);
-	    tiles[t].chgtile = (a<<8)+b;
-	    if(tiles[t].chgtile > numtiles)
-			    	tiles[t].chgtile = 0;
-	  }
-	  fclose(fp);
-
-	  // Those Tile data files are an good option, but they are not very well seen.
-	  // Especially in mods. The one of Episode 2 has an error with items already
-	  // I'm to lazy to write a program which fixes the file so a new assignTilePointer is
-	  // used, which in future will replace the files making them obsolete
-	  assignChangeTileAttribute(tiles);
+	// This function assigns the correct tiles that have to be changed
+    assignChangeTileAttribute(tiles);
 
 	  return true;
 }
@@ -183,6 +159,22 @@ void CTileLoader::assignChangeTileAttribute(stTile *tile)
 {
 	// This special call is used for workarounds which are wrong in the tiles attributes file of CG.
 	// I hope those attributes can be read out of the exe-files in future.
+	// Everything to zero in order to avoid bugs in mods
+	for(int i=0 ; i<numtiles ; i++)
+		tile[i].chgtile = 0;
+
+	// At any other case, than the special ones, the tile is always 143 for pickuppable items
+	// 17 is tile for an exit.
+	for(int i=0 ; i<numtiles ; i++)
+	{
+		if(TileProperty[i][BEHAVIOR] >= 2 &&
+		   TileProperty[i][BEHAVIOR] <= 21 &&
+		   TileProperty[i][BEHAVIOR] != 17 )
+		{
+			tile[i].chgtile = 143;
+		}
+	}
+
 	switch(m_episode)
 	{
 		case 1:
@@ -197,6 +189,28 @@ void CTileLoader::assignChangeTileAttribute(stTile *tile)
 		}
 		case 3:
 		{
+			// Episode 3 is a special case, because the items are repeated 6 times
+			for(int i=0 ; i<=numtiles ; i++)
+			{
+				// Only items!!
+				if( (TileProperty[i][BEHAVIOR] >= 6 &&
+					 TileProperty[i][BEHAVIOR] <= 21 &&
+				     TileProperty[i][BEHAVIOR] != 17) ||
+				     TileProperty[i][BEHAVIOR] == 27 ||
+				     TileProperty[i][BEHAVIOR] == 28 )
+				{
+					int j = i;
+					while(TileProperty[j][BEHAVIOR] != 0) // "Nothing" is to the left of items row.
+						j--;
+					tile[i].chgtile = j;
+				}
+
+				// Only Doors! Tile is always 182
+				if(TileProperty[i][BEHAVIOR] >= 2 &&
+				   TileProperty[i][BEHAVIOR] <= 5)
+					tile[i].chgtile = 182;
+			}
+
 			break;
 		}
 	}

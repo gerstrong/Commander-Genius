@@ -1,6 +1,11 @@
 Commander Genius Pre-Release v0.3 (CloneKeenPlus):
 --------------------------------------------------
 
+26-07-2009
+- fixed some bugs which made the game crash
+- removed an old and obsolete class
+- The need of ep?attr.dat has been lifted and future versions won't bring that file anymore!
+
 25-07-2009
 Changes by Albert:
 - Implementation of Searchpath

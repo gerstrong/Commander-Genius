@@ -90,7 +90,6 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
 
     fclose(latchfile);
 
-    // TODO: Try to blit the Font map here!
      // these are the offsets of the different video planes as
      // relative to each other--that is if a pixel in plane1
      // is at N, the byte for that same pixel in plane3 will be
@@ -111,8 +110,6 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
 							 plane3 + m_fontlocation,
 							 plane4 + m_fontlocation,
 							 0);
-
-     // TODO: Create surfaces which can be blitted directly to the blit surface or maybe screen.
 
 	// Load 8x8 Tiles
      char c=0;
@@ -183,7 +180,6 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
        }
      }
      delete Planes;
-
 
      // Load Bitmaps
      // figure out how much RAM we'll need to read all 4 planes of
