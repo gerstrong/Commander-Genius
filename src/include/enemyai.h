@@ -24,7 +24,6 @@ void tankep2_ai(int o, stCloneKeenPlus *pCKP);
 void platform_ai(int o, stLevelControl levelcontrol);
 void vortelite_ai(int o, bool darkness);
 void se_ai(int o, stCloneKeenPlus *pCKP);
-void baby_ai(int o, stLevelControl levelcontrol);
 void explosion_ai(int o);
 void earthchunk_ai(int o);
 // ep3

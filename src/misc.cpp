@@ -1228,6 +1228,13 @@ void usage(void)
   printf("  keen -ep3                  play a normal game of ep3<br>");
 }
 
+unsigned int rnd(void)
+{
+  //random_seed = random_seed * 1103515245 + 12345;
+  //return (uint)(random_seed / 65536) % 32768;
+	return rand();
+}
+
 void radar(void)
 {
 unsigned int x,y,o;

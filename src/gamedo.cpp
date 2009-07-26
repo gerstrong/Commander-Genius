@@ -21,6 +21,7 @@
 
 #include "include/enemyai.h"
 
+
 extern unsigned long gotPlayX;
 
 extern unsigned long CurrentTickCount;
@@ -268,7 +269,8 @@ int i;
           case OBJ_PLATFORM: platform_ai(i, pCKP->Control.levelcontrol); break;
           case OBJ_VORTELITE: vortelite_ai(i, pCKP->Control.levelcontrol.dark); break;
           case OBJ_SECTOREFFECTOR: se_ai(i, pCKP); break;
-          case OBJ_BABY: baby_ai(i, pCKP->Control.levelcontrol); break;
+          case OBJ_BABY: baby_ai(i, pCKP->Control.levelcontrol.episode,
+								  pCKP->Control.levelcontrol.hardmode); break;
           case OBJ_EXPLOSION: explosion_ai(i); break;
           case OBJ_EARTHCHUNK: earthchunk_ai(i); break;
           //KEEN3

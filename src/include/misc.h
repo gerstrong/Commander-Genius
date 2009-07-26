@@ -13,3 +13,5 @@ char gameiswon(stCloneKeenPlus *pCKP);
 void game_save(char *fname, stCloneKeenPlus *pCKP);
 int game_load(char *fname, stCloneKeenPlus *pCKP);
 void showTextMB(int lines, char **text, stCloneKeenPlus *pCKP);
+
+unsigned int rnd(void);
