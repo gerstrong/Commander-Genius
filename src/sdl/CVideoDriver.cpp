@@ -107,14 +107,6 @@ void CVideoDriver::initResolutionList()
 	  if(!ResolutionFile)
 	  {
 		  g_pLogFile->textOut(PURPLE,"Warning: resolutions.cfg could not be read! Maybe your files weren't extracted correctly!<br>");
-
-		  resolution.width = 320;
-		  resolution.height = 240;
-		  resolution.depth = 16;
-		  m_Resolutionlist.push_back(resolution);
-
-		  resolution.depth = 32;
-		  m_Resolutionlist.push_back(resolution);
 	  }
 	  else
 	  {
@@ -126,8 +118,21 @@ void CVideoDriver::initResolutionList()
 									  &resolution.depth) == 3)
 				  m_Resolutionlist.push_back(resolution);
 		  }
+		  ResolutionFile.close();
 	  }
-	  ResolutionFile.close();
+	
+	if(m_Resolutionlist.empty()) {
+		resolution.width = 640;
+		resolution.height = 480;
+		resolution.depth = 32;
+		m_Resolutionlist.push_back(resolution);
+		
+		resolution.depth = 16;
+		m_Resolutionlist.push_back(resolution);
+	}
+	
+	// will set the default mode; CSettings::loadDrvConfig will reset this if config file loaded successfully
+	setMode(640, 480, 32);
 }
 
 st_resolution CVideoDriver::setNextResolution()
