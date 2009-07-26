@@ -11,7 +11,6 @@
 		235755D3101A5E5900275638 /* main.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD57E20DA1CFC700B32029 /* main.xib */; };
 		235755D5101A5E5900275638 /* baby.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9751013ABC9001643FA /* baby.cpp */; };
 		235755D6101A5E5900275638 /* balljack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9761013ABC9001643FA /* balljack.cpp */; };
-		235755D7101A5E5900275638 /* bear.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9771013ABC9001643FA /* bear.cpp */; };
 		235755D8101A5E5900275638 /* butler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9781013ABC9001643FA /* butler.cpp */; };
 		235755D9101A5E5900275638 /* door.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9791013ABC9001643FA /* door.cpp */; };
 		235755DA101A5E5900275638 /* earth.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E97A1013ABC9001643FA /* earth.cpp */; };
@@ -110,6 +109,7 @@
 		23575696101A6BE600275638 /* Ogg.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564C101A5F8F00275638 /* Ogg.framework */; };
 		23575697101A6BE600275638 /* Vorbis.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564D101A5F8F00275638 /* Vorbis.framework */; };
 		235756C2101B766800275638 /* Unicode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 235756C1101B766800275638 /* Unicode.cpp */; };
+		235756C9101BE31A00275638 /* vortelite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 235756C7101BE31A00275638 /* vortelite.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -142,9 +142,10 @@
 		2357564D101A5F8F00275638 /* Vorbis.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Vorbis.framework; sourceTree = "<group>"; };
 		23575688101A6AE600275638 /* Commander Genius.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Commander Genius.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		235756C1101B766800275638 /* Unicode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Unicode.cpp; sourceTree = "<group>"; };
+		235756C7101BE31A00275638 /* vortelite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vortelite.cpp; sourceTree = "<group>"; };
+		235756C8101BE31A00275638 /* vortelite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vortelite.h; sourceTree = "<group>"; };
 		23D3E9751013ABC9001643FA /* baby.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = baby.cpp; sourceTree = "<group>"; };
 		23D3E9761013ABC9001643FA /* balljack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = balljack.cpp; sourceTree = "<group>"; };
-		23D3E9771013ABC9001643FA /* bear.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bear.cpp; sourceTree = "<group>"; };
 		23D3E9781013ABC9001643FA /* butler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = butler.cpp; sourceTree = "<group>"; };
 		23D3E9791013ABC9001643FA /* door.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = door.cpp; sourceTree = "<group>"; };
 		23D3E97A1013ABC9001643FA /* earth.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = earth.cpp; sourceTree = "<group>"; };
@@ -470,9 +471,10 @@
 		23D3E9741013ABC9001643FA /* ai */ = {
 			isa = PBXGroup;
 			children = (
+				235756C7101BE31A00275638 /* vortelite.cpp */,
+				235756C8101BE31A00275638 /* vortelite.h */,
 				23D3E9751013ABC9001643FA /* baby.cpp */,
 				23D3E9761013ABC9001643FA /* balljack.cpp */,
-				23D3E9771013ABC9001643FA /* bear.cpp */,
 				23D3E9781013ABC9001643FA /* butler.cpp */,
 				23D3E9791013ABC9001643FA /* door.cpp */,
 				23D3E97A1013ABC9001643FA /* earth.cpp */,
@@ -760,7 +762,6 @@
 			files = (
 				235755D5101A5E5900275638 /* baby.cpp in Sources */,
 				235755D6101A5E5900275638 /* balljack.cpp in Sources */,
-				235755D7101A5E5900275638 /* bear.cpp in Sources */,
 				235755D8101A5E5900275638 /* butler.cpp in Sources */,
 				235755D9101A5E5900275638 /* door.cpp in Sources */,
 				235755DA101A5E5900275638 /* earth.cpp in Sources */,
@@ -850,6 +851,7 @@
 				2357562E101A5E5900275638 /* CLatch.cpp in Sources */,
 				2357562F101A5E5900275638 /* ConfigHandler.cpp in Sources */,
 				235756C2101B766800275638 /* Unicode.cpp in Sources */,
+				235756C9101BE31A00275638 /* vortelite.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
