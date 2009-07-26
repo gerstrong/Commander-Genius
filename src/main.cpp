@@ -122,14 +122,18 @@ int main(int argc, char *argv[])
 	banner(); // Intro on the text-console.
 
 	if(argc >= 1) {
+		binary_dir = argv[0];
 		size_t slashpos = findLastPathSep(binary_dir);
 		if(slashpos != std::string::npos)  {
 			binary_dir.erase(slashpos);
 			binary_dir = SystemNativeToUtf8(binary_dir);
 		} else
-			binary_dir = ".";		
-	} else
+			binary_dir = ".";
+	} else {
+		warnings << "Binary-argument not given, assuming current dir" << endl;
 		binary_dir = ".";
+	}
+	binary_dir = GetAbsolutePath(binary_dir);
 	
 	InitSearchPaths();
 	
