@@ -70,12 +70,13 @@ CVideoDriver::CVideoDriver() {
 	  Filtermode=1;
 	  Zoom=2;
 	  FrameSkip=2;
-	  m_targetfps = 0;	// Disable automatic frameskipping by default
+	  m_targetfps = 50;
 #endif
 	  m_opengl = false;
 #ifdef USE_OPENGL
 	  m_opengl_filter = GL_NEAREST;
 	  mp_OpenGL = NULL;
+	m_opengl = true; // use it if possible
 #endif
 	  m_aspect_correction = true;
 
