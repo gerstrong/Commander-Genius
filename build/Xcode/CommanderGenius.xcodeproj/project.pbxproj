@@ -97,7 +97,6 @@
 		2357562B101A5E5900275638 /* Debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3EE571017602E001643FA /* Debug.cpp */; };
 		2357562C101A5E5900275638 /* CrashHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3EE5910176098001643FA /* CrashHandler.cpp */; };
 		2357562D101A5E5900275638 /* FindFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 235751EF1019D0C000275638 /* FindFile.cpp */; };
-		2357562E101A5E5900275638 /* CLatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 235752061019DFFF00275638 /* CLatch.cpp */; };
 		2357562F101A5E5900275638 /* ConfigHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 235752D51019F83800275638 /* ConfigHandler.cpp */; };
 		23575631101A5E5900275638 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20286C33FDCF999611CA2CEA /* Carbon.framework */; };
 		23575632101A5E5900275638 /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D3EA691013AC7B001643FA /* SDL.framework */; };
@@ -133,8 +132,6 @@
 		1DDD57E30DA1CFC700B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/main.xib; sourceTree = "<group>"; };
 		20286C33FDCF999611CA2CEA /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 		235751EF1019D0C000275638 /* FindFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FindFile.cpp; sourceTree = "<group>"; };
-		235752061019DFFF00275638 /* CLatch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CLatch.cpp; sourceTree = "<group>"; };
-		235752071019DFFF00275638 /* CLatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLatch.h; sourceTree = "<group>"; };
 		235752D51019F83800275638 /* ConfigHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConfigHandler.cpp; sourceTree = "<group>"; };
 		235752D61019F83800275638 /* ConfigHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigHandler.h; sourceTree = "<group>"; };
 		23575640101A5E5900275638 /* Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy.plist"; sourceTree = "<group>"; };
@@ -377,8 +374,6 @@
 				235756C1101B766800275638 /* Unicode.cpp */,
 				235752D51019F83800275638 /* ConfigHandler.cpp */,
 				235752D61019F83800275638 /* ConfigHandler.h */,
-				235752061019DFFF00275638 /* CLatch.cpp */,
-				235752071019DFFF00275638 /* CLatch.h */,
 				235751EF1019D0C000275638 /* FindFile.cpp */,
 				23D3EE5910176098001643FA /* CrashHandler.cpp */,
 				23D3EE5A10176098001643FA /* CrashHandler.h */,
@@ -848,7 +843,6 @@
 				2357562B101A5E5900275638 /* Debug.cpp in Sources */,
 				2357562C101A5E5900275638 /* CrashHandler.cpp in Sources */,
 				2357562D101A5E5900275638 /* FindFile.cpp in Sources */,
-				2357562E101A5E5900275638 /* CLatch.cpp in Sources */,
 				2357562F101A5E5900275638 /* ConfigHandler.cpp in Sources */,
 				235756C2101B766800275638 /* Unicode.cpp in Sources */,
 				235756C9101BE31A00275638 /* vortelite.cpp in Sources */,
