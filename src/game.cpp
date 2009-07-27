@@ -21,6 +21,7 @@
 #include "vorticon/CPlayer.h"
 #include "vorticon/CHighScores.h"
 #include "hqp/CHQBitmap.h"
+#include "CLogFile.h"
 char otherplayer;
 
 // TODO: seperate status boxes for the different players
@@ -655,10 +656,8 @@ int i;
    }
  }
  // object could not be created
- crashflag = 1;
- crashflag2 = otype;
- crashflag3 = 0;
- why_term_ptr = "Object could not be created.";
+
+ g_pLogFile->textOut(PURPLE, "Warning : Object could not be created.");
  return 0;
 }
 

@@ -179,6 +179,15 @@ void CTileLoader::assignChangeTileAttribute(stTile *tile)
 	{
 		case 1:
 		{
+			for(int i=502 ; i<=506 ; i++) // Workaround in Level 12 of Episode 2, where the tiles are solid after a taken item.
+			{
+				if( (TileProperty[i][BEHAVIOR] >= 6 &&
+					 TileProperty[i][BEHAVIOR] <= 21 &&
+				     TileProperty[i][BEHAVIOR] != 17) ||
+				     TileProperty[i][BEHAVIOR] == 27 ||
+				     TileProperty[i][BEHAVIOR] == 28 )
+				tile[i].chgtile = 439;
+			}
 			break;
 		}
 		case 2:

@@ -6,7 +6,6 @@ until 0.4:
 - Update the Dialog Class. It should support more controls, and be easier to manage
 - New Games Menu. Should run without the need of an episode!
 - Improve the logic of Keen.exe reading for a better mod compatibility
-- Implement the patch reading of pat files.
 - Implement a better Audio Control. Volume, mute, etc.
 - improve the physics using floats
 - Ubuntu debs
