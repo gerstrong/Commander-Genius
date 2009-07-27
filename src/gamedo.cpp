@@ -42,7 +42,7 @@ unsigned char oldctrlkey = 5;
 unsigned char oldaltkey = 5;
 void gamedo_getInput(stCloneKeenPlus *pCKP)
 {
-int i;
+int i=0;
 int byt;
 unsigned int msb, lsb;
 
@@ -280,8 +280,8 @@ int i;
           case OBJ_SNDWAVE: sndwave_ai(i, pCKP); break;
           case OBJ_MOTHER: mother_ai(i, pCKP->Control.levelcontrol); break;
           case OBJ_FIREBALL: fireball_ai(i, pCKP); break;
-          case OBJ_BALL: ballandjack_ai(i, pCKP); break;
-          case OBJ_JACK: ballandjack_ai(i, pCKP); break;
+          case OBJ_BALL: ballandjack_ai(i); break;
+          case OBJ_JACK: ballandjack_ai(i); break;
           case OBJ_PLATVERT: platvert_ai(i); break;
           case OBJ_NESSIE: nessie_ai(i); break;
 
@@ -402,7 +402,7 @@ int xa,ya;
 
 void gamedo_render_drawdebug(void)
 {
-int tl,y;
+int tl=0,y;
 /*int h;*/
 	std::string debugmsg;
 

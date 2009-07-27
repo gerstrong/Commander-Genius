@@ -1,63 +1,96 @@
 // ai for the ball and the jack in ep3
 #include "../keen.h"
 
-#include "../include/enemyai.h"
-
 #include "../include/game.h"
 
-#define BALL_FRAME      109
-#define JACK_FRAME      110
+#include "balljack.h"
 
 #define BALL_SPEED      15
 #define JACK_SPEED      10
 #define JACK_ANIM_RATE  50
 
-#define BALLPUSHAMOUNT  20
+#define BALLPUSHAMOUNT	30
 
 char BJ_BlockedD(int o);
 
-void ballandjack_ai(int o, stCloneKeenPlus *pCKP)
+void ballandjack_ai(int o)
 {
   if (objects[o].needinit)
   {
-    objects[o].ai.bj.dir = DUPLEFT;
-    objects[o].ai.bj.animframe = 0;
-    objects[o].ai.bj.animtimer = 0;
-    objects[o].blockedl = 0;
-    objects[o].blockedr = 0;
-    objects[o].blockedu = 0;
-    objects[o].blockedd = 0;
-    objects[o].inhibitfall = 1;
+	int i = rnd()%4;
+	switch(i)
+	{
+		case 0: objects[o].ai.bj.dir = DUPLEFT; break;
+		case 1: objects[o].ai.bj.dir = DUPRIGHT; break;
+		case 2: objects[o].ai.bj.dir = DDOWNLEFT; break;
+		case 3: objects[o].ai.bj.dir = DDOWNRIGHT; break;
+	}
+
+	objects[o].ai.bj.animframe = 0;
+	objects[o].ai.bj.animtimer = 0;
+	objects[o].blockedl = 0;
+	objects[o].blockedr = 0;
+	objects[o].blockedu = 0;
+	objects[o].blockedd = 0;
+	objects[o].inhibitfall = 1;
 
     if (objects[o].type==OBJ_BALL)
     {
-      objects[o].sprite = BALL_FRAME;
       objects[o].ai.bj.speed = BALL_SPEED;
+	  objects[o].canbezapped = 1;
     }
     else
     {
-      objects[o].sprite = JACK_FRAME;
       objects[o].ai.bj.speed = JACK_SPEED;
+	  objects[o].canbezapped = 0;
     }
     objects[o].needinit = 0;
   }
 
-  if (objects[o].touchPlayer)
+	if (objects[o].touchPlayer)
+	{
+		if (objects[o].type==OBJ_BALL)
+		{
+			if (player[objects[o].touchedBy].x < objects[o].x)
+			{
+				bumpplayer(objects[o].touchedBy, -BALLPUSHAMOUNT, true);
+			}
+			else
+			{
+				bumpplayer(objects[o].touchedBy, BALLPUSHAMOUNT, true);
+			}
+
+			switch(objects[o].ai.bj.dir)
+			{
+				case DUPRIGHT: objects[o].ai.bj.dir = DUPLEFT; break;
+				case DUPLEFT: objects[o].ai.bj.dir = DUPRIGHT; break;
+				case DDOWNRIGHT: objects[o].ai.bj.dir = DDOWNLEFT; break;
+				case DDOWNLEFT: objects[o].ai.bj.dir = DDOWNRIGHT; break;
+			}
+		}
+		else killplayer(objects[o].touchedBy);
+	}
+
+  if (objects[o].zapped)
   {
-      if (objects[o].type==OBJ_BALL)
-      {
-        if (player[objects[o].touchedBy].x < objects[o].x)
-        {
-          player[objects[o].touchedBy].playpushed_x = -BALLPUSHAMOUNT;
-          player[objects[o].touchedBy].playpushed_decreasetimer = 0;
-        }
-        else
-        {
-          player[objects[o].touchedBy].playpushed_x = BALLPUSHAMOUNT;
-          player[objects[o].touchedBy].playpushed_decreasetimer = 0;
-        }
-      }
-      else killplayer(objects[o].touchedBy);
+		// have ball change direction when zapped
+		if (objects[o].zapd==LEFT)
+		{
+			switch(objects[o].ai.bj.dir)
+			{
+				case DUPRIGHT: objects[o].ai.bj.dir = DUPLEFT; break;
+				case DDOWNRIGHT: objects[o].ai.bj.dir = DDOWNLEFT; break;
+			}
+		}
+		else
+		{
+			switch(objects[o].ai.bj.dir)
+			{
+				case DUPLEFT: objects[o].ai.bj.dir = DUPRIGHT; break;
+				case DDOWNLEFT: objects[o].ai.bj.dir = DDOWNRIGHT; break;
+			}
+		}
+		objects[o].zapped = 0;
   }
 
   switch(objects[o].ai.bj.dir)
@@ -94,11 +127,11 @@ void ballandjack_ai(int o, stCloneKeenPlus *pCKP)
 
   if (objects[o].type==OBJ_BALL)
   {
-    objects[o].sprite = BALL_FRAME;
+	objects[o].sprite = OBJ_BALL_DEFSPRITE;
   }
   else
   {
-    objects[o].sprite = JACK_FRAME + objects[o].ai.bj.animframe;
+    objects[o].sprite = OBJ_JACK_DEFSPRITE + objects[o].ai.bj.animframe;
     if (objects[o].ai.bj.animtimer > JACK_ANIM_RATE)
     {
       objects[o].ai.bj.animframe++;
@@ -119,13 +152,11 @@ char BJ_BlockedD(int o)
   {
     // ensure that the tile common_enemy_ai said we hit also has
     // solid l/r set
-
 	if (TileProperty[getmaptileat((objects[o].x>>CSF)+2, (objects[o].y>>CSF)+sprites[objects[o].sprite].ysize)][BLEFT])
-    //if (tiles[getmaptileat((objects[o].x>>CSF)+2, (objects[o].y>>CSF)+sprites[objects[o].sprite].ysize)].solidl)
       { return 1; }
 	if (TileProperty[getmaptileat((objects[o].x>>CSF)+(sprites[objects[o].sprite].xsize-2), (objects[o].y>>CSF)+sprites[objects[o].sprite].ysize)][BLEFT])
-    //if (tiles[getmaptileat((objects[o].x>>CSF)+(sprites[objects[o].sprite].xsize-2), (objects[o].y>>CSF)+sprites[objects[o].sprite].ysize)].solidl)
       { return 1; }
+
   }
 
   // ensure it's not a ball no-pass point

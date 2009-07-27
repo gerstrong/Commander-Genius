@@ -57,8 +57,8 @@ int eseq2_TantalusRay(stCloneKeenPlus *pCKP)
 {
 char enter,lastenterstate;
 int x, y, t, o, i;
-int tantalus_animframe, tantalus_animtimer;
-int state, timer, spawnedcount;
+int tantalus_animframe, tantalus_animtimer=0;
+int state, timer, spawnedcount=0;
 
 	o=0;
 

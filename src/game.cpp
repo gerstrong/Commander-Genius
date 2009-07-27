@@ -505,8 +505,8 @@ unsigned int i;
     objdefsprites[OBJ_NINJA] = OBJ_NINJA_DEFSPRITE;
     objdefsprites[OBJ_MOTHER] = OBJ_MOTHER_DEFSPRITE;
     objdefsprites[OBJ_MEEP] = OBJ_MEEP_DEFSPRITE;
-    objdefsprites[OBJ_BALL] = OBJ_BJ_DEFSPRITE;
-    objdefsprites[OBJ_JACK] = OBJ_BJ_DEFSPRITE;
+    objdefsprites[OBJ_BALL] = OBJ_BALL_DEFSPRITE;
+    objdefsprites[OBJ_JACK] = OBJ_BALL_DEFSPRITE;
 
     objdefsprites[OBJ_RAY] = OBJ_RAY_DEFSPRITE_EP3;
     objdefsprites[OBJ_VORT] = OBJ_VORT_DEFSPRITE_EP3;
@@ -1353,6 +1353,34 @@ void procgoodie(int t, int mpx, int mpy, int theplayer, stCloneKeenPlus *pCKP)
    }
 
 
+}
+
+// yorp/walker etc "bump".
+// if solid = 0, player can possibly force his way through.
+// if solid = 1, object acts like a solid "wall".
+void bumpplayer(int p, int pushamt, bool solid)
+{
+	player[p].playpushed_x = pushamt;
+
+	if (solid)
+	{
+		if (pushamt > 0)
+		{
+			if (player[p].pinertia_x < 0)
+				player[p].pinertia_x = 0;
+		}
+		else
+		{
+			if (player[p].pinertia_x > 0)
+				player[p].pinertia_x = 0;
+		}
+	}
+
+	player[p].playpushed_decreasetimer = 0;
+	if (!player[p].pjumping)
+	{
+		player[p].pdir = player[p].pshowdir = (pushamt<0)?LEFT:RIGHT;
+	}
 }
 
 void GiveAnkh(int cp)

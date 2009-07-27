@@ -235,7 +235,7 @@ void VorticonElder(int mpx, int mpy, stCloneKeenPlus *pCKP)
 {
 	int twirlframe, twirltimer;
 	int dlgX,dlgY,dlgW,dlgH,twirlX,twirlY;
-	const char *strName;
+	const char *strName="";
 	const int twirl_speed = 100;
 
 	for(int i=0; i < 4 ; i++)

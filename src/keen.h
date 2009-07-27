@@ -476,6 +476,9 @@ typedef struct stObject
 
  char canbezapped;         // if 0 ray will not stop on hitdetect
  char zapped;              // number of times got hit by keen's raygun
+ int zapx, zapy, zapd;	   // x,y, and direction of last shot at time of impact
+ char zappedbyenemy;	   // if 1, it was an ENEMYRAY and not keen that shot it
+
 
  char inhibitfall;         // if 1 common_enemy_ai will not do falling
  char cansupportplayer[MAX_PLAYERS];
@@ -603,13 +606,16 @@ typedef struct stAnimTile
 #define OBJ_PLATFORM_DEFSPRITE_EP3   107
 #define OBJ_WALKER_DEFSPRITE     102
 #define OBJ_TANKEP2_DEFSPRITE    112
+
 #define OBJ_VORTELITE_DEFSPRITE  88
 
-#define OBJ_FOOB_DEFSPRITE       95
-#define OBJ_NINJA_DEFSPRITE      77
-#define OBJ_MOTHER_DEFSPRITE     87
-#define OBJ_BJ_DEFSPRITE         109
-#define OBJ_MEEP_DEFSPRITE       118
+#define OBJ_FOOB_DEFSPRITE			95
+#define OBJ_NINJA_DEFSPRITE			77
+#define OBJ_MOTHER_DEFSPRITE		87
+#define OBJ_BALL_DEFSPRITE			109
+#define OBJ_JACK_DEFSPRITE			110
+#define OBJ_MEEP_DEFSPRITE			118
+#define OBJ_NESSIE_DEFSPRITE		132
 
 #define OBJ_BABY_DEFSPRITE_EP2   52
 #define OBJ_BABY_DEFSPRITE_EP3   51

@@ -33,7 +33,7 @@ void meep_ai(int o, stLevelControl levelcontrol);
 void sndwave_ai(int o, stCloneKeenPlus *pCKP);
 void mother_ai(int o, stLevelControl levelcontrol);
 void fireball_ai(int o, stCloneKeenPlus *pCKP);
-void ballandjack_ai(int o, stCloneKeenPlus *pCKP);
+void ballandjack_ai(int o);
 void platvert_ai(int o);
 void nessie_ai(int o);
 

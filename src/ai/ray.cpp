@@ -55,6 +55,14 @@ int hitlethal;
             {
               objects[o].ai.ray.state = RAY_STATE_SETZAPZOT;
               objects[i].zapped++;
+              objects[i].zapx = objects[o].x;
+              objects[i].zapy = objects[o].y;
+              objects[i].zapd = objects[o].ai.ray.direction;
+              if (objects[o].sprite==ENEMYRAY || objects[o].sprite==ENEMYRAYEP2 || objects[o].sprite==ENEMYRAYEP3)
+					objects[i].zappedbyenemy = 1;
+              else
+					objects[i].zappedbyenemy = 0;
+
             }
          }
        }
