@@ -28,7 +28,7 @@
 #include <fstream>
 #include "StringUtils.h"
 #include "FindFile.h"
-
+#include <vector>
 
 #define SELMOVE_SPD         3
 
@@ -928,8 +928,9 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 
 
 // This function shows the Story of Commander Keen!
-void showPage(const std::string& text, stCloneKeenPlus *pCKP, int textsize)
+void showPage(const std::string& str_text, stCloneKeenPlus *pCKP, int textsize)
 {
+	char *text;
 	unsigned int i, j, k;
 	int exit=0;
 	int textpos;
@@ -937,6 +938,14 @@ void showPage(const std::string& text, stCloneKeenPlus *pCKP, int textsize)
 	unsigned int dlgX,dlgY,dlgW,dlgH;
 	unsigned int scroll, maxscroll;
 	char buffer[200][40];
+
+
+	// copy the string to an array since string manipulation are dangerous here!
+
+	text = new char[textsize];
+	memset(text,0,textsize);
+
+	memcpy(text,str_text.c_str(),textsize);
 
 	showmapatpos(90, STORYBOARD_X, STORYBOARD_Y, 0, pCKP);
 
@@ -963,16 +972,16 @@ void showPage(const std::string& text, stCloneKeenPlus *pCKP, int textsize)
 	  memset(buffer,0,200*40*sizeof(char));
 	  // Prepare the buffer
 
-	std::string sbuf;
+	  char sbuf[256];
 	  unsigned int totnumline=0;
 
 	  for(i=0;i<200;i++)
 	  {
 	  	for(j=0;j<dlgW-1;j++)
 	   	{
-			sbuf = text.substr(textpos);
+	   		sscanf(text+textpos,"%s",sbuf);
 
-	   		if((sbuf.size() + j) > dlgW-2)
+	   		if(((strlen(sbuf) + j) > dlgW-2))
 	   		{
 	   			if(text[textpos] == ' ')
 	   			{
@@ -987,14 +996,14 @@ void showPage(const std::string& text, stCloneKeenPlus *pCKP, int textsize)
 				break;
 	   		}
 
-			buffer[i][j] = text[textpos];
-			
 	   		if(text[textpos]==31 ) 	// I don't know, what they do,
 									//but original version seems to ignore them!
 	   		{
-	   			buffer[i][j]=' ';
+	   			text[textpos]=' ';
 	   		}
 
+
+    		buffer[i][j]=text[textpos];
     		textpos++;
     		if(textpos >= textsize)
     			break;
@@ -1009,7 +1018,9 @@ void showPage(const std::string& text, stCloneKeenPlus *pCKP, int textsize)
 	  }
 	  buffer[i][j] = ' '; // Last character is empty!
 
-	std::string coverline(37, (char)2);
+	  delete [] text;
+
+	std::string coverline(38, (char)2);
 
 	  do
 	  {
@@ -1026,7 +1037,7 @@ void showPage(const std::string& text, stCloneKeenPlus *pCKP, int textsize)
 	    {
 	    	if(buffer[i+(scroll>>3)][0]=='~') // Special Background Colour
 	    	{
-				std::string temp(37, ' ');
+				std::string temp(38, ' ');
 		    	g_pGraphics->sb_color_font_draw(temp, (dlgX+1)<<3, (((dlgY+i+1)<<3) -(scroll%8)),COLOUR_DARKRED,COLOUR_GREY);
 		    	g_pGraphics->sb_color_font_draw(buffer[i+(scroll>>3)]+1, (dlgX+1)<<3, (((dlgY+i+1)<<3) -(scroll%8)),COLOUR_DARKRED,COLOUR_GREY);
 	    	}

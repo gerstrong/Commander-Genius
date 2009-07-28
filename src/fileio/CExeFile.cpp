@@ -17,7 +17,7 @@ using namespace std;
 CExeFile::CExeFile(int episode, const std::string& datadirectory) {
 	m_episode = episode;
 	m_datadirectory = datadirectory;
-	if( m_datadirectory != "" && *(m_datadirectory.end()) != '/') m_datadirectory += "/";
+	if( m_datadirectory != "") if(*(m_datadirectory.end()-1) != '/') m_datadirectory += "/";
 	m_data = NULL;
 }
 
@@ -30,7 +30,6 @@ bool CExeFile::readData()
 	std::string filename = "data/" + m_datadirectory + "keen" + itoa(m_episode) + ".exe";
 
 	std::ifstream File; OpenGameFileR(File, filename, ios::binary);
-	// TODO: If Exe-file wasn't detected, make the program quit somehow, or it crashes
 
 	if(!File) return false;
 

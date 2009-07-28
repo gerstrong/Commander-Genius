@@ -24,43 +24,37 @@ int readStoryText(char **ptext, int episode, const std::string& path)
 	FILE *fp;
 	if((fp=OpenGameFile(buf.c_str(),"rt"))==NULL)
 	{
-		buf = buf2 + "keen" + itoa(episode) + ".exe";
+		unsigned char *filebuf;
+		int startflag=0, endflag=0; // where story begins and ends!
 
-		if((fp=OpenGameFile(buf.c_str(),"rb"))!=NULL)
+		CExeFile *ExeFile = new CExeFile(episode, path);
+		if(!ExeFile) return -1;
+		ExeFile->readData();
+		filebuf = ExeFile->getData();
+
+		if(episode == 2)
 		{
-			unsigned char *filebuf;
-			int startflag=0, endflag=0; // where story begins and ends!
+			startflag = 92864;
+			endflag = 96088;
+		}
+		if(episode == 3)
+		{
+			startflag = 101328;
+			endflag = 104435;
+		}
 
-			CExeFile *ExeFile = new CExeFile(episode, buf2);
-			ExeFile->readData();
-			filebuf = ExeFile->getData();
-
-			if(episode == 2)
-			{
-				startflag = 92864;
-				endflag = 96088;
-			}
-			if(episode == 3)
-			{
-				startflag = 101328;
-				endflag = 104435;
-			}
-
-			if(startflag == 0 || endflag == 0)
-			{
-				g_pLogFile->textOut(PURPLE,"Sorry, but your exe-file is not compatible for reading the story.<br>");
-			}
-			else
-			{
-				*ptext = (char*) malloc((endflag-startflag+10)*sizeof(char));
-				strncpy((*ptext),(char*)filebuf+startflag,(endflag-startflag)*sizeof(char));
-			}
-			delete ExeFile;
-
-			return (endflag-startflag);
+		if(startflag == 0 || endflag == 0)
+		{
+			g_pLogFile->textOut(PURPLE,"Sorry, but your exe-file is not compatible for reading the story.<br>");
 		}
 		else
-			return -1;
+		{
+			*ptext = (char*) malloc((endflag-startflag+10)*sizeof(char));
+			strncpy((*ptext),(char*)filebuf+startflag,(endflag-startflag)*sizeof(char));
+		}
+		delete ExeFile;
+
+		return (endflag-startflag);
 	}
 	else
 	{
