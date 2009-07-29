@@ -258,7 +258,7 @@ int i;
           case OBJ_BUTLER: butler_ai(i, pCKP->Control.levelcontrol.hardmode); break;
           case OBJ_TANK: tank_ai(i, pCKP->Control.levelcontrol.hardmode); break;
           case OBJ_RAY: ray_ai(i, pCKP, pCKP->Control.levelcontrol); break;
-          case OBJ_DOOR: door_ai(i); break;
+          case OBJ_DOOR: door_ai(i, pCKP->Control.levelcontrol.cepvars.DoorOpenDir); break;
           case OBJ_ICECHUNK: icechunk_ai(i); break;
           case OBJ_ICEBIT: icebit_ai(i); break;
           case OBJ_TELEPORTER: teleporter_ai(i, pCKP->Control.levelcontrol); break;

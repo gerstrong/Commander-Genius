@@ -39,8 +39,10 @@ char not_about_to_fall;
      objects[o].ai.butler.movedir = RIGHT;
      objects[o].ai.butler.animtimer = 0;
      objects[o].canbezapped = 1;  // will stop bullets but are not harmed
+     //objects[o].inhibitfall = 1;
      objects[o].needinit = 0;
-     objects[o].x -= 16;
+     //objects[o].x -= 16;
+     objects[o].x -= 4;
    }
    // push keen
      if (objects[o].touchPlayer && !player[objects[o].touchedBy].pdie)
@@ -87,7 +89,6 @@ char not_about_to_fall;
        {  // move left
 
          not_about_to_fall = TileProperty[getmaptileat((objects[o].x>>CSF)-BUTLER_LOOK_AHEAD_DIST, (objects[o].y>>CSF)+sprites[BUTLER_WALK_LEFT_FRAME].ysize)][BUP];
-    	 //not_about_to_fall = tiles[getmaptileat((objects[o].x>>CSF)-BUTLER_LOOK_AHEAD_DIST, (objects[o].y>>CSF)+sprites[BUTLER_WALK_LEFT_FRAME].ysize)].solidfall;
          objects[o].sprite = BUTLER_WALK_LEFT_FRAME + objects[o].ai.butler.frame;
          if (!objects[o].blockedl && not_about_to_fall)
          {
@@ -109,7 +110,6 @@ char not_about_to_fall;
        {  // move right
 
      	 not_about_to_fall = TileProperty[getmaptileat((objects[o].x>>CSF)+sprites[BUTLER_WALK_RIGHT_FRAME].xsize+BUTLER_LOOK_AHEAD_DIST, (objects[o].y>>CSF)+sprites[BUTLER_WALK_RIGHT_FRAME].ysize)][BUP];
-         //not_about_to_fall = tiles[getmaptileat((objects[o].x>>CSF)+sprites[BUTLER_WALK_RIGHT_FRAME].xsize+BUTLER_LOOK_AHEAD_DIST, (objects[o].y>>CSF)+sprites[BUTLER_WALK_RIGHT_FRAME].ysize)].solidfall;
          objects[o].sprite = BUTLER_WALK_RIGHT_FRAME + objects[o].ai.butler.frame;
          if (!objects[o].blockedr && not_about_to_fall)
          {

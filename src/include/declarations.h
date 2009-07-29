@@ -64,6 +64,16 @@ struct stLevelControl
 	
 	// as long as we only have POD
 	stLevelControl() { memset(this, 0, sizeof(stLevelControl)); }
+
+	 // stuff for custom episode's options
+	 struct
+	 {
+	 	char DoorOpenDir;
+		char pShotSpeed;
+		char VortDieDoFade;
+		char vgatiles;
+		char vgasprites;
+	 } cepvars;
 };
 
 

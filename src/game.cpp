@@ -384,6 +384,15 @@ short tilefix=0;
    objects[o].sprite = doorsprite;
 }
 
+void delete_object(int o)
+{
+	if (objects[o].exists)
+	{
+		objects[o].exists = 0;
+		//if (o+1==highest_objslot) highest_objslot--;
+	}
+}
+
 // checks if score is > than "extra life at" and award 1-UPs when appropriate
 void extralifeat(int cp)
 {
