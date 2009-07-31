@@ -31,6 +31,7 @@ public:
 	void drawSprite(int x, int y, unsigned int s, int objectnum);
 	void eraseSprite(int x, int y, unsigned int s, int objectnum);
 	void drawCharacter(int x, int y, int f);
+	void drawCharacter(float x, float y, int f);
 	void sb_drawCharacter(int x, int y, int f);
 	void sb_drawCharacterwithmask(int x, int y, int f, char mask);
 	void sb_drawColorcharacter(int x, int y, int f, unsigned short colour, unsigned short bgcolour);
@@ -46,6 +47,7 @@ public:
 	int  getBitmapNumberFromName(const char *bmname);
 	void sb_drawCharacterinverse(int x, int y, int f);
 	void drawFont(const std::string& text, int xoff, int yoff, int highlight);
+	void drawFont(const std::string& text, float xoff, float yoff, int highlight);
 	void sb_font_draw(const std::string& text, int xoff, int yoff);
 	void sb_mask_font_draw(const std::string& text, int xoff, int yoff, char mask);
 	void sb_color_font_draw(const std::string& text, int xoff, int yoff, unsigned int colour, unsigned short bgcolour);

@@ -27,6 +27,8 @@
 #include "StringUtils.h"
 #include "FindFile.h"
 
+#include "dialog/CWindow.h"
+
 
 void banner(void)
 {
@@ -153,97 +155,77 @@ void sb_dialogbox(int x1, int y1, int w, int h)
     }
 }
 
-#define YORPSTATUEHEADUSED 485
-void youseeinyourmind(int mpx, int mpy, stCloneKeenPlus *pCKP)
+void showGameHint(int mpx, int mpy, int episode, int level)
 {
-int twirlframe, twirltimer;
-char strname[80];
-int dlgX,dlgY,dlgW,dlgH,twirlX,twirlY;
+	std::string strname;
 
-bool isgarg;
+	// First check, if the item has really been activated
+   	if(!map_isanimated(mpx, mpy+(episode==2) ))
+   		return;
 
-int i;
-
-	isgarg = false;
-	if(map.mapdata[mpx][mpy] >= 435 && map.mapdata[mpx][mpy] <= 438)
-		isgarg = true;
-
-    if (!isgarg)
-    {
-    	if(!map_isanimated(mpx, mpy))
-    		return;
-    }
-    else
-    { // it's a garg statue
-    	if(!map_isanimated(mpx, mpy))
-    		return;
-    }
-
-	for(i=0; i < 4 ; i++)
+	if(episode == 1)
 	{
-		player[0].playcontrol[PA_JUMP+i] = 0;
+		if(map.mapdata[mpx][mpy] >= 435 && map.mapdata[mpx][mpy] <= 438)
+			// it's a garg statue
+    		map_chgtile(mpx, mpy, 434);
+		else
+			map_chgtile(mpx, mpy, 485);
+
+		strname =  "EP1_YSIYM_LVL" + itoa(level);
 	}
+	else if(episode == 2)
+	{
+        // make the switch stop glowing
+        // There may be a bug. Be careful
+        map_chgtile(mpx, mpy+1, 432);
 
-    const int twirl_speed = 100;
+	    switch(level)
+	    {
+	    case 8:
+	      strname = "EP2_VE_NOJUMPINDARK";
+	      break;
+	    case 10:
+	      strname = "EP2_VE_EVILBELTS";
+	      break;
+	    }
+	}
+	map_deanimate(mpx, mpy+(episode==2));
 
-    // get the name of the string we need to display
-    sprintf(strname, "EP1_YSIYM_LVL%d", pCKP->Control.levelcontrol.curlevel);
+	// In Episode 2 the floor must be deanimated, instead of the player, the player is at.?
 
-    dlgX = GetStringAttribute(strname, "LEFT");
-    dlgY = GetStringAttribute(strname, "TOP");
-    dlgW = GetStringAttribute(strname, "WIDTH");
-    dlgH = GetStringAttribute(strname, "HEIGHT");
-    twirlX = GetStringAttribute(strname, "TWIRLX");
-    twirlY = GetStringAttribute(strname, "TWIRLY");
+	CWindow *InfoTextWindow = new CWindow(0.2, 0.2, 0.6, 0.6);
+	InfoTextWindow->addTextBox(0.0f, 0.0f, 1.0f, 0.8f, getstring(strname), true);
+	InfoTextWindow->addTextBox(0.2f, 0.8f, 1.0f, 0.2f, "Okay!", true);
+	g_pInput->flushAll();
 
-    dialogbox(dlgX,dlgY,dlgW,dlgH);
-    g_pGraphics->drawFont(getstring(strname), (dlgX+1)<<3, (dlgY+1)<<3,0);
-
-    twirlframe = 0;
-    twirltimer = twirl_speed+1;
-    // wait for enter
     do
     {
-      if (twirltimer>twirl_speed)
-      {
-    	  g_pGraphics->drawCharacter((dlgX+twirlX)<<3, (dlgY+twirlY)<<3, 9+twirlframe);
+        g_pInput->pollEvents();
+        g_pTimer->SpeedThrottle();
+        InfoTextWindow->render();
         g_pVideoDriver->update_screen();
-        twirlframe++;
-        if (twirlframe>5) twirlframe=0;
-        twirltimer=0;
-      } else twirltimer++;
-      g_pInput->pollEvents();
-      g_pTimer->SpeedThrottle();
-      g_pVideoDriver->update_screen();
-    } while(!g_pInput->getPressedKey(KENTER) /*&& !immediate_keytable[KQUIT] && !getanyevent(pCKP)*/);
+    } while(!g_pInput->getPressedAnyCommand());
 
-    // make the statue head stop glowing
-    if (!isgarg)
-    {
-      map_chgtile(mpx, mpy, YORPSTATUEHEADUSED);
-      map_deanimate(mpx, mpy);
-    }
-    else
-    { // it's a garg statue
-
-    	map_chgtile(mpx, mpy, 434);
-        map_deanimate(mpx, mpy);
-    }
+    delete InfoTextWindow;
 }
 
 void VorticonElder(int mpx, int mpy, stCloneKeenPlus *pCKP)
 {
+	CWindow *ElderTextWindow;
+
+	/*
 	int twirlframe, twirltimer;
 	int dlgX,dlgY,dlgW,dlgH,twirlX,twirlY;
+	const int twirl_speed = 100;*/
 	const char *strName="";
-	const int twirl_speed = 100;
 
-	for(int i=0; i < 4 ; i++)
-	{
-		player[0].playcontrol[PA_JUMP+i] = 0;
-	}
+	// TODO: Pause the game, because CWindow won't do that
+
+	g_pInput->flushAll();
 
     g_pSound->pauseSound();
+
+    ElderTextWindow = new CWindow(0.2, 0.2, 0.6, 0.6);
 
     switch(pCKP->Control.levelcontrol.curlevel)
     {
@@ -260,35 +242,39 @@ void VorticonElder(int mpx, int mpy, stCloneKeenPlus *pCKP)
       break;
     }
 
-    dlgX = GetStringAttribute(strName, "LEFT");
+    /*dlgX = GetStringAttribute(strName, "LEFT");
     dlgY = GetStringAttribute(strName, "TOP");
     dlgW = GetStringAttribute(strName, "WIDTH");
     dlgH = GetStringAttribute(strName, "HEIGHT");
     twirlX = GetStringAttribute(strName, "TWIRLX");
-    twirlY = GetStringAttribute(strName, "TWIRLY");
+    twirlY = GetStringAttribute(strName, "TWIRLY");*/
 
-    dialogbox(dlgX, dlgY, dlgW, dlgH);
-    g_pGraphics->drawFont( getstring(strName), (dlgX+1)<<3, (dlgY+1)<<3,0);
+    //dialogbox(dlgX, dlgY, dlgW, dlgH);
+    //g_pGraphics->drawFont( getstring(strName), (dlgX+1)<<3, (dlgY+1)<<3,0);
+    // For what was pGraphics->drawFont
 
-    twirlframe = 0;
-    twirltimer = twirl_speed+1;
-  // wait for enter
+    //twirlframe = 0;
+    //twirltimer = twirl_speed+1;
+    // wait for enter
     do
     {
-      if (twirltimer>twirl_speed)
+      /*if (twirltimer>twirl_speed)
       {
     	  g_pGraphics->drawCharacter((dlgX+twirlX)<<3, (dlgY+twirlY)<<3, 9+twirlframe);
         g_pVideoDriver->update_screen();
         twirlframe++;
         if (twirlframe>5) twirlframe=0;
         twirltimer=0;
-      } else twirltimer++;
-      g_pInput->pollEvents();
-      g_pTimer->SpeedThrottle();
-      g_pVideoDriver->update_screen();
+      } else twirltimer++;*/
+
+    	g_pInput->pollEvents();
+    	g_pTimer->SpeedThrottle();
+    	ElderTextWindow->render();
+    	g_pVideoDriver->update_screen();
     } while(!g_pInput->getPressedKey(KENTER) );
 
     // make the switch stop glowing
+    // There may be a bug. Be careful
     map_chgtile(mpx, mpy+1, 432);
 
     map_deanimate(mpx, mpy+1);

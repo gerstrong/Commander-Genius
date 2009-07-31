@@ -1314,14 +1314,8 @@ void procgoodie(int t, int mpx, int mpy, int theplayer, stCloneKeenPlus *pCKP)
         pCKP->Control.levelcontrol.tobonuslevel = 1;
     break;
 
-    case YORPSTATUEHEAD:
-      if(pCKP->Control.levelcontrol.episode == 1)
-      {
-    	  youseeinyourmind(mpx, mpy, pCKP);
-      }
-      else if(pCKP->Control.levelcontrol.episode == 2)
-    	  if(!player[theplayer].blockedr && !player[theplayer].blockedl)
-    		  VorticonElder(mpx, mpy, pCKP);
+    case 22: // Game info block (Youseein your mind or vorticon elder...)
+    	showGameHint(mpx, mpy, pCKP->Control.levelcontrol.episode, pCKP->Control.levelcontrol.curlevel);
       break;
 
     case 27:

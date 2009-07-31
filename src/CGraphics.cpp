@@ -312,6 +312,21 @@ unsigned char xa,ya;
   }
 }
 
+void CGraphics::drawCharacter(float x, float y, int f)
+{
+	assert(f >= 0 && f < 256);
+unsigned char xa,ya;
+
+  for(ya=0;ya<8;ya++)
+  {
+    for(xa=0;xa<8;xa++)
+    {
+    	g_pVideoDriver->setpixel((unsigned int)((x*320)+xa), (unsigned int)((y*200)+ya), (unsigned char)font[f][ya][xa]);
+    }
+  }
+}
+
+
 void CGraphics::sb_drawCharacter(int x, int y, int f)
 {
 	unsigned char xa,ya;
@@ -605,7 +620,7 @@ unsigned int i,x=xoff,y;
      if (c!=13)
      {
        if (highlight) c|=128;
-       drawCharacter(x, y, c);
+       drawCharacter((int)x, (int)y, c);
        x+=8;
      }
      else
@@ -615,6 +630,14 @@ unsigned int i,x=xoff,y;
      }
    }
 }
+
+// font drawing functions (float version)
+void CGraphics::drawFont(const std::string& text, float xoff, float yoff, int highlight)
+{
+	drawFont(text, (int)(xoff*320), (int)(yoff*200), highlight);
+}
+
+
 void CGraphics::sb_font_draw(const std::string& text, int xoff, int yoff)
 {
    unsigned int i,x,y;
