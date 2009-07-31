@@ -159,10 +159,6 @@ void showGameHint(int mpx, int mpy, int episode, int level)
 {
 	std::string strname;
 
-	// First check, if the item has really been activated
-   	if(!map_isanimated(mpx, mpy+(episode==2) ))
-   		return;
-
 	if(episode == 1)
 	{
 		if(map.mapdata[mpx][mpy] >= 435 && map.mapdata[mpx][mpy] <= 438)
@@ -189,9 +185,6 @@ void showGameHint(int mpx, int mpy, int episode, int level)
 	      break;
 	    }
 	}
-	map_deanimate(mpx, mpy+(episode==2));
-
-	// In Episode 2 the floor must be deanimated, instead of the player, the player is at.?
 
 	CWindow *InfoTextWindow = new CWindow(0.2, 0.2, 0.6, 0.6);
 	InfoTextWindow->addTextBox(0.0f, 0.0f, 1.0f, 0.8f, getstring(strname), true);
@@ -208,80 +201,6 @@ void showGameHint(int mpx, int mpy, int episode, int level)
 
     delete InfoTextWindow;
 }
-
-void VorticonElder(int mpx, int mpy, stCloneKeenPlus *pCKP)
-{
-	CWindow *ElderTextWindow;
-
-	/*
-	int twirlframe, twirltimer;
-	int dlgX,dlgY,dlgW,dlgH,twirlX,twirlY;
-	const int twirl_speed = 100;*/
-	const char *strName="";
-
-	// TODO: Pause the game, because CWindow won't do that
-
-	g_pInput->flushAll();
-
-    g_pSound->pauseSound();
-
-    ElderTextWindow = new CWindow(0.2, 0.2, 0.6, 0.6);
-
-    switch(pCKP->Control.levelcontrol.curlevel)
-    {
-    case 8:
-      strName = "EP2_VE_NOJUMPINDARK";
-      break;
-    case 10:
-      strName = "EP2_VE_EVILBELTS";
-      break;
-
-    default:
-      crashflag = 1;
-      why_term_ptr = "VE box: Illegal level #.";
-      break;
-    }
-
-    /*dlgX = GetStringAttribute(strName, "LEFT");
-    dlgY = GetStringAttribute(strName, "TOP");
-    dlgW = GetStringAttribute(strName, "WIDTH");
-    dlgH = GetStringAttribute(strName, "HEIGHT");
-    twirlX = GetStringAttribute(strName, "TWIRLX");
-    twirlY = GetStringAttribute(strName, "TWIRLY");*/
-
-    //dialogbox(dlgX, dlgY, dlgW, dlgH);
-    //g_pGraphics->drawFont( getstring(strName), (dlgX+1)<<3, (dlgY+1)<<3,0);
-    // For what was pGraphics->drawFont
-
-    //twirlframe = 0;
-    //twirltimer = twirl_speed+1;
-    // wait for enter
-    do
-    {
-      /*if (twirltimer>twirl_speed)
-      {
-    	  g_pGraphics->drawCharacter((dlgX+twirlX)<<3, (dlgY+twirlY)<<3, 9+twirlframe);
-        g_pVideoDriver->update_screen();
-        twirlframe++;
-        if (twirlframe>5) twirlframe=0;
-        twirltimer=0;
-      } else twirltimer++;*/
-
-    	g_pInput->pollEvents();
-    	g_pTimer->SpeedThrottle();
-    	ElderTextWindow->render();
-    	g_pVideoDriver->update_screen();
-    } while(!g_pInput->getPressedKey(KENTER) );
-
-    // make the switch stop glowing
-    // There may be a bug. Be careful
-    map_chgtile(mpx, mpy+1, 432);
-
-    map_deanimate(mpx, mpy+1);
-
-    g_pSound->resumeSounds();
-}
-
 
 void inventory_draw_ep1(int p)
 {

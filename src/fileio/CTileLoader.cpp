@@ -125,34 +125,38 @@ bool CTileLoader::load()
 	}
 
 	int value;
-
-	for( j=0 ; j < numtiles ; j++ )
+	for( j=0 ; j < numtiles ;)
 	{
 		value = TileProperty[j][0];
 
 		// stuff for animated tiles
 		if(value == 1)
 		{
-		    tiles[j].animOffset = 0;   // starting offset from the base frame
+		    tiles[j++].animOffset = 0;   // starting offset from the base frame
 		}
 		else if( value == 2 )
 		{
 			 tiles[j++].animOffset = 0;   // starting offset from the base frame
-			 tiles[j].animOffset = 1;   // starting offset from the base frame
+			 tiles[j++].animOffset = 1;   // starting offset from the base frame
 		}
 		else
 		{
 			 tiles[j++].animOffset = 0;   // starting offset from the base frame
 			 tiles[j++].animOffset = 1;   // starting offset from the base frame
 			 tiles[j++].animOffset = 2;   // starting offset from the base frame
-			 tiles[j].animOffset = 3;   // starting offset from the base frame
+			 tiles[j++].animOffset = 3;   // starting offset from the base frame
 		}
+	}
+
+	for(i=0 ; i<numtiles ; i++)
+	{
+		printf("tile %d: %d\n",i,TileProperty[i][0]);
 	}
 
 	// This function assigns the correct tiles that have to be changed
     assignChangeTileAttribute(tiles);
 
-	  return true;
+	return true;
 }
 
 void CTileLoader::assignChangeTileAttribute(stTile *tile)

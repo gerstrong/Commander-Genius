@@ -238,7 +238,7 @@ int i;
       px = ((mapxstripepos+((x-mapx)<<4))&511);
       py = ((mapystripepos+((y-mapy)<<4))&511);
 
-      TileProperty[map.mapdata[x][y]][ANIMATION] = 1;
+      //TileProperty[map.mapdata[x][y]][ANIMATION] = 1;
 
       // find it!
       for(i=1;i<MAX_ANIMTILES-1;i++)

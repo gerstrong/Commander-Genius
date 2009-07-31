@@ -378,6 +378,7 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
     p_levelcontrol->command = LVLC_NOCOMMAND;
 
     p_levelcontrol->dark = 0;
+    p_levelcontrol->usedhintmb = false;
     if (loadinggame)
     {
       sprintf(SaveGameFileName, "ep%csave%c.dat", p_levelcontrol->episode+'0', loadslot+'0');

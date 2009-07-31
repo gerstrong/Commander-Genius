@@ -6,7 +6,7 @@
 
 // gamedo.c
 int gamedo_ScrollTriggers(int theplayer);
-void gamedo_AnimatedTiles(void);
+void gamedo_AnimatedTiles(bool animate_hinttiles = false);
 
 void gamedo_render_eraseobjects(void);
 void gamedo_render_drawdebug(void);

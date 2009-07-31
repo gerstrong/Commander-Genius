@@ -50,6 +50,7 @@ struct stLevelControl
 
  int episode;                 // which episode we're playing (1-3)
  bool hardmode;
+ bool usedhintmb;			  // Has the message box been used?
 
  // array of which levels have been completed (have "Done" tiles over them
  // on the world map)

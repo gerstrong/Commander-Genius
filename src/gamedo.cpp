@@ -186,21 +186,25 @@ int scrollchanged;
 }
 
 // animates animated tiles
-void gamedo_AnimatedTiles(void)
+void gamedo_AnimatedTiles(bool animate_hinttiles)
 {
 int i;
    /* animate animated tiles */
    if (animtiletimer>ANIM_TILE_TIME)
    {
       /* advance to next frame */
-      curanimtileframe = (curanimtileframe+1)&7;
-      /* re-draw all animated tiles */
+	  curanimtileframe = (curanimtileframe+1)&7;
+
+	  /* re-draw all animated tiles */
       for(i=1;i<MAX_ANIMTILES-1;i++)
       {
-         if (animtiles[i].slotinuse)
-         {
-        	 g_pGraphics->drawTile(animtiles[i].x, animtiles[i].y, animtiles[i].baseframe+((animtiles[i].offset+curanimtileframe)%TileProperty[animtiles[i].baseframe][ANIMATION]));
-         }
+          if (animtiles[i].slotinuse)
+          {
+        	  if( TileProperty[animtiles[i].baseframe][BEHAVIOR] != 22 || animate_hinttiles ) // If the tile is a hint mb, then, only animate if it hasn't been triggered yet!
+        	  {
+        		  g_pGraphics->drawTile(animtiles[i].x, animtiles[i].y, animtiles[i].baseframe+((animtiles[i].offset+curanimtileframe)%TileProperty[animtiles[i].baseframe][ANIMATION]));
+        	  }
+          }
       }
       animtiletimer = 0;
    }

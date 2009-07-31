@@ -39,13 +39,7 @@ void gameloop(stCloneKeenPlus *pCKP)
 
   int enter,lastquit;
 
-  // Enable the yorp/garg statues elders switches animations
-  for(int i=0 ; i<numtiles ; i++)
-	  if(TileProperty[i][BEHAVIOR] == 22)
-		  TileProperty[i][ANIMATION] = 4;
-
   if (player[0].x==0 || player[0].y==0)
-
   {
     crashflag=1;
     crashflag2 = pCKP->Control.levelcontrol.curlevel;
@@ -143,7 +137,7 @@ void gameloop(stCloneKeenPlus *pCKP)
     	}
    	 }
 
-     gamedo_AnimatedTiles();
+     gamedo_AnimatedTiles(!pCKP->Control.levelcontrol.usedhintmb);
      gamedo_enemyai(pCKP);
 
      gamedo_HandleFKeys(pCKP);
@@ -1315,7 +1309,11 @@ void procgoodie(int t, int mpx, int mpy, int theplayer, stCloneKeenPlus *pCKP)
     break;
 
     case 22: // Game info block (Youseein your mind or vorticon elder...)
-    	showGameHint(mpx, mpy, pCKP->Control.levelcontrol.episode, pCKP->Control.levelcontrol.curlevel);
+    	if(!pCKP->Control.levelcontrol.usedhintmb)
+    	{
+    		showGameHint(mpx, mpy, pCKP->Control.levelcontrol.episode, pCKP->Control.levelcontrol.curlevel);
+    		pCKP->Control.levelcontrol.usedhintmb = true;
+    	}
       break;
 
     case 27:
