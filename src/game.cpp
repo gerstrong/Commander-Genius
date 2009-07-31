@@ -1328,7 +1328,7 @@ void procgoodie(int t, int mpx, int mpy, int theplayer, stCloneKeenPlus *pCKP)
       break;
 
     case 17:
-      if (pCKP->Control.levelcontrol.canexit && (!pCKP->Control.levelcontrol.isfinallevel || player[theplayer].inventory.HasFuel))
+      if (pCKP->Control.levelcontrol.canexit)
       {
         pCKP->Control.levelcontrol.exitXpos = (mpx+2)<<4;
         PlayerTouchedExit(theplayer, pCKP);

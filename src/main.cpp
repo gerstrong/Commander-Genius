@@ -351,7 +351,7 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
     }
 
     p_levelcontrol->curlevel = p_levelcontrol->chglevelto;
-    if (p_levelcontrol->curlevel == FINAL_MAP)
+    if (p_levelcontrol->curlevel == FINAL_MAP && p_levelcontrol->episode == 1)
     {
       p_levelcontrol->isfinallevel = 1;
       p_levelcontrol->canexit = 0;

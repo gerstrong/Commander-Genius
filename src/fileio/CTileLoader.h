@@ -44,6 +44,7 @@ private:
 
 	void assignChangeTileAttribute(stTile *tile);
 	bool setProperOffset();
+	bool canbePickedup(int tile);
 };
 
 #endif /* CTILELOADER_H_ */

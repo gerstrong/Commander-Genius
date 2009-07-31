@@ -164,36 +164,27 @@ void CTileLoader::assignChangeTileAttribute(stTile *tile)
 		tile[i].chgtile = 0;
 
 	// At any other case, than the special ones, the tile is always 143 for pickuppable items
-	// 17 is tile for an exit.
+	// 17 is tile for an exit. Until row 19, this seems to be valid
 	for(int i=0 ; i<numtiles ; i++)
-	{
-		if(TileProperty[i][BEHAVIOR] >= 2 &&
-		   TileProperty[i][BEHAVIOR] <= 21 &&
-		   TileProperty[i][BEHAVIOR] != 17 )
-		{
+		if(canbePickedup(i) )
 			tile[i].chgtile = 143;
-		}
-	}
 
 	switch(m_episode)
 	{
 		case 1:
-		{
-			for(int i=502 ; i<=506 ; i++) // Workaround in Level 12 of Episode 2, where the tiles are solid after a taken item.
-			{
-				if( (TileProperty[i][BEHAVIOR] >= 6 &&
-					 TileProperty[i][BEHAVIOR] <= 21 &&
-				     TileProperty[i][BEHAVIOR] != 17) ||
-				     TileProperty[i][BEHAVIOR] == 27 ||
-				     TileProperty[i][BEHAVIOR] == 28 )
-				tile[i].chgtile = 439;
-			}
-			break;
-		}
 		case 2:
 		{
-			for(int i=306 ; i<=311 ; i++) // Workaround in Level 12 of Episode 2, where the tiles are solid after a taken item.
-				tile[i].chgtile = 276;
+			for(int i=38*13 ; i<39*13 ; i++) // Workaround for silcar 1. Row 38
+				if( canbePickedup(i) )
+					tile[i].chgtile = 439;
+
+			for(int i=35*13 ; i<36*13 ; i++) // Workaround for silcar 4. Row 35
+				if( canbePickedup(i) )
+					tile[i].chgtile = 335;
+
+			for(int i=23*13 ; i<24*13 ; i++) // Workaround in Level 12 of Episode 2, where the tiles are solid after a taken item.
+					tile[i].chgtile = 276;   // Row 23
+
 			break;
 		}
 		case 3:
@@ -202,11 +193,7 @@ void CTileLoader::assignChangeTileAttribute(stTile *tile)
 			for(int i=0 ; i<=numtiles ; i++)
 			{
 				// Only items!!
-				if( (TileProperty[i][BEHAVIOR] >= 6 &&
-					 TileProperty[i][BEHAVIOR] <= 21 &&
-				     TileProperty[i][BEHAVIOR] != 17) ||
-				     TileProperty[i][BEHAVIOR] == 27 ||
-				     TileProperty[i][BEHAVIOR] == 28 )
+				if(canbePickedup(i))
 				{
 					int j = i;
 					while(TileProperty[j][BEHAVIOR] != 0) // "Nothing" is to the left of items row.
@@ -214,7 +201,7 @@ void CTileLoader::assignChangeTileAttribute(stTile *tile)
 					tile[i].chgtile = j;
 				}
 
-				// Only Doors! Tile is always 182
+				// Only for Doors! Tile is always 182
 				if(TileProperty[i][BEHAVIOR] >= 2 &&
 				   TileProperty[i][BEHAVIOR] <= 5)
 					tile[i].chgtile = 182;
@@ -223,4 +210,13 @@ void CTileLoader::assignChangeTileAttribute(stTile *tile)
 			break;
 		}
 	}
+}
+
+bool CTileLoader::canbePickedup(int tile)
+{
+	return ((TileProperty[tile][BEHAVIOR] >= 6 &&
+			TileProperty[tile][BEHAVIOR] <= 21 &&
+			TileProperty[tile][BEHAVIOR] != 17) ||
+			TileProperty[tile][BEHAVIOR] == 27 ||
+			TileProperty[tile][BEHAVIOR] == 28);
 }
