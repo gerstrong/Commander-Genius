@@ -25,7 +25,7 @@ unsigned int getlevelat(unsigned int xpx, unsigned int ypx);
 /* located in misc.cpp */
 
 //-------------------[referenced from ai/balljack.cpp]-----------------//
-uint rnd(void);
+unsigned int rnd(void);
 
 
 /* located in ai/balljack.c */
