@@ -2,6 +2,8 @@
 
 #include "../include/enemyai.h"
 
+#include "earth.h"
+
 // explosion and earth chunk objects, used for the "earth explodes"
 // sequence when you press the switch on a Tantalus Ray in ep2.
 
@@ -26,7 +28,7 @@ void explosion_ai(int o)
   {
     if (objects[o].ai.ray.direction==-1 && objects[o].ai.ray.animframe==0)
     {
-      objects[o].exists = 0;
+    	delete_object(o);
     }
     else
     {
@@ -55,7 +57,7 @@ void earthchunk_ai(int o)
      objects[o].inhibitfall = 1;
      objects[o].needinit = 0;
   }
-  if (!objects[o].onscreen) objects[o].exists = 0;
+  if (!objects[o].onscreen) delete_object(o);
 
   switch(objects[o].ai.ray.direction)
   {

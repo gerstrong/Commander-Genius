@@ -283,7 +283,7 @@ int i;
           case OBJ_MEEP: meep_ai(i, pCKP->Control.levelcontrol); break;
           case OBJ_SNDWAVE: sndwave_ai(i, pCKP); break;
           case OBJ_MOTHER: mother_ai(i, pCKP->Control.levelcontrol); break;
-          case OBJ_FIREBALL: fireball_ai(i, pCKP); break;
+          case OBJ_FIREBALL: fireball_ai(i, pCKP->Control.levelcontrol.hardmode); break;
           case OBJ_BALL: ballandjack_ai(i); break;
           case OBJ_JACK: ballandjack_ai(i); break;
           case OBJ_PLATVERT: platvert_ai(i); break;

@@ -5,11 +5,12 @@
 #include "../include/enemyai.h"
 
 #include "../sdl/sound/CSound.h"
+#include "fireball.h"
 
 // fireball projectile shot out by Vorticon Mother (Ep3)
 
-#define FIREBALL_SPEED   5
-
+#define FIREBALL_SPEED   		8
+#define FIREBALL_HARD_SPEED		19
 #define FIREBALL_ANIM_RATE     80
 
 #define FIREBALL_LEFT_FRAME    57
@@ -17,9 +18,10 @@
 
 #define FIREBALL_OFFSCREEN_KILL_TIME     100
 
-void fireball_ai(int o, stCloneKeenPlus *pCKP)
+void fireball_ai(int o, bool hard)
 {
-	int i;
+int i;
+int speed;
   if (objects[o].needinit)
   {
     objects[o].ai.ray.animframe = 0;
@@ -30,35 +32,42 @@ void fireball_ai(int o, stCloneKeenPlus *pCKP)
     objects[o].needinit = 0;
   }
 
-  // test if it hit a baddie
-   for(i=1;i<MAX_OBJECTS;i++)
-   {
-     if (!objects[i].exists || i==o) continue;
-     if (objects[o].ai.ray.dontHitEnable)
-     {
-       if (objects[i].type==objects[o].ai.ray.dontHit) continue;
-     }
-
-     if (objects[i].canbezapped && objects[i].type != OBJ_MOTHER)
-     {
-        if (hitdetect(i, o))
-        {
-	     objects[o].type = OBJ_RAY;
-		 objects[o].ai.ray.state = RAY_STATE_SETZAPZOT;
-          objects[i].zapped++;
-        }
-     }
-   }
-
   // check if it hit keen
   if (objects[o].touchPlayer)
   {
      killplayer(objects[o].touchedBy);
+	 // make a ZAP-ZOT animation
      objects[o].type = OBJ_RAY;
      objects[o].ai.ray.state = RAY_STATE_SETZAPZOT;
      objects[o].inhibitfall = 1;
      objects[o].needinit = 0;
+	 return;
   }
+
+  // test if it hit a baddie
+	//for(i=1;i<highest_objslot;i++)
+	for(i=1;i<MAX_OBJECTS;i++) // TODO: Must be replaced by the upper when highest_objslot is in existence
+	{
+		if (!objects[i].exists || i==o) continue;
+		if (objects[i].type==OBJ_RAY || objects[i].type==OBJ_FIREBALL) continue;
+
+		if (objects[i].canbezapped)
+		{
+			if (hitdetect(i, o))
+			{
+				objects[o].type = OBJ_RAY;
+				objects[o].ai.ray.state = RAY_STATE_SETZAPZOT;
+				objects[o].inhibitfall = 1;
+				objects[o].needinit = 0;
+				objects[i].zapped++;
+				objects[i].zapx = objects[o].x;
+				objects[i].zapy = objects[o].y;
+				objects[i].zapd = objects[o].ai.ray.direction;
+				objects[i].zappedbyenemy = 1;
+				return;
+			}
+		}
+	}
 
   // check if it was shot
   if (objects[o].zapped)
@@ -79,7 +88,7 @@ void fireball_ai(int o, stCloneKeenPlus *pCKP)
   {
     if (objects[o].ai.ray.offscreentime > FIREBALL_OFFSCREEN_KILL_TIME)
     {
-      objects[o].exists = 0;
+      delete_object(o);
       return;
     }
     else objects[o].ai.ray.offscreentime++;
@@ -87,6 +96,7 @@ void fireball_ai(int o, stCloneKeenPlus *pCKP)
   else objects[o].ai.ray.offscreentime = 0;
 
   // fly through the air
+  speed = hard ? FIREBALL_HARD_SPEED : FIREBALL_SPEED;
   if (objects[o].ai.ray.direction == RIGHT)
   {
      objects[o].sprite = FIREBALL_RIGHT_FRAME + objects[o].ai.ray.animframe;
@@ -98,7 +108,7 @@ void fireball_ai(int o, stCloneKeenPlus *pCKP)
         objects[o].needinit = 0;
         return;
      }
-     else objects[o].x += FIREBALL_SPEED;
+     else objects[o].x += speed;
   }
   else
   {
@@ -111,7 +121,7 @@ void fireball_ai(int o, stCloneKeenPlus *pCKP)
         objects[o].needinit = 0;
         return;
      }
-     else objects[o].x -= FIREBALL_SPEED;
+     else objects[o].x -= speed;
   }
 
   // animation
@@ -122,4 +132,6 @@ void fireball_ai(int o, stCloneKeenPlus *pCKP)
   }
   else objects[o].ai.ray.animtimer++;
 }
+
+
 
