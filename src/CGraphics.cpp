@@ -96,10 +96,18 @@ unsigned char xa,ya;
 void CGraphics::drawSprite_direct(int x, int y, unsigned int t)
 {
 unsigned char xa,ya;
+unsigned char oldpixel; // used for the or operation when drawing maked sprites
+
   for(ya=0;ya<sprites[t].ysize;ya++)
    for(xa=0;xa<sprites[t].xsize;xa++)
-    if (sprites[t].maskdata[ya][xa])
-    	g_pVideoDriver->setpixel(x+xa, y+ya, sprites[t].imgdata[ya][xa]);
+    if ( sprites[t].maskdata[ya][xa]  )
+    {
+    	oldpixel = g_pVideoDriver->getpixel(x+xa, y+ya);
+    	g_pVideoDriver->setpixel(x+xa, y+ya, (oldpixel | sprites[t].imgdata[ya][xa]) );
+    }
+    else
+    	g_pVideoDriver->setpixel(x+xa, y+ya, (sprites[t].imgdata[ya][xa]==0) ? 16 :
+															sprites[t].imgdata[ya][xa]);
 }
 
 void CGraphics::drawTile(int x, int y, unsigned int t)
@@ -250,11 +258,12 @@ unsigned int xstart,ystart;
    bufoffX = (x+xstart+scrollx_buf)&511;       // offset within line
    for(xa=xstart;xa<sprites[s].xsize;xa++)
    {
-     if (sprites[s].maskdata[ya][xa])
-     {
-       objects[objectnum].erasedata[ya][xa] = scrollbuffer[bufoffY+bufoffX];
-       scrollbuffer[bufoffY+bufoffX] = sprites[s].imgdata[ya][xa];
-     }
+     objects[objectnum].erasedata[ya][xa] = scrollbuffer[bufoffY+bufoffX];
+     if ( sprites[s].maskdata[ya][xa]  )
+    	 scrollbuffer[bufoffY+bufoffX] |= sprites[s].imgdata[ya][xa];
+     else
+    	 scrollbuffer[bufoffY+bufoffX] = sprites[s].imgdata[ya][xa];
+
      bufoffX = (bufoffX+1)&511;
    }
    // move to next line and wrap to top of buffer if needed
@@ -286,11 +295,8 @@ unsigned int xstart,ystart;
    bufoffX = (x+xstart+scrollx_buf)&511;       // offset within line
    for(xa=xstart;xa<sprites[s].xsize;xa++)
    {
-     if (sprites[s].maskdata[ya][xa])
-     {
-       scrollbuffer[bufoffY+bufoffX] = objects[objectnum].erasedata[ya][xa];
-     }
-     bufoffX = (bufoffX+1)&511;
+      scrollbuffer[bufoffY+bufoffX] = objects[objectnum].erasedata[ya][xa];
+      bufoffX = (bufoffX+1)&511;
    }
    // move to next line and wrap to top of buffer if needed
    bufoffY += 512;

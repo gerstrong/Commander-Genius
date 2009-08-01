@@ -148,11 +148,6 @@ bool CTileLoader::load()
 		}
 	}
 
-	for(i=0 ; i<numtiles ; i++)
-	{
-		printf("tile %d: %d\n",i,TileProperty[i][0]);
-	}
-
 	// This function assigns the correct tiles that have to be changed
     assignChangeTileAttribute(tiles);
 

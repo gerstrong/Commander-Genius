@@ -1073,11 +1073,11 @@ int x,y1,y2,tboundary;
         sprites[s].imgdata[y1][x] = tiledata[t][y2][x];
         if (sprites[s].imgdata[y1][x] != transparentcol)
         {
-          sprites[s].maskdata[y1][x] = 15;
+          sprites[s].maskdata[y1][x] = 0;
         }
         else
         {
-          sprites[s].maskdata[y1][x] = 0;
+          sprites[s].maskdata[y1][x] = 15;
         }
       }
       y2++;
@@ -1178,7 +1178,7 @@ int x,y,i,indx;
       for(x=0;x<DEMOBOX_WIDTH;x++)
       {
         sprites[DemoSprite].imgdata[y][x] = demobox_image[indx];
-        sprites[DemoSprite].maskdata[y][x] = demobox_mask[indx];
+        sprites[DemoSprite].maskdata[y][x] = 15-demobox_mask[indx];
         indx++;
       }
     }
@@ -1210,15 +1210,6 @@ int x,y,i,indx;
       ReplaceSpriteColor(s, 9, 12, 8);
       ReplaceSpriteColor(s, 1, 4, 8);
       s++;
-    }
-
-    // set up mask for ice cannons (ep1)
-    if (pCKP->Control.levelcontrol.episode==1)
-    {
-
-//       MakeMask(443, 155, 7);
-  //     tiles[443].masktile = 155;
-//       tiles[428].masktile = 155;
     }
 }
 

@@ -62,7 +62,7 @@ bool CEGASprit::loadHead(char *data)
     	memcpy(Sprite[i].name,data+128*i+16,12);
     	memcpy(&(Sprite[i].hv_offset),data+128*i+28,4);
 
-    	Sprite[i].width *= 8; // Another case where the width is divided by 8
+    	Sprite[i].width *= 8; // Where the width is divided by 8
     	Sprite[i].hitbox_l >>= 8;
     	Sprite[i].hitbox_u >>= 8;
     	Sprite[i].hitbox_r >>= 8;
@@ -143,7 +143,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
                c = sprites[s].imgdata[y][x];
              }
              c |= (Planes->getbit(RawData, p) << p);
-             if (p==3 && c==0) c = 16;
+             //if (p==3 && c==0) c = 16;
              sprites[s].imgdata[y][x] = c;
            }
          }
@@ -159,7 +159,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
        {
          for(int x=0 ; x<sprites[s].xsize ; x++)
          {
-            sprites[s].maskdata[y][x] = (1 - Planes->getbit(RawData, 4));
+            sprites[s].maskdata[y][x] =  Planes->getbit(RawData, 4);
          }
        }
      }

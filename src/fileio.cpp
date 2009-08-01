@@ -472,12 +472,15 @@ unsigned int temp1, temp2, temp3, temp4;
 
 unsigned int loadmap(const std::string& filename, const std::string& path, int lvlnum, int isworldmap, stCloneKeenPlus *pCKP)
 {
+
+	// TODO: Tie that one up in convert stuff in C++
+
 FILE *fp;
 int t;
 unsigned int c;
 int numruns = 0;
-int gottenazero;
 int resetcnt, resetpt;
+unsigned int planesize = 0;
 
   NessieAlreadySpawned = 0;
   map.isworldmap = isworldmap;
@@ -498,7 +501,7 @@ int resetcnt, resetpt;
   curmapx = curmapy = mapdone = 0;
 
  unsigned int *filebuf; // big File Buffer for the uncompression
- filebuf = (unsigned int*) malloc(500000*sizeof(int));
+ filebuf = (unsigned int*) malloc(1000000*sizeof(int));
 
  if(filebuf == NULL)
  {
@@ -532,44 +535,32 @@ int resetcnt, resetpt;
     return 1;
   }
 
-  c=18;
-
-  while(c < ((filebuf[9] / 2)+18)) // Check against Tilesize
+  planesize = filebuf[9];
+  planesize /= 2; // Size of two planes, but we only need one
+  for( c=18 ; c<planesize+18 ; c++ ) // Check against Tilesize
   {
 	  t = filebuf[c];
 	  if(!mapdone)
 		  addmaptile(t);
 
 	  if(t > 255)
-	  {
 		  t=0; // If there are some invalid values in the file
-	  }
-
-      c++;
   }
 
-
-  // now do the enemies
-    gottenazero = 0;
-
-  // get enemy/objectlayer data
+  // now do the sprites
+  // get sprite data
     curmapx = curmapy = mapdone = numruns = 0;
     resetcnt = resetpt = 0;
 
     while(!mapdone)
-        {
-          t = filebuf[c];
+    {
+    	t = filebuf[c];
 
-          if (t==0 && !gottenazero)
-          {
-             curmapx = curmapy = 0;
-             gottenazero = 1;
-          }
-          if (map.isworldmap) addobjectlayertile(t, pCKP); else addenemytile(t, pCKP);
-          if (++resetcnt==resetpt) curmapx=curmapy=0;
+        if (map.isworldmap) addobjectlayertile(t, pCKP); else addenemytile(t, pCKP);
+        if (++resetcnt==resetpt) curmapx=curmapy=0;
 
-          c++;
-        }
+        c++;
+    }
 
     free(filebuf);
 

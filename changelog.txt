@@ -1,6 +1,11 @@
 Commander Genius Pre-Release v0.3 (CloneKeenPlus):
 --------------------------------------------------
 
+01-08-2009
+- Masked tile can now use semi-transparent pixels. Silcar 3 ghosts use that (Tulip)
+- Implemented a new dialog system. Base for the future dialogs and menus
+- Minor issues
+
 26-07-2009
 - fixed some bugs which made the game crash
 - removed an old and obsolete class

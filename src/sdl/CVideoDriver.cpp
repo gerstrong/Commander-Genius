@@ -724,7 +724,6 @@ void CVideoDriver::setpixel(unsigned int x, unsigned int y, unsigned char c)
 	if( x >= GAME_STD_WIDTH || y >= GAME_STD_HEIGHT ) // out of Bonds!!!
 		return;
 
-
     if(BlitSurface->format->BitsPerPixel == 16)
     {
     	Uint16 *ubuff16;
@@ -749,7 +748,7 @@ void CVideoDriver::setpixel(unsigned int x, unsigned int y, unsigned char c)
 }
 unsigned char CVideoDriver::getpixel(int x, int y)
 {
-  return 0;
+	return 15;
 }
 
 // "Console" here refers to the capability to pop up in-game messages

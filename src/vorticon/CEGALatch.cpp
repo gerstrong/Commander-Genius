@@ -102,7 +102,6 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
      plane4 = (m_latchplanesize * 3);
 
      // ** read the 8x8 tiles **
-     //g_pLogFile->ftextOut("latch_loadlatch(): Decoding 8x8 tiles...<br>", fname);
 
      // set up the getbit() function of CPlanes class
      CPlanes *Planes = new CPlanes(plane1 + m_fontlocation,
@@ -112,7 +111,7 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
 							 0);
 
 	// Load 8x8 Tiles
-     char c=0;
+     unsigned char c=0;
      for(int p=0;p<4;p++)
      {
        for(int t=0;t<m_fonttiles;t++)
