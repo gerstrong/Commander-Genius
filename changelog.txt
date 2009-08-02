@@ -1,5 +1,7 @@
 Commander Genius Pre-Release v0.3 (CloneKeenPlus):
 --------------------------------------------------
+02-08-2009
+- Updated the PC-Speaker Sound emulation (Thx to Napalm for a great lesson!)
 
 01-08-2009
 - Masked tile can now use semi-transparent pixels. Silcar 3 ghosts use that (Tulip)

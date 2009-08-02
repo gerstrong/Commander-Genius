@@ -4,12 +4,6 @@
  *  Created on: 23.05.2009
  *      Author: gerstrong
  */
-
-#define MAX_STRING_LENGTH	256
-#define MAX_SOUNDS				50
-
-#define MAX_STACK_SPACE      	1024
-
 #include <stdio.h>
 #include <string.h>
 #include <vector>
@@ -50,12 +44,10 @@ bool CSoundSlot::loadSound(const std::string& fname, const std::string& searchna
 	{
 		FILE *fp;
 		int curheader = 0x10;
-		int i,j;
 		int offset, priority, garbage, nr_of_sounds;
 		char name[12];
 
-		for(i=0;i<12;i++)
-			name[i] = 0;
+		memset(name,0,12);
 
 		fp = OpenGameFile(fname.c_str(), "rb");
 		if (!fp)
@@ -67,15 +59,40 @@ bool CSoundSlot::loadSound(const std::string& fname, const std::string& searchna
 		fseek(fp, 0x6, SEEK_SET);
 		nr_of_sounds = fgeti(fp);
 
-		j=0;
-		for(j=0;(j<nr_of_sounds)||feof(fp);j++)
+		for(int j=0; j<nr_of_sounds || feof(fp) ; j++)
 		{
 			fseek(fp, curheader, SEEK_SET);
 			offset = fgeti(fp);
 			priority = fgetc(fp);
 			garbage = fgetc(fp);
-			for(i=0;i<12;i++) name[i] = fgetc(fp);
-			if (name == searchname) goto sound_found;
+
+			for(int i=0;i<12;i++) name[i] = fgetc(fp);
+			if (name == searchname)
+			{
+				fseek(fp, offset, SEEK_SET);
+
+				signed int sample;
+				// Read the file and convert it into waveform
+				std::vector<unsigned int> waveform;
+				do
+				{
+					sample = fgeti(fp);
+					waveform.push_back( (sample != 0x0000 && sample != 0xFFFF) ? (0x1234DD/sample) : sample );
+				}while (sample != 0xffff);
+
+				m_soundlength = waveform.size();
+
+				// copy the data to the real m_sounddata block and reduce fragmentation!
+				m_sounddata = new unsigned int[m_soundlength];
+
+				memcpy(m_sounddata, waveform.data(), m_soundlength*sizeof(unsigned int));
+
+				g_pLogFile->ftextOut("loadSound : loaded sound %s of %d bytes.<br>", searchname.c_str(), m_soundlength);
+				m_hqsound.enabled = false;
+
+				fclose(fp);
+				return true;
+			}
 
 			curheader += 0x10;
 		}
@@ -83,32 +100,6 @@ bool CSoundSlot::loadSound(const std::string& fname, const std::string& searchna
 		g_pLogFile->ftextOut("loadSound : sound %s could not be found in %s.<br>", searchname.c_str(), fname.c_str());
 		fclose(fp);
 		return false;
-
-		sound_found: ;
-
-		fseek(fp, offset, SEEK_SET);
-
-		signed int sample;
-		// Read the file and convert it into waveform
-		std::vector<unsigned int> waveform;
-		do
-		{
-			sample = fgeti(fp);
-			waveform.push_back( (sample != 0x0000 && sample != 0xFFFF) ? (0x1234DD/sample) : sample );
-		}while (sample != 0xffff);
-
-		m_soundlength = waveform.size();
-
-		// copy the data to the real m_sounddata block and reduce fragmentation!
-		m_sounddata = new unsigned int[m_soundlength];
-
-		memcpy(m_sounddata, waveform.data(), m_soundlength*sizeof(unsigned int));
-
-		g_pLogFile->ftextOut("loadSound : loaded sound %s of %d bytes.<br>", searchname.c_str(), m_soundlength);
-		m_hqsound.enabled = false;
-
-		fclose(fp);
-		return true;
 	}
 }
 
