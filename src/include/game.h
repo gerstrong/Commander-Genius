@@ -214,6 +214,9 @@ void initsprites(stCloneKeenPlus *pCKP, int s);
 void keen_get_goodie(int px, int py, int theplayer, stCloneKeenPlus *pCKP);
 void procgoodie(int t, int mpx, int mpy, int theplayer, stCloneKeenPlus *pCKP);
 
+void recalc_highest_objslot(void);
+char IsStopPoint(int x, int y, int o);
+
 void initgame(stCloneKeenPlus *pCKP);
 int initgamefirsttime(stCloneKeenPlus *pCKP, int s);
 

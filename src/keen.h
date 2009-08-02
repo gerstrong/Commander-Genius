@@ -65,6 +65,9 @@ typedef struct stFade
 #define SCROLLBUF_XSIZE  512
 #define SCROLLBUF_YSIZE  512
 #define SCROLLBUF_MEMSIZE ((SCROLLBUF_XSIZE)*(SCROLLBUF_YSIZE+300))
+#define TILE_W			16
+#define TILE_H			16
+#define TILE_S			4
 #define SCROLLBUF_NUMTILESX (SCROLLBUF_XSIZE / 16)
 #define SCROLLBUF_NUMTILESY (SCROLLBUF_YSIZE / 16)
 
@@ -497,6 +500,7 @@ typedef struct stObject
 
  unsigned int needinit;    // 1=new object--requires initilization
  unsigned char wasoffscreen;  // set to 1 when object goes offscreen
+ bool dead;
  // data for ai and such, used differently depending on
  // what kind of object it is
  union ai
@@ -855,7 +859,7 @@ typedef struct stShipQueue
 
 #include <SDL.h>
 #include "include/declarations.h"
-#include "keenext.h"
+#include "externals.h"
 #include "sdl/CSettings.h"
 
 struct stCloneKeenPlus

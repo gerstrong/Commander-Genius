@@ -41,7 +41,6 @@
 #include "include/fileio/story.h"
 #include "include/main.h"
 #include "fileio/CParser.h"
-#include "vorticon/CPlayer.h"
 #include "vorticon/CHighScores.h"
 #include "CLogFile.h"
 #include "CGame.h"
@@ -70,7 +69,6 @@ char QuitState = NO_QUIT;
 stString strings[MAX_STRINGS+1];
 int numStrings = 0;
 
-int demomode;
 FILE *demofile = NULL;
 
 char ScreenIsScrolling;
@@ -86,8 +84,6 @@ extern unsigned int scrolly_buf;
 extern unsigned char scrollpixy;
 extern unsigned int mapy;
 extern unsigned int mapystripepos;
-
-extern CPlayer *Player;
 
 char loadinggame, loadslot;
 
@@ -548,7 +544,7 @@ gotEOF: ;
    // initilize some variables
    demo_RLERunLen = 0;
    demo_data_index = 0;
-   demomode = DEMO_PLAYBACK;
+   pCKP->Control.levelcontrol.demomode = DEMO_PLAYBACK;
    loadinggame = 0;
    p_levelcontrol->curlevel = lvl;
    p_levelcontrol->command = LVLC_NOCOMMAND;
@@ -650,7 +646,7 @@ short readCommandLine(int argc, char *argv[], stCloneKeenPlus *pCKP)
 	      }
 	      else if (strcmp(tempbuf, "-rec")==0)      // record a demo
 	      {
-	        demomode = DEMO_RECORD;
+	    	  pCKP->Control.levelcontrol.demomode = DEMO_RECORD;
 	      }
 	      else if (strcmp(tempbuf, "-eseq")==0)     // play end sequence
 	      {

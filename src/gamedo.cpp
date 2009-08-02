@@ -15,8 +15,7 @@
 #include "sdl/CInput.h"
 #include "sdl/sound/CSound.h"
 #include "CGraphics.h"
-#include "vorticon/CPlayer.h"
-#include "keenext.h"
+#include "externals.h"
 #include "StringUtils.h"
 
 #include "include/enemyai.h"
@@ -27,8 +26,6 @@ extern unsigned long gotPlayX;
 extern unsigned long CurrentTickCount;
 
 extern unsigned int unknownKey;
-
-extern CPlayer *Player;
 
 int animtiletimer, curanimtileframe;
 
@@ -46,7 +43,8 @@ int i=0;
 int byt;
 unsigned int msb, lsb;
 
-     if (demomode==DEMO_PLAYBACK)
+
+     if (pCKP->Control.levelcontrol.demomode==DEMO_PLAYBACK)
      {
         // time to get a new key block?
         if (!demo_RLERunLen)
@@ -123,7 +121,7 @@ unsigned int msb, lsb;
     	 if(g_pInput->getHoldedCommand(p, IC_STATUS))
     		 player[p].playcontrol[PA_STATUS] = 1;
 
-    	 if (demomode==DEMO_RECORD)
+    	 if (pCKP->Control.levelcontrol.demomode==DEMO_RECORD)
     	 {
     	   if(i) player[p].playcontrol[PA_X] += 100;
     	   fputc(i, demofile);
@@ -214,12 +212,16 @@ int i;
 // do object and enemy AI
 void gamedo_enemyai(stCloneKeenPlus *pCKP)
 {
-int i;
-// handle objects and do enemy AI
-   for(i=1;i<MAX_OBJECTS-1;i++)
+int i, topobj;
+	// handle objects and do enemy AI
+	topobj = highest_objslot;
+   for(i=1;i<topobj;i++)
    {
       if (!objects[i].exists || objects[i].type==OBJ_PLAYER) continue;
 
+      //gamedo_calcenemyvisibility(i);
+
+      // This will do the function gamedo_calcenemyvisibility(i);
       // check if object is really in the map!!!
       if (objects[i].x < 0 || objects[i].y < 0)
     	  continue;
@@ -238,19 +240,16 @@ int i;
           }
           else
           {
-             #ifdef TARGET_WIN32
-//               if (numplayers>1)
-//                 if (!objects[i].hasbeenonscreen)
-//                   net_sendobjectonscreen(i);
-             #endif
-
              objects[i].onscreen = 1;
              objects[i].hasbeenonscreen = 1;
           }
 
-      if (objects[i].hasbeenonscreen || objects[i].type==OBJ_RAY || \
-          objects[i].type==OBJ_ICECHUNK || objects[i].type==OBJ_PLATFORM ||\
-          objects[i].type==OBJ_PLATVERT)
+		if (objects[i].hasbeenonscreen || objects[i].zapped ||
+			objects[i].type==OBJ_RAY || \
+			objects[i].type==OBJ_ICECHUNK || objects[i].type==OBJ_PLATFORM ||\
+			objects[i].type==OBJ_PLATVERT || objects[i].type==OBJ_YORP ||
+			objects[i].type==OBJ_FOOB || objects[i].type==OBJ_WALKER)
+
       {
          common_enemy_ai(i);
          switch(objects[i].type)
@@ -263,6 +262,7 @@ int i;
           case OBJ_TANK: tank_ai(i, pCKP->Control.levelcontrol.hardmode); break;
           case OBJ_RAY: ray_ai(i, pCKP, pCKP->Control.levelcontrol); break;
           case OBJ_DOOR: door_ai(i, pCKP->Control.levelcontrol.cepvars.DoorOpenDir); break;
+          //case OBJ_ICECANNON: icecannon_ai(i); break; TODO: Add this AI
           case OBJ_ICECHUNK: icechunk_ai(i); break;
           case OBJ_ICEBIT: icebit_ai(i); break;
           case OBJ_TELEPORTER: teleporter_ai(i, pCKP->Control.levelcontrol); break;
@@ -277,6 +277,7 @@ int i;
 								  pCKP->Control.levelcontrol.hardmode); break;
           case OBJ_EXPLOSION: explosion_ai(i); break;
           case OBJ_EARTHCHUNK: earthchunk_ai(i); break;
+          //case OBJ_SPARK: spark_ai(i); break; TODO: Add this AI
           //KEEN3
           case OBJ_FOOB: foob_ai(i, pCKP); break;
           case OBJ_NINJA: ninja_ai(i, pCKP); break;
@@ -288,13 +289,13 @@ int i;
           case OBJ_JACK: ballandjack_ai(i); break;
           case OBJ_PLATVERT: platvert_ai(i); break;
           case OBJ_NESSIE: nessie_ai(i); break;
+          //Specials
+          //case OBJ_AUTORAY: case OBJ_AUTORAY_V: autoray_ai(i); break;
+          //case OBJ_GOTPOINTS: gotpoints_ai(i); break;
 
           case OBJ_DEMOMSG: break;
           default:
-            crashflag = 1;
-            crashflag2 = i;
-            crashflag3 = objects[i].type;
-            why_term_ptr = "Invalid object flag2 of type flag3";
+				//crash("gamedo_enemy_ai: Object %d is of invalid type %d\n", i, objects[i].type);
             break;
          }
 
@@ -304,6 +305,162 @@ int i;
    }
 }
 
+// common enemy/object ai, such as falling, setting blocked variables,
+// detecting player contact, etc.
+void common_enemy_ai(int o)
+{
+int x,y,xa,ya,xsize,ysize;
+int temp;
+int cplayer;
+
+	//if (objects[o].type==OBJ_GOTPOINTS) return;
+
+	xsize = sprites[objects[o].sprite].xsize;
+	ysize = sprites[objects[o].sprite].ysize;
+
+ // set value of blockedd--should object fall?
+	temp = (objects[o].y>>CSF)+ysize;
+	if ((temp>>TILE_S)<<TILE_S != temp)
+	{
+		objects[o].blockedd = 0;
+	}
+	else
+	{ // on a tile boundary, test if tile under object is solid
+		objects[o].blockedd = 0;
+		x = (objects[o].x>>CSF);
+		y = (objects[o].y>>CSF)+ysize+1;
+		for(xa=0;xa<xsize-2;xa+=16)
+		{
+			if (TileProperty[getmaptileat(x+xa,y)][BDOWN] || IsStopPoint(x+xa,y,o))
+			{
+				objects[o].blockedd = 1;
+				break;
+			}
+		}
+
+		if (!objects[o].blockedd)	// check final point
+		{
+			if (TileProperty[getmaptileat(x+xsize-2, y)][BDOWN] || IsStopPoint(x+xsize-2,y,o))
+			{
+				objects[o].blockedd = 1;
+			}
+		}
+	}
+
+	// set blockedu
+	objects[o].blockedu = 0;
+	x = (objects[o].x>>CSF);
+	y = (objects[o].y>>CSF)-1;
+	for(xa=1;xa<xsize;xa+=16)		// change start pixel to xa=1 for icecannon in ep1l8
+	{
+		if (TileProperty[getmaptileat(x+xa,y)][BUP] || IsStopPoint(x+xa,y,o))
+		{
+			objects[o].blockedu = 1;
+			break;
+		}
+    }
+
+	if (!objects[o].blockedu)		// check final point
+	{
+		if (TileProperty[getmaptileat(x+xsize-2, y)][BUP] || IsStopPoint(x+xsize-2,y,o))
+		{
+			objects[o].blockedu = 1;
+		}
+	}
+
+
+ // set blockedl
+    objects[o].blockedl = 0;
+    x = (objects[o].x>>CSF)-1;
+    y = (objects[o].y>>CSF)+1;
+    for(ya=0;ya<ysize;ya+=16)
+    {
+
+        if (TileProperty[getmaptileat(x,y+ya)][BRIGHT] || IsStopPoint(x,y+ya,o))
+        {
+          objects[o].blockedl = 1;
+          goto blockedl_set;
+        }
+    }
+    if (TileProperty[getmaptileat(x, ((objects[o].y>>CSF)+ysize-1))][BRIGHT] ||
+    		IsStopPoint(x, (objects[o].y>>CSF)+ysize-1, o))
+    {
+      objects[o].blockedl = 1;
+    }
+    blockedl_set: ;
+
+ // set blockedr
+    objects[o].blockedr = 0;
+    x = (objects[o].x>>CSF)+xsize;
+    y = (objects[o].y>>CSF)+1;
+    for(ya=0;ya<ysize;ya+=16)
+    {
+        if (TileProperty[getmaptileat(x,y+ya)][BLEFT] || IsStopPoint(x,y+ya,o))
+        {
+          objects[o].blockedr = 1;
+          goto blockedr_set;
+        }
+    }
+    if (TileProperty[getmaptileat(x, ((objects[o].y>>CSF)+ysize-1))][BLEFT] ||
+		IsStopPoint(x, (objects[o].y>>CSF)+ysize-1, o))
+    {
+      objects[o].blockedr = 1;
+    }
+    blockedr_set: ;
+
+    // hit detection with players
+    objects[o].touchPlayer = 0;
+    for(cplayer=0;cplayer<MAX_PLAYERS;cplayer++)
+    {
+      if (player[cplayer].isPlaying)
+      {
+        objects[player[cplayer].useObject].x = player[cplayer].x;
+        objects[player[cplayer].useObject].y = player[cplayer].y;
+        objects[player[cplayer].useObject].sprite = 0;
+        if (!player[cplayer].pdie)
+        {
+          if (hitdetect(o, player[cplayer].useObject))
+          {
+			if (!player[cplayer].godmode)
+			{
+	            objects[o].touchPlayer = 1;
+	            objects[o].touchedBy = cplayer;
+			}
+			else
+			{
+				if (objects[o].type==OBJ_MOTHER || objects[o].type==OBJ_BABY ||\
+					objects[o].type==OBJ_MEEP || objects[o].type==OBJ_YORP)
+				{
+					if (objects[o].canbezapped)
+						objects[o].zapped += 100;
+				}
+			}
+            break;
+          }
+        }
+      }
+    }
+
+// have object fall if it should
+  if (!objects[o].inhibitfall)
+  {
+       #define OBJFALLSPEED   20
+       if (objects[o].blockedd)
+       {
+         objects[o].yinertia = 0;
+       }
+       else
+       {
+#define OBJ_YINERTIA_RATE  5
+         if (objects[o].yinertiatimer>OBJ_YINERTIA_RATE)
+         {
+           if (objects[o].yinertia < OBJFALLSPEED) objects[o].yinertia++;
+           objects[o].yinertiatimer = 0;
+         } else objects[o].yinertiatimer++;
+       }
+       objects[o].y += objects[o].yinertia;
+  }
+}
 
 int savew, saveh;
 
@@ -337,7 +494,7 @@ int xa,ya;
 
    // if we're playing a demo keep the "DEMO" message on the screen
    // as an object
-   if (demomode==DEMO_PLAYBACK)
+   if (pCKP->Control.levelcontrol.demomode==DEMO_PLAYBACK)
    {
      #define DEMO_X_POS         137
      #define DEMO_Y_POS         6
@@ -353,7 +510,7 @@ int xa,ya;
 
    // draw all objects. drawn in reverse order because the player sprites
    // are in the first few indexes and we want them to come out on top.
-   for(i=MAX_OBJECTS-1;;i--)
+   for(i=highest_objslot;;i--)
    {
       if (objects[i].exists && objects[i].onscreen)
       {
@@ -515,10 +672,10 @@ void gamedo_RenderScreen(stCloneKeenPlus *pCKP)
 
    g_pGraphics->renderHQBitmap();
 
-   gamedo_render_drawobjects(pCKP);
-
    if(pCKP != NULL)
    {
+	   gamedo_render_drawobjects(pCKP);
+
 	   if (pCKP->Control.levelcontrol.gameovermode)
 	   {
 		   // figure out where to center the gameover bitmap and draw it

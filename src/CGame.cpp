@@ -288,7 +288,7 @@ void CGame::preallocateCKP(stCloneKeenPlus *pCKP)
 
 	framebyframe = 0;
 
-	demomode = DEMO_NODEMO;
+	pCKP->Control.levelcontrol.demomode = DEMO_NODEMO;
 	current_demo = 1;
 
 	pCKP->Joystick = NULL;

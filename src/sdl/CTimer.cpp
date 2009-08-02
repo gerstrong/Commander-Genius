@@ -7,7 +7,7 @@
 
 
 #include "../keen.h"
-#include "../keenext.h"
+//#include "../externals.h"
 #include "../MathLib.h"
 
 #include "CTimer.h"

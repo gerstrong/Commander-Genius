@@ -11,7 +11,6 @@
 #include "hqp/CMusic.h"
 #include "include/fileio.h"
 #include "include/fileio/rle.h"
-#include "vorticon/CPlayer.h"
 #include "CLogFile.h"
 #include "CGraphics.h"
 #include <unistd.h>
@@ -20,8 +19,6 @@
 #include "StringUtils.h"
 #include "Debug.h"
 #include "FindFile.h"
-
-extern CPlayer *Player;
 
 unsigned int curmapx, curmapy;
 unsigned char mapdone;

@@ -45,8 +45,7 @@ int speed;
   }
 
   // test if it hit a baddie
-	//for(i=1;i<highest_objslot;i++)
-	for(i=1;i<MAX_OBJECTS;i++) // TODO: Must be replaced by the upper when highest_objslot is in existence
+	for(i=1;i<highest_objslot;i++)
 	{
 		if (!objects[i].exists || i==o) continue;
 		if (objects[i].type==OBJ_RAY || objects[i].type==OBJ_FIREBALL) continue;

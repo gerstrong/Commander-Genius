@@ -18,7 +18,6 @@
 #include "sdl/sound/CSound.h"
 #include "include/enemyai.h"
 #include "hqp/CMusic.h"
-#include "vorticon/CPlayer.h"
 #include "vorticon/CHighScores.h"
 #include "hqp/CHQBitmap.h"
 #include "CLogFile.h"
@@ -94,18 +93,6 @@ void gameloop(stCloneKeenPlus *pCKP)
   {
      if (primaryplayer==1) otherplayer = 0; else otherplayer = 1;
 
-     #ifdef NETWORK_PLAY
-//       if (numplayers>1) net_getdata();
-         if (is_server)
-         {
-           Net_Server_Run();
-         }
-         else if (is_client)
-         {
-           Net_Client_Run();
-         }
-     #endif
-
      gamedo_fades();
 
      // periodically make all enemy gun fixtures fire (in ep3)
@@ -159,7 +146,7 @@ void gameloop(stCloneKeenPlus *pCKP)
      {
          if (fade.dir==FADE_OUT)
          {
-            demomode = DEMO_NODEMO;
+        	pCKP->Control.levelcontrol.demomode = DEMO_NODEMO;
             pCKP->Control.levelcontrol.level_done = LEVEL_COMPLETE;
             pCKP->Control.levelcontrol.command = LVLC_CHANGE_LEVEL;
             if (pCKP->Control.levelcontrol.curlevel != WM_MAP_NUM)
@@ -378,15 +365,6 @@ short tilefix=0;
    objects[o].sprite = doorsprite;
 }
 
-void delete_object(int o)
-{
-	if (objects[o].exists)
-	{
-		objects[o].exists = 0;
-		//if (o+1==highest_objslot) highest_objslot--;
-	}
-}
-
 // checks if score is > than "extra life at" and award 1-UPs when appropriate
 void extralifeat(int cp)
 {
@@ -557,19 +535,19 @@ unsigned int i;
   }
   // each player is tied to a "puppet" object.
   // initialize objects used by players.
-  int o;
   for(i=0;i<numplayers;i++)
   {
-	  o = player[i].useObject;
 	  if (player[i].isPlaying)
 	  {
-    	objects[o].exists = 1;
-    	objects[o].onscreen = 1;
-    	objects[o].type = OBJ_PLAYER;
-    	objects[o].sprite = 0;
-    	objects[o].onscreen = 1;
-    	objects[o].AssociatedWithPlayer = i;
-    	objects[o].honorPriority = 1;
+    	objects[player[i].useObject].exists = 1;
+    	objects[player[i].useObject].onscreen = 1;
+    	objects[player[i].useObject].type = OBJ_PLAYER;
+    	objects[player[i].useObject].sprite = 0;
+    	objects[player[i].useObject].onscreen = 1;
+    	objects[player[i].useObject].AssociatedWithPlayer = i;
+    	objects[player[i].useObject].honorPriority = 1;
+    	objects[player[i].useObject].canbezapped = false;
+    	highest_objslot = player[i].useObject + 1;
 	  }
   }
 
@@ -616,10 +594,10 @@ int initgamefirsttime(stCloneKeenPlus *pCKP, int s)
        {
          player[i].inventory.charges = 5;
        }
-       if (demomode) player[i].inventory.charges = 100;
+       if (pCKP->Control.levelcontrol.demomode) player[i].inventory.charges = 100;
 
        // start with pogo stick in all episodes but 1
-       if (pCKP->Control.levelcontrol.episode!=1 || demomode)
+       if (pCKP->Control.levelcontrol.episode!=1 || pCKP->Control.levelcontrol.demomode)
          { player[i].inventory.HasPogo = 1; }
        else
          { player[i].inventory.HasPogo = 0; }
@@ -627,7 +605,7 @@ int initgamefirsttime(stCloneKeenPlus *pCKP, int s)
 
    initsprites(pCKP, s);
 
-   if (demomode) srand(375);
+   if (pCKP->Control.levelcontrol.demomode) srand(375);
 
    primaryplayer = 0;
 
@@ -638,7 +616,7 @@ char spawn_object(int x, int y, int otype)
 {
 int i;
  // find an unused object slot
- for(i=1;i<MAX_OBJECTS-1;i++)
+ for(i=1;i<MAX_OBJECTS;i++)
  {
    if (!objects[i].exists && objects[i].type != OBJ_PLAYER)
    {
@@ -648,163 +626,121 @@ int i;
      objects[i].sprite = objdefsprites[otype];
      objects[i].exists = 1;
      objects[i].needinit = 1;
+     objects[i].dead = false;
      objects[i].onscreen = 0;
      objects[i].hasbeenonscreen = 0;
-     objects[i].canbezapped = 0;
      objects[i].zapped = 0;
+     objects[i].canbezapped = 0;
      objects[i].inhibitfall = 0;
      objects[i].honorPriority = 1;
+
      SetAllCanSupportPlayer(i, 0);
+
+     if( i >= highest_objslot )
+    	 highest_objslot = i+1;
+
      return i;
    }
  }
- // object could not be created
-
- g_pLogFile->textOut(PURPLE, "Warning : Object could not be created.");
- return 0;
+	// object could not be created
+	//crash("Object of type %d could not be created at %d,%d (out of object slots)",otype,x,y);
+	g_pLogFile->ftextOut("Object of type %d could not be created at %d,%d (out of object slots)<br>",otype,x,y);
+	return 0;
 }
 
-// common enemy/object ai, such as falling, setting blocked variables,
-// detecting player contact, etc.
-void common_enemy_ai(int o)
+void delete_object(int o)
 {
-int x,y,xa,ya,xsize,ysize;
-int temp;
-int cplayer;
+	if (objects[o].exists)
+	{
+		objects[o].exists = 0;
+		if (o+1==highest_objslot) highest_objslot--;
+	}
+}
 
-       if (objects[o].type==OBJ_DEMOMSG) return;
+void delete_all_objects(void)
+{
+int i;
+	for(i=0;i<MAX_OBJECTS;i++)
+	{
+		if (objects[i].exists && objects[i].type != OBJ_PLAYER)
+			delete_object(i);
+	}
+	recalc_highest_objslot();
+}
+void recalc_highest_objslot(void)
+{
+int i;
+	highest_objslot = 0;
+	for(i=MAX_OBJECTS-1;i>=0;i--)
+	{
+		if (objects[i].exists)
+		{
+			highest_objslot = i+1;
+			break;
+		}
+	}
+}
 
-       xsize = sprites[objects[o].sprite].xsize;
-       ysize = sprites[objects[o].sprite].ysize;
+// anything (players/enemies) occupying the map tile at [mpx,mpy] is killed
+/*void kill_all_intersecting_tile(int mpx, int mpy)
+{
+int xpix,ypix;
+int i;
+	xpix = mpx<<TILE_S<<CSF;
+	ypix = mpy<<TILE_S<<CSF;
+	for(i=0;i<highest_objslot;i++)
+	{
+		if (objects[i].exists)
+		{
+			if (xpix <= objects[i].x && xpix+(16<<CSF) >= objects[i].x)
+			{
+				if (ypix <= objects[i].y && ypix+(16<<CSF) >= objects[i].y)
+				{
+					killobject(i);
+				}
+			}
+		}
+	}
+}*/
 
- // set value of blockedd--should object fall?
-       temp = (objects[o].y>>CSF)+ysize;
-       if ((temp>>4)<<4 != temp)
-       {
-          objects[o].blockedd = 0;
-       }
-       else
-       { // on a tile boundary, test if tile under object is solid
-          objects[o].blockedd = 0;
-          x = (objects[o].x>>CSF);
-          y = (objects[o].y>>CSF)+ysize+1;
-          for(xa=0;xa<xsize-2;xa+=16)
-          {
-        	if(TileProperty[getmaptileat(x+xa,y)][BUP] || (TileProperty[getmaptileat(x+xa,y)][BEHAVIOR] > 1 &&
-        	TileProperty[getmaptileat(x+xa,y)][BEHAVIOR] < 6) )
-            {
-              objects[o].blockedd = 1;
-              goto setblockedd;
-            }
-          }
-          if(TileProperty[getmaptileat(x+xsize-2, y)][BUP] || (TileProperty[getmaptileat(x+xa,y)][BEHAVIOR] > 1 &&
-        		  TileProperty[getmaptileat(x+xa,y)][BEHAVIOR] < 6)  )
-          {
-             objects[o].blockedd = 1;
-          }
-          setblockedd: ;
-       }
+// returns whether pix position x,y is a stop point for object o.
+// stop points are invisible blockers that act solid only to certain
+// kinds of enemies. They're used to help make the enemies seem smarter
+// and keep them from falling off certain platforms. Stoppoints are manually
+// placed from fileio.c.
+char IsStopPoint(int x, int y, int o)
+{
+	switch(objects[o].type)
+	{
+		case OBJ_YORP:
+		case OBJ_GARG:
+		case OBJ_MOTHER:
+		case OBJ_VORT:
+		case OBJ_VORTELITE:
+		case OBJ_TANK:
+		case OBJ_TANKEP2:
+			//if (getlevelat(x,y)==ENEMY_STOPPOINT) return 1;
+		case OBJ_WALKER:
+		case OBJ_PLATFORM:
+		case OBJ_PLATVERT:
+		case OBJ_BABY:
+			//if (IsDoor(getmaptileat(x,y))) return 1;
+		break;
 
-  // set blockedu
-    objects[o].blockedu = 0;
-    x = (objects[o].x>>CSF);
-    y = (objects[o].y>>CSF)-1;
-    for(xa=0;xa<xsize;xa+=16)
-    {
-    	if(TileProperty[getmaptileat(x+xa,y)][BDOWN])
-        //if (tiles[getmaptileat(x+xa,y)].solidceil)
-        {
-          objects[o].blockedu = 1;
-          goto setblockedu;
-        }
-    }
-    if(TileProperty[getmaptileat(x+xsize-1, y)][BDOWN])
-    //if (tiles[getmaptileat(x+xsize-1, y)].solidceil)
-    {
-      objects[o].blockedu = 1;
-    }
-    setblockedu: ;
+		case OBJ_RAY:
+			/*if (getoption(OPT_DOORSBLOCKRAY)) // TODO: The option must has to be implemented
+			{
+				if (IsDoor(getmaptileat(x,y))) return 1;
+			}*/
+		break;
 
- // set blockedl
-    objects[o].blockedl = 0;
-    x = (objects[o].x>>CSF)-1;
-    y = (objects[o].y>>CSF)+1;
-    for(ya=0;ya<ysize;ya+=16)
-    {
-    	if(TileProperty[getmaptileat(x,y+ya)][BRIGHT])
-        //if (tiles[getmaptileat(x,y+ya)].solidr)
-        {
-          objects[o].blockedl = 1;
-          goto setblockedl;
-        }
-    }
-    if(TileProperty[getmaptileat(x, ((objects[o].y>>CSF)+ysize-1))][BRIGHT])
-    //if (tiles[getmaptileat(x, ((objects[o].y>>CSF)+ysize-1))].solidr)
-    {
-      objects[o].blockedl = 1;
-    }
-    setblockedl: ;
+		case OBJ_BALL:
+			if (getlevelat(x,y)==BALL_NOPASSPOINT) return 1;
+			//if (IsDoor(getmaptileat(x,y))) return 1;
+		break;
+	}
 
- // set blockedr
-    objects[o].blockedr = 0;
-    x = (objects[o].x>>CSF)+xsize;
-    y = (objects[o].y>>CSF)+1;
-    for(ya=0;ya<ysize;ya+=16)
-    {
-    	if(TileProperty[getmaptileat(x,y+ya)][BRIGHT])
-        //if (tiles[getmaptileat(x,y+ya)].solidl)
-        {
-          objects[o].blockedr = 1;
-          goto setblockedr;
-        }
-    }
-    if(TileProperty[getmaptileat(x, ((objects[o].y>>CSF)+ysize-1))][BLEFT])
-    //if (tiles[getmaptileat(x, ((objects[o].y>>CSF)+ysize-1))].solidl)
-    {
-      objects[o].blockedr = 1;
-    }
-    setblockedr: ;
-
-    // hit detection with players
-    objects[o].touchPlayer = 0;
-    for(cplayer=0;cplayer<MAX_PLAYERS;cplayer++)
-    {
-      if (player[cplayer].isPlaying)
-      {
-        objects[player[cplayer].useObject].x = player[cplayer].x;
-        objects[player[cplayer].useObject].y = player[cplayer].y;
-        objects[player[cplayer].useObject].sprite = 0;
-        if (!player[cplayer].pdie)
-        {
-          if (hitdetect(o, player[cplayer].useObject))
-          {
-            objects[o].touchPlayer = 1;
-            objects[o].touchedBy = cplayer;
-            break;
-          }
-        }
-      }
-    }
-
-// have object fall if it should
-  if (!objects[o].inhibitfall)
-  {
-       #define OBJFALLSPEED   20
-       if (objects[o].blockedd)
-       {
-         objects[o].yinertia = 0;
-       }
-       else
-       {
-#define OBJ_YINERTIA_RATE  5
-         if (objects[o].yinertiatimer>OBJ_YINERTIA_RATE)
-         {
-           if (objects[o].yinertia < OBJFALLSPEED) objects[o].yinertia++;
-           objects[o].yinertiatimer = 0;
-         } else objects[o].yinertiatimer++;
-       }
-       objects[o].y += objects[o].yinertia;
-  }
+	return 0;
 }
 
 // returns nonzero if object1 overlaps object2
@@ -943,7 +879,7 @@ char checkobjsolid(unsigned int x, unsigned int y, unsigned int cp)
 {
   int o;
 
-   for(o=1;o<MAX_OBJECTS;o++)
+   for(o=1;o<highest_objslot;o++)
    {
       if (objects[o].exists && objects[o].cansupportplayer[cp])
       {

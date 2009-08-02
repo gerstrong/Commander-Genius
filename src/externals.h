@@ -1,5 +1,6 @@
 #include "sdl/CSettings.h"
 
+extern int highest_objslot;			// the highest object slot in use, +1
 extern char PlatExtending;
 extern stFade fade;
 extern stMap map;
@@ -76,7 +77,6 @@ extern int DemoSprite;
 extern stShipQueue shipqueue[32];
 extern int ShipQueuePtr;
 
-extern int demomode;
 extern FILE *demofile;
 extern unsigned int demo_RLERunLen;
 extern unsigned char demo_data[DEMO_MAX_SIZE+1];

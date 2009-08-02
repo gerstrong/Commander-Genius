@@ -11,7 +11,7 @@
  */
 
 #include "keen.h"
-#include "keenext.h"
+//#include "externals.h"
 #include "CGraphics.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/video/colourtable.h"

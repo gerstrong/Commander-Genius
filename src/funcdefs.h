@@ -13,32 +13,21 @@ void gamedo_render_drawdebug(void);
 void gamedo_render_erasedebug(void);
 void gamedo_fades(void);
 
-// gamepdo.c
-
-
 // gamepdowm.c
-//void gamepdo_wm_HandlePlayer(int cp);
-//void gamepdo_InertiaAndFriction_Y(int cp);
-//void gamepdo_wm_AllowEnterLevel(int cp);
 char wm_issolid(int xb, int yb, int *levels_completed);
 
 // game.c
-//void SetGameOver(void);
 void overrun_detect(void);
 void scrolltest(void);
-//void gameloop_initialize(void);
 void give_keycard(int doortile, int p);
 void take_keycard(int doortile, int p);
-//void open_door(int doortile, int doorsprite, int mpx, int mpy, int cp, stCloneKeenPlus *pCKP)
 void extralifeat(int p);
 char spawn_object(int x, int y, int otype);
 void common_enemy_ai(int o);
 char hitdetect(int object1, int object2);
 void freezeplayer(int theplayer);
 void unregister_animtiles(int tile);
-//void endlevel(int success, stCloneKeenPlus *pCKP)
 char checkobjsolid(unsigned int x, unsigned int y, unsigned int cp);
-//void initsprites(stCloneKeenPlus *pCKP)
 void CopyTileToSprite(int t, int s, int ntilestocopy, int transparent);
 void GiveAnkh(int cp);
 // map.c
@@ -104,12 +93,6 @@ void sb_mask_font_draw(unsigned char *text, int xoff, int yoff, char mask);
 void sb_color_font_draw(unsigned char *text, int xoff, int yoff, unsigned int colour, unsigned short bgcolour);
 void sb_font_draw_inverse(unsigned char *text, int xoff, int yoff);
 // viddrv.c
-// fileio.c
-//void addmaptile(unsigned int t, stCloneKeenPlus *pCKP);
-//void addenemytile(unsigned int t, stCloneKeenPlus *pCKP);
-//unsigned int fgeti(FILE *fp);
-//unsigned long fgetl(FILE *fp);
-//unsigned int loadmap(char *filename, char *path, int lvlnum, int isworldmap);
 #include "fileio.h"
 
 bool loadtileattributes(int episode, int version, unsigned char *filebuf);
@@ -154,9 +137,6 @@ char lz_decompress(FILE *lzfile, unsigned char *outbuffer);
 
 // finale.c
 void finale_draw(const std::string& filename, const std::string& path);
-
-// scalerx.c
-//void scale2x(void* void_dst, unsigned dst_slice, const void* void_src, unsigned src_slice, unsigned pixel, unsigned width, unsigned height);
 
 #endif
 

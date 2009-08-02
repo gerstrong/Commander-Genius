@@ -3,7 +3,7 @@
 */
 
 #include "../keen.h"
-#include "../keenext.h"
+//#include "../externals.h"
 #include "CVideoDriver.h"
 #include "../CLogFile.h"
 

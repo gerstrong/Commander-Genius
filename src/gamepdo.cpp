@@ -66,7 +66,7 @@ char doFall;
           }
 
 
-          if (fade.mode==NO_FADE || fade.dir==FADE_IN || demomode)
+          if (fade.mode==NO_FADE || fade.dir==FADE_IN || pCKP->Control.levelcontrol.demomode)
           {
             gamepdo_playpushed(cp, pCKP);
             gamepdo_InertiaAndFriction_X(cp, pCKP);

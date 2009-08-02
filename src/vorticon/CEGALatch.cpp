@@ -10,7 +10,7 @@
 #include "CPlanes.h"
 #include "../funcdefs.h"
 #include "../keen.h"
-#include "../keenext.h"
+//#include "../externals.h"
 #include "../FindFile.h"
 #include <stdio.h>
 #include <string.h>
