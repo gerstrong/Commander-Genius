@@ -9,10 +9,10 @@
 #define MAX_SOUNDS				50
 
 #define MAX_STACK_SPACE      	1024
-#define SOUND_FREQ_DIVISOR    	1363634 // The past original one
 
 #include <stdio.h>
 #include <string.h>
+#include <vector>
 #include "CSoundSlot.h"
 #include "../../CLogFile.h"
 #include "../../fileio.h"
@@ -52,7 +52,6 @@ bool CSoundSlot::loadSound(const std::string& fname, const std::string& searchna
 		int curheader = 0x10;
 		int i,j;
 		int offset, priority, garbage, nr_of_sounds;
-		int sndbyte;
 		char name[12];
 
 		for(i=0;i<12;i++)
@@ -86,35 +85,24 @@ bool CSoundSlot::loadSound(const std::string& fname, const std::string& searchna
 		return false;
 
 		sound_found: ;
-		// use stacking method for reading sound
-		unsigned int tempstack[MAX_STACK_SPACE];
 
-		m_soundlength = 0;
 		fseek(fp, offset, SEEK_SET);
-		for(i=0;i<MAX_STACK_SPACE;i++)
-		{
-			sndbyte = fgeti(fp);
-			if (sndbyte != 0x0000 && sndbyte != 0xFFFF)
-			{
-				tempstack[i] = SOUND_FREQ_DIVISOR / sndbyte;
-			}
-			else
-			{
-				tempstack[i] = sndbyte;
-			}
-			if (sndbyte==0xffff)
-			{
-				tempstack[i] = sndbyte;
-				m_soundlength++;
-				break;
-			}
 
-			m_soundlength++;
-		}
-		// copy the data to the real m_sounddata block and reduce the space!
+		signed int sample;
+		// Read the file and convert it into waveform
+		std::vector<unsigned int> waveform;
+		do
+		{
+			sample = fgeti(fp);
+			waveform.push_back( (sample != 0x0000 && sample != 0xFFFF) ? (0x1234DD/sample) : sample );
+		}while (sample != 0xffff);
+
+		m_soundlength = waveform.size();
+
+		// copy the data to the real m_sounddata block and reduce fragmentation!
 		m_sounddata = new unsigned int[m_soundlength];
 
-		memcpy(m_sounddata, tempstack, m_soundlength*sizeof(unsigned int));
+		memcpy(m_sounddata, waveform.data(), m_soundlength*sizeof(unsigned int));
 
 		g_pLogFile->ftextOut("loadSound : loaded sound %s of %d bytes.<br>", searchname.c_str(), m_soundlength);
 		m_hqsound.enabled = false;
@@ -123,4 +111,5 @@ bool CSoundSlot::loadSound(const std::string& fname, const std::string& searchna
 		return true;
 	}
 }
+
 
