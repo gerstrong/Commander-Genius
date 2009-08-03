@@ -6,11 +6,14 @@
 
 // Yorp (ep1)
 
-#define YORP_LOOK       0     // yorp is "looking around" (waving his eye)
-#define YORP_MOVE       1     // yorp is walking either left or right
-#define YORP_STUNNED    2     // the yorp is stunned
-#define YORP_DYING      3     // the yorp is getting fried!
-#define YORP_DEAD       4     // they look so sad when they're dead
+enum
+{
+YORP_LOOK,     // yorp is "looking around" (waving his eye)
+YORP_MOVE,     // yorp is walking either left or right
+YORP_STUNNED,  // the yorp is stunned
+YORP_DYING,    // the yorp is getting fried!
+YORP_DEAD      // they look so sad when they're dead
+};
 
 #define YORP_LOOK_TIME  100   // time each frame of YORP_LOOK is shown
 #define YORP_STUN_ANIM_TIME  40
@@ -42,6 +45,7 @@
 #define YORP_DYING_FRAME   58
 #define YORP_DEAD_FRAME    59
 #define YORP_DIE_TIME      90
+
 void yorp_ai(int o, stLevelControl levelcontrol)
 {
 int pushamt;
@@ -52,9 +56,7 @@ char numlooks;
    {
      objects[o].wasoffscreen = 0;
      if (objects[o].ai.yorp.state==YORP_STUNNED)
-     {
        objects[o].needinit = 1;
-     }
    }
    if (objects[o].needinit)
    {  // first time initilization

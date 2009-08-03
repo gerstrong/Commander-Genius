@@ -331,7 +331,7 @@ int cplayer;
 		y = (objects[o].y>>CSF)+ysize+1;
 		for(xa=0;xa<xsize-2;xa+=16)
 		{
-			if (TileProperty[getmaptileat(x+xa,y)][BDOWN] || IsStopPoint(x+xa,y,o))
+			if (TileProperty[getmaptileat(x+xa,y)][BUP] || IsStopPoint(x+xa,y,o))
 			{
 				objects[o].blockedd = 1;
 				break;
@@ -340,7 +340,7 @@ int cplayer;
 
 		if (!objects[o].blockedd)	// check final point
 		{
-			if (TileProperty[getmaptileat(x+xsize-2, y)][BDOWN] || IsStopPoint(x+xsize-2,y,o))
+			if (TileProperty[getmaptileat(x+xsize-2, y)][BUP] || IsStopPoint(x+xsize-2,y,o))
 			{
 				objects[o].blockedd = 1;
 			}
@@ -353,7 +353,7 @@ int cplayer;
 	y = (objects[o].y>>CSF)-1;
 	for(xa=1;xa<xsize;xa+=16)		// change start pixel to xa=1 for icecannon in ep1l8
 	{
-		if (TileProperty[getmaptileat(x+xa,y)][BUP] || IsStopPoint(x+xa,y,o))
+		if (TileProperty[getmaptileat(x+xa,y)][BDOWN] || IsStopPoint(x+xa,y,o))
 		{
 			objects[o].blockedu = 1;
 			break;
@@ -362,7 +362,7 @@ int cplayer;
 
 	if (!objects[o].blockedu)		// check final point
 	{
-		if (TileProperty[getmaptileat(x+xsize-2, y)][BUP] || IsStopPoint(x+xsize-2,y,o))
+		if (TileProperty[getmaptileat(x+xsize-2, y)][BDOWN] || IsStopPoint(x+xsize-2,y,o))
 		{
 			objects[o].blockedu = 1;
 		}

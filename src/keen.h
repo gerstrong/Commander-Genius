@@ -108,15 +108,6 @@ typedef struct stMap
  char firsttime;  // used when generating multiplayer positions on world map
 } stMap;
 
-
-// Tile information planes
-#define ANIMATION		0
-#define BEHAVIOR		1
-#define BUP				2
-#define BRIGHT			3
-#define BDOWN			4
-#define BLEFT			5
-
 struct stBitmap
 {
  int xsize;

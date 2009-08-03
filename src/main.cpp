@@ -91,8 +91,6 @@ stFade fade;
 stMap map;
 unsigned int AnimTileInUse[ATILEINUSE_SIZEX][ATILEINUSE_SIZEY];
 stTile tiles[MAX_TILES+1];
-int numtiles;
-int **TileProperty = NULL; // This version will replace the old stTile Structure and save memory
 unsigned char tiledata[MAX_TILES+1][16][16];
 stSprite *sprites = NULL;
 stBitmap bitmaps[MAX_BITMAPS+1];

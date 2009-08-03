@@ -39,10 +39,8 @@ char not_about_to_fall;
      objects[o].ai.butler.movedir = RIGHT;
      objects[o].ai.butler.animtimer = 0;
      objects[o].canbezapped = 1;  // will stop bullets but are not harmed
-     //objects[o].inhibitfall = 1;
      objects[o].needinit = 0;
-     //objects[o].x -= 16;
-     objects[o].x -= 4;
+     objects[o].y -= 8;
    }
    // push keen
      if (objects[o].touchPlayer && !player[objects[o].touchedBy].pdie)

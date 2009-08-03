@@ -10,4 +10,8 @@
  *      In future that file should be able to be removed.
  */
 
+#include <stdio.h>
+
 int highest_objslot;			// the highest object slot in use, +1
+int numtiles;
+int **TileProperty = NULL;
