@@ -22,9 +22,19 @@ public:
 	CWindow(float x, float y, float w, float h);
 	virtual ~CWindow();
 
-	void addTextBox(float x, float y, float w, float h, const std::string& text, bool border_rel);
+	// Creation routines
+	void addObject(CTextBox* newTextBox);
 
+	// Property set methods
+	void Resize(float width, float height);
+
+	// Property retrieval methods
+	float getWidth();
+
+	// Drawing routines
 	void render();
+
+	std::vector<CTextBox*> m_TextBox;
 
 private:
 	float m_x;
@@ -36,7 +46,6 @@ private:
 	float m_8x8tilewidth;
 
 	std::list<int> m_ID_List;
-	std::vector<CTextBox*> m_TextBox;
 
 	void drawWindow();
 };

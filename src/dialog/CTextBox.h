@@ -13,10 +13,14 @@
 
 class CTextBox {
 public:
-	CTextBox(float x, float y, float w, float h, float font_w, float font_h, const std::string& text);
+	CTextBox(float x, float y, float w, float h,
+			const std::string& text, bool border_rel = true);
 
+	void setFontDimensions(float width, float height = 0.0f);
 	void format();
 	void draw();
+
+	int getNumberOfTextlines();
 
 private:
 
@@ -24,6 +28,7 @@ private:
 	std::vector <std::string> m_Textline;
 	float m_x, m_y, m_w, m_h;
 	float m_fontwidth, m_fontheight;
+	bool m_border_relative;
 };
 
 #endif /* CTEXTBOX_H_ */

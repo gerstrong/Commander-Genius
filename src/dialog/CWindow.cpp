@@ -38,28 +38,32 @@ CWindow::~CWindow() {
 ///////////////////////
 // Creation Routines //
 ///////////////////////
-void CWindow::addTextBox(float x, float y, float w, float h, const std::string& text, bool border_rel)
+void CWindow::addObject(CTextBox* newTextBox)
 {
+	//float x, float y, float w, float h, const std::string& text, bool border_rel;
 	// Element coordinates are all relative and must go inside the borders if desired!
 	// if false it will be relative to the window itself and can be used as title border
-	if(border_rel)
-	{
-		x *= m_w;
-		x += (m_8x8tilewidth);
-		y *= m_h;
-		y += (m_8x8tileheight);
-		w -= 2*m_8x8tilewidth/(m_w);
-		h -= 2*m_8x8tileheight/(m_h);
-	}
 
-	CTextBox* ptr = new CTextBox(x + m_x,
-								 y + m_y,
-								 w*(m_w),
-								 h*(m_h),
-								m_8x8tilewidth, m_8x8tileheight, text);
-	m_TextBox.push_back(ptr);
+	m_TextBox.push_back(newTextBox);
 	m_TextBox.back()->format();
 	m_ID_List.push_back(OBJ_TYPE_TEXT);
+}
+
+///////////////////////////
+// Property Set Routines //
+///////////////////////////
+void CWindow::Resize(float width, float height)
+{
+	m_w = width;
+	m_h = height;
+}
+
+///////////////////////////
+// Property Get Routines //
+///////////////////////////
+float CWindow::getWidth()
+{
+	return m_w;
 }
 
 ////////////////////////

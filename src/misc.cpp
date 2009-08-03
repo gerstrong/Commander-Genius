@@ -186,9 +186,17 @@ void showGameHint(int mpx, int mpy, int episode, int level)
 	    }
 	}
 
-	CWindow *InfoTextWindow = new CWindow(0.2, 0.2, 0.6, 0.6);
-	InfoTextWindow->addTextBox(0.0f, 0.0f, 1.0f, 0.8f, getstring(strname), true);
-	InfoTextWindow->addTextBox(0.2f, 0.8f, 1.0f, 0.2f, "Okay!", true);
+	CTextBox* TextBox;
+	CWindow *InfoTextWindow = new CWindow(0.2f, 0.2f, 0.6f, 0.6f);
+
+	TextBox = new CTextBox(0.2f, 0.2f, 0.6f, 0.6f, getstring(strname), true);
+	TextBox->setFontDimensions(8.0f/320.0f, 8.0f/200.0f);
+	InfoTextWindow->addObject(TextBox);
+
+	// The Text will be too big, so resize in knowing the height of the first text.
+	InfoTextWindow->Resize(InfoTextWindow->getWidth(),
+			( (float)(InfoTextWindow->m_TextBox[0]->getNumberOfTextlines()+2)*8.0f ) / 200.0f );
+
 	g_pInput->flushAll();
 
     do

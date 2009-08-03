@@ -165,7 +165,7 @@ void CTileLoader::assignChangeTileAttribute(stTile *tile)
 	// At any other case, than the special ones, the tile is always 143 for pickuppable items
 	// 17 is tile for an exit. Until row 19, this seems to be valid
 	for(int i=0 ; i<numtiles ; i++)
-		if(canbePickedup(i) )
+		if(canbePickedup(i) || isaDoor(i) )
 			tile[i].chgtile = 143;
 
 	switch(m_episode)
@@ -201,8 +201,7 @@ void CTileLoader::assignChangeTileAttribute(stTile *tile)
 				}
 
 				// Only for Doors! Tile is always 182
-				if(TileProperty[i][BEHAVIOR] >= 2 &&
-				   TileProperty[i][BEHAVIOR] <= 5)
+				if(isaDoor(i))
 					tile[i].chgtile = 182;
 			}
 
@@ -218,4 +217,9 @@ bool CTileLoader::canbePickedup(int tile)
 			TileProperty[tile][BEHAVIOR] != 17) ||
 			TileProperty[tile][BEHAVIOR] == 27 ||
 			TileProperty[tile][BEHAVIOR] == 28);
+}
+
+bool CTileLoader::isaDoor(int tile)
+{
+	return (TileProperty[tile][BEHAVIOR] >= 2 && TileProperty[tile][BEHAVIOR] <= 5);
 }
