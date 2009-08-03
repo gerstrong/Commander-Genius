@@ -224,6 +224,7 @@ void CDialog::renderDialog()
 
 	if(scrollpos < (number_of_options-h+2) && number_of_options > (int)(h-2))
 		g_pGraphics->sb_drawCharacter((x+w-1)<<3, (y+h-2)<<3, FONT_DOWNARROW);
+
 }
 
 // The original Game had a open Dialog Animation. This is what that function does...

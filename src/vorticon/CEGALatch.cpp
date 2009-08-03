@@ -203,7 +203,7 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
                        0);
 
      // decode bitmaps into the BitmapData structure. The bitmaps are
-     // loaded into one continous stream of image data, with the bitmaps[]
+     // loaded into one continuous stream of image data, with the bitmaps[]
      // array giving pointers to where each bitmap starts within the stream.
 
 

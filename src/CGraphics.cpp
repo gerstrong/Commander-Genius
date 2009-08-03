@@ -125,9 +125,6 @@ void CGraphics::drawTile(int x, int y, unsigned int t)
 				memset(offset, COLOUR_MASK, 16);
 				offset+=512;
 			}
-
-			//HQBitmap->updateHQBitmap(g_pVideoDriver->getScrollSurface(),x,y);
-
 		}
 		else
 		{

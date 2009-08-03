@@ -688,8 +688,12 @@ void gamedo_RenderScreen(stCloneKeenPlus *pCKP)
 
    g_pVideoDriver->sb_blit();	// blit scrollbuffer to display
 
-   gamedo_render_erasedebug();
-   gamedo_render_eraseobjects();
+
+   if(pCKP != NULL)
+   {
+	   gamedo_render_erasedebug();
+	   gamedo_render_eraseobjects();
+   }
 
    curfps++;
 }
