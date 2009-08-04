@@ -1,5 +1,10 @@
 Commander Genius Pre-Release v0.3 (CloneKeenPlus):
 --------------------------------------------------
+04-08-2009
+- Fixed some minor issues with mods [Sprite Replacement] (Tulip)
+- Added Ordering Info to Episode 1. Only works there!
+- Episode 1 is now bundled with the interpreter
+
 02-08-2009
 - Updated the PC-Speaker Sound emulation (Thx to Napalm for a great lesson!)
 
