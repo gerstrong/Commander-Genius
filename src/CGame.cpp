@@ -24,6 +24,7 @@
 #include "fileio/CPatcher.h"
 #include "sdl/sound/CSound.h"
 #include "sdl/CVideoDriver.h"
+#include "vorticon/COrderingInfo.h"
 
 CGame::CGame() {
 	m_Episode = 0;
@@ -161,7 +162,14 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 	    	  pCredit = new CCredits;
 	    	  pCredit->Render(pCKP);
 	    	  delete pCredit;
-	    	  pCredit = NULL;
+	    	  break;
+
+	      case MAINMNU_ORDERING_INFO:
+	    	  COrderingInfo *OrderingInfo;
+	    	  OrderingInfo = new COrderingInfo(pCKP->Control.levelcontrol.episode,
+	    			  pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory);
+	    	  OrderingInfo->Render(pCKP);
+	    	  delete OrderingInfo;
 	    	  break;
 
 	      case MAINMNU_TIMEOUT:

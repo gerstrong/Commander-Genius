@@ -240,7 +240,7 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 	// Prepare the Games Menu
 	MainMenu = new CDialog();
 
-	MainMenu->setDimensions(11,8,18,12);
+	MainMenu->setDimensions(11,7,18,13);
 
 	// Load the Title Bitmap
 	bmnum = g_pGraphics->getBitmapNumberFromName("TITLE");
@@ -254,6 +254,7 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 	MainMenu->addOptionText("Demo");
 	MainMenu->addOptionText("Change Game");
 	MainMenu->addOptionText("About CG");
+	MainMenu->addOptionText("Ordering Info");
 	MainMenu->addOptionText("Quit");
 
 	x = (320/2)-(bitmaps[bmnum].xsize/2);

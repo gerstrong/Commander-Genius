@@ -766,19 +766,20 @@ typedef struct stShipQueue
 #define BONUSLEVEL_RESPAWN_X    31812
 #define BONUSLEVEL_RESPAWN_Y    18936
 
-    #define MAINMNU_1PLAYER      0
-    #define MAINMNU_2PLAYER      1
-    #define MAINMNU_LOADGAME     2
-	#define MAINMNU_STORY	     3
-	#define MAINMNU_HIGHSCORES   4
-	#define MAINMNU_OPTIONS      5
-    #define MAINMNU_DEMO         6
-	#define MAINMNU_NEW_GAME     7
-	#define MAINMNU_ABOUT        8
-	#define MAINMNU_QUIT         9
-    #define MAINMNU_TIMEOUT      11     // going to demo due to timeout
-    #define RESTART_GAME         12
-	#define BACK2MAINMENU		 13
+    #define MAINMNU_1PLAYER      	0
+    #define MAINMNU_2PLAYER      	1
+    #define MAINMNU_LOADGAME     	2
+	#define MAINMNU_STORY	     	3
+	#define MAINMNU_HIGHSCORES   	4
+	#define MAINMNU_OPTIONS      	5
+    #define MAINMNU_DEMO         	6
+	#define MAINMNU_NEW_GAME     	7
+	#define MAINMNU_ABOUT        	8
+	#define MAINMNU_ORDERING_INFO 	9
+	#define MAINMNU_QUIT         	10
+    #define MAINMNU_TIMEOUT      	11     // going to demo due to timeout
+    #define RESTART_GAME         	12
+	#define BACK2MAINMENU		 	13
 
     #define MAINMENU_NUM_OPTIONS        MAINMNU_QUIT
 
