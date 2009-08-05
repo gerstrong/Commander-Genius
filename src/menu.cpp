@@ -970,7 +970,7 @@ void showPage(const std::string& str_text, stCloneKeenPlus *pCKP, int textsize)
 	  dlgH = 15;
 
 	  textpos=0;
-	  memset(buffer,0,200*40*sizeof(char));
+	  memset(buffer,0,200*40);
 	  // Prepare the buffer
 
 	  char sbuf[256];
@@ -1004,7 +1004,7 @@ void showPage(const std::string& str_text, stCloneKeenPlus *pCKP, int textsize)
 	   		}
 
 
-    		buffer[i][j]=text[textpos];
+    		buffer[i][j] = text[textpos];
     		textpos++;
     		if(textpos >= textsize)
     			break;

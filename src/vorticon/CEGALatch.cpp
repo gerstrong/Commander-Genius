@@ -111,7 +111,7 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
 							 0);
 
 	// Load 8x8 Tiles
-     unsigned char c=0;
+     int c=0;
      for(int p=0;p<4;p++)
      {
        for(int t=0;t<m_fonttiles;t++)

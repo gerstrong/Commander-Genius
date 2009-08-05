@@ -105,7 +105,7 @@ int scrollingon;
 
   scrollingon = 1;
 
-  #define MARK_SPR_NUM          5
+  #define MARK_SPR_NUM          2
   initgame(pCKP);
 
   // set up the ship's route

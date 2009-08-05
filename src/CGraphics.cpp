@@ -651,7 +651,7 @@ void CGraphics::sb_font_draw(const std::string& text, int xoff, int yoff)
    {
      if (text[i]!=13)
      {
-       sb_drawCharacter(x, y, text[i]);
+       sb_drawCharacter(x, y, (unsigned char)text[i]);
        x+=8;
      }
      else
