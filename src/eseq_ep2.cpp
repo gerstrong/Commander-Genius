@@ -383,6 +383,7 @@ int cancel, lastcancelstate;
 
     // draw the text up to the amount currently shown
     tempbuf = text;
+    if(amountshown < tempbuf.size())
 	  tempbuf.erase(amountshown);
     sb_dialogbox(boxleft,boxtop,boxwidth,boxheight);
     g_pGraphics->sb_font_draw( tempbuf, (boxleft+1)*8, (boxtop+1+textline)*8);

@@ -336,7 +336,8 @@ int dlgX, dlgY, dlgW, dlgH;
 
     // draw the current text line up to the amount currently shown
 	  tempbuf = text[textline];
-	  tempbuf.erase(amountshown);
+	  if(amountshown < tempbuf.size())
+		  tempbuf.erase(amountshown);
     g_pGraphics->sb_font_draw( tempbuf, (dlgX+1)*8, (dlgY+1)*8);
 
     if (state==STATE_TEXTAPPEARING)
