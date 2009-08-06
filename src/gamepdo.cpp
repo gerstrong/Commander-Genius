@@ -165,7 +165,7 @@ void gamepdo_dieanim(int cp, stCloneKeenPlus *pCKP)
        }
        else
        {
-         endlevel(0,pCKP);
+         endlevel(0,&(pCKP->Control.levelcontrol));
        }
      }
    }
@@ -243,7 +243,7 @@ void gamepdo_ProcessInput(unsigned int cp, stCloneKeenPlus *pCKP)
        if (p_levelcontrol->level_done != LEVEL_DONE_FADEOUT)
        {
     	   p_levelcontrol->level_done = LEVEL_DONE_FADEOUT;
-         endlevel(1, pCKP);
+         endlevel(1, &(pCKP->Control.levelcontrol));
        }
      }
      else if (p_levelcontrol->level_done_timer > LEVEL_DONE_STOPWALKING_TIME)

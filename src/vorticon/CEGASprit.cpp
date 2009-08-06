@@ -117,7 +117,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 
      // TODO: Create surfaces which can be blitted directly to the blit surface or maybe screen.
      // load the image data
-     sprites = new stSprite[301];
+     sprites = new stSprite[MAX_SPRITES+1];
      char c;
      for(int p=0 ; p<4 ; p++)
      {

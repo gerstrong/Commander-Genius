@@ -283,7 +283,7 @@ int oneoflasttiles;
               oneoflasttiles = 0;
               for(i=0;i<NESSIETRAILLEN;i++)
               {
-                if (objects[o].ai.nessie.tiletrailX[i]==destx &&\
+                if (objects[o].ai.nessie.tiletrailX[i]==destx &&
                     objects[o].ai.nessie.tiletrailY[i]==desty)
                 {
                   oneoflasttiles = 1;

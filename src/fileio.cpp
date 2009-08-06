@@ -325,11 +325,9 @@ int o,x;
                  // foob (ep3)
            if (pCKP->Control.levelcontrol.episode==1)
            {
-              o = spawn_object((((curmapx+1)<<4)+4)<<CSF, ((curmapy<<4)-4)<<CSF, OBJ_SECTOREFFECTOR);
-              objects[o].ai.se.type = SE_ICECANNON;
-              objects[o].ai.se.dir = DUPRIGHT;
-              objects[o].inhibitfall = 1;
-              objects[o].hasbeenonscreen = 1;
+              o = spawn_object((((curmapx+1)<<4)+4)<<CSF, ((curmapy<<4)-4)<<CSF, OBJ_ICECANNON);
+              objects[o].ai.icechunk.vector_x = 1;
+              objects[o].ai.icechunk.vector_y = -1;
            }
            else if (pCKP->Control.levelcontrol.episode==2)
            {
@@ -343,11 +341,10 @@ int o,x;
       case 7:   // spark (ep2) ball (ep3)
            if (pCKP->Control.levelcontrol.episode==2)
            {
-              o = spawn_object(curmapx<<4<<CSF,curmapy<<4<<CSF,OBJ_SECTOREFFECTOR);
-              objects[o].ai.se.type = SE_SPARK;
+              o = spawn_object(curmapx<<4<<CSF,curmapy<<4<<CSF,OBJ_SPARK);
               pCKP->Control.levelcontrol.canexit = 0;    // can't exit till spark is shot
            }
-           else
+           else if (pCKP->Control.levelcontrol.episode==3)
            {
               o = spawn_object(curmapx<<4<<CSF,curmapy<<4<<CSF,OBJ_BALL);
               objects[o].hasbeenonscreen = 1;
@@ -363,12 +360,9 @@ int o,x;
       case 9:    // up-left-flying ice chunk (ep1) horiz platform (ep3)
            if (pCKP->Control.levelcontrol.episode==1)
            {
-             o = spawn_object(((curmapx<<4)-4)<<CSF, ((curmapy<<4)-4)<<CSF, OBJ_SECTOREFFECTOR);
-//             objects[o].ai.icechunk.movedir = DUPLEFT;
-              objects[o].ai.se.type = SE_ICECANNON;
-              objects[o].ai.se.dir = DUPLEFT;
-             objects[o].inhibitfall = 1;
-             objects[o].hasbeenonscreen = 1;
+             o = spawn_object(((curmapx<<4)-4)<<CSF, ((curmapy<<4)-4)<<CSF, OBJ_ICECANNON);
+             objects[o].ai.icechunk.vector_x = -1;
+             objects[o].ai.icechunk.vector_y = -1;
            }
            else if (pCKP->Control.levelcontrol.episode==3)
            {
@@ -406,7 +400,7 @@ int o,x;
            if (pCKP->Control.levelcontrol.episode==3)
            {
              o = spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_SECTOREFFECTOR);
-             objects[o].ai.se.type = SE_GUN_RIGHT;
+             //objects[o].ai.se.type = SE_GUN_RIGHT;
              objects[o].hasbeenonscreen = 1;
            }
            break;
@@ -414,7 +408,7 @@ int o,x;
            if (pCKP->Control.levelcontrol.episode==3)
            {
              o = spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_SECTOREFFECTOR);
-             objects[o].ai.se.type = SE_GUN_VERT;
+             //objects[o].ai.se.type = SE_GUN_VERT;
              objects[o].hasbeenonscreen = 1;
            }
            break;

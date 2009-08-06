@@ -1,5 +1,5 @@
 void killplayer(int theplayer);
-char spawn_object(int x, int y, int otype);
+unsigned char spawn_object(int x, int y, int otype);
 
 unsigned int getmaptileat(unsigned int x, unsigned int y);
 

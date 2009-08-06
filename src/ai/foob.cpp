@@ -3,19 +3,23 @@
 #include "../include/game.h"
 
 // AI for the foobs (yellow "scaredy cat" creatures) (ep3)
-#define FOOB_WALK    0
-#define FOOB_SPOOK   1
-#define FOOB_FLEE    2
-#define FOOB_EXPLODE 3
-#define FOOB_DEAD    4
+enum FOOB_ACTIONS{
+FOOB_WALK,
+FOOB_SPOOK,
+FOOB_FLEE,
+FOOB_EXPLODE,
+FOOB_DEAD
+};
 
 #define FOOB_WALK_SPEED      2
 #define FOOB_WALK_ANIM_RATE  80
 
-#define FOOB_FLEE_SPEED      20
+#define FOOB_FLEE_SPEED      18
 #define FOOB_FLEE_ANIM_RATE  16
 
 #define FOOB_SPOOK_SHOW_TIME    50
+
+#define FOOB_HARDMODE_BLOCK_TIME	150
 
 #define FOOB_EXPLODE_ANIM_RATE  35
 
@@ -28,7 +32,7 @@
 #define FOOB_EXPLODE_FRAME      97
 #define FOOB_DEAD_FRAME         101
 
-void foob_ai(int o, stCloneKeenPlus *pCKP)
+void foob_ai(int o, bool hardmode)
 {
 int onsamelevel;
 unsigned int i;
@@ -41,9 +45,12 @@ unsigned int i;
     objects[o].ai.foob.OnSameLevelTime = 0;
     objects[o].blockedr = 0;
     objects[o].canbezapped = 1;
+    objects[o].dead = 0;
     objects[o].needinit = 0;
   }
   if (objects[o].ai.foob.state==FOOB_DEAD) return;
+	  if (!objects[o].hasbeenonscreen) return;
+
 
   if (objects[o].zapped || objects[o].touchPlayer)
   {
@@ -54,7 +61,7 @@ unsigned int i;
       objects[o].ai.foob.state = FOOB_EXPLODE;
       objects[o].canbezapped = 0;
       if (objects[o].onscreen) g_pSound->playStereofromCoord(SOUND_YORP_DIE, PLAY_NOW, objects[o].scrx);
-      if (pCKP->Control.levelcontrol.hardmode && objects[o].touchPlayer)
+      if (hardmode && objects[o].touchPlayer)
       {
         killplayer(objects[o].touchedBy);
       }
@@ -142,6 +149,9 @@ unsigned int i;
          {
            objects[o].ai.foob.dir = LEFT;
          }
+		 // in hard mode run TOWARDS the player (he's deadly in hard mode)
+		 if (hardmode) objects[o].ai.foob.dir ^= 1;
+
       }
       else objects[o].ai.foob.spooktimer++;
    break;
@@ -153,8 +163,10 @@ unsigned int i;
      {
        if (objects[o].ai.foob.OffOfSameLevelTime > FOOB_RELAX_TIME)
        {
+relax: ;
          objects[o].ai.foob.state = FOOB_WALK;
          objects[o].ai.foob.OnSameLevelTime = 0;
+		 break;
        }
        else objects[o].ai.foob.OffOfSameLevelTime++;
      }
@@ -165,16 +177,34 @@ unsigned int i;
        objects[o].sprite = FOOB_WALK_RIGHT_FRAME + objects[o].ai.foob.animframe;
        if (!objects[o].blockedr)
        {
-         objects[o].x += FOOB_FLEE_SPEED;
+			objects[o].x += FOOB_FLEE_SPEED;
+			objects[o].ai.foob.blockedtime = 0;
        }
+	   else if (hardmode)
+	   {
+			if (++objects[o].ai.foob.blockedtime >= FOOB_HARDMODE_BLOCK_TIME)
+			{
+				objects[o].ai.foob.blockedtime = 0;
+				goto relax;
+			}
+	   }
      }
      else
      {  // walking left
        objects[o].sprite = FOOB_WALK_LEFT_FRAME + objects[o].ai.foob.animframe;
        if (!objects[o].blockedl)
        {
-         objects[o].x -= FOOB_FLEE_SPEED;
+			objects[o].x -= FOOB_FLEE_SPEED;
+			objects[o].ai.foob.blockedtime = 0;
        }
+	   else if (hardmode)
+	   {
+			if (++objects[o].ai.foob.blockedtime >= FOOB_HARDMODE_BLOCK_TIME)
+			{
+				objects[o].ai.foob.blockedtime = 0;
+				goto relax;
+			}
+	   }
      }
 
      /* walk animation */
@@ -192,6 +222,7 @@ unsigned int i;
      if (objects[o].sprite==FOOB_DEAD_FRAME)
      {
         objects[o].ai.foob.state = FOOB_DEAD;
+		objects[o].dead = 1;
      }
      else
      {
@@ -205,3 +236,4 @@ unsigned int i;
    break;
   }
 }
+

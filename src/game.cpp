@@ -612,7 +612,7 @@ int initgamefirsttime(stCloneKeenPlus *pCKP, int s)
    return 0;
 }
 
-char spawn_object(int x, int y, int otype)
+unsigned char spawn_object(int x, int y, int otype)
 {
 int i;
  // find an unused object slot
@@ -643,7 +643,6 @@ int i;
    }
  }
 	// object could not be created
-	//crash("Object of type %d could not be created at %d,%d (out of object slots)",otype,x,y);
 	g_pLogFile->ftextOut("Object of type %d could not be created at %d,%d (out of object slots)<br>",otype,x,y);
 	return 0;
 }
@@ -681,10 +680,26 @@ int i;
 	}
 }
 
-// anything (players/enemies) occupying the map tile at [mpx,mpy] is killed
-/*void kill_all_intersecting_tile(int mpx, int mpy)
+void killobject(int o)
 {
-int xpix,ypix;
+	if (objects[o].exists)
+	{
+		if (objects[o].type==OBJ_PLAYER)
+		{
+			killplayer(o);
+		}
+		else
+		{
+			if (objects[o].zapped < 500 && objects[o].canbezapped)
+				objects[o].zapped += 500;
+		}
+	}
+}
+
+// anything (players/enemies) occupying the map tile at [mpx,mpy] is killed
+void kill_all_intersecting_tile(int mpx, int mpy)
+{
+unsigned int xpix,ypix;
 int i;
 	xpix = mpx<<TILE_S<<CSF;
 	ypix = mpy<<TILE_S<<CSF;
@@ -701,7 +716,7 @@ int i;
 			}
 		}
 	}
-}*/
+}
 
 // returns whether pix position x,y is a stop point for object o.
 // stop points are invisible blockers that act solid only to certain
@@ -845,7 +860,7 @@ void PlayerTouchedExit(int theplayer, stCloneKeenPlus *pCKP)
        }
 }
 
-void endlevel(int success, stCloneKeenPlus *pCKP)
+void endlevel(int reason_for_leaving, stLevelControl *levelcontrol)
 {
   if (fade.mode == NO_FADE)
   {
@@ -854,8 +869,8 @@ void endlevel(int success, stCloneKeenPlus *pCKP)
     fade.fadetimer = 0;
     fade.rate = FADE_NORM;
     fade.mode = FADE_GO;
-    pCKP->Control.levelcontrol.success = success;
-    pCKP->Control.levelcontrol.tobonuslevel = 0;
+    levelcontrol->success = reason_for_leaving;
+    levelcontrol->tobonuslevel = 0;
   }
 }
 
@@ -1211,27 +1226,31 @@ void procgoodie(int t, int mpx, int mpy, int theplayer, stCloneKeenPlus *pCKP)
 
     case 11:
      player[theplayer].inventory.HasJoystick = 1;
+     pCKP->Control.levelcontrol.canexit = 1;
      g_pSound->playSound(SOUND_GET_PART, PLAY_NOW);
     break;
 
     case 12:
      player[theplayer].inventory.HasBattery = 1;
+     pCKP->Control.levelcontrol.canexit = 1;
      g_pSound->playSound(SOUND_GET_PART, PLAY_NOW);
     break;
     case 13:
 
      player[theplayer].inventory.HasVacuum = 1;
+     pCKP->Control.levelcontrol.canexit = 1;
      g_pSound->playSound(SOUND_GET_PART, PLAY_NOW);
     break;
     case 14:
      player[theplayer].inventory.HasFuel = 1;
+     pCKP->Control.levelcontrol.canexit = 1;
      g_pSound->playSound(SOUND_GET_PART, PLAY_NOW);
     break;
 
     // in-level teleporter
     // (in level13.ck1 that takes you to the bonus level)
     case 24:
-        endlevel(0, pCKP);
+        endlevel(0, &(pCKP->Control.levelcontrol) );
         pCKP->Control.levelcontrol.tobonuslevel = 1;
     break;
 

@@ -30,7 +30,7 @@
 
 #define WM_MAP_NUM      80
 
-#define MAX_SPRITES  300
+#define MAX_SPRITES  500
 #define MAX_FONT     256
 #define MAX_BITMAPS  20
 
@@ -89,12 +89,16 @@ typedef struct stFade
  #define WORLD_MAP              80
  #define FINAL_MAP              16
 
+// values returned by gameloop()
+
  #define LVLC_NOCOMMAND         0
  #define LVLC_CHANGE_LEVEL      1
  #define LVLC_END_SEQUENCE      2
  #define LVLC_GAME_OVER         3
  #define LVLC_TANTALUS_RAY      4       // switch on tantalus ray pressed
  #define LVLC_START_LEVEL       5
+
+#define WON_LEVEL				LVLC_CHANGE_LEVEL
 
 
 typedef struct stMap
@@ -157,297 +161,8 @@ struct stString
   unsigned int attrvalues[MAX_ATTRIBUTES+1];
 };
 
-/* Structs used for different enemies data, these are in a union */
-struct stYorpData
-{
-  unsigned char state;
-
-  unsigned char looktimes,lookposition;
-  unsigned char timer, dietimer;
-  unsigned char walkframe;
-  unsigned int dist_traveled;
-  signed int yorpdie_inertia_y;
-
-  unsigned char movedir;
-};
-
-struct stGargData
-{
-  unsigned char state;
-
-  unsigned char looktimes,lookframe;
-  unsigned char timer, dietimer, keenonsameleveltimer;
-  unsigned char about_to_charge;
-  unsigned char walkframe;
-  unsigned int dist_traveled;
-  signed int gargdie_inertia_y;
-
-  unsigned char movedir;
-  unsigned char detectedPlayer, detectedPlayerIndex;
-};
-
-struct stVortData
-{
-  unsigned char state;
-
-  unsigned char timer,timer2;
-  unsigned int animtimer;
-  unsigned char palflashtimer, palflashamt;
-  unsigned char frame;
-  unsigned int dist_traveled;
-  signed int inertiay;
-
-  char ep1style;                // episode 1 style four-shots-to-kill
-
-  unsigned char movedir;
-  // these hold the animation frames indexes since they're
-  // different for each episode
-  int WalkLeftFrame;
-  int WalkRightFrame;
-  int LookFrame;
-  int JumpRightFrame;
-  int JumpLeftFrame;
-  int DyingFrame;
-  int DeadFrame;
-};
-
-struct stVortEliteData
-{
-  unsigned char state;
-
-  unsigned char timer,timer2;
-  unsigned int animtimer;
-  unsigned char frame;
-  signed int inertiay;
-  unsigned char movedir;
-  unsigned int timesincefire;
-  unsigned int running;
-
-  int dist_traveled;
-};
-
-struct stButlerData
-{
-  unsigned char state;
-  unsigned char timer,animtimer;
-  unsigned char frame;
-  unsigned int dist_traveled;
-
-  unsigned char movedir;
-};
-
-struct stTankData
-{
-  unsigned char state;
-
-  unsigned char timer,animtimer;
-  unsigned char frame;
-  unsigned int dist_traveled;
-
-  unsigned char movedir;
-
-  int ponsameleveltime;
-  unsigned char alreadyfiredcauseonsamelevel;
-  unsigned char fireafterlook;
-
-  unsigned char detectedPlayer;         // 1 if player on same level
-  unsigned char detectedPlayerIndex;    // index of player that was detected
-
-  // for tank2
-  unsigned int timetillnextshot;
-  unsigned int firetimes;
-  unsigned int timetillcanfire;
-  unsigned int timetillcanfirecauseonsamelevel;
-};
-
-struct stRayData
-{
-  char state;
-  char direction;
-  char zapzottimer;
-
-  char dontHitEnable;
-  unsigned int dontHit;         // index of an object type ray will not harm
-
-  // for soundwave
-  int animframe, animtimer;
-  int offscreentime;
-
-  // for earth chunks
-  int baseframe;
-};
-
-struct stDoorData
-{
-  char timer;
-  char distance_traveled;
-};
-
-struct stIceChunk
-{
-  char movedir;
-  char state;
-  unsigned int originalX, originalY;
-  int timer;
-};
-
-struct stTeleportData
-{
-  char animtimer;
-  char animframe;
-  char numframechanges;
-
-  char direction;
-  int whichplayer;
-  unsigned int destx;
-  signed int desty;
-
-  int baseframe;
-  int idleframe;
-
-  char NoExitingTeleporter;
-  char snap;
-
-  char fadeamt;
-  char fadetimer;
-};
-
-struct stRopeData
-{
-  char state;
-  int droptimer;
-  int droptimes;
-  int stoneX, stoneY;
-  int vortboss;
-};
-
-struct stWalkerData
-{
-  unsigned char state;
-
-  unsigned char animtimer, dietimer;
-  unsigned char walkframe;
-  signed int walkerdie_inertia_y;
-  int fallinctimer,fallspeed;
-
-  unsigned char walkdir;
-  unsigned char kickedplayer[MAX_PLAYERS];
-};
-
-struct stPlatformData
-{
-  unsigned char state;
-  unsigned char animframe;
-  unsigned int animtimer;
-  unsigned int waittimer;
-
-  unsigned char movedir;
-  unsigned char kickedplayer[MAX_PLAYERS];
-};
-
-struct stSEData
-{
-  unsigned int type;
-
-  unsigned char state;
-  unsigned int timer;
-  unsigned int platx, platy;
-  unsigned int bgtile;
-  unsigned int dir;
-
-  int counter,destroytiles;
-  unsigned int frame;
-  int mx,my;
-  int blowx,blowy;
-};
-
-struct stBabyData
-{
-  char state;
-  char dir;
-  signed int inertia_x, inertia_y;
-  int jumpdectimer, xdectimer;
-  int jumpdecrate;
-  int dietimer;
-
-  char walkframe;
-  int walktimer;
-};
-
-struct stFoobData
-{
-  char state;
-  char dir;
-
-  int animframe, animtimer;
-  int OnSameLevelTime;
-  int OffOfSameLevelTime;
-  int spooktimer;
-  int SpookedByWho;
-};
-
-struct stNinjaData
-{
-  char state;
-  char dir;
-
-  int animframe, animtimer;
-  unsigned int timetillkick;
-
-  signed int XInertia, YInertia;
-  unsigned int XFrictionTimer, YFrictionTimer;
-  unsigned int XFrictionRate, YFrictionRate;
-  int KickMoveTimer;
-  int isdying;
-  int dietimer;
-};
-
-typedef struct stMotherData
-{
-  char state;
-  char dir;
-  char hittimes;
-
-  int animframe, animtimer;
-  int timer;
-} stMotherData;
-
-typedef struct stMeepData
-{
-  char state;
-  char dir;
-
-  int animframe, animtimer;
-  int timer;
-} stMeepData;
-
-typedef struct stBallJackData
-{
-  char dir;
-  int animframe, animtimer;
-  int speed;
-} stBallJackData;
-
-#define NESSIETRAILLEN   5
-typedef struct stNessieData
-{
-  char state;
-  char leftrightdir, updowndir;
-  unsigned int baseframe;
-
-  unsigned int tiletrailX[NESSIETRAILLEN+1];
-  unsigned int tiletrailY[NESSIETRAILLEN+1];
-  int tiletrailhead;
-
-  char animframe, animtimer;
-  unsigned int destx, desty;
-
-  unsigned int pausetimer;
-  unsigned int pausex, pausey;
-
-  unsigned int mortimer_swim_amt;
-  unsigned int mounted[MAX_PLAYERS];
-} stNessieData;
+// structures for each AI module's data
+#include "ai/enemydata.h"
 
 // and the object structure containing the union of the above structs
 typedef struct stObject
@@ -496,30 +211,30 @@ typedef struct stObject
  // what kind of object it is
  union ai
  {
-   // ep1
-   stYorpData yorp;
-   stGargData garg;
-   stVortData vort;
-   stButlerData butler;
-   stTankData tank;
-   stRayData ray;
-   stDoorData door;
-   stIceChunk icechunk;
-   stTeleportData teleport;
-   stRopeData rope;
-   // ep2
-   stWalkerData walker;
-   stPlatformData platform;
-   stVortEliteData vortelite;
-   stSEData se;
-   stBabyData baby;
-   // ep3
-   stFoobData foob;
-   stNinjaData ninja;
-   stMeepData meep;
-   stMotherData mother;
-   stBallJackData bj;
-   stNessieData nessie;
+		// ep1
+		stYorpData yorp;
+		stGargData garg;
+		stVortData vort;
+		stButlerData butler;
+		stTankData tank;
+		stRayData ray;
+		stDoorData door;
+		stIceChunk icechunk;
+		stTeleportData teleport;
+		stRopeData rope;
+		// ep2
+		stWalkerData walker;
+		stPlatformData platform;
+		stVortEliteData vortelite;
+		stSEData se;
+		stBabyData baby;
+		// ep3
+		stFoobData foob;
+		stNinjaData ninja;
+		stMeepData meep;
+		stMotherData mother;
+		stBallJackData bj;
+		stNessieData nessie;
  } ai;
  unsigned char erasedata[64][64];   // backbuffer to erase this object
 } stObject;
@@ -537,43 +252,56 @@ typedef struct stAnimTile
 } stAnimTile;
 
 #define NUM_OBJ_TYPES      40
+
+enum enumerated_Objects{
 // ** objects from KEEN1
-#define OBJ_YORP           1
-#define OBJ_GARG           2
-#define OBJ_VORT           3
-#define OBJ_BUTLER         4
-#define OBJ_TANK           5
-#define OBJ_RAY            6     // keen's raygun blast
-#define OBJ_DOOR           7     // an opening door
-#define OBJ_ICECHUNK       8     // ice chunk from ice cannon
-#define OBJ_ICEBIT         9     // piece of shattered ice chunk
-#define OBJ_PLAYER         10
-#define OBJ_TELEPORTER     11    // world map teleporter
-#define OBJ_ROPE           12
+OBJ_YORP,
+OBJ_GARG,
+OBJ_VORT,
+OBJ_BUTLER,
+OBJ_TANK,
+OBJ_RAY,                // keen's raygun blast
+OBJ_DOOR,               // an opening door
+OBJ_ICECHUNK,           // ice chunk from ice cannon
+OBJ_ICEBIT,             // piece of shattered ice chunk
+OBJ_PLAYER,
+OBJ_TELEPORTER,        // world map teleporter
+OBJ_ROPE,
 
 // ** objects from KEEN2 (some of these are in ep3 as well)
-#define OBJ_WALKER               13
-#define OBJ_TANKEP2              14
-#define OBJ_PLATFORM             15
-#define OBJ_VORTELITE            16
-#define OBJ_SECTOREFFECTOR       17
-#define OBJ_BABY                 18
-#define OBJ_EXPLOSION            19
-#define OBJ_EARTHCHUNK           20
+OBJ_WALKER,
+OBJ_TANKEP2,
+OBJ_PLATFORM,
+OBJ_VORTELITE,
+OBJ_SECTOREFFECTOR,
+OBJ_BABY,
+OBJ_EXPLOSION,
+OBJ_EARTHCHUNK,
+OBJ_SPARK,
 
 // ** objects from KEEN3
-#define OBJ_FOOB                 21
-#define OBJ_NINJA                22
-#define OBJ_MEEP                 23
-#define OBJ_SNDWAVE              24
-#define OBJ_MOTHER               25
-#define OBJ_FIREBALL             26
-#define OBJ_BALL                 27
-#define OBJ_JACK                 28
-#define OBJ_PLATVERT             29
-#define OBJ_NESSIE               30
+OBJ_FOOB,
+OBJ_NINJA,
+OBJ_MEEP,
+OBJ_SNDWAVE,
+OBJ_MOTHER,
+OBJ_FIREBALL,
+OBJ_BALL,
+OBJ_JACK,
+OBJ_PLATVERT,
+OBJ_NESSIE,
 
-#define OBJ_DEMOMSG              31
+OBJ_DEMOMSG,
+
+// the guns that shoot periodically
+OBJ_AUTORAY,
+OBJ_AUTORAY_V,
+OBJ_ICECANNON,
+
+OBJ_GOTPOINTS,	//this thing is the rising point numbers
+OBJ_GHOST,		//ghosted object from map editor
+LAST_OBJ_TYPE
+};
 
 // default sprites...when an object is spawned it's sprite is set to this
 // sprite. the object AI will immediately reset the sprite frame, so it
@@ -594,8 +322,9 @@ typedef struct stAnimTile
 #define OBJ_RAY_DEFSPRITE_EP3    102
 #define OBJ_ICECHUNK_DEFSPRITE   112
 #define OBJ_ICEBIT_DEFSPRITE     113
+#define OBJ_ROPE_DEFSPRITE       114
 #define OBJ_TELEPORTER_DEFSPRITE 180
-#define OBJ_ROPE_DEFSPRITE       184
+
 
 #define OBJ_PLATFORM_DEFSPRITE_EP2   126
 #define OBJ_PLATFORM_DEFSPRITE_EP3   107
@@ -615,6 +344,7 @@ typedef struct stAnimTile
 #define OBJ_BABY_DEFSPRITE_EP2   52
 #define OBJ_BABY_DEFSPRITE_EP3   51
 
+#define OBJ_SPARK_DEFSPRITE_EP2		128
 
 // some directions (mostly for OBJ_ICECHUNK and OBJ_ICEBIT)
 #define DUPRIGHT         0
@@ -789,20 +519,18 @@ typedef struct stShipQueue
 #define TILE_EXTENDING_PLATFORM    270
 
 // "Sector Effector" types
-#define SE_EXTEND_PLATFORM      1
-#define SE_RETRACT_PLATFORM     2
-#define SE_SPARK                3
-#define SE_GUN_VERT             4
-#define SE_GUN_RIGHT            5
-#define SE_ANKHSHIELD           6
-#define SE_ICECANNON            7
-#define SE_MORTIMER_ARM         8
-#define SE_MORTIMER_LEG_LEFT    9
-#define SE_MORTIMER_LEG_RIGHT   10
-#define SE_MORTIMER_SPARK       11
-#define SE_MORTIMER_HEART       12
-#define SE_MORTIMER_ZAPSUP      13
-#define SE_MORTIMER_RANDOMZAPS  14
+enum sector_effector_type{
+SE_EXTEND_PLATFORM,
+SE_RETRACT_PLATFORM,
+SE_ANKHSHIELD,
+SE_MORTIMER_ARM,
+SE_MORTIMER_LEG_LEFT,
+SE_MORTIMER_LEG_RIGHT,
+SE_MORTIMER_SPARK,
+SE_MORTIMER_HEART,
+SE_MORTIMER_ZAPSUP,
+SE_MORTIMER_RANDOMZAPS
+};
 
 // animation rate of animated tiles
 #define ANIM_TILE_TIME        40

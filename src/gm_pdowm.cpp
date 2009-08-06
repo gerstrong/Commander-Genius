@@ -315,7 +315,7 @@ p_levelcontrol = &(pCKP->Control.levelcontrol);
 
               default:      // a regular level
             	p_levelcontrol->chglevelto = (lvl & 0x7fff);
-                endlevel(1, pCKP);
+                endlevel(1, &(pCKP->Control.levelcontrol));
                 g_pMusicPlayer->stop();
                 g_pSound->playStereofromCoord(SOUND_ENTER_LEVEL, PLAY_NOW, objects[player[cp].useObject].scrx);
 

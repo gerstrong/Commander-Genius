@@ -1,5 +1,9 @@
 Commander Genius Pre-Release v0.3 (CloneKeenPlus):
 --------------------------------------------------
+05-08-2009
+- fixed crash when game in EP1 or 2 was ending
+- fixed fonts problems in story section.
+
 04-08-2009
 - Fixed some minor issues with mods [Sprite Replacement] (Tulip)
 - Added Ordering Info to Episode 1. Only works there!

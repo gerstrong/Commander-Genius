@@ -14,6 +14,7 @@
 #include "sdl/CTimer.h"
 #include "sdl/CInput.h"
 #include "sdl/sound/CSound.h"
+#include "CLogFile.h"
 #include "CGraphics.h"
 #include "externals.h"
 #include "StringUtils.h"
@@ -69,7 +70,7 @@ unsigned int msb, lsb;
           if (byt & 32)player[0].playcontrol[PA_STATUS] = 1;
           if (byt & 64)
           {  // demo STOP command
-            if (fade.mode!=FADE_GO) endlevel(1, pCKP);
+            if (fade.mode!=FADE_GO) endlevel(1, &(pCKP->Control.levelcontrol) );
           }
         }
         else
@@ -83,12 +84,12 @@ unsigned int msb, lsb;
         {
           if (g_pInput->getPressedKey(i))
           {
-            if (fade.mode!=FADE_GO) endlevel(0, pCKP);
+            if (fade.mode!=FADE_GO) endlevel(0, &(pCKP->Control.levelcontrol) );
           }
         }
         if (g_pInput->getPressedCommand(IC_STATUS))
         {
-          if (fade.mode!=FADE_GO) endlevel(0, pCKP);
+          if (fade.mode!=FADE_GO) endlevel(0, &(pCKP->Control.levelcontrol) );
         }
 
         return;
@@ -262,7 +263,7 @@ int i, topobj;
           case OBJ_TANK: tank_ai(i, pCKP->Control.levelcontrol.hardmode); break;
           case OBJ_RAY: ray_ai(i, pCKP, pCKP->Control.levelcontrol); break;
           case OBJ_DOOR: door_ai(i, pCKP->Control.levelcontrol.cepvars.DoorOpenDir); break;
-          //case OBJ_ICECANNON: icecannon_ai(i); break; TODO: Add this AI
+          case OBJ_ICECANNON: icecannon_ai(i); break;
           case OBJ_ICECHUNK: icechunk_ai(i); break;
           case OBJ_ICEBIT: icebit_ai(i); break;
           case OBJ_TELEPORTER: teleporter_ai(i, pCKP->Control.levelcontrol); break;
@@ -277,7 +278,7 @@ int i, topobj;
 								  pCKP->Control.levelcontrol.hardmode); break;
           case OBJ_EXPLOSION: explosion_ai(i); break;
           case OBJ_EARTHCHUNK: earthchunk_ai(i); break;
-          //case OBJ_SPARK: spark_ai(i); break; TODO: Add this AI
+          case OBJ_SPARK: spark_ai(i, &(pCKP->Control.levelcontrol.sparks_left) ); break;
           //KEEN3
           case OBJ_FOOB: foob_ai(i, pCKP); break;
           case OBJ_NINJA: ninja_ai(i, pCKP); break;
@@ -296,6 +297,7 @@ int i, topobj;
           case OBJ_DEMOMSG: break;
           default:
 				//crash("gamedo_enemy_ai: Object %d is of invalid type %d\n", i, objects[i].type);
+        	  g_pLogFile->ftextOut("gamedo_enemy_ai: Object %d is of invalid type %d\n", i, objects[i].type);
             break;
          }
 
@@ -819,7 +821,7 @@ int i;
             // F9 - exit level immediately
             if(g_pInput->getPressedKey(KF9))
             {
-               endlevel(1, pCKP);
+               endlevel(1, &(pCKP->Control.levelcontrol) );
             }
             // F6 - onscreen debug--toggle through debug/radar/off
             if(g_pInput->getPressedKey(KF6))

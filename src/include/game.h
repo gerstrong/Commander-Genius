@@ -1,10 +1,13 @@
 // various states we go through when a level is completed
 // to do the walking out the exit door animation
-#define LEVEL_NOT_DONE      0      // not completed
-#define LEVEL_DONE_WALK     1      // walking through exit door
-#define LEVEL_DONE_WAIT     2      // finished walk through door, wait a bit
-#define LEVEL_DONE_FADEOUT  3      // fading out
-#define LEVEL_COMPLETE      4      // on to the next level!
+enum levelstate
+{
+LEVEL_NOT_DONE,           // not completed
+LEVEL_DONE_WALK,           // walking through exit door
+LEVEL_DONE_WAIT,          // finished walk through door, wait a bit
+LEVEL_DONE_FADEOUT,        // fading out
+LEVEL_COMPLETE            // on to the next level!
+};
 
 // width of the player sprite, used for walking "behind" the exit door frame
 #define PLAYERSPRITE_WIDTH      16
@@ -34,10 +37,12 @@
 #define ICECANNON_FIRE_FREQ  400
 
 // direction defines used for various things
-#define RIGHT    0
-#define LEFT     1
-#define UP       2
-#define DOWN     3
+enum directions{
+RIGHT,
+LEFT,
+UP,
+DOWN
+};
 
 #define ANKH_SHIELD_FRAME       61
 
@@ -191,10 +196,43 @@
 #define DOOR_GREEN         4
 #define DOOR_BLUE          5
 
-#define DOOR_RED_SPRITE    (MAX_SPRITES-5)
-#define DOOR_GREEN_SPRITE  (MAX_SPRITES-4)
-#define DOOR_BLUE_SPRITE   (MAX_SPRITES-3)
-#define DOOR_YELLOW_SPRITE (MAX_SPRITES-2)
+// special sprites (they either weren't in the game originally,
+// or are used for internal engine stuff).
+#define BLANKSPRITE			(MAX_SPRITES-1)
+#define DOOR_YELLOW_SPRITE	(MAX_SPRITES-2)			// opening door (yellow)
+#define DOOR_BLUE_SPRITE	(MAX_SPRITES-3)
+#define DOOR_GREEN_SPRITE	(MAX_SPRITES-4)
+#define DOOR_RED_SPRITE		(MAX_SPRITES-5)
+#define PT5000_SPRITE		(MAX_SPRITES-6)			// rising bonus pts (+5000)
+#define PT1000_SPRITE		(MAX_SPRITES-7)
+#define PT500_SPRITE		(MAX_SPRITES-8)
+#define PT200_SPRITE		(MAX_SPRITES-9)
+#define PT100_SPRITE		(MAX_SPRITES-10)
+#define PT1UP_SPRITE		(MAX_SPRITES-11)		// rising 1up bonus
+#define PTCARDY_SPRITE		(MAX_SPRITES-12)		// rising access card
+#define PTCARDR_SPRITE		(MAX_SPRITES-13)
+#define PTCARDG_SPRITE		(MAX_SPRITES-14)
+#define PTCARDB_SPRITE		(MAX_SPRITES-15)
+#define SHOTUP_SPRITE		(MAX_SPRITES-16)		// rising single shot (ep3)
+#define GUNUP_SPRITE		(MAX_SPRITES-17)		// rising ray gun
+#define YORPSHIELD_SPRITE	(MAX_SPRITES-18)		// invincibility force field, used in editor and in "yorps have forcefields" mode
+#define VERSION_SPRITE		(MAX_SPRITES-19)		// version text shown in lower-right corner at startup
+#define DEMOBOX_SPRITE		(MAX_SPRITES-20)		// says "Demo"
+#define OSD_LIVES_SPRITE	(MAX_SPRITES-21)
+#define OSD_AMMO_SPRITE		(MAX_SPRITES-22)
+#define OSD_YORPS_SPRITE	(MAX_SPRITES-23)
+#define TITLE_LOGO1_SPRITE	(MAX_SPRITES-24)		// left half of the logo
+#define TITLE_LOGO2_SPRITE	(MAX_SPRITES-25)		// right half of the logo
+#define TITLE_FLOOR_SPRITE	(MAX_SPRITES-26)		// more stuff for the logo
+#define TITLE_VORT_SPRITE   (MAX_SPRITES-27)
+#define ARROWLR_SPRITE		(MAX_SPRITES-28)		// these are directional arrows used in the editor
+#define ARROWUD_SPRITE		(MAX_SPRITES-29)
+#define ARROWUR_SPRITE		(MAX_SPRITES-30)
+#define ARROWUL_SPRITE		(MAX_SPRITES-31)
+#define ARROWU_SPRITE		(MAX_SPRITES-32)
+#define ARROWD_SPRITE		(MAX_SPRITES-33)
+#define LAST_SPECIAL_SPRITE (MAX_SPRITES-34)
+
 #define YORPSTATUEHEAD     22
 #define YORPSTATUEHEADUSED 485
 #define YORPSTATUEBOTTOM   22
@@ -224,7 +262,7 @@ void open_door(int doortile, int doorsprite, int mpx, int mpy, int cp, stCloneKe
 void killplayer(int theplayer);
 void PlayerTouchedExit(int theplayer, stCloneKeenPlus *pCKP);
 
-void endlevel(int success, stCloneKeenPlus *pCKP);
+void endlevel(int reason_for_leaving, stLevelControl *levelcontrol);
 
 void SetGameOver(stCloneKeenPlus *pCKP);
 char checkissolidl(int x, int y, int cp, stCloneKeenPlus *pCKP);

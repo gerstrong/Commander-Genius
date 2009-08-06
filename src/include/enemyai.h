@@ -15,6 +15,7 @@ void tank_ai(int o, bool hardmode);
 void ray_ai(int o, stCloneKeenPlus *pCKP, stLevelControl levelcontrol);
 void icechunk_ai(int o);
 void icebit_ai(int o);
+void icecannon_ai(int o);
 void door_ai(int o, char DoorOpenDir);
 void teleporter_ai(int o, stLevelControl levelcontrol);
 void rope_ai(int o);
@@ -26,8 +27,9 @@ void vortelite_ai(int o, bool darkness);
 void se_ai(int o, stCloneKeenPlus *pCKP);
 void explosion_ai(int o);
 void earthchunk_ai(int o);
+void spark_ai(int o, int *p_sparks_left);
 // ep3
-void foob_ai(int o, stCloneKeenPlus *pCKP);
+void foob_ai(int o, bool hardmode);
 void ninja_ai(int o, stCloneKeenPlus *pCKP);
 void meep_ai(int o, stLevelControl levelcontrol);
 void sndwave_ai(int o, stCloneKeenPlus *pCKP);
