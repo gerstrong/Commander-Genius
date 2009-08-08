@@ -51,7 +51,7 @@ typedef struct stVortData
 	  unsigned int dist_traveled;
 	  signed int inertiay;
 
-	  char ep1style;                // episode 1 style four-shots-to-kill
+	  char hp;                // episode 1 style four-shots-to-kill
 
 	  unsigned char movedir;
 	  // these hold the animation frames indexes since they're

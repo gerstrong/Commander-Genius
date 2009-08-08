@@ -287,8 +287,6 @@ void CGame::preallocateCKP(stCloneKeenPlus *pCKP)
 	pCKP->GameData = NULL;
 	pCKP->GameData = new stGameData[1];
 
-	framebyframe = 0;
-
 	pCKP->Control.levelcontrol.demomode = DEMO_NODEMO;
 	current_demo = 1;
 

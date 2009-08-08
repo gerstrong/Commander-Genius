@@ -44,11 +44,17 @@ int bonk,kill;
      objects[o].canbezapped = 1;
      objects[o].needinit = 0;
 
-     if (p_levelcontrol->hardmode)
+     // give him some health points, depening on episode and level
+     if(p_levelcontrol->episode == 1)
      {
-       objects[o].ai.vort.ep1style = 1;
+    	 if(p_levelcontrol->curlevel == 16) // He is the vorticon commander and has much more HP
+    		 objects[o].ai.vort.hp = 105;
+    	 else
+    		 objects[o].ai.vort.hp = 4;
      }
-     else objects[o].ai.vort.ep1style = 0;
+     else
+    	 objects[o].ai.vort.hp = (p_levelcontrol->hardmode) ? 4 : 1;
+		 // In EP2 and 3 the Vorticons are much weaker, when no hardmode selected
 
      // copy in animation frame indexes for the current ep
      if (p_levelcontrol->episode==1)
@@ -59,7 +65,6 @@ int bonk,kill;
        objects[o].ai.vort.JumpRightFrame = VORT1_JUMP_RIGHT_FRAME;
        objects[o].ai.vort.JumpLeftFrame = VORT1_JUMP_LEFT_FRAME;
        objects[o].ai.vort.DyingFrame = VORT1_DYING_FRAME;
-       objects[o].ai.vort.ep1style = 1;
      }
      else if (p_levelcontrol->episode==2)
      {
@@ -89,13 +94,10 @@ int bonk,kill;
      kill = 0;
      // if we touch a glowcell, we die!
 
-     if (objects[o].zapped >= VORT_HP && !p_levelcontrol->isfinallevel) kill = 1;
-     else if (objects[o].zapped >= VORT_COMMANDER_HP && p_levelcontrol->isfinallevel) kill = 1;
-     else if (objects[o].zapped && !objects[o].ai.vort.ep1style) kill = 1;
+     if ( objects[o].zapped >= objects[o].ai.vort.hp ) kill = 1;
      else if (p_levelcontrol->episode==2 && getmaptileat((objects[o].x>>CSF)+12, (objects[o].y>>CSF)+16)==TILE_GLOWCELL)
-     {
        kill = 1;
-     }
+
      if (kill)
      {
        objects[o].inhibitfall = 0;
@@ -293,11 +295,6 @@ vort_reprocess: ;
     break;
     case VORT_DYING:
     objects[o].sprite = objects[o].ai.vort.DyingFrame + objects[o].ai.vort.frame;
-
-       if (p_levelcontrol->isfinallevel && p_levelcontrol->episode==1)
-       {
-         p_levelcontrol->canexit = true;
-       }
 
        if (objects[o].ai.vort.animtimer > VORT_DIE_ANIM_TIME)
        {

@@ -24,17 +24,30 @@ unsigned int curmapx, curmapy;
 unsigned char mapdone;
 void addmaptile(unsigned int t)
 {
-  map.mapdata[curmapx][curmapy] = t;
-  curmapx++;
-  if (curmapx >= map.xsize)
-  {
-    curmapx = 0;
-    curmapy++;
+	// Special cases. Those happen normally, when level are not replayed.
+	// For example if one player has battery, the level won't show that item
+	for(unsigned int cp=0 ; cp<numplayers ; cp++)
+	{
+		if( (TileProperty[t][BEHAVIOR] == 11 && player[cp].inventory.HasJoystick) ||
+			(TileProperty[t][BEHAVIOR] == 12 && player[cp].inventory.HasBattery) ||
+			(TileProperty[t][BEHAVIOR] == 13 && player[cp].inventory.HasVacuum) ||
+			(TileProperty[t][BEHAVIOR] == 14 && player[cp].inventory.HasWiskey) ||
+			(TileProperty[t][BEHAVIOR] == 16 && player[cp].inventory.HasPogo)	)
+				t = tiles[t].chgtile; // is it a battery!!
+	}
 
-    if (curmapy >= map.ysize) mapdone = 1;
-  }
+	// Now set this this tile at pos(curmapx, curmapy)
+	map.mapdata[curmapx][curmapy] = t;
+
+	curmapx++;
+	if (curmapx >= map.xsize)
+	{
+		curmapx = 0;
+		curmapy++;
+
+		if (curmapy >= map.ysize) mapdone = 1;
+	}
 }
-
 
 short checkConsistencyofGameData(stGameData *p_GameData)
 {
@@ -200,7 +213,7 @@ levelmarker: ;
 }
 
 void addenemytile(unsigned int t, int episode,
-					int chglevelto, bool *canexit)
+					int chglevelto)
 {
 int o,x;
   map.objectlayer[curmapx][curmapy] = t;
@@ -339,7 +352,6 @@ int o,x;
            if (episode==2)
            {
               o = spawn_object(curmapx<<4<<CSF,curmapy<<4<<CSF,OBJ_SPARK);
-              *canexit = false;    // can't exit till spark is shot
            }
            else if (episode==3)
            {
@@ -474,8 +486,6 @@ unsigned int loadmap(const std::string& filename, const std::string& path,
 	int episode = p_levelcontrol->episode;
 	int chglevelto = p_levelcontrol->chglevelto;
 	int *levels_completed = p_levelcontrol->levels_completed;
-	bool *p_canexit = &(p_levelcontrol->canexit);
-
 
 	NessieAlreadySpawned = 0;
 	map.isworldmap = (lvlnum == 80);
@@ -552,7 +562,7 @@ unsigned int loadmap(const std::string& filename, const std::string& path,
     	t = filebuf[c];
 
         if (map.isworldmap) addobjectlayertile(t,  episode,  levels_completed);
-        else addenemytile(t, episode, chglevelto, p_canexit);
+        else addenemytile(t, episode, chglevelto);
 
         if (++resetcnt==resetpt) curmapx=curmapy=0;
 

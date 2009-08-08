@@ -229,6 +229,7 @@ void CDialog::renderDialog()
 
 // The original Game had a open Dialog Animation. This is what that function does...
 void CDialog::animateDialogBox(bool value){	isanimated = value; }
+
 void CDialog::renderOpenDialogAnimation(int x,int y, int w, int h)
 {
 	if(!isanimated || !isVisible)

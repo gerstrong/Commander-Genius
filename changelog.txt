@@ -1,5 +1,13 @@
 Commander Genius Pre-Release v0.3 (CloneKeenPlus):
 --------------------------------------------------
+
+08-08-2009
+- Special key items can only be taken once. Even replaying the levels
+- Now levels can be exited without doing something before through the exit door. Be careful ;-)
+- Vorticon Commander in Ep1 now dies with 105 shots.
+- Improved consistency of the program
+- Improved Enemys AI 
+
 05-08-2009
 - fixed crash when game in EP1 or 2 was ending
 - fixed fonts problems in story section.

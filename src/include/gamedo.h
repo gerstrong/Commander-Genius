@@ -1,7 +1,7 @@
-void gamedo_RenderScreen();
+void gamedo_RenderScreen(bool gameovermode = false);
 
 
-void gamedo_frameskipping();
+void gamedo_frameskipping( bool gameovermode = false );
 void gamedo_HandleFKeys(stCloneKeenPlus *pCKP);
 void gamedo_frameskipping_blitonly();
 void gamedo_getInput(stLevelControl *p_levelcontrol);

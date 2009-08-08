@@ -33,9 +33,7 @@ char doFall;
     {
        gamepdo_dieanim(cp, pCKP);
        if (!pCKP->Control.levelcontrol.gameovermode)
-       {
          gamepdo_StatusBox(cp, pCKP);
-       }
     }
     else
     {
@@ -79,15 +77,13 @@ char doFall;
           if (player[cp].inhibitfall) doFall = 0;
 
           if (doFall)
-          {
-             gamepdo_falling(cp, pCKP);
-          }
+        	  gamepdo_falling(cp, pCKP);
           else
           {
         	  if(player[cp].pjumping == PJUMPED)
         		  player[cp].pfalling = 0;
-             player[cp].psupportingtile = 145;
-             player[cp].psupportingobject = 0;
+        	  player[cp].psupportingtile = 145;
+        	  player[cp].psupportingobject = 0;
           }
 
        }

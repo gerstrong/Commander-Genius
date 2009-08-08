@@ -19,7 +19,7 @@
 
 // number of shots to kill
 #define VORT_HP                 4
-#define VORT_COMMANDER_HP       99
+#define VORT_COMMANDER_HP       105
 
 #define VORT_DIE_ANIM_TIME      125
 #define VORT2_DIE_ANIM_TIME     125

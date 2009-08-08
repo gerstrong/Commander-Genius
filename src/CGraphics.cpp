@@ -494,7 +494,6 @@ void CGraphics::fadePalette(int fadeamt)
 {
 int c;
 int r,g,b;
-if (framebyframe) fadeamt = PAL_FADE_SHADES;
 
    for(c=0;c<17;c++)
    {

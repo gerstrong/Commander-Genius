@@ -12,8 +12,6 @@
 
 unsigned int loadmap(const std::string& filename, const std::string& path,
 									int lvlnum, stLevelControl* p_levelcontrol);
-void addmaptile(unsigned int t);
-void addenemytile(unsigned int t, stCloneKeenPlus *pCKP);
 short checkConsistencyofGameData(stGameData *p_GameData);
 std::string formatPathString(const std::string& path);
 void assignChangeTileAttribute(stTile *tile, int episode);

@@ -8,7 +8,6 @@
 #include "include/misc.h"
 #include "sdl/CVideoDriver.h"
 #include "include/game.h"
-#include "include/gamedo.h"
 #include "sdl/CTimer.h"
 #include "sdl/sound/CSound.h"
 #include "include/fileio.h"
@@ -22,6 +21,7 @@
 #include "vorticon/CDialog.h"
 #include "CLogFile.h"
 #include "sdl/CSettings.h"
+
 #include <SDL.h>
 #include <iostream>
 #include <fstream>
@@ -1020,7 +1020,7 @@ void showPage(const std::string& str_text, stCloneKeenPlus *pCKP, int textsize)
 
 	  delete [] text;
 
-	std::string coverline(38, (char)2);
+	  std::string coverline(38, (char) 2);
 
 	  do
 	  {

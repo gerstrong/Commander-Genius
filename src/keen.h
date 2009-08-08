@@ -141,11 +141,12 @@ struct stInventory
  unsigned char HasCardRed;
  unsigned char HasCardGreen;
  unsigned char HasCardBlue;
- // ep1 only
- unsigned char HasJoystick;
- unsigned char HasFuel;
- unsigned char HasBattery;
- unsigned char HasVacuum;
+
+ // ep1 normally
+ bool HasJoystick;
+ bool HasWiskey;
+ bool HasBattery;
+ bool HasVacuum;
 };
 
 // for strings loaded from "strings.dat"

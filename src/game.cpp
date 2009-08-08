@@ -136,10 +136,8 @@ void gameloop(stCloneKeenPlus *pCKP)
         if (gamedo_ScrollTriggers(primaryplayer)) ScreenIsScrolling = 1;
      }
 
-
-
      // do frameskipping, and render/blit the screen if it's time
-     gamedo_frameskipping();
+     gamedo_frameskipping( pCKP->Control.levelcontrol.gameovermode );
 
      // when we complete a fade out flag to exit the game loop
      if (fade.mode==FADE_COMPLETE)
@@ -212,7 +210,7 @@ void gameloop(stCloneKeenPlus *pCKP)
       			 extras[1] = true;
       		 if(player[0].inventory.HasVacuum)
       			 extras[2] = true;
-      		 if(player[0].inventory.HasFuel)
+      		 if(player[0].inventory.HasWiskey)
       			 extras[3] = true;
       	 }
 
@@ -438,7 +436,7 @@ unsigned int i;
   sprites[DOOR_BLUE_SPRITE].ysize = 32;
 
   p_levelcontrol->level_done_timer = 0;
-  p_levelcontrol->gameovermode = 0;
+  p_levelcontrol->gameovermode = false;
 
   // all objects -> not exist
  for(i=1;i<MAX_OBJECTS-1;i++) objects[i].exists = 0;
@@ -1204,25 +1202,21 @@ void procgoodie(int t, int mpx, int mpy, int theplayer, stCloneKeenPlus *pCKP)
     break;
 
     case 11:
-     player[theplayer].inventory.HasJoystick = 1;
-     pCKP->Control.levelcontrol.canexit = 1;
+     player[theplayer].inventory.HasJoystick = true;
      g_pSound->playSound(SOUND_GET_PART, PLAY_NOW);
     break;
 
     case 12:
-     player[theplayer].inventory.HasBattery = 1;
-     pCKP->Control.levelcontrol.canexit = 1;
+     player[theplayer].inventory.HasBattery = true;
      g_pSound->playSound(SOUND_GET_PART, PLAY_NOW);
     break;
     case 13:
 
-     player[theplayer].inventory.HasVacuum = 1;
-     pCKP->Control.levelcontrol.canexit = 1;
+     player[theplayer].inventory.HasVacuum = true;
      g_pSound->playSound(SOUND_GET_PART, PLAY_NOW);
     break;
     case 14:
-     player[theplayer].inventory.HasFuel = 1;
-     pCKP->Control.levelcontrol.canexit = 1;
+     player[theplayer].inventory.HasWiskey = true;
      g_pSound->playSound(SOUND_GET_PART, PLAY_NOW);
     break;
 
@@ -1251,12 +1245,9 @@ void procgoodie(int t, int mpx, int mpy, int theplayer, stCloneKeenPlus *pCKP)
       break;
 
     case 17:
-      if (pCKP->Control.levelcontrol.canexit)
-      {
-        pCKP->Control.levelcontrol.exitXpos = (mpx+2)<<4;
-        PlayerTouchedExit(theplayer, pCKP);
-      }
-    break;
+      pCKP->Control.levelcontrol.exitXpos = (mpx+2)<<4;
+      PlayerTouchedExit(theplayer, pCKP);
+      break;
 
     case 23:break;	// these are switches. They cannot not be picked up!
     case 25:break;  // Refer to JumpandPogo to check the activation code

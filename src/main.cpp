@@ -53,7 +53,6 @@ int NessieObjectHandle;
 int DemoObjectHandle;
 int BlankSprite;
 int DemoSprite;
-int framebyframe;
 int fps=0, curfps=0;
 
 stOption *options = NULL;
@@ -300,11 +299,7 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
   char SaveGameFileName[40];
   int newlevel;
 
-  stLevelControl *p_levelcontrol;
-  stOption	*p_option;
-
-  p_option = pCKP->Option;
-  p_levelcontrol = &(pCKP->Control.levelcontrol);
+  stLevelControl *p_levelcontrol = &(pCKP->Control.levelcontrol);
 
   if( p_levelcontrol->command != LVLC_START_LEVEL )
   {
@@ -333,14 +328,9 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
     sprintf(levelname, "level%02d.ck%d", newlevel, p_levelcontrol->episode);
 
     if (p_levelcontrol->chglevelto==WORLD_MAP)
-    {
       wm = 1;
-    }
     else
-    {
       wm = 0;
-    }
-    p_levelcontrol->canexit = 1;   // assume can exit before loading map
 
     if (loadmap(levelname, pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory, newlevel, p_levelcontrol))
     {
@@ -350,15 +340,6 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
     }
 
     p_levelcontrol->curlevel = p_levelcontrol->chglevelto;
-    if (p_levelcontrol->curlevel == FINAL_MAP && p_levelcontrol->episode == 1)
-    {
-      p_levelcontrol->isfinallevel = 1;
-      p_levelcontrol->canexit = 0;
-    }
-    else
-    {
-      p_levelcontrol->isfinallevel = 0;
-    }
 
     if (firsttime)
     {

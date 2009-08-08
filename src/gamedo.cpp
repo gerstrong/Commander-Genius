@@ -21,7 +21,6 @@
 
 #include "include/enemyai.h"
 
-
 extern unsigned long gotPlayX;
 
 extern unsigned long CurrentTickCount;
@@ -664,32 +663,25 @@ extern int NumConsoleMessages;
 // performs frameskipping and blits the display as needed,
 // at end of functions erases all drawn objects from the scrollbuf.
 
-void gamedo_RenderScreen()
-{
-   //int x,y, bmnum;
-
+void gamedo_RenderScreen(bool gameovermode) // gameovermode is not a good idea.
+{											// TODO: Make a list of Bitmaps to be drawn and draw them, like the objects and tiles
    g_pGraphics->renderHQBitmap();
 
-   //if(pCKP != NULL)
-   //{
-	   gamedo_render_drawobjects();
+   gamedo_render_drawobjects(); // (Sprites)
 
-	   //if (pCKP->Control.levelcontrol.gameovermode)
-	   // TODO: make this Bitmap also a object or tile to be added.
-	   /*if (special_bitmap == GAMEOVER_BITMAP)
-	   {
-		   // figure out where to center the gameover bitmap and draw it
-		   bmnum = g_pGraphics->getBitmapNumberFromName("GAMEOVER");
-		   x = (320/2)-(bitmaps[bmnum].xsize/2);
-		   y = (200/2)-(bitmaps[bmnum].ysize/2);
-		   g_pGraphics->drawBitmap(x, y, bmnum);
-	   }*/
-   //}
-
-   g_pVideoDriver->sb_blit();	// blit scrollbuffer to display
+   g_pVideoDriver->sb_blit();	// blit scrollbuffer to display (Tiles)
 
    gamedo_render_erasedebug();
    gamedo_render_eraseobjects();
+
+   if(gameovermode) // (Gameover Bitmap) More to come!
+   {
+	   int bmnum = g_pGraphics->getBitmapNumberFromName("GAMEOVER");
+	   // figure out where to center the gameover bitmap and draw it
+	   int x = (320/2)-(bitmaps[bmnum].xsize/2);
+	   int y = (200/2)-(bitmaps[bmnum].ysize/2);
+	   g_pGraphics->drawBitmap(x, y, bmnum);
+   }
 
    curfps++;
 }
@@ -804,29 +796,18 @@ int i;
                  player[i].pfrozentime = 0;
               }
             }
-            // F8 - frame by frame
-            if(g_pInput->getPressedKey(KF8))
-            {
-              framebyframe = 1;
-              #ifdef BUILD_SDL
-              g_pVideoDriver->AddConsoleMsg("Frame-by-frame mode  F8:advance F7:stop");
-              #endif
-            }
+
             // F9 - exit level immediately
             if(g_pInput->getPressedKey(KF9))
             {
                endlevel(1, &(pCKP->Control.levelcontrol) );
             }
+
             // F6 - onscreen debug--toggle through debug/radar/off
             if(g_pInput->getPressedKey(KF6))
             {
                debugmode++;
                if (debugmode>2) debugmode=0;
-            }
-            // F7 - accelerate mode/frame by frame frame advance
-            if(g_pInput->getPressedKey(KF7))
-            {
-               if (!framebyframe) acceleratemode=1-acceleratemode;
             }
     }
 
@@ -878,32 +859,20 @@ void gamedo_fades(void)
     }
 }
 
-void gamedo_frameskipping()
+void gamedo_frameskipping( bool gameovermode )
 {
-	 if (framebyframe)
-     {
-       gamedo_RenderScreen();
-       return;
-     }
-
      if (frameskiptimer >= g_pVideoDriver->getFrameskip())
      {
-       gamedo_RenderScreen();
-       frameskiptimer = 0;
-     } else frameskiptimer++;
+    	 gamedo_RenderScreen(gameovermode);
 
+    	 frameskiptimer = 0;
+     } else frameskiptimer++;
 }
 
 // same as above but only does a sb_blit, not the full RenderScreen.
 // used for intros etc.
 void gamedo_frameskipping_blitonly()
 {
-    if (framebyframe)
-    {
-    	g_pVideoDriver->sb_blit();
-    	return;
-    }
-
     if (frameskiptimer >= g_pVideoDriver->getFrameskip())
     {
     	g_pVideoDriver->sb_blit();

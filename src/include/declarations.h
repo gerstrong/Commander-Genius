@@ -41,11 +41,9 @@ struct stLevelControl
  int tobonuslevel;            // if 1 player will warp to bonus level on return to WM (for ep1)
  // data about current level
  int curlevel;                // number of current level
- char success;                // 1 if level was finished, 0 if he died
- char isfinallevel;           // 1 if this is the final level
- bool canexit;                // true if player is allowed to use the exit door
- char gameovermode;           // 1 if "Game Over" is displayed
- bool dokeensleft;            // 1 if we need to do the "Keens Left"
+ bool success;                // true if level was finished, 0 if he died
+ bool gameovermode;           // true if "Game Over" is displayed
+ bool dokeensleft;            // true if we need to do the "Keens Left"
  bool dark;                   // true if level is currently dark (lights are out)
 
  int episode;                 // which episode we're playing (1-3)

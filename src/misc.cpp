@@ -275,7 +275,7 @@ int dlgX,dlgY,dlgW,dlgH;
   g_pGraphics->drawTile_direct((dlgX+21)<<3, ((dlgY+4)<<3)+3, t);
   if (player[p].inventory.HasVacuum) t=450; else t=323;
   g_pGraphics->drawTile_direct((dlgX+24)<<3, ((dlgY+4)<<3)+3, t);
-  if (player[p].inventory.HasFuel) t=451; else t=324;
+  if (player[p].inventory.HasWiskey) t=451; else t=324;
   g_pGraphics->drawTile_direct((dlgX+27)<<3, ((dlgY+4)<<3)+3, t);
   // ray gun charges
   i = player[p].inventory.charges;
@@ -580,7 +580,7 @@ int dlgX,dlgY,dlgW,dlgH;
   if (!player[cp].inventory.HasVacuum)
 	  g_pGraphics->drawTile_direct((dlgX+15)<<3, (dlgY+3)<<3, 450);
 
-  if (!player[cp].inventory.HasFuel)
+  if (!player[cp].inventory.HasWiskey)
 	  g_pGraphics->drawTile_direct((dlgX+18)<<3, (dlgY+3)<<3, 451);
 
   g_pVideoDriver->update_screen();
@@ -1004,7 +1004,7 @@ int i;
              {
                if (player[i].inventory.HasJoystick) partcount++;
                if (player[i].inventory.HasBattery) partcount++;
-               if (player[i].inventory.HasFuel) partcount++;
+               if (player[i].inventory.HasWiskey) partcount++;
                if (player[i].inventory.HasVacuum) partcount++;
              }
            }
@@ -1047,6 +1047,8 @@ return 0;
 
 void usage(void)
 {
+	// TODO: Many options has to be changed. For now it is disabled
+	/*
   printf("Usage: keen [lvlnum] [-*player] [-nopk] [-ep*] [-dtm] [-nocheat] [-rec] -[eseq]<br>\n");
   printf("lvlnum          specify a level number (such as 2) to go directly to that level<br>");
   printf("-*player        select number of players (1-4); defaults to 1<br>");
@@ -1063,15 +1065,13 @@ void usage(void)
   printf("-ogl            hardware acceleration<br>");
   printf("-showfps        show FPS in upper-right of screen<br>");
 #endif
-#ifdef TARGET_WIN32
-  printf("<br>-host & -join   for the experimental network play mode. These DON'T work yet.\n");
-#endif
 
   printf("<br>");
   printf("Examples:<br>");
   printf("  keen 3 -ep2                play ep 2, level 3 in 1-player mode<br>");
   printf("  keen -ep3 -dtm -2player    play ep3, skip title&intro, 2-player mode<br>");
   printf("  keen -ep3                  play a normal game of ep3<br>");
+  */
 }
 
 unsigned int rnd(void)

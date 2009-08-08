@@ -14,7 +14,7 @@ void eseq_showmsg(const std::string& text, int boxleft, int boxtop,
 		int boxwidth, int boxheight, bool autodismiss);
 
 // references to ../gamedo.cpp
-void gamedo_frameskipping();
+void gamedo_frameskipping( bool gameovermode = false );
 void gamedo_enemyai(stLevelControl *p_levelcontrol);
 
 #endif /* ENDINGSEQUENCEEP2_H_ */
