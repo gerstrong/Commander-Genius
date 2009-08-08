@@ -36,7 +36,6 @@
 #include "include/menu.h"
 #include "sdl/CVideoDriver.h"
 #include "include/game.h"
-#include "include/eseq_ep2.h"
 #include "include/fileio.h"
 #include "include/fileio/story.h"
 #include "include/main.h"
@@ -289,6 +288,11 @@ short closeCKP(stCloneKeenPlus *pCKP)
 	return 0;
 }
 
+// Prototypes needed for playgame_levelmanager
+int eseq2_TantalusRay(stCloneKeenPlus *pCKP);
+void eseq2_vibrate();
+
+
 void playgame_levelmanager(stCloneKeenPlus *pCKP)
 {
   int i, o, wm, firsttime = 1;
@@ -313,7 +317,7 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
 
   do
   {
-    initgame(pCKP);
+    initgame( &(pCKP->Control.levelcontrol) );
 
     newlevel = p_levelcontrol->chglevelto;
     if (p_levelcontrol->episode==1 && p_levelcontrol->hardmode)
@@ -337,7 +341,8 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
       wm = 0;
     }
     p_levelcontrol->canexit = 1;   // assume can exit before loading map
-    if (loadmap(levelname, pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory, p_levelcontrol->chglevelto, wm, pCKP))
+
+    if (loadmap(levelname, pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory, newlevel, p_levelcontrol))
     {
       crashflag = 1;
       crashflag2 = p_levelcontrol->chglevelto;
@@ -487,7 +492,7 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
   }
   else if (p_levelcontrol->command==LVLC_TANTALUS_RAY)
   {
-    eseq2_vibrate(pCKP);
+    eseq2_vibrate();
     eseq2_TantalusRay(pCKP);
     IntroCanceled = 1;               // popup main menu immediately
   }
@@ -548,12 +553,12 @@ gotEOF: ;
    p_levelcontrol->command = LVLC_NOCOMMAND;
 
    initgamefirsttime(pCKP, s);
-   initgame(pCKP);
+   initgame( &(pCKP->Control.levelcontrol) );
 
    // now load the map and play the level
    sprintf(filename, "level%02d.ck%d", p_levelcontrol->curlevel, p_levelcontrol->episode);
-   if (loadmap(filename, pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory,
-		   p_levelcontrol->curlevel, 0, pCKP)) return DEMO_RESULT_FILE_BAD;
+   if ( loadmap(filename, pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory,
+		   p_levelcontrol->curlevel, &(pCKP->Control.levelcontrol)) ) return DEMO_RESULT_FILE_BAD;
 
    for(i=0;i<NUM_OPTIONS;i++) SaveOptions[i] = p_option[i].value;
    // SetDefaultOptions();

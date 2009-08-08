@@ -37,7 +37,6 @@ void walker_ai(int o, stLevelControl levelcontrol)
 {
 unsigned int p;
 unsigned int i=0;
-//int supportingsomebody;
 int nopush;
 int /*til,*/floor;
 
@@ -263,10 +262,8 @@ int /*til,*/floor;
                   // of the walker a bit)
                   floor = 0;
                   if (!TileProperty[getmaptileat((player[i].x>>CSF)+4, (player[i].y>>CSF)+sprites[0].ysize)][BUP])
-                  //if (!tiles[getmaptileat((player[i].x>>CSF)+4, (player[i].y>>CSF)+sprites[0].ysize)].solidfall)
                   { // lower-left isn't solid
                 	if (TileProperty[getmaptileat((player[i].x>>CSF)+12, (player[i].y>>CSF)+sprites[0].ysize)][BUP])
-                    //if (tiles[getmaptileat((player[i].x>>CSF)+12, (player[i].y>>CSF)+sprites[0].ysize)].solidfall)
                     {
                       floor = 1;
                     }
@@ -324,7 +321,6 @@ int /*til,*/floor;
            }
            break;
        }
-/*anim: ;*/
 
        // walk animation
        if (objects[o].ai.walker.animtimer > WALKER_WALK_ANIM_TIME)

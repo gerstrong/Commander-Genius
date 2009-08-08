@@ -2,19 +2,19 @@
   Ending sequence for Episode 2.
 */
 
-#include "keen.h"
-#include "include/game.h"
+#include "../keen.h"
+/*#include "include/game.h"
 #include "include/gamedo.h"
-#include "include/gamepdo.h"
-#include "sdl/CTimer.h"
-#include "sdl/CInput.h"
-#include "sdl/sound/CSound.h"
-#include "include/eseq_ep2.h"
-#include "include/eseq_ep1.h"
-#include "include/menu.h"
-#include "include/enemyai.h"
-#include "CGraphics.h"
-#include "StringUtils.h"
+#include "include/gamepdo.h"*/
+#include "../sdl/CTimer.h"
+#include "../sdl/CInput.h"
+#include "../sdl/sound/CSound.h"
+#include "../include/menu.h"
+#include "../include/enemyai.h"
+#include "EndingSequenceEp2.h"
+#include "CommonEnding.h"
+#include "../CGraphics.h"
+#include "../StringUtils.h"
 
 
 #define CMD_MOVE                0
@@ -28,8 +28,6 @@
 
 stShipQueue shipqueue[32];
 int ShipQueuePtr;
-
-#define LETTER_SHOW_SPD          30
 
 // start x,y map scroll position for eseq2_TantalusRay()
 #define TANTALUS_X       0
@@ -76,10 +74,10 @@ int state, timer, spawnedcount=0;
   pCKP->Control.levelcontrol.dark = 0;
   g_pGraphics->initPalette(pCKP->Control.levelcontrol.dark);
 
-  initgame(pCKP);
+  initgame( &(pCKP->Control.levelcontrol) );
   state = TAN_STATE_WAITBEFOREFIRE;
 
-  showmapatpos(81,TANTALUS_X, TANTALUS_Y, 0, pCKP);
+  showmapatpos(81,TANTALUS_X, TANTALUS_Y, pCKP);
 
   AllPlayersInvisible();
   numplayers = 1;
@@ -202,8 +200,8 @@ int state, timer, spawnedcount=0;
           case 32:
             state = TAN_STATE_GAMEOVER;
             g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
-            SetGameOver(pCKP);
-          break;
+            pCKP->Control.levelcontrol.gameovermode = true;
+            break;
          }
          spawnedcount++;
          timer = 60;
@@ -236,8 +234,8 @@ int state, timer, spawnedcount=0;
     gamedo_fades();
     if (state!=TAN_STATE_GAMEOVER) gamedo_AnimatedTiles();
 
-    gamedo_frameskipping(pCKP);
-    gamedo_enemyai(pCKP);
+    gamedo_frameskipping();
+    gamedo_enemyai( &(pCKP->Control.levelcontrol) );
 
     if(((player[0].x>>CSF)-scroll_x) > 160-16) map_scroll_right();
     if (((player[0].y>>CSF)-scroll_y) > 100)
@@ -251,7 +249,7 @@ int state, timer, spawnedcount=0;
   return 1;
 }
 
-void eseq2_vibrate(stCloneKeenPlus *pCKP)
+void eseq2_vibrate()
 {
 int xamt, yamt;
 int xdir, ydir;
@@ -325,7 +323,7 @@ int x,y,w,h;
     }
 
     // show the frame
-    gamedo_frameskipping(pCKP);
+    gamedo_frameskipping();
     vibratetimes++;
 
     g_pInput->pollEvents();
@@ -338,14 +336,12 @@ int x,y,w,h;
   w = GetStringAttribute("EP2_AfterVibrateString", "WIDTH");
   h = GetStringAttribute("EP2_AfterVibrateString", "HEIGHT");
 
-  eseq_showmsg(getstring("EP2_AfterVibrateString"),x,y,w,h,1, pCKP);
+  eseq_showmsg(getstring("EP2_AfterVibrateString"),x,y,w,h,1);
 }
 
 
 #define HEADFOREARTH_X          0
 #define HEADFOREARTH_Y          0
-
-#define HEADFOREARTH_WAIT_TIME  600
 
 #define SPR_SHIP_RIGHT_EP2      132
 #define SPR_SHIP_LEFT_EP2       133
@@ -356,79 +352,6 @@ int x,y,w,h;
 #define HEADSFOREARTH_W        33
 #define HEADSFOREARTH_H        8
 
-void eseq_showmsg(const std::string& text, int boxleft, int boxtop, int boxwidth, int boxheight, char autodismiss, stCloneKeenPlus *pCKP)
-{
-//int draw;
-//int i;
-
-	std::string tempbuf;
-char textline, showtimer;
-unsigned int amountshown;
-int waittimer;
-int cancel, lastcancelstate;
-
-  textline = 0;
-  amountshown = 0;
-  showtimer = 0;
-  lastcancelstate = 1;
-  waittimer = 0;
-
-  do
-  {
-    gamedo_fades();
-    gamedo_AnimatedTiles();
-    gamedo_render_drawobjects(pCKP);
-
-    cancel = (g_pInput->getPressedCommand(KENTER) || g_pInput->getPressedCommand(KCTRL) || g_pInput->getPressedCommand(KALT));
-
-    // draw the text up to the amount currently shown
-    tempbuf = text;
-    if(amountshown < tempbuf.size())
-	  tempbuf.erase(amountshown);
-    sb_dialogbox(boxleft,boxtop,boxwidth,boxheight);
-    g_pGraphics->sb_font_draw( tempbuf, (boxleft+1)*8, (boxtop+1+textline)*8);
-
-    gamedo_frameskipping_blitonly();
-    gamedo_render_eraseobjects();
-
-    if (showtimer > LETTER_SHOW_SPD)
-    {  // it's time to show a new letter
-      if (amountshown < text.size())
-      {
-        amountshown++;
-      }
-      showtimer = 0;
-    } else showtimer++;
-
-    // user pressed enter or some other key
-    if (cancel && !lastcancelstate)
-    {
-      if (amountshown < text.size())
-      {
-         amountshown = text.size();
-      }
-      else return;
-    }
-
-    // when all text is shown wait a sec then return
-    if (autodismiss)
-    {
-      if (amountshown >= text.size())
-      {
-        if (waittimer > HEADFOREARTH_WAIT_TIME) return;
-        waittimer++;
-      }
-    }
-
-
-    lastcancelstate = cancel;
-
-    g_pInput->pollEvents();
-    g_pTimer->SpeedThrottle();
-  } while(!g_pInput->getPressedCommand(KQUIT));
-  return;
-}
-
 int eseq2_HeadsForEarth(stCloneKeenPlus *pCKP)
 {
 char enter,lastenterstate;
@@ -436,7 +359,7 @@ int x, y;
 int downtimer;
 int afterfadewaittimer;
 
-  initgame(pCKP);
+  initgame( &(pCKP->Control.levelcontrol) );
 
   // set up the ship's route
   ShipQueuePtr = 0;
@@ -444,7 +367,7 @@ int afterfadewaittimer;
   addshipqueue(CMD_MOVE, 2360, DDOWNRIGHT);
   addshipqueue(CMD_FADEOUT, 0, 0);
 
-  showmapatpos(81, HEADFOREARTH_X, HEADFOREARTH_Y, 0, pCKP);
+  showmapatpos(81, HEADFOREARTH_X, HEADFOREARTH_Y, pCKP);
 
   numplayers = 1;
   // place the player near the vorticon mothership
@@ -470,7 +393,7 @@ int afterfadewaittimer;
   fade.dir = FADE_IN;
   fade.curamt = 0;
   fade.fadetimer = 0;
-  eseq_showmsg(getstring("EP2_ESEQ_PART1"),HEADSFOREARTH_X,HEADSFOREARTH_Y,HEADSFOREARTH_W,HEADSFOREARTH_H,1, pCKP);
+  eseq_showmsg(getstring("EP2_ESEQ_PART1"),HEADSFOREARTH_X,HEADSFOREARTH_Y,HEADSFOREARTH_W,HEADSFOREARTH_H, true);
 
   // erase the message dialog
   map_redraw();
@@ -550,7 +473,7 @@ int afterfadewaittimer;
     gamedo_fades();
     gamedo_AnimatedTiles();
 
-    gamedo_frameskipping(pCKP);
+    gamedo_frameskipping();
     gamedo_ScrollTriggers(0);
 
     g_pInput->pollEvents();
@@ -569,7 +492,7 @@ char enter,lastenterstate;
 int downtimer;
 int afterfadewaittimer = 0;
 
-  initgame(pCKP);
+  initgame( &(pCKP->Control.levelcontrol) );
 
   // set up the ship's route
   ShipQueuePtr = 0;
@@ -577,7 +500,7 @@ int afterfadewaittimer = 0;
   addshipqueue(CMD_MOVE, 1600, DUPLEFT);
   addshipqueue(CMD_FADEOUT, 0, 0);
 
-  showmapatpos(81, LIMPSHOME_X, LIMPSHOME_Y, 0, pCKP);
+  showmapatpos(81, LIMPSHOME_X, LIMPSHOME_Y, pCKP);
 
   numplayers = 1;
   player[0].x = (10 <<4<<CSF);
@@ -592,7 +515,7 @@ int afterfadewaittimer = 0;
   fade.dir = FADE_IN;
   fade.curamt = 0;
   fade.fadetimer = 0;
-  eseq_showmsg(getstring("EP2_ESEQ_PART2"),HEADSFOREARTH_X,HEADSFOREARTH_Y,HEADSFOREARTH_W,HEADSFOREARTH_H-1,1, pCKP);
+  eseq_showmsg(getstring("EP2_ESEQ_PART2"),HEADSFOREARTH_X,HEADSFOREARTH_Y,HEADSFOREARTH_W,HEADSFOREARTH_H-1,1);
 
   // erase the message dialog
   map_redraw();
@@ -662,7 +585,7 @@ int afterfadewaittimer = 0;
     gamedo_fades();
     gamedo_AnimatedTiles();
 
-    gamedo_frameskipping(pCKP);
+    gamedo_frameskipping();
 
     g_pInput->pollEvents();
     g_pTimer->SpeedThrottle();
@@ -704,14 +627,14 @@ int dlgX, dlgY, dlgW, dlgH;
      dlgH = GetStringAttribute(tempstr, "HEIGHT");
      lastpage = GetStringAttribute(tempstr, "LASTPAGE");
 
-     eseq_showmsg(text, dlgX, dlgY, dlgW, dlgH, 1, pCKP);
+     eseq_showmsg(text, dlgX, dlgY, dlgW, dlgH, 1);
      if (lastpage==1) break;
 
      curpage++;
   } while(!g_pInput->getPressedCommand(KQUIT));
 
   finale_draw("finale.ck2", pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory);
-  eseq_ToBeContinued(pCKP);
+  eseq_ToBeContinued();
 
   return 0;
 }

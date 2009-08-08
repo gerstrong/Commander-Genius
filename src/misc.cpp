@@ -18,9 +18,6 @@
 
 #include "include/misc.h"
 #include "include/game.h"
-#include "include/eseq_ep1.h"
-#include "include/eseq_ep2.h"
-#include "include/eseq_ep3.h"
 #include "include/gamedo.h"
 #include "CLogFile.h"
 #include "CGraphics.h"
@@ -692,47 +689,6 @@ int i;
    if (i=='W') return 1; else return 0;
 }
 
-/*
-int game_load(char *fname)
-{
-FILE *fp;
-long i;
-unsigned long scrx;
-int scry;
-
-   fp = OpenGameFile(fname, "rb");
-   if (!fp) return 1;
-
-   // do the header and version check
-   if (fgetc(fp) != 'S') { fclose(fp); return 1; }
-   if (fgetc(fp) != SAVEGAMEVERSION) { fclose(fp); return 1; }
-   fgetc(fp);           // iswm flag--not needed here
-
-   // save all necessary structures to the file
-   fread(&numplayers, sizeof(numplayers), 1, fp);
-   fread(&levelcontrol, sizeof(levelcontrol), 1, fp);
-   fread(&scrx, sizeof(scrx), 1, fp);
-   fread(&scry, sizeof(scry), 1, fp);
-   fread(&max_scroll_x, sizeof(max_scroll_x), 1, fp);
-   fread(&max_scroll_y, sizeof(max_scroll_y), 1, fp);
-   fread(&map, sizeof(map), 1, fp);
-
-   initgame();           // reset scroll
-   drawmap();
-   for(i=0;i<scrx;i++) map_scroll_right();
-   for(i=0;i<scry;i++) map_scroll_down();
-
-   fread(&player[0], sizeof(player[0]), numplayers, fp);
-   fread(&objects[0], sizeof(objects), 1, fp);
-   fread(&tiles[0], sizeof(tiles), 1, fp);
-
-   fclose(fp);
-
-   debugmode = 0;
-   return 0;
-}
-*/
-
 int game_load(char *fname, stCloneKeenPlus *pCKP)
 {
 FILE *fp;
@@ -761,7 +717,7 @@ p_levelcontrol = &(pCKP->Control.levelcontrol);
    sgrle_decompress(fp, (unsigned char *)&max_scroll_y, sizeof(max_scroll_y));
    sgrle_decompress(fp, (unsigned char *)&map, sizeof(map));
 
-   initgame(pCKP);           // reset scroll
+   initgame( &(pCKP->Control.levelcontrol) );           // reset scroll
    drawmap();
    for(i=0;i<scrx;i++) map_scroll_right();
    for(i=0;i<scry;i++) map_scroll_down();
@@ -818,7 +774,7 @@ top: ;
   do
   {
 
-    gamedo_render_drawobjects(pCKP);
+    gamedo_render_drawobjects();
 
     sb_dialogbox(dlgX,dlgY,dlgW,dlgH);
     if (issave)
@@ -884,7 +840,7 @@ top: ;
   do
   {
 
-    gamedo_render_drawobjects(pCKP);
+    gamedo_render_drawobjects();
 
     sb_dialogbox(dlgX,dlgY,dlgW,dlgH);
     if (issave)
@@ -951,7 +907,7 @@ int dlgX,dlgY,dlgW,dlgH;
     waittimer++;
     if (waittimer > 5000) break;
 
-    gamedo_render_drawobjects(pCKP);
+    gamedo_render_drawobjects();
 
     sb_dialogbox(dlgX,dlgY,dlgW,dlgH);
     g_pGraphics->sb_font_draw( getstring("GameSaveSuccess"),(dlgX+1)<<3,(dlgY+1)<<3);
@@ -966,7 +922,7 @@ int dlgX,dlgY,dlgW,dlgH;
   map_redraw();
 }
 
-int VerifyQuit(stCloneKeenPlus *pCKP)
+int VerifyQuit()
 {
 int dlgX,dlgY,dlgW,dlgH;
 	std::string text;
@@ -983,7 +939,7 @@ int dlgX,dlgY,dlgW,dlgH;
   // loading a game that doesn't exist.
   do
   {
-    gamedo_render_drawobjects(pCKP);
+    gamedo_render_drawobjects();
     gamedo_AnimatedTiles();
 
     sb_dialogbox(dlgX, dlgY, dlgW, dlgH);
@@ -1013,29 +969,6 @@ int dlgX,dlgY,dlgW,dlgH;
     g_pInput->pollEvents();
     g_pTimer->SpeedThrottle();
   } while(1);
-}
-
-int endsequence(stCloneKeenPlus *pCKP)
-{
-
-  if (pCKP->Control.levelcontrol.episode==1)
-  {
-     if (eseq1_ReturnsToShip(pCKP)) return 0;
-     if (eseq1_ShipFlys(pCKP)) return 0;
-     eseq1_BackAtHome(pCKP);
-  }
-  else if (pCKP->Control.levelcontrol.episode==2)
-  {
-     if (eseq2_HeadsForEarth(pCKP)) return 0;
-     if (eseq2_LimpsHome(pCKP)) return 0;
-     if (eseq2_SnowedOutside(pCKP)) return 0;
-  }
-  else if (pCKP->Control.levelcontrol.episode==3)
-  {
-     if (eseq3_AwardBigV(pCKP)) return 0;
-  }
-
-  return 0;
 }
 
 void AllPlayersInvisible(void)

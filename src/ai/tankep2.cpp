@@ -39,7 +39,7 @@
 #define TANK2_TIME_BEFORE_FIRE_WHEN_SEE      100
 #define TANK2_TIME_BETWEEN_FIRE_CAUSE_LEVEL  400
 
-void tankep2_ai(int o, stCloneKeenPlus *pCKP)
+void tankep2_ai(int o, bool hardmode)
 {
 int newobject;
 //int not_about_to_fall;
@@ -141,7 +141,7 @@ unsigned int i;
               else
               {
                  // no we're not facing him, on hard difficulty turn around
-                 if (pCKP->Control.levelcontrol.hardmode)
+                 if (hardmode)
                  {
                     objects[o].ai.tank.frame = 0;
                     objects[o].ai.tank.timer = 0;

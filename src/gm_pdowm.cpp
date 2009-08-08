@@ -49,23 +49,20 @@ void gamepdo_wm_HandlePlayer(int cp, stCloneKeenPlus *pCKP)
       AllowMountUnmountNessie(cp);
     }
 
-    gamepdo_wm_SelectFrame(cp, pCKP);
+    gamepdo_wm_SelectFrame(cp);
 
     // copy player's keytable to lastkeytable
     memcpy(&player[cp].lastkeytable, &player[cp].keytable, sizeof(player[cp].lastkeytable));
 }
 
 // select the appropriate player frame based on what he's doing
-void gamepdo_wm_SelectFrame(int cp, stCloneKeenPlus *pCKP)
+void gamepdo_wm_SelectFrame(int cp)
 {
     // select base frame for current direction
     if (player[cp].pshowdir==RIGHT) player[cp].playframe = PMAPRIGHTFRAME;
     else if (player[cp].pshowdir==LEFT) player[cp].playframe = PMAPLEFTFRAME;
     else if (player[cp].pshowdir==UP) player[cp].playframe = PMAPUPFRAME;
     else if (player[cp].pshowdir==DOWN) player[cp].playframe = PMAPDOWNFRAME;
-
-    // episode 3 map frames start at 31, ep1&2 at 32
-    if (pCKP->Control.levelcontrol.episode==3) player[cp].playframe--;
 
     // no walking animation if we're fading
     if (fade.mode != NO_FADE) return;

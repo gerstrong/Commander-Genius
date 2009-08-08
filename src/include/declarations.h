@@ -43,9 +43,9 @@ struct stLevelControl
  int curlevel;                // number of current level
  char success;                // 1 if level was finished, 0 if he died
  char isfinallevel;           // 1 if this is the final level
- char canexit;                // 1 if player is allowed to use the exit door
+ bool canexit;                // true if player is allowed to use the exit door
  char gameovermode;           // 1 if "Game Over" is displayed
- char dokeensleft;            // 1 if we need to do the "Keens Left"
+ bool dokeensleft;            // 1 if we need to do the "Keens Left"
  bool dark;                   // true if level is currently dark (lights are out)
 
  int episode;                 // which episode we're playing (1-3)
@@ -69,7 +69,7 @@ struct stLevelControl
  int sparks_left;
 	
 
- // if 1, a moving platform is currently extending/retracting (ep2)
+ // if true, a moving platform is currently extending/retracting (ep2)
  bool PlatExtending;
 
  // if > 0, the screen will shake and it will decrement each frame.

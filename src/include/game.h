@@ -247,7 +247,7 @@ DOWN
 #define PSUPPORTEDBYOBJECT         0
 
 void gameloop(stCloneKeenPlus *pCKP);
-void gameloop_initialize(stCloneKeenPlus *pCKP);
+void gameloop_initialize(int episode, bool show_keensleft);
 void initsprites(stCloneKeenPlus *pCKP, int s);
 void keen_get_goodie(int px, int py, int theplayer, stCloneKeenPlus *pCKP);
 void procgoodie(int t, int mpx, int mpy, int theplayer, stCloneKeenPlus *pCKP);
@@ -255,7 +255,6 @@ void procgoodie(int t, int mpx, int mpy, int theplayer, stCloneKeenPlus *pCKP);
 void recalc_highest_objslot(void);
 char IsStopPoint(int x, int y, int o);
 
-void initgame(stCloneKeenPlus *pCKP);
 int initgamefirsttime(stCloneKeenPlus *pCKP, int s);
 
 void open_door(int doortile, int doorsprite, int mpx, int mpy, int cp, stCloneKeenPlus *pCKP);
@@ -264,7 +263,11 @@ void PlayerTouchedExit(int theplayer, stCloneKeenPlus *pCKP);
 
 void endlevel(int reason_for_leaving, stLevelControl *levelcontrol);
 
-void SetGameOver(stCloneKeenPlus *pCKP);
 char checkissolidl(int x, int y, int cp, stCloneKeenPlus *pCKP);
 char checkissolidr(int x, int y, int cp, stCloneKeenPlus *pCKP);
+
+void gamedo_enemyai(stLevelControl *p_levelcontrol);
+
+// Referenzed from cinematics/EndingSequenceEp3.cpp
+void eseq3_Mortimer();
 

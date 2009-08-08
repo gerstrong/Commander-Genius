@@ -69,7 +69,7 @@ char CHighScores::showHighScore(void)
 	loadHighScoreTable();
 
 	// show High-score Frame
-	showmapatpos(90, HIGHSCORETABLE_X, HIGHSCORETABLE_Y, 0, pCKP);
+	showmapatpos(90, HIGHSCORETABLE_X, HIGHSCORETABLE_Y, pCKP);
 
 	// Prepare some extra items if available (Ep1 + 2)
 	memset(ItemTiles,0,4*sizeof(int));
@@ -161,7 +161,7 @@ char CHighScores::showHighScore(void)
 
 	    gamedo_AnimatedTiles();
 
-	    gamedo_frameskipping(pCKP);
+	    gamedo_frameskipping();
 
 	    g_pInput->pollEvents();
 	    g_pTimer->SpeedThrottle();
@@ -189,7 +189,7 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 	loadHighScoreTable();
 
 	// show High-score Frame
-	showmapatpos(90, HIGHSCORETABLE_X, HIGHSCORETABLE_Y, 0, pCKP);
+	showmapatpos(90, HIGHSCORETABLE_X, HIGHSCORETABLE_Y, pCKP);
 
 	place=6;
 	sscanf(Score[place],"%d",&num);
@@ -352,7 +352,7 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 
 	    gamedo_AnimatedTiles();
 
-	    gamedo_frameskipping(pCKP);
+	    gamedo_frameskipping();
 
 	    g_pInput->pollEvents();
 	    g_pTimer->SpeedThrottle();

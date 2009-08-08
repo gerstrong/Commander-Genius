@@ -277,7 +277,7 @@ void CDialog::renderOpenDialogAnimation(int x,int y, int w, int h)
 		drawDialogbox(mx,my,mw,mh);
 
 	    gamedo_AnimatedTiles();
-	    gamedo_frameskipping(NULL);
+	    gamedo_frameskipping();
 	    g_pTimer->SpeedThrottle();
 
 	    timer++;

@@ -38,14 +38,14 @@ unsigned char oldupkey = 5;
 unsigned char olddownkey = 5;
 unsigned char oldctrlkey = 5;
 unsigned char oldaltkey = 5;
-void gamedo_getInput(stCloneKeenPlus *pCKP)
+void gamedo_getInput(stLevelControl *p_levelcontrol)
 {
 int i=0;
 int byt;
 unsigned int msb, lsb;
 
 
-     if (pCKP->Control.levelcontrol.demomode==DEMO_PLAYBACK)
+     if (p_levelcontrol->demomode==DEMO_PLAYBACK)
      {
         // time to get a new key block?
         if (!demo_RLERunLen)
@@ -70,7 +70,7 @@ unsigned int msb, lsb;
           if (byt & 32)player[0].playcontrol[PA_STATUS] = 1;
           if (byt & 64)
           {  // demo STOP command
-            if (fade.mode!=FADE_GO) endlevel(1, &(pCKP->Control.levelcontrol) );
+            if (fade.mode!=FADE_GO) endlevel(1, p_levelcontrol );
           }
         }
         else
@@ -84,12 +84,12 @@ unsigned int msb, lsb;
         {
           if (g_pInput->getPressedKey(i))
           {
-            if (fade.mode!=FADE_GO) endlevel(0, &(pCKP->Control.levelcontrol) );
+            if (fade.mode!=FADE_GO) endlevel( 0, p_levelcontrol );
           }
         }
         if (g_pInput->getPressedCommand(IC_STATUS))
         {
-          if (fade.mode!=FADE_GO) endlevel(0, &(pCKP->Control.levelcontrol) );
+          if (fade.mode!=FADE_GO) endlevel( 0, p_levelcontrol );
         }
 
         return;
@@ -122,7 +122,7 @@ unsigned int msb, lsb;
     	 if(g_pInput->getHoldedCommand(p, IC_STATUS))
     		 player[p].playcontrol[PA_STATUS] = 1;
 
-    	 if (pCKP->Control.levelcontrol.demomode==DEMO_RECORD)
+    	 if (p_levelcontrol->demomode==DEMO_RECORD)
     	 {
     	   if(i) player[p].playcontrol[PA_X] += 100;
     	   fputc(i, demofile);
@@ -148,9 +148,6 @@ signed int px, py;
 int scrollchanged;
 
    if (player[theplayer].pdie) return 0;
-
-   //px = (Player[theplayer].getCoordX()>>CSF)-scroll_x;
-   //py = (Player[theplayer].getCoordY()>>CSF)-scroll_y;
 
    px = (player[theplayer].x>>CSF)-scroll_x;
    py = (player[theplayer].y>>CSF)-scroll_y;
@@ -211,7 +208,7 @@ int i;
 }
 
 // do object and enemy AI
-void gamedo_enemyai(stCloneKeenPlus *pCKP)
+void gamedo_enemyai(stLevelControl *p_levelcontrol)
 {
 int i, topobj;
 	// handle objects and do enemy AI
@@ -256,36 +253,36 @@ int i, topobj;
          switch(objects[i].type)
          {
           //KEEN1
-          case OBJ_YORP: yorp_ai(i, pCKP->Control.levelcontrol); break;
-          case OBJ_GARG: garg_ai(i, pCKP); break;
-          case OBJ_VORT: vort_ai(i, pCKP, pCKP->Control.levelcontrol); break;
-          case OBJ_BUTLER: butler_ai(i, pCKP->Control.levelcontrol.hardmode); break;
-          case OBJ_TANK: tank_ai(i, pCKP->Control.levelcontrol.hardmode); break;
-          case OBJ_RAY: ray_ai(i, pCKP, pCKP->Control.levelcontrol); break;
-          case OBJ_DOOR: door_ai(i, pCKP->Control.levelcontrol.cepvars.DoorOpenDir); break;
+          case OBJ_YORP: yorp_ai(i, *p_levelcontrol); break;
+          case OBJ_GARG: garg_ai(i, p_levelcontrol->hardmode); break;
+          case OBJ_VORT: vort_ai(i, p_levelcontrol ); break;
+          case OBJ_BUTLER: butler_ai(i, p_levelcontrol->hardmode); break;
+          case OBJ_TANK: tank_ai(i, p_levelcontrol->hardmode); break;
+          case OBJ_RAY: ray_ai(i, p_levelcontrol->episode); break;
+          case OBJ_DOOR: door_ai(i, p_levelcontrol->cepvars.DoorOpenDir); break;
           case OBJ_ICECANNON: icecannon_ai(i); break;
           case OBJ_ICECHUNK: icechunk_ai(i); break;
           case OBJ_ICEBIT: icebit_ai(i); break;
-          case OBJ_TELEPORTER: teleporter_ai(i, pCKP->Control.levelcontrol); break;
+          case OBJ_TELEPORTER: teleporter_ai(i, *p_levelcontrol); break;
           case OBJ_ROPE: rope_ai(i); break;
           //KEEN2
-          case OBJ_WALKER: walker_ai(i, pCKP->Control.levelcontrol); break;
-          case OBJ_TANKEP2: tankep2_ai(i, pCKP); break;
-          case OBJ_PLATFORM: platform_ai(i, pCKP->Control.levelcontrol); break;
-          case OBJ_VORTELITE: vortelite_ai(i, pCKP->Control.levelcontrol.dark); break;
-          case OBJ_SECTOREFFECTOR: se_ai(i, pCKP); break;
-          case OBJ_BABY: baby_ai(i, pCKP->Control.levelcontrol.episode,
-								  pCKP->Control.levelcontrol.hardmode); break;
+          case OBJ_WALKER: walker_ai(i, *p_levelcontrol); break;
+          case OBJ_TANKEP2: tankep2_ai(i, p_levelcontrol->hardmode); break;
+          case OBJ_PLATFORM: platform_ai(i, *p_levelcontrol); break;
+          case OBJ_VORTELITE: vortelite_ai(i, p_levelcontrol->dark); break;
+          case OBJ_SECTOREFFECTOR: se_ai(i, p_levelcontrol ); break;
+          case OBJ_BABY: baby_ai(i, p_levelcontrol->episode,
+								  p_levelcontrol->hardmode); break;
           case OBJ_EXPLOSION: explosion_ai(i); break;
           case OBJ_EARTHCHUNK: earthchunk_ai(i); break;
-          case OBJ_SPARK: spark_ai(i, &(pCKP->Control.levelcontrol.sparks_left) ); break;
+          case OBJ_SPARK: spark_ai(i, &(p_levelcontrol->sparks_left) ); break;
           //KEEN3
-          case OBJ_FOOB: foob_ai(i, pCKP); break;
-          case OBJ_NINJA: ninja_ai(i, pCKP); break;
-          case OBJ_MEEP: meep_ai(i, pCKP->Control.levelcontrol); break;
-          case OBJ_SNDWAVE: sndwave_ai(i, pCKP); break;
-          case OBJ_MOTHER: mother_ai(i, pCKP->Control.levelcontrol); break;
-          case OBJ_FIREBALL: fireball_ai(i, pCKP->Control.levelcontrol.hardmode); break;
+          case OBJ_FOOB: foob_ai(i, p_levelcontrol->hardmode); break;
+          case OBJ_NINJA: ninja_ai(i, p_levelcontrol->hardmode); break;
+          case OBJ_MEEP: meep_ai(i, *p_levelcontrol); break;
+          case OBJ_SNDWAVE: sndwave_ai(i, p_levelcontrol->hardmode); break;
+          case OBJ_MOTHER: mother_ai(i, *p_levelcontrol); break;
+          case OBJ_FIREBALL: fireball_ai(i, p_levelcontrol->hardmode); break;
           case OBJ_BALL: ballandjack_ai(i); break;
           case OBJ_JACK: ballandjack_ai(i); break;
           case OBJ_PLATVERT: platvert_ai(i); break;
@@ -296,7 +293,6 @@ int i, topobj;
 
           case OBJ_DEMOMSG: break;
           default:
-				//crash("gamedo_enemy_ai: Object %d is of invalid type %d\n", i, objects[i].type);
         	  g_pLogFile->ftextOut("gamedo_enemy_ai: Object %d is of invalid type %d\n", i, objects[i].type);
             break;
          }
@@ -466,7 +462,7 @@ int cplayer;
 
 int savew, saveh;
 
-void gamedo_render_drawobjects(stCloneKeenPlus *pCKP)
+void gamedo_render_drawobjects()
 {
 unsigned int i;
 int x,y,o,tl,xsize,ysize;
@@ -479,14 +475,11 @@ int xa,ya;
      o = player[i].useObject;
 
      if (!player[i].hideplayer)
-     {
        objects[o].sprite = player[i].playframe + playerbaseframes[i];
-     }
 
      else
-     {
        objects[o].sprite = BlankSprite;
-     }
+
      objects[o].x = player[i].x;
      objects[o].y = player[i].y;
      objects[o].scrx = (player[i].x>>CSF)-scroll_x;
@@ -496,7 +489,9 @@ int xa,ya;
 
    // if we're playing a demo keep the "DEMO" message on the screen
    // as an object
-   if (pCKP->Control.levelcontrol.demomode==DEMO_PLAYBACK)
+   // TODO: It would be better to add this demo message as on object, like the other stuff that is shown
+   // This  still must be done...
+   /*if (show_demo_title)
    {
      #define DEMO_X_POS         137
      #define DEMO_Y_POS         6
@@ -508,7 +503,7 @@ int xa,ya;
      objects[DemoObjectHandle].y = (DEMO_Y_POS+scroll_y)<<CSF;
      objects[DemoObjectHandle].honorPriority = 0;
    }
-   else objects[DemoObjectHandle].exists = 0;
+   else objects[DemoObjectHandle].exists = 0;*/
 
    // draw all objects. drawn in reverse order because the player sprites
    // are in the first few indexes and we want them to come out on top.
@@ -668,34 +663,33 @@ extern int NumConsoleMessages;
 // draws sprites, players, and debug messages (if debug mode is on),
 // performs frameskipping and blits the display as needed,
 // at end of functions erases all drawn objects from the scrollbuf.
-void gamedo_RenderScreen(stCloneKeenPlus *pCKP)
+
+void gamedo_RenderScreen()
 {
-   int x,y,bmnum;
+   //int x,y, bmnum;
 
    g_pGraphics->renderHQBitmap();
 
-   if(pCKP != NULL)
-   {
-	   gamedo_render_drawobjects(pCKP);
+   //if(pCKP != NULL)
+   //{
+	   gamedo_render_drawobjects();
 
-	   if (pCKP->Control.levelcontrol.gameovermode)
+	   //if (pCKP->Control.levelcontrol.gameovermode)
+	   // TODO: make this Bitmap also a object or tile to be added.
+	   /*if (special_bitmap == GAMEOVER_BITMAP)
 	   {
 		   // figure out where to center the gameover bitmap and draw it
 		   bmnum = g_pGraphics->getBitmapNumberFromName("GAMEOVER");
 		   x = (320/2)-(bitmaps[bmnum].xsize/2);
 		   y = (200/2)-(bitmaps[bmnum].ysize/2);
 		   g_pGraphics->drawBitmap(x, y, bmnum);
-	   }
-   }
+	   }*/
+   //}
 
    g_pVideoDriver->sb_blit();	// blit scrollbuffer to display
 
-
-   if(pCKP != NULL)
-   {
-	   gamedo_render_erasedebug();
-	   gamedo_render_eraseobjects();
-   }
+   gamedo_render_erasedebug();
+   gamedo_render_eraseobjects();
 
    curfps++;
 }
@@ -884,17 +878,17 @@ void gamedo_fades(void)
     }
 }
 
-void gamedo_frameskipping(stCloneKeenPlus *pCKP)
+void gamedo_frameskipping()
 {
 	 if (framebyframe)
      {
-       gamedo_RenderScreen(pCKP);
+       gamedo_RenderScreen();
        return;
      }
 
      if (frameskiptimer >= g_pVideoDriver->getFrameskip())
      {
-       gamedo_RenderScreen(pCKP);
+       gamedo_RenderScreen();
        frameskiptimer = 0;
      } else frameskiptimer++;
 
@@ -902,7 +896,7 @@ void gamedo_frameskipping(stCloneKeenPlus *pCKP)
 
 // same as above but only does a sb_blit, not the full RenderScreen.
 // used for intros etc.
-void gamedo_frameskipping_blitonly(void)
+void gamedo_frameskipping_blitonly()
 {
     if (framebyframe)
     {

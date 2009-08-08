@@ -37,7 +37,7 @@ void CIntro::Render(stCloneKeenPlus *pCKP)
 	fade.curamt = 0;
 	fade.fadetimer = 0;
 
-	showmapatpos(90, 104<<4, 32, 0, pCKP);
+	showmapatpos(90, 104<<4, 32, pCKP);
 
 	// Load the Title Bitmap
 	bmnum[0] = g_pGraphics->getBitmapNumberFromName("AN");

@@ -38,7 +38,7 @@
 char garg_CanWalkLeft(int o);
 char garg_CanWalkRight(int o);
 
-void garg_ai(int o, stCloneKeenPlus *pCKP)
+void garg_ai(int o, bool hardmode)
 {
 unsigned int i;
 
@@ -205,7 +205,7 @@ unsigned int i;
 
          if (garg_CanWalkLeft(o))
          {
-           if (pCKP->Control.levelcontrol.hardmode)
+           if (hardmode)
              objects[o].x -= GARG_WALK_SPEED_FAST;
            else
              objects[o].x -= GARG_WALK_SPEED;
@@ -223,7 +223,7 @@ unsigned int i;
          objects[o].sprite = GARG_WALK_RIGHT + objects[o].ai.garg.walkframe;
          if (garg_CanWalkRight(o))
          {
-           if (pCKP->Control.levelcontrol.hardmode)
+           if (hardmode)
              objects[o].x += GARG_WALK_SPEED_FAST;
            else
              objects[o].x += GARG_WALK_SPEED;
@@ -238,8 +238,8 @@ unsigned int i;
        }
 
        /* walk animation */
-       if (objects[o].ai.garg.timer > GARG_WALK_ANIM_TIME || \
-           (objects[o].ai.garg.timer > GARG_WALK_ANIM_TIME && pCKP->Control.levelcontrol.hardmode))
+       if (objects[o].ai.garg.timer > GARG_WALK_ANIM_TIME ||
+           (objects[o].ai.garg.timer > GARG_WALK_ANIM_TIME && hardmode))
        {
          objects[o].ai.garg.walkframe ^= 1;
          objects[o].ai.garg.timer = 0;

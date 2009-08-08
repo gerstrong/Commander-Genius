@@ -2,17 +2,17 @@
   Ending sequence for Episode 1.
 */
 
-#include "keen.h"
-#include "include/game.h"
-#include "include/gamedo.h"
-#include "include/gamepdo.h"
-#include "sdl/CInput.h"
-#include "sdl/CTimer.h"
-#include "include/eseq_ep1.h"
-#include "include/eseq_ep2.h"
-#include "include/menu.h"
-#include "CGraphics.h"
-#include "StringUtils.h"
+#include "../keen.h"
+#include "../include/game.h"
+#include "../include/gamedo.h"
+#include "../include/gamepdo.h"
+#include "../sdl/CInput.h"
+#include "../sdl/CTimer.h"
+#include "../include/menu.h"
+#include "../CGraphics.h"
+#include "../StringUtils.h"
+
+#include "EndingSequenceEp1.h"
 
 #define CMD_MOVE                0
 #define CMD_WAIT                1
@@ -43,6 +43,9 @@
 
 #define BACKHOME_SHORT_WAIT_TIME   250
 
+#define MARK_SPR_NUM          2
+
+
 int eseq1_ReturnsToShip(stCloneKeenPlus *pCKP)
 {
 int i;
@@ -50,7 +53,7 @@ int i;
   for(i=0;i<MAX_LEVELS;i++)
    pCKP->Control.levelcontrol.levels_completed[i] = 0;
 
-  showmapatpos(80, WM_X, WM_Y, 0, pCKP);
+  showmapatpos(80, WM_X, WM_Y, pCKP);
 
   // draw keen next to his ship
   g_pGraphics->drawSprite(168, 85, PMAPLEFTFRAME, 0);
@@ -68,7 +71,7 @@ int i;
   fade.fadetimer = 0;
   fade.rate = FADE_NORM;
 
-  eseq_showmsg(getstring("EP1_ESEQ_PART1"),1,18,37,6,1, pCKP);
+  eseq_showmsg(getstring("EP1_ESEQ_PART1"),1,18,37,6,1);
 
   // fade out
   fade.mode = FADE_GO;
@@ -104,9 +107,7 @@ int x, y;
 int scrollingon;
 
   scrollingon = 1;
-
-  #define MARK_SPR_NUM          2
-  initgame(pCKP);
+  initgame( &(pCKP->Control.levelcontrol) );
 
   // set up the ship's route
   ShipQueuePtr = 0;
@@ -135,7 +136,7 @@ int scrollingon;
   addshipqueue(CMD_MOVE, 100, DDOWN);
   addshipqueue(CMD_ENDOFQUEUE, 0, 0);
 
-  showmapatpos(81, SHIPFLY_X, SHIPFLY_Y, 0, pCKP);
+  showmapatpos(81, SHIPFLY_X, SHIPFLY_Y, pCKP);
 
   objects[MARK_SPR_NUM].type = OBJ_YORP;                // doesn't matter
   objects[MARK_SPR_NUM].exists = 0;
@@ -268,7 +269,7 @@ int scrollingon;
     gamedo_fades();
     gamedo_AnimatedTiles();
 
-    gamedo_frameskipping(pCKP);
+    gamedo_frameskipping();
     if (scrollingon) gamedo_ScrollTriggers(0);
 
     g_pInput->pollEvents();
@@ -408,37 +409,6 @@ int dlgX, dlgY, dlgW, dlgH;
   } while(1);
 
   finale_draw("finale.ck1", pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory);
-  eseq_ToBeContinued(pCKP);
+  eseq_ToBeContinued();
   return 1;
-}
-
-void eseq_ToBeContinued(stCloneKeenPlus *pCKP)
-{
-int i;
-	std::string text;
-int dlgX, dlgY, dlgW, dlgH;
-
-  // remove all objects because eseq_showmsg will call drawobjects
-  for(i=0;i<MAX_OBJECTS;i++)
-     objects[i].exists = 0;
-
-  text = getstring("TO_BE_CONTINUED");
-  dlgX = GetStringAttribute("TO_BE_CONTINUED", "LEFT");
-  dlgY = GetStringAttribute("TO_BE_CONTINUED", "TOP");
-  dlgW = GetStringAttribute("TO_BE_CONTINUED", "WIDTH");
-  dlgH = GetStringAttribute("TO_BE_CONTINUED", "HEIGHT");
-  eseq_showmsg(text, dlgX, dlgY, dlgW, dlgH, 0, pCKP);
-
-  fade.dir = FADE_OUT;
-  fade.curamt = PAL_FADE_SHADES;
-  fade.fadetimer = 0;
-  fade.rate = FADE_NORM;
-  fade.mode = FADE_GO;
-  do
-  {
-    gamedo_fades();
-    if (g_pInput->getPressedKey(KQUIT)) return;
-    g_pInput->pollEvents();
-    g_pTimer->SpeedThrottle();
-  } while(fade.mode == FADE_GO);
 }

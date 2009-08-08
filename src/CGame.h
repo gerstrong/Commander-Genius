@@ -12,6 +12,12 @@
 #include "vorticon/CEGAGraphics.h"
 #include "vorticon/CMessages.h"
 
+// references to cinematics/CommonEnding
+int endsequence(stCloneKeenPlus *pCKP);
+
+// Reference from game.cpp
+void initgame(stLevelControl *p_levelcontrol);
+
 class CGame {
 public:
 	CGame();

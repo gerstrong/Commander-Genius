@@ -109,7 +109,7 @@ short checkConsistencyofGameData(stGameData *p_GameData)
 }
 
 char NessieAlreadySpawned;
-void addobjectlayertile(unsigned int t, stCloneKeenPlus *pCKP)
+void addobjectlayertile(unsigned int t, int episode, int *levels_completed)
 {
 int o;
   switch(t)
@@ -117,14 +117,12 @@ int o;
    case 0: break;       // blank
    case 255:            // player start
 
-	 //Player[0].setCoord(curmapx << 4 << CSF, curmapy << 4 << CSF);
-
 	 player[0].x = curmapx << 4 << CSF;
      player[0].y = curmapy << 4 << CSF;
      map.objectlayer[curmapx][curmapy] = 0;
      break;
    case NESSIE_PATH:          // spawn nessie at first occurance of her path
-     if (pCKP->Control.levelcontrol.episode==3)
+     if (episode==3)
      {
        if (!NessieAlreadySpawned)
        {
@@ -138,7 +136,7 @@ int o;
    break;
    default:             // level marker
 levelmarker: ;
-     if ((t&0x7fff) < 256 && pCKP->Control.levelcontrol.levels_completed[t&0x00ff])
+     if ((t&0x7fff) < 256 && levels_completed[t&0x00ff])
      {
     	 if(!options[OPT_LVLREPLAYABILITY].value)
     		map.objectlayer[curmapx][curmapy] = 0;
@@ -148,7 +146,7 @@ levelmarker: ;
     	 int newtile = tiles[map.mapdata[curmapx][curmapy]].chgtile;
 
     	 // Consistency check! Some Mods have issues with that.
-    	 if(pCKP->Control.levelcontrol.episode == 1 || pCKP->Control.levelcontrol.episode == 2)
+    	 if(episode == 1 || episode == 2)
     	 {
     		 if(newtile<77 || newtile>81)
     			 // something went wrong. Use default tile
@@ -165,7 +163,7 @@ levelmarker: ;
     			 newtile = 81; // br. this one
     		 }
     	 }
-    	 else if(pCKP->Control.levelcontrol.episode == 3)
+    	 else if(episode == 3)
     	 {
     		 if(newtile<52 || newtile>56)
     			 // something went wrong. Use default tile
@@ -201,7 +199,8 @@ levelmarker: ;
   }
 }
 
-void addenemytile(unsigned int t, stCloneKeenPlus *pCKP)
+void addenemytile(unsigned int t, int episode,
+					int chglevelto, bool *canexit)
 {
 int o,x;
   map.objectlayer[curmapx][curmapy] = t;
@@ -216,8 +215,6 @@ int o,x;
         if(curmapy >= map.ysize-2) // Edge bug. Keen would fall in some levels without this.
       	   curmapx = 4;
 
-       //Player[0].setCoord(curmapx << 4 << CSF, ((curmapy << 4) + 8) << CSF);
-
        player[0].x = curmapx << 4 << CSF;
        player[0].y = ((curmapy << 4) + 8) << CSF;
     }
@@ -228,7 +225,7 @@ int o,x;
       case 0: break;
       case -1: break;
       case 1:  // yorp (ep1) vort (ep2&3)
-           if (pCKP->Control.levelcontrol.episode==1)
+           if (episode==1)
            {
               x = curmapx;
 
@@ -250,13 +247,13 @@ int o,x;
            }
            break;
       case 2:    // garg (ep1) baby vorticon (ep2&3)
-           if (pCKP->Control.levelcontrol.episode==1)
+           if (episode==1)
            {
              // those bastards. sometimes embedding garg's in the floor in
              // the original maps.
         	 if(TileProperty[map.mapdata[curmapx+1][curmapy+1]][BLEFT])
              {
-               if (pCKP->Control.levelcontrol.chglevelto==7)
+               if (chglevelto==7)
                {
                  spawn_object(curmapx<<4<<CSF, (curmapy-1)<<4<<CSF, OBJ_GARG);
                }
@@ -276,40 +273,40 @@ int o,x;
            }
            break;
       case 3:    // vorticon (ep1) bear (ep2)
-           if (pCKP->Control.levelcontrol.episode==1)
+           if (episode==1)
            {
              spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_VORT);
            }
-           else if (pCKP->Control.levelcontrol.episode==2)
+           else if (episode==2)
            {
              spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_VORTELITE);
            }
-           else if (pCKP->Control.levelcontrol.episode==3)
+           else if (episode==3)
            {
               spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_MOTHER);
            }
            break;
       case 4:    // butler (ep1) OR walker (ep2) OR meep (ep3)
-           if (pCKP->Control.levelcontrol.episode==1)
+           if (episode==1)
              spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_BUTLER);
-           else if (pCKP->Control.levelcontrol.episode==2)
+           else if (episode==2)
              spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_WALKER);
-           else if (pCKP->Control.levelcontrol.episode==3)
+           else if (episode==3)
              spawn_object(curmapx<<4<<CSF, ((curmapy<<4)+8)<<CSF, OBJ_MEEP);
            break;
       case 5:    // tank robot (ep1&2) karate bear (ep3)
-           if (pCKP->Control.levelcontrol.episode==1)
+           if (episode==1)
            {
               o = spawn_object(curmapx<<4<<CSF, ((curmapy<<4)+8)<<CSF, OBJ_TANK);
               // set tank robot guarding bonus level to be active at startup
-              if (pCKP->Control.levelcontrol.chglevelto==13)
+              if (chglevelto==13)
               {
                 objects[o].hasbeenonscreen = 1;
               }
            }
-           else if (pCKP->Control.levelcontrol.episode==2)
+           else if (episode==2)
               spawn_object(curmapx<<4<<CSF, ((curmapy<<4)+0)<<CSF, OBJ_TANKEP2);
-           else if (pCKP->Control.levelcontrol.episode==3)
+           else if (episode==3)
            {
         	  if(TileProperty[map.mapdata[curmapx][curmapy+1]][BLEFT])
               {
@@ -323,65 +320,65 @@ int o,x;
            break;
       case 6:    // up-right-flying ice chunk (ep1) horiz platform (ep2)
                  // foob (ep3)
-           if (pCKP->Control.levelcontrol.episode==1)
+           if (episode==1)
            {
               o = spawn_object((((curmapx+1)<<4)+4)<<CSF, ((curmapy<<4)-4)<<CSF, OBJ_ICECANNON);
               objects[o].ai.icechunk.vector_x = 1;
               objects[o].ai.icechunk.vector_y = -1;
            }
-           else if (pCKP->Control.levelcontrol.episode==2)
+           else if (episode==2)
            {
               o = spawn_object(curmapx<<4<<CSF, ((curmapy<<4)-3)<<CSF, OBJ_PLATFORM);
            }
-           else if (pCKP->Control.levelcontrol.episode==3)
+           else if (episode==3)
            {
               o = spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_FOOB);
            }
            break;
       case 7:   // spark (ep2) ball (ep3)
-           if (pCKP->Control.levelcontrol.episode==2)
+           if (episode==2)
            {
               o = spawn_object(curmapx<<4<<CSF,curmapy<<4<<CSF,OBJ_SPARK);
-              pCKP->Control.levelcontrol.canexit = 0;    // can't exit till spark is shot
+              *canexit = false;    // can't exit till spark is shot
            }
-           else if (pCKP->Control.levelcontrol.episode==3)
+           else if (episode==3)
            {
               o = spawn_object(curmapx<<4<<CSF,curmapy<<4<<CSF,OBJ_BALL);
               objects[o].hasbeenonscreen = 1;
            }
            break;
       case 8:    // jack (ep3)
-           if (pCKP->Control.levelcontrol.episode==3)
+           if (episode==3)
            {
               o = spawn_object(curmapx<<4<<CSF,curmapy<<4<<CSF,OBJ_JACK);
               objects[o].hasbeenonscreen = 1;
            }
            break;
       case 9:    // up-left-flying ice chunk (ep1) horiz platform (ep3)
-           if (pCKP->Control.levelcontrol.episode==1)
+           if (episode==1)
            {
              o = spawn_object(((curmapx<<4)-4)<<CSF, ((curmapy<<4)-4)<<CSF, OBJ_ICECANNON);
              objects[o].ai.icechunk.vector_x = -1;
              objects[o].ai.icechunk.vector_y = -1;
            }
-           else if (pCKP->Control.levelcontrol.episode==3)
+           else if (episode==3)
            {
              o = spawn_object(curmapx<<4<<CSF, (((curmapy)<<4)-4)<<CSF, OBJ_PLATFORM);
            }
            break;
       case 10:   // rope holding the stone above the final vorticon (ep1)
                  // vert platform (ep3)
-           if (pCKP->Control.levelcontrol.episode==1)
+           if (episode==1)
            {
              spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_ROPE);
            }
-           else if (pCKP->Control.levelcontrol.episode==3)
+           else if (episode==3)
            {
              spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_PLATVERT);
            }
            break;
       case 11:   // jumping vorticon (ep3)
-           if (pCKP->Control.levelcontrol.episode==3)
+           if (episode==3)
            {
              spawn_object(curmapx<<4<<CSF, ((curmapy<<4)-8)<<CSF, OBJ_VORT);
            }
@@ -397,7 +394,7 @@ int o,x;
           objects[o].hasbeenonscreen = 1;
           break;
       case 14:   // right-pointing raygun (ep3)
-           if (pCKP->Control.levelcontrol.episode==3)
+           if (episode==3)
            {
              o = spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_SECTOREFFECTOR);
              //objects[o].ai.se.type = SE_GUN_RIGHT;
@@ -405,7 +402,7 @@ int o,x;
            }
            break;
       case 15:   // vertical raygun (ep3)
-           if (pCKP->Control.levelcontrol.episode==3)
+           if (episode==3)
            {
              o = spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_SECTOREFFECTOR);
              //objects[o].ai.se.type = SE_GUN_VERT;
@@ -461,24 +458,31 @@ unsigned int temp1, temp2, temp3, temp4;
   return (temp4<<24) | (temp3<<16) | (temp2<<8) | temp1;
 }
 
-unsigned int loadmap(const std::string& filename, const std::string& path, int lvlnum, int isworldmap, stCloneKeenPlus *pCKP)
+unsigned int loadmap(const std::string& filename, const std::string& path,
+									int lvlnum,stLevelControl* p_levelcontrol)
 {
 
-	// TODO: Tie that one up in convert stuff in C++
+	// TODO: Tie that one up in converting stuff into C++
 
-FILE *fp;
-int t;
-unsigned int c;
-int numruns = 0;
-int resetcnt, resetpt;
-unsigned int planesize = 0;
+	FILE *fp;
+	int t;
+	unsigned int c;
+	int numruns = 0;
+	int resetcnt, resetpt;
+	unsigned int planesize = 0;
 
-  NessieAlreadySpawned = 0;
-  map.isworldmap = isworldmap;
+	int episode = p_levelcontrol->episode;
+	int chglevelto = p_levelcontrol->chglevelto;
+	int *levels_completed = p_levelcontrol->levels_completed;
+	bool *p_canexit = &(p_levelcontrol->canexit);
+
+
+	NessieAlreadySpawned = 0;
+	map.isworldmap = (lvlnum == 80);
 
 	std::string buffer = formatPathString(path);
 	std::string fname = buffer + filename;
-  fp = OpenGameFile(fname.c_str(), "rb");
+	fp = OpenGameFile(fname.c_str(), "rb");
   if (!fp)
   {
     // only record this error message on build platforms that log errors
@@ -547,7 +551,9 @@ unsigned int planesize = 0;
     {
     	t = filebuf[c];
 
-        if (map.isworldmap) addobjectlayertile(t, pCKP); else addenemytile(t, pCKP);
+        if (map.isworldmap) addobjectlayertile(t,  episode,  levels_completed);
+        else addenemytile(t, episode, chglevelto, p_canexit);
+
         if (++resetcnt==resetpt) curmapx=curmapy=0;
 
         c++;
@@ -597,7 +603,7 @@ unsigned int planesize = 0;
     // Didn't it work? Don't matter. HQP is optional, so continue
 
  // install enemy stoppoints as needed
- if (pCKP->Control.levelcontrol.episode==1 && lvlnum==13)
+ if (episode==1 && lvlnum==13)
  {
     map.objectlayer[94][13] = GARG_STOPPOINT;
     map.objectlayer[113][13] = GARG_STOPPOINT;
@@ -606,17 +612,17 @@ unsigned int planesize = 0;
     map.objectlayer[87][5] = GARG_STOPPOINT;
     map.objectlayer[39][18] = GARG_STOPPOINT;
  }
- else if (pCKP->Control.levelcontrol.episode==3 && lvlnum==6)
+ else if (episode==3 && lvlnum==6)
  {
     map.objectlayer[40][7] = BALL_NOPASSPOINT;
     map.objectlayer[50][7] = BALL_NOPASSPOINT;
  }
- else if (pCKP->Control.levelcontrol.episode==3 && lvlnum==9)
+ else if (episode==3 && lvlnum==9)
  {
     map.objectlayer[45][106] = BALL_NOPASSPOINT;
 
  }
- else if (pCKP->Control.levelcontrol.episode==3 && lvlnum==4)
+ else if (episode==3 && lvlnum==4)
  {
     map.objectlayer[94][17] = BALL_NOPASSPOINT;
  }

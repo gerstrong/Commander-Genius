@@ -31,7 +31,7 @@
 
 void vort_initiatejump(int o);
 
-void vort_ai(int o, stCloneKeenPlus *pCKP, stLevelControl levelcontrol)
+void vort_ai(int o, stLevelControl *p_levelcontrol)
 {
 int bonk,kill;
    if (objects[o].needinit)
@@ -44,14 +44,14 @@ int bonk,kill;
      objects[o].canbezapped = 1;
      objects[o].needinit = 0;
 
-     if (pCKP->Control.levelcontrol.hardmode)
+     if (p_levelcontrol->hardmode)
      {
        objects[o].ai.vort.ep1style = 1;
      }
      else objects[o].ai.vort.ep1style = 0;
 
      // copy in animation frame indexes for the current ep
-     if (levelcontrol.episode==1)
+     if (p_levelcontrol->episode==1)
      {
        objects[o].ai.vort.WalkLeftFrame = VORT1_WALK_LEFT_FRAME;
        objects[o].ai.vort.WalkRightFrame = VORT1_WALK_RIGHT_FRAME;
@@ -61,7 +61,7 @@ int bonk,kill;
        objects[o].ai.vort.DyingFrame = VORT1_DYING_FRAME;
        objects[o].ai.vort.ep1style = 1;
      }
-     else if (levelcontrol.episode==2)
+     else if (p_levelcontrol->episode==2)
      {
        objects[o].ai.vort.WalkLeftFrame = VORT2_WALK_LEFT_FRAME;
        objects[o].ai.vort.WalkRightFrame = VORT2_WALK_RIGHT_FRAME;
@@ -71,7 +71,7 @@ int bonk,kill;
        objects[o].ai.vort.DyingFrame = VORT2_DYING_FRAME;
        objects[o].ai.vort.DeadFrame = VORT2_DEAD_FRAME;
      }
-     else if (levelcontrol.episode==3)
+     else if (p_levelcontrol->episode==3)
      {
        objects[o].ai.vort.WalkLeftFrame = VORT3_WALK_LEFT_FRAME;
        objects[o].ai.vort.WalkRightFrame = VORT3_WALK_RIGHT_FRAME;
@@ -89,10 +89,10 @@ int bonk,kill;
      kill = 0;
      // if we touch a glowcell, we die!
 
-     if (objects[o].zapped >= VORT_HP && !levelcontrol.isfinallevel) kill = 1;
-     else if (objects[o].zapped >= VORT_COMMANDER_HP && levelcontrol.isfinallevel) kill = 1;
+     if (objects[o].zapped >= VORT_HP && !p_levelcontrol->isfinallevel) kill = 1;
+     else if (objects[o].zapped >= VORT_COMMANDER_HP && p_levelcontrol->isfinallevel) kill = 1;
      else if (objects[o].zapped && !objects[o].ai.vort.ep1style) kill = 1;
-     else if (levelcontrol.episode==2 && getmaptileat((objects[o].x>>CSF)+12, (objects[o].y>>CSF)+16)==TILE_GLOWCELL)
+     else if (p_levelcontrol->episode==2 && getmaptileat((objects[o].x>>CSF)+12, (objects[o].y>>CSF)+16)==TILE_GLOWCELL)
      {
        kill = 1;
      }
@@ -104,7 +104,7 @@ int bonk,kill;
        objects[o].ai.vort.frame = 0;
        objects[o].ai.vort.palflashtimer = VORT_PALETTE_FLASH_TIME + 1;
        objects[o].ai.vort.palflashamt = 255;
-       if (levelcontrol.episode == 1)
+       if (p_levelcontrol->episode == 1)
        {
          objects[o].ai.vort.state = VORT_DYING;
          //pal_set(BORDER_COLOR, 255, objects[o].ai.vort.palflashamt, objects[o].ai.vort.palflashamt);
@@ -118,7 +118,7 @@ int bonk,kill;
        else
        {
          objects[o].ai.vort.state = VORT2_DYING;
-         if (pCKP->Control.levelcontrol.hardmode)
+         if (p_levelcontrol->hardmode)
          {
             fade.mode = FADE_GO;
             fade.dir = FADE_IN;
@@ -214,7 +214,7 @@ vort_reprocess: ;
 
        if (rand()%VORT_JUMP_PROB == (VORT_JUMP_PROB/2))
        {  // let's jump.
-         if (!levelcontrol.dark && !objects[o].blockedu)
+         if (!p_levelcontrol->dark && !objects[o].blockedu)
          {
            vort_initiatejump(o);
            goto vort_reprocess;
@@ -237,7 +237,7 @@ vort_reprocess: ;
            // if we only traveled a tiny amount before hitting a wall, we've
            // probably fallen into a small narrow area, and we need to try
            // to jump out of it
-           if (objects[o].ai.vort.dist_traveled < VORT_TRAPPED_DIST && !levelcontrol.dark && objects[o].blockedd && !objects[o].blockedu)
+           if (objects[o].ai.vort.dist_traveled < VORT_TRAPPED_DIST && !p_levelcontrol->dark && objects[o].blockedd && !objects[o].blockedu)
            {
              vort_initiatejump(o);
              if (rand()&1)
@@ -267,7 +267,7 @@ vort_reprocess: ;
            objects[o].ai.vort.animtimer = 0;
            objects[o].ai.vort.state = VORT_LOOK;
 
-           if (objects[o].ai.vort.dist_traveled < VORT_TRAPPED_DIST && !levelcontrol.dark && objects[o].blockedd && !objects[o].blockedu)
+           if (objects[o].ai.vort.dist_traveled < VORT_TRAPPED_DIST && !p_levelcontrol->dark && objects[o].blockedd && !objects[o].blockedu)
            {
              vort_initiatejump(o);
              if (rand()&1)
@@ -294,15 +294,15 @@ vort_reprocess: ;
     case VORT_DYING:
     objects[o].sprite = objects[o].ai.vort.DyingFrame + objects[o].ai.vort.frame;
 
-       if (levelcontrol.isfinallevel&&levelcontrol.episode==1)
+       if (p_levelcontrol->isfinallevel && p_levelcontrol->episode==1)
        {
-         pCKP->Control.levelcontrol.canexit = 1;
+         p_levelcontrol->canexit = true;
        }
 
        if (objects[o].ai.vort.animtimer > VORT_DIE_ANIM_TIME)
        {
          objects[o].ai.vort.palflashamt -= PAL_FLASH_DEC_AMT;
-         if (levelcontrol.episode!=2)
+         if (p_levelcontrol->episode != 2)
          {
 //           pal_set(BORDER_COLOR, 212, objects[o].ai.vort.palflashamt, objects[o].ai.vort.palflashamt);
 //           pal_apply();

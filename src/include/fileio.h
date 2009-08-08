@@ -10,7 +10,8 @@
 
 #include <string>
 
-unsigned int loadmap(const std::string& filename, const std::string& path, int lvlnum, int isworldmap, stCloneKeenPlus *pCKP);
+unsigned int loadmap(const std::string& filename, const std::string& path,
+									int lvlnum, stLevelControl* p_levelcontrol);
 void addmaptile(unsigned int t);
 void addenemytile(unsigned int t, stCloneKeenPlus *pCKP);
 short checkConsistencyofGameData(stGameData *p_GameData);

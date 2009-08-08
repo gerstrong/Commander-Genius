@@ -15,7 +15,7 @@
 
 #define SNDWAVE_OFFSCREEN_KILL_TIME     100
 
-void sndwave_ai(int o, stCloneKeenPlus *pCKP)
+void sndwave_ai(int o, bool hardmode)
 {
 //int i;
   if (objects[o].needinit)
@@ -57,7 +57,7 @@ void sndwave_ai(int o, stCloneKeenPlus *pCKP)
      }
      else
      {
-        if (pCKP->Control.levelcontrol.hardmode)
+        if (hardmode)
           objects[o].x += SNDWAVE_SPEED_FAST;
         else
           objects[o].x += SNDWAVE_SPEED;
@@ -72,7 +72,7 @@ void sndwave_ai(int o, stCloneKeenPlus *pCKP)
      }
      else
      {
-        if (pCKP->Control.levelcontrol.hardmode)
+        if (hardmode)
           objects[o].x -= SNDWAVE_SPEED_FAST;
         else
           objects[o].x -= SNDWAVE_SPEED;

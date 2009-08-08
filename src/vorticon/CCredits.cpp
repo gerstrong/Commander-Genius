@@ -35,7 +35,7 @@ void CCredits::Render(stCloneKeenPlus *pCKP)
 	fade.curamt = 0;
 	fade.fadetimer = 0;
 
-	showmapatpos(90, 104<<4, 32, 0, pCKP);
+	showmapatpos(90, 104<<4, 32, pCKP);
 
 	memset(scrolltext,0,51*80);
 

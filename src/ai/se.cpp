@@ -1,11 +1,13 @@
-#include "../sdl/sound/CSound.h"
+
 #include "../keen.h"
+
 #include "ray.h"
 #include "se.h"
-#include "../include/game.h"
 
+#include "../include/game.h"
 #include "../include/enemyai.h"
 
+#include "../sdl/sound/CSound.h"
 #include "../CLogFile.h"
 
 char PlatExtending=0;
@@ -21,20 +23,20 @@ char PlatExtending=0;
 void set_mortimer_surprised(int yes);
 int mortimer_surprisedcount = 0;
 
-void se_ai(int o, stCloneKeenPlus *pCKP)
+void se_ai(int o, stLevelControl *p_levelcontrol)
 {
 
 	switch(objects[o].ai.se.type)
 	{
-		case SE_EXTEND_PLATFORM: se_extend_plat(o, &(pCKP->Control.levelcontrol.PlatExtending) ); break;
-		case SE_RETRACT_PLATFORM: se_retract_plat(o, &(pCKP->Control.levelcontrol.PlatExtending) ); break;
-		case SE_ANKHSHIELD: se_ankhshield(o, pCKP->Control.levelcontrol.episode); break;
+		case SE_EXTEND_PLATFORM: se_extend_plat(o, &(p_levelcontrol->PlatExtending) ); break;
+		case SE_RETRACT_PLATFORM: se_retract_plat(o, &(p_levelcontrol->PlatExtending) ); break;
+		case SE_ANKHSHIELD: se_ankhshield(o, p_levelcontrol->episode); break;
 		case SE_MORTIMER_ARM: se_mortimer_arm(o); break;
 		case SE_MORTIMER_LEG_LEFT: se_mortimer_leg_left(o); break;
 		case SE_MORTIMER_LEG_RIGHT: se_mortimer_leg_right(o); break;
-		case SE_MORTIMER_SPARK: se_mortimer_spark(o, &(pCKP->Control.levelcontrol) ); break;
-		case SE_MORTIMER_HEART: se_mortimer_heart(o, &(pCKP->Control.levelcontrol) ); break;
-		case SE_MORTIMER_ZAPSUP: se_mortimer_zapsup(o, &(pCKP->Control.levelcontrol) ); break;
+		case SE_MORTIMER_SPARK: se_mortimer_spark(o, p_levelcontrol ); break;
+		case SE_MORTIMER_HEART: se_mortimer_heart(o, p_levelcontrol ); break;
+		case SE_MORTIMER_ZAPSUP: se_mortimer_zapsup(o, p_levelcontrol ); break;
 		case SE_MORTIMER_RANDOMZAPS: se_mortimer_randomzaps(o); break;
 
 		default:

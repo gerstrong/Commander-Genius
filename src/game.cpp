@@ -12,11 +12,10 @@
 #include "include/gamedo.h"
 #include "include/gamepdo.h"
 #include "include/gm_pdowm.h"
-#include "include/eseq_ep3.h"
 #include "sdl/CTimer.h"
 #include "sdl/CInput.h"
 #include "sdl/sound/CSound.h"
-#include "include/enemyai.h"
+//#include "include/enemyai.h"
 #include "hqp/CMusic.h"
 #include "vorticon/CHighScores.h"
 #include "hqp/CHQBitmap.h"
@@ -43,12 +42,13 @@ void gameloop(stCloneKeenPlus *pCKP)
     crashflag=1;
     crashflag2 = pCKP->Control.levelcontrol.curlevel;
     crashflag3 = pCKP->Control.levelcontrol.episode;
-    why_term_ptr = "No player start position! (flag2=pCKP->Control.levelcontrol.curlevel, flag3=pCKP->Control.levelcontrol.episode)";
+    why_term_ptr = "No player start position! (flag2=levelcontrol.curlevel, flag3=levelcontrol.episode)";
   }
 
   if (!loadinggame)
   {
-     gameloop_initialize(pCKP);
+     gameloop_initialize(pCKP->Control.levelcontrol.episode, pCKP->Control.levelcontrol.dokeensleft);
+     pCKP->Control.levelcontrol.dokeensleft = false;
   }
   else
   {
@@ -78,10 +78,10 @@ void gameloop(stCloneKeenPlus *pCKP)
         gamedo_AnimatedTiles();
         g_pInput->pollEvents();
         g_pTimer->SpeedThrottle();
-        gamedo_RenderScreen(pCKP);
+        gamedo_RenderScreen();
      } while(fade.mode!=FADE_COMPLETE /*&& !immediate_keytable[KQUIT]*/);
 
-     eseq3_Mortimer(pCKP);
+     eseq3_Mortimer();
   }
 
   lastquit = 1;
@@ -106,7 +106,7 @@ void gameloop(stCloneKeenPlus *pCKP)
      else gunfiretimer++;
 
      // gather input and copy to player[].keytable[] structures
-     gamedo_getInput(pCKP);
+     gamedo_getInput( &(pCKP->Control.levelcontrol) );
 
      // run the player behaviour for each player in the game
    	 if (!map.isworldmap)
@@ -125,7 +125,7 @@ void gameloop(stCloneKeenPlus *pCKP)
    	 }
 
      gamedo_AnimatedTiles(!pCKP->Control.levelcontrol.usedhintmb);
-     gamedo_enemyai(pCKP);
+     gamedo_enemyai( &(pCKP->Control.levelcontrol) );
 
      gamedo_HandleFKeys(pCKP);
 
@@ -139,7 +139,7 @@ void gameloop(stCloneKeenPlus *pCKP)
 
 
      // do frameskipping, and render/blit the screen if it's time
-     gamedo_frameskipping(pCKP);
+     gamedo_frameskipping();
 
      // when we complete a fade out flag to exit the game loop
      if (fade.mode==FADE_COMPLETE)
@@ -248,7 +248,7 @@ void gameloop(stCloneKeenPlus *pCKP)
 
      if (g_pInput->getPressedKey(KQUIT))
      {
-       VerifyQuit(pCKP);
+       VerifyQuit();
      }
      if (QuitState != NO_QUIT) return;
 
@@ -394,8 +394,7 @@ int mpx,mpy,t;
       //if (tiles[t].isAnimated) map_deanimate(mpx, mpy);
       if (TileProperty[t][ANIMATION] != 1) map_deanimate(mpx, mpy);
    }
-   else if (TileProperty[t][BEHAVIOR] == 1)
-   //else if (tiles[t].lethal)
+   else if (TileProperty[t][BEHAVIOR] == 1) // Lethal (Deadly) Behavoir
    {  // whoah, this "goodie" isn't so good...
       killplayer(theplayer);
       return;
@@ -405,7 +404,7 @@ int mpx,mpy,t;
    procgoodie(t, mpx, mpy, theplayer, pCKP);
 }
 
-void initgame(stCloneKeenPlus *pCKP)
+void initgame(stLevelControl *p_levelcontrol)
 {
 int x,y;
 unsigned int i;
@@ -423,7 +422,7 @@ unsigned int i;
   }
 
   // set gun/ice cannon fire freq
-  if (pCKP->Control.levelcontrol.episode==1)
+  if (p_levelcontrol->episode==1)
   {
     gunfirefreq = ICECANNON_FIRE_FREQ;
   }
@@ -438,8 +437,8 @@ unsigned int i;
   sprites[DOOR_GREEN_SPRITE].ysize = 32;
   sprites[DOOR_BLUE_SPRITE].ysize = 32;
 
-  pCKP->Control.levelcontrol.level_done_timer = 0;
-  pCKP->Control.levelcontrol.gameovermode = 0;
+  p_levelcontrol->level_done_timer = 0;
+  p_levelcontrol->gameovermode = 0;
 
   // all objects -> not exist
  for(i=1;i<MAX_OBJECTS-1;i++) objects[i].exists = 0;
@@ -456,7 +455,7 @@ unsigned int i;
 
 // initilize default sprites for objects
   memset(objdefsprites, 0, sizeof(objdefsprites));
-  if (pCKP->Control.levelcontrol.episode==1)
+  if (p_levelcontrol->episode==1)
   {
     objdefsprites[OBJ_YORP] = OBJ_YORP_DEFSPRITE;
     objdefsprites[OBJ_GARG] = OBJ_GARG_DEFSPRITE;
@@ -469,7 +468,7 @@ unsigned int i;
     objdefsprites[OBJ_RAY] = OBJ_RAY_DEFSPRITE_EP1;
     objdefsprites[OBJ_VORT] = OBJ_VORT_DEFSPRITE_EP1;
   }
-  else if (pCKP->Control.levelcontrol.episode==2)
+  else if (p_levelcontrol->episode==2)
   {
     objdefsprites[OBJ_WALKER] = OBJ_WALKER_DEFSPRITE;
     objdefsprites[OBJ_TANKEP2] = OBJ_TANKEP2_DEFSPRITE;
@@ -480,7 +479,7 @@ unsigned int i;
     objdefsprites[OBJ_PLATFORM] = OBJ_PLATFORM_DEFSPRITE_EP2;
     objdefsprites[OBJ_BABY] = OBJ_BABY_DEFSPRITE_EP2;
   }
-  else if (pCKP->Control.levelcontrol.episode==3)
+  else if (p_levelcontrol->episode==3)
   {
     objdefsprites[OBJ_FOOB] = OBJ_FOOB_DEFSPRITE;
     objdefsprites[OBJ_NINJA] = OBJ_NINJA_DEFSPRITE;
@@ -501,7 +500,7 @@ unsigned int i;
   objdefsprites[OBJ_SECTOREFFECTOR] = BlankSprite;
 
 // initilize game variables
-  pCKP->Control.levelcontrol.level_done = LEVEL_NOT_DONE;
+  p_levelcontrol->level_done = LEVEL_NOT_DONE;
   animtiletimer = curanimtileframe = 0;
   DemoObjectHandle = 0;
 
@@ -699,23 +698,14 @@ void killobject(int o)
 // anything (players/enemies) occupying the map tile at [mpx,mpy] is killed
 void kill_all_intersecting_tile(int mpx, int mpy)
 {
-unsigned int xpix,ypix;
-int i;
+	unsigned int xpix,ypix;
 	xpix = mpx<<TILE_S<<CSF;
 	ypix = mpy<<TILE_S<<CSF;
-	for(i=0;i<highest_objslot;i++)
-	{
+	for(int i=0 ; i<highest_objslot ; i++)
 		if (objects[i].exists)
-		{
 			if (xpix <= objects[i].x && xpix+(16<<CSF) >= objects[i].x)
-			{
 				if (ypix <= objects[i].y && ypix+(16<<CSF) >= objects[i].y)
-				{
 					killobject(i);
-				}
-			}
-		}
-	}
 }
 
 // returns whether pix position x,y is a stop point for object o.
@@ -873,17 +863,6 @@ void endlevel(int reason_for_leaving, stLevelControl *levelcontrol)
     levelcontrol->tobonuslevel = 0;
   }
 }
-
-void SetGameOver(stCloneKeenPlus *pCKP)
-{
-/*int x,y,bmnum;*/
-   if (!pCKP->Control.levelcontrol.gameovermode)
-   {
-     pCKP->Control.levelcontrol.gameovermode = 1;
-     g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
-   }
-}
-
 
 // this is so objects can block the player,
 // player can stand on them, etc.
@@ -1345,12 +1324,12 @@ int o;
   gamepdo_ankh(cp);
 }
 
-void gameloop_initialize(stCloneKeenPlus *pCKP)
+void gameloop_initialize(int episode, bool show_keensleft = false)
 {
 unsigned int x,y,i/*,tl*/;
 int timeout;
 
-   if (pCKP->Control.levelcontrol.episode == 3)
+   if (episode == 3)
    {
      // coat the top of the map ("oh no!" border) with a non-solid tile
      // so keen can jump partially off the top of the screen
@@ -1371,7 +1350,7 @@ int timeout;
      }
    }
 
-  if (pCKP->Control.levelcontrol.episode==1)
+  if (episode==1)
   {
     // coat the bottom of the map below the border.
     // since the border has solidceil=1 this provides
@@ -1394,7 +1373,7 @@ int timeout;
      x = player[0].x;
      for(i=1;i<numplayers;i++)
      {
-      if (player[0].x>>CSF>>4 < (map.xsize/2) || pCKP->Control.levelcontrol.episode==1)
+      if (player[0].x>>CSF>>4 < (map.xsize/2) || episode==1)
       {
         x += (18<<CSF);
       }
@@ -1420,7 +1399,7 @@ int timeout;
       player[i].pdir = player[i].pshowdir = DOWN;
     else
     {
-      if (player[i].x>>CSF>>4 < (map.xsize/2) || pCKP->Control.levelcontrol.episode==1)
+      if (player[i].x>>CSF>>4 < (map.xsize/2) || episode==1)
         player[i].pdir = player[i].pshowdir = RIGHT;
       else
         player[i].pdir = player[i].pshowdir = LEFT;
@@ -1451,10 +1430,7 @@ int timeout;
   fade.fadetimer = 0;
 
   // "keens left" when returning to world map after dying
-  if (pCKP->Control.levelcontrol.dokeensleft)
-  {
-    keensleft(pCKP);
-    pCKP->Control.levelcontrol.dokeensleft = 0;
-  }
+  if (show_keensleft)
+	keensleft(episode);
 
 }

@@ -11,7 +11,6 @@
 #include "include/gamedo.h"
 #include "sdl/CTimer.h"
 #include "sdl/sound/CSound.h"
-#include "include/eseq_ep2.h"
 #include "include/fileio.h"
 #include "include/gm_pdowm.h"
 #include "include/gamedo.h"
@@ -34,15 +33,15 @@
 
 short openDlgStruct(stDlgStruct *pDlgStruct, stCloneKeenPlus *pCKP);
 
-void showmapatpos(int level, int xoff, int yoff, int wm, stCloneKeenPlus *pCKP)
+void showmapatpos(int level, int xoff, int yoff, stCloneKeenPlus *pCKP)
 {
 	int i;
 	std::string levelname;
-	g_pLogFile->ftextOut("showmapatpos(%d, %d, %d, %d);<br>",level,xoff,yoff,wm);
+	g_pLogFile->ftextOut("showmapatpos(%d, %d, %d);<br>",level,xoff,yoff);
 	pCKP->Control.levelcontrol.dark = 0;
 	g_pGraphics->initPalette(pCKP->Control.levelcontrol.dark);
 	
-	initgame(pCKP);           // reset scroll
+	initgame( &(pCKP->Control.levelcontrol) );           // reset scroll
 	levelname = "level" + FixedWidthStr_LeftFill(itoa(level), 2, '0') + ".ck" + itoa(pCKP->Control.levelcontrol.episode);
 	
 	short numsel;
@@ -51,7 +50,7 @@ void showmapatpos(int level, int xoff, int yoff, int wm, stCloneKeenPlus *pCKP)
 	else
 		numsel = pCKP->Resources.GameSelected-1;
 	
-	if(loadmap(levelname, pCKP->GameData[numsel].DataDirectory, level, wm, pCKP) != 0)
+	if(loadmap(levelname, pCKP->GameData[numsel].DataDirectory, level, &(pCKP->Control.levelcontrol) ) != 0)
 		return;
 	
 	drawmap();
@@ -136,7 +135,7 @@ short loadResourcesforStartMenu(stCloneKeenPlus *pCKP, CGame *Game)
 	{
 		return 1;
 	}
-	initgame(pCKP);
+	initgame( &(pCKP->Control.levelcontrol) );
 
 	return 0;
 }
@@ -155,7 +154,7 @@ bool loadStartMenu(stCloneKeenPlus *pCKP)
 	fade.dir = FADE_IN;
 	fade.curamt = 0;
 	fade.fadetimer = 0;
-	showmapatpos(90, (104 << 2)+256+256+80, 32-4, 0, pCKP);
+	showmapatpos(90, (104 << 2)+256+256+80, 32-4, pCKP);
 
 	// Prepare the Games Menu
 	GamesMenu = new CDialog();
@@ -235,7 +234,7 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 	fade.dir = FADE_IN;
 	fade.curamt = 0;
 	fade.fadetimer = 0;
-	showmapatpos(90, MAINMENU_X, MENUS_Y, 0, pCKP);
+	showmapatpos(90, MAINMENU_X, MENUS_Y, pCKP);
 
 	// Prepare the Games Menu
 	MainMenu = new CDialog();
@@ -374,7 +373,7 @@ int getDifficulty(stCloneKeenPlus *pCKP)
 	fade.curamt = 0;
 	fade.fadetimer = 0;
 
-	showmapatpos(90, MAINMENU_X, MENUS_Y, 0, pCKP);
+	showmapatpos(90, MAINMENU_X, MENUS_Y, pCKP);
 
 	// Load the Title Bitmap
 	bmnum = g_pGraphics->getBitmapNumberFromName("TITLE");
@@ -440,7 +439,7 @@ int AudioDlg(stCloneKeenPlus *pCKP)
 	int rate=0;
 	short mode=0;
 
-	showmapatpos(90, MAINMENU_X, MENUS_Y, 0, pCKP);
+	showmapatpos(90, MAINMENU_X, MENUS_Y, pCKP);
 
 	// Load the Title Bitmap
 	bmnum = g_pGraphics->getBitmapNumberFromName("TITLE");
@@ -549,7 +548,7 @@ void OptionsDlg(stCloneKeenPlus *pCKP)
 
 	char buf[256];
 
-	showmapatpos(90, MAINMENU_X, MENUS_Y, 0, pCKP);
+	showmapatpos(90, MAINMENU_X, MENUS_Y, pCKP);
 
 	// Load the Title Bitmap
 	bmnum = g_pGraphics->getBitmapNumberFromName("TITLE");
@@ -651,7 +650,7 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 	unsigned char autoframeskip = 0;
 	bool aspect;
 
-	showmapatpos(90, MAINMENU_X, MENUS_Y, 0, pCKP);
+	showmapatpos(90, MAINMENU_X, MENUS_Y, pCKP);
 
 	// Load the Title Bitmap
 	bmnum = g_pGraphics->getBitmapNumberFromName("TITLE");
@@ -898,7 +897,7 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 				Settings->saveDrvCfg();
 				delete Settings; Settings = NULL;
 
-				showmapatpos(90, MAINMENU_X, MENUS_Y, 0, pCKP);
+				showmapatpos(90, MAINMENU_X, MENUS_Y, pCKP);
 
 				fade.mode = FADE_GO;
 				fade.dir = FADE_IN;
@@ -948,7 +947,7 @@ void showPage(const std::string& str_text, stCloneKeenPlus *pCKP, int textsize)
 
 	memcpy(text,str_text.c_str(),textsize);
 
-	showmapatpos(90, STORYBOARD_X, STORYBOARD_Y, 0, pCKP);
+	showmapatpos(90, STORYBOARD_X, STORYBOARD_Y, pCKP);
 
     fade.mode = FADE_GO;
 	fade.rate = FADE_NORM;
@@ -1075,7 +1074,7 @@ void showPage(const std::string& str_text, stCloneKeenPlus *pCKP, int textsize)
 	        fade.mode = FADE_GO;
 	    }
 
-	    gamedo_frameskipping(pCKP);
+	    gamedo_frameskipping();
 
 	    g_pInput->pollEvents();
 	    g_pTimer->SpeedThrottle();
@@ -1096,7 +1095,7 @@ char configmenu(stCloneKeenPlus *pCKP)
 	int selection;
 	int x;
 
-	showmapatpos(90, MAINMENU_X, MENUS_Y, 0, pCKP);
+	showmapatpos(90, MAINMENU_X, MENUS_Y, pCKP);
 
 	// Load the Title Bitmap
 	bmnum = g_pGraphics->getBitmapNumberFromName("TITLE");
@@ -1186,7 +1185,7 @@ char controlsmenu(stCloneKeenPlus *pCKP)
 	char buf[256];
 	char buf2[256];
 
-	showmapatpos(90, MAINMENU_X, MENUS_Y, 0, pCKP);
+	showmapatpos(90, MAINMENU_X, MENUS_Y, pCKP);
 
 	// Load the Title Bitmap
 	bmnum = g_pGraphics->getBitmapNumberFromName("TITLE");
@@ -1369,7 +1368,7 @@ char controlsmenu(stCloneKeenPlus *pCKP)
 	return 0;
 }
 
-void keensleft(stCloneKeenPlus *pCKP)
+void keensleft(int episode)
 {
 int enter, lastenterstate;
 unsigned int p;
@@ -1377,24 +1376,17 @@ int x,y,i;
 int boxY, boxH;
 int boxtimer;
 
-stLevelControl *p_levelcontrol = &pCKP->Control.levelcontrol;
-
-  // on episode 3 we have to subtract one from the map tiles
-  // because the tiles start at 31, not 32 like on the other eps
-  int ep3 = 0;
-  if (p_levelcontrol->episode==3) ep3 = 1;
-
   #define KEENSLEFT_TIME        400
 
   for(i=0;i<MAX_PLAYERS;i++)
   {
     if (player[i].isPlaying)
     {
-      gamepdo_wm_SelectFrame(i, pCKP);
+      gamepdo_wm_SelectFrame(i);
       player[i].hideplayer = 0;
     }
   }
-  gamedo_RenderScreen(pCKP);
+  gamedo_RenderScreen();
 
   #define KEENSLEFT_X        7
   #define KEENSLEFT_Y        11
@@ -1414,7 +1406,9 @@ stLevelControl *p_levelcontrol = &pCKP->Control.levelcontrol;
     x = ((KEENSLEFT_X+1)*8)+4;
     for(i=0;i<player[p].inventory.lives&&i<=10;i++)
     {
-    	g_pGraphics->drawSprite_direct(x, y, PMAPDOWNFRAME+playerbaseframes[p]-ep3);
+    	g_pGraphics->drawSprite_direct(x, y, PMAPDOWNFRAME+playerbaseframes[p]-
+    			(episode==3));
+    	// (episode==3) TODO: Check whether this is necessary
       x+=16;
     }
     y+=18;

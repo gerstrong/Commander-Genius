@@ -44,19 +44,12 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 {
 	  int opt = MAINMNU_1PLAYER;
 	  int retval;
-	  int eseq = 0;
 	  int defaultopt = 0;
 
 	  initgamefirsttime(pCKP, EGAGraphics->getNumSprites());
-	  initgame(pCKP);
+	  initgame( &(pCKP->Control.levelcontrol) );
 
 	  g_pLogFile->ftextOut("Game starting...<br>");
-
-	  if (eseq)
-	  {
-		  endsequence(pCKP);
-		  closeCKP(pCKP);
-	  }
 
 	  if(!pCKP->Control.skipstarting)
 	  {

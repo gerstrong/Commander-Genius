@@ -19,9 +19,7 @@
 #define STONE_DROP_RATE      100
 
 void delete_object(int o);
-
 void static rope_movestone(int o);
-
 void kill_all_intersecting_tile(int mpx, int mpy);
 
 void rope_ai(int o)

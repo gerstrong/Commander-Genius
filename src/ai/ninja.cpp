@@ -26,7 +26,7 @@
 #define NINJA_DYING_FRAME              83
 #define NINJA_DEAD_FRAME               84
 
-void ninja_ai(int o, stCloneKeenPlus *pCKP)
+void ninja_ai(int o, bool hardmode)
 {
 unsigned int i;
 int onsamelevel;
@@ -35,7 +35,7 @@ int onsamelevel;
   {
     objects[o].ai.ninja.state = NINJA_STAND;
     objects[o].ai.ninja.timetillkick = (rand()%(NINJA_MAX_TIME_TILL_KICK-NINJA_MIN_TIME_TILL_KICK))+NINJA_MIN_TIME_TILL_KICK;
-    if (pCKP->Control.levelcontrol.hardmode) objects[o].ai.ninja.timetillkick /= 3;
+    if (hardmode) objects[o].ai.ninja.timetillkick /= 3;
 
     if (player[primaryplayer].x < objects[o].x)
       { objects[o].ai.ninja.dir = LEFT; }

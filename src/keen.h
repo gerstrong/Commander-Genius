@@ -104,12 +104,12 @@ typedef struct stFade
 typedef struct stMap
 {
  unsigned int xsize, ysize;            // size of the map
- unsigned char isworldmap;             // if 1, this is the world map
+ bool isworldmap;             // if 1, this is the world map
  unsigned int mapdata[256][256];       // the map data
  // in-game, contains monsters and special object tags like for switches
  // on world map contains level numbers and flags for things like teleporters
  unsigned int objectlayer[256][256];
- char firsttime;  // used when generating multiplayer positions on world map
+ bool firsttime;  // used when generating multiplayer positions on world map
 } stMap;
 
 struct stBitmap

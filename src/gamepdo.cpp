@@ -161,7 +161,8 @@ void gamepdo_dieanim(int cp, stCloneKeenPlus *pCKP)
        player[cp].pdie = PDIE_DEAD;
        if (player[cp].inventory.lives<0)
        {
-         SetGameOver(pCKP);
+         pCKP->Control.levelcontrol.gameovermode = true;
+         g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
        }
        else
        {
@@ -284,7 +285,7 @@ void gamepdo_ProcessInput(unsigned int cp, stCloneKeenPlus *pCKP)
 		   g_pTimer->SpeedThrottle();
 		   gamedo_fades();
 
-		   gamedo_render_drawobjects(pCKP);
+		   gamedo_render_drawobjects();
 		   gamedo_AnimatedTiles();
 		   PauseDialog->renderDialog();
 		   gamedo_frameskipping_blitonly();
