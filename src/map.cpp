@@ -178,32 +178,21 @@ int ya = y>>4;
 
   if (xa<=255 && ya<=255)
   {
-    return map.mapdata[xa][ya];
+	  return map.mapdata[xa][ya];
   }
   else
   {
 	  if(xa > 255)
-	  {
 		  xa = 255;
-		  //player[cp].xa = 255;
-	  }
+
 	  if(ya > 254)
-	  {
 		  ya = 255;
-		  //player[cp].ya = 255;
-	  }
 
 	  return map.mapdata[xa][ya];
-    //crashflag = 1;
-    //crashflag2 = x;
-    //crashflag3 = y;
-    //why_term_ptr = "getmaptileat(): OOB reading from mapdata.";
-    //return 0;
   }
 }
 unsigned int getlevelat(unsigned int x, unsigned int y)
 {
-
   return map.objectlayer[x>>4][y>>4];
 }
 
@@ -212,11 +201,10 @@ unsigned int getlevelat(unsigned int x, unsigned int y)
 // in stripes as it scrolls around.
 void drawmap(void)
 {
-int y;
+	int y;
+
     for(y=0;y<SCROLLBUF_NUMTILESY;y++)
-    {
       map_draw_hstripe(y<<4, y);
-    }
 }
 
 // changes the tile at (x,y) in real time

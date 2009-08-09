@@ -5,14 +5,16 @@
  *      Author: gerstrong
  */
 
+#include <vector>
 #include <stdio.h>
-#include "../funcdefs.h"
 
+// Reference to ../fileio.cpp
+unsigned int fgeti(FILE *fp);
 
-int unRLEW(FILE *fp, unsigned int *filebuf)
+unsigned long unRLEW(FILE *fp, std::vector<unsigned int>& filebuf)
 {
-
-	int t,i, howmany, cursize, finsize;
+	int t,i, howmany, cursize;
+	unsigned int finsize;
   /*
 1.) If implemented, get the first dword in the file, [Final Length]
 2.) If [Length of data so far] < [Final Length] then:
@@ -31,28 +33,26 @@ int unRLEW(FILE *fp, unsigned int *filebuf)
 
 	rewind(fp);
 
-
 	while(!feof(fp)) // Detect, if the file is really RLEW compressed!
 	{
 		t = fgeti(fp);
 		if(t == 0xFEFE)
 		{
 			cursize = 1;
+			filebuf.push_back(1);
 			break;
 		}
 	}
 
 
 	if(cursize == 0)
-	{
-		return -1; // This file is not RLEW compressed!
-	}
+		return 0; // This file is not RLEW compressed!
+
 	rewind(fp);
 
 	finsize = fgeti(fp);
 
-
-    while( cursize < finsize )
+    while( filebuf.size() < finsize )
     {
      t = fgeti(fp);
      if (t == 0xFEFE)
@@ -61,16 +61,19 @@ int unRLEW(FILE *fp, unsigned int *filebuf)
        t = fgeti(fp);
        for(i=0;i<howmany;i++)
        {
-    	   filebuf[cursize] = t;
-    	   cursize++;
+    	   //filebuf[cursize] = t;
+    	   filebuf.push_back(t);
+    	   //cursize++;
        }
      }
      else
      {
-    	 filebuf[cursize] = t;
-    	 cursize++;
+    	 //filebuf[cursize] = t;
+    	 filebuf.push_back(t);
+    	 //cursize++;
      }
     }
 
-    return cursize;
+    //return cursize;
+    return filebuf.size();
 }

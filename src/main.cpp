@@ -109,6 +109,7 @@ unsigned int numplayers;
 int crashflag,crashflag2,crashflag3;
 const char *why_term_ptr = "No reason given.";
 
+
 int main(int argc, char *argv[])
 {
 	banner(); // Intro on the text-console.
@@ -172,11 +173,7 @@ int main(int argc, char *argv[])
 	if(!CKP.Control.skipstarting)
 	{
 		while(!loadStartMenu(&CKP))
-		{
 			g_pLogFile->textOut(PURPLE,"Error! You have chosen a Game that doesn't exist. Please correct the \"games.cfg\" File under \"data\" and choose another game.<br>");
-			//cleanupResources(&CKP);
-			//return 0;
-		}
 	}
 
 	if(!g_pInput->getExitEvent())
@@ -194,17 +191,14 @@ int main(int argc, char *argv[])
 		{
 			if(CKP.shutdown != SHUTDOWN_NEW_GAME) {
 				CKP.shutdown = SHUTDOWN_NONE; // Game is runnning
+
 				Game.runCycle(&CKP);
 			}
 			
 			if(CKP.shutdown == SHUTDOWN_NEW_GAME)
 			{
 				while(!loadStartMenu(&CKP))
-				{
 					g_pLogFile->textOut(PURPLE,"Error! You have chosen a Game that doesn't exist. Please correct the \"games.cfg\" File under \"data\" and choose another game.<br>");
-					//cleanupResources(&CKP);
-					//return 0;
-				}
 
 				//loadResourcesforGame(pCKP);
 				if(Game.loadResources(CKP.Control.levelcontrol.episode, CKP.GameData[CKP.Resources.GameSelected-1].DataDirectory))
@@ -291,7 +285,6 @@ short closeCKP(stCloneKeenPlus *pCKP)
 int eseq2_TantalusRay(stCloneKeenPlus *pCKP);
 void eseq2_vibrate();
 
-
 void playgame_levelmanager(stCloneKeenPlus *pCKP)
 {
   int i, o, wm, firsttime = 1;
@@ -357,7 +350,7 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
 
     p_levelcontrol->command = LVLC_NOCOMMAND;
 
-    p_levelcontrol->dark = 0;
+    p_levelcontrol->dark = false;
     p_levelcontrol->usedhintmb = false;
     if (loadinggame)
     {
@@ -377,6 +370,20 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
 	g_pGraphics->loadHQGraphics(p_levelcontrol->episode,p_levelcontrol->chglevelto,pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory);
 
 	g_pInput->flushAll();
+
+	// Check if we are in Demo-mode. If yes, add the upper logo to the objects
+	if(pCKP->Control.levelcontrol.demomode)
+	{
+		objects[DemoObjectHandle].exists = 1;
+		objects[DemoObjectHandle].onscreen = 1;
+		objects[DemoObjectHandle].type = OBJ_DEMOMSG;
+		objects[DemoObjectHandle].sprite = DemoSprite;
+		objects[DemoObjectHandle].x = 0;
+		objects[DemoObjectHandle].y = 0;
+		objects[DemoObjectHandle].honorPriority = 0;
+	}
+	else
+		objects[DemoObjectHandle].exists = 0;
 
     if (wm)
     {  // entering map from normal level, or first time around

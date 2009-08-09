@@ -100,13 +100,13 @@ typedef struct stTankData
 {
   char state;
 
-  uint timer,animtimer;
+  unsigned int timer,animtimer;
   unsigned char frame;
-  uint dist_traveled;
+  unsigned int dist_traveled;
 
   unsigned char movedir;
 
-  uint ponsameleveltime;
+  unsigned int ponsameleveltime;
   unsigned char alreadyfiredcauseonsamelevel;
   unsigned char fireafterlook;
 
@@ -114,11 +114,11 @@ typedef struct stTankData
   unsigned char detectedPlayerIndex;    // index of player that was detected
 
   // for tank2
-  uint timetillnextshot;
-  uint firetimes;
-  uint timetillcanfire;
-  uint timetillcanfirecauseonsamelevel;
-  uint turnaroundtimer;
+  unsigned int timetillnextshot;
+  unsigned int firetimes;
+  unsigned int timetillcanfire;
+  unsigned int timetillcanfirecauseonsamelevel;
+  unsigned int turnaroundtimer;
   int pausetime;
 } stTankData;
 

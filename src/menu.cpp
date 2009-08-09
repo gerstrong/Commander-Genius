@@ -1382,7 +1382,7 @@ int boxtimer;
   {
     if (player[i].isPlaying)
     {
-      gamepdo_wm_SelectFrame(i);
+      gamepdo_wm_SelectFrame(i, episode);
       player[i].hideplayer = 0;
     }
   }

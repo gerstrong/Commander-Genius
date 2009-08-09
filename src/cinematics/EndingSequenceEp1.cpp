@@ -280,17 +280,17 @@ int scrollingon;
 
 int eseq1_BackAtHome(stCloneKeenPlus *pCKP)
 {
-/*int draw;*/
-int i;
+	int i;
 	std::string text[10];
 	std::string strname;
 	std::string tempbuf;
-short textline, showtimer;
-unsigned short amountshown;
-signed int waittimer;
-int state;
-int enter, lastenterstate;
-int dlgX, dlgY, dlgW, dlgH;
+	short textline, showtimer;
+	unsigned short amountshown;
+	signed int waittimer;
+	int state;
+	int enter, lastenterstate;
+	int dlgX, dlgY, dlgW, dlgH;
+	int bmnum_window;
 
   #define STATE_TEXTAPPEARING   0
   #define STATE_WAITASEC        1
@@ -323,6 +323,7 @@ int dlgX, dlgY, dlgW, dlgH;
   dlgY = GetStringAttribute("EP1_ESEQ_PART2_PAGE1", "TOP");
   dlgW = GetStringAttribute("EP1_ESEQ_PART2_PAGE1", "WIDTH");
   dlgH = GetStringAttribute("EP1_ESEQ_PART2_PAGE1", "HEIGHT");
+  bmnum_window = g_pGraphics->getBitmapNumberFromName("WINDOFF");	// window lights off
 
   fade.mode = FADE_GO;
   fade.rate = FADE_NORM;
@@ -331,81 +332,87 @@ int dlgX, dlgY, dlgW, dlgH;
   fade.fadetimer = 0;
   do
   {
-	enter = ( g_pInput->getPressedKey(KENTER) || g_pInput->getPressedKey(KCTRL) || g_pInput->getPressedKey(KALT) );
+	  enter = ( g_pInput->getPressedKey(KENTER) || g_pInput->getPressedKey(KCTRL) || g_pInput->getPressedKey(KALT) );
 
-	sb_dialogbox(dlgX, dlgY, dlgW, dlgH);
+	  // Show the window (lights on or off)
+	  g_pGraphics->drawBitmap(80, 0, bmnum_window);
 
-    // draw the current text line up to the amount currently shown
+	  sb_dialogbox(dlgX, dlgY, dlgW, dlgH);
+
+	  // draw the current text line up to the amount currently shown
 	  tempbuf = text[textline];
 	  if(amountshown < tempbuf.size())
 		  tempbuf.erase(amountshown);
-    g_pGraphics->sb_font_draw( tempbuf, (dlgX+1)*8, (dlgY+1)*8);
+	  g_pGraphics->sb_font_draw( tempbuf, (dlgX+1)*8, (dlgY+1)*8);
 
-    if (state==STATE_TEXTAPPEARING)
-    {
-      if (enter) goto fullshow;
-      if (showtimer > LETTER_SHOW_SPD)
-      {  // it's time to show a new letter
-        amountshown++;
-        if (amountshown > text[textline].size())
-        {  // reached end of line
-          state = STATE_WAITASEC;
-//          if (textline==8)
-  //          waittimer = -BACKHOME_SHORT_WAIT_TIME*3;
-    //      else
-            waittimer = -BACKHOME_SHORT_WAIT_TIME*2;
-        }
-        // if the last letter shown is a dash/cr ('Billy...are you a-'),
-        // show the rest of the text immediately
-        // (for when the mom shouts "WHAT IS THIS ONE-EYED GREEN THING..."
-        if (text[textline][amountshown]==13 && \
-            text[textline][amountshown-1]=='-')
-        {
-          fullshow: ;
-          amountshown = text[textline].size();
-          state = STATE_WAITASEC;
-          waittimer = -BACKHOME_SHORT_WAIT_TIME*3;
-        }
-        showtimer = 0;
-      } else showtimer++;
+	  if (state==STATE_TEXTAPPEARING)
+	  {
+		  if (enter) goto fullshow;
+		  if (showtimer > LETTER_SHOW_SPD)
+		  {  // it's time to show a new letter
+			  amountshown++;
+			  if (amountshown > text[textline].size())
+			  {  // reached end of line
+				  state = STATE_WAITASEC;
+				  waittimer = -BACKHOME_SHORT_WAIT_TIME*2;
+			  }
+			  // if the last letter shown is a dash/cr ('Billy...are you a-'),
+			  // show the rest of the text immediately
+			  // (for when the mom shouts "WHAT IS THIS ONE-EYED GREEN THING..."
+			  if (text[textline][amountshown]==13 && \
+					  text[textline][amountshown-1]=='-')
+			  {
+				  fullshow: ;
+				  amountshown = text[textline].size();
+				  state = STATE_WAITASEC;
+				  waittimer = -BACKHOME_SHORT_WAIT_TIME*3;
+			  }
+			  showtimer = 0;
+		  } else showtimer++;
 
-      // user pressed enter
-      if (enter)
-      {  // show all text immediately
+		  // user pressed enter
+		  if (enter)
+		  {  // show all text immediately
 
-      }
-    }
-    else if (state==STATE_WAITASEC)
-    {
-      if (enter) goto nextline;
-      if (waittimer<BACKHOME_SHORT_WAIT_TIME)
-      {
-        waittimer++;
-        if (waittimer==BACKHOME_SHORT_WAIT_TIME)
-        {
-          nextline: ;
-          textline++;
-          state = STATE_TEXTAPPEARING;
-          amountshown = 0;
-          if (textline>7)
-          {  // end of text
-             break;
-          }
-        }
-      }
-    }
+		  }
+	  }
+	  else if (state==STATE_WAITASEC)
+	  {
+		  if (enter) goto nextline;
+		  if (waittimer<BACKHOME_SHORT_WAIT_TIME)
+		  {
+			  waittimer++;
+			  if (waittimer==BACKHOME_SHORT_WAIT_TIME)
+			  {
+				  nextline: ;
 
-    if (fade.dir==FADE_OUT && fade.mode==FADE_COMPLETE)
-      return 0;
+				  if( (textline > 0 && textline < 5)  || textline == 6)
+					  bmnum_window = g_pGraphics->getBitmapNumberFromName("WINDON");	// lights on
+				  else
+					  bmnum_window = g_pGraphics->getBitmapNumberFromName("WINDOFF");	// lights off
 
-    gamedo_fades();
-    gamedo_frameskipping_blitonly();
+				  textline++;
+				  state = STATE_TEXTAPPEARING;
+				  amountshown = 0;
+				  if (textline>7)
+				  {  // end of text
+					  break;
+				  }
+			  }
+		  }
+	  }
 
-    lastenterstate = enter;
+	  if (fade.dir==FADE_OUT && fade.mode==FADE_COMPLETE)
+		  return 0;
 
-    g_pInput->pollEvents();
-    g_pTimer->SpeedThrottle();
-    if (g_pInput->getPressedKey(KQUIT)) return 1;
+	  gamedo_fades();
+	  gamedo_frameskipping_blitonly();
+
+	  lastenterstate = enter;
+
+	  g_pInput->pollEvents();
+	  g_pTimer->SpeedThrottle();
+	  if (g_pInput->getPressedKey(KQUIT)) return 1;
   } while(1);
 
   finale_draw("finale.ck1", pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory);

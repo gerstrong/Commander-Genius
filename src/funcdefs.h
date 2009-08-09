@@ -7,7 +7,6 @@
 // gamedo.c
 int gamedo_ScrollTriggers(int theplayer);
 void gamedo_AnimatedTiles(bool animate_hinttiles = false);
-
 void gamedo_render_eraseobjects(void);
 void gamedo_render_drawdebug(void);
 void gamedo_render_erasedebug(void);
@@ -63,7 +62,6 @@ void sound_resume(void);
 char sound_extraction_of_exe_files(char *inputpath, int episode);
 
 // graphics.c
-void DrawBitmap(int xa, int ya, int b);
 void freemem(void);
 void Graphics_Stop(void);
 void /*inline*/ sb_setpixel(int x, int y, unsigned char c);

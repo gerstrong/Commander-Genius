@@ -532,30 +532,6 @@ void showinventory(int p, stCloneKeenPlus *pCKP)
   }
 }
 
-/*void sshot(char *visiblefile, char *scrollfile)
-{
-FILE *fp;
-int x,y;
-
-  fp = OpenGameFile(visiblefile, "wb");
-  if (!fp) return;<
-
-  for(y=0;y<200;y++)
-   for(x=0;x<320;x++)
-    fputc(getpixel(x,y), fp);
-
-  fclose(fp);
-
-  fp = OpenGameFile(scrollfile, "wb");
-  if (!fp) return;
-
-  for(y=0;y<512;y++)
-   for(x=0;x<512;x++)
-    fputc(sb_getpixel(x,y), fp);
-
-  fclose(fp);
-}*/
-
 void YourShipNeedsTheseParts(stCloneKeenPlus *pCKP)
 {
 int cp = 0;

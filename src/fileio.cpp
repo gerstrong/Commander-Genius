@@ -10,12 +10,12 @@
 #include "sdl/sound/CSound.h"
 #include "hqp/CMusic.h"
 #include "include/fileio.h"
+#include <vector>
 #include "include/fileio/rle.h"
 #include "CLogFile.h"
 #include "CGraphics.h"
 #include <unistd.h>
 #include <sys/types.h>
-#include <dirent.h>
 #include "StringUtils.h"
 #include "Debug.h"
 #include "FindFile.h"
@@ -473,7 +473,6 @@ unsigned int temp1, temp2, temp3, temp4;
 unsigned int loadmap(const std::string& filename, const std::string& path,
 									int lvlnum,stLevelControl* p_levelcontrol)
 {
-
 	// TODO: Tie that one up in converting stuff into C++
 
 	FILE *fp;
@@ -495,37 +494,29 @@ unsigned int loadmap(const std::string& filename, const std::string& path,
 	fp = OpenGameFile(fname.c_str(), "rb");
   if (!fp)
   {
-    // only record this error message on build platforms that log errors
-    // to a file and not to the screen.
+	  // only record this error message on build platforms that log errors
+	  // to a file and not to the screen.
 	  g_pLogFile->ftextOut("loadmap(): unable to open file %s<br>", fname.c_str());
-    return 1;
+	  return 1;
   }
   g_pLogFile->ftextOut("loadmap(): file %s opened. Loading...<br>", fname.c_str());
 
     // decompress map RLEW data
   curmapx = curmapy = mapdone = 0;
 
- unsigned int *filebuf; // big File Buffer for the uncompression
- filebuf = (unsigned int*) malloc(1000000*sizeof(int));
+	std::vector<unsigned int> filebuf;
+	unsigned long finsize; 		   // Final size
 
- if(filebuf == NULL)
- {
-	 g_pLogFile->ftextOut("loadmap(): unable to allocate memory for unpacking the level file<br>", fname.c_str());
-	    return 1;
- }
-
-  int finsize; 		   // Final size
-
-  finsize = unRLEW(fp, filebuf);
+	finsize = unRLEW(fp, filebuf);
 
   c=0;
 
-  if(finsize == -1)
+  if(!finsize)
   {
 	  rewind(fp);
 	  while(!feof(fp))
 	  {
-		  filebuf[c] = fgeti(fp);
+		  filebuf.push_back( fgeti(fp) );
 		  c++;
 	  }
   }
@@ -569,8 +560,7 @@ unsigned int loadmap(const std::string& filename, const std::string& path,
         c++;
     }
 
-    free(filebuf);
-
+    filebuf.clear();
     fclose(fp);
 
     // HQ Sounds. Load Music for a level if you have HQP

@@ -5,4 +5,4 @@
  *      Author: gerstrong
  */
 
-int unRLEW(FILE *fp, unsigned int *filebuf);
+unsigned long unRLEW(FILE *fp, std::vector<unsigned int>& filebuf);

@@ -15,7 +15,6 @@
 #include "sdl/CTimer.h"
 #include "sdl/CInput.h"
 #include "sdl/sound/CSound.h"
-//#include "include/enemyai.h"
 #include "hqp/CMusic.h"
 #include "vorticon/CHighScores.h"
 #include "hqp/CHQBitmap.h"
@@ -275,33 +274,35 @@ void gameloop(stCloneKeenPlus *pCKP)
 // gives keycard for door doortile to player p
 void give_keycard(int doortile, int p)
 {
-	bool keystack = options[OPT_KEYCARDSTACK].value; // True if set
 	g_pSound->playSound(SOUND_GET_CARD, PLAY_NOW);
 
-	if (doortile==DOOR_YELLOW) player[p].inventory.HasCardYellow = keystack ? player[p].inventory.HasCardYellow + 1 : 1;
-	else if (doortile==DOOR_RED) player[p].inventory.HasCardRed = keystack ? player[p].inventory.HasCardRed + 1 : 1;
-	else if (doortile==DOOR_GREEN) player[p].inventory.HasCardGreen = keystack ? player[p].inventory.HasCardGreen + 1 : 1;
-	else if (doortile==DOOR_BLUE) player[p].inventory.HasCardBlue = keystack ? player[p].inventory.HasCardBlue + 1 : 1;
+	if (doortile==DOOR_YELLOW && player[p].inventory.HasCardYellow < 9)
+		player[p].inventory.HasCardYellow++;
+	else if (doortile==DOOR_RED && player[p].inventory.HasCardRed < 9)
+		player[p].inventory.HasCardRed++;
+	else if (doortile==DOOR_GREEN && player[p].inventory.HasCardGreen < 9)
+		player[p].inventory.HasCardGreen++;
+	else if (doortile==DOOR_BLUE && player[p].inventory.HasCardBlue < 9)
+		player[p].inventory.HasCardBlue++;
 	else
 	{
-		crashflag = 1;
+		crashflag = 0;
 		crashflag2 = doortile;
-		why_term_ptr = "give_keycard(): invalid value for doortile parameter.";
+		g_pLogFile->textOut("give_keycard(): invalid value for doortile parameter.<br>");
 	}
 }
 
 // take away the specified keycard from player p
 void take_keycard(int doortile, int p)
 {
-	if (doortile==DOOR_YELLOW) player[p].inventory.HasCardYellow--;
-	else if (doortile==DOOR_RED) player[p].inventory.HasCardRed--;
-	else if (doortile==DOOR_GREEN) player[p].inventory.HasCardGreen--;
-	else if (doortile==DOOR_BLUE) player[p].inventory.HasCardBlue--;
-
-	if(player[p].inventory.HasCardYellow > 9) player[p].inventory.HasCardYellow = 0;
-	if(player[p].inventory.HasCardRed > 9) player[p].inventory.HasCardRed = 0;
-	if(player[p].inventory.HasCardGreen > 9) player[p].inventory.HasCardGreen = 0;
-	if(player[p].inventory.HasCardBlue > 9) player[p].inventory.HasCardBlue = 0;
+	if (doortile==DOOR_YELLOW && player[p].inventory.HasCardYellow > 0)
+		player[p].inventory.HasCardYellow--;
+	else if (doortile==DOOR_RED && player[p].inventory.HasCardRed > 0)
+		player[p].inventory.HasCardRed--;
+	else if (doortile==DOOR_GREEN && player[p].inventory.HasCardGreen > 0)
+		player[p].inventory.HasCardGreen--;
+	else if (doortile==DOOR_BLUE && player[p].inventory.HasCardBlue > 0)
+		player[p].inventory.HasCardBlue--;
 }
 
 // unregisters all animated tiles with baseframe tile

@@ -111,6 +111,7 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 	        initgamefirsttime(pCKP, EGAGraphics->getNumSprites());
 	        loadinggame = 0;
 	        playgame_levelmanager(pCKP);
+
 	        break;
 	      case MAINMNU_2PLAYER:
 	        defaultopt = 0;
@@ -167,34 +168,34 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 
 	      case MAINMNU_TIMEOUT:
 	      case MAINMNU_DEMO:
-	        retval = play_demo(current_demo, pCKP, EGAGraphics->getNumSprites());
 
-	        if (retval==DEMO_RESULT_FILE_BAD)
-	        {
-	        	// we tried to play a demo that did not exist--assume we
-	        	// reached the last demo and go back to the intro
-	        	//intro(pCKP);
-	        	CIntro *pIntro;
-	        	pIntro = new CIntro();
-	        	delete pIntro;
-	        	pIntro = NULL;
-	        	current_demo = 0;
-	        }
-	        else if (retval==DEMO_RESULT_CANCELED)
-	        { // user hit a key to cancel demo
-	           IntroCanceled = 1;            // pop up menu
-	        }
+	    	  retval = play_demo(current_demo, pCKP, EGAGraphics->getNumSprites());
 
-	        if (IntroCanceled)
-	        { // user canceled out of demo (or intro if at end of demos)
-	           // if user selected "demo" have it selected when he comes back
-	           if (opt==MAINMNU_DEMO)
-	           {
-	             defaultopt = MAINMNU_DEMO;
-	           }
-	        }
+	    	  if (retval==DEMO_RESULT_FILE_BAD)
+	    	  {
+	    		  // we tried to play a demo that did not exist--assume we
+	    		  // reached the last demo and go back to the intro
+	    		  //intro(pCKP);
+	    		  CIntro *pIntro;
+	    		  pIntro = new CIntro();
+	    		  delete pIntro;
+	    		  pIntro = NULL;
+	    		  current_demo = 0;
+	    	  }
+	    	  else if (retval==DEMO_RESULT_CANCELED)
+	    	  { // user hit a key to cancel demo
+	    		  IntroCanceled = 1;            // pop up menu
+	    	  }
 
-	        current_demo++;
+	    	  if (IntroCanceled)
+	    	  {   // user canceled out of demo (or intro if at end of demos)
+	    		  // if user selected "demo" have it selected when he comes back
+	    		  if (opt==MAINMNU_DEMO)
+	    		  {
+	    			  defaultopt = MAINMNU_DEMO;
+	    		  }
+	    	  }
+	    	  current_demo++;
 	      break;
 	      case RESTART_GAME:
 	        g_pLogFile->ftextOut("********************<br>");

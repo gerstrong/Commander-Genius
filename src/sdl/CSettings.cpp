@@ -130,7 +130,6 @@ void CSettings::loadDefaultGameCfg(stOption *Option)
 	setOption(Option,OPT_ALLOWPKING, "pking", 1);
 	setOption(Option,OPT_CHEATS, "allcheats", 0);
 	setOption(Option,OPT_TWOBUTTON, "two-button-firing", 0);
-	setOption(Option,OPT_KEYCARDSTACK, "keycard-stacking", 0);
 	setOption(Option,OPT_ANALOGJOYSTICK, "analog-joystick", 1);
 	setOption(Option,OPT_LVLREPLAYABILITY, "level replayability", 0);
 }

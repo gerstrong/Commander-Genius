@@ -243,7 +243,7 @@ int i, topobj;
 
 		if (objects[i].hasbeenonscreen || objects[i].zapped ||
 			objects[i].type==OBJ_RAY || \
-			objects[i].type==OBJ_ICECHUNK || objects[i].type==OBJ_PLATFORM ||\
+			objects[i].type==OBJ_ICECHUNK || objects[i].type==OBJ_PLATFORM ||
 			objects[i].type==OBJ_PLATVERT || objects[i].type==OBJ_YORP ||
 			objects[i].type==OBJ_FOOB || objects[i].type==OBJ_WALKER)
 
@@ -291,13 +291,14 @@ int i, topobj;
           //case OBJ_GOTPOINTS: gotpoints_ai(i); break;
 
           case OBJ_DEMOMSG: break;
+
           default:
         	  g_pLogFile->ftextOut("gamedo_enemy_ai: Object %d is of invalid type %d\n", i, objects[i].type);
             break;
          }
 
-        objects[i].scrx = (objects[i].x>>CSF)-scroll_x;
-        objects[i].scry = (objects[i].y>>CSF)-scroll_y;
+       	 objects[i].scrx = (objects[i].x>>CSF)-scroll_x;
+       	 objects[i].scry = (objects[i].y>>CSF)-scroll_y;
       }
    }
 }
@@ -486,33 +487,26 @@ int xa,ya;
 
    }
 
-   // if we're playing a demo keep the "DEMO" message on the screen
-   // as an object
-   // TODO: It would be better to add this demo message as on object, like the other stuff that is shown
-   // This  still must be done...
-   /*if (show_demo_title)
-   {
-     #define DEMO_X_POS         137
-     #define DEMO_Y_POS         6
-     objects[DemoObjectHandle].exists = 1;
-     objects[DemoObjectHandle].onscreen = 1;
-     objects[DemoObjectHandle].type = OBJ_DEMOMSG;
-     objects[DemoObjectHandle].sprite = DemoSprite;
-     objects[DemoObjectHandle].x = (DEMO_X_POS+scroll_x)<<CSF;
-     objects[DemoObjectHandle].y = (DEMO_Y_POS+scroll_y)<<CSF;
-     objects[DemoObjectHandle].honorPriority = 0;
-   }
-   else objects[DemoObjectHandle].exists = 0;*/
-
    // draw all objects. drawn in reverse order because the player sprites
    // are in the first few indexes and we want them to come out on top.
-   for(i=highest_objslot;;i--)
+   for( i=highest_objslot ;; i-- )
    {
       if (objects[i].exists && objects[i].onscreen)
       {
-        objects[i].scrx = ((objects[i].x>>CSF)-scroll_x);
-        objects[i].scry = ((objects[i].y>>CSF)-scroll_y);
-        g_pGraphics->drawSprite(objects[i].scrx, objects[i].scry, objects[i].sprite, i);
+    	  // Draw the Demo-Bar if it must be shown
+    	  if(objects[i].type == OBJ_DEMOMSG)
+    	  {
+   				#define DEMO_X_POS         137
+				#define DEMO_Y_POS         6
+   			   objects[i].scrx = DEMO_X_POS;
+   			   objects[i].scry = DEMO_Y_POS;
+    	  }
+    	  else
+    	  {
+    		  objects[i].scrx = ((objects[i].x>>CSF)-scroll_x);
+    		  objects[i].scry = ((objects[i].y>>CSF)-scroll_y);
+    	  }
+    	  g_pGraphics->drawSprite(objects[i].scrx, objects[i].scry, objects[i].sprite, i);
 
         if (objects[i].honorPriority)
         {
@@ -552,9 +546,8 @@ int xa,ya;
         }
 
       }
-      if(i==0) break;
+    if(i==0) break;
    }
-
 }
 
 void gamedo_render_drawdebug(void)
