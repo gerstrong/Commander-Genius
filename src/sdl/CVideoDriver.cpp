@@ -111,15 +111,42 @@ void CVideoDriver::initResolutionList()
 	  }
 	  else
 	  {
+		  // Init SDL in order to check, if the resolutions are really supported
+		  if(SDL_Init(SDL_INIT_VIDEO) < 0)
+		  {
+			  g_pLogFile->textOut(RED,"Could not initialize SDL for mode detection: %s<br>", SDL_GetError());
+			  return;
+		  }
+		  else
+			  g_pLogFile->textOut(GREEN,"SDL-Video was successfully initialized for mode detections!<br>");
+
+
+		  std::list<st_resolution> :: iterator i;
 		  while(!ResolutionFile.eof())
 		  {
 			  ResolutionFile.getline(buf,256);
 			  if(sscanf(buf,"%hdx%hdx%hd", &resolution.width,
 									  &resolution.height,
 									  &resolution.depth) == 3)
-				  m_Resolutionlist.push_back(resolution);
+				  // Now check if it's possible to use this resolution
+				  resolution.depth = SDL_VideoModeOK(resolution.width, resolution.height,
+													  resolution.depth, SDL_FULLSCREEN);
+				  if(resolution.depth)
+				  {
+					  for( i = m_Resolutionlist.begin() ; i != m_Resolutionlist.end() ; i++ )
+						  if(i->width == resolution.width &&
+							 i->height == resolution.height &&
+							 i->depth == resolution.depth) break;
+
+					  if(i == m_Resolutionlist.end())
+						  m_Resolutionlist.push_back(resolution);
+				  }
 		  }
 		  ResolutionFile.close();
+
+		  SDL_Quit();
+
+		  // shutdown SDL, so the game can initialize it correctly
 	  }
 	
 	if(m_Resolutionlist.empty()) {

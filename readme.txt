@@ -1,18 +1,18 @@
-*************************************
-*                                   *
-*        Commander Genius           * 
-*         (CloneKeenPlus)           *
-*                                   *
-*    (c)2008-2009  Gerstrong        *
-*    (c)2009       Pickle           *
-*    (c)2009       Tulip            *
-*    (c)2009       DaVince
-*    (c)2003-2005  Caitlin Shaw     *
-*      Released under GNU/GPL       *
-*                                   *
-*        Prerelease v0.3            *
-*                                   *
-*************************************
+**********************************************
+*                                            *
+*             Commander Genius               * 
+*              (CloneKeenPlus)               *
+*                                            *
+*    (c)2008-2009  Gerstrong                 *
+*    (c)2009       Pickle                    *
+*    (c)2009       Tulip                     *
+*    (c)2009                 DaVince         *
+*    (c)2003-2005 and 2009  Caitlin Shaw     *
+*           Released under GNU/GPL           *
+*                                            *
+*             Release v0.3                   *
+*                                            *
+**********************************************
 
 Welcome to Commander Genius (aka CloneKeenPlus)
 
@@ -22,9 +22,8 @@ Vorticons by ID Software. Commander Genius requires the original game
 data files to work. You can play all three episodes of the game and
 some fanmade mods.
 
-Commander Genius currently runs under Linux/X11 and Windows with SDL. 
-In Mac OS X it also runs, but we are still looking for a distributor.
-Check our website to get CG running on MacOs X Systems.
+Commander Genius currently runs under Linux/X11, Windows 
+and MacOS X with SDL. Also portable systems are supported (Wiz)  
 
 Commander Genius tries to mostly replicate the original game,
 however there are also a number of improvements like:
