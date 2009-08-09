@@ -92,8 +92,7 @@ short CSettings::loadDrvCfg()
 		g_pVideoDriver->setMode(width,height,depth);
 		g_pVideoDriver->setFrameskip(Parser.getIntValue("frameskip","Video"));
 
-		if((Parser.getIntValue("fullscreen","Video")) == 1)
-			g_pVideoDriver->isFullscreen(true);
+		g_pVideoDriver->isFullscreen(((Parser.getIntValue("fullscreen","Video")) == 1));
 
 		g_pVideoDriver->setOGLFilter(Parser.getIntValue("OGLfilter","Video"));
 		g_pVideoDriver->setZoom(Parser.getIntValue("scale","Video"));
@@ -101,15 +100,12 @@ short CSettings::loadDrvCfg()
 
 		g_pVideoDriver->setFilter(Parser.getIntValue("filter","Video"));
 
-		if(Parser.getIntValue("OpenGL","Video") == 1)
-			g_pVideoDriver->enableOpenGL(true);
-		else
-			g_pVideoDriver->enableOpenGL(false);
+		g_pVideoDriver->enableOpenGL(Parser.getIntValue("OpenGL","Video") == 1);
 
-		if(Parser.getIntValue("channels","Audio") == 2)
-			g_pSound->setSoundmode(Parser.getIntValue("rate","Audio"), true);
-		else
-			g_pSound->setSoundmode(Parser.getIntValue("rate","Audio"), false);
+		g_pVideoDriver->setAspectCorrection(Parser.getIntValue("aspect","Video") == 1);
+
+		g_pSound->setSoundmode(Parser.getIntValue("rate","Audio"),
+						Parser.getIntValue("channels","Audio") == 2);
 	}
 
 	return retval;

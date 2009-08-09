@@ -35,45 +35,28 @@ however there are also a number of improvements like:
 - high quality packs (for better sounds and music)
 - games menu
 - gamepad support (Assing your input devices as you want)
+- patch system for mods (WIP)
+- better logics like keystacking
 
 and much more!
 
-To my knowledge this is the only released attempt at
+To our knowledge this is the only released attempt at
 writing a third-party Keen game that has reached this
 stage of completeness.
 
 Commander Genius is a new edition of CloneKeenPlus.
-The reason I call it is because this version is compiled
+The reason we call it is because this version is compiled
 with GNU C++ (previously GNU C). Some functions are 
 now classes. The idea behind that is to provide a faster
 and more stable program. Features like the implementation
 of resolution changes was achieved through classes. 
-Although it looks very similar the skeleton of the 
-program is very different to the one in CloneKeen. 
+Although the program itself looks very similar 
+the skeleton of the program is very different 
+to the one in CloneKeen. 
 
 The Commander Genius source code may be freely distributed and
 modified as per the GPL, just please remember to give
 credit to the original authors.
-
-Commander Genius has been developed by Gerstrong togther 
-with Pickle and Tulip implementing mayor improvements 
-basing on the original source code of CloneKeen 
-by Caitlin Shaw. Many thanks to him, 
-for bringing us this great program.
-
-Obviously it is not the original version of CloneKeen 
-or any update. It is another version from a different
-author. Other guys and me had many improvements and 
-I tried to post them to the author. However, until 
-today he has not responded. It is also known, that there
-have not been updates of CloneKeen since 2005. It stayed
-in beta 0.83.
- 
-I also would like to see those changes and improvements 
-(or some of them) in his original project.
-So I hope he will contact me some day. Most of the code is
-based on his work and I acknowledge him a lot for that!
-
 
 Setting up the data of the game:
 
@@ -90,19 +73,23 @@ Setting up the data of the game:
    Under Linux it is called "CommanderGenius", under Windows "CGenius.exe".    
  * If you want better sounds and music, please download the high quality pack (HQP).
    Extract its contents to the "data" directory together with your game data.
+ * If your monitor and graphic card support a special resolution, you can add it by
+   modifying "resolutions.cfg" with your favorite text-editor
  
 Howto use Commander Genius (If you didn't compile it):
+ * Go to the game directory.
  * Under Windows you start "cgenius.exe", under Linux "./CommanderGenius"
 
-Howto compile it under Ubuntu (testet on Intrepid):
+Howto compile it under Ubuntu (testet on Jaunty):
+ * This is based on the source code that we provide on our website
  * As I know which packages are needed, because I use Ubuntu, here is an extra guide. 
  * Install through Synaptic or "sudo apt-get install" following packages:
  	- build-essential
  	- libvorbis-dev
  	- libsdl1.2-dev
  	- libgl1-mesa-dev
- * extract my source code into "ckp".
- * cd into the "cpk/Release" subdirectory.
+ * extract my source code into "CGenius".
+ * cd into the "CGenius/Release" subdirectory.
  * Run "make".
  * Then, you can run "CommanderGenius". Copy the files, wherever you want them together 
    with the data directory. "make install" does not work though.
@@ -122,19 +109,19 @@ Compiling CG on Linux/UNIX (other than Ubuntu):
    
 - VIDEO SYSTEM -
 Being cross-platform, there are many methods to detect different resolutions on a system.
-SDL uses one function to detect them but it doesn't seem to work properly on any system.
 
 Gernerally it is not necessary, because many resolutions are already supported, but if 
 you want to support other resolutions that you don't find in the options list just modify the
-"resolutions.cfg" file by hand.
+"resolutions.cfg" file by hand. CG always reads this file and checks whether your card and 
+monitor support it.
 
-Caution: This is recommended for advanced users who now what they do. The team won't take responsabilities 
-if you use a wrong configuration.
+Caution: This is recommended for advanced users who know what they do. The team won't take 
+responsabilities if you use a wrong configuration. If you want to see other resolutions to 
+in future versions of CG, mail us ;-).
 
-   
 - GAME PLAY -
 Before you play the game, you should take a look at the controls. Normally RAlt, Ctrl, Space and Enter
-are the action keys. On some systems (specially Windows) it may be different. So check it out!
+are the action keys. You can also assign joystick buttons and axes to those actions.
 
 There are some keys, which cannot be changed and are part of the game
 
@@ -144,12 +131,7 @@ LALT+F4		quit			   it will ask you, if you really want that
 LALT+Enter	fullscreen/        This will change between fullscreen and window-mode
             windows			   
    
-
-HINTS & SECRETS
-
-
 - CHEAT CODES -
-
 There are a full assortment of cheat codes available. Some cheats must first
 be enabled with -cheat or through the options->game menu. C+T+SPACE and G+O+D will
 always work.
@@ -163,13 +145,11 @@ TAB			No clipping		   If you hold down this key you will disable clipping.
 							   However, you cannot fall though floors. 
 
 - SAVE/LOAD GAME -
-
 The game can be saved by pressing F3 at any point during the game. The game will
 be saved in the exact position it was left (unlike the original which only
 allowed save at the map).
 
 - DEMO -
-
 Demo doesn't work until you record some. If you want to do that start the interpreter with "-rec" as argument.
 For example: "CGenius.exe -rec -game1 -level01" and you should be off to go recording in game 1 level 1.
 
@@ -200,7 +180,6 @@ A: You can increase the frameskip under settings->video or you can enable automa
    the program.
 
 - BUG! -
-
 So you really found one or more bugs? Please report me those per e-mail (gerstrong@gmail.com)
 and they will be checked. You can also submit them through the bug tracker at Sourceforge.net.
 Depending on the priority, I'm going to fix them as soon as possible. 
@@ -212,17 +191,16 @@ suggestions:
 
 
 Sciz CT
-DaVince
+DSL (Nice icon contribution)
 Commander Spleen
-Napalm
+Napalm (More Keen Data Structure Information)
 Malvineous
-Tulip
 Hans de Goede
 Levelass (Keen EXE-Information)
 ZidaneA (For his music tracks!)
 Iv4n
 
-Special thanks to Tulip, who has been supporting me all the time in testing
+Also many special thanks to Tulip who has been supporting me all the time in testing
 the Windows version of CKP. Without you it wouldn't be so great now! 
 
 I'm sure, there were more people who helped me and I forgot to mention, but

@@ -33,7 +33,6 @@ bool COpenGL::initGL(unsigned Width, unsigned Height, unsigned char Depth,
 		glViewport(0,(Height-(Height*200)/240)/2,Width, (Height*200)/240);
 	else
 		glViewport(0,0,Width, Height);
-	//glViewport(0,0,1024, 1024);
 
 	// Set clear colour
 	glClearColor(0,0,0,0);
