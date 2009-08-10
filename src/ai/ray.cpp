@@ -22,10 +22,13 @@ int hitlethal;
     if (objects[o].ai.ray.direction==RIGHT && objects[o].blockedr)
     {
        objects[o].x = (objects[o].x >> 4 >> CSF) << 4 << CSF;
-       if (TileProperty[getmaptileat(objects[o].x>>CSF,objects[o].y>>CSF)][BLEFT]) objects[o].x -= (16<<CSF);
-       //if (tiles[getmaptileat(objects[o].x>>CSF,objects[o].y>>CSF)].solidl) objects[o].x -= (16<<CSF);
+       if (TileProperty[getmaptileat(objects[o].x>>CSF,objects[o].y>>CSF)][BLEFT])
+    	   objects[o].x -= (16<<CSF);
+
        objects[o].ai.ray.state = RAY_STATE_SETZAPZOT;
-       if (objects[o].onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, objects[o].scrx);
+
+       if (objects[o].onscreen)
+    	   g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, objects[o].scrx);
     }
     else if (objects[o].ai.ray.direction==LEFT && objects[o].blockedl)
     {

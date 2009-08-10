@@ -231,7 +231,7 @@ reprocess: ;
 			objects[o].ai.vortelite.state = VORTELITE_FIRED;
 			if (objects[o].ai.vortelite.movedir==RIGHT)
 			{
-			  newobject = spawn_object(objects[o].x+(sprites[VORTELITE_FIRE_RIGHT_FRAME].xsize<<CSF), objects[o].y+(9<<CSF), OBJ_RAY);
+			  newobject = spawn_object(objects[o].x+(sprites[VORTELITE_FIRE_RIGHT_FRAME].xsize<<CSF), objects[o].y+(7<<CSF), OBJ_RAY);
 			  objects[newobject].ai.ray.direction = RIGHT;
 			}
 			else
