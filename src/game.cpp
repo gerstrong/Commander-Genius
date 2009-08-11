@@ -228,6 +228,14 @@ void start_gameover(stCloneKeenPlus *pCKP)
  	 int cities=0;
    	 CHighScores *HighScoreTable = new CHighScores(pCKP);
 
+   	 // Fade in. The high score must be seen!
+     fade.mode = FADE_GO;
+     fade.dir = FADE_IN;
+     fade.curamt = 0;
+     fade.fadetimer = 0;
+     fade.rate = FADE_NORM;
+
+
 	 bool extras[4] = {false,false,false,false};
 
 	 stLevelControl *p_levelcontrol = &(pCKP->Control.levelcontrol);

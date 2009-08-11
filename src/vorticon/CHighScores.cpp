@@ -222,8 +222,6 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 
 	memset(Name[place],0,16*sizeof(char));
 
-	sprintf(Name[place],"_");
-
 	string WrittenName;
 
 	// Prepare some extra items if available (Ep1 + 2)

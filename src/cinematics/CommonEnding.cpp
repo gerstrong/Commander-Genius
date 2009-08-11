@@ -137,11 +137,6 @@ int dlgX, dlgY, dlgW, dlgH;
   dlgH = GetStringAttribute("TO_BE_CONTINUED", "HEIGHT");
   eseq_showmsg(text, dlgX, dlgY, dlgW, dlgH, 0);
 
-  fade.dir = FADE_OUT;
-  fade.curamt = PAL_FADE_SHADES;
-  fade.fadetimer = 0;
-  fade.rate = FADE_NORM;
-  fade.mode = FADE_GO;
   do
   {
     gamedo_fades();
