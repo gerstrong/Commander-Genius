@@ -27,6 +27,9 @@
 
 #define SNDWAVE_LEFT_FRAME      128
 
+unsigned int rnd(void);
+void bumpplayer(int p, int pushamt, bool solid);
+
 void meep_ai(int o, stLevelControl levelcontrol)
 {
 int newobject;
@@ -54,17 +57,9 @@ int not_about_to_fall;
       if (!levelcontrol.level_done || levelcontrol.level_finished_by != objects[o].touchedBy)
       {
          if (player[objects[o].touchedBy].x < objects[o].x)
-         {
-            player[objects[o].touchedBy].playpushed_x = -MEEP_WALK_SPD;
-            if (player[objects[o].touchedBy].pinertia_x > 0) player[objects[o].touchedBy].pinertia_x = 0;
-            player[objects[o].touchedBy].playpushed_decreasetimer = 0;
-         }
+        	 bumpplayer(objects[o].touchedBy, -MEEP_WALK_SPD, true);
          else
-         {
-            player[objects[o].touchedBy].playpushed_x = MEEP_WALK_SPD;
-            if (player[objects[o].touchedBy].pinertia_x < 0) player[objects[o].touchedBy].pinertia_x = 0;
-            player[objects[o].touchedBy].playpushed_decreasetimer = 0;
-         }
+        	 bumpplayer(objects[o].touchedBy, MEEP_WALK_SPD, true);
       }
    }
 
@@ -80,7 +75,7 @@ int not_about_to_fall;
   switch(objects[o].ai.meep.state)
   {
    case MEEP_WALK:
-     if (rand()%MEEP_SING_PROB==(MEEP_SING_PROB/2))
+     if (rnd()%MEEP_SING_PROB==(MEEP_SING_PROB/2))
      {
        if (objects[o].onscreen)
        {
@@ -102,7 +97,6 @@ int not_about_to_fall;
        objects[o].sprite = MEEP_WALK_RIGHT_FRAME + objects[o].ai.meep.animframe;
 
        not_about_to_fall = TileProperty[getmaptileat((objects[o].x>>CSF)+sprites[MEEP_WALK_RIGHT_FRAME].xsize, (objects[o].y>>CSF)+sprites[MEEP_WALK_RIGHT_FRAME].ysize)][BUP];
-       //not_about_to_fall = tiles[getmaptileat((objects[o].x>>CSF)+sprites[MEEP_WALK_RIGHT_FRAME].xsize, (objects[o].y>>CSF)+sprites[MEEP_WALK_RIGHT_FRAME].ysize)].solidfall;
 
        if (objects[o].blockedr || !not_about_to_fall)
        {
@@ -116,7 +110,6 @@ int not_about_to_fall;
      else
      {
        objects[o].sprite = MEEP_WALK_LEFT_FRAME + objects[o].ai.meep.animframe;
-       //not_about_to_fall = tiles[getmaptileat((objects[o].x>>CSF)-1, (objects[o].y>>CSF)+sprites[MEEP_WALK_RIGHT_FRAME].ysize)].solidfall;
        not_about_to_fall = TileProperty[getmaptileat((objects[o].x>>CSF)-1, (objects[o].y>>CSF)+sprites[MEEP_WALK_RIGHT_FRAME].ysize)][BUP];
 
        if (objects[o].blockedl || !not_about_to_fall)

@@ -360,7 +360,7 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
       {
         crashflag = 1;
         crashflag2 = loadslot;
-        why_term_ptr = "Error loading game (slot # in flag2)! The save file may be corrupt or created by a different version of CloneKeen.";
+        g_pLogFile->textOut("Error loading game! The save file may be corrupt or created by a different version of CloneKeen Plus.");
         return;
       }
     }

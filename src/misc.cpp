@@ -637,6 +637,7 @@ void game_save(char *fname, stCloneKeenPlus *pCKP)
    sgrle_compress(fp, (unsigned char *)&max_scroll_x, sizeof(max_scroll_x));
    sgrle_compress(fp, (unsigned char *)&max_scroll_y, sizeof(max_scroll_y));
    sgrle_compress(fp, (unsigned char *)&map, sizeof(map));
+   sgrle_compress(fp, (unsigned char *)&highest_objslot, sizeof(highest_objslot) );
    for(i=0;i<numplayers;i++)
    {
      sgrle_compress(fp, (unsigned char *)&player[i], sizeof(player[i]));
@@ -692,6 +693,7 @@ p_levelcontrol = &(pCKP->Control.levelcontrol);
    sgrle_decompress(fp, (unsigned char *)&max_scroll_x, sizeof(max_scroll_x));
    sgrle_decompress(fp, (unsigned char *)&max_scroll_y, sizeof(max_scroll_y));
    sgrle_decompress(fp, (unsigned char *)&map, sizeof(map));
+   sgrle_decompress(fp, (unsigned char *)&highest_objslot, sizeof(highest_objslot) );
 
    initgame( &(pCKP->Control.levelcontrol) );           // reset scroll
    drawmap();

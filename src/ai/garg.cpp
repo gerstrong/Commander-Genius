@@ -11,13 +11,11 @@
 
 #define GARG_MINTRAVELDIST  1000
 #define GARG_LOOK_PROB      800
-#define GARG_WALK_SPEED      2
+#define GARG_WALK_SPEED      3
 #define GARG_WALK_ANIM_TIME  50
 #define GARG_WALK_SPEED_FAST      5
-
-
 #define GARG_WALK_ANIM_TIME_FAST  30
-#define GARG_CHARGE_SPEED    14
+#define GARG_CHARGE_SPEED    18
 #define GARG_CHARGE_ANIM_TIME  30
 
 #define GARG_LOOK_TIME     70
@@ -35,8 +33,7 @@
 #define GARGDIE_START_INERTIA      -10
 #define GARGDIE_INERTIA_DECREASE    2
 
-char garg_CanWalkLeft(int o);
-char garg_CanWalkRight(int o);
+unsigned int rnd(void);
 
 void garg_ai(int o, bool hardmode)
 {
@@ -71,7 +68,7 @@ unsigned int i;
       objects[o].ai.garg.dietimer = 0;
       objects[o].canbezapped = 0;
       objects[o].sprite = GARG_DYING_FRAME;
-      objects[o].zapped--;
+      objects[o].zapped=0;
       objects[o].ai.garg.gargdie_inertia_y = GARGDIE_START_INERTIA;
       objects[o].y -= 10;
       objects[o].inhibitfall = 1;
@@ -91,6 +88,7 @@ unsigned int i;
        if (objects[o].ai.garg.gargdie_inertia_y >= 0 && objects[o].blockedd)
          {
             objects[o].sprite = GARG_DEAD_FRAME;
+            objects[o].inhibitfall = 0;
             objects[o].ai.garg.state = GARG_DEAD;
          }
      break;
@@ -99,21 +97,17 @@ unsigned int i;
        {
           // try to head towards Keen...
           if (player[objects[o].ai.garg.detectedPlayerIndex].x < objects[o].x)
-          {
             objects[o].ai.garg.movedir = LEFT;
-          }
           else
-          {
             objects[o].ai.garg.movedir = RIGHT;
-          }
 
-          if (!objects[o].ai.garg.about_to_charge && rand()%3==1)
-          { // 25% prob, go the other way (but always charge towards player)
+          if (!objects[o].ai.garg.about_to_charge && rnd()%3==1)
+           // 25% prob, go the other way (but always charge towards player)
                objects[o].ai.garg.movedir ^= 1;
-          }
+
           // however if we're blocked on one side we must go the other way
-          if (!garg_CanWalkLeft(o)) objects[o].ai.garg.movedir = RIGHT;
-          else if (!garg_CanWalkRight(o)) objects[o].ai.garg.movedir = LEFT;
+          if (objects[o].blockedl) objects[o].ai.garg.movedir = RIGHT;
+          else if (objects[o].blockedr) objects[o].ai.garg.movedir = LEFT;
 
           objects[o].ai.garg.timer = 0;
           objects[o].ai.garg.walkframe = 0;
@@ -171,7 +165,7 @@ unsigned int i;
        // every now and then go back to look state
        if (objects[o].ai.garg.dist_traveled > GARG_MINTRAVELDIST)
        {
-          if (rand()%GARG_LOOK_PROB==(GARG_LOOK_PROB/2))
+          if (rnd()%GARG_LOOK_PROB==(GARG_LOOK_PROB/2))
           {
               objects[o].ai.garg.looktimes = 0;
               objects[o].ai.garg.timer = 0;
@@ -188,7 +182,7 @@ unsigned int i;
          // * we are blockedl, or
          // * there is empty space for two tiles ahead at floor level,
          //   and there is not a solid block 1-2 tiles ahead at wall level
-/*         not_about_to_fall1 = tiles[getmaptileat((objects[o].x>>CSF)-1, (objects[o].y>>CSF)+sprites[GARG_WALK_LEFT].ysize+2)].solidfall;
+         /*not_about_to_fall1 = tiles[getmaptileat((objects[o].x>>CSF)-1, (objects[o].y>>CSF)+sprites[GARG_WALK_LEFT].ysize+2)].solidfall;
          not_about_to_fall2 = tiles[getmaptileat((objects[o].x>>CSF)-17, (objects[o].y>>CSF)+sprites[GARG_WALK_LEFT].ysize+2)].solidfall;
          GotoLook = 0;
          if (objects[o].blockedl) GotoLook = 1;
@@ -197,13 +191,11 @@ unsigned int i;
            blocked_ahead1 = tiles[getmaptileat((objects[o].x>>CSF)-16, (objects[o].y>>CSF)+20)].solidr;
            blocked_ahead2 = tiles[getmaptileat((objects[o].x>>CSF)-28, (objects[o].y>>CSF)+20)].solidr;
            if (!blocked_ahead1 && !blocked_ahead2)
-           {
              GotoLook = 1;
-           }
-         }
-         */
+         }*/
 
-         if (garg_CanWalkLeft(o))
+
+         if (!objects[o].blockedl)
          {
            if (hardmode)
              objects[o].x -= GARG_WALK_SPEED_FAST;
@@ -221,7 +213,7 @@ unsigned int i;
        else
        {  // garg is walking right
          objects[o].sprite = GARG_WALK_RIGHT + objects[o].ai.garg.walkframe;
-         if (garg_CanWalkRight(o))
+         if (!objects[o].blockedr)
          {
            if (hardmode)
              objects[o].x += GARG_WALK_SPEED_FAST;
@@ -250,7 +242,7 @@ unsigned int i;
        if (objects[o].ai.garg.movedir==LEFT)
        {  // garg is charging left
          objects[o].sprite = GARG_WALK_LEFT + objects[o].ai.garg.walkframe;
-         if (garg_CanWalkLeft(o))
+         if (!objects[o].blockedl)
          {
            objects[o].x -= GARG_CHARGE_SPEED;
            objects[o].ai.garg.dist_traveled++;
@@ -265,7 +257,7 @@ unsigned int i;
        else
        {  // garg is charging right
          objects[o].sprite = GARG_WALK_RIGHT + objects[o].ai.garg.walkframe;
-         if (garg_CanWalkRight(o))
+         if (!objects[o].blockedr)
          {
            objects[o].x += GARG_CHARGE_SPEED;
            objects[o].ai.garg.dist_traveled++;
@@ -286,31 +278,4 @@ unsigned int i;
        } else objects[o].ai.garg.timer++;
      break;
    }
-}
-
-// determines if the garg can walk left
-// gargs will not pass a object marker of GARG_STOPPOINT
-char garg_CanWalkLeft(int o)
-{
-int objtile;
-
-  if (objects[o].blockedl) return 0;
-
-  objtile = map.objectlayer[((objects[o].x>>CSF)-1)>>4][((objects[o].y>>CSF)+2)>>4];
-  if (objtile == GARG_STOPPOINT) return 0;
-
-  return 1;
-}
-
-// determines if the garg can walk right
-char garg_CanWalkRight(int o)
-{
-int objtile;
-
-  if (objects[o].blockedr) return 0;
-
-  objtile = map.objectlayer[((objects[o].x>>CSF)+sprites[GARG_WALK_RIGHT].xsize+1)>>4][((objects[o].y>>CSF)+2)>>4];
-  if (objtile == GARG_STOPPOINT) return 0;
-
-  return 1;
 }

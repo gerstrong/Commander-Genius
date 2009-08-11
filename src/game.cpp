@@ -454,12 +454,9 @@ unsigned int i;
  for(i=1;i<MAX_OBJECTS-1;i++) objects[i].exists = 0;
  // clear out AnimTileInUse array
  for(y=0;y<ATILEINUSE_SIZEX-1;y++)
- {
    for(x=0;x<ATILEINUSE_SIZEY-1;x++)
-   {
       AnimTileInUse[x][y] = 0;
-   }
- }
+
  // set all animated tile slots to "not in use"
  map_unregister_all_animtiles();
 
@@ -1285,8 +1282,8 @@ void procgoodie(int t, int mpx, int mpy, int theplayer, stCloneKeenPlus *pCKP)
 }
 
 // yorp/walker etc "bump".
-// if solid = 0, player can possibly force his way through.
-// if solid = 1, object acts like a solid "wall".
+// if solid = false, player can possibly force his way through.
+// if solid = true, object acts like a solid "wall".
 void bumpplayer(int p, int pushamt, bool solid)
 {
 	player[p].playpushed_x = pushamt;
@@ -1307,9 +1304,7 @@ void bumpplayer(int p, int pushamt, bool solid)
 
 	player[p].playpushed_decreasetimer = 0;
 	if (!player[p].pjumping)
-	{
 		player[p].pdir = player[p].pshowdir = (pushamt<0)?LEFT:RIGHT;
-	}
 }
 
 void GiveAnkh(int cp)

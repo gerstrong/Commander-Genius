@@ -11,10 +11,11 @@
 #define MOTHER_HURT     2
 #define MOTHER_DEAD     3
 
-#define MOTHER_WALK_ANIM_RATE     30
+#define MOTHER_WALK_ANIM_RATE     60
 #define MOTHER_WALK_SPD           3
 
-#define MOTHER_SPIT_PROB          1000
+#define MOTHER_SPIT_PROB          1100
+#define MOTHER_SPIT_PROB_HARD     400
 #define MOTHER_SPIT_SHOW_TIME     100
 
 #define MOTHER_HP      5
@@ -30,10 +31,14 @@
 #define MOTHER_HURT_FRAME        91
 #define MOTHER_DEAD_FRAME	 92
 
+void bumpplayer(int p, int pushamt, bool solid);
+unsigned int rnd(void);
+
 void mother_ai(int o, stLevelControl levelcontrol)
 {
 int newobject;
-//int not_about_to_fall;
+int prob;
+
   if (objects[o].needinit)
   {
     objects[o].ai.mother.state = MOTHER_WALK;
@@ -58,17 +63,9 @@ int newobject;
       if (!levelcontrol.level_done || levelcontrol.level_finished_by != objects[o].touchedBy)
       {
          if (player[objects[o].touchedBy].x < objects[o].x)
-         {
-            player[objects[o].touchedBy].playpushed_x = -MOTHER_WALK_SPD;
-            if (player[objects[o].touchedBy].pinertia_x > 0) player[objects[o].touchedBy].pinertia_x = 0;
-            player[objects[o].touchedBy].playpushed_decreasetimer = 0;
-         }
+        	 bumpplayer(objects[o].touchedBy, -MOTHER_WALK_SPD, true);
          else
-         {
-            player[objects[o].touchedBy].playpushed_x = MOTHER_WALK_SPD;
-            if (player[objects[o].touchedBy].pinertia_x < 0) player[objects[o].touchedBy].pinertia_x = 0;
-            player[objects[o].touchedBy].playpushed_decreasetimer = 0;
-         }
+        	 bumpplayer(objects[o].touchedBy, MOTHER_WALK_SPD, true);
       }
    }
 
@@ -88,16 +85,19 @@ int newobject;
   switch(objects[o].ai.mother.state)
   {
    case MOTHER_WALK:
-     if (rand()%MOTHER_SPIT_PROB == (MOTHER_SPIT_PROB/2))
-     {
-	   if (objects[o].ai.mother.dir == RIGHT) // turn around before spitting
-			objects[o].ai.mother.dir = LEFT;
-	   else
-			objects[o].ai.mother.dir = RIGHT;
 
-	   objects[o].ai.mother.state = MOTHER_SPIT;
-       objects[o].ai.mother.timer = 0;
-     }
+	 prob = levelcontrol.hardmode ? MOTHER_SPIT_PROB_HARD : MOTHER_SPIT_PROB;
+	 if (rnd()%prob==0)
+	 {
+		if (objects[o].onscreen)
+		{
+			if (rnd()&1)
+				objects[o].ai.mother.dir ^= 1;		// turn around before spitting
+
+			objects[o].ai.mother.state = MOTHER_SPIT;
+			objects[o].ai.mother.timer = 0;
+		}
+	 }
 
      if (objects[o].ai.mother.dir==RIGHT)
      {
@@ -115,16 +115,11 @@ int newobject;
      else
      {
        objects[o].sprite = MOTHER_WALK_LEFT_FRAME + objects[o].ai.mother.animframe;
-//       not_about_to_fall = tiles[getmaptileat((objects[o].x>>CSF)-1, (objects[o].y>>CSF)+sprites[MOTHER_WALK_RIGHT_FRAME].ysize)].solidfall;
 
-       if (objects[o].blockedl)// || !not_about_to_fall)
-       {
+       if (objects[o].blockedl)
          objects[o].ai.mother.dir = RIGHT;
-       }
        else
-       {
          objects[o].x -= MOTHER_WALK_SPD;
-       }
      }
 
      /* walk animation */
@@ -136,15 +131,11 @@ int newobject;
      else objects[o].ai.mother.animtimer++;
 
    break;
-   case MOTHER_SPIT:
-     if (objects[o].ai.mother.dir==RIGHT)
-     {
-       objects[o].sprite = MOTHER_SPIT_RIGHT_FRAME;
-     }
-     else
-     {
-       objects[o].sprite = MOTHER_SPIT_LEFT_FRAME;
-     }
+
+	case MOTHER_SPIT:
+		objects[o].sprite = (objects[o].ai.mother.dir==RIGHT) ?
+						MOTHER_SPIT_RIGHT_FRAME:MOTHER_SPIT_LEFT_FRAME;
+
 
      if (objects[o].ai.mother.timer > MOTHER_SPIT_SHOW_TIME)
      {

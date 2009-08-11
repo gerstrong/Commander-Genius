@@ -30,7 +30,7 @@ void nessie_ai(int o)
 {
 unsigned int i;
 int isMounted;
-//int spd;
+
   if (objects[o].needinit)
   {
     objects[o].ai.nessie.baseframe = NESSIE_DOWNLEFT_FRAME;

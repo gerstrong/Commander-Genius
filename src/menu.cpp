@@ -264,7 +264,6 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 
 	do
 	{
-
 		g_pInput->pollEvents();
 	    g_pTimer->SpeedThrottle();
 
@@ -307,24 +306,22 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
     	int diff;
     	diff = getDifficulty(pCKP);
     	if(diff>2)
-    	{
     		return BACK2MAINMENU;
-    	}
 
     	pCKP->Control.levelcontrol.hardmode = (diff == 1) ? true : false;
 
-      loadslot = save_slot_box(0, pCKP);
-      if (loadslot)
-      {
-        fade.dir = FADE_OUT;
-        fade.curamt = PAL_FADE_SHADES;
-        fade.fadetimer = 0;
-        fade.rate = FADE_NORM;
-        fade.mode = FADE_GO;
-      }
-      bmnum = g_pGraphics->getBitmapNumberFromName("TITLE");
-      x = (320/2)-(bitmaps[bmnum].xsize/2);
-      g_pGraphics->drawBitmap(x, 0, bmnum);
+    	loadslot = save_slot_box(0, pCKP);
+    	if (loadslot)
+    	{
+    		fade.dir = FADE_OUT;
+    		fade.curamt = PAL_FADE_SHADES;
+    		fade.fadetimer = 0;
+    		fade.rate = FADE_NORM;
+    		fade.mode = FADE_GO;
+    	}
+    	bmnum = g_pGraphics->getBitmapNumberFromName("TITLE");
+    	x = (320/2)-(bitmaps[bmnum].xsize/2);
+    	g_pGraphics->drawBitmap(x, 0, bmnum);
     }
     else if (selection==MAINMNU_OPTIONS)
     {
@@ -337,7 +334,6 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
     {
     	if(selection==MAINMNU_1PLAYER || selection==MAINMNU_2PLAYER)
     	{
-
         	int diff;
         	diff = getDifficulty(pCKP);
 

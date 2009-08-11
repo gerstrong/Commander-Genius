@@ -47,23 +47,19 @@ unsigned char sgrle_get_next_byte(FILE *fp)
 /* file pointer *fp to the memory area pointed to by *ptr. */
 void sgrle_decompress(FILE *fp, unsigned char *ptr, unsigned long nbytes)
 {
-unsigned long i;
-  for(i=0;i<nbytes;i++)
-  {
+  for(unsigned long i=0;i<nbytes;i++)
     ptr[i] = sgrle_get_next_byte(fp);
-  }
 }
 
 /* given a memory area *ptr of length nbytes, compresses the data */
 /* using the SGRLE algorithm and saves it to file *fp */
 void sgrle_compress(FILE *fp, unsigned char *ptr, unsigned long nbytes)
 {
-//long RLErunlen;
-int byt/*, lastbyt*/;
-unsigned long compress_index, run_ahead_index;
-unsigned int runlength;
-int readbyt;
-unsigned int i;
+	int byt;
+	unsigned long compress_index, run_ahead_index;
+	unsigned int runlength;
+	int readbyt;
+	unsigned int i;
 
 
   compress_index = 0;
