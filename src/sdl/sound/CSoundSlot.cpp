@@ -85,7 +85,7 @@ bool CSoundSlot::loadSound(const std::string& fname, const std::string& searchna
 				// copy the data to the real m_sounddata block and reduce fragmentation!
 				m_sounddata = new unsigned int[m_soundlength];
 
-				memcpy(m_sounddata, waveform.data(), m_soundlength*sizeof(unsigned int));
+				memcpy(m_sounddata, &waveform[0], waveform.size()*sizeof(unsigned int));
 
 				g_pLogFile->ftextOut("loadSound : loaded sound %s of %d bytes.<br>", searchname.c_str(), m_soundlength);
 				m_hqsound.enabled = false;
