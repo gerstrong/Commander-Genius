@@ -183,55 +183,7 @@ void gameloop(stCloneKeenPlus *pCKP)
      if (pCKP->Control.levelcontrol.gameovermode)
      {
        if (enter)
-       {
-    	 int cities=0;
-      	 CHighScores *HighScoreTable;
-
-     	 if (pCKP->Control.levelcontrol.levels_completed[4]) cities++;
-      	 if (pCKP->Control.levelcontrol.levels_completed[6]) cities++;
-      	 if (pCKP->Control.levelcontrol.levels_completed[7]) cities++;
-      	 if (pCKP->Control.levelcontrol.levels_completed[13]) cities++;
-      	 if (pCKP->Control.levelcontrol.levels_completed[11]) cities++;
-      	 if (pCKP->Control.levelcontrol.levels_completed[9]) cities++;
-      	 if (pCKP->Control.levelcontrol.levels_completed[15]) cities++;
-      	 if (pCKP->Control.levelcontrol.levels_completed[16]) cities++;
-
-      	 HighScoreTable = new CHighScores(pCKP);
-
-		   bool extras[4] = {false,false,false,false};
-
-      	 // check inventory or saved cities
-      	 if(pCKP->Control.levelcontrol.episode == 1)
-      	 {
-      		 if(player[0].inventory.HasJoystick)
-      			 extras[0] = true;
-      		 if(player[0].inventory.HasBattery)
-      			 extras[1] = true;
-      		 if(player[0].inventory.HasVacuum)
-      			 extras[2] = true;
-      		 if(player[0].inventory.HasWiskey)
-      			 extras[3] = true;
-      	 }
-
-      	 HighScoreTable->writeHighScore((int)player[0].inventory.score,extras,cities);
-
-      	 HighScoreTable->showHighScore();
-
-      	 delete HighScoreTable;
-
-
-         if (fade.mode!=FADE_GO && fade.dir!=FADE_OUT)
-         {
-           fade.dir = FADE_OUT;
-           fade.curamt = PAL_FADE_SHADES;
-           fade.fadetimer = 0;
-           fade.rate = FADE_NORM;
-           fade.mode = FADE_GO;
-         }
-
-         pCKP->Control.levelcontrol.command = LVLC_GAME_OVER;
-
-       }
+    	   start_gameover( pCKP );
 
        if (fade.mode==FADE_COMPLETE && fade.dir==FADE_OUT)
        {
@@ -269,6 +221,57 @@ void gameloop(stCloneKeenPlus *pCKP)
 
   // Cleanup the player structure!
 
+}
+
+void start_gameover(stCloneKeenPlus *pCKP)
+{
+ 	 int cities=0;
+   	 CHighScores *HighScoreTable = new CHighScores(pCKP);
+
+	 bool extras[4] = {false,false,false,false};
+
+	 stLevelControl *p_levelcontrol = &(pCKP->Control.levelcontrol);
+
+   	 // check inventory or saved cities
+   	 if(p_levelcontrol->episode == 1)
+   	 {
+   		 if(player[0].inventory.HasJoystick)
+   			 extras[0] = true;
+   		 if(player[0].inventory.HasBattery)
+   			 extras[1] = true;
+   		 if(player[0].inventory.HasVacuum)
+   			 extras[2] = true;
+   		 if(player[0].inventory.HasWiskey)
+   			 extras[3] = true;
+   	 }
+   	 else if(p_levelcontrol->episode == 2)
+   	 {
+      	 if (p_levelcontrol->levels_completed[4]) cities++;
+       	 if (p_levelcontrol->levels_completed[6]) cities++;
+       	 if (p_levelcontrol->levels_completed[7]) cities++;
+       	 if (p_levelcontrol->levels_completed[13]) cities++;
+       	 if (p_levelcontrol->levels_completed[11]) cities++;
+       	 if (p_levelcontrol->levels_completed[9]) cities++;
+       	 if (p_levelcontrol->levels_completed[15]) cities++;
+       	 if (p_levelcontrol->levels_completed[16]) cities++;
+   	 }
+
+   	 HighScoreTable->writeHighScore((int)player[0].inventory.score,extras,cities);
+
+   	 HighScoreTable->showHighScore();
+
+   	 delete HighScoreTable;
+
+     if (fade.mode!=FADE_GO && fade.dir!=FADE_OUT)
+     {
+       fade.dir = FADE_OUT;
+       fade.curamt = PAL_FADE_SHADES;
+       fade.fadetimer = 0;
+       fade.rate = FADE_NORM;
+       fade.mode = FADE_GO;
+     }
+
+     p_levelcontrol->command = LVLC_GAME_OVER;
 }
 
 // gives keycard for door doortile to player p

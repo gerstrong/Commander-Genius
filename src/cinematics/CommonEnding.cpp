@@ -12,6 +12,8 @@
 #include "../sdl/CInput.h"
 #include "../sdl/CTimer.h"
 
+#include "../include/game.h"
+
 #define LETTER_SHOW_SPD          30
 
 #define HEADFOREARTH_WAIT_TIME  600
@@ -36,6 +38,11 @@ int endsequence(stCloneKeenPlus *pCKP)
   {
      if (eseq3_AwardBigV(pCKP)) return 0;
   }
+
+  pCKP->Control.levelcontrol.gameovermode = true;
+  // Remove all the items.
+
+  start_gameover(pCKP);
 
   return 0;
 }

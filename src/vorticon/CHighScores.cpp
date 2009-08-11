@@ -293,13 +293,13 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
     	g_pGraphics->drawBitmap(x4, y2, bExtra);
 
     memset(buf,0,256);
-    *buf= '_';
 
 	// This cycle will wait for the input of name and hit of enter
+    bool blink = true;
+    int blinkctr = 0;
 	do
 	{
 		// Blit all the text and images
-
 		for(i=KA ; i<KZ ; i++)
 		{
 			if(g_pInput->getPressedKey(i))
@@ -308,7 +308,6 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 				WrittenName.append(buf);
 				copy(WrittenName.data(),WrittenName.data()+WrittenName.length(),Name[place]);
 				WrittenName.copy(buf,WrittenName.length(),0);
-				strcat(buf,"_");
 			}
 		}
 		if(g_pInput->getPressedKey(KBCKSPCE) && (WrittenName.length() > 0))
@@ -319,7 +318,6 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 			WrittenName.copy(buf,WrittenName.length(),0);
 			memset(Name[place],0,16);
 			WrittenName.copy(Name[place],WrittenName.length(),0);
-			strcat(buf,"_");
 		}
 
 
@@ -328,13 +326,18 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 
 		// Here it must be split up in Episodes 1, 2 and 3.
 		// Print the labels
-
 		for( i=0 ; i<7 ; i++ )
 		{
 			if(i != place)
 				g_pGraphics->sb_color_font_draw(Name[i],40,64+(i<<4),4,7);
 			else
+			{
 				g_pGraphics->sb_color_font_draw(buf,40,64+(i<<4),4,7);
+				if(blink)
+					g_pGraphics->sb_color_font_draw("_",40+(strlen(buf)<<3),64+(i<<4),4,7);
+				else
+					g_pGraphics->sb_color_font_draw(" ",40+(strlen(buf)<<3),64+(i<<4),4,7);
+			}
 			g_pGraphics->sb_color_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4),4,7);
 
 			if(pCKP->Control.levelcontrol.episode == 1)
@@ -356,6 +359,13 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 
 	    g_pInput->pollEvents();
 	    g_pTimer->SpeedThrottle();
+
+	    blinkctr++; // The blinking cursor
+	    if(blinkctr > 100)
+	    {
+	    	blink = !blink;
+	    	blinkctr = 0;
+	    }
 
 	}while(!g_pInput->getPressedKey(KENTER));
 

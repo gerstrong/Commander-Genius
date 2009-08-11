@@ -271,3 +271,4 @@ void gamedo_enemyai(stLevelControl *p_levelcontrol);
 // Referenzed from cinematics/EndingSequenceEp3.cpp
 void eseq3_Mortimer();
 
+void start_gameover(stCloneKeenPlus *pCKP);
