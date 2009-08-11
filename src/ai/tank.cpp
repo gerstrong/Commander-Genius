@@ -38,6 +38,9 @@
 char tank_CanMoveLeft(int o);
 char tank_CanMoveRight(int o);
 
+//reference to ../misc.cpp
+unsigned int rnd(void);
+
 void tank_ai(int o, bool hardmode)
 {
 int newobject;
@@ -102,7 +105,7 @@ unsigned int i;
                { objects[o].ai.tank.movedir = LEFT; }
              else if (!tank_CanMoveLeft(o))
                { objects[o].ai.tank.movedir = RIGHT; }
-             else if (player[objects[o].ai.tank.detectedPlayerIndex].x < objects[o].x) // turn towards player
+             else if (rnd()&1) // turn towards player
                { objects[o].ai.tank.movedir = LEFT; }
              else
                { objects[o].ai.tank.movedir = RIGHT; }
@@ -150,8 +153,10 @@ unsigned int i;
          if (objects[o].ai.tank.detectedPlayer)
          {
            objects[o].ai.tank.ponsameleveltime++;
-           if (objects[o].ai.tank.ponsameleveltime > TANK_SAME_LEVEL_TIME_FAST && hardmode)
-           {   // keen would be a good target now. (hard mode)
+           if ((objects[o].ai.tank.ponsameleveltime > TANK_SAME_LEVEL_TIME) ||
+                 (objects[o].ai.tank.ponsameleveltime > TANK_SAME_LEVEL_TIME_FAST && hardmode))
+           {   // keen would be a good target now (hard mode).
+
               if (!objects[o].ai.tank.alreadyfiredcauseonsamelevel ||\
                   objects[o].ai.tank.ponsameleveltime > TANK_REPEAT_FIRE_TIME || \
                   (objects[o].ai.tank.ponsameleveltime > TANK_REPEAT_FIRE_TIME_FAST && hardmode))
@@ -183,11 +188,21 @@ unsigned int i;
 
        if (objects[o].ai.tank.dist_traveled > TANK_MINTRAVELDIST && objects[o].onscreen)
        {
-          if (rand()%TANK_LOOKFIRE_PROB==(TANK_LOOKFIRE_PROB/2))
-	  {
-		  objects[o].ai.tank.timer = 0;
-		  objects[o].ai.tank.state = TANK_FIRE;
-	  }
+          if (rnd()%TANK_LOOKFIRE_PROB==(TANK_LOOKFIRE_PROB/2))
+          {  // we're either going to look or fire
+              if (rnd()&1)
+              { // look
+                 objects[o].ai.tank.timer = 0;
+                 objects[o].ai.tank.frame = 0;
+                 objects[o].ai.tank.state = TANK_LOOK;
+              }
+              else
+              { // FIRE!
+            	  objects[o].ai.tank.timer = 0;
+            	  objects[o].ai.tank.state = TANK_FIRE;
+              }
+              break;
+          }
        }
 
        if (objects[o].ai.tank.movedir==LEFT)
@@ -248,10 +263,8 @@ unsigned int i;
          objects[newobject].sprite = ENEMYRAY;
          objects[newobject].ai.ray.dontHitEnable = 0;
 
-	 objects[o].ai.tank.timer = 0;
-         objects[o].ai.tank.frame = 0;
-         objects[o].ai.tank.animtimer = 0;
-         objects[o].ai.tank.state = TANK_LOOK; // must look after fire
+         objects[o].ai.tank.state = TANK_WALK;
+
       } else objects[o].ai.tank.timer++;
      break;
 
@@ -260,18 +273,14 @@ unsigned int i;
 
 char tank_CanMoveLeft(int o)
 {
-int not_about_to_fall;
-   not_about_to_fall = TileProperty[getmaptileat((objects[o].x>>CSF)-1, (objects[o].y>>CSF)+sprites[TANK_WALK_LEFT_FRAME].ysize)][BUP];
-   //not_about_to_fall = tiles[getmaptileat((objects[o].x>>CSF)-1, (objects[o].y>>CSF)+sprites[TANK_WALK_LEFT_FRAME].ysize)].solidfall;
-   if (!objects[o].blockedl && not_about_to_fall) return 1;
-   return 0;
+	int not_about_to_fall = TileProperty[getmaptileat((objects[o].x>>CSF)-1, (objects[o].y>>CSF)+sprites[TANK_WALK_LEFT_FRAME].ysize)][BUP];
+	if (!objects[o].blockedl && not_about_to_fall) return 1;
+	return 0;
 }
 
 char tank_CanMoveRight(int o)
 {
-int not_about_to_fall;
-   //not_about_to_fall = tiles[getmaptileat((objects[o].x>>CSF)+sprites[TANK_WALK_RIGHT_FRAME].xsize+1, (objects[o].y>>CSF)+sprites[TANK_WALK_RIGHT_FRAME].ysize)].solidfall;
-   not_about_to_fall = TileProperty[getmaptileat((objects[o].x>>CSF)+sprites[TANK_WALK_RIGHT_FRAME].xsize+1, (objects[o].y>>CSF)+sprites[TANK_WALK_RIGHT_FRAME].ysize)][BUP];
-   if (!objects[o].blockedr && not_about_to_fall) return 1;
-   return 0;
+	int not_about_to_fall = TileProperty[getmaptileat((objects[o].x>>CSF)+sprites[TANK_WALK_RIGHT_FRAME].xsize+1, (objects[o].y>>CSF)+sprites[TANK_WALK_RIGHT_FRAME].ysize)][BUP];
+	if (!objects[o].blockedr && not_about_to_fall) return 1;
+	return 0;
 }

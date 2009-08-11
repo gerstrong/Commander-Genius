@@ -9,7 +9,7 @@
 #define PLATVERT_WAIT   1
 
 #define PLATVERT_WAITTIME       150
-#define PLATVERT_MOVE_SPD       3
+#define PLATVERT_MOVE_SPD       4
 
 #define PLATVERT_ANIM_RATE      60
 
@@ -18,7 +18,6 @@
 void platvert_ai(int o)
 {
 unsigned int i,p;
-//int needtokick;
 
    if (objects[o].needinit)
    {  // first time initilization
@@ -60,15 +59,15 @@ unsigned int i,p;
          // if player is standing around minding his own business and we
          // come down on his head, change direction. if player is trying
          // to walk/jump into us horizontally, push him away.
-         if (player[objects[o].touchedBy].y > objects[o].y && \
-              (player[objects[o].touchedBy].pjumping==PNOJUMP || \
-               player[objects[o].touchedBy].pjumping==PPREPAREJUMP ||\
-               player[objects[o].touchedBy].pjumping==PPREPAREPOGO) &&\
-             objects[o].ai.platform.movedir==DOWN &&\
+         if (player[objects[o].touchedBy].y > objects[o].y &&
+              (player[objects[o].touchedBy].pjumping==PNOJUMP ||
+               player[objects[o].touchedBy].pjumping==PPREPAREJUMP ||
+               player[objects[o].touchedBy].pjumping==PPREPAREPOGO) &&
+             objects[o].ai.platform.movedir==DOWN &&
              !player[objects[o].touchedBy].pfalling)
          {
             // change direction
-             //objects[o].ai.platform.movedir = UP;
+             objects[o].ai.platform.movedir = UP;
          }
          else
          {
@@ -134,11 +133,7 @@ unsigned int i,p;
        else if (objects[o].ai.platform.movedir==DOWN)
        {
          if (objects[o].blockedd)
-         {
            objects[o].ai.platform.movedir = UP;
-           objects[o].ai.platform.waittimer = PLATVERT_WAITTIME / 2; // Only wait half time as up
-           objects[o].ai.platform.state = PLATVERT_WAIT;
-         }
          else
          {
            objects[o].y += PLATVERT_MOVE_SPD;
@@ -155,10 +150,10 @@ unsigned int i,p;
    break;
    case PLATVERT_WAIT:
        if (objects[o].ai.platform.waittimer > PLATVERT_WAITTIME)
-       {
           objects[o].ai.platform.state = PLATVERT_MOVE;
-       }
-       else objects[o].ai.platform.waittimer++;
+
+       else
+    	   objects[o].ai.platform.waittimer++;
    break;
    }
 }

@@ -12,7 +12,7 @@ void garg_ai(int o, bool hardmode);
 void vort_ai(int o, stLevelControl *p_levelcontrol);
 void butler_ai(int o, bool hardmode);
 void tank_ai(int o, bool hardmode);
-void ray_ai(int o, int episode);
+void ray_ai(int o, int episode, bool automatic_raygun, char pShotSpeed);
 void icechunk_ai(int o);
 void icebit_ai(int o);
 void icecannon_ai(int o);

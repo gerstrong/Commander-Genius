@@ -8,26 +8,8 @@
 // Vorticon (all episodes, albeit the behavior changes slightly
 // depending on levelcontrol.episode).
 
-// the color of the screen's border (for the flashing during the
-// death sequence in ep1)
-#ifdef TARGET_DOS
-  // for the DOS port, all the color "0"'s in the graphics
-  // are changed to 16's, which is set black, then the only
-  // thing on the screen that's color 0 is the VGA border.
-  #define BORDER_COLOR                    0
-  #define BORDER_R                        0
-  #define BORDER_G                        0
-  #define BORDER_B                        0
-  #define PAL_FLASH_DEC_AMT               48
-#else
-  // for the SDL ports, there is no border so we'll
-  // flash the grey background instead.
-  #define BORDER_COLOR                    7
-  #define BORDER_R                        0xA8
-  #define BORDER_G                        0xA8
-  #define BORDER_B                        0xA8
-  #define PAL_FLASH_DEC_AMT               32
-#endif
+// Reference to ../misc.cpp
+unsigned int rnd(void);
 
 void vort_initiatejump(int o);
 
@@ -199,7 +181,7 @@ vort_reprocess: ;
            { // not blocked on either side, head towards player
         	 //  player[primaryplayer].useObject!!!
 
-       		   if ((objects[player[primaryplayer].useObject].x) < (objects[o].x))
+       		   if ( player[primaryplayer].x < objects[o].x)
        		   { objects[o].ai.vort.movedir = LEFT; }
        		   else
 			   { objects[o].ai.vort.movedir = RIGHT; }
@@ -214,7 +196,7 @@ vort_reprocess: ;
      case VORT_WALK:
        objects[o].ai.vort.dist_traveled++;
 
-       if (rand()%VORT_JUMP_PROB == (VORT_JUMP_PROB/2))
+       if (rnd()%VORT_JUMP_PROB == (VORT_JUMP_PROB/2))
        {  // let's jump.
          if (!p_levelcontrol->dark && !objects[o].blockedu)
          {
@@ -242,7 +224,7 @@ vort_reprocess: ;
            if (objects[o].ai.vort.dist_traveled < VORT_TRAPPED_DIST && !p_levelcontrol->dark && objects[o].blockedd && !objects[o].blockedu)
            {
              vort_initiatejump(o);
-             if (rand()&1)
+             if (rnd()&1)
              {
                objects[o].ai.vort.inertiay = -VORT_MAX_JUMP_HEIGHT;
              }
@@ -298,20 +280,11 @@ vort_reprocess: ;
 
        if (objects[o].ai.vort.animtimer > VORT_DIE_ANIM_TIME)
        {
-         objects[o].ai.vort.palflashamt -= PAL_FLASH_DEC_AMT;
-         if (p_levelcontrol->episode != 2)
-         {
-//           pal_set(BORDER_COLOR, 212, objects[o].ai.vort.palflashamt, objects[o].ai.vort.palflashamt);
-//           pal_apply();
-         }
 
          objects[o].ai.vort.frame++;
          if (objects[o].ai.vort.frame>=6)
-         {
-//             pal_set(BORDER_COLOR, BORDER_R, BORDER_G, BORDER_B);
-//             pal_apply();
              objects[o].ai.vort.state = VORT_DEAD;
-         }
+
          objects[o].ai.vort.animtimer = 0;
        } else objects[o].ai.vort.animtimer++;
     break;
@@ -339,7 +312,7 @@ void vort_initiatejump(int o)
            objects[o].ai.vort.frame = 0;
            objects[o].ai.vort.animtimer = 0;
            objects[o].ai.vort.inertiay = \
-             -((rand()%(VORT_MAX_JUMP_HEIGHT-VORT_MIN_JUMP_HEIGHT))+VORT_MIN_JUMP_HEIGHT);
+             -((rnd()%(VORT_MAX_JUMP_HEIGHT-VORT_MIN_JUMP_HEIGHT))+VORT_MIN_JUMP_HEIGHT);
 
            if (objects[o].ai.vort.movedir==RIGHT)
               objects[o].sprite = objects[o].ai.vort.JumpRightFrame;

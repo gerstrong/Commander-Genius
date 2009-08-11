@@ -38,7 +38,7 @@ void walker_ai(int o, stLevelControl levelcontrol)
 unsigned int p;
 unsigned int i=0;
 int nopush;
-int /*til,*/floor;
+int floor;
 
    if (objects[o].needinit)
    {  // first time initilization
@@ -54,6 +54,7 @@ int /*til,*/floor;
      objects[o].blockedl = 0;
      objects[o].blockedr = 0;
      objects[o].blockedu = 0;
+     objects[o].dead = 0;
      SetAllCanSupportPlayer(o, 1);
      for(i=0;i<numplayers;i++)
      {
@@ -109,17 +110,9 @@ int /*til,*/floor;
       if (!nopush)
       {
          if (player[objects[o].touchedBy].x < objects[o].x)
-         {
-            player[objects[o].touchedBy].playpushed_x = -WALKERPUSHAMOUNT;
-            if (player[objects[o].touchedBy].pinertia_x > 0) player[objects[o].touchedBy].pinertia_x = 0;
-            player[objects[o].touchedBy].playpushed_decreasetimer = 0;
-         }
+        	 bumpplayer(objects[o].touchedBy, -WALKERPUSHAMOUNT, 1);
          else
-         {
-            player[objects[o].touchedBy].playpushed_x = WALKERPUSHAMOUNT;
-            if (player[objects[o].touchedBy].pinertia_x < 0) player[objects[o].touchedBy].pinertia_x = 0;
-            player[objects[o].touchedBy].playpushed_decreasetimer = 0;
-         }
+        	 bumpplayer(objects[o].touchedBy, WALKERPUSHAMOUNT, 1);
       }
    }
 
@@ -166,6 +159,7 @@ int /*til,*/floor;
           objects[o].sprite = WALKER_DEAD_FRAME;
           objects[o].ai.walker.state = WALKER_DEAD;
           objects[o].y = (objects[o].y>>CSF>>4)<<4<<CSF;
+          objects[o].dead = 1;
           SetAllCanSupportPlayer(o, 0);
        }
        return;

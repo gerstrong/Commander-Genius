@@ -15,9 +15,11 @@
 
 #define SNDWAVE_OFFSCREEN_KILL_TIME     100
 
+// Reference to ../game.cpp
+void delete_object(int o);
+
 void sndwave_ai(int o, bool hardmode)
 {
-//int i;
   if (objects[o].needinit)
   {
     objects[o].ai.ray.animframe = 0;
@@ -40,7 +42,7 @@ void sndwave_ai(int o, bool hardmode)
   {
     if (objects[o].ai.ray.offscreentime > SNDWAVE_OFFSCREEN_KILL_TIME)
     {
-      objects[o].exists = 0;
+      delete_object(o);
       return;
     }
     else objects[o].ai.ray.offscreentime++;
@@ -51,10 +53,9 @@ void sndwave_ai(int o, bool hardmode)
   if (objects[o].ai.ray.direction == RIGHT)
   {
      objects[o].sprite = SNDWAVE_RIGHT_FRAME + objects[o].ai.ray.animframe;
+
      if (objects[o].x>>CSF>>4 > map.xsize-2)
-     {
-        objects[o].exists = 0;
-     }
+    	 delete_object(o);
      else
      {
         if (hardmode)
@@ -66,10 +67,9 @@ void sndwave_ai(int o, bool hardmode)
   else
   {
      objects[o].sprite = SNDWAVE_LEFT_FRAME + objects[o].ai.ray.animframe;
+
      if (objects[o].x>>CSF>>4 < 2)
-     {
-        objects[o].exists = 0;
-     }
+    	 delete_object(o);
      else
      {
         if (hardmode)

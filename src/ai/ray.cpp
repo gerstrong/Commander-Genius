@@ -7,10 +7,11 @@
 // raygun blast, shot by keen, and by the tank robots in ep1&2.
 #include "ray.h"
 
-void ray_ai(int o, int episode)
+void ray_ai(int o, int episode, bool automatic_raygun, char pShotSpeed)
 {
 int i;
 int hitlethal;
+int rayspeed;
   if (objects[o].needinit)
   {
     objects[o].ai.ray.state = RAY_STATE_FLY;
@@ -40,11 +41,23 @@ int hitlethal;
     }
   }
 
+  // shots from "fully automatic" raygun go faster
+  if (objects[o].sprite!=objdefsprites[OBJ_RAY] || !automatic_raygun)
+  {
+	if (!pShotSpeed)
+		rayspeed = RAY_SPEED;
+	else
+		rayspeed = pShotSpeed;
+  }
+  else
+	rayspeed = RAY_AUTO_SPEED;
+
+
   switch(objects[o].ai.ray.state)
   {
   case RAY_STATE_FLY:
        // test if it hit a baddie
-       for(i=1;i<MAX_OBJECTS;i++)
+       for(i=1 ; i<highest_objslot ; i++)
        {
          if (!objects[i].exists || i==o) continue;
          if (objects[o].ai.ray.dontHitEnable)
@@ -52,7 +65,9 @@ int hitlethal;
            if (objects[i].type==objects[o].ai.ray.dontHit) continue;
          }
 
-         if (objects[i].canbezapped)
+		 if (objects[i].type==OBJ_RAY) continue;
+
+		 if (objects[i].canbezapped && objects[i].onscreen)
          {
             if (hitdetect(i, o))
             {
@@ -92,27 +107,30 @@ int hitlethal;
        {
            // don't go through bonklethal tiles, even if they're not solid
            // (for the arms on mortimer's machine)
-          /* if (tiles[getmaptileat((objects[o].x>>CSF)+sprites[objects[o].sprite].xsize, (objects[o].y>>CSF)+1)].bonklethal)
+       	   if (TileProperty[getmaptileat((objects[o].x>>CSF)+sprites[objects[o].sprite].xsize, (objects[o].y>>CSF)+1)][BEHAVIOR] == 1)
               hitlethal = 1;
-           else if (tiles[getmaptileat((objects[o].x>>CSF)+sprites[objects[o].sprite].xsize, (objects[o].y>>CSF)+(sprites[objects[o].sprite].ysize-1))].bonklethal)
-              hitlethal = 1;*/
-           /*else*/ hitlethal = 0;
+           else if (TileProperty[getmaptileat((objects[o].x>>CSF)+sprites[objects[o].sprite].xsize, (objects[o].y>>CSF)+(sprites[objects[o].sprite].ysize-1))][BEHAVIOR] == 1)
+              hitlethal = 1;
+           else
+        	  hitlethal = 0;
 
            if (objects[o].blockedr || hitlethal)
            {
               objects[o].ai.ray.state = RAY_STATE_SETZAPZOT;
-              if (objects[o].onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, objects[o].scrx);
+              if (objects[o].onscreen)
+            	  g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, objects[o].scrx);
            }
 
-           objects[o].x += RAY_SPEED;
+           objects[o].x += rayspeed;
        }
        else if (objects[o].ai.ray.direction == LEFT)
        {
-           /*if (tiles[getmaptileat((objects[o].x>>CSF)-1, (objects[o].y>>CSF)+1)].bonklethal)
+           if (TileProperty[getmaptileat((objects[o].x>>CSF)-1, (objects[o].y>>CSF)+1)][BEHAVIOR] == 1)
               hitlethal = 1;
-           else if (tiles[getmaptileat((objects[o].x>>CSF)-1, (objects[o].y>>CSF)+(sprites[objects[o].sprite].ysize-1))].bonklethal)
-              hitlethal = 1;*/
-           /*else*/ hitlethal = 0;
+           else if (TileProperty[getmaptileat((objects[o].x>>CSF)-1, (objects[o].y>>CSF)+(sprites[objects[o].sprite].ysize-1))][BEHAVIOR] == 1)
+              hitlethal = 1;
+           else
+        	  hitlethal = 0;
 
            if (objects[o].blockedl || hitlethal)
            {
@@ -120,7 +138,7 @@ int hitlethal;
               if (objects[o].onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, objects[o].scrx);
            }
 
-           objects[o].x -= RAY_SPEED;
+           objects[o].x -= rayspeed;
        }
        else if (objects[o].ai.ray.direction == DOWN)
        {
@@ -130,7 +148,7 @@ int hitlethal;
               if (objects[o].onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, objects[o].scrx);
            }
 
-           objects[o].y += RAY_SPEED;
+           objects[o].y += rayspeed;
        }
   break;
   case RAY_STATE_SETZAPZOT:
@@ -139,21 +157,21 @@ int hitlethal;
 
        if (episode==1)
        {
-         if (rand()&1)
+         if (rnd()&1)
            { objects[o].sprite = RAY_FRAME_ZAP_EP1; }
          else
            { objects[o].sprite = RAY_FRAME_ZOT_EP1; }
        }
        else if (episode==2)
        {
-         if (rand()&1)
+         if (rnd()&1)
            { objects[o].sprite = RAY_FRAME_ZAP_EP2; }
          else
            { objects[o].sprite = RAY_FRAME_ZOT_EP2; }
        }
        else
        {
-         if (rand()&1)
+         if (rnd()&1)
            { objects[o].sprite = RAY_FRAME_ZAP_EP3; }
          else
            { objects[o].sprite = RAY_FRAME_ZOT_EP3; }
@@ -170,7 +188,7 @@ int hitlethal;
        // ... and fall through
   case RAY_STATE_ZAPZOT:
        if (!objects[o].ai.ray.zapzottimer)
-         { objects[o].exists = 0; }
+         { delete_object(o); }
        else objects[o].ai.ray.zapzottimer--;
   break;
   }

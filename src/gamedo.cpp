@@ -257,7 +257,8 @@ int i, topobj;
           case OBJ_VORT: vort_ai(i, p_levelcontrol ); break;
           case OBJ_BUTLER: butler_ai(i, p_levelcontrol->hardmode); break;
           case OBJ_TANK: tank_ai(i, p_levelcontrol->hardmode); break;
-          case OBJ_RAY: ray_ai(i, p_levelcontrol->episode); break;
+          case OBJ_RAY: ray_ai(i, p_levelcontrol->episode,
+							  options[OPT_FULLYAUTOMATIC].value, p_levelcontrol->cepvars.pShotSpeed); break;
           case OBJ_DOOR: door_ai(i, p_levelcontrol->cepvars.DoorOpenDir); break;
           case OBJ_ICECANNON: icecannon_ai(i); break;
           case OBJ_ICECHUNK: icechunk_ai(i); break;

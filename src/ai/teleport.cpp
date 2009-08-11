@@ -20,6 +20,9 @@
 #define TELEPORTER_ANIM_RATE_EP1    16
 #define TELEPORTER_NUMFRAMES_EP1    20
 
+// Reference to ../game.cpp
+void delete_object(int o);
+
 void teleporter_ai(int o, stLevelControl levelcontrol)
 {
 int mx,my;
@@ -59,7 +62,7 @@ int animrate, numframes;
      objects[o].ai.teleport.animtimer = 0;
 
      if (objects[o].ai.teleport.numframechanges > numframes)
-     { // animation and sound are done
+     { // animation is done
        map_chgtile(mx, my, objects[o].ai.teleport.idleframe);
        if (objects[o].ai.teleport.direction==TELEPORTING_OUT)
        {  // teleporting out, go to new teleporter and new teleport in anim
@@ -107,7 +110,7 @@ tport_done: ;
            player[objects[o].ai.teleport.whichplayer].pdir = UP;
            levelcontrol.tobonuslevel = 0;
          }
-         objects[o].exists = 0;
+         delete_object(o);
        }
        return;
      }

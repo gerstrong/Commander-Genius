@@ -5,17 +5,18 @@
 #include "../include/enemyai.h"
 
 // Ninja AI (the black, bear-like karate-kicking creature in ep3)
-
-#define NINJA_STAND            0
-#define NINJA_KICK             1
-#define NINJA_DYING            2
-#define NINJA_DEAD             3
+enum ninja_actions{
+NINJA_STAND,
+NINJA_KICK,
+NINJA_DYING,
+NINJA_DEAD
+};
 
 #define NINJA_STAND_ANIM_RATE          100
 #define NINJA_DYING_SHOW_TIME          100
 
-#define NINJA_MIN_TIME_TILL_KICK       500
-#define NINJA_MAX_TIME_TILL_KICK       1000
+#define NINJA_MIN_TIME_TILL_KICK       300
+#define NINJA_MAX_TIME_TILL_KICK       500
 
 #define NINJA_KICK_MOVE_RATE           1
 
@@ -25,6 +26,8 @@
 #define NINJA_KICK_RIGHT_FRAME         82
 #define NINJA_DYING_FRAME              83
 #define NINJA_DEAD_FRAME               84
+
+unsigned int rnd(void);
 
 void ninja_ai(int o, bool hardmode)
 {
@@ -38,9 +41,9 @@ int onsamelevel;
     if (hardmode) objects[o].ai.ninja.timetillkick /= 3;
 
     if (player[primaryplayer].x < objects[o].x)
-      { objects[o].ai.ninja.dir = LEFT; }
+       objects[o].ai.ninja.dir = LEFT;
     else
-      { objects[o].ai.ninja.dir = RIGHT; }
+       objects[o].ai.ninja.dir = RIGHT;
 
     objects[o].ai.ninja.animtimer = 0;
     objects[o].ai.ninja.animframe = 0;
@@ -53,9 +56,7 @@ int onsamelevel;
 
   if (objects[o].touchPlayer && !player[objects[o].touchedBy].pdie && \
       objects[o].ai.ninja.state != NINJA_DYING)
-  {
      killplayer(objects[o].touchedBy);
-  }
 
   if (objects[o].zapped >= 4)
   {
@@ -72,30 +73,27 @@ int onsamelevel;
   if (objects[o].ai.ninja.isdying)
   {
     if (objects[o].ai.ninja.state == NINJA_STAND)
-    {
       objects[o].ai.ninja.state = NINJA_DYING;
-    }
+
     objects[o].ai.ninja.dietimer++;
     if (objects[o].ai.ninja.dietimer > NINJA_DYING_SHOW_TIME)
-    {
       objects[o].sprite = NINJA_DEAD_FRAME;
-    }
   }
 
   switch(objects[o].ai.ninja.state)
   {
    case NINJA_STAND:
      if (player[primaryplayer].x < objects[o].x+(8<<CSF))
-      { objects[o].ai.ninja.dir = LEFT; }
+       objects[o].ai.ninja.dir = LEFT;
      else
-      { objects[o].ai.ninja.dir = RIGHT; }
+       objects[o].ai.ninja.dir = RIGHT;
 
      if (!objects[o].ai.ninja.timetillkick)
      {
        objects[o].ai.ninja.state = NINJA_KICK;
        objects[o].inhibitfall = 1;
 
-       if (rand()&1)
+       if (rnd()&1)
        {
          // high, short jump
          objects[o].ai.ninja.XInertia = 25;
@@ -117,9 +115,7 @@ int onsamelevel;
        }
 
        if (objects[o].ai.ninja.dir==LEFT)
-       {
          objects[o].ai.ninja.XInertia = -objects[o].ai.ninja.XInertia;
-       }
      }
      else
      {
@@ -138,41 +134,35 @@ int onsamelevel;
         }
 
         if (onsamelevel)
-        {
           objects[o].ai.ninja.timetillkick--;
-        }
      }
 
      if (objects[o].ai.ninja.dir==LEFT)
-     {
        objects[o].sprite = NINJA_STAND_LEFT_FRAME + objects[o].ai.ninja.animframe;
-     }
      else
-     {
        objects[o].sprite = NINJA_STAND_RIGHT_FRAME + objects[o].ai.ninja.animframe;
-     }
 
      if (objects[o].ai.ninja.animtimer > NINJA_STAND_ANIM_RATE)
      {
        objects[o].ai.ninja.animframe ^= 1;
        objects[o].ai.ninja.animtimer = 0;
      }
-     else objects[o].ai.ninja.animtimer++;
+     else
+    	 objects[o].ai.ninja.animtimer++;
      break;
    case NINJA_KICK:
-       if (objects[o].blockedu && objects[o].ai.ninja.YInertia < 0) objects[o].ai.ninja.YInertia *= 0.5;
+     if (objects[o].blockedu && objects[o].ai.ninja.YInertia < 0)
+    	   objects[o].ai.ninja.YInertia *= 0.5;
 
-	   if (!objects[o].ai.ninja.isdying)
-     {
-       if (objects[o].ai.ninja.dir==LEFT)
-         { objects[o].sprite = NINJA_KICK_LEFT_FRAME; }
-       else
-         { objects[o].sprite = NINJA_KICK_RIGHT_FRAME; }
+     if (!objects[o].ai.ninja.isdying)
+	 {
+		   if (objects[o].ai.ninja.dir==LEFT)
+		    objects[o].sprite = NINJA_KICK_LEFT_FRAME;
+		   else
+		    objects[o].sprite = NINJA_KICK_RIGHT_FRAME;
      }
      else
-     {
         objects[o].sprite = NINJA_DYING_FRAME;
-     }
 
      if (objects[o].ai.ninja.KickMoveTimer < NINJA_KICK_MOVE_RATE)
      {
@@ -184,13 +174,10 @@ int onsamelevel;
      if (objects[o].ai.ninja.YInertia > 0 && objects[o].blockedd)
      {
        if (!objects[o].ai.ninja.isdying)
-       {
          objects[o].needinit = 1;
-       }
        else
-       {
          objects[o].ai.ninja.state = NINJA_DYING;
-       }
+
        break;
      }
      else
@@ -203,28 +190,28 @@ int onsamelevel;
        }
 
        if (objects[o].ai.ninja.YInertia > 0 || !objects[o].blockedu)
-       {
          objects[o].y += objects[o].ai.ninja.YInertia;
-       }
      }
 
      if (objects[o].ai.ninja.XFrictionTimer > objects[o].ai.ninja.XFrictionRate)
      {
        if (objects[o].ai.ninja.XInertia>0)
-         { objects[o].ai.ninja.XInertia--; }
+           objects[o].ai.ninja.XInertia--;
        else
-         { objects[o].ai.ninja.XInertia++; }
+           objects[o].ai.ninja.XInertia++;
 
        objects[o].ai.ninja.XFrictionTimer = 0;
      }
-     else objects[o].ai.ninja.XFrictionTimer++;
+     else
+    	 objects[o].ai.ninja.XFrictionTimer++;
 
      if (objects[o].ai.ninja.YFrictionTimer > objects[o].ai.ninja.YFrictionRate)
      {
        objects[o].ai.ninja.YInertia++;
        objects[o].ai.ninja.YFrictionTimer = 0;
      }
-     else objects[o].ai.ninja.YFrictionTimer++;
+     else
+    	 objects[o].ai.ninja.YFrictionTimer++;
 
      break;
    case NINJA_DYING:
