@@ -198,9 +198,12 @@ void showGameHint(int mpx, int mpy, int episode, int level)
 
     do
     {
-        g_pInput->pollEvents();
-        InfoTextWindow->render();
-        g_pVideoDriver->update_screen();
+    	if(g_pTimer->TimeToRunLogic())
+    	{
+    		g_pInput->pollEvents();
+			InfoTextWindow->render();
+			g_pVideoDriver->update_screen();
+    	}
     } while(!g_pInput->getPressedAnyCommand());
 
     delete InfoTextWindow;
@@ -1152,46 +1155,30 @@ void SetAllCanSupportPlayer(int o, int state)
 		objects[o].cansupportplayer[i] = state;
 }
 
-void showTextMB(int lines, char **text, stCloneKeenPlus *pCKP)
+void showTextMB(const std::string& Text)
 {
-	int twirlframe, twirltimer;
-	int dlgX,dlgY,dlgW,dlgH,twirlX,twirlY;
-	int i;
+	CTextBox* TextBox;
+	CWindow *InfoTextWindow = new CWindow( 0.1f, 0.4f, 0.7f, 0.7f );
 
-    #define TWIRL_SPEED        50
+	TextBox = new CTextBox(0.1f, 0.4f, 0.7f, 0.6f, Text, true);
+	TextBox->setFontDimensions(8.0f/320.0f, 8.0f/200.0f);
+	InfoTextWindow->addObject(TextBox);
 
-	    dlgX = 5;
-	    dlgY = 7;
-	    dlgW = 27;
-	    dlgH = lines+2;
-	    twirlX = dlgW-2;
-	    twirlY = dlgH-2;
+	// The Text will be too big, so resize in knowing the height of the first text.
+	InfoTextWindow->Resize(InfoTextWindow->getWidth(),
+			( (float)(InfoTextWindow->m_TextBox[0]->getNumberOfTextlines()+2)*8.0f ) / 200.0f );
 
-	    dialogbox(dlgX,dlgY,dlgW,dlgH);
+	g_pInput->flushAll();
 
-	    for(i=0;i<lines;i++)
-	    	g_pGraphics->drawFont(text[i], (dlgX+1)<<3, (dlgY+1+i)<<3,0);
+    do
+    {
+    	if(g_pTimer->TimeToRunLogic())
+    	{
+    		g_pInput->pollEvents();
+			InfoTextWindow->render();
+			g_pVideoDriver->update_screen();
+    	}
+    } while(!g_pInput->getPressedAnyCommand());
 
-	    twirlframe = 0;
-	    twirltimer = TWIRL_SPEED+1;
-
-	    g_pInput->flushAll();
-
-	    // wait for enter
-	    do
-	    {
-	  	  if(g_pTimer->TimeToRunLogic())
-	  	  {
-	  		  if (twirltimer>TWIRL_SPEED)
-	  		  {
-	  			  g_pGraphics->drawCharacter((dlgX+twirlX)<<3, (dlgY+twirlY)<<3, 9+twirlframe);
-	  			  g_pVideoDriver->update_screen();
-	  			  twirlframe++;
-	  			  if (twirlframe>5) twirlframe=0;
-	  			  twirltimer=0;
-	  		  } else twirltimer++;
-	  		  g_pInput->pollEvents();
-	  		  g_pVideoDriver->update_screen();
-	  	  }
-	    } while(!g_pInput->getPressedKey(KENTER));
+    delete InfoTextWindow;
 }

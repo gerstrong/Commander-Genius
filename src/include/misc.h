@@ -13,7 +13,7 @@ int VerifyQuit();
 char gameiswon(stCloneKeenPlus *pCKP);
 void game_save(char *fname, stCloneKeenPlus *pCKP);
 int game_load(char *fname, stCloneKeenPlus *pCKP);
-void showTextMB(int lines, char **text, stCloneKeenPlus *pCKP);
+void showTextMB(const std::string& Text);
 void showGameHint(int mpx, int mpy, int episode, int level);
 
 unsigned int rnd(void);

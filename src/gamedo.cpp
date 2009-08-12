@@ -18,6 +18,7 @@
 #include "CGraphics.h"
 #include "externals.h"
 #include "StringUtils.h"
+#include <string>
 
 #include "include/enemyai.h"
 
@@ -720,18 +721,15 @@ int i;
           		    	text[i]= (char*) malloc(MAX_STRING_LENGTH*sizeof(char));
           		    }
 
-          		    strcpy(text[0], "You are now cheating!");
-          		    strcpy(text[1], "You just got a pogo stick,");
-          		    strcpy(text[2], "all the key cards, and");
-          		    strcpy(text[3], "lots of ray gun charges.");
+          		    std::string Text;
 
-          		    showTextMB(4,text,pCKP);
 
-          		    for(i=0;i<4;i++)
-          		    {
-          		    	free(text[i]);
-          		    }
-          		    free(text);
+          		    Text = 	"You are now cheating!\n";
+          		    Text +=	"You got more lives\n";
+          		    Text +=	"all the key cards, and\n";
+          		    Text +=	"lots of ray gun charges!\n";
+
+          		    showTextMB(Text);
                  }
               }
          g_pVideoDriver->AddConsoleMsg("All items cheat");
@@ -755,22 +753,7 @@ int i;
            g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
 
            // Show a message like in the original game
- 		    char **text;
-
- 		    text = (char**) malloc(sizeof(char*));
-
-		   static const int MAX_STRING_LENGTH = 256;
-	    	text[0]= (char*) malloc(MAX_STRING_LENGTH*sizeof(char));
-
- 		    if (player[0].godmode)
- 			   strcpy(text[0], "Godmode enabled");
- 		    else
- 			   strcpy(text[0], "Godmode disabled");
-
- 		    showTextMB(1,text,pCKP);
-
-	    	free(text[0]);
- 		    free(text);
+  		    showTextMB("Godmode " + player[0].godmode ? "enabled" : "disabled");
        }
 
 

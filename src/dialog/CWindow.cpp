@@ -10,6 +10,7 @@
 
 CWindow::CWindow(float x, float y, float w, float h, char window_type)
 {
+	// TODO: Change that back to uint input as all the entire class. With Float it is a nightmare here!
 	m_x = x;
 	m_y = y;
 	m_w = w;
