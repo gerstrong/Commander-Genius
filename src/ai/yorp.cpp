@@ -39,17 +39,22 @@ YORP_DEAD      // they look so sad when they're dead
 #define YORP_JUMP_PROB      40
 #define YORP_JUMP_HEIGHT    -7
 
-#define YORPPUSHAMOUNT    24
-#define YORPPUSHAMOUNT_FAST    10
-
 #define YORP_DYING_FRAME   58
 #define YORP_DEAD_FRAME    59
 #define YORP_DIE_TIME      90
 
+unsigned int rnd(void);
+
+// Reference to ../game.cpp
+void bumpplayer(int p, int pushamt, bool solid);
+
 void yorp_ai(int o, stLevelControl levelcontrol)
 {
-int pushamt;
 char numlooks;
+int pushamt;
+//int newobject;
+unsigned int tb;
+
    // fix where yorps can get stunned, go offscreen, then
    // come back hours later and they're still doing the stun animation
    if (objects[o].wasoffscreen)
@@ -71,25 +76,34 @@ char numlooks;
    // but return to the calling procedure.
    if (objects[o].ai.yorp.state==YORP_DEAD) return;
 
+   //if (objects[o].ai.yorp.state != YORP_DYING) levelcontrol.numyorps++;
+   if (!objects[o].hasbeenonscreen) return;
+
+
+   tb = objects[o].touchedBy;
+
    // code for the yorps to push keen, and code for them to get stunned
-       if (objects[o].touchPlayer && objects[o].ai.yorp.state != YORP_STUNNED\
-           && objects[o].ai.yorp.state != YORP_DYING)
-       {
-          if (!player[objects[o].touchedBy].pdie)
+   if (objects[o].touchPlayer && objects[o].ai.yorp.state != YORP_STUNNED\
+           && objects[o].ai.yorp.state != YORP_DYING  && !player[tb].pdie)
+   {
+	   if (player[tb].pfalling)
+	   {  // falling, see if he bonked the yorp on the head
+          // this happens if keen's feet are higher than the top
+          // half of the yorp
+          if ((player[tb].y>>CSF)+16 < (objects[o].y>>CSF)+12)
           {
-            if (player[objects[o].touchedBy].pfalling)
-            {  // falling, see if he bonked the yorp on the head
-               // this happens if keen's feet are higher than the top
-               // half of the yorp
-               if ((player[objects[o].touchedBy].y>>CSF)+16 < (objects[o].y>>CSF)+12)
-               {
-            	  player[objects[o].touchedBy].ppogostick = false; // No pogo, You get it disabled at this point
-            	  g_pSound->playStereofromCoord(SOUND_YORP_STUN, PLAY_NOW, objects[o].scrx);
-                  objects[o].ai.yorp.state = YORP_STUNNED;
-                  objects[o].ai.yorp.looktimes = 0;
-                  objects[o].ai.yorp.timer = 0;
-                  objects[o].ai.yorp.lookposition = 0;
-                  // make the yorp look a little less "soft" by
+				// must have pogo out to stun yorps in High Difficulty
+				if (!levelcontrol.hardmode || player[tb].ppogostick)
+				{
+					player[tb].ppogostick = false; // No pogo, You get it disabled at this point
+					g_pSound->playStereofromCoord(SOUND_YORP_STUN, PLAY_NOW, objects[o].scrx);
+					objects[o].ai.yorp.state = YORP_STUNNED;
+					objects[o].ai.yorp.looktimes = 0;
+					objects[o].ai.yorp.timer = 0;
+					objects[o].ai.yorp.lookposition = 0;
+				}
+
+            	  // make the yorp look a little less "soft" by
                   // offering a bit of resistance
                   // (actually, having keen do a small jump)
                   player[objects[o].touchedBy].pjumptime = 0;
@@ -102,67 +116,83 @@ char numlooks;
             }
             else
             {
-               if (!levelcontrol.level_done || levelcontrol.level_finished_by != objects[o].touchedBy)
+               if (!levelcontrol.level_done || levelcontrol.level_finished_by != tb)
                {
+            	   g_pSound->playStereofromCoord(SOUND_YORP_BUMP, PLAY_NOW, objects[o].scrx);
+
                  // if yorp is moving, also push in direction he's moving
                  // in. this allows walking through a yorp if he is walking
                  // away from Keen
                  if (objects[o].ai.yorp.state==YORP_MOVE)
                  {
-                	 g_pSound->playStereofromCoord(SOUND_YORP_BUMP, PLAY_NOW, objects[o].scrx);
-                    if (player[objects[o].touchedBy].pshowdir==objects[o].ai.yorp.movedir)
-                      pushamt = 12;
-                    else
-                      pushamt = YORPPUSHAMOUNT+player[objects[o].touchedBy].pwalking*8;
+ 					if (player[tb].pshowdir != objects[o].ai.yorp.movedir)
+ 					{	// player pushing against yorp
+ 						if (player[tb].pwalking)
+ 							pushamt = levelcontrol.hardmode ? 35:25;
+ 						else
+ 							pushamt = levelcontrol.hardmode ? 24:18;
 
-                    if (objects[o].ai.yorp.movedir==LEFT)
-                      goto bump_left;
-                    else
-                      goto bump_right;
+ 						if (objects[o].ai.yorp.movedir==LEFT) pushamt = -pushamt;
+ 					}
+ 					else
+ 						// yorp not moving
+ 						pushamt = (player[tb].x < objects[o].x) ? -18:18;
                  }
-                 // else, always push keen away from the yorp
+ 				 else
+ 				 {   // player "walking through" yorp--provide resistance
+ 						pushamt = (player[tb].pshowdir==LEFT) ? 8:-8;
+ 				 }
 
-                 g_pSound->playStereofromCoord(SOUND_YORP_BUMP, PLAY_NORESTART, objects[o].scrx);
-                 pushamt = YORPPUSHAMOUNT;
-                 if (player[objects[o].touchedBy].x < objects[o].x)
-                 {
-                   bump_left: ;
-                   player[objects[o].touchedBy].playpushed_x = -pushamt;
-                   if (levelcontrol.hardmode) player[objects[o].touchedBy].playpushed_x -= YORPPUSHAMOUNT_FAST;
-                   player[objects[o].touchedBy].playpushed_decreasetimer = 0;
-                   if (!player[objects[o].touchedBy].pjumping)
-                   {
-                     player[objects[o].touchedBy].pdir = player[objects[o].touchedBy].pshowdir = LEFT;
-                   }
-                 }
-                 else
-                 {
-                   bump_right: ;
-                   player[objects[o].touchedBy].playpushed_x = pushamt;
-                   if (levelcontrol.hardmode) player[objects[o].touchedBy].playpushed_x += YORPPUSHAMOUNT_FAST;
-                   player[objects[o].touchedBy].playpushed_decreasetimer = 0;
-                   if (!player[objects[o].touchedBy].pjumping)
-                   {
-                     player[objects[o].touchedBy].pdir = player[objects[o].touchedBy].pshowdir = RIGHT;
-                   }
-                 }
-               }
-            }
-          }
-       }
+
+ 				if (player[tb].pwalking)
+ 				{
+ 					if (pushamt > 0 && player[tb].blockedr) pushamt = 0;
+ 					if (pushamt < 0 && player[tb].blockedl) pushamt = 0;
+ 				}
+
+ 				if (pushamt)
+ 					bumpplayer(tb, pushamt, 0);
+ 			}
+ 		}
+ 	}
 
 #define YORPDIE_START_INERTIA      -10
 #define YORPDIE_MAX_INERTIA         32
 #define YORPDIE_INERTIA_DECREASE    2
-   // did the yorp get shot?
+   // did the poor guy get shot?
    if (objects[o].zapped)
    {
-      // what'd you kill an innocent yorp for, you emotionless bastard!
+		// is "force fields" mode on?
+		/*if (getoption(OPT_YORPFORCEFIELDS) && !objects[o].zappedbyenemy && objects[o].ai.yorp.state != YORP_STUNNED)
+		{
+			objects[o].zapped = 0;
+
+			// reflect the ray back at the player
+			if (objects[o].zapd==RIGHT)
+			{
+				newobject = spawn_object(objects[o].x-(sprites[ENEMYRAY].xsize<<CSF), objects[o].zapy, OBJ_RAY);
+	            objects[newobject].ai.ray.direction = LEFT;
+			}
+			else
+			{
+				newobject = spawn_object(objects[o].x+(sprites[objects[o].sprite].xsize<<CSF), objects[o].zapy, OBJ_RAY);
+	            objects[newobject].ai.ray.direction = RIGHT;
+			}
+			sound_play(SOUND_YORP_BUMP, PLAY_NOW);
+			objects[newobject].sprite = ENEMYRAY;
+			objects[newobject].ai.ray.dontHitEnable = 0;
+			newobject = spawn_object(objects[o].x-(2<<CSF), objects[o].y+(1<<CSF), OBJ_GOTPOINTS);
+			objects[newobject].sprite = YORPSHIELD_SPRITE;
+		}
+		else
+		{*/
+			// what'd you kill an innocent yorp for, you bastard!
+
       objects[o].ai.yorp.state = YORP_DYING;
       objects[o].ai.yorp.dietimer = 0;
       objects[o].canbezapped = 0;
       objects[o].sprite = YORP_DYING_FRAME;
-      objects[o].zapped--;
+      objects[o].zapped = 0;
       objects[o].ai.yorp.yorpdie_inertia_y = YORPDIE_START_INERTIA;
       objects[o].y -= 10;
       objects[o].inhibitfall = 1;
@@ -183,11 +213,21 @@ char numlooks;
        if (objects[o].ai.yorp.yorpdie_inertia_y >= 0 && objects[o].blockedd)
          {
             objects[o].sprite = YORP_DEAD_FRAME;
-            objects[o].ai.yorp.state = YORP_DEAD;
+			objects[o].inhibitfall = 0;
+			objects[o].ai.yorp.state = YORP_DEAD;
+			objects[o].dead = 1;
+			/*if (getoption(OPT_MUSTKILLYORPS))
+			{
+				risebonus(PT100_SPRITE, objects[o].x, objects[o].y);
+				// fixme: points should be given to player who shot the yorp
+				/// temphack
+				incscore(0, 100);
+			}*/
          }
      break;
      case YORP_LOOK:
-       if (levelcontrol.hardmode) numlooks = YORP_NUM_LOOKS_FAST; else numlooks = YORP_NUM_LOOKS;
+    	 numlooks = levelcontrol.hardmode ? YORP_NUM_LOOKS_FAST : YORP_NUM_LOOKS;
+
        if (objects[o].ai.yorp.looktimes>numlooks &&\
            objects[o].ai.yorp.timer==YORP_LOOK_TIME-(YORP_LOOK_TIME/4))
        {
@@ -196,10 +236,16 @@ char numlooks;
                { objects[o].ai.yorp.movedir = LEFT; }
              else
                { objects[o].ai.yorp.movedir = RIGHT; }
-          if (rand()%3==1)
+          if (rnd()%3==1)
           { // 25% prob go the other way
                objects[o].ai.yorp.movedir ^= 1;
           }
+
+			/*if (getoption(OPT_MUSTKILLYORPS))
+			{	// they know you've got it out for them. run away!!
+				objects[o].ai.yorp.movedir ^= 1;
+			}   */
+
           // unless we're can't go that way
           if (objects[o].blockedl) objects[o].ai.yorp.movedir = RIGHT;
           if (objects[o].blockedr) objects[o].ai.yorp.movedir = LEFT;
@@ -212,6 +258,8 @@ char numlooks;
 
        if (!objects[o].ai.yorp.timer)
        {
+    	   objects[o].ai.yorp.looktimes++;
+
          switch(objects[o].ai.yorp.lookposition)
          {
           case 0: objects[o].sprite = YORP_LOOK_LEFT; break;
@@ -224,14 +272,18 @@ char numlooks;
          if (++objects[o].ai.yorp.lookposition>3)
            objects[o].ai.yorp.lookposition=0;
          objects[o].ai.yorp.timer=YORP_LOOK_TIME;
-       } else objects[o].ai.yorp.timer--;
+       }
+       else
+    	   objects[o].ai.yorp.timer--;
      break;
      case YORP_MOVE:
        #define YORP_LOOK_PROB    1000
        #define YORP_MINTRAVELDIST    1000
+    	 // looking
        if (objects[o].ai.yorp.dist_traveled > YORP_MINTRAVELDIST)
        {
-          if (rand()%YORP_LOOK_PROB==(YORP_LOOK_PROB/2))
+    	   // hopping
+		  if (objects[o].blockedd && rnd()%YORP_JUMP_PROB==1)
           {
               objects[o].ai.yorp.looktimes = 0;
               objects[o].ai.yorp.timer = 0;
@@ -244,7 +296,7 @@ char numlooks;
        if (objects[o].blockedd)
            if (rand()%YORP_JUMP_PROB==1)
            {
-             objects[o].yinertia = YORP_JUMP_HEIGHT - (rand()%3);
+             objects[o].yinertia = YORP_JUMP_HEIGHT - (rnd()%3);
              objects[o].y--;
            }
 
@@ -253,12 +305,8 @@ char numlooks;
          objects[o].sprite = YORP_WALK_LEFT + objects[o].ai.yorp.walkframe;
          if (!objects[o].blockedl)
          {
-           if (levelcontrol.hardmode)
-             objects[o].x -= YORP_WALK_SPEED_FAST;
-           else
-             objects[o].x -= YORP_WALK_SPEED;
-
-           objects[o].ai.yorp.dist_traveled++;
+        	 objects[o].x -= levelcontrol.hardmode ? YORP_WALK_SPEED_FAST:YORP_WALK_SPEED;
+        	 objects[o].ai.yorp.dist_traveled++;
          }
          else
          {
@@ -273,11 +321,8 @@ char numlooks;
          objects[o].sprite = YORP_WALK_RIGHT + objects[o].ai.yorp.walkframe;
          if (!objects[o].blockedr)
          {
-           if (levelcontrol.hardmode)
-             objects[o].x += YORP_WALK_SPEED_FAST;
-           else
-             objects[o].x += YORP_WALK_SPEED;
-           objects[o].ai.yorp.dist_traveled++;
+        	 objects[o].x += levelcontrol.hardmode ? YORP_WALK_SPEED_FAST:YORP_WALK_SPEED;
+        	 objects[o].ai.yorp.dist_traveled++;
          }
          else
          {
@@ -293,13 +338,17 @@ char numlooks;
        {
          objects[o].ai.yorp.walkframe ^= 1;
          objects[o].ai.yorp.timer = 0;
-       } else objects[o].ai.yorp.timer++;
+       }
+       else
+    	   objects[o].ai.yorp.timer++;
+
      break;
    case YORP_STUNNED:
        objects[o].sprite = YORP_STUNFRAME + objects[o].ai.yorp.walkframe;
        if (objects[o].ai.yorp.timer > YORP_STUN_ANIM_TIME)
        {
-         if (levelcontrol.hardmode) numlooks = YORP_STUNTIME_FAST; else numlooks = YORP_STUNTIME;
+    	   numlooks = levelcontrol.hardmode ? YORP_STUNTIME_FAST:YORP_STUNTIME;
+
          if (objects[o].ai.yorp.looktimes>numlooks)
          {
            objects[o].ai.yorp.looktimes = 0;
@@ -309,7 +358,10 @@ char numlooks;
          } else objects[o].ai.yorp.looktimes++;
          objects[o].ai.yorp.walkframe ^= 1;
          objects[o].ai.yorp.timer = 0;
-       } else objects[o].ai.yorp.timer++;
+       }
+       else
+    	   objects[o].ai.yorp.timer++;
+
        break;
    }
 }

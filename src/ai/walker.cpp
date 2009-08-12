@@ -33,6 +33,9 @@
 
 void Walker_TurnOnCansupportWhereNotKicked(int o);
 
+// Reference to ../game.cpp
+void bumpplayer(int p, int pushamt, bool solid);
+
 void walker_ai(int o, stLevelControl levelcontrol)
 {
 unsigned int p;
