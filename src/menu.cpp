@@ -1004,15 +1004,13 @@ void showPage(const std::string& str_text, stCloneKeenPlus *pCKP, int textsize)
 
 	  do
 	  {
-			if(g_pTimer->TimeToRunLogic())
+		    if(g_pTimer->TimeToRunLogic())
 			{
 				gamedo_fades();
 				gamedo_AnimatedTiles();
-
 				sb_dialogbox(dlgX, dlgY, dlgW, dlgH);
 
 				k=0;
-
 				// Draw the text
 				for(i=0;i<dlgH-1;i++)
 				{
@@ -1023,26 +1021,18 @@ void showPage(const std::string& str_text, stCloneKeenPlus *pCKP, int textsize)
 						g_pGraphics->sb_color_font_draw(buffer[i+(scroll>>3)]+1, (dlgX+1)<<3, (((dlgY+i+1)<<3) -(scroll%8)),COLOUR_DARKRED,COLOUR_GREY);
 					}
 					else
-					{
 						g_pGraphics->sb_font_draw(buffer[i+(scroll>>3)], (dlgX+1)<<3, (((dlgY+i+1)<<3) -(scroll%8)));
-					}
 				}
 				g_pGraphics->sb_font_draw(coverline, (dlgX+1)<<3, dlgY); // Upper and lower edge Update
 				g_pGraphics->sb_font_draw(coverline, (dlgX+1)<<3, (dlgY+dlgH-1)<<3);
 
 				// If user presses up or down
 				if (g_pInput->getHoldedCommand(0,IC_DOWN) || g_pInput->getHoldedCommand(1,IC_DOWN))
-				{
 					if(scroll < (totnumline-dlgH)<<3)
 						scroll++;
-					SDL_Delay(2);
-				}
 				else if (g_pInput->getHoldedCommand(0,IC_UP) || g_pInput->getHoldedCommand(1,IC_UP))
-				{
 					if(scroll > 0)
 						scroll--;
-					SDL_Delay(2);
-				}
 
 				enter = (g_pInput->getPressedCommand(0,IC_STATUS) || g_pInput->getPressedCommand(1,IC_STATUS));
 				if (enter)
@@ -1062,7 +1052,6 @@ void showPage(const std::string& str_text, stCloneKeenPlus *pCKP, int textsize)
 
 				if (g_pInput->getPressedCommand(KQUIT)) break;
 			}
-
 			gamedo_frameskipping();
 
 	  } while(!crashflag);
