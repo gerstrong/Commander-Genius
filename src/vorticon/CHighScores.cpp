@@ -119,52 +119,52 @@ char CHighScores::showHighScore(void)
 	// This cycle only serves as a key which must be pressed for now
 	do
 	{
-
-		// Here it must be split up in Episodes 1, 2 and 3.
-		if(pCKP->Control.levelcontrol.episode == 1)
+		if(g_pTimer->TimeToRunLogic())
 		{
-			// Print the labels
-
-			for( i=0 ; i<7 ; i++ )
+			// Here it must be split up in Episodes 1, 2 and 3.
+			if(pCKP->Control.levelcontrol.episode == 1)
 			{
-				g_pGraphics->sb_color_font_draw(Name[i],40,64+(i<<4),4,7);
-				g_pGraphics->sb_color_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4),4,7);
-				if(Extra[i][0] == true)
-					g_pGraphics->drawTile(32,90+(i<<4),ItemTiles[0]);
-				if(Extra[i][1] == true)
-					g_pGraphics->drawTile(48,90+(i<<4),ItemTiles[1]);
-				if(Extra[i][2] == true)
-					g_pGraphics->drawTile(64,90+(i<<4),ItemTiles[2]);
-				if(Extra[i][3] == true)
-					g_pGraphics->drawTile(80,90+(i<<4),ItemTiles[3]);
+				// Print the labels
+
+				for( i=0 ; i<7 ; i++ )
+				{
+					g_pGraphics->sb_color_font_draw(Name[i],40,64+(i<<4),4,7);
+					g_pGraphics->sb_color_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4),4,7);
+					if(Extra[i][0] == true)
+						g_pGraphics->drawTile(32,90+(i<<4),ItemTiles[0]);
+					if(Extra[i][1] == true)
+						g_pGraphics->drawTile(48,90+(i<<4),ItemTiles[1]);
+					if(Extra[i][2] == true)
+						g_pGraphics->drawTile(64,90+(i<<4),ItemTiles[2]);
+					if(Extra[i][3] == true)
+						g_pGraphics->drawTile(80,90+(i<<4),ItemTiles[3]);
+				}
 			}
-		}
-		else if(pCKP->Control.levelcontrol.episode == 2)
-		{
-			for( i=0 ; i<7 ; i++ )
+			else if(pCKP->Control.levelcontrol.episode == 2)
 			{
-				std::string buf;
-				g_pGraphics->sb_color_font_draw(Name[i],40,64+(i<<4),4,7);
-				g_pGraphics->sb_color_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4),4,7);
-				buf = itoa(Cities[i]);
-				g_pGraphics->sb_color_font_draw(buf,250,64+(i<<4),4,7);
+				for( i=0 ; i<7 ; i++ )
+				{
+					std::string buf;
+					g_pGraphics->sb_color_font_draw(Name[i],40,64+(i<<4),4,7);
+					g_pGraphics->sb_color_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4),4,7);
+					buf = itoa(Cities[i]);
+					g_pGraphics->sb_color_font_draw(buf,250,64+(i<<4),4,7);
+				}
 			}
-		}
-		else
-		{
-			for( i=0 ; i<7 ; i++ )
+			else
 			{
-				g_pGraphics->sb_color_font_draw(Name[i],40,64+(i<<4),4,7);
-				g_pGraphics->sb_color_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4),4,7);
+				for( i=0 ; i<7 ; i++ )
+				{
+					g_pGraphics->sb_color_font_draw(Name[i],40,64+(i<<4),4,7);
+					g_pGraphics->sb_color_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4),4,7);
+				}
 			}
+
+			gamedo_AnimatedTiles();
+			g_pInput->pollEvents();
 		}
+		gamedo_frameskipping();
 
-	    gamedo_AnimatedTiles();
-
-	    gamedo_frameskipping();
-
-	    g_pInput->pollEvents();
-	    g_pTimer->SpeedThrottle();
 	}while(!g_pInput->getPressedAnyKey());
 
 	return 0;
@@ -297,73 +297,73 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
     int blinkctr = 0;
 	do
 	{
-		// Blit all the text and images
-		for(i=KA ; i<KZ ; i++)
+		if(g_pTimer->TimeToRunLogic())
 		{
-			if(g_pInput->getPressedKey(i))
+			// Blit all the text and images
+			for(i=KA ; i<KZ ; i++)
 			{
-				sprintf(buf,"%c",'A' + i - KA);
-				WrittenName.append(buf);
-				copy(WrittenName.data(),WrittenName.data()+WrittenName.length(),Name[place]);
+				if(g_pInput->getPressedKey(i))
+				{
+					sprintf(buf,"%c",'A' + i - KA);
+					WrittenName.append(buf);
+					copy(WrittenName.data(),WrittenName.data()+WrittenName.length(),Name[place]);
+					WrittenName.copy(buf,WrittenName.length(),0);
+				}
+			}
+			if(g_pInput->getPressedKey(KBCKSPCE) && (WrittenName.length() > 0))
+			{
+				memset(buf,0,256);
+				g_pGraphics->sb_color_font_draw("              ",40,64+(place<<4),4,7);
+				WrittenName.erase(WrittenName.length()-1);
 				WrittenName.copy(buf,WrittenName.length(),0);
+				memset(Name[place],0,16);
+				WrittenName.copy(Name[place],WrittenName.length(),0);
 			}
-		}
-		if(g_pInput->getPressedKey(KBCKSPCE) && (WrittenName.length() > 0))
-		{
-			memset(buf,0,256);
-			g_pGraphics->sb_color_font_draw("              ",40,64+(place<<4),4,7);
-			WrittenName.erase(WrittenName.length()-1);
-			WrittenName.copy(buf,WrittenName.length(),0);
-			memset(Name[place],0,16);
-			WrittenName.copy(Name[place],WrittenName.length(),0);
-		}
 
 
-		if(WrittenName.length() > 14)
-			break;
+			if(WrittenName.length() > 14)
+				break;
 
-		// Here it must be split up in Episodes 1, 2 and 3.
-		// Print the labels
-		for( i=0 ; i<7 ; i++ )
-		{
-			if(i != place)
-				g_pGraphics->sb_color_font_draw(Name[i],40,64+(i<<4),4,7);
-			else
+			// Here it must be split up in Episodes 1, 2 and 3.
+			// Print the labels
+			for( i=0 ; i<7 ; i++ )
 			{
-				g_pGraphics->sb_color_font_draw(buf,40,64+(i<<4),4,7);
-				if(blink)
-					g_pGraphics->sb_color_font_draw("_",40+(strlen(buf)<<3),64+(i<<4),4,7);
+				if(i != place)
+					g_pGraphics->sb_color_font_draw(Name[i],40,64+(i<<4),4,7);
 				else
-					g_pGraphics->sb_color_font_draw(" ",40+(strlen(buf)<<3),64+(i<<4),4,7);
-			}
-			g_pGraphics->sb_color_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4),4,7);
+				{
+					g_pGraphics->sb_color_font_draw(buf,40,64+(i<<4),4,7);
+					if(blink)
+						g_pGraphics->sb_color_font_draw("_",40+(strlen(buf)<<3),64+(i<<4),4,7);
+					else
+						g_pGraphics->sb_color_font_draw(" ",40+(strlen(buf)<<3),64+(i<<4),4,7);
+				}
+				g_pGraphics->sb_color_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4),4,7);
 
-			if(pCKP->Control.levelcontrol.episode == 1)
+				if(pCKP->Control.levelcontrol.episode == 1)
+				{
+					if(Extra[i][0] == true)
+						g_pGraphics->drawTile(32,90+(i<<4),ItemTiles[0]);
+					if(Extra[i][1] == true)
+						g_pGraphics->drawTile(48,90+(i<<4),ItemTiles[1]);
+					if(Extra[i][2] == true)
+						g_pGraphics->drawTile(64,90+(i<<4),ItemTiles[2]);
+					if(Extra[i][3] == true)
+						g_pGraphics->drawTile(80,90+(i<<4),ItemTiles[3]);
+				}
+			}
+
+			gamedo_AnimatedTiles();
+			g_pInput->pollEvents();
+
+			blinkctr++; // The blinking cursor
+			if(blinkctr > 100)
 			{
-				if(Extra[i][0] == true)
-					g_pGraphics->drawTile(32,90+(i<<4),ItemTiles[0]);
-				if(Extra[i][1] == true)
-					g_pGraphics->drawTile(48,90+(i<<4),ItemTiles[1]);
-				if(Extra[i][2] == true)
-					g_pGraphics->drawTile(64,90+(i<<4),ItemTiles[2]);
-				if(Extra[i][3] == true)
-					g_pGraphics->drawTile(80,90+(i<<4),ItemTiles[3]);
+				blink = !blink;
+				blinkctr = 0;
 			}
 		}
-
-	    gamedo_AnimatedTiles();
-
-	    gamedo_frameskipping();
-
-	    g_pInput->pollEvents();
-	    g_pTimer->SpeedThrottle();
-
-	    blinkctr++; // The blinking cursor
-	    if(blinkctr > 100)
-	    {
-	    	blink = !blink;
-	    	blinkctr = 0;
-	    }
+		gamedo_frameskipping();
 
 	}while(!g_pInput->getPressedKey(KENTER));
 

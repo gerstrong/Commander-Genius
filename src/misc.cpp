@@ -184,7 +184,7 @@ void showGameHint(int mpx, int mpy, int episode, int level)
 	}
 
 	CTextBox* TextBox;
-	CWindow *InfoTextWindow = new CWindow(0.2f, 0.2f, 0.6f, 0.6f);
+	CWindow *InfoTextWindow = new CWindow( 0.2f, 0.2f, 0.6f, 0.6f );
 
 	TextBox = new CTextBox(0.2f, 0.2f, 0.6f, 0.6f, getstring(strname), true);
 	TextBox->setFontDimensions(8.0f/320.0f, 8.0f/200.0f);
@@ -199,7 +199,6 @@ void showGameHint(int mpx, int mpy, int episode, int level)
     do
     {
         g_pInput->pollEvents();
-        g_pTimer->SpeedThrottle();
         InfoTextWindow->render();
         g_pVideoDriver->update_screen();
     } while(!g_pInput->getPressedAnyCommand());
@@ -612,7 +611,6 @@ const int twirlspeed = 100;
 	  } else twirltimer++;
       if(g_pInput->getPressedAnyCommand()) break;
       g_pInput->pollEvents();
-    g_pTimer->SpeedThrottle();
     } while(!g_pInput->getPressedAnyKey());
 }
 
@@ -775,7 +773,6 @@ top: ;
 
 
     g_pInput->pollEvents();
-    g_pTimer->SpeedThrottle();
   } while(!g_pInput->getPressedKey(KQUIT) && !saveslot);
 
   /* check if the selected save file exists */
@@ -852,7 +849,6 @@ top: ;
     gamedo_render_eraseobjects();
 
     g_pInput->pollEvents();
-    g_pTimer->SpeedThrottle();
   } while(!g_pInput->getPressedKey(KQUIT));
 
   map_redraw();
@@ -894,7 +890,6 @@ int dlgX,dlgY,dlgW,dlgH;
     gamedo_render_eraseobjects();
 
     g_pInput->pollEvents();
-    g_pTimer->SpeedThrottle();
   } while(!g_pInput->getPressedAnyKey());
 
   map_redraw();
@@ -945,7 +940,6 @@ int dlgX,dlgY,dlgW,dlgH;
     gamedo_render_eraseobjects();
 
     g_pInput->pollEvents();
-    g_pTimer->SpeedThrottle();
   } while(1);
 }
 
@@ -1193,7 +1187,6 @@ void showTextMB(int lines, char **text, stCloneKeenPlus *pCKP)
 	    	  twirltimer=0;
 	      } else twirltimer++;
 	      g_pInput->pollEvents();
-	      g_pTimer->SpeedThrottle();
 	      g_pVideoDriver->update_screen();
 	    } while(!g_pInput->getPressedKey(KENTER));
 }

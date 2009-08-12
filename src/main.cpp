@@ -100,7 +100,6 @@ stPlayer net_lastplayer[MAX_PLAYERS];
 
 unsigned int scroll_y = 0;
 unsigned int objdefsprites[NUM_OBJ_TYPES+1];
-char frameskiptimer=0;
 
 int thisplayer;
 unsigned int primaryplayer;

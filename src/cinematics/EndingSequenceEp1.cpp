@@ -85,7 +85,6 @@ int i;
     gamedo_AnimatedTiles();
 
     g_pInput->pollEvents();
-    g_pTimer->SpeedThrottle();
   } while(fade.mode != FADE_COMPLETE && !g_pInput->getPressedKey(KQUIT));
 
   return 0;
@@ -168,112 +167,114 @@ int scrollingon;
   max_scroll_x = max_scroll_y = 20000;
   do
   {
-    // keep the question or exclamation mark sprite next to the player
-    objects[MARK_SPR_NUM].x = player[0].x + (20<<CSF);
-    objects[MARK_SPR_NUM].y = player[0].y - (10<<CSF);
-    objects[MARK_SPR_NUM].onscreen = 1;
-//    objects[MARK_SPR_NUM].priorityptsfound = 0;
-//    objects[MARK_SPR_NUM].priorityptschecked = 4;
-    objects[MARK_SPR_NUM].scrx = (objects[MARK_SPR_NUM].x>>CSF)-scroll_x;
-    objects[MARK_SPR_NUM].scry = (objects[MARK_SPR_NUM].y>>CSF)-scroll_y;
+	  if(g_pTimer->TimeToRunLogic())
+	  {
+		// keep the question or exclamation mark sprite next to the player
+		objects[MARK_SPR_NUM].x = player[0].x + (20<<CSF);
+		objects[MARK_SPR_NUM].y = player[0].y - (10<<CSF);
+		objects[MARK_SPR_NUM].onscreen = 1;
+	//    objects[MARK_SPR_NUM].priorityptsfound = 0;
+	//    objects[MARK_SPR_NUM].priorityptschecked = 4;
+		objects[MARK_SPR_NUM].scrx = (objects[MARK_SPR_NUM].x>>CSF)-scroll_x;
+		objects[MARK_SPR_NUM].scry = (objects[MARK_SPR_NUM].y>>CSF)-scroll_y;
 
-    // execute the current command in the queue
-    if (fade.dir != FADE_OUT)
-    {
-          switch(shipqueue[ShipQueuePtr].cmd)
-          {
-            case CMD_MOVE:
-              switch(shipqueue[ShipQueuePtr].flag1)
-              {
-                case DUP:
-                  player[0].y-=SHIPSPD;
-                  player[0].playframe = SPR_SHIP_RIGHT;
-                  break;
-                case DDOWN:
-                  player[0].y+=SHIPSPD/2;
-                  player[0].playframe = SPR_SHIP_RIGHT;
-                  break;
-                case DLEFT:
-                  player[0].x-=SHIPSPD;
-                  player[0].playframe = SPR_SHIP_LEFT;
-                  break;
-                case DRIGHT:
-                  player[0].x+=SHIPSPD;
-                  player[0].playframe = SPR_SHIP_RIGHT;
-                  break;
-                case DDOWNRIGHT:
-                  player[0].x+=SHIPSPD*2;
-                  player[0].y+=SHIPSPD*0.8;
-                  player[0].playframe = SPR_SHIP_RIGHT;
-                  break;
-              }
-            break;
-            case CMD_SPAWNSPR:
-              objects[MARK_SPR_NUM].sprite = shipqueue[ShipQueuePtr].flag1;
-              objects[MARK_SPR_NUM].exists = 1;
-            break;
-            case CMD_REMOVESPR:
-              objects[MARK_SPR_NUM].sprite = shipqueue[ShipQueuePtr].flag1;
-              objects[MARK_SPR_NUM].exists = 0;
-            break;
-            case CMD_ENABLESCROLLING:
-              scrollingon = 1;
-            break;
-            case CMD_DISABLESCROLLING:
-              scrollingon = 0;
-            break;
-            case CMD_WAIT:
-            break;
-            case CMD_FADEOUT:
-              if (fade.dir!=FADE_OUT)
-              {
-                fade.dir = FADE_OUT;
-                fade.curamt = PAL_FADE_SHADES;
-                fade.fadetimer = 0;
-                fade.mode = FADE_GO;
-                fade.rate = FADE_NORM;
-              }
-            break;
-            default: break;
-          }
-          // decrease the time remaining
-          if (shipqueue[ShipQueuePtr].time)
-          {
-            shipqueue[ShipQueuePtr].time--;
-          }
-          else
-          {  // no time left on this command, go to next cmd
-            ShipQueuePtr++;
-          }
-    }
+		// execute the current command in the queue
+		if (fade.dir != FADE_OUT)
+		{
+			  switch(shipqueue[ShipQueuePtr].cmd)
+			  {
+				case CMD_MOVE:
+				  switch(shipqueue[ShipQueuePtr].flag1)
+				  {
+					case DUP:
+					  player[0].y-=SHIPSPD;
+					  player[0].playframe = SPR_SHIP_RIGHT;
+					  break;
+					case DDOWN:
+					  player[0].y+=SHIPSPD/2;
+					  player[0].playframe = SPR_SHIP_RIGHT;
+					  break;
+					case DLEFT:
+					  player[0].x-=SHIPSPD;
+					  player[0].playframe = SPR_SHIP_LEFT;
+					  break;
+					case DRIGHT:
+					  player[0].x+=SHIPSPD;
+					  player[0].playframe = SPR_SHIP_RIGHT;
+					  break;
+					case DDOWNRIGHT:
+					  player[0].x+=SHIPSPD*2;
+					  player[0].y+=SHIPSPD*0.8;
+					  player[0].playframe = SPR_SHIP_RIGHT;
+					  break;
+				  }
+				break;
+				case CMD_SPAWNSPR:
+				  objects[MARK_SPR_NUM].sprite = shipqueue[ShipQueuePtr].flag1;
+				  objects[MARK_SPR_NUM].exists = 1;
+				break;
+				case CMD_REMOVESPR:
+				  objects[MARK_SPR_NUM].sprite = shipqueue[ShipQueuePtr].flag1;
+				  objects[MARK_SPR_NUM].exists = 0;
+				break;
+				case CMD_ENABLESCROLLING:
+				  scrollingon = 1;
+				break;
+				case CMD_DISABLESCROLLING:
+				  scrollingon = 0;
+				break;
+				case CMD_WAIT:
+				break;
+				case CMD_FADEOUT:
+				  if (fade.dir!=FADE_OUT)
+				  {
+					fade.dir = FADE_OUT;
+					fade.curamt = PAL_FADE_SHADES;
+					fade.fadetimer = 0;
+					fade.mode = FADE_GO;
+					fade.rate = FADE_NORM;
+				  }
+				break;
+				default: break;
+			  }
+			  // decrease the time remaining
+			  if (shipqueue[ShipQueuePtr].time)
+			  {
+				shipqueue[ShipQueuePtr].time--;
+			  }
+			  else
+			  {  // no time left on this command, go to next cmd
+				ShipQueuePtr++;
+			  }
+		}
 
-    if (fade.dir==FADE_OUT && fade.mode==FADE_COMPLETE)
-    {  // we're done
-      return 0;
-    }
+		if (fade.dir==FADE_OUT && fade.mode==FADE_COMPLETE)
+		{  // we're done
+		  return 0;
+		}
 
-    enter = ( g_pInput->getPressedKey(KENTER) || g_pInput->getPressedKey(KCTRL) || g_pInput->getPressedKey(KALT) );
-    if (enter)
-    {
-      if (fade.dir!=FADE_OUT)
-      {
-        fade.dir = FADE_OUT;
-        fade.curamt = PAL_FADE_SHADES;
-        fade.fadetimer = 0;
-        fade.mode = FADE_GO;
-        fade.rate = FADE_NORM;
-      }
-    }
-    lastenterstate = enter;
+		enter = ( g_pInput->getPressedKey(KENTER) || g_pInput->getPressedKey(KCTRL) || g_pInput->getPressedKey(KALT) );
+		if (enter)
+		{
+		  if (fade.dir!=FADE_OUT)
+		  {
+			fade.dir = FADE_OUT;
+			fade.curamt = PAL_FADE_SHADES;
+			fade.fadetimer = 0;
+			fade.mode = FADE_GO;
+			fade.rate = FADE_NORM;
+		  }
+		}
+		lastenterstate = enter;
 
-    gamedo_fades();
-    gamedo_AnimatedTiles();
+		gamedo_fades();
+		gamedo_AnimatedTiles();
 
+		if (scrollingon) gamedo_ScrollTriggers(0);
+
+		g_pInput->pollEvents();
+	}
     gamedo_frameskipping();
-    if (scrollingon) gamedo_ScrollTriggers(0);
-
-    g_pInput->pollEvents();
-    g_pTimer->SpeedThrottle();
   } while(!g_pInput->getPressedKey(KQUIT));
   return 1;
 }
@@ -332,87 +333,90 @@ int eseq1_BackAtHome(stCloneKeenPlus *pCKP)
   fade.fadetimer = 0;
   do
   {
-	  enter = ( g_pInput->getPressedKey(KENTER) || g_pInput->getPressedKey(KCTRL) || g_pInput->getPressedKey(KALT) );
-
-	  // Show the window (lights on or off)
-	  g_pGraphics->drawBitmap(80, 0, bmnum_window);
-
-	  sb_dialogbox(dlgX, dlgY, dlgW, dlgH);
-
-	  // draw the current text line up to the amount currently shown
-	  tempbuf = text[textline];
-	  if(amountshown < tempbuf.size())
-		  tempbuf.erase(amountshown);
-	  g_pGraphics->sb_font_draw( tempbuf, (dlgX+1)*8, (dlgY+1)*8);
-
-	  if (state==STATE_TEXTAPPEARING)
+	  if(g_pTimer->TimeToRunLogic())
 	  {
-		  if (enter) goto fullshow;
-		  if (showtimer > LETTER_SHOW_SPD)
-		  {  // it's time to show a new letter
-			  amountshown++;
-			  if (amountshown > text[textline].size())
-			  {  // reached end of line
-				  state = STATE_WAITASEC;
-				  waittimer = -BACKHOME_SHORT_WAIT_TIME*2;
-			  }
-			  // if the last letter shown is a dash/cr ('Billy...are you a-'),
-			  // show the rest of the text immediately
-			  // (for when the mom shouts "WHAT IS THIS ONE-EYED GREEN THING..."
-			  if (text[textline][amountshown]==13 && \
-					  text[textline][amountshown-1]=='-')
-			  {
-				  fullshow: ;
-				  amountshown = text[textline].size();
-				  state = STATE_WAITASEC;
-				  waittimer = -BACKHOME_SHORT_WAIT_TIME*3;
-			  }
-			  showtimer = 0;
-		  } else showtimer++;
+		  enter = ( g_pInput->getPressedKey(KENTER) || g_pInput->getPressedKey(KCTRL) || g_pInput->getPressedKey(KALT) );
 
-		  // user pressed enter
-		  if (enter)
-		  {  // show all text immediately
+		  // Show the window (lights on or off)
+		  g_pGraphics->drawBitmap(80, 0, bmnum_window);
 
-		  }
-	  }
-	  else if (state==STATE_WAITASEC)
-	  {
-		  if (enter) goto nextline;
-		  if (waittimer<BACKHOME_SHORT_WAIT_TIME)
+		  sb_dialogbox(dlgX, dlgY, dlgW, dlgH);
+
+		  // draw the current text line up to the amount currently shown
+		  tempbuf = text[textline];
+		  if(amountshown < tempbuf.size())
+			  tempbuf.erase(amountshown);
+		  g_pGraphics->sb_font_draw( tempbuf, (dlgX+1)*8, (dlgY+1)*8);
+
+		  if (state==STATE_TEXTAPPEARING)
 		  {
-			  waittimer++;
-			  if (waittimer==BACKHOME_SHORT_WAIT_TIME)
+			  if (enter) goto fullshow;
+			  if (showtimer > LETTER_SHOW_SPD)
+			  {  // it's time to show a new letter
+				  amountshown++;
+				  if (amountshown > text[textline].size())
+				  {  // reached end of line
+					  state = STATE_WAITASEC;
+					  waittimer = -BACKHOME_SHORT_WAIT_TIME*2;
+				  }
+				  // if the last letter shown is a dash/cr ('Billy...are you a-'),
+				  // show the rest of the text immediately
+				  // (for when the mom shouts "WHAT IS THIS ONE-EYED GREEN THING..."
+				  if (text[textline][amountshown]==13 && \
+						  text[textline][amountshown-1]=='-')
+				  {
+					  fullshow: ;
+					  amountshown = text[textline].size();
+					  state = STATE_WAITASEC;
+					  waittimer = -BACKHOME_SHORT_WAIT_TIME*3;
+				  }
+				  showtimer = 0;
+			  } else showtimer++;
+
+			  // user pressed enter
+			  if (enter)
+			  {  // show all text immediately
+
+			  }
+		  }
+		  else if (state==STATE_WAITASEC)
+		  {
+			  if (enter) goto nextline;
+			  if (waittimer<BACKHOME_SHORT_WAIT_TIME)
 			  {
-				  nextline: ;
+				  waittimer++;
+				  if (waittimer==BACKHOME_SHORT_WAIT_TIME)
+				  {
+					  nextline: ;
 
-				  if( (textline > 0 && textline < 5)  || textline == 6)
-					  bmnum_window = g_pGraphics->getBitmapNumberFromName("WINDON");	// lights on
-				  else
-					  bmnum_window = g_pGraphics->getBitmapNumberFromName("WINDOFF");	// lights off
+					  if( (textline > 0 && textline < 5)  || textline == 6)
+						  bmnum_window = g_pGraphics->getBitmapNumberFromName("WINDON");	// lights on
+					  else
+						  bmnum_window = g_pGraphics->getBitmapNumberFromName("WINDOFF");	// lights off
 
-				  textline++;
-				  state = STATE_TEXTAPPEARING;
-				  amountshown = 0;
-				  if (textline>7)
-				  {  // end of text
-					  break;
+					  textline++;
+					  state = STATE_TEXTAPPEARING;
+					  amountshown = 0;
+					  if (textline>7)
+					  {  // end of text
+						  break;
+					  }
 				  }
 			  }
 		  }
+
+		  if (fade.dir==FADE_OUT && fade.mode==FADE_COMPLETE)
+			  return 0;
+
+		  gamedo_fades();
+
+		  lastenterstate = enter;
+
+		  g_pInput->pollEvents();
+		  if (g_pInput->getPressedKey(KQUIT)) return 1;
 	  }
-
-	  if (fade.dir==FADE_OUT && fade.mode==FADE_COMPLETE)
-		  return 0;
-
-	  gamedo_fades();
 	  gamedo_frameskipping_blitonly();
 
-	  lastenterstate = enter;
-
-	  g_pInput->pollEvents();
-	  g_pTimer->SpeedThrottle();
-	  if (g_pInput->getPressedKey(KQUIT)) return 1;
   } while(1);
 
   finale_draw("finale.ck1", pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory);

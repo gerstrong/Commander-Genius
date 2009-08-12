@@ -79,7 +79,6 @@ char eseq3_AwardBigV(stCloneKeenPlus *pCKP)
   {
     gamedo_fades();
     g_pInput->pollEvents();
-    g_pTimer->SpeedThrottle();
   } while(fade.mode==FADE_GO);
 
   fade.mode = FADE_GO;
@@ -111,7 +110,6 @@ char eseq3_AwardBigV(stCloneKeenPlus *pCKP)
        fade.fadetimer = 0;
     }
     g_pInput->pollEvents();
-    g_pTimer->SpeedThrottle();
     if (g_pInput->getPressedKey(KQUIT) && fade.mode==FADE_COMPLETE) break;
   } while(fade.mode!=FADE_COMPLETE || fade.dir!=FADE_OUT);
 

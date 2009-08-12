@@ -5,97 +5,81 @@
  *      Author: gerstrong
  */
 
+//#include "../MathLib.h" // For what is that?
 
+/* The timer (speed throttler) driver for SDL.
+   This code is a slightly modified version
+   of the code used in FCEU.
+*/
+
+#include <SDL.h>
 #include "../keen.h"
-//#include "../externals.h"
-#include "../MathLib.h"
-
 #include "CTimer.h"
 #include "CVideoDriver.h"
+#include "../CLogFile.h"
 
-Uint32 FPSCallback(Uint32 interval, void* param);
-
-static uint64 tfreq;
-static uint64 desiredfps;
-
-SDL_TimerID ckp_timer_id;
-
-Uint32 FPSCallback(Uint32 interval, void* param)
+CTimer::CTimer()
 {
-  fps = (curfps << 1);
-  curfps = 0;
-
-  unsigned char targetfps;
-  targetfps = g_pVideoDriver->getTargetFPS();
-
-  if(targetfps > 0 && fps > 0)
-  {
-	  if(fps > targetfps + 10)
-	  {
-		  uint8 fsk;
-		  fsk = g_pVideoDriver->getFrameskip();
-
-		  if(fsk < 20)
-			  fsk++;
-
-		  g_pVideoDriver->setFrameskip(fsk);
-	  }
-	  else if( fps < targetfps - 10)
-	  {
-		  uint8 fsk;
-		  fsk = g_pVideoDriver->getFrameskip();
-
-		  if(fsk > 0)
-			  fsk--;
-
-		  g_pVideoDriver->setFrameskip(fsk);
-	  }
-  }
-
-  return interval;
+	RenderRate = (1000 / 60);			// 60fps
+	LogicRate = (1000 / 333);			// 333fps
+	g_pLogFile->textOut(GREEN, true, "Starting timer driver...\n");
+	InitTimers();
 }
 
-CTimer::CTimer() {
-	  RefreshThrottleFPS();
-	  if(SDL_Init(SDL_INIT_TIMER) == 0)
-		  ckp_timer_id = SDL_AddTimer(1000, FPSCallback, NULL);
-
-	  ltime = 0;
-	  m_frameskip = 0;
-}
-
-CTimer::~CTimer() {
-	SDL_RemoveTimer(ckp_timer_id);
-}
-
-void CTimer::SpeedThrottle(void)
+CTimer::~CTimer()
 {
-	//regulateFrameskip();
-
-	 waiter:
-
-	 ttime=SDL_GetTicks();
-	 //ttime*=10000;
-	 ttime<<=14;
-
-	 if( (ttime-ltime) < (tfreq/desiredfps) )
-	 {
-		 delay=(tfreq/desiredfps)-(ttime-ltime);
-		 Uint32 d = delay >> 14;
-		 if(d>0) SDL_Delay(d);
-		 goto waiter;
-	 }
-	 if( (ttime-ltime) >= ((tfreq<<2)/desiredfps) )
-	  ltime=ttime;
-	 else
-	  ltime+=tfreq/desiredfps;
 }
-void CTimer::RefreshThrottleFPS(void)
+
+void CTimer::InitTimers(void)
 {
-//       desiredfps=FCEUI_GetDesiredFPS()>>8;
-//        desiredfps = 23000000;
-       //desiredfps = 21800000;
-	   desiredfps = 13600000;
-       tfreq=10000000;
-       tfreq<<=16;    /* Adjustment for fps returned from FCEUI_GetDesiredFPS(). */
+	LastRenderTime = LastLogicTime = LastSecTime = SDL_GetTicks();
+}
+
+bool CTimer::TimeToRunLogic(void)
+{
+	ulong CurTime = SDL_GetTicks();
+	if ((CurTime - LastLogicTime) >= LogicRate)
+	{
+		LastLogicTime += LogicRate;
+		return true;
+	}
+	else return false;
+}
+
+bool CTimer::TimeToRender(void)
+{
+ulong CurTime = SDL_GetTicks();
+	if ((CurTime - LastRenderTime) >= RenderRate)
+	{
+		///LastRenderTime += RenderRate;
+		LastRenderTime = CurTime;
+		// do not render if we are behind on the logic
+		if ((CurTime - LastLogicTime) > LogicRate)
+			return false;
+
+		if (m_Frameskip > 0)
+			RenderRate = (1000 / m_Frameskip);
+		return true;
+	}
+	else return 0;
+}
+
+//////////////////////////////////////////////////////////
+// Those are for measuring the time in the game itself. //
+//////////////////////////////////////////////////////////
+void CTimer::ResetSecondsTimer(void)
+{
+	LastSecTime = SDL_GetTicks();
+}
+
+// will return nonzero once per second
+bool CTimer::HasSecElapsed(void)
+{
+ulong CurTime = SDL_GetTicks();
+	if (CurTime - LastSecTime >= 1000)
+	{
+		LastSecTime = CurTime;
+		return true;
+	}
+	return false;
 }

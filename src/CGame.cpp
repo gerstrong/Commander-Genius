@@ -191,9 +191,8 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 	    	  {   // user canceled out of demo (or intro if at end of demos)
 	    		  // if user selected "demo" have it selected when he comes back
 	    		  if (opt==MAINMNU_DEMO)
-	    		  {
 	    			  defaultopt = MAINMNU_DEMO;
-	    		  }
+
 	    	  }
 	    	  current_demo++;
 	      break;

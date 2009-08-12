@@ -277,13 +277,15 @@ void gamepdo_ProcessInput(unsigned int cp, stCloneKeenPlus *pCKP)
 
 	   do
 	   {
-		   g_pInput->pollEvents();
-		   g_pTimer->SpeedThrottle();
-		   gamedo_fades();
+		   if(g_pTimer->TimeToRunLogic())
+		   {
+			   g_pInput->pollEvents();
+			   gamedo_fades();
 
-		   gamedo_render_drawobjects();
-		   gamedo_AnimatedTiles();
-		   PauseDialog->renderDialog();
+			   gamedo_render_drawobjects();
+			   gamedo_AnimatedTiles();
+			   PauseDialog->renderDialog();
+		   }
 		   gamedo_frameskipping_blitonly();
 		} while(!g_pInput->getPressedAnyKey());
 

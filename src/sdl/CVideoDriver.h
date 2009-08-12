@@ -65,7 +65,6 @@ public:
 	void AddConsoleMsg(const char *the_msg);
 
 	short getZoomValue(void);
-	unsigned short getFrameskip(void);
 	bool getShowFPS(void);
 	short getFiltermode(void);
 	bool getFullscreen(void);
@@ -82,7 +81,6 @@ public:
 	SDL_Surface *getBGLayerSurface(void);
 
 	void setMode(int width, int height,int depth);
-	void setFrameskip(unsigned short value);
 	void setFilter(short value);
 	void setZoom(short vale);
 	bool initOpenGL();
@@ -93,8 +91,6 @@ public:
 	void enableOpenGL(bool value) { m_opengl = false; }
 	void setOGLFilter(unsigned char value) { m_opengl_filter = 0; }
 #endif
-	void setTargetFPS(unsigned int targetfps){ if( targetfps >= 0 && targetfps <= 70 ) m_targetfps = targetfps; }
-	unsigned char getTargetFPS(void){ return m_targetfps; }
 	st_resolution setNextResolution();
 
 	void showFPS(bool value);

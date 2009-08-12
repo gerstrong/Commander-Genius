@@ -247,41 +247,44 @@ void CDialog::renderOpenDialogAnimation(int x,int y, int w, int h)
 
 	do
 	{
-		if(timer == 10)
+		if(g_pTimer->TimeToRunLogic())
 		{
-			if(mx > x)
-				mx--;
-			if(my > y)
-				my--;
-			if(mh < h)
+			if(timer == 10)
 			{
-				if(mh+1 == h)
-					mh++;
-				else
-					mh+=2;
-			}
-			if(mw < w)
-			{
-				if(mw+1 == w)
-					mw++;
-				else
-					mw+=2;
+				if(mx > x)
+					mx--;
+				if(my > y)
+					my--;
+				if(mh < h)
+				{
+					if(mh+1 == h)
+						mh++;
+					else
+						mh+=2;
+				}
+				if(mw < w)
+				{
+					if(mw+1 == w)
+						mw++;
+					else
+						mw+=2;
+				}
+
+				timer = 0;
 			}
 
-			timer = 0;
+
+			if(mx <= x && my <= y && mh >= h && mw >= w)
+				break;
+
+			drawDialogbox(mx,my,mw,mh);
+
+			gamedo_AnimatedTiles();
+
+			timer++;
 		}
+		gamedo_frameskipping();
 
-
-		if(mx <= x && my <= y && mh >= h && mw >= w)
-			break;
-
-		drawDialogbox(mx,my,mw,mh);
-
-	    gamedo_AnimatedTiles();
-	    gamedo_frameskipping();
-	    g_pTimer->SpeedThrottle();
-
-	    timer++;
 	}while(1);
 
 	isanimated = false;

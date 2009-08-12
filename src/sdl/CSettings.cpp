@@ -9,6 +9,7 @@
 #include "../CLogFile.h"
 #include "CSettings.h"
 #include "CVideoDriver.h"
+#include "CTimer.h"
 #include "sound/CSound.h"
 #include "../FindFile.h"
 #include "../ConfigHandler.h"
@@ -39,7 +40,6 @@ short CSettings::saveDrvCfg(void)
 	}
 	
 	Parser.saveIntValue("bpp","Video",g_pVideoDriver->getDepth());
-	Parser.saveIntValue("frameskip","Video",g_pVideoDriver->getFrameskip());
 
 	if(g_pVideoDriver->getFullscreen())
 		Parser.saveIntValue("fullscreen","Video",1);
@@ -56,7 +56,7 @@ short CSettings::saveDrvCfg(void)
 	Parser.saveIntValue("scale","Video",g_pVideoDriver->getZoomValue());
 	Parser.saveIntValue("OGLfilter","Video",g_pVideoDriver->getOGLFilter());
 	Parser.saveIntValue("filter","Video",g_pVideoDriver->getFiltermode());
-	Parser.saveIntValue("autoframeskip","Video",g_pVideoDriver->getTargetFPS());
+	Parser.saveIntValue("autoframeskip","Video",g_pTimer->getFrameskip());
 	Parser.saveIntValue("aspect","Video",g_pVideoDriver->getAspectCorrection() ? 1 : 0);
 
 	Parser.saveIntValue("channels","Audio",(g_pSound->getAudioSpec()).channels);
@@ -90,13 +90,12 @@ short CSettings::loadDrvCfg()
 			g_pLogFile->ftextOut(RED,"Error reading the configuration file. It appears to be damaged!");
 
 		g_pVideoDriver->setMode(width,height,depth);
-		g_pVideoDriver->setFrameskip(Parser.getIntValue("frameskip","Video"));
 
 		g_pVideoDriver->isFullscreen(((Parser.getIntValue("fullscreen","Video")) == 1));
 
 		g_pVideoDriver->setOGLFilter(Parser.getIntValue("OGLfilter","Video"));
 		g_pVideoDriver->setZoom(Parser.getIntValue("scale","Video"));
-		g_pVideoDriver->setTargetFPS(Parser.getIntValue("autoframeskip","Video"));
+		g_pTimer->setFrameskip(Parser.getIntValue("autoframeskip","Video"));
 
 		g_pVideoDriver->setFilter(Parser.getIntValue("filter","Video"));
 

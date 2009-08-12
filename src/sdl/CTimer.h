@@ -1,8 +1,8 @@
 /*
  * CTimer.h
  *
- *  Created on: 26.03.2009
- *      Author: gerstrong
+ *  Created on: 12.08.2009
+ *      Author: Caitlin Shaw
  */
 
 
@@ -12,24 +12,7 @@
 #include "../CSingleton.h"
 #define g_pTimer	CTimer::Get()
 
-#include <SDL.h>
-
-void initTimer(void);
-
-typedef char int8;
-typedef short int16;
-typedef long  int32;
-
-typedef unsigned char uint8;
-typedef unsigned short uint16;
-typedef unsigned long  uint32;
-
-#ifdef __GNUC__
- typedef unsigned long long uint64;
- typedef long long int64;
- #define INLINE inline
- #define GINLINE inline
-#endif
+typedef unsigned long  ulong;
 
 class CTimer : public CSingleton<CTimer>
 {
@@ -37,23 +20,22 @@ public:
 	CTimer();
 	virtual ~CTimer();
 
-	void SpeedThrottle(void);
-	void RefreshThrottleFPS(void);
+	void InitTimers();
+	bool TimeToRunLogic();
+	bool TimeToRender();
 
-	uint8 getFrameskip(void){ return m_frameskip; }
-	void setFrameskip(uint8 frameskip){ m_frameskip = frameskip; }
+	void ResetSecondsTimer();
+	bool HasSecElapsed();
 
-	uint64 getTime(void) { return ltime; }
+	int getFrameskip() { return m_Frameskip; }
+	void setFrameskip(int value) { m_Frameskip=value; }
 
 private:
 
-	uint64 ttime;
-	uint64 ltime;
-	int64 delay;
-
-	uint64 m_timepoint;
-	uint64 m_elaptime;
-	uint8  m_frameskip;
+	ulong LastRenderTime, LastLogicTime, LastSecTime;
+	ulong RenderRate;			// 60fps
+	ulong LogicRate;			// 333fps
+	int m_Frameskip;				// This one must first be read
 };
 
 #endif /* CTIMER_H_ */

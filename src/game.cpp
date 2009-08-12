@@ -76,7 +76,6 @@ void gameloop(stCloneKeenPlus *pCKP)
         gamedo_fades();
         gamedo_AnimatedTiles();
         g_pInput->pollEvents();
-        g_pTimer->SpeedThrottle();
         gamedo_RenderScreen();
      } while(fade.mode!=FADE_COMPLETE /*&& !immediate_keytable[KQUIT]*/);
 
@@ -90,132 +89,125 @@ void gameloop(stCloneKeenPlus *pCKP)
   // Let's create the player objects
   do
   {
-     if (primaryplayer==1) otherplayer = 0; else otherplayer = 1;
+	  if(g_pTimer->TimeToRunLogic())
+	  {
+		 if (primaryplayer==1) otherplayer = 0; else otherplayer = 1;
 
-     gamedo_fades();
+		 gamedo_fades();
 
-     // periodically make all enemy gun fixtures fire (in ep3)
-     // (also ice cannons in ep1) we do this in a global variable
-     // so they're all in sync. when gunfiretimer==0 all gun SE
-     // objects will fire.
-     if (gunfiretimer > gunfirefreq)
-     {
-       gunfiretimer = 0;
-     }
-     else gunfiretimer++;
+		 // periodically make all enemy gun fixtures fire (in ep3)
+		 // (also ice cannons in ep1) we do this in a global variable
+		 // so they're all in sync. when gunfiretimer==0 all gun SE
+		 // objects will fire.
+		 if (gunfiretimer > gunfirefreq)
+		 {
+		   gunfiretimer = 0;
+		 }
+		 else gunfiretimer++;
 
-     // gather input and copy to player[].keytable[] structures
-     gamedo_getInput( &(pCKP->Control.levelcontrol) );
+		 // gather input and copy to player[].keytable[] structures
+		 gamedo_getInput( &(pCKP->Control.levelcontrol) );
 
-     // run the player behaviour for each player in the game
-   	 if (!map.isworldmap)
-     {
-   		for(i=0;i<MAX_PLAYERS;i++)
-   		{
-    		if (player[i].isPlaying) gamepdo_HandlePlayer(i, pCKP);
-    	}
-     }
-     else
-     {
-    	for(i=0;i<MAX_PLAYERS;i++)
-    	{
-    	 if (player[i].isPlaying) gamepdo_wm_HandlePlayer(i, pCKP);
-    	}
-   	 }
+		 // run the player behaviour for each player in the game
+		 if (!map.isworldmap)
+		 {
+			for(i=0;i<MAX_PLAYERS;i++)
+			{
+				if (player[i].isPlaying) gamepdo_HandlePlayer(i, pCKP);
+			}
+		 }
+		 else
+		 {
+			for(i=0;i<MAX_PLAYERS;i++)
+			{
+			 if (player[i].isPlaying) gamepdo_wm_HandlePlayer(i, pCKP);
+			}
+		 }
 
-     gamedo_AnimatedTiles(!pCKP->Control.levelcontrol.usedhintmb);
-     gamedo_enemyai( &(pCKP->Control.levelcontrol) );
+		 gamedo_AnimatedTiles(!pCKP->Control.levelcontrol.usedhintmb);
+		 gamedo_enemyai( &(pCKP->Control.levelcontrol) );
 
-     gamedo_HandleFKeys(pCKP);
+		 gamedo_HandleFKeys(pCKP);
 
-     /* scroll triggers */
-     if (!pCKP->Control.levelcontrol.gameovermode && pCKP->Control.levelcontrol.level_done==LEVEL_NOT_DONE)
-     {
-        ScreenIsScrolling = 0;
-        if (gamedo_ScrollTriggers(primaryplayer)) ScreenIsScrolling = 1;
-     }
+		 /* scroll triggers */
+		 if (!pCKP->Control.levelcontrol.gameovermode && pCKP->Control.levelcontrol.level_done==LEVEL_NOT_DONE)
+		 {
+			ScreenIsScrolling = 0;
+			if (gamedo_ScrollTriggers(primaryplayer)) ScreenIsScrolling = 1;
+		 }
 
-     // do frameskipping, and render/blit the screen if it's time
-     gamedo_frameskipping( pCKP->Control.levelcontrol.gameovermode );
+		 // when we complete a fade out flag to exit the game loop
+		 if (fade.mode==FADE_COMPLETE)
+		 {
+			 if (fade.dir==FADE_OUT)
+			 {
+				pCKP->Control.levelcontrol.demomode = DEMO_NODEMO;
+				pCKP->Control.levelcontrol.level_done = LEVEL_COMPLETE;
+				pCKP->Control.levelcontrol.command = LVLC_CHANGE_LEVEL;
+				if (pCKP->Control.levelcontrol.curlevel != WM_MAP_NUM)
+				{ // exiting a level, going back to world map
+					for(i=0;i<numplayers;i++)
+					{
+						player[i].inventory.HasCardYellow = 0;
+						player[i].inventory.HasCardBlue = 0;
+						player[i].inventory.HasCardGreen = 0;
+						player[i].inventory.HasCardRed = 0;
+					}
 
-     // when we complete a fade out flag to exit the game loop
-     if (fade.mode==FADE_COMPLETE)
-     {
-         if (fade.dir==FADE_OUT)
-         {
-        	pCKP->Control.levelcontrol.demomode = DEMO_NODEMO;
-            pCKP->Control.levelcontrol.level_done = LEVEL_COMPLETE;
-            pCKP->Control.levelcontrol.command = LVLC_CHANGE_LEVEL;
-            if (pCKP->Control.levelcontrol.curlevel != WM_MAP_NUM)
-            { // exiting a level, going back to world map
-                for(i=0;i<numplayers;i++)
-                {
-               		player[i].inventory.HasCardYellow = 0;
-               		player[i].inventory.HasCardBlue = 0;
-               		player[i].inventory.HasCardGreen = 0;
-               		player[i].inventory.HasCardRed = 0;
-                }
+				  if (pCKP->Control.levelcontrol.success==1)
+				  { // mark level as completed on world map
+					pCKP->Control.levelcontrol.levels_completed[pCKP->Control.levelcontrol.curlevel] = 1;
+				  }
+				  pCKP->Control.levelcontrol.chglevelto = WM_MAP_NUM;
+				}
+			 }
+			 else
+			 {
+			   fade.mode = NO_FADE;
+			 }
+		 }
 
-              if (pCKP->Control.levelcontrol.success==1)
-              { // mark level as completed on world map
-                pCKP->Control.levelcontrol.levels_completed[pCKP->Control.levelcontrol.curlevel] = 1;
-              }
-              pCKP->Control.levelcontrol.chglevelto = WM_MAP_NUM;
-            }
-         }
-         else
-         {
-           fade.mode = NO_FADE;
-         }
-     }
+		 // when walking through the exit door don't show keen's sprite past
+		 // the door frame (so it looks like he walks "through" the door)
+		 if (pCKP->Control.levelcontrol.level_done==LEVEL_DONE_WALK)
+		 {
+			gamepdo_walkbehindexitdoor(pCKP->Control.levelcontrol.level_finished_by, pCKP);
+		 }
 
-     // when walking through the exit door don't show keen's sprite past
-     // the door frame (so it looks like he walks "through" the door)
-     if (pCKP->Control.levelcontrol.level_done==LEVEL_DONE_WALK)
-     {
-        gamepdo_walkbehindexitdoor(pCKP->Control.levelcontrol.level_finished_by, pCKP);
-     }
+		 // allow enter to return to main menu
+		 // if we're in game over mode
 
-     // allow enter to return to main menu
-     // if we're in game over mode
+		 enter = (g_pInput->getPressedCommand(IC_STATUS));
+		 if (pCKP->Control.levelcontrol.gameovermode)
+		 {
+		   if (enter)
+			   start_gameover( pCKP );
 
-     enter = (g_pInput->getPressedCommand(IC_STATUS));
-     if (pCKP->Control.levelcontrol.gameovermode)
-     {
-       if (enter)
-    	   start_gameover( pCKP );
+		   if (fade.mode==FADE_COMPLETE && fade.dir==FADE_OUT)
+		   {
+			 pCKP->Control.levelcontrol.command = LVLC_GAME_OVER;
+		   }
+		 }
 
-       if (fade.mode==FADE_COMPLETE && fade.dir==FADE_OUT)
-       {
-         pCKP->Control.levelcontrol.command = LVLC_GAME_OVER;
-       }
-     }
+		 if (g_pInput->getPressedKey(KQUIT))
+		 {
+		   VerifyQuit();
+		 }
+		 if (QuitState != NO_QUIT) return;
 
-     #ifdef NETWORK_PLAY
-//       if (numplayers>1) net_senddata();
-     #endif
+		 // limit frame rate
+		 if (!acceleratemode)
+			 g_pInput->pollEvents();
 
-     if (g_pInput->getPressedKey(KQUIT))
-     {
-       VerifyQuit();
-     }
-     if (QuitState != NO_QUIT) return;
+		 if(g_pInput->getExitEvent())
+		 {
+			 g_pInput->sendKey(KQUIT);
+			 g_pInput->cancelExitEvent();
+		 }
+	}
 
-     // limit frame rate
-     if (!acceleratemode)
-     {
-    	 g_pInput->pollEvents();
-    	 g_pTimer->SpeedThrottle();
-        #ifdef NETWORK_PLAY
-//          if (numplayers>1) net_sync();
-        #endif
-     }
-
-     if(g_pInput->getExitEvent())
-     {
-    	 g_pInput->sendKey(KQUIT);
-    	 g_pInput->cancelExitEvent();
-     }
+	// do frameskipping, and render/blit the screen if it's time
+	gamedo_frameskipping( pCKP->Control.levelcontrol.gameovermode );
 
   } while(!crashflag && pCKP->Control.levelcontrol.command==LVLC_NOCOMMAND);
 

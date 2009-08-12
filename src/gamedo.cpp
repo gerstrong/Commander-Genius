@@ -855,22 +855,15 @@ void gamedo_fades(void)
 
 void gamedo_frameskipping( bool gameovermode )
 {
-     if (frameskiptimer >= g_pVideoDriver->getFrameskip())
-     {
+     if (g_pTimer->TimeToRender())
     	 gamedo_RenderScreen(gameovermode);
-
-    	 frameskiptimer = 0;
-     } else frameskiptimer++;
 }
 
 // same as above but only does a sb_blit, not the full RenderScreen.
 // used for intros etc.
 void gamedo_frameskipping_blitonly()
 {
-    if (frameskiptimer >= g_pVideoDriver->getFrameskip())
-    {
+    if (g_pTimer->TimeToRender())
     	g_pVideoDriver->sb_blit();
-    	frameskiptimer = 0;
-    } else frameskiptimer++;
 }
 

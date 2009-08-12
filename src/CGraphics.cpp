@@ -317,16 +317,12 @@ unsigned char xa,ya;
 
 void CGraphics::drawCharacter(float x, float y, int f)
 {
-	assert(f >= 0 && f < 256);
-unsigned char xa,ya;
+  assert(f >= 0 && f < 256);
+  unsigned char xa,ya;
 
   for(ya=0;ya<8;ya++)
-  {
     for(xa=0;xa<8;xa++)
-    {
     	g_pVideoDriver->setpixel((unsigned int)((x*320)+xa), (unsigned int)((y*200)+ya), (unsigned char)font[f][ya][xa]);
-    }
-  }
 }
 
 

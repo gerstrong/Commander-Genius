@@ -323,10 +323,6 @@ bool CVideoDriver::applyMode(void)
 
 	return true;
 }
-void CVideoDriver::setFrameskip(unsigned short value)
-{
-	FrameSkip = value;
-}
 void CVideoDriver::setFilter(short value)
 {
 	Filtermode = value;
@@ -833,14 +829,6 @@ void CVideoDriver::isFullscreen(bool value)
 	return;
 }
 
-unsigned short CVideoDriver::getFrameskip(void)
-{
-	return FrameSkip;
-}
-bool CVideoDriver::getShowFPS(void)
-{
-	return showfps;
-}
 short CVideoDriver::getFiltermode(void)
 {
 	if(Filtermode < 0)

@@ -6,15 +6,16 @@
  */
 
 #include "CWindow.h"
-
 #include "../CGraphics.h"
 
-CWindow::CWindow(float x, float y, float w, float h)
+CWindow::CWindow(float x, float y, float w, float h, char window_type)
 {
 	m_x = x;
 	m_y = y;
 	m_w = w;
 	m_h = h;
+
+	m_window_type = window_type;
 
 	m_8x8tileheight = 8.0/200.0;
 	m_8x8tilewidth = 8.0/320.0;
@@ -91,7 +92,10 @@ void CWindow::render()
 
 void CWindow::drawWindow()
 {
-	// Use we use floating values, the drawing routine is very important to get a well sized window.
+	// If we use floating values, the drawing routine is very important to get a well sized window.
+
+	// However it should be blit to a memory map and then rendered every time. If not, no new effects can
+	// be improved.
 
 	// first draw the blank rect
 	float i, j;
@@ -105,15 +109,15 @@ void CWindow::drawWindow()
 	// then the borders
 	for( i = m_8x8tilewidth ; i < m_w-m_8x8tilewidth ; i+= m_8x8tilewidth )
 	{
-		g_pGraphics->drawCharacter( m_x + i, m_y, 2); 		// 2 is one upper-border
-		g_pGraphics->drawCharacter( m_x + i, m_y + m_h - m_8x8tileheight, 7); // 2 is also the lower-border
+		g_pGraphics->drawCharacter( m_x + i, m_y, 2); 							// 2 is one upper-border
+		g_pGraphics->drawCharacter( m_x + i, m_y + m_h - m_8x8tileheight, 7); 	// 7 is also the lower-border
 	}
 	g_pGraphics->drawCharacter( m_x + m_w - m_8x8tilewidth, m_y, 2);	// for the last tile
 	g_pGraphics->drawCharacter( m_x + m_w - m_8x8tilewidth, m_y + m_h - m_8x8tileheight, 2); // for the last tile
 	for( j = m_8x8tileheight ; j < m_h-m_8x8tileheight ; j+= (m_8x8tileheight*(7.0/8.0)) )
 	{
 		g_pGraphics->drawCharacter( m_x, m_y + j, 4); 		// 4 is one left-border
-		g_pGraphics->drawCharacter( m_x + m_w - m_8x8tilewidth, m_y + j, 5); // 4 is also the right-border
+		g_pGraphics->drawCharacter( m_x + m_w - m_8x8tilewidth, m_y + j, 5); // 5 is the right-border
 	}
 
 	// At last the corners
@@ -121,4 +125,25 @@ void CWindow::drawWindow()
 	g_pGraphics->drawCharacter( m_x + m_w - m_8x8tilewidth, m_y, 3); // Upper-Right corner
 	g_pGraphics->drawCharacter( m_x, m_y + m_h - m_8x8tileheight, 6); // Lower-Left corner
 	g_pGraphics->drawCharacter( m_x + m_w - m_8x8tilewidth, m_y + m_h - m_8x8tileheight, 8); // Lower-Right corner
+
+	if(m_window_type == WND_PAGESCROLLER)
+	{
+		// It has Scroll Controls, so the user knows, that he can scroll down, up and quit
+		// fill the area with grey tiles
+		for( i=m_8x8tilewidth ; i<m_w-m_8x8tilewidth ; i+=m_8x8tilewidth )
+			for( j=0 ; j<2*m_8x8tileheight ; j+=m_8x8tileheight )
+				g_pGraphics->drawCharacter( m_x+i, m_y+m_h+j, 160);	// just grey small tile
+
+		g_pGraphics->drawCharacter( m_x, m_y + m_h, 4); 						// 4 is one left-border
+		g_pGraphics->drawCharacter( m_x + m_w - m_8x8tilewidth, m_y + m_h, 5); 	// 5 is the right-border
+		for( i = m_8x8tilewidth ; i < m_w-m_8x8tilewidth ; i+= m_8x8tilewidth )
+			g_pGraphics->drawCharacter( m_x + i, m_y + m_h + m_8x8tileheight, 7); 					// 7 is also the lower-border
+		g_pGraphics->drawCharacter( m_x, m_y + m_h + m_8x8tileheight, 6); 						// Lower-Left corner
+		g_pGraphics->drawCharacter( m_x + m_w - m_8x8tilewidth, m_y + m_h + m_8x8tileheight, 8); 	// Lower-Right corner
+
+		// Now print the helping text
+		g_pGraphics->drawFont("ESC to Exit / \17 \21 to Read",
+							m_x+m_8x8tilewidth+(m_w/2)-12*m_8x8tilewidth
+								, m_y+m_h, true);
+	}
 }
