@@ -60,7 +60,6 @@ void CIntro::Render(stCloneKeenPlus *pCKP)
 			// do fades
 			gamedo_fades();
 			g_pGraphics->drawBitmap2FG(mid[1], scrolly+9, bmnum[1]);
-			gamedo_AnimatedTiles();
 
 			if(fade.mode != FADE_COMPLETE)
 				continue;
@@ -70,17 +69,17 @@ void CIntro::Render(stCloneKeenPlus *pCKP)
 			{
 				timer=0;
 				if(scrolly>35)	scrolly--;
-				else
-				{
-					g_pGraphics->drawBitmap2FG(mid[0], scrolly, bmnum[0]);
-					g_pGraphics->drawBitmap2FG(mid[1], scrolly+9, bmnum[1]);
-					g_pGraphics->drawBitmap2FG(mid[2], scrolly+43, bmnum[2]);
-					g_pGraphics->drawBitmap2FG(mid[3], scrolly+56, bmnum[3]);
-					g_pGraphics->drawBitmap2FG(mid[4], scrolly+77, bmnum[4]);
-					g_pGraphics->drawBitmap2FG(mid[5], scrolly+87, bmnum[5]);
-					g_pGraphics->drawBitmap2FG(mid[6], scrolly+120, bmnum[6]);
-				}
 			}
+
+			g_pGraphics->drawBitmap2FG(mid[0], scrolly, bmnum[0]);
+			g_pGraphics->drawBitmap2FG(mid[1], scrolly+9, bmnum[1]);
+			g_pGraphics->drawBitmap2FG(mid[2], scrolly+43, bmnum[2]);
+			g_pGraphics->drawBitmap2FG(mid[3], scrolly+56, bmnum[3]);
+			g_pGraphics->drawBitmap2FG(mid[4], scrolly+77, bmnum[4]);
+			g_pGraphics->drawBitmap2FG(mid[5], scrolly+87, bmnum[5]);
+			g_pGraphics->drawBitmap2FG(mid[6], scrolly+120, bmnum[6]);
+
+			gamedo_AnimatedTiles();
 
 			if( g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand() )
 			{

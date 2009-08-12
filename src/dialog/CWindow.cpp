@@ -8,7 +8,7 @@
 #include "CWindow.h"
 #include "../CGraphics.h"
 
-CWindow::CWindow(float x, float y, float w, float h, char window_type)
+CWindow::CWindow(int x, int y, int w, int h, char window_type)
 {
 	// TODO: Change that back to uint input as all the entire class. With Float it is a nightmare here!
 	m_x = x;
@@ -18,8 +18,8 @@ CWindow::CWindow(float x, float y, float w, float h, char window_type)
 
 	m_window_type = window_type;
 
-	m_8x8tileheight = 8.0/200.0;
-	m_8x8tilewidth = 8.0/320.0;
+	m_8x8tileheight = 8.0;
+	m_8x8tilewidth = 8.0;
 }
 
 CWindow::~CWindow() {
@@ -54,7 +54,7 @@ void CWindow::addObject(CTextBox* newTextBox)
 ///////////////////////////
 // Property Set Routines //
 ///////////////////////////
-void CWindow::Resize(float width, float height)
+void CWindow::Resize(int width, int height)
 {
 	m_w = width;
 	m_h = height;
@@ -63,7 +63,7 @@ void CWindow::Resize(float width, float height)
 ///////////////////////////
 // Property Get Routines //
 ///////////////////////////
-float CWindow::getWidth()
+int CWindow::getWidth()
 {
 	return m_w;
 }
@@ -99,10 +99,10 @@ void CWindow::drawWindow()
 	// be improved.
 
 	// first draw the blank rect
-	float i, j;
-	for(j = 0.0 ; j < m_h - m_8x8tileheight ; j+= (m_8x8tileheight*(7.0/8.0)) )
+	int i, j;
+	for(j = 0 ; j < m_h - m_8x8tileheight ; j+= m_8x8tileheight )
 	{
-		for(i = 0.0 ; i < m_w - m_8x8tilewidth ; i+= m_8x8tilewidth )
+		for(i = 0 ; i < m_w - m_8x8tilewidth ; i+= m_8x8tilewidth )
 			g_pGraphics->drawCharacter( m_x + i, m_y + j, 32); // 32 is blank tile
 		g_pGraphics->drawCharacter( m_x + m_w - m_8x8tilewidth, m_y + j, 32); // for the last tile
 	}
@@ -115,7 +115,7 @@ void CWindow::drawWindow()
 	}
 	g_pGraphics->drawCharacter( m_x + m_w - m_8x8tilewidth, m_y, 2);	// for the last tile
 	g_pGraphics->drawCharacter( m_x + m_w - m_8x8tilewidth, m_y + m_h - m_8x8tileheight, 2); // for the last tile
-	for( j = m_8x8tileheight ; j < m_h-m_8x8tileheight ; j+= (m_8x8tileheight*(7.0/8.0)) )
+	for( j = m_8x8tileheight ; j < m_h-m_8x8tileheight ; j+= m_8x8tileheight )
 	{
 		g_pGraphics->drawCharacter( m_x, m_y + j, 4); 		// 4 is one left-border
 		g_pGraphics->drawCharacter( m_x + m_w - m_8x8tilewidth, m_y + j, 5); // 5 is the right-border

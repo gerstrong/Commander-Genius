@@ -664,11 +664,6 @@ void gamedo_RenderScreen(bool gameovermode) // gameovermode is not a good idea.
 
    gamedo_render_drawobjects(); // (Sprites)
 
-   g_pVideoDriver->sb_blit();	// blit scrollbuffer to display (Tiles)
-
-   gamedo_render_erasedebug();
-   gamedo_render_eraseobjects();
-
    if(gameovermode) // (Gameover Bitmap) More to come!
    {
 	   int bmnum = g_pGraphics->getBitmapNumberFromName("GAMEOVER");
@@ -677,6 +672,11 @@ void gamedo_RenderScreen(bool gameovermode) // gameovermode is not a good idea.
 	   int y = (200/2)-(bitmaps[bmnum].ysize/2);
 	   g_pGraphics->drawBitmap(x, y, bmnum);
    }
+
+   g_pVideoDriver->sb_blit();	// blit scrollbuffer to display (Tiles)
+
+   gamedo_render_erasedebug();
+   gamedo_render_eraseobjects();
 
    curfps++;
 }

@@ -307,12 +307,8 @@ void CGraphics::drawCharacter(int x, int y, int f)
 unsigned char xa,ya;
 
   for(ya=0;ya<8;ya++)
-  {
     for(xa=0;xa<8;xa++)
-    {
     	g_pVideoDriver->setpixel(x+xa, y+ya, font[f][ya][xa]);
-    }
-  }
 }
 
 void CGraphics::drawCharacter(float x, float y, int f)

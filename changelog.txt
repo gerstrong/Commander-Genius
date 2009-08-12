@@ -3,6 +3,7 @@ Commander Genius Pre-Release v0.3 (CloneKeenPlus):
 
 12-08-2009
 - New Timer System! At last!
+- Minor issues have been fixed
 
 09-08-2009
 - Added Window lights in the ending scene

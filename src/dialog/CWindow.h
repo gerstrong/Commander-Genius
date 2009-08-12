@@ -28,17 +28,17 @@ enum Windowtypes{
 
 class CWindow {
 public:
-	CWindow(float x, float y, float w, float h, char window_type = WND_STANDARD);
+	CWindow(int x, int y, int w, int h, char window_type = WND_STANDARD);
 	virtual ~CWindow();
 
 	// Creation routines
 	void addObject(CTextBox* newTextBox);
 
 	// Property set methods
-	void Resize(float width, float height);
+	void Resize(int width, int height);
 
 	// Property retrieval methods
-	float getWidth();
+	int getWidth();
 
 	// Drawing routines
 	void render();
@@ -46,13 +46,13 @@ public:
 	std::vector<CTextBox*> m_TextBox;
 
 private:
-	float m_x;
-	float m_y;
-	float m_h;
-	float m_w;
+	int m_x;
+	int m_y;
+	int m_h;
+	int m_w;
 
-	float m_8x8tileheight;
-	float m_8x8tilewidth;
+	int m_8x8tileheight;
+	int m_8x8tilewidth;
 
 	char m_window_type;
 

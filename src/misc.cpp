@@ -184,15 +184,15 @@ void showGameHint(int mpx, int mpy, int episode, int level)
 	}
 
 	CTextBox* TextBox;
-	CWindow *InfoTextWindow = new CWindow( 0.2f, 0.2f, 0.6f, 0.6f );
+	CWindow *InfoTextWindow = new CWindow( 50, 50, 220, 100 );
 
-	TextBox = new CTextBox(0.2f, 0.2f, 0.6f, 0.6f, getstring(strname), true);
-	TextBox->setFontDimensions(8.0f/320.0f, 8.0f/200.0f);
+	TextBox = new CTextBox(50, 50, 204, 84, getstring(strname), true);
+	TextBox->setFontDimensions(8, 8);
 	InfoTextWindow->addObject(TextBox);
 
 	// The Text will be too big, so resize in knowing the height of the first text.
 	InfoTextWindow->Resize(InfoTextWindow->getWidth(),
-			( (float)(InfoTextWindow->m_TextBox[0]->getNumberOfTextlines()+2)*8.0f ) / 200.0f );
+			(InfoTextWindow->m_TextBox[0]->getNumberOfTextlines()+2)*8);
 
 	g_pInput->flushAll();
 
@@ -202,8 +202,10 @@ void showGameHint(int mpx, int mpy, int episode, int level)
     	{
     		g_pInput->pollEvents();
 			InfoTextWindow->render();
-			g_pVideoDriver->update_screen();
+
     	}
+    	if(g_pTimer->TimeToRender())
+    		g_pVideoDriver->update_screen();
     } while(!g_pInput->getPressedAnyCommand());
 
     delete InfoTextWindow;
@@ -1158,15 +1160,15 @@ void SetAllCanSupportPlayer(int o, int state)
 void showTextMB(const std::string& Text)
 {
 	CTextBox* TextBox;
-	CWindow *InfoTextWindow = new CWindow( 0.1f, 0.4f, 0.7f, 0.7f );
+	CWindow *InfoTextWindow = new CWindow( 60, 50, 200, 100 );
 
-	TextBox = new CTextBox(0.1f, 0.4f, 0.7f, 0.6f, Text, true);
-	TextBox->setFontDimensions(8.0f/320.0f, 8.0f/200.0f);
+	TextBox = new CTextBox(60, 50, 200, 100, Text, true);
+	TextBox->setFontDimensions(8, 8);
 	InfoTextWindow->addObject(TextBox);
 
 	// The Text will be too big, so resize in knowing the height of the first text.
 	InfoTextWindow->Resize(InfoTextWindow->getWidth(),
-			( (float)(InfoTextWindow->m_TextBox[0]->getNumberOfTextlines()+2)*8.0f ) / 200.0f );
+			 (InfoTextWindow->m_TextBox[0]->getNumberOfTextlines()+2)*8 );
 
 	g_pInput->flushAll();
 
