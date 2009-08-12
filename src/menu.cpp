@@ -1021,11 +1021,15 @@ void showPage(const std::string& str_text, stCloneKeenPlus *pCKP, int textsize)
 
 				// If user presses up or down
 				if (g_pInput->getHoldedCommand(0,IC_DOWN) || g_pInput->getHoldedCommand(1,IC_DOWN))
+				{
 					if(scroll < (totnumline-dlgH)<<3)
 						scroll++;
+				}
 				else if (g_pInput->getHoldedCommand(0,IC_UP) || g_pInput->getHoldedCommand(1,IC_UP))
+				{
 					if(scroll > 0)
 						scroll--;
+				}
 
 				enter = (g_pInput->getPressedCommand(0,IC_STATUS) || g_pInput->getPressedCommand(1,IC_STATUS));
 				if (enter)

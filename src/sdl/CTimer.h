@@ -27,15 +27,15 @@ public:
 	void ResetSecondsTimer();
 	bool HasSecElapsed();
 
-	int getFrameskip() { return m_Frameskip; }
-	void setFrameskip(int value) { m_Frameskip=value; }
+	int getFrameskip() { return m_FPS; }
+	void setFrameskip(int value) { m_FPS=value; }
 
 private:
 
 	ulong LastRenderTime, LastLogicTime, LastSecTime;
 	ulong RenderRate;			// 60fps
 	ulong LogicRate;			// 333fps
-	int m_Frameskip;				// This one must first be read
+	int m_FPS;				// This one must first be read
 };
 
 #endif /* CTIMER_H_ */

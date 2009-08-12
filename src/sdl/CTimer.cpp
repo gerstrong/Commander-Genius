@@ -57,8 +57,8 @@ ulong CurTime = SDL_GetTicks();
 		if ((CurTime - LastLogicTime) > LogicRate)
 			return false;
 
-		if (m_Frameskip > 0)
-			RenderRate = (1000 / m_Frameskip);
+		if (m_FPS > 0)
+			RenderRate = (1000 / m_FPS);
 		return true;
 	}
 	else return 0;

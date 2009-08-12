@@ -59,18 +59,6 @@ unsigned int i,p;
          // if player is standing around minding his own business and we
          // come down on his head, change direction. if player is trying
          // to walk/jump into us horizontally, push him away.
-         if (player[objects[o].touchedBy].y > objects[o].y &&
-              (player[objects[o].touchedBy].pjumping==PNOJUMP ||
-               player[objects[o].touchedBy].pjumping==PPREPAREJUMP ||
-               player[objects[o].touchedBy].pjumping==PPREPAREPOGO) &&
-             objects[o].ai.platform.movedir==DOWN &&
-             !player[objects[o].touchedBy].pfalling)
-         {
-            // change direction
-             objects[o].ai.platform.movedir = UP;
-         }
-         else
-         {
            // push him away
             if (player[objects[o].touchedBy].x < objects[o].x)
             {
@@ -84,7 +72,6 @@ unsigned int i,p;
                if (player[objects[o].touchedBy].pinertia_x < 0) player[objects[o].touchedBy].pinertia_x = 0;
                player[objects[o].touchedBy].playpushed_decreasetimer = 0;
             }
-         }
      }
    }
 
