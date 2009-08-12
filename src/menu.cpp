@@ -719,8 +719,6 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 
 	if(autoframeskip)
 		sprintf(buf,"Auto-Frameskip : %d fps",autoframeskip);
-	else
-		sprintf(buf,"Auto-Frameskip disabled");
 
 	DisplayMenu->addOptionText(buf);
 
@@ -830,15 +828,10 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 				else if(selection == 5)
 				{
 					if(autoframeskip < 70)
-					{
 						autoframeskip += 10;
-						sprintf(buf,"Auto-Frameskip : %d fps", autoframeskip);
-					}
 					else
-					{
-						autoframeskip = 0;
-						sprintf(buf,"Auto-Frameskip disabled");
-					}
+						autoframeskip = 10;
+					sprintf(buf,"Auto-Frameskip : %d fps", autoframeskip);
 
 					DisplayMenu->setOptionText(5, buf);
 				}
