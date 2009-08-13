@@ -250,53 +250,59 @@ int i, topobj;
 
       {
          common_enemy_ai(i);
-         switch(objects[i].type)
+         if(!p_levelcontrol->level_done)
          {
-          //KEEN1
-          case OBJ_YORP: yorp_ai(i, *p_levelcontrol); break;
-          case OBJ_GARG: garg_ai(i, p_levelcontrol->hardmode); break;
-          case OBJ_VORT: vort_ai(i, p_levelcontrol ); break;
-          case OBJ_BUTLER: butler_ai(i, p_levelcontrol->hardmode); break;
-          case OBJ_TANK: tank_ai(i, p_levelcontrol->hardmode); break;
-          case OBJ_RAY: ray_ai(i, p_levelcontrol->episode,
+        	 switch(objects[i].type)
+        	 {
+        	 //KEEN1
+			  case OBJ_YORP: yorp_ai(i, *p_levelcontrol); break;
+			  case OBJ_GARG: garg_ai(i, p_levelcontrol->hardmode); break;
+			  case OBJ_VORT: vort_ai(i, p_levelcontrol ); break;
+			  case OBJ_BUTLER: butler_ai(i, p_levelcontrol->hardmode); break;
+			  case OBJ_TANK: tank_ai(i, p_levelcontrol->hardmode); break;
+			  case OBJ_RAY: ray_ai(i, p_levelcontrol->episode,
 							  options[OPT_FULLYAUTOMATIC].value, p_levelcontrol->cepvars.pShotSpeed); break;
-          case OBJ_DOOR: door_ai(i, p_levelcontrol->cepvars.DoorOpenDir); break;
-          case OBJ_ICECANNON: icecannon_ai(i); break;
-          case OBJ_ICECHUNK: icechunk_ai(i); break;
-          case OBJ_ICEBIT: icebit_ai(i); break;
-          case OBJ_TELEPORTER: teleporter_ai(i, *p_levelcontrol); break;
-          case OBJ_ROPE: rope_ai(i); break;
-          //KEEN2
-          case OBJ_WALKER: walker_ai(i, *p_levelcontrol); break;
-          case OBJ_TANKEP2: tankep2_ai(i, p_levelcontrol->hardmode); break;
-          case OBJ_PLATFORM: platform_ai(i, *p_levelcontrol); break;
-          case OBJ_VORTELITE: vortelite_ai(i, p_levelcontrol->dark); break;
-          case OBJ_SECTOREFFECTOR: se_ai(i, p_levelcontrol ); break;
-          case OBJ_BABY: baby_ai(i, p_levelcontrol->episode,
+			  case OBJ_DOOR: door_ai(i, p_levelcontrol->cepvars.DoorOpenDir); break;
+			  case OBJ_ICECANNON: icecannon_ai(i); break;
+			  case OBJ_ICECHUNK: icechunk_ai(i); break;
+			  case OBJ_ICEBIT: icebit_ai(i); break;
+			  case OBJ_TELEPORTER: teleporter_ai(i, *p_levelcontrol); break;
+			  case OBJ_ROPE: rope_ai(i); break;
+
+			  //KEEN2
+			  case OBJ_WALKER: walker_ai(i, *p_levelcontrol); break;
+			  case OBJ_TANKEP2: tankep2_ai(i, p_levelcontrol->hardmode); break;
+			  case OBJ_PLATFORM: platform_ai(i, *p_levelcontrol); break;
+			  case OBJ_VORTELITE: vortelite_ai(i, p_levelcontrol->dark); break;
+			  case OBJ_SECTOREFFECTOR: se_ai(i, p_levelcontrol ); break;
+			  case OBJ_BABY: baby_ai(i, p_levelcontrol->episode,
 								  p_levelcontrol->hardmode); break;
-          case OBJ_EXPLOSION: explosion_ai(i); break;
-          case OBJ_EARTHCHUNK: earthchunk_ai(i); break;
-          case OBJ_SPARK: spark_ai(i, &(p_levelcontrol->sparks_left) ); break;
-          //KEEN3
-          case OBJ_FOOB: foob_ai(i, p_levelcontrol->hardmode); break;
-          case OBJ_NINJA: ninja_ai(i, p_levelcontrol->hardmode); break;
-          case OBJ_MEEP: meep_ai(i, *p_levelcontrol); break;
-          case OBJ_SNDWAVE: sndwave_ai(i, p_levelcontrol->hardmode); break;
-          case OBJ_MOTHER: mother_ai(i, *p_levelcontrol); break;
-          case OBJ_FIREBALL: fireball_ai(i, p_levelcontrol->hardmode); break;
-          case OBJ_BALL: ballandjack_ai(i); break;
-          case OBJ_JACK: ballandjack_ai(i); break;
-          case OBJ_PLATVERT: platvert_ai(i); break;
-          case OBJ_NESSIE: nessie_ai(i); break;
-          //Specials
-          //case OBJ_AUTORAY: case OBJ_AUTORAY_V: autoray_ai(i); break;
-          //case OBJ_GOTPOINTS: gotpoints_ai(i); break;
+			  case OBJ_EXPLOSION: explosion_ai(i); break;
+			  case OBJ_EARTHCHUNK: earthchunk_ai(i); break;
+			  case OBJ_SPARK: spark_ai(i, &(p_levelcontrol->sparks_left) ); break;
 
-          case OBJ_DEMOMSG: break;
+			  //KEEN3
+			  case OBJ_FOOB: foob_ai(i, p_levelcontrol->hardmode); break;
+			  case OBJ_NINJA: ninja_ai(i, p_levelcontrol->hardmode); break;
+			  case OBJ_MEEP: meep_ai(i, *p_levelcontrol); break;
+			  case OBJ_SNDWAVE: sndwave_ai(i, p_levelcontrol->hardmode); break;
+			  case OBJ_MOTHER: mother_ai(i, *p_levelcontrol); break;
+			  case OBJ_FIREBALL: fireball_ai(i, p_levelcontrol->hardmode); break;
+			  case OBJ_BALL: ballandjack_ai(i); break;
+			  case OBJ_JACK: ballandjack_ai(i); break;
+			  case OBJ_PLATVERT: platvert_ai(i); break;
+			  case OBJ_NESSIE: nessie_ai(i); break;
 
-          default:
-        	  g_pLogFile->ftextOut("gamedo_enemy_ai: Object %d is of invalid type %d\n", i, objects[i].type);
-            break;
+			  //Specials
+			  //case OBJ_AUTORAY: case OBJ_AUTORAY_V: autoray_ai(i); break;
+			  //case OBJ_GOTPOINTS: gotpoints_ai(i); break;
+
+			  case OBJ_DEMOMSG: break;
+
+			  default:
+				  g_pLogFile->ftextOut("gamedo_enemy_ai: Object %d is of invalid type %d\n", i, objects[i].type);
+        	  break;
+			 }
          }
 
        	 objects[i].scrx = (objects[i].x>>CSF)-scroll_x;
