@@ -455,10 +455,16 @@ int o,x;
 }
 
 unsigned int fgeti(FILE *fp) {
-unsigned int temp1, temp2;
-  temp1 = fgetc(fp);
-  temp2 = fgetc(fp);
-  return (temp2<<8) | temp1;
+unsigned int lsb, msb;
+  lsb = fgetc(fp);
+  msb = fgetc(fp);
+  return (msb<<8) | lsb;
+}
+
+void fputi(uint word, FILE *fp)
+{
+	fputc(word&255, fp);
+	fputc(word/256, fp);
 }
 
 unsigned long fgetl(FILE *fp) {
@@ -468,6 +474,20 @@ unsigned int temp1, temp2, temp3, temp4;
   temp3 = fgetc(fp);
   temp4 = fgetc(fp);
   return (temp4<<24) | (temp3<<16) | (temp2<<8) | temp1;
+}
+
+void fputl(ulong word, FILE *fp)
+{
+unsigned long a,b,c,d;
+	a=b=c=d = word;
+	a &= 0xFF000000; a >>= 24;
+	b &= 0x00FF0000; b >>= 16;
+	c &= 0x0000FF00; c >>= 8;
+	d &= 0x000000FF;
+	fputc(d, fp);
+	fputc(c, fp);
+	fputc(b, fp);
+	fputc(a, fp);
 }
 
 unsigned int loadmap(const std::string& filename, const std::string& path,
@@ -686,7 +706,7 @@ unsigned int i;
 }
 
 // load strings from file *fname ("strings.dat")
-char loadstrings(const std::string& fname)
+char loadstrings()
 {
 FILE *fp;
 char state;
@@ -703,8 +723,8 @@ char highlight;
   #define STSTATE_READSTRING    2
   #define STSTATE_READATTR      3
 
-g_pLogFile->ftextOut("loadstrings(): Opening string file '%s'.<br>", fname.c_str());
-  fp = OpenGameFile(fname.c_str(), "rb");
+  g_pLogFile->ftextOut("loadstrings(): Opening string file 'strings.dat'.<br>");
+  fp = OpenGameFile("strings.dat", "rb");
   if (!fp)
   {
 	  g_pLogFile->ftextOut("loadstrings(): String file unable to open.<br>");
@@ -846,7 +866,7 @@ g_pLogFile->ftextOut("loadstrings(): Opening string file '%s'.<br>", fname.c_str
 
   } while(1);
 
-  g_pLogFile->ftextOut("loadstrings(): loaded %d strings from '%s'.<br>", numStrings, fname.c_str());
+  g_pLogFile->ftextOut("loadstrings(): loaded %d strings from 'strings.dat'.<br>", numStrings);
   fclose(fp);
   return 0;
 }

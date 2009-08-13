@@ -25,7 +25,7 @@
 // the sysbeep will not sound.
 #define QUIT_NONFATAL   555
 
-#define SAVEGAMEVERSION '4'
+#define SAVEGAMEVERSION '5'
 #define ATTRFILEVERSION  1
 
 #define WM_MAP_NUM      80
@@ -135,7 +135,7 @@ struct stInventory
  unsigned long score;
  unsigned long extralifeat;
  unsigned int charges;        // ray gun ammo
- signed int lives;
+ signed char lives;
  unsigned char HasPogo;
  unsigned char HasCardYellow;
  unsigned char HasCardRed;

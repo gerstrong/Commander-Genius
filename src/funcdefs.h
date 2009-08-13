@@ -117,18 +117,8 @@ void AllPlayersInvisible(void);
 // menu.c
 int GetBitmapNumberFromName(const char *bmname);
 
-
 // eseq_ep1.c
 void addshipqueue(int cmd, int time, int flag1);
-
-// latch.c
-//char latch_loadgraphics(int episode, char *path);
-
-// sglre.c
-void sgrle_reset(void);
-void sgrle_compress(FILE *fp, unsigned char *ptr, unsigned long nbytes);
-void sgrle_decompress(FILE *fp, unsigned char *ptr, unsigned long nbytes);
-unsigned char sgrle_get_next_byte(FILE *fp);
 
 // lz.c
 char lz_decompress(FILE *lzfile, unsigned char *outbuffer);

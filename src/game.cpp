@@ -155,24 +155,21 @@ void gameloop(stCloneKeenPlus *pCKP)
 					}
 
 				  if (pCKP->Control.levelcontrol.success==1)
-				  { // mark level as completed on world map
+				   // mark level as completed on world map
 					pCKP->Control.levelcontrol.levels_completed[pCKP->Control.levelcontrol.curlevel] = 1;
-				  }
+
 				  pCKP->Control.levelcontrol.chglevelto = WM_MAP_NUM;
 				}
 			 }
 			 else
-			 {
 			   fade.mode = NO_FADE;
-			 }
+
 		 }
 
 		 // when walking through the exit door don't show keen's sprite past
 		 // the door frame (so it looks like he walks "through" the door)
 		 if (pCKP->Control.levelcontrol.level_done==LEVEL_DONE_WALK)
-		 {
 			gamepdo_walkbehindexitdoor(pCKP->Control.levelcontrol.level_finished_by, pCKP);
-		 }
 
 		 // allow enter to return to main menu
 		 // if we're in game over mode

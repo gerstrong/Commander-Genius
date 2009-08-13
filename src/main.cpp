@@ -46,7 +46,7 @@
 #include "CGraphics.h"
 #include "sdl/CSettings.h"
 #include "FindFile.h"
-
+#include "fileio/CSavedGame.h"
 
 int IntroCanceled;
 int NessieObjectHandle;
@@ -102,8 +102,8 @@ unsigned int scroll_y = 0;
 unsigned int objdefsprites[NUM_OBJ_TYPES+1];
 
 int thisplayer;
-unsigned int primaryplayer;
-unsigned int numplayers;
+unsigned char primaryplayer;
+unsigned char numplayers;
 
 int crashflag,crashflag2,crashflag3;
 const char *why_term_ptr = "No reason given.";
@@ -288,7 +288,6 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
 {
   int i, o, wm, firsttime = 1;
   char levelname[80];
-  char SaveGameFileName[40];
   int newlevel;
 
   stLevelControl *p_levelcontrol = &(pCKP->Control.levelcontrol);
@@ -353,15 +352,18 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
     p_levelcontrol->usedhintmb = false;
     if (loadinggame)
     {
-      sprintf(SaveGameFileName, "ep%csave%c.dat", p_levelcontrol->episode+'0', loadslot+'0');
-      wm = savegameiswm(SaveGameFileName);
-      if (game_load(SaveGameFileName, pCKP))
+      CSavedGame *SavedGame = new CSavedGame(p_levelcontrol);
+
+      if (!SavedGame->load(loadslot))
       {
         crashflag = 1;
         crashflag2 = loadslot;
         g_pLogFile->textOut("Error loading game! The save file may be corrupt or created by a different version of CloneKeen Plus.");
         return;
       }
+      delete SavedGame;
+
+      wm = (p_levelcontrol->curlevel==80) ? 1 : 0 ;
     }
 	g_pGraphics->initPalette(p_levelcontrol->dark);
 

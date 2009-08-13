@@ -4,9 +4,11 @@
 #include <string>
 #include <cstdio>
 
-char loadstrings(const std::string& fname);
+char loadstrings();
 unsigned int fgeti(FILE *fp);
 unsigned long fgetl(FILE *fp);
-	std::string formatPathString(const std::string& path);
+void fputi(unsigned int word, FILE *fp);
+void fputl(unsigned long word, FILE *fp);
+std::string formatPathString(const std::string& path);
 
 #endif

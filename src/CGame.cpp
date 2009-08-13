@@ -236,6 +236,7 @@ bool CGame::loadResources(unsigned short Episode, const std::string& DataDirecto
     CExeFile *ExeFile = new CExeFile(Episode, DataDirectory);
     ExeFile->readData();
     int version = ExeFile->getEXEVersion();
+
 	g_pLogFile->ftextOut("Commander Keen Episode %d (Version %d.%d) was detected.<br>", Episode, version/100,version%100);
 	if(version == 134) g_pLogFile->ftextOut("This version of the game is not supported!<br>");
 
@@ -263,7 +264,7 @@ bool CGame::loadResources(unsigned short Episode, const std::string& DataDirecto
     // load the strings. TODO: After that this one will replace loadstrings
     //m_Messages = new CMessages();    delete ExeFile;
     //m_Messages->readData(char *buf, int episode, int version);
-	loadstrings("strings.dat");
+	loadstrings();
 
     delete ExeFile;
 

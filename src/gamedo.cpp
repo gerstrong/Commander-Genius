@@ -759,9 +759,8 @@ int i;
            g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
 
            // Show a message like in the original game
-  		    showTextMB("Godmode " + player[0].godmode ? "enabled" : "disabled");
+           showTextMB(player[0].godmode ? "Godmode enabled" : "Godmode disabled");
        }
-
 
     if (pCKP->Option[OPT_CHEATS].value)
     {

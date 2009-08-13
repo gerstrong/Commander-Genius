@@ -19,6 +19,7 @@
 #include "include/misc.h"
 #include "include/game.h"
 #include "include/gamedo.h"
+#include "fileio/CSavedGame.h"
 #include "CLogFile.h"
 #include "CGraphics.h"
 #include "StringUtils.h"
@@ -59,19 +60,6 @@ void cleanup(stCloneKeenPlus *CKP)
 	g_pSound->stopAllSounds();
 	g_pSound->destroy();
 	g_pLogFile->textOut(BLACK,true," Sound driver shut down.<br>");
-
-  #ifdef NETWORK_PLAY
-    if (is_server)
-    {
-    	NetDrv_Server_Stop();
-		g_pLogFile->ftextOut("  * Network (server) shut down.<br>");
-    }
-    if (is_client)
-    {
-    	NetDrv_Client_Stop();
-        g_pLogFile->ftextOut("  * Network (client) shut down.<br>");
-    }
-  #endif
 
     if (demofile)
     {
@@ -615,103 +603,6 @@ const int twirlspeed = 100;
     } while(!g_pInput->getPressedAnyKey());
 }
 
-void game_save(char *fname, stCloneKeenPlus *pCKP)
-{
-	unsigned int i;
-	FILE *fp;
-
-   fp = OpenGameFile(fname, "wb");
-
-   // save the header/version check
-   fputc('S', fp);
-   fputc(SAVEGAMEVERSION, fp);
-
-   // save all necessary structures to the file
-   if (map.isworldmap) fputc('W', fp); else fputc('L', fp);
-
-   sgrle_compress(fp, (unsigned char *)&numplayers, sizeof(numplayers));
-   sgrle_compress(fp, (unsigned char *)&(pCKP->Control.levelcontrol), sizeof(pCKP->Control.levelcontrol));
-   sgrle_compress(fp, (unsigned char *)&scroll_x, sizeof(scroll_x));
-   sgrle_compress(fp, (unsigned char *)&scroll_y, sizeof(scroll_y));
-   sgrle_compress(fp, (unsigned char *)&max_scroll_x, sizeof(max_scroll_x));
-   sgrle_compress(fp, (unsigned char *)&max_scroll_y, sizeof(max_scroll_y));
-   sgrle_compress(fp, (unsigned char *)&map, sizeof(map));
-   sgrle_compress(fp, (unsigned char *)&highest_objslot, sizeof(highest_objslot) );
-   for(i=0;i<numplayers;i++)
-   {
-     sgrle_compress(fp, (unsigned char *)&player[i], sizeof(player[i]));
-   }
-   sgrle_compress(fp, (unsigned char *)&objects[0], sizeof(objects));
-   sgrle_compress(fp, (unsigned char *)&tiles[0], sizeof(tiles));
-
-   fclose(fp);
-
-   return;
-}
-
-int savegameiswm(char *fname)
-{
-FILE *fp;
-int i;
-
-   fp = OpenGameFile(fname, "rb");
-   if (!fp) return 0;          // file didn't exist, don't try to go further
-
-   fgetc(fp); fgetc(fp);
-   i = fgetc(fp);
-
-   fclose(fp);
-
-   if (i=='W') return 1; else return 0;
-}
-
-int game_load(char *fname, stCloneKeenPlus *pCKP)
-{
-FILE *fp;
-unsigned long i;
-unsigned long scrx;
-unsigned int scry;
-
-stLevelControl *p_levelcontrol;
-p_levelcontrol = &(pCKP->Control.levelcontrol);
-
-   fp = OpenGameFile(fname, "rb");
-   if (!fp) return 1;
-
-   // do the header and version check
-   if (fgetc(fp) != 'S') { fclose(fp); return 1; }
-   if (fgetc(fp) != SAVEGAMEVERSION) { fclose(fp); return 1; }
-   fgetc(fp);           // iswm flag--not needed here
-
-   // load all structures from the file
-   sgrle_reset();
-   sgrle_decompress(fp, (unsigned char *)&numplayers, sizeof(numplayers));
-   sgrle_decompress(fp, (unsigned char *) p_levelcontrol , sizeof(*p_levelcontrol));
-   sgrle_decompress(fp, (unsigned char *)&scrx, sizeof(scrx));
-   sgrle_decompress(fp, (unsigned char *)&scry, sizeof(scry));
-   sgrle_decompress(fp, (unsigned char *)&max_scroll_x, sizeof(max_scroll_x));
-   sgrle_decompress(fp, (unsigned char *)&max_scroll_y, sizeof(max_scroll_y));
-   sgrle_decompress(fp, (unsigned char *)&map, sizeof(map));
-   sgrle_decompress(fp, (unsigned char *)&highest_objslot, sizeof(highest_objslot) );
-
-   initgame( &(pCKP->Control.levelcontrol) );           // reset scroll
-   drawmap();
-   for(i=0;i<scrx;i++) map_scroll_right();
-   for(i=0;i<scry;i++) map_scroll_down();
-
-   for(i=0;i<numplayers;i++)
-   {
-     sgrle_decompress(fp, (unsigned char *)&player[i], sizeof(player[i]));
-   }
-   sgrle_decompress(fp, (unsigned char *)&objects[0], sizeof(objects));
-   sgrle_decompress(fp, (unsigned char *)&tiles[0], sizeof(tiles));
-
-   fclose(fp);
-
-   debugmode = 0;
-   return 0;
-}
-
 // pops up the "which slot do you want to save to" box.
 // is issave=1, it's a save box, if issave=0, it's a load box
 // returns either the selected slot or 0 if canceled
@@ -863,7 +754,6 @@ top: ;
 void game_save_interface(stCloneKeenPlus *pCKP)
 {
 int waittimer;
-char fname[40];
 char saveslot;
 int dlgX,dlgY,dlgW,dlgH;
 
@@ -876,8 +766,9 @@ int dlgX,dlgY,dlgW,dlgH;
   if (!saveslot) return;                // canceled
 
   /* save the game */
-  sprintf(fname, "ep%csave%c.dat", pCKP->Control.levelcontrol.episode+'0', saveslot+'0');
-  game_save(fname,pCKP);
+  CSavedGame *SavedGame = new CSavedGame(&(pCKP->Control.levelcontrol));
+  SavedGame->save(saveslot);
+  delete SavedGame;
 
   /* display the "your game has been saved" box */
   waittimer = 0;
@@ -1184,3 +1075,9 @@ void showTextMB(const std::string& Text)
 
     delete InfoTextWindow;
 }
+
+/////////////////////////////////////////
+// The new implementations of code 8.4 //
+/////////////////////////////////////////
+
+

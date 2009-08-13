@@ -31,8 +31,8 @@ extern int numStrings;
 extern int animtiletimer, curanimtileframe;
 
 extern int thisplayer;
-extern unsigned int primaryplayer;
-extern unsigned int numplayers;
+extern unsigned char primaryplayer;
+extern unsigned char numplayers;
 
 extern char frameskiptimer;
 
