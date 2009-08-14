@@ -1,4 +1,3 @@
-
 /* MAIN.C
   This is CloneKeen's main source file.
 
@@ -304,215 +303,179 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
 
   do
   {
-    initgame( &(pCKP->Control.levelcontrol) );
+		initgame( &(pCKP->Control.levelcontrol) );
 
-    newlevel = p_levelcontrol->chglevelto;
-    if (p_levelcontrol->episode==1 && p_levelcontrol->hardmode)
-    {
-        // in high-difficulity mode switch levels 5 & 9 so
-        // you can't get the pogo stick until you make it
-        // to the dark side of mars.
-        if (newlevel==5)
-           newlevel = 9;
-        else if (newlevel==9)
-           newlevel = 5;
-    }
-    sprintf(levelname, "level%02d.ck%d", newlevel, p_levelcontrol->episode);
+		newlevel = p_levelcontrol->chglevelto;
+		if (p_levelcontrol->episode==1 && p_levelcontrol->hardmode)
+		{
+			// in high-difficulity mode switch levels 5 & 9 so
+			// you can't get the pogo stick until you make it
+			// to the dark side of mars.
+			if (newlevel==5)
+			   newlevel = 9;
+			else if (newlevel==9)
+			   newlevel = 5;
+		}
+		sprintf(levelname, "level%02d.ck%d", newlevel, p_levelcontrol->episode);
 
-    if (p_levelcontrol->chglevelto==WORLD_MAP)
-      wm = 1;
-    else
-      wm = 0;
+		if (p_levelcontrol->chglevelto==WORLD_MAP)
+		  wm = 1;
+		else
+		  wm = 0;
 
-    if (loadmap(levelname, pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory, newlevel, p_levelcontrol))
-    {
-      crashflag = 1;
-      crashflag2 = p_levelcontrol->chglevelto;
-      why_term_ptr = "Unable to load the map (# shown in crashflag2).";
-    }
+		if (loadmap(levelname, pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory, newlevel, p_levelcontrol))
+		{
+		  crashflag = 1;
+		  crashflag2 = p_levelcontrol->chglevelto;
+		  why_term_ptr = "Unable to load the map (# shown in crashflag2).";
+		}
 
-    p_levelcontrol->curlevel = p_levelcontrol->chglevelto;
+		p_levelcontrol->curlevel = p_levelcontrol->chglevelto;
 
-    if (firsttime)
-    {
-    	int op;
-    	for(i=0;i<MAX_PLAYERS;i++)
-    	{
-    		op = player[i].useObject;
-      		player[i].mapplayx = player[i].x;
-    		player[i].mapplayy = player[i].y;
-    		player[i].w = sprites[objects[op].sprite].xsize-4;
-    		player[i].h = sprites[objects[op].sprite].ysize;
-    	}
-    }
-    firsttime = 0;
+		if (firsttime)
+		{
+			int op;
+			for(i=0;i<MAX_PLAYERS;i++)
+			{
+				op = player[i].useObject;
+				player[i].mapplayx = player[i].x;
+				player[i].mapplayy = player[i].y;
+				player[i].w = sprites[objects[op].sprite].xsize-4;
+				player[i].h = sprites[objects[op].sprite].ysize;
+			}
+		}
+		firsttime = 0;
 
-    p_levelcontrol->command = LVLC_NOCOMMAND;
+		p_levelcontrol->command = LVLC_NOCOMMAND;
 
-    p_levelcontrol->dark = false;
-    p_levelcontrol->usedhintmb = false;
-    if (loadinggame)
-    {
-      CSavedGame *SavedGame = new CSavedGame(p_levelcontrol);
+		p_levelcontrol->dark = false;
+		p_levelcontrol->usedhintmb = false;
+		if (loadinggame)
+		{
+		  CSavedGame *SavedGame = new CSavedGame(p_levelcontrol);
 
-      if (!SavedGame->load(loadslot))
-      {
-        crashflag = 1;
-        crashflag2 = loadslot;
-        g_pLogFile->textOut("Error loading game! The save file may be corrupt or created by a different version of CloneKeen Plus.");
-        return;
-      }
-      delete SavedGame;
+		  if (!SavedGame->load(loadslot))
+		  {
+			crashflag = 1;
+			crashflag2 = loadslot;
+			g_pLogFile->textOut("Error loading game! The save file may be corrupt or created by a different version of CloneKeen Plus.");
+			return;
+		  }
+		  delete SavedGame;
 
-      wm = (p_levelcontrol->curlevel==80) ? 1 : 0 ;
-    }
-	g_pGraphics->initPalette(p_levelcontrol->dark);
+		  wm = (p_levelcontrol->curlevel==80) ? 1 : 0 ;
+		}
+		g_pGraphics->initPalette(p_levelcontrol->dark);
 
-    // Now load HQ Stuff, because the game could have been loaded too.
-	g_pGraphics->loadHQGraphics(p_levelcontrol->episode,p_levelcontrol->chglevelto,pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory);
+		// Now load HQ Stuff, because the game could have been loaded too.
+		g_pGraphics->loadHQGraphics(p_levelcontrol->episode,p_levelcontrol->chglevelto,pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory);
+		// HQ Music. Load Music for a level if you have HQP
+		g_pMusicPlayer->stop();
+		sprintf(levelname, "level%02d.ck%d",  p_levelcontrol->curlevel, p_levelcontrol->episode);
+		g_pMusicPlayer->LoadfromMusicTable(levelname);
+		// Didn't it work? Don't matter. HQP is optional, so continue
 
-    // HQ Music. Load Music for a level if you have HQP
-    g_pMusicPlayer->stop();
+		g_pLogFile->ftextOut("Drawing map...\n");
+		map_redraw();
 
-    FILE *fp;
-    sprintf(levelname, "level%02d.ck%d",  p_levelcontrol->curlevel, p_levelcontrol->episode);
-    if((fp=OpenGameFile("data/hqp/music/table.cfg","rt")) != NULL)
-    {
-		static const int MAX_STRING_LENGTH = 256;
-    	char buf1[MAX_STRING_LENGTH];
-    	char buf2[MAX_STRING_LENGTH];
+		g_pInput->flushAll();
 
-    	memset(buf1,0,sizeof(char)*MAX_STRING_LENGTH);
-    	memset(buf2,0,sizeof(char)*MAX_STRING_LENGTH);
+		// Check if we are in Demo-mode. If yes, add the upper logo to the objects
+		if(pCKP->Control.levelcontrol.demomode)
+		{
+			objects[DemoObjectHandle].exists = 1;
+			objects[DemoObjectHandle].onscreen = 1;
+			objects[DemoObjectHandle].type = OBJ_DEMOMSG;
+			objects[DemoObjectHandle].sprite = DemoSprite;
+			objects[DemoObjectHandle].x = 0;
+			objects[DemoObjectHandle].y = 0;
+			objects[DemoObjectHandle].honorPriority = 0;
+		}
+		else
+			objects[DemoObjectHandle].exists = 0;
 
-    	while(!feof(fp))
-    	{
-    		fscanf(fp,"%s",buf1);
+		if (wm)
+		{  // entering map from normal level, or first time around
+		  if (!p_levelcontrol->tobonuslevel)
+		  {
+			if (!loadinggame)
+			{
+			  for(i=0;i<MAX_PLAYERS;i++)
+			  {
+				player[i].x = player[i].mapplayx;
+				player[i].y = player[i].mapplayy;
+			  }
+			}
+		  }
+		  else
+		  {  // respawn at the bonus level
+			for(i=0;i<MAX_PLAYERS;i++)
+			{
+			  player[i].x = BONUSLEVEL_RESPAWN_X;
+			  player[i].y = BONUSLEVEL_RESPAWN_Y;
+			  if (player[i].isPlaying && player[i].inventory.lives)
+			  {
+				 player[i].hideplayer = 1;
+				 o = spawn_object((player[i].x>>CSF>>4)<<CSF<<4,((player[i].y>>CSF>>4)+1)<<CSF<<4,OBJ_TELEPORTER);
+				 objects[o].ai.teleport.direction = TELEPORTING_IN;
+				 objects[o].ai.teleport.whichplayer = i;
+				 objects[o].ai.teleport.baseframe = TELEPORT_RED_BASEFRAME_EP1;
+				 objects[o].ai.teleport.idleframe = TELEPORT_RED_IDLEFRAME_EP1;
+				 g_pSound->playStereofromCoord(SOUND_TELEPORT, PLAY_NOW, objects[player[i].useObject].scrx);
+			  }
+			}
+		  }
 
-    		if(strcmp(buf1,levelname) == 0)
-    		{
-    			fscanf(fp,"%s",buf2);
-    			break;
-    		}
-    		else
-    			fgets(buf1,MAX_STRING_LENGTH,fp);
-    	}
+		  if (!p_levelcontrol->success || firsttime)
+		  {
+			if (!p_levelcontrol->tobonuslevel) p_levelcontrol->dokeensleft = 1;
+			// when you die you lose all keycards
+			for(i=0;i<MAX_PLAYERS;i++)
+			{
+			  if (player[i].isPlaying)
+			  {
+				  take_keycard(DOOR_YELLOW, i);
+				  take_keycard(DOOR_RED, i);
+				  take_keycard(DOOR_GREEN, i);
+				  take_keycard(DOOR_BLUE, i);
+			   }
+			}
+		  }
+		  else p_levelcontrol->dokeensleft = 0;
 
+		  gameloop(pCKP);
 
-    	fclose(fp);
+		  for(i=0;i<MAX_PLAYERS;i++)
+		  {
+			player[i].mapplayx = player[i].x;
+			player[i].mapplayy = player[i].y;
+		  }
 
-    	if(*buf2 != 0)
-    	{
-    		strcpy(buf1,"data/hqp/music/");
-    		strcat(buf1,buf2);
-    		g_pMusicPlayer->load(g_pSound->getAudioSpec(),buf1);
-    		g_pMusicPlayer->play();
-     	}
-    }
-    // Didn't it work? Don't matter. HQP is optional, so continue
+		}
+		else
+		{
+		   // entering a normal level from map
+		   p_levelcontrol->dokeensleft = 0;
+		   gameloop(pCKP);
 
-	g_pLogFile->ftextOut("Drawing map...\n");
-	map_redraw();
+		   // after completion of a normal level check if the game is won
+		   if (gameiswon(pCKP))
+			  p_levelcontrol->command = LVLC_END_SEQUENCE;
+		}
+		g_pMusicPlayer->stop();
 
-	g_pInput->flushAll();
+		if(QuitState==QUIT_PROGRAM)
+		{
+			pCKP->shutdown = SHUTDOWN_EXIT;
+			break;
+		}
+		g_pGraphics->unloadHQGraphics();
 
-	// Check if we are in Demo-mode. If yes, add the upper logo to the objects
-	if(pCKP->Control.levelcontrol.demomode)
-	{
-		objects[DemoObjectHandle].exists = 1;
-		objects[DemoObjectHandle].onscreen = 1;
-		objects[DemoObjectHandle].type = OBJ_DEMOMSG;
-		objects[DemoObjectHandle].sprite = DemoSprite;
-		objects[DemoObjectHandle].x = 0;
-		objects[DemoObjectHandle].y = 0;
-		objects[DemoObjectHandle].honorPriority = 0;
-	}
-	else
-		objects[DemoObjectHandle].exists = 0;
-
-    if (wm)
-    {  // entering map from normal level, or first time around
-      if (!p_levelcontrol->tobonuslevel)
-      {
-        if (!loadinggame)
-        {
-          for(i=0;i<MAX_PLAYERS;i++)
-          {
-            player[i].x = player[i].mapplayx;
-            player[i].y = player[i].mapplayy;
-          }
-        }
-      }
-      else
-      {  // respawn at the bonus level
-        for(i=0;i<MAX_PLAYERS;i++)
-        {
-          player[i].x = BONUSLEVEL_RESPAWN_X;
-          player[i].y = BONUSLEVEL_RESPAWN_Y;
-          if (player[i].isPlaying && player[i].inventory.lives)
-          {
-             player[i].hideplayer = 1;
-             o = spawn_object((player[i].x>>CSF>>4)<<CSF<<4,((player[i].y>>CSF>>4)+1)<<CSF<<4,OBJ_TELEPORTER);
-             objects[o].ai.teleport.direction = TELEPORTING_IN;
-             objects[o].ai.teleport.whichplayer = i;
-             objects[o].ai.teleport.baseframe = TELEPORT_RED_BASEFRAME_EP1;
-             objects[o].ai.teleport.idleframe = TELEPORT_RED_IDLEFRAME_EP1;
-             g_pSound->playStereofromCoord(SOUND_TELEPORT, PLAY_NOW, objects[player[i].useObject].scrx);
-          }
-        }
-      }
-
-      if (!p_levelcontrol->success || firsttime)
-      {
-        if (!p_levelcontrol->tobonuslevel) p_levelcontrol->dokeensleft = 1;
-        // when you die you lose all keycards
-        for(i=0;i<MAX_PLAYERS;i++)
-        {
-          if (player[i].isPlaying)
-          {
-              take_keycard(DOOR_YELLOW, i);
-              take_keycard(DOOR_RED, i);
-              take_keycard(DOOR_GREEN, i);
-              take_keycard(DOOR_BLUE, i);
-           }
-        }
-      }
-      else p_levelcontrol->dokeensleft = 0;
-
-      gameloop(pCKP);
-
-      for(i=0;i<MAX_PLAYERS;i++)
-      {
-        player[i].mapplayx = player[i].x;
-        player[i].mapplayy = player[i].y;
-      }
-
-    }
-    else
-    {
-       // entering a normal level from map
-       p_levelcontrol->dokeensleft = 0;
-       gameloop(pCKP);
-
-       // after completion of a normal level check if the game is won
-       if (gameiswon(pCKP))
-          p_levelcontrol->command = LVLC_END_SEQUENCE;
-    }
-    g_pMusicPlayer->stop();
-
-    if(QuitState==QUIT_PROGRAM)
-    {
-    	pCKP->shutdown = SHUTDOWN_EXIT;
-    	break;
-    }
-    g_pGraphics->unloadHQGraphics();
-
-    for(unsigned int i=0;i<numplayers;i++)
-    {
-    	player[i].x = 0;
-    	player[i].y = 0;
-    }
-
+		for(unsigned int i=0;i<numplayers;i++)
+		{
+			player[i].x = 0;
+			player[i].y = 0;
+		}
   } while(p_levelcontrol->command==LVLC_CHANGE_LEVEL && !crashflag);
 
   g_pGraphics->unloadHQGraphics();

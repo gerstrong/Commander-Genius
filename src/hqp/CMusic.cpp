@@ -5,6 +5,7 @@
  *      Author: gerstrong
  */
 
+#include "../sdl/sound/CSound.h"
 #include "CMusic.h"
 #include "../hqp/hq_sound.h"
 #include "../CLogFile.h"
@@ -129,4 +130,43 @@ Uint8 *CMusic::passBuffer(int length) // length only refers to the part(buffer) 
 		music_pos = 0;
 		return music_buffer;
 	}
+}
+
+bool CMusic::LoadfromMusicTable(const std::string filename)
+{
+    FILE *fp;
+    if((fp=OpenGameFile("data/hqp/music/table.cfg","rt")) != NULL)
+    {
+		static const int MAX_STRING_LENGTH = 256;
+    	char buf1[MAX_STRING_LENGTH];
+    	char buf2[MAX_STRING_LENGTH];
+
+    	memset(buf1,0,sizeof(char)*MAX_STRING_LENGTH);
+    	memset(buf2,0,sizeof(char)*MAX_STRING_LENGTH);
+
+    	while(!feof(fp))
+    	{
+    		fscanf(fp,"%s",buf1);
+
+    		if(strcmp(buf1,filename.c_str()) == 0)
+    		{
+    			fscanf(fp,"%s",buf2);
+    			break;
+    		}
+    		else
+    			fgets(buf1,MAX_STRING_LENGTH,fp);
+    	}
+    	fclose(fp);
+
+    	if(*buf2 != 0)
+    	{
+    		strcpy(buf1,"data/hqp/music/");
+    		strcat(buf1,buf2);
+    		load(g_pSound->getAudioSpec(),buf1);
+    		play();
+     	}
+    	return true;
+    }
+    else
+    	return false;
 }

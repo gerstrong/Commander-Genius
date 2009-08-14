@@ -15,6 +15,7 @@ enum playstatus{
 };
 
 #include <SDL.h>
+#include <string>
 
 #include "../CSingleton.h"
 #define g_pMusicPlayer CMusic::Get()
@@ -30,6 +31,7 @@ public:
 	void play(void);
 	void stop(void);
 	Uint8 *passBuffer(int length); // returns the buffer that has to be played in every callback
+	bool LoadfromMusicTable(const std::string filename);
 
 	int playing(void){return playmode;}
 
