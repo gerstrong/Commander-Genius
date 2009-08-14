@@ -32,6 +32,7 @@
 #include "sdl/CInput.h"
 #include "sdl/CTimer.h"
 #include "sdl/sound/CSound.h"
+#include "hqp/CMusic.h"
 #include "include/misc.h"
 #include "include/menu.h"
 #include "sdl/CVideoDriver.h"
@@ -370,6 +371,49 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
     // Now load HQ Stuff, because the game could have been loaded too.
 	g_pGraphics->loadHQGraphics(p_levelcontrol->episode,p_levelcontrol->chglevelto,pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory);
 
+    // HQ Music. Load Music for a level if you have HQP
+    g_pMusicPlayer->stop();
+
+    FILE *fp;
+    sprintf(levelname, "level%02d.ck%d",  p_levelcontrol->curlevel, p_levelcontrol->episode);
+    if((fp=OpenGameFile("data/hqp/music/table.cfg","rt")) != NULL)
+    {
+		static const int MAX_STRING_LENGTH = 256;
+    	char buf1[MAX_STRING_LENGTH];
+    	char buf2[MAX_STRING_LENGTH];
+
+    	memset(buf1,0,sizeof(char)*MAX_STRING_LENGTH);
+    	memset(buf2,0,sizeof(char)*MAX_STRING_LENGTH);
+
+    	while(!feof(fp))
+    	{
+    		fscanf(fp,"%s",buf1);
+
+    		if(strcmp(buf1,levelname) == 0)
+    		{
+    			fscanf(fp,"%s",buf2);
+    			break;
+    		}
+    		else
+    			fgets(buf1,MAX_STRING_LENGTH,fp);
+    	}
+
+
+    	fclose(fp);
+
+    	if(*buf2 != 0)
+    	{
+    		strcpy(buf1,"data/hqp/music/");
+    		strcat(buf1,buf2);
+    		g_pMusicPlayer->load(g_pSound->getAudioSpec(),buf1);
+    		g_pMusicPlayer->play();
+     	}
+    }
+    // Didn't it work? Don't matter. HQP is optional, so continue
+
+	g_pLogFile->ftextOut("Drawing map...\n");
+	map_redraw();
+
 	g_pInput->flushAll();
 
 	// Check if we are in Demo-mode. If yes, add the upper logo to the objects
@@ -452,10 +496,9 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
 
        // after completion of a normal level check if the game is won
        if (gameiswon(pCKP))
-       {
           p_levelcontrol->command = LVLC_END_SEQUENCE;
-       }
     }
+    g_pMusicPlayer->stop();
 
     if(QuitState==QUIT_PROGRAM)
     {

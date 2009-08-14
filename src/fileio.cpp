@@ -8,7 +8,6 @@
 #include "keen.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/sound/CSound.h"
-#include "hqp/CMusic.h"
 #include "include/fileio.h"
 #include <vector>
 #include "include/fileio/rle.h"
@@ -582,45 +581,6 @@ unsigned int loadmap(const std::string& filename, const std::string& path,
 
     filebuf.clear();
     fclose(fp);
-
-    // HQ Sounds. Load Music for a level if you have HQP
-    g_pMusicPlayer->stop();
-
-    if((fp=OpenGameFile("data/hqp/music/table.cfg","rt")) != NULL)
-    {
-		static const int MAX_STRING_LENGTH = 256;
-    	char buf1[MAX_STRING_LENGTH];
-    	char buf2[MAX_STRING_LENGTH];
-
-    	memset(buf1,0,sizeof(char)*MAX_STRING_LENGTH);
-    	memset(buf2,0,sizeof(char)*MAX_STRING_LENGTH);
-
-    	while(!feof(fp))
-    	{
-    		fscanf(fp,"%s",buf1);
-
-    		if(strcmp(buf1,filename.c_str()) == 0)
-    		{
-    			fscanf(fp,"%s",buf2);
-    			break;
-    		}
-    		else
-    			fgets(buf1,MAX_STRING_LENGTH,fp);
-    	}
-
-
-    	fclose(fp);
-
-    	if(*buf2 != 0)
-    	{
-    		strcpy(buf1,"data/hqp/music/");
-    		strcat(buf1,buf2);
-    		g_pMusicPlayer->load(g_pSound->getAudioSpec(),buf1);
-    		g_pMusicPlayer->play();
-     	}
-    }
-
-    // Didn't it work? Don't matter. HQP is optional, so continue
 
  // install enemy stoppoints as needed
  if (episode==1 && lvlnum==13)

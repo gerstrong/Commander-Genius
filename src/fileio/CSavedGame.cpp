@@ -52,7 +52,6 @@ std::string fname="savegame" + itoa(slot) + ".dat";
 	fputc(primaryplayer, fp);
 
 	sgrle_compress(fp, (unsigned char *) mp_levelcontrol, sizeof(*mp_levelcontrol));
-
 	sgrle_compress(fp, (unsigned char *)&scroll_x, sizeof(scroll_x));
 	sgrle_compress(fp, (unsigned char *)&scrollx_buf, sizeof(scrollx_buf));
 	sgrle_compress(fp, (unsigned char *)&scrollpix, sizeof(scrollpix));
@@ -73,7 +72,6 @@ std::string fname="savegame" + itoa(slot) + ".dat";
 	fputi(highest_objslot, fp);
 	sgrle_compress(fp, (unsigned char *)&objects[0], sizeof(objects));
 	sgrle_compress(fp, (unsigned char *)&tiles[0], sizeof(tiles));
-	sgrle_compress(fp, (unsigned char *)&highest_objslot, sizeof(highest_objslot));
 
 	for(unsigned i=0;i<numplayers;i++)
 		sgrle_compress(fp, (unsigned char *)&player[i], sizeof(player[i]));
@@ -154,17 +152,11 @@ unsigned int i;
 	primaryplayer = fgetc(fp);
 
 	sgrle_compress(fp, (unsigned char *) mp_levelcontrol, sizeof(*mp_levelcontrol));
+
 	// note that we don't have to load the LEVEL, because the state
 	// of the map is already saved inside the save-game.
-
 	sgrle_initdecompression();
 	if (sgrle_decompress(fp, (unsigned char *) mp_levelcontrol, sizeof(*mp_levelcontrol))) return 1;
-
-	/*if (Load_Episode(episode))
-	{
-		g_pLogFile->ftextOut("game_load: failed loading episode %d\n", episode);
-		return 1;
-	}*/
 
 	if (sgrle_decompress(fp, (unsigned char *)&scroll_x, sizeof(scroll_x))) return 1;
 	if (sgrle_decompress(fp, (unsigned char *)&scrollx_buf, sizeof(scrollx_buf))) return 1;
@@ -186,7 +178,6 @@ unsigned int i;
 	highest_objslot = fgeti(fp);
 	if (sgrle_decompress(fp, (unsigned char *)&objects[0], sizeof(objects))) return 1;
 	if (sgrle_decompress(fp, (unsigned char *)&tiles[0], sizeof(tiles))) return 1;
-	if (sgrle_decompress(fp, (unsigned char *)&highest_objslot, sizeof(highest_objslot))) return 1;
 
 	for(i=0;i<numplayers;i++)
 	{
@@ -198,15 +189,9 @@ unsigned int i;
 	sprites[DOOR_GREEN_SPRITE].ysize = fgetc(fp);
 	sprites[DOOR_BLUE_SPRITE].ysize = fgetc(fp);
 
-	initgame( mp_levelcontrol );           // reset scroll
-	drawmap();
-	for(i=0 ; i<scroll_x ; i++) map_scroll_right();
-	for(i=0 ; i<scroll_y ; i++) map_scroll_down();
-
 	fclose(fp);
+
 	g_pLogFile->ftextOut("Structures restored: map size: %d,%d\n", map.xsize, map.ysize);
-	g_pLogFile->ftextOut("Redrawing map...\n");
-	map_redraw();
 	g_pLogFile->ftextOut("Load game OK\n");
 	return true;
 }
