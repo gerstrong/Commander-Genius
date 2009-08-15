@@ -11,6 +11,7 @@
 #include "../CLogFile.h"
 #include "../include/vorbis/oggsupport.h"
 #include "../FindFile.h"
+#include <fstream>
 
 CMusic::CMusic() {
 	playmode = PLAY_MODE_STOP;
@@ -23,7 +24,7 @@ CMusic::~CMusic() {
 	unload();
 }
 
-int CMusic::load(SDL_AudioSpec AudioSpec, char *musicfile)
+int CMusic::load(SDL_AudioSpec AudioSpec, const std::string &musicfile)
 {
 	if(AudioSpec.format != 0)
 	{
@@ -39,19 +40,19 @@ int CMusic::load(SDL_AudioSpec AudioSpec, char *musicfile)
 	pOggAudio.sound_pos=0;
 
 	FILE *fp;
-	if((fp = OpenGameFile(musicfile,"rb")) == NULL)
+	if((fp = OpenGameFile(musicfile.c_str(),"rb")) == NULL)
 	{
-		g_pLogFile->textOut(PURPLE,"Music Driver(): \"%s\". File does not exist!<br>", musicfile);
+		g_pLogFile->textOut(PURPLE,"Music Driver(): \"%s\". File does not exist!<br>", musicfile.c_str());
 		return -1;
 	}
 
 	if(openOGGSound(fp, &AudioFileSpec, AudioSpec.format, &pOggAudio) != 0)
 	{
-		g_pLogFile->textOut(PURPLE,"Music Driver(): OGG file could not be opened: \"%s\". File is damaged or something is wrong with your soundcard!<br>", musicfile);
+		g_pLogFile->textOut(PURPLE,"Music Driver(): OGG file could not be opened: \"%s\". File is damaged or something is wrong with your soundcard!<br>", musicfile.c_str());
 		return 1;
 	}
 
-	g_pLogFile->ftextOut("Music Driver(): File \"%s\" opened successfully!<br>", musicfile);
+	g_pLogFile->ftextOut("Music Driver(): File \"%s\" opened successfully!<br>", musicfile.c_str());
 
     int ret;
 
@@ -132,41 +133,35 @@ Uint8 *CMusic::passBuffer(int length) // length only refers to the part(buffer) 
 	}
 }
 
-bool CMusic::LoadfromMusicTable(const std::string filename)
+bool CMusic::LoadfromMusicTable(const std::string levelfilename)
 {
-    FILE *fp;
-    if((fp=OpenGameFile("data/hqp/music/table.cfg","rt")) != NULL)
+    std::ifstream Tablefile;
+    OpenGameFileR(Tablefile, "data/hqp/music/table.cfg");
+
+    if(Tablefile)
     {
-		static const int MAX_STRING_LENGTH = 256;
-    	char buf1[MAX_STRING_LENGTH];
-    	char buf2[MAX_STRING_LENGTH];
+    	std::string str_buf;
+    	char c_buf[256];
 
-    	memset(buf1,0,sizeof(char)*MAX_STRING_LENGTH);
-    	memset(buf2,0,sizeof(char)*MAX_STRING_LENGTH);
-
-    	while(!feof(fp))
+    	while(!Tablefile.eof())
     	{
-    		fscanf(fp,"%s",buf1);
-
-    		if(strcmp(buf1,filename.c_str()) == 0)
+        	Tablefile.get(c_buf, 256, ' ');
+        	str_buf = c_buf;
+    		if( str_buf == levelfilename )	// found the level! Load the song!
     		{
-    			fscanf(fp,"%s",buf2);
-    			break;
+    			// Get the song filename and load it!
+    			Tablefile.get(c_buf, 256);
+    			str_buf = c_buf;
+    			TrimSpaces(str_buf);
+    			load(g_pSound->getAudioSpec(), "data/hqp/music/" + str_buf);
+        		play();
+    			Tablefile.close();
+    			return true;
     		}
-    		else
-    			fgets(buf1,MAX_STRING_LENGTH,fp);
+    		Tablefile.get(c_buf, 256);
+    		Tablefile.get(); // Skip the '\n' delimiter, so next will be read.
     	}
-    	fclose(fp);
-
-    	if(*buf2 != 0)
-    	{
-    		strcpy(buf1,"data/hqp/music/");
-    		strcat(buf1,buf2);
-    		load(g_pSound->getAudioSpec(),buf1);
-    		play();
-     	}
-    	return true;
+    	Tablefile.close();
     }
-    else
-    	return false;
+	return false;
 }

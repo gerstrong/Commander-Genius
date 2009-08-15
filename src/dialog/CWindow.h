@@ -28,7 +28,7 @@ enum Windowtypes{
 
 class CWindow {
 public:
-	CWindow(int x, int y, int w, int h, char window_type = WND_STANDARD);
+	CWindow(int x, int y, int w, int h);
 	virtual ~CWindow();
 
 	// Creation routines

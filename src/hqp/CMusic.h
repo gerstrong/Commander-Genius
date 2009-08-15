@@ -26,12 +26,12 @@ public:
 	CMusic();
 	virtual ~CMusic();
 
-	int load(SDL_AudioSpec AudioSpec, char *musicfile);
+	int load(SDL_AudioSpec AudioSpec, const std::string &musicfile);
 	void unload(void);
 	void play(void);
 	void stop(void);
 	Uint8 *passBuffer(int length); // returns the buffer that has to be played in every callback
-	bool LoadfromMusicTable(const std::string filename);
+	bool LoadfromMusicTable(const std::string levelfilename);
 
 	int playing(void){return playmode;}
 

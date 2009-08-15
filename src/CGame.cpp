@@ -75,6 +75,7 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 	    	if(textsize > 0)
 	    	{
 					showPage(text,pCKP,textsize);
+
 					free(text);
 			}
 	    	else if(textsize == 0)

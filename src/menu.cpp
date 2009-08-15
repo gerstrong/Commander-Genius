@@ -21,6 +21,7 @@
 #include "vorticon/CDialog.h"
 #include "CLogFile.h"
 #include "sdl/CSettings.h"
+#include "dialog/CTextViewer.h"
 
 #include <SDL.h>
 #include <iostream>
@@ -903,22 +904,10 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 // This function shows the Story of Commander Keen!
 void showPage(const std::string& str_text, stCloneKeenPlus *pCKP, int textsize)
 {
-	char *text;
-	unsigned int i, j, k;
-	int exit=0;
-	int textpos;
-	bool enter;
-	unsigned int dlgX,dlgY,dlgW,dlgH;
-	unsigned int scroll, maxscroll;
-	char buffer[200][40];
+	bool cancel = false;
 
-
-	// copy the string to an array since string manipulation are dangerous here!
-
-	text = new char[textsize];
-	memset(text,0,textsize);
-
-	memcpy(text,str_text.c_str(),textsize);
+	CTextViewer *TextViewer = new CTextViewer(0,0,320,140);
+	TextViewer->loadText(str_text);
 
 	showmapatpos(90, STORYBOARD_X, STORYBOARD_Y, pCKP);
 
@@ -928,130 +917,29 @@ void showPage(const std::string& str_text, stCloneKeenPlus *pCKP, int textsize)
 	fade.curamt = 0;
 	fade.fadetimer = 0;
 
-	scroll=0;
-	maxscroll=0;
-
-	j=0;
-	k=0;
-
 	AllPlayersInvisible();
 
-	  dlgX = 0;
-	  dlgY = 0;
-	  dlgW = 39;
-	  dlgH = 15;
-
-	  textpos=0;
-	  memset(buffer,0,200*40);
-	  // Prepare the buffer
-
-	  char sbuf[256];
-	  unsigned int totnumline=0;
-
-	  for(i=0;i<200;i++)
-	  {
-	  	for(j=0;j<dlgW-1;j++)
-	   	{
-	   		sscanf(text+textpos,"%s",sbuf);
-
-	   		if(((strlen(sbuf) + j) > dlgW-2))
-	   		{
-	   			if(text[textpos] == ' ')
-	   			{
-	   				textpos++;
-	   				break;
-	   			}
-	   		}
-
-	   		if(text[textpos]=='\n' )
-	   		{
-	   			textpos++;
-				break;
-	   		}
-
-	   		if(text[textpos]==31 ) 	// I don't know, what they do,
-									//but original version seems to ignore them!
-	   		{
-	   			text[textpos]=' ';
-	   		}
-
-
-    		buffer[i][j] = text[textpos];
-    		textpos++;
-    		if(textpos >= textsize)
-    			break;
-    	}
-		if(textpos >= textsize)
+	do
+	{
+	    if(g_pTimer->TimeToRunLogic())
 		{
-			totnumline+=3;
-			break;
+			gamedo_fades();
+			gamedo_AnimatedTiles();
+
+			g_pInput->pollEvents();
+
+			cancel = g_pInput->getPressedAnyKey();
 		}
+	     if (g_pTimer->TimeToRender())
+	     {
+	    	gamedo_RenderScreen();
+		    TextViewer->renderBox(); // This comes after, because it does transparent overlay
+	     }
 
-		totnumline++;
-	  }
-	  buffer[i][j] = ' '; // Last character is empty!
+	} while(!cancel);
 
-	  delete [] text;
+	  delete TextViewer;
 
-	  std::string coverline(38, (char) 2);
-
-	  do
-	  {
-		    if(g_pTimer->TimeToRunLogic())
-			{
-				gamedo_fades();
-				gamedo_AnimatedTiles();
-				sb_dialogbox(dlgX, dlgY, dlgW, dlgH);
-
-				k=0;
-				// Draw the text
-				for(i=0;i<dlgH-1;i++)
-				{
-					if(buffer[i+(scroll>>3)][0]=='~') // Special Background Colour
-					{
-						std::string temp(38, ' ');
-						g_pGraphics->sb_color_font_draw(temp, (dlgX+1)<<3, (((dlgY+i+1)<<3) -(scroll%8)),COLOUR_DARKRED,COLOUR_GREY);
-						g_pGraphics->sb_color_font_draw(buffer[i+(scroll>>3)]+1, (dlgX+1)<<3, (((dlgY+i+1)<<3) -(scroll%8)),COLOUR_DARKRED,COLOUR_GREY);
-					}
-					else
-						g_pGraphics->sb_font_draw(buffer[i+(scroll>>3)], (dlgX+1)<<3, (((dlgY+i+1)<<3) -(scroll%8)));
-				}
-				g_pGraphics->sb_font_draw(coverline, (dlgX+1)<<3, dlgY); // Upper and lower edge Update
-				g_pGraphics->sb_font_draw(coverline, (dlgX+1)<<3, (dlgY+dlgH-1)<<3);
-
-				// If user presses up or down
-				if (g_pInput->getHoldedCommand(0,IC_DOWN) || g_pInput->getHoldedCommand(1,IC_DOWN))
-				{
-					if(scroll < (totnumline-dlgH)<<3)
-						scroll++;
-				}
-				else if (g_pInput->getHoldedCommand(0,IC_UP) || g_pInput->getHoldedCommand(1,IC_UP))
-				{
-					if(scroll > 0)
-						scroll--;
-				}
-
-				enter = (g_pInput->getPressedCommand(0,IC_STATUS) || g_pInput->getPressedCommand(1,IC_STATUS));
-				if (enter)
-				{
-					exit=1;
-					fade.dir = FADE_OUT;
-					fade.curamt = PAL_FADE_SHADES;
-					fade.fadetimer = 0;
-					fade.rate = FADE_NORM;
-					fade.mode = FADE_GO;
-				}
-
-				g_pInput->pollEvents();
-
-				if(exit==1 && fade.mode==FADE_COMPLETE)
-					break;
-
-				if (g_pInput->getPressedCommand(KQUIT)) break;
-			}
-			gamedo_frameskipping();
-
-	  } while(!crashflag);
 	  return;
 }
 

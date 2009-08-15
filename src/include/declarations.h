@@ -40,7 +40,7 @@ struct stLevelControl
  int chglevelto;              // parameter to LVLC_CHANGE_LEVEL
  int tobonuslevel;            // if 1 player will warp to bonus level on return to WM (for ep1)
  // data about current level
- char curlevel;                // number of current level
+ unsigned char curlevel;                // number of current level
  bool success;                // true if level was finished, 0 if he died
  bool gameovermode;           // true if "Game Over" is displayed
  bool dokeensleft;            // true if we need to do the "Keens Left"

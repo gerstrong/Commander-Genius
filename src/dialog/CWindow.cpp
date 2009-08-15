@@ -8,18 +8,15 @@
 #include "CWindow.h"
 #include "../CGraphics.h"
 
-CWindow::CWindow(int x, int y, int w, int h, char window_type)
+CWindow::CWindow(int x, int y, int w, int h)
 {
-	// TODO: Change that back to uint input as all the entire class. With Float it is a nightmare here!
 	m_x = x;
 	m_y = y;
 	m_w = w;
 	m_h = h;
 
-	m_window_type = window_type;
-
-	m_8x8tileheight = 8.0;
-	m_8x8tilewidth = 8.0;
+	m_8x8tileheight = 8;
+	m_8x8tilewidth = 8;
 }
 
 CWindow::~CWindow() {
@@ -126,25 +123,4 @@ void CWindow::drawWindow()
 	g_pGraphics->drawCharacter( m_x + m_w - m_8x8tilewidth, m_y, 3); // Upper-Right corner
 	g_pGraphics->drawCharacter( m_x, m_y + m_h - m_8x8tileheight, 6); // Lower-Left corner
 	g_pGraphics->drawCharacter( m_x + m_w - m_8x8tilewidth, m_y + m_h - m_8x8tileheight, 8); // Lower-Right corner
-
-	if(m_window_type == WND_PAGESCROLLER)
-	{
-		// It has Scroll Controls, so the user knows, that he can scroll down, up and quit
-		// fill the area with grey tiles
-		for( i=m_8x8tilewidth ; i<m_w-m_8x8tilewidth ; i+=m_8x8tilewidth )
-			for( j=0 ; j<2*m_8x8tileheight ; j+=m_8x8tileheight )
-				g_pGraphics->drawCharacter( m_x+i, m_y+m_h+j, 160);	// just grey small tile
-
-		g_pGraphics->drawCharacter( m_x, m_y + m_h, 4); 						// 4 is one left-border
-		g_pGraphics->drawCharacter( m_x + m_w - m_8x8tilewidth, m_y + m_h, 5); 	// 5 is the right-border
-		for( i = m_8x8tilewidth ; i < m_w-m_8x8tilewidth ; i+= m_8x8tilewidth )
-			g_pGraphics->drawCharacter( m_x + i, m_y + m_h + m_8x8tileheight, 7); 					// 7 is also the lower-border
-		g_pGraphics->drawCharacter( m_x, m_y + m_h + m_8x8tileheight, 6); 						// Lower-Left corner
-		g_pGraphics->drawCharacter( m_x + m_w - m_8x8tilewidth, m_y + m_h + m_8x8tileheight, 8); 	// Lower-Right corner
-
-		// Now print the helping text
-		g_pGraphics->drawFont("ESC to Exit / \17 \21 to Read",
-							m_x+m_8x8tilewidth+(m_w/2)-12*m_8x8tilewidth
-								, m_y+m_h, true);
-	}
 }
