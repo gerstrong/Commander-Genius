@@ -1,6 +1,9 @@
 Commander Genius Pre-Release v0.3 (CloneKeenPlus):
 --------------------------------------------------
 
+14-08-2009
+- The Savegame system has been improved a lot!
+
 12-08-2009
 - New Timer System! At last!
 - Minor issues have been fixed

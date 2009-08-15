@@ -906,7 +906,7 @@ void showPage(const std::string& str_text, stCloneKeenPlus *pCKP, int textsize)
 {
 	bool cancel = false;
 
-	CTextViewer *TextViewer = new CTextViewer(0,0,320,140);
+	CTextViewer *TextViewer = new CTextViewer(0,0,320,136);
 	TextViewer->loadText(str_text);
 
 	showmapatpos(90, STORYBOARD_X, STORYBOARD_Y, pCKP);
@@ -919,6 +919,7 @@ void showPage(const std::string& str_text, stCloneKeenPlus *pCKP, int textsize)
 
 	AllPlayersInvisible();
 
+	char timer=0;
 	do
 	{
 	    if(g_pTimer->TimeToRunLogic())
@@ -928,7 +929,37 @@ void showPage(const std::string& str_text, stCloneKeenPlus *pCKP, int textsize)
 
 			g_pInput->pollEvents();
 
-			cancel = g_pInput->getPressedAnyKey();
+			// Normal Keys/Axes
+			if( g_pInput->getHoldedCommand(IC_DOWN) )
+			{
+				timer++;
+				if(timer >= 5)
+					TextViewer->scrollDown();
+			}
+			if( g_pInput->getHoldedCommand(IC_UP) )
+			{
+				timer++;
+				if(timer >= 5)
+					TextViewer->scrollUp();
+			}
+
+			// Page Keys
+			if( g_pInput->getHoldedKey(KPGDN) )
+			{
+				timer++;
+				if(timer >= 5)
+					TextViewer->setNextPos();
+			}
+			if( g_pInput->getHoldedKey(KPGUP) )
+			{
+				timer++;
+				if(timer >= 5)
+					TextViewer->setPrevPos();
+			}
+
+			if(timer>=10) timer=0;
+
+			cancel = g_pInput->getPressedKey(KQUIT);
 		}
 	     if (g_pTimer->TimeToRender())
 	     {

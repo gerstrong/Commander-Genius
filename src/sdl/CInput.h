@@ -22,6 +22,8 @@
 //#define KEYTABLE_SIZE            54
 //#define KEYTABLE_REALKEYS_SIZE   49
 
+// TODO: Change this to enums
+
 #define KQUIT		  0
 #define KLEFT         1
 #define KRIGHT        2
@@ -102,8 +104,10 @@
 #define KY			78
 #define KZ			79
 #define KLSHIFT		80
+#define KPGUP		81
+#define KPGDN		82
 
-#define KEYTABLE_SIZE   82
+#define KEYTABLE_SIZE   90
 
 #define IC_JUMP		0
 #define IC_POGO		1

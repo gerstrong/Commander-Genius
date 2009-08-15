@@ -318,6 +318,11 @@ void CInput::processKeys(int value)
        case SDLK_RIGHT:	immediate_keytable[KRIGHT]	= value;  break;
        case SDLK_DOWN:	immediate_keytable[KDOWN]	= value;  break;
 
+       // Page Keys
+       case SDLK_PAGEUP:	immediate_keytable[KPGUP]	= value;  break;
+       case SDLK_PAGEDOWN:	immediate_keytable[KPGDN]		= value;  break;
+
+
        case SDLK_RETURN:immediate_keytable[KENTER]	= value;  break;
        case SDLK_RCTRL:immediate_keytable[KCTRL]	= value;  break;
        case SDLK_SPACE:immediate_keytable[KSPACE]	= value;  break;
