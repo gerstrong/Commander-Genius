@@ -963,8 +963,9 @@
 			baseConfigurationReference = 5048396E09E3307300765E4B /* CommanderGeniusTarget.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\\\"$(SRCROOT)\\\"",
@@ -975,6 +976,7 @@
 				HEADER_SEARCH_PATHS = /Library/Frameworks/SDL.framework/Headers;
 				INFOPLIST_FILE = "/Users/az/Programmierung/CommanderGenius/build/Xcode/Info copy.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
+				MACOSX_DEPLOYMENT_TARGET = 10.3;
 				OTHER_CFLAGS = (
 					"-DBUILD_SDL",
 					"-DUSE_OPENGL",
@@ -982,6 +984,7 @@
 				);
 				PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES;
 				PRODUCT_NAME = "Commander Genius";
+				SDKROOT = macosx10.4;
 			};
 			name = Release;
 		};

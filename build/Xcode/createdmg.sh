@@ -49,5 +49,5 @@ mkdmg() {
 
 
 cd "$(dirname "$0")"
-rsync -a --delete build/Debug/Commander\ Genius.app dmg/
+rsync -a --delete build/Release/Commander\ Genius.app dmg/
 mkdmg CommanderGenius "$(egrep -E ".*#define.*CGVERSION.*" ../../version.h | cut -d "\"" -f 2)" dmg
