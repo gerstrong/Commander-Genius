@@ -231,9 +231,6 @@
 		23D3E9B61013ABCA001643FA /* hq_sound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hq_sound.h; sourceTree = "<group>"; };
 		23D3E9B81013ABCA001643FA /* declarations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = declarations.h; sourceTree = "<group>"; };
 		23D3E9B91013ABCA001643FA /* enemyai.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = enemyai.h; sourceTree = "<group>"; };
-		23D3E9BA1013ABCA001643FA /* eseq_ep1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = eseq_ep1.h; sourceTree = "<group>"; };
-		23D3E9BB1013ABCA001643FA /* eseq_ep2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = eseq_ep2.h; sourceTree = "<group>"; };
-		23D3E9BC1013ABCA001643FA /* eseq_ep3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = eseq_ep3.h; sourceTree = "<group>"; };
 		23D3E9BE1013ABCA001643FA /* lzexe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lzexe.h; sourceTree = "<group>"; };
 		23D3E9BF1013ABCA001643FA /* rle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rle.h; sourceTree = "<group>"; };
 		23D3E9C01013ABCA001643FA /* story.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = story.h; sourceTree = "<group>"; };
@@ -598,9 +595,6 @@
 			children = (
 				23D3E9B81013ABCA001643FA /* declarations.h */,
 				23D3E9B91013ABCA001643FA /* enemyai.h */,
-				23D3E9BA1013ABCA001643FA /* eseq_ep1.h */,
-				23D3E9BB1013ABCA001643FA /* eseq_ep2.h */,
-				23D3E9BC1013ABCA001643FA /* eseq_ep3.h */,
 				23D3E9BD1013ABCA001643FA /* fileio */,
 				23D3E9C11013ABCA001643FA /* fileio.h */,
 				23D3E9C21013ABCA001643FA /* game.h */,
