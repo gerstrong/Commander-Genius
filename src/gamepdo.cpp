@@ -854,9 +854,7 @@ void gamepdo_Jump(int cp)
 
 		   // Did he bonk the ceiling
 		   if(!player[cp].blockedu)
-		   {
 			   player[cp].y += player[cp].pinertia_y;
-		   }
 		   else
 		   {
     		   player[cp].pinertia_y = 0;
@@ -1009,35 +1007,35 @@ p_levelcontrol = &(pCKP->Control.levelcontrol);
              // continously bounce while pogo stick is out
         	  g_pSound->playStereofromCoord(SOUND_KEEN_JUMP, PLAY_NOW, objects[player[cp].useObject].scrx);
 
-             // jump high if JUMP key down, else bounce low
-             if (player[cp].playcontrol[PA_JUMP])
-             {
-               if (!pCKP->Option[OPT_SUPERPOGO].value)
-               {  // normal high pogo jump
-                  player[cp].pjumpupspeed = PPOGOUP_SPEED;
-                  player[cp].pjumptime = PJUMP_NORMALTIME_POGO_LONG;
-                  player[cp].pjumpupdecreaserate = PJUMP_UPDECREASERATE_POGO_LONG;
-               }
-               else
-               {
-                  player[cp].pjumpupspeed = PPOGOUP_SPEED_SUPER;
-                  player[cp].pjumptime = PJUMP_NORMALTIME_POGO_LONG_SUPER;
-                  player[cp].pjumpupdecreaserate = PJUMP_UPDECREASERATE_POGO_LONG_SUPER;
-               }
-             }
-             else
-             {
-               if(player[cp].ppogostick)
-               {
-            	   player[cp].pjumpupspeed = PJUMPUP_SPEED;
-				   player[cp].pjumptime = PJUMP_NORMALTIME_POGO_SHORT;
-				   player[cp].pjumpupdecreaserate = PJUMP_UPDECREASERATE_POGO_SHORT;
-               }
-             }
-             player[cp].pjumpframe = PJUMP_PREPARE_LAST_FRAME;
-             player[cp].pjumping = PPOGOING;
-             player[cp].pjumpupspeed_decreasetimer = 0;
-             player[cp].pjustjumped = 1;
+        	  // jump high if JUMP key down, else bounce low
+        	  if (player[cp].playcontrol[PA_JUMP])
+        	  {
+				   if (!pCKP->Option[OPT_SUPERPOGO].value)
+				   {  // normal high pogo jump
+					  player[cp].pjumpupspeed = (PPOGOUP_SPEED*player[cp].playcontrol[PA_JUMP]) / 50;
+					  player[cp].pjumptime = PJUMP_NORMALTIME_POGO_LONG;
+					  player[cp].pjumpupdecreaserate = PJUMP_UPDECREASERATE_POGO_LONG;
+				   }
+				   else
+				   {
+					  player[cp].pjumpupspeed = PPOGOUP_SPEED_SUPER;
+					  player[cp].pjumptime = PJUMP_NORMALTIME_POGO_LONG_SUPER;
+					  player[cp].pjumpupdecreaserate = PJUMP_UPDECREASERATE_POGO_LONG_SUPER;
+				   }
+        	  }
+        	  else
+        	  {
+        		  if(player[cp].ppogostick)
+        		  {
+        			  player[cp].pjumpupspeed = PJUMPUP_SPEED;
+        			  player[cp].pjumptime = PJUMP_NORMALTIME_POGO_SHORT;
+        			  player[cp].pjumpupdecreaserate = PJUMP_UPDECREASERATE_POGO_SHORT;
+        		  }
+        	  }
+        	  player[cp].pjumpframe = PJUMP_PREPARE_LAST_FRAME;
+        	  player[cp].pjumping = PPOGOING;
+        	  player[cp].pjumpupspeed_decreasetimer = 0;
+        	  player[cp].pjustjumped = 1;
 
           } else player[cp].pjumpanimtimer++;
           break;
@@ -1063,8 +1061,8 @@ p_levelcontrol = &(pCKP->Control.levelcontrol);
              if (player[cp].pjumpanimtimer > PJUMP_PREPARE_ANIM_RATE)
              {
                   if (player[cp].pjumpframe == PJUMP_PREPARE_LAST_FRAME || !player[cp].playcontrol[PA_JUMP])
-                  {  // time to start the jump
-                  // select a jump depending on how long keen was preparing
+                  {  	// time to start the jump
+						// select a jump depending on how long keen was preparing
                        player[cp].pjumpupspeed = PJUMPUP_SPEED;
                        switch(player[cp].pjumpframe)
                        {
@@ -1125,19 +1123,12 @@ p_levelcontrol = &(pCKP->Control.levelcontrol);
                         {  player[cp].pdir=RIGHT; }
                     }
                     else
-                    {
                       player[cp].pjumpdir = UP;
 
-                    }
-
                     if (player[0].playcontrol[PA_X] < 0)
-                    {
-                   	 player[cp].pinertia_x--;
-                    }
+                    	player[cp].pinertia_x--;
                     if (player[0].playcontrol[PA_X] > 0)
-                    {
-                   	 player[cp].pinertia_x++;
-                    }
+                    	player[cp].pinertia_x++;
 
                     player[cp].pwalkincreasetimer = 0;
                   }
@@ -1164,11 +1155,12 @@ p_levelcontrol = &(pCKP->Control.levelcontrol);
          {
            if (player[cp].pjumpupspeed_decreasetimer>player[cp].pjumpupdecreaserate)
            {
-              if (!player[cp].pjumpupspeed)
-              {
-                player[cp].pjumping = PNOJUMP;
-              } else player[cp].pjumpupspeed--;
-              player[cp].pjumpupspeed_decreasetimer=0;
+       		   if (!player[cp].pjumpupspeed)
+       		   {
+       			   player[cp].pjumping = PNOJUMP;
+       		   }
+       		   else player[cp].pjumpupspeed--;
+       		   player[cp].pjumpupspeed_decreasetimer=0;
            } else player[cp].pjumpupspeed_decreasetimer++;
          }
          else player[cp].pjumptime--;
@@ -1177,6 +1169,10 @@ p_levelcontrol = &(pCKP->Control.levelcontrol);
          break;
     }
 
+    // If we are in Godmode, use the Pogo, and pressing the jump button, make the player fly
+    if( player[cp].godmode && player[cp].ppogostick &&
+    		g_pInput->getHoldedCommand(cp, IC_JUMP) && !player[cp].blockedu )
+    	player[cp].y -= PPOGOUP_SPEED;
 }
 
 void gamepdo_falling(int cp, stCloneKeenPlus *pCKP)
@@ -1301,9 +1297,9 @@ short tilsupport;
           player[cp].pfallspeed_increasetimer=0;
        } else player[cp].pfallspeed_increasetimer++;
 
-       // add current fall speed to player Y
-       player[cp].y += player[cp].pfallspeed;
-
+       // add current fall speed to player Y or make him fly in godmode with pogo
+       if( !player[cp].godmode || !player[cp].ppogostick || !g_pInput->getHoldedCommand(cp, IC_JUMP) )
+           player[cp].y += player[cp].pfallspeed;
     }
     else
     {  // not falling

@@ -66,7 +66,7 @@ char eseq3_AwardBigV(stCloneKeenPlus *pCKP)
   eseq_showmsg(getstring("EP3_ESEQ_PAGE3"),x,y,w,h, true);
   eseq_showmsg(getstring("EP3_ESEQ_PAGE4"),x,y,w,h, true);
 
-  finale_draw("finale.ck3", pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory);
+  finale_draw("finale.ck3", pCKP->Resources.GameDataDirectory);
   scrollx_buf = scrolly_buf = 0;
   player[0].hideplayer = 1;
 

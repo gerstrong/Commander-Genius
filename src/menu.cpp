@@ -127,8 +127,6 @@ short loadResourcesforStartMenu(stCloneKeenPlus *pCKP, CGame *Game)
 	else
 		pCKP->Control.levelcontrol.episode = pCKP->GameData[pCKP->Resources.GameSelected-1].Episode;
 
-    //if (latch_loadgraphics(pCKP->Control.levelcontrol.episode, pCKP->GameData[0].DataDirectory)) return abortCKP(pCKP);
-	//if (Game->getLatch()->loadGraphics(pCKP->Control.levelcontrol.episode, pCKP->GameData[0].DataDirectory)) return abortCKP(pCKP);
 	Game->loadResources(pCKP->Control.levelcontrol.episode, pCKP->GameData[0].DataDirectory);
 
 	player[0].x = player[0].y = 0;
@@ -199,7 +197,8 @@ bool loadStartMenu(stCloneKeenPlus *pCKP)
 				{
 					ret = true;
 					pCKP->Resources.GameSelected = GamesMenu->getSelection()+1;
-					pCKP->Control.levelcontrol.episode = pCKP->GameData[pCKP->Resources.GameSelected-1].Episode;
+					pCKP->Control.levelcontrol.episode = pCKP->GameData[GamesMenu->getSelection()].Episode;
+					pCKP->Resources.GameDataDirectory = pCKP->GameData[GamesMenu->getSelection()].DataDirectory;
 				}
 				else ret = false;
 				break;
@@ -516,7 +515,7 @@ int AudioDlg(stCloneKeenPlus *pCKP)
 					delete Settings; Settings = NULL;
 					g_pSound->init();
 					ok = g_pSound->loadSoundData(pCKP->Control.levelcontrol.episode,
-							pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory);
+												 pCKP->Resources.GameDataDirectory);
 
 					break;
 				}

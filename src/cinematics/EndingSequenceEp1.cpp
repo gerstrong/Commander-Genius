@@ -311,7 +311,7 @@ int eseq1_BackAtHome(stCloneKeenPlus *pCKP)
   lastenterstate = 1;
   waittimer = 0;
 
-  finale_draw("finale.ck1", pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory);
+  finale_draw("finale.ck1", pCKP->Resources.GameDataDirectory);
   scrollx_buf = scroll_x = 0;
   scrolly_buf = scroll_y = 0;
 

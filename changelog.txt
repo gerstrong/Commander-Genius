@@ -1,5 +1,13 @@
-Commander Genius Pre-Release v0.3 (CloneKeenPlus):
---------------------------------------------------
+Commander Genius Pre-Release v0.3.0.1 (CloneKeenPlus):
+------------------------------------------------------
+
+16-08-2009
+- Godmode now also makes keen fly with pogo
+- Pogo jump are more sensitive to the button press-time.
+- Improved High-Score System
+
+15-08-2009
+- New TextViewer for the Story Text and in future for others.
 
 14-08-2009
 - The Savegame system has been improved a lot!

@@ -68,8 +68,8 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 	    	int textsize;
 
 	    	textsize = readStoryText(&text,
-					pCKP->GameData[pCKP->Resources.GameSelected-1].Episode,
-					pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory); // Read text from
+					pCKP->Control.levelcontrol.episode,
+					pCKP->Resources.GameDataDirectory); // Read text from
 																				   // and store it at the text pointer
 
 	    	if(textsize > 0)
@@ -162,7 +162,7 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 	      case MAINMNU_ORDERING_INFO:
 	    	  COrderingInfo *OrderingInfo;
 	    	  OrderingInfo = new COrderingInfo(pCKP->Control.levelcontrol.episode,
-	    			  pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory);
+	    			  pCKP->Resources.GameDataDirectory);
 	    	  OrderingInfo->Render(pCKP);
 	    	  delete OrderingInfo;
 	    	  break;

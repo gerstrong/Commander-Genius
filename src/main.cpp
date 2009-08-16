@@ -323,7 +323,7 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
 		else
 		  wm = 0;
 
-		if (loadmap(levelname, pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory, newlevel, p_levelcontrol))
+		if (loadmap(levelname, pCKP->Resources.GameDataDirectory, newlevel, p_levelcontrol))
 		{
 		  crashflag = 1;
 		  crashflag2 = p_levelcontrol->chglevelto;
@@ -368,7 +368,9 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
 		g_pGraphics->initPalette(p_levelcontrol->dark);
 
 		// Now load HQ Stuff, because the game could have been loaded too.
-		g_pGraphics->loadHQGraphics(p_levelcontrol->episode,p_levelcontrol->chglevelto,pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory);
+		g_pGraphics->loadHQGraphics(p_levelcontrol->episode,
+									p_levelcontrol->chglevelto,
+									pCKP->Resources.GameDataDirectory);
 		// HQ Music. Load Music for a level if you have HQP
 		g_pMusicPlayer->stop();
 		sprintf(levelname, "level%02d.ck%d",  p_levelcontrol->curlevel, p_levelcontrol->episode);
@@ -552,7 +554,7 @@ gotEOF: ;
 
    // now load the map and play the level
    sprintf(filename, "level%02d.ck%d", p_levelcontrol->curlevel, p_levelcontrol->episode);
-   if ( loadmap(filename, pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory,
+   if ( loadmap(filename, pCKP->Resources.GameDataDirectory,
 		   p_levelcontrol->curlevel, &(pCKP->Control.levelcontrol)) ) return DEMO_RESULT_FILE_BAD;
 
    for(i=0;i<NUM_OPTIONS;i++) SaveOptions[i] = p_option[i].value;

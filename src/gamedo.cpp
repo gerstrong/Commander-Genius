@@ -100,8 +100,8 @@ unsigned int msb, lsb;
     	 memcpy(player[p].lastplaycontrol,player[p].playcontrol,PA_MAX_ACTIONS);
 
     	 // Entry for every player
-    	 for(Uint8 j=0 ; j<PA_MAX_ACTIONS ; j++)
-    		 player[p].playcontrol[j] = 0;
+   		 player[p].playcontrol[0] = 0;
+   		 player[p].playcontrol[1] = 0;
 
     	 if(g_pInput->getHoldedCommand(p, IC_LEFT))
     		 player[p].playcontrol[PA_X] -= 100;
@@ -114,13 +114,16 @@ unsigned int msb, lsb;
     		 player[p].playcontrol[PA_Y] += 100;
 
     	 if(g_pInput->getHoldedCommand(p, IC_JUMP))
-    		 player[p].playcontrol[PA_JUMP] = 1;
-    	 if(g_pInput->getHoldedCommand(p, IC_POGO))
-    		 player[p].playcontrol[PA_POGO] = 1;
-    	 if(g_pInput->getHoldedCommand(p, IC_FIRE))
-    		 player[p].playcontrol[PA_FIRE] = 1;
-    	 if(g_pInput->getHoldedCommand(p, IC_STATUS))
-    		 player[p].playcontrol[PA_STATUS] = 1;
+    		 player[p].playcontrol[PA_JUMP]++;
+    	 else
+    		 player[p].playcontrol[PA_JUMP] = 0;
+
+   		 player[p].playcontrol[PA_POGO]   = g_pInput->getHoldedCommand(p, IC_POGO)   ? 1 : 0;
+   		 player[p].playcontrol[PA_FIRE]   = g_pInput->getHoldedCommand(p, IC_FIRE)   ? 1 : 0;
+   		 player[p].playcontrol[PA_STATUS] = g_pInput->getHoldedCommand(p, IC_STATUS) ? 1 : 0;
+
+   		 // The possibility to charge jumps. This is mainly used for the pogo.
+   		 if( player[p].playcontrol[PA_JUMP] > 50) player[p].playcontrol[PA_JUMP] = 50;
 
     	 if (p_levelcontrol->demomode==DEMO_RECORD)
     	 {

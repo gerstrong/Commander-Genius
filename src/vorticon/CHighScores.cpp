@@ -47,7 +47,7 @@ CHighScores::CHighScores(stCloneKeenPlus *poutsideCKP) {
 	pCKP = poutsideCKP;
 
 	Episode = pCKP->Control.levelcontrol.episode;
-	DataDirectory = pCKP->GameData->DataDirectory;
+	DataDirectory = pCKP->Resources.GameDataDirectory;
 }
 
 CHighScores::~CHighScores() {
@@ -125,11 +125,11 @@ char CHighScores::showHighScore(void)
 			if(pCKP->Control.levelcontrol.episode == 1)
 			{
 				// Print the labels
-
 				for( i=0 ; i<7 ; i++ )
 				{
-					g_pGraphics->sb_color_font_draw(Name[i],40,64+(i<<4),4,7);
-					g_pGraphics->sb_color_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4),4,7);
+					g_pGraphics->sb_font_draw(Name[i],40,64+(i<<4), true);
+
+					g_pGraphics->sb_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4),true);
 					if(Extra[i][0] == true)
 						g_pGraphics->drawTile(32,90+(i<<4),ItemTiles[0]);
 					if(Extra[i][1] == true)
@@ -145,18 +145,18 @@ char CHighScores::showHighScore(void)
 				for( i=0 ; i<7 ; i++ )
 				{
 					std::string buf;
-					g_pGraphics->sb_color_font_draw(Name[i],40,64+(i<<4),4,7);
-					g_pGraphics->sb_color_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4),4,7);
+					g_pGraphics->sb_font_draw(Name[i],40,64+(i<<4), true);
+					g_pGraphics->sb_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4), true);
 					buf = itoa(Cities[i]);
-					g_pGraphics->sb_color_font_draw(buf,250,64+(i<<4),4,7);
+					g_pGraphics->sb_font_draw(buf,250,64+(i<<4), true);
 				}
 			}
 			else
 			{
 				for( i=0 ; i<7 ; i++ )
 				{
-					g_pGraphics->sb_color_font_draw(Name[i],40,64+(i<<4),4,7);
-					g_pGraphics->sb_color_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4),4,7);
+					g_pGraphics->sb_font_draw(Name[i],40,64+(i<<4), true);
+					g_pGraphics->sb_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4), true);
 				}
 			}
 
@@ -247,18 +247,18 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 		for( i=0 ; i<7 ; i++ )
 		{
 			std::string buf;
-			g_pGraphics->sb_color_font_draw(Name[i],40,64+(i<<4),4,7);
-			g_pGraphics->sb_color_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4),4,7);
+			g_pGraphics->sb_font_draw(Name[i],40,64+(i<<4), true);
+			g_pGraphics->sb_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4), true);
 			buf = itoa(Cities[i]);
-			g_pGraphics->sb_color_font_draw(buf,250,64+(i<<4),4,7);
+			g_pGraphics->sb_font_draw(buf,250,64+(i<<4), true);
 		}
 	}
 	else
 	{
 		for( i=0 ; i<7 ; i++ )
 		{
-			g_pGraphics->sb_color_font_draw(Name[i],40,64+(i<<4),4,7);
-			g_pGraphics->sb_color_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4),4,7);
+			g_pGraphics->sb_font_draw(Name[i],40,64+(i<<4), true);
+			g_pGraphics->sb_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4), true);
 		}
 	}
 
@@ -313,7 +313,7 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 			if(g_pInput->getPressedKey(KBCKSPCE) && (WrittenName.length() > 0))
 			{
 				memset(buf,0,256);
-				g_pGraphics->sb_color_font_draw("              ",40,64+(place<<4),4,7);
+				g_pGraphics->sb_font_draw("              ",40,64+(place<<4), true);
 				WrittenName.erase(WrittenName.length()-1);
 				WrittenName.copy(buf,WrittenName.length(),0);
 				memset(Name[place],0,16);
@@ -329,16 +329,16 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 			for( i=0 ; i<7 ; i++ )
 			{
 				if(i != place)
-					g_pGraphics->sb_color_font_draw(Name[i],40,64+(i<<4),4,7);
+					g_pGraphics->sb_font_draw(Name[i],40,64+(i<<4), true);
 				else
 				{
-					g_pGraphics->sb_color_font_draw(buf,40,64+(i<<4),4,7);
+					g_pGraphics->sb_font_draw(buf,40,64+(i<<4), true);
 					if(blink)
-						g_pGraphics->sb_color_font_draw("_",40+(strlen(buf)<<3),64+(i<<4),4,7);
+						g_pGraphics->sb_font_draw("_",40+(strlen(buf)<<3),64+(i<<4), true);
 					else
-						g_pGraphics->sb_color_font_draw(" ",40+(strlen(buf)<<3),64+(i<<4),4,7);
+						g_pGraphics->sb_font_draw(" ",40+(strlen(buf)<<3),64+(i<<4), true);
 				}
-				g_pGraphics->sb_color_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4),4,7);
+				g_pGraphics->sb_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4), true);
 
 				if(pCKP->Control.levelcontrol.episode == 1)
 				{

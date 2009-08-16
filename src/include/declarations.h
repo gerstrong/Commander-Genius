@@ -116,6 +116,7 @@ struct stGameData
 typedef struct stResources
 {
 	unsigned short GameSelected;
+	std::string GameDataDirectory;
 } stResources;
 
 typedef struct stJoyevent

@@ -321,9 +321,7 @@ bool CDialog::setSelection(int value)
 }
 
 int CDialog::getSelection(void)
-{
-	return selection;
-}
+{	return selection;	}
 
 bool CDialog::setNextSelection()
 {

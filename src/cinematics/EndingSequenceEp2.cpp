@@ -608,7 +608,7 @@ int dlgX, dlgY, dlgW, dlgH;
 
   scrollx_buf = scroll_x = 0;
   scrolly_buf = scroll_y = 0;
-  finale_draw("finale.ck2", pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory);
+  finale_draw("finale.ck2", pCKP->Resources.GameDataDirectory);
 
   curpage = 1;
   fade.mode = FADE_GO;
@@ -637,7 +637,7 @@ int dlgX, dlgY, dlgW, dlgH;
      curpage++;
   } while(!g_pInput->getPressedCommand(KQUIT));
 
-  finale_draw("finale.ck2", pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory);
+  finale_draw("finale.ck2", pCKP->Resources.GameDataDirectory);
   eseq_ToBeContinued();
 
   return 0;

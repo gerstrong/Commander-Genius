@@ -632,7 +632,7 @@ void CGraphics::drawFont(const std::string& text, float xoff, float yoff, int hi
 }
 
 
-void CGraphics::sb_font_draw(const std::string& text, int xoff, int yoff)
+void CGraphics::sb_font_draw(const std::string& text, int xoff, int yoff, bool useHighlightcolour)
 {
    unsigned int i,x,y;
 
@@ -642,7 +642,7 @@ void CGraphics::sb_font_draw(const std::string& text, int xoff, int yoff)
    {
      if (text[i]!=13)
      {
-       sb_drawCharacter(x, y, (unsigned char)text[i]);
+       sb_drawCharacter(x, y, (unsigned char)text[i] + 128*(useHighlightcolour==true));
        x+=8;
      }
      else
