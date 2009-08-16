@@ -400,6 +400,15 @@ void gamepdo_setblockedlru(unsigned int cp, stCloneKeenPlus *pCKP)
       {
     	  if(TileProperty[getmaptileat((tx+i),ty)][BDOWN] || checkobjsolid((tx+i)<<CSF,(ty)<<CSF,cp))
 		  {
+   			  player[cp].blockedu = 1;
+			  break;
+		  }
+      }
+
+      for( i=5 ; i < PLAYERWIDTH+1 ; i++ )
+      {
+    	  if(checkobjsolid((tx+i)<<CSF,((ty<<CSF)+PLAYERHEIGHT),cp))
+		  {
 			  player[cp].blockedu = 1;
 			  break;
 		  }
@@ -423,14 +432,6 @@ void gamepdo_setblockedlru(unsigned int cp, stCloneKeenPlus *pCKP)
     		  player[cp].widejump = false;
     		  break;
     	  }
-      }
-      for( i=5 ; i < PLAYERWIDTH+1 ; i++ )
-      {
-    	  if(checkobjsolid((tx+i)<<CSF,((ty<<CSF)+PLAYERHEIGHT),cp))
-		  {
-			  player[cp].blockedu = 1;
-			  break;
-		  }
       }
 
       // for one-way force fields in ep3, so you can back out if you're
@@ -1206,7 +1207,6 @@ short tilsupport;
     { // lower-left isn't solid
       objsupport = checkobjsolid(player[cp].x+(12<<CSF), player[cp].y+(sprites[0].ysize<<CSF),cp);
       tilsupport = TileProperty[getmaptileat((player[cp].x>>CSF)+10, (player[cp].y>>CSF)+sprites[0].ysize)][BUP];
-      //tilsupport = tiles[getmaptileat((player[cp].x>>CSF)+12, (player[cp].y>>CSF)+sprites[0].ysize)].solidfall;
       if (!tilsupport && !objsupport)
       {  // lower-right isn't solid
          player[cp].pfalling = 1;        // so fall.

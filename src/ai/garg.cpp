@@ -3,11 +3,14 @@
 #include "../keen.h"
 #include "../include/game.h"
 
-#define GARG_LOOK          0
-#define GARG_MOVE          1
-#define GARG_CHARGE        2
-#define GARG_DYING         3
-#define GARG_DEAD          4
+enum garg_states{
+GARG_LOOK,
+GARG_MOVE,
+GARG_CHARGE,
+GARG_JUMP,
+GARG_DYING,
+GARG_DEAD
+};
 
 #define GARG_MINTRAVELDIST  1000
 #define GARG_LOOK_PROB      800
@@ -17,6 +20,7 @@
 #define GARG_WALK_ANIM_TIME_FAST  30
 #define GARG_CHARGE_SPEED    18
 #define GARG_CHARGE_ANIM_TIME  30
+#define GARG_JUMP_HEIGHT	40
 
 #define GARG_LOOK_TIME     70
 #define GARG_NUM_LOOKS     3
@@ -56,9 +60,7 @@ unsigned int i;
 
    // kill player on touch
    if (objects[o].ai.garg.state!=GARG_DYING && objects[o].touchPlayer)
-   {
      killplayer(objects[o].touchedBy);
-   }
 
    // did the garg get shot?
    if (objects[o].zapped)
@@ -238,6 +240,7 @@ unsigned int i;
        } else objects[o].ai.garg.timer++;
      break;
      case GARG_CHARGE:
+     case GARG_JUMP:
 
        if (objects[o].ai.garg.movedir==LEFT)
        {  // garg is charging left
@@ -269,6 +272,22 @@ unsigned int i;
            objects[o].ai.garg.state = GARG_LOOK;
          }
        }
+
+       // if Garg is about to fall while charged make him jump
+       if(TileProperty[getmaptileat((objects[o].x>>CSF)+sprites[objects[o].sprite].xsize/2, (objects[o].y>>CSF)+sprites[objects[o].sprite].ysize+1)][BUP] == 0)
+       {
+    	   objects[o].ai.garg.state = GARG_JUMP;
+    	   objects[o].ai.garg.jumpheight = GARG_JUMP_HEIGHT<<CSF;
+       }
+
+       if(objects[o].ai.garg.jumpheight > 0 && objects[o].ai.garg.state == GARG_JUMP)
+       {
+			objects[o].ai.garg.jumpheight--;
+			objects[o].y-=12;
+       }
+
+       if( objects[o].ai.garg.jumpheight == 0 )	// Is he still jumping or already falling? Did he hit ground?
+    	   objects[o].ai.garg.state = GARG_CHARGE;
 
        // walk animation
        if (objects[o].ai.garg.timer > GARG_CHARGE_ANIM_TIME)

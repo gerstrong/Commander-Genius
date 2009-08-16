@@ -114,7 +114,7 @@ int rayspeed;
            else
         	  hitlethal = 0;
 
-           if (objects[o].blockedr || hitlethal)
+           if (objects[o].blockedr)
            {
               objects[o].ai.ray.state = RAY_STATE_SETZAPZOT;
               if (objects[o].onscreen)
@@ -132,7 +132,7 @@ int rayspeed;
            else
         	  hitlethal = 0;
 
-           if (objects[o].blockedl || hitlethal)
+           if (objects[o].blockedl)
            {
               objects[o].ai.ray.state = RAY_STATE_SETZAPZOT;
               if (objects[o].onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, objects[o].scrx);
