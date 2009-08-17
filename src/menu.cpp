@@ -901,14 +901,12 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 }
 
 // This function shows the Story of Commander Keen!
-void showPage(const std::string& str_text, stCloneKeenPlus *pCKP, int textsize)
+void showPage(const std::string& str_text, int textsize)
 {
 	bool cancel = false;
 
 	CTextViewer *TextViewer = new CTextViewer(0,0,320,136);
 	TextViewer->loadText(str_text);
-
-	showmapatpos(90, STORYBOARD_X, STORYBOARD_Y, pCKP);
 
     fade.mode = FADE_GO;
 	fade.rate = FADE_NORM;

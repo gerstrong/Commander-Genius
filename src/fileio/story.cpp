@@ -29,7 +29,7 @@ int readStoryText(char **ptext, int episode, const std::string& path)
 
 		CExeFile *ExeFile = new CExeFile(episode, path);
 		if(!ExeFile) return -1;
-		ExeFile->readData();
+		if(!ExeFile->readData()) return -1;
 		filebuf = ExeFile->getData();
 
 		if(episode == 2)
@@ -44,9 +44,8 @@ int readStoryText(char **ptext, int episode, const std::string& path)
 		}
 
 		if(startflag == 0 || endflag == 0)
-		{
 			g_pLogFile->textOut(PURPLE,"Sorry, but your exe-file is not compatible for reading the story.<br>");
-		}
+
 		else
 		{
 			*ptext = (char*) malloc((endflag-startflag+10)*sizeof(char));

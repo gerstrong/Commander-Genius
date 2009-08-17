@@ -23,7 +23,6 @@
 #define CMD_ENABLESCROLLING     6
 #define CMD_DISABLESCROLLING    7
 
-
 // start x,y map scroll position for eseq1_ShipFlys()
 #define SHIPFLY_X       32
 #define SHIPFLY_Y       0
@@ -51,7 +50,7 @@ int eseq1_ReturnsToShip(stCloneKeenPlus *pCKP)
 int i;
 
   for(i=0;i<MAX_LEVELS;i++)
-   pCKP->Control.levelcontrol.levels_completed[i] = 0;
+	  pCKP->Control.levelcontrol.levels_completed[i] = 0;
 
   showmapatpos(80, WM_X, WM_Y, pCKP);
 
@@ -73,12 +72,6 @@ int i;
 
   eseq_showmsg(getstring("EP1_ESEQ_PART1"),1,18,37,6,1);
 
-  // fade out
-  fade.mode = FADE_GO;
-  fade.dir = FADE_OUT;
-  fade.curamt = PAL_FADE_SHADES;
-  fade.fadetimer = 0;
-  fade.rate = FADE_NORM;
   do
   {
     gamedo_fades();
@@ -99,7 +92,7 @@ void addshipqueue(int cmd, int time, int flag1)
   ShipQueuePtr++;
 }
 
-int eseq1_ShipFlys(stCloneKeenPlus *pCKP)
+int eseq1_ShipFlys(stCloneKeenPlus *pCKP, bool flyback)
 {
 char enter,lastenterstate;
 int x, y;
@@ -110,41 +103,58 @@ int scrollingon;
 
   // set up the ship's route
   ShipQueuePtr = 0;
-  addshipqueue(CMD_MOVE, 230, DUP);
-  addshipqueue(CMD_WAIT, 50, 0);
-  addshipqueue(CMD_MOVE, 2690, DDOWNRIGHT);
-  addshipqueue(CMD_WAIT, 100, 0);
-  addshipqueue(CMD_MOVE, 480, DDOWN);
-  addshipqueue(CMD_WAIT, 150, 0);
-  addshipqueue(CMD_SPAWNSPR, 0, SPR_QUESTION);
-  addshipqueue(CMD_DISABLESCROLLING, 0, 0);
-  addshipqueue(CMD_WAIT, 350, 0);
-  addshipqueue(CMD_REMOVESPR, 0, 0);
-  addshipqueue(CMD_WAIT, 50, 0);
-  addshipqueue(CMD_MOVE, 700, DLEFT);
-  addshipqueue(CMD_WAIT, 150, 0);
-  addshipqueue(CMD_SPAWNSPR, 0, SPR_EXCLAMATION);
-  addshipqueue(CMD_WAIT, 500, 0);
-  addshipqueue(CMD_REMOVESPR, 0, 0);
-  addshipqueue(CMD_WAIT, 50, 0);
-  addshipqueue(CMD_MOVE, 700, DRIGHT);
-  addshipqueue(CMD_WAIT, 25, 0);
-  addshipqueue(CMD_ENABLESCROLLING, 0, 0);
-  addshipqueue(CMD_MOVE, 465, DDOWN);
-  addshipqueue(CMD_FADEOUT, 0, 0);
-  addshipqueue(CMD_MOVE, 100, DDOWN);
-  addshipqueue(CMD_ENDOFQUEUE, 0, 0);
 
-  showmapatpos(81, SHIPFLY_X, SHIPFLY_Y, pCKP);
+  if(!flyback) // When Keen flies back from mars
+  {
+	  addshipqueue(CMD_MOVE, 230, DUP);
+	  addshipqueue(CMD_WAIT, 50, 0);
+	  addshipqueue(CMD_MOVE, 2690, DDOWNRIGHT);
+	  addshipqueue(CMD_WAIT, 100, 0);
+	  addshipqueue(CMD_MOVE, 480, DDOWN);
+	  addshipqueue(CMD_WAIT, 150, 0);
+	  addshipqueue(CMD_SPAWNSPR, 0, SPR_QUESTION);
+	  addshipqueue(CMD_DISABLESCROLLING, 0, 0);
+	  addshipqueue(CMD_WAIT, 350, 0);
+	  addshipqueue(CMD_REMOVESPR, 0, 0);
+	  addshipqueue(CMD_WAIT, 50, 0);
+	  addshipqueue(CMD_MOVE, 700, DLEFT);
+	  addshipqueue(CMD_WAIT, 150, 0);
+	  addshipqueue(CMD_SPAWNSPR, 0, SPR_EXCLAMATION);
+	  addshipqueue(CMD_WAIT, 500, 0);
+	  addshipqueue(CMD_REMOVESPR, 0, 0);
+	  addshipqueue(CMD_WAIT, 50, 0);
+	  addshipqueue(CMD_MOVE, 700, DRIGHT);
+	  addshipqueue(CMD_WAIT, 25, 0);
+	  addshipqueue(CMD_ENABLESCROLLING, 0, 0);
+	  addshipqueue(CMD_MOVE, 465, DDOWN);
+	  addshipqueue(CMD_FADEOUT, 0, 0);
+	  addshipqueue(CMD_MOVE, 100, DDOWN);
+	  addshipqueue(CMD_ENDOFQUEUE, 0, 0);
+
+	  showmapatpos(81, SHIPFLY_X, SHIPFLY_Y, pCKP);
+  }
+  else // When keen flies from earth to the space ship
+  {
+	  addshipqueue(CMD_MOVE, 230, DUP);
+	  addshipqueue(CMD_DISABLESCROLLING, 0, 0);
+	  addshipqueue(CMD_WAIT, 50, DUPLEFT);
+	  addshipqueue(CMD_MOVE, 830, DLEFT);
+	  addshipqueue(CMD_FADEOUT, 0, 0);
+	  addshipqueue(CMD_MOVE, 100, DDOWN);
+	  addshipqueue(CMD_ENDOFQUEUE, 0, 0);
+
+	  showmapatpos(81, SHIPFLY_X+600, SHIPFLY_Y+200, pCKP);
+  }
+
 
   objects[MARK_SPR_NUM].type = OBJ_YORP;                // doesn't matter
   objects[MARK_SPR_NUM].exists = 0;
   objects[MARK_SPR_NUM].sprite = SPR_QUESTION;
 
   numplayers = 1;
-  // place the player at the center of mars
-  if (map_findtile(593, &x, &y))
-  { // found the tile at the center of mars
+  // place the player at the center of mars or earth
+  if (map_findtile( flyback ? 586 : 593, &x, &y))
+  { // found the tile at the center of mars or earth
     player[0].x = ((x<<4)+1)<<CSF;
     player[0].y = ((y<<4)-3)<<CSF;
   }
@@ -156,7 +166,6 @@ int scrollingon;
   }
 
   player[0].playframe = SPR_SHIP_RIGHT;
-//  player[0].pbgprioritycorners = 0;
 
   fade.mode = FADE_GO;
   fade.dir = FADE_IN;
@@ -173,8 +182,6 @@ int scrollingon;
 		objects[MARK_SPR_NUM].x = player[0].x + (20<<CSF);
 		objects[MARK_SPR_NUM].y = player[0].y - (10<<CSF);
 		objects[MARK_SPR_NUM].onscreen = 1;
-	//    objects[MARK_SPR_NUM].priorityptsfound = 0;
-	//    objects[MARK_SPR_NUM].priorityptschecked = 4;
 		objects[MARK_SPR_NUM].scrx = (objects[MARK_SPR_NUM].x>>CSF)-scroll_x;
 		objects[MARK_SPR_NUM].scry = (objects[MARK_SPR_NUM].y>>CSF)-scroll_y;
 
@@ -226,45 +233,22 @@ int scrollingon;
 				case CMD_WAIT:
 				break;
 				case CMD_FADEOUT:
-				  if (fade.dir!=FADE_OUT)
-				  {
-					fade.dir = FADE_OUT;
-					fade.curamt = PAL_FADE_SHADES;
-					fade.fadetimer = 0;
-					fade.mode = FADE_GO;
-					fade.rate = FADE_NORM;
-				  }
+					return 0;
 				break;
 				default: break;
 			  }
 			  // decrease the time remaining
 			  if (shipqueue[ShipQueuePtr].time)
-			  {
 				shipqueue[ShipQueuePtr].time--;
-			  }
 			  else
-			  {  // no time left on this command, go to next cmd
+			    // no time left on this command, go to next cmd
 				ShipQueuePtr++;
-			  }
-		}
-
-		if (fade.dir==FADE_OUT && fade.mode==FADE_COMPLETE)
-		{  // we're done
-		  return 0;
 		}
 
 		enter = ( g_pInput->getPressedKey(KENTER) || g_pInput->getPressedKey(KCTRL) || g_pInput->getPressedKey(KALT) );
 		if (enter)
-		{
-		  if (fade.dir!=FADE_OUT)
-		  {
-			fade.dir = FADE_OUT;
-			fade.curamt = PAL_FADE_SHADES;
-			fade.fadetimer = 0;
-			fade.mode = FADE_GO;
-			fade.rate = FADE_NORM;
-		  }
-		}
+		  return 0;
+
 		lastenterstate = enter;
 
 		gamedo_fades();
@@ -276,6 +260,7 @@ int scrollingon;
 	}
     gamedo_frameskipping();
   } while(!g_pInput->getPressedKey(KQUIT));
+
   return 1;
 }
 
@@ -326,11 +311,11 @@ int eseq1_BackAtHome(stCloneKeenPlus *pCKP)
   dlgH = GetStringAttribute("EP1_ESEQ_PART2_PAGE1", "HEIGHT");
   bmnum_window = g_pGraphics->getBitmapNumberFromName("WINDOFF");	// window lights off
 
-  fade.mode = FADE_GO;
+  /*fade.mode = FADE_GO;
   fade.rate = FADE_NORM;
   fade.dir = FADE_IN;
   fade.curamt = 0;
-  fade.fadetimer = 0;
+  fade.fadetimer = 0;*/
   do
   {
 	  if(g_pTimer->TimeToRunLogic())
@@ -418,8 +403,35 @@ int eseq1_BackAtHome(stCloneKeenPlus *pCKP)
 	  gamedo_frameskipping_blitonly();
 
   } while(1);
+  return 0;
+}
 
-  finale_draw("finale.ck1", pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory);
-  eseq_ToBeContinued();
-  return 1;
+
+int readStoryText(char **ptext, int episode, const std::string& path);
+
+void eseq1_showEndingText(std::string Path)
+{
+	std::vector<unsigned char> text;
+	unsigned long textsize;
+
+	// Read another text-type
+	unsigned char *filebuf;
+	int startflag=0, endflag=0; // where story begins and ends!
+
+	CExeFile *ExeFile = new CExeFile(episode, path);
+	if(!ExeFile) return;
+	if(!ExeFile->readData()) return;
+	filebuf = ExeFile->getData();
+
+	for( unsigned long i=0 ; i<text.size() ; i++ )
+		text.push_back(filebuf[i]);
+
+	delete ExeFile;
+
+	if(endflag-startflag > 0)
+	{
+		showPage(text,textsize);
+
+		free(text);
+	}
 }

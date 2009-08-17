@@ -10,6 +10,7 @@
 
 #define REVISION        "Commander Genius Release v0.3"
 #include "CSingleton.h"
+#include <string>
 #define g_pLogFile	CLogFile::Get()
 
 #define MAX_BUFFER 1024
@@ -32,9 +33,9 @@ public:
 
 	void CreateLogfile	(const char *LogName);
 	void WriteTopic		(const char *Topic, int Size);
-	void textOut		(const char *Text);
-	void textOut		(FONTCOLORS Color, const char *Text);
-	void textOut		(FONTCOLORS Color, bool List, const char *Text);
+	void textOut		(const std::string Text);
+	void textOut		(FONTCOLORS Color, const std::string Text);
+	void textOut		(FONTCOLORS Color, bool List, const std::string Text);
 	void ftextOut		(const char *Text, ...);
 	void ftextOut		(FONTCOLORS Color, const char *Text, ...);
 	void fltextOut		(FONTCOLORS Color, bool List, const char *Text, ...);

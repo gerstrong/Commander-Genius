@@ -418,7 +418,7 @@ struct stPlayer
    unsigned char playpushed_decreasetimer;
    bool widejump;
 
-   unsigned char blockedl,blockedr,blockedu,blockedd;
+   bool blockedl,blockedr,blockedu,blockedd;
    unsigned int blockedby;
 
    unsigned char pjumping, pjumptime, pjumpupspeed_decreasetimer, pjumpdir;

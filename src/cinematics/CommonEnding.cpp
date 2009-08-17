@@ -25,8 +25,11 @@ int endsequence(stCloneKeenPlus *pCKP)
   if (pCKP->Control.levelcontrol.episode==1)
   {
      if (eseq1_ReturnsToShip(pCKP)) return 0;
-     if (eseq1_ShipFlys(pCKP)) return 0;
-     eseq1_BackAtHome(pCKP);
+     if (eseq1_ShipFlys(pCKP,false)) return 0;
+     if (eseq1_BackAtHome(pCKP)) return 0;
+     if (eseq1_ShipFlys(pCKP,true)) return 0;
+     eseq1_showEndingText(pCKP->Resources.GameDataDirectory);
+     eseq_ToBeContinued();
   }
   else if (pCKP->Control.levelcontrol.episode==2)
   {
@@ -119,14 +122,14 @@ void eseq_showmsg(const std::string& text, int boxleft, int boxtop,
 	  }
 	  gamedo_frameskipping_blitonly();
 
-  } while(!g_pInput->getPressedCommand(KQUIT));
+  } while(!g_pInput->getPressedAnyCommand());
   return;
 }
 
 void eseq_ToBeContinued()
 {
 int i;
-	std::string text;
+std::string text;
 int dlgX, dlgY, dlgW, dlgH;
 
   // remove all objects because eseq_showmsg will call drawobjects
@@ -142,9 +145,9 @@ int dlgX, dlgY, dlgW, dlgH;
 
   do
   {
-    gamedo_fades();
-    if (g_pInput->getPressedKey(KQUIT)) return;
-    g_pInput->pollEvents();
+	  gamedo_fades();
+	  if (g_pInput->getPressedKey(KQUIT)) return;
+	  g_pInput->pollEvents();
   } while(fade.mode == FADE_GO);
 }
 

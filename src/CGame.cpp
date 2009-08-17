@@ -74,9 +74,10 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 
 	    	if(textsize > 0)
 	    	{
-					showPage(text,pCKP,textsize);
+	    		showmapatpos(90, STORYBOARD_X, STORYBOARD_Y, pCKP);
+				showPage(text,textsize);
 
-					free(text);
+				free(text);
 			}
 	    	else if(textsize == 0)
 	    	{
@@ -235,7 +236,7 @@ bool CGame::loadResources(unsigned short Episode, const std::string& DataDirecto
 
     // Get the EXE of the game and decompress it if needed.
     CExeFile *ExeFile = new CExeFile(Episode, DataDirectory);
-    ExeFile->readData();
+    if(!ExeFile->readData()) return false;
     int version = ExeFile->getEXEVersion();
 
 	g_pLogFile->ftextOut("Commander Keen Episode %d (Version %d.%d) was detected.<br>", Episode, version/100,version%100);

@@ -11,6 +11,7 @@
 #include <fstream>
 #include "../StringUtils.h"
 #include "../FindFile.h"
+#include "../CLogFile.h"
 
 using namespace std;
 
@@ -31,7 +32,11 @@ bool CExeFile::readData()
 
 	std::ifstream File; OpenGameFileR(File, filename, ios::binary);
 
-	if(!File) return false;
+	if(!File)
+	{
+		g_pLogFile->textOut(RED,"Error the executable \"" + filename + "\" is missing!");
+		return false;
+	}
 
 	File.seekg(0,ios::end);
 	m_datasize = File.tellg();
@@ -91,7 +96,7 @@ int CExeFile::get_bit(int *p_bit_count, unsigned char *fin, int *posin)
 // return how much was unpacked or zero if nothing was unpacked
 int CExeFile::unlzexe(unsigned char *fin, vector<unsigned char> *outbuffer)
 {
-	  short offset;
+	  short offset=0;
 	  int repeat;
 	  int posin = 0;	// position of input
 
@@ -103,11 +108,9 @@ int CExeFile::unlzexe(unsigned char *fin, vector<unsigned char> *outbuffer)
 
 	  while (1)
 	  {
-
 		  if (get_bit(&bit_count, fin, &posin))
 		  {
 			  outbuffer->push_back(fin[posin]);
-			  //outbuffer[pos] = fin[posin];
 			  pos++;
 			  posin++;
 		  }
@@ -135,9 +138,6 @@ int CExeFile::unlzexe(unsigned char *fin, vector<unsigned char> *outbuffer)
 				  }
 				  else
 					  repeat += 2;
-
-
-
 			  }
 			  else
 			  {
@@ -150,7 +150,6 @@ int CExeFile::unlzexe(unsigned char *fin, vector<unsigned char> *outbuffer)
 			  while (repeat > 0)
 			  {
 				  outbuffer->push_back(outbuffer->at(pos + offset));
-				  //outbuffer[pos] = outbuffer[pos + offset];
 				  pos++;
 				  repeat--;
 			  }

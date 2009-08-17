@@ -30,7 +30,7 @@ void CInput::resetControls() {
 
 	m_exit = false;
 	m_cmdpulse = 0;
-	m_joydeadzone = 6400;
+	m_joydeadzone = 16384;
 
 	memset(immediate_keytable,false,KEYTABLE_SIZE);
 	memset(last_immediate_keytable,false,KEYTABLE_SIZE);

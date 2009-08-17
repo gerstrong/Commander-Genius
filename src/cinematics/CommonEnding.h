@@ -9,9 +9,10 @@
 #define COMMONENDING_H_
 
 // For Episode 1
-int eseq1_ShipFlys(stCloneKeenPlus *pCKP);
+int eseq1_ShipFlys(stCloneKeenPlus *pCKP, bool flyback);
 int eseq1_ReturnsToShip(stCloneKeenPlus *pCKP);
 int eseq1_BackAtHome(stCloneKeenPlus *pCKP);
+void eseq1_showEndingText(std::string Path);
 
 // For Episode 2
 int eseq2_HeadsForEarth(stCloneKeenPlus *pCKP);
@@ -20,6 +21,9 @@ int eseq2_SnowedOutside(stCloneKeenPlus *pCKP);
 
 // For Episode 3
 char eseq3_AwardBigV(stCloneKeenPlus *pCKP);
+
+// common functions
+void eseq_ToBeContinued();
 
 // Reference to ../gamedo.cpp
 void gamedo_render_drawobjects();

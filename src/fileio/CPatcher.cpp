@@ -30,53 +30,49 @@ void CPatcher::patchMemory()
 	// then read out of the list the patch commands and apply them to the
 	// Exe-file data m_data
 
+	std::string line;
+	bool ignorelines=false; // ignore the lines which are read. This happens, when patch files are created
+							// for multiple keen versions (1.1, 1.34)
+
 	// TODO: Extend this part further with more commands
 	while(!m_TextList.empty())
 	{
-		std::string line = *m_TextList.begin();
+		// Get the next line
+		line = *m_TextList.begin();
 
-		if(strCaseStartsWith(line,"\%version"))
+		if( (strCaseStartsWith(line,"\%version 1.1") && m_version == 131) ||
+			(strCaseStartsWith(line,"\%version 1.31") && m_version == 110) )
+			ignorelines = true; // If %version detected and no match ignore the other lines
+
+		if( (strCaseStartsWith(line,"\%version 1.31") && m_version == 131) ||
+			(strCaseStartsWith(line,"\%version 1.1") && m_version == 110) ||
+			 strCaseStartsWith(line,"\%version ALL")							)
+			ignorelines = false; // If the line matches don't ignore anymore them anymore
+
+		// Now we really start to process the commands
+		if( strCaseStartsWith(line,"\%patchfile") )
 		{
-			std::string verstring = line.substr(strlen("\%version "));
+			std::string newbuf = line.substr(strlen("\%patchfile"));
+			TrimSpaces(newbuf);
+			size_t p = newbuf.find(' ');
+			if(p != std::string::npos) {
 
-			if((strCaseStartsWith(verstring,"1.31") && m_version == 131 )
-				|| (strCaseStartsWith(verstring,"1.1") && m_version == 110 )
-				|| strCaseStartsWith(verstring,"ALL"))
-			{
-				while(!m_TextList.empty())
-				{
-					// Get the next line
-					line = *m_TextList.begin();
+				long offset = 0;
+				sscanf(newbuf.substr(0,p).c_str(), "%lx", &offset); // Only hexadecimal numbers supported
+				std::string patch_file_name = newbuf.substr(p+1);
+				TrimSpaces(patch_file_name);
 
-					// Now we really start to process the commands
-					if( strCaseStartsWith(line,"\%patchfile") )
-					{
-						std::string newbuf = line.substr(strlen("\%patchfile"));
-						TrimSpaces(newbuf);
-						size_t p = newbuf.find(' ');
-						if(p != std::string::npos) {
-							long offset = 0;
-							sscanf(newbuf.substr(0,p).c_str(), "%lx", &offset); // Only hexadecimal numbers supported
-							std::string patch_file_name = newbuf.substr(p+1);
-							TrimSpaces(patch_file_name);
-							patchMemfromFile("data/" + m_datadirectory + "/" + patch_file_name,offset);
-						}						
-					}
+				p = patch_file_name.find(' ');
+				if( p != std::string::npos )
+					patch_file_name.erase(p);
 
-					if(!m_TextList.empty())
-					{
-						m_TextList.pop_front();
-					}
-				}
+				patchMemfromFile("data/" + m_datadirectory + "/" + patch_file_name,offset);
 			}
 		}
 
 		if(!m_TextList.empty())
-		{
 			m_TextList.pop_front();
-		}
 	}
-
 }
 
 struct PatchListFiller {
@@ -133,6 +129,12 @@ void CPatcher::patchMemfromFile(const std::string& patch_file_name, long offset)
 	std::ifstream Patchfile; OpenGameFileR(Patchfile, patch_file_name, std::ios::binary);
 
 	if(!Patchfile) return;
+
+	if(!m_data)
+	{
+		g_pLogFile->textOut(PURPLE,"Warning: The patchfile was wrongly read!<br>");
+		return;
+	}
 
 	buf_to_patch = m_data + offset;
 

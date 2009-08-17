@@ -191,6 +191,13 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 	// show High-score Frame
 	showmapatpos(90, HIGHSCORETABLE_X, HIGHSCORETABLE_Y, pCKP);
 
+	fade.mode = FADE_GO;
+	fade.dir = FADE_IN;
+	fade.curamt = 0;
+	fade.fadetimer = 0;
+	fade.rate = FADE_NORM;
+	ShipQueuePtr = 0;
+
 	place=6;
 	sscanf(Score[place],"%d",&num);
 	if(num > points)

@@ -8,7 +8,6 @@
 #ifndef ENDINGSEQUENCEEP1_H_
 #define ENDINGSEQUENCEEP1_H_
 
-void eseq_ToBeContinued();
 void eseq_showmsg(const std::string& text, int boxleft, int boxtop,
 		int boxwidth, int boxheight, bool autodismiss);
 

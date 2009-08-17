@@ -60,7 +60,7 @@ int x;
 				rope_movestone(o);
 
 				// check if we've hit the ground yet
-				for(x=0;x<STONE_WIDTH;x++)
+				for(x=2;x<STONE_WIDTH-2;x++)
 				{
 					if (TileProperty[map.mapdata[objects[o].ai.rope.stoneX+x][objects[o].ai.rope.stoneY+2]][BUP])
 					{
@@ -68,6 +68,7 @@ int x;
 						return;
 					}
 				}
+
 			}
 			else objects[o].ai.rope.droptimer--;
      break;

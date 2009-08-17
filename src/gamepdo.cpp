@@ -342,14 +342,14 @@ int stuck;
 // set blockedl/r/u...is Keen up against a solid object or a the edge of the level?
 void gamepdo_setblockedlru(unsigned int cp, stCloneKeenPlus *pCKP)
 {
-	// This function has a lot of bugs now!
+	// This function still has a lot of bugs!
    int tx,ty;
    unsigned int i;
    stOption *p_option;
 
 
 #define PLAYERHEIGHT (player[cp].h)
-#define PLAYERWIDTH  (player[cp].w) // bug here! Sometimes it detects 16 and sometimes 24. Why?!
+#define PLAYERWIDTH  (player[cp].w)
 
    p_option = pCKP->Option;
 
@@ -396,20 +396,15 @@ void gamepdo_setblockedlru(unsigned int cp, stCloneKeenPlus *pCKP)
        // Also check floor and ceiling tiles
       // TODO: Try to optimize this!
 
+      unsigned int aux1;
+
       for( i=5 ; i < PLAYERWIDTH ; i++ )
       {
-    	  if(TileProperty[getmaptileat((tx+i),ty)][BDOWN] || checkobjsolid((tx+i)<<CSF,(ty)<<CSF,cp))
+    	  aux1 = getmaptileat((tx+i),ty);
+    	  if( TileProperty[aux1][BDOWN]
+    			  || checkobjsolid((tx+i)<<CSF,(ty)<<CSF,cp))
 		  {
-   			  player[cp].blockedu = 1;
-			  break;
-		  }
-      }
-
-      for( i=5 ; i < PLAYERWIDTH+1 ; i++ )
-      {
-    	  if(checkobjsolid((tx+i)<<CSF,((ty<<CSF)+PLAYERHEIGHT),cp))
-		  {
-			  player[cp].blockedu = 1;
+   			  player[cp].blockedu = ( TileProperty[aux1][BEHAVIOR] != 65535 ) ? true : false ;
 			  break;
 		  }
       }
@@ -418,7 +413,7 @@ void gamepdo_setblockedlru(unsigned int cp, stCloneKeenPlus *pCKP)
       {
     	  if (checkissolidl((player[cp].x>>CSF)+PLAYERWIDTH+1, (player[cp].y>>CSF)+i,cp, pCKP))
     	  {
-    		  player[cp].blockedr = 1;
+    		  player[cp].blockedr = true;
     		  player[cp].widejump = false;
     		  break;
     	  }
@@ -428,7 +423,7 @@ void gamepdo_setblockedlru(unsigned int cp, stCloneKeenPlus *pCKP)
       {
     	  if (checkissolidr((player[cp].x>>CSF)+2, (player[cp].y>>CSF)+i,cp, pCKP))
     	  {
-    		  player[cp].blockedl = 1;
+    		  player[cp].blockedl = true;
     		  player[cp].widejump = false;
     		  break;
     	  }
@@ -440,7 +435,7 @@ void gamepdo_setblockedlru(unsigned int cp, stCloneKeenPlus *pCKP)
       {
         if (((player[cp].x>>CSF)+13)>>4<<4 != ((player[cp].x>>CSF)+11))
         {  // not on a tile boundary.
-          player[cp].blockedr = 0;
+          player[cp].blockedr = false;
         }
       }
 
@@ -449,27 +444,27 @@ void gamepdo_setblockedlru(unsigned int cp, stCloneKeenPlus *pCKP)
       {
         if ((((player[cp].x>>CSF)+2)>>4<<4)+12 != ((player[cp].x>>CSF)+2))
         {  // not on a tile boundary.
-          player[cp].blockedl = 0;
+          player[cp].blockedl = false;
         }
       }
 
       // Check if the player is going out of the level map
       if( player[cp].y <= (2<< 4 << CSF) ) // Upper edge or ceiling
-    	  player[cp].blockedu = 1;
+    	  player[cp].blockedu = true;
       else if( player[cp].y >= (map.ysize << 4 << CSF) )
       {
-    	  player[cp].blockedd = 1;
-    	  player[cp].pdie = 1;
+    	  player[cp].blockedd = true;
+    	  player[cp].pdie = true;
 
       }
 
       if( (player[cp].x) >= ((map.xsize-3) << 4 << CSF) )
-    	  player[cp].blockedr = 1;
+    	  player[cp].blockedr = true;
 
       else if( (player[cp].x) <= ( 2 << 4 << CSF ) )
-    	  player[cp].blockedl = 1;
+    	  player[cp].blockedl = true;
    }
-   else player[cp].playpushed_x = 0;
+   else player[cp].playpushed_x = false;
 }
 
 // let's have keen be able to pick up goodies

@@ -72,13 +72,13 @@ void CLogFile::WriteTopic(const char *Topic, int Size)
 
 
 // Now with colors
-void CLogFile::textOut(FONTCOLORS Color, const char *Text)
+void CLogFile::textOut(FONTCOLORS Color, const std::string Text)
 {
 	textOut(Color, false, Text);
 }
 
 // Now the entire definition (with list and color)
-void CLogFile::textOut(FONTCOLORS Color, bool List, const char *Text)
+void CLogFile::textOut(FONTCOLORS Color, bool List, const std::string Text)
 {
 	if(List == true)
 		textOut("<li>");
@@ -109,10 +109,10 @@ void CLogFile::textOut(FONTCOLORS Color, bool List, const char *Text)
 }
 
 
-void CLogFile::textOut(const char *Text)
+void CLogFile::textOut(const std::string Text)
 {
 	notes << Text << endl;
-	fprintf(m_Logfile,"%s",Text);
+	fprintf(m_Logfile,"%s",Text.c_str());
 	fflush(m_Logfile);
 }
 
