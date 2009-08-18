@@ -16,9 +16,8 @@ public:
 	virtual ~CSavedGame();
 
 	char save(int slot);
-	char IsValidSaveGame(char *fname);
+	char IsValidSaveGame(std::string fname);
 	bool load(int slot);
-	void deleteSaveGame(int slot);
 
 private:
 	void readHeader(FILE *fp, uchar *episode, uchar *level, uchar *lives, uchar *num_players);

@@ -11,6 +11,7 @@
 #include "../include/menu.h"
 #include "../CGraphics.h"
 #include "../StringUtils.h"
+#include "../fileio/CExeFile.h"
 
 #include "EndingSequenceEp1.h"
 
@@ -411,27 +412,36 @@ int readStoryText(char **ptext, int episode, const std::string& path);
 
 void eseq1_showEndingText(std::string Path)
 {
-	std::vector<unsigned char> text;
-	unsigned long textsize;
+	std::string text;
+	unsigned long textsize=0;
 
 	// Read another text-type
 	unsigned char *filebuf;
-	int startflag=0, endflag=0; // where story begins and ends!
+	unsigned long startflag=0x1652A-512, endflag=0x1679A-512; // where story begins and ends!
 
-	CExeFile *ExeFile = new CExeFile(episode, path);
+	CExeFile *ExeFile = new CExeFile(1, Path);
 	if(!ExeFile) return;
 	if(!ExeFile->readData()) return;
-	filebuf = ExeFile->getData();
+	filebuf = ExeFile->getData() + startflag;
 
-	for( unsigned long i=0 ; i<text.size() ; i++ )
+	for( unsigned long i=0 ; i<endflag-startflag ; i++ )
 		text.push_back(filebuf[i]);
+
+	/*unsigned long p;
+	for( unsigned long i=0 ; i<text.size() ; i++ )
+	{
+		p = text.find('\0');
+		if( p != std::string::npos )
+		{
+			text.erase(p);
+			i += p;
+		}
+	}*/
 
 	delete ExeFile;
 
-	if(endflag-startflag > 0)
-	{
+	if(textsize > 0)
 		showPage(text,textsize);
 
-		free(text);
-	}
+	text.clear();
 }

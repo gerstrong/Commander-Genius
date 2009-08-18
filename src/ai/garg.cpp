@@ -242,6 +242,8 @@ unsigned int i;
      case GARG_CHARGE:
      case GARG_JUMP:
 
+    	 // TODO: Some things must still be done. The Garg is still stupid at some places
+
        if (objects[o].ai.garg.movedir==LEFT)
        {  // garg is charging left
          objects[o].sprite = GARG_WALK_LEFT + objects[o].ai.garg.walkframe;

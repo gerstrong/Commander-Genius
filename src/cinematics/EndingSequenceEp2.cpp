@@ -3,9 +3,6 @@
 */
 
 #include "../keen.h"
-/*#include "include/game.h"
-#include "include/gamedo.h"
-#include "include/gamepdo.h"*/
 #include "../sdl/CTimer.h"
 #include "../sdl/CInput.h"
 #include "../sdl/sound/CSound.h"
@@ -17,14 +14,16 @@
 #include "../StringUtils.h"
 
 
-#define CMD_MOVE                0
-#define CMD_WAIT                1
-#define CMD_SPAWNSPR            2
-#define CMD_REMOVESPR           3
-#define CMD_FADEOUT             4
-#define CMD_ENDOFQUEUE          5
-#define CMD_ENABLESCROLLING     6
-#define CMD_DISABLESCROLLING    7
+enum cmd_actions{
+CMD_MOVE,
+CMD_WAIT,
+CMD_SPAWNSPR,
+CMD_REMOVESPR,
+CMD_FADEOUT,
+CMD_ENDOFQUEUE,
+CMD_ENABLESCROLLING,
+CMD_DISABLESCROLLING
+};
 
 stShipQueue shipqueue[32];
 int ShipQueuePtr;
@@ -203,6 +202,13 @@ int state, timer, spawnedcount=0;
 					state = TAN_STATE_GAMEOVER;
 					g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
 					pCKP->Control.levelcontrol.gameovermode = true;
+
+					int bmnum = g_pGraphics->getBitmapNumberFromName("GAMEOVER");
+					// figure out where to center the gameover bitmap and draw it
+				    int x = (320/2)-(bitmaps[bmnum].xsize/2);
+					int y = (200/2)-(bitmaps[bmnum].ysize/2);
+					int o = spawn_object(x, y, OBJ_EGA_BITMAP);
+					objects[o].ai.bitmap.BitmapID = bmnum;
 					break;
 				 }
 				 spawnedcount++;
@@ -216,6 +222,7 @@ int state, timer, spawnedcount=0;
 
 			if (fade.dir==FADE_OUT && fade.mode==FADE_COMPLETE)
 			{  // we're done
+			  delete_object(find_next_object(OBJ_EGA_BITMAP));
 			  return 0;
 			}
 
@@ -240,15 +247,14 @@ int state, timer, spawnedcount=0;
 
 			if(((player[0].x>>CSF)-scroll_x) > 160-16) map_scroll_right();
 			if (((player[0].y>>CSF)-scroll_y) > 100)
-			{
 			  map_scroll_down();
-			}
 
 			g_pInput->pollEvents();
 	  }
 	  gamedo_frameskipping();
 
     } while(!g_pInput->getPressedCommand(KQUIT));
+  delete_object(find_next_object(OBJ_EGA_BITMAP));
   return 1;
 }
 

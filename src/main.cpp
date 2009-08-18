@@ -354,7 +354,7 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
 		{
 		  CSavedGame *SavedGame = new CSavedGame(p_levelcontrol);
 
-		  if (!SavedGame->load(loadslot))
+		  if ( !SavedGame->load(loadslot) )
 		  {
 			crashflag = 1;
 			crashflag2 = loadslot;

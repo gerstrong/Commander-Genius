@@ -18,6 +18,12 @@
 #include "StringUtils.h"
 #include "Debug.h"
 #include "FindFile.h"
+#include <stdio.h>
+
+#ifdef TARGET_WIN32
+#define uint unsigned int
+#define ulong unsigned long
+#endif
 
 unsigned int curmapx, curmapy;
 unsigned char mapdone;

@@ -16,7 +16,6 @@ void delete_object(int o);
 void killplayer(int theplayer);
 unsigned char spawn_object(int x, int y, int otype);
 
-
 /* located in map.c */
 
 //----------------------[referenced from ai/se.cpp]--------------------//

@@ -218,7 +218,7 @@ int i, topobj;
 	topobj = highest_objslot;
    for(i=1;i<topobj;i++)
    {
-      if (!objects[i].exists || objects[i].type==OBJ_PLAYER) continue;
+      if ( !objects[i].exists || objects[i].type==OBJ_PLAYER ) continue;
 
       //gamedo_calcenemyvisibility(i);
 
@@ -232,10 +232,14 @@ int i, topobj;
 
       objects[i].scrx = (objects[i].x>>CSF)-scroll_x;
       objects[i].scry = (objects[i].y>>CSF)-scroll_y;
+
+      // Bitmaps are also part of the object, but only print them directly
+      if ( objects[i].type==OBJ_EGA_BITMAP ) continue;
+
       if (objects[i].scrx < -(sprites[objects[i].sprite].xsize) || objects[i].scrx > 320 \
           || objects[i].scry < -(sprites[objects[i].sprite].ysize) || objects[i].scry > 200)
           {
-             objects[i].onscreen = 0;
+			 objects[i].onscreen = 0;
              objects[i].wasoffscreen = 1;
              if (objects[i].type==OBJ_ICEBIT) objects[i].exists = 0;
           }
@@ -377,7 +381,6 @@ int cplayer;
 		}
 	}
 
-
  // set blockedl
     objects[o].blockedl = 0;
     x = (objects[o].x>>CSF)-1;
@@ -393,9 +396,8 @@ int cplayer;
     }
     if (TileProperty[getmaptileat(x, ((objects[o].y>>CSF)+ysize-1))][BRIGHT] ||
     		IsStopPoint(x, (objects[o].y>>CSF)+ysize-1, o))
-    {
       objects[o].blockedl = 1;
-    }
+
     blockedl_set: ;
 
  // set blockedr
@@ -505,12 +507,17 @@ int xa,ya;
       if (objects[i].exists && objects[i].onscreen)
       {
     	  // Draw the Demo-Bar if it must be shown
-    	  if(objects[i].type == OBJ_DEMOMSG)
+    	  if( objects[i].type == OBJ_DEMOMSG )
     	  {
    				#define DEMO_X_POS         137
 				#define DEMO_Y_POS         6
    			   objects[i].scrx = DEMO_X_POS;
    			   objects[i].scry = DEMO_Y_POS;
+    	  }
+    	  else if( objects[i].type == OBJ_EGA_BITMAP )
+    	  {
+    		  g_pGraphics->drawBitmap(objects[i].x, objects[i].y, objects[i].ai.bitmap.BitmapID);
+    		  continue;
     	  }
     	  else
     	  {
@@ -667,20 +674,11 @@ extern int NumConsoleMessages;
 // performs frameskipping and blits the display as needed,
 // at end of functions erases all drawn objects from the scrollbuf.
 
-void gamedo_RenderScreen(bool gameovermode) // gameovermode is not a good idea.
+void gamedo_RenderScreen() // gameovermode is not a good idea.
 {											// TODO: Make a list of Bitmaps to be drawn and draw them, like the objects and tiles
    g_pGraphics->renderHQBitmap();
 
    gamedo_render_drawobjects(); // (Sprites)
-
-   if(gameovermode) // (Gameover Bitmap) More to come!
-   {
-	   int bmnum = g_pGraphics->getBitmapNumberFromName("GAMEOVER");
-	   // figure out where to center the gameover bitmap and draw it
-	   int x = (320/2)-(bitmaps[bmnum].xsize/2);
-	   int y = (200/2)-(bitmaps[bmnum].ysize/2);
-	   g_pGraphics->drawBitmap(x, y, bmnum);
-   }
 
    g_pVideoDriver->sb_blit();	// blit scrollbuffer to display (Tiles)
 
@@ -844,10 +842,10 @@ void gamedo_fades(void)
     }
 }
 
-void gamedo_frameskipping( bool gameovermode )
+void gamedo_frameskipping()
 {
      if (g_pTimer->TimeToRender())
-    	 gamedo_RenderScreen(gameovermode);
+    	 gamedo_RenderScreen();
 }
 
 // same as above but only does a sb_blit, not the full RenderScreen.

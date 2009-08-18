@@ -177,13 +177,11 @@ void gameloop(stCloneKeenPlus *pCKP)
 		 enter = (g_pInput->getPressedCommand(IC_STATUS));
 		 if (pCKP->Control.levelcontrol.gameovermode)
 		 {
-		   if (enter)
-			   start_gameover( pCKP );
+				if (enter)
+					start_gameover( pCKP );
 
-		   if (fade.mode==FADE_COMPLETE && fade.dir==FADE_OUT)
-		   {
-			 pCKP->Control.levelcontrol.command = LVLC_GAME_OVER;
-		   }
+				if (fade.mode==FADE_COMPLETE && fade.dir==FADE_OUT)
+					pCKP->Control.levelcontrol.command = LVLC_GAME_OVER;
 		 }
 
 		 if (g_pInput->getPressedKey(KQUIT))
@@ -204,12 +202,11 @@ void gameloop(stCloneKeenPlus *pCKP)
 	}
 
 	// do frameskipping, and render/blit the screen if it's time
-	gamedo_frameskipping( pCKP->Control.levelcontrol.gameovermode );
+	gamedo_frameskipping();
 
   } while(!crashflag && pCKP->Control.levelcontrol.command==LVLC_NOCOMMAND);
 
   // Cleanup the player structure!
-
 }
 
 void start_gameover(stCloneKeenPlus *pCKP)
@@ -629,6 +626,11 @@ int i;
      objects[i].inhibitfall = 0;
      objects[i].honorPriority = 1;
 
+     if(otype == OBJ_EGA_BITMAP)
+     {
+    	 objects[i].onscreen = 1;
+     }
+
      SetAllCanSupportPlayer(i, 0);
 
      if( i >= highest_objslot )
@@ -642,8 +644,17 @@ int i;
 	return 0;
 }
 
+int find_next_object(unsigned int type)
+{
+	for(int o=0 ; o<highest_objslot ; o++)
+		if(objects[o].type == type) return o;
+	return -1;
+}
+
 void delete_object(int o)
 {
+	if(o<0)	return;
+
 	if (objects[o].exists)
 	{
 		objects[o].exists = 0;

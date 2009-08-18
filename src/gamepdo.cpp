@@ -23,6 +23,10 @@ char tempbuf[200];
 #include "vorticon/CDialog.h"
 #include "CGraphics.h"
 
+#ifdef TARGET_WIN32
+#define uint unsigned int
+#endif
+
 // player handler mother-function, calls all needed "gamepdo"
 // functions for player cp
 void gamepdo_HandlePlayer(int cp, stCloneKeenPlus *pCKP)
@@ -157,8 +161,14 @@ void gamepdo_dieanim(int cp, stCloneKeenPlus *pCKP)
        player[cp].pdie = PDIE_DEAD;
        if (player[cp].inventory.lives<0)
        {
-         pCKP->Control.levelcontrol.gameovermode = true;
-         g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
+    	   pCKP->Control.levelcontrol.gameovermode = true;
+    	   g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
+    	   int bmnum = g_pGraphics->getBitmapNumberFromName("GAMEOVER");
+    	   // figure out where to center the gameover bitmap and draw it
+		   int x = (320/2)-(bitmaps[bmnum].xsize/2);
+		   int y = (200/2)-(bitmaps[bmnum].ysize/2);
+		   int o = spawn_object(x, y, OBJ_EGA_BITMAP);
+		   objects[o].ai.bitmap.BitmapID = bmnum;
        }
        else
        {
@@ -170,7 +180,6 @@ void gamepdo_dieanim(int cp, stCloneKeenPlus *pCKP)
    {  // not yet time to fly off screen, decrement timer
      player[cp].pdietillfly--;
    }  // end "time to fly"
-
 }
 
 void gamepdo_keencicle(int cp, stCloneKeenPlus *pCKP)
@@ -404,7 +413,7 @@ void gamepdo_setblockedlru(unsigned int cp, stCloneKeenPlus *pCKP)
     	  if( TileProperty[aux1][BDOWN]
     			  || checkobjsolid((tx+i)<<CSF,(ty)<<CSF,cp))
 		  {
-   			  player[cp].blockedu = ( TileProperty[aux1][BEHAVIOR] != 65535 ) ? true : false ;
+   			  player[cp].blockedu = true;
 			  break;
 		  }
       }
@@ -884,96 +893,121 @@ void gamepdo_Jump(int cp)
 	   }
 }
 
-void gamepdo_JumpAndPogo(int cp, stCloneKeenPlus *pCKP)
+// called when a switch is flipped. mx,my is the pixel coords of the switch,
+// relative to the upper-left corner of the map.
+void gamepdo_ExtendingPlatformSwitch(int x, int y, stLevelControl *p_levelcontrol)
 {
-int mx, my, t, l;
+uint ppos;
 int platx, platy;
 signed char pxoff, pyoff;
+int mapx, mapy;
 int o;
-int try2;
+
+	// convert pixel coords to tile coords
+	mapx = (x >> TILE_S);
+	mapy = (y >> TILE_S);
+
+	// figure out where the platform is supposed to extend at
+	// (this is coded in the object layer...
+	// high byte is the Y offset and the low byte is the X offset,
+	// and it's relative to the position of the switch.)
+	ppos = getlevelat(x, y);
+
+	if (!ppos || !p_levelcontrol->PlatExtending)
+	{
+		// flip switch
+		g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, mapx);
+		if (getmaptileat(x, y)==TILE_SWITCH_DOWN)
+			map_chgtile(mapx, mapy, TILE_SWITCH_UP);
+		else
+			map_chgtile(mapx, mapy, TILE_SWITCH_DOWN);
+	}
+
+	// if zero it means he hit the switch on a tantalus ray!
+	if (!ppos)
+	{
+		/*if (editor)	  // in editor it'll bork if we play a cinematic, so don't
+		{
+			killplayer(0);
+		}
+		else
+		{
+		}*/
+		p_levelcontrol->success = 0;
+		p_levelcontrol->command = LVLC_TANTALUS_RAY;
+		return;
+	}
+	else
+	{
+		// it's a moving platform switch--don't allow player to hit it again while
+		// the plat is still moving as this will glitch
+		if (p_levelcontrol->PlatExtending) return;
+		p_levelcontrol->PlatExtending = 1;
+	}
+
+	pxoff = (ppos & 0x00ff);
+	pyoff = (ppos & 0xff00) >> 8;
+	platx = mapx + pxoff;
+	platy = mapy + pyoff;
+
+	// spawn a "sector effector" to extend/retract the platform
+	o = spawn_object(mapx<<TILE_S<<CSF,mapy<<TILE_S<<CSF,OBJ_SECTOREFFECTOR);
+	objects[o].ai.se.type = SE_EXTEND_PLATFORM;
+	objects[o].ai.se.platx = platx;
+	objects[o].ai.se.platy = platy;
+}
+
+// allow Keen to toggle the pogo stick and hit switches
+void gamepdo_TogglePogo_and_Switches(int cp, stLevelControl *p_levelcontrol)
+{
+int i;
+int mx, my, t;
+
+	// detect if KPOGO key just pressed
+	if (player[cp].playcontrol[PA_POGO] && !player[cp].lastplaycontrol[PA_POGO] && !player[cp].pfrozentime)
+	{
+		// if we are standing near a switch hit the switch instead
+		mx = (player[cp].x>>CSF)+(sprites[PSTANDFRAME].xsize/2);
+
+		for(i=sprites[PSTANDFRAME].ysize-1;i>=0;i-=8)
+		{
+			my = (player[cp].y>>CSF)+i;
+
+			t = getmaptileat(mx, my);
+
+			// check for extending-platform switch
+			if (t==TILE_SWITCH_UP || t==TILE_SWITCH_DOWN )
+			{
+				gamepdo_ExtendingPlatformSwitch(mx, my, p_levelcontrol);
+				if (!player[cp].ppogostick) return;
+			}
+			else if (t==TILE_LIGHTSWITCH)
+			{ // lightswitch
+				   p_levelcontrol->dark ^= 1;
+				   g_pGraphics->initPalette(p_levelcontrol->dark);
+				   g_pGraphics->fadePalette(PAL_FADE_SHADES);
+				   g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, objects[player[cp].useObject].scrx);
+				if (!player[cp].ppogostick) return;
+			}
+		}
+
+		// toggle pogo stick
+		if (player[cp].inventory.HasPogo)
+		{
+			player[cp].ppogostick ^= 1;
+		}
+	}
+}
+
+void gamepdo_JumpAndPogo(int cp, stCloneKeenPlus *pCKP)
+{
 
 stLevelControl *p_levelcontrol;
 
 p_levelcontrol = &(pCKP->Control.levelcontrol);
 
-   // toggle pogo when KPOGO key is pressed
-   if (player[cp].playcontrol[PA_POGO] && !player[cp].lastplaycontrol[PA_POGO] && !player[cp].pfrozentime)
-   {
-	   // if we are at a switch hit the switch instead
-	   mx = (player[cp].x>>CSF)+8;
-	   my = (player[cp].y>>CSF)+9;
-	   try2 = 0;
-	   retry: ;
-	   t = getmaptileat(mx, my);
-	   if (!player[cp].ppogostick && (t==TILE_SWITCH_UP || t==TILE_SWITCH_DOWN))
-	   { // switch to extend platform
-
-		 // figure out where the platform is supposed to extend
-		 // (this is coded in the object layer...high byte is the Y offset
-		 //  and the low byte is the X offset)
-		 l = getlevelat(mx, my);
-		 // if zero it's the switch on a tantalus ray!
-		 if (l==0)
-		 {
-			 g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, objects[player[cp].useObject].scrx);
-
-		   map_chgtile(mx>>4,my>>4,TILE_SWITCH_DOWN);
-		   p_levelcontrol->success = 0;
-		   p_levelcontrol->command = LVLC_TANTALUS_RAY;
-		   return;
-		 }
-		 pxoff = (l & 0x00ff);
-		 pyoff = (l & 0xff00) >> 8;
-		 platx = (mx >> 4) + pxoff;
-		 platy = (my >> 4) + pyoff;
-
-		 if (PlatExtending)       // don't allow player to hit switch again while
-		 {                        // plat is moving as this will glitch the plat
-		   return;
-		 }
-		 else PlatExtending = 1;
-
-		 g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, objects[player[cp].useObject].scrx);
-
-		 if (t==TILE_SWITCH_UP)
-		 {  // switch toggled from up to down--extend platform
-		   map_chgtile(mx>>4,my>>4,TILE_SWITCH_DOWN);
-		   o = spawn_object((mx>>4<<4)<<CSF,(my>>4<<4)<<CSF,OBJ_SECTOREFFECTOR);
-		   objects[o].ai.se.type = SE_EXTEND_PLATFORM;
-		   objects[o].ai.se.platx = platx;
-		   objects[o].ai.se.platy = platy;
-		 }
-		 else
-		 {  // switch toggled from down to up--remove platform
-		   map_chgtile(mx>>4,my>>4,TILE_SWITCH_UP);
-		   o = spawn_object((mx>>4<<4)<<CSF,(my>>4<<4)<<CSF,OBJ_SECTOREFFECTOR);
-		   objects[o].ai.se.type = SE_RETRACT_PLATFORM;
-		   objects[o].ai.se.platx = platx;
-		   objects[o].ai.se.platy = platy;
-		 }
-	 }
-	 else if (!player[cp].ppogostick && t==TILE_LIGHTSWITCH)
-	 { // lightswitch
-	   p_levelcontrol->dark ^= 1;
-	   g_pGraphics->initPalette(p_levelcontrol->dark);
-	   g_pGraphics->fadePalette(PAL_FADE_SHADES);
-	   g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, objects[player[cp].useObject].scrx);
-	 }
-	 else
-	 {
-		if (!try2)
-		{
-			my = (player[cp].y>>CSF)+1;
-			try2 = 1;
-			goto retry;
-		}
-		 // toggle pogo
-		 if (player[cp].inventory.HasPogo)
-		 {
-		   player[cp].ppogostick = !player[cp].ppogostick;
-		 }
-	 }
-   }
+	// allow him to toggle the pogo stick
+	gamepdo_TogglePogo_and_Switches(cp, p_levelcontrol);
 
    // handle the JUMP key, both for normal jumps and (high) pogo jumps
    if (!player[cp].pjumping && !player[cp].pfalling && !player[cp].pfiring)

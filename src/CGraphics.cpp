@@ -306,6 +306,8 @@ void CGraphics::drawCharacter(int x, int y, int f)
 	assert(f >= 0 && f < 256);
 unsigned char xa,ya;
 
+	if(f==0) return;
+
   for(ya=0;ya<8;ya++)
     for(xa=0;xa<8;xa++)
     	g_pVideoDriver->setpixel(x+xa, y+ya, font[f][ya][xa]);

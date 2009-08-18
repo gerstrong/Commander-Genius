@@ -69,6 +69,7 @@ char CHighScores::showHighScore(void)
 	loadHighScoreTable();
 
 	// show High-score Frame
+	g_pGraphics->unloadHQGraphics();
 	showmapatpos(90, HIGHSCORETABLE_X, HIGHSCORETABLE_Y, pCKP);
 
 	// Prepare some extra items if available (Ep1 + 2)
@@ -197,6 +198,8 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 	fade.fadetimer = 0;
 	fade.rate = FADE_NORM;
 	ShipQueuePtr = 0;
+
+	showmapatpos(90, (104 << 2)+256+256+80, 32-4, pCKP);
 
 	place=6;
 	sscanf(Score[place],"%d",&num);

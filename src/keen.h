@@ -165,6 +165,11 @@ struct stString
 // structures for each AI module's data
 #include "ai/enemydata.h"
 
+//
+typedef struct stBitmapData{
+	int BitmapID;
+}stBitmapData;
+
 // and the object structure containing the union of the above structs
 typedef struct stObject
 {
@@ -208,6 +213,7 @@ typedef struct stObject
  unsigned int needinit;    // 1=new object--requires initilization
  unsigned char wasoffscreen;  // set to 1 when object goes offscreen
  bool dead;
+
  // data for ai and such, used differently depending on
  // what kind of object it is
  union ai
@@ -223,12 +229,14 @@ typedef struct stObject
 		stIceChunk icechunk;
 		stTeleportData teleport;
 		stRopeData rope;
+
 		// ep2
 		stWalkerData walker;
 		stPlatformData platform;
 		stVortEliteData vortelite;
 		stSEData se;
 		stBabyData baby;
+
 		// ep3
 		stFoobData foob;
 		stNinjaData ninja;
@@ -236,6 +244,9 @@ typedef struct stObject
 		stMotherData mother;
 		stBallJackData bj;
 		stNessieData nessie;
+
+		// Extras, used in every episode
+		stBitmapData bitmap;
  } ai;
  unsigned char erasedata[64][64];   // backbuffer to erase this object
 } stObject;
@@ -252,7 +263,7 @@ typedef struct stAnimTile
   int offset;           // offset from base frame
 } stAnimTile;
 
-#define NUM_OBJ_TYPES      40
+#define NUM_OBJ_TYPES      41
 
 enum enumerated_Objects{
 // ** objects from KEEN1
@@ -299,8 +310,9 @@ OBJ_AUTORAY,
 OBJ_AUTORAY_V,
 OBJ_ICECANNON,
 
-OBJ_GOTPOINTS,	//this thing is the rising point numbers
-OBJ_GHOST,		//ghosted object from map editor
+OBJ_GOTPOINTS,		// this thing is the rising point numbers
+OBJ_GHOST,			// ghosted object from map editor
+OBJ_EGA_BITMAP,		// Used for bitmaps which are loaded into the system. Keen Bitmaps
 LAST_OBJ_TYPE
 };
 

@@ -35,7 +35,13 @@ CSavedGame::~CSavedGame() {
 char CSavedGame::save(int slot)
 {
 FILE *fp;
-std::string fname="savegame" + itoa(slot) + ".dat";
+std::string fname;
+
+	fname = "ep";
+	fname += mp_levelcontrol->episode + '0';
+	fname += "save";
+	fname += slot+'0';
+	fname += ".dat";
 
 	// can't save game under certain circumstances
 	//if (fade_in_progress()) return 1;
@@ -87,7 +93,7 @@ std::string fname="savegame" + itoa(slot) + ".dat";
 }
 
 
-char CSavedGame::IsValidSaveGame(char *fname)
+char CSavedGame::IsValidSaveGame(std::string fname)
 {
 FILE *fp;
 unsigned int i;
@@ -126,21 +132,25 @@ void CSavedGame::readHeader(FILE *fp, uchar *episode, uchar *level, uchar *lives
 bool CSavedGame::load(int slot)
 {
 FILE *fp;
-char fname[20];
+std::string fname;
 unsigned char episode, level, lives;
 unsigned int i;
 
-	sprintf(fname, "savegame%d.dat", slot);
+	fname = "ep";
+	fname += mp_levelcontrol->episode + '0';
+	fname += "save";
+	fname += slot+'0';
+	fname += ".dat";
 
 	if (!IsValidSaveGame(fname))
 	{
-		g_pLogFile->ftextOut("%s is not a valid save-game.\n", fname);
+		g_pLogFile->ftextOut("%s is not a valid save-game.\n", fname.c_str());
 		return false;
 	}
 
-	g_pLogFile->ftextOut("Loading game from file %s\n", fname);
+	g_pLogFile->ftextOut("Loading game from file %s\n", fname.c_str());
 	fp = OpenGameFile(fname, "rb");
-	if (!fp) { g_pLogFile->ftextOut("unable to open %s\n",fname); return 1; }
+	if (!fp) { g_pLogFile->ftextOut("unable to open %s\n",fname.c_str()); return 1; }
 
 	readHeader(fp, &episode, &level, &lives, &numplayers);
 
@@ -194,12 +204,4 @@ unsigned int i;
 	g_pLogFile->ftextOut("Structures restored: map size: %d,%d\n", map.xsize, map.ysize);
 	g_pLogFile->ftextOut("Load game OK\n");
 	return true;
-}
-
-void CSavedGame::deleteSaveGame(int slot)
-{
-	char fname[20];
-
-	sprintf(fname, "savegame%d.dat", slot);
-	remove(fname);
 }
