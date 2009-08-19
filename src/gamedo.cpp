@@ -674,8 +674,8 @@ extern int NumConsoleMessages;
 // performs frameskipping and blits the display as needed,
 // at end of functions erases all drawn objects from the scrollbuf.
 
-void gamedo_RenderScreen() // gameovermode is not a good idea.
-{											// TODO: Make a list of Bitmaps to be drawn and draw them, like the objects and tiles
+void gamedo_RenderScreen()
+{
    g_pGraphics->renderHQBitmap();
 
    gamedo_render_drawobjects(); // (Sprites)
@@ -748,9 +748,8 @@ int i;
        if (g_pInput->getHoldedKey(KG) && g_pInput->getHoldedKey(KO) && g_pInput->getHoldedKey(KD))
        {
            for(i=0;i<MAX_PLAYERS;i++)
-           {
               player[i].godmode ^= 1;
-           }
+
            g_pVideoDriver->DeleteConsoleMsgs();
            if (player[0].godmode)
         	   g_pVideoDriver->AddConsoleMsg("God mode ON");
@@ -840,12 +839,6 @@ void gamedo_fades(void)
     {
       fade.fadetimer++;
     }
-}
-
-void gamedo_frameskipping()
-{
-     if (g_pTimer->TimeToRender())
-    	 gamedo_RenderScreen();
 }
 
 // same as above but only does a sb_blit, not the full RenderScreen.

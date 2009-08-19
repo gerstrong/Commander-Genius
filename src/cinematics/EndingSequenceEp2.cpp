@@ -251,7 +251,8 @@ int state, timer, spawnedcount=0;
 
 			g_pInput->pollEvents();
 	  }
-	  gamedo_frameskipping();
+	  if (g_pTimer->TimeToRender())
+    	 gamedo_RenderScreen();
 
     } while(!g_pInput->getPressedCommand(KQUIT));
   delete_object(find_next_object(OBJ_EGA_BITMAP));
@@ -334,7 +335,8 @@ int x,y,w,h;
 		vibratetimes++;
 		g_pInput->pollEvents();
 	  }
-	  gamedo_frameskipping();
+	  if (g_pTimer->TimeToRender())
+    	 gamedo_RenderScreen();
 
   } while(!g_pInput->getPressedCommand(KQUIT) && vibratetimes < VIBRATE_NUM_FRAMES);
 
@@ -485,7 +487,8 @@ int afterfadewaittimer;
 			gamedo_ScrollTriggers(0);
 			g_pInput->pollEvents();
 	  }
-	  gamedo_frameskipping();
+	  if (g_pTimer->TimeToRender())
+	   	 gamedo_RenderScreen();
 
   } while(!g_pInput->getPressedCommand(KQUIT));
   return 1;
@@ -597,7 +600,8 @@ int afterfadewaittimer = 0;
 		gamedo_AnimatedTiles();
 		g_pInput->pollEvents();
 	}
-    gamedo_frameskipping();
+    if (g_pTimer->TimeToRender())
+    	 gamedo_RenderScreen();
 
   } while(!g_pInput->getPressedCommand(KQUIT));
   return 1;

@@ -1068,9 +1068,12 @@ void showTextMB(const std::string& Text)
     	if(g_pTimer->TimeToRunLogic())
     	{
     		g_pInput->pollEvents();
-			InfoTextWindow->render();
-			g_pVideoDriver->update_screen();
     	}
+        if (g_pTimer->TimeToRender())
+        {
+        	InfoTextWindow->render();
+			g_pVideoDriver->update_screen();
+        }
     } while(!g_pInput->getPressedAnyCommand());
 
     delete InfoTextWindow;

@@ -202,7 +202,8 @@ void gameloop(stCloneKeenPlus *pCKP)
 	}
 
 	// do frameskipping, and render/blit the screen if it's time
-	gamedo_frameskipping();
+    if (g_pTimer->TimeToRender())
+    	 gamedo_RenderScreen();
 
   } while(!crashflag && pCKP->Control.levelcontrol.command==LVLC_NOCOMMAND);
 

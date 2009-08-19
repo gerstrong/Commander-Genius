@@ -193,12 +193,7 @@ void CTileLoader::assignChangeTileAttribute(stTile *tile)
 			{
 				// Only items!!
 				if(canbePickedup(i))
-				{
-					int j = i;
-					while(TileProperty[j][BEHAVIOR] != 0) // "Nothing" is to the left of items row.
-						j--;
-					tile[i].chgtile = j;
-				}
+					tile[i].chgtile = (i/13)*13;
 
 				// Only for Doors! Tile is always 182
 				if(isaDoor(i))

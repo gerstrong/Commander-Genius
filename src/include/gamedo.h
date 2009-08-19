@@ -1,6 +1,5 @@
 void gamedo_RenderScreen();
 
-void gamedo_frameskipping();
 void gamedo_HandleFKeys(stCloneKeenPlus *pCKP);
 void gamedo_frameskipping_blitonly();
 void gamedo_getInput(stLevelControl *p_levelcontrol);

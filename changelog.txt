@@ -1,6 +1,10 @@
 Commander Genius Pre-Release v0.3.0.1 (CloneKeenPlus):
 ------------------------------------------------------
 
+19-08-2009
+- Improved Gargs AI
+- Improved platform extender/retractor (bridges in Ep2)
+
 16-08-2009
 - Godmode now also makes keen fly with pogo
 - Pogo jump are more sensitive to the button press-time.

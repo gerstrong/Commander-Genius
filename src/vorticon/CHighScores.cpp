@@ -164,7 +164,8 @@ char CHighScores::showHighScore(void)
 			gamedo_AnimatedTiles();
 			g_pInput->pollEvents();
 		}
-		gamedo_frameskipping();
+		if (g_pTimer->TimeToRender())
+			gamedo_RenderScreen();
 
 	}while(!g_pInput->getPressedAnyKey());
 
@@ -373,7 +374,8 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 				blinkctr = 0;
 			}
 		}
-		gamedo_frameskipping();
+		if (g_pTimer->TimeToRender())
+			gamedo_RenderScreen();
 
 	}while(!g_pInput->getPressedKey(KENTER));
 

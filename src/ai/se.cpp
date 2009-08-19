@@ -61,8 +61,7 @@ void se_extend_plat(int o, bool *p_PlatExtending)
 		// if the platform is already extended, turn ourselves
 		// into an se_retract_plat()
 		//lprintf(">se_extend:check=%d expect=%d",getmaptileat(objects[o].x>>CSF,objects[o].y>>CSF),TILE_EXTENDING_PLATFORM);
-		if (map.mapdata[objects[o].ai.se.platx][objects[o].ai.se.platy]==\
-			TILE_EXTENDING_PLATFORM)
+		if ( map.mapdata[objects[o].ai.se.platx][objects[o].ai.se.platy]==TILE_EXTENDING_PLATFORM )
 		{
 			objects[o].ai.se.type = SE_RETRACT_PLATFORM;
 			se_retract_plat(o, p_PlatExtending);
@@ -80,16 +79,28 @@ void se_extend_plat(int o, bool *p_PlatExtending)
 
 	if (!objects[o].ai.se.timer)
 	{
-		if (!TileProperty[map.mapdata[objects[o].ai.se.platx][objects[o].ai.se.platy]][BUP])
+		if (objects[o].ai.se.dir==RIGHT &&
+				!TileProperty[map.mapdata[objects[o].ai.se.platx][objects[o].ai.se.platy]][BLEFT])
 		{
+			// get the background tile from the tile above the starting point
+			if(!TileProperty[map.mapdata[objects[o].ai.se.platx+1][objects[o].ai.se.platy]][BLEFT])
+				objects[o].ai.se.bgtile = map.mapdata[objects[o].ai.se.platx][objects[o].ai.se.platy];
+
+			map_chgtile(objects[o].ai.se.platx, objects[o].ai.se.platy, TILE_EXTENDING_PLATFORM);
+			objects[o].ai.se.platx++;
+			kill_all_intersecting_tile(objects[o].ai.se.platx, objects[o].ai.se.platy);
+			objects[o].ai.se.timer = PLAT_EXTEND_RATE;
+		}
+		else if(objects[o].ai.se.dir==LEFT &&
+				!TileProperty[map.mapdata[objects[o].ai.se.platx][objects[o].ai.se.platy]][BRIGHT])
+		{
+			// get the background tile from the tile above the starting point
+			if(!TileProperty[map.mapdata[objects[o].ai.se.platx-1][objects[o].ai.se.platy]][BRIGHT])
+				objects[o].ai.se.bgtile = map.mapdata[objects[o].ai.se.platx-1][objects[o].ai.se.platy];
+
 			map_chgtile(objects[o].ai.se.platx, objects[o].ai.se.platy, TILE_EXTENDING_PLATFORM);
 			kill_all_intersecting_tile(objects[o].ai.se.platx, objects[o].ai.se.platy);
-
-			if (objects[o].ai.se.dir==RIGHT)
-				objects[o].ai.se.platx++;
-			else
-				objects[o].ai.se.platx--;
-
+			objects[o].ai.se.platx--;
 			objects[o].ai.se.timer = PLAT_EXTEND_RATE;
 		}
 		else
@@ -106,8 +117,6 @@ void se_retract_plat(int o, bool *p_PlatExtending)
 {
 	if (objects[o].needinit)
 	{
-		// get the background tile from the tile above the starting point
-		objects[o].ai.se.bgtile = map.mapdata[objects[o].ai.se.platx][objects[o].ai.se.platy-1];
 		// figure out which direction the bridge is supposed to go
 		if (map.mapdata[objects[o].ai.se.platx-1][objects[o].ai.se.platy] != TILE_EXTENDING_PLATFORM)
           objects[o].ai.se.dir = LEFT;

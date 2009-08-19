@@ -259,7 +259,8 @@ int scrollingon;
 
 		g_pInput->pollEvents();
 	}
-    gamedo_frameskipping();
+    if (g_pTimer->TimeToRender())
+    	gamedo_RenderScreen();
   } while(!g_pInput->getPressedKey(KQUIT));
 
   return 1;

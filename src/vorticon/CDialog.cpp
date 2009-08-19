@@ -283,7 +283,8 @@ void CDialog::renderOpenDialogAnimation(int x,int y, int w, int h)
 
 			timer++;
 		}
-		gamedo_frameskipping();
+		if (g_pTimer->TimeToRender())
+			gamedo_RenderScreen();
 
 	}while(1);
 
