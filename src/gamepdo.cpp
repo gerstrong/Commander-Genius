@@ -1004,7 +1004,7 @@ void gamepdo_JumpAndPogo(int cp, stCloneKeenPlus *pCKP)
 
 stLevelControl *p_levelcontrol;
 
-p_levelcontrol = &(pCKP->Control.levelcontrol);
+	p_levelcontrol = &(pCKP->Control.levelcontrol);
 
 	// allow him to toggle the pogo stick
 	gamepdo_TogglePogo_and_Switches(cp, p_levelcontrol);
@@ -1042,7 +1042,10 @@ p_levelcontrol = &(pCKP->Control.levelcontrol);
         	  {
 				   if (!pCKP->Option[OPT_SUPERPOGO].value)
 				   {  // normal high pogo jump
-					  player[cp].pjumpupspeed = (PPOGOUP_SPEED*player[cp].playcontrol[PA_JUMP]) / 50;
+					  if(player[cp].playcontrol[PA_JUMP] > 12)
+						  player[cp].pjumpupspeed = (PPOGOUP_SPEED*player[cp].playcontrol[PA_JUMP]) / 50;
+					  else
+						  player[cp].pjumpupspeed = (PPOGOUP_SPEED*11) / 10; // Impossible Pogo Trick
 					  player[cp].pjumptime = PJUMP_NORMALTIME_POGO_LONG;
 					  player[cp].pjumpupdecreaserate = PJUMP_UPDECREASERATE_POGO_LONG;
 				   }

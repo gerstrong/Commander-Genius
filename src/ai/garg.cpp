@@ -239,8 +239,17 @@ unsigned int i;
          objects[o].ai.garg.timer = 0;
        } else objects[o].ai.garg.timer++;
      break;
-     case GARG_CHARGE:
      case GARG_JUMP:
+         if( objects[o].ai.garg.jumpheight > 0 )
+         {
+  			objects[o].ai.garg.jumpheight--;
+  			objects[o].y-=12;
+         }
+
+         if( objects[o].ai.garg.jumpheight == 0 )	// Is he still jumping or already falling? Did he hit ground?
+      	   objects[o].ai.garg.state = GARG_CHARGE;
+
+     case GARG_CHARGE:
 
     	 // TODO: Some things must still be done. The Garg is still stupid at some places
 
@@ -281,15 +290,6 @@ unsigned int i;
     	   objects[o].ai.garg.state = GARG_JUMP;
     	   objects[o].ai.garg.jumpheight = GARG_JUMP_HEIGHT<<CSF;
        }
-
-       if(objects[o].ai.garg.jumpheight > 0 && objects[o].ai.garg.state == GARG_JUMP)
-       {
-			objects[o].ai.garg.jumpheight--;
-			objects[o].y-=12;
-       }
-
-       if( objects[o].ai.garg.jumpheight == 0 )	// Is he still jumping or already falling? Did he hit ground?
-    	   objects[o].ai.garg.state = GARG_CHARGE;
 
        // walk animation
        if (objects[o].ai.garg.timer > GARG_CHARGE_ANIM_TIME)
