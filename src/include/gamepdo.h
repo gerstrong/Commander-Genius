@@ -6,7 +6,7 @@ void gamepdo_falling(int cp, stCloneKeenPlus *pCKP);
 void gamepdo_ProcessInput(unsigned int cp, stCloneKeenPlus *pCKP);
 
 void gamepdo_walkbehindexitdoor(int cp, stCloneKeenPlus *pCKP);
-void gamepdo_dieanim(int cp, stCloneKeenPlus *pCKP);
+void gamepdo_dieanim(int cp, stLevelControl *p_levelcontrol);
 void gamepdo_keencicle(int cp, stCloneKeenPlus *pCKP);
 void gamepdo_setdir(int cp, stCloneKeenPlus *pCKP);
 void gamepdo_setblockedlru(unsigned int cp, stCloneKeenPlus *pCKP);

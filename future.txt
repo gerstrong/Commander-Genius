@@ -2,7 +2,6 @@ Here are the features that I still want to implement:
 -----------------------------------------------------
 
 until 0.4:
-- F1 Help screen would be nice
 - Update the Dialog Class. It should support more controls, and be easier to manage
 - Read all the text out of EXE-files. This should provide better support for mods!
 - New Games Menu. Should run without the need of an episode!

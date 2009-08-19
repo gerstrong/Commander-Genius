@@ -35,7 +35,7 @@ char doFall;
 
     if (player[cp].pdie)
     {
-       gamepdo_dieanim(cp, pCKP);
+       gamepdo_dieanim(cp, &(pCKP->Control.levelcontrol));
        if (!pCKP->Control.levelcontrol.gameovermode)
          gamepdo_StatusBox(cp, pCKP);
     }
@@ -121,7 +121,7 @@ int x, diff, width;
     }
 }
 
-void gamepdo_dieanim(int cp, stCloneKeenPlus *pCKP)
+void gamepdo_dieanim(int cp, stLevelControl *p_levelcontrol)
 {
    if (!player[cp].pdie) return;                // should never happen...
    if (player[cp].pdie==PDIE_DEAD) return;      // if true animation is over
@@ -161,7 +161,7 @@ void gamepdo_dieanim(int cp, stCloneKeenPlus *pCKP)
        player[cp].pdie = PDIE_DEAD;
        if (player[cp].inventory.lives<0)
        {
-    	   pCKP->Control.levelcontrol.gameovermode = true;
+    	   p_levelcontrol->gameovermode = true;
     	   g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
     	   int bmnum = g_pGraphics->getBitmapNumberFromName("GAMEOVER");
     	   // figure out where to center the gameover bitmap and draw it
@@ -172,7 +172,7 @@ void gamepdo_dieanim(int cp, stCloneKeenPlus *pCKP)
        }
        else
        {
-         endlevel(0,&(pCKP->Control.levelcontrol));
+         endlevel(0,p_levelcontrol);
        }
      }
    }
@@ -210,7 +210,6 @@ void gamepdo_keencicle(int cp, stCloneKeenPlus *pCKP)
 
 }
 
-// Only checks if keen exits the level and if two-button firing should be triggered!
 void gamepdo_ProcessInput(unsigned int cp, stCloneKeenPlus *pCKP)
 {
 	stLevelControl *p_levelcontrol;
@@ -273,36 +272,16 @@ void gamepdo_ProcessInput(unsigned int cp, stCloneKeenPlus *pCKP)
 
    if(g_pInput->getPressedKey(KP))
    {
+       g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
+
 	   // Open the Pause Dialog
-	   CDialog	*PauseDialog;
-
-	   PauseDialog = new CDialog;
-
-	   PauseDialog->setDimensions(10,10,20,3);
-	   PauseDialog->addOptionText("Game Paused");
-	   PauseDialog->animateDialogBox(true);
-
-	   PauseDialog->setVisible(true);
-
-	   do
-	   {
-		   if(g_pTimer->TimeToRunLogic())
-		   {
-			   g_pInput->pollEvents();
-			   gamedo_fades();
-
-			   gamedo_render_drawobjects();
-			   gamedo_AnimatedTiles();
-			   PauseDialog->renderDialog();
-		   }
-		   gamedo_frameskipping_blitonly();
-		} while(!g_pInput->getPressedAnyKey());
-
-	   delete PauseDialog;
-
-	   map_redraw();
+       showTextMB("Game Paused");
    }
-
+   else if(g_pInput->getPressedKey(KF1))
+   {
+	   // Show the typical F1 Help
+       showF1HelpText(pCKP->Control.levelcontrol.episode, pCKP->Resources.GameDataDirectory);
+   }
 }
 
 // if player not sliding and not jumping, allow
@@ -1800,8 +1779,5 @@ void gamepdo_StatusBox(int cp, stCloneKeenPlus *pCKP)
   if (fade.mode != NO_FADE) return;
 
   if(player[cp].playcontrol[PA_STATUS] && !player[cp].lastplaycontrol[PA_STATUS])
-  {
 	  showinventory(cp, pCKP);
-  }
-
 }

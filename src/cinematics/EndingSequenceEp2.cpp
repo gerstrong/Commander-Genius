@@ -8,6 +8,7 @@
 #include "../sdl/sound/CSound.h"
 #include "../include/menu.h"
 #include "../include/enemyai.h"
+#include "../include/gamedo.h"
 #include "EndingSequenceEp2.h"
 #include "CommonEnding.h"
 #include "../CGraphics.h"

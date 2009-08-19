@@ -25,8 +25,12 @@
 #include "StringUtils.h"
 #include "FindFile.h"
 
-#include "dialog/CWindow.h"
+#include "fileio/CExeFile.h"
 
+#include "dialog/CWindow.h"
+#include "dialog/CTextViewer.h"
+
+#include <fstream>
 
 void banner(void)
 {
@@ -837,10 +841,12 @@ int dlgX,dlgY,dlgW,dlgH;
 		  return QuitState;
 		}
 
-		g_pVideoDriver->sb_blit();
-		gamedo_render_eraseobjects();
-
 		g_pInput->pollEvents();
+	  }
+	  if(g_pTimer->TimeToRender())
+	  {
+			g_pVideoDriver->sb_blit();
+			gamedo_render_eraseobjects();
 	  }
   } while(1);
 }
@@ -1077,6 +1083,63 @@ void showTextMB(const std::string& Text)
     } while(!g_pInput->getPressedAnyCommand());
 
     delete InfoTextWindow;
+}
+
+// This function shows up the helping text when F1 is pushed
+void showF1HelpText(int episode, std::string DataDirectory)
+{
+   std::string helptext;
+
+   if(episode==1)
+   {
+	   // We suppose that we are using version 131. Maybe it must be extended
+		std::string filename = "data/" + DataDirectory + "helptext.ck1";
+		std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);
+
+		while(!File.eof())
+			helptext.push_back(File.get());
+
+		File.close();
+   }
+   else
+   {
+	   // Here the Text file is within the EXE-File
+	   unsigned long startflag=0, endflag=0;
+	   unsigned char *text_data = NULL;
+
+	   CExeFile *ExeFile = new CExeFile(episode, DataDirectory);
+	   ExeFile->readData();
+
+	   if(!ExeFile->getData()) return;
+
+	   if(episode == 2)
+	   {
+		   startflag = 0x15DC0-512;
+		   endflag = 0x1659F-512;
+	   }
+	   else // Episode 3
+	   {
+		   startflag = 0x17BD0-512;
+		   endflag = 0x1839F-512;
+	   }
+
+	   text_data = ExeFile->getData();
+
+	   for(unsigned long i=startflag ; i<endflag ; i++ )
+		   helptext.push_back(text_data[i]);
+
+	   delete ExeFile;
+   }
+
+   helptext += "\n\nNOTE: The controls in CKP may be different than in the help described.\nCheck out the Readme.txt!\n";
+
+   CTextViewer *Textviewer = new CTextViewer(0,0,320,140);
+
+   Textviewer->loadText(helptext);
+
+   Textviewer->processCycle();
+
+   delete Textviewer;
 }
 
 /////////////////////////////////////////

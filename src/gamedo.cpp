@@ -38,6 +38,7 @@ unsigned char oldupkey = 5;
 unsigned char olddownkey = 5;
 unsigned char oldctrlkey = 5;
 unsigned char oldaltkey = 5;
+
 void gamedo_getInput(stLevelControl *p_levelcontrol)
 {
 int i=0;
@@ -100,8 +101,8 @@ unsigned int msb, lsb;
     	 memcpy(player[p].lastplaycontrol,player[p].playcontrol,PA_MAX_ACTIONS);
 
     	 // Entry for every player
-   		 player[p].playcontrol[0] = 0;
-   		 player[p].playcontrol[1] = 0;
+   		 player[p].playcontrol[PA_X] = 0;
+   		 player[p].playcontrol[PA_Y] = 0;
 
     	 if(g_pInput->getHoldedCommand(p, IC_LEFT))
     		 player[p].playcontrol[PA_X] -= 100;

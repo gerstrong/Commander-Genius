@@ -4,14 +4,6 @@
 
 #include <string>
 
-// gamedo.c
-int gamedo_ScrollTriggers(int theplayer);
-void gamedo_AnimatedTiles(bool animate_hinttiles = false);
-void gamedo_render_eraseobjects(void);
-void gamedo_render_drawdebug(void);
-void gamedo_render_erasedebug(void);
-void gamedo_fades(void);
-
 // gamepdowm.c
 char wm_issolid(int xb, int yb, int *levels_completed);
 

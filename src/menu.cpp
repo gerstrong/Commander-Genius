@@ -219,7 +219,7 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 {
 
 	CDialog *MainMenu;
-	int bmnum;
+	int bmnum, bmnum1;
 	int x;
 	int selection;
 
@@ -242,7 +242,8 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 	MainMenu->setDimensions(11,7,18,13);
 
 	// Load the Title Bitmap
-	bmnum = g_pGraphics->getBitmapNumberFromName("TITLE");
+	bmnum  = g_pGraphics->getBitmapNumberFromName("TITLE");
+	bmnum1 = g_pGraphics->getBitmapNumberFromName("F1HELP");
 
 	MainMenu->addOptionText("1-Player Game");
 	MainMenu->addOptionText("2-Player Game");
@@ -257,8 +258,12 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 	MainMenu->addOptionText("Quit");
 
 	x = (320/2)-(bitmaps[bmnum].xsize/2);
-
 	g_pGraphics->drawBitmap(x, 0, bmnum);
+
+	if(pCKP->Control.levelcontrol.episode == 3)
+		g_pGraphics->drawBitmap(128, 181, bmnum1);
+	else
+		g_pGraphics->drawBitmap(96, 181, bmnum1);
 
 	MainMenu->animateDialogBox(true);
 
@@ -287,6 +292,10 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 				break;
 			}
 
+			if(g_pInput->getPressedKey(KF1))
+			{
+				showF1HelpText(pCKP->Control.levelcontrol.episode, pCKP->Resources.GameDataDirectory);
+			}
 
 			// Render the Games-Menu
 			MainMenu->renderDialog();
@@ -903,12 +912,10 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 // This function shows the Story of Commander Keen!
 void showPage(const std::string& str_text, int textsize)
 {
-	bool cancel = false;
-
 	CTextViewer *TextViewer = new CTextViewer(0,0,320,136);
 	TextViewer->loadText(str_text);
 
-    fade.mode = FADE_GO;
+	fade.mode = FADE_GO;
 	fade.rate = FADE_NORM;
 	fade.dir = FADE_IN;
 	fade.curamt = 0;
@@ -916,59 +923,10 @@ void showPage(const std::string& str_text, int textsize)
 
 	AllPlayersInvisible();
 
-	char timer=0;
-	do
-	{
-	    if(g_pTimer->TimeToRunLogic())
-		{
-			gamedo_fades();
-			gamedo_AnimatedTiles();
+	TextViewer->processCycle();
+	delete TextViewer;
 
-			g_pInput->pollEvents();
-
-			// Normal Keys/Axes
-			if( g_pInput->getHoldedCommand(IC_DOWN) )
-			{
-				timer++;
-				if(timer >= 5)
-					TextViewer->scrollDown();
-			}
-			if( g_pInput->getHoldedCommand(IC_UP) )
-			{
-				timer++;
-				if(timer >= 5)
-					TextViewer->scrollUp();
-			}
-
-			// Page Keys
-			if( g_pInput->getHoldedKey(KPGDN) )
-			{
-				timer++;
-				if(timer >= 5)
-					TextViewer->setNextPos();
-			}
-			if( g_pInput->getHoldedKey(KPGUP) )
-			{
-				timer++;
-				if(timer >= 5)
-					TextViewer->setPrevPos();
-			}
-
-			if(timer>=10) timer=0;
-
-			cancel = g_pInput->getPressedKey(KQUIT);
-		}
-	     if (g_pTimer->TimeToRender())
-	     {
-	    	gamedo_RenderScreen();
-		    TextViewer->renderBox(); // This comes after, because it does transparent overlay
-	     }
-
-	} while(!cancel);
-
-	  delete TextViewer;
-
-	  return;
+    return;
 }
 
 

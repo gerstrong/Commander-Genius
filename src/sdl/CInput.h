@@ -8,6 +8,8 @@
 #ifndef CINPUT_H_
 #define CINPUT_H_
 
+#include <SDL/SDL.h>
+
 #ifdef WIZ
 #include <sys/ioctl.h>
 #include <sys/soundcard.h>
