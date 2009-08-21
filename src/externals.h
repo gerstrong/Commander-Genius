@@ -8,7 +8,7 @@ extern unsigned int AnimTileInUse[ATILEINUSE_SIZEX][ATILEINUSE_SIZEY];
 extern stTile tiles[MAX_TILES+1];
 extern unsigned char tiledata[MAX_TILES+1][16][16];
 extern stSprite *sprites;
-extern stBitmap bitmaps[MAX_BITMAPS+1];
+extern CBitmap bitmaps[MAX_BITMAPS+1];
 extern stAnimTile animtiles[MAX_ANIMTILES+1];
 extern char font[MAX_FONT+1][8][8];
 extern stObject objects[MAX_OBJECTS+1];
@@ -61,8 +61,6 @@ extern char debugmode,acceleratemode;
 
 
 extern char loadinggame, loadslot;
-
-extern char *BitmapData;
 
 extern char ScreenIsScrolling;
 extern int blockedby;

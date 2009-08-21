@@ -630,7 +630,7 @@ void gamepdo_InertiaAndFriction_X(unsigned int cp, stCloneKeenPlus *pCKP)
 		   }
 		   else
 		   {
-			   player[cp].pboost_x-= player[cp].ppogostick ? 3 : 1;
+			   player[cp].pboost_x-= player[cp].ppogostick ? 4 : 1;
 		   }
 	   }
 	   if (player[cp].playcontrol[PA_X] > 0 && !player[cp].pfrozentime)
@@ -642,7 +642,7 @@ void gamepdo_InertiaAndFriction_X(unsigned int cp, stCloneKeenPlus *pCKP)
 		   }
 		   else
 		   {
-			   player[cp].pboost_x+= player[cp].ppogostick ? 3 : 1;
+			   player[cp].pboost_x+= player[cp].ppogostick ? 4 : 1;
 		   }
 	   }
 

@@ -127,6 +127,8 @@ bool CEGAGraphics::loadData()
 		buf = m_path + "/egasprit.ck" + itoa(m_episode);
     m_Sprit->loadData("data/" + buf,(compressed>>1));
 
+    delete[] data;
+
     return true;
 }
 

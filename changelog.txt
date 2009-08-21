@@ -1,5 +1,12 @@
-Commander Genius Release v0.3.0.1 (CloneKeenPlus):
+Commander Genius Release v0.3.0.2 (CloneKeenPlus):
 --------------------------------------------------
+21-08-2009
+- New Menu System, compatible as ingame menu. (Still not implemented)
+- Modified lightly the pogo physics
+- removed some memory leaks
+- reduced the source code at some parts
+- fixed errors with mods
+
 19-08-2009
 - Added F1-Help Screen
 - Improved Gargs AI

@@ -91,7 +91,7 @@ unsigned int AnimTileInUse[ATILEINUSE_SIZEX][ATILEINUSE_SIZEY];
 stTile tiles[MAX_TILES+1];
 unsigned char tiledata[MAX_TILES+1][16][16];
 stSprite *sprites = NULL;
-stBitmap bitmaps[MAX_BITMAPS+1];
+CBitmap bitmaps[MAX_BITMAPS+1];
 stObject objects[MAX_OBJECTS+1];
 char font[MAX_FONT+1][8][8];
 stAnimTile animtiles[MAX_ANIMTILES+1];
@@ -209,10 +209,9 @@ int main(int argc, char *argv[])
 	}
 
 	Settings.saveGameCfg(CKP.Option);
-
 	cleanupResources(&CKP);
-
 	Settings.saveDrvCfg();
+	Game.freeResources();
 	
 	printf("Thank you very much for playing this wonderful game!");
 

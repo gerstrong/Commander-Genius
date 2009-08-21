@@ -153,7 +153,7 @@ void CDialog::render()
 	if( m_h+m_scroll-2 > (Uint8)m_dlgobject.size() )
 		max = m_dlgobject.size();
 	else
-		max = m_h-2+m_scroll;
+		max = m_h+m_scroll-2;
 
 	// they are processed by ID of course
 	for(Uint16 i=m_scroll ;	i<max ; i++)

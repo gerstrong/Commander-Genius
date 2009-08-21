@@ -15,8 +15,6 @@
 #include <stdio.h>
 #include <string.h>
 
-char *BitmapData; // TODO: Partial solution. This BitmapData must become member of this class!
-
 CEGALatch::CEGALatch( int planesize,
 						long bitmaptablelocation,
 						short fonttiles,
@@ -69,6 +67,7 @@ bool CEGALatch::loadHead( char *data )
 bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
 {
 	char *RawData;
+    char *BitmapData; // TODO: Partial solution. This BitmapData must become member of this class!
 
 	FILE* latchfile = OpenGameFile(filename.c_str(),"rb");
 

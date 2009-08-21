@@ -553,7 +553,7 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 	filter = g_pVideoDriver->getFiltermode();
 
 	// Prepare the Games Menu
-	CDialog DisplayMenu(4,4,32,13);
+	CDialog DisplayMenu(4,4,32,12);
 
 	// Use the standard Menu-Frame used in the old DOS-Games
 	DisplayMenu.setFrameTheme( DLG_THEME_OLDSCHOOL );
@@ -586,42 +586,42 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 		gl_filter = g_pVideoDriver->getOGLFilter();
 
 		if(gl_filter == 1)
-			DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 36, "OGL Filter: Linear");
+			DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 28, "OGL Filter: Linear");
 		else
-			DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 36, "OGL Filter: Nearest");
+			DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 28, "OGL Filter: Nearest");
 	}
 
 	filter = g_pVideoDriver->getFiltermode();
 	if(filter == 0)
-		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 44, "No Filter");
+		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 36, "No Filter");
 	else if(filter == 1)
-		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 44, "Scale2x Filter");
+		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 36, "Scale2x Filter");
 	else if(filter == 2)
-		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 44, "Scale3x Filter");
+		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 36, "Scale3x Filter");
 	else if(filter == 3)
-		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 44, "Scale4x Filter");
+		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 36, "Scale4x Filter");
 	else
-		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 44, "Unknown Filter");
+		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 36, "Unknown Filter");
 
 	if(opengl)
-		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 52, "OpenGL Acceleration");
+		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 44, "OpenGL Acceleration");
 	else
-		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 52, "Software Rendering");
+		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 44, "Software Rendering");
 
 	autoframeskip = g_pTimer->getFrameskip();
 
 	if(autoframeskip)
-		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 60, "Auto-Frameskip : " + itoa(autoframeskip) + " fps");
+		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 52, "Auto-Frameskip : " + itoa(autoframeskip) + " fps");
 
 	aspect = g_pVideoDriver->getAspectCorrection();
 
 	buf = "OGL Aspect Ratio ";
 	buf += aspect ? "enabled" : "disabled";
 
-	DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 68, buf);
+	DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 60, buf);
 
-	DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 84, "Save and return");
-	DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 92, "Cancel");
+	DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 76, "Save and return");
+	DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 84, "Cancel");
 
 	do
 	{
@@ -811,14 +811,12 @@ char configmenu(stCloneKeenPlus *pCKP)
 					break;
 
 				case 3:
-					controlsmenu(pCKP);
+					controlsmenu();
 					break;
 
 				default:
 					break;
 				}
-
-				break;
 			}
 			OptionsMenu.processlogic();
 		}
@@ -831,7 +829,7 @@ char configmenu(stCloneKeenPlus *pCKP)
 	return 0;
 }
 
-char controlsmenu(stCloneKeenPlus *pCKP)
+char controlsmenu()
 {
 	int bmnum;
 	int selection;
@@ -847,7 +845,7 @@ char controlsmenu(stCloneKeenPlus *pCKP)
 	g_pGraphics->drawBitmap(x, 0, bmnum);
 
 	// Prepare the Games Menu
-	CDialog ControlsMenu(8,16,38,21);
+	CDialog ControlsMenu(8,16,38,22);
 
 	// Use the standard Menu-Frame used in the old DOS-Games
 	ControlsMenu.setFrameTheme( DLG_THEME_OLDSCHOOL );
@@ -857,7 +855,7 @@ char controlsmenu(stCloneKeenPlus *pCKP)
 	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 24, buf);
 
 	g_pInput->getEventName(IC_UP, 0, buf2);
-	buf = "P1 Up:   " + buf2;
+	buf = "P1 Up:     " + buf2;
 	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 32, buf);
 
 	g_pInput->getEventName(IC_RIGHT, 0, buf2);
@@ -890,7 +888,7 @@ char controlsmenu(stCloneKeenPlus *pCKP)
 	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 88, buf);
 
 	g_pInput->getEventName(IC_UP, 1, buf2);
-	buf = "P2 Up:   " + buf2;
+	buf = "P2 Up:     " + buf2;
 	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 96, buf);
 
 	g_pInput->getEventName(IC_RIGHT, 1, buf2);
@@ -917,8 +915,9 @@ char controlsmenu(stCloneKeenPlus *pCKP)
 	buf = "P2 Status: " + buf2;
 	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 144, buf);
 
-	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 160, "Save and return");
-	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 168, "Cancel");
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 24, 152, "Reset Controls");
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 168, "Save and return");
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 176, "Cancel");
 
 	do
 	{
@@ -1007,9 +1006,13 @@ char controlsmenu(stCloneKeenPlus *pCKP)
 					g_pInput->saveControlconfig();
 					break;
 				}
-				else
+				else if(selection == MAX_COMMANDS*2+1)
 				{
 					g_pInput->saveControlconfig();
+					break;
+				}
+				else
+				{
 					break;
 				}
 			}

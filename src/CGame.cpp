@@ -279,6 +279,7 @@ bool CGame::loadResources(unsigned short Episode, const std::string& DataDirecto
 void CGame::freeResources(void)
 {
 	if(EGAGraphics) { delete EGAGraphics; EGAGraphics = NULL; }
+	if(sprites) { delete sprites; sprites = NULL; }
 }
 
 void CGame::preallocateCKP(stCloneKeenPlus *pCKP)
