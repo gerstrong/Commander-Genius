@@ -90,10 +90,6 @@ char doFall;
         	  player[cp].psupportingobject = 0;
           }
        }
-       else
-       { // we're in game-over mode
-
-       }
     }
 
     gamepdo_SelectFrame(cp);
