@@ -70,13 +70,12 @@ CVideoDriver::CVideoDriver() {
 	  Filtermode=1;
 	  Zoom=2;
 	  FrameSkip=2;
-	  m_targetfps = 50;
+	  m_targetfps = 60;
 #endif
-	  m_opengl = false;
 #ifdef USE_OPENGL
 	  m_opengl_filter = GL_NEAREST;
 	  mp_OpenGL = NULL;
-	m_opengl = true; // use it if possible
+	  m_opengl = false; // Must stay optional for better compatibility
 #endif
 	  m_aspect_correction = true;
 

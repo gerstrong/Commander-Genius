@@ -18,7 +18,7 @@
 #include "sdl/video/colourtable.h"
 #include "include/gui/dialog.h"
 #include "sdl/CInput.h"
-#include "vorticon/CDialog.h"
+#include "dialog/CDialog.h"
 #include "CLogFile.h"
 #include "sdl/CSettings.h"
 #include "dialog/CTextViewer.h"
@@ -145,74 +145,41 @@ short loadResourcesforStartMenu(stCloneKeenPlus *pCKP, CGame *Game)
 extern char fade_black;
 bool loadStartMenu(stCloneKeenPlus *pCKP)
 {
-	CDialog *GamesMenu;
-	bool ret = true;
+	CDialog *GamesMenu = new CDialog(16,8,36,20);
+
+	// Use the standard Menu-Frame used in the old DOS-Games
+	GamesMenu->setFrameTheme( DLG_THEME_OLDSCHOOL );
+
+	// Show me the games you detected!
+	for( int i=0 ; i < pCKP->numGames ; i++ )
+		GamesMenu->addObject(DLG_OBJ_OPTION_TEXT,16+8,8+8*(i+1), pCKP->GameData[i].Name);
 
 	fade.mode = FADE_GO;
 	fade.rate = FADE_NORM;
 	fade.dir = FADE_IN;
 	fade.curamt = 0;
 	fade.fadetimer = 0;
-	showmapatpos(90, (104 << 2)+256+256+80, 32-4, pCKP);
-
-	// Prepare the Games Menu
-	GamesMenu = new CDialog();
-
-	GamesMenu->setDimensions(2,2,36,15);
-
-	// Show me the games you detected!
-	for( int i=0 ; i < pCKP->numGames ; i++ )
-		GamesMenu->addOptionText(pCKP->GameData[i].Name);
-
-	GamesMenu->animateDialogBox(true);
 
 	do
 	{
 		if(g_pTimer->TimeToRunLogic())
 		{
-			g_pInput->pollEvents();
-
-			// do fades
-			gamedo_fades();
-			if(fade.mode == FADE_COMPLETE)
-				GamesMenu->setVisible(true);
-
-			gamedo_AnimatedTiles();
-
-			// Check the Input
-			if(g_pInput->getPulsedCommand(IC_DOWN, 80))
-				GamesMenu->setNextSelection();
-			if(g_pInput->getPulsedCommand(IC_UP, 80))
-				GamesMenu->setPrevSelection();
-
-			if(g_pInput->getPressedCommand(0, IC_STATUS))
-			{
-				fade.dir = FADE_OUT;
-				fade.curamt = PAL_FADE_SHADES;
-				fade.fadetimer = 0;
-				fade.rate = FADE_NORM;
-				fade.mode = FADE_GO;
-
-				if( GamesMenu->getSelection() < pCKP->numGames )
-				{
-					ret = true;
-					pCKP->Resources.GameSelected = GamesMenu->getSelection()+1;
-					pCKP->Control.levelcontrol.episode = pCKP->GameData[GamesMenu->getSelection()].Episode;
-					pCKP->Resources.GameDataDirectory = pCKP->GameData[GamesMenu->getSelection()].DataDirectory;
-				}
-				else ret = false;
-				break;
-			}
-			// Render the Games-Menu
-			GamesMenu->renderDialog();
+			GamesMenu->processlogic();
 		}
-		// blit the scrollbuffer to the display
-		gamedo_frameskipping_blitonly();
-	} while(!g_pInput->getExitEvent());
+		else if(g_pTimer->TimeToRender())
+		{
+			GamesMenu->render();
+		}
+	} while( !g_pInput->getPressedCommand(IC_JUMP) && !g_pInput->getPressedCommand(IC_STATUS) );
+
+
+	pCKP->Resources.GameSelected = GamesMenu->getSelection()+1;
+	pCKP->Control.levelcontrol.episode = pCKP->GameData[GamesMenu->getSelection()].Episode;
+	pCKP->Resources.GameDataDirectory = pCKP->GameData[GamesMenu->getSelection()].DataDirectory;
 
 	delete GamesMenu;
 
-	return ret;
+	return true;
 }
 
 int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
@@ -223,93 +190,76 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 	int x;
 	int selection;
 
+	fade.mode = FADE_GO;
+	fade.rate = FADE_NORM;
+	fade.dir = FADE_IN;
+	fade.curamt = 0;
+	fade.fadetimer = 0;
+
 	for(unsigned int cp=0 ; cp<numplayers ; cp++)	// in some situations. the player is shown for a short time.
 	{
 		player[cp].x = 0;
 		player[cp].y = 0;
 	}
 
-	fade.mode = FADE_GO;
-	fade.rate = FADE_NORM;
-	fade.dir = FADE_IN;
-	fade.curamt = 0;
-	fade.fadetimer = 0;
 	showmapatpos(90, MAINMENU_X, MENUS_Y, pCKP);
 
 	// Prepare the Games Menu
-	MainMenu = new CDialog();
-
-	MainMenu->setDimensions(11,7,18,13);
+	MainMenu = new CDialog(88, 56, 18, 13);
 
 	// Load the Title Bitmap
 	bmnum  = g_pGraphics->getBitmapNumberFromName("TITLE");
 	bmnum1 = g_pGraphics->getBitmapNumberFromName("F1HELP");
 
-	MainMenu->addOptionText("1-Player Game");
-	MainMenu->addOptionText("2-Player Game");
-	MainMenu->addOptionText("Load Game");
-	MainMenu->addOptionText("Story");
-	MainMenu->addOptionText("High Scores");
-	MainMenu->addOptionText("Options");
-	MainMenu->addOptionText("Demo");
-	MainMenu->addOptionText("Change Game");
-	MainMenu->addOptionText("About CG");
-	MainMenu->addOptionText("Ordering Info");
-	MainMenu->addOptionText("Quit");
+	// Use the standard Menu-Frame used in the old DOS-Games
+	MainMenu->setFrameTheme( DLG_THEME_OLDSCHOOL );
+
+	// Show me the games you detected!
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 88+8, 64, "1-Player Game");
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 88+8, 72, "2-Player Game");
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 88+8, 80, "Load Game");
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 88+8, 88, "Story");
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 88+8, 96, "High Scores");
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 88+8, 104, "Options");
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 88+8, 112, "Demo");
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 88+8, 120, "Change Game");
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 88+8, 128, "About CG");
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 88+8, 136, "Ordering Info");
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 88+8, 144, "Quit");
 
 	x = (320/2)-(bitmaps[bmnum].xsize/2);
 	g_pGraphics->drawBitmap(x, 0, bmnum);
 
+	// Draw Help Text-Screen
 	if(pCKP->Control.levelcontrol.episode == 3)
 		g_pGraphics->drawBitmap(128, 181, bmnum1);
 	else
 		g_pGraphics->drawBitmap(96, 181, bmnum1);
 
-	MainMenu->animateDialogBox(true);
 
 	do
 	{
 		if(g_pTimer->TimeToRunLogic())
 		{
-			g_pInput->pollEvents();
-
-			// do fades
 			gamedo_fades();
-			if(fade.mode == FADE_COMPLETE)
-				MainMenu->setVisible(true);
-
 			gamedo_AnimatedTiles();
-
-			// Check the Input
-			if(g_pInput->getPulsedCommand(IC_DOWN, 80))
-				MainMenu->setNextSelection();
-			if(g_pInput->getPulsedCommand(IC_UP, 80))
-				MainMenu->setPrevSelection();
-
-			if(g_pInput->getPressedCommand(IC_STATUS))
-			{
-				selection = MainMenu->getSelection();
-				break;
-			}
+			MainMenu->processlogic();
 
 			if(g_pInput->getPressedKey(KF1))
-			{
 				showF1HelpText(pCKP->Control.levelcontrol.episode, pCKP->Resources.GameDataDirectory);
-			}
-
-			// Render the Games-Menu
-			MainMenu->renderDialog();
-
-			if(g_pInput->getExitEvent())
-			{
-				delete MainMenu;
-				return MAINMNU_QUIT;
-			}
+			else if(g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP))
+				break;
+		}
+		else if(g_pTimer->TimeToRender())
+		{
+			MainMenu->render();
 		}
 
-		// blit the scrollbuffer to the display
-		gamedo_frameskipping_blitonly();
 	} while(1);
+
+	selection = MainMenu->getSelection();
+
+	delete MainMenu;
 
     if (selection==MAINMNU_LOADGAME)
     {
@@ -347,11 +297,9 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
         	int diff;
         	diff = getDifficulty(pCKP);
 
-        	if(diff>2)
-        	{
-        		delete MainMenu;
+        	if(diff>=2)
         		return BACK2MAINMENU;
-        	}
+
         	pCKP->Control.levelcontrol.hardmode = (diff == 1) ? true : false;
     	}
 
@@ -362,24 +310,13 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
     	fade.mode = FADE_GO;
     }
 
-	delete MainMenu;
-
 	return selection;
 }
 
 int getDifficulty(stCloneKeenPlus *pCKP)
 {
 	int bmnum;
-	int selection;
 	int x;
-
-	fade.mode = FADE_GO;
-	fade.rate = FADE_NORM;
-	fade.dir = FADE_IN;
-	fade.curamt = 0;
-	fade.fadetimer = 0;
-
-	showmapatpos(90, MAINMENU_X, MENUS_Y, pCKP);
 
 	// Load the Title Bitmap
 	bmnum = g_pGraphics->getBitmapNumberFromName("TITLE");
@@ -389,54 +326,36 @@ int getDifficulty(stCloneKeenPlus *pCKP)
 	g_pGraphics->drawBitmap(x, 0, bmnum);
 
 	// Prepare the Games Menu
-	CDialog DifficultyMenu;
+	CDialog DifficultyMenu(120,32,14,6);
 
-	DifficultyMenu.setDimensions(15,4,14,6);
+	DifficultyMenu.setFrameTheme(DLG_THEME_OLDSCHOOL);
 
-	DifficultyMenu.addOptionText("Normal");
-	DifficultyMenu.addOptionText("Hard");
-	DifficultyMenu.addSeparator();
-	DifficultyMenu.addOptionText("Cancel");
-
-	DifficultyMenu.animateDialogBox(true);
+	DifficultyMenu.addObject(DLG_OBJ_OPTION_TEXT, 128, 40, "Normal");
+	DifficultyMenu.addObject(DLG_OBJ_OPTION_TEXT, 128, 48, "Hard");
+	DifficultyMenu.addObject(DLG_OBJ_OPTION_TEXT, 128, 64, "Cancel");
 
 	do
 	{
 		if(g_pTimer->TimeToRunLogic())
 		{
-			// do fades
-			gamedo_fades();
-			if(fade.mode == FADE_COMPLETE)
-				DifficultyMenu.setVisible(true);
-
-			gamedo_AnimatedTiles();
-
-			// Check the Input
-			if(g_pInput->getPulsedCommand(IC_DOWN, 80))
-				DifficultyMenu.setNextSelection();
-			if(g_pInput->getPulsedCommand(IC_UP, 80))
-				DifficultyMenu.setPrevSelection();
-
-			if(g_pInput->getPressedCommand(IC_STATUS))
-			{
-				selection = DifficultyMenu.getSelection();
-				break;
-			}
 			// Render the Games-Menu
-			DifficultyMenu.renderDialog();
+			DifficultyMenu.processlogic();
+			if( g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP))
+				break;
+
 			g_pInput->pollEvents();
 		}
-		// blit the scrollbuffer to the display
-		gamedo_frameskipping_blitonly();
-
+		if(g_pTimer->TimeToRender())
+		{
+			DifficultyMenu.render();
+		}
 	} while(true);
 
-	return selection;
+	return DifficultyMenu.getSelection();
 }
 
 int AudioDlg(stCloneKeenPlus *pCKP)
 {
-	CDialog *AudioMenu;
 	int bmnum;
 	int selection;
 	int x;
@@ -445,51 +364,37 @@ int AudioDlg(stCloneKeenPlus *pCKP)
 	int rate=0;
 	short mode=0;
 
-	showmapatpos(90, MAINMENU_X, MENUS_Y, pCKP);
-
 	// Load the Title Bitmap
 	bmnum = g_pGraphics->getBitmapNumberFromName("TITLE");
 	x = (320/2)-(bitmaps[bmnum].xsize/2);
 	g_pGraphics->drawBitmap(x, 0, bmnum);
 
 	// Prepare the Games Menu
-	AudioMenu = new CDialog();
-	AudioMenu->setDimensions(4,4,32,7);
+	CDialog AudioMenu(32,32,32,7);
 
-	char buf[256];
+	AudioMenu.setFrameTheme(DLG_THEME_OLDSCHOOL);
+
 	rate = g_pSound->getAudioSpec().freq;
-	sprintf(buf,"Rate: %d kHz",rate);
-	AudioMenu->addOptionText(buf);
+	AudioMenu.addObject(DLG_OBJ_OPTION_TEXT, 40, 40, "Rate: " + itoa(rate) +" kHz");
 	mode = g_pSound->getAudioSpec().channels - 1;
 	if(mode == 1)
-		AudioMenu->addOptionText("Mode: Stereo");
+		AudioMenu.addObject(DLG_OBJ_OPTION_TEXT, 40, 48, "Mode: Stereo");
 	else
-		AudioMenu->addOptionText("Mode: Mono");
-	AudioMenu->addSeparator();
-	AudioMenu->addOptionText("Save and go back");
-	AudioMenu->addOptionText("Cancel");
+		AudioMenu.addObject(DLG_OBJ_OPTION_TEXT, 40, 48, "Mode: Mono");
 
-	AudioMenu->animateDialogBox(true);
+	AudioMenu.addObject(DLG_OBJ_OPTION_TEXT, 40, 64, "Save and go back");
+	AudioMenu.addObject(DLG_OBJ_OPTION_TEXT, 40, 72, "Cancel");
+
 
 	do
 	{
 		if(g_pTimer->TimeToRunLogic())
 		{
-			// do fades
-			gamedo_fades();
-			if(fade.mode == FADE_COMPLETE)
-				AudioMenu->setVisible(true);
 			gamedo_AnimatedTiles();
 
-			// Check the Input
-			if(g_pInput->getPulsedCommand(IC_DOWN, 80))
-				AudioMenu->setNextSelection();
-			if(g_pInput->getPulsedCommand(IC_UP, 80))
-				AudioMenu->setPrevSelection();
-
-			if(g_pInput->getPressedCommand(IC_STATUS))
+			if(g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP))
 			{
-				selection = AudioMenu->getSelection();
+				selection = AudioMenu.getSelection();
 
 				if(selection == 0)
 				{
@@ -500,21 +405,19 @@ int AudioDlg(stCloneKeenPlus *pCKP)
 					case 11000: rate = 22050; break;
 					default: rate = 11000; break;
 					}
-
-					sprintf(buf,"Rate: %d kHz",rate);
-					AudioMenu->setOptionText(0,buf);
+					AudioMenu.setObjectText(0, "Rate: " + itoa(rate) + " kHz");
 				}
 
 				if(selection == 1)
 				{
 					mode = !mode;
 					if(!mode)
-						AudioMenu->setOptionText(1,"Mode: Mono");
+						AudioMenu.setObjectText(1,"Mode: Mono");
 					else
-						AudioMenu->setOptionText(1,"Mode: Stereo");
+						AudioMenu.setObjectText(1,"Mode: Stereo");
 				}
 
-				if(selection == 3)
+				if(selection == 2)
 				{
 					g_pSound->destroy();
 					g_pSound->setSoundmode(rate, mode ? true : false);
@@ -525,35 +428,30 @@ int AudioDlg(stCloneKeenPlus *pCKP)
 					g_pSound->init();
 					ok = g_pSound->loadSoundData(pCKP->Control.levelcontrol.episode,
 												 pCKP->Resources.GameDataDirectory);
-
 					break;
 				}
-				if(selection == 4)
+				if(selection == 3)
 					break;
 
 			}
-			// Render the Games-Menu
-			AudioMenu->renderDialog();
-			g_pInput->pollEvents();
+			AudioMenu.processlogic();
 		}
-		// blit the scrollbuffer to the display
-		gamedo_frameskipping_blitonly();
+		else if(g_pTimer->TimeToRender())
+		{
+			AudioMenu.render();
+		}
 	} while(1);
 
-	delete AudioMenu;
 	return ok;
 }
 
 void OptionsDlg(stCloneKeenPlus *pCKP)
 {
-	CDialog *OptionsMenu;
 	int bmnum;
 	int selection;
 	int x,i;
 
-	char buf[256];
-
-	showmapatpos(90, MAINMENU_X, MENUS_Y, pCKP);
+	std::string buf;
 
 	// Load the Title Bitmap
 	bmnum = g_pGraphics->getBitmapNumberFromName("TITLE");
@@ -561,127 +459,115 @@ void OptionsDlg(stCloneKeenPlus *pCKP)
 	g_pGraphics->drawBitmap(x, 0, bmnum);
 
 	// Prepare the Games Menu
-	OptionsMenu = new CDialog();
-	OptionsMenu->setDimensions(3,3,34,12);
+	CDialog OptionsMenu(24,24,34,12);
+
+	OptionsMenu.setFrameTheme(DLG_THEME_OLDSCHOOL);
 
 	for( i = 0 ; i < NUM_OPTIONS ; i++ )
 	{
-		sprintf(buf,"%s: ",options[i].name);
-		if(options[i].value)
-			strcat(buf,"Enabled");
-		else
-			strcat(buf,"Disabled");
+		buf = options[i].name + ": ";
 
-		OptionsMenu->addOptionText(buf);
+		if(options[i].value)
+			buf += "Enabled";
+		else
+			buf += "Disabled";
+
+		OptionsMenu.addObject(DLG_OBJ_OPTION_TEXT, 32, 32+8*i, buf);
 	}
 
-	OptionsMenu->addSeparator();
-	OptionsMenu->addOptionText("Return");
-
-	OptionsMenu->animateDialogBox(true);
+	OptionsMenu.addObject(DLG_OBJ_OPTION_TEXT, 32, 40+8*(i), "Save and Continue");
+	OptionsMenu.addObject(DLG_OBJ_OPTION_TEXT, 32, 40+8*(i+1), "Cancel");
 
 	do
 	{
 		if(g_pTimer->TimeToRunLogic())
 		{
-			// do fades
-			gamedo_fades();
-			if(fade.mode == FADE_COMPLETE)
-				OptionsMenu->setVisible(true);
 			gamedo_AnimatedTiles();
 
-			// Check the Input
-			if(g_pInput->getPulsedCommand(IC_DOWN, 80))
-				OptionsMenu->setNextSelection();
-			if(g_pInput->getPulsedCommand(IC_UP, 80))
-				OptionsMenu->setPrevSelection();
-
-			if(g_pInput->getPressedCommand(IC_STATUS))
+			if(g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP))
 			{
-				selection = OptionsMenu->getSelection();
+				selection = OptionsMenu.getSelection();
 
 				if(selection < NUM_OPTIONS)
 				{
-					sprintf(buf,"%s: ",options[selection].name);
+					buf = options[selection].name + ": ";
 
 					if(options[selection].value)
 					{
 						options[selection].value = 0;
-						strcat(buf,"Disabled");
+						buf += "Disabled";
 					}
 					else
 					{
 						options[selection].value = 1;
-						strcat(buf,"Enabled");
+						buf += "Enabled";
 					}
 
-					OptionsMenu->setOptionText(selection,buf);
+					OptionsMenu.setObjectText(selection, buf);
 				}
-				else
+				else if(selection < NUM_OPTIONS+1)
 				{
-					CSettings Settings;
+					CSettings Settings; // Pressed Save,
 					Settings.saveGameCfg(pCKP->Option);
 					break;
 				}
+				else
+				{
+					// Pressed Cancel, don't save
+					break;
+				}
 			}
-			// Render the Games-Menu
-			OptionsMenu->renderDialog();
-			g_pInput->pollEvents();
+
+			OptionsMenu.processlogic();
 		}
-		// blit the scrollbuffer to the display
-		gamedo_frameskipping_blitonly();
+		else if(g_pTimer->TimeToRender())
+		{
+			OptionsMenu.render();
+		}
 
 	} while(1);
-
-	delete OptionsMenu;
 }
 
 short GraphicsDlg(stCloneKeenPlus *pCKP)
 {
-	CDialog *DisplayMenu;
 	int bmnum;
 	int selection;
 	int x;
-	unsigned int width;
-	unsigned int height;
-	unsigned short depth;
-	unsigned short zoom = 1;
-	unsigned short filter = 0;
-	unsigned char gl_filter = 0;
-	bool fsmode;
-	char buf[256];
+	Uint16 width, height;
+	Uint8 depth, zoom = 1, filter = 0, gl_filter = 0;
+	bool fsmode, aspect;
+	std::string buf;
 	short retval = 0;
-	unsigned char autoframeskip = 0;
-	bool aspect;
-
-	showmapatpos(90, MAINMENU_X, MENUS_Y, pCKP);
+	Uint8 autoframeskip = 0;
 
 	// Load the Title Bitmap
 	bmnum = g_pGraphics->getBitmapNumberFromName("TITLE");
 	x = (320/2)-(bitmaps[bmnum].xsize/2);
 	g_pGraphics->drawBitmap(x, 0, bmnum);
 
-	// Prepare the Games Menu
-	DisplayMenu = new CDialog();
-	DisplayMenu->setDimensions(4,3,32,13);
-
 	width  = g_pVideoDriver->getWidth();
 	height = g_pVideoDriver->getHeight();
 	depth  = g_pVideoDriver->getDepth();
-	sprintf(buf,"Resolution: %dx%dx%d",width,height,depth);
 
 	zoom   = g_pVideoDriver->getZoomValue();
 	filter = g_pVideoDriver->getFiltermode();
 
-	DisplayMenu->addOptionText(buf);
+	// Prepare the Games Menu
+	CDialog DisplayMenu(4,4,32,13);
+
+	// Use the standard Menu-Frame used in the old DOS-Games
+	DisplayMenu.setFrameTheme( DLG_THEME_OLDSCHOOL );
+
+	buf = "Resolution: " + itoa(width) + "x" + itoa(height) + "x" + itoa(depth);
+	DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 12, buf);
 	if(g_pVideoDriver->getFullscreen())
 	{
-		DisplayMenu->addOptionText("Fullscreen mode");
+		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 20, "Fullscreen mode");
 		fsmode = true;
 	}
 	else
 	{
-		DisplayMenu->addOptionText("Windowed mode");
+		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 20, "Windowed mode");
 		fsmode = false;
 	}
 
@@ -691,77 +577,59 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 		zoom = g_pVideoDriver->getZoomValue();
 
 		if(zoom == 1)
-			sprintf(buf,"No scale");
+			DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 28, "No Scale");
 		else
-			sprintf(buf,"Scale: %d", zoom);
-		DisplayMenu->addOptionText(buf);
+			DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 28, "Scale: " + itoa(zoom) );
 	}
 	else
 	{
 		gl_filter = g_pVideoDriver->getOGLFilter();
 
 		if(gl_filter == 1)
-			sprintf(buf,"OGL Filter: Linear");
+			DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 36, "OGL Filter: Linear");
 		else
-			sprintf(buf,"OGL Filter: Nearest");
-		DisplayMenu->addOptionText(buf);
+			DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 36, "OGL Filter: Nearest");
 	}
 
 	filter = g_pVideoDriver->getFiltermode();
 	if(filter == 0)
-		DisplayMenu->addOptionText("No Filter");
+		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 44, "No Filter");
 	else if(filter == 1)
-		DisplayMenu->addOptionText("Scale2x Filter");
+		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 44, "Scale2x Filter");
 	else if(filter == 2)
-		DisplayMenu->addOptionText("Scale3x Filter");
+		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 44, "Scale3x Filter");
 	else if(filter == 3)
-		DisplayMenu->addOptionText("Scale4x Filter");
+		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 44, "Scale4x Filter");
 	else
-		DisplayMenu->addOptionText("Unknown Filter");
+		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 44, "Unknown Filter");
 
 	if(opengl)
-		DisplayMenu->addOptionText("OpenGL Acceleration");
+		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 52, "OpenGL Acceleration");
 	else
-		DisplayMenu->addOptionText("Software Rendering");
+		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 52, "Software Rendering");
 
 	autoframeskip = g_pTimer->getFrameskip();
 
 	if(autoframeskip)
-		sprintf(buf,"Auto-Frameskip : %d fps",autoframeskip);
-
-	DisplayMenu->addOptionText(buf);
+		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 60, "Auto-Frameskip : " + itoa(autoframeskip) + " fps");
 
 	aspect = g_pVideoDriver->getAspectCorrection();
 
-	if(aspect)
-		DisplayMenu->addOptionText("OGL Aspect Ratio Enabled");
-	else
-		DisplayMenu->addOptionText("OGL Aspect Ratio Disabled");
+	buf = "OGL Aspect Ratio ";
+	buf += aspect ? "enabled" : "disabled";
 
-	DisplayMenu->addSeparator();
-	DisplayMenu->addOptionText("Save and return");
-	DisplayMenu->addOptionText("Cancel");
-	DisplayMenu->animateDialogBox(true);
+	DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 68, buf);
+
+	DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 84, "Save and return");
+	DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 92, "Cancel");
 
 	do
 	{
 		if(g_pTimer->TimeToRunLogic())
 		{
-			// do fades
-			gamedo_fades();
-			if(fade.mode == FADE_COMPLETE)
-				DisplayMenu->setVisible(true);
-			gamedo_AnimatedTiles();
-
-			// Check the Input
-			if(g_pInput->getPulsedCommand(IC_DOWN, 80))
-				DisplayMenu->setNextSelection();
-			if(g_pInput->getPulsedCommand(IC_UP, 80))
-				DisplayMenu->setPrevSelection();
-
 			if(g_pInput->getPressedCommand(IC_STATUS))
 			{
-				selection = DisplayMenu->getSelection();
+				selection = DisplayMenu.getSelection();
 
 				if(selection == 0)
 				{
@@ -769,15 +637,15 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 					st_resolution Resolution;
 					Resolution = g_pVideoDriver->setNextResolution();
 
-					sprintf(buf,"Resolution: %dx%dx%d", Resolution.width, Resolution.height, Resolution.depth);
-					DisplayMenu->setOptionText(selection,buf);
+					buf = "Resolution: " + itoa(Resolution.width) + "x" + itoa(Resolution.height) + "x" + itoa(Resolution.depth);
+					DisplayMenu.setObjectText(0,buf);
 				}
 				else if(selection == 1)
 				{
 					if(!fsmode)
-						DisplayMenu->setOptionText(1,"Fullscreen mode");
+						DisplayMenu.setObjectText(1,"Fullscreen mode");
 					else
-						DisplayMenu->setOptionText(1,"Windowed mode");
+						DisplayMenu.setObjectText(1,"Windowed mode");
 					fsmode = !fsmode;
 				}
 				else if(selection == 2)
@@ -785,76 +653,59 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 					if(opengl)
 					{
 						gl_filter = (gl_filter==1) ? 0 : 1;
-
-						if(gl_filter == 1)
-							sprintf(buf,"OGL Filter: Linear");
-						else
-							sprintf(buf,"OGL Filter: Nearest");
-
-						DisplayMenu->setOptionText(2,buf);
+						buf = (gl_filter == 1) ? "OGL Filter: Linear" : "OGL Filter: Nearest";
+						DisplayMenu.setObjectText(2,buf);
 					}
 					else
 					{
-						if(zoom >= 4)
-							zoom = 1;
-						else
-							zoom++;
-
-						if(zoom == 1)
-							sprintf(buf,"No scale");
-						else
-							sprintf(buf,"Scale: %d", zoom);
+						zoom = (zoom >= 4) ? 1 : zoom+1;
+						buf = (zoom == 1) ? "No scale" : "Scale: " + itoa(zoom);
 					}
-
-					DisplayMenu->setOptionText(2,buf);
+					DisplayMenu.setObjectText(2,buf);
 				}
-
 				else if(selection == 3)
 				{
-					if(filter >= 3)
-						filter = 0;
-					else
-						filter++;
+					filter = (filter >= 3) ? 0 : filter+1;
 
 					if(filter == 0)
-						DisplayMenu->setOptionText(3,"No Filter");
+						DisplayMenu.setObjectText(3,"No Filter");
 					else if(filter == 1)
-						DisplayMenu->setOptionText(3,"Scale2x Filter");
+						DisplayMenu.setObjectText(3,"Scale2x Filter");
 					else if(filter == 2)
-						DisplayMenu->setOptionText(3,"Scale3x Filter");
+						DisplayMenu.setObjectText(3,"Scale3x Filter");
 					else if(filter == 3)
-						DisplayMenu->setOptionText(3,"Scale4x Filter");
+						DisplayMenu.setObjectText(3,"Scale4x Filter");
 				}
 				else if(selection == 4)
 				{
 					opengl = !opengl; // switch the mode!!
 
 					if(opengl)
-						DisplayMenu->setOptionText(4,"OpenGL Acceleration");
+						DisplayMenu.setObjectText(4,"OpenGL Acceleration");
 					else
-						DisplayMenu->setOptionText(4,"Software Rendering");
+						DisplayMenu.setObjectText(4,"Software Rendering");
 				}
 				else if(selection == 5)
 				{
-					if(autoframeskip < 70)
+					if(autoframeskip < 120)
 						autoframeskip += 10;
 					else
 						autoframeskip = 10;
-					sprintf(buf,"Auto-Frameskip : %d fps", autoframeskip);
+					buf = "Auto-Frameskip : " + itoa(autoframeskip) + " fps";
 
-					DisplayMenu->setOptionText(5, buf);
+					DisplayMenu.setObjectText(5, buf);
 				}
 				else if(selection == 6)
 				{
 					aspect = !aspect;
 
 					if(aspect)
-						DisplayMenu->setOptionText(6,"OGL Aspect Ratio Enabled");
+						DisplayMenu.setObjectText(6,"OGL Aspect Ratio Enabled");
 					else
-						DisplayMenu->setOptionText(6,"OGL Aspect Ratio Disabled");
+						DisplayMenu.setObjectText(6,"OGL Aspect Ratio Disabled");
 
 				}
-				else if(selection == 8)
+				else if(selection == 7)
 				{
 					g_pVideoDriver->stop();
 
@@ -881,7 +732,7 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 					Settings->saveDrvCfg();
 					delete Settings; Settings = NULL;
 
-					showmapatpos(90, MAINMENU_X, MENUS_Y, pCKP);
+					//showmapatpos(90, MAINMENU_X, MENUS_Y, pCKP);
 
 					fade.mode = FADE_GO;
 					fade.dir = FADE_IN;
@@ -895,18 +746,282 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 					break;
 			}
 			// Render the Games-Menu
-			DisplayMenu->renderDialog();
-			g_pInput->pollEvents();
+			DisplayMenu.processlogic();
 		}
-		// blit the scrollbuffer to the display
-		gamedo_frameskipping_blitonly();
-
-
+		else if(g_pTimer->TimeToRender())
+		{
+			// blit the scrollbuffer to the display
+			DisplayMenu.render();
+		}
 	} while(1);
 
-	delete DisplayMenu;
-
 	return retval;
+}
+
+char configmenu(stCloneKeenPlus *pCKP)
+{
+	int bmnum;
+	int selection;
+	int x;
+
+	// Load the Title Bitmap
+	bmnum = g_pGraphics->getBitmapNumberFromName("TITLE");
+
+	x = (320/2)-(bitmaps[bmnum].xsize/2);
+
+	g_pGraphics->drawBitmap(x, 0, bmnum);
+
+	// Prepare the Games Menu
+	CDialog OptionsMenu(120,32,14,8);
+
+	OptionsMenu.setFrameTheme(DLG_THEME_OLDSCHOOL);
+
+	OptionsMenu.addObject(DLG_OBJ_OPTION_TEXT, 128, 40, "Graphics");
+	OptionsMenu.addObject(DLG_OBJ_OPTION_TEXT, 128, 48, "Audio");
+	OptionsMenu.addObject(DLG_OBJ_OPTION_TEXT, 128, 56, "Game");
+	OptionsMenu.addObject(DLG_OBJ_OPTION_TEXT, 128, 64, "Controls");
+
+	OptionsMenu.addObject(DLG_OBJ_OPTION_TEXT, 128, 80, "Back");
+
+	do
+	{
+		if(g_pTimer->TimeToRunLogic())
+		{
+			gamedo_AnimatedTiles();
+
+			if(g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP))
+			{
+				selection = OptionsMenu.getSelection();
+
+				if(selection == 4)
+					break;
+
+				switch(selection)
+				{
+				case 0:
+					GraphicsDlg(pCKP);
+					break;
+
+				case 1:
+					AudioDlg(pCKP);
+					break;
+
+				case 2:
+					OptionsDlg(pCKP);
+					break;
+
+				case 3:
+					controlsmenu(pCKP);
+					break;
+
+				default:
+					break;
+				}
+
+				break;
+			}
+			OptionsMenu.processlogic();
+		}
+		else if(g_pTimer->TimeToRender())
+		{
+			OptionsMenu.render();
+		}
+	} while(1);
+
+	return 0;
+}
+
+char controlsmenu(stCloneKeenPlus *pCKP)
+{
+	int bmnum;
+	int selection;
+	int x;
+	std::string buf;
+	std::string buf2;
+
+	// Load the Title Bitmap
+	bmnum = g_pGraphics->getBitmapNumberFromName("TITLE");
+
+	x = (320/2)-(bitmaps[bmnum].xsize/2);
+
+	g_pGraphics->drawBitmap(x, 0, bmnum);
+
+	// Prepare the Games Menu
+	CDialog ControlsMenu(8,16,38,21);
+
+	// Use the standard Menu-Frame used in the old DOS-Games
+	ControlsMenu.setFrameTheme( DLG_THEME_OLDSCHOOL );
+
+	g_pInput->getEventName(IC_LEFT, 0, buf2);
+	buf = "P1 Left:   " + buf2;
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 24, buf);
+
+	g_pInput->getEventName(IC_UP, 0, buf2);
+	buf = "P1 Up:   " + buf2;
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 32, buf);
+
+	g_pInput->getEventName(IC_RIGHT, 0, buf2);
+	buf = "P1 Right:  " + buf2;
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 40, buf);
+
+	g_pInput->getEventName(IC_DOWN, 0, buf2);
+	buf = "P1 Down:   " + buf2;
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 48, buf);
+
+	g_pInput->getEventName(IC_JUMP, 0, buf2);
+	buf = "P1 Jump:   " + buf2;
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 56, buf);
+
+	g_pInput->getEventName(IC_POGO, 0, buf2);
+	buf = "P1 Pogo:   " + buf2;
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 64, buf);
+
+	g_pInput->getEventName(IC_FIRE, 0, buf2);
+	buf = "P1 Fire:   " + buf2;
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 72, buf);
+
+	g_pInput->getEventName(IC_STATUS, 0, buf2);
+	buf = "P1 Status: " + buf2;
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 80, buf);
+
+
+	g_pInput->getEventName(IC_LEFT, 1, buf2);
+	buf = "P2 Left:   " + buf2;
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 88, buf);
+
+	g_pInput->getEventName(IC_UP, 1, buf2);
+	buf = "P2 Up:   " + buf2;
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 96, buf);
+
+	g_pInput->getEventName(IC_RIGHT, 1, buf2);
+	buf = "P2 Right:  " + buf2;
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 104, buf);
+
+	g_pInput->getEventName(IC_DOWN, 1, buf2);
+	buf = "P2 Down:   " + buf2;
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 112, buf);
+
+	g_pInput->getEventName(IC_JUMP, 1, buf2);
+	buf = "P2 Jump:   " + buf2;
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 120, buf);
+
+	g_pInput->getEventName(IC_POGO, 1, buf2);
+	buf = "P2 Pogo:   " + buf2;
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 128, buf);
+
+	g_pInput->getEventName(IC_FIRE, 1, buf2);
+	buf = "P2 Fire:   " + buf2;
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 136, buf);
+
+	g_pInput->getEventName(IC_STATUS, 1, buf2);
+	buf = "P2 Status: " + buf2;
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 144, buf);
+
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 160, "Save and return");
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 168, "Cancel");
+
+	do
+	{
+		if(g_pTimer->TimeToRunLogic())
+		{
+			if(g_pInput->getPressedCommand(IC_STATUS))
+			{
+				selection = ControlsMenu.getSelection();
+
+				if(selection < MAX_COMMANDS)
+				{
+					int item=0;
+					if(selection < 4)
+						item = selection + 4;
+					else
+						item = selection - 4;
+
+					switch(selection)
+					{
+					 case 0: buf = "P1 Left:   "; break;
+					 case 1: buf = "P1 Up:     "; break;
+					 case 2: buf = "P1 Right:  "; break;
+					 case 3: buf = "P1 Down:   "; break;
+					 case 4: buf = "P1 Jump:   "; break;
+					 case 5: buf = "P1 Pogo:   "; break;
+					 case 6: buf = "P1 Fire:   "; break;
+					 case 7: buf = "P1 Status: "; break;
+					}
+
+					buf2 = buf;
+					buf2 += "*Waiting for Input*";
+					ControlsMenu.setObjectText(selection, buf2);
+
+					while(!g_pInput->readNewEvent(0,item))
+					{
+						if(g_pTimer->TimeToRunLogic())
+							ControlsMenu.processlogic();
+						else if(g_pTimer->TimeToRender())
+							ControlsMenu.render();
+					}
+
+					g_pInput->getEventName(item, 0, buf2);
+					buf += buf2;
+					ControlsMenu.setObjectText(selection,buf);
+				}
+				else if(selection >= MAX_COMMANDS && selection < MAX_COMMANDS*2)
+				{
+					int item=0;
+					if(selection < (4 + MAX_COMMANDS))
+						item = selection + 4 - MAX_COMMANDS;
+					else
+						item = selection - 4 - MAX_COMMANDS;
+
+					switch(selection)
+					{
+					 case 0+ MAX_COMMANDS: buf = "P2 Left:   "; break;
+					 case 1+ MAX_COMMANDS: buf = "P2 Up:     "; break;
+					 case 2+ MAX_COMMANDS: buf = "P2 Right:  "; break;
+					 case 3+ MAX_COMMANDS: buf = "P2 Down:   "; break;
+					 case 4+ MAX_COMMANDS: buf = "P2 Jump:   "; break;
+					 case 5+ MAX_COMMANDS: buf = "P2 Pogo:   "; break;
+					 case 6+ MAX_COMMANDS: buf = "P2 Fire:   "; break;
+					 case 7+ MAX_COMMANDS: buf = "P2 Status: "; break;
+					}
+
+					buf2 = buf;
+					buf2 += "*Waiting for Input*";
+					ControlsMenu.setObjectText(selection,buf2);
+
+					while(!g_pInput->readNewEvent(1,item))
+					{
+						if(g_pTimer->TimeToRunLogic())
+							ControlsMenu.processlogic();
+						else if(g_pTimer->TimeToRender())
+							ControlsMenu.render();
+					}
+
+					g_pInput->getEventName(item, 1, buf2);
+					buf += buf2;
+					ControlsMenu.setObjectText(selection,buf);
+				}
+				else if(selection == MAX_COMMANDS*2)
+				{
+					// Reset Controls here!
+					g_pInput->resetControls();
+					g_pInput->saveControlconfig();
+					break;
+				}
+				else
+				{
+					g_pInput->saveControlconfig();
+					break;
+				}
+			}
+			// Render the Menu
+			ControlsMenu.processlogic();
+		}
+		else if(g_pTimer->TimeToRender())
+		{
+			ControlsMenu.render();
+		}
+	} while(1);
+	return 0;
 }
 
 // This function shows the Story of Commander Keen!
@@ -927,289 +1042,6 @@ void showPage(const std::string& str_text, int textsize)
 	delete TextViewer;
 
     return;
-}
-
-
-char configmenu(stCloneKeenPlus *pCKP)
-{
-	CDialog *OptionsMenu;
-	int bmnum;
-	int selection;
-	int x;
-
-	showmapatpos(90, MAINMENU_X, MENUS_Y, pCKP);
-
-	// Load the Title Bitmap
-	bmnum = g_pGraphics->getBitmapNumberFromName("TITLE");
-
-	x = (320/2)-(bitmaps[bmnum].xsize/2);
-
-	g_pGraphics->drawBitmap(x, 0, bmnum);
-
-	// Prepare the Games Menu
-	OptionsMenu = new CDialog();
-
-	OptionsMenu->setDimensions(15,4,14,8);
-
-	OptionsMenu->addOptionText("Graphics");
-	OptionsMenu->addOptionText("Audio");
-	OptionsMenu->addOptionText("Game");
-	OptionsMenu->addOptionText("Controls");
-	OptionsMenu->addSeparator();
-	OptionsMenu->addOptionText("Back");
-
-	OptionsMenu->animateDialogBox(true);
-
-	do
-	{
-		if(g_pTimer->TimeToRunLogic())
-		{
-			// do fades
-			gamedo_fades();
-			if(fade.mode == FADE_COMPLETE)
-				OptionsMenu->setVisible(true);
-
-			gamedo_AnimatedTiles();
-
-			// Check the Input
-			if(g_pInput->getPulsedCommand(IC_DOWN, 80))
-				OptionsMenu->setNextSelection();
-			if(g_pInput->getPulsedCommand(IC_UP, 80))
-				OptionsMenu->setPrevSelection();
-
-			if(g_pInput->getPressedCommand(IC_STATUS))
-			{
-				selection = OptionsMenu->getSelection();
-				break;
-			}
-			// Render the Games-Menu
-			OptionsMenu->renderDialog();
-			g_pInput->pollEvents();
-		}
-
-		// blit the scrollbuffer to the display
-		gamedo_frameskipping_blitonly();
-	} while(1);
-
-	switch(selection)
-	{
-	case 0:
-		GraphicsDlg(pCKP);
-		break;
-
-	case 1:
-		AudioDlg(pCKP);
-		break;
-
-	case 2:
-		OptionsDlg(pCKP);
-		break;
-
-	case 3:
-		controlsmenu(pCKP);
-		break;
-
-	default:
-		break;
-	}
-
-	delete OptionsMenu;
-
-	return 0;
-}
-
-char controlsmenu(stCloneKeenPlus *pCKP)
-{
-	CDialog *ControlsMenu;
-	int bmnum;
-	int selection;
-	int x;
-	char buf[256];
-	char buf2[256];
-
-	showmapatpos(90, MAINMENU_X, MENUS_Y, pCKP);
-
-	// Load the Title Bitmap
-	bmnum = g_pGraphics->getBitmapNumberFromName("TITLE");
-
-	x = (320/2)-(bitmaps[bmnum].xsize/2);
-
-	g_pGraphics->drawBitmap(x, 0, bmnum);
-
-	// Prepare the Games Menu
-	ControlsMenu = new CDialog();
-
-	ControlsMenu->setDimensions(1,2,38,21);
-
-	g_pInput->getEventName(IC_LEFT, 0, buf2);
-	sprintf(buf,"P1 Left:   %s",buf2);
-	ControlsMenu->addOptionText(buf);
-	g_pInput->getEventName(IC_UP, 0, buf2);
-	sprintf(buf,"P1 Up:     %s",buf2);
-	ControlsMenu->addOptionText(buf);
-	g_pInput->getEventName(IC_RIGHT, 0, buf2);
-	sprintf(buf,"P1 Right:  %s",buf2);
-	ControlsMenu->addOptionText(buf);
-	g_pInput->getEventName(IC_DOWN, 0, buf2);
-	sprintf(buf,"P1 Down:   %s",buf2);
-	ControlsMenu->addOptionText(buf);
-	g_pInput->getEventName(IC_JUMP, 0, buf2);
-	sprintf(buf,"P1 Jump:   %s",buf2);
-	ControlsMenu->addOptionText(buf);
-	g_pInput->getEventName(IC_POGO, 0, buf2);
-	sprintf(buf,"P1 Pogo:   %s",buf2);
-	ControlsMenu->addOptionText(buf);
-	g_pInput->getEventName(IC_FIRE, 0, buf2);
-	sprintf(buf,"P1 Fire:   %s",buf2);
-	ControlsMenu->addOptionText(buf);
-	g_pInput->getEventName(IC_STATUS, 0, buf2);
-	sprintf(buf,"P1 Status: %s",buf2);
-	ControlsMenu->addOptionText(buf);
-
-	g_pInput->getEventName(IC_LEFT, 1, buf2);
-	sprintf(buf,"P2 Left:   %s",buf2);
-	ControlsMenu->addOptionText(buf);
-	g_pInput->getEventName(IC_UP, 1, buf2);
-	sprintf(buf,"P2 Up:     %s",buf2);
-	ControlsMenu->addOptionText(buf);
-	g_pInput->getEventName(IC_RIGHT, 1, buf2);
-	sprintf(buf,"P2 Right:  %s",buf2);
-	ControlsMenu->addOptionText(buf);
-	g_pInput->getEventName(IC_DOWN, 1, buf2);
-	sprintf(buf,"P2 Down:   %s",buf2);
-	ControlsMenu->addOptionText(buf);
-	g_pInput->getEventName(IC_JUMP, 1, buf2);
-	sprintf(buf,"P2 Jump:   %s",buf2);
-	ControlsMenu->addOptionText(buf);
-	g_pInput->getEventName(IC_POGO, 1, buf2);
-	sprintf(buf,"P2 Pogo:   %s",buf2);
-	ControlsMenu->addOptionText(buf);
-	g_pInput->getEventName(IC_FIRE, 1, buf2);
-	sprintf(buf,"P2 Fire:   %s",buf2);
-	ControlsMenu->addOptionText(buf);
-	g_pInput->getEventName(IC_STATUS, 1, buf2);
-	sprintf(buf,"P2 Status: %s",buf2);
-	ControlsMenu->addOptionText(buf);
-	ControlsMenu->addSeparator();
-	ControlsMenu->addOptionText("Reset Controls");
-	ControlsMenu->addOptionText("Return");
-
-	ControlsMenu->animateDialogBox(true);
-
-	do
-	{
-		if(g_pTimer->TimeToRunLogic())
-		{
-			// do fades
-			gamedo_fades();
-			if(fade.mode == FADE_COMPLETE)
-				ControlsMenu->setVisible(true);
-			gamedo_AnimatedTiles();
-
-			// Check the Input
-			if(g_pInput->getPulsedCommand(IC_DOWN, 80))
-				ControlsMenu->setNextSelection();
-			if(g_pInput->getPulsedCommand(IC_UP, 80))
-				ControlsMenu->setPrevSelection();
-
-			if(g_pInput->getPressedCommand(IC_STATUS))
-			{
-				selection = ControlsMenu->getSelection();
-
-				if(selection < MAX_COMMANDS)
-				{
-					int item=0;
-					if(selection < 4)
-						item = selection + 4;
-					else
-						item = selection - 4;
-
-					switch(selection)
-					{
-					 case 0: sprintf(buf,"P1 Left:   "); break;
-					 case 1: sprintf(buf,"P1 Up:     "); break;
-					 case 2: sprintf(buf,"P1 Right:  "); break;
-					 case 3: sprintf(buf,"P1 Down:   "); break;
-					 case 4: sprintf(buf,"P1 Jump:   "); break;
-					 case 5: sprintf(buf,"P1 Pogo:   "); break;
-					 case 6: sprintf(buf,"P1 Fire:   "); break;
-					 case 7: sprintf(buf,"P1 Status: "); break;
-					}
-
-					strcpy(buf2,buf);
-					strcat(buf2,"*Waiting for Input*");
-					ControlsMenu->setOptionText(selection,buf2);
-
-					while(!g_pInput->readNewEvent(0,item))
-					{
-						if(g_pTimer->TimeToRunLogic())
-							ControlsMenu->renderDialog();
-						gamedo_frameskipping_blitonly();
-					}
-
-					g_pInput->getEventName(item, 0, buf2);
-					strcat(buf,buf2);
-					ControlsMenu->setOptionText(selection,buf);
-				}
-				else if(selection >= MAX_COMMANDS && selection < MAX_COMMANDS*2)
-				{
-					int item=0;
-					if(selection < (4 + MAX_COMMANDS))
-						item = selection + 4 - MAX_COMMANDS;
-					else
-						item = selection - 4 - MAX_COMMANDS;
-
-					switch(selection)
-					{
-					 case 0+ MAX_COMMANDS: sprintf(buf,"P2 Left:   "); break;
-					 case 1+ MAX_COMMANDS: sprintf(buf,"P2 Up:     "); break;
-					 case 2+ MAX_COMMANDS: sprintf(buf,"P2 Right:  "); break;
-					 case 3+ MAX_COMMANDS: sprintf(buf,"P2 Down:   "); break;
-					 case 4+ MAX_COMMANDS: sprintf(buf,"P2 Jump:   "); break;
-					 case 5+ MAX_COMMANDS: sprintf(buf,"P2 Pogo:   "); break;
-					 case 6+ MAX_COMMANDS: sprintf(buf,"P2 Fire:   "); break;
-					 case 7+ MAX_COMMANDS: sprintf(buf,"P2 Status: "); break;
-					}
-
-					strcpy(buf2,buf);
-					strcat(buf2,"*Waiting for Input*");
-					ControlsMenu->setOptionText(selection,buf2);
-
-					while(!g_pInput->readNewEvent(1,item))
-					{
-						if(g_pTimer->TimeToRunLogic())
-							ControlsMenu->renderDialog();
-						gamedo_frameskipping_blitonly();
-					}
-
-					g_pInput->getEventName(item, 1, buf2);
-					strcat(buf,buf2);
-					ControlsMenu->setOptionText(selection,buf);
-				}
-				else if(selection == MAX_COMMANDS*2+1)
-				{
-					// Reset Controls here!
-					g_pInput->resetControls();
-					g_pInput->saveControlconfig();
-					break;
-				}
-				else
-				{
-					g_pInput->saveControlconfig();
-					break;
-				}
-			}
-			// Render the Menu
-			ControlsMenu->renderDialog();
-			g_pInput->pollEvents();
-		}
-		// blit the scrollbuffer to the display
-		gamedo_frameskipping_blitonly();
-
-	} while(1);
-
-	delete ControlsMenu;
-	return 0;
 }
 
 void keensleft(int episode)
@@ -1285,8 +1117,12 @@ int boxtimer;
 		}
 
 		lastenterstate = enter;
-		g_pInput->pollEvents();
 	}
-  } while(!crashflag);
+	else if(g_pTimer->TimeToRender())
+	{
+
+	}
+
+  } while(1);
 
 }

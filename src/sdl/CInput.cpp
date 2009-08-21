@@ -115,27 +115,22 @@ short CInput::saveControlconfig(void)
 
 	return 1;
 }
-void CInput::getEventName(int position, unsigned char input, char *buf)
+void CInput::getEventName(int position, unsigned char input, std::string &buf)
 {
-	char buf2[256];
-	memset(buf,0,256);
-
-	strcat(buf,SDL_GetKeyName(InputCommand[input][position].keysym));
+	buf = SDL_GetKeyName(InputCommand[input][position].keysym);
 	if(InputCommand[input][position].joyeventtype == ETYPE_JOYAXIS)
 	{
-		strcat(buf,", ");
-		sprintf(buf2,"Joy%d-A%d",InputCommand[input][position].which, InputCommand[input][position].joyaxis);
-		strcat(buf,buf2);
+		buf += ", ";
+		buf += "Joy" + itoa(InputCommand[input][position].which) + "-A" + itoa(InputCommand[input][position].joyaxis);
 		if(InputCommand[input][position].joyvalue < 0)
-			strcat(buf,"-");
+			buf += "-";
 		else
-			strcat(buf,"+");
+			buf += "+";
 	}
 	if(InputCommand[input][position].joyeventtype == ETYPE_JOYBUTTON)
 	{
-		strcat(buf,", ");
-		sprintf(buf2,"Joy%d-B%d",InputCommand[input][position].which, InputCommand[input][position].joybutton);
-		strcat(buf,buf2);
+		buf += ", ";
+		buf += "Joy" + itoa(InputCommand[input][position].which) + "-B" + itoa(InputCommand[input][position].joybutton);
 	}
 }
 

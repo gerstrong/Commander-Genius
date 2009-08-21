@@ -20,7 +20,7 @@ enum e_OptionKeywords
 
 typedef struct stOption
 {
-  char *name;
+  std::string name;
   char value;
 } stOption;
 

@@ -20,7 +20,7 @@ char tempbuf[200];
 #include "include/misc.h"
 #include "include/menu.h"
 
-#include "vorticon/CDialog.h"
+#include "dialog/CDialog.h"
 #include "CGraphics.h"
 
 #ifdef TARGET_WIN32

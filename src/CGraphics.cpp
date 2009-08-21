@@ -627,13 +627,6 @@ unsigned int i,x=xoff,y;
    }
 }
 
-// font drawing functions (float version)
-void CGraphics::drawFont(const std::string& text, float xoff, float yoff, int highlight)
-{
-	drawFont(text, (int)(xoff*320), (int)(yoff*200), highlight);
-}
-
-
 void CGraphics::sb_font_draw(const std::string& text, int xoff, int yoff, bool useHighlightcolour)
 {
    unsigned int i,x,y;

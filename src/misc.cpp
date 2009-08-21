@@ -1093,10 +1093,17 @@ void showF1HelpText(int episode, std::string DataDirectory)
    if(episode==1)
    {
 	   // We suppose that we are using version 131. Maybe it must be extended
-		std::string filename = "data/" + DataDirectory + "helptext.ck1";
-		std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);
+		   std::string filename = "data/" + DataDirectory;
+		   if(DataDirectory != "")
+			   filename += "/";
 
-		while(!File.eof())
+		   filename += "helptext.ck1";
+
+		   std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);
+
+		   if(!File) return;
+
+		   while(!File.eof())
 			helptext.push_back(File.get());
 
 		File.close();
