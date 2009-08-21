@@ -89,7 +89,6 @@ char doFall;
         	  player[cp].psupportingtile = 145;
         	  player[cp].psupportingobject = 0;
           }
-
        }
        else
        { // we're in game-over mode
@@ -942,7 +941,7 @@ void gamepdo_TogglePogo_and_Switches(int cp, stLevelControl *p_levelcontrol)
 int i;
 int mx, my, t;
 
-	// detect if KPOGO key just pressed
+	// detect if KPOGO key only pressed
 	if (player[cp].playcontrol[PA_POGO] && !player[cp].lastplaycontrol[PA_POGO] && !player[cp].pfrozentime)
 	{
 		// if we are standing near a switch hit the switch instead

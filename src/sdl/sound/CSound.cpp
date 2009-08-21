@@ -35,7 +35,7 @@ CSound::CSound() {
 	m_MixedForm = NULL;
 	AudioSpec.channels = 2; // Stereo Sound
 	AudioSpec.format = AUDIO_U8; // 8-bit sound
-	AudioSpec.freq = 48000; // high quality
+	AudioSpec.freq = 44000; // high quality
 }
 
 CSound::~CSound() {
@@ -303,10 +303,10 @@ bool CSound::loadSoundData(unsigned short Episode, const std::string& DataDirect
 {
   if(!m_active) return false;
 
-	std::string path;
+  std::string path;
   bool ok = true;
-	std::string soundfile;
-	std::string buf;
+  std::string soundfile;
+  std::string buf;
 
   if(m_soundslot) delete[] m_soundslot;
   m_soundslot = new CSoundSlot[MAX_SOUNDS];
@@ -471,11 +471,10 @@ void CSound::setSoundmode(int freq, bool stereo)
 	case 11000:
 	case 22050:
 	case 44100:
-	case 48000:
 		AudioSpec.freq = freq;
 		break;
 	default:
-		AudioSpec.freq = 48000;
+		AudioSpec.freq = 44000;
 	}
 }
 

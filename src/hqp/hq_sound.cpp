@@ -12,6 +12,8 @@
 #include "../CLogFile.h"
 #include "../FindFile.h"
 
+#include <vector>
+
 short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::string& soundfile)
 {
 	SDL_AudioSpec AudioFileSpec;
@@ -101,6 +103,7 @@ short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::stri
 	/* copy the converted stuff to the original music buffer*/
 	psound->sound_len = Audio_cvt.len_cvt;
 	psound->sound_buffer = (Uint8*) malloc(psound->sound_len);
+
 	memcpy(psound->sound_buffer, Audio_cvt.buf, psound->sound_len);
 
 	// Structure Audio_cvt must be freed!

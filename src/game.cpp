@@ -830,7 +830,6 @@ void freezeplayer(int theplayer)
 
 void PlayerTouchedExit(int theplayer, stCloneKeenPlus *pCKP)
 {
-/*int i;*/
        if (!player[theplayer].pjumping && !player[theplayer].pfalling\
            && !player[theplayer].ppogostick && \
            pCKP->Control.levelcontrol.level_done==LEVEL_NOT_DONE)

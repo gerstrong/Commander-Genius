@@ -400,7 +400,6 @@ int AudioDlg(stCloneKeenPlus *pCKP)
 				{
 					switch(rate)
 					{
-					case 44100: rate = 48000; break;
 					case 22050: rate = 44100; break;
 					case 11000: rate = 22050; break;
 					default: rate = 11000; break;
