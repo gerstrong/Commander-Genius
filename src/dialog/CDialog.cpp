@@ -131,6 +131,8 @@ void CDialog::processlogic()
 
 void CDialog::render()
 {
+	if( g_pTimer->TimeToRender() == false ) return;
+
 	// do fades
 	gamedo_fades();
 
@@ -165,8 +167,8 @@ void CDialog::render()
 	renderTwirl();
 
 	// blit the scrollbuffer to the display
-	//g_pVideoDriver->sb_blit();
-	gamedo_frameskipping_blitonly();
+	g_pVideoDriver->sb_blit();
+	g_pTimer->TimeToDelay();
 }
 
 #define TWIRL_TIME	10
