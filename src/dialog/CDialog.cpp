@@ -165,7 +165,8 @@ void CDialog::render()
 	renderTwirl();
 
 	// blit the scrollbuffer to the display
-	g_pVideoDriver->sb_blit();
+	//g_pVideoDriver->sb_blit();
+	gamedo_frameskipping_blitonly();
 }
 
 #define TWIRL_TIME	10

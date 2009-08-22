@@ -86,7 +86,7 @@ void CTimer::TimeToDelay( void )
 	if( curtime > m_LogicRenderStart )
 	{
 		delay = m_LogicRateMS - (int)(curtime - m_LogicRenderStart);
-		if( delay>0 && delay<m_LogicRateMS ) {
+		if( delay>0 && delay<(m_LogicRateMS*2) ) {
 			SDL_Delay(delay);
 		}
 /*
