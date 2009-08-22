@@ -58,7 +58,7 @@ void showmapatpos(int level, int xoff, int yoff, stCloneKeenPlus *pCKP)
 	for(i=0;i<xoff;i++) map_scroll_right();
 	for(i=0;i<yoff;i++) map_scroll_down();
 	
-	g_pVideoDriver->sb_blit();
+	gamedo_frameskipping_blitonly();
 }
 
 short loadResourcesforStartMenu(stCloneKeenPlus *pCKP, CGame *Game)
