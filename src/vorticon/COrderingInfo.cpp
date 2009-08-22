@@ -7,7 +7,6 @@
 
 #include "../keen.h"
 #include "COrderingInfo.h"
-#include "../sdl/CTimer.h"
 #include "../sdl/CInput.h"
 #include "../CGraphics.h"
 #include "../CLogFile.h"
@@ -104,34 +103,31 @@ void COrderingInfo::Render(stCloneKeenPlus *pCKP)
 
 	do
 	{
-		if(g_pTimer->TimeToRunLogic())
+		// do fades
+		gamedo_fades();
+		gamedo_AnimatedTiles();
+
+		if(fade.mode != FADE_COMPLETE)
+			continue;
+
+		for(int i=0 ; i<m_numberoflines ; i++)
 		{
-			// do fades
-			gamedo_fades();
-			gamedo_AnimatedTiles();
-
-			if(fade.mode != FADE_COMPLETE)
-				continue;
-
-			for(int i=0 ; i<m_numberoflines ; i++)
-			{
-				g_pGraphics->drawFont(m_Textline[i], m_Text_Coordinate[i], 8*(i+m_starty), true);
-			}
-
-			if( g_pInput->getPressedAnyCommand() )
-			{
-				cancel = true;
-				fade.dir = FADE_OUT;
-				fade.curamt = PAL_FADE_SHADES;
-				fade.fadetimer = 0;
-				fade.rate = FADE_NORM;
-				fade.mode = FADE_GO;
-			}
-
-			if(g_pInput->getExitEvent()) cancel=true;
-
-			g_pInput->pollEvents();
+			g_pGraphics->drawFont(m_Textline[i], m_Text_Coordinate[i], 8*(i+m_starty), true);
 		}
+
+		if( g_pInput->getPressedAnyCommand() )
+		{
+			cancel = true;
+			fade.dir = FADE_OUT;
+			fade.curamt = PAL_FADE_SHADES;
+			fade.fadetimer = 0;
+			fade.rate = FADE_NORM;
+			fade.mode = FADE_GO;
+		}
+
+		if(g_pInput->getExitEvent()) cancel=true;
+
+		g_pInput->pollEvents();
 		// blit the scrollbuffer to the display
 		gamedo_frameskipping_blitonly();
 

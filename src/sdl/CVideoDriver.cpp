@@ -59,8 +59,8 @@ CVideoDriver::CVideoDriver() {
 	  Fullscreen=true;
 	  Filtermode=0;
 	  Zoom=1;
-	  FrameSkip=0;
-	  m_targetfps = 30;	// Enable automatic frameskipping by default at 30
+	  FrameSkip=2;
+	  m_targetfps = 50;	// Enable automatic frameskipping by default at 30
 #else
 	  m_Resolution.width=640;
 	  m_Resolution.height=480;
@@ -149,17 +149,25 @@ void CVideoDriver::initResolutionList()
 	  }
 	
 	if(m_Resolutionlist.empty()) {
+#ifdef WIZ
+		resolution.width = 320;
+		resolution.height = 240;
+#else
 		resolution.width = 640;
 		resolution.height = 480;
 		resolution.depth = 32;
 		m_Resolutionlist.push_back(resolution);
-		
+#endif
 		resolution.depth = 16;
 		m_Resolutionlist.push_back(resolution);
 	}
 	
 	// will set the default mode; CSettings::loadDrvConfig will reset this if config file loaded successfully
+#ifdef WIZ
+	setMode(320, 240, 16);
+#else
 	setMode(640, 480, 32);
+#endif
 }
 
 st_resolution CVideoDriver::setNextResolution()
@@ -264,14 +272,13 @@ bool CVideoDriver::applyMode(void)
 	if( (Zoom == 3 && Filtermode == 1) && !m_opengl )
 		Zoom = 2;
 
-	// Grab a surface on the screen
-	Mode = SDL_HWPALETTE | SDL_HWSURFACE;
-
 	m_Resolution = *m_Resolution_pos;
 
 #ifndef WIZ
 	// Support for doublebuffering
-	Mode |= SDL_DOUBLEBUF;
+	Mode = SDL_DOUBLEBUF | SDL_HWPALETTE | SDL_HWSURFACE;;
+#else
+	Mode = SDL_SWSURFACE;;
 #endif
 
 	// Enable OpenGL

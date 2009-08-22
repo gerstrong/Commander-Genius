@@ -56,7 +56,7 @@ short CSettings::saveDrvCfg(void)
 	Parser.saveIntValue("scale","Video",g_pVideoDriver->getZoomValue());
 	Parser.saveIntValue("OGLfilter","Video",g_pVideoDriver->getOGLFilter());
 	Parser.saveIntValue("filter","Video",g_pVideoDriver->getFiltermode());
-	Parser.saveIntValue("autoframeskip","Video",g_pTimer->getFrameskip());
+	Parser.saveIntValue("autoframeskip","Video",g_pTimer->getFrameRate());
 	Parser.saveIntValue("aspect","Video",g_pVideoDriver->getAspectCorrection() ? 1 : 0);
 
 	Parser.saveIntValue("channels","Audio",(g_pSound->getAudioSpec()).channels);
@@ -95,7 +95,7 @@ short CSettings::loadDrvCfg()
 
 		g_pVideoDriver->setOGLFilter(Parser.getIntValue("OGLfilter","Video"));
 		g_pVideoDriver->setZoom(Parser.getIntValue("scale","Video"));
-		g_pTimer->setFrameskip(Parser.getIntValue("autoframeskip","Video"));
+		g_pTimer->setFrameRate(Parser.getIntValue("autoframeskip","Video"));
 
 		g_pVideoDriver->setFilter(Parser.getIntValue("filter","Video"));
 

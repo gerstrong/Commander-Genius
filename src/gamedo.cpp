@@ -677,6 +677,8 @@ extern int NumConsoleMessages;
 
 void gamedo_RenderScreen()
 {
+   if( g_pTimer->TimeToRender() == false ) return;
+
    g_pGraphics->renderHQBitmap();
 
    gamedo_render_drawobjects(); // (Sprites)
@@ -685,6 +687,8 @@ void gamedo_RenderScreen()
 
    gamedo_render_erasedebug();
    gamedo_render_eraseobjects();
+
+    g_pTimer->TimeToDelay();
 
    curfps++;
 }
@@ -846,7 +850,9 @@ void gamedo_fades(void)
 // used for intros etc.
 void gamedo_frameskipping_blitonly()
 {
-    if (g_pTimer->TimeToRender())
-    	g_pVideoDriver->sb_blit();
-}
+	if( g_pTimer->TimeToRender() == false ) return;
 
+    	g_pVideoDriver->sb_blit();
+
+	g_pTimer->TimeToDelay();
+}

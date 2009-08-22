@@ -10,7 +10,6 @@
 
 #include "../CGraphics.h"
 #include "../sdl/CInput.h"
-#include "../sdl/CTimer.h"
 
 #include "../include/game.h"
 #include "../include/gamedo.h"
@@ -70,59 +69,55 @@ void eseq_showmsg(const std::string& text, int boxleft, int boxtop,
 
   do
   {
-	  if(g_pTimer->TimeToRunLogic())
+	gamedo_fades();
+	gamedo_AnimatedTiles();
+	gamedo_render_drawobjects();
+
+	cancel = (g_pInput->getPressedCommand(KENTER) || g_pInput->getPressedCommand(KCTRL) || g_pInput->getPressedCommand(KALT));
+
+	// draw the text up to the amount currently shown
+	tempbuf = text;
+	if(amountshown < tempbuf.size())
+	  tempbuf.erase(amountshown);
+	sb_dialogbox(boxleft,boxtop,boxwidth,boxheight);
+	g_pGraphics->sb_font_draw( tempbuf, (boxleft+1)*8, (boxtop+1+textline)*8);
+
+	gamedo_render_eraseobjects();
+
+	if (showtimer > LETTER_SHOW_SPD)
+	{  // it's time to show a new letter
+	  if (amountshown < text.size())
 	  {
-		gamedo_fades();
-		gamedo_AnimatedTiles();
-		gamedo_render_drawobjects();
-
-		cancel = (g_pInput->getPressedCommand(KENTER) || g_pInput->getPressedCommand(KCTRL) || g_pInput->getPressedCommand(KALT));
-
-		// draw the text up to the amount currently shown
-		tempbuf = text;
-		if(amountshown < tempbuf.size())
-		  tempbuf.erase(amountshown);
-		sb_dialogbox(boxleft,boxtop,boxwidth,boxheight);
-		g_pGraphics->sb_font_draw( tempbuf, (boxleft+1)*8, (boxtop+1+textline)*8);
-
-		gamedo_render_eraseobjects();
-
-		if (showtimer > LETTER_SHOW_SPD)
-		{  // it's time to show a new letter
-		  if (amountshown < text.size())
-		  {
-			amountshown++;
-		  }
-		  showtimer = 0;
-		} else showtimer++;
-
-		// user pressed enter or some other key
-		if (cancel && !lastcancelstate)
-		{
-		  if (amountshown < text.size())
-		  {
-			 amountshown = text.size();
-		  }
-		  else return;
-		}
-
-		// when all text is shown wait a sec then return
-		if (autodismiss)
-		{
-		  if (amountshown >= text.size())
-		  {
-			if (waittimer > HEADFOREARTH_WAIT_TIME) return;
-			waittimer++;
-		  }
-		}
-
-
-		lastcancelstate = cancel;
-
-		g_pInput->pollEvents();
+		amountshown++;
 	  }
-	  gamedo_frameskipping_blitonly();
+	  showtimer = 0;
+	} else showtimer++;
 
+	// user pressed enter or some other key
+	if (cancel && !lastcancelstate)
+	{
+	  if (amountshown < text.size())
+	  {
+		  amountshown = text.size();
+	  }
+	  else return;
+	}
+
+	// when all text is shown wait a sec then return
+	if (autodismiss)
+	{
+	  if (amountshown >= text.size())
+	  {
+		if (waittimer > HEADFOREARTH_WAIT_TIME) return;
+		waittimer++;
+	  }
+	}
+
+
+	lastcancelstate = cancel;
+
+	g_pInput->pollEvents();
+	gamedo_frameskipping_blitonly();
   } while(!g_pInput->getPressedAnyCommand());
   return;
 }

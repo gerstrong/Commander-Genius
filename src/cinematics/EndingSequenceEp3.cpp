@@ -10,7 +10,6 @@
 #include "../include/gamedo.h"
 #include "../include/menu.h"
 
-#include "../sdl/CTimer.h"
 #include "../sdl/CInput.h"
 #include "../sdl/sound/CSound.h"
 

@@ -465,6 +465,10 @@ void InitBaseSearchPaths() {
 	AddToFileList(&basesearchpaths, "${HOME}/Commander Genius");
 	AddToFileList(&basesearchpaths, ".");
 	AddToFileList(&basesearchpaths, "${BIN}");
+#elif defined(WIZ)
+	AddToFileList(&basesearchpaths, "${PWD}/.CommanderGenius");
+	AddToFileList(&basesearchpaths, ".");
+	AddToFileList(&basesearchpaths, SYSTEM_DATA_DIR"/commandergenius"); // no use of ${SYSTEM_DATA}, because it is uncommon and could cause confusion
 #else // all other systems (Linux, *BSD, OS/2, ...)
 	AddToFileList(&basesearchpaths, "${HOME}/.CommanderGenius");
 	AddToFileList(&basesearchpaths, ".");
@@ -715,7 +719,11 @@ bool FileListIncludesExact(const searchpathlist* l, const std::string& f) {
 
 std::string GetHomeDir() {
 #ifndef WIN32
+#ifdef WIZ
+	char* home = getenv("PWD");
+#else
 	char* home = getenv("HOME");
+#endif
 	if(home == NULL || home[0] == '\0') {
 		passwd* userinfo = getpwuid(getuid());
 		if(userinfo)
@@ -778,7 +786,11 @@ void ReplaceFileVariables(std::string& filename) {
 		filename.erase(0,1);
 		filename.insert(0,GetHomeDir());
 	}
+#ifdef WIZ
+	replace(filename, "${PWD}", GetHomeDir());
+#else
 	replace(filename, "${HOME}", GetHomeDir());
+#endif
 	replace(filename, "${SYSTEM_DATA}", GetSystemDataDir());
 	replace(filename, "${BIN}", GetBinaryDir());
 }

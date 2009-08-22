@@ -29,7 +29,6 @@
 #include "keen.h"
 #include "sdl/joydrv.h"
 #include "sdl/CInput.h"
-#include "sdl/CTimer.h"
 #include "sdl/sound/CSound.h"
 #include "hqp/CMusic.h"
 #include "include/misc.h"

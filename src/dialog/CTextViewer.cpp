@@ -7,7 +7,6 @@
 
 #include "../keen.h"
 
-#include "../sdl/CTimer.h"
 #include "../sdl/CInput.h"
 #include "../include/gamedo.h"
 #include "CTextViewer.h"
@@ -151,50 +150,45 @@ void CTextViewer::processCycle()
 
 	do
 	{
-		if(g_pTimer->TimeToRunLogic())
+		gamedo_fades();
+		gamedo_AnimatedTiles();
+
+		g_pInput->pollEvents();
+
+		// Normal Keys/Axes
+		if( g_pInput->getHoldedCommand(IC_DOWN) )
 		{
-			gamedo_fades();
-			gamedo_AnimatedTiles();
-
-			g_pInput->pollEvents();
-
-			// Normal Keys/Axes
-			if( g_pInput->getHoldedCommand(IC_DOWN) )
-			{
-				timer++;
-				if(timer >= 5)
-					scrollDown();
-			}
-			if( g_pInput->getHoldedCommand(IC_UP) )
-			{
-				timer++;
-				if(timer >= 5)
-					scrollUp();
-			}
-
-			// Page Keys
-			if( g_pInput->getHoldedKey(KPGDN) )
-			{
-				timer++;
-				if(timer >= 5)
-					setNextPos();
-			}
-			if( g_pInput->getHoldedKey(KPGUP) )
-			{
-				timer++;
-				if(timer >= 5)
-					setPrevPos();
-			}
-
-			if(timer>=10) timer=0;
-
-			cancel = g_pInput->getPressedKey(KQUIT);
+			timer++;
+			if(timer >= 5)
+				scrollDown();
 		}
-		if (g_pTimer->TimeToRender())
+		if( g_pInput->getHoldedCommand(IC_UP) )
 		{
-			gamedo_RenderScreen();
-			renderBox(); // This comes after, because it does transparent overlay
+			timer++;
+			if(timer >= 5)
+				scrollUp();
 		}
+
+		// Page Keys
+		if( g_pInput->getHoldedKey(KPGDN) )
+		{
+			timer++;
+			if(timer >= 5)
+				setNextPos();
+		}
+		if( g_pInput->getHoldedKey(KPGUP) )
+		{
+			timer++;
+			if(timer >= 5)
+				setPrevPos();
+		}
+
+		if(timer>=10) timer=0;
+
+		cancel = g_pInput->getPressedKey(KQUIT);
+
+		gamedo_RenderScreen();
+		renderBox(); // This comes after, because it does transparent overlay
 	} while(!cancel);
 }
 

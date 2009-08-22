@@ -11,7 +11,6 @@
 #include <SDL.h>
 #include "sdl/joydrv.h"
 #include "sdl/CInput.h"
-#include "sdl/CTimer.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/sound/CSound.h"
 #endif
@@ -190,14 +189,9 @@ void showGameHint(int mpx, int mpy, int episode, int level)
 
     do
     {
-    	if(g_pTimer->TimeToRunLogic())
-    	{
-    		g_pInput->pollEvents();
-			InfoTextWindow->render();
-
-    	}
-    	if(g_pTimer->TimeToRender())
-    		g_pVideoDriver->update_screen();
+    	g_pInput->pollEvents();
+	InfoTextWindow->render();
+    	g_pVideoDriver->update_screen();
     } while(!g_pInput->getPressedAnyCommand());
 
     delete InfoTextWindow;
@@ -508,13 +502,10 @@ void showinventory(int p, stCloneKeenPlus *pCKP)
 
   while(!close)
   {
-	  if(g_pTimer->TimeToRunLogic())
-	  {
-		  g_pInput->pollEvents();
+	g_pInput->pollEvents();
 
-		  if(g_pInput->getPressedAnyCommand(p))
-				 close=true;
-	  }
+	if(g_pInput->getPressedAnyCommand(p))
+		close=true;
   }
 }
 
@@ -551,13 +542,10 @@ int dlgX,dlgY,dlgW,dlgH;
   g_pInput->flushKeys();
   while(!g_pInput->getPressedAnyKey())
   {
-	  if(g_pTimer->TimeToRunLogic())
-	  {
-		  g_pInput->pollEvents();
+	g_pInput->pollEvents();
 
-		  if(g_pInput->getPressedAnyCommand())
-			  break;
-	  }
+	if(g_pInput->getPressedAnyCommand())
+		break;
   }
 }
 
@@ -591,19 +579,16 @@ const int twirlspeed = 100;
     // wait for any command or key
     do
     {
-  	  if(g_pTimer->TimeToRunLogic())
-  	  {
-  		  if (twirltimer>twirlspeed)
-  		  {
-  			  g_pGraphics->drawCharacter((dlgX+twirlX)<<3, (dlgY+twirlY)<<3, twirlframe+9);
-  			  g_pVideoDriver->update_screen();
-  			  twirlframe++;
-  			  if (twirlframe>5) twirlframe=0;
-  			  twirltimer=0;
-  		  } else twirltimer++;
-  		  if(g_pInput->getPressedAnyCommand()) break;
-  		  g_pInput->pollEvents();
-  	  }
+	if (twirltimer>twirlspeed)
+	{
+		g_pGraphics->drawCharacter((dlgX+twirlX)<<3, (dlgY+twirlY)<<3, twirlframe+9);
+		g_pVideoDriver->update_screen();
+		twirlframe++;
+		if (twirlframe>5) twirlframe=0;
+		twirltimer=0;
+	} else twirltimer++;
+	if(g_pInput->getPressedAnyCommand()) break;
+	g_pInput->pollEvents();
     } while(!g_pInput->getPressedAnyKey());
 }
 
@@ -645,32 +630,29 @@ top: ;
   saveslot = 0;
   do
   {
-	  if(g_pTimer->TimeToRunLogic())
-	  {
+	gamedo_render_drawobjects();
 
-		  gamedo_render_drawobjects();
+	sb_dialogbox(dlgX,dlgY,dlgW,dlgH);
+	if (issave)
+	{
+		g_pGraphics->sb_font_draw( getstring("WhichSlotSave"),(dlgX+1)<<3,(dlgY+1)<<3);
+	}
+	else
+	{
+		g_pGraphics->sb_font_draw( getstring("WhichSlotLoad"),(dlgX+1)<<3,(dlgY+1)<<3);
+		gamedo_AnimatedTiles();
+	}
 
-		sb_dialogbox(dlgX,dlgY,dlgW,dlgH);
-		if (issave)
-		{
-			g_pGraphics->sb_font_draw( getstring("WhichSlotSave"),(dlgX+1)<<3,(dlgY+1)<<3);
-		}
-		else
-		{
-			g_pGraphics->sb_font_draw( getstring("WhichSlotLoad"),(dlgX+1)<<3,(dlgY+1)<<3);
-			gamedo_AnimatedTiles();
-		}
+	for (int i=0 ; i<9  ; i++)
+	{
+		if (g_pInput->getPressedKey(KNUM1+i)) saveslot = 1+i;
+	}
 
-		for (int i=0 ; i<9  ; i++)
-		{
-			if (g_pInput->getPressedKey(KNUM1+i)) saveslot = 1+i;
-		}
+	//g_pVideoDriver->sb_blit();
+	gamedo_frameskipping_blitonly();
+	gamedo_render_eraseobjects();
 
-		g_pVideoDriver->sb_blit();
-		gamedo_render_eraseobjects();
-
-		g_pInput->pollEvents();
-	  }
+	g_pInput->pollEvents();
   } while(!g_pInput->getPressedKey(KQUIT) && !saveslot);
 
   /* check if the selected save file exists */
@@ -712,43 +694,40 @@ top: ;
   // loading a game that doesn't exist.
   do
   {
-	  if(g_pTimer->TimeToRunLogic())
+	  gamedo_render_drawobjects();
+
+	  sb_dialogbox(dlgX,dlgY,dlgW,dlgH);
+	  if (issave)
 	  {
-		gamedo_render_drawobjects();
-
-		sb_dialogbox(dlgX,dlgY,dlgW,dlgH);
-		if (issave)
-		{
-		  g_pGraphics->sb_font_draw( getstring("SaveSlotOverwrite"),(dlgX+1)<<3,(dlgY+1)<<3);
-		  if (g_pInput->getPressedKey(KN))
-		  {
-			map_redraw();
-			goto top;
-		  }
-		  else if (g_pInput->getPressedKey(KY))
-		  {
-			map_redraw();
-			return saveslot;
-		  }
-	   }
-		else
-		{
-			g_pGraphics->sb_font_draw( getstring("LoadNoSuchSlot"),(dlgX+1)<<3,(dlgY+1)<<3);
-
-			if (g_pInput->getPressedAnyKey())
-			{
-				map_redraw();
-				goto top;
-			}
-
-			gamedo_AnimatedTiles();
-		}
-
-		g_pVideoDriver->sb_blit();
-		gamedo_render_eraseobjects();
-
-		g_pInput->pollEvents();
+	    g_pGraphics->sb_font_draw( getstring("SaveSlotOverwrite"),(dlgX+1)<<3,(dlgY+1)<<3);
+	    if (g_pInput->getPressedKey(KN))
+	    {
+		  map_redraw();
+		  goto top;
+	    }
+	    else if (g_pInput->getPressedKey(KY))
+	    {
+		  map_redraw();
+		  return saveslot;
+	    }
 	  }
+	  else
+	  {
+		  g_pGraphics->sb_font_draw( getstring("LoadNoSuchSlot"),(dlgX+1)<<3,(dlgY+1)<<3);
+
+		  if (g_pInput->getPressedAnyKey())
+		  {
+			  map_redraw();
+			  goto top;
+		  }
+
+		  gamedo_AnimatedTiles();
+	  }
+
+	  gamedo_frameskipping_blitonly();
+	  gamedo_render_eraseobjects();
+
+	  g_pInput->pollEvents();
   } while(!g_pInput->getPressedKey(KQUIT));
 
   map_redraw();
@@ -778,21 +757,18 @@ int dlgX,dlgY,dlgW,dlgH;
   waittimer = 0;
   do
   {
-	  if(g_pTimer->TimeToRunLogic())
-	  {
-		  waittimer++;
-		  if (waittimer > 5000) break;
+	waittimer++;
+	if (waittimer > 5000) break;
 
-		  gamedo_render_drawobjects();
+	gamedo_render_drawobjects();
 
-		  sb_dialogbox(dlgX,dlgY,dlgW,dlgH);
-		  g_pGraphics->sb_font_draw( getstring("GameSaveSuccess"),(dlgX+1)<<3,(dlgY+1)<<3);
+	sb_dialogbox(dlgX,dlgY,dlgW,dlgH);
+	g_pGraphics->sb_font_draw( getstring("GameSaveSuccess"),(dlgX+1)<<3,(dlgY+1)<<3);
 
-		  g_pVideoDriver->sb_blit();
-		  gamedo_render_eraseobjects();
+	gamedo_frameskipping_blitonly();
+	gamedo_render_eraseobjects();
 
-		  g_pInput->pollEvents();
-	  }
+	g_pInput->pollEvents();
   } while(!g_pInput->getPressedAnyKey());
 
   map_redraw();
@@ -815,39 +791,34 @@ int dlgX,dlgY,dlgW,dlgH;
   // loading a game that doesn't exist.
   do
   {
-	  if(g_pTimer->TimeToRunLogic())
-	  {
-		gamedo_render_drawobjects();
-		gamedo_AnimatedTiles();
+	gamedo_render_drawobjects();
+	gamedo_AnimatedTiles();
 
-		sb_dialogbox(dlgX, dlgY, dlgW, dlgH);
-		g_pGraphics->sb_font_draw( text, (dlgX+1)<<3, (dlgY+1)<<3);
-		if (g_pInput->getPressedKey(KQ))
-		{
-		  map_redraw();
-		  QuitState = QUIT_PROGRAM;
-		  return 0;
-		}
-		else if (g_pInput->getPressedKey(KT))
-		{
-		  map_redraw();
-		  QuitState = QUIT_TO_TITLE;
-		  return QuitState;
-		}
-		else if (g_pInput->getPressedKey(KQUIT))
-		{
-		  map_redraw();
-		  QuitState = NO_QUIT;
-		  return QuitState;
-		}
+	sb_dialogbox(dlgX, dlgY, dlgW, dlgH);
+	g_pGraphics->sb_font_draw( text, (dlgX+1)<<3, (dlgY+1)<<3);
+	if (g_pInput->getPressedKey(KQ))
+	{
+	  map_redraw();
+	  QuitState = QUIT_PROGRAM;
+	  return 0;
+	}
+	else if (g_pInput->getPressedKey(KT))
+	{
+	  map_redraw();
+	  QuitState = QUIT_TO_TITLE;
+	  return QuitState;
+	}
+	else if (g_pInput->getPressedKey(KQUIT))
+	{
+	  map_redraw();
+	  QuitState = NO_QUIT;
+	  return QuitState;
+	}
 
-		g_pInput->pollEvents();
-	  }
-	  if(g_pTimer->TimeToRender())
-	  {
-			g_pVideoDriver->sb_blit();
-			gamedo_render_eraseobjects();
-	  }
+	g_pInput->pollEvents();
+
+	gamedo_frameskipping_blitonly();
+	gamedo_render_eraseobjects();
   } while(1);
 }
 
@@ -1068,18 +1039,11 @@ void showTextMB(const std::string& Text)
 			 (InfoTextWindow->m_TextBox[0]->getNumberOfTextlines()+2)*8 );
 
 	g_pInput->flushAll();
-
     do
     {
-    	if(g_pTimer->TimeToRunLogic())
-    	{
-    		g_pInput->pollEvents();
-    	}
-        if (g_pTimer->TimeToRender())
-        {
-        	InfoTextWindow->render();
-			g_pVideoDriver->update_screen();
-        }
+		g_pInput->pollEvents();
+		InfoTextWindow->render();
+		g_pVideoDriver->update_screen();
     } while(!g_pInput->getPressedAnyCommand());
 
     delete InfoTextWindow;

@@ -4,6 +4,8 @@
  *  Created on: 04.06.2009
  *      Author: gerstrong
  */
+#ifdef USE_OPENGL
+
 #include "COpenGL.h"
 #include "CVideoDriver.h"
 #include "../CLogFile.h"
@@ -164,3 +166,5 @@ void COpenGL::render(void)
 
 	   SDL_GL_SwapBuffers();
 }
+
+#endif

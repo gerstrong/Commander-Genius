@@ -7,7 +7,6 @@
 #include "../include/gamedo.h"
 #include "../include/gamepdo.h"
 #include "../sdl/CInput.h"
-#include "../sdl/CTimer.h"
 #include "../include/menu.h"
 #include "../CGraphics.h"
 #include "../StringUtils.h"
@@ -177,89 +176,85 @@ int scrollingon;
   max_scroll_x = max_scroll_y = 20000;
   do
   {
-	  if(g_pTimer->TimeToRunLogic())
-	  {
-		// keep the question or exclamation mark sprite next to the player
-		objects[MARK_SPR_NUM].x = player[0].x + (20<<CSF);
-		objects[MARK_SPR_NUM].y = player[0].y - (10<<CSF);
-		objects[MARK_SPR_NUM].onscreen = 1;
-		objects[MARK_SPR_NUM].scrx = (objects[MARK_SPR_NUM].x>>CSF)-scroll_x;
-		objects[MARK_SPR_NUM].scry = (objects[MARK_SPR_NUM].y>>CSF)-scroll_y;
+	// keep the question or exclamation mark sprite next to the player
+	objects[MARK_SPR_NUM].x = player[0].x + (20<<CSF);
+	objects[MARK_SPR_NUM].y = player[0].y - (10<<CSF);
+	objects[MARK_SPR_NUM].onscreen = 1;
+	objects[MARK_SPR_NUM].scrx = (objects[MARK_SPR_NUM].x>>CSF)-scroll_x;
+	objects[MARK_SPR_NUM].scry = (objects[MARK_SPR_NUM].y>>CSF)-scroll_y;
 
-		// execute the current command in the queue
-		if (fade.dir != FADE_OUT)
-		{
-			  switch(shipqueue[ShipQueuePtr].cmd)
+	// execute the current command in the queue
+	if (fade.dir != FADE_OUT)
+	{
+		  switch(shipqueue[ShipQueuePtr].cmd)
+		  {
+			case CMD_MOVE:
+			  switch(shipqueue[ShipQueuePtr].flag1)
 			  {
-				case CMD_MOVE:
-				  switch(shipqueue[ShipQueuePtr].flag1)
-				  {
-					case DUP:
-					  player[0].y-=SHIPSPD;
-					  player[0].playframe = SPR_SHIP_RIGHT;
-					  break;
-					case DDOWN:
-					  player[0].y+=SHIPSPD/2;
-					  player[0].playframe = SPR_SHIP_RIGHT;
-					  break;
-					case DLEFT:
-					  player[0].x-=SHIPSPD;
-					  player[0].playframe = SPR_SHIP_LEFT;
-					  break;
-					case DRIGHT:
-					  player[0].x+=SHIPSPD;
-					  player[0].playframe = SPR_SHIP_RIGHT;
-					  break;
-					case DDOWNRIGHT:
-					  player[0].x+=SHIPSPD*2;
-					  player[0].y+=SHIPSPD*0.8;
-					  player[0].playframe = SPR_SHIP_RIGHT;
-					  break;
-				  }
-				break;
-				case CMD_SPAWNSPR:
-				  objects[MARK_SPR_NUM].sprite = shipqueue[ShipQueuePtr].flag1;
-				  objects[MARK_SPR_NUM].exists = 1;
-				break;
-				case CMD_REMOVESPR:
-				  objects[MARK_SPR_NUM].sprite = shipqueue[ShipQueuePtr].flag1;
-				  objects[MARK_SPR_NUM].exists = 0;
-				break;
-				case CMD_ENABLESCROLLING:
-				  scrollingon = 1;
-				break;
-				case CMD_DISABLESCROLLING:
-				  scrollingon = 0;
-				break;
-				case CMD_WAIT:
-				break;
-				case CMD_FADEOUT:
-					return 0;
-				break;
-				default: break;
+				case DUP:
+				  player[0].y-=SHIPSPD;
+				  player[0].playframe = SPR_SHIP_RIGHT;
+				  break;
+				case DDOWN:
+				  player[0].y+=SHIPSPD/2;
+				  player[0].playframe = SPR_SHIP_RIGHT;
+				  break;
+				case DLEFT:
+				  player[0].x-=SHIPSPD;
+				  player[0].playframe = SPR_SHIP_LEFT;
+				  break;
+				case DRIGHT:
+				  player[0].x+=SHIPSPD;
+				  player[0].playframe = SPR_SHIP_RIGHT;
+				  break;
+				case DDOWNRIGHT:
+				  player[0].x+=SHIPSPD*2;
+				  player[0].y+=SHIPSPD*0.8;
+				  player[0].playframe = SPR_SHIP_RIGHT;
+				  break;
 			  }
-			  // decrease the time remaining
-			  if (shipqueue[ShipQueuePtr].time)
-				shipqueue[ShipQueuePtr].time--;
-			  else
-			    // no time left on this command, go to next cmd
-				ShipQueuePtr++;
-		}
-
-		enter = ( g_pInput->getPressedKey(KENTER) || g_pInput->getPressedKey(KCTRL) || g_pInput->getPressedKey(KALT) );
-		if (enter)
-		  return 0;
-
-		lastenterstate = enter;
-
-		gamedo_fades();
-		gamedo_AnimatedTiles();
-
-		if (scrollingon) gamedo_ScrollTriggers(0);
-
-		g_pInput->pollEvents();
+			break;
+			case CMD_SPAWNSPR:
+			  objects[MARK_SPR_NUM].sprite = shipqueue[ShipQueuePtr].flag1;
+			  objects[MARK_SPR_NUM].exists = 1;
+			break;
+			case CMD_REMOVESPR:
+			  objects[MARK_SPR_NUM].sprite = shipqueue[ShipQueuePtr].flag1;
+			  objects[MARK_SPR_NUM].exists = 0;
+			break;
+			case CMD_ENABLESCROLLING:
+			  scrollingon = 1;
+			break;
+			case CMD_DISABLESCROLLING:
+			  scrollingon = 0;
+			break;
+			case CMD_WAIT:
+			break;
+			case CMD_FADEOUT:
+				return 0;
+			break;
+			default: break;
+		  }
+		  // decrease the time remaining
+		  if (shipqueue[ShipQueuePtr].time)
+			shipqueue[ShipQueuePtr].time--;
+		  else
+		    // no time left on this command, go to next cmd
+			ShipQueuePtr++;
 	}
-    if (g_pTimer->TimeToRender())
+
+	enter = ( g_pInput->getPressedKey(KENTER) || g_pInput->getPressedKey(KCTRL) || g_pInput->getPressedKey(KALT) );
+	if (enter)
+	  return 0;
+
+	lastenterstate = enter;
+
+	gamedo_fades();
+	gamedo_AnimatedTiles();
+
+	if (scrollingon) gamedo_ScrollTriggers(0);
+
+	g_pInput->pollEvents();
     	gamedo_RenderScreen();
   } while(!g_pInput->getPressedKey(KQUIT));
 
@@ -320,88 +315,86 @@ int eseq1_BackAtHome(stCloneKeenPlus *pCKP)
   fade.fadetimer = 0;*/
   do
   {
-	  if(g_pTimer->TimeToRunLogic())
-	  {
-		  enter = ( g_pInput->getPressedKey(KENTER) || g_pInput->getPressedKey(KCTRL) || g_pInput->getPressedKey(KALT) );
+	enter = ( g_pInput->getPressedKey(KENTER) || g_pInput->getPressedKey(KCTRL) || g_pInput->getPressedKey(KALT) );
 
-		  // Show the window (lights on or off)
-		  g_pGraphics->drawBitmap(80, 0, bmnum_window);
+	// Show the window (lights on or off)
+	g_pGraphics->drawBitmap(80, 0, bmnum_window);
 
-		  sb_dialogbox(dlgX, dlgY, dlgW, dlgH);
+	sb_dialogbox(dlgX, dlgY, dlgW, dlgH);
 
-		  // draw the current text line up to the amount currently shown
-		  tempbuf = text[textline];
-		  if(amountshown < tempbuf.size())
-			  tempbuf.erase(amountshown);
-		  g_pGraphics->sb_font_draw( tempbuf, (dlgX+1)*8, (dlgY+1)*8);
+	// draw the current text line up to the amount currently shown
+	tempbuf = text[textline];
+	if(amountshown < tempbuf.size())
+		tempbuf.erase(amountshown);
+	g_pGraphics->sb_font_draw( tempbuf, (dlgX+1)*8, (dlgY+1)*8);
 
-		  if (state==STATE_TEXTAPPEARING)
-		  {
-			  if (enter) goto fullshow;
-			  if (showtimer > LETTER_SHOW_SPD)
-			  {  // it's time to show a new letter
-				  amountshown++;
-				  if (amountshown > text[textline].size())
-				  {  // reached end of line
-					  state = STATE_WAITASEC;
-					  waittimer = -BACKHOME_SHORT_WAIT_TIME*2;
-				  }
-				  // if the last letter shown is a dash/cr ('Billy...are you a-'),
-				  // show the rest of the text immediately
-				  // (for when the mom shouts "WHAT IS THIS ONE-EYED GREEN THING..."
-				  if (text[textline][amountshown]==13 && \
-						  text[textline][amountshown-1]=='-')
-				  {
-					  fullshow: ;
-					  amountshown = text[textline].size();
-					  state = STATE_WAITASEC;
-					  waittimer = -BACKHOME_SHORT_WAIT_TIME*3;
-				  }
-				  showtimer = 0;
-			  } else showtimer++;
+	if (state==STATE_TEXTAPPEARING)
+	{
+		if (enter) goto fullshow;
+		if (showtimer > LETTER_SHOW_SPD)
+		{  // it's time to show a new letter
+			amountshown++;
+			if (amountshown > text[textline].size())
+			{  // reached end of line
+				state = STATE_WAITASEC;
+				waittimer = -BACKHOME_SHORT_WAIT_TIME*2;
+			}
+			// if the last letter shown is a dash/cr ('Billy...are you a-'),
+			// show the rest of the text immediately
+			// (for when the mom shouts "WHAT IS THIS ONE-EYED GREEN THING..."
+			if (text[textline][amountshown]==13 && \
+					text[textline][amountshown-1]=='-')
+			{
+				fullshow: ;
+				amountshown = text[textline].size();
+				state = STATE_WAITASEC;
+				waittimer = -BACKHOME_SHORT_WAIT_TIME*3;
+			}
+			showtimer = 0;
+		} else showtimer++;
 
-			  // user pressed enter
-			  if (enter)
-			  {  // show all text immediately
+		// user pressed enter
+		if (enter)
+		{  // show all text immediately
 
-			  }
-		  }
-		  else if (state==STATE_WAITASEC)
-		  {
-			  if (enter) goto nextline;
-			  if (waittimer<BACKHOME_SHORT_WAIT_TIME)
-			  {
-				  waittimer++;
-				  if (waittimer==BACKHOME_SHORT_WAIT_TIME)
-				  {
-					  nextline: ;
+		}
+	}
+	else if (state==STATE_WAITASEC)
+	{
+		if (enter) goto nextline;
+		if (waittimer<BACKHOME_SHORT_WAIT_TIME)
+		{
+			waittimer++;
+			if (waittimer==BACKHOME_SHORT_WAIT_TIME)
+			{
+				nextline: ;
 
-					  if( (textline > 0 && textline < 5)  || textline == 6)
-						  bmnum_window = g_pGraphics->getBitmapNumberFromName("WINDON");	// lights on
-					  else
-						  bmnum_window = g_pGraphics->getBitmapNumberFromName("WINDOFF");	// lights off
+				if( (textline > 0 && textline < 5)  || textline == 6)
+					bmnum_window = g_pGraphics->getBitmapNumberFromName("WINDON");	// lights on
+				else
+					bmnum_window = g_pGraphics->getBitmapNumberFromName("WINDOFF");	// lights off
 
-					  textline++;
-					  state = STATE_TEXTAPPEARING;
-					  amountshown = 0;
-					  if (textline>7)
-					  {  // end of text
-						  break;
-					  }
-				  }
-			  }
-		  }
+				textline++;
+				state = STATE_TEXTAPPEARING;
+				amountshown = 0;
+				if (textline>7)
+				{  // end of text
+					break;
+				}
+			}
+		}
+	}
 
-		  if (fade.dir==FADE_OUT && fade.mode==FADE_COMPLETE)
-			  return 0;
+	if (fade.dir==FADE_OUT && fade.mode==FADE_COMPLETE)
+		return 0;
 
-		  gamedo_fades();
+	gamedo_fades();
 
-		  lastenterstate = enter;
+	lastenterstate = enter;
 
-		  g_pInput->pollEvents();
-		  if (g_pInput->getPressedKey(KQUIT)) return 1;
-	  }
+	g_pInput->pollEvents();
+	if (g_pInput->getPressedKey(KQUIT)) return 1;
+
 	  gamedo_frameskipping_blitonly();
 
   } while(1);

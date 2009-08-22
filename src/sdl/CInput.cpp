@@ -10,7 +10,6 @@
 
 #include "CInput.h"
 #include "CVideoDriver.h"
-#include "CTimer.h"
 #include "../CLogFile.h"
 #include "../FindFile.h"
 
@@ -568,13 +567,13 @@ void CInput::WIZ_EmuKeyboard( int button, int value )
 			fakeevent2.key.keysym.sym = SDLK_2;
 			break;
 		case GP2X_BUTTON_A:
-			fakeevent1.key.keysym.sym = SDLK_a;
+			fakeevent1.key.keysym.sym = SDLK_LCTRL;
 			break;
 		case GP2X_BUTTON_B:
-			fakeevent1.key.keysym.sym = SDLK_b;
+			fakeevent1.key.keysym.sym = SDLK_LALT;
 			break;
 		case GP2X_BUTTON_X:
-			fakeevent1.key.keysym.sym = SDLK_n;
+			fakeevent1.key.keysym.sym = SDLK_SPACE;
 			break;
 		case GP2X_BUTTON_Y:
 			fakeevent1.key.keysym.sym = SDLK_y;

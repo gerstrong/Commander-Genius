@@ -162,14 +162,8 @@ bool loadStartMenu(stCloneKeenPlus *pCKP)
 
 	do
 	{
-		if(g_pTimer->TimeToRunLogic())
-		{
-			GamesMenu->processlogic();
-		}
-		else if(g_pTimer->TimeToRender())
-		{
-			GamesMenu->render();
-		}
+		GamesMenu->processlogic();
+		GamesMenu->render();
 	} while( !g_pInput->getPressedCommand(IC_JUMP) && !g_pInput->getPressedCommand(IC_STATUS) );
 
 
@@ -239,22 +233,15 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 
 	do
 	{
-		if(g_pTimer->TimeToRunLogic())
-		{
-			gamedo_fades();
-			gamedo_AnimatedTiles();
-			MainMenu->processlogic();
+		gamedo_fades();
+		gamedo_AnimatedTiles();
+		MainMenu->processlogic();
 
-			if(g_pInput->getPressedKey(KF1))
-				showF1HelpText(pCKP->Control.levelcontrol.episode, pCKP->Resources.GameDataDirectory);
-			else if(g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP))
-				break;
-		}
-		else if(g_pTimer->TimeToRender())
-		{
-			MainMenu->render();
-		}
-
+		if(g_pInput->getPressedKey(KF1))
+			showF1HelpText(pCKP->Control.levelcontrol.episode, pCKP->Resources.GameDataDirectory);
+		else if(g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP))
+			break;
+		MainMenu->render();
 	} while(1);
 
 	selection = MainMenu->getSelection();
@@ -336,19 +323,13 @@ int getDifficulty(stCloneKeenPlus *pCKP)
 
 	do
 	{
-		if(g_pTimer->TimeToRunLogic())
-		{
-			// Render the Games-Menu
-			DifficultyMenu.processlogic();
-			if( g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP))
-				break;
+		// Render the Games-Menu
+		DifficultyMenu.processlogic();
+		if( g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP))
+			break;
 
-			g_pInput->pollEvents();
-		}
-		if(g_pTimer->TimeToRender())
-		{
-			DifficultyMenu.render();
-		}
+		g_pInput->pollEvents();
+		DifficultyMenu.render();
 	} while(true);
 
 	return DifficultyMenu.getSelection();
@@ -388,57 +369,51 @@ int AudioDlg(stCloneKeenPlus *pCKP)
 
 	do
 	{
-		if(g_pTimer->TimeToRunLogic())
-		{
-			gamedo_AnimatedTiles();
+		gamedo_AnimatedTiles();
 
-			if(g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP))
+		if(g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP))
+		{
+			selection = AudioMenu.getSelection();
+
+			if(selection == 0)
 			{
-				selection = AudioMenu.getSelection();
-
-				if(selection == 0)
+				switch(rate)
 				{
-					switch(rate)
-					{
-					case 22050: rate = 44100; break;
-					case 11000: rate = 22050; break;
-					default: rate = 11000; break;
-					}
-					AudioMenu.setObjectText(0, "Rate: " + itoa(rate) + " kHz");
+				case 22050: rate = 44100; break;
+				case 11000: rate = 22050; break;
+				default: rate = 11000; break;
 				}
-
-				if(selection == 1)
-				{
-					mode = !mode;
-					if(!mode)
-						AudioMenu.setObjectText(1,"Mode: Mono");
-					else
-						AudioMenu.setObjectText(1,"Mode: Stereo");
-				}
-
-				if(selection == 2)
-				{
-					g_pSound->destroy();
-					g_pSound->setSoundmode(rate, mode ? true : false);
-					CSettings *Settings;
-					Settings = new CSettings();
-					Settings->saveDrvCfg();
-					delete Settings; Settings = NULL;
-					g_pSound->init();
-					ok = g_pSound->loadSoundData(pCKP->Control.levelcontrol.episode,
-												 pCKP->Resources.GameDataDirectory);
-					break;
-				}
-				if(selection == 3)
-					break;
-
+				AudioMenu.setObjectText(0, "Rate: " + itoa(rate) + " kHz");
 			}
-			AudioMenu.processlogic();
+
+			if(selection == 1)
+			{
+				mode = !mode;
+				if(!mode)
+					AudioMenu.setObjectText(1,"Mode: Mono");
+				else
+					AudioMenu.setObjectText(1,"Mode: Stereo");
+			}
+
+			if(selection == 2)
+			{
+				g_pSound->destroy();
+				g_pSound->setSoundmode(rate, mode ? true : false);
+				CSettings *Settings;
+				Settings = new CSettings();
+				Settings->saveDrvCfg();
+				delete Settings; Settings = NULL;
+				g_pSound->init();
+				ok = g_pSound->loadSoundData(pCKP->Control.levelcontrol.episode,
+											  pCKP->Resources.GameDataDirectory);
+				break;
+			}
+			if(selection == 3)
+				break;
+
 		}
-		else if(g_pTimer->TimeToRender())
-		{
-			AudioMenu.render();
-		}
+		AudioMenu.processlogic();
+		AudioMenu.render();
 	} while(1);
 
 	return ok;
@@ -479,51 +454,44 @@ void OptionsDlg(stCloneKeenPlus *pCKP)
 
 	do
 	{
-		if(g_pTimer->TimeToRunLogic())
+		gamedo_AnimatedTiles();
+
+		if(g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP))
 		{
-			gamedo_AnimatedTiles();
+			selection = OptionsMenu.getSelection();
 
-			if(g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP))
+			if(selection < NUM_OPTIONS)
 			{
-				selection = OptionsMenu.getSelection();
+				buf = options[selection].name + ": ";
 
-				if(selection < NUM_OPTIONS)
+				if(options[selection].value)
 				{
-					buf = options[selection].name + ": ";
-
-					if(options[selection].value)
-					{
-						options[selection].value = 0;
-						buf += "Disabled";
-					}
-					else
-					{
-						options[selection].value = 1;
-						buf += "Enabled";
-					}
-
-					OptionsMenu.setObjectText(selection, buf);
-				}
-				else if(selection < NUM_OPTIONS+1)
-				{
-					CSettings Settings; // Pressed Save,
-					Settings.saveGameCfg(pCKP->Option);
-					break;
+					options[selection].value = 0;
+					buf += "Disabled";
 				}
 				else
 				{
-					// Pressed Cancel, don't save
-					break;
+					options[selection].value = 1;
+					buf += "Enabled";
 				}
+
+				OptionsMenu.setObjectText(selection, buf);
 			}
-
-			OptionsMenu.processlogic();
+			else if(selection < NUM_OPTIONS+1)
+			{
+				CSettings Settings; // Pressed Save,
+				Settings.saveGameCfg(pCKP->Option);
+				break;
+			}
+			else
+			{
+				// Pressed Cancel, don't save
+				break;
+			}
 		}
-		else if(g_pTimer->TimeToRender())
-		{
-			OptionsMenu.render();
-		}
 
+		OptionsMenu.processlogic();
+		OptionsMenu.render();
 	} while(1);
 }
 
@@ -607,7 +575,7 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 	else
 		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 44, "Software Rendering");
 
-	autoframeskip = g_pTimer->getFrameskip();
+	autoframeskip = g_pTimer->getFrameRate();
 
 	if(autoframeskip)
 		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 52, "Auto-Frameskip : " + itoa(autoframeskip) + " fps");
@@ -624,134 +592,128 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 
 	do
 	{
-		if(g_pTimer->TimeToRunLogic())
+		if(g_pInput->getPressedCommand(IC_STATUS))
 		{
-			if(g_pInput->getPressedCommand(IC_STATUS))
+			selection = DisplayMenu.getSelection();
+
+			if(selection == 0)
 			{
-				selection = DisplayMenu.getSelection();
+				// Now the part of the resolution list
+				st_resolution Resolution;
+				Resolution = g_pVideoDriver->setNextResolution();
 
-				if(selection == 0)
+				buf = "Resolution: " + itoa(Resolution.width) + "x" + itoa(Resolution.height) + "x" + itoa(Resolution.depth);
+				DisplayMenu.setObjectText(0,buf);
+			}
+			else if(selection == 1)
+			{
+				if(!fsmode)
+					DisplayMenu.setObjectText(1,"Fullscreen mode");
+				else
+					DisplayMenu.setObjectText(1,"Windowed mode");
+				fsmode = !fsmode;
+			}
+			else if(selection == 2)
+			{
+				if(opengl)
 				{
-					// Now the part of the resolution list
-					st_resolution Resolution;
-					Resolution = g_pVideoDriver->setNextResolution();
-
-					buf = "Resolution: " + itoa(Resolution.width) + "x" + itoa(Resolution.height) + "x" + itoa(Resolution.depth);
-					DisplayMenu.setObjectText(0,buf);
-				}
-				else if(selection == 1)
-				{
-					if(!fsmode)
-						DisplayMenu.setObjectText(1,"Fullscreen mode");
-					else
-						DisplayMenu.setObjectText(1,"Windowed mode");
-					fsmode = !fsmode;
-				}
-				else if(selection == 2)
-				{
-					if(opengl)
-					{
-						gl_filter = (gl_filter==1) ? 0 : 1;
-						buf = (gl_filter == 1) ? "OGL Filter: Linear" : "OGL Filter: Nearest";
-						DisplayMenu.setObjectText(2,buf);
-					}
-					else
-					{
-						zoom = (zoom >= 4) ? 1 : zoom+1;
-						buf = (zoom == 1) ? "No scale" : "Scale: " + itoa(zoom);
-					}
+					gl_filter = (gl_filter==1) ? 0 : 1;
+					buf = (gl_filter == 1) ? "OGL Filter: Linear" : "OGL Filter: Nearest";
 					DisplayMenu.setObjectText(2,buf);
 				}
-				else if(selection == 3)
-				{
-					filter = (filter >= 3) ? 0 : filter+1;
-
-					if(filter == 0)
-						DisplayMenu.setObjectText(3,"No Filter");
-					else if(filter == 1)
-						DisplayMenu.setObjectText(3,"Scale2x Filter");
-					else if(filter == 2)
-						DisplayMenu.setObjectText(3,"Scale3x Filter");
-					else if(filter == 3)
-						DisplayMenu.setObjectText(3,"Scale4x Filter");
-				}
-				else if(selection == 4)
-				{
-					opengl = !opengl; // switch the mode!!
-
-					if(opengl)
-						DisplayMenu.setObjectText(4,"OpenGL Acceleration");
-					else
-						DisplayMenu.setObjectText(4,"Software Rendering");
-				}
-				else if(selection == 5)
-				{
-					if(autoframeskip < 120)
-						autoframeskip += 10;
-					else
-						autoframeskip = 10;
-					buf = "Auto-Frameskip : " + itoa(autoframeskip) + " fps";
-
-					DisplayMenu.setObjectText(5, buf);
-				}
-				else if(selection == 6)
-				{
-					aspect = !aspect;
-
-					if(aspect)
-						DisplayMenu.setObjectText(6,"OGL Aspect Ratio Enabled");
-					else
-						DisplayMenu.setObjectText(6,"OGL Aspect Ratio Disabled");
-
-				}
-				else if(selection == 7)
-				{
-					g_pVideoDriver->stop();
-
-					if(fsmode)
-						g_pVideoDriver->isFullscreen(true);
-					else
-						g_pVideoDriver->isFullscreen(false);
-
-					g_pVideoDriver->enableOpenGL(opengl);
-					g_pVideoDriver->setOGLFilter(gl_filter);
-					g_pVideoDriver->setZoom(zoom);
-					g_pVideoDriver->setFilter(filter);
-					g_pTimer->setFrameskip(autoframeskip);
-					g_pVideoDriver->setAspectCorrection(aspect);
-
-					// initialize/activate all drivers
-					g_pLogFile->ftextOut("Restarting graphics driver... (Menu)<br>");
-					if (g_pVideoDriver->start())
-						retval = 1;
-
-					CSettings *Settings;
-					Settings = new CSettings();
-
-					Settings->saveDrvCfg();
-					delete Settings; Settings = NULL;
-
-					//showmapatpos(90, MAINMENU_X, MENUS_Y, pCKP);
-
-					fade.mode = FADE_GO;
-					fade.dir = FADE_IN;
-					fade.curamt = 0;
-					fade.rate = FADE_NORM;
-					fade.fadetimer = 0;
-					gamedo_fades();
-					break;
-				}
 				else
-					break;
+				{
+					zoom = (zoom >= 4) ? 1 : zoom+1;
+					buf = (zoom == 1) ? "No scale" : "Scale: " + itoa(zoom);
+				}
+				DisplayMenu.setObjectText(2,buf);
 			}
-			// Render the Games-Menu
-			DisplayMenu.processlogic();
+			else if(selection == 3)
+			{
+				filter = (filter >= 3) ? 0 : filter+1;
+
+				if(filter == 0)
+					DisplayMenu.setObjectText(3,"No Filter");
+				else if(filter == 1)
+					DisplayMenu.setObjectText(3,"Scale2x Filter");
+				else if(filter == 2)
+					DisplayMenu.setObjectText(3,"Scale3x Filter");
+				else if(filter == 3)
+					DisplayMenu.setObjectText(3,"Scale4x Filter");
+			}
+			else if(selection == 4)
+			{
+				opengl = !opengl; // switch the mode!!
+
+				if(opengl)
+					DisplayMenu.setObjectText(4,"OpenGL Acceleration");
+				else
+					DisplayMenu.setObjectText(4,"Software Rendering");
+			}
+			else if(selection == 5)
+			{
+				if(autoframeskip < 120)
+					autoframeskip += 10;
+				else
+					autoframeskip = 10;
+				buf = "Auto-Frameskip : " + itoa(autoframeskip) + " fps";
+
+				DisplayMenu.setObjectText(5, buf);
+			}
+			else if(selection == 6)
+			{
+				aspect = !aspect;
+
+				if(aspect)
+					DisplayMenu.setObjectText(6,"OGL Aspect Ratio Enabled");
+				else
+					DisplayMenu.setObjectText(6,"OGL Aspect Ratio Disabled");
+
+			}
+			else if(selection == 7)
+			{
+				g_pVideoDriver->stop();
+
+				if(fsmode)
+					g_pVideoDriver->isFullscreen(true);
+				else
+					g_pVideoDriver->isFullscreen(false);
+
+				g_pVideoDriver->enableOpenGL(opengl);
+				g_pVideoDriver->setOGLFilter(gl_filter);
+				g_pVideoDriver->setZoom(zoom);
+				g_pVideoDriver->setFilter(filter);
+				g_pTimer->setFrameRate(autoframeskip);
+				g_pVideoDriver->setAspectCorrection(aspect);
+
+				// initialize/activate all drivers
+				g_pLogFile->ftextOut("Restarting graphics driver... (Menu)<br>");
+				if (g_pVideoDriver->start())
+					retval = 1;
+
+				CSettings *Settings;
+				Settings = new CSettings();
+
+				Settings->saveDrvCfg();
+				delete Settings; Settings = NULL;
+
+				//showmapatpos(90, MAINMENU_X, MENUS_Y, pCKP);
+
+				fade.mode = FADE_GO;
+				fade.dir = FADE_IN;
+				fade.curamt = 0;
+				fade.rate = FADE_NORM;
+				fade.fadetimer = 0;
+				gamedo_fades();
+				break;
+			}
+			else
+				break;
 		}
-		else if(g_pTimer->TimeToRender())
-		{
-			// blit the scrollbuffer to the display
-			DisplayMenu.render();
-		}
+		// Render the Games-Menu
+		DisplayMenu.processlogic();
+		// blit the scrollbuffer to the display
+		DisplayMenu.render();
 	} while(1);
 
 	return retval;
@@ -784,45 +746,39 @@ char configmenu(stCloneKeenPlus *pCKP)
 
 	do
 	{
-		if(g_pTimer->TimeToRunLogic())
-		{
-			gamedo_AnimatedTiles();
+		gamedo_AnimatedTiles();
 
-			if(g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP))
+		if(g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP))
+		{
+			selection = OptionsMenu.getSelection();
+
+			if(selection == 4)
+				break;
+
+			switch(selection)
 			{
-				selection = OptionsMenu.getSelection();
+			case 0:
+				GraphicsDlg(pCKP);
+				break;
 
-				if(selection == 4)
-					break;
+			case 1:
+				AudioDlg(pCKP);
+				break;
 
-				switch(selection)
-				{
-				case 0:
-					GraphicsDlg(pCKP);
-					break;
+			case 2:
+				OptionsDlg(pCKP);
+				break;
 
-				case 1:
-					AudioDlg(pCKP);
-					break;
+			case 3:
+				controlsmenu();
+				break;
 
-				case 2:
-					OptionsDlg(pCKP);
-					break;
-
-				case 3:
-					controlsmenu();
-					break;
-
-				default:
-					break;
-				}
+			default:
+				break;
 			}
-			OptionsMenu.processlogic();
 		}
-		else if(g_pTimer->TimeToRender())
-		{
-			OptionsMenu.render();
-		}
+		OptionsMenu.processlogic();
+		OptionsMenu.render();
 	} while(1);
 
 	return 0;
@@ -920,108 +876,98 @@ char controlsmenu()
 
 	do
 	{
-		if(g_pTimer->TimeToRunLogic())
+		if(g_pInput->getPressedCommand(IC_STATUS))
 		{
-			if(g_pInput->getPressedCommand(IC_STATUS))
+			selection = ControlsMenu.getSelection();
+
+			if(selection < MAX_COMMANDS)
 			{
-				selection = ControlsMenu.getSelection();
-
-				if(selection < MAX_COMMANDS)
-				{
-					int item=0;
-					if(selection < 4)
-						item = selection + 4;
-					else
-						item = selection - 4;
-
-					switch(selection)
-					{
-					 case 0: buf = "P1 Left:   "; break;
-					 case 1: buf = "P1 Up:     "; break;
-					 case 2: buf = "P1 Right:  "; break;
-					 case 3: buf = "P1 Down:   "; break;
-					 case 4: buf = "P1 Jump:   "; break;
-					 case 5: buf = "P1 Pogo:   "; break;
-					 case 6: buf = "P1 Fire:   "; break;
-					 case 7: buf = "P1 Status: "; break;
-					}
-
-					buf2 = buf;
-					buf2 += "*Waiting for Input*";
-					ControlsMenu.setObjectText(selection, buf2);
-
-					while(!g_pInput->readNewEvent(0,item))
-					{
-						if(g_pTimer->TimeToRunLogic())
-							ControlsMenu.processlogic();
-						else if(g_pTimer->TimeToRender())
-							ControlsMenu.render();
-					}
-
-					g_pInput->getEventName(item, 0, buf2);
-					buf += buf2;
-					ControlsMenu.setObjectText(selection,buf);
-				}
-				else if(selection >= MAX_COMMANDS && selection < MAX_COMMANDS*2)
-				{
-					int item=0;
-					if(selection < (4 + MAX_COMMANDS))
-						item = selection + 4 - MAX_COMMANDS;
-					else
-						item = selection - 4 - MAX_COMMANDS;
-
-					switch(selection)
-					{
-					 case 0+ MAX_COMMANDS: buf = "P2 Left:   "; break;
-					 case 1+ MAX_COMMANDS: buf = "P2 Up:     "; break;
-					 case 2+ MAX_COMMANDS: buf = "P2 Right:  "; break;
-					 case 3+ MAX_COMMANDS: buf = "P2 Down:   "; break;
-					 case 4+ MAX_COMMANDS: buf = "P2 Jump:   "; break;
-					 case 5+ MAX_COMMANDS: buf = "P2 Pogo:   "; break;
-					 case 6+ MAX_COMMANDS: buf = "P2 Fire:   "; break;
-					 case 7+ MAX_COMMANDS: buf = "P2 Status: "; break;
-					}
-
-					buf2 = buf;
-					buf2 += "*Waiting for Input*";
-					ControlsMenu.setObjectText(selection,buf2);
-
-					while(!g_pInput->readNewEvent(1,item))
-					{
-						if(g_pTimer->TimeToRunLogic())
-							ControlsMenu.processlogic();
-						else if(g_pTimer->TimeToRender())
-							ControlsMenu.render();
-					}
-
-					g_pInput->getEventName(item, 1, buf2);
-					buf += buf2;
-					ControlsMenu.setObjectText(selection,buf);
-				}
-				else if(selection == MAX_COMMANDS*2)
-				{
-					// Reset Controls here!
-					g_pInput->resetControls();
-					g_pInput->saveControlconfig();
-					break;
-				}
-				else if(selection == MAX_COMMANDS*2+1)
-				{
-					g_pInput->saveControlconfig();
-					break;
-				}
+				int item=0;
+				if(selection < 4)
+					item = selection + 4;
 				else
+					item = selection - 4;
+
+				switch(selection)
 				{
-					break;
+				  case 0: buf = "P1 Left:   "; break;
+				  case 1: buf = "P1 Up:     "; break;
+				  case 2: buf = "P1 Right:  "; break;
+				  case 3: buf = "P1 Down:   "; break;
+				  case 4: buf = "P1 Jump:   "; break;
+				  case 5: buf = "P1 Pogo:   "; break;
+				  case 6: buf = "P1 Fire:   "; break;
+				  case 7: buf = "P1 Status: "; break;
 				}
+
+				buf2 = buf;
+				buf2 += "*Waiting for Input*";
+				ControlsMenu.setObjectText(selection, buf2);
+
+				while(!g_pInput->readNewEvent(0,item))
+				{
+					ControlsMenu.processlogic();
+					ControlsMenu.render();
+				}
+
+				g_pInput->getEventName(item, 0, buf2);
+				buf += buf2;
+				ControlsMenu.setObjectText(selection,buf);
 			}
-			// Render the Menu
-			ControlsMenu.processlogic();
+			else if(selection >= MAX_COMMANDS && selection < MAX_COMMANDS*2)
+			{
+				int item=0;
+				if(selection < (4 + MAX_COMMANDS))
+					item = selection + 4 - MAX_COMMANDS;
+				else
+					item = selection - 4 - MAX_COMMANDS;
+
+				switch(selection)
+				{
+				  case 0+ MAX_COMMANDS: buf = "P2 Left:   "; break;
+				  case 1+ MAX_COMMANDS: buf = "P2 Up:     "; break;
+				  case 2+ MAX_COMMANDS: buf = "P2 Right:  "; break;
+				  case 3+ MAX_COMMANDS: buf = "P2 Down:   "; break;
+				  case 4+ MAX_COMMANDS: buf = "P2 Jump:   "; break;
+				  case 5+ MAX_COMMANDS: buf = "P2 Pogo:   "; break;
+				  case 6+ MAX_COMMANDS: buf = "P2 Fire:   "; break;
+				  case 7+ MAX_COMMANDS: buf = "P2 Status: "; break;
+				}
+
+				buf2 = buf;
+				buf2 += "*Waiting for Input*";
+				ControlsMenu.setObjectText(selection,buf2);
+
+				while(!g_pInput->readNewEvent(1,item))
+				{
+					ControlsMenu.processlogic();
+					ControlsMenu.render();
+				}
+
+				g_pInput->getEventName(item, 1, buf2);
+				buf += buf2;
+				ControlsMenu.setObjectText(selection,buf);
+			}
+			else if(selection == MAX_COMMANDS*2)
+			{
+				// Reset Controls here!
+				g_pInput->resetControls();
+				g_pInput->saveControlconfig();
+				break;
+			}
+			else if(selection == MAX_COMMANDS*2+1)
+			{
+				g_pInput->saveControlconfig();
+				break;
+			}
+			else
+			{
+				break;
+			}
 		}
-		else if(g_pTimer->TimeToRender())
-		{
-			ControlsMenu.render();
-		}
+		// Render the Menu
+		ControlsMenu.processlogic();
+		ControlsMenu.render();
 	} while(1);
 	return 0;
 }
@@ -1098,33 +1044,25 @@ int boxtimer;
   boxtimer = 0;
   do
   {
-	if(g_pTimer->TimeToRunLogic())
+	gamedo_fades();
+
+	if (boxtimer > KEENSLEFT_TIME)
 	{
-		gamedo_fades();
+	  break;
+	} else boxtimer++;
 
-		if (boxtimer > KEENSLEFT_TIME)
-		{
-		  break;
-		} else boxtimer++;
-
-		enter = g_pInput->getPressedCommand(IC_STATUS)||g_pInput->getPressedCommand(IC_FIRE)||
-		g_pInput->getPressedCommand(IC_JUMP)||g_pInput->getPressedCommand(IC_POGO);
-		if (enter)
-		{
-		  break;
-		}
-		if (g_pInput->getPressedCommand(KQUIT))
-		{
-		  return;
-		}
-
-		lastenterstate = enter;
+	enter = g_pInput->getPressedCommand(IC_STATUS)||g_pInput->getPressedCommand(IC_FIRE)||
+	g_pInput->getPressedCommand(IC_JUMP)||g_pInput->getPressedCommand(IC_POGO);
+	if (enter)
+	{
+	  break;
 	}
-	else if(g_pTimer->TimeToRender())
+	if (g_pInput->getPressedCommand(KQUIT))
 	{
-
+	  return;
 	}
 
+	lastenterstate = enter;
   } while(1);
 
 }

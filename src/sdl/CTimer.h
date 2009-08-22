@@ -21,21 +21,25 @@ public:
 	virtual ~CTimer();
 
 	void InitTimers();
-	bool TimeToRunLogic();
+	void CalculateRate( void );
 	bool TimeToRender();
+	void TimeToDelay();
 
 	void ResetSecondsTimer();
 	bool HasSecElapsed();
 
-	int getFrameskip() { return m_FPS; }
-	void setFrameskip(int value) { m_FPS=value; }
+	int getFrameRate() { return m_FPSRate; }
+	void setFrameRate(int value);
 
 private:
 
-	ulong LastRenderTime, LastLogicTime, LastSecTime;
-	ulong RenderRate;			// 60fps
-	ulong LogicRate;			// 333fps
-	int m_FPS;				// This one must first be read
+	ulong m_LogicRenderStart, m_CountTime, m_LastSecTime;
+	int m_LoopsTotal;
+	int m_FramesTotal;
+	int m_LogicRateMS;
+	int m_FPSRate;
+	int m_RenderInterval;
+	int m_RenderIntervalCount;
 };
 
 #endif /* CTIMER_H_ */
