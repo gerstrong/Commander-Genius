@@ -143,7 +143,7 @@ void sb_dialogbox(int x1, int y1, int w, int h)
     }
 }
 
-void showGameHint(int mpx, int mpy, int episode, int level)
+bool showGameHint(int mpx, int mpy, int episode, int level)
 {
 	std::string strname;
 
@@ -160,18 +160,18 @@ void showGameHint(int mpx, int mpy, int episode, int level)
 	else if(episode == 2)
 	{
         // make the switch stop glowing
-        // There may be a bug. Be careful
-        map_chgtile(mpx, mpy+1, 432);
-
 	    switch(level)
 	    {
 	    case 8:
-	      strname = "EP2_VE_NOJUMPINDARK";
-	      break;
+	    	strname = "EP2_VE_NOJUMPINDARK";
+			break;
 	    case 10:
-	      strname = "EP2_VE_EVILBELTS";
-	      break;
+	    	strname = "EP2_VE_EVILBELTS";
+			break;
+	    default:
+	    	return false;
 	    }
+        map_chgtile(mpx, mpy+1, 432);
 	}
 
 	CTextBox* TextBox;
@@ -195,6 +195,7 @@ void showGameHint(int mpx, int mpy, int episode, int level)
     } while(!g_pInput->getPressedAnyCommand());
 
     delete InfoTextWindow;
+    return true;
 }
 
 void inventory_draw_ep1(int p)

@@ -1233,8 +1233,8 @@ void procgoodie(int t, int mpx, int mpy, int theplayer, stCloneKeenPlus *pCKP)
     case 22: // Game info block (Youseein your mind or vorticon elder...)
     	if(!pCKP->Control.levelcontrol.usedhintmb)
     	{
-    		showGameHint(mpx, mpy, pCKP->Control.levelcontrol.episode, pCKP->Control.levelcontrol.curlevel);
-    		pCKP->Control.levelcontrol.usedhintmb = true;
+    		if(showGameHint(mpx, mpy, pCKP->Control.levelcontrol.episode, pCKP->Control.levelcontrol.curlevel));
+				pCKP->Control.levelcontrol.usedhintmb = true;
     	}
       break;
 

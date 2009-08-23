@@ -99,7 +99,7 @@ void CTimer::TimeToDelay( void )
 	// Display the loops per second and the frames drawn
 	if( curtime - m_CountTime >= 1000 || m_CountTime > curtime  )
 	{
-		printf( "LPS %d FPS %d Interval %d MSrate %d\n", m_LoopsTotal, m_FramesTotal, m_RenderInterval, m_LogicRateMS  );
+		//printf( "LPS %d FPS %d Interval %d MSrate %d\n", m_LoopsTotal, m_FramesTotal, m_RenderInterval, m_LogicRateMS  );
 		m_FramesTotal	= 0;
 		m_LoopsTotal	= 0;
 		m_CountTime = curtime;

@@ -121,6 +121,11 @@ bool CTileLoader::load()
 		{
 			TileProperty[j][i] = m_data[i*2*(numtiles)+2*j];
 			TileProperty[j][i] += m_data[i*2*(numtiles)+2*j+1]<<8;
+
+			if(TileProperty[j][i] == 22)
+			{
+				printf("Report Hintbox tile!\n");
+			}
 		}
 	}
 

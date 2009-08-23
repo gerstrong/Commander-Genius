@@ -15,7 +15,7 @@ void game_save(char *fname, stCloneKeenPlus *pCKP);
 int game_load(char *fname, stCloneKeenPlus *pCKP);
 void showTextMB(const std::string& Text);
 void showF1HelpText(int episode, std::string DataDirectory);
-void showGameHint(int mpx, int mpy, int episode, int level);
+bool showGameHint(int mpx, int mpy, int episode, int level);
 
 unsigned int rnd(void);
 

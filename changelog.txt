@@ -1,5 +1,9 @@
 Commander Genius Release v0.3.0.2 (CloneKeenPlus):
 --------------------------------------------------
+23-08-2009
+- Improved the timer much more. (Many thanks to Pickle!!!)
+- Solved message box bugs in Ep2.
+
 21-08-2009
 - New Menu System, compatible as ingame menu. (Still not implemented)
 - Modified lightly the pogo physics
