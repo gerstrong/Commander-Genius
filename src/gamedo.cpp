@@ -302,7 +302,7 @@ int i, topobj;
 			  case OBJ_NESSIE: nessie_ai(i); break;
 
 			  //Specials
-			  //case OBJ_AUTORAY: case OBJ_AUTORAY_V: autoray_ai(i); break;
+			  case OBJ_AUTORAY: case OBJ_AUTORAY_V: autoray_ai(i); break;
 			  //case OBJ_GOTPOINTS: gotpoints_ai(i); break;
 
 			  case OBJ_DEMOMSG: break;

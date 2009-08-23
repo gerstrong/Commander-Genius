@@ -213,7 +213,7 @@ typedef struct stObject
  // touching player is what goes in here.
  unsigned char hity;
 
- unsigned int needinit;    // 1=new object--requires initilization
+ bool needinit;    // 1=new object--requires initilization
  unsigned char wasoffscreen;  // set to 1 when object goes offscreen
  bool dead;
 

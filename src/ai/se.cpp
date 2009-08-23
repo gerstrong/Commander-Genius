@@ -118,6 +118,9 @@ void se_retract_plat(int o, bool *p_PlatExtending)
 	if (objects[o].needinit)
 	{
 		// figure out which direction the bridge is supposed to go
+		if(objects[o].ai.se.platx-1 > MAX_OBJECTS)
+			return;
+
 		if (map.mapdata[objects[o].ai.se.platx-1][objects[o].ai.se.platy] != TILE_EXTENDING_PLATFORM)
           objects[o].ai.se.dir = LEFT;
         else

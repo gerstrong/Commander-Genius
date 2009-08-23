@@ -40,3 +40,6 @@ void fireball_ai(int o, bool hard);
 void ballandjack_ai(int o);
 void platvert_ai(int o);
 void nessie_ai(int o);
+
+// Special
+void autoray_ai(int o);

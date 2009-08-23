@@ -443,49 +443,59 @@ unsigned int i;
 
 // initilize default sprites for objects
   memset(objdefsprites, 0, sizeof(objdefsprites));
-  if (p_levelcontrol->episode==1)
-  {
-    objdefsprites[OBJ_YORP] = OBJ_YORP_DEFSPRITE;
-    objdefsprites[OBJ_GARG] = OBJ_GARG_DEFSPRITE;
-    objdefsprites[OBJ_BUTLER] = OBJ_BUTLER_DEFSPRITE;
-    objdefsprites[OBJ_TANK] = OBJ_TANK_DEFSPRITE;
-    objdefsprites[OBJ_ICECHUNK] = OBJ_ICECHUNK_DEFSPRITE;
-    objdefsprites[OBJ_ICEBIT] = OBJ_ICEBIT_DEFSPRITE;
-    objdefsprites[OBJ_ROPE] = OBJ_ROPE_DEFSPRITE;
 
-    objdefsprites[OBJ_RAY] = OBJ_RAY_DEFSPRITE_EP1;
-    objdefsprites[OBJ_VORT] = OBJ_VORT_DEFSPRITE_EP1;
-  }
-  else if (p_levelcontrol->episode==2)
-  {
-    objdefsprites[OBJ_WALKER] = OBJ_WALKER_DEFSPRITE;
-    objdefsprites[OBJ_TANKEP2] = OBJ_TANKEP2_DEFSPRITE;
-    objdefsprites[OBJ_VORTELITE] = OBJ_VORTELITE_DEFSPRITE;
-
-    objdefsprites[OBJ_RAY] = OBJ_RAY_DEFSPRITE_EP2;
-    objdefsprites[OBJ_VORT] = OBJ_VORT_DEFSPRITE_EP2;
-    objdefsprites[OBJ_PLATFORM] = OBJ_PLATFORM_DEFSPRITE_EP2;
-    objdefsprites[OBJ_BABY] = OBJ_BABY_DEFSPRITE_EP2;
-  }
-  else if (p_levelcontrol->episode==3)
-  {
-    objdefsprites[OBJ_FOOB] = OBJ_FOOB_DEFSPRITE;
-    objdefsprites[OBJ_NINJA] = OBJ_NINJA_DEFSPRITE;
-    objdefsprites[OBJ_MOTHER] = OBJ_MOTHER_DEFSPRITE;
-    objdefsprites[OBJ_MEEP] = OBJ_MEEP_DEFSPRITE;
-    objdefsprites[OBJ_BALL] = OBJ_BALL_DEFSPRITE;
-    objdefsprites[OBJ_JACK] = OBJ_BALL_DEFSPRITE;
-
-    objdefsprites[OBJ_RAY] = OBJ_RAY_DEFSPRITE_EP3;
-    objdefsprites[OBJ_VORT] = OBJ_VORT_DEFSPRITE_EP3;
-    objdefsprites[OBJ_PLATFORM] = OBJ_PLATFORM_DEFSPRITE_EP3;
-    objdefsprites[OBJ_BABY] = OBJ_BABY_DEFSPRITE_EP3;
-  }
+  objdefsprites[OBJ_AUTORAY] = ENEMYRAYEP3;
+  objdefsprites[OBJ_AUTORAY_V] = RAY_VERT_EP3;
 
   objdefsprites[OBJ_DOOR] = DOOR_YELLOW_SPRITE;
   objdefsprites[OBJ_TELEPORTER] = OBJ_TELEPORTER_DEFSPRITE;
 
-  objdefsprites[OBJ_SECTOREFFECTOR] = BlankSprite;
+  objdefsprites[OBJ_SECTOREFFECTOR] = BLANKSPRITE;
+  objdefsprites[OBJ_GOTPOINTS] = PT500_SPRITE;
+
+  if (p_levelcontrol->episode==1)
+  {
+		objdefsprites[OBJ_YORP] = OBJ_YORP_DEFSPRITE;
+		objdefsprites[OBJ_GARG] = OBJ_GARG_DEFSPRITE;
+		objdefsprites[OBJ_BUTLER] = OBJ_BUTLER_DEFSPRITE;
+		objdefsprites[OBJ_TANK] = OBJ_TANK_DEFSPRITE;
+		objdefsprites[OBJ_ICECHUNK] = OBJ_ICECHUNK_DEFSPRITE;
+		objdefsprites[OBJ_ICEBIT] = OBJ_ICEBIT_DEFSPRITE;
+		objdefsprites[OBJ_ROPE] = OBJ_ROPE_DEFSPRITE;
+
+		objdefsprites[OBJ_RAY] = OBJ_RAY_DEFSPRITE_EP1;
+		objdefsprites[OBJ_VORT] = OBJ_VORT_DEFSPRITE_EP1;
+		// make ice cannon markers show up in level editor
+		objdefsprites[OBJ_ICECANNON] = OBJ_ICECHUNK_DEFSPRITE;
+  }
+  else if (p_levelcontrol->episode==2)
+  {
+		objdefsprites[OBJ_WALKER] = OBJ_WALKER_DEFSPRITE;
+		objdefsprites[OBJ_TANKEP2] = OBJ_TANKEP2_DEFSPRITE;
+		objdefsprites[OBJ_VORTELITE] = OBJ_VORTELITE_DEFSPRITE;
+
+		objdefsprites[OBJ_RAY] = OBJ_RAY_DEFSPRITE_EP2;
+		objdefsprites[OBJ_VORT] = OBJ_VORT_DEFSPRITE_EP2;
+		objdefsprites[OBJ_PLATFORM] = OBJ_PLATFORM_DEFSPRITE_EP2;
+		objdefsprites[OBJ_BABY] = OBJ_BABY_DEFSPRITE_EP2;
+		objdefsprites[OBJ_SPARK] = OBJ_SPARK_DEFSPRITE_EP2;
+  }
+  else if (p_levelcontrol->episode==3)
+  {
+		objdefsprites[OBJ_FOOB] = OBJ_FOOB_DEFSPRITE;
+		objdefsprites[OBJ_NINJA] = OBJ_NINJA_DEFSPRITE;
+		objdefsprites[OBJ_MOTHER] = OBJ_MOTHER_DEFSPRITE;
+		objdefsprites[OBJ_MEEP] = OBJ_MEEP_DEFSPRITE;
+		objdefsprites[OBJ_BALL] = OBJ_BALL_DEFSPRITE;
+		objdefsprites[OBJ_JACK] = OBJ_JACK_DEFSPRITE;
+		objdefsprites[OBJ_NESSIE] = OBJ_NESSIE_DEFSPRITE;
+
+		objdefsprites[OBJ_RAY] = OBJ_RAY_DEFSPRITE_EP3;
+		objdefsprites[OBJ_VORT] = OBJ_VORT_DEFSPRITE_EP3;
+		objdefsprites[OBJ_PLATFORM] = OBJ_PLATFORM_DEFSPRITE_EP3;
+		objdefsprites[OBJ_PLATVERT] = OBJ_PLATFORM_DEFSPRITE_EP3;
+		objdefsprites[OBJ_BABY] = OBJ_BABY_DEFSPRITE_EP3;
+  }
 
 // initilize game variables
   p_levelcontrol->level_done = LEVEL_NOT_DONE;
@@ -612,7 +622,7 @@ int i;
      objects[i].type = otype;
      objects[i].sprite = objdefsprites[otype];
      objects[i].exists = 1;
-     objects[i].needinit = 1;
+     objects[i].needinit = true;
      objects[i].dead = false;
      objects[i].onscreen = 0;
      objects[i].hasbeenonscreen = 0;

@@ -26,7 +26,6 @@
 #endif
 
 unsigned int curmapx, curmapy;
-unsigned char mapdone;
 void addmaptile(unsigned int t)
 {
 	// Special cases. Those happen normally, when level are not replayed.
@@ -43,15 +42,6 @@ void addmaptile(unsigned int t)
 
 	// Now set this this tile at pos(curmapx, curmapy)
 	map.mapdata[curmapx][curmapy] = t;
-
-	curmapx++;
-	if (curmapx >= map.xsize)
-	{
-		curmapx = 0;
-		curmapy++;
-
-		if (curmapy >= map.ysize) mapdone = 1;
-	}
 }
 
 short checkConsistencyofGameData(stGameData *p_GameData)
@@ -208,13 +198,6 @@ levelmarker: ;
      break;
   }
 
-  curmapx++;
-  if (curmapx >= map.xsize)
-  {
-    curmapx = 0;
-    curmapy++;
-    if (curmapy >= map.ysize) mapdone = 1;
-  }
 }
 
 void addenemytile(unsigned int t, int episode,
@@ -413,17 +396,13 @@ int o,x;
       case 14:   // right-pointing raygun (ep3)
            if (episode==3)
            {
-             o = spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_SECTOREFFECTOR);
-             //objects[o].ai.se.type = SE_GUN_RIGHT;
-             objects[o].hasbeenonscreen = 1;
+             o = spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_AUTORAY);
            }
            break;
       case 15:   // vertical raygun (ep3)
            if (episode==3)
            {
-             o = spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_SECTOREFFECTOR);
-             //objects[o].ai.se.type = SE_GUN_VERT;
-             objects[o].hasbeenonscreen = 1;
+        	   o = spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_AUTORAY_V);
            }
            break;
       case 16:  // mortimer's arms
@@ -450,13 +429,7 @@ int o,x;
       }
     }
   }
-  curmapx++;
-  if (curmapx >= map.xsize)
-  {
-    curmapx = 0;
-    curmapy++;
-    if (curmapy >= map.ysize) mapdone = 1;
-  }
+
 }
 
 unsigned int fgeti(FILE *fp) {
@@ -527,7 +500,7 @@ unsigned int loadmap(const std::string& filename, const std::string& path,
   g_pLogFile->ftextOut("loadmap(): file %s opened. Loading...<br>", fname.c_str());
 
     // decompress map RLEW data
-  curmapx = curmapy = mapdone = 0;
+  curmapx = curmapy = 0;
 
 	std::vector<unsigned int> filebuf;
 	unsigned long finsize; 		   // Final size
@@ -558,31 +531,46 @@ unsigned int loadmap(const std::string& filename, const std::string& path,
 
   planesize = filebuf[9];
   planesize /= 2; // Size of two planes, but we only need one
+
   for( c=18 ; c<planesize+18 ; c++ ) // Check against Tilesize
   {
-	  t = filebuf[c];
-	  if(!mapdone)
-		  addmaptile(t);
+		t = filebuf[c];
 
-	  if(t > 255)
-		  t=0; // If there are some invalid values in the file
+		addmaptile(t);
+
+		curmapx++;
+		if (curmapx >= map.xsize)
+		{
+			curmapx = 0;
+			curmapy++;
+			if (curmapy >= map.ysize) break;
+		}
+
+		if(t > 255)
+			t=0; // If there are some invalid values in the file
   }
 
   // now do the sprites
   // get sprite data
-    curmapx = curmapy = mapdone = numruns = 0;
+    curmapx = curmapy = numruns = 0;
     resetcnt = resetpt = 0;
 
-    while(!mapdone)
+    for( c=planesize+18 ; c<2*planesize+18 ; c++ )
     {
     	t = filebuf[c];
 
         if (map.isworldmap) addobjectlayertile(t,  episode,  levels_completed);
         else addenemytile(t, episode, chglevelto);
 
-        if (++resetcnt==resetpt) curmapx=curmapy=0;
+        curmapx++;
+        if (curmapx >= map.xsize)
+        {
+          curmapx = 0;
+          curmapy++;
+          if (curmapy >= map.ysize) break;
+        }
 
-        c++;
+        if (++resetcnt==resetpt) curmapx=curmapy=0;
     }
 
     filebuf.clear();
@@ -861,6 +849,13 @@ int NumStringsFreed;
   return NumStringsFreed;
 }
 
+/*static void dumpstrings() {
+	notes << "Available strings: ";
+	for(int i=0;i<numStrings;i++)
+		notes << strings[i].name << ", ";
+	notes << endl;
+}*/
+
 // returns a pointer to the string with name 'name'
 std::string getstring(const std::string& name)
 {
@@ -871,6 +866,8 @@ std::string getstring(const std::string& name)
       return strings[i].stringptr;
     }
   }
+
+	//dumpstrings();
 	
   return "UNKNOWN '" + name + "' STRING";
 }
@@ -905,4 +902,3 @@ int i,j;
   // failed to find string
   return -1;
 }
-
