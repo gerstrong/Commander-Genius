@@ -957,7 +957,7 @@ int mx, my, t;
 			else if (t==TILE_LIGHTSWITCH)
 			{ // lightswitch
 				   p_levelcontrol->dark ^= 1;
-				   pal_init(p_levelcontrol->dark);
+				   pal_setdark(p_levelcontrol->dark);
 				   pal_fade(PAL_FADE_SHADES);
 				   g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, objects[player[cp].useObject].scrx);
 				if (!player[cp].ppogostick) return;

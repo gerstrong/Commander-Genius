@@ -28,6 +28,7 @@ CTimer::CTimer()
 	//	    we can delay the remaining time it would take to do (1000/300)*(300/60) ms
 	//	    Visual exmaple: logic->logic->frame->delay(left over time from 2 logic loops)
 	m_FPSRate = RENDER_FPS;	// frames per second
+	m_RenderInterval = 0.0f;
 	CalculateRate();
 	
 	g_pLogFile->textOut(GREEN, true, "Starting timer driver...\n");
@@ -44,9 +45,13 @@ void CTimer::setFrameRate(int value)
 	CalculateRate();
 }
 
+#include "../StringUtils.h"
+
 void CTimer::CalculateRate( void )
 {
-	m_RenderInterval	= LOGIC_LPS/m_FPSRate;				// loops per frame
+	if(m_FPSRate == 0) m_FPSRate=60; // 0 mustn't exist
+
+	m_RenderInterval	= LOGIC_LPS/m_FPSRate;					// loops per frame
 	m_LogicRateMS		= (1000.0f/(float)LOGIC_LPS)*m_RenderInterval;	// millsec for each loops per frame group
 }
 

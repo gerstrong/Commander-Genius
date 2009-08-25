@@ -86,13 +86,11 @@ short CSettings::loadDrvCfg()
 		width  = Parser.getIntValue("width","Video");
 		height = Parser.getIntValue("height","Video");
 
+
 		if(depth*width*height < 0)
 			g_pLogFile->ftextOut(RED,"Error reading the configuration file. It appears to be damaged!");
-
 		g_pVideoDriver->setMode(width,height,depth);
-
 		g_pVideoDriver->isFullscreen(((Parser.getIntValue("fullscreen","Video")) == 1));
-
 		g_pVideoDriver->setOGLFilter(Parser.getIntValue("OGLfilter","Video"));
 		g_pVideoDriver->setZoom(Parser.getIntValue("scale","Video"));
 		g_pTimer->setFrameRate(Parser.getIntValue("autoframeskip","Video"));

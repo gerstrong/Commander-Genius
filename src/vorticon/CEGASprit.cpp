@@ -232,6 +232,7 @@ std::string fname;
 		}
 		else
 		{
+			sprites[s].imgdata[y][x] = 0;
 			sprites[s].maskdata[y][x] = 1;
 		}
 	}
@@ -267,7 +268,7 @@ break3: ;
 break4: ;
 	sprites[s].bboxY2 = y << CSF;
 
-	free(base);
+	delete [] base;
 	return 0;
 }
 
@@ -306,8 +307,12 @@ void CEGASprit::DeriveSpecialSprites()
 			CreateYellowSpriteofTile(t,PTCARDB_SPRITE+TileProperty[t][BEHAVIOR]-18);
 
 		// Single Bullet in Ep3
-		if( TileProperty[t][BEHAVIOR]==28  )
+		if( TileProperty[t][BEHAVIOR]==28 )
 			CreateYellowSpriteofTile(t,SHOTUP_SPRITE);
+
+		if( TileProperty[t][BEHAVIOR]==27 )
+			CreateYellowSpriteofTile(t,ANKHUP_SPRITE);
+
 	}
 }
 
@@ -325,6 +330,7 @@ void CEGASprit::CreateYellowSpriteofTile(Uint16 tile, Uint16 sprite)
 			if(tiledata[tile][x][y] == transparent_colour)
 			{
 				sprites[sprite].maskdata[x][y] = 15;
+				sprites[sprite].imgdata[x][y] = 0;
 			}
 			else
 			{

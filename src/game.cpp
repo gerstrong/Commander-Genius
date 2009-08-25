@@ -1285,10 +1285,12 @@ void procgoodie(int t, int mpx, int mpy, int theplayer, stCloneKeenPlus *pCKP)
     case 27:
       if(pCKP->Control.levelcontrol.episode == 3)
          GiveAnkh(theplayer);
+		 risebonus(ANKHUP_SPRITE, (mpx<<4<<CSF)-(2<<CSF), (mpy<<4<<CSF)-(2<<CSF));
       break;
     case 28:
       player[theplayer].inventory.charges++;
       g_pSound->playSound(SOUND_GET_ITEM, PLAY_NOW);
+	  risebonus(SHOTUP_SPRITE, (mpx<<4<<CSF)-(2<<CSF), (mpy<<4<<CSF)-(2<<CSF));
       break;
 
     case 17:

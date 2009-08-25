@@ -26,7 +26,7 @@ CTileLoader::~CTileLoader() {
 	// Here we really start reading the tiles
 	if(TileProperty != NULL)
 	{
-		for(int i = 0 ; i < 1000 ; i++)
+		for(int i = 0 ; i < MAX_TILES ; i++)
 		{
 			if(TileProperty[i] != NULL)
 			{
@@ -95,15 +95,15 @@ bool CTileLoader::load()
 
 	if(!setProperOffset()) return false;
 
-	TileProperty = new int*[1000];
+	TileProperty = new int*[MAX_TILES];
 
-	for(i = 0 ; i < 1000 ; i++)
+	for(i = 0 ; i < MAX_TILES ; i++)
 	{
 		TileProperty[i] = NULL;
 		TileProperty[i] = new int[6];
 	}
 
-	for(j=0 ; j < 1000 ; j++ )
+	for(j=0 ; j < MAX_TILES ; j++ )
 	{
 		for(i=0; i < 6 ; i++)
 			TileProperty[j][i]=0;
@@ -121,11 +121,6 @@ bool CTileLoader::load()
 		{
 			TileProperty[j][i] = m_data[i*2*(numtiles)+2*j];
 			TileProperty[j][i] += m_data[i*2*(numtiles)+2*j+1]<<8;
-
-			if(TileProperty[j][i] == 22)
-			{
-				printf("Report Hintbox tile!\n");
-			}
 		}
 	}
 

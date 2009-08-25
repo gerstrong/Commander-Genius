@@ -228,11 +228,6 @@ bool CGame::loadResources(unsigned short Episode, const std::string& DataDirecto
 	if( m_DataDirectory.size() > 0 && m_DataDirectory[m_DataDirectory.size()-1] != '/' )
 		m_DataDirectory += "/";
 
-	// Decode the entire graphics for the game (EGALATCH, EGASPRIT)
-    EGAGraphics = new CEGAGraphics(Episode, DataDirectory); // Path is relative to the data dir
-    if(!EGAGraphics) return 1;
-
-    EGAGraphics->loadData();
 
     // Get the EXE of the game and decompress it if needed.
     CExeFile *ExeFile = new CExeFile(Episode, DataDirectory);
@@ -242,26 +237,32 @@ bool CGame::loadResources(unsigned short Episode, const std::string& DataDirecto
 	g_pLogFile->ftextOut("Commander Keen Episode %d (Version %d.%d) was detected.<br>", Episode, version/100,version%100);
 	if(version == 134) g_pLogFile->ftextOut("This version of the game is not supported!<br>");
 
-    // Patch the EXE-File-Data directly in the memory.
-	CPatcher *Patcher = new CPatcher(Episode, ExeFile->getEXEVersion(), ExeFile->getData(), DataDirectory);
-	Patcher->patchMemory();
-	delete Patcher;
-
     // Load tile attributes.
 	if(TileLoader) delete TileLoader;
-	
+
 	if(ExeFile->getData() == NULL) {
 		g_pLogFile->textOut(RED, "CGame::loadResources: Could not load data out of EXE<br>");
 		delete ExeFile;
 		return false;
 	}
-	
+
 	TileLoader = new CTileLoader(Episode, ExeFile->getEXEVersion(), ExeFile->getData());
 	if(!TileLoader->load()) {
 		g_pLogFile->textOut(RED, "CGame::loadResources: Could not load data with TileLoader<br>");
 		delete ExeFile;
 		return false;
 	}
+
+    // Patch the EXE-File-Data directly in the memory.
+	CPatcher *Patcher = new CPatcher(Episode, ExeFile->getEXEVersion(), ExeFile->getData(), DataDirectory);
+	Patcher->patchMemory();
+	delete Patcher;
+
+	// Decode the entire graphics for the game (EGALATCH, EGASPRIT)
+    EGAGraphics = new CEGAGraphics(Episode, DataDirectory); // Path is relative to the data dir
+    if(!EGAGraphics) return 1;
+
+    EGAGraphics->loadData();
 	
     // load the strings. TODO: After that this one will replace loadstrings
     //m_Messages = new CMessages();    delete ExeFile;

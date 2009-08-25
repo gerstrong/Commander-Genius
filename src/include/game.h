@@ -215,24 +215,25 @@ DOWN
 #define PTCARDG_SPRITE		(MAX_SPRITES-14)
 #define PTCARDB_SPRITE		(MAX_SPRITES-15)
 #define SHOTUP_SPRITE		(MAX_SPRITES-16)		// rising single shot (ep3)
-#define GUNUP_SPRITE		(MAX_SPRITES-17)		// rising ray gun
-#define YORPSHIELD_SPRITE	(MAX_SPRITES-18)		// invincibility force field, used in editor and in "yorps have forcefields" mode
-#define VERSION_SPRITE		(MAX_SPRITES-19)		// version text shown in lower-right corner at startup
-#define DEMOBOX_SPRITE		(MAX_SPRITES-20)		// says "Demo"
-#define OSD_LIVES_SPRITE	(MAX_SPRITES-21)
-#define OSD_AMMO_SPRITE		(MAX_SPRITES-22)
-#define OSD_YORPS_SPRITE	(MAX_SPRITES-23)
-#define TITLE_LOGO1_SPRITE	(MAX_SPRITES-24)		// left half of the logo
-#define TITLE_LOGO2_SPRITE	(MAX_SPRITES-25)		// right half of the logo
-#define TITLE_FLOOR_SPRITE	(MAX_SPRITES-26)		// more stuff for the logo
-#define TITLE_VORT_SPRITE   (MAX_SPRITES-27)
-#define ARROWLR_SPRITE		(MAX_SPRITES-28)		// these are directional arrows used in the editor
-#define ARROWUD_SPRITE		(MAX_SPRITES-29)
-#define ARROWUR_SPRITE		(MAX_SPRITES-30)
-#define ARROWUL_SPRITE		(MAX_SPRITES-31)
-#define ARROWU_SPRITE		(MAX_SPRITES-32)
-#define ARROWD_SPRITE		(MAX_SPRITES-33)
-#define LAST_SPECIAL_SPRITE (MAX_SPRITES-34)
+#define ANKHUP_SPRITE		(MAX_SPRITES-17)		// rising single shot (ep3)
+#define GUNUP_SPRITE		(MAX_SPRITES-18)		// rising ray gun
+#define YORPSHIELD_SPRITE	(MAX_SPRITES-19)		// invincibility force field, used in editor and in "yorps have forcefields" mode
+#define VERSION_SPRITE		(MAX_SPRITES-20)		// version text shown in lower-right corner at startup
+#define DEMOBOX_SPRITE		(MAX_SPRITES-21)		// says "Demo"
+#define OSD_LIVES_SPRITE	(MAX_SPRITES-22)
+#define OSD_AMMO_SPRITE		(MAX_SPRITES-23)
+#define OSD_YORPS_SPRITE	(MAX_SPRITES-24)
+#define TITLE_LOGO1_SPRITE	(MAX_SPRITES-25)		// left half of the logo
+#define TITLE_LOGO2_SPRITE	(MAX_SPRITES-26)		// right half of the logo
+#define TITLE_FLOOR_SPRITE	(MAX_SPRITES-27)		// more stuff for the logo
+#define TITLE_VORT_SPRITE   (MAX_SPRITES-28)
+#define ARROWLR_SPRITE		(MAX_SPRITES-29)		// these are directional arrows used in the editor
+#define ARROWUD_SPRITE		(MAX_SPRITES-30)
+#define ARROWUR_SPRITE		(MAX_SPRITES-31)
+#define ARROWUL_SPRITE		(MAX_SPRITES-32)
+#define ARROWU_SPRITE		(MAX_SPRITES-33)
+#define ARROWD_SPRITE		(MAX_SPRITES-34)
+#define LAST_SPECIAL_SPRITE (MAX_SPRITES-35)
 
 #define YORPSTATUEHEAD     22
 #define YORPSTATUEHEADUSED 485

@@ -70,8 +70,8 @@ int state, timer, spawnedcount=0;
   } while(fade_in_progress());
 
   pCKP->Control.levelcontrol.dark = 0;
-  pal_init(pCKP->Control.levelcontrol.dark);
-
+  pal_setdark(pCKP->Control.levelcontrol.dark);
+  pal_fade(PAL_FADE_SHADES);
 
   initgame( &(pCKP->Control.levelcontrol) );
   state = TAN_STATE_WAITBEFOREFIRE;

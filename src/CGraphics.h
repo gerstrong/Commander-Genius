@@ -19,7 +19,6 @@ class CGraphics : public CSingleton<CGraphics>
 {
 public:
 	CGraphics();
-	virtual ~CGraphics();
 	bool allocScrollBufmem(void);
 	void freemem(void);
 	void sb_setpixel(int x, int y, unsigned char c);

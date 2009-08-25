@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include "../CLogFile.h"
 
+
 char LoadTGA(const std::string &file, unsigned char **image, int *widthout, int *heightout)
 // load a 32-bit uncompressed RGBA targa file, and return a pointer to
 // the raw image data. The width and height of the image are returned as well.

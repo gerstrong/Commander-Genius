@@ -143,11 +143,14 @@ int main(int argc, char *argv[])
 		Settings.saveDrvCfg();
 	}
 
+	g_pLogFile->textOut(RED,"Parsing Command line flags.<br>");
 	if(readCommandLine(argc, argv, &CKP) != 0)
 	{
 		g_pLogFile->textOut(RED,"Sorry, but CKP needs correct command line parameters.<br>");
 		printf("Sorry, but CKP needs correct command line parameters.\n");
 	}
+
+	g_pLogFile->textOut(RED,"Loading all drivers...<br>");
 
 	if(loadCKPDrivers(&CKP) != 0)
 	{
@@ -155,12 +158,15 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
+	g_pLogFile->textOut(RED,"Loading Configuration files.<br>");
 	Settings.loadDefaultGameCfg(CKP.Option);
 	if(Settings.loadGameCfg(CKP.Option) != 0)
 	{
 		g_pLogFile->textOut(PURPLE,"There are no settings! CKP is going to use the default options. You can change them later in the game.<br>");
 		Settings.saveGameCfg(CKP.Option);
 	}
+
+	g_pLogFile->textOut(RED,"Loading Games Menu.<br>");
 
 	if(loadResourcesforStartMenu(&CKP, &Game) != 0)
 	{
@@ -363,7 +369,9 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
 
 		  wm = (p_levelcontrol->curlevel==80) ? 1 : 0 ;
 		}
-		pal_init(p_levelcontrol->dark);
+		pal_init();
+	    pal_setdark(p_levelcontrol->dark);
+	    pal_fade(PAL_FADE_SHADES);
 
 		// Now load HQ Stuff, because the game could have been loaded too.
 		g_pGraphics->loadHQGraphics(p_levelcontrol->episode,

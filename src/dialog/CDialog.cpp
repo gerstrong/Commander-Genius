@@ -22,6 +22,7 @@ CDialog::CDialog(Uint16 x, Uint16 y, Uint16 w, Uint16 h)
 
 	m_twirl.posy = y;
 	m_twirl.frame = 0;
+	m_twirl.timer = 0;
 
 	m_selected_ID = 0;
 	m_scroll = 0;

@@ -14,8 +14,8 @@ char fade_in_progress(void);
 char pal_load(int episode);
 void pal_fade(int fadeamt);
 
-void pal_init(int dark);
+void pal_init();
 void pal_fade(int fadeamt);
-
+void pal_setdark(int dark);
 
 #endif /* PALETTE_H_ */

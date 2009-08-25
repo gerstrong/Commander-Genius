@@ -41,7 +41,8 @@ void showmapatpos(int level, int xoff, int yoff, stCloneKeenPlus *pCKP)
 	std::string levelname;
 	g_pLogFile->ftextOut("showmapatpos(%d, %d, %d);<br>",level,xoff,yoff);
 	pCKP->Control.levelcontrol.dark = 0;
-	pal_init(pCKP->Control.levelcontrol.dark);
+	pal_setdark(pCKP->Control.levelcontrol.dark);
+	pal_fade(PAL_FADE_SHADES);
 	
 	initgame( &(pCKP->Control.levelcontrol) );           // reset scroll
 	levelname = "level" + FixedWidthStr_LeftFill(itoa(level), 2, '0') + ".ck" + itoa(pCKP->Control.levelcontrol.episode);
@@ -415,7 +416,7 @@ void OptionsDlg(stCloneKeenPlus *pCKP)
 	g_pGraphics->drawBitmap(x, 0, bmnum);
 
 	// Prepare the Games Menu
-	CDialog OptionsMenu(24,24,34,12);
+	CDialog OptionsMenu(24,24,34,13);
 
 	OptionsMenu.setFrameTheme(DLG_THEME_OLDSCHOOL);
 

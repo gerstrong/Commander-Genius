@@ -1,5 +1,12 @@
-Commander Genius Release v0.3.0.2 (CloneKeenPlus):
+Commander Genius Release v0.3.0.3 (CloneKeenPlus):
 --------------------------------------------------
+25-08-2009
+- New Palette system (Thanks to Caitlin Shaw)
+- Physics improvement (Thanks to guys of the PCKF Forum)
+- Added TGA Graphics
+- fixed some bugs that were in the new Timer
+- Added new item rising effect (Caitlin Shaw)
+
 23-08-2009
 - Improved the timer much more. (Many thanks to Pickle!!!)
 - Solved message box bugs in Ep2.
