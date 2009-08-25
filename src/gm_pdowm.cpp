@@ -13,7 +13,11 @@
 #include "include/misc.h"
 #include "include/gm_pdowm.h"
 #include "include/gamepdo.h"
+
 #include "sdl/sound/CSound.h"
+
+#include "common/palette.h"
+
 #include "hqp/CMusic.h"
 
 void AllowMountUnmountNessie(int cp);
@@ -38,11 +42,11 @@ void gamepdo_wm_HandlePlayer(int cp, stCloneKeenPlus *pCKP)
     gamepdo_walking(cp, pCKP);
     gamepdo_walkinganim(cp, pCKP);
 
-    if (fade.mode==NO_FADE)
-    {
+    //if (fade.mode==NO_FADE)
+    //{
       gamepdo_InertiaAndFriction_X(cp, pCKP);
       gamepdo_InertiaAndFriction_Y(cp, pCKP);
-    }
+    //}
 
     if (pCKP->Control.levelcontrol.episode==3)
     {
@@ -68,7 +72,7 @@ void gamepdo_wm_SelectFrame(int cp, int episode)
     if (episode==3) player[cp].playframe--;
 
     // no walking animation if we're fading
-    if (fade.mode != NO_FADE) return;
+    if (fade_in_progress()) return;
 
     // add in walk frame if walking
     if (player[cp].pwalking) player[cp].playframe += player[cp].pwalkframe;
@@ -212,7 +216,7 @@ int teleport_snap[NUM_TPORTS+1] = {1   ,1   ,1   ,1   ,1   ,1   ,0   ,0   ,0   ,
 
 p_levelcontrol = &(pCKP->Control.levelcontrol);
 
-    if (fade.mode != NO_FADE) return;
+    if (fade_in_progress()) return;
     if (player[cp].hideplayer) return;  // don't execute function while teleporting
 
     if ((player[cp].playcontrol[PA_JUMP] || player[cp].playcontrol[PA_POGO]) && !player[cp].wm_lastenterstate)

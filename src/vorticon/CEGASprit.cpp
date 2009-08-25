@@ -12,6 +12,7 @@
 #include "CEGASprit.h"
 #include "CPlanes.h"
 #include "../keen.h"
+#include "../include/game.h"
 #include "../FindFile.h"
 #include <stdio.h>
 #include <string.h>
@@ -23,6 +24,13 @@
 #define CSF    5
 
 extern stSprite *sprites;
+
+// Reference to ../common/tga.cpp
+char LoadTGA(const std::string &file, unsigned char **image, int *widthout, int *heightout);
+
+//////////////////////////
+// section of the class //
+//////////////////////////
 
 CEGASprit::CEGASprit(int planesize,
 					long spritestartloc,
@@ -169,5 +177,166 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 
      if(RawData){ delete[] RawData; RawData = NULL;}
 
+     // Now create special sprites for some neat effects!
+     DeriveSpecialSprites();
+
+     // Now load the special TGA Sprites if some are available
+     LoadSpecialSprites();
+
 	return true;
 }
+
+
+// load a 32-bit RGBA TGA file into sprite 's', and add colors to the palette
+// as needed so that it can be shown exactly as found in the file.
+// returns nonzero on failure.
+char CEGASprit::LoadTGASprite( const std::string &filename, int s )
+{
+unsigned char *image, *base;
+int x,y;
+int w,h;
+unsigned char r,g,b,a;
+int c;
+std::string fname;
+
+	fname = GFXDIR + filename;
+	if (LoadTGA(fname, &image, &w, &h))
+		return 1;
+
+	if (w > MAX_SPRITE_WIDTH || h > MAX_SPRITE_HEIGHT)
+	{
+		free(image);
+		//lprintf("LoadTGASprite: image %s too big (%dx%d, max %dx%d)!\n", fname, w, h, MAX_SPRITE_WIDTH, MAX_SPRITE_HEIGHT);
+		return 1;
+	}
+
+	//lprintf("LoadTGASprite: Parse %s; %dx%d\n", fname, w, h);
+
+	base = image;
+	for(y=h-1;y>=0;y--)
+	for(x=0;x<w;x++)
+	{
+		b = *image++; g = *image++; r = *image++; a = *image++;
+		if (a & 128)
+		{
+			c = pal_getcolor(r, g, b);
+			if (c==-1) c = pal_addcolor(r, g, b);
+			if (c==-1)
+			{
+				//g_pLogFile->textOut(RED,"LoadTGASprite: out of colorspace");
+				return 1;
+			}
+
+			sprites[s].imgdata[y][x] = c;
+			sprites[s].maskdata[y][x] = 0;
+		}
+		else
+		{
+			sprites[s].maskdata[y][x] = 1;
+		}
+	}
+	sprites[s].xsize = w;
+	sprites[s].ysize = h;
+
+	// detect the sprite's bounding box
+	for(x=0;x<sprites[s].xsize-1;x++)
+	{
+		for(y=0;y<sprites[s].ysize;y++) if (sprites[s].maskdata[y][x]) goto break1;
+	}
+break1: ;
+	sprites[s].bboxX1 = x << CSF;
+
+	for(x=sprites[s].xsize-1;x>0;x--)
+	{
+		for(y=0;y<sprites[s].ysize;y++) if (sprites[s].maskdata[y][x]) goto break2;
+	}
+break2: ;
+	sprites[s].bboxX2 = x << CSF;
+
+	for(y=0;y<sprites[s].ysize-1;y++)
+	{
+		for(x=0;x<sprites[s].xsize-1;x++) if (sprites[s].maskdata[y][x]) goto break3;
+	}
+break3: ;
+	sprites[s].bboxY1 = y << CSF;
+
+	for(y=sprites[s].ysize-1;y>0;y--)
+	{
+		for(x=0;x<sprites[s].xsize-1;x++) if (sprites[s].maskdata[y][x]) goto break4;
+	}
+break4: ;
+	sprites[s].bboxY2 = y << CSF;
+
+	free(base);
+	return 0;
+}
+
+// load special clonekeen-specific sprites from the .raw files
+// Code by Caitlin Shaw
+void CEGASprit::LoadSpecialSprites()
+{
+	LoadTGASprite("100.tga", PT100_SPRITE);
+	LoadTGASprite("200.tga", PT200_SPRITE);
+	LoadTGASprite("500.tga", PT500_SPRITE);
+	LoadTGASprite("1000.tga", PT1000_SPRITE);
+	LoadTGASprite("5000.tga", PT5000_SPRITE);
+	LoadTGASprite("demobox.tga", DEMOBOX_SPRITE);
+	LoadTGASprite("arrowlr.tga", ARROWLR_SPRITE);
+	LoadTGASprite("arrowud.tga", ARROWUD_SPRITE);
+	LoadTGASprite("arrowul.tga", ARROWUL_SPRITE);
+	LoadTGASprite("arrowur.tga", ARROWUR_SPRITE);
+	LoadTGASprite("arrowu.tga", ARROWU_SPRITE);
+	LoadTGASprite("arrowd.tga", ARROWD_SPRITE);
+}
+
+// This function has the task to make some items-tiles
+// be painted into yellow, so they look nice, when they are
+// collected
+void CEGASprit::DeriveSpecialSprites()
+{
+	Uint16 t;
+	for( t=0 ; t<numtiles ; t++)
+	{
+		// The Gun!
+		if( TileProperty[t][BEHAVIOR]==15 )
+			CreateYellowSpriteofTile(t,GUNUP_SPRITE);
+
+		// Keycards
+		if( TileProperty[t][BEHAVIOR]>=18 && TileProperty[t][BEHAVIOR]<=21 )
+			CreateYellowSpriteofTile(t,PTCARDB_SPRITE+TileProperty[t][BEHAVIOR]-18);
+
+		// Single Bullet in Ep3
+		if( TileProperty[t][BEHAVIOR]==28  )
+			CreateYellowSpriteofTile(t,SHOTUP_SPRITE);
+	}
+}
+
+void CEGASprit::CreateYellowSpriteofTile(Uint16 tile, Uint16 sprite)
+{
+	// The first pixel is usually the transparent on items. Use it!
+	Uint8 transparent_colour = tiledata[tile][0][0];
+
+	sprites[sprite].xsize = sprites[sprite].ysize = 16;
+
+	for(Uint8 x=0 ; x<16 ; x++)
+	{
+		for(Uint8 y=0 ; y<16 ; y++)
+		{
+			if(tiledata[tile][x][y] == transparent_colour)
+			{
+				sprites[sprite].maskdata[x][y] = 15;
+			}
+			else
+			{
+				sprites[sprite].maskdata[x][y] = 0;
+				if(tiledata[tile][x][y] != 0 && tiledata[tile][x][y] != 16)
+					sprites[sprite].imgdata[x][y] = 14; // Yellow (Light brown)
+				else
+					sprites[sprite].imgdata[x][y] = tiledata[tile][x][y]; // Take the normal there!
+			}
+
+		}
+	}
+}
+
+

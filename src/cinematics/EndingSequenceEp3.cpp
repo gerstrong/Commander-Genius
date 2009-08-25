@@ -15,6 +15,7 @@
 
 #include "EndingSequenceEp3.h"
 
+#include "../common/palette.h"
 
 void eseq3_Mortimer()
 {
@@ -49,11 +50,11 @@ char eseq3_AwardBigV(stCloneKeenPlus *pCKP)
   player[0].y = 104<<CSF;
   player[0].playframe = 0;
 
-  fade.mode = FADE_GO;
+  /*fade.mode = FADE_GO;
   fade.rate = FADE_NORM;
   fade.dir = FADE_IN;
   fade.curamt = 0;
-  fade.fadetimer = 0;
+  fade.fadetimer = 0;*/
 
   x = GetStringAttribute("EP3_ESEQ_PAGE1", "LEFT");
   y = GetStringAttribute("EP3_ESEQ_PAGE1", "TOP");
@@ -69,22 +70,22 @@ char eseq3_AwardBigV(stCloneKeenPlus *pCKP)
   scrollx_buf = scrolly_buf = 0;
   player[0].hideplayer = 1;
 
-  fade.mode = FADE_GO;
+  /*fade.mode = FADE_GO;
   fade.rate = FADE_NORM;
   fade.dir = FADE_OUT;
   fade.curamt = PAL_FADE_SHADES;
-  fade.fadetimer = 0;
-  do
+  fade.fadetimer = 0;*/
+  /*do
   {
     gamedo_fades();
     g_pInput->pollEvents();
-  } while(fade.mode==FADE_GO);
+  } while(fade_in_progress());*/
 
-  fade.mode = FADE_GO;
+  /*fade.mode = FADE_GO;
   fade.rate = FADE_NORM;
   fade.dir = FADE_IN;
   fade.curamt = 0;
-  fade.fadetimer = 0;
+  fade.fadetimer = 0;*/
 
   x = GetStringAttribute("THE_END", "LEFT");
   y = GetStringAttribute("THE_END", "TOP");
@@ -100,17 +101,17 @@ char eseq3_AwardBigV(stCloneKeenPlus *pCKP)
     gamedo_fades();
     if (c==0 && !g_pInput->getPressedCommand(IC_STATUS)) c++;
     if (c==1 && g_pInput->getPressedCommand(IC_STATUS)) c++;
-    if (c==2 && fade.dir==FADE_IN)
+    /*if (c==2 && fade.dir==FADE_IN)
     {
        fade.mode = FADE_GO;
        fade.rate = FADE_NORM;
        fade.dir = FADE_OUT;
        fade.curamt = PAL_FADE_SHADES;
        fade.fadetimer = 0;
-    }
+    }*/
     g_pInput->pollEvents();
-    if (g_pInput->getPressedKey(KQUIT) && fade.mode==FADE_COMPLETE) break;
-  } while(fade.mode!=FADE_COMPLETE || fade.dir!=FADE_OUT);
+    if (g_pInput->getPressedKey(KQUIT) /*&& fade.mode==FADE_COMPLETE*/) break;
+  } while(1/*fade.mode!=FADE_COMPLETE || fade.dir!=FADE_OUT*/);
 
   if (g_pInput->getPressedKey(KQUIT)) return 1;
   return 0;

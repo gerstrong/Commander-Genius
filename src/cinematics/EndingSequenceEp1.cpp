@@ -12,6 +12,8 @@
 #include "../StringUtils.h"
 #include "../fileio/CExeFile.h"
 
+#include "../common/palette.h"
+
 #include "EndingSequenceEp1.h"
 
 #define CMD_MOVE                0
@@ -64,11 +66,7 @@ int i;
   // all objects -> nonexistant
   for(i=0;i<MAX_OBJECTS;i++) objects[i].exists = 0;
 
-  fade.mode = FADE_GO;
-  fade.dir = FADE_IN;
-  fade.curamt = 0;
-  fade.fadetimer = 0;
-  fade.rate = FADE_NORM;
+  fade(FADE_IN, FADE_NORM);
 
   eseq_showmsg(getstring("EP1_ESEQ_PART1"),1,18,37,6,1);
 
@@ -78,7 +76,7 @@ int i;
     gamedo_AnimatedTiles();
 
     g_pInput->pollEvents();
-  } while(fade.mode != FADE_COMPLETE && !g_pInput->getPressedKey(KQUIT));
+  } while(fade_in_progress() && !g_pInput->getPressedKey(KQUIT));
 
   return 0;
 }
@@ -167,11 +165,7 @@ int scrollingon;
 
   player[0].playframe = SPR_SHIP_RIGHT;
 
-  fade.mode = FADE_GO;
-  fade.dir = FADE_IN;
-  fade.curamt = 0;
-  fade.fadetimer = 0;
-  fade.rate = FADE_NORM;
+  fade(FADE_IN, FADE_NORM);
   ShipQueuePtr = 0;
   max_scroll_x = max_scroll_y = 20000;
   do
@@ -184,8 +178,8 @@ int scrollingon;
 	objects[MARK_SPR_NUM].scry = (objects[MARK_SPR_NUM].y>>CSF)-scroll_y;
 
 	// execute the current command in the queue
-	if (fade.dir != FADE_OUT)
-	{
+	//if (fade.dir != FADE_OUT)
+	//{
 		  switch(shipqueue[ShipQueuePtr].cmd)
 		  {
 			case CMD_MOVE:
@@ -241,7 +235,7 @@ int scrollingon;
 		  else
 		    // no time left on this command, go to next cmd
 			ShipQueuePtr++;
-	}
+	//}
 
 	enter = ( g_pInput->getPressedKey(KENTER) || g_pInput->getPressedKey(KCTRL) || g_pInput->getPressedKey(KALT) );
 	if (enter)
@@ -308,11 +302,8 @@ int eseq1_BackAtHome(stCloneKeenPlus *pCKP)
   dlgH = GetStringAttribute("EP1_ESEQ_PART2_PAGE1", "HEIGHT");
   bmnum_window = g_pGraphics->getBitmapNumberFromName("WINDOFF");	// window lights off
 
-  /*fade.mode = FADE_GO;
-  fade.rate = FADE_NORM;
-  fade.dir = FADE_IN;
-  fade.curamt = 0;
-  fade.fadetimer = 0;*/
+  fade(FADE_IN, FADE_NORM);
+
   do
   {
 	enter = ( g_pInput->getPressedKey(KENTER) || g_pInput->getPressedKey(KCTRL) || g_pInput->getPressedKey(KALT) );
@@ -385,8 +376,8 @@ int eseq1_BackAtHome(stCloneKeenPlus *pCKP)
 		}
 	}
 
-	if (fade.dir==FADE_OUT && fade.mode==FADE_COMPLETE)
-		return 0;
+	/*if (fade.dir==FADE_OUT && fade.mode==FADE_COMPLETE)
+		return 0;*/
 
 	gamedo_fades();
 

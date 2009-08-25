@@ -14,6 +14,7 @@
 #include "sdl/CTimer.h"
 #include "sdl/CInput.h"
 #include "sdl/sound/CSound.h"
+#include "common/palette.h"
 #include "CLogFile.h"
 #include "CGraphics.h"
 #include "externals.h"
@@ -23,10 +24,10 @@
 #include "include/enemyai.h"
 
 extern unsigned long gotPlayX;
-
 extern unsigned long CurrentTickCount;
-
 extern unsigned int unknownKey;
+
+extern stFadeControl fadecontrol;
 
 int animtiletimer, curanimtileframe;
 
@@ -71,7 +72,7 @@ unsigned int msb, lsb;
           if (byt & 32)player[0].playcontrol[PA_STATUS] = 1;
           if (byt & 64)
           {  // demo STOP command
-            if (fade.mode!=FADE_GO) endlevel(1, p_levelcontrol );
+            if(fadecontrol.mode!=FADE_GO) endlevel(1, p_levelcontrol );
           }
         }
         else
@@ -85,12 +86,12 @@ unsigned int msb, lsb;
         {
           if (g_pInput->getPressedKey(i))
           {
-            if (fade.mode!=FADE_GO) endlevel( 0, p_levelcontrol );
+            if (fadecontrol.mode!=FADE_GO) endlevel( 0, p_levelcontrol );
           }
         }
         if (g_pInput->getPressedCommand(IC_STATUS))
         {
-          if (fade.mode!=FADE_GO) endlevel( 0, p_levelcontrol );
+          if (fadecontrol.mode!=FADE_GO) endlevel( 0, p_levelcontrol );
         }
 
         return;
@@ -303,7 +304,7 @@ int i, topobj;
 
 			  //Specials
 			  case OBJ_AUTORAY: case OBJ_AUTORAY_V: autoray_ai(i); break;
-			  //case OBJ_GOTPOINTS: gotpoints_ai(i); break;
+			  case OBJ_GOTPOINTS: gotpoints_ai(i); break;
 
 			  case OBJ_DEMOMSG: break;
 
@@ -327,7 +328,7 @@ int x,y,xa,ya,xsize,ysize;
 int temp;
 int cplayer;
 
-	//if (objects[o].type==OBJ_GOTPOINTS) return;
+	if (objects[o].type==OBJ_GOTPOINTS) return;
 
 	xsize = sprites[objects[o].sprite].xsize;
 	ysize = sprites[objects[o].sprite].ysize;
@@ -812,38 +813,40 @@ int i;
 
 void gamedo_fades(void)
 {
-    if (fade.mode != FADE_GO) return;
+	if (!fade_in_progress()) return;
 
-    if (fade.fadetimer > fade.rate)
-    {
-      if (fade.dir==FADE_IN)
-      {
-        if (fade.curamt < PAL_FADE_SHADES)
-        {
-          fade.curamt++;                // coming in from black
-        }
-        else
-        {
-          fade.curamt--;                // coming in from white-out
-        }
-        if (fade.curamt==PAL_FADE_SHADES)
-        {
-           fade.mode = FADE_COMPLETE;
-        }
-        g_pGraphics->fadePalette(fade.curamt);
-      }
-      else if (fade.dir==FADE_OUT)
-      {
-        fade.curamt--;
-        if (fade.curamt==0) fade.mode = FADE_COMPLETE;
-        g_pGraphics->fadePalette(fade.curamt);
-      }
-      fade.fadetimer = 0;
-    }
+	if (fadecontrol.fadetimer > fadecontrol.rate)
+	{
+		fadecontrol.fadetimer = 0;
+		if (fadecontrol.dir==FADE_IN)
+		{
+			if (++fadecontrol.curamt >= PAL_FADE_SHADES)
+				fadecontrol.mode = FADE_COMPLETE;
+		}
+		else if (fadecontrol.dir==FADE_FLASH)
+		{
+			if (--fadecontrol.curamt <= PAL_FADE_SHADES)
+				fadecontrol.mode = FADE_COMPLETE;
+		}
+		else if (fadecontrol.dir==FADE_OUT)
+		{
+			if (fadecontrol.curamt > 0)
+			{
+				fadecontrol.curamt--;
+			}
+			else
+			{
+				fadecontrol.mode = FADE_COMPLETE;
+				fadecontrol.fadeout_complete = 1;
+			}
+		}
+
+		pal_fade(fadecontrol.curamt);
+	}
     else
-    {
-      fade.fadetimer++;
-    }
+	{
+		fadecontrol.fadetimer++;
+	}
 }
 
 // same as above but only does a sb_blit, not the full RenderScreen.

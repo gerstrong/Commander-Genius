@@ -13,6 +13,8 @@
 #include "../CGraphics.h"
 #include "../StringUtils.h"
 
+#include "../common/palette.h"
+
 
 enum cmd_actions{
 CMD_MOVE,
@@ -59,19 +61,17 @@ int state, timer, spawnedcount=0;
 
 	o=0;
 
-  fade.mode = FADE_GO;
-  fade.rate = FADE_NORM;
-  fade.dir = FADE_OUT;
-  fade.curamt = PAL_FADE_SHADES;
-  fade.fadetimer = 0;
+  fade(FADE_OUT, FADE_NORM);
+
   do
   {
     gamedo_fades();
     g_pInput->pollEvents();
-  } while(fade.mode!=FADE_COMPLETE);
+  } while(fade_in_progress());
 
   pCKP->Control.levelcontrol.dark = 0;
-  g_pGraphics->initPalette(pCKP->Control.levelcontrol.dark);
+  pal_init(pCKP->Control.levelcontrol.dark);
+
 
   initgame( &(pCKP->Control.levelcontrol) );
   state = TAN_STATE_WAITBEFOREFIRE;
@@ -99,11 +99,7 @@ int state, timer, spawnedcount=0;
 
   player[0].playframe = BlankSprite;
 
-  fade.mode = FADE_GO;
-  fade.rate = FADE_NORM;
-  fade.dir = FADE_IN;
-  fade.curamt = 0;
-  fade.fadetimer = 0;
+  fade(FADE_IN, FADE_NORM);
   tantalus_animframe = 0;
   timer = 0;
   do
@@ -218,7 +214,7 @@ int state, timer, spawnedcount=0;
 	break;
 	}
 
-	if (fade.dir==FADE_OUT && fade.mode==FADE_COMPLETE)
+	if (!fade_in_progress())
 	{  // we're done
 	  delete_object(find_next_object(OBJ_EGA_BITMAP));
 	  return 0;
@@ -227,14 +223,8 @@ int state, timer, spawnedcount=0;
 	enter = (g_pInput->getPressedCommand(KENTER) || g_pInput->getPressedCommand(KCTRL) || g_pInput->getPressedCommand(KALT) );
 	if (enter && state==TAN_STATE_GAMEOVER)
 	{
-	  if (fade.dir!=FADE_OUT)
-	  {
-		fade.dir = FADE_OUT;
-		fade.curamt = PAL_FADE_SHADES;
-		fade.fadetimer = 0;
-		fade.rate = FADE_NORM;
-		fade.mode = FADE_GO;
-	  }
+	  //if (fade.dir!=FADE_OUT)
+        fade(FADE_OUT, FADE_NORM);
 	}
 	lastenterstate = enter;
 
@@ -391,11 +381,8 @@ int afterfadewaittimer;
   ShipQueuePtr = 0;
   max_scroll_x = max_scroll_y = 20000;
 
-  fade.mode = FADE_GO;
-  fade.rate = FADE_NORM;
-  fade.dir = FADE_IN;
-  fade.curamt = 0;
-  fade.fadetimer = 0;
+  fade(FADE_IN, FADE_NORM);
+
   eseq_showmsg(getstring("EP2_ESEQ_PART1"),HEADSFOREARTH_X,HEADSFOREARTH_Y,HEADSFOREARTH_W,HEADSFOREARTH_H, true);
 
   // erase the message dialog
@@ -407,8 +394,8 @@ int afterfadewaittimer;
   do
   {
 	// execute the current command in the queue
-	if (fade.dir != FADE_OUT)
-	{
+	//if (fade.dir != FADE_OUT)
+	//{
 		  switch(shipqueue[ShipQueuePtr].cmd)
 		  {
 		    case CMD_MOVE:
@@ -428,14 +415,14 @@ int afterfadewaittimer;
 		    case CMD_WAIT:
 		    break;
 		    case CMD_FADEOUT:
-			  if (fade.dir!=FADE_OUT)
+			  /*if (fade.dir!=FADE_OUT)
 			  {
 				fade.dir = FADE_OUT;
 				fade.curamt = PAL_FADE_SHADES;
 				fade.fadetimer = 0;
 				fade.rate = FADE_NORM;
 				fade.mode = FADE_GO;
-			  }
+			  }*/
 		    break;
 		    default: break;
 		  }
@@ -448,28 +435,28 @@ int afterfadewaittimer;
 		  {  // no time left on this command, go to next cmd
 		    ShipQueuePtr++;
 		  }
-	}
+	//}
 
-	if (fade.dir==FADE_OUT && fade.mode==FADE_COMPLETE)
-	{
+	//if (fade.dir==FADE_OUT && fade.mode==FADE_COMPLETE)
+	//{
 	  if (afterfadewaittimer > 80)
 	  {
 		return 0;
 	  }
 	  else afterfadewaittimer++;
-	}
+	//}
 
 	enter = (g_pInput->getPressedCommand(KENTER)||g_pInput->getPressedCommand(KCTRL)||g_pInput->getPressedCommand(KALT));
 	if (enter && !lastenterstate)
 	{
-	  if (fade.dir!=FADE_OUT)
+	  /*if (fade.dir!=FADE_OUT)
 	  {
 		fade.dir = FADE_OUT;
 		fade.curamt = PAL_FADE_SHADES;
 		fade.fadetimer = 0;
 		fade.rate = FADE_NORM;
 		fade.mode = FADE_GO;
-	  }
+	  }*/
 	}
 	lastenterstate = enter;
 
@@ -511,11 +498,11 @@ int afterfadewaittimer = 0;
 
   ShipQueuePtr = 0;
 
-  fade.mode = FADE_GO;
+  /*fade.mode = FADE_GO;
   fade.rate = FADE_NORM;
   fade.dir = FADE_IN;
   fade.curamt = 0;
-  fade.fadetimer = 0;
+  fade.fadetimer = 0;*/
   eseq_showmsg(getstring("EP2_ESEQ_PART2"),HEADSFOREARTH_X,HEADSFOREARTH_Y,HEADSFOREARTH_W,HEADSFOREARTH_H-1,1);
 
   // erase the message dialog
@@ -526,8 +513,8 @@ int afterfadewaittimer = 0;
   do
   {
 	// execute the current command in the queue
-	if (fade.dir != FADE_OUT)
-	{
+	//if (fade.dir != FADE_OUT)
+	//{
 		  switch(shipqueue[ShipQueuePtr].cmd)
 		  {
 		    case CMD_MOVE:
@@ -538,14 +525,14 @@ int afterfadewaittimer = 0;
 		    case CMD_WAIT:
 		    break;
 		    case CMD_FADEOUT:
-			  if (fade.dir!=FADE_OUT)
+			  /*if (fade.dir!=FADE_OUT)
 			  {
 			    fade.dir = FADE_OUT;
 			    fade.curamt = PAL_FADE_SHADES;
 			    fade.fadetimer = 0;
 			    fade.rate = FADE_NORM;
 			    fade.mode = FADE_GO;
-			  }
+			  }*/
 		    break;
 		    default: break;
 		  }
@@ -558,28 +545,28 @@ int afterfadewaittimer = 0;
 		  {  // no time left on this command, go to next cmd
 		    ShipQueuePtr++;
 		  }
-	}
+	//}
 
-	if (fade.dir==FADE_OUT && fade.mode==FADE_COMPLETE)
-	{
+	//if (fade.dir==FADE_OUT && fade.mode==FADE_COMPLETE)
+	//{
 	  if (afterfadewaittimer > 80)
 	  {
 		return 0;
 	  }
 	  else afterfadewaittimer++;
-	}
+	//}
 
 	enter = (g_pInput->getPressedCommand(KENTER)||g_pInput->getPressedCommand(KCTRL)||g_pInput->getPressedCommand(KALT));
 	if (enter && !lastenterstate)
 	{
-	  if (fade.dir!=FADE_OUT)
+	  /*if (fade.dir!=FADE_OUT)
 	  {
 		fade.dir = FADE_OUT;
 		fade.curamt = PAL_FADE_SHADES;
 		fade.fadetimer = 0;
 		fade.rate = FADE_NORM;
 		fade.mode = FADE_GO;
-	  }
+	  }*/
 	}
 	lastenterstate = enter;
 
@@ -607,11 +594,11 @@ int dlgX, dlgY, dlgW, dlgH;
   finale_draw("finale.ck2", pCKP->Resources.GameDataDirectory);
 
   curpage = 1;
-  fade.mode = FADE_GO;
+  /*fade.mode = FADE_GO;
   fade.rate = FADE_NORM;
   fade.dir = FADE_IN;
   fade.curamt = 0;
-  fade.fadetimer = 0;
+  fade.fadetimer = 0;*/
 
   numplayers = 1;
   player[0].x = player[0].y = 0;

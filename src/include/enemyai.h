@@ -41,5 +41,6 @@ void ballandjack_ai(int o);
 void platvert_ai(int o);
 void nessie_ai(int o);
 
-// Special
+// Specials
 void autoray_ai(int o);
+void gotpoints_ai(int o);

@@ -12,6 +12,7 @@
 #include "include/gamedo.h"
 #include "include/gamepdo.h"
 #include "include/gm_pdowm.h"
+#include "common/palette.h"
 #include "sdl/CInput.h"
 #include "sdl/sound/CSound.h"
 #include "hqp/CMusic.h"
@@ -27,6 +28,8 @@ int playerbaseframes[MAX_PLAYERS] = {0,0,0,0,0,0,0,0};
 
 unsigned int max_scroll_x, max_scroll_y;
 char debugmode=0,acceleratemode=0;
+
+extern stFadeControl fadecontrol;
 
 // and this is where the magic happens
 void gameloop(stCloneKeenPlus *pCKP)
@@ -51,11 +54,7 @@ void gameloop(stCloneKeenPlus *pCKP)
   else
   {
      loadinggame = 0;
-     fade.mode = FADE_GO;
-     fade.dir = FADE_IN;
-     fade.curamt = 0;
-     fade.fadetimer = 0;
-     fade.rate = FADE_NORM;
+     fade(FADE_IN, FADE_NORM);
   }
 
   // fire all guns immediately first time around
@@ -76,7 +75,7 @@ void gameloop(stCloneKeenPlus *pCKP)
         gamedo_AnimatedTiles();
         g_pInput->pollEvents();
         gamedo_RenderScreen();
-     } while(fade.mode!=FADE_COMPLETE /*&& !immediate_keytable[KQUIT]*/);
+     } while(fade_in_progress() /*&& !immediate_keytable[KQUIT]*/);
 
      eseq3_Mortimer();
   }
@@ -134,9 +133,9 @@ void gameloop(stCloneKeenPlus *pCKP)
 	}
 
 	// when we complete a fade out flag to exit the game loop
-	if (fade.mode==FADE_COMPLETE)
+	if(!fade_in_progress())
 	{
-		if (fade.dir==FADE_OUT)
+		if ( fadecontrol.dir == FADE_OUT )
 		{
 		      pCKP->Control.levelcontrol.demomode = DEMO_NODEMO;
 		      pCKP->Control.levelcontrol.level_done = LEVEL_COMPLETE;
@@ -159,7 +158,7 @@ void gameloop(stCloneKeenPlus *pCKP)
 		      }
 		}
 		else
-		  fade.mode = NO_FADE;
+		  fadecontrol.mode = NO_FADE;
 
 	}
 
@@ -177,7 +176,7 @@ void gameloop(stCloneKeenPlus *pCKP)
 		      if (enter)
 			      start_gameover( pCKP );
 
-		      if (fade.mode==FADE_COMPLETE && fade.dir==FADE_OUT)
+		      //if (fade.mode==FADE_COMPLETE && fade.dir==FADE_OUT)
 			      pCKP->Control.levelcontrol.command = LVLC_GAME_OVER;
 	}
 
@@ -210,12 +209,7 @@ void start_gameover(stCloneKeenPlus *pCKP)
    	 CHighScores *HighScoreTable = new CHighScores(pCKP);
 
    	 // Fade in. The high score must be seen!
-     fade.mode = FADE_GO;
-     fade.dir = FADE_IN;
-     fade.curamt = 0;
-     fade.fadetimer = 0;
-     fade.rate = FADE_NORM;
-
+   	 fade(FADE_IN, FADE_NORM);
 
 	 bool extras[4] = {false,false,false,false};
 
@@ -251,13 +245,9 @@ void start_gameover(stCloneKeenPlus *pCKP)
 
    	 delete HighScoreTable;
 
-     if (fade.mode!=FADE_GO && fade.dir!=FADE_OUT)
+     if (fadecontrol.mode!=FADE_GO && fadecontrol.dir!=FADE_OUT)
      {
-       fade.dir = FADE_OUT;
-       fade.curamt = PAL_FADE_SHADES;
-       fade.fadetimer = 0;
-       fade.rate = FADE_NORM;
-       fade.mode = FADE_GO;
+       fade(FADE_OUT, FADE_NORM);
      }
 
      p_levelcontrol->command = LVLC_GAME_OVER;
@@ -356,16 +346,54 @@ short tilefix=0;
    objects[o].sprite = doorsprite;
 }
 
-// checks if score is > than "extra life at" and award 1-UPs when appropriate
-void extralifeat(int cp)
+void risebonus(int spr, int x, int y)
 {
-  if (player[cp].inventory.score > player[cp].inventory.extralifeat)
-  {
-	  g_pSound->playSound(SOUND_EXTRA_LIFE, PLAY_NOW);
-	  player[cp].inventory.lives++;
-	  player[cp].inventory.extralifeat += 20000;
-  }
+int o;
+	if (options[OPT_RISEBONUS].value)
+	{
+		o = spawn_object(x, y, OBJ_GOTPOINTS);
+		objects[o].sprite = spr;
+	}
 }
+
+void incscore(int cp, int numpts)
+{
+	player[cp].inventory.score += numpts;
+
+	// check if score is > than "extra life at"
+	if (player[cp].inventory.score >= player[cp].inventory.extralifeat)
+	{
+		g_pSound->stopSound(SOUND_GET_BONUS);
+		g_pSound->playStereofromCoord(SOUND_EXTRA_LIFE, PLAY_NOW, rand()%160);
+		player[cp].inventory.lives++;
+		player[cp].inventory.extralifeat += 20000;
+	}
+}
+
+void getbonuspoints(int cp, int numpts, int mpx, int mpy)
+{
+int spr;
+int x,y;
+
+	g_pSound->playStereofromCoord(SOUND_GET_BONUS, PLAY_NOW, rand()%160);
+	incscore(cp, numpts);
+
+	switch(numpts)
+	{
+		case 100: spr = PT100_SPRITE; break;
+		case 200: spr = PT200_SPRITE; break;
+		case 500: spr = PT500_SPRITE; break;
+		case 1000: spr = PT1000_SPRITE; break;
+		case 5000: spr = PT5000_SPRITE; break;
+		default: spr = 0;
+	}
+	if (spr)
+	{
+		x = mpx<<4<<CSF; y = mpy<<4<<CSF;
+		risebonus(spr, x-(2<<CSF), y-(2<<CSF));
+	}
+}
+
 
 // have keen pick up the goodie at screen pixel position (px, py)
 void keen_get_goodie(int px, int py, int theplayer, stCloneKeenPlus *pCKP)
@@ -863,13 +891,9 @@ void PlayerTouchedExit(int theplayer, stCloneKeenPlus *pCKP)
 
 void endlevel(int reason_for_leaving, stLevelControl *levelcontrol)
 {
-  if (fade.mode == NO_FADE)
+  if (fadecontrol.mode == NO_FADE)
   {
-    fade.dir = FADE_OUT;
-    fade.curamt = PAL_FADE_SHADES;
-    fade.fadetimer = 0;
-    fade.rate = FADE_NORM;
-    fade.mode = FADE_GO;
+    fade(FADE_OUT, FADE_NORM);
     levelcontrol->success = reason_for_leaving;
     levelcontrol->tobonuslevel = 0;
   }
@@ -1019,6 +1043,7 @@ int x,y1,y2,tboundary;
         else
         {
           sprites[s].maskdata[y1][x] = 15;
+          sprites[s].imgdata[y1][x] = 0;
         }
       }
       y2++;
@@ -1168,10 +1193,18 @@ void procgoodie(int t, int mpx, int mpy, int theplayer, stCloneKeenPlus *pCKP)
    switch(TileProperty[t][BEHAVIOR])
    {
     // keycards
-    case 18: give_keycard(DOOR_YELLOW, theplayer); break;
-    case 19: give_keycard(DOOR_RED, theplayer); break;
-    case 20: give_keycard(DOOR_GREEN, theplayer); break;
-    case 21: give_keycard(DOOR_BLUE, theplayer); break;
+    case 18: give_keycard(DOOR_YELLOW, theplayer);
+			 risebonus(PTCARDY_SPRITE, (mpx<<4<<CSF)-(2<<CSF), (mpy<<4<<CSF)-(2<<CSF));
+			 break;
+    case 19: give_keycard(DOOR_RED, theplayer);
+			 risebonus(PTCARDR_SPRITE, (mpx<<4<<CSF)-(2<<CSF), (mpy<<4<<CSF)-(2<<CSF));
+			 break;
+    case 20: give_keycard(DOOR_GREEN, theplayer);
+			 risebonus(PTCARDG_SPRITE, (mpx<<4<<CSF)-(2<<CSF), (mpy<<4<<CSF)-(2<<CSF));
+			 break;
+    case 21: give_keycard(DOOR_BLUE, theplayer);
+			 risebonus(PTCARDB_SPRITE, (mpx<<4<<CSF)-(2<<CSF), (mpy<<4<<CSF)-(2<<CSF));
+			 break;
 
     case DOOR_YELLOW:
            if (player[theplayer].inventory.HasCardYellow)
@@ -1191,22 +1224,23 @@ void procgoodie(int t, int mpx, int mpy, int theplayer, stCloneKeenPlus *pCKP)
          break;
 
     case 7:    // What gives you 100 Points
-         player[theplayer].inventory.score += 100; extralifeat(theplayer);
+         getbonuspoints(theplayer, 100, mpx, mpy);
          break;
     case 8:    // What gives you 200 Points
-         player[theplayer].inventory.score += 200; extralifeat(theplayer);
+         getbonuspoints(theplayer, 200, mpx, mpy);
          break;
     case 6:    // What gives you 500 Points
-         player[theplayer].inventory.score += 500; extralifeat(theplayer);
+         getbonuspoints(theplayer, 500, mpx, mpy);
          break;
     case 9:    // What gives you 1000 Points
-         player[theplayer].inventory.score += 1000; extralifeat(theplayer);
+         getbonuspoints(theplayer, 1000, mpx, mpy);
          break;
     case 10:    // What gives you 5000 Points
-         player[theplayer].inventory.score += 5000; extralifeat(theplayer);
+		 getbonuspoints(theplayer, 5000, mpx, mpy);
          break;
 
     case 15:           // raygun
+		 risebonus(GUNUP_SPRITE, (mpx<<4<<CSF)-(2<<CSF), (mpy<<4<<CSF)-(2<<CSF));
          player[theplayer].inventory.charges += 5;
     break;
     case 16:           // the Holy Pogo Stick
@@ -1425,11 +1459,7 @@ int timeout;
   }
 
   // initiate fade-in
-  fade.mode = FADE_GO;
-  fade.dir = FADE_IN;
-  fade.rate = FADE_NORM;
-  fade.curamt = 0;
-  fade.fadetimer = 0;
+  fade(FADE_IN, FADE_NORM);
 
   // "keens left" when returning to world map after dying
   if (show_keensleft)

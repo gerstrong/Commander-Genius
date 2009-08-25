@@ -8,6 +8,8 @@
 #include "../keen.h"
 #include "CommonEnding.h"
 
+#include "../common/palette.h"
+
 #include "../CGraphics.h"
 #include "../sdl/CInput.h"
 
@@ -144,6 +146,6 @@ int dlgX, dlgY, dlgW, dlgH;
 	  gamedo_fades();
 	  if (g_pInput->getPressedKey(KQUIT)) return;
 	  g_pInput->pollEvents();
-  } while(fade.mode == FADE_GO);
+  } while(fade_in_progress());
 }
 

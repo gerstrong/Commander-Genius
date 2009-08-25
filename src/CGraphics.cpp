@@ -11,13 +11,13 @@
  */
 
 #include "keen.h"
-//#include "externals.h"
 #include "CGraphics.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/video/colourtable.h"
 #include "sdl/CVideoDriver.h"
 #include "CLogFile.h"
 #include "StringUtils.h"
+#include "common/palette.h"
 
 CGraphics::CGraphics() {
 	HQBitmap = NULL;
@@ -240,7 +240,7 @@ unsigned char xa,ya;
 unsigned int bufoffX, bufoffY;
 unsigned int xstart,ystart;
 
-// clip the sprite
+  // clip the sprite
   if (x>320 || y>200) return;
   if (x<-sprites[s].xsize||y<-sprites[s].ysize) return;
   // if sprite is partially off the top or left of the screen, invert
@@ -405,126 +405,12 @@ unsigned int yb;
   }
 }
 
-char CGraphics::startGraphics(void)
-{
-  // tell the video driver (platform-specific) to start up
-  if(!g_pVideoDriver->start())
-  {
-    printf("Graphics_Start(): VidDrv_Start() failed to initilize display<br>");
-    return 1;
-  }
-
-  // set up the palette
-  g_pLogFile->ftextOut("Graphics_Start(): configuring palette.<br>");
-  initPalette(0);
-  fadePalette(0);
-  return 0;
-}
-
 void CGraphics::stopGraphics(void)
 {
   // shut down the video driver
 	g_pVideoDriver->stop();
 }
 
-void CGraphics::configPalette(int c, int r, int g, int b)
-{
-  palette[c].r = r;
-  palette[c].g = g;
-  palette[c].b = b;
-}
-
-// loads the EGA palette into the palette[] array. if dark=1, loads in
-// the palette used when the lights are off (in ep2)
-void CGraphics::initPalette(int dark)
-{
-  if (!dark)
-  {
-     configPalette(0, 0x00,0x00,0x00);
-     configPalette(1, 0x00,0x00,0xa8);
-     configPalette(2, 0x00,0xa8,0x00);
-     configPalette(3, 0x00,0xa8,0xa8);
-     configPalette(4, 0xa8,0x00,0x00);
-     configPalette(5, 0xa8,0x00,0xa8);
-     configPalette(6, 0xa8,0x54,0x00);
-     configPalette(7, 0xa8,0xa8,0xa8);
-     configPalette(8, 0x54,0x54,0x54);
-     configPalette(9, 0x54,0x54,0xfc);
-     configPalette(10, 0x54,0xfc,0x54);
-     configPalette(11, 0x54,0xfc,0xfc);
-     configPalette(12, 0xfc,0x54,0x54);
-     configPalette(13, 0xfc,0x54,0xfc);
-     configPalette(14, 0xfc,0xfc,0x54);
-     configPalette(15, 0xfc,0xfc,0xfc);
-  }
-  else
-  {
-     configPalette(0, 0x00,0x00,0x00);
-     configPalette(1, 0x00,0x00,0x00);
-     configPalette(2, 0x00,0x00,0x00);
-     configPalette(3, 0x00,0x00,0x00);
-     configPalette(4, 0x00,0x00,0x00);
-     configPalette(5, 0x00,0x00,0x00);
-     configPalette(6, 0x00,0x00,0x00);
-     configPalette(7, 0x54,0x54,0x54);
-     configPalette(8, 0x00,0x00,0x00);
-     configPalette(9, 0x00,0x00,0xa8);
-     configPalette(10, 0x00,0xa8,0x00);
-     configPalette(11, 0x00,0xa8,0xa8);
-     configPalette(12, 0xa8,0x00,0x00);
-     configPalette(13, 0xa8,0x00,0xa8);
-     configPalette(14, 0xa8,0x54,0x00);
-     configPalette(15, 0xa8,0xa8,0xa8);
-  }
-
-  // 16 is black, for flashing during vorticon death sequence
-  // (all black in the graphics is mapped to 16, then the border around
-  // the screen is the only thing left at color 0, so we can change 0's
-  // palette to change the border color)
-  configPalette(16,0x00,0x00,0x00);
-}
-
-void CGraphics::fadePalette(int fadeamt)
-{
-int c;
-int r,g,b;
-
-   for(c=0;c<17;c++)
-   {
-      r = palette[c].r;
-      g = palette[c].g;
-      b = palette[c].b;
-
-      if (fadeamt != PAL_FADE_SHADES)
-      {
-         if ((c==0||c==16) && fadeamt > PAL_FADE_SHADES && fade_black)
-         {
-            r = 255 / (PAL_FADE_WHITEOUT - PAL_FADE_SHADES);
-            r = (r * (fadeamt - (PAL_FADE_WHITEOUT - PAL_FADE_SHADES)));
-            g = b = r;
-         }
-         else
-         {
-            r /= PAL_FADE_SHADES;
-            g /= PAL_FADE_SHADES;
-            b /= PAL_FADE_SHADES;
-
-            r *= fadeamt;
-            g *= fadeamt;
-            b *= fadeamt;
-         }
-
-         if (r > 0xff) r = 0xff;
-         if (g > 0xff) g = 0xff;
-         if (b > 0xff) b = 0xff;
-      }
-      g_pVideoDriver->pal_set(c, r, g, b);
-   }
-   if(HQBitmap)
-	   HQBitmap->setAlphaBlend(static_cast <Uint8>(fadeamt));
-
-   g_pVideoDriver->pal_apply();
-}
 
 void CGraphics::drawBitmap(int xa, int ya, int b)
 {

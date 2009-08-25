@@ -9,6 +9,7 @@
 #include "sdl/CVideoDriver.h"
 #include "sdl/sound/CSound.h"
 #include "include/fileio.h"
+#include "common/palette.h"
 #include <vector>
 #include "include/fileio/rle.h"
 #include "CLogFile.h"
@@ -18,6 +19,7 @@
 #include "StringUtils.h"
 #include "Debug.h"
 #include "FindFile.h"
+
 #include <stdio.h>
 
 #ifdef TARGET_WIN32
@@ -421,7 +423,7 @@ int o,x;
           objects[o].hasbeenonscreen = 1;
       break;
       default:
-    	   g_pGraphics->fadePalette(20);
+		   pal_fade(20);
            g_pLogFile->ftextOut(PURPLE,"unknown enemy type %d at (%d,%d)<br>", t, curmapx, curmapy);
            //while(g_pInput->getPressedCommand(KENTER));
 
@@ -603,6 +605,7 @@ unsigned int loadmap(const std::string& filename, const std::string& path,
 
   return 0;
 }
+
 
 char loadstrings_AddAttr(char *attr, int stringIndex)
 {

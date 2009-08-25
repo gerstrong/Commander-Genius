@@ -9,6 +9,11 @@
 #define CEGASPRIT_H_
 
 #include <string>
+#include <SDL/SDL.h>
+
+// Reference to palette.c
+char pal_addcolor(unsigned char r, unsigned char g, unsigned char b);
+int pal_getcolor(unsigned char r, unsigned char g, unsigned char b);
 
 class CEGASprit {
 public:
@@ -41,6 +46,11 @@ private:
 		// There are 3 copies of the same Elements in the file. There were used for performance
 		// in DOS but are ignored here.
 	}*Sprite;
+
+	char LoadTGASprite( const std::string &filename, int s );
+	void LoadSpecialSprites();
+	void DeriveSpecialSprites();
+	void CreateYellowSpriteofTile(Uint16 tile, Uint16 sprite);
 };
 
 #endif /* CEGASPRIT_H_ */

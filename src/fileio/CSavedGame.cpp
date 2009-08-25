@@ -12,6 +12,7 @@
 #include "../include/game.h"
 #include "../CLogFile.h"
 #include "../FindFile.h"
+#include "../common/palette.h"
 #include "CSavedGame.h"
 #include <string>
 
@@ -44,7 +45,7 @@ std::string fname;
 	fname += ".dat";
 
 	// can't save game under certain circumstances
-	//if (fade_in_progress()) return 1;
+	if (fade_in_progress()) return 1;
 
 	g_pLogFile->textOut("Saving game...\n");
 	fp = OpenGameFile(fname, "wb");

@@ -14,6 +14,8 @@
 #include "../include/gamedo.h"
 #include "../fileio/CExeFile.h"
 
+#include "../common/palette.h"
+
 COrderingInfo::COrderingInfo(int episode, std::string& datadirectory) {
 	CExeFile *Exefile = new CExeFile(episode, datadirectory);
 
@@ -93,12 +95,7 @@ void COrderingInfo::Render(stCloneKeenPlus *pCKP)
 		return;
 	}
 
-	fade.mode = FADE_GO;
-	fade.rate = FADE_NORM;
-	fade.dir = FADE_IN;
-	fade.curamt = 0;
-	fade.fadetimer = 0;
-
+	fade(FADE_IN, FADE_NORM);
 	showmapatpos(90, 22<<4, 32, pCKP);
 
 	do
@@ -107,7 +104,7 @@ void COrderingInfo::Render(stCloneKeenPlus *pCKP)
 		gamedo_fades();
 		gamedo_AnimatedTiles();
 
-		if(fade.mode != FADE_COMPLETE)
+		if(fade_in_progress())
 			continue;
 
 		for(int i=0 ; i<m_numberoflines ; i++)
@@ -118,11 +115,7 @@ void COrderingInfo::Render(stCloneKeenPlus *pCKP)
 		if( g_pInput->getPressedAnyCommand() )
 		{
 			cancel = true;
-			fade.dir = FADE_OUT;
-			fade.curamt = PAL_FADE_SHADES;
-			fade.fadetimer = 0;
-			fade.rate = FADE_NORM;
-			fade.mode = FADE_GO;
+			fade(FADE_OUT, FADE_NORM);
 		}
 
 		if(g_pInput->getExitEvent()) cancel=true;
@@ -131,7 +124,7 @@ void COrderingInfo::Render(stCloneKeenPlus *pCKP)
 		// blit the scrollbuffer to the display
 		gamedo_frameskipping_blitonly();
 
-	} while(!(cancel && fade.mode == FADE_COMPLETE));
+	} while( !( cancel && !fade_in_progress() ) );
 
 
 }

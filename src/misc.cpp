@@ -29,6 +29,8 @@
 #include "dialog/CWindow.h"
 #include "dialog/CTextViewer.h"
 
+#include "common/palette.h"
+
 #include <fstream>
 
 void banner(void)
@@ -495,7 +497,6 @@ void showinventory(int p, stCloneKeenPlus *pCKP)
     inventory_draw_ep3(p);
   }
 
-
   g_pVideoDriver->update_screen();
 
   // wait for any button pressed or any action triggered
@@ -780,7 +781,7 @@ int VerifyQuit()
 int dlgX,dlgY,dlgW,dlgH;
 	std::string text;
 
-  if (fade.mode==FADE_GO) return NO_QUIT;
+  if (fade_in_progress()) return NO_QUIT;
 
   text = getstring("VerifyQuit");
   dlgX = GetStringAttribute("VerifyQuit", "LEFT");

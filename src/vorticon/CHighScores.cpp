@@ -16,6 +16,7 @@
 #include "../include/gamedo.h"
 #include "CHighScores.h"
 #include "../sdl/CInput.h"
+#include "../common/palette.h"
 #include "../CGraphics.h"
 #include "../StringUtils.h"
 #include "../FindFile.h"
@@ -188,11 +189,7 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 	// show High-score Frame
 	showmapatpos(90, HIGHSCORETABLE_X, HIGHSCORETABLE_Y, pCKP);
 
-	fade.mode = FADE_GO;
-	fade.dir = FADE_IN;
-	fade.curamt = 0;
-	fade.fadetimer = 0;
-	fade.rate = FADE_NORM;
+	fade(FADE_IN, FADE_NORM);
 	ShipQueuePtr = 0;
 
 	showmapatpos(90, (104 << 2)+256+256+80, 32-4, pCKP);

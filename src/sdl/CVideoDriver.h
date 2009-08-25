@@ -47,7 +47,7 @@ public:
 	void drawConsoleMessages(void);
 	void initResolutionList();
 
-	void pal_set(short colour, char red, char green, char blue);
+	void pal_set(short colour, Uint8 red, Uint8 green, Uint8 blue);
 	void pal_apply(void);
 
 	void sb_blit(void);

@@ -31,31 +31,38 @@
 #define WM_MAP_NUM      80
 
 #define MAX_SPRITES  500
+#define MAX_SPRITE_WIDTH	80
+#define MAX_SPRITE_HEIGHT	62
 #define MAX_FONT     256
 #define MAX_BITMAPS  20
+
 
 #define MAX_OBJECTS    100
 #define MAX_ANIMTILES  200
 
 #define PAL_FADE_SHADES   20
 #define PAL_FADE_WHITEOUT 40
-typedef struct stFade
+typedef struct stFadeControl
 {
  int mode;
  int dir;
  int curamt;
  int fadetimer;
  int rate;
-} stFade;
+ char fadeout_complete;
+} stFadeControl;
+
 #define NO_FADE         0
 #define FADE_GO         1
 #define FADE_COMPLETE   2
 
 #define FADE_IN         1
 #define FADE_OUT        2
+
 #define FADE_NORM       3
 #define FADE_FAST       1
 #define FADE_SLOW       30
+#define FADE_FLASH		255		//temphack
 
 #define NO_QUIT                 0
 #define QUIT_PROGRAM            1
@@ -592,6 +599,9 @@ SE_MORTIMER_RANDOMZAPS
 #define VIDEO_MODE_SOFTWARE		 0
 #define VIDEO_MODE_HARDWARE		 1
 #define VIDEO_MODE_OPENGL		 2
+
+// directory "special" sprites and VGASprites are under
+#define GFXDIR					"res/gfx/"
 
 #include <SDL.h>
 #include "include/declarations.h"

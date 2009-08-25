@@ -11,6 +11,7 @@
 #include "../CGraphics.h"
 #include "../include/menu.h"
 #include "../include/gamedo.h"
+#include "../common/palette.h"
 
 CCredits::CCredits() {
 }
@@ -28,11 +29,7 @@ void CCredits::Render(stCloneKeenPlus *pCKP)
 	int scrolly = -51*8;
 	bool cancel = false;
 
-	fade.mode = FADE_GO;
-	fade.rate = FADE_NORM;
-	fade.dir = FADE_IN;
-	fade.curamt = 0;
-	fade.fadetimer = 0;
+	fade(FADE_IN, FADE_NORM);
 
 	showmapatpos(90, 104<<4, 32, pCKP);
 
@@ -43,9 +40,6 @@ void CCredits::Render(stCloneKeenPlus *pCKP)
 		// do fades
 		gamedo_fades();
 		gamedo_AnimatedTiles();
-
-		if(fade.mode != FADE_COMPLETE)
-			continue;
 
 		if(timer<15) timer++;
 		else
@@ -128,11 +122,7 @@ void CCredits::Render(stCloneKeenPlus *pCKP)
 		if( g_pInput->getPressedAnyCommand() )
 		{
 			cancel = true;
-			fade.dir = FADE_OUT;
-			fade.curamt = PAL_FADE_SHADES;
-			fade.fadetimer = 0;
-			fade.rate = FADE_NORM;
-			fade.mode = FADE_GO;
+			fade(FADE_OUT, FADE_NORM);
 		}
 
 		if(g_pInput->getExitEvent()) cancel=true;
@@ -141,7 +131,6 @@ void CCredits::Render(stCloneKeenPlus *pCKP)
 
 		// blit the scrollbuffer to the display
 		gamedo_frameskipping_blitonly();
-	} while(!(cancel && fade.mode == FADE_COMPLETE));
-
+	} while(!(cancel && !fade_in_progress()));
 
 }

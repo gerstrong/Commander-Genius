@@ -30,15 +30,16 @@
 #include "sdl/joydrv.h"
 #include "sdl/CInput.h"
 #include "sdl/sound/CSound.h"
+#include "sdl/CVideoDriver.h"
 #include "hqp/CMusic.h"
 #include "include/misc.h"
 #include "include/menu.h"
-#include "sdl/CVideoDriver.h"
 #include "include/game.h"
 #include "include/fileio.h"
 #include "include/fileio/story.h"
 #include "include/main.h"
 #include "fileio/CParser.h"
+#include "common/palette.h"
 #include "vorticon/CHighScores.h"
 #include "CLogFile.h"
 #include "CGame.h"
@@ -56,7 +57,7 @@ int fps=0, curfps=0;
 
 stOption *options = NULL;
 
-
+stFadeControl fadecontrol;
 unsigned int demo_RLERunLen;
 unsigned char demo_data[DEMO_MAX_SIZE+1];
 unsigned int demo_data_index;
@@ -84,7 +85,6 @@ extern unsigned int mapystripepos;
 
 char loadinggame, loadslot;
 
-stFade fade;
 stMap map;
 unsigned int AnimTileInUse[ATILEINUSE_SIZEX][ATILEINUSE_SIZEY];
 stTile tiles[MAX_TILES+1];
@@ -363,7 +363,7 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
 
 		  wm = (p_levelcontrol->curlevel==80) ? 1 : 0 ;
 		}
-		g_pGraphics->initPalette(p_levelcontrol->dark);
+		pal_init(p_levelcontrol->dark);
 
 		// Now load HQ Stuff, because the game could have been loaded too.
 		g_pGraphics->loadHQGraphics(p_levelcontrol->episode,

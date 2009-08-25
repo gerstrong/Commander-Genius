@@ -404,7 +404,7 @@ bool CVideoDriver::createSurfaces(void)
 
 // alter the color palette. the palette is not actually altered
 // on-screen until pal_apply() is called.
-void CVideoDriver::pal_set(short colour, char red, char green, char blue)
+void CVideoDriver::pal_set(short colour, Uint8 red, Uint8 green, Uint8 blue)
 {
   MyPalette[colour].r = red;
   MyPalette[colour].g = green;

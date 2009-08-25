@@ -10,6 +10,8 @@
 #include "../sdl/sound/CSound.h"
 #include "../CLogFile.h"
 
+#include "../common/palette.h"
+
 char PlatExtending=0;
 
 // "Sector Effector" object (The name comes from D3D)...it's basically
@@ -261,7 +263,7 @@ int mx,my,x,y;
            objects[o].ai.se.timer = 0;
            objects[o].ai.se.blowy = 0;
 
-		   //fade(FADE_FLASH, FADE_NORM);
+		   fade(FADE_FLASH, FADE_NORM);
 	   }
       break;
       case SPARK_BLOWUP1:

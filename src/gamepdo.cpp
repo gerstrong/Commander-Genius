@@ -20,12 +20,16 @@ char tempbuf[200];
 #include "include/misc.h"
 #include "include/menu.h"
 
+#include "common/palette.h"
+
 #include "dialog/CDialog.h"
 #include "CGraphics.h"
 
 #ifdef TARGET_WIN32
 #define uint unsigned int
 #endif
+
+extern stFadeControl fadecontrol;
 
 // player handler mother-function, calls all needed "gamepdo"
 // functions for player cp
@@ -68,7 +72,7 @@ char doFall;
           }
 
 
-          if (fade.mode==NO_FADE || fade.dir==FADE_IN || pCKP->Control.levelcontrol.demomode)
+          if ( fadecontrol.mode==NO_FADE || fadecontrol.dir==FADE_IN || pCKP->Control.levelcontrol.demomode)
           {
             gamepdo_playpushed(cp, pCKP);
             gamepdo_InertiaAndFriction_X(cp, pCKP);
@@ -314,11 +318,6 @@ int stuck;
    {
      if (player[cp].playcontrol[PA_X] < 0) { player[cp].pdir = player[cp].pshowdir = LEFT; }
      if (player[cp].playcontrol[PA_X] > 0) { player[cp].pdir = player[cp].pshowdir = RIGHT; }
-   }
-   else
-   {
-     if (player[cp].playcontrol[PA_X] < 0) { player[cp].pdir = player[cp].pshowdir = LEFT;  }
-     if (player[cp].playcontrol[PA_X] > 0) { player[cp].pdir = player[cp].pshowdir = RIGHT;  }
    }
 }
 
@@ -958,8 +957,8 @@ int mx, my, t;
 			else if (t==TILE_LIGHTSWITCH)
 			{ // lightswitch
 				   p_levelcontrol->dark ^= 1;
-				   g_pGraphics->initPalette(p_levelcontrol->dark);
-				   g_pGraphics->fadePalette(PAL_FADE_SHADES);
+				   pal_init(p_levelcontrol->dark);
+				   pal_fade(PAL_FADE_SHADES);
 				   g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, objects[player[cp].useObject].scrx);
 				if (!player[cp].ppogostick) return;
 			}
@@ -1771,7 +1770,7 @@ int o;
 
 void gamepdo_StatusBox(int cp, stCloneKeenPlus *pCKP)
 {
-  if (fade.mode != NO_FADE) return;
+  if (fade_in_progress()) return;
 
   if(player[cp].playcontrol[PA_STATUS] && !player[cp].lastplaycontrol[PA_STATUS])
 	  showinventory(cp, pCKP);

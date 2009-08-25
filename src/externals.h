@@ -2,7 +2,6 @@
 
 extern int highest_objslot;			// the highest object slot in use, +1
 extern char PlatExtending;
-extern stFade fade;
 extern stMap map;
 extern unsigned int AnimTileInUse[ATILEINUSE_SIZEX][ATILEINUSE_SIZEY];
 extern stTile tiles[MAX_TILES+1];

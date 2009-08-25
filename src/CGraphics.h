@@ -37,11 +37,7 @@ public:
 	void sb_drawColorcharacter(int x, int y, int f, unsigned short colour, unsigned short bgcolour);
 	void saveArea(int x1, int y1, int x2, int y2);
 	void restoreArea(int x1, int y1, int x2, int y2);
-	char startGraphics(void);
 	void stopGraphics(void);
-	void configPalette(int c, int r, int g, int b);
-	void initPalette(int dark);
-	void fadePalette(int fadeamt);
 	void drawBitmap(int xa, int ya, int b);
 	void drawBitmap2FG(int xa, int ya, int b);
 	int  getBitmapNumberFromName(const char *bmname);
@@ -60,6 +56,8 @@ public:
 	void loadHQGraphics(unsigned char episode, unsigned char level, const std::string& datadir);
 	void unloadHQGraphics();
 
+	CHQBitmap	*HQBitmap;
+
 private:
 	Uint32 scrollbuf_memsize;
 	Uint32 blitbuf_memsize;
@@ -67,15 +65,7 @@ private:
 	unsigned char *scrollbuffer;
 	unsigned char *blitbuffer;
 
-	typedef struct stColour
-	{
-	  int r,g,b;
-	} stColour;
-	stColour palette[256];
-
 	bool fade_black;
-
-	CHQBitmap	*HQBitmap;
 };
 
 #endif /* CGRAPHICS_H_ */

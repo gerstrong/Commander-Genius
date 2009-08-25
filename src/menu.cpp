@@ -22,6 +22,7 @@
 #include "CLogFile.h"
 #include "sdl/CSettings.h"
 #include "dialog/CTextViewer.h"
+#include "common/palette.h"
 
 #include <SDL.h>
 #include <iostream>
@@ -40,7 +41,7 @@ void showmapatpos(int level, int xoff, int yoff, stCloneKeenPlus *pCKP)
 	std::string levelname;
 	g_pLogFile->ftextOut("showmapatpos(%d, %d, %d);<br>",level,xoff,yoff);
 	pCKP->Control.levelcontrol.dark = 0;
-	g_pGraphics->initPalette(pCKP->Control.levelcontrol.dark);
+	pal_init(pCKP->Control.levelcontrol.dark);
 	
 	initgame( &(pCKP->Control.levelcontrol) );           // reset scroll
 	levelname = "level" + FixedWidthStr_LeftFill(itoa(level), 2, '0') + ".ck" + itoa(pCKP->Control.levelcontrol.episode);
@@ -142,7 +143,6 @@ short loadResourcesforStartMenu(stCloneKeenPlus *pCKP, CGame *Game)
 
 #define MAINMENU_GOTO_DEMO_TIME      4000
 
-extern char fade_black;
 bool loadStartMenu(stCloneKeenPlus *pCKP)
 {
 	CDialog *GamesMenu = new CDialog(16,8,36,20);
@@ -154,17 +154,13 @@ bool loadStartMenu(stCloneKeenPlus *pCKP)
 	for( int i=0 ; i < pCKP->numGames ; i++ )
 		GamesMenu->addObject(DLG_OBJ_OPTION_TEXT,16+8,8+8*(i+1), pCKP->GameData[i].Name);
 
-	fade.mode = FADE_GO;
-	fade.rate = FADE_NORM;
-	fade.dir = FADE_IN;
-	fade.curamt = 0;
-	fade.fadetimer = 0;
+	fade(FADE_IN, FADE_NORM);
 
 	do
 	{
 		GamesMenu->processlogic();
 		GamesMenu->render();
-	} while( !g_pInput->getPressedCommand(IC_JUMP) && !g_pInput->getPressedCommand(IC_STATUS) );
+	} while( !g_pInput->getPressedCommand(IC_JUMP) && !g_pInput->getPressedCommand(IC_STATUS) && !g_pInput->getExitEvent() );
 
 
 	pCKP->Resources.GameSelected = GamesMenu->getSelection()+1;
@@ -184,11 +180,7 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 	int x;
 	int selection;
 
-	fade.mode = FADE_GO;
-	fade.rate = FADE_NORM;
-	fade.dir = FADE_IN;
-	fade.curamt = 0;
-	fade.fadetimer = 0;
+	fade(FADE_IN, FADE_NORM);
 
 	for(unsigned int cp=0 ; cp<numplayers ; cp++)	// in some situations. the player is shown for a short time.
 	{
@@ -242,7 +234,7 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 		else if(g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP))
 			break;
 		MainMenu->render();
-	} while(1);
+	} while(!g_pInput->getExitEvent());
 
 	selection = MainMenu->getSelection();
 
@@ -259,13 +251,8 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 
     	loadslot = save_slot_box(0, pCKP);
     	if (loadslot)
-    	{
-    		fade.dir = FADE_OUT;
-    		fade.curamt = PAL_FADE_SHADES;
-    		fade.fadetimer = 0;
-    		fade.rate = FADE_NORM;
-    		fade.mode = FADE_GO;
-    	}
+    		fade(FADE_OUT, FADE_NORM);
+
     	bmnum = g_pGraphics->getBitmapNumberFromName("TITLE");
     	x = (320/2)-(bitmaps[bmnum].xsize/2);
     	g_pGraphics->drawBitmap(x, 0, bmnum);
@@ -289,12 +276,7 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 
         	pCKP->Control.levelcontrol.hardmode = (diff == 1) ? true : false;
     	}
-
-    	fade.dir = FADE_OUT;
-    	fade.curamt = PAL_FADE_SHADES;
-    	fade.fadetimer = 0;
-    	fade.rate = FADE_NORM;
-    	fade.mode = FADE_GO;
+    	fade(FADE_OUT, FADE_NORM);
     }
 
 	return selection;
@@ -697,13 +679,7 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 				Settings->saveDrvCfg();
 				delete Settings; Settings = NULL;
 
-				//showmapatpos(90, MAINMENU_X, MENUS_Y, pCKP);
-
-				fade.mode = FADE_GO;
-				fade.dir = FADE_IN;
-				fade.curamt = 0;
-				fade.rate = FADE_NORM;
-				fade.fadetimer = 0;
+				fade(FADE_IN, FADE_NORM);
 				gamedo_fades();
 				break;
 			}
@@ -978,12 +954,7 @@ void showPage(const std::string& str_text, int textsize)
 	CTextViewer *TextViewer = new CTextViewer(0,0,320,136);
 	TextViewer->loadText(str_text);
 
-	fade.mode = FADE_GO;
-	fade.rate = FADE_NORM;
-	fade.dir = FADE_IN;
-	fade.curamt = 0;
-	fade.fadetimer = 0;
-
+	fade(FADE_IN, FADE_NORM);
 	AllPlayersInvisible();
 
 	TextViewer->processCycle();
@@ -994,7 +965,7 @@ void showPage(const std::string& str_text, int textsize)
 
 void keensleft(int episode)
 {
-int enter, lastenterstate;
+bool enter;
 unsigned int p;
 int x,y,i;
 int boxY, boxH;
@@ -1010,7 +981,6 @@ int boxtimer;
       player[i].hideplayer = 0;
     }
   }
-  gamedo_RenderScreen();
 
   #define KEENSLEFT_X        7
   #define KEENSLEFT_Y        11
@@ -1020,49 +990,55 @@ int boxtimer;
   boxY = KEENSLEFT_Y - (numplayers);
   boxH = KEENSLEFT_H + (numplayers * 2);
 
-  dialogbox(KEENSLEFT_X,boxY,KEENSLEFT_W,boxH);
-  g_pGraphics->drawFont( getstring("LIVES_LEFT_BACKGROUND"),(KEENSLEFT_X+1)*8,(boxY+1)*8,0);
-  g_pGraphics->drawFont( getstring("LIVES_LEFT"),((KEENSLEFT_X+7)*8)+4,(boxY+1)*8,0);
-  y = ((boxY+2)*8)+4;
-  if (numplayers>1) y--;
-  for(p=0;p<numplayers;p++)
-  {
-    x = ((KEENSLEFT_X+1)*8)+4;
-    for(i=0;i<player[p].inventory.lives&&i<=10;i++)
-    {
-    	g_pGraphics->drawSprite_direct(x, y, PMAPDOWNFRAME+playerbaseframes[p]-
-    			(episode==3));
-    	// (episode==3) TODO: Check whether this is necessary
-      x+=16;
-    }
-    y+=18;
-  }
-  g_pVideoDriver->update_screen();
-
   g_pSound->playSound(SOUND_KEENSLEFT, PLAY_NOW);
+
+  fade(FADE_IN, FADE_NORM);
+
+  while(fade_in_progress())
+  {
+	  gamedo_fades();
+	  gamedo_RenderScreen();
+  }
 
   boxtimer = 0;
   do
   {
-	gamedo_fades();
+	  if(g_pTimer->TimeToRender())
+	  {
+		  dialogbox(KEENSLEFT_X,boxY,KEENSLEFT_W,boxH);
+		  g_pGraphics->drawFont( getstring("LIVES_LEFT_BACKGROUND"),(KEENSLEFT_X+1)*8,(boxY+1)*8,0);
+		  g_pGraphics->drawFont( getstring("LIVES_LEFT"),((KEENSLEFT_X+7)*8)+4,(boxY+1)*8,0);
+		  y = ((boxY+2)*8)+4;
+		  if (numplayers>1) y--;
+		  for(p=0;p<numplayers;p++)
+		  {
+		    x = ((KEENSLEFT_X+1)*8)+4;
+		    for(i=0;i<player[p].inventory.lives&&i<=10;i++)
+		    {
+		    	g_pGraphics->drawSprite_direct(x, y, PMAPDOWNFRAME+playerbaseframes[p]-
+		    			(episode==3));
+		    	// (episode==3) TODO: Check whether this is necessary
+		      x+=16;
+		    }
+		    y+=18;
+		  }
+		  g_pVideoDriver->update_screen();
 
-	if (boxtimer > KEENSLEFT_TIME)
-	{
-	  break;
-	} else boxtimer++;
+		  if (boxtimer > KEENSLEFT_TIME)
+		  {
+			  break;
+		  } else boxtimer++;
 
-	enter = g_pInput->getPressedCommand(IC_STATUS)||g_pInput->getPressedCommand(IC_FIRE)||
-	g_pInput->getPressedCommand(IC_JUMP)||g_pInput->getPressedCommand(IC_POGO);
-	if (enter)
-	{
-	  break;
-	}
-	if (g_pInput->getPressedCommand(KQUIT))
-	{
-	  return;
-	}
+		  enter = g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_FIRE)||
+				  g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_POGO);
+		  if (enter)
+			  break;
+		  if (g_pInput->getPressedCommand(KQUIT))
+			  return;
 
-	lastenterstate = enter;
-  } while(1);
+		  g_pInput->pollEvents();
+		  g_pTimer->TimeToDelay();
+	  }
+  } while(!enter);
 
 }

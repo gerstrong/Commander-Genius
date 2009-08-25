@@ -11,6 +11,7 @@
 #include "../CGraphics.h"
 #include "../include/menu.h"
 #include "../include/gamedo.h"
+#include "../common/palette.h"
 
 CIntro::CIntro() {
 }
@@ -30,12 +31,7 @@ void CIntro::Render(stCloneKeenPlus *pCKP)
 	int scrolly = 200;
 	bool cancel=false;
 
-	fade.mode = FADE_GO;
-	fade.rate = FADE_NORM;
-	fade.dir = FADE_IN;
-	fade.curamt = 0;
-	fade.fadetimer = 0;
-
+	fade( FADE_IN, FADE_NORM );
 	showmapatpos(90, 104<<4, 32, pCKP);
 
 	// Load the Title Bitmap
@@ -58,7 +54,7 @@ void CIntro::Render(stCloneKeenPlus *pCKP)
 		gamedo_fades();
 		g_pGraphics->drawBitmap2FG(mid[1], scrolly+9, bmnum[1]);
 
-		if(fade.mode != FADE_COMPLETE)
+		if(fade_in_progress())
 			continue;
 
 		if(timer<7) timer++;
@@ -85,11 +81,7 @@ void CIntro::Render(stCloneKeenPlus *pCKP)
 		if( g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand() )
 		{
 			cancel = true;
-			fade.dir = FADE_OUT;
-			fade.curamt = PAL_FADE_SHADES;
-			fade.fadetimer = 0;
-			fade.rate = FADE_NORM;
-			fade.mode = FADE_GO;
+			fade(FADE_OUT, FADE_NORM);
 		}
 
 		if(g_pInput->getExitEvent()) cancel=true;
@@ -101,7 +93,7 @@ void CIntro::Render(stCloneKeenPlus *pCKP)
 		// blit the scrollbuffer to the display
 		gamedo_frameskipping_blitonly();
 
-	} while(!(cancel && fade.mode == FADE_COMPLETE));
+	} while(!(cancel /*&& fade.mode == FADE_COMPLETE*/));
 
 
 }

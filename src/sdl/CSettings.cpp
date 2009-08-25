@@ -127,6 +127,7 @@ void CSettings::loadDefaultGameCfg(stOption *Option)
 	setOption(Option,OPT_TWOBUTTON, "two-button-firing", 0);
 	setOption(Option,OPT_ANALOGJOYSTICK, "analog-joystick", 1);
 	setOption(Option,OPT_LVLREPLAYABILITY, "level replayability", 0);
+	setOption(Option,OPT_RISEBONUS, "rise bonus", 1);
 }
 
 short CSettings::loadGameCfg(stOption *Option)

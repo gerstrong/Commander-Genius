@@ -5,6 +5,8 @@
 
 #include "../include/enemyai.h"
 
+#include "../common/palette.h"
+
 // Vorticon (all episodes, albeit the behavior changes slightly
 // depending on levelcontrol.episode).
 
@@ -91,24 +93,14 @@ int bonk,kill;
        if (p_levelcontrol->episode == 1)
        {
          objects[o].ai.vort.state = VORT_DYING;
-         //pal_set(BORDER_COLOR, 255, objects[o].ai.vort.palflashamt, objects[o].ai.vort.palflashamt);
-         //pal_apply();
-          fade.mode = FADE_GO;
-          fade.dir = FADE_IN;
-          fade.curamt = PAL_FADE_WHITEOUT;
-          fade.fadetimer = 0;
-          fade.rate = FADE_SLOW;
+          fade( FADE_FLASH, FADE_SLOW);
        }
        else
        {
          objects[o].ai.vort.state = VORT2_DYING;
          if (p_levelcontrol->hardmode)
          {
-            fade.mode = FADE_GO;
-            fade.dir = FADE_IN;
-            fade.curamt = PAL_FADE_WHITEOUT;
-            fade.fadetimer = 0;
-            fade.rate = FADE_NORM;
+            fade( FADE_FLASH, FADE_NORM);
          }
        }
        g_pSound->playStereofromCoord(SOUND_VORT_DIE, PLAY_NOW, objects[o].scrx);

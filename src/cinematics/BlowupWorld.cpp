@@ -11,6 +11,8 @@
 
 #include "../keen.h"
 
+#include "../common/palette.h"
+
 #define VIBRATE_MINSTRENGTH      1
 #define VIBRATE_MORTIMERSTRENGTH 4
 #define VIBRATE_MAXSTRENGTH      16
