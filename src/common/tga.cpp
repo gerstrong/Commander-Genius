@@ -20,7 +20,7 @@ char LoadTGA(const std::string &file, unsigned char **image, int *widthout, int 
 TGA_HEADER header;
 FILE *fp;
 int bytesperpixel;
-ulong imgdatasize;
+unsigned long imgdatasize;
 
 	if (!(fp=fopen(file.c_str(), "rb")))
 	{

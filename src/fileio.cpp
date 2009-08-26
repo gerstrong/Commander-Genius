@@ -456,7 +456,7 @@ unsigned int temp1, temp2, temp3, temp4;
   return (temp4<<24) | (temp3<<16) | (temp2<<8) | temp1;
 }
 
-void fputl(ulong word, FILE *fp)
+void fputl(unsigned long word, FILE *fp)
 {
 unsigned long a,b,c,d;
 	a=b=c=d = word;
