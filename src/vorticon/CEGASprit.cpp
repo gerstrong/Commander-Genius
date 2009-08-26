@@ -14,6 +14,7 @@
 #include "../keen.h"
 #include "../include/game.h"
 #include "../FindFile.h"
+#include "../sdl/CVideoDriver.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -127,6 +128,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
      // load the image data
      if(sprites) { delete [] sprites; sprites=NULL; }
      sprites = new stSprite[MAX_SPRITES+1];
+
      char c;
      for(int p=0 ; p<4 ; p++)
      {
@@ -154,6 +156,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
              c |= (Planes->getbit(RawData, p) << p);
              //if (p==3 && c==0) c = 16;
              sprites[s].imgdata[y][x] = c;
+
            }
          }
        }
@@ -182,6 +185,48 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 
      // Now load the special TGA Sprites if some are available
      LoadSpecialSprites();
+
+
+     ///////////// SDL Surfaces Part //////////////////////////////////
+
+     SDL_Color *GamePalette = g_pVideoDriver->MyPalette;
+     // Create SDL Surfaces for sprites
+     for(int s=0 ; s<MAX_SPRITES ; s++)
+     {
+    	 sprites[s].surface = NULL;
+
+
+    	 if((Sprite[s].width > 0 && Sprite[s].height > 0) &&
+    	     Sprite[s].width < 64 && Sprite[s].height < 64	 )
+    	 {
+    		 sprites[s].surface = SDL_CreateRGBSurface(SDL_SWSURFACE,
+								 Sprite[s].width,Sprite[s].height,8,0,0,0,0);
+
+			 if(sprites[s].surface != NULL) // Surface was created
+			 {
+				 int colourkey = 255;
+		    	 SDL_SetColorKey( sprites[s].surface, SDL_SRCCOLORKEY, colourkey );
+				 SDL_SetColors(sprites[s].surface, GamePalette,0,256);
+				 SDL_LockSurface(sprites[s].surface);
+
+				 Uint8 *src = (Uint8*) sprites[s].surface->pixels;
+				 Uint8 w = sprites[s].surface->w;
+				 Uint8 h = sprites[s].surface->h;
+				 for(int i=0 ; i<h ; i++)
+				 {
+					 for(int j=0 ; j<w ; j++)
+					 {
+						 if(sprites[s].maskdata[i][j] == 0)
+							 memset(src+i*w+j, sprites[s].imgdata[i][j],1);
+						 else
+							 memset(src+i*w+j, colourkey,1);
+					 }
+				 }
+
+				 SDL_UnlockSurface(sprites[s].surface);
+			 }
+    	 }
+     }
 
 	return true;
 }

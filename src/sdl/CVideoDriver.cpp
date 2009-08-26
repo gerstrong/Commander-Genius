@@ -15,6 +15,7 @@
 #include "../CLogFile.h"
 #include "../CGraphics.h"
 #include "../FindFile.h"
+#include "../common/palette.h"
 #include <iostream>
 #include <fstream>
 using namespace std;
@@ -276,9 +277,9 @@ bool CVideoDriver::applyMode(void)
 
 #ifndef WIZ
 	// Support for doublebuffering
-	Mode = SDL_DOUBLEBUF | SDL_HWPALETTE | SDL_HWSURFACE;;
+	Mode = SDL_DOUBLEBUF | SDL_HWPALETTE | SDL_HWSURFACE;
 #else
-	Mode = SDL_SWSURFACE;;
+	Mode = SDL_SWSURFACE;
 #endif
 
 	// Enable OpenGL
@@ -394,6 +395,10 @@ bool CVideoDriver::createSurfaces(void)
 		blitsurface_alloc = 1;
 		VRAMPtr = (unsigned char*)screen->pixels + ((m_Resolution.width * stretch_blit_yoff * m_Resolution.depth)>>3)+screenrect.y*screen->pitch + (screenrect.x*m_Resolution.depth>>3);
     }
+
+    pal_init();
+    pal_fade(PAL_FADE_SHADES);
+    pal_apply();
 
     dstrect.x = 0; dstrect.y = 0;
 	dstrect.w = GAME_STD_WIDTH;

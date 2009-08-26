@@ -6,12 +6,13 @@
  */
 
 #include "CEGALatch.h"
+#include "../graphics/CGfxEngine.h"
 #include "../sdl/CVideoDriver.h"
 #include "CPlanes.h"
 #include "../funcdefs.h"
 #include "../keen.h"
-//#include "../externals.h"
 #include "../FindFile.h"
+#include <SDL/SDL.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -109,7 +110,7 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
 							 plane4 + m_fontlocation,
 							 0);
 
-	// Load 8x8 Tiles
+     // Load 8x8 Tiles
      int c=0;
      for(int p=0;p<4;p++)
      {
@@ -140,6 +141,21 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
          }
        }
      }
+
+     // Load these graphics into the CFont Class of CGfxEngine
+     Uint8 *offset;
+     g_pGfxEngine->Font.CreateSurface( g_pVideoDriver->MyPalette, SDL_SWSURFACE );
+     Uint8 *pixel = (Uint8*) g_pGfxEngine->Font.getSDLSurface()->pixels;
+     for(int t=0;t<m_fonttiles;t++)
+     {
+       for(int y=0;y<8;y++)
+       {
+       	 offset = pixel + 128*8*(t/16) + 8*(t%16) + 128*y ;
+       	 memcpy(offset, font[t][y], 8);
+       }
+     }
+
+     g_pGfxEngine->Font.generateSpecialTwirls();
      delete Planes;
 
      // Load 32x32 Tiles

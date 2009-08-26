@@ -2,7 +2,7 @@ Here are the features that I still want to implement:
 -----------------------------------------------------
 
 until 0.4:
-- Update the Dialog Class. It should support more controls, and be easier to manage
+- Improve the graphics of CG using SDL_BLit instead of arrays (CGfxEngine)
 - Read all the text out of EXE-files. This should provide better support for mods!
 - New Games Menu. Should run without the need of an episode!
 - Improve the logic of Keen.exe reading for a better mod compatibility

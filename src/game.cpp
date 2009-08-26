@@ -564,15 +564,16 @@ unsigned int i;
   {
 	  if (player[i].isPlaying)
 	  {
-    	objects[player[i].useObject].exists = 1;
-    	objects[player[i].useObject].onscreen = 1;
-    	objects[player[i].useObject].type = OBJ_PLAYER;
-    	objects[player[i].useObject].sprite = 0;
-    	objects[player[i].useObject].onscreen = 1;
-    	objects[player[i].useObject].AssociatedWithPlayer = i;
-    	objects[player[i].useObject].honorPriority = 1;
-    	objects[player[i].useObject].canbezapped = false;
-    	highest_objslot = player[i].useObject + 1;
+		Uint8 obj = player[i].useObject;
+    	objects[obj].exists = 1;
+    	objects[obj].onscreen = 1;
+    	objects[obj].type = OBJ_PLAYER;
+    	objects[obj].sprite = 0;
+    	objects[obj].onscreen = 1;
+    	objects[obj].AssociatedWithPlayer = i;
+    	objects[obj].honorPriority = 1;
+    	objects[obj].canbezapped = false;
+    	highest_objslot = obj + 1;
 	  }
   }
 

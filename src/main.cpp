@@ -369,7 +369,6 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
 
 		  wm = (p_levelcontrol->curlevel==80) ? 1 : 0 ;
 		}
-		pal_init();
 	    pal_setdark(p_levelcontrol->dark);
 	    pal_fade(PAL_FADE_SHADES);
 

@@ -11,6 +11,7 @@
 #include "../sdl/CInput.h"
 #include "../sdl/CVideoDriver.h"
 #include "../CGraphics.h"
+#include "../graphics/CGfxEngine.h"
 #include "CDialog.h"
 
 CDialog::CDialog(Uint16 x, Uint16 y, Uint16 w, Uint16 h)
@@ -173,15 +174,14 @@ void CDialog::render()
 	g_pTimer->TimeToDelay();
 }
 
-#define TWIRL_TIME	10
-#define TWIRL_SPEED	10
+#define TWIRL_TIME	5
 void CDialog::renderTwirl()
 {
 	if( m_twirl.timer >= TWIRL_TIME )
 	{
 		m_twirl.timer = 0;
 
-		if(m_twirl.frame >= 5)
+		if(m_twirl.frame >= 7)
 			m_twirl.frame=0;
 		else
 			m_twirl.frame++;
@@ -211,8 +211,11 @@ void CDialog::renderTwirl()
 		m_twirl.posy++;
 	}
 
-	g_pGraphics->drawCharacter(m_dlgobject[m_selected_ID]->m_x,
-								m_twirl.posy, 9+m_twirl.frame);
+	/*g_pGraphics->drawCharacter(m_dlgobject[m_selected_ID]->m_x,
+								m_twirl.posy, 9+m_twirl.frame);*/
+	g_pGfxEngine->Font.drawTwirl( g_pVideoDriver->FGLayerSurface, m_twirl.frame,
+									m_dlgobject[m_selected_ID]->m_x,
+									m_twirl.posy );
 }
 
 ///

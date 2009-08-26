@@ -73,8 +73,6 @@ void sb_drawcharacterinverse(int x, int y, int f);
 void save_area(int x1, int y1, int x2, int y2);
 void restore_area(int x1, int y1, int x2, int y2);
 void setvideomode(unsigned char mode);
-void addpal(int c, int r, int g, int b);
-void pal_apply(void);
 void font_draw(unsigned char *text, int xoff, int yoff, int highlight);
 void sb_font_draw(const unsigned char *text, int xoff, int yoff);
 void sb_mask_font_draw(unsigned char *text, int xoff, int yoff, char mask);

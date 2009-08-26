@@ -130,6 +130,8 @@ public:
  CBitmap(){ bmptr=NULL; }
 };
 
+#include <SDL/SDL.h>
+
 struct stSprite
 {
  char xsize, ysize;
@@ -138,6 +140,8 @@ struct stSprite
  // bounding box for hit detection
  unsigned int bboxX1, bboxY1;
  unsigned int bboxX2, bboxY2;
+ SDL_Surface* surface;
+ SDL_Surface* erasesurface;
 };
 
 struct stInventory
