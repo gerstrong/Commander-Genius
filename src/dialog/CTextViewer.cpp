@@ -156,34 +156,30 @@ void CTextViewer::processCycle()
 		g_pInput->pollEvents();
 
 		// Normal Keys/Axes
-		if( g_pInput->getHoldedCommand(IC_DOWN) )
+		if( g_pInput->getHoldedKey(KDOWN) )
 		{
 			timer++;
-			if(timer >= 5)
+			if(timer >= 4)
 				scrollDown();
 		}
-		if( g_pInput->getHoldedCommand(IC_UP) )
+		if( g_pInput->getHoldedKey(KUP) )
 		{
 			timer++;
-			if(timer >= 5)
+			if(timer >= 4)
 				scrollUp();
 		}
 
 		// Page Keys
-		if( g_pInput->getHoldedKey(KPGDN) )
+		if( g_pInput->getPressedKey(KPGDN) )
 		{
-			timer++;
-			if(timer >= 5)
-				setNextPos();
+				setPosition(m_linepos+16);
 		}
-		if( g_pInput->getHoldedKey(KPGUP) )
+		if( g_pInput->getPressedKey(KPGUP) )
 		{
-			timer++;
-			if(timer >= 5)
-				setPrevPos();
+				setPosition(m_linepos-16);
 		}
 
-		if(timer>=10) timer=0;
+		if(timer>=8) timer=0;
 
 		cancel = g_pInput->getPressedKey(KQUIT);
 

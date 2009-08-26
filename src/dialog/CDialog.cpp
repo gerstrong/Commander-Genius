@@ -25,6 +25,7 @@ CDialog::CDialog(Uint16 x, Uint16 y, Uint16 w, Uint16 h)
 	m_twirl.timer = 0;
 
 	m_selected_ID = 0;
+	m_switch = 0;
 	m_scroll = 0;
 
 	m_Frame = NULL;
@@ -87,13 +88,13 @@ int CDialog::getSelection()
 
 void CDialog::processlogic()
 {
-	if(g_pInput->getPulsedCommand(IC_DOWN, 80))
+	if(g_pInput->getPulsedCommand(IC_DOWN, 60))
 	{
 		do
 		{
 			if(m_selected_ID == m_dlgobject.size()-1)
 			{
-				m_selected_ID = 0;
+				m_switch=1;
 				m_scroll=0;
 			}
 			else
@@ -106,14 +107,14 @@ void CDialog::processlogic()
 
 		} while(!m_dlgobject[m_selected_ID]->m_selectable);
 	}
-	else if(g_pInput->getPulsedCommand(IC_UP, 80))
+	else if(g_pInput->getPulsedCommand(IC_UP, 60))
 	{
 		do
 		{
 			if(m_selected_ID == 0)
 			{
-				m_selected_ID = m_dlgobject.size()-1;
-
+				m_switch=2;
+				
 				if(m_dlgobject.size() > m_h)
 					m_scroll = m_selected_ID-(m_h-2)+1;
 			}
@@ -187,10 +188,28 @@ void CDialog::renderTwirl()
 	}
 	else m_twirl.timer++;
 
-	if(m_dlgobject[m_selected_ID]->m_y < m_twirl.posy)
+	if(m_dlgobject[m_selected_ID]->m_y < m_twirl.posy or m_switch == 1)
+	{
+		if(m_switch == 1)
+		{
+			m_selected_ID = 0;
+			m_switch = 0;
+			m_twirl.posy = m_dlgobject[m_selected_ID]->m_y;
+		}
+		else
 		m_twirl.posy--;
-	else if(m_dlgobject[m_selected_ID]->m_y > m_twirl.posy)
+	}
+	else if(m_dlgobject[m_selected_ID]->m_y > m_twirl.posy or m_switch == 2)
+	{
+		if(m_switch == 2)
+		{
+			m_selected_ID = m_dlgobject.size()-1;
+			m_switch = 0;
+			m_twirl.posy = m_dlgobject[m_selected_ID]->m_y;
+		}
+		else
 		m_twirl.posy++;
+	}
 
 	g_pGraphics->drawCharacter(m_dlgobject[m_selected_ID]->m_x,
 								m_twirl.posy, 9+m_twirl.frame);
