@@ -31,6 +31,8 @@ public:
 	int getFrameRate() { return m_FPSRate; }
 	void setFrameRate(int value);
 
+	int getLoopsPerSec( void ) { return m_LPS; }
+	int getFramesPerSec( void ) { return m_FPS; }
 private:
 
 	ulong m_LogicRenderStart, m_CountTime, m_LastSecTime;
@@ -40,6 +42,9 @@ private:
 	int m_FPSRate;
 	int m_RenderInterval;
 	int m_RenderIntervalCount;
+
+	int m_LPS;
+	int m_FPS;
 };
 
 #endif /* CTIMER_H_ */

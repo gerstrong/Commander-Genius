@@ -90,21 +90,24 @@ void CTimer::TimeToDelay( void )
     
 	if( curtime > m_LogicRenderStart )
 	{
+#if 0
+		do {
+		    curtime = SDL_GetTicks();
+		} while( (curtime - m_LogicRenderStart) <= m_LogicRateMS );
+#else
 		delay = m_LogicRateMS - (int)(curtime - m_LogicRenderStart);
 		if( delay>0 && delay<(m_LogicRateMS*2) ) {
 			SDL_Delay(delay);
 		}
-/*
-		do {
-		    curtime = SDL_GetTicks();
-		} while( (curtime - m_LogicRenderStart) <= m_LogicRateMS );
-*/
+#endif
 	}
 
 	// Display the loops per second and the frames drawn
 	if( curtime - m_CountTime >= 1000 || m_CountTime > curtime  )
 	{
 		//printf( "LPS %d FPS %d Interval %d MSrate %d\n", m_LoopsTotal, m_FramesTotal, m_RenderInterval, m_LogicRateMS  );
+		m_LPS = m_LoopsTotal;
+		m_FPS = m_FramesTotal;
 		m_FramesTotal	= 0;
 		m_LoopsTotal	= 0;
 		m_CountTime = curtime;

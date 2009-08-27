@@ -48,8 +48,8 @@ void CInput::resetControls() {
 		InputCommand[i][IC_RIGHT].keysym = SDLK_RIGHT;
 		InputCommand[i][IC_DOWN].keysym = SDLK_DOWN;
 
-		InputCommand[i][IC_JUMP].keysym = SDLK_RCTRL;
-		InputCommand[i][IC_POGO].keysym = SDLK_RALT;
+		InputCommand[i][IC_JUMP].keysym = SDLK_LCTRL;
+		InputCommand[i][IC_POGO].keysym = SDLK_LALT;
 		InputCommand[i][IC_FIRE].keysym = SDLK_SPACE;
 		InputCommand[i][IC_STATUS].keysym = SDLK_RETURN;
 

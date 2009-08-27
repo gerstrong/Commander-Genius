@@ -7,6 +7,7 @@
  */
 #include "CVideoDriver.h"
 #include "CInput.h"
+#include "CTimer.h"
 
 #include "../keen.h"
 #include "video/colourconvert.h"
@@ -516,10 +517,10 @@ char tempbuf[80];
    {
 
 #ifdef DEBUG
-     sprintf(tempbuf, "FPS: %03d; x = %ld ; y = %d", fps, player[0].x >>CSF, player[0].y >>CSF);
-
+     sprintf(tempbuf, "LPS: %03d FPS: %03d; x = %ld ; y = %d", g_pTimer->getLoopsPerSec(),
+							       g_pTimer->getFramesPerSec(), player[0].x >>CSF, player[0].y >>CSF);
 #else
-     sprintf(tempbuf, "FPS: %03d", fps);
+     sprintf(tempbuf, "FPS: %03d", g_pTimer->getFramesPerSec() );
 #endif
      g_pGraphics->drawFont( tempbuf, 320-3-(strlen( (char *) tempbuf)<<3), 3, 1);
    }

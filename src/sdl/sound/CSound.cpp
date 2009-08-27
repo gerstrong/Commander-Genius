@@ -35,7 +35,7 @@ CSound::CSound() {
 	m_MixedForm = NULL;
 	AudioSpec.channels = 2; // Stereo Sound
 	AudioSpec.format = AUDIO_U8; // 8-bit sound
-	AudioSpec.freq = 44000; // high quality
+	AudioSpec.freq = 44100; // high quality
 }
 
 CSound::~CSound() {
@@ -87,7 +87,26 @@ bool CSound::init(void)
   g_pLogFile->ftextOut("  freq: %d<br>", AudioSpec.freq);
   g_pLogFile->ftextOut("  channels: %d<br>", AudioSpec.channels);
   g_pLogFile->ftextOut("  audio buffer size: %d<br>", AudioSpec.size);
+  switch( AudioSpec.format )
+  {
+	case AUDIO_U8:
+		g_pLogFile->ftextOut("  format: AUDIO_U8<br>" );	
+		break;
+	case AUDIO_S8:
+		g_pLogFile->ftextOut("  format: AUDIO_S8<br>" );	
+		break;
+	case AUDIO_U16:
+		g_pLogFile->ftextOut("  format: AUDIO_U16<br>" );	
+		break;
+	case AUDIO_S16:
+		g_pLogFile->ftextOut("  format: AUDIO_S16<br>" );	
+		break;
+	default:
+		g_pLogFile->ftextOut("  format: UNKNOWN %d<br>", AudioSpec.format );
+  }
   g_pLogFile->ftextOut("Using audio driver: %s<br>", SDL_AudioDriverName(name, 32));
+
+
 
   m_mixing_channels = 7;
 
@@ -474,7 +493,7 @@ void CSound::setSoundmode(int freq, bool stereo)
 		AudioSpec.freq = freq;
 		break;
 	default:
-		AudioSpec.freq = 44000;
+		AudioSpec.freq = 44100;
 	}
 }
 
