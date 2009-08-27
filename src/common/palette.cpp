@@ -55,7 +55,7 @@ void pal_init()
 	configPalette(14, 0, 0xfc,0xfc,0x54);
 	configPalette(15, 0, 0xfc,0xfc,0xfc);
 
-	configPalette(0, 1, 0x00,0x00,0x00);
+	configPalette(0, 1, 0x01,0x00,0x00);
 	configPalette(1, 1, 0x00,0x00,0x00);
 	configPalette(2, 1, 0x00,0x00,0x00);
 	configPalette(3, 1, 0x00,0x00,0x00);
@@ -76,8 +76,8 @@ void pal_init()
   // (all black in the graphics is mapped to 16, then the border around
   // the screen is the only thing left at color 0, so we can change 0's
   // palette to change the border color)
-  configPalette(16, 0, 0x00,0x00,0x00);
-  configPalette(16, 1, 0x00,0x00,0x00);
+  configPalette(16, 0, 0x01,0x00,0x00);
+  configPalette(16, 1, 0x01,0x00,0x00);
 
   palette_ncolors = 17;
 }

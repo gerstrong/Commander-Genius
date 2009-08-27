@@ -419,6 +419,7 @@ void CVideoDriver::pal_set(short colour, Uint8 red, Uint8 green, Uint8 blue)
 // applies all changes to the palette made with pal_set
 void CVideoDriver::pal_apply(void)
 {
+
   SDL_SetColors(screen, (SDL_Color *) &MyPalette, 0, 256);
   SDL_SetColors(ScrollSurface, (SDL_Color *) &MyPalette, 0, 256);
   if (blitsurface_alloc)
