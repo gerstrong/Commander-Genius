@@ -1,18 +1,22 @@
 Here are the features that I still want to implement:
 -----------------------------------------------------
+until 0.3.5:
+- Read all the text out of EXE-files. This should provide better support for mods!
+- Improve the logic of Keen.exe reading for a better mod compatibility
+- improve the physics using floats
 
 until 0.4:
 - Improve the graphics of CG using SDL_BLit instead of arrays (CGfxEngine)
-- Read all the text out of EXE-files. This should provide better support for mods!
 - New Games Menu. Should run without the need of an episode!
-- Improve the logic of Keen.exe reading for a better mod compatibility
 - Implement a better Audio Controls. Volume, mute, etc.
-- improve the physics using floats
 - Ubuntu debs
 - Commander Keen 4-6
 
 until 0.5:
 - OpenGL new effects
 - Maybe Keen Dreams
-- No more plans for now!
+- Well functioning 2-Player support, and maybe 3 and/or 4 Player support.
 
+until 0.6:
+- Level Editor for all Keen Games built in.
+- Tools for mod creation using Commander Genius.

@@ -4,6 +4,8 @@
 *              (CloneKeenPlus)               *
 *                                            *
 *    (c)2008-2009            Gerstrong       *
+*    (c)2009                 Albert          *
+*    (c)2009                 pizza2004       *
 *    (c)2009                 Pickle          *
 *    (c)2009                 Tulip           *
 *    (c)2009                 DaVince         *
@@ -31,11 +33,11 @@ however there are also a number of improvements like:
 - MMX Support
 - OpenGL Acceleration (through Hardware on some systems)
 - better graphic effects (transparency, fading)
-- 2-player support (still incomplete)
-- high quality packs (for better sounds and music)
-- games menu
-- gamepad support (Assing your input devices as you want)
-- patch system for mods (WIP)
+- 2-player support (still very incomplete)
+- high quality packs (for better and more sounds and ingame music)
+- games menu that allows choosing which one to play
+- gamepad support (for using your input devices as you want)
+- built in patch system for mods (WIP)
 - better logics like keystacking
 
 and much more!
@@ -61,12 +63,14 @@ credit to the original authors.
 Setting up the data of the game:
 
  * Copy all of the data files from the original game(s) into the
-   "./data" folder. This means all of the files with the extension
+   "./data/data" folder. This means all of the files with the extension
    .ck?. If you have the registered versions, you can play the whole game,
    otherwise download the shareware version and copy the data from it.
-   You also can use mods.
+   You also can use mods.  In Macintosh you can find this folder by right
+   clicking on the game and clicking open package then going into resources.
  * If you want to use some patched mods, you can put them into subdirectories.
-   You only have to modify the "games.cfg". 
+   You only have to modify the "games.cfg" which can be found in the
+   "./data/data" folder along with the Keen 1 files. 
  * Go into the Release folder and start the interpreter. If you have downloaded 
    the binary version of Commander Genius (for Windows, Linux32/64), then you 
    will find the executable in the root directory of the extracted game.
@@ -74,7 +78,9 @@ Setting up the data of the game:
  * If you want better sounds and music, please download the high quality pack (HQP).
    Extract its contents to the "data" directory together with your game data.
  * If your monitor and graphic card support a special resolution, you can add it by
-   modifying "resolutions.cfg" with your favorite text-editor
+   modifying "resolutions.cfg" with your favorite text-editor, it can be found in the
+   "./data" folder and you simply have to add in resolutions as "width"x"height"x"depth"
+   (depth should always be 32 in the case of a computer).
  
 Howto use Commander Genius (If you didn't compile it):
  * Go to the game directory.
@@ -120,7 +126,7 @@ responsabilities if you use a wrong configuration. If you want to see other reso
 in future versions of CG, mail us ;-).
 
 - GAME PLAY -
-Before you play the game, you should take a look at the controls. Normally RAlt, Ctrl, Space and Enter
+Before you play the game, you should take a look at the controls. Normally LAlt, Ctrl, Space and Enter
 are the action keys. You can also assign joystick buttons and axes to those actions.
 
 There are some keys, which cannot be changed and are part of the game
@@ -196,7 +202,7 @@ Commander Spleen
 Napalm (More Keen Data Structure Information)
 Malvineous
 Hans de Goede
-Levelass (Keen EXE-Information)
+Levellass (Keen EXE-Information)
 ZidaneA (For his music tracks!)
 Iv4n
 
