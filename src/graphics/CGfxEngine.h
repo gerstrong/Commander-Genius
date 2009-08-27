@@ -22,6 +22,8 @@ public:
 	CGfxEngine();
 	virtual ~CGfxEngine();
 
+	void setColorPalettes(SDL_Color *Palette);
+
 	CFont Font;
 };
 

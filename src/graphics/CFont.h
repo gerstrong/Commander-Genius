@@ -25,6 +25,9 @@ public:
 	bool CreateSurface(SDL_Color *Palette, Uint32 Flags);
 	SDL_Surface *getSDLSurface();
 
+	void setColorPalette(SDL_Color *Palette);
+
+	void generateGlowFonts();
 	void generateSpecialTwirls();
 
 	void drawTwirl(SDL_Surface* dst, int twirlframe, Uint16 x, Uint16 y);

@@ -237,8 +237,8 @@ int floor;
               objects[o].ai.walker.walkdir = RIGHT;
               objects[o].sprite = WALKER_WALK_RIGHT + objects[o].ai.walker.walkframe;
               SetAllCanSupportPlayer(o, 0);
-              objects[o].x += (1<<CSF);
               objects[o].y += (1<<CSF);
+              objects[o].x += (2<<CSF);
               common_enemy_ai(o);
            }
            else if (objects[o].blockedd)
@@ -357,7 +357,7 @@ int floor;
    // then turns to walk down. in this case we need to go into a falling
    // state and fall until we reach solid ground again. this keeps it from
    // freaking out and going flying across the screen.
-   if (!objects[o].blockedl && !objects[o].blockedr &&\
+   if (!objects[o].blockedl && !objects[o].blockedr &&
        !objects[o].blockedu && !objects[o].blockedd)
    {
        if (objects[o].ai.walker.state!=WALKER_FALLING)

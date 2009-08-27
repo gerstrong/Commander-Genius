@@ -15,3 +15,9 @@ CGfxEngine::CGfxEngine() {
 CGfxEngine::~CGfxEngine() {
 	// TODO Auto-generated destructor stub
 }
+
+// Needed when the fade effect is called.
+void CGfxEngine::setColorPalettes(SDL_Color *Palette)
+{
+	Font.setColorPalette(Palette);
+}
