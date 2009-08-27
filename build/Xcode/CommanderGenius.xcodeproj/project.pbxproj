@@ -188,7 +188,6 @@
 		6350FB3910449E2B00A992D5 /* readme.txt in Copy Text Files */ = {isa = PBXBuildFile; fileRef = 6350FB0B10449DAA00A992D5 /* readme.txt */; };
 		637642201045E091003D2FAD /* CFont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6376421C1045E091003D2FAD /* CFont.cpp */; };
 		637642211045E091003D2FAD /* CGfxEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6376421E1045E091003D2FAD /* CGfxEngine.cpp */; };
-		6376470110472F1A003D2FAD /* data in Copy Text Files */ = {isa = PBXBuildFile; fileRef = 6376470010472F19003D2FAD /* data */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -243,7 +242,7 @@
 		6350FA7E104490F300A992D5 /* Copy Keen 1 Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = data/games/EP1;
+			dstPath = data/data/EP1;
 			dstSubfolderSpec = 7;
 			files = (
 				6350FA42104490B600A992D5 /* EGAHEAD.CK1 in Copy Keen 1 Files */,
@@ -289,7 +288,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
-				6376470110472F1A003D2FAD /* data in Copy Text Files */,
 				6350FB3710449E2B00A992D5 /* changelog.txt in Copy Text Files */,
 				6350FB3810449E2B00A992D5 /* future.txt in Copy Text Files */,
 				6350FB3910449E2B00A992D5 /* readme.txt in Copy Text Files */,
@@ -300,7 +298,7 @@
 		637646B71047233A003D2FAD /* Copy Games Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = data/games;
+			dstPath = data/data;
 			dstSubfolderSpec = 7;
 			files = (
 				6350FA47104490B600A992D5 /* games.cfg in Copy Games Files */,
@@ -605,7 +603,6 @@
 		6376421D1045E091003D2FAD /* CFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CFont.h; path = ../../src/graphics/CFont.h; sourceTree = SOURCE_ROOT; };
 		6376421E1045E091003D2FAD /* CGfxEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CGfxEngine.cpp; path = ../../src/graphics/CGfxEngine.cpp; sourceTree = SOURCE_ROOT; };
 		6376421F1045E091003D2FAD /* CGfxEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CGfxEngine.h; path = ../../src/graphics/CGfxEngine.h; sourceTree = SOURCE_ROOT; };
-		6376470010472F19003D2FAD /* data */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = data; sourceTree = SOURCE_ROOT; };
 		8D0C4E960486CD37000505A6 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -803,7 +800,6 @@
 				23C637E2103181D700FEEFEE /* icecannon.h */,
 				23C637E3103181D700FEEFEE /* se.h */,
 				2321F1AF101DA0CE00510514 /* baby.h */,
-				6376470010472F19003D2FAD /* data */,
 				235756C7101BE31A00275638 /* vortelite.cpp */,
 				235756C8101BE31A00275638 /* vortelite.h */,
 				23D3E9751013ABC9001643FA /* baby.cpp */,
@@ -1043,7 +1039,7 @@
 			children = (
 				6350F7A21044797300A992D5 /* cglogo512.png */,
 				6350F7A31044797300A992D5 /* controls.dat */,
-				6350F7A41044797300A992D5 /* games */,
+				6350F7A41044797300A992D5 /* data */,
 				6350F7C81044797300A992D5 /* demo.dat */,
 				6350F7C91044797300A992D5 /* ep1attr.dat */,
 				6350F7CA1044797300A992D5 /* ep1demo1.dat */,
@@ -1073,7 +1069,7 @@
 			path = ../../data;
 			sourceTree = "<group>";
 		};
-		6350F7A41044797300A992D5 /* games */ = {
+		6350F7A41044797300A992D5 /* data */ = {
 			isa = PBXGroup;
 			children = (
 				637646A810472253003D2FAD /* EP1 */,
@@ -1081,7 +1077,7 @@
 				6350F7C41044797300A992D5 /* renlower.sh */,
 			);
 			includeInIndex = 1;
-			path = games;
+			path = data;
 			sourceTree = "<group>";
 		};
 		637646A810472253003D2FAD /* EP1 */ = {
