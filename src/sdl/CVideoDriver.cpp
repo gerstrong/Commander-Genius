@@ -64,7 +64,7 @@ CVideoDriver::CVideoDriver() {
 	  m_targetfps = 50;	// Enable automatic frameskipping by default at 30
 #else
 	  m_Resolution.width=640;
-	  m_Resolution.height=480;
+	  m_Resolution.height=400;
 	  m_Resolution.depth=0;
 	  Mode=0;
 	  Fullscreen=false;
@@ -155,7 +155,7 @@ void CVideoDriver::initResolutionList()
 		resolution.height = 240;
 #else
 		resolution.width = 640;
-		resolution.height = 480;
+		resolution.height = 400;
 		resolution.depth = 32;
 		m_Resolutionlist.push_back(resolution);
 #endif
@@ -167,7 +167,7 @@ void CVideoDriver::initResolutionList()
 #ifdef WIZ
 	setMode(320, 240, 16);
 #else
-	setMode(640, 480, 32);
+	setMode(640, 400, 32);
 #endif
 }
 

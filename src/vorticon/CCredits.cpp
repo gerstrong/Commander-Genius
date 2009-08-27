@@ -22,11 +22,11 @@ CCredits::~CCredits() {
 
 void CCredits::Render(stCloneKeenPlus *pCKP)
 {
-	int mid[51];
-	char scrolltext[51][80];
+	int mid[52];
+	char scrolltext[52][80];
 	unsigned char pagenumber = 0;
 	int timer = 8;
-	int scrolly = -51*8;
+	int scrolly = -52*8;
 	bool cancel = false;
 
 	fade(FADE_IN, FADE_NORM);
@@ -78,48 +78,49 @@ void CCredits::Render(stCloneKeenPlus *pCKP)
 					strcpy(scrolltext[22],"Main Developers:");
 					strcpy(scrolltext[23],"         Gerstrong");
 					strcpy(scrolltext[24],"         Albert Zeyer");
-					strcpy(scrolltext[25],"Handheld Devices (Wiz):");
-					strcpy(scrolltext[26],"         Pickle");
-					strcpy(scrolltext[27],"Resources:");
-					strcpy(scrolltext[28],"         Tulip");
-					strcpy(scrolltext[29],"         DaVince");
-					strcpy(scrolltext[30],"");
+					strcpy(scrolltext[25],"			pizza2004");
+					strcpy(scrolltext[26],"Handheld Devices (Wiz):");
+					strcpy(scrolltext[27],"         Pickle");
+					strcpy(scrolltext[28],"Resources:");
+					strcpy(scrolltext[29],"         Tulip");
+					strcpy(scrolltext[30],"         DaVince");
 					strcpy(scrolltext[31],"");
-					strcpy(scrolltext[32],"\"As a child, I spent way too");
-					strcpy(scrolltext[33],"much time playing these games.");
-					strcpy(scrolltext[34],"Thanks to ID Software");
-					strcpy(scrolltext[35],"for the wonderful");
-					strcpy(scrolltext[36],"\"Commander Keen\" series.");
-					strcpy(scrolltext[37],"");
-					strcpy(scrolltext[38],"And now I have spent way");
-					strcpy(scrolltext[39],"too much time programming");
-					strcpy(scrolltext[40],"this game.");
-					strcpy(scrolltext[41],"");
-					strcpy(scrolltext[42],"...");
-					strcpy(scrolltext[43],"Hmmm... Does history repeat itself?");
-					strcpy(scrolltext[44],":)");
-					strcpy(scrolltext[45],"");
-					strcpy(scrolltext[46],"This is my tribute to");
-					strcpy(scrolltext[47],"the \"Keen legacy\".");
-					strcpy(scrolltext[48],"");
-					strcpy(scrolltext[49],"Enjoy the Game.\"");
-					strcpy(scrolltext[50],"               -Katy");
+					strcpy(scrolltext[32],"");
+					strcpy(scrolltext[33],"\"As a child, I spent way too");
+					strcpy(scrolltext[34],"much time playing these games.");
+					strcpy(scrolltext[35],"Thanks to ID Software");
+					strcpy(scrolltext[36],"for the wonderful");
+					strcpy(scrolltext[37],"\"Commander Keen\" series.");
+					strcpy(scrolltext[38],"");
+					strcpy(scrolltext[39],"And now I have spent way");
+					strcpy(scrolltext[40],"too much time programming");
+					strcpy(scrolltext[41],"this game.");
+					strcpy(scrolltext[42],"");
+					strcpy(scrolltext[43],"...");
+					strcpy(scrolltext[44],"Hmmm... Does history repeat itself?");
+					strcpy(scrolltext[45],":)");
+					strcpy(scrolltext[46],"");
+					strcpy(scrolltext[47],"This is my tribute to");
+					strcpy(scrolltext[48],"the \"Keen legacy\".");
+					strcpy(scrolltext[49],"");
+					strcpy(scrolltext[50],"Enjoy the Game.\"");
+					strcpy(scrolltext[51],"               -Katy");
 					break;
 
 				default: cancel = true; break;
 				}
 
-				for(int j=0 ; j<51 ; j++)
+				for(int j=0 ; j<52 ; j++)
 					mid[j] = (320-(strlen(scrolltext[j])<<3))>>1;
 				pagenumber++;
 			}
 		}
 
-		for(int j=0 ; j<51 ; j++)
+		for(int j=0 ; j<52 ; j++)
 			if(scrolly+(j<<3) > -8 && scrolly+(j<<3) < 200)
 				g_pGraphics->sb_font_draw_inverse( scrolltext[j], mid[j], scrolly+(j<<3));
 
-		if( g_pInput->getPressedAnyCommand() )
+		if( g_pInput->getPressedAnyKey() )
 		{
 			cancel = true;
 			fade(FADE_OUT, FADE_NORM);

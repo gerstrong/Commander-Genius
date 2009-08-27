@@ -232,7 +232,7 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 
 		if(g_pInput->getPressedKey(KF1))
 			showF1HelpText(pCKP->Control.levelcontrol.episode, pCKP->Resources.GameDataDirectory);
-		else if(g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP))
+		else if(g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedKey(KENTER))
 			break;
 		MainMenu->render();
 	} while(!g_pInput->getExitEvent());
@@ -1034,7 +1034,7 @@ int boxtimer;
 				  g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_POGO);
 		  if (enter)
 			  break;
-		  if (g_pInput->getPressedCommand(KQUIT))
+		  if (g_pInput->getPressedKey(KQUIT))
 			  return;
 
 		  g_pInput->pollEvents();

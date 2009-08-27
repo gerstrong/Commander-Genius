@@ -28,6 +28,7 @@ CDialog::CDialog(Uint16 x, Uint16 y, Uint16 w, Uint16 h)
 	m_selected_ID = 0;
 	m_switch = 0;
 	m_scroll = 0;
+	m_count = 0;
 
 	m_Frame = NULL;
 }
@@ -193,22 +194,42 @@ void CDialog::renderTwirl()
 		if(m_switch == 1)
 		{
 			m_selected_ID = 0;
-			m_switch = 0;
-			m_twirl.posy = m_dlgobject[m_selected_ID]->m_y;
+			if(m_count == 3)
+			{
+				m_switch = 0;
+				m_twirl.posy = m_dlgobject[m_selected_ID]->m_y;
+				m_count = 0;
+			}
+			else m_count++;
+		}
+		else if(m_twirl.posy-m_dlgobject[m_selected_ID]->m_y > 8)
+		{
+			m_twirl.posy = m_twirl.posy-2;
 		}
 		else
-		m_twirl.posy--;
+			m_twirl.posy--;
+		
 	}
 	else if(m_dlgobject[m_selected_ID]->m_y > m_twirl.posy or m_switch == 2)
 	{
 		if(m_switch == 2)
 		{
 			m_selected_ID = m_dlgobject.size()-1;
-			m_switch = 0;
-			m_twirl.posy = m_dlgobject[m_selected_ID]->m_y;
+			if(m_count == 3)
+			{
+				m_switch = 0;
+				m_twirl.posy = m_dlgobject[m_selected_ID]->m_y;
+				m_count=0;
+			}
+			else m_count++;
+		}
+		else if(m_dlgobject[m_selected_ID]->m_y-m_twirl.posy > 8)
+		{
+			m_twirl.posy = m_twirl.posy+2;
 		}
 		else
-		m_twirl.posy++;
+			m_twirl.posy++;
+		
 	}
 
 	/*g_pGraphics->drawCharacter(m_dlgobject[m_selected_ID]->m_x,

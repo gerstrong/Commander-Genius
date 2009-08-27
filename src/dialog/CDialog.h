@@ -36,6 +36,7 @@ private:
 	Uint8 m_selected_ID;
 	Uint8 m_switch;
 	Uint8 m_scroll;
+	Uint8 m_count;
 
 	CDlgFrame *m_Frame;
 

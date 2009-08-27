@@ -425,7 +425,7 @@ int o,x;
       default:
 		   pal_fade(20);
            g_pLogFile->ftextOut(PURPLE,"unknown enemy type %d at (%d,%d)<br>", t, curmapx, curmapy);
-           //while(g_pInput->getPressedCommand(KENTER));
+           //while(g_pInput->getPressedKey(KENTER));
 
            break;
       }

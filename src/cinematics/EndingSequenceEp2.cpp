@@ -220,7 +220,7 @@ int state, timer, spawnedcount=0;
 	  return 0;
 	}
 
-	enter = (g_pInput->getPressedCommand(KENTER) || g_pInput->getPressedCommand(KCTRL) || g_pInput->getPressedCommand(KALT) );
+	enter = (g_pInput->getPressedKey(KENTER) || g_pInput->getPressedKey(KCTRL) || g_pInput->getPressedKey(KALT) );
 	if (enter && state==TAN_STATE_GAMEOVER)
 	{
 	  //if (fade.dir!=FADE_OUT)
@@ -240,7 +240,7 @@ int state, timer, spawnedcount=0;
 	g_pInput->pollEvents();
 
 	  gamedo_RenderScreen();
-    } while(!g_pInput->getPressedCommand(KQUIT));
+    } while(!g_pInput->getPressedKey(KQUIT));
   delete_object(find_next_object(OBJ_EGA_BITMAP));
   return 1;
 }
@@ -321,7 +321,7 @@ int x,y,w,h;
 
     	 gamedo_RenderScreen();
 
-  } while(!g_pInput->getPressedCommand(KQUIT) && vibratetimes < VIBRATE_NUM_FRAMES);
+  } while(!g_pInput->getPressedKey(KQUIT) && vibratetimes < VIBRATE_NUM_FRAMES);
 
   // display the "uh-oh."
   x = GetStringAttribute("EP2_AfterVibrateString", "LEFT");
@@ -446,7 +446,7 @@ int afterfadewaittimer;
 	  else afterfadewaittimer++;
 	//}
 
-	enter = (g_pInput->getPressedCommand(KENTER)||g_pInput->getPressedCommand(KCTRL)||g_pInput->getPressedCommand(KALT));
+	enter = (g_pInput->getPressedKey(KENTER)||g_pInput->getPressedKey(KCTRL)||g_pInput->getPressedKey(KALT));
 	if (enter && !lastenterstate)
 	{
 	  /*if (fade.dir!=FADE_OUT)
@@ -466,7 +466,7 @@ int afterfadewaittimer;
 	g_pInput->pollEvents();
 
 	  gamedo_RenderScreen();
-  } while(!g_pInput->getPressedCommand(KQUIT));
+  } while(!g_pInput->getPressedKey(KQUIT));
   return 1;
 }
 
@@ -556,7 +556,7 @@ int afterfadewaittimer = 0;
 	  else afterfadewaittimer++;
 	//}
 
-	enter = (g_pInput->getPressedCommand(KENTER)||g_pInput->getPressedCommand(KCTRL)||g_pInput->getPressedCommand(KALT));
+	enter = (g_pInput->getPressedKey(KENTER)||g_pInput->getPressedKey(KCTRL)||g_pInput->getPressedKey(KALT));
 	if (enter && !lastenterstate)
 	{
 	  /*if (fade.dir!=FADE_OUT)
@@ -576,7 +576,7 @@ int afterfadewaittimer = 0;
 
     gamedo_RenderScreen();
 
-  } while(!g_pInput->getPressedCommand(KQUIT));
+  } while(!g_pInput->getPressedKey(KQUIT));
   return 1;
 }
 
@@ -618,7 +618,7 @@ int dlgX, dlgY, dlgW, dlgH;
      if (lastpage==1) break;
 
      curpage++;
-  } while(!g_pInput->getPressedCommand(KQUIT));
+  } while(!g_pInput->getPressedKey(KQUIT));
 
   finale_draw("finale.ck2", pCKP->Resources.GameDataDirectory);
   eseq_ToBeContinued();

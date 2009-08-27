@@ -33,6 +33,7 @@ private:
 	unsigned char	m_Depth;
 	unsigned char	m_ScaleX;
 	unsigned int	m_texparam;
+	float	m_aspectratio;
 };
 
 #endif

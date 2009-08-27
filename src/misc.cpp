@@ -194,7 +194,7 @@ bool showGameHint(int mpx, int mpy, int episode, int level)
     	g_pInput->pollEvents();
 	InfoTextWindow->render();
     	g_pVideoDriver->update_screen();
-    } while(!g_pInput->getPressedAnyCommand());
+    } while(!g_pInput->getPressedKey(KENTER));
 
     delete InfoTextWindow;
     return true;
@@ -1046,7 +1046,7 @@ void showTextMB(const std::string& Text)
 		g_pInput->pollEvents();
 		InfoTextWindow->render();
 		g_pVideoDriver->update_screen();
-    } while(!g_pInput->getPressedAnyCommand());
+    } while(!g_pInput->getPressedAnyKey());
 
     delete InfoTextWindow;
 }

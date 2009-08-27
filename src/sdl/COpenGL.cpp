@@ -27,12 +27,18 @@ bool COpenGL::initGL(unsigned Width, unsigned Height, unsigned char Depth,
 {
 	m_Depth = Depth;
 	m_ScaleX = scalex;
+	m_aspectratio = Width/Height;
 	//m_texparam = GL_TEXTURE_RECTANGLE_ARB;
 	m_texparam = GL_TEXTURE_2D;
 
 	// Set the proper resolution for OpenGL. Very important, when user changes the resolution
 	if(aspect)
-		glViewport(0,(Height-(Height*200)/240)/2,Width, (Height*200)/240);
+	{
+		if(m_aspectratio < 8.0f/5.0f)
+		glViewport(0,(Height-((Width/320)*200))/2,Width, (Width/320)*200);
+		if(m_aspectratio > 8.0f/5.0f)
+		glViewport((Width-((Height/200)*320))/2,0, (Height/200)*320, Height);
+	}
 	else
 		glViewport(0,0,Width, Height);
 
