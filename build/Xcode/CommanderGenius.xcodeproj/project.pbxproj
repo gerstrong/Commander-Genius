@@ -123,71 +123,72 @@
 		6350F77E1044784900A992D5 /* CDlgOptionText.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6350F7781044784900A992D5 /* CDlgOptionText.cpp */; };
 		6350F77F1044784900A992D5 /* CTextViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6350F77A1044784900A992D5 /* CTextViewer.cpp */; };
 		6350F7821044785600A992D5 /* CSavedGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6350F7801044785600A992D5 /* CSavedGame.cpp */; };
-		6350FA40104490B600A992D5 /* cglogo512.png in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7A21044797300A992D5 /* cglogo512.png */; };
-		6350FA41104490B600A992D5 /* controls.dat in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7A31044797300A992D5 /* controls.dat */; };
-		6350FA42104490B600A992D5 /* EGAHEAD.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7A51044797300A992D5 /* EGAHEAD.CK1 */; };
-		6350FA43104490B600A992D5 /* EGALATCH.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7A61044797300A992D5 /* EGALATCH.CK1 */; };
-		6350FA44104490B600A992D5 /* EGASPRIT.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7A71044797300A992D5 /* EGASPRIT.CK1 */; };
-		6350FA45104490B600A992D5 /* ENDTEXT.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7A81044797300A992D5 /* ENDTEXT.CK1 */; };
-		6350FA46104490B600A992D5 /* FINALE.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7A91044797300A992D5 /* FINALE.CK1 */; };
-		6350FA47104490B600A992D5 /* games.cfg in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7AA1044797300A992D5 /* games.cfg */; };
-		6350FA48104490B600A992D5 /* HELPTEXT.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7AB1044797300A992D5 /* HELPTEXT.CK1 */; };
-		6350FA49104490B600A992D5 /* KEEN1.EXE in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7AC1044797300A992D5 /* KEEN1.EXE */; };
-		6350FA4A104490B600A992D5 /* LEVEL01.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7AD1044797300A992D5 /* LEVEL01.CK1 */; };
-		6350FA4B104490B600A992D5 /* LEVEL02.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7AE1044797300A992D5 /* LEVEL02.CK1 */; };
-		6350FA4C104490B600A992D5 /* LEVEL03.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7AF1044797300A992D5 /* LEVEL03.CK1 */; };
-		6350FA4D104490B600A992D5 /* LEVEL04.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7B01044797300A992D5 /* LEVEL04.CK1 */; };
-		6350FA4E104490B600A992D5 /* LEVEL05.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7B11044797300A992D5 /* LEVEL05.CK1 */; };
-		6350FA4F104490B600A992D5 /* LEVEL06.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7B21044797300A992D5 /* LEVEL06.CK1 */; };
-		6350FA50104490B600A992D5 /* LEVEL07.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7B31044797300A992D5 /* LEVEL07.CK1 */; };
-		6350FA51104490B600A992D5 /* LEVEL08.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7B41044797300A992D5 /* LEVEL08.CK1 */; };
-		6350FA52104490B600A992D5 /* LEVEL09.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7B51044797300A992D5 /* LEVEL09.CK1 */; };
-		6350FA53104490B600A992D5 /* LEVEL10.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7B61044797300A992D5 /* LEVEL10.CK1 */; };
-		6350FA54104490B600A992D5 /* LEVEL11.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7B71044797300A992D5 /* LEVEL11.CK1 */; };
-		6350FA55104490B600A992D5 /* LEVEL12.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7B81044797300A992D5 /* LEVEL12.CK1 */; };
-		6350FA56104490B600A992D5 /* LEVEL13.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7B91044797300A992D5 /* LEVEL13.CK1 */; };
-		6350FA57104490B600A992D5 /* LEVEL14.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7BA1044797300A992D5 /* LEVEL14.CK1 */; };
-		6350FA58104490B600A992D5 /* LEVEL15.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7BB1044797300A992D5 /* LEVEL15.CK1 */; };
-		6350FA59104490B600A992D5 /* LEVEL16.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7BC1044797300A992D5 /* LEVEL16.CK1 */; };
-		6350FA5A104490B600A992D5 /* LEVEL80.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7BD1044797300A992D5 /* LEVEL80.CK1 */; };
-		6350FA5B104490B600A992D5 /* LEVEL81.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7BE1044797300A992D5 /* LEVEL81.CK1 */; };
-		6350FA5C104490B600A992D5 /* LEVEL90.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7BF1044797300A992D5 /* LEVEL90.CK1 */; };
-		6350FA5D104490B600A992D5 /* ORDER.FRM in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7C01044797300A992D5 /* ORDER.FRM */; };
-		6350FA5E104490B600A992D5 /* PREVIEW2.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7C11044797300A992D5 /* PREVIEW2.CK1 */; };
-		6350FA5F104490B600A992D5 /* PREVIEW3.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7C21044797300A992D5 /* PREVIEW3.CK1 */; };
-		6350FA60104490B600A992D5 /* PREVIEWS.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7C31044797300A992D5 /* PREVIEWS.CK1 */; };
-		6350FA61104490B600A992D5 /* renlower.sh in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7C41044797300A992D5 /* renlower.sh */; };
-		6350FA62104490B600A992D5 /* SOUNDS.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7C51044797300A992D5 /* SOUNDS.CK1 */; };
-		6350FA63104490B600A992D5 /* STORYTXT.CK1 in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7C61044797300A992D5 /* STORYTXT.CK1 */; };
-		6350FA64104490B600A992D5 /* VENDOR.DOC in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7C71044797300A992D5 /* VENDOR.DOC */; };
-		6350FA65104490B600A992D5 /* demo.dat in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C81044797300A992D5 /* demo.dat */; };
-		6350FA66104490B600A992D5 /* ep1attr.dat in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C91044797300A992D5 /* ep1attr.dat */; };
-		6350FA67104490B600A992D5 /* ep1demo1.dat in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7CA1044797300A992D5 /* ep1demo1.dat */; };
-		6350FA68104490B600A992D5 /* ep1demo2.dat in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7CB1044797300A992D5 /* ep1demo2.dat */; };
-		6350FA69104490B600A992D5 /* EP1DEMO3.dat in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7CC1044797300A992D5 /* EP1DEMO3.dat */; };
-		6350FA6A104490B600A992D5 /* ep1save1.dat in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7CD1044797300A992D5 /* ep1save1.dat */; };
-		6350FA6B104490B600A992D5 /* ep1save2.dat in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7CE1044797300A992D5 /* ep1save2.dat */; };
-		6350FA6C104490B600A992D5 /* ep1save3.dat in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7CF1044797300A992D5 /* ep1save3.dat */; };
-		6350FA6D104490B600A992D5 /* ep1save5.dat in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7D01044797300A992D5 /* ep1save5.dat */; };
-		6350FA6E104490B600A992D5 /* ep1save8.dat in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7D11044797300A992D5 /* ep1save8.dat */; };
-		6350FA6F104490B600A992D5 /* ep2attr.dat in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7D21044797300A992D5 /* ep2attr.dat */; };
-		6350FA70104490B600A992D5 /* EP2DEMO1.DAT in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7D31044797300A992D5 /* EP2DEMO1.DAT */; };
-		6350FA71104490B600A992D5 /* ep2demo2.dat in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7D41044797300A992D5 /* ep2demo2.dat */; };
-		6350FA72104490B600A992D5 /* ep2demo3.dat in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7D51044797300A992D5 /* ep2demo3.dat */; };
-		6350FA73104490B600A992D5 /* ep2save1.dat in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7D61044797300A992D5 /* ep2save1.dat */; };
-		6350FA74104490B600A992D5 /* ep3attr.dat in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7D71044797300A992D5 /* ep3attr.dat */; };
-		6350FA75104490B600A992D5 /* EP3DEMO1.DAT in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7D81044797300A992D5 /* EP3DEMO1.DAT */; };
-		6350FA76104490B600A992D5 /* ep3demo2.dat in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7D91044797300A992D5 /* ep3demo2.dat */; };
-		6350FA77104490B600A992D5 /* ep3demo3.dat in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7DA1044797300A992D5 /* ep3demo3.dat */; };
-		6350FA78104490B600A992D5 /* EP3DEMO4.DAT in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7DB1044797300A992D5 /* EP3DEMO4.DAT */; };
-		6350FA79104490B600A992D5 /* ep3save6.dat in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7DC1044797300A992D5 /* ep3save6.dat */; };
-		6350FA7A104490B600A992D5 /* resolutions.cfg in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7DD1044797300A992D5 /* resolutions.cfg */; };
-		6350FA7B104490B600A992D5 /* strings.dat in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7DE1044797300A992D5 /* strings.dat */; };
+		6350FA40104490B600A992D5 /* cglogo512.png in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7A21044797300A992D5 /* cglogo512.png */; };
+		6350FA41104490B600A992D5 /* controls.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7A31044797300A992D5 /* controls.dat */; };
+		6350FA42104490B600A992D5 /* EGAHEAD.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7A51044797300A992D5 /* EGAHEAD.CK1 */; };
+		6350FA43104490B600A992D5 /* EGALATCH.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7A61044797300A992D5 /* EGALATCH.CK1 */; };
+		6350FA44104490B600A992D5 /* EGASPRIT.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7A71044797300A992D5 /* EGASPRIT.CK1 */; };
+		6350FA45104490B600A992D5 /* ENDTEXT.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7A81044797300A992D5 /* ENDTEXT.CK1 */; };
+		6350FA46104490B600A992D5 /* FINALE.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7A91044797300A992D5 /* FINALE.CK1 */; };
+		6350FA47104490B600A992D5 /* games.cfg in Copy Games Files */ = {isa = PBXBuildFile; fileRef = 6350F7AA1044797300A992D5 /* games.cfg */; };
+		6350FA48104490B600A992D5 /* HELPTEXT.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7AB1044797300A992D5 /* HELPTEXT.CK1 */; };
+		6350FA49104490B600A992D5 /* KEEN1.EXE in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7AC1044797300A992D5 /* KEEN1.EXE */; };
+		6350FA4A104490B600A992D5 /* LEVEL01.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7AD1044797300A992D5 /* LEVEL01.CK1 */; };
+		6350FA4B104490B600A992D5 /* LEVEL02.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7AE1044797300A992D5 /* LEVEL02.CK1 */; };
+		6350FA4C104490B600A992D5 /* LEVEL03.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7AF1044797300A992D5 /* LEVEL03.CK1 */; };
+		6350FA4D104490B600A992D5 /* LEVEL04.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7B01044797300A992D5 /* LEVEL04.CK1 */; };
+		6350FA4E104490B600A992D5 /* LEVEL05.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7B11044797300A992D5 /* LEVEL05.CK1 */; };
+		6350FA4F104490B600A992D5 /* LEVEL06.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7B21044797300A992D5 /* LEVEL06.CK1 */; };
+		6350FA50104490B600A992D5 /* LEVEL07.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7B31044797300A992D5 /* LEVEL07.CK1 */; };
+		6350FA51104490B600A992D5 /* LEVEL08.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7B41044797300A992D5 /* LEVEL08.CK1 */; };
+		6350FA52104490B600A992D5 /* LEVEL09.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7B51044797300A992D5 /* LEVEL09.CK1 */; };
+		6350FA53104490B600A992D5 /* LEVEL10.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7B61044797300A992D5 /* LEVEL10.CK1 */; };
+		6350FA54104490B600A992D5 /* LEVEL11.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7B71044797300A992D5 /* LEVEL11.CK1 */; };
+		6350FA55104490B600A992D5 /* LEVEL12.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7B81044797300A992D5 /* LEVEL12.CK1 */; };
+		6350FA56104490B600A992D5 /* LEVEL13.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7B91044797300A992D5 /* LEVEL13.CK1 */; };
+		6350FA57104490B600A992D5 /* LEVEL14.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7BA1044797300A992D5 /* LEVEL14.CK1 */; };
+		6350FA58104490B600A992D5 /* LEVEL15.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7BB1044797300A992D5 /* LEVEL15.CK1 */; };
+		6350FA59104490B600A992D5 /* LEVEL16.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7BC1044797300A992D5 /* LEVEL16.CK1 */; };
+		6350FA5A104490B600A992D5 /* LEVEL80.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7BD1044797300A992D5 /* LEVEL80.CK1 */; };
+		6350FA5B104490B600A992D5 /* LEVEL81.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7BE1044797300A992D5 /* LEVEL81.CK1 */; };
+		6350FA5C104490B600A992D5 /* LEVEL90.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7BF1044797300A992D5 /* LEVEL90.CK1 */; };
+		6350FA5D104490B600A992D5 /* ORDER.FRM in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C01044797300A992D5 /* ORDER.FRM */; };
+		6350FA5E104490B600A992D5 /* PREVIEW2.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C11044797300A992D5 /* PREVIEW2.CK1 */; };
+		6350FA5F104490B600A992D5 /* PREVIEW3.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C21044797300A992D5 /* PREVIEW3.CK1 */; };
+		6350FA60104490B600A992D5 /* PREVIEWS.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C31044797300A992D5 /* PREVIEWS.CK1 */; };
+		6350FA61104490B600A992D5 /* renlower.sh in Copy Games Files */ = {isa = PBXBuildFile; fileRef = 6350F7C41044797300A992D5 /* renlower.sh */; };
+		6350FA62104490B600A992D5 /* SOUNDS.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C51044797300A992D5 /* SOUNDS.CK1 */; };
+		6350FA63104490B600A992D5 /* STORYTXT.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C61044797300A992D5 /* STORYTXT.CK1 */; };
+		6350FA64104490B600A992D5 /* VENDOR.DOC in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C71044797300A992D5 /* VENDOR.DOC */; };
+		6350FA65104490B600A992D5 /* demo.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7C81044797300A992D5 /* demo.dat */; };
+		6350FA66104490B600A992D5 /* ep1attr.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7C91044797300A992D5 /* ep1attr.dat */; };
+		6350FA67104490B600A992D5 /* ep1demo1.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7CA1044797300A992D5 /* ep1demo1.dat */; };
+		6350FA68104490B600A992D5 /* ep1demo2.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7CB1044797300A992D5 /* ep1demo2.dat */; };
+		6350FA69104490B600A992D5 /* EP1DEMO3.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7CC1044797300A992D5 /* EP1DEMO3.dat */; };
+		6350FA6A104490B600A992D5 /* ep1save1.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7CD1044797300A992D5 /* ep1save1.dat */; };
+		6350FA6B104490B600A992D5 /* ep1save2.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7CE1044797300A992D5 /* ep1save2.dat */; };
+		6350FA6C104490B600A992D5 /* ep1save3.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7CF1044797300A992D5 /* ep1save3.dat */; };
+		6350FA6D104490B600A992D5 /* ep1save5.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7D01044797300A992D5 /* ep1save5.dat */; };
+		6350FA6E104490B600A992D5 /* ep1save8.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7D11044797300A992D5 /* ep1save8.dat */; };
+		6350FA6F104490B600A992D5 /* ep2attr.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7D21044797300A992D5 /* ep2attr.dat */; };
+		6350FA70104490B600A992D5 /* EP2DEMO1.DAT in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7D31044797300A992D5 /* EP2DEMO1.DAT */; };
+		6350FA71104490B600A992D5 /* ep2demo2.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7D41044797300A992D5 /* ep2demo2.dat */; };
+		6350FA72104490B600A992D5 /* ep2demo3.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7D51044797300A992D5 /* ep2demo3.dat */; };
+		6350FA73104490B600A992D5 /* ep2save1.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7D61044797300A992D5 /* ep2save1.dat */; };
+		6350FA74104490B600A992D5 /* ep3attr.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7D71044797300A992D5 /* ep3attr.dat */; };
+		6350FA75104490B600A992D5 /* EP3DEMO1.DAT in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7D81044797300A992D5 /* EP3DEMO1.DAT */; };
+		6350FA76104490B600A992D5 /* ep3demo2.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7D91044797300A992D5 /* ep3demo2.dat */; };
+		6350FA77104490B600A992D5 /* ep3demo3.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7DA1044797300A992D5 /* ep3demo3.dat */; };
+		6350FA78104490B600A992D5 /* EP3DEMO4.DAT in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7DB1044797300A992D5 /* EP3DEMO4.DAT */; };
+		6350FA79104490B600A992D5 /* ep3save6.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7DC1044797300A992D5 /* ep3save6.dat */; };
+		6350FA7A104490B600A992D5 /* resolutions.cfg in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7DD1044797300A992D5 /* resolutions.cfg */; };
+		6350FA7B104490B600A992D5 /* strings.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7DE1044797300A992D5 /* strings.dat */; };
 		6350FB3710449E2B00A992D5 /* changelog.txt in Copy Text Files */ = {isa = PBXBuildFile; fileRef = 6350FB0910449DAA00A992D5 /* changelog.txt */; };
 		6350FB3810449E2B00A992D5 /* future.txt in Copy Text Files */ = {isa = PBXBuildFile; fileRef = 6350FB0A10449DAA00A992D5 /* future.txt */; };
 		6350FB3910449E2B00A992D5 /* readme.txt in Copy Text Files */ = {isa = PBXBuildFile; fileRef = 6350FB0B10449DAA00A992D5 /* readme.txt */; };
 		637642201045E091003D2FAD /* CFont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6376421C1045E091003D2FAD /* CFont.cpp */; };
 		637642211045E091003D2FAD /* CGfxEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6376421E1045E091003D2FAD /* CGfxEngine.cpp */; };
+		6376470110472F1A003D2FAD /* data in Copy Text Files */ = {isa = PBXBuildFile; fileRef = 6376470010472F19003D2FAD /* data */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -204,84 +205,82 @@
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6350FA7D104490F300A992D5 /* Copy Keen 1 Files */ = {
+		6350FA7D104490F300A992D5 /* Copy Data Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = data;
 			dstSubfolderSpec = 7;
 			files = (
-				6350FA40104490B600A992D5 /* cglogo512.png in Copy Keen 1 Files */,
-				6350FA41104490B600A992D5 /* controls.dat in Copy Keen 1 Files */,
-				6350FA65104490B600A992D5 /* demo.dat in Copy Keen 1 Files */,
-				6350FA66104490B600A992D5 /* ep1attr.dat in Copy Keen 1 Files */,
-				6350FA67104490B600A992D5 /* ep1demo1.dat in Copy Keen 1 Files */,
-				6350FA68104490B600A992D5 /* ep1demo2.dat in Copy Keen 1 Files */,
-				6350FA69104490B600A992D5 /* EP1DEMO3.dat in Copy Keen 1 Files */,
-				6350FA6A104490B600A992D5 /* ep1save1.dat in Copy Keen 1 Files */,
-				6350FA6B104490B600A992D5 /* ep1save2.dat in Copy Keen 1 Files */,
-				6350FA6C104490B600A992D5 /* ep1save3.dat in Copy Keen 1 Files */,
-				6350FA6D104490B600A992D5 /* ep1save5.dat in Copy Keen 1 Files */,
-				6350FA6E104490B600A992D5 /* ep1save8.dat in Copy Keen 1 Files */,
-				6350FA6F104490B600A992D5 /* ep2attr.dat in Copy Keen 1 Files */,
-				6350FA70104490B600A992D5 /* EP2DEMO1.DAT in Copy Keen 1 Files */,
-				6350FA71104490B600A992D5 /* ep2demo2.dat in Copy Keen 1 Files */,
-				6350FA72104490B600A992D5 /* ep2demo3.dat in Copy Keen 1 Files */,
-				6350FA73104490B600A992D5 /* ep2save1.dat in Copy Keen 1 Files */,
-				6350FA74104490B600A992D5 /* ep3attr.dat in Copy Keen 1 Files */,
-				6350FA75104490B600A992D5 /* EP3DEMO1.DAT in Copy Keen 1 Files */,
-				6350FA76104490B600A992D5 /* ep3demo2.dat in Copy Keen 1 Files */,
-				6350FA77104490B600A992D5 /* ep3demo3.dat in Copy Keen 1 Files */,
-				6350FA78104490B600A992D5 /* EP3DEMO4.DAT in Copy Keen 1 Files */,
-				6350FA79104490B600A992D5 /* ep3save6.dat in Copy Keen 1 Files */,
-				6350FA7A104490B600A992D5 /* resolutions.cfg in Copy Keen 1 Files */,
-				6350FA7B104490B600A992D5 /* strings.dat in Copy Keen 1 Files */,
-			);
-			name = "Copy Keen 1 Files";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		6350FA7E104490F300A992D5 /* Copy Data Files */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = data/data;
-			dstSubfolderSpec = 7;
-			files = (
-				6350FA42104490B600A992D5 /* EGAHEAD.CK1 in Copy Data Files */,
-				6350FA43104490B600A992D5 /* EGALATCH.CK1 in Copy Data Files */,
-				6350FA44104490B600A992D5 /* EGASPRIT.CK1 in Copy Data Files */,
-				6350FA45104490B600A992D5 /* ENDTEXT.CK1 in Copy Data Files */,
-				6350FA46104490B600A992D5 /* FINALE.CK1 in Copy Data Files */,
-				6350FA47104490B600A992D5 /* games.cfg in Copy Data Files */,
-				6350FA48104490B600A992D5 /* HELPTEXT.CK1 in Copy Data Files */,
-				6350FA49104490B600A992D5 /* KEEN1.EXE in Copy Data Files */,
-				6350FA4A104490B600A992D5 /* LEVEL01.CK1 in Copy Data Files */,
-				6350FA4B104490B600A992D5 /* LEVEL02.CK1 in Copy Data Files */,
-				6350FA4C104490B600A992D5 /* LEVEL03.CK1 in Copy Data Files */,
-				6350FA4D104490B600A992D5 /* LEVEL04.CK1 in Copy Data Files */,
-				6350FA4E104490B600A992D5 /* LEVEL05.CK1 in Copy Data Files */,
-				6350FA4F104490B600A992D5 /* LEVEL06.CK1 in Copy Data Files */,
-				6350FA50104490B600A992D5 /* LEVEL07.CK1 in Copy Data Files */,
-				6350FA51104490B600A992D5 /* LEVEL08.CK1 in Copy Data Files */,
-				6350FA52104490B600A992D5 /* LEVEL09.CK1 in Copy Data Files */,
-				6350FA53104490B600A992D5 /* LEVEL10.CK1 in Copy Data Files */,
-				6350FA54104490B600A992D5 /* LEVEL11.CK1 in Copy Data Files */,
-				6350FA55104490B600A992D5 /* LEVEL12.CK1 in Copy Data Files */,
-				6350FA56104490B600A992D5 /* LEVEL13.CK1 in Copy Data Files */,
-				6350FA57104490B600A992D5 /* LEVEL14.CK1 in Copy Data Files */,
-				6350FA58104490B600A992D5 /* LEVEL15.CK1 in Copy Data Files */,
-				6350FA59104490B600A992D5 /* LEVEL16.CK1 in Copy Data Files */,
-				6350FA5A104490B600A992D5 /* LEVEL80.CK1 in Copy Data Files */,
-				6350FA5B104490B600A992D5 /* LEVEL81.CK1 in Copy Data Files */,
-				6350FA5C104490B600A992D5 /* LEVEL90.CK1 in Copy Data Files */,
-				6350FA5D104490B600A992D5 /* ORDER.FRM in Copy Data Files */,
-				6350FA5E104490B600A992D5 /* PREVIEW2.CK1 in Copy Data Files */,
-				6350FA5F104490B600A992D5 /* PREVIEW3.CK1 in Copy Data Files */,
-				6350FA60104490B600A992D5 /* PREVIEWS.CK1 in Copy Data Files */,
-				6350FA61104490B600A992D5 /* renlower.sh in Copy Data Files */,
-				6350FA62104490B600A992D5 /* SOUNDS.CK1 in Copy Data Files */,
-				6350FA63104490B600A992D5 /* STORYTXT.CK1 in Copy Data Files */,
-				6350FA64104490B600A992D5 /* VENDOR.DOC in Copy Data Files */,
+				6350FA40104490B600A992D5 /* cglogo512.png in Copy Data Files */,
+				6350FA41104490B600A992D5 /* controls.dat in Copy Data Files */,
+				6350FA65104490B600A992D5 /* demo.dat in Copy Data Files */,
+				6350FA66104490B600A992D5 /* ep1attr.dat in Copy Data Files */,
+				6350FA67104490B600A992D5 /* ep1demo1.dat in Copy Data Files */,
+				6350FA68104490B600A992D5 /* ep1demo2.dat in Copy Data Files */,
+				6350FA69104490B600A992D5 /* EP1DEMO3.dat in Copy Data Files */,
+				6350FA6A104490B600A992D5 /* ep1save1.dat in Copy Data Files */,
+				6350FA6B104490B600A992D5 /* ep1save2.dat in Copy Data Files */,
+				6350FA6C104490B600A992D5 /* ep1save3.dat in Copy Data Files */,
+				6350FA6D104490B600A992D5 /* ep1save5.dat in Copy Data Files */,
+				6350FA6E104490B600A992D5 /* ep1save8.dat in Copy Data Files */,
+				6350FA6F104490B600A992D5 /* ep2attr.dat in Copy Data Files */,
+				6350FA70104490B600A992D5 /* EP2DEMO1.DAT in Copy Data Files */,
+				6350FA71104490B600A992D5 /* ep2demo2.dat in Copy Data Files */,
+				6350FA72104490B600A992D5 /* ep2demo3.dat in Copy Data Files */,
+				6350FA73104490B600A992D5 /* ep2save1.dat in Copy Data Files */,
+				6350FA74104490B600A992D5 /* ep3attr.dat in Copy Data Files */,
+				6350FA75104490B600A992D5 /* EP3DEMO1.DAT in Copy Data Files */,
+				6350FA76104490B600A992D5 /* ep3demo2.dat in Copy Data Files */,
+				6350FA77104490B600A992D5 /* ep3demo3.dat in Copy Data Files */,
+				6350FA78104490B600A992D5 /* EP3DEMO4.DAT in Copy Data Files */,
+				6350FA79104490B600A992D5 /* ep3save6.dat in Copy Data Files */,
+				6350FA7A104490B600A992D5 /* resolutions.cfg in Copy Data Files */,
+				6350FA7B104490B600A992D5 /* strings.dat in Copy Data Files */,
 			);
 			name = "Copy Data Files";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6350FA7E104490F300A992D5 /* Copy Keen 1 Files */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = data/games/EP1;
+			dstSubfolderSpec = 7;
+			files = (
+				6350FA42104490B600A992D5 /* EGAHEAD.CK1 in Copy Keen 1 Files */,
+				6350FA43104490B600A992D5 /* EGALATCH.CK1 in Copy Keen 1 Files */,
+				6350FA44104490B600A992D5 /* EGASPRIT.CK1 in Copy Keen 1 Files */,
+				6350FA45104490B600A992D5 /* ENDTEXT.CK1 in Copy Keen 1 Files */,
+				6350FA46104490B600A992D5 /* FINALE.CK1 in Copy Keen 1 Files */,
+				6350FA48104490B600A992D5 /* HELPTEXT.CK1 in Copy Keen 1 Files */,
+				6350FA49104490B600A992D5 /* KEEN1.EXE in Copy Keen 1 Files */,
+				6350FA4A104490B600A992D5 /* LEVEL01.CK1 in Copy Keen 1 Files */,
+				6350FA4B104490B600A992D5 /* LEVEL02.CK1 in Copy Keen 1 Files */,
+				6350FA4C104490B600A992D5 /* LEVEL03.CK1 in Copy Keen 1 Files */,
+				6350FA4D104490B600A992D5 /* LEVEL04.CK1 in Copy Keen 1 Files */,
+				6350FA4E104490B600A992D5 /* LEVEL05.CK1 in Copy Keen 1 Files */,
+				6350FA4F104490B600A992D5 /* LEVEL06.CK1 in Copy Keen 1 Files */,
+				6350FA50104490B600A992D5 /* LEVEL07.CK1 in Copy Keen 1 Files */,
+				6350FA51104490B600A992D5 /* LEVEL08.CK1 in Copy Keen 1 Files */,
+				6350FA52104490B600A992D5 /* LEVEL09.CK1 in Copy Keen 1 Files */,
+				6350FA53104490B600A992D5 /* LEVEL10.CK1 in Copy Keen 1 Files */,
+				6350FA54104490B600A992D5 /* LEVEL11.CK1 in Copy Keen 1 Files */,
+				6350FA55104490B600A992D5 /* LEVEL12.CK1 in Copy Keen 1 Files */,
+				6350FA56104490B600A992D5 /* LEVEL13.CK1 in Copy Keen 1 Files */,
+				6350FA57104490B600A992D5 /* LEVEL14.CK1 in Copy Keen 1 Files */,
+				6350FA58104490B600A992D5 /* LEVEL15.CK1 in Copy Keen 1 Files */,
+				6350FA59104490B600A992D5 /* LEVEL16.CK1 in Copy Keen 1 Files */,
+				6350FA5A104490B600A992D5 /* LEVEL80.CK1 in Copy Keen 1 Files */,
+				6350FA5B104490B600A992D5 /* LEVEL81.CK1 in Copy Keen 1 Files */,
+				6350FA5C104490B600A992D5 /* LEVEL90.CK1 in Copy Keen 1 Files */,
+				6350FA5D104490B600A992D5 /* ORDER.FRM in Copy Keen 1 Files */,
+				6350FA5E104490B600A992D5 /* PREVIEW2.CK1 in Copy Keen 1 Files */,
+				6350FA5F104490B600A992D5 /* PREVIEW3.CK1 in Copy Keen 1 Files */,
+				6350FA60104490B600A992D5 /* PREVIEWS.CK1 in Copy Keen 1 Files */,
+				6350FA62104490B600A992D5 /* SOUNDS.CK1 in Copy Keen 1 Files */,
+				6350FA63104490B600A992D5 /* STORYTXT.CK1 in Copy Keen 1 Files */,
+				6350FA64104490B600A992D5 /* VENDOR.DOC in Copy Keen 1 Files */,
+			);
+			name = "Copy Keen 1 Files";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		6350FB5010449E3C00A992D5 /* Copy Text Files */ = {
@@ -290,11 +289,24 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
+				6376470110472F1A003D2FAD /* data in Copy Text Files */,
 				6350FB3710449E2B00A992D5 /* changelog.txt in Copy Text Files */,
 				6350FB3810449E2B00A992D5 /* future.txt in Copy Text Files */,
 				6350FB3910449E2B00A992D5 /* readme.txt in Copy Text Files */,
 			);
 			name = "Copy Text Files";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		637646B71047233A003D2FAD /* Copy Games Files */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = data/games;
+			dstSubfolderSpec = 7;
+			files = (
+				6350FA47104490B600A992D5 /* games.cfg in Copy Games Files */,
+				6350FA61104490B600A992D5 /* renlower.sh in Copy Games Files */,
+			);
+			name = "Copy Games Files";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -310,7 +322,7 @@
 		235752D61019F83800275638 /* ConfigHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigHandler.h; sourceTree = "<group>"; };
 		2357564C101A5F8F00275638 /* Ogg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Ogg.framework; sourceTree = "<group>"; };
 		2357564D101A5F8F00275638 /* Vorbis.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Vorbis.framework; sourceTree = "<group>"; };
-		23575688101A6AE600275638 /* Commander Genius.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Commander Genius.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		23575688101A6AE600275638 /* CommanderGenius.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CommanderGenius.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		235756C1101B766800275638 /* Unicode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Unicode.cpp; sourceTree = "<group>"; };
 		235756C7101BE31A00275638 /* vortelite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vortelite.cpp; sourceTree = "<group>"; };
 		235756C8101BE31A00275638 /* vortelite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vortelite.h; sourceTree = "<group>"; };
@@ -528,41 +540,41 @@
 		6350F7811044785600A992D5 /* CSavedGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CSavedGame.h; path = ../../src/fileio/CSavedGame.h; sourceTree = SOURCE_ROOT; };
 		6350F7A21044797300A992D5 /* cglogo512.png */ = {isa = PBXFileReference; explicitFileType = image.png; path = cglogo512.png; sourceTree = "<group>"; };
 		6350F7A31044797300A992D5 /* controls.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = controls.dat; sourceTree = "<group>"; };
-		6350F7A51044797300A992D5 /* EGAHEAD.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = EGAHEAD.CK1; sourceTree = "<group>"; };
-		6350F7A61044797300A992D5 /* EGALATCH.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = EGALATCH.CK1; sourceTree = "<group>"; };
-		6350F7A71044797300A992D5 /* EGASPRIT.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = EGASPRIT.CK1; sourceTree = "<group>"; };
-		6350F7A81044797300A992D5 /* ENDTEXT.CK1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ENDTEXT.CK1; sourceTree = "<group>"; };
-		6350F7A91044797300A992D5 /* FINALE.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = FINALE.CK1; sourceTree = "<group>"; };
+		6350F7A51044797300A992D5 /* EGAHEAD.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; name = EGAHEAD.CK1; path = EP1/EGAHEAD.CK1; sourceTree = "<group>"; };
+		6350F7A61044797300A992D5 /* EGALATCH.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; name = EGALATCH.CK1; path = EP1/EGALATCH.CK1; sourceTree = "<group>"; };
+		6350F7A71044797300A992D5 /* EGASPRIT.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; name = EGASPRIT.CK1; path = EP1/EGASPRIT.CK1; sourceTree = "<group>"; };
+		6350F7A81044797300A992D5 /* ENDTEXT.CK1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ENDTEXT.CK1; path = EP1/ENDTEXT.CK1; sourceTree = "<group>"; };
+		6350F7A91044797300A992D5 /* FINALE.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; name = FINALE.CK1; path = EP1/FINALE.CK1; sourceTree = "<group>"; };
 		6350F7AA1044797300A992D5 /* games.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = games.cfg; sourceTree = "<group>"; };
-		6350F7AB1044797300A992D5 /* HELPTEXT.CK1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HELPTEXT.CK1; sourceTree = "<group>"; };
-		6350F7AC1044797300A992D5 /* KEEN1.EXE */ = {isa = PBXFileReference; lastKnownFileType = file; path = KEEN1.EXE; sourceTree = "<group>"; };
-		6350F7AD1044797300A992D5 /* LEVEL01.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL01.CK1; sourceTree = "<group>"; };
-		6350F7AE1044797300A992D5 /* LEVEL02.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL02.CK1; sourceTree = "<group>"; };
-		6350F7AF1044797300A992D5 /* LEVEL03.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL03.CK1; sourceTree = "<group>"; };
-		6350F7B01044797300A992D5 /* LEVEL04.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL04.CK1; sourceTree = "<group>"; };
-		6350F7B11044797300A992D5 /* LEVEL05.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL05.CK1; sourceTree = "<group>"; };
-		6350F7B21044797300A992D5 /* LEVEL06.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL06.CK1; sourceTree = "<group>"; };
-		6350F7B31044797300A992D5 /* LEVEL07.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL07.CK1; sourceTree = "<group>"; };
-		6350F7B41044797300A992D5 /* LEVEL08.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL08.CK1; sourceTree = "<group>"; };
-		6350F7B51044797300A992D5 /* LEVEL09.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL09.CK1; sourceTree = "<group>"; };
-		6350F7B61044797300A992D5 /* LEVEL10.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL10.CK1; sourceTree = "<group>"; };
-		6350F7B71044797300A992D5 /* LEVEL11.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL11.CK1; sourceTree = "<group>"; };
-		6350F7B81044797300A992D5 /* LEVEL12.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL12.CK1; sourceTree = "<group>"; };
-		6350F7B91044797300A992D5 /* LEVEL13.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL13.CK1; sourceTree = "<group>"; };
-		6350F7BA1044797300A992D5 /* LEVEL14.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL14.CK1; sourceTree = "<group>"; };
-		6350F7BB1044797300A992D5 /* LEVEL15.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL15.CK1; sourceTree = "<group>"; };
-		6350F7BC1044797300A992D5 /* LEVEL16.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL16.CK1; sourceTree = "<group>"; };
-		6350F7BD1044797300A992D5 /* LEVEL80.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL80.CK1; sourceTree = "<group>"; };
-		6350F7BE1044797300A992D5 /* LEVEL81.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL81.CK1; sourceTree = "<group>"; };
-		6350F7BF1044797300A992D5 /* LEVEL90.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL90.CK1; sourceTree = "<group>"; };
-		6350F7C01044797300A992D5 /* ORDER.FRM */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ORDER.FRM; sourceTree = "<group>"; };
-		6350F7C11044797300A992D5 /* PREVIEW2.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = PREVIEW2.CK1; sourceTree = "<group>"; };
-		6350F7C21044797300A992D5 /* PREVIEW3.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = PREVIEW3.CK1; sourceTree = "<group>"; };
-		6350F7C31044797300A992D5 /* PREVIEWS.CK1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PREVIEWS.CK1; sourceTree = "<group>"; };
+		6350F7AB1044797300A992D5 /* HELPTEXT.CK1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = HELPTEXT.CK1; path = EP1/HELPTEXT.CK1; sourceTree = "<group>"; };
+		6350F7AC1044797300A992D5 /* KEEN1.EXE */ = {isa = PBXFileReference; lastKnownFileType = file; name = KEEN1.EXE; path = EP1/KEEN1.EXE; sourceTree = "<group>"; };
+		6350F7AD1044797300A992D5 /* LEVEL01.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; name = LEVEL01.CK1; path = EP1/LEVEL01.CK1; sourceTree = "<group>"; };
+		6350F7AE1044797300A992D5 /* LEVEL02.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; name = LEVEL02.CK1; path = EP1/LEVEL02.CK1; sourceTree = "<group>"; };
+		6350F7AF1044797300A992D5 /* LEVEL03.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; name = LEVEL03.CK1; path = EP1/LEVEL03.CK1; sourceTree = "<group>"; };
+		6350F7B01044797300A992D5 /* LEVEL04.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; name = LEVEL04.CK1; path = EP1/LEVEL04.CK1; sourceTree = "<group>"; };
+		6350F7B11044797300A992D5 /* LEVEL05.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; name = LEVEL05.CK1; path = EP1/LEVEL05.CK1; sourceTree = "<group>"; };
+		6350F7B21044797300A992D5 /* LEVEL06.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; name = LEVEL06.CK1; path = EP1/LEVEL06.CK1; sourceTree = "<group>"; };
+		6350F7B31044797300A992D5 /* LEVEL07.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; name = LEVEL07.CK1; path = EP1/LEVEL07.CK1; sourceTree = "<group>"; };
+		6350F7B41044797300A992D5 /* LEVEL08.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; name = LEVEL08.CK1; path = EP1/LEVEL08.CK1; sourceTree = "<group>"; };
+		6350F7B51044797300A992D5 /* LEVEL09.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; name = LEVEL09.CK1; path = EP1/LEVEL09.CK1; sourceTree = "<group>"; };
+		6350F7B61044797300A992D5 /* LEVEL10.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; name = LEVEL10.CK1; path = EP1/LEVEL10.CK1; sourceTree = "<group>"; };
+		6350F7B71044797300A992D5 /* LEVEL11.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; name = LEVEL11.CK1; path = EP1/LEVEL11.CK1; sourceTree = "<group>"; };
+		6350F7B81044797300A992D5 /* LEVEL12.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; name = LEVEL12.CK1; path = EP1/LEVEL12.CK1; sourceTree = "<group>"; };
+		6350F7B91044797300A992D5 /* LEVEL13.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; name = LEVEL13.CK1; path = EP1/LEVEL13.CK1; sourceTree = "<group>"; };
+		6350F7BA1044797300A992D5 /* LEVEL14.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; name = LEVEL14.CK1; path = EP1/LEVEL14.CK1; sourceTree = "<group>"; };
+		6350F7BB1044797300A992D5 /* LEVEL15.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; name = LEVEL15.CK1; path = EP1/LEVEL15.CK1; sourceTree = "<group>"; };
+		6350F7BC1044797300A992D5 /* LEVEL16.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; name = LEVEL16.CK1; path = EP1/LEVEL16.CK1; sourceTree = "<group>"; };
+		6350F7BD1044797300A992D5 /* LEVEL80.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; name = LEVEL80.CK1; path = EP1/LEVEL80.CK1; sourceTree = "<group>"; };
+		6350F7BE1044797300A992D5 /* LEVEL81.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; name = LEVEL81.CK1; path = EP1/LEVEL81.CK1; sourceTree = "<group>"; };
+		6350F7BF1044797300A992D5 /* LEVEL90.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; name = LEVEL90.CK1; path = EP1/LEVEL90.CK1; sourceTree = "<group>"; };
+		6350F7C01044797300A992D5 /* ORDER.FRM */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ORDER.FRM; path = EP1/ORDER.FRM; sourceTree = "<group>"; };
+		6350F7C11044797300A992D5 /* PREVIEW2.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; name = PREVIEW2.CK1; path = EP1/PREVIEW2.CK1; sourceTree = "<group>"; };
+		6350F7C21044797300A992D5 /* PREVIEW3.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; name = PREVIEW3.CK1; path = EP1/PREVIEW3.CK1; sourceTree = "<group>"; };
+		6350F7C31044797300A992D5 /* PREVIEWS.CK1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = PREVIEWS.CK1; path = EP1/PREVIEWS.CK1; sourceTree = "<group>"; };
 		6350F7C41044797300A992D5 /* renlower.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = renlower.sh; sourceTree = "<group>"; };
-		6350F7C51044797300A992D5 /* SOUNDS.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = SOUNDS.CK1; sourceTree = "<group>"; };
-		6350F7C61044797300A992D5 /* STORYTXT.CK1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = STORYTXT.CK1; sourceTree = "<group>"; };
-		6350F7C71044797300A992D5 /* VENDOR.DOC */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VENDOR.DOC; sourceTree = "<group>"; };
+		6350F7C51044797300A992D5 /* SOUNDS.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; name = SOUNDS.CK1; path = EP1/SOUNDS.CK1; sourceTree = "<group>"; };
+		6350F7C61044797300A992D5 /* STORYTXT.CK1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = STORYTXT.CK1; path = EP1/STORYTXT.CK1; sourceTree = "<group>"; };
+		6350F7C71044797300A992D5 /* VENDOR.DOC */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = VENDOR.DOC; path = EP1/VENDOR.DOC; sourceTree = "<group>"; };
 		6350F7C81044797300A992D5 /* demo.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = demo.dat; sourceTree = "<group>"; };
 		6350F7C91044797300A992D5 /* ep1attr.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = ep1attr.dat; sourceTree = "<group>"; };
 		6350F7CA1044797300A992D5 /* ep1demo1.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = ep1demo1.dat; sourceTree = "<group>"; };
@@ -593,6 +605,7 @@
 		6376421D1045E091003D2FAD /* CFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CFont.h; path = ../../src/graphics/CFont.h; sourceTree = SOURCE_ROOT; };
 		6376421E1045E091003D2FAD /* CGfxEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CGfxEngine.cpp; path = ../../src/graphics/CGfxEngine.cpp; sourceTree = SOURCE_ROOT; };
 		6376421F1045E091003D2FAD /* CGfxEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CGfxEngine.h; path = ../../src/graphics/CGfxEngine.h; sourceTree = SOURCE_ROOT; };
+		6376470010472F19003D2FAD /* data */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = data; sourceTree = SOURCE_ROOT; };
 		8D0C4E960486CD37000505A6 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -616,7 +629,7 @@
 		195DF8CFFE9D517E11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				23575688101A6AE600275638 /* Commander Genius.app */,
+				23575688101A6AE600275638 /* CommanderGenius.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -790,6 +803,7 @@
 				23C637E2103181D700FEEFEE /* icecannon.h */,
 				23C637E3103181D700FEEFEE /* se.h */,
 				2321F1AF101DA0CE00510514 /* baby.h */,
+				6376470010472F19003D2FAD /* data */,
 				235756C7101BE31A00275638 /* vortelite.cpp */,
 				235756C8101BE31A00275638 /* vortelite.h */,
 				23D3E9751013ABC9001643FA /* baby.cpp */,
@@ -1029,7 +1043,7 @@
 			children = (
 				6350F7A21044797300A992D5 /* cglogo512.png */,
 				6350F7A31044797300A992D5 /* controls.dat */,
-				6350F7A41044797300A992D5 /* data */,
+				6350F7A41044797300A992D5 /* games */,
 				6350F7C81044797300A992D5 /* demo.dat */,
 				6350F7C91044797300A992D5 /* ep1attr.dat */,
 				6350F7CA1044797300A992D5 /* ep1demo1.dat */,
@@ -1059,7 +1073,18 @@
 			path = ../../data;
 			sourceTree = "<group>";
 		};
-		6350F7A41044797300A992D5 /* data */ = {
+		6350F7A41044797300A992D5 /* games */ = {
+			isa = PBXGroup;
+			children = (
+				637646A810472253003D2FAD /* EP1 */,
+				6350F7AA1044797300A992D5 /* games.cfg */,
+				6350F7C41044797300A992D5 /* renlower.sh */,
+			);
+			includeInIndex = 1;
+			path = games;
+			sourceTree = "<group>";
+		};
+		637646A810472253003D2FAD /* EP1 */ = {
 			isa = PBXGroup;
 			children = (
 				6350F7A51044797300A992D5 /* EGAHEAD.CK1 */,
@@ -1067,7 +1092,6 @@
 				6350F7A71044797300A992D5 /* EGASPRIT.CK1 */,
 				6350F7A81044797300A992D5 /* ENDTEXT.CK1 */,
 				6350F7A91044797300A992D5 /* FINALE.CK1 */,
-				6350F7AA1044797300A992D5 /* games.cfg */,
 				6350F7AB1044797300A992D5 /* HELPTEXT.CK1 */,
 				6350F7AC1044797300A992D5 /* KEEN1.EXE */,
 				6350F7AD1044797300A992D5 /* LEVEL01.CK1 */,
@@ -1093,25 +1117,24 @@
 				6350F7C11044797300A992D5 /* PREVIEW2.CK1 */,
 				6350F7C21044797300A992D5 /* PREVIEW3.CK1 */,
 				6350F7C31044797300A992D5 /* PREVIEWS.CK1 */,
-				6350F7C41044797300A992D5 /* renlower.sh */,
 				6350F7C51044797300A992D5 /* SOUNDS.CK1 */,
 				6350F7C61044797300A992D5 /* STORYTXT.CK1 */,
 				6350F7C71044797300A992D5 /* VENDOR.DOC */,
 			);
-			includeInIndex = 1;
-			path = data;
+			name = EP1;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		235755D0101A5E5900275638 /* Commander Genius */ = {
+		235755D0101A5E5900275638 /* CommanderGenius */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2357563B101A5E5900275638 /* Build configuration list for PBXNativeTarget "Commander Genius" */;
+			buildConfigurationList = 2357563B101A5E5900275638 /* Build configuration list for PBXNativeTarget "CommanderGenius" */;
 			buildPhases = (
 				235755D1101A5E5900275638 /* Resources */,
-				6350FA7E104490F300A992D5 /* Copy Data Files */,
-				6350FA7D104490F300A992D5 /* Copy Keen 1 Files */,
+				6350FA7E104490F300A992D5 /* Copy Keen 1 Files */,
+				637646B71047233A003D2FAD /* Copy Games Files */,
+				6350FA7D104490F300A992D5 /* Copy Data Files */,
 				6350FB5010449E3C00A992D5 /* Copy Text Files */,
 				235755D4101A5E5900275638 /* Sources */,
 				23575630101A5E5900275638 /* Frameworks */,
@@ -1122,10 +1145,10 @@
 			);
 			dependencies = (
 			);
-			name = "Commander Genius";
+			name = CommanderGenius;
 			productInstallPath = "$(HOME)/Applications";
 			productName = CommanderGenius;
-			productReference = 23575688101A6AE600275638 /* Commander Genius.app */;
+			productReference = 23575688101A6AE600275638 /* CommanderGenius.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1140,7 +1163,7 @@
 			projectDirPath = "";
 			projectRoot = ../../..;
 			targets = (
-				235755D0101A5E5900275638 /* Commander Genius */,
+				235755D0101A5E5900275638 /* CommanderGenius */,
 			);
 		};
 /* End PBXProject section */
@@ -1171,7 +1194,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\n\n# script taken from Pidgin-MacOSX project\n# by Albert Zeyer - www.az2000.de\n\n# builds a DMG for Commander Genius\n\n\n# Creates a disk image (dmg) on Mac OS X from the command line.\n# usage:\n#    mkdmg <volname> <vers> <srcdir>\n#\n# Where <volname> is the name to use for the mounted image, <vers> is the version\n# number of the volume and <srcdir> is where the contents to put on the dmg are.\n#\n# The result will be a file called <volname>-<vers>.dmg\nDEBUG=\"false\"\n\nmkdmg() {\n\n\tif [ $# != 3 ]; then\n\t echo \"usage: mkdmg.sh volname vers srcdir\"\n\t exit 0\n\tfi\n\n\tVOL=\"$1\"\n\tVER=\"$2\"\n\tFILES=\"$3\"\n\n\tDMG=\"tmp-$VOL.dmg\"\n\n\t# create temporary disk image and format, ejecting when done\n\tSIZE=$(du -sk ${FILES} | cut -f 1)\n\tSIZE=$((${SIZE}/1000+5))\n\thdiutil create \"$DMG\" -megabytes ${SIZE} -ov -type UDIF -fs HFS+ -volname \"$VOL\"\n\n\t# mount and copy files onto volume\n\thdid \"$DMG\"\n\techo -n \"copying files ... \"\n\tcp -R \"${FILES}\"/* \"/Volumes/$VOL/\"\n\techo \"ready\"\n\thdiutil eject \"/Volumes/$VOL\"\n\t#osascript -e \"tell application \"Finder\" to eject disk \"$VOL\"\" && \n\n\t# convert to compressed image, delete temp image\n\trm -f \"cgenius-v${VER}-mac.dmg\"\n\thdiutil convert \"$DMG\" -format UDZO -o \"cgenius-v${VER}-mac.dmg\"\n\trm -f \"$DMG\"\n\n}\n\nif [ $DEBUG == \"false\" ]; then\n cd \"$(dirname \"$0\")/../../../../\"\n mkdmg CommanderGenius \"$(egrep -E \".*#define.*CGVERSION.*\" ../../version.h | cut -d \"\\\"\" -f 2)\" build/Release\nfi";
+			shellScript = "#!/bin/sh\n\n# script taken from Pidgin-MacOSX project\n# by Albert Zeyer - www.az2000.de\n\n# builds a DMG for Commander Genius\n\n\n# Creates a disk image (dmg) on Mac OS X from the command line.\n# usage:\n#    mkdmg <volname> <vers> <srcdir>\n#\n# Where <volname> is the name to use for the mounted image, <vers> is the version\n# number of the volume and <srcdir> is where the contents to put on the dmg are.\n#\n# The result will be a file called <volname>-<vers>.dmg\nDEBUG=\"true\"\n\nmkdmg() {\n\n\tif [ $# != 3 ]; then\n\t echo \"usage: mkdmg.sh volname vers srcdir\"\n\t exit 0\n\tfi\n\n\tVOL=\"$1\"\n\tVER=\"$2\"\n\tFILES=\"$3\"\n\n\tDMG=\"tmp-$VOL.dmg\"\n\n\t# create temporary disk image and format, ejecting when done\n\tSIZE=$(du -sk ${FILES} | cut -f 1)\n\tSIZE=$((${SIZE}/1000+5))\n\thdiutil create \"$DMG\" -megabytes ${SIZE} -ov -type UDIF -fs HFS+ -volname \"$VOL\"\n\n\t# mount and copy files onto volume\n\thdid \"$DMG\"\n\techo -n \"copying files ... \"\n\tcp -R \"${FILES}\"/* \"/Volumes/$VOL/\"\n\techo \"ready\"\n\thdiutil eject \"/Volumes/$VOL\"\n\t#osascript -e \"tell application \"Finder\" to eject disk \"$VOL\"\" && \n\n\t# convert to compressed image, delete temp image\n\trm -f \"cgenius-v${VER}-mac.dmg\"\n\thdiutil convert \"$DMG\" -format UDZO -o \"cgenius-v${VER}-mac.dmg\"\n\trm -f \"$DMG\"\n\n}\n\nif [ $DEBUG == \"false\" ]; then\n cd \"$(dirname \"$0\")/../../../../\"\n mkdmg CommanderGenius \"$(egrep -E \".*#define.*CGVERSION.*\" ../../version.h | cut -d \"\\\"\" -f 2)\" build/Release\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1366,7 +1389,7 @@
 					"-DBUILD_WITH_OGG",
 				);
 				PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES;
-				PRODUCT_NAME = "Commander Genius";
+				PRODUCT_NAME = CommanderGenius;
 				SDKROOT = macosx10.4;
 			};
 			name = Release;
@@ -1400,7 +1423,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2357563B101A5E5900275638 /* Build configuration list for PBXNativeTarget "Commander Genius" */ = {
+		2357563B101A5E5900275638 /* Build configuration list for PBXNativeTarget "CommanderGenius" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2357563C101A5E5900275638 /* Debug */,
