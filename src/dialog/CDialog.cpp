@@ -14,7 +14,7 @@
 #include "../graphics/CGfxEngine.h"
 #include "CDialog.h"
 
-CDialog::CDialog(Uint16 x, Uint16 y, Uint16 w, Uint16 h)
+CDialog::CDialog(SDL_Surface *DialogSurface, Uint16 x, Uint16 y, Uint16 w, Uint16 h)
 {
 	m_x = x;
 	m_y = y;
@@ -30,6 +30,8 @@ CDialog::CDialog(Uint16 x, Uint16 y, Uint16 w, Uint16 h)
 	m_scroll = 0;
 
 	m_Frame = NULL;
+
+	m_DialogSurface = DialogSurface;
 }
 
 CDialog::~CDialog(){
@@ -221,9 +223,7 @@ void CDialog::renderTwirl()
 		
 	}
 
-	/*g_pGraphics->drawCharacter(m_dlgobject[m_selected_ID]->m_x,
-								m_twirl.posy, 9+m_twirl.frame);*/
-	g_pGfxEngine->Font.drawTwirl( g_pVideoDriver->FGLayerSurface, m_twirl.frame,
+	g_pGfxEngine->Font.drawTwirl( m_DialogSurface, m_twirl.frame,
 									m_dlgobject[m_selected_ID]->m_x,
 									m_twirl.posy );
 }

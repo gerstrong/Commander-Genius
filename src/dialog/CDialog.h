@@ -14,7 +14,7 @@
 
 class CDialog {
 public:
-	CDialog(Uint16 x, Uint16 y, Uint16 w, Uint16 h);
+	CDialog(SDL_Surface *DialogSurface, Uint16 x, Uint16 y, Uint16 w, Uint16 h);
 	virtual ~CDialog();
 
 	void setFrameTheme(Uint8 theme);
@@ -44,6 +44,8 @@ private:
 		Uint8  timer;
 		Uint16 posy;
 	} m_twirl;
+
+	SDL_Surface *m_DialogSurface;
 
 	std::vector<CDlgObject*> m_dlgobject;
 };

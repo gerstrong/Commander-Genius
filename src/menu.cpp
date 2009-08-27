@@ -146,7 +146,7 @@ short loadResourcesforStartMenu(stCloneKeenPlus *pCKP, CGame *Game)
 
 bool loadStartMenu(stCloneKeenPlus *pCKP)
 {
-	CDialog *GamesMenu = new CDialog(16,8,36,20);
+	CDialog *GamesMenu = new CDialog(g_pVideoDriver->FGLayerSurface, 16, 8, 36, 20);
 
 	// Use the standard Menu-Frame used in the old DOS-Games
 	GamesMenu->setFrameTheme( DLG_THEME_OLDSCHOOL );
@@ -175,7 +175,6 @@ bool loadStartMenu(stCloneKeenPlus *pCKP)
 
 int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 {
-
 	CDialog *MainMenu;
 	int bmnum, bmnum1;
 	int x;
@@ -192,7 +191,7 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 	showmapatpos(90, MAINMENU_X, MENUS_Y, pCKP);
 
 	// Prepare the Games Menu
-	MainMenu = new CDialog(88, 56, 18, 13);
+	MainMenu = new CDialog(g_pVideoDriver->FGLayerSurface, 88, 56, 18, 13);
 
 	// Load the Title Bitmap
 	bmnum  = g_pGraphics->getBitmapNumberFromName("TITLE");
@@ -296,7 +295,7 @@ int getDifficulty(stCloneKeenPlus *pCKP)
 	g_pGraphics->drawBitmap(x, 0, bmnum);
 
 	// Prepare the Games Menu
-	CDialog DifficultyMenu(120,32,14,6);
+	CDialog DifficultyMenu(g_pVideoDriver->FGLayerSurface, 120,32,14,6);
 
 	DifficultyMenu.setFrameTheme(DLG_THEME_OLDSCHOOL);
 
@@ -334,7 +333,7 @@ int AudioDlg(stCloneKeenPlus *pCKP)
 	g_pGraphics->drawBitmap(x, 0, bmnum);
 
 	// Prepare the Games Menu
-	CDialog AudioMenu(32,32,32,7);
+	CDialog AudioMenu(g_pVideoDriver->FGLayerSurface, 32,32,32,7);
 
 	AudioMenu.setFrameTheme(DLG_THEME_OLDSCHOOL);
 
@@ -416,7 +415,7 @@ void OptionsDlg(stCloneKeenPlus *pCKP)
 	g_pGraphics->drawBitmap(x, 0, bmnum);
 
 	// Prepare the Games Menu
-	CDialog OptionsMenu(24,24,34,13);
+	CDialog OptionsMenu(g_pVideoDriver->FGLayerSurface, 24,24,34,13);
 
 	OptionsMenu.setFrameTheme(DLG_THEME_OLDSCHOOL);
 
@@ -503,7 +502,7 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 	filter = g_pVideoDriver->getFiltermode();
 
 	// Prepare the Games Menu
-	CDialog DisplayMenu(4,4,32,12);
+	CDialog DisplayMenu(g_pVideoDriver->FGLayerSurface, 4,4,32,12);
 
 	// Use the standard Menu-Frame used in the old DOS-Games
 	DisplayMenu.setFrameTheme( DLG_THEME_OLDSCHOOL );
@@ -710,7 +709,7 @@ char configmenu(stCloneKeenPlus *pCKP)
 	g_pGraphics->drawBitmap(x, 0, bmnum);
 
 	// Prepare the Games Menu
-	CDialog OptionsMenu(120,32,14,8);
+	CDialog OptionsMenu(g_pVideoDriver->FGLayerSurface, 120,32,14,8);
 
 	OptionsMenu.setFrameTheme(DLG_THEME_OLDSCHOOL);
 
@@ -777,7 +776,7 @@ char controlsmenu()
 	g_pGraphics->drawBitmap(x, 0, bmnum);
 
 	// Prepare the Games Menu
-	CDialog ControlsMenu(8,16,38,22);
+	CDialog ControlsMenu(g_pVideoDriver->FGLayerSurface, 8,16,38,22);
 
 	// Use the standard Menu-Frame used in the old DOS-Games
 	ControlsMenu.setFrameTheme( DLG_THEME_OLDSCHOOL );
