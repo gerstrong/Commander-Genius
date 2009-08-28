@@ -129,9 +129,15 @@ void gameloop(stCloneKeenPlus *pCKP)
 	if (!pCKP->Control.levelcontrol.gameovermode && pCKP->Control.levelcontrol.level_done==LEVEL_NOT_DONE)
 	{
 	      ScreenIsScrolling = 0;
+		  if (numplayers == 1)
+		  {
 	      if (gamedo_ScrollTriggers(primaryplayer)) ScreenIsScrolling = 1;
-		  if (!otherplayer == 1)
-		  if (gamedo_ScrollTriggers(otherplayer)) ScreenIsScrolling = 1;
+		  }
+		  else if (ScreenIsScrolling == 0)
+		  {
+			  if (gamedo_ScrollTriggers(primaryplayer) or gamedo_ScrollTriggers(otherplayer)) ScreenIsScrolling = 1;
+			  //if (gamedo_ScrollTriggers(otherplayer)) ScreenIsScrolling = 1;
+		  }
 	}
 
 	// when we complete a fade out flag to exit the game loop
