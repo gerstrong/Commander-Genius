@@ -289,7 +289,7 @@ int o,x;
               spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_MOTHER);
            }
            break;
-      case 4:    // butler (ep1) OR walker (ep2) OR meep (ep3)
+      case 4:    // butler (ep1) OR scrub (ep2) OR meep (ep3)
            if (episode==1)
              spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_BUTLER);
            else if (episode==2)

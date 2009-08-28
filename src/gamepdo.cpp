@@ -562,7 +562,7 @@ void gamepdo_walkinganim(int cp, stCloneKeenPlus *pCKP)
     }
 }
 
-// handle playpushed_x: for yorps/walkers/etc pushing keen
+// handle playpushed_x: for yorps/scrubs/etc pushing keen
 void gamepdo_playpushed(int cp, stCloneKeenPlus *pCKP)
 {
     if (pCKP->Option[OPT_CHEATS].value && g_pInput->getHoldedKey(KTAB)) return;

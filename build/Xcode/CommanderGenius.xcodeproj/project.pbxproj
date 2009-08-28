@@ -32,7 +32,7 @@
 		235755EB101A5E5900275638 /* tankep2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E98C1013ABC9001643FA /* tankep2.cpp */; };
 		235755EC101A5E5900275638 /* teleport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E98D1013ABC9001643FA /* teleport.cpp */; };
 		235755ED101A5E5900275638 /* vort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E98E1013ABC9001643FA /* vort.cpp */; };
-		235755EE101A5E5900275638 /* walker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9901013ABCA001643FA /* walker.cpp */; };
+		235755EE101A5E5900275638 /* scrub.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9901013ABCA001643FA /* scrub.cpp */; };
 		235755EF101A5E5900275638 /* yorp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9911013ABCA001643FA /* yorp.cpp */; };
 		235755F0101A5E5900275638 /* CCGenius.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9921013ABCA001643FA /* CCGenius.cpp */; };
 		235755F1101A5E5900275638 /* CGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9941013ABCA001643FA /* CGame.cpp */; };
@@ -363,7 +363,7 @@
 		23D3E98D1013ABC9001643FA /* teleport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = teleport.cpp; sourceTree = "<group>"; };
 		23D3E98E1013ABC9001643FA /* vort.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vort.cpp; sourceTree = "<group>"; };
 		23D3E98F1013ABCA001643FA /* vort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vort.h; sourceTree = "<group>"; };
-		23D3E9901013ABCA001643FA /* walker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = walker.cpp; sourceTree = "<group>"; };
+		23D3E9901013ABCA001643FA /* scrub.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scrub.cpp; sourceTree = "<group>"; };
 		23D3E9911013ABCA001643FA /* yorp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = yorp.cpp; sourceTree = "<group>"; };
 		23D3E9921013ABCA001643FA /* CCGenius.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CCGenius.cpp; path = ../../src/CCGenius.cpp; sourceTree = SOURCE_ROOT; };
 		23D3E9931013ABCA001643FA /* CCGenius.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCGenius.h; path = ../../src/CCGenius.h; sourceTree = SOURCE_ROOT; };
@@ -818,7 +818,7 @@
 				23D3E98D1013ABC9001643FA /* teleport.cpp */,
 				23D3E98E1013ABC9001643FA /* vort.cpp */,
 				23D3E98F1013ABCA001643FA /* vort.h */,
-				23D3E9901013ABCA001643FA /* walker.cpp */,
+				23D3E9901013ABCA001643FA /* scrub.cpp */,
 				23D3E9911013ABCA001643FA /* yorp.cpp */,
 			);
 			name = ai;
@@ -1202,7 +1202,7 @@
 				235755EB101A5E5900275638 /* tankep2.cpp in Sources */,
 				235755EC101A5E5900275638 /* teleport.cpp in Sources */,
 				235755ED101A5E5900275638 /* vort.cpp in Sources */,
-				235755EE101A5E5900275638 /* walker.cpp in Sources */,
+				235755EE101A5E5900275638 /* scrub.cpp in Sources */,
 				235755EF101A5E5900275638 /* yorp.cpp in Sources */,
 				235755F0101A5E5900275638 /* CCGenius.cpp in Sources */,
 				235755F1101A5E5900275638 /* CGame.cpp in Sources */,

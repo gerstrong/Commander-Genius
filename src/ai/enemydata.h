@@ -189,18 +189,18 @@ typedef struct stRopeData
 } stRopeData;
 
 
-typedef struct stWalkerData
+typedef struct stScrubData
 {
   unsigned char state;
 
   unsigned char animtimer, dietimer;
   unsigned char walkframe;
-  signed int walkerdie_inertia_y;
+  signed int scrubdie_inertia_y;
   int fallinctimer,fallspeed;
 
   unsigned char walkdir;
   unsigned char kickedplayer[MAX_PLAYERS];
-} stWalkerData;
+} stScrubData;
 
 
 // a moving platform

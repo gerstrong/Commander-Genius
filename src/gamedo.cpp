@@ -279,7 +279,7 @@ int i, topobj;
 			  case OBJ_ROPE: rope_ai(i); break;
 
 			  //KEEN2
-			  case OBJ_WALKER: walker_ai(i, *p_levelcontrol); break;
+			  case OBJ_WALKER: scrub_ai(i, *p_levelcontrol); break;
 			  case OBJ_TANKEP2: tankep2_ai(i, p_levelcontrol->hardmode); break;
 			  case OBJ_PLATFORM: platform_ai(i, *p_levelcontrol); break;
 			  case OBJ_VORTELITE: vortelite_ai(i, p_levelcontrol->dark); break;

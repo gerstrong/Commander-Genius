@@ -21,7 +21,7 @@ void teleporter_ai(int o, stLevelControl levelcontrol);
 void rope_ai(int o);
 
 // ep2
-void walker_ai(int o, stLevelControl levelcontrol);
+void scrub_ai(int o, stLevelControl levelcontrol);
 void tankep2_ai(int o, bool hardmode);
 void platform_ai(int o, stLevelControl levelcontrol);
 void vortelite_ai(int o, bool darkness);

@@ -245,7 +245,7 @@ typedef struct stObject
 		stRopeData rope;
 
 		// ep2
-		stWalkerData walker;
+		stScrubData scrub;
 		stPlatformData platform;
 		stVortEliteData vortelite;
 		stSEData se;

@@ -1330,7 +1330,7 @@ void procgoodie(int t, int mpx, int mpy, int theplayer, stCloneKeenPlus *pCKP)
 
 }
 
-// yorp/walker etc "bump".
+// yorp/scrub etc "bump".
 // if solid = false, player can possibly force his way through.
 // if solid = true, object acts like a solid "wall".
 void bumpplayer(int p, int pushamt, bool solid)
