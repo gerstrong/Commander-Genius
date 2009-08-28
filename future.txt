@@ -1,4 +1,4 @@
-Here are the features that We still want to implement:
+Here are the features that we still want to implement:
 ------------------------------------------------------
 until 0.3.5:
 - Improve the graphics of CG using SDL_BLit instead of arrays (CGfxEngine)
