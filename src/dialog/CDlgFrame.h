@@ -20,7 +20,7 @@ public:
 	CDlgFrame(int x, int y, int w, int h, Uint8 theme);
 	virtual ~CDlgFrame();
 
-	void draw();
+	void draw(SDL_Surface *dst);
 
 	int m_x;
 	int m_y;
@@ -34,7 +34,7 @@ private:
 
 	Uint8 m_theme;
 
-	void drawOldShoolFrame();
+	void drawOldShoolFrame(SDL_Surface *dst);
 };
 
 #endif /* CDLGFRAME_H_ */

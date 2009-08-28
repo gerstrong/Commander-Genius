@@ -55,16 +55,13 @@ void CFont::generateGlowFonts()
 
 	// And this code makes the letter create blue edges
 	SDL_LockSurface(FontSurface);
+
 	Uint8 *pixel = (Uint8*) FontSurface->pixels + 136*128;
 	for(Uint8 y=0 ; y<8*6 ; y++)
 	{
 		for(Uint8 x=0 ; x<128 ; x++)
 		{
-			/*if( *pixel == 15 && ( *(pixel+1) == 16 || *(pixel-1) == 16 ||
-				  *(pixel+128) == 16 || (*(pixel-128) == 16 && y>0)) )*/ // That one looks a bit Ugly.
-																		   // Maybe some knows how to improve that.
-			if( *pixel == 16 )
-				memset(pixel,9,1);
+			if( *pixel == 16 ) memset(pixel,1,1);
 			pixel++;
 		}
 	}
@@ -83,11 +80,9 @@ void CFont::generateSpecialTwirls()
 	// Copy the first 5 tiles
 	twrect.x=9*8;
 	twrect.y = fmrect.x = 0;
-	twrect.w=5*8;
-	twrect.h=8;
+	twrect.w = fmrect.w = 5*8;
+	twrect.h = fmrect.h = 8;
 	fmrect.y=128;
-	fmrect.w=5*8;
-	fmrect.h=8;
 	SDL_BlitSurface(FontSurface, &twrect, FontSurface, &fmrect);
 
 	// now the complex stuff for the extra two tiles
@@ -157,7 +152,6 @@ void CFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint1
 	scrrect.y = 8*(character/16);
 	scrrect.w = dstrect.w = 8;
 	scrrect.h = dstrect.h = 8;
-
 	dstrect.x = xoff;
 	dstrect.y = yoff;
 

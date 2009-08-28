@@ -73,9 +73,7 @@ void CDialog::addObject(Uint8 type, Uint16 x, Uint16 y,const std::string text)
 void CDialog::setObjectText(Uint8 ID, const std::string &text)
 {
 	if( m_dlgobject[ID]->m_type == DLG_OBJ_OPTION_TEXT )
-	{
 		m_dlgobject[ID]->change(text, m_w-((m_dlgobject[ID]->m_x-m_x)/8)-4);
-	}
 }
 
 ///
@@ -141,7 +139,7 @@ void CDialog::render()
 	gamedo_fades();
 
 	// Render the empty Dialog frame if any
-	if(m_Frame) m_Frame->draw();
+	if(m_Frame) m_Frame->draw(m_DialogSurface);
 
 	// Draw the to icon up or down accordingly
 	if( m_scroll>0 ) // Up Arrow
