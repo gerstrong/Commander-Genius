@@ -16,6 +16,7 @@
 #define CFONT_H_
 
 #include <SDL/SDL.h>
+#include <string>
 
 class CFont {
 public:
@@ -32,7 +33,8 @@ public:
 
 	void drawTwirl(SDL_Surface* dst, int twirlframe, Uint16 x, Uint16 y);
 
-	void drawCharacter(SDL_Surface* dst, Uint16 character);
+	void drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff);
+	void drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, bool highlight);
 
 private:
 

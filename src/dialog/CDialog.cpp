@@ -88,7 +88,6 @@ int CDialog::getSelection()
 ///
 // Rendering routine
 ///
-
 void CDialog::processlogic()
 {
 	if(g_pInput->getPulsedCommand(IC_DOWN, 60))
@@ -165,7 +164,7 @@ void CDialog::render()
 	// they are processed by ID of course
 	for(Uint16 i=m_scroll ;	i<max ; i++)
 	{
-		m_dlgobject[i]->render(m_scroll, (i==m_selected_ID) );
+		m_dlgobject[i]->render(m_DialogSurface, m_scroll, (i==m_selected_ID) );
 	}
 
 	// Render the twirl

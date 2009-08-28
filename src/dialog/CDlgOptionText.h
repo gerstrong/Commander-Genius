@@ -17,7 +17,7 @@ public:
 	virtual ~CDlgOptionText();
 
 	void setText(const std::string &text, unsigned int delimit);
-	void draw(Uint16 x,Uint16 y, bool highlight);
+	void draw(SDL_Surface *Textsurface, Uint16 x,Uint16 y, bool highlight);
 
 private:
 	std::string	m_text;

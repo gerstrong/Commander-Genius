@@ -6,7 +6,8 @@
  */
 
 #include "CDlgOptionText.h"
-#include "../CGraphics.h"
+
+#include "../graphics/CGfxEngine.h"
 
 CDlgOptionText::CDlgOptionText(const std::string &text, unsigned int delimit) {
 	setText(text, delimit);
@@ -25,7 +26,7 @@ void CDlgOptionText::setText(const std::string &text, unsigned int delimit) {
 CDlgOptionText::~CDlgOptionText() {
 }
 
-void CDlgOptionText::draw(Uint16 x,Uint16 y, bool highlight)
+void CDlgOptionText::draw(SDL_Surface *Textsurface, Uint16 x, Uint16 y, bool highlight)
 {
-	g_pGraphics->drawFont(m_text, x, y, highlight);
+	g_pGfxEngine->Font.drawFont(Textsurface, m_text, x, y, highlight);
 }

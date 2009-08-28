@@ -60,8 +60,10 @@ void CFont::generateGlowFonts()
 	{
 		for(Uint8 x=0 ; x<128 ; x++)
 		{
-			if( *pixel == 15 && ( *(pixel+1) == 16 || *(pixel-1) == 16 ||
-								  *(pixel+128) == 16 || (*(pixel-128) == 16 && y>0)) )
+			/*if( *pixel == 15 && ( *(pixel+1) == 16 || *(pixel-1) == 16 ||
+				  *(pixel+128) == 16 || (*(pixel-128) == 16 && y>0)) )*/ // That one looks a bit Ugly.
+																		   // Maybe some knows how to improve that.
+			if( *pixel == 16 )
 				memset(pixel,9,1);
 			pixel++;
 		}
@@ -144,8 +146,27 @@ void CFont::drawTwirl(SDL_Surface* dst, int twirlframe, Uint16 x, Uint16 y)
 	fmrect.w = fmrect.h = twrect.w = twrect.h = 8;
 
 	SDL_BlitSurface(FontSurface, &twrect, dst, &fmrect);
-	//SDL_BlitSurface(FontSurface, NULL, dst, NULL);
+	//SDL_BlitSurface(FontSurface, NULL, dst, NULL); // Just used for testing the fontmap. Please don't remove!
 }
 
-void CFont::drawCharacter(SDL_Surface* dst, Uint16 character)
-{}
+void CFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff)
+{
+	SDL_Rect scrrect, dstrect;
+
+	scrrect.x = 8*(character%16);
+	scrrect.y = 8*(character/16);
+	scrrect.w = dstrect.w = 8;
+	scrrect.h = dstrect.h = 8;
+
+	dstrect.x = xoff;
+	dstrect.y = yoff;
+
+	SDL_BlitSurface(FontSurface, &scrrect, dst, &dstrect);
+}
+
+void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, bool highlight)
+{
+	// If highlight enabled, glow letters are to be shown!
+	for(Uint16 i=0 ; i<text.size() ; i++)
+		drawCharacter(dst, text[i] + (128+7*16)*(highlight==true), xoff+8*i, yoff);
+}

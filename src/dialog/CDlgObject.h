@@ -27,7 +27,7 @@ public:
 	void create(Uint8 type, Uint16 ID, Uint16 x, Uint16 y, const std::string &text, unsigned int delimiter);
 	void change(const std::string &text, unsigned int delimiter);
 
-	void render(Uint8 scrollamt, bool highlight);
+	void render(SDL_Surface *dst, Uint8 scrollamt, bool highlight);
 
 	CDlgOptionText 	*m_OptionText;
 

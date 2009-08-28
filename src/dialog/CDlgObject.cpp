@@ -58,10 +58,10 @@ void CDlgObject::change(const std::string &text, unsigned int delimiter)
 ///
 // Rendering Routine
 ///
-void CDlgObject::render(Uint8 scrollamt, bool highlight)
+void CDlgObject::render(SDL_Surface *dst, Uint8 scrollamt, bool highlight)
 {
 	if(m_type == DLG_OBJ_OPTION_TEXT)
 	{
-		m_OptionText->draw(m_x+16, m_y-8*scrollamt, highlight); // +16 because selection icon needs space
+		m_OptionText->draw(dst, m_x+16, m_y-8*scrollamt, highlight); // +16 because selection icon needs space
 	}
 }
