@@ -8,7 +8,6 @@ until 0.3.5:
 
 until 0.4:
 - New Games Menu. Should run without the need of an episode!
-- Games Menu autodetects what games there are and displays them (Only
 - Implement a better Audio Controls. Volume, mute, etc.
 - Ubuntu debs
 - Commander Keen 4-6

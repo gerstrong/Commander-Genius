@@ -63,14 +63,14 @@ credit to the original authors.
 Setting up the data of the game:
 
  * Copy all of the data files from the original game(s) into the
-   "./data/games" folder. This means all of the files with the extension
+   "./data/data" folder. This means all of the files with the extension
    .ck?. If you have the registered versions, you can play the whole game,
-   otherwise Keen1 is included for your enjoyment.  If you wish to use the
-   second and third game copy their files into a folder inside the games
-   folder named EP2 and EP3 respectively.  You also can use mods.
+   otherwise download the shareware version and copy the data from it.
+   You also can use mods.  In Macintosh you can find this folder by right
+   clicking on the game and clicking open package then going into resources.
  * If you want to use some patched mods, you can put them into subdirectories.
    You only have to modify the "games.cfg" which can be found in the
-   "./data/games" folder along with the Keen 1 files. 
+   "./data/data" folder along with the Keen 1 files. 
  * Go into the Release folder and start the interpreter. If you have downloaded 
    the binary version of Commander Genius (for Windows, Linux32/64), then you 
    will find the executable in the root directory of the extracted game.
