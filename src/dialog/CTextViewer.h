@@ -13,7 +13,7 @@
 
 class CTextViewer {
 public:
-	CTextViewer(int x, int y, int w, int h);
+	CTextViewer(SDL_Surface *TextVSfc, int x, int y, int w, int h);
 
 	void initialize();
 	void renderBox();
@@ -46,6 +46,8 @@ private:
 
 	int m_linepos;
 	char m_scrollpos; // Goes from 0 to textheight and is only used for a smooth scroll effect
+
+	SDL_Surface *m_TextVSfc;
 };
 
 #endif /* CTEXTVIEWER_H_ */

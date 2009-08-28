@@ -81,16 +81,14 @@ void CFont::generateSpecialTwirls()
 	twrect.x=9*8;
 	twrect.y = fmrect.x = 0;
 	twrect.w = fmrect.w = 5*8;
-	twrect.h = fmrect.h = 8;
-	fmrect.y=128;
+	twrect.h = fmrect.h = 8;	fmrect.y=128;
 	SDL_BlitSurface(FontSurface, &twrect, FontSurface, &fmrect);
 
 	// now the complex stuff for the extra two tiles
 	// Draw tile 9 and 10 inverted
 	SDL_LockSurface(FontSurface);
 
-	Uint8* src;
-	Uint8* dst;
+	Uint8 *src, *dst;
 	src = dst = (Uint8*) FontSurface->pixels;
 
 	// for twirl 6 (LB down)
@@ -117,11 +115,9 @@ void CFont::generateSpecialTwirls()
 	SDL_UnlockSurface(FontSurface);
 
 	// Now copy the last twirl (8) taking the original 6th one
-	twrect.x=14*8;
-	twrect.y=0;
+	twrect.x=14*8;	twrect.y=0;
 	twrect.w = fmrect.w = twrect.h = fmrect.h = 8 ;
-	fmrect.x=7*8;
-	fmrect.y=128;
+	fmrect.x=7*8;	fmrect.y=128;
 	SDL_BlitSurface(FontSurface, &twrect, FontSurface, &fmrect);
 }
 
@@ -131,13 +127,10 @@ void CFont::generateSpecialTwirls()
 
 void CFont::drawTwirl(SDL_Surface* dst, int twirlframe, Uint16 x, Uint16 y)
 {
-	SDL_Rect twrect;
-	SDL_Rect fmrect;
+	SDL_Rect twrect, fmrect;
 
-	twrect.x = twirlframe*8;
-	twrect.y = 128;
-	fmrect.x = x;
-	fmrect.y = y;
+	twrect.x = twirlframe*8;	twrect.y = 128;
+	fmrect.x = x;	fmrect.y = y;
 	fmrect.w = fmrect.h = twrect.w = twrect.h = 8;
 
 	SDL_BlitSurface(FontSurface, &twrect, dst, &fmrect);
@@ -148,19 +141,34 @@ void CFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint1
 {
 	SDL_Rect scrrect, dstrect;
 
-	scrrect.x = 8*(character%16);
-	scrrect.y = 8*(character/16);
-	scrrect.w = dstrect.w = 8;
-	scrrect.h = dstrect.h = 8;
-	dstrect.x = xoff;
-	dstrect.y = yoff;
+	scrrect.x = 8*(character%16);	scrrect.y = 8*(character/16);
+	scrrect.w = dstrect.w = 8;	scrrect.h = dstrect.h = 8;
+	dstrect.x = xoff;	dstrect.y = yoff;
 
 	SDL_BlitSurface(FontSurface, &scrrect, dst, &dstrect);
 }
 
-void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, bool highlight)
+void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, Uint8 lettertype)
 {
-	// If highlight enabled, glow letters are to be shown!
-	for(Uint16 i=0 ; i<text.size() ; i++)
-		drawCharacter(dst, text[i] + (128+7*16)*(highlight==true), xoff+8*i, yoff);
+	unsigned int i,x=xoff,y=yoff;
+
+	for(i=0;i<text.size();i++)
+	{
+	    unsigned char c = text[i];
+	    if (c!=13)
+	    {
+	    	if(lettertype != LETTER_TYPE_NORMAL) c |= 128;
+	    	if(lettertype == LETTER_TYPE_BLUE)
+	    		drawCharacter(dst, ((Uint16) c) + 7*16, (int)x, (int)y);
+	    	else
+	    		drawCharacter(dst, c, (int)x, (int)y);
+
+	       x+=8;
+	    }
+	    else
+	    {
+	       x=xoff;
+	       y+=8;
+	    }
+	}
 }

@@ -11,9 +11,11 @@
 #include <string>
 #include <vector>
 
+#include <SDL/SDL.h>
+
 class CTextBox {
 public:
-	CTextBox(int x, int y, int w, int h,
+	CTextBox(SDL_Surface *surface, int x, int y, int w, int h,
 			const std::string& text, bool border_rel = true);
 
 	void setFontDimensions(int width, int height = 0.0f);
@@ -29,6 +31,7 @@ private:
 	int m_x, m_y, m_w, m_h;
 	int m_fontwidth, m_fontheight;
 	bool m_border_relative;
+	SDL_Surface *m_surface;
 };
 
 #endif /* CTEXTBOX_H_ */

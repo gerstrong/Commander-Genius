@@ -11,6 +11,7 @@
 #include <list>
 #include <vector>
 #include <string>
+#include <SDL/SDL.h>
 #include "CTextBox.h"
 
 enum Objecttypes{
@@ -28,7 +29,7 @@ enum Windowtypes{
 
 class CWindow {
 public:
-	CWindow(int x, int y, int w, int h);
+	CWindow(SDL_Surface *Surface, int x, int y, int w, int h);
 	virtual ~CWindow();
 
 	// Creation routines
@@ -57,6 +58,8 @@ private:
 	char m_window_type;
 
 	std::list<int> m_ID_List;
+
+	SDL_Surface *m_Surface;
 
 	void drawWindow();
 };

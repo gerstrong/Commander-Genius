@@ -162,8 +162,9 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 
 	      case MAINMNU_ORDERING_INFO:
 	    	  COrderingInfo *OrderingInfo;
-	    	  OrderingInfo = new COrderingInfo(pCKP->Control.levelcontrol.episode,
-	    			  pCKP->Resources.GameDataDirectory);
+	    	  OrderingInfo = new COrderingInfo(g_pVideoDriver->FGLayerSurface,
+											  pCKP->Control.levelcontrol.episode,
+											  pCKP->Resources.GameDataDirectory);
 	    	  OrderingInfo->Render(pCKP);
 	    	  delete OrderingInfo;
 	    	  break;

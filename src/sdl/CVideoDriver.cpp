@@ -523,7 +523,7 @@ char tempbuf[80];
 #else
      sprintf(tempbuf, "FPS: %03d", g_pTimer->getFramesPerSec() );
 #endif
-     g_pGraphics->drawFont( tempbuf, 320-3-(strlen( (char *) tempbuf)<<3), 3, 1);
+     g_pGfxEngine->Font.drawFont( FGLayerSurface, tempbuf, 320-3-(strlen( (char *) tempbuf)<<3), 3, 1);
    }
 
    update_screen();
@@ -807,7 +807,7 @@ int y;
  y = CONSOLE_MESSAGE_Y;
  for(i=0;i<NumConsoleMessages;i++)
  {
-	 g_pGraphics->drawFont( cmsg[i].msg, CONSOLE_MESSAGE_X, y, 1);
+	 g_pGfxEngine->Font.drawFont( FGLayerSurface, cmsg[i].msg, CONSOLE_MESSAGE_X, y, 1);
     y += CONSOLE_MESSAGE_SPACING;
  }
 }

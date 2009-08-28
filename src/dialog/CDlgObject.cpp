@@ -58,7 +58,7 @@ void CDlgObject::change(const std::string &text, unsigned int delimiter)
 ///
 // Rendering Routine
 ///
-void CDlgObject::render(SDL_Surface *dst, Uint8 scrollamt, bool highlight)
+void CDlgObject::render(SDL_Surface *dst, Uint8 scrollamt, Uint8 highlight)
 {
 	if(m_type == DLG_OBJ_OPTION_TEXT)
 	{

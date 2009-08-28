@@ -18,6 +18,12 @@
 #include <SDL/SDL.h>
 #include <string>
 
+enum{
+	LETTER_TYPE_NORMAL,
+	LETTER_TYPE_RED,
+	LETTER_TYPE_BLUE
+};
+
 class CFont {
 public:
 	CFont();
@@ -34,7 +40,7 @@ public:
 	void drawTwirl(SDL_Surface* dst, int twirlframe, Uint16 x, Uint16 y);
 
 	void drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff);
-	void drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, bool highlight);
+	void drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, Uint8 lettertype = LETTER_TYPE_NORMAL);
 
 private:
 

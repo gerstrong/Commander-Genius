@@ -8,16 +8,18 @@
 #include "../keen.h"
 #include "COrderingInfo.h"
 #include "../sdl/CInput.h"
-#include "../CGraphics.h"
+//#include "../CGraphics.h"
 #include "../CLogFile.h"
 #include "../include/menu.h"
 #include "../include/gamedo.h"
 #include "../fileio/CExeFile.h"
+#include "../graphics/CGfxEngine.h"
 
 #include "../common/palette.h"
 
-COrderingInfo::COrderingInfo(int episode, std::string& datadirectory) {
+COrderingInfo::COrderingInfo(SDL_Surface *Surface, int episode, std::string& datadirectory) {
 	CExeFile *Exefile = new CExeFile(episode, datadirectory);
+	m_Surface = Surface;
 
 	// load the exe file
 	Exefile->readData();
@@ -109,7 +111,7 @@ void COrderingInfo::Render(stCloneKeenPlus *pCKP)
 
 		for(int i=0 ; i<m_numberoflines ; i++)
 		{
-			g_pGraphics->drawFont(m_Textline[i], m_Text_Coordinate[i], 8*(i+m_starty), true);
+			g_pGfxEngine->Font.drawFont(m_Surface, m_Textline[i], m_Text_Coordinate[i], 8*(i+m_starty), true);
 		}
 
 		if( g_pInput->getPressedAnyCommand() )

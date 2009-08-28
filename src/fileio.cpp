@@ -865,9 +865,13 @@ std::string getstring(const std::string& name)
   for(int i=0;i<numStrings;i++)
   {
 	  if (name == strings[i].name)
-    {
-      return strings[i].stringptr;
-    }
+	  {
+		  // Returning is not enough anymore
+		  // Convert the /h and /H into proper colours
+		  // This is necessary since the new graphics engine
+
+		  return strings[i].stringptr;
+	  }
   }
 
 	//dumpstrings();

@@ -15,10 +15,8 @@
 
 CDialog::CDialog(SDL_Surface *DialogSurface, Uint16 x, Uint16 y, Uint16 w, Uint16 h)
 {
-	m_x = x;
-	m_y = y;
-	m_w = w;
-	m_h = h;
+	m_x = x;	m_y = y;
+	m_w = w;	m_h = h;
 
 	m_twirl.posy = y;
 	m_twirl.frame = 0;
@@ -27,18 +25,14 @@ CDialog::CDialog(SDL_Surface *DialogSurface, Uint16 x, Uint16 y, Uint16 w, Uint1
 	m_selected_ID = 0;
 	m_switch = 0;
 	m_scroll = 0;
-
 	m_Frame = NULL;
-
 	m_DialogSurface = DialogSurface;
 }
 
 CDialog::~CDialog(){
 
 	for(Uint8 i=0 ; i<m_dlgobject.size() ; i++ )
-	{
 		delete m_dlgobject[i]; // the first vector element must be cleared
-	}
 
 	while(!m_dlgobject.empty())
 		m_dlgobject.pop_back();
@@ -164,7 +158,7 @@ void CDialog::render()
 	// they are processed by ID of course
 	for(Uint16 i=m_scroll ;	i<max ; i++)
 	{
-		m_dlgobject[i]->render(m_DialogSurface, m_scroll, (i==m_selected_ID) );
+		m_dlgobject[i]->render(m_DialogSurface, m_scroll, 2*(i==m_selected_ID) );
 	}
 
 	// Render the twirl

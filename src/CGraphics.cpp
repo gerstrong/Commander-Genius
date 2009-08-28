@@ -299,29 +299,6 @@ unsigned int xstart,ystart;
   }
 }
 
-void CGraphics::drawCharacter(int x, int y, int f)
-{
-	assert(f >= 0 && f < 256);
-unsigned char xa,ya;
-
-	if(f==0) return;
-
-  for(ya=0;ya<8;ya++)
-    for(xa=0;xa<8;xa++)
-    	g_pVideoDriver->setpixel(x+xa, y+ya, font[f][ya][xa]);
-}
-
-void CGraphics::drawCharacter(float x, float y, int f)
-{
-  assert(f >= 0 && f < 256);
-  unsigned char xa,ya;
-
-  for(ya=0;ya<8;ya++)
-    for(xa=0;xa<8;xa++)
-    	g_pVideoDriver->setpixel((unsigned int)((x*320)+xa), (unsigned int)((y*200)+ya), (unsigned char)font[f][ya][xa]);
-}
-
-
 void CGraphics::sb_drawCharacter(int x, int y, int f)
 {
 	unsigned char xa,ya;
@@ -486,29 +463,6 @@ int c;
       scrollbuffer[yb+((x+xa+scrollx_buf)&511)] = c;
     }
   }
-}
-
-// font drawing functions
-void CGraphics::drawFont(const std::string& text, int xoff, int yoff, int highlight)
-{
-unsigned int i,x=xoff,y;
-
-   y = yoff;
-   for(i=0;i<text.size();i++)
-   {
-     unsigned char c = text[i];
-     if (c!=13)
-     {
-       if (highlight) c|=128;
-       drawCharacter((int)x, (int)y, c);
-       x+=8;
-     }
-     else
-     {
-       x=xoff;
-       y+=8;
-     }
-   }
 }
 
 void CGraphics::sb_font_draw(const std::string& text, int xoff, int yoff, bool useHighlightcolour)

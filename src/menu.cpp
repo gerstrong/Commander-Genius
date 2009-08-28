@@ -23,6 +23,7 @@
 #include "sdl/CSettings.h"
 #include "dialog/CTextViewer.h"
 #include "common/palette.h"
+#include "graphics/CGfxEngine.h"
 
 #include <SDL.h>
 #include <iostream>
@@ -951,7 +952,7 @@ char controlsmenu()
 // This function shows the Story of Commander Keen!
 void showPage(const std::string& str_text, int textsize)
 {
-	CTextViewer *TextViewer = new CTextViewer(0,0,320,136);
+	CTextViewer *TextViewer = new CTextViewer(g_pVideoDriver->FGLayerSurface, 0, 0, 320, 136);
 	TextViewer->loadText(str_text);
 
 	fade(FADE_IN, FADE_NORM);
@@ -970,6 +971,8 @@ unsigned int p;
 int x,y,i;
 int boxY, boxH;
 int boxtimer;
+
+  SDL_Surface *boxsurface = g_pVideoDriver->FGLayerSurface;
 
   #define KEENSLEFT_TIME        400
 
@@ -1006,8 +1009,8 @@ int boxtimer;
 	  if(g_pTimer->TimeToRender())
 	  {
 		  dialogbox(KEENSLEFT_X,boxY,KEENSLEFT_W,boxH);
-		  g_pGraphics->drawFont( getstring("LIVES_LEFT_BACKGROUND"),(KEENSLEFT_X+1)*8,(boxY+1)*8,0);
-		  g_pGraphics->drawFont( getstring("LIVES_LEFT"),((KEENSLEFT_X+7)*8)+4,(boxY+1)*8,0);
+		  g_pGfxEngine->Font.drawFont( boxsurface, getstring("LIVES_LEFT_BACKGROUND"),(KEENSLEFT_X+1)*8,(boxY+1)*8,0);
+		  g_pGfxEngine->Font.drawFont( boxsurface, getstring("LIVES_LEFT"),((KEENSLEFT_X+7)*8)+4,(boxY+1)*8,0);
 		  y = ((boxY+2)*8)+4;
 		  if (numplayers>1) y--;
 		  for(p=0;p<numplayers;p++)
@@ -1017,7 +1020,6 @@ int boxtimer;
 		    {
 		    	g_pGraphics->drawSprite_direct(x, y, PMAPDOWNFRAME+playerbaseframes[p]-
 		    			(episode==3));
-		    	// (episode==3) TODO: Check whether this is necessary
 		      x+=16;
 		    }
 		    y+=18;

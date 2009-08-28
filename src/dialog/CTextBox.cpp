@@ -6,18 +6,16 @@
  */
 
 #include "CTextBox.h"
-#include "../CGraphics.h"
+#include "../graphics/CGfxEngine.h"
 #include "../StringUtils.h"
 
-CTextBox::CTextBox(int x, int y, int w, int h, const std::string& text, bool border_rel) {
-	m_fontwidth = 0;
-	m_fontheight = 0;
-	m_x = x;
-	m_y = y;
-	m_w = w;
-	m_h = h;
+CTextBox::CTextBox(SDL_Surface *surface, int x, int y, int w, int h, const std::string& text, bool border_rel) {
+	m_fontwidth = m_fontheight = 0;
+	m_x = x;	m_y = y;
+	m_w = w;	m_h = h;
 	m_String = text;
 	m_border_relative = border_rel;
+	m_surface = surface;
 }
 
 void CTextBox::setFontDimensions(int width, int height)
@@ -73,7 +71,7 @@ void CTextBox::draw()
 	// Draw Routine for the Textbox
 	for(unsigned int i=0 ; i<m_Textline.size() ; i++ )
 	{
-		g_pGraphics->drawFont(m_Textline[i], m_x, m_y+i*m_fontheight, 0); // 0 is blank colour
+		g_pGfxEngine->Font.drawFont(m_surface, m_Textline[i], m_x, m_y+i*m_fontheight, 0); // 0 is blank colour
 		if( i*m_fontheight > (unsigned int) m_h )
 			break;
 	}
