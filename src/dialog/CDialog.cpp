@@ -10,7 +10,6 @@
 #include "../sdl/CTimer.h"
 #include "../sdl/CInput.h"
 #include "../sdl/CVideoDriver.h"
-#include "../CGraphics.h"
 #include "../graphics/CGfxEngine.h"
 #include "CDialog.h"
 
@@ -144,13 +143,16 @@ void CDialog::render()
 	// Draw the to icon up or down accordingly
 	if( m_scroll>0 ) // Up Arrow
 	{
-		g_pGraphics->drawCharacter(m_Frame->m_x+m_Frame->m_w-16,m_Frame->m_y+8,15);
+		g_pGfxEngine->Font.drawCharacter(m_DialogSurface, 15,
+									m_Frame->m_x+m_Frame->m_w-16,
+									m_Frame->m_y+8);
 	}
 	if( ( m_h-2 < (Uint8) m_dlgobject.size() )  &&
 		( m_scroll != m_dlgobject.size()-m_h+2 )) // Down Arrow
 	{
-		g_pGraphics->drawCharacter(m_Frame->m_x+m_Frame->m_w-16,
-									m_Frame->m_y+m_Frame->m_h-16 ,19);
+		g_pGfxEngine->Font.drawCharacter(m_DialogSurface , 19,
+									m_Frame->m_x+m_Frame->m_w-16,
+									m_Frame->m_y+m_Frame->m_h-16);
 	}
 
 	Uint8 max;
