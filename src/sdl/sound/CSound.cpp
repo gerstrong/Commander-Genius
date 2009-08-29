@@ -60,7 +60,6 @@ bool CSound::init(void)
   case 11025: AudioSpec.samples = 256; break;
   case 22050: AudioSpec.samples = 512; break;
   default: AudioSpec.samples = 1024; break;
-
   }
 
   AudioSpec.callback = CCallback;
