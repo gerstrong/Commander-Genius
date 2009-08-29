@@ -377,7 +377,6 @@ void gamepdo_setblockedlru(unsigned int cp, stCloneKeenPlus *pCKP)
        // right of the player--which will be the left of a potential tile.
        // Also check floor and ceiling tiles
       // TODO: Try to optimize this!
-
       unsigned int aux1;
 
       for( i=5 ; i < PLAYERWIDTH ; i++ )
@@ -590,7 +589,6 @@ void gamepdo_playpushed(int cp, stCloneKeenPlus *pCKP)
       if (player[cp].playpushed_x > 0 && player[cp].blockedr) player[cp].playpushed_x = 0;
       if (player[cp].playpushed_x < 0 && player[cp].blockedl) player[cp].playpushed_x = 0;
     }
-
 }
 // handles inertia and friction for the X direction
 // (this is where the inertia/playpushed_x is actually applied to playx)
@@ -974,10 +972,7 @@ int mx, my, t;
 
 void gamepdo_JumpAndPogo(int cp, stCloneKeenPlus *pCKP)
 {
-
-stLevelControl *p_levelcontrol;
-
-	p_levelcontrol = &(pCKP->Control.levelcontrol);
+	stLevelControl *p_levelcontrol = &(pCKP->Control.levelcontrol);
 
 	// allow him to toggle the pogo stick
 	gamepdo_TogglePogo_and_Switches(cp, p_levelcontrol);
@@ -1016,7 +1011,7 @@ stLevelControl *p_levelcontrol;
 				   if (!pCKP->Option[OPT_SUPERPOGO].value)
 				   {  // normal high pogo jump
 					  if(player[cp].playcontrol[PA_JUMP] > 12)
-						  player[cp].pjumpupspeed = (PPOGOUP_SPEED*player[cp].playcontrol[PA_JUMP]) / 50;
+						  player[cp].pjumpupspeed = ((PPOGOUP_SPEED-PJUMPUP_SPEED)*player[cp].playcontrol[PA_JUMP]) / 50 + PJUMPUP_SPEED;
 					  else
 						  player[cp].pjumpupspeed = (PPOGOUP_SPEED*11) / 10; // Impossible Pogo Trick
 					  player[cp].pjumptime = PJUMP_NORMALTIME_POGO_LONG;
@@ -1161,11 +1156,9 @@ stLevelControl *p_levelcontrol;
          {
            if (player[cp].pjumpupspeed_decreasetimer>player[cp].pjumpupdecreaserate)
            {
-       		   if (!player[cp].pjumpupspeed)
-       		   {
-       			   player[cp].pjumping = PNOJUMP;
-       		   }
+       		   if (!player[cp].pjumpupspeed) player[cp].pjumping = PNOJUMP;
        		   else player[cp].pjumpupspeed--;
+
        		   player[cp].pjumpupspeed_decreasetimer=0;
            } else player[cp].pjumpupspeed_decreasetimer++;
          }
@@ -1287,18 +1280,15 @@ short tilsupport;
          player[cp].pfallspeed = 1;
          player[cp].pfallspeed_increasetimer = 0;
          if (!player[cp].pjustjumped)
-         {
         	 g_pSound->playStereofromCoord(SOUND_KEEN_FALL, PLAY_NOW, objects[player[cp].useObject].scrx);
-         }
        }
 
        // gradually increase the fall speed up to maximum rate
        if (player[cp].pfallspeed_increasetimer>PFALL_INCREASERATE)
        {
           if (player[cp].pfallspeed<PFALL_MAXSPEED)
-          {
             player[cp].pfallspeed++;
-          }
+
           player[cp].pfallspeed_increasetimer=0;
        } else player[cp].pfallspeed_increasetimer++;
 
@@ -1308,7 +1298,6 @@ short tilsupport;
     }
     else
     {  // not falling
-
        if (player[cp].plastfalling)
        {  // just now stopped falling
           if (player[cp].pdie != PDIE_FELLOFFMAP)
@@ -1316,14 +1305,11 @@ short tilsupport;
           // thud noise
           if (!player[cp].ppogostick)
         	  g_pSound->playStereofromCoord(SOUND_KEEN_LAND, PLAY_NOW, objects[player[cp].useObject].scrx);
-
           // fix "sliding" effect when you fall, go one way, then
           // before you land turn around and as you hit the ground
           // you're starting to move the other direction
           // (set inertia to 0 if it's contrary to player's current dir)
        }
-
-
     }   // close "not falling"
 
     // save fall state so we can detect the high/low-going edges
@@ -1751,27 +1737,21 @@ int o;
 
   player[cp].ankhtime--;
   if (!player[cp].ankhtime)
-  {
     objects[o].exists = 0;
-  }
+
   else if (player[cp].ankhtime < ANKH_STAGE3_TIME)
-  {
     objects[o].ai.se.state = ANKH_STATE_FLICKERSLOW;
-  }
   else if (player[cp].ankhtime < ANKH_STAGE2_TIME)
-  {
     objects[o].ai.se.state = ANKH_STATE_FLICKERFAST;
-  }
   else
-  {
     objects[o].ai.se.state = ANKH_STATE_NOFLICKER;
-  }
+
 }
 
 void gamepdo_StatusBox(int cp, stCloneKeenPlus *pCKP)
 {
   if (fade_in_progress()) return;
 
-  if(player[cp].playcontrol[PA_STATUS] && !player[cp].lastplaycontrol[PA_STATUS])
+  if( g_pInput->getHoldedCommand(cp, IC_STATUS) )
 	  showinventory(cp, pCKP);
 }

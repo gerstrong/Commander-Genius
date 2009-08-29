@@ -40,12 +40,10 @@ public:
 	void drawBitmap(int xa, int ya, int b);
 	void drawBitmap2FG(int xa, int ya, int b);
 	int  getBitmapNumberFromName(const char *bmname);
-	void sb_drawCharacterinverse(int x, int y, int f);
 	void drawFont(const std::string& text, int xoff, int yoff, int highlight);
 	void sb_font_draw(const std::string& text, int xoff, int yoff, bool useHighlightcolour=false);
 	void sb_mask_font_draw(const std::string& text, int xoff, int yoff, char mask);
 	void sb_color_font_draw(const std::string& text, int xoff, int yoff, unsigned int colour, unsigned short bgcolour);
-	void sb_font_draw_inverse(const std::string& text, int xoff, int yoff);
 	void drawTile_direct(int x, int y, unsigned int t);
 	void setFadeBlack(bool value);
 

@@ -7,8 +7,10 @@
 #include "../include/gamedo.h"
 #include "../include/gamepdo.h"
 #include "../sdl/CInput.h"
+#include "../sdl/CVideoDriver.h"
 #include "../include/menu.h"
 #include "../CGraphics.h"
+#include "../graphics/CGfxEngine.h"
 #include "../StringUtils.h"
 #include "../fileio/CExeFile.h"
 
@@ -269,6 +271,8 @@ int eseq1_BackAtHome(stCloneKeenPlus *pCKP)
 	int dlgX, dlgY, dlgW, dlgH;
 	int bmnum_window;
 
+	SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
+
   #define STATE_TEXTAPPEARING   0
   #define STATE_WAITASEC        1
   #define STATE_FADING          2
@@ -311,13 +315,13 @@ int eseq1_BackAtHome(stCloneKeenPlus *pCKP)
 	// Show the window (lights on or off)
 	g_pGraphics->drawBitmap(80, 0, bmnum_window);
 
-	sb_dialogbox(dlgX, dlgY, dlgW, dlgH);
+	g_pGfxEngine->drawDialogBox(sfc ,dlgX, dlgY, dlgW, dlgH);
 
 	// draw the current text line up to the amount currently shown
 	tempbuf = text[textline];
 	if(amountshown < tempbuf.size())
 		tempbuf.erase(amountshown);
-	g_pGraphics->sb_font_draw( tempbuf, (dlgX+1)*8, (dlgY+1)*8);
+	g_pGfxEngine->Font.drawFont(sfc, tempbuf, (dlgX+1)*8, (dlgY+1)*8);
 
 	if (state==STATE_TEXTAPPEARING)
 	{
@@ -376,22 +380,14 @@ int eseq1_BackAtHome(stCloneKeenPlus *pCKP)
 		}
 	}
 
-	/*if (fade.dir==FADE_OUT && fade.mode==FADE_COMPLETE)
-		return 0;*/
-
 	gamedo_fades();
-
 	lastenterstate = enter;
-
 	g_pInput->pollEvents();
 	if (g_pInput->getPressedKey(KQUIT)) return 1;
-
-	  gamedo_frameskipping_blitonly();
-
+	gamedo_frameskipping_blitonly();
   } while(1);
   return 0;
 }
-
 
 int readStoryText(char **ptext, int episode, const std::string& path);
 
@@ -411,17 +407,6 @@ void eseq1_showEndingText(std::string Path)
 
 	for( unsigned long i=0 ; i<endflag-startflag ; i++ )
 		text.push_back(filebuf[i]);
-
-	/*unsigned long p;
-	for( unsigned long i=0 ; i<text.size() ; i++ )
-	{
-		p = text.find('\0');
-		if( p != std::string::npos )
-		{
-			text.erase(p);
-			i += p;
-		}
-	}*/
 
 	delete ExeFile;
 

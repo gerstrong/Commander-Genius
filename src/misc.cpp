@@ -115,38 +115,6 @@ int x,y,i,j;
       x+=8;
     }
 }
-// draw an empty dialog box, for youseeinyourmind(), etc.
-void sb_dialogbox(int x1, int y1, int w, int h)
-{
-	int x,y,i,j;
-
-	g_pGraphics->sb_drawCharacter(x1*8, y1*8, 1);
-	g_pGraphics->sb_drawCharacter((x1+w)*8, y1*8, 3);
-	for(x=(x1*8)+8,i=0;i<w-1;i++)
-	{
-		g_pGraphics->sb_drawCharacter(x, y1*8, 2);
-		x+=8;
-	}
-	y=(y1+1)*8;
-	for(j=0;j<h-2;j++)
-	{
-		for(x=(x1*8),i=0;i<=w;i++)
-		{
-			if (i==0) g_pGraphics->sb_drawCharacter(x, y, 4);
-			else if (i==w) g_pGraphics->sb_drawCharacter(x, y, 5);
-			else g_pGraphics->sb_drawCharacter(x, y, ' ');
-			x+=8;
-		}
-		y+=8;
-  }
-    for(x=(x1*8),i=0;i<=w;i++)
-    {
-      if (i==0) g_pGraphics->sb_drawCharacter(x, y, 6);
-      else if (i==w) g_pGraphics->sb_drawCharacter(x, y, 8);
-      else g_pGraphics->sb_drawCharacter(x, y, 7);
-      x+=8;
-    }
-}
 
 bool showGameHint(int mpx, int mpy, int episode, int level)
 {
@@ -493,29 +461,27 @@ void showinventory(int p, stCloneKeenPlus *pCKP)
 
   // draw the episode-specific stuff
   if (p_levelcontrol->episode==1)
-  {
     inventory_draw_ep1(p);
-  }
+
   else if (p_levelcontrol->episode==2)
-  {
     inventory_draw_ep2(p, pCKP);
-  }
+
   else if (p_levelcontrol->episode==3)
-  {
     inventory_draw_ep3(p);
-  }
+
 
   g_pVideoDriver->update_screen();
 
   // wait for any button pressed or any action triggered
   bool close=false;
 
+  g_pInput->flushAll();
+
   while(!close)
   {
 	g_pInput->pollEvents();
 
-	if(g_pInput->getPressedAnyCommand(p))
-		close=true;
+	if(g_pInput->getPressedAnyCommand(p) || g_pInput->getPressedAnyKey()) close=true;
   }
 }
 
@@ -758,6 +724,8 @@ int dlgX,dlgY,dlgW,dlgH;
   dlgW = GetStringAttribute("GameSaveSuccess", "WIDTH");
   dlgH = GetStringAttribute("GameSaveSuccess", "HEIGHT");
 
+  SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
+
   saveslot = save_slot_box(1, pCKP);
   if (!saveslot) return;                // canceled
 
@@ -775,8 +743,8 @@ int dlgX,dlgY,dlgW,dlgH;
 
 	gamedo_render_drawobjects();
 
-	sb_dialogbox(dlgX,dlgY,dlgW,dlgH);
-	g_pGraphics->sb_font_draw( getstring("GameSaveSuccess"),(dlgX+1)<<3,(dlgY+1)<<3);
+	g_pGfxEngine->drawDialogBox( sfc, dlgX,dlgY,dlgW,dlgH);
+	g_pGfxEngine->Font.drawFont( sfc, getstring("GameSaveSuccess"), (dlgX+1)<<3, (dlgY+1)<<3 );
 
 	gamedo_frameskipping_blitonly();
 	gamedo_render_eraseobjects();
@@ -800,6 +768,7 @@ int dlgX,dlgY,dlgW,dlgH;
   dlgW = GetStringAttribute("VerifyQuit", "WIDTH");
   dlgH = GetStringAttribute("VerifyQuit", "HEIGHT");
 
+  SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
   // either we're trying to save over an existing game, or we're
   // loading a game that doesn't exist.
   do
@@ -807,8 +776,9 @@ int dlgX,dlgY,dlgW,dlgH;
 	gamedo_render_drawobjects();
 	gamedo_AnimatedTiles();
 
-	sb_dialogbox(dlgX, dlgY, dlgW, dlgH);
-	g_pGraphics->sb_font_draw( text, (dlgX+1)<<3, (dlgY+1)<<3);
+	g_pGfxEngine->drawDialogBox( sfc, dlgX,dlgY,dlgW,dlgH);
+	g_pGfxEngine->Font.drawFont( sfc, text, (dlgX+1)<<3, (dlgY+1)<<3 );
+
 	if (g_pInput->getPressedKey(KQ))
 	{
 	  map_redraw();
@@ -1125,9 +1095,4 @@ void showF1HelpText(int episode, std::string DataDirectory)
 
    delete Textviewer;
 }
-
-/////////////////////////////////////////
-// The new implementations of code 8.4 //
-/////////////////////////////////////////
-
 

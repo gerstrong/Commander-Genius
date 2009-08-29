@@ -73,11 +73,10 @@ void sb_drawcharacterinverse(int x, int y, int f);
 void save_area(int x1, int y1, int x2, int y2);
 void restore_area(int x1, int y1, int x2, int y2);
 void setvideomode(unsigned char mode);
-void font_draw(unsigned char *text, int xoff, int yoff, int highlight);
 void sb_font_draw(const unsigned char *text, int xoff, int yoff);
 void sb_mask_font_draw(unsigned char *text, int xoff, int yoff, char mask);
 void sb_color_font_draw(unsigned char *text, int xoff, int yoff, unsigned int colour, unsigned short bgcolour);
-void sb_font_draw_inverse(unsigned char *text, int xoff, int yoff);
+
 // viddrv.c
 #include "fileio.h"
 
@@ -93,7 +92,6 @@ void KeyDrv_Stop(void);
 // misc.c
 void banner(void);
 void dialogbox(int x1, int y1, int w, int h);
-void sb_dialogbox(int x1, int y1, int w, int h);
 void statusbox(void);
 
 int savegameiswm(char *fname);

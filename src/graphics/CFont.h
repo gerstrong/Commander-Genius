@@ -21,7 +21,8 @@
 enum{
 	LETTER_TYPE_NORMAL,
 	LETTER_TYPE_RED,
-	LETTER_TYPE_BLUE
+	LETTER_TYPE_BLUE,
+	LETTER_TYPE_INVERSE
 };
 
 class CFont {
@@ -36,6 +37,7 @@ public:
 
 	void generateGlowFonts();
 	void generateSpecialTwirls();
+	void generateInverseFonts();
 
 	void drawTwirl(SDL_Surface* dst, int twirlframe, Uint16 x, Uint16 y);
 

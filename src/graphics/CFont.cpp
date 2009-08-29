@@ -41,16 +41,16 @@ void CFont::setColorPalette(SDL_Color *Palette)
 	SDL_SetColors(FontSurface, Palette, 0, 255);
 }
 
+// Used for the selected text
 void CFont::generateGlowFonts()
 {
 	SDL_Rect srcrect, fmrect;
 
 	// Copy the first 5 tiles
 	srcrect.x = fmrect.x = 0;
-	srcrect.y = 16;
+	srcrect.y = 16; 	fmrect.y = 136;
 	srcrect.w = fmrect.w = 128;
 	srcrect.h = fmrect.h = 8*6;
-	fmrect.y = 136;
 	SDL_BlitSurface(FontSurface, &srcrect, FontSurface, &fmrect);
 
 	// And this code makes the letter create blue edges
@@ -61,7 +61,36 @@ void CFont::generateGlowFonts()
 	{
 		for(Uint8 x=0 ; x<128 ; x++)
 		{
-			if( *pixel == 16 ) memset(pixel,1,1);
+			if( *pixel != 15 ) memset(pixel,1,1);
+			//else memset(pixel,0,1);
+			pixel++;
+		}
+	}
+	SDL_UnlockSurface(FontSurface);
+}
+
+// Used for scrolling text in the Credits section
+void CFont::generateInverseFonts()
+{
+	SDL_Rect srcrect, fmrect;
+
+	// Copy the first 5 tiles
+	srcrect.x = fmrect.x = 0;
+	srcrect.y = 16; fmrect.y = 184;
+	srcrect.w = fmrect.w = 128;
+	srcrect.h = fmrect.h = 8*6;
+	SDL_BlitSurface(FontSurface, &srcrect, FontSurface, &fmrect);
+
+	// And this code makes the letter create blue edges
+	SDL_LockSurface(FontSurface);
+
+	Uint8 *pixel = (Uint8*) FontSurface->pixels + 184*128;
+	for(Uint8 y=0 ; y<8*6 ; y++)
+	{
+		for(Uint8 x=0 ; x<128 ; x++)
+		{
+			if( *pixel == 15 ) memset(pixel,0,1);
+			else memset(pixel,11,1);
 			pixel++;
 		}
 	}
@@ -134,7 +163,7 @@ void CFont::drawTwirl(SDL_Surface* dst, int twirlframe, Uint16 x, Uint16 y)
 	fmrect.w = fmrect.h = twrect.w = twrect.h = 8;
 
 	SDL_BlitSurface(FontSurface, &twrect, dst, &fmrect);
-	//SDL_BlitSurface(FontSurface, NULL, dst, NULL); // Just used for testing the fontmap. Please don't remove!
+	//SDL_BlitSurface(FontSurface, NULL, dst, &fmrect); // Just used for testing the fontmap. Please don't remove!
 }
 
 void CFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff)
@@ -160,6 +189,8 @@ void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uin
 	    	if(lettertype != LETTER_TYPE_NORMAL) c |= 128;
 	    	if(lettertype == LETTER_TYPE_BLUE)
 	    		drawCharacter(dst, ((Uint16) c) + 7*16, (int)x, (int)y);
+	    	else if(lettertype == LETTER_TYPE_INVERSE)
+	    		drawCharacter(dst, ((Uint16) c) + 13*16, (int)x, (int)y);
 	    	else
 	    		drawCharacter(dst, c, (int)x, (int)y);
 

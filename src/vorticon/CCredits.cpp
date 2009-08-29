@@ -8,7 +8,8 @@
 #include "../keen.h"
 #include "CCredits.h"
 #include "../sdl/CInput.h"
-#include "../CGraphics.h"
+#include "../sdl/CVideoDriver.h"
+#include "../graphics/CGfxEngine.h"
 #include "../include/menu.h"
 #include "../include/gamedo.h"
 #include "../common/palette.h"
@@ -32,7 +33,7 @@ void CCredits::Render(stCloneKeenPlus *pCKP)
 	fade(FADE_IN, FADE_NORM);
 
 	showmapatpos(90, 104<<4, 32, pCKP);
-
+	g_pInput->flushAll();
 	memset(scrolltext,0,51*80);
 
 	do
@@ -49,7 +50,6 @@ void CCredits::Render(stCloneKeenPlus *pCKP)
 			else
 			{
 				scrolly = 200;
-
 				switch(pagenumber)
 				{
 				case 0:
@@ -78,7 +78,7 @@ void CCredits::Render(stCloneKeenPlus *pCKP)
 					strcpy(scrolltext[22],"Main Developers:");
 					strcpy(scrolltext[23],"         Gerstrong");
 					strcpy(scrolltext[24],"         Albert Zeyer");
-					strcpy(scrolltext[25],"			pizza2004");
+					strcpy(scrolltext[25],"         Pizza2004");
 					strcpy(scrolltext[26],"Handheld Devices (Wiz):");
 					strcpy(scrolltext[27],"         Pickle");
 					strcpy(scrolltext[28],"Resources:");
@@ -118,7 +118,7 @@ void CCredits::Render(stCloneKeenPlus *pCKP)
 
 		for(int j=0 ; j<52 ; j++)
 			if(scrolly+(j<<3) > -8 && scrolly+(j<<3) < 200)
-				g_pGraphics->sb_font_draw_inverse( scrolltext[j], mid[j], scrolly+(j<<3));
+				g_pGfxEngine->Font.drawFont( g_pVideoDriver->FGLayerSurface, scrolltext[j], mid[j], scrolly+(j<<3), LETTER_TYPE_INVERSE);
 
 		if( g_pInput->getPressedAnyKey() )
 		{

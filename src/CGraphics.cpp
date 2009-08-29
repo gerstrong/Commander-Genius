@@ -447,24 +447,6 @@ int CGraphics::getBitmapNumberFromName(const char *bmname)
   return -1;
 }
 
-
-void CGraphics::sb_drawCharacterinverse(int x, int y, int f)
-{
-unsigned char xa,ya;
-unsigned int yb;
-int c;
-
-  for(ya=0;ya<8;ya++)
-  {
-    yb = ((y+ya+scrolly_buf)&511)<<9;
-    for(xa=0;xa<8;xa++)
-    {
-      if (font[f][ya][xa]!=15) c=11; else c=0;
-      scrollbuffer[yb+((x+xa+scrollx_buf)&511)] = c;
-    }
-  }
-}
-
 void CGraphics::sb_font_draw(const std::string& text, int xoff, int yoff, bool useHighlightcolour)
 {
    unsigned int i,x,y;
@@ -519,26 +501,6 @@ unsigned int i,x,y;
      if (text[i]!=13)
      {
        sb_drawColorcharacter(x, y, text[i], colour, bgcolour);
-       x+=8;
-     }
-     else
-     {
-       x=xoff;
-       y+=8;
-     }
-   }
-}
-
-void CGraphics::sb_font_draw_inverse(const std::string& text, int xoff, int yoff)
-{
-unsigned int i,x=xoff,y;
-
-   y=yoff;
-   for(i=0;i< text.size();i++)
-   {
-     if (text[i]!=13)
-     {
-       sb_drawCharacterinverse(x, y, text[i]);
        x+=8;
      }
      else

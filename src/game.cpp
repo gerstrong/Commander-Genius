@@ -95,14 +95,12 @@ void gameloop(stCloneKeenPlus *pCKP)
 	// (also ice cannons in ep1) we do this in a global variable
 	// so they're all in sync. when gunfiretimer==0 all gun SE
 	// objects will fire.
-	if (gunfiretimer > gunfirefreq)
-	{
-	  gunfiretimer = 0;
-	}
+	if (gunfiretimer > gunfirefreq) gunfiretimer = 0;
 	else gunfiretimer++;
 
 	// gather input and copy to player[].keytable[] structures
 	gamedo_getInput( &(pCKP->Control.levelcontrol) );
+	gamedo_HandleFKeys(pCKP);
 
 	// run the player behaviour for each player in the game
 	if (!map.isworldmap)
@@ -123,8 +121,6 @@ void gameloop(stCloneKeenPlus *pCKP)
 	gamedo_AnimatedTiles(!pCKP->Control.levelcontrol.usedhintmb);
 	gamedo_enemyai( &(pCKP->Control.levelcontrol) );
 
-	gamedo_HandleFKeys(pCKP);
-
 	/* scroll triggers */
 	if (!pCKP->Control.levelcontrol.gameovermode && pCKP->Control.levelcontrol.level_done==LEVEL_NOT_DONE)
 	{
@@ -136,7 +132,6 @@ void gameloop(stCloneKeenPlus *pCKP)
 		  else if (ScreenIsScrolling == 0)
 		  {
 			  if (gamedo_ScrollTriggers(primaryplayer) or gamedo_ScrollTriggers(otherplayer)) ScreenIsScrolling = 1;
-			  //if (gamedo_ScrollTriggers(otherplayer)) ScreenIsScrolling = 1;
 		  }
 	}
 

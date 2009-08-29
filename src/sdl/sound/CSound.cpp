@@ -57,8 +57,8 @@ bool CSound::init(void)
 
   switch (AudioSpec.freq)
   {
-  case 11000: AudioSpec.samples = 256; break;
-  case 22000: AudioSpec.samples = 512; break;
+  case 11025: AudioSpec.samples = 256; break;
+  case 22050: AudioSpec.samples = 512; break;
   default: AudioSpec.samples = 1024; break;
 
   }
@@ -487,7 +487,7 @@ void CSound::setSoundmode(int freq, bool stereo)
 	switch(freq)
 	{
 	case 0: break; // means that the actual frequency stays untouched
-	case 11000:
+	case 11025:
 	case 22050:
 	case 44100:
 		AudioSpec.freq = freq;

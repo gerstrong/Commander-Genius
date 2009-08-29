@@ -697,7 +697,7 @@ void gamedo_RenderScreen()
 int ctspace=0, lastctspace=0;
 void gamedo_HandleFKeys(stCloneKeenPlus *pCKP)
 {
-int i;
+	int i;
 
     if (g_pInput->getHoldedKey(KC) &&
     		g_pInput->getHoldedKey(KT) &&

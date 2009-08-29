@@ -22,6 +22,7 @@ void CGfxEngine::setColorPalettes(SDL_Color *Palette)
 	Font.setColorPalette(Palette);
 }
 
+// draw an empty dialog box, for youseeinyourmind(), etc.
 void CGfxEngine::drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w, int h)
 {
 	int x,y,i,j;

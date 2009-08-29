@@ -11,7 +11,10 @@
 #include "../common/palette.h"
 
 #include "../CGraphics.h"
+#include "../graphics/CGfxEngine.h"
+
 #include "../sdl/CInput.h"
+#include "../sdl/CVideoDriver.h"
 
 #include "../include/game.h"
 #include "../include/gamedo.h"
@@ -62,6 +65,7 @@ void eseq_showmsg(const std::string& text, int boxleft, int boxtop,
 	unsigned int amountshown;
 	int waittimer;
 	int cancel, lastcancelstate;
+	SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
 
   textline = 0;
   amountshown = 0;
@@ -81,17 +85,16 @@ void eseq_showmsg(const std::string& text, int boxleft, int boxtop,
 	tempbuf = text;
 	if(amountshown < tempbuf.size())
 	  tempbuf.erase(amountshown);
-	sb_dialogbox(boxleft,boxtop,boxwidth,boxheight);
-	g_pGraphics->sb_font_draw( tempbuf, (boxleft+1)*8, (boxtop+1+textline)*8);
+	g_pGfxEngine->drawDialogBox(sfc, boxleft,boxtop,boxwidth,boxheight);
+	g_pGfxEngine->Font.drawFont(sfc, tempbuf, (boxleft+1)*8, (boxtop+1+textline)*8);
 
 	gamedo_render_eraseobjects();
 
 	if (showtimer > LETTER_SHOW_SPD)
 	{  // it's time to show a new letter
 	  if (amountshown < text.size())
-	  {
 		amountshown++;
-	  }
+
 	  showtimer = 0;
 	} else showtimer++;
 
@@ -99,9 +102,8 @@ void eseq_showmsg(const std::string& text, int boxleft, int boxtop,
 	if (cancel && !lastcancelstate)
 	{
 	  if (amountshown < text.size())
-	  {
 		  amountshown = text.size();
-	  }
+
 	  else return;
 	}
 

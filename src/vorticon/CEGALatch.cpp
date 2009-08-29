@@ -157,6 +157,7 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
 
      g_pGfxEngine->Font.generateSpecialTwirls();
      g_pGfxEngine->Font.generateGlowFonts();
+     g_pGfxEngine->Font.generateInverseFonts();
      delete Planes;
 
      // Load 32x32 Tiles
