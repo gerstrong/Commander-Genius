@@ -618,8 +618,8 @@ char slotexists;
 int x, bmnum;
 int dlgX,dlgY,dlgW,dlgH;
 
-stLevelControl *p_levelcontrol;
-p_levelcontrol = &(pCKP->Control.levelcontrol);
+stLevelControl *p_levelcontrol = &(pCKP->Control.levelcontrol);
+SDL_Surface *boxsfc = g_pVideoDriver->FGLayerSurface;
 
 top: ;
   if (issave)
@@ -646,14 +646,14 @@ top: ;
   {
 	gamedo_render_drawobjects();
 
-	sb_dialogbox(dlgX,dlgY,dlgW,dlgH);
+	g_pGfxEngine->drawDialogBox(boxsfc, dlgX,dlgY,dlgW,dlgH);
 	if (issave)
 	{
-		g_pGraphics->sb_font_draw( getstring("WhichSlotSave"),(dlgX+1)<<3,(dlgY+1)<<3);
+		g_pGfxEngine->Font.drawFont(boxsfc, getstring("WhichSlotSave"),(dlgX+1)<<3,(dlgY+1)<<3);
 	}
 	else
 	{
-		g_pGraphics->sb_font_draw( getstring("WhichSlotLoad"),(dlgX+1)<<3,(dlgY+1)<<3);
+		g_pGfxEngine->Font.drawFont(boxsfc, getstring("WhichSlotLoad"),(dlgX+1)<<3,(dlgY+1)<<3);
 		gamedo_AnimatedTiles();
 	}
 
@@ -662,7 +662,6 @@ top: ;
 		if (g_pInput->getPressedKey(KNUM1+i)) saveslot = 1+i;
 	}
 
-	//g_pVideoDriver->sb_blit();
 	gamedo_frameskipping_blitonly();
 	gamedo_render_eraseobjects();
 
@@ -710,10 +709,10 @@ top: ;
   {
 	  gamedo_render_drawobjects();
 
-	  sb_dialogbox(dlgX,dlgY,dlgW,dlgH);
+	  g_pGfxEngine->drawDialogBox(boxsfc, dlgX,dlgY,dlgW,dlgH);
 	  if (issave)
 	  {
-	    g_pGraphics->sb_font_draw( getstring("SaveSlotOverwrite"),(dlgX+1)<<3,(dlgY+1)<<3);
+		g_pGfxEngine->Font.drawFont(boxsfc, getstring("SaveSlotOverwrite"),(dlgX+1)<<3,(dlgY+1)<<3);
 	    if (g_pInput->getPressedKey(KN))
 	    {
 		  map_redraw();
@@ -727,7 +726,7 @@ top: ;
 	  }
 	  else
 	  {
-		  g_pGraphics->sb_font_draw( getstring("LoadNoSuchSlot"),(dlgX+1)<<3,(dlgY+1)<<3);
+		  g_pGfxEngine->Font.drawFont(boxsfc, getstring("LoadNoSuchSlot"),(dlgX+1)<<3,(dlgY+1)<<3);
 
 		  if (g_pInput->getPressedAnyKey())
 		  {

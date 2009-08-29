@@ -24,6 +24,8 @@ public:
 
 	void setColorPalettes(SDL_Color *Palette);
 
+	void drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w, int h);
+
 	CFont Font;
 };
 
