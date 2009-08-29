@@ -14,7 +14,7 @@
 #include "CGraphics.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/video/colourtable.h"
-#include "sdl/CVideoDriver.h"
+#include "graphics/CGfxEngine.h"
 #include "CLogFile.h"
 #include "StringUtils.h"
 #include "common/palette.h"
@@ -110,6 +110,7 @@ unsigned char oldpixel; // used for the or operation when drawing maked sprites
 
 void CGraphics::drawTile(int x, int y, unsigned int t)
 {
+	// TODO: Must be passed to the Tilemap class of CGFXEngine
 	if(HQBitmap)
 	{
 		unsigned char *offset = &scrollbuffer[(y<<9)+x];
@@ -131,17 +132,6 @@ void CGraphics::drawTile(int x, int y, unsigned int t)
 				memcpy(offset, &tiledata[t][ya][0], 16);
 				offset+=512;
 			}
-		}
-	}
-	else
-	{
-		unsigned char *offset = &scrollbuffer[(y<<9)+x];
-		unsigned char ya;
-
-		for(ya=0;ya<16;ya++)
-		{
-			memcpy(offset, &tiledata[t][ya][0], 16);
-			offset+=512;
 		}
 	}
 }

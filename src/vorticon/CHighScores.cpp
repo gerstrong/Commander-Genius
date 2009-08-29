@@ -126,14 +126,14 @@ char CHighScores::showHighScore(void)
 			// Print the labels
 			for( i=0 ; i<7 ; i++ )
 			{
-				if(Extra[i][0] == true)
-					g_pGraphics->drawTile(32,90+(i<<4),ItemTiles[0]);
-				if(Extra[i][1] == true)
-					g_pGraphics->drawTile(48,90+(i<<4),ItemTiles[1]);
-				if(Extra[i][2] == true)
-					g_pGraphics->drawTile(64,90+(i<<4),ItemTiles[2]);
-				if(Extra[i][3] == true)
-					g_pGraphics->drawTile(80,90+(i<<4),ItemTiles[3]);
+				if(Extra[i][0])
+					g_pGfxEngine->Tilemap.drawTile(m_sfc, 32,90+(i<<4),ItemTiles[0]);
+				if(Extra[i][1])
+					g_pGfxEngine->Tilemap.drawTile(m_sfc, 48,90+(i<<4),ItemTiles[1]);
+				if(Extra[i][2])
+					g_pGfxEngine->Tilemap.drawTile(m_sfc, 64,90+(i<<4),ItemTiles[2]);
+				if(Extra[i][3])
+					g_pGfxEngine->Tilemap.drawTile(m_sfc, 80,90+(i<<4),ItemTiles[3]);
 			}
 		}
 		else if(pCKP->Control.levelcontrol.episode == 2)
@@ -317,10 +317,14 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 
 			if(pCKP->Control.levelcontrol.episode == 1)
 			{
-				if(Extra[i][0])	g_pGraphics->drawTile(32,90+(i<<4),ItemTiles[0]);
-				if(Extra[i][1])	g_pGraphics->drawTile(48,90+(i<<4),ItemTiles[1]);
-				if(Extra[i][2])	g_pGraphics->drawTile(64,90+(i<<4),ItemTiles[2]);
-				if(Extra[i][3])	g_pGraphics->drawTile(80,90+(i<<4),ItemTiles[3]);
+				if(Extra[i][0])
+					g_pGfxEngine->Tilemap.drawTile(m_sfc, 32,90+(i<<4),ItemTiles[0]);
+				if(Extra[i][1])
+					g_pGfxEngine->Tilemap.drawTile(m_sfc, 48,90+(i<<4),ItemTiles[1]);
+				if(Extra[i][2])
+					g_pGfxEngine->Tilemap.drawTile(m_sfc, 64,90+(i<<4),ItemTiles[2]);
+				if(Extra[i][3])
+					g_pGfxEngine->Tilemap.drawTile(m_sfc, 80,90+(i<<4),ItemTiles[3]);
 			}
 		}
 

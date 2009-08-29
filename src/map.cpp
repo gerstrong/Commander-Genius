@@ -5,6 +5,8 @@
 
 #include "keen.h"
 #include "CGraphics.h"
+#include "sdl/CVideoDriver.h"
+#include "graphics/CGfxEngine.h"
 
 unsigned long scroll_x = 0;      // total amount of X scroll
 unsigned int scrollx_buf = 0;    // amount the scroll buffer is scrolled(x)
@@ -107,7 +109,9 @@ int i,y,c;
   for(y=0;y<SCROLLBUF_NUMTILESY;y++)
   {
       c = map.mapdata[mpx][y+mapy];
-      g_pGraphics->drawTile(x, ((y<<4)+mapystripepos)&511, c);
+      //g_pGraphics->drawTile(x, ((y<<4)+mapystripepos)&511, c);
+	  g_pGfxEngine->Tilemap.drawTile(g_pVideoDriver->getScrollSurface(), x, ((y<<4)+mapystripepos)&511, c);
+
 
       if (AnimTileInUse[x>>4][(((y<<4)+mapystripepos)&511)>>4])
       { // we just drew over an animated tile which we must unregister
@@ -142,7 +146,8 @@ int i,x,c;
   for(x=0;x<SCROLLBUF_NUMTILESX;x++)
   {
       c = map.mapdata[x+mapx][mpy];
-      g_pGraphics->drawTile(((x<<4)+mapxstripepos)&511, y, c);
+      //g_pGraphics->drawTile(((x<<4)+mapxstripepos)&511, y, c);
+	  g_pGfxEngine->Tilemap.drawTile(g_pVideoDriver->getScrollSurface(), ((x<<4)+mapxstripepos)&511, y, c);
 
       if (AnimTileInUse[(((x<<4)+mapxstripepos)&511)>>4][y>>4])
       { // we just drew over an animated tile which we must unregister
@@ -213,7 +218,8 @@ void map_chgtile(unsigned int x, unsigned int y, int newtile)
    map.mapdata[x][y] = newtile;
 
    if (x>=mapx && y>=mapy && x<mapx+64 && y<mapy+64)
-	   g_pGraphics->drawTile(((mapxstripepos+((x-mapx)<<4))&511), ((mapystripepos+((y-mapy)<<4))&511), newtile);
+	   //g_pGraphics->drawTile(((mapxstripepos+((x-mapx)<<4))&511), ((mapystripepos+((y-mapy)<<4))&511), newtile);
+	   g_pGfxEngine->Tilemap.drawTile(g_pVideoDriver->getScrollSurface(), ((mapxstripepos+((x-mapx)<<4))&511), ((mapystripepos+((y-mapy)<<4))&511), newtile);
 }
 
 // searches for animated tiles at the map position (X,Y) and

@@ -12,6 +12,7 @@
 #define CGFXENGINE_H_
 
 #include "CFont.h"
+#include "CTilemap.h"
 
 #include "../CSingleton.h"
 #define g_pGfxEngine CGfxEngine::Get()
@@ -27,6 +28,7 @@ public:
 	void drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w, int h);
 
 	CFont Font;
+	CTilemap Tilemap;
 };
 
 #endif /* CGFXENGINE_H_ */

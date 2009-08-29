@@ -87,7 +87,7 @@ void CSoundChannel::generateWaveform(Uint8 *waveform, unsigned int len, int freq
     // setup so we process a new byte of the sound first time through
     firsttime = 1;
 
-    for(index=0;index<len;index++)
+    for(index=0 ; index<len ; index++)
     {
     	if (!m_sound_timer || firsttime)
         {
@@ -173,7 +173,7 @@ void CSoundChannel::generateWaveform(Uint8 *waveform, unsigned int len, int freq
     delete[] WaveBuffer;
 }
 
-// This programme reads the balance information and balances the stereo sound
+// This program reads the balance information and balances the stereo sound
 void CSoundChannel::transintoStereoChannels(Uint8* waveform, unsigned int len)
 {
 	if(m_balance != 0) // Because, if it is not zero, there is no balance, and waves must be adapted

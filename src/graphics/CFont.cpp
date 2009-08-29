@@ -20,10 +20,10 @@ CFont::~CFont() {
 
 bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags)
 {
+	if(FontSurface) delete FontSurface;
 	FontSurface = SDL_CreateRGBSurface(Flags, 128, 256, 8, 0, 0, 0, 0);
 	SDL_SetColors(FontSurface, Palette, 0, 255);
 	SDL_SetColorKey(FontSurface, SDL_SRCCOLORKEY, COLORKEY);
-
 	return (FontSurface != NULL);
 }
 
@@ -35,7 +35,6 @@ SDL_Surface *CFont::getSDLSurface()
 ///////////////////////////////////
 ///// Initialization Routines /////
 ///////////////////////////////////
-
 void CFont::setColorPalette(SDL_Color *Palette)
 {
 	SDL_SetColors(FontSurface, Palette, 0, 255);
@@ -153,7 +152,6 @@ void CFont::generateSpecialTwirls()
 ////////////////////////////
 ///// Drawing Routines /////
 ////////////////////////////
-
 void CFont::drawTwirl(SDL_Surface* dst, int twirlframe, Uint16 x, Uint16 y)
 {
 	SDL_Rect twrect, fmrect;
@@ -163,7 +161,6 @@ void CFont::drawTwirl(SDL_Surface* dst, int twirlframe, Uint16 x, Uint16 y)
 	fmrect.w = fmrect.h = twrect.w = twrect.h = 8;
 
 	SDL_BlitSurface(FontSurface, &twrect, dst, &fmrect);
-	//SDL_BlitSurface(FontSurface, NULL, dst, &fmrect); // Just used for testing the fontmap. Please don't remove!
 }
 
 void CFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff)

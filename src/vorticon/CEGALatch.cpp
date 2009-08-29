@@ -69,6 +69,7 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
 {
 	char *RawData;
     char *BitmapData; // TODO: Partial solution. This BitmapData must become member of this class!
+    SDL_Surface *sfc;
 
 	FILE* latchfile = OpenGameFile(filename.c_str(),"rb");
 
@@ -102,16 +103,18 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
      plane4 = (m_latchplanesize * 3);
 
      // ** read the 8x8 tiles **
-
      // set up the getbit() function of CPlanes class
      CPlanes *Planes = new CPlanes(plane1 + m_fontlocation,
 							 plane2 + m_fontlocation,
 							 plane3 + m_fontlocation,
 							 plane4 + m_fontlocation,
 							 0);
-
-     // Load 8x8 Tiles
-     char font[MAX_FONT+1][8][8];
+     // Load these graphics into the CFont Class of CGfxEngine
+     char *offset;
+     g_pGfxEngine->Font.CreateSurface( g_pVideoDriver->MyPalette, SDL_SWSURFACE );
+     sfc = g_pGfxEngine->Font.getSDLSurface();
+     if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
+     char *pixel = (char*) sfc->pixels;
      int c=0;
      for(int p=0;p<4;p++)
      {
@@ -121,56 +124,42 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
          {
            for(int x=0;x<8;x++)
            {
-             // if we're on the first plane start with black,
-             // else merge with the previously accumulated data
-             if (p==0)
-             {
-               c = 0;
-             }
-             else
-             {
-               c = font[t][y][x];
-             }
-             // read a bit out of the current plane, shift it into the
-             // correct position and merge it
-             c |= (Planes->getbit(RawData, p) << p);
-             // map black pixels to color 16 because of the way the
-             // vorticon death sequence works in ep1
-             if (p==3 && c==0) c = 16;
-             font[t][y][x] = c;
+        	   // if we're on the first plane start with black,
+        	   // else merge with the previously accumulated data
+        	   offset = pixel + 128*8*(t/16) + 8*(t%16) + 128*y + x;
+        	   if (p==0) c = 0;
+        	   else c = *offset;
+        	   // read a bit out of the current plane, shift it into the
+        	   // correct position and merge it
+        	   c |= (Planes->getbit(RawData, p) << p);
+        	   // map black pixels to color 16 because of the way the
+        	   // vorticon death sequence works in ep1
+        	   if (p==3 && c==0) c = 16;
+        	   *offset = c;
            }
          }
        }
      }
-
-     // Load these graphics into the CFont Class of CGfxEngine
-     Uint8 *offset;
-     g_pGfxEngine->Font.CreateSurface( g_pVideoDriver->MyPalette, SDL_SWSURFACE );
-     Uint8 *pixel = (Uint8*) g_pGfxEngine->Font.getSDLSurface()->pixels;
-     for(int t=0;t<m_fonttiles;t++)
-     {
-       for(int y=0;y<8;y++)
-       {
-       	 offset = pixel + 128*8*(t/16) + 8*(t%16) + 128*y ;
-       	 memcpy(offset, font[t][y], 8);
-       }
-     }
-
      g_pGfxEngine->Font.generateSpecialTwirls();
      g_pGfxEngine->Font.generateGlowFonts();
      g_pGfxEngine->Font.generateInverseFonts();
+     if(SDL_MUSTLOCK(sfc))SDL_UnlockSurface(sfc);
      delete Planes;
 
      // Load 32x32 Tiles
-
      // TODO: Add a read function for 32x32 Tiles
 
-     // Load 16x16 Tiles
+     // ** read the 16x16 tiles **
      Planes = new CPlanes(plane1 + m_tiles16location,
                        plane2 + m_tiles16location,
                        plane3 + m_tiles16location,
                        plane4 + m_tiles16location,
                        0);
+     Uint8 *u_offset;
+     g_pGfxEngine->Tilemap.CreateSurface( g_pVideoDriver->MyPalette, SDL_SWSURFACE );
+     sfc = g_pGfxEngine->Tilemap.getSDLSurface();
+     if(SDL_MUSTLOCK(sfc))	SDL_LockSurface(sfc);
+     Uint8 *u_pixel = (Uint8*) sfc->pixels;
 
      for(int p=0;p<4;p++)
      {
@@ -180,22 +169,19 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
          {
            for(int x=0;x<16;x++)
            {
-             if (p==0)
-             {
-               c = 0;
-             }
-             else
-             {
-               c = tiledata[t][y][x];
-             }
-             c |= (Planes->getbit(RawData, p) << p);
-             if (p==3 && c==0) c = 16;
+               u_offset = u_pixel + 16*13*16*(t/13) + 16*(t%13)  + 16*13*y + x;
+               if (p==0) c = 0;
+               else c = tiledata[t][y][x];
+               c |= (Planes->getbit(RawData, p) << p);
+               if (p==3 && c==0) c = 16;
+               tiledata[t][y][x] = c;
 
-            	tiledata[t][y][x] = c;
+               *u_offset = c;
            }
          }
        }
      }
+     if(SDL_MUSTLOCK(sfc))	SDL_UnlockSurface(sfc);
      delete Planes;
 
      // Load Bitmaps

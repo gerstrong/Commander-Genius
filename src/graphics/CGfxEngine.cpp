@@ -20,6 +20,7 @@ CGfxEngine::~CGfxEngine() {
 void CGfxEngine::setColorPalettes(SDL_Color *Palette)
 {
 	Font.setColorPalette(Palette);
+	Tilemap.setColorPalette(Palette);
 }
 
 // draw an empty dialog box, for youseeinyourmind(), etc.
