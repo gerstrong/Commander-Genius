@@ -41,8 +41,8 @@ mkdmg() {
 	#osascript -e "tell application "Finder" to eject disk "$VOL"" && 
 
 	# convert to compressed image, delete temp image
-	rm -f "cgenius-v${VER}-mac.dmg"
-	hdiutil convert "$DMG" -format UDZO -o "cgenius-v${VER}-mac.dmg"
+	rm -f "cgenius-v${VER}-mac-32bit.dmg"
+	hdiutil convert "$DMG" -format UDZO -o "cgenius-v${VER}-mac-32bit.dmg"
 	rm -f "$DMG"
 
 }
