@@ -92,7 +92,6 @@ unsigned char tiledata[MAX_TILES+1][16][16];
 stSprite *sprites = NULL;
 CBitmap bitmaps[MAX_BITMAPS+1];
 stObject objects[MAX_OBJECTS+1];
-char font[MAX_FONT+1][8][8];
 stAnimTile animtiles[MAX_ANIMTILES+1];
 stPlayer player[MAX_PLAYERS];
 stPlayer net_lastplayer[MAX_PLAYERS];

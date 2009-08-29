@@ -9,7 +9,6 @@ extern unsigned char tiledata[MAX_TILES+1][16][16];
 extern stSprite *sprites;
 extern CBitmap bitmaps[MAX_BITMAPS+1];
 extern stAnimTile animtiles[MAX_ANIMTILES+1];
-extern char font[MAX_FONT+1][8][8];
 extern stObject objects[MAX_OBJECTS+1];
 extern stPlayer player[MAX_PLAYERS];
 extern stPlayer net_lastplayer[MAX_PLAYERS];

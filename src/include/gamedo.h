@@ -8,7 +8,6 @@ void gamedo_getInput(stLevelControl *p_levelcontrol);
 int gamedo_ScrollTriggers(int theplayer);
 void gamedo_AnimatedTiles(bool animate_hinttiles = false);
 void gamedo_render_eraseobjects(void);
-void gamedo_render_drawdebug(void);
 void gamedo_render_erasedebug(void);
 void gamedo_fades(void);
 

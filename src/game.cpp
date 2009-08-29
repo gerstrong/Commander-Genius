@@ -209,7 +209,7 @@ void gameloop(stCloneKeenPlus *pCKP)
 void start_gameover(stCloneKeenPlus *pCKP)
 {
  	 int cities=0;
-   	 CHighScores *HighScoreTable = new CHighScores(pCKP);
+   	 CHighScores *HighScoreTable = new CHighScores(g_pVideoDriver->FGLayerSurface, pCKP);
 
    	 // Fade in. The high score must be seen!
    	 fade(FADE_IN, FADE_NORM);

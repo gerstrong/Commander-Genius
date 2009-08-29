@@ -73,9 +73,6 @@ void sb_drawcharacterinverse(int x, int y, int f);
 void save_area(int x1, int y1, int x2, int y2);
 void restore_area(int x1, int y1, int x2, int y2);
 void setvideomode(unsigned char mode);
-void sb_font_draw(const unsigned char *text, int xoff, int yoff);
-void sb_mask_font_draw(unsigned char *text, int xoff, int yoff, char mask);
-void sb_color_font_draw(unsigned char *text, int xoff, int yoff, unsigned int colour, unsigned short bgcolour);
 
 // viddrv.c
 #include "fileio.h"

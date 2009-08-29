@@ -299,56 +299,6 @@ unsigned int xstart,ystart;
   }
 }
 
-void CGraphics::sb_drawCharacter(int x, int y, int f)
-{
-	unsigned char xa,ya;
-	unsigned int yb;
-
-	  for(ya=0;ya<8;ya++)
-	  {
-	    yb = ((y+ya+scrolly_buf)&511)<<9;
-	    for(xa=0;xa<8;xa++)
-	    {
-	   		scrollbuffer[yb+((x+xa+scrollx_buf)&511)] = font[f][ya][xa];
-	    }
-	  }
-}
-
-void CGraphics::sb_drawCharacterwithmask(int x, int y, int f, char mask)
-{
-unsigned char xa,ya;
-unsigned int yb;
-
-  for(ya=0;ya<8;ya++)
-  {
-    yb = ((y+ya+scrolly_buf)&511)<<9;
-    for(xa=0;xa<8;xa++)
-    {
-    	if(font[f][ya][xa] != mask)
-    		scrollbuffer[yb+((x+xa+scrollx_buf)&511)] = font[f][ya][xa];
-    }
-  }
-}
-
-
-void CGraphics::sb_drawColorcharacter(int x, int y, int f, unsigned short colour, unsigned short bgcolour)
-{
-unsigned char xa,ya;
-unsigned int yb;
-
-  for(ya=0;ya<8;ya++)
-  {
-    yb = ((y+ya+scrolly_buf)&511)<<9;
-    for(xa=0;xa<8;xa++)
-    {
-    	if(font[f][ya][xa] == 16)
-    		scrollbuffer[yb+((x+xa+scrollx_buf)&511)] = colour;
-    	else if(bgcolour != COLOUR_MASK)
-    		scrollbuffer[yb+((x+xa+scrollx_buf)&511)] = bgcolour;
-    }
-  }
-}
-
 unsigned char savebuf[200][320];
 void CGraphics::saveArea(int x1, int y1, int x2, int y2)
 {
@@ -447,69 +397,6 @@ int CGraphics::getBitmapNumberFromName(const char *bmname)
   return -1;
 }
 
-void CGraphics::sb_font_draw(const std::string& text, int xoff, int yoff, bool useHighlightcolour)
-{
-   unsigned int i,x,y;
-
-   x=xoff;
-   y=yoff;
-   for(i=0;i<text.size();i++)
-   {
-     if (text[i]!=13)
-     {
-       sb_drawCharacter(x, y, (unsigned char)text[i] + 128*(useHighlightcolour==true));
-       x+=8;
-     }
-     else
-     {
-       x=xoff;
-       y+=8;
-     }
-   }
-}
-
-void CGraphics::sb_mask_font_draw(const std::string& text, int xoff, int yoff, char mask)
-{
-unsigned int i,x,y;
-
-   x=xoff;
-   y=yoff;
-   for(i=0;i<text.size();i++)
-   {
-     if (text[i]!=13)
-     {
-       sb_drawCharacterwithmask(x, y, text[i], mask);
-       x+=8;
-     }
-     else
-     {
-       x=xoff;
-       y+=8;
-     }
-   }
-}
-
-
-void CGraphics::sb_color_font_draw(const std::string& text, int xoff, int yoff, unsigned int colour, unsigned short bgcolour)
-{
-unsigned int i,x,y;
-
-   x=xoff;
-   y=yoff;
-   for(i=0;i< text.size(); i++)
-   {
-     if (text[i]!=13)
-     {
-       sb_drawColorcharacter(x, y, text[i], colour, bgcolour);
-       x+=8;
-     }
-     else
-     {
-       x=xoff;
-       y+=8;
-     }
-   }
-}
 
 void CGraphics::setFadeBlack(bool value)
 {	fade_black = value;	}

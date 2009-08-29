@@ -29,11 +29,6 @@ public:
 	void drawPrioritytile(int x, int y, unsigned int til);
 	void drawSprite(int x, int y, unsigned int s, int objectnum);
 	void eraseSprite(int x, int y, unsigned int s, int objectnum);
-	void drawCharacter(int x, int y, int f);
-	void drawCharacter(float x, float y, int f);
-	void sb_drawCharacter(int x, int y, int f);
-	void sb_drawCharacterwithmask(int x, int y, int f, char mask);
-	void sb_drawColorcharacter(int x, int y, int f, unsigned short colour, unsigned short bgcolour);
 	void saveArea(int x1, int y1, int x2, int y2);
 	void restoreArea(int x1, int y1, int x2, int y2);
 	void stopGraphics(void);

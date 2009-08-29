@@ -61,7 +61,6 @@ bool CSound::init(void)
   case 22050: AudioSpec.samples = 512; break;
   default: AudioSpec.samples = 1024; break;
   }
-
   AudioSpec.callback = CCallback;
   AudioSpec.userdata = NULL;
 
@@ -104,7 +103,6 @@ bool CSound::init(void)
 		g_pLogFile->ftextOut("  format: UNKNOWN %d<br>", AudioSpec.format );
   }
   g_pLogFile->ftextOut("Using audio driver: %s<br>", SDL_AudioDriverName(name, 32));
-
 
 
   m_mixing_channels = 7;

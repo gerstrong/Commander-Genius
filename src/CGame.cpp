@@ -141,7 +141,7 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 
 	      case MAINMNU_HIGHSCORES:
 	    	  CHighScores *pHighscores;
-	    	  pHighscores = new CHighScores(pCKP);
+	    	  pHighscores = new CHighScores(g_pVideoDriver->FGLayerSurface, pCKP);
 	    	  if(pHighscores->showHighScore())
 	    	  {
 	    		  g_pLogFile->ftextOut("Error processing Highscore!!<br>");

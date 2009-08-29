@@ -17,6 +17,7 @@
 #include "CHighScores.h"
 #include "../sdl/CInput.h"
 #include "../common/palette.h"
+#include "../graphics/CGfxEngine.h"
 #include "../CGraphics.h"
 #include "../StringUtils.h"
 #include "../FindFile.h"
@@ -27,7 +28,7 @@
 using namespace std;
 
 
-CHighScores::CHighScores(stCloneKeenPlus *poutsideCKP) {
+CHighScores::CHighScores(SDL_Surface *sfc, stCloneKeenPlus *poutsideCKP) {
 	// Set default Scores
 	strcpy(Name[0],"Gerstrong");
 	strcpy(Name[1],"Tulip");
@@ -45,6 +46,7 @@ CHighScores::CHighScores(stCloneKeenPlus *poutsideCKP) {
 	memset(Cities, 0, 7*sizeof(unsigned int));
 
 	pCKP = poutsideCKP;
+	m_sfc = sfc;
 
 	Episode = pCKP->Control.levelcontrol.episode;
 	DataDirectory = pCKP->Resources.GameDataDirectory;
@@ -77,17 +79,10 @@ char CHighScores::showHighScore(void)
 
 	if(pCKP->Control.levelcontrol.episode == 1)
 	{
-		int t;
-		for(t=0 ; t<numtiles ;t++)
+		for(int t=0 ; t<numtiles ;t++)
 		{
-			if(TileProperty[t][BEHAVIOR] == 11)
-				ItemTiles[0] = t;
-			if(TileProperty[t][BEHAVIOR] == 12)
-				ItemTiles[1] = t;
-			if(TileProperty[t][BEHAVIOR] == 13)
-				ItemTiles[2] = t;
-			if(TileProperty[t][BEHAVIOR] == 14)
-				ItemTiles[3] = t;
+			if(TileProperty[t][BEHAVIOR] >= 11 && TileProperty[t][BEHAVIOR] <= 14)
+				ItemTiles[TileProperty[t][BEHAVIOR]-11] = t;
 		}
 	}
 
@@ -102,10 +97,8 @@ char CHighScores::showHighScore(void)
     	bExtra = g_pGraphics->getBitmapNumberFromName("PARTS");
 
     x1 = 160-(bitmaps[bTitle].xsize/2);
-    y1 = 8;
-    x2 = 40;
-    y2 = 42;
-    x3 = 178-(bitmaps[bScore].xsize/2);
+    y1 = 8;    x2 = 40;
+    y2 = 42;    x3 = 178-(bitmaps[bScore].xsize/2);
     x4 = 230;
 
     // They are blit once.
@@ -120,15 +113,19 @@ char CHighScores::showHighScore(void)
 	// This cycle only serves as a key which must be pressed for now
 	do
 	{
-		// Here it must be split up in Episodes 1, 2 and 3.
+		// Print the labels
+		for( i=0 ; i<7 ; i++ )
+		{
+			g_pGfxEngine->Font.drawFont(m_sfc, Name[i],40,64+(i<<4), LETTER_TYPE_RED);
+			g_pGfxEngine->Font.drawFont(m_sfc, Score[i],200-(strlen(Score[i])<<3),64+(i<<4), LETTER_TYPE_RED);
+		}
+
+		// Here it must be split up into Episodes 1, 2 and 3.
 		if(pCKP->Control.levelcontrol.episode == 1)
 		{
 			// Print the labels
 			for( i=0 ; i<7 ; i++ )
 			{
-				g_pGraphics->sb_font_draw(Name[i],40,64+(i<<4), true);
-
-				g_pGraphics->sb_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4),true);
 				if(Extra[i][0] == true)
 					g_pGraphics->drawTile(32,90+(i<<4),ItemTiles[0]);
 				if(Extra[i][1] == true)
@@ -142,21 +139,7 @@ char CHighScores::showHighScore(void)
 		else if(pCKP->Control.levelcontrol.episode == 2)
 		{
 			for( i=0 ; i<7 ; i++ )
-			{
-				std::string buf;
-				g_pGraphics->sb_font_draw(Name[i],40,64+(i<<4), true);
-				g_pGraphics->sb_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4), true);
-				buf = itoa(Cities[i]);
-				g_pGraphics->sb_font_draw(buf,250,64+(i<<4), true);
-			}
-		}
-		else
-		{
-			for( i=0 ; i<7 ; i++ )
-			{
-				g_pGraphics->sb_font_draw(Name[i],40,64+(i<<4), true);
-				g_pGraphics->sb_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4), true);
-			}
+				g_pGfxEngine->Font.drawFont(m_sfc, itoa(Cities[i]) ,250,64+(i<<4), LETTER_TYPE_RED);
 		}
 
 		gamedo_AnimatedTiles();
@@ -230,10 +213,15 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 	// Prepare some extra items if available (Ep1 + 2)
 	memset(ItemTiles,0,4*sizeof(int));
 
+	for( i=0 ; i<7 ; i++ )
+	{
+		g_pGfxEngine->Font.drawFont(m_sfc, Name[i], 40,64+(i<<4), LETTER_TYPE_RED);
+		g_pGfxEngine->Font.drawFont(m_sfc, Score[i], 200-(strlen(Score[i])<<3),64+(i<<4), LETTER_TYPE_RED);
+	}
+
 	if(pCKP->Control.levelcontrol.episode == 1)
 	{
-		int t;
-		for(t=0 ; t<numtiles ;t++)
+		for(int t=0 ; t<numtiles ;t++)
 		{
 			if(TileProperty[t][BEHAVIOR] == 11)
 				ItemTiles[0] = t;
@@ -248,23 +236,8 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 	else if(pCKP->Control.levelcontrol.episode == 2)
 	{
 		for( i=0 ; i<7 ; i++ )
-		{
-			std::string buf;
-			g_pGraphics->sb_font_draw(Name[i],40,64+(i<<4), true);
-			g_pGraphics->sb_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4), true);
-			buf = itoa(Cities[i]);
-			g_pGraphics->sb_font_draw(buf,250,64+(i<<4), true);
-		}
+			g_pGfxEngine->Font.drawFont(m_sfc, itoa(Cities[i]), 250, 64+(i<<4), LETTER_TYPE_RED);
 	}
-	else
-	{
-		for( i=0 ; i<7 ; i++ )
-		{
-			g_pGraphics->sb_font_draw(Name[i],40,64+(i<<4), true);
-			g_pGraphics->sb_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4), true);
-		}
-	}
-
 
 	// Get the Bitmap IDs and set the correct positions on screen
     bTitle = g_pGraphics->getBitmapNumberFromName("HIGHSCOR");
@@ -277,8 +250,7 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
     	bExtra = g_pGraphics->getBitmapNumberFromName("PARTS");
 
     x1 = 160-(bitmaps[bTitle].xsize/2);
-    y1 = 8;
-    x2 = 40;
+    y1 = 8;    x2 = 40;
     y2 = 42;
     x3 = 178-(bitmaps[bScore].xsize/2);
     x4 = 230;
@@ -314,7 +286,8 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 		if(g_pInput->getPressedKey(KBCKSPCE) && (WrittenName.length() > 0))
 		{
 			memset(buf,0,256);
-			g_pGraphics->sb_font_draw("              ",40,64+(place<<4), true);
+			g_pGfxEngine->Font.drawFont(m_sfc, "              ",40,64+(place<<4), LETTER_TYPE_RED);
+
 			WrittenName.erase(WrittenName.length()-1);
 			WrittenName.copy(buf,WrittenName.length(),0);
 			memset(Name[place],0,16);
@@ -330,27 +303,24 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 		for( i=0 ; i<7 ; i++ )
 		{
 			if(i != place)
-				g_pGraphics->sb_font_draw(Name[i],40,64+(i<<4), true);
+				g_pGfxEngine->Font.drawFont(m_sfc, Name[i],40,64+(i<<4), LETTER_TYPE_RED);
 			else
 			{
-				g_pGraphics->sb_font_draw(buf,40,64+(i<<4), true);
+				g_pGfxEngine->Font.drawFont(m_sfc, buf,40,64+(i<<4), LETTER_TYPE_RED);
+
 				if(blink)
-					g_pGraphics->sb_font_draw("_",40+(strlen(buf)<<3),64+(i<<4), true);
+					g_pGfxEngine->Font.drawFont(m_sfc, "_",40+(strlen(buf)<<3),64+(i<<4), LETTER_TYPE_RED);
 				else
-					g_pGraphics->sb_font_draw(" ",40+(strlen(buf)<<3),64+(i<<4), true);
+					g_pGfxEngine->Font.drawFont(m_sfc, " ",40+(strlen(buf)<<3),64+(i<<4), LETTER_TYPE_RED);
 			}
-			g_pGraphics->sb_font_draw(Score[i],200-(strlen(Score[i])<<3),64+(i<<4), true);
+			g_pGfxEngine->Font.drawFont(m_sfc, Score[i],200-(strlen(Score[i])<<3),64+(i<<4), LETTER_TYPE_RED);
 
 			if(pCKP->Control.levelcontrol.episode == 1)
 			{
-				if(Extra[i][0] == true)
-					g_pGraphics->drawTile(32,90+(i<<4),ItemTiles[0]);
-				if(Extra[i][1] == true)
-					g_pGraphics->drawTile(48,90+(i<<4),ItemTiles[1]);
-				if(Extra[i][2] == true)
-					g_pGraphics->drawTile(64,90+(i<<4),ItemTiles[2]);
-				if(Extra[i][3] == true)
-					g_pGraphics->drawTile(80,90+(i<<4),ItemTiles[3]);
+				if(Extra[i][0])	g_pGraphics->drawTile(32,90+(i<<4),ItemTiles[0]);
+				if(Extra[i][1])	g_pGraphics->drawTile(48,90+(i<<4),ItemTiles[1]);
+				if(Extra[i][2])	g_pGraphics->drawTile(64,90+(i<<4),ItemTiles[2]);
+				if(Extra[i][3])	g_pGraphics->drawTile(80,90+(i<<4),ItemTiles[3]);
 			}
 		}
 

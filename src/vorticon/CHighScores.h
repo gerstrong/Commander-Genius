@@ -12,7 +12,7 @@
 
 class CHighScores {
 public:
-	CHighScores(stCloneKeenPlus *poutsideCKP);
+	CHighScores(SDL_Surface *sfc, stCloneKeenPlus *poutsideCKP);
 	virtual ~CHighScores();
 
 	char showHighScore(void);
@@ -30,6 +30,7 @@ private:
 	std::string		DataDirectory;
 
 	stCloneKeenPlus *pCKP;
+	SDL_Surface *m_sfc;
 
 	void writeName(char *name, int place);
 	char saveHighScoreTable(void);
