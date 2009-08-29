@@ -501,7 +501,7 @@ unsigned int i;
   }
   else if (p_levelcontrol->episode==2)
   {
-		objdefsprites[OBJ_WALKER] = OBJ_WALKER_DEFSPRITE;
+		objdefsprites[OBJ_SCRUB] = OBJ_SCRUB_DEFSPRITE;
 		objdefsprites[OBJ_TANKEP2] = OBJ_TANKEP2_DEFSPRITE;
 		objdefsprites[OBJ_VORTELITE] = OBJ_VORTELITE_DEFSPRITE;
 
@@ -769,7 +769,7 @@ char IsStopPoint(int x, int y, int o)
 		case OBJ_TANK:
 		case OBJ_TANKEP2:
 			//if (getlevelat(x,y)==ENEMY_STOPPOINT) return 1;
-		case OBJ_WALKER:
+		case OBJ_SCRUB:
 		case OBJ_PLATFORM:
 		case OBJ_PLATVERT:
 		case OBJ_BABY:

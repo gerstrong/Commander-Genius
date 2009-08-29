@@ -259,7 +259,7 @@ int i, topobj;
 			objects[i].type==OBJ_RAY || \
 			objects[i].type==OBJ_ICECHUNK || objects[i].type==OBJ_PLATFORM ||
 			objects[i].type==OBJ_PLATVERT || objects[i].type==OBJ_YORP ||
-			objects[i].type==OBJ_FOOB || objects[i].type==OBJ_WALKER)
+			objects[i].type==OBJ_FOOB || objects[i].type==OBJ_SCRUB)
 
       {
          common_enemy_ai(i);
@@ -283,7 +283,7 @@ int i, topobj;
 			  case OBJ_ROPE: rope_ai(i); break;
 
 			  //KEEN2
-			  case OBJ_WALKER: scrub_ai(i, *p_levelcontrol); break;
+			  case OBJ_SCRUB: scrub_ai(i, *p_levelcontrol); break;
 			  case OBJ_TANKEP2: tankep2_ai(i, p_levelcontrol->hardmode); break;
 			  case OBJ_PLATFORM: platform_ai(i, *p_levelcontrol); break;
 			  case OBJ_VORTELITE: vortelite_ai(i, p_levelcontrol->dark); break;

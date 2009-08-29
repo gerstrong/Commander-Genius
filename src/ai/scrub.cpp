@@ -6,30 +6,30 @@
 
 // The red creatures that follow the wall (ep2)
 
-#define WALKER_WALK     0     // walking
-#define WALKER_FALLING  1     // oops, we fell off!
-#define WALKER_DYING    2     // getting fried!
-#define WALKER_DEAD     3     // dead scrub! here's a dead scrub!
+#define SCRUB_WALK     0     // walking
+#define SCRUB_FALLING  1     // oops, we fell off!
+#define SCRUB_DYING    2     // getting fried!
+#define SCRUB_DEAD     3     // dead scrub! here's a dead scrub!
 
-#define WALKER_WALK_ANIM_TIME  50
-#define WALKER_WALK_SPEED      4
+#define SCRUB_WALK_ANIM_TIME  50
+#define SCRUB_WALK_SPEED      4
 
-#define WALKER_FALLSPDINCRATE   2
-#define WALKER_MIN_FALL_SPEED  10
-#define WALKER_MAX_FALL_SPEED  25
+#define SCRUB_FALLSPDINCRATE   2
+#define SCRUB_MIN_FALL_SPEED  10
+#define SCRUB_MAX_FALL_SPEED  25
 
-#define WALKERDIE_START_INERTIA      -10
-#define WALKERDIE_INERTIA_DECREASE    2
+#define SCRUBDIE_START_INERTIA      -10
+#define SCRUBDIE_INERTIA_DECREASE    2
 
-#define WALKERPUSHAMOUNT       7
+#define SCRUBPUSHAMOUNT       7
 
 // frames
-#define WALKER_WALK_LEFT       102
-#define WALKER_WALK_UP         104
-#define WALKER_WALK_RIGHT      106
-#define WALKER_WALK_DOWN       108
-#define WALKER_FRY_FRAME       110
-#define WALKER_DEAD_FRAME      111
+#define SCRUB_WALK_LEFT       102
+#define SCRUB_WALK_UP         104
+#define SCRUB_WALK_RIGHT      106
+#define SCRUB_WALK_DOWN       108
+#define SCRUB_FRY_FRAME       110
+#define SCRUB_DEAD_FRAME      111
 
 void Scrub_TurnOnCansupportWhereNotKicked(int o);
 
@@ -46,7 +46,7 @@ int floor;
    if (objects[o].needinit)
    {  // first time initilization
      objects[o].ai.scrub.walkdir = LEFT;
-     objects[o].ai.scrub.state = WALKER_WALK;
+     objects[o].ai.scrub.state = SCRUB_WALK;
      objects[o].ai.scrub.walkframe = 0;
      objects[o].ai.scrub.animtimer = 0;
      objects[o].inhibitfall = 1;
@@ -64,7 +64,7 @@ int floor;
        objects[o].ai.scrub.kickedplayer[i] = 0;
      }
    }
-   if (objects[o].ai.scrub.state==WALKER_DEAD)
+   if (objects[o].ai.scrub.state==SCRUB_DEAD)
    {
      objects[o].hasbeenonscreen = 0;
      return;
@@ -113,9 +113,9 @@ int floor;
       if (!nopush)
       {
          if (player[objects[o].touchedBy].x < objects[o].x)
-        	 bumpplayer(objects[o].touchedBy, -WALKERPUSHAMOUNT, 1);
+        	 bumpplayer(objects[o].touchedBy, -SCRUBPUSHAMOUNT, 1);
          else
-        	 bumpplayer(objects[o].touchedBy, WALKERPUSHAMOUNT, 1);
+        	 bumpplayer(objects[o].touchedBy, SCRUBPUSHAMOUNT, 1);
       }
    }
 
@@ -124,7 +124,7 @@ int floor;
      // if we touch a glowcell, we die!
      if (getmaptileat((objects[o].x>>CSF)+8, (objects[o].y>>CSF)+8)==TILE_GLOWCELL)
      {
-       objects[o].ai.scrub.state = WALKER_DYING;
+       objects[o].ai.scrub.state = SCRUB_DYING;
        objects[o].ai.scrub.dietimer = 0;
        objects[o].zapped = 0;
        objects[o].canbezapped = 0;
@@ -132,25 +132,25 @@ int floor;
      // die if shot
      if (objects[o].zapped)
      {
-       objects[o].ai.scrub.state = WALKER_DYING;
+       objects[o].ai.scrub.state = SCRUB_DYING;
        objects[o].ai.scrub.dietimer = 0;
        objects[o].zapped = 0;
        objects[o].canbezapped = 0;
        objects[o].y -= 10;
-       objects[o].ai.scrub.scrubdie_inertia_y = WALKERDIE_START_INERTIA;
+       objects[o].ai.scrub.scrubdie_inertia_y = SCRUBDIE_START_INERTIA;
        g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, objects[o].scrx);
      }
    }
 
    switch(objects[o].ai.scrub.state)
    {
-     case WALKER_DYING:
+     case SCRUB_DYING:
        SetAllCanSupportPlayer(o, 0);
-       objects[o].sprite = WALKER_FRY_FRAME;
+       objects[o].sprite = SCRUB_FRY_FRAME;
        objects[o].y += objects[o].ai.scrub.scrubdie_inertia_y;
-       if (objects[o].ai.scrub.dietimer>WALKERDIE_INERTIA_DECREASE)
+       if (objects[o].ai.scrub.dietimer>SCRUBDIE_INERTIA_DECREASE)
        {
-           if (objects[o].ai.scrub.scrubdie_inertia_y < WALKER_MAX_FALL_SPEED)
+           if (objects[o].ai.scrub.scrubdie_inertia_y < SCRUB_MAX_FALL_SPEED)
            {
              objects[o].ai.scrub.scrubdie_inertia_y++;
            }
@@ -159,22 +159,22 @@ int floor;
        else objects[o].ai.scrub.dietimer++;
        if (objects[o].ai.scrub.scrubdie_inertia_y >= 0 && objects[o].blockedd)
        {
-          objects[o].sprite = WALKER_DEAD_FRAME;
-          objects[o].ai.scrub.state = WALKER_DEAD;
+          objects[o].sprite = SCRUB_DEAD_FRAME;
+          objects[o].ai.scrub.state = SCRUB_DEAD;
           objects[o].y = (objects[o].y>>CSF>>4)<<4<<CSF;
           objects[o].dead = 1;
           SetAllCanSupportPlayer(o, 0);
        }
        return;
      break;
-     case WALKER_WALK:
+     case SCRUB_WALK:
        switch(objects[o].ai.scrub.walkdir)
        {
          case LEFT:
-           objects[o].sprite = WALKER_WALK_LEFT + objects[o].ai.scrub.walkframe;
+           objects[o].sprite = SCRUB_WALK_LEFT + objects[o].ai.scrub.walkframe;
            if (!objects[o].blockedd)
            { // walked off the edge
-              objects[o].sprite = WALKER_WALK_DOWN + objects[o].ai.scrub.walkframe;
+              objects[o].sprite = SCRUB_WALK_DOWN + objects[o].ai.scrub.walkframe;
               objects[o].ai.scrub.walkdir = DOWN;
               objects[o].y += (2<<CSF);
               for(i=0;i<numplayers;i++)
@@ -190,31 +190,31 @@ int floor;
            }
            else if (objects[o].blockedl)
            {
-              objects[o].sprite = WALKER_WALK_UP + objects[o].ai.scrub.walkframe;
+              objects[o].sprite = SCRUB_WALK_UP + objects[o].ai.scrub.walkframe;
               objects[o].ai.scrub.walkdir = UP;
               Scrub_TurnOnCansupportWhereNotKicked(o);
            }
            else
            {
-              objects[o].x -= WALKER_WALK_SPEED;
+              objects[o].x -= SCRUB_WALK_SPEED;
               for(i=0;i<numplayers;i++)
               {
                 if (player[i].psupportingobject==o && player[i].pjumping!=PJUMPUP && player[i].pjumping!=PPOGOING)
                 {
                   if (!player[i].blockedl)
                   {
-                    player[i].x -= WALKER_WALK_SPEED;
+                    player[i].x -= SCRUB_WALK_SPEED;
                   }
                 }
               }
            }
            break;
          case RIGHT:
-           objects[o].sprite = WALKER_WALK_RIGHT + objects[o].ai.scrub.walkframe;
+           objects[o].sprite = SCRUB_WALK_RIGHT + objects[o].ai.scrub.walkframe;
            if (!objects[o].blockedu)
            {
              objects[o].ai.scrub.walkdir = UP;
-             objects[o].sprite = WALKER_WALK_UP + objects[o].ai.scrub.walkframe;
+             objects[o].sprite = SCRUB_WALK_UP + objects[o].ai.scrub.walkframe;
              Scrub_TurnOnCansupportWhereNotKicked(o);
              objects[o].y -= (2<<CSF);
              common_enemy_ai(o);                // recalculate blockedx's
@@ -222,20 +222,20 @@ int floor;
            else if (objects[o].blockedr)
            {
              objects[o].ai.scrub.walkdir = DOWN;
-             objects[o].sprite = WALKER_WALK_DOWN + objects[o].ai.scrub.walkframe;
+             objects[o].sprite = SCRUB_WALK_DOWN + objects[o].ai.scrub.walkframe;
              Scrub_TurnOnCansupportWhereNotKicked(o);
            }
            else
            {
-             objects[o].x += WALKER_WALK_SPEED;
+             objects[o].x += SCRUB_WALK_SPEED;
            }
            break;
          case DOWN:
-           objects[o].sprite = WALKER_WALK_DOWN + objects[o].ai.scrub.walkframe;
+           objects[o].sprite = SCRUB_WALK_DOWN + objects[o].ai.scrub.walkframe;
            if (!objects[o].blockedr)
            {
               objects[o].ai.scrub.walkdir = RIGHT;
-              objects[o].sprite = WALKER_WALK_RIGHT + objects[o].ai.scrub.walkframe;
+              objects[o].sprite = SCRUB_WALK_RIGHT + objects[o].ai.scrub.walkframe;
               SetAllCanSupportPlayer(o, 0);
               objects[o].y += (1<<CSF);
               objects[o].x += (2<<CSF);
@@ -244,12 +244,12 @@ int floor;
            else if (objects[o].blockedd)
            {
               objects[o].ai.scrub.walkdir = LEFT;
-              objects[o].sprite = WALKER_WALK_LEFT + objects[o].ai.scrub.walkframe;
+              objects[o].sprite = SCRUB_WALK_LEFT + objects[o].ai.scrub.walkframe;
               Scrub_TurnOnCansupportWhereNotKicked(o);
            }
            else
            {
-              objects[o].y += WALKER_WALK_SPEED;
+              objects[o].y += SCRUB_WALK_SPEED;
               for(i=0;i<numplayers;i++)
               {
                 if (player[i].psupportingobject==o && player[i].pjumping!=PJUMPUP && player[i].pjumping!=PPOGOING)
@@ -269,18 +269,18 @@ int floor;
 
                   if (!floor)
                   {
-                    player[i].y += WALKER_WALK_SPEED;
+                    player[i].y += SCRUB_WALK_SPEED;
                   }
                 }
               }
            }
            break;
          case UP:
-           objects[o].sprite = WALKER_WALK_UP + objects[o].ai.scrub.walkframe;
+           objects[o].sprite = SCRUB_WALK_UP + objects[o].ai.scrub.walkframe;
            if (!objects[o].blockedl)
            {
              objects[o].ai.scrub.walkdir = LEFT;
-             objects[o].sprite = WALKER_WALK_LEFT + objects[o].ai.scrub.walkframe;
+             objects[o].sprite = SCRUB_WALK_LEFT + objects[o].ai.scrub.walkframe;
              Scrub_TurnOnCansupportWhereNotKicked(o);
              objects[o].x -= (2<<CSF);
              objects[o].y = (((objects[o].y>>CSF>>4)<<4)+1)<<CSF;
@@ -297,11 +297,11 @@ int floor;
            else if (objects[o].blockedu)
            {
              objects[o].ai.scrub.walkdir = RIGHT;
-             objects[o].sprite = WALKER_WALK_RIGHT + objects[o].ai.scrub.walkframe;
+             objects[o].sprite = SCRUB_WALK_RIGHT + objects[o].ai.scrub.walkframe;
              SetAllCanSupportPlayer(o, 0);
            }
            {
-             objects[o].y -= WALKER_WALK_SPEED;
+             objects[o].y -= SCRUB_WALK_SPEED;
              for(i=0;i<numplayers;i++)
              {
                if (player[i].psupportingobject==o && player[i].pjumping!=PJUMPUP && player[i].pjumping!=PPOGOING)
@@ -312,7 +312,7 @@ int floor;
                    objects[o].cansupportplayer[i] = 0;
                    objects[o].ai.scrub.kickedplayer[i] = 1;
                  }
-                 else player[i].y -= WALKER_WALK_SPEED;
+                 else player[i].y -= SCRUB_WALK_SPEED;
                }
              }
            }
@@ -320,27 +320,27 @@ int floor;
        }
 
        // walk animation
-       if (objects[o].ai.scrub.animtimer > WALKER_WALK_ANIM_TIME)
+       if (objects[o].ai.scrub.animtimer > SCRUB_WALK_ANIM_TIME)
        {
          objects[o].ai.scrub.walkframe ^= 1;
          objects[o].ai.scrub.animtimer = 0;
        } else objects[o].ai.scrub.animtimer++;
      break;
-     case WALKER_FALLING:
-       objects[o].sprite = WALKER_WALK_DOWN;
+     case SCRUB_FALLING:
+       objects[o].sprite = SCRUB_WALK_DOWN;
        if (objects[o].blockedd)
        {
          objects[o].ai.scrub.walkdir = LEFT;
-         objects[o].ai.scrub.state = WALKER_WALK;
+         objects[o].ai.scrub.state = SCRUB_WALK;
          objects[o].ai.scrub.walkframe = 0;
          objects[o].ai.scrub.animtimer = 0;
          Scrub_TurnOnCansupportWhereNotKicked(o);
        }
        else
        {
-         if (objects[o].ai.scrub.fallinctimer > WALKER_FALLSPDINCRATE)
+         if (objects[o].ai.scrub.fallinctimer > SCRUB_FALLSPDINCRATE)
          {
-           if (objects[o].ai.scrub.fallspeed < WALKER_MAX_FALL_SPEED)
+           if (objects[o].ai.scrub.fallspeed < SCRUB_MAX_FALL_SPEED)
            {
              objects[o].ai.scrub.fallspeed++;
            }
@@ -360,11 +360,11 @@ int floor;
    if (!objects[o].blockedl && !objects[o].blockedr &&
        !objects[o].blockedu && !objects[o].blockedd)
    {
-       if (objects[o].ai.scrub.state!=WALKER_FALLING)
+       if (objects[o].ai.scrub.state!=SCRUB_FALLING)
        {
          objects[o].ai.scrub.fallinctimer = 0;
-         objects[o].ai.scrub.fallspeed = WALKER_MIN_FALL_SPEED;
-         objects[o].ai.scrub.state = WALKER_FALLING;
+         objects[o].ai.scrub.fallspeed = SCRUB_MIN_FALL_SPEED;
+         objects[o].ai.scrub.state = SCRUB_FALLING;
          SetAllCanSupportPlayer(o, 0);
        }
    }

@@ -293,7 +293,7 @@ int o,x;
            if (episode==1)
              spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_BUTLER);
            else if (episode==2)
-             spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_WALKER);
+             spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_SCRUB);
            else if (episode==3)
              spawn_object(curmapx<<4<<CSF, ((curmapy<<4)+8)<<CSF, OBJ_MEEP);
            break;

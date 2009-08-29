@@ -295,7 +295,7 @@ OBJ_TELEPORTER,        // world map teleporter
 OBJ_ROPE,
 
 // ** objects from KEEN2 (some of these are in ep3 as well)
-OBJ_WALKER,
+OBJ_SCRUB,
 OBJ_TANKEP2,
 OBJ_PLATFORM,
 OBJ_VORTELITE,
@@ -355,7 +355,7 @@ LAST_OBJ_TYPE
 
 #define OBJ_PLATFORM_DEFSPRITE_EP2   126
 #define OBJ_PLATFORM_DEFSPRITE_EP3   107
-#define OBJ_WALKER_DEFSPRITE     102
+#define OBJ_SCRUB_DEFSPRITE     102
 #define OBJ_TANKEP2_DEFSPRITE    112
 
 #define OBJ_VORTELITE_DEFSPRITE  88

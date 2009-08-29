@@ -188,6 +188,8 @@
 		6350FB3910449E2B00A992D5 /* readme.txt in Copy Text Files */ = {isa = PBXBuildFile; fileRef = 6350FB0B10449DAA00A992D5 /* readme.txt */; };
 		637642201045E091003D2FAD /* CFont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6376421C1045E091003D2FAD /* CFont.cpp */; };
 		637642211045E091003D2FAD /* CGfxEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6376421E1045E091003D2FAD /* CGfxEngine.cpp */; };
+		63DDDF961049E91C003AFDA0 /* CSpritemap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63DDDF921049E91C003AFDA0 /* CSpritemap.cpp */; };
+		63DDDF971049E91C003AFDA0 /* CTilemap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63DDDF941049E91C003AFDA0 /* CTilemap.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -593,6 +595,10 @@
 		6376421D1045E091003D2FAD /* CFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CFont.h; path = ../../src/graphics/CFont.h; sourceTree = SOURCE_ROOT; };
 		6376421E1045E091003D2FAD /* CGfxEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CGfxEngine.cpp; path = ../../src/graphics/CGfxEngine.cpp; sourceTree = SOURCE_ROOT; };
 		6376421F1045E091003D2FAD /* CGfxEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CGfxEngine.h; path = ../../src/graphics/CGfxEngine.h; sourceTree = SOURCE_ROOT; };
+		63DDDF921049E91C003AFDA0 /* CSpritemap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CSpritemap.cpp; path = ../../src/graphics/CSpritemap.cpp; sourceTree = SOURCE_ROOT; };
+		63DDDF931049E91C003AFDA0 /* CSpritemap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CSpritemap.h; path = ../../src/graphics/CSpritemap.h; sourceTree = SOURCE_ROOT; };
+		63DDDF941049E91C003AFDA0 /* CTilemap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CTilemap.cpp; path = ../../src/graphics/CTilemap.cpp; sourceTree = SOURCE_ROOT; };
+		63DDDF951049E91C003AFDA0 /* CTilemap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTilemap.h; path = ../../src/graphics/CTilemap.h; sourceTree = SOURCE_ROOT; };
 		8D0C4E960486CD37000505A6 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -772,6 +778,10 @@
 			isa = PBXGroup;
 			children = (
 				23C637DC103181D700FEEFEE /* balljack.h */,
+				63DDDF921049E91C003AFDA0 /* CSpritemap.cpp */,
+				63DDDF931049E91C003AFDA0 /* CSpritemap.h */,
+				63DDDF941049E91C003AFDA0 /* CTilemap.cpp */,
+				63DDDF951049E91C003AFDA0 /* CTilemap.h */,
 				6350F7801044785600A992D5 /* CSavedGame.cpp */,
 				6350F7811044785600A992D5 /* CSavedGame.h */,
 				6350F7741044784900A992D5 /* CDlgFrame.cpp */,
@@ -1286,6 +1296,8 @@
 				6350F7821044785600A992D5 /* CSavedGame.cpp in Sources */,
 				637642201045E091003D2FAD /* CFont.cpp in Sources */,
 				637642211045E091003D2FAD /* CGfxEngine.cpp in Sources */,
+				63DDDF961049E91C003AFDA0 /* CSpritemap.cpp in Sources */,
+				63DDDF971049E91C003AFDA0 /* CTilemap.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
