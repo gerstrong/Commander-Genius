@@ -176,7 +176,16 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
                if (p==3 && c==0) c = 16;
                tiledata[t][y][x] = c;
 
-               *u_offset = c;
+           	   if( t>0 && TileProperty[t-1][BEHAVIOR] == 65534 )  // This is for masked tiles.
+           	   {
+           		   if(c==15)
+           			   *u_offset = 255;
+           		   else
+           			   *u_offset = *(u_pixel + 16*13*16*((t-1)/13) + 16*((t-1)%13)  + 16*13*y + x);
+           	   }
+               else
+            	   *u_offset = c;
+
            }
          }
        }

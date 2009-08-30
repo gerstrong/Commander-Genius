@@ -6,18 +6,19 @@
 #include "keen.h"
 #include "demobox.h"
 #include "include/game.h"
+#include "sdl/CInput.h"
 #include "sdl/CVideoDriver.h"
+#include "sdl/sound/CSound.h"
 #include "include/menu.h"
 #include "include/misc.h"
 #include "include/gamedo.h"
 #include "include/gamepdo.h"
 #include "include/gm_pdowm.h"
 #include "common/palette.h"
-#include "sdl/CInput.h"
-#include "sdl/sound/CSound.h"
 #include "hqp/CMusic.h"
-#include "vorticon/CHighScores.h"
 #include "hqp/CHQBitmap.h"
+#include "graphics/CGfxEngine.h"
+#include "vorticon/CHighScores.h"
 #include "CLogFile.h"
 char otherplayer;
 
@@ -1035,43 +1036,35 @@ int x,y1,y2,tboundary;
 
     tboundary = 0;
     y2 = 0;
+    SDL_Surface *sfc = g_pGfxEngine->Tilemap.getSDLSurface();
+    if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
+    Uint8 *pixel = (Uint8*) sfc->pixels;
+    Uint8 *offset;
     for(y1=0;y1<(16*ntilestocopy);y1++)
     {
       for(x=0;x<16;x++)
       {
-        sprites[s].imgdata[y1][x] = tiledata[t][y2][x];
-        if (sprites[s].imgdata[y1][x] != transparentcol)
-        {
-          sprites[s].maskdata[y1][x] = 0;
-        }
-        else
-        {
-          sprites[s].maskdata[y1][x] = 15;
-          sprites[s].imgdata[y1][x] = 0;
-        }
+    	  offset = pixel + 13*16*16*(t/13) + 16*(t%13) + 13*16*y2 + x; // Postion formula of one pixel
+    	  sprites[s].imgdata[y1][x] = *offset;
+          if (sprites[s].imgdata[y1][x] != transparentcol)
+          {
+        	  sprites[s].maskdata[y1][x] = 0;
+          }
+          else
+          {
+        	  sprites[s].maskdata[y1][x] = 15;
+        	  sprites[s].imgdata[y1][x] = 0;
+          }
       }
       y2++;
       if (y2>=16)
       {
-        y2 = 0;
-        t++;
+    	  y2 = 0;
+		  t++;
       }
     }
-}
+    if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
 
-// creates a mask from a sourcetile, places it in desttile
-void MakeMask(int sourcetile, int desttile, int transparentcol)
-{
-int x,y,c;
-   for(y=0;y<16;y++)
-   {
-     for(x=0;x<16;x++)
-     {
-        c = tiledata[sourcetile][y][x];
-        if (c != transparentcol) c = 0; else c = 15;
-        tiledata[desttile][y][x] = c;
-     }
-   }
 }
 
 // replaces all instances of color find in sprite s with

@@ -81,15 +81,6 @@ unsigned char CGraphics::sb_getpixel(int x, int y)
   return scrollbuffer[(y<<9) + x];
 }
 
-// draw a tile directly to the display (bypass the scroll buffer)
-void CGraphics::drawTile_direct(int x, int y, unsigned int t)
-{
-unsigned char xa,ya;
-  for(ya=0;ya<16;ya++)
-   for(xa=0;xa<16;xa++)
-	    g_pVideoDriver->setpixel(x+xa, y+ya, tiledata[t][ya][xa]);
-}
-
 // draws a sprite directly to the display (only used by status window)
 void CGraphics::drawSprite_direct(int x, int y, unsigned int t)
 {
@@ -107,116 +98,6 @@ unsigned char oldpixel; // used for the or operation when drawing maked sprites
     	g_pVideoDriver->setpixel(x+xa, y+ya, (sprites[t].imgdata[ya][xa]==0) ? 16 :
 															sprites[t].imgdata[ya][xa]);
 }
-
-void CGraphics::drawTile(int x, int y, unsigned int t)
-{
-	// TODO: Must be passed to the Tilemap class of CGFXEngine
-	if(HQBitmap)
-	{
-		unsigned char *offset = &scrollbuffer[(y<<9)+x];
-		unsigned char ya;
-		// Tile in which the player won't interact, are to be ignored!
-		if((TileProperty[t][BEHAVIOR] == 0 && TileProperty[t][ANIMATION] <= 1) ||
-			(TileProperty[t][BEHAVIOR] > 30) )
-		{
-			for(ya=0;ya<16;ya++)
-			{
-				memset(offset, COLOUR_MASK, 16);
-				offset+=512;
-			}
-		}
-		else
-		{
-			for(ya=0;ya<16;ya++)
-			{
-				memcpy(offset, &tiledata[t][ya][0], 16);
-				offset+=512;
-			}
-		}
-	}
-}
-
-// draws a masked tile ("til") to the scrollbuffer.
-// adjusts based on the X&Y scroll so that when the buffer is blitted
-// the tile will appear at (x,y). only pixels which have a corresponding
-// black pixel in tile "tmask" will be drawn.
-void CGraphics::drawTilewithmask(int x, int y, unsigned int til, unsigned int tmask)
-{
-unsigned char xa,ya;
-unsigned int bufoffX,bufoffY;
-unsigned int xstart,ystart;
-// clip the tile
-  if (x>320 || y>200) return;
-  if (x<-16||y<-16) return;
-  if (x<0) xstart=-x; else xstart = 0;
-  if (y<0) ystart=-y; else ystart = 0;
-
-  bufoffY = ((y+ystart+scrolly_buf)&511)<<9;   // points to start of line
-  for(ya=ystart;ya<16;ya++)
-  {
-    bufoffX = (x+xstart+scrollx_buf)&511;       // offset within line
-    for(xa=xstart;xa<16;xa++)
-    {
-      if (tiledata[tmask][ya][xa] != 15)
-      {
-        scrollbuffer[bufoffY+bufoffX] = tiledata[til][ya][xa];
-      }
-      bufoffX = (bufoffX+1)&511;
-    }
-    // move to next line and wrap to top of buffer if needed
-    bufoffY += 512;
-    if (bufoffY >= (512*512)) bufoffY = 0;
-  }
-}
-
-// draws a tile ("til") to the scrollbuffer. adjusts based on the X&Y scroll
-// so that when the buffer is blitted the tile will appear at (x,y).
-// used for priority tiles (tiles[].priority)
-void CGraphics::drawPrioritytile(int x, int y, unsigned int til)
-{
-unsigned char xa,ya;
-unsigned int bufoffX,bufoffY;
-unsigned int xstart,ystart;
-// clip the tile
-  if (x>320 || y>200) return;
-  if (x<-16 || y<-16) return;
-  if (x<0) xstart=-x; else xstart = 0;
-  if (y<0) ystart=-y; else ystart = 0;
-
-  bufoffY = ((y+ystart+scrolly_buf)&511)<<9;    // points to start of line
-
-  if(HQBitmap)
-  {
-	  for(ya=ystart;ya<16;ya++)
-	  {
-	    bufoffX = (x+xstart+scrollx_buf)&511;       // offset within line
-	    for(xa=xstart;xa<16;xa++)
-	    {
-	       scrollbuffer[bufoffY+bufoffX] = COLOUR_MASK;
-	       bufoffX = (bufoffX+1)&511;
-	    }
-	    // move to next line and wrap to top of buffer if needed
-	    bufoffY += 512;
-	    if (bufoffY >= (512*512)) bufoffY = 0;
-	  }
-
-	  return;
-  }
-
-  for(ya=ystart;ya<16;ya++)
-  {
-    bufoffX = (x+xstart+scrollx_buf)&511;       // offset within line
-    for(xa=xstart;xa<16;xa++)
-    {
-       scrollbuffer[bufoffY+bufoffX] = tiledata[til][ya][xa];
-       bufoffX = (bufoffX+1)&511;
-    }
-    // move to next line and wrap to top of buffer if needed
-    bufoffY += 512;
-    if (bufoffY >= (512*512)) bufoffY = 0;
-  }
-}
-
 
 // draws a sprite to the scrollbuffer.
 // adjusts based on the X&Y scroll so that when the buffer is blitted

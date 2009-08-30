@@ -204,7 +204,6 @@ int i;
           {
         	  if( TileProperty[animtiles[i].baseframe][BEHAVIOR] != 22 || animate_hinttiles ) // If the tile is a hint mb, then, only animate if it hasn't been triggered yet!
         	  {
-        		  //g_pGraphics->drawTile(animtiles[i].x, animtiles[i].y, animtiles[i].baseframe+((animtiles[i].offset+curanimtileframe)%TileProperty[animtiles[i].baseframe][ANIMATION]));
         		  g_pGfxEngine->Tilemap.drawTile(g_pVideoDriver->getScrollSurface(),
         				  animtiles[i].x, animtiles[i].y,
         				  animtiles[i].baseframe+((animtiles[i].offset+curanimtileframe)%TileProperty[animtiles[i].baseframe][ANIMATION]));
@@ -555,16 +554,16 @@ int xa,ya;
                 tl = getmaptileat(x+xa,y+ya);
                 if(TileProperty[tl][BEHAVIOR] == 65534)
                 {
-                	g_pGraphics->drawTilewithmask(x+xa-scroll_x,y+ya-scroll_y,tl,tl+1);
+                	g_pGfxEngine->Tilemap.drawTile(g_pVideoDriver->FGLayerSurface, x+xa-scroll_x, y+ya-scroll_y, tl+1);
                 }
                 else if (TileProperty[tl][BEHAVIOR] == 65535)
                 {
                    if ( TileProperty[tl][ANIMATION] > 1 )
-                   {
                 	  tl = (tl-tiles[tl].animOffset)+((tiles[tl].animOffset+curanimtileframe)%TileProperty[tl][ANIMATION]);
-                   }
-                   g_pGraphics->drawPrioritytile(x+xa-scroll_x,y+ya-scroll_y,tl);
+
+                   g_pGfxEngine->Tilemap.drawTile(g_pVideoDriver->FGLayerSurface, x+xa-scroll_x, y+ya-scroll_y, tl);
                 }
+
               }
             }
         }

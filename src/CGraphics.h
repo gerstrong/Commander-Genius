@@ -24,9 +24,6 @@ public:
 	void sb_setpixel(int x, int y, unsigned char c);
 	unsigned char sb_getpixel(int x, int y);
 	void drawSprite_direct(int x, int y, unsigned int t);
-	void drawTile(int x, int y, unsigned int t);
-	void drawTilewithmask(int x, int y, unsigned int til, unsigned int tmask);
-	void drawPrioritytile(int x, int y, unsigned int til);
 	void drawSprite(int x, int y, unsigned int s, int objectnum);
 	void eraseSprite(int x, int y, unsigned int s, int objectnum);
 	void saveArea(int x1, int y1, int x2, int y2);
@@ -39,7 +36,6 @@ public:
 	void sb_font_draw(const std::string& text, int xoff, int yoff, bool useHighlightcolour=false);
 	void sb_mask_font_draw(const std::string& text, int xoff, int yoff, char mask);
 	void sb_color_font_draw(const std::string& text, int xoff, int yoff, unsigned int colour, unsigned short bgcolour);
-	void drawTile_direct(int x, int y, unsigned int t);
 	void setFadeBlack(bool value);
 
 	Uint8 *getScrollbuffer(void);

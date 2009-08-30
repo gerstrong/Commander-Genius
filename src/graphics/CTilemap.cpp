@@ -40,6 +40,7 @@ SDL_Surface *CTilemap::getSDLSurface()
 ////////////////////////////
 ///// Drawing Routines /////
 ////////////////////////////
+
 void CTilemap::drawTile(SDL_Surface *dst, Uint16 x, Uint16 y, Uint16 t)
 {
 	SDL_Rect src_rect, dst_rect;
@@ -48,5 +49,4 @@ void CTilemap::drawTile(SDL_Surface *dst, Uint16 x, Uint16 y, Uint16 t)
 	dst_rect.x = x;		dst_rect.y = y;
 
 	SDL_BlitSurface(m_Tilesurface, &src_rect, dst, &dst_rect);
-	//SDL_BlitSurface(m_Tilesurface, NULL, dst, NULL);
 }
