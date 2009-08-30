@@ -56,7 +56,6 @@ char sound_extraction_of_exe_files(char *inputpath, int episode);
 // graphics.c
 void freemem(void);
 void Graphics_Stop(void);
-void /*inline*/ sb_setpixel(int x, int y, unsigned char c);
 unsigned char sb_getpixel(int x, int y);
 void drawsprite_direct(int x, int y, unsigned int t);
 void drawsprite(int x, int y, unsigned int s, int objectnum);
