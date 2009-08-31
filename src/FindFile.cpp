@@ -786,11 +786,7 @@ void ReplaceFileVariables(std::string& filename) {
 		filename.erase(0,1);
 		filename.insert(0,GetHomeDir());
 	}
-#ifdef WIZ
-	replace(filename, "${PWD}", GetHomeDir());
-#else
 	replace(filename, "${HOME}", GetHomeDir());
-#endif
 	replace(filename, "${SYSTEM_DATA}", GetSystemDataDir());
 	replace(filename, "${BIN}", GetBinaryDir());
 }
