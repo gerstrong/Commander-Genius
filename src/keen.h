@@ -108,7 +108,7 @@ typedef struct stFadeControl
 #define WON_LEVEL				LVLC_CHANGE_LEVEL
 
 
-typedef struct stMap
+struct stMap
 {
  unsigned int xsize, ysize;            // size of the map
  bool isworldmap;             // if 1, this is the world map
@@ -117,7 +117,7 @@ typedef struct stMap
  // on world map contains level numbers and flags for things like teleporters
  unsigned int objectlayer[256][256];
  bool firsttime;  // used when generating multiplayer positions on world map
-} stMap;
+};
 
 class CBitmap
 {
@@ -130,7 +130,7 @@ public:
  CBitmap(){ bmptr=NULL; }
 };
 
-#include <SDL/SDL.h>
+struct SDL_Surface;
 
 struct stSprite
 {
@@ -180,12 +180,12 @@ struct stString
 #include "ai/enemydata.h"
 
 //
-typedef struct stBitmapData{
+struct stBitmapData{
 	int BitmapID;
-}stBitmapData;
+};
 
 // and the object structure containing the union of the above structs
-typedef struct stObject
+struct stObject
 {
  unsigned int type;        // yorp, vorticon, etc.
  unsigned int exists;
@@ -201,10 +201,10 @@ typedef struct stObject
 
  // if zero, priority tiles will not be honored and object will always
  // appear in front of the background
- char honorPriority;
+ bool honorPriority;
 
- char canbezapped;         // if 0 ray will not stop on hitdetect
- char zapped;              // number of times got hit by keen's raygun
+ bool canbezapped;         // if 0 ray will not stop on hitdetect
+ int zapped;              // number of times got hit by keen's raygun
  int zapx, zapy, zapd;	   // x,y, and direction of last shot at time of impact
  char zappedbyenemy;	   // if 1, it was an ENEMYRAY and not keen that shot it
 
@@ -263,19 +263,19 @@ typedef struct stObject
 		stBitmapData bitmap;
  } ai;
  unsigned char erasedata[64][64];   // backbuffer to erase this object
-} stObject;
+};
 
 // (map) stripe attribute structures, for animated tiles
 // slot 0 is not used. data starts at slot 1. see description
 // of AnimTileInUse in map structure to see why.
-typedef struct stAnimTile
+struct stAnimTile
 {
   int slotinuse;        // if 0, this entry should not be drawn
   int x;                // x pixel position in scrollbuf[] where tile is
   int y;                // y pixel position in scrollbuf[]
   int baseframe;        // base frame, i.e. the first frame of animation
   int offset;           // offset from base frame
-} stAnimTile;
+};
 
 #define NUM_OBJ_TYPES      41
 
@@ -607,7 +607,6 @@ SE_MORTIMER_RANDOMZAPS
 // directory "special" sprites and VGASprites are under
 #define GFXDIR					"res/gfx/"
 
-#include <SDL.h>
 #include "include/declarations.h"
 #include "externals.h"
 #include "sdl/CSettings.h"
