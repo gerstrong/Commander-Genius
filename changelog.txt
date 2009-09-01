@@ -1,3 +1,9 @@
+31-08-2009
+-graphics system nearly fully implemented
+-load menu cancel fixed
+-deleted savegames that came with
+-changed the way the camera works while in 2 player mode
+
 26-08-2009
 -better twirl on menus
 -fixed some bugs that basically froze gameplay
