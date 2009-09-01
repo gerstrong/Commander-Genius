@@ -373,9 +373,6 @@ bool CVideoDriver::createSurfaces(void)
 	SDL_SetColorKey( FGLayerSurface, SDL_SRCCOLORKEY,
 					SDL_MapRGB(FGLayerSurface->format, 0, 0, 0) );
 
-	//Set surface alpha
-	SDL_SetAlpha( FGLayerSurface, SDL_SRCALPHA, 225 );
-
     if(m_Resolution.width == 320 && !m_opengl)
     {
     	g_pLogFile->textOut("Blitsurface = Screen<br>");

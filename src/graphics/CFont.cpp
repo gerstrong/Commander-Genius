@@ -11,25 +11,37 @@
 #define COLORKEY 255
 
 CFont::CFont() {
-	FontSurface = NULL;
+	m_FontSurface = NULL;
 }
 
 CFont::~CFont() {
-	if(FontSurface) delete FontSurface;
+	if(m_FontSurface) delete m_FontSurface;
 }
 
 bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags)
 {
-	if(FontSurface) delete FontSurface;
-	FontSurface = SDL_CreateRGBSurface(Flags, 128, 256, 8, 0, 0, 0, 0);
-	SDL_SetColors(FontSurface, Palette, 0, 255);
-	SDL_SetColorKey(FontSurface, SDL_SRCCOLORKEY, COLORKEY);
-	return (FontSurface != NULL);
+	if(m_FontSurface) delete m_FontSurface;
+	m_FontSurface = SDL_CreateRGBSurface(Flags, 128, 256, 8, 0, 0, 0, 0);
+	SDL_SetColors(m_FontSurface, Palette, 0, 255);
+	SDL_SetColorKey(m_FontSurface, SDL_SRCCOLORKEY, COLORKEY);
+	return (m_FontSurface != NULL);
+}
+
+bool CFont::optimizeSurface()
+{
+	if(m_FontSurface)
+	{
+		SDL_Surface *temp_surface;
+		temp_surface = SDL_DisplayFormat(m_FontSurface);
+		SDL_FreeSurface(m_FontSurface);
+		m_FontSurface = temp_surface;
+	}
+	return true;
 }
 
 SDL_Surface *CFont::getSDLSurface()
 {
-	return FontSurface;
+	return m_FontSurface;
 }
 
 ///////////////////////////////////
@@ -37,7 +49,7 @@ SDL_Surface *CFont::getSDLSurface()
 ///////////////////////////////////
 void CFont::setColorPalette(SDL_Color *Palette)
 {
-	SDL_SetColors(FontSurface, Palette, 0, 255);
+	SDL_SetColors(m_FontSurface, Palette, 0, 255);
 }
 
 // Used for the selected text
@@ -50,22 +62,21 @@ void CFont::generateGlowFonts()
 	srcrect.y = 16; 	fmrect.y = 136;
 	srcrect.w = fmrect.w = 128;
 	srcrect.h = fmrect.h = 8*6;
-	SDL_BlitSurface(FontSurface, &srcrect, FontSurface, &fmrect);
+	SDL_BlitSurface(m_FontSurface, &srcrect, m_FontSurface, &fmrect);
 
 	// And this code makes the letter create blue edges
-	SDL_LockSurface(FontSurface);
+	SDL_LockSurface(m_FontSurface);
 
-	Uint8 *pixel = (Uint8*) FontSurface->pixels + 136*128;
+	Uint8 *pixel = (Uint8*) m_FontSurface->pixels + 136*128;
 	for(Uint8 y=0 ; y<8*6 ; y++)
 	{
 		for(Uint8 x=0 ; x<128 ; x++)
 		{
 			if( *pixel != 15 ) memset(pixel,1,1);
-			//else memset(pixel,0,1);
 			pixel++;
 		}
 	}
-	SDL_UnlockSurface(FontSurface);
+	SDL_UnlockSurface(m_FontSurface);
 }
 
 // Used for scrolling text in the Credits section
@@ -78,12 +89,12 @@ void CFont::generateInverseFonts()
 	srcrect.y = 16; fmrect.y = 184;
 	srcrect.w = fmrect.w = 128;
 	srcrect.h = fmrect.h = 8*6;
-	SDL_BlitSurface(FontSurface, &srcrect, FontSurface, &fmrect);
+	SDL_BlitSurface(m_FontSurface, &srcrect, m_FontSurface, &fmrect);
 
 	// And this code makes the letter create blue edges
-	SDL_LockSurface(FontSurface);
+	SDL_LockSurface(m_FontSurface);
 
-	Uint8 *pixel = (Uint8*) FontSurface->pixels + 184*128;
+	Uint8 *pixel = (Uint8*) m_FontSurface->pixels + 184*128;
 	for(Uint8 y=0 ; y<8*6 ; y++)
 	{
 		for(Uint8 x=0 ; x<128 ; x++)
@@ -93,7 +104,7 @@ void CFont::generateInverseFonts()
 			pixel++;
 		}
 	}
-	SDL_UnlockSurface(FontSurface);
+	SDL_UnlockSurface(m_FontSurface);
 }
 
 void CFont::generateSpecialTwirls()
@@ -110,14 +121,14 @@ void CFont::generateSpecialTwirls()
 	twrect.y = fmrect.x = 0;
 	twrect.w = fmrect.w = 5*8;
 	twrect.h = fmrect.h = 8;	fmrect.y=128;
-	SDL_BlitSurface(FontSurface, &twrect, FontSurface, &fmrect);
+	SDL_BlitSurface(m_FontSurface, &twrect, m_FontSurface, &fmrect);
 
 	// now the complex stuff for the extra two tiles
 	// Draw tile 9 and 10 inverted
-	SDL_LockSurface(FontSurface);
+	SDL_LockSurface(m_FontSurface);
 
 	Uint8 *src, *dst;
-	src = dst = (Uint8*) FontSurface->pixels;
+	src = dst = (Uint8*) m_FontSurface->pixels;
 
 	// for twirl 6 (LB down)
 	//src += (8*10 + 8*128);
@@ -129,7 +140,7 @@ void CFont::generateSpecialTwirls()
 		src -= 8*16;
 		dst += 8*16;
 	}
-	src = dst = (Uint8*) FontSurface->pixels;
+	src = dst = (Uint8*) m_FontSurface->pixels;
 
 	// for twirl 7 (LB down left)
 	src += (8*9 + 7*128);
@@ -140,13 +151,13 @@ void CFont::generateSpecialTwirls()
 		src -= 8*16;
 		dst += 8*16;
 	}
-	SDL_UnlockSurface(FontSurface);
+	SDL_UnlockSurface(m_FontSurface);
 
 	// Now copy the last twirl (8) taking the original 6th one
 	twrect.x=14*8;	twrect.y=0;
 	twrect.w = fmrect.w = twrect.h = fmrect.h = 8 ;
 	fmrect.x=7*8;	fmrect.y=128;
-	SDL_BlitSurface(FontSurface, &twrect, FontSurface, &fmrect);
+	SDL_BlitSurface(m_FontSurface, &twrect, m_FontSurface, &fmrect);
 }
 
 ////////////////////////////
@@ -160,7 +171,7 @@ void CFont::drawTwirl(SDL_Surface* dst, int twirlframe, Uint16 x, Uint16 y)
 	fmrect.x = x;	fmrect.y = y;
 	fmrect.w = fmrect.h = twrect.w = twrect.h = 8;
 
-	SDL_BlitSurface(FontSurface, &twrect, dst, &fmrect);
+	SDL_BlitSurface(m_FontSurface, &twrect, dst, &fmrect);
 }
 
 void CFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff)
@@ -171,7 +182,7 @@ void CFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint1
 	scrrect.w = dstrect.w = 8;	scrrect.h = dstrect.h = 8;
 	dstrect.x = xoff;	dstrect.y = yoff;
 
-	SDL_BlitSurface(FontSurface, &scrrect, dst, &dstrect);
+	SDL_BlitSurface(m_FontSurface, &scrrect, dst, &dstrect);
 }
 
 void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, Uint8 lettertype)

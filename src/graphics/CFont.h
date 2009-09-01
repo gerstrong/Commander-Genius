@@ -31,6 +31,7 @@ public:
 	virtual ~CFont();
 
 	bool CreateSurface(SDL_Color *Palette, Uint32 Flags);
+	bool optimizeSurface();
 	SDL_Surface *getSDLSurface();
 
 	void setColorPalette(SDL_Color *Palette);
@@ -46,7 +47,7 @@ public:
 
 private:
 
-	SDL_Surface *FontSurface;
+	SDL_Surface *m_FontSurface;
 
 };
 

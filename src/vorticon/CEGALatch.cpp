@@ -143,6 +143,7 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
      g_pGfxEngine->Font.generateSpecialTwirls();
      g_pGfxEngine->Font.generateGlowFonts();
      g_pGfxEngine->Font.generateInverseFonts();
+     //g_pGfxEngine->Font.optimizeSurface();
      if(SDL_MUSTLOCK(sfc))SDL_UnlockSurface(sfc);
      delete Planes;
 
@@ -191,6 +192,7 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
        }
      }
      if(SDL_MUSTLOCK(sfc))	SDL_UnlockSurface(sfc);
+     //g_pGfxEngine->Tilemap.optimizeSurface();
      delete Planes;
 
      // Load Bitmaps

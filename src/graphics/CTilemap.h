@@ -18,6 +18,7 @@ public:
 	virtual ~CTilemap();
 
 	bool CreateSurface(SDL_Color *Palette, Uint32 Flags);
+	bool optimizeSurface();
 	SDL_Surface *getSDLSurface();
 
 	void setColorPalette(SDL_Color *Palette);

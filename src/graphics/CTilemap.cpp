@@ -24,6 +24,18 @@ bool CTilemap::CreateSurface(SDL_Color *Palette, Uint32 Flags)
 	return (m_Tilesurface != NULL);
 }
 
+bool CTilemap::optimizeSurface()
+{
+	if(m_Tilesurface)
+	{
+		SDL_Surface *temp_surface;
+		temp_surface = SDL_DisplayFormat(m_Tilesurface);
+		SDL_FreeSurface(m_Tilesurface);
+		m_Tilesurface = temp_surface;
+	}
+	return true;
+}
+
 ///////////////////////////////////
 ///// Initialization Routines /////
 ///////////////////////////////////
