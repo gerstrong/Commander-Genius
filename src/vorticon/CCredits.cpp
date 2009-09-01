@@ -120,7 +120,7 @@ void CCredits::Render(stCloneKeenPlus *pCKP)
 			if(scrolly+(j<<3) > -8 && scrolly+(j<<3) < 200)
 				g_pGfxEngine->Font.drawFont( g_pVideoDriver->FGLayerSurface, scrolltext[j], mid[j], scrolly+(j<<3), LETTER_TYPE_INVERSE);
 
-		if( g_pInput->getPressedAnyKey() )
+		if( g_pInput->getPressedAnyCommand() )
 		{
 			cancel = true;
 			fade(FADE_OUT, FADE_NORM);

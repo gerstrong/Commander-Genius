@@ -79,7 +79,7 @@ void eseq_showmsg(const std::string& text, int boxleft, int boxtop,
 	gamedo_AnimatedTiles();
 	gamedo_render_drawobjects();
 
-	cancel = (g_pInput->getPressedKey(KENTER) || g_pInput->getPressedKey(KCTRL) || g_pInput->getPressedKey(KALT));
+	cancel = (g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_POGO));
 
 	// draw the text up to the amount currently shown
 	tempbuf = text;

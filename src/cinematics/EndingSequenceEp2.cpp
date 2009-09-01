@@ -220,7 +220,7 @@ int state, timer, spawnedcount=0;
 	  return 0;
 	}
 
-	enter = (g_pInput->getPressedKey(KENTER) || g_pInput->getPressedKey(KCTRL) || g_pInput->getPressedKey(KALT) );
+	enter = (g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_POGO));
 	if (enter && state==TAN_STATE_GAMEOVER)
 	{
 	  //if (fade.dir!=FADE_OUT)
@@ -446,7 +446,7 @@ int afterfadewaittimer;
 	  else afterfadewaittimer++;
 	//}
 
-	enter = (g_pInput->getPressedKey(KENTER)||g_pInput->getPressedKey(KCTRL)||g_pInput->getPressedKey(KALT));
+	enter = (g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_POGO));
 	if (enter && !lastenterstate)
 	{
 	  /*if (fade.dir!=FADE_OUT)
@@ -556,7 +556,7 @@ int afterfadewaittimer = 0;
 	  else afterfadewaittimer++;
 	//}
 
-	enter = (g_pInput->getPressedKey(KENTER)||g_pInput->getPressedKey(KCTRL)||g_pInput->getPressedKey(KALT));
+	enter = (g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_POGO));
 	if (enter && !lastenterstate)
 	{
 	  /*if (fade.dir!=FADE_OUT)

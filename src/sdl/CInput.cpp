@@ -412,9 +412,9 @@ bool CInput::getPressedAnyKey(void)
 }
 bool CInput::getHoldedCommand(int command)
 {
-	bool retval = true;
+	bool retval = false;
 	for( Uint8 player=0; player<NUM_INPUTS ; player++ )
-		retval &= getHoldedCommand(player, command);
+		retval |= getHoldedCommand(player, command);
 	return retval;
 }
 
@@ -474,9 +474,9 @@ bool CInput::getPulsedCommand(Uint8 player, int command, int msec)
 
 bool CInput::getPressedAnyCommand()
 {
-	bool retval = true;
+	bool retval = false;
 	for(Uint8 player=0 ; player<NUM_INPUTS ; player++)
-		retval &= getPressedAnyCommand(player);
+		retval |= getPressedAnyCommand(player);
 	return retval;
 }
 

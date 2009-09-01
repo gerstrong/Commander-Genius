@@ -159,13 +159,13 @@ void CTextViewer::processCycle()
 		g_pInput->pollEvents();
 
 		// Normal Keys/Axes
-		if( g_pInput->getHoldedKey(KDOWN) )
+		if( g_pInput->getHoldedCommand(IC_DOWN) )
 		{
 			timer++;
 			if(timer >= 4)
 				scrollDown();
 		}
-		if( g_pInput->getHoldedKey(KUP) )
+		if( g_pInput->getHoldedCommand(IC_UP) )
 		{
 			timer++;
 			if(timer >= 4)
