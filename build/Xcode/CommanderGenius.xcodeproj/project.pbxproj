@@ -1341,48 +1341,6 @@
 			};
 			name = Release;
 		};
-		634442D01048D17800565753 /* Release64 */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5048396D09E3307300765E4B /* CommanderGeniusProj.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				GCC_C_LANGUAGE_STANDARD = c99;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				SDKROOT = macosx10.6;
-				SEPARATE_STRIP = YES;
-			};
-			name = Release64;
-		};
-		634442D11048D17800565753 /* Release64 */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5048396E09E3307300765E4B /* CommanderGeniusTarget.xcconfig */;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
-				DEAD_CODE_STRIPPING = YES;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\\\"$(SRCROOT)\\\"",
-					"\"$(SRCROOT)\"",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
-				HEADER_SEARCH_PATHS = /Library/Frameworks/SDL.framework/Headers;
-				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(HOME)/Applications";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CFLAGS = (
-					"-DBUILD_SDL",
-					"-DUSE_OPENGL",
-					"-DBUILD_WITH_OGG",
-				);
-				PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES;
-				PRODUCT_NAME = "Commander Genius";
-				SDKROOT = macosx10.6;
-			};
-			name = Release64;
-		};
 		C0E91ACA08A95435008D54AB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5048396D09E3307300765E4B /* CommanderGeniusProj.xcconfig */;
@@ -1417,7 +1375,6 @@
 			buildConfigurations = (
 				2357563C101A5E5900275638 /* Debug */,
 				2357563D101A5E5900275638 /* Release */,
-				634442D11048D17800565753 /* Release64 */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1427,7 +1384,6 @@
 			buildConfigurations = (
 				C0E91ACA08A95435008D54AB /* Debug */,
 				C0E91ACB08A95435008D54AB /* Release */,
-				634442D01048D17800565753 /* Release64 */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
