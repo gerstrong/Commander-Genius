@@ -123,7 +123,6 @@
 		6350F77E1044784900A992D5 /* CDlgOptionText.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6350F7781044784900A992D5 /* CDlgOptionText.cpp */; };
 		6350F77F1044784900A992D5 /* CTextViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6350F77A1044784900A992D5 /* CTextViewer.cpp */; };
 		6350F7821044785600A992D5 /* CSavedGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6350F7801044785600A992D5 /* CSavedGame.cpp */; };
-		6350FA40104490B600A992D5 /* cglogo512.png in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7A21044797300A992D5 /* cglogo512.png */; };
 		6350FA41104490B600A992D5 /* controls.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7A31044797300A992D5 /* controls.dat */; };
 		6350FA42104490B600A992D5 /* EGAHEAD.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7A51044797300A992D5 /* EGAHEAD.CK1 */; };
 		6350FA43104490B600A992D5 /* EGALATCH.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7A61044797300A992D5 /* EGALATCH.CK1 */; };
@@ -161,19 +160,16 @@
 		6350FA63104490B600A992D5 /* STORYTXT.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C61044797300A992D5 /* STORYTXT.CK1 */; };
 		6350FA64104490B600A992D5 /* VENDOR.DOC in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C71044797300A992D5 /* VENDOR.DOC */; };
 		6350FA65104490B600A992D5 /* demo.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7C81044797300A992D5 /* demo.dat */; };
-		6350FA66104490B600A992D5 /* ep1attr.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7C91044797300A992D5 /* ep1attr.dat */; };
 		6350FA67104490B600A992D5 /* ep1demo1.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7CA1044797300A992D5 /* ep1demo1.dat */; };
 		6350FA68104490B600A992D5 /* ep1demo2.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7CB1044797300A992D5 /* ep1demo2.dat */; };
-		6350FA69104490B600A992D5 /* EP1DEMO3.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7CC1044797300A992D5 /* EP1DEMO3.dat */; };
-		6350FA6F104490B600A992D5 /* ep2attr.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7D21044797300A992D5 /* ep2attr.dat */; };
-		6350FA70104490B600A992D5 /* EP2DEMO1.DAT in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7D31044797300A992D5 /* EP2DEMO1.DAT */; };
+		6350FA69104490B600A992D5 /* ep1demo3.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7CC1044797300A992D5 /* ep1demo3.dat */; };
+		6350FA70104490B600A992D5 /* ep2demo1.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7D31044797300A992D5 /* ep2demo1.dat */; };
 		6350FA71104490B600A992D5 /* ep2demo2.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7D41044797300A992D5 /* ep2demo2.dat */; };
 		6350FA72104490B600A992D5 /* ep2demo3.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7D51044797300A992D5 /* ep2demo3.dat */; };
-		6350FA74104490B600A992D5 /* ep3attr.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7D71044797300A992D5 /* ep3attr.dat */; };
-		6350FA75104490B600A992D5 /* EP3DEMO1.DAT in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7D81044797300A992D5 /* EP3DEMO1.DAT */; };
+		6350FA75104490B600A992D5 /* ep3demo1.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7D81044797300A992D5 /* ep3demo1.dat */; };
 		6350FA76104490B600A992D5 /* ep3demo2.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7D91044797300A992D5 /* ep3demo2.dat */; };
 		6350FA77104490B600A992D5 /* ep3demo3.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7DA1044797300A992D5 /* ep3demo3.dat */; };
-		6350FA78104490B600A992D5 /* EP3DEMO4.DAT in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7DB1044797300A992D5 /* EP3DEMO4.DAT */; };
+		6350FA78104490B600A992D5 /* ep3demo4.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7DB1044797300A992D5 /* ep3demo4.dat */; };
 		6350FA7A104490B600A992D5 /* resolutions.cfg in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7DD1044797300A992D5 /* resolutions.cfg */; };
 		6350FA7B104490B600A992D5 /* strings.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7DE1044797300A992D5 /* strings.dat */; };
 		6350FB3710449E2B00A992D5 /* changelog.txt in Copy Text Files */ = {isa = PBXBuildFile; fileRef = 6350FB0910449DAA00A992D5 /* changelog.txt */; };
@@ -205,22 +201,18 @@
 			dstPath = data;
 			dstSubfolderSpec = 7;
 			files = (
-				6350FA40104490B600A992D5 /* cglogo512.png in Copy Data Files */,
 				6350FA41104490B600A992D5 /* controls.dat in Copy Data Files */,
 				6350FA65104490B600A992D5 /* demo.dat in Copy Data Files */,
-				6350FA66104490B600A992D5 /* ep1attr.dat in Copy Data Files */,
 				6350FA67104490B600A992D5 /* ep1demo1.dat in Copy Data Files */,
 				6350FA68104490B600A992D5 /* ep1demo2.dat in Copy Data Files */,
-				6350FA69104490B600A992D5 /* EP1DEMO3.dat in Copy Data Files */,
-				6350FA6F104490B600A992D5 /* ep2attr.dat in Copy Data Files */,
-				6350FA70104490B600A992D5 /* EP2DEMO1.DAT in Copy Data Files */,
+				6350FA69104490B600A992D5 /* ep1demo3.dat in Copy Data Files */,
+				6350FA70104490B600A992D5 /* ep2demo1.dat in Copy Data Files */,
 				6350FA71104490B600A992D5 /* ep2demo2.dat in Copy Data Files */,
 				6350FA72104490B600A992D5 /* ep2demo3.dat in Copy Data Files */,
-				6350FA74104490B600A992D5 /* ep3attr.dat in Copy Data Files */,
-				6350FA75104490B600A992D5 /* EP3DEMO1.DAT in Copy Data Files */,
+				6350FA75104490B600A992D5 /* ep3demo1.dat in Copy Data Files */,
 				6350FA76104490B600A992D5 /* ep3demo2.dat in Copy Data Files */,
 				6350FA77104490B600A992D5 /* ep3demo3.dat in Copy Data Files */,
-				6350FA78104490B600A992D5 /* EP3DEMO4.DAT in Copy Data Files */,
+				6350FA78104490B600A992D5 /* ep3demo4.dat in Copy Data Files */,
 				6350FA7A104490B600A992D5 /* resolutions.cfg in Copy Data Files */,
 				6350FA7B104490B600A992D5 /* strings.dat in Copy Data Files */,
 			);
@@ -514,7 +506,6 @@
 		6350F77B1044784900A992D5 /* CTextViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTextViewer.h; path = ../../src/dialog/CTextViewer.h; sourceTree = SOURCE_ROOT; };
 		6350F7801044785600A992D5 /* CSavedGame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CSavedGame.cpp; path = ../../src/fileio/CSavedGame.cpp; sourceTree = SOURCE_ROOT; };
 		6350F7811044785600A992D5 /* CSavedGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CSavedGame.h; path = ../../src/fileio/CSavedGame.h; sourceTree = SOURCE_ROOT; };
-		6350F7A21044797300A992D5 /* cglogo512.png */ = {isa = PBXFileReference; explicitFileType = image.png; path = cglogo512.png; sourceTree = "<group>"; };
 		6350F7A31044797300A992D5 /* controls.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = controls.dat; sourceTree = "<group>"; };
 		6350F7A51044797300A992D5 /* EGAHEAD.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = EGAHEAD.CK1; sourceTree = "<group>"; };
 		6350F7A61044797300A992D5 /* EGALATCH.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = EGALATCH.CK1; sourceTree = "<group>"; };
@@ -552,19 +543,16 @@
 		6350F7C61044797300A992D5 /* STORYTXT.CK1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = STORYTXT.CK1; sourceTree = "<group>"; };
 		6350F7C71044797300A992D5 /* VENDOR.DOC */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VENDOR.DOC; sourceTree = "<group>"; };
 		6350F7C81044797300A992D5 /* demo.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = demo.dat; sourceTree = "<group>"; };
-		6350F7C91044797300A992D5 /* ep1attr.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = ep1attr.dat; sourceTree = "<group>"; };
 		6350F7CA1044797300A992D5 /* ep1demo1.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = ep1demo1.dat; sourceTree = "<group>"; };
 		6350F7CB1044797300A992D5 /* ep1demo2.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = ep1demo2.dat; sourceTree = "<group>"; };
-		6350F7CC1044797300A992D5 /* EP1DEMO3.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = EP1DEMO3.dat; sourceTree = "<group>"; };
-		6350F7D21044797300A992D5 /* ep2attr.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = ep2attr.dat; sourceTree = "<group>"; };
-		6350F7D31044797300A992D5 /* EP2DEMO1.DAT */ = {isa = PBXFileReference; lastKnownFileType = file; path = EP2DEMO1.DAT; sourceTree = "<group>"; };
+		6350F7CC1044797300A992D5 /* ep1demo3.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = ep1demo3.dat; sourceTree = "<group>"; };
+		6350F7D31044797300A992D5 /* ep2demo1.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = ep2demo1.dat; sourceTree = "<group>"; };
 		6350F7D41044797300A992D5 /* ep2demo2.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = ep2demo2.dat; sourceTree = "<group>"; };
 		6350F7D51044797300A992D5 /* ep2demo3.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = ep2demo3.dat; sourceTree = "<group>"; };
-		6350F7D71044797300A992D5 /* ep3attr.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = ep3attr.dat; sourceTree = "<group>"; };
-		6350F7D81044797300A992D5 /* EP3DEMO1.DAT */ = {isa = PBXFileReference; lastKnownFileType = file; path = EP3DEMO1.DAT; sourceTree = "<group>"; };
+		6350F7D81044797300A992D5 /* ep3demo1.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = ep3demo1.dat; sourceTree = "<group>"; };
 		6350F7D91044797300A992D5 /* ep3demo2.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = ep3demo2.dat; sourceTree = "<group>"; };
 		6350F7DA1044797300A992D5 /* ep3demo3.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = ep3demo3.dat; sourceTree = "<group>"; };
-		6350F7DB1044797300A992D5 /* EP3DEMO4.DAT */ = {isa = PBXFileReference; lastKnownFileType = file; path = EP3DEMO4.DAT; sourceTree = "<group>"; };
+		6350F7DB1044797300A992D5 /* ep3demo4.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = ep3demo4.dat; sourceTree = "<group>"; };
 		6350F7DD1044797300A992D5 /* resolutions.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = resolutions.cfg; sourceTree = "<group>"; };
 		6350F7DE1044797300A992D5 /* strings.dat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = strings.dat; sourceTree = "<group>"; };
 		6350FB0910449DAA00A992D5 /* changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = changelog.txt; path = ../../changelog.txt; sourceTree = SOURCE_ROOT; };
@@ -1018,23 +1006,19 @@
 		6350F7A11044797300A992D5 /* data */ = {
 			isa = PBXGroup;
 			children = (
-				6350F7A21044797300A992D5 /* cglogo512.png */,
 				6350F7A31044797300A992D5 /* controls.dat */,
 				6350F7A41044797300A992D5 /* data */,
 				6350F7C81044797300A992D5 /* demo.dat */,
-				6350F7C91044797300A992D5 /* ep1attr.dat */,
 				6350F7CA1044797300A992D5 /* ep1demo1.dat */,
 				6350F7CB1044797300A992D5 /* ep1demo2.dat */,
-				6350F7CC1044797300A992D5 /* EP1DEMO3.dat */,
-				6350F7D21044797300A992D5 /* ep2attr.dat */,
-				6350F7D31044797300A992D5 /* EP2DEMO1.DAT */,
+				6350F7CC1044797300A992D5 /* ep1demo3.dat */,
+				6350F7D31044797300A992D5 /* ep2demo1.dat */,
 				6350F7D41044797300A992D5 /* ep2demo2.dat */,
 				6350F7D51044797300A992D5 /* ep2demo3.dat */,
-				6350F7D71044797300A992D5 /* ep3attr.dat */,
-				6350F7D81044797300A992D5 /* EP3DEMO1.DAT */,
+				6350F7D81044797300A992D5 /* ep3demo1.dat */,
 				6350F7D91044797300A992D5 /* ep3demo2.dat */,
 				6350F7DA1044797300A992D5 /* ep3demo3.dat */,
-				6350F7DB1044797300A992D5 /* EP3DEMO4.DAT */,
+				6350F7DB1044797300A992D5 /* ep3demo4.dat */,
 				6350F7DD1044797300A992D5 /* resolutions.cfg */,
 				6350F7DE1044797300A992D5 /* strings.dat */,
 			);
