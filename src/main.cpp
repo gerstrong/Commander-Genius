@@ -361,7 +361,7 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
 		  {
 			crashflag = 1;
 			crashflag2 = loadslot;
-			g_pLogFile->textOut("Error loading game! The save file may be corrupt or created by a different version of CloneKeen Plus.");
+			g_pLogFile->textOut("Error loading game! The save file may be corrupt or created by a different version of Commander Genius.");
 			return;
 		  }
 		  delete SavedGame;

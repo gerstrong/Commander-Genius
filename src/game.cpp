@@ -133,6 +133,7 @@ void gameloop(stCloneKeenPlus *pCKP)
 		  else if (ScreenIsScrolling == 0)
 		  {
 			  if (gamedo_ScrollTriggers(primaryplayer) or gamedo_ScrollTriggers(otherplayer)) ScreenIsScrolling = 1;
+			  if (gamedo_ScrollTriggers(otherplayer) or gamedo_ScrollTriggers(primaryplayer)) ScreenIsScrolling = 1;
 		  }
 	}
 

@@ -245,7 +245,7 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
     {
     	int diff;
     	diff = getDifficulty(pCKP);
-    	if(diff>2)
+    	if(diff>=2)
     		return BACK2MAINMENU;
 
     	pCKP->Control.levelcontrol.hardmode = (diff == 1) ? true : false;
