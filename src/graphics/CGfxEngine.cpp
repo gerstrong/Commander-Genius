@@ -8,7 +8,7 @@
 #include "CGfxEngine.h"
 
 CGfxEngine::CGfxEngine() {
-	// TODO Auto-generated constructor stub
+	m_Palette = NULL;
 }
 
 CGfxEngine::~CGfxEngine() {
@@ -26,11 +26,38 @@ void CGfxEngine::createEmptySprites(Uint16 num_sprites)
 // Needed when the fade effect is called.
 void CGfxEngine::setColorPalettes(SDL_Color *Palette)
 {
+	m_Palette = Palette;
 	Font.setColorPalette(Palette);
 	Tilemap.setColorPalette(Palette);
+	for( Uint16 i=0 ; i<Sprite.size() ; i++ )
+		Sprite[i].setColorPalette(Palette);
+}
+
+void CGfxEngine::copyTileToSprite( Uint16 t, Uint16 s, Uint16 ntilestocopy )
+{
+	SDL_Rect src_rect, dst_rect;
+
+	src_rect.w = src_rect.h = 16;
+	dst_rect.w = dst_rect.h = 16;
+
+
+	Sprite[s].setSize( 16, 16*ntilestocopy );
+	Sprite[s].createSurface( Tilemap.getSDLSurface()->flags, m_Palette );
+
+	for(Uint8 i=0 ; i<ntilestocopy ; i++)
+	{
+		src_rect.x = 16*((t+i)%13);
+		src_rect.y = 16*((t+i)/13);
+
+		dst_rect.x = 0;
+		dst_rect.y = 16*i;
+
+		SDL_BlitSurface( Tilemap.getSDLSurface(), &src_rect, Sprite[s].getSDLSurface(), &dst_rect);
+	}
 }
 
 // draw an empty dialog box, for youseeinyourmind(), etc.
+// Maybe this should go to CFont, because it's drawn by fonts...
 void CGfxEngine::drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w, int h)
 {
 	int x,y,i,j;

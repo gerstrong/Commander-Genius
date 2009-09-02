@@ -28,11 +28,16 @@ public:
 	void createEmptySprites(Uint16 num_sprites);
 	void setColorPalettes(SDL_Color *Palette);
 
+	void copyTileToSprite( Uint16 t, Uint16 s, Uint16 ntilestocopy );
+
 	void drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w, int h);
 
 	CFont Font;
 	CTilemap Tilemap;
 	std::vector<CSprite> Sprite;
+
+private:
+	SDL_Color *m_Palette;
 };
 
 #endif /* CGFXENGINE_H_ */

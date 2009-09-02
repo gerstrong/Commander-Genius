@@ -1102,7 +1102,7 @@ int x,y;
   }
 }
 
-// initilize sprites that come from tiles, such as the doors
+// initialize sprites that come from tiles, such as the doors
 void initsprites(stCloneKeenPlus *pCKP, int s)
 {
 int x,y,i,indx;
@@ -1111,16 +1111,21 @@ int x,y,i,indx;
     	for(i=0 ; i < numtiles ; i++ )
     	{
     		if(TileProperty[i][BEHAVIOR] == DOOR_YELLOW)
-    			CopyTileToSprite(i-1, DOOR_YELLOW_SPRITE, 2, 7);
+    			g_pGfxEngine->copyTileToSprite(i-1, DOOR_YELLOW_SPRITE, 2);
+    			//CopyTileToSprite(i-1, DOOR_YELLOW_SPRITE, 2, 7);
 
     		if(TileProperty[i][BEHAVIOR] == DOOR_RED)
-    			CopyTileToSprite(i-1, DOOR_RED_SPRITE, 2, 7);
+    			g_pGfxEngine->copyTileToSprite(i-1, DOOR_RED_SPRITE, 2);
+    			//CopyTileToSprite(i-1, DOOR_RED_SPRITE, 2, 7);
 
     		if(TileProperty[i][BEHAVIOR] == DOOR_GREEN)
-    			CopyTileToSprite(i-1, DOOR_GREEN_SPRITE, 2, 7);
+    			g_pGfxEngine->copyTileToSprite(i-1, DOOR_GREEN_SPRITE, 2);
+    			//CopyTileToSprite(i-1, DOOR_GREEN_SPRITE, 2, 7);
 
     		if(TileProperty[i][BEHAVIOR] == DOOR_BLUE)
-    			CopyTileToSprite(i-1, DOOR_BLUE_SPRITE, 2, 7);
+    			g_pGfxEngine->copyTileToSprite(i-1, DOOR_BLUE_SPRITE, 2);
+
+    			//CopyTileToSprite(i-1, DOOR_BLUE_SPRITE, 2, 7);
     	}
 
 
