@@ -9,11 +9,18 @@
 
 CGfxEngine::CGfxEngine() {
 	// TODO Auto-generated constructor stub
-
 }
 
 CGfxEngine::~CGfxEngine() {
 	// TODO Auto-generated destructor stub
+}
+
+void CGfxEngine::createEmptySprites(Uint16 num_sprites)
+{
+	CSprite tmp_spr;
+	Sprite.reserve(num_sprites);
+	for(Uint16 i=0 ; i<num_sprites ; i++ )
+		Sprite.push_back(tmp_spr);
 }
 
 // Needed when the fade effect is called.

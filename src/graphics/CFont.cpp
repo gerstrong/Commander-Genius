@@ -20,7 +20,7 @@ CFont::~CFont() {
 
 bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags)
 {
-	if(m_FontSurface) delete m_FontSurface;
+	if(m_FontSurface) SDL_FreeSurface(m_FontSurface);
 	m_FontSurface = SDL_CreateRGBSurface(Flags, 128, 256, 8, 0, 0, 0, 0);
 	SDL_SetColors(m_FontSurface, Palette, 0, 255);
 	SDL_SetColorKey(m_FontSurface, SDL_SRCCOLORKEY, COLORKEY);

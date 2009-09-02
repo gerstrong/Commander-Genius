@@ -371,16 +371,12 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
 	    pal_setdark(p_levelcontrol->dark);
 	    pal_fade(PAL_FADE_SHADES);
 
-		// Now load HQ Stuff, because the game could have been loaded too.
-		g_pGraphics->loadHQGraphics(p_levelcontrol->episode,
-									p_levelcontrol->chglevelto,
-									pCKP->Resources.GameDataDirectory);
 		// HQ Music. Load Music for a level if you have HQP
 		g_pMusicPlayer->stop();
 		sprintf(levelname, "level%02d.ck%d",  p_levelcontrol->curlevel, p_levelcontrol->episode);
 		g_pMusicPlayer->LoadfromMusicTable(levelname);
-		// Didn't it work? Don't matter. HQP is optional, so continue
 
+		// Didn't it work? Don't matter. HQP is optional, so continue
 		g_pLogFile->ftextOut("Drawing map...\n");
 		map_redraw();
 
@@ -475,7 +471,6 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
 			pCKP->shutdown = SHUTDOWN_EXIT;
 			break;
 		}
-		g_pGraphics->unloadHQGraphics();
 
 		for(unsigned int i=0;i<numplayers;i++)
 		{
@@ -483,8 +478,6 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
 			player[i].y = 0;
 		}
   } while(p_levelcontrol->command==LVLC_CHANGE_LEVEL && !crashflag);
-
-  g_pGraphics->unloadHQGraphics();
 
   if (p_levelcontrol->command==LVLC_END_SEQUENCE)
   {

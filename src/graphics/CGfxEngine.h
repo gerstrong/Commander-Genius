@@ -13,6 +13,8 @@
 
 #include "CFont.h"
 #include "CTilemap.h"
+#include "CSprite.h"
+#include <vector>
 
 #include "../CSingleton.h"
 #define g_pGfxEngine CGfxEngine::Get()
@@ -23,12 +25,14 @@ public:
 	CGfxEngine();
 	virtual ~CGfxEngine();
 
+	void createEmptySprites(Uint16 num_sprites);
 	void setColorPalettes(SDL_Color *Palette);
 
 	void drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w, int h);
 
 	CFont Font;
 	CTilemap Tilemap;
+	std::vector<CSprite> Sprite;
 };
 
 #endif /* CGFXENGINE_H_ */

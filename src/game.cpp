@@ -16,7 +16,6 @@
 #include "include/gm_pdowm.h"
 #include "common/palette.h"
 #include "hqp/CMusic.h"
-#include "hqp/CHQBitmap.h"
 #include "graphics/CGfxEngine.h"
 #include "vorticon/CHighScores.h"
 #include "CLogFile.h"
@@ -581,7 +580,6 @@ unsigned int i;
     	highest_objslot = obj + 1;
 	  }
   }
-
 
   scroll_x = 0;
   scrollx_buf = 0;

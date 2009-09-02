@@ -71,7 +71,6 @@ char CHighScores::showHighScore(void)
 	loadHighScoreTable();
 
 	// show High-score Frame
-	g_pGraphics->unloadHQGraphics();
 	showmapatpos(90, HIGHSCORETABLE_X, HIGHSCORETABLE_Y, pCKP);
 
 	// Prepare some extra items if available (Ep1 + 2)

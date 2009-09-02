@@ -529,7 +529,9 @@ int xa,ya;
     		  objects[i].scrx = ((objects[i].x>>CSF)-scroll_x);
     		  objects[i].scry = ((objects[i].y>>CSF)-scroll_y);
     	  }
-    	  g_pGraphics->drawSprite(objects[i].scrx, objects[i].scry, objects[i].sprite, i);
+    	  //g_pGraphics->drawSprite(objects[i].scrx, objects[i].scry, objects[i].sprite, i);
+    	  g_pGfxEngine->Sprite[objects[i].sprite].drawSprite( g_pVideoDriver->SpriteLayerSurface,
+															  objects[i].scrx, objects[i].scry );
 
         if (objects[i].honorPriority)
         {
@@ -586,12 +588,11 @@ int i;
    // note that this is done in the reverse order they are drawn.
    // this is necessary or you will see corrupted pixels when
    // two objects are occupying the same space.
+   SDL_Surface *spr_sfc = g_pVideoDriver->SpriteLayerSurface;
    for(i=0;i<MAX_OBJECTS;i++)
    {
       if (objects[i].exists && objects[i].onscreen)
-      {
-    	  g_pGraphics->eraseSprite(objects[i].scrx, objects[i].scry, objects[i].sprite, i);
-      }
+    	  g_pGfxEngine->Sprite[objects[i].sprite].eraseSprite(spr_sfc, objects[i].scrx, objects[i].scry );
    }
 }
 
@@ -604,8 +605,6 @@ extern int NumConsoleMessages;
 void gamedo_RenderScreen()
 {
    if( g_pTimer->TimeToRender() == false ) return;
-
-   g_pGraphics->renderHQBitmap();
 
    gamedo_render_drawobjects(); // (Sprites)
 

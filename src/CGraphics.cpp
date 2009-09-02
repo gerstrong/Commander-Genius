@@ -20,7 +20,6 @@
 #include "common/palette.h"
 
 CGraphics::CGraphics() {
-	HQBitmap = NULL;
 	scrollbuffer=NULL;
 	blitbuffer=NULL;
 	scrollbuf_memsize = 0;
@@ -97,77 +96,6 @@ unsigned char oldpixel; // used for the or operation when drawing maked sprites
     else
     	g_pVideoDriver->setpixel(x+xa, y+ya, (sprites[t].imgdata[ya][xa]==0) ? 16 :
 															sprites[t].imgdata[ya][xa]);
-}
-
-// draws a sprite to the scrollbuffer.
-// adjusts based on the X&Y scroll so that when the buffer is blitted
-// the sprite will appear at (x,y). saves the image beneath the sprite
-// into the erasedata[] of object objectnum.
-void CGraphics::drawSprite(int x, int y, unsigned int s, int objectnum)
-{
-unsigned char xa,ya;
-unsigned int bufoffX, bufoffY;
-unsigned int xstart,ystart;
-
-  // clip the sprite
-  if (x>320 || y>200) return;
-  if (x<-sprites[s].xsize||y<-sprites[s].ysize) return;
-  // if sprite is partially off the top or left of the screen, invert
-  // the sign on the coordinate to make it positive, and start drawing
-  // the sprite from there.
-  if (x<0) xstart=-x; else xstart = 0;
-  if (y<0) ystart=-y; else ystart = 0;
-
-  bufoffY = ((y+ystart+scrolly_buf)&511)<<9;   // points to start of line
-  for(ya=ystart;ya<sprites[s].ysize;ya++)
-  {
-   bufoffX = (x+xstart+scrollx_buf)&511;       // offset within line
-   for(xa=xstart;xa<sprites[s].xsize;xa++)
-   {
-     objects[objectnum].erasedata[ya][xa] = scrollbuffer[bufoffY+bufoffX];
-     if ( sprites[s].maskdata[ya][xa]  )
-    	 scrollbuffer[bufoffY+bufoffX] |= sprites[s].imgdata[ya][xa];
-     else
-    	 scrollbuffer[bufoffY+bufoffX] = sprites[s].imgdata[ya][xa];
-
-     bufoffX = (bufoffX+1)&511;
-   }
-   // move to next line and wrap to top of buffer if needed
-   bufoffY += 512;
-   if (bufoffY >= (512*512)) bufoffY = 0;
-  }
-}
-
-// complement of drawsprite(). uses the saved image in objectnum to erase
-// a previously-drawn sprite.
-void CGraphics::eraseSprite(int x, int y, unsigned int s, int objectnum)
-{
-unsigned char xa,ya;
-unsigned int bufoffX, bufoffY;
-unsigned int xstart,ystart;
-
-// clip the sprite
-  if (x>320 || y>200) return;
-  if (x<-sprites[s].xsize||y<-sprites[s].ysize) return;
-  // if sprite is partially off the top or left of the screen, invert
-  // the sign on the coordinate to make it positive, and start drawing
-  // the sprite from there.
-  if (x<0) xstart=-x; else xstart = 0;
-  if (y<0) ystart=-y; else ystart = 0;
-
-  bufoffY = ((y+ystart+scrolly_buf)&511)<<9;   // points to start of line
-  for(ya=ystart;ya<sprites[s].ysize;ya++)
-  {
-   bufoffX = (x+xstart+scrollx_buf)&511;       // offset within line
-   for(xa=xstart;xa<sprites[s].xsize;xa++)
-   {
-      scrollbuffer[bufoffY+bufoffX] = objects[objectnum].erasedata[ya][xa];
-      bufoffX = (bufoffX+1)&511;
-   }
-   // move to next line and wrap to top of buffer if needed
-   bufoffY += 512;
-   if (bufoffY >= (512*512)) bufoffY = 0;
-  }
 }
 
 unsigned char savebuf[200][320];
@@ -274,86 +202,3 @@ void CGraphics::setFadeBlack(bool value)
 
 Uint8 *CGraphics::getScrollbuffer(void)
 {	return scrollbuffer;	}
-
-
-void CGraphics::renderHQBitmap()
-{
-	if(HQBitmap)
-	{
-		SDL_Rect srcrect;
-		//SDL_Rect dstrect;
-
-		srcrect.x = scroll_x-32;
-		srcrect.y = scroll_y-32;
-		srcrect.w = g_pVideoDriver->getBGLayerSurface()->w;
-		srcrect.h = g_pVideoDriver->getBGLayerSurface()->h;
-
-		HQBitmap->updateHQBitmap(g_pVideoDriver->getBGLayerSurface(), &srcrect, NULL);
-	}
-}
-
-void CGraphics::loadHQGraphics(unsigned char episode, unsigned char level, const std::string& datadir)
-{
-	SDL_Rect screen_rect;
-
-	std::string buf = formatPathString(datadir);
-	std::string buf2 = buf + "level" + itoa(level) + "ep" + itoa(episode) + ".bmp";
-
-	screen_rect.x = 0;
-	screen_rect.y = 0;
-	screen_rect.w = g_pVideoDriver->getWidth();
-	screen_rect.h = g_pVideoDriver->getHeight();
-
-	HQBitmap = new CHQBitmap(screen_rect);
-	if(!HQBitmap->loadImage(buf2, (int) map.xsize, (int) map.ysize))
-	{
-		delete HQBitmap;
-		HQBitmap = NULL;
-		return;
-	}
-
-	// Check if the tile have grey pixels in some tiles and remove them!
-	for(int t=0 ; t < numtiles ; t++)
-	{
-		if(TileProperty[t][BEHAVIOR] > 0)
-		{
-			for(int xa=0 ; xa < 16 ; xa++)
-			{
-				for(int ya=0 ; ya < 16 ; ya++)
-				{
-					if(tiledata[t][ya][xa] == COLOUR_GREY)	// Which should be masked. In Episode 1 it is gray
-					{
-						tiledata[t][ya][xa] = COLOUR_MASK;
-					}
-				}
-			}
-		}
-	}
-
-}
-void CGraphics::unloadHQGraphics()
-{
-	if(!HQBitmap)
-		return;
-
-	delete HQBitmap;
-	HQBitmap = NULL;
-
-	// Make unmask some tiles adding the original pixels back!
-	for(int t=0 ; t < numtiles ; t++)
-	{
-		if(TileProperty[t][BEHAVIOR] > 0)
-		{
-			for(int xa=0 ; xa < 16 ; xa++)
-			{
-				for(int ya=0 ; ya < 16 ; ya++)
-				{
-					if(tiledata[t][ya][xa] == COLOUR_MASK)	// Which should be masked. In Episode 1 it is gray
-					{
-						tiledata[t][ya][xa] = COLOUR_GREY;
-					}
-				}
-			}
-		}
-	}
-}

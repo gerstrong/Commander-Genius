@@ -59,7 +59,7 @@ int i;
   showmapatpos(80, WM_X, WM_Y, pCKP);
 
   // draw keen next to his ship
-  g_pGraphics->drawSprite(168, 85, PMAPLEFTFRAME, 0);
+  g_pGfxEngine->Sprite[PMAPLEFTFRAME].drawSprite(g_pVideoDriver->SpriteLayerSurface, 168, 85);
   // do not show player when we render the screen
   numplayers = 1;
   player[0].x = 0;

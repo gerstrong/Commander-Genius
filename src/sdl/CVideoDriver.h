@@ -51,7 +51,6 @@ public:
 	void pal_apply(void);
 
 	void sb_blit(void);
-	void blitBGLayer(void);
 	void update_screen(void);
 	void noscale(char *dest, char *src, short bbp);
 	void scale2xnofilter(char *dest, char *src, short bbp);
@@ -78,7 +77,6 @@ public:
 	unsigned char getOGLFilter(void) { return 0; }
 #endif
 	SDL_Surface *getScrollSurface(void);
-	SDL_Surface *getBGLayerSurface(void);
 
 	void setMode(int width, int height,int depth);
 	void setFilter(short value);
@@ -102,6 +100,7 @@ public:
 
 	SDL_Surface *screen;                   // the actual video memory/window
 	SDL_Surface *BlitSurface;
+	SDL_Surface *SpriteLayerSurface;   // For the sprites
 	SDL_Surface *FGLayerSurface;       // Scroll buffer for Messages
 
 private:
@@ -131,8 +130,6 @@ private:
 	//SDL_Surface *FGLayerSurface;       // Scroll buffer for Messages
 	// This one is not allowed here! Used only for tests!
 	//SDL_Surface *screen;                   // the actual video memory/window
-	SDL_Surface *BGLayerSurface;           // Special surface which support more colors than the scrollsurface
-											 //for (Ex. HQ-Images)
 	SDL_Surface *ScrollSurface;       // 512x512 scroll buffer
 	// pointer to the surface that sb_blit is to assemble the scroll buffer into.
 	// if zoom=1 this is the same as "screen", else it's allocated as it's own

@@ -89,7 +89,6 @@ CVideoDriver::CVideoDriver() {
 
 	  ScrollSurface=NULL;       // 512x512 scroll buffer
 	  FGLayerSurface=NULL;       // Scroll buffer for Messages
-	  BGLayerSurface=NULL;
 	  BlitSurface=NULL;
 
 	  m_Resolution_pos = m_Resolutionlist.begin();
@@ -356,14 +355,6 @@ bool CVideoDriver::createSurfaces(void)
 	  return false;
 	}
 
-	BGLayerSurface = SDL_CreateRGBSurface(Mode,320, 200, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
-	if (!BGLayerSurface)
-	{
-		g_pLogFile->textOut(RED,"VideoDriver: Couldn't create BGLayerSurface!<br>");
-	  return false;
-	}
-
-
 	FGLayerSurface = SDL_CreateRGBSurface(Mode,320, 200, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
 	if (!FGLayerSurface)
 	{
@@ -372,6 +363,17 @@ bool CVideoDriver::createSurfaces(void)
 	}
 	SDL_SetColorKey( FGLayerSurface, SDL_SRCCOLORKEY,
 					SDL_MapRGB(FGLayerSurface->format, 0, 0, 0) );
+
+	SpriteLayerSurface = SDL_CreateRGBSurface( Mode, 320, 200, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
+	if (!SpriteLayerSurface)
+	{
+		g_pLogFile->textOut(RED,"VideoDriver: Couldn't create SpriteLayerSurface!<br>");
+	  return false;
+	}
+	SDL_SetColorKey( SpriteLayerSurface, SDL_SRCCOLORKEY,
+					SDL_MapRGB(SpriteLayerSurface->format, 0, 0xFF, 0xFE) );
+	SDL_FillRect( SpriteLayerSurface, NULL, SDL_MapRGB(SpriteLayerSurface->format, 0, 0xFF, 0xFE) );
+
 
     if(m_Resolution.width == 320 && !m_opengl)
     {
@@ -439,8 +441,6 @@ char tempbuf[80];
 
    srcrect.x = scrollx_buf;
    srcrect.y = scrolly_buf;
-
-   blitBGLayer();
 
    if (scrollx_buf > (512-320))
    { // need to wrap right side
@@ -525,18 +525,15 @@ char tempbuf[80];
 
    update_screen();
 }
-void CVideoDriver::blitBGLayer(void)
-{
-	SDL_BlitSurface(BGLayerSurface, NULL, BlitSurface, NULL);
-}
 
 void CVideoDriver::update_screen(void)
 {
+	SDL_BlitSurface(SpriteLayerSurface, NULL, BlitSurface, NULL);
+	SDL_BlitSurface(FGLayerSurface, NULL, BlitSurface, NULL);
+
 #ifdef USE_OPENGL
    if(m_opengl)
    {
-	   SDL_BlitSurface(FGLayerSurface, NULL, BlitSurface, NULL);
-
 	   mp_OpenGL->render();
 
 	   LockSurface(FGLayerSurface);
@@ -548,8 +545,6 @@ void CVideoDriver::update_screen(void)
    else // No OpenGL but Software Rendering
    {
 #endif
-	   SDL_BlitSurface(FGLayerSurface, NULL, BlitSurface, NULL);
-
 	   // if we're doing zoom then we have copied the scroll buffer into
 	   // another offscreen buffer, and must now stretchblit it to the screen
 	   if (Zoom == 1 && m_Resolution.width != 320 )
@@ -856,7 +851,5 @@ unsigned short CVideoDriver::getDepth(void)
 {	return m_Resolution.depth;	}
 SDL_Surface *CVideoDriver::getScrollSurface(void)
 {	return ScrollSurface; }
-SDL_Surface *CVideoDriver::getBGLayerSurface(void)
-{	return BGLayerSurface; }
 
 

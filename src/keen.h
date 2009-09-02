@@ -141,7 +141,6 @@ struct stSprite
  unsigned int bboxX1, bboxY1;
  unsigned int bboxX2, bboxY2;
  SDL_Surface* surface;
- SDL_Surface* erasesurface;
 };
 
 struct stInventory
@@ -262,7 +261,6 @@ struct stObject
 		// Extras, used in every episode
 		stBitmapData bitmap;
  } ai;
- unsigned char erasedata[64][64];   // backbuffer to erase this object
 };
 
 // (map) stripe attribute structures, for animated tiles

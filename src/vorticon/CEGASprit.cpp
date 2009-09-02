@@ -13,6 +13,7 @@
 #include "CPlanes.h"
 #include "../keen.h"
 #include "../include/game.h"
+#include "../graphics/CGfxEngine.h"
 #include "../FindFile.h"
 #include "../sdl/CVideoDriver.h"
 #include <stdio.h>
@@ -156,7 +157,6 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
              c |= (Planes->getbit(RawData, p) << p);
              //if (p==3 && c==0) c = 16;
              sprites[s].imgdata[y][x] = c;
-
            }
          }
        }
@@ -186,46 +186,34 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
      // Now load the special TGA Sprites if some are available
      LoadSpecialSprites();
 
-
      ///////////// SDL Surfaces Part //////////////////////////////////
-
-     SDL_Color *GamePalette = g_pVideoDriver->MyPalette;
-     // Create SDL Surfaces for sprites
-     for(int s=0 ; s<MAX_SPRITES ; s++)
+     SDL_Surface *sfc;
+     Uint8* pixel;
+     g_pGfxEngine->createEmptySprites( MAX_SPRITES+1 );
+     for(int s=0 ; s<MAX_SPRITES+1 ; s++)
      {
-    	 sprites[s].surface = NULL;
+    	 g_pGfxEngine->Sprite[s].setSize( sprites[s].xsize, sprites[s].ysize );
+    	 g_pGfxEngine->Sprite[s].setBouncingBoxCoordinates( sprites[s].bboxX1,
+															sprites[s].bboxY1,
+															sprites[s].bboxX2,
+															sprites[s].bboxY2 );
+    	 g_pGfxEngine->Sprite[s].createSurface( g_pVideoDriver->SpriteLayerSurface->flags,
+												g_pVideoDriver->MyPalette );
 
-
-    	 if((Sprite[s].width > 0 && Sprite[s].height > 0) &&
-    	     Sprite[s].width < 64 && Sprite[s].height < 64	 )
-    	 {
-    		 sprites[s].surface = SDL_CreateRGBSurface(SDL_SWSURFACE,
-								 Sprite[s].width,Sprite[s].height,8,0,0,0,0);
-
-			 if(sprites[s].surface != NULL) // Surface was created
-			 {
-				 int colourkey = 255;
-		    	 SDL_SetColorKey( sprites[s].surface, SDL_SRCCOLORKEY, colourkey );
-				 SDL_SetColors(sprites[s].surface, GamePalette,0,256);
-				 SDL_LockSurface(sprites[s].surface);
-
-				 Uint8 *src = (Uint8*) sprites[s].surface->pixels;
-				 Uint8 w = sprites[s].surface->w;
-				 Uint8 h = sprites[s].surface->h;
-				 for(int i=0 ; i<h ; i++)
-				 {
-					 for(int j=0 ; j<w ; j++)
-					 {
-						 if(sprites[s].maskdata[i][j] == 0)
-							 memset(src+i*w+j, sprites[s].imgdata[i][j],1);
-						 else
-							 memset(src+i*w+j, colourkey,1);
-					 }
-				 }
-
-				 SDL_UnlockSurface(sprites[s].surface);
-			 }
-    	 }
+    	 sfc = g_pGfxEngine->Sprite[s].getSDLSurface();
+    	 if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
+    	 pixel = (Uint8*) sfc->pixels;
+         for(Uint8 y=0 ; y<sfc->h ; y++)
+         {
+           for(Uint8 x=0 ; x<sfc->pitch ; x++)
+           {
+        	   if(sprites[s].maskdata[y][x] == 0)
+        		   pixel[y*sfc->pitch + x] = sprites[s].imgdata[y][x];
+        	   else
+        		   pixel[y*sfc->pitch + x] = COLORKEY;
+           }
+         }
+    	 if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
      }
 
 	return true;

@@ -13,7 +13,6 @@
 
 #include <string>
 #include <SDL.h>
-#include "hqp/CHQBitmap.h"
 
 class CGraphics : public CSingleton<CGraphics>
 {
@@ -24,8 +23,6 @@ public:
 	void sb_setpixel(int x, int y, unsigned char c);
 	unsigned char sb_getpixel(int x, int y);
 	void drawSprite_direct(int x, int y, unsigned int t);
-	void drawSprite(int x, int y, unsigned int s, int objectnum);
-	void eraseSprite(int x, int y, unsigned int s, int objectnum);
 	void saveArea(int x1, int y1, int x2, int y2);
 	void restoreArea(int x1, int y1, int x2, int y2);
 	void stopGraphics(void);
@@ -39,12 +36,6 @@ public:
 	void setFadeBlack(bool value);
 
 	Uint8 *getScrollbuffer(void);
-
-	void renderHQBitmap();
-	void loadHQGraphics(unsigned char episode, unsigned char level, const std::string& datadir);
-	void unloadHQGraphics();
-
-	CHQBitmap	*HQBitmap;
 
 private:
 	Uint32 scrollbuf_memsize;

@@ -124,10 +124,7 @@ int r,g,b;
 	}
 	palette_dirty = 1;
 
-   if(g_pGraphics->HQBitmap)
-	   g_pGraphics->HQBitmap->setAlphaBlend(static_cast <Uint8>(fadeamt));
-
-   g_pVideoDriver->pal_apply();
+	g_pVideoDriver->pal_apply();
 }
 
 // sets whether to use the "dark" (lights off) palette or not
