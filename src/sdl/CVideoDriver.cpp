@@ -362,7 +362,10 @@ bool CVideoDriver::createSurfaces(void)
 	  return false;
 	}
 	SDL_SetColorKey( FGLayerSurface, SDL_SRCCOLORKEY,
-					SDL_MapRGB(FGLayerSurface->format, 0, 0, 0) );
+					SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE) );
+	SDL_FillRect( FGLayerSurface, NULL, SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE) );
+	//Set surface alpha
+	SDL_SetAlpha( FGLayerSurface, SDL_SRCALPHA, 225 );
 
 	SpriteLayerSurface = SDL_CreateRGBSurface( Mode, 320, 200, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
 	if (!SpriteLayerSurface)
@@ -536,11 +539,8 @@ void CVideoDriver::update_screen(void)
    {
 	   mp_OpenGL->render();
 
-	   LockSurface(FGLayerSurface);
-	   // Flush the layers
-	   memset(FGLayerSurface->pixels,SDL_MapRGB(FGLayerSurface->format, 0, 0, 0),
-			   GAME_STD_WIDTH*GAME_STD_HEIGHT*FGLayerSurface->format->BytesPerPixel);
-	   UnlockSurface(FGLayerSurface);
+	   // Flush the FG-Layer
+	   SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE));
    }
    else // No OpenGL but Software Rendering
    {
@@ -652,13 +652,10 @@ void CVideoDriver::update_screen(void)
 	   }
 
 	   SDL_Flip(screen);
-	   //SDL_UpdateRect(screen, screenrect.x, screenrect.y, screenrect.w, screenrect.h);
 
-	   LockSurface(FGLayerSurface);
-	   // Flush the layers
-	   memset(FGLayerSurface->pixels,SDL_MapRGB(FGLayerSurface->format, 0, 0, 0),
-			   GAME_STD_WIDTH*GAME_STD_HEIGHT*FGLayerSurface->format->BytesPerPixel);
-	   UnlockSurface(FGLayerSurface);
+	   // Flush the FG-Layer
+	   SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE));
+
 #ifdef USE_OPENGL
    }
 #endif

@@ -7,7 +7,7 @@
 // raygun blast, shot by keen, and by the tank robots in ep1&2.
 #include "ray.h"
 
-void ray_ai(int o, int episode, bool automatic_raygun, char pShotSpeed)
+void ray_ai(int o, CSprite *sprites, int episode, bool automatic_raygun, char pShotSpeed)
 {
 int i;
 int hitlethal;
@@ -107,9 +107,9 @@ int rayspeed;
        {
            // don't go through bonklethal tiles, even if they're not solid
            // (for the arms on mortimer's machine)
-       	   if (TileProperty[getmaptileat((objects[o].x>>CSF)+sprites[objects[o].sprite].xsize, (objects[o].y>>CSF)+1)][BEHAVIOR] == 1)
+       	   if (TileProperty[getmaptileat((objects[o].x>>CSF)+sprites[objects[o].sprite].getWidth(), (objects[o].y>>CSF)+1)][BEHAVIOR] == 1)
               hitlethal = 1;
-           else if (TileProperty[getmaptileat((objects[o].x>>CSF)+sprites[objects[o].sprite].xsize, (objects[o].y>>CSF)+(sprites[objects[o].sprite].ysize-1))][BEHAVIOR] == 1)
+           else if (TileProperty[getmaptileat((objects[o].x>>CSF)+sprites[objects[o].sprite].getWidth(), (objects[o].y>>CSF)+(sprites[objects[o].sprite].getHeight()-1))][BEHAVIOR] == 1)
               hitlethal = 1;
            else
         	  hitlethal = 0;
@@ -127,7 +127,7 @@ int rayspeed;
        {
            if (TileProperty[getmaptileat((objects[o].x>>CSF)-1, (objects[o].y>>CSF)+1)][BEHAVIOR] == 1)
               hitlethal = 1;
-           else if (TileProperty[getmaptileat((objects[o].x>>CSF)-1, (objects[o].y>>CSF)+(sprites[objects[o].sprite].ysize-1))][BEHAVIOR] == 1)
+           else if (TileProperty[getmaptileat((objects[o].x>>CSF)-1, (objects[o].y>>CSF)+(sprites[objects[o].sprite].getHeight()-1))][BEHAVIOR] == 1)
               hitlethal = 1;
            else
         	  hitlethal = 0;

@@ -115,12 +115,10 @@ int x, diff, width;
        if (width < 0) width = 0;               // don't set to negative
 
        // set new width of all player walk frames
-       g_pGfxEngine->Sprite[playerbaseframes[cp]+0].m_xsize = width;
-       g_pGfxEngine->Sprite[playerbaseframes[cp]+1].m_xsize = width;
-       g_pGfxEngine->Sprite[playerbaseframes[cp]+2].m_xsize = width;
-       g_pGfxEngine->Sprite[playerbaseframes[cp]+3].m_xsize = width;
-
-       // TODO: Problem, m_xsize, must be restored, when finished!
+       g_pGfxEngine->Sprite[playerbaseframes[cp]+0].setWidth(width);
+       g_pGfxEngine->Sprite[playerbaseframes[cp]+1].setWidth(width);
+       g_pGfxEngine->Sprite[playerbaseframes[cp]+2].setWidth(width);
+       g_pGfxEngine->Sprite[playerbaseframes[cp]+3].setWidth(width);
     }
 }
 
@@ -323,6 +321,12 @@ int stuck;
      if (player[cp].playcontrol[PA_X] < 0) { player[cp].pdir = player[cp].pshowdir = LEFT; }
      if (player[cp].playcontrol[PA_X] > 0) { player[cp].pdir = player[cp].pshowdir = RIGHT; }
    }
+   else
+   {
+     if (player[cp].playcontrol[PA_X] < 0) { player[cp].pdir = player[cp].pshowdir = LEFT;  }
+     if (player[cp].playcontrol[PA_X] > 0) { player[cp].pdir = player[cp].pshowdir = RIGHT;  }
+   }
+
 }
 
 // set blockedl/r/u...is Keen up against a solid object or a the edge of the level?
@@ -937,14 +941,15 @@ void gamepdo_TogglePogo_and_Switches(int cp, stLevelControl *p_levelcontrol)
 {
 int i;
 int mx, my, t;
+CSprite *standsprite = &g_pGfxEngine->Sprite[PSTANDFRAME];
 
 	// detect if KPOGO key only pressed
 	if (player[cp].playcontrol[PA_POGO] && !player[cp].lastplaycontrol[PA_POGO] && !player[cp].pfrozentime)
 	{
 		// if we are standing near a switch hit the switch instead
-		mx = (player[cp].x>>CSF)+(sprites[PSTANDFRAME].xsize/2);
+		mx = (player[cp].x>>CSF)+(standsprite->getWidth()/2);
 
-		for(i=sprites[PSTANDFRAME].ysize-1;i>=0;i-=8)
+		for(i=standsprite->getHeight()-1;i>=0;i-=8)
 		{
 			my = (player[cp].y>>CSF)+i;
 
@@ -1184,6 +1189,7 @@ unsigned int temp;
 int objsupport;
 short tilsupport;
 
+	CSprite *p_sprite = &g_pGfxEngine->Sprite[0];
 	player[cp].pfalling = 0;         // assume not falling if not jumped to the maximum height
 
     // do not fall if we're jumping
@@ -1198,17 +1204,17 @@ short tilsupport;
     player[cp].psupportingtile = BG_GRAY;
     player[cp].psupportingobject = 0;
     // test if tile under player is solid; if so set psupportingtile
-    objsupport = checkobjsolid(player[cp].x+(4<<CSF), player[cp].y+(sprites[0].ysize<<CSF),cp);
+    objsupport = checkobjsolid(player[cp].x+(4<<CSF), player[cp].y+( p_sprite->getHeight()<<CSF),cp);
 
-    tilsupport = TileProperty[getmaptileat((player[cp].x>>CSF)+5, (player[cp].y>>CSF)+sprites[0].ysize)][BUP];
-    if(TileProperty[getmaptileat((player[cp].x>>CSF)+4, (player[cp].y>>CSF)+sprites[0].ysize)][BEHAVIOR] >= 2&&
-       TileProperty[getmaptileat((player[cp].x>>CSF)+4, (player[cp].y>>CSF)+sprites[0].ysize)][BEHAVIOR] <= 5)
+    tilsupport = TileProperty[getmaptileat((player[cp].x>>CSF)+5, (player[cp].y>>CSF)+p_sprite->getHeight())][BUP];
+    if(TileProperty[getmaptileat((player[cp].x>>CSF)+4, (player[cp].y>>CSF)+p_sprite->getHeight())][BEHAVIOR] >= 2&&
+       TileProperty[getmaptileat((player[cp].x>>CSF)+4, (player[cp].y>>CSF)+p_sprite->getHeight())][BEHAVIOR] <= 5)
     	tilsupport = 1; // This workaround prevents the player from falling through doors.
 
     if (!tilsupport && !objsupport)
     { // lower-left isn't solid
-      objsupport = checkobjsolid(player[cp].x+(12<<CSF), player[cp].y+(sprites[0].ysize<<CSF),cp);
-      tilsupport = TileProperty[getmaptileat((player[cp].x>>CSF)+10, (player[cp].y>>CSF)+sprites[0].ysize)][BUP];
+      objsupport = checkobjsolid(player[cp].x+(12<<CSF), player[cp].y+(p_sprite->getHeight()<<CSF),cp);
+      tilsupport = TileProperty[getmaptileat((player[cp].x>>CSF)+10, (player[cp].y>>CSF)+p_sprite->getHeight())][BUP];
       if (!tilsupport && !objsupport)
       {  // lower-right isn't solid
          player[cp].pfalling = 1;        // so fall.
@@ -1236,7 +1242,7 @@ short tilsupport;
     // to land in the middle of a tile.
     if (!player[cp].pfalling && player[cp].psupportingtile!=PSUPPORTEDBYOBJECT)
     {
-       temp = (player[cp].y>>CSF)+sprites[0].ysize;    // bottom of player
+       temp = (player[cp].y>>CSF)+p_sprite->getHeight();    // bottom of player
        if ((temp>>4)<<4 != temp)   // true if it's not a multiple of 16
        {
           player[cp].pfalling = 1;   // not on a tile boundary. fall.
@@ -1249,7 +1255,7 @@ short tilsupport;
     // the object else fall
     if (!player[cp].pfalling && player[cp].psupportingtile==PSUPPORTEDBYOBJECT)
     {
-       if ((player[cp].y>>CSF)+sprites[0].ysize > (objects[player[cp].psupportingobject].y>>CSF)+4)
+       if ((player[cp].y>>CSF)+p_sprite->getHeight() > (objects[player[cp].psupportingobject].y>>CSF)+4)
        {
           if (!tilsupport)
           {
@@ -1265,7 +1271,7 @@ short tilsupport;
     // top of the object
     if (player[cp].psupportingobject && !player[cp].lastsupportingobject)
     {
-       player[cp].y = objects[player[cp].psupportingobject].y - (sprites[0].ysize<<CSF);
+       player[cp].y = objects[player[cp].psupportingobject].y - (p_sprite->getHeight()<<CSF);
     }
     player[cp].lastsupportingobject = player[cp].psupportingobject;
 
@@ -1380,7 +1386,7 @@ int canRefire;
 
              if (player[cp].pdir==RIGHT)
              {  // fire a blast to the right
-                o = spawn_object(player[cp].x+((sprites[0].xsize-4)<<CSF), player[cp].y+(9<<CSF), OBJ_RAY);
+                o = spawn_object(player[cp].x+((g_pGfxEngine->Sprite[0].getWidth()-4)<<CSF), player[cp].y+(9<<CSF), OBJ_RAY);
                 objects[o].ai.ray.direction = RIGHT;
              }
              else

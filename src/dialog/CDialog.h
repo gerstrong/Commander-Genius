@@ -38,6 +38,7 @@ private:
 	Uint8 m_scroll;
 
 	CDlgFrame *m_Frame;
+	Uint8 m_alpha;
 
 	struct{
 		Uint8  frame;

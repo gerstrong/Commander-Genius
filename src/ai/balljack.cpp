@@ -2,6 +2,7 @@
 #include "../keen.h"
 
 #include "../include/game.h"
+#include "../graphics/CGfxEngine.h"
 
 #include "balljack.h"
 
@@ -147,22 +148,26 @@ char BJ_BlockedD(int o)
   // we do our own blockedd, because we don't want the ball/jack to
   // bounce off the top of platforms that have only solidfall set--
   // so we test blockedd against solidl/r instead
+  CSprite *sprites = &g_pGfxEngine->Sprite[objects[o].sprite];
+  Uint16 obj_width, obj_height;
+  obj_width = sprites->getWidth();
+  obj_height = sprites->getHeight();
 
   if (objects[o].blockedd)
   {
     // ensure that the tile common_enemy_ai said we hit also has
     // solid l/r set
-	if (TileProperty[getmaptileat((objects[o].x>>CSF)+2, (objects[o].y>>CSF)+sprites[objects[o].sprite].ysize)][BLEFT])
+	if (TileProperty[getmaptileat((objects[o].x>>CSF)+2, (objects[o].y>>CSF)+obj_height)][BLEFT])
       { return 1; }
-	if (TileProperty[getmaptileat((objects[o].x>>CSF)+(sprites[objects[o].sprite].xsize-2), (objects[o].y>>CSF)+sprites[objects[o].sprite].ysize)][BLEFT])
+	if (TileProperty[getmaptileat((objects[o].x>>CSF)+(obj_width-2), (objects[o].y>>CSF)+obj_height)][BLEFT])
       { return 1; }
 
   }
 
   // ensure it's not a ball no-pass point
-  if (getlevelat((objects[o].x>>CSF)+2, (objects[o].y>>CSF)+sprites[objects[o].sprite].ysize)==BALL_NOPASSPOINT)
+  if (getlevelat((objects[o].x>>CSF)+2, (objects[o].y>>CSF)+obj_height)==BALL_NOPASSPOINT)
     { return 1; }
-  if (getlevelat((objects[o].x>>CSF)+(sprites[objects[o].sprite].xsize-2), (objects[o].y>>CSF)+sprites[objects[o].sprite].ysize)==BALL_NOPASSPOINT)
+  if (getlevelat((objects[o].x>>CSF)+(obj_width-2), (objects[o].y>>CSF)+obj_height)==BALL_NOPASSPOINT)
     { return 1; }
 
   return 0;

@@ -253,8 +253,8 @@ int dlgX,dlgY,dlgW,dlgH;
   if (i>7) i=7;
   for(j=0;j<i;j++)
   {
-	  g_pGraphics->drawSprite_direct(x, (dlgY+4)<<3, playerbaseframes[p]);
-	  x += sprites[0].xsize;
+	  g_pGfxEngine->Sprite[playerbaseframes[p]].drawSprite( g_pVideoDriver->FGLayerSurface, x, (dlgY+4)<<3);
+	  x += g_pGfxEngine->Sprite[0].getWidth();
   }
 }
 
@@ -341,8 +341,8 @@ int dlgX,dlgY,dlgW,dlgH;
   if (i>7) i=7;
   for(j=0;j<i;j++)
   {
-	  g_pGraphics->drawSprite_direct(x, (dlgY+4)<<3, playerbaseframes[p]);
-    x += sprites[0].xsize;
+	  g_pGfxEngine->Sprite[playerbaseframes[p]].drawSprite( g_pVideoDriver->FGLayerSurface, x, (dlgY+4)<<3);
+	  x += g_pGfxEngine->Sprite[0].getWidth();
   }
 
 }
@@ -427,8 +427,8 @@ int dlgX,dlgY,dlgW,dlgH;
   if (i>9) i=9;
   for(j=0;j<i;j++)
   {
-	  g_pGraphics->drawSprite_direct(x, (dlgY+4)<<3, playerbaseframes[p]);
-	  x += sprites[0].xsize;
+	  g_pGfxEngine->Sprite[playerbaseframes[p]].drawSprite( g_pVideoDriver->FGLayerSurface, x, (dlgY+4)<<3);
+	  x += g_pGfxEngine->Sprite[0].getWidth();
   }
 }
 

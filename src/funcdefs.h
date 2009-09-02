@@ -19,7 +19,6 @@ char hitdetect(int object1, int object2);
 void freezeplayer(int theplayer);
 void unregister_animtiles(int tile);
 char checkobjsolid(unsigned int x, unsigned int y, unsigned int cp);
-void CopyTileToSprite(int t, int s, int ntilestocopy, int transparent);
 void GiveAnkh(int cp);
 // map.c
 void map_scroll_right(void);

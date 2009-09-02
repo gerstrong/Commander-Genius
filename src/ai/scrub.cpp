@@ -36,7 +36,7 @@ void Scrub_TurnOnCansupportWhereNotKicked(int o);
 // Reference to ../game.cpp
 void bumpplayer(int p, int pushamt, bool solid);
 
-void scrub_ai(int o, stLevelControl levelcontrol)
+void scrub_ai(int o, CSprite *sprites,stLevelControl levelcontrol)
 {
 unsigned int p;
 unsigned int i=0;
@@ -93,8 +93,8 @@ int floor;
       /* don't push the player if he's standing on top of the scrub */
       if (player[objects[o].touchedBy].pfalling)
       {
-          if (objects[0].scry+sprites[0].ysize >\
-             objects[o].scry+(sprites[objects[o].sprite].ysize>>1))
+          if (objects[0].scry+sprites[0].getHeight() >
+             objects[o].scry+(sprites[objects[o].sprite].getHeight()>>1))
           {
              nopush = 1;
           }
@@ -258,9 +258,9 @@ int floor;
                   // in certain situations if player is hanging off the right side
                   // of the scrub a bit)
                   floor = 0;
-                  if (!TileProperty[getmaptileat((player[i].x>>CSF)+4, (player[i].y>>CSF)+sprites[0].ysize)][BUP])
+                  if (!TileProperty[getmaptileat((player[i].x>>CSF)+4, (player[i].y>>CSF)+sprites[0].getHeight())][BUP])
                   { // lower-left isn't solid
-                	if (TileProperty[getmaptileat((player[i].x>>CSF)+12, (player[i].y>>CSF)+sprites[0].ysize)][BUP])
+                	if (TileProperty[getmaptileat((player[i].x>>CSF)+12, (player[i].y>>CSF)+sprites[0].getHeight())][BUP])
                     {
                       floor = 1;
                     }
@@ -290,7 +290,7 @@ int floor;
                if (player[i].psupportingobject==o && player[i].pjumping!=PJUMPUP && player[i].pjumping!=PPOGOING)
                {
                  player[i].x -= (2<<CSF);
-                 player[i].y = (objects[o].y - (sprites[0].ysize<<CSF));
+                 player[i].y = (objects[o].y - (sprites[0].getHeight()<<CSF));
                }
              }
            }

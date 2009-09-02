@@ -13,7 +13,6 @@
 #include "CPlanes.h"
 #include "../keen.h"
 #include "../include/game.h"
-#include "../graphics/CGfxEngine.h"
 #include "../FindFile.h"
 #include "../sdl/CVideoDriver.h"
 #include <stdio.h>
@@ -24,8 +23,6 @@
 ////////////////////////
 
 #define CSF    5
-
-extern stSprite *sprites;
 
 // Reference to ../common/tga.cpp
 char LoadTGA(const std::string &file, unsigned char **image, int *widthout, int *heightout);
@@ -44,12 +41,10 @@ CEGASprit::CEGASprit(int planesize,
 	m_numsprites = numsprites;
 	m_spriteloc = spriteloc;
 	Sprite = NULL;
-	sprites = NULL;
 }
 
 CEGASprit::~CEGASprit() {
 	if(Sprite) delete [] Sprite, Sprite = NULL;
-	if(sprites) delete [] sprites, sprites = NULL;
 }
 
 
@@ -85,6 +80,8 @@ bool CEGASprit::loadHead(char *data)
 bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 {
 	char *RawData;
+    SDL_Surface *sfc;
+    Uint8* pixel;
 
 	FILE* latchfile = OpenGameFile(filename.c_str(),"rb");
 
@@ -127,38 +124,42 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 
      // TODO: Create surfaces which can be blitted directly to the blit surface or maybe screen.
      // load the image data
-     if(sprites) { delete [] sprites; sprites=NULL; }
-     sprites = new stSprite[MAX_SPRITES+1];
+
+     g_pGfxEngine->createEmptySprites(MAX_SPRITES+1);
+     for(int s=0 ; s<m_numsprites ; s++)
+     {
+    	 g_pGfxEngine->Sprite[s].setSize( Sprite[s].width, Sprite[s].height );
+    	 g_pGfxEngine->Sprite[s].setBouncingBoxCoordinates( (Sprite[s].hitbox_l << CSF),
+															(Sprite[s].hitbox_u << CSF),
+															(Sprite[s].hitbox_r << CSF),
+															(Sprite[s].hitbox_b << CSF) );
+    	 g_pGfxEngine->Sprite[s].createSurface( g_pVideoDriver->SpriteLayerSurface->flags,
+											g_pVideoDriver->MyPalette );
+     }
 
      char c;
      for(int p=0 ; p<4 ; p++)
      {
        for(int s=0 ; s<m_numsprites ; s++)
        {
-         sprites[s].xsize = Sprite[s].width;
-         sprites[s].ysize = Sprite[s].height;
-         sprites[s].bboxX1 = (Sprite[s].hitbox_l << CSF);
-         sprites[s].bboxY1 = (Sprite[s].hitbox_u << CSF);
-         sprites[s].bboxX2 = (Sprite[s].hitbox_r << CSF);
-         sprites[s].bboxY2 = (Sprite[s].hitbox_b << CSF);
+      	 sfc = g_pGfxEngine->Sprite[s].getSDLSurface();
+      	 if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
+      	 pixel = (Uint8*) sfc->pixels;
 
-         for(int y=0 ; y<sprites[s].ysize ; y++)
+         for(int y=0 ; y<sfc->h ; y++)
          {
-           for(int x=0 ; x<sprites[s].xsize ; x++)
+           for(int x=0 ; x<sfc->w ; x++)
            {
-             if (p==0)
-             {
-               c = 0;
-             }
-             else
-             {
-               c = sprites[s].imgdata[y][x];
-             }
+             if (p==0) c = 0;
+             else c = pixel[y*sfc->w + x];
+
              c |= (Planes->getbit(RawData, p) << p);
              //if (p==3 && c==0) c = 16;
-             sprites[s].imgdata[y][x] = c;
+             pixel[y*sfc->w + x] = c;
            }
          }
+
+         if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
        }
      }
 
@@ -167,13 +168,20 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
      // use white on black masks whereas keen uses black on white.
      for(int s=0 ; s<m_numsprites ; s++)
      {
-       for(int y=0 ; y<sprites[s].ysize ; y++)
+       sfc = g_pGfxEngine->Sprite[s].getSDLSurface();
+       if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
+       pixel = (Uint8*) sfc->pixels;
+
+       for(int y=0 ; y<sfc->h ; y++)
        {
-         for(int x=0 ; x<sprites[s].xsize ; x++)
+         for(int x=0 ; x<sfc->w ; x++)
          {
-            sprites[s].maskdata[y][x] =  Planes->getbit(RawData, 4);
+            //sprites[s].maskdata[y][x] =  Planes->getbit(RawData, 4);
+            if(Planes->getbit(RawData, 4)) pixel[y*sfc->w + x] = COLORKEY;
          }
        }
+
+       if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
      }
 
      delete Planes;
@@ -181,41 +189,10 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
      if(RawData){ delete[] RawData; RawData = NULL;}
 
      // Now create special sprites for some neat effects!
-     DeriveSpecialSprites();
+     DeriveSpecialSprites( &g_pGfxEngine->Tilemap, &g_pGfxEngine->Sprite[0] );
 
      // Now load the special TGA Sprites if some are available
-     LoadSpecialSprites();
-
-     ///////////// SDL Surfaces Part //////////////////////////////////
-     SDL_Surface *sfc;
-     Uint8* pixel;
-     g_pGfxEngine->createEmptySprites( MAX_SPRITES+1 );
-     for(int s=0 ; s<MAX_SPRITES+1 ; s++)
-     {
-    	 g_pGfxEngine->Sprite[s].setSize( sprites[s].xsize, sprites[s].ysize );
-    	 g_pGfxEngine->Sprite[s].setBouncingBoxCoordinates( sprites[s].bboxX1,
-															sprites[s].bboxY1,
-															sprites[s].bboxX2,
-															sprites[s].bboxY2 );
-    	 g_pGfxEngine->Sprite[s].createSurface( g_pVideoDriver->SpriteLayerSurface->flags,
-												g_pVideoDriver->MyPalette );
-
-    	 sfc = g_pGfxEngine->Sprite[s].getSDLSurface();
-    	 if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
-    	 pixel = (Uint8*) sfc->pixels;
-         for(Uint8 y=0 ; y<sfc->h ; y++)
-         {
-           for(Uint8 x=0 ; x<sfc->pitch ; x++)
-           {
-        	   if(sprites[s].maskdata[y][x] == 0)
-        		   pixel[y*sfc->pitch + x] = sprites[s].imgdata[y][x];
-        	   else
-        		   pixel[y*sfc->pitch + x] = COLORKEY;
-           }
-         }
-    	 if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
-     }
-
+     LoadSpecialSprites( &g_pGfxEngine->Sprite[0] );
 	return true;
 }
 
@@ -223,7 +200,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 // load a 32-bit RGBA TGA file into sprite 's', and add colors to the palette
 // as needed so that it can be shown exactly as found in the file.
 // returns nonzero on failure.
-char CEGASprit::LoadTGASprite( const std::string &filename, int s )
+char CEGASprit::LoadTGASprite( const std::string &filename, CSprite *sprite )
 {
 unsigned char *image, *base;
 int x,y;
@@ -231,6 +208,7 @@ int w,h;
 unsigned char r,g,b,a;
 int c;
 std::string fname;
+Uint8* pixel;
 
 	fname = GFXDIR + filename;
 	if (LoadTGA(fname, &image, &w, &h))
@@ -239,143 +217,119 @@ std::string fname;
 	if (w > MAX_SPRITE_WIDTH || h > MAX_SPRITE_HEIGHT)
 	{
 		free(image);
-		//lprintf("LoadTGASprite: image %s too big (%dx%d, max %dx%d)!\n", fname, w, h, MAX_SPRITE_WIDTH, MAX_SPRITE_HEIGHT);
 		return 1;
 	}
 
-	//lprintf("LoadTGASprite: Parse %s; %dx%d\n", fname, w, h);
-
 	base = image;
+	sprite->setSize(w, h);
+	sprite->createSurface( g_pVideoDriver->SpriteLayerSurface->flags, g_pVideoDriver->MyPalette );
+
+	SDL_Surface *sfc = sprite->getSDLSurface();
+
+	if(SDL_MUSTLOCK(sfc))	SDL_LockSurface(sfc);
+	pixel = (Uint8*) sfc->pixels;
 	for(y=h-1;y>=0;y--)
-	for(x=0;x<w;x++)
 	{
-		b = *image++; g = *image++; r = *image++; a = *image++;
-		if (a & 128)
+		for(x=0;x<w;x++)
 		{
-			c = pal_getcolor(r, g, b);
-			if (c==-1) c = pal_addcolor(r, g, b);
-			if (c==-1)
+			b = *image++; g = *image++; r = *image++; a = *image++;
+			if (a & 128)
 			{
-				//g_pLogFile->textOut(RED,"LoadTGASprite: out of colorspace");
-				return 1;
+				c = pal_getcolor(r, g, b);
+				if (c==-1) c = pal_addcolor(r, g, b);
+				if (c==-1) return 1;
+
+				pixel[y*w + x] = c;
 			}
-
-			sprites[s].imgdata[y][x] = c;
-			sprites[s].maskdata[y][x] = 0;
-		}
-		else
-		{
-			sprites[s].imgdata[y][x] = 0;
-			sprites[s].maskdata[y][x] = 1;
+			else
+				pixel[y*w + x] = COLORKEY;
 		}
 	}
-	sprites[s].xsize = w;
-	sprites[s].ysize = h;
 
-	// detect the sprite's bounding box
-	for(x=0;x<sprites[s].xsize-1;x++)
-	{
-		for(y=0;y<sprites[s].ysize;y++) if (sprites[s].maskdata[y][x]) goto break1;
-	}
-break1: ;
-	sprites[s].bboxX1 = x << CSF;
+	sprite->m_bboxX1=0;
+	sprite->m_bboxY1=0;
+	sprite->m_bboxX2=sprite->getWidth();
+	sprite->m_bboxY2=sprite->getHeight();
 
-	for(x=sprites[s].xsize-1;x>0;x--)
-	{
-		for(y=0;y<sprites[s].ysize;y++) if (sprites[s].maskdata[y][x]) goto break2;
-	}
-break2: ;
-	sprites[s].bboxX2 = x << CSF;
-
-	for(y=0;y<sprites[s].ysize-1;y++)
-	{
-		for(x=0;x<sprites[s].xsize-1;x++) if (sprites[s].maskdata[y][x]) goto break3;
-	}
-break3: ;
-	sprites[s].bboxY1 = y << CSF;
-
-	for(y=sprites[s].ysize-1;y>0;y--)
-	{
-		for(x=0;x<sprites[s].xsize-1;x++) if (sprites[s].maskdata[y][x]) goto break4;
-	}
-break4: ;
-	sprites[s].bboxY2 = y << CSF;
-
-	delete [] base;
 	return 0;
 }
 
 // load special clonekeen-specific sprites from the .raw files
 // Code by Caitlin Shaw
-void CEGASprit::LoadSpecialSprites()
+void CEGASprit::LoadSpecialSprites( CSprite *sprite )
 {
-	LoadTGASprite("100.tga", PT100_SPRITE);
-	LoadTGASprite("200.tga", PT200_SPRITE);
-	LoadTGASprite("500.tga", PT500_SPRITE);
-	LoadTGASprite("1000.tga", PT1000_SPRITE);
-	LoadTGASprite("5000.tga", PT5000_SPRITE);
-	LoadTGASprite("demobox.tga", DEMOBOX_SPRITE);
-	LoadTGASprite("arrowlr.tga", ARROWLR_SPRITE);
-	LoadTGASprite("arrowud.tga", ARROWUD_SPRITE);
-	LoadTGASprite("arrowul.tga", ARROWUL_SPRITE);
-	LoadTGASprite("arrowur.tga", ARROWUR_SPRITE);
-	LoadTGASprite("arrowu.tga", ARROWU_SPRITE);
-	LoadTGASprite("arrowd.tga", ARROWD_SPRITE);
+	LoadTGASprite("100.tga", &sprite[PT100_SPRITE] );
+	LoadTGASprite("200.tga", &sprite[PT200_SPRITE] );
+	LoadTGASprite("500.tga", &sprite[PT500_SPRITE] );
+	LoadTGASprite("1000.tga", &sprite[PT1000_SPRITE] );
+	LoadTGASprite("5000.tga", &sprite[PT5000_SPRITE] );
+	LoadTGASprite("demobox.tga", &sprite[DEMOBOX_SPRITE] );
+	LoadTGASprite("arrowlr.tga", &sprite[ARROWLR_SPRITE] );
+	LoadTGASprite("arrowud.tga", &sprite[ARROWUD_SPRITE] );
+	LoadTGASprite("arrowul.tga", &sprite[ARROWUL_SPRITE] );
+	LoadTGASprite("arrowur.tga", &sprite[ARROWUR_SPRITE] );
+	LoadTGASprite("arrowu.tga", &sprite[ARROWU_SPRITE] );
+	LoadTGASprite("arrowd.tga", &sprite[ARROWD_SPRITE] );
 }
 
 // This function has the task to make some items-tiles
 // be painted into yellow, so they look nice, when they are
 // collected
-void CEGASprit::DeriveSpecialSprites()
+void CEGASprit::DeriveSpecialSprites( CTilemap *tilemap, CSprite *sprite )
 {
 	Uint16 t;
 	for( t=0 ; t<numtiles ; t++)
 	{
 		// The Gun!
 		if( TileProperty[t][BEHAVIOR]==15 )
-			CreateYellowSpriteofTile(t,GUNUP_SPRITE);
+			CreateYellowSpriteofTile( tilemap, t, &sprite[GUNUP_SPRITE] );
 
 		// Keycards
 		if( TileProperty[t][BEHAVIOR]>=18 && TileProperty[t][BEHAVIOR]<=21 )
-			CreateYellowSpriteofTile(t,PTCARDB_SPRITE+TileProperty[t][BEHAVIOR]-18);
+			CreateYellowSpriteofTile( tilemap, t, &sprite[PTCARDB_SPRITE+TileProperty[t][BEHAVIOR]-18]);
 
 		// Single Bullet in Ep3
 		if( TileProperty[t][BEHAVIOR]==28 )
-			CreateYellowSpriteofTile(t,SHOTUP_SPRITE);
+			CreateYellowSpriteofTile( tilemap, t, &sprite[SHOTUP_SPRITE] );
 
 		if( TileProperty[t][BEHAVIOR]==27 )
-			CreateYellowSpriteofTile(t,ANKHUP_SPRITE);
-
+			CreateYellowSpriteofTile( tilemap, t, &sprite[ANKHUP_SPRITE] );
 	}
 }
 
-void CEGASprit::CreateYellowSpriteofTile(Uint16 tile, Uint16 sprite)
+void CEGASprit::CreateYellowSpriteofTile( CTilemap *tilemap, Uint16 tile, CSprite *sprite )
 {
-	// The first pixel is usually the transparent on items. Use it!
-	Uint8 transparent_colour = tiledata[tile][0][0];
+	SDL_Rect tile_rect;
 
-	sprites[sprite].xsize = sprites[sprite].ysize = 16;
+	tile_rect.x = 16*(tile%13);
+	tile_rect.y = 16*(tile/13);
+	tile_rect.w = tile_rect.h= 16;
 
+	sprite->setSize(tile_rect.w, tile_rect.h);
+	sprite->createSurface( g_pVideoDriver->SpriteLayerSurface->flags,
+						   g_pVideoDriver->MyPalette );
+
+	SDL_Surface *src_sfc = sprite->getSDLSurface();
+
+	SDL_BlitSurface(tilemap->getSDLSurface(), &tile_rect, src_sfc, NULL);
+
+	if(SDL_MUSTLOCK(src_sfc)) SDL_LockSurface(src_sfc);
+
+	// The first pixel is usually the transparent one on items. Use it!
+	Uint8* pixel = (Uint8*) src_sfc->pixels;
+	Uint8 transparent_colour = pixel[0];
 	for(Uint8 x=0 ; x<16 ; x++)
 	{
 		for(Uint8 y=0 ; y<16 ; y++)
 		{
-			if(tiledata[tile][x][y] == transparent_colour)
-			{
-				sprites[sprite].maskdata[x][y] = 15;
-				sprites[sprite].imgdata[x][y] = 0;
-			}
-			else
-			{
-				sprites[sprite].maskdata[x][y] = 0;
-				if(tiledata[tile][x][y] != 0 && tiledata[tile][x][y] != 16)
-					sprites[sprite].imgdata[x][y] = 14; // Yellow (Light brown)
-				else
-					sprites[sprite].imgdata[x][y] = tiledata[tile][x][y]; // Take the normal there!
-			}
+			if(*pixel == transparent_colour) *pixel = COLORKEY;
+			else if(*pixel != 0 && *pixel != 16)	*pixel = 14; // Yellow (Light brown)
 
+			pixel++;
 		}
 	}
+
+	if(SDL_MUSTLOCK(src_sfc)) SDL_UnlockSurface(src_sfc);
 }
 
 

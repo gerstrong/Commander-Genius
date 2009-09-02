@@ -2,6 +2,7 @@
 #include "vortelite.h"
 #include "../include/game.h"
 #include "../sdl/sound/CSound.h"
+#include "../graphics/CGfxEngine.h"
 
 // the "Vorticon Elite" enemies in ep2
 #define VORTELITE_WALK          0
@@ -45,6 +46,8 @@
 #define VORTELITE_PALETTE_FLASH_TIME  5
 
 #define VORTELITE_TRAPPED_DIST        150
+
+#define sprites (&g_pGfxEngine->Sprite[0])
 
 void vortelite_initiatejump(int o);
 
@@ -231,12 +234,12 @@ reprocess: ;
 			objects[o].ai.vortelite.state = VORTELITE_FIRED;
 			if (objects[o].ai.vortelite.movedir==RIGHT)
 			{
-			  newobject = spawn_object(objects[o].x+(sprites[VORTELITE_FIRE_RIGHT_FRAME].xsize<<CSF), objects[o].y+(7<<CSF), OBJ_RAY);
+			  newobject = spawn_object(objects[o].x+(sprites[VORTELITE_FIRE_RIGHT_FRAME].getWidth()<<CSF), objects[o].y+(7<<CSF), OBJ_RAY);
 			  objects[newobject].ai.ray.direction = RIGHT;
 			}
 			else
 			{
-			  newobject = spawn_object(objects[o].x-(sprites[ENEMYRAYEP2].xsize<<CSF), objects[o].y+(9<<CSF), OBJ_RAY);
+			  newobject = spawn_object(objects[o].x-(sprites[ENEMYRAYEP2].getWidth()<<CSF), objects[o].y+(9<<CSF), OBJ_RAY);
 			  objects[newobject].ai.ray.direction = LEFT;
 			}
 			objects[newobject].sprite = ENEMYRAYEP2;

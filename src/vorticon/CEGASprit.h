@@ -10,6 +10,7 @@
 
 #include <string>
 #include <SDL/SDL.h>
+#include "../graphics/CGfxEngine.h"
 
 // Reference to palette.c
 char pal_addcolor(unsigned char r, unsigned char g, unsigned char b);
@@ -47,10 +48,10 @@ private:
 		// in DOS but are ignored here.
 	}*Sprite;
 
-	char LoadTGASprite( const std::string &filename, int s );
-	void LoadSpecialSprites();
-	void DeriveSpecialSprites();
-	void CreateYellowSpriteofTile(Uint16 tile, Uint16 sprite);
+	char LoadTGASprite( const std::string &filename, CSprite *sprite );
+	void LoadSpecialSprites( CSprite *sprite );
+	void DeriveSpecialSprites( CTilemap *tilemap, CSprite *sprite );
+	void CreateYellowSpriteofTile( CTilemap *tilemap, Uint16 tile, CSprite *sprite );
 };
 
 #endif /* CEGASPRIT_H_ */

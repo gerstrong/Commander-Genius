@@ -89,7 +89,6 @@ stMap map;
 unsigned int AnimTileInUse[ATILEINUSE_SIZEX][ATILEINUSE_SIZEY];
 stTile tiles[MAX_TILES+1];
 unsigned char tiledata[MAX_TILES+1][16][16];
-stSprite *sprites = NULL;
 CBitmap bitmaps[MAX_BITMAPS+1];
 stObject objects[MAX_OBJECTS+1];
 stAnimTile animtiles[MAX_ANIMTILES+1];
@@ -338,13 +337,16 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
 		if (firsttime)
 		{
 			int op;
+			CSprite *obj_sprite;;
 			for(i=0;i<MAX_PLAYERS;i++)
 			{
 				op = player[i].useObject;
+				obj_sprite = &(g_pGfxEngine->Sprite[objects[op].sprite]);
 				player[i].mapplayx = player[i].x;
 				player[i].mapplayy = player[i].y;
-				player[i].w = sprites[objects[op].sprite].xsize-4;
-				player[i].h = sprites[objects[op].sprite].ysize;
+
+				player[i].w = obj_sprite->getWidth()-4;
+				player[i].h = obj_sprite->getHeight();
 			}
 		}
 		firsttime = 0;

@@ -143,7 +143,7 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
      g_pGfxEngine->Font.generateSpecialTwirls();
      g_pGfxEngine->Font.generateGlowFonts();
      g_pGfxEngine->Font.generateInverseFonts();
-     //g_pGfxEngine->Font.optimizeSurface();
+     g_pGfxEngine->Font.optimizeSurface();
      if(SDL_MUSTLOCK(sfc))SDL_UnlockSurface(sfc);
      delete Planes;
 

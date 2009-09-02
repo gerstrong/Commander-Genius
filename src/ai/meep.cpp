@@ -30,7 +30,7 @@
 unsigned int rnd(void);
 void bumpplayer(int p, int pushamt, bool solid);
 
-void meep_ai(int o, stLevelControl levelcontrol)
+void meep_ai(int o, stLevelControl levelcontrol, CSprite *sprite)
 {
 int newobject;
 int not_about_to_fall;
@@ -96,7 +96,7 @@ int not_about_to_fall;
      {
        objects[o].sprite = MEEP_WALK_RIGHT_FRAME + objects[o].ai.meep.animframe;
 
-       not_about_to_fall = TileProperty[getmaptileat((objects[o].x>>CSF)+sprites[MEEP_WALK_RIGHT_FRAME].xsize, (objects[o].y>>CSF)+sprites[MEEP_WALK_RIGHT_FRAME].ysize)][BUP];
+       not_about_to_fall = TileProperty[getmaptileat((objects[o].x>>CSF)+sprite[MEEP_SING_LEFT_FRAME].getWidth(), (objects[o].y>>CSF)+sprite[MEEP_SING_LEFT_FRAME].getHeight())][BUP];
 
        if (objects[o].blockedr || !not_about_to_fall)
        {
@@ -110,7 +110,7 @@ int not_about_to_fall;
      else
      {
        objects[o].sprite = MEEP_WALK_LEFT_FRAME + objects[o].ai.meep.animframe;
-       not_about_to_fall = TileProperty[getmaptileat((objects[o].x>>CSF)-1, (objects[o].y>>CSF)+sprites[MEEP_WALK_RIGHT_FRAME].ysize)][BUP];
+       not_about_to_fall = TileProperty[getmaptileat((objects[o].x>>CSF)-1, (objects[o].y>>CSF)+sprite[MEEP_SING_LEFT_FRAME].getHeight())][BUP];
 
        if (objects[o].blockedl || !not_about_to_fall)
        {
@@ -145,12 +145,12 @@ int not_about_to_fall;
      {
         if (objects[o].ai.meep.dir==RIGHT)
         {
-            newobject = spawn_object(objects[o].x+(sprites[MEEP_SING_RIGHT_FRAME].xsize<<CSF), objects[o].y+(5<<CSF), OBJ_SNDWAVE);
+            newobject = spawn_object(objects[o].x+(sprite[MEEP_SING_RIGHT_FRAME].getWidth()<<CSF), objects[o].y+(5<<CSF), OBJ_SNDWAVE);
             objects[newobject].ai.ray.direction = RIGHT;
         }
         else
         {
-            newobject = spawn_object(objects[o].x-(sprites[SNDWAVE_LEFT_FRAME].xsize<<CSF), objects[o].y+(5<<CSF), OBJ_SNDWAVE);
+            newobject = spawn_object(objects[o].x-(sprite[SNDWAVE_LEFT_FRAME].getWidth()<<CSF), objects[o].y+(5<<CSF), OBJ_SNDWAVE);
             objects[newobject].ai.ray.direction = LEFT;
         }
         g_pSound->playStereofromCoord(SOUND_MEEP, PLAY_NOW, objects[o].scrx);

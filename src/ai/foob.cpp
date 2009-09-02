@@ -1,6 +1,7 @@
 #include "../sdl/sound/CSound.h"
 #include "../keen.h"
 #include "../include/game.h"
+#include "../graphics/CGfxEngine.h"
 
 // AI for the foobs (yellow "scaredy cat" creatures) (ep3)
 enum FOOB_ACTIONS{
@@ -69,12 +70,14 @@ unsigned int i;
   }
 
    // find out if a player is on the same level as the foob cat
+   Uint16 player_height = g_pGfxEngine->Sprite[0].getHeight();
+   Uint16 foob_height = g_pGfxEngine->Sprite[objects[o].sprite].getHeight();
    onsamelevel = 0;
    for(i=0;i<numplayers;i++)
    {
      if (player[i].isPlaying)
      {
-       if ((player[i].y >= objects[o].y-(24<<CSF)) && ((player[i].y>>CSF)+sprites[0].ysize <= (objects[o].y>>CSF)+sprites[objects[o].sprite].ysize+24))
+       if ((player[i].y >= objects[o].y-(24<<CSF)) && ((player[i].y>>CSF)+player_height <= (objects[o].y>>CSF)+foob_height+24))
        {
          onsamelevel = 1;
          objects[o].ai.foob.SpookedByWho = i;

@@ -132,17 +132,6 @@ public:
 
 struct SDL_Surface;
 
-struct stSprite
-{
- char xsize, ysize;
- unsigned char imgdata[64][64];
- unsigned char maskdata[64][64];
- // bounding box for hit detection
- unsigned int bboxX1, bboxY1;
- unsigned int bboxX2, bboxY2;
- SDL_Surface* surface;
-};
-
 struct stInventory
 {
  unsigned long score;

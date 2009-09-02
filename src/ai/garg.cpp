@@ -2,6 +2,7 @@
 
 #include "../keen.h"
 #include "../include/game.h"
+#include "../graphics/CGfxEngine.h"
 
 enum garg_states{
 GARG_LOOK,
@@ -42,6 +43,9 @@ unsigned int rnd(void);
 void garg_ai(int o, bool hardmode)
 {
 unsigned int i;
+Uint16 garg_width = g_pGfxEngine->Sprite[objects[o].sprite].getWidth();
+Uint16 garg_height = g_pGfxEngine->Sprite[objects[o].sprite].getHeight();
+Uint16 player_height = g_pGfxEngine->Sprite[0].getHeight();
 
    if (objects[o].needinit)
    {  // first time initilization
@@ -142,7 +146,7 @@ unsigned int i;
          {
            if (player[i].y >= objects[o].y-(8<<CSF))
            {
-             if ((player[i].y>>CSF)+sprites[0].ysize <= (objects[o].y>>CSF)+sprites[objects[o].sprite].ysize+16)
+             if ((player[i].y>>CSF)+player_height <= (objects[o].y>>CSF)+garg_height+16)
              {
                objects[o].ai.garg.detectedPlayer = 1;
                objects[o].ai.garg.detectedPlayerIndex = i;
@@ -285,7 +289,7 @@ unsigned int i;
        }
 
        // if Garg is about to fall while charged make him jump
-       if(TileProperty[getmaptileat((objects[o].x>>CSF)+sprites[objects[o].sprite].xsize/2, (objects[o].y>>CSF)+sprites[objects[o].sprite].ysize+1)][BUP] == 0)
+       if(TileProperty[getmaptileat((objects[o].x>>CSF)+garg_width/2, (objects[o].y>>CSF)+player_height+1)][BUP] == 0)
        {
     	   objects[o].ai.garg.state = GARG_JUMP;
     	   objects[o].ai.garg.jumpheight = GARG_JUMP_HEIGHT<<CSF;

@@ -5,6 +5,7 @@
 #include "../include/enemyai.h"
 
 #include "../sdl/sound/CSound.h"
+#include "../graphics/CGfxEngine.h"
 
 // AI for "butler" robot (ep1)
 
@@ -33,6 +34,9 @@
 void butler_ai(int o, bool hardmode)
 {
 char not_about_to_fall;
+Uint16 butler_height, butler_width;
+CSprite *sprite = &g_pGfxEngine->Sprite[BUTLER_WALK_LEFT_FRAME];
+
    if (objects[o].needinit)
    {
      objects[o].ai.butler.state = BUTLER_WALK;
@@ -83,10 +87,12 @@ char not_about_to_fall;
        } else objects[o].ai.butler.timer++;
     break;
     case BUTLER_WALK:
+    	butler_height = sprite->getHeight();
+    	butler_width = sprite->getWidth();
        if (objects[o].ai.butler.movedir==LEFT)
        {  // move left
 
-         not_about_to_fall = TileProperty[getmaptileat((objects[o].x>>CSF)-BUTLER_LOOK_AHEAD_DIST, (objects[o].y>>CSF)+sprites[BUTLER_WALK_LEFT_FRAME].ysize)][BUP];
+         not_about_to_fall = TileProperty[getmaptileat((objects[o].x>>CSF)-BUTLER_LOOK_AHEAD_DIST, (objects[o].y>>CSF)+butler_height)][BUP];
          objects[o].sprite = BUTLER_WALK_LEFT_FRAME + objects[o].ai.butler.frame;
          if (!objects[o].blockedl && not_about_to_fall)
          {
@@ -107,7 +113,7 @@ char not_about_to_fall;
        else
        {  // move right
 
-     	 not_about_to_fall = TileProperty[getmaptileat((objects[o].x>>CSF)+sprites[BUTLER_WALK_RIGHT_FRAME].xsize+BUTLER_LOOK_AHEAD_DIST, (objects[o].y>>CSF)+sprites[BUTLER_WALK_RIGHT_FRAME].ysize)][BUP];
+     	 not_about_to_fall = TileProperty[getmaptileat((objects[o].x>>CSF)+butler_width+BUTLER_LOOK_AHEAD_DIST, (objects[o].y>>CSF)+butler_height)][BUP];
          objects[o].sprite = BUTLER_WALK_RIGHT_FRAME + objects[o].ai.butler.frame;
          if (!objects[o].blockedr && not_about_to_fall)
          {

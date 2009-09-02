@@ -80,24 +80,6 @@ unsigned char CGraphics::sb_getpixel(int x, int y)
   return scrollbuffer[(y<<9) + x];
 }
 
-// draws a sprite directly to the display (only used by status window)
-void CGraphics::drawSprite_direct(int x, int y, unsigned int t)
-{
-unsigned char xa,ya;
-unsigned char oldpixel; // used for the or operation when drawing maked sprites
-
-  for(ya=0;ya<sprites[t].ysize;ya++)
-   for(xa=0;xa<sprites[t].xsize;xa++)
-    if ( sprites[t].maskdata[ya][xa]  )
-    {
-    	oldpixel = g_pVideoDriver->getpixel(x+xa, y+ya);
-    	g_pVideoDriver->setpixel(x+xa, y+ya, (oldpixel | sprites[t].imgdata[ya][xa]) );
-    }
-    else
-    	g_pVideoDriver->setpixel(x+xa, y+ya, (sprites[t].imgdata[ya][xa]==0) ? 16 :
-															sprites[t].imgdata[ya][xa]);
-}
-
 unsigned char savebuf[200][320];
 void CGraphics::saveArea(int x1, int y1, int x2, int y2)
 {

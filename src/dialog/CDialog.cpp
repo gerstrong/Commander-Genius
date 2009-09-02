@@ -26,6 +26,7 @@ CDialog::CDialog(SDL_Surface *DialogSurface, Uint16 x, Uint16 y, Uint16 w, Uint1
 	m_switch = 0;
 	m_scroll = 0;
 	m_Frame = NULL;
+	m_alpha = 0;
 	m_DialogSurface = DialogSurface;
 }
 
@@ -36,6 +37,9 @@ CDialog::~CDialog(){
 
 	while(!m_dlgobject.empty())
 		m_dlgobject.pop_back();
+
+	m_alpha = 225;
+	SDL_SetAlpha(m_DialogSurface, SDL_SRCALPHA, m_alpha );
 
 	if(m_Frame) delete m_Frame;
 }
@@ -127,6 +131,12 @@ void CDialog::processlogic()
 void CDialog::render()
 {
 	if( g_pTimer->TimeToRender() == false ) return;
+
+	if(m_alpha < 230)
+	{
+		SDL_SetAlpha(m_DialogSurface, SDL_SRCALPHA, m_alpha );
+		m_alpha+=10;
+	}
 
 	// do fades
 	gamedo_fades();

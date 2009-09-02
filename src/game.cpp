@@ -438,10 +438,10 @@ unsigned int i;
   // reset player walk frame widths. Lame!
   for(i=0;i<numplayers;i++)
   {
-    g_pGfxEngine->Sprite[playerbaseframes[i]+0].m_xsize = PLAYERSPRITE_WIDTH;
-    g_pGfxEngine->Sprite[playerbaseframes[i]+1].m_xsize = PLAYERSPRITE_WIDTH;
-    g_pGfxEngine->Sprite[playerbaseframes[i]+2].m_xsize = PLAYERSPRITE_WIDTH;
-    g_pGfxEngine->Sprite[playerbaseframes[i]+3].m_xsize = PLAYERSPRITE_WIDTH;
+    g_pGfxEngine->Sprite[playerbaseframes[i]+0].setWidth(PLAYERSPRITE_WIDTH);
+    g_pGfxEngine->Sprite[playerbaseframes[i]+1].setWidth(PLAYERSPRITE_WIDTH);
+    g_pGfxEngine->Sprite[playerbaseframes[i]+2].setWidth(PLAYERSPRITE_WIDTH);
+    g_pGfxEngine->Sprite[playerbaseframes[i]+3].setWidth(PLAYERSPRITE_WIDTH);
   }
 
   // set gun/ice cannon fire freq
@@ -455,10 +455,12 @@ unsigned int i;
   }
 
   // reset the ysize attribute of all doors
-  sprites[DOOR_YELLOW_SPRITE].ysize = 32;
-  sprites[DOOR_RED_SPRITE].ysize = 32;
-  sprites[DOOR_GREEN_SPRITE].ysize = 32;
-  sprites[DOOR_BLUE_SPRITE].ysize = 32;
+
+  CSprite *sprites = &g_pGfxEngine->Sprite[0];
+  sprites[DOOR_YELLOW_SPRITE].setHeight(32);
+  sprites[DOOR_RED_SPRITE].setHeight(32);
+  sprites[DOOR_GREEN_SPRITE].setHeight(32);
+  sprites[DOOR_BLUE_SPRITE].setHeight(32);
 
   p_levelcontrol->level_done_timer = 0;
   p_levelcontrol->gameovermode = false;
@@ -795,25 +797,25 @@ char IsStopPoint(int x, int y, int o)
 // returns nonzero if object1 overlaps object2
 char hitdetect(int object1, int object2)
 {
-int s1, s2;
+CSprite *spr1, *spr2;
 unsigned int rect1x1, rect1y1, rect1x2, rect1y2;
 unsigned int rect2x1, rect2y1, rect2x2, rect2y2;
 
   // get the sprites used by the two objects
-  s1 = objects[object1].sprite;
-  s2 = objects[object2].sprite;
+  spr1 = &g_pGfxEngine->Sprite[object1];
+  spr2 = &g_pGfxEngine->Sprite[object2];
 
   // get the bounding rectangle of the first object
-  rect1x1 = objects[object1].x + sprites[s1].bboxX1;
-  rect1y1 = objects[object1].y + sprites[s1].bboxY1;
-  rect1x2 = objects[object1].x + sprites[s1].bboxX2;
-  rect1y2 = objects[object1].y + sprites[s1].bboxY2;
+  rect1x1 = objects[object1].x + spr1->m_bboxX1;
+  rect1y1 = objects[object1].y + spr1->m_bboxY1;
+  rect1x2 = objects[object1].x + spr1->m_bboxX2;
+  rect1y2 = objects[object1].y + spr1->m_bboxY2;
 
   // get the bounding rectangle of the second object
-  rect2x1 = objects[object2].x + sprites[s2].bboxX1;
-  rect2y1 = objects[object2].y + sprites[s2].bboxY1;
-  rect2x2 = objects[object2].x + sprites[s2].bboxX2;
-  rect2y2 = objects[object2].y + sprites[s2].bboxY2;
+  rect2x1 = objects[object2].x + spr2->m_bboxX1;
+  rect2y1 = objects[object2].y + spr2->m_bboxY1;
+  rect2x2 = objects[object2].x + spr2->m_bboxX2;
+  rect2y2 = objects[object2].y + spr2->m_bboxY2;
 
   // find out if the rectangles overlap
   if ((rect1x1 < rect2x1) && (rect1x2 < rect2x1)) return 0;
@@ -911,15 +913,17 @@ void endlevel(int reason_for_leaving, stLevelControl *levelcontrol)
 char checkobjsolid(unsigned int x, unsigned int y, unsigned int cp)
 {
   int o;
+  CSprite *sprite;
 
    for(o=1;o<highest_objslot;o++)
    {
-      if (objects[o].exists && objects[o].cansupportplayer[cp])
-      {
-        if (x >= objects[o].x+sprites[objects[o].sprite].bboxX1)
-          if (x <= objects[o].x+sprites[objects[o].sprite].bboxX2)
-            if (y >= objects[o].y+sprites[objects[o].sprite].bboxY1)
-              if (y <= objects[o].y+sprites[objects[o].sprite].bboxY2)
+	   sprite = &g_pGfxEngine->Sprite[objects[o].sprite];
+	   if (objects[o].exists && objects[o].cansupportplayer[cp])
+	   {
+        if (x >= objects[o].x+sprite->m_bboxX1)
+          if (x <= objects[o].x+sprite->m_bboxX2)
+            if (y >= objects[o].y+sprite->m_bboxY1)
+              if (y <= objects[o].y+sprite->m_bboxY2)
                 return o;
       }
    }
@@ -1022,162 +1026,51 @@ int t;
   return 0;
 }
 
-// copies tile data into a sprite. multiple tiles can be copied into
-// a single sprite--they will be stacked up vertically.
-void CopyTileToSprite(int t, int s, int ntilestocopy, int transparentcol)
-{
-int x,y1,y2,tboundary;
-    sprites[s].xsize = 16;
-    sprites[s].ysize = 16 * ntilestocopy;
-    sprites[s].bboxX1 = sprites[s].bboxY1 = 0;
-    sprites[s].bboxX2 = (sprites[s].xsize << CSF);
-    sprites[s].bboxY2 = (sprites[s].ysize << CSF);
-
-    tboundary = 0;
-    y2 = 0;
-    SDL_Surface *sfc = g_pGfxEngine->Tilemap.getSDLSurface();
-    if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
-    Uint8 *pixel = (Uint8*) sfc->pixels;
-    Uint8 *offset;
-    for(y1=0;y1<(16*ntilestocopy);y1++)
-    {
-      for(x=0;x<16;x++)
-      {
-    	  offset = pixel + 13*16*16*(t/13) + 16*(t%13) + 13*16*y2 + x; // Postion formula of one pixel
-    	  sprites[s].imgdata[y1][x] = *offset;
-          if (sprites[s].imgdata[y1][x] != transparentcol)
-          {
-        	  sprites[s].maskdata[y1][x] = 0;
-          }
-          else
-          {
-        	  sprites[s].maskdata[y1][x] = 15;
-        	  sprites[s].imgdata[y1][x] = 0;
-          }
-      }
-      y2++;
-      if (y2>=16)
-      {
-    	  y2 = 0;
-		  t++;
-      }
-    }
-    if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
-
-}
-
-// replaces all instances of color find in sprite s with
-// color replace, as long as the y is greater than miny
-void ReplaceSpriteColor(int s, int find, int replace, int miny)
-{
-int x,y;
-
- for(y=miny;y<sprites[s].ysize;y++)
- {
-   for(x=0;x<sprites[s].xsize;x++)
-   {
-     if (sprites[s].imgdata[y][x]==find)
-     {
-       sprites[s].imgdata[y][x] = replace;
-     }
-   }
- }
-}
-
-// duplicates sprite source to dest
-void CopySprite(int source, int dest)
-{
-int x,y;
-
-  sprites[dest].xsize = sprites[source].xsize;
-  sprites[dest].ysize = sprites[source].ysize;
-
-  for(y=0;y<sprites[source].ysize;y++)
-  {
-    for(x=0;x<sprites[source].xsize;x++)
-    {
-      sprites[dest].imgdata[y][x] = sprites[source].imgdata[y][x];
-      sprites[dest].maskdata[y][x] = sprites[source].maskdata[y][x];
-    }
-  }
-}
-
 // initialize sprites that come from tiles, such as the doors
 void initsprites(stCloneKeenPlus *pCKP, int s)
 {
-int x,y,i,indx;
+int i;
 
+	CSprite *sprite = &g_pGfxEngine->Sprite[0];
 
-    	for(i=0 ; i < numtiles ; i++ )
-    	{
-    		if(TileProperty[i][BEHAVIOR] == DOOR_YELLOW)
-    			g_pGfxEngine->copyTileToSprite(i-1, DOOR_YELLOW_SPRITE, 2);
-    			//CopyTileToSprite(i-1, DOOR_YELLOW_SPRITE, 2, 7);
+	for(i=0 ; i < numtiles ; i++ )
+	{
+		if(TileProperty[i][BEHAVIOR] == DOOR_YELLOW)
+			g_pGfxEngine->copyTileToSprite(i-1, DOOR_YELLOW_SPRITE, 2);
 
-    		if(TileProperty[i][BEHAVIOR] == DOOR_RED)
-    			g_pGfxEngine->copyTileToSprite(i-1, DOOR_RED_SPRITE, 2);
-    			//CopyTileToSprite(i-1, DOOR_RED_SPRITE, 2, 7);
+		if(TileProperty[i][BEHAVIOR] == DOOR_RED)
+			g_pGfxEngine->copyTileToSprite(i-1, DOOR_RED_SPRITE, 2);
 
-    		if(TileProperty[i][BEHAVIOR] == DOOR_GREEN)
-    			g_pGfxEngine->copyTileToSprite(i-1, DOOR_GREEN_SPRITE, 2);
-    			//CopyTileToSprite(i-1, DOOR_GREEN_SPRITE, 2, 7);
+		if(TileProperty[i][BEHAVIOR] == DOOR_GREEN)
+			g_pGfxEngine->copyTileToSprite(i-1, DOOR_GREEN_SPRITE, 2);
 
-    		if(TileProperty[i][BEHAVIOR] == DOOR_BLUE)
-    			g_pGfxEngine->copyTileToSprite(i-1, DOOR_BLUE_SPRITE, 2);
-
-    			//CopyTileToSprite(i-1, DOOR_BLUE_SPRITE, 2, 7);
-    	}
-
+		if(TileProperty[i][BEHAVIOR] == DOOR_BLUE)
+			g_pGfxEngine->copyTileToSprite(i-1, DOOR_BLUE_SPRITE, 2);
+	}
 
     // create BLANKSPRITE
     BlankSprite = s;
-    sprites[BlankSprite].xsize = sprites[BlankSprite].ysize = 0;
+    sprite[BlankSprite].setSize(0, 0);
 
-    // create DEMOSPRITE (the "demo" message the appears on the screen
-    // during a demo--the graphics for it are stored in demobox.h)
-    s++;
-    DemoSprite = s;
-    sprites[DemoSprite].xsize = 48;
-    sprites[DemoSprite].ysize = 16;
-    indx = 0;
-    for(y=0;y<DEMOBOX_HEIGHT;y++)
-    {
-      for(x=0;x<DEMOBOX_WIDTH;x++)
-      {
-        sprites[DemoSprite].imgdata[y][x] = demobox_image[indx];
-        sprites[DemoSprite].maskdata[y][x] = 15-demobox_mask[indx];
-        indx++;
-      }
-    }
+    // TODO: Demo-Sprite must be added. This time loaded from one TGA File! The TGA is already there!
 
     // create the sprites for player 2
     s++;
     playerbaseframes[1] = s;
     for(i=0;i<48;i++)
     {
-      CopySprite(i, s);
-      ReplaceSpriteColor(s, 13, 10, 0);
-      ReplaceSpriteColor(s, 5, 2, 0);
-      ReplaceSpriteColor(s, 9, 14, 8);
-      ReplaceSpriteColor(s, 1, 6, 8);
-      ReplaceSpriteColor(s, 12, 11, 0);
-      ReplaceSpriteColor(s, 4, 3, 0);
+      sprite[i].copy( &sprite[s], g_pVideoDriver->MyPalette );
+      sprite[s].replaceSpriteColor( 13, 10 ,0 );
+      sprite[s].replaceSpriteColor( 5, 2 ,0 );
+      sprite[s].replaceSpriteColor( 9, 14 ,8 );
+      sprite[s].replaceSpriteColor( 1, 6 ,8 );
+      sprite[s].replaceSpriteColor( 12, 11 ,0 );
+      sprite[s].replaceSpriteColor( 4, 3 ,0 );
       s++;
     }
 
     // create the sprites for player 3
-    playerbaseframes[2] = s;
-    for(i=0;i<48;i++)
-    {
-      CopySprite(i, s);
-      ReplaceSpriteColor(s, 12, 6, 0);
-      ReplaceSpriteColor(s, 4, 6, 0);
-      ReplaceSpriteColor(s, 13, 12, 0);
-      ReplaceSpriteColor(s, 5, 4, 0);
-      ReplaceSpriteColor(s, 9, 12, 8);
-      ReplaceSpriteColor(s, 1, 4, 8);
-      s++;
-    }
+    // Unsupported for now...
 }
 
 void procgoodie(int t, int mpx, int mpy, int theplayer, stCloneKeenPlus *pCKP)

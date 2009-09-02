@@ -5,6 +5,7 @@
 #include "../keen.h"
 #include "../sdl/CInput.h"
 #include "../sdl/sound/CSound.h"
+#include "../graphics/CGfxEngine.h"
 #include "../include/menu.h"
 #include "../include/enemyai.h"
 #include "../include/gamedo.h"
@@ -58,6 +59,11 @@ char enter,lastenterstate;
 int x, y, t, o, i;
 int tantalus_animframe, tantalus_animtimer=0;
 int state, timer, spawnedcount=0;
+CSprite *sprites = &g_pGfxEngine->Sprite[0];
+
+	Uint16 tantalus_sprite_width = sprites[TANTALUS_SPRITE].getWidth();
+	Uint16 tantalus_sprite_height = sprites[TANTALUS_SPRITE].getHeight();
+
 
 	o=0;
 
@@ -127,7 +133,7 @@ int state, timer, spawnedcount=0;
 	    player[0].x += TANTALUS_SPD_X;
 	    player[0].y += TANTALUS_SPD_Y;
 
-	    t = getmaptileat((player[0].x>>CSF)+(sprites[TANTALUS_SPRITE].xsize/2), (player[0].y>>CSF)+(sprites[TANTALUS_SPRITE].ysize/2));
+	    t = getmaptileat((player[0].x>>CSF)+(tantalus_sprite_width/2), (player[0].y>>CSF)+(tantalus_sprite_height/2));
 	    if (t==586)
 	    {  // hit center of earth
 		  state = TAN_STATE_EARTH_EXPLODING;

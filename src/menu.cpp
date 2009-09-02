@@ -1018,8 +1018,9 @@ int boxtimer;
 		    x = ((KEENSLEFT_X+1)*8)+4;
 		    for(i=0;i<player[p].inventory.lives&&i<=10;i++)
 		    {
-		    	g_pGraphics->drawSprite_direct(x, y, PMAPDOWNFRAME+playerbaseframes[p]-
-		    			(episode==3));
+		    	Uint16 f = PMAPDOWNFRAME+playerbaseframes[p]-(episode==3);
+		    	g_pGfxEngine->Sprite[f].drawSprite(g_pVideoDriver->FGLayerSurface, x, y );
+
 		      x+=16;
 		    }
 		    y+=18;

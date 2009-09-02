@@ -5,7 +5,6 @@
 #include "../include/enemyai.h"
 
 // Tank Robot (Ep2)
-
 #define TANK_LOOK       0
 #define TANK_WALK       1
 
@@ -38,6 +37,8 @@
 #define TANK2_TIME_BETWEEN_SHOTS  50
 #define TANK2_TIME_BEFORE_FIRE_WHEN_SEE      100
 #define TANK2_TIME_BETWEEN_FIRE_CAUSE_LEVEL  400
+
+#define sprites (&g_pGfxEngine->Sprite[0])
 
 // reference to ../misc.cpp
 unsigned int rnd(void);
@@ -149,12 +150,12 @@ int newobject;
              if (objects[o].onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, objects[o].scrx);
              if (objects[o].ai.tank.movedir==RIGHT)
              {
-                 newobject = spawn_object(objects[o].x+(sprites[TANK2_WALK_RIGHT_FRAME].xsize<<CSF), objects[o].y+(6<<CSF), OBJ_RAY);
+                 newobject = spawn_object(objects[o].x+(sprites[TANK2_WALK_RIGHT_FRAME].getWidth()<<CSF), objects[o].y+(6<<CSF), OBJ_RAY);
                  objects[newobject].ai.ray.direction = RIGHT;
              }
              else
              {
-                 newobject = spawn_object(objects[o].x-(sprites[ENEMYRAYEP2].xsize<<CSF), objects[o].y+(6<<CSF), OBJ_RAY);
+                 newobject = spawn_object(objects[o].x-(sprites[ENEMYRAYEP2].getWidth()<<CSF), objects[o].y+(6<<CSF), OBJ_RAY);
                  objects[newobject].ai.ray.direction = LEFT;
              }
              objects[newobject].sprite = ENEMYRAYEP2;
@@ -288,7 +289,7 @@ void static tank_searchplayers(int o)
 	{
 		if (player[i].y >= objects[o].y-(12<<CSF))
 		{
-			if ((player[i].y>>CSF)+sprites[0].ysize <= (objects[o].y>>CSF)+sprites[objects[o].sprite].ysize+12)
+			if ((player[i].y>>CSF)+sprites[0].getHeight() <= (objects[o].y>>CSF)+sprites[objects[o].sprite].getHeight()+12)
 			{
 				objects[o].ai.tank.detectedPlayer = 1;
 				objects[o].ai.tank.detectedPlayerIndex = i;

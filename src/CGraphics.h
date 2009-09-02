@@ -22,7 +22,6 @@ public:
 	void freemem(void);
 	void sb_setpixel(int x, int y, unsigned char c);
 	unsigned char sb_getpixel(int x, int y);
-	void drawSprite_direct(int x, int y, unsigned int t);
 	void saveArea(int x1, int y1, int x2, int y2);
 	void restoreArea(int x1, int y1, int x2, int y2);
 	void stopGraphics(void);

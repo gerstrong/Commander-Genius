@@ -241,8 +241,8 @@ int i, topobj;
       // Bitmaps are also part of the object, but only print them directly
       if ( objects[i].type==OBJ_EGA_BITMAP ) continue;
 
-      if (objects[i].scrx < -(sprites[objects[i].sprite].xsize) || objects[i].scrx > 320 \
-          || objects[i].scry < -(sprites[objects[i].sprite].ysize) || objects[i].scry > 200)
+      if (objects[i].scrx < -(g_pGfxEngine->Sprite[objects[i].sprite].getWidth()) || objects[i].scrx > 320 \
+          || objects[i].scry < -(g_pGfxEngine->Sprite[objects[i].sprite].getHeight()) || objects[i].scry > 200)
           {
 			 objects[i].onscreen = 0;
              objects[i].wasoffscreen = 1;
@@ -271,8 +271,8 @@ int i, topobj;
 			  case OBJ_GARG: garg_ai(i, p_levelcontrol->hardmode); break;
 			  case OBJ_VORT: vort_ai(i, p_levelcontrol ); break;
 			  case OBJ_BUTLER: butler_ai(i, p_levelcontrol->hardmode); break;
-			  case OBJ_TANK: tank_ai(i, p_levelcontrol->hardmode); break;
-			  case OBJ_RAY: ray_ai(i, p_levelcontrol->episode,
+			  case OBJ_TANK: tank_ai(i, &g_pGfxEngine->Sprite[0], p_levelcontrol->hardmode); break;
+			  case OBJ_RAY: ray_ai(i, &g_pGfxEngine->Sprite[0],p_levelcontrol->episode,
 							  options[OPT_FULLYAUTOMATIC].value, p_levelcontrol->cepvars.pShotSpeed); break;
 			  case OBJ_DOOR: door_ai(i, p_levelcontrol->cepvars.DoorOpenDir); break;
 			  case OBJ_ICECANNON: icecannon_ai(i); break;
@@ -282,7 +282,7 @@ int i, topobj;
 			  case OBJ_ROPE: rope_ai(i); break;
 
 			  //KEEN2
-			  case OBJ_SCRUB: scrub_ai(i, *p_levelcontrol); break;
+			  case OBJ_SCRUB: scrub_ai(i, &g_pGfxEngine->Sprite[0],*p_levelcontrol); break;
 			  case OBJ_TANKEP2: tankep2_ai(i, p_levelcontrol->hardmode); break;
 			  case OBJ_PLATFORM: platform_ai(i, *p_levelcontrol); break;
 			  case OBJ_VORTELITE: vortelite_ai(i, p_levelcontrol->dark); break;
@@ -295,10 +295,13 @@ int i, topobj;
 
 			  //KEEN3
 			  case OBJ_FOOB: foob_ai(i, p_levelcontrol->hardmode); break;
-			  case OBJ_NINJA: ninja_ai(i, p_levelcontrol->hardmode); break;
-			  case OBJ_MEEP: meep_ai(i, *p_levelcontrol); break;
+			  case OBJ_NINJA: ninja_ai(i, &g_pGfxEngine->Sprite[0],
+										  p_levelcontrol->hardmode); break;
+			  case OBJ_MEEP: meep_ai(i, *p_levelcontrol,
+									  &g_pGfxEngine->Sprite[0]); break;
 			  case OBJ_SNDWAVE: sndwave_ai(i, p_levelcontrol->hardmode); break;
-			  case OBJ_MOTHER: mother_ai(i, *p_levelcontrol); break;
+			  case OBJ_MOTHER: mother_ai(i, *p_levelcontrol,
+									  &g_pGfxEngine->Sprite[0]); break;
 			  case OBJ_FIREBALL: fireball_ai(i, p_levelcontrol->hardmode); break;
 			  case OBJ_BALL: ballandjack_ai(i); break;
 			  case OBJ_JACK: ballandjack_ai(i); break;
@@ -333,8 +336,8 @@ int cplayer;
 
 	if (objects[o].type==OBJ_GOTPOINTS) return;
 
-	xsize = sprites[objects[o].sprite].xsize;
-	ysize = sprites[objects[o].sprite].ysize;
+	xsize = g_pGfxEngine->Sprite[objects[o].sprite].getWidth();
+	ysize = g_pGfxEngine->Sprite[objects[o].sprite].getHeight();
 
  // set value of blockedd--should object fall?
 	temp = (objects[o].y>>CSF)+ysize;
@@ -535,20 +538,27 @@ int xa,ya;
 
         if (objects[i].honorPriority)
         {
+        	CSprite *sprite = &g_pGfxEngine->Sprite[objects[i].sprite];
             // handle priority tiles and tiles with masks
             // get the upper-left coordinates to start checking for tiles
             x = (((objects[i].x>>CSF)-1)>>4)<<4;
             y = (((objects[i].y>>CSF)-1)>>4)<<4;
 
             // get the xsize/ysize of this sprite--round up to the nearest 16
-            xsize = ((sprites[objects[i].sprite].xsize)>>4<<4);
-            if (xsize != sprites[objects[i].sprite].xsize) xsize+=16;
+            xsize = ((sprite->getWidth())>>4<<4);
+            if (xsize != sprite->getWidth()) xsize+=16;
 
-            ysize = ((sprites[objects[i].sprite].ysize)>>4<<4);
-            if (ysize != sprites[objects[i].sprite].ysize) ysize+=16;
+            ysize = ((g_pGfxEngine->Sprite[objects[i].sprite].getHeight())>>4<<4);
+            if (ysize != sprite->getHeight()) ysize+=16;
+
+            tl = getmaptileat(x,y);
 
             // now redraw any priority/masked tiles that we covered up
             // with the sprite
+            SDL_Surface *sfc = g_pVideoDriver->SpriteLayerSurface;
+            SDL_Rect sfc_rect;
+            sfc_rect.w = sfc_rect.h = 16;
+
             for(ya=0;ya<=ysize;ya+=16)
             {
               for(xa=0;xa<=xsize;xa+=16)
@@ -556,14 +566,12 @@ int xa,ya;
                 tl = getmaptileat(x+xa,y+ya);
                 if(TileProperty[tl][BEHAVIOR] == 65534)
                 {
-                	g_pGfxEngine->Tilemap.drawTile(g_pVideoDriver->FGLayerSurface, x+xa-scroll_x, y+ya-scroll_y, tl+1);
+                	g_pGfxEngine->Tilemap.drawTile(g_pVideoDriver->SpriteLayerSurface, x+xa-scroll_x, y+ya-scroll_y, tl+1);
                 }
                 else if (TileProperty[tl][BEHAVIOR] == 65535)
                 {
-                   if ( TileProperty[tl][ANIMATION] > 1 )
-                	  tl = (tl-tiles[tl].animOffset)+((tiles[tl].animOffset+curanimtileframe)%TileProperty[tl][ANIMATION]);
-
-                   g_pGfxEngine->Tilemap.drawTile(g_pVideoDriver->FGLayerSurface, x+xa-scroll_x, y+ya-scroll_y, tl);
+                   sfc_rect.x = x+xa-scroll_x;	sfc_rect.y = y+ya-scroll_y;
+                   SDL_FillRect(sfc, &sfc_rect, sfc->format->colorkey);
                 }
 
               }

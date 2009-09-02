@@ -34,7 +34,7 @@
 void bumpplayer(int p, int pushamt, bool solid);
 unsigned int rnd(void);
 
-void mother_ai(int o, stLevelControl levelcontrol)
+void mother_ai(int o, stLevelControl levelcontrol, CSprite *sprites)
 {
 int newobject;
 int prob;
@@ -141,12 +141,12 @@ int prob;
      {
         if (objects[o].ai.mother.dir==RIGHT)
         {
-            newobject = spawn_object(objects[o].x+(sprites[MOTHER_SPIT_RIGHT_FRAME].xsize<<CSF), objects[o].y+(11<<CSF), OBJ_FIREBALL);
+            newobject = spawn_object(objects[o].x+(sprites[MOTHER_SPIT_RIGHT_FRAME].getWidth()<<CSF), objects[o].y+(11<<CSF), OBJ_FIREBALL);
             objects[newobject].ai.ray.direction = RIGHT;
         }
         else
         {
-            newobject = spawn_object(objects[o].x-(sprites[MOTHER_SPIT_LEFT_FRAME].xsize<<CSF), objects[o].y+(11<<CSF), OBJ_FIREBALL);
+            newobject = spawn_object(objects[o].x-(sprites[MOTHER_SPIT_LEFT_FRAME].getWidth()<<CSF), objects[o].y+(11<<CSF), OBJ_FIREBALL);
             objects[newobject].ai.ray.direction = LEFT;
         }
         if (objects[o].onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, objects[o].scrx);
