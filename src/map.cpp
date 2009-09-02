@@ -374,7 +374,6 @@ void map_redraw(void)
 int x,mpx;
 
 	SDL_FillRect(g_pVideoDriver->SpriteLayerSurface, NULL, g_pVideoDriver->SpriteLayerSurface->format->colorkey);
-
 	x = mapxstripepos;
 	for(mpx=0;mpx<32;mpx++)
 	{

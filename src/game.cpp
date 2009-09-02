@@ -435,13 +435,13 @@ unsigned int i;
   animtiletimer = curanimtileframe = 0;
   //PlatExtending = 0;
 
-  // reset player walk frame widths
+  // reset player walk frame widths. Lame!
   for(i=0;i<numplayers;i++)
   {
-    sprites[playerbaseframes[i]+0].xsize = PLAYERSPRITE_WIDTH;
-    sprites[playerbaseframes[i]+1].xsize = PLAYERSPRITE_WIDTH;
-    sprites[playerbaseframes[i]+2].xsize = PLAYERSPRITE_WIDTH;
-    sprites[playerbaseframes[i]+3].xsize = PLAYERSPRITE_WIDTH;
+    g_pGfxEngine->Sprite[playerbaseframes[i]+0].m_xsize = PLAYERSPRITE_WIDTH;
+    g_pGfxEngine->Sprite[playerbaseframes[i]+1].m_xsize = PLAYERSPRITE_WIDTH;
+    g_pGfxEngine->Sprite[playerbaseframes[i]+2].m_xsize = PLAYERSPRITE_WIDTH;
+    g_pGfxEngine->Sprite[playerbaseframes[i]+3].m_xsize = PLAYERSPRITE_WIDTH;
   }
 
   // set gun/ice cannon fire freq

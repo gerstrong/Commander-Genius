@@ -58,11 +58,15 @@ SDL_Surface *CSprite::getSDLSurface()
 ///
 void CSprite::drawSprite( SDL_Surface *dst, Uint16 x, Uint16 y )
 {
-	SDL_Rect dst_rect;
+	SDL_Rect dst_rect, src_rect;
 	dst_rect.x = x;			dst_rect.y = y;
 	dst_rect.w = m_xsize;	dst_rect.h = m_ysize;
 
-	SDL_BlitSurface( m_surface, NULL, dst, &dst_rect );
+	src_rect.x = 0;	src_rect.y = 0;
+	src_rect.w = dst_rect.w;
+	src_rect.h = dst_rect.h;
+
+	SDL_BlitSurface( m_surface, &src_rect, dst, &dst_rect );
 }
 
 void CSprite::eraseSprite( SDL_Surface *dst,  Uint16 x, Uint16 y )

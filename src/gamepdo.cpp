@@ -13,6 +13,8 @@ char tempbuf[200];
 #include "sdl/CTimer.h"
 #include "sdl/sound/CSound.h"
 
+#include "graphics/CGfxEngine.h"
+
 #include "include/game.h"
 #include "include/gamepdo.h"
 #include "include/gamedo.h"
@@ -113,10 +115,12 @@ int x, diff, width;
        if (width < 0) width = 0;               // don't set to negative
 
        // set new width of all player walk frames
-       sprites[playerbaseframes[cp]+0].xsize = width;
-       sprites[playerbaseframes[cp]+1].xsize = width;
-       sprites[playerbaseframes[cp]+2].xsize = width;
-       sprites[playerbaseframes[cp]+3].xsize = width;
+       g_pGfxEngine->Sprite[playerbaseframes[cp]+0].m_xsize = width;
+       g_pGfxEngine->Sprite[playerbaseframes[cp]+1].m_xsize = width;
+       g_pGfxEngine->Sprite[playerbaseframes[cp]+2].m_xsize = width;
+       g_pGfxEngine->Sprite[playerbaseframes[cp]+3].m_xsize = width;
+
+       // TODO: Problem, m_xsize, must be restored, when finished!
     }
 }
 
