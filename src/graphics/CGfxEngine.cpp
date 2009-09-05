@@ -50,9 +50,7 @@ CBitmap *CGfxEngine::createEmptyBitmaps(Uint16 num_bmps)
 {
 	Bitmap.reserve(num_bmps);
 	for(Uint16 i=0 ; i<num_bmps ; i++ )
-	{
-		Bitmap.push_back(new CBitmap());
-	}
+		Bitmap.push_back( new CBitmap() );
 
 	if (!Bitmap.empty()) return Bitmap[0];
 	else return NULL;
@@ -70,25 +68,28 @@ void CGfxEngine::freeFonts()
 
 void CGfxEngine::freeBitmaps()
 {
-	while( !Bitmap.empty() )
+	CBitmap *bitmap;
+	while( Bitmap.size() > 0 )
 	{
-		delete *Bitmap.end();
+		bitmap = *Bitmap.end();
+		if(bitmap) delete bitmap;
 		Bitmap.pop_back();
 	}
 }
 
 void CGfxEngine::freeSprites()
 {
-	while( !Sprite.empty() )
+	CSprite *sprite;
+	while( Sprite.size() > 0 )
 	{
-		delete *Sprite.end();
+		sprite = *Sprite.end();
+		if(sprite) delete sprite;
 		Sprite.pop_back();
 	}
 }
 
 Uint8 CGfxEngine::getBitmapID(const std::string name)
 {
-	int num = Bitmap.size();
 	for(Uint8 i=0 ; i<Bitmap.size() ; i++)
 		if(Bitmap[i]->getName() == name) return i;
 	return 0;

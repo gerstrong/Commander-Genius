@@ -57,6 +57,10 @@ bool CEGAGraphics::loadData()
 	std::string buf;
 	vector<char> databuf;
 
+	// assure that the last used resources are freed
+	g_pGfxEngine->freeFonts();
+	g_pGfxEngine->freeTilemap();
+
 	if(m_path == "")
 		buf = "egahead.ck" + itoa(m_episode);
 	else

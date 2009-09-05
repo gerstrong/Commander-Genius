@@ -346,7 +346,7 @@ bool CVideoDriver::createSurfaces(void)
 
 	stretch_blit_yoff = 0;
 
-	ScrollSurface = SDL_CreateRGBSurface( Mode, 512, 512, 8,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
+	ScrollSurface = SDL_CreateRGBSurface( Mode, 512, 512, 32,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
 	SDL_SetColorKey(ScrollSurface, SDL_SRCCOLORKEY, COLOUR_MASK);
 	if (!ScrollSurface)
 	{
@@ -540,6 +540,7 @@ void CVideoDriver::update_screen(void)
 
 	   // Flush the FG-Layer
 	   SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE));
+	   SDL_FillRect(SpriteLayerSurface, NULL, SDL_MapRGB(SpriteLayerSurface->format, 0, 0xFF, 0xFE));
    }
    else // No OpenGL but Software Rendering
    {
@@ -654,6 +655,7 @@ void CVideoDriver::update_screen(void)
 
 	   // Flush the FG-Layer
 	   SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE));
+	   SDL_FillRect(SpriteLayerSurface, NULL, SDL_MapRGB(SpriteLayerSurface->format, 0, 0xFF, 0xFE));
 
 #ifdef USE_OPENGL
    }

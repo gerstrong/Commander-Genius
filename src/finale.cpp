@@ -7,6 +7,8 @@
 #include "keen.h"
 #include "include/fileio.h"
 #include "CGraphics.h"
+#include "graphics/CGfxEngine.h"
+#include "sdl/CVideoDriver.h"
 #include "FindFile.h"
 
 int finale_x;
@@ -21,7 +23,15 @@ void finale_plot(int pix)
 {
 int mask;
 
+//TODO: THis is a temporary solution. Might be changed later.
    mask = 128;
+
+   SDL_Surface *sfc = g_pVideoDriver->getScrollSurface();
+
+   if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
+   Uint8* pixel = (Uint8*) sfc->pixels;
+   Uint8 bpp = sfc->format->BytesPerPixel;
+
    do
    {
      if (pix & mask)
@@ -29,15 +39,18 @@ int mask;
        if (finale_planecol==1)
        {
     	   //g_pGraphics->sb_setpixel(finale_x, finale_y, finale_planecol);
+    	   pixel[(finale_y*320 + finale_x)*bpp] = finale_planecol;
        }
        else
        {  // merge with previous planes
     	   //g_pGraphics->sb_setpixel(finale_x, finale_y, g_pGraphics->sb_getpixel(finale_x, finale_y) | finale_planecol);
+    	   pixel[(finale_y*320 + finale_x)*bpp] |= finale_planecol;
        }
      }
      else if (finale_planecol==1)
      {
     	 //g_pGraphics->sb_setpixel(finale_x, finale_y, 0);
+    	 pixel[(finale_y*320 + finale_x)*bpp] = 0;
      }
 
      finale_x++;
@@ -66,6 +79,8 @@ int mask;
      }
 
    } while(1);
+
+   if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
 
 }
 

@@ -26,8 +26,6 @@ public:
 	void drawTile(SDL_Surface *dst, Uint16 x, Uint16 y, Uint16 t);
 
 private:
-
 	SDL_Surface *m_Tilesurface;
-
 };
 #endif /* CTILEMAP_H_ */

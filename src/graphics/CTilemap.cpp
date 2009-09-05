@@ -17,10 +17,11 @@ CTilemap::~CTilemap() {
 
 bool CTilemap::CreateSurface(SDL_Color *Palette, Uint32 Flags)
 {
-	m_Tilesurface = SDL_CreateRGBSurface(Flags, 13*16, 800*16,8, 0, 0, 0, 0);
+	m_Tilesurface = SDL_CreateRGBSurface(Flags, 13*16, 800*16, 8, 0, 0, 0, 0);
 	SDL_SetColors(m_Tilesurface, Palette, 0, 255);
 	SDL_SetColorKey(m_Tilesurface, SDL_SRCCOLORKEY, COLORKEY);
-	return (m_Tilesurface != NULL);
+
+	return ( m_Tilesurface != NULL );
 }
 
 bool CTilemap::optimizeSurface()

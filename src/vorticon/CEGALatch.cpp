@@ -48,6 +48,11 @@ CEGALatch::~CEGALatch() {
 bool CEGALatch::loadHead( char *data )
 {
 	Uint16 height, width;
+	char name[8];
+
+    const std::string default_names[] = { "TITLE", "IDLOGO", "F1HELP", "HIGHSCOR",
+  		  "NAME", "SCORE", "PARTS", "GAMEOVER", "AN", "PRESENT", "APOGEE", "KEENSHIP", "WINDON",
+  		  "WINDOFF", "ONEMOMEN", "OFAN", "PRODUCT", "IDSOFT" }; // in case the names are empty
 
 	data += m_bitmaptablelocation;
 
@@ -56,7 +61,11 @@ bool CEGALatch::loadHead( char *data )
 	{
 		memcpy(&width,data+16*i,2);
 		memcpy(&height,data+16*i+2,2);
+		memcpy(name,data+16*i+8,8);
 		width *= 8; // The width is always divided by eight when read
+
+		if( name[0] != 0 ) g_pGfxEngine->Bitmap[i]->setName( name );
+		else g_pGfxEngine->Bitmap[i]->setName( default_names[i] );
 
 		g_pGfxEngine->Bitmap[i]->setDimensions(width,height);
 	}
@@ -144,7 +153,7 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
      Font->generateSpecialTwirls();
      Font->generateGlowFonts();
      Font->generateInverseFonts();
-     //Font->optimizeSurface();
+     Font->optimizeSurface();
      if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
      delete Planes;
 
@@ -187,6 +196,7 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
            			   *u_offset = COLORKEY;
            		   else
            			   *u_offset = *(u_pixel + 16*13*16*((t-1)/13) + 16*((t-1)%13)  + 16*13*y + x);
+           			   //*u_offset = g_pVideoDriver->SpriteLayerSurface->format->colorkey;
            	   }
                else
             	   *u_offset = c;
@@ -195,6 +205,7 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
          }
        }
      }
+     Tilemap->optimizeSurface();
      if(SDL_MUSTLOCK(sfc))	SDL_UnlockSurface(sfc);
      delete Planes;
 
@@ -214,14 +225,9 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
      // array giving pointers to where each bitmap starts within the stream.
 
      // In case there is a strange mod or defect episode, put some names to them!
-     const char names[][9] = { "TITLE", "IDLOGO", "F1HELP", "HIGHSCOR",
-   		  "NAME", "SCORE", "PARTS", "GAMEOVER", "AN", "PRESENT", "APOGEE", "KEENSHIP", "WINDON",
-   		  "WINDOFF", "ONEMOMEN", "OFAN", "PRODUCT", "IDSOFT" };
-
      for(int b=0 ; b<m_bitmaps ; b++)
      {
     	 bitmap = g_pGfxEngine->Bitmap[b];
-    	 bitmap->setName(names[b]);
     	 bitmap->createSurface(g_pVideoDriver->getScrollSurface()->flags, g_pVideoDriver->MyPalette);
      }
 
