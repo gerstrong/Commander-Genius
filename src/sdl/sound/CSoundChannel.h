@@ -11,10 +11,22 @@
 #include <SDL.h>
 #include "CSoundSlot.h"
 
-#define WAVEFORM_VOLUME         5
-#define WAVE_SILENCE            128
-#define WAVE_IN                 (WAVE_SILENCE-WAVEFORM_VOLUME)
-#define WAVE_OUT                (WAVE_SILENCE+WAVEFORM_VOLUME)
+// 8 bit sound
+#define WAVEFORM_VOLUME_8	5
+#define WAVE_SILENCE_U8         128
+#define WAVE_SILENCE_S8         0
+#define WAVE_IN_U8		(WAVE_SILENCE_U8-WAVEFORM_VOLUME_8)
+#define WAVE_OUT_U8		(WAVE_SILENCE_U8+WAVEFORM_VOLUME_8)
+#define WAVE_IN_S8		(WAVE_SILENCE_S8-WAVEFORM_VOLUME_8)
+#define WAVE_OUT_S8		(WAVE_SILENCE_S8+WAVEFORM_VOLUME_8)
+// 16 bit sound
+#define WAVEFORM_VOLUME_16	1280
+#define WAVE_SILENCE_U16        32768
+#define WAVE_SILENCE_S16        0
+#define WAVE_IN_U16		(WAVE_SILENCE_U16-WAVEFORM_VOLUME_16)
+#define WAVE_OUT_U16		(WAVE_SILENCE_U16+WAVEFORM_VOLUME_16)
+#define WAVE_IN_S16		(WAVE_SILENCE_S16-WAVEFORM_VOLUME_16)
+#define WAVE_OUT_S16		(WAVE_SILENCE_S16+WAVEFORM_VOLUME_16)
 
 #define SLOW_RATE      90		// Wait time for resampling PC Speaker Sound.
 								// The higher it is, the faster sound is played!
@@ -30,7 +42,8 @@ public:
 	bool isForcedPlaying() { return (m_sound_playing && m_sound_forced); }
 	unsigned short getCurrentsound() { return m_current_sound; }
 	void readWaveform(Uint8* waveform, int len, Uint8 channels, int frequency);
-	void generateWaveform(Uint8 *waveform, unsigned int len, int frequency, bool stereo);
+	void generateWaveform8(Uint8 *waveform, unsigned int len, int frequency, bool stereo);
+	void generateWaveform16(Uint8 *waveform, unsigned int len, int frequency, bool stereo);
 	void transintoStereoChannels(Uint8* waveform, unsigned int len);
 
 	short getBalance() { return m_balance; }
@@ -38,12 +51,13 @@ public:
 	void setFrequencyCorrection(int freq);
 	void enableHighQuality(bool value) { m_hq = value; }
 
+	void setFormat( Uint16 format );
 	void setupSound(unsigned short current_sound,
 					unsigned int sound_timer,
 					bool playing,
-					int waveState,
 					unsigned int freqtimer,
-					bool sound_forced);
+					bool sound_forced,
+					Uint16 format);
 
 	void setSoundSlotPtr(CSoundSlot	*pSoundSlot) { m_pSoundSlot = pSoundSlot;}
 
@@ -59,9 +73,15 @@ private:
     unsigned int m_desiredfreq;     	// current desired frequency in hz
     unsigned int m_changerate;      	// frequency in samples (calculated)
     unsigned int m_freqtimer;       	// time when to change waveform state
-    int m_waveState;                	// current position of the output waveform
+    Sint32 m_waveState;                	// current position of the output waveform
     short m_balance;					// This variable is used for stereo sound, and to calculate where the sound must be played!
     unsigned int m_freq_corr;				// used for correcting PC-Speaker sampling for different frequencies
+
+    Uint16 m_format;
+    Sint32 m_waveout;
+    Sint32 m_wavein;
+    Sint32 m_silence;
+    Sint32 m_volume;
 
     CSoundSlot	*m_pSoundSlot;			// Pointer to the Soundslots of CSound
 };

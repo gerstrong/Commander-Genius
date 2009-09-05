@@ -110,8 +110,10 @@ bool CSound::init(void)
   if(m_soundchannel) delete[] m_soundchannel; m_soundchannel = NULL;
   m_soundchannel = new CSoundChannel[m_mixing_channels];
 
-  for(unsigned short i=0 ; i < m_mixing_channels ; i++)
+  for(unsigned short i=0 ; i < m_mixing_channels ; i++) {
+	  m_soundchannel[i].setFormat(AudioSpec.format);
 	  m_soundchannel[i].setFrequencyCorrection(AudioSpec.freq);
+  }
 
   SDL_PauseAudio(0);
 
@@ -312,7 +314,7 @@ playsound: ;
 	  m_soundchannel[chnl].setBalance(balance);
 
   m_soundchannel[chnl].enableHighQuality(m_soundslot[snd].isHighQuality());
-  m_soundchannel[chnl].setupSound((unsigned short)snd, 0, true, WAVE_IN, 0, (mode==PLAY_FORCE) ? true : false );
+  m_soundchannel[chnl].setupSound((unsigned short)snd, 0, true, 0, (mode==PLAY_FORCE) ? true : false, AudioSpec.format );
 }
 
 bool CSound::loadSoundData(unsigned short Episode, const std::string& DataDirectory)
