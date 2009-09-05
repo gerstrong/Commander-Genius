@@ -38,7 +38,7 @@
 #define TANK2_TIME_BEFORE_FIRE_WHEN_SEE      100
 #define TANK2_TIME_BETWEEN_FIRE_CAUSE_LEVEL  400
 
-#define sprites (&g_pGfxEngine->Sprite[0])
+#define sprites g_pGfxEngine->Sprite[0]
 
 // reference to ../misc.cpp
 unsigned int rnd(void);

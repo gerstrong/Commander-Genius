@@ -66,7 +66,7 @@ unsigned long imgdatasize;
 	}
 
 	fread(*image, imgdatasize, 1, fp);
-
 	fclose(fp);
+
 	return 0;
 }

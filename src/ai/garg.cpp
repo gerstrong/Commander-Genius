@@ -43,9 +43,9 @@ unsigned int rnd(void);
 void garg_ai(int o, bool hardmode)
 {
 unsigned int i;
-Uint16 garg_width = g_pGfxEngine->Sprite[objects[o].sprite].getWidth();
-Uint16 garg_height = g_pGfxEngine->Sprite[objects[o].sprite].getHeight();
-Uint16 player_height = g_pGfxEngine->Sprite[0].getHeight();
+Uint16 garg_width = g_pGfxEngine->Sprite[objects[o].sprite]->getWidth();
+Uint16 garg_height = g_pGfxEngine->Sprite[objects[o].sprite]->getHeight();
+Uint16 player_height = g_pGfxEngine->Sprite[0]->getHeight();
 
    if (objects[o].needinit)
    {  // first time initilization

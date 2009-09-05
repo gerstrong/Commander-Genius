@@ -38,28 +38,27 @@ CEGALatch::CEGALatch( int planesize,
 	m_bitmaps = bitmaps;
 	m_bitmaplocation = bitmaplocation;
 
-	Bitmap = NULL;
-
 	RawData = NULL;
 }
 
 CEGALatch::~CEGALatch() {
-	if(Bitmap) delete [] Bitmap, Bitmap = NULL;
 	if(RawData) delete [] RawData, RawData = NULL;
 }
 
 bool CEGALatch::loadHead( char *data )
 {
-	data += m_bitmaptablelocation;
-	Bitmap = new st_Bitmap[m_bitmaps];
+	Uint16 height, width;
 
+	data += m_bitmaptablelocation;
+
+	g_pGfxEngine->createEmptyBitmaps(m_bitmaps);
 	for(int i=0 ; i<m_bitmaps ; i++)
 	{
-		memcpy(&(Bitmap[i].width),data+16*i,2);
-		memcpy(&(Bitmap[i].height),data+16*i+2,2);
-		memcpy(&(Bitmap[i].location),data+16*i+4,4);
-		memcpy(Bitmap[i].name,data+16*i+8,8);
-		Bitmap[i].width *= 8; // The width is always divided by eight
+		memcpy(&width,data+16*i,2);
+		memcpy(&height,data+16*i+2,2);
+		width *= 8; // The width is always divided by eight when read
+
+		g_pGfxEngine->Bitmap[i]->setDimensions(width,height);
 	}
 
 	return true;
@@ -68,7 +67,8 @@ bool CEGALatch::loadHead( char *data )
 bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
 {
 	char *RawData;
-    char *BitmapData; // TODO: Partial solution. This BitmapData must become member of this class!
+    CBitmap *bitmap;
+    Uint16 width, height;
     SDL_Surface *sfc;
 
 	FILE* latchfile = OpenGameFile(filename.c_str(),"rb");
@@ -111,8 +111,9 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
 							 0);
      // Load these graphics into the CFont Class of CGfxEngine
      char *offset;
-     g_pGfxEngine->Font.CreateSurface( g_pVideoDriver->MyPalette, SDL_SWSURFACE );
-     sfc = g_pGfxEngine->Font.getSDLSurface();
+     CFont *Font = g_pGfxEngine->createEmptyFontmap();
+     Font->CreateSurface( g_pVideoDriver->MyPalette, SDL_SWSURFACE );
+     sfc = Font->getSDLSurface();
      if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
      char *pixel = (char*) sfc->pixels;
      int c=0;
@@ -140,15 +141,15 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
          }
        }
      }
-     g_pGfxEngine->Font.generateSpecialTwirls();
-     g_pGfxEngine->Font.generateGlowFonts();
-     g_pGfxEngine->Font.generateInverseFonts();
-     g_pGfxEngine->Font.optimizeSurface();
-     if(SDL_MUSTLOCK(sfc))SDL_UnlockSurface(sfc);
+     Font->generateSpecialTwirls();
+     Font->generateGlowFonts();
+     Font->generateInverseFonts();
+     //Font->optimizeSurface();
+     if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
      delete Planes;
 
      // Load 32x32 Tiles
-     // TODO: Add a read function for 32x32 Tiles
+     // TODO: Add a read method for 32x32 Tiles
 
      // ** read the 16x16 tiles **
      Planes = new CPlanes(plane1 + m_tiles16location,
@@ -157,11 +158,14 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
                        plane4 + m_tiles16location,
                        0);
      Uint8 *u_offset;
-     g_pGfxEngine->Tilemap.CreateSurface( g_pVideoDriver->MyPalette, SDL_SWSURFACE );
-     sfc = g_pGfxEngine->Tilemap.getSDLSurface();
+     g_pGfxEngine->createEmptyTilemap();
+     CTilemap *Tilemap = g_pGfxEngine->Tilemap;
+     Tilemap->CreateSurface( g_pVideoDriver->MyPalette, SDL_SWSURFACE );
+     sfc = Tilemap->getSDLSurface();
      if(SDL_MUSTLOCK(sfc))	SDL_LockSurface(sfc);
      Uint8 *u_pixel = (Uint8*) sfc->pixels;
 
+     Uint8 tiledata[MAX_TILES+1][16][16];
      for(int p=0;p<4;p++)
      {
        for(int t=0;t<m_num16tiles;t++)
@@ -180,7 +184,7 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
            	   if( t>0 && TileProperty[t-1][BEHAVIOR] == 65534 )  // This is for masked tiles.
            	   {
            		   if(c==15)
-           			   *u_offset = 255;
+           			   *u_offset = COLORKEY;
            		   else
            			   *u_offset = *(u_pixel + 16*13*16*((t-1)/13) + 16*((t-1)%13)  + 16*13*y + x);
            	   }
@@ -192,23 +196,11 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
        }
      }
      if(SDL_MUSTLOCK(sfc))	SDL_UnlockSurface(sfc);
-     //g_pGfxEngine->Tilemap.optimizeSurface();
      delete Planes;
 
-     // Load Bitmaps
-     // figure out how much RAM we'll need to read all 4 planes of
-     // latch data into memory.
-     BitmapBufferRAMSize = 0;
-     for(int i=0;i<m_bitmaps;i++)
-     {
-       // keep a tally of the bitmap sizes so we'll know how much RAM we have
-       // to allocate for all of the bitmaps once they're decoded
-       BitmapBufferRAMSize += (Bitmap[i].width *
-							   Bitmap[i].height);
-     }
-     BitmapBufferRAMSize++;
-
-     BitmapData = new char[BitmapBufferRAMSize];
+     ////////////////////
+     /// Load Bitmaps ///
+     ////////////////////
 
      // set up the getbit() function
      Planes = new CPlanes(plane1 + m_bitmaplocation,
@@ -221,51 +213,43 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
      // loaded into one continuous stream of image data, with the bitmaps[]
      // array giving pointers to where each bitmap starts within the stream.
 
-
-     const char defbitmapname[][9] = { "TITLE", "IDLOGO", "F1HELP", "HIGHSCOR",
+     // In case there is a strange mod or defect episode, put some names to them!
+     const char names[][9] = { "TITLE", "IDLOGO", "F1HELP", "HIGHSCOR",
    		  "NAME", "SCORE", "PARTS", "GAMEOVER", "AN", "PRESENT", "APOGEE", "KEENSHIP", "WINDON",
-   		  "WINDOFF", "ONEMOMEN", "OFAN", "PRODUCT", "IDSOFT"};
+   		  "WINDOFF", "ONEMOMEN", "OFAN", "PRODUCT", "IDSOFT" };
 
-     // In case there is a strange mod or defect episode, put some names to it!
-
-     char *bmdataptr;
+     for(int b=0 ; b<m_bitmaps ; b++)
+     {
+    	 bitmap = g_pGfxEngine->Bitmap[b];
+    	 bitmap->setName(names[b]);
+    	 bitmap->createSurface(g_pVideoDriver->getScrollSurface()->flags, g_pVideoDriver->MyPalette);
+     }
 
      for(int p=0 ; p<4 ; p++)
      {
-       // this points to the location that we're currently
-       // decoding bitmap data to
-       bmdataptr = &BitmapData[0];
-
        for(int b=0 ; b<m_bitmaps ; b++)
        {
-         bitmaps[b].xsize = Bitmap[b].width;
-         bitmaps[b].ysize = Bitmap[b].height;
-         if( Bitmap[b].name[0] == 0 && b<18 )
-        	 strcpy(bitmaps[b].name,defbitmapname[b]);
-         else
-        	 memcpy(bitmaps[b].name, Bitmap[b].name, 8);
-         bitmaps[b].name[8] = 0;  //ensure null-terminated
+           // this points to the location that we're currently
+           // decoding bitmap data to
+    	   bitmap = g_pGfxEngine->Bitmap[b];
 
-         bitmaps[b].bmptr =  (unsigned char*) bmdataptr;
-
-         for(int y=0 ; y<bitmaps[b].ysize ; y++)
-         {
-           for(int x=0 ; x<bitmaps[b].xsize ; x++)
-           {
-             if (p==0)
-             {
-               c = 0;
-             }
-             else
-             {
-               c = *bmdataptr;
-             }
-             c |= (Planes->getbit(RawData, p) << p);
-             if (p==3 && c==0) c = 16;
-             *bmdataptr = c;
-             bmdataptr++;
-           }
-         }
+    	   sfc= bitmap->getSDLSurface();
+    	   if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
+    	   Uint8* pixel = (Uint8*) sfc->pixels;
+    	   width = bitmap->getWidth(); height = bitmap->getHeight();
+    	   // Now read the raw data
+    	   for(int y=0 ; y<height ; y++)
+    	   {
+			   for(int x=0 ; x<width ; x++)
+			   {
+				 if (p==0) c = 0;
+				 else c = pixel[y*width + x];
+				 c |= (Planes->getbit(RawData, p) << p);
+				 if (p==3 && c==0) c = 16;
+				 pixel[y*width + x] = c;
+			   }
+    	   }
+    	   if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
        }
      }
      delete Planes;

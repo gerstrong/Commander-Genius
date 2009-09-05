@@ -28,5 +28,5 @@ CDlgOptionText::~CDlgOptionText() {
 
 void CDlgOptionText::draw(SDL_Surface *Textsurface, Uint16 x, Uint16 y, Uint8 highlight)
 {
-	g_pGfxEngine->Font.drawFont(Textsurface, m_text, x, y, highlight);
+	g_pGfxEngine->Font->drawFont(Textsurface, m_text, x, y, highlight);
 }

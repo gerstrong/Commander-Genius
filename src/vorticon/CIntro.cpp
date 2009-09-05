@@ -12,6 +12,7 @@
 #include "../include/menu.h"
 #include "../include/gamedo.h"
 #include "../common/palette.h"
+#include "../sdl/CVideoDriver.h"
 
 CIntro::CIntro() {
 }
@@ -21,11 +22,8 @@ CIntro::~CIntro() {
 
 void CIntro::Render(stCloneKeenPlus *pCKP)
 {
-	// TODO: Now that the new intro function works, the old one must become
-	// a credits class
-
-	int bmnum[7];
-	int mid[7];
+	CBitmap* bm[6];
+	int mid[6];
 	int timer = 0;
 	int introtime = 5000;  // Total time to elapse until Main menu opens
 	int scrolly = 200;
@@ -35,16 +33,15 @@ void CIntro::Render(stCloneKeenPlus *pCKP)
 	showmapatpos(90, 104<<4, 32, pCKP);
 
 	// Load the Title Bitmap
-	bmnum[0] = g_pGraphics->getBitmapNumberFromName("AN");
-	bmnum[1] = g_pGraphics->getBitmapNumberFromName("APOGEE");
-	bmnum[2] = g_pGraphics->getBitmapNumberFromName("PRESENT");
-	bmnum[3] = g_pGraphics->getBitmapNumberFromName("OFAN");
-	bmnum[4] = g_pGraphics->getBitmapNumberFromName("IDSOFT");
-	bmnum[5] = g_pGraphics->getBitmapNumberFromName("SOFTWARE");
-	bmnum[6] = g_pGraphics->getBitmapNumberFromName("PRODUCT");
+	bm[0] = g_pGfxEngine->getBitmap("AN");
+	bm[1] = g_pGfxEngine->getBitmap("APOGEE");
+	bm[2] = g_pGfxEngine->getBitmap("PRESENT");
+	bm[3] = g_pGfxEngine->getBitmap("OFAN");
+	bm[4] = g_pGfxEngine->getBitmap("IDSOFT");
+	bm[5] = g_pGfxEngine->getBitmap("PRODUCT");
 
-	for(int j=0 ; j<7 ; j++)
-		mid[j] = (320/2)-(bitmaps[bmnum[j]].xsize/2);
+	for(int j=0 ; j<6 ; j++)
+		mid[j] = (320/2)-(bm[j]->getWidth()/2);
 
 	g_pInput->flushAll();
 
@@ -52,7 +49,7 @@ void CIntro::Render(stCloneKeenPlus *pCKP)
 	{
 		// do fades
 		gamedo_fades();
-		g_pGraphics->drawBitmap2FG(mid[1], scrolly+9, bmnum[1]);
+		bm[1]->draw( g_pVideoDriver->FGLayerSurface, mid[1], scrolly+9);
 
 		if(fade_in_progress())
 			continue;
@@ -64,16 +61,15 @@ void CIntro::Render(stCloneKeenPlus *pCKP)
 			if(scrolly>35)	scrolly--;
 		}
 
-		g_pGraphics->drawBitmap2FG(mid[1], scrolly+9, bmnum[1]);
+		bm[1]->draw( g_pVideoDriver->FGLayerSurface, mid[1], scrolly+9);
 
 		if(scrolly<=35) // Show this, when scrolling is finished
 		{
-			g_pGraphics->drawBitmap2FG(mid[0], scrolly, bmnum[0]);
-			g_pGraphics->drawBitmap2FG(mid[2], scrolly+43, bmnum[2]);
-			g_pGraphics->drawBitmap2FG(mid[3], scrolly+56, bmnum[3]);
-			g_pGraphics->drawBitmap2FG(mid[4], scrolly+77, bmnum[4]);
-			g_pGraphics->drawBitmap2FG(mid[5], scrolly+87, bmnum[5]);
-			g_pGraphics->drawBitmap2FG(mid[6], scrolly+120, bmnum[6]);
+			bm[0]->draw( g_pVideoDriver->FGLayerSurface, mid[0], scrolly);
+			bm[2]->draw( g_pVideoDriver->FGLayerSurface, mid[2], scrolly+43);
+			bm[3]->draw( g_pVideoDriver->FGLayerSurface, mid[3], scrolly+56);
+			bm[4]->draw( g_pVideoDriver->FGLayerSurface, mid[4], scrolly+77);
+			bm[5]->draw( g_pVideoDriver->FGLayerSurface, mid[5], scrolly+120);
 		}
 
 		gamedo_AnimatedTiles();
@@ -93,7 +89,7 @@ void CIntro::Render(stCloneKeenPlus *pCKP)
 		// blit the scrollbuffer to the display
 		gamedo_frameskipping_blitonly();
 
-	} while(!(cancel /*&& fade.mode == FADE_COMPLETE*/));
+	} while(!cancel);
 
 
 }

@@ -34,14 +34,6 @@ private:
 	int m_num_Latches;
 	int m_latchplanesize;
 	long m_bitmaptablelocation;
-
-	struct st_Bitmap{
-		short height;
-		short width;
-		long location;
-		char name[8];
-	}*Bitmap;
-
 	long m_latchstart;
 	short m_fonttiles;
 	long m_fontlocation;
@@ -51,8 +43,6 @@ private:
 	long m_tiles16location;
 	short m_bitmaps;
 	long m_bitmaplocation;
-
-	unsigned long BitmapBufferRAMSize;
 };
 
 #endif /* CEGALATCH_H_ */

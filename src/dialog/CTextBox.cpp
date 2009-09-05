@@ -71,7 +71,7 @@ void CTextBox::draw()
 	// Draw Routine for the Textbox
 	for(unsigned int i=0 ; i<m_Textline.size() ; i++ )
 	{
-		g_pGfxEngine->Font.drawFont(m_surface, m_Textline[i], m_x, m_y+i*m_fontheight, 0); // 0 is blank colour
+		g_pGfxEngine->Font->drawFont(m_surface, m_Textline[i], m_x, m_y+i*m_fontheight, 0); // 0 is blank colour
 		if( i*m_fontheight > (unsigned int) m_h )
 			break;
 	}

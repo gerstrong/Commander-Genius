@@ -35,7 +35,7 @@ void butler_ai(int o, bool hardmode)
 {
 char not_about_to_fall;
 Uint16 butler_height, butler_width;
-CSprite *sprite = &g_pGfxEngine->Sprite[BUTLER_WALK_LEFT_FRAME];
+CSprite *sprite = g_pGfxEngine->Sprite[BUTLER_WALK_LEFT_FRAME];
 
    if (objects[o].needinit)
    {

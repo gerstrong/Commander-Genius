@@ -438,10 +438,10 @@ unsigned int i;
   // reset player walk frame widths. Lame!
   for(i=0;i<numplayers;i++)
   {
-    g_pGfxEngine->Sprite[playerbaseframes[i]+0].setWidth(PLAYERSPRITE_WIDTH);
-    g_pGfxEngine->Sprite[playerbaseframes[i]+1].setWidth(PLAYERSPRITE_WIDTH);
-    g_pGfxEngine->Sprite[playerbaseframes[i]+2].setWidth(PLAYERSPRITE_WIDTH);
-    g_pGfxEngine->Sprite[playerbaseframes[i]+3].setWidth(PLAYERSPRITE_WIDTH);
+    g_pGfxEngine->Sprite[playerbaseframes[i]+0]->setWidth(PLAYERSPRITE_WIDTH);
+    g_pGfxEngine->Sprite[playerbaseframes[i]+1]->setWidth(PLAYERSPRITE_WIDTH);
+    g_pGfxEngine->Sprite[playerbaseframes[i]+2]->setWidth(PLAYERSPRITE_WIDTH);
+    g_pGfxEngine->Sprite[playerbaseframes[i]+3]->setWidth(PLAYERSPRITE_WIDTH);
   }
 
   // set gun/ice cannon fire freq
@@ -456,11 +456,11 @@ unsigned int i;
 
   // reset the ysize attribute of all doors
 
-  CSprite *sprites = &g_pGfxEngine->Sprite[0];
-  sprites[DOOR_YELLOW_SPRITE].setHeight(32);
-  sprites[DOOR_RED_SPRITE].setHeight(32);
-  sprites[DOOR_GREEN_SPRITE].setHeight(32);
-  sprites[DOOR_BLUE_SPRITE].setHeight(32);
+  CSprite **sprites = &g_pGfxEngine->Sprite[0];
+  sprites[DOOR_YELLOW_SPRITE]->setHeight(32);
+  sprites[DOOR_RED_SPRITE]->setHeight(32);
+  sprites[DOOR_GREEN_SPRITE]->setHeight(32);
+  sprites[DOOR_BLUE_SPRITE]->setHeight(32);
 
   p_levelcontrol->level_done_timer = 0;
   p_levelcontrol->gameovermode = false;
@@ -802,8 +802,8 @@ unsigned int rect1x1, rect1y1, rect1x2, rect1y2;
 unsigned int rect2x1, rect2y1, rect2x2, rect2y2;
 
   // get the sprites used by the two objects
-  spr1 = &g_pGfxEngine->Sprite[object1];
-  spr2 = &g_pGfxEngine->Sprite[object2];
+  spr1 = g_pGfxEngine->Sprite[object1];
+  spr2 = g_pGfxEngine->Sprite[object2];
 
   // get the bounding rectangle of the first object
   rect1x1 = objects[object1].x + spr1->m_bboxX1;
@@ -917,7 +917,7 @@ char checkobjsolid(unsigned int x, unsigned int y, unsigned int cp)
 
    for(o=1;o<highest_objslot;o++)
    {
-	   sprite = &g_pGfxEngine->Sprite[objects[o].sprite];
+	   sprite = g_pGfxEngine->Sprite[objects[o].sprite];
 	   if (objects[o].exists && objects[o].cansupportplayer[cp])
 	   {
         if (x >= objects[o].x+sprite->m_bboxX1)
@@ -1030,8 +1030,7 @@ int t;
 void initsprites(stCloneKeenPlus *pCKP, int s)
 {
 int i;
-
-	CSprite *sprite = &g_pGfxEngine->Sprite[0];
+CSprite** sprite = &g_pGfxEngine->Sprite[0];
 
 	for(i=0 ; i < numtiles ; i++ )
 	{
@@ -1050,7 +1049,7 @@ int i;
 
     // create BLANKSPRITE
     BlankSprite = s;
-    sprite[BlankSprite].setSize(0, 0);
+    sprite[BlankSprite]->setSize(0, 0);
 
     // TODO: Demo-Sprite must be added. This time loaded from one TGA File! The TGA is already there!
 
@@ -1059,13 +1058,13 @@ int i;
     playerbaseframes[1] = s;
     for(i=0;i<48;i++)
     {
-      sprite[i].copy( &sprite[s], g_pVideoDriver->MyPalette );
-      sprite[s].replaceSpriteColor( 13, 10 ,0 );
-      sprite[s].replaceSpriteColor( 5, 2 ,0 );
-      sprite[s].replaceSpriteColor( 9, 14 ,8 );
-      sprite[s].replaceSpriteColor( 1, 6 ,8 );
-      sprite[s].replaceSpriteColor( 12, 11 ,0 );
-      sprite[s].replaceSpriteColor( 4, 3 ,0 );
+      sprite[i]->copy( sprite[s], g_pVideoDriver->MyPalette );
+      sprite[s]->replaceSpriteColor( 13, 10 ,0 );
+      sprite[s]->replaceSpriteColor( 5, 2 ,0 );
+      sprite[s]->replaceSpriteColor( 9, 14 ,8 );
+      sprite[s]->replaceSpriteColor( 1, 6 ,8 );
+      sprite[s]->replaceSpriteColor( 12, 11 ,0 );
+      sprite[s]->replaceSpriteColor( 4, 3 ,0 );
       s++;
     }
 

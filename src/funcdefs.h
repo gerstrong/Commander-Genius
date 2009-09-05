@@ -87,7 +87,6 @@ void statusbox(void);
 
 int savegameiswm(char *fname);
 void usage(void);
-void radar(void);
 void SetAllCanSupportPlayer(int o, int state);
 void AllPlayersInvisible(void);
 

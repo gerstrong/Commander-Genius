@@ -86,7 +86,7 @@ void eseq_showmsg(const std::string& text, int boxleft, int boxtop,
 	if(amountshown < tempbuf.size())
 	  tempbuf.erase(amountshown);
 	g_pGfxEngine->drawDialogBox(sfc, boxleft,boxtop,boxwidth,boxheight);
-	g_pGfxEngine->Font.drawFont(sfc, tempbuf, (boxleft+1)*8, (boxtop+1+textline)*8);
+	g_pGfxEngine->Font->drawFont(sfc, tempbuf, (boxleft+1)*8, (boxtop+1+textline)*8);
 
 	gamedo_render_eraseobjects();
 

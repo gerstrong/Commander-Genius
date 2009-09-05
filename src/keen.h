@@ -119,16 +119,6 @@ struct stMap
  bool firsttime;  // used when generating multiplayer positions on world map
 };
 
-class CBitmap
-{
-public:
- int xsize;
- int ysize;
- unsigned char *bmptr;
- char name[9];
-
- CBitmap(){ bmptr=NULL; }
-};
 
 struct SDL_Surface;
 

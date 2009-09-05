@@ -111,7 +111,7 @@ void COrderingInfo::Render(stCloneKeenPlus *pCKP)
 
 		for(int i=0 ; i<m_numberoflines ; i++)
 		{
-			g_pGfxEngine->Font.drawFont(m_Surface, m_Textline[i], m_Text_Coordinate[i], 8*(i+m_starty), true);
+			g_pGfxEngine->Font->drawFont(m_Surface, m_Textline[i], m_Text_Coordinate[i], 8*(i+m_starty), true);
 		}
 
 		if( g_pInput->getPressedAnyCommand() )

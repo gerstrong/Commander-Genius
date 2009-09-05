@@ -10,7 +10,6 @@
 #include "CTimer.h"
 
 #include "../keen.h"
-#include "video/colourconvert.h"
 #include "video/colourtable.h"
 #include "../graphics/CGfxEngine.h"
 #include "../scale2x/scalebit.h"
@@ -347,7 +346,7 @@ bool CVideoDriver::createSurfaces(void)
 
 	stretch_blit_yoff = 0;
 
-	ScrollSurface = SDL_CreateRGBSurfaceFrom(g_pGraphics->getScrollbuffer(), 512, 512, 8, 512, screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
+	ScrollSurface = SDL_CreateRGBSurface( Mode, 512, 512, 8,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
 	SDL_SetColorKey(ScrollSurface, SDL_SRCCOLORKEY, COLOUR_MASK);
 	if (!ScrollSurface)
 	{
@@ -355,7 +354,7 @@ bool CVideoDriver::createSurfaces(void)
 	  return false;
 	}
 
-	FGLayerSurface = SDL_CreateRGBSurface(Mode,320, 200, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
+	FGLayerSurface = SDL_CreateRGBSurface( Mode, 320, 200, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
 	if (!FGLayerSurface)
 	{
 		g_pLogFile->textOut(RED,"VideoDriver: Couldn't create FGLayerSurface!<br>");
@@ -523,7 +522,7 @@ char tempbuf[80];
 #else
      sprintf(tempbuf, "FPS: %03d", g_pTimer->getFramesPerSec() );
 #endif
-     g_pGfxEngine->Font.drawFont( FGLayerSurface, tempbuf, 320-3-(strlen( (char *) tempbuf)<<3), 3, 1);
+     g_pGfxEngine->Font->drawFont( FGLayerSurface, tempbuf, 320-3-(strlen( (char *) tempbuf)<<3), 3, 1);
    }
 
    update_screen();
@@ -744,39 +743,6 @@ void CVideoDriver::scale4xnofilter(char *dest, char *src, short bbp)
 	}
 }
 
-// functions to directly set and retrieve pixels from the VGA display
-void CVideoDriver::setpixel(unsigned int x, unsigned int y, unsigned char c)
-{
-	if( x >= GAME_STD_WIDTH || y >= GAME_STD_HEIGHT ) // out of Bonds!!!
-		return;
-
-    if(BlitSurface->format->BitsPerPixel == 16)
-    {
-    	Uint16 *ubuff16;
-        ubuff16 = (Uint16*) FGLayerSurface->pixels;
-    	ubuff16 += (y * 320) + x;
-    	*ubuff16 = convert4to16BPPcolor(c, BlitSurface);
-    }
-    else if(BlitSurface->format->BitsPerPixel == 32)
-    {
-    	Uint32 *ubuff32;
-        ubuff32 = (Uint32*) FGLayerSurface->pixels;
-    	ubuff32 += (y * 320) + x;
-    	*ubuff32 = convert4to32BPPcolor(c, BlitSurface);
-    }
-    else
-    {
-    	Uint8 *ubuff8;
-        ubuff8 = (Uint8*) FGLayerSurface->pixels;
-    	ubuff8 += (y * 320) + x;
-    	*ubuff8 = (Uint8) c;
-    }
-}
-unsigned char CVideoDriver::getpixel(int x, int y)
-{
-	return 15;
-}
-
 // "Console" here refers to the capability to pop up in-game messages
 // in the upper-left corner during game play ala Doom.
 void CVideoDriver::drawConsoleMessages(void)
@@ -796,7 +762,7 @@ int y;
  y = CONSOLE_MESSAGE_Y;
  for(i=0;i<NumConsoleMessages;i++)
  {
-	 g_pGfxEngine->Font.drawFont( FGLayerSurface, cmsg[i].msg, CONSOLE_MESSAGE_X, y, 1);
+	 g_pGfxEngine->Font->drawFont( FGLayerSurface, cmsg[i].msg, CONSOLE_MESSAGE_X, y, 1);
     y += CONSOLE_MESSAGE_SPACING;
  }
 }

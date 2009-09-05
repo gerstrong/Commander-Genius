@@ -128,12 +128,12 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
      g_pGfxEngine->createEmptySprites(MAX_SPRITES+1);
      for(int s=0 ; s<m_numsprites ; s++)
      {
-    	 g_pGfxEngine->Sprite[s].setSize( Sprite[s].width, Sprite[s].height );
-    	 g_pGfxEngine->Sprite[s].setBouncingBoxCoordinates( (Sprite[s].hitbox_l << CSF),
+    	 g_pGfxEngine->Sprite[s]->setSize( Sprite[s].width, Sprite[s].height );
+    	 g_pGfxEngine->Sprite[s]->setBouncingBoxCoordinates( (Sprite[s].hitbox_l << CSF),
 															(Sprite[s].hitbox_u << CSF),
 															(Sprite[s].hitbox_r << CSF),
 															(Sprite[s].hitbox_b << CSF) );
-    	 g_pGfxEngine->Sprite[s].createSurface( g_pVideoDriver->SpriteLayerSurface->flags,
+    	 g_pGfxEngine->Sprite[s]->createSurface( g_pVideoDriver->SpriteLayerSurface->flags,
 											g_pVideoDriver->MyPalette );
      }
 
@@ -142,7 +142,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
      {
        for(int s=0 ; s<m_numsprites ; s++)
        {
-      	 sfc = g_pGfxEngine->Sprite[s].getSDLSurface();
+      	 sfc = g_pGfxEngine->Sprite[s]->getSDLSurface();
       	 if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
       	 pixel = (Uint8*) sfc->pixels;
 
@@ -168,7 +168,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
      // use white on black masks whereas keen uses black on white.
      for(int s=0 ; s<m_numsprites ; s++)
      {
-       sfc = g_pGfxEngine->Sprite[s].getSDLSurface();
+       sfc = g_pGfxEngine->Sprite[s]->getSDLSurface();
        if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
        pixel = (Uint8*) sfc->pixels;
 
@@ -189,10 +189,10 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
      if(RawData){ delete[] RawData; RawData = NULL;}
 
      // Now create special sprites for some neat effects!
-     DeriveSpecialSprites( &g_pGfxEngine->Tilemap, &g_pGfxEngine->Sprite[0] );
+     DeriveSpecialSprites( g_pGfxEngine->Tilemap, &g_pGfxEngine->Sprite[0] );
 
      // Now load the special TGA Sprites if some are available
-     LoadSpecialSprites( &g_pGfxEngine->Sprite[0] );
+     LoadSpecialSprites( g_pGfxEngine->Sprite );
 	return true;
 }
 
@@ -245,55 +245,58 @@ Uint8* pixel;
 				pixel[y*w + x] = COLORKEY;
 		}
 	}
+	if(SDL_MUSTLOCK(sfc))	SDL_UnlockSurface(sfc);
 
 	sprite->m_bboxX1=0;
 	sprite->m_bboxY1=0;
 	sprite->m_bboxX2=sprite->getWidth();
 	sprite->m_bboxY2=sprite->getHeight();
 
+	delete [] base;
+
 	return 0;
 }
 
 // load special clonekeen-specific sprites from the .raw files
 // Code by Caitlin Shaw
-void CEGASprit::LoadSpecialSprites( CSprite *sprite )
+void CEGASprit::LoadSpecialSprites( std::vector<CSprite*> &sprite )
 {
-	LoadTGASprite("100.tga", &sprite[PT100_SPRITE] );
-	LoadTGASprite("200.tga", &sprite[PT200_SPRITE] );
-	LoadTGASprite("500.tga", &sprite[PT500_SPRITE] );
-	LoadTGASprite("1000.tga", &sprite[PT1000_SPRITE] );
-	LoadTGASprite("5000.tga", &sprite[PT5000_SPRITE] );
-	LoadTGASprite("demobox.tga", &sprite[DEMOBOX_SPRITE] );
-	LoadTGASprite("arrowlr.tga", &sprite[ARROWLR_SPRITE] );
-	LoadTGASprite("arrowud.tga", &sprite[ARROWUD_SPRITE] );
-	LoadTGASprite("arrowul.tga", &sprite[ARROWUL_SPRITE] );
-	LoadTGASprite("arrowur.tga", &sprite[ARROWUR_SPRITE] );
-	LoadTGASprite("arrowu.tga", &sprite[ARROWU_SPRITE] );
-	LoadTGASprite("arrowd.tga", &sprite[ARROWD_SPRITE] );
+	LoadTGASprite("100.tga", sprite[PT100_SPRITE] );
+	LoadTGASprite("200.tga", sprite[PT200_SPRITE] );
+	LoadTGASprite("500.tga", sprite[PT500_SPRITE] );
+	LoadTGASprite("1000.tga", sprite[PT1000_SPRITE] );
+	LoadTGASprite("5000.tga", sprite[PT5000_SPRITE] );
+	LoadTGASprite("demobox.tga", sprite[DEMOBOX_SPRITE] );
+	LoadTGASprite("arrowlr.tga", sprite[ARROWLR_SPRITE] );
+	LoadTGASprite("arrowud.tga", sprite[ARROWUD_SPRITE] );
+	LoadTGASprite("arrowul.tga", sprite[ARROWUL_SPRITE] );
+	LoadTGASprite("arrowur.tga", sprite[ARROWUR_SPRITE] );
+	LoadTGASprite("arrowu.tga", sprite[ARROWU_SPRITE] );
+	LoadTGASprite("arrowd.tga", sprite[ARROWD_SPRITE] );
 }
 
 // This function has the task to make some items-tiles
 // be painted into yellow, so they look nice, when they are
 // collected
-void CEGASprit::DeriveSpecialSprites( CTilemap *tilemap, CSprite *sprite )
+void CEGASprit::DeriveSpecialSprites( CTilemap *tilemap, CSprite **sprite )
 {
 	Uint16 t;
 	for( t=0 ; t<numtiles ; t++)
 	{
 		// The Gun!
 		if( TileProperty[t][BEHAVIOR]==15 )
-			CreateYellowSpriteofTile( tilemap, t, &sprite[GUNUP_SPRITE] );
+			CreateYellowSpriteofTile( tilemap, t, sprite[GUNUP_SPRITE] );
 
 		// Keycards
 		if( TileProperty[t][BEHAVIOR]>=18 && TileProperty[t][BEHAVIOR]<=21 )
-			CreateYellowSpriteofTile( tilemap, t, &sprite[PTCARDB_SPRITE+TileProperty[t][BEHAVIOR]-18]);
+			CreateYellowSpriteofTile( tilemap, t, sprite[PTCARDB_SPRITE+TileProperty[t][BEHAVIOR]-18]);
 
 		// Single Bullet in Ep3
 		if( TileProperty[t][BEHAVIOR]==28 )
-			CreateYellowSpriteofTile( tilemap, t, &sprite[SHOTUP_SPRITE] );
+			CreateYellowSpriteofTile( tilemap, t, sprite[SHOTUP_SPRITE] );
 
 		if( TileProperty[t][BEHAVIOR]==27 )
-			CreateYellowSpriteofTile( tilemap, t, &sprite[ANKHUP_SPRITE] );
+			CreateYellowSpriteofTile( tilemap, t, sprite[ANKHUP_SPRITE] );
 	}
 }
 

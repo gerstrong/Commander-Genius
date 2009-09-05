@@ -21,6 +21,7 @@
 #include "../CGraphics.h"
 #include "../StringUtils.h"
 #include "../FindFile.h"
+#include "../sdl/CVideoDriver.h"
 
 #define HIGHSCORETABLE_X			1344
 #define HIGHSCORETABLE_Y			32
@@ -67,6 +68,7 @@ char CHighScores::showHighScore(void)
 	int bName;
 	int bScore;
 	int bExtra;
+	CBitmap *bitmaps = g_pGfxEngine->Bitmap[0];
 
 	loadHighScoreTable();
 
@@ -86,28 +88,29 @@ char CHighScores::showHighScore(void)
 	}
 
 	// Get the Bitmap IDs and set the correct positions on screen
-    bTitle = g_pGraphics->getBitmapNumberFromName("HIGHSCOR");
-    bName = g_pGraphics->getBitmapNumberFromName("NAME");
-    bScore = g_pGraphics->getBitmapNumberFromName("SCORE");
+    bTitle = g_pGfxEngine->getBitmapID("HIGHSCOR");
+    bName = g_pGfxEngine->getBitmapID("NAME");
+    bScore = g_pGfxEngine->getBitmapID("SCORE");
 
     if(Episode == 2)
-    	bExtra = g_pGraphics->getBitmapNumberFromName("SAVED");
+    	bExtra = g_pGfxEngine->getBitmapID("SAVED");
     else
-    	bExtra = g_pGraphics->getBitmapNumberFromName("PARTS");
+    	bExtra = g_pGfxEngine->getBitmapID("PARTS");
 
-    x1 = 160-(bitmaps[bTitle].xsize/2);
+    x1 = 160-(bitmaps[bTitle].getWidth()/2);
     y1 = 8;    x2 = 40;
-    y2 = 42;    x3 = 178-(bitmaps[bScore].xsize/2);
+    y2 = 42;    x3 = 178-(bitmaps[bScore].getWidth()/2);
     x4 = 230;
 
     // They are blit once.
-    g_pGraphics->drawBitmap(x1, y1, bTitle);
-    g_pGraphics->drawBitmap(x2, y2, bName);
-    g_pGraphics->drawBitmap(x3, y2, bScore);
+    bitmaps[bTitle].draw( g_pVideoDriver->getScrollSurface(), x1, y1);
+    bitmaps[bName].draw( g_pVideoDriver->getScrollSurface(), x2, y2);
+    bitmaps[bScore].draw( g_pVideoDriver->getScrollSurface(), x3, y2);
+
     if(Episode == 2)
-    	g_pGraphics->drawBitmap(x4, y2-8, bExtra);
+		bitmaps[bExtra].draw( g_pVideoDriver->getScrollSurface(), x4, y2-8);
     else
-    	g_pGraphics->drawBitmap(x4, y2, bExtra);
+		bitmaps[bExtra].draw( g_pVideoDriver->getScrollSurface(), x4, y2);
 
 	// This cycle only serves as a key which must be pressed for now
 	do
@@ -115,8 +118,8 @@ char CHighScores::showHighScore(void)
 		// Print the labels
 		for( i=0 ; i<7 ; i++ )
 		{
-			g_pGfxEngine->Font.drawFont(m_sfc, Name[i],40,64+(i<<4), LETTER_TYPE_RED);
-			g_pGfxEngine->Font.drawFont(m_sfc, Score[i],200-(strlen(Score[i])<<3),64+(i<<4), LETTER_TYPE_RED);
+			g_pGfxEngine->Font->drawFont(m_sfc, Name[i],40,64+(i<<4), LETTER_TYPE_RED);
+			g_pGfxEngine->Font->drawFont(m_sfc, Score[i],200-(strlen(Score[i])<<3),64+(i<<4), LETTER_TYPE_RED);
 		}
 
 		// Here it must be split up into Episodes 1, 2 and 3.
@@ -126,19 +129,19 @@ char CHighScores::showHighScore(void)
 			for( i=0 ; i<7 ; i++ )
 			{
 				if(Extra[i][0])
-					g_pGfxEngine->Tilemap.drawTile(m_sfc, 32,90+(i<<4),ItemTiles[0]);
+					g_pGfxEngine->Tilemap->drawTile(m_sfc, 32,90+(i<<4),ItemTiles[0]);
 				if(Extra[i][1])
-					g_pGfxEngine->Tilemap.drawTile(m_sfc, 48,90+(i<<4),ItemTiles[1]);
+					g_pGfxEngine->Tilemap->drawTile(m_sfc, 48,90+(i<<4),ItemTiles[1]);
 				if(Extra[i][2])
-					g_pGfxEngine->Tilemap.drawTile(m_sfc, 64,90+(i<<4),ItemTiles[2]);
+					g_pGfxEngine->Tilemap->drawTile(m_sfc, 64,90+(i<<4),ItemTiles[2]);
 				if(Extra[i][3])
-					g_pGfxEngine->Tilemap.drawTile(m_sfc, 80,90+(i<<4),ItemTiles[3]);
+					g_pGfxEngine->Tilemap->drawTile(m_sfc, 80,90+(i<<4),ItemTiles[3]);
 			}
 		}
 		else if(pCKP->Control.levelcontrol.episode == 2)
 		{
 			for( i=0 ; i<7 ; i++ )
-				g_pGfxEngine->Font.drawFont(m_sfc, itoa(Cities[i]) ,250,64+(i<<4), LETTER_TYPE_RED);
+				g_pGfxEngine->Font->drawFont(m_sfc, itoa(Cities[i]) ,250,64+(i<<4), LETTER_TYPE_RED);
 		}
 
 		gamedo_AnimatedTiles();
@@ -165,6 +168,7 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 	int bName;
 	int bScore;
 	int bExtra;
+	CBitmap *bitmaps = g_pGfxEngine->Bitmap[0];
 
 	loadHighScoreTable();
 
@@ -214,8 +218,8 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 
 	for( i=0 ; i<7 ; i++ )
 	{
-		g_pGfxEngine->Font.drawFont(m_sfc, Name[i], 40,64+(i<<4), LETTER_TYPE_RED);
-		g_pGfxEngine->Font.drawFont(m_sfc, Score[i], 200-(strlen(Score[i])<<3),64+(i<<4), LETTER_TYPE_RED);
+		g_pGfxEngine->Font->drawFont(m_sfc, Name[i], 40,64+(i<<4), LETTER_TYPE_RED);
+		g_pGfxEngine->Font->drawFont(m_sfc, Score[i], 200-(strlen(Score[i])<<3),64+(i<<4), LETTER_TYPE_RED);
 	}
 
 	if(pCKP->Control.levelcontrol.episode == 1)
@@ -235,34 +239,34 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 	else if(pCKP->Control.levelcontrol.episode == 2)
 	{
 		for( i=0 ; i<7 ; i++ )
-			g_pGfxEngine->Font.drawFont(m_sfc, itoa(Cities[i]), 250, 64+(i<<4), LETTER_TYPE_RED);
+			g_pGfxEngine->Font->drawFont(m_sfc, itoa(Cities[i]), 250, 64+(i<<4), LETTER_TYPE_RED);
 	}
 
 	// Get the Bitmap IDs and set the correct positions on screen
-    bTitle = g_pGraphics->getBitmapNumberFromName("HIGHSCOR");
-    bName = g_pGraphics->getBitmapNumberFromName("NAME");
-    bScore = g_pGraphics->getBitmapNumberFromName("SCORE");
+    bTitle = g_pGfxEngine->getBitmapID("HIGHSCOR");
+    bName = g_pGfxEngine->getBitmapID("NAME");
+    bScore = g_pGfxEngine->getBitmapID("SCORE");
 
     if(Episode == 2)
-    	bExtra = g_pGraphics->getBitmapNumberFromName("SAVED");
+    	bExtra = g_pGfxEngine->getBitmapID("SAVED");
     else
-    	bExtra = g_pGraphics->getBitmapNumberFromName("PARTS");
+    	bExtra = g_pGfxEngine->getBitmapID("PARTS");
 
-    x1 = 160-(bitmaps[bTitle].xsize/2);
+    x1 = 160-(bitmaps[bTitle].getWidth()/2);
     y1 = 8;    x2 = 40;
     y2 = 42;
-    x3 = 178-(bitmaps[bScore].xsize/2);
+    x3 = 178-(bitmaps[bScore].getWidth()/2);
     x4 = 230;
 
 
     // They are blit once.
-    g_pGraphics->drawBitmap(x1, y1, bTitle);
-    g_pGraphics->drawBitmap(x2, y2, bName);
-    g_pGraphics->drawBitmap(x3, y2, bScore);
+    g_pGfxEngine->Bitmap[bTitle]->draw( g_pVideoDriver->getScrollSurface(), x1, y1);
+    g_pGfxEngine->Bitmap[bName]->draw( g_pVideoDriver->getScrollSurface(), x2, y2);
+    g_pGfxEngine->Bitmap[bScore]->draw( g_pVideoDriver->getScrollSurface(), x3, y2);
     if(Episode == 2)
-    	g_pGraphics->drawBitmap(x4, y2-8, bExtra);
+		g_pGfxEngine->Bitmap[bExtra]->draw( g_pVideoDriver->getScrollSurface(), x4, y2-8);
     else
-    	g_pGraphics->drawBitmap(x4, y2, bExtra);
+		g_pGfxEngine->Bitmap[bExtra]->draw( g_pVideoDriver->getScrollSurface(), x4, y2);
 
     memset(buf,0,256);
 
@@ -285,7 +289,7 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 		if(g_pInput->getPressedKey(KBCKSPCE) && (WrittenName.length() > 0))
 		{
 			memset(buf,0,256);
-			g_pGfxEngine->Font.drawFont(m_sfc, "              ",40,64+(place<<4), LETTER_TYPE_RED);
+			g_pGfxEngine->Font->drawFont(m_sfc, "              ",40,64+(place<<4), LETTER_TYPE_RED);
 
 			WrittenName.erase(WrittenName.length()-1);
 			WrittenName.copy(buf,WrittenName.length(),0);
@@ -302,28 +306,28 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 		for( i=0 ; i<7 ; i++ )
 		{
 			if(i != place)
-				g_pGfxEngine->Font.drawFont(m_sfc, Name[i],40,64+(i<<4), LETTER_TYPE_RED);
+				g_pGfxEngine->Font->drawFont(m_sfc, Name[i],40,64+(i<<4), LETTER_TYPE_RED);
 			else
 			{
-				g_pGfxEngine->Font.drawFont(m_sfc, buf,40,64+(i<<4), LETTER_TYPE_RED);
+				g_pGfxEngine->Font->drawFont(m_sfc, buf,40,64+(i<<4), LETTER_TYPE_RED);
 
 				if(blink)
-					g_pGfxEngine->Font.drawFont(m_sfc, "_",40+(strlen(buf)<<3),64+(i<<4), LETTER_TYPE_RED);
+					g_pGfxEngine->Font->drawFont(m_sfc, "_",40+(strlen(buf)<<3),64+(i<<4), LETTER_TYPE_RED);
 				else
-					g_pGfxEngine->Font.drawFont(m_sfc, " ",40+(strlen(buf)<<3),64+(i<<4), LETTER_TYPE_RED);
+					g_pGfxEngine->Font->drawFont(m_sfc, " ",40+(strlen(buf)<<3),64+(i<<4), LETTER_TYPE_RED);
 			}
-			g_pGfxEngine->Font.drawFont(m_sfc, Score[i],200-(strlen(Score[i])<<3),64+(i<<4), LETTER_TYPE_RED);
+			g_pGfxEngine->Font->drawFont(m_sfc, Score[i],200-(strlen(Score[i])<<3),64+(i<<4), LETTER_TYPE_RED);
 
 			if(pCKP->Control.levelcontrol.episode == 1)
 			{
 				if(Extra[i][0])
-					g_pGfxEngine->Tilemap.drawTile(m_sfc, 32,90+(i<<4),ItemTiles[0]);
+					g_pGfxEngine->Tilemap->drawTile(m_sfc, 32,90+(i<<4),ItemTiles[0]);
 				if(Extra[i][1])
-					g_pGfxEngine->Tilemap.drawTile(m_sfc, 48,90+(i<<4),ItemTiles[1]);
+					g_pGfxEngine->Tilemap->drawTile(m_sfc, 48,90+(i<<4),ItemTiles[1]);
 				if(Extra[i][2])
-					g_pGfxEngine->Tilemap.drawTile(m_sfc, 64,90+(i<<4),ItemTiles[2]);
+					g_pGfxEngine->Tilemap->drawTile(m_sfc, 64,90+(i<<4),ItemTiles[2]);
 				if(Extra[i][3])
-					g_pGfxEngine->Tilemap.drawTile(m_sfc, 80,90+(i<<4),ItemTiles[3]);
+					g_pGfxEngine->Tilemap->drawTile(m_sfc, 80,90+(i<<4),ItemTiles[3]);
 			}
 		}
 

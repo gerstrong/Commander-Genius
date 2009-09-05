@@ -115,15 +115,17 @@ int x, diff, width;
        if (width < 0) width = 0;               // don't set to negative
 
        // set new width of all player walk frames
-       g_pGfxEngine->Sprite[playerbaseframes[cp]+0].setWidth(width);
-       g_pGfxEngine->Sprite[playerbaseframes[cp]+1].setWidth(width);
-       g_pGfxEngine->Sprite[playerbaseframes[cp]+2].setWidth(width);
-       g_pGfxEngine->Sprite[playerbaseframes[cp]+3].setWidth(width);
+       g_pGfxEngine->Sprite[playerbaseframes[cp]+0]->setWidth(width);
+       g_pGfxEngine->Sprite[playerbaseframes[cp]+1]->setWidth(width);
+       g_pGfxEngine->Sprite[playerbaseframes[cp]+2]->setWidth(width);
+       g_pGfxEngine->Sprite[playerbaseframes[cp]+3]->setWidth(width);
     }
 }
 
 void gamepdo_dieanim(int cp, stLevelControl *p_levelcontrol)
 {
+   CBitmap *bitmaps = g_pGfxEngine->Bitmap[0];
+
    if (!player[cp].pdie) return;                // should never happen...
    if (player[cp].pdie==PDIE_DEAD) return;      // if true animation is over
    if (player[cp].pdie==PDIE_FELLOFFMAP)
@@ -164,10 +166,10 @@ void gamepdo_dieanim(int cp, stLevelControl *p_levelcontrol)
        {
     	   p_levelcontrol->gameovermode = true;
     	   g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
-    	   int bmnum = g_pGraphics->getBitmapNumberFromName("GAMEOVER");
+    	   int bmnum = g_pGfxEngine->getBitmapID("GAMEOVER");
     	   // figure out where to center the gameover bitmap and draw it
-		   int x = (320/2)-(bitmaps[bmnum].xsize/2);
-		   int y = (200/2)-(bitmaps[bmnum].ysize/2);
+		   int x = (320/2)-(bitmaps[bmnum].getWidth()/2);
+		   int y = (200/2)-(bitmaps[bmnum].getHeight()/2);
 		   int o = spawn_object(x, y, OBJ_EGA_BITMAP);
 		   objects[o].ai.bitmap.BitmapID = bmnum;
        }
@@ -941,7 +943,7 @@ void gamepdo_TogglePogo_and_Switches(int cp, stLevelControl *p_levelcontrol)
 {
 int i;
 int mx, my, t;
-CSprite *standsprite = &g_pGfxEngine->Sprite[PSTANDFRAME];
+CSprite *standsprite = g_pGfxEngine->Sprite[PSTANDFRAME];
 
 	// detect if KPOGO key only pressed
 	if (player[cp].playcontrol[PA_POGO] && !player[cp].lastplaycontrol[PA_POGO] && !player[cp].pfrozentime)
@@ -1189,7 +1191,7 @@ unsigned int temp;
 int objsupport;
 short tilsupport;
 
-	CSprite *p_sprite = &g_pGfxEngine->Sprite[0];
+	CSprite *p_sprite = g_pGfxEngine->Sprite[0];
 	player[cp].pfalling = 0;         // assume not falling if not jumped to the maximum height
 
     // do not fall if we're jumping
@@ -1386,7 +1388,7 @@ int canRefire;
 
              if (player[cp].pdir==RIGHT)
              {  // fire a blast to the right
-                o = spawn_object(player[cp].x+((g_pGfxEngine->Sprite[0].getWidth()-4)<<CSF), player[cp].y+(9<<CSF), OBJ_RAY);
+                o = spawn_object(player[cp].x+((g_pGfxEngine->Sprite[0]->getWidth()-4)<<CSF), player[cp].y+(9<<CSF), OBJ_RAY);
                 objects[o].ai.ray.direction = RIGHT;
              }
              else

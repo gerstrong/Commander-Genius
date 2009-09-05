@@ -177,9 +177,10 @@ bool loadStartMenu(stCloneKeenPlus *pCKP)
 int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 {
 	CDialog *MainMenu;
-	int bmnum, bmnum1;
+	CBitmap *bm_title, *bm_f1help;
 	int x;
 	int selection;
+	SDL_Surface *sfc;
 
 	fade(FADE_IN, FADE_NORM);
 
@@ -195,8 +196,9 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 	MainMenu = new CDialog(g_pVideoDriver->FGLayerSurface, 88, 56, 18, 13);
 
 	// Load the Title Bitmap
-	bmnum  = g_pGraphics->getBitmapNumberFromName("TITLE");
-	bmnum1 = g_pGraphics->getBitmapNumberFromName("F1HELP");
+	sfc = g_pVideoDriver->getScrollSurface();
+	bm_title = g_pGfxEngine->getBitmap("TITLE");
+	bm_f1help = g_pGfxEngine->getBitmap("F1HELP");
 
 	// Use the standard Menu-Frame used in the old DOS-Games
 	MainMenu->setFrameTheme( DLG_THEME_OLDSCHOOL );
@@ -214,15 +216,14 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 88+8, 136, "Ordering Info");
 	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 88+8, 144, "Quit");
 
-	x = (320/2)-(bitmaps[bmnum].xsize/2);
-	g_pGraphics->drawBitmap(x, 0, bmnum);
+	x = (320/2)-(bm_title->getWidth()/2);
+	bm_title->draw( sfc, x+scroll_x, scroll_y);
 
 	// Draw Help Text-Screen
 	if(pCKP->Control.levelcontrol.episode == 3)
-		g_pGraphics->drawBitmap(128, 181, bmnum1);
+		bm_f1help->draw( sfc, 128+scroll_x, 181+scroll_y);
 	else
-		g_pGraphics->drawBitmap(96, 181, bmnum1);
-
+		bm_f1help->draw( sfc, 96+scroll_x, 181+scroll_y);
 
 	do
 	{
@@ -254,9 +255,8 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
     	if (loadslot)
     		fade(FADE_OUT, FADE_NORM);
 
-    	bmnum = g_pGraphics->getBitmapNumberFromName("TITLE");
-    	x = (320/2)-(bitmaps[bmnum].xsize/2);
-    	g_pGraphics->drawBitmap(x, 0, bmnum);
+    	x = (320/2)-(bm_title->getWidth()/2);
+    	bm_title->draw(sfc, x+scroll_x, 0);
     }
     else if (selection==MAINMNU_OPTIONS)
     {
@@ -285,15 +285,12 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 
 int getDifficulty(stCloneKeenPlus *pCKP)
 {
-	int bmnum;
 	int x;
+	CBitmap *bm_title = g_pGfxEngine->getBitmap("TITLE");
 
-	// Load the Title Bitmap
-	bmnum = g_pGraphics->getBitmapNumberFromName("TITLE");
+	x = (320/2)-(bm_title->getWidth()/2);
 
-	x = (320/2)-(bitmaps[bmnum].xsize/2);
-
-	g_pGraphics->drawBitmap(x, 0, bmnum);
+	bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y );
 
 	// Prepare the Games Menu
 	CDialog DifficultyMenu(g_pVideoDriver->FGLayerSurface, 120,32,14,6);
@@ -320,18 +317,17 @@ int getDifficulty(stCloneKeenPlus *pCKP)
 
 int AudioDlg(stCloneKeenPlus *pCKP)
 {
-	int bmnum;
 	int selection;
 	int x;
 	int ok=0;
+	CBitmap *bm_title = g_pGfxEngine->getBitmap("TITLE");
 
 	int rate=0;
 	short mode=0;
 
 	// Load the Title Bitmap
-	bmnum = g_pGraphics->getBitmapNumberFromName("TITLE");
-	x = (320/2)-(bitmaps[bmnum].xsize/2);
-	g_pGraphics->drawBitmap(x, 0, bmnum);
+	x = (320/2)-(bm_title->getWidth()/2);
+	bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y );
 
 	// Prepare the Games Menu
 	CDialog AudioMenu(g_pVideoDriver->FGLayerSurface, 32,32,32,7);
@@ -404,16 +400,15 @@ int AudioDlg(stCloneKeenPlus *pCKP)
 
 void OptionsDlg(stCloneKeenPlus *pCKP)
 {
-	int bmnum;
 	int selection;
 	int x,i;
+	CBitmap *bm_title = g_pGfxEngine->getBitmap("TITLE");
 
 	std::string buf;
 
 	// Load the Title Bitmap
-	bmnum = g_pGraphics->getBitmapNumberFromName("TITLE");
-	x = (320/2)-(bitmaps[bmnum].xsize/2);
-	g_pGraphics->drawBitmap(x, 0, bmnum);
+	x = (320/2)-(bm_title->getWidth()/2);
+	bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y );
 
 	// Prepare the Games Menu
 	CDialog OptionsMenu(g_pVideoDriver->FGLayerSurface, 24,24,34,13);
@@ -480,7 +475,6 @@ void OptionsDlg(stCloneKeenPlus *pCKP)
 
 short GraphicsDlg(stCloneKeenPlus *pCKP)
 {
-	int bmnum;
 	int selection;
 	int x;
 	Uint16 width, height;
@@ -489,11 +483,11 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 	std::string buf;
 	short retval = 0;
 	Uint8 autoframeskip = 0;
+	CBitmap *bm_title = g_pGfxEngine->getBitmap("TITLE");
 
 	// Load the Title Bitmap
-	bmnum = g_pGraphics->getBitmapNumberFromName("TITLE");
-	x = (320/2)-(bitmaps[bmnum].xsize/2);
-	g_pGraphics->drawBitmap(x, 0, bmnum);
+	x = (320/2)-(bm_title->getWidth()/2);
+	bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y );
 
 	width  = g_pVideoDriver->getWidth();
 	height = g_pVideoDriver->getHeight();
@@ -698,16 +692,15 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 
 char configmenu(stCloneKeenPlus *pCKP)
 {
-	int bmnum;
 	int selection;
 	int x;
+	CBitmap *title_bitmap = g_pGfxEngine->Bitmap[g_pGfxEngine->getBitmapID("TITLE")];
 
 	// Load the Title Bitmap
-	bmnum = g_pGraphics->getBitmapNumberFromName("TITLE");
 
-	x = (320/2)-(bitmaps[bmnum].xsize/2);
+	x = (320/2)-(title_bitmap->getWidth()/2);
 
-	g_pGraphics->drawBitmap(x, 0, bmnum);
+	title_bitmap->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y );
 
 	// Prepare the Games Menu
 	CDialog OptionsMenu(g_pVideoDriver->FGLayerSurface, 120,32,14,8);
@@ -763,18 +756,14 @@ char configmenu(stCloneKeenPlus *pCKP)
 
 char controlsmenu()
 {
-	int bmnum;
 	int selection;
 	int x;
 	std::string buf;
 	std::string buf2;
+	CBitmap *bm_title = g_pGfxEngine->getBitmap("TITLE");
 
-	// Load the Title Bitmap
-	bmnum = g_pGraphics->getBitmapNumberFromName("TITLE");
-
-	x = (320/2)-(bitmaps[bmnum].xsize/2);
-
-	g_pGraphics->drawBitmap(x, 0, bmnum);
+	x = (320/2)-(bm_title->getWidth()/2);
+	bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y );
 
 	// Prepare the Games Menu
 	CDialog ControlsMenu(g_pVideoDriver->FGLayerSurface, 8,16,38,22);
@@ -1009,8 +998,8 @@ int boxtimer;
 	  if(g_pTimer->TimeToRender())
 	  {
 		  dialogbox(KEENSLEFT_X,boxY,KEENSLEFT_W,boxH);
-		  g_pGfxEngine->Font.drawFont( boxsurface, getstring("LIVES_LEFT_BACKGROUND"),(KEENSLEFT_X+1)*8,(boxY+1)*8,0);
-		  g_pGfxEngine->Font.drawFont( boxsurface, getstring("LIVES_LEFT"),((KEENSLEFT_X+7)*8)+4,(boxY+1)*8,0);
+		  g_pGfxEngine->Font->drawFont( boxsurface, getstring("LIVES_LEFT_BACKGROUND"),(KEENSLEFT_X+1)*8,(boxY+1)*8,0);
+		  g_pGfxEngine->Font->drawFont( boxsurface, getstring("LIVES_LEFT"),((KEENSLEFT_X+7)*8)+4,(boxY+1)*8,0);
 		  y = ((boxY+2)*8)+4;
 		  if (numplayers>1) y--;
 		  for(p=0;p<numplayers;p++)
@@ -1019,7 +1008,7 @@ int boxtimer;
 		    for(i=0;i<player[p].inventory.lives&&i<=10;i++)
 		    {
 		    	Uint16 f = PMAPDOWNFRAME+playerbaseframes[p]-(episode==3);
-		    	g_pGfxEngine->Sprite[f].drawSprite(g_pVideoDriver->FGLayerSurface, x, y );
+		    	g_pGfxEngine->Sprite[f]->drawSprite(g_pVideoDriver->FGLayerSurface, x, y );
 
 		      x+=16;
 		    }

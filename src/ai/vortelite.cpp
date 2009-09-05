@@ -47,7 +47,7 @@
 
 #define VORTELITE_TRAPPED_DIST        150
 
-#define sprites (&g_pGfxEngine->Sprite[0])
+#define sprites g_pGfxEngine->Sprite[0]
 
 void vortelite_initiatejump(int o);
 

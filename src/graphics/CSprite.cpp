@@ -16,7 +16,6 @@ CSprite::CSprite() {
 
 CSprite::~CSprite() {
 	if(m_surface) SDL_FreeSurface(m_surface);	// TODO Auto-generated destructor stub
-	m_surface = NULL;
 }
 
 /////////////////////////////
@@ -24,7 +23,6 @@ CSprite::~CSprite() {
 /////////////////////////////
 bool CSprite::createSurface(Uint32 flags, SDL_Color *Palette)
 {
-	//if(m_surface) SDL_FreeSurface(m_surface);
 	m_surface = SDL_CreateRGBSurface( flags, m_xsize, m_ysize, 8, 0, 0, 0, 0);
 	SDL_SetColors( m_surface, Palette, 0, 255);
 	SDL_SetColorKey( m_surface, SDL_SRCCOLORKEY, COLORKEY ); // One black is the color key. There is another black, as normal color

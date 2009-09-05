@@ -28,16 +28,16 @@ int mask;
      {
        if (finale_planecol==1)
        {
-    	   g_pGraphics->sb_setpixel(finale_x, finale_y, finale_planecol);
+    	   //g_pGraphics->sb_setpixel(finale_x, finale_y, finale_planecol);
        }
        else
        {  // merge with previous planes
-    	   g_pGraphics->sb_setpixel(finale_x, finale_y, g_pGraphics->sb_getpixel(finale_x, finale_y) | finale_planecol);
+    	   //g_pGraphics->sb_setpixel(finale_x, finale_y, g_pGraphics->sb_getpixel(finale_x, finale_y) | finale_planecol);
        }
      }
      else if (finale_planecol==1)
      {
-    	 g_pGraphics->sb_setpixel(finale_x, finale_y, 0);
+    	 //g_pGraphics->sb_setpixel(finale_x, finale_y, 0);
      }
 
      finale_x++;

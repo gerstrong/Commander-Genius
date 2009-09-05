@@ -59,10 +59,11 @@ char enter,lastenterstate;
 int x, y, t, o, i;
 int tantalus_animframe, tantalus_animtimer=0;
 int state, timer, spawnedcount=0;
-CSprite *sprites = &g_pGfxEngine->Sprite[0];
+CSprite **sprites = &g_pGfxEngine->Sprite[0];
+CBitmap **bitmaps = &g_pGfxEngine->Bitmap[0];
 
-	Uint16 tantalus_sprite_width = sprites[TANTALUS_SPRITE].getWidth();
-	Uint16 tantalus_sprite_height = sprites[TANTALUS_SPRITE].getHeight();
+	Uint16 tantalus_sprite_width = sprites[TANTALUS_SPRITE]->getWidth();
+	Uint16 tantalus_sprite_height = sprites[TANTALUS_SPRITE]->getHeight();
 
 
 	o=0;
@@ -203,10 +204,10 @@ CSprite *sprites = &g_pGfxEngine->Sprite[0];
 			g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
 			pCKP->Control.levelcontrol.gameovermode = true;
 
-			int bmnum = g_pGraphics->getBitmapNumberFromName("GAMEOVER");
+			int bmnum = g_pGfxEngine->getBitmapID("GAMEOVER");
 			// figure out where to center the gameover bitmap and draw it
-		    int x = (320/2)-(bitmaps[bmnum].xsize/2);
-			int y = (200/2)-(bitmaps[bmnum].ysize/2);
+		    int x = (320/2)-(bitmaps[bmnum]->getWidth()/2);
+			int y = (200/2)-(bitmaps[bmnum]->getHeight()/2);
 			int o = spawn_object(x, y, OBJ_EGA_BITMAP);
 			objects[o].ai.bitmap.BitmapID = bmnum;
 			break;

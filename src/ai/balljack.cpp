@@ -148,7 +148,7 @@ char BJ_BlockedD(int o)
   // we do our own blockedd, because we don't want the ball/jack to
   // bounce off the top of platforms that have only solidfall set--
   // so we test blockedd against solidl/r instead
-  CSprite *sprites = &g_pGfxEngine->Sprite[objects[o].sprite];
+  CSprite *sprites = g_pGfxEngine->Sprite[objects[o].sprite];
   Uint16 obj_width, obj_height;
   obj_width = sprites->getWidth();
   obj_height = sprites->getHeight();

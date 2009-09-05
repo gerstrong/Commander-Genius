@@ -85,12 +85,12 @@ std::string fname;
 		sgrle_compress(fp, (unsigned char *)&player[i], sizeof(player[i]));
 
 	// save state of partially-opened doors
-	CSprite *sprites = &g_pGfxEngine->Sprite[0];
+	CSprite **sprites = &g_pGfxEngine->Sprite[0];
 
-	fputc(sprites[DOOR_YELLOW_SPRITE].getWidth(), fp);
-	fputc(sprites[DOOR_RED_SPRITE].getWidth(), fp);
-	fputc(sprites[DOOR_GREEN_SPRITE].getWidth(), fp);
-	fputc(sprites[DOOR_BLUE_SPRITE].getWidth(), fp);
+	fputc(sprites[DOOR_YELLOW_SPRITE]->getWidth(), fp);
+	fputc(sprites[DOOR_RED_SPRITE]->getWidth(), fp);
+	fputc(sprites[DOOR_GREEN_SPRITE]->getWidth(), fp);
+	fputc(sprites[DOOR_BLUE_SPRITE]->getWidth(), fp);
 
 	fclose(fp);
 	return 0;
@@ -198,11 +198,11 @@ unsigned int i;
 		if (sgrle_decompress(fp, (unsigned char *)&player[i], sizeof(player[i]))) return 1;
 	}
 
-	CSprite *sprites = &g_pGfxEngine->Sprite[0];
-	sprites[DOOR_YELLOW_SPRITE].setHeight(fgetc(fp));
-	sprites[DOOR_RED_SPRITE].setHeight(fgetc(fp));
-	sprites[DOOR_GREEN_SPRITE].setHeight(fgetc(fp));
-	sprites[DOOR_BLUE_SPRITE].setHeight(fgetc(fp));
+	CSprite **sprites = &g_pGfxEngine->Sprite[0];
+	sprites[DOOR_YELLOW_SPRITE]->setHeight(fgetc(fp));
+	sprites[DOOR_RED_SPRITE]->setHeight(fgetc(fp));
+	sprites[DOOR_GREEN_SPRITE]->setHeight(fgetc(fp));
+	sprites[DOOR_BLUE_SPRITE]->setHeight(fgetc(fp));
 
 	fclose(fp);
 

@@ -49,8 +49,8 @@ private:
 	}*Sprite;
 
 	char LoadTGASprite( const std::string &filename, CSprite *sprite );
-	void LoadSpecialSprites( CSprite *sprite );
-	void DeriveSpecialSprites( CTilemap *tilemap, CSprite *sprite );
+	void LoadSpecialSprites( std::vector<CSprite*> &sprite );
+	void DeriveSpecialSprites( CTilemap *tilemap, CSprite **sprite );
 	void CreateYellowSpriteofTile( CTilemap *tilemap, Uint16 tile, CSprite *sprite );
 };
 

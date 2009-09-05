@@ -88,8 +88,6 @@ char loadinggame, loadslot;
 stMap map;
 unsigned int AnimTileInUse[ATILEINUSE_SIZEX][ATILEINUSE_SIZEY];
 stTile tiles[MAX_TILES+1];
-unsigned char tiledata[MAX_TILES+1][16][16];
-CBitmap bitmaps[MAX_BITMAPS+1];
 stObject objects[MAX_OBJECTS+1];
 stAnimTile animtiles[MAX_ANIMTILES+1];
 stPlayer player[MAX_PLAYERS];
@@ -341,7 +339,7 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
 			for(i=0;i<MAX_PLAYERS;i++)
 			{
 				op = player[i].useObject;
-				obj_sprite = &(g_pGfxEngine->Sprite[objects[op].sprite]);
+				obj_sprite = g_pGfxEngine->Sprite[objects[op].sprite];
 				player[i].mapplayx = player[i].x;
 				player[i].mapplayy = player[i].y;
 

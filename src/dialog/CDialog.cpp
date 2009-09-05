@@ -147,14 +147,14 @@ void CDialog::render()
 	// Draw the to icon up or down accordingly
 	if( m_scroll>0 ) // Up Arrow
 	{
-		g_pGfxEngine->Font.drawCharacter(m_DialogSurface, 15,
+		g_pGfxEngine->Font->drawCharacter(m_DialogSurface, 15,
 									m_Frame->m_x+m_Frame->m_w-16,
 									m_Frame->m_y+8);
 	}
 	if( ( m_h-2 < (Uint8) m_dlgobject.size() )  &&
 		( m_scroll != m_dlgobject.size()-m_h+2 )) // Down Arrow
 	{
-		g_pGfxEngine->Font.drawCharacter(m_DialogSurface , 19,
+		g_pGfxEngine->Font->drawCharacter(m_DialogSurface , 19,
 									m_Frame->m_x+m_Frame->m_w-16,
 									m_Frame->m_y+m_Frame->m_h-16);
 	}
@@ -226,7 +226,7 @@ void CDialog::renderTwirl()
 		
 	}
 
-	g_pGfxEngine->Font.drawTwirl( m_DialogSurface, m_twirl.frame,
+	g_pGfxEngine->Font->drawTwirl( m_DialogSurface, m_twirl.frame,
 									m_dlgobject[m_selected_ID]->m_x,
 									m_twirl.posy );
 }

@@ -118,7 +118,7 @@ void CCredits::Render(stCloneKeenPlus *pCKP)
 
 		for(int j=0 ; j<52 ; j++)
 			if(scrolly+(j<<3) > -8 && scrolly+(j<<3) < 200)
-				g_pGfxEngine->Font.drawFont( g_pVideoDriver->FGLayerSurface, scrolltext[j], mid[j], scrolly+(j<<3), LETTER_TYPE_INVERSE);
+				g_pGfxEngine->Font->drawFont( g_pVideoDriver->FGLayerSurface, scrolltext[j], mid[j], scrolly+(j<<3), LETTER_TYPE_INVERSE);
 
 		if( g_pInput->getPressedAnyCommand() )
 		{

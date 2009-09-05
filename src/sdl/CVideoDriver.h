@@ -57,9 +57,6 @@ public:
 	void scale3xnofilter(char *dest, char *src, short bbp);
 	void scale4xnofilter(char *dest, char *src, short bbp);
 
-	void setpixel(unsigned int x, unsigned int y, unsigned char c);
-	unsigned char getpixel(int x, int y);
-
 	void DeleteConsoleMsgs(void);
 	void AddConsoleMsg(const char *the_msg);
 

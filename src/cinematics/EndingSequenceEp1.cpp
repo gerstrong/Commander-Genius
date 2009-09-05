@@ -59,7 +59,7 @@ int i;
   showmapatpos(80, WM_X, WM_Y, pCKP);
 
   // draw keen next to his ship
-  g_pGfxEngine->Sprite[PMAPLEFTFRAME].drawSprite(g_pVideoDriver->SpriteLayerSurface, 168, 85);
+  g_pGfxEngine->Sprite[PMAPLEFTFRAME]->drawSprite(g_pVideoDriver->SpriteLayerSurface, 168, 85);
   // do not show player when we render the screen
   numplayers = 1;
   player[0].x = 0;
@@ -269,7 +269,7 @@ int eseq1_BackAtHome(stCloneKeenPlus *pCKP)
 	int state;
 	int enter, lastenterstate;
 	int dlgX, dlgY, dlgW, dlgH;
-	int bmnum_window;
+	CBitmap *bm_window;
 
 	SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
 
@@ -304,7 +304,7 @@ int eseq1_BackAtHome(stCloneKeenPlus *pCKP)
   dlgY = GetStringAttribute("EP1_ESEQ_PART2_PAGE1", "TOP");
   dlgW = GetStringAttribute("EP1_ESEQ_PART2_PAGE1", "WIDTH");
   dlgH = GetStringAttribute("EP1_ESEQ_PART2_PAGE1", "HEIGHT");
-  bmnum_window = g_pGraphics->getBitmapNumberFromName("WINDOFF");	// window lights off
+  bm_window = g_pGfxEngine->Bitmap[g_pGfxEngine->getBitmapID("WINDOFF")];	// window lights off
 
   fade(FADE_IN, FADE_NORM);
 
@@ -313,7 +313,7 @@ int eseq1_BackAtHome(stCloneKeenPlus *pCKP)
 	enter = ( g_pInput->getPressedKey(KENTER) || g_pInput->getPressedKey(KCTRL) || g_pInput->getPressedKey(KALT) );
 
 	// Show the window (lights on or off)
-	g_pGraphics->drawBitmap(80, 0, bmnum_window);
+	bm_window->draw(sfc, 80, 0);
 
 	g_pGfxEngine->drawDialogBox(sfc ,dlgX, dlgY, dlgW, dlgH);
 
@@ -321,7 +321,7 @@ int eseq1_BackAtHome(stCloneKeenPlus *pCKP)
 	tempbuf = text[textline];
 	if(amountshown < tempbuf.size())
 		tempbuf.erase(amountshown);
-	g_pGfxEngine->Font.drawFont(sfc, tempbuf, (dlgX+1)*8, (dlgY+1)*8);
+	g_pGfxEngine->Font->drawFont(sfc, tempbuf, (dlgX+1)*8, (dlgY+1)*8);
 
 	if (state==STATE_TEXTAPPEARING)
 	{
@@ -365,9 +365,9 @@ int eseq1_BackAtHome(stCloneKeenPlus *pCKP)
 				nextline: ;
 
 				if( (textline > 0 && textline < 5)  || textline == 6)
-					bmnum_window = g_pGraphics->getBitmapNumberFromName("WINDON");	// lights on
+					bm_window = g_pGfxEngine->Bitmap[g_pGfxEngine->getBitmapID("WINDON")]; // lights on
 				else
-					bmnum_window = g_pGraphics->getBitmapNumberFromName("WINDOFF");	// lights off
+					bm_window = g_pGfxEngine->Bitmap[g_pGfxEngine->getBitmapID("WINDOFF")]; // lights off
 
 				textline++;
 				state = STATE_TEXTAPPEARING;

@@ -9,28 +9,114 @@
 
 CGfxEngine::CGfxEngine() {
 	m_Palette = NULL;
+	Font = NULL;
+	Tilemap = NULL;
 }
 
 CGfxEngine::~CGfxEngine() {
-	// TODO Auto-generated destructor stub
+	freeBitmaps();
+	freeSprites();
+	freeFonts();
+	freeTilemap();
 }
 
-void CGfxEngine::createEmptySprites(Uint16 num_sprites)
+///
+// Creation Routines
+///
+
+CTilemap *CGfxEngine::createEmptyTilemap()
 {
-	CSprite tmp_spr;
+	Tilemap = new CTilemap();
+	return Tilemap;
+}
+
+CFont *CGfxEngine::createEmptyFontmap()
+{
+	Font = new CFont();
+	return Font;
+}
+
+CSprite *CGfxEngine::createEmptySprites(Uint16 num_sprites)
+{
 	Sprite.reserve(num_sprites);
 	for(Uint16 i=0 ; i<num_sprites ; i++ )
-		Sprite.push_back(tmp_spr);
+		Sprite.push_back( new CSprite() );
+
+	if(!Sprite.empty())	return Sprite[0];
+	else return NULL;
+}
+
+CBitmap *CGfxEngine::createEmptyBitmaps(Uint16 num_bmps)
+{
+	Bitmap.reserve(num_bmps);
+	for(Uint16 i=0 ; i<num_bmps ; i++ )
+	{
+		Bitmap.push_back(new CBitmap());
+	}
+
+	if (!Bitmap.empty()) return Bitmap[0];
+	else return NULL;
+
+}
+
+void CGfxEngine::freeTilemap()
+{
+	if(Tilemap) delete Tilemap;
+}
+void CGfxEngine::freeFonts()
+{
+	if(Font) delete Font;
+}
+
+void CGfxEngine::freeBitmaps()
+{
+	while( !Bitmap.empty() )
+	{
+		delete *Bitmap.end();
+		Bitmap.pop_back();
+	}
+}
+
+void CGfxEngine::freeSprites()
+{
+	while( !Sprite.empty() )
+	{
+		delete *Sprite.end();
+		Sprite.pop_back();
+	}
+}
+
+Uint8 CGfxEngine::getBitmapID(const std::string name)
+{
+	int num = Bitmap.size();
+	for(Uint8 i=0 ; i<Bitmap.size() ; i++)
+		if(Bitmap[i]->getName() == name) return i;
+	return 0;
+}
+
+CBitmap *CGfxEngine::getBitmap(const std::string &name)
+{
+	std::string s_name;
+	for(Uint8 i=0 ; i<Bitmap.size() ; i++)
+	{
+		s_name = Bitmap[i]->getName();
+
+		if(s_name == name)
+			return Bitmap[i];
+	}
+	return NULL;
 }
 
 // Needed when the fade effect is called.
 void CGfxEngine::setColorPalettes(SDL_Color *Palette)
 {
-	m_Palette = Palette;
-	Font.setColorPalette(Palette);
-	Tilemap.setColorPalette(Palette);
+	if ( (m_Palette = Palette) == NULL ) return;
+	if(Font) Font->setColorPalette(m_Palette);
+	if(Tilemap) Tilemap->setColorPalette(m_Palette);
 	for( Uint16 i=0 ; i<Sprite.size() ; i++ )
-		Sprite[i].setColorPalette(Palette);
+		Sprite[i]->setColorPalette(m_Palette);
+	for( Uint16 i=0 ; i<Bitmap.size() ; i++ )
+		Bitmap[i]->setColorPalette(m_Palette);
 }
 
 void CGfxEngine::copyTileToSprite( Uint16 t, Uint16 s, Uint16 ntilestocopy )
@@ -41,8 +127,8 @@ void CGfxEngine::copyTileToSprite( Uint16 t, Uint16 s, Uint16 ntilestocopy )
 	dst_rect.w = dst_rect.h = 16;
 
 
-	Sprite[s].setSize( 16, 16*ntilestocopy );
-	Sprite[s].createSurface( Tilemap.getSDLSurface()->flags, m_Palette );
+	Sprite[s]->setSize( 16, 16*ntilestocopy );
+	Sprite[s]->createSurface( Tilemap->getSDLSurface()->flags, m_Palette );
 
 	for(Uint8 i=0 ; i<ntilestocopy ; i++)
 	{
@@ -52,7 +138,7 @@ void CGfxEngine::copyTileToSprite( Uint16 t, Uint16 s, Uint16 ntilestocopy )
 		dst_rect.x = 0;
 		dst_rect.y = 16*i;
 
-		SDL_BlitSurface( Tilemap.getSDLSurface(), &src_rect, Sprite[s].getSDLSurface(), &dst_rect);
+		SDL_BlitSurface( Tilemap->getSDLSurface(), &src_rect, Sprite[s]->getSDLSurface(), &dst_rect);
 	}
 }
 
@@ -62,11 +148,11 @@ void CGfxEngine::drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w
 {
 	int x,y,i,j;
 
-	Font.drawCharacter(DialogSurface, 1, x1*8, y1*8);
-	Font.drawCharacter(DialogSurface, 3, (x1+w)*8, y1*8);
+	Font->drawCharacter(DialogSurface, 1, x1*8, y1*8);
+	Font->drawCharacter(DialogSurface, 3, (x1+w)*8, y1*8);
 	for(x=(x1*8)+8,i=0;i<w-1;i++)
 	{
-		Font.drawCharacter(DialogSurface, 2, x, y1*8);
+		Font->drawCharacter(DialogSurface, 2, x, y1*8);
 		x+=8;
 	}
 	y=(y1+1)*8;
@@ -74,18 +160,18 @@ void CGfxEngine::drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w
 	{
 		for(x=(x1*8),i=0;i<=w;i++)
 		{
-			if (i==0) Font.drawCharacter(DialogSurface, 4, x, y);
-			else if (i==w) Font.drawCharacter(DialogSurface, 5, x, y);
-			else Font.drawCharacter(DialogSurface, ' ', x, y);
+			if (i==0) Font->drawCharacter(DialogSurface, 4, x, y);
+			else if (i==w) Font->drawCharacter(DialogSurface, 5, x, y);
+			else Font->drawCharacter(DialogSurface, ' ', x, y);
 			x+=8;
 		}
 		y+=8;
   }
     for(x=(x1*8),i=0;i<=w;i++)
     {
-      if (i==0) Font.drawCharacter(DialogSurface, 6, x, y);
-      else if (i==w) Font.drawCharacter(DialogSurface, 8, x, y);
-      else Font.drawCharacter(DialogSurface, 7, x, y);
+      if (i==0) Font->drawCharacter(DialogSurface, 6, x, y);
+      else if (i==w) Font->drawCharacter(DialogSurface, 8, x, y);
+      else Font->drawCharacter(DialogSurface, 7, x, y);
       x+=8;
     }
 }

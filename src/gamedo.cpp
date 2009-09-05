@@ -204,7 +204,7 @@ int i;
           {
         	  if( TileProperty[animtiles[i].baseframe][BEHAVIOR] != 22 || animate_hinttiles ) // If the tile is a hint mb, then, only animate if it hasn't been triggered yet!
         	  {
-        		  g_pGfxEngine->Tilemap.drawTile(g_pVideoDriver->getScrollSurface(),
+        		  g_pGfxEngine->Tilemap->drawTile(g_pVideoDriver->getScrollSurface(),
         				  animtiles[i].x, animtiles[i].y,
         				  animtiles[i].baseframe+((animtiles[i].offset+curanimtileframe)%TileProperty[animtiles[i].baseframe][ANIMATION]));
         	  }
@@ -241,8 +241,8 @@ int i, topobj;
       // Bitmaps are also part of the object, but only print them directly
       if ( objects[i].type==OBJ_EGA_BITMAP ) continue;
 
-      if (objects[i].scrx < -(g_pGfxEngine->Sprite[objects[i].sprite].getWidth()) || objects[i].scrx > 320 \
-          || objects[i].scry < -(g_pGfxEngine->Sprite[objects[i].sprite].getHeight()) || objects[i].scry > 200)
+      if (objects[i].scrx < -(g_pGfxEngine->Sprite[objects[i].sprite]->getWidth()) || objects[i].scrx > 320 \
+          || objects[i].scry < -(g_pGfxEngine->Sprite[objects[i].sprite]->getHeight()) || objects[i].scry > 200)
           {
 			 objects[i].onscreen = 0;
              objects[i].wasoffscreen = 1;
@@ -271,8 +271,8 @@ int i, topobj;
 			  case OBJ_GARG: garg_ai(i, p_levelcontrol->hardmode); break;
 			  case OBJ_VORT: vort_ai(i, p_levelcontrol ); break;
 			  case OBJ_BUTLER: butler_ai(i, p_levelcontrol->hardmode); break;
-			  case OBJ_TANK: tank_ai(i, &g_pGfxEngine->Sprite[0], p_levelcontrol->hardmode); break;
-			  case OBJ_RAY: ray_ai(i, &g_pGfxEngine->Sprite[0],p_levelcontrol->episode,
+			  case OBJ_TANK: tank_ai(i, g_pGfxEngine->Sprite[0], p_levelcontrol->hardmode); break;
+			  case OBJ_RAY: ray_ai(i, g_pGfxEngine->Sprite[0],p_levelcontrol->episode,
 							  options[OPT_FULLYAUTOMATIC].value, p_levelcontrol->cepvars.pShotSpeed); break;
 			  case OBJ_DOOR: door_ai(i, p_levelcontrol->cepvars.DoorOpenDir); break;
 			  case OBJ_ICECANNON: icecannon_ai(i); break;
@@ -282,7 +282,7 @@ int i, topobj;
 			  case OBJ_ROPE: rope_ai(i); break;
 
 			  //KEEN2
-			  case OBJ_SCRUB: scrub_ai(i, &g_pGfxEngine->Sprite[0],*p_levelcontrol); break;
+			  case OBJ_SCRUB: scrub_ai(i, g_pGfxEngine->Sprite[0],*p_levelcontrol); break;
 			  case OBJ_TANKEP2: tankep2_ai(i, p_levelcontrol->hardmode); break;
 			  case OBJ_PLATFORM: platform_ai(i, *p_levelcontrol); break;
 			  case OBJ_VORTELITE: vortelite_ai(i, p_levelcontrol->dark); break;
@@ -295,13 +295,13 @@ int i, topobj;
 
 			  //KEEN3
 			  case OBJ_FOOB: foob_ai(i, p_levelcontrol->hardmode); break;
-			  case OBJ_NINJA: ninja_ai(i, &g_pGfxEngine->Sprite[0],
+			  case OBJ_NINJA: ninja_ai(i, g_pGfxEngine->Sprite[0],
 										  p_levelcontrol->hardmode); break;
 			  case OBJ_MEEP: meep_ai(i, *p_levelcontrol,
-									  &g_pGfxEngine->Sprite[0]); break;
+									  g_pGfxEngine->Sprite[0]); break;
 			  case OBJ_SNDWAVE: sndwave_ai(i, p_levelcontrol->hardmode); break;
 			  case OBJ_MOTHER: mother_ai(i, *p_levelcontrol,
-									  &g_pGfxEngine->Sprite[0]); break;
+									  g_pGfxEngine->Sprite[0]); break;
 			  case OBJ_FIREBALL: fireball_ai(i, p_levelcontrol->hardmode); break;
 			  case OBJ_BALL: ballandjack_ai(i); break;
 			  case OBJ_JACK: ballandjack_ai(i); break;
@@ -336,8 +336,8 @@ int cplayer;
 
 	if (objects[o].type==OBJ_GOTPOINTS) return;
 
-	xsize = g_pGfxEngine->Sprite[objects[o].sprite].getWidth();
-	ysize = g_pGfxEngine->Sprite[objects[o].sprite].getHeight();
+	xsize = g_pGfxEngine->Sprite[objects[o].sprite]->getWidth();
+	ysize = g_pGfxEngine->Sprite[objects[o].sprite]->getHeight();
 
  // set value of blockedd--should object fall?
 	temp = (objects[o].y>>CSF)+ysize;
@@ -524,7 +524,8 @@ int xa,ya;
     	  }
     	  else if( objects[i].type == OBJ_EGA_BITMAP )
     	  {
-    		  g_pGraphics->drawBitmap(objects[i].x, objects[i].y, objects[i].ai.bitmap.BitmapID);
+    		  g_pGfxEngine->Bitmap[objects[i].ai.bitmap.BitmapID]->
+    		  draw(g_pVideoDriver->getScrollSurface(), objects[i].x, objects[i].y );
     		  continue;
     	  }
     	  else
@@ -533,12 +534,12 @@ int xa,ya;
     		  objects[i].scry = ((objects[i].y>>CSF)-scroll_y);
     	  }
     	  //g_pGraphics->drawSprite(objects[i].scrx, objects[i].scry, objects[i].sprite, i);
-    	  g_pGfxEngine->Sprite[objects[i].sprite].drawSprite( g_pVideoDriver->SpriteLayerSurface,
+    	  g_pGfxEngine->Sprite[objects[i].sprite]->drawSprite( g_pVideoDriver->SpriteLayerSurface,
 															  objects[i].scrx, objects[i].scry );
 
         if (objects[i].honorPriority)
         {
-        	CSprite *sprite = &g_pGfxEngine->Sprite[objects[i].sprite];
+        	CSprite *sprite = g_pGfxEngine->Sprite[objects[i].sprite];
             // handle priority tiles and tiles with masks
             // get the upper-left coordinates to start checking for tiles
             x = (((objects[i].x>>CSF)-1)>>4)<<4;
@@ -548,7 +549,7 @@ int xa,ya;
             xsize = ((sprite->getWidth())>>4<<4);
             if (xsize != sprite->getWidth()) xsize+=16;
 
-            ysize = ((g_pGfxEngine->Sprite[objects[i].sprite].getHeight())>>4<<4);
+            ysize = ((g_pGfxEngine->Sprite[objects[i].sprite]->getHeight())>>4<<4);
             if (ysize != sprite->getHeight()) ysize+=16;
 
             tl = getmaptileat(x,y);
@@ -566,7 +567,7 @@ int xa,ya;
                 tl = getmaptileat(x+xa,y+ya);
                 if(TileProperty[tl][BEHAVIOR] == 65534)
                 {
-                	g_pGfxEngine->Tilemap.drawTile(g_pVideoDriver->SpriteLayerSurface, x+xa-scroll_x, y+ya-scroll_y, tl+1);
+                	g_pGfxEngine->Tilemap->drawTile(g_pVideoDriver->SpriteLayerSurface, x+xa-scroll_x, y+ya-scroll_y, tl+1);
                 }
                 else if (TileProperty[tl][BEHAVIOR] == 65535)
                 {
@@ -583,11 +584,6 @@ int xa,ya;
    }
 }
 
-void gamedo_render_erasedebug(void)
-{
-   if (debugmode) g_pGraphics->restoreArea(4,4,savew,saveh);
-}
-
 void gamedo_render_eraseobjects(void)
 {
 int i;
@@ -600,7 +596,7 @@ int i;
    for(i=0;i<MAX_OBJECTS;i++)
    {
       if (objects[i].exists && objects[i].onscreen)
-    	  g_pGfxEngine->Sprite[objects[i].sprite].eraseSprite(spr_sfc, objects[i].scrx, objects[i].scry );
+    	  g_pGfxEngine->Sprite[objects[i].sprite]->eraseSprite(spr_sfc, objects[i].scrx, objects[i].scry );
    }
 }
 
@@ -618,7 +614,6 @@ void gamedo_RenderScreen()
 
    g_pVideoDriver->sb_blit();	// blit scrollbuffer to display (Tiles)
 
-   gamedo_render_erasedebug();
    gamedo_render_eraseobjects();
 
     g_pTimer->TimeToDelay();
@@ -721,13 +716,6 @@ void gamedo_HandleFKeys(stCloneKeenPlus *pCKP)
             if(g_pInput->getPressedKey(KF9))
             {
                endlevel(1, &(pCKP->Control.levelcontrol) );
-            }
-
-            // F6 - onscreen debug--toggle through debug/radar/off
-            if(g_pInput->getPressedKey(KF6))
-            {
-               debugmode++;
-               if (debugmode>2) debugmode=0;
             }
     }
 

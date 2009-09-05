@@ -88,11 +88,11 @@ int x,y,i,j;
 
   SDL_Surface *boxsurface = g_pVideoDriver->FGLayerSurface;
 
-  g_pGfxEngine->Font.drawCharacter(boxsurface, 1, x1*8, y1*8);
-  g_pGfxEngine->Font.drawCharacter(boxsurface, 3, (x1+w)*8, y1*8);
+  g_pGfxEngine->Font->drawCharacter(boxsurface, 1, x1*8, y1*8);
+  g_pGfxEngine->Font->drawCharacter(boxsurface, 3, (x1+w)*8, y1*8);
   for(x=(x1*8)+8,i=0;i<w-1;i++)
   {
-	  g_pGfxEngine->Font.drawCharacter(boxsurface, 2, x, y1*8);
+	  g_pGfxEngine->Font->drawCharacter(boxsurface, 2, x, y1*8);
 	  x+=8;
   }
   y=(y1+1)*8;
@@ -100,18 +100,18 @@ int x,y,i,j;
   {
     for(x=(x1*8),i=0;i<=w;i++)
     {
-      if (i==0) g_pGfxEngine->Font.drawCharacter(boxsurface, 4, x, y );
-      else if (i==w) g_pGfxEngine->Font.drawCharacter(boxsurface, 5, x, y );
-      else g_pGfxEngine->Font.drawCharacter(boxsurface, ' ', x, y );
+      if (i==0) g_pGfxEngine->Font->drawCharacter(boxsurface, 4, x, y );
+      else if (i==w) g_pGfxEngine->Font->drawCharacter(boxsurface, 5, x, y );
+      else g_pGfxEngine->Font->drawCharacter(boxsurface, ' ', x, y );
       x+=8;
     }
     y+=8;
   }
     for(x=(x1*8),i=0;i<=w;i++)
     {
-      if (i==0) g_pGfxEngine->Font.drawCharacter(boxsurface, 6, x, y);
-      else if (i==w) g_pGfxEngine->Font.drawCharacter(boxsurface, 8, x, y);
-      else g_pGfxEngine->Font.drawCharacter(boxsurface, 7, x, y);
+      if (i==0) g_pGfxEngine->Font->drawCharacter(boxsurface, 6, x, y);
+      else if (i==w) g_pGfxEngine->Font->drawCharacter(boxsurface, 8, x, y);
+      else g_pGfxEngine->Font->drawCharacter(boxsurface, 7, x, y);
       x+=8;
     }
 }
@@ -185,7 +185,7 @@ int dlgX,dlgY,dlgW,dlgH;
   dlgH = GetStringAttribute("EP1_StatusBox", "HEIGHT");
 
   dialogbox(dlgX,dlgY,dlgW,dlgH);
-  g_pGfxEngine->Font.drawFont( boxsurface, getstring("EP1_StatusBox"), (dlgX+1)<<3, (dlgY+1)<<3, 0);
+  g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP1_StatusBox"), (dlgX+1)<<3, (dlgY+1)<<3, 0);
 
   // fill in what we have
   // 321: joystick/battery/vacuum/fuel not gotten
@@ -193,68 +193,68 @@ int dlgX,dlgY,dlgW,dlgH;
   // 424: yellow/red/green/blue cards
   // 448: ship parts, gotten
   // raygun icon
-  g_pGfxEngine->Tilemap.drawTile(boxsurface, (dlgX+4)<<3, ((dlgY+8)<<3)+3, 414);
+  g_pGfxEngine->Tilemap->drawTile(boxsurface, (dlgX+4)<<3, ((dlgY+8)<<3)+3, 414);
   // pogo
-  if (player[p].inventory.HasPogo) g_pGfxEngine->Tilemap.drawTile(boxsurface, ((dlgX+12)<<3)+4, ((dlgY+9)<<3)+3, 415);
+  if (player[p].inventory.HasPogo) g_pGfxEngine->Tilemap->drawTile(boxsurface, ((dlgX+12)<<3)+4, ((dlgY+9)<<3)+3, 415);
   // cards
   if (player[p].inventory.HasCardYellow)
   {
-	  g_pGfxEngine->Tilemap.drawTile(boxsurface, (dlgX+21)<<3, ((dlgY+8)<<3)+3, 424);
+	  g_pGfxEngine->Tilemap->drawTile(boxsurface, (dlgX+21)<<3, ((dlgY+8)<<3)+3, 424);
 	  if(player[p].inventory.HasCardYellow > 1)
-		  g_pGfxEngine->Font.drawFont( boxsurface, itoa(player[p].inventory.HasCardYellow),(dlgX+20)<<3,((dlgY+8)<<3)+3,0);
+		  g_pGfxEngine->Font->drawFont( boxsurface, itoa(player[p].inventory.HasCardYellow),(dlgX+20)<<3,((dlgY+8)<<3)+3,0);
   }
   if (player[p].inventory.HasCardRed)
   {
-	  g_pGfxEngine->Tilemap.drawTile(boxsurface, (dlgX+25)<<3, ((dlgY+8)<<3)+3, 425);
+	  g_pGfxEngine->Tilemap->drawTile(boxsurface, (dlgX+25)<<3, ((dlgY+8)<<3)+3, 425);
 
 	  if(player[p].inventory.HasCardRed > 1)
-		  g_pGfxEngine->Font.drawFont( boxsurface, itoa(player[p].inventory.HasCardRed),(dlgX+24)<<3,((dlgY+8)<<3)+3,0);
+		  g_pGfxEngine->Font->drawFont( boxsurface, itoa(player[p].inventory.HasCardRed),(dlgX+24)<<3,((dlgY+8)<<3)+3,0);
   }
   if (player[p].inventory.HasCardGreen)
   {
-	  g_pGfxEngine->Tilemap.drawTile(boxsurface, (dlgX+21)<<3, ((dlgY+10)<<3)+4, 426);
+	  g_pGfxEngine->Tilemap->drawTile(boxsurface, (dlgX+21)<<3, ((dlgY+10)<<3)+4, 426);
 
 	  if (player[p].inventory.HasCardGreen > 1)
-		  g_pGfxEngine->Font.drawFont( boxsurface, itoa(player[p].inventory.HasCardGreen),(dlgX+20)<<3,((dlgY+10)<<3)+3,0);
+		  g_pGfxEngine->Font->drawFont( boxsurface, itoa(player[p].inventory.HasCardGreen),(dlgX+20)<<3,((dlgY+10)<<3)+3,0);
   }
   if (player[p].inventory.HasCardBlue)
   {
-	  g_pGfxEngine->Tilemap.drawTile(boxsurface, (dlgX+25)<<3, ((dlgY+10)<<3)+4, 427);
+	  g_pGfxEngine->Tilemap->drawTile(boxsurface, (dlgX+25)<<3, ((dlgY+10)<<3)+4, 427);
 
 	  if(player[p].inventory.HasCardBlue > 1)
-		  g_pGfxEngine->Font.drawFont( boxsurface, itoa(player[p].inventory.HasCardBlue),(dlgX+24)<<3,((dlgY+10)<<3)+3,0);
+		  g_pGfxEngine->Font->drawFont( boxsurface, itoa(player[p].inventory.HasCardBlue),(dlgX+24)<<3,((dlgY+10)<<3)+3,0);
   }
   // ship parts
   if (player[p].inventory.HasJoystick) t=448; else t=321;
-  g_pGfxEngine->Tilemap.drawTile(boxsurface, (dlgX+18)<<3, ((dlgY+4)<<3)+3, t);
+  g_pGfxEngine->Tilemap->drawTile(boxsurface, (dlgX+18)<<3, ((dlgY+4)<<3)+3, t);
   if (player[p].inventory.HasBattery) t=449; else t=322;
-  g_pGfxEngine->Tilemap.drawTile(boxsurface, (dlgX+21)<<3, ((dlgY+4)<<3)+3, t);
+  g_pGfxEngine->Tilemap->drawTile(boxsurface, (dlgX+21)<<3, ((dlgY+4)<<3)+3, t);
   if (player[p].inventory.HasVacuum) t=450; else t=323;
-  g_pGfxEngine->Tilemap.drawTile(boxsurface, (dlgX+24)<<3, ((dlgY+4)<<3)+3, t);
+  g_pGfxEngine->Tilemap->drawTile(boxsurface, (dlgX+24)<<3, ((dlgY+4)<<3)+3, t);
   if (player[p].inventory.HasWiskey) t=451; else t=324;
-  g_pGfxEngine->Tilemap.drawTile(boxsurface, (dlgX+27)<<3, ((dlgY+4)<<3)+3, t);
+  g_pGfxEngine->Tilemap->drawTile(boxsurface, (dlgX+27)<<3, ((dlgY+4)<<3)+3, t);
   // ray gun charges
   i = player[p].inventory.charges;
   if (i>999) i=999;
   tempbuf = itoa(i);
-  g_pGfxEngine->Font.drawFont( boxsurface, tempbuf, (dlgX+4)<<3, (dlgY+12)<<3, 0);
+  g_pGfxEngine->Font->drawFont( boxsurface, tempbuf, (dlgX+4)<<3, (dlgY+12)<<3, 0);
 
   // score
   i = player[p].inventory.score;
   tempbuf = itoa(i);
-  g_pGfxEngine->Font.drawFont( boxsurface, tempbuf, (dlgX+12-tempbuf.size())<<3, (dlgY+2)<<3, 0);
+  g_pGfxEngine->Font->drawFont( boxsurface, tempbuf, (dlgX+12-tempbuf.size())<<3, (dlgY+2)<<3, 0);
   // extra life at
   i = player[p].inventory.extralifeat;
   tempbuf = itoa(i);
-  g_pGfxEngine->Font.drawFont( boxsurface, tempbuf, (dlgX+28-tempbuf.size())<<3, (dlgY+2)<<3, 0);
+  g_pGfxEngine->Font->drawFont( boxsurface, tempbuf, (dlgX+28-tempbuf.size())<<3, (dlgY+2)<<3, 0);
   // lives
   i = player[p].inventory.lives;
   x = ((dlgX+1)<<3)+4;
   if (i>7) i=7;
   for(j=0;j<i;j++)
   {
-	  g_pGfxEngine->Sprite[playerbaseframes[p]].drawSprite( g_pVideoDriver->FGLayerSurface, x, (dlgY+4)<<3);
-	  x += g_pGfxEngine->Sprite[0].getWidth();
+	  g_pGfxEngine->Sprite[playerbaseframes[p]]->drawSprite( g_pVideoDriver->FGLayerSurface, x, (dlgY+4)<<3);
+	  x += g_pGfxEngine->Sprite[0]->getWidth();
   }
 }
 
@@ -275,65 +275,65 @@ int dlgX,dlgY,dlgW,dlgH;
   dlgH = GetStringAttribute("EP2_StatusBox", "HEIGHT");
 
   dialogbox(dlgX,dlgY,dlgW,dlgH);
-  g_pGfxEngine->Font.drawFont( boxsurface, getstring("EP2_StatusBox"), (dlgX+1)<<3, (dlgY+1)<<3, 0);
+  g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP2_StatusBox"), (dlgX+1)<<3, (dlgY+1)<<3, 0);
 
   // cards
   if (player[p].inventory.HasCardYellow)
   {
-	  g_pGfxEngine->Tilemap.drawTile(boxsurface, ((dlgX+21)<<3)-4, ((dlgY+8)<<3)+3, 424);
+	  g_pGfxEngine->Tilemap->drawTile(boxsurface, ((dlgX+21)<<3)-4, ((dlgY+8)<<3)+3, 424);
 
 	  if(player[p].inventory.HasCardYellow > 1)
-		  g_pGfxEngine->Font.drawFont( boxsurface, itoa(player[p].inventory.HasCardYellow),(dlgX+20)<<3,((dlgY+8)<<3)+3);
+		  g_pGfxEngine->Font->drawFont( boxsurface, itoa(player[p].inventory.HasCardYellow),(dlgX+20)<<3,((dlgY+8)<<3)+3);
 
   }
   if (player[p].inventory.HasCardRed)
   {
-	  g_pGfxEngine->Tilemap.drawTile(boxsurface, ((dlgX+25)<<3)-4, ((dlgY+8)<<3)+3, 425);
+	  g_pGfxEngine->Tilemap->drawTile(boxsurface, ((dlgX+25)<<3)-4, ((dlgY+8)<<3)+3, 425);
 
 	  if(player[p].inventory.HasCardRed > 1)
-		  g_pGfxEngine->Font.drawFont( boxsurface, itoa(player[p].inventory.HasCardRed),(dlgX+24)<<3,((dlgY+8)<<3)+3,0);
+		  g_pGfxEngine->Font->drawFont( boxsurface, itoa(player[p].inventory.HasCardRed),(dlgX+24)<<3,((dlgY+8)<<3)+3,0);
 
   }
   if (player[p].inventory.HasCardGreen)
   {
-	  g_pGfxEngine->Tilemap.drawTile(boxsurface, ((dlgX+21)<<3)-4, ((dlgY+10)<<3)+4, 426);
+	  g_pGfxEngine->Tilemap->drawTile(boxsurface, ((dlgX+21)<<3)-4, ((dlgY+10)<<3)+4, 426);
 
 	  if(player[p].inventory.HasCardGreen > 1)
-		  g_pGfxEngine->Font.drawFont( boxsurface, itoa(player[p].inventory.HasCardGreen),(dlgX+20)<<3,((dlgY+10)<<3)+3,0);
+		  g_pGfxEngine->Font->drawFont( boxsurface, itoa(player[p].inventory.HasCardGreen),(dlgX+20)<<3,((dlgY+10)<<3)+3,0);
   }
   if (player[p].inventory.HasCardBlue)
   {
-	  g_pGfxEngine->Tilemap.drawTile(boxsurface, ((dlgX+25)<<3)-4, ((dlgY+10)<<3)+4, 427);
+	  g_pGfxEngine->Tilemap->drawTile(boxsurface, ((dlgX+25)<<3)-4, ((dlgY+10)<<3)+4, 427);
 
 	  if(player[p].inventory.HasCardBlue > 1)
-		  g_pGfxEngine->Font.drawFont( boxsurface, itoa(player[p].inventory.HasCardBlue),(dlgX+24)<<3,((dlgY+10)<<3)+3,0);
+		  g_pGfxEngine->Font->drawFont( boxsurface, itoa(player[p].inventory.HasCardBlue),(dlgX+24)<<3,((dlgY+10)<<3)+3,0);
 
   }
   // cities saved
-  if (p_levelcontrol->levels_completed[4]) g_pGfxEngine->Font.drawFont( boxsurface, getstring("EP2_LVL4_TargetName"), (dlgX+1)<<3, (dlgY+8)<<3, 0);
-  if (p_levelcontrol->levels_completed[6]) g_pGfxEngine->Font.drawFont( boxsurface, getstring("EP2_LVL6_TargetName"), (dlgX+8)<<3, (dlgY+8)<<3, 0);
-  if (p_levelcontrol->levels_completed[7]) g_pGfxEngine->Font.drawFont( boxsurface, getstring("EP2_LVL7_TargetName"), (dlgX+1)<<3, (dlgY+9)<<3, 0);
-  if (p_levelcontrol->levels_completed[13]) g_pGfxEngine->Font.drawFont( boxsurface, getstring("EP2_LVL13_TargetName"), (dlgX+8)<<3, (dlgY+9)<<3, 0);
-  if (p_levelcontrol->levels_completed[11]) g_pGfxEngine->Font.drawFont( boxsurface, getstring("EP2_LVL11_TargetName"), (dlgX+1)<<3, (dlgY+10)<<3, 0);
-  if (p_levelcontrol->levels_completed[9]) g_pGfxEngine->Font.drawFont( boxsurface, getstring("EP2_LVL9_TargetName"), (dlgX+8)<<3, (dlgY+10)<<3, 0);
-  if (p_levelcontrol->levels_completed[15]) g_pGfxEngine->Font.drawFont( boxsurface, getstring("EP2_LVL15_TargetName"), (dlgX+1)<<3, (dlgY+11)<<3, 0);
-  if (p_levelcontrol->levels_completed[16]) g_pGfxEngine->Font.drawFont( boxsurface, getstring("EP2_LVL16_TargetName"), (dlgX+8)<<3, (dlgY+11)<<3, 0);
+  if (p_levelcontrol->levels_completed[4]) g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP2_LVL4_TargetName"), (dlgX+1)<<3, (dlgY+8)<<3, 0);
+  if (p_levelcontrol->levels_completed[6]) g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP2_LVL6_TargetName"), (dlgX+8)<<3, (dlgY+8)<<3, 0);
+  if (p_levelcontrol->levels_completed[7]) g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP2_LVL7_TargetName"), (dlgX+1)<<3, (dlgY+9)<<3, 0);
+  if (p_levelcontrol->levels_completed[13]) g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP2_LVL13_TargetName"), (dlgX+8)<<3, (dlgY+9)<<3, 0);
+  if (p_levelcontrol->levels_completed[11]) g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP2_LVL11_TargetName"), (dlgX+1)<<3, (dlgY+10)<<3, 0);
+  if (p_levelcontrol->levels_completed[9]) g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP2_LVL9_TargetName"), (dlgX+8)<<3, (dlgY+10)<<3, 0);
+  if (p_levelcontrol->levels_completed[15]) g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP2_LVL15_TargetName"), (dlgX+1)<<3, (dlgY+11)<<3, 0);
+  if (p_levelcontrol->levels_completed[16]) g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP2_LVL16_TargetName"), (dlgX+8)<<3, (dlgY+11)<<3, 0);
 
   // raygun icon
-  g_pGfxEngine->Tilemap.drawTile(boxsurface, (dlgX+20)<<3, ((dlgY+5)<<3)-5, 414);
+  g_pGfxEngine->Tilemap->drawTile(boxsurface, (dlgX+20)<<3, ((dlgY+5)<<3)-5, 414);
 
   // ray gun charges text
   i = player[p].inventory.charges;
   if (i>999) i=999;
-  g_pGfxEngine->Font.drawFont( boxsurface, itoa(i), (dlgX+27-tempbuf.size())<<3, ((dlgY+5)<<3)-1, 0);
+  g_pGfxEngine->Font->drawFont( boxsurface, itoa(i), (dlgX+27-tempbuf.size())<<3, ((dlgY+5)<<3)-1, 0);
 
   // score
   i = player[p].inventory.score;
-  g_pGfxEngine->Font.drawFont( boxsurface, itoa(i), (dlgX+12-tempbuf.size())<<3, (dlgY+2)<<3, 0);
+  g_pGfxEngine->Font->drawFont( boxsurface, itoa(i), (dlgX+12-tempbuf.size())<<3, (dlgY+2)<<3, 0);
 
   // extra life at
   i = player[p].inventory.extralifeat;
-  g_pGfxEngine->Font.drawFont( boxsurface, itoa(i), (dlgX+28-tempbuf.size())<<3, (dlgY+2)<<3, 0);
+  g_pGfxEngine->Font->drawFont( boxsurface, itoa(i), (dlgX+28-tempbuf.size())<<3, (dlgY+2)<<3, 0);
 
   // lives
   i = player[p].inventory.lives;
@@ -341,8 +341,8 @@ int dlgX,dlgY,dlgW,dlgH;
   if (i>7) i=7;
   for(j=0;j<i;j++)
   {
-	  g_pGfxEngine->Sprite[playerbaseframes[p]].drawSprite( g_pVideoDriver->FGLayerSurface, x, (dlgY+4)<<3);
-	  x += g_pGfxEngine->Sprite[0].getWidth();
+	  g_pGfxEngine->Sprite[playerbaseframes[p]]->drawSprite( g_pVideoDriver->FGLayerSurface, x, (dlgY+4)<<3);
+	  x += g_pGfxEngine->Sprite[0]->getWidth();
   }
 
 }
@@ -363,72 +363,72 @@ int dlgX,dlgY,dlgW,dlgH;
   dlgH = GetStringAttribute("EP3_StatusBox", "HEIGHT");
 
   dialogbox(dlgX,dlgY,dlgW,dlgH);
-  g_pGfxEngine->Font.drawFont( boxsurface, getstring("EP3_StatusBox"), (dlgX+1)<<3, (dlgY+1)<<3, 0);
+  g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP3_StatusBox"), (dlgX+1)<<3, (dlgY+1)<<3, 0);
 
   // calculate % ankh time left
   ankhtimepercent = (int)((float)player[p].ankhtime / (PLAY_ANKH_TIME/100));
   // ankh time
-  g_pGfxEngine->Tilemap.drawTile(boxsurface, (dlgX+4)<<3, ((dlgY+8)<<3)+3, 214);
+  g_pGfxEngine->Tilemap->drawTile(boxsurface, (dlgX+4)<<3, ((dlgY+8)<<3)+3, 214);
 
-  g_pGfxEngine->Font.drawFont( boxsurface, itoa(ankhtimepercent), (dlgX+8)<<3, ((dlgY+8)<<3)+7, 0);
+  g_pGfxEngine->Font->drawFont( boxsurface, itoa(ankhtimepercent), (dlgX+8)<<3, ((dlgY+8)<<3)+7, 0);
 
   // raygun icon
-  g_pGfxEngine->Tilemap.drawTile(boxsurface, (dlgX+23)<<3, ((dlgY+5)<<3)-5, 216);
+  g_pGfxEngine->Tilemap->drawTile(boxsurface, (dlgX+23)<<3, ((dlgY+5)<<3)-5, 216);
 
   // ray gun charges text
   i = player[p].inventory.charges;
   if (i>999) i=999;
   tempbuf = itoa(i);
-  g_pGfxEngine->Font.drawFont( boxsurface, tempbuf, (dlgX+26)<<3, ((dlgY+5)<<3)-1, 0);
+  g_pGfxEngine->Font->drawFont( boxsurface, tempbuf, (dlgX+26)<<3, ((dlgY+5)<<3)-1, 0);
 
   // cards
   if (player[p].inventory.HasCardYellow)
   {
-	  g_pGfxEngine->Tilemap.drawTile(boxsurface, ((dlgX+14)<<3)+4, ((dlgY+8)<<3)+4, 217);
+	  g_pGfxEngine->Tilemap->drawTile(boxsurface, ((dlgX+14)<<3)+4, ((dlgY+8)<<3)+4, 217);
 
 	  if(player[p].inventory.HasCardYellow > 1)
-		  g_pGfxEngine->Font.drawFont( boxsurface, itoa(player[p].inventory.HasCardYellow),(dlgX+13)<<3,((dlgY+8)<<3)+3,0);
+		  g_pGfxEngine->Font->drawFont( boxsurface, itoa(player[p].inventory.HasCardYellow),(dlgX+13)<<3,((dlgY+8)<<3)+3,0);
 
   }
   if (player[p].inventory.HasCardRed)
   {
-	  g_pGfxEngine->Tilemap.drawTile(boxsurface, ((dlgX+18)<<3)+4, ((dlgY+8)<<3)+4, 218);
+	  g_pGfxEngine->Tilemap->drawTile(boxsurface, ((dlgX+18)<<3)+4, ((dlgY+8)<<3)+4, 218);
 
 	  if(player[p].inventory.HasCardRed > 1)
-		  g_pGfxEngine->Font.drawFont(boxsurface, itoa(player[p].inventory.HasCardRed),(dlgX+17)<<3,((dlgY+8)<<3)+3,0);
+		  g_pGfxEngine->Font->drawFont(boxsurface, itoa(player[p].inventory.HasCardRed),(dlgX+17)<<3,((dlgY+8)<<3)+3,0);
 
   }
   if (player[p].inventory.HasCardGreen)
   {
-	  g_pGfxEngine->Tilemap.drawTile(boxsurface, ((dlgX+22)<<3)+4, ((dlgY+8)<<3)+4, 219);
+	  g_pGfxEngine->Tilemap->drawTile(boxsurface, ((dlgX+22)<<3)+4, ((dlgY+8)<<3)+4, 219);
 
 	  if(player[p].inventory.HasCardGreen > 1)
-		  g_pGfxEngine->Font.drawFont(boxsurface, itoa(player[p].inventory.HasCardGreen),(dlgX+21)<<3,((dlgY+8)<<3)+3,0);
+		  g_pGfxEngine->Font->drawFont(boxsurface, itoa(player[p].inventory.HasCardGreen),(dlgX+21)<<3,((dlgY+8)<<3)+3,0);
 
   }
   if (player[p].inventory.HasCardBlue)
   {
-	  g_pGfxEngine->Tilemap.drawTile(boxsurface, ((dlgX+26)<<3)+4, ((dlgY+8)<<3)+4, 220);
+	  g_pGfxEngine->Tilemap->drawTile(boxsurface, ((dlgX+26)<<3)+4, ((dlgY+8)<<3)+4, 220);
 
 	  if(player[p].inventory.HasCardBlue > 1)
-		  g_pGfxEngine->Font.drawFont(boxsurface, itoa(player[p].inventory.HasCardBlue),(dlgX+25)<<3,((dlgY+8)<<3)+3,0);
+		  g_pGfxEngine->Font->drawFont(boxsurface, itoa(player[p].inventory.HasCardBlue),(dlgX+25)<<3,((dlgY+8)<<3)+3,0);
 
   }
 
   // score
   i = player[p].inventory.score;
-  g_pGfxEngine->Font.drawFont(boxsurface, itoa(i), (dlgX+12-tempbuf.size())<<3, (dlgY+2)<<3);
+  g_pGfxEngine->Font->drawFont(boxsurface, itoa(i), (dlgX+12-tempbuf.size())<<3, (dlgY+2)<<3);
   // extra life at
   i = player[p].inventory.extralifeat;
-  g_pGfxEngine->Font.drawFont(boxsurface, itoa(i), (dlgX+28-tempbuf.size())<<3, (dlgY+2)<<3);
+  g_pGfxEngine->Font->drawFont(boxsurface, itoa(i), (dlgX+28-tempbuf.size())<<3, (dlgY+2)<<3);
   // lives
   i = player[p].inventory.lives;
   x = ((dlgX+1)<<3)+4;
   if (i>9) i=9;
   for(j=0;j<i;j++)
   {
-	  g_pGfxEngine->Sprite[playerbaseframes[p]].drawSprite( g_pVideoDriver->FGLayerSurface, x, (dlgY+4)<<3);
-	  x += g_pGfxEngine->Sprite[0].getWidth();
+	  g_pGfxEngine->Sprite[playerbaseframes[p]]->drawSprite( g_pVideoDriver->FGLayerSurface, x, (dlgY+4)<<3);
+	  x += g_pGfxEngine->Sprite[0]->getWidth();
   }
 }
 
@@ -477,20 +477,20 @@ int dlgX,dlgY,dlgW,dlgH;
 
   SDL_Surface *boxsurface = g_pVideoDriver->FGLayerSurface;
 
-  g_pGfxEngine->Font.drawFont( boxsurface, getstring("EP1_SHIP"), (dlgX+1)<<3, (dlgY+1)<<3,0);
+  g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP1_SHIP"), (dlgX+1)<<3, (dlgY+1)<<3,0);
 
   // draw needed parts
   if (!player[cp].inventory.HasJoystick)
-	  g_pGfxEngine->Tilemap.drawTile(boxsurface, (dlgX+9)<<3, (dlgY+3)<<3, 448);
+	  g_pGfxEngine->Tilemap->drawTile(boxsurface, (dlgX+9)<<3, (dlgY+3)<<3, 448);
 
   if (!player[cp].inventory.HasBattery)
-	  g_pGfxEngine->Tilemap.drawTile(boxsurface, (dlgX+12)<<3, (dlgY+3)<<3, 449);
+	  g_pGfxEngine->Tilemap->drawTile(boxsurface, (dlgX+12)<<3, (dlgY+3)<<3, 449);
 
   if (!player[cp].inventory.HasVacuum)
-	  g_pGfxEngine->Tilemap.drawTile(boxsurface, (dlgX+15)<<3, (dlgY+3)<<3, 450);
+	  g_pGfxEngine->Tilemap->drawTile(boxsurface, (dlgX+15)<<3, (dlgY+3)<<3, 450);
 
   if (!player[cp].inventory.HasWiskey)
-	  g_pGfxEngine->Tilemap.drawTile(boxsurface, (dlgX+18)<<3, (dlgY+3)<<3, 451);
+	  g_pGfxEngine->Tilemap->drawTile(boxsurface, (dlgX+18)<<3, (dlgY+3)<<3, 451);
 
   g_pVideoDriver->update_screen();
 
@@ -524,7 +524,7 @@ const int twirlspeed = 100;
   twirlY = GetStringAttribute(strname, "TWIRLY");
 
   dialogbox(dlgX,dlgY,dlgW,dlgH);
-  g_pGfxEngine->Font.drawFont( boxsurface, getstring(strname), (dlgX+1)<<3, (dlgY+1)<<3,0);
+  g_pGfxEngine->Font->drawFont( boxsurface, getstring(strname), (dlgX+1)<<3, (dlgY+1)<<3,0);
 
   g_pVideoDriver->update_screen();
 
@@ -538,7 +538,7 @@ const int twirlspeed = 100;
     {
 	if (twirltimer>twirlspeed)
 	{
-		g_pGfxEngine->Font.drawCharacter( boxsurface, (dlgX+twirlX)<<3, (dlgY+twirlY)<<3, twirlframe+9);
+		g_pGfxEngine->Font->drawCharacter( boxsurface, (dlgX+twirlX)<<3, (dlgY+twirlY)<<3, twirlframe+9);
 		g_pVideoDriver->update_screen();
 		twirlframe++;
 		if (twirlframe>5) twirlframe=0;
@@ -556,9 +556,9 @@ char save_slot_box(int issave, stCloneKeenPlus *pCKP)
 {
 char saveslot;
 FILE *fp;
-	std::string fname;
+std::string fname;
 char slotexists;
-int x, bmnum;
+int x;
 int dlgX,dlgY,dlgW,dlgH;
 
 stLevelControl *p_levelcontrol = &(pCKP->Control.levelcontrol);
@@ -579,9 +579,8 @@ top: ;
      dlgW = GetStringAttribute("WhichSlotLoad", "WIDTH");
      dlgH = GetStringAttribute("WhichSlotLoad", "HEIGHT");
      map_redraw();
-     bmnum = g_pGraphics->getBitmapNumberFromName("TITLE");
-     x = (320/2)-(bitmaps[bmnum].xsize/2);
-     g_pGraphics->drawBitmap(x, 0, bmnum);
+     x = (320/2)-(g_pGfxEngine->getBitmap("TITLE")->getWidth()/2);
+     g_pGfxEngine->getBitmap("TITLE")->draw( g_pVideoDriver->getScrollSurface(), x, 0);
   }
 
   saveslot = 0;
@@ -592,11 +591,11 @@ top: ;
 	g_pGfxEngine->drawDialogBox(boxsfc, dlgX,dlgY,dlgW,dlgH);
 	if (issave)
 	{
-		g_pGfxEngine->Font.drawFont(boxsfc, getstring("WhichSlotSave"),(dlgX+1)<<3,(dlgY+1)<<3);
+		g_pGfxEngine->Font->drawFont(boxsfc, getstring("WhichSlotSave"),(dlgX+1)<<3,(dlgY+1)<<3);
 	}
 	else
 	{
-		g_pGfxEngine->Font.drawFont(boxsfc, getstring("WhichSlotLoad"),(dlgX+1)<<3,(dlgY+1)<<3);
+		g_pGfxEngine->Font->drawFont(boxsfc, getstring("WhichSlotLoad"),(dlgX+1)<<3,(dlgY+1)<<3);
 		gamedo_AnimatedTiles();
 	}
 
@@ -655,7 +654,7 @@ top: ;
 	  g_pGfxEngine->drawDialogBox(boxsfc, dlgX,dlgY,dlgW,dlgH);
 	  if (issave)
 	  {
-		g_pGfxEngine->Font.drawFont(boxsfc, getstring("SaveSlotOverwrite"),(dlgX+1)<<3,(dlgY+1)<<3);
+		g_pGfxEngine->Font->drawFont(boxsfc, getstring("SaveSlotOverwrite"),(dlgX+1)<<3,(dlgY+1)<<3);
 	    if (g_pInput->getPressedKey(KN))
 	    {
 		  map_redraw();
@@ -669,7 +668,7 @@ top: ;
 	  }
 	  else
 	  {
-		  g_pGfxEngine->Font.drawFont(boxsfc, getstring("LoadNoSuchSlot"),(dlgX+1)<<3,(dlgY+1)<<3);
+		  g_pGfxEngine->Font->drawFont(boxsfc, getstring("LoadNoSuchSlot"),(dlgX+1)<<3,(dlgY+1)<<3);
 
 		  if (g_pInput->getPressedAnyKey())
 		  {
@@ -721,7 +720,7 @@ int dlgX,dlgY,dlgW,dlgH;
 	gamedo_render_drawobjects();
 
 	g_pGfxEngine->drawDialogBox( sfc, dlgX,dlgY,dlgW,dlgH);
-	g_pGfxEngine->Font.drawFont( sfc, getstring("GameSaveSuccess"), (dlgX+1)<<3, (dlgY+1)<<3 );
+	g_pGfxEngine->Font->drawFont( sfc, getstring("GameSaveSuccess"), (dlgX+1)<<3, (dlgY+1)<<3 );
 
 	gamedo_frameskipping_blitonly();
 	gamedo_render_eraseobjects();
@@ -754,7 +753,7 @@ int dlgX,dlgY,dlgW,dlgH;
 	gamedo_AnimatedTiles();
 
 	g_pGfxEngine->drawDialogBox( sfc, dlgX,dlgY,dlgW,dlgH);
-	g_pGfxEngine->Font.drawFont( sfc, text, (dlgX+1)<<3, (dlgY+1)<<3 );
+	g_pGfxEngine->Font->drawFont( sfc, text, (dlgX+1)<<3, (dlgY+1)<<3 );
 
 	if (g_pInput->getPressedKey(KQ))
 	{
@@ -890,92 +889,6 @@ unsigned int rnd(void)
   //random_seed = random_seed * 1103515245 + 12345;
   //return (uint)(random_seed / 65536) % 32768;
 	return rand();
-}
-
-void radar(void)
-{
-unsigned int x,y,o;
-unsigned int x1,y1,x2,y2;
-unsigned int yoff;
-  // draw the map
-  for(y=0;y<map.ysize;y++)
-  {
-    yoff = ((y+4+scrolly_buf)&511)<<9;
-    for(x=0;x<map.xsize;x++)
-    	g_pGraphics->getScrollbuffer()[yoff+((4+x+scrollx_buf)&511)] = map.mapdata[x][y]&15;
-
-  }
-
-  // draw objects
-  for(o=0;o<MAX_OBJECTS;o++)
-  {
-    if (objects[o].exists)
-    {
-      x = objects[o].x >> CSF >> 4;
-      y = objects[o].y >> CSF >> 4;
-
-      yoff = ((y+4+scrolly_buf)&511)<<9;
-      g_pGraphics->getScrollbuffer()[yoff+((4+x+scrollx_buf)&511)] = objects[o].type&15;
-    }
-  }
-
-  // draw the area that is visible in the scrollbuffer
-  x1 = mapx; y1 = mapy;
-  x2 = x1+32; y2 = y1+32;
-  for(y=y1;y<y2;y++)
-  {
-     if (y<map.ysize)
-     {
-       yoff = ((y+4+scrolly_buf)&511)<<9;
-       g_pGraphics->getScrollbuffer()[yoff+((4+x1+scrollx_buf)&511)] = 10;
-       if (x2<map.xsize)
-    	   g_pGraphics->getScrollbuffer()[yoff+((4+x2+scrollx_buf)&511)] = 10;
-     }
-  }
-  for(x=x1;x<=x2;x++)
-  {
-     if (y1 < map.ysize && x < map.xsize)
-     {
-       yoff = ((y1+4+scrolly_buf)&511)<<9;
-       g_pGraphics->getScrollbuffer()[yoff+((4+x+scrollx_buf)&511)] = 10;
-     }
-     if (y2 < map.ysize && x < map.xsize)
-     {
-       yoff = ((y2+4+scrolly_buf)&511)<<9;
-       g_pGraphics->getScrollbuffer()[yoff+((4+x+scrollx_buf)&511)] = 10;
-     }
-  }
-
-  // draw the area that is visible on the screen
-  // 320x200 = 20x12.5 tiles
-  x1 = scroll_x>>4; y1 = scroll_y>>4;
-  x2 = x1+20; y2 = y1+12;
-  for(y=y1;y<y2;y++)
-  {
-     if (y<map.ysize)
-     {
-       yoff = ((y+4+scrolly_buf)&511)<<9;
-       g_pGraphics->getScrollbuffer()[yoff+((4+x1+scrollx_buf)&511)] = 12;
-       if (x2<map.xsize)
-    	   g_pGraphics->getScrollbuffer()[yoff+((4+x2+scrollx_buf)&511)] = 12;
-     }
-  }
-  for(x=x1;x<=x2;x++)
-  {
-     if (x < map.xsize)
-     {
-       if (y1 < map.ysize)
-       {
-         yoff = ((y1+4+scrolly_buf)&511)<<9;
-         g_pGraphics->getScrollbuffer()[yoff+((4+x+scrollx_buf)&511)] = 12;
-       }
-       if (y2 < map.ysize)
-       {
-         yoff = ((y2+4+scrolly_buf)&511)<<9;
-         g_pGraphics->getScrollbuffer()[yoff+((4+x+scrollx_buf)&511)] = 12;
-       }
-     }
-  }
 }
 
 void SetAllCanSupportPlayer(int o, int state)

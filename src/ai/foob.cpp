@@ -70,8 +70,8 @@ unsigned int i;
   }
 
    // find out if a player is on the same level as the foob cat
-   Uint16 player_height = g_pGfxEngine->Sprite[0].getHeight();
-   Uint16 foob_height = g_pGfxEngine->Sprite[objects[o].sprite].getHeight();
+   Uint16 player_height = g_pGfxEngine->Sprite[0]->getHeight();
+   Uint16 foob_height = g_pGfxEngine->Sprite[objects[o].sprite]->getHeight();
    onsamelevel = 0;
    for(i=0;i<numplayers;i++)
    {
