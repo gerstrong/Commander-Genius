@@ -193,6 +193,10 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 
      // Now load the special TGA Sprites if some are available
      LoadSpecialSprites( g_pGfxEngine->Sprite );
+
+     for(Uint16 s=0 ; s<g_pGfxEngine->Sprite.size() ; s++)
+    	 g_pGfxEngine->Sprite[s]->optimizeSurface();
+
 	return true;
 }
 

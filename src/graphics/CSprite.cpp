@@ -29,6 +29,21 @@ bool CSprite::createSurface(Uint32 flags, SDL_Color *Palette)
 	return ( m_surface != NULL );
 }
 
+bool CSprite::optimizeSurface()
+{
+	if(m_surface)
+	{
+		SDL_Surface *temp_surface;
+		temp_surface = SDL_DisplayFormat(m_surface);
+		SDL_FreeSurface(m_surface);
+		m_surface = temp_surface;
+	}
+	return true;
+}
+
+///
+// Getters and Setters
+///
 void CSprite::setColorPalette(SDL_Color *Palette)
 {
 	SDL_SetColors(m_surface, Palette, 0, 255);
