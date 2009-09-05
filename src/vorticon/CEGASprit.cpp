@@ -154,7 +154,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
              else c = pixel[y*sfc->w + x];
 
              c |= (Planes->getbit(RawData, p) << p);
-             //if (p==3 && c==0) c = 16;
+             if (p==3 && c==0) c = 16;
              pixel[y*sfc->w + x] = c;
            }
          }
