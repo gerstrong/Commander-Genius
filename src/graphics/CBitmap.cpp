@@ -62,11 +62,6 @@ void CBitmap::setName(const std::string &name)
 	m_name = name;
 }
 
-void CBitmap::setColorPalette(SDL_Color *Palette)
-{
-	SDL_SetColors(m_BitmapSurface, Palette, 0, 255);
-}
-
 ///
 // Drawing Routines
 ///

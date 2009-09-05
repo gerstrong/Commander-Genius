@@ -21,8 +21,6 @@ public:
 	bool optimizeSurface();
 	SDL_Surface *getSDLSurface();
 
-	void setColorPalette(SDL_Color *Palette);
-
 	void drawTile(SDL_Surface *dst, Uint16 x, Uint16 y, Uint16 t);
 
 private:

@@ -422,13 +422,7 @@ void CVideoDriver::pal_set(short colour, Uint8 red, Uint8 green, Uint8 blue)
 // applies all changes to the palette made with pal_set
 void CVideoDriver::pal_apply(void)
 {
-  g_pGfxEngine->setColorPalettes( (SDL_Color *) &MyPalette);
-  SDL_SetColors(screen, (SDL_Color *) &MyPalette, 0, 256);
-  SDL_SetColors(ScrollSurface, (SDL_Color *) &MyPalette, 0, 256);
-  if (blitsurface_alloc)
-  {
-    SDL_SetColors(BlitSurface, (SDL_Color *) &MyPalette, 0, 256);
-  }
+	// TODO: Apply a new function which is not palette dependive
 }
 
 void CVideoDriver::sb_blit(void)

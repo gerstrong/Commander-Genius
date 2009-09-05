@@ -80,6 +80,16 @@ void pal_init()
   configPalette(16, 1, 0x01,0x00,0x00);
 
   palette_ncolors = 17;
+
+  int r, g, b, c;
+  for(c=0;c<palette_ncolors;c++)
+  {
+	  r = palette[c].r[isdark];
+	  g = palette[c].g[isdark];
+	  b = palette[c].b[isdark];
+
+	  g_pVideoDriver->pal_set(c, r, g, b);
+  }
 }
 
 void pal_fade(int fadeamt)
@@ -120,7 +130,7 @@ int r,g,b;
 			}
 		}
 
-		g_pVideoDriver->pal_set(c, r, g, b);
+		//g_pVideoDriver->pal_set(c, r, g, b);
 	}
 	palette_dirty = 1;
 

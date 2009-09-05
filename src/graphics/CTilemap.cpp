@@ -41,11 +41,6 @@ bool CTilemap::optimizeSurface()
 ///////////////////////////////////
 ///// Initialization Routines /////
 ///////////////////////////////////
-void CTilemap::setColorPalette(SDL_Color *Palette)
-{
-	SDL_SetColors(m_Tilesurface, Palette, 0, 255);
-}
-
 SDL_Surface *CTilemap::getSDLSurface()
 {
 	return m_Tilesurface;

@@ -23,7 +23,6 @@ CGfxEngine::~CGfxEngine() {
 ///
 // Creation Routines
 ///
-
 CTilemap *CGfxEngine::createEmptyTilemap()
 {
 	Tilemap = new CTilemap();
@@ -108,16 +107,9 @@ CBitmap *CGfxEngine::getBitmap(const std::string &name)
 	return NULL;
 }
 
-// Needed when the fade effect is called.
 void CGfxEngine::setColorPalettes(SDL_Color *Palette)
 {
 	if ( (m_Palette = Palette) == NULL ) return;
-	if(Font) Font->setColorPalette(m_Palette);
-	if(Tilemap) Tilemap->setColorPalette(m_Palette);
-	for( Uint16 i=0 ; i<Sprite.size() ; i++ )
-		Sprite[i]->setColorPalette(m_Palette);
-	for( Uint16 i=0 ; i<Bitmap.size() ; i++ )
-		Bitmap[i]->setColorPalette(m_Palette);
 }
 
 void CGfxEngine::copyTileToSprite( Uint16 t, Uint16 s, Uint16 ntilestocopy )

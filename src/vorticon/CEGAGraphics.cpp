@@ -6,6 +6,7 @@
  */
 
 #include "CEGAGraphics.h"
+#include "../sdl/CVideoDriver.h"
 
 #ifdef TARGET_WIN32
 #include <dir.h>
@@ -60,6 +61,9 @@ bool CEGAGraphics::loadData()
 	// assure that the last used resources are freed
 	g_pGfxEngine->freeFonts();
 	g_pGfxEngine->freeTilemap();
+
+	// Set the palette, so the proper colours are loaded
+	g_pGfxEngine->setColorPalettes( g_pVideoDriver->MyPalette );
 
 	if(m_path == "")
 		buf = "egahead.ck" + itoa(m_episode);

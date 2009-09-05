@@ -23,8 +23,6 @@ CGraphics::CGraphics() {
 	blitbuffer=NULL;
 	scrollbuf_memsize = 0;
 	blitbuf_memsize = 0;
-
-	pal_init();
 }
 
 bool CGraphics::allocScrollBufmem(void)

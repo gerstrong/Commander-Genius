@@ -47,10 +47,6 @@ SDL_Surface *CFont::getSDLSurface()
 ///////////////////////////////////
 ///// Initialization Routines /////
 ///////////////////////////////////
-void CFont::setColorPalette(SDL_Color *Palette)
-{
-	SDL_SetColors(m_FontSurface, Palette, 0, 255);
-}
 
 // Used for the selected text
 void CFont::generateGlowFonts()

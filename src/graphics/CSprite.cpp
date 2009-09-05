@@ -44,11 +44,6 @@ bool CSprite::optimizeSurface()
 ///
 // Getters and Setters
 ///
-void CSprite::setColorPalette(SDL_Color *Palette)
-{
-	SDL_SetColors(m_surface, Palette, 0, 255);
-}
-
 void CSprite::setSize(Uint8 w, Uint8 h)
 {
 	m_xsize = w; m_ysize = h;

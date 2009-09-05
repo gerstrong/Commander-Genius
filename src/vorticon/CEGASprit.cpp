@@ -243,6 +243,7 @@ Uint8* pixel;
 				if (c==-1) c = pal_addcolor(r, g, b);
 				if (c==-1) return 1;
 
+				if ( c == 0 ) c=16;
 				pixel[y*w + x] = c;
 			}
 			else

@@ -34,8 +34,6 @@ public:
 	bool optimizeSurface();
 	SDL_Surface *getSDLSurface();
 
-	void setColorPalette(SDL_Color *Palette);
-
 	void generateGlowFonts();
 	void generateSpecialTwirls();
 	void generateInverseFonts();
