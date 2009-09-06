@@ -970,45 +970,41 @@ int boxtimer;
 
   g_pSound->playSound(SOUND_KEENSLEFT, PLAY_NOW);
 
+
   boxtimer = 0;
   do
   {
-	  if(g_pTimer->TimeToRender())
+	  dialogbox(KEENSLEFT_X,boxY,KEENSLEFT_W,boxH);
+	  g_pGfxEngine->Font->drawFont( boxsurface, getstring("LIVES_LEFT_BACKGROUND"),(KEENSLEFT_X+1)*8,(boxY+1)*8,0);
+	  g_pGfxEngine->Font->drawFont( boxsurface, getstring("LIVES_LEFT"),((KEENSLEFT_X+7)*8)+4,(boxY+1)*8,0);
+	  y = ((boxY+2)*8)+4;
+	  if (numplayers>1) y--;
+	  for(p=0;p<numplayers;p++)
 	  {
-		  dialogbox(KEENSLEFT_X,boxY,KEENSLEFT_W,boxH);
-		  g_pGfxEngine->Font->drawFont( boxsurface, getstring("LIVES_LEFT_BACKGROUND"),(KEENSLEFT_X+1)*8,(boxY+1)*8,0);
-		  g_pGfxEngine->Font->drawFont( boxsurface, getstring("LIVES_LEFT"),((KEENSLEFT_X+7)*8)+4,(boxY+1)*8,0);
-		  y = ((boxY+2)*8)+4;
-		  if (numplayers>1) y--;
-		  for(p=0;p<numplayers;p++)
-		  {
-		    x = ((KEENSLEFT_X+1)*8)+4;
-		    for(i=0;i<player[p].inventory.lives&&i<=10;i++)
-		    {
-		    	Uint16 f = PMAPDOWNFRAME+playerbaseframes[p]-(episode==3);
-		    	g_pGfxEngine->Sprite[f]->drawSprite(g_pVideoDriver->FGLayerSurface, x, y );
-
+	    x = ((KEENSLEFT_X+1)*8)+4;
+	    for(i=0;i<player[p].inventory.lives&&i<=10;i++)
+	    {
+	    	Uint16 f = PMAPDOWNFRAME+playerbaseframes[p]-(episode==3);
+	    	g_pGfxEngine->Sprite[f]->drawSprite(g_pVideoDriver->FGLayerSurface, x, y );
 		      x+=16;
-		    }
-		    y+=18;
-		  }
-		  g_pVideoDriver->update_screen();
-
-		  if (boxtimer > KEENSLEFT_TIME)
-		  {
-			  break;
-		  } else boxtimer++;
-
-		  enter = g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_FIRE)||
-				  g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_POGO);
-		  if (enter)
-			  break;
-		  if (g_pInput->getPressedKey(KQUIT))
-			  return;
-
-		  g_pInput->pollEvents();
-		  g_pTimer->TimeToDelay();
+	    }
+	    y+=18;
 	  }
+	  //g_pVideoDriver->update_screen();
+	  if (boxtimer > KEENSLEFT_TIME)
+	  {
+		  break;
+	  } else boxtimer++;
+	  enter = g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_FIRE)||
+			  g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_POGO);
+	  if (enter)
+		  break;
+	  if (g_pInput->getPressedKey(KQUIT))
+		  return;
+
+	  g_pInput->pollEvents();
+
+	  gamedo_RenderScreen();
   } while(!enter);
 
 }
