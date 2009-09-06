@@ -129,8 +129,6 @@ void CGfxEngine::drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w
 {
 	int x,y,i,j;
 
-
-
 	Font->drawCharacter(DialogSurface, 1, x1*8, y1*8);
 	Font->drawCharacter(DialogSurface, 3, (x1+w)*8, y1*8);
 	for(x=(x1*8)+8,i=0;i<w-1;i++)

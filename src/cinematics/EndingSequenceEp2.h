@@ -14,7 +14,6 @@ void eseq_showmsg(const std::string& text, int boxleft, int boxtop,
 		int boxwidth, int boxheight, bool autodismiss);
 
 // references to ../gamedo.cpp
-void gamedo_RenderScreen();
 void gamedo_enemyai(stLevelControl *p_levelcontrol);
 
 // Reference to ../game.cpp
