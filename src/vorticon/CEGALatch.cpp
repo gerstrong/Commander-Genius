@@ -48,7 +48,7 @@ CEGALatch::~CEGALatch() {
 bool CEGALatch::loadHead( char *data )
 {
 	Uint16 height, width;
-	char name[8];
+	char name[9];
 
     const std::string default_names[] = { "TITLE", "IDLOGO", "F1HELP", "HIGHSCOR",
   		  "NAME", "SCORE", "PARTS", "GAMEOVER", "AN", "PRESENT", "APOGEE", "KEENSHIP", "WINDON",
@@ -64,6 +64,7 @@ bool CEGALatch::loadHead( char *data )
 		memcpy(name,data+16*i+8,8);
 		width *= 8; // The width is always divided by eight when read
 
+		name[8] = 0; // Ensure null-terminated!
 		if( name[0] != 0 ) g_pGfxEngine->Bitmap[i]->setName( name );
 		else g_pGfxEngine->Bitmap[i]->setName( default_names[i] );
 
