@@ -573,7 +573,7 @@ int dlgX, dlgY, dlgW, dlgH;
   scrollx_buf = scroll_x = 0;
   scrolly_buf = scroll_y = 0;
 
-  SDL_Surface *finale_sfc = SDL_CreateRGBSurface( g_pVideoDriver->FGLayerSurface->flags, 320, 200, 8, 0, 0, 0, 0);
+  SDL_Surface *finale_sfc = SDL_CreateRGBSurface( g_pVideoDriver->SpriteLayerSurface->flags, 320, 200, 8, 0, 0, 0, 0);
   SDL_SetColors( finale_sfc, g_pGfxEngine->Palette.m_Palette, 0, 255);
   finale_draw( finale_sfc, "finale.ck2", pCKP->Resources.GameDataDirectory);
 
@@ -585,21 +585,26 @@ int dlgX, dlgY, dlgW, dlgH;
 
   do
   {
-	  tempstr = "EP2_ESEQ_PART3_PAGE" + itoa(curpage);
-     text = getstring(tempstr);
-     dlgX = GetStringAttribute(tempstr, "LEFT");
-     dlgY = GetStringAttribute(tempstr, "TOP");
-     dlgW = GetStringAttribute(tempstr, "WIDTH");
-     dlgH = GetStringAttribute(tempstr, "HEIGHT");
-     lastpage = GetStringAttribute(tempstr, "LASTPAGE");
+		// Draw uncompressed finale Plot
+		SDL_BlitSurface( finale_sfc, NULL, g_pVideoDriver->SpriteLayerSurface, NULL );
 
-     eseq_showmsg(text, dlgX, dlgY, dlgW, dlgH, 1);
-     if (lastpage==1) break;
+		tempstr = "EP2_ESEQ_PART3_PAGE" + itoa(curpage);
+		text = getstring(tempstr);
+		dlgX = GetStringAttribute(tempstr, "LEFT");
+		dlgY = GetStringAttribute(tempstr, "TOP");
+		dlgW = GetStringAttribute(tempstr, "WIDTH");
+		dlgH = GetStringAttribute(tempstr, "HEIGHT");
+		lastpage = GetStringAttribute(tempstr, "LASTPAGE");
 
-     curpage++;
+		eseq_showmsg(text, dlgX, dlgY, dlgW, dlgH, 1);
+		if (lastpage==1) break;
+
+		curpage++;
   } while(!g_pInput->getPressedKey(KQUIT));
 
   finale_draw( finale_sfc, "finale.ck2", pCKP->Resources.GameDataDirectory);
+  // Draw uncompressed finale Plot
+  SDL_BlitSurface( finale_sfc, NULL, g_pVideoDriver->SpriteLayerSurface, NULL );
   eseq_ToBeContinued();
   SDL_FreeSurface(finale_sfc);
 

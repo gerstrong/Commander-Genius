@@ -36,18 +36,21 @@ int mask;
        if (finale_planecol==1)
        {
     	   //g_pGraphics->sb_setpixel(finale_x, finale_y, finale_planecol);
-    	   //pixel[finale_y*320 + finale_x] = finale_planecol;
+    	   if( (finale_y*320 + finale_x) < 320*200 )
+    		   pixel[finale_y*320 + finale_x] = finale_planecol;
        }
        else
        {  // merge with previous planes
     	   //g_pGraphics->sb_setpixel(finale_x, finale_y, g_pGraphics->sb_getpixel(finale_x, finale_y) | finale_planecol);
-    	   //pixel[finale_y*320 + finale_x] |= finale_planecol;
+    	   if( finale_y*finale_x < 320*200 )
+    		   pixel[finale_y*320 + finale_x] |= finale_planecol;
        }
      }
      else if (finale_planecol==1)
      {
     	 //g_pGraphics->sb_setpixel(finale_x, finale_y, 0);
-    	 pixel[(finale_y*320 + finale_x)*bpp] = 0;
+    	 if( (finale_y*320 + finale_x) < 320*200 )
+    		 pixel[finale_y*320 + finale_x] = 0;
      }
 
      finale_x++;

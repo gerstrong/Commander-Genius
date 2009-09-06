@@ -285,7 +285,7 @@ int eseq1_BackAtHome(stCloneKeenPlus *pCKP)
   lastenterstate = 1;
   waittimer = 0;
 
-  SDL_Surface *finale_sfc = SDL_CreateRGBSurface( g_pVideoDriver->FGLayerSurface->flags, 320, 200, 8, 0, 0, 0, 0);
+  SDL_Surface *finale_sfc = SDL_CreateRGBSurface( g_pVideoDriver->SpriteLayerSurface->flags, 320, 200, 8, 0, 0, 0, 0);
   SDL_SetColors( finale_sfc, g_pGfxEngine->Palette.m_Palette, 0, 255);
   finale_draw( finale_sfc, "finale.ck1", pCKP->Resources.GameDataDirectory);
 
@@ -306,12 +306,12 @@ int eseq1_BackAtHome(stCloneKeenPlus *pCKP)
   do
   {
 	// Draw uncompressed finale Plot
-	SDL_BlitSurface( finale_sfc, NULL, g_pVideoDriver->FGLayerSurface, NULL );
+	SDL_BlitSurface( finale_sfc, NULL, g_pVideoDriver->SpriteLayerSurface, NULL );
 
 	enter = ( g_pInput->getPressedKey(KENTER) || g_pInput->getPressedKey(KCTRL) || g_pInput->getPressedKey(KALT) );
 
 	// Show the window (lights on or off)
-	bm_window->draw(sfc, 80, 0);
+	bm_window->draw(g_pVideoDriver->SpriteLayerSurface, 80, 0);
 
 	g_pGfxEngine->drawDialogBox(sfc ,dlgX, dlgY, dlgW, dlgH);
 
