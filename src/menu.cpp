@@ -22,7 +22,6 @@
 #include "CLogFile.h"
 #include "sdl/CSettings.h"
 #include "dialog/CTextViewer.h"
-#include "common/palette.h"
 #include "graphics/CGfxEngine.h"
 
 #include <SDL.h>
@@ -42,8 +41,6 @@ void showmapatpos(int level, int xoff, int yoff, stCloneKeenPlus *pCKP)
 	std::string levelname;
 	g_pLogFile->ftextOut("showmapatpos(%d, %d, %d);<br>",level,xoff,yoff);
 	pCKP->Control.levelcontrol.dark = 0;
-	pal_setdark(pCKP->Control.levelcontrol.dark);
-	pal_fade(PAL_FADE_SHADES);
 	
 	initgame( &(pCKP->Control.levelcontrol) );           // reset scroll
 	levelname = "level" + FixedWidthStr_LeftFill(itoa(level), 2, '0') + ".ck" + itoa(pCKP->Control.levelcontrol.episode);
@@ -156,7 +153,6 @@ bool loadStartMenu(stCloneKeenPlus *pCKP)
 	for( int i=0 ; i < pCKP->numGames ; i++ )
 		GamesMenu->addObject(DLG_OBJ_OPTION_TEXT,16+8,8+8*(i+1), pCKP->GameData[i].Name);
 
-	fade(FADE_IN, FADE_NORM);
 
 	do
 	{
@@ -181,8 +177,6 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 	int x;
 	int selection;
 	SDL_Surface *sfc;
-
-	fade(FADE_IN, FADE_NORM);
 
 	for(unsigned int cp=0 ; cp<numplayers ; cp++)	// in some situations. the player is shown for a short time.
 	{
@@ -227,7 +221,6 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 
 	do
 	{
-		gamedo_fades();
 		gamedo_AnimatedTiles();
 		MainMenu->processlogic();
 
@@ -252,8 +245,6 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
     	pCKP->Control.levelcontrol.hardmode = (diff == 1) ? true : false;
 
     	loadslot = save_slot_box(0, pCKP);
-    	if (loadslot)
-    		fade(FADE_OUT, FADE_NORM);
 
     	x = (320/2)-(bm_title->getWidth()/2);
     	bm_title->draw(sfc, x+scroll_x, 0);
@@ -277,7 +268,6 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 
         	pCKP->Control.levelcontrol.hardmode = (diff == 1) ? true : false;
     	}
-    	fade(FADE_OUT, FADE_NORM);
     }
 
 	return selection;
@@ -673,9 +663,6 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 
 				Settings->saveDrvCfg();
 				delete Settings; Settings = NULL;
-
-				fade(FADE_IN, FADE_NORM);
-				gamedo_fades();
 				break;
 			}
 			else
@@ -944,7 +931,6 @@ void showPage(const std::string& str_text, int textsize)
 	CTextViewer *TextViewer = new CTextViewer(g_pVideoDriver->FGLayerSurface, 0, 0, 320, 136);
 	TextViewer->loadText(str_text);
 
-	fade(FADE_IN, FADE_NORM);
 	AllPlayersInvisible();
 
 	TextViewer->processCycle();
@@ -983,14 +969,6 @@ int boxtimer;
   boxH = KEENSLEFT_H + (numplayers * 2);
 
   g_pSound->playSound(SOUND_KEENSLEFT, PLAY_NOW);
-
-  fade(FADE_IN, FADE_NORM);
-
-  while(fade_in_progress())
-  {
-	  gamedo_fades();
-	  gamedo_RenderScreen();
-  }
 
   boxtimer = 0;
   do

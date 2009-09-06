@@ -153,7 +153,6 @@ void CTextViewer::processCycle()
 
 	do
 	{
-		gamedo_fades();
 		gamedo_AnimatedTiles();
 
 		g_pInput->pollEvents();

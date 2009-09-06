@@ -40,30 +40,6 @@
 #define MAX_OBJECTS    100
 #define MAX_ANIMTILES  200
 
-#define PAL_FADE_SHADES   20
-#define PAL_FADE_WHITEOUT 40
-typedef struct stFadeControl
-{
- int mode;
- int dir;
- int curamt;
- int fadetimer;
- int rate;
- char fadeout_complete;
-} stFadeControl;
-
-#define NO_FADE         0
-#define FADE_GO         1
-#define FADE_COMPLETE   2
-
-#define FADE_IN         1
-#define FADE_OUT        2
-
-#define FADE_NORM       3
-#define FADE_FAST       1
-#define FADE_SLOW       30
-#define FADE_FLASH		255		//temphack
-
 #define NO_QUIT                 0
 #define QUIT_PROGRAM            1
 #define QUIT_TO_TITLE           2

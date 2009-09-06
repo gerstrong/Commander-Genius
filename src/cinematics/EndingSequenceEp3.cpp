@@ -15,8 +15,6 @@
 
 #include "EndingSequenceEp3.h"
 
-#include "../common/palette.h"
-
 void eseq3_Mortimer()
 {
 int x,y,w,h;
@@ -70,23 +68,6 @@ char eseq3_AwardBigV(stCloneKeenPlus *pCKP)
   scrollx_buf = scrolly_buf = 0;
   player[0].hideplayer = 1;
 
-  /*fade.mode = FADE_GO;
-  fade.rate = FADE_NORM;
-  fade.dir = FADE_OUT;
-  fade.curamt = PAL_FADE_SHADES;
-  fade.fadetimer = 0;*/
-  /*do
-  {
-    gamedo_fades();
-    g_pInput->pollEvents();
-  } while(fade_in_progress());*/
-
-  /*fade.mode = FADE_GO;
-  fade.rate = FADE_NORM;
-  fade.dir = FADE_IN;
-  fade.curamt = 0;
-  fade.fadetimer = 0;*/
-
   x = GetStringAttribute("THE_END", "LEFT");
   y = GetStringAttribute("THE_END", "TOP");
   w = GetStringAttribute("THE_END", "WIDTH");
@@ -98,7 +79,6 @@ char eseq3_AwardBigV(stCloneKeenPlus *pCKP)
   c = 0;
   do
   {
-    gamedo_fades();
     if (c==0 && !g_pInput->getPressedCommand(IC_STATUS)) c++;
     if (c==1 && g_pInput->getPressedCommand(IC_STATUS)) c++;
     /*if (c==2 && fade.dir==FADE_IN)

@@ -7,8 +7,6 @@
 
 #include "../sdl/sound/CSound.h"
 
-#include "../common/palette.h"
-
 // Teleporter on world map
 // (animates the teleporter and moves the player)
 // (ep1&3)
@@ -90,8 +88,6 @@ int animrate, numframes;
                return;
              }
            }
-           // white-out teleport flash
-           fade(FADE_IN, FADE_FAST);
          }
          if (objects[o].ai.teleport.NoExitingTeleporter)
          {  // for the teleporter to exit the bonus area in ep1

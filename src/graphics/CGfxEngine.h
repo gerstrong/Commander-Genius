@@ -15,6 +15,7 @@
 #include "CTilemap.h"
 #include "CSprite.h"
 #include "CBitmap.h"
+#include "CPalette.h"
 #include <vector>
 
 #include "../CSingleton.h"
@@ -36,8 +37,6 @@ public:
 	void freeTilemap();
 	void freeFonts();
 
-	void setColorPalettes(SDL_Color *Palette);
-
 	void copyTileToSprite( Uint16 t, Uint16 s, Uint16 ntilestocopy );
 
 	void drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w, int h);
@@ -45,13 +44,16 @@ public:
 	Uint8 getBitmapID(const std::string name);
 	CBitmap *getBitmap(const std::string &name);
 
+	void fade(Uint8 alpha);
+
 	CFont *Font;
 	CTilemap *Tilemap;
+	CPalette Palette;
 	std::vector<CSprite*> Sprite;
 	std::vector<CBitmap*> Bitmap;
 
 private:
-	SDL_Color *m_Palette;
+	SDL_Surface *m_fxsurface;
 };
 
 #endif /* CGFXENGINE_H_ */

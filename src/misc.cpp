@@ -30,8 +30,6 @@
 #include "dialog/CWindow.h"
 #include "dialog/CTextViewer.h"
 
-#include "common/palette.h"
-
 #include <fstream>
 
 void banner(void)
@@ -735,8 +733,6 @@ int VerifyQuit()
 {
 int dlgX,dlgY,dlgW,dlgH;
 	std::string text;
-
-  if (fade_in_progress()) return NO_QUIT;
 
   text = getstring("VerifyQuit");
   dlgX = GetStringAttribute("VerifyQuit", "LEFT");

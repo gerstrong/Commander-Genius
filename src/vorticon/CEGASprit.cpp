@@ -134,7 +134,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 															(Sprite[s].hitbox_r << CSF),
 															(Sprite[s].hitbox_b << CSF) );
     	 g_pGfxEngine->Sprite[s]->createSurface( g_pVideoDriver->SpriteLayerSurface->flags,
-											g_pVideoDriver->MyPalette );
+												 g_pGfxEngine->Palette.m_Palette );
      }
 
      char c;
@@ -226,7 +226,7 @@ Uint8* pixel;
 
 	base = image;
 	sprite->setSize(w, h);
-	sprite->createSurface( g_pVideoDriver->SpriteLayerSurface->flags, g_pVideoDriver->MyPalette );
+	sprite->createSurface( g_pVideoDriver->SpriteLayerSurface->flags, g_pGfxEngine->Palette.m_Palette );
 
 	SDL_Surface *sfc = sprite->getSDLSurface();
 
@@ -239,8 +239,8 @@ Uint8* pixel;
 			b = *image++; g = *image++; r = *image++; a = *image++;
 			if (a & 128)
 			{
-				c = pal_getcolor(r, g, b);
-				if (c==-1) c = pal_addcolor(r, g, b);
+				c = g_pGfxEngine->Palette.getcolor(r, g, b);
+				if (c==-1) c = g_pGfxEngine->Palette.addcolor(r, g, b);
 				if (c==-1) return 1;
 
 				if ( c == 0 ) c=16;
@@ -315,7 +315,7 @@ void CEGASprit::CreateYellowSpriteofTile( CTilemap *tilemap, Uint16 tile, CSprit
 
 	sprite->setSize(tile_rect.w, tile_rect.h);
 	sprite->createSurface( g_pVideoDriver->SpriteLayerSurface->flags,
-						   g_pVideoDriver->MyPalette );
+						   g_pGfxEngine->Palette.m_Palette );
 
 	SDL_Surface *src_sfc = sprite->getSDLSurface();
 

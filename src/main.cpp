@@ -39,7 +39,6 @@
 #include "include/fileio/story.h"
 #include "include/main.h"
 #include "fileio/CParser.h"
-#include "common/palette.h"
 #include "vorticon/CHighScores.h"
 #include "CLogFile.h"
 #include "CGame.h"
@@ -57,7 +56,6 @@ int fps=0, curfps=0;
 
 stOption *options = NULL;
 
-stFadeControl fadecontrol;
 unsigned int demo_RLERunLen;
 unsigned char demo_data[DEMO_MAX_SIZE+1];
 unsigned int demo_data_index;
@@ -335,7 +333,7 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
 		if (firsttime)
 		{
 			int op;
-			CSprite *obj_sprite;;
+			CSprite *obj_sprite;
 			for(i=0;i<MAX_PLAYERS;i++)
 			{
 				op = player[i].useObject;
@@ -368,8 +366,6 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
 
 		  wm = (p_levelcontrol->curlevel==80) ? 1 : 0 ;
 		}
-	    pal_setdark(p_levelcontrol->dark);
-	    pal_fade(PAL_FADE_SHADES);
 
 		// HQ Music. Load Music for a level if you have HQP
 		g_pMusicPlayer->stop();

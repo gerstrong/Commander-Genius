@@ -17,7 +17,6 @@
 #include "graphics/CGfxEngine.h"
 #include "CLogFile.h"
 #include "StringUtils.h"
-#include "common/palette.h"
 
 CGraphics::CGraphics() {
 	blitbuffer=NULL;

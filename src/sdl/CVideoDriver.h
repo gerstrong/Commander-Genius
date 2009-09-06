@@ -93,12 +93,14 @@ public:
 	void setAspectCorrection(bool value) { m_aspect_correction = value; }
 	bool getAspectCorrection(void) { return m_aspect_correction; }
 
-	SDL_Color MyPalette[256];
-
 	SDL_Surface *screen;                   // the actual video memory/window
 	SDL_Surface *BlitSurface;
 	SDL_Surface *SpriteLayerSurface;   // For the sprites
 	SDL_Surface *FGLayerSurface;       // Scroll buffer for Messages
+	SDL_Surface *ScrollSurface;       // 512x512 scroll buffer
+	SDL_Surface *FXSurface;
+
+	bool m_fading;
 
 private:
 #ifdef USE_OPENGL
@@ -127,7 +129,6 @@ private:
 	//SDL_Surface *FGLayerSurface;       // Scroll buffer for Messages
 	// This one is not allowed here! Used only for tests!
 	//SDL_Surface *screen;                   // the actual video memory/window
-	SDL_Surface *ScrollSurface;       // 512x512 scroll buffer
 	// pointer to the surface that sb_blit is to assemble the scroll buffer into.
 	// if zoom=1 this is the same as "screen", else it's allocated as it's own
 	// buffer of 320x200.

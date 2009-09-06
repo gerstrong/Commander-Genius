@@ -14,8 +14,6 @@
 #include "../StringUtils.h"
 #include "../fileio/CExeFile.h"
 
-#include "../common/palette.h"
-
 #include "EndingSequenceEp1.h"
 
 #define CMD_MOVE                0
@@ -68,17 +66,15 @@ int i;
   // all objects -> nonexistant
   for(i=0;i<MAX_OBJECTS;i++) objects[i].exists = 0;
 
-  fade(FADE_IN, FADE_NORM);
 
   eseq_showmsg(getstring("EP1_ESEQ_PART1"),1,18,37,6,1);
 
   do
   {
-    gamedo_fades();
     gamedo_AnimatedTiles();
 
     g_pInput->pollEvents();
-  } while(fade_in_progress() && !g_pInput->getPressedKey(KQUIT));
+  } while( !g_pInput->getPressedKey(KQUIT) );
 
   return 0;
 }
@@ -167,7 +163,6 @@ int scrollingon;
 
   player[0].playframe = SPR_SHIP_RIGHT;
 
-  fade(FADE_IN, FADE_NORM);
   ShipQueuePtr = 0;
   max_scroll_x = max_scroll_y = 20000;
   do
@@ -245,7 +240,6 @@ int scrollingon;
 
 	lastenterstate = enter;
 
-	gamedo_fades();
 	gamedo_AnimatedTiles();
 
 	if (scrollingon) gamedo_ScrollTriggers(0);
@@ -305,8 +299,6 @@ int eseq1_BackAtHome(stCloneKeenPlus *pCKP)
   dlgW = GetStringAttribute("EP1_ESEQ_PART2_PAGE1", "WIDTH");
   dlgH = GetStringAttribute("EP1_ESEQ_PART2_PAGE1", "HEIGHT");
   bm_window = g_pGfxEngine->Bitmap[g_pGfxEngine->getBitmapID("WINDOFF")];	// window lights off
-
-  fade(FADE_IN, FADE_NORM);
 
   do
   {
@@ -380,7 +372,6 @@ int eseq1_BackAtHome(stCloneKeenPlus *pCKP)
 		}
 	}
 
-	gamedo_fades();
 	lastenterstate = enter;
 	g_pInput->pollEvents();
 	if (g_pInput->getPressedKey(KQUIT)) return 1;

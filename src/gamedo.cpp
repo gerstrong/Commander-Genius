@@ -15,7 +15,6 @@
 #include "sdl/CInput.h"
 #include "sdl/sound/CSound.h"
 #include "graphics/CGfxEngine.h"
-#include "common/palette.h"
 #include "CLogFile.h"
 #include "CGraphics.h"
 #include "externals.h"
@@ -27,8 +26,6 @@
 extern unsigned long gotPlayX;
 extern unsigned long CurrentTickCount;
 extern unsigned int unknownKey;
-
-extern stFadeControl fadecontrol;
 
 int animtiletimer, curanimtileframe;
 
@@ -73,7 +70,7 @@ unsigned int msb, lsb;
           if (byt & 32)player[0].playcontrol[PA_STATUS] = 1;
           if (byt & 64)
           {  // demo STOP command
-            if(fadecontrol.mode!=FADE_GO) endlevel(1, p_levelcontrol );
+            endlevel(1, p_levelcontrol );
           }
         }
         else
@@ -87,12 +84,12 @@ unsigned int msb, lsb;
         {
           if (g_pInput->getPressedKey(i))
           {
-            if (fadecontrol.mode!=FADE_GO) endlevel( 0, p_levelcontrol );
+            endlevel( 0, p_levelcontrol );
           }
         }
         if (g_pInput->getPressedCommand(IC_STATUS))
         {
-          if (fadecontrol.mode!=FADE_GO) endlevel( 0, p_levelcontrol );
+          endlevel( 0, p_levelcontrol );
         }
 
         return;
@@ -729,44 +726,6 @@ void gamedo_HandleFKeys(stCloneKeenPlus *pCKP)
     if (g_pInput->getPressedKey(KF3))
        game_save_interface(pCKP);
 
-}
-
-void gamedo_fades(void)
-{
-	if (!fade_in_progress()) return;
-
-	if (fadecontrol.fadetimer > fadecontrol.rate)
-	{
-		fadecontrol.fadetimer = 0;
-		if (fadecontrol.dir==FADE_IN)
-		{
-			if (++fadecontrol.curamt >= PAL_FADE_SHADES)
-				fadecontrol.mode = FADE_COMPLETE;
-		}
-		else if (fadecontrol.dir==FADE_FLASH)
-		{
-			if (--fadecontrol.curamt <= PAL_FADE_SHADES)
-				fadecontrol.mode = FADE_COMPLETE;
-		}
-		else if (fadecontrol.dir==FADE_OUT)
-		{
-			if (fadecontrol.curamt > 0)
-			{
-				fadecontrol.curamt--;
-			}
-			else
-			{
-				fadecontrol.mode = FADE_COMPLETE;
-				fadecontrol.fadeout_complete = 1;
-			}
-		}
-
-		pal_fade(fadecontrol.curamt);
-	}
-    else
-	{
-		fadecontrol.fadetimer++;
-	}
 }
 
 // same as above but only does a sb_blit, not the full RenderScreen.

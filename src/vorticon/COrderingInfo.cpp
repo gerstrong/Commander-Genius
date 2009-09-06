@@ -8,14 +8,11 @@
 #include "../keen.h"
 #include "COrderingInfo.h"
 #include "../sdl/CInput.h"
-//#include "../CGraphics.h"
 #include "../CLogFile.h"
 #include "../include/menu.h"
 #include "../include/gamedo.h"
 #include "../fileio/CExeFile.h"
 #include "../graphics/CGfxEngine.h"
-
-#include "../common/palette.h"
 
 COrderingInfo::COrderingInfo(SDL_Surface *Surface, int episode, std::string& datadirectory) {
 	CExeFile *Exefile = new CExeFile(episode, datadirectory);
@@ -97,17 +94,11 @@ void COrderingInfo::Render(stCloneKeenPlus *pCKP)
 		return;
 	}
 
-	fade(FADE_IN, FADE_NORM);
 	showmapatpos(90, 22<<4, 32, pCKP);
 
 	do
 	{
-		// do fades
-		gamedo_fades();
 		gamedo_AnimatedTiles();
-
-		if(fade_in_progress())
-			continue;
 
 		for(int i=0 ; i<m_numberoflines ; i++)
 		{
@@ -115,10 +106,7 @@ void COrderingInfo::Render(stCloneKeenPlus *pCKP)
 		}
 
 		if( g_pInput->getPressedAnyCommand() )
-		{
 			cancel = true;
-			fade(FADE_OUT, FADE_NORM);
-		}
 
 		if(g_pInput->getExitEvent()) cancel=true;
 
@@ -126,7 +114,7 @@ void COrderingInfo::Render(stCloneKeenPlus *pCKP)
 		// blit the scrollbuffer to the display
 		gamedo_frameskipping_blitonly();
 
-	} while( !( cancel && !fade_in_progress() ) );
+	} while( !cancel );
 
 
 }

@@ -22,16 +22,12 @@ char tempbuf[200];
 #include "include/misc.h"
 #include "include/menu.h"
 
-#include "common/palette.h"
-
 #include "dialog/CDialog.h"
 #include "CGraphics.h"
 
 #ifdef TARGET_WIN32
 #define uint unsigned int
 #endif
-
-extern stFadeControl fadecontrol;
 
 // player handler mother-function, calls all needed "gamepdo"
 // functions for player cp
@@ -74,11 +70,11 @@ char doFall;
           }
 
 
-          if ( fadecontrol.mode==NO_FADE || fadecontrol.dir==FADE_IN || pCKP->Control.levelcontrol.demomode)
-          {
+          //if ( pCKP->Control.levelcontrol.demomode)
+          //{
             gamepdo_playpushed(cp, pCKP);
             gamepdo_InertiaAndFriction_X(cp, pCKP);
-          }
+          //}
 
        	  gamepdo_JumpAndPogo(cp, pCKP);
 
@@ -907,13 +903,6 @@ int o;
 	// if zero it means he hit the switch on a tantalus ray!
 	if (!ppos)
 	{
-		/*if (editor)	  // in editor it'll bork if we play a cinematic, so don't
-		{
-			killplayer(0);
-		}
-		else
-		{
-		}*/
 		p_levelcontrol->success = 0;
 		p_levelcontrol->command = LVLC_TANTALUS_RAY;
 		return;
@@ -966,8 +955,6 @@ CSprite *standsprite = g_pGfxEngine->Sprite[PSTANDFRAME];
 			else if (t==TILE_LIGHTSWITCH)
 			{ // lightswitch
 				   p_levelcontrol->dark ^= 1;
-				   pal_setdark(p_levelcontrol->dark);
-				   pal_fade(PAL_FADE_SHADES);
 				   g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, objects[player[cp].useObject].scrx);
 				if (!player[cp].ppogostick) return;
 			}
@@ -1762,8 +1749,6 @@ int o;
 
 void gamepdo_StatusBox(int cp, stCloneKeenPlus *pCKP)
 {
-  if (fade_in_progress()) return;
-
   if( g_pInput->getHoldedCommand(cp, IC_STATUS) )
 	  showinventory(cp, pCKP);
 }

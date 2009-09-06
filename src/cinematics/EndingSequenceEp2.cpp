@@ -14,8 +14,6 @@
 #include "../CGraphics.h"
 #include "../StringUtils.h"
 
-#include "../common/palette.h"
-
 
 enum cmd_actions{
 CMD_MOVE,
@@ -68,17 +66,7 @@ CBitmap **bitmaps = &g_pGfxEngine->Bitmap[0];
 
 	o=0;
 
-  fade(FADE_OUT, FADE_NORM);
-
-  do
-  {
-    gamedo_fades();
-    g_pInput->pollEvents();
-  } while(fade_in_progress());
-
   pCKP->Control.levelcontrol.dark = 0;
-  pal_setdark(pCKP->Control.levelcontrol.dark);
-  pal_fade(PAL_FADE_SHADES);
 
   initgame( &(pCKP->Control.levelcontrol) );
   state = TAN_STATE_WAITBEFOREFIRE;
@@ -106,7 +94,6 @@ CBitmap **bitmaps = &g_pGfxEngine->Bitmap[0];
 
   player[0].playframe = BlankSprite;
 
-  fade(FADE_IN, FADE_NORM);
   tantalus_animframe = 0;
   timer = 0;
   do
@@ -221,21 +208,13 @@ CBitmap **bitmaps = &g_pGfxEngine->Bitmap[0];
 	break;
 	}
 
-	if (!fade_in_progress())
-	{  // we're done
-	  delete_object(find_next_object(OBJ_EGA_BITMAP));
-	  return 0;
-	}
-
 	enter = (g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_POGO));
 	if (enter && state==TAN_STATE_GAMEOVER)
 	{
 	  //if (fade.dir!=FADE_OUT)
-        fade(FADE_OUT, FADE_NORM);
 	}
 	lastenterstate = enter;
 
-	gamedo_fades();
 	if (state!=TAN_STATE_GAMEOVER) gamedo_AnimatedTiles();
 
 	gamedo_enemyai( &(pCKP->Control.levelcontrol) );
@@ -388,8 +367,6 @@ int afterfadewaittimer;
   ShipQueuePtr = 0;
   max_scroll_x = max_scroll_y = 20000;
 
-  fade(FADE_IN, FADE_NORM);
-
   eseq_showmsg(getstring("EP2_ESEQ_PART1"),HEADSFOREARTH_X,HEADSFOREARTH_Y,HEADSFOREARTH_W,HEADSFOREARTH_H, true);
 
   // erase the message dialog
@@ -467,7 +444,6 @@ int afterfadewaittimer;
 	}
 	lastenterstate = enter;
 
-	gamedo_fades();
 	gamedo_AnimatedTiles();
 	gamedo_ScrollTriggers(0);
 	g_pInput->pollEvents();
@@ -577,7 +553,6 @@ int afterfadewaittimer = 0;
 	}
 	lastenterstate = enter;
 
-	gamedo_fades();
 	gamedo_AnimatedTiles();
 	g_pInput->pollEvents();
 

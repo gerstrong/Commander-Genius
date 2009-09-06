@@ -138,9 +138,6 @@ void CDialog::render()
 		m_alpha+=10;
 	}
 
-	// do fades
-	gamedo_fades();
-
 	// Render the empty Dialog frame if any
 	if(m_Frame) m_Frame->draw(m_DialogSurface);
 

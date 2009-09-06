@@ -63,7 +63,7 @@ bool CEGAGraphics::loadData()
 	g_pGfxEngine->freeTilemap();
 
 	// Set the palette, so the proper colours are loaded
-	g_pGfxEngine->setColorPalettes( g_pVideoDriver->MyPalette );
+	g_pGfxEngine->Palette.setupColorPalettes();
 
 	if(m_path == "")
 		buf = "egahead.ck" + itoa(m_episode);

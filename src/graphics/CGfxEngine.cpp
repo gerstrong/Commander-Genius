@@ -8,9 +8,9 @@
 #include "CGfxEngine.h"
 
 CGfxEngine::CGfxEngine() {
-	m_Palette = NULL;
 	Font = NULL;
 	Tilemap = NULL;
+	m_fxsurface = NULL;
 }
 
 CGfxEngine::~CGfxEngine() {
@@ -107,11 +107,6 @@ CBitmap *CGfxEngine::getBitmap(const std::string &name)
 	return NULL;
 }
 
-void CGfxEngine::setColorPalettes(SDL_Color *Palette)
-{
-	if ( (m_Palette = Palette) == NULL ) return;
-}
-
 void CGfxEngine::copyTileToSprite( Uint16 t, Uint16 s, Uint16 ntilestocopy )
 {
 	SDL_Rect src_rect, dst_rect;
@@ -121,7 +116,7 @@ void CGfxEngine::copyTileToSprite( Uint16 t, Uint16 s, Uint16 ntilestocopy )
 
 
 	Sprite[s]->setSize( 16, 16*ntilestocopy );
-	Sprite[s]->createSurface( Tilemap->getSDLSurface()->flags, m_Palette );
+	Sprite[s]->createSurface( Tilemap->getSDLSurface()->flags, Palette.m_Palette );
 
 	for(Uint8 i=0 ; i<ntilestocopy ; i++)
 	{

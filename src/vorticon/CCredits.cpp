@@ -12,7 +12,6 @@
 #include "../graphics/CGfxEngine.h"
 #include "../include/menu.h"
 #include "../include/gamedo.h"
-#include "../common/palette.h"
 
 CCredits::CCredits() {
 }
@@ -30,8 +29,6 @@ void CCredits::Render(stCloneKeenPlus *pCKP)
 	int scrolly = -52*8;
 	bool cancel = false;
 
-	fade(FADE_IN, FADE_NORM);
-
 	showmapatpos(90, 104<<4, 32, pCKP);
 	g_pInput->flushAll();
 	memset(scrolltext,0,51*80);
@@ -39,7 +36,6 @@ void CCredits::Render(stCloneKeenPlus *pCKP)
 	do
 	{
 		// do fades
-		gamedo_fades();
 		gamedo_AnimatedTiles();
 
 		if(timer<15) timer++;
@@ -121,10 +117,7 @@ void CCredits::Render(stCloneKeenPlus *pCKP)
 				g_pGfxEngine->Font->drawFont( g_pVideoDriver->FGLayerSurface, scrolltext[j], mid[j], scrolly+(j<<3), LETTER_TYPE_INVERSE);
 
 		if( g_pInput->getPressedAnyCommand() )
-		{
 			cancel = true;
-			fade(FADE_OUT, FADE_NORM);
-		}
 
 		if(g_pInput->getExitEvent()) cancel=true;
 
@@ -132,6 +125,6 @@ void CCredits::Render(stCloneKeenPlus *pCKP)
 
 		// blit the scrollbuffer to the display
 		gamedo_frameskipping_blitonly();
-	} while(!(cancel && !fade_in_progress()));
+	} while( !cancel );
 
 }

@@ -11,7 +11,6 @@
 #include "../CGraphics.h"
 #include "../include/menu.h"
 #include "../include/gamedo.h"
-#include "../common/palette.h"
 #include "../sdl/CVideoDriver.h"
 
 CIntro::CIntro() {
@@ -29,7 +28,6 @@ void CIntro::Render(stCloneKeenPlus *pCKP)
 	int scrolly = 200;
 	bool cancel=false;
 
-	fade( FADE_IN, FADE_NORM );
 	showmapatpos(90, 104<<4, 32, pCKP);
 
 	// Load the Title Bitmap
@@ -47,12 +45,7 @@ void CIntro::Render(stCloneKeenPlus *pCKP)
 
 	do
 	{
-		// do fades
-		gamedo_fades();
 		bm[1]->draw( g_pVideoDriver->FGLayerSurface, mid[1], scrolly+9);
-
-		if(fade_in_progress())
-			continue;
 
 		if(timer<7) timer++;
 		else
@@ -75,10 +68,7 @@ void CIntro::Render(stCloneKeenPlus *pCKP)
 		gamedo_AnimatedTiles();
 
 		if( g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand() )
-		{
 			cancel = true;
-			fade(FADE_OUT, FADE_NORM);
-		}
 
 		if(g_pInput->getExitEvent()) cancel=true;
 

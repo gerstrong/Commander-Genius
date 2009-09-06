@@ -16,8 +16,6 @@
 
 #include "sdl/sound/CSound.h"
 
-#include "common/palette.h"
-
 #include "hqp/CMusic.h"
 
 void AllowMountUnmountNessie(int cp);
@@ -70,9 +68,6 @@ void gamepdo_wm_SelectFrame(int cp, int episode)
 
     // episode 3 map frames start at 31, ep1&2 at 32
     if (episode==3) player[cp].playframe--;
-
-    // no walking animation if we're fading
-    if (fade_in_progress()) return;
 
     // add in walk frame if walking
     if (player[cp].pwalking) player[cp].playframe += player[cp].pwalkframe;
@@ -216,7 +211,6 @@ int teleport_snap[NUM_TPORTS+1] = {1   ,1   ,1   ,1   ,1   ,1   ,0   ,0   ,0   ,
 
 p_levelcontrol = &(pCKP->Control.levelcontrol);
 
-    if (fade_in_progress()) return;
     if (player[cp].hideplayer) return;  // don't execute function while teleporting
 
     if ((player[cp].playcontrol[PA_JUMP] || player[cp].playcontrol[PA_POGO]) && !player[cp].wm_lastenterstate)
@@ -318,6 +312,25 @@ p_levelcontrol = &(pCKP->Control.levelcontrol);
                 break;
 
               default:      // a regular level
+
+            	/*p_levelcontrol->demomode = DEMO_NODEMO;
+            	p_levelcontrol->level_done = LEVEL_COMPLETE;*/
+            	p_levelcontrol->command = LVLC_CHANGE_LEVEL;
+            	/*if (p_levelcontrol->curlevel != WM_MAP_NUM)
+            	{ // exiting a level, going back to world map
+					  for(i=0;i<numplayers;i++)
+					  {
+						player[i].inventory.HasCardYellow = 0;
+						player[i].inventory.HasCardBlue = 0;
+						player[i].inventory.HasCardGreen = 0;
+						player[i].inventory.HasCardRed = 0;
+					  }
+
+					  if (pCKP->Control.levelcontrol.success==1)  // mark level as completed on world map
+							  pCKP->Control.levelcontrol.levels_completed[pCKP->Control.levelcontrol.curlevel] = 1;
+
+					  pCKP->Control.levelcontrol.chglevelto = WM_MAP_NUM;
+            	}*/
             	p_levelcontrol->chglevelto = (lvl & 0x7fff);
                 endlevel(1, &(pCKP->Control.levelcontrol));
                 g_pMusicPlayer->stop();

@@ -8,8 +8,6 @@
 #include "../keen.h"
 #include "CommonEnding.h"
 
-#include "../common/palette.h"
-
 #include "../CGraphics.h"
 #include "../graphics/CGfxEngine.h"
 
@@ -75,7 +73,6 @@ void eseq_showmsg(const std::string& text, int boxleft, int boxtop,
 
   do
   {
-	gamedo_fades();
 	gamedo_AnimatedTiles();
 	gamedo_render_drawobjects();
 
@@ -145,9 +142,8 @@ int dlgX, dlgY, dlgW, dlgH;
 
   do
   {
-	  gamedo_fades();
 	  if (g_pInput->getPressedKey(KQUIT)) return;
 	  g_pInput->pollEvents();
-  } while(fade_in_progress());
+  } while(1);
 }
 

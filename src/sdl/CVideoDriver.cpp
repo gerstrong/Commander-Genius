@@ -16,7 +16,6 @@
 #include "../CLogFile.h"
 #include "../CGraphics.h"
 #include "../FindFile.h"
-#include "../common/palette.h"
 #include <iostream>
 #include <fstream>
 using namespace std;
@@ -89,6 +88,7 @@ CVideoDriver::CVideoDriver() {
 	  ScrollSurface=NULL;       // 512x512 scroll buffer
 	  FGLayerSurface=NULL;       // Scroll buffer for Messages
 	  BlitSurface=NULL;
+	  m_fading = false;
 
 	  m_Resolution_pos = m_Resolutionlist.begin();
 
@@ -376,6 +376,13 @@ bool CVideoDriver::createSurfaces(void)
 					SDL_MapRGB(SpriteLayerSurface->format, 0, 0xFF, 0xFE) );
 	SDL_FillRect( SpriteLayerSurface, NULL, SDL_MapRGB(SpriteLayerSurface->format, 0, 0xFF, 0xFE) );
 
+	FXSurface = SDL_CreateRGBSurface( Mode, 320, 200, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
+	if (!FXSurface)
+	{
+		g_pLogFile->textOut(RED,"VideoDriver: Couldn't create FXSurface!<br>");
+	  return false;
+	}
+	g_pGfxEngine->Palette.setFXSurface( FXSurface );
 
     if(m_Resolution.width == 320 && !m_opengl)
     {
@@ -399,30 +406,11 @@ bool CVideoDriver::createSurfaces(void)
 		VRAMPtr = (unsigned char*)screen->pixels + ((m_Resolution.width * stretch_blit_yoff * m_Resolution.depth)>>3)+screenrect.y*screen->pitch + (screenrect.x*m_Resolution.depth>>3);
     }
 
-    pal_init();
-    pal_fade(PAL_FADE_SHADES);
-    pal_apply();
-
     dstrect.x = 0; dstrect.y = 0;
 	dstrect.w = GAME_STD_WIDTH;
 	dstrect.h = GAME_STD_HEIGHT;
 
 	return true;
-}
-
-// alter the color palette. the palette is not actually altered
-// on-screen until pal_apply() is called.
-void CVideoDriver::pal_set(short colour, Uint8 red, Uint8 green, Uint8 blue)
-{
-  MyPalette[colour].r = red;
-  MyPalette[colour].g = green;
-  MyPalette[colour].b = blue;
-}
-
-// applies all changes to the palette made with pal_set
-void CVideoDriver::pal_apply(void)
-{
-	// TODO: Apply a new function which is not palette dependive
 }
 
 void CVideoDriver::sb_blit(void)
@@ -526,6 +514,9 @@ void CVideoDriver::update_screen(void)
 {
 	SDL_BlitSurface(SpriteLayerSurface, NULL, BlitSurface, NULL);
 	SDL_BlitSurface(FGLayerSurface, NULL, BlitSurface, NULL);
+
+	if(g_pGfxEngine->Palette.m_alpha)
+		SDL_BlitSurface(FXSurface, NULL, BlitSurface, NULL);
 
 #ifdef USE_OPENGL
    if(m_opengl)

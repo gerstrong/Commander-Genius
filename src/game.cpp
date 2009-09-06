@@ -14,7 +14,6 @@
 #include "include/gamedo.h"
 #include "include/gamepdo.h"
 #include "include/gm_pdowm.h"
-#include "common/palette.h"
 #include "hqp/CMusic.h"
 #include "graphics/CGfxEngine.h"
 #include "vorticon/CHighScores.h"
@@ -29,14 +28,11 @@ int playerbaseframes[MAX_PLAYERS] = {0,0,0,0,0,0,0,0};
 unsigned int max_scroll_x, max_scroll_y;
 char debugmode=0,acceleratemode=0;
 
-extern stFadeControl fadecontrol;
-
 // and this is where the magic happens
 void gameloop(stCloneKeenPlus *pCKP)
 {
-	unsigned int i;
-
-  int enter,lastquit;
+unsigned int i;
+int enter,lastquit;
 
   if (player[0].x==0 || player[0].y==0)
   {
@@ -52,10 +48,7 @@ void gameloop(stCloneKeenPlus *pCKP)
      pCKP->Control.levelcontrol.dokeensleft = false;
   }
   else
-  {
      loadinggame = 0;
-     fade(FADE_IN, FADE_NORM);
-  }
 
   // fire all guns immediately first time around
   gunfiretimer = (gunfirefreq+1);
@@ -69,14 +62,6 @@ void gameloop(stCloneKeenPlus *pCKP)
        if (player[i].isPlaying) gamepdo_SelectFrame(i);
      }
 
-     do
-     {
-        gamedo_fades();
-        gamedo_AnimatedTiles();
-        g_pInput->pollEvents();
-        gamedo_RenderScreen();
-     } while(fade_in_progress() /*&& !immediate_keytable[KQUIT]*/);
-
      eseq3_Mortimer();
   }
 
@@ -88,8 +73,6 @@ void gameloop(stCloneKeenPlus *pCKP)
   do
   {
 	if (primaryplayer==1) otherplayer = 0; else otherplayer = 1;
-
-	gamedo_fades();
 
 	// periodically make all enemy gun fixtures fire (in ep3)
 	// (also ice cannons in ep1) we do this in a global variable
@@ -114,7 +97,7 @@ void gameloop(stCloneKeenPlus *pCKP)
 	{
 	      for(i=0;i<MAX_PLAYERS;i++)
 	      {
-		if (player[i].isPlaying) gamepdo_wm_HandlePlayer(i, pCKP);
+	    	  if (player[i].isPlaying) gamepdo_wm_HandlePlayer(i, pCKP);
 	      }
 	}
 
@@ -134,36 +117,6 @@ void gameloop(stCloneKeenPlus *pCKP)
 			  if (gamedo_ScrollTriggers(primaryplayer) or gamedo_ScrollTriggers(otherplayer)) ScreenIsScrolling = 1;
 			  if (gamedo_ScrollTriggers(otherplayer) or gamedo_ScrollTriggers(primaryplayer)) ScreenIsScrolling = 1;
 		  }
-	}
-
-	// when we complete a fade out flag to exit the game loop
-	if(!fade_in_progress())
-	{
-		if ( fadecontrol.dir == FADE_OUT )
-		{
-		      pCKP->Control.levelcontrol.demomode = DEMO_NODEMO;
-		      pCKP->Control.levelcontrol.level_done = LEVEL_COMPLETE;
-		      pCKP->Control.levelcontrol.command = LVLC_CHANGE_LEVEL;
-		      if (pCKP->Control.levelcontrol.curlevel != WM_MAP_NUM)
-		      { // exiting a level, going back to world map
-			      for(i=0;i<numplayers;i++)
-			      {
-				      player[i].inventory.HasCardYellow = 0;
-				      player[i].inventory.HasCardBlue = 0;
-				      player[i].inventory.HasCardGreen = 0;
-				      player[i].inventory.HasCardRed = 0;
-			      }
-
-			if (pCKP->Control.levelcontrol.success==1)
-			  // mark level as completed on world map
-			      pCKP->Control.levelcontrol.levels_completed[pCKP->Control.levelcontrol.curlevel] = 1;
-
-			pCKP->Control.levelcontrol.chglevelto = WM_MAP_NUM;
-		      }
-		}
-		else
-		  fadecontrol.mode = NO_FADE;
-
 	}
 
 	// when walking through the exit door don't show keen's sprite past
@@ -201,7 +154,7 @@ void gameloop(stCloneKeenPlus *pCKP)
 	}
 
 	// do frameskipping, and render/blit the screen if it's time
-    	 gamedo_RenderScreen();
+    gamedo_RenderScreen();
   } while(!crashflag && pCKP->Control.levelcontrol.command==LVLC_NOCOMMAND);
 
   // Cleanup the player structure!
@@ -211,9 +164,6 @@ void start_gameover(stCloneKeenPlus *pCKP)
 {
  	 int cities=0;
    	 CHighScores *HighScoreTable = new CHighScores(g_pVideoDriver->FGLayerSurface, pCKP);
-
-   	 // Fade in. The high score must be seen!
-   	 fade(FADE_IN, FADE_NORM);
 
 	 bool extras[4] = {false,false,false,false};
 
@@ -248,11 +198,6 @@ void start_gameover(stCloneKeenPlus *pCKP)
    	 HighScoreTable->showHighScore();
 
    	 delete HighScoreTable;
-
-     if (fadecontrol.mode!=FADE_GO && fadecontrol.dir!=FADE_OUT)
-     {
-       fade(FADE_OUT, FADE_NORM);
-     }
 
      p_levelcontrol->command = LVLC_GAME_OVER;
 }
@@ -897,12 +842,8 @@ void PlayerTouchedExit(int theplayer, stCloneKeenPlus *pCKP)
 
 void endlevel(int reason_for_leaving, stLevelControl *levelcontrol)
 {
-  if (fadecontrol.mode == NO_FADE)
-  {
-    fade(FADE_OUT, FADE_NORM);
     levelcontrol->success = reason_for_leaving;
     levelcontrol->tobonuslevel = 0;
-  }
 }
 
 // this is so objects can block the player,
@@ -1058,7 +999,7 @@ CSprite** sprite = &g_pGfxEngine->Sprite[0];
     playerbaseframes[1] = s;
     for(i=0;i<48;i++)
     {
-      sprite[i]->copy( sprite[s], g_pVideoDriver->MyPalette );
+      sprite[i]->copy( sprite[s], g_pGfxEngine->Palette.m_Palette );
       sprite[s]->replaceSpriteColor( 13, 10 ,0 );
       sprite[s]->replaceSpriteColor( 5, 2 ,0 );
       sprite[s]->replaceSpriteColor( 9, 14 ,8 );
@@ -1352,9 +1293,6 @@ int timeout;
   {
     if (!gamedo_ScrollTriggers(primaryplayer)) break;
   }
-
-  // initiate fade-in
-  fade(FADE_IN, FADE_NORM);
 
   // "keens left" when returning to world map after dying
   if (show_keensleft)

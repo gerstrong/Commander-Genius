@@ -121,7 +121,7 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
      // Load these graphics into the CFont Class of CGfxEngine
      char *offset;
      CFont *Font = g_pGfxEngine->createEmptyFontmap();
-     Font->CreateSurface( g_pVideoDriver->MyPalette, SDL_SWSURFACE );
+     Font->CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE );
      sfc = Font->getSDLSurface();
      if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
      char *pixel = (char*) sfc->pixels;
@@ -169,7 +169,7 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
      Uint8 *u_offset;
      g_pGfxEngine->createEmptyTilemap();
      CTilemap *Tilemap = g_pGfxEngine->Tilemap;
-     Tilemap->CreateSurface( g_pVideoDriver->MyPalette, SDL_SWSURFACE );
+     Tilemap->CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE );
      sfc = Tilemap->getSDLSurface();
      if(SDL_MUSTLOCK(sfc))	SDL_LockSurface(sfc);
      Uint8 *u_pixel = (Uint8*) sfc->pixels;
@@ -228,7 +228,7 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
      for(int b=0 ; b<m_bitmaps ; b++)
      {
     	 bitmap = g_pGfxEngine->Bitmap[b];
-    	 bitmap->createSurface(g_pVideoDriver->getScrollSurface()->flags, g_pVideoDriver->MyPalette);
+    	 bitmap->createSurface(g_pVideoDriver->getScrollSurface()->flags, g_pGfxEngine->Palette.m_Palette);
      }
 
      for(int p=0 ; p<4 ; p++)

@@ -391,7 +391,6 @@ void CSoundChannel::readWaveform(Uint8* waveform, int len, Uint8 channels, int f
      	{
      		stHQSound* hqsound = m_pSoundSlot[m_current_sound].getHQSoundPtr();
 
-         	//memcpy(waveform, hqsounds[m_current_sound].sound_buffer + m_sound_ptr, len);
      		memcpy(waveform, hqsound->sound_buffer + m_sound_ptr, len);
          	m_sound_ptr += len;
 

@@ -5,22 +5,21 @@
   The functions for loading the graphics (EGALATCH&EGASPRIT) are in latch.c.
 */
 
+#include <unistd.h>
+#include <sys/types.h>
+#include <vector>
+#include <stdio.h>
+
 #include "keen.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/sound/CSound.h"
 #include "include/fileio.h"
-#include "common/palette.h"
-#include <vector>
 #include "include/fileio/rle.h"
 #include "CLogFile.h"
 #include "CGraphics.h"
-#include <unistd.h>
-#include <sys/types.h>
 #include "StringUtils.h"
 #include "Debug.h"
 #include "FindFile.h"
-
-#include <stdio.h>
 
 #ifdef TARGET_WIN32
 #define uint unsigned int
@@ -423,10 +422,7 @@ int o,x;
           objects[o].hasbeenonscreen = 1;
       break;
       default:
-		   pal_fade(20);
            g_pLogFile->ftextOut(PURPLE,"unknown enemy type %d at (%d,%d)<br>", t, curmapx, curmapy);
-           //while(g_pInput->getPressedKey(KENTER));
-
            break;
       }
     }
