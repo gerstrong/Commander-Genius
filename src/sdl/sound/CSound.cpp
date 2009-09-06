@@ -34,8 +34,13 @@ CSound::CSound() {
 	m_soundslot = NULL;
 	m_MixedForm = NULL;
 	AudioSpec.channels = 2; // Stereo Sound
+#ifdef WIZ
+	AudioSpec.format = AUDIO_S16; // 16-bit sound
+#else
 	AudioSpec.format = AUDIO_U8; // 8-bit sound
+#endif
 	AudioSpec.freq = 44100; // high quality
+
 }
 
 CSound::~CSound() {
