@@ -11,6 +11,7 @@
 #include "../include/menu.h"
 
 #include "../sdl/CInput.h"
+#include "../sdl/CVideoDriver.h"
 #include "../sdl/sound/CSound.h"
 
 #include "EndingSequenceEp3.h"
@@ -64,7 +65,9 @@ char eseq3_AwardBigV(stCloneKeenPlus *pCKP)
   eseq_showmsg(getstring("EP3_ESEQ_PAGE3"),x,y,w,h, true);
   eseq_showmsg(getstring("EP3_ESEQ_PAGE4"),x,y,w,h, true);
 
-  finale_draw("finale.ck3", pCKP->Resources.GameDataDirectory);
+  SDL_Surface *finale_sfc = SDL_CreateRGBSurface( g_pVideoDriver->FGLayerSurface->flags, 320, 200, 8, 0, 0, 0, 0);
+  SDL_SetColors( finale_sfc, g_pGfxEngine->Palette.m_Palette, 0, 255);
+  finale_draw( finale_sfc, "finale.ck3", pCKP->Resources.GameDataDirectory);
   scrollx_buf = scrolly_buf = 0;
   player[0].hideplayer = 1;
 
@@ -81,17 +84,12 @@ char eseq3_AwardBigV(stCloneKeenPlus *pCKP)
   {
     if (c==0 && !g_pInput->getPressedCommand(IC_STATUS)) c++;
     if (c==1 && g_pInput->getPressedCommand(IC_STATUS)) c++;
-    /*if (c==2 && fade.dir==FADE_IN)
-    {
-       fade.mode = FADE_GO;
-       fade.rate = FADE_NORM;
-       fade.dir = FADE_OUT;
-       fade.curamt = PAL_FADE_SHADES;
-       fade.fadetimer = 0;
-    }*/
+
     g_pInput->pollEvents();
     if (g_pInput->getPressedKey(KQUIT) /*&& fade.mode==FADE_COMPLETE*/) break;
-  } while(1/*fade.mode!=FADE_COMPLETE || fade.dir!=FADE_OUT*/);
+  } while(1);
+
+  SDL_FreeSurface(finale_sfc);
 
   if (g_pInput->getPressedKey(KQUIT)) return 1;
   return 0;

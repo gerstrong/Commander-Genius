@@ -285,7 +285,10 @@ int eseq1_BackAtHome(stCloneKeenPlus *pCKP)
   lastenterstate = 1;
   waittimer = 0;
 
-  finale_draw("finale.ck1", pCKP->Resources.GameDataDirectory);
+  SDL_Surface *finale_sfc = SDL_CreateRGBSurface( g_pVideoDriver->FGLayerSurface->flags, 320, 200, 8, 0, 0, 0, 0);
+  SDL_SetColors( finale_sfc, g_pGfxEngine->Palette.m_Palette, 0, 255);
+  finale_draw( finale_sfc, "finale.ck1", pCKP->Resources.GameDataDirectory);
+
   scrollx_buf = scroll_x = 0;
   scrolly_buf = scroll_y = 0;
 
@@ -302,6 +305,9 @@ int eseq1_BackAtHome(stCloneKeenPlus *pCKP)
 
   do
   {
+	// Draw uncompressed finale Plot
+	SDL_BlitSurface( finale_sfc, NULL, g_pVideoDriver->FGLayerSurface, NULL );
+
 	enter = ( g_pInput->getPressedKey(KENTER) || g_pInput->getPressedKey(KCTRL) || g_pInput->getPressedKey(KALT) );
 
 	// Show the window (lights on or off)
@@ -377,6 +383,9 @@ int eseq1_BackAtHome(stCloneKeenPlus *pCKP)
 	if (g_pInput->getPressedKey(KQUIT)) return 1;
 	gamedo_frameskipping_blitonly();
   } while(1);
+
+  SDL_FreeSurface(finale_sfc);
+
   return 0;
 }
 

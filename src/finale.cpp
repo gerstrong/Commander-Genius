@@ -19,18 +19,15 @@ int finale_plane_length;
 int finale_done;
 
 // used internally by finale_draw()
-void finale_plot(int pix)
+void finale_plot( SDL_Surface *sfc, int pix )
 {
 int mask;
 
-//TODO: THis is a temporary solution. Might be changed later.
+	//TODO: This is a temporary solution. Might be changed later.
    mask = 128;
-
-   SDL_Surface *sfc = g_pVideoDriver->getScrollSurface();
 
    if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
    Uint8* pixel = (Uint8*) sfc->pixels;
-   Uint8 bpp = sfc->format->BytesPerPixel;
 
    do
    {
@@ -39,12 +36,12 @@ int mask;
        if (finale_planecol==1)
        {
     	   //g_pGraphics->sb_setpixel(finale_x, finale_y, finale_planecol);
-    	   pixel[(finale_y*320 + finale_x)*bpp] = finale_planecol;
+    	   //pixel[finale_y*320 + finale_x] = finale_planecol;
        }
        else
        {  // merge with previous planes
     	   //g_pGraphics->sb_setpixel(finale_x, finale_y, g_pGraphics->sb_getpixel(finale_x, finale_y) | finale_planecol);
-    	   pixel[(finale_y*320 + finale_x)*bpp] |= finale_planecol;
+    	   //pixel[finale_y*320 + finale_x] |= finale_planecol;
        }
      }
      else if (finale_planecol==1)
@@ -81,11 +78,10 @@ int mask;
    } while(1);
 
    if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
-
 }
 
 // draws a finale.ck? file into the upper-left corner of the scrollbuffer
-void finale_draw(const std::string& filename, const std::string& path)
+void finale_draw( SDL_Surface *sfc, const std::string& filename, const std::string& path)
 {
 FILE *fp;
 int cmdbyte;
@@ -127,7 +123,7 @@ int i;
         bytecount = (cmdbyte & 0x7F) + 1;
         for(i=0;i<bytecount;i++)
         {
-          finale_plot(fgetc(fp));
+          finale_plot( sfc, fgetc(fp) );
         }
      }
      else
@@ -137,7 +133,7 @@ int i;
         repeatbyte = fgetc(fp);
         for(i=0;i<bytecount;i++)
         {
-          finale_plot(repeatbyte);
+          finale_plot( sfc, repeatbyte );
         }
      }
 

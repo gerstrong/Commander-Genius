@@ -572,14 +572,12 @@ int dlgX, dlgY, dlgW, dlgH;
 
   scrollx_buf = scroll_x = 0;
   scrolly_buf = scroll_y = 0;
-  finale_draw("finale.ck2", pCKP->Resources.GameDataDirectory);
+
+  SDL_Surface *finale_sfc = SDL_CreateRGBSurface( g_pVideoDriver->FGLayerSurface->flags, 320, 200, 8, 0, 0, 0, 0);
+  SDL_SetColors( finale_sfc, g_pGfxEngine->Palette.m_Palette, 0, 255);
+  finale_draw( finale_sfc, "finale.ck2", pCKP->Resources.GameDataDirectory);
 
   curpage = 1;
-  /*fade.mode = FADE_GO;
-  fade.rate = FADE_NORM;
-  fade.dir = FADE_IN;
-  fade.curamt = 0;
-  fade.fadetimer = 0;*/
 
   numplayers = 1;
   player[0].x = player[0].y = 0;
@@ -601,8 +599,9 @@ int dlgX, dlgY, dlgW, dlgH;
      curpage++;
   } while(!g_pInput->getPressedKey(KQUIT));
 
-  finale_draw("finale.ck2", pCKP->Resources.GameDataDirectory);
+  finale_draw( finale_sfc, "finale.ck2", pCKP->Resources.GameDataDirectory);
   eseq_ToBeContinued();
+  SDL_FreeSurface(finale_sfc);
 
   return 0;
 }

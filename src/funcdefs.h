@@ -3,6 +3,7 @@
 #define __CG_FUNCDEFS_H__
 
 #include <string>
+#include <SDL/SDL.h>
 
 // gamepdowm.c
 char wm_issolid(int xb, int yb, int *levels_completed);
@@ -99,7 +100,7 @@ void addshipqueue(int cmd, int time, int flag1);
 char lz_decompress(FILE *lzfile, unsigned char *outbuffer);
 
 // finale.c
-void finale_draw(const std::string& filename, const std::string& path);
+void finale_draw( SDL_Surface *sfc, const std::string& filename, const std::string& path);
 
 #endif
 
