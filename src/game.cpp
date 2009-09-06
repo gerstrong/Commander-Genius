@@ -32,7 +32,7 @@ char debugmode=0,acceleratemode=0;
 void gameloop(stCloneKeenPlus *pCKP)
 {
 unsigned int i;
-int enter,lastquit;
+int lastquit;
 
   if (player[0].x==0 || player[0].y==0)
   {
@@ -126,15 +126,12 @@ int enter,lastquit;
 
 	// allow enter to return to main menu
 	// if we're in game over mode
-
-	enter = (g_pInput->getPressedCommand(IC_STATUS));
 	if (pCKP->Control.levelcontrol.gameovermode)
 	{
-		      if (enter)
-			      start_gameover( pCKP );
+		start_gameover( pCKP );
 
-		      //if (fade.mode==FADE_COMPLETE && fade.dir==FADE_OUT)
-			      pCKP->Control.levelcontrol.command = LVLC_GAME_OVER;
+		//if (fade.mode==FADE_COMPLETE && fade.dir==FADE_OUT)
+			pCKP->Control.levelcontrol.command = LVLC_GAME_OVER;
 	}
 
 	if (g_pInput->getPressedKey(KQUIT))

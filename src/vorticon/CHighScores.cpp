@@ -159,8 +159,6 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 
 	ShipQueuePtr = 0;
 
-	showmapatpos(90, (104 << 2)+512+80, 32-4, pCKP);
-
 	place=6;
 	sscanf(Score[place],"%d",&num);
 	if(num > points)
@@ -238,12 +236,6 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
     y2 = (Episode == 2) ? 34 : 42;
     x3 = 178-(bm_score->getWidth()/2);
     x4 = 230;
-
-
-    // They are blit once.
-    bm_highscore->draw( g_pVideoDriver->getScrollSurface(), x1, y1);
-    bm_name->draw( g_pVideoDriver->getScrollSurface(), x2, y2);
-    bm_score->draw( g_pVideoDriver->getScrollSurface(), x3, y2);
 
     memset(buf,0,256);
 
