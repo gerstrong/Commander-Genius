@@ -6,6 +6,7 @@
  */
 
 #include "CTilemap.h"
+#include "CPalette.h"
 
 CTilemap::CTilemap() {
 	m_Tilesurface = NULL;

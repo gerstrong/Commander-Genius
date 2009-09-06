@@ -323,7 +323,7 @@ bool CVideoDriver::applyMode(void)
 
 	m_Resolution.depth = screen->format->BitsPerPixel;
 	
-	if(!Fullscreen)
+ 	if(!Fullscreen)
 		SDL_ShowCursor(SDL_ENABLE);
 	else
 		SDL_ShowCursor(SDL_DISABLE);
@@ -346,8 +346,8 @@ bool CVideoDriver::createSurfaces(void)
 
 	stretch_blit_yoff = 0;
 
-	ScrollSurface = SDL_CreateRGBSurface( Mode, 512, 512, 32,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
-	SDL_SetColorKey(ScrollSurface, SDL_SRCCOLORKEY, COLOUR_MASK);
+	ScrollSurface = SDL_CreateRGBSurface( Mode, 512, 512, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
+	SDL_SetColorKey(ScrollSurface, SDL_SRCCOLORKEY, SDL_MapRGB(ScrollSurface->format, 0, 0xFF, 0xFF));
 	if (!ScrollSurface)
 	{
 		g_pLogFile->textOut(RED,"VideoDriver: Couldn't create ScrollSurface!<br>");
@@ -362,7 +362,7 @@ bool CVideoDriver::createSurfaces(void)
 	}
 	SDL_SetColorKey( FGLayerSurface, SDL_SRCCOLORKEY,
 					SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE) );
-	SDL_FillRect( FGLayerSurface, NULL, SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE) );
+	SDL_FillRect( FGLayerSurface, NULL, SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFF) );
 	//Set surface alpha
 	SDL_SetAlpha( FGLayerSurface, SDL_SRCALPHA, 225 );
 
@@ -374,7 +374,7 @@ bool CVideoDriver::createSurfaces(void)
 	}
 	SDL_SetColorKey( SpriteLayerSurface, SDL_SRCCOLORKEY,
 					SDL_MapRGB(SpriteLayerSurface->format, 0, 0xFF, 0xFE) );
-	SDL_FillRect( SpriteLayerSurface, NULL, SDL_MapRGB(SpriteLayerSurface->format, 0, 0xFF, 0xFE) );
+	SDL_FillRect( SpriteLayerSurface, NULL, SDL_MapRGB(SpriteLayerSurface->format, 0, 0xFF, 0xFF) );
 
 	FXSurface = SDL_CreateRGBSurface( Mode, 320, 200, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
 	if (!FXSurface)

@@ -9,6 +9,8 @@
 #ifndef CPALETTE_H_
 #define CPALETTE_H_
 
+#define COLORKEY 16 // Used only for the 8-bit tile. Colour number COLORKEY in the Palette
+
 #include <SDL/SDL.h>
 
 class CPalette {

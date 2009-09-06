@@ -10,8 +10,6 @@
 
 #include <SDL/SDL.h>
 
-#define COLORKEY 255
-
 class CSprite {
 public:
 	CSprite();

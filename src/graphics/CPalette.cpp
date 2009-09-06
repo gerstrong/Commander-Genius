@@ -51,7 +51,7 @@ void CPalette::setupColorPalettes()
 	setPaletteColour(13, 0xfc, 0x54, 0xfc);
 	setPaletteColour(14, 0xfc, 0xfc, 0x54);
 	setPaletteColour(15, 0xfc, 0xfc, 0xfc);
-	setPaletteColour(16, 0x01, 0x00, 0x00);
+	setPaletteColour(16, 0x00, 0xff, 0xff);
 }
 
 void CPalette::setPaletteColour( Uint8 c, Uint8 r, Uint8 g, Uint8 b)

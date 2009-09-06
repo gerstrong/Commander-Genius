@@ -12,8 +12,6 @@
 #include <vector>
 #include <string>
 
-#define COLORKEY 255
-
 class CBitmap {
 public:
 	CBitmap();

@@ -154,7 +154,6 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
              else c = pixel[y*sfc->w + x];
 
              c |= (Planes->getbit(RawData, p) << p);
-             if (p==3 && c==0) c = 16;
              pixel[y*sfc->w + x] = c;
            }
          }
@@ -243,7 +242,6 @@ Uint8* pixel;
 				if (c==-1) c = g_pGfxEngine->Palette.addcolor(r, g, b);
 				if (c==-1) return 1;
 
-				if ( c == 0 ) c=16;
 				pixel[y*w + x] = c;
 			}
 			else
@@ -331,7 +329,6 @@ void CEGASprit::CreateYellowSpriteofTile( CTilemap *tilemap, Uint16 tile, CSprit
 		for(Uint8 y=0 ; y<16 ; y++)
 		{
 			if( *pixel == transparent_colour ) *pixel = COLORKEY;
-			else if( *pixel == 0 ) *pixel = 16;
 			else if( *pixel != 0 && *pixel != 16 )	*pixel = 14; // Yellow (Light brown)
 
 			pixel++;

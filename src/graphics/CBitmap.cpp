@@ -6,6 +6,7 @@
  */
 
 #include "CBitmap.h"
+#include "CPalette.h"
 
 CBitmap::CBitmap() {
 	m_BitmapSurface = NULL;

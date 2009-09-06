@@ -144,7 +144,6 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
         	   c |= (Planes->getbit(RawData, p) << p);
         	   // map black pixels to color 16 because of the way the
         	   // vorticon death sequence works in ep1
-        	   if (p==3 && c==0) c = 16;
         	   *offset = c;
            }
          }
@@ -187,7 +186,6 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
                if (p==0) c = 0;
                else c = tiledata[t][y][x];
                c |= (Planes->getbit(RawData, p) << p);
-               if (p==3 && c==0) c = 16;
                tiledata[t][y][x] = c;
 
            	   if( t>0 && TileProperty[t-1][BEHAVIOR] == 65534 )  // This is for masked tiles.
@@ -251,7 +249,6 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
 				 if (p==0) c = 0;
 				 else c = pixel[y*width + x];
 				 c |= (Planes->getbit(RawData, p) << p);
-				 if (p==3 && c==0) c = 16;
 				 pixel[y*width + x] = c;
 			   }
     	   }

@@ -6,9 +6,8 @@
  */
 
 #include "CFont.h"
+#include "CPalette.h"
 #include <string.h>
-
-#define COLORKEY 255
 
 CFont::CFont() {
 	m_FontSurface = NULL;
