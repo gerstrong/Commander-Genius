@@ -681,7 +681,7 @@ char configmenu(stCloneKeenPlus *pCKP)
 {
 	int selection;
 	int x;
-	CBitmap *title_bitmap = g_pGfxEngine->Bitmap[g_pGfxEngine->getBitmapID("TITLE")];
+	CBitmap *title_bitmap = g_pGfxEngine->getBitmap("TITLE");
 
 	// Load the Title Bitmap
 

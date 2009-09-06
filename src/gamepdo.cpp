@@ -120,8 +120,6 @@ int x, diff, width;
 
 void gamepdo_dieanim(int cp, stLevelControl *p_levelcontrol)
 {
-   CBitmap *bitmaps = g_pGfxEngine->Bitmap[0];
-
    if (!player[cp].pdie) return;                // should never happen...
    if (player[cp].pdie==PDIE_DEAD) return;      // if true animation is over
    if (player[cp].pdie==PDIE_FELLOFFMAP)
@@ -162,16 +160,18 @@ void gamepdo_dieanim(int cp, stLevelControl *p_levelcontrol)
        {
     	   p_levelcontrol->gameovermode = true;
     	   g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
-    	   int bmnum = g_pGfxEngine->getBitmapID("GAMEOVER");
+    	   CBitmap *bm_gameover = g_pGfxEngine->getBitmap("GAMEOVER");
     	   // figure out where to center the gameover bitmap and draw it
-		   int x = (320/2)-(bitmaps[bmnum].getWidth()/2);
-		   int y = (200/2)-(bitmaps[bmnum].getHeight()/2);
-		   int o = spawn_object(x, y, OBJ_EGA_BITMAP);
-		   objects[o].ai.bitmap.BitmapID = bmnum;
+		   int x = (320/2)-(bm_gameover->getWidth()/2);
+		   int y = (200/2)-(bm_gameover->getHeight()/2);
+		   bm_gameover->draw(g_pVideoDriver->SpriteLayerSurface, x, y);
+
        }
        else
        {
          endlevel(0,p_levelcontrol);
+         p_levelcontrol->chglevelto = WM_MAP_NUM;
+         p_levelcontrol->command = LVLC_CHANGE_LEVEL;
        }
      }
    }
@@ -247,7 +247,10 @@ void gamepdo_ProcessInput(unsigned int cp, stCloneKeenPlus *pCKP)
        if (p_levelcontrol->level_done != LEVEL_DONE_FADEOUT)
        {
     	   p_levelcontrol->level_done = LEVEL_DONE_FADEOUT;
-         endlevel(1, &(pCKP->Control.levelcontrol));
+    	   endlevel(1, &(pCKP->Control.levelcontrol));
+    	   p_levelcontrol->chglevelto = WM_MAP_NUM;
+    	   p_levelcontrol->command = LVLC_CHANGE_LEVEL;
+    	   p_levelcontrol->levels_completed[p_levelcontrol->curlevel] = 1;
        }
      }
      else if (p_levelcontrol->level_done_timer > LEVEL_DONE_STOPWALKING_TIME)

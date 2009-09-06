@@ -313,24 +313,7 @@ p_levelcontrol = &(pCKP->Control.levelcontrol);
 
               default:      // a regular level
 
-            	/*p_levelcontrol->demomode = DEMO_NODEMO;
-            	p_levelcontrol->level_done = LEVEL_COMPLETE;*/
             	p_levelcontrol->command = LVLC_CHANGE_LEVEL;
-            	/*if (p_levelcontrol->curlevel != WM_MAP_NUM)
-            	{ // exiting a level, going back to world map
-					  for(i=0;i<numplayers;i++)
-					  {
-						player[i].inventory.HasCardYellow = 0;
-						player[i].inventory.HasCardBlue = 0;
-						player[i].inventory.HasCardGreen = 0;
-						player[i].inventory.HasCardRed = 0;
-					  }
-
-					  if (pCKP->Control.levelcontrol.success==1)  // mark level as completed on world map
-							  pCKP->Control.levelcontrol.levels_completed[pCKP->Control.levelcontrol.curlevel] = 1;
-
-					  pCKP->Control.levelcontrol.chglevelto = WM_MAP_NUM;
-            	}*/
             	p_levelcontrol->chglevelto = (lvl & 0x7fff);
                 endlevel(1, &(pCKP->Control.levelcontrol));
                 g_pMusicPlayer->stop();

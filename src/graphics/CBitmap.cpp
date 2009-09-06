@@ -72,5 +72,6 @@ void CBitmap::draw(SDL_Surface *dst, Uint16 x, Uint16 y)
 	dst_rect.w = m_width;
 	dst_rect.h = m_height;
 
-	SDL_BlitSurface(m_BitmapSurface, NULL, dst, &dst_rect);
+	if( dst_rect.w>0 && dst_rect.h>0 )
+		SDL_BlitSurface(m_BitmapSurface, NULL, dst, &dst_rect);
 }

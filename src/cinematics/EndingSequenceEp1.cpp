@@ -298,7 +298,7 @@ int eseq1_BackAtHome(stCloneKeenPlus *pCKP)
   dlgY = GetStringAttribute("EP1_ESEQ_PART2_PAGE1", "TOP");
   dlgW = GetStringAttribute("EP1_ESEQ_PART2_PAGE1", "WIDTH");
   dlgH = GetStringAttribute("EP1_ESEQ_PART2_PAGE1", "HEIGHT");
-  bm_window = g_pGfxEngine->Bitmap[g_pGfxEngine->getBitmapID("WINDOFF")];	// window lights off
+  bm_window = g_pGfxEngine->getBitmap("WINDOFF");	// window lights off
 
   do
   {
@@ -357,9 +357,9 @@ int eseq1_BackAtHome(stCloneKeenPlus *pCKP)
 				nextline: ;
 
 				if( (textline > 0 && textline < 5)  || textline == 6)
-					bm_window = g_pGfxEngine->Bitmap[g_pGfxEngine->getBitmapID("WINDON")]; // lights on
+					bm_window = g_pGfxEngine->getBitmap("WINDON"); // lights on
 				else
-					bm_window = g_pGfxEngine->Bitmap[g_pGfxEngine->getBitmapID("WINDOFF")]; // lights off
+					bm_window = g_pGfxEngine->getBitmap("WINDOFF"); // lights off
 
 				textline++;
 				state = STATE_TEXTAPPEARING;

@@ -41,7 +41,6 @@ public:
 
 	void drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w, int h);
 
-	Uint8 getBitmapID(const std::string name);
 	CBitmap *getBitmap(const std::string &name);
 
 	void fade(Uint8 alpha);

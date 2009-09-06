@@ -330,8 +330,9 @@ void CEGASprit::CreateYellowSpriteofTile( CTilemap *tilemap, Uint16 tile, CSprit
 	{
 		for(Uint8 y=0 ; y<16 ; y++)
 		{
-			if(*pixel == transparent_colour) *pixel = COLORKEY;
-			else if(*pixel != 0 && *pixel != 16)	*pixel = 14; // Yellow (Light brown)
+			if( *pixel == transparent_colour ) *pixel = COLORKEY;
+			else if( *pixel == 0 ) *pixel = 16;
+			else if( *pixel != 0 && *pixel != 16 )	*pixel = 14; // Yellow (Light brown)
 
 			pixel++;
 		}

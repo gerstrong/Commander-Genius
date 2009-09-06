@@ -63,11 +63,10 @@ char CHighScores::showHighScore(void)
 	int x2,y2;
 	int x3;
 	int x4;
-	int bTitle;
-	int bName;
-	int bScore;
-	int bExtra;
-	CBitmap *bitmaps = g_pGfxEngine->Bitmap[0];
+	CBitmap *bm_title = g_pGfxEngine->getBitmap("TITLE");
+	CBitmap *bm_name = g_pGfxEngine->getBitmap("NAME");
+	CBitmap *bm_extra;
+	CBitmap *bm_score = g_pGfxEngine->getBitmap("SCORE");
 
 	loadHighScoreTable();
 
@@ -86,30 +85,25 @@ char CHighScores::showHighScore(void)
 		}
 	}
 
-	// Get the Bitmap IDs and set the correct positions on screen
-    bTitle = g_pGfxEngine->getBitmapID("HIGHSCOR");
-    bName = g_pGfxEngine->getBitmapID("NAME");
-    bScore = g_pGfxEngine->getBitmapID("SCORE");
-
     if(Episode == 2)
-    	bExtra = g_pGfxEngine->getBitmapID("SAVED");
+    	bm_extra = g_pGfxEngine->getBitmap("SAVED");
     else
-    	bExtra = g_pGfxEngine->getBitmapID("PARTS");
+    	bm_extra = g_pGfxEngine->getBitmap("PARTS");
 
-    x1 = 160-(bitmaps[bTitle].getWidth()/2);
+    x1 = 160-(bm_title->getWidth()/2);
     y1 = 8;    x2 = 40;
-    y2 = 42;    x3 = 178-(bitmaps[bScore].getWidth()/2);
+    y2 = 42;    x3 = 178-(bm_score->getWidth()/2);
     x4 = 230;
 
     // They are blit once.
-    bitmaps[bTitle].draw( g_pVideoDriver->getScrollSurface(), x1, y1);
-    bitmaps[bName].draw( g_pVideoDriver->getScrollSurface(), x2, y2);
-    bitmaps[bScore].draw( g_pVideoDriver->getScrollSurface(), x3, y2);
+    bm_title->draw( g_pVideoDriver->getScrollSurface(), x1, y1);
+    bm_name->draw( g_pVideoDriver->getScrollSurface(), x2, y2);
+    bm_score->draw( g_pVideoDriver->getScrollSurface(), x3, y2);
 
     if(Episode == 2)
-		bitmaps[bExtra].draw( g_pVideoDriver->getScrollSurface(), x4, y2-8);
+		bm_extra->draw( g_pVideoDriver->getScrollSurface(), x4, y2-8);
     else
-		bitmaps[bExtra].draw( g_pVideoDriver->getScrollSurface(), x4, y2);
+    	bm_extra->draw( g_pVideoDriver->getScrollSurface(), x4, y2);
 
 	// This cycle only serves as a key which must be pressed for now
 	do
@@ -163,11 +157,7 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 	int x2,y2;
 	int x3;
 	int x4;
-	int bTitle;
-	int bName;
-	int bScore;
-	int bExtra;
-	CBitmap *bitmaps = g_pGfxEngine->Bitmap[0];
+	CBitmap *bm_title, *bm_score, *bm_extra, *bm_name;
 
 	loadHighScoreTable();
 
@@ -241,30 +231,30 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 	}
 
 	// Get the Bitmap IDs and set the correct positions on screen
-    bTitle = g_pGfxEngine->getBitmapID("HIGHSCOR");
-    bName = g_pGfxEngine->getBitmapID("NAME");
-    bScore = g_pGfxEngine->getBitmapID("SCORE");
+    bm_title = g_pGfxEngine->getBitmap("HIGHSCOR");
+    bm_name = g_pGfxEngine->getBitmap("NAME");
+    bm_score = g_pGfxEngine->getBitmap("SCORE");
 
     if(Episode == 2)
-    	bExtra = g_pGfxEngine->getBitmapID("SAVED");
+    	bm_extra = g_pGfxEngine->getBitmap("SAVED");
     else
-    	bExtra = g_pGfxEngine->getBitmapID("PARTS");
+    	bm_extra = g_pGfxEngine->getBitmap("PARTS");
 
-    x1 = 160-(bitmaps[bTitle].getWidth()/2);
+    x1 = 160-(bm_title->getWidth()/2);
     y1 = 8;    x2 = 40;
     y2 = 42;
-    x3 = 178-(bitmaps[bScore].getWidth()/2);
+    x3 = 178-(bm_score->getWidth()/2);
     x4 = 230;
 
 
     // They are blit once.
-    g_pGfxEngine->Bitmap[bTitle]->draw( g_pVideoDriver->getScrollSurface(), x1, y1);
-    g_pGfxEngine->Bitmap[bName]->draw( g_pVideoDriver->getScrollSurface(), x2, y2);
-    g_pGfxEngine->Bitmap[bScore]->draw( g_pVideoDriver->getScrollSurface(), x3, y2);
+    bm_title->draw( g_pVideoDriver->getScrollSurface(), x1, y1);
+    bm_name->draw( g_pVideoDriver->getScrollSurface(), x2, y2);
+    bm_score->draw( g_pVideoDriver->getScrollSurface(), x3, y2);
     if(Episode == 2)
-		g_pGfxEngine->Bitmap[bExtra]->draw( g_pVideoDriver->getScrollSurface(), x4, y2-8);
+		bm_extra->draw( g_pVideoDriver->getScrollSurface(), x4, y2-8);
     else
-		g_pGfxEngine->Bitmap[bExtra]->draw( g_pVideoDriver->getScrollSurface(), x4, y2);
+		bm_extra->draw( g_pVideoDriver->getScrollSurface(), x4, y2);
 
     memset(buf,0,256);
 

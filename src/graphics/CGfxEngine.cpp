@@ -87,13 +87,6 @@ void CGfxEngine::freeSprites()
 	}
 }
 
-Uint8 CGfxEngine::getBitmapID(const std::string name)
-{
-	for(Uint8 i=0 ; i<Bitmap.size() ; i++)
-		if(Bitmap[i]->getName() == name) return i;
-	return 0;
-}
-
 CBitmap *CGfxEngine::getBitmap(const std::string &name)
 {
 	std::string s_name;
