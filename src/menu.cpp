@@ -754,6 +754,9 @@ char configmenu(stCloneKeenPlus *pCKP)
 			default:
 				break;
 			}
+			map_redraw();
+			title_bitmap->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y );
+			OptionsMenu.setSDLSurface(g_pVideoDriver->FGLayerSurface);
 		}
 		OptionsMenu.processlogic();
 		OptionsMenu.render();

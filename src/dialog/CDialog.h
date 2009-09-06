@@ -17,9 +17,10 @@ public:
 	CDialog(SDL_Surface *DialogSurface, Uint16 x, Uint16 y, Uint16 w, Uint16 h);
 	virtual ~CDialog();
 
-	void setFrameTheme(Uint8 theme);
-	void addObject(Uint8 type, Uint16 x, Uint16 y,const std::string text);
-	void setObjectText(Uint8 ID, const std::string &text);
+	void setFrameTheme( Uint8 theme );
+	void addObject( Uint8 type, Uint16 x, Uint16 y,const std::string text );
+	void setObjectText( Uint8 ID, const std::string &text );
+	void setSDLSurface( SDL_Surface* Surface ) { m_DialogSurface = Surface; }
 
 	int getSelection();
 

@@ -63,7 +63,7 @@ char CHighScores::showHighScore(void)
 	int x2,y2;
 	int x3;
 	int x4;
-	CBitmap *bm_title = g_pGfxEngine->getBitmap("TITLE");
+	CBitmap *bm_highscore = g_pGfxEngine->getBitmap("HIGHSCOR");
 	CBitmap *bm_name = g_pGfxEngine->getBitmap("NAME");
 	CBitmap *bm_extra;
 	CBitmap *bm_score = g_pGfxEngine->getBitmap("SCORE");
@@ -85,29 +85,22 @@ char CHighScores::showHighScore(void)
 		}
 	}
 
-    if(Episode == 2)
-    	bm_extra = g_pGfxEngine->getBitmap("SAVED");
-    else
-    	bm_extra = g_pGfxEngine->getBitmap("PARTS");
+    if(Episode == 2) bm_extra = g_pGfxEngine->getBitmap("SAVED");
+    else		     bm_extra = g_pGfxEngine->getBitmap("PARTS");
 
-    x1 = 160-(bm_title->getWidth()/2);
+    x1 = 160-(bm_highscore->getWidth()/2);
     y1 = 8;    x2 = 40;
-    y2 = 42;    x3 = 178-(bm_score->getWidth()/2);
+    y2 = (Episode == 2) ? 34 : 42;    x3 = 178-(bm_score->getWidth()/2);
     x4 = 230;
-
-    // They are blit once.
-    bm_title->draw( g_pVideoDriver->getScrollSurface(), x1, y1);
-    bm_name->draw( g_pVideoDriver->getScrollSurface(), x2, y2);
-    bm_score->draw( g_pVideoDriver->getScrollSurface(), x3, y2);
-
-    if(Episode == 2)
-		bm_extra->draw( g_pVideoDriver->getScrollSurface(), x4, y2-8);
-    else
-    	bm_extra->draw( g_pVideoDriver->getScrollSurface(), x4, y2);
 
 	// This cycle only serves as a key which must be pressed for now
 	do
 	{
+	    bm_highscore->draw( m_sfc, x1, y1 );
+	    bm_name->draw( m_sfc, x2, y2 );
+	    bm_score->draw( m_sfc, x3, y2);
+	    if( bm_extra ) bm_extra->draw( m_sfc, x4, y2);
+
 		// Print the labels
 		for( i=0 ; i<7 ; i++ )
 		{
@@ -122,13 +115,13 @@ char CHighScores::showHighScore(void)
 			for( i=0 ; i<7 ; i++ )
 			{
 				if(Extra[i][0])
-					g_pGfxEngine->Tilemap->drawTile(m_sfc, 32,90+(i<<4),ItemTiles[0]);
+					g_pGfxEngine->Tilemap->drawTile(m_sfc, 224,60+(i<<4),ItemTiles[0]);
 				if(Extra[i][1])
-					g_pGfxEngine->Tilemap->drawTile(m_sfc, 48,90+(i<<4),ItemTiles[1]);
+					g_pGfxEngine->Tilemap->drawTile(m_sfc, 240,60+(i<<4),ItemTiles[1]);
 				if(Extra[i][2])
-					g_pGfxEngine->Tilemap->drawTile(m_sfc, 64,90+(i<<4),ItemTiles[2]);
+					g_pGfxEngine->Tilemap->drawTile(m_sfc, 256,60+(i<<4),ItemTiles[2]);
 				if(Extra[i][3])
-					g_pGfxEngine->Tilemap->drawTile(m_sfc, 80,90+(i<<4),ItemTiles[3]);
+					g_pGfxEngine->Tilemap->drawTile(m_sfc, 272,60+(i<<4),ItemTiles[3]);
 			}
 		}
 		else if(pCKP->Control.levelcontrol.episode == 2)
@@ -157,7 +150,7 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 	int x2,y2;
 	int x3;
 	int x4;
-	CBitmap *bm_title, *bm_score, *bm_extra, *bm_name;
+	CBitmap *bm_highscore, *bm_score, *bm_extra, *bm_name;
 
 	loadHighScoreTable();
 
@@ -166,7 +159,7 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 
 	ShipQueuePtr = 0;
 
-	showmapatpos(90, (104 << 2)+256+256+80, 32-4, pCKP);
+	showmapatpos(90, (104 << 2)+512+80, 32-4, pCKP);
 
 	place=6;
 	sscanf(Score[place],"%d",&num);
@@ -231,7 +224,7 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 	}
 
 	// Get the Bitmap IDs and set the correct positions on screen
-    bm_title = g_pGfxEngine->getBitmap("HIGHSCOR");
+	bm_highscore = g_pGfxEngine->getBitmap("HIGHSCOR");
     bm_name = g_pGfxEngine->getBitmap("NAME");
     bm_score = g_pGfxEngine->getBitmap("SCORE");
 
@@ -240,21 +233,17 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
     else
     	bm_extra = g_pGfxEngine->getBitmap("PARTS");
 
-    x1 = 160-(bm_title->getWidth()/2);
+    x1 = 160-(bm_highscore->getWidth()/2);
     y1 = 8;    x2 = 40;
-    y2 = 42;
+    y2 = (Episode == 2) ? 34 : 42;
     x3 = 178-(bm_score->getWidth()/2);
     x4 = 230;
 
 
     // They are blit once.
-    bm_title->draw( g_pVideoDriver->getScrollSurface(), x1, y1);
+    bm_highscore->draw( g_pVideoDriver->getScrollSurface(), x1, y1);
     bm_name->draw( g_pVideoDriver->getScrollSurface(), x2, y2);
     bm_score->draw( g_pVideoDriver->getScrollSurface(), x3, y2);
-    if(Episode == 2)
-		bm_extra->draw( g_pVideoDriver->getScrollSurface(), x4, y2-8);
-    else
-		bm_extra->draw( g_pVideoDriver->getScrollSurface(), x4, y2);
 
     memset(buf,0,256);
 
@@ -263,6 +252,11 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
     int blinkctr = 0;
 	do
 	{
+	    bm_highscore->draw( m_sfc, x1, y1 );
+	    bm_name->draw( m_sfc, x2, y2 );
+	    bm_score->draw( m_sfc, x3, y2);
+	    bm_extra->draw( m_sfc, x4, y2);
+
 		// Blit all the text and images
 		for(i=KA ; i<KZ ; i++)
 		{
@@ -309,13 +303,13 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 			if(pCKP->Control.levelcontrol.episode == 1)
 			{
 				if(Extra[i][0])
-					g_pGfxEngine->Tilemap->drawTile(m_sfc, 32,90+(i<<4),ItemTiles[0]);
+					g_pGfxEngine->Tilemap->drawTile(m_sfc, 224,60+(i<<4),ItemTiles[0]);
 				if(Extra[i][1])
-					g_pGfxEngine->Tilemap->drawTile(m_sfc, 48,90+(i<<4),ItemTiles[1]);
+					g_pGfxEngine->Tilemap->drawTile(m_sfc, 240,60+(i<<4),ItemTiles[1]);
 				if(Extra[i][2])
-					g_pGfxEngine->Tilemap->drawTile(m_sfc, 64,90+(i<<4),ItemTiles[2]);
+					g_pGfxEngine->Tilemap->drawTile(m_sfc, 256,60+(i<<4),ItemTiles[2]);
 				if(Extra[i][3])
-					g_pGfxEngine->Tilemap->drawTile(m_sfc, 80,90+(i<<4),ItemTiles[3]);
+					g_pGfxEngine->Tilemap->drawTile(m_sfc, 272,60+(i<<4),ItemTiles[3]);
 			}
 		}
 

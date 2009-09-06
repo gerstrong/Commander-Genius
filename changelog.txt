@@ -1,17 +1,24 @@
+Commander Genius Release v0.3.0.4 (CloneKeenPlus):
+--------------------------------------------------
+
+06-09-2009
+- The new Graphics Engine is fully implemented and can 
+  handle and speedup all the graphics (tiles, sprites, bitmaps, etc)
+- Improved Sound-System. Now 16 Bit is supported! (Many thanks to Pickle for his work!)
+- Improved 2-player camera and minor issues! (Many thanks to Pizza2004!)
+
 31-08-2009
--graphics system nearly fully implemented
--load menu cancel fixed
--deleted savegames that came with
--changed the way the camera works while in 2 player mode
+- graphics system nearly fully implemented
+- load menu cancel fixed
+- deleted savegames that came with
+- changed the way the camera works while in 2 player mode
 
 26-08-2009
--better twirl on menus
--fixed some bugs that basically froze gameplay
--fixed and improved the aspect ratio feature
--beginnings of new graphics system implemented
+- better twirl on menus
+- fixed some bugs that basically froze gameplay
+- fixed and improved the aspect ratio feature
+- beginnings of new graphics system implemented
 
-Commander Genius Release v0.3.0.3 (CloneKeenPlus):
---------------------------------------------------
 25-08-2009
 - New Palette system (Thanks to Caitlin Shaw)
 - Physics improvement (Thanks to guys of the PCKF Forum)

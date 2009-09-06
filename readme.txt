@@ -5,7 +5,7 @@
 *                                            *
 *    (c)2008-2009            Gerstrong       *
 *    (c)2009                 Albert          *
-*    (c)2009                 pizza2004       *
+*    (c)2009                 Pizza2004       *
 *    (c)2009                 Pickle          *
 *    (c)2009                 Tulip           *
 *    (c)2009                 DaVince         *
