@@ -82,7 +82,6 @@ void KeyDrv_Stop(void);
 
 // misc.c
 void banner(void);
-void dialogbox(int x1, int y1, int w, int h);
 void statusbox(void);
 
 int savegameiswm(char *fname);

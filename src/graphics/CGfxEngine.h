@@ -53,6 +53,8 @@ public:
 
 private:
 	SDL_Surface *m_fxsurface;
+
+	Uint8 m_alpha;
 };
 
 #endif /* CGFXENGINE_H_ */

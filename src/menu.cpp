@@ -974,7 +974,7 @@ int boxtimer;
   boxtimer = 0;
   do
   {
-	  dialogbox(KEENSLEFT_X,boxY,KEENSLEFT_W,boxH);
+	  g_pGfxEngine->drawDialogBox(g_pVideoDriver->FGLayerSurface, KEENSLEFT_X, boxY,KEENSLEFT_W,boxH);
 	  g_pGfxEngine->Font->drawFont( boxsurface, getstring("LIVES_LEFT_BACKGROUND"),(KEENSLEFT_X+1)*8,(boxY+1)*8,0);
 	  g_pGfxEngine->Font->drawFont( boxsurface, getstring("LIVES_LEFT"),((KEENSLEFT_X+7)*8)+4,(boxY+1)*8,0);
 	  y = ((boxY+2)*8)+4;

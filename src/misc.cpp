@@ -79,41 +79,6 @@ void cleanup(stCloneKeenPlus *CKP)
     g_pLogFile->ftextOut("<br>");
 }
 
-// draw an empty dialog box, for youseeinyourmind(), etc.
-void dialogbox(int x1, int y1, int w, int h)
-{
-int x,y,i,j;
-
-  SDL_Surface *boxsurface = g_pVideoDriver->FGLayerSurface;
-
-  g_pGfxEngine->Font->drawCharacter(boxsurface, 1, x1*8, y1*8);
-  g_pGfxEngine->Font->drawCharacter(boxsurface, 3, (x1+w)*8, y1*8);
-  for(x=(x1*8)+8,i=0;i<w-1;i++)
-  {
-	  g_pGfxEngine->Font->drawCharacter(boxsurface, 2, x, y1*8);
-	  x+=8;
-  }
-  y=(y1+1)*8;
-  for(j=0;j<h-2;j++)
-  {
-    for(x=(x1*8),i=0;i<=w;i++)
-    {
-      if (i==0) g_pGfxEngine->Font->drawCharacter(boxsurface, 4, x, y );
-      else if (i==w) g_pGfxEngine->Font->drawCharacter(boxsurface, 5, x, y );
-      else g_pGfxEngine->Font->drawCharacter(boxsurface, ' ', x, y );
-      x+=8;
-    }
-    y+=8;
-  }
-    for(x=(x1*8),i=0;i<=w;i++)
-    {
-      if (i==0) g_pGfxEngine->Font->drawCharacter(boxsurface, 6, x, y);
-      else if (i==w) g_pGfxEngine->Font->drawCharacter(boxsurface, 8, x, y);
-      else g_pGfxEngine->Font->drawCharacter(boxsurface, 7, x, y);
-      x+=8;
-    }
-}
-
 bool showGameHint(int mpx, int mpy, int episode, int level)
 {
 	std::string strname;
@@ -182,7 +147,7 @@ int dlgX,dlgY,dlgW,dlgH;
   dlgW = GetStringAttribute("EP1_StatusBox", "WIDTH");
   dlgH = GetStringAttribute("EP1_StatusBox", "HEIGHT");
 
-  dialogbox(dlgX,dlgY,dlgW,dlgH);
+  g_pGfxEngine->drawDialogBox( boxsurface, dlgX,dlgY,dlgW,dlgH);
   g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP1_StatusBox"), (dlgX+1)<<3, (dlgY+1)<<3, 0);
 
   // fill in what we have
@@ -272,7 +237,7 @@ int dlgX,dlgY,dlgW,dlgH;
   dlgW = GetStringAttribute("EP2_StatusBox", "WIDTH");
   dlgH = GetStringAttribute("EP2_StatusBox", "HEIGHT");
 
-  dialogbox(dlgX,dlgY,dlgW,dlgH);
+  g_pGfxEngine->drawDialogBox( boxsurface, dlgX,dlgY,dlgW,dlgH);
   g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP2_StatusBox"), (dlgX+1)<<3, (dlgY+1)<<3, 0);
 
   // cards
@@ -360,7 +325,7 @@ int dlgX,dlgY,dlgW,dlgH;
   dlgW = GetStringAttribute("EP3_StatusBox", "WIDTH");
   dlgH = GetStringAttribute("EP3_StatusBox", "HEIGHT");
 
-  dialogbox(dlgX,dlgY,dlgW,dlgH);
+  g_pGfxEngine->drawDialogBox( boxsurface, dlgX,dlgY,dlgW,dlgH);
   g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP3_StatusBox"), (dlgX+1)<<3, (dlgY+1)<<3, 0);
 
   // calculate % ankh time left
@@ -471,10 +436,9 @@ int dlgX,dlgY,dlgW,dlgH;
   dlgW = GetStringAttribute("EP1_SHIP", "WIDTH");
   dlgH = GetStringAttribute("EP1_SHIP", "HEIGHT");
 
-  dialogbox(dlgX,dlgY,dlgW,dlgH);
-
   SDL_Surface *boxsurface = g_pVideoDriver->FGLayerSurface;
 
+  g_pGfxEngine->drawDialogBox( boxsurface, dlgX,dlgY,dlgW,dlgH);
   g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP1_SHIP"), (dlgX+1)<<3, (dlgY+1)<<3,0);
 
   // draw needed parts
@@ -521,7 +485,7 @@ const int twirlspeed = 100;
   twirlX = GetStringAttribute(strname, "TWIRLX");
   twirlY = GetStringAttribute(strname, "TWIRLY");
 
-  dialogbox(dlgX,dlgY,dlgW,dlgH);
+  g_pGfxEngine->drawDialogBox( boxsurface, dlgX,dlgY,dlgW,dlgH);
   g_pGfxEngine->Font->drawFont( boxsurface, getstring(strname), (dlgX+1)<<3, (dlgY+1)<<3,0);
 
   g_pVideoDriver->update_screen();
