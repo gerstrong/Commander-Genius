@@ -42,9 +42,9 @@ public:
 	void destroy(void);
 
 	SDL_AudioSpec	getAudioSpec(void) { return AudioSpec; }
-	unsigned short 	getMixingchannels(void) { return m_mixing_channels; };
+	unsigned short 	getMixingchannels(void) { return m_mixing_channels; }
 
-	void setSoundmode(int freq, bool stereo);
+	void setSoundmode(int freq, bool stereo, Uint16 format);
 
 	char extractOfExeFile(const std::string& inputpath, int episode); // This is a special funktion. It doesn't belong here!
 

@@ -481,12 +481,15 @@ char CSound::extractOfExeFile(const std::string& inputpath, int episode)
 
 	  return ret;
 }
-void CSound::setSoundmode(int freq, bool stereo)
+
+void CSound::setSoundmode(int freq, bool stereo, Uint16 format)
 {
 	if(stereo)
 		AudioSpec.channels = 2;
 	else
 		AudioSpec.channels = 1;
+
+	AudioSpec.format = format;
 
 	switch(freq)
 	{
@@ -500,4 +503,3 @@ void CSound::setSoundmode(int freq, bool stereo)
 		AudioSpec.freq = 44100;
 	}
 }
-

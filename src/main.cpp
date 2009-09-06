@@ -661,7 +661,7 @@ short readCommandLine(int argc, char *argv[], stCloneKeenPlus *pCKP)
 	      }
 	      else if (strcmp(tempbuf, "-stereo")==0)       // Enable Stereo Sound
 	      {
-	    	  g_pSound->setSoundmode(0,true);
+	    	  g_pSound->setSoundmode(0,true, AUDIO_U8);
 	      }
 	      else if (strcmp(tempbuf, "-showfps")==0)  // show fps
 	      {

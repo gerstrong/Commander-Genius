@@ -102,7 +102,7 @@ short CSettings::loadDrvCfg()
 		g_pVideoDriver->setAspectCorrection(Parser.getIntValue("aspect","Video") == 1);
 
 		g_pSound->setSoundmode(Parser.getIntValue("rate","Audio"),
-						Parser.getIntValue("channels","Audio") == 2);
+						Parser.getIntValue("channels","Audio") == 2, Parser.getIntValue("format","Audio"));
 	}
 
 	return retval;

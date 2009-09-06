@@ -312,7 +312,8 @@ int AudioDlg(stCloneKeenPlus *pCKP)
 	int ok=0;
 	CBitmap *bm_title = g_pGfxEngine->getBitmap("TITLE");
 
-	int rate=0;
+	int rate = 0;
+	Uint16 format = 0;
 	short mode=0;
 
 	// Load the Title Bitmap
@@ -320,20 +321,29 @@ int AudioDlg(stCloneKeenPlus *pCKP)
 	bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y );
 
 	// Prepare the Games Menu
-	CDialog AudioMenu(g_pVideoDriver->FGLayerSurface, 32,32,32,7);
+	CDialog AudioMenu(g_pVideoDriver->FGLayerSurface, 32,32,32,8);
 
 	AudioMenu.setFrameTheme(DLG_THEME_OLDSCHOOL);
 
 	rate = g_pSound->getAudioSpec().freq;
 	AudioMenu.addObject(DLG_OBJ_OPTION_TEXT, 40, 40, "Rate: " + itoa(rate) +" kHz");
+
+	format = g_pSound->getAudioSpec().format;
+	std::string buf;
+	if(format == AUDIO_S16)
+		buf = "Format: 16 bits";
+	else
+		buf = "Format: 8 bits";
+	AudioMenu.addObject(DLG_OBJ_OPTION_TEXT, 40, 48, buf);
+
 	mode = g_pSound->getAudioSpec().channels - 1;
 	if(mode == 1)
-		AudioMenu.addObject(DLG_OBJ_OPTION_TEXT, 40, 48, "Mode: Stereo");
+		AudioMenu.addObject(DLG_OBJ_OPTION_TEXT, 40, 56, "Mode: Stereo");
 	else
-		AudioMenu.addObject(DLG_OBJ_OPTION_TEXT, 40, 48, "Mode: Mono");
+		AudioMenu.addObject(DLG_OBJ_OPTION_TEXT, 40, 56, "Mode: Mono");
 
-	AudioMenu.addObject(DLG_OBJ_OPTION_TEXT, 40, 64, "Save and go back");
-	AudioMenu.addObject(DLG_OBJ_OPTION_TEXT, 40, 72, "Cancel");
+	AudioMenu.addObject(DLG_OBJ_OPTION_TEXT, 40, 72, "Save and go back");
+	AudioMenu.addObject(DLG_OBJ_OPTION_TEXT, 40, 80, "Cancel");
 
 
 	do
@@ -357,17 +367,28 @@ int AudioDlg(stCloneKeenPlus *pCKP)
 
 			if(selection == 1)
 			{
-				mode = !mode;
-				if(!mode)
-					AudioMenu.setObjectText(1,"Mode: Mono");
+				if( format == AUDIO_S16 ) format = AUDIO_U8;
+				else if( format == AUDIO_U8 ) format = AUDIO_S16;
+				if(format == AUDIO_S16)
+					buf = "Format: 16 bits";
 				else
-					AudioMenu.setObjectText(1,"Mode: Stereo");
+					buf = "Format: 8 bits";
+				AudioMenu.setObjectText(1, buf);
 			}
 
 			if(selection == 2)
 			{
+				mode = !mode;
+				if(!mode)
+					AudioMenu.setObjectText(2,"Mode: Mono");
+				else
+					AudioMenu.setObjectText(2,"Mode: Stereo");
+			}
+
+			if(selection == 3)
+			{
 				g_pSound->destroy();
-				g_pSound->setSoundmode(rate, mode ? true : false);
+				g_pSound->setSoundmode(rate, mode ? true : false, format);
 				CSettings *Settings;
 				Settings = new CSettings();
 				Settings->saveDrvCfg();
@@ -377,7 +398,7 @@ int AudioDlg(stCloneKeenPlus *pCKP)
 											  pCKP->Resources.GameDataDirectory);
 				break;
 			}
-			if(selection == 3)
+			if(selection == 4)
 				break;
 
 		}
