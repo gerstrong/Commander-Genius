@@ -44,16 +44,12 @@ char eseq3_AwardBigV(stCloneKeenPlus *pCKP)
 
   showmapatpos(81, 32, 32, pCKP);
 
+  g_pInput->flushAll();
+
   numplayers = 1;
   player[0].x = 244<<CSF;
   player[0].y = 104<<CSF;
   player[0].playframe = 0;
-
-  /*fade.mode = FADE_GO;
-  fade.rate = FADE_NORM;
-  fade.dir = FADE_IN;
-  fade.curamt = 0;
-  fade.fadetimer = 0;*/
 
   x = GetStringAttribute("EP3_ESEQ_PAGE1", "LEFT");
   y = GetStringAttribute("EP3_ESEQ_PAGE1", "TOP");
@@ -89,7 +85,7 @@ char eseq3_AwardBigV(stCloneKeenPlus *pCKP)
     if (c==1 && g_pInput->getPressedCommand(IC_STATUS)) c++;
 
     g_pInput->pollEvents();
-    if (g_pInput->getPressedKey(KQUIT) /*&& fade.mode==FADE_COMPLETE*/) break;
+    if (g_pInput->getPressedKey(KQUIT)) break;
   } while(1);
 
   SDL_FreeSurface(finale_sfc);

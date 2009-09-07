@@ -247,7 +247,7 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
     	loadslot = save_slot_box(0, pCKP);
 
     	x = (320/2)-(bm_title->getWidth()/2);
-    	bm_title->draw(sfc, x+scroll_x, 0);
+    	bm_title->draw( sfc, x+scroll_x, scroll_y);
     }
     else if (selection==MAINMNU_OPTIONS)
     {

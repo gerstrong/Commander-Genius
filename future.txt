@@ -1,7 +1,6 @@
 Here are the features that we still want to implement:
 ------------------------------------------------------
 until 0.3.5:
-- Improve the graphics of CG using SDL_BLit instead of arrays (CGfxEngine)
 - Read all the text out of EXE-files. This should provide better support for mods!
 - Improve the logic of Keen.exe reading for a better mod compatibility
 - improve the physics using floats

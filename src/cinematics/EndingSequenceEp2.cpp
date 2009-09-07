@@ -208,11 +208,6 @@ CSprite **sprites = &g_pGfxEngine->Sprite[0];
 	}
 
 	enter = (g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_POGO));
-	if (enter && state==TAN_STATE_GAMEOVER)
-	{
-	  //if (fade.dir!=FADE_OUT)
-	}
-	lastenterstate = enter;
 
 	if (state!=TAN_STATE_GAMEOVER) gamedo_AnimatedTiles();
 
@@ -235,7 +230,6 @@ void eseq2_vibrate()
 int xamt, yamt;
 int xdir, ydir;
 int vibratetimes;
-//int enter,lastenterstate;
 int i;
 int x,y,w,h;
 
@@ -337,6 +331,8 @@ int x, y;
 int downtimer;
 int afterfadewaittimer;
 
+  g_pInput->flushAll();
+
   initgame( &(pCKP->Control.levelcontrol) );
 
   // set up the ship's route
@@ -376,71 +372,45 @@ int afterfadewaittimer;
   afterfadewaittimer = 0;
   do
   {
-	// execute the current command in the queue
-	//if (fade.dir != FADE_OUT)
-	//{
-		  switch(shipqueue[ShipQueuePtr].cmd)
+	  switch(shipqueue[ShipQueuePtr].cmd)
+	  {
+		case CMD_MOVE:
+		// down-right only, here
+		  player[0].x+=9;
+		  player[0].y+=4;
+		  // we need a little bit more resolution that we can get--
+		  // the Y speed needs to be somewhere between 4 and 5 for
+		  // him to end up at the center of the earth
+		  if (downtimer > 6)
 		  {
-		    case CMD_MOVE:
-		    // down-right only, here
-			  player[0].x+=9;
-			  player[0].y+=4;
-			  // we need a little bit more resolution that we can get--
-			  // the Y speed needs to be somewhere between 4 and 5 for
-			  // him to end up at the center of the earth
-			  if (downtimer > 6)
-			  {
-			    player[0].y++;
-			    downtimer = 0;
-			  }
-			  else downtimer++;
-		    break;
-		    case CMD_WAIT:
-		    break;
-		    case CMD_FADEOUT:
-			  /*if (fade.dir!=FADE_OUT)
-			  {
-				fade.dir = FADE_OUT;
-				fade.curamt = PAL_FADE_SHADES;
-				fade.fadetimer = 0;
-				fade.rate = FADE_NORM;
-				fade.mode = FADE_GO;
-			  }*/
-		    break;
-		    default: break;
+			player[0].y++;
+			downtimer = 0;
 		  }
-		  // decrease the time remaining
-		  if (shipqueue[ShipQueuePtr].time)
-		  {
-		    shipqueue[ShipQueuePtr].time--;
-		  }
-		  else
-		  {  // no time left on this command, go to next cmd
-		    ShipQueuePtr++;
-		  }
-	//}
+		  else downtimer++;
+		break;
+		case CMD_WAIT:
+		break;
 
-	//if (fade.dir==FADE_OUT && fade.mode==FADE_COMPLETE)
-	//{
+		break;
+		default: break;
+	  }
+	  // decrease the time remaining
+	  if (shipqueue[ShipQueuePtr].time)
+	  {
+		shipqueue[ShipQueuePtr].time--;
+	  }
+	  else
+	  {  // no time left on this command, go to next cmd
+		ShipQueuePtr++;
+	  }
 	  if (afterfadewaittimer > 80)
 	  {
 		return 0;
 	  }
 	  else afterfadewaittimer++;
-	//}
 
 	enter = (g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_POGO));
-	if (enter && !lastenterstate)
-	{
-	  /*if (fade.dir!=FADE_OUT)
-	  {
-		fade.dir = FADE_OUT;
-		fade.curamt = PAL_FADE_SHADES;
-		fade.fadetimer = 0;
-		fade.rate = FADE_NORM;
-		fade.mode = FADE_GO;
-	  }*/
-	}
+
 	lastenterstate = enter;
 
 	gamedo_AnimatedTiles();
@@ -458,11 +428,11 @@ int afterfadewaittimer;
 int eseq2_LimpsHome(stCloneKeenPlus *pCKP)
 {
 char enter,lastenterstate;
-//int x, y;
 int downtimer;
 int afterfadewaittimer = 0;
 
   initgame( &(pCKP->Control.levelcontrol) );
+  g_pInput->flushAll();
 
   // set up the ship's route
   ShipQueuePtr = 0;
@@ -480,11 +450,6 @@ int afterfadewaittimer = 0;
 
   ShipQueuePtr = 0;
 
-  /*fade.mode = FADE_GO;
-  fade.rate = FADE_NORM;
-  fade.dir = FADE_IN;
-  fade.curamt = 0;
-  fade.fadetimer = 0;*/
   eseq_showmsg(getstring("EP2_ESEQ_PART2"),HEADSFOREARTH_X,HEADSFOREARTH_Y,HEADSFOREARTH_W,HEADSFOREARTH_H-1,1);
 
   // erase the message dialog
@@ -494,63 +459,35 @@ int afterfadewaittimer = 0;
   downtimer = 0;
   do
   {
-	// execute the current command in the queue
-	//if (fade.dir != FADE_OUT)
-	//{
-		  switch(shipqueue[ShipQueuePtr].cmd)
-		  {
-		    case CMD_MOVE:
-		    // up-left only, here
-			  player[0].x-=1;
-			  player[0].y-=2;
-		    break;
-		    case CMD_WAIT:
-		    break;
-		    case CMD_FADEOUT:
-			  /*if (fade.dir!=FADE_OUT)
-			  {
-			    fade.dir = FADE_OUT;
-			    fade.curamt = PAL_FADE_SHADES;
-			    fade.fadetimer = 0;
-			    fade.rate = FADE_NORM;
-			    fade.mode = FADE_GO;
-			  }*/
-		    break;
-		    default: break;
-		  }
-		  // decrease the time remaining
-		  if (shipqueue[ShipQueuePtr].time)
-		  {
-		    shipqueue[ShipQueuePtr].time--;
-		  }
-		  else
-		  {  // no time left on this command, go to next cmd
-		    ShipQueuePtr++;
-		  }
-	//}
-
-	//if (fade.dir==FADE_OUT && fade.mode==FADE_COMPLETE)
-	//{
+	  switch(shipqueue[ShipQueuePtr].cmd)
+	  {
+		case CMD_MOVE:
+		// up-left only, here
+		  player[0].x-=1;
+		  player[0].y-=2;
+		break;
+		case CMD_WAIT:
+		break;
+		case CMD_FADEOUT:
+		break;
+		default: break;
+	  }
+	  // decrease the time remaining
+	  if (shipqueue[ShipQueuePtr].time)
+	  {
+		shipqueue[ShipQueuePtr].time--;
+	  }
+	  else
+	  {  // no time left on this command, go to next cmd
+		ShipQueuePtr++;
+	  }
 	  if (afterfadewaittimer > 80)
 	  {
 		return 0;
 	  }
 	  else afterfadewaittimer++;
-	//}
 
 	enter = (g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_POGO));
-	if (enter && !lastenterstate)
-	{
-	  /*if (fade.dir!=FADE_OUT)
-	  {
-		fade.dir = FADE_OUT;
-		fade.curamt = PAL_FADE_SHADES;
-		fade.fadetimer = 0;
-		fade.rate = FADE_NORM;
-		fade.mode = FADE_GO;
-	  }*/
-	}
-	lastenterstate = enter;
 
 	gamedo_AnimatedTiles();
 	g_pInput->pollEvents();
@@ -565,11 +502,11 @@ int eseq2_SnowedOutside(stCloneKeenPlus *pCKP)
 {
 int curpage;
 int lastpage;
-	std::string tempstr;
-	std::string text;
-//int enter, lastenterstate;
+std::string tempstr;
+std::string text;
 int dlgX, dlgY, dlgW, dlgH;
 
+  g_pInput->flushAll();
   scrollx_buf = scroll_x = 0;
   scrolly_buf = scroll_y = 0;
 

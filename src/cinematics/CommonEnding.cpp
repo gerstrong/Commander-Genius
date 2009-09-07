@@ -96,7 +96,7 @@ void eseq_showmsg(const std::string& text, int boxleft, int boxtop,
 	} else showtimer++;
 
 	// user pressed enter or some other key
-	if (cancel && !lastcancelstate)
+	if (cancel)
 	{
 	  if (amountshown < text.size())
 		  amountshown = text.size();
@@ -119,7 +119,7 @@ void eseq_showmsg(const std::string& text, int boxleft, int boxtop,
 
 	g_pInput->pollEvents();
 	gamedo_frameskipping_blitonly();
-  } while(!g_pInput->getPressedAnyCommand());
+  } while(!g_pInput->getPressedCommand(KQUIT));
   return;
 }
 

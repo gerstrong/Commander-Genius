@@ -66,15 +66,7 @@ int i;
   // all objects -> nonexistant
   for(i=0;i<MAX_OBJECTS;i++) objects[i].exists = 0;
 
-
   eseq_showmsg(getstring("EP1_ESEQ_PART1"),1,18,37,6,1);
-
-  do
-  {
-    gamedo_AnimatedTiles();
-
-    g_pInput->pollEvents();
-  } while( !g_pInput->getPressedKey(KQUIT) );
 
   return 0;
 }
@@ -96,6 +88,8 @@ int scrollingon;
 
   scrollingon = 1;
   initgame( &(pCKP->Control.levelcontrol) );
+
+  g_pInput->flushAll();
 
   // set up the ship's route
   ShipQueuePtr = 0;

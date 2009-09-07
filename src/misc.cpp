@@ -542,7 +542,7 @@ top: ;
      dlgH = GetStringAttribute("WhichSlotLoad", "HEIGHT");
      map_redraw();
      x = (320/2)-(g_pGfxEngine->getBitmap("TITLE")->getWidth()/2);
-     g_pGfxEngine->getBitmap("TITLE")->draw( g_pVideoDriver->getScrollSurface(), x, 0);
+     g_pGfxEngine->getBitmap("TITLE")->draw( g_pVideoDriver->getScrollSurface(), x+scrollx_buf, scrolly_buf);
   }
 
   saveslot = 0;
