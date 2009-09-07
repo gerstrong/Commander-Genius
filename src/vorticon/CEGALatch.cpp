@@ -204,6 +204,7 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
          }
        }
      }
+     Tilemap->loadHiresTile();
      Tilemap->optimizeSurface();
      if(SDL_MUSTLOCK(sfc))	SDL_UnlockSurface(sfc);
      delete Planes;

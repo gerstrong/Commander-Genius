@@ -563,15 +563,9 @@ int xa,ya;
               {
                 tl = getmaptileat(x+xa,y+ya);
                 if(TileProperty[tl][BEHAVIOR] == 65534)
-                {
-                	g_pGfxEngine->Tilemap->drawTile(g_pVideoDriver->SpriteLayerSurface, x+xa-scroll_x, y+ya-scroll_y, tl+1);
-                }
+                	g_pGfxEngine->Tilemap->drawTile(sfc, x+xa-scroll_x, y+ya-scroll_y, tl+1);
                 else if (TileProperty[tl][BEHAVIOR] == 65535)
-                {
-                   sfc_rect.x = x+xa-scroll_x;	sfc_rect.y = y+ya-scroll_y;
-                   SDL_FillRect(sfc, &sfc_rect, sfc->format->colorkey);
-                }
-
+                   g_pGfxEngine->Tilemap->drawTile(sfc, x+xa-scroll_x, y+ya-scroll_y, tl);
               }
             }
         }
