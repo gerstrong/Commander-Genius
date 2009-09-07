@@ -7,30 +7,18 @@
 
 #include "CPalette.h"
 
+///
+// Initialization
+///
 CPalette::CPalette() {
 	m_numcolors = 17;
 	m_fxsurface = NULL;
-	m_alpha=0;
+	m_alpha = 0;
+	m_fadespeed = 1;
 }
 
 CPalette::~CPalette() {
 	// TODO Auto-generated destructor stub
-}
-
-void CPalette::fade(Uint8 alpha)
-{
-	m_alpha = alpha;
-	SDL_SetAlpha( m_fxsurface, SDL_SRCALPHA, m_alpha);
-}
-
-void CPalette::setFXSurface(SDL_Surface *fxsurface)
-{
-	m_fxsurface = fxsurface;
-}
-
-void CPalette::setFadeColour(Uint32 colour)
-{
-	SDL_FillRect(m_fxsurface, NULL, colour);
 }
 
 void CPalette::setupColorPalettes()
@@ -61,6 +49,40 @@ void CPalette::setPaletteColour( Uint8 c, Uint8 r, Uint8 g, Uint8 b)
 	m_Palette[c].b = b;
 }
 
+// adds a color onto the end of the palette and returns it's index.
+// if the palette is full, returns -1.
+char CPalette::addcolor(unsigned char r, unsigned char g, unsigned char b)
+{
+	if (m_numcolors >= 255) return -1;
+
+	m_Palette[m_numcolors].r = r;
+	m_Palette[m_numcolors].g = g;
+	m_Palette[m_numcolors].b = b;
+
+	m_numcolors++;
+	return (m_numcolors-1);
+}
+
+///
+// Getters and Setters
+///
+// sets whether to use the "dark" (lights off) palette or not
+void CPalette::setdark(int dark)
+{
+
+}
+
+void CPalette::setFXSurface(SDL_Surface *fxsurface)
+{
+	m_fxsurface = fxsurface;
+	SDL_SetAlpha( m_fxsurface, SDL_SRCALPHA, m_alpha);
+}
+
+void CPalette::setFadeColour(Uint32 colour)
+{
+	SDL_FillRect(m_fxsurface, NULL, colour);
+}
+
 // returns the index of a color in the current palette with an RGB value
 // identical to the one given, or -1.
 int CPalette::getcolor(unsigned char r, unsigned char g, unsigned char b)
@@ -73,28 +95,50 @@ int CPalette::getcolor(unsigned char r, unsigned char g, unsigned char b)
 	return -1;
 }
 
-// adds a color onto the end of the palette and returns it's index.
-// if the palette is full, returns -1.
-char CPalette::addcolor(unsigned char r, unsigned char g, unsigned char b)
-{
-	if (m_numcolors >= 256) return -1;
-
-	m_Palette[m_numcolors].r = r;
-	m_Palette[m_numcolors].g = g;
-	m_Palette[m_numcolors].b = b;
-
-	m_numcolors++;
-	return (m_numcolors-1);
-}
-
-// sets whether to use the "dark" (lights off) palette or not
-void CPalette::setdark(int dark)
-{
-
-}
-
+///
+// Fading Routines
+///
 bool CPalette::in_progress(void)		// return whether or not a fade is in progress
 {
-	return false;
+	return m_fade_in_progess;
 }
+
+void CPalette::fadeto(Uint8 alpha, Uint8 fadespeed)
+{
+	m_alpha = alpha;
+	m_fade_in_progess = true;
+	m_fadespeed = fadespeed;
+}
+
+void CPalette::applyFade()
+{
+	Uint8 current_alpha = m_fxsurface->format->alpha;
+
+	if( m_alpha!=current_alpha )
+	{
+		m_fade_in_progess = true;
+		if( m_alpha>current_alpha )
+		{
+			if(current_alpha+m_fadespeed>m_alpha)
+				current_alpha = m_alpha;
+			else
+				current_alpha += m_fadespeed;
+		}
+		else if( m_alpha<current_alpha )
+		{
+			if(current_alpha-m_fadespeed<m_alpha)
+				current_alpha = m_alpha;
+			else
+				current_alpha -= m_fadespeed;
+		}
+
+		SDL_SetAlpha( m_fxsurface, SDL_SRCALPHA, current_alpha);
+	}
+	else
+	{
+		m_fade_in_progess = false;
+	}
+}
+
+
 

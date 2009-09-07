@@ -96,7 +96,6 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 
 			opt = mainmenu(pCKP, defaultopt); // Read option from the main menu
 											  // of the game.
-
 			pCKP->Control.skipstarting=0;
 
 			g_pLogFile->ftextOut("gcl: opt = %d<br>", opt);
@@ -113,7 +112,6 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 	        initgamefirsttime(pCKP, EGAGraphics->getNumSprites());
 	        loadinggame = 0;
 	        playgame_levelmanager(pCKP);
-
 	        break;
 	      case MAINMNU_2PLAYER:
 	        defaultopt = 0;

@@ -11,6 +11,9 @@
 
 #define COLORKEY 16 // Used only for the 8-bit tile. Colour number COLORKEY in the Palette
 
+// Standard Fade speeds
+#define FADE_SPEED_FAST 10
+
 #include <SDL/SDL.h>
 
 class CPalette {
@@ -18,7 +21,8 @@ public:
 	CPalette();
 	virtual ~CPalette();
 
-	void fade(Uint8 alpha);
+	void fadeto(Uint8 alpha, Uint8 fadespeed);
+	void applyFade();
 
 	void setupColorPalettes();
 	void setPaletteColour( Uint8 c, Uint8 r, Uint8 g, Uint8 b);
@@ -35,7 +39,9 @@ public:
 	SDL_Color m_Palette[256];
 	Uint8 m_alpha;
 	Uint8 m_numcolors;
+	Uint8 m_fadespeed;
 	SDL_Surface *m_fxsurface;
+	bool m_fade_in_progess;
 };
 
 #endif /* CPALETTE_H_ */

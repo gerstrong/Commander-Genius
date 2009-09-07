@@ -42,6 +42,8 @@ int lastquit;
     why_term_ptr = "No player start position! (flag2=levelcontrol.curlevel, flag3=levelcontrol.episode)";
   }
 
+  g_pGfxEngine->Palette.fadeto( 0, FADE_SPEED_FAST );
+
   if (!loadinggame)
   {
      gameloop_initialize(pCKP->Control.levelcontrol.episode, pCKP->Control.levelcontrol.dokeensleft);
@@ -70,8 +72,12 @@ int lastquit;
 
   // Now, we are ready to loop the game scenes (map and level)
   // Let's create the player objects
+
   do
   {
+    if(g_pGfxEngine->Palette.in_progress())
+		  g_pGfxEngine->Palette.applyFade();
+
 	if (primaryplayer==1) otherplayer = 0; else otherplayer = 1;
 
 	// periodically make all enemy gun fixtures fire (in ep3)
@@ -1195,7 +1201,7 @@ int o;
 
 void gameloop_initialize(int episode, bool show_keensleft = false)
 {
-unsigned int x,y,i/*,tl*/;
+unsigned int x,y,i;
 int timeout;
 
    if (episode == 3)

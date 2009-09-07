@@ -195,7 +195,6 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
            			   *u_offset = COLORKEY;
            		   else
            			   *u_offset = *(u_pixel + 16*13*16*((t-1)/13) + 16*((t-1)%13)  + 16*13*y + x);
-           			   //*u_offset = g_pVideoDriver->SpriteLayerSurface->format->colorkey;
            	   }
                else
             	   *u_offset = c;

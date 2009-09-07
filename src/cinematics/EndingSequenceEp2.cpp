@@ -54,7 +54,7 @@ int ShipQueuePtr;
 
 int eseq2_TantalusRay(stCloneKeenPlus *pCKP)
 {
-char enter,lastenterstate;
+char enter;
 int x, y, t, o, i;
 int tantalus_animframe, tantalus_animtimer=0;
 int state, timer, spawnedcount=0;

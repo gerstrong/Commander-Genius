@@ -994,10 +994,12 @@ int boxtimer;
 
   g_pSound->playSound(SOUND_KEENSLEFT, PLAY_NOW);
 
-
   boxtimer = 0;
   do
   {
+	  if(g_pGfxEngine->Palette.in_progress())
+		  g_pGfxEngine->Palette.applyFade();
+
 	  g_pGfxEngine->drawDialogBox(g_pVideoDriver->FGLayerSurface, KEENSLEFT_X, boxY,KEENSLEFT_W,boxH);
 	  g_pGfxEngine->Font->drawFont( boxsurface, getstring("LIVES_LEFT_BACKGROUND"),(KEENSLEFT_X+1)*8,(boxY+1)*8,0);
 	  g_pGfxEngine->Font->drawFont( boxsurface, getstring("LIVES_LEFT"),((KEENSLEFT_X+7)*8)+4,(boxY+1)*8,0);

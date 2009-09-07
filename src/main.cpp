@@ -29,6 +29,7 @@
 #include "keen.h"
 #include "sdl/joydrv.h"
 #include "sdl/CInput.h"
+#include "sdl/CTimer.h"
 #include "sdl/sound/CSound.h"
 #include "sdl/CVideoDriver.h"
 #include "hqp/CMusic.h"
@@ -301,6 +302,16 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
 
   do
   {
+
+		g_pGfxEngine->Palette.fadeto(255, FADE_SPEED_FAST);
+		do
+		{
+			if( g_pTimer->TimeToRender() == false ) continue;
+			g_pGfxEngine->Palette.applyFade();
+			g_pVideoDriver->sb_blit();
+			g_pTimer->TimeToDelay();
+		} while(g_pGfxEngine->Palette.in_progress());
+
 		initgame( &(pCKP->Control.levelcontrol) );
 
 		newlevel = p_levelcontrol->chglevelto;
