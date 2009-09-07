@@ -997,7 +997,7 @@ int boxtimer;
   boxtimer = 0;
   do
   {
-	  if(g_pGfxEngine->Palette.in_progress())
+	  if( g_pGfxEngine->Palette.m_fade_in_progess )
 		  g_pGfxEngine->Palette.applyFade();
 
 	  g_pGfxEngine->drawDialogBox(g_pVideoDriver->FGLayerSurface, KEENSLEFT_X, boxY,KEENSLEFT_W,boxH);

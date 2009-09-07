@@ -515,7 +515,7 @@ void CVideoDriver::update_screen(void)
 	SDL_BlitSurface(SpriteLayerSurface, NULL, BlitSurface, NULL);
 	SDL_BlitSurface(FGLayerSurface, NULL, BlitSurface, NULL);
 
-	if(g_pGfxEngine->Palette.m_alpha)
+	if(FXSurface->format->alpha)
 		SDL_BlitSurface(FXSurface, NULL, BlitSurface, NULL);
 
 #ifdef USE_OPENGL

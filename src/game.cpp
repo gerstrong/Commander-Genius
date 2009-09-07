@@ -42,7 +42,7 @@ int lastquit;
     why_term_ptr = "No player start position! (flag2=levelcontrol.curlevel, flag3=levelcontrol.episode)";
   }
 
-  g_pGfxEngine->Palette.fadeto( 0, FADE_SPEED_FAST );
+  g_pGfxEngine->Palette.fadeto( 0, FADE_SPEED_FAST/5 );
 
   if (!loadinggame)
   {
@@ -75,8 +75,8 @@ int lastquit;
 
   do
   {
-    if(g_pGfxEngine->Palette.in_progress())
-		  g_pGfxEngine->Palette.applyFade();
+	if( g_pGfxEngine->Palette.m_fade_in_progess )
+		g_pGfxEngine->Palette.applyFade();
 
 	if (primaryplayer==1) otherplayer = 0; else otherplayer = 1;
 
