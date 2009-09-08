@@ -277,13 +277,13 @@ unsigned int i;
 char tank_CanMoveLeft(int o, int h)
 {
 	int not_about_to_fall = TileProperty[getmaptileat((objects[o].x>>CSF)-1, (objects[o].y>>CSF)+h)][BUP];
-	if (!objects[o].blockedl && not_about_to_fall) return 0;
-	return 1;
+	if (!objects[o].blockedl && not_about_to_fall) return 1;
+	return 0;
 }
 
 char tank_CanMoveRight(int o, int w, int h)
 {
 	int not_about_to_fall = TileProperty[getmaptileat((objects[o].x>>CSF)+w+1, (objects[o].y>>CSF)+h)][BUP];
-	if (!objects[o].blockedr && not_about_to_fall) return 0;
-	return 1;
+	if (!objects[o].blockedr && not_about_to_fall) return 1;
+	return 0;
 }
