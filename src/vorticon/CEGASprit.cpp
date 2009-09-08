@@ -122,18 +122,16 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 							 plane4 + m_spriteloc,
 							 plane5 + m_spriteloc);
 
-     // TODO: Create surfaces which can be blitted directly to the blit surface or maybe screen.
      // load the image data
-
      g_pGfxEngine->createEmptySprites(MAX_SPRITES+1);
-     for(int s=0 ; s<m_numsprites ; s++)
+     for(int i=0 ; i<m_numsprites ; i++)
      {
-    	 g_pGfxEngine->Sprite[s]->setSize( Sprite[s].width, Sprite[s].height );
-    	 g_pGfxEngine->Sprite[s]->setBouncingBoxCoordinates( (Sprite[s].hitbox_l << CSF),
-															(Sprite[s].hitbox_u << CSF),
-															(Sprite[s].hitbox_r << CSF),
-															(Sprite[s].hitbox_b << CSF) );
-    	 g_pGfxEngine->Sprite[s]->createSurface( g_pVideoDriver->SpriteLayerSurface->flags,
+    	 g_pGfxEngine->Sprite[i]->setSize( Sprite[i].width, Sprite[i].height );
+    	 g_pGfxEngine->Sprite[i]->setBouncingBoxCoordinates( (Sprite[i].hitbox_l << CSF),
+															(Sprite[i].hitbox_u << CSF),
+															(Sprite[i].hitbox_r << CSF),
+															(Sprite[i].hitbox_b << CSF) );
+    	 g_pGfxEngine->Sprite[i]->createSurface( g_pVideoDriver->SpriteLayerSurface->flags,
 												 g_pGfxEngine->Palette.m_Palette );
      }
 
@@ -175,7 +173,6 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
        {
          for(int x=0 ; x<sfc->w ; x++)
          {
-            //sprites[s].maskdata[y][x] =  Planes->getbit(RawData, 4);
             if(Planes->getbit(RawData, 4)) pixel[y*sfc->w + x] = COLORKEY;
          }
        }
