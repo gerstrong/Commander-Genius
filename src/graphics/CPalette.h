@@ -13,6 +13,11 @@
 
 // Standard Fade speeds
 #define FADE_SPEED_FAST 10
+#define FADE_SPEED_SLOW 2
+
+// Standard Darkness for light switches
+#define FADE_DARKNESS_HARD 232
+#define FADE_DARKNESS 216
 
 #include <SDL/SDL.h>
 
@@ -28,7 +33,8 @@ public:
 	void setPaletteColour( Uint8 c, Uint8 r, Uint8 g, Uint8 b);
 	void setFXSurface(SDL_Surface *fxsurface);
 	void setFadeColour(Uint32 colour);
-	void setdark(int dark);
+	void setdark(bool dark);
+	void setdarkness(Uint8 darkness);
 
 	char addcolor(unsigned char r, unsigned char g, unsigned char b);
 	int getcolor(unsigned char r, unsigned char g, unsigned char b);
@@ -40,8 +46,10 @@ public:
 	Uint8 m_alpha;
 	Uint8 m_numcolors;
 	Uint8 m_fadespeed;
+	Uint8 m_darkness;
 	SDL_Surface *m_fxsurface;
 	bool m_fade_in_progess;
+	bool m_dark;
 };
 
 #endif /* CPALETTE_H_ */

@@ -8,6 +8,7 @@
 #include "CEGALatch.h"
 #include "../graphics/CGfxEngine.h"
 #include "../sdl/CVideoDriver.h"
+#include "../CLogFile.h"
 #include "CPlanes.h"
 #include "../funcdefs.h"
 #include "../keen.h"
@@ -74,12 +75,16 @@ bool CEGALatch::loadHead( char *data )
 	return true;
 }
 
-bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
+bool CEGALatch::loadData( std::string &m_path, short m_episode, bool compresseddata )
 {
+	std::string filename;
 	char *RawData;
     CBitmap *bitmap;
     Uint16 width, height;
     SDL_Surface *sfc;
+
+	if(m_path == "") filename = "data/egalatch.ck" + itoa(m_episode);
+	else filename = "data/" + m_path + "/egalatch.ck" + itoa(m_episode);
 
 	FILE* latchfile = OpenGameFile(filename.c_str(),"rb");
 
@@ -203,7 +208,14 @@ bool CEGALatch::loadData(const std::string& filename, bool compresseddata)
          }
        }
      }
-     Tilemap->loadHiresTile();
+
+     // Load Hires, VGA, SVGA Tiles into the tilemap
+     if(m_path == "") filename = "data/ck" + itoa(m_episode) + "tiles.bmp";
+     else filename = "data/" + m_path + "/ck" + itoa(m_episode) + "tiles.bmp";
+     if(Tilemap->loadHiresTile(filename))
+    	 g_pLogFile->textOut(GREEN, "Hi-res Bitmap for Tiles was loaded successfully!");
+
+     // Adapt the tilemap to the display, so they are faster blit
      Tilemap->optimizeSurface();
      if(SDL_MUSTLOCK(sfc))	SDL_UnlockSurface(sfc);
      delete Planes;

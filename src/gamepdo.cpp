@@ -958,6 +958,7 @@ CSprite *standsprite = g_pGfxEngine->Sprite[PSTANDFRAME];
 			else if (t==TILE_LIGHTSWITCH)
 			{ // lightswitch
 				   p_levelcontrol->dark ^= 1;
+				   g_pGfxEngine->Palette.setdark(p_levelcontrol->dark);
 				   g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, objects[player[cp].useObject].scrx);
 				if (!player[cp].ppogostick) return;
 			}

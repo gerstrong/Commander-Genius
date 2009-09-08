@@ -9,6 +9,7 @@
 #define CTILEMAP_H_
 
 #include <SDL/SDL.h>
+#include <string>
 
 class CTilemap {
 public:
@@ -16,7 +17,7 @@ public:
 	virtual ~CTilemap();
 
 	bool CreateSurface(SDL_Color *Palette, Uint32 Flags);
-	bool loadHiresTile();
+	bool loadHiresTile( const std::string& filename );
 	bool optimizeSurface();
 	SDL_Surface *getSDLSurface();
 

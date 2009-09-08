@@ -315,16 +315,20 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
 		initgame( &(pCKP->Control.levelcontrol) );
 
 		newlevel = p_levelcontrol->chglevelto;
-		if (p_levelcontrol->episode==1 && p_levelcontrol->hardmode)
+		if(p_levelcontrol->hardmode)
 		{
-			// in high-difficulity mode switch levels 5 & 9 so
-			// you can't get the pogo stick until you make it
-			// to the dark side of mars.
-			if (newlevel==5)
-			   newlevel = 9;
-			else if (newlevel==9)
-			   newlevel = 5;
+			g_pGfxEngine->Palette.setdarkness(FADE_DARKNESS_HARD);
+			if ( p_levelcontrol->episode==1 )
+			{
+				// in high-difficulity mode switch levels 5 & 9 so
+				// you can't get the pogo stick until you make it
+				// to the dark side of mars.
+				if (newlevel==5) newlevel = 9;
+				else if (newlevel==9) newlevel = 5;
+			}
 		}
+		else g_pGfxEngine->Palette.setdarkness(FADE_DARKNESS);
+
 		sprintf(levelname, "level%02d.ck%d", newlevel, p_levelcontrol->episode);
 
 		if (p_levelcontrol->chglevelto==WORLD_MAP)

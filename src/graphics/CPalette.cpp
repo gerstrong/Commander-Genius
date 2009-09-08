@@ -15,6 +15,8 @@ CPalette::CPalette() {
 	m_fxsurface = NULL;
 	m_alpha = 0;
 	m_fadespeed = 1;
+	m_dark = false;
+	m_darkness = FADE_DARKNESS;
 }
 
 CPalette::~CPalette() {
@@ -42,13 +44,6 @@ void CPalette::setupColorPalettes()
 	setPaletteColour(16, 0x00, 0xff, 0xff);
 }
 
-void CPalette::setPaletteColour( Uint8 c, Uint8 r, Uint8 g, Uint8 b)
-{
-	m_Palette[c].r = r;
-	m_Palette[c].g = g;
-	m_Palette[c].b = b;
-}
-
 // adds a color onto the end of the palette and returns it's index.
 // if the palette is full, returns -1.
 char CPalette::addcolor(unsigned char r, unsigned char g, unsigned char b)
@@ -66,10 +61,25 @@ char CPalette::addcolor(unsigned char r, unsigned char g, unsigned char b)
 ///
 // Getters and Setters
 ///
-// sets whether to use the "dark" (lights off) palette or not
-void CPalette::setdark(int dark)
-{
 
+void CPalette::setPaletteColour( Uint8 c, Uint8 r, Uint8 g, Uint8 b)
+{
+	m_Palette[c].r = r;
+	m_Palette[c].g = g;
+	m_Palette[c].b = b;
+}
+
+// sets whether to use the "dark" (lights off) or not
+void CPalette::setdark(bool dark)
+{
+	m_dark = dark;
+	setFadeColour(0);
+	fadeto( m_dark ? m_darkness : 0, FADE_SPEED_SLOW);
+}
+
+void CPalette::setdarkness(Uint8 darkness)
+{
+	m_darkness = darkness;
 }
 
 void CPalette::setFXSurface(SDL_Surface *fxsurface)

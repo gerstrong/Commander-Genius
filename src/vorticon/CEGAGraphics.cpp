@@ -116,11 +116,7 @@ bool CEGAGraphics::loadData()
 
     m_Latch->loadHead(data);
 
-	if(m_path == "")
-		buf = "egalatch.ck" + itoa(m_episode);
-	else
-		buf = m_path + "/egalatch.ck" + itoa(m_episode);
-    m_Latch->loadData("data/" + buf,(compressed>>1)); // The second bit tells, if latch is compressed.
+    m_Latch->loadData( m_path, m_episode, (compressed>>1)); // The second bit tells, if latch is compressed.
 
 
     m_Sprit = new CEGASprit(SpritePlaneSize,

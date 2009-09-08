@@ -26,7 +26,7 @@ public:
 	virtual ~CEGALatch();
 
 	bool loadHead(char *data );
-	bool loadData(const std::string& filename, bool compresseddata);
+	bool loadData( std::string &m_path, short m_episode, bool compresseddata );
 
 	char *RawData;
 

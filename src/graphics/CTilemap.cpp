@@ -25,7 +25,7 @@ bool CTilemap::CreateSurface(SDL_Color *Palette, Uint32 Flags)
 	return ( m_Tilesurface != NULL );
 }
 
-bool CTilemap::loadHiresTile()
+bool CTilemap::optimizeSurface()
 {
 	if(m_Tilesurface)
 	{
@@ -39,11 +39,11 @@ bool CTilemap::loadHiresTile()
 		return false;
 }
 
-bool CTilemap::optimizeSurface()
+bool CTilemap::loadHiresTile( const std::string& filename )
 {
 	if(m_Tilesurface)
 	{
-		SDL_Surface *temp_surface = SDL_LoadBMP("ck1tiles.bmp");
+		SDL_Surface *temp_surface = SDL_LoadBMP(filename.c_str());
 		if(temp_surface)
 		{
 			SDL_FreeSurface(m_Tilesurface);

@@ -725,6 +725,8 @@ int dlgX,dlgY,dlgW,dlgH;
 	{
 	  map_redraw();
 	  QuitState = QUIT_TO_TITLE;
+	  g_pGfxEngine->Palette.setdark(false);
+	  while(g_pGfxEngine->Palette.in_progress()) g_pGfxEngine->Palette.applyFade();
 	  return QuitState;
 	}
 	else if (g_pInput->getPressedKey(KQUIT))

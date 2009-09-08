@@ -141,9 +141,8 @@ int lastquit;
 	}
 
 	if (g_pInput->getPressedKey(KQUIT))
-	{
-	  VerifyQuit();
-	}
+		VerifyQuit();
+
 	if (QuitState != NO_QUIT) return;
 
 	// limit frame rate
