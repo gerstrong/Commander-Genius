@@ -27,10 +27,12 @@
 
 #define SNDWAVE_LEFT_FRAME      128
 
+#define Sprite g_pGfxEngine->Sprite
+
 unsigned int rnd(void);
 void bumpplayer(int p, int pushamt, bool solid);
 
-void meep_ai(int o, stLevelControl levelcontrol, CSprite *sprite)
+void meep_ai( int o, stLevelControl levelcontrol )
 {
 int newobject;
 int not_about_to_fall;
@@ -96,7 +98,7 @@ int not_about_to_fall;
      {
        objects[o].sprite = MEEP_WALK_RIGHT_FRAME + objects[o].ai.meep.animframe;
 
-       not_about_to_fall = TileProperty[getmaptileat((objects[o].x>>CSF)+sprite[MEEP_SING_LEFT_FRAME].getWidth(), (objects[o].y>>CSF)+sprite[MEEP_SING_LEFT_FRAME].getHeight())][BUP];
+       not_about_to_fall = TileProperty[getmaptileat((objects[o].x>>CSF)+Sprite[MEEP_SING_LEFT_FRAME]->getWidth(), (objects[o].y>>CSF)+Sprite[MEEP_SING_LEFT_FRAME]->getHeight())][BUP];
 
        if (objects[o].blockedr || !not_about_to_fall)
        {
@@ -110,7 +112,7 @@ int not_about_to_fall;
      else
      {
        objects[o].sprite = MEEP_WALK_LEFT_FRAME + objects[o].ai.meep.animframe;
-       not_about_to_fall = TileProperty[getmaptileat((objects[o].x>>CSF)-1, (objects[o].y>>CSF)+sprite[MEEP_SING_LEFT_FRAME].getHeight())][BUP];
+       not_about_to_fall = TileProperty[getmaptileat((objects[o].x>>CSF)-1, (objects[o].y>>CSF)+Sprite[MEEP_SING_LEFT_FRAME]->getHeight())][BUP];
 
        if (objects[o].blockedl || !not_about_to_fall)
        {
@@ -145,12 +147,12 @@ int not_about_to_fall;
      {
         if (objects[o].ai.meep.dir==RIGHT)
         {
-            newobject = spawn_object(objects[o].x+(sprite[MEEP_SING_RIGHT_FRAME].getWidth()<<CSF), objects[o].y+(5<<CSF), OBJ_SNDWAVE);
+            newobject = spawn_object(objects[o].x+(Sprite[MEEP_SING_RIGHT_FRAME]->getWidth()<<CSF), objects[o].y+(5<<CSF), OBJ_SNDWAVE);
             objects[newobject].ai.ray.direction = RIGHT;
         }
         else
         {
-            newobject = spawn_object(objects[o].x-(sprite[SNDWAVE_LEFT_FRAME].getWidth()<<CSF), objects[o].y+(5<<CSF), OBJ_SNDWAVE);
+            newobject = spawn_object(objects[o].x-(Sprite[SNDWAVE_LEFT_FRAME]->getWidth()<<CSF), objects[o].y+(5<<CSF), OBJ_SNDWAVE);
             objects[newobject].ai.ray.direction = LEFT;
         }
         g_pSound->playStereofromCoord(SOUND_MEEP, PLAY_NOW, objects[o].scrx);

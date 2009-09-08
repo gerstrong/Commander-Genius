@@ -35,13 +35,15 @@
 
 #define TANKPUSHAMOUNT        16
 
+#define Sprite g_pGfxEngine->Sprite
+
 char tank_CanMoveLeft(int o, int h);
 char tank_CanMoveRight(int o, int w, int h);
 
 //reference to ../misc.cpp
 unsigned int rnd(void);
 
-void tank_ai(int o, CSprite *sprites,bool hardmode)
+void tank_ai(int o, bool hardmode)
 {
 int newobject;
 unsigned int i;
@@ -101,9 +103,9 @@ unsigned int i;
          // did we go into this state for the purpose of turning and firing?
          if (!objects[o].ai.tank.fireafterlook)
          { // no
-             if (!tank_CanMoveRight(o, sprites[TANK_WALK_RIGHT_FRAME].getWidth(), sprites[TANK_WALK_RIGHT_FRAME].getHeight()))
+             if (!tank_CanMoveRight(o, Sprite[TANK_WALK_RIGHT_FRAME]->getWidth(), Sprite[TANK_WALK_RIGHT_FRAME]->getHeight()))
                { objects[o].ai.tank.movedir = LEFT; }
-             else if (!tank_CanMoveLeft(o, sprites[TANK_WALK_RIGHT_FRAME].getHeight()))
+             else if (!tank_CanMoveLeft(o, Sprite[TANK_WALK_RIGHT_FRAME]->getHeight()))
                { objects[o].ai.tank.movedir = RIGHT; }
              else if (rnd()&1) // turn towards player
                { objects[o].ai.tank.movedir = LEFT; }
@@ -141,7 +143,7 @@ unsigned int i;
        {
          if (player[i].y >= objects[o].y-(48<<CSF))
          {
-           if ((player[i].y>>CSF)+sprites[0].getHeight() <= (objects[o].y>>CSF)+sprites[objects[o].sprite].getHeight()+48)
+           if ((player[i].y>>CSF)+Sprite[0]->getHeight() <= (objects[o].y>>CSF)+Sprite[objects[o].sprite]->getHeight()+48)
            {
              objects[o].ai.tank.detectedPlayer = 1;
              objects[o].ai.tank.detectedPlayerIndex = i;
@@ -208,7 +210,7 @@ unsigned int i;
        if (objects[o].ai.tank.movedir==LEFT)
        {  // move left
          objects[o].sprite = TANK_WALK_LEFT_FRAME + objects[o].ai.tank.frame;
-         if (tank_CanMoveLeft(o, sprites[TANK_WALK_RIGHT_FRAME].getHeight()))
+         if (tank_CanMoveLeft(o, Sprite[TANK_WALK_RIGHT_FRAME]->getHeight()))
          {
            objects[o].x -= TANK_WALK_SPEED;
            objects[o].ai.tank.dist_traveled++;
@@ -224,8 +226,8 @@ unsigned int i;
        else
        {  // move right
          objects[o].sprite = TANK_WALK_RIGHT_FRAME + objects[o].ai.tank.frame;
-         if (tank_CanMoveRight(o, sprites[TANK_WALK_RIGHT_FRAME].getWidth(),
-								 sprites[TANK_WALK_RIGHT_FRAME].getHeight()))
+         if (tank_CanMoveRight(o, Sprite[TANK_WALK_RIGHT_FRAME]->getWidth(),
+							      Sprite[TANK_WALK_RIGHT_FRAME]->getHeight()))
          {
            objects[o].x += TANK_WALK_SPEED;
            objects[o].ai.tank.dist_traveled++;
@@ -253,12 +255,12 @@ unsigned int i;
          if (objects[o].onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, objects[o].scrx);
          if (objects[o].ai.tank.movedir==RIGHT)
          {
-             newobject = spawn_object(objects[o].x+(sprites[TANK_WALK_RIGHT_FRAME].getWidth()<<CSF), objects[o].y+(5<<CSF), OBJ_RAY);
+             newobject = spawn_object(objects[o].x+(Sprite[OBJ_RAY_DEFSPRITE_EP1]->getWidth()<<CSF), objects[o].y+(5<<CSF), OBJ_RAY);
              objects[newobject].ai.ray.direction = RIGHT;
          }
          else
          {
-             newobject = spawn_object(objects[o].x-(sprites[TANK_WALK_LEFT_FRAME].getWidth()<<CSF), objects[o].y+(5<<CSF), OBJ_RAY);
+             newobject = spawn_object(objects[o].x-(Sprite[OBJ_RAY_DEFSPRITE_EP1]->getWidth()<<CSF), objects[o].y+(5<<CSF), OBJ_RAY);
              objects[newobject].ai.ray.direction = LEFT;
          }
          objects[newobject].sprite = ENEMYRAY;

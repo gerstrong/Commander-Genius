@@ -27,9 +27,11 @@ NINJA_DEAD
 #define NINJA_DYING_FRAME              83
 #define NINJA_DEAD_FRAME               84
 
+#define Sprite g_pGfxEngine->Sprite
+
 unsigned int rnd(void);
 
-void ninja_ai(int o, CSprite *sprites, bool hardmode)
+void ninja_ai(int o, bool hardmode)
 {
 unsigned int i;
 int onsamelevel;
@@ -125,7 +127,7 @@ int onsamelevel;
         {
           if (player[i].isPlaying)
           {
-            if ((player[i].y >= objects[o].y-(96<<CSF)) && ((player[i].y>>CSF)+sprites[0].getHeight() <= (objects[o].y>>CSF)+sprites[objects[o].sprite].getHeight()+96))
+            if ((player[i].y >= objects[o].y-(96<<CSF)) && ((player[i].y>>CSF)+Sprite[0]->getHeight() <= (objects[o].y>>CSF)+Sprite[objects[o].sprite]->getHeight()+96))
             {
               onsamelevel = 1;
               break;

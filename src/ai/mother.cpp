@@ -31,10 +31,12 @@
 #define MOTHER_HURT_FRAME        91
 #define MOTHER_DEAD_FRAME	 92
 
+#define Sprite g_pGfxEngine->Sprite
+
 void bumpplayer(int p, int pushamt, bool solid);
 unsigned int rnd(void);
 
-void mother_ai(int o, stLevelControl levelcontrol, CSprite *sprites)
+void mother_ai( int o, stLevelControl levelcontrol )
 {
 int newobject;
 int prob;
@@ -141,12 +143,12 @@ int prob;
      {
         if (objects[o].ai.mother.dir==RIGHT)
         {
-            newobject = spawn_object(objects[o].x+(sprites[MOTHER_SPIT_RIGHT_FRAME].getWidth()<<CSF), objects[o].y+(11<<CSF), OBJ_FIREBALL);
+            newobject = spawn_object(objects[o].x+(Sprite[MOTHER_SPIT_RIGHT_FRAME]->getWidth()<<CSF), objects[o].y+(11<<CSF), OBJ_FIREBALL);
             objects[newobject].ai.ray.direction = RIGHT;
         }
         else
         {
-            newobject = spawn_object(objects[o].x-(sprites[MOTHER_SPIT_LEFT_FRAME].getWidth()<<CSF), objects[o].y+(11<<CSF), OBJ_FIREBALL);
+            newobject = spawn_object(objects[o].x-(Sprite[MOTHER_SPIT_LEFT_FRAME]->getWidth()<<CSF), objects[o].y+(11<<CSF), OBJ_FIREBALL);
             objects[newobject].ai.ray.direction = LEFT;
         }
         if (objects[o].onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, objects[o].scrx);

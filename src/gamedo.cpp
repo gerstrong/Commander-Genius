@@ -268,8 +268,8 @@ int i, topobj;
 			  case OBJ_GARG: garg_ai(i, p_levelcontrol->hardmode); break;
 			  case OBJ_VORT: vort_ai(i, p_levelcontrol ); break;
 			  case OBJ_BUTLER: butler_ai(i, p_levelcontrol->hardmode); break;
-			  case OBJ_TANK: tank_ai(i, g_pGfxEngine->Sprite[0], p_levelcontrol->hardmode); break;
-			  case OBJ_RAY: ray_ai(i, g_pGfxEngine->Sprite[0],p_levelcontrol->episode,
+			  case OBJ_TANK: tank_ai(i, p_levelcontrol->hardmode); break;
+			  case OBJ_RAY: ray_ai(i, p_levelcontrol->episode,
 							  options[OPT_FULLYAUTOMATIC].value, p_levelcontrol->cepvars.pShotSpeed); break;
 			  case OBJ_DOOR: door_ai(i, p_levelcontrol->cepvars.DoorOpenDir); break;
 			  case OBJ_ICECANNON: icecannon_ai(i); break;
@@ -279,7 +279,7 @@ int i, topobj;
 			  case OBJ_ROPE: rope_ai(i); break;
 
 			  //KEEN2
-			  case OBJ_SCRUB: scrub_ai(i, g_pGfxEngine->Sprite[0],*p_levelcontrol); break;
+			  case OBJ_SCRUB: scrub_ai(i, *p_levelcontrol); break;
 			  case OBJ_TANKEP2: tankep2_ai(i, p_levelcontrol->hardmode); break;
 			  case OBJ_PLATFORM: platform_ai(i, *p_levelcontrol); break;
 			  case OBJ_VORTELITE: vortelite_ai(i, p_levelcontrol->dark); break;
@@ -292,14 +292,11 @@ int i, topobj;
 
 			  //KEEN3
 			  case OBJ_FOOB: foob_ai(i, p_levelcontrol->hardmode); break;
-			  case OBJ_NINJA: ninja_ai(i, g_pGfxEngine->Sprite[0],
-										  p_levelcontrol->hardmode); break;
-			  case OBJ_MEEP: meep_ai(i, *p_levelcontrol,
-									  g_pGfxEngine->Sprite[0]); break;
-			  case OBJ_SNDWAVE: sndwave_ai(i, p_levelcontrol->hardmode); break;
-			  case OBJ_MOTHER: mother_ai(i, *p_levelcontrol,
-									  g_pGfxEngine->Sprite[0]); break;
-			  case OBJ_FIREBALL: fireball_ai(i, p_levelcontrol->hardmode); break;
+			  case OBJ_NINJA: ninja_ai( i, p_levelcontrol->hardmode); break;
+			  case OBJ_MEEP: meep_ai( i, *p_levelcontrol ); break;
+			  case OBJ_SNDWAVE: sndwave_ai( i, p_levelcontrol->hardmode); break;
+			  case OBJ_MOTHER: mother_ai( i, *p_levelcontrol ); break;
+			  case OBJ_FIREBALL: fireball_ai( i, p_levelcontrol->hardmode ); break;
 			  case OBJ_BALL: ballandjack_ai(i); break;
 			  case OBJ_JACK: ballandjack_ai(i); break;
 			  case OBJ_PLATVERT: platvert_ai(i); break;
