@@ -18,6 +18,10 @@
 #endif
 
 CInput::CInput() {
+	#ifdef WIZ
+	volume = 60-1;
+	WIZ_AdjustVolume(VOLUME_UP);
+	#endif
 	resetControls();
 }
 
