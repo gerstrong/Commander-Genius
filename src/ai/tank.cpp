@@ -258,7 +258,7 @@ unsigned int i;
          }
          else
          {
-             newobject = spawn_object(objects[o].x-(sprites[OBJ_RAY_DEFSPRITE_EP1].getWidth()<<CSF), objects[o].y+(5<<CSF), OBJ_RAY);
+             newobject = spawn_object(objects[o].x-(sprites[TANK_WALK_LEFT_FRAME].getWidth()<<CSF), objects[o].y+(5<<CSF), OBJ_RAY);
              objects[newobject].ai.ray.direction = LEFT;
          }
          objects[newobject].sprite = ENEMYRAY;
