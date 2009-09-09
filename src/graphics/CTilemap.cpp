@@ -25,20 +25,6 @@ bool CTilemap::CreateSurface(SDL_Color *Palette, Uint32 Flags)
 	return ( m_Tilesurface != NULL );
 }
 
-bool CTilemap::optimizeSurface()
-{
-	if(m_Tilesurface)
-	{
-		SDL_Surface *temp_surface;
-		temp_surface = SDL_DisplayFormat(m_Tilesurface);
-		SDL_FreeSurface(m_Tilesurface);
-		m_Tilesurface = temp_surface;
-		return true;
-	}
-	else
-		return false;
-}
-
 bool CTilemap::loadHiresTile( const std::string& filename )
 {
 	if(m_Tilesurface)
@@ -53,6 +39,20 @@ bool CTilemap::loadHiresTile( const std::string& filename )
 	}
 
 	return false;
+}
+
+bool CTilemap::optimizeSurface()
+{
+	if(m_Tilesurface)
+	{
+		SDL_Surface *temp_surface;
+		temp_surface = SDL_DisplayFormatAlpha(m_Tilesurface);
+		SDL_FreeSurface(m_Tilesurface);
+		m_Tilesurface = temp_surface;
+		return true;
+	}
+	else
+		return false;
 }
 
 ///////////////////////////////////

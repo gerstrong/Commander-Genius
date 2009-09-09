@@ -104,7 +104,7 @@ void CVideoDriver::initResolutionList()
 	  st_resolution resolution;
 	  char buf[256];
 
-	ifstream ResolutionFile; OpenGameFileR(ResolutionFile, "resolutions.cfg");
+	  ifstream ResolutionFile; OpenGameFileR(ResolutionFile, "resolutions.cfg");
 	  if(!ResolutionFile)
 	  {
 		  g_pLogFile->textOut(PURPLE,"Warning: resolutions.cfg could not be read! Maybe your files weren't extracted correctly!<br>");
@@ -342,12 +342,15 @@ void CVideoDriver::setZoom(short value)
 bool CVideoDriver::createSurfaces(void)
 {
 	// This function creates the surfaces which are needed for the game.
+	SDL_Surface *temp_surface;
 	unsigned stretch_blit_yoff;
 
 	stretch_blit_yoff = 0;
 
-	ScrollSurface = SDL_CreateRGBSurface( Mode, 512, 512, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
-	SDL_SetColorKey(ScrollSurface, SDL_SRCCOLORKEY, SDL_MapRGB(ScrollSurface->format, 0, 0xFF, 0xFF));
+	temp_surface = SDL_CreateRGBSurface( Mode, 512, 512, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
+	//ScrollSurface = SDL_CreateRGBSurface( Mode, 512, 512, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
+	//SDL_SetColorKey(ScrollSurface, SDL_SRCCOLORKEY, SDL_MapRGB(ScrollSurface->format, 0, 0xFF, 0xFF));
+	ScrollSurface = SDL_DisplayFormatAlpha( temp_surface );
 	if (!ScrollSurface)
 	{
 		g_pLogFile->textOut(RED,"VideoDriver: Couldn't create ScrollSurface!<br>");
@@ -362,7 +365,6 @@ bool CVideoDriver::createSurfaces(void)
 	}
 	SDL_SetColorKey( FGLayerSurface, SDL_SRCCOLORKEY,
 					SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE) );
-	SDL_FillRect( FGLayerSurface, NULL, SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFF) );
 	//Set surface alpha
 	SDL_SetAlpha( FGLayerSurface, SDL_SRCALPHA, 225 );
 
@@ -376,7 +378,7 @@ bool CVideoDriver::createSurfaces(void)
 					SDL_MapRGB(SpriteLayerSurface->format, 0, 0xFF, 0xFE) );
 	SDL_FillRect( SpriteLayerSurface, NULL, SDL_MapRGB(SpriteLayerSurface->format, 0, 0xFF, 0xFF) );
 
-	FXSurface = SDL_CreateRGBSurface( Mode, 320, 200, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
+	FXSurface =  SDL_CreateRGBSurface( Mode, 320, 200, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
 	if (!FXSurface)
 	{
 		g_pLogFile->textOut(RED,"VideoDriver: Couldn't create FXSurface!<br>");
@@ -396,7 +398,8 @@ bool CVideoDriver::createSurfaces(void)
     else
     {
     	g_pLogFile->textOut("Blitsurface = creatergbsurfacefrom<br>");
-    	BlitSurface = SDL_CreateRGBSurface(Mode,GAME_STD_WIDTH, GAME_STD_HEIGHT, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
+    	temp_surface = SDL_CreateRGBSurface(Mode,GAME_STD_WIDTH, GAME_STD_HEIGHT, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
+    	BlitSurface = SDL_DisplayFormatAlpha( temp_surface );
 		if (!BlitSurface)
 		{
 			g_pLogFile->textOut(RED,"VidDrv_Start(): Couldn't create BlitSurface!<br>");

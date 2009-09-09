@@ -193,21 +193,12 @@ bool CEGALatch::loadData( std::string &m_path, short m_episode, bool compressedd
                else c = tiledata[t][y][x];
                c |= (Planes->getbit(RawData, p) << p);
                tiledata[t][y][x] = c;
-
-           	   if( t>0 && TileProperty[t-1][BEHAVIOR] == 65534 )  // This is for masked tiles.
-           	   {
-           		   if(c==15)
-           			   *u_offset = COLORKEY;
-           		   else
-           			   *u_offset = *(u_pixel + 16*13*16*((t-1)/13) + 16*((t-1)%13)  + 16*13*y + x);
-           	   }
-               else
-            	   *u_offset = c;
-
+           	   *u_offset = c;
            }
          }
        }
      }
+     if(SDL_MUSTLOCK(sfc))	SDL_UnlockSurface(sfc);
 
      // Load Hires, VGA, SVGA Tiles into the tilemap
      if(m_path == "") filename = "data/ck" + itoa(m_episode) + "tiles.bmp";
@@ -217,7 +208,10 @@ bool CEGALatch::loadData( std::string &m_path, short m_episode, bool compressedd
 
      // Adapt the tilemap to the display, so they are faster blit
      Tilemap->optimizeSurface();
-     if(SDL_MUSTLOCK(sfc))	SDL_UnlockSurface(sfc);
+
+     // make masked tiles according to it's surfaces
+     applyMasks();
+
      delete Planes;
 
      ////////////////////
@@ -273,4 +267,56 @@ bool CEGALatch::loadData( std::string &m_path, short m_episode, bool compressedd
      if(RawData){ delete[] RawData; RawData = NULL;}
 
 	return true;
+}
+
+// Convert the normal tiles to masked tiles
+void CEGALatch::applyMasks()
+{
+	SDL_Surface *sfc;
+	Uint32 u_colour = 0;
+	SDL_Rect rect;
+	Uint8 bpp;
+	Uint8 r,g,b,alpha;
+	Uint8 *u_offset;
+
+	sfc = g_pGfxEngine->Tilemap->getSDLSurface();
+
+	if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
+
+	bpp = sfc->format->BytesPerPixel;
+	rect.w = rect.h = 1;
+
+	for( Uint16 t=0 ; t<m_num16tiles ; t++ )
+	{
+		if( TileProperty[t][BEHAVIOR] == 65534 )  // This is for masked tiles.
+		{
+			for( Uint16 x=0 ; x<16 ; x++ )
+			{
+				for( Uint16 y=0 ; y<16 ; y++ )
+				{
+					u_offset = (Uint8*)sfc->pixels + bpp*((y+16*((t+1)/13))*13*16 + 16*((t+1)%13) + x);
+					memcpy( &u_colour, u_offset, bpp);
+					SDL_GetRGB( u_colour, sfc->format, &r, &g, &b);
+
+					rect.x = 16*((t+1)%13) + x;
+					rect.y = y+16*((t+1)/13);
+
+					if( r>=250 && g>=250 && b>=250 ) //In this case set colourkey
+					{
+						SDL_FillRect(sfc, &rect, SDL_MapRGBA(sfc->format, 0, 0, 0, 0));
+					}
+					else // Get the pixel of the previous tile. If the mask has colour, use alpha channel, black is opaque
+					{
+						alpha = 255 - (r*g*b)/3;
+						u_offset = (Uint8*)sfc->pixels + bpp*((y+16*(t/13))*13*16 + 16*(t%13) + x);
+						memcpy( &u_colour, u_offset, bpp);
+						SDL_GetRGB( u_colour, sfc->format, &r, &g, &b);
+						SDL_FillRect(sfc, &rect, SDL_MapRGBA(sfc->format,r,g,b,alpha));
+					}
+				}
+			}
+		}
+	}
+
+	if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
 }

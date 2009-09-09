@@ -28,6 +28,8 @@ public:
 	bool loadHead(char *data );
 	bool loadData( std::string &m_path, short m_episode, bool compresseddata );
 
+	void applyMasks();
+
 	char *RawData;
 
 private:
