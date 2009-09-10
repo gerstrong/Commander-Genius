@@ -214,7 +214,7 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 
 	      g_pLogFile->ftextOut("bottom of game control loop opt=%d crashflag=%d<br>", opt, crashflag);
 	      if(pCKP->shutdown == SHUTDOWN_EXIT) break;
-	    } while(opt != MAINMNU_QUIT && opt != MAINMNU_NEW_GAME && !crashflag);
+	    } while(opt != MAINMNU_QUIT && opt != MAINMNU_NEW_GAME && !crashflag );
 
 		return 0;
 }

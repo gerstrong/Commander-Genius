@@ -231,6 +231,9 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 		MainMenu->render();
 	} while(!g_pInput->getExitEvent());
 
+    if(g_pInput->getExitEvent())
+    	return MAINMNU_QUIT;
+
 	selection = MainMenu->getSelection();
 
 	delete MainMenu;
@@ -256,9 +259,9 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
          return RESTART_GAME;
       }
     }
-    else
+    else if(selection==MAINMNU_1PLAYER || selection==MAINMNU_2PLAYER)
     {
-    	if(selection==MAINMNU_1PLAYER || selection==MAINMNU_2PLAYER)
+
     	{
         	int diff;
         	diff = getDifficulty(pCKP);

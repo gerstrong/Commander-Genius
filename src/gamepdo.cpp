@@ -70,11 +70,8 @@ char doFall;
           }
 
 
-          //if ( pCKP->Control.levelcontrol.demomode)
-          //{
-            gamepdo_playpushed(cp, pCKP);
-            gamepdo_InertiaAndFriction_X(cp, pCKP);
-          //}
+          gamepdo_playpushed(cp, pCKP);
+          gamepdo_InertiaAndFriction_X(cp, pCKP);
 
        	  gamepdo_JumpAndPogo(cp, pCKP);
 
@@ -631,7 +628,7 @@ void gamepdo_InertiaAndFriction_X(unsigned int cp, stCloneKeenPlus *pCKP)
 		   }
 		   else
 		   {
-			   player[cp].pboost_x-= player[cp].ppogostick ? 4 : 1;
+			   player[cp].pboost_x-= player[cp].ppogostick ? 2 : 1;
 		   }
 	   }
 	   if (player[cp].playcontrol[PA_X] > 0 && !player[cp].pfrozentime)
@@ -643,7 +640,7 @@ void gamepdo_InertiaAndFriction_X(unsigned int cp, stCloneKeenPlus *pCKP)
 		   }
 		   else
 		   {
-			   player[cp].pboost_x+= player[cp].ppogostick ? 4 : 1;
+			   player[cp].pboost_x+= player[cp].ppogostick ? 2 : 1;
 		   }
 	   }
 
@@ -1530,7 +1527,7 @@ void gamepdo_walking(int cp, stCloneKeenPlus *pCKP)
     }
 
     // test if we're trying to walk
-    if ((player[cp].psemisliding&&player[cp].pinertia_x!=0) || (((player[cp].playcontrol[PA_X] < 0) || (player[cp].playcontrol[PA_X] > 0) || (((player[cp].playcontrol[PA_Y] < 0) || (player[cp].playcontrol[PA_Y] > 0))&&map.isworldmap)) && !player[cp].inhibitwalking))
+    if ((player[cp].psemisliding && player[cp].pinertia_x!=0) || (((player[cp].playcontrol[PA_X] < 0) || (player[cp].playcontrol[PA_X] > 0) || (((player[cp].playcontrol[PA_Y] < 0) || (player[cp].playcontrol[PA_Y] > 0))&&map.isworldmap)) && !player[cp].inhibitwalking))
     {
       // we just started walking or we changed directions suddenly?
       if (player[cp].pwalking == 0 || ((player[cp].lastpdir==RIGHT && player[cp].pdir==LEFT)||(player[cp].lastpdir==LEFT && player[cp].pdir==RIGHT)))
@@ -1621,7 +1618,7 @@ void gamepdo_walking(int cp, stCloneKeenPlus *pCKP)
         	  }
         	  else
         	  {
-        		  player[cp].pinertia_x=player[cp].playcontrol[PA_X]*PFASTINCMAXSPEED/100;
+        		  player[cp].pinertia_x = player[cp].playcontrol[PA_X]*PFASTINCMAXSPEED/100;
         	  }
           }
 
