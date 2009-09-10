@@ -380,7 +380,6 @@ int x,y;
 unsigned int i;
 
   animtiletimer = curanimtileframe = 0;
-  //PlatExtending = 0;
 
   // reset player walk frame widths. Lame!
   for(i=0;i<numplayers;i++)
@@ -402,7 +401,6 @@ unsigned int i;
   }
 
   // reset the ysize attribute of all doors
-
   CSprite **sprites = &g_pGfxEngine->Sprite[0];
   sprites[DOOR_YELLOW_SPRITE]->setHeight(32);
   sprites[DOOR_RED_SPRITE]->setHeight(32);
@@ -491,7 +489,7 @@ unsigned int i;
   for(i=0;i<numplayers;i++)
   {
     player[i].isPlaying = 1;
-    player[i].useObject = (i+1); // player objects start at 1 cause DemoObject is index 0
+    player[i].useObject = (i+1); // player objects start at min 1 cause DemoObject is index 0
     player[i].dpadcount = player[i].dpadlastcount = 0;
     player[i].hideplayer = 0;
     player[i].mounted = 0;
@@ -556,6 +554,7 @@ int initgamefirsttime(stCloneKeenPlus *pCKP, int s)
 
 	for(i=0;i<MAX_PLAYERS;i++)
 	{
+       memset(&player[i].inventory, 0, sizeof(player[i].inventory));
        player[i].inventory.extralifeat = 20000;
        player[i].inventory.lives = 4;
        player[i].godmode = 0;
@@ -572,7 +571,6 @@ int initgamefirsttime(stCloneKeenPlus *pCKP, int s)
        {
          player[i].inventory.charges = 5;
        }
-       if (pCKP->Control.levelcontrol.demomode) player[i].inventory.charges = 100;
 
        // start with pogo stick in all episodes but 1
        if (pCKP->Control.levelcontrol.episode!=1 || pCKP->Control.levelcontrol.demomode)

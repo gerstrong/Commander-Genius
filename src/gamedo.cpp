@@ -330,8 +330,9 @@ int cplayer;
 
 	if (objects[o].type==OBJ_GOTPOINTS) return;
 
-	xsize = g_pGfxEngine->Sprite[objects[o].sprite]->getWidth();
+
 	ysize = g_pGfxEngine->Sprite[objects[o].sprite]->getHeight();
+	xsize = g_pGfxEngine->Sprite[objects[o].sprite]->getWidth();
 
  // set value of blockedd--should object fall?
 	temp = (objects[o].y>>CSF)+ysize;
@@ -360,9 +361,12 @@ int cplayer;
 				objects[o].blockedd = 1;
 			}
 		}
+
+		// If the object is out of map
+		if(y >= (int)((map.ysize-2)<<4))	objects[o].blockedd = 1;
 	}
 
-	// set blockedu
+// set blockedu
 	objects[o].blockedu = 0;
 	x = (objects[o].x>>CSF);
 	y = (objects[o].y>>CSF)-1;
@@ -383,6 +387,9 @@ int cplayer;
 		}
 	}
 
+	// If the object is out of map
+	if(y <= (2<<4)) objects[o].blockedu = 1;
+
  // set blockedl
     objects[o].blockedl = 0;
     x = (objects[o].x>>CSF)-1;
@@ -402,6 +409,9 @@ int cplayer;
 
     blockedl_set: ;
 
+	// If the object is out of map
+	if(x <= (2<<4)) objects[o].blockedl = 1;
+
  // set blockedr
     objects[o].blockedr = 0;
     x = (objects[o].x>>CSF)+xsize;
@@ -420,6 +430,8 @@ int cplayer;
       objects[o].blockedr = 1;
     }
     blockedr_set: ;
+
+    if(x >= (int)((map.xsize-2)<<4)) objects[o].blockedr = 1;
 
     // hit detection with players
     objects[o].touchPlayer = 0;

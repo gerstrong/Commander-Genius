@@ -12,8 +12,8 @@
 #define BUTLER_TURN     0
 #define BUTLER_WALK     1
 
-#define BUTLER_WALK_SPEED        7
-#define BUTLER_WALK_SPEED_FAST   11
+#define BUTLER_WALK_SPEED        6
+#define BUTLER_WALK_SPEED_FAST   10
 #define BUTLER_WALK_ANIM_TIME    35
 #define BUTLER_WALK_ANIM_TIME_FAST    25
 #define BUTLER_TURN_TIME         50

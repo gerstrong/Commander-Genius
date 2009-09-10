@@ -44,9 +44,10 @@ unsigned int p;
 unsigned int i=0;
 int nopush;
 int floor;
+bool walkovertile=false;
 
    if (objects[o].needinit)
-   {  // first time initilization
+   {  // first time initialization
      objects[o].ai.scrub.walkdir = LEFT;
      objects[o].ai.scrub.state = SCRUB_WALK;
      objects[o].ai.scrub.walkframe = 0;
@@ -60,6 +61,7 @@ int floor;
      objects[o].blockedr = 0;
      objects[o].blockedu = 0;
      objects[o].dead = 0;
+
      SetAllCanSupportPlayer(o, 1);
      for(i=0;i<numplayers;i++)
      {
@@ -170,11 +172,14 @@ int floor;
        return;
      break;
      case SCRUB_WALK:
+
        switch(objects[o].ai.scrub.walkdir)
        {
          case LEFT:
            objects[o].sprite = SCRUB_WALK_LEFT + objects[o].ai.scrub.walkframe;
-           if (!objects[o].blockedd)
+
+           walkovertile = (TileProperty[getmaptileat((objects[o].x>>CSF)-8, (objects[o].y>>CSF)+16)][BUP] != 0);
+           if (!objects[o].blockedd && !walkovertile)
            { // walked off the edge
               objects[o].sprite = SCRUB_WALK_DOWN + objects[o].ai.scrub.walkframe;
               objects[o].ai.scrub.walkdir = DOWN;
@@ -213,6 +218,7 @@ int floor;
            break;
          case RIGHT:
            objects[o].sprite = SCRUB_WALK_RIGHT + objects[o].ai.scrub.walkframe;
+
            if (!objects[o].blockedu)
            {
              objects[o].ai.scrub.walkdir = UP;
@@ -360,7 +366,7 @@ int floor;
    // state and fall until we reach solid ground again. this keeps it from
    // freaking out and going flying across the screen.
    if (!objects[o].blockedl && !objects[o].blockedr &&
-       !objects[o].blockedu && !objects[o].blockedd)
+       !objects[o].blockedu && !objects[o].blockedd && !walkovertile)
    {
        if (objects[o].ai.scrub.state!=SCRUB_FALLING)
        {
