@@ -86,10 +86,15 @@ bool showGameHint(int mpx, int mpy, int episode, int level)
 	if(episode == 1)
 	{
 		if(map.mapdata[mpx][mpy] >= 435 && map.mapdata[mpx][mpy] <= 438)
+		{
 			// it's a garg statue
     		map_chgtile(mpx, mpy, 434);
+		}
 		else
-			map_chgtile(mpx, mpy, 485);
+		{
+			map_deanimate(mpx, mpy);
+			map_chgtile(mpx, mpy, 315);
+		}
 
 		strname =  "EP1_YSIYM_LVL" + itoa(level);
 	}
@@ -126,7 +131,7 @@ bool showGameHint(int mpx, int mpy, int episode, int level)
     do
     {
     	g_pInput->pollEvents();
-	InfoTextWindow->render();
+    	InfoTextWindow->render();
     	g_pVideoDriver->update_screen();
     } while(!g_pInput->getPressedAnyCommand());
 
@@ -221,16 +226,13 @@ int dlgX,dlgY,dlgW,dlgH;
   }
 }
 
-void inventory_draw_ep2(int p, stCloneKeenPlus *pCKP)
+void inventory_draw_ep2(int p, bool *levels_completed)
 {
-int x,/*y,t,*/i,j;
-	std::string tempbuf;
+int x,i,j;
+std::string tempbuf;
 int dlgX,dlgY,dlgW,dlgH;
 
-  stLevelControl *p_levelcontrol;
   SDL_Surface *boxsurface = g_pVideoDriver->FGLayerSurface;
-
-  p_levelcontrol = &(pCKP->Control.levelcontrol);
 
   dlgX = GetStringAttribute("EP2_StatusBox", "LEFT");
   dlgY = GetStringAttribute("EP2_StatusBox", "TOP");
@@ -273,14 +275,14 @@ int dlgX,dlgY,dlgW,dlgH;
 
   }
   // cities saved
-  if (p_levelcontrol->levels_completed[4]) g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP2_LVL4_TargetName"), (dlgX+1)<<3, (dlgY+8)<<3, 0);
-  if (p_levelcontrol->levels_completed[6]) g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP2_LVL6_TargetName"), (dlgX+8)<<3, (dlgY+8)<<3, 0);
-  if (p_levelcontrol->levels_completed[7]) g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP2_LVL7_TargetName"), (dlgX+1)<<3, (dlgY+9)<<3, 0);
-  if (p_levelcontrol->levels_completed[13]) g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP2_LVL13_TargetName"), (dlgX+8)<<3, (dlgY+9)<<3, 0);
-  if (p_levelcontrol->levels_completed[11]) g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP2_LVL11_TargetName"), (dlgX+1)<<3, (dlgY+10)<<3, 0);
-  if (p_levelcontrol->levels_completed[9]) g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP2_LVL9_TargetName"), (dlgX+8)<<3, (dlgY+10)<<3, 0);
-  if (p_levelcontrol->levels_completed[15]) g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP2_LVL15_TargetName"), (dlgX+1)<<3, (dlgY+11)<<3, 0);
-  if (p_levelcontrol->levels_completed[16]) g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP2_LVL16_TargetName"), (dlgX+8)<<3, (dlgY+11)<<3, 0);
+  if (levels_completed[4]) g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP2_LVL4_TargetName"), (dlgX+1)<<3, (dlgY+8)<<3, 0);
+  if (levels_completed[6]) g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP2_LVL6_TargetName"), (dlgX+8)<<3, (dlgY+8)<<3, 0);
+  if (levels_completed[7]) g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP2_LVL7_TargetName"), (dlgX+1)<<3, (dlgY+9)<<3, 0);
+  if (levels_completed[13]) g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP2_LVL13_TargetName"), (dlgX+8)<<3, (dlgY+9)<<3, 0);
+  if (levels_completed[11]) g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP2_LVL11_TargetName"), (dlgX+1)<<3, (dlgY+10)<<3, 0);
+  if (levels_completed[9]) g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP2_LVL9_TargetName"), (dlgX+8)<<3, (dlgY+10)<<3, 0);
+  if (levels_completed[15]) g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP2_LVL15_TargetName"), (dlgX+1)<<3, (dlgY+11)<<3, 0);
+  if (levels_completed[16]) g_pGfxEngine->Font->drawFont( boxsurface, getstring("EP2_LVL16_TargetName"), (dlgX+8)<<3, (dlgY+11)<<3, 0);
 
   // raygun icon
   g_pGfxEngine->Tilemap->drawTile(boxsurface, (dlgX+20)<<3, ((dlgY+5)<<3)-5, 414);
@@ -288,15 +290,18 @@ int dlgX,dlgY,dlgW,dlgH;
   // ray gun charges text
   i = player[p].inventory.charges;
   if (i>999) i=999;
-  g_pGfxEngine->Font->drawFont( boxsurface, itoa(i), (dlgX+27-tempbuf.size())<<3, ((dlgY+5)<<3)-1, 0);
+  tempbuf = itoa(i);
+  g_pGfxEngine->Font->drawFont( boxsurface, tempbuf, (dlgX+27-tempbuf.size())<<3, ((dlgY+5)<<3)-1, 0);
 
   // score
   i = player[p].inventory.score;
-  g_pGfxEngine->Font->drawFont( boxsurface, itoa(i), (dlgX+12-tempbuf.size())<<3, (dlgY+2)<<3, 0);
+  tempbuf = itoa(i);
+  g_pGfxEngine->Font->drawFont( boxsurface, tempbuf, (dlgX+12-tempbuf.size())<<3, (dlgY+2)<<3, 0);
 
   // extra life at
   i = player[p].inventory.extralifeat;
-  g_pGfxEngine->Font->drawFont( boxsurface, itoa(i), (dlgX+28-tempbuf.size())<<3, (dlgY+2)<<3, 0);
+  tempbuf = itoa(i);
+  g_pGfxEngine->Font->drawFont( boxsurface, tempbuf, (dlgX+28-tempbuf.size())<<3, (dlgY+2)<<3, 0);
 
   // lives
   i = player[p].inventory.lives;
@@ -380,10 +385,12 @@ int dlgX,dlgY,dlgW,dlgH;
 
   // score
   i = player[p].inventory.score;
-  g_pGfxEngine->Font->drawFont(boxsurface, itoa(i), (dlgX+12-tempbuf.size())<<3, (dlgY+2)<<3);
+  tempbuf = itoa(i);
+  g_pGfxEngine->Font->drawFont(boxsurface, tempbuf, (dlgX+12-tempbuf.size())<<3, (dlgY+2)<<3);
   // extra life at
   i = player[p].inventory.extralifeat;
-  g_pGfxEngine->Font->drawFont(boxsurface, itoa(i), (dlgX+28-tempbuf.size())<<3, (dlgY+2)<<3);
+  tempbuf = itoa(i);
+  g_pGfxEngine->Font->drawFont(boxsurface, tempbuf, (dlgX+28-tempbuf.size())<<3, (dlgY+2)<<3);
   // lives
   i = player[p].inventory.lives;
   x = ((dlgX+1)<<3)+4;
@@ -405,7 +412,7 @@ void showinventory(int p, stCloneKeenPlus *pCKP)
     inventory_draw_ep1(p);
 
   else if (p_levelcontrol->episode==2)
-    inventory_draw_ep2(p, pCKP);
+    inventory_draw_ep2(p, pCKP->Control.levelcontrol.levels_completed);
 
   else if (p_levelcontrol->episode==3)
     inventory_draw_ep3(p);

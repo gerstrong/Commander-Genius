@@ -42,6 +42,7 @@ int lastquit;
     why_term_ptr = "No player start position! (flag2=levelcontrol.curlevel, flag3=levelcontrol.episode)";
   }
 
+  g_pGfxEngine->Palette.setFadeColour(SDL_MapRGB(g_pVideoDriver->FXSurface->format, 0, 0, 0));
   g_pGfxEngine->Palette.fadeto( 0, FADE_SPEED_FAST/5 );
 
   if (!loadinggame)
@@ -107,7 +108,7 @@ int lastquit;
 	      }
 	}
 
-	gamedo_AnimatedTiles(!pCKP->Control.levelcontrol.usedhintmb);
+	gamedo_AnimatedTiles();
 	gamedo_enemyai( &(pCKP->Control.levelcontrol) );
 
 	/* scroll triggers */
@@ -136,8 +137,7 @@ int lastquit;
 	{
 		start_gameover( pCKP );
 
-		//if (fade.mode==FADE_COMPLETE && fade.dir==FADE_OUT)
-			pCKP->Control.levelcontrol.command = LVLC_GAME_OVER;
+		pCKP->Control.levelcontrol.command = LVLC_GAME_OVER;
 	}
 
 	if (g_pInput->getPressedKey(KQUIT))
@@ -358,10 +358,8 @@ int mpx,mpy,t;
    if ((TileProperty[t][BEHAVIOR] < 17 && TileProperty[t][BEHAVIOR] > 5) ||
 	   (TileProperty[t][BEHAVIOR] > 17 && TileProperty[t][BEHAVIOR] < 22) ||
 	   (TileProperty[t][BEHAVIOR] == 27 || TileProperty[t][BEHAVIOR] == 28)   ) // All pickupable items
-   //if (tiles[t].pickupable)
    {  // pick up the goodie, i.e. erase it from the map
       map_chgtile(mpx, mpy, tiles[t].chgtile);
-      //if (tiles[t].isAnimated) map_deanimate(mpx, mpy);
       if (TileProperty[t][ANIMATION] != 1) map_deanimate(mpx, mpy);
    }
    else if (TileProperty[t][BEHAVIOR] == 1) // Lethal (Deadly) Behavoir
@@ -1111,7 +1109,7 @@ void procgoodie(int t, int mpx, int mpy, int theplayer, stCloneKeenPlus *pCKP)
     case 22: // Game info block (Youseein your mind or vorticon elder...)
     	if(!pCKP->Control.levelcontrol.usedhintmb)
     	{
-    		if(showGameHint(mpx, mpy, pCKP->Control.levelcontrol.episode, pCKP->Control.levelcontrol.curlevel));
+    		if(showGameHint(mpx, mpy, pCKP->Control.levelcontrol.episode, pCKP->Control.levelcontrol.curlevel))
 				pCKP->Control.levelcontrol.usedhintmb = true;
     	}
       break;

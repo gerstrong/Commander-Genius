@@ -1,4 +1,5 @@
 #include "../sdl/sound/CSound.h"
+#include "../sdl/CVideoDriver.h"
 #include "../keen.h"
 #include "vort.h"
 #include "../include/game.h"
@@ -69,7 +70,7 @@ int bonk,kill;
        objects[o].ai.vort.DeadFrame = VORT3_DEAD_FRAME;
      }
    }
-   if (objects[o].ai.vort.state==VORT_DEAD) return;
+   if (objects[o].ai.vort.state==VORT_DEAD)   return;
 
    if (objects[o].canbezapped)
    {
@@ -89,9 +90,14 @@ int bonk,kill;
        objects[o].ai.vort.palflashtimer = VORT_PALETTE_FLASH_TIME + 1;
        objects[o].ai.vort.palflashamt = 255;
        if (p_levelcontrol->episode == 1)
-         objects[o].ai.vort.state = VORT_DYING;
+       {
+           g_pGfxEngine->Palette.setFadeColour(SDL_MapRGB(g_pVideoDriver->FXSurface->format,
+    										   255,255,255));
+           g_pGfxEngine->Palette.fadeto(200, FADE_SPEED_FAST);
+           objects[o].ai.vort.state = VORT_DYING;
+       }
        else
-         objects[o].ai.vort.state = VORT2_DYING;
+    	   objects[o].ai.vort.state = VORT2_DYING;
 
        g_pSound->playStereofromCoord(SOUND_VORT_DIE, PLAY_NOW, objects[o].scrx);
      }
@@ -262,10 +268,14 @@ vort_reprocess: ;
 
        if (objects[o].ai.vort.animtimer > VORT_DIE_ANIM_TIME)
        {
-
-         objects[o].ai.vort.frame++;
-         if (objects[o].ai.vort.frame>=6)
-             objects[o].ai.vort.state = VORT_DEAD;
+   		   objects[o].ai.vort.frame++;
+   		   if (objects[o].ai.vort.frame>=6)
+   		   {
+   			objects[o].ai.vort.frame = 5;
+             g_pGfxEngine->Palette.fadeto(0, FADE_SPEED_VERY_SLOW);
+             if(!g_pGfxEngine->Palette.in_progress())
+            	 objects[o].ai.vort.state = VORT_DEAD;
+   		   }
 
          objects[o].ai.vort.animtimer = 0;
        } else objects[o].ai.vort.animtimer++;

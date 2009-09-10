@@ -118,7 +118,7 @@ short checkConsistencyofGameData(stGameData *p_GameData)
 }
 
 char NessieAlreadySpawned;
-void addobjectlayertile(unsigned int t, int episode, int *levels_completed)
+void addobjectlayertile(unsigned int t, int episode, bool *levels_completed)
 {
 int o;
   switch(t)
@@ -480,7 +480,7 @@ unsigned int loadmap(const std::string& filename, const std::string& path,
 
 	int episode = p_levelcontrol->episode;
 	int chglevelto = p_levelcontrol->chglevelto;
-	int *levels_completed = p_levelcontrol->levels_completed;
+	bool *levels_completed = p_levelcontrol->levels_completed;
 
 	NessieAlreadySpawned = 0;
 	map.isworldmap = (lvlnum == 80);
@@ -599,7 +599,7 @@ unsigned int loadmap(const std::string& filename, const std::string& path,
     map.objectlayer[94][17] = BALL_NOPASSPOINT;
  }
 
-  return 0;
+ return 0;
 }
 
 

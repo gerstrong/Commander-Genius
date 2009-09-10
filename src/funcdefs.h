@@ -6,7 +6,7 @@
 #include <SDL/SDL.h>
 
 // gamepdowm.c
-char wm_issolid(int xb, int yb, int *levels_completed);
+char wm_issolid(int xb, int yb, bool *levels_completed);
 
 // game.c
 void overrun_detect(void);

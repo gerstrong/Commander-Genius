@@ -329,7 +329,7 @@ p_levelcontrol = &(pCKP->Control.levelcontrol);
     player[cp].wm_lastenterstate = (player[cp].playcontrol[PA_JUMP] || player[cp].playcontrol[PA_POGO]);
 }
 
-char wm_issolid(int xb, int yb, int *levels_completed)
+char wm_issolid(int xb, int yb, bool *levels_completed)
 {
 
   // for map tiles solidl and solidr are always gonna be the same...

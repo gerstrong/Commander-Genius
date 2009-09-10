@@ -53,7 +53,7 @@ struct stLevelControl
 
  // array of which levels have been completed (have "Done" tiles over them
  // on the world map)
- int levels_completed[MAX_LEVELS+1];
+ bool levels_completed[MAX_LEVELS+1];
 
  // exitXpos: the X pixel position (not <<CSFed) of the frame of the exit
  // door. when walking out the door, keen's sprite will not be drawn past

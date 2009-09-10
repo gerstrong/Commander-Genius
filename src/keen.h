@@ -223,7 +223,7 @@ struct stObject
 // of AnimTileInUse in map structure to see why.
 struct stAnimTile
 {
-  int slotinuse;        // if 0, this entry should not be drawn
+  bool slotinuse;        // if 0, this entry should not be drawn
   int x;                // x pixel position in scrollbuf[] where tile is
   int y;                // y pixel position in scrollbuf[]
   int baseframe;        // base frame, i.e. the first frame of animation

@@ -105,7 +105,6 @@ void map_scroll_up(void)
 void map_draw_vstripe(unsigned int x, unsigned int mpx)
 {
 int i,y,c;
-/*int xt=x>>4;*/
   for(y=0;y<SCROLLBUF_NUMTILESY;y++)
   {
       c = map.mapdata[mpx][y+mapy];
@@ -116,12 +115,11 @@ int i,y,c;
         animtiles[AnimTileInUse[x>>4][(((y<<4)+mapystripepos)&511)>>4]].slotinuse = 0;
         AnimTileInUse[x>>4][(((y<<4)+mapystripepos)&511)>>4] = 0;
       }
-      //if (tiles[c].isAnimated)
       if ( TileProperty[c][ANIMATION] > 1 )
       { // we just drew an animated tile which we will now register
           for(i=1;i<MAX_ANIMTILES-1;i++)
           {
-            if (!animtiles[i].slotinuse)
+            if ( !animtiles[i].slotinuse)
             {  // we found an unused slot
                 animtiles[i].x = x;
                 animtiles[i].y = (((y<<4)+mapystripepos)&511);
@@ -140,7 +138,6 @@ int i,y,c;
 void map_draw_hstripe(unsigned int y, unsigned int mpy)
 {
 int i,x,c;
-/*int xt;*/
   for(x=0;x<SCROLLBUF_NUMTILESX;x++)
   {
       c = map.mapdata[x+mapx][mpy];
@@ -215,7 +212,12 @@ void map_chgtile(unsigned int x, unsigned int y, int newtile)
    map.mapdata[x][y] = newtile;
 
    if (x>=mapx && y>=mapy && x<mapx+64 && y<mapy+64)
-	   g_pGfxEngine->Tilemap->drawTile(g_pVideoDriver->getScrollSurface(), ((mapxstripepos+((x-mapx)<<4))&511), ((mapystripepos+((y-mapy)<<4))&511), newtile);
+   {
+	   g_pGfxEngine->Tilemap->drawTile(g_pVideoDriver->getScrollSurface(),
+			   ((mapxstripepos+((x-mapx)<<4))&511),
+			   ((mapystripepos+((y-mapy)<<4))&511),
+			   newtile);
+   }
 
    map_redraw();
 }
@@ -230,14 +232,13 @@ int i;
       px = ((mapxstripepos+((x-mapx)<<4))&511);
       py = ((mapystripepos+((y-mapy)<<4))&511);
 
-      //TileProperty[map.mapdata[x][y]][ANIMATION] = 1;
-
       // find it!
       for(i=1;i<MAX_ANIMTILES-1;i++)
       {
         if (animtiles[i].x == px && animtiles[i].y == py)
         {
           animtiles[i].slotinuse = 0;
+          animtiles[i].offset = 0;
           AnimTileInUse[px>>4][py>>4] = 0;
           return;
         }
@@ -304,7 +305,7 @@ int c, i;
       // find an unused slot in animtiles
       for(i=1;i<MAX_ANIMTILES-1;i++)
       {
-        if (!animtiles[i].slotinuse)
+        if ( !animtiles[i].slotinuse )
         {  // we found an unused slot
            animtiles[i].x = px;
            animtiles[i].y = py;

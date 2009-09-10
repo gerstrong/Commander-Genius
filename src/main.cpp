@@ -302,7 +302,7 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
 
   do
   {
-
+		g_pGfxEngine->Palette.setFadeColour(SDL_MapRGB(g_pVideoDriver->FXSurface->format, 0, 0, 0));
 		g_pGfxEngine->Palette.fadeto(255, FADE_SPEED_FAST);
 		do
 		{

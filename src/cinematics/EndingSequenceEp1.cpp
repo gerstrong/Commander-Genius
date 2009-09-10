@@ -169,8 +169,6 @@ int scrollingon;
 	objects[MARK_SPR_NUM].scry = (objects[MARK_SPR_NUM].y>>CSF)-scroll_y;
 
 	// execute the current command in the queue
-	//if (fade.dir != FADE_OUT)
-	//{
 		  switch(shipqueue[ShipQueuePtr].cmd)
 		  {
 			case CMD_MOVE:

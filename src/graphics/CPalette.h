@@ -14,6 +14,7 @@
 // Standard Fade speeds
 #define FADE_SPEED_FAST 10
 #define FADE_SPEED_SLOW 2
+#define FADE_SPEED_VERY_SLOW 1
 
 // Standard Darkness for light switches
 #define FADE_DARKNESS_HARD 232
