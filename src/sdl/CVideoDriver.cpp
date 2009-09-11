@@ -52,7 +52,7 @@ CVideoDriver::CVideoDriver() {
 	// Default values
 
 	  showfps=true;
-#ifdef WIZ
+#ifdef WIZGP2X
 	  m_Resolution.width=320;
 	  m_Resolution.height=240;
 	  m_Resolution.depth=16;
@@ -148,9 +148,9 @@ void CVideoDriver::initResolutionList()
 
 		  // shutdown SDL, so the game can initialize it correctly
 	  }
-	
+
 	if(m_Resolutionlist.empty()) {
-#ifdef WIZ
+#ifdef WIZGP2X
 		resolution.width = 320;
 		resolution.height = 240;
 #else
@@ -162,9 +162,9 @@ void CVideoDriver::initResolutionList()
 		resolution.depth = 16;
 		m_Resolutionlist.push_back(resolution);
 	}
-	
+
 	// will set the default mode; CSettings::loadDrvConfig will reset this if config file loaded successfully
-#ifdef WIZ
+#ifdef WIZGP2X
 	setMode(320, 240, 16);
 #else
 	setMode(640, 400, 32);
@@ -275,11 +275,15 @@ bool CVideoDriver::applyMode(void)
 
 	m_Resolution = *m_Resolution_pos;
 
-#ifndef WIZ
+#ifdef WIZGP2X
+	#ifdef GP2X
+    Mode = SDL_DOUBLEBUF | SDL_HWSURFACE;
+	#else
+	Mode = SDL_SWSURFACE;
+    #endif
+#else
 	// Support for doublebuffering
 	Mode = SDL_DOUBLEBUF | SDL_HWPALETTE | SDL_HWSURFACE;
-#else
-	Mode = SDL_SWSURFACE;
 #endif
 
 	// Enable OpenGL
@@ -322,7 +326,7 @@ bool CVideoDriver::applyMode(void)
 	}
 
 	m_Resolution.depth = screen->format->BitsPerPixel;
-	
+
  	if(!Fullscreen)
 		SDL_ShowCursor(SDL_ENABLE);
 	else
@@ -351,6 +355,7 @@ bool CVideoDriver::createSurfaces(void)
 	//ScrollSurface = SDL_CreateRGBSurface( Mode, 512, 512, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
 	//SDL_SetColorKey(ScrollSurface, SDL_SRCCOLORKEY, SDL_MapRGB(ScrollSurface->format, 0, 0xFF, 0xFF));
 	ScrollSurface = SDL_DisplayFormatAlpha( temp_surface );
+	SDL_FreeSurface(temp_surface);
 	if (!ScrollSurface)
 	{
 		g_pLogFile->textOut(RED,"VideoDriver: Couldn't create ScrollSurface!<br>");
@@ -400,6 +405,7 @@ bool CVideoDriver::createSurfaces(void)
     	g_pLogFile->textOut("Blitsurface = creatergbsurfacefrom<br>");
     	temp_surface = SDL_CreateRGBSurface(Mode,GAME_STD_WIDTH, GAME_STD_HEIGHT, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
     	BlitSurface = SDL_DisplayFormatAlpha( temp_surface );
+	SDL_FreeSurface(temp_surface);
 		if (!BlitSurface)
 		{
 			g_pLogFile->textOut(RED,"VidDrv_Start(): Couldn't create BlitSurface!<br>");

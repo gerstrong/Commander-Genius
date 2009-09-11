@@ -38,8 +38,10 @@ bool CSprite::optimizeSurface()
 		temp_surface = SDL_DisplayFormat(m_surface);
 		SDL_FreeSurface(m_surface);
 		m_surface = temp_surface;
+        return true;
 	}
-	return true;
+	else
+        return false;
 }
 
 ///

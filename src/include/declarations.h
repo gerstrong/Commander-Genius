@@ -22,9 +22,9 @@ struct stDisplay
   short Filtermode;
   short Zoom;
   unsigned short FrameSkip;
-	
+
 	// as long as we only have POD
-	stDisplay() { memset(this, 0, sizeof(stDisplay)); }	
+	stDisplay() { memset(this, 0, sizeof(stDisplay)); }
 };
 
 struct stDevice
@@ -65,7 +65,7 @@ struct stLevelControl
  // for ep2: how many sparks (tantalus ray machines) are left
  // you must destroy the tantalus ray generator before exiting
  int sparks_left;
-	
+
 
  // if true, a moving platform is currently extending/retracting (ep2)
  bool PlatExtending;
@@ -99,7 +99,7 @@ struct stControl
 	bool skipstarting;	// Skip Startmenu, Intro and Mainmenu.
 
 	stLevelControl levelcontrol;
-	
+
 	stControl() : eseq(false), dtm(false), storyboard(false), skipstarting(false) {}
 };
 

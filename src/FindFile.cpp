@@ -74,22 +74,22 @@
 void InitSearchPaths() {
 	// have to set to find the config at some of the default places
 	InitBaseSearchPaths();
-	
+
 	int i = 1;
 	while(true) {
 		std::string value;
 		if(!ReadString(CONFIGFILENAME, "FileHandling", "SearchPath" + itoa(i), value, ""))
 			break;
-		
+
 		AddToFileList(&tSearchPaths, value);
 		i++;
 	}
-	
+
 	// add the basesearchpaths to the searchpathlist as they should be saved in the end
 	for(searchpathlist::const_iterator p1 = basesearchpaths.begin(); p1 != basesearchpaths.end(); i++,p1++)  {
 		AddToFileList(&tSearchPaths, *p1);
 	}
-	
+
 	// print the searchpaths, this may be very usefull for the user
 	notes << "I have now the following searchpaths (in this order):\n";
 	for(searchpathlist::const_iterator p2 = tSearchPaths.begin(); p2 != tSearchPaths.end(); p2++) {
@@ -573,7 +573,7 @@ std::string GetFullFileName(const std::string& path, std::string* searchpath) {
 		GetExactFileName(path, tmp);
 		return tmp;
 	}
-	
+
 	std::string fname;
 	CheckSearchpathForFile checker(path, &fname, searchpath);
 	ForEachSearchpath(checker);
@@ -668,7 +668,7 @@ bool OpenGameFileR(std::ifstream& f, const std::string& path, std::ios_base::ope
 bool OpenGameFileW(std::ofstream& f, const std::string& path, std::ios_base::openmode mode) {
 	if(path.size() == 0)
 		return false;
-	
+
 	std::string fullfn = GetWriteFullFileName(path, true);
 	if(fullfn.size() != 0) {
 		try {
@@ -677,8 +677,8 @@ bool OpenGameFileW(std::ofstream& f, const std::string& path, std::ios_base::ope
 		} catch(...) {}
 		return false;
 	}
-	
-	return false;	
+
+	return false;
 }
 
 
@@ -715,7 +715,7 @@ bool FileListIncludesExact(const searchpathlist* l, const std::string& f) {
 
 std::string GetHomeDir() {
 #ifndef WIN32
-#ifdef WIZ
+#ifdef WIZGP2X
 	char* home = getenv("PWD");
 #else
 	char* home = getenv("HOME");
@@ -946,7 +946,7 @@ std::string ExtractDirectory(const std::string& path)
 
 
 std::string GetScriptInterpreterCommandForFile(const std::string& filename) {
-	FILE* f = OpenGameFile(filename, "r");	
+	FILE* f = OpenGameFile(filename, "r");
 	if(f) {
 		std::string line = ReadUntil(f);
 		if(line.size() > 2 && line[0] == '#' && line[1] == '!') {

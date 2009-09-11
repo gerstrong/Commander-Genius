@@ -34,7 +34,7 @@ CSound::CSound() {
 	m_soundslot = NULL;
 	m_MixedForm = NULL;
 	AudioSpec.channels = 2; // Stereo Sound
-#ifdef WIZ
+#ifdef WIZGP2X
 	AudioSpec.format = AUDIO_S16; // 16-bit sound
 #else
 	AudioSpec.format = AUDIO_U8; // 8-bit sound
@@ -93,16 +93,16 @@ bool CSound::init(void)
   switch( AudioSpec.format )
   {
 	case AUDIO_U8:
-		g_pLogFile->ftextOut("  format: AUDIO_U8<br>" );	
+		g_pLogFile->ftextOut("  format: AUDIO_U8<br>" );
 		break;
 	case AUDIO_S8:
-		g_pLogFile->ftextOut("  format: AUDIO_S8<br>" );	
+		g_pLogFile->ftextOut("  format: AUDIO_S8<br>" );
 		break;
 	case AUDIO_U16:
-		g_pLogFile->ftextOut("  format: AUDIO_U16<br>" );	
+		g_pLogFile->ftextOut("  format: AUDIO_U16<br>" );
 		break;
 	case AUDIO_S16:
-		g_pLogFile->ftextOut("  format: AUDIO_S16<br>" );	
+		g_pLogFile->ftextOut("  format: AUDIO_S16<br>" );
 		break;
 	default:
 		g_pLogFile->ftextOut("  format: UNKNOWN %d<br>", AudioSpec.format );
@@ -349,7 +349,7 @@ bool CSound::loadSoundData(unsigned short Episode, const std::string& DataDirect
 
   if( ( p_file = OpenGameFile(soundfile.c_str(),"rb") ) == NULL )
   {
-	  
+
 	buf = "keen" + itoa(Episode) + ".exe";
 	g_pLogFile->ftextOut("sound_load_all(): \"%s\" was not found in the data directory. Looking for \"%s\" in \"%s\" and trying to extract this file<br>", soundfile.c_str(), buf.c_str(), formatPathString(path).c_str());
 	extractOfExeFile(path, Episode);

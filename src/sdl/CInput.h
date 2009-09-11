@@ -11,7 +11,7 @@
 #include <SDL/SDL.h>
 #include <string>
 
-#ifdef WIZ
+#ifdef WIZGP2X
 #include <sys/ioctl.h>
 #include <sys/soundcard.h>
 #include <fcntl.h>
@@ -190,7 +190,7 @@ private:
 
 	bool immediate_keytable[KEYTABLE_SIZE];
 	bool last_immediate_keytable[KEYTABLE_SIZE];
-#ifdef WIZ
+#ifdef WIZGP2X
 	int volume;
 	int volume_direction;
 #endif
@@ -198,7 +198,7 @@ private:
 	void processKeys(int value);
 	void processJoystickAxis(void);
 	void processJoystickButton(int value);
-#ifdef WIZ
+#ifdef WIZGP2X
 	void WIZ_EmuKeyboard( int button, int value );
 	void WIZ_AdjustVolume( int direction );
 #endif
