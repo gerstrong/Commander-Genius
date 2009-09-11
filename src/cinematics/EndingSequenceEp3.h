@@ -14,8 +14,4 @@ void map_redraw(void);
 // Reference to ../fileio.cpp
 int GetStringAttribute(const std::string& stringName, const char *attrName);
 
-// Reference to CommonEnding.cpp
-void eseq_showmsg(const std::string& text, int boxleft, int boxtop,
-		int boxwidth, int boxheight, bool autodismiss);
-
 #endif /* ENDINGSEQUENCEEP3_H_ */

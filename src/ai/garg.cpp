@@ -19,7 +19,7 @@ GARG_DEAD
 #define GARG_WALK_ANIM_TIME  50
 #define GARG_WALK_SPEED_FAST      5
 #define GARG_WALK_ANIM_TIME_FAST  30
-#define GARG_CHARGE_SPEED    18
+#define GARG_CHARGE_SPEED    14
 #define GARG_CHARGE_ANIM_TIME  30
 #define GARG_JUMP_HEIGHT	40
 
@@ -245,18 +245,14 @@ Uint16 player_height = g_pGfxEngine->Sprite[0]->getHeight();
      break;
      case GARG_JUMP:
          if( objects[o].ai.garg.jumpheight > 0 )
-         {
   			objects[o].ai.garg.jumpheight--;
-  			objects[o].y-=12;
-         }
 
-         if( objects[o].ai.garg.jumpheight == 0 )	// Is he still jumping or already falling? Did he hit ground?
+       	 if(TileProperty[getmaptileat((objects[o].x>>CSF)+garg_width/2, (objects[o].y>>CSF)+garg_height+1)][BUP]) // There is floor
       	   objects[o].ai.garg.state = GARG_CHARGE;
+       	 else
+       	   objects[o].y-=12;
 
      case GARG_CHARGE:
-
-    	 // TODO: Some things must still be done. The Garg is still stupid at some places
-
        if (objects[o].ai.garg.movedir==LEFT)
        {  // garg is charging left
          objects[o].sprite = GARG_WALK_LEFT + objects[o].ai.garg.walkframe;
@@ -270,6 +266,13 @@ Uint16 player_height = g_pGfxEngine->Sprite[0]->getHeight();
            objects[o].ai.garg.looktimes = 0;
            objects[o].ai.garg.timer = 0;
            objects[o].ai.garg.state = GARG_LOOK;
+         }
+
+         // if Garg is about to fall while charged make him jump
+         if( TileProperty[getmaptileat((objects[o].x>>CSF)-garg_width/2, (objects[o].y>>CSF)+garg_height+1)][BUP] == 0 )
+         {
+      	   objects[o].ai.garg.state = GARG_JUMP;
+      	   objects[o].ai.garg.jumpheight = GARG_JUMP_HEIGHT<<CSF;
          }
        }
        else
@@ -286,13 +289,13 @@ Uint16 player_height = g_pGfxEngine->Sprite[0]->getHeight();
            objects[o].ai.garg.timer = 0;
            objects[o].ai.garg.state = GARG_LOOK;
          }
-       }
 
-       // if Garg is about to fall while charged make him jump
-       if(TileProperty[getmaptileat((objects[o].x>>CSF)+garg_width/2, (objects[o].y>>CSF)+player_height+1)][BUP] == 0)
-       {
-    	   objects[o].ai.garg.state = GARG_JUMP;
-    	   objects[o].ai.garg.jumpheight = GARG_JUMP_HEIGHT<<CSF;
+         // if Garg is about to fall while charged make him jump
+         if( TileProperty[getmaptileat((objects[o].x>>CSF)+garg_width/2, (objects[o].y>>CSF)+garg_height+1)][BUP] == 0 )
+         {
+      	   objects[o].ai.garg.state = GARG_JUMP;
+      	   objects[o].ai.garg.jumpheight = GARG_JUMP_HEIGHT<<CSF;
+         }
        }
 
        // walk animation

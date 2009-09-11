@@ -499,6 +499,8 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
   {
     eseq2_vibrate();
     eseq2_TantalusRay(pCKP);
+    start_gameover(pCKP);
+
     IntroCanceled = 1;               // popup main menu immediately
   }
 }

@@ -540,6 +540,7 @@ int xa,ya;
     	  g_pGfxEngine->Sprite[objects[i].sprite]->drawSprite( g_pVideoDriver->SpriteLayerSurface,
 															  objects[i].scrx, objects[i].scry );
 
+
         if (objects[i].honorPriority)
         {
         	CSprite *sprite = g_pGfxEngine->Sprite[objects[i].sprite];

@@ -17,8 +17,8 @@
 #define FADE_SPEED_VERY_SLOW 1
 
 // Standard Darkness for light switches
-#define FADE_DARKNESS_HARD 232
-#define FADE_DARKNESS 216
+#define FADE_DARKNESS_HARD 216
+#define FADE_DARKNESS 200
 
 #include <SDL/SDL.h>
 

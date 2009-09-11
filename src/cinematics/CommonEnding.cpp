@@ -55,17 +55,15 @@ int endsequence(stCloneKeenPlus *pCKP)
 
 // Just show a message like type writing. Maybe this one will be replaced by the new Dialog system
 void eseq_showmsg(const std::string& text, int boxleft, int boxtop,
-		int boxwidth, int boxheight, bool autodismiss)
+		int boxwidth, int boxheight, bool autodismiss, SDL_Surface *spritesurface)
 {
+std::string tempbuf;
+char showtimer;
+unsigned int amountshown;
+int waittimer;
+int cancel, lastcancelstate;
+SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
 
-	std::string tempbuf;
-	char textline, showtimer;
-	unsigned int amountshown;
-	int waittimer;
-	int cancel, lastcancelstate;
-	SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
-
-  textline = 0;
   amountshown = 0;
   showtimer = 0;
   lastcancelstate = 1;
@@ -73,6 +71,7 @@ void eseq_showmsg(const std::string& text, int boxleft, int boxtop,
 
   do
   {
+	gamedo_render_eraseobjects();
 	gamedo_AnimatedTiles();
 	gamedo_render_drawobjects();
 
@@ -82,10 +81,10 @@ void eseq_showmsg(const std::string& text, int boxleft, int boxtop,
 	tempbuf = text;
 	if(amountshown < tempbuf.size())
 	  tempbuf.erase(amountshown);
+	if( spritesurface )
+		SDL_BlitSurface( spritesurface, NULL, g_pVideoDriver->SpriteLayerSurface, NULL );
 	g_pGfxEngine->drawDialogBox(sfc, boxleft,boxtop,boxwidth,boxheight);
-	g_pGfxEngine->Font->drawFont(sfc, tempbuf, (boxleft+1)*8, (boxtop+1+textline)*8);
-
-	gamedo_render_eraseobjects();
+	g_pGfxEngine->Font->drawFont(sfc, tempbuf, (boxleft+1)*8, (boxtop+1)*8);
 
 	if (showtimer > LETTER_SHOW_SPD)
 	{  // it's time to show a new letter
@@ -114,7 +113,6 @@ void eseq_showmsg(const std::string& text, int boxleft, int boxtop,
 	  }
 	}
 
-
 	lastcancelstate = cancel;
 
 	g_pInput->pollEvents();
@@ -123,7 +121,7 @@ void eseq_showmsg(const std::string& text, int boxleft, int boxtop,
   return;
 }
 
-void eseq_ToBeContinued()
+void eseq_ToBeContinued(SDL_Surface *extrascreen)
 {
 int i;
 std::string text;
@@ -138,11 +136,10 @@ int dlgX, dlgY, dlgW, dlgH;
   dlgY = GetStringAttribute("TO_BE_CONTINUED", "TOP");
   dlgW = GetStringAttribute("TO_BE_CONTINUED", "WIDTH");
   dlgH = GetStringAttribute("TO_BE_CONTINUED", "HEIGHT");
-  eseq_showmsg(text, dlgX, dlgY, dlgW, dlgH, 0);
-
+  eseq_showmsg(text, dlgX, dlgY, dlgW, dlgH, 0, extrascreen);
   do
   {
-	  if (g_pInput->getPressedKey(KQUIT)) return;
+	  if (g_pInput->getPressedAnyCommand()) return;
 	  g_pInput->pollEvents();
   } while(1);
 }

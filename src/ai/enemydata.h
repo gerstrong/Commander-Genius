@@ -27,7 +27,7 @@ typedef struct stYorpData
 typedef struct stGargData
 {
   unsigned char state;
-  unsigned int jumpheight;
+  int jumpheight;
 
   unsigned char looktimes,lookframe;
   unsigned char timer, dietimer, keenonsameleveltimer;

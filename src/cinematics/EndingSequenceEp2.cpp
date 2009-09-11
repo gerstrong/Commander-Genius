@@ -55,16 +55,14 @@ int ShipQueuePtr;
 int eseq2_TantalusRay(stCloneKeenPlus *pCKP)
 {
 char enter;
-int x, y, t, o, i;
+int x, y, t, o=0, i;
 int tantalus_animframe, tantalus_animtimer=0;
 int state, timer, spawnedcount=0;
 CSprite **sprites = &g_pGfxEngine->Sprite[0];
 
-	Uint16 tantalus_sprite_width = sprites[TANTALUS_SPRITE]->getWidth();
-	Uint16 tantalus_sprite_height = sprites[TANTALUS_SPRITE]->getHeight();
-
-
-	o=0;
+Uint16 tantalus_sprite_width = sprites[TANTALUS_SPRITE]->getWidth();
+Uint16 tantalus_sprite_height = sprites[TANTALUS_SPRITE]->getHeight();
+CBitmap *bm_gameover =NULL;
 
   pCKP->Control.levelcontrol.dark = 0;
 
@@ -130,7 +128,7 @@ CSprite **sprites = &g_pGfxEngine->Sprite[0];
 		  spawnedcount = 0;
 		  srand(300);
 		  o = spawn_object(player[0].x+(24<<CSF), player[0].y-(8<<CSF), OBJ_EXPLOSION);
-		  g_pSound->playSound(SOUND_EARTHPOW, PLAY_NOW);
+		  g_pSound->playSound(SOUND_KEEN_BLOK, PLAY_NOW);
 	    }
 	break;
 	case TAN_STATE_EARTH_EXPLODING:
@@ -191,11 +189,11 @@ CSprite **sprites = &g_pGfxEngine->Sprite[0];
 			g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
 			pCKP->Control.levelcontrol.gameovermode = true;
 
-			CBitmap *bm_gameover = g_pGfxEngine->getBitmap("GAMEOVER");
+			bm_gameover = g_pGfxEngine->getBitmap("GAMEOVER");
 			// figure out where to center the gameover bitmap and draw it
-		    int x = (320/2)-(bm_gameover->getWidth()/2);
-			int y = (200/2)-(bm_gameover->getHeight()/2);
-			bm_gameover->draw(g_pVideoDriver->SpriteLayerSurface, x, y );
+		    x = (320/2)-(bm_gameover->getWidth()/2);
+			y = (200/2)-(bm_gameover->getHeight()/2);
+
 			break;
 		  }
 		  spawnedcount++;
@@ -219,8 +217,10 @@ CSprite **sprites = &g_pGfxEngine->Sprite[0];
 
 	g_pInput->pollEvents();
 
-	  gamedo_RenderScreen();
-    } while(!g_pInput->getPressedKey(KQUIT));
+	if(bm_gameover) bm_gameover->draw(g_pVideoDriver->FGLayerSurface, x, y );
+
+	gamedo_RenderScreen();
+  } while(!g_pInput->getPressedKey(KQUIT));
   delete_object(find_next_object(OBJ_EGA_BITMAP));
   return 1;
 }
@@ -326,7 +326,7 @@ int x,y,w,h;
 
 int eseq2_HeadsForEarth(stCloneKeenPlus *pCKP)
 {
-char enter,lastenterstate;
+bool enter;
 int x, y;
 int downtimer;
 int afterfadewaittimer;
@@ -367,7 +367,6 @@ int afterfadewaittimer;
   // erase the message dialog
   map_redraw();
 
-  lastenterstate = 1;
   downtimer = 0;
   afterfadewaittimer = 0;
   do
@@ -396,28 +395,21 @@ int afterfadewaittimer;
 	  }
 	  // decrease the time remaining
 	  if (shipqueue[ShipQueuePtr].time)
-	  {
 		shipqueue[ShipQueuePtr].time--;
-	  }
-	  else
-	  {  // no time left on this command, go to next cmd
+	  else // no time left on this command, go to next cmd
 		ShipQueuePtr++;
-	  }
-	  if (afterfadewaittimer > 80)
-	  {
-		return 0;
-	  }
+
+	  if ( afterfadewaittimer > 80 || enter ) return 0;
 	  else afterfadewaittimer++;
 
-	enter = (g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_POGO));
+	  enter = (g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_POGO));
 
-	lastenterstate = enter;
-
-	gamedo_AnimatedTiles();
-	gamedo_ScrollTriggers(0);
-	g_pInput->pollEvents();
-
+	  gamedo_AnimatedTiles();
+	  gamedo_ScrollTriggers(0);
+	  gamedo_render_drawobjects();
 	  gamedo_RenderScreen();
+	  gamedo_render_eraseobjects();
+	  g_pInput->pollEvents();
   } while(!g_pInput->getPressedKey(KQUIT));
   return 1;
 }
@@ -427,7 +419,7 @@ int afterfadewaittimer;
 
 int eseq2_LimpsHome(stCloneKeenPlus *pCKP)
 {
-char enter,lastenterstate;
+bool enter;
 int downtimer;
 int afterfadewaittimer = 0;
 
@@ -455,7 +447,6 @@ int afterfadewaittimer = 0;
   // erase the message dialog
   map_redraw();
 
-  lastenterstate = 1;
   downtimer = 0;
   do
   {
@@ -473,26 +464,19 @@ int afterfadewaittimer = 0;
 		default: break;
 	  }
 	  // decrease the time remaining
-	  if (shipqueue[ShipQueuePtr].time)
-	  {
-		shipqueue[ShipQueuePtr].time--;
-	  }
-	  else
-	  {  // no time left on this command, go to next cmd
-		ShipQueuePtr++;
-	  }
-	  if (afterfadewaittimer > 80)
-	  {
-		return 0;
-	  }
+	  if ( shipqueue[ShipQueuePtr].time )	shipqueue[ShipQueuePtr].time--;
+	  else	ShipQueuePtr++;
+
+	  if ( afterfadewaittimer > 80 || enter )	return 0;
 	  else afterfadewaittimer++;
 
-	enter = (g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_POGO));
+	  enter = (g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_POGO));
 
-	gamedo_AnimatedTiles();
-	g_pInput->pollEvents();
-
-    gamedo_RenderScreen();
+	  gamedo_AnimatedTiles();
+	  gamedo_render_drawobjects();
+	  gamedo_RenderScreen();
+	  gamedo_render_eraseobjects();
+	  g_pInput->pollEvents();
 
   } while(!g_pInput->getPressedKey(KQUIT));
   return 1;
@@ -533,7 +517,7 @@ int dlgX, dlgY, dlgW, dlgH;
 		dlgH = GetStringAttribute(tempstr, "HEIGHT");
 		lastpage = GetStringAttribute(tempstr, "LASTPAGE");
 
-		eseq_showmsg(text, dlgX, dlgY, dlgW, dlgH, 1);
+		eseq_showmsg( text, dlgX, dlgY, dlgW, dlgH, 1, finale_sfc );
 		if (lastpage==1) break;
 
 		curpage++;
@@ -542,8 +526,8 @@ int dlgX, dlgY, dlgW, dlgH;
   finale_draw( finale_sfc, "finale.ck2", pCKP->Resources.GameDataDirectory);
   // Draw uncompressed finale Plot
   SDL_BlitSurface( finale_sfc, NULL, g_pVideoDriver->SpriteLayerSurface, NULL );
-  eseq_ToBeContinued();
-  SDL_FreeSurface(finale_sfc);
+  eseq_ToBeContinued( finale_sfc );
+  SDL_FreeSurface( finale_sfc );
 
   return 0;
 }

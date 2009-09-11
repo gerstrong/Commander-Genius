@@ -15,6 +15,7 @@
 #include "../sdl/sound/CSound.h"
 
 #include "EndingSequenceEp3.h"
+#include "CommonEnding.h"
 
 void eseq3_Mortimer()
 {
@@ -72,10 +73,7 @@ char eseq3_AwardBigV(stCloneKeenPlus *pCKP)
   w = GetStringAttribute("THE_END", "WIDTH");
   h = GetStringAttribute("THE_END", "HEIGHT");
 
-  // Draw uncompressed finale Plot
-  SDL_BlitSurface( finale_sfc, NULL, g_pVideoDriver->SpriteLayerSurface, NULL );
-
-  eseq_showmsg(getstring("THE_END"),x,y,w,h, false);
+  eseq_showmsg(getstring("THE_END"),x,y,w,h, false, finale_sfc);
 
   // wait for enter pressed
   c = 0;

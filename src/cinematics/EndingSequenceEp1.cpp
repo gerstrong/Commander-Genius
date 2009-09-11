@@ -15,6 +15,7 @@
 #include "../fileio/CExeFile.h"
 
 #include "EndingSequenceEp1.h"
+#include "CommonEnding.h"
 
 #define CMD_MOVE                0
 #define CMD_WAIT                1
@@ -57,14 +58,13 @@ int i;
   showmapatpos(80, WM_X, WM_Y, pCKP);
 
   // draw keen next to his ship
-  g_pGfxEngine->Sprite[PMAPLEFTFRAME]->drawSprite(g_pVideoDriver->SpriteLayerSurface, 168, 85);
-  // do not show player when we render the screen
   numplayers = 1;
-  player[0].x = 0;
-  player[0].y = 0;
-  player[0].playframe = BlankSprite;
-  // all objects -> nonexistant
+  player[0].x = 6636;
+  player[0].y = 19968;
+  player[0].playframe = PMAPLEFTFRAME;
+  // all objects except the first player -> nonexistant
   for(i=0;i<MAX_OBJECTS;i++) objects[i].exists = 0;
+  objects[1].exists = 1;
 
   eseq_showmsg(getstring("EP1_ESEQ_PART1"),1,18,37,6,1);
 
@@ -245,17 +245,17 @@ int scrollingon;
 
 int eseq1_BackAtHome(stCloneKeenPlus *pCKP)
 {
-	int i;
-	std::string text[10];
-	std::string strname;
-	std::string tempbuf;
-	short textline, showtimer;
-	unsigned short amountshown;
-	signed int waittimer;
-	int state;
-	int enter, lastenterstate;
-	int dlgX, dlgY, dlgW, dlgH;
-	CBitmap *bm_window;
+int i;
+std::string text[10];
+std::string strname;
+std::string tempbuf;
+short textline, showtimer;
+unsigned short amountshown;
+signed int waittimer;
+int state;
+int enter, lastenterstate;
+int dlgX, dlgY, dlgW, dlgH;
+CBitmap *bm_window;
 
 	SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
 
@@ -383,12 +383,9 @@ int eseq1_BackAtHome(stCloneKeenPlus *pCKP)
 
 int readStoryText(char **ptext, int episode, const std::string& path);
 
-void eseq1_showEndingText(std::string Path)
+void eseq1_showEndingText(std::string &Path)
 {
 	std::string text;
-	unsigned long textsize=0;
-
-	// Read another text-type
 	unsigned char *filebuf;
 	unsigned long startflag=0x1652A-512, endflag=0x1679A-512; // where story begins and ends!
 
@@ -398,12 +395,15 @@ void eseq1_showEndingText(std::string Path)
 	filebuf = ExeFile->getData() + startflag;
 
 	for( unsigned long i=0 ; i<endflag-startflag ; i++ )
-		text.push_back(filebuf[i]);
+	{
+		if(filebuf[i])
+			text.push_back(filebuf[i]);
+	}
 
 	delete ExeFile;
 
-	if(textsize > 0)
-		showPage(text,textsize);
+	if( text.size() > 0 )
+		showPage( text, text.size() );
 
 	text.clear();
 }

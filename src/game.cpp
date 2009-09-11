@@ -51,7 +51,10 @@ int lastquit;
      pCKP->Control.levelcontrol.dokeensleft = false;
   }
   else
-     loadinggame = 0;
+  {
+	   g_pGfxEngine->Palette.setdark(pCKP->Control.levelcontrol.dark);
+	   loadinggame = 0;
+  }
 
   // fire all guns immediately first time around
   gunfiretimer = (gunfirefreq+1);
@@ -134,11 +137,7 @@ int lastquit;
 	// allow enter to return to main menu
 	// if we're in game over mode
 	if (pCKP->Control.levelcontrol.gameovermode)
-	{
 		start_gameover( pCKP );
-
-		pCKP->Control.levelcontrol.command = LVLC_GAME_OVER;
-	}
 
 	if (g_pInput->getPressedKey(KQUIT))
 		VerifyQuit();

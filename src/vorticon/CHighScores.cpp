@@ -32,11 +32,11 @@ CHighScores::CHighScores(SDL_Surface *sfc, stCloneKeenPlus *poutsideCKP) {
 	// Set default Scores
 	strcpy(Name[0],"Gerstrong");
 	strcpy(Name[1],"Tulip");
-	strcpy(Name[2],"Spleen");
-	strcpy(Name[3],"Yorpy");
-	strcpy(Name[4],"Garg");
-	strcpy(Name[5],"Vorticon");
-	strcpy(Name[6],"maybeyou");
+	strcpy(Name[2],"Albert");
+	strcpy(Name[3],"Pickle");
+	strcpy(Name[4],"Pizza");
+	strcpy(Name[5],"DaVince");
+	strcpy(Name[6],"Zear");
 
 	int i;
 	for(i=0 ; i<7 ; i++)
