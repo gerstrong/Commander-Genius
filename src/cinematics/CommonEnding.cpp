@@ -71,52 +71,54 @@ SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
 
   do
   {
-	gamedo_render_eraseobjects();
-	gamedo_AnimatedTiles();
-	gamedo_render_drawobjects();
+	  if(g_pGfxEngine->Palette.in_progress())
+		  g_pGfxEngine->Palette.applyFade();
+	  gamedo_render_eraseobjects();
+	  gamedo_AnimatedTiles();
+	  gamedo_render_drawobjects();
 
-	cancel = (g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_POGO));
+	  cancel = (g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_POGO));
 
-	// draw the text up to the amount currently shown
-	tempbuf = text;
-	if(amountshown < tempbuf.size())
-	  tempbuf.erase(amountshown);
-	if( spritesurface )
-		SDL_BlitSurface( spritesurface, NULL, g_pVideoDriver->SpriteLayerSurface, NULL );
-	g_pGfxEngine->drawDialogBox(sfc, boxleft,boxtop,boxwidth,boxheight);
-	g_pGfxEngine->Font->drawFont(sfc, tempbuf, (boxleft+1)*8, (boxtop+1)*8);
+	  // draw the text up to the amount currently shown
+	  tempbuf = text;
+	  if(amountshown < tempbuf.size())
+		  tempbuf.erase(amountshown);
+	  if( spritesurface )
+		  SDL_BlitSurface( spritesurface, NULL, g_pVideoDriver->SpriteLayerSurface, NULL );
+	  g_pGfxEngine->drawDialogBox(sfc, boxleft,boxtop,boxwidth,boxheight);
+	  g_pGfxEngine->Font->drawFont(sfc, tempbuf, (boxleft+1)*8, (boxtop+1)*8);
 
-	if (showtimer > LETTER_SHOW_SPD)
-	{  // it's time to show a new letter
-	  if (amountshown < text.size())
-		amountshown++;
+	  if (showtimer > LETTER_SHOW_SPD)
+	  {  // it's time to show a new letter
+		  if (amountshown < text.size())
+			  amountshown++;
 
-	  showtimer = 0;
-	} else showtimer++;
+		  showtimer = 0;
+	  } else showtimer++;
 
-	// user pressed enter or some other key
-	if (cancel)
-	{
-	  if (amountshown < text.size())
-		  amountshown = text.size();
-
-	  else return;
-	}
-
-	// when all text is shown wait a sec then return
-	if (autodismiss)
-	{
-	  if (amountshown >= text.size())
+	  // user pressed enter or some other key
+	  if (cancel)
 	  {
-		if (waittimer > HEADFOREARTH_WAIT_TIME) return;
-		waittimer++;
+		  if (amountshown < text.size())
+			  amountshown = text.size();
+
+		  else return;
 	  }
-	}
 
-	lastcancelstate = cancel;
+	  // when all text is shown wait a sec then return
+	  if (autodismiss)
+	  {
+		  if (amountshown >= text.size())
+		  {
+			  if (waittimer > HEADFOREARTH_WAIT_TIME) return;
+			  waittimer++;
+		  }
+	  }
 
-	g_pInput->pollEvents();
-	gamedo_frameskipping_blitonly();
+	  lastcancelstate = cancel;
+
+	  g_pInput->pollEvents();
+	  gamedo_frameskipping_blitonly();
   } while(!g_pInput->getPressedCommand(KQUIT));
   return;
 }

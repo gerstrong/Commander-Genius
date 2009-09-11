@@ -1,5 +1,8 @@
 Commander Genius Release v0.3.0.4 (CloneKeenPlus):
 --------------------------------------------------
+11-09-2009
+- many bugs fixes (Many thanks to James K. Beard)
+- Graphical improvements and performance (Pickle)
 
 06-09-2009
 - The new Graphics Engine is fully implemented and can 
