@@ -13,12 +13,12 @@
 #include "../graphics/CGfxEngine.h"
 #include "CDialog.h"
 
-CDialog::CDialog(SDL_Surface *DialogSurface, Uint16 x, Uint16 y, Uint16 w, Uint16 h)
+CDialog::CDialog(SDL_Surface *DialogSurface, /*Uint16 x, Uint16 y,*/ Uint16 w, Uint16 h)
 {
-	m_x = x;	m_y = y;
+	m_x = (300/2)-(w*4)+10/*x*/;	m_y = (200/2)-(h*4)/*y*/;
 	m_w = w;	m_h = h;
 
-	m_twirl.posy = y;
+	m_twirl.posy = m_y;
 	m_twirl.frame = 0;
 	m_twirl.timer = 0;
 
@@ -55,7 +55,7 @@ void CDialog::setFrameTheme(Uint8 theme)
 void CDialog::addObject(Uint8 type, Uint16 x, Uint16 y,const std::string text)
 {
 	CDlgObject *DlgObject = new CDlgObject();
-	DlgObject->create(type, m_dlgobject.size(), x, y, text, m_w-((x-m_x)/8)-4 );
+	DlgObject->create(type, m_dlgobject.size(), m_x+(x*8), m_y+(y*8), text, m_w-((x-m_x)/8)-4 );
 	m_dlgobject.push_back(DlgObject);
 
 	for(Uint8 i=0 ; i<m_dlgobject.size() ; i++) // go the next selectable item

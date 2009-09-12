@@ -144,14 +144,14 @@ short loadResourcesforStartMenu(stCloneKeenPlus *pCKP, CGame *Game)
 
 bool loadStartMenu(stCloneKeenPlus *pCKP)
 {
-	CDialog *GamesMenu = new CDialog(g_pVideoDriver->FGLayerSurface, 16, 8, 36, 20);
+	CDialog *GamesMenu = new CDialog(g_pVideoDriver->FGLayerSurface, /*16, 8,*/ 36, 20);
 
 	// Use the standard Menu-Frame used in the old DOS-Games
 	GamesMenu->setFrameTheme( DLG_THEME_OLDSCHOOL );
 
 	// Show me the games you detected!
 	for( int i=0 ; i < pCKP->numGames ; i++ )
-		GamesMenu->addObject(DLG_OBJ_OPTION_TEXT,16+8,8+8*(i+1), pCKP->GameData[i].Name);
+		GamesMenu->addObject(DLG_OBJ_OPTION_TEXT,1,i+1, pCKP->GameData[i].Name);
 
 
 	do
@@ -187,7 +187,7 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 	showmapatpos(90, MAINMENU_X, MENUS_Y, pCKP);
 
 	// Prepare the Games Menu
-	MainMenu = new CDialog(g_pVideoDriver->FGLayerSurface, 88, 56, 18, 13);
+	MainMenu = new CDialog(g_pVideoDriver->FGLayerSurface, /*88, 56,*/ 18, 13);
 
 	// Load the Title Bitmap
 	sfc = g_pVideoDriver->getScrollSurface();
@@ -198,17 +198,17 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 	MainMenu->setFrameTheme( DLG_THEME_OLDSCHOOL );
 
 	// Show me the games you detected!
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 88+8, 64, "1-Player Game");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 88+8, 72, "2-Player Game");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 88+8, 80, "Load Game");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 88+8, 88, "Story");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 88+8, 96, "High Scores");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 88+8, 104, "Options");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 88+8, 112, "Demo");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 88+8, 120, "Change Game");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 88+8, 128, "About CG");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 88+8, 136, "Ordering Info");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 88+8, 144, "Quit");
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "1-Player Game");
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "2-Player Game");
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Load Game");
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Story");
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "High Scores");
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Options");
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "Demo");
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Change Game");
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 9, "About CG");
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 10, "Ordering Info");
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 11, "Quit");
 
 	x = (320/2)-(bm_title->getWidth()/2);
 	bm_title->draw( sfc, x+scroll_x, 1+scroll_y);
@@ -250,7 +250,7 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
     	loadslot = save_slot_box(0, pCKP);
 
     	x = (320/2)-(bm_title->getWidth()/2);
-    	bm_title->draw( sfc, x+scroll_x, scroll_y);
+    	bm_title->draw( sfc, x+scroll_x, scroll_y+1);
     }
     else if (selection==MAINMNU_OPTIONS)
     {
@@ -283,16 +283,16 @@ int getDifficulty(stCloneKeenPlus *pCKP)
 
 	x = (320/2)-(bm_title->getWidth()/2);
 
-	bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y );
+	bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
 
 	// Prepare the Games Menu
-	CDialog DifficultyMenu(g_pVideoDriver->FGLayerSurface, 120,32,14,6);
+	CDialog DifficultyMenu(g_pVideoDriver->FGLayerSurface, /*120,32,*/ 14, 6);
 
 	DifficultyMenu.setFrameTheme(DLG_THEME_OLDSCHOOL);
 
-	DifficultyMenu.addObject(DLG_OBJ_OPTION_TEXT, 128, 40, "Normal");
-	DifficultyMenu.addObject(DLG_OBJ_OPTION_TEXT, 128, 48, "Hard");
-	DifficultyMenu.addObject(DLG_OBJ_OPTION_TEXT, 128, 64, "Cancel");
+	DifficultyMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Normal");
+	DifficultyMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Hard");
+	DifficultyMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Cancel");
 
 	do
 	{
@@ -321,15 +321,15 @@ int AudioDlg(stCloneKeenPlus *pCKP)
 
 	// Load the Title Bitmap
 	x = (320/2)-(bm_title->getWidth()/2);
-	bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y );
+	bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
 
 	// Prepare the Games Menu
-	CDialog AudioMenu(g_pVideoDriver->FGLayerSurface, 32,32,32,8);
+	CDialog AudioMenu(g_pVideoDriver->FGLayerSurface, /*32, 32,*/ 32, 8);
 
 	AudioMenu.setFrameTheme(DLG_THEME_OLDSCHOOL);
 
 	rate = g_pSound->getAudioSpec().freq;
-	AudioMenu.addObject(DLG_OBJ_OPTION_TEXT, 40, 40, "Rate: " + itoa(rate) +" kHz");
+	AudioMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Rate: " + itoa(rate) +" kHz");
 
 	format = g_pSound->getAudioSpec().format;
 	std::string buf;
@@ -337,16 +337,16 @@ int AudioDlg(stCloneKeenPlus *pCKP)
 		buf = "Format: 16 bits";
 	else
 		buf = "Format: 8 bits";
-	AudioMenu.addObject(DLG_OBJ_OPTION_TEXT, 40, 48, buf);
+	AudioMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 2, buf);
 
 	mode = g_pSound->getAudioSpec().channels - 1;
 	if(mode == 1)
-		AudioMenu.addObject(DLG_OBJ_OPTION_TEXT, 40, 56, "Mode: Stereo");
+		AudioMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Mode: Stereo");
 	else
-		AudioMenu.addObject(DLG_OBJ_OPTION_TEXT, 40, 56, "Mode: Mono");
+		AudioMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Mode: Mono");
 
-	AudioMenu.addObject(DLG_OBJ_OPTION_TEXT, 40, 72, "Save and go back");
-	AudioMenu.addObject(DLG_OBJ_OPTION_TEXT, 40, 80, "Cancel");
+	AudioMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "Save and go back");
+	AudioMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Cancel");
 
 
 	do
@@ -422,10 +422,10 @@ void OptionsDlg(stCloneKeenPlus *pCKP)
 
 	// Load the Title Bitmap
 	x = (320/2)-(bm_title->getWidth()/2);
-	bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y );
+	bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
 
 	// Prepare the Games Menu
-	CDialog OptionsMenu(g_pVideoDriver->FGLayerSurface, 24,24,34,13);
+	CDialog OptionsMenu(g_pVideoDriver->FGLayerSurface, /*24, 24,*/ 34, 13);
 
 	OptionsMenu.setFrameTheme(DLG_THEME_OLDSCHOOL);
 
@@ -438,11 +438,11 @@ void OptionsDlg(stCloneKeenPlus *pCKP)
 		else
 			buf += "Disabled";
 
-		OptionsMenu.addObject(DLG_OBJ_OPTION_TEXT, 32, 32+8*i, buf);
+		OptionsMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, i+1, buf);
 	}
 
-	OptionsMenu.addObject(DLG_OBJ_OPTION_TEXT, 32, 40+8*(i), "Save and Continue");
-	OptionsMenu.addObject(DLG_OBJ_OPTION_TEXT, 32, 40+8*(i+1), "Cancel");
+	OptionsMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, i+2, "Save and Continue");
+	OptionsMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, i+3, "Cancel");
 
 	do
 	{
@@ -501,7 +501,7 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 
 	// Load the Title Bitmap
 	x = (320/2)-(bm_title->getWidth()/2);
-	bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y );
+	bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
 
 	width  = g_pVideoDriver->getWidth();
 	height = g_pVideoDriver->getHeight();
@@ -511,21 +511,21 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 	filter = g_pVideoDriver->getFiltermode();
 
 	// Prepare the Games Menu
-	CDialog DisplayMenu(g_pVideoDriver->FGLayerSurface, 4,4,32,12);
+	CDialog DisplayMenu(g_pVideoDriver->FGLayerSurface, /*4, 4,*/ 32, 12);
 
 	// Use the standard Menu-Frame used in the old DOS-Games
 	DisplayMenu.setFrameTheme( DLG_THEME_OLDSCHOOL );
 
 	buf = "Resolution: " + itoa(width) + "x" + itoa(height) + "x" + itoa(depth);
-	DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 12, buf);
+	DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 1, buf);
 	if(g_pVideoDriver->getFullscreen())
 	{
-		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 20, "Fullscreen mode");
+		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Fullscreen mode");
 		fsmode = true;
 	}
 	else
 	{
-		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 20, "Windowed mode");
+		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Windowed mode");
 		fsmode = false;
 	}
 
@@ -535,51 +535,51 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 		zoom = g_pVideoDriver->getZoomValue();
 
 		if(zoom == 1)
-			DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 28, "No Scale");
+			DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "No Scale");
 		else
-			DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 28, "Scale: " + itoa(zoom) );
+			DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Scale: " + itoa(zoom) );
 	}
 	else
 	{
 		gl_filter = g_pVideoDriver->getOGLFilter();
 
 		if(gl_filter == 1)
-			DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 28, "OGL Filter: Linear");
+			DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "OGL Filter: Linear");
 		else
-			DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 28, "OGL Filter: Nearest");
+			DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "OGL Filter: Nearest");
 	}
 
 	filter = g_pVideoDriver->getFiltermode();
 	if(filter == 0)
-		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 36, "No Filter");
+		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "No Filter");
 	else if(filter == 1)
-		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 36, "Scale2x Filter");
+		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Scale2x Filter");
 	else if(filter == 2)
-		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 36, "Scale3x Filter");
+		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Scale3x Filter");
 	else if(filter == 3)
-		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 36, "Scale4x Filter");
+		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Scale4x Filter");
 	else
-		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 36, "Unknown Filter");
+		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Unknown Filter");
 
 	if(opengl)
-		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 44, "OpenGL Acceleration");
+		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "OpenGL Acceleration");
 	else
-		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 44, "Software Rendering");
+		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "Software Rendering");
 
 	autoframeskip = g_pTimer->getFrameRate();
 
 	if(autoframeskip)
-		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 52, "Auto-Frameskip : " + itoa(autoframeskip) + " fps");
+		DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Auto-Frameskip : " + itoa(autoframeskip) + " fps");
 
 	aspect = g_pVideoDriver->getAspectCorrection();
 
 	buf = "OGL Aspect Ratio ";
 	buf += aspect ? "enabled" : "disabled";
 
-	DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 60, buf);
+	DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 7, buf);
 
-	DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 76, "Save and return");
-	DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 12, 84, "Cancel");
+	DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 9, "Save and return");
+	DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 10, "Cancel");
 
 	do
 	{
@@ -711,19 +711,19 @@ char configmenu(stCloneKeenPlus *pCKP)
 
 	x = (320/2)-(title_bitmap->getWidth()/2);
 
-	title_bitmap->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y );
+	title_bitmap->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
 
 	// Prepare the Games Menu
-	CDialog OptionsMenu(g_pVideoDriver->FGLayerSurface, 120,32,14,8);
+	CDialog OptionsMenu(g_pVideoDriver->FGLayerSurface, /*120, 32,*/ 14, 8);
 
 	OptionsMenu.setFrameTheme(DLG_THEME_OLDSCHOOL);
 
-	OptionsMenu.addObject(DLG_OBJ_OPTION_TEXT, 128, 40, "Graphics");
-	OptionsMenu.addObject(DLG_OBJ_OPTION_TEXT, 128, 48, "Audio");
-	OptionsMenu.addObject(DLG_OBJ_OPTION_TEXT, 128, 56, "Game");
-	OptionsMenu.addObject(DLG_OBJ_OPTION_TEXT, 128, 64, "Controls");
+	OptionsMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Graphics");
+	OptionsMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Audio");
+	OptionsMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Game");
+	OptionsMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Controls");
 
-	OptionsMenu.addObject(DLG_OBJ_OPTION_TEXT, 128, 80, "Back");
+	OptionsMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Back");
 
 	do
 	{
@@ -758,7 +758,7 @@ char configmenu(stCloneKeenPlus *pCKP)
 				break;
 			}
 			map_redraw();
-			title_bitmap->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y );
+			title_bitmap->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
 			OptionsMenu.setSDLSurface(g_pVideoDriver->FGLayerSurface);
 		}
 		OptionsMenu.processlogic();
@@ -777,82 +777,82 @@ char controlsmenu()
 	CBitmap *bm_title = g_pGfxEngine->getBitmap("TITLE");
 
 	x = (320/2)-(bm_title->getWidth()/2);
-	bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y );
+	bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
 
 	// Prepare the Games Menu
-	CDialog ControlsMenu(g_pVideoDriver->FGLayerSurface, 8,16,38,22);
+	CDialog ControlsMenu(g_pVideoDriver->FGLayerSurface, /*8, 16,*/ 38, 22);
 
 	// Use the standard Menu-Frame used in the old DOS-Games
 	ControlsMenu.setFrameTheme( DLG_THEME_OLDSCHOOL );
 
 	g_pInput->getEventName(IC_LEFT, 0, buf2);
 	buf = "P1 Left:   " + buf2;
-	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 24, buf);
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 1, buf);
 
 	g_pInput->getEventName(IC_UP, 0, buf2);
 	buf = "P1 Up:     " + buf2;
-	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 32, buf);
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 2, buf);
 
 	g_pInput->getEventName(IC_RIGHT, 0, buf2);
 	buf = "P1 Right:  " + buf2;
-	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 40, buf);
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 3, buf);
 
 	g_pInput->getEventName(IC_DOWN, 0, buf2);
 	buf = "P1 Down:   " + buf2;
-	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 48, buf);
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 4, buf);
 
 	g_pInput->getEventName(IC_JUMP, 0, buf2);
 	buf = "P1 Jump:   " + buf2;
-	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 56, buf);
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 5, buf);
 
 	g_pInput->getEventName(IC_POGO, 0, buf2);
 	buf = "P1 Pogo:   " + buf2;
-	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 64, buf);
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 6, buf);
 
 	g_pInput->getEventName(IC_FIRE, 0, buf2);
 	buf = "P1 Fire:   " + buf2;
-	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 72, buf);
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 7, buf);
 
 	g_pInput->getEventName(IC_STATUS, 0, buf2);
 	buf = "P1 Status: " + buf2;
-	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 80, buf);
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 8, buf);
 
 
 	g_pInput->getEventName(IC_LEFT, 1, buf2);
 	buf = "P2 Left:   " + buf2;
-	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 88, buf);
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 9, buf);
 
 	g_pInput->getEventName(IC_UP, 1, buf2);
 	buf = "P2 Up:     " + buf2;
-	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 96, buf);
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 10, buf);
 
 	g_pInput->getEventName(IC_RIGHT, 1, buf2);
 	buf = "P2 Right:  " + buf2;
-	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 104, buf);
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 11, buf);
 
 	g_pInput->getEventName(IC_DOWN, 1, buf2);
 	buf = "P2 Down:   " + buf2;
-	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 112, buf);
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 12, buf);
 
 	g_pInput->getEventName(IC_JUMP, 1, buf2);
 	buf = "P2 Jump:   " + buf2;
-	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 120, buf);
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 13, buf);
 
 	g_pInput->getEventName(IC_POGO, 1, buf2);
 	buf = "P2 Pogo:   " + buf2;
-	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 128, buf);
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 14, buf);
 
 	g_pInput->getEventName(IC_FIRE, 1, buf2);
 	buf = "P2 Fire:   " + buf2;
-	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 136, buf);
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 15, buf);
 
 	g_pInput->getEventName(IC_STATUS, 1, buf2);
 	buf = "P2 Status: " + buf2;
-	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 144, buf);
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 16, buf);
 
-	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 24, 152, "Reset Controls");
-	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 168, "Save and return");
-	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 16, 176, "Cancel");
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 2, 17, "Reset Controls");
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 19, "Save and return");
+	ControlsMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 20, "Cancel");
 
 	do
 	{

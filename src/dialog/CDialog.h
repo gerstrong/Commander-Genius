@@ -14,7 +14,7 @@
 
 class CDialog {
 public:
-	CDialog(SDL_Surface *DialogSurface, Uint16 x, Uint16 y, Uint16 w, Uint16 h);
+	CDialog(SDL_Surface *DialogSurface, /*Uint16 x, Uint16 y,*/ Uint16 w, Uint16 h);
 	virtual ~CDialog();
 
 	void setFrameTheme( Uint8 theme );
