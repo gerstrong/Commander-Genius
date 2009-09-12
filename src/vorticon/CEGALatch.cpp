@@ -46,14 +46,10 @@ CEGALatch::~CEGALatch() {
 	if(RawData) delete [] RawData, RawData = NULL;
 }
 
-bool CEGALatch::loadHead( char *data )
+bool CEGALatch::loadHead( char *data, short m_episode )
 {
 	Uint16 height, width;
 	char name[9];
-
-    const std::string default_names[] = { "TITLE", "IDLOGO", "F1HELP", "HIGHSCOR",
-  		  "NAME", "SCORE", "PARTS", "GAMEOVER", "AN", "PRESENT", "APOGEE", "KEENSHIP", "WINDON",
-  		  "WINDOFF", "ONEMOMEN", "OFAN", "PRODUCT", "IDSOFT" }; // in case the names are empty
 
 	data += m_bitmaptablelocation;
 
@@ -67,7 +63,23 @@ bool CEGALatch::loadHead( char *data )
 
 		name[8] = 0; // Ensure null-terminated!
 		if( name[0] != 0 ) g_pGfxEngine->Bitmap[i]->setName( name );
-		else g_pGfxEngine->Bitmap[i]->setName( default_names[i] );
+		else {
+			if (m_episode == 1) {
+				const std::string default_names[] = { "TITLE", "IDLOGO", "F1HELP", "HIGHSCOR",
+					"NAME", "SCORE", "PARTS", "GAMEOVER", "AN", "PRESENT", "APOGEE", "KEENSHIP", "WINDON",
+					"WINDOFF", "ONEMOMEN", "OFAN", "PRODUCT", "IDSOFT" }; // in case the names are empty
+							g_pGfxEngine->Bitmap[i]->setName( default_names[i] );
+			}else if (m_episode == 2) {
+				const std::string default_names[] = { "TITLE", "IDLOGO", "F1HELP", "HIGHSCOR",
+					"NAME", "SCORE", "CITIES", "GAMEOVER", "AN", "PRESENT", "APOGEE", "KEENSHIP", "WINDON",
+					"WINDOFF", "ONEMOMEN", "OFAN", "PRODUCT", "IDSOFT" }; // in case the names are empty
+							g_pGfxEngine->Bitmap[i]->setName( default_names[i] );
+			}else if (m_episode == 3) {
+				const std::string default_names[] = { "TITLE", "IDLOGO", "F1HELP", "HIGHSCOR",
+					"NAME", "SCORE", "GAMEOVER", "AN", "PRESENT", "APOGEE", "ONEMOMEN", "OFAN", "PRODUCT", "IDSOFT" }; // in case the names are empty
+							g_pGfxEngine->Bitmap[i]->setName( default_names[i] );
+			}
+		}
 
 		g_pGfxEngine->Bitmap[i]->setDimensions(width,height);
 	}

@@ -211,7 +211,7 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 88+8, 144, "Quit");
 
 	x = (320/2)-(bm_title->getWidth()/2);
-	bm_title->draw( sfc, x+scroll_x, scroll_y);
+	bm_title->draw( sfc, x+scroll_x, 1+scroll_y);
 
 	// Draw Help Text-Screen
 	if(pCKP->Control.levelcontrol.episode == 3)

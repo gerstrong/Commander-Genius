@@ -39,30 +39,33 @@ void CIntro::Render(stCloneKeenPlus *pCKP)
 	bm[5] = g_pGfxEngine->getBitmap("PRODUCT");
 
 	for(int j=0 ; j<6 ; j++)
+		if (j==0)
+		mid[j] = (320/2)-((bm[j]->getWidth()+4)/2);
+		else
 		mid[j] = (320/2)-(bm[j]->getWidth()/2);
 
 	g_pInput->flushAll();
 
 	do
 	{
-		bm[1]->draw( g_pVideoDriver->FGLayerSurface, mid[1], scrolly+9);
+		bm[1]->draw( g_pVideoDriver->FGLayerSurface, mid[1], scrolly+11);
 
-		if(timer<7) timer++;
+		if(timer<9) timer++;
 		else
 		{
 			timer=0;
-			if(scrolly>35)	scrolly--;
+			if(scrolly>42)	scrolly--;
 		}
 
-		bm[1]->draw( g_pVideoDriver->FGLayerSurface, mid[1], scrolly+9);
+		bm[1]->draw( g_pVideoDriver->FGLayerSurface, mid[1], scrolly+11);
 
-		if(scrolly<=35) // Show this, when scrolling is finished
+		if(scrolly<=42) // Show this, when scrolling is finished
 		{
 			bm[0]->draw( g_pVideoDriver->FGLayerSurface, mid[0], scrolly);
-			bm[2]->draw( g_pVideoDriver->FGLayerSurface, mid[2], scrolly+43);
-			bm[3]->draw( g_pVideoDriver->FGLayerSurface, mid[3], scrolly+56);
-			bm[4]->draw( g_pVideoDriver->FGLayerSurface, mid[4], scrolly+77);
-			bm[5]->draw( g_pVideoDriver->FGLayerSurface, mid[5], scrolly+120);
+			bm[2]->draw( g_pVideoDriver->FGLayerSurface, mid[2], scrolly+40);
+			bm[3]->draw( g_pVideoDriver->FGLayerSurface, mid[3], scrolly+52);
+			bm[4]->draw( g_pVideoDriver->FGLayerSurface, mid[4], scrolly+66);
+			bm[5]->draw( g_pVideoDriver->FGLayerSurface, mid[5], scrolly+108);
 		}
 
 		gamedo_AnimatedTiles();

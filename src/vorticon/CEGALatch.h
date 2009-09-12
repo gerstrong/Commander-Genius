@@ -25,7 +25,7 @@ public:
 			long bitmaplocation);
 	virtual ~CEGALatch();
 
-	bool loadHead(char *data );
+	bool loadHead(char *data, short m_episode );
 	bool loadData( std::string &m_path, short m_episode, bool compresseddata );
 
 	void applyMasks();
