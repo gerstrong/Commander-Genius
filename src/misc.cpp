@@ -681,7 +681,7 @@ int dlgX,dlgY,dlgW,dlgH;
   if (!saveslot) return;                // canceled
 
   /* save the game */
-  CSavedGame *SavedGame = new CSavedGame(&(pCKP->Control.levelcontrol));
+  CSavedGame *SavedGame = new CSavedGame(&(pCKP->Control.levelcontrol),pCKP);
   SavedGame->save(saveslot);
   delete SavedGame;
 

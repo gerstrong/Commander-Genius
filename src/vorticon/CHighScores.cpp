@@ -368,9 +368,10 @@ char CHighScores::loadHighScoreTable(void)
 	string sBuf;
 	std::string chBuf = itoa(Episode);
 
+	sBuf.append("${BIN}/../Resources/data/");
 	sBuf.append("games/");
 	sBuf.append(DataDirectory);
-	sBuf.append("highscoreep");
+	sBuf.append("/highscoreep");
 	sBuf.append(chBuf);
 	sBuf.append(".dat");
 
@@ -401,9 +402,10 @@ char CHighScores::saveHighScoreTable(void)
 
 	sprintf(chBuf,"%d",Episode);
 
+	sBuf.append("${BIN}/../Resources/data/");
 	sBuf.append("games/");
 	sBuf.append(DataDirectory);
-	sBuf.append("highscoreep");
+	sBuf.append("/highscoreep");
 	sBuf.append(chBuf);
 	sBuf.append(".dat");
 

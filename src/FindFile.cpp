@@ -511,6 +511,11 @@ size_t FileSize(const std::string& path)
 // Checks if the given path is absolute
 bool IsAbsolutePath(const std::string& path)
 {
+	if (path[0] == '$')
+		return true;
+		else
+		{
+
 #ifdef WIN32
 	// The path must start with a drive letter
 	if (path.size() < 2)
@@ -524,6 +529,7 @@ bool IsAbsolutePath(const std::string& path)
 
 	return path[0] == '/';
 #endif
+		}
 }
 
 
@@ -852,10 +858,13 @@ bool CanWriteToDir(const std::string& dir) {
 
 
 std::string GetAbsolutePath(const std::string& path) {
+std::string tmp1 = path;
+ReplaceFileVariables(tmp1);
+	
 #ifdef WIN32
 	std::string exactpath;
-	if (!GetExactFileName(path, exactpath))
-		exactpath = path;
+	if (!GetExactFileName(tmp1, exactpath))
+		exactpath = tmp1;
 
 	char buf[2048];
 	int len = GetFullPathName(Utf8ToSystemNative(exactpath).c_str(), sizeof(buf), buf, NULL);
@@ -863,10 +872,10 @@ std::string GetAbsolutePath(const std::string& path) {
 	if (len)
 		return SystemNativeToUtf8(buf);
 	else  // Failed
-		return path;
+		return tmp1;
 #else
 	std::string exactpath;
-	if(GetExactFileName(path, exactpath)) {
+	if(GetExactFileName(tmp1, exactpath)) {
 		char buf[PATH_MAX];
 		if(realpath(exactpath.c_str(), buf) != NULL) {
 			fix_markend(buf);
@@ -874,7 +883,7 @@ std::string GetAbsolutePath(const std::string& path) {
 		} else
 			return exactpath;
 	} else
-		return path;
+		return tmp1;
 #endif
 }
 

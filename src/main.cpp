@@ -368,7 +368,7 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
 		p_levelcontrol->usedhintmb = false;
 		if (loadinggame)
 		{
-		  CSavedGame *SavedGame = new CSavedGame(p_levelcontrol);
+		  CSavedGame *SavedGame = new CSavedGame(p_levelcontrol, pCKP);
 
 		  if ( !SavedGame->load(loadslot) )
 		  {

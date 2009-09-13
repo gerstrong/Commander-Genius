@@ -24,9 +24,11 @@ char sgrle_decompress(FILE *fp, unsigned char *ptr, unsigned long nbytes);
 
 void initgame(stLevelControl *p_levelcontrol);
 
-CSavedGame::CSavedGame(stLevelControl *lvlcontrol) {
+CSavedGame::CSavedGame(stLevelControl *lvlcontrol, stCloneKeenPlus *poutsideCKP) {
 	// TODO Auto-generated constructor stub
+	pCKP = poutsideCKP;
 	mp_levelcontrol = lvlcontrol;
+		DataDirectory = pCKP->Resources.GameDataDirectory;
 }
 
 CSavedGame::~CSavedGame() {
@@ -38,7 +40,10 @@ char CSavedGame::save(int slot)
 FILE *fp;
 std::string fname;
 
-	fname = "ep";
+	fname = "${BIN}/../Resources/data/";
+	fname += "games/";
+	fname += DataDirectory;
+	fname += "/ep";
 	fname += mp_levelcontrol->episode + '0';
 	fname += "save";
 	fname += slot+'0';
@@ -136,7 +141,10 @@ std::string fname;
 unsigned char episode, level, lives;
 unsigned int i;
 
-	fname = "ep";
+	fname = "${BIN}/../Resources/data/";
+	fname += "games/";
+	fname += DataDirectory;
+	fname += "/ep";
 	fname += mp_levelcontrol->episode + '0';
 	fname += "save";
 	fname += slot+'0';
