@@ -1,6 +1,4 @@
-# CMake file for development of OLX
-# this file is not intendent (yet) as a system for building final releases
-# use compile.sh instead
+# CMake file for development of Commander Genius (taken from OLX)
 
 cmake_minimum_required(VERSION 2.4)
 IF (${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION} GREATER 2.4)
@@ -9,18 +7,21 @@ IF (${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION} GREATER 2.4)
 	#include(PCHSupport_26.cmake)
 ENDIF (${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION} GREATER 2.4)
 
-SET(GP2X_WIZ 1)
-SET(GP2X_ONLY 1)
+#if the use did not write -DBUILD_TYPE=WIN32 for example
+IF(DEFINED BUILD_TYPE)
+	MESSAGE( "BUILD_TYPE = ${BUILD_TYPE}" )
+ELSE(DEFINED BUILD_TYPE)
+	MESSAGE( "BUILD_TYPE = not defined" )
+	SET(BUILD_TYPE LINUX)
+	MESSAGE( "WARNING: You did not specify the build type with the -DBUILD_TYPE= Parameter. LINUX has been choosen" )
+	MESSAGE( "Avialable Builds are: WIN32, LINUX, GP2X. For 64-bit Linux use -DLINUX64=yes" )
+ENDIF(DEFINED BUILD_TYPE)
 
 OPTION(DEBUG "enable debug build" No)
-OPTION(STLPORT "STLport support" No)
-OPTION(GCOREDUMPER "Google Coredumper support" No)
-#OPTION(PCH "Precompiled header (CMake 2.6 only)" No)
-OPTION(ADVASSERT "Advanced assert" No)
-
-OPTION(SDL "SDL support (probably will not work without)" Yes)
+OPTION(SDL "SDL support (will not work without)" Yes)
 OPTION(OPENGL "OpenGL support" Yes)
 OPTION(OGG "Ogg/Vorbis support" Yes)
+OPTION(LINUX64 "Linux 64-bit Build" No)
 
 IF (DEBUG)
 	SET(CMAKE_BUILD_TYPE Debug)
@@ -32,8 +33,9 @@ ENDIF (DEBUG)
 # Compilers and other specific variables can be found here:
 # http://www.cmake.org/Wiki/CMake_Useful_Variables
 
+# Compilation Flags
 IF(UNIX)
-	IF (GP2X_WIZ)
+	IF (BUILD_TYPE EQUAL GP2X)
 	set(CMAKE_SYSTEM_NAME Linux)
 		IF (GP2X_ONLY)
 			set(PREFIX /mythtv/media/devel/toolchains/open2x/gcc-4.1.1-glibc-2.3.6)
@@ -61,36 +63,19 @@ IF(UNIX)
 	ADD_DEFINITIONS(-fomit-frame-pointer)
 	include_directories(${PREFIX}/include)
 	link_directories(${PREFIX}/lib)
-
-	ENDIF(GP2X_WIZ)
-
-	IF(APPLE)
-	ELSE(APPLE)
-	ENDIF(APPLE)
-
-	IF (CYGWIN)
-	ELSE (CYGWIN)
-	ENDIF (CYGWIN)
+	ELSE(BUILD_TYPE EQUAL GP2X)
+	ENDIF(BUILD_TYPE EQUAL GP2X)
 ELSE(UNIX)
-	IF(WIN32)
-	ELSE(WIN32)
-	ENDIF(WIN32)
 ENDIF(UNIX)
 
-
 MESSAGE( "DEBUG = ${DEBUG}" )
-MESSAGE( "STLPORT = ${STLPORT}" )
-MESSAGE( "GCOREDUMPER = ${GCOREDUMPER}" )
 MESSAGE( "CMAKE_C_COMPILER = ${CMAKE_C_COMPILER}" )
 MESSAGE( "CMAKE_C_FLAGS = ${CMAKE_C_FLAGS}" )
 MESSAGE( "CMAKE_CXX_COMPILER = ${CMAKE_CXX_COMPILER}" )
 MESSAGE( "CMAKE_CXX_FLAGS = ${CMAKE_CXX_FLAGS}" )
-# commented out because only devs need these options anyway
-#MESSAGE( "PCH = ${PCH} (Precompiled header, CMake 2.6 only)" )
-#MESSAGE( "ADVASSERT = ${ADVASSERT}" )
-
 MESSAGE( "OPENGL = ${OPENGL}" )
 MESSAGE( "OGG = ${OGG}" )
+MESSAGE( "LINUX64 = ${LINUX64}" )
 
 EXEC_PROGRAM(mkdir ARGS -p ${CMAKE_CURRENT_SOURCE_DIR}/bin OUTPUT_VARIABLE NULL)
 
@@ -99,10 +84,6 @@ PROJECT(commandergenius)
 # main includes
 INCLUDE_DIRECTORIES(optional-includes/generated)
 INCLUDE_DIRECTORIES(src)
-
-IF(ADVASSERT)
-	INCLUDE_DIRECTORIES(optional-includes/advanced-assert)
-ENDIF(ADVASSERT)
 
 AUX_SOURCE_DIRECTORY(src ROOT_S)
 AUX_SOURCE_DIRECTORY(src/ai AI_S)
@@ -122,11 +103,13 @@ AUX_SOURCE_DIRECTORY(src/graphics GRAPHICS_S)
 SET(ALL_SRCS ${ROOT_S} ${AI_S} ${FILEIO_S} ${HQP_S} ${SCALE2X_S} ${SDL_S} ${SDLSOUND_S} ${SDLVIDEO_S} ${VORTICON_S} ${CINEMATICS_S} ${DIALOG_S} ${COMMON_S} ${GRAPHICS_S})
 
 IF (OGG)
+	INCLUDE_DIRECTORIES(/usr/include/vorbis)
 	ADD_DEFINITIONS(-DBUILD_WITH_OGG)
 	SET(ALL_SRCS ${ALL_SRCS} ${VORBIS_S})
 ENDIF (OGG)
 
 IF (SDL)
+	INCLUDE_DIRECTORIES(/usr/include/SDL)
 	ADD_DEFINITIONS(-DBUILD_SDL)
 ENDIF (SDL)
 
@@ -134,105 +117,57 @@ IF (OPENGL)
 	ADD_DEFINITIONS(-DUSE_OPENGL)
 ENDIF (OPENGL)
 
-IF (GCOREDUMPER)
-	INCLUDE_DIRECTORIES(libs/coredumper/src)
-	ADD_DEFINITIONS(-DGCOREDUMPER)
-	AUX_SOURCE_DIRECTORY(libs/coredumper/src COREDUMPER_SRCS)
-	SET(ALL_SRCS ${ALL_SRCS} ${COREDUMPER_SRCS})
-ENDIF (GCOREDUMPER)
-
-IF (STLPORT)
-	INCLUDE_DIRECTORIES(/usr/include/stlport)
-	ADD_DEFINITIONS(-D_FILE_OFFSET_BITS=64) # hm, don't know, at least it works for me (ppc32/amd32)
-# debugging stuff for STLport
-	ADD_DEFINITIONS(-D_STLP_DEBUG=1)
-	ADD_DEFINITIONS(-D_STLP_DEBUG_LEVEL=_STLP_STANDARD_DBG_LEVEL)
-	ADD_DEFINITIONS(-D_STLP_SHRED_BYTE=0xA3)
-	ADD_DEFINITIONS(-D_STLP_DEBUG_UNINITIALIZED=1)
-	ADD_DEFINITIONS(-D_STLP_DEBUG_ALLOC=1)
-ENDIF (STLPORT)
-
-
 IF(DEBUG)
-	ADD_DEFINITIONS(-DDEBUG=1)
+	ADD_DEFINITIONS(-DDEBUG)
 ENDIF(DEBUG)
 
-
-
 IF(WIN32)
-#	EXEC_PROGRAM("${CMAKE_BINARY_DIR}/svn_revision.exe" ARGS "${CMAKE_SOURCE_DIR}/optional-includes/generated/Version_generated.h" "${CMAKE_SOURCE_DIR}")
-#	ADD_DEFINITIONS(-D_CRT_SECURE_NO_DEPRECATE -DHAVE_BOOST -DZLIB_WIN32_NODLL)
 	SET(OPTIMIZE_COMPILER_FLAG /Ox /Ob2 /Oi /Ot /GL)
-	IF(DEBUG)
-		ADD_DEFINITIONS(-DUSE_DEFAULT_MSC_DELEAKER)
-	ELSE(DEBUG)
-		ADD_DEFINITIONS(${OPTIMIZE_COMPILER_FLAG})
-	ENDIF(DEBUG)
+	SET(BUILD_DIR Windows)
 ELSE(WIN32)
-	ADD_DEFINITIONS(-Wall)
+# Compilation for Linux
+	ADD_DEFINITIONS("-DTARGET_LNX -c -fmessage-length=0")
 
-#	EXEC_PROGRAM(sh ARGS ${CMAKE_CURRENT_SOURCE_DIR}/get_version.sh OUTPUT_VARIABLE OLXVER)
-#	string(REGEX REPLACE "[\r\n]" " " OLXVER "${OLXVER}")
-#	MESSAGE( "OLX_VERSION = ${OLXVER}" )
-	# Escaping backslashes overkill, yay.
-#	EXEC_PROGRAM(sh ARGS -c echo\\ \\\\\#define\\ LX_VERSION\\ \\\\\\"${OLXVER}\\\\\\" > optional-includes/generated/Version_generated.h OUTPUT_VARIABLE DUMMY)
+	IF(LINUX64)
+		SET(BUILD_DIR Linux64)
+	ELSE(LINUX64)
+		LINK_DIRECTORIES(/usr/lib32)
+		SET(BUILD_DIR Linux32)
+	ENDIF(LINUX64)
 
-	IF(SDL)
-		EXEC_PROGRAM(${PREFIX}/bin/sdl-config ARGS --cflags OUTPUT_VARIABLE SDLCFLAGS)
-		string(REGEX REPLACE "[\r\n]" " " SDLCFLAGS "${SDLCFLAGS}")
-		ADD_DEFINITIONS(${SDLCFLAGS})
-	ENDIF(SDL)
-
-	ADD_DEFINITIONS("-pthread")
 	SET(OPTIMIZE_COMPILER_FLAG -O3)
 ENDIF(WIN32)
 
+# Executable definition
 ADD_EXECUTABLE(commandergenius ${ALL_SRCS})
 
-#IF(PCH)
-#	EXEC_PROGRAM(./update_precompiled_header.sh OUTPUT_VARIABLE NULL)
-#	ADD_PRECOMPILED_HEADER(openlierox include/PrecompiledHeader.hpp 1)
-#ENDIF(PCH)
-
+# Linking part
 IF(SDL)
+	TARGET_LINK_LIBRARIES(commandergenius SDL)
+ENDIF(SDL)
+
 IF(OPENGL)
 	TARGET_LINK_LIBRARIES(commandergenius GL)
-ELSE(OPENGL)
-	TARGET_LINK_LIBRARIES(commandergenius SDL)
 ENDIF(OPENGL)
-ENDIF(SDL)
+
+IF(OGG)
+	TARGET_LINK_LIBRARIES(commandergenius vorbisfile vorbis)
+ENDIF(OGG)
 
 IF(WIN32)
 	TARGET_LINK_LIBRARIES(commandergenius wsock32 wininet dbghelp
 				"${CMAKE_SOURCE_DIR}/build/msvc/libs/SDLmain.lib"
 				"${CMAKE_SOURCE_DIR}/build/msvc/libs/bgd.lib")
-
-	SET_TARGET_PROPERTIES(commandergenius PROPERTIES OUTPUT_NAME "../../../bin/Commander Genius")
-	
-	# Add debug info to release build in linker flags
-	SET_TARGET_PROPERTIES(openlierox PROPERTIES LINK_FLAGS "${LINK_FLAGS} 
-		/LTCG
-		/DEBUG
-		/MAP:\"${CMAKE_SOURCE_DIR}/bin/CommanderGenius.map\"
-		/MAPINFO:EXPORTS
-		/NODEFAULTLIB:\"LIBC\"
-		/INCREMENTAL:NO")
 ELSE(WIN32)
-	IF(SDL)
-		EXEC_PROGRAM(${PREFIX}/bin/sdl-config ARGS --libs OUTPUT_VARIABLE SDLLIBS)
-		STRING(REGEX REPLACE "[\r\n]" " " SDLLIBS "${SDLLIBS}")
-
-		TARGET_LINK_LIBRARIES(commandergenius ${SDLLIBS})
-	ENDIF(SDL)
-
-	IF(OGG)
-		TARGET_LINK_LIBRARIES(commandergenius ogg vorbis vorbisfile)
-	ENDIF(OGG)
-
-	IF (STLPORT)
-		TARGET_LINK_LIBRARIES(commandergenius stlportstlg)
-	ENDIF (STLPORT)
-
-	SET_TARGET_PROPERTIES(commandergenius PROPERTIES OUTPUT_NAME bin/commandergenius)
-
 ENDIF(WIN32)
+
+MESSAGE( "BUILD_DIR = ${BUILD_DIR}" )
+
+SET_TARGET_PROPERTIES(commandergenius PROPERTIES OUTPUT_NAME "build/${BUILD_DIR}/CGenius")
+
+# Aditional flags
+IF(LINUX AND NOT LINUX64)
+	SET_TARGET_PROPERTIES(commandergenius PROPERTIES LINKFLAGS m32)
+ENDIF(LINUX AND NOT LINUX64)
+
+
