@@ -20,9 +20,7 @@
 #include "CLogFile.h"
 char otherplayer;
 
-// TODO: seperate status boxes for the different players
 // TODO: Your Ship Needs These Parts in multiplayer
-
 int playerbaseframes[MAX_PLAYERS] = {0,0,0,0,0,0,0,0};
 
 unsigned int max_scroll_x, max_scroll_y;
@@ -1103,6 +1101,8 @@ void procgoodie(int t, int mpx, int mpy, int theplayer, stCloneKeenPlus *pCKP)
     case 24:
         endlevel(0, &(pCKP->Control.levelcontrol) );
         pCKP->Control.levelcontrol.tobonuslevel = 1;
+        pCKP->Control.levelcontrol.command = LVLC_CHANGE_LEVEL;
+        pCKP->Control.levelcontrol.chglevelto = WM_MAP_NUM;
     break;
 
     case 22: // Game info block (Youseein your mind or vorticon elder...)
