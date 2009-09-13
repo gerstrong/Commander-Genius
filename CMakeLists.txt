@@ -1,4 +1,6 @@
 # CMake file for development of Commander Genius (taken from OLX)
+# This CMake file is used under Linux normally. If someone wants 
+# to adapt windows, he is welcome, to do so.
 
 cmake_minimum_required(VERSION 2.4)
 IF (${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION} GREATER 2.4)
@@ -77,7 +79,13 @@ MESSAGE( "OPENGL = ${OPENGL}" )
 MESSAGE( "OGG = ${OGG}" )
 MESSAGE( "LINUX64 = ${LINUX64}" )
 
-EXEC_PROGRAM(mkdir ARGS -p ${CMAKE_CURRENT_SOURCE_DIR}/bin OUTPUT_VARIABLE NULL)
+# Directory creation of all the builds
+EXEC_PROGRAM(mkdir ARGS -p ${CMAKE_CURRENT_SOURCE_DIR}/build OUTPUT_VARIABLE NULL)
+EXEC_PROGRAM(mkdir ARGS -p ${CMAKE_CURRENT_SOURCE_DIR}/build/Linux32 OUTPUT_VARIABLE NULL)
+EXEC_PROGRAM(mkdir ARGS -p ${CMAKE_CURRENT_SOURCE_DIR}/build/Linux64 OUTPUT_VARIABLE NULL)
+EXEC_PROGRAM(mkdir ARGS -p ${CMAKE_CURRENT_SOURCE_DIR}/build/Windows OUTPUT_VARIABLE NULL)
+EXEC_PROGRAM(mkdir ARGS -p ${CMAKE_CURRENT_SOURCE_DIR}/build/Wiz OUTPUT_VARIABLE NULL)
+EXEC_PROGRAM(mkdir ARGS -p ${CMAKE_CURRENT_SOURCE_DIR}/build/Xcode OUTPUT_VARIABLE NULL)
 
 PROJECT(commandergenius)
 
@@ -121,29 +129,33 @@ IF(DEBUG)
 	ADD_DEFINITIONS(-DDEBUG)
 ENDIF(DEBUG)
 
-IF(WIN32)
-	SET(OPTIMIZE_COMPILER_FLAG /Ox /Ob2 /Oi /Ot /GL)
-	SET(BUILD_DIR Windows)
-ELSE(WIN32)
-# Compilation for Linux
+IF(UNIX)
+# Compilation under Linux
 	ADD_DEFINITIONS("-DTARGET_LNX -c -fmessage-length=0")
 
 	IF(LINUX64)
 		SET(BUILD_DIR Linux64)
 	ELSE(LINUX64)
-		LINK_DIRECTORIES(/usr/lib32)
+		ADD_DEFINITIONS(-D__i386__)
+		ADD_DEFINITIONS(-m32)
 		SET(BUILD_DIR Linux32)
 	ENDIF(LINUX64)
 
 	SET(OPTIMIZE_COMPILER_FLAG -O3)
-ENDIF(WIN32)
+ENDIF(UNIX)
 
 # Executable definition
 ADD_EXECUTABLE(commandergenius ${ALL_SRCS})
 
-# Linking part
+# Linking part under Linux
 IF(SDL)
-	TARGET_LINK_LIBRARIES(commandergenius SDL)
+	IF(LINUX64)
+		TARGET_LINK_LIBRARIES(commandergenius SDL)
+	ELSE(LINUX64)
+		TARGET_LINK_LIBRARIES(commandergenius SDL-1.2)
+		SET_TARGET_PROPERTIES(commandergenius PROPERTIES LINK_FLAGS -L/usr/lib32)
+		SET_TARGET_PROPERTIES(commandergenius PROPERTIES LINK_FLAGS -m32)
+	ENDIF(LINUX64)
 ENDIF(SDL)
 
 IF(OPENGL)
@@ -154,20 +166,7 @@ IF(OGG)
 	TARGET_LINK_LIBRARIES(commandergenius vorbisfile vorbis)
 ENDIF(OGG)
 
-IF(WIN32)
-	TARGET_LINK_LIBRARIES(commandergenius wsock32 wininet dbghelp
-				"${CMAKE_SOURCE_DIR}/build/msvc/libs/SDLmain.lib"
-				"${CMAKE_SOURCE_DIR}/build/msvc/libs/bgd.lib")
-ELSE(WIN32)
-ENDIF(WIN32)
-
 MESSAGE( "BUILD_DIR = ${BUILD_DIR}" )
 
 SET_TARGET_PROPERTIES(commandergenius PROPERTIES OUTPUT_NAME "build/${BUILD_DIR}/CGenius")
-
-# Aditional flags
-IF(LINUX AND NOT LINUX64)
-	SET_TARGET_PROPERTIES(commandergenius PROPERTIES LINKFLAGS m32)
-ENDIF(LINUX AND NOT LINUX64)
-
 
