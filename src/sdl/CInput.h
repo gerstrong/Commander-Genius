@@ -77,7 +77,6 @@ KNUM9,
 KTAB,
 
 KBCKSPCE,
-KLALT,
 
 // New keys
 KA,
@@ -106,7 +105,7 @@ KW,
 KX,
 KY,
 KZ,
-KLSHIFT,
+KSHIFT,
 KPGUP,
 KPGDN
 };

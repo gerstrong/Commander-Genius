@@ -549,7 +549,11 @@ top: ;
      dlgH = GetStringAttribute("WhichSlotLoad", "HEIGHT");
      map_redraw();
      x = (320/2)-(g_pGfxEngine->getBitmap("TITLE")->getWidth()/2);
-     g_pGfxEngine->getBitmap("TITLE")->draw( g_pVideoDriver->getScrollSurface(), x+scrollx_buf, scrolly_buf);
+     g_pGfxEngine->getBitmap("TITLE")->draw( g_pVideoDriver->getScrollSurface(), x+scrollx_buf, scrolly_buf+1);
+	 if(pCKP->Control.levelcontrol.episode == 3)
+	  g_pGfxEngine->getBitmap("F1HELP")->draw( g_pVideoDriver->getScrollSurface(), 128+scrollx_buf, 181+scrolly_buf);
+	 else
+	  g_pGfxEngine->getBitmap("F1HELP")->draw( g_pVideoDriver->getScrollSurface(), 96+scrollx_buf, 181+scrolly_buf);
   }
 
   saveslot = 0;
@@ -577,7 +581,9 @@ top: ;
 	gamedo_render_eraseobjects();
 
 	g_pInput->pollEvents();
-  } while(!g_pInput->getPressedKey(KQUIT) && !saveslot);
+	  if (g_pInput->getPressedKey(KQUIT))
+		  return 0;
+  } while(!saveslot);
 
   /* check if the selected save file exists */
 	fname = "ep";
@@ -899,7 +905,7 @@ void showF1HelpText(int episode, std::string DataDirectory)
    if(episode==1)
    {
 	   // We suppose that we are using version 131. Maybe it must be extended
-		   std::string filename = "data/" + DataDirectory;
+		   std::string filename = "games/" + DataDirectory;
 		   if(DataDirectory != "")
 			   filename += "/";
 

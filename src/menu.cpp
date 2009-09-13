@@ -65,7 +65,7 @@ short loadResourcesforStartMenu(stCloneKeenPlus *pCKP, CGame *Game)
 {
 	std::string line;
 
-	std::ifstream gamescfg; OpenGameFileR(gamescfg, "data/games.cfg");
+	std::ifstream gamescfg; OpenGameFileR(gamescfg, "games/games.cfg");
 
     if (gamescfg.is_open())
 	{
@@ -102,16 +102,16 @@ short loadResourcesforStartMenu(stCloneKeenPlus *pCKP, CGame *Game)
 	}
     else
     {
-    	g_pLogFile->ftextOut(RED,"loadResourcesforStartMenu(): \"data/games.cfg\" could not be read! Assure, that the directory can be accessed.");
+    	g_pLogFile->ftextOut(RED,"loadResourcesforStartMenu(): \"games/games.cfg\" could not be read! Assure, that the directory can be accessed.");
     	return -1;
     }
 
 	if(  pCKP->numGames >= 20 )
-		g_pLogFile->ftextOut(PURPLE,"parseTheGames(): Warning! Number of games limit in \"data/games.cfg\" reached.");
+		g_pLogFile->ftextOut(PURPLE,"parseTheGames(): Warning! Number of games limit in \"games/games.cfg\" reached.");
 
 	if(pCKP->numGames == 0)
 	{
-		g_pLogFile->ftextOut(PURPLE,"parseTheGames(): In the file \"data/games.cfg\" no games were found.");
+		g_pLogFile->ftextOut(PURPLE,"parseTheGames(): In the file \"games/games.cfg\" no games were found.");
 		return -1;
 	}
 
@@ -251,6 +251,10 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 
     	x = (320/2)-(bm_title->getWidth()/2);
     	bm_title->draw( sfc, x+scroll_x, scroll_y+1);
+		if(pCKP->Control.levelcontrol.episode == 3)
+			bm_f1help->draw( sfc, 128+scroll_x, 181+scroll_y);
+		else
+			bm_f1help->draw( sfc, 96+scroll_x, 181+scroll_y);
     }
     else if (selection==MAINMNU_OPTIONS)
     {
@@ -705,13 +709,18 @@ char configmenu(stCloneKeenPlus *pCKP)
 {
 	int selection;
 	int x;
-	CBitmap *title_bitmap = g_pGfxEngine->getBitmap("TITLE");
+	CBitmap *title_bitmap = g_pGfxEngine->getBitmap("TITLE"), *bm_f1help = g_pGfxEngine->getBitmap("F1HELP");
 
 	// Load the Title Bitmap
 
 	x = (320/2)-(title_bitmap->getWidth()/2);
-
 	title_bitmap->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
+	
+	// Draw Help Text-Screen
+	if(pCKP->Control.levelcontrol.episode == 3)
+		bm_f1help->draw( g_pVideoDriver->getScrollSurface(), 128+scroll_x, 181+scroll_y);
+	else
+		bm_f1help->draw( g_pVideoDriver->getScrollSurface(), 96+scroll_x, 181+scroll_y);
 
 	// Prepare the Games Menu
 	CDialog OptionsMenu(g_pVideoDriver->FGLayerSurface, /*120, 32,*/ 14, 8);
@@ -759,6 +768,10 @@ char configmenu(stCloneKeenPlus *pCKP)
 			}
 			map_redraw();
 			title_bitmap->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
+			if(pCKP->Control.levelcontrol.episode == 3)
+				bm_f1help->draw( g_pVideoDriver->getScrollSurface(), 128+scroll_x, 181+scroll_y);
+			else
+				bm_f1help->draw( g_pVideoDriver->getScrollSurface(), 96+scroll_x, 181+scroll_y);
 			OptionsMenu.setSDLSurface(g_pVideoDriver->FGLayerSurface);
 		}
 		OptionsMenu.processlogic();

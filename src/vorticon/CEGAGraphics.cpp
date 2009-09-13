@@ -69,7 +69,7 @@ bool CEGAGraphics::loadData()
 		buf = "egahead.ck" + itoa(m_episode);
 	else
 		buf = m_path + "/egahead.ck" + itoa(m_episode);
-	std::ifstream HeadFile; OpenGameFileR(HeadFile, "data/" + buf, ios::binary);
+	std::ifstream HeadFile; OpenGameFileR(HeadFile, "games/" + buf, ios::binary);
 
 	if(!HeadFile)
 		return false;
@@ -129,7 +129,7 @@ bool CEGAGraphics::loadData()
 		buf = "egasprit.ck" + itoa(m_episode);
 	else
 		buf = m_path + "/egasprit.ck" + itoa(m_episode);
-    m_Sprit->loadData("data/" + buf,(compressed>>1));
+    m_Sprit->loadData("games/" + buf,(compressed>>1));
 
     delete[] data;
 

@@ -130,7 +130,7 @@
 		6350FA44104490B600A992D5 /* EGASPRIT.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7A71044797300A992D5 /* EGASPRIT.CK1 */; };
 		6350FA45104490B600A992D5 /* ENDTEXT.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7A81044797300A992D5 /* ENDTEXT.CK1 */; };
 		6350FA46104490B600A992D5 /* FINALE.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7A91044797300A992D5 /* FINALE.CK1 */; };
-		6350FA47104490B600A992D5 /* games.cfg in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7AA1044797300A992D5 /* games.cfg */; };
+		6350FA47104490B600A992D5 /* games.cfg in Copy Game Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7AA1044797300A992D5 /* games.cfg */; };
 		6350FA48104490B600A992D5 /* HELPTEXT.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7AB1044797300A992D5 /* HELPTEXT.CK1 */; };
 		6350FA49104490B600A992D5 /* KEEN1.EXE in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7AC1044797300A992D5 /* KEEN1.EXE */; };
 		6350FA4A104490B600A992D5 /* LEVEL01.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7AD1044797300A992D5 /* LEVEL01.CK1 */; };
@@ -156,7 +156,7 @@
 		6350FA5E104490B600A992D5 /* PREVIEW2.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C11044797300A992D5 /* PREVIEW2.CK1 */; };
 		6350FA5F104490B600A992D5 /* PREVIEW3.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C21044797300A992D5 /* PREVIEW3.CK1 */; };
 		6350FA60104490B600A992D5 /* PREVIEWS.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C31044797300A992D5 /* PREVIEWS.CK1 */; };
-		6350FA61104490B600A992D5 /* renlower.sh in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C41044797300A992D5 /* renlower.sh */; };
+		6350FA61104490B600A992D5 /* renlower.sh in Copy Game Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7C41044797300A992D5 /* renlower.sh */; };
 		6350FA62104490B600A992D5 /* SOUNDS.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C51044797300A992D5 /* SOUNDS.CK1 */; };
 		6350FA63104490B600A992D5 /* STORYTXT.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C61044797300A992D5 /* STORYTXT.CK1 */; };
 		6350FA64104490B600A992D5 /* VENDOR.DOC in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C71044797300A992D5 /* VENDOR.DOC */; };
@@ -221,7 +221,7 @@
 		6350FA7E104490F300A992D5 /* Copy Keen 1 Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = data/data;
+			dstPath = data/games/EP1;
 			dstSubfolderSpec = 7;
 			files = (
 				6350FA42104490B600A992D5 /* EGAHEAD.CK1 in Copy Keen 1 Files */,
@@ -229,7 +229,6 @@
 				6350FA44104490B600A992D5 /* EGASPRIT.CK1 in Copy Keen 1 Files */,
 				6350FA45104490B600A992D5 /* ENDTEXT.CK1 in Copy Keen 1 Files */,
 				6350FA46104490B600A992D5 /* FINALE.CK1 in Copy Keen 1 Files */,
-				6350FA47104490B600A992D5 /* games.cfg in Copy Keen 1 Files */,
 				6350FA48104490B600A992D5 /* HELPTEXT.CK1 in Copy Keen 1 Files */,
 				6350FA49104490B600A992D5 /* KEEN1.EXE in Copy Keen 1 Files */,
 				6350FA4A104490B600A992D5 /* LEVEL01.CK1 in Copy Keen 1 Files */,
@@ -255,7 +254,6 @@
 				6350FA5E104490B600A992D5 /* PREVIEW2.CK1 in Copy Keen 1 Files */,
 				6350FA5F104490B600A992D5 /* PREVIEW3.CK1 in Copy Keen 1 Files */,
 				6350FA60104490B600A992D5 /* PREVIEWS.CK1 in Copy Keen 1 Files */,
-				6350FA61104490B600A992D5 /* renlower.sh in Copy Keen 1 Files */,
 				6350FA62104490B600A992D5 /* SOUNDS.CK1 in Copy Keen 1 Files */,
 				6350FA63104490B600A992D5 /* STORYTXT.CK1 in Copy Keen 1 Files */,
 				6350FA64104490B600A992D5 /* VENDOR.DOC in Copy Keen 1 Files */,
@@ -274,6 +272,18 @@
 				6350FB3910449E2B00A992D5 /* readme.txt in Copy Text Files */,
 			);
 			name = "Copy Text Files";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		637F48BC105C96AF00DE486C /* Copy Game Data Files */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = data/games;
+			dstSubfolderSpec = 7;
+			files = (
+				6350FA47104490B600A992D5 /* games.cfg in Copy Game Data Files */,
+				6350FA61104490B600A992D5 /* renlower.sh in Copy Game Data Files */,
+			);
+			name = "Copy Game Data Files";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -1010,7 +1020,7 @@
 			isa = PBXGroup;
 			children = (
 				6350F7A31044797300A992D5 /* controls.dat */,
-				6350F7A41044797300A992D5 /* data */,
+				6350F7A41044797300A992D5 /* games */,
 				6350F7C81044797300A992D5 /* demo.dat */,
 				6350F7CA1044797300A992D5 /* ep1demo1.dat */,
 				6350F7CB1044797300A992D5 /* ep1demo2.dat */,
@@ -1030,15 +1040,21 @@
 			path = ../../data;
 			sourceTree = "<group>";
 		};
-		6350F7A41044797300A992D5 /* data */ = {
+		6350F7A41044797300A992D5 /* games */ = {
+			isa = PBXGroup;
+			children = (
+				637F48C8105C97D900DE486C /* EP1 */,
+				6350F7AA1044797300A992D5 /* games.cfg */,
+				6350F7C41044797300A992D5 /* renlower.sh */,
+			);
+			includeInIndex = 1;
+			path = games;
+			sourceTree = "<group>";
+		};
+		637F48C8105C97D900DE486C /* EP1 */ = {
 			isa = PBXGroup;
 			children = (
 				6350F7A51044797300A992D5 /* EGAHEAD.CK1 */,
-				6350F7A61044797300A992D5 /* EGALATCH.CK1 */,
-				6350F7A71044797300A992D5 /* EGASPRIT.CK1 */,
-				6350F7A81044797300A992D5 /* ENDTEXT.CK1 */,
-				6350F7A91044797300A992D5 /* FINALE.CK1 */,
-				6350F7AA1044797300A992D5 /* games.cfg */,
 				6350F7AB1044797300A992D5 /* HELPTEXT.CK1 */,
 				6350F7AC1044797300A992D5 /* KEEN1.EXE */,
 				6350F7AD1044797300A992D5 /* LEVEL01.CK1 */,
@@ -1064,13 +1080,15 @@
 				6350F7C11044797300A992D5 /* PREVIEW2.CK1 */,
 				6350F7C21044797300A992D5 /* PREVIEW3.CK1 */,
 				6350F7C31044797300A992D5 /* PREVIEWS.CK1 */,
-				6350F7C41044797300A992D5 /* renlower.sh */,
+				6350F7A61044797300A992D5 /* EGALATCH.CK1 */,
+				6350F7A71044797300A992D5 /* EGASPRIT.CK1 */,
+				6350F7A81044797300A992D5 /* ENDTEXT.CK1 */,
+				6350F7A91044797300A992D5 /* FINALE.CK1 */,
 				6350F7C51044797300A992D5 /* SOUNDS.CK1 */,
 				6350F7C61044797300A992D5 /* STORYTXT.CK1 */,
 				6350F7C71044797300A992D5 /* VENDOR.DOC */,
 			);
-			includeInIndex = 1;
-			path = data;
+			path = EP1;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1082,6 +1100,7 @@
 			buildPhases = (
 				235755D1101A5E5900275638 /* Resources */,
 				6350FA7E104490F300A992D5 /* Copy Keen 1 Files */,
+				637F48BC105C96AF00DE486C /* Copy Game Data Files */,
 				6350FA7D104490F300A992D5 /* Copy Data Files */,
 				6350FB5010449E3C00A992D5 /* Copy Text Files */,
 				235755D4101A5E5900275638 /* Sources */,

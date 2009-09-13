@@ -71,7 +71,7 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 							g_pGfxEngine->Bitmap[i]->setName( default_names[i] );
 			}else if (m_episode == 2) {
 				const std::string default_names[] = { "TITLE", "IDLOGO", "F1HELP", "HIGHSCOR",
-					"NAME", "SCORE", "CITIES", "GAMEOVER", "AN", "PRESENT", "APOGEE", "KEENSHIP", "WINDON",
+					"NAME", "SCORE", "SAVED", "GAMEOVER", "AN", "PRESENT", "APOGEE", "KEENSHIP", "WINDON",
 					"WINDOFF", "ONEMOMEN", "OFAN", "PRODUCT", "IDSOFT" }; // in case the names are empty
 							g_pGfxEngine->Bitmap[i]->setName( default_names[i] );
 			}else if (m_episode == 3) {
@@ -95,8 +95,8 @@ bool CEGALatch::loadData( std::string &m_path, short m_episode, bool compressedd
     Uint16 width, height;
     SDL_Surface *sfc;
 
-	if(m_path == "") filename = "data/egalatch.ck" + itoa(m_episode);
-	else filename = "data/" + m_path + "/egalatch.ck" + itoa(m_episode);
+	if(m_path == "") filename = "games/egalatch.ck" + itoa(m_episode);
+	else filename = "games/" + m_path + "/egalatch.ck" + itoa(m_episode);
 
 	FILE* latchfile = OpenGameFile(filename.c_str(),"rb");
 
@@ -213,8 +213,8 @@ bool CEGALatch::loadData( std::string &m_path, short m_episode, bool compressedd
      if(SDL_MUSTLOCK(sfc))	SDL_UnlockSurface(sfc);
 
      // Load Hires, VGA, SVGA Tiles into the tilemap
-     if(m_path == "") filename = "data/ck" + itoa(m_episode) + "tiles.bmp";
-     else filename = "data/" + m_path + "/ck" + itoa(m_episode) + "tiles.bmp";
+     if(m_path == "") filename = "games/ck" + itoa(m_episode) + "tiles.bmp";
+     else filename = "games/" + m_path + "/ck" + itoa(m_episode) + "tiles.bmp";
      if(Tilemap->loadHiresTile(filename))
     	 g_pLogFile->textOut(GREEN, "Hi-res Bitmap for Tiles was loaded successfully!");
 

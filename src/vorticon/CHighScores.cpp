@@ -61,11 +61,11 @@ char CHighScores::showHighScore(void)
 	unsigned char i;
 	int x1,y1;
 	int x2,y2;
-	int x3;
+	int x3,y3;
 	int x4;
 	CBitmap *bm_highscore = g_pGfxEngine->getBitmap("HIGHSCOR");
 	CBitmap *bm_name = g_pGfxEngine->getBitmap("NAME");
-	CBitmap *bm_extra;
+	CBitmap *bm_extra = 0;
 	CBitmap *bm_score = g_pGfxEngine->getBitmap("SCORE");
 
 	loadHighScoreTable();
@@ -86,12 +86,12 @@ char CHighScores::showHighScore(void)
 	}
 
     if(Episode == 2) bm_extra = g_pGfxEngine->getBitmap("SAVED");
-    else		     bm_extra = g_pGfxEngine->getBitmap("PARTS");
+    else if(Episode == 1) bm_extra = g_pGfxEngine->getBitmap("PARTS");
 
     x1 = 160-(bm_highscore->getWidth()/2);
-    y1 = 8;    x2 = 40;
-    y2 = (Episode == 2) ? 34 : 42;    x3 = 178-(bm_score->getWidth()/2);
-    x4 = 230;
+    y1 = 6;    x2 = (Episode == 3) ? 69 : 40;
+    y2 = 42;  x3 = (Episode == 3) ? 207 : 154;
+    y3 = (Episode == 2) ? 38 : 42;	x4 = 232;
 
 	// This cycle only serves as a key which must be pressed for now
 	do
@@ -99,13 +99,24 @@ char CHighScores::showHighScore(void)
 	    bm_highscore->draw( m_sfc, x1, y1 );
 	    bm_name->draw( m_sfc, x2, y2 );
 	    bm_score->draw( m_sfc, x3, y2);
-	    if( bm_extra ) bm_extra->draw( m_sfc, x4, y2);
+	    if( bm_extra ) bm_extra->draw( m_sfc, x4, y3);
 
 		// Print the labels
+		if(pCKP->Control.levelcontrol.episode == 3)
+		{
+			for( i=0 ; i<7 ; i++ )
+			{
+				g_pGfxEngine->Font->drawFont(m_sfc, Name[i],69,64+(i<<4), LETTER_TYPE_RED);
+				g_pGfxEngine->Font->drawFont(m_sfc, Score[i],253-(strlen(Score[i])<<3),64+(i<<4), LETTER_TYPE_RED);
+			}
+		}
+		else
+		{
 		for( i=0 ; i<7 ; i++ )
 		{
 			g_pGfxEngine->Font->drawFont(m_sfc, Name[i],40,64+(i<<4), LETTER_TYPE_RED);
 			g_pGfxEngine->Font->drawFont(m_sfc, Score[i],200-(strlen(Score[i])<<3),64+(i<<4), LETTER_TYPE_RED);
+		}
 		}
 
 		// Here it must be split up into Episodes 1, 2 and 3.
@@ -127,7 +138,7 @@ char CHighScores::showHighScore(void)
 		else if(pCKP->Control.levelcontrol.episode == 2)
 		{
 			for( i=0 ; i<7 ; i++ )
-				g_pGfxEngine->Font->drawFont(m_sfc, itoa(Cities[i]) ,250,64+(i<<4), LETTER_TYPE_RED);
+				g_pGfxEngine->Font->drawFont(m_sfc, itoa(Cities[i]) ,252,64+(i<<4), LETTER_TYPE_RED);
 		}
 
 		gamedo_AnimatedTiles();
@@ -148,9 +159,9 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 	int num;
 	int x1,y1;
 	int x2,y2;
-	int x3;
+	int x3,y3;
 	int x4;
-	CBitmap *bm_highscore, *bm_score, *bm_extra, *bm_name;
+	CBitmap *bm_highscore, *bm_score, *bm_extra = 0, *bm_name;
 
 	loadHighScoreTable();
 
@@ -228,14 +239,15 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 
     if(Episode == 2)
     	bm_extra = g_pGfxEngine->getBitmap("SAVED");
-    else
+    else if(Episode == 1)
     	bm_extra = g_pGfxEngine->getBitmap("PARTS");
 
     x1 = 160-(bm_highscore->getWidth()/2);
-    y1 = 8;    x2 = 40;
-    y2 = (Episode == 2) ? 34 : 42;
-    x3 = 178-(bm_score->getWidth()/2);
-    x4 = 230;
+    y1 = 6;    x2 = (Episode == 3) ? 69 : 40;
+	y2 = 42;
+    y3 = (Episode == 2) ? 38 : 42;
+    x3 = (Episode == 3) ? 207 : 154;
+    x4 = 232;
 
     memset(buf,0,256);
 
@@ -247,18 +259,26 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 	    bm_highscore->draw( m_sfc, x1, y1 );
 	    bm_name->draw( m_sfc, x2, y2 );
 	    bm_score->draw( m_sfc, x3, y2);
-	    bm_extra->draw( m_sfc, x4, y2);
+	    if( bm_extra ) bm_extra->draw( m_sfc, x4, y3);
 
 		// Blit all the text and images
-		for(i=KA ; i<KZ ; i++)
+		for(i=KA ; i<=KZ ; i++)
 		{
-			if(g_pInput->getPressedKey(i))
+			if (g_pInput->getHoldedKey(KSHIFT) && g_pInput->getPressedKey(i) && WrittenName.length() < 13)
 			{
-				sprintf(buf,"%c",'A' + i - KA);
-				WrittenName.append(buf);
-				copy(WrittenName.data(),WrittenName.data()+WrittenName.length(),Name[place]);
-				WrittenName.copy(buf,WrittenName.length(),0);
+					sprintf(buf,"%c",'A' + i - KA);
+					WrittenName.append(buf);
+					copy(WrittenName.data(),WrittenName.data()+WrittenName.length(),Name[place]);
+					WrittenName.copy(buf,WrittenName.length(),0);
 			}
+			else if(g_pInput->getPressedKey(i) && WrittenName.length() < 13)
+			{
+					sprintf(buf,"%c",'a' + i - KA);
+					WrittenName.append(buf);
+					copy(WrittenName.data(),WrittenName.data()+WrittenName.length(),Name[place]);
+					WrittenName.copy(buf,WrittenName.length(),0);
+			}
+
 		}
 		if(g_pInput->getPressedKey(KBCKSPCE) && (WrittenName.length() > 0))
 		{
@@ -271,14 +291,28 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 			WrittenName.copy(Name[place],WrittenName.length(),0);
 		}
 
-
-		if(WrittenName.length() > 14)
-			break;
-
 		// Here it must be split up in Episodes 1, 2 and 3.
 		// Print the labels
 		for( i=0 ; i<7 ; i++ )
 		{
+			if(pCKP->Control.levelcontrol.episode == 3)
+			{
+				if(i != place)
+					g_pGfxEngine->Font->drawFont(m_sfc, Name[i],69,64+(i<<4), LETTER_TYPE_RED);
+				else
+				{
+					g_pGfxEngine->Font->drawFont(m_sfc, buf,69,64+(i<<4), LETTER_TYPE_RED);
+					
+					if(blink)
+						g_pGfxEngine->Font->drawFont(m_sfc, "_",69+(strlen(buf)<<3),64+(i<<4), LETTER_TYPE_RED);
+					else
+						g_pGfxEngine->Font->drawFont(m_sfc, " ",69+(strlen(buf)<<3),64+(i<<4), LETTER_TYPE_RED);
+				}
+				g_pGfxEngine->Font->drawFont(m_sfc, Score[i],253-(strlen(Score[i])<<3),64+(i<<4), LETTER_TYPE_RED);
+				
+			}
+			else
+			{
 			if(i != place)
 				g_pGfxEngine->Font->drawFont(m_sfc, Name[i],40,64+(i<<4), LETTER_TYPE_RED);
 			else
@@ -291,6 +325,7 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 					g_pGfxEngine->Font->drawFont(m_sfc, " ",40+(strlen(buf)<<3),64+(i<<4), LETTER_TYPE_RED);
 			}
 			g_pGfxEngine->Font->drawFont(m_sfc, Score[i],200-(strlen(Score[i])<<3),64+(i<<4), LETTER_TYPE_RED);
+			}
 
 			if(pCKP->Control.levelcontrol.episode == 1)
 			{
@@ -302,6 +337,11 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 					g_pGfxEngine->Tilemap->drawTile(m_sfc, 256,60+(i<<4),ItemTiles[2]);
 				if(Extra[i][3])
 					g_pGfxEngine->Tilemap->drawTile(m_sfc, 272,60+(i<<4),ItemTiles[3]);
+			}
+			else if(pCKP->Control.levelcontrol.episode == 2)
+			{
+				for( i=0 ; i<7 ; i++ )
+					g_pGfxEngine->Font->drawFont(m_sfc, itoa(Cities[i]) ,252,64+(i<<4), LETTER_TYPE_RED);
 			}
 		}
 
@@ -328,7 +368,7 @@ char CHighScores::loadHighScoreTable(void)
 	string sBuf;
 	std::string chBuf = itoa(Episode);
 
-	sBuf.append("data/");
+	sBuf.append("games/");
 	sBuf.append(DataDirectory);
 	sBuf.append("highscoreep");
 	sBuf.append(chBuf);
@@ -361,7 +401,7 @@ char CHighScores::saveHighScoreTable(void)
 
 	sprintf(chBuf,"%d",Episode);
 
-	sBuf.append("data/");
+	sBuf.append("games/");
 	sBuf.append(DataDirectory);
 	sBuf.append("highscoreep");
 	sBuf.append(chBuf);

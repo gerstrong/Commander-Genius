@@ -23,7 +23,7 @@ short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::stri
 	std::string buf;
 	FILE *fp;
 
-	buf = "data/hqp/snd/" + soundfile + ".OGG"; // Start with OGG
+	buf = "games/hqp/snd/" + soundfile + ".OGG"; // Start with OGG
 	if((fp = OpenGameFile(buf.c_str(),"rb")) != NULL)
 	{
 		#ifdef BUILD_WITH_OGG
@@ -40,7 +40,7 @@ short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::stri
 
 		#ifndef BUILD_WITH_OGG
 		g_pLogFile->textOut(PURPLE,"Sorry, OGG-Support is disabled!<br>");
-		  buf = "data/hqp/snd/"+ soundfile + ".WAV";
+		  buf = "games/hqp/snd/"+ soundfile + ".WAV";
 
 		std::string fullfname = GetFullFileName(buf);
 		if(fullfname.size() == 0) {
@@ -59,7 +59,7 @@ short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::stri
 	}
 	else
 	{
-	  buf = "data/hqp/snd/" + soundfile + ".WAV";
+	  buf = "games/hqp/snd/" + soundfile + ".WAV";
 
 		std::string fullfname = GetFullFileName(buf);
 		if(fullfname.size() == 0)

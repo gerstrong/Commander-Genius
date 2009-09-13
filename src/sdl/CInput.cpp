@@ -210,7 +210,7 @@ void CInput::pollEvents()
 	}
 
 	// Check, if LALT+ENTER was pressed
-	if(getHoldedKey(KLALT) && getPressedKey(KENTER))
+	if((getHoldedKey(KALT)) && getPressedKey(KENTER))
 	{
 		bool value;
 		value = g_pVideoDriver->getFullscreen();
@@ -235,7 +235,7 @@ void CInput::pollEvents()
 	}
 
 	// Check, if LALT+Q or LALT+F4 was pressed
-	if(getHoldedKey(KLALT) && (getPressedKey(KF4) || getPressedKey(KQ)) )
+	if(getHoldedKey(KALT) && (getPressedKey(KF4) || getPressedKey(KQ)) )
 	{
 		g_pLogFile->textOut("User exit request!");
 		m_exit = true;
@@ -323,12 +323,14 @@ void CInput::processKeys(int value)
 
        case SDLK_RETURN:immediate_keytable[KENTER]	= value;  break;
        case SDLK_RCTRL:immediate_keytable[KCTRL]	= value;  break;
+	   case SDLK_LCTRL:immediate_keytable[KCTRL]	= value;  break;
        case SDLK_SPACE:immediate_keytable[KSPACE]	= value;  break;
        case SDLK_RALT:immediate_keytable[KALT]		= value;  break;
+	   case SDLK_LALT:immediate_keytable[KALT]		= value;  break;
        case SDLK_TAB:immediate_keytable[KTAB]		= value;  break;
-       case SDLK_LSHIFT:immediate_keytable[KLSHIFT]	= value;  break;
+       case SDLK_LSHIFT:immediate_keytable[KSHIFT]	= value;  break;
+	   case SDLK_RSHIFT:immediate_keytable[KSHIFT]	= value;  break;
        case SDLK_ESCAPE:immediate_keytable[KQUIT]	= value;  break;
-       case SDLK_LALT:immediate_keytable[KLALT]	= value;  break;
 
        case SDLK_BACKSPACE:immediate_keytable[KBCKSPCE] = value; break;
 

@@ -66,7 +66,7 @@ void CPatcher::patchMemory()
 				if( p != std::string::npos )
 					patch_file_name.erase(p);
 
-				patchMemfromFile("data/" + m_datadirectory + "/" + patch_file_name,offset);
+				patchMemfromFile("games/" + m_datadirectory + "/" + patch_file_name,offset);
 			}
 		}
 
@@ -89,7 +89,7 @@ struct PatchListFiller {
 
 bool CPatcher::loadPatchfile()
 {
-	std::string path = "data/" + m_datadirectory;
+	std::string path = "games/" + m_datadirectory;
 
 	//Get the list of ".pat" files
 	PatchListFiller patchlist;

@@ -94,7 +94,7 @@ short checkConsistencyofGameData(stGameData *p_GameData)
 		if(p_GameData->FileList[c][0] == 0) // If there are no more files!
 			break;
 
-		std::string buf = "data/" + p_GameData->DataDirectory;
+		std::string buf = "games/" + p_GameData->DataDirectory;
 		if(p_GameData->DataDirectory != "")
 			buf += "/";
 		buf += p_GameData->FileList[c];
@@ -879,7 +879,7 @@ std::string getstring(const std::string& name)
 std::string formatPathString(const std::string& path)
 {
 	size_t p = path.find('\r');
-	return "data/" + path.substr(0,p) + "/";
+	return "games/" + path.substr(0,p) + "/";
 }
 
 // returns attribute attrname of string stringname, or -1 if it doesn't exist.

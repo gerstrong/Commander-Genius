@@ -345,7 +345,7 @@ char wm_issolid(int xb, int yb, bool *levels_completed)
 	  if(levels_completed[map.objectlayer[xb>>4][yb>>4] & 0x7fff] && options[OPT_LVLREPLAYABILITY].value) // check if level is done, but can be replayed
 		  return 0;
 
-	  if(g_pInput->getHoldedKey(KTAB) && g_pInput->getHoldedKey(KLSHIFT))
+	  if(g_pInput->getHoldedKey(KTAB) && g_pInput->getHoldedKey(KSHIFT))
 	  {
 		  return 0;
 	  }
