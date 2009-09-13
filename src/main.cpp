@@ -172,7 +172,7 @@ int main(int argc, char *argv[])
 	if(!CKP.Control.skipstarting)
 	{
 		while(!loadStartMenu(&CKP))
-			g_pLogFile->textOut(PURPLE,"Error! You have chosen a Game that doesn't exist. Please correct the \"games.cfg\" File under \"data\" and choose another game.<br>");
+			g_pLogFile->textOut(PURPLE,"Error! You have chosen a Game that doesn't exist. Please correct the \"games.cfg\" File under \"games\" and choose another game.<br>");
 	}
 
 	if(!g_pInput->getExitEvent())
@@ -197,7 +197,7 @@ int main(int argc, char *argv[])
 			if(CKP.shutdown == SHUTDOWN_NEW_GAME)
 			{
 				while(!loadStartMenu(&CKP))
-					g_pLogFile->textOut(PURPLE,"Error! You have chosen a Game that doesn't exist. Please correct the \"games.cfg\" File under \"data\" and choose another game.<br>");
+					g_pLogFile->textOut(PURPLE,"Error! You have chosen a Game that doesn't exist. Please correct the \"games.cfg\" File under \"games\" and choose another game.<br>");
 
 				//loadResourcesforGame(pCKP);
 				if(Game.loadResources(CKP.Control.levelcontrol.episode, CKP.GameData[CKP.Resources.GameSelected-1].DataDirectory))

@@ -5,6 +5,7 @@
 
 #include "keen.h"
 #include "demobox.h"
+#include "CGame.h"
 #include "include/game.h"
 #include "sdl/CInput.h"
 #include "sdl/CVideoDriver.h"
@@ -29,6 +30,7 @@ char debugmode=0,acceleratemode=0;
 // and this is where the magic happens
 void gameloop(stCloneKeenPlus *pCKP)
 {
+CGame Game;
 unsigned int i;
 int lastquit;
 
@@ -138,7 +140,21 @@ int lastquit;
 		start_gameover( pCKP );
 
 	if (g_pInput->getPressedKey(KQUIT))
-		VerifyQuit();
+	{
+		Game.ingamerunCycle(pCKP);
+		if(pCKP->shutdown == SHUTDOWN_NEW_GAME)
+		{
+			while(!loadStartMenu(pCKP))
+				g_pLogFile->textOut(PURPLE,"Error! You have chosen a Game that doesn't exist. Please correct the \"games.cfg\" File under \"games\" and choose another game.<br>");
+			
+			//loadResourcesforGame(pCKP);
+			if(Game.loadResources(pCKP->Control.levelcontrol.episode, pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory))
+				pCKP->shutdown = SHUTDOWN_RESTART;
+			else
+				pCKP->shutdown = SHUTDOWN_NEW_GAME;
+		}
+	}
+		//VerifyQuit();
 
 	if (QuitState != NO_QUIT) return;
 

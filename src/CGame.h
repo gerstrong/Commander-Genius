@@ -26,6 +26,7 @@ public:
 	bool loadResources(unsigned short Episode, const std::string& DataDirectory);
 	void freeResources(void);
 	short runCycle(stCloneKeenPlus *pCKP);
+	short ingamerunCycle(stCloneKeenPlus *pCKP);
 	void preallocateCKP(stCloneKeenPlus *pCKP);
 
 private:

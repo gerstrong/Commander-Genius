@@ -15,6 +15,7 @@
 #include "../CGame.h"
 
 char controlsmenu();
+int loadmainmenu(stCloneKeenPlus *pCKP,int defaultopt);
 int mainmenu(stCloneKeenPlus *pCKP,int defaultopt);
 char configmenu(stCloneKeenPlus *pCKP);
 bool  loadStartMenu(stCloneKeenPlus *pCKP);
