@@ -40,7 +40,7 @@ char CSavedGame::save(int slot)
 FILE *fp;
 std::string fname;
 
-	fname = "${BIN}/../Resources/data/";
+	fname = "";
 	fname += "games/";
 	fname += DataDirectory;
 	fname += "/ep";
@@ -141,7 +141,7 @@ std::string fname;
 unsigned char episode, level, lives;
 unsigned int i;
 
-	fname = "${BIN}/../Resources/data/";
+	fname = "";
 	fname += "games/";
 	fname += DataDirectory;
 	fname += "/ep";
