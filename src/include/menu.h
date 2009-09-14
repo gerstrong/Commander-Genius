@@ -17,7 +17,7 @@
 char controlsmenu();
 int loadmainmenu(stCloneKeenPlus *pCKP,int defaultopt);
 int mainmenu(stCloneKeenPlus *pCKP,int defaultopt);
-char configmenu(stCloneKeenPlus *pCKP);
+char configmenu(stCloneKeenPlus *pCKP,int ingame);
 bool  loadStartMenu(stCloneKeenPlus *pCKP);
 void keensleft(int episode);
 void showmapatpos(int level, int xoff, int yoff, stCloneKeenPlus *pCKP);

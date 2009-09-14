@@ -521,7 +521,7 @@ const int twirlspeed = 100;
 // pops up the "which slot do you want to save to" box.
 // is issave=1, it's a save box, if issave=0, it's a load box
 // returns either the selected slot or 0 if canceled
-char save_slot_box(int issave, stCloneKeenPlus *pCKP)
+char save_slot_box(int issave, stCloneKeenPlus *pCKP,int ingame)
 {
 char saveslot;
 FILE *fp;
@@ -548,12 +548,15 @@ top: ;
      dlgW = GetStringAttribute("WhichSlotLoad", "WIDTH");
      dlgH = GetStringAttribute("WhichSlotLoad", "HEIGHT");
      map_redraw();
+	  if (ingame == 0)
+	  {
      x = (320/2)-(g_pGfxEngine->getBitmap("TITLE")->getWidth()/2);
      g_pGfxEngine->getBitmap("TITLE")->draw( g_pVideoDriver->getScrollSurface(), x+scrollx_buf, scrolly_buf+1);
 	 if(pCKP->Control.levelcontrol.episode == 3)
 	  g_pGfxEngine->getBitmap("F1HELP")->draw( g_pVideoDriver->getScrollSurface(), 128+scrollx_buf, 181+scrolly_buf);
 	 else
 	  g_pGfxEngine->getBitmap("F1HELP")->draw( g_pVideoDriver->getScrollSurface(), 96+scrollx_buf, 181+scrolly_buf);
+	  }
   }
 
   saveslot = 0;
@@ -586,7 +589,9 @@ top: ;
   } while(!saveslot);
 
   /* check if the selected save file exists */
-	fname = "ep";
+	fname = "games/";
+	fname += pCKP->Resources.GameDataDirectory;
+	fname += "/ep";
 	fname += p_levelcontrol->episode+'0';
 	fname += "save";
 	fname += saveslot+'0';
@@ -677,7 +682,7 @@ int dlgX,dlgY,dlgW,dlgH;
 
   SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
 
-  saveslot = save_slot_box(1, pCKP);
+  saveslot = save_slot_box(1, pCKP, 1);
   if (!saveslot) return;                // canceled
 
   /* save the game */

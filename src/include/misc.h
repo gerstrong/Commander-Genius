@@ -7,7 +7,7 @@ void YourShipNeedsTheseParts(stCloneKeenPlus *pCKP);
 void ShipEp3(stCloneKeenPlus *pCKP);
 void youseeinyourmind(int mpx, int mpy, stCloneKeenPlus *pCKP);
 void VorticonElder(int mpx, int mpy, stCloneKeenPlus *pCKP);
-char save_slot_box(int issave, stCloneKeenPlus *pCKP);
+char save_slot_box(int issave, stCloneKeenPlus *pCKP,int ingame);
 void game_save_interface(stCloneKeenPlus *pCKP);
 int VerifyQuit();
 char gameiswon(stCloneKeenPlus *pCKP);

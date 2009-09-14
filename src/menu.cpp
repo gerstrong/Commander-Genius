@@ -145,6 +145,7 @@ short loadResourcesforStartMenu(stCloneKeenPlus *pCKP, CGame *Game)
 bool loadStartMenu(stCloneKeenPlus *pCKP)
 {
 	CDialog *GamesMenu = new CDialog(g_pVideoDriver->FGLayerSurface, /*16, 8,*/ 36, 20);
+	showmapatpos(90, 104<<4, 32, pCKP);
 
 	// Use the standard Menu-Frame used in the old DOS-Games
 	GamesMenu->setFrameTheme( DLG_THEME_OLDSCHOOL );
@@ -156,6 +157,7 @@ bool loadStartMenu(stCloneKeenPlus *pCKP)
 
 	do
 	{
+		gamedo_AnimatedTiles();
 		GamesMenu->processlogic();
 		GamesMenu->render();
 	} while( !g_pInput->getPressedCommand(IC_JUMP) && !g_pInput->getPressedCommand(IC_STATUS) && !g_pInput->getExitEvent() );
@@ -175,6 +177,8 @@ int loadmainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 	CDialog *MainMenu;
 	int selection;
 	
+	map_redraw();
+	
 	// Prepare the Games Menu
 	MainMenu = new CDialog(g_pVideoDriver->FGLayerSurface, /*88, 56,*/ 18, 13);
 	
@@ -185,13 +189,13 @@ int loadmainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "1-Player Game");
 	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "2-Player Game");
 	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Load Game");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Story");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "High Scores");
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "");
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "");
 	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Options");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "Demo");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Change Game");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 9, "About CG");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 10, "Ordering Info");
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "");
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Back To Title");
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 9, "");
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 10, "");
 	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 11, "Quit");
 	
 	do
@@ -228,15 +232,15 @@ int loadmainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 		
     	pCKP->Control.levelcontrol.hardmode = (diff == 1) ? true : false;
 		
-    	loadslot = save_slot_box(0, pCKP);
+    	loadslot = save_slot_box(0, pCKP, 1);
     }
     else if (selection==MAINMNU_OPTIONS)
     {
-		if (configmenu(pCKP))
+		if (configmenu(pCKP,1))
 		{    // need to restart game
 			return RESTART_GAME;
 		}
-    }
+	}
     else if(selection==MAINMNU_1PLAYER || selection==MAINMNU_2PLAYER)
     {
 		
@@ -337,7 +341,7 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 
     	pCKP->Control.levelcontrol.hardmode = (diff == 1) ? true : false;
 
-    	loadslot = save_slot_box(0, pCKP);
+    	loadslot = save_slot_box(0, pCKP, 0);
 
     	x = (320/2)-(bm_title->getWidth()/2);
     	bm_title->draw( sfc, x+scroll_x, scroll_y+1);
@@ -348,7 +352,7 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
     }
     else if (selection==MAINMNU_OPTIONS)
     {
-      if (configmenu(pCKP))
+      if (configmenu(pCKP,0))
       {    // need to restart game
          return RESTART_GAME;
       }
@@ -375,9 +379,9 @@ int getDifficulty(stCloneKeenPlus *pCKP)
 	int x;
 	CBitmap *bm_title = g_pGfxEngine->getBitmap("TITLE");
 
-	x = (320/2)-(bm_title->getWidth()/2);
+	//x = (320/2)-(bm_title->getWidth()/2);
 
-	bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
+	//bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
 
 	// Prepare the Games Menu
 	CDialog DifficultyMenu(g_pVideoDriver->FGLayerSurface, /*120,32,*/ 14, 6);
@@ -396,6 +400,7 @@ int getDifficulty(stCloneKeenPlus *pCKP)
 			break;
 
 		g_pInput->pollEvents();
+		gamedo_AnimatedTiles();
 		DifficultyMenu.render();
 	} while(true);
 
@@ -414,8 +419,8 @@ int AudioDlg(stCloneKeenPlus *pCKP)
 	short mode=0;
 
 	// Load the Title Bitmap
-	x = (320/2)-(bm_title->getWidth()/2);
-	bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
+	//x = (320/2)-(bm_title->getWidth()/2);
+	//bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
 
 	// Prepare the Games Menu
 	CDialog AudioMenu(g_pVideoDriver->FGLayerSurface, /*32, 32,*/ 32, 8);
@@ -515,8 +520,8 @@ void OptionsDlg(stCloneKeenPlus *pCKP)
 	std::string buf;
 
 	// Load the Title Bitmap
-	x = (320/2)-(bm_title->getWidth()/2);
-	bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
+	//x = (320/2)-(bm_title->getWidth()/2);
+	//bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
 
 	// Prepare the Games Menu
 	CDialog OptionsMenu(g_pVideoDriver->FGLayerSurface, /*24, 24,*/ 34, 13);
@@ -581,7 +586,7 @@ void OptionsDlg(stCloneKeenPlus *pCKP)
 	} while(1);
 }
 
-short GraphicsDlg(stCloneKeenPlus *pCKP)
+short GraphicsDlg(stCloneKeenPlus *pCKP, int ingame)
 {
 	int selection;
 	int x;
@@ -591,11 +596,11 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 	std::string buf;
 	short retval = 0;
 	Uint8 autoframeskip = 0;
-	CBitmap *bm_title = g_pGfxEngine->getBitmap("TITLE");
+	CBitmap *bm_title = g_pGfxEngine->getBitmap("TITLE"), *bm_f1help = g_pGfxEngine->getBitmap("F1HELP");
 
 	// Load the Title Bitmap
 	x = (320/2)-(bm_title->getWidth()/2);
-	bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
+	//bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
 
 	width  = g_pVideoDriver->getWidth();
 	height = g_pVideoDriver->getHeight();
@@ -677,6 +682,8 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 
 	do
 	{
+		gamedo_AnimatedTiles();
+		
 		if(g_pInput->getPressedCommand(IC_STATUS))
 		{
 			selection = DisplayMenu.getSelection();
@@ -781,6 +788,15 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 
 				Settings->saveDrvCfg();
 				delete Settings; Settings = NULL;
+				map_redraw();
+				if (ingame == 0)
+				{
+				bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
+				if(pCKP->Control.levelcontrol.episode == 3)
+					bm_f1help->draw( g_pVideoDriver->getScrollSurface(), 128+scroll_x, 181+scroll_y);
+				else
+					bm_f1help->draw( g_pVideoDriver->getScrollSurface(), 96+scroll_x, 181+scroll_y);
+				}
 				break;
 			}
 			else
@@ -795,7 +811,7 @@ short GraphicsDlg(stCloneKeenPlus *pCKP)
 	return retval;
 }
 
-char configmenu(stCloneKeenPlus *pCKP)
+char configmenu(stCloneKeenPlus *pCKP,int ingame)
 {
 	int selection;
 	int x;
@@ -803,14 +819,14 @@ char configmenu(stCloneKeenPlus *pCKP)
 
 	// Load the Title Bitmap
 
-	x = (320/2)-(title_bitmap->getWidth()/2);
-	title_bitmap->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
+	//x = (320/2)-(title_bitmap->getWidth()/2);
+	//title_bitmap->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
 	
 	// Draw Help Text-Screen
-	if(pCKP->Control.levelcontrol.episode == 3)
-		bm_f1help->draw( g_pVideoDriver->getScrollSurface(), 128+scroll_x, 181+scroll_y);
-	else
-		bm_f1help->draw( g_pVideoDriver->getScrollSurface(), 96+scroll_x, 181+scroll_y);
+	//if(pCKP->Control.levelcontrol.episode == 3)
+	//	bm_f1help->draw( g_pVideoDriver->getScrollSurface(), 128+scroll_x, 181+scroll_y);
+	//else
+	//	bm_f1help->draw( g_pVideoDriver->getScrollSurface(), 96+scroll_x, 181+scroll_y);
 
 	// Prepare the Games Menu
 	CDialog OptionsMenu(g_pVideoDriver->FGLayerSurface, /*120, 32,*/ 14, 8);
@@ -838,7 +854,7 @@ char configmenu(stCloneKeenPlus *pCKP)
 			switch(selection)
 			{
 			case 0:
-				GraphicsDlg(pCKP);
+				GraphicsDlg(pCKP,ingame);
 				break;
 
 			case 1:
@@ -856,12 +872,12 @@ char configmenu(stCloneKeenPlus *pCKP)
 			default:
 				break;
 			}
-			map_redraw();
-			title_bitmap->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
-			if(pCKP->Control.levelcontrol.episode == 3)
-				bm_f1help->draw( g_pVideoDriver->getScrollSurface(), 128+scroll_x, 181+scroll_y);
-			else
-				bm_f1help->draw( g_pVideoDriver->getScrollSurface(), 96+scroll_x, 181+scroll_y);
+			//map_redraw();
+			//title_bitmap->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
+			//if(pCKP->Control.levelcontrol.episode == 3)
+			//	bm_f1help->draw( g_pVideoDriver->getScrollSurface(), 128+scroll_x, 181+scroll_y);
+			//else
+			//	bm_f1help->draw( g_pVideoDriver->getScrollSurface(), 96+scroll_x, 181+scroll_y);
 			OptionsMenu.setSDLSurface(g_pVideoDriver->FGLayerSurface);
 		}
 		OptionsMenu.processlogic();
@@ -879,8 +895,8 @@ char controlsmenu()
 	std::string buf2;
 	CBitmap *bm_title = g_pGfxEngine->getBitmap("TITLE");
 
-	x = (320/2)-(bm_title->getWidth()/2);
-	bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
+	//x = (320/2)-(bm_title->getWidth()/2);
+	//bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
 
 	// Prepare the Games Menu
 	CDialog ControlsMenu(g_pVideoDriver->FGLayerSurface, /*8, 16,*/ 38, 22);
@@ -959,6 +975,8 @@ char controlsmenu()
 
 	do
 	{
+		gamedo_AnimatedTiles();
+		
 		if(g_pInput->getPressedCommand(IC_STATUS))
 		{
 			selection = ControlsMenu.getSelection();

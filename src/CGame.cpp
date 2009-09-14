@@ -272,11 +272,11 @@ short CGame::ingamerunCycle(stCloneKeenPlus *pCKP)
 	    IntroCanceled = 0;
 	    switch(opt)
 		{
-			/*case MAINMNU_1PLAYER:
+			case MAINMNU_1PLAYER:
 				numplayers = 1;
 				defaultopt = 0;
 				current_demo = 1;
-				initgamefirsttime(pCKP, EGAGraphics->getNumSprites());
+				//initgamefirsttime(pCKP, EGAGraphics->getNumSprites());
 				loadinggame = 0;
 				playgame_levelmanager(pCKP);
 				break;
@@ -284,7 +284,7 @@ short CGame::ingamerunCycle(stCloneKeenPlus *pCKP)
 				defaultopt = 0;
 				current_demo = 1;
 				numplayers = 2;
-				initgamefirsttime(pCKP, EGAGraphics->getNumSprites());
+				//initgamefirsttime(pCKP, EGAGraphics->getNumSprites());
 				loadinggame = 0;
 				playgame_levelmanager(pCKP);
 				break;
@@ -295,12 +295,12 @@ short CGame::ingamerunCycle(stCloneKeenPlus *pCKP)
 					defaultopt = 0;
 					current_demo = 1;
 					numplayers = 1; // here was 2. Why was that? I don't understand
-					initgamefirsttime(pCKP, EGAGraphics->getNumSprites());
+					//initgamefirsttime(pCKP, EGAGraphics->getNumSprites());
 					playgame_levelmanager(pCKP);
 				}
 				break;
 				
-			case MAINMNU_STORY:
+			/*case MAINMNU_STORY:
 				pCKP->Control.storyboard=1;
 				break;
 				
@@ -312,13 +312,13 @@ short CGame::ingamerunCycle(stCloneKeenPlus *pCKP)
 					g_pLogFile->ftextOut("Error processing Highscore!!<br>");
 				}
 				delete pHighscores;
-				break;
-				*/
-			/*case MAINMNU_NEW_GAME:
-				pCKP->shutdown = SHUTDOWN_NEW_GAME;
 				break;*/
-				/*
-			case MAINMNU_ABOUT:
+			case MAINMNU_NEW_GAME:
+				//pCKP->shutdown = SHUTDOWN_NEW_GAME;
+				QuitState = QUIT_TO_TITLE;
+				return 0;
+				break;
+			/*case MAINMNU_ABOUT:
 				CCredits *pCredit;
 				pCredit = new CCredits;
 				pCredit->Render(pCKP);
@@ -332,10 +332,10 @@ short CGame::ingamerunCycle(stCloneKeenPlus *pCKP)
 												 pCKP->Resources.GameDataDirectory);
 				OrderingInfo->Render(pCKP);
 				delete OrderingInfo;
-				break;
+				break;*/
 				
 			case MAINMNU_TIMEOUT:
-			case MAINMNU_DEMO:
+			/*case MAINMNU_DEMO:
 				
 				retval = play_demo(current_demo, pCKP, EGAGraphics->getNumSprites());
 				
@@ -363,7 +363,7 @@ short CGame::ingamerunCycle(stCloneKeenPlus *pCKP)
 					
 				}
 				current_demo++;
-				break;
+				break;*/
 			case RESTART_GAME:
 				g_pLogFile->ftextOut("********************<br>");
 				g_pLogFile->ftextOut(" Restarting game...<br>");
@@ -371,13 +371,11 @@ short CGame::ingamerunCycle(stCloneKeenPlus *pCKP)
 				cleanup(pCKP);
 				pCKP->shutdown = SHUTDOWN_RESTART;
 				return 0;
-				break;*/
+				break;
 			case BACK2MAINMENU:
 				
 			default: break;
 		}
-		
-		if(pCKP->shutdown == SHUTDOWN_NEW_GAME) return 0;
 		
 		g_pLogFile->ftextOut("bottom of game control loop opt=%d crashflag=%d<br>", opt, crashflag);
 		if(pCKP->shutdown == SHUTDOWN_EXIT) break;
