@@ -558,7 +558,7 @@ SE_MORTIMER_RANDOMZAPS
 #define VIDEO_MODE_OPENGL		 2
 
 // directory "special" sprites and VGASprites are under
-#define GFXDIR					"res/gfx/"
+#define GFXDIR					"data/res/gfx/"
 
 #include "include/declarations.h"
 #include "externals.h"
