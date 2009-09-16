@@ -8,7 +8,7 @@
 #ifndef CLOGFILE_H_
 #define CLOGFILE_H_
 
-#define REVISION        "Commander Genius Release v0.3.0.4"
+#define REVISION        "Commander Genius Release v0.3.0.5"
 #include "CSingleton.h"
 #include <string>
 #define g_pLogFile	CLogFile::Get()

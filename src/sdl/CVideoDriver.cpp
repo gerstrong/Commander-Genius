@@ -352,36 +352,36 @@ bool CVideoDriver::createSurfaces(void)
 	stretch_blit_yoff = 0;
 
 	temp_surface = SDL_CreateRGBSurface( Mode, 512, 512, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
-	//ScrollSurface = SDL_CreateRGBSurface( Mode, 512, 512, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
-	//SDL_SetColorKey(ScrollSurface, SDL_SRCCOLORKEY, SDL_MapRGB(ScrollSurface->format, 0, 0xFF, 0xFF));
 	ScrollSurface = SDL_DisplayFormatAlpha( temp_surface );
 	SDL_FreeSurface(temp_surface);
 	if (!ScrollSurface)
 	{
 		g_pLogFile->textOut(RED,"VideoDriver: Couldn't create ScrollSurface!<br>");
-	  return false;
+		return false;
 	}
 
-	FGLayerSurface = SDL_CreateRGBSurface( Mode, 320, 200, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
+	temp_surface = SDL_CreateRGBSurface( Mode, 320, 200, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
+	FGLayerSurface = SDL_DisplayFormat( temp_surface );
 	if (!FGLayerSurface)
 	{
 		g_pLogFile->textOut(RED,"VideoDriver: Couldn't create FGLayerSurface!<br>");
-	  return false;
+		return false;
 	}
 	SDL_SetColorKey( FGLayerSurface, SDL_SRCCOLORKEY,
 					SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE) );
 	//Set surface alpha
 	SDL_SetAlpha( FGLayerSurface, SDL_SRCALPHA, 225 );
 
-	SpriteLayerSurface = SDL_CreateRGBSurface( Mode, 320, 200, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
+	temp_surface = SDL_CreateRGBSurface( Mode, 320, 200, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
+	SpriteLayerSurface = SDL_DisplayFormatAlpha( temp_surface );
 	if (!SpriteLayerSurface)
 	{
 		g_pLogFile->textOut(RED,"VideoDriver: Couldn't create SpriteLayerSurface!<br>");
 	  return false;
 	}
-	SDL_SetColorKey( SpriteLayerSurface, SDL_SRCCOLORKEY,
-					SDL_MapRGB(SpriteLayerSurface->format, 0, 0xFF, 0xFE) );
-	SDL_FillRect( SpriteLayerSurface, NULL, SDL_MapRGB(SpriteLayerSurface->format, 0, 0xFF, 0xFF) );
+	//SDL_SetColorKey( SpriteLayerSurface, SDL_SRCCOLORKEY,
+		//			SDL_MapRGB(SpriteLayerSurface->format, 0, 0xFF, 0xFE) );
+	//SDL_FillRect( SpriteLayerSurface, NULL, SDL_MapRGB(SpriteLayerSurface->format, 0, 0xFF, 0xFF) );
 
 	FXSurface =  SDL_CreateRGBSurface( Mode, 320, 200, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
 	if (!FXSurface)
@@ -534,7 +534,7 @@ void CVideoDriver::update_screen(void)
 
 	   // Flush the FG-Layer
 	   SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE));
-	   SDL_FillRect(SpriteLayerSurface, NULL, SDL_MapRGB(SpriteLayerSurface->format, 0, 0xFF, 0xFE));
+	   SDL_FillRect(SpriteLayerSurface, NULL, SDL_MapRGBA(SpriteLayerSurface->format, 0, 0, 0, 0));
    }
    else // No OpenGL but Software Rendering
    {
@@ -649,7 +649,7 @@ void CVideoDriver::update_screen(void)
 
 	   // Flush the FG-Layer
 	   SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE));
-	   SDL_FillRect(SpriteLayerSurface, NULL, SDL_MapRGB(SpriteLayerSurface->format, 0, 0xFF, 0xFE));
+	   SDL_FillRect(SpriteLayerSurface, NULL, SDL_MapRGBA(SpriteLayerSurface->format, 0, 0, 0, 0));
 
 #ifdef USE_OPENGL
    }

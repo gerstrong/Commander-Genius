@@ -414,16 +414,17 @@ bool CGame::loadResources(unsigned short Episode, const std::string& DataDirecto
 	}
 
 	TileLoader = new CTileLoader(Episode, ExeFile->getEXEVersion(), ExeFile->getData());
+
+	// Patch the EXE-File-Data directly in the memory.
+	CPatcher *Patcher = new CPatcher(Episode, ExeFile->getEXEVersion(), ExeFile->getData(), DataDirectory);
+	Patcher->patchMemory();
+	delete Patcher;
+
 	if(!TileLoader->load()) {
 		g_pLogFile->textOut(RED, "CGame::loadResources: Could not load data with TileLoader<br>");
 		delete ExeFile;
 		return false;
 	}
-
-    // Patch the EXE-File-Data directly in the memory.
-	CPatcher *Patcher = new CPatcher(Episode, ExeFile->getEXEVersion(), ExeFile->getData(), DataDirectory);
-	Patcher->patchMemory();
-	delete Patcher;
 
 	// Decode the entire graphics for the game (EGALATCH, EGASPRIT)
     EGAGraphics = new CEGAGraphics(Episode, DataDirectory); // Path is relative to the data dir

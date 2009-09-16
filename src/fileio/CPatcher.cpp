@@ -47,26 +47,29 @@ void CPatcher::patchMemory()
 		if( (strCaseStartsWith(line,"\%version 1.31") && m_version == 131) ||
 			(strCaseStartsWith(line,"\%version 1.1") && m_version == 110) ||
 			 strCaseStartsWith(line,"\%version ALL")							)
-			ignorelines = false; // If the line matches don't ignore anymore them anymore
+			ignorelines = false; // If the line matches don't ignore them anymore
 
-		// Now we really start to process the commands
-		if( strCaseStartsWith(line,"\%patchfile") )
+		if( !ignorelines )
 		{
-			std::string newbuf = line.substr(strlen("\%patchfile"));
-			TrimSpaces(newbuf);
-			size_t p = newbuf.find(' ');
-			if(p != std::string::npos) {
+			// Now we really start to process the commands
+			if( strCaseStartsWith(line,"\%patchfile") )
+			{
+				std::string newbuf = line.substr(strlen("\%patchfile"));
+				TrimSpaces(newbuf);
+				size_t p = newbuf.find(' ');
+				if(p != std::string::npos) {
 
-				long offset = 0;
-				sscanf(newbuf.substr(0,p).c_str(), "%lx", &offset); // Only hexadecimal numbers supported
-				std::string patch_file_name = newbuf.substr(p+1);
-				TrimSpaces(patch_file_name);
+					long offset = 0;
+					sscanf(newbuf.substr(0,p).c_str(), "%lx", &offset); // Only hexadecimal numbers supported
+					std::string patch_file_name = newbuf.substr(p+1);
+					TrimSpaces(patch_file_name);
 
-				p = patch_file_name.find(' ');
-				if( p != std::string::npos )
-					patch_file_name.erase(p);
+					p = patch_file_name.find(' ');
+					if( p != std::string::npos )
+						patch_file_name.erase(p);
 
-				patchMemfromFile("games/" + m_datadirectory + "/" + patch_file_name,offset);
+					patchMemfromFile("games/" + m_datadirectory + "/" + patch_file_name,offset);
+				}
 			}
 		}
 
