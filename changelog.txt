@@ -1,4 +1,4 @@
-Commander Genius Release v0.3.0.4 (CloneKeenPlus):
+Commander Genius Release v0.3.0.5 (CloneKeenPlus):
 --------------------------------------------------
 11-09-2009
 - many bugs fixes (Many thanks to James K. Beard)

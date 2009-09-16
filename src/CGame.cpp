@@ -434,10 +434,10 @@ bool CGame::loadResources(unsigned short Episode, const std::string& DataDirecto
 	
     // load the strings. TODO: After that this one will replace loadstrings
     //m_Messages = new CMessages();    delete ExeFile;
-    //m_Messages->readData(char *buf, int episode, int version);
+    //m_Messages->readData(Episode, version, DataDirectory);
 	loadstrings();
 
-    delete ExeFile;
+	delete ExeFile;
 
 	// Load the sound data
 	bool ok = g_pSound->loadSoundData(m_Episode, DataDirectory);

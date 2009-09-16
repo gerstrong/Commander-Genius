@@ -11,6 +11,7 @@
 
 #include "CMessages.h"
 #include "../CLogFile.h"
+#include "../fileio/CExeFile.h"
 
 CMessages::CMessages() {
 
@@ -23,49 +24,68 @@ CMessages::~CMessages() {
 // buf -  is the uncompressed buffer of the exe-file (keen1.exe for example)
 // episode - the game's episode
 // version - version of the exe-file
-bool CMessages::readData(char *buf, int episode, int version)
+bool CMessages::readData(/*char *buf,*/ int episode, int version, const std::string& DataDirectory)
 {
 	long offset_start;
 	long offset_end;
-
+	unsigned char *text_data = NULL;
+	//std::string Text;
+	
+	CExeFile *ExeFile = new CExeFile(episode, DataDirectory);
+	ExeFile->readData();
+	
+	//if(!ExeFile->getData()) return;
+	
 	// TODO: This function still has bugs when reading the text. Check this closer!
 	// This part of switches is used to get the proper addresses of the message text.
 	switch(episode)
 	{
-	case 1:
-		switch(version)
+		case 1:
+			switch(version)
 		{
-		case 131:
-			offset_start = 0x14FAB;
-			offset_end = 0x16801;
-			break;
+			case 131:
+				offset_start = 0x14FAB-512;
+				offset_end = 0x16801-512;
+				break;
 		}
-		break;
-	case 2:
-		g_pLogFile->textOut(RED,"This version of the game is not supported!");
-		break;
-	case 3:
-		g_pLogFile->textOut(RED,"This version of the game is not supported!");
-		break;
-	default:
-		g_pLogFile->textOut(RED,"This version of the game is not supported!");
-		return false;
+			break;
+		case 2:
+			g_pLogFile->textOut(RED,"This version of the game is not supported!");
+			break;
+		case 3:
+			g_pLogFile->textOut(RED,"This version of the game is not supported!");
+			break;
+		default:
+			g_pLogFile->textOut(RED,"This version of the game is not supported!");
+			return false;
 	}
+	
+	text_data = ExeFile->getData();
+	
+	/*for(unsigned long i=offset_start ; i<offset_end ; i++ )
+	{
+		Text += text_data[i];
+		//Text.push_back(text_data[i]);
+	g_pLogFile->textOut(RED,Text);
+		}
+	
+	delete ExeFile;*/
 
 	// Now read the stuff and store it to a list
 	for(int pos=offset_start ; pos<offset_end ; pos++)
 	{
 		std::string Text;
 
-		while(buf[pos] != 0)
+		while(text_data[pos] != 0)
 		{
-			Text += buf[pos];
+			Text += text_data[pos];
 			pos++;
 		}
 		pos++;
 
 		if(!Text.empty()) // not empty
 			StringList.push_back(Text);
+		g_pLogFile->textOut(RED,Text);
 	}
 
 	std::list<std::string> :: iterator i;
