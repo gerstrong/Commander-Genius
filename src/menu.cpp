@@ -191,7 +191,7 @@ int loadmainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 	MainMenu->addObject(DLG_OBJ_DISABLED,  1, 4, "Story");
 	MainMenu->addObject(DLG_OBJ_DISABLED,  1, 5, "Highscores");
 	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Options");
-	MainMenu->addObject(DLG_OBJ_DISABLED,  1, 7, "Demo");
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT,  1, 7, "Back To Game");
 	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Back To Title");
 	MainMenu->addObject(DLG_OBJ_DISABLED,  1, 9, "About CG");
 	MainMenu->addObject(DLG_OBJ_DISABLED,  1, 10, "Ordering Info");
@@ -297,7 +297,7 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Story");
 	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "High Scores");
 	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Options");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "Demo");
+	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "Back To Demo");
 	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Change Game");
 	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 9, "About CG");
 	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 10, "Ordering Info");

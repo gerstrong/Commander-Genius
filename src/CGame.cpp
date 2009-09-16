@@ -335,9 +335,12 @@ short CGame::ingamerunCycle(stCloneKeenPlus *pCKP)
 				break;*/
 				
 			case MAINMNU_TIMEOUT:
-			/*case MAINMNU_DEMO:
+			case MAINMNU_DEMO:
 				
-				retval = play_demo(current_demo, pCKP, EGAGraphics->getNumSprites());
+				QuitState = NO_QUIT;
+				return 0;
+				
+				/*retval = play_demo(current_demo, pCKP, EGAGraphics->getNumSprites());
 				
 				if (retval==DEMO_RESULT_FILE_BAD)
 				{
@@ -362,8 +365,8 @@ short CGame::ingamerunCycle(stCloneKeenPlus *pCKP)
 						defaultopt = MAINMNU_DEMO;
 					
 				}
-				current_demo++;
-				break;*/
+				current_demo++;*/
+				break;
 			case RESTART_GAME:
 				g_pLogFile->ftextOut("********************<br>");
 				g_pLogFile->ftextOut(" Restarting game...<br>");

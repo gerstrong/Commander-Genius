@@ -116,6 +116,7 @@
 		23C637D41031812500FEEFEE /* externals.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637CB1031812500FEEFEE /* externals.cpp */; };
 		23C637DB103181BF00FEEFEE /* COrderingInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637D9103181BF00FEEFEE /* COrderingInfo.cpp */; };
 		23C637E4103181D700FEEFEE /* icecannon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637E1103181D700FEEFEE /* icecannon.cpp */; };
+		63281EB410613B8700AC831C /* CMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63281EB210613B8700AC831C /* CMenu.cpp */; };
 		6350F76C1044782400A992D5 /* autoray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6350F76A1044782400A992D5 /* autoray.cpp */; };
 		6350F76D1044782400A992D5 /* gotpoints.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6350F76B1044782400A992D5 /* gotpoints.cpp */; };
 		6350F7731044783200A992D5 /* tga.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6350F7701044783200A992D5 /* tga.cpp */; };
@@ -503,6 +504,8 @@
 		23D3EE5A10176098001643FA /* CrashHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CrashHandler.h; sourceTree = "<group>"; };
 		5048396D09E3307300765E4B /* CommanderGeniusProj.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = CommanderGeniusProj.xcconfig; sourceTree = "<group>"; };
 		5048396E09E3307300765E4B /* CommanderGeniusTarget.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = CommanderGeniusTarget.xcconfig; sourceTree = "<group>"; };
+		63281EB210613B8700AC831C /* CMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CMenu.cpp; path = ../../src/common/CMenu.cpp; sourceTree = SOURCE_ROOT; };
+		63281EB310613B8700AC831C /* CMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMenu.h; path = ../../src/common/CMenu.h; sourceTree = SOURCE_ROOT; };
 		6350F76A1044782400A992D5 /* autoray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = autoray.cpp; sourceTree = "<group>"; };
 		6350F76B1044782400A992D5 /* gotpoints.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gotpoints.cpp; sourceTree = "<group>"; };
 		6350F7701044783200A992D5 /* tga.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tga.cpp; path = ../../src/common/tga.cpp; sourceTree = SOURCE_ROOT; };
@@ -771,6 +774,8 @@
 				6350F7751044784900A992D5 /* CDlgFrame.h */,
 				637FC63310559B5600C2EA77 /* CBitmap.cpp */,
 				637FC63410559B5600C2EA77 /* CBitmap.h */,
+				63281EB210613B8700AC831C /* CMenu.cpp */,
+				63281EB310613B8700AC831C /* CMenu.h */,
 				637FC63510559B5600C2EA77 /* CPalette.cpp */,
 				637FC63610559B5600C2EA77 /* CPalette.h */,
 				6350F7761044784900A992D5 /* CDlgObject.cpp */,
@@ -1277,6 +1282,7 @@
 				23526705104E756F0054F00B /* CTilemap.cpp in Sources */,
 				637FC63710559B5600C2EA77 /* CBitmap.cpp in Sources */,
 				637FC63810559B5600C2EA77 /* CPalette.cpp in Sources */,
+				63281EB410613B8700AC831C /* CMenu.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
