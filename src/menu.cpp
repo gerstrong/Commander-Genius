@@ -717,12 +717,30 @@ short GraphicsDlg(stCloneKeenPlus *pCKP, int ingame)
 				{
 					zoom = (zoom >= 4) ? 1 : zoom+1;
 					buf = (zoom == 1) ? "No scale" : "Scale: " + itoa(zoom);
+					if(filter>0)
+                        filter = zoom-1;
 				}
 				DisplayMenu.setObjectText(2,buf);
+
+                if(filter == 0)
+					DisplayMenu.setObjectText(3,"No Filter");
+				else if(filter == 1)
+					DisplayMenu.setObjectText(3,"Scale2x Filter");
+				else if(filter == 2)
+					DisplayMenu.setObjectText(3,"Scale3x Filter");
+				else if(filter == 3)
+					DisplayMenu.setObjectText(3,"Scale4x Filter");
 			}
 			else if(selection == 3)
 			{
-				filter = (filter >= 3) ? 0 : filter+1;
+                if(opengl)
+				{
+                    filter = (filter >= 3) ? 0 : filter+1;
+				}
+				else
+				{
+                    filter = (filter > 0) ? 0 : zoom-1;
+				}
 
 				if(filter == 0)
 					DisplayMenu.setObjectText(3,"No Filter");
