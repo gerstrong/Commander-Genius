@@ -41,23 +41,23 @@ void showmapatpos(int level, int xoff, int yoff, stCloneKeenPlus *pCKP)
 	std::string levelname;
 	g_pLogFile->ftextOut("showmapatpos(%d, %d, %d);<br>",level,xoff,yoff);
 	pCKP->Control.levelcontrol.dark = 0;
-	
+
 	initgame( &(pCKP->Control.levelcontrol) );           // reset scroll
 	levelname = "level" + FixedWidthStr_LeftFill(itoa(level), 2, '0') + ".ck" + itoa(pCKP->Control.levelcontrol.episode);
-	
+
 	short numsel;
 	if(pCKP->Resources.GameSelected == 0 ) // First time startup. No game has been chosen
 		numsel = 0;
 	else
 		numsel = pCKP->Resources.GameSelected-1;
-	
+
 	if(loadmap(levelname, pCKP->GameData[numsel].DataDirectory, level, &(pCKP->Control.levelcontrol) ) != 0)
 		return;
-	
+
 	drawmap();
 	for(i=0;i<xoff;i++) map_scroll_right();
 	for(i=0;i<yoff;i++) map_scroll_down();
-	
+
 	gamedo_frameskipping_blitonly();
 }
 
@@ -176,33 +176,33 @@ int loadmainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 {
 	CDialog *MainMenu;
 	int selection;
-	
+
 	map_redraw();
-	
+
 	// Prepare the Games Menu
 	MainMenu = new CDialog(g_pVideoDriver->FGLayerSurface, /*88, 56,*/ 18, 13);
-	
+
 	// Use the standard Menu-Frame used in the old DOS-Games
 	MainMenu->setFrameTheme( DLG_THEME_OLDSCHOOL );
-	
+
 	// Show me the games you detected!
 	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "1-Player Game");
 	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "2-Player Game");
 	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Load Game");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "");
+	MainMenu->addObject(DLG_OBJ_BLANK_LINE,  1, 4, "");
+	MainMenu->addObject(DLG_OBJ_BLANK_LINE,  1, 5, "");
 	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Options");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "");
+	MainMenu->addObject(DLG_OBJ_BLANK_LINE,  1, 7, "");
 	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Back To Title");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 9, "");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 10, "");
+	MainMenu->addObject(DLG_OBJ_BLANK_LINE,  1, 9, "");
+	MainMenu->addObject(DLG_OBJ_BLANK_LINE,  1, 10, "");
 	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 11, "Quit");
-	
+
 	do
 	{
 		gamedo_AnimatedTiles();
 		MainMenu->processlogic();
-		
+
 		if(g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedKey(KENTER))
 			break;
 		if (g_pInput->getPressedKey(KQUIT))
@@ -212,26 +212,26 @@ int loadmainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 		}
 		MainMenu->render();
 	} while(!g_pInput->getExitEvent());
-	
+
     if(g_pInput->getExitEvent())
 	{
 		QuitState = QUIT_PROGRAM;
     	return 0;
 	}
-	
+
 	selection = MainMenu->getSelection();
-	
+
 	delete MainMenu;
-	
+
     if (selection==MAINMNU_LOADGAME)
     {
     	int diff;
     	diff = getDifficulty(pCKP);
     	if(diff>=2)
     		return BACK2MAINMENU;
-		
+
     	pCKP->Control.levelcontrol.hardmode = (diff == 1) ? true : false;
-		
+
     	loadslot = save_slot_box(0, pCKP, 1);
     }
     else if (selection==MAINMNU_OPTIONS)
@@ -243,14 +243,14 @@ int loadmainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 	}
     else if(selection==MAINMNU_1PLAYER || selection==MAINMNU_2PLAYER)
     {
-		
+
     	{
         	int diff;
         	diff = getDifficulty(pCKP);
-			
+
         	if(diff>=2)
         		return BACK2MAINMENU;
-			
+
         	pCKP->Control.levelcontrol.hardmode = (diff == 1) ? true : false;
     	}
     }
@@ -259,7 +259,7 @@ int loadmainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 		QuitState = QUIT_PROGRAM;
     	return MAINMNU_QUIT;
     }
-	
+
 	return selection;
 }
 
@@ -683,7 +683,7 @@ short GraphicsDlg(stCloneKeenPlus *pCKP, int ingame)
 	do
 	{
 		gamedo_AnimatedTiles();
-		
+
 		if(g_pInput->getPressedCommand(IC_STATUS))
 		{
 			selection = DisplayMenu.getSelection();
@@ -821,7 +821,7 @@ char configmenu(stCloneKeenPlus *pCKP,int ingame)
 
 	//x = (320/2)-(title_bitmap->getWidth()/2);
 	//title_bitmap->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
-	
+
 	// Draw Help Text-Screen
 	//if(pCKP->Control.levelcontrol.episode == 3)
 	//	bm_f1help->draw( g_pVideoDriver->getScrollSurface(), 128+scroll_x, 181+scroll_y);
@@ -976,7 +976,7 @@ char controlsmenu()
 	do
 	{
 		gamedo_AnimatedTiles();
-		
+
 		if(g_pInput->getPressedCommand(IC_STATUS))
 		{
 			selection = ControlsMenu.getSelection();

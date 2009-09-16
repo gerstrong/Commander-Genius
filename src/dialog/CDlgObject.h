@@ -17,6 +17,7 @@
 ////////////////////////
 enum{
 	DLG_OBJ_OPTION_TEXT = 1,
+	DLG_OBJ_BLANK_LINE
 };
 
 class CDlgObject {
