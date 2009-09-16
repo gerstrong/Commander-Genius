@@ -154,7 +154,6 @@ bool loadStartMenu(stCloneKeenPlus *pCKP)
 	for( int i=0 ; i < pCKP->numGames ; i++ )
 		GamesMenu->addObject(DLG_OBJ_OPTION_TEXT,1,i+1, pCKP->GameData[i].Name);
 
-
 	do
 	{
 		gamedo_AnimatedTiles();
@@ -189,13 +188,13 @@ int loadmainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "1-Player Game");
 	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "2-Player Game");
 	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Load Game");
-	MainMenu->addObject(DLG_OBJ_BLANK_LINE,  1, 4, "");
-	MainMenu->addObject(DLG_OBJ_BLANK_LINE,  1, 5, "");
+	MainMenu->addObject(DLG_OBJ_DISABLED,  1, 4, "Story");
+	MainMenu->addObject(DLG_OBJ_DISABLED,  1, 5, "Highscores");
 	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Options");
-	MainMenu->addObject(DLG_OBJ_BLANK_LINE,  1, 7, "");
+	MainMenu->addObject(DLG_OBJ_DISABLED,  1, 7, "Demo");
 	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Back To Title");
-	MainMenu->addObject(DLG_OBJ_BLANK_LINE,  1, 9, "");
-	MainMenu->addObject(DLG_OBJ_BLANK_LINE,  1, 10, "");
+	MainMenu->addObject(DLG_OBJ_DISABLED,  1, 9, "About CG");
+	MainMenu->addObject(DLG_OBJ_DISABLED,  1, 10, "Ordering Info");
 	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 11, "Quit");
 
 	do

@@ -20,7 +20,7 @@ CFont::~CFont() {
 bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags)
 {
 	if(m_FontSurface) SDL_FreeSurface(m_FontSurface);
-	m_FontSurface = SDL_CreateRGBSurface(Flags, 128, 256, 8, 0, 0, 0, 0);
+	m_FontSurface = SDL_CreateRGBSurface(Flags, 128, 512, 8, 0, 0, 0, 0);
 	SDL_SetColors(m_FontSurface, Palette, 0, 255);
 	SDL_SetColorKey(m_FontSurface, SDL_SRCCOLORKEY, COLORKEY);
 	return (m_FontSurface != NULL);
@@ -89,13 +89,41 @@ void CFont::generateInverseFonts()
 	// And this code makes the letter create blue edges
 	SDL_LockSurface(m_FontSurface);
 
-	Uint8 *pixel = (Uint8*) m_FontSurface->pixels + 184*128;
+	Uint8 *pixel = (Uint8*) m_FontSurface->pixels + fmrect.y*128;
 	for(Uint8 y=0 ; y<8*6 ; y++)
 	{
 		for(Uint8 x=0 ; x<128 ; x++)
 		{
 			if( *pixel == 15 ) memset(pixel,0,1);
 			else memset(pixel,11,1);
+			pixel++;
+		}
+	}
+	SDL_UnlockSurface(m_FontSurface);
+}
+
+// Those are light grey and normally used in the main menu indicating disabled items
+void CFont::generateDisabledFonts()
+{
+	SDL_Rect srcrect, fmrect;
+
+	// Copy the first 5 tiles
+	srcrect.x = fmrect.x = 0;
+	srcrect.y = 16; fmrect.y = 232;
+	srcrect.w = fmrect.w = 128;
+	srcrect.h = fmrect.h = 8*6;
+	SDL_BlitSurface(m_FontSurface, &srcrect, m_FontSurface, &fmrect);
+
+	// And this code makes the letter create blue edges
+	SDL_LockSurface(m_FontSurface);
+
+	Uint8 *pixel = (Uint8*) m_FontSurface->pixels + fmrect.y*128;
+	for(Uint8 y=0 ; y<8*6 ; y++)
+	{
+		for(Uint8 x=0 ; x<128 ; x++)
+		{
+			if( *pixel == 15 ) memset(pixel,15,1);
+			else memset(pixel,7,1);
 			pixel++;
 		}
 	}
@@ -194,10 +222,12 @@ void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uin
 	    		drawCharacter(dst, ((Uint16) c) + 7*16, (int)x, (int)y);
 	    	else if(lettertype == LETTER_TYPE_INVERSE)
 	    		drawCharacter(dst, ((Uint16) c) + 13*16, (int)x, (int)y);
+	    	else if(lettertype == LETTER_TYPE_DISABLED)
+	    		drawCharacter(dst, ((Uint16) c) + 19*16, (int)x, (int)y);
 	    	else
 	    		drawCharacter(dst, c, (int)x, (int)y);
 
-	       x+=8;
+	    	x+=8;
 	    }
 	    else
 	    {

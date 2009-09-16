@@ -170,6 +170,7 @@ bool CEGALatch::loadData( std::string &m_path, short m_episode, bool compressedd
      Font->generateSpecialTwirls();
      Font->generateGlowFonts();
      Font->generateInverseFonts();
+     Font->generateDisabledFonts();
      Font->optimizeSurface();
      if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
      delete Planes;

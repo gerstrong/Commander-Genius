@@ -22,7 +22,8 @@ enum{
 	LETTER_TYPE_NORMAL,
 	LETTER_TYPE_RED,
 	LETTER_TYPE_BLUE,
-	LETTER_TYPE_INVERSE
+	LETTER_TYPE_INVERSE,
+	LETTER_TYPE_DISABLED
 };
 
 class CFont {
@@ -37,6 +38,7 @@ public:
 	void generateGlowFonts();
 	void generateSpecialTwirls();
 	void generateInverseFonts();
+	void generateDisabledFonts();
 
 	void drawTwirl(SDL_Surface* dst, int twirlframe, Uint16 x, Uint16 y);
 
@@ -44,9 +46,7 @@ public:
 	void drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, Uint8 lettertype = LETTER_TYPE_NORMAL);
 
 private:
-
 	SDL_Surface *m_FontSurface;
-
 };
 
 #endif /* CFONT_H_ */
