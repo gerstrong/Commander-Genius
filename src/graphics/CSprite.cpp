@@ -58,7 +58,6 @@ void CSprite::applyTransparency()
 	Uint8 *maskpx;
 	Uint32 colour, mask;
 	Uint8 r,g,b,a;
-	Uint8 m_r,m_g,m_b,m_a;
 
 	if(!m_surface) return;
 
@@ -73,7 +72,7 @@ void CSprite::applyTransparency()
 		for( Uint8 x=0 ; x<m_xsize ; x++ )
 		{
 			memcpy( &colour, pixel, m_surface->format->BytesPerPixel );
-			memcpy( &mask, maskpx, m_surface->format->BytesPerPixel );
+			memcpy( &mask, pixel, m_surface->format->BytesPerPixel );
 
 			SDL_GetRGBA( colour, m_surface->format, &r, &g, &b, &a );
 			//SDL_GetRGB( mask, m_masksurface->format, &m_r, &m_g, &m_b );

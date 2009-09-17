@@ -167,12 +167,14 @@ bool CEGALatch::loadData( std::string &m_path, short m_episode, bool compressedd
          }
        }
      }
+     if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
+
      Font->generateSpecialTwirls();
      Font->generateGlowFonts();
      Font->generateInverseFonts();
      Font->generateDisabledFonts();
      Font->optimizeSurface();
-     if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
+
      delete Planes;
 
      // Load 32x32 Tiles

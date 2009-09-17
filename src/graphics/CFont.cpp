@@ -14,7 +14,7 @@ CFont::CFont() {
 }
 
 CFont::~CFont() {
-	if(m_FontSurface) delete m_FontSurface;
+	if(m_FontSurface) SDL_FreeSurface(m_FontSurface);
 }
 
 bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags)

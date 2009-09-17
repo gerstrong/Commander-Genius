@@ -427,6 +427,7 @@ bool CGame::loadResources(unsigned short Episode, const std::string& DataDirecto
 	}
 
 	// Decode the entire graphics for the game (EGALATCH, EGASPRIT)
+	if(EGAGraphics) delete EGAGraphics;
     EGAGraphics = new CEGAGraphics(Episode, DataDirectory); // Path is relative to the data dir
     if(!EGAGraphics) return 1;
 
