@@ -81,6 +81,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 {
 	char *RawData;
     SDL_Surface *sfc;
+    SDL_Surface *pixsfc;
     Uint8* pixel;
 
 	FILE* latchfile = OpenGameFile(filename.c_str(),"rb");
@@ -131,7 +132,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 															 (Sprite[i].hitbox_u << CSF),
 															 (Sprite[i].hitbox_r << CSF),
 															 (Sprite[i].hitbox_b << CSF) );
-    	 g_pGfxEngine->Sprite[i]->createSurface( g_pVideoDriver->SpriteLayerSurface->flags,
+    	 g_pGfxEngine->Sprite[i]->createSurface( g_pVideoDriver->BlitSurface->flags,
 												 g_pGfxEngine->Palette.m_Palette );
      }
 
@@ -165,33 +166,42 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
      // use white on black masks whereas keen uses black on white.
      for(int s=0 ; s<m_numsprites ; s++)
      {
-       sfc = g_pGfxEngine->Sprite[s]->getSDLSurface();
+       pixsfc = g_pGfxEngine->Sprite[s]->getSDLSurface();
+       sfc = g_pGfxEngine->Sprite[s]->getSDLMaskSurface();
+
+       if(SDL_MUSTLOCK(pixsfc)) SDL_LockSurface(pixsfc);
        if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
+
        pixel = (Uint8*) sfc->pixels;
 
        for(int y=0 ; y<sfc->h ; y++)
        {
          for(int x=0 ; x<sfc->w ; x++)
          {
-            if(Planes->getbit(RawData, 4)) pixel[y*sfc->w + x] = COLORKEY;
+            pixel[y*sfc->w + x] = Planes->getbit(RawData, 4) ? ((Uint8*)pixsfc->pixels)[y*pixsfc->w + x] : 15;
          }
        }
 
+
        if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
+       if(SDL_MUSTLOCK(pixsfc)) SDL_UnlockSurface(pixsfc);
      }
 
      delete Planes;
 
      if(RawData){ delete[] RawData; RawData = NULL;}
 
-     // Now create special sprites for some neat effects!
-     DeriveSpecialSprites( g_pGfxEngine->Tilemap, &g_pGfxEngine->Sprite[0] );
-
      // Now load the special TGA Sprites if some are available
      LoadSpecialSprites( g_pGfxEngine->Sprite );
 
      for(Uint16 s=0 ; s<g_pGfxEngine->Sprite.size() ; s++)
+     {
     	 g_pGfxEngine->Sprite[s]->optimizeSurface();
+    	 g_pGfxEngine->Sprite[s]->applyTransparency();
+     }
+
+     // Now create special sprites for some neat effects!
+     DeriveSpecialSprites( g_pGfxEngine->Tilemap, &g_pGfxEngine->Sprite[0] );
 
 	return true;
 }
@@ -208,7 +218,7 @@ int w,h;
 unsigned char r,g,b,a;
 int c;
 std::string fname;
-Uint8* pixel;
+Uint8 *pixel, *maskpx;
 
 	fname = GFXDIR + filename;
 	if (LoadTGA(fname, &image, &w, &h))
@@ -222,12 +232,17 @@ Uint8* pixel;
 
 	base = image;
 	sprite->setSize(w, h);
-	sprite->createSurface( g_pVideoDriver->SpriteLayerSurface->flags, g_pGfxEngine->Palette.m_Palette );
+	sprite->createSurface( g_pVideoDriver->BlitSurface->flags, g_pGfxEngine->Palette.m_Palette );
 
 	SDL_Surface *sfc = sprite->getSDLSurface();
+	SDL_Surface *msksfc = sprite->getSDLMaskSurface();
 
 	if(SDL_MUSTLOCK(sfc))	SDL_LockSurface(sfc);
+	if(SDL_MUSTLOCK(msksfc))	SDL_LockSurface(msksfc);
+
 	pixel = (Uint8*) sfc->pixels;
+	maskpx = (Uint8*) msksfc->pixels;
+
 	for(y=h-1;y>=0;y--)
 	{
 		for(x=0;x<w;x++)
@@ -240,12 +255,15 @@ Uint8* pixel;
 				if (c==-1) return 1;
 
 				pixel[y*w + x] = c;
+				maskpx[y*w + x] = 15;
 			}
 			else
-				pixel[y*w + x] = COLORKEY;
+				maskpx[y*w + x] = 0;
 		}
 	}
-	if(SDL_MUSTLOCK(sfc))	SDL_UnlockSurface(sfc);
+
+	if(SDL_MUSTLOCK(msksfc)) SDL_UnlockSurface(msksfc);
+	if(SDL_MUSTLOCK(sfc))	 SDL_UnlockSurface(sfc);
 
 	sprite->m_bboxX1=0;
 	sprite->m_bboxY1=0;
@@ -309,8 +327,9 @@ void CEGASprit::CreateYellowSpriteofTile( CTilemap *tilemap, Uint16 tile, CSprit
 	tile_rect.w = tile_rect.h= 16;
 
 	sprite->setSize(tile_rect.w, tile_rect.h);
-	sprite->createSurface( g_pVideoDriver->SpriteLayerSurface->flags,
+	sprite->createSurface( g_pVideoDriver->BlitSurface->flags,
 						   g_pGfxEngine->Palette.m_Palette );
+	sprite->optimizeSurface();
 
 	SDL_Surface *src_sfc = sprite->getSDLSurface();
 
@@ -319,16 +338,26 @@ void CEGASprit::CreateYellowSpriteofTile( CTilemap *tilemap, Uint16 tile, CSprit
 	if(SDL_MUSTLOCK(src_sfc)) SDL_LockSurface(src_sfc);
 
 	// The first pixel is usually the transparent one on items. Use it!
-	Uint8* pixel = (Uint8*) src_sfc->pixels;
-	Uint8 transparent_colour = pixel[0];
+	Uint8* pixel = (Uint8*)src_sfc->pixels;
+	Uint32 transparent_colour;
+	Uint32 colour;
+	Uint8 r,g,b,a;
+	memcpy(&transparent_colour, pixel, src_sfc->format->BytesPerPixel);
 	for(Uint8 x=0 ; x<16 ; x++)
 	{
 		for(Uint8 y=0 ; y<16 ; y++)
 		{
-			if( *pixel == transparent_colour ) *pixel = COLORKEY;
-			else if( *pixel != 0 && *pixel != 16 )	*pixel = 14; // Yellow (Light brown)
+			memcpy(&colour, pixel, src_sfc->format->BytesPerPixel);
+			SDL_GetRGBA( colour, src_sfc->format, &r, &g, &b, &a );
+			if( colour == transparent_colour )
+				a = 0;
+			if( r!=0 && g!=0 && b!=0 && a!=0)
+				r = g = 255;
 
-			pixel++;
+			colour = SDL_MapRGBA( src_sfc->format, r, g, b, a );
+			memcpy( pixel, &colour ,src_sfc->format->BytesPerPixel);
+
+			pixel += src_sfc->format->BytesPerPixel;
 		}
 	}
 

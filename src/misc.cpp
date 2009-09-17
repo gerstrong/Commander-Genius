@@ -581,7 +581,6 @@ top: ;
 	}
 
 	gamedo_frameskipping_blitonly();
-	gamedo_render_eraseobjects();
 
 	g_pInput->pollEvents();
 	  if (g_pInput->getPressedKey(KQUIT))
@@ -660,7 +659,6 @@ top: ;
 	  }
 
 	  gamedo_frameskipping_blitonly();
-	  gamedo_render_eraseobjects();
 
 	  g_pInput->pollEvents();
   } while(!g_pInput->getPressedKey(KQUIT));
@@ -703,7 +701,6 @@ int dlgX,dlgY,dlgW,dlgH;
 	g_pGfxEngine->Font->drawFont( sfc, getstring("GameSaveSuccess"), (dlgX+1)<<3, (dlgY+1)<<3 );
 
 	gamedo_frameskipping_blitonly();
-	gamedo_render_eraseobjects();
 
 	g_pInput->pollEvents();
   } while(!g_pInput->getPressedAnyKey());
@@ -757,7 +754,6 @@ int dlgX,dlgY,dlgW,dlgH;
 	g_pInput->pollEvents();
 
 	gamedo_frameskipping_blitonly();
-	gamedo_render_eraseobjects();
   } while(1);
 }
 

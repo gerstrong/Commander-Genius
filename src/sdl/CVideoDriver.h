@@ -95,7 +95,6 @@ public:
 
 	SDL_Surface *screen;                   // the actual video memory/window
 	SDL_Surface *BlitSurface;
-	SDL_Surface *SpriteLayerSurface;   // For the sprites
 	SDL_Surface *FGLayerSurface;       // Scroll buffer for Messages
 	SDL_Surface *ScrollSurface;       // 512x512 scroll buffer
 	SDL_Surface *FXSurface;

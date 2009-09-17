@@ -7,6 +7,7 @@
 
 #include "CSprite.h"
 #include "CPalette.h"
+#include "../sdl/CVideoDriver.h"
 
 CSprite::CSprite() {
 	m_xsize = m_ysize = 0;
@@ -16,7 +17,8 @@ CSprite::CSprite() {
 }
 
 CSprite::~CSprite() {
-	if(m_surface) SDL_FreeSurface(m_surface);	// TODO Auto-generated destructor stub
+	if(m_surface) SDL_FreeSurface(m_surface);
+	if(m_masksurface) SDL_FreeSurface(m_masksurface);
 }
 
 /////////////////////////////
@@ -27,7 +29,11 @@ bool CSprite::createSurface(Uint32 flags, SDL_Color *Palette)
 	m_surface = SDL_CreateRGBSurface( flags, m_xsize, m_ysize, 8, 0, 0, 0, 0);
 	SDL_SetColors( m_surface, Palette, 0, 255);
 	SDL_SetColorKey( m_surface, SDL_SRCCOLORKEY, COLORKEY ); // One black is the color key. There is another black, as normal color
-	return ( m_surface != NULL );
+	m_masksurface = SDL_CreateRGBSurface( flags, m_xsize, m_ysize, 8, 0, 0, 0, 0);
+	SDL_SetColors( m_masksurface, Palette, 0, 255);
+	SDL_SetColorKey( m_masksurface, SDL_SRCCOLORKEY, COLORKEY ); // One black is the color key. There is another black, as normal color
+
+	return ( m_surface != NULL && m_masksurface != NULL );
 }
 
 bool CSprite::optimizeSurface()
@@ -35,13 +41,58 @@ bool CSprite::optimizeSurface()
 	if(m_surface)
 	{
 		SDL_Surface *temp_surface;
-		temp_surface = SDL_DisplayFormat(m_surface);
+
+		temp_surface = SDL_DisplayFormatAlpha(m_surface);
 		SDL_FreeSurface(m_surface);
 		m_surface = temp_surface;
+
         return true;
 	}
 	else
         return false;
+}
+
+void CSprite::applyTransparency()
+{
+	Uint8 *pixel;
+	Uint8 *maskpx;
+	Uint32 colour, mask;
+	Uint8 r,g,b,a;
+	Uint8 m_r,m_g,m_b,m_a;
+
+	if(!m_surface) return;
+
+	if(SDL_MUSTLOCK(m_surface)) SDL_LockSurface(m_surface);
+	if(SDL_MUSTLOCK(m_masksurface)) SDL_LockSurface(m_masksurface);
+
+	pixel = (Uint8*)m_surface->pixels;
+	maskpx = (Uint8*)m_masksurface->pixels;
+
+	for( Uint8 y=0 ; y<m_ysize ; y++ )
+	{
+		for( Uint8 x=0 ; x<m_xsize ; x++ )
+		{
+			memcpy( &colour, pixel, m_surface->format->BytesPerPixel );
+			memcpy( &mask, maskpx, m_surface->format->BytesPerPixel );
+
+			SDL_GetRGBA( colour, m_surface->format, &r, &g, &b, &a );
+			//SDL_GetRGB( mask, m_masksurface->format, &m_r, &m_g, &m_b );
+
+			if(*maskpx<16)
+				a = (255*(*maskpx))/15;
+			else a = 255;
+
+			colour = SDL_MapRGBA( m_surface->format, r, g, b, a );
+
+			memcpy( pixel, &colour, m_surface->format->BytesPerPixel );
+
+			pixel += m_surface->format->BytesPerPixel;
+			maskpx += m_masksurface->format->BytesPerPixel;
+		}
+	}
+	if(SDL_MUSTLOCK(m_masksurface)) SDL_LockSurface(m_masksurface);
+	if(SDL_MUSTLOCK(m_surface)) SDL_LockSurface(m_surface);
+
 }
 
 ///
@@ -103,6 +154,11 @@ SDL_Surface *CSprite::getSDLSurface()
 	return m_surface;
 }
 
+SDL_Surface *CSprite::getSDLMaskSurface()
+{
+	return m_masksurface;
+}
+
 ///
 // Drawing Routines
 ///
@@ -117,13 +173,4 @@ void CSprite::drawSprite( SDL_Surface *dst, Uint16 x, Uint16 y )
 	src_rect.h = dst_rect.h;
 
 	SDL_BlitSurface( m_surface, &src_rect, dst, &dst_rect );
-}
-
-void CSprite::eraseSprite( SDL_Surface *dst,  Uint16 x, Uint16 y )
-{
-	SDL_Rect dst_rect;
-	dst_rect.x = x;			dst_rect.y = y;
-	dst_rect.w = m_xsize;	dst_rect.h = m_ysize;
-
-	SDL_FillRect(dst, &dst_rect, dst->format->colorkey);
 }

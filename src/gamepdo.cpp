@@ -161,7 +161,7 @@ void gamepdo_dieanim(int cp, stLevelControl *p_levelcontrol)
     	   // figure out where to center the gameover bitmap and draw it
 		   int x = (320/2)-(bm_gameover->getWidth()/2);
 		   int y = (200/2)-(bm_gameover->getHeight()/2);
-		   bm_gameover->draw(g_pVideoDriver->SpriteLayerSurface, x, y);
+		   bm_gameover->draw(g_pVideoDriver->BlitSurface, x, y);
 
        }
        else

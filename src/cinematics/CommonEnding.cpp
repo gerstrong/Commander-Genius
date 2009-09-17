@@ -73,7 +73,6 @@ SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
   {
 	  if(g_pGfxEngine->Palette.in_progress())
 		  g_pGfxEngine->Palette.applyFade();
-	  gamedo_render_eraseobjects();
 	  gamedo_AnimatedTiles();
 	  gamedo_render_drawobjects();
 
@@ -84,7 +83,7 @@ SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
 	  if(amountshown < tempbuf.size())
 		  tempbuf.erase(amountshown);
 	  if( spritesurface )
-		  SDL_BlitSurface( spritesurface, NULL, g_pVideoDriver->SpriteLayerSurface, NULL );
+		  SDL_BlitSurface( spritesurface, NULL, g_pVideoDriver->BlitSurface, NULL );
 	  g_pGfxEngine->drawDialogBox(sfc, boxleft,boxtop,boxwidth,boxheight);
 	  g_pGfxEngine->Font->drawFont(sfc, tempbuf, (boxleft+1)*8, (boxtop+1)*8);
 

@@ -372,17 +372,6 @@ bool CVideoDriver::createSurfaces(void)
 	//Set surface alpha
 	SDL_SetAlpha( FGLayerSurface, SDL_SRCALPHA, 225 );
 
-	temp_surface = SDL_CreateRGBSurface( Mode, 320, 200, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
-	SpriteLayerSurface = SDL_DisplayFormatAlpha( temp_surface );
-	if (!SpriteLayerSurface)
-	{
-		g_pLogFile->textOut(RED,"VideoDriver: Couldn't create SpriteLayerSurface!<br>");
-	  return false;
-	}
-	//SDL_SetColorKey( SpriteLayerSurface, SDL_SRCCOLORKEY,
-		//			SDL_MapRGB(SpriteLayerSurface->format, 0, 0xFF, 0xFE) );
-	//SDL_FillRect( SpriteLayerSurface, NULL, SDL_MapRGB(SpriteLayerSurface->format, 0, 0xFF, 0xFF) );
-
 	FXSurface =  SDL_CreateRGBSurface( Mode, 320, 200, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
 	if (!FXSurface)
 	{
@@ -405,7 +394,7 @@ bool CVideoDriver::createSurfaces(void)
     	g_pLogFile->textOut("Blitsurface = creatergbsurfacefrom<br>");
     	temp_surface = SDL_CreateRGBSurface(Mode,GAME_STD_WIDTH, GAME_STD_HEIGHT, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
     	BlitSurface = SDL_DisplayFormatAlpha( temp_surface );
-	SDL_FreeSurface(temp_surface);
+    	SDL_FreeSurface(temp_surface);
 		if (!BlitSurface)
 		{
 			g_pLogFile->textOut(RED,"VidDrv_Start(): Couldn't create BlitSurface!<br>");
@@ -516,12 +505,11 @@ char tempbuf[80];
      g_pGfxEngine->Font->drawFont( FGLayerSurface, tempbuf, 320-3-(strlen( (char *) tempbuf)<<3), 3, 1);
    }
 
-   update_screen();
+   //update_screen();
 }
 
 void CVideoDriver::update_screen(void)
 {
-	SDL_BlitSurface(SpriteLayerSurface, NULL, BlitSurface, NULL);
 	SDL_BlitSurface(FGLayerSurface, NULL, BlitSurface, NULL);
 
 	if(FXSurface->format->alpha)
@@ -534,7 +522,6 @@ void CVideoDriver::update_screen(void)
 
 	   // Flush the FG-Layer
 	   SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE));
-	   SDL_FillRect(SpriteLayerSurface, NULL, SDL_MapRGBA(SpriteLayerSurface->format, 0, 0, 0, 0));
    }
    else // No OpenGL but Software Rendering
    {
@@ -649,7 +636,6 @@ void CVideoDriver::update_screen(void)
 
 	   // Flush the FG-Layer
 	   SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE));
-	   SDL_FillRect(SpriteLayerSurface, NULL, SDL_MapRGBA(SpriteLayerSurface->format, 0, 0, 0, 0));
 
 #ifdef USE_OPENGL
    }

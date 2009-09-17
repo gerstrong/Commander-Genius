@@ -17,15 +17,16 @@ public:
 
 	bool createSurface(Uint32 flags, SDL_Color *Palette);
 	bool optimizeSurface();
+	void applyTransparency();
 	void copy( CSprite *Destination, SDL_Color *Palette );
 	void replaceSpriteColor(Uint16 find, Uint16 replace, Uint16 miny);
 
 	void setSize(Uint8 w, Uint8 h);
 	void setBouncingBoxCoordinates( Uint16 bboxx1, Uint16 bboxy1, Uint16 bboxx2, Uint16 bboxy2 );
 	SDL_Surface *getSDLSurface();
+	SDL_Surface *getSDLMaskSurface();
 
 	void drawSprite( SDL_Surface *dst, Uint16 x, Uint16 y );
-	void eraseSprite( SDL_Surface *dst,  Uint16 x, Uint16 y );
 
 	Uint8 getWidth() { return m_xsize; };
 	Uint8 getHeight() { return m_ysize; };
@@ -38,6 +39,7 @@ public:
 
 private:
 	SDL_Surface* m_surface;
+	SDL_Surface* m_masksurface;
 
 	Uint8 m_xsize, m_ysize;
 };

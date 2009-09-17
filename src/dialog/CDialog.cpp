@@ -173,6 +173,7 @@ void CDialog::render()
 
 	// blit the scrollbuffer to the display
 	g_pVideoDriver->sb_blit();
+	g_pVideoDriver->update_screen();
 	g_pTimer->TimeToDelay();
 }
 

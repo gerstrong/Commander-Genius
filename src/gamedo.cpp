@@ -537,7 +537,7 @@ int xa,ya;
     		  objects[i].scry = ((objects[i].y>>CSF)-scroll_y);
     	  }
     	  //g_pGraphics->drawSprite(objects[i].scrx, objects[i].scry, objects[i].sprite, i);
-    	  g_pGfxEngine->Sprite[objects[i].sprite]->drawSprite( g_pVideoDriver->SpriteLayerSurface,
+    	  g_pGfxEngine->Sprite[objects[i].sprite]->drawSprite( g_pVideoDriver->BlitSurface,
 															  objects[i].scrx, objects[i].scry );
 
 
@@ -560,7 +560,7 @@ int xa,ya;
 
             // now redraw any priority/masked tiles that we covered up
             // with the sprite
-            SDL_Surface *sfc = g_pVideoDriver->SpriteLayerSurface;
+            SDL_Surface *sfc = g_pVideoDriver->BlitSurface;
             SDL_Rect sfc_rect;
             sfc_rect.w = sfc_rect.h = 16;
 
@@ -582,22 +582,6 @@ int xa,ya;
    }
 }
 
-void gamedo_render_eraseobjects(void)
-{
-int i;
-
-   // erase all objects.
-   // note that this is done in the reverse order they are drawn.
-   // this is necessary or you will see corrupted pixels when
-   // two objects are occupying the same space.
-   SDL_Surface *spr_sfc = g_pVideoDriver->SpriteLayerSurface;
-   for(i=0;i<MAX_OBJECTS;i++)
-   {
-      if (objects[i].exists && objects[i].onscreen)
-    	  g_pGfxEngine->Sprite[objects[i].sprite]->eraseSprite(spr_sfc, objects[i].scrx, objects[i].scry );
-   }
-}
-
 extern int NumConsoleMessages;
 
 // draws sprites, players, and debug messages (if debug mode is on),
@@ -608,11 +592,11 @@ void gamedo_RenderScreen()
 {
    if( g_pTimer->TimeToRender() == false ) return;
 
-   gamedo_render_drawobjects(); // (Sprites)
-
    g_pVideoDriver->sb_blit();	// blit scrollbuffer to display (Tiles)
 
-   gamedo_render_eraseobjects();
+   gamedo_render_drawobjects(); // (Sprites)
+
+   g_pVideoDriver->update_screen();
 
     g_pTimer->TimeToDelay();
 
@@ -736,6 +720,8 @@ void gamedo_frameskipping_blitonly()
 	if( g_pTimer->TimeToRender() == false ) return;
 
     	g_pVideoDriver->sb_blit();
+
+    	g_pVideoDriver->update_screen();
 
 	g_pTimer->TimeToDelay();
 }

@@ -62,7 +62,7 @@ char eseq3_AwardBigV(stCloneKeenPlus *pCKP)
   eseq_showmsg(getstring("EP3_ESEQ_PAGE3"),x,y,w,h, true);
   eseq_showmsg(getstring("EP3_ESEQ_PAGE4"),x,y,w,h, true);
 
-  SDL_Surface *finale_sfc = SDL_CreateRGBSurface( g_pVideoDriver->SpriteLayerSurface->flags, 320, 200, 8, 0, 0, 0, 0);
+  SDL_Surface *finale_sfc = SDL_CreateRGBSurface( g_pVideoDriver->BlitSurface->flags, 320, 200, 8, 0, 0, 0, 0);
   SDL_SetColors( finale_sfc, g_pGfxEngine->Palette.m_Palette, 0, 255);
   finale_draw( finale_sfc, "finale.ck3", pCKP->Resources.GameDataDirectory);
   scrollx_buf = scrolly_buf = 0;

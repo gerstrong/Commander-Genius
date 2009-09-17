@@ -309,6 +309,7 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
 			if( g_pTimer->TimeToRender() == false ) continue;
 			g_pGfxEngine->Palette.applyFade();
 			g_pVideoDriver->sb_blit();
+			g_pVideoDriver->update_screen();
 			g_pTimer->TimeToDelay();
 		} while(g_pGfxEngine->Palette.in_progress());
 

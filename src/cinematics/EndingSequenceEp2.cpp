@@ -408,7 +408,6 @@ int afterfadewaittimer;
 	  gamedo_ScrollTriggers(0);
 	  gamedo_render_drawobjects();
 	  gamedo_RenderScreen();
-	  gamedo_render_eraseobjects();
 	  g_pInput->pollEvents();
   } while(!g_pInput->getPressedKey(KQUIT));
   return 1;
@@ -475,7 +474,6 @@ int afterfadewaittimer = 0;
 	  gamedo_AnimatedTiles();
 	  gamedo_render_drawobjects();
 	  gamedo_RenderScreen();
-	  gamedo_render_eraseobjects();
 	  g_pInput->pollEvents();
 
   } while(!g_pInput->getPressedKey(KQUIT));
@@ -494,7 +492,7 @@ int dlgX, dlgY, dlgW, dlgH;
   scrollx_buf = scroll_x = 0;
   scrolly_buf = scroll_y = 0;
 
-  SDL_Surface *finale_sfc = SDL_CreateRGBSurface( g_pVideoDriver->SpriteLayerSurface->flags, 320, 200, 8, 0, 0, 0, 0);
+  SDL_Surface *finale_sfc = SDL_CreateRGBSurface( g_pVideoDriver->BlitSurface->flags, 320, 200, 8, 0, 0, 0, 0);
   SDL_SetColors( finale_sfc, g_pGfxEngine->Palette.m_Palette, 0, 255);
   finale_draw( finale_sfc, "finale.ck2", pCKP->Resources.GameDataDirectory);
 
@@ -507,7 +505,7 @@ int dlgX, dlgY, dlgW, dlgH;
   do
   {
 		// Draw uncompressed finale Plot
-		SDL_BlitSurface( finale_sfc, NULL, g_pVideoDriver->SpriteLayerSurface, NULL );
+		SDL_BlitSurface( finale_sfc, NULL, g_pVideoDriver->BlitSurface, NULL );
 
 		tempstr = "EP2_ESEQ_PART3_PAGE" + itoa(curpage);
 		text = getstring(tempstr);
@@ -525,7 +523,7 @@ int dlgX, dlgY, dlgW, dlgH;
 
   finale_draw( finale_sfc, "finale.ck2", pCKP->Resources.GameDataDirectory);
   // Draw uncompressed finale Plot
-  SDL_BlitSurface( finale_sfc, NULL, g_pVideoDriver->SpriteLayerSurface, NULL );
+  SDL_BlitSurface( finale_sfc, NULL, g_pVideoDriver->BlitSurface, NULL );
   eseq_ToBeContinued( finale_sfc );
   SDL_FreeSurface( finale_sfc );
 
