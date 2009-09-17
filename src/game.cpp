@@ -773,11 +773,32 @@ unsigned int rect2x1, rect2y1, rect2x2, rect2y2;
   rect2x2 = objects[object2].x + spr2->m_bboxX2;
   rect2y2 = objects[object2].y + spr2->m_bboxY2;
 
+  SDL_Rect rect1;
+  SDL_Rect rect2;
+  rect1.x = (rect1x1>>CSF) - scroll_x;
+  rect1.w = (spr1->m_bboxX2>>CSF);
+  rect1.y = (rect1y1>>CSF) - scroll_y;
+  rect1.h = (spr1->m_bboxY2>>CSF);
+  rect2.x = (rect2x1>>CSF) - scroll_x;
+  rect2.w = (spr2->m_bboxX2>>CSF);
+  rect2.y = (rect2y1>>CSF) - scroll_y;
+  rect2.h = (spr2->m_bboxY2>>CSF);;
+
+  SDL_FillRect( g_pVideoDriver->FGLayerSurface, &rect1, 0 );
+  SDL_FillRect( g_pVideoDriver->FGLayerSurface, &rect2, 0 );
+
   // find out if the rectangles overlap
   if ((rect1x1 < rect2x1) && (rect1x2 < rect2x1)) return 0;
   if ((rect1x1 > rect2x2) && (rect1x2 > rect2x2)) return 0;
   if ((rect1y1 < rect2y1) && (rect1y2 < rect2y1)) return 0;
   if ((rect1y1 > rect2y2) && (rect1y2 > rect2y2)) return 0;
+
+  printf("object1: %d\n", object1);
+  printf(" %d :  %d\n", rect1x1, rect1y1);
+  printf(" %d :  %d\n", rect1x2, rect1y2);
+  printf("object2: %d\n", object2);
+  printf(" %d :  %d\n", rect2x1, rect2y1);
+  printf(" %d :  %d\n", rect2x2, rect2y2);
 
   return 1;
 }
