@@ -758,8 +758,8 @@ unsigned int rect1x1, rect1y1, rect1x2, rect1y2;
 unsigned int rect2x1, rect2y1, rect2x2, rect2y2;
 
   // get the sprites used by the two objects
-  spr1 = g_pGfxEngine->Sprite[objects[object1].sprite];
-  spr2 = g_pGfxEngine->Sprite[objects[object2].sprite];
+  spr1 = g_pGfxEngine->Sprite.at(objects[object1].sprite);
+  spr2 = g_pGfxEngine->Sprite.at(objects[object2].sprite);
 
   // get the bounding rectangle of the first object
   rect1x1 = objects[object1].x + spr1->m_bboxX1;
