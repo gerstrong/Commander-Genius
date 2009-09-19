@@ -75,7 +75,6 @@ void CSprite::applyTransparency()
 			memcpy( &mask, pixel, m_surface->format->BytesPerPixel );
 
 			SDL_GetRGBA( colour, m_surface->format, &r, &g, &b, &a );
-			//SDL_GetRGB( mask, m_masksurface->format, &m_r, &m_g, &m_b );
 
 			if(*maskpx<16)
 				a = (255*(*maskpx))/15;

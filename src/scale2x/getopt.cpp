@@ -60,7 +60,7 @@ int getopt(int nargc, char *const nargv[], const char *ostr)
   }
 
   if ((optopt = (int)*place++) == (int)':'
-      || !(oli = strchr(ostr, optopt)))
+      || !(oli = strchr((char *)ostr, optopt)))
   {
     /*
      * if the user didn't specify '-' as an option,
