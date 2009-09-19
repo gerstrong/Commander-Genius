@@ -92,6 +92,7 @@ public:
 
 	void setAspectCorrection(bool value) { m_aspect_correction = value; }
 	bool getAspectCorrection(void) { return m_aspect_correction; }
+	SDL_Rect getGameResRect() { return game_resolution_rect; }
 
 	SDL_Surface *screen;                   // the actual video memory/window
 	SDL_Surface *BlitSurface;
@@ -125,13 +126,6 @@ private:
 	SDL_Rect screenrect;
 	SDL_Rect blitrect;
 
-	//SDL_Surface *FGLayerSurface;       // Scroll buffer for Messages
-	// This one is not allowed here! Used only for tests!
-	//SDL_Surface *screen;                   // the actual video memory/window
-	// pointer to the surface that sb_blit is to assemble the scroll buffer into.
-	// if zoom=1 this is the same as "screen", else it's allocated as it's own
-	// buffer of 320x200.
-	//SDL_Surface *BlitSurface;
-
+	SDL_Rect game_resolution_rect;
 };
 #endif /* CVIDEODRIVER_H_ */

@@ -1273,7 +1273,7 @@ int timeout;
    map.firsttime = 0;
    // set the maximum amount the map is allowed to scroll
    max_scroll_x = (map.xsize-2-(320/16))<<4;
-   max_scroll_y = (map.ysize<<4)-200-32;
+   max_scroll_y = (map.ysize<<4)-g_pVideoDriver->getGameResRect().h-32;
 
    // players start facing left if the start position
    // is on the left half of the map, else right

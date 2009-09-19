@@ -371,9 +371,6 @@ int getDifficulty(stCloneKeenPlus *pCKP)
 	int x;
 	CBitmap *bm_title = g_pGfxEngine->getBitmap("TITLE");
 
-	//x = (320/2)-(bm_title->getWidth()/2);
-
-	//bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
 
 	// Prepare the Games Menu
 	CDialog DifficultyMenu(g_pVideoDriver->FGLayerSurface, /*120,32,*/ 14, 6);
@@ -404,15 +401,11 @@ int AudioDlg(stCloneKeenPlus *pCKP)
 	int selection;
 	int x;
 	int ok=0;
-	CBitmap *bm_title = g_pGfxEngine->getBitmap("TITLE");
+	CBitmap *bm_title = g_pGfxEngine->getBitmap("TITLE");	// Load the Title Bitmap
 
 	int rate = 0;
 	Uint16 format = 0;
 	short mode=0;
-
-	// Load the Title Bitmap
-	//x = (320/2)-(bm_title->getWidth()/2);
-	//bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
 
 	// Prepare the Games Menu
 	CDialog AudioMenu(g_pVideoDriver->FGLayerSurface, /*32, 32,*/ 32, 8);
@@ -505,13 +498,9 @@ void OptionsDlg(stCloneKeenPlus *pCKP)
 {
 	int selection;
 	int x,i;
-	CBitmap *bm_title = g_pGfxEngine->getBitmap("TITLE");
+	CBitmap *bm_title = g_pGfxEngine->getBitmap("TITLE"); 	// Load the Title Bitmap
 
 	std::string buf;
-
-	// Load the Title Bitmap
-	//x = (320/2)-(bm_title->getWidth()/2);
-	//bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
 
 	// Prepare the Games Menu
 	CDialog OptionsMenu(g_pVideoDriver->FGLayerSurface, /*24, 24,*/ 34, 13);
@@ -586,11 +575,10 @@ short GraphicsDlg(stCloneKeenPlus *pCKP, int ingame)
 	std::string buf;
 	short retval = 0;
 	Uint8 autoframeskip = 0;
-	CBitmap *bm_title = g_pGfxEngine->getBitmap("TITLE"), *bm_f1help = g_pGfxEngine->getBitmap("F1HELP");
+	CBitmap *bm_title = g_pGfxEngine->getBitmap("TITLE"),
+			*bm_f1help = g_pGfxEngine->getBitmap("F1HELP");
 
-	// Load the Title Bitmap
 	x = (320/2)-(bm_title->getWidth()/2);
-	//bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
 
 	width  = g_pVideoDriver->getWidth();
 	height = g_pVideoDriver->getHeight();
@@ -820,18 +808,8 @@ char configmenu(stCloneKeenPlus *pCKP,int ingame)
 {
 	int selection;
 	int x;
-	CBitmap *title_bitmap = g_pGfxEngine->getBitmap("TITLE"), *bm_f1help = g_pGfxEngine->getBitmap("F1HELP");
-
-	// Load the Title Bitmap
-
-	//x = (320/2)-(title_bitmap->getWidth()/2);
-	//title_bitmap->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
-
-	// Draw Help Text-Screen
-	//if(pCKP->Control.levelcontrol.episode == 3)
-	//	bm_f1help->draw( g_pVideoDriver->getScrollSurface(), 128+scroll_x, 181+scroll_y);
-	//else
-	//	bm_f1help->draw( g_pVideoDriver->getScrollSurface(), 96+scroll_x, 181+scroll_y);
+	CBitmap *title_bitmap = g_pGfxEngine->getBitmap("TITLE"),
+			*bm_f1help = g_pGfxEngine->getBitmap("F1HELP");
 
 	// Prepare the Games Menu
 	CDialog OptionsMenu(g_pVideoDriver->FGLayerSurface, /*120, 32,*/ 14, 8);
@@ -877,12 +855,6 @@ char configmenu(stCloneKeenPlus *pCKP,int ingame)
 			default:
 				break;
 			}
-			//map_redraw();
-			//title_bitmap->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
-			//if(pCKP->Control.levelcontrol.episode == 3)
-			//	bm_f1help->draw( g_pVideoDriver->getScrollSurface(), 128+scroll_x, 181+scroll_y);
-			//else
-			//	bm_f1help->draw( g_pVideoDriver->getScrollSurface(), 96+scroll_x, 181+scroll_y);
 			OptionsMenu.setSDLSurface(g_pVideoDriver->FGLayerSurface);
 		}
 		OptionsMenu.processlogic();
@@ -899,9 +871,6 @@ char controlsmenu()
 	std::string buf;
 	std::string buf2;
 	CBitmap *bm_title = g_pGfxEngine->getBitmap("TITLE");
-
-	//x = (320/2)-(bm_title->getWidth()/2);
-	//bm_title->draw( g_pVideoDriver->getScrollSurface(), x+scroll_x, scroll_y+1 );
 
 	// Prepare the Games Menu
 	CDialog ControlsMenu(g_pVideoDriver->FGLayerSurface, /*8, 16,*/ 38, 22);

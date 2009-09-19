@@ -34,8 +34,6 @@ using namespace std;
 unsigned char *VRAMPtr;
 char blitsurface_alloc = 0;
 
-SDL_Rect game_resolution_rect;
-
 typedef struct stConsoleMessage
 {
   char msg[80];
