@@ -144,63 +144,61 @@ short loadResourcesforStartMenu(stCloneKeenPlus *pCKP, CGame *Game)
 
 bool loadStartMenu(stCloneKeenPlus *pCKP)
 {
-	CDialog *GamesMenu = new CDialog(g_pVideoDriver->FGLayerSurface, /*16, 8,*/ 36, 20);
+    // Prepare the Games Menu
+	CDialog GamesMenu(g_pVideoDriver->FGLayerSurface, /*16, 8,*/ 36, 20);
+
 	showmapatpos(90, 104<<4, 32, pCKP);
 
 	// Use the standard Menu-Frame used in the old DOS-Games
-	GamesMenu->setFrameTheme( DLG_THEME_OLDSCHOOL );
+	GamesMenu.setFrameTheme( DLG_THEME_OLDSCHOOL );
 
 	// Show me the games you detected!
 	for( int i=0 ; i < pCKP->numGames ; i++ )
-		GamesMenu->addObject(DLG_OBJ_OPTION_TEXT,1,i+1, pCKP->GameData[i].Name);
+		GamesMenu.addObject(DLG_OBJ_OPTION_TEXT,1,i+1, pCKP->GameData[i].Name);
 
 	do
 	{
 		gamedo_AnimatedTiles();
-		GamesMenu->processlogic();
-		GamesMenu->render();
+		GamesMenu.processlogic();
+		GamesMenu.render();
 	} while( !g_pInput->getPressedCommand(IC_JUMP) && !g_pInput->getPressedCommand(IC_STATUS) && !g_pInput->getExitEvent() );
 
 
-	pCKP->Resources.GameSelected = GamesMenu->getSelection()+1;
-	pCKP->Control.levelcontrol.episode = pCKP->GameData[GamesMenu->getSelection()].Episode;
-	pCKP->Resources.GameDataDirectory = pCKP->GameData[GamesMenu->getSelection()].DataDirectory;
-
-	delete GamesMenu;
+	pCKP->Resources.GameSelected = GamesMenu.getSelection()+1;
+	pCKP->Control.levelcontrol.episode = pCKP->GameData[GamesMenu.getSelection()].Episode;
+	pCKP->Resources.GameDataDirectory = pCKP->GameData[GamesMenu.getSelection()].DataDirectory;
 
 	return true;
 }
 
 int loadmainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 {
-	CDialog *MainMenu;
-	int selection;
+    int selection;
+    // Prepare the Games Menu
+	CDialog MainMenu(g_pVideoDriver->FGLayerSurface, /*88, 56,*/ 18, 13);
 
 	map_redraw();
 
-	// Prepare the Games Menu
-	MainMenu = new CDialog(g_pVideoDriver->FGLayerSurface, /*88, 56,*/ 18, 13);
-
 	// Use the standard Menu-Frame used in the old DOS-Games
-	MainMenu->setFrameTheme( DLG_THEME_OLDSCHOOL );
+	MainMenu.setFrameTheme( DLG_THEME_OLDSCHOOL );
 
 	// Show me the games you detected!
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "1-Player Game");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "2-Player Game");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Load Game");
-	MainMenu->addObject(DLG_OBJ_DISABLED,  1, 4, "Story");
-	MainMenu->addObject(DLG_OBJ_DISABLED,  1, 5, "Highscores");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Options");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT,  1, 7, "Back To Game");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Back To Title");
-	MainMenu->addObject(DLG_OBJ_DISABLED,  1, 9, "About CG");
-	MainMenu->addObject(DLG_OBJ_DISABLED,  1, 10, "Ordering Info");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 11, "Quit");
+	MainMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "1-Player Game");
+	MainMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "2-Player Game");
+	MainMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Load Game");
+	MainMenu.addObject(DLG_OBJ_DISABLED,  1, 4, "Story");
+	MainMenu.addObject(DLG_OBJ_DISABLED,  1, 5, "Highscores");
+	MainMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Options");
+	MainMenu.addObject(DLG_OBJ_OPTION_TEXT,  1, 7, "Back To Game");
+	MainMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Back To Title");
+	MainMenu.addObject(DLG_OBJ_DISABLED,  1, 9, "About CG");
+	MainMenu.addObject(DLG_OBJ_DISABLED,  1, 10, "Ordering Info");
+	MainMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 11, "Quit");
 
 	do
 	{
 		gamedo_AnimatedTiles();
-		MainMenu->processlogic();
+		MainMenu.processlogic();
 
 		if(g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedKey(KENTER))
 			break;
@@ -209,7 +207,7 @@ int loadmainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 			QuitState = NO_QUIT;
 			return MAINMNU_QUIT;
 		}
-		MainMenu->render();
+		MainMenu.render();
 	} while(!g_pInput->getExitEvent());
 
     if(g_pInput->getExitEvent())
@@ -218,9 +216,7 @@ int loadmainmenu(stCloneKeenPlus *pCKP,int defaultopt)
     	return 0;
 	}
 
-	selection = MainMenu->getSelection();
-
-	delete MainMenu;
+	selection = MainMenu.getSelection();
 
     if (selection==MAINMNU_LOADGAME)
     {
@@ -265,11 +261,13 @@ int loadmainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 
 int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 {
-	CDialog *MainMenu;
 	CBitmap *bm_title, *bm_f1help;
 	int x;
 	int selection;
 	SDL_Surface *sfc;
+
+    // Prepare the Games Menu
+	CDialog MainMenu(g_pVideoDriver->FGLayerSurface, /*88, 56,*/ 18, 13);
 
 	for(unsigned int cp=0 ; cp<numplayers ; cp++)	// in some situations. the player is shown for a short time.
 	{
@@ -279,29 +277,26 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 
 	showmapatpos(90, MAINMENU_X, MENUS_Y, pCKP);
 
-	// Prepare the Games Menu
-	MainMenu = new CDialog(g_pVideoDriver->FGLayerSurface, /*88, 56,*/ 18, 13);
-
 	// Load the Title Bitmap
 	sfc = g_pVideoDriver->getScrollSurface();
 	bm_title = g_pGfxEngine->getBitmap("TITLE");
 	bm_f1help = g_pGfxEngine->getBitmap("F1HELP");
 
 	// Use the standard Menu-Frame used in the old DOS-Games
-	MainMenu->setFrameTheme( DLG_THEME_OLDSCHOOL );
+	MainMenu.setFrameTheme( DLG_THEME_OLDSCHOOL );
 
 	// Show me the games you detected!
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "1-Player Game");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "2-Player Game");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Load Game");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Story");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "High Scores");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Options");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "Back To Demo");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Change Game");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 9, "About CG");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 10, "Ordering Info");
-	MainMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, 11, "Quit");
+	MainMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "1-Player Game");
+	MainMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "2-Player Game");
+	MainMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Load Game");
+	MainMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Story");
+	MainMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "High Scores");
+	MainMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Options");
+	MainMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "Back To Demo");
+	MainMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Change Game");
+	MainMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 9, "About CG");
+	MainMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 10, "Ordering Info");
+	MainMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 11, "Quit");
 
 	x = (320/2)-(bm_title->getWidth()/2);
 	bm_title->draw( sfc, x+scroll_x, 1+scroll_y);
@@ -315,21 +310,19 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 	do
 	{
 		gamedo_AnimatedTiles();
-		MainMenu->processlogic();
+		MainMenu.processlogic();
 
 		if(g_pInput->getPressedKey(KF1))
 			showF1HelpText(pCKP->Control.levelcontrol.episode, pCKP->Resources.GameDataDirectory);
 		else if(g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedKey(KENTER))
 			break;
-		MainMenu->render();
+		MainMenu.render();
 	} while(!g_pInput->getExitEvent());
 
     if(g_pInput->getExitEvent())
     	return MAINMNU_QUIT;
 
-	selection = MainMenu->getSelection();
-
-	delete MainMenu;
+	selection = MainMenu.getSelection();
 
     if (selection==MAINMNU_LOADGAME)
     {
@@ -488,12 +481,10 @@ int AudioDlg(stCloneKeenPlus *pCKP)
 
 			if(selection == 3)
 			{
+                CSettings Settings;
 				g_pSound->destroy();
 				g_pSound->setSoundmode(rate, mode ? true : false, format);
-				CSettings *Settings;
-				Settings = new CSettings();
-				Settings->saveDrvCfg();
-				delete Settings; Settings = NULL;
+				Settings.saveDrvCfg();
 				g_pSound->init();
 				ok = g_pSound->loadSoundData(pCKP->Control.levelcontrol.episode,
 											  pCKP->Resources.GameDataDirectory);
@@ -800,11 +791,8 @@ short GraphicsDlg(stCloneKeenPlus *pCKP, int ingame)
 				if (g_pVideoDriver->start())
 					retval = 1;
 
-				CSettings *Settings;
-				Settings = new CSettings();
-
-				Settings->saveDrvCfg();
-				delete Settings; Settings = NULL;
+				CSettings Settings;
+				Settings.saveDrvCfg();
 				map_redraw();
 				if (ingame == 0)
 				{
@@ -1093,14 +1081,12 @@ char controlsmenu()
 // This function shows the Story of Commander Keen!
 void showPage(const std::string& str_text, int textsize)
 {
-	CTextViewer *TextViewer = new CTextViewer(g_pVideoDriver->FGLayerSurface, 0, 0, 320, 136);
-	TextViewer->loadText(str_text);
+	CTextViewer TextViewer(g_pVideoDriver->FGLayerSurface, 0, 0, 320, 136);
+	TextViewer.loadText(str_text);
 
 	AllPlayersInvisible();
 
-	TextViewer->processCycle();
-	delete TextViewer;
-
+	TextViewer.processCycle();
     return;
 }
 
