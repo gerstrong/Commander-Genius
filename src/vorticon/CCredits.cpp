@@ -45,7 +45,7 @@ void CCredits::Render(stCloneKeenPlus *pCKP)
 			if(scrolly>-51*8) scrolly--;
 			else
 			{
-				scrolly = 200;
+				scrolly = g_pVideoDriver->getGameResRect().w;
 				switch(pagenumber)
 				{
 				case 0:
@@ -113,7 +113,7 @@ void CCredits::Render(stCloneKeenPlus *pCKP)
 		}
 
 		for(int j=0 ; j<52 ; j++)
-			if(scrolly+(j<<3) > -8 && scrolly+(j<<3) < 200)
+			if(scrolly+(j<<3) > -8 && scrolly+(j<<3) < g_pVideoDriver->getGameResRect().w)
 				g_pGfxEngine->Font->drawFont( g_pVideoDriver->FGLayerSurface, scrolltext[j], mid[j], scrolly+(j<<3), LETTER_TYPE_INVERSE);
 
 		if( g_pInput->getPressedAnyCommand() )

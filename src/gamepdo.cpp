@@ -159,8 +159,8 @@ void gamepdo_dieanim(int cp, stLevelControl *p_levelcontrol)
     	   g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
     	   CBitmap *bm_gameover = g_pGfxEngine->getBitmap("GAMEOVER");
     	   // figure out where to center the gameover bitmap and draw it
-		   int x = (320/2)-(bm_gameover->getWidth()/2);
-		   int y = (200/2)-(bm_gameover->getHeight()/2);
+		   int x = (g_pVideoDriver->getGameResRect().w/2)-(bm_gameover->getWidth()/2);
+		   int y = (g_pVideoDriver->getGameResRect().h/2)-(bm_gameover->getHeight()/2);
 		   bm_gameover->draw(g_pVideoDriver->BlitSurface, x, y);
 
        }

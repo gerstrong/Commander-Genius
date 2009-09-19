@@ -26,7 +26,7 @@ CGraphics::CGraphics() {
 
 bool CGraphics::allocScrollBufmem(void)
 {
-	blitbuf_memsize = (320)*(200+30);
+	blitbuf_memsize = (g_pVideoDriver->getGameResRect().w)*(g_pVideoDriver->getGameResRect().h+30);
 
 	if (g_pVideoDriver->getZoomValue() > 1)
 	{

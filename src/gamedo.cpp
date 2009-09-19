@@ -235,8 +235,8 @@ int i, topobj;
       // Bitmaps are also part of the object, but only print them directly
       if ( objects[i].type==OBJ_EGA_BITMAP ) continue;
 
-      if (objects[i].scrx < -(g_pGfxEngine->Sprite[objects[i].sprite]->getWidth()) || objects[i].scrx > 320 \
-          || objects[i].scry < -(g_pGfxEngine->Sprite[objects[i].sprite]->getHeight()) || objects[i].scry > 200)
+      if (objects[i].scrx < -(g_pGfxEngine->Sprite[objects[i].sprite]->getWidth()) || objects[i].scrx > g_pVideoDriver->getGameResRect().w \
+          || objects[i].scry < -(g_pGfxEngine->Sprite[objects[i].sprite]->getHeight()) || objects[i].scry > g_pVideoDriver->getGameResRect().h)
           {
 			 objects[i].onscreen = 0;
              objects[i].wasoffscreen = 1;

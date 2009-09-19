@@ -291,8 +291,15 @@ bool CVideoDriver::applyMode(void)
 	}
 #endif
 
-	game_resolution_rect.w = 320;
-	game_resolution_rect.h = 200;
+    game_resolution_rect.w = 320;
+    if( m_Resolution.height % 240 == 0 )
+    {
+		game_resolution_rect.h = 240;
+    }
+    else
+    {
+		game_resolution_rect.h = 200;
+    }
 
 	// Now we decide if it will be fullscreen or windowed mode.
 	if(Fullscreen)
@@ -307,10 +314,10 @@ bool CVideoDriver::applyMode(void)
 	screenrect.h = blitrect.h = game_resolution_rect.h*Zoom;
 	screenrect.x = (m_Resolution.width-screenrect.w)>>1;
 
-	if(m_Resolution.width == 320)
+	//if(m_Resolution.width == 320)
 		screenrect.y = 0;
-	else
-		screenrect.y = (m_Resolution.height-screenrect.h)>>1;
+	//else
+	//	screenrect.y = (m_Resolution.height-screenrect.h)>>1;
     blitrect.x = 0;
     blitrect.y = 0;
 
@@ -385,11 +392,6 @@ bool CVideoDriver::createSurfaces(void)
     // Some surfaces could get 320x240 and the screenspace is extended.
     // The video class must be changed for any further resolutions
     game_resolution_rect.x = 0; game_resolution_rect.y = 0;
-    if( BlitSurface->w==320 && BlitSurface->h==240 )
-    {
-    	game_resolution_rect.w = 320;
-		game_resolution_rect.h = 240;
-    }
 
 	temp_surface = SDL_CreateRGBSurface( Mode, game_resolution_rect.w, game_resolution_rect.h, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
 	FGLayerSurface = SDL_DisplayFormat( temp_surface );
@@ -650,7 +652,7 @@ void CVideoDriver::noscale(char *dest, char *src, short bbp)
 {
 	// just passes a blitsurface to the screen
 	int i;
-	for(i=0 ; i < 200 ; i++)
+	for(i=0 ; i < g_pVideoDriver->getGameResRect().h ; i++)
 		memcpy(dest+(i*m_Resolution.width)*bbp,src+(i*game_resolution_rect.w)*bbp,320*bbp);
 }
 
@@ -662,9 +664,9 @@ void CVideoDriver::scale2xnofilter(char *dest, char *src, short bbp)
 	bbp >>= 1;
 
 	int i,j;
-	for(i=0 ; i < 200 ; i++)
+	for(i=0 ; i < g_pVideoDriver->getGameResRect().w ; i++)
 	{
-		for(j = 0; j < 320 ; j++)
+		for(j = 0; j < g_pVideoDriver->getGameResRect().w ; j++)
 		{
 			memcpy(dest+((j<<1)<<bbp)+(((i<<1)*m_Resolution.width)<<bbp),src+(j<<bbp)+((i*game_resolution_rect.w)<<bbp),bbp<<1);
 			memcpy(dest+(((j<<1)+1)<<bbp)+(((i<<1)*m_Resolution.width)<<bbp),src+(j<<bbp)+((i*game_resolution_rect.w)<<bbp),bbp<<1);
@@ -681,9 +683,9 @@ void CVideoDriver::scale3xnofilter(char *dest, char *src, short bbp)
 	bbp >>= 1;
 
 	int i,j;
-	for(i=0 ; i < 200 ; i++)
+	for(i=0 ; i < g_pVideoDriver->getGameResRect().w ; i++)
 	{
-		for(j = 0; j < 320 ; j++)
+		for(j = 0; j < g_pVideoDriver->getGameResRect().h ; j++)
 		{
 			// j*3 = (j<<1) + j
 			memcpy(dest+(((j<<1)+j)<<bbp)+((((i<<1) + i)*m_Resolution.width)<<bbp),src+(j<<bbp)+((i*game_resolution_rect.w)<<bbp),bbp<<1);
