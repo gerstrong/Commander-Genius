@@ -60,7 +60,13 @@ CVideoDriver::CVideoDriver() {
 #else
 	  m_Resolution.width=640;
 	  m_Resolution.height=400;
-	  m_Resolution.depth=0;
+	  m_Resolution.depth=32;
+	  m_Resolution.widthw=640;
+	  m_Resolution.heightw=400;
+	  m_Resolution.depthw=32;
+	  m_Resolution.widthf=640;
+	  m_Resolution.heightf=400;
+	  m_Resolution.depthf=32;
 	  Mode=0;
 	  Fullscreen=false;
 	  Filtermode=1;
@@ -98,6 +104,9 @@ void CVideoDriver::initResolutionList()
 {
 	  st_resolution resolution;
 	  char buf[256];
+	m_Resolutionlist = m_Resolutionlistempty;
+	SDL_Rect** modes;
+	int e,g,j;
 
 	  ifstream ResolutionFile; OpenGameFileR(ResolutionFile, "resolutions.cfg");
 	  if(!ResolutionFile)
@@ -117,16 +126,87 @@ void CVideoDriver::initResolutionList()
 
 
 		  std::list<st_resolution> :: iterator i;
-		  while(!ResolutionFile.eof())
+		  //if(getFullscreen())
+		  //{
+			  /* Get available fullscreen/hardware modes */
+			  modes = SDL_ListModes(NULL, SDL_FULLSCREEN);
+			  
+			  /* Check if there are any modes available */
+			  if (modes == (SDL_Rect**)0) {
+				  g_pLogFile->textOut(RED,"No modes available!<br>");
+			  }
+			  else if (modes == (SDL_Rect**)-1) {
+				  g_pLogFile->textOut(RED,"All resolutions available.<br>");
+				  for (e=0; modes[e]; ++e)
+				  {
+					  resolution.width = modes[e]->w;
+					  resolution.height = modes[e]->h;
+					  resolution.depth = 32;
+					  for( i = m_Resolutionlist.begin() ; i != m_Resolutionlist.end() ; i++ )
+						  if(i->width == resolution.width &&
+							 i->height == resolution.height &&
+							 i->depth == resolution.depth) break;
+					  
+					  if(i == m_Resolutionlist.end())
+					  {
+						  m_Resolutionlist.push_front(resolution);
+					  }
+				  }
+			  }
+			  else{
+				  /* Print valid modes */
+				  g_pLogFile->textOut(RED,"Available Modes:<br>");
+				  for (e=0; modes[e]; ++e)
+				  {
+					  std::ostringstream ostrw;
+					  std::ostringstream ostrh;
+					  ostrw << modes[e]->w;
+					  ostrh << modes[e]->h;
+					  std::string sw = ostrw.str();
+					  std::string sh = ostrh.str();
+					  g_pLogFile->textOut(RED,sw+"x" +sh+ "<br>");
+					  resolution.width = modes[e]->w;
+					  resolution.height = modes[e]->h;
+					  resolution.depth = 32;
+					  for( i = m_Resolutionlist.begin() ; i != m_Resolutionlist.end() ; i++ )
+						  if(i->width == resolution.width &&
+							 i->height == resolution.height &&
+							 i->depth == resolution.depth) break;
+					  
+					  if(i == m_Resolutionlist.end())
+					  {
+						  m_Resolutionlist.push_front(resolution);
+					  }
+				  }
+			  }
+		  //}
+		  if(!getFullscreen())
 		  {
-			  ResolutionFile.getline(buf,256);
+		  //while(!ResolutionFile.eof())
+		  //{
+			  for (g=1; g != 20; g++) {
+				  if (g*320>m_Resolutionlist.back().width or g*200>m_Resolutionlist.back().height)
+				  {
+					  j=g;
+					  break;
+				  }
+					  }
+			  m_Resolutionlist.clear();
+			  for (g=1; g!=j; g++) {
+				  resolution.width=g*320;
+				  resolution.height=g*200;
+				  resolution.depth=32;
+				  m_Resolutionlist.push_back(resolution);
+			  }
+			  /*ResolutionFile.getline(buf,256);
 			  if(sscanf(buf,"%hdx%hdx%hd", &resolution.width,
 									  &resolution.height,
 									  &resolution.depth) == 3)
 				  // Now check if it's possible to use this resolution
-				  resolution.depth = SDL_VideoModeOK(resolution.width, resolution.height,
+				  resolution.allowed = SDL_VideoModeOK(resolution.width, resolution.height,
 													  resolution.depth, SDL_FULLSCREEN);
-				  if(resolution.depth)
+
+				  if(resolution.allowed)
 				  {
 					  for( i = m_Resolutionlist.begin() ; i != m_Resolutionlist.end() ; i++ )
 						  if(i->width == resolution.width &&
@@ -135,11 +215,12 @@ void CVideoDriver::initResolutionList()
 
 					  if(i == m_Resolutionlist.end())
 						  m_Resolutionlist.push_back(resolution);
-				  }
+				  }*/
+		  //}
 		  }
 		  ResolutionFile.close();
 
-		  SDL_Quit();
+		  //SDL_Quit();
 
 		  // shutdown SDL, so the game can initialize it correctly
 	  }
@@ -148,21 +229,21 @@ void CVideoDriver::initResolutionList()
 #ifdef WIZGP2X
 		resolution.width = 320;
 		resolution.height = 240;
+		resolution.depth = 16;
+		m_Resolutionlist.push_back(resolution);
 #else
 		resolution.width = 640;
-		resolution.height = 400;
+		resolution.height = 480;
 		resolution.depth = 32;
 		m_Resolutionlist.push_back(resolution);
 #endif
-		resolution.depth = 16;
-		m_Resolutionlist.push_back(resolution);
 	}
 
 	// will set the default mode; CSettings::loadDrvConfig will reset this if config file loaded successfully
 #ifdef WIZGP2X
-	setMode(320, 240, 16);
+	setMode(320, 240, 16, 320, 240, 16);
 #else
-	setMode(640, 400, 32);
+	setMode(m_Resolution.widthw, m_Resolution.heightw, m_Resolution.depthw, m_Resolution.widthf, m_Resolution.heightf, m_Resolution.depthf);
 #endif
 }
 
@@ -176,11 +257,30 @@ st_resolution CVideoDriver::setNextResolution()
 	return *m_Resolution_pos;
 }
 
-void CVideoDriver::setMode(int width, int height,int depth)
+void CVideoDriver::setMode(int widthw, int heightw,int depthw,int widthf,int heightf,int depthf)
 {
-	m_Resolution.width = width;
-	m_Resolution.height = height;
-	m_Resolution.depth = depth;
+	m_Resolution.widthw = widthw;
+	m_Resolution.heightw = heightw;
+	m_Resolution.depthw = depthw;
+	m_Resolution.widthf = widthf;
+	m_Resolution.heightf = heightf;
+	m_Resolution.depthf = depthf;
+	
+	int width;
+	int height;
+	int depth;
+	
+	if (getFullscreen())
+	{
+		width = widthf;
+		height = heightf;
+		depth = depthf;
+	}else {
+		width = widthw;
+		height = heightw;
+		depth = depthw;
+	}
+
 
 	// TODO: Cycle through the list until the matching resolution is matched. If it doesn't exist
 	// add it;
@@ -244,7 +344,9 @@ bool CVideoDriver::initOpenGL()
 	if(m_opengl) // If OpenGL could be set, initialize the matrices
 	{
 		mp_OpenGL = new COpenGL();
-		if(!(mp_OpenGL->initGL(m_Resolution.width, m_Resolution.height, m_Resolution.depth,
+		if (getFullscreen())
+		{
+		if(!(mp_OpenGL->initGL(m_Resolution.widthf, m_Resolution.heightf, m_Resolution.depthf,
 								m_opengl_filter, Filtermode+1, m_aspect_correction)))
 		{
 			delete mp_OpenGL;
@@ -253,6 +355,18 @@ bool CVideoDriver::initOpenGL()
 		}
 		else
 			mp_OpenGL->setSurface(BlitSurface);
+		}else {
+			if(!(mp_OpenGL->initGL(m_Resolution.widthw, m_Resolution.heightw, m_Resolution.depthw,
+								   m_opengl_filter, Filtermode+1, m_aspect_correction)))
+			{
+				delete mp_OpenGL;
+				mp_OpenGL = NULL;
+				m_opengl = false;
+			}
+			else
+				mp_OpenGL->setSurface(BlitSurface);
+		}
+
 	}
 #endif
 
@@ -800,6 +914,24 @@ unsigned int CVideoDriver::getHeight(void)
 {	return m_Resolution.height;	}
 unsigned short CVideoDriver::getDepth(void)
 {	return m_Resolution.depth;	}
+unsigned int CVideoDriver::getWidthw(void)
+{	return m_Resolution.widthw;	}
+unsigned int CVideoDriver::getHeightw(void)
+{	return m_Resolution.heightw;	}
+unsigned short CVideoDriver::getDepthw(void)
+{	return m_Resolution.depthw;	}
+unsigned int CVideoDriver::getWidthf(void)
+{	return m_Resolution.widthf;	}
+unsigned int CVideoDriver::getHeightf(void)
+{	return m_Resolution.heightf;	}
+unsigned short CVideoDriver::getDepthf(void)
+{	return m_Resolution.depthf;	}
+std::string CVideoDriver::getWidthwf(void)
+{	return itoa(m_Resolution.widthw)+"/"+itoa(m_Resolution.widthf);	}
+std::string CVideoDriver::getHeightwf(void)
+{	return itoa(m_Resolution.heightw)+"/"+itoa(m_Resolution.heightf);	}
+std::string CVideoDriver::getDepthwf(void)
+{	return itoa(m_Resolution.depthw)+"/"+itoa(m_Resolution.depthf);	}
 SDL_Surface *CVideoDriver::getScrollSurface(void)
 {	return ScrollSurface; }
 

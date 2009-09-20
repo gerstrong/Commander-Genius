@@ -569,8 +569,8 @@ short GraphicsDlg(stCloneKeenPlus *pCKP, int ingame)
 {
 	int selection;
 	int x;
-	Uint16 width, height;
-	Uint8 depth, zoom = 1, filter = 0, gl_filter = 0;
+	Uint16 widthw, heightw, widthf, heightf;
+	Uint8 depthw, depthf, zoom = 1, filter = 0, gl_filter = 0;
 	bool fsmode, aspect;
 	std::string buf;
 	short retval = 0;
@@ -580,12 +580,19 @@ short GraphicsDlg(stCloneKeenPlus *pCKP, int ingame)
 
 	x = (320/2)-(bm_title->getWidth()/2);
 
-	width  = g_pVideoDriver->getWidth();
-	height = g_pVideoDriver->getHeight();
-	depth  = g_pVideoDriver->getDepth();
+	widthw  = g_pVideoDriver->getWidthw();
+	heightw = g_pVideoDriver->getHeightw();
+	depthw  = g_pVideoDriver->getDepthw();
+	widthf  = g_pVideoDriver->getWidthf();
+	heightf = g_pVideoDriver->getHeightf();
+	depthf  = g_pVideoDriver->getDepthf();
 
 	zoom   = g_pVideoDriver->getZoomValue();
 	filter = g_pVideoDriver->getFiltermode();
+	
+	g_pVideoDriver->initResolutionList();
+	
+	g_pVideoDriver->setMode(widthw, heightw, depthw, widthf, heightf, depthf);
 
 	// Prepare the Games Menu
 	CDialog DisplayMenu(g_pVideoDriver->FGLayerSurface, /*4, 4,*/ 32, 12);
@@ -593,7 +600,10 @@ short GraphicsDlg(stCloneKeenPlus *pCKP, int ingame)
 	// Use the standard Menu-Frame used in the old DOS-Games
 	DisplayMenu.setFrameTheme( DLG_THEME_OLDSCHOOL );
 
-	buf = "Resolution: " + itoa(width) + "x" + itoa(height) + "x" + itoa(depth);
+	if (g_pVideoDriver->getFullscreen())
+	buf = "Resolution: " + itoa(widthf) + "x" + itoa(heightf) + "x" + itoa(depthf);
+	else
+	buf = "Resolution: " + itoa(widthw) + "x" + itoa(heightw) + "x" + itoa(depthw);
 	DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 1, buf);
 	if(g_pVideoDriver->getFullscreen())
 	{
@@ -653,7 +663,10 @@ short GraphicsDlg(stCloneKeenPlus *pCKP, int ingame)
 	buf = "OGL Aspect Ratio ";
 	buf += aspect ? "enabled" : "disabled";
 
+	if(opengl)
 	DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 7, buf);
+	else
+	DisplayMenu.addObject(DLG_OBJ_DISABLED, 1, 7, buf);
 
 	DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 9, "Save and return");
 	DisplayMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 10, "Cancel");
@@ -677,11 +690,30 @@ short GraphicsDlg(stCloneKeenPlus *pCKP, int ingame)
 			}
 			else if(selection == 1)
 			{
-				if(!fsmode)
-					DisplayMenu.setObjectText(1,"Fullscreen mode");
-				else
-					DisplayMenu.setObjectText(1,"Windowed mode");
 				fsmode = !fsmode;
+				if(fsmode)
+					g_pVideoDriver->isFullscreen(true);
+				else
+					g_pVideoDriver->isFullscreen(false);
+				if(fsmode)
+				{
+					DisplayMenu.setObjectText(1,"Fullscreen mode");
+					g_pVideoDriver->initResolutionList();
+					buf = "Resolution: " + itoa(g_pVideoDriver->m_Resolutionlist.back().width) + "x" + itoa(g_pVideoDriver->m_Resolutionlist.back().height) + "x" + itoa(g_pVideoDriver->m_Resolutionlist.back().depth);
+					DisplayMenu.setObjectText(0,buf);
+					g_pVideoDriver->setMode(g_pVideoDriver->getWidthw(), g_pVideoDriver->getHeightw(), g_pVideoDriver->getDepthw(), g_pVideoDriver->getWidthf(), g_pVideoDriver->getHeightf(), g_pVideoDriver->getDepthf());
+				}
+				else
+				{
+					DisplayMenu.setObjectText(1,"Windowed mode");
+					g_pVideoDriver->initResolutionList();
+					buf = "Resolution: " + itoa(g_pVideoDriver->m_Resolutionlist.front().width) + "x" + itoa(g_pVideoDriver->m_Resolutionlist.front().height) + "x" + itoa(g_pVideoDriver->m_Resolutionlist.front().depth);
+					DisplayMenu.setObjectText(0,buf);
+				}
+				if(!fsmode)
+					g_pVideoDriver->isFullscreen(true);
+				else
+					g_pVideoDriver->isFullscreen(false);
 			}
 			else if(selection == 2)
 			{
@@ -766,7 +798,7 @@ short GraphicsDlg(stCloneKeenPlus *pCKP, int ingame)
 					g_pVideoDriver->isFullscreen(true);
 				else
 					g_pVideoDriver->isFullscreen(false);
-
+				
 				g_pVideoDriver->enableOpenGL(opengl);
 				g_pVideoDriver->setOGLFilter(gl_filter);
 				g_pVideoDriver->setZoom(zoom);

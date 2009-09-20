@@ -39,7 +39,7 @@ short CSettings::saveDrvCfg(void)
 			Parser.saveValue("SearchPath" + itoa(i), "FileHandling", *p);
 	}
 	
-	Parser.saveIntValue("bpp","Video",g_pVideoDriver->getDepth());
+	Parser.saveValue("bpp","Video",g_pVideoDriver->getDepthwf());
 
 	if(g_pVideoDriver->getFullscreen())
 		Parser.saveIntValue("fullscreen","Video",1);
@@ -51,8 +51,8 @@ short CSettings::saveDrvCfg(void)
 	else
 		Parser.saveIntValue("OpenGL","Video",0);
 
-	Parser.saveIntValue("width","Video",g_pVideoDriver->getWidth());
-	Parser.saveIntValue("height","Video",g_pVideoDriver->getHeight());
+	Parser.saveValue("width","Video",g_pVideoDriver->getWidthwf());
+	Parser.saveValue("height","Video",g_pVideoDriver->getHeightwf());
 	Parser.saveIntValue("scale","Video",g_pVideoDriver->getZoomValue());
 	Parser.saveIntValue("OGLfilter","Video",g_pVideoDriver->getOGLFilter());
 	Parser.saveIntValue("filter","Video",g_pVideoDriver->getFiltermode());
@@ -80,16 +80,23 @@ short CSettings::loadDrvCfg()
 	}
 	else
 	{
-		int width, height, depth;
+		std::string widths, heights, depths;
+		int widthw, heightw, depthw, widthf, heightf, depthf;
 
-		depth  = Parser.getIntValue("bpp","Video");
-		width  = Parser.getIntValue("width","Video");
-		height = Parser.getIntValue("height","Video");
+		depths  = Parser.getValue("bpp","Video");
+		widths  = Parser.getValue("width","Video");
+		heights = Parser.getValue("height","Video");
+		
+		depthw = atoi(depths.substr(0,2));
+		depthf = atoi(depths.substr(3,2));
+		widthw = atoi(widths.substr(0,4));
+		widthf = atoi(widths.substr(5,4));
+		heightw = atoi(heights.substr(0,4));
+		heightf = atoi(heights.substr(5,4));
 
-
-		if(depth*width*height < 0)
+		if(depthw*widthw*heightw < 0 or depthf*widthf*heightf < 0)
 			g_pLogFile->ftextOut(RED,"Error reading the configuration file. It appears to be damaged!");
-		g_pVideoDriver->setMode(width,height,depth);
+		g_pVideoDriver->setMode(widthw,heightw,depthw,widthf,heightf,depthf);
 		g_pVideoDriver->isFullscreen(((Parser.getIntValue("fullscreen","Video")) == 1));
 		g_pVideoDriver->setOGLFilter(Parser.getIntValue("OGLfilter","Video"));
 		g_pVideoDriver->setZoom(Parser.getIntValue("scale","Video"));

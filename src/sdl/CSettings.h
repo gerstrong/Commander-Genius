@@ -8,6 +8,8 @@
 #ifndef CSETTINGS_H_
 #define CSETTINGS_H_
 
+#include <iostream>
+
 extern std::string CONFIGFILENAME;
 
 enum e_OptionKeywords

@@ -12,7 +12,7 @@
 #define g_pVideoDriver CVideoDriver::Get()
 
 struct st_resolution
-{ short width,height,depth; };
+{ short width,height,depth,widthw,heightw,depthw,widthf,heightf,depthf; };
 
 #ifdef USE_OPENGL
 #include "COpenGL.h"
@@ -67,6 +67,15 @@ public:
 	unsigned int getWidth(void);
 	unsigned int getHeight(void);
 	unsigned short getDepth(void);
+	unsigned int getWidthw(void);
+	unsigned int getHeightw(void);
+	unsigned short getDepthw(void);
+	unsigned int getWidthf(void);
+	unsigned int getHeightf(void);
+	unsigned short getDepthf(void);
+	std::string getWidthwf(void);
+	std::string getHeightwf(void);
+	std::string getDepthwf(void);
 	bool isOpenGL(void) { return m_opengl; }
 #ifdef USE_OPENGL
 	unsigned char getOGLFilter(void) { return (m_opengl_filter==GL_LINEAR); }
@@ -75,7 +84,7 @@ public:
 #endif
 	SDL_Surface *getScrollSurface(void);
 
-	void setMode(int width, int height,int depth);
+	void setMode(int widthw, int heightw,int depthw,int widthf,int heightf,int depthf);
 	void setFilter(short value);
 	void setZoom(short vale);
 	bool initOpenGL();
@@ -101,6 +110,7 @@ public:
 	SDL_Surface *FXSurface;
 
 	bool m_fading;
+	std::list<st_resolution> m_Resolutionlist;
 
 private:
 #ifdef USE_OPENGL
@@ -109,7 +119,7 @@ private:
 
 	st_resolution m_Resolution;
 
-	std::list<st_resolution> m_Resolutionlist;
+	std::list<st_resolution> m_Resolutionlistempty;
 	std::list<st_resolution> :: iterator m_Resolution_pos;
 
 	unsigned int Mode;

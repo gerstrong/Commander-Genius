@@ -22,7 +22,7 @@ COpenGL::~COpenGL() {
 	if(m_opengl_buffer){ delete[] m_opengl_buffer; m_opengl_buffer = NULL; }
 }
 
-bool COpenGL::initGL(unsigned Width, unsigned Height, unsigned char Depth,
+bool COpenGL::initGL(float Width, float Height, unsigned char Depth,
 									GLint oglfilter, unsigned char scalex, bool aspect)
 {
 	m_Depth = Depth;
@@ -36,8 +36,10 @@ bool COpenGL::initGL(unsigned Width, unsigned Height, unsigned char Depth,
 	{
 		if(m_aspectratio < 8.0f/5.0f)
 		glViewport(0,(Height-((Width/320)*200))/2,Width, (Width/320)*200);
-		if(m_aspectratio > 8.0f/5.0f)
+		else if(m_aspectratio > 8.0f/5.0f)
 		glViewport((Width-((Height/200)*320))/2,0, (Height/200)*320, Height);
+		else
+		glViewport(0,0,Width, Height);
 	}
 	else
 		glViewport(0,0,Width, Height);
