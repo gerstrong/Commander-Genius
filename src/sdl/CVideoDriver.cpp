@@ -158,6 +158,11 @@ void CVideoDriver::initResolutionList()
 					  resolution.width = modes[e]->w;
 					  resolution.height = modes[e]->h;
 					  resolution.depth = 32;
+					  resolution.depth = SDL_VideoModeOK(resolution.width, resolution.height,
+														 resolution.depth, SDL_FULLSCREEN);
+					  
+					  if(resolution.depth)
+					  {
 					  for( i = m_Resolutionlist.begin() ; i != m_Resolutionlist.end() ; i++ )
 						  if(i->width == resolution.width &&
 							 i->height == resolution.height &&
@@ -166,6 +171,7 @@ void CVideoDriver::initResolutionList()
 					  if(i == m_Resolutionlist.end())
 					  {
 						  m_Resolutionlist.push_front(resolution);
+					  }
 					  }
 				  }
 			  }
@@ -184,6 +190,11 @@ void CVideoDriver::initResolutionList()
 					  resolution.width = modes[e]->w;
 					  resolution.height = modes[e]->h;
 					  resolution.depth = 32;
+					  resolution.depth = SDL_VideoModeOK(resolution.width, resolution.height,
+														 resolution.depth, SDL_FULLSCREEN);
+					  
+					  if(resolution.depth)
+					  {
 					  for( i = m_Resolutionlist.begin() ; i != m_Resolutionlist.end() ; i++ )
 						  if(i->width == resolution.width &&
 							 i->height == resolution.height &&
@@ -192,6 +203,7 @@ void CVideoDriver::initResolutionList()
 					  if(i == m_Resolutionlist.end())
 					  {
 						  m_Resolutionlist.push_front(resolution);
+					  }
 					  }
 				  }
 			  }
