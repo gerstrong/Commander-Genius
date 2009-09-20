@@ -12,7 +12,7 @@
 #define g_pVideoDriver CVideoDriver::Get()
 
 struct st_resolution
-{ short width,height,depth,widthw,heightw,depthw,widthf,heightf,depthf; };
+{ short width,height,depth; };
 
 #ifdef USE_OPENGL
 #include "COpenGL.h"
@@ -84,7 +84,7 @@ public:
 #endif
 	SDL_Surface *getScrollSurface(void);
 
-	void setMode(int widthw, int heightw,int depthw,int widthf,int heightf,int depthf);
+	void setMode(int width, int height,int depth);
 	void setFilter(short value);
 	void setZoom(short vale);
 	bool initOpenGL();

@@ -8,22 +8,20 @@
 #ifndef CSETTINGS_H_
 #define CSETTINGS_H_
 
-#include <iostream>
-
 extern std::string CONFIGFILENAME;
 
 enum e_OptionKeywords
 { OPT_FULLYAUTOMATIC, OPT_SUPERPOGO,
-  OPT_ALLOWPKING, OPT_CHEATS,
- OPT_TWOBUTTON, OPT_ANALOGJOYSTICK,
- OPT_LVLREPLAYABILITY, OPT_RISEBONUS };
+	OPT_ALLOWPKING, OPT_CHEATS,
+	OPT_TWOBUTTON, OPT_ANALOGJOYSTICK,
+	OPT_LVLREPLAYABILITY, OPT_RISEBONUS };
 
 #define NUM_OPTIONS    8
 
 typedef struct stOption
 {
-  std::string name;
-  char value;
+	std::string name;
+	char value;
 } stOption;
 
 class CSettings {

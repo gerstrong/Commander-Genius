@@ -61,12 +61,6 @@ CVideoDriver::CVideoDriver() {
 	  m_Resolution.width=640;
 	  m_Resolution.height=400;
 	  m_Resolution.depth=32;
-	  m_Resolution.widthw=640;
-	  m_Resolution.heightw=400;
-	  m_Resolution.depthw=32;
-	  m_Resolution.widthf=640;
-	  m_Resolution.heightf=400;
-	  m_Resolution.depthf=32;
 	  Mode=0;
 	  Fullscreen=false;
 	  Filtermode=1;
@@ -104,7 +98,7 @@ void CVideoDriver::initResolutionList()
 {
 	  st_resolution resolution;
 	  char buf[256];
-	m_Resolutionlist = m_Resolutionlistempty;
+	m_Resolutionlist.clear();
 	SDL_Rect** modes;
 	int e,g,j;
 
@@ -133,7 +127,29 @@ void CVideoDriver::initResolutionList()
 			  
 			  /* Check if there are any modes available */
 			  if (modes == (SDL_Rect**)0) {
-				  g_pLogFile->textOut(RED,"No modes available!<br>");
+				  g_pLogFile->textOut(RED,"No modes available!  Using resolution list.<br>");
+				  std::list<st_resolution> :: iterator i;
+				  while(!ResolutionFile.eof())
+				  {
+				  ResolutionFile.getline(buf,256);
+				   if(sscanf(buf,"%hdx%hdx%hd", &resolution.width,
+				   &resolution.height,
+				   &resolution.depth) == 3)
+				   // Now check if it's possible to use this resolution
+				   resolution.depth = SDL_VideoModeOK(resolution.width, resolution.height,
+				   resolution.depth, SDL_FULLSCREEN);
+				   
+				   if(resolution.depth)
+				   {
+				   for( i = m_Resolutionlist.begin() ; i != m_Resolutionlist.end() ; i++ )
+				   if(i->width == resolution.width &&
+				   i->height == resolution.height &&
+				   i->depth == resolution.depth) break;
+				   
+				   if(i == m_Resolutionlist.end())
+				   m_Resolutionlist.push_back(resolution);
+				   }
+				  }
 			  }
 			  else if (modes == (SDL_Rect**)-1) {
 				  g_pLogFile->textOut(RED,"All resolutions available.<br>");
@@ -182,8 +198,6 @@ void CVideoDriver::initResolutionList()
 		  //}
 		  if(!getFullscreen())
 		  {
-		  //while(!ResolutionFile.eof())
-		  //{
 			  for (g=1; g != 20; g++) {
 				  if (g*320>m_Resolutionlist.back().width or g*200>m_Resolutionlist.back().height)
 				  {
@@ -198,25 +212,6 @@ void CVideoDriver::initResolutionList()
 				  resolution.depth=32;
 				  m_Resolutionlist.push_back(resolution);
 			  }
-			  /*ResolutionFile.getline(buf,256);
-			  if(sscanf(buf,"%hdx%hdx%hd", &resolution.width,
-									  &resolution.height,
-									  &resolution.depth) == 3)
-				  // Now check if it's possible to use this resolution
-				  resolution.allowed = SDL_VideoModeOK(resolution.width, resolution.height,
-													  resolution.depth, SDL_FULLSCREEN);
-
-				  if(resolution.allowed)
-				  {
-					  for( i = m_Resolutionlist.begin() ; i != m_Resolutionlist.end() ; i++ )
-						  if(i->width == resolution.width &&
-							 i->height == resolution.height &&
-							 i->depth == resolution.depth) break;
-
-					  if(i == m_Resolutionlist.end())
-						  m_Resolutionlist.push_back(resolution);
-				  }*/
-		  //}
 		  }
 		  ResolutionFile.close();
 
@@ -243,7 +238,7 @@ void CVideoDriver::initResolutionList()
 #ifdef WIZGP2X
 	setMode(320, 240, 16, 320, 240, 16);
 #else
-	setMode(m_Resolution.widthw, m_Resolution.heightw, m_Resolution.depthw, m_Resolution.widthf, m_Resolution.heightf, m_Resolution.depthf);
+	setMode(m_Resolutionlist.front().width, m_Resolutionlist.front().height, m_Resolutionlist.front().depth);
 #endif
 }
 
@@ -257,29 +252,11 @@ st_resolution CVideoDriver::setNextResolution()
 	return *m_Resolution_pos;
 }
 
-void CVideoDriver::setMode(int widthw, int heightw,int depthw,int widthf,int heightf,int depthf)
+void CVideoDriver::setMode(int width, int height,int depth)
 {
-	m_Resolution.widthw = widthw;
-	m_Resolution.heightw = heightw;
-	m_Resolution.depthw = depthw;
-	m_Resolution.widthf = widthf;
-	m_Resolution.heightf = heightf;
-	m_Resolution.depthf = depthf;
-	
-	int width;
-	int height;
-	int depth;
-	
-	if (getFullscreen())
-	{
-		width = widthf;
-		height = heightf;
-		depth = depthf;
-	}else {
-		width = widthw;
-		height = heightw;
-		depth = depthw;
-	}
+	m_Resolution.width = width;
+	m_Resolution.height = height;
+	m_Resolution.depth = depth;
 
 
 	// TODO: Cycle through the list until the matching resolution is matched. If it doesn't exist
@@ -344,9 +321,7 @@ bool CVideoDriver::initOpenGL()
 	if(m_opengl) // If OpenGL could be set, initialize the matrices
 	{
 		mp_OpenGL = new COpenGL();
-		if (getFullscreen())
-		{
-		if(!(mp_OpenGL->initGL(m_Resolution.widthf, m_Resolution.heightf, m_Resolution.depthf,
+		if(!(mp_OpenGL->initGL(m_Resolution.width, m_Resolution.height, m_Resolution.depth,
 								m_opengl_filter, Filtermode+1, m_aspect_correction)))
 		{
 			delete mp_OpenGL;
@@ -355,18 +330,6 @@ bool CVideoDriver::initOpenGL()
 		}
 		else
 			mp_OpenGL->setSurface(BlitSurface);
-		}else {
-			if(!(mp_OpenGL->initGL(m_Resolution.widthw, m_Resolution.heightw, m_Resolution.depthw,
-								   m_opengl_filter, Filtermode+1, m_aspect_correction)))
-			{
-				delete mp_OpenGL;
-				mp_OpenGL = NULL;
-				m_opengl = false;
-			}
-			else
-				mp_OpenGL->setSurface(BlitSurface);
-		}
-
 	}
 #endif
 
@@ -914,24 +877,6 @@ unsigned int CVideoDriver::getHeight(void)
 {	return m_Resolution.height;	}
 unsigned short CVideoDriver::getDepth(void)
 {	return m_Resolution.depth;	}
-unsigned int CVideoDriver::getWidthw(void)
-{	return m_Resolution.widthw;	}
-unsigned int CVideoDriver::getHeightw(void)
-{	return m_Resolution.heightw;	}
-unsigned short CVideoDriver::getDepthw(void)
-{	return m_Resolution.depthw;	}
-unsigned int CVideoDriver::getWidthf(void)
-{	return m_Resolution.widthf;	}
-unsigned int CVideoDriver::getHeightf(void)
-{	return m_Resolution.heightf;	}
-unsigned short CVideoDriver::getDepthf(void)
-{	return m_Resolution.depthf;	}
-std::string CVideoDriver::getWidthwf(void)
-{	return itoa(m_Resolution.widthw)+"/"+itoa(m_Resolution.widthf);	}
-std::string CVideoDriver::getHeightwf(void)
-{	return itoa(m_Resolution.heightw)+"/"+itoa(m_Resolution.heightf);	}
-std::string CVideoDriver::getDepthwf(void)
-{	return itoa(m_Resolution.depthw)+"/"+itoa(m_Resolution.depthf);	}
 SDL_Surface *CVideoDriver::getScrollSurface(void)
 {	return ScrollSurface; }
 
