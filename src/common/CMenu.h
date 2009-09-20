@@ -1,21 +1,23 @@
 /*
- * CMenu.h
- *
- *  Created on: 16.09.2009
- *      Author: gerstrong
- */
+#define TWIRL_SPEED_SLOW        100
+#define TWIRL_SPEED_FAST        20
 
-#ifndef CMENU_H_
-#define CMENU_H_
+#define MENUS_Y                 32
+#define MAINMENU_X              32
 
-#include "../keen.h"
+#define STORYBOARD_X			672
+#define STORYBOARD_Y			32
 
-class CMenu {
-public:
-	CMenu();
-	virtual ~CMenu();
+#define FONT_TWIRL              9
+#define TWIRL_SPEED             30
+#define TWIRL_NUM_FRAMES        5
 
-	bool loadStartMenu(stCloneKeenPlus *pCKP);
-};
+#include "../CGame.h"
 
-#endif /* CMENU_H_ */
+char controlsmenu();
+int mainmenu(stCloneKeenPlus *pCKP,int defaultopt);
+char configmenu(stCloneKeenPlus *pCKP,int ingame);
+void keensleft(int episode);
+int getDifficulty(stCloneKeenPlus *pCKP);
+void showPage(const std::string& str_text, int textsize);
+*/
