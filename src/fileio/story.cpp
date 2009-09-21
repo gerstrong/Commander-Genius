@@ -18,19 +18,15 @@
 
 int readStoryText(char **ptext, int episode, const std::string& path)
 {
-	std::string buf2 = formatPathString(path);
-	std::string buf = buf2 + "storytxt.ck" + itoa(episode);
-
-	FILE *fp;
-	if((fp=OpenGameFile(buf.c_str(),"rt"))==NULL)
+	FILE *fp = OpenGameFile(formatPathString(path) + "storytxt.ck" + itoa(episode), "rt");
+	if(fp==NULL)
 	{
-		unsigned char *filebuf;
 		int startflag=0, endflag=0; // where story begins and ends!
 
 		CExeFile *ExeFile = new CExeFile(episode, path);
 		if(!ExeFile) return -1;
 		if(!ExeFile->readData()) return -1;
-		filebuf = ExeFile->getData();
+		unsigned char * filebuf = ExeFile->getData();
 
 		if(episode == 2)
 		{
