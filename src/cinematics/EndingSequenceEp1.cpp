@@ -8,7 +8,7 @@
 #include "../include/gamepdo.h"
 #include "../sdl/CInput.h"
 #include "../sdl/CVideoDriver.h"
-#include "../include/menu.h"
+#include "../include/CStartScreen.h"
 #include "../CGraphics.h"
 #include "../graphics/CGfxEngine.h"
 #include "../StringUtils.h"

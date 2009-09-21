@@ -10,7 +10,7 @@
 #include "../sdl/CInput.h"
 #include "../sdl/CVideoDriver.h"
 #include "../graphics/CGfxEngine.h"
-#include "../include/menu.h"
+#include "../include/CStartScreen.h"
 #include "../include/gamedo.h"
 
 CCredits::CCredits() {

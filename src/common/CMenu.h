@@ -1,4 +1,3 @@
-/*
 #define TWIRL_SPEED_SLOW        100
 #define TWIRL_SPEED_FAST        20
 
@@ -20,4 +19,3 @@ char configmenu(stCloneKeenPlus *pCKP,int ingame);
 void keensleft(int episode);
 int getDifficulty(stCloneKeenPlus *pCKP);
 void showPage(const std::string& str_text, int textsize);
-*/

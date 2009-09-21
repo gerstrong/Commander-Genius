@@ -34,7 +34,7 @@
 #include "sdl/CVideoDriver.h"
 #include "hqp/CMusic.h"
 #include "include/misc.h"
-#include "include/menu.h"
+#include "include/CStartScreen.h"
 #include "include/game.h"
 #include "include/fileio.h"
 #include "include/fileio/story.h"

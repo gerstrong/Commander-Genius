@@ -9,7 +9,7 @@
 #include "COrderingInfo.h"
 #include "../sdl/CInput.h"
 #include "../CLogFile.h"
-#include "../include/menu.h"
+#include "../include/CStartScreen.h"
 #include "../include/gamedo.h"
 #include "../fileio/CExeFile.h"
 #include "../graphics/CGfxEngine.h"

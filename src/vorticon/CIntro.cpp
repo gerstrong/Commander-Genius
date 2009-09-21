@@ -9,7 +9,7 @@
 #include "CIntro.h"
 #include "../sdl/CInput.h"
 #include "../CGraphics.h"
-#include "../include/menu.h"
+#include "../include/CStartScreen.h"
 #include "../include/gamedo.h"
 #include "../sdl/CVideoDriver.h"
 

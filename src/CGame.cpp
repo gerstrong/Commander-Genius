@@ -9,10 +9,11 @@
 
 #include "keen.h"
 #include "CGame.h"
+#include "common/CMenu.h"
 #include "include/game.h"
 #include "include/misc.h"
 #include "include/main.h"
-#include "include/menu.h"
+#include "include/CStartScreen.h"
 #include "include/fileio/story.h"
 #include "vorticon/CHighScores.h"
 #include "vorticon/CIntro.h"
@@ -261,7 +262,7 @@ short CGame::ingamerunCycle(stCloneKeenPlus *pCKP)
 	    {
 	    	g_pLogFile->ftextOut("calling mainmenu()<br>");
 			
-			opt = loadmainmenu(pCKP, defaultopt); // Read option from the main menu
+			opt = mainmenu(pCKP, defaultopt); // Read option from the main menu
 			// of the game.
 			pCKP->Control.skipstarting=0;
 			

@@ -20,7 +20,7 @@ char tempbuf[200];
 #include "include/gamedo.h"
 #include "include/gm_pdowm.h"
 #include "include/misc.h"
-#include "include/menu.h"
+#include "include/CStartScreen.h"
 
 #include "dialog/CDialog.h"
 #include "CGraphics.h"

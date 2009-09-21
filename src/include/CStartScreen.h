@@ -14,13 +14,6 @@
 
 #include "../CGame.h"
 
-char controlsmenu();
-int loadmainmenu(stCloneKeenPlus *pCKP,int defaultopt);
-int mainmenu(stCloneKeenPlus *pCKP,int defaultopt);
-char configmenu(stCloneKeenPlus *pCKP,int ingame);
 bool  loadStartMenu(stCloneKeenPlus *pCKP);
-void keensleft(int episode);
 void showmapatpos(int level, int xoff, int yoff, stCloneKeenPlus *pCKP);
 short loadResourcesforStartMenu(stCloneKeenPlus *pCKP, CGame *Game);
-int getDifficulty(stCloneKeenPlus *pCKP);
-void showPage(const std::string& str_text, int textsize);

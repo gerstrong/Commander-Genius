@@ -56,7 +56,7 @@
 		23575604101A5E5900275638 /* lz.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9D11013ABCA001643FA /* lz.cpp */; };
 		23575605101A5E5900275638 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9D31013ABCA001643FA /* main.cpp */; };
 		23575606101A5E5900275638 /* map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9D41013ABCA001643FA /* map.cpp */; };
-		23575607101A5E5900275638 /* menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9D51013ABCA001643FA /* menu.cpp */; };
+		23575607101A5E5900275638 /* CStartScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9D51013ABCA001643FA /* CStartScreen.cpp */; };
 		23575608101A5E5900275638 /* misc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9D61013ABCA001643FA /* misc.cpp */; };
 		23575609101A5E5900275638 /* getopt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9D91013ABCA001643FA /* getopt.cpp */; };
 		2357560A101A5E5900275638 /* pixel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9DA1013ABCA001643FA /* pixel.cpp */; };
@@ -402,7 +402,7 @@
 		23D3E9C61013ABCA001643FA /* graphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = graphics.h; sourceTree = "<group>"; };
 		23D3E9C81013ABCA001643FA /* dialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dialog.h; sourceTree = "<group>"; };
 		23D3E9C91013ABCA001643FA /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = "<group>"; };
-		23D3E9CA1013ABCA001643FA /* menu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = menu.h; sourceTree = "<group>"; };
+		23D3E9CA1013ABCA001643FA /* CStartScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CStartScreen.h; sourceTree = "<group>"; };
 		23D3E9CB1013ABCA001643FA /* misc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = misc.h; sourceTree = "<group>"; };
 		23D3E9CC1013ABCA001643FA /* playeraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = playeraction.h; sourceTree = "<group>"; };
 		23D3E9CE1013ABCA001643FA /* oggsupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = oggsupport.h; sourceTree = "<group>"; };
@@ -411,7 +411,7 @@
 		23D3E9D21013ABCA001643FA /* lz.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lz.h; path = ../../src/lz.h; sourceTree = SOURCE_ROOT; };
 		23D3E9D31013ABCA001643FA /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../src/main.cpp; sourceTree = SOURCE_ROOT; };
 		23D3E9D41013ABCA001643FA /* map.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = map.cpp; path = ../../src/map.cpp; sourceTree = SOURCE_ROOT; };
-		23D3E9D51013ABCA001643FA /* menu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = menu.cpp; path = ../../src/menu.cpp; sourceTree = SOURCE_ROOT; };
+		23D3E9D51013ABCA001643FA /* CStartScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CStartScreen.cpp; path = ../../src/CStartScreen.cpp; sourceTree = SOURCE_ROOT; };
 		23D3E9D61013ABCA001643FA /* misc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = misc.cpp; path = ../../src/misc.cpp; sourceTree = SOURCE_ROOT; };
 		23D3E9D71013ABCA001643FA /* pressf10.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pressf10.h; path = ../../src/pressf10.h; sourceTree = SOURCE_ROOT; };
 		23D3E9D91013ABCA001643FA /* getopt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = getopt.cpp; sourceTree = "<group>"; };
@@ -685,7 +685,7 @@
 				23D3E9D21013ABCA001643FA /* lz.h */,
 				23D3E9D31013ABCA001643FA /* main.cpp */,
 				23D3E9D41013ABCA001643FA /* map.cpp */,
-				23D3E9D51013ABCA001643FA /* menu.cpp */,
+				23D3E9D51013ABCA001643FA /* CStartScreen.cpp */,
 				23D3E9D61013ABCA001643FA /* misc.cpp */,
 				23D3E9D71013ABCA001643FA /* pressf10.h */,
 				23D3E9D81013ABCA001643FA /* scale2x */,
@@ -873,7 +873,7 @@
 				23D3E9C61013ABCA001643FA /* graphics.h */,
 				23D3E9C71013ABCA001643FA /* gui */,
 				23D3E9C91013ABCA001643FA /* main.h */,
-				23D3E9CA1013ABCA001643FA /* menu.h */,
+				23D3E9CA1013ABCA001643FA /* CStartScreen.h */,
 				23D3E9CB1013ABCA001643FA /* misc.h */,
 				23D3E9CC1013ABCA001643FA /* playeraction.h */,
 				23D3E9CD1013ABCA001643FA /* vorbis */,
@@ -1217,7 +1217,7 @@
 				23575604101A5E5900275638 /* lz.cpp in Sources */,
 				23575605101A5E5900275638 /* main.cpp in Sources */,
 				23575606101A5E5900275638 /* map.cpp in Sources */,
-				23575607101A5E5900275638 /* menu.cpp in Sources */,
+				23575607101A5E5900275638 /* CStartScreen.cpp in Sources */,
 				23575608101A5E5900275638 /* misc.cpp in Sources */,
 				23575609101A5E5900275638 /* getopt.cpp in Sources */,
 				2357560A101A5E5900275638 /* pixel.cpp in Sources */,
