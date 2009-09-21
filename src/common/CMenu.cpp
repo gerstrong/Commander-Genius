@@ -27,8 +27,8 @@
 #include <SDL.h>
 #include <iostream>
 #include <fstream>
-#include "StringUtils.h"
-#include "FindFile.h"
+#include "../StringUtils.h"
+#include "../FindFile.h"
 #include <vector>
 
 #define SELMOVE_SPD         3
@@ -155,7 +155,6 @@ int getDifficulty(stCloneKeenPlus *pCKP)
 int AudioDlg(stCloneKeenPlus *pCKP)
 {
 	int selection;
-	int x;
 	int ok=0;
 	CBitmap *bm_title = g_pGfxEngine->getBitmap("TITLE");	// Load the Title Bitmap
 
