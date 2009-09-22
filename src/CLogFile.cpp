@@ -109,9 +109,33 @@ void CLogFile::textOut(FONTCOLORS Color, bool List, const std::string Text)
 }
 
 
+std::string CLogFile::removeHTML(const std::string input)
+{
+    std::string::size_type left, right;
+    std::string output;
+
+    output = input;
+    do {
+        left  = output.find_first_of('<', 0);
+        right = output.find_first_of('>', 0);
+
+        if( left == std::string::npos || right == std::string::npos )
+            break;
+
+        output = output.erase( left, right-left+1 );
+    } while( 1 );
+
+    return output;
+}
+
 void CLogFile::textOut(const std::string Text)
 {
-	notes << Text << endl;
+    std::string output;
+
+    output = removeHTML(Text);
+    if( output.length() > 0 ) {
+        notes << output << endl;
+    }
 	fprintf(m_Logfile,"%s",Text.c_str());
 	fflush(m_Logfile);
 }

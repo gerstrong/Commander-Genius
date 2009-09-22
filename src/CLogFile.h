@@ -44,6 +44,8 @@ public:
 private:
 
 	FILE *m_Logfile;
+
+    std::string removeHTML(const std::string input);
 };
 
 #endif /* CLOGFILE_H_ */
