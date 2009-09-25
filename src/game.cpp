@@ -142,17 +142,17 @@ int lastquit;
 
 	if (g_pInput->getPressedKey(KQUIT))
 	{
-		Game.ingamerunCycle(pCKP);
+		//Game.ingamerunCycle(pCKP);
 		if(pCKP->shutdown == SHUTDOWN_NEW_GAME)
 		{
 			while(!loadStartMenu(pCKP))
 				g_pLogFile->textOut(PURPLE,"Error! You have chosen a Game that doesn't exist. Please correct the \"games.cfg\" File under \"games\" and choose another game.<br>");
 			
 			//loadResourcesforGame(pCKP);
-			if(Game.loadResources(pCKP->Control.levelcontrol.episode, pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory))
+			/*if(Game.loadResources(pCKP->Control.levelcontrol.episode, pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory))
 				pCKP->shutdown = SHUTDOWN_RESTART;
 			else
-				pCKP->shutdown = SHUTDOWN_NEW_GAME;
+				pCKP->shutdown = SHUTDOWN_NEW_GAME;*/
 		}
 	}
 		//VerifyQuit();
@@ -253,7 +253,7 @@ void take_keycard(int doortile, int p)
 }
 
 // unregisters all animated tiles with baseframe tile
-void unregister_animtiles(int tile)
+/*void unregister_animtiles(int tile)
 {
 int i;
      for(i=0;i<MAX_ANIMTILES-1;i++)
@@ -263,7 +263,7 @@ int i;
            animtiles[i].slotinuse = 0;
         }
      }
-}
+}*/
 
 void open_door(int doortile, int doorsprite, int mpx, int mpy, int cp, stCloneKeenPlus *pCKP)
 {
@@ -430,7 +430,7 @@ unsigned int i;
       AnimTileInUse[x][y] = 0;
 
  // set all animated tile slots to "not in use"
- map_unregister_all_animtiles();
+ //map_unregister_all_animtiles();
 
 // initilize default sprites for objects
   memset(objdefsprites, 0, sizeof(objdefsprites));
@@ -1249,7 +1249,7 @@ int timeout;
   }
 
    // draw map first time
-   drawmap();
+   //drawmap();
 
    // generate other player's start positions
    // don't generate player positions for the world
@@ -1297,8 +1297,8 @@ int timeout;
 // left past X=32.
    for(i=0;i<2*16;i++)
    {
-      map_scroll_right();
-      map_scroll_down();
+      //map_scroll_right();
+      //map_scroll_down();
    }
 
 // scroll the screen until the primary player is onscreen
@@ -1309,7 +1309,7 @@ int timeout;
   }
 
   // "keens left" when returning to world map after dying
-  if (show_keensleft)
-	keensleft(episode);
+  //if (show_keensleft)
+//	keensleft(episode);
 
 }

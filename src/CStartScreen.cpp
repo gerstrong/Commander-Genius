@@ -13,7 +13,6 @@
 #include "include/gm_pdowm.h"
 #include "include/gamedo.h"
 #include "include/main.h"
-#include "CGraphics.h"
 #include "sdl/video/colourtable.h"
 #include "include/gui/dialog.h"
 #include "sdl/CInput.h"
@@ -34,12 +33,13 @@
 
 short openDlgStruct(stDlgStruct *pDlgStruct, stCloneKeenPlus *pCKP);
 
-void showmapatpos(int level, int xoff, int yoff, stCloneKeenPlus *pCKP)
+// TODO: This function is old. Try to remove it for future implementations
+/*void showmapatpos(int level, int xoff, int yoff, stCloneKeenPlus *pCKP)
 {
 	int i;
 	std::string levelname;
 	g_pLogFile->ftextOut("showmapatpos(%d, %d, %d);<br>",level,xoff,yoff);
-	pCKP->Control.levelcontrol.dark = 0;
+	pCKP->Control.levelcontrol.dark = false;
 
 	initgame( &(pCKP->Control.levelcontrol) );           // reset scroll
 	levelname = "level" + FixedWidthStr_LeftFill(itoa(level), 2, '0') + ".ck" + itoa(pCKP->Control.levelcontrol.episode);
@@ -58,7 +58,7 @@ void showmapatpos(int level, int xoff, int yoff, stCloneKeenPlus *pCKP)
 	for(i=0;i<yoff;i++) map_scroll_down();
 
 	gamedo_frameskipping_blitonly();
-}
+}*/
 
 short loadResourcesforStartMenu(stCloneKeenPlus *pCKP, CGame *Game)
 {
@@ -126,7 +126,7 @@ short loadResourcesforStartMenu(stCloneKeenPlus *pCKP, CGame *Game)
 	else
 		pCKP->Control.levelcontrol.episode = pCKP->GameData[pCKP->Resources.GameSelected-1].Episode;
 
-	Game->loadResources(pCKP->Control.levelcontrol.episode, pCKP->GameData[0].DataDirectory);
+	//Game->loadResources(pCKP->Control.levelcontrol.episode, pCKP->GameData[0].DataDirectory);
 
 	player[0].x = player[0].y = 0;
 	if(initgamefirsttime(pCKP, 0) != 0)
@@ -146,7 +146,8 @@ bool loadStartMenu(stCloneKeenPlus *pCKP)
     // Prepare the Games Menu
 	CDialog GamesMenu(g_pVideoDriver->FGLayerSurface, /*16, 8,*/ 36, 20);
 
-	showmapatpos(90, 104<<4, 32, pCKP);
+
+	//showmapatpos(90, 104<<4, 32, pCKP);
 
 	// Use the standard Menu-Frame used in the old DOS-Games
 	GamesMenu.setFrameTheme( DLG_THEME_OLDSCHOOL );
@@ -158,8 +159,8 @@ bool loadStartMenu(stCloneKeenPlus *pCKP)
 	do
 	{
 		gamedo_AnimatedTiles();
-		GamesMenu.processlogic();
-		GamesMenu.render();
+		GamesMenu.processInput();
+		GamesMenu.draw();
 	} while( !g_pInput->getPressedCommand(IC_JUMP) && !g_pInput->getPressedCommand(IC_STATUS) && !g_pInput->getExitEvent() );
 
 

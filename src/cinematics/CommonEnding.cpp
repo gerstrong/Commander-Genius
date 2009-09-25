@@ -8,7 +8,6 @@
 #include "../keen.h"
 #include "CommonEnding.h"
 
-#include "../CGraphics.h"
 #include "../graphics/CGfxEngine.h"
 
 #include "../sdl/CInput.h"

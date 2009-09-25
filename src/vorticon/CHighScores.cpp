@@ -17,7 +17,6 @@
 #include "CHighScores.h"
 #include "../sdl/CInput.h"
 #include "../graphics/CGfxEngine.h"
-#include "../CGraphics.h"
 #include "../StringUtils.h"
 #include "../FindFile.h"
 #include "../sdl/CVideoDriver.h"
@@ -71,7 +70,7 @@ char CHighScores::showHighScore(void)
 	loadHighScoreTable();
 
 	// show High-score Frame
-	showmapatpos(90, HIGHSCORETABLE_X, HIGHSCORETABLE_Y, pCKP);
+	//showmapatpos(90, HIGHSCORETABLE_X, HIGHSCORETABLE_Y, pCKP);
 
 	// Prepare some extra items if available (Ep1 + 2)
 	memset(ItemTiles,0,4*sizeof(int));
@@ -166,7 +165,7 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 	loadHighScoreTable();
 
 	// show High-score Frame
-	showmapatpos(90, HIGHSCORETABLE_X, HIGHSCORETABLE_Y, pCKP);
+	//showmapatpos(90, HIGHSCORETABLE_X, HIGHSCORETABLE_Y, pCKP);
 
 	ShipQueuePtr = 0;
 
@@ -369,7 +368,6 @@ char CHighScores::loadHighScoreTable(void)
 	std::string chBuf = itoa(Episode);
 
 	sBuf.append("");
-	sBuf.append("games/");
 	sBuf.append(DataDirectory);
 	sBuf.append("/highscoreep");
 	sBuf.append(chBuf);
@@ -403,7 +401,6 @@ char CHighScores::saveHighScoreTable(void)
 	sprintf(chBuf,"%d",Episode);
 
 	sBuf.append("");
-	sBuf.append("games/");
 	sBuf.append(DataDirectory);
 	sBuf.append("/highscoreep");
 	sBuf.append(chBuf);

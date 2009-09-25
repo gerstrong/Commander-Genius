@@ -41,7 +41,6 @@ FILE *fp;
 std::string fname;
 
 	fname = "";
-	fname += "games/";
 	fname += DataDirectory;
 	fname += "/ep";
 	fname += mp_levelcontrol->episode + '0';
@@ -142,7 +141,6 @@ unsigned char episode, level, lives;
 unsigned int i;
 
 	fname = "";
-	fname += "games/";
 	fname += DataDirectory;
 	fname += "/ep";
 	fname += mp_levelcontrol->episode + '0';

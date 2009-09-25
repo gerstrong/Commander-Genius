@@ -12,7 +12,6 @@
 #include "../include/gamedo.h"
 #include "EndingSequenceEp2.h"
 #include "CommonEnding.h"
-#include "../CGraphics.h"
 #include "../StringUtils.h"
 
 
@@ -66,10 +65,10 @@ CBitmap *bm_gameover =NULL;
 
   pCKP->Control.levelcontrol.dark = 0;
 
-  initgame( &(pCKP->Control.levelcontrol) );
+  //initgame( &(pCKP->Control.levelcontrol) );
   state = TAN_STATE_WAITBEFOREFIRE;
 
-  showmapatpos(81,TANTALUS_X, TANTALUS_Y, pCKP);
+  //showmapatpos(81,TANTALUS_X, TANTALUS_Y, pCKP);
 
   AllPlayersInvisible();
   numplayers = 1;
@@ -333,7 +332,7 @@ int afterfadewaittimer;
 
   g_pInput->flushAll();
 
-  initgame( &(pCKP->Control.levelcontrol) );
+  //initgame( &(pCKP->Control.levelcontrol) );
 
   // set up the ship's route
   ShipQueuePtr = 0;
@@ -341,7 +340,7 @@ int afterfadewaittimer;
   addshipqueue(CMD_MOVE, 2360, DDOWNRIGHT);
   addshipqueue(CMD_FADEOUT, 0, 0);
 
-  showmapatpos(81, HEADFOREARTH_X, HEADFOREARTH_Y, pCKP);
+  //showmapatpos(81, HEADFOREARTH_X, HEADFOREARTH_Y, pCKP);
 
   numplayers = 1;
   // place the player near the vorticon mothership
@@ -422,7 +421,7 @@ bool enter;
 int downtimer;
 int afterfadewaittimer = 0;
 
-  initgame( &(pCKP->Control.levelcontrol) );
+  //initgame( &(pCKP->Control.levelcontrol) );
   g_pInput->flushAll();
 
   // set up the ship's route
@@ -431,7 +430,7 @@ int afterfadewaittimer = 0;
   addshipqueue(CMD_MOVE, 1600, DUPLEFT);
   addshipqueue(CMD_FADEOUT, 0, 0);
 
-  showmapatpos(81, LIMPSHOME_X, LIMPSHOME_Y, pCKP);
+  //showmapatpos(81, LIMPSHOME_X, LIMPSHOME_Y, pCKP);
 
   numplayers = 1;
   player[0].x = (10 <<4<<CSF);

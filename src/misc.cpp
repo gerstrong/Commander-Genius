@@ -9,7 +9,6 @@
 #include "keen.h"
 #ifdef BUILD_SDL
 #include <SDL.h>
-#include "sdl/joydrv.h"
 #include "sdl/CInput.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/sound/CSound.h"
@@ -21,7 +20,6 @@
 #include "fileio/CSavedGame.h"
 #include "CLogFile.h"
 #include "graphics/CGfxEngine.h"
-#include "CGraphics.h"
 #include "StringUtils.h"
 #include "FindFile.h"
 
@@ -59,7 +57,6 @@ void cleanup(stCloneKeenPlus *CKP)
 
 	g_pLogFile->fltextOut(BLACK,true," Freed %d strings.<br>", freestrings());
 
-	JoyDrv_Stop(&(CKP->Joystick));
 	g_pLogFile->textOut(BLACK,true," Joystick driver shut down.<br>");
 	g_pSound->stopAllSounds();
 	g_pSound->destroy();
@@ -71,11 +68,7 @@ void cleanup(stCloneKeenPlus *CKP)
     	g_pLogFile->fltextOut(BLACK,true," Demo file closed.<br>");
     }
 
-    g_pGraphics->stopGraphics();
     g_pLogFile->fltextOut(BLACK,true," Graphics driver shut down.<br>");
-
-    g_pGraphics->freemem();
-
     g_pLogFile->ftextOut("<br>");
 }
 
@@ -588,8 +581,7 @@ top: ;
   } while(!saveslot);
 
   /* check if the selected save file exists */
-	fname = "games/";
-	fname += pCKP->Resources.GameDataDirectory;
+	fname = pCKP->Resources.GameDataDirectory;
 	fname += "/ep";
 	fname += p_levelcontrol->episode+'0';
 	fname += "save";
@@ -906,7 +898,7 @@ void showF1HelpText(int episode, std::string DataDirectory)
    if(episode==1)
    {
 	   // We suppose that we are using version 131. Maybe it must be extended
-		   std::string filename = "games/" + DataDirectory;
+		   std::string filename = DataDirectory;
 		   if(DataDirectory != "")
 			   filename += "/";
 

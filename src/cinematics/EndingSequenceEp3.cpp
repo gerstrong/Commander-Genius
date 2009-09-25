@@ -41,9 +41,9 @@ char eseq3_AwardBigV(stCloneKeenPlus *pCKP)
 {
   int x,y,w,h;
   int c;
-  initgame( &(pCKP->Control.levelcontrol) );
+  //initgame( &(pCKP->Control.levelcontrol) );
 
-  showmapatpos(81, 32, 32, pCKP);
+  //showmapatpos(81, 32, 32, pCKP);
 
   g_pInput->flushAll();
 

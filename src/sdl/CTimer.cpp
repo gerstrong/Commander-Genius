@@ -23,7 +23,7 @@
 
 CTimer::CTimer()
 {	
-	// Exmaple: if we loop logic at 300 times per sec and we want to draw 60 frames per sec then 300/60 is how many logic loops must pass until
+	// Example: if we loop logic at 300 times per sec and we want to draw 60 frames per sec then 300/60 is how many logic loops must pass until
 	//          a frame can be drawn. To maximize time we can do 300/60 loops back to back and then draw the frame, to sync to our desired rates
 	//	    we can delay the remaining time it would take to do (1000/300)*(300/60) ms
 	//	    Visual exmaple: logic->logic->frame->delay(left over time from 2 logic loops)

@@ -94,7 +94,7 @@ void COrderingInfo::Render(stCloneKeenPlus *pCKP)
 		return;
 	}
 
-	showmapatpos(90, 22<<4, 32, pCKP);
+	//showmapatpos(90, 22<<4, 32, pCKP);
 
 	do
 	{

@@ -27,11 +27,6 @@ struct stDisplay
 	stDisplay() { memset(this, 0, sizeof(stDisplay)); }
 };
 
-struct stDevice
-{
-  SDL_Joystick *Joystick;
-  SDL_Event Event;
-};
 
 struct stLevelControl
 {
@@ -93,14 +88,13 @@ struct stLevelControl
 
 struct stControl
 {
-	bool eseq; 		// see only the ending sequence
+	bool eseq; 		    // see only the ending sequence
 	bool dtm; 			// go direct to map.
-	bool storyboard; 	// go to storyboard
 	bool skipstarting;	// Skip Startmenu, Intro and Mainmenu.
 
 	stLevelControl levelcontrol;
 
-	stControl() : eseq(false), dtm(false), storyboard(false), skipstarting(false) {}
+	stControl() : eseq(false), dtm(false), skipstarting(false) {}
 };
 
 struct stGameData

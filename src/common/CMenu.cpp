@@ -2,62 +2,121 @@
 //  The main menu, intro, and other such stuff.
 
 
-#include "../keen.h"
-#include "../pressf10.h"
 #include "CMenu.h"
-#include "../include/misc.h"
 #include "../sdl/CVideoDriver.h"
-#include "../include/game.h"
-#include "../sdl/CTimer.h"
-#include "../sdl/sound/CSound.h"
-#include "../include/fileio.h"
-#include "../include/gm_pdowm.h"
-#include "../include/gamedo.h"
-#include "../include/main.h"
-#include "../CGraphics.h"
-#include "../sdl/video/colourtable.h"
-#include "../include/gui/dialog.h"
 #include "../sdl/CInput.h"
-#include "../dialog/CDialog.h"
-#include "../CLogFile.h"
-#include "../sdl/CSettings.h"
-#include "../dialog/CTextViewer.h"
-#include "../graphics/CGfxEngine.h"
-
-#include <SDL.h>
-#include <iostream>
-#include <fstream>
-#include "../StringUtils.h"
-#include "../FindFile.h"
-#include <vector>
 
 #define SELMOVE_SPD         3
 
-short openDlgStruct(stDlgStruct *pDlgStruct, stCloneKeenPlus *pCKP);
-
-int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
+CMenu::CMenu( char menu_mode )
 {
-    int selection;
-    // Prepare the Games Menu
-	CDialog MainMenu(g_pVideoDriver->FGLayerSurface, 18, 13);
+    // Create the Main Menu
+	mp_MenuSurface = g_pVideoDriver->FGLayerSurface;
+	m_selection = -1; // Nothing has been selected
+	m_menu_mode = menu_mode;
+}
 
-	map_redraw();
+CMenu::~CMenu()
+{
+}
+
+////
+// Initialization Routines
+////
+bool CMenu::init( char menu_type )
+{
+	m_menu_type = menu_type;
+
+	if( m_menu_type == MAIN )
+	{
+		mp_Dialog = new CDialog(mp_MenuSurface, 18, 13);
+
+		// When in Intro, Title, Demo mode
+		if( m_menu_mode == PASSIVE )
+		{
+			mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "1-Player Game");
+			mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 2, "2-Player Game");
+			mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 3, "Load Game");
+			mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 4, "Story");
+			mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 5, "Highscores");
+			mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 6, "Options");
+			mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 7, "Back To Game");
+			mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 8, "Back To Title");
+			mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 9, "About CG");
+			mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 10, "Ordering Info");
+			mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 11, "Quit");
+		}
+
+		// When Player plays
+		// TODO: This must be adapted
+		if( m_menu_mode == ACTIVE )
+		{
+			mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "1-Player Game");
+			mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 2, "2-Player Game");
+			mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 3, "Load Game");
+			mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 4, "Story");
+			mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 5, "Highscores");
+			mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 6, "Options");
+			mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 7, "Back To Game");
+			mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 8, "Back To Title");
+			mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 9, "About CG");
+			mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 10, "Ordering Info");
+			mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 11, "Quit");
+		}
+
+	}
 
 	// Use the standard Menu-Frame used in the old DOS-Games
-	MainMenu.setFrameTheme( DLG_THEME_OLDSCHOOL );
+	mp_Dialog->setFrameTheme( DLG_THEME_OLDSCHOOL );
+	return true;
+}
 
-	// Show me the games you detected!
-	MainMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "1-Player Game");
-	MainMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "2-Player Game");
-	MainMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Load Game");
-	MainMenu.addObject(DLG_OBJ_DISABLED,  1, 4, "Story");
-	MainMenu.addObject(DLG_OBJ_DISABLED,  1, 5, "Highscores");
-	MainMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Options");
-	MainMenu.addObject(DLG_OBJ_OPTION_TEXT,  1, 7, "Back To Game");
-	MainMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Back To Title");
-	MainMenu.addObject(DLG_OBJ_DISABLED,  1, 9, "About CG");
-	MainMenu.addObject(DLG_OBJ_DISABLED,  1, 10, "Ordering Info");
-	MainMenu.addObject(DLG_OBJ_OPTION_TEXT, 1, 11, "Quit");
+////
+// Process Routines
+////
+void CMenu::process()
+{
+	// Get Input for selection
+	if( g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_STATUS) )
+	{
+		m_selection = mp_Dialog->getSelection();
+	}
+	mp_Dialog->processInput();
+
+	// Draw the menu
+	mp_Dialog->draw();
+
+	// Process the Menu Type logic.
+	// Which menu is open and what do we have to do?
+	if( m_menu_type == MAIN )
+	{
+		if( m_selection==10 )
+		{
+			cleanup();
+			m_menu_type = QUIT;
+		}
+	}
+}
+
+////
+// Cleanup Routines
+////
+void CMenu::cleanup()
+{
+	if( m_menu_type == MAIN )
+	{
+
+	}
+
+	delete mp_Dialog;
+}
+
+////
+// Old Structures, they still have to be adapted
+////
+/*int CMenu::getChoice(stCloneKeenPlus *pCKP,int defaultopt)
+{
+
 
 	do
 	{
@@ -71,7 +130,7 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
 			QuitState = NO_QUIT;
 			return MAINMNU_QUIT;
 		}
-		MainMenu.render();
+		MainMenu.draw();
 	} while(!g_pInput->getExitEvent());
 
     if(g_pInput->getExitEvent())
@@ -113,13 +172,33 @@ int mainmenu(stCloneKeenPlus *pCKP,int defaultopt)
         	pCKP->Control.levelcontrol.hardmode = (diff == 1) ? true : false;
     	}
     }
+    else if(selection == MAINMNU_STORY)
+    {
+    	char *text;
+    	int textsize;
+
+    	textsize = readStoryText(&text,
+								 pCKP->Control.levelcontrol.episode,
+								 pCKP->Resources.GameDataDirectory); // Read text from
+		// and store it at the text pointer
+
+    	if(textsize > 0)
+    	{
+    		showmapatpos(90, STORYBOARD_X, STORYBOARD_Y, pCKP);
+			showPage(text,textsize);
+
+			free(text);
+		}
+    	else if(textsize == 0)
+    	{
+    		g_pLogFile->ftextOut("readStoryText(): Error reading story text. Are you sure that there is any story text?");
+    	}
+    }
 	else if (selection==MAINMNU_QUIT)
     {
 		QuitState = QUIT_PROGRAM;
     	return MAINMNU_QUIT;
     }
-
-	return selection;
 }
 
 int getDifficulty(stCloneKeenPlus *pCKP)
@@ -146,7 +225,7 @@ int getDifficulty(stCloneKeenPlus *pCKP)
 
 		g_pInput->pollEvents();
 		gamedo_AnimatedTiles();
-		DifficultyMenu.render();
+		DifficultyMenu.draw();
 	} while(true);
 
 	return DifficultyMenu.getSelection();
@@ -243,7 +322,7 @@ int AudioDlg(stCloneKeenPlus *pCKP)
 
 		}
 		AudioMenu.processlogic();
-		AudioMenu.render();
+		AudioMenu.draw();
 	} while(1);
 
 	return ok;
@@ -316,7 +395,7 @@ void OptionsDlg(stCloneKeenPlus *pCKP)
 		}
 
 		OptionsMenu.processlogic();
-		OptionsMenu.render();
+		OptionsMenu.draw();
 	} while(1);
 }
 
@@ -579,7 +658,7 @@ short GraphicsDlg(stCloneKeenPlus *pCKP, int ingame)
 		// Render the Games-Menu
 		DisplayMenu.processlogic();
 		// blit the scrollbuffer to the display
-		DisplayMenu.render();
+		DisplayMenu.draw();
 	} while(1);
 
 	return retval;
@@ -639,7 +718,7 @@ char configmenu(stCloneKeenPlus *pCKP,int ingame)
 			OptionsMenu.setSDLSurface(g_pVideoDriver->FGLayerSurface);
 		}
 		OptionsMenu.processlogic();
-		OptionsMenu.render();
+		OptionsMenu.draw();
 	} while(1);
 
 	return 0;
@@ -763,7 +842,7 @@ char controlsmenu()
 				while(!g_pInput->readNewEvent(0,item))
 				{
 					ControlsMenu.processlogic();
-					ControlsMenu.render();
+					ControlsMenu.draw();
 				}
 
 				g_pInput->getEventName(item, 0, buf2);
@@ -797,7 +876,7 @@ char controlsmenu()
 				while(!g_pInput->readNewEvent(1,item))
 				{
 					ControlsMenu.processlogic();
-					ControlsMenu.render();
+					ControlsMenu.draw();
 				}
 
 				g_pInput->getEventName(item, 1, buf2);
@@ -823,7 +902,7 @@ char controlsmenu()
 		}
 		// Render the Menu
 		ControlsMenu.processlogic();
-		ControlsMenu.render();
+		ControlsMenu.draw();
 	} while(1);
 	return 0;
 }
@@ -910,4 +989,4 @@ int boxtimer;
 	  gamedo_RenderScreen();
   } while(!enter);
 
-}
+}*/

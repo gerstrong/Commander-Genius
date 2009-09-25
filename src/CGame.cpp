@@ -3,6 +3,8 @@
  *
  *  Created on: 01.05.2009
  *      Author: gerstrong
+ *  This Game engine should strip down the main function
+ *  and provide more dynamic control over the game
  */
 
 #include <stdlib.h>
@@ -20,42 +22,97 @@
 #include "vorticon/CCredits.h"
 #include "CLogFile.h"
 #include "fileio.h"
-#include "fileio/CExeFile.h"
-#include "fileio/CTileLoader.h"
-#include "fileio/CPatcher.h"
-#include "sdl/sound/CSound.h"
 #include "sdl/CVideoDriver.h"
+#include "sdl/CInput.h"
+#include "sdl/CTimer.h"
 #include "vorticon/COrderingInfo.h"
 
 CGame::CGame() {
-	m_Episode = 0;
-
-	TileLoader = NULL;
-    EGAGraphics = NULL;
-    m_Messages = NULL;
 }
 
 CGame::~CGame() {
-	if(EGAGraphics) delete EGAGraphics;
-	if(TileLoader) delete TileLoader;
-	if(m_Messages) delete m_Messages;
 }
 
+//////////////////////////////////
+// Initialize Game Engine here! //
+//////////////////////////////////
+bool CGame::init()
+{
+	CSettings Settings;
+
+	// Check if there are settings on the PC, otherwise save the defaults.
+	if(!Settings.loadDrvCfg())
+	{
+		g_pLogFile->textOut(PURPLE,"First time message: CKP didn't find the driver config file. However, it generated some default values and will save them.<br>");
+		Settings.saveDrvCfg();
+	}
+
+	// Setup the Hardware using the settings we have
+	g_pLogFile->textOut(GREEN,"Loading hardware settings...<br>");
+	if(loadCKPDrivers() != 0)
+	{
+		g_pLogFile->textOut(RED,"The game cannot start, because you do not meet the hardware requirements.<br>");
+		return false;
+	}
+
+	// Initialize the way the launcher is started
+	m_GameControl.init();
+
+	return true;
+}
+
+/////////////////////////////
+// Process Game Engine here! //
+/////////////////////////////
+void CGame::run()
+{
+	do
+	{
+	   // Poll Inputs
+	   g_pInput->pollEvents();
+
+	   // Process Game Control
+	   m_GameControl.process();
+
+	   if( g_pTimer->TimeToRender() )
+	   {
+		   // Render the Screen
+		   g_pVideoDriver->update_screen();
+
+		   // wait the time until next frame
+		   g_pTimer->TimeToDelay();
+	   }
+	} while(!m_GameControl.mustShutdown());
+}
+
+///////////////////////////////
+// Cleanup Game Engine here! //
+///////////////////////////////
+void CGame::cleanup()
+{
+	m_GameControl.cleanup();
+}
+
+
+///////////////////////////////////////////////
+// Depreciated Fnctions. Might be removed soon!
+///////////////////////////////////////////////
+/*
 short CGame::runCycle(stCloneKeenPlus *pCKP)
 {
 	  int opt = MAINMNU_1PLAYER;
-	  int retval;
+	  //int retval;
 	  int defaultopt = 0;
 
-	  initgamefirsttime(pCKP, EGAGraphics->getNumSprites());
-	  initgame( &(pCKP->Control.levelcontrol) );
+	  //initgamefirsttime(pCKP, EGAGraphics->getNumSprites());
+	  //initgame( &(pCKP->Control.levelcontrol) );
 
 	  g_pLogFile->ftextOut("Game starting...<br>");
 
 	  if(!pCKP->Control.skipstarting)
 	  {
 		  CIntro Intro;
-		  Intro.Render(pCKP);
+		  //Intro.Render(pCKP);
 		  pCKP->Control.skipstarting=0;
 	  }
 
@@ -94,9 +151,10 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 	    if(pCKP->Control.levelcontrol.command != LVLC_START_LEVEL)
 	    {
 	    	g_pLogFile->ftextOut("calling mainmenu()<br>");
+	    	CMenu Mainmenu;
 
-			opt = mainmenu(pCKP, defaultopt); // Read option from the main menu
-											  // of the game.
+	    	opt = Mainmenu.getChoice(pCKP, defaultopt); // Read option from the main menu
+														// of the game.
 			pCKP->Control.skipstarting=0;
 
 			g_pLogFile->ftextOut("gcl: opt = %d<br>", opt);
@@ -109,16 +167,16 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 	      case MAINMNU_1PLAYER:
 	        numplayers = 1;
 	        defaultopt = 0;
-	        current_demo = 1;
-	        initgamefirsttime(pCKP, EGAGraphics->getNumSprites());
+	        //current_demo = 1;
+	        //initgamefirsttime(pCKP, EGAGraphics->getNumSprites());
 	        loadinggame = 0;
 	        playgame_levelmanager(pCKP);
 	        break;
 	      case MAINMNU_2PLAYER:
 	        defaultopt = 0;
-	        current_demo = 1;
+	        //current_demo = 1;
 	        numplayers = 2;
-	        initgamefirsttime(pCKP, EGAGraphics->getNumSprites());
+	        //initgamefirsttime(pCKP, EGAGraphics->getNumSprites());
 	        loadinggame = 0;
 	        playgame_levelmanager(pCKP);
 	        break;
@@ -127,16 +185,12 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 	        {
 	           loadinggame = 1;
 	           defaultopt = 0;
-	           current_demo = 1;
+	           //current_demo = 1;
 	           numplayers = 1; // here was 2. Why was that? I don't understand
-	           initgamefirsttime(pCKP, EGAGraphics->getNumSprites());
+	           //initgamefirsttime(pCKP, EGAGraphics->getNumSprites());
 	           playgame_levelmanager(pCKP);
 	        }
 	        break;
-
-	      case MAINMNU_STORY:
-	          pCKP->Control.storyboard=1;
-	          break;
 
 	      case MAINMNU_HIGHSCORES:
 	    	  CHighScores *pHighscores;
@@ -171,7 +225,7 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 	      case MAINMNU_TIMEOUT:
 	      case MAINMNU_DEMO:
 
-	    	  retval = play_demo(current_demo, pCKP, EGAGraphics->getNumSprites());
+	    	  //retval = play_demo(current_demo, pCKP, EGAGraphics->getNumSprites());
 
 	    	  if (retval==DEMO_RESULT_FILE_BAD)
 	    	  {
@@ -182,7 +236,7 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 	    		  pIntro = new CIntro();
 	    		  delete pIntro;
 	    		  pIntro = NULL;
-	    		  current_demo = 0;
+	    		  //current_demo = 0;
 	    	  }
 	    	  else if (retval==DEMO_RESULT_CANCELED)
 	    	  { // user hit a key to cancel demo
@@ -202,7 +256,7 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 	        g_pLogFile->ftextOut("********************<br>");
 	        g_pLogFile->ftextOut(" Restarting game...<br>");
 	        g_pLogFile->ftextOut("********************<br>\n");
-	        cleanup(pCKP);
+	        cleanup();
 	        pCKP->shutdown = SHUTDOWN_RESTART;
 	        return 0;
 	      break;
@@ -223,14 +277,14 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 short CGame::ingamerunCycle(stCloneKeenPlus *pCKP)
 {
 	int opt = MAINMNU_1PLAYER;
-	int retval;
+	//int retval;
 	int defaultopt = 0;
 		
 	do
 	{
 	    if (QuitState==QUIT_TO_TITLE) QuitState = NO_QUIT;
 		
-	    /*if(pCKP->Control.storyboard == 1) // Show the story of the game
+	    if(pCKP->Control.storyboard == 1) // Show the story of the game
 	    {
 	    	char *text;
 	    	int textsize;
@@ -256,14 +310,15 @@ short CGame::ingamerunCycle(stCloneKeenPlus *pCKP)
 	    		g_pLogFile->ftextOut("readStoryText(): Error reading story text. The version appears to be incompatible");
 	    	}
 	    	pCKP->Control.storyboard = 0;
-	    }*/
+	    }
 		
 	    if(pCKP->Control.levelcontrol.command != LVLC_START_LEVEL)
 	    {
 	    	g_pLogFile->ftextOut("calling mainmenu()<br>");
-			
-			opt = mainmenu(pCKP, defaultopt); // Read option from the main menu
-			// of the game.
+	    	CMenu Mainmenu;
+
+	    	opt = Mainmenu.getChoice(pCKP, defaultopt); // Read option from the main menu
+														// of the game.
 			pCKP->Control.skipstarting=0;
 			
 			g_pLogFile->ftextOut("gcl: opt = %d<br>", opt);
@@ -276,14 +331,14 @@ short CGame::ingamerunCycle(stCloneKeenPlus *pCKP)
 			case MAINMNU_1PLAYER:
 				numplayers = 1;
 				defaultopt = 0;
-				current_demo = 1;
+				//current_demo = 1;
 				//initgamefirsttime(pCKP, EGAGraphics->getNumSprites());
 				loadinggame = 0;
 				playgame_levelmanager(pCKP);
 				break;
 			case MAINMNU_2PLAYER:
 				defaultopt = 0;
-				current_demo = 1;
+				//current_demo = 1;
 				numplayers = 2;
 				//initgamefirsttime(pCKP, EGAGraphics->getNumSprites());
 				loadinggame = 0;
@@ -294,14 +349,14 @@ short CGame::ingamerunCycle(stCloneKeenPlus *pCKP)
 				{
 					loadinggame = 1;
 					defaultopt = 0;
-					current_demo = 1;
+					//current_demo = 1;
 					numplayers = 1; // here was 2. Why was that? I don't understand
 					//initgamefirsttime(pCKP, EGAGraphics->getNumSprites());
 					playgame_levelmanager(pCKP);
 				}
 				break;
 				
-			/*case MAINMNU_STORY:
+			case MAINMNU_STORY:
 				pCKP->Control.storyboard=1;
 				break;
 				
@@ -313,13 +368,13 @@ short CGame::ingamerunCycle(stCloneKeenPlus *pCKP)
 					g_pLogFile->ftextOut("Error processing Highscore!!<br>");
 				}
 				delete pHighscores;
-				break;*/
+				break;
 			case MAINMNU_NEW_GAME:
 				//pCKP->shutdown = SHUTDOWN_NEW_GAME;
 				QuitState = QUIT_TO_TITLE;
 				return 0;
 				break;
-			/*case MAINMNU_ABOUT:
+			case MAINMNU_ABOUT:
 				CCredits *pCredit;
 				pCredit = new CCredits;
 				pCredit->Render(pCKP);
@@ -333,7 +388,7 @@ short CGame::ingamerunCycle(stCloneKeenPlus *pCKP)
 												 pCKP->Resources.GameDataDirectory);
 				OrderingInfo->Render(pCKP);
 				delete OrderingInfo;
-				break;*/
+				break;
 				
 			case MAINMNU_TIMEOUT:
 			case MAINMNU_DEMO:
@@ -341,7 +396,7 @@ short CGame::ingamerunCycle(stCloneKeenPlus *pCKP)
 				QuitState = NO_QUIT;
 				return 0;
 				
-				/*retval = play_demo(current_demo, pCKP, EGAGraphics->getNumSprites());
+				retval = play_demo(current_demo, pCKP, EGAGraphics->getNumSprites());
 				
 				if (retval==DEMO_RESULT_FILE_BAD)
 				{
@@ -366,13 +421,13 @@ short CGame::ingamerunCycle(stCloneKeenPlus *pCKP)
 						defaultopt = MAINMNU_DEMO;
 					
 				}
-				current_demo++;*/
+				current_demo++;
 				break;
 			case RESTART_GAME:
 				g_pLogFile->ftextOut("********************<br>");
 				g_pLogFile->ftextOut(" Restarting game...<br>");
 				g_pLogFile->ftextOut("********************<br>\n");
-				cleanup(pCKP);
+				cleanup();
 				pCKP->shutdown = SHUTDOWN_RESTART;
 				return 0;
 				break;
@@ -388,70 +443,6 @@ short CGame::ingamerunCycle(stCloneKeenPlus *pCKP)
 	return 0;
 }
 
-bool CGame::loadResources(unsigned short Episode, const std::string& DataDirectory)
-{
-	m_Episode = Episode;
-	m_DataDirectory = DataDirectory;
-
-	if( m_DataDirectory.size() > 0 && m_DataDirectory[m_DataDirectory.size()-1] != '/' )
-		m_DataDirectory += "/";
-
-
-    // Get the EXE of the game and decompress it if needed.
-    CExeFile *ExeFile = new CExeFile(Episode, DataDirectory);
-    if(!ExeFile->readData()) return false;
-    int version = ExeFile->getEXEVersion();
-
-	g_pLogFile->ftextOut("Commander Keen Episode %d (Version %d.%d) was detected.<br>", Episode, version/100,version%100);
-	if(version == 134) g_pLogFile->ftextOut("This version of the game is not supported!<br>");
-
-    // Load tile attributes.
-	if(TileLoader) delete TileLoader;
-
-	if(ExeFile->getData() == NULL) {
-		g_pLogFile->textOut(RED, "CGame::loadResources: Could not load data out of EXE<br>");
-		delete ExeFile;
-		return false;
-	}
-
-	TileLoader = new CTileLoader(Episode, ExeFile->getEXEVersion(), ExeFile->getData());
-
-	// Patch the EXE-File-Data directly in the memory.
-	CPatcher *Patcher = new CPatcher(Episode, ExeFile->getEXEVersion(), ExeFile->getData(), DataDirectory);
-	Patcher->patchMemory();
-	delete Patcher;
-
-	if(!TileLoader->load()) {
-		g_pLogFile->textOut(RED, "CGame::loadResources: Could not load data with TileLoader<br>");
-		delete ExeFile;
-		return false;
-	}
-
-	// Decode the entire graphics for the game (EGALATCH, EGASPRIT)
-	if(EGAGraphics) delete EGAGraphics;
-    EGAGraphics = new CEGAGraphics(Episode, DataDirectory); // Path is relative to the data dir
-    if(!EGAGraphics) return 1;
-
-    EGAGraphics->loadData();
-	
-    // load the strings. TODO: After that this one will replace loadstrings
-    //m_Messages = new CMessages();    delete ExeFile;
-    //m_Messages->readData(Episode, version, DataDirectory);
-	loadstrings();
-
-	delete ExeFile;
-
-	// Load the sound data
-	bool ok = g_pSound->loadSoundData(m_Episode, DataDirectory);
-	if( !ok ) return false;
-	return true;
-}
-
-void CGame::freeResources(void)
-{
-	if(EGAGraphics) { delete EGAGraphics; EGAGraphics = NULL; }
-}
-
 void CGame::preallocateCKP(stCloneKeenPlus *pCKP)
 {
 	// This function prepares the CKP Structure so that the it is allocated in the memory.
@@ -462,7 +453,7 @@ void CGame::preallocateCKP(stCloneKeenPlus *pCKP)
 	pCKP->GameData = new stGameData[1];
 
 	pCKP->Control.levelcontrol.demomode = DEMO_NODEMO;
-	current_demo = 1;
+	//current_demo = 1;
 
 	pCKP->Joystick = NULL;
 
@@ -470,4 +461,4 @@ void CGame::preallocateCKP(stCloneKeenPlus *pCKP)
 	g_pVideoDriver->showFPS(false);
 
 	player[0].x = player[0].y = 0;
-}
+}*/

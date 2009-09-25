@@ -23,7 +23,6 @@ char tempbuf[200];
 #include "include/CStartScreen.h"
 
 #include "dialog/CDialog.h"
-#include "CGraphics.h"
 
 #ifdef TARGET_WIN32
 #define uint unsigned int

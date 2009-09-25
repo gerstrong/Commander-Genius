@@ -27,7 +27,6 @@
 */
 
 #include "keen.h"
-#include "sdl/joydrv.h"
 #include "sdl/CInput.h"
 #include "sdl/CTimer.h"
 #include "sdl/sound/CSound.h"
@@ -43,7 +42,6 @@
 #include "vorticon/CHighScores.h"
 #include "CLogFile.h"
 #include "CGame.h"
-#include "CGraphics.h"
 #include "sdl/CSettings.h"
 #include "FindFile.h"
 #include "fileio/CSavedGame.h"
@@ -128,49 +126,53 @@ int main(int argc, char *argv[])
 
 	g_pLogFile->CreateLogfile("CGLog.html");
 
+	/*		g_pLogFile->textOut(RED,"Parsing Command line flags.<br>");
+		if(readCommandLine(argc, argv, &CKP) != 0)
+		{
+			g_pLogFile->textOut(RED,"Sorry, but CKP needs correct command line parameters.<br>");
+			printf("Sorry, but CKP needs correct command line parameters.\n");
+		}
+
+	 * */
+
 	CGame Game;
-	Game.preallocateCKP(&CKP);
-
-	CSettings Settings;
-	if(Settings.loadDrvCfg() != 0) // Always return 0 if no ERROR
+	//////////////////////////////////
+	// Initialize Game Engine here! //
+	//////////////////////////////////
+	if(Game.init())
 	{
-		g_pLogFile->textOut(RED,"First time message: CKP didn't find the driver config file. However, it is going to generate one basing on default configurations.<br>");
-		Settings.saveDrvCfg();
+		/////////////////////////////
+		// Start Game Engine here! //
+		/////////////////////////////
+		Game.run();
 	}
 
-	g_pLogFile->textOut(RED,"Parsing Command line flags.<br>");
-	if(readCommandLine(argc, argv, &CKP) != 0)
+	///////////////////////////////
+	// Cleanup Game Engine here! //
+	///////////////////////////////
+	Game.cleanup();
+
+	/*g_pLogFile->textOut(RED,"Loading Games Menu.<br>");
+
+	CStartMenu StartMenu = new CStartMenu;
+	if(StartMenu->loadResources(&CKP, &Game))
 	{
-		g_pLogFile->textOut(RED,"Sorry, but CKP needs correct command line parameters.<br>");
-		printf("Sorry, but CKP needs correct command line parameters.\n");
+
+		delete StartMenu;
 	}
-
-	g_pLogFile->textOut(RED,"Loading all drivers...<br>");
-
-	if(loadCKPDrivers(&CKP) != 0)
-	{
-		g_pLogFile->textOut(RED,"The game cannot start, because you do not meet the hardware requirements.<br>");
-		return 1;
-	}
-
-	g_pLogFile->textOut(RED,"Loading Configuration files.<br>");
-	Settings.loadDefaultGameCfg(CKP.Option);
-	if(Settings.loadGameCfg(CKP.Option) != 0)
-	{
-		g_pLogFile->textOut(PURPLE,"There are no settings! CKP is going to use the default options. You can change them later in the game.<br>");
-		Settings.saveGameCfg(CKP.Option);
-	}
-
-	g_pLogFile->textOut(RED,"Loading Games Menu.<br>");
-
-	if(loadResourcesforStartMenu(&CKP, &Game) != 0)
+	else
 	{
 		g_pLogFile->textOut(RED,"Error! Resources for start menu cannot be loaded! Maybe you need to copy the data files!<br>");
-		return 1;
+		delete StartMenu;
 	}
+
+
+
+	// Must clean up.
 
 	if(!CKP.Control.skipstarting)
 	{
+
 		while(!loadStartMenu(&CKP))
 			g_pLogFile->textOut(PURPLE,"Error! You have chosen a Game that doesn't exist. Please correct the \"games.cfg\" File under \"games\" and choose another game.<br>");
 	}
@@ -210,8 +212,7 @@ int main(int argc, char *argv[])
 
 	Settings.saveGameCfg(CKP.Option);
 	cleanupResources(&CKP);
-	Settings.saveDrvCfg();
-	Game.freeResources();
+	Settings.saveDrvCfg();*/
 	
 	printf("Thank you very much for playing this wonderful game!");
 
@@ -224,22 +225,21 @@ void cleanupResources(stCloneKeenPlus *pCKP)
 	return;
 }
 
-short loadCKPDrivers(stCloneKeenPlus *pCKP)
+short loadCKPDrivers()
 {
-	g_pGraphics->allocScrollBufmem();
 
 	// initialize/activate all drivers
 	g_pLogFile->ftextOut("Starting graphics driver...<br>");
 
 	if (!g_pVideoDriver->start())
-		return abortCKP(pCKP);
+	{
+		return 1;
+	}
 
 	g_pLogFile->ftextOut("Starting sound driver...<br>");
-
 	g_pSound->init();
 
-	g_pLogFile->ftextOut("Starting input driver...<br>");
-	JoyDrv_Start(&(pCKP->Device.Joystick));
+	g_pLogFile->ftextOut("Starting the input driver...<br>");
 	g_pInput->loadControlconfig();
 
 	return 0;
@@ -308,7 +308,7 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
 		{
 			if( g_pTimer->TimeToRender() == false ) continue;
 			g_pGfxEngine->Palette.applyFade();
-			g_pVideoDriver->sb_blit();
+			//g_pVideoDriver->sb_blit();
 			g_pVideoDriver->update_screen();
 			g_pTimer->TimeToDelay();
 		} while(g_pGfxEngine->Palette.in_progress());
@@ -493,7 +493,7 @@ void playgame_levelmanager(stCloneKeenPlus *pCKP)
 
   if (p_levelcontrol->command==LVLC_END_SEQUENCE)
   {
-    endsequence(pCKP);
+    //endsequence(pCKP);
     g_pLogFile->ftextOut("eseq complete<br>");
   }
   else if (p_levelcontrol->command==LVLC_TANTALUS_RAY)
@@ -666,7 +666,7 @@ short readCommandLine(int argc, char *argv[], stCloneKeenPlus *pCKP)
 
 	      else if (strcmp(tempbuf, "-story")==0)     // play end sequence
 	      {
-	        pCKP->Control.storyboard = 1;
+	        //pCKP->Control.storyboard = 1;
 	        pCKP->Control.skipstarting = 1;
 	      }
 	      else if (strcmp(tempbuf, "-fs")==0)       // full-screen

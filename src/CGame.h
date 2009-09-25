@@ -8,35 +8,33 @@
 #ifndef CGAME_H_
 #define CGAME_H_
 
-#include <string>
-#include "vorticon/CEGAGraphics.h"
-#include "vorticon/CMessages.h"
+#include "CGameControl.h"
 
 // references to cinematics/CommonEnding
-int endsequence(stCloneKeenPlus *pCKP);
+//int endsequence(stCloneKeenPlus *pCKP);
 
 // Reference from game.cpp
-void initgame(stLevelControl *p_levelcontrol);
+//void initgame(stLevelControl *p_levelcontrol);
 
 class CGame {
 public:
 	CGame();
 	virtual ~CGame();
 
-	bool loadResources(unsigned short Episode, const std::string& DataDirectory);
-	void freeResources(void);
+	bool init();
+	void run();
+	void cleanup();
+
+	///////
+	/// Depreciated
+	///////
+	/*void freeResources(void);
 	short runCycle(stCloneKeenPlus *pCKP);
 	short ingamerunCycle(stCloneKeenPlus *pCKP);
-	void preallocateCKP(stCloneKeenPlus *pCKP);
+	void preallocateCKP(stCloneKeenPlus *pCKP);*/
 
 private:
-	unsigned short m_Episode;
-	std::string m_DataDirectory;
-	int current_demo;
-
-	CEGAGraphics *EGAGraphics;
-	CMessages *m_Messages;
-	CTileLoader *TileLoader;
+	CGameControl m_GameControl;
 };
 
 #endif /* CGAME_H_ */

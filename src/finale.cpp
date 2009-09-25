@@ -6,7 +6,6 @@
 
 #include "keen.h"
 #include "include/fileio.h"
-#include "CGraphics.h"
 #include "graphics/CGfxEngine.h"
 #include "sdl/CVideoDriver.h"
 #include "FindFile.h"
@@ -94,7 +93,7 @@ int i;
 
 	std::string buffer = formatPathString(path);
 
-	map_unregister_all_animtiles();
+	//map_unregister_all_animtiles();
 
 	std::string fname = buffer + filename;
    fp = OpenGameFile(fname.c_str(), "rb");

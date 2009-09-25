@@ -96,7 +96,7 @@ bool CEGALatch::loadData( std::string &m_path, short m_episode, bool compressedd
     SDL_Surface *sfc;
 
 	if(m_path == "") filename = "games/egalatch.ck" + itoa(m_episode);
-	else filename = "games/" + m_path + "/egalatch.ck" + itoa(m_episode);
+	else filename = m_path + "/egalatch.ck" + itoa(m_episode);
 
 	FILE* latchfile = OpenGameFile(filename.c_str(),"rb");
 
@@ -217,7 +217,7 @@ bool CEGALatch::loadData( std::string &m_path, short m_episode, bool compressedd
 
      // Load Hires, VGA, SVGA Tiles into the tilemap
      if(m_path == "") filename = "games/ck" + itoa(m_episode) + "tiles.bmp";
-     else filename = "games/" + m_path + "/ck" + itoa(m_episode) + "tiles.bmp";
+     else filename = m_path + "/ck" + itoa(m_episode) + "tiles.bmp";
      if(Tilemap->loadHiresTile(filename))
     	 g_pLogFile->textOut(GREEN, "Hi-res Bitmap for Tiles was loaded successfully!");
 

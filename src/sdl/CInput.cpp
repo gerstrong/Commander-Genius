@@ -23,9 +23,13 @@ CInput::CInput() {
 	WIZ_AdjustVolume(VOLUME_UP);
 	#endif
 	resetControls();
+	startJoyDriver();
 }
 
 CInput::~CInput() {
+	// Shutdown Joysticks
+	if(mp_Joystick)
+		SDL_JoystickClose(mp_Joystick);
 }
 
 void CInput::resetControls() {
@@ -88,6 +92,45 @@ void CInput::resetControls() {
 		InputCommand[i][IC_STATUS].joybutton = 3;
 		InputCommand[i][IC_STATUS].which = 0;
 	}
+}
+
+bool CInput::startJoyDriver()
+{
+	g_pLogFile->textOut("JoyDrv_Start() : ");
+
+	if (SDL_Init( SDL_INIT_JOYSTICK ) < 0)
+	{
+		g_pLogFile->ftextOut("JoyDrv_Start() : Couldn't initialize SDL: %s<br>", SDL_GetError());
+		return 1;
+	}
+	else
+	{
+	  int i=0;
+	  int joynum;
+	  joynum = SDL_NumJoysticks();
+	  if(joynum)
+	  {
+		  if(joynum == 1)
+			  g_pLogFile->ftextOut("1 joystick was found.<br>\n", joynum );
+		  else
+			  g_pLogFile->ftextOut("%i joysticks were found.<br>\n", joynum );
+		  g_pLogFile->textOut("The names of the joysticks are:<br>");
+
+		  for( i=0; i < SDL_NumJoysticks(); i++ )
+		  {
+			  g_pLogFile->ftextOut("    %s<br>", SDL_JoystickName(i));
+		  }
+	  }
+	  else
+	  {
+		  g_pLogFile->ftextOut("No joysticks were found.<br>\n");
+	  }
+	}
+
+  SDL_JoystickEventState(SDL_ENABLE);
+  mp_Joystick = SDL_JoystickOpen(0);
+
+  return 0;
 }
 
 short CInput::loadControlconfig(void)

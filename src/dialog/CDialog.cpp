@@ -81,15 +81,15 @@ int CDialog::getSelection()
 }
 
 ///
-// Rendering routine
+// Process routine
 ///
-void CDialog::processlogic()
+void CDialog::processInput()
 {
 	if(g_pInput->getPulsedCommand(IC_DOWN, 60))
 	{
 		do
 		{
-			if(m_selected_ID == m_dlgobject.size()-1)
+			if(m_selected_ID >= m_dlgobject.size()-1)
 			{
 				m_switch=1;
 				m_scroll=0;
@@ -108,12 +108,13 @@ void CDialog::processlogic()
 	{
 		do
 		{
-			if(m_selected_ID == 0)
+			if(m_selected_ID <= 0 )
 			{
 				m_switch=2;
 				
 				if(m_dlgobject.size() > m_h)
 					m_scroll = m_selected_ID-(m_h-2)+1;
+				break;
 			}
 			else
 			{
@@ -124,14 +125,10 @@ void CDialog::processlogic()
 			}
 		} while(!m_dlgobject[m_selected_ID]->m_selectable);
 	}
-
-	g_pInput->pollEvents();
 }
 
-void CDialog::render()
+void CDialog::draw()
 {
-	if( g_pTimer->TimeToRender() == false ) return;
-
 	if(m_alpha < 230)
 	{
 		SDL_SetAlpha(m_DialogSurface, SDL_SRCALPHA, m_alpha );
@@ -169,16 +166,11 @@ void CDialog::render()
 	}
 
 	// Render the twirl
-	renderTwirl();
-
-	// blit the scrollbuffer to the display
-	g_pVideoDriver->sb_blit();
-	g_pVideoDriver->update_screen();
-	g_pTimer->TimeToDelay();
+	drawTwirl();
 }
 
 #define TWIRL_TIME	5
-void CDialog::renderTwirl()
+void CDialog::drawTwirl()
 {
 	if( m_twirl.timer >= TWIRL_TIME )
 	{
@@ -195,8 +187,12 @@ void CDialog::renderTwirl()
 	{
 		if(m_switch == 1)
 		{
-			m_selected_ID = 0;
 			m_switch = 0;
+			if(!m_dlgobject[m_selected_ID]->m_selectable)
+				m_selected_ID = m_dlgobject.size()-1;
+			else
+				m_selected_ID = 0;
+
 			m_twirl.posy = m_dlgobject[m_selected_ID]->m_y;
 		}
 		else if(m_twirl.posy-m_dlgobject[m_selected_ID]->m_y > 8)

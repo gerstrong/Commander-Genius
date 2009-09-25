@@ -218,6 +218,7 @@ struct stObject
  } ai;
 };
 
+// TODO: Remove!!!! Depreciated!
 // (map) stripe attribute structures, for animated tiles
 // slot 0 is not used. data starts at slot 1. see description
 // of AnimTileInUse in map structure to see why.
@@ -512,10 +513,6 @@ SE_MORTIMER_ZAPSUP,
 SE_MORTIMER_RANDOMZAPS
 };
 
-// animation rate of animated tiles
-#define ANIM_TILE_TIME        40
-
-
 #define TELEPORT_GRAY_BASEFRAME_EP1  342
 #define TELEPORT_GRAY_IDLEFRAME_EP1  99
 
@@ -571,7 +568,6 @@ struct stCloneKeenPlus
 	SDL_Event Event;
 	stResources Resources;
 	stGameData *GameData;
-	stDevice Device;
 	stControl Control;
 	stOption Option[NUM_OPTIONS];
 	unsigned short numGames;

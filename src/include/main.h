@@ -14,5 +14,5 @@ short abortCKP(stCloneKeenPlus *pCKP);
 void cleanupResources(stCloneKeenPlus *pCKP);
 short closeCKP(stCloneKeenPlus *pCKP);
 void createDefaultSettings(stOption *Option);
-short loadCKPDrivers(stCloneKeenPlus *pCKP);
+short loadCKPDrivers();
 void SaveConfig(stOption *Option);

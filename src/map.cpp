@@ -4,7 +4,6 @@
 */
 
 #include "keen.h"
-#include "CGraphics.h"
 #include "sdl/CVideoDriver.h"
 #include "graphics/CGfxEngine.h"
 

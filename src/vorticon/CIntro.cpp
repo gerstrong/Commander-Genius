@@ -5,84 +5,70 @@
  *      Author: gerstrong
  */
 
-#include "../keen.h"
 #include "CIntro.h"
 #include "../sdl/CInput.h"
-#include "../CGraphics.h"
-#include "../include/CStartScreen.h"
-#include "../include/gamedo.h"
 #include "../sdl/CVideoDriver.h"
+#include "../sdl/CTimer.h"
 
 CIntro::CIntro() {
+	m_timer = 0;
+	m_introtime = 10;  // Total time (in seconds) to elapse until Main menu opens
+	m_scrolly = 200;
+	m_finished = false;
+	mp_bmp_surface = g_pVideoDriver->FGLayerSurface;
+	SDL_FillRect(mp_bmp_surface, NULL, 0);
 }
 
 CIntro::~CIntro() {
 }
 
-void CIntro::Render(stCloneKeenPlus *pCKP)
+void CIntro::init()
 {
-	CBitmap* bm[6];
-	int mid[6];
-	int timer = 0;
-	int introtime = 5000;  // Total time to elapse until Main menu opens
-	int scrolly = 200;
-	bool cancel=false;
-
-	showmapatpos(90, 104<<4, 32, pCKP);
-
 	// Load the Title Bitmap
-	bm[0] = g_pGfxEngine->getBitmap("AN");
-	bm[1] = g_pGfxEngine->getBitmap("APOGEE");
-	bm[2] = g_pGfxEngine->getBitmap("PRESENT");
-	bm[3] = g_pGfxEngine->getBitmap("OFAN");
-	bm[4] = g_pGfxEngine->getBitmap("IDSOFT");
-	bm[5] = g_pGfxEngine->getBitmap("PRODUCT");
+	mp_bm[0] = g_pGfxEngine->getBitmap("AN");
+	mp_bm[1] = g_pGfxEngine->getBitmap("APOGEE");
+	mp_bm[2] = g_pGfxEngine->getBitmap("PRESENT");
+	mp_bm[3] = g_pGfxEngine->getBitmap("OFAN");
+	mp_bm[4] = g_pGfxEngine->getBitmap("IDSOFT");
+	mp_bm[5] = g_pGfxEngine->getBitmap("PRODUCT");
 
 	for(int j=0 ; j<6 ; j++)
-		if (j==0)
-		mid[j] = (320/2)-((bm[j]->getWidth()+4)/2);
-		else
-		mid[j] = (320/2)-(bm[j]->getWidth()/2);
-
-	g_pInput->flushAll();
-
-	do
 	{
-		bm[1]->draw( g_pVideoDriver->FGLayerSurface, mid[1], scrolly+11);
-
-		if(timer<9) timer++;
+		if (j==0)
+			m_mid[j] = (320/2)-((mp_bm[j]->getWidth()+4)/2);
 		else
-		{
-			timer=0;
-			if(scrolly>42)	scrolly--;
-		}
+			m_mid[j] = (320/2)-(mp_bm[j]->getWidth()/2);
+	}
 
-		bm[1]->draw( g_pVideoDriver->FGLayerSurface, mid[1], scrolly+11);
+	g_pTimer->ResetSecondsTimer();
+}
 
-		if(scrolly<=42) // Show this, when scrolling is finished
-		{
-			bm[0]->draw( g_pVideoDriver->FGLayerSurface, mid[0], scrolly);
-			bm[2]->draw( g_pVideoDriver->FGLayerSurface, mid[2], scrolly+40);
-			bm[3]->draw( g_pVideoDriver->FGLayerSurface, mid[3], scrolly+52);
-			bm[4]->draw( g_pVideoDriver->FGLayerSurface, mid[4], scrolly+66);
-			bm[5]->draw( g_pVideoDriver->FGLayerSurface, mid[5], scrolly+108);
-		}
+void CIntro::process()
+{
+	mp_bm[1]->draw( mp_bmp_surface, m_mid[1], m_scrolly+11);
 
-		gamedo_AnimatedTiles();
+	if( m_timer<9 ) m_timer++;
+	else
+	{
+		m_timer=0;
+		if( m_scrolly>42 )	m_scrolly--;
+	}
 
-		if( g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand() )
-			cancel = true;
+	mp_bm[1]->draw( mp_bmp_surface, m_mid[1], m_scrolly+11);
 
-		if(g_pInput->getExitEvent()) cancel=true;
+	if(m_scrolly<=42) // Show this, when scrolling is finished
+	{
+		mp_bm[0]->draw( mp_bmp_surface, m_mid[0], m_scrolly);
+		mp_bm[2]->draw( mp_bmp_surface, m_mid[2], m_scrolly+40);
+		mp_bm[3]->draw( mp_bmp_surface, m_mid[3], m_scrolly+52);
+		mp_bm[4]->draw( mp_bmp_surface, m_mid[4], m_scrolly+66);
+		mp_bm[5]->draw( mp_bmp_surface, m_mid[5], m_scrolly+108);
+	}
 
-		g_pInput->pollEvents();
-
-		if( introtime <= 0 ) break;
-		introtime--;
-		// blit the scrollbuffer to the display
-		gamedo_frameskipping_blitonly();
-
-	} while(!cancel);
-
-
+	// Check if time for Intro is out
+	if(g_pTimer->HasSecElapsed())
+	{
+		if(m_introtime <= 0) m_finished = true;
+		else m_introtime--;
+	}
 }

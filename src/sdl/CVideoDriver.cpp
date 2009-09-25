@@ -14,7 +14,6 @@
 #include "../graphics/CGfxEngine.h"
 #include "../scale2x/scalebit.h"
 #include "../CLogFile.h"
-#include "../CGraphics.h"
 #include "../FindFile.h"
 #include <iostream>
 #include <fstream>
@@ -85,7 +84,10 @@ CVideoDriver::CVideoDriver() {
 	  BlitSurface=NULL;
 	  m_fading = false;
 
+	  m_scrollx_buf = m_scrolly_buf = 0;
+
 	  m_Resolution_pos = m_Resolutionlist.begin();
+
 
 	  initResolutionList();
 }
@@ -505,7 +507,8 @@ bool CVideoDriver::createSurfaces(void)
 	return true;
 }
 
-void CVideoDriver::sb_blit(void) // This is for tiles
+void CVideoDriver::blitScrollSurface(Sint16 sbufferx, Sint16 sbuffery) // This is only for tiles
+// The name should be changed
 {
 SDL_Rect srcrect;
 SDL_Rect dstrect;
@@ -517,12 +520,12 @@ char tempbuf[80];
    dstrect.w = game_resolution_rect.w;
    dstrect.h = game_resolution_rect.h;
 
-   srcrect.x = scrollx_buf;
-   srcrect.y = scrolly_buf;
+   srcrect.x = sbufferx;
+   srcrect.y = sbuffery;
 
-   if (scrollx_buf > (Uint16)(512-game_resolution_rect.w))
+   if (sbufferx > (Uint16)(512-game_resolution_rect.w))
    { // need to wrap right side
-     srcrect.w = (512-scrollx_buf);
+     srcrect.w = (512-sbufferx);
      wraphoz = 1;
    }
    else
@@ -531,9 +534,9 @@ char tempbuf[80];
      wraphoz = 0;
    }
 
-   if (scrolly_buf > (Uint16)(512-game_resolution_rect.h))
+   if (sbuffery > (Uint16)(512-game_resolution_rect.h))
    { // need to wrap on bottom
-     srcrect.h = (512-scrolly_buf);
+     srcrect.h = (512-sbuffery);
      wrapvrt = 1;
    }
    else
@@ -576,7 +579,7 @@ char tempbuf[80];
       dstrect.x = srcrect.w;
       dstrect.w = game_resolution_rect.w - dstrect.x;
       srcrect.x = 0;
-      srcrect.w = (game_resolution_rect.w - srcrect.w);
+      srcrect.w = game_resolution_rect.w - srcrect.w;
       SDL_BlitSurface(ScrollSurface, &srcrect, BlitSurface, &dstrect);
    }
    else if (wrapvrt)

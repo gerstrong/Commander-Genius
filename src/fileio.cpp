@@ -16,7 +16,6 @@
 #include "include/fileio.h"
 #include "include/fileio/rle.h"
 #include "CLogFile.h"
-#include "CGraphics.h"
 #include "StringUtils.h"
 #include "Debug.h"
 #include "FindFile.h"
@@ -25,25 +24,6 @@
 #define uint unsigned int
 #define ulong unsigned long
 #endif
-
-unsigned int curmapx, curmapy;
-void addmaptile(unsigned int t)
-{
-	// Special cases. Those happen normally, when level are not replayed.
-	// For example if one player has battery, the level won't show that item
-	for(unsigned int cp=0 ; cp<numplayers ; cp++)
-	{
-		if( (TileProperty[t][BEHAVIOR] == 11 && player[cp].inventory.HasJoystick) ||
-			(TileProperty[t][BEHAVIOR] == 12 && player[cp].inventory.HasBattery) ||
-			(TileProperty[t][BEHAVIOR] == 13 && player[cp].inventory.HasVacuum) ||
-			(TileProperty[t][BEHAVIOR] == 14 && player[cp].inventory.HasWiskey) ||
-			(TileProperty[t][BEHAVIOR] == 16 && player[cp].inventory.HasPogo)	)
-				t = tiles[t].chgtile; // is it a battery!!
-	}
-
-	// Now set this this tile at pos(curmapx, curmapy)
-	map.mapdata[curmapx][curmapy] = t;
-}
 
 short checkConsistencyofGameData(stGameData *p_GameData)
 {
@@ -94,7 +74,7 @@ short checkConsistencyofGameData(stGameData *p_GameData)
 		if(p_GameData->FileList[c][0] == 0) // If there are no more files!
 			break;
 
-		std::string buf = "games/" + p_GameData->DataDirectory;
+		std::string buf = p_GameData->DataDirectory;
 		if(p_GameData->DataDirectory != "")
 			buf += "/";
 		buf += p_GameData->FileList[c];
@@ -120,14 +100,14 @@ short checkConsistencyofGameData(stGameData *p_GameData)
 char NessieAlreadySpawned;
 void addobjectlayertile(unsigned int t, int episode, bool *levels_completed)
 {
-int o;
+/*int o;
   switch(t)
   {
    case 0: break;       // blank
    case 255:            // player start
 
-	 player[0].x = curmapx << 4 << CSF;
-     player[0].y = curmapy << 4 << CSF;
+	 //player[0].x = curmapx << 4 << CSF;
+     //player[0].y = curmapy << 4 << CSF;
      map.objectlayer[curmapx][curmapy] = 0;
      break;
    case NESSIE_PATH:          // spawn nessie at first occurance of her path
@@ -197,14 +177,14 @@ levelmarker: ;
        map.objectlayer[curmapx][curmapy] = t;
      }
      break;
-  }
+  }*/
 
 }
 
 void addenemytile(unsigned int t, int episode,
 					int chglevelto)
 {
-int o,x;
+/*int o,x;
   map.objectlayer[curmapx][curmapy] = t;
 
   if (t)
@@ -238,6 +218,7 @@ int o,x;
            {
               // in ep2 level 16 there a vorticon embedded in the floor for
               // some reason! that's what the if() is for--to fix it.
+        	  // TODO: Is this still needed?
         	  if (TileProperty[map.mapdata[curmapx][curmapy+1]][BLEFT])
               {
                 spawn_object(curmapx<<4<<CSF, ((curmapy<<4)-16)<<CSF, OBJ_VORT);
@@ -427,7 +408,7 @@ int o,x;
       }
     }
   }
-
+*/
 }
 
 unsigned int fgeti(FILE *fp) {
@@ -469,9 +450,7 @@ unsigned long a,b,c,d;
 unsigned int loadmap(const std::string& filename, const std::string& path,
 									int lvlnum,stLevelControl* p_levelcontrol)
 {
-	// TODO: Tie that one up in converting stuff into C++
-
-	FILE *fp;
+/*	FILE *fp;
 	int t;
 	unsigned int c;
 	int numruns = 0;
@@ -498,8 +477,6 @@ unsigned int loadmap(const std::string& filename, const std::string& path,
   g_pLogFile->ftextOut("loadmap(): file %s opened. Loading...<br>", fname.c_str());
 
     // decompress map RLEW data
-  curmapx = curmapy = 0;
-
 	std::vector<unsigned int> filebuf;
 	unsigned long finsize; 		   // Final size
 
@@ -534,7 +511,7 @@ unsigned int loadmap(const std::string& filename, const std::string& path,
   {
 		t = filebuf[c];
 
-		addmaptile(t);
+		//addmaptile(t);
 
 		curmapx++;
 		if (curmapx >= map.xsize)
@@ -574,6 +551,7 @@ unsigned int loadmap(const std::string& filename, const std::string& path,
     filebuf.clear();
     fclose(fp);
 
+
  // install enemy stoppoints as needed
  if (episode==1 && lvlnum==13)
  {
@@ -598,7 +576,7 @@ unsigned int loadmap(const std::string& filename, const std::string& path,
  {
     map.objectlayer[94][17] = BALL_NOPASSPOINT;
  }
-
+*/
  return 0;
 }
 
@@ -878,8 +856,10 @@ std::string getstring(const std::string& name)
 // because windows and linux read files differently, these is to function to get them correctly
 std::string formatPathString(const std::string& path)
 {
-	size_t p = path.find('\r');
-	return "games/" + path.substr(0,p) + "/";
+	std::string buffer = path;
+	if( buffer.size() > 0 && buffer[buffer.size()-1] != '/' )
+		buffer += '/';
+	return buffer;
 }
 
 // returns attribute attrname of string stringname, or -1 if it doesn't exist.

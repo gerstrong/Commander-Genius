@@ -464,7 +464,7 @@ char CSound::extractOfExeFile(const std::string& inputpath, int episode)
 	  {
 		  FILE *fout;
 
-		  buffer = "games/" + inputpath;
+		  buffer = inputpath;
 		  if( *(buffer.end()) != '/') buffer  += "/";
 		  buffer += outputfname;
 

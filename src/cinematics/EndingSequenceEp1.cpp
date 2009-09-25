@@ -9,7 +9,6 @@
 #include "../sdl/CInput.h"
 #include "../sdl/CVideoDriver.h"
 #include "../include/CStartScreen.h"
-#include "../CGraphics.h"
 #include "../graphics/CGfxEngine.h"
 #include "../StringUtils.h"
 #include "../fileio/CExeFile.h"
@@ -55,7 +54,7 @@ int i;
   for(i=0;i<MAX_LEVELS;i++)
 	  pCKP->Control.levelcontrol.levels_completed[i] = 0;
 
-  showmapatpos(80, WM_X, WM_Y, pCKP);
+  //showmapatpos(80, WM_X, WM_Y, pCKP);
 
   // draw keen next to his ship
   numplayers = 1;
@@ -87,7 +86,7 @@ int x, y;
 int scrollingon;
 
   scrollingon = 1;
-  initgame( &(pCKP->Control.levelcontrol) );
+  //initgame( &(pCKP->Control.levelcontrol) );
 
   g_pInput->flushAll();
 
@@ -121,7 +120,7 @@ int scrollingon;
 	  addshipqueue(CMD_MOVE, 100, DDOWN);
 	  addshipqueue(CMD_ENDOFQUEUE, 0, 0);
 
-	  showmapatpos(81, SHIPFLY_X, SHIPFLY_Y, pCKP);
+	  //showmapatpos(81, SHIPFLY_X, SHIPFLY_Y, pCKP);
   }
   else // When keen flies from earth to the space ship
   {
@@ -133,7 +132,7 @@ int scrollingon;
 	  addshipqueue(CMD_MOVE, 100, DDOWN);
 	  addshipqueue(CMD_ENDOFQUEUE, 0, 0);
 
-	  showmapatpos(81, SHIPFLY_X+600, SHIPFLY_Y+200, pCKP);
+	  //showmapatpos(81, SHIPFLY_X+600, SHIPFLY_Y+200, pCKP);
   }
 
 
@@ -402,8 +401,8 @@ void eseq1_showEndingText(std::string &Path)
 
 	delete ExeFile;
 
-	if( text.size() > 0 )
-		showPage( text, text.size() );
+	/*if( text.size() > 0 )
+		showPage( text, text.size() );*/
 
 	text.clear();
 }

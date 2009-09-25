@@ -29,7 +29,7 @@ void CCredits::Render(stCloneKeenPlus *pCKP)
 	int scrolly = -52*8;
 	bool cancel = false;
 
-	showmapatpos(90, 104<<4, 32, pCKP);
+	//showmapatpos(90, 104<<4, 32, pCKP);
 	g_pInput->flushAll();
 	memset(scrolltext,0,51*80);
 

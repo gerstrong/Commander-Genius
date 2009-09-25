@@ -28,7 +28,7 @@ CExeFile::~CExeFile() {
 
 bool CExeFile::readData()
 {
-	std::string filename = "games/" + m_datadirectory + "keen" + itoa(m_episode) + ".exe";
+	std::string filename =  m_datadirectory + "keen" + itoa(m_episode) + ".exe";
 
 	std::ifstream File; OpenGameFileR(File, filename, ios::binary);
 

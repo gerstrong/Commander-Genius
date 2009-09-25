@@ -174,6 +174,7 @@ public:
 
 	short loadControlconfig();
 	void resetControls();
+	bool startJoyDriver();
 	short saveControlconfig();
 
 	void flushKeys(void);
@@ -182,6 +183,8 @@ public:
 
 private:
 	SDL_Event Event;
+	SDL_Joystick *mp_Joystick;
+
 	stInputCommand InputCommand[NUM_INPUTS][NUMBER_OF_COMMANDS];
 	bool m_exit;
 	int m_cmdpulse;

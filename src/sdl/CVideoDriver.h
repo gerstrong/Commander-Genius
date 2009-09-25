@@ -50,7 +50,7 @@ public:
 	void pal_set(short colour, Uint8 red, Uint8 green, Uint8 blue);
 	void pal_apply(void);
 
-	void sb_blit(void);
+	void blitScrollSurface(Sint16 sbufferx, Sint16 sbuffery);
 	void update_screen(void);
 	void noscale(char *dest, char *src, short bbp);
 	void scale2xnofilter(char *dest, char *src, short bbp);
@@ -111,6 +111,10 @@ public:
 
 	bool m_fading;
 	std::list<st_resolution> m_Resolutionlist;
+
+	Uint16 m_scrollx_buf;
+	Uint16 m_scrolly_buf;
+
 
 private:
 #ifdef USE_OPENGL

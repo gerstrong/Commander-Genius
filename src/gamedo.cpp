@@ -16,7 +16,6 @@
 #include "sdl/sound/CSound.h"
 #include "graphics/CGfxEngine.h"
 #include "CLogFile.h"
-#include "CGraphics.h"
 #include "externals.h"
 #include "StringUtils.h"
 #include <string>
@@ -150,14 +149,14 @@ int gamedo_ScrollTriggers(int theplayer)
 signed int px, py;
 int scrollchanged;
 
-   if (player[theplayer].pdie) return 0;
+   /*if (player[theplayer].pdie) return 0;
 
    px = (player[theplayer].x>>CSF)-scroll_x;
    py = (player[theplayer].y>>CSF)-scroll_y;
 
    scrollchanged = 0;
 
-   /* left-right scrolling */
+   // left-right scrolling
    if(px > SCROLLTRIGGERRIGHT && scroll_x < max_scroll_x)
    {
       map_scroll_right();
@@ -169,7 +168,7 @@ int scrollchanged;
       scrollchanged = 1;
    }
 
-   /* up-down scrolling */
+   // up-down scrolling
    if (py > SCROLLTRIGGERDOWN && scroll_y < max_scroll_y)
    {
       map_scroll_down();
@@ -179,7 +178,7 @@ int scrollchanged;
    {
       map_scroll_up();
       scrollchanged = 1;
-   }
+   }*/
 
    return scrollchanged;
 }
@@ -587,12 +586,11 @@ extern int NumConsoleMessages;
 // draws sprites, players, and debug messages (if debug mode is on),
 // performs frameskipping and blits the display as needed,
 // at end of functions erases all drawn objects from the scrollbuf.
-
 void gamedo_RenderScreen()
 {
    if( g_pTimer->TimeToRender() == false ) return;
 
-   g_pVideoDriver->sb_blit();	// blit scrollbuffer to display (Tiles)
+   //g_pVideoDriver->sb_blit();	// blit scrollbuffer to display (Tiles)
 
    gamedo_render_drawobjects(); // (Sprites)
 
@@ -719,7 +717,7 @@ void gamedo_frameskipping_blitonly()
 {
 	if( g_pTimer->TimeToRender() == false ) return;
 
-    	g_pVideoDriver->sb_blit();
+    	//g_pVideoDriver->sb_blit();
 
     	g_pVideoDriver->update_screen();
 
