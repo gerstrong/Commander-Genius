@@ -72,13 +72,13 @@ void CLogFile::WriteTopic(const char *Topic, int Size)
 
 
 // Now with colors
-void CLogFile::textOut(FONTCOLORS Color, const std::string Text)
+void CLogFile::textOut(FONTCOLORS Color, const std::string& Text)
 {
 	textOut(Color, false, Text);
 }
 
 // Now the entire definition (with list and color)
-void CLogFile::textOut(FONTCOLORS Color, bool List, const std::string Text)
+void CLogFile::textOut(FONTCOLORS Color, bool List, const std::string& Text)
 {
 	if(List == true)
 		textOut("<li>");
@@ -109,7 +109,7 @@ void CLogFile::textOut(FONTCOLORS Color, bool List, const std::string Text)
 }
 
 
-std::string CLogFile::removeHTML(const std::string input)
+std::string CLogFile::removeHTML(const std::string& input)
 {
     std::string::size_type left, right;
     std::string output;
@@ -128,7 +128,7 @@ std::string CLogFile::removeHTML(const std::string input)
     return output;
 }
 
-void CLogFile::textOut(const std::string Text)
+void CLogFile::textOut(const std::string& Text)
 {
     std::string output;
 

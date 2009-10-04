@@ -32,10 +32,10 @@ public:
 	virtual ~CLogFile();
 
 	void CreateLogfile	(const char *LogName);
-	void WriteTopic		(const char *Topic, int Size);
-	void textOut		(const std::string Text);
-	void textOut		(FONTCOLORS Color, const std::string Text);
-	void textOut		(FONTCOLORS Color, bool List, const std::string Text);
+	void WriteTopic	(const char *Topic, int Size);
+	void textOut		(const std::string& Text);
+	void textOut		(FONTCOLORS Color, const std::string& Text);
+	void textOut		(FONTCOLORS Color, bool List, const std::string& Text);
 	void ftextOut		(const char *Text, ...);
 	void ftextOut		(FONTCOLORS Color, const char *Text, ...);
 	void fltextOut		(FONTCOLORS Color, bool List, const char *Text, ...);
@@ -45,7 +45,7 @@ private:
 
 	FILE *m_Logfile;
 
-    std::string removeHTML(const std::string input);
+    std::string removeHTML(const std::string& input);
 };
 
 #endif /* CLOGFILE_H_ */
