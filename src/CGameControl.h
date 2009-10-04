@@ -14,7 +14,7 @@
 #include "vorticon/CEGAGraphics.h"
 #include "vorticon/CMessages.h"
 #include "vorticon/CPassive.h"
-#include "fileio/CTileLoader.h"
+#include "vorticon/CPlayGame.h"
 #include <string>
 
 class CGameControl {
@@ -27,12 +27,15 @@ public:
 	CGameControl();
 	virtual ~CGameControl();
 
-	bool init();
+	bool init(char mode=GAMELAUNCHER);
 	bool loadResources(unsigned short Episode, const std::string& DataDirectory);
 
 	void process();
 
-	void cleanup();
+
+	void cleanup(char mode);
+	void cleanup() { cleanup(m_mode); }
+
 
 	// getters and setters
 	bool mustShutdown(){ return (m_mode==SHUTDOWN); }
@@ -41,6 +44,7 @@ private:
 	char m_mode;
 	CGameLauncher *mp_GameLauncher;
 	CPassive *mp_PassiveMode;
+	CPlayGame *mp_PlayGame;
 
 	Uint8 m_Episode;
 	Uint8 m_ChosenGame;
@@ -49,7 +53,6 @@ private:
 
 	CEGAGraphics *m_EGAGraphics;
 	CMessages *m_Messages;
-	CTileLoader *m_TileLoader;
 };
 
 #endif /* CGAMECONTROL_H_ */

@@ -32,7 +32,7 @@ public:
 	void letchooseagain() { m_hasbeenchosen=false; }
 
 	bool getQuit(){ return m_mustquit; }
-	std::string getDirectory(Uint8 slot) { return m_DirList[slot]; }
+	std::string getDirectory(Uint8 slot) { return m_DirList.at(slot); }
 
 private:
 	bool m_mustquit;

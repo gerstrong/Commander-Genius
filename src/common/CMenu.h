@@ -39,7 +39,7 @@ class CMenu {
 public:
 	// Which Menu has to be shown?
 	enum menutypes{
-		MAIN, LOAD, DIFFICULTY, OPTIONS, QUIT
+		MAIN, START, LOAD, DIFFICULTY, OPTIONS, QUIT
 	};
 
 	// Active means, when the player is playing, PASSIVE when the Player is not playing
@@ -51,13 +51,20 @@ public:
 	virtual ~CMenu();
 
 	bool init( char menu_type = MAIN );
+	void initMainMenu();
+	void initNumPlayersMenu();
 
 	void process();
+	void processMainMenu();
+	void processNumPlayersMenu();
 
 	void cleanup();
 
+	// Getters
+	char getNumPlayers() { return m_NumPlayers; }
+	char getDifficulty() { return m_Difficulty; }
+	bool mustStartGame() { return (m_NumPlayers > 0); }
 	bool getExitEvent() { return (m_menu_type==QUIT); }
-
 
 	//int getChoice(stCloneKeenPlus *pCKP,int defaultopt);
 
@@ -68,6 +75,8 @@ private:
 	char m_selection;
 	char m_menu_type;
 	char m_menu_mode;
+	char m_NumPlayers;
+	char m_Difficulty;
 };
 
 #endif /* CMENU_H_ */

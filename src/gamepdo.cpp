@@ -58,7 +58,7 @@ char doFall;
 
           if (pCKP->Control.levelcontrol.episode==3) gamepdo_ankh(cp);
 
-          gamepdo_raygun(cp, pCKP);
+          //gamepdo_raygun(cp, pCKP);
 
           gamepdo_keencicle(cp, pCKP);
 
@@ -258,7 +258,7 @@ void gamepdo_ProcessInput(unsigned int cp, stCloneKeenPlus *pCKP)
      return;
    }
 
-   if(options[OPT_TWOBUTTON].value)
+   /*if(options[OPT_TWOBUTTON].value)
    {
 	   if(player[cp].playcontrol[PA_JUMP] && player[cp].playcontrol[PA_POGO])
 	   {
@@ -266,7 +266,7 @@ void gamepdo_ProcessInput(unsigned int cp, stCloneKeenPlus *pCKP)
 		   player[cp].playcontrol[PA_JUMP] = 0;
 		   player[cp].playcontrol[PA_POGO] = 0;
 	   }
-   }
+   }*/
 
    if(g_pInput->getPressedKey(KP))
    {
@@ -330,15 +330,15 @@ int stuck;
 void gamepdo_setblockedlru(unsigned int cp, stCloneKeenPlus *pCKP)
 {
 	// This function still has a lot of bugs!
-   int tx,ty;
-   unsigned int i;
-   stOption *p_option;
+   //int tx,ty;
+   //unsigned int i;
+   //stOption *p_option;
 
 
 #define PLAYERHEIGHT (player[cp].h)
 #define PLAYERWIDTH  (player[cp].w)
 
-   p_option = pCKP->Option;
+   //p_option = pCKP->Option;
 
    player[cp].blockedl = player[cp].blockedr = 0;
    player[cp].blockedu = 0;
@@ -347,7 +347,7 @@ void gamepdo_setblockedlru(unsigned int cp, stCloneKeenPlus *pCKP)
 
    if ((player[cp].x>>CSF) < 2) player[cp].blockedl = 1;
 
-   if (!p_option[OPT_CHEATS].value || g_pInput->getHoldedKey(KTAB)==0)   // holding down TAB will turn off clipping
+   /*if (!p_option[OPT_CHEATS].value || g_pInput->getHoldedKey(KTAB)==0)   // holding down TAB will turn off clipping
    {
       tx = (player[cp].x>>CSF);
       ty = (player[cp].y>>CSF);
@@ -450,7 +450,7 @@ void gamepdo_setblockedlru(unsigned int cp, stCloneKeenPlus *pCKP)
       else if( (player[cp].x) <= ( 2 << 4 << CSF ) )
     	  player[cp].blockedl = true;
    }
-   else player[cp].playpushed_x = false;
+   else player[cp].playpushed_x = false;*/
 }
 
 // let's have keen be able to pick up goodies
@@ -569,7 +569,7 @@ void gamepdo_walkinganim(int cp, stCloneKeenPlus *pCKP)
 // handle playpushed_x: for yorps/scrubs/etc pushing keen
 void gamepdo_playpushed(int cp, stCloneKeenPlus *pCKP)
 {
-    if (pCKP->Option[OPT_CHEATS].value && g_pInput->getHoldedKey(KTAB)) return;
+    //if (pCKP->Option[OPT_CHEATS].value && g_pInput->getHoldedKey(KTAB)) return;
 
     // if we're being pushed...
     if (player[cp].playpushed_x)
@@ -1006,7 +1006,7 @@ void gamepdo_JumpAndPogo(int cp, stCloneKeenPlus *pCKP)
         	  // jump high if JUMP key down, else bounce low
         	  if (player[cp].playcontrol[PA_JUMP])
         	  {
-				   if (!pCKP->Option[OPT_SUPERPOGO].value)
+				   /*if (!pCKP->Option[OPT_SUPERPOGO].value)
 				   {  // normal high pogo jump
 					  if(player[cp].playcontrol[PA_JUMP] > 12)
 						  player[cp].pjumpupspeed = ((PPOGOUP_SPEED-PJUMPUP_SPEED)*player[cp].playcontrol[PA_JUMP]) / 50 + PJUMPUP_SPEED;
@@ -1016,11 +1016,11 @@ void gamepdo_JumpAndPogo(int cp, stCloneKeenPlus *pCKP)
 					  player[cp].pjumpupdecreaserate = PJUMP_UPDECREASERATE_POGO_LONG;
 				   }
 				   else
-				   {
+				   {*/
 					  player[cp].pjumpupspeed = PPOGOUP_SPEED_SUPER;
 					  player[cp].pjumptime = PJUMP_NORMALTIME_POGO_LONG_SUPER;
 					  player[cp].pjumpupdecreaserate = PJUMP_UPDECREASERATE_POGO_LONG_SUPER;
-				   }
+				   //}
         	  }
         	  else
         	  {
@@ -1266,7 +1266,7 @@ short tilsupport;
 
     // ** if the player should be falling, well what are we waiting for?
     //    make him fall! **
-    if (pCKP->Option[OPT_CHEATS].value && g_pInput->getHoldedKey(KPLUS)) { player[cp].pfalling = 1; player[cp].pjustfell = 1; }
+    //if (pCKP->Option[OPT_CHEATS].value && g_pInput->getHoldedKey(KPLUS)) { player[cp].pfalling = 1; player[cp].pjustfell = 1; }
 
     if (player[cp].pfalling)
     {  // nothing solid under player, let's make him fall
@@ -1320,7 +1320,7 @@ short tilsupport;
 
 // wouldn't it be cool if keen had a raygun, and he could shoot things?
 // oh wait, he does, and here's the code for it.
-void gamepdo_raygun(int cp, stCloneKeenPlus *pCKP)
+/*void gamepdo_raygun(int cp, stCloneKeenPlus *pCKP)
 {
 int o;
 int canRefire;
@@ -1419,7 +1419,7 @@ int canRefire;
       }
    }
 
-}
+}*/
 
 // select the appropriate player frame based on what he's doing
 void gamepdo_SelectFrame(int cp)

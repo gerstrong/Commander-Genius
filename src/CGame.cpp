@@ -3,8 +3,8 @@
  *
  *  Created on: 01.05.2009
  *      Author: gerstrong
- *  This Game engine should strip down the main function
- *  and provide more dynamic control over the game
+ *  This Game-engine stripes down the main function
+ *  and provides more dynamic control over the game
  */
 
 #include <stdlib.h>
@@ -40,16 +40,16 @@ bool CGame::init()
 {
 	CSettings Settings;
 
-	// Check if there are settings on the PC, otherwise save the defaults.
+	// Check if there are settings on the PC, otherwise use defaults.
 	if(!Settings.loadDrvCfg())
 	{
-		g_pLogFile->textOut(PURPLE,"First time message: CKP didn't find the driver config file. However, it generated some default values and will save them.<br>");
+		g_pLogFile->textOut(PURPLE,"First time message: CKP didn't find the driver config file. However, it generated some default values and will save them now.<br>");
 		Settings.saveDrvCfg();
 	}
 
-	// Setup the Hardware using the settings we have
+	// Setup the Hardware using the settings we have loaded
 	g_pLogFile->textOut(GREEN,"Loading hardware settings...<br>");
-	if(loadCKPDrivers() != 0)
+	if(!loadCKPDrivers())
 	{
 		g_pLogFile->textOut(RED,"The game cannot start, because you do not meet the hardware requirements.<br>");
 		return false;

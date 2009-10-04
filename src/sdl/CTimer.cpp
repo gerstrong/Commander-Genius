@@ -17,6 +17,7 @@
 #include "CTimer.h"
 #include "CVideoDriver.h"
 #include "../CLogFile.h"
+#include "../StringUtils.h"
 
 #define LOGIC_LPS	333			// loops per second (keep as factor of FPS)
 #define RENDER_FPS	60
@@ -44,8 +45,6 @@ void CTimer::setFrameRate(int value)
 	m_FPSRate=value;
 	CalculateRate();
 }
-
-#include "../StringUtils.h"
 
 void CTimer::CalculateRate( void )
 {

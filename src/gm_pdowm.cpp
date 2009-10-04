@@ -80,7 +80,7 @@ void gamepdo_wm_setblockedlrud(int cp, stCloneKeenPlus *pCKP)
    player[cp].blockedu = player[cp].blockedd = 0;
 
    // cheat: holding down TAB will turn off clipping. or if you are in godmode
-   if ((pCKP->Option[OPT_CHEATS].value && g_pInput->getHoldedKey(KTAB)) || player[cp].godmode) return;
+   //if ((pCKP->Option[OPT_CHEATS].value && g_pInput->getHoldedKey(KTAB)) || player[cp].godmode) return;
 
    // R
    if (wm_issolid((player[cp].x>>CSF)+8, (player[cp].y>>CSF)+1, pCKP->Control.levelcontrol.levels_completed))
@@ -342,8 +342,8 @@ char wm_issolid(int xb, int yb, bool *levels_completed)
 
   if (level & 0x8000)
   {
-	  if(levels_completed[map.objectlayer[xb>>4][yb>>4] & 0x7fff] && options[OPT_LVLREPLAYABILITY].value) // check if level is done, but can be replayed
-		  return 0;
+	  /*if(levels_completed[map.objectlayer[xb>>4][yb>>4] & 0x7fff] && options[OPT_LVLREPLAYABILITY].value) // check if level is done, but can be replayed
+		  return 0;*/
 
 	  if(g_pInput->getHoldedKey(KTAB) && g_pInput->getHoldedKey(KSHIFT))
 	  {

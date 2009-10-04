@@ -15,6 +15,7 @@
 #define CPASSIVE_H_
 
 #include "CIntro.h"
+#include "CTitle.h"
 #include "../common/CMenu.h"
 #include "../common/CMap.h"
 #include <string>
@@ -32,19 +33,30 @@ public:
 	bool init(char mode = INTRO);
 
 	void process();
+
+	// Getters
+	char getEpisode() { return m_Episode; }
+	char getNumPlayers() { return m_NumPlayers; }
+	char getDifficulty() { return m_Difficulty; }
+	std::string getGamePath() { return m_DataDirectory; }
+
+	bool mustStartGame() { return (m_mode==STARTGAME); }
 	bool getExitEvent() { return (m_mode==SHUTDOWN); }
 
 	void cleanup();
 
 private:
 	CIntro *mp_IntroScreen;
-	CMenu *mp_menu;
-	CMap *mp_map;
+	CTitle *mp_TitleScreen;
+	CMenu *mp_Menu;
+	CMap *mp_Map;
 
 	CTilemap *mp_Tilemap;
 	SDL_Surface *mp_Scrollsurface;
 
 	char m_Episode;
+	char m_NumPlayers;
+	char m_Difficulty;
 	std::string m_DataDirectory;
 
 	char m_mode;

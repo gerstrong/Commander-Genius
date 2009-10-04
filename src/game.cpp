@@ -313,12 +313,12 @@ short tilefix=0;
 
 void risebonus(int spr, int x, int y)
 {
-int o;
+/*int o;
 	if (options[OPT_RISEBONUS].value)
 	{
 		o = spawn_object(x, y, OBJ_GOTPOINTS);
 		objects[o].sprite = spr;
-	}
+	}*/
 }
 
 void incscore(int cp, int numpts)
@@ -540,7 +540,7 @@ unsigned int i;
 	  }
   }
 
-  scroll_x = 0;
+  /*scroll_x = 0;
   scrollx_buf = 0;
   scrollpix = 0;
   mapx = 0;
@@ -552,7 +552,7 @@ unsigned int i;
   mapy = 0;
   mapystripepos = 0;
 
-  thisplayer = 0;
+  thisplayer = 0;*/
 }
 
 int initgamefirsttime(stCloneKeenPlus *pCKP, int s)

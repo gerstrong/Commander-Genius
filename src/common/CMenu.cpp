@@ -10,14 +10,11 @@
 
 CMenu::CMenu( char menu_mode )
 {
-    // Create the Main Menu
+	// Create the Main Menu
 	mp_MenuSurface = g_pVideoDriver->FGLayerSurface;
-	m_selection = -1; // Nothing has been selected
 	m_menu_mode = menu_mode;
-}
-
-CMenu::~CMenu()
-{
+	m_Difficulty = 0; // easy if none chosen
+	m_NumPlayers = 0; // no player chosen...
 }
 
 ////
@@ -26,49 +23,66 @@ CMenu::~CMenu()
 bool CMenu::init( char menu_type )
 {
 	m_menu_type = menu_type;
+	m_selection = -1; // Nothing has been selected yet.
 
 	if( m_menu_type == MAIN )
 	{
-		mp_Dialog = new CDialog(mp_MenuSurface, 18, 13);
-
-		// When in Intro, Title, Demo mode
-		if( m_menu_mode == PASSIVE )
-		{
-			mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "1-Player Game");
-			mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 2, "2-Player Game");
-			mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 3, "Load Game");
-			mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 4, "Story");
-			mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 5, "Highscores");
-			mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 6, "Options");
-			mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 7, "Back To Game");
-			mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 8, "Back To Title");
-			mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 9, "About CG");
-			mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 10, "Ordering Info");
-			mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 11, "Quit");
-		}
-
-		// When Player plays
-		// TODO: This must be adapted
-		if( m_menu_mode == ACTIVE )
-		{
-			mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "1-Player Game");
-			mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 2, "2-Player Game");
-			mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 3, "Load Game");
-			mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 4, "Story");
-			mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 5, "Highscores");
-			mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 6, "Options");
-			mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 7, "Back To Game");
-			mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 8, "Back To Title");
-			mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 9, "About CG");
-			mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 10, "Ordering Info");
-			mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 11, "Quit");
-		}
-
+		initMainMenu();
+	}
+	else if( m_menu_type == START )
+	{
+		initNumPlayersMenu();
 	}
 
 	// Use the standard Menu-Frame used in the old DOS-Games
 	mp_Dialog->setFrameTheme( DLG_THEME_OLDSCHOOL );
 	return true;
+}
+
+void CMenu::initMainMenu()
+{
+	mp_Dialog = new CDialog(mp_MenuSurface, 18, 13);
+
+	// When in Intro, Title, Demo mode
+	if( m_menu_mode == PASSIVE )
+	{
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Start");
+		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 2, "Load");
+		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 3, "Story");
+		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 4, "Highscores");
+		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 5, "Options");
+		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 6, "Back to Game");
+		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 7, "Back to Title");
+		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 8, "About CG");
+		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 9, "Ordering Info");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 10, "Quit");
+	}
+
+	// When Player is playing
+	// TODO: This still must be adapted to ingame situation
+	if( m_menu_mode == ACTIVE )
+	{
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Start");
+		mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 2, "Load");
+		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 3, "Story");
+		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 4, "Highscores");
+		mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 5, "Options");
+		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 6, "Back to Game");
+		mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 7, "Back to Title");
+		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 8, "About CG");
+		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 9, "Ordering Info");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 10, "Quit");
+	}
+}
+
+void CMenu::initNumPlayersMenu()
+{
+	mp_Dialog = new CDialog(mp_MenuSurface, 18, 13);
+
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Single");
+	mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 2, "Two Players");
+	mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 2, "");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 2, "Back");
 }
 
 ////
@@ -88,13 +102,36 @@ void CMenu::process()
 
 	// Process the Menu Type logic.
 	// Which menu is open and what do we have to do?
-	if( m_menu_type == MAIN )
+	if( m_menu_type == MAIN ) processMainMenu();
+	else if( m_menu_type == START ) processNumPlayersMenu();
+}
+
+void CMenu::processMainMenu()
+{
+	if( m_selection == 0 ) // Start Game
 	{
-		if( m_selection==10 )
-		{
-			cleanup();
-			m_menu_type = QUIT;
-		}
+		cleanup();			
+		init(START);
+	}
+	else if( m_selection == 9 ) // Quit
+	{
+		cleanup();
+		m_menu_type = QUIT;
+	}
+}
+
+void CMenu::processNumPlayersMenu()
+{
+	if( m_selection == -1) return;
+
+	cleanup();
+	if( m_selection < 2 )
+	{
+		m_NumPlayers = m_selection + 1;	
+	}
+	else
+	{
+		init(MAIN);
 	}
 }
 
@@ -103,12 +140,11 @@ void CMenu::process()
 ////
 void CMenu::cleanup()
 {
-	if( m_menu_type == MAIN )
-	{
-
-	}
-
 	delete mp_Dialog;
+}
+
+CMenu::~CMenu()
+{
 }
 
 ////

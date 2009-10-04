@@ -54,7 +54,7 @@ and more stable program. Features like the implementation
 of resolution changes was achieved through classes. 
 Although the program itself looks very similar 
 the skeleton of the program is very different 
-to the one in CloneKeen. 
+to the one of CloneKeen. 
 
 The Commander Genius source code may be freely distributed and
 modified as per the GPL, just please remember to give

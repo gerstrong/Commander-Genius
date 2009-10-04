@@ -146,8 +146,8 @@ unsigned int msb, lsb;
 // returns nonzero if the scroll was changed
 int gamedo_ScrollTriggers(int theplayer)
 {
-signed int px, py;
-int scrollchanged;
+//signed int px, py;
+int scrollchanged=0;
 
    /*if (player[theplayer].pdie) return 0;
 
@@ -228,8 +228,8 @@ int i, topobj;
       if (objects[i].x > (map.xsize << CSF << 4) || objects[i].y > (map.ysize << CSF << 4))
     	  continue;
 
-      objects[i].scrx = (objects[i].x>>CSF)-scroll_x;
-      objects[i].scry = (objects[i].y>>CSF)-scroll_y;
+      //objects[i].scrx = (objects[i].x>>CSF)-scroll_x;
+      //objects[i].scry = (objects[i].y>>CSF)-scroll_y;
 
       // Bitmaps are also part of the object, but only print them directly
       if ( objects[i].type==OBJ_EGA_BITMAP ) continue;
@@ -265,8 +265,8 @@ int i, topobj;
 			  case OBJ_VORT: vort_ai(i, p_levelcontrol ); break;
 			  case OBJ_BUTLER: butler_ai(i, p_levelcontrol->hardmode); break;
 			  case OBJ_TANK: tank_ai(i, p_levelcontrol->hardmode); break;
-			  case OBJ_RAY: ray_ai(i, p_levelcontrol->episode,
-							  options[OPT_FULLYAUTOMATIC].value, p_levelcontrol->cepvars.pShotSpeed); break;
+/*			  case OBJ_RAY: ray_ai(i, p_levelcontrol->episode,
+							  options[OPT_FULLYAUTOMATIC].value, p_levelcontrol->cepvars.pShotSpeed); break;*/
 			  case OBJ_DOOR: door_ai(i, p_levelcontrol->cepvars.DoorOpenDir); break;
 			  case OBJ_ICECANNON: icecannon_ai(i); break;
 			  case OBJ_ICECHUNK: icechunk_ai(i); break;
@@ -311,7 +311,7 @@ int i, topobj;
          }
 
        	 objects[i].scrx = (objects[i].x>>CSF)-scroll_x;
-       	 objects[i].scry = (objects[i].y>>CSF)-scroll_y;
+       	 //objects[i].scry = (objects[i].y>>CSF)-scroll_y;
       }
    }
 }
@@ -506,7 +506,7 @@ int xa,ya;
      objects[o].x = player[i].x;
      objects[o].y = player[i].y;
      objects[o].scrx = (player[i].x>>CSF)-scroll_x;
-     objects[o].scry = (player[i].y>>CSF)-scroll_y;
+     //objects[o].scry = (player[i].y>>CSF)-scroll_y;
 
    }
 
@@ -533,7 +533,7 @@ int xa,ya;
     	  else
     	  {
     		  objects[i].scrx = ((objects[i].x>>CSF)-scroll_x);
-    		  objects[i].scry = ((objects[i].y>>CSF)-scroll_y);
+    		  //objects[i].scry = ((objects[i].y>>CSF)-scroll_y);
     	  }
     	  //g_pGraphics->drawSprite(objects[i].scrx, objects[i].scry, objects[i].sprite, i);
     	  g_pGfxEngine->Sprite[objects[i].sprite]->drawSprite( g_pVideoDriver->BlitSurface,
@@ -559,7 +559,7 @@ int xa,ya;
 
             // now redraw any priority/masked tiles that we covered up
             // with the sprite
-            SDL_Surface *sfc = g_pVideoDriver->BlitSurface;
+            //SDL_Surface *sfc = g_pVideoDriver->BlitSurface;
             SDL_Rect sfc_rect;
             sfc_rect.w = sfc_rect.h = 16;
 
@@ -568,10 +568,10 @@ int xa,ya;
               for(xa=0;xa<=xsize;xa+=16)
               {
                 tl = getmaptileat(x+xa,y+ya);
-                if(TileProperty[tl][BEHAVIOR] == 65534)
+                /*if(TileProperty[tl][BEHAVIOR] == 65534)
                 	g_pGfxEngine->Tilemap->drawTile(sfc, x+xa-scroll_x, y+ya-scroll_y, tl+1);
                 else if (TileProperty[tl][BEHAVIOR] == 65535)
-                   g_pGfxEngine->Tilemap->drawTile(sfc, x+xa-scroll_x, y+ya-scroll_y, tl);
+                   g_pGfxEngine->Tilemap->drawTile(sfc, x+xa-scroll_x, y+ya-scroll_y, tl);*/
               }
             }
         }
@@ -675,7 +675,7 @@ void gamedo_HandleFKeys(stCloneKeenPlus *pCKP)
            showTextMB(player[0].godmode ? "Godmode enabled" : "Godmode disabled");
        }
 
-    if (pCKP->Option[OPT_CHEATS].value)
+    /*if (pCKP->Option[OPT_CHEATS].value)
     {
             if (g_pInput->getHoldedKey(KTAB)) // noclip/revive
             {
@@ -697,7 +697,7 @@ void gamedo_HandleFKeys(stCloneKeenPlus *pCKP)
             {
                endlevel(1, &(pCKP->Control.levelcontrol) );
             }
-    }
+    }*/
 
     // F10 - change primary player
     if(g_pInput->getPressedKey(KF10))

@@ -22,23 +22,6 @@ CTileLoader::CTileLoader(int episode, int version, unsigned char *data) {
 	m_offset = 0;
 }
 
-CTileLoader::~CTileLoader() {
-	// Here we really start reading the tiles
-	if(TileProperty != NULL)
-	{
-		for(int i = 0 ; i < MAX_TILES ; i++)
-		{
-			if(TileProperty[i] != NULL)
-			{
-				delete [] TileProperty[i];
-				TileProperty[i] = NULL;
-			}
-		}
-		delete [] TileProperty;
-		TileProperty = NULL;
-	}
-}
-
 bool CTileLoader::setProperOffset()
 {
 	// Identify the offset
@@ -51,7 +34,7 @@ bool CTileLoader::setProperOffset()
 			{
 				case 110: m_offset = 0x131F8; break;
 				case 131: m_offset = 0x130F8; break;
-				case 134: m_offset = 0x130F8; // This is incorrect!
+				case 134: m_offset = 0x130F8; // This is incorrect! Sure?
 						  g_pLogFile->textOut(PURPLE,"If you want to use Episode 1 Version 1.34, assure that is was unpacked before (with unpklite for example).<br>");
 						  break;
 			}
@@ -149,7 +132,7 @@ bool CTileLoader::load()
 	}
 
 	// This function assigns the correct tiles that have to be changed
-    assignChangeTileAttribute(tiles);
+	assignChangeTileAttribute(tiles);
 
 	return true;
 }
@@ -173,6 +156,7 @@ void CTileLoader::assignChangeTileAttribute(stTile *tile)
 		case 1:
 		case 2:
 		{
+			// TODO: Check out how to perform that chgtile algorithm
 			for(int i=38*13 ; i<39*13 ; i++) // Workaround for silcar 1. Row 38
 				if( canbePickedup(i) )
 					tile[i].chgtile = 439;
@@ -217,4 +201,22 @@ bool CTileLoader::canbePickedup(int tile)
 bool CTileLoader::isaDoor(int tile)
 {
 	return (TileProperty[tile][BEHAVIOR] >= 2 && TileProperty[tile][BEHAVIOR] <= 5);
+}
+
+CTileLoader::~CTileLoader() {
+	// Here we really start reading the tiles
+	// TODO: Use another function which unloads the tile properties
+	/*if(TileProperty != NULL)
+	{
+		for(int i = 0 ; i < MAX_TILES ; i++)
+		{
+			if(TileProperty[i] != NULL)
+			{
+				delete [] TileProperty[i];
+				TileProperty[i] = NULL;
+			}
+		}
+		delete [] TileProperty;
+		TileProperty = NULL;
+	}*/
 }

@@ -15,7 +15,7 @@
   the Vorticons" games. "Commander Keen" and it's associated
   graphics, level, and sound files are the property of ID
   Software. Commander Genius requires the original version of a
-  Commander Keen game in order to be able to emulate that
+  Commander Keen game in order to be able to interpret that
   episode.
 
   Enjoy the Code
@@ -53,7 +53,7 @@ int BlankSprite;
 int DemoSprite;
 int fps=0, curfps=0;
 
-stOption *options = NULL;
+//stOption *options = NULL;
 
 unsigned int demo_RLERunLen;
 unsigned char demo_data[DEMO_MAX_SIZE+1];
@@ -69,17 +69,6 @@ FILE *demofile = NULL;
 char ScreenIsScrolling;
 int gunfiretimer, gunfirefreq;
 
-extern unsigned long scroll_x;
-extern unsigned int scrollx_buf;
-extern unsigned char scrollpix;
-extern unsigned int mapx;
-extern unsigned int mapxstripepos;
-extern unsigned int scroll_y;
-extern unsigned int scrolly_buf;
-extern unsigned char scrollpixy;
-extern unsigned int mapy;
-extern unsigned int mapystripepos;
-
 char loadinggame, loadslot;
 
 stMap map;
@@ -90,7 +79,6 @@ stAnimTile animtiles[MAX_ANIMTILES+1];
 stPlayer player[MAX_PLAYERS];
 stPlayer net_lastplayer[MAX_PLAYERS];
 
-unsigned int scroll_y = 0;
 unsigned int objdefsprites[NUM_OBJ_TYPES+1];
 
 int thisplayer;
@@ -136,20 +124,20 @@ int main(int argc, char *argv[])
 	 * */
 
 	CGame Game;
-	//////////////////////////////////
-	// Initialize Game Engine here! //
-	//////////////////////////////////
+	////////////////////////////
+	// Initialize Game Engine //
+	////////////////////////////
 	if(Game.init())
 	{
-		/////////////////////////////
-		// Start Game Engine here! //
-		/////////////////////////////
+		///////////////////////
+		// Start Game Engine //
+		///////////////////////
 		Game.run();
 	}
 
-	///////////////////////////////
-	// Cleanup Game Engine here! //
-	///////////////////////////////
+	/////////////////////////
+	// Cleanup Game Engine //
+	/////////////////////////
 	Game.cleanup();
 
 	/*g_pLogFile->textOut(RED,"Loading Games Menu.<br>");
@@ -225,16 +213,14 @@ void cleanupResources(stCloneKeenPlus *pCKP)
 	return;
 }
 
-short loadCKPDrivers()
+// TODO: Those mmust go to a new class. Let's call it CDevices
+bool loadCKPDrivers()
 {
-
 	// initialize/activate all drivers
 	g_pLogFile->ftextOut("Starting graphics driver...<br>");
 
-	if (!g_pVideoDriver->start())
-	{
-		return 1;
-	}
+	// The graphics are very important, if the other subsystems fail, warn but continue
+	if (!g_pVideoDriver->start()) return false;
 
 	g_pLogFile->ftextOut("Starting sound driver...<br>");
 	g_pSound->init();
@@ -242,7 +228,7 @@ short loadCKPDrivers()
 	g_pLogFile->ftextOut("Starting the input driver...<br>");
 	g_pInput->loadControlconfig();
 
-	return 0;
+	return true;
 }
 
 short abortCKP(stCloneKeenPlus *pCKP)
@@ -261,7 +247,7 @@ short closeCKP(stCloneKeenPlus *pCKP)
 
 	banner();
 
-	Settings.saveGameCfg(pCKP->Option);
+	Settings.saveGameCfg();
 
 	g_pLogFile->ftextOut("<br>Thanks for playing!<br><br>");
 	cleanup(pCKP);
@@ -279,232 +265,6 @@ short closeCKP(stCloneKeenPlus *pCKP)
 	return 0;
 }
 
-// Prototypes needed for playgame_levelmanager
-int eseq2_TantalusRay(stCloneKeenPlus *pCKP);
-void eseq2_vibrate();
-
-void playgame_levelmanager(stCloneKeenPlus *pCKP)
-{
-  int i, o, wm, firsttime = 1;
-  char levelname[80];
-  int newlevel;
-
-  stLevelControl *p_levelcontrol = &(pCKP->Control.levelcontrol);
-
-  if( p_levelcontrol->command != LVLC_START_LEVEL )
-  {
-	  p_levelcontrol->command = LVLC_CHANGE_LEVEL;
-	  p_levelcontrol->chglevelto = WM_MAP_NUM;
-  }
-  p_levelcontrol->tobonuslevel = 0;
-  p_levelcontrol->success = 0;
-  map.firsttime = 1;
-
-  do
-  {
-		g_pGfxEngine->Palette.setFadeColour(SDL_MapRGB(g_pVideoDriver->FXSurface->format, 0, 0, 0));
-		g_pGfxEngine->Palette.fadeto(255, FADE_SPEED_FAST);
-		do
-		{
-			if( g_pTimer->TimeToRender() == false ) continue;
-			g_pGfxEngine->Palette.applyFade();
-			//g_pVideoDriver->sb_blit();
-			g_pVideoDriver->update_screen();
-			g_pTimer->TimeToDelay();
-		} while(g_pGfxEngine->Palette.in_progress());
-
-		initgame( &(pCKP->Control.levelcontrol) );
-
-		newlevel = p_levelcontrol->chglevelto;
-		if(p_levelcontrol->hardmode)
-		{
-			g_pGfxEngine->Palette.setdarkness(FADE_DARKNESS_HARD);
-			if ( p_levelcontrol->episode==1 )
-			{
-				// in high-difficulity mode switch levels 5 & 9 so
-				// you can't get the pogo stick until you make it
-				// to the dark side of mars.
-				if (newlevel==5) newlevel = 9;
-				else if (newlevel==9) newlevel = 5;
-			}
-		}
-		else g_pGfxEngine->Palette.setdarkness(FADE_DARKNESS);
-
-		sprintf(levelname, "level%02d.ck%d", newlevel, p_levelcontrol->episode);
-
-		if (p_levelcontrol->chglevelto==WORLD_MAP)
-		  wm = 1;
-		else
-		  wm = 0;
-
-		if (loadmap(levelname, pCKP->Resources.GameDataDirectory, newlevel, p_levelcontrol))
-		{
-		  crashflag = 1;
-		  crashflag2 = p_levelcontrol->chglevelto;
-		  why_term_ptr = "Unable to load the map (# shown in crashflag2).";
-		}
-
-		p_levelcontrol->curlevel = p_levelcontrol->chglevelto;
-
-		if (firsttime)
-		{
-			int op;
-			CSprite *obj_sprite;
-			for(i=0;i<MAX_PLAYERS;i++)
-			{
-				op = player[i].useObject;
-				obj_sprite = g_pGfxEngine->Sprite[objects[op].sprite];
-				player[i].mapplayx = player[i].x;
-				player[i].mapplayy = player[i].y;
-
-				player[i].w = obj_sprite->getWidth()-4;
-				player[i].h = obj_sprite->getHeight();
-			}
-		}
-		firsttime = 0;
-
-		p_levelcontrol->command = LVLC_NOCOMMAND;
-
-		p_levelcontrol->dark = false;
-		p_levelcontrol->usedhintmb = false;
-		if (loadinggame)
-		{
-		  CSavedGame *SavedGame = new CSavedGame(p_levelcontrol, pCKP);
-
-		  if ( !SavedGame->load(loadslot) )
-		  {
-			crashflag = 1;
-			crashflag2 = loadslot;
-			g_pLogFile->textOut("Error loading game! The save file may be corrupt or created by a different version of Commander Genius.");
-			return;
-		  }
-		  delete SavedGame;
-
-		  wm = (p_levelcontrol->curlevel==80) ? 1 : 0 ;
-		}
-
-		// HQ Music. Load Music for a level if you have HQP
-		g_pMusicPlayer->stop();
-		sprintf(levelname, "level%02d.ck%d",  p_levelcontrol->curlevel, p_levelcontrol->episode);
-		g_pMusicPlayer->LoadfromMusicTable(levelname);
-
-		// Didn't it work? Don't matter. HQP is optional, so continue
-		g_pLogFile->ftextOut("Drawing map...\n");
-		map_redraw();
-
-		g_pInput->flushAll();
-
-		// Check if we are in Demo-mode. If yes, add the upper logo to the objects
-		if(pCKP->Control.levelcontrol.demomode)
-		{
-			objects[DemoObjectHandle].exists = 1;
-			objects[DemoObjectHandle].onscreen = 1;
-			objects[DemoObjectHandle].type = OBJ_DEMOMSG;
-			objects[DemoObjectHandle].sprite = DemoSprite;
-			objects[DemoObjectHandle].x = 0;
-			objects[DemoObjectHandle].y = 0;
-			objects[DemoObjectHandle].honorPriority = 0;
-		}
-		else
-			objects[DemoObjectHandle].exists = 0;
-
-		if (wm)
-		{  // entering map from normal level, or first time around
-		  if (!p_levelcontrol->tobonuslevel)
-		  {
-			if (!loadinggame)
-			{
-			  for(i=0;i<MAX_PLAYERS;i++)
-			  {
-				player[i].x = player[i].mapplayx;
-				player[i].y = player[i].mapplayy;
-			  }
-			}
-		  }
-		  else
-		  {  // respawn at the bonus level
-			for(i=0;i<MAX_PLAYERS;i++)
-			{
-			  player[i].x = BONUSLEVEL_RESPAWN_X;
-			  player[i].y = BONUSLEVEL_RESPAWN_Y;
-			  if (player[i].isPlaying && player[i].inventory.lives)
-			  {
-				 player[i].hideplayer = 1;
-				 o = spawn_object((player[i].x>>CSF>>4)<<CSF<<4,((player[i].y>>CSF>>4)+1)<<CSF<<4,OBJ_TELEPORTER);
-				 objects[o].ai.teleport.direction = TELEPORTING_IN;
-				 objects[o].ai.teleport.whichplayer = i;
-				 objects[o].ai.teleport.baseframe = TELEPORT_RED_BASEFRAME_EP1;
-				 objects[o].ai.teleport.idleframe = TELEPORT_RED_IDLEFRAME_EP1;
-				 g_pSound->playStereofromCoord(SOUND_TELEPORT, PLAY_NOW, objects[player[i].useObject].scrx);
-			  }
-			}
-		  }
-
-		  if (!p_levelcontrol->success || firsttime)
-		  {
-			if (!p_levelcontrol->tobonuslevel) p_levelcontrol->dokeensleft = 1;
-			// when you die you lose all keycards
-			for(i=0;i<MAX_PLAYERS;i++)
-			{
-			  if (player[i].isPlaying)
-			  {
-				  take_keycard(DOOR_YELLOW, i);
-				  take_keycard(DOOR_RED, i);
-				  take_keycard(DOOR_GREEN, i);
-				  take_keycard(DOOR_BLUE, i);
-			   }
-			}
-		  }
-		  else p_levelcontrol->dokeensleft = 0;
-
-		  gameloop(pCKP);
-
-		  for(i=0;i<MAX_PLAYERS;i++)
-		  {
-			player[i].mapplayx = player[i].x;
-			player[i].mapplayy = player[i].y;
-		  }
-
-		}
-		else
-		{
-		   // entering a normal level from map
-		   p_levelcontrol->dokeensleft = 0;
-		   gameloop(pCKP);
-
-		   // after completion of a normal level check if the game is won
-		   if (gameiswon(pCKP))
-			  p_levelcontrol->command = LVLC_END_SEQUENCE;
-		}
-		g_pMusicPlayer->stop();
-
-		if(QuitState==QUIT_PROGRAM)
-		{
-			pCKP->shutdown = SHUTDOWN_EXIT;
-			break;
-		}
-
-		for(unsigned int i=0;i<numplayers;i++)
-		{
-			player[i].x = 0;
-			player[i].y = 0;
-		}
-  } while(p_levelcontrol->command==LVLC_CHANGE_LEVEL && !crashflag);
-
-  if (p_levelcontrol->command==LVLC_END_SEQUENCE)
-  {
-    //endsequence(pCKP);
-    g_pLogFile->ftextOut("eseq complete<br>");
-  }
-  else if (p_levelcontrol->command==LVLC_TANTALUS_RAY)
-  {
-    eseq2_vibrate();
-    eseq2_TantalusRay(pCKP);
-    start_gameover(pCKP);
-
-    IntroCanceled = 1;               // popup main menu immediately
-  }
-}
 
 // plays the demo file specified in fname
 // returns:
@@ -517,12 +277,12 @@ int i;
 int byt;
 int lvl;
 char filename[40];
-char SaveOptions[NUM_OPTIONS];
+//char SaveOptions[NUM_OPTIONS];
 	stLevelControl *p_levelcontrol;
-	stOption *p_option;
+	//stOption *p_option;
 
 	p_levelcontrol = &(pCKP->Control.levelcontrol);
-	p_option = pCKP->Option;
+	//p_option = pCKP->Option;
 
    // open the demo file
    sprintf(filename, "ep%ddemo%d.dat", p_levelcontrol->episode, demonum);
@@ -568,10 +328,10 @@ gotEOF: ;
    if ( loadmap(filename, pCKP->Resources.GameDataDirectory,
 		   p_levelcontrol->curlevel, &(pCKP->Control.levelcontrol)) ) return DEMO_RESULT_FILE_BAD;
 
-   for(i=0;i<NUM_OPTIONS;i++) SaveOptions[i] = p_option[i].value;
+   //for(i=0;i<NUM_OPTIONS;i++) SaveOptions[i] = p_option[i].value;
    // SetDefaultOptions();
    gameloop(pCKP);
-   for(i=0;i<NUM_OPTIONS;i++) p_option[i].value = SaveOptions[i];
+   //for(i=0;i<NUM_OPTIONS;i++) p_option[i].value = SaveOptions[i];
 
    // based on success/failure returned from gameloop let the
    // calling procedure know whether the user canceled or not
@@ -633,7 +393,7 @@ short readCommandLine(int argc, char *argv[], stCloneKeenPlus *pCKP)
 	      }
 	      else if (strcmp(tempbuf, "-nopk")==0)     // do not allow players to kill each other
 	      {
-	    	  pCKP->Option[OPT_ALLOWPKING].value = 0;
+	    	  //pCKP->Option[OPT_ALLOWPKING].value = 0;
 	      }
 	      else if (strncmp(tempbuf, "-game",strlen("-game"))==0)      // select the game
 	      {
@@ -653,7 +413,7 @@ short readCommandLine(int argc, char *argv[], stCloneKeenPlus *pCKP)
 	      }
 	      else if (strcmp(tempbuf, "-cheat")==0)    // enable cheat codes
 	      {
-	    	  pCKP->Option[OPT_CHEATS].value = 1;
+	    	  //pCKP->Option[OPT_CHEATS].value = 1;
 	      }
 	      else if (strcmp(tempbuf, "-rec")==0)      // record a demo
 	      {

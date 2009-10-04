@@ -13,8 +13,6 @@ extern stPlayer net_lastplayer[MAX_PLAYERS];
 extern unsigned char *scrollbuf;
 extern unsigned char *blitbuf;
 extern char keytable[50];
-//extern char immediate_keytable[KEYTABLE_SIZE+1];
-//extern char last_immediate_keytable[KEYTABLE_SIZE+1];
 extern int opx,opy;
 extern int font_start;
 extern char QuitState;
@@ -32,7 +30,7 @@ extern unsigned char numplayers;
 
 extern char frameskiptimer;
 
-extern stOption *options;
+//extern stOption *options;
 
 extern unsigned long scroll_x;
 extern unsigned int scrollx_buf;

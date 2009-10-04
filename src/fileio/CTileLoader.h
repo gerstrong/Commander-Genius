@@ -21,7 +21,7 @@ enum TileEmurations{
 };
 
 extern int numtiles;
-extern int **TileProperty; // This version will replace the old stTile Structure and save memory
+extern int **TileProperty;
 
 typedef struct
 {

@@ -14,9 +14,7 @@
 #include "../FindFile.h"
 #include "../ConfigHandler.h"
 
-
-std::string CONFIGFILENAME = "genius.cfg";
-
+//std::string CONFIGFILENAME = "genius.cfg";
 
 CSettings::CSettings() {
 	notes << "Reading game options from " << GetFullFileName(CONFIGFILENAME) << endl;
@@ -26,7 +24,7 @@ CSettings::CSettings() {
 CSettings::~CSettings() {}
 
 
-short CSettings::saveDrvCfg(void)
+short CSettings::saveDrvCfg()
 {
 	short retval = 0;
 	
@@ -69,15 +67,11 @@ short CSettings::saveDrvCfg(void)
 	return retval;
 }
 
-short CSettings::loadDrvCfg()
+bool CSettings::loadDrvCfg()
 {	
-	short retval = 0;
 	CParser Parser;
 	
-	if(!Parser.loadParseFile())
-	{
-		retval = 1;
-	}
+	if(!Parser.loadParseFile()) return false;
 	else
 	{
 		int width, height, depth;
@@ -86,9 +80,12 @@ short CSettings::loadDrvCfg()
 		width  = Parser.getIntValue("width","Video");
 		height = Parser.getIntValue("height","Video");
 		
-		
-		if(depth*width*height < 0)
-			g_pLogFile->ftextOut(RED,"Error reading the configuration file. It appears to be damaged!");
+		if(depth*width*height <= 0)
+		{
+			g_pLogFile->ftextOut(RED,"Error reading the configuration file!<br>");
+			return false;
+		}
+
 		g_pVideoDriver->setMode(width,height,depth);
 		g_pVideoDriver->isFullscreen(((Parser.getIntValue("fullscreen","Video")) == 1));
 		g_pVideoDriver->setOGLFilter(Parser.getIntValue("OGLfilter","Video"));
@@ -104,65 +101,59 @@ short CSettings::loadDrvCfg()
 		g_pSound->setSoundmode(Parser.getIntValue("rate","Audio"),
 							   Parser.getIntValue("channels","Audio") == 2, Parser.getIntValue("format","Audio"));
 	}
-	
-	return retval;
+	return true;
 }
 
-void CSettings::setOption(stOption *options, int opt, const char *name, char value)
+void CSettings::setOption( int opt, const std::string &name, char value)
 {
-	if (name != NULL)
-		options[opt].name = (char*) name;
-	
-	options[opt].value = value;
+	m_option[opt].name = name;
+	m_option[opt].value = value;
 }
 
-void CSettings::loadDefaultGameCfg(stOption *Option)
-{
-	setOption(Option,OPT_FULLYAUTOMATIC, "autogun", 0);
-	setOption(Option,OPT_SUPERPOGO, "superpogo", 0);
-	setOption(Option,OPT_ALLOWPKING, "pking", 1);
-	setOption(Option,OPT_CHEATS, "allcheats", 0);
-	setOption(Option,OPT_TWOBUTTON, "two-button-firing", 0);
-	setOption(Option,OPT_ANALOGJOYSTICK, "analog-joystick", 1);
-	setOption(Option,OPT_LVLREPLAYABILITY, "level replayability", 0);
-	setOption(Option,OPT_RISEBONUS, "rise bonus", 1);
+void CSettings::loadDefaultGameCfg()
+{ 
+	setOption( OPT_FULLYAUTOMATIC, "autogun", 0 );
+	setOption( OPT_SUPERPOGO, "superpogo", 0 );
+	setOption( OPT_ALLOWPKING, "pking", 1 );
+	setOption( OPT_CHEATS, "allcheats", 0 );
+	setOption( OPT_TWOBUTTON, "two-button-firing", 0 );
+	setOption( OPT_ANALOGJOYSTICK, "analog-joystick", 1 );
+	setOption( OPT_LVLREPLAYABILITY, "level replayability", 0 );
+	setOption( OPT_RISEBONUS, "rise bonus", 1 );
 }
 
-short CSettings::loadGameCfg(stOption *Option)
+short CSettings::loadGameCfg()
 {
 	int i;
 	CParser Parser;
 	
 	if(!Parser.loadParseFile()) {
-		loadDefaultGameCfg(Option);
+		loadDefaultGameCfg();
 		return 1;
 	}
 	
 	for (i = 0; i < NUM_OPTIONS; i++)
 	{
-		Option[i].value = Parser.getIntValue(Option[i].name,"Game");
-		if(Option[i].value == -1)
+		m_option[i].value = Parser.getIntValue(m_option[i].name,"Game");
+		if(m_option[i].value == -1)
 		{
-			loadDefaultGameCfg(Option);
+			loadDefaultGameCfg();
 			return 1;
 		}
 	}
-	
 	
 	g_pLogFile->ftextOut("<br>Your personal settings were loaded successfully...<br>");
 	return 0;
 }
 
-void CSettings::saveGameCfg(stOption *Option)
+void CSettings::saveGameCfg()
 {
 	CParser Parser;
 	Parser.loadParseFile();
 	
 	for (int i = 0; i < NUM_OPTIONS; i++)
-		Parser.saveIntValue(Option[i].name,"Game",Option[i].value);
+		Parser.saveIntValue(m_option[i].name,"Game",m_option[i].value);
 	
 	Parser.saveParseFile();
-	
-	return;
 }
 

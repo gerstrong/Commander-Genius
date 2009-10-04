@@ -569,7 +569,7 @@ struct stCloneKeenPlus
 	stResources Resources;
 	stGameData *GameData;
 	stControl Control;
-	stOption Option[NUM_OPTIONS];
+	//stOption Option[NUM_OPTIONS];
 	unsigned short numGames;
 	unsigned short shutdown;
 	

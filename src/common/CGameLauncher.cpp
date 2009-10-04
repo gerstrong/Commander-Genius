@@ -11,11 +11,14 @@
 #include "../graphics/CGfxEngine.h"
 #include <dirent.h>
 
+
 CGameLauncher::CGameLauncher() {
 	m_mustquit = false;
 	m_hasbeenchosen = false;
 	m_numGames = 0;
 	m_chosenGame = 0;
+	mp_map = NULL;
+	mp_LaunchMenu = NULL;
 }
 
 CGameLauncher::~CGameLauncher() {
@@ -61,8 +64,6 @@ bool CGameLauncher::init()
 	// won't be cleared every update screen
 	mp_map->drawAll();
 
-	// You also should be able to exit!
-
 	return true;
 }
 
@@ -85,7 +86,7 @@ Uint8 CGameLauncher::scanDirectories()
 		if(dp->d_type == DT_DIR)
 		{
 			buffer = dp->d_name;
-			if(buffer[0] != '.') // no ., .., or hidden files please
+			if(buffer[0] != '.') // no ".", "..", or hidden files, please!
 				m_DirList.push_back(buffer);
 		}
 	}
@@ -116,7 +117,7 @@ void CGameLauncher::process()
 
 	}
 
-	// Did the use press (X)
+	// Did the user press (X)?
 	if( g_pInput->getExitEvent() )
 		m_mustquit = true;
 
@@ -129,11 +130,11 @@ void CGameLauncher::process()
 	// Blit the background
 	g_pVideoDriver->blitScrollSurface(mp_map->m_scrollx_buf, mp_map->m_scrolly_buf);
 
-	// Draw the Start Menu to the Foreground-layer
+	// Draw the Start-Menu
 	mp_LaunchMenu->draw();
 }
 
-// When the game is chosen, read the episode number, by looking which exe is present
+// When the game is chosen, read the episode number by looking which exe file is present
 Uint8 CGameLauncher::retrievetEpisode(short chosengame)
 {
 	// TODO: implement search-path here!
@@ -141,7 +142,7 @@ Uint8 CGameLauncher::retrievetEpisode(short chosengame)
 	std::string buffer;
 
 	// Detect the right Episode
-	buffer = "games/" + m_DirList[chosengame] + "/keen1.exe";
+	buffer = "games/" + m_DirList.at(chosengame) + "/keen1.exe";
 	if((fp = fopen(buffer.c_str(),"rb")) != NULL)
 	{
 		return 1;
@@ -169,9 +170,9 @@ Uint8 CGameLauncher::retrievetEpisode(short chosengame)
 void CGameLauncher::cleanup()
 {
 	// destroy the map
-	delete mp_map;
+	if (mp_map) delete mp_map, mp_map = NULL;
 
 	// destroy the menu
-	delete mp_LaunchMenu;
+	if (mp_LaunchMenu) delete mp_LaunchMenu, mp_LaunchMenu = NULL;
 }
 

@@ -2,14 +2,17 @@
  * CSettings.h
  *
  *  Created on: 08.06.2009
- *      Author: gerstrong
+ *      Author: gerstrong and albert
  */
 
 #ifndef CSETTINGS_H_
 #define CSETTINGS_H_
 
-extern std::string CONFIGFILENAME;
+#include <string>
 
+#define CONFIGFILENAME "cgenius.cfg"
+
+// TODO: Implement the option structure using STL Maps
 enum e_OptionKeywords
 { OPT_FULLYAUTOMATIC, OPT_SUPERPOGO,
 	OPT_ALLOWPKING, OPT_CHEATS,
@@ -18,22 +21,23 @@ enum e_OptionKeywords
 
 #define NUM_OPTIONS    8
 
-typedef struct stOption
-{
-	std::string name;
-	char value;
-} stOption;
-
 class CSettings {
 public:
 	CSettings();
 	virtual ~CSettings();
-	short saveDrvCfg(void);
-	short loadDrvCfg(void);
-	short loadGameCfg(stOption *Option);
-	void saveGameCfg(stOption *Option);
-	void loadDefaultGameCfg(stOption *Option);
-	void setOption(stOption *options, int opt, const char *name, char value);
+	short saveDrvCfg();
+	bool loadDrvCfg();
+	short loadGameCfg();
+	void saveGameCfg();
+	void loadDefaultGameCfg();
+	void setOption( int opt, const std::string &name, char value);
+
+private:
+	struct stOption
+	{
+		std::string name;
+		char value;
+	} m_option[NUM_OPTIONS];
 };
 
 #endif /* CSETTINGS_H_ */

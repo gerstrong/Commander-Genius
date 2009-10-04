@@ -19,9 +19,6 @@ CIntro::CIntro() {
 	SDL_FillRect(mp_bmp_surface, NULL, 0);
 }
 
-CIntro::~CIntro() {
-}
-
 void CIntro::init()
 {
 	// Load the Title Bitmap
@@ -45,8 +42,6 @@ void CIntro::init()
 
 void CIntro::process()
 {
-	mp_bm[1]->draw( mp_bmp_surface, m_mid[1], m_scrolly+11);
-
 	if( m_timer<9 ) m_timer++;
 	else
 	{
@@ -72,3 +67,7 @@ void CIntro::process()
 		else m_introtime--;
 	}
 }
+
+CIntro::~CIntro() {
+}
+

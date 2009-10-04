@@ -13,6 +13,7 @@ unsigned char scrollpix = 0;     // (0-7) for tracking when to draw a stripe
 unsigned int mapx = 0;           // map X location shown at scrollbuffer row 0
 unsigned int mapxstripepos = 0;  // X pixel position of next stripe row
 
+unsigned int scroll_y = 0;
 unsigned int scrolly_buf = 0;    // amount the scroll buffer is scrolled(y)
 unsigned char scrollpixy = 0;    // (0-7) for tracking when to draw a stripe
 unsigned int mapy = 0;           // map Y location shown at scrollbuffer column 0
