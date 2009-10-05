@@ -40,7 +40,7 @@ void bumpplayer(int p, int pushamt, bool solid);
 
 void scrub_ai(int o, stLevelControl levelcontrol)
 {
-unsigned int p;
+/*unsigned int p;
 unsigned int i=0;
 int nopush;
 int floor;
@@ -94,7 +94,7 @@ bool walkovertile=false;
        player[i].psupportingobject!=o)
    {
       nopush = 0;
-      /* don't push the player if he's standing on top of the scrub */
+      // don't push the player if he's standing on top of the scrub
       if (player[objects[o].touchedBy].pfalling)
       {
           if (objects[0].scry+Sprite[0]->getHeight() >
@@ -103,12 +103,12 @@ bool walkovertile=false;
              nopush = 1;
           }
       }
-      /* don't push the player as he falls through us during a kick-off */
+      // don't push the player as he falls through us during a kick-off
       else if (objects[o].ai.scrub.kickedplayer[objects[o].touchedBy])
       {
         nopush = 1;
       }
-      /* don't push the player as he's walking through the exit door */
+      // don't push the player as he's walking through the exit door
       else if (levelcontrol.level_done && levelcontrol.level_finished_by == objects[o].touchedBy)
       {
         nopush = 1;
@@ -375,7 +375,7 @@ bool walkovertile=false;
          objects[o].ai.scrub.state = SCRUB_FALLING;
          SetAllCanSupportPlayer(o, 0);
        }
-   }
+   }*/
 }
 
 void Scrub_TurnOnCansupportWhereNotKicked(int o)

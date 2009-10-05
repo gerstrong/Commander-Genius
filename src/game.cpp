@@ -22,6 +22,7 @@
 #include "CLogFile.h"
 char otherplayer;
 
+
 // TODO: Your Ship Needs These Parts in multiplayer
 int playerbaseframes[MAX_PLAYERS] = {0,0,0,0,0,0,0,0};
 
@@ -31,7 +32,7 @@ char debugmode=0,acceleratemode=0;
 // and this is where the magic happens
 void gameloop(stCloneKeenPlus *pCKP)
 {
-CGame Game;
+/*CGame Game;
 unsigned int i;
 int lastquit;
 
@@ -115,7 +116,7 @@ int lastquit;
 	gamedo_AnimatedTiles();
 	gamedo_enemyai( &(pCKP->Control.levelcontrol) );
 
-	/* scroll triggers */
+	// scroll triggers
 	if (!pCKP->Control.levelcontrol.gameovermode && pCKP->Control.levelcontrol.level_done==LEVEL_NOT_DONE)
 	{
 	      ScreenIsScrolling = 0;
@@ -149,10 +150,10 @@ int lastquit;
 				g_pLogFile->textOut(PURPLE,"Error! You have chosen a Game that doesn't exist. Please correct the \"games.cfg\" File under \"games\" and choose another game.<br>");
 			
 			//loadResourcesforGame(pCKP);
-			/*if(Game.loadResources(pCKP->Control.levelcontrol.episode, pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory))
+			if(Game.loadResources(pCKP->Control.levelcontrol.episode, pCKP->GameData[pCKP->Resources.GameSelected-1].DataDirectory))
 				pCKP->shutdown = SHUTDOWN_RESTART;
 			else
-				pCKP->shutdown = SHUTDOWN_NEW_GAME;*/
+				pCKP->shutdown = SHUTDOWN_NEW_GAME;
 		}
 	}
 		//VerifyQuit();
@@ -174,11 +175,12 @@ int lastquit;
   } while(!crashflag && pCKP->Control.levelcontrol.command==LVLC_NOCOMMAND);
 
   // Cleanup the player structure!
+  */
 }
 
 void start_gameover(stCloneKeenPlus *pCKP)
 {
- 	 int cities=0;
+ 	 /*int cities=0;
    	 CHighScores *HighScoreTable = new CHighScores(g_pVideoDriver->FGLayerSurface, pCKP);
 
 	 bool extras[4] = {false,false,false,false};
@@ -215,13 +217,13 @@ void start_gameover(stCloneKeenPlus *pCKP)
 
    	 delete HighScoreTable;
 
-     p_levelcontrol->command = LVLC_GAME_OVER;
+     p_levelcontrol->command = LVLC_GAME_OVER;*/
 }
 
 // gives keycard for door doortile to player p
 void give_keycard(int doortile, int p)
 {
-	g_pSound->playSound(SOUND_GET_CARD, PLAY_NOW);
+	/*g_pSound->playSound(SOUND_GET_CARD, PLAY_NOW);
 
 	if (doortile==DOOR_YELLOW && player[p].inventory.HasCardYellow < 9)
 		player[p].inventory.HasCardYellow++;
@@ -236,45 +238,32 @@ void give_keycard(int doortile, int p)
 		crashflag = 0;
 		crashflag2 = doortile;
 		g_pLogFile->textOut("give_keycard(): invalid value for doortile parameter.<br>");
-	}
+	}*/
 }
 
 // take away the specified keycard from player p
 void take_keycard(int doortile, int p)
 {
-	if (doortile==DOOR_YELLOW && player[p].inventory.HasCardYellow > 0)
+	/*if (doortile==DOOR_YELLOW && player[p].inventory.HasCardYellow > 0)
 		player[p].inventory.HasCardYellow--;
 	else if (doortile==DOOR_RED && player[p].inventory.HasCardRed > 0)
 		player[p].inventory.HasCardRed--;
 	else if (doortile==DOOR_GREEN && player[p].inventory.HasCardGreen > 0)
 		player[p].inventory.HasCardGreen--;
 	else if (doortile==DOOR_BLUE && player[p].inventory.HasCardBlue > 0)
-		player[p].inventory.HasCardBlue--;
+		player[p].inventory.HasCardBlue--;*/
 }
-
-// unregisters all animated tiles with baseframe tile
-/*void unregister_animtiles(int tile)
-{
-int i;
-     for(i=0;i<MAX_ANIMTILES-1;i++)
-     {
-        if (animtiles[i].baseframe == tile)
-        {
-           animtiles[i].slotinuse = 0;
-        }
-     }
-}*/
 
 void open_door(int doortile, int doorsprite, int mpx, int mpy, int cp, stCloneKeenPlus *pCKP)
 {
-int o,chgtotile;
+/*int o,chgtotile;
 short tilefix=0;
 
 	g_pSound->playSound(SOUND_DOOR_OPEN, PLAY_NOW);
 
 	take_keycard(doortile, cp);
 
-   /* erase door from map */
+   // erase door from map
    if (pCKP->Control.levelcontrol.episode==3)
    {
      chgtotile = map.mapdata[mpx-1][mpy];
@@ -308,7 +297,7 @@ short tilefix=0;
 
    // replace the door tiles with a door object, which will do the animation
    o = spawn_object(mpx<<4<<CSF,(mpy-tilefix)<<4<<CSF,OBJ_DOOR);
-   objects[o].sprite = doorsprite;
+   objects[o].sprite = doorsprite;*/
 }
 
 void risebonus(int spr, int x, int y)
@@ -323,7 +312,7 @@ void risebonus(int spr, int x, int y)
 
 void incscore(int cp, int numpts)
 {
-	player[cp].inventory.score += numpts;
+	/*player[cp].inventory.score += numpts;
 
 	// check if score is > than "extra life at"
 	if (player[cp].inventory.score >= player[cp].inventory.extralifeat)
@@ -332,12 +321,12 @@ void incscore(int cp, int numpts)
 		g_pSound->playStereofromCoord(SOUND_EXTRA_LIFE, PLAY_NOW, rand()%160);
 		player[cp].inventory.lives++;
 		player[cp].inventory.extralifeat += 20000;
-	}
+	}*/
 }
 
 void getbonuspoints(int cp, int numpts, int mpx, int mpy)
 {
-int spr;
+/*int spr;
 int x,y;
 
 	g_pSound->playStereofromCoord(SOUND_GET_BONUS, PLAY_NOW, rand()%160);
@@ -356,15 +345,14 @@ int x,y;
 	{
 		x = mpx<<4<<CSF; y = mpy<<4<<CSF;
 		risebonus(spr, x-(2<<CSF), y-(2<<CSF));
-	}
+	}*/
 }
 
 
 // have keen pick up the goodie at screen pixel position (px, py)
 void keen_get_goodie(int px, int py, int theplayer, stCloneKeenPlus *pCKP)
 {
-int mpx,mpy,t;
-/*int i;*/
+/*int mpx,mpy,t;
    mpx = px>>4;
    mpy = py>>4;
    t = map.mapdata[mpx][mpy];
@@ -383,12 +371,12 @@ int mpx,mpy,t;
    }
 
    // do whatever the goodie is supposed to do...
-   procgoodie(t, mpx, mpy, theplayer, pCKP);
+   procgoodie(t, mpx, mpy, theplayer, pCKP);*/
 }
 
 void initgame(stLevelControl *p_levelcontrol)
 {
-int x,y;
+/*int x,y;
 unsigned int i;
 
   animtiletimer = curanimtileframe = 0;
@@ -557,7 +545,7 @@ unsigned int i;
 
 int initgamefirsttime(stCloneKeenPlus *pCKP, int s)
 {
-	int i;
+	/*int i;
 
 	map.firsttime = 1;
 
@@ -597,7 +585,7 @@ int initgamefirsttime(stCloneKeenPlus *pCKP, int s)
 
    primaryplayer = 0;
 
-   return 0;
+   return 0;*/
 }
 
 unsigned char spawn_object(int x, int y, int otype)
@@ -785,7 +773,7 @@ unsigned int rect2x1, rect2y1, rect2x2, rect2y2;
 
 void killplayer(int theplayer)
 {
-   if (player[theplayer].godmode || g_pInput->getHoldedKey(KTAB)) return;
+   /*if (player[theplayer].godmode || g_pInput->getHoldedKey(KTAB)) return;
    if (player[theplayer].ankhtime) return;
    if (!player[theplayer].pdie)
    {
@@ -800,12 +788,12 @@ void killplayer(int theplayer)
       gamepdo_SelectFrame(theplayer);
       g_pMusicPlayer->stop();
       g_pSound->playSound(SOUND_KEEN_DIE, PLAY_NOW);
-   }
+   }*/
 }
 
 void freezeplayer(int theplayer)
 {
-   if (player[theplayer].godmode /*|| immediate_keytable[KTAB]*/) return;
+   /*if ( player[theplayer].godmode ) return;
    if (player[theplayer].ankhtime) return;
    // give the player a little "kick"
    player[theplayer].pjumptime = PJUMP_NORMALTIME_1;
@@ -819,13 +807,13 @@ void freezeplayer(int theplayer)
    player[theplayer].pfrozentime = PFROZEN_TIME;
    player[theplayer].pfrozenframe = 0;
    player[theplayer].pfrozenanimtimer = 0;
-   player[theplayer].ppogostick = false;
+   player[theplayer].ppogostick = false;*/
 }
 
 
 void PlayerTouchedExit(int theplayer, stCloneKeenPlus *pCKP)
 {
-       if (!player[theplayer].pjumping && !player[theplayer].pfalling\
+       /*if (!player[theplayer].pjumping && !player[theplayer].pfalling\
            && !player[theplayer].ppogostick && \
            pCKP->Control.levelcontrol.level_done==LEVEL_NOT_DONE)
        {
@@ -849,7 +837,7 @@ void PlayerTouchedExit(int theplayer, stCloneKeenPlus *pCKP)
             g_pSound->playSound(SOUND_LEVEL_DONE, PLAY_NOW);
             pCKP->Control.levelcontrol.level_done = LEVEL_DONE_WALK;
             pCKP->Control.levelcontrol.level_finished_by = theplayer;
-       }
+       }*/
 }
 
 void endlevel(int reason_for_leaving, stLevelControl *levelcontrol)
@@ -886,7 +874,7 @@ char checkobjsolid(unsigned int x, unsigned int y, unsigned int cp)
 // returns 1 if player cp has the card to door t, which -> door
 char CheckDoorBlock(int t, int cp, int which,stCloneKeenPlus *pCKP)
 {
-        if (which==DOOR_YELLOW)
+        /*if (which==DOOR_YELLOW)
         {
           if (!player[cp].inventory.HasCardYellow)
           {
@@ -917,7 +905,7 @@ char CheckDoorBlock(int t, int cp, int which,stCloneKeenPlus *pCKP)
             player[cp].blockedby = t;
             return 1;
           }
-        }
+        }*/
 
    return 0;
 }
@@ -926,7 +914,7 @@ char CheckDoorBlock(int t, int cp, int which,stCloneKeenPlus *pCKP)
 // returns 1 and sets blockedby if so.
 char checkissolidl(int x, int y, int cp, stCloneKeenPlus *pCKP)
 {
-int t;
+/*int t;
   t = getmaptileat(x, y);
 
   if(TileProperty[t][BLEFT] || x < 0)
@@ -947,7 +935,7 @@ int t;
     {
       return 1;
     }
-  }
+  }*/
   return 0;
 }
 
@@ -955,7 +943,7 @@ int t;
 // returns 1 and sets blockedby if so.
 char checkissolidr(int x, int y, int cp, stCloneKeenPlus *pCKP)
 {
-int t;
+/*int t;
   t = getmaptileat(x, y);
   if(TileProperty[t][BRIGHT])
   //if (tiles[t].solidr)
@@ -975,7 +963,7 @@ int t;
     {
       return 1;
     }
-  }
+  }*/
   return 0;
 }
 
@@ -1027,7 +1015,7 @@ CSprite** sprite = &g_pGfxEngine->Sprite[0];
 
 void procgoodie(int t, int mpx, int mpy, int theplayer, stCloneKeenPlus *pCKP)
 {
-   if ((TileProperty[t][BEHAVIOR] > 5 && TileProperty[t][BEHAVIOR] < 11) ||
+   /*if ((TileProperty[t][BEHAVIOR] > 5 && TileProperty[t][BEHAVIOR] < 11) ||
 		   (TileProperty[t][BEHAVIOR] > 17 && TileProperty[t][BEHAVIOR] < 22)   )
    {
 	   if((player[theplayer].x*player[theplayer].y) % 2 == 1)
@@ -1165,8 +1153,7 @@ void procgoodie(int t, int mpx, int mpy, int theplayer, stCloneKeenPlus *pCKP)
     	why_term_ptr = "procgoodie_ep1: Unknown goodie-- value given in flag2.";
         break;
    }
-
-
+*/
 }
 
 // yorp/scrub etc "bump".
@@ -1174,7 +1161,7 @@ void procgoodie(int t, int mpx, int mpy, int theplayer, stCloneKeenPlus *pCKP)
 // if solid = true, object acts like a solid "wall".
 void bumpplayer(int p, int pushamt, bool solid)
 {
-	player[p].playpushed_x = pushamt;
+	/*player[p].playpushed_x = pushamt;
 
 	if (solid)
 	{
@@ -1192,12 +1179,12 @@ void bumpplayer(int p, int pushamt, bool solid)
 
 	player[p].playpushed_decreasetimer = 0;
 	if (!player[p].pjumping)
-		player[p].pdir = player[p].pshowdir = (pushamt<0)?LEFT:RIGHT;
+		player[p].pdir = player[p].pshowdir = (pushamt<0)?LEFT:RIGHT;*/
 }
 
 void GiveAnkh(int cp)
 {
-int o;
+/*int o;
   if (!player[cp].ankhtime)
   {
     o = spawn_object(player[cp].x, player[cp].y, OBJ_SECTOREFFECTOR);
@@ -1207,12 +1194,12 @@ int o;
 
   g_pSound->playSound(SOUND_ANKH, PLAY_NOW);
   player[cp].ankhtime = PLAY_ANKH_TIME;
-  gamepdo_ankh(cp);
+  gamepdo_ankh(cp);*/
 }
 
 void gameloop_initialize(int episode, bool show_keensleft = false)
 {
-unsigned int x,y,i;
+/*unsigned int x,y,i;
 int timeout;
 
    if (episode == 3)
@@ -1311,5 +1298,5 @@ int timeout;
   // "keens left" when returning to world map after dying
   //if (show_keensleft)
 //	keensleft(episode);
-
+*/
 }

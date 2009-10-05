@@ -134,7 +134,7 @@ bool showGameHint(int mpx, int mpy, int episode, int level)
 
 void inventory_draw_ep1(int p)
 {
-int x,t,i,j;
+/*int x,t,i,j;
 	std::string tempbuf;
 int dlgX,dlgY,dlgW,dlgH;
 
@@ -216,12 +216,12 @@ int dlgX,dlgY,dlgW,dlgH;
   {
 	  g_pGfxEngine->Sprite[playerbaseframes[p]]->drawSprite( g_pVideoDriver->FGLayerSurface, x, (dlgY+4)<<3);
 	  x += g_pGfxEngine->Sprite[0]->getWidth();
-  }
+  }*/
 }
 
 void inventory_draw_ep2(int p, bool *levels_completed)
 {
-int x,i,j;
+/*int x,i,j;
 std::string tempbuf;
 int dlgX,dlgY,dlgW,dlgH;
 
@@ -305,13 +305,13 @@ int dlgX,dlgY,dlgW,dlgH;
 	  g_pGfxEngine->Sprite[playerbaseframes[p]]->drawSprite( g_pVideoDriver->FGLayerSurface, x, (dlgY+4)<<3);
 	  x += g_pGfxEngine->Sprite[0]->getWidth();
   }
-
+*/
 }
 
 void inventory_draw_ep3(int p)
 {
 //int x,y,t,i,j;
-int i,j,x;
+/*int i,j,x;
 int ankhtimepercent;
 	std::string tempbuf;
 int dlgX,dlgY,dlgW,dlgH;
@@ -392,12 +392,12 @@ int dlgX,dlgY,dlgW,dlgH;
   {
 	  g_pGfxEngine->Sprite[playerbaseframes[p]]->drawSprite( g_pVideoDriver->FGLayerSurface, x, (dlgY+4)<<3);
 	  x += g_pGfxEngine->Sprite[0]->getWidth();
-  }
+  }*/
 }
 
 void showinventory(int p, stCloneKeenPlus *pCKP)
 {
-	stLevelControl *p_levelcontrol;
+	/*stLevelControl *p_levelcontrol;
 	p_levelcontrol = &(pCKP->Control.levelcontrol);
 
   // draw the episode-specific stuff
@@ -423,12 +423,12 @@ void showinventory(int p, stCloneKeenPlus *pCKP)
 	g_pInput->pollEvents();
 
 	if(g_pInput->getPressedAnyCommand(p) || g_pInput->getPressedAnyKey()) close=true;
-  }
+  }*/
 }
 
 void YourShipNeedsTheseParts(stCloneKeenPlus *pCKP)
 {
-int cp = 0;
+/*int cp = 0;
 int dlgX,dlgY,dlgW,dlgH;
 
   dlgX = GetStringAttribute("EP1_SHIP", "LEFT");
@@ -463,7 +463,7 @@ int dlgX,dlgY,dlgW,dlgH;
 	g_pInput->pollEvents();
 
 	if(g_pInput->getPressedAnyCommand()) break;
-  }
+  }*/
 }
 
 void ShipEp3(stCloneKeenPlus *pCKP)
@@ -751,7 +751,7 @@ int dlgX,dlgY,dlgW,dlgH;
 
 void AllPlayersInvisible(void)
 {
-int i;
+/*int i;
 
   for(i=0;i<MAX_PLAYERS;i++)
   {
@@ -760,19 +760,19 @@ int i;
       objects[player[i].useObject].onscreen = 0;
       player[i].hideplayer = 1;
     }
-  }
+  }*/
 }
 
 char gameiswon(stCloneKeenPlus *pCKP)
 {
-int partcount;
+/*int partcount;
 int i;
 	stLevelControl *p_levelcontrol;
 	p_levelcontrol = &(pCKP->Control.levelcontrol);
 
        if (p_levelcontrol->episode==1)
        {
-          /* episode 1: game is won when all parts are collected */
+          // episode 1: game is won when all parts are collected
 
            // count the number of parts the players have acquired
            partcount = 0;
@@ -796,7 +796,7 @@ int i;
        }
        else if (p_levelcontrol->episode==2)
        {
-         /* episode 2: game is won when all cities are saved */
+         // episode 2: game is won when all cities are saved
          if (!p_levelcontrol->levels_completed[4]) return 0;
          if (!p_levelcontrol->levels_completed[6]) return 0;
          if (!p_levelcontrol->levels_completed[7]) return 0;
@@ -809,7 +809,7 @@ int i;
        }
        else if (p_levelcontrol->episode==3)
        {
-         /* episode 3: game is won when mortimer is defeated */
+         // episode 3: game is won when mortimer is defeated
          if (p_levelcontrol->levels_completed[16])
          {
            return 1;
@@ -818,7 +818,7 @@ int i;
          {
            return 0;
          }
-       }
+       }*/
 
 return 0;
 }

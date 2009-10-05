@@ -3,6 +3,7 @@
 
 #include "../include/enemyai.h"
 
+
 // vertically-moving platform (ep3)
 
 #define PLATVERT_MOVE   0
@@ -17,7 +18,7 @@
 
 void platvert_ai(int o)
 {
-unsigned int i,p;
+/*unsigned int i,p;
 
    if (objects[o].needinit)
    {  // first time initilization
@@ -142,5 +143,5 @@ unsigned int i,p;
        else
     	   objects[o].ai.platform.waittimer++;
    break;
-   }
+   }*/
 }

@@ -128,7 +128,7 @@ short loadResourcesforStartMenu(stCloneKeenPlus *pCKP, CGame *Game)
 
 	//Game->loadResources(pCKP->Control.levelcontrol.episode, pCKP->GameData[0].DataDirectory);
 
-	player[0].x = player[0].y = 0;
+	//mp_player[0].x = mp_player[0].y = 0;
 	if(initgamefirsttime(pCKP, 0) != 0)
 	{
 		return 1;

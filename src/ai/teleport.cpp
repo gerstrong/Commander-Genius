@@ -7,6 +7,7 @@
 
 #include "../sdl/sound/CSound.h"
 
+
 // Teleporter on world map
 // (animates the teleporter and moves the player)
 // (ep1&3)
@@ -25,7 +26,7 @@ void delete_object(int o);
 
 void teleporter_ai(int o, stLevelControl levelcontrol)
 {
-int mx,my;
+/*int mx,my;
 int timeout;
 int animrate, numframes;
    if (levelcontrol.episode!=3)
@@ -117,5 +118,5 @@ tport_done: ;
    {
      objects[o].ai.teleport.animtimer++;
    }
-
+*/
 }

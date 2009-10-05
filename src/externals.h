@@ -8,8 +8,6 @@ extern stTile tiles[MAX_TILES+1];
 extern unsigned char tiledata[MAX_TILES+1][16][16];
 extern stAnimTile animtiles[MAX_ANIMTILES+1];
 extern stObject objects[MAX_OBJECTS+1];
-extern stPlayer player[MAX_PLAYERS];
-extern stPlayer net_lastplayer[MAX_PLAYERS];
 extern unsigned char *scrollbuf;
 extern unsigned char *blitbuf;
 extern char keytable[50];

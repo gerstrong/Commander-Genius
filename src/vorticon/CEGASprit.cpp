@@ -22,8 +22,6 @@
 // section of defines //
 ////////////////////////
 
-#define CSF    5
-
 // Reference to ../common/tga.cpp
 char LoadTGA(const std::string &file, unsigned char **image, int *widthout, int *heightout);
 

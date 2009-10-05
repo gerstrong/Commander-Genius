@@ -33,7 +33,7 @@ void baby_jump(int o, int big);
 
 void baby_ai(int o, int episode, bool hard)
 {
-  bool ep3;
+  /*bool ep3;
 
   if (objects[o].needinit)
   {
@@ -61,7 +61,7 @@ void baby_ai(int o, int episode, bool hard)
   // babies are in ep2 & ep3, but frameset starts one index prior in ep3
   if (episode==3) ep3 = true; else ep3 = false;
 
-  /* jumping */
+  // jumping
   if (objects[o].ai.baby.inertia_y < 0 || !objects[o].blockedd)
   {
     if (objects[o].blockedu && objects[o].ai.baby.inertia_y < 0)
@@ -164,7 +164,7 @@ void baby_ai(int o, int episode, bool hard)
      else objects[o].ai.baby.dietimer++;
    break;
    case BABY_RUN:
-     /* run in appropriate direction */
+     // run in appropriate direction
      if (objects[o].ai.baby.dir==RIGHT)
      { // running right
        objects[o].sprite = BABY_WALK_RIGHT_FRAME + objects[o].ai.baby.walkframe - ep3;
@@ -193,7 +193,7 @@ void baby_ai(int o, int episode, bool hard)
        }
      }
 
-     /* run animation */
+     // run animation
      if (objects[o].ai.baby.walktimer > BABY_WALK_ANIM_RATE)
      {
        objects[o].ai.baby.walkframe++;
@@ -201,7 +201,7 @@ void baby_ai(int o, int episode, bool hard)
        objects[o].ai.baby.walktimer = 0;
      } else objects[o].ai.baby.walktimer++;
    break;
-  }
+  }*/
 }
 
 #define BABY_BIGJUMP                 25

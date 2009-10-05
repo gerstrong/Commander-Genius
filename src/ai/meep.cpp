@@ -5,6 +5,7 @@
 
 #include "../include/enemyai.h"
 
+
 #define MEEP_WALK       0
 #define MEEP_SING       1
 #define MEEP_DYING      2
@@ -34,7 +35,7 @@ void bumpplayer(int p, int pushamt, bool solid);
 
 void meep_ai( int o, stLevelControl levelcontrol )
 {
-int newobject;
+/*int newobject;
 int not_about_to_fall;
   if (objects[o].needinit)
   {
@@ -55,7 +56,7 @@ int not_about_to_fall;
 
    if (objects[o].touchPlayer && !player[objects[o].touchedBy].pdie)
    {
-      /* don't push the player as he's walking through the exit door */
+      // don't push the player as he's walking through the exit door
       if (!levelcontrol.level_done || levelcontrol.level_finished_by != objects[o].touchedBy)
       {
          if (player[objects[o].touchedBy].x < objects[o].x)
@@ -124,7 +125,7 @@ int not_about_to_fall;
        }
      }
 
-     /* walk animation */
+     // walk animation
      if (objects[o].ai.meep.animtimer > MEEP_WALK_ANIM_RATE)
      {
        objects[o].ai.meep.animframe ^= 1;
@@ -170,5 +171,5 @@ int not_about_to_fall;
      }
      else objects[o].ai.meep.timer++;
    break;
-  }
+  }*/
 }

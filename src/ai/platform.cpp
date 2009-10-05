@@ -17,7 +17,7 @@
 
 void platform_ai(int o, stLevelControl levelcontrol)
 {
-unsigned int i;
+/*unsigned int i;
 
    if (objects[o].needinit)
    {  // first time initilization
@@ -119,6 +119,6 @@ unsigned int i;
        }
        else objects[o].ai.platform.waittimer++;
    break;
-   }
+   }*/
 }
 

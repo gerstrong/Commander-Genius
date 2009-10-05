@@ -4,6 +4,7 @@
 
 #include "../include/enemyai.h"
 
+
 // Tank Robot (ep1)
 
 #define TANK_LOOK       0
@@ -45,7 +46,7 @@ unsigned int rnd(void);
 
 void tank_ai(int o, bool hardmode)
 {
-int newobject;
+/*int newobject;
 unsigned int i;
    if (objects[o].needinit)
    {  // first time initilization
@@ -271,7 +272,7 @@ unsigned int i;
       } else objects[o].ai.tank.timer++;
      break;
 
-   }
+   }*/
 }
 
 char tank_CanMoveLeft(int o, int h)

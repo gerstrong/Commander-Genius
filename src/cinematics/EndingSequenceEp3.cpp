@@ -17,6 +17,7 @@
 #include "EndingSequenceEp3.h"
 #include "CommonEnding.h"
 
+
 void eseq3_Mortimer()
 {
 int x,y,w,h;
@@ -39,7 +40,7 @@ int x,y,w,h;
 
 char eseq3_AwardBigV(stCloneKeenPlus *pCKP)
 {
-  int x,y,w,h;
+  /*int x,y,w,h;
   int c;
   //initgame( &(pCKP->Control.levelcontrol) );
 
@@ -88,6 +89,6 @@ char eseq3_AwardBigV(stCloneKeenPlus *pCKP)
 
   SDL_FreeSurface(finale_sfc);
 
-  if (g_pInput->getPressedKey(KQUIT)) return 1;
+  if (g_pInput->getPressedKey(KQUIT)) return 1;*/
   return 0;
 }

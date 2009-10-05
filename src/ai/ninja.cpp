@@ -33,7 +33,7 @@ unsigned int rnd(void);
 
 void ninja_ai(int o, bool hardmode)
 {
-unsigned int i;
+/*unsigned int i;
 int onsamelevel;
 
   if (objects[o].needinit)
@@ -225,5 +225,5 @@ int onsamelevel;
        objects[o].ai.ninja.state = NINJA_DEAD;
      }
      break;
-  }
+  }*/
 }

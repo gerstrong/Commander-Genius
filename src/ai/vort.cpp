@@ -6,6 +6,8 @@
 
 #include "../include/enemyai.h"
 
+
+
 // Vorticon (all episodes, albeit the behavior changes slightly
 // depending on levelcontrol.episode).
 
@@ -16,7 +18,7 @@ void vort_initiatejump(int o);
 
 void vort_ai(int o, stLevelControl *p_levelcontrol)
 {
-int bonk,kill;
+/*int bonk,kill;
    if (objects[o].needinit)
    {  // first time initilization
      objects[o].ai.vort.frame = 0;
@@ -312,5 +314,5 @@ void vort_initiatejump(int o)
               objects[o].sprite = objects[o].ai.vort.JumpLeftFrame;
 
            objects[o].inhibitfall = 1;
-           objects[o].ai.vort.state = VORT_JUMP;
+           objects[o].ai.vort.state = VORT_JUMP;*/
 }

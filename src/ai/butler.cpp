@@ -8,7 +8,6 @@
 #include "../graphics/CGfxEngine.h"
 
 // AI for "butler" robot (ep1)
-
 #define BUTLER_TURN     0
 #define BUTLER_WALK     1
 
@@ -33,7 +32,7 @@
 
 void butler_ai(int o, bool hardmode)
 {
-char not_about_to_fall;
+/*char not_about_to_fall;
 Uint16 butler_height, butler_width;
 CSprite *sprite = g_pGfxEngine->Sprite[BUTLER_WALK_LEFT_FRAME];
 
@@ -140,5 +139,5 @@ CSprite *sprite = g_pGfxEngine->Sprite[BUTLER_WALK_LEFT_FRAME];
          objects[o].ai.butler.animtimer = 0;
        } else objects[o].ai.butler.animtimer++;
     break;
-   }
+   }*/
 }

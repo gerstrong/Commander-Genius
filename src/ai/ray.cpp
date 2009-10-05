@@ -11,7 +11,7 @@
 
 void ray_ai(int o, int episode, bool automatic_raygun, char pShotSpeed)
 {
-int i;
+/*int i;
 int hitlethal;
 int rayspeed;
   if (objects[o].needinit)
@@ -193,6 +193,6 @@ int rayspeed;
          { delete_object(o); }
        else objects[o].ai.ray.zapzottimer--;
   break;
-  }
+  }*/
 }
 

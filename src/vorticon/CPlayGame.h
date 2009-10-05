@@ -11,6 +11,7 @@
 #define CPlayGame_H_
 
 #include "../graphics/CGfxEngine.h"
+#include "../common/CPlayer.h"
 #include "../common/CMenu.h"
 #include "../common/CMap.h"
 #include <SDL/SDL.h>
@@ -58,5 +59,6 @@ private:
 
 	CMap *mp_Map;
 	CMenu *mp_Menu;
+	CPlayer *mp_Player;
 };
 #endif /* CPlayGame_H_ */

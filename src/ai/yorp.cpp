@@ -50,7 +50,7 @@ void bumpplayer(int p, int pushamt, bool solid);
 
 void yorp_ai(int o, stLevelControl levelcontrol)
 {
-char numlooks;
+/*char numlooks;
 int pushamt;
 //int newobject;
 unsigned int tb;
@@ -163,7 +163,7 @@ unsigned int tb;
    if (objects[o].zapped)
    {
 		// is "force fields" mode on?
-		/*if (getoption(OPT_YORPFORCEFIELDS) && !objects[o].zappedbyenemy && objects[o].ai.yorp.state != YORP_STUNNED)
+		if (getoption(OPT_YORPFORCEFIELDS) && !objects[o].zappedbyenemy && objects[o].ai.yorp.state != YORP_STUNNED)
 		{
 			objects[o].zapped = 0;
 
@@ -185,7 +185,7 @@ unsigned int tb;
 			objects[newobject].sprite = YORPSHIELD_SPRITE;
 		}
 		else
-		{*/
+		{
 			// what'd you kill an innocent yorp for, you bastard!
 
       objects[o].ai.yorp.state = YORP_DYING;
@@ -216,13 +216,13 @@ unsigned int tb;
 			objects[o].inhibitfall = 0;
 			objects[o].ai.yorp.state = YORP_DEAD;
 			objects[o].dead = 1;
-			/*if (getoption(OPT_MUSTKILLYORPS))
+			if (getoption(OPT_MUSTKILLYORPS))
 			{
 				risebonus(PT100_SPRITE, objects[o].x, objects[o].y);
 				// fixme: points should be given to player who shot the yorp
 				/// temphack
 				incscore(0, 100);
-			}*/
+			}
          }
      break;
      case YORP_LOOK:
@@ -241,10 +241,10 @@ unsigned int tb;
                objects[o].ai.yorp.movedir ^= 1;
           }
 
-			/*if (getoption(OPT_MUSTKILLYORPS))
+			if (getoption(OPT_MUSTKILLYORPS))
 			{	// they know you've got it out for them. run away!!
 				objects[o].ai.yorp.movedir ^= 1;
-			}   */
+			}
 
           // unless we're can't go that way
           if (objects[o].blockedl) objects[o].ai.yorp.movedir = RIGHT;
@@ -363,5 +363,5 @@ unsigned int tb;
     	   objects[o].ai.yorp.timer++;
 
        break;
-   }
+   }*/
 }

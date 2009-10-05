@@ -42,7 +42,7 @@ unsigned int rnd(void);
 
 void garg_ai(int o, bool hardmode)
 {
-unsigned int i;
+/*unsigned int i;
 Uint16 garg_width = g_pGfxEngine->Sprite[objects[o].sprite]->getWidth();
 Uint16 garg_height = g_pGfxEngine->Sprite[objects[o].sprite]->getHeight();
 Uint16 player_height = g_pGfxEngine->Sprite[0]->getHeight();
@@ -126,7 +126,7 @@ Uint16 player_height = g_pGfxEngine->Sprite[0]->getHeight();
           else objects[o].ai.garg.state = GARG_MOVE;
        }
 
-       /* look animation */
+       // look animation
        if (!objects[o].ai.garg.timer)
        {
          objects[o].sprite = GARG_STAND + objects[o].ai.garg.lookframe;
@@ -188,7 +188,7 @@ Uint16 player_height = g_pGfxEngine->Sprite[0]->getHeight();
          // * we are blockedl, or
          // * there is empty space for two tiles ahead at floor level,
          //   and there is not a solid block 1-2 tiles ahead at wall level
-         /*not_about_to_fall1 = tiles[getmaptileat((objects[o].x>>CSF)-1, (objects[o].y>>CSF)+sprites[GARG_WALK_LEFT].ysize+2)].solidfall;
+         not_about_to_fall1 = tiles[getmaptileat((objects[o].x>>CSF)-1, (objects[o].y>>CSF)+sprites[GARG_WALK_LEFT].ysize+2)].solidfall;
          not_about_to_fall2 = tiles[getmaptileat((objects[o].x>>CSF)-17, (objects[o].y>>CSF)+sprites[GARG_WALK_LEFT].ysize+2)].solidfall;
          GotoLook = 0;
          if (objects[o].blockedl) GotoLook = 1;
@@ -198,7 +198,7 @@ Uint16 player_height = g_pGfxEngine->Sprite[0]->getHeight();
            blocked_ahead2 = tiles[getmaptileat((objects[o].x>>CSF)-28, (objects[o].y>>CSF)+20)].solidr;
            if (!blocked_ahead1 && !blocked_ahead2)
              GotoLook = 1;
-         }*/
+         }
 
 
          if (!objects[o].blockedl)
@@ -235,7 +235,7 @@ Uint16 player_height = g_pGfxEngine->Sprite[0]->getHeight();
          }
        }
 
-       /* walk animation */
+       // walk animation
        if (objects[o].ai.garg.timer > GARG_WALK_ANIM_TIME ||
            (objects[o].ai.garg.timer > GARG_WALK_ANIM_TIME && hardmode))
        {
@@ -305,5 +305,5 @@ Uint16 player_height = g_pGfxEngine->Sprite[0]->getHeight();
          objects[o].ai.garg.timer = 0;
        } else objects[o].ai.garg.timer++;
      break;
-   }
+   }*/
 }

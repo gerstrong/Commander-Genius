@@ -12,7 +12,6 @@ short loadResourcesforGame(stCloneKeenPlus *pCKP);
 short runGameCycle(stCloneKeenPlus *pCKP, CGame *Game);
 short abortCKP(stCloneKeenPlus *pCKP);
 void cleanupResources(stCloneKeenPlus *pCKP);
-short closeCKP(stCloneKeenPlus *pCKP);
 //void createDefaultSettings(stOption *Option);
 bool loadCKPDrivers();
 //void SaveConfig(stOption *Option);

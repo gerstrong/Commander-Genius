@@ -16,6 +16,7 @@
 #include "EndingSequenceEp1.h"
 #include "CommonEnding.h"
 
+
 #define CMD_MOVE                0
 #define CMD_WAIT                1
 #define CMD_SPAWNSPR            2
@@ -49,7 +50,7 @@
 
 int eseq1_ReturnsToShip(stCloneKeenPlus *pCKP)
 {
-int i;
+/*int i;
 
   for(i=0;i<MAX_LEVELS;i++)
 	  pCKP->Control.levelcontrol.levels_completed[i] = 0;
@@ -66,7 +67,7 @@ int i;
   objects[1].exists = 1;
 
   eseq_showmsg(getstring("EP1_ESEQ_PART1"),1,18,37,6,1);
-
+*/
   return 0;
 }
 
@@ -81,7 +82,7 @@ void addshipqueue(int cmd, int time, int flag1)
 
 int eseq1_ShipFlys(stCloneKeenPlus *pCKP, bool flyback)
 {
-char enter,lastenterstate;
+/*char enter,lastenterstate;
 int x, y;
 int scrollingon;
 
@@ -238,13 +239,13 @@ int scrollingon;
 	g_pInput->pollEvents();
     	gamedo_RenderScreen();
   } while(!g_pInput->getPressedKey(KQUIT));
-
+*/
   return 1;
 }
 
 int eseq1_BackAtHome(stCloneKeenPlus *pCKP)
 {
-int i;
+/*int i;
 std::string text[10];
 std::string strname;
 std::string tempbuf;
@@ -376,7 +377,7 @@ CBitmap *bm_window;
   } while(1);
 
   SDL_FreeSurface(finale_sfc);
-
+*/
   return 0;
 }
 
@@ -400,9 +401,6 @@ void eseq1_showEndingText(std::string &Path)
 	}
 
 	delete ExeFile;
-
-	/*if( text.size() > 0 )
-		showPage( text, text.size() );*/
 
 	text.clear();
 }

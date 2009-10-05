@@ -38,7 +38,7 @@ unsigned int rnd(void);
 
 void mother_ai( int o, stLevelControl levelcontrol )
 {
-int newobject;
+/*int newobject;
 int prob;
 
   if (objects[o].needinit)
@@ -61,7 +61,7 @@ int prob;
 
    if (objects[o].touchPlayer && !player[objects[o].touchedBy].pdie)
    {
-      /* don't push the player as he's walking through the exit door */
+      // don't push the player as he's walking through the exit door
       if (!levelcontrol.level_done || levelcontrol.level_finished_by != objects[o].touchedBy)
       {
          if (player[objects[o].touchedBy].x < objects[o].x)
@@ -124,7 +124,7 @@ int prob;
          objects[o].x -= MOTHER_WALK_SPD;
      }
 
-     /* walk animation */
+     // walk animation
      if (objects[o].ai.mother.animtimer > MOTHER_WALK_ANIM_RATE)
      {
        objects[o].ai.mother.animframe ^= 1;
@@ -179,5 +179,5 @@ int prob;
      }
      else objects[o].ai.mother.timer++;
    break;
-  }
+  }*/
 }

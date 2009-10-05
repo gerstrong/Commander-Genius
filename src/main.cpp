@@ -76,8 +76,6 @@ unsigned int AnimTileInUse[ATILEINUSE_SIZEX][ATILEINUSE_SIZEY];
 stTile tiles[MAX_TILES+1];
 stObject objects[MAX_OBJECTS+1];
 stAnimTile animtiles[MAX_ANIMTILES+1];
-stPlayer player[MAX_PLAYERS];
-stPlayer net_lastplayer[MAX_PLAYERS];
 
 unsigned int objdefsprites[NUM_OBJ_TYPES+1];
 
@@ -238,33 +236,6 @@ short abortCKP(stCloneKeenPlus *pCKP)
 	  g_pLogFile->ftextOut("A fatal error has occurred; game is shutting down.<br>");
 	  return 1;
 }
-
-short closeCKP(stCloneKeenPlus *pCKP)
-{
-	int count;
-	int i;
-	CSettings Settings;
-
-	banner();
-
-	Settings.saveGameCfg();
-
-	g_pLogFile->ftextOut("<br>Thanks for playing!<br><br>");
-	cleanup(pCKP);
-	if (crashflag)
-	{
-		if (crashflag != QUIT_NONFATAL) g_pLogFile->ftextOut("\a");
-		g_pLogFile->ftextOut("abnormal program termination, error code %d/%d/%d<br>explanation: %s<br>", crashflag,crashflag2,crashflag3, why_term_ptr);
-
-		g_pLogFile->ftextOut("numplayers: %d<br>", numplayers);
-
-		for(count=0,i=0;i<MAX_PLAYERS;i++) if (player[i].isPlaying) count++;
-
-		g_pLogFile->ftextOut("# of player instances with isPlaying set: %d<br>", count);
-	}
-	return 0;
-}
-
 
 // plays the demo file specified in fname
 // returns:

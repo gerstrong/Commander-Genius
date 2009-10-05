@@ -14,7 +14,6 @@
 #include "CommonEnding.h"
 #include "../StringUtils.h"
 
-
 enum cmd_actions{
 CMD_MOVE,
 CMD_WAIT,
@@ -53,7 +52,7 @@ int ShipQueuePtr;
 
 int eseq2_TantalusRay(stCloneKeenPlus *pCKP)
 {
-char enter;
+/*char enter;
 int x, y, t, o=0, i;
 int tantalus_animframe, tantalus_animtimer=0;
 int state, timer, spawnedcount=0;
@@ -220,7 +219,7 @@ CBitmap *bm_gameover =NULL;
 
 	gamedo_RenderScreen();
   } while(!g_pInput->getPressedKey(KQUIT));
-  delete_object(find_next_object(OBJ_EGA_BITMAP));
+  delete_object(find_next_object(OBJ_EGA_BITMAP));*/
   return 1;
 }
 
@@ -325,7 +324,7 @@ int x,y,w,h;
 
 int eseq2_HeadsForEarth(stCloneKeenPlus *pCKP)
 {
-bool enter;
+/*bool enter;
 int x, y;
 int downtimer;
 int afterfadewaittimer;
@@ -408,7 +407,7 @@ int afterfadewaittimer;
 	  gamedo_render_drawobjects();
 	  gamedo_RenderScreen();
 	  g_pInput->pollEvents();
-  } while(!g_pInput->getPressedKey(KQUIT));
+  } while(!g_pInput->getPressedKey(KQUIT));*/
   return 1;
 }
 
@@ -417,7 +416,7 @@ int afterfadewaittimer;
 
 int eseq2_LimpsHome(stCloneKeenPlus *pCKP)
 {
-bool enter;
+/*bool enter;
 int downtimer;
 int afterfadewaittimer = 0;
 
@@ -475,13 +474,13 @@ int afterfadewaittimer = 0;
 	  gamedo_RenderScreen();
 	  g_pInput->pollEvents();
 
-  } while(!g_pInput->getPressedKey(KQUIT));
+  } while(!g_pInput->getPressedKey(KQUIT));*/
   return 1;
 }
 
 int eseq2_SnowedOutside(stCloneKeenPlus *pCKP)
 {
-int curpage;
+/*int curpage;
 int lastpage;
 std::string tempstr;
 std::string text;
@@ -525,6 +524,6 @@ int dlgX, dlgY, dlgW, dlgH;
   SDL_BlitSurface( finale_sfc, NULL, g_pVideoDriver->BlitSurface, NULL );
   eseq_ToBeContinued( finale_sfc );
   SDL_FreeSurface( finale_sfc );
-
+*/
   return 0;
 }

@@ -55,7 +55,7 @@ std::string fname;
 	fprintf(fp, "CKSAVE%c", SAVEGAMEVERSION);
 	fputc(mp_levelcontrol->episode, fp);
 	fputc(mp_levelcontrol->curlevel, fp);
-	fputc(player[0].inventory.lives, fp);
+	//fputc(player[0].inventory.lives, fp);
 	fputc(numplayers, fp);
 	fputc(primaryplayer, fp);
 
@@ -82,15 +82,15 @@ std::string fname;
 	sgrle_compress(fp, (unsigned char *)&tiles[0], sizeof(tiles));
 
 	for(unsigned i=0;i<numplayers;i++)
-		sgrle_compress(fp, (unsigned char *)&player[i], sizeof(player[i]));
+		//sgrle_compress(fp, (unsigned char *)&player[i], sizeof(player[i]));
 
 	// save state of partially-opened doors
-	CSprite **sprites = &g_pGfxEngine->Sprite[0];
+	/*CSprite **sprites = &g_pGfxEngine->Sprite[0];
 
 	fputc(sprites[DOOR_YELLOW_SPRITE]->getWidth(), fp);
 	fputc(sprites[DOOR_RED_SPRITE]->getWidth(), fp);
 	fputc(sprites[DOOR_GREEN_SPRITE]->getWidth(), fp);
-	fputc(sprites[DOOR_BLUE_SPRITE]->getWidth(), fp);
+	fputc(sprites[DOOR_BLUE_SPRITE]->getWidth(), fp);*/
 
 	fclose(fp);
 	return 0;
@@ -162,7 +162,7 @@ unsigned int i;
 
 	mp_levelcontrol->episode = episode;
 	mp_levelcontrol->curlevel = level;
-	player[0].inventory.lives = lives;
+	//player[0].inventory.lives = lives;
 
 	g_pLogFile->ftextOut("game_load: restoring structures...\n");
 	primaryplayer = fgetc(fp);
@@ -197,7 +197,7 @@ unsigned int i;
 
 	for(i=0;i<numplayers;i++)
 	{
-		if (sgrle_decompress(fp, (unsigned char *)&player[i], sizeof(player[i]))) return 1;
+		//if (sgrle_decompress(fp, (unsigned char *)&player[i], sizeof(player[i]))) return 1;
 	}
 
 	CSprite **sprites = &g_pGfxEngine->Sprite[0];

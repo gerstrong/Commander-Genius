@@ -29,25 +29,32 @@ CPlayGame::CPlayGame( char episode, char level,
 	m_endgame = false;
 	mp_Map = NULL;
 	mp_Menu = NULL;
+
+	// Create the Player
+	if(m_NumPlayers != 0)
+		mp_Player = new CPlayer[m_NumPlayers];
+	else
+		mp_Player = NULL;
 }
 
 bool CPlayGame::init()
-{ 
+{
 	// load level map
 	mp_Map = new CMap( g_pVideoDriver->getScrollSurface(), g_pGfxEngine->Tilemap );
 
-	if( mp_Map )
-	{
-		if( mp_Map->loadMap( m_Episode, m_Level, m_Gamepath ) )
-		{
-			// draw level map
-			mp_Map->drawAll();
+	if( !mp_Map ) return false;
+	if( !mp_Map->loadMap( m_Episode, m_Level, m_Gamepath ) ) return false;
 
-			return true;
-		}
-	}
+	// If those worked fine, continue the initialization
 
-	return false;
+	// draw level map
+	mp_Map->drawAll();
+
+	// Now Scroll to the position of the player
+
+
+
+	return true;
 }
 
 bool CPlayGame::loadGameState( std::string &statefile )
@@ -140,7 +147,7 @@ void CPlayGame::cleanup()
 }
 
 CPlayGame::~CPlayGame() {
-
+	if(mp_Player) delete [] mp_Player;
 }
 
 /////

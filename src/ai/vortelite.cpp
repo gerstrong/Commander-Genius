@@ -4,6 +4,7 @@
 #include "../sdl/sound/CSound.h"
 #include "../graphics/CGfxEngine.h"
 
+
 // the "Vorticon Elite" enemies in ep2
 #define VORTELITE_WALK          0
 #define VORTELITE_JUMP          1
@@ -53,7 +54,7 @@ void vortelite_initiatejump(int o);
 
 void vortelite_ai(int o, bool darkness)
 {
-int bonk;
+/*int bonk;
 int newobject;
 
    if (objects[o].needinit)
@@ -289,12 +290,12 @@ reprocess: ;
 		}
 	 break;
 	 default: break;
-	}
+	}*/
 }
 
 void vortelite_initiatejump(int o)
 {
-           if (objects[o].ai.vortelite.state==VORTELITE_JUMP) return;
+ /*          if (objects[o].ai.vortelite.state==VORTELITE_JUMP) return;
 
            objects[o].ai.vortelite.frame = 0;
            objects[o].ai.vortelite.animtimer = 0;
@@ -311,5 +312,5 @@ void vortelite_initiatejump(int o)
            }
 
            objects[o].inhibitfall = 1;
-           objects[o].ai.vortelite.state = VORTELITE_JUMP;
+           objects[o].ai.vortelite.state = VORTELITE_JUMP;*/
 }

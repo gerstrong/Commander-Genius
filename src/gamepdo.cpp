@@ -24,6 +24,7 @@ char tempbuf[200];
 
 #include "dialog/CDialog.h"
 
+
 #ifdef TARGET_WIN32
 #define uint unsigned int
 #endif
@@ -32,7 +33,7 @@ char tempbuf[200];
 // functions for player cp
 void gamepdo_HandlePlayer(int cp, stCloneKeenPlus *pCKP)
 {
-char doFall;
+/*char doFall;
 
     if (player[cp].pdie)
     {
@@ -90,14 +91,14 @@ char doFall;
        }
     }
 
-    gamepdo_SelectFrame(cp);
+    gamepdo_SelectFrame(cp);*/
 }
 
 void gamepdo_walkbehindexitdoor(int cp, stCloneKeenPlus *pCKP)
 {
-int x, diff, width;
+/*int x, diff, width;
 
-    /* don't draw keen as he walks through the door (past exitXpos) */
+    // don't draw keen as he walks through the door (past exitXpos)
     // X pixel position of right side of player
     x = (player[cp].x >> CSF) + PLAYERSPRITE_WIDTH;
     diff = (x - pCKP->Control.levelcontrol.exitXpos);        // dist between keen and door
@@ -111,12 +112,12 @@ int x, diff, width;
        g_pGfxEngine->Sprite[playerbaseframes[cp]+1]->setWidth(width);
        g_pGfxEngine->Sprite[playerbaseframes[cp]+2]->setWidth(width);
        g_pGfxEngine->Sprite[playerbaseframes[cp]+3]->setWidth(width);
-    }
+    }*/
 }
 
 void gamepdo_dieanim(int cp, stLevelControl *p_levelcontrol)
 {
-   if (!player[cp].pdie) return;                // should never happen...
+   /*if (!player[cp].pdie) return;                // should never happen...
    if (player[cp].pdie==PDIE_DEAD) return;      // if true animation is over
    if (player[cp].pdie==PDIE_FELLOFFMAP)
    {
@@ -174,13 +175,13 @@ void gamepdo_dieanim(int cp, stLevelControl *p_levelcontrol)
    else
    {  // not yet time to fly off screen, decrement timer
      player[cp].pdietillfly--;
-   }  // end "time to fly"
+   }  // end "time to fly"*/
 }
 
 void gamepdo_keencicle(int cp, stCloneKeenPlus *pCKP)
 {
    // keencicle code (when keen gets hit by an ice chunk)
-   if (player[cp].pfrozentime)
+   /*if (player[cp].pfrozentime)
    {
      if (player[cp].pfrozentime > PFROZEN_THAW)
      {
@@ -201,13 +202,12 @@ void gamepdo_keencicle(int cp, stCloneKeenPlus *pCKP)
 
      player[cp].pfrozentime--;
      player[cp].inhibitwalking = 1;
-   }
-
+   }*/
 }
 
 void gamepdo_ProcessInput(unsigned int cp, stCloneKeenPlus *pCKP)
 {
-	stLevelControl *p_levelcontrol;
+	/*stLevelControl *p_levelcontrol;
 
 	p_levelcontrol = &(pCKP->Control.levelcontrol);
 
@@ -258,7 +258,7 @@ void gamepdo_ProcessInput(unsigned int cp, stCloneKeenPlus *pCKP)
      return;
    }
 
-   /*if(options[OPT_TWOBUTTON].value)
+   if(options[OPT_TWOBUTTON].value)
    {
 	   if(player[cp].playcontrol[PA_JUMP] && player[cp].playcontrol[PA_POGO])
 	   {
@@ -266,7 +266,7 @@ void gamepdo_ProcessInput(unsigned int cp, stCloneKeenPlus *pCKP)
 		   player[cp].playcontrol[PA_JUMP] = 0;
 		   player[cp].playcontrol[PA_POGO] = 0;
 	   }
-   }*/
+   }
 
    if(g_pInput->getPressedKey(KP))
    {
@@ -279,7 +279,7 @@ void gamepdo_ProcessInput(unsigned int cp, stCloneKeenPlus *pCKP)
    {
 	   // Show the typical F1 Help
        showF1HelpText(pCKP->Control.levelcontrol.episode, pCKP->Resources.GameDataDirectory);
-   }
+   }*/
 }
 
 // if player not sliding and not jumping, allow
@@ -288,7 +288,7 @@ void gamepdo_ProcessInput(unsigned int cp, stCloneKeenPlus *pCKP)
 // in the frame.
 void gamepdo_setdir(int cp, stCloneKeenPlus *pCKP)
 {
-int stuck;
+/*int stuck;
 
    if (player[cp].pfrozentime) return;
    // can't change direction on ice,
@@ -323,13 +323,13 @@ int stuck;
      if (player[cp].playcontrol[PA_X] < 0) { player[cp].pdir = player[cp].pshowdir = LEFT;  }
      if (player[cp].playcontrol[PA_X] > 0) { player[cp].pdir = player[cp].pshowdir = RIGHT;  }
    }
-
+*/
 }
 
 // set blockedl/r/u...is Keen up against a solid object or a the edge of the level?
 void gamepdo_setblockedlru(unsigned int cp, stCloneKeenPlus *pCKP)
 {
-	// This function still has a lot of bugs!
+/*	// This function still has a lot of bugs!
    //int tx,ty;
    //unsigned int i;
    //stOption *p_option;
@@ -347,7 +347,7 @@ void gamepdo_setblockedlru(unsigned int cp, stCloneKeenPlus *pCKP)
 
    if ((player[cp].x>>CSF) < 2) player[cp].blockedl = 1;
 
-   /*if (!p_option[OPT_CHEATS].value || g_pInput->getHoldedKey(KTAB)==0)   // holding down TAB will turn off clipping
+   if (!p_option[OPT_CHEATS].value || g_pInput->getHoldedKey(KTAB)==0)   // holding down TAB will turn off clipping
    {
       tx = (player[cp].x>>CSF);
       ty = (player[cp].y>>CSF);
@@ -456,7 +456,7 @@ void gamepdo_setblockedlru(unsigned int cp, stCloneKeenPlus *pCKP)
 // let's have keen be able to pick up goodies
 void gamepdo_getgoodies(int cp, stCloneKeenPlus *pCKP)
 {
-   if ((TileProperty[getmaptileat((player[cp].x>>CSF)+9, (player[cp].y>>CSF)+1)][BEHAVIOR] > 0) &&
+   /*if ((TileProperty[getmaptileat((player[cp].x>>CSF)+9, (player[cp].y>>CSF)+1)][BEHAVIOR] > 0) &&
 		   ( TileProperty[getmaptileat((player[cp].x>>CSF)+9, (player[cp].y>>CSF)+1)][BEHAVIOR] < 31 ) )
       { keen_get_goodie((player[cp].x>>CSF)+9, (player[cp].y>>CSF)+1, cp, pCKP); return; }
 
@@ -470,14 +470,14 @@ void gamepdo_getgoodies(int cp, stCloneKeenPlus *pCKP)
 
    else if ((TileProperty[getmaptileat((player[cp].x>>CSF)+4, (player[cp].y>>CSF)+23)][BEHAVIOR] > 0) &&
 		   ( TileProperty[getmaptileat((player[cp].x>>CSF)+4, (player[cp].y>>CSF)+23)][BEHAVIOR] < 31 ) )
-      { keen_get_goodie((player[cp].x>>CSF)+4, (player[cp].y>>CSF)+23, cp, pCKP); return; }
+      { keen_get_goodie((player[cp].x>>CSF)+4, (player[cp].y>>CSF)+23, cp, pCKP); return; }*/
 }
 
 // animation for walking
 void gamepdo_walkinganim(int cp, stCloneKeenPlus *pCKP)
 {
     // no walk animation while sliding
-    if (player[cp].inhibitwalking || player[cp].psliding ) return;
+    /*if (player[cp].inhibitwalking || player[cp].psliding ) return;
 
     // should we do walk animation?
     if (player[cp].pwalking  || player[cp].playpushed_x || player[cp].psemisliding)
@@ -563,13 +563,13 @@ void gamepdo_walkinganim(int cp, stCloneKeenPlus *pCKP)
         {
           player[cp].pwalkframe = player[cp].pwalkframea;
         }
-    }
+    }*/
 }
 
 // handle playpushed_x: for yorps/scrubs/etc pushing keen
 void gamepdo_playpushed(int cp, stCloneKeenPlus *pCKP)
 {
-    //if (pCKP->Option[OPT_CHEATS].value && g_pInput->getHoldedKey(KTAB)) return;
+    /*//if (pCKP->Option[OPT_CHEATS].value && g_pInput->getHoldedKey(KTAB)) return;
 
     // if we're being pushed...
     if (player[cp].playpushed_x)
@@ -593,13 +593,13 @@ void gamepdo_playpushed(int cp, stCloneKeenPlus *pCKP)
       // if we run up against a wall all push inertia stops
       if (player[cp].playpushed_x > 0 && player[cp].blockedr) player[cp].playpushed_x = 0;
       if (player[cp].playpushed_x < 0 && player[cp].blockedl) player[cp].playpushed_x = 0;
-    }
+    }*/
 }
 // handles inertia and friction for the X direction
 // (this is where the inertia/playpushed_x is actually applied to playx)
 void gamepdo_InertiaAndFriction_X(unsigned int cp, stCloneKeenPlus *pCKP)
 {
-	stLevelControl *p_levelcontrol;
+	/*stLevelControl *p_levelcontrol;
 	int friction_rate;
 
 	p_levelcontrol = &(pCKP->Control.levelcontrol);
@@ -794,12 +794,12 @@ void gamepdo_InertiaAndFriction_X(unsigned int cp, stCloneKeenPlus *pCKP)
         }
         else player[cp].pfriction_timer_x++;
      }
-   }
+   }*/
 
 }
 void gamepdo_Jump(int cp)
 {
-	   // handle the JUMP key, both for normal jumps and (high) pogo jumps
+	/*   // handle the JUMP key, both for normal jumps and (high) pogo jumps
 	   if (!player[cp].pjumping && !player[cp].pfalling && !player[cp].pfiring)
 	   {
 		 player[cp].pboost_x = 0;
@@ -866,14 +866,14 @@ void gamepdo_Jump(int cp)
 			  // Maybe not needed!
 		   player[cp].pjumping = 0;
 		   player[cp].pfalling = 1;
-	   }
+	   }*/
 }
 
 // called when a switch is flipped. mx,my is the pixel coords of the switch,
 // relative to the upper-left corner of the map.
 void gamepdo_ExtendingPlatformSwitch(int x, int y, stLevelControl *p_levelcontrol)
 {
-uint ppos;
+/*uint ppos;
 int platx, platy;
 signed char pxoff, pyoff;
 int mapx, mapy;
@@ -923,13 +923,13 @@ int o;
 	o = spawn_object(mapx<<TILE_S<<CSF,mapy<<TILE_S<<CSF,OBJ_SECTOREFFECTOR);
 	objects[o].ai.se.type = SE_EXTEND_PLATFORM;
 	objects[o].ai.se.platx = platx;
-	objects[o].ai.se.platy = platy;
+	objects[o].ai.se.platy = platy;*/
 }
 
 // allow Keen to toggle the pogo stick and hit switches
 void gamepdo_TogglePogo_and_Switches(int cp, stLevelControl *p_levelcontrol)
 {
-int i;
+/*int i;
 int mx, my, t;
 CSprite *standsprite = g_pGfxEngine->Sprite[PSTANDFRAME];
 
@@ -965,12 +965,12 @@ CSprite *standsprite = g_pGfxEngine->Sprite[PSTANDFRAME];
 		{
 			player[cp].ppogostick ^= 1;
 		}
-	}
+	}*/
 }
 
 void gamepdo_JumpAndPogo(int cp, stCloneKeenPlus *pCKP)
 {
-	stLevelControl *p_levelcontrol = &(pCKP->Control.levelcontrol);
+	/*stLevelControl *p_levelcontrol = &(pCKP->Control.levelcontrol);
 
 	// allow him to toggle the pogo stick
 	gamepdo_TogglePogo_and_Switches(cp, p_levelcontrol);
@@ -1006,7 +1006,7 @@ void gamepdo_JumpAndPogo(int cp, stCloneKeenPlus *pCKP)
         	  // jump high if JUMP key down, else bounce low
         	  if (player[cp].playcontrol[PA_JUMP])
         	  {
-				   /*if (!pCKP->Option[OPT_SUPERPOGO].value)
+				   if (!pCKP->Option[OPT_SUPERPOGO].value)
 				   {  // normal high pogo jump
 					  if(player[cp].playcontrol[PA_JUMP] > 12)
 						  player[cp].pjumpupspeed = ((PPOGOUP_SPEED-PJUMPUP_SPEED)*player[cp].playcontrol[PA_JUMP]) / 50 + PJUMPUP_SPEED;
@@ -1016,7 +1016,7 @@ void gamepdo_JumpAndPogo(int cp, stCloneKeenPlus *pCKP)
 					  player[cp].pjumpupdecreaserate = PJUMP_UPDECREASERATE_POGO_LONG;
 				   }
 				   else
-				   {*/
+				   {
 					  player[cp].pjumpupspeed = PPOGOUP_SPEED_SUPER;
 					  player[cp].pjumptime = PJUMP_NORMALTIME_POGO_LONG_SUPER;
 					  player[cp].pjumpupdecreaserate = PJUMP_UPDECREASERATE_POGO_LONG_SUPER;
@@ -1169,12 +1169,12 @@ void gamepdo_JumpAndPogo(int cp, stCloneKeenPlus *pCKP)
     // If we are in Godmode, use the Pogo, and pressing the jump button, make the player fly
     if( player[cp].godmode && player[cp].ppogostick &&
     		g_pInput->getHoldedCommand(cp, IC_JUMP) && !player[cp].blockedu )
-    	player[cp].y -= PPOGOUP_SPEED;
+    	player[cp].y -= PPOGOUP_SPEED;*/
 }
 
 void gamepdo_falling(int cp, stCloneKeenPlus *pCKP)
 {
-unsigned int temp;
+/*unsigned int temp;
 int objsupport;
 short tilsupport;
 
@@ -1315,7 +1315,7 @@ short tilsupport;
     player[cp].plastfalling = player[cp].pfalling;
 
     // ensure no sliding if we fall or jump off of ice
-    if (player[cp].pfalling||player[cp].pjumping) player[cp].psliding=0;
+    if (player[cp].pfalling||player[cp].pjumping) player[cp].psliding=0;*/
 }
 
 // wouldn't it be cool if keen had a raygun, and he could shoot things?
@@ -1424,7 +1424,7 @@ int canRefire;
 // select the appropriate player frame based on what he's doing
 void gamepdo_SelectFrame(int cp)
 {
-    player[cp].playframe = 0;      // basic standing
+    /*player[cp].playframe = 0;      // basic standing
 
     // select the frame assuming he's pointing right. ep1 does not select
     // a walk frame while fading--this is for the bonus teleporter in L13.
@@ -1459,13 +1459,13 @@ void gamepdo_SelectFrame(int cp)
        {
           player[cp].playframe+=4;
        }
-    }
+    }*/
 }
 
 // handles walking. the walking animation is handled by gamepdo_walkinganim()
 void gamepdo_walking(int cp, stCloneKeenPlus *pCKP)
 {
-	int cur_pfastincrate;
+	/*int cur_pfastincrate;
     if (player[cp].inhibitwalking && !player[cp].psliding)
     {
       if (!player[cp].pfrozentime||pCKP->Control.levelcontrol.episode!=1)
@@ -1560,7 +1560,7 @@ void gamepdo_walking(int cp, stCloneKeenPlus *pCKP)
     	}
     }
 
-      /* when sliding on ice force maximum speed */
+      // when sliding on ice force maximum speed
       if (player[cp].psliding)
       {
          if (player[cp].pjumping != PPREPAREJUMP &&
@@ -1583,7 +1583,7 @@ void gamepdo_walking(int cp, stCloneKeenPlus *pCKP)
       else if (!player[cp].pwalking) return;    // don't run rest of sub if not walking
       // if we get here we're walking and not sliding
 
-     /* increase player inertia while walk key held down */
+     // increase player inertia while walk key held down
      if (player[cp].ppogostick)
         cur_pfastincrate = PFASTINCRATE_POGO;
       else
@@ -1721,13 +1721,13 @@ void gamepdo_walking(int cp, stCloneKeenPlus *pCKP)
         		  player[cp].pinertia_y=player[cp].playcontrol[PA_Y]*PFASTINCMAXSPEED/100;
         	  }
           }
-      }
+      }*/
 
 }
 
 void gamepdo_ankh(int cp)
 {
-int o;
+/*int o;
   if (!player[cp].ankhtime) return;
 
   o = player[cp].ankhshieldobject;
@@ -1744,7 +1744,7 @@ int o;
     objects[o].ai.se.state = ANKH_STATE_FLICKERFAST;
   else
     objects[o].ai.se.state = ANKH_STATE_NOFLICKER;
-
+*/
 }
 
 void gamepdo_StatusBox(int cp, stCloneKeenPlus *pCKP)

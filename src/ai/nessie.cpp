@@ -28,7 +28,7 @@ void nessie_find_next_checkpoint(int o);
 
 void nessie_ai(int o)
 {
-unsigned int i;
+/*unsigned int i;
 int isMounted;
 
   if (objects[o].needinit)
@@ -84,7 +84,7 @@ int isMounted;
     }
   }
 
-  /* animation */
+  // animation
   objects[o].sprite = objects[o].ai.nessie.baseframe + objects[o].ai.nessie.animframe;
   if (isMounted) objects[o].sprite += 8;
 
@@ -137,7 +137,7 @@ int isMounted;
 
    case NESSIE_SWIMNORMAL:
 
-     /* arrived at destination? */
+     // arrived at destination?
      if (objects[o].x>>CSF==objects[o].ai.nessie.destx>>CSF && \
          objects[o].y>>CSF==objects[o].ai.nessie.desty>>CSF)
      {
@@ -155,7 +155,7 @@ int isMounted;
 
        nessie_find_next_checkpoint(o);
 
-       /* set up/down and left/right direction flags for frame selection */
+       // set up/down and left/right direction flags for frame selection
        if (objects[o].ai.nessie.destx > objects[o].x)
        {
          objects[o].ai.nessie.leftrightdir = RIGHT;
@@ -180,7 +180,7 @@ int isMounted;
        objects[o].ai.nessie.updowndir = DOWN;
      }
 
-     /* select proper frame based on up/down and left/right direction flags */
+     // select proper frame based on up/down and left/right direction flags
      if (objects[o].ai.nessie.updowndir==DOWN && objects[o].ai.nessie.leftrightdir==LEFT)
      {
        objects[o].ai.nessie.baseframe = NESSIE_DOWNLEFT_FRAME;
@@ -198,14 +198,14 @@ int isMounted;
        objects[o].ai.nessie.baseframe = NESSIE_UPRIGHT_FRAME;
      }
 
-     /* pause if needed */
+     // pause if needed
      if (objects[o].ai.nessie.pausetimer)
      {
        objects[o].ai.nessie.pausetimer--;
        return;
      }
 
-     /* head to destination */
+     // head to destination
      if (objects[o].x < objects[o].ai.nessie.destx)
      {
        if (objects[o].ai.nessie.destx - objects[o].x > NESSIE_SPEED)
@@ -253,7 +253,7 @@ int isMounted;
      }
 
    break;
-  }
+  }*/
 }
 
 void nessie_find_next_checkpoint(int o)

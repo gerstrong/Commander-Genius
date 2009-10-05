@@ -15,7 +15,7 @@
 
 #include "include/playeraction.h"
 
-#define CSF    5
+#define CSF    9
 
 //#define OVSIZE    3000
 
@@ -97,25 +97,6 @@ struct stMap
 
 
 struct SDL_Surface;
-
-struct stInventory
-{
- unsigned long score;
- unsigned long extralifeat;
- unsigned int charges;        // ray gun ammo
- signed char lives;
- unsigned char HasPogo;
- unsigned char HasCardYellow;
- unsigned char HasCardRed;
- unsigned char HasCardGreen;
- unsigned char HasCardBlue;
-
- // ep1 normally
- bool HasJoystick;
- bool HasWiskey;
- bool HasBattery;
- bool HasVacuum;
-};
 
 // for strings loaded from "strings.dat"
 #define MAX_STRINGS             100
@@ -359,93 +340,6 @@ LAST_OBJ_TYPE
 #define SCROLLTRIGGERLEFT      110
 #define SCROLLTRIGGERUP        80
 #define SCROLLTRIGGERDOWN      114
-
-// this structure contains all the variables used by a player
-struct stPlayer
-{
-   // these coordinates are CSFed
-   unsigned long x;
-   unsigned int y;
-
-   unsigned int w;
-   unsigned int h;
-
-   char isPlaying;
-   int useObject;
-
-   char godmode;
-
-   // used on world map only
-   char hideplayer;
-   char mounted;
-
-   short treshold;		// This is used for analog devices like joysticks
-   signed int pinertia_y;
-
-   unsigned long mapplayx;
-   signed int mapplayy;
-
-   unsigned char playframe;
-
-   unsigned char pfalling,plastfalling,pfallspeed,pfallspeed_increasetimer;
-
-   unsigned char pwalking,playspeed;
-   unsigned char pslowingdown;
-   unsigned char pwalkframe,pwalkframea,pwalkanimtimer;
-   unsigned char pwalkincreasetimer, pfriction_timer_x, pfriction_timer_y;
-   signed int pinertia_x,pboost_x,playpushed_x;
-   int chargedjump;
-   unsigned char playpushed_decreasetimer;
-   bool widejump;
-
-   bool blockedl,blockedr,blockedu,blockedd;
-   unsigned int blockedby;
-
-   unsigned char pjumping, pjumptime, pjumpupspeed_decreasetimer, pjumpdir;
-   unsigned char pjumpframe, pjumpanimtimer, pjumpupspeed;
-   unsigned char pjumpnormaltime, pjumpupdecreaserate, pjustjumped;
-   unsigned char pjustfell;
-   unsigned char pjumpfloattimer;
-
-   unsigned char pdir,pshowdir,lastpdir;
-
-   char pfiring,pfireframetimer;
-   char inhibitwalking, inhibitfall;
-
-   int ctrltimer, alttimer;
-   char keyprocstate;
-   char wm_lastenterstate;
-
-   char pdie, pdieframe, pdietimer;
-   int pdietillfly;
-   signed int pdie_xvect;
-   int psupportingtile, psupportingobject, lastsupportingobject;
-   char psliding;
-   char psemisliding;
-   bool ppogostick;
-   int pfrozentime,pfrozenframe,pfrozenanimtimer;
-
-   unsigned char keytable[50];
-   unsigned char lastkeytable[50];
-
-
-   // New values
-   char playcontrol[PA_MAX_ACTIONS];
-   char lastplaycontrol[PA_MAX_ACTIONS];
-
-   char x_friction;
-   char y_friction;
-
-   // End new values
-
-   unsigned char dpadcount, dpadlastcount;
-
-   unsigned int ankhtime, ankhshieldobject;
-
-   stInventory inventory;
-	
-	stPlayer() { memset(this, 0, sizeof(stPlayer)); }
-};
 
 typedef struct stShipQueue
 {

@@ -14,7 +14,7 @@
 
 void icechunk_ai(int o)
 {
-
+/*
 	if (objects[o].needinit)
 	{  // first time initialization
 		int speed;
@@ -86,11 +86,11 @@ void icechunk_ai(int o)
 
 	// fly through the air
 	objects[o].x += objects[o].ai.icechunk.veloc_x;
-	objects[o].y += objects[o].ai.icechunk.veloc_y;
+	objects[o].y += objects[o].ai.icechunk.veloc_y;*/
 }
 
 
-static void smash(int o)
+/*static void smash(int o)
 {
 int newobject;
 
@@ -120,7 +120,7 @@ int newobject;
 	}
 
 	delete_object(o);
-}
+}*/
 
 
 // the little pieces that break off of an OBJ_ICECHUNK when it hits

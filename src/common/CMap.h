@@ -10,17 +10,19 @@
 
 #include <SDL/SDL.h>
 #include <string>
-#include <list>
 
+#include "CPlayer.h"
 #include "../graphics/CTilemap.h"
 
 class CMap {
 public:
-	CMap(SDL_Surface *p_scrollsurface, CTilemap *p_Tilemap);
+	CMap(SDL_Surface *p_scrollsurface, CTilemap *p_Tilemap, CPlayer *p_Player=NULL);
 	virtual ~CMap();
 
 	bool loadMap( Uint8 episode, Uint8 level, const std::string& path );
 	void addTile( Uint16 t, Uint16 x, Uint16 y );
+	void addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episode, bool *levels_completed);
+	void addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode, int chglevelto);
 
 	bool gotoPos( Uint16 x, Uint16 y );
 	void scrollLeft(void);
@@ -58,6 +60,7 @@ private:
 
 	 SDL_Surface *mp_scrollsurface;
 	 CTilemap *mp_Tilemap;
+	 CPlayer *mp_Player;
 };
 
 #endif /* CMAP_H_ */

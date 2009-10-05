@@ -39,7 +39,7 @@ unsigned char oldaltkey = 5;
 
 void gamedo_getInput(stLevelControl *p_levelcontrol)
 {
-int i=0;
+/*int i=0;
 int byt;
 unsigned int msb, lsb;
 
@@ -49,7 +49,7 @@ unsigned int msb, lsb;
         // time to get a new key block?
         if (!demo_RLERunLen)
         {
-          /* get next RLE run length */
+          // get next RLE run length
           lsb = demo_data[demo_data_index++];
           msb = demo_data[demo_data_index++];
           demo_RLERunLen = (msb<<8) | lsb;
@@ -139,7 +139,7 @@ unsigned int msb, lsb;
     	   if(i) player[p].playcontrol[PA_STATUS] = 1;
     	   fputc(i, demofile);
     	 }
-     }
+     }*/
 }
 
 // handles scrolling, for player cp
@@ -211,7 +211,7 @@ int i;
 // do object and enemy AI
 void gamedo_enemyai(stLevelControl *p_levelcontrol)
 {
-int i, topobj;
+/*int i, topobj;
 	// handle objects and do enemy AI
 	topobj = highest_objslot;
    for(i=1;i<topobj;i++)
@@ -265,8 +265,8 @@ int i, topobj;
 			  case OBJ_VORT: vort_ai(i, p_levelcontrol ); break;
 			  case OBJ_BUTLER: butler_ai(i, p_levelcontrol->hardmode); break;
 			  case OBJ_TANK: tank_ai(i, p_levelcontrol->hardmode); break;
-/*			  case OBJ_RAY: ray_ai(i, p_levelcontrol->episode,
-							  options[OPT_FULLYAUTOMATIC].value, p_levelcontrol->cepvars.pShotSpeed); break;*/
+//			  case OBJ_RAY: ray_ai(i, p_levelcontrol->episode,
+//							  options[OPT_FULLYAUTOMATIC].value, p_levelcontrol->cepvars.pShotSpeed); break;
 			  case OBJ_DOOR: door_ai(i, p_levelcontrol->cepvars.DoorOpenDir); break;
 			  case OBJ_ICECANNON: icecannon_ai(i); break;
 			  case OBJ_ICECHUNK: icechunk_ai(i); break;
@@ -313,14 +313,14 @@ int i, topobj;
        	 objects[i].scrx = (objects[i].x>>CSF)-scroll_x;
        	 //objects[i].scry = (objects[i].y>>CSF)-scroll_y;
       }
-   }
+   }*/
 }
 
 // common enemy/object ai, such as falling, setting blocked variables,
 // detecting player contact, etc.
 void common_enemy_ai(int o)
 {
-int x,y,xa,ya,xsize,ysize;
+/*int x,y,xa,ya,xsize,ysize;
 int temp;
 int cplayer;
 
@@ -480,14 +480,14 @@ int cplayer;
          } else objects[o].yinertiatimer++;
        }
        objects[o].y += objects[o].yinertia;
-  }
+  }*/
 }
 
 int savew, saveh;
 
 void gamedo_render_drawobjects()
 {
-unsigned int i;
+/*unsigned int i;
 int x,y,o,tl,xsize,ysize;
 int xa,ya;
 
@@ -568,17 +568,17 @@ int xa,ya;
               for(xa=0;xa<=xsize;xa+=16)
               {
                 tl = getmaptileat(x+xa,y+ya);
-                /*if(TileProperty[tl][BEHAVIOR] == 65534)
+                if(TileProperty[tl][BEHAVIOR] == 65534)
                 	g_pGfxEngine->Tilemap->drawTile(sfc, x+xa-scroll_x, y+ya-scroll_y, tl+1);
                 else if (TileProperty[tl][BEHAVIOR] == 65535)
-                   g_pGfxEngine->Tilemap->drawTile(sfc, x+xa-scroll_x, y+ya-scroll_y, tl);*/
+                   g_pGfxEngine->Tilemap->drawTile(sfc, x+xa-scroll_x, y+ya-scroll_y, tl);
               }
             }
         }
 
       }
     if(i==0) break;
-   }
+   }*/
 }
 
 extern int NumConsoleMessages;
@@ -604,7 +604,7 @@ void gamedo_RenderScreen()
 int ctspace=0, lastctspace=0;
 void gamedo_HandleFKeys(stCloneKeenPlus *pCKP)
 {
-	int i;
+	/*int i;
 
     if (g_pInput->getHoldedKey(KC) &&
     		g_pInput->getHoldedKey(KT) &&
@@ -675,7 +675,7 @@ void gamedo_HandleFKeys(stCloneKeenPlus *pCKP)
            showTextMB(player[0].godmode ? "Godmode enabled" : "Godmode disabled");
        }
 
-    /*if (pCKP->Option[OPT_CHEATS].value)
+    if (pCKP->Option[OPT_CHEATS].value)
     {
             if (g_pInput->getHoldedKey(KTAB)) // noclip/revive
             {

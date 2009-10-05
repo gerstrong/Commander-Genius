@@ -18,6 +18,7 @@
 
 #include "hqp/CMusic.h"
 
+
 void AllowMountUnmountNessie(int cp);
 void MountNessieIfAvailable(int cp);
 
@@ -26,7 +27,7 @@ void MountNessieIfAvailable(int cp);
 // this is the world map version
 void gamepdo_wm_HandlePlayer(int cp, stCloneKeenPlus *pCKP)
 {
-    player[cp].inhibitwalking = 0;
+    /*player[cp].inhibitwalking = 0;
     player[cp].inhibitfall = 0;
 
     gamepdo_StatusBox(cp, pCKP);
@@ -55,12 +56,13 @@ void gamepdo_wm_HandlePlayer(int cp, stCloneKeenPlus *pCKP)
 
     // copy player's keytable to lastkeytable
     memcpy(&player[cp].lastkeytable, &player[cp].keytable, sizeof(player[cp].lastkeytable));
+    */
 }
 
 // select the appropriate player frame based on what he's doing
 void gamepdo_wm_SelectFrame(int cp, int episode)
 {
-    // select base frame for current direction
+    /*// select base frame for current direction
     if (player[cp].pshowdir==RIGHT) player[cp].playframe = PMAPRIGHTFRAME;
     else if (player[cp].pshowdir==LEFT) player[cp].playframe = PMAPLEFTFRAME;
     else if (player[cp].pshowdir==UP) player[cp].playframe = PMAPUPFRAME;
@@ -70,13 +72,13 @@ void gamepdo_wm_SelectFrame(int cp, int episode)
     if (episode==3) player[cp].playframe--;
 
     // add in walk frame if walking
-    if (player[cp].pwalking) player[cp].playframe += player[cp].pwalkframe;
+    if (player[cp].pwalking) player[cp].playframe += player[cp].pwalkframe;*/
 }
 
 // set blockedl and blockedr...is Keen up against a solid object?
 void gamepdo_wm_setblockedlrud(int cp, stCloneKeenPlus *pCKP)
 {
-   player[cp].blockedl = player[cp].blockedr = 0;
+   /*player[cp].blockedl = player[cp].blockedr = 0;
    player[cp].blockedu = player[cp].blockedd = 0;
 
    // cheat: holding down TAB will turn off clipping. or if you are in godmode
@@ -112,14 +114,14 @@ void gamepdo_wm_setblockedlrud(int cp, stCloneKeenPlus *pCKP)
    else if (wm_issolid((player[cp].x>>CSF)+4, (player[cp].y>>CSF)+14, pCKP->Control.levelcontrol.levels_completed))
       { player[cp].blockedd = 1; }
    else if (wm_issolid((player[cp].x>>CSF)+7, (player[cp].y>>CSF)+14, pCKP->Control.levelcontrol.levels_completed))
-      { player[cp].blockedd = 1; }
+      { player[cp].blockedd = 1; }*/
 
 }
 
 // select proper player direction
 void gamepdo_wm_setdir(int cp, stCloneKeenPlus *pCKP)
 {
-int exception;
+/*int exception;
    player[cp].dpadcount = 0;
    if (player[cp].playcontrol[PA_X] < 0) { player[cp].pdir = LEFT; player[cp].dpadcount++; }
    if (player[cp].playcontrol[PA_X] > 0) { player[cp].pdir = RIGHT; player[cp].dpadcount++; }
@@ -138,14 +140,14 @@ int exception;
    {
      player[cp].pshowdir = player[cp].pdir;
    }
-   player[cp].dpadlastcount = player[cp].dpadcount;
+   player[cp].dpadlastcount = player[cp].dpadcount;*/
 }
 
 // handles inertia and friction for the Y direction
 // (this is where the inertia is actually applied to playx)
 void gamepdo_InertiaAndFriction_Y(int cp, stCloneKeenPlus *pCKP)
 {
-   if (player[cp].hideplayer)
+   /*if (player[cp].hideplayer)
    {
      player[cp].pinertia_y = 0;
      return;
@@ -176,12 +178,12 @@ void gamepdo_InertiaAndFriction_Y(int cp, stCloneKeenPlus *pCKP)
         player[cp].pfriction_timer_y = 0;
       }
       else player[cp].pfriction_timer_y++;
-    }
+    }*/
 }
 
 void gamepdo_wm_AllowEnterLevel(int cp, stCloneKeenPlus *pCKP)
 {
-int lvl;
+/*int lvl;
 int x,y,i,o;
 int destx, desty;
 int telfrom, teldest, telsnap;
@@ -231,7 +233,7 @@ p_levelcontrol = &(pCKP->Control.levelcontrol);
 
         if (lvl)
         {
-          /* handle special map objects, and standard levels too */
+          // handle special map objects, and standard levels too
 
           // look through the teleporter tables and see if this is
           // a teleporter
@@ -342,8 +344,8 @@ char wm_issolid(int xb, int yb, bool *levels_completed)
 
   if (level & 0x8000)
   {
-	  /*if(levels_completed[map.objectlayer[xb>>4][yb>>4] & 0x7fff] && options[OPT_LVLREPLAYABILITY].value) // check if level is done, but can be replayed
-		  return 0;*/
+	  if(levels_completed[map.objectlayer[xb>>4][yb>>4] & 0x7fff] && options[OPT_LVLREPLAYABILITY].value) // check if level is done, but can be replayed
+		  return 0;
 
 	  if(g_pInput->getHoldedKey(KTAB) && g_pInput->getHoldedKey(KSHIFT))
 	  {
@@ -354,13 +356,13 @@ char wm_issolid(int xb, int yb, bool *levels_completed)
 		  return 1;
 	  }
   }
-  return 0;
+  return 0;*/
 }
 
 // if nessie is at a mount point near the player, mounts him!
 void MountNessieIfAvailable(int cp)
 {
-char AtSameMountPoint;
+/*char AtSameMountPoint;
 
    if (!player[cp].mounted)
    {
@@ -379,12 +381,12 @@ char AtSameMountPoint;
             player[cp].hideplayer = 1;
          }
       }
-   }
+   }*/
 }
 
 void AllowMountUnmountNessie(int cp)
 {
-int objmarker;
+/*int objmarker;
    if (!player[cp].mounted)
    {  // not mounted. find out if he's trying to mount
       // if the upper quarter of the map (mortimer's castle mount point)
@@ -443,5 +445,5 @@ int objmarker;
          }
       }
 
-   }
+   }*/
 }

@@ -16,7 +16,7 @@ char BJ_BlockedD(int o);
 
 void ballandjack_ai(int o)
 {
-  if (objects[o].needinit)
+  /*if (objects[o].needinit)
   {
 	int i = rnd()%4;
 	switch(i)
@@ -140,7 +140,7 @@ void ballandjack_ai(int o)
       objects[o].ai.bj.animtimer = 0;
     }
     else objects[o].ai.bj.animtimer++;
-  }
+  }*/
 }
 
 char BJ_BlockedD(int o)

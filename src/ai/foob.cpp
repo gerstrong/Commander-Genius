@@ -35,7 +35,7 @@ FOOB_DEAD
 
 void foob_ai(int o, bool hardmode)
 {
-int onsamelevel;
+/*int onsamelevel;
 unsigned int i;
   if (objects[o].needinit)
   {
@@ -127,7 +127,7 @@ unsigned int i;
        }
      }
 
-     /* walk animation */
+     // walk animation
      if (objects[o].ai.foob.animtimer > FOOB_WALK_ANIM_RATE)
      {
        objects[o].ai.foob.animframe ^= 1;
@@ -210,7 +210,7 @@ relax: ;
 	   }
      }
 
-     /* walk animation */
+     // walk animation
      if (objects[o].ai.foob.animtimer > FOOB_FLEE_ANIM_RATE)
      {
        objects[o].ai.foob.animframe ^= 1;
@@ -237,6 +237,6 @@ relax: ;
         else objects[o].ai.foob.animtimer++;
      }
    break;
-  }
+  }*/
 }
 

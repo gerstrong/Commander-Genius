@@ -4,6 +4,7 @@
 
 #include "../include/enemyai.h"
 
+
 // Tank Robot (Ep2)
 #define TANK_LOOK       0
 #define TANK_WALK       1
@@ -48,7 +49,7 @@ void static tank2_fire(int o);
 
 void tankep2_ai(int o, bool hardmode)
 {
-int newobject;
+/*int newobject;
    if (objects[o].needinit)
    {  // first time initilization
      objects[o].ai.tank.state = TANK_WALK;
@@ -268,7 +269,7 @@ int newobject;
 			}
 		}
 		break;
-	  }
+	  }*/
 }
 
 // makes the tank start firing
@@ -284,7 +285,7 @@ void static tank2_fire(int o)
 // searches for any players on the same level as the tank
 void static tank_searchplayers(int o)
 {
-	objects[o].ai.tank.detectedPlayer = 0;
+/*	objects[o].ai.tank.detectedPlayer = 0;
 	for( unsigned int i=0 ; i<numplayers ; i++ )
 	{
 		if (player[i].y >= objects[o].y-(12<<CSF))
@@ -296,5 +297,5 @@ void static tank_searchplayers(int o)
 				break;
 			}
 		}
-	}
+	}*/
 }
