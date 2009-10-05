@@ -40,18 +40,18 @@ CPlayGame::CPlayGame( char episode, char level,
 bool CPlayGame::init()
 {
 	// load level map
-	mp_Map = new CMap( g_pVideoDriver->getScrollSurface(), g_pGfxEngine->Tilemap );
+	mp_Map = new CMap( g_pVideoDriver->getScrollSurface(), g_pGfxEngine->Tilemap, mp_Player );
 
 	if( !mp_Map ) return false;
 	if( !mp_Map->loadMap( m_Episode, m_Level, m_Gamepath ) ) return false;
 
-	// If those worked fine, continue the initialization
+	//// If those worked fine, continue the initialization
 
 	// draw level map
 	mp_Map->drawAll();
 
-	// Now Scroll to the position of the player
-
+	// Now Scroll to the position of the player and center him
+	mp_Map->gotoPos( (mp_Player[0].x>>5) - 160, (mp_Player[0].y>>5) - 100 );
 
 
 	return true;
