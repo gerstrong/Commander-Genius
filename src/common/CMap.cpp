@@ -181,6 +181,7 @@ void CMap::addTile( Uint16 t, Uint16 x, Uint16 y )
 /////////////////////////
 // Getters and Setters //
 /////////////////////////
+// return the tile which is set at the given coordinates
 Uint16 CMap::at(Uint16 x, Uint16 y)
 {
 	return mp_data[y*m_width + x];

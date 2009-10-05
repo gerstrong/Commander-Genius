@@ -51,8 +51,6 @@ public:
 	virtual ~CMenu();
 
 	bool init( char menu_type = MAIN );
-	void initMainMenu();
-	void initNumPlayersMenu();
 
 	void process();
 	void processMainMenu();
@@ -63,15 +61,20 @@ public:
 	// Getters
 	char getNumPlayers() { return m_NumPlayers; }
 	char getDifficulty() { return m_Difficulty; }
+	bool mustEndGame() { return m_Endgame; }
 	bool mustStartGame() { return (m_NumPlayers > 0); }
 	bool getExitEvent() { return (m_menu_type==QUIT); }
-
-	//int getChoice(stCloneKeenPlus *pCKP,int defaultopt);
+	bool mustBeClosed() { return m_goback; }
 
 private:
+	void initMainMenu();
+	void initNumPlayersMenu();
+
 	CDialog *mp_Dialog;
 	SDL_Surface *mp_MenuSurface;
 
+	bool m_goback;
+	bool m_Endgame;
 	char m_selection;
 	char m_menu_type;
 	char m_menu_mode;

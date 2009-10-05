@@ -15,6 +15,9 @@ CMenu::CMenu( char menu_mode )
 	m_menu_mode = menu_mode;
 	m_Difficulty = 0; // easy if none chosen
 	m_NumPlayers = 0; // no player chosen...
+	m_goback = false;
+	m_Endgame = false;
+	mp_Dialog = NULL;
 }
 
 ////
@@ -62,7 +65,7 @@ void CMenu::initMainMenu()
 	// TODO: This still must be adapted to ingame situation
 	if( m_menu_mode == ACTIVE )
 	{
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Start");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "End Game");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 2, "Load");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 3, "Story");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 4, "Highscores");
@@ -81,8 +84,8 @@ void CMenu::initNumPlayersMenu()
 
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Single");
 	mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 2, "Two Players");
-	mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 2, "");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 2, "Back");
+	mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 3, "");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 4, "Back");
 }
 
 ////
@@ -94,6 +97,10 @@ void CMenu::process()
 	if( g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_STATUS) )
 	{
 		m_selection = mp_Dialog->getSelection();
+	}
+	else if( g_pInput->getPressedKey(KQUIT) )
+	{
+		m_goback = true;
 	}
 	mp_Dialog->processInput();
 
@@ -108,12 +115,25 @@ void CMenu::process()
 
 void CMenu::processMainMenu()
 {
-	if( m_selection == 0 ) // Start Game
+	if( m_menu_mode == PASSIVE )
 	{
-		cleanup();			
-		init(START);
+		if( m_selection == 0 ) // Start Game
+		{
+			cleanup();
+			init(START);
+		}
 	}
-	else if( m_selection == 9 ) // Quit
+	else if( m_menu_mode == ACTIVE )
+	{
+		if( m_selection == 0 ) // End Game
+		{
+			cleanup();
+			m_Endgame = true;
+		}
+	}
+
+
+	if( m_selection == 9 ) // Quit
 	{
 		cleanup();
 		m_menu_type = QUIT;
@@ -131,8 +151,15 @@ void CMenu::processNumPlayersMenu()
 	}
 	else
 	{
+		m_goback = true;
+	}
+
+	if(m_goback)
+	{
+		cleanup();
 		init(MAIN);
 	}
+
 }
 
 ////
@@ -141,6 +168,7 @@ void CMenu::processNumPlayersMenu()
 void CMenu::cleanup()
 {
 	delete mp_Dialog;
+	mp_Dialog = NULL;
 }
 
 CMenu::~CMenu()

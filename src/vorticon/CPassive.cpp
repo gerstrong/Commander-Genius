@@ -133,8 +133,7 @@ void CPassive::process()
 			cleanup();
 			m_mode = STARTGAME;
 		}
-
-		if(mp_Menu->getExitEvent())
+		else if(mp_Menu->getExitEvent())
 		{
 			delete mp_Menu;
 			mp_Menu = NULL;

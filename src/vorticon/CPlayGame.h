@@ -11,6 +11,8 @@
 #define CPlayGame_H_
 
 #include "../graphics/CGfxEngine.h"
+#include "../common/CMenu.h"
+#include "../common/CMap.h"
 #include <SDL/SDL.h>
 #include <string>
 
@@ -37,6 +39,7 @@ enum e_levelcommands
 	bool isFinished() 
 		{ return m_finished; }
 
+	bool getEndGame() { return m_endgame; }
 	bool getExitEvent() { return m_exitgame; }
 
 	void cleanup();
@@ -44,6 +47,7 @@ enum e_levelcommands
 
 private:
 	bool m_finished;
+	bool m_endgame;
 	bool m_exitgame;
 	char m_Episode;
 	char m_Level;
@@ -51,5 +55,8 @@ private:
 	char m_Difficulty;
 	char m_level_command;
 	std::string m_Gamepath;
+
+	CMap *mp_Map;
+	CMenu *mp_Menu;
 };
 #endif /* CPlayGame_H_ */

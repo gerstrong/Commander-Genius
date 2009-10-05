@@ -10,6 +10,8 @@
 #include "CPlayGame.h"
 #include "../sdl/CTimer.h"
 #include "../sdl/CVideoDriver.h"
+#include "../sdl/CInput.h"
+#include "../graphics/CGfxEngine.h"
 
 ////
 // Creation Routine
@@ -24,13 +26,28 @@ CPlayGame::CPlayGame( char episode, char level,
 	m_level_command = GOTO_WORLD_MAP;
 	m_Gamepath = gamepath;
 	m_exitgame = false;
+	m_endgame = false;
+	mp_Map = NULL;
+	mp_Menu = NULL;
 }
 
 bool CPlayGame::init()
 { 
-	// Where to start, which level or map?
+	// load level map
+	mp_Map = new CMap( g_pVideoDriver->getScrollSurface(), g_pGfxEngine->Tilemap );
 
-	return true;
+	if( mp_Map )
+	{
+		if( mp_Map->loadMap( m_Episode, m_Level, m_Gamepath ) )
+		{
+			// draw level map
+			mp_Map->drawAll();
+
+			return true;
+		}
+	}
+
+	return false;
 }
 
 bool CPlayGame::loadGameState( std::string &statefile )
@@ -76,6 +93,41 @@ void CPlayGame::process()
 
 		// end(s) the game.
 	}
+
+	// Animate the tiles of the map
+	g_pGfxEngine->Tilemap->animateAllTiles(g_pVideoDriver->ScrollSurface);
+
+	// Blit the background
+	g_pVideoDriver->blitScrollSurface(mp_Map->m_scrollx_buf, mp_Map->m_scrolly_buf);
+
+	// Open the Main Menu if ESC Key pressed and mp_Menu not opened
+	if(!mp_Menu && g_pInput->getPressedKey(KQUIT))
+	{
+		// Open the menu
+		mp_Menu = new CMenu( CMenu::ACTIVE );
+		mp_Menu->init();
+	}
+
+	// If the menu is open process it!
+	if(mp_Menu)
+	{
+		if( mp_Menu->mustBeClosed() || mp_Menu->getExitEvent() || mp_Menu->mustEndGame() )
+		{
+			if( mp_Menu->getExitEvent() )
+				m_exitgame = true;
+
+			if( mp_Menu->mustEndGame() )
+				m_endgame = true;
+
+			mp_Menu->cleanup();
+			delete mp_Menu;
+			mp_Menu = NULL;
+		}
+		else
+		{
+			mp_Menu->process();
+		}
+	}
 }
 
 ////
@@ -83,7 +135,8 @@ void CPlayGame::process()
 ////
 void CPlayGame::cleanup()
 {
-	
+	delete mp_Map;
+	mp_Map = NULL;
 }
 
 CPlayGame::~CPlayGame() {

@@ -40,34 +40,25 @@ bool CGameControl::init(char mode)
 	}
 	else if(m_mode == PASSIVE)
 	{	
-		//// Game has been chosen. Launch it!
-		// Get the path were to Launch the game
-		m_DataDirectory = "games/" + mp_GameLauncher->getDirectory( m_ChosenGame );
+		// Create mp_PassiveMode object used for the screens while Player is not playing
+		mp_PassiveMode = new CPassive( m_Episode, m_DataDirectory );
+		if( mp_PassiveMode->init() ) return true;
+	}
+	else if(m_mode == PLAYGAME)
+	{
+		char episode, numplayers, difficulty;
+		std::string gamepath;
 
-		// We have to check which Episode is used
-		m_Episode = mp_GameLauncher->retrievetEpisode( m_ChosenGame );
+		m_mode = PLAYGAME;
+		episode = mp_PassiveMode->getEpisode();
+		numplayers = mp_PassiveMode->getNumPlayers();
+		difficulty = mp_PassiveMode->getDifficulty();
+		gamepath = mp_PassiveMode->getGamePath();
 
-		if( m_Episode > 0 ) // The game has to have a valid episode!
-		{
-			// Load the Resources
-			if( loadResources( m_Episode, m_DataDirectory ) )
-			{
-				// Create mp_PassiveMode object used for the screens while Player is not playing
-				mp_PassiveMode = new CPassive( m_Episode, m_DataDirectory );
-
-				if( mp_PassiveMode->init() ) return true;
-				else
-				{
-					mp_GameLauncher->letchooseagain();
-					delete mp_PassiveMode;
-				}
-			}
-		}
-		else
-		{
-			mp_GameLauncher->letchooseagain();
-			g_pLogFile->textOut(RED,"No Suitable game was detected in this path! Please check its contents!\n");
-		}
+		mp_PlayGame = new CPlayGame(episode, WORLD_MAP_LEVEL,
+						numplayers, difficulty,
+						gamepath);
+		return mp_PlayGame->init();
 	}
 	return false;
 }
@@ -145,9 +136,34 @@ void CGameControl::process()
 		// Launch the code of the Startmenu here! The one for choosing the games
 		mp_GameLauncher->process();
 		m_ChosenGame = mp_GameLauncher->getChosengame();
+
 		if( mp_GameLauncher->waschosen() )
 		{
-			if(init(PASSIVE)) cleanup(GAMELAUNCHER);
+			//// Game has been chosen. Launch it!
+			// Get the path were to Launch the game
+			m_DataDirectory = "games/" + mp_GameLauncher->getDirectory( m_ChosenGame );
+
+			// We have to check which Episode is used
+			m_Episode = mp_GameLauncher->retrievetEpisode( m_ChosenGame );
+
+			if( m_Episode > 0 ) // The game has to have a valid episode!
+			{
+				// Load the Resources
+				if( loadResources( m_Episode, m_DataDirectory ) )
+				{
+					if(init(PASSIVE)) cleanup(GAMELAUNCHER);
+					else
+					{
+						mp_GameLauncher->letchooseagain();
+						delete mp_PassiveMode;
+					}
+				}
+			}
+			else
+			{
+				mp_GameLauncher->letchooseagain();
+				g_pLogFile->textOut(RED,"No Suitable game was detected in this path! Please check its contents!\n");
+			}
 		}
 		else if(mp_GameLauncher->getQuit())
 		{
@@ -164,18 +180,7 @@ void CGameControl::process()
 		// NOTE: Demo is not part of playgame anymore!!
 		if(mp_PassiveMode->mustStartGame())
 		{
-			char episode, numplayers, difficulty;
-			std::string gamepath; 
-
-			m_mode = PLAYGAME;
-			episode = mp_PassiveMode->getEpisode();
-			numplayers = mp_PassiveMode->getNumPlayers();
-			difficulty = mp_PassiveMode->getDifficulty();
-			gamepath = mp_PassiveMode->getGamePath();
- 
-			mp_PlayGame = new CPlayGame(episode, WORLD_MAP_LEVEL,
-							numplayers, difficulty, 
-							gamepath);		
+			init( PLAYGAME );
 			delete mp_PassiveMode;
 		}
 
@@ -189,12 +194,12 @@ void CGameControl::process()
 		// The player is playing the game. It also includes scenes like ending
 		mp_PlayGame->process();
 
-		/*if( mp_PlayGame->getEndGame() )
+		if( mp_PlayGame->getEndGame() )
 		{
 			cleanup();
 			init(PASSIVE);
-		}*/
-		if( mp_PlayGame->getExitEvent() )
+		}
+		else if( mp_PlayGame->getExitEvent() )
 			m_mode = SHUTDOWN;
 	}
 	// That should never happen!
@@ -223,7 +228,7 @@ void CGameControl::cleanup(char mode)
 	else if(mode == PLAYGAME)
 	{
 		// Tie up when in game play
-		mp_PassiveMode->cleanup();	
+		mp_PlayGame->cleanup();
 		delete mp_PlayGame;
 	} 
 }

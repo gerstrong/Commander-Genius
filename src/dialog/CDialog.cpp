@@ -58,9 +58,12 @@ void CDialog::addObject(Uint8 type, Uint16 x, Uint16 y,const std::string text)
 	DlgObject->create( type, m_dlgobject.size(), m_x+(x*8), m_y+(y*8), text, m_w-((x-m_x)/8)-5 );
 	m_dlgobject.push_back(DlgObject);
 
+	// Check if the ID is not out of bounds.
+	if( m_selected_ID < m_dlgobject.size() ) return;
+
 	for(Uint8 i=0 ; i<m_dlgobject.size() ; i++) // go the next selectable item
 	{
-		if(!m_dlgobject[m_selected_ID]->m_selectable)
+		if(!m_dlgobject.at(m_selected_ID)->m_selectable)
 		{
 			m_selected_ID++;
 		}
