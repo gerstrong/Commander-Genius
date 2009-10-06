@@ -33,7 +33,7 @@ bool CGameLauncher::init()
 	// Load the map for the background
 	mp_map = new CMap(g_pVideoDriver->getScrollSurface(), g_pGfxEngine->Tilemap);
 
-	if(!mp_map->loadMap(1, 90, "games")) return false;
+	if(!mp_map->loadMap(1, 90, "games/EP1")) return false;
 
 	mp_map->gotoPos(32,32);
 
@@ -50,7 +50,16 @@ bool CGameLauncher::init()
 		// TODO: Check consistency of the games.
 
 		for( i=0 ; i < m_numGames ; i++ )
+		{
+			if (m_DirList[i] == "EP1")
+				mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,i+1, "Episode 1: Marooned on Mars");
+										 else if (m_DirList[i] == "EP2")
+										 mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,i+1, "Episode 2: The Earth Explodes");
+																  else if (m_DirList[i] == "EP3")
+																  mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,i+1, "Episode 3: Keen Must Die!");
+				else
 			mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,i+1, m_DirList[i]);
+		}
 
 		mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,i+1, "Quit");
 	}
@@ -74,8 +83,12 @@ Uint8 CGameLauncher::scanDirectories()
 	DIR* games_root;
 	std::string buffer;
 
+	#if defined(__APPLE__)
+	games_root = opendir("Commander Genius.app/Contents/Resources/data/games");
+	#else
 	games_root = opendir("games");
-
+	#endif
+	
 	struct dirent *dp;
 
 	if(!games_root)
@@ -142,23 +155,43 @@ Uint8 CGameLauncher::retrievetEpisode(short chosengame)
 	std::string buffer;
 
 	// Detect the right Episode
+#if defined(__APPLE__)
+	buffer = "Commander Genius.app/Contents/Resources/data/games/" + m_DirList.at(chosengame) + "/keen1.exe";
+	if((fp = fopen(buffer.c_str(),"rb")) != NULL)
+	{
+		return 1;
+	}
+	
+	buffer = "Commander Genius.app/Contents/Resources/data/games/" + m_DirList[chosengame] + "/keen2.exe";
+	if((fp = fopen(buffer.c_str(),"rb")) != NULL)
+	{
+		return 2;
+	}
+	
+	buffer = "Commander Genius.app/Contents/Resources/data/games/" + m_DirList[chosengame] + "/keen3.exe";
+	if((fp = fopen(buffer.c_str(),"rb")) != NULL)
+	{
+		return 3;
+	}
+#else
 	buffer = "games/" + m_DirList.at(chosengame) + "/keen1.exe";
 	if((fp = fopen(buffer.c_str(),"rb")) != NULL)
 	{
 		return 1;
 	}
-
+	
 	buffer = "games/" + m_DirList[chosengame] + "/keen2.exe";
 	if((fp = fopen(buffer.c_str(),"rb")) != NULL)
 	{
 		return 2;
 	}
-
+	
 	buffer = "games/" + m_DirList[chosengame] + "/keen3.exe";
 	if((fp = fopen(buffer.c_str(),"rb")) != NULL)
 	{
 		return 3;
 	}
+#endif
 
 	return 0;
 }

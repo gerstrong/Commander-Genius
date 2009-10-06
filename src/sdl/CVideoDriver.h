@@ -12,7 +12,7 @@
 #define g_pVideoDriver CVideoDriver::Get()
 
 struct st_resolution
-{ short width,height,depth; };
+{ int width,height,depth; };
 
 #ifdef USE_OPENGL
 #include "COpenGL.h"

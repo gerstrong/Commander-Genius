@@ -32,7 +32,7 @@ bool CGameControl::init(char mode)
 	if(m_mode == GAMELAUNCHER)
 	{
 		// Resources for the main menu.
-		if(!loadResources(1, "games"))	return false;
+		if(!loadResources(1, "games/EP1"))	return false;
 
 		// Load the graphics for menu and background.
 		mp_GameLauncher = new CGameLauncher();
