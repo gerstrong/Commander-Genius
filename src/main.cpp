@@ -49,7 +49,6 @@
 int IntroCanceled;
 int NessieObjectHandle;
 int DemoObjectHandle;
-int BlankSprite;
 int DemoSprite;
 int fps=0, curfps=0;
 

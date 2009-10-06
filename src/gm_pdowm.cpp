@@ -63,16 +63,16 @@ void gamepdo_wm_HandlePlayer(int cp, stCloneKeenPlus *pCKP)
 void gamepdo_wm_SelectFrame(int cp, int episode)
 {
     /*// select base frame for current direction
-    if (player[cp].pshowdir==RIGHT) player[cp].playframe = PMAPRIGHTFRAME;
-    else if (player[cp].pshowdir==LEFT) player[cp].playframe = PMAPLEFTFRAME;
-    else if (player[cp].pshowdir==UP) player[cp].playframe = PMAPUPFRAME;
-    else if (player[cp].pshowdir==DOWN) player[cp].playframe = PMAPDOWNFRAME;
+    if (pshowdir==RIGHT) playframe = PMAPRIGHTFRAME;
+    else if (pshowdir==LEFT) playframe = PMAPLEFTFRAME;
+    else if (pshowdir==UP) playframe = PMAPUPFRAME;
+    else if (pshowdir==DOWN) playframe = PMAPDOWNFRAME;
 
     // episode 3 map frames start at 31, ep1&2 at 32
-    if (episode==3) player[cp].playframe--;
+    if (m_episode==3) playframe--;
 
     // add in walk frame if walking
-    if (player[cp].pwalking) player[cp].playframe += player[cp].pwalkframe;*/
+    if (pwalking) playframe += pwalkframe;*/
 }
 
 // set blockedl and blockedr...is Keen up against a solid object?

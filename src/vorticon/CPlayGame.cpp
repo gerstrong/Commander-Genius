@@ -25,6 +25,7 @@ CPlayGame::CPlayGame( char episode, char level,
 	m_NumPlayers = numplayers;
 	m_Difficulty = difficulty;
 	m_level_command = GOTO_WORLD_MAP;
+	m_NumSprites = g_pGfxEngine->getNumSprites();
 	m_Gamepath = gamepath;
 	m_exitgame = false;
 	m_endgame = false;
@@ -41,7 +42,8 @@ CPlayGame::CPlayGame( char episode, char level,
 	for (int i=0 ; i<numplayers ; i++)
 	{
 		CObject object;
-		mp_Player[i].useObject = i;
+		mp_Player[i].m_player_number = i;
+		mp_Player[i].m_episode = m_Episode;
 
 		m_Object.push_back(object);
 		m_Object[i].exists = true;
@@ -84,9 +86,11 @@ void CPlayGame::process()
 	if( m_Level == WORLD_MAP_LEVEL )
 	{
 		// Perform wm AIs
-
-		// Check if player(s)...
 		
+		// Perform player Objects...
+		for( int i=0 ; i<m_NumPlayers ; i++ )
+			mp_Player[i].processWorldMap();
+
 		// entered level 
 		
 		// used teleport
@@ -99,9 +103,11 @@ void CPlayGame::process()
 		// Perform AIs
 
 		// Perform physics
-
-		/// Check if player(s)...
 		
+		// Perform player Objects...
+		for( int i=0 ; i<m_NumPlayers ; i++ )
+			mp_Player[i].processInLevel();
+
 		// finished the level
 
 		// gets to bonus level
@@ -155,18 +161,18 @@ void CPlayGame::drawObjects()
 {
 	int i;
 	int x,y,o,tl,xsize,ysize;
-	//int xa,ya;
+	int xa,ya;
 
 	   // copy player data to their associated objects show they can get drawn
 	   // in the object-drawing loop with the rest of the objects
 	   for( i=0 ;i < m_NumPlayers ; i++)
 	   {
-	     o = mp_Player[i].useObject;
+	     o = mp_Player[i].m_player_number;
 
 	     if (!mp_Player[i].hideplayer)
 	    	 m_Object.at(o).sprite = mp_Player[i].playframe;
 	     else
-	    	 m_Object.at(o).sprite = 0;//BlankSprite;
+	    	 m_Object.at(o).sprite = m_NumSprites-1;
 
     	 m_Object.at(o).x = mp_Player[i].x;
     	 m_Object.at(o).y = mp_Player[i].y;
@@ -187,26 +193,26 @@ void CPlayGame::drawObjects()
 	    			  p_object->scrx, p_object->scry );
 
 
-	        /*if (objects[i].honorPriority)
+	        if (p_object->honorPriority)
 	        {
-	        	CSprite *sprite = g_pGfxEngine->Sprite[objects[i].sprite];
+	        	CSprite *sprite = g_pGfxEngine->Sprite[p_object->sprite];
 	            // handle priority tiles and tiles with masks
 	            // get the upper-left coordinates to start checking for tiles
-	            x = (((objects[i].x>>CSF)-1)>>4)<<4;
-	            y = (((objects[i].y>>CSF)-1)>>4)<<4;
+	            x = (((p_object->x>>CSF)-1)>>4)<<4;
+	            y = (((p_object->y>>CSF)-1)>>4)<<4;
 
 	            // get the xsize/ysize of this sprite--round up to the nearest 16
 	            xsize = ((sprite->getWidth())>>4<<4);
 	            if (xsize != sprite->getWidth()) xsize+=16;
 
-	            ysize = ((g_pGfxEngine->Sprite[objects[i].sprite]->getHeight())>>4<<4);
+	            ysize = ((g_pGfxEngine->Sprite[p_object->sprite]->getHeight())>>4<<4);
 	            if (ysize != sprite->getHeight()) ysize+=16;
 
 	            tl = getmaptileat(x,y);
 
 	            // now redraw any priority/masked tiles that we covered up
 	            // with the sprite
-	            //SDL_Surface *sfc = g_pVideoDriver->BlitSurface;
+	            SDL_Surface *sfc = g_pVideoDriver->BlitSurface;
 	            SDL_Rect sfc_rect;
 	            sfc_rect.w = sfc_rect.h = 16;
 
@@ -222,7 +228,6 @@ void CPlayGame::drawObjects()
 	              }
 	            }
 	        }
-*/
 	      }
 	   }
 }

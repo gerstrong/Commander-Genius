@@ -986,8 +986,7 @@ CSprite** sprite = &g_pGfxEngine->Sprite[0];
 	}
 
     // create BLANKSPRITE
-    BlankSprite = s;
-    sprite[BlankSprite]->setSize(0, 0);
+    sprite[s]->setSize(0, 0);
 
     // TODO: Demo-Sprite must be added. This time loaded from one TGA File! The TGA is already there!
 

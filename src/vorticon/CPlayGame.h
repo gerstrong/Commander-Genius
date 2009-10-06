@@ -54,6 +54,7 @@ private:
 	bool m_finished;
 	bool m_endgame;
 	bool m_exitgame;
+	int  m_NumSprites;
 	char m_Episode;
 	char m_Level;
 	char m_NumPlayers;

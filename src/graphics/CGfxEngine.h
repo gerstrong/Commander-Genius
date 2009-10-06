@@ -40,6 +40,7 @@ public:
 	void copyTileToSprite( Uint16 t, Uint16 s, Uint16 ntilestocopy );
 
 	void drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w, int h);
+	int getNumSprites() { return Sprite.size(); }
 
 	CBitmap *getBitmap(const std::string &name);
 

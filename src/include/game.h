@@ -46,20 +46,6 @@ DOWN
 
 #define ANKH_SHIELD_FRAME       61
 
-// upon starting to walk, keen will quickly increase to
-// PFASTINCMAXSPEED. keen can, at a slower rate,
-// reach up to PMAXSPEED (increased every walk anim frame)
-#define PFASTINCMAXSPEED  9
-#define PMAXSPEED        14
-#define PJUMPINERTIA     30		// The higher, the value, the more difficult it is to jump or pogo
-#define PFASTINCRATE     16        // accel delay rate up to PFASTINCMAXSPEED
-#define PFASTINCRATE_POGO  50      // rate when pogo stick is out
-// rates at which player slows down
-#define PFRICTION_RATE_INAIR      25      //8
-#define PFRICTION_RATE_ONGROUND   5      //2
-#define PFRICTION_RATE_WM         1      // on world map
-// rate at which player walking animation is shown
-#define PWALKANIMRATE             40
 
 // speed at which player walks through the exit door
 #define PMAXEXITDOORSPEED       3

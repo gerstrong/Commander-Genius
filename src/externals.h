@@ -57,7 +57,6 @@ extern char cheatmode;
 
 extern int NessieObjectHandle;
 extern int DemoObjectHandle;
-extern int BlankSprite;
 extern int DemoSprite;
 
 extern stShipQueue shipqueue[32];

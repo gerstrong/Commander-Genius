@@ -21,6 +21,21 @@
 #define MAX_BOOST		200
 #define TIME_DIVIDER	500		// For speed and acceleration
 
+// upon starting to walk, keen will quickly increase to
+// PFASTINCMAXSPEED. keen can, at a slower rate,
+// reach up to PMAXSPEED (increased every walk anim frame)
+#define PFASTINCMAXSPEED  9
+#define PMAXSPEED        14
+#define PJUMPINERTIA     30		// The higher, the value, the more difficult it is to jump or pogo
+#define PFASTINCRATE     16        // accel delay rate up to PFASTINCMAXSPEED
+#define PFASTINCRATE_POGO  50      // rate when pogo stick is out
+// rates at which player slows down
+#define PFRICTION_RATE_INAIR      25      //8
+#define PFRICTION_RATE_ONGROUND   5      //2
+#define PFRICTION_RATE_WM         1      // on world map
+// rate at which player walking animation is shown
+#define PWALKANIMRATE             40
+
 // the various jump states
 #define PNOJUMP       0                 // not jumping
 #define PPREPAREJUMP  1                 // doing the jump animation
@@ -70,13 +85,30 @@
 class CPlayer {
 public:
 
+	// direction defines used for various things
+	enum e_directions{
+	RIGHT,LEFT,	UP,	DOWN
+	};
+
 	enum e_playingmodes{
 		NONE, WORLDMAP, LEVELPLAY
 	};
 
 	CPlayer();
 
-	void process();
+	// World Map specific
+	void processWorldMap();
+	void setWorldMapdir();
+	void selectFrameOnWorldMap();
+	void setWMblockedlrud();
+	bool isWMSolid(int xb, int yb, bool *levels_completed);
+	void Walking();
+
+	// In Level specific
+	void processInLevel();
+
+	// Used for both situations
+	void ProcessInput();
 
 	virtual ~CPlayer();
 
@@ -90,7 +122,8 @@ public:
 	unsigned int h;
 
 	char m_playingmode;
-	int useObject;
+	char m_episode;
+	int m_player_number;
 
 	char godmode;
 
@@ -120,6 +153,8 @@ public:
 	bool blockedl,blockedr,blockedu,blockedd;
 	unsigned int blockedby;
 
+	bool *m_levels_completed;
+
 	unsigned char pjumping, pjumptime, pjumpupspeed_decreasetimer, pjumpdir;
 	unsigned char pjumpframe, pjumpanimtimer, pjumpupspeed;
 	unsigned char pjumpnormaltime, pjumpupdecreaserate, pjustjumped;
@@ -129,7 +164,7 @@ public:
 	unsigned char pdir,pshowdir,lastpdir;
 
 	char pfiring,pfireframetimer;
-	char inhibitwalking, inhibitfall;
+	bool inhibitwalking, inhibitfall;
 
 	int ctrltimer, alttimer;
 	char keyprocstate;
@@ -144,13 +179,8 @@ public:
 	bool ppogostick;
 	int pfrozentime,pfrozenframe,pfrozenanimtimer;
 
-	unsigned char keytable[50];
-	unsigned char lastkeytable[50];
-
-
 	// New values
 	char playcontrol[PA_MAX_ACTIONS];
-	char lastplaycontrol[PA_MAX_ACTIONS];
 
 	char x_friction;
 	char y_friction;
