@@ -23,9 +23,6 @@
 char otherplayer;
 
 
-// TODO: Your Ship Needs These Parts in multiplayer
-int playerbaseframes[MAX_PLAYERS] = {0,0,0,0,0,0,0,0};
-
 unsigned int max_scroll_x, max_scroll_y;
 char debugmode=0,acceleratemode=0;
 
@@ -528,7 +525,7 @@ unsigned int i;
 	  }
   }
 
-  /*scroll_x = 0;
+  scroll_x = 0;
   scrollx_buf = 0;
   scrollpix = 0;
   mapx = 0;
@@ -584,13 +581,13 @@ int initgamefirsttime(stCloneKeenPlus *pCKP, int s)
    if (pCKP->Control.levelcontrol.demomode) srand(375);
 
    primaryplayer = 0;
-
-   return 0;*/
+*/
+   return 0;
 }
 
 unsigned char spawn_object(int x, int y, int otype)
 {
-int i;
+/*int i;
  // find an unused object slot
  for(i=1;i<MAX_OBJECTS;i++)
  {
@@ -624,41 +621,41 @@ int i;
    }
  }
 	// object could not be created
-	g_pLogFile->ftextOut("Object of type %d could not be created at %d,%d (out of object slots)<br>",otype,x,y);
+	g_pLogFile->ftextOut("Object of type %d could not be created at %d,%d (out of object slots)<br>",otype,x,y);*/
 	return 0;
 }
 
 int find_next_object(unsigned int type)
 {
-	for(int o=0 ; o<highest_objslot ; o++)
-		if(objects[o].type == type) return o;
+	/*for(int o=0 ; o<highest_objslot ; o++)
+		if(objects[o].type == type) return o;*/
 	return -1;
 }
 
 void delete_object(int o)
 {
-	if(o<0)	return;
+	/*if(o<0)	return;
 
 	if (objects[o].exists)
 	{
 		objects[o].exists = 0;
 		if (o+1==highest_objslot) highest_objslot--;
-	}
+	}*/
 }
 
 void delete_all_objects(void)
 {
-int i;
+/*int i;
 	for(i=0;i<MAX_OBJECTS;i++)
 	{
 		if (objects[i].exists && objects[i].type != OBJ_PLAYER)
 			delete_object(i);
 	}
-	recalc_highest_objslot();
+	recalc_highest_objslot();*/
 }
 void recalc_highest_objslot(void)
 {
-int i;
+/*int i;
 	highest_objslot = 0;
 	for(i=MAX_OBJECTS-1;i>=0;i--)
 	{
@@ -667,12 +664,12 @@ int i;
 			highest_objslot = i+1;
 			break;
 		}
-	}
+	}*/
 }
 
 void killobject(int o)
 {
-	if (objects[o].exists)
+	/*if (objects[o].exists)
 	{
 		if (objects[o].type==OBJ_PLAYER)
 		{
@@ -683,20 +680,20 @@ void killobject(int o)
 			if (objects[o].zapped < 500 && objects[o].canbezapped)
 				objects[o].zapped += 500;
 		}
-	}
+	}*/
 }
 
 // anything (players/enemies) occupying the map tile at [mpx,mpy] is killed
 void kill_all_intersecting_tile(int mpx, int mpy)
 {
-	unsigned int xpix,ypix;
+	/*unsigned int xpix,ypix;
 	xpix = mpx<<TILE_S<<CSF;
 	ypix = mpy<<TILE_S<<CSF;
 	for(int i=0 ; i<highest_objslot ; i++)
 		if (objects[i].exists)
 			if (xpix <= objects[i].x && xpix+(16<<CSF) >= objects[i].x)
 				if (ypix <= objects[i].y && ypix+(16<<CSF) >= objects[i].y)
-					killobject(i);
+					killobject(i);*/
 }
 
 // returns whether pix position x,y is a stop point for object o.
@@ -706,7 +703,7 @@ void kill_all_intersecting_tile(int mpx, int mpy)
 // placed from fileio.c.
 char IsStopPoint(int x, int y, int o)
 {
-	switch(objects[o].type)
+	/*switch(objects[o].type)
 	{
 		case OBJ_YORP:
 		case OBJ_GARG:
@@ -724,17 +721,17 @@ char IsStopPoint(int x, int y, int o)
 		break;
 
 		case OBJ_RAY:
-			/*if (getoption(OPT_DOORSBLOCKRAY)) // TODO: The option must has to be implemented
+			if (getoption(OPT_DOORSBLOCKRAY)) // TODO: The option must has to be implemented
 			{
 				if (IsDoor(getmaptileat(x,y))) return 1;
-			}*/
+			}
 		break;
 
 		case OBJ_BALL:
 			if (getlevelat(x,y)==BALL_NOPASSPOINT) return 1;
 			//if (IsDoor(getmaptileat(x,y))) return 1;
 		break;
-	}
+	}*/
 
 	return 0;
 }
@@ -742,7 +739,7 @@ char IsStopPoint(int x, int y, int o)
 // returns nonzero if object1 overlaps object2
 char hitdetect(int object1, int object2)
 {
-CSprite *spr1, *spr2;
+/*CSprite *spr1, *spr2;
 unsigned int rect1x1, rect1y1, rect1x2, rect1y2;
 unsigned int rect2x1, rect2y1, rect2x2, rect2y2;
 
@@ -766,7 +763,7 @@ unsigned int rect2x1, rect2y1, rect2x2, rect2y2;
   if ((rect1x1 < rect2x1) && (rect1x2 < rect2x1)) return 0;
   if ((rect1x1 > rect2x2) && (rect1x2 > rect2x2)) return 0;
   if ((rect1y1 < rect2y1) && (rect1y2 < rect2y1)) return 0;
-  if ((rect1y1 > rect2y2) && (rect1y2 > rect2y2)) return 0;
+  if ((rect1y1 > rect2y2) && (rect1y2 > rect2y2)) return 0;*/
 
   return 1;
 }
@@ -853,7 +850,7 @@ void endlevel(int reason_for_leaving, stLevelControl *levelcontrol)
 // at that point
 char checkobjsolid(unsigned int x, unsigned int y, unsigned int cp)
 {
-  int o;
+  /*int o;
   CSprite *sprite;
 
    for(o=1;o<highest_objslot;o++)
@@ -867,7 +864,7 @@ char checkobjsolid(unsigned int x, unsigned int y, unsigned int cp)
               if (y <= objects[o].y+sprite->m_bboxY2)
                 return o;
       }
-   }
+   }*/
  return 0;
 }
 
@@ -995,7 +992,7 @@ CSprite** sprite = &g_pGfxEngine->Sprite[0];
     // TODO: Demo-Sprite must be added. This time loaded from one TGA File! The TGA is already there!
 
     // create the sprites for player 2
-    s++;
+    /*s++;
     playerbaseframes[1] = s;
     for(i=0;i<48;i++)
     {
@@ -1007,7 +1004,7 @@ CSprite** sprite = &g_pGfxEngine->Sprite[0];
       sprite[s]->replaceSpriteColor( 12, 11 ,0 );
       sprite[s]->replaceSpriteColor( 4, 3 ,0 );
       s++;
-    }
+    }*/
 
     // create the sprites for player 3
     // Unsupported for now...

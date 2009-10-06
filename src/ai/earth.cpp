@@ -14,7 +14,7 @@
 
 void explosion_ai(int o)
 {
-  if (objects[o].needinit)
+  /*if (objects[o].needinit)
   {
     objects[o].ai.ray.animframe = 0;
     objects[o].ai.ray.animtimer = 0;
@@ -116,5 +116,5 @@ void earthchunk_ai(int o)
      objects[o].x += BIGCHUNKSPD;
      objects[o].y += BIGCHUNKSPD;
    break;
-  }
+  }*/
 }

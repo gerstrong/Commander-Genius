@@ -16,7 +16,7 @@ unsigned char spawn_object(int x, int y, int otype);
 
 void autoray_ai(int o)
 {
-int newobject;
+/*int newobject;
 	if (objects[o].needinit)
 	{
 		objects[o].ai.se.timer = 0;
@@ -40,7 +40,7 @@ int newobject;
             objects[newobject].ai.ray.direction = RIGHT;
           }
           if (objects[o].onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, objects[o].x);
-	}
+	}*/
 }
 
 

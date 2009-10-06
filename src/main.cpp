@@ -74,8 +74,6 @@ char loadinggame, loadslot;
 stMap map;
 unsigned int AnimTileInUse[ATILEINUSE_SIZEX][ATILEINUSE_SIZEY];
 stTile tiles[MAX_TILES+1];
-stObject objects[MAX_OBJECTS+1];
-stAnimTile animtiles[MAX_ANIMTILES+1];
 
 unsigned int objdefsprites[NUM_OBJ_TYPES+1];
 

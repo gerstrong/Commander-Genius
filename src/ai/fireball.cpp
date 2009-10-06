@@ -20,7 +20,7 @@
 
 void fireball_ai(int o, bool hard)
 {
-int i;
+/*int i;
 int speed;
   if (objects[o].needinit)
   {
@@ -129,7 +129,7 @@ int speed;
     objects[o].ai.ray.animframe ^= 1;
     objects[o].ai.ray.animtimer = 0;
   }
-  else objects[o].ai.ray.animtimer++;
+  else objects[o].ai.ray.animtimer++;*/
 }
 
 

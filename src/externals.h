@@ -6,8 +6,6 @@ extern stMap map;
 extern unsigned int AnimTileInUse[ATILEINUSE_SIZEX][ATILEINUSE_SIZEY];
 extern stTile tiles[MAX_TILES+1];
 extern unsigned char tiledata[MAX_TILES+1][16][16];
-extern stAnimTile animtiles[MAX_ANIMTILES+1];
-extern stObject objects[MAX_OBJECTS+1];
 extern unsigned char *scrollbuf;
 extern unsigned char *blitbuf;
 extern char keytable[50];
@@ -48,9 +46,7 @@ extern unsigned int objdefsprites[NUM_OBJ_TYPES+1];
 
 extern unsigned int max_scroll_x, max_scroll_y;
 extern int atilescount,aobjectscount;
-extern int playerbaseframes[MAX_PLAYERS];
 extern char debugmode,acceleratemode;
-
 
 extern char loadinggame, loadslot;
 

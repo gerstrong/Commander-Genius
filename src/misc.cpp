@@ -861,9 +861,9 @@ unsigned int rnd(void)
 
 void SetAllCanSupportPlayer(int o, int state)
 {
-	unsigned int i;
+	/*unsigned int i;
 	for(i=0;i<numplayers;i++)
-		objects[o].cansupportplayer[i] = state;
+		objects[o].cansupportplayer[i] = state;*/
 }
 
 void showTextMB(const std::string& Text)

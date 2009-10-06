@@ -25,7 +25,7 @@ int mortimer_surprisedcount = 0;
 
 void se_ai(int o, stLevelControl *p_levelcontrol)
 {
-
+/*
 	switch(objects[o].ai.se.type)
 	{
 		case SE_EXTEND_PLATFORM: se_extend_plat(o, &(p_levelcontrol->PlatExtending) ); break;
@@ -43,13 +43,13 @@ void se_ai(int o, stLevelControl *p_levelcontrol)
 			g_pLogFile->ftextOut("Invalid sector effector type %d", objects[o].ai.se.type);
 			break;
 	}
-
+*/
 }
 
 
 void se_extend_plat(int o, bool *p_PlatExtending)
 {
-    #define PLAT_EXTEND_RATE        30
+  /*  #define PLAT_EXTEND_RATE        30
 
 	if (objects[o].needinit)
 	{
@@ -110,12 +110,12 @@ void se_extend_plat(int o, bool *p_PlatExtending)
 			return;
         }
 	}
-	else objects[o].ai.se.timer--;
+	else objects[o].ai.se.timer--;*/
 }
 
 void se_retract_plat(int o, bool *p_PlatExtending)
 {
-	if (objects[o].needinit)
+	/*if (objects[o].needinit)
 	{
 		// figure out which direction the bridge is supposed to go
 		if(objects[o].ai.se.platx-1 > MAX_OBJECTS)
@@ -181,14 +181,14 @@ void se_retract_plat(int o, bool *p_PlatExtending)
 			*p_PlatExtending = false;
 		}
 	}
-	else objects[o].ai.se.timer--;
+	else objects[o].ai.se.timer--;*/
 }
 
 
 // AI for the Spark object in the Tantalus Ray Machine's of ep2
 void spark_ai(int o, int *p_sparks_left)
 {
-int newobject;
+/*int newobject;
 int mx,my,x,y;
 
     #define SPARK_BASEFRAME         OBJ_SPARK_DEFSPRITE_EP2
@@ -329,12 +329,12 @@ int mx,my,x,y;
          else objects[o].ai.se.timer++;
       break;
      }  // end of state switch for SE_SPARK
-
+*/
 }
 
 void se_ankhshield(int o, int episode)
 {
-        #define ANKH_FLICKER_FREQ       12
+        /*#define ANKH_FLICKER_FREQ       12
 
         if (objects[o].needinit)
         {
@@ -377,7 +377,7 @@ void se_ankhshield(int o, int episode)
           if (objects[o].ai.se.frame>8) objects[o].ai.se.frame = 0;
           objects[o].ai.se.timer = 0;
         }
-        else objects[o].ai.se.timer++;
+        else objects[o].ai.se.timer++;*/
 }
 
 #define ARM_GO          0
@@ -387,7 +387,7 @@ void se_ankhshield(int o, int episode)
 #define ARM_WAIT_TIME    70
 void se_mortimer_arm(int o)
 {
-int mx,my;
+/*int mx,my;
    if (objects[o].needinit)
    {
      objects[o].ai.se.dir = DOWN;
@@ -485,7 +485,7 @@ int mx,my;
       }
       else objects[o].ai.se.timer++;
     break;
-   }
+   }*/
 }
 
 #define MORTIMER_SPARK_BASEFRAME        114
@@ -501,7 +501,7 @@ int mx,my;
 #define MSPARK_DESTROYARMS       1
 void se_mortimer_spark(int o, stLevelControl *p_levelcontrol)
 {
-int x,mx,i;
+/*int x,mx,i;
 int newobject;
     if (objects[o].needinit)
     {
@@ -555,7 +555,7 @@ int newobject;
 			}
 			// keen just destroyed the last spark
 
-			/* destroy mortimer's arms */
+			// destroy mortimer's arms
 			objects[o].sprite = BLANKSPRITE;
 
 			// destroy the sector effectors controlling his arms
@@ -614,7 +614,7 @@ int newobject;
       }
       else objects[o].ai.se.timer--;
     break;
-   }
+   }*/
 }
 
 #define MORTIMER_HEART_BASEFRAME        146
@@ -639,7 +639,7 @@ int newobject;
 #define ZAPSUP_ABOUTTOFADEOUT   1
 void se_mortimer_heart(int o, stLevelControl *p_levelcontrol)
 {
-int x,i;
+/*int x,i;
 int newobject;
 
     if (objects[o].needinit)
@@ -670,7 +670,7 @@ int newobject;
 				objects[o].sprite = BLANKSPRITE;
 				set_mortimer_surprised(1);
 
-				/* destroy Mortimer's machine */
+				// destroy Mortimer's machine
 				SetVibrateTime(1500, 0, p_levelcontrol);
 
 				// kill all enemies
@@ -736,13 +736,13 @@ int newobject;
       }
       else objects[o].ai.se.timer--;
     break;
-    }
+    }*/
 }
 
 #define TIME_AFTER_DESTROY_BEFORE_FADEOUT       2300
 void se_mortimer_zapsup(int o, stLevelControl *levelcontrol)
 {
-int x, newobject;
+/*int x, newobject;
 
       if (!objects[o].ai.se.timer)
       {
@@ -789,7 +789,7 @@ int x, newobject;
         }
         else objects[o].ai.se.my--;
       }
-      else objects[o].ai.se.timer--;
+      else objects[o].ai.se.timer--;*/
 }
 
 #define LEG_GO          0
@@ -802,7 +802,7 @@ int x, newobject;
 #define RIGHTLEG_WAIT_TIME    120
 void se_mortimer_leg_left(int o)
 {
-int mx,my;
+/*int mx,my;
    if (objects[o].needinit)
    {
      objects[o].ai.se.dir = UP;
@@ -896,12 +896,12 @@ int mx,my;
       }
       else objects[o].ai.se.timer++;
     break;
-   }
+   }*/
 }
 
 void se_mortimer_leg_right(int o)
 {
-int mx,my;
+/*int mx,my;
    if (objects[o].needinit)
    {
      objects[o].ai.se.dir = UP;
@@ -1000,14 +1000,14 @@ int mx,my;
       }
       else objects[o].ai.se.timer++;
     break;
-   }
+   }*/
 }
 
 #define NUM_RANDOM_ZAPS         30
 #define TIME_BETWEEN_ZAPS       10
 void se_mortimer_randomzaps(int o)
 {
-int x,y;
+/*int x,y;
 int newobject;
   if (objects[o].needinit)
   {
@@ -1036,7 +1036,7 @@ int newobject;
     }
     else objects[o].ai.se.counter++;
   }
-  else objects[o].ai.se.timer--;
+  else objects[o].ai.se.timer--;*/
 }
 
 void set_mortimer_surprised(int yes)

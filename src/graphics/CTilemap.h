@@ -43,7 +43,7 @@ public:
 	void registerAnimation(Uint32 x, Uint32 y, int c);
 
 private:
-	SDL_Surface *m_Tilesurface;
+	 SDL_Surface *m_Tilesurface;
 
 	 // (map) stripe attribute structures, for animated tiles
 	 // slot 0 is not used. data starts at slot 1. see description

@@ -40,6 +40,9 @@ public:
 	 Sint16 m_scrollx_buf;		// Amount to move surface in X.
 	 Sint16 m_scrolly_buf; 		// Amount to move surface in Y.
 
+	 Uint16 m_scrollx;      	// total amount of X scroll
+	 Uint16 m_scrolly;    		// amount the scroll buffer is scrolled(y)
+
 private:
 	 Uint32 m_width, m_height;            // size of the map
 	 bool m_worldmap;             // if 1, this is the world map
@@ -48,12 +51,10 @@ private:
 	 // on world map contains level numbers and flags for things like teleporters
 	 Uint16 m_objectlayer[256][256];
 
-	 Uint16 m_scrollx;      	// total amount of X scroll
 	 Uint8 m_scrollpix;     	// (0-7) for tracking when to draw a stripe
 	 Uint16 m_mapx;           	// map X location shown at scrollbuffer row 0
 	 Uint16 m_mapxstripepos;  	// X pixel position of next stripe row
 
-	 Uint16 m_scrolly;    		// amount the scroll buffer is scrolled(y)
 	 Uint8 m_scrollpixy;    	// (0-7) for tracking when to draw a stripe
 	 Uint16 m_mapy;         	// map Y location shown at scrollbuffer column 0
 	 Uint16 m_mapystripepos;  	// Y pixel position of next stripe column

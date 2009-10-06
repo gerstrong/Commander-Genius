@@ -12,7 +12,7 @@ void delete_object(int o);
 
 unsigned int rnd(void);
 
-static void smash(int o);
+//static void smash(int o);
 
 
 #endif /* ICECANNON_H_ */

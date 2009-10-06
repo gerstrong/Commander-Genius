@@ -104,7 +104,7 @@ void map_scroll_up(void)
 // draws a vertical stripe from map position mapx to scrollbuffer position x
 void map_draw_vstripe(unsigned int x, unsigned int mpx)
 {
-int i,y,c;
+/*int i,y,c;
   for(y=0;y<SCROLLBUF_NUMTILESY;y++)
   {
       c = map.mapdata[mpx][y+mapy];
@@ -132,12 +132,12 @@ int i,y,c;
           }
           stop: ;
       }
-  }
+  }*/
 }
 // draw a horizontal stripe, for vertical scrolling
 void map_draw_hstripe(unsigned int y, unsigned int mpy)
 {
-int i,x,c;
+/*int i,x,c;
   for(x=0;x<SCROLLBUF_NUMTILESX;x++)
   {
       c = map.mapdata[x+mapx][mpy];
@@ -166,7 +166,7 @@ int i,x,c;
         }
         stop: ;
       }
-  }
+  }*/
 }
 
 // returns the map tile at map position (x,y)
@@ -226,7 +226,7 @@ void map_chgtile(unsigned int x, unsigned int y, int newtile)
 // unregisters them from animtiles
 void map_deanimate(int x, int y)
 {
-int px,py;
+/*int px,py;
 int i;
       // figure out pixel position of map tile (x,y)
       px = ((mapxstripepos+((x-mapx)<<4))&511);
@@ -243,12 +243,13 @@ int i;
           return;
         }
       }
+      */
 }
 
 // tells if the object is animating at a given position
 int map_isanimated(int x, int y)
 {
-int px,py;
+/*int px,py;
 int i;
       // figure out pixel position of map tile (x,y)
       px = ((mapxstripepos+((x-mapx)<<4))&511);
@@ -262,15 +263,15 @@ int i;
         	if(animtiles[i].slotinuse != 0)
         		return 1;
         }
-      }
+      }*/
 
       return 0; // no
 }
 
 void map_unregister_all_animtiles(void)
 {
-int i;
-  for(i=0;i<MAX_ANIMTILES-1;i++) animtiles[i].slotinuse = 0;
+//int i;
+  //for(i=0;i<MAX_ANIMTILES-1;i++) animtiles[i].slotinuse = 0;
 }
 
 // after changing a map tile in real time with map_chgtile()
@@ -278,7 +279,7 @@ int i;
 // function to register the new animated tile.
 void map_animate(int x, int y)
 {
-int px,py;
+/*int px,py;
 int c, i;
 
       // figure out pixel position of map tile (x,y)
@@ -320,7 +321,7 @@ int c, i;
       crashflag = 1;
       crashflag2 = x;
       crashflag3 = y;
-      why_term_ptr = "Unable to animate tile at x/y=crashflag1/2";
+      why_term_ptr = "Unable to animate tile at x/y=crashflag1/2";*/
 }
 
 // searches the map's object layer for object OBJ.

@@ -8,6 +8,7 @@
  */
 
 #include "CPlayGame.h"
+#include "../keen.h"
 #include "../sdl/CTimer.h"
 #include "../sdl/CVideoDriver.h"
 #include "../sdl/CInput.h"
@@ -35,6 +36,17 @@ CPlayGame::CPlayGame( char episode, char level,
 		mp_Player = new CPlayer[m_NumPlayers];
 	else
 		mp_Player = NULL;
+
+	// tie puppy objects so the player can interact in the level
+	for (int i=0 ; i<numplayers ; i++)
+	{
+		CObject object;
+		mp_Player[i].useObject = i;
+
+		m_Object.push_back(object);
+		m_Object[i].exists = true;
+		m_Object[i].onscreen = true;
+	}
 }
 
 bool CPlayGame::init()
@@ -46,13 +58,11 @@ bool CPlayGame::init()
 	if( !mp_Map->loadMap( m_Episode, m_Level, m_Gamepath ) ) return false;
 
 	//// If those worked fine, continue the initialization
-
 	// draw level map
 	mp_Map->drawAll();
 
 	// Now Scroll to the position of the player and center him
 	mp_Map->gotoPos( (mp_Player[0].x>>5) - 160, (mp_Player[0].y>>5) - 100 );
-
 
 	return true;
 }
@@ -107,6 +117,9 @@ void CPlayGame::process()
 	// Blit the background
 	g_pVideoDriver->blitScrollSurface(mp_Map->m_scrollx_buf, mp_Map->m_scrolly_buf);
 
+	// Draw objects to the screen
+	drawObjects();
+
 	// Open the Main Menu if ESC Key pressed and mp_Menu not opened
 	if(!mp_Menu && g_pInput->getPressedKey(KQUIT))
 	{
@@ -135,6 +148,83 @@ void CPlayGame::process()
 			mp_Menu->process();
 		}
 	}
+}
+
+// This function draws the objects that need to be seen on the screen
+void CPlayGame::drawObjects()
+{
+	int i;
+	int x,y,o,tl,xsize,ysize;
+	//int xa,ya;
+
+	   // copy player data to their associated objects show they can get drawn
+	   // in the object-drawing loop with the rest of the objects
+	   for( i=0 ;i < m_NumPlayers ; i++)
+	   {
+	     o = mp_Player[i].useObject;
+
+	     if (!mp_Player[i].hideplayer)
+	    	 m_Object.at(o).sprite = mp_Player[i].playframe;
+	     else
+	    	 m_Object.at(o).sprite = 0;//BlankSprite;
+
+    	 m_Object.at(o).x = mp_Player[i].x;
+    	 m_Object.at(o).y = mp_Player[i].y;
+	   }
+
+	   // draw all objects. drawn in reverse order because the player sprites
+	   // are in the first few indexes and we want them to come out on top.
+	   std::vector<CObject>::iterator p_object;
+	   for ( p_object = m_Object.end() ; p_object != m_Object.begin() ; p_object-- );
+	   {
+	      if (p_object->exists && p_object->onscreen)
+	      {
+	    	  p_object->scrx = ((p_object->x>>CSF)<<4)-mp_Map->m_scrollx;
+	    	  p_object->scry = ((p_object->y>>CSF)<<4)-mp_Map->m_scrolly;
+
+	    	  //g_pGraphics->drawSprite(objects[i].scrx, objects[i].scry, objects[i].sprite, i);
+	    	  g_pGfxEngine->Sprite[p_object->sprite]->drawSprite( g_pVideoDriver->BlitSurface,
+	    			  p_object->scrx, p_object->scry );
+
+
+	        /*if (objects[i].honorPriority)
+	        {
+	        	CSprite *sprite = g_pGfxEngine->Sprite[objects[i].sprite];
+	            // handle priority tiles and tiles with masks
+	            // get the upper-left coordinates to start checking for tiles
+	            x = (((objects[i].x>>CSF)-1)>>4)<<4;
+	            y = (((objects[i].y>>CSF)-1)>>4)<<4;
+
+	            // get the xsize/ysize of this sprite--round up to the nearest 16
+	            xsize = ((sprite->getWidth())>>4<<4);
+	            if (xsize != sprite->getWidth()) xsize+=16;
+
+	            ysize = ((g_pGfxEngine->Sprite[objects[i].sprite]->getHeight())>>4<<4);
+	            if (ysize != sprite->getHeight()) ysize+=16;
+
+	            tl = getmaptileat(x,y);
+
+	            // now redraw any priority/masked tiles that we covered up
+	            // with the sprite
+	            //SDL_Surface *sfc = g_pVideoDriver->BlitSurface;
+	            SDL_Rect sfc_rect;
+	            sfc_rect.w = sfc_rect.h = 16;
+
+	            for(ya=0;ya<=ysize;ya+=16)
+	            {
+	              for(xa=0;xa<=xsize;xa+=16)
+	              {
+	                tl = getmaptileat(x+xa,y+ya);
+	                if(TileProperty[tl][BEHAVIOR] == 65534)
+	                	g_pGfxEngine->Tilemap->drawTile(sfc, x+xa-scroll_x, y+ya-scroll_y, tl+1);
+	                else if (TileProperty[tl][BEHAVIOR] == 65535)
+	                   g_pGfxEngine->Tilemap->drawTile(sfc, x+xa-scroll_x, y+ya-scroll_y, tl);
+	              }
+	            }
+	        }
+*/
+	      }
+	   }
 }
 
 ////

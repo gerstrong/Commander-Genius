@@ -5,6 +5,7 @@
  *      Author: gerstrong
  */
 
+#include "../keen.h"
 #include "CMap.h"
 #include <iostream>
 #include <fstream>
@@ -179,8 +180,8 @@ void CMap::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episode, bo
   {
    case 0: break;       // blank
    case 255:            // player start
-	   mp_Player[0].x = x << 9;
-	   mp_Player[0].y = y << 9;
+	   mp_Player[0].x = x << CSF;
+	   mp_Player[0].y = y << CSF;
 	   m_objectlayer[x][y] = 0;
      break;
    /*case NESSIE_PATH:          // spawn nessie at first occurance of her path

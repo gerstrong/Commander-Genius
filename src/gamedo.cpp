@@ -186,14 +186,14 @@ int scrollchanged=0;
 // animates animated tiles
 void gamedo_AnimatedTiles()
 {
-int i;
-   /* animate animated tiles */
+/*int i;
+   // animate animated tiles
    if (animtiletimer>ANIM_TILE_TIME)
    {
-      /* advance to next frame */
+      // advance to next frame
 	  curanimtileframe = (curanimtileframe+1)&7;
 
-	  /* re-draw all animated tiles */
+	  // re-draw all animated tiles
       for(i=1;i<MAX_ANIMTILES-1;i++)
       {
           if ( animtiles[i].slotinuse )
@@ -205,7 +205,7 @@ int i;
       }
       animtiletimer = 0;
    }
-   else animtiletimer++;
+   else animtiletimer++;*/
 }
 
 // do object and enemy AI

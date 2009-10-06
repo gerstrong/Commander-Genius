@@ -44,8 +44,8 @@
 // reference to ../misc.cpp
 unsigned int rnd(void);
 
-void static tank_searchplayers(int o);
-void static tank2_fire(int o);
+//void static tank_searchplayers(int o);
+//void static tank2_fire(int o);
 
 void tankep2_ai(int o, bool hardmode)
 {
@@ -273,19 +273,19 @@ void tankep2_ai(int o, bool hardmode)
 }
 
 // makes the tank start firing
-void static tank2_fire(int o)
+/*void static tank2_fire(int o)
 {
 	objects[o].ai.tank.firetimes = TANK2_SHOTS_PER_VOLLEY;
 	objects[o].ai.tank.timetillnextshot = 0;
 	objects[o].ai.tank.timetillcanfire = (rnd()%(TANK2_MAX_TIME_TILL_CAN_FIRE-TANK2_MIN_TIME_TILL_CAN_FIRE))+TANK2_MIN_TIME_TILL_CAN_FIRE;
 	objects[o].ai.tank.pausetime = TANK_FIRE_PAUSE_TIME;
-}
+}*/
 
 
 // searches for any players on the same level as the tank
-void static tank_searchplayers(int o)
+/*void static tank_searchplayers(int o)
 {
-/*	objects[o].ai.tank.detectedPlayer = 0;
+	objects[o].ai.tank.detectedPlayer = 0;
 	for( unsigned int i=0 ; i<numplayers ; i++ )
 	{
 		if (player[i].y >= objects[o].y-(12<<CSF))
@@ -297,5 +297,5 @@ void static tank_searchplayers(int o)
 				break;
 			}
 		}
-	}*/
-}
+	}
+}*/

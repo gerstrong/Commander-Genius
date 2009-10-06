@@ -258,7 +258,7 @@ int isMounted;
 
 void nessie_find_next_checkpoint(int o)
 {
-int x,y,i;
+/*int x,y,i;
 int xa,ya;
 unsigned int destx, desty;
 int obj;
@@ -323,7 +323,7 @@ foundtile: ;
          objects[o].ai.nessie.pausex = destx;
          objects[o].ai.nessie.pausey = desty;
        }
-    }
+    }*/
 
 }
 

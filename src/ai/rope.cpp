@@ -19,12 +19,12 @@
 #define STONE_DROP_RATE      100
 
 void delete_object(int o);
-void static rope_movestone(int o);
+//void static rope_movestone(int o);
 void kill_all_intersecting_tile(int mpx, int mpy);
 
 void rope_ai(int o)
 {
-int x;
+/*int x;
 	if (objects[o].needinit)
 	{  // first time initialization
 		objects[o].ai.rope.state = ROPE_IDLE;
@@ -72,10 +72,10 @@ int x;
 			}
 			else objects[o].ai.rope.droptimer--;
      break;
-   }
+   }*/
 }
 
-void static rope_movestone(int o)
+/*void static rope_movestone(int o)
 {
 int xa,ya;
 int x,y;
@@ -100,5 +100,5 @@ int x,y;
 		map_chgtile(x+xa,ya,objects[o].ai.rope.bgtile);
 
 	objects[o].ai.rope.stoneY++;
-}
+}*/
 

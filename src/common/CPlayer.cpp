@@ -7,11 +7,26 @@
 
 #include "CPlayer.h"
 
+///
+// Initialization Part
+///
 CPlayer::CPlayer() {
-	// TODO Auto-generated constructor stub
+	// When worldmap is set up, use that frame
+	playframe = PMAPDOWNFRAME;
+	hideplayer = false;
+}
+
+///
+// Process Part
+///
+void CPlayer::process()
+{
 
 }
 
+///
+// Cleanup Part
+///
 CPlayer::~CPlayer() {
 	// TODO Auto-generated destructor stub
 }

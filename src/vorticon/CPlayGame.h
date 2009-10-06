@@ -12,10 +12,12 @@
 
 #include "../graphics/CGfxEngine.h"
 #include "../common/CPlayer.h"
+#include "../common/CObject.h"
 #include "../common/CMenu.h"
 #include "../common/CMap.h"
 #include <SDL/SDL.h>
 #include <string>
+#include <vector>
 
 #define WORLD_MAP_LEVEL 80
 
@@ -35,7 +37,9 @@ enum e_levelcommands
 
 	bool init();
 	bool loadGameState( std::string &statefile );
+
 	void process();
+	void drawObjects();
 
 	bool isFinished() 
 		{ return m_finished; }
@@ -60,5 +64,6 @@ private:
 	CMap *mp_Map;
 	CMenu *mp_Menu;
 	CPlayer *mp_Player;
+	std::vector<CObject> m_Object;
 };
 #endif /* CPlayGame_H_ */

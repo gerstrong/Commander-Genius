@@ -20,13 +20,9 @@ void delete_object(int o);
 void gotpoints_ai(int o)
 {
 
-	if (objects[o].needinit)
+	/*if (objects[o].needinit)
 	{
-		//if (objects[o].sprite != YORPSHIELD_SPRITE)
-			objects[o].ai.ray.offscreentime = GOTPOINTS_LIFETIME;
-		/*else
-			objects[o].ai.ray.offscreentime = YORPSHIELD_LIFETIME;*/
-
+		objects[o].ai.ray.offscreentime = GOTPOINTS_LIFETIME;
 		objects[o].inhibitfall = 1;
 		objects[o].honorPriority = 0;
 		objects[o].needinit = 0;
@@ -39,11 +35,6 @@ void gotpoints_ai(int o)
 		return;
 	}
 	else objects[o].ai.ray.offscreentime--;
-
-	// rise up
-	//if (objects[o].sprite != YORPSHIELD_SPRITE)
-	//{
-		objects[o].y -= GOTPOINTS_SPEED;
-	//}
+	*/
 }
 

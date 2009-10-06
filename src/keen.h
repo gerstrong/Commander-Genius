@@ -67,8 +67,6 @@
  #define ATILEINUSE_SIZEX               33
  #define ATILEINUSE_SIZEY               33
 
- #define MAX_PLAYERS            8
-
  #define WORLD_MAP              80
  #define FINAL_MAP              16
 
@@ -111,106 +109,6 @@ struct stString
   unsigned int attrvalues[MAX_ATTRIBUTES+1];
 };
 
-// structures for each AI module's data
-#include "ai/enemydata.h"
-
-//
-struct stBitmapData{
-	int BitmapID;
-};
-
-// and the object structure containing the union of the above structs
-struct stObject
-{
- unsigned int type;        // yorp, vorticon, etc.
- unsigned int exists;
- unsigned int onscreen;    // 1=(scrx,scry) position is visible onscreen
- unsigned int hasbeenonscreen;
- unsigned int sprite;      // which sprite should this object be drawn with
- unsigned int x, y;        // x,y location in map coords, CSFed
- int scrx, scry;           // x,y pixel position on screen
-
- // if type is OBJ_PLAYER, this contains the player number that this object
- // is associated with
- int AssociatedWithPlayer;
-
- // if zero, priority tiles will not be honored and object will always
- // appear in front of the background
- bool honorPriority;
-
- bool canbezapped;         // if 0 ray will not stop on hitdetect
- int zapped;              // number of times got hit by keen's raygun
- int zapx, zapy, zapd;	   // x,y, and direction of last shot at time of impact
- char zappedbyenemy;	   // if 1, it was an ENEMYRAY and not keen that shot it
-
-
- char inhibitfall;         // if 1 common_enemy_ai will not do falling
- char cansupportplayer[MAX_PLAYERS];
-
- unsigned int blockedl, blockedr, blockedu, blockedd;
- signed int xinertia, yinertia;
- unsigned char xinertiatimer, yinertiatimer;
-
- unsigned char touchPlayer;      // 1=hit detection with player
- unsigned char touchedBy;        // which player was hit
- // Y position on this object the hit was detected
- // this is used for the yorps' bonk-on-the-head thing.
- // objects are scanned bottom to top, and first pixel
- // touching player is what goes in here.
- unsigned char hity;
-
- bool needinit;    // 1=new object--requires initilization
- unsigned char wasoffscreen;  // set to 1 when object goes offscreen
- bool dead;
-
- // data for ai and such, used differently depending on
- // what kind of object it is
- union ai
- {
-		// ep1
-		stYorpData yorp;
-		stGargData garg;
-		stVortData vort;
-		stButlerData butler;
-		stTankData tank;
-		stRayData ray;
-		stDoorData door;
-		stIceChunk icechunk;
-		stTeleportData teleport;
-		stRopeData rope;
-
-		// ep2
-		stScrubData scrub;
-		stPlatformData platform;
-		stVortEliteData vortelite;
-		stSEData se;
-		stBabyData baby;
-
-		// ep3
-		stFoobData foob;
-		stNinjaData ninja;
-		stMeepData meep;
-		stMotherData mother;
-		stBallJackData bj;
-		stNessieData nessie;
-
-		// Extras, used in every episode
-		stBitmapData bitmap;
- } ai;
-};
-
-// TODO: Remove!!!! Depreciated!
-// (map) stripe attribute structures, for animated tiles
-// slot 0 is not used. data starts at slot 1. see description
-// of AnimTileInUse in map structure to see why.
-struct stAnimTile
-{
-  bool slotinuse;        // if 0, this entry should not be drawn
-  int x;                // x pixel position in scrollbuf[] where tile is
-  int y;                // y pixel position in scrollbuf[]
-  int baseframe;        // base frame, i.e. the first frame of animation
-  int offset;           // offset from base frame
-};
 
 #define NUM_OBJ_TYPES      41
 

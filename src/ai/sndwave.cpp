@@ -20,7 +20,7 @@ void delete_object(int o);
 
 void sndwave_ai(int o, bool hardmode)
 {
-  if (objects[o].needinit)
+  /*if (objects[o].needinit)
   {
     objects[o].ai.ray.animframe = 0;
     objects[o].ai.ray.animtimer = 0;
@@ -85,6 +85,6 @@ void sndwave_ai(int o, bool hardmode)
     objects[o].ai.ray.animframe ^= 1;
     objects[o].ai.ray.animtimer = 0;
   }
-  else objects[o].ai.ray.animtimer++;
+  else objects[o].ai.ray.animtimer++;*/
 }
 

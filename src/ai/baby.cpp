@@ -213,7 +213,7 @@ void baby_ai(int o, int episode, bool hard)
 #define BABY_SMALLJUMP_MAX_DEC_RATE    20
 void baby_jump(int o, int big)
 {
-    if ((rnd()&2)==0) big = 1-big;
+    /*if ((rnd()&2)==0) big = 1-big;
     if (big==BABY_JUMP_BIG)
     {
       objects[o].ai.baby.inertia_y = -BABY_BIGJUMP;
@@ -226,7 +226,7 @@ void baby_jump(int o, int big)
     }
 
 
-    objects[o].ai.baby.jumpdectimer = 0;
+    objects[o].ai.baby.jumpdectimer = 0;*/
 }
 
 

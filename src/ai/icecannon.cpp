@@ -129,7 +129,7 @@ int newobject;
 
 void icebit_ai(int o)
 {
-	if (objects[o].needinit)
+	/*if (objects[o].needinit)
 	{  // first time initilization
 		objects[o].ai.icechunk.veloc_x = ICEBIT_SPEED * objects[o].ai.icechunk.vector_x;
 		objects[o].ai.icechunk.veloc_y = ICEBIT_SPEED * objects[o].ai.icechunk.vector_y;
@@ -144,14 +144,14 @@ void icebit_ai(int o)
 	if (!objects[o].onscreen)
 	{
 		delete_object(o);
-	}
+	}*/
 }
 
 
 // the ice cannon itself
 void icecannon_ai(int o)
 {
-int newobject;
+/*int newobject;
 
 	// keep spawner object invisible and properly positioned
 	objects[o].sprite = BLANKSPRITE;
@@ -163,7 +163,7 @@ int newobject;
 
 		objects[newobject].ai.icechunk.vector_x = objects[o].ai.icechunk.vector_x;
 		objects[newobject].ai.icechunk.vector_y = objects[o].ai.icechunk.vector_y;
-	}
+	}*/
 }
 
 

@@ -380,12 +380,12 @@ bool walkovertile=false;
 
 void Scrub_TurnOnCansupportWhereNotKicked(int o)
 {
-unsigned int i;
+/*unsigned int i;
   for(i=0;i<numplayers;i++)
   {
     if (!objects[o].ai.scrub.kickedplayer[i])
     {
       objects[o].cansupportplayer[i] = 1;
     }
-  }
+  }*/
 }

@@ -78,7 +78,7 @@ std::string fname;
 	sgrle_compress(fp, (unsigned char *)&map, sizeof(map));
 
 	fputi(highest_objslot, fp);
-	sgrle_compress(fp, (unsigned char *)&objects[0], sizeof(objects));
+	//sgrle_compress(fp, (unsigned char *)&objects[0], sizeof(objects));
 	sgrle_compress(fp, (unsigned char *)&tiles[0], sizeof(tiles));
 
 	for(unsigned i=0;i<numplayers;i++)
@@ -192,7 +192,7 @@ unsigned int i;
 	if (sgrle_decompress(fp, (unsigned char *)&map, sizeof(map))) return 1;
 
 	highest_objslot = fgeti(fp);
-	if (sgrle_decompress(fp, (unsigned char *)&objects[0], sizeof(objects))) return 1;
+	//if (sgrle_decompress(fp, (unsigned char *)&objects[0], sizeof(objects))) return 1;
 	if (sgrle_decompress(fp, (unsigned char *)&tiles[0], sizeof(tiles))) return 1;
 
 	for(i=0;i<numplayers;i++)

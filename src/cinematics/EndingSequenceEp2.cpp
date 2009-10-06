@@ -285,14 +285,14 @@ int x,y,w,h;
 	}
 
 	// align sprites with new scroll position
-	for(i=0;i<MAX_OBJECTS;i++)
+	/*for(i=0;i<MAX_OBJECTS;i++)
 	{
 	  if (objects[i].exists && objects[i].type!=OBJ_PLAYER)
 	  {
 		objects[i].scrx = (objects[i].x>>CSF)-scroll_x;
 		objects[i].scry = (objects[i].y>>CSF)-scroll_y;
 	  }
-	}
+	}*/
 	vibratetimes++;
 	g_pInput->pollEvents();
 

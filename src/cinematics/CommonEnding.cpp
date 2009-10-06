@@ -123,7 +123,7 @@ SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
 
 void eseq_ToBeContinued(SDL_Surface *extrascreen)
 {
-int i;
+/*int i;
 std::string text;
 int dlgX, dlgY, dlgW, dlgH;
 
@@ -141,6 +141,6 @@ int dlgX, dlgY, dlgW, dlgH;
   {
 	  if (g_pInput->getPressedAnyCommand()) return;
 	  g_pInput->pollEvents();
-  } while(1);
+  } while(1);*/
 }
 
