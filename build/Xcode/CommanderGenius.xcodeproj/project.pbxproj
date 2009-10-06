@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		230716001036E85300DE25FC /* cglogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 230715FF1036E85300DE25FC /* cglogo.icns */; };
 		235266E5104E74430054F00B /* CSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 235266DF104E74430054F00B /* CSprite.cpp */; };
 		235266F2104E75250054F00B /* CFont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 235266F0104E75250054F00B /* CFont.cpp */; };
 		235266FC104E754D0054F00B /* CGfxEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 235266FA104E754D0054F00B /* CGfxEngine.cpp */; };
@@ -298,7 +297,6 @@
 		0867D6ABFE840B52C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1DDD57E30DA1CFC700B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/main.xib; sourceTree = "<group>"; };
 		20286C33FDCF999611CA2CEA /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
-		230715FF1036E85300DE25FC /* cglogo.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = cglogo.icns; sourceTree = "<group>"; };
 		2321F1AF101DA0CE00510514 /* baby.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = baby.h; sourceTree = "<group>"; };
 		235266DF104E74430054F00B /* CSprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSprite.cpp; sourceTree = "<group>"; };
 		235266E0104E74430054F00B /* CSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSprite.h; sourceTree = "<group>"; };
@@ -623,7 +621,6 @@
 		20286C29FDCF999611CA2CEA /* CommanderGenius */ = {
 			isa = PBXGroup;
 			children = (
-				230715FF1036E85300DE25FC /* cglogo.icns */,
 				5048396909E3304600765E4B /* Configuration Files */,
 				20286C2AFDCF999611CA2CEA /* src */,
 				20286C2CFDCF999611CA2CEA /* Resources */,
@@ -1172,7 +1169,6 @@
 			files = (
 				235755D2101A5E5900275638 /* InfoPlist.strings in Resources */,
 				235755D3101A5E5900275638 /* main.xib in Resources */,
-				230716001036E85300DE25FC /* cglogo.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

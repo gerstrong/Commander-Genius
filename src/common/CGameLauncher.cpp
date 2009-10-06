@@ -2,7 +2,7 @@
  * CGameLauncher.cpp
  *
  *  Created on: 22.09.2009
- *      Author: gerstrong
+ *      Author: gerstrong 
  */
 
 #include "CGameLauncher.h"

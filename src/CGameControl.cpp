@@ -1,5 +1,5 @@
 /*
- * CGameControl.cpp
+ * CGameControl.cpp 
  *
  *  Created on: 22.09.2009
  *      Author: gerstrong

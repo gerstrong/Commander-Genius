@@ -178,17 +178,8 @@ void CVideoDriver::initResolutionList()
 				  }
 			  }
 			  else{
-				  /* Print valid modes */
-				  //g_pLogFile->textOut(RED,"Available Modes:<br>");
 				  for (e=0; modes[e]; ++e)
 				  {
-					  //std::ostringstream ostrw;
-					  //std::ostringstream ostrh;
-					  //ostrw << modes[e]->w;
-					  //ostrh << modes[e]->h;
-					  //std::string sw = ostrw.str();
-					  //std::string sh = ostrh.str();
-					  //g_pLogFile->textOut(RED,sw+"x" +sh+ "<br>");
 					  resolution.width = modes[e]->w;
 					  resolution.height = modes[e]->h;
 					  resolution.depth = 32;
