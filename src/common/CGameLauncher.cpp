@@ -6,6 +6,7 @@
  */
 
 #include "CGameLauncher.h"
+#include "../CLogFile.h"
 #include "../sdl/CVideoDriver.h"
 #include "../sdl/CInput.h"
 #include "../graphics/CGfxEngine.h"
@@ -113,10 +114,14 @@ Uint8 CGameLauncher::scanDirectories()
 {
 	// TODO: This implementation must be adapted to the searchpath system!!
 	DIR* games_root;
+	std::string dir;
 	std::string buffer;
 
 	#if defined(__APPLE__)
-	games_root = opendir("Commander Genius.app/Contents/Resources/data/games");
+	dir = GetBinaryDir()+"/../Resources/data/games";
+	char *dirc = (char*)dir.c_str();
+	g_pLogFile->ftextOut(RED,dirc);
+	games_root = opendir(dirc);
 	#else
 	games_root = opendir("games");
 	#endif
@@ -184,23 +189,27 @@ Uint8 CGameLauncher::retrievetEpisode(short chosengame)
 {
 	// TODO: implement search-path here!
 	FILE *fp;
+	std::string dir;
 	std::string buffer;
 
 	// Detect the right Episode
 #if defined(__APPLE__)
-	buffer = "Commander Genius.app/Contents/Resources/data/games/" + m_DirList.at(chosengame) + "/keen1.exe";
+	dir = GetBinaryDir()+"/../Resources/data/games/";
+	char *dirc = (char*)dir.c_str();
+	
+	buffer = dirc + m_DirList.at(chosengame) + "/keen1.exe";
 	if((fp = fopen(buffer.c_str(),"rb")) != NULL)
 	{
 		return 1;
 	}
 	
-	buffer = "Commander Genius.app/Contents/Resources/data/games/" + m_DirList[chosengame] + "/keen2.exe";
+	buffer = dirc + m_DirList[chosengame] + "/keen2.exe";
 	if((fp = fopen(buffer.c_str(),"rb")) != NULL)
 	{
 		return 2;
 	}
 	
-	buffer = "Commander Genius.app/Contents/Resources/data/games/" + m_DirList[chosengame] + "/keen3.exe";
+	buffer = dirc + m_DirList[chosengame] + "/keen3.exe";
 	if((fp = fopen(buffer.c_str(),"rb")) != NULL)
 	{
 		return 3;
