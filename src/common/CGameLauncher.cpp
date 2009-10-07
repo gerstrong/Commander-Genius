@@ -126,14 +126,9 @@ Uint8 CGameLauncher::scanDirectories()
 	std::string dir;
 	std::string buffer;
 
-	#if defined(__APPLE__)
-	dir = GetBinaryDir()+"/../Resources/data/games";
-	char *dirc = (char*)dir.c_str();
-	g_pLogFile->ftextOut(RED,dirc);
-	games_root = opendir(dirc);
-	#else
-	games_root = opendir("games");
-	#endif
+	// TODO: use FindFiles or GetFileList to get the list
+	dir = GetFullFileName("games");
+	games_root = opendir(dir.c_str());
 	
 	struct dirent *dp;
 
