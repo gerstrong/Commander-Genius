@@ -51,6 +51,7 @@ bool CGameLauncher::init()
 	if( (m_numGames = scanDirectories()) != 0)
 	{
 		std::string line;
+		std::string stream;
 		std::string dir;
 		std::string name;
 		
@@ -63,7 +64,7 @@ bool CGameLauncher::init()
 		{
 			if (gamescfg.is_open())
 			{
-				while ( !both )
+				while ( !gamescfg.eof() && !both )
 				{
 					getline (gamescfg,line);
 			
@@ -77,9 +78,14 @@ bool CGameLauncher::init()
 					if(strncmp(line.c_str(),"/Name=",strlen("/Name=")) == 0)
 					{
 						name = line.substr(strlen("/Name="));
+						if (m_DirList[i] == dir)
 						both = true;
+						else
+							both = false;
+
 					}
 				}
+				gamescfg.close();
 			}
 			
 			if (both == true)
@@ -89,11 +95,14 @@ bool CGameLauncher::init()
 				mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,i+1, name);
 					both = false;
 				}
-				else
-			mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,i+1, m_DirList[i]);
+				OpenGameFileR(gamescfg, "games/games.cfg");
+			}
+			else
+			{
+				mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,i+1, m_DirList[i]);
+				OpenGameFileR(gamescfg, "games/games.cfg");
 			}
 		}
-		gamescfg.close();
 		mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,i+1, "Quit");
 	}
 	else
