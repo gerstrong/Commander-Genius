@@ -191,52 +191,28 @@ void CGameLauncher::process()
 // When the game is chosen, read the episode number by looking which exe file is present
 Uint8 CGameLauncher::retrievetEpisode(short chosengame)
 {
-	// TODO: implement search-path here!
 	FILE *fp;
-	std::string dir;
 	std::string buffer;
 
 	// Detect the right Episode
-#if defined(__APPLE__)
-	dir = GetBinaryDir()+"/../Resources/data/games/";
-	char *dirc = (char*)dir.c_str();
 	
-	buffer = dirc + m_DirList.at(chosengame) + "/keen1.exe";
-	if((fp = fopen(buffer.c_str(),"rb")) != NULL)
-	{
-		return 1;
-	}
-	
-	buffer = dirc + m_DirList[chosengame] + "/keen2.exe";
-	if((fp = fopen(buffer.c_str(),"rb")) != NULL)
-	{
-		return 2;
-	}
-	
-	buffer = dirc + m_DirList[chosengame] + "/keen3.exe";
-	if((fp = fopen(buffer.c_str(),"rb")) != NULL)
-	{
-		return 3;
-	}
-#else
 	buffer = "games/" + m_DirList.at(chosengame) + "/keen1.exe";
-	if((fp = fopen(buffer.c_str(),"rb")) != NULL)
+	if((fp = OpenGameFile(buffer,"rb")) != NULL)
 	{
 		return 1;
 	}
 	
 	buffer = "games/" + m_DirList[chosengame] + "/keen2.exe";
-	if((fp = fopen(buffer.c_str(),"rb")) != NULL)
+	if((fp = OpenGameFile(buffer,"rb")) != NULL)
 	{
 		return 2;
 	}
 	
 	buffer = "games/" + m_DirList[chosengame] + "/keen3.exe";
-	if((fp = fopen(buffer.c_str(),"rb")) != NULL)
+	if((fp = OpenGameFile(buffer,"rb")) != NULL)
 	{
 		return 3;
 	}
-#endif
 
 	return 0;
 }
