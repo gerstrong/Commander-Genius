@@ -10,7 +10,10 @@
 #include "../sdl/CInput.h"
 #include "../graphics/CGfxEngine.h"
 #include <dirent.h>
-
+#include <iostream>
+#include <fstream>
+#include "StringUtils.h"
+#include "FindFile.h"
 
 CGameLauncher::CGameLauncher() {
 	m_mustquit = false;
@@ -46,21 +49,50 @@ bool CGameLauncher::init()
 	// Scan for games...
 	if( (m_numGames = scanDirectories()) != 0)
 	{
+		std::string line;
+		std::string dir;
+		std::string name;
+		
+		std::ifstream gamescfg; OpenGameFileR(gamescfg, "games/games.cfg");
 		int i=0;
+		bool both=false;
 		// TODO: Check consistency of the games.
 
 		for( i=0 ; i < m_numGames ; i++ )
 		{
-			if (m_DirList[i] == "EP1")
-				mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,i+1, "Episode 1: Marooned on Mars");
-										 else if (m_DirList[i] == "EP2")
-										 mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,i+1, "Episode 2: The Earth Explodes");
-																  else if (m_DirList[i] == "EP3")
-																  mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,i+1, "Episode 3: Keen Must Die!");
+			if (gamescfg.is_open())
+			{
+				while ( !both )
+				{
+					getline (gamescfg,line);
+			
+					if(strncmp(line.c_str(),"",strlen("")) == 0)
+						both=false;
+				if(strncmp(line.c_str(),"&Dir=",strlen("&Dir=")) == 0)
+				{
+					dir = line.substr(strlen("&Dir="));
+					both = false;
+				}
+					if(strncmp(line.c_str(),"/Name=",strlen("/Name=")) == 0)
+					{
+						name = line.substr(strlen("/Name="));
+						both = true;
+					}
+				}
+			}
+			
+			if (both == true)
+			{
+				if (m_DirList[i] == dir)
+				{
+				mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,i+1, name);
+					both = false;
+				}
 				else
 			mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,i+1, m_DirList[i]);
+			}
 		}
-
+		gamescfg.close();
 		mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,i+1, "Quit");
 	}
 	else

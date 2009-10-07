@@ -76,7 +76,6 @@
 		2357561B101A5E5900275638 /* CDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3EA021013ABCA001643FA /* CDialog.cpp */; };
 		2357561C101A5E5900275638 /* CHighScores.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3EA041013ABCA001643FA /* CHighScores.cpp */; };
 		2357561D101A5E5900275638 /* CIntro.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3EA061013ABCA001643FA /* CIntro.cpp */; };
-		2357561E101A5E5900275638 /* CObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3EA081013ABCA001643FA /* CObject.cpp */; };
 		23575620101A5E5900275638 /* MacMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 23D3EA8C1013AEF3001643FA /* MacMain.m */; };
 		23575621101A5E5900275638 /* CExeFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3EC3A101696DF001643FA /* CExeFile.cpp */; };
 		23575622101A5E5900275638 /* CPatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3EC3C101696DF001643FA /* CPatcher.cpp */; };
@@ -182,6 +181,8 @@
 		6350FB3910449E2B00A992D5 /* readme.txt in Copy Text Files */ = {isa = PBXBuildFile; fileRef = 6350FB0B10449DAA00A992D5 /* readme.txt */; };
 		637FC63710559B5600C2EA77 /* CBitmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 637FC63310559B5600C2EA77 /* CBitmap.cpp */; };
 		637FC63810559B5600C2EA77 /* CPalette.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 637FC63510559B5600C2EA77 /* CPalette.cpp */; };
+		63AB8BDF107C5C83001EE22F /* CObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63AB8BDD107C5C83001EE22F /* CObject.cpp */; };
+		63AB8C2F107C62D0001EE22F /* cglogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63AB8C2E107C62D0001EE22F /* cglogo.icns */; };
 		63E5304F107B84E60022BB1B /* CPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63E5304D107B84E60022BB1B /* CPlayer.cpp */; };
 /* End PBXBuildFile section */
 
@@ -455,8 +456,6 @@
 		23D3EA051013ABCA001643FA /* CHighScores.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHighScores.h; sourceTree = "<group>"; };
 		23D3EA061013ABCA001643FA /* CIntro.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CIntro.cpp; sourceTree = "<group>"; };
 		23D3EA071013ABCA001643FA /* CIntro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CIntro.h; sourceTree = "<group>"; };
-		23D3EA081013ABCA001643FA /* CObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CObject.cpp; sourceTree = "<group>"; };
-		23D3EA091013ABCA001643FA /* CObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CObject.h; sourceTree = "<group>"; };
 		23D3EA0C1013ABCA001643FA /* sounds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sounds.h; sourceTree = "<group>"; };
 		23D3EA691013AC7B001643FA /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = Library/Frameworks/SDL.framework; sourceTree = SDKROOT; };
 		23D3EA831013AEB5001643FA /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -587,6 +586,9 @@
 		637FC63410559B5600C2EA77 /* CBitmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CBitmap.h; path = ../../src/graphics/CBitmap.h; sourceTree = SOURCE_ROOT; };
 		637FC63510559B5600C2EA77 /* CPalette.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CPalette.cpp; path = ../../src/graphics/CPalette.cpp; sourceTree = SOURCE_ROOT; };
 		637FC63610559B5600C2EA77 /* CPalette.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CPalette.h; path = ../../src/graphics/CPalette.h; sourceTree = SOURCE_ROOT; };
+		63AB8BDD107C5C83001EE22F /* CObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CObject.cpp; path = common/CObject.cpp; sourceTree = "<group>"; };
+		63AB8BDE107C5C83001EE22F /* CObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CObject.h; path = common/CObject.h; sourceTree = "<group>"; };
+		63AB8C2E107C62D0001EE22F /* cglogo.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = cglogo.icns; sourceTree = SOURCE_ROOT; };
 		63DCCCBB104CBC3000B3BC10 /* version.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = version.h; path = ../../version.h; sourceTree = SOURCE_ROOT; };
 		63E5304D107B84E60022BB1B /* CPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CPlayer.cpp; path = ../../src/common/CPlayer.cpp; sourceTree = SOURCE_ROOT; };
 		63E5304E107B84E60022BB1B /* CPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CPlayer.h; path = ../../src/common/CPlayer.h; sourceTree = SOURCE_ROOT; };
@@ -696,6 +698,8 @@
 				23D3E9D31013ABCA001643FA /* main.cpp */,
 				23D3E9D41013ABCA001643FA /* map.cpp */,
 				23D3E9D51013ABCA001643FA /* CStartScreen.cpp */,
+				63AB8BDD107C5C83001EE22F /* CObject.cpp */,
+				63AB8BDE107C5C83001EE22F /* CObject.h */,
 				23D3E9D61013ABCA001643FA /* misc.cpp */,
 				23D3E9D71013ABCA001643FA /* pressf10.h */,
 				23D3E9D81013ABCA001643FA /* scale2x */,
@@ -851,6 +855,7 @@
 			children = (
 				23D3EC3A101696DF001643FA /* CExeFile.cpp */,
 				23D3EC3B101696DF001643FA /* CExeFile.h */,
+				63AB8C2E107C62D0001EE22F /* cglogo.icns */,
 				23D3EC3C101696DF001643FA /* CPatcher.cpp */,
 				23D3EC3D101696DF001643FA /* CPatcher.h */,
 				23D3EC3E101696DF001643FA /* CTileLoader.cpp */,
@@ -1026,8 +1031,6 @@
 				23D3EA051013ABCA001643FA /* CHighScores.h */,
 				23D3EA061013ABCA001643FA /* CIntro.cpp */,
 				23D3EA071013ABCA001643FA /* CIntro.h */,
-				23D3EA081013ABCA001643FA /* CObject.cpp */,
-				23D3EA091013ABCA001643FA /* CObject.h */,
 				23D3EA0C1013ABCA001643FA /* sounds.h */,
 			);
 			name = vorticon;
@@ -1169,6 +1172,7 @@
 			files = (
 				235755D2101A5E5900275638 /* InfoPlist.strings in Resources */,
 				235755D3101A5E5900275638 /* main.xib in Resources */,
+				63AB8C2F107C62D0001EE22F /* cglogo.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1259,7 +1263,6 @@
 				2357561B101A5E5900275638 /* CDialog.cpp in Sources */,
 				2357561C101A5E5900275638 /* CHighScores.cpp in Sources */,
 				2357561D101A5E5900275638 /* CIntro.cpp in Sources */,
-				2357561E101A5E5900275638 /* CObject.cpp in Sources */,
 				23575620101A5E5900275638 /* MacMain.m in Sources */,
 				23575621101A5E5900275638 /* CExeFile.cpp in Sources */,
 				23575622101A5E5900275638 /* CPatcher.cpp in Sources */,
@@ -1309,6 +1312,7 @@
 				63453BE510798CFE007265F8 /* CPlayGame.cpp in Sources */,
 				63453BE610798CFE007265F8 /* CTitle.cpp in Sources */,
 				63E5304F107B84E60022BB1B /* CPlayer.cpp in Sources */,
+				63AB8BDF107C5C83001EE22F /* CObject.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
