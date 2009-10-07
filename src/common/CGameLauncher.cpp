@@ -118,34 +118,20 @@ bool CGameLauncher::init()
 	return true;
 }
 
+struct FileListAdder {
+	void operator()(CGameLauncher::DirList& dirs, const std::string& path) {
+		std::string basepath = GetBaseFilename(path);
+		if(basepath != "" && basepath[0] != '.') {
+			dirs.push_back(basepath);
+		}
+	}
+};
 
 Uint8 CGameLauncher::scanDirectories()
 {
-	// TODO: This implementation must be adapted to the searchpath system!!
-	DIR* games_root;
-	std::string dir;
-	std::string buffer;
-
-	// TODO: use FindFiles or GetFileList to get the list
-	dir = GetFullFileName("games");
-	games_root = opendir(dir.c_str());
+	FileListAdder fileListAdder;
+	GetFileList(m_DirList, fileListAdder, "games", false, FM_DIR);
 	
-	struct dirent *dp;
-
-	if(!games_root)
-		return 0;
-
-	while( (dp = readdir(games_root)) != NULL )
-	{
-		if(dp->d_type == DT_DIR)
-		{
-			buffer = dp->d_name;
-			if(buffer[0] != '.') // no ".", "..", or hidden files, please!
-				m_DirList.push_back(buffer);
-		}
-	}
-
-	closedir(games_root);
 	return m_DirList.size();
 }
 
