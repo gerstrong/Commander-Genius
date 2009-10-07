@@ -191,28 +191,9 @@ void CGameLauncher::process()
 // When the game is chosen, read the episode number by looking which exe file is present
 Uint8 CGameLauncher::retrievetEpisode(short chosengame)
 {
-	FILE *fp;
-	std::string buffer;
-
-	// Detect the right Episode
-	
-	buffer = "games/" + m_DirList.at(chosengame) + "/keen1.exe";
-	if((fp = OpenGameFile(buffer,"rb")) != NULL)
-	{
-		return 1;
-	}
-	
-	buffer = "games/" + m_DirList[chosengame] + "/keen2.exe";
-	if((fp = OpenGameFile(buffer,"rb")) != NULL)
-	{
-		return 2;
-	}
-	
-	buffer = "games/" + m_DirList[chosengame] + "/keen3.exe";
-	if((fp = OpenGameFile(buffer,"rb")) != NULL)
-	{
-		return 3;
-	}
+	if(IsFileAvailable("games/" + m_DirList.at(chosengame) + "/keen1.exe")) return 1;
+	if(IsFileAvailable("games/" + m_DirList.at(chosengame) + "/keen2.exe")) return 2;
+	if(IsFileAvailable("games/" + m_DirList.at(chosengame) + "/keen3.exe")) return 3;
 
 	return 0;
 }
