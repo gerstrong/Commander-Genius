@@ -3,6 +3,11 @@
  *
  *  Created on: 05.10.2009
  *      Author: gerstrong
+ *
+ *  The Player logics are processed here.
+ *  Some functions are common, others map and level specific.
+ *  Those are stored in CPlayerWM.cpp and CPlayerLevel.cpp
+ *
  */
 
 #include "CPlayer.h"
@@ -21,141 +26,27 @@ CPlayer::CPlayer() {
 	pwalkframe = 0;
 	m_player_number = 0;
 	m_levels_completed = NULL;
+
+    dpadcount = 0;
+    hideplayer = false;
+    mounted = false;
+    ppogostick = false;
+    pjumping = 0;
+    pfalling = false;
+    pwalking = playspeed = 0;
+    pinertia_x = pinertia_y = 0;
+    pboost_x = 0;
+    playpushed_x = 0;
+    pfiring = 0;
+    psliding = psemisliding = 0;
+    pdie = 0;
+
+    pfrozentime = 0;
+    ankhtime = 0;
+    keyprocstate = 0;         // KPROC_IDLE
+    pjustjumped = pjustfell = 0;
 }
 
-///
-// Process Part
-///
-
-////
-// Process the stuff of the player when playing on the world map
-void CPlayer::processWorldMap()
-{
-    inhibitwalking = false;
-    inhibitfall = false;
-
-    //gamepdo_StatusBox(cp, pCKP);
-
-    ProcessInput();
-    setWorldMapdir();
-
-    setWMblockedlrud();
-    //gamepdo_wm_AllowEnterLevel(cp, pCKP);
-
-    Walking();
-    //gamepdo_walkinganim(cp, pCKP);
-
-    //if (fade.mode==NO_FADE)
-    //{
-      //gamepdo_InertiaAndFriction_X(cp, pCKP);
-      //gamepdo_InertiaAndFriction_Y(cp, pCKP);
-    //}
-
-    /*if (pCKP->Control.levelcontrol.episode==3)
-    {
-      AllowMountUnmountNessie(cp);
-    }*/
-
-    selectFrameOnWorldMap();
-}
-
-// select proper player direction
-void CPlayer::setWorldMapdir()
-{
-bool exception;
-   dpadcount = 0;
-   if (playcontrol[PA_X] < 0) { pdir = LEFT; dpadcount++; }
-   if (playcontrol[PA_X] > 0) { pdir = RIGHT; dpadcount++; }
-   if (playcontrol[PA_Y] < 0) { pdir = UP; dpadcount++; }
-   if (playcontrol[PA_Y] > 0) { pdir = DOWN; dpadcount++; }
-
-   exception = false;
-   if ( pshowdir==UP && !playcontrol[PA_Y] < 0) exception = true;
-   if ( pshowdir==DOWN && !playcontrol[PA_Y] > 0) exception = true;
-   if ( pshowdir==LEFT && !playcontrol[PA_X] < 0) exception = true;
-   if ( pshowdir==RIGHT && !playcontrol[PA_X] > 0) exception = true;
-   if ((playcontrol[PA_Y] < 0) && (playcontrol[PA_Y] > 0)) pshowdir = DOWN;
-   if ((playcontrol[PA_X] < 0) && (playcontrol[PA_X] > 0)) pshowdir = RIGHT;
-
-   if (dpadcount==1 || dpadlastcount==0 || exception)
-   {
-     pshowdir = pdir;
-   }
-   dpadlastcount = dpadcount;
-}
-
-// set blockedl and blockedr...is Keen up against a solid object?
-void CPlayer::setWMblockedlrud()
-{
-   blockedl = blockedr = 0;
-   blockedu = blockedd = 0;
-
-   // cheat: holding down TAB will turn off clipping. or if you are in godmode
-   //if ((pCKP->Option[OPT_CHEATS].value && g_pInput->getHoldedKey(KTAB)) || player[cp].godmode) return;
-
-   // R
-   if (isWMSolid((x>>CSF)+8, (y>>CSF)+1, m_levels_completed))
-      { blockedr = true; }
-   else if (isWMSolid((x>>CSF)+8, (y>>CSF)+8, m_levels_completed))
-      { blockedr = true; }
-   else if (isWMSolid((x>>CSF)+8, (y>>CSF)+13, m_levels_completed))
-      { blockedr = true; }
-
-   // L
-   if (isWMSolid((x>>CSF)+0, (y>>CSF)+1, m_levels_completed))
-      { blockedl = true; }
-   else if (isWMSolid((x>>CSF)+0, (y>>CSF)+8, m_levels_completed))
-      { blockedl = true; }
-   else if (isWMSolid((x>>CSF)+0, (y>>CSF)+13, m_levels_completed))
-      { blockedl = true; }
-
-   // U
-   if (isWMSolid((x>>CSF)+1, (y>>CSF)-1, m_levels_completed))
-      { blockedu = true; }
-   else if (isWMSolid((x>>CSF)+4, (y>>CSF)-1, m_levels_completed))
-      { blockedu = true; }
-   else if (isWMSolid((x>>CSF)+7, (y>>CSF)-1, m_levels_completed))
-      { blockedu = true; }
-
-   // D
-   if (isWMSolid((x>>CSF)+1, (y>>CSF)+14, m_levels_completed))
-      { blockedd = true; }
-   else if (isWMSolid((x>>CSF)+4, (y>>CSF)+14, m_levels_completed))
-      { blockedd = true; }
-   else if (isWMSolid((x>>CSF)+7, (y>>CSF)+14, m_levels_completed))
-      { blockedd = true; }
-
-}
-
-
-
-bool CPlayer::isWMSolid(int xb, int yb, bool *levels_completed)
-{
-/*
-  // for map tiles solidl and solidr are always gonna be the same...
-  // so we can get away with this.
-  if ( TileProperty[getmaptileat(xb, yb)][BLEFT] ) return true;
-  //if (tiles[getmaptileat(xb, yb)].solidl) return 1;
-
-  unsigned int level;
-  level = getlevelat(xb, yb);
-
-  if (level & 0x8000)
-  {
-	  if(levels_completed[map.objectlayer[xb>>4][yb>>4] & 0x7fff] && options[OPT_LVLREPLAYABILITY].value) // check if level is done, but can be replayed
-		  return 0;
-
-	  if(g_pInput->getHoldedKey(KTAB) && g_pInput->getHoldedKey(KSHIFT))
-	  {
-		  return 0;
-	  }
-	  else
-	  {
-		  return 1;
-	  }
-  }*/
-  return false;
-}
 
 // handles walking. the walking animation is handled by gamepdo_walkinganim()
 void CPlayer::Walking()
@@ -417,29 +308,204 @@ void CPlayer::Walking()
         	  }
           }
       }
-
 }
 
-void CPlayer::selectFrameOnWorldMap()
+// handles inertia and friction for the X direction
+// (this is where the inertia/playpushed_x is actually applied to playx)
+void CPlayer::InertiaAndFriction_X()
 {
-    // select base frame for current direction
-    if (pshowdir==RIGHT) playframe = PMAPRIGHTFRAME;
-    else if (pshowdir==LEFT) playframe = PMAPLEFTFRAME;
-    else if (pshowdir==UP) playframe = PMAPUPFRAME;
-    else if (pshowdir==DOWN) playframe = PMAPDOWNFRAME;
+   int friction_rate;
 
-    // episode 3 map frames start at 31, ep1&2 at 32
-    if (m_episode==3) playframe--;
+   if (hideplayer)
+   {
+     pinertia_x = 0;
+     return;
+   }
+   // don't move when firing
+   if (pfiring && !pjumping && !pfalling)
+   {
+     pinertia_x = 0;
+   }
 
-    // add in walk frame if walking
-    if (pwalking) playframe += pwalkframe;
-}
+   // Check walking boost and pogoing. It is similar to inertia
+   if(pjumping || pfalling)
+   {
+	   if (playcontrol[PA_X] < 0 && !pfrozentime)
+	   {
+		   if(pboost_x > 0 && !ppogostick)
+		   {
+			   pboost_x = 0;
+			   pinertia_x /= 2;
+		   }
+		   else
+		   {
+			   pboost_x-= ppogostick ? 2 : 1;
+		   }
+	   }
+	   if (playcontrol[PA_X] > 0 && !pfrozentime)
+	   {
+		   if(pboost_x < 0 && !ppogostick)
+		   {
+			   pboost_x = 0;
+			   pinertia_x /= 2;
+		   }
+		   else
+		   {
+			   pboost_x+= ppogostick ? 2 : 1;
+		   }
+	   }
 
-////
-// Process the stuff of the player when playing in a normal level
-void CPlayer::processInLevel()
-{
+	   if(pboost_x >= PJUMPINERTIA ||
+			   pboost_x <= -PJUMPINERTIA)
+	   {
+		   if(ppogostick)
+		   {
+			   pinertia_x += 3*pboost_x/(PJUMPINERTIA*2);
+		   }
+		   else
+		   {
+			   // This is a normal jump without obstacles
+			   if(widejump)
+			   {
+				   pinertia_x += 2*pboost_x/PJUMPINERTIA + chargedjump;
+				   chargedjump = 0;
+			   }
 
+			   // When falling get some inertia
+			   if(pfalling)
+			   {
+				   pinertia_x += 2*pboost_x/PJUMPINERTIA;
+			   }
+			   else
+			   {
+				   pinertia_x += 2*pboost_x/PJUMPINERTIA;
+			   }
+		   }
+		   pboost_x = 0;
+	   }
+   }
+
+   // Calculate Threshold of your analog device for walking animation speed!
+   if(!pfrozentime)
+	   treshold = playcontrol[PA_X];
+
+  int pmaxspeed = 0;
+
+  if(!pjumping && !pfalling &&
+	 !psemisliding && !psliding && !ppogostick && !pslowingdown)
+  {
+	  if(treshold < playcontrol[PA_Y] && playcontrol[PA_Y] > 0 )
+		  treshold = playcontrol[PA_Y];
+
+	  if(treshold > playcontrol[PA_Y] && playcontrol[PA_Y] < 0 )
+		  treshold = playcontrol[PA_Y];
+
+	  if(treshold < 0)
+		  treshold *= (-1);
+  }
+  else
+  {
+	  treshold = 100;
+  }
+
+  // if we hit a solid object do not move, and keep inertia...
+  // * at slow speed: if we're falling or jumping and we're facing
+  //                  the right direction, we want to keep
+  //                  a small amount of inertia pent up so we can
+  //                  easily get into tight spaces.
+  // * at zero:       otherwise, or if we're not walking, we want
+  //                  to hold the inertia at zero so we don't "shoot"
+  //                  off of platforms, etc which looks weird.
+  /*if (!p_levelcontrol->level_done || p_levelcontrol->level_finished_by!=cp)
+  {
+    if (pinertia_x < 0 && blockedl)
+    {
+      if (!pwalking || (!pfalling && !pjumping) || pdir==RIGHT || (pfrozentime && p_levelcontrol->episode==1))
+      {
+		 pinertia_x = pboost_x = 0;
+		 widejump = false;
+      }
+      else if (pinertia_x < -PFASTINCMAXSPEED)
+      {
+    	  //pinertia_x--;
+    	  pinertia_x >>= 1;
+      }
+      return;
+    }
+    else if (pinertia_x > 0 && blockedr)
+    {
+      if (!pwalking || (!pfalling && !pjumping) || pdir==LEFT || (pfrozentime&&p_levelcontrol->episode==1))
+      {
+    	 pinertia_x = pboost_x = 0;
+    	 widejump = false;
+      }
+      else if (pinertia_x > PFASTINCMAXSPEED)
+      {
+    	  //pinertia_x++;
+    	  pinertia_x >>= 1;
+      }
+   	  return;
+    }
+  }*/
+
+  pmaxspeed = treshold*PMAXSPEED/100;
+
+	  if(pinertia_x > pmaxspeed)
+		  pinertia_x = pmaxspeed;
+	  if(pinertia_x < -pmaxspeed)
+		  pinertia_x = -pmaxspeed;
+
+
+   // apply pinertia_x and playpushed_x inertia
+   // (unless we're about to make a pogo jump)
+   if ( pjumping != PPREPAREPOGO)
+   {
+	   x += (pinertia_x + playpushed_x);
+   }
+
+
+   // if we stopped walking (i.e. left or right not held down) apply friction
+   // there's no friction if we're semisliding
+   if (!(playcontrol[PA_X] < 0) && !(playcontrol[PA_X] > 0) && \
+       !psemisliding)
+   {
+     // determine friction rate--different rates for on ground and in air
+     if (m_playingmode == WORLDMAP)
+     {
+       friction_rate = PFRICTION_RATE_WM;
+     }
+     else
+     {
+        if (!pfalling & !pjumping)
+        {
+          friction_rate = PFRICTION_RATE_ONGROUND;
+        }
+        else
+        {
+          friction_rate = PFRICTION_RATE_INAIR;
+        }
+     }
+
+
+     // and apply friction to pinertia_x
+     // when pogoing apply friction till we get down to PFASTINCMAXSPEED
+     // then stop the friction
+     if (!ppogostick || (pinertia_x > PFASTINCMAXSPEED) || (pinertia_x < -PFASTINCMAXSPEED))
+     {
+        if (pfriction_timer_x > friction_rate)
+        {
+          if (!pfrozentime || m_episode!=1)
+          {  // disable friction while frozen
+        	  // here the wall animation must be applied!
+             if (pinertia_x < 0) pinertia_x++;
+             else if (pinertia_x > 0) pinertia_x--;
+          }
+
+          pfriction_timer_x = 0;
+        }
+        else pfriction_timer_x++;
+     }
+   }
 }
 
 void CPlayer::ProcessInput()
@@ -480,25 +546,25 @@ void CPlayer::ProcessInput()
 	   {
 	     // don't let player control keen
 
-		 memset(player[cp].playcontrol,0,PA_MAX_ACTIONS);
+		 memset(playcontrol,0,PA_MAX_ACTIONS);
 
-	      player[cp].inhibitfall = 1;
+	      inhibitfall = 1;
 	     if (pCKP->Control.levelcontrol.level_done==LEVEL_DONE_WALK)
 	     {
 	        // keep him going right
-	        player[cp].pdir = player[cp].pshowdir = RIGHT;
+	        pdir = pshowdir = RIGHT;
 	        // make keen walk slowly through the exit door
-	        player[cp].playcontrol[PA_X] = 80;
-	        if (player[cp].pinertia_x > PMAXEXITDOORSPEED)
+	        playcontrol[PA_X] = 80;
+	        if (pinertia_x > PMAXEXITDOORSPEED)
 	        {
-	          player[cp].pinertia_x = PMAXEXITDOORSPEED;
+	          pinertia_x = PMAXEXITDOORSPEED;
 	        }
 	     }
 	     else
 	     {
 	        // he's all the way through the door; hold him still
-	        player[cp].pinertia_x = 0;
-	        player[cp].pwalking = 0;
+	        pinertia_x = 0;
+	        pwalking = 0;
 	     }
 
 	     if (p_levelcontrol->level_done_timer > LEVEL_DONE_TOTAL_WAIT_TIME)
@@ -523,11 +589,11 @@ void CPlayer::ProcessInput()
 
 	   if(options[OPT_TWOBUTTON].value)
 	   {
-		   if(player[cp].playcontrol[PA_JUMP] && player[cp].playcontrol[PA_POGO])
+		   if(playcontrol[PA_JUMP] && playcontrol[PA_POGO])
 		   {
-			   player[cp].playcontrol[PA_FIRE] = 1;
-			   player[cp].playcontrol[PA_JUMP] = 0;
-			   player[cp].playcontrol[PA_POGO] = 0;
+			   playcontrol[PA_FIRE] = 1;
+			   playcontrol[PA_JUMP] = 0;
+			   playcontrol[PA_POGO] = 0;
 		   }
 	   }
 

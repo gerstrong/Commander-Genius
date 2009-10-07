@@ -154,7 +154,6 @@ void CGameLauncher::process()
 			m_hasbeenchosen = true;
 			m_chosenGame = selection;
 		}
-
 	}
 
 	// Did the user press (X)?

@@ -103,6 +103,7 @@ public:
 	void setWMblockedlrud();
 	bool isWMSolid(int xb, int yb, bool *levels_completed);
 	void Walking();
+	void InertiaAndFriction_X();
 
 	// In Level specific
 	void processInLevel();

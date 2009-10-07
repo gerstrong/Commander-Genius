@@ -82,58 +82,6 @@ void CPlayGame::process()
 {
 	// Handle Inputs
 
-	/// The following function must be worldmap dependent
-	if( m_Level == WORLD_MAP_LEVEL )
-	{
-		// Perform wm AIs
-		
-		// Perform player Objects...
-		for( int i=0 ; i<m_NumPlayers ; i++ )
-			mp_Player[i].processWorldMap();
-
-		// entered level 
-		
-		// used teleport
-
-		// in episode 3 rides on nessie 
-	
-	}
-	else
-	{
-		// Perform AIs
-
-		// Perform physics
-		
-		// Perform player Objects...
-		for( int i=0 ; i<m_NumPlayers ; i++ )
-			mp_Player[i].processInLevel();
-
-		// finished the level
-
-		// gets to bonus level
-
-		// lost a life
-
-		// end(s) the game.
-	}
-
-	// Animate the tiles of the map
-	g_pGfxEngine->Tilemap->animateAllTiles(g_pVideoDriver->ScrollSurface);
-
-	// Blit the background
-	g_pVideoDriver->blitScrollSurface(mp_Map->m_scrollx_buf, mp_Map->m_scrolly_buf);
-
-	// Draw objects to the screen
-	drawObjects();
-
-	// Open the Main Menu if ESC Key pressed and mp_Menu not opened
-	if(!mp_Menu && g_pInput->getPressedKey(KQUIT))
-	{
-		// Open the menu
-		mp_Menu = new CMenu( CMenu::ACTIVE );
-		mp_Menu->init();
-	}
-
 	// If the menu is open process it!
 	if(mp_Menu)
 	{
@@ -153,6 +101,60 @@ void CPlayGame::process()
 		{
 			mp_Menu->process();
 		}
+	}
+	else
+	{
+		/// The following function must be worldmap dependent
+		if( m_Level == WORLD_MAP_LEVEL )
+		{
+			// Perform wm AIs
+
+			// Perform player Objects...
+			for( int i=0 ; i<m_NumPlayers ; i++ )
+				mp_Player[i].processWorldMap();
+
+			// entered level
+
+			// used teleport
+
+			// in episode 3 rides on nessie
+
+		}
+		else
+		{
+			// Perform AIs
+
+			// Perform physics
+
+			// Perform player Objects...
+			for( int i=0 ; i<m_NumPlayers ; i++ )
+				mp_Player[i].processInLevel();
+
+			// finished the level
+
+			// gets to bonus level
+
+			// lost a life
+
+			// end(s) the game.
+		}
+	}
+
+	// Animate the tiles of the map
+	g_pGfxEngine->Tilemap->animateAllTiles(g_pVideoDriver->ScrollSurface);
+
+	// Blit the background
+	g_pVideoDriver->blitScrollSurface(mp_Map->m_scrollx_buf, mp_Map->m_scrolly_buf);
+
+	// Draw objects to the screen
+	drawObjects();
+
+	// Open the Main Menu if ESC Key pressed and mp_Menu not opened
+	if(!mp_Menu && g_pInput->getPressedKey(KQUIT))
+	{
+		// Open the menu
+		mp_Menu = new CMenu( CMenu::ACTIVE );
+		mp_Menu->init();
 	}
 }
 
@@ -185,8 +187,8 @@ void CPlayGame::drawObjects()
 	   {
 	      if (p_object->exists && p_object->onscreen)
 	      {
-	    	  p_object->scrx = ((p_object->x>>CSF)<<4)-mp_Map->m_scrollx;
-	    	  p_object->scry = ((p_object->y>>CSF)<<4)-mp_Map->m_scrolly;
+	    	  p_object->scrx = ((p_object->x<<4)>>CSF)-mp_Map->m_scrollx;
+	    	  p_object->scry = ((p_object->y<<4)>>CSF)-mp_Map->m_scrolly;
 
 	    	  //g_pGraphics->drawSprite(objects[i].scrx, objects[i].scry, objects[i].sprite, i);
 	    	  g_pGfxEngine->Sprite[p_object->sprite]->drawSprite( g_pVideoDriver->BlitSurface,

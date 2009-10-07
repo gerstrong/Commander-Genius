@@ -68,14 +68,14 @@ void CGame::run()
 {
 	do
 	{
-	   // Poll Inputs
-	   g_pInput->pollEvents();
-
-	   // Process Game Control
-	   m_GameControl.process();
-
 	   if( g_pTimer->TimeToRender() )
 	   {
+		   // Poll Inputs
+		   g_pInput->pollEvents();
+
+		   // Process Game Control
+		   m_GameControl.process();
+
 		   // Render the Screen
 		   g_pVideoDriver->update_screen();
 
