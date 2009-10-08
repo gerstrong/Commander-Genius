@@ -172,7 +172,7 @@ void map_draw_hstripe(unsigned int y, unsigned int mpy)
 // returns the map tile at map position (x,y)
 unsigned int getmaptileat(unsigned int x, unsigned int y)
 {
-int xa = x>>4;
+/*int xa = x>>4;
 int ya = y>>4;
 
   if (xa<=255 && ya<=255)
@@ -188,11 +188,12 @@ int ya = y>>4;
 		  ya = 255;
 
 	  return map.mapdata[xa][ya];
-  }
+  }*/
 }
 unsigned int getlevelat(unsigned int x, unsigned int y)
 {
-  return map.objectlayer[x>>4][y>>4];
+  //return map.objectlayer[x>>4][y>>4];
+	return 0;
 }
 
 // called at start of level to draw the upper-left corner of the map
@@ -209,7 +210,7 @@ void drawmap(void)
 // changes the tile at (x,y) in real time
 void map_chgtile(unsigned int x, unsigned int y, int newtile)
 {
-   map.mapdata[x][y] = newtile;
+   /*map.mapdata[x][y] = newtile;
 
    if (x>=mapx && y>=mapy && x<mapx+64 && y<mapy+64)
    {
@@ -219,7 +220,7 @@ void map_chgtile(unsigned int x, unsigned int y, int newtile)
 			   newtile);
    }
 
-   map_redraw();
+   map_redraw();*/
 }
 
 // searches for animated tiles at the map position (X,Y) and
@@ -330,7 +331,7 @@ int c, i;
 // in (xout,yout)
 char map_findobject(unsigned int obj, int *xout, int *yout)
 {
-unsigned int x,y;
+/*unsigned int x,y;
 
   for(y=2;y<map.ysize-2;y++)
   {
@@ -343,7 +344,7 @@ unsigned int x,y;
         return 1;
       }
     }
-  }
+  }*/
   return 0;
 }
 
@@ -353,7 +354,7 @@ unsigned int x,y;
 // in (xout,yout)
 char map_findtile(unsigned int tile, int *xout, int *yout)
 {
-unsigned int x,y;
+/*unsigned int x,y;
 
   for(y=2;y<map.ysize-2;y++)
   {
@@ -366,7 +367,7 @@ unsigned int x,y;
         return 1;
       }
     }
-  }
+  }*/
   return 0;
 }
 

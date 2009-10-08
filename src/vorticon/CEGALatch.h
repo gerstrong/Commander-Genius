@@ -26,7 +26,7 @@ public:
 	virtual ~CEGALatch();
 
 	bool loadHead(char *data, short m_episode );
-	bool loadData( std::string &m_path, short m_episode, bool compresseddata );
+	bool loadData( std::string &m_path, short m_episode, int version, unsigned char *data, bool compresseddata );
 
 	void applyMasks();
 

@@ -44,6 +44,7 @@ CPlayGame::CPlayGame( char episode, char level,
 		CObject object;
 		mp_Player[i].m_player_number = i;
 		mp_Player[i].m_episode = m_Episode;
+		mp_Player[i].mp_levels_completed = mp_level_completed;
 
 		m_Object.push_back(object);
 		m_Object[i].exists = true;
@@ -233,10 +234,10 @@ void CPlayGame::drawObjects()
 	              for(xa=0;xa<=xsize;xa+=16)
 	              {
 	                tl = getmaptileat(x+xa,y+ya);
-	                if(TileProperty[tl][BEHAVIOR] == 65534)
-	                	g_pGfxEngine->Tilemap->drawTile(sfc, x+xa-scroll_x, y+ya-scroll_y, tl+1);
-	                else if (TileProperty[tl][BEHAVIOR] == 65535)
-	                   g_pGfxEngine->Tilemap->drawTile(sfc, x+xa-scroll_x, y+ya-scroll_y, tl);
+	                if(g_pGfxEngine->Tilemap->mp_tiles[tl].behaviour == -2)
+	                	g_pGfxEngine->Tilemap->drawTile(sfc, x+xa-mp_Map->m_scrollx, y+ya-mp_Map->m_scrolly, tl+1);
+	                else if (g_pGfxEngine->Tilemap->mp_tiles[tl].behaviour == -1)
+	                   g_pGfxEngine->Tilemap->drawTile(sfc, x+xa-mp_Map->m_scrollx, y+ya-mp_Map->m_scrolly, tl);
 	              }
 	            }
 	        }

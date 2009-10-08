@@ -109,6 +109,7 @@ struct stString
   unsigned int attrvalues[MAX_ATTRIBUTES+1];
 };
 
+#include "externals.h"
 
 #define NUM_OBJ_TYPES      41
 
@@ -350,7 +351,6 @@ SE_MORTIMER_RANDOMZAPS
 #define GFXDIR					"data/res/gfx/"
 
 #include "include/declarations.h"
-#include "externals.h"
 #include "sdl/CSettings.h"
 
 struct stCloneKeenPlus

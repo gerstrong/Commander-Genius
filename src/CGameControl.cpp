@@ -8,7 +8,6 @@
 #include "CGameControl.h"
 #include "fileio/CExeFile.h"
 #include "fileio/CPatcher.h"
-#include "fileio/CTileLoader.h"
 #include "fileio.h"
 #include "CLogFile.h"
 #include "sdl/sound/CSound.h"
@@ -76,10 +75,10 @@ unsigned char *p_exedata;
 	if( m_DataDirectory.size() > 0 && m_DataDirectory[m_DataDirectory.size()-1] != '/' )
 		m_DataDirectory += "/";
 
-    	// Get the EXE of the game and decompress it if needed.
-    	if(!ExeFile.readData()) return false;
+    // Get the EXE of the game and decompress it if needed.
+    if(!ExeFile.readData()) return false;
 
-    	version = ExeFile.getEXEVersion();
+    version = ExeFile.getEXEVersion();
 	p_exedata = ExeFile.getData();
 
 	g_pLogFile->ftextOut("Commander Keen Episode %d (Version %d.%d) was detected.<br>", Episode, version/100, version%100);
@@ -96,21 +95,12 @@ unsigned char *p_exedata;
 		Patcher.patchMemory();
 	}
 
-	// Load tile attributes.
-	{
-		CTileLoader TileLoader( Episode, version, p_exedata );
-		if(!TileLoader.load()) {
-			g_pLogFile->textOut(RED, "CGameControl::loadResources: Could not load data for the tiles<br>");
-			return false;
-		}
-	}
-
 	// Decode the entire graphics for the game (EGALATCH, EGASPRIT, etc.)
 	if(m_EGAGraphics) delete m_EGAGraphics; // except for the first start of a game this always happens
-	m_EGAGraphics = new CEGAGraphics(Episode, DataDirectory); // Path is relative to the data dir
+	m_EGAGraphics = new CEGAGraphics(Episode, DataDirectory ); // Path is relative to the data dir
     	if(!m_EGAGraphics) return false;
 
-    	m_EGAGraphics->loadData();
+    	m_EGAGraphics->loadData( version, p_exedata );
 
     	// load the strings. TODO: After that this one will replace loadstrings
     	//m_Messages = new CMessages();

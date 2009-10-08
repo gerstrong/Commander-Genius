@@ -22,13 +22,27 @@
 #define ATILEINUSE_SIZEX               33
 #define ATILEINUSE_SIZEY               33
 
+#define MAX_TILES    800
 
 #include <SDL/SDL.h>
 #include <string>
 
+typedef struct
+{
+ int masktile;        // if nonzero, specifies a mask for this tile
+ int chgtile;         // tile to change to when level completed (for wm)
+					 // or tile to change to when picked up (in-level)
+ unsigned int animOffset;   // starting offset from the base frame
+
+ // Tile Properties start here!
+ char animation;
+ char behaviour;
+ char bup,bright,bdown,bleft;
+} stTile;
+
 class CTilemap {
 public:
-	CTilemap();
+	CTilemap(stTile *pTileProperties);
 	virtual ~CTilemap();
 
 	bool CreateSurface(SDL_Color *Palette, Uint32 Flags);
@@ -41,6 +55,10 @@ public:
 	void animateAllTiles(SDL_Surface *dst);
 	void unregisterAnimtiles(int tile);
 	void registerAnimation(Uint32 x, Uint32 y, int c);
+
+	stTile *mp_tiles;
+
+	int m_numtiles;
 
 private:
 	 SDL_Surface *m_Tilesurface;

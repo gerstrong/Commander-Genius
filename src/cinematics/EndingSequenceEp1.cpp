@@ -74,10 +74,10 @@ int eseq1_ReturnsToShip(stCloneKeenPlus *pCKP)
 
 void addshipqueue(int cmd, int time, int flag1)
 {
-  shipqueue[ShipQueuePtr].cmd = cmd;
+  /*shipqueue[ShipQueuePtr].cmd = cmd;
   shipqueue[ShipQueuePtr].time = time;
   shipqueue[ShipQueuePtr].flag1 = flag1;
-  ShipQueuePtr++;
+  ShipQueuePtr++;*/
 }
 
 int eseq1_ShipFlys(stCloneKeenPlus *pCKP, bool flyback)

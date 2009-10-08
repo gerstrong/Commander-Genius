@@ -61,6 +61,7 @@ private:
 	char m_Difficulty;
 	char m_level_command;
 	std::string m_Gamepath;
+	bool mp_level_completed[16];
 
 	CMap *mp_Map;
 	CMenu *mp_Menu;

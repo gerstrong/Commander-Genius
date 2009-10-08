@@ -52,37 +52,24 @@ int DemoObjectHandle;
 int DemoSprite;
 int fps=0, curfps=0;
 
-//stOption *options = NULL;
 
 unsigned int demo_RLERunLen;
 unsigned char demo_data[DEMO_MAX_SIZE+1];
 unsigned int demo_data_index;
 
-char QuitState = NO_QUIT;
-
 stString strings[MAX_STRINGS+1];
 int numStrings = 0;
-
-FILE *demofile = NULL;
 
 char ScreenIsScrolling;
 int gunfiretimer, gunfirefreq;
 
 char loadinggame, loadslot;
 
-stMap map;
-unsigned int AnimTileInUse[ATILEINUSE_SIZEX][ATILEINUSE_SIZEY];
-stTile tiles[MAX_TILES+1];
-
 unsigned int objdefsprites[NUM_OBJ_TYPES+1];
 
 int thisplayer;
 unsigned char primaryplayer;
 unsigned char numplayers;
-
-int crashflag,crashflag2,crashflag3;
-const char *why_term_ptr = "No reason given.";
-
 
 int main(int argc, char *argv[])
 {
@@ -241,7 +228,7 @@ short abortCKP(stCloneKeenPlus *pCKP)
 //  DEMO_RESULT_CANCELED               user canceled the demo
 char play_demo(int demonum, stCloneKeenPlus *pCKP, int s)
 {
-int i;
+/*int i;
 int byt;
 int lvl;
 char filename[40];
@@ -429,6 +416,6 @@ short readCommandLine(int argc, char *argv[], stCloneKeenPlus *pCKP)
 	        return 1;
 	      }
 	    }
-	  }
+	  }*/
 	  return 0;
 }

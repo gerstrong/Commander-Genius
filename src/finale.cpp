@@ -99,8 +99,8 @@ int i;
    fp = OpenGameFile(fname.c_str(), "rb");
    if (!fp)
    {
-     crashflag = 1;
-     why_term_ptr = "finale_draw(): cannot open finake.ck? file.";
+    // crashflag = 1;
+    // why_term_ptr = "finale_draw(): cannot open finake.ck? file.";
      return;
    }
 

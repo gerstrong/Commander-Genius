@@ -967,10 +967,10 @@ char checkissolidr(int x, int y, int cp, stCloneKeenPlus *pCKP)
 // initialize sprites that come from tiles, such as the doors
 void initsprites(stCloneKeenPlus *pCKP, int s)
 {
-int i;
-CSprite** sprite = &g_pGfxEngine->Sprite[0];
+//int i;
+//CSprite** sprite = &g_pGfxEngine->Sprite[0];
 
-	for(i=0 ; i < numtiles ; i++ )
+	/*for(i=0 ; i < numtiles ; i++ )
 	{
 		if(TileProperty[i][BEHAVIOR] == DOOR_YELLOW)
 			g_pGfxEngine->copyTileToSprite(i-1, DOOR_YELLOW_SPRITE, 2);
@@ -983,10 +983,10 @@ CSprite** sprite = &g_pGfxEngine->Sprite[0];
 
 		if(TileProperty[i][BEHAVIOR] == DOOR_BLUE)
 			g_pGfxEngine->copyTileToSprite(i-1, DOOR_BLUE_SPRITE, 2);
-	}
+	}*/
 
     // create BLANKSPRITE
-    sprite[s]->setSize(0, 0);
+    //sprite[s]->setSize(0, 0);
 
     // TODO: Demo-Sprite must be added. This time loaded from one TGA File! The TGA is already there!
 

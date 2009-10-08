@@ -37,7 +37,7 @@ CSavedGame::~CSavedGame() {
 
 char CSavedGame::save(int slot)
 {
-FILE *fp;
+/*FILE *fp;
 std::string fname;
 
 	fname = "";
@@ -85,14 +85,14 @@ std::string fname;
 		//sgrle_compress(fp, (unsigned char *)&player[i], sizeof(player[i]));
 
 	// save state of partially-opened doors
-	/*CSprite **sprites = &g_pGfxEngine->Sprite[0];
+	CSprite **sprites = &g_pGfxEngine->Sprite[0];
 
 	fputc(sprites[DOOR_YELLOW_SPRITE]->getWidth(), fp);
 	fputc(sprites[DOOR_RED_SPRITE]->getWidth(), fp);
 	fputc(sprites[DOOR_GREEN_SPRITE]->getWidth(), fp);
-	fputc(sprites[DOOR_BLUE_SPRITE]->getWidth(), fp);*/
+	fputc(sprites[DOOR_BLUE_SPRITE]->getWidth(), fp);
 
-	fclose(fp);
+	fclose(fp);*/
 	return 0;
 }
 
@@ -135,7 +135,7 @@ void CSavedGame::readHeader(FILE *fp, uchar *episode, uchar *level, uchar *lives
 
 bool CSavedGame::load(int slot)
 {
-FILE *fp;
+/*FILE *fp;
 std::string fname;
 unsigned char episode, level, lives;
 unsigned int i;
@@ -209,6 +209,6 @@ unsigned int i;
 	fclose(fp);
 
 	g_pLogFile->ftextOut("Structures restored: map size: %d,%d\n", map.xsize, map.ysize);
-	g_pLogFile->ftextOut("Load game OK\n");
+	g_pLogFile->ftextOut("Load game OK\n");*/
 	return true;
 }

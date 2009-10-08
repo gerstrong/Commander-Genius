@@ -105,16 +105,19 @@ public:
 	void setWorldMapdir();
 	void selectFrameOnWorldMap();
 	void setWMblockedlrud();
+	void AllowEnterLevelonWM();
 	bool isWMSolid(int xb, int yb, bool *levels_completed);
 	void Walking();
 	void WalkingAnimation();
 	void InertiaAndFriction_X();
 	void InertiaAndFriction_Y();
+	void AllowMountUnmountNessie();
 
 	// In Level specific
 	void processInLevel();
 
 	// Used for both situations
+	void StatusBox();
 	void ProcessInput();
 
 	virtual ~CPlayer();
@@ -162,7 +165,7 @@ public:
 	bool blockedl,blockedr,blockedu,blockedd;
 	unsigned int blockedby;
 
-	bool *m_levels_completed;
+	bool *mp_levels_completed;
 
 	unsigned char pjumping, pjumptime, pjumpupspeed_decreasetimer, pjumpdir;
 	unsigned char pjumpframe, pjumpanimtimer, pjumpupspeed;
@@ -218,6 +221,8 @@ public:
 	 bool HasBattery;
 	 bool HasVacuum;
 	} inventory;
+
+	unsigned int m_level_coordinates;
 };
 
 #endif /* CPLAYER_H_ */

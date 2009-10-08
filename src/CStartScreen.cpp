@@ -60,7 +60,7 @@ short openDlgStruct(stDlgStruct *pDlgStruct, stCloneKeenPlus *pCKP);
 	gamedo_frameskipping_blitonly();
 }*/
 
-short loadResourcesforStartMenu(stCloneKeenPlus *pCKP, CGame *Game)
+/*short loadResourcesforStartMenu(stCloneKeenPlus *pCKP, CGame *Game)
 {
 	std::string line;
 
@@ -120,7 +120,7 @@ short loadResourcesforStartMenu(stCloneKeenPlus *pCKP, CGame *Game)
 		checkConsistencyofGameData(&(pCKP->GameData[c]));
 	}
 
-	//  /* Load the graphics of the first game for displaying the menu */ /* Graphics of the first Episode are taken*/
+	//   Load the graphics of the first game for displaying the menu */ /* Graphics of the first Episode are taken
 	if(!pCKP->Control.skipstarting)
 		pCKP->Control.levelcontrol.episode = 1;
 	else
@@ -136,7 +136,7 @@ short loadResourcesforStartMenu(stCloneKeenPlus *pCKP, CGame *Game)
 	initgame( &(pCKP->Control.levelcontrol) );
 
 	return 0;
-}
+}*/
 
 
 #define MAINMENU_GOTO_DEMO_TIME      4000

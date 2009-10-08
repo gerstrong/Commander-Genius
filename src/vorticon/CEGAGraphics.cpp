@@ -53,7 +53,7 @@ CEGAGraphics::~CEGAGraphics() {
 	if(m_Sprit) delete m_Sprit;
 }
 
-bool CEGAGraphics::loadData()
+bool CEGAGraphics::loadData( int version, unsigned char *p_exedata )
 {
 	std::string buf;
 	vector<char> databuf;
@@ -116,7 +116,7 @@ bool CEGAGraphics::loadData()
 
     m_Latch->loadHead( data, m_episode);
 
-    m_Latch->loadData( m_path, m_episode, (compressed>>1)); // The second bit tells, if latch is compressed.
+    m_Latch->loadData( m_path, m_episode, version, p_exedata, (compressed>>1)); // The second bit tells, if latch is compressed.
 
 
     m_Sprit = new CEGASprit(SpritePlaneSize,

@@ -12,7 +12,7 @@
 #include <cstring>
 
 #include "../keen.h"
-#include "../include/CStartScreen.h"
+//#include "../include/CStartScreen.h"
 #include "../include/gamedo.h"
 #include "CHighScores.h"
 #include "../sdl/CInput.h"
@@ -57,7 +57,7 @@ CHighScores::~CHighScores() {
 
 char CHighScores::showHighScore(void)
 {
-	unsigned char i;
+	/*unsigned char i;
 	int x1,y1;
 	int x2,y2;
 	int x3,y3;
@@ -145,13 +145,13 @@ char CHighScores::showHighScore(void)
 
 		gamedo_RenderScreen();
 	}while(!g_pInput->getPressedAnyKey());
-
+*/
 	return 0;
 }
 
 char CHighScores::writeHighScore(int points, bool *extras, int cities)
 {
-	int place;
+/*	int place;
 	char buf[256];
 
 	unsigned char i;
@@ -358,13 +358,13 @@ char CHighScores::writeHighScore(int points, bool *extras, int cities)
 	}while(!g_pInput->getPressedKey(KENTER));
 
 	saveHighScoreTable();
-
+*/
 	return 0;
 }
 
 char CHighScores::loadHighScoreTable(void)
 {
-	string sBuf;
+	/*string sBuf;
 	std::string chBuf = itoa(Episode);
 
 	sBuf.append("");
@@ -388,14 +388,14 @@ char CHighScores::loadHighScoreTable(void)
 	ScoreTableFile.seekg(7*4*sizeof(char),ios_base::cur);
 	ScoreTableFile.read((char*)Cities, 7*sizeof(unsigned char));
 
-	ScoreTableFile.close();
+	ScoreTableFile.close();*/
 
 	return 0;
 }
 
 char CHighScores::saveHighScoreTable(void)
 {
-	string sBuf;
+	/*string sBuf;
 	char chBuf[256];
 
 	sprintf(chBuf,"%d",Episode);
@@ -422,7 +422,7 @@ char CHighScores::saveHighScoreTable(void)
 	ScoreTableFile.write((char*) Cities, 7*sizeof(unsigned char));
 
 
-	ScoreTableFile.close();
+	ScoreTableFile.close();*/
 
 	return 0;
 }

@@ -53,7 +53,7 @@ char buf[80];
 
 void cleanup(stCloneKeenPlus *CKP)
 {
-	if(CKP->GameData){ delete[] CKP->GameData; CKP->GameData = NULL; }
+	/*if(CKP->GameData){ delete[] CKP->GameData; CKP->GameData = NULL; }
 
 	g_pLogFile->fltextOut(BLACK,true," Freed %d strings.<br>", freestrings());
 
@@ -69,12 +69,12 @@ void cleanup(stCloneKeenPlus *CKP)
     }
 
     g_pLogFile->fltextOut(BLACK,true," Graphics driver shut down.<br>");
-    g_pLogFile->ftextOut("<br>");
+    g_pLogFile->ftextOut("<br>");*/
 }
 
 bool showGameHint(int mpx, int mpy, int episode, int level)
 {
-	std::string strname;
+	/*std::string strname;
 
 	if(episode == 1)
 	{
@@ -128,7 +128,7 @@ bool showGameHint(int mpx, int mpy, int episode, int level)
     	g_pVideoDriver->update_screen();
     } while(!g_pInput->getPressedAnyCommand());
 
-    delete InfoTextWindow;
+    delete InfoTextWindow;*/
     return true;
 }
 
@@ -516,7 +516,7 @@ const int twirlspeed = 100;
 // returns either the selected slot or 0 if canceled
 char save_slot_box(int issave, stCloneKeenPlus *pCKP,int ingame)
 {
-char saveslot;
+/*char saveslot;
 FILE *fp;
 std::string fname;
 char slotexists;
@@ -580,7 +580,7 @@ top: ;
 		  return 0;
   } while(!saveslot);
 
-  /* check if the selected save file exists */
+  // check if the selected save file exists
 	fname = pCKP->Resources.GameDataDirectory;
 	fname += "/ep";
 	fname += p_levelcontrol->episode+'0';
@@ -655,7 +655,7 @@ top: ;
 	  g_pInput->pollEvents();
   } while(!g_pInput->getPressedKey(KQUIT));
 
-  map_redraw();
+  map_redraw();*/
   return 0;
 }
 
@@ -702,7 +702,7 @@ int dlgX,dlgY,dlgW,dlgH;
 
 int VerifyQuit()
 {
-int dlgX,dlgY,dlgW,dlgH;
+/*int dlgX,dlgY,dlgW,dlgH;
 	std::string text;
 
   text = getstring("VerifyQuit");
@@ -746,7 +746,8 @@ int dlgX,dlgY,dlgW,dlgH;
 	g_pInput->pollEvents();
 
 	gamedo_frameskipping_blitonly();
-  } while(1);
+  } while(1);*/
+	return 0;
 }
 
 void AllPlayersInvisible(void)

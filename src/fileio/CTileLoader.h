@@ -8,28 +8,7 @@
 #ifndef CTILELOADER_H_
 #define CTILELOADER_H_
 
-#define MAX_TILES    800
-
-// Tile information planes
-enum TileEmurations{
-	ANIMATION,
-	BEHAVIOR,
-	BUP,
-	BRIGHT,
-	BDOWN,
-	BLEFT
-};
-
-extern int numtiles;
-extern int **TileProperty;
-
-typedef struct
-{
- int masktile;        // if nonzero, specifies a mask for this tile
- int chgtile;         // tile to change to when level completed (for wm)
-					 // or tile to change to when picked up (in-level)
- unsigned int animOffset;   // starting offset from the base frame
-} stTile;
+#include "../graphics/CTilemap.h"
 
 class CTileLoader {
 public:
@@ -38,13 +17,18 @@ public:
 
 	bool load();
 
+	stTile *getTileProperties() { return mp_TileProperty; }
+
 private:
 	int m_episode;
 	int m_version;
 	long m_offset;
 	unsigned char *m_data;
+	int m_numtiles;
 
-	void assignChangeTileAttribute(stTile *tile);
+	stTile *mp_TileProperty;
+
+	void assignChangeTileAttribute();
 	bool setProperOffset();
 	bool canbePickedup(int tile);
 	bool isaDoor(int tile);

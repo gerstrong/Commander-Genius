@@ -10,17 +10,16 @@
 #include "CPalette.h"
 #include <stdlib.h>
 
-extern stTile tiles[MAX_TILES+1];
-
-CTilemap::CTilemap() {
+CTilemap::CTilemap(stTile *pTileProperties) {
 	m_Tilesurface = NULL;
 	memset( m_AnimTileInUse, 0, sizeof(m_AnimTileInUse));
 	memset( m_animtiles, 0, sizeof(m_animtiles));
 	m_animtiletimer = m_curanimtileframe = 0;
+	mp_tiles = pTileProperties;
 }
 
 CTilemap::~CTilemap() {
-	// TODO Auto-generated destructor stub
+	if(mp_tiles) delete [] mp_tiles;
 }
 
 bool CTilemap::CreateSurface(SDL_Color *Palette, Uint32 Flags)
@@ -103,7 +102,7 @@ void CTilemap::animateAllTiles(SDL_Surface *dst)
        		  drawTile( dst, m_animtiles[i].x, m_animtiles[i].y,
        				  m_animtiles[i].baseframe+
        				  ((m_animtiles[i].offset+m_curanimtileframe)%
-       				  TileProperty[m_animtiles[i].baseframe][ANIMATION]));
+       					mp_tiles[m_animtiles[i].baseframe].animation));
           }
       }
       m_animtiletimer = 0;
@@ -135,7 +134,7 @@ void CTilemap::registerAnimation(Uint32 x, Uint32 y, int c)
     }
 
     // we just drew an animated tile which we will now register
-    if ( TileProperty[c][ANIMATION] > 1 )
+    if ( mp_tiles[c].animation > 1 )
     {
       for(int i=1 ; i<MAX_ANIMTILES-1 ; i++)
       {
@@ -143,8 +142,8 @@ void CTilemap::registerAnimation(Uint32 x, Uint32 y, int c)
         {  // we found an unused slot
             m_animtiles[i].x = x;
             m_animtiles[i].y = y;
-            m_animtiles[i].baseframe = c - tiles[c].animOffset;
-            m_animtiles[i].offset = tiles[c].animOffset;
+            m_animtiles[i].baseframe = c - mp_tiles[c].animOffset;
+            m_animtiles[i].offset = mp_tiles[c].animOffset;
             m_animtiles[i].slotinuse = 1;
             m_AnimTileInUse[x>>4][y>>4] = i;
             break;

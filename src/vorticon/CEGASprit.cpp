@@ -297,21 +297,21 @@ void CEGASprit::LoadSpecialSprites( std::vector<CSprite*> &sprite )
 void CEGASprit::DeriveSpecialSprites( CTilemap *tilemap, CSprite **sprite )
 {
 	Uint16 t;
-	for( t=0 ; t<numtiles ; t++)
+	for( t=0 ; t<tilemap->m_numtiles ; t++)
 	{
 		// The Gun!
-		if( TileProperty[t][BEHAVIOR]==15 )
+		if( tilemap->mp_tiles[t].behaviour==15 )
 			CreateYellowSpriteofTile( tilemap, t, sprite[GUNUP_SPRITE] );
 
 		// Keycards
-		if( TileProperty[t][BEHAVIOR]>=18 && TileProperty[t][BEHAVIOR]<=21 )
-			CreateYellowSpriteofTile( tilemap, t, sprite[PTCARDB_SPRITE+TileProperty[t][BEHAVIOR]-18]);
+		if( tilemap->mp_tiles[t].behaviour>=18 && tilemap->mp_tiles[t].behaviour<=21 )
+			CreateYellowSpriteofTile( tilemap, t, sprite[PTCARDB_SPRITE+tilemap->mp_tiles[t].behaviour-18]);
 
 		// Single Bullet in Ep3
-		if( TileProperty[t][BEHAVIOR]==28 )
+		if( tilemap->mp_tiles[t].behaviour==28 )
 			CreateYellowSpriteofTile( tilemap, t, sprite[SHOTUP_SPRITE] );
 
-		if( TileProperty[t][BEHAVIOR]==27 )
+		if( tilemap->mp_tiles[t].behaviour==27 )
 			CreateYellowSpriteofTile( tilemap, t, sprite[ANKHUP_SPRITE] );
 	}
 }

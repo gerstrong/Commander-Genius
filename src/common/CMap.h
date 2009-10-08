@@ -37,6 +37,9 @@ public:
 	Uint16 at(Uint16 x, Uint16 y);
 	bool setTile(Uint16 x, Uint16 y, Uint16 t);
 
+	unsigned int getlevelat(unsigned int x, unsigned int y)	{
+				return m_objectlayer[x>>4][y>>4];	}
+
 	 Sint16 m_scrollx_buf;		// Amount to move surface in X.
 	 Sint16 m_scrolly_buf; 		// Amount to move surface in Y.
 

@@ -26,7 +26,7 @@ CPlayer::CPlayer() {
 	hideplayer = false;
 	pwalkframe = 0;
 	m_player_number = 0;
-	m_levels_completed = NULL;
+	mp_levels_completed = NULL;
 	mp_object = NULL;
 
     dpadcount = 0;
@@ -42,7 +42,6 @@ CPlayer::CPlayer() {
     pfiring = 0;
     psliding = psemisliding = 0;
     pdie = 0;
-    blockedd = blockedl = blockedr = blockedu = false;
 
     pfrozentime = 0;
     ankhtime = 0;
@@ -50,6 +49,12 @@ CPlayer::CPlayer() {
     pjustjumped = pjustfell = 0;
 }
 
+
+void CPlayer::StatusBox()
+{
+  /*if( g_pInput->getHoldedCommand(cp, IC_STATUS) )
+	  showinventory(cp, pCKP);*/
+}
 
 // handles walking. the walking animation is handled by gamepdo_walkinganim()
 void CPlayer::Walking()

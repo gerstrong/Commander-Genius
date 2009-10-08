@@ -12,14 +12,13 @@
 #include <cstdlib>
 #include <string>
 
-extern stTile tiles[MAX_TILES+1];
-
 CTileLoader::CTileLoader(int episode, int version, unsigned char *data) {
-	TileProperty = NULL;
 	m_episode = episode;
 	m_version = version;
 	m_data = data;
 	m_offset = 0;
+	mp_TileProperty = NULL;
+	m_numtiles = 0;
 }
 
 bool CTileLoader::setProperOffset()
@@ -29,7 +28,7 @@ bool CTileLoader::setProperOffset()
 	{
 		case 1:
 		{
-			numtiles = 611;
+			m_numtiles = 611;
 			switch(m_version)
 			{
 				case 110: m_offset = 0x131F8; break;
@@ -42,7 +41,7 @@ bool CTileLoader::setProperOffset()
 		}
 		case 2:
 		{
-			numtiles = 689;
+			m_numtiles = 689;
 			switch(m_version)
 			{
 				case 100: m_offset = 0x17938; break;
@@ -52,7 +51,7 @@ bool CTileLoader::setProperOffset()
 		}
 		case 3:
 		{
-			numtiles = 715;
+			m_numtiles = 715;
 			switch(m_version)
 			{
 				case 100: m_offset = 0x199F8; break;
@@ -74,82 +73,78 @@ bool CTileLoader::setProperOffset()
 bool CTileLoader::load()
 {
 	std::string fname;
-	int i,j; // standard counters
+	int j; // standard counters
 
 	if(!setProperOffset()) return false;
 
-	TileProperty = new int*[MAX_TILES];
+	mp_TileProperty = new stTile[m_numtiles];
 
-	for(i = 0 ; i < MAX_TILES ; i++)
+	if(!mp_TileProperty)
 	{
-		TileProperty[i] = NULL;
-		TileProperty[i] = new int[6];
-	}
-
-	for(j=0 ; j < MAX_TILES ; j++ )
-	{
-		for(i=0; i < 6 ; i++)
-			TileProperty[j][i]=0;
-	}
-
-	if(TileProperty == NULL)
-	{
-	     g_pLogFile->textOut(RED,"TileLoader: The memory couldn't be allocated for this version of game!<br>");
+	     g_pLogFile->textOut(RED,"TileLoader: Memory couldn't be allocated for this version of game!<br>");
 	     return false;
 	}
 
-	for(i=0 ; i < 6 ; i++)
+	for(j=0 ; j < m_numtiles ; j++)
 	{
-		for(j=0 ; j < numtiles ; j++)
-		{
-			TileProperty[j][i] = m_data[i*2*(numtiles)+2*j];
-			TileProperty[j][i] += m_data[i*2*(numtiles)+2*j+1]<<8;
-		}
+		mp_TileProperty[j].animation = m_data[1*2*(m_numtiles)+2*j];
+		mp_TileProperty[j].animation = m_data[1*2*(m_numtiles)+2*j+1] << 8;
+		mp_TileProperty[j].behaviour = m_data[2*2*(m_numtiles)+2*j];
+		mp_TileProperty[j].behaviour = m_data[2*2*(m_numtiles)+2*j+1] << 8;
+		mp_TileProperty[j].bup = m_data[3*2*(m_numtiles)+2*j];
+		mp_TileProperty[j].bup = m_data[3*2*(m_numtiles)+2*j+1] << 8;
+		mp_TileProperty[j].bright = m_data[4*2*(m_numtiles)+2*j];
+		mp_TileProperty[j].bright = m_data[4*2*(m_numtiles)+2*j+1] << 8;
+		mp_TileProperty[j].bdown = m_data[5*2*(m_numtiles)+2*j];
+		mp_TileProperty[j].bdown = m_data[5*2*(m_numtiles)+2*j+1] << 8;
+		mp_TileProperty[j].bleft = m_data[6*2*(m_numtiles)+2*j];
+		mp_TileProperty[j].bleft = m_data[6*2*(m_numtiles)+2*j+1] << 8;
 	}
 
+
 	int value;
-	for( j=0 ; j < numtiles ;)
+	for( j=0 ; j < m_numtiles ; )
 	{
-		value = TileProperty[j][0];
+		value = mp_TileProperty[j].animation;
 
 		// stuff for animated tiles
 		if(value == 1)
 		{
-		    tiles[j++].animOffset = 0;   // starting offset from the base frame
+			mp_TileProperty[j++].animOffset = 0;   // starting offset from the base frame
 		}
 		else if( value == 2 )
 		{
-			 tiles[j++].animOffset = 0;   // starting offset from the base frame
-			 tiles[j++].animOffset = 1;   // starting offset from the base frame
+			mp_TileProperty[j++].animOffset = 0;   // starting offset from the base frame
+			mp_TileProperty[j++].animOffset = 1;   // starting offset from the base frame
 		}
 		else
 		{
-			 tiles[j++].animOffset = 0;   // starting offset from the base frame
-			 tiles[j++].animOffset = 1;   // starting offset from the base frame
-			 tiles[j++].animOffset = 2;   // starting offset from the base frame
-			 tiles[j++].animOffset = 3;   // starting offset from the base frame
+			mp_TileProperty[j++].animOffset = 0;   // starting offset from the base frame
+			mp_TileProperty[j++].animOffset = 1;   // starting offset from the base frame
+			mp_TileProperty[j++].animOffset = 2;   // starting offset from the base frame
+			mp_TileProperty[j++].animOffset = 3;   // starting offset from the base frame
 		}
 	}
 
 	// This function assigns the correct tiles that have to be changed
-	assignChangeTileAttribute(tiles);
+	assignChangeTileAttribute();
 
 	return true;
 }
 
-void CTileLoader::assignChangeTileAttribute(stTile *tile)
+void CTileLoader::assignChangeTileAttribute()
 {
 	// This special call is used for workarounds which are wrong in the tiles attributes file of CG.
 	// I hope those attributes can be read out of the exe-files in future.
 	// Everything to zero in order to avoid bugs in mods
-	for(int i=0 ; i<numtiles ; i++)
-		tile[i].chgtile = 0;
+	for(int i=0 ; i<m_numtiles ; i++)
+		mp_TileProperty[i].chgtile = 0;
 
 	// At any other case, than the special ones, the tile is always 143 for pickuppable items
 	// 17 is tile for an exit. Until row 19, this seems to be valid
-	for(int i=0 ; i<numtiles ; i++)
+	for(int i=0 ; i<m_numtiles ; i++)
 		if(canbePickedup(i) || isaDoor(i) )
-			tile[i].chgtile = 143;
+			mp_TileProperty[i].chgtile = 143;
 
 	switch(m_episode)
 	{
@@ -159,29 +154,29 @@ void CTileLoader::assignChangeTileAttribute(stTile *tile)
 			// TODO: Check out how to perform that chgtile algorithm
 			for(int i=38*13 ; i<39*13 ; i++) // Workaround for silcar 1. Row 38
 				if( canbePickedup(i) )
-					tile[i].chgtile = 439;
+					mp_TileProperty[i].chgtile = 439;
 
 			for(int i=35*13 ; i<36*13 ; i++) // Workaround for silcar 4. Row 35
 				if( canbePickedup(i) )
-					tile[i].chgtile = 335;
+					mp_TileProperty[i].chgtile = 335;
 
 			for(int i=23*13 ; i<24*13 ; i++) // Workaround in Level 12 of Episode 2, where the tiles are solid after a taken item.
-					tile[i].chgtile = 276;   // Row 23
+					mp_TileProperty[i].chgtile = 276;   // Row 23
 
 			break;
 		}
 		case 3:
 		{
 			// Episode 3 is a special case, because the items are repeated 6 times
-			for(int i=0 ; i<=numtiles ; i++)
+			for(int i=0 ; i<=m_numtiles ; i++)
 			{
 				// Only items!!
 				if(canbePickedup(i))
-					tile[i].chgtile = (i/13)*13;
+					mp_TileProperty[i].chgtile = (i/13)*13;
 
 				// Only for Doors! Tile is always 182
 				if(isaDoor(i))
-					tile[i].chgtile = 182;
+					mp_TileProperty[i].chgtile = 182;
 			}
 
 			break;
@@ -191,32 +186,18 @@ void CTileLoader::assignChangeTileAttribute(stTile *tile)
 
 bool CTileLoader::canbePickedup(int tile)
 {
-	return ((TileProperty[tile][BEHAVIOR] >= 6 &&
-			TileProperty[tile][BEHAVIOR] <= 21 &&
-			TileProperty[tile][BEHAVIOR] != 17) ||
-			TileProperty[tile][BEHAVIOR] == 27 ||
-			TileProperty[tile][BEHAVIOR] == 28);
+	return ((mp_TileProperty[tile].behaviour >= 6 &&
+			mp_TileProperty[tile].behaviour <= 21 &&
+			mp_TileProperty[tile].behaviour != 17) ||
+			mp_TileProperty[tile].behaviour == 27 ||
+			mp_TileProperty[tile].behaviour == 28);
 }
 
 bool CTileLoader::isaDoor(int tile)
 {
-	return (TileProperty[tile][BEHAVIOR] >= 2 && TileProperty[tile][BEHAVIOR] <= 5);
+	return (mp_TileProperty[tile].behaviour >= 2 && mp_TileProperty[tile].behaviour <= 5);
 }
 
 CTileLoader::~CTileLoader() {
-	// Here we really start reading the tiles
-	// TODO: Use another function which unloads the tile properties
-	/*if(TileProperty != NULL)
-	{
-		for(int i = 0 ; i < MAX_TILES ; i++)
-		{
-			if(TileProperty[i] != NULL)
-			{
-				delete [] TileProperty[i];
-				TileProperty[i] = NULL;
-			}
-		}
-		delete [] TileProperty;
-		TileProperty = NULL;
-	}*/
+
 }

@@ -598,7 +598,7 @@ void gamedo_RenderScreen()
 
     g_pTimer->TimeToDelay();
 
-   curfps++;
+   //curfps++;
 }
 
 int ctspace=0, lastctspace=0;
@@ -700,14 +700,14 @@ void gamedo_HandleFKeys(stCloneKeenPlus *pCKP)
     }*/
 
     // F10 - change primary player
-    if(g_pInput->getPressedKey(KF10))
+    /*if(g_pInput->getPressedKey(KF10))
     {
         primaryplayer++;
         if (primaryplayer>=numplayers) primaryplayer=0;
     }
     // F3 - save game
     if (g_pInput->getPressedKey(KF3))
-       game_save_interface(pCKP);
+       game_save_interface(pCKP);*/
 
 }
 
