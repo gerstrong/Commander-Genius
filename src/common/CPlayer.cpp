@@ -14,6 +14,7 @@
 
 #include "../keen.h"
 #include "../sdl/CInput.h"
+#include "../sdl/sound/CSound.h"
 #include <stdlib.h>
 
 ///
@@ -26,6 +27,7 @@ CPlayer::CPlayer() {
 	pwalkframe = 0;
 	m_player_number = 0;
 	m_levels_completed = NULL;
+	mp_object = NULL;
 
     dpadcount = 0;
     hideplayer = false;
@@ -40,6 +42,7 @@ CPlayer::CPlayer() {
     pfiring = 0;
     psliding = psemisliding = 0;
     pdie = 0;
+    blockedd = blockedl = blockedr = blockedu = false;
 
     pfrozentime = 0;
     ankhtime = 0;
@@ -112,7 +115,7 @@ void CPlayer::Walking()
     }
 
     // test if we're trying to walk
-    if ((psemisliding && pinertia_x!=0) || (((playcontrol[PA_X] < 0) || (playcontrol[PA_X] > 0) || (((playcontrol[PA_Y] < 0) || (playcontrol[PA_Y] > 0))&&map.isworldmap)) && !inhibitwalking))
+    if ((psemisliding && pinertia_x!=0) || (((playcontrol[PA_X] < 0) || (playcontrol[PA_X] > 0) || (( (playcontrol[PA_Y] < 0) || (playcontrol[PA_Y] > 0)) && m_playingmode == WORLDMAP )) && !inhibitwalking))
     {
       // we just started walking or we changed directions suddenly?
       if (pwalking == 0 || ((lastpdir==RIGHT && pdir==LEFT)||(lastpdir==LEFT && pdir==RIGHT)))
@@ -195,7 +198,7 @@ void CPlayer::Walking()
           }
 
           // prevent sliding on map
-          if (map.isworldmap )
+          if ( m_playingmode == WORLDMAP )
           {
         	  if(pinertia_x < 0)
         	  {
@@ -215,6 +218,7 @@ void CPlayer::Walking()
       }
       else if (playcontrol[PA_X] < 0)
       {
+    	  // left
           // quickly reach PFASTINCMAXSPEED
           if (pwalkincreasetimer>=cur_pfastincrate && pinertia_x>-PFASTINCMAXSPEED)
           {
@@ -227,7 +231,7 @@ void CPlayer::Walking()
           }
 
           // prevent sliding on map
-          if (map.isworldmap )
+          if ( m_playingmode == WORLDMAP )
           {
         	  if(pinertia_x > 0)
         	  {
@@ -264,7 +268,7 @@ void CPlayer::Walking()
           }
 
           // prevent sliding on map
-          if (map.isworldmap )
+          if ( m_playingmode == WORLDMAP )
           {
         	  if(pinertia_y < 0)
         	  {
@@ -296,7 +300,7 @@ void CPlayer::Walking()
           }
 
           // prevent sliding on map
-          if (map.isworldmap )
+          if ( m_playingmode == WORLDMAP )
           {
         	  if(pinertia_y > 0)
         	  {
@@ -308,6 +312,98 @@ void CPlayer::Walking()
         	  }
           }
       }
+}
+
+// animation for walking
+void CPlayer::WalkingAnimation()
+{
+    // no walk animation while sliding
+    if (inhibitwalking || psliding ) return;
+
+    // should we do walk animation?
+    if (pwalking  || playpushed_x || psemisliding)
+    {
+    	int walkanimrate; // walk animation speed according to player speed
+
+    	if(!psemisliding)
+    	{
+    		walkanimrate = 101*PWALKANIMRATE/(treshold+1);
+        	if(walkanimrate > 150)
+        			walkanimrate = 150;
+    	}
+    	else
+    		walkanimrate = PWALKANIMRATE;
+
+    	// ** do walk animation **
+        if (pwalkanimtimer > walkanimrate)
+        { // time to change walking frame
+          // make walk noise
+          if (!pjumping && !pfalling)
+          {
+            if (!pfrozentime && pwalking)
+            {
+               if (pwalkframea&1)
+                 {
+            	   g_pSound->playStereofromCoord(SOUND_KEEN_WALK, PLAY_NOW, mp_object->scrx);
+                 }
+               else
+                 {
+            	   g_pSound->playStereofromCoord(SOUND_KEEN_WALK2, PLAY_NOW, mp_object->scrx);
+                 }
+
+               if( m_playingmode != WORLDMAP && (blockedr || blockedl) )
+               {
+            	   g_pSound->playStereofromCoord(SOUND_KEEN_BUMPHEAD, PLAY_NOW, mp_object->scrx);
+				   // It is not bumping a head, but walking in some direction and being blocked
+               }
+               else if ( m_playingmode == WORLDMAP )
+               {
+            	   // Same on world map!
+
+            	   short play=0;
+
+            	   if (blockedu && pdir == UP)
+            		   play=1;
+
+            	   if (blockedd && pdir == DOWN)
+            		   play=1;
+
+            	   if (blockedl && pdir == LEFT)
+            		   play=1;
+
+            	   if (blockedr && pdir == RIGHT)
+            		   play=1;
+
+            	   if (play)
+            		   g_pSound->playStereofromCoord(SOUND_KEEN_BUMPHEAD, PLAY_NOW, mp_object->scrx);
+               }
+
+            }
+          }
+          // increase walk frame and wrap it to 1st frame if needed
+          if (pwalkframea < 4)
+            { pwalkframea++; }
+          else
+            { pwalkframea=1; }
+
+          pwalkanimtimer = 0;
+        }
+        else
+        {  // did not change walk frame
+          pwalkanimtimer++;
+        }
+
+        // set walk frame: map frame "4" to frame "2", this gives a
+        // sequence of 1,2,3,2,1,2,3,2,1,2,3,2....
+        if (pwalkframea==4)
+        {
+          pwalkframe = 2;
+        }
+        else
+        {
+          pwalkframe = pwalkframea;
+        }
+    }
 }
 
 // handles inertia and friction for the X direction
@@ -420,28 +516,26 @@ void CPlayer::InertiaAndFriction_X()
   {
     if (pinertia_x < 0 && blockedl)
     {
-      if (!pwalking || (!pfalling && !pjumping) || pdir==RIGHT || (pfrozentime && p_levelcontrol->episode==1))
+      if (!pwalking || (!pfalling && !pjumping) || pdir==RIGHT || (pfrozentime && m_episode==1))
       {
 		 pinertia_x = pboost_x = 0;
 		 widejump = false;
       }
       else if (pinertia_x < -PFASTINCMAXSPEED)
       {
-    	  //pinertia_x--;
     	  pinertia_x >>= 1;
       }
       return;
     }
     else if (pinertia_x > 0 && blockedr)
     {
-      if (!pwalking || (!pfalling && !pjumping) || pdir==LEFT || (pfrozentime&&p_levelcontrol->episode==1))
+      if (!pwalking || (!pfalling && !pjumping) || pdir==LEFT || (pfrozentime && m_episode==1))
       {
     	 pinertia_x = pboost_x = 0;
     	 widejump = false;
       }
       else if (pinertia_x > PFASTINCMAXSPEED)
       {
-    	  //pinertia_x++;
     	  pinertia_x >>= 1;
       }
    	  return;
@@ -460,7 +554,7 @@ void CPlayer::InertiaAndFriction_X()
    // (unless we're about to make a pogo jump)
    if ( pjumping != PPREPAREPOGO)
    {
-	   x += (pinertia_x + playpushed_x);
+	   x += ((pinertia_x + playpushed_x)<<4);
    }
 
 
@@ -506,6 +600,44 @@ void CPlayer::InertiaAndFriction_X()
         else pfriction_timer_x++;
      }
    }
+}
+
+// handles inertia and friction for the Y direction
+// (this is where the inertia is actually applied to playx)
+void CPlayer::InertiaAndFriction_Y()
+{
+   if (hideplayer)
+   {
+     pinertia_y = 0;
+     return;
+   }
+
+   // if we hit a solid object kill all inertia
+   if (pinertia_y > 0 && blockedd)
+   {
+     pinertia_y = 0;
+   }
+   else if (pinertia_y < 0 && blockedu)
+   {
+     pinertia_y = 0;
+   }
+
+   // apply pinertia_y
+   y += (pinertia_y<<4);
+
+   // if we stopped walking (i.e. LRUD not held down) apply friction
+    //if (!keytable[KDOWN] && !keytable[KUP])
+    if (playcontrol[PA_Y] == 0)
+    {
+      // and apply friction to pinertia_y
+      if (pfriction_timer_y > PFRICTION_RATE_WM)
+      {
+        if (pinertia_y < 0) pinertia_y++;
+        else if (pinertia_y > 0) pinertia_y--;
+        pfriction_timer_y = 0;
+      }
+      else pfriction_timer_y++;
+    }
 }
 
 void CPlayer::ProcessInput()

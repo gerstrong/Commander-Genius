@@ -13,8 +13,8 @@
 #include <dirent.h>
 #include <iostream>
 #include <fstream>
-#include "StringUtils.h"
-#include "FindFile.h"
+#include "../StringUtils.h"
+#include "../FindFile.h"
 
 CGameLauncher::CGameLauncher() {
 	m_mustquit = false;

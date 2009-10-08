@@ -48,6 +48,7 @@ CPlayGame::CPlayGame( char episode, char level,
 		m_Object.push_back(object);
 		m_Object[i].exists = true;
 		m_Object[i].onscreen = true;
+		mp_Player[i].mp_object = &(m_Object.at(i));
 	}
 }
 
@@ -65,6 +66,15 @@ bool CPlayGame::init()
 
 	// Now Scroll to the position of the player and center him
 	mp_Map->gotoPos( (mp_Player[0].x>>5) - 160, (mp_Player[0].y>>5) - 100 );
+	// TODO: Must be changed. It is just a workaround while scrolling doesn't work.
+
+	for (int i=0 ; i<m_NumPlayers ; i++)
+	{
+		if( m_Level == WORLD_MAP_LEVEL )
+			mp_Player[i].m_playingmode = CPlayer::WORLDMAP;
+		else
+			mp_Player[i].m_playingmode = CPlayer::LEVELPLAY;
+	}
 
 	return true;
 }

@@ -8,6 +8,8 @@
 #ifndef CPLAYER_H_
 #define CPLAYER_H_
 
+#include "CObject.h"
+
 #define	PA_X		0
 #define	PA_Y   		1
 #define	PA_JUMP		2
@@ -24,17 +26,19 @@
 // upon starting to walk, keen will quickly increase to
 // PFASTINCMAXSPEED. keen can, at a slower rate,
 // reach up to PMAXSPEED (increased every walk anim frame)
-#define PFASTINCMAXSPEED  9
+//#define PFASTINCMAXSPEED 36
+#define PFASTINCMAXSPEED 2
 #define PMAXSPEED        14
-#define PJUMPINERTIA     30		// The higher, the value, the more difficult it is to jump or pogo
-#define PFASTINCRATE     16        // accel delay rate up to PFASTINCMAXSPEED
+#define PJUMPINERTIA     30
+#define PFASTINCRATE     64        // accel delay rate up to PFASTINCMAXSPEED
 #define PFASTINCRATE_POGO  50      // rate when pogo stick is out
 // rates at which player slows down
 #define PFRICTION_RATE_INAIR      25      //8
 #define PFRICTION_RATE_ONGROUND   5      //2
 #define PFRICTION_RATE_WM         1      // on world map
 // rate at which player walking animation is shown
-#define PWALKANIMRATE             40
+//#define PWALKANIMRATE             40
+#define PWALKANIMRATE             8
 
 // the various jump states
 #define PNOJUMP       0                 // not jumping
@@ -103,7 +107,9 @@ public:
 	void setWMblockedlrud();
 	bool isWMSolid(int xb, int yb, bool *levels_completed);
 	void Walking();
+	void WalkingAnimation();
 	void InertiaAndFriction_X();
+	void InertiaAndFriction_Y();
 
 	// In Level specific
 	void processInLevel();
@@ -125,6 +131,8 @@ public:
 	char m_playingmode;
 	char m_episode;
 	int m_player_number;
+	// Pointer to the Object type assign to this player
+	CObject *mp_object;
 
 	char godmode;
 
