@@ -87,7 +87,7 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 	return true;
 }
 
-bool CEGALatch::loadData( std::string &m_path, short m_episode, int version, unsigned char *data, bool compresseddata )
+bool CEGALatch::loadData( std::string &path, short episode, int version, unsigned char *data, bool compresseddata )
 {
 	std::string filename;
 	char *RawData;
@@ -98,17 +98,17 @@ bool CEGALatch::loadData( std::string &m_path, short m_episode, int version, uns
     // First, retrieve the Tile properties so the tilemap gets properly formatted
     // Important especially for masks
 	// Load tile attributes.
-	CTileLoader TileLoader( m_episode, version, data );
+	CTileLoader TileLoader( episode, version, data );
 	if(!TileLoader.load())
 	{
 		g_pLogFile->textOut(RED, "CGameControl::loadResources: Could not load data for the tiles<br>");
 		return false;
 	}
 
-	if(m_path == "") filename = "games/egalatch.ck" + itoa(m_episode);
-	else filename = m_path + "/egalatch.ck" + itoa(m_episode);
+	if(path == "") filename = "games/egalatch.ck" + itoa(episode);
+	else filename = path + "/egalatch.ck" + itoa(episode);
 
-	FILE* latchfile = OpenGameFile(filename.c_str(),"rb");
+	FILE* latchfile = OpenGameFile(filename,"rb");
 
 	if(!latchfile)
 		return false;
@@ -226,8 +226,8 @@ bool CEGALatch::loadData( std::string &m_path, short m_episode, int version, uns
      if(SDL_MUSTLOCK(sfc))	SDL_UnlockSurface(sfc);
 
      // Load Hires, VGA, SVGA Tiles into the tilemap
-     if(m_path == "") filename = "games/ck" + itoa(m_episode) + "tiles.bmp";
-     else filename = m_path + "/ck" + itoa(m_episode) + "tiles.bmp";
+     if(path == "") filename = "games/ck" + itoa(episode) + "tiles.bmp";
+     else filename = path + "/ck" + itoa(episode) + "tiles.bmp";
      if(Tilemap->loadHiresTile(filename))
     	 g_pLogFile->textOut(GREEN, "Hi-res Bitmap for Tiles was loaded successfully!");
 
