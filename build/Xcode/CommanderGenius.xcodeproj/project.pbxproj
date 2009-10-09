@@ -109,7 +109,6 @@
 		23C637D11031812500FEEFEE /* EndingSequenceEp3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637C41031812500FEEFEE /* EndingSequenceEp3.cpp */; };
 		23C637D21031812500FEEFEE /* CTextBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637C71031812500FEEFEE /* CTextBox.cpp */; };
 		23C637D31031812500FEEFEE /* CWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637C91031812500FEEFEE /* CWindow.cpp */; };
-		23C637D41031812500FEEFEE /* externals.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637CB1031812500FEEFEE /* externals.cpp */; };
 		23C637DB103181BF00FEEFEE /* COrderingInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637D9103181BF00FEEFEE /* COrderingInfo.cpp */; };
 		23C637E4103181D700FEEFEE /* icecannon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637E1103181D700FEEFEE /* icecannon.cpp */; };
 		63281EB410613B8700AC831C /* CMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63281EB210613B8700AC831C /* CMenu.cpp */; };
@@ -163,17 +162,6 @@
 		6350FA62104490B600A992D5 /* SOUNDS.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C51044797300A992D5 /* SOUNDS.CK1 */; };
 		6350FA63104490B600A992D5 /* STORYTXT.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C61044797300A992D5 /* STORYTXT.CK1 */; };
 		6350FA64104490B600A992D5 /* VENDOR.DOC in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C71044797300A992D5 /* VENDOR.DOC */; };
-		6350FA65104490B600A992D5 /* demo.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7C81044797300A992D5 /* demo.dat */; };
-		6350FA67104490B600A992D5 /* ep1demo1.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7CA1044797300A992D5 /* ep1demo1.dat */; };
-		6350FA68104490B600A992D5 /* ep1demo2.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7CB1044797300A992D5 /* ep1demo2.dat */; };
-		6350FA69104490B600A992D5 /* EP1DEMO3.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7CC1044797300A992D5 /* EP1DEMO3.dat */; };
-		6350FA70104490B600A992D5 /* EP2DEMO1.DAT in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7D31044797300A992D5 /* EP2DEMO1.DAT */; };
-		6350FA71104490B600A992D5 /* ep2demo2.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7D41044797300A992D5 /* ep2demo2.dat */; };
-		6350FA72104490B600A992D5 /* ep2demo3.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7D51044797300A992D5 /* ep2demo3.dat */; };
-		6350FA75104490B600A992D5 /* EP3DEMO1.DAT in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7D81044797300A992D5 /* EP3DEMO1.DAT */; };
-		6350FA76104490B600A992D5 /* ep3demo2.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7D91044797300A992D5 /* ep3demo2.dat */; };
-		6350FA77104490B600A992D5 /* ep3demo3.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7DA1044797300A992D5 /* ep3demo3.dat */; };
-		6350FA78104490B600A992D5 /* EP3DEMO4.DAT in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7DB1044797300A992D5 /* EP3DEMO4.DAT */; };
 		6350FA7A104490B600A992D5 /* resolutions.cfg in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7DD1044797300A992D5 /* resolutions.cfg */; };
 		6350FA7B104490B600A992D5 /* strings.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7DE1044797300A992D5 /* strings.dat */; };
 		6350FB3710449E2B00A992D5 /* changelog.txt in Copy Text Files */ = {isa = PBXBuildFile; fileRef = 6350FB0910449DAA00A992D5 /* changelog.txt */; };
@@ -183,6 +171,27 @@
 		637FC63810559B5600C2EA77 /* CPalette.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 637FC63510559B5600C2EA77 /* CPalette.cpp */; };
 		63AB8BDF107C5C83001EE22F /* CObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63AB8BDD107C5C83001EE22F /* CObject.cpp */; };
 		63AB8C2F107C62D0001EE22F /* cglogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63AB8C2E107C62D0001EE22F /* cglogo.icns */; };
+		63D4A6CC107FE15A00E43500 /* CPlayerLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63D4A6CA107FE15A00E43500 /* CPlayerLevel.cpp */; };
+		63D4A6CD107FE15A00E43500 /* CPlayerWM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63D4A6CB107FE15A00E43500 /* CPlayerWM.cpp */; };
+		63D4A702107FEB7C00E43500 /* 100.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6EF107FEB7C00E43500 /* 100.tga */; };
+		63D4A703107FEB7C00E43500 /* 1000.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6F0107FEB7C00E43500 /* 1000.tga */; };
+		63D4A704107FEB7C00E43500 /* 200.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6F1107FEB7C00E43500 /* 200.tga */; };
+		63D4A705107FEB7C00E43500 /* 500.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6F2107FEB7C00E43500 /* 500.tga */; };
+		63D4A706107FEB7C00E43500 /* 5000.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6F3107FEB7C00E43500 /* 5000.tga */; };
+		63D4A707107FEB7C00E43500 /* arrowd.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6F4107FEB7C00E43500 /* arrowd.tga */; };
+		63D4A708107FEB7C00E43500 /* arrowlr.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6F5107FEB7C00E43500 /* arrowlr.tga */; };
+		63D4A709107FEB7C00E43500 /* arrowu.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6F6107FEB7C00E43500 /* arrowu.tga */; };
+		63D4A70A107FEB7C00E43500 /* arrowud.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6F7107FEB7C00E43500 /* arrowud.tga */; };
+		63D4A70B107FEB7C00E43500 /* arrowul.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6F8107FEB7C00E43500 /* arrowul.tga */; };
+		63D4A70C107FEB7C00E43500 /* arrowur.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6F9107FEB7C00E43500 /* arrowur.tga */; };
+		63D4A70D107FEB7C00E43500 /* cklogo1.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6FA107FEB7C00E43500 /* cklogo1.tga */; };
+		63D4A70E107FEB7C00E43500 /* cklogo2.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6FB107FEB7C00E43500 /* cklogo2.tga */; };
+		63D4A70F107FEB7C00E43500 /* demobox.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6FC107FEB7C00E43500 /* demobox.tga */; };
+		63D4A710107FEB7C00E43500 /* gunup.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6FD107FEB7C00E43500 /* gunup.tga */; };
+		63D4A711107FEB7C00E43500 /* shotup.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6FE107FEB7C00E43500 /* shotup.tga */; };
+		63D4A712107FEB7C00E43500 /* tile185.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6FF107FEB7C00E43500 /* tile185.tga */; };
+		63D4A713107FEB7C00E43500 /* tile190.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A700107FEB7C00E43500 /* tile190.tga */; };
+		63D4A714107FEB7C00E43500 /* yorpshield.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A701107FEB7C00E43500 /* yorpshield.tga */; };
 		63E5304F107B84E60022BB1B /* CPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63E5304D107B84E60022BB1B /* CPlayer.cpp */; };
 /* End PBXBuildFile section */
 
@@ -207,17 +216,6 @@
 			dstSubfolderSpec = 7;
 			files = (
 				6350FA41104490B600A992D5 /* controls.dat in Copy Data Files */,
-				6350FA65104490B600A992D5 /* demo.dat in Copy Data Files */,
-				6350FA67104490B600A992D5 /* ep1demo1.dat in Copy Data Files */,
-				6350FA68104490B600A992D5 /* ep1demo2.dat in Copy Data Files */,
-				6350FA69104490B600A992D5 /* EP1DEMO3.dat in Copy Data Files */,
-				6350FA70104490B600A992D5 /* EP2DEMO1.DAT in Copy Data Files */,
-				6350FA71104490B600A992D5 /* ep2demo2.dat in Copy Data Files */,
-				6350FA72104490B600A992D5 /* ep2demo3.dat in Copy Data Files */,
-				6350FA75104490B600A992D5 /* EP3DEMO1.DAT in Copy Data Files */,
-				6350FA76104490B600A992D5 /* ep3demo2.dat in Copy Data Files */,
-				6350FA77104490B600A992D5 /* ep3demo3.dat in Copy Data Files */,
-				6350FA78104490B600A992D5 /* EP3DEMO4.DAT in Copy Data Files */,
 				6350FA7A104490B600A992D5 /* resolutions.cfg in Copy Data Files */,
 				6350FA7B104490B600A992D5 /* strings.dat in Copy Data Files */,
 			);
@@ -292,6 +290,35 @@
 			name = "Copy Game Data Files";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		63D4A718107FEC1100E43500 /* Copy Res Files */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = data/res/gfx;
+			dstSubfolderSpec = 7;
+			files = (
+				63D4A702107FEB7C00E43500 /* 100.tga in Copy Res Files */,
+				63D4A703107FEB7C00E43500 /* 1000.tga in Copy Res Files */,
+				63D4A704107FEB7C00E43500 /* 200.tga in Copy Res Files */,
+				63D4A705107FEB7C00E43500 /* 500.tga in Copy Res Files */,
+				63D4A706107FEB7C00E43500 /* 5000.tga in Copy Res Files */,
+				63D4A707107FEB7C00E43500 /* arrowd.tga in Copy Res Files */,
+				63D4A708107FEB7C00E43500 /* arrowlr.tga in Copy Res Files */,
+				63D4A709107FEB7C00E43500 /* arrowu.tga in Copy Res Files */,
+				63D4A70A107FEB7C00E43500 /* arrowud.tga in Copy Res Files */,
+				63D4A70B107FEB7C00E43500 /* arrowul.tga in Copy Res Files */,
+				63D4A70C107FEB7C00E43500 /* arrowur.tga in Copy Res Files */,
+				63D4A70D107FEB7C00E43500 /* cklogo1.tga in Copy Res Files */,
+				63D4A70E107FEB7C00E43500 /* cklogo2.tga in Copy Res Files */,
+				63D4A70F107FEB7C00E43500 /* demobox.tga in Copy Res Files */,
+				63D4A710107FEB7C00E43500 /* gunup.tga in Copy Res Files */,
+				63D4A711107FEB7C00E43500 /* shotup.tga in Copy Res Files */,
+				63D4A712107FEB7C00E43500 /* tile185.tga in Copy Res Files */,
+				63D4A713107FEB7C00E43500 /* tile190.tga in Copy Res Files */,
+				63D4A714107FEB7C00E43500 /* yorpshield.tga in Copy Res Files */,
+			);
+			name = "Copy Res Files";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -329,7 +356,6 @@
 		23C637C81031812500FEEFEE /* CTextBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTextBox.h; sourceTree = "<group>"; };
 		23C637C91031812500FEEFEE /* CWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CWindow.cpp; sourceTree = "<group>"; };
 		23C637CA1031812500FEEFEE /* CWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CWindow.h; sourceTree = "<group>"; };
-		23C637CB1031812500FEEFEE /* externals.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = externals.cpp; sourceTree = "<group>"; };
 		23C637CC1031812500FEEFEE /* externals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = externals.h; sourceTree = "<group>"; };
 		23C637D9103181BF00FEEFEE /* COrderingInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = COrderingInfo.cpp; sourceTree = "<group>"; };
 		23C637DA103181BF00FEEFEE /* COrderingInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COrderingInfo.h; sourceTree = "<group>"; };
@@ -566,17 +592,6 @@
 		6350F7C51044797300A992D5 /* SOUNDS.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = SOUNDS.CK1; sourceTree = "<group>"; };
 		6350F7C61044797300A992D5 /* STORYTXT.CK1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = STORYTXT.CK1; sourceTree = "<group>"; };
 		6350F7C71044797300A992D5 /* VENDOR.DOC */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VENDOR.DOC; sourceTree = "<group>"; };
-		6350F7C81044797300A992D5 /* demo.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = demo.dat; sourceTree = "<group>"; };
-		6350F7CA1044797300A992D5 /* ep1demo1.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = ep1demo1.dat; sourceTree = "<group>"; };
-		6350F7CB1044797300A992D5 /* ep1demo2.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = ep1demo2.dat; sourceTree = "<group>"; };
-		6350F7CC1044797300A992D5 /* EP1DEMO3.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = EP1DEMO3.dat; sourceTree = "<group>"; };
-		6350F7D31044797300A992D5 /* EP2DEMO1.DAT */ = {isa = PBXFileReference; lastKnownFileType = file; path = EP2DEMO1.DAT; sourceTree = "<group>"; };
-		6350F7D41044797300A992D5 /* ep2demo2.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = ep2demo2.dat; sourceTree = "<group>"; };
-		6350F7D51044797300A992D5 /* ep2demo3.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = ep2demo3.dat; sourceTree = "<group>"; };
-		6350F7D81044797300A992D5 /* EP3DEMO1.DAT */ = {isa = PBXFileReference; lastKnownFileType = file; path = EP3DEMO1.DAT; sourceTree = "<group>"; };
-		6350F7D91044797300A992D5 /* ep3demo2.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = ep3demo2.dat; sourceTree = "<group>"; };
-		6350F7DA1044797300A992D5 /* ep3demo3.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = ep3demo3.dat; sourceTree = "<group>"; };
-		6350F7DB1044797300A992D5 /* EP3DEMO4.DAT */ = {isa = PBXFileReference; lastKnownFileType = file; path = EP3DEMO4.DAT; sourceTree = "<group>"; };
 		6350F7DD1044797300A992D5 /* resolutions.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = resolutions.cfg; sourceTree = "<group>"; };
 		6350F7DE1044797300A992D5 /* strings.dat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = strings.dat; sourceTree = "<group>"; };
 		6350FB0910449DAA00A992D5 /* changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = changelog.txt; path = ../../changelog.txt; sourceTree = SOURCE_ROOT; };
@@ -589,6 +604,27 @@
 		63AB8BDD107C5C83001EE22F /* CObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CObject.cpp; path = common/CObject.cpp; sourceTree = "<group>"; };
 		63AB8BDE107C5C83001EE22F /* CObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CObject.h; path = common/CObject.h; sourceTree = "<group>"; };
 		63AB8C2E107C62D0001EE22F /* cglogo.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = cglogo.icns; sourceTree = SOURCE_ROOT; };
+		63D4A6CA107FE15A00E43500 /* CPlayerLevel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CPlayerLevel.cpp; path = ../../src/common/CPlayerLevel.cpp; sourceTree = SOURCE_ROOT; };
+		63D4A6CB107FE15A00E43500 /* CPlayerWM.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CPlayerWM.cpp; path = ../../src/common/CPlayerWM.cpp; sourceTree = SOURCE_ROOT; };
+		63D4A6EF107FEB7C00E43500 /* 100.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = 100.tga; sourceTree = "<group>"; };
+		63D4A6F0107FEB7C00E43500 /* 1000.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = 1000.tga; sourceTree = "<group>"; };
+		63D4A6F1107FEB7C00E43500 /* 200.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = 200.tga; sourceTree = "<group>"; };
+		63D4A6F2107FEB7C00E43500 /* 500.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = 500.tga; sourceTree = "<group>"; };
+		63D4A6F3107FEB7C00E43500 /* 5000.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = 5000.tga; sourceTree = "<group>"; };
+		63D4A6F4107FEB7C00E43500 /* arrowd.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = arrowd.tga; sourceTree = "<group>"; };
+		63D4A6F5107FEB7C00E43500 /* arrowlr.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = arrowlr.tga; sourceTree = "<group>"; };
+		63D4A6F6107FEB7C00E43500 /* arrowu.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = arrowu.tga; sourceTree = "<group>"; };
+		63D4A6F7107FEB7C00E43500 /* arrowud.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = arrowud.tga; sourceTree = "<group>"; };
+		63D4A6F8107FEB7C00E43500 /* arrowul.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = arrowul.tga; sourceTree = "<group>"; };
+		63D4A6F9107FEB7C00E43500 /* arrowur.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = arrowur.tga; sourceTree = "<group>"; };
+		63D4A6FA107FEB7C00E43500 /* cklogo1.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = cklogo1.tga; sourceTree = "<group>"; };
+		63D4A6FB107FEB7C00E43500 /* cklogo2.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = cklogo2.tga; sourceTree = "<group>"; };
+		63D4A6FC107FEB7C00E43500 /* demobox.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = demobox.tga; sourceTree = "<group>"; };
+		63D4A6FD107FEB7C00E43500 /* gunup.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = gunup.tga; sourceTree = "<group>"; };
+		63D4A6FE107FEB7C00E43500 /* shotup.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = shotup.tga; sourceTree = "<group>"; };
+		63D4A6FF107FEB7C00E43500 /* tile185.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = tile185.tga; sourceTree = "<group>"; };
+		63D4A700107FEB7C00E43500 /* tile190.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = tile190.tga; sourceTree = "<group>"; };
+		63D4A701107FEB7C00E43500 /* yorpshield.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = yorpshield.tga; sourceTree = "<group>"; };
 		63DCCCBB104CBC3000B3BC10 /* version.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = version.h; path = ../../version.h; sourceTree = SOURCE_ROOT; };
 		63E5304D107B84E60022BB1B /* CPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CPlayer.cpp; path = ../../src/common/CPlayer.cpp; sourceTree = SOURCE_ROOT; };
 		63E5304E107B84E60022BB1B /* CPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CPlayer.h; path = ../../src/common/CPlayer.h; sourceTree = SOURCE_ROOT; };
@@ -643,7 +679,6 @@
 				235266DA104E74430054F00B /* graphics */,
 				23C637BC1031812500FEEFEE /* cinematics */,
 				23C637C61031812500FEEFEE /* dialog */,
-				23C637CB1031812500FEEFEE /* externals.cpp */,
 				23C637CC1031812500FEEFEE /* externals.h */,
 				235756C1101B766800275638 /* Unicode.cpp */,
 				235752D51019F83800275638 /* ConfigHandler.cpp */,
@@ -1009,6 +1044,8 @@
 				23C637DA103181BF00FEEFEE /* COrderingInfo.h */,
 				23D3EC431016973A001643FA /* CEGAGraphics.cpp */,
 				23D3EC441016973A001643FA /* CEGAGraphics.h */,
+				63D4A6CA107FE15A00E43500 /* CPlayerLevel.cpp */,
+				63D4A6CB107FE15A00E43500 /* CPlayerWM.cpp */,
 				23D3EC451016973A001643FA /* CEGALatch.cpp */,
 				23D3EC461016973A001643FA /* CEGALatch.h */,
 				23D3EC471016973A001643FA /* CEGASprit.cpp */,
@@ -1049,19 +1086,9 @@
 		6350F7A11044797300A992D5 /* data */ = {
 			isa = PBXGroup;
 			children = (
+				63D4A6ED107FEB7C00E43500 /* res */,
 				6350F7A31044797300A992D5 /* controls.dat */,
 				6350F7A41044797300A992D5 /* games */,
-				6350F7C81044797300A992D5 /* demo.dat */,
-				6350F7CA1044797300A992D5 /* ep1demo1.dat */,
-				6350F7CB1044797300A992D5 /* ep1demo2.dat */,
-				6350F7CC1044797300A992D5 /* EP1DEMO3.dat */,
-				6350F7D31044797300A992D5 /* EP2DEMO1.DAT */,
-				6350F7D41044797300A992D5 /* ep2demo2.dat */,
-				6350F7D51044797300A992D5 /* ep2demo3.dat */,
-				6350F7D81044797300A992D5 /* EP3DEMO1.DAT */,
-				6350F7D91044797300A992D5 /* ep3demo2.dat */,
-				6350F7DA1044797300A992D5 /* ep3demo3.dat */,
-				6350F7DB1044797300A992D5 /* EP3DEMO4.DAT */,
 				6350F7DD1044797300A992D5 /* resolutions.cfg */,
 				6350F7DE1044797300A992D5 /* strings.dat */,
 			);
@@ -1121,6 +1148,40 @@
 			path = EP1;
 			sourceTree = "<group>";
 		};
+		63D4A6ED107FEB7C00E43500 /* res */ = {
+			isa = PBXGroup;
+			children = (
+				63D4A6EE107FEB7C00E43500 /* gfx */,
+			);
+			path = res;
+			sourceTree = "<group>";
+		};
+		63D4A6EE107FEB7C00E43500 /* gfx */ = {
+			isa = PBXGroup;
+			children = (
+				63D4A6EF107FEB7C00E43500 /* 100.tga */,
+				63D4A6F0107FEB7C00E43500 /* 1000.tga */,
+				63D4A6F1107FEB7C00E43500 /* 200.tga */,
+				63D4A6F2107FEB7C00E43500 /* 500.tga */,
+				63D4A6F3107FEB7C00E43500 /* 5000.tga */,
+				63D4A6F4107FEB7C00E43500 /* arrowd.tga */,
+				63D4A6F5107FEB7C00E43500 /* arrowlr.tga */,
+				63D4A6F6107FEB7C00E43500 /* arrowu.tga */,
+				63D4A6F7107FEB7C00E43500 /* arrowud.tga */,
+				63D4A6F8107FEB7C00E43500 /* arrowul.tga */,
+				63D4A6F9107FEB7C00E43500 /* arrowur.tga */,
+				63D4A6FA107FEB7C00E43500 /* cklogo1.tga */,
+				63D4A6FB107FEB7C00E43500 /* cklogo2.tga */,
+				63D4A6FC107FEB7C00E43500 /* demobox.tga */,
+				63D4A6FD107FEB7C00E43500 /* gunup.tga */,
+				63D4A6FE107FEB7C00E43500 /* shotup.tga */,
+				63D4A6FF107FEB7C00E43500 /* tile185.tga */,
+				63D4A700107FEB7C00E43500 /* tile190.tga */,
+				63D4A701107FEB7C00E43500 /* yorpshield.tga */,
+			);
+			path = gfx;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1132,6 +1193,7 @@
 				6350FA7E104490F300A992D5 /* Copy Keen 1 Files */,
 				637F48BC105C96AF00DE486C /* Copy Game Data Files */,
 				6350FA7D104490F300A992D5 /* Copy Data Files */,
+				63D4A718107FEC1100E43500 /* Copy Res Files */,
 				6350FB5010449E3C00A992D5 /* Copy Text Files */,
 				235755D4101A5E5900275638 /* Sources */,
 				23575630101A5E5900275638 /* Frameworks */,
@@ -1287,7 +1349,6 @@
 				23C637D11031812500FEEFEE /* EndingSequenceEp3.cpp in Sources */,
 				23C637D21031812500FEEFEE /* CTextBox.cpp in Sources */,
 				23C637D31031812500FEEFEE /* CWindow.cpp in Sources */,
-				23C637D41031812500FEEFEE /* externals.cpp in Sources */,
 				23C637DB103181BF00FEEFEE /* COrderingInfo.cpp in Sources */,
 				23C637E4103181D700FEEFEE /* icecannon.cpp in Sources */,
 				6350F76C1044782400A992D5 /* autoray.cpp in Sources */,
@@ -1313,6 +1374,8 @@
 				63453BE610798CFE007265F8 /* CTitle.cpp in Sources */,
 				63E5304F107B84E60022BB1B /* CPlayer.cpp in Sources */,
 				63AB8BDF107C5C83001EE22F /* CObject.cpp in Sources */,
+				63D4A6CC107FE15A00E43500 /* CPlayerLevel.cpp in Sources */,
+				63D4A6CD107FE15A00E43500 /* CPlayerWM.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
