@@ -7,12 +7,10 @@
 */
 
 #include "keen.h"
-#ifdef BUILD_SDL
 #include <SDL.h>
 #include "sdl/CInput.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/sound/CSound.h"
-#endif
 
 #include "include/misc.h"
 #include "include/game.h"
