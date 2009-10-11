@@ -457,14 +457,18 @@ searchpathlist	basesearchpaths;
 void InitBaseSearchPaths() {
 	basesearchpaths.clear();
 #if defined(__APPLE__)
+	AddToFileList(&basesearchpaths, "${HOME}/Library/Application Support/Commander Genius");
+	AddToFileList(&basesearchpaths, ".");
 	AddToFileList(&basesearchpaths, "${BIN}/../Resources/data");
-	AddToFileList(&basesearchpaths, ".");
+	AddToFileList(&basesearchpaths, SYSTEM_DATA_DIR"/commandergenius");
 #elif defined(WIN32)
-	AddToFileList(&basesearchpaths, "${BIN}");
+	AddToFileList(&basesearchpaths, "${HOME}/Commander Genius");
 	AddToFileList(&basesearchpaths, ".");
+	AddToFileList(&basesearchpaths, "${BIN}");
 #else // all other systems (Linux, *BSD, OS/2, ...)
 	AddToFileList(&basesearchpaths, "${HOME}/.CommanderGenius");
 	AddToFileList(&basesearchpaths, ".");
+	AddToFileList(&basesearchpaths, SYSTEM_DATA_DIR"/commandergenius"); // no use of ${SYSTEM_DATA}, because it is uncommon and could cause confusion to the user
 #endif
 }
 
