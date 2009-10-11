@@ -199,7 +199,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
      }
 
      // Now create special sprites for some neat effects!
-     DeriveSpecialSprites( g_pGfxEngine->Tilemap, &g_pGfxEngine->Sprite[0] );
+     DeriveSpecialSprites( g_pGfxEngine->Tilemap, g_pGfxEngine->Sprite );
 
 	return true;
 }
@@ -294,29 +294,28 @@ void CEGASprit::LoadSpecialSprites( std::vector<CSprite*> &sprite )
 // This function has the task to make some items-tiles
 // be painted into yellow, so they look nice, when they are
 // collected
-void CEGASprit::DeriveSpecialSprites( CTilemap *tilemap, CSprite **sprite )
+void CEGASprit::DeriveSpecialSprites( CTilemap *tilemap, std::vector<CSprite*> &sprites )
 {
-	Uint16 t;
-	for( t=0 ; t<tilemap->m_numtiles ; t++)
+	for( Uint16 t=0 ; t<tilemap->m_numtiles ; t++)
 	{
 		// The Gun!
 		if( tilemap->mp_tiles[t].behaviour==15 )
-			CreateYellowSpriteofTile( tilemap, t, sprite[GUNUP_SPRITE] );
+			CreateYellowSpriteofTile( tilemap, t, sprites.at(GUNUP_SPRITE) );
 
 		// Keycards
 		if( tilemap->mp_tiles[t].behaviour>=18 && tilemap->mp_tiles[t].behaviour<=21 )
-			CreateYellowSpriteofTile( tilemap, t, sprite[PTCARDB_SPRITE+tilemap->mp_tiles[t].behaviour-18]);
+			CreateYellowSpriteofTile( tilemap, t, sprites.at(PTCARDB_SPRITE+tilemap->mp_tiles[t].behaviour-18));
 
 		// Single Bullet in Ep3
 		if( tilemap->mp_tiles[t].behaviour==28 )
-			CreateYellowSpriteofTile( tilemap, t, sprite[SHOTUP_SPRITE] );
+			CreateYellowSpriteofTile( tilemap, t, sprites.at(SHOTUP_SPRITE) );
 
 		if( tilemap->mp_tiles[t].behaviour==27 )
-			CreateYellowSpriteofTile( tilemap, t, sprite[ANKHUP_SPRITE] );
+			CreateYellowSpriteofTile( tilemap, t, sprites.at(ANKHUP_SPRITE) );
 	}
 }
 
-void CEGASprit::CreateYellowSpriteofTile( CTilemap *tilemap, Uint16 tile, CSprite *sprite )
+void CEGASprit::CreateYellowSpriteofTile( CTilemap *tilemap, Uint16 tile, CSprite* sprite )
 {
 	SDL_Rect tile_rect;
 

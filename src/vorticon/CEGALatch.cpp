@@ -197,7 +197,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
                        plane4 + m_tiles16location,
                        0);
      Uint8 *u_offset;
-     g_pGfxEngine->createEmptyTilemap(TileLoader.getTileProperties());
+     g_pGfxEngine->createEmptyTilemap(TileLoader.getTileProperties(), TileLoader.getNumTiles() );
      CTilemap *Tilemap = g_pGfxEngine->Tilemap;
      Tilemap->CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE );
      sfc = Tilemap->getSDLSurface();

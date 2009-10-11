@@ -22,6 +22,7 @@ CInput::CInput() {
 	volume = 60-1;
 	WIZ_AdjustVolume(VOLUME_UP);
 	#endif
+	memset(&Event,0,sizeof(Event));
 	resetControls();
 	startJoyDriver();
 }

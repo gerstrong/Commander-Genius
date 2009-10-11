@@ -28,6 +28,8 @@ CTimer::CTimer()
 	//          a frame can be drawn. To maximize time we can do 300/60 loops back to back and then draw the frame, to sync to our desired rates
 	//	    we can delay the remaining time it would take to do (1000/300)*(300/60) ms
 	//	    Visual exmaple: logic->logic->frame->delay(left over time from 2 logic loops)
+	m_FPS = 0;
+	m_LPS = 0;
 	m_FPSRate = RENDER_FPS;	// frames per second
 	m_RenderInterval = 0.0f;
 	CalculateRate();

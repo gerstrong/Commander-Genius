@@ -10,11 +10,12 @@
 #include "../sdl/CVideoDriver.h"
 #include "../sdl/CInput.h"
 #include "../graphics/CGfxEngine.h"
+#include "../common/CMapLoader.h"
+#include "../StringUtils.h"
+#include "../FindFile.h"
 #include <dirent.h>
 #include <iostream>
 #include <fstream>
-#include "../StringUtils.h"
-#include "../FindFile.h"
 
 CGameLauncher::CGameLauncher() {
 	m_mustquit = false;
@@ -37,7 +38,8 @@ bool CGameLauncher::init()
 	// Load the map for the background
 	mp_map = new CMap(g_pVideoDriver->getScrollSurface(), g_pGfxEngine->Tilemap);
 
-	if(!mp_map->loadMap(1, 90, "games/EP1")) return false;
+	CMapLoader MapLoader(mp_map);
+	if(!MapLoader.load(1, 90, "games/EP1")) return false;
 
 	mp_map->gotoPos(32,32);
 

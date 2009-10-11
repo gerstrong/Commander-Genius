@@ -6,9 +6,9 @@
  */
 
 #include "CPlayer.h"
-
+#include "../graphics/CGfxEngine.h"
+#include "../sdl/CInput.h"
 #include "../keen.h"
-//#include "../sdl/CInput.h"
 
 ///
 // Process Part
@@ -263,15 +263,19 @@ p_levelcontrol = &(pCKP->Control.levelcontrol);
 
 bool CPlayer::isWMSolid(int xb, int yb, bool *levels_completed)
 {
+int level_coordinates;
   // for map tiles solidl and solidr are always gonna be the same...
   // so we can get away with this.
-  /*if ( TileProperty[getmaptileat(xb, yb)][BLEFT] ) return true;
 
-  m_level_coordinates = mp_map->getlevelat(xb, yb);
+  stTile *p_tiles = g_pGfxEngine->Tilemap->mp_tiles;
 
-  if (m_level_coordinates & 0x8000)
+  if ( p_tiles[mp_map->at(xb, yb)].bleft ) return true;
+
+  /*level_coordinates = mp_map->getObjectat(xb>>4, yb>>4);
+
+  if (level_coordinates & 0x8000)
   {
-	  if(levels_completed[m_level_coordinates & 0x7fff] && options[OPT_LVLREPLAYABILITY].value) // check if level is done, but can be replayed
+	  if(levels_completed[level_coordinates & 0x7fff] && options[OPT_LVLREPLAYABILITY].value) // check if level is done, but can be replayed
 		  return 0;
 
 	  if(g_pInput->getHoldedKey(KTAB) && g_pInput->getHoldedKey(KSHIFT))

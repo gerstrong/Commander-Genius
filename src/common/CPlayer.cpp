@@ -47,8 +47,9 @@ CPlayer::CPlayer() {
     ankhtime = 0;
     keyprocstate = 0;         // KPROC_IDLE
     pjustjumped = pjustfell = 0;
-}
 
+	mp_map = NULL;
+}
 
 void CPlayer::StatusBox()
 {

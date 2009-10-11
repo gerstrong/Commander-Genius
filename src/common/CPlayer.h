@@ -8,7 +8,9 @@
 #ifndef CPLAYER_H_
 #define CPLAYER_H_
 
+#include <SDL/SDL.h>
 #include "CObject.h"
+#include "CMap.h"
 
 #define	PA_X		0
 #define	PA_Y   		1
@@ -99,6 +101,7 @@ public:
 	};
 
 	CPlayer();
+	void setMapData(CMap *p_map){	mp_map = p_map;	}
 
 	// World Map specific
 	void processWorldMap();
@@ -222,7 +225,11 @@ public:
 	 bool HasVacuum;
 	} inventory;
 
-	unsigned int m_level_coordinates;
+	CMap *mp_map;
+private:
+
+	/*Uint16 getmaptileat(unsigned int x, unsigned int y);
+	Uint16 getlevelat(unsigned int x, unsigned int y);*/
 };
 
 #endif /* CPLAYER_H_ */

@@ -11,18 +11,12 @@
 #include <SDL/SDL.h>
 #include <string>
 
-#include "CPlayer.h"
 #include "../graphics/CTilemap.h"
 
 class CMap {
 public:
-	CMap(SDL_Surface *p_scrollsurface, CTilemap *p_Tilemap, CPlayer *p_Player=NULL);
+	CMap(SDL_Surface *p_scrollsurface, CTilemap *p_Tilemap);
 	virtual ~CMap();
-
-	bool loadMap( Uint8 episode, Uint8 level, const std::string& path );
-	void addTile( Uint16 t, Uint16 x, Uint16 y );
-	void addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episode, bool *levels_completed);
-	void addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode, int chglevelto);
 
 	bool gotoPos( Uint16 x, Uint16 y );
 	void scrollLeft(void);
@@ -35,6 +29,8 @@ public:
 	void drawVstripe( unsigned int x, unsigned int mpx );
 
 	Uint16 at(Uint16 x, Uint16 y);
+	Uint16 getObjectat(Uint16 x, Uint16 y);
+
 	bool setTile(Uint16 x, Uint16 y, Uint16 t);
 
 	unsigned int getlevelat(unsigned int x, unsigned int y)	{
@@ -46,13 +42,15 @@ public:
 	 Uint16 m_scrollx;      	// total amount of X scroll
 	 Uint16 m_scrolly;    		// amount the scroll buffer is scrolled(y)
 
-private:
-	 Uint32 m_width, m_height;            // size of the map
-	 bool m_worldmap;             // if 1, this is the world map
 	 Uint16 *mp_data;       // the map data
 	 // in-game, contains monsters and special object tags like for switches
 	 // on world map contains level numbers and flags for things like teleporters
 	 Uint16 m_objectlayer[256][256];
+	 // TODO: Still need changes, because it shouldn't limit up to 256x256
+	 Uint32 m_width, m_height;            // size of the map
+	 bool m_worldmap;             // if 1, this is the world map
+
+private:
 
 	 Uint8 m_scrollpix;     	// (0-7) for tracking when to draw a stripe
 	 Uint16 m_mapx;           	// map X location shown at scrollbuffer row 0
@@ -64,7 +62,6 @@ private:
 
 	 SDL_Surface *mp_scrollsurface;
 	 CTilemap *mp_Tilemap;
-	 CPlayer *mp_Player;
 };
 
 #endif /* CMAP_H_ */

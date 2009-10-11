@@ -12,6 +12,7 @@
 #include "../sdl/CTimer.h"
 #include "../sdl/CVideoDriver.h"
 #include "../sdl/CInput.h"
+#include "../common/CMapLoader.h"
 #include "../graphics/CGfxEngine.h"
 
 ////
@@ -56,10 +57,11 @@ CPlayGame::CPlayGame( char episode, char level,
 bool CPlayGame::init()
 {
 	// load level map
-	mp_Map = new CMap( g_pVideoDriver->getScrollSurface(), g_pGfxEngine->Tilemap, mp_Player );
+	mp_Map = new CMap( g_pVideoDriver->getScrollSurface(), g_pGfxEngine->Tilemap );
+	CMapLoader MapLoader( mp_Map, mp_Player);
 
 	if( !mp_Map ) return false;
-	if( !mp_Map->loadMap( m_Episode, m_Level, m_Gamepath ) ) return false;
+	if( !MapLoader.load( m_Episode, m_Level, m_Gamepath ) ) return false;
 
 	//// If those worked fine, continue the initialization
 	// draw level map
@@ -75,6 +77,9 @@ bool CPlayGame::init()
 			mp_Player[i].m_playingmode = CPlayer::WORLDMAP;
 		else
 			mp_Player[i].m_playingmode = CPlayer::LEVELPLAY;
+
+		// Set the pointers to the map and object data
+		mp_Player[i].setMapData(mp_Map);
 	}
 
 	return true;

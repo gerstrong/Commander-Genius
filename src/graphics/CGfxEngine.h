@@ -29,7 +29,7 @@ public:
 
 	CSprite *createEmptySprites(Uint16 num_sprites);
 	CBitmap *createEmptyBitmaps(Uint16 num_bmps);
-	CTilemap *createEmptyTilemap(stTile *pTileProperty);
+	CTilemap *createEmptyTilemap(stTile *pTileProperty, int numtiles);
 	CFont *createEmptyFontmap();
 
 	void freeBitmaps();

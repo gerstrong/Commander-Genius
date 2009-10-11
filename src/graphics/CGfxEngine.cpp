@@ -23,9 +23,9 @@ CGfxEngine::~CGfxEngine() {
 ///
 // Creation Routines
 ///
-CTilemap *CGfxEngine::createEmptyTilemap(stTile *pTileProperties)
+CTilemap *CGfxEngine::createEmptyTilemap(stTile *pTileProperties, int numtiles)
 {
-	Tilemap = new CTilemap(pTileProperties);
+	Tilemap = new CTilemap(pTileProperties, numtiles);
 	return Tilemap;
 }
 

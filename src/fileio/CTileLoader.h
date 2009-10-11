@@ -18,6 +18,7 @@ public:
 	bool load();
 
 	stTile *getTileProperties() { return mp_TileProperty; }
+	int getNumTiles() { return m_numtiles; }
 
 private:
 	int m_episode;

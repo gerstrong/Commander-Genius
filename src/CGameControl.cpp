@@ -172,6 +172,7 @@ void CGameControl::process()
 		{
 			init( PLAYGAME );
 			delete mp_PassiveMode;
+			return;
 		}
 
 		// User wants to exit. Called from the PassiveMode

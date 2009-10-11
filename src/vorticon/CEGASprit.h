@@ -10,6 +10,7 @@
 
 #include <string>
 #include <SDL/SDL.h>
+#include <vector>
 #include "../graphics/CGfxEngine.h"
 
 // Reference to palette.c
@@ -50,8 +51,8 @@ private:
 
 	char LoadTGASprite( const std::string &filename, CSprite *sprite );
 	void LoadSpecialSprites( std::vector<CSprite*> &sprite );
-	void DeriveSpecialSprites( CTilemap *tilemap, CSprite **sprite );
-	void CreateYellowSpriteofTile( CTilemap *tilemap, Uint16 tile, CSprite *sprite );
+	void DeriveSpecialSprites( CTilemap *tilemap, std::vector<CSprite*> &sprites );
+	void CreateYellowSpriteofTile( CTilemap *tilemap, Uint16 tile, CSprite* sprite );
 };
 
 #endif /* CEGASPRIT_H_ */

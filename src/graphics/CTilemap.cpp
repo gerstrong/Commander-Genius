@@ -10,12 +10,13 @@
 #include "CPalette.h"
 #include <stdlib.h>
 
-CTilemap::CTilemap(stTile *pTileProperties) {
+CTilemap::CTilemap(stTile *pTileProperties, int numtiles) {
 	m_Tilesurface = NULL;
 	memset( m_AnimTileInUse, 0, sizeof(m_AnimTileInUse));
 	memset( m_animtiles, 0, sizeof(m_animtiles));
 	m_animtiletimer = m_curanimtileframe = 0;
 	mp_tiles = pTileProperties;
+	m_numtiles = numtiles;
 }
 
 CTilemap::~CTilemap() {

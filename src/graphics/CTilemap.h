@@ -42,7 +42,7 @@ typedef struct
 
 class CTilemap {
 public:
-	CTilemap(stTile *pTileProperties);
+	CTilemap(stTile *pTileProperties, int numtiles);
 	virtual ~CTilemap();
 
 	bool CreateSurface(SDL_Color *Palette, Uint32 Flags);

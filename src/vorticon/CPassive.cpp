@@ -8,6 +8,7 @@
 
 #include "CPassive.h"
 #include "../graphics/CGfxEngine.h"
+#include "../common/CMapLoader.h"
 #include "../sdl/CVideoDriver.h"
 #include "../sdl/CInput.h"
 
@@ -31,8 +32,9 @@ bool CPassive::init(char mode)
 	if( m_mode == INTRO )
 	{
 		mp_IntroScreen = new CIntro();
-		mp_Map = new CMap( mp_Scrollsurface, mp_Tilemap );
-		mp_Map->loadMap( m_Episode, 90, m_DataDirectory);
+		mp_Map = new CMap( mp_Scrollsurface, mp_Tilemap);
+		CMapLoader MapLoader( mp_Map );
+		MapLoader.load( m_Episode, 90, m_DataDirectory);
 		mp_Map->gotoPos( 64+5*320, 32); // Coordinates of star sky
 		mp_Map->drawAll();
 		mp_IntroScreen->init();
@@ -40,8 +42,9 @@ bool CPassive::init(char mode)
 	else if( m_mode == TITLE )
 	{
 		mp_TitleScreen = new CTitle();
-		mp_Map = new CMap( mp_Scrollsurface, mp_Tilemap );
-		mp_Map->loadMap( m_Episode, 90, m_DataDirectory); 
+		mp_Map = new CMap( mp_Scrollsurface, mp_Tilemap);
+		CMapLoader MapLoader( mp_Map );
+		MapLoader.load( m_Episode, 90, m_DataDirectory);
 		mp_Map->gotoPos( 32, 32); // Coordinates of title screen 
 		mp_Map->drawAll();
 		mp_TitleScreen->init();				
