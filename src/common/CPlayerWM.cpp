@@ -263,7 +263,7 @@ p_levelcontrol = &(pCKP->Control.levelcontrol);
 
 bool CPlayer::isWMSolid(int xb, int yb, bool *levels_completed)
 {
-int level_coordinates;
+//int level_coordinates;
   // for map tiles solidl and solidr are always gonna be the same...
   // so we can get away with this.
 

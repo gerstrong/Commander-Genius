@@ -167,6 +167,7 @@
 		6350FB3710449E2B00A992D5 /* changelog.txt in Copy Text Files */ = {isa = PBXBuildFile; fileRef = 6350FB0910449DAA00A992D5 /* changelog.txt */; };
 		6350FB3810449E2B00A992D5 /* future.txt in Copy Text Files */ = {isa = PBXBuildFile; fileRef = 6350FB0A10449DAA00A992D5 /* future.txt */; };
 		6350FB3910449E2B00A992D5 /* readme.txt in Copy Text Files */ = {isa = PBXBuildFile; fileRef = 6350FB0B10449DAA00A992D5 /* readme.txt */; };
+		63693F6F1082765A003BEED9 /* CMapLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63693F6D1082765A003BEED9 /* CMapLoader.cpp */; };
 		637FC63710559B5600C2EA77 /* CBitmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 637FC63310559B5600C2EA77 /* CBitmap.cpp */; };
 		637FC63810559B5600C2EA77 /* CPalette.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 637FC63510559B5600C2EA77 /* CPalette.cpp */; };
 		63AB8BDF107C5C83001EE22F /* CObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63AB8BDD107C5C83001EE22F /* CObject.cpp */; };
@@ -597,6 +598,8 @@
 		6350FB0910449DAA00A992D5 /* changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = changelog.txt; path = ../../changelog.txt; sourceTree = SOURCE_ROOT; };
 		6350FB0A10449DAA00A992D5 /* future.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = future.txt; path = ../../future.txt; sourceTree = SOURCE_ROOT; };
 		6350FB0B10449DAA00A992D5 /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = readme.txt; path = ../../readme.txt; sourceTree = SOURCE_ROOT; };
+		63693F6D1082765A003BEED9 /* CMapLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CMapLoader.cpp; path = ../../src/common/CMapLoader.cpp; sourceTree = SOURCE_ROOT; };
+		63693F6E1082765A003BEED9 /* CMapLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMapLoader.h; path = ../../src/common/CMapLoader.h; sourceTree = SOURCE_ROOT; };
 		637FC63310559B5600C2EA77 /* CBitmap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CBitmap.cpp; path = ../../src/graphics/CBitmap.cpp; sourceTree = SOURCE_ROOT; };
 		637FC63410559B5600C2EA77 /* CBitmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CBitmap.h; path = ../../src/graphics/CBitmap.h; sourceTree = SOURCE_ROOT; };
 		637FC63510559B5600C2EA77 /* CPalette.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CPalette.cpp; path = ../../src/graphics/CPalette.cpp; sourceTree = SOURCE_ROOT; };
@@ -853,6 +856,8 @@
 				235756C8101BE31A00275638 /* vortelite.h */,
 				23D3E9751013ABC9001643FA /* baby.cpp */,
 				23D3E9761013ABC9001643FA /* balljack.cpp */,
+				63693F6D1082765A003BEED9 /* CMapLoader.cpp */,
+				63693F6E1082765A003BEED9 /* CMapLoader.h */,
 				6350F76A1044782400A992D5 /* autoray.cpp */,
 				6350F76B1044782400A992D5 /* gotpoints.cpp */,
 				23D3E9781013ABC9001643FA /* butler.cpp */,
@@ -1376,6 +1381,7 @@
 				63AB8BDF107C5C83001EE22F /* CObject.cpp in Sources */,
 				63D4A6CC107FE15A00E43500 /* CPlayerLevel.cpp in Sources */,
 				63D4A6CD107FE15A00E43500 /* CPlayerWM.cpp in Sources */,
+				63693F6F1082765A003BEED9 /* CMapLoader.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

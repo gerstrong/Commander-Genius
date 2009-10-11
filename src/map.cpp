@@ -189,6 +189,7 @@ int ya = y>>4;
 
 	  return map.mapdata[xa][ya];
   }*/
+	return 0;
 }
 unsigned int getlevelat(unsigned int x, unsigned int y)
 {

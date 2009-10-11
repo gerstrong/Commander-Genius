@@ -134,7 +134,7 @@ void CVideoDriver::initResolutionList()
 				  while(!ResolutionFile.eof())
 				  {
 				  ResolutionFile.getline(buf,256);
-				   if(sscanf(buf,"%hdx%hdx%hd", &resolution.width,
+				   if(sscanf(buf,"%ix%ix%i", &resolution.width,
 				   &resolution.height,
 				   &resolution.depth) == 3)
 				   // Now check if it's possible to use this resolution
