@@ -78,37 +78,36 @@ void CPlayer::setWMblockedlrud()
    //if ((pCKP->Option[OPT_CHEATS].value && g_pInput->getHoldedKey(KTAB)) || player[cp].godmode) return;
 
    // R
-   if (isWMSolid((x>>CSF)+8, (y>>CSF)+1, mp_levels_completed))
-      { blockedr = true; }
-   else if (isWMSolid((x>>CSF)+8, (y>>CSF)+8, mp_levels_completed))
-      { blockedr = true; }
-   else if (isWMSolid((x>>CSF)+8, (y>>CSF)+13, mp_levels_completed))
-      { blockedr = true; }
+   if (isWMSolid((x>>5)+8, (y>>5)+1, mp_levels_completed))
+      { blockedr = 1; }
+   else if (isWMSolid((x>>5)+8, (y>>5)+8, mp_levels_completed))
+      { blockedr = 1; }
+   else if (isWMSolid((x>>5)+8, (y>>5)+13, mp_levels_completed))
+      { blockedr = 1; }
 
    // L
-   if (isWMSolid((x>>CSF)+0, (y>>CSF)+1, mp_levels_completed))
-      { blockedl = true; }
-   else if (isWMSolid((x>>CSF)+0, (y>>CSF)+8, mp_levels_completed))
-      { blockedl = true; }
-   else if (isWMSolid((x>>CSF)+0, (y>>CSF)+13, mp_levels_completed))
-      { blockedl = true; }
+   if (isWMSolid((x>>5)+0, (y>>5)+1, mp_levels_completed))
+      { blockedl = 1; }
+   else if (isWMSolid((x>>5)+0, (y>>5)+8, mp_levels_completed))
+      { blockedl = 1; }
+   else if (isWMSolid((x>>5)+0, (y>>5)+13, mp_levels_completed))
+      { blockedl = 1; }
 
    // U
-   if (isWMSolid((x>>CSF)+1, (y>>CSF)-1, mp_levels_completed))
-      { blockedu = true; }
-   else if (isWMSolid((x>>CSF)+4, (y>>CSF)-1, mp_levels_completed))
-      { blockedu = true; }
-   else if (isWMSolid((x>>CSF)+7, (y>>CSF)-1, mp_levels_completed))
-      { blockedu = true; }
+   if (isWMSolid((x>>5)+1, (y>>5)-1, mp_levels_completed))
+      { blockedu = 1; }
+   else if (isWMSolid((x>>5)+4, (y>>5)-1, mp_levels_completed))
+      { blockedu = 1; }
+   else if (isWMSolid((x>>5)+7, (y>>5)-1, mp_levels_completed))
+      { blockedu = 1; }
 
    // D
-   if (isWMSolid((x>>CSF)+1, (y>>CSF)+14, mp_levels_completed))
-      { blockedd = true; }
-   else if (isWMSolid((x>>CSF)+4, (y>>CSF)+14, mp_levels_completed))
-      { blockedd = true; }
-   else if (isWMSolid((x>>CSF)+7, (y>>CSF)+14, mp_levels_completed))
-      { blockedd = true; }
-
+   if (isWMSolid((x>>5)+1, (y>>5)+14, mp_levels_completed))
+      { blockedd = 1; }
+   else if (isWMSolid((x>>5)+4, (y>>5)+14, mp_levels_completed))
+      { blockedd = 1; }
+   else if (isWMSolid((x>>5)+7, (y>>5)+14, mp_levels_completed))
+      { blockedd = 1; }
 }
 
 void CPlayer::AllowEnterLevelonWM()
@@ -263,17 +262,15 @@ p_levelcontrol = &(pCKP->Control.levelcontrol);
 
 bool CPlayer::isWMSolid(int xb, int yb, bool *levels_completed)
 {
-//int level_coordinates;
-  // for map tiles solidl and solidr are always gonna be the same...
-  // so we can get away with this.
+int level_coordinates;
 
   stTile *p_tiles = g_pGfxEngine->Tilemap->mp_tiles;
 
-  if ( p_tiles[mp_map->at(xb, yb)].bleft ) return true;
+  if( p_tiles[mp_map->at(xb>>4, yb>>4)].bleft ) return true;
 
-  /*level_coordinates = mp_map->getObjectat(xb>>4, yb>>4);
+  level_coordinates = mp_map->getObjectat(xb>>4, yb>>4);
 
-  if (level_coordinates & 0x8000)
+  /*if (level_coordinates & 0x8000)
   {
 	  if(levels_completed[level_coordinates & 0x7fff] && options[OPT_LVLREPLAYABILITY].value) // check if level is done, but can be replayed
 		  return 0;

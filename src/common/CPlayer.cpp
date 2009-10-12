@@ -518,10 +518,8 @@ void CPlayer::InertiaAndFriction_X()
   // * at zero:       otherwise, or if we're not walking, we want
   //                  to hold the inertia at zero so we don't "shoot"
   //                  off of platforms, etc which looks weird.
-  /*if (!p_levelcontrol->level_done || p_levelcontrol->level_finished_by!=cp)
+  if (pinertia_x < 0 && blockedl)
   {
-    if (pinertia_x < 0 && blockedl)
-    {
       if (!pwalking || (!pfalling && !pjumping) || pdir==RIGHT || (pfrozentime && m_episode==1))
       {
 		 pinertia_x = pboost_x = 0;
@@ -532,11 +530,11 @@ void CPlayer::InertiaAndFriction_X()
     	  pinertia_x >>= 1;
       }
       return;
-    }
-    else if (pinertia_x > 0 && blockedr)
-    {
-      if (!pwalking || (!pfalling && !pjumping) || pdir==LEFT || (pfrozentime && m_episode==1))
-      {
+  }
+  else if (pinertia_x > 0 && blockedr)
+  {
+	  if (!pwalking || (!pfalling && !pjumping) || pdir==LEFT || (pfrozentime && m_episode==1))
+	  {
     	 pinertia_x = pboost_x = 0;
     	 widejump = false;
       }
@@ -545,8 +543,7 @@ void CPlayer::InertiaAndFriction_X()
     	  pinertia_x >>= 1;
       }
    	  return;
-    }
-  }*/
+  }
 
   pmaxspeed = treshold*PMAXSPEED/100;
 
