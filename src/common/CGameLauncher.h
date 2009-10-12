@@ -34,14 +34,13 @@ public:
 	bool getQuit(){ return m_mustquit; }
 	std::string getDirectory(Uint8 slot) { return m_DirList.at(slot); }
 
-	typedef std::vector<std::string> DirList;
-
 private:
 	bool m_mustquit;
 	Uint8 m_numGames;
 	short m_chosenGame;
 	bool m_hasbeenchosen;
 	Uint8 m_episode;
+	typedef std::vector<std::string> DirList;
 	DirList m_DirList;
 
 	CDialog *mp_LaunchMenu;

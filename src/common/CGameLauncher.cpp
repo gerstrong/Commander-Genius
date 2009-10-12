@@ -121,19 +121,21 @@ bool CGameLauncher::init()
 }
 
 struct FileListAdder {
-	void operator()(CGameLauncher::DirList& dirs, const std::string& path) {
+	void operator()(std::set<std::string>& dirs, const std::string& path) {
 		std::string basepath = GetBaseFilename(path);
 		if(basepath != "" && basepath[0] != '.') {
-			dirs.push_back(basepath);
+			dirs.insert(basepath);
 		}
 	}
 };
 
 Uint8 CGameLauncher::scanDirectories()
 {
+	std::set<std::string> dirs;
 	FileListAdder fileListAdder;
-	GetFileList(m_DirList, fileListAdder, "games", false, FM_DIR);
+	GetFileList(dirs, fileListAdder, "games", false, FM_DIR);
 	
+	m_DirList = DirList(dirs.begin(), dirs.end());
 	return m_DirList.size();
 }
 
