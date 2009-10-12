@@ -131,18 +131,33 @@ void CPlayGame::process()
 		/// The following function must be worldmap dependent
 		if( m_Level == WORLD_MAP_LEVEL )
 		{
+			int useobject;
+
 			// Perform wm AIs
 
 			// Perform player Objects...
 			for( int i=0 ; i<m_NumPlayers ; i++ )
+			{
 				mp_Player[i].processWorldMap();
 
-			// entered level
+				// entered a level, used ship, teleporter, etc.
+				useobject = mp_Player[i].getNewObject();
+				if( useobject != 0)
+				{	// A new level was chosen by the player
+					// TODO: Code the stuff for entering the level
 
-			// used teleport
+					// If it is teleporter, make the Player teleport
+					// player[i].teleport(x1, y1, x2, y2);
 
-			// in episode 3 rides on nessie
+					// If it is level, change the playgame mode and load the new map.
+				}
 
+				// in episode 3 he can ride on nessie
+				if (m_Episode==3)
+				{
+					mp_Player[i].AllowMountUnmountNessie();
+				}
+			}
 		}
 		else
 		{

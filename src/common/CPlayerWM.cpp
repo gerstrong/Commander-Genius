@@ -27,18 +27,13 @@ void CPlayer::processWorldMap()
     setWorldMapdir();
 
     setWMblockedlrud();
-    //gamepdo_wm_AllowEnterLevel(cp, pCKP);
+    AllowEnterLevelonWM();
 
     Walking();
     WalkingAnimation();
 
     InertiaAndFriction_X();
     InertiaAndFriction_Y();
-
-    if (m_episode==3)
-    {
-      AllowMountUnmountNessie();
-    }
 
     selectFrameOnWorldMap();
 }
@@ -108,6 +103,38 @@ void CPlayer::setWMblockedlrud()
       { blockedd = 1; }
    else if (isWMSolid((x>>5)+7, (y>>5)+14))
       { blockedd = 1; }
+}
+
+// tell me, if the player tries to use an object on the map like entering the level
+int CPlayer::getNewObject()
+{
+	int xb, yb;
+	int lvl;
+
+    if ( playcontrol[PA_JUMP] || playcontrol[PA_POGO] )
+    {   // trying to enter a level (or use a teleporter, etc)
+
+        // get level/object marker beneath player
+        xb = (x>>CSF)+4;
+        yb = (y>>CSF)+4;
+        lvl = mp_map->getObjectat(xb>>4, yb>>4);
+        if (!lvl)
+        {
+          yb = (y>>CSF)+8;
+          lvl = mp_map->getObjectat(xb>>4, yb>>4);
+        }
+
+        xb = xb >> 4 << 4;
+        yb = yb >> 4 << 4;
+
+        if (lvl)
+        {
+        	  // TODO: Code for the chosen stuff...
+        }
+        printf("Object selected: %d\n", lvl);
+    }
+
+    return 0;
 }
 
 void CPlayer::AllowEnterLevelonWM()
@@ -194,7 +221,7 @@ p_levelcontrol = &(pCKP->Control.levelcontrol);
                 objects[o].ai.teleport.whichplayer = cp;
                 objects[o].ai.teleport.NoExitingTeleporter = 0;
                 objects[o].ai.teleport.snap = telsnap;
-                if (p_levelcontrol->episode==3)
+                if (m_episode==3)
                 {
                   objects[o].ai.teleport.baseframe = TELEPORT_BASEFRAME_EP3;
                   objects[o].ai.teleport.idleframe = TELEPORT_IDLEFRAME_EP3;
@@ -232,7 +259,7 @@ p_levelcontrol = &(pCKP->Control.levelcontrol);
                 break;
 
               case LVLS_SHIP:
-                if (p_levelcontrol->episode==1)
+                if (m_episode==1)
                 {
                   YourShipNeedsTheseParts(pCKP);
                 }

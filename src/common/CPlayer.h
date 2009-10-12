@@ -115,6 +115,7 @@ public:
 	void InertiaAndFriction_X();
 	void InertiaAndFriction_Y();
 	void AllowMountUnmountNessie();
+	int getNewObject();
 
 	// In Level specific
 	void processInLevel();
