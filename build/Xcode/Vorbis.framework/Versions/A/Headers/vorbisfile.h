@@ -60,7 +60,7 @@ static ov_callbacks OV_CALLBACKS_DEFAULT = {
   (long (*)(void *))                            ftell
 };
 
-static ov_callbacks OV_CALLBACKS_NOCLOSE = {
+/*static ov_callbacks OV_CALLBACKS_NOCLOSE = {
   (size_t (*)(void *, size_t, size_t, void *))  fread,
   (int (*)(void *, ogg_int64_t, int))           _ov_header_fseek_wrap,
   (int (*)(void *))                             NULL,
@@ -79,7 +79,7 @@ static ov_callbacks OV_CALLBACKS_STREAMONLY_NOCLOSE = {
   (int (*)(void *, ogg_int64_t, int))           NULL,
   (int (*)(void *))                             NULL,
   (long (*)(void *))                            NULL
-};
+};*/
 
 #define  NOTOPEN   0
 #define  PARTOPEN  1
