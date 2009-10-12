@@ -183,7 +183,6 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
      {
    		 mp_map->m_objectlayer[x][y] = 0;
 
-
     	 int newtile = g_pGfxEngine->Tilemap->mp_tiles[mp_map->at(x,y)].chgtile;
 
     	 // Consistency check! Some Mods have issues with that.
@@ -212,7 +211,7 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
     		 // try to guess, if it is a 32x32 (4 16x16) Tile
     		 if(mp_map->at(x-1, y-1) == (unsigned int) newtile &&
     				 mp_map->at(x, y-1) == (unsigned int) newtile  &&
-    						 mp_map->at(x-1, y) == (unsigned int) newtile)
+    				 mp_map->at(x-1, y) == (unsigned int) newtile)
     		 {
     			 mp_map->setTile(x-1, y-1, 52);
     			 mp_map->setTile(x, y-1, 53);

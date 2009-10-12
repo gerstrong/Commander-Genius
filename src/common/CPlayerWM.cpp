@@ -274,12 +274,12 @@ int level_coordinates;
   if (level_coordinates & 0x8000)
   {
 	  if( mp_levels_completed[level_coordinates & 0x7fff] ) // check if level is done, but can be replayed
-		  return false;
+	  {	  return false;	}
 
 	  if( g_pInput->getHoldedKey(KTAB) && g_pInput->getHoldedKey(KSHIFT) )
-	  {	  return false;	  }
+	  {	  return false;	}
 	  else
-	  {	  return true;	  }
+	  {	  return true;	}
   }
   return false;
 }

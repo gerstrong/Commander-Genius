@@ -31,6 +31,7 @@ CMap::CMap(SDL_Surface *p_scrollsurface, CTilemap *p_Tilemap) {
 	 mp_scrollsurface = p_scrollsurface;
 	 mp_Tilemap = p_Tilemap;
 	 mp_data = NULL;
+	 memset(m_objectlayer, 0, sizeof(m_objectlayer));
 }
 
 CMap::~CMap() {
@@ -54,7 +55,7 @@ Uint16 CMap::at(Uint16 x, Uint16 y)
 // returns the object/sprite/level which is set at the given coordinates
 Uint16 CMap::getObjectat(Uint16 x, Uint16 y)
 {
-	return m_objectlayer[y][x];
+	return m_objectlayer[x][y];
 }
 
 
