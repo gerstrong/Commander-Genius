@@ -234,12 +234,6 @@ LAST_OBJ_TYPE
 #define EC_DOWNLEFT         12
 #define EC_DOWNRIGHT        13
 
-// scroll triggers
-#define SCROLLTRIGGERRIGHT     194
-#define SCROLLTRIGGERLEFT      110
-#define SCROLLTRIGGERUP        80
-#define SCROLLTRIGGERDOWN      114
-
 typedef struct stShipQueue
 {
   int cmd;

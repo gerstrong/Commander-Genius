@@ -52,6 +52,8 @@ CPlayGame::CPlayGame( char episode, char level,
 		m_Object[i].onscreen = true;
 		mp_Player[i].mp_object = &(m_Object.at(i));
 	}
+
+	m_theplayer = 0;
 }
 
 bool CPlayGame::init()
@@ -154,6 +156,9 @@ void CPlayGame::process()
 
 			// end(s) the game.
 		}
+
+		// Handle the Scrolling here!
+		scrollTriggers();
 	}
 
 	// Animate the tiles of the map
@@ -248,6 +253,55 @@ void CPlayGame::drawObjects()
 	        }
 	      }
 	   }
+}
+
+// scroll triggers
+#define SCROLLTRIGGERRIGHT     194
+#define SCROLLTRIGGERLEFT      110
+#define SCROLLTRIGGERUP        80
+#define SCROLLTRIGGERDOWN      114
+
+bool CPlayGame::scrollTriggers()
+{
+int px, py;
+bool scrollchanged=0;
+int scroll_x, scroll_y;
+
+	   scroll_x = mp_Map->m_scrollx;
+	   scroll_y = mp_Map->m_scrolly;
+
+	   if (mp_Player[m_theplayer].pdie) return false;
+
+	   px = ((mp_Player[m_theplayer].x<<4)>>CSF)-scroll_x;
+	   py = ((mp_Player[m_theplayer].y<<4)>>CSF)-scroll_y;
+
+	   scrollchanged = 0;
+
+	   // left-right scrolling
+	   if(px > SCROLLTRIGGERRIGHT && scroll_x < (int)mp_Map->m_maxscrollx)
+	   {
+	      mp_Map->scrollRight();
+	      scrollchanged = true;
+	   }
+	   else if(px < SCROLLTRIGGERLEFT && scroll_x > 32)
+	   {
+	      mp_Map->scrollLeft();
+	      scrollchanged = true;
+	   }
+
+	   // up-down scrolling
+	   if (py > SCROLLTRIGGERDOWN && scroll_y < (int)mp_Map->m_maxscrolly)
+	   {
+	      mp_Map->scrollDown();
+	      scrollchanged = true;
+	   }
+	   else if (py < SCROLLTRIGGERUP && scroll_y > 32)
+	   {
+	      mp_Map->scrollUp();
+	      scrollchanged = true;
+	   }
+
+	   return scrollchanged;
 }
 
 ////

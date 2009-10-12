@@ -137,6 +137,10 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path )
     filebuf.clear();
     MapFile.close();
 
+    // Do some post calculations
+    mp_map->m_maxscrollx = mp_map->m_width-320>>4;
+    mp_map->m_maxscrolly = mp_map->m_height-200>>4;
+
     return true;
 }
 

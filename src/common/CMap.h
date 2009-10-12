@@ -50,6 +50,8 @@ public:
 	 Uint32 m_width, m_height;            // size of the map
 	 bool m_worldmap;             // if 1, this is the world map
 
+	 unsigned int m_maxscrollx, m_maxscrolly;
+
 private:
 
 	 Uint8 m_scrollpix;     	// (0-7) for tracking when to draw a stripe

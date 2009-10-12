@@ -23,7 +23,7 @@
 char otherplayer;
 
 
-unsigned int max_scroll_x, max_scroll_y;
+//unsigned int max_scroll_x, max_scroll_y;
 char debugmode=0,acceleratemode=0;
 
 // and this is where the magic happens

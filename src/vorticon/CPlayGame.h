@@ -40,6 +40,7 @@ enum e_levelcommands
 
 	void process();
 	void drawObjects();
+	bool scrollTriggers();
 
 	bool isFinished() 
 		{ return m_finished; }
@@ -66,6 +67,7 @@ private:
 	CMap *mp_Map;
 	CMenu *mp_Menu;
 	CPlayer *mp_Player;
+	int m_theplayer;
 	std::vector<CObject> m_Object;
 };
 #endif /* CPlayGame_H_ */
