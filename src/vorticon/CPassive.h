@@ -33,6 +33,7 @@ public:
 	bool init(char mode = INTRO);
 
 	void process();
+	void GoDemo(bool Go);
 
 	// Getters
 	char getEpisode() { return m_Episode; }
@@ -54,6 +55,7 @@ private:
 	CTilemap *mp_Tilemap;
 	SDL_Surface *mp_Scrollsurface;
 
+	bool m_GoDemo;
 	char m_Episode;
 	char m_NumPlayers;
 	char m_Difficulty;

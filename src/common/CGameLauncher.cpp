@@ -41,7 +41,7 @@ bool CGameLauncher::init()
 	CMapLoader MapLoader(mp_map);
 	if(!MapLoader.load(1, 90, "games/EP1")) return false;
 
-	mp_map->gotoPos(32,32);
+	mp_map->gotoPos(64+5*320,32);
 
 	// Initialize the menu
 	mp_LaunchMenu = new CDialog(g_pVideoDriver->FGLayerSurface, 36, 20);

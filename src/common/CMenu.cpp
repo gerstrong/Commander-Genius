@@ -3,6 +3,8 @@
 
 
 #include "CMenu.h"
+#include "../CGameControl.h"
+#include "../vorticon/CPassive.h"
 #include "../sdl/CVideoDriver.h"
 #include "../sdl/CInput.h"
 
@@ -49,13 +51,13 @@ void CMenu::initMainMenu()
 	// When in Intro, Title, Demo mode
 	if( m_menu_mode == PASSIVE )
 	{
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Start");
-		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 2, "Load");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "New Game");
+		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 2, "Load Game");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 3, "Story");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 4, "Highscores");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 5, "Options");
-		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 6, "Back to Game");
-		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 7, "Back to Title");
+		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 6, "Choose Game");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 7, "Back to Demo");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 8, "About CG");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 9, "Ordering Info");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 10, "Quit");
@@ -65,13 +67,13 @@ void CMenu::initMainMenu()
 	// TODO: This still must be adapted to ingame situation
 	if( m_menu_mode == ACTIVE )
 	{
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "End Game");
-		mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 2, "Load");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "New Game");
+		mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 2, "Save/Load Game");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 3, "Story");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 4, "Highscores");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 5, "Options");
-		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 6, "Back to Game");
-		mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 7, "Back to Title");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 6, "Back to Game");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "Back to Title");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 8, "About CG");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 9, "Ordering Info");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 10, "Quit");
@@ -82,9 +84,8 @@ void CMenu::initNumPlayersMenu()
 {
 	mp_Dialog = new CDialog(mp_MenuSurface, 18, 13);
 
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Single");
-	mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 2, "Two Players");
-	mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 3, "");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "One Player");
+	mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 2, "Two Player");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 4, "Back");
 }
 
@@ -117,22 +118,46 @@ void CMenu::processMainMenu()
 {
 	if( m_menu_mode == PASSIVE )
 	{
-		if( m_selection == 0 ) // Start Game
+		if( m_selection == 5 ) // Choose Game
 		{
-			cleanup();
-			init(START);
+		}
+		if( m_selection == 6 ) // Back to Demo
+		{
 		}
 	}
 	else if( m_menu_mode == ACTIVE )
 	{
-		if( m_selection == 0 ) // End Game
+		if( m_selection == 5 ) // Back to Game
+		{
+			m_goback = true;
+		}
+		if( m_selection == 6 ) // Back to Title
 		{
 			cleanup();
 			m_Endgame = true;
 		}
 	}
 
-
+	if( m_selection == 0 ) // Start Game
+	{
+		cleanup();
+		init(START);
+	}
+	if( m_selection == 2 ) // Story
+	{
+	}
+	if( m_selection == 3 ) // Highscores
+	{
+	}
+	if( m_selection == 4 ) // Options
+	{
+	}
+	if( m_selection == 7 ) // About CG
+	{
+	}
+	if( m_selection == 8 ) // Ordering Info
+	{
+	}
 	if( m_selection == 9 ) // Quit
 	{
 		cleanup();

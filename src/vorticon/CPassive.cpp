@@ -17,7 +17,8 @@ CPassive::CPassive(char Episode, std::string DataDirectory) {
 	mp_TitleScreen = NULL;
 	mp_Menu = NULL;
 	mp_Map = NULL;
-
+	
+	m_GoDemo = false;
 	m_mode = INTRO;
 	m_Episode = Episode;
 	m_DataDirectory = DataDirectory;
@@ -59,6 +60,11 @@ bool CPassive::init(char mode)
 	return true;
 }
 
+void CPassive::GoDemo(bool Go)
+{
+	m_GoDemo=Go;
+}
+
 ////
 // Process Routine
 ////
@@ -73,10 +79,11 @@ void CPassive::process()
 		mp_Menu = new CMenu( CMenu::PASSIVE );
 		mp_Menu->init();
 	}
-	else if( (g_pInput->getPressedKey(KQUIT) || g_pInput->getPressedCommand(IC_FIRE)) && mp_Menu!=NULL )
+	else if( m_GoDemo && mp_Menu!=NULL )
 	{
 		delete mp_Menu;
 		mp_Menu = NULL;
+		m_GoDemo = false;
 	}
 
 	// Modes. We have three: Intro, Main-tile and Demos. We could add more.

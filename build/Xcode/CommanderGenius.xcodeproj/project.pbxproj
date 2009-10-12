@@ -555,16 +555,16 @@
 		63453BE310798CFE007265F8 /* CTitle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTitle.h; sourceTree = "<group>"; };
 		6350F76A1044782400A992D5 /* autoray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = autoray.cpp; sourceTree = "<group>"; };
 		6350F76B1044782400A992D5 /* gotpoints.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gotpoints.cpp; sourceTree = "<group>"; };
-		6350F7741044784900A992D5 /* CDlgFrame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CDlgFrame.cpp; path = ../../src/dialog/CDlgFrame.cpp; sourceTree = SOURCE_ROOT; };
-		6350F7751044784900A992D5 /* CDlgFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDlgFrame.h; path = ../../src/dialog/CDlgFrame.h; sourceTree = SOURCE_ROOT; };
-		6350F7761044784900A992D5 /* CDlgObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CDlgObject.cpp; path = ../../src/dialog/CDlgObject.cpp; sourceTree = SOURCE_ROOT; };
-		6350F7771044784900A992D5 /* CDlgObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDlgObject.h; path = ../../src/dialog/CDlgObject.h; sourceTree = SOURCE_ROOT; };
-		6350F7781044784900A992D5 /* CDlgOptionText.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CDlgOptionText.cpp; path = ../../src/dialog/CDlgOptionText.cpp; sourceTree = SOURCE_ROOT; };
-		6350F7791044784900A992D5 /* CDlgOptionText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDlgOptionText.h; path = ../../src/dialog/CDlgOptionText.h; sourceTree = SOURCE_ROOT; };
-		6350F77A1044784900A992D5 /* CTextViewer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CTextViewer.cpp; path = ../../src/dialog/CTextViewer.cpp; sourceTree = SOURCE_ROOT; };
-		6350F77B1044784900A992D5 /* CTextViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTextViewer.h; path = ../../src/dialog/CTextViewer.h; sourceTree = SOURCE_ROOT; };
-		6350F7801044785600A992D5 /* CSavedGame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CSavedGame.cpp; path = ../../src/fileio/CSavedGame.cpp; sourceTree = SOURCE_ROOT; };
-		6350F7811044785600A992D5 /* CSavedGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CSavedGame.h; path = ../../src/fileio/CSavedGame.h; sourceTree = SOURCE_ROOT; };
+		6350F7741044784900A992D5 /* CDlgFrame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CDlgFrame.cpp; sourceTree = "<group>"; };
+		6350F7751044784900A992D5 /* CDlgFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDlgFrame.h; sourceTree = "<group>"; };
+		6350F7761044784900A992D5 /* CDlgObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CDlgObject.cpp; sourceTree = "<group>"; };
+		6350F7771044784900A992D5 /* CDlgObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDlgObject.h; sourceTree = "<group>"; };
+		6350F7781044784900A992D5 /* CDlgOptionText.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CDlgOptionText.cpp; sourceTree = "<group>"; };
+		6350F7791044784900A992D5 /* CDlgOptionText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDlgOptionText.h; sourceTree = "<group>"; };
+		6350F77A1044784900A992D5 /* CTextViewer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CTextViewer.cpp; sourceTree = "<group>"; };
+		6350F77B1044784900A992D5 /* CTextViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTextViewer.h; sourceTree = "<group>"; };
+		6350F7801044785600A992D5 /* CSavedGame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSavedGame.cpp; sourceTree = "<group>"; };
+		6350F7811044785600A992D5 /* CSavedGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSavedGame.h; sourceTree = "<group>"; };
 		6350F7A31044797300A992D5 /* controls.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = controls.dat; sourceTree = "<group>"; };
 		6350F7A51044797300A992D5 /* EGAHEAD.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = EGAHEAD.CK1; sourceTree = "<group>"; };
 		6350F7A61044797300A992D5 /* EGALATCH.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = EGALATCH.CK1; sourceTree = "<group>"; };
@@ -606,11 +606,11 @@
 		6350FB0910449DAA00A992D5 /* changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = changelog.txt; path = ../../changelog.txt; sourceTree = SOURCE_ROOT; };
 		6350FB0A10449DAA00A992D5 /* future.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = future.txt; path = ../../future.txt; sourceTree = SOURCE_ROOT; };
 		6350FB0B10449DAA00A992D5 /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = readme.txt; path = ../../readme.txt; sourceTree = SOURCE_ROOT; };
-		637FC63310559B5600C2EA77 /* CBitmap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CBitmap.cpp; path = ../../src/graphics/CBitmap.cpp; sourceTree = SOURCE_ROOT; };
-		637FC63410559B5600C2EA77 /* CBitmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CBitmap.h; path = ../../src/graphics/CBitmap.h; sourceTree = SOURCE_ROOT; };
-		637FC63510559B5600C2EA77 /* CPalette.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CPalette.cpp; path = ../../src/graphics/CPalette.cpp; sourceTree = SOURCE_ROOT; };
-		637FC63610559B5600C2EA77 /* CPalette.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CPalette.h; path = ../../src/graphics/CPalette.h; sourceTree = SOURCE_ROOT; };
-		63AB8C2E107C62D0001EE22F /* cglogo.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = cglogo.icns; sourceTree = SOURCE_ROOT; };
+		637FC63310559B5600C2EA77 /* CBitmap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBitmap.cpp; sourceTree = "<group>"; };
+		637FC63410559B5600C2EA77 /* CBitmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBitmap.h; sourceTree = "<group>"; };
+		637FC63510559B5600C2EA77 /* CPalette.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPalette.cpp; sourceTree = "<group>"; };
+		637FC63610559B5600C2EA77 /* CPalette.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPalette.h; sourceTree = "<group>"; };
+		63AB8C2E107C62D0001EE22F /* cglogo.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = cglogo.icns; sourceTree = "<group>"; };
 		63D4A6EF107FEB7C00E43500 /* 100.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = 100.tga; sourceTree = "<group>"; };
 		63D4A6F0107FEB7C00E43500 /* 1000.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = 1000.tga; sourceTree = "<group>"; };
 		63D4A6F1107FEB7C00E43500 /* 200.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = 200.tga; sourceTree = "<group>"; };
@@ -679,10 +679,18 @@
 		20286C2AFDCF999611CA2CEA /* src */ = {
 			isa = PBXGroup;
 			children = (
-				231FC3401083642B00E7869E /* common */,
-				235266DA104E74430054F00B /* graphics */,
-				23C637BC1031812500FEEFEE /* cinematics */,
+				23D3E9741013ABC9001643FA /* ai */,
 				23C637C61031812500FEEFEE /* dialog */,
+				231FC3401083642B00E7869E /* common */,
+				23C637BC1031812500FEEFEE /* cinematics */,
+				23D3E9A11013ABCA001643FA /* fileio */,
+				235266DA104E74430054F00B /* graphics */,
+				23D3E9B01013ABCA001643FA /* hqp */,
+				23D3E9B71013ABCA001643FA /* include */,
+				23D3E9D81013ABCA001643FA /* scale2x */,
+				23D3E9E31013ABCA001643FA /* sdl */,
+				23D3E9FD1013ABCA001643FA /* vorbis */,
+				23D3E9FF1013ABCA001643FA /* vorticon */,
 				23C637CC1031812500FEEFEE /* externals.h */,
 				235756C1101B766800275638 /* Unicode.cpp */,
 				63453BD510798CCC007265F8 /* CGameControl.cpp */,
@@ -714,14 +722,12 @@
 				23D3ED70101759C8001643FA /* StringUtils.cpp */,
 				23D3ED71101759C8001643FA /* StringUtils.h */,
 				23D3EA8C1013AEF3001643FA /* MacMain.m */,
-				23D3E9741013ABC9001643FA /* ai */,
 				23D3E9941013ABCA001643FA /* CGame.cpp */,
 				23D3E9951013ABCA001643FA /* CGame.h */,
 				23D3E99A1013ABCA001643FA /* CLogFile.cpp */,
 				23D3E99B1013ABCA001643FA /* CLogFile.h */,
 				23D3E99C1013ABCA001643FA /* CSingleton.h */,
 				23D3E99D1013ABCA001643FA /* demobox.h */,
-				23D3E9A11013ABCA001643FA /* fileio */,
 				23D3E9A71013ABCA001643FA /* fileio.cpp */,
 				23D3E9A81013ABCA001643FA /* fileio.h */,
 				23D3E9A91013ABCA001643FA /* finale.cpp */,
@@ -731,8 +737,6 @@
 				23D3E9AD1013ABCA001643FA /* gameorg.h */,
 				23D3E9AE1013ABCA001643FA /* gamepdo.cpp */,
 				23D3E9AF1013ABCA001643FA /* gm_pdowm.cpp */,
-				23D3E9B01013ABCA001643FA /* hqp */,
-				23D3E9B71013ABCA001643FA /* include */,
 				23D3E9CF1013ABCA001643FA /* keen.h */,
 				23D3E9D11013ABCA001643FA /* lz.cpp */,
 				23D3E9D21013ABCA001643FA /* lz.h */,
@@ -741,11 +745,7 @@
 				23D3E9D51013ABCA001643FA /* CStartScreen.cpp */,
 				23D3E9D61013ABCA001643FA /* misc.cpp */,
 				23D3E9D71013ABCA001643FA /* pressf10.h */,
-				23D3E9D81013ABCA001643FA /* scale2x */,
-				23D3E9E31013ABCA001643FA /* sdl */,
 				23D3E9FC1013ABCA001643FA /* sgrle.cpp */,
-				23D3E9FD1013ABCA001643FA /* vorbis */,
-				23D3E9FF1013ABCA001643FA /* vorticon */,
 			);
 			name = src;
 			path = ../../src;
@@ -754,6 +754,8 @@
 		20286C2CFDCF999611CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				63DCCCBB104CBC3000B3BC10 /* version.h */,
+				63AB8C2E107C62D0001EE22F /* cglogo.icns */,
 				6350FB0910449DAA00A992D5 /* changelog.txt */,
 				6350F7A11044797300A992D5 /* data */,
 				6350FB0A10449DAA00A992D5 /* future.txt */,
@@ -799,14 +801,18 @@
 		235266DA104E74430054F00B /* graphics */ = {
 			isa = PBXGroup;
 			children = (
-				23526703104E756F0054F00B /* CTilemap.cpp */,
-				23526704104E756F0054F00B /* CTilemap.h */,
-				235266FA104E754D0054F00B /* CGfxEngine.cpp */,
-				235266FB104E754D0054F00B /* CGfxEngine.h */,
+				637FC63310559B5600C2EA77 /* CBitmap.cpp */,
+				637FC63410559B5600C2EA77 /* CBitmap.h */,
 				235266F0104E75250054F00B /* CFont.cpp */,
 				235266F1104E75250054F00B /* CFont.h */,
+				235266FA104E754D0054F00B /* CGfxEngine.cpp */,
+				235266FB104E754D0054F00B /* CGfxEngine.h */,
+				637FC63510559B5600C2EA77 /* CPalette.cpp */,
+				637FC63610559B5600C2EA77 /* CPalette.h */,
 				235266DF104E74430054F00B /* CSprite.cpp */,
 				235266E0104E74430054F00B /* CSprite.h */,
+				23526703104E756F0054F00B /* CTilemap.cpp */,
+				23526704104E756F0054F00B /* CTilemap.h */,
 			);
 			path = graphics;
 			sourceTree = "<group>";
@@ -830,8 +836,16 @@
 		23C637C61031812500FEEFEE /* dialog */ = {
 			isa = PBXGroup;
 			children = (
+				6350F7741044784900A992D5 /* CDlgFrame.cpp */,
+				6350F7751044784900A992D5 /* CDlgFrame.h */,
+				6350F7761044784900A992D5 /* CDlgObject.cpp */,
+				6350F7771044784900A992D5 /* CDlgObject.h */,
+				6350F7781044784900A992D5 /* CDlgOptionText.cpp */,
+				6350F7791044784900A992D5 /* CDlgOptionText.h */,
 				23C637C71031812500FEEFEE /* CTextBox.cpp */,
 				23C637C81031812500FEEFEE /* CTextBox.h */,
+				6350F77A1044784900A992D5 /* CTextViewer.cpp */,
+				6350F77B1044784900A992D5 /* CTextViewer.h */,
 				23C637C91031812500FEEFEE /* CWindow.cpp */,
 				23C637CA1031812500FEEFEE /* CWindow.h */,
 			);
@@ -841,41 +855,24 @@
 		23D3E9741013ABC9001643FA /* ai */ = {
 			isa = PBXGroup;
 			children = (
-				23C637DC103181D700FEEFEE /* balljack.h */,
-				6350F7801044785600A992D5 /* CSavedGame.cpp */,
-				6350F7811044785600A992D5 /* CSavedGame.h */,
-				6350F7741044784900A992D5 /* CDlgFrame.cpp */,
-				6350F7751044784900A992D5 /* CDlgFrame.h */,
-				637FC63310559B5600C2EA77 /* CBitmap.cpp */,
-				637FC63410559B5600C2EA77 /* CBitmap.h */,
-				637FC63510559B5600C2EA77 /* CPalette.cpp */,
-				637FC63610559B5600C2EA77 /* CPalette.h */,
-				6350F7761044784900A992D5 /* CDlgObject.cpp */,
-				6350F7771044784900A992D5 /* CDlgObject.h */,
-				6350F7781044784900A992D5 /* CDlgOptionText.cpp */,
-				6350F7791044784900A992D5 /* CDlgOptionText.h */,
-				6350F77A1044784900A992D5 /* CTextViewer.cpp */,
-				6350F77B1044784900A992D5 /* CTextViewer.h */,
-				23C637DD103181D700FEEFEE /* door.h */,
-				23C637DE103181D700FEEFEE /* earth.h */,
-				23C637DF103181D700FEEFEE /* enemydata.h */,
-				23C637E0103181D700FEEFEE /* fireball.h */,
-				23C637E1103181D700FEEFEE /* icecannon.cpp */,
-				23C637E2103181D700FEEFEE /* icecannon.h */,
-				23C637E3103181D700FEEFEE /* se.h */,
-				2321F1AF101DA0CE00510514 /* baby.h */,
-				235756C7101BE31A00275638 /* vortelite.cpp */,
-				235756C8101BE31A00275638 /* vortelite.h */,
-				23D3E9751013ABC9001643FA /* baby.cpp */,
-				23D3E9761013ABC9001643FA /* balljack.cpp */,
 				6350F76A1044782400A992D5 /* autoray.cpp */,
-				6350F76B1044782400A992D5 /* gotpoints.cpp */,
+				23D3E9751013ABC9001643FA /* baby.cpp */,
+				2321F1AF101DA0CE00510514 /* baby.h */,
+				23D3E9761013ABC9001643FA /* balljack.cpp */,
+				23C637DC103181D700FEEFEE /* balljack.h */,
 				23D3E9781013ABC9001643FA /* butler.cpp */,
 				23D3E9791013ABC9001643FA /* door.cpp */,
+				23C637DD103181D700FEEFEE /* door.h */,
 				23D3E97A1013ABC9001643FA /* earth.cpp */,
+				23C637DE103181D700FEEFEE /* earth.h */,
+				23C637DF103181D700FEEFEE /* enemydata.h */,
 				23D3E97B1013ABC9001643FA /* fireball.cpp */,
+				23C637E0103181D700FEEFEE /* fireball.h */,
 				23D3E97C1013ABC9001643FA /* foob.cpp */,
 				23D3E97D1013ABC9001643FA /* garg.cpp */,
+				6350F76B1044782400A992D5 /* gotpoints.cpp */,
+				23C637E1103181D700FEEFEE /* icecannon.cpp */,
+				23C637E2103181D700FEEFEE /* icecannon.h */,
 				23D3E9801013ABC9001643FA /* meep.cpp */,
 				23D3E9811013ABC9001643FA /* mother.cpp */,
 				23D3E9821013ABC9001643FA /* nessie.cpp */,
@@ -885,15 +882,17 @@
 				23D3E9861013ABC9001643FA /* ray.cpp */,
 				23D3E9871013ABC9001643FA /* ray.h */,
 				23D3E9881013ABC9001643FA /* rope.cpp */,
+				23D3E9901013ABCA001643FA /* scrub.cpp */,
 				23D3E9891013ABC9001643FA /* se.cpp */,
+				23C637E3103181D700FEEFEE /* se.h */,
 				23D3E98A1013ABC9001643FA /* sndwave.cpp */,
 				23D3E98B1013ABC9001643FA /* tank.cpp */,
 				23D3E98C1013ABC9001643FA /* tankep2.cpp */,
 				23D3E98D1013ABC9001643FA /* teleport.cpp */,
 				23D3E98E1013ABC9001643FA /* vort.cpp */,
 				23D3E98F1013ABCA001643FA /* vort.h */,
-				63DCCCBB104CBC3000B3BC10 /* version.h */,
-				23D3E9901013ABCA001643FA /* scrub.cpp */,
+				235756C7101BE31A00275638 /* vortelite.cpp */,
+				235756C8101BE31A00275638 /* vortelite.h */,
 				23D3E9911013ABCA001643FA /* yorp.cpp */,
 			);
 			name = ai;
@@ -905,13 +904,14 @@
 			children = (
 				23D3EC3A101696DF001643FA /* CExeFile.cpp */,
 				23D3EC3B101696DF001643FA /* CExeFile.h */,
-				63AB8C2E107C62D0001EE22F /* cglogo.icns */,
-				23D3EC3C101696DF001643FA /* CPatcher.cpp */,
-				23D3EC3D101696DF001643FA /* CPatcher.h */,
-				23D3EC3E101696DF001643FA /* CTileLoader.cpp */,
-				23D3EC3F101696DF001643FA /* CTileLoader.h */,
 				23D3E9A21013ABCA001643FA /* CParser.cpp */,
 				23D3E9A31013ABCA001643FA /* CParser.h */,
+				23D3EC3C101696DF001643FA /* CPatcher.cpp */,
+				23D3EC3D101696DF001643FA /* CPatcher.h */,
+				6350F7801044785600A992D5 /* CSavedGame.cpp */,
+				6350F7811044785600A992D5 /* CSavedGame.h */,
+				23D3EC3E101696DF001643FA /* CTileLoader.cpp */,
+				23D3EC3F101696DF001643FA /* CTileLoader.h */,
 				23D3E9A41013ABCA001643FA /* lzexe.cpp */,
 				23D3E9A51013ABCA001643FA /* rle.cpp */,
 				23D3E9A61013ABCA001643FA /* story.cpp */,
@@ -935,6 +935,7 @@
 		23D3E9B71013ABCA001643FA /* include */ = {
 			isa = PBXGroup;
 			children = (
+				23D3E9CA1013ABCA001643FA /* CStartScreen.h */,
 				23D3E9B81013ABCA001643FA /* declarations.h */,
 				23D3E9B91013ABCA001643FA /* enemyai.h */,
 				23D3E9BD1013ABCA001643FA /* fileio */,
@@ -946,7 +947,6 @@
 				23D3E9C61013ABCA001643FA /* graphics.h */,
 				23D3E9C71013ABCA001643FA /* gui */,
 				23D3E9C91013ABCA001643FA /* main.h */,
-				23D3E9CA1013ABCA001643FA /* CStartScreen.h */,
 				23D3E9CB1013ABCA001643FA /* misc.h */,
 				23D3E9CC1013ABCA001643FA /* playeraction.h */,
 				23D3E9CD1013ABCA001643FA /* vorbis */,
