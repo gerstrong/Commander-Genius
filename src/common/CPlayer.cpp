@@ -49,6 +49,8 @@ CPlayer::CPlayer() {
     pjustjumped = pjustfell = 0;
 
 	mp_map = NULL;
+	m_godmode = false;
+	m_cheats_enabled = false;
 }
 
 void CPlayer::StatusBox()

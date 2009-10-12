@@ -20,7 +20,7 @@ public:
 	bool load( Uint8 episode, Uint8 level, const std::string& path );
 
 	void addTile( Uint16 t, Uint16 x, Uint16 y );
-	void addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episode, bool *levels_completed);
+	void addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episode);
 	void addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode, int chglevelto);
 
 private:

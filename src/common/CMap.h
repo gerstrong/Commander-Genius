@@ -15,7 +15,7 @@
 
 class CMap {
 public:
-	CMap(SDL_Surface *p_scrollsurface, CTilemap *p_Tilemap);
+	CMap( SDL_Surface *p_scrollsurface, CTilemap *p_Tilemap);
 	virtual ~CMap();
 
 	bool gotoPos( Uint16 x, Uint16 y );
@@ -51,7 +51,6 @@ public:
 	 bool m_worldmap;             // if 1, this is the world map
 
 	 unsigned int m_maxscrollx, m_maxscrolly;
-
 private:
 
 	 Uint8 m_scrollpix;     	// (0-7) for tracking when to draw a stripe

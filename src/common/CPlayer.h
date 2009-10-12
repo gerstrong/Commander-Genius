@@ -109,7 +109,7 @@ public:
 	void selectFrameOnWorldMap();
 	void setWMblockedlrud();
 	void AllowEnterLevelonWM();
-	bool isWMSolid(int xb, int yb, bool *levels_completed);
+	bool isWMSolid(int xb, int yb);
 	void Walking();
 	void WalkingAnimation();
 	void InertiaAndFriction_X();
@@ -168,8 +168,6 @@ public:
 	bool blockedl,blockedr,blockedu,blockedd;
 	unsigned int blockedby;
 
-	bool *mp_levels_completed;
-
 	unsigned char pjumping, pjumptime, pjumpupspeed_decreasetimer, pjumpdir;
 	unsigned char pjumpframe, pjumpanimtimer, pjumpupspeed;
 	unsigned char pjumpnormaltime, pjumpupdecreaserate, pjustjumped;
@@ -224,6 +222,9 @@ public:
 	 bool HasBattery;
 	 bool HasVacuum;
 	} inventory;
+
+	bool m_godmode, m_cheats_enabled;
+	bool *mp_levels_completed;
 
 	CMap *mp_map;
 private:

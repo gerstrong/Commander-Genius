@@ -21,6 +21,7 @@
 CPlayGame::CPlayGame( char episode, char level, 
 			char numplayers, char difficulty,
 			std::string &gamepath ) {
+	bool *p_completed_levels;
 	m_Episode = episode;
 	m_Level = level;
 	m_NumPlayers = numplayers;
@@ -39,6 +40,10 @@ CPlayGame::CPlayGame( char episode, char level,
 	else
 		mp_Player = NULL;
 
+	// Create completed level list
+	p_completed_levels = new bool[16];
+	memset(p_completed_levels,false,16*sizeof(bool));
+
 	// tie puppy objects so the player can interact in the level
 	for (int i=0 ; i<numplayers ; i++)
 	{
@@ -46,6 +51,7 @@ CPlayGame::CPlayGame( char episode, char level,
 		mp_Player[i].m_player_number = i;
 		mp_Player[i].m_episode = m_Episode;
 		mp_Player[i].mp_levels_completed = mp_level_completed;
+		mp_Player[i].mp_levels_completed = p_completed_levels;
 
 		m_Object.push_back(object);
 		m_Object[i].exists = true;
@@ -59,7 +65,7 @@ CPlayGame::CPlayGame( char episode, char level,
 bool CPlayGame::init()
 {
 	// load level map
-	mp_Map = new CMap( g_pVideoDriver->getScrollSurface(), g_pGfxEngine->Tilemap );
+	mp_Map = new CMap( g_pVideoDriver->getScrollSurface(), g_pGfxEngine->Tilemap);
 	CMapLoader MapLoader( mp_Map, mp_Player);
 
 	if( !mp_Map ) return false;
@@ -264,21 +270,22 @@ void CPlayGame::drawObjects()
 bool CPlayGame::scrollTriggers()
 {
 int px, py;
-bool scrollchanged=0;
+bool scrollchanged=false;
 int scroll_x, scroll_y;
+int max_scroll_x, max_scroll_y;
 
 	   scroll_x = mp_Map->m_scrollx;
 	   scroll_y = mp_Map->m_scrolly;
+	   max_scroll_x = mp_Map->m_maxscrollx<<4;
+	   max_scroll_y = mp_Map->m_maxscrolly<<4;
 
 	   if (mp_Player[m_theplayer].pdie) return false;
 
-	   px = ((mp_Player[m_theplayer].x<<4)>>CSF)-scroll_x;
-	   py = ((mp_Player[m_theplayer].y<<4)>>CSF)-scroll_y;
-
-	   scrollchanged = 0;
+	   px = (mp_Player[m_theplayer].x>>5)-scroll_x;
+	   py = (mp_Player[m_theplayer].y>>5)-scroll_y;
 
 	   // left-right scrolling
-	   if(px > SCROLLTRIGGERRIGHT && scroll_x < (int)mp_Map->m_maxscrollx)
+	   if(px > SCROLLTRIGGERRIGHT && scroll_x < max_scroll_x)
 	   {
 	      mp_Map->scrollRight();
 	      scrollchanged = true;
@@ -290,7 +297,7 @@ int scroll_x, scroll_y;
 	   }
 
 	   // up-down scrolling
-	   if (py > SCROLLTRIGGERDOWN && scroll_y < (int)mp_Map->m_maxscrolly)
+	   if (py > SCROLLTRIGGERDOWN && scroll_y < max_scroll_y)
 	   {
 	      mp_Map->scrollDown();
 	      scrollchanged = true;
@@ -314,6 +321,9 @@ void CPlayGame::cleanup()
 }
 
 CPlayGame::~CPlayGame() {
+	bool *p_levels_completed = mp_Player[0].mp_levels_completed;
+	delete [] p_levels_completed;
+
 	if(mp_Player) delete [] mp_Player;
 }
 

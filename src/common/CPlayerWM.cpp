@@ -75,38 +75,38 @@ void CPlayer::setWMblockedlrud()
    blockedu = blockedd = false;
 
    // cheat: holding down TAB will turn off clipping. or if you are in godmode
-   //if ((pCKP->Option[OPT_CHEATS].value && g_pInput->getHoldedKey(KTAB)) || player[cp].godmode) return;
+   if ((m_cheats_enabled && g_pInput->getHoldedKey(KTAB)) || m_godmode) return;
 
    // R
-   if (isWMSolid((x>>5)+8, (y>>5)+1, mp_levels_completed))
+   if (isWMSolid((x>>5)+8, (y>>5)+1))
       { blockedr = 1; }
-   else if (isWMSolid((x>>5)+8, (y>>5)+8, mp_levels_completed))
+   else if (isWMSolid((x>>5)+8, (y>>5)+8))
       { blockedr = 1; }
-   else if (isWMSolid((x>>5)+8, (y>>5)+13, mp_levels_completed))
+   else if (isWMSolid((x>>5)+8, (y>>5)+13))
       { blockedr = 1; }
 
    // L
-   if (isWMSolid((x>>5)+0, (y>>5)+1, mp_levels_completed))
+   if (isWMSolid((x>>5)+0, (y>>5)+1))
       { blockedl = 1; }
-   else if (isWMSolid((x>>5)+0, (y>>5)+8, mp_levels_completed))
+   else if (isWMSolid((x>>5)+0, (y>>5)+8))
       { blockedl = 1; }
-   else if (isWMSolid((x>>5)+0, (y>>5)+13, mp_levels_completed))
+   else if (isWMSolid((x>>5)+0, (y>>5)+13))
       { blockedl = 1; }
 
    // U
-   if (isWMSolid((x>>5)+1, (y>>5)-1, mp_levels_completed))
+   if (isWMSolid((x>>5)+1, (y>>5)-1))
       { blockedu = 1; }
-   else if (isWMSolid((x>>5)+4, (y>>5)-1, mp_levels_completed))
+   else if (isWMSolid((x>>5)+4, (y>>5)-1))
       { blockedu = 1; }
-   else if (isWMSolid((x>>5)+7, (y>>5)-1, mp_levels_completed))
+   else if (isWMSolid((x>>5)+7, (y>>5)-1))
       { blockedu = 1; }
 
    // D
-   if (isWMSolid((x>>5)+1, (y>>5)+14, mp_levels_completed))
+   if (isWMSolid((x>>5)+1, (y>>5)+14))
       { blockedd = 1; }
-   else if (isWMSolid((x>>5)+4, (y>>5)+14, mp_levels_completed))
+   else if (isWMSolid((x>>5)+4, (y>>5)+14))
       { blockedd = 1; }
-   else if (isWMSolid((x>>5)+7, (y>>5)+14, mp_levels_completed))
+   else if (isWMSolid((x>>5)+7, (y>>5)+14))
       { blockedd = 1; }
 }
 
@@ -187,7 +187,7 @@ p_levelcontrol = &(pCKP->Control.levelcontrol);
           {
              if (map_findobject(teldest, &destx, &desty))
              {
-                o = spawn_object(x<<CSF,y<<CSF,OBJ_TELEPORTER);
+                o = spawn_object(x<<CSF,y<<levels_completedCSF,OBJ_TELEPORTER);
                 objects[o].ai.teleport.direction = TELEPORTING_OUT;
                 objects[o].ai.teleport.destx = destx << 4 << CSF;
                 objects[o].ai.teleport.desty = desty << 4 << CSF;
@@ -260,7 +260,7 @@ p_levelcontrol = &(pCKP->Control.levelcontrol);
     player[cp].wm_lastenterstate = (player[cp].playcontrol[PA_JUMP] || player[cp].playcontrol[PA_POGO]);*/
 }
 
-bool CPlayer::isWMSolid(int xb, int yb, bool *levels_completed)
+bool CPlayer::isWMSolid(int xb, int yb)
 {
 int level_coordinates;
 
@@ -268,22 +268,19 @@ int level_coordinates;
 
   if( p_tiles[mp_map->at(xb>>4, yb>>4)].bleft ) return true;
 
+  // Now check if the levels must block the player
   level_coordinates = mp_map->getObjectat(xb>>4, yb>>4);
 
-  /*if (level_coordinates & 0x8000)
+  if (level_coordinates & 0x8000)
   {
-	  if(levels_completed[level_coordinates & 0x7fff] && options[OPT_LVLREPLAYABILITY].value) // check if level is done, but can be replayed
-		  return 0;
+	  if( mp_levels_completed[level_coordinates & 0x7fff] ) // check if level is done, but can be replayed
+		  return false;
 
-	  if(g_pInput->getHoldedKey(KTAB) && g_pInput->getHoldedKey(KSHIFT))
-	  {
-		  return 0;
-	  }
+	  if( g_pInput->getHoldedKey(KTAB) && g_pInput->getHoldedKey(KSHIFT) )
+	  {	  return false;	  }
 	  else
-	  {
-		  return 1;
-	  }
-  }*/
+	  {	  return true;	  }
+  }
   return false;
 }
 

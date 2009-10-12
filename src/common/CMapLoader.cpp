@@ -12,6 +12,7 @@
 #include "../FindFile.h"
 #include "../CLogFile.h"
 #include "../include/fileio/rle.h"
+#include "../graphics/CGfxEngine.h"
 
 CMapLoader::CMapLoader(CMap* p_map, CPlayer *p_Player) {
 	mp_map = p_map;
@@ -121,7 +122,7 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path )
     	t = filebuf[c];
 
         //if (m_worldmap) addObjectlayerTile(t,  episode,  levels_completed);
-    	if (mp_map->m_worldmap) addWorldMapObject(t, curmapx, curmapy,  episode,  NULL);
+    	if (mp_map->m_worldmap) addWorldMapObject(t, curmapx, curmapy,  episode );
         //else addEnemyObject(t, curmapx, curmapy, episode, chglevelto);
 
         curmapx++;
@@ -138,8 +139,8 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path )
     MapFile.close();
 
     // Do some post calculations
-    mp_map->m_maxscrollx = mp_map->m_width-320>>4;
-    mp_map->m_maxscrolly = mp_map->m_height-200>>4;
+    mp_map->m_maxscrollx = mp_map->m_width-(320>>4);
+    mp_map->m_maxscrolly = mp_map->m_height-(200>>4);
 
     return true;
 }
@@ -154,7 +155,7 @@ void CMapLoader::addTile( Uint16 t, Uint16 x, Uint16 y )
 }
 
 //bool NessieAlreadySpawned;
-void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episode, bool *levels_completed)
+void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episode)
 {
   //int o;
   switch(t)
@@ -176,18 +177,14 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
          NessieObjectHandle = o;
        }
      }
-     goto levelmarker;
    break;*/
    default:             // level marker
-//levelmarker: ;
-     /*if ((t&0x7fff) < 256 && levels_completed[t&0x00ff])
+     if ((t&0x7fff) < 256 && mp_Player->mp_levels_completed[t&0x00ff])
      {
-    	 if(!options[OPT_LVLREPLAYABILITY].value)
-    		m_objectlayer[x][y] = 0;
-    	 else
-    		 m_objectlayer[x][y] = t;
+   		 mp_map->m_objectlayer[x][y] = 0;
 
-    	 int newtile = tiles[map.mapdata[x][y]].chgtile;
+
+    	 int newtile = g_pGfxEngine->Tilemap->mp_tiles[mp_map->at(x,y)].chgtile;
 
     	 // Consistency check! Some Mods have issues with that.
     	 if(episode == 1 || episode == 2)
@@ -197,13 +194,13 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
     			 newtile = 77;
 
     		 // try to guess, if it is a 32x32 (4 16x16) Tile
-    		 if(mp_data[x-1][y-1] == (unsigned int) newtile &&
-    				 mp_data[x][y-1] == (unsigned int) newtile  &&
-    				 mp_data[x-1][y] == (unsigned int) newtile)
+    		 if(mp_map->at(x-1,y-1) == (unsigned int) newtile &&
+    				 mp_map->at(x,y-1) == (unsigned int) newtile  &&
+    				 mp_map->at(x-1,y) == (unsigned int) newtile)
     		 {
-    			 mp_data[x-1][y-1] = 78; //ul
-    			 mp_data[x][y-1] = 79; //ur
-    			 mp_data[x-1][y] = 80; //bl
+    			 mp_map->setTile(x-1, y-1, 78);
+    			 mp_map->setTile(x, y-1, 79);
+    			 mp_map->setTile(x-1, y, 80);
     			 newtile = 81; // br. this one
     		 }
     	 }
@@ -213,22 +210,22 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
     			 // something went wrong. Use default tile
     			 newtile = 56;
     		 // try to guess, if it is a 32x32 (4 16x16) Tile
-    		 if(mp_data[x-1][y-1] == (unsigned int) newtile &&
-    				 mp_data[x][y-1] == (unsigned int) newtile  &&
-    				 mp_data[x-1][y] == (unsigned int) newtile)
+    		 if(mp_map->at(x-1, y-1) == (unsigned int) newtile &&
+    				 mp_map->at(x, y-1) == (unsigned int) newtile  &&
+    						 mp_map->at(x-1, y) == (unsigned int) newtile)
     		 {
-    			 mp_data[x-1][y-1] = 52; //bl
-    			 mp_data[x][y-1] = 53; //ur
-    			 mp_data[x-1][y] = 54; //ul
-    			 newtile = 55; // br. this one
+    			 mp_map->setTile(x-1, y-1, 52);
+    			 mp_map->setTile(x, y-1, 53);
+    			 mp_map->setTile(x-1, y, 54);
+    			 newtile = 55;
     		 }
     	 }
- 		mp_data[x][y] = newtile;
+    	 mp_map->setTile(x, y, newtile);
      }
      else
-     {*/
+     {
 	   mp_map->m_objectlayer[x][y] = t;
-     //}
+     }
      break;
   }
 }
