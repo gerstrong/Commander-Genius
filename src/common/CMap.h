@@ -18,7 +18,7 @@ public:
 	CMap( SDL_Surface *p_scrollsurface, CTilemap *p_Tilemap);
 	virtual ~CMap();
 
-	bool gotoPos( Uint16 x, Uint16 y );
+	bool gotoPos( int x, int y );
 	void scrollLeft(void);
 	void scrollRight(void);
 	void scrollUp(void);

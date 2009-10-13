@@ -76,7 +76,9 @@ bool CPlayGame::init()
 	mp_Map->drawAll();
 
 	// Now Scroll to the position of the player and center him
-	mp_Map->gotoPos( (mp_Player[0].x>>5) - 160, (mp_Player[0].y>>5) - 100 );
+
+	mp_Map->gotoPos( 32, 32 ); // Assure that the edges are never seen
+	while(scrollTriggers()); // Scroll the map to players position
 	// TODO: Must be changed. It is just a workaround while scrolling doesn't work.
 
 	for (int i=0 ; i<m_NumPlayers ; i++)

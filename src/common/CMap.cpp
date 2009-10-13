@@ -73,27 +73,19 @@ bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t)
 ////
 // Scrolling Routines
 ////
-bool CMap::gotoPos(Uint16 x, Uint16 y)
+bool CMap::gotoPos(int x, int y)
 {
-	if((m_width<<4) < x || (m_height<<4) < y )
-		return false;
-	else
-	{
-		int dx,dy;
-		dx = x - m_scrollx;
-		dy = y - m_scrolly;
+	int dx,dy;
+	dx = x - m_scrollx;
+	dy = y - m_scrolly;
 
-		if(dx > 0)
-			for(int scrollx=0 ; scrollx<dx ;scrollx++) scrollRight();
-		else if(dx < 0)
-			for(int scrollx=0 ; scrollx>dx ;scrollx--) scrollLeft();
+	if( dx > 0 )
+		for(int scrollx=0 ; scrollx<dx ;scrollx++) scrollRight();
 
-		if(dy > 0)
-			for(int scrolly=0 ; scrolly<dy ;scrolly++) scrollDown();
-		else if(dy < 0)
-			for(int scrolly=0 ; scrolly>dy ;scrolly--) scrollUp();
-		return true;
-	}
+	if( dy > 0 )
+		for(int scrolly=0 ; scrolly<dy ;scrolly++) scrollDown();
+
+	return true;
 }
 
 // scrolls the map one pixel right
