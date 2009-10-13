@@ -17,9 +17,12 @@ CMenu::CMenu( char menu_mode )
 	m_menu_mode = menu_mode;
 	m_Difficulty = 0; // easy if none chosen
 	m_NumPlayers = 0; // no player chosen...
+	m_demoback = false;
+	m_choosegame = false;
 	m_goback = false;
 	m_Endgame = false;
 	mp_Dialog = NULL;
+	mp_TextViewer = NULL;
 }
 
 ////
@@ -34,7 +37,7 @@ bool CMenu::init( char menu_type )
 	{
 		initMainMenu();
 	}
-	else if( m_menu_type == START )
+	else if( m_menu_type == NEW )
 	{
 		initNumPlayersMenu();
 	}
@@ -53,10 +56,10 @@ void CMenu::initMainMenu()
 	{
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "New Game");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 2, "Load Game");
-		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 3, "Story");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 3, "Story");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 4, "Highscores");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 5, "Options");
-		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 6, "Choose Game");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 6, "Choose Game");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 7, "Back to Demo");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 8, "About CG");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 9, "Ordering Info");
@@ -111,7 +114,7 @@ void CMenu::process()
 	// Process the Menu Type logic.
 	// Which menu is open and what do we have to do?
 	if( m_menu_type == MAIN ) processMainMenu();
-	else if( m_menu_type == START ) processNumPlayersMenu();
+	else if( m_menu_type == NEW ) processNumPlayersMenu();
 }
 
 void CMenu::processMainMenu()
@@ -120,9 +123,11 @@ void CMenu::processMainMenu()
 	{
 		if( m_selection == 5 ) // Choose Game
 		{
+			m_choosegame = true;
 		}
 		if( m_selection == 6 ) // Back to Demo
 		{
+			m_demoback = true;
 		}
 	}
 	else if( m_menu_mode == ACTIVE )
@@ -141,7 +146,7 @@ void CMenu::processMainMenu()
 	if( m_selection == 0 ) // Start Game
 	{
 		cleanup();
-		init(START);
+		init(NEW);
 	}
 	if( m_selection == 2 ) // Story
 	{
@@ -187,12 +192,23 @@ void CMenu::processNumPlayersMenu()
 
 }
 
+// This function shows the Story of Commander Keen!
+void CMenu::showPage(const std::string& str_text, int textsize)
+{
+	mp_TextViewer = new CTextViewer(mp_MenuSurface, 0, 0, 320, 136);
+	mp_TextViewer->loadText(str_text);
+	mp_TextViewer->processCycle();
+    return;
+}
+
 ////
 // Cleanup Routines
 ////
 void CMenu::cleanup()
 {
 	delete mp_Dialog;
+	delete mp_TextViewer;
+	mp_TextViewer = NULL;
 	mp_Dialog = NULL;
 }
 
@@ -994,18 +1010,6 @@ char controlsmenu()
 		ControlsMenu.draw();
 	} while(1);
 	return 0;
-}
-
-// This function shows the Story of Commander Keen!
-void showPage(const std::string& str_text, int textsize)
-{
-	CTextViewer TextViewer(g_pVideoDriver->FGLayerSurface, 0, 0, 320, 136);
-	TextViewer.loadText(str_text);
-
-	AllPlayersInvisible();
-
-	TextViewer.processCycle();
-    return;
 }
 
 void keensleft(int episode)

@@ -14,6 +14,7 @@
 #include <string>
 #include <SDL/SDL.h>
 #include "../dialog/CDialog.h"
+#include "../dialog/CTextViewer.h"
 
 #define TWIRL_SPEED_SLOW        100
 #define TWIRL_SPEED_FAST        20
@@ -31,15 +32,14 @@
 /*char controlsmenu();
 char configmenu(stCloneKeenPlus *pCKP,int ingame);
 void keensleft(int episode);
-int getDifficulty(stCloneKeenPlus *pCKP);
-void showPage(const std::string& str_text, int textsize);*/
+int getDifficulty(stCloneKeenPlus *pCKP);*/
 
 class CMenu {
 
 public:
 	// Which Menu has to be shown?
 	enum menutypes{
-		MAIN, START, LOAD, DIFFICULTY, OPTIONS, QUIT
+		MAIN, NEW, LOAD, DIFFICULTY, OPTIONS, QUIT
 	};
 
 	// Active means, when the player is playing, PASSIVE when the Player is not playing
@@ -55,6 +55,7 @@ public:
 	void process();
 	void processMainMenu();
 	void processNumPlayersMenu();
+	void showPage(const std::string& str_text, int textsize);
 
 	void cleanup();
 
@@ -64,15 +65,23 @@ public:
 	bool mustEndGame() { return m_Endgame; }
 	bool mustStartGame() { return (m_NumPlayers > 0); }
 	bool getExitEvent() { return (m_menu_type==QUIT); }
+	bool getShowStory() { return (m_selection==2); }
 	bool mustBeClosed() { return m_goback; }
+	bool getBacktoDemo() { return m_demoback; }
+	bool getChooseGame() { return m_choosegame; }
+	
+	bool m_demoback;
+	char m_mode;
 
 private:
 	void initMainMenu();
 	void initNumPlayersMenu();
 
 	CDialog *mp_Dialog;
+	CTextViewer *mp_TextViewer;
 	SDL_Surface *mp_MenuSurface;
 
+	bool m_choosegame;
 	bool m_goback;
 	bool m_Endgame;
 	char m_selection;

@@ -7,7 +7,9 @@
  */
 
 #include "CPassive.h"
+#include "../include/fileio/story.h"
 #include "../graphics/CGfxEngine.h"
+#include "../common/CMenu.h"
 #include "../common/CMapLoader.h"
 #include "../sdl/CVideoDriver.h"
 #include "../sdl/CInput.h"
@@ -18,12 +20,14 @@ CPassive::CPassive(char Episode, std::string DataDirectory) {
 	mp_Menu = NULL;
 	mp_Map = NULL;
 	
+	m_modeg = false;
 	m_GoDemo = false;
 	m_mode = INTRO;
 	m_Episode = Episode;
 	m_DataDirectory = DataDirectory;
 	mp_Tilemap = g_pGfxEngine->Tilemap;
 	mp_Scrollsurface = g_pVideoDriver->ScrollSurface;
+	m_textsize = 0;
 	m_NumPlayers = 0; // because no game chosen
 }
 
@@ -60,11 +64,6 @@ bool CPassive::init(char mode)
 	return true;
 }
 
-void CPassive::GoDemo(bool Go)
-{
-	m_GoDemo=Go;
-}
-
 ////
 // Process Routine
 ////
@@ -76,14 +75,21 @@ void CPassive::process()
 	if( g_pInput->getPressedAnyKey() && mp_Menu==NULL )
 	{
 		g_pInput->flushAll();
+		if (m_mode != TITLE)
+		{
+			cleanup();
+			init(TITLE);
+		}
 		mp_Menu = new CMenu( CMenu::PASSIVE );
 		mp_Menu->init();
 	}
-	else if( m_GoDemo && mp_Menu!=NULL )
+	else if( mp_Menu!=NULL )
 	{
-		delete mp_Menu;
-		mp_Menu = NULL;
-		m_GoDemo = false;
+		if ( mp_Menu->m_demoback )
+		{
+			delete mp_Menu;
+			mp_Menu = NULL;
+		}
 	}
 
 	// Modes. We have three: Intro, Main-tile and Demos. We could add more.
@@ -149,6 +155,31 @@ void CPassive::process()
 			mp_Menu = NULL;
 			cleanup();
 			m_mode = SHUTDOWN;
+		}
+		else if(mp_Menu->getShowStory())
+		{
+			delete mp_Menu;
+			mp_Menu = NULL;
+			m_textsize = readStoryText(&m_text, m_Episode, m_DataDirectory); // Read text from
+			// and store it at the text pointer
+
+			if(m_textsize > 0)
+			{
+				CMapLoader MapLoader( mp_Map );
+				MapLoader.load( m_Episode, 90, m_DataDirectory);
+				mp_Map->drawAll();
+				mp_Menu->showPage(m_text,m_textsize);
+
+				free(m_text);
+			}
+			cleanup();
+		}
+		else if(mp_Menu->getChooseGame())
+		{
+			delete mp_Menu;
+			mp_Menu = NULL;
+			cleanup();
+			m_modeg = true;
 		}
 	}
 }

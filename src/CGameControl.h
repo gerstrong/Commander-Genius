@@ -39,9 +39,10 @@ public:
 
 	// getters and setters
 	bool mustShutdown(){ return (m_mode==SHUTDOWN); }
+	
+	char m_mode;
 
 private:
-	char m_mode;
 	CGameLauncher *mp_GameLauncher;
 	CPassive *mp_PassiveMode;
 	CPlayGame *mp_PlayGame;

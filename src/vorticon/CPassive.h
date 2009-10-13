@@ -33,14 +33,14 @@ public:
 	bool init(char mode = INTRO);
 
 	void process();
-	void GoDemo(bool Go);
 
 	// Getters
 	char getEpisode() { return m_Episode; }
 	char getNumPlayers() { return m_NumPlayers; }
 	char getDifficulty() { return m_Difficulty; }
 	std::string getGamePath() { return m_DataDirectory; }
-
+	
+	bool getchooseGame() { return m_modeg; }
 	bool mustStartGame() { return (m_mode==STARTGAME); }
 	bool getExitEvent() { return (m_mode==SHUTDOWN); }
 
@@ -55,7 +55,10 @@ private:
 	CTilemap *mp_Tilemap;
 	SDL_Surface *mp_Scrollsurface;
 
+	int m_textsize;
 	bool m_GoDemo;
+	bool m_modeg;
+	char *m_text;
 	char m_Episode;
 	char m_NumPlayers;
 	char m_Difficulty;

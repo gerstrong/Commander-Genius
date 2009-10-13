@@ -6,6 +6,7 @@
  */
 
 #include "CGameControl.h"
+#include "common/CMenu.h"
 #include "fileio/CExeFile.h"
 #include "fileio/CPatcher.h"
 #include "fileio.h"
@@ -168,6 +169,12 @@ void CGameControl::process()
 
 		// check here what the player chose from the menu over the passive mode.
 		// NOTE: Demo is not part of playgame anymore!!
+		if(mp_PassiveMode->getchooseGame())
+		{
+			cleanup();
+			init( GAMELAUNCHER );
+		}
+		
 		if(mp_PassiveMode->mustStartGame())
 		{
 			init( PLAYGAME );
