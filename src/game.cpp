@@ -768,25 +768,25 @@ unsigned int rect2x1, rect2y1, rect2x2, rect2y2;
   return 1;
 }
 
-void killplayer(int theplayer)
+/*void killplayer(int theplayer)
 {
-   /*if (player[theplayer].godmode || g_pInput->getHoldedKey(KTAB)) return;
-   if (player[theplayer].ankhtime) return;
-   if (!player[theplayer].pdie)
+   if (godmode || g_pInput->getHoldedKey(KTAB)) return;
+   if (ankhtime) return;
+   if (!pdie)
    {
-      player[theplayer].pdie = PDIE_DYING;
-      player[theplayer].pdieframe = 0;
-      player[theplayer].pdietimer = 0;
-      player[theplayer].pdietillfly = DIE_TILL_FLY_TIME;
-      player[theplayer].pdie_xvect = rand()%(DIE_MAX_XVECT*2);
-      player[theplayer].pdie_xvect -= DIE_MAX_XVECT;
-      player[theplayer].inventory.lives--;
-      player[theplayer].y += (8<<CSF);
-      gamepdo_SelectFrame(theplayer);
-      g_pMusicPlayer->stop();
+      pdie = PDIE_DYING;
+      pdieframe = 0;
+      pdietimer = 0;
+      pdietillfly = DIE_TILL_FLY_TIME;
+      pdie_xvect = rand()%(DIE_MAX_XVECT*2);
+      pdie_xvect -= DIE_MAX_XVECT;
+      inventory.lives--;
+      y += (8<<CSF);
+      SelectFrame();
+      //g_pMusicPlayer->stop();
       g_pSound->playSound(SOUND_KEEN_DIE, PLAY_NOW);
-   }*/
-}
+   }
+}*/
 
 void freezeplayer(int theplayer)
 {
@@ -866,102 +866,6 @@ char checkobjsolid(unsigned int x, unsigned int y, unsigned int cp)
       }
    }*/
  return 0;
-}
-
-// returns 1 if player cp has the card to door t, which -> door
-char CheckDoorBlock(int t, int cp, int which,stCloneKeenPlus *pCKP)
-{
-        /*if (which==DOOR_YELLOW)
-        {
-          if (!player[cp].inventory.HasCardYellow)
-          {
-            player[cp].blockedby = t;
-            return 1;
-          }
-        }
-        else if (which==DOOR_RED)
-        {
-          if (!player[cp].inventory.HasCardRed)
-          {
-            player[cp].blockedby = t;
-            return 1;
-          }
-        }
-        else if (which==DOOR_GREEN)
-        {
-          if (!player[cp].inventory.HasCardGreen)
-          {
-            player[cp].blockedby = t;
-            return 1;
-          }
-        }
-        else if (which==DOOR_BLUE)
-        {
-          if (!player[cp].inventory.HasCardBlue)
-          {
-            player[cp].blockedby = t;
-            return 1;
-          }
-        }*/
-
-   return 0;
-}
-
-// checks if tile at (x,y) is solid to the player walking left into it.
-// returns 1 and sets blockedby if so.
-char checkissolidl(int x, int y, int cp, stCloneKeenPlus *pCKP)
-{
-/*int t;
-  t = getmaptileat(x, y);
-
-  if(TileProperty[t][BLEFT] || x < 0)
-  //if (tiles[t].solidl)
-  {
-    player[cp].blockedby = t;
-    return 1;
-  }
-  if (checkobjsolid(x<<CSF,y<<CSF,cp))
-  {
-    player[cp].blockedby = 0;
-    return 1;
-  }
-  else
-  {
-    // don't let player walk through doors he doesn't have the key to
-    if (CheckDoorBlock(t, cp, TileProperty[t][BEHAVIOR], pCKP))
-    {
-      return 1;
-    }
-  }*/
-  return 0;
-}
-
-// checks if tile at (x,y) is solid to the player walking right into it.
-// returns 1 and sets blockedby if so.
-char checkissolidr(int x, int y, int cp, stCloneKeenPlus *pCKP)
-{
-/*int t;
-  t = getmaptileat(x, y);
-  if(TileProperty[t][BRIGHT])
-  //if (tiles[t].solidr)
-  {
-    player[cp].blockedby = t;
-    return 1;
-  }
-  else if (checkobjsolid(x<<CSF,y<<CSF,cp))
-  {
-    player[cp].blockedby = 0;
-    return 1;
-  }
-  else
-  {
-    // don't let player walk through doors he doesn't have the key to
-    if (CheckDoorBlock(t, cp, TileProperty[t][BEHAVIOR], pCKP))
-    {
-      return 1;
-    }
-  }*/
-  return 0;
 }
 
 // initialize sprites that come from tiles, such as the doors

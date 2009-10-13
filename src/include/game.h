@@ -93,65 +93,7 @@ DOWN
 #define PDIE_RISE_SPEED    -20
 #define DIE_MAX_XVECT       10
 
-// initial negative inertia to provide player at
-// start of a normal jump and a (high) pogo jump
-#define PJUMPUP_SPEED            20
-#define PPOGOUP_SPEED            24
 
-// These control the various jump heights.
-// one of these pairs is selected depending on how
-// long the CTRL key was held down while Keen
-// was preparing to jump. #1 causes the highest
-// jump and they get lower from there.
-// NORMAL_TIME is the amount of time keen will
-// jump straight up at speed -PJUMPUP_SPEED.
-// when expired his jump slows down at a rate
-// of DECREASERATE.
-
-#define PJUMP_NORMALTIME_1         6
-#define PJUMP_UPDECREASERATE_1     6
-
-#define PJUMP_NORMALTIME_2         5
-#define PJUMP_UPDECREASERATE_2     5
-
-#define PJUMP_NORMALTIME_3         4
-#define PJUMP_UPDECREASERATE_3     4
-
-#define PJUMP_NORMALTIME_4         3
-#define PJUMP_UPDECREASERATE_4     2
-
-#define PJUMP_NORMALTIME_5         2
-#define PJUMP_UPDECREASERATE_5     1
-
-#define PJUMP_NORMALTIME_6         1
-#define PJUMP_UPDECREASERATE_6     0
-
-
-// for short pogo jumps, uses -PJUMPUP_SPEED
-#define PJUMP_NORMALTIME_POGO_SHORT       6
-#define PJUMP_UPDECREASERATE_POGO_SHORT   6
-
-// for high pogo jumps, uses -PPOGOUP_SPEED
-//#define PJUMP_NORMALTIME_POGO_LONG        25
-//#define PJUMP_UPDECREASERATE_POGO_LONG    12
-#define PJUMP_NORMALTIME_POGO_LONG        36
-#define PJUMP_UPDECREASERATE_POGO_LONG    6
-
-// for the super-pogo option
-#define PPOGOUP_SPEED_SUPER                     40
-#define PJUMP_NORMALTIME_POGO_LONG_SUPER        10
-#define PJUMP_UPDECREASERATE_POGO_LONG_SUPER    4
-
-// pogo frames
-#define PFRAME_POGO           24
-#define PFRAME_POGOBOUNCE     25
-
-// frame and animation speed for frozen keen (ep1) and stunned keen (ep2&3)
-#define PFRAME_FROZEN         28
-#define PFROZENANIMTIME       100
-// how long keen should stay frozen when hit by an ice chunk
-#define PFROZEN_TIME          1000
-#define PFROZEN_THAW          100
 
 // when falling keen's Y inertia increases at INCREASERATE up to MAXSPEED
 #define PFALL_INCREASERATE       3
@@ -164,7 +106,6 @@ DOWN
 // into JUMP, POGO, and FIRE.
 #define CTRLALT_DEBOUNCETIME    20
 
-#define PDIEFRAME             22
 
 // various tile indexes
 #define BG_GRAY            143
@@ -178,10 +119,6 @@ DOWN
 #define TILE_ICE              405
 #define TILE_ICE_CUBE         394
 #define TILE_GLOWCELL      241
-#define DOOR_YELLOW        2
-#define DOOR_RED           3
-#define DOOR_GREEN         4
-#define DOOR_BLUE          5
 
 // special sprites (they either weren't in the game originally,
 // or are used for internal engine stuff).

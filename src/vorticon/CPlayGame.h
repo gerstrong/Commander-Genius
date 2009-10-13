@@ -19,6 +19,11 @@
 #include <string>
 #include <vector>
 
+#define DOOR_YELLOW        2
+#define DOOR_RED           3
+#define DOOR_GREEN         4
+#define DOOR_BLUE          5
+
 #define WORLD_MAP_LEVEL 80
 
 class CPlayGame {
@@ -41,6 +46,12 @@ enum e_levelcommands
 	void process();
 	void drawObjects();
 	bool scrollTriggers();
+
+	// Collision stuff stored in CPlayGameCollision.cpp
+	void checkPlayerCollisions(int cp);
+	char checkissolidr(int x, int y, int cp);
+	char checkissolidl(int x, int y, int cp);
+	char CheckDoorBlock(int t, int cp, int which);
 
 	bool isFinished() 
 		{ return m_finished; }

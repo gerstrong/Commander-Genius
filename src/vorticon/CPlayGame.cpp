@@ -195,7 +195,13 @@ void CPlayGame::process()
 
 			// Perform player Objects...
 			for( int i=0 ; i<m_NumPlayers ; i++ )
+			{
+				// Check Collisions
+				checkPlayerCollisions(i);
+
+				// Process the other stuff like, items, jump, etc.
 				mp_Player[i].processInLevel();
+			}
 
 			// finished the level
 
