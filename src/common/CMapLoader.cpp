@@ -123,14 +123,14 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path )
 
         //if (m_worldmap) addObjectlayerTile(t,  episode,  levels_completed);
     	if (mp_map->m_worldmap) addWorldMapObject(t, curmapx, curmapy,  episode );
-        //else addEnemyObject(t, curmapx, curmapy, episode, chglevelto);
+        else addEnemyObject(t, curmapx, curmapy, episode, level);
 
         curmapx++;
         if (curmapx >= mp_map->m_width)
         {
-          curmapx = 0;
-          curmapy++;
-          if (curmapy >= mp_map->m_height) break;
+        	curmapx = 0;
+        	curmapy++;
+        	if (curmapy >= mp_map->m_height) break;
         }
 
         if (++resetcnt==resetpt) curmapx=curmapy=0;
@@ -157,7 +157,6 @@ void CMapLoader::addTile( Uint16 t, Uint16 x, Uint16 y )
 //bool NessieAlreadySpawned;
 void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episode)
 {
-  //int o;
   switch(t)
   {
    case 0: break;       // blank
@@ -181,7 +180,7 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
    default:             // level marker
      if ((t&0x7fff) < 256 && mp_Player->mp_levels_completed[t&0x00ff])
      {
-   		 mp_map->m_objectlayer[x][y] = 0;
+   		 mp_map->m_objectlayer[x][y] = t;
 
     	 int newtile = g_pGfxEngine->Tilemap->mp_tiles[mp_map->at(x,y)].chgtile;
 
@@ -229,14 +228,14 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
   }
 }
 
-void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode, int chglevelto)
+void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode, int level)
 {
 //int o,x;
   mp_map->m_objectlayer[x][y] = t;
 
   if (t)
   {
-    if (t==255)
+    if (t==255) // The player in the level!
     {
         if(x >= mp_map->m_width-2) // Edge bug. Keen would fall in some levels without this.
       	   x = 4;

@@ -143,13 +143,39 @@ void CPlayGame::process()
 				// entered a level, used ship, teleporter, etc.
 				useobject = mp_Player[i].getNewObject();
 				if( useobject != 0)
-				{	// A new level was chosen by the player
+				{	// A new object was chosen by the player
 					// TODO: Code the stuff for entering the level
 
 					// If it is teleporter, make the Player teleport
 					// player[i].teleport(x1, y1, x2, y2);
 
 					// If it is level, change the playgame mode and load the new map.
+					switch(useobject)
+				    {
+					  case NESSIE_PATH: break;
+					  case NESSIE_PAUSE: break;
+					  case NESSIE_MOUNTPOINT: break;
+
+					  case LVLS_SHIP:
+						if (m_Episode==1)
+						{
+						  //YourShipNeedsTheseParts(pCKP);
+						}
+						else
+						{
+						  //ShipEp3(pCKP);
+						}
+						break;
+
+					  default:      // a regular level
+						  m_level_command = START_LEVEL;
+						  m_Level = useobject & 0x7fff;
+						  //g_pMusicPlayer->stop();
+						  //g_pSound->playStereofromCoord(SOUND_ENTER_LEVEL, PLAY_NOW, m_Object[mp_Player[i].useObject].scrx);
+						  cleanup();
+						  init();
+						break;
+				    } // end switch(level)
 				}
 
 				// in episode 3 he can ride on nessie

@@ -21,7 +21,7 @@ public:
 
 	void addTile( Uint16 t, Uint16 x, Uint16 y );
 	void addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episode);
-	void addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode, int chglevelto);
+	void addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode, int level);
 
 private:
 	CMap *mp_map;

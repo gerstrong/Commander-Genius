@@ -115,25 +115,17 @@ int CPlayer::getNewObject()
     {   // trying to enter a level (or use a teleporter, etc)
 
         // get level/object marker beneath player
-        xb = (x>>CSF)+4;
-        yb = (y>>CSF)+4;
+        xb = (x>>(CSF-4))+4;
+        yb = (y>>(CSF-4))+4;
         lvl = mp_map->getObjectat(xb>>4, yb>>4);
         if (!lvl)
         {
           yb = (y>>CSF)+8;
           lvl = mp_map->getObjectat(xb>>4, yb>>4);
         }
-
-        xb = xb >> 4 << 4;
-        yb = yb >> 4 << 4;
-
-        if (lvl)
-        {
-        	  // TODO: Code for the chosen stuff...
-        }
         printf("Object selected: %d\n", lvl);
+        return lvl;
     }
-
     return 0;
 }
 

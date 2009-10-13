@@ -8,7 +8,6 @@
 #include "CPlayer.h"
 
 #include "../keen.h"
-//#include "../sdl/CInput.h"
 
 ////
 // Process the stuff of the player when playing in a normal level
