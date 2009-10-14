@@ -559,7 +559,10 @@ void CPlayer::InertiaAndFriction_X()
    // (unless we're about to make a pogo jump)
    if ( pjumping != PPREPAREPOGO)
    {
-	   x += ((pinertia_x + playpushed_x)<<4);
+	   int dx=((pinertia_x + playpushed_x)<<4);
+	   // check first if the player is not blocked
+	   if( (!blockedr and dx>0) or (!blockedl and dx<0) )
+		   x += dx;
    }
 
 
