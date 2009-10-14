@@ -88,6 +88,9 @@ bool CPlayGame::init()
 		else
 			mp_Player[i].m_playingmode = CPlayer::LEVELPLAY;
 
+		mp_Player[i].w = g_pGfxEngine->Sprite[PSTANDFRAME]->getWidth()<<5;
+		mp_Player[i].h = g_pGfxEngine->Sprite[PSTANDFRAME]->getHeight()<<5;
+
 		// Set the pointers to the map and object data
 		mp_Player[i].setMapData(mp_Map);
 	}
