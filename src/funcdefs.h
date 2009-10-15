@@ -16,7 +16,6 @@ void common_enemy_ai(int o);
 char hitdetect(int object1, int object2);
 void freezeplayer(int theplayer);
 void unregister_animtiles(int tile);
-char checkobjsolid(unsigned int x, unsigned int y, unsigned int cp);
 void GiveAnkh(int cp);
 // map.c
 void map_scroll_right(void);

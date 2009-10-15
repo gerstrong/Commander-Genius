@@ -37,7 +37,7 @@ void CPlayGame::checkPlayerCollisions(int cp)
 
       /*if((p_tile[mp_map->at(tx,ty)].bup == true) && (p_tile[mp_map->at(tx,ty)].behaviour == true))
       {
-    	  killplayer(); // Whines
+    	  killplayer(); // Whines in Episode 1
       }*/
 
       // set psliding if we're on ice
@@ -76,7 +76,7 @@ void CPlayGame::checkPlayerCollisions(int cp)
 
       for( i=0 ; i < PLAYERHEIGHT ; i++ )
       {
-    	  if (checkissolidl( tx+PLAYERWIDTH, ty+i, cp ))
+    	  if (checkisSolidl( tx+PLAYERWIDTH, ty+i, cp ))
     	  {
     		  mp_Player[cp].blockedr = true;
     		  mp_Player[cp].widejump = false;
@@ -86,7 +86,7 @@ void CPlayGame::checkPlayerCollisions(int cp)
 
       for( i=0 ; i < PLAYERHEIGHT ; i++ )
       {
-    	  if (checkissolidr( tx, ty+i, cp ))
+    	  if (checkisSolidr( tx, ty+i, cp ))
     	  {
     		  mp_Player[cp].blockedl = true;
     		  mp_Player[cp].widejump = false;
@@ -139,7 +139,7 @@ void CPlayGame::checkPlayerCollisions(int cp)
 
 // checks if tile at (x,y) is solid to the player walking left into it.
 // returns 1 and sets blockedby if so.
-char CPlayGame::checkissolidl(int x, int y, int cp)
+bool CPlayGame::checkisSolidl(int x, int y, int cp)
 {
 int t = mp_Map->at(x>>CSF, y>>CSF);
 
@@ -148,7 +148,7 @@ int t = mp_Map->at(x>>CSF, y>>CSF);
     mp_Player[cp].blockedby = t;
     return true;
   }
-  /*if (checkobjsolid(x<<5,y<<5,cp))
+  if (checkObjSolid(x>>5,y>>5,cp))
   {
 	mp_Player[cp].blockedby = 0;
     return true;
@@ -156,17 +156,17 @@ int t = mp_Map->at(x>>CSF, y>>CSF);
   else
   {
     // don't let player walk through doors he doesn't have the key to
-    if (CheckDoorBlock(t, cp, g_pGfxEngine->Tilemap->mp_tiles[t].behaviour))
+    if (checkDoorBlock(t, cp, g_pGfxEngine->Tilemap->mp_tiles[t].behaviour))
     {
       return true;
     }
-  }*/
+  }
   return false;
 }
 
 // checks if tile at (x,y) is solid to the player walking right into it.
 // returns 1 and sets blockedby if so.
-char CPlayGame::checkissolidr(int x, int y, int cp)
+char CPlayGame::checkisSolidr(int x, int y, int cp)
 {
 int t = mp_Map->at(x>>CSF, y>>CSF);
   if(g_pGfxEngine->Tilemap->mp_tiles[t].bright)
@@ -174,7 +174,7 @@ int t = mp_Map->at(x>>CSF, y>>CSF);
 	  mp_Player[cp].blockedby = t;
     return true;
   }
-  /*else if (checkobjsolid(x<<5,y<<5,cp))
+  else if (checkObjSolid(x>>5,y>>5,cp))
   {
 	  mp_Player[cp].blockedby = 0;
     return true;
@@ -182,16 +182,42 @@ int t = mp_Map->at(x>>CSF, y>>CSF);
   else
   {
     // don't let player walk through doors he doesn't have the key to
-    if (CheckDoorBlock(t, cp, g_pGfxEngine->Tilemap->mp_tiles[t].behaviour))
-    {
+    if (checkDoorBlock(t, cp, g_pGfxEngine->Tilemap->mp_tiles[t].behaviour))
       return true;
-    }
-  }*/
+  }
   return false;
 }
 
+// this is so objects can block the player,
+// player can stand on them, etc.
+// x and y are the CSFed coordinates to check (e.g. playx and playy)
+// returns nonzero if there is a solid object
+// at that point
+int CPlayGame::checkObjSolid(unsigned int x, unsigned int y, unsigned int cp)
+{
+  CSprite *sprite;
+  int o=0;
+
+  std::vector<CObject>::iterator p_object;
+   for( p_object=m_Object.begin() ; p_object!=m_Object.end() ; p_object++ )
+   {
+	   sprite = g_pGfxEngine->Sprite.at(p_object->sprite);
+	   if (p_object->exists && p_object->cansupportplayer[cp])
+	   {
+        if (x >= p_object->x+sprite->m_bboxX1)
+          if (x <= p_object->x+sprite->m_bboxX2)
+            if (y >= p_object->y+sprite->m_bboxY1)
+              if (y <= p_object->y+sprite->m_bboxY2)
+                return o;
+        o++;
+      }
+   }
+   return 0;
+}
+
+
 // returns 1 if player cp has the card to door t, which -> door
-char CPlayGame::CheckDoorBlock(int t, int cp, int which)
+char CPlayGame::checkDoorBlock(int t, int cp, int which)
 {
         if (which==DOOR_YELLOW)
         {

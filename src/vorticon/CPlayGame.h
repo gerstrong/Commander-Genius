@@ -49,9 +49,10 @@ enum e_levelcommands
 
 	// Collision stuff stored in CPlayGameCollision.cpp
 	void checkPlayerCollisions(int cp);
-	char checkissolidr(int x, int y, int cp);
-	char checkissolidl(int x, int y, int cp);
-	char CheckDoorBlock(int t, int cp, int which);
+	char checkisSolidr(int x, int y, int cp);
+	bool checkisSolidl(int x, int y, int cp);
+	char checkDoorBlock(int t, int cp, int which);
+	int checkObjSolid(unsigned int x, unsigned int y, unsigned int cp);
 
 	bool isFinished() 
 		{ return m_finished; }

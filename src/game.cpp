@@ -843,31 +843,6 @@ void endlevel(int reason_for_leaving, stLevelControl *levelcontrol)
     levelcontrol->tobonuslevel = 0;
 }
 
-// this is so objects can block the player,
-// player can stand on them, etc.
-// x and y are the CSFed coordinates to check (e.g. playx and playy)
-// returns nonzero if there is a solid object
-// at that point
-char checkobjsolid(unsigned int x, unsigned int y, unsigned int cp)
-{
-  /*int o;
-  CSprite *sprite;
-
-   for(o=1;o<highest_objslot;o++)
-   {
-	   sprite = g_pGfxEngine->Sprite[objects[o].sprite];
-	   if (objects[o].exists && objects[o].cansupportplayer[cp])
-	   {
-        if (x >= objects[o].x+sprite->m_bboxX1)
-          if (x <= objects[o].x+sprite->m_bboxX2)
-            if (y >= objects[o].y+sprite->m_bboxY1)
-              if (y <= objects[o].y+sprite->m_bboxY2)
-                return o;
-      }
-   }*/
- return 0;
-}
-
 // initialize sprites that come from tiles, such as the doors
 void initsprites(stCloneKeenPlus *pCKP, int s)
 {
