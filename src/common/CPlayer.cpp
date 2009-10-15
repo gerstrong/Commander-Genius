@@ -49,14 +49,11 @@ CPlayer::CPlayer() {
     pjustjumped = pjustfell = 0;
 
 	mp_map = NULL;
+	mp_StatusScr = NULL;
+
 	m_godmode = false;
 	m_cheats_enabled = false;
-}
-
-void CPlayer::StatusBox()
-{
-  /*if( g_pInput->getHoldedCommand(cp, IC_STATUS) )
-	  showinventory(cp, pCKP);*/
+	m_showStatusScreen = false;
 }
 
 // handles walking. the walking animation is handled by gamepdo_walkinganim()
@@ -749,6 +746,33 @@ void CPlayer::ProcessInput()
 		   // Show the typical F1 Help
 	       showF1HelpText(pCKP->Control.levelcontrol.episode, pCKP->Resources.GameDataDirectory);
 	   }*/
+}
+
+void CPlayer::StatusBox()
+{
+  if( g_pInput->getPressedCommand(IC_STATUS) )
+	  m_showStatusScreen=true; // PlayGame class detects that variable and launches drawStatusScreen()
+}
+
+// Draws the Status screen and return false, when it's still open.
+bool CPlayer::drawStatusScreen()
+{
+	if(m_showStatusScreen)
+	{
+		if(mp_StatusScr == NULL)
+			mp_StatusScr = new CStatusScreen();
+
+		mp_StatusScr->draw();
+
+		if(g_pInput->getPressedAnyCommand())
+		{
+			m_showStatusScreen = false;
+			delete mp_StatusScr;
+			mp_StatusScr = NULL;
+		}
+		return false;
+	}
+	else return true;
 }
 
 ///

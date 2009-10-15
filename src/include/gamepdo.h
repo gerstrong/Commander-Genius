@@ -1,5 +1,4 @@
 
-void gamepdo_StatusBox(int cp, stCloneKeenPlus *pCKP);
 void gamepdo_HandlePlayer(int cp, stCloneKeenPlus *pCKP);
 void gamepdo_getgoodies(int cp, stCloneKeenPlus *pCKP);
 void gamepdo_falling(int cp, stCloneKeenPlus *pCKP);

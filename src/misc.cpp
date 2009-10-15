@@ -393,37 +393,6 @@ int dlgX,dlgY,dlgW,dlgH;
   }*/
 }
 
-void showinventory(int p, stCloneKeenPlus *pCKP)
-{
-	/*stLevelControl *p_levelcontrol;
-	p_levelcontrol = &(pCKP->Control.levelcontrol);
-
-  // draw the episode-specific stuff
-  if (p_levelcontrol->episode==1)
-    inventory_draw_ep1(p);
-
-  else if (p_levelcontrol->episode==2)
-    inventory_draw_ep2(p, pCKP->Control.levelcontrol.levels_completed);
-
-  else if (p_levelcontrol->episode==3)
-    inventory_draw_ep3(p);
-
-
-  g_pVideoDriver->update_screen();
-
-  // wait for any button pressed or any action triggered
-  bool close=false;
-
-  g_pInput->flushAll();
-
-  while(!close)
-  {
-	g_pInput->pollEvents();
-
-	if(g_pInput->getPressedAnyCommand(p) || g_pInput->getPressedAnyKey()) close=true;
-  }*/
-}
-
 void YourShipNeedsTheseParts(stCloneKeenPlus *pCKP)
 {
 /*int cp = 0;

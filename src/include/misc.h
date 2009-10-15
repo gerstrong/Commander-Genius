@@ -2,7 +2,6 @@
 void initgame(stLevelControl *p_levelcontrol);
 
 void cleanup(stCloneKeenPlus *CKP);
-void showinventory(int p, stCloneKeenPlus *pCKP);
 void YourShipNeedsTheseParts(stCloneKeenPlus *pCKP);
 void ShipEp3(stCloneKeenPlus *pCKP);
 void youseeinyourmind(int mpx, int mpy, stCloneKeenPlus *pCKP);

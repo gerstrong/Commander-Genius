@@ -1746,9 +1746,3 @@ void gamepdo_ankh(int cp)
     objects[o].ai.se.state = ANKH_STATE_NOFLICKER;
 */
 }
-
-void gamepdo_StatusBox(int cp, stCloneKeenPlus *pCKP)
-{
-  if( g_pInput->getHoldedCommand(cp, IC_STATUS) )
-	  showinventory(cp, pCKP);
-}

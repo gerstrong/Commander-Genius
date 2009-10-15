@@ -60,6 +60,8 @@ CPlayGame::CPlayGame( char episode, char level,
 	}
 
 	m_theplayer = 0;
+	m_paused = false;
+	m_showPauseDialog = false;
 }
 
 bool CPlayGame::init()
@@ -109,8 +111,6 @@ bool CPlayGame::loadGameState( std::string &statefile )
 ////
 void CPlayGame::process()
 {
-	// Handle Inputs
-
 	// If the menu is open process it!
 	if(mp_Menu)
 	{
@@ -131,7 +131,7 @@ void CPlayGame::process()
 			mp_Menu->process();
 		}
 	}
-	else
+	else if(!m_paused) // Game is not paused
 	{
 		/// The following function must be worldmap dependent
 		if( m_Level == WORLD_MAP_LEVEL )
@@ -204,8 +204,9 @@ void CPlayGame::process()
 
 				// Process the other stuff like, items, jump, etc.
 				mp_Player[i].processInLevel();
-			}
 
+				// Check if one of the players dies
+			}
 			// finished the level
 
 			// gets to bonus level
@@ -217,6 +218,24 @@ void CPlayGame::process()
 
 		// Handle the Scrolling here!
 		scrollTriggers();
+
+		// Did the someone press 'p' for Pause?
+
+		// Does one of the players need to pause the game?
+		for( int i=0 ; i<m_NumPlayers ; i++ )
+		{
+			// Did he open the status screen?
+			if(mp_Player[i].m_showStatusScreen)
+				m_paused = true; // this is processed in processPauseDialogs!
+
+			// TODO: Did he hit a hint box, like yorp statue in Episode 1.
+		}
+
+	}
+	else // In this case the game is paused
+	{
+		// Finally draw Dialogs like status screen, game paused, etc.
+		processPauseDialogs();
 	}
 
 	// Animate the tiles of the map

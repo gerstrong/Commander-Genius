@@ -11,6 +11,7 @@
 #include <SDL/SDL.h>
 #include "CObject.h"
 #include "CMap.h"
+#include "CStatusScreen.h"
 #include "Playerdefines.h"
 
 ///
@@ -62,6 +63,7 @@ public:
 	void WalkingAnimation();
 	void StatusBox();
 	void ProcessInput();
+	bool drawStatusScreen();
 
 	virtual ~CPlayer();
 
@@ -167,10 +169,11 @@ public:
 	bool *mp_levels_completed;
 
 	CMap *mp_map;
-private:
 
-	/*Uint16 getmaptileat(unsigned int x, unsigned int y);
-	Uint16 getlevelat(unsigned int x, unsigned int y);*/
+	bool m_showStatusScreen;
+
+private:
+	CStatusScreen *mp_StatusScr;
 };
 
 #endif /* CPLAYER_H_ */

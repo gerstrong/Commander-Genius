@@ -54,6 +54,10 @@ enum e_levelcommands
 	char checkDoorBlock(int t, int cp, int which);
 	int checkObjSolid(unsigned int x, unsigned int y, unsigned int cp);
 
+	// Dialog processes stored in CPlayGameDialogs.cpp
+	void processPauseDialogs();
+	void showPausedGameDlg();
+
 	bool isFinished() 
 		{ return m_finished; }
 
@@ -73,6 +77,8 @@ private:
 	char m_NumPlayers;
 	char m_Difficulty;
 	char m_level_command;
+	bool m_paused;
+	bool m_showPauseDialog;
 	std::string m_Gamepath;
 	bool mp_level_completed[16];
 
