@@ -20,6 +20,8 @@ CExeFile::CExeFile(int episode, const std::string& datadirectory) {
 	m_datadirectory = datadirectory;
 	if( m_datadirectory != "") if(*(m_datadirectory.end()-1) != '/') m_datadirectory += "/";
 	m_data = NULL;
+
+	crc32_init();
 }
 
 CExeFile::~CExeFile() {
@@ -62,6 +64,10 @@ bool CExeFile::readData()
 		memcpy(m_data, m_data_temp+512,m_datasize);
 	}
 	delete[] m_data_temp;
+
+	m_crc = getcrc32( m_data, m_datasize );
+
+    printf( "EXE processed with size of %d and crc of %X\n", m_datasize, m_crc );
 
 	return true;
 }
@@ -173,7 +179,6 @@ int CExeFile::getEXEVersion()
 				return -1;
 			else
 				return 131;
-
 		case 398:
 			if(m_episode != 1)
 				return -1;
@@ -185,21 +190,17 @@ int CExeFile::getEXEVersion()
 				return -1;
 			else
 				return 100;
-
 		case 118160:
-
 			if(m_episode != 2)
 				return -1;
 			else
 				return 131;
 
 		case 127086:
-
 			if(m_episode != 3)
 				return -1;
 			else
 				return 100;
-
 		case 127104:
 			if(m_episode != 3)
 				return -1;
@@ -210,6 +211,63 @@ int CExeFile::getEXEVersion()
     }
 }
 
+int CExeFile::GetEXEOriginal()
+{
+    int version = getEXEVersion();
+
+    switch( m_episode )
+    {
+        case 1:
+            switch( version )
+            {
+                case 110:
+                    if(m_crc != 1)
+                        return -1;
+                    else
+                        return 1;
+                case 131:
+                    if(m_crc != 0x195771AE)
+                        return -1;
+                    else
+                        return true;
+                case 134:
+                    if(m_crc != 1)
+                        return -1;
+                    else
+                        return 1;
+                default: return -2;
+            }
+        case 2:
+            switch( version )
+            {
+                case 100:
+                    if(m_crc != 1)
+                        return -1;
+                    else
+                        return 1;
+                case 131:
+                    if(m_crc != 0x94E464B4)
+                        return -1;
+                    else
+                        return true;
+            }
+        case 3:
+            switch( version )
+            {
+                case 100:
+                    if(m_crc != 1)
+                        return -1;
+                    else
+                        return 1;
+                case 131:
+                    if(m_crc != 0x94E464B4)
+                        return -1;
+                    else
+                        return 1;
+            }
+		default: return -2;
+    }
+}
+
 unsigned char* CExeFile::getData()
 {	return m_data;	}
-

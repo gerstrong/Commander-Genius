@@ -11,6 +11,8 @@
 #ifndef CEXEFILE_H_
 #define CEXEFILE_H_
 
+#include "../fileio/crc.h"
+
 #include <vector>
 #include <string>
 
@@ -21,11 +23,13 @@ public:
 
 	bool readData();
 	int getEXEVersion();
+	int GetEXEOriginal();
 	unsigned char* getData();
 
 private:
 	int m_datasize;
 	int m_episode;
+	unsigned int m_crc;
 	unsigned char *m_data;
 	std::string m_datadirectory;
 

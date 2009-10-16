@@ -56,7 +56,10 @@ bool CGame::init()
 	}
 
 	// Initialize the way the launcher is started
-	m_GameControl.init();
+	if(!m_GameControl.init())
+	{
+		return false;
+	}
 
 	return true;
 }
@@ -279,26 +282,26 @@ short CGame::ingamerunCycle(stCloneKeenPlus *pCKP)
 	int opt = MAINMNU_1PLAYER;
 	//int retval;
 	int defaultopt = 0;
-		
+
 	do
 	{
 	    if (QuitState==QUIT_TO_TITLE) QuitState = NO_QUIT;
-		
+
 	    if(pCKP->Control.storyboard == 1) // Show the story of the game
 	    {
 	    	char *text;
 	    	int textsize;
-			
+
 	    	textsize = readStoryText(&text,
 									 pCKP->Control.levelcontrol.episode,
 									 pCKP->Resources.GameDataDirectory); // Read text from
 			// and store it at the text pointer
-			
+
 	    	if(textsize > 0)
 	    	{
 	    		showmapatpos(90, STORYBOARD_X, STORYBOARD_Y, pCKP);
 				showPage(text,textsize);
-				
+
 				free(text);
 			}
 	    	else if(textsize == 0)
@@ -311,7 +314,7 @@ short CGame::ingamerunCycle(stCloneKeenPlus *pCKP)
 	    	}
 	    	pCKP->Control.storyboard = 0;
 	    }
-		
+
 	    if(pCKP->Control.levelcontrol.command != LVLC_START_LEVEL)
 	    {
 	    	g_pLogFile->ftextOut("calling mainmenu()<br>");
@@ -320,10 +323,10 @@ short CGame::ingamerunCycle(stCloneKeenPlus *pCKP)
 	    	opt = Mainmenu.getChoice(pCKP, defaultopt); // Read option from the main menu
 														// of the game.
 			pCKP->Control.skipstarting=0;
-			
+
 			g_pLogFile->ftextOut("gcl: opt = %d<br>", opt);
 	    }
-		
+
 	    defaultopt = 0;
 	    IntroCanceled = 0;
 	    switch(opt)
@@ -355,11 +358,11 @@ short CGame::ingamerunCycle(stCloneKeenPlus *pCKP)
 					playgame_levelmanager(pCKP);
 				}
 				break;
-				
+
 			case MAINMNU_STORY:
 				pCKP->Control.storyboard=1;
 				break;
-				
+
 			case MAINMNU_HIGHSCORES:
 				CHighScores *pHighscores;
 				pHighscores = new CHighScores(g_pVideoDriver->FGLayerSurface, pCKP);
@@ -380,7 +383,7 @@ short CGame::ingamerunCycle(stCloneKeenPlus *pCKP)
 				pCredit->Render(pCKP);
 				delete pCredit;
 				break;
-				
+
 			case MAINMNU_ORDERING_INFO:
 				COrderingInfo *OrderingInfo;
 				OrderingInfo = new COrderingInfo(g_pVideoDriver->FGLayerSurface,
@@ -389,15 +392,15 @@ short CGame::ingamerunCycle(stCloneKeenPlus *pCKP)
 				OrderingInfo->Render(pCKP);
 				delete OrderingInfo;
 				break;
-				
+
 			case MAINMNU_TIMEOUT:
 			case MAINMNU_DEMO:
-				
+
 				QuitState = NO_QUIT;
 				return 0;
-				
+
 				retval = play_demo(current_demo, pCKP, EGAGraphics->getNumSprites());
-				
+
 				if (retval==DEMO_RESULT_FILE_BAD)
 				{
 					// we tried to play a demo that did not exist--assume we
@@ -413,13 +416,13 @@ short CGame::ingamerunCycle(stCloneKeenPlus *pCKP)
 				{ // user hit a key to cancel demo
 					IntroCanceled = 1;            // pop up menu
 				}
-				
+
 				if (IntroCanceled)
 				{   // user canceled out of demo (or intro if at end of demos)
 					// if user selected "demo" have it selected when he comes back
 					if (opt==MAINMNU_DEMO)
 						defaultopt = MAINMNU_DEMO;
-					
+
 				}
 				current_demo++;
 				break;
@@ -432,14 +435,14 @@ short CGame::ingamerunCycle(stCloneKeenPlus *pCKP)
 				return 0;
 				break;
 			case BACK2MAINMENU:
-				
+
 			default: break;
 		}
-		
+
 		g_pLogFile->ftextOut("bottom of game control loop opt=%d crashflag=%d<br>", opt, crashflag);
 		if(pCKP->shutdown == SHUTDOWN_EXIT) break;
 	} while(opt != MAINMNU_QUIT && opt != MAINMNU_NEW_GAME && !crashflag );
-	
+
 	return 0;
 }
 

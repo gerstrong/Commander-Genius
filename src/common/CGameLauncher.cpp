@@ -2,7 +2,7 @@
  * CGameLauncher.cpp
  *
  *  Created on: 22.09.2009
- *      Author: gerstrong 
+ *      Author: gerstrong
  */
 
 #include "CGameLauncher.h"
@@ -18,16 +18,22 @@
 #include <fstream>
 
 CGameLauncher::CGameLauncher() {
-	m_mustquit = false;
-	m_hasbeenchosen = false;
-	m_numGames = 0;
-	m_chosenGame = 0;
-	mp_map = NULL;
-	mp_LaunchMenu = NULL;
+    m_mustquit = false;
+    m_hasbeenchosen = false;
+    m_numGames = 0;
+    m_chosenGame = 0;
+    mp_map = NULL;
+    mp_LaunchMenu = NULL;
+    m_ep1slot = -1;
+
+    m_ExeList.clear();
+    m_ExeList.push_back( KEENEXE1 );
+    m_ExeList.push_back( KEENEXE2 );
+    m_ExeList.push_back( KEENEXE3 );
 }
 
 CGameLauncher::~CGameLauncher() {
-	// TODO Auto-generated destructor stub
+    // TODO Auto-generated destructor stub
 }
 
 ////
@@ -35,108 +41,152 @@ CGameLauncher::~CGameLauncher() {
 ////
 bool CGameLauncher::init()
 {
-	// Load the map for the background
-	mp_map = new CMap(g_pVideoDriver->getScrollSurface(), g_pGfxEngine->Tilemap);
+    bool gamedetected = false;
+    std::string root;
 
-	CMapLoader MapLoader(mp_map);
-	if(!MapLoader.load(1, 90, "games/EP1")) return false;
+    // Initialize the menu
+    mp_LaunchMenu = new CDialog(g_pVideoDriver->FGLayerSurface, 36, 20);
 
-	mp_map->gotoPos(64+5*320,32);
+    // Scan for games...
+    gamedetected = false;
+    m_DirList.clear();
+    m_EpiList.clear();
 
-	// Initialize the menu
-	mp_LaunchMenu = new CDialog(g_pVideoDriver->FGLayerSurface, 36, 20);
+    g_pLogFile->ftextOut("Game Autodetection Started<br>" );
 
-	// Use the standard Menu-Frame used in the old DOS-Games
-	mp_LaunchMenu->setFrameTheme( DLG_THEME_OLDSCHOOL );
+    mp_LaunchMenu->addObject(DLG_OBJ_DISABLED,1,1, "Episode Mod Ver Folder");
 
-	// Scan for games...
-	if( (m_numGames = scanDirectories()) != 0)
-	{
-		std::string line;
-		std::string stream;
-		std::string dir;
-		std::string name;
-		
-		std::ifstream gamescfg; OpenGameFileR(gamescfg, "games/games.cfg");
-		int i=0;
-		bool both=false;
-		// TODO: Check consistency of the games.
+    root = ".";
+    if (scanExecutables(root))
+        gamedetected = true;
 
-		for( i=0 ; i < m_numGames ; i++ )
-		{
-			if (gamescfg.is_open())
-			{
-				while ( !gamescfg.eof() && !both )
-				{
-					getline (gamescfg,line);
-			
-					if(strncmp(line.c_str(),"",strlen("")) == 0)
-						both=false;
-				if(strncmp(line.c_str(),"&Dir=",strlen("&Dir=")) == 0)
-				{
-					dir = line.substr(strlen("&Dir="));
-					both = false;
-				}
-					if(strncmp(line.c_str(),"/Name=",strlen("/Name=")) == 0)
-					{
-						name = line.substr(strlen("/Name="));
-						if (m_DirList[i] == dir)
-						both = true;
-						else
-							both = false;
+    if (scanSubDirectories(root))
+        gamedetected = true;
 
-					}
-				}
-				gamescfg.close();
-			}
-			
-			if (both == true)
-			{
-				if (m_DirList[i] == dir)
-				{
-				mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,i+1, name);
-					both = false;
-				}
-				OpenGameFileR(gamescfg, "games/games.cfg");
-			}
-			else
-			{
-				mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,i+1, m_DirList[i]);
-				OpenGameFileR(gamescfg, "games/games.cfg");
-			}
-		}
-		mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,i+1, "Quit");
-	}
-	else
-	{
-		mp_LaunchMenu->addObject(DLG_OBJ_DISABLED,1,1, "No games were found!");
-		mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,2, "Quit");
-	}
+    if(!gamedetected)
+        return false;
 
-	// Draw Background. This is only needed once, since Scrollsurface
-	// won't be cleared every update screen
-	mp_map->drawAll();
+    m_numGames = m_DirList.size();
+    mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,m_numGames+2, "Quit");
 
-	return true;
+    g_pLogFile->ftextOut("Game Autodetection Finished<br>" );
+
+    return true;
+}
+
+bool CGameLauncher::drawMenu()
+{
+    // Use the standard Menu-Frame used in the old DOS-Games
+    mp_LaunchMenu->setFrameTheme( DLG_THEME_OLDSCHOOL );
+
+    // Load the map for the background
+    mp_map = new CMap(g_pVideoDriver->getScrollSurface(), g_pGfxEngine->Tilemap);
+    CMapLoader MapLoader(mp_map);
+
+    if(!MapLoader.load(1, 90, m_DirList.at(m_ep1slot))) return false;
+
+    mp_map->gotoPos(32,32);
+
+    // Draw Background. This is only needed once, since Scrollsurface
+    // won't be cleared every update screen
+    mp_map->drawAll();
+
+    return true;
 }
 
 struct FileListAdder {
-	void operator()(std::set<std::string>& dirs, const std::string& path) {
-		std::string basepath = GetBaseFilename(path);
-		if(basepath != "" && basepath[0] != '.') {
-			dirs.insert(basepath);
-		}
-	}
+    void operator()(std::set<std::string>& dirs, const std::string& path) {
+        std::string basepath = GetBaseFilename(path);
+        if(basepath != "" && basepath[0] != '.') {
+            dirs.insert(basepath);
+        }
+    }
 };
 
-Uint8 CGameLauncher::scanDirectories()
+Uint8 CGameLauncher::scanDirectories(std::string& path, DirList& dir)
 {
-	std::set<std::string> dirs;
-	FileListAdder fileListAdder;
-	GetFileList(dirs, fileListAdder, "games", false, FM_DIR);
-	
-	m_DirList = DirList(dirs.begin(), dirs.end());
-	return m_DirList.size();
+    std::set<std::string> dirs;
+    FileListAdder fileListAdder;
+
+    GetFileList(dirs, fileListAdder, path, false, FM_DIR);
+    dir = DirList(dirs.begin(), dirs.end());
+
+    return dir.size();
+}
+
+bool CGameLauncher::scanSubDirectories( std::string& root )
+{
+    unsigned int i;
+    bool gamedetected = false;
+    std::string path;
+    DirList dirlist;
+
+    scanDirectories(root, dirlist);
+    for ( i=0; i<dirlist.size(); i++ )
+    {
+        path = root + '/' + dirlist.at(i);
+        if (scanExecutables(path))
+            gamedetected = true;
+
+        if (scanSubDirectories(path))
+            gamedetected = true;
+    }
+    return gamedetected;
+}
+
+bool CGameLauncher::scanExecutables(std::string& path)
+{
+    bool result, original;
+    int version, episode;
+    unsigned int i=0;
+    std::string file, label;
+    CExeFile* executable;
+
+    g_pLogFile->ftextOut("Search: %s<br>", path.c_str() );
+
+    result = false;
+    for (i=0; i < m_ExeList.size(); i++)
+    {
+        file = path + '/' + m_ExeList.at(i);
+        if (IsFileAvailable(file))
+        {
+            executable = new CExeFile(i+1, path);
+
+            executable->readData();
+            original = executable->GetEXEOriginal();
+            version = executable->getEXEVersion();
+            episode = i+1;
+            m_DirList.push_back(path);
+            m_EpiList.push_back(episode);
+
+                                   //Episode
+            label = itoa(episode) + "       ";
+            if (original) {
+                        //Mod
+                label += "No  ";
+            } else {
+                label += "Yes ";
+            }
+                                    //Ver Folder
+            label += itoa(version) + " " + path;
+            mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,m_DirList.size()+1, label);
+
+            g_pLogFile->ftextOut("Detected game Name: %s Version: %d Original: %d<br>", file.c_str()
+                                                                        , version
+                                                                        , original );
+            // The original episode 1 exe is needed to load gfx's for game launcher menu
+            if ( m_ep1slot <= -1 && original == true )
+            {
+                m_ep1slot = m_DirList.size()-1;
+                g_pLogFile->ftextOut("   Using for in-game menu resources<br>" );
+            }
+            delete executable;
+
+            result = true;
+        }
+    }
+
+    return result;
 }
 
 ////
@@ -144,59 +194,60 @@ Uint8 CGameLauncher::scanDirectories()
 ////
 void CGameLauncher::process()
 {
-	// Gather input states
-	if( g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedKey(KENTER) )
-	{
-		unsigned char selection = mp_LaunchMenu->getSelection();
-		if( selection >= m_numGames )
-		{
-			// outside the number of games, that exist. This means exit was triggered.
-			m_mustquit = true;
-		}
-		else
-		{
-			m_hasbeenchosen = true;
-			m_chosenGame = selection;
-		}
-	}
+    // Gather input states
+    if( g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedKey(KENTER) )
+    {
+        signed char selection = mp_LaunchMenu->getSelection()-1;
+        if( selection >= m_numGames )
+        {
+            // outside the number of games, that exist. This means exit was triggered.
+            m_mustquit = true;
+        }
+        else if( selection >= 0 )
+        {
+            m_hasbeenchosen = true;
+            m_chosenGame = selection;
+        }
+    }
 
-	// Did the user press (X)?
-	if( g_pInput->getExitEvent() )
-		m_mustquit = true;
+    // Did the user press (X)?
+    if( g_pInput->getExitEvent() )
+        m_mustquit = true;
 
-	// Process Menu Input
-	mp_LaunchMenu->processInput();
+    // Process Menu Input
+    mp_LaunchMenu->processInput();
 
-	// Animate the tiles of the map
-	g_pGfxEngine->Tilemap->animateAllTiles(g_pVideoDriver->ScrollSurface);
+    // Animate the tiles of the map
+    g_pGfxEngine->Tilemap->animateAllTiles(g_pVideoDriver->ScrollSurface);
 
-	// Blit the background
-	g_pVideoDriver->blitScrollSurface(mp_map->m_scrollx_buf, mp_map->m_scrolly_buf);
+    // Blit the background
+    g_pVideoDriver->blitScrollSurface(mp_map->m_scrollx_buf, mp_map->m_scrolly_buf);
 
-	// Draw the Start-Menu
-	mp_LaunchMenu->draw();
+    // Draw the Start-Menu
+    mp_LaunchMenu->draw();
 }
 
+/*
 // When the game is chosen, read the episode number by looking which exe file is present
 Uint8 CGameLauncher::retrievetEpisode(short chosengame)
 {
-	if(IsFileAvailable("games/" + m_DirList.at(chosengame) + "/keen1.exe")) return 1;
-	if(IsFileAvailable("games/" + m_DirList.at(chosengame) + "/keen2.exe")) return 2;
-	if(IsFileAvailable("games/" + m_DirList.at(chosengame) + "/keen3.exe")) return 3;
+    if(IsFileAvailable("games/" + m_DirList.at(chosengame) + "/keen1.exe")) return 1;
+    if(IsFileAvailable("games/" + m_DirList.at(chosengame) + "/keen2.exe")) return 2;
+    if(IsFileAvailable("games/" + m_DirList.at(chosengame) + "/keen3.exe")) return 3;
 
-	return 0;
+    return 0;
 }
-
+*/
 
 ////
 // Cleanup Routine
 ////
 void CGameLauncher::cleanup()
 {
-	// destroy the map
-	if (mp_map) delete mp_map, mp_map = NULL;
+    // destroy the map
+    if (mp_map) delete mp_map, mp_map = NULL;
 
-	// destroy the menu
-	if (mp_LaunchMenu) delete mp_LaunchMenu, mp_LaunchMenu = NULL;
+    // destroy the menu
+    if (mp_LaunchMenu) delete mp_LaunchMenu, mp_LaunchMenu = NULL;
 }
 

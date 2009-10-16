@@ -19,7 +19,7 @@ CPassive::CPassive(char Episode, std::string DataDirectory) {
 	mp_TitleScreen = NULL;
 	mp_Menu = NULL;
 	mp_Map = NULL;
-	
+
 	m_modeg = false;
 	m_GoDemo = false;
 	m_mode = INTRO;
@@ -50,9 +50,9 @@ bool CPassive::init(char mode)
 		mp_Map = new CMap( mp_Scrollsurface, mp_Tilemap);
 		CMapLoader MapLoader( mp_Map );
 		MapLoader.load( m_Episode, 90, m_DataDirectory);
-		mp_Map->gotoPos( 32, 32); // Coordinates of title screen 
+		mp_Map->gotoPos( 32, 32); // Coordinates of title screen
 		mp_Map->drawAll();
-		mp_TitleScreen->init();				
+		mp_TitleScreen->init();
 	}
 	else if( m_mode == DEMO )
 	{
@@ -112,7 +112,7 @@ void CPassive::process()
 		if( mp_TitleScreen->isFinished() )
 		{
 			// The Title screen was shown enough time, shut it down
-			// and load Demo environment	
+			// and load Demo environment
 			cleanup();
 			init(DEMO);
 		}
@@ -178,7 +178,7 @@ void CPassive::process()
 		{
 			delete mp_Menu;
 			mp_Menu = NULL;
-			cleanup();
+			//cleanup();  This cleanup is called by GameControls also
 			m_modeg = true;
 		}
 	}

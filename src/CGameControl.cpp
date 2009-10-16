@@ -1,5 +1,5 @@
 /*
- * CGameControl.cpp 
+ * CGameControl.cpp
  *
  *  Created on: 22.09.2009
  *      Author: gerstrong
@@ -25,21 +25,27 @@ CGameControl::CGameControl() {
 
 ////
 // Initialization Routine
-////
+/////*/*/*
 bool CGameControl::init(char mode)
 {
 	m_mode = mode;
 	if(m_mode == GAMELAUNCHER)
 	{
-		// Resources for the main menu.
-		if(!loadResources(1, "games/EP1"))	return false;
-
 		// Load the graphics for menu and background.
 		mp_GameLauncher = new CGameLauncher();
-		return mp_GameLauncher->init();
+        if(!mp_GameLauncher->init())
+        {
+            g_pLogFile->textOut(RED,"The game cannot start, because you do not have any game data files.<br>");
+            return false;
+        }
+        // Resources for the main menu
+		if(!loadResources(1, mp_GameLauncher->getEP1Directory() ))	return false;
+		if(!mp_GameLauncher->drawMenu()) return false;
+
+		return true;
 	}
 	else if(m_mode == PASSIVE)
-	{	
+	{
 		// Create mp_PassiveMode object used for the screens while Player is not playing
 		mp_PassiveMode = new CPassive( m_Episode, m_DataDirectory );
 		if( mp_PassiveMode->init() ) return true;
@@ -68,7 +74,7 @@ bool CGameControl::loadResources(unsigned short Episode, const std::string& Data
 CExeFile ExeFile(Episode, DataDirectory);
 int version;
 unsigned char *p_exedata;
-	
+
 	m_Episode = Episode;
 	m_DataDirectory = DataDirectory;
 
@@ -132,10 +138,10 @@ void CGameControl::process()
 		{
 			//// Game has been chosen. Launch it!
 			// Get the path were to Launch the game
-			m_DataDirectory = "games/" + mp_GameLauncher->getDirectory( m_ChosenGame );
+			m_DataDirectory = mp_GameLauncher->getDirectory( m_ChosenGame );
 
 			// We have to check which Episode is used
-			m_Episode = mp_GameLauncher->retrievetEpisode( m_ChosenGame );
+			m_Episode = mp_GameLauncher->getEpisode( m_ChosenGame );
 
 			if( m_Episode > 0 ) // The game has to have a valid episode!
 			{
@@ -174,7 +180,7 @@ void CGameControl::process()
 			cleanup();
 			init( GAMELAUNCHER );
 		}
-		
+
 		if(mp_PassiveMode->mustStartGame())
 		{
 			init( PLAYGAME );
@@ -228,7 +234,7 @@ void CGameControl::cleanup(char mode)
 		// Tie up when in game play
 		mp_PlayGame->cleanup();
 		delete mp_PlayGame;
-	} 
+	}
 }
 
 CGameControl::~CGameControl() {

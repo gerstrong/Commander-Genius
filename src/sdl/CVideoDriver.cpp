@@ -126,7 +126,7 @@ void CVideoDriver::initResolutionList()
 		  //{
 			  /* Get available fullscreen/hardware modes */
 		  modes = SDL_ListModes(NULL, SDL_FULLSCREEN | SDL_OPENGLBLIT);
-			  
+
 			  /* Check if there are any modes available */
 			  if (modes == (SDL_Rect**)0) {
 				  g_pLogFile->textOut(RED,"No modes available!  Using resolution list.<br>");
@@ -140,14 +140,14 @@ void CVideoDriver::initResolutionList()
 				   // Now check if it's possible to use this resolution
 				   resolution.depth = SDL_VideoModeOK(resolution.width, resolution.height,
 				   resolution.depth, SDL_FULLSCREEN);
-				   
+
 				   if(resolution.depth)
 				   {
 				   for( i = m_Resolutionlist.begin() ; i != m_Resolutionlist.end() ; i++ )
 				   if(i->width == resolution.width &&
 				   i->height == resolution.height &&
 				   i->depth == resolution.depth) break;
-				   
+
 				   if(i == m_Resolutionlist.end())
 				   m_Resolutionlist.push_back(resolution);
 				   }
@@ -162,14 +162,14 @@ void CVideoDriver::initResolutionList()
 					  resolution.depth = 32;
 					  resolution.depth = SDL_VideoModeOK(resolution.width, resolution.height,
 														 resolution.depth, SDL_FULLSCREEN);
-					  
+
 					  if(resolution.depth)
 					  {
 					  for( i = m_Resolutionlist.begin() ; i != m_Resolutionlist.end() ; i++ )
 						  if(i->width == resolution.width &&
 							 i->height == resolution.height &&
 							 i->depth == resolution.depth) break;
-					  
+
 					  if(i == m_Resolutionlist.end())
 					  {
 						  m_Resolutionlist.push_front(resolution);
@@ -185,14 +185,14 @@ void CVideoDriver::initResolutionList()
 					  resolution.depth = 32;
 					  resolution.depth = SDL_VideoModeOK(resolution.width, resolution.height,
 														 resolution.depth, SDL_FULLSCREEN);
-					  
+
 					  if(resolution.depth)
 					  {
 					  for( i = m_Resolutionlist.begin() ; i != m_Resolutionlist.end() ; i++ )
 						  if(i->width == resolution.width &&
 							 i->height == resolution.height &&
 							 i->depth == resolution.depth) break;
-					  
+
 					  if(i == m_Resolutionlist.end())
 					  {
 						  m_Resolutionlist.push_front(resolution);
@@ -588,7 +588,7 @@ char tempbuf[80];
 
 #ifdef DEBUG
      sprintf(tempbuf, "LPS: %03d FPS: %03d; x = %ld ; y = %d", g_pTimer->getLoopsPerSec(),
-							       g_pTimer->getFramesPerSec(), player[0].x >>CSF, player[0].y >>CSF);
+							       g_pTimer->getFramesPerSec()/*, player[0].x >>CSF, player[0].y >>CSF*/);
 #else
      sprintf(tempbuf, "FPS: %03d", g_pTimer->getFramesPerSec() );
 #endif
