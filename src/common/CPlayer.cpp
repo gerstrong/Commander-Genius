@@ -760,7 +760,7 @@ bool CPlayer::drawStatusScreen()
 	if(m_showStatusScreen)
 	{
 		if(mp_StatusScr == NULL)
-			mp_StatusScr = new CStatusScreen();
+			mp_StatusScr = new CStatusScreen(m_episode, &inventory);
 
 		mp_StatusScr->draw();
 

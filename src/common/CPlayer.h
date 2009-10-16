@@ -9,6 +9,7 @@
 #define CPLAYER_H_
 
 #include <SDL/SDL.h>
+#include "inventory.h"
 #include "CObject.h"
 #include "CMap.h"
 #include "CStatusScreen.h"
@@ -146,24 +147,7 @@ public:
 
 	unsigned int ankhtime, ankhshieldobject;
 
-	struct stInventory
-	{
-	 unsigned long score;
-	 unsigned long extralifeat;
-	 unsigned int charges;        // ray gun ammo
-	 signed char lives;
-	 unsigned char HasPogo;
-	 unsigned char HasCardYellow;
-	 unsigned char HasCardRed;
-	 unsigned char HasCardGreen;
-	 unsigned char HasCardBlue;
-
-	 // ep1 normally
-	 bool HasJoystick;
-	 bool HasWiskey;
-	 bool HasBattery;
-	 bool HasVacuum;
-	} inventory;
+	stInventory inventory;
 
 	bool m_godmode, m_cheats_enabled;
 	bool *mp_levels_completed;
