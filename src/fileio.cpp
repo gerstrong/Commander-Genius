@@ -341,7 +341,7 @@ char highlight;
   #define STSTATE_READATTR      3
 
   g_pLogFile->ftextOut("loadstrings(): Opening string file 'strings.dat'.<br>");
-  fp = OpenGameFile("strings.dat", "rb");
+  fp = OpenGameFile("data/strings.dat", "rb");
   if (!fp)
   {
 	  g_pLogFile->ftextOut("loadstrings(): String file unable to open.<br>");

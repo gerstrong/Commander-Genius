@@ -54,6 +54,8 @@ CPlayer::CPlayer() {
 	m_godmode = false;
 	m_cheats_enabled = false;
 	m_showStatusScreen = false;
+
+	memset(&inventory, 0, sizeof(inventory));
 }
 
 // handles walking. the walking animation is handled by gamepdo_walkinganim()
