@@ -86,7 +86,7 @@ COrderingInfo::~COrderingInfo() {
 
 void COrderingInfo::Render(stCloneKeenPlus *pCKP)
 {
-	bool cancel = false;
+	/*bool cancel = false;
 
 	if(!m_Textline.size())
 	{
@@ -115,6 +115,5 @@ void COrderingInfo::Render(stCloneKeenPlus *pCKP)
 		gamedo_frameskipping_blitonly();
 
 	} while( !cancel );
-
-
+*/
 }

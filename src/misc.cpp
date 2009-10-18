@@ -628,7 +628,7 @@ top: ;
 
 void game_save_interface(stCloneKeenPlus *pCKP)
 {
-int waittimer;
+/*int waittimer;
 char saveslot;
 int dlgX,dlgY,dlgW,dlgH;
 
@@ -642,12 +642,12 @@ int dlgX,dlgY,dlgW,dlgH;
   saveslot = save_slot_box(1, pCKP, 1);
   if (!saveslot) return;                // canceled
 
-  /* save the game */
+  // save the game
   CSavedGame *SavedGame = new CSavedGame(&(pCKP->Control.levelcontrol),pCKP);
   SavedGame->save(saveslot);
   delete SavedGame;
 
-  /* display the "your game has been saved" box */
+  // display the "your game has been saved" box
   waittimer = 0;
   do
   {
@@ -664,7 +664,7 @@ int dlgX,dlgY,dlgW,dlgH;
 	g_pInput->pollEvents();
   } while(!g_pInput->getPressedAnyKey());
 
-  map_redraw();
+  map_redraw();*/
 }
 
 int VerifyQuit()

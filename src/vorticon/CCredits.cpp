@@ -22,7 +22,7 @@ CCredits::~CCredits() {
 
 void CCredits::Render(stCloneKeenPlus *pCKP)
 {
-	int mid[52];
+	/*int mid[52];
 	char scrolltext[52][80];
 	unsigned char pagenumber = 0;
 	int timer = 8;
@@ -126,5 +126,5 @@ void CCredits::Render(stCloneKeenPlus *pCKP)
 		// blit the scrollbuffer to the display
 		gamedo_frameskipping_blitonly();
 	} while( !cancel );
-
+*/
 }

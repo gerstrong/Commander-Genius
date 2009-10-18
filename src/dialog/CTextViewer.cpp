@@ -148,7 +148,7 @@ void CTextViewer::drawTextlines()
 // Most common render function for this TextViewer
 void CTextViewer::processCycle()
 {
-	char timer=0;
+	/*char timer=0;
 	bool cancel = false;
 
 	do
@@ -187,7 +187,7 @@ void CTextViewer::processCycle()
 
 		gamedo_RenderScreen();
 		renderBox(); // This comes after, because it does transparent overlay
-	} while(!cancel);
+	} while(!cancel);*/
 }
 
 // This function shows the Story of Commander Keen!

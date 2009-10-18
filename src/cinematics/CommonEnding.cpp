@@ -56,6 +56,7 @@ int endsequence(stCloneKeenPlus *pCKP)
 void eseq_showmsg(const std::string& text, int boxleft, int boxtop,
 		int boxwidth, int boxheight, bool autodismiss, SDL_Surface *spritesurface)
 {
+	/*
 std::string tempbuf;
 char showtimer;
 unsigned int amountshown;
@@ -118,7 +119,7 @@ SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
 	  g_pInput->pollEvents();
 	  gamedo_frameskipping_blitonly();
   } while(!g_pInput->getPressedCommand(KQUIT));
-  return;
+  return;*/
 }
 
 void eseq_ToBeContinued(SDL_Surface *extrascreen)

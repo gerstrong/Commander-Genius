@@ -224,7 +224,7 @@ CBitmap *bm_gameover =NULL;
 }
 
 void eseq2_vibrate()
-{
+{/*
 int xamt, yamt;
 int xdir, ydir;
 int vibratetimes;
@@ -285,14 +285,14 @@ int x,y,w,h;
 	}
 
 	// align sprites with new scroll position
-	/*for(i=0;i<MAX_OBJECTS;i++)
+	for(i=0;i<MAX_OBJECTS;i++)
 	{
 	  if (objects[i].exists && objects[i].type!=OBJ_PLAYER)
 	  {
 		objects[i].scrx = (objects[i].x>>CSF)-scroll_x;
 		objects[i].scry = (objects[i].y>>CSF)-scroll_y;
 	  }
-	}*/
+	}
 	vibratetimes++;
 	g_pInput->pollEvents();
 
@@ -306,7 +306,7 @@ int x,y,w,h;
   w = GetStringAttribute("EP2_AfterVibrateString", "WIDTH");
   h = GetStringAttribute("EP2_AfterVibrateString", "HEIGHT");
 
-  eseq_showmsg(getstring("EP2_AfterVibrateString"),x,y,w,h,1);
+  eseq_showmsg(getstring("EP2_AfterVibrateString"),x,y,w,h,1);*/
 }
 
 

@@ -143,8 +143,9 @@ short openDlgStruct(stDlgStruct *pDlgStruct, stCloneKeenPlus *pCKP);
 
 bool loadStartMenu(stCloneKeenPlus *pCKP)
 {
+	/*
     // Prepare the Games Menu
-	CDialog GamesMenu(g_pVideoDriver->FGLayerSurface, /*16, 8,*/ 36, 20);
+	CDialog GamesMenu(g_pVideoDriver->FGLayerSurface,  36, 20);
 
 
 	//showmapatpos(90, 104<<4, 32, pCKP);
@@ -167,6 +168,7 @@ bool loadStartMenu(stCloneKeenPlus *pCKP)
 	pCKP->Resources.GameSelected = GamesMenu.getSelection()+1;
 	pCKP->Control.levelcontrol.episode = pCKP->GameData[GamesMenu.getSelection()].Episode;
 	pCKP->Resources.GameDataDirectory = pCKP->GameData[GamesMenu.getSelection()].DataDirectory;
-
+*/
 	return true;
+
 }
