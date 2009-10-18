@@ -11,6 +11,7 @@
 #define CGAMECONTROL_H_
 
 #include "common/CGameLauncher.h"
+#include "common/options.h"
 #include "vorticon/CEGAGraphics.h"
 #include "vorticon/CMessages.h"
 #include "vorticon/CPassive.h"
@@ -41,6 +42,7 @@ public:
 	bool mustShutdown(){ return (m_mode==SHUTDOWN); }
 	
 	char m_mode;
+	stOption *mp_option;
 
 private:
 	CGameLauncher *mp_GameLauncher;

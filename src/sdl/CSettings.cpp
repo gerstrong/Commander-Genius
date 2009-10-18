@@ -5,20 +5,20 @@
  *      Author: gerstrong
  */
 
+#include "../common/options.h"
 #include "../fileio/CParser.h"
 #include "../CLogFile.h"
+#include "../FindFile.h"
+#include "../ConfigHandler.h"
 #include "CSettings.h"
 #include "CVideoDriver.h"
 #include "CTimer.h"
 #include "sound/CSound.h"
-#include "../FindFile.h"
-#include "../ConfigHandler.h"
 
-//std::string CONFIGFILENAME = "genius.cfg";
-
-CSettings::CSettings() {
+CSettings::CSettings(stOption *p_option) {
 	notes << "Reading game options from " << GetFullFileName(CONFIGFILENAME) << endl;
 	notes << "Will write game options to " << GetWriteFullFileName(CONFIGFILENAME, true) << endl;
+	mp_option = p_option;
 }
 
 CSettings::~CSettings() {}
@@ -106,8 +106,8 @@ bool CSettings::loadDrvCfg()
 
 void CSettings::setOption( int opt, const std::string &name, char value)
 {
-	m_option[opt].name = name;
-	m_option[opt].value = value;
+	mp_option[opt].name = name;
+	mp_option[opt].value = value;
 }
 
 void CSettings::loadDefaultGameCfg()
@@ -134,8 +134,8 @@ short CSettings::loadGameCfg()
 	
 	for (i = 0; i < NUM_OPTIONS; i++)
 	{
-		m_option[i].value = Parser.getIntValue(m_option[i].name,"Game");
-		if(m_option[i].value == -1)
+		mp_option[i].value = Parser.getIntValue(mp_option[i].name,"Game");
+		if(mp_option[i].value == -1)
 		{
 			loadDefaultGameCfg();
 			return 1;
@@ -152,7 +152,7 @@ void CSettings::saveGameCfg()
 	Parser.loadParseFile();
 	
 	for (int i = 0; i < NUM_OPTIONS; i++)
-		Parser.saveIntValue(m_option[i].name,"Game",m_option[i].value);
+		Parser.saveIntValue(mp_option[i].name,"Game",mp_option[i].value);
 	
 	Parser.saveParseFile();
 }

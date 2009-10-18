@@ -9,21 +9,13 @@
 #define CSETTINGS_H_
 
 #include <string>
+#include "../common/options.h"
 
 #define CONFIGFILENAME "cgenius.cfg"
 
-// TODO: Implement the option structure using STL Maps
-enum e_OptionKeywords
-{ OPT_FULLYAUTOMATIC, OPT_SUPERPOGO,
-	OPT_ALLOWPKING, OPT_CHEATS,
-	OPT_TWOBUTTON, OPT_ANALOGJOYSTICK,
-	OPT_LVLREPLAYABILITY, OPT_RISEBONUS };
-
-#define NUM_OPTIONS    8
-
 class CSettings {
 public:
-	CSettings();
+	CSettings(stOption *p_option);
 	virtual ~CSettings();
 	short saveDrvCfg();
 	bool loadDrvCfg();
@@ -33,11 +25,7 @@ public:
 	void setOption( int opt, const std::string &name, char value);
 
 private:
-	struct stOption
-	{
-		std::string name;
-		char value;
-	} m_option[NUM_OPTIONS];
+	stOption *mp_option;
 };
 
 #endif /* CSETTINGS_H_ */

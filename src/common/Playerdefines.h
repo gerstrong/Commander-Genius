@@ -75,6 +75,19 @@
 #define PJUMPUP_SPEED            20
 #define PPOGOUP_SPEED            24
 
+// various tile indexes
+#define BG_GRAY            143
+#define BG_GRAY_PRIORITY   304
+#define BG_BLACK           155
+#define BG_DARK_EP2        147
+#define TILE_FELLOFFMAP_EP1    582
+#define TILE_FELLOFFMAP_EP3    0
+#define TILE_ICE_LEFTCORNER   403
+#define TILE_ICE_RIGHTCORNER  404
+#define TILE_ICE              405
+#define TILE_ICE_CUBE         394
+#define TILE_GLOWCELL      241
+
 // These control the various jump heights.
 // one of these pairs is selected depending on how
 // long the CTRL key was held down while Keen
@@ -119,10 +132,13 @@
 #define PJUMP_NORMALTIME_POGO_LONG_SUPER        10
 #define PJUMP_UPDECREASERATE_POGO_LONG_SUPER    4
 
+// when falling keen's Y inertia increases at INCREASERATE up to MAXSPEED
+#define PFALL_INCREASERATE       3
+#define PFALL_MAXSPEED           19
+
 // pogo frames
 #define PFRAME_POGO           24
 #define PFRAME_POGOBOUNCE     25
-
 
 // frame and animation speed for frozen keen (ep1) and stunned keen (ep2&3)
 #define PFRAME_FROZEN         28
@@ -142,5 +158,9 @@
 #define PDIE_RISE_SPEED    -20
 #define DIE_MAX_XVECT       10
 
+// if player[].psupportingtile contains this value the player is actually
+// supported by an object and you should look in player[].psupportingobj
+// for it's index.
+#define PSUPPORTEDBYOBJECT         0
 
 #endif /* PLAYERDEFINES_H_ */

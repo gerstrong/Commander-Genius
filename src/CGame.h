@@ -9,6 +9,7 @@
 #define CGAME_H_
 
 #include "CGameControl.h"
+#include "common/options.h"
 
 // references to cinematics/CommonEnding
 //int endsequence(stCloneKeenPlus *pCKP);
@@ -25,13 +26,7 @@ public:
 	void run();
 	void cleanup();
 
-	///////
-	/// Depreciated
-	///////
-	/*void freeResources(void);
-	short runCycle(stCloneKeenPlus *pCKP);
-	short ingamerunCycle(stCloneKeenPlus *pCKP);
-	void preallocateCKP(stCloneKeenPlus *pCKP);*/
+	stOption m_option[NUM_OPTIONS];
 
 private:
 	CGameControl m_GameControl;

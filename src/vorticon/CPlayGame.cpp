@@ -20,8 +20,7 @@
 ////
 CPlayGame::CPlayGame( char episode, char level, 
 			char numplayers, char difficulty,
-			std::string &gamepath ) {
-	bool *p_completed_levels;
+			std::string &gamepath, stOption *p_option ) {
 	m_Episode = episode;
 	m_Level = level;
 	m_NumPlayers = numplayers;
@@ -33,6 +32,7 @@ CPlayGame::CPlayGame( char episode, char level,
 	m_endgame = false;
 	mp_Map = NULL;
 	mp_Menu = NULL;
+	mp_option = p_option;
 
 	// Create the Player
 	if(m_NumPlayers != 0)
@@ -41,8 +41,7 @@ CPlayGame::CPlayGame( char episode, char level,
 		mp_Player = NULL;
 
 	// Create completed level list
-	p_completed_levels = new bool[16];
-	memset(p_completed_levels,false,16*sizeof(bool));
+	memset(mp_level_completed,false,16*sizeof(bool));
 
 	// tie puppy objects so the player can interact in the level
 	for (int i=0 ; i<numplayers ; i++)
@@ -51,12 +50,12 @@ CPlayGame::CPlayGame( char episode, char level,
 		mp_Player[i].m_player_number = i;
 		mp_Player[i].m_episode = m_Episode;
 		mp_Player[i].mp_levels_completed = mp_level_completed;
-		mp_Player[i].mp_levels_completed = p_completed_levels;
 
 		m_Object.push_back(object);
 		m_Object[i].exists = true;
 		m_Object[i].onscreen = true;
 		mp_Player[i].mp_object = &(m_Object.at(i));
+		mp_Player[i].mp_option = p_option;
 	}
 
 	m_theplayer = 0;
@@ -90,8 +89,8 @@ bool CPlayGame::init()
 		else
 			mp_Player[i].m_playingmode = CPlayer::LEVELPLAY;
 
-		mp_Player[i].w = g_pGfxEngine->Sprite[PSTANDFRAME]->getWidth()<<5;
-		mp_Player[i].h = g_pGfxEngine->Sprite[PSTANDFRAME]->getHeight()<<5;
+		mp_Player[i].w = g_pGfxEngine->Sprite[PSTANDFRAME]->getWidth()<<(CSF-4);
+		mp_Player[i].h = g_pGfxEngine->Sprite[PSTANDFRAME]->getHeight()<<(CSF-4);
 
 		// Set the pointers to the map and object data
 		mp_Player[i].setMapData(mp_Map);
@@ -199,13 +198,26 @@ void CPlayGame::process()
 			// Perform player Objects...
 			for( int i=0 ; i<m_NumPlayers ; i++ )
 			{
-				// Check Collisions
-				checkPlayerCollisions(i);
+				// Check if one of the players dies
 
 				// Process the other stuff like, items, jump, etc.
 				mp_Player[i].processInLevel();
 
-				// Check if one of the players dies
+				// Process the falling physics of the player here.
+				// We need to know the objects and tiles which could hinder the fall.
+				// decide if player should fall
+
+				if (!mp_Player[i].inhibitfall) processPlayerfallings(&mp_Player[i]);
+				else
+				{
+				  if(mp_Player[i].pjumping == PJUMPED)
+					  mp_Player[i].pfalling = 0;
+				  mp_Player[i].psupportingtile = 145;
+				  mp_Player[i].psupportingobject = 0;
+				}
+
+				// Check Collisions and only move player, if it is not blocked
+				checkPlayerCollisions(&mp_Player[i]);
 			}
 			// finished the level
 

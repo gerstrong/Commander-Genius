@@ -63,7 +63,7 @@ bool CGameControl::init(char mode)
 
 		mp_PlayGame = new CPlayGame(episode, WORLD_MAP_LEVEL,
 						numplayers, difficulty,
-						gamepath);
+						gamepath, mp_option);
 		return mp_PlayGame->init();
 	}
 	return false;

@@ -21,41 +21,11 @@
 // Initialization Part
 ///
 CPlayer::CPlayer() {
+	// Set every value in the class to zero.
+	memset(this, 0, sizeof(CPlayer));
+
 	// When worldmap is set up, use that frame
 	playframe = PMAPDOWNFRAME;
-	hideplayer = false;
-	pwalkframe = 0;
-	m_player_number = 0;
-	mp_levels_completed = NULL;
-	mp_object = NULL;
-
-    dpadcount = 0;
-    hideplayer = false;
-    mounted = false;
-    ppogostick = false;
-    pjumping = 0;
-    pfalling = false;
-    pwalking = playspeed = 0;
-    pinertia_x = pinertia_y = 0;
-    pboost_x = 0;
-    playpushed_x = 0;
-    pfiring = 0;
-    psliding = psemisliding = 0;
-    pdie = 0;
-
-    pfrozentime = 0;
-    ankhtime = 0;
-    keyprocstate = 0;         // KPROC_IDLE
-    pjustjumped = pjustfell = 0;
-
-	mp_map = NULL;
-	mp_StatusScr = NULL;
-
-	m_godmode = false;
-	m_cheats_enabled = false;
-	m_showStatusScreen = false;
-
-	memset(&inventory, 0, sizeof(inventory));
 }
 
 // handles walking. the walking animation is handled by gamepdo_walkinganim()
@@ -561,7 +531,7 @@ void CPlayer::InertiaAndFriction_X()
 	   int dx=((pinertia_x + playpushed_x)<<4);
 	   // check first if the player is not blocked
 	   if( (!blockedr and dx>0) or (!blockedl and dx<0) )
-		   x += dx;
+		   goto_x += dx;
    }
 
 
@@ -630,7 +600,7 @@ void CPlayer::InertiaAndFriction_Y()
    }
 
    // apply pinertia_y
-   y += (pinertia_y<<4);
+   goto_y += (pinertia_y<<4);
 
    // if we stopped walking (i.e. LRUD not held down) apply friction
     //if (!keytable[KDOWN] && !keytable[KUP])

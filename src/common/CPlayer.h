@@ -14,6 +14,7 @@
 #include "CMap.h"
 #include "CStatusScreen.h"
 #include "Playerdefines.h"
+#include "options.h"
 
 ///
 // Class definition starts here!
@@ -53,7 +54,6 @@ public:
 	void Jump();
 	void TogglePogo_and_Switches();
 	void JumpAndPogo();
-	void falling();
 	void raygun();
 	void ankh();
 	void SelectFrame();
@@ -73,6 +73,8 @@ public:
 	// these coordinates are CSFed
 	unsigned long x;
 	unsigned int y;
+	unsigned long goto_x;
+	unsigned int goto_y;
 
 	unsigned int w;
 	unsigned int h;
@@ -151,10 +153,10 @@ public:
 
 	bool m_godmode, m_cheats_enabled;
 	bool *mp_levels_completed;
+	bool m_showStatusScreen;
 
 	CMap *mp_map;
-
-	bool m_showStatusScreen;
+	stOption *mp_option;
 
 private:
 	CStatusScreen *mp_StatusScr;

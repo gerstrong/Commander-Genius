@@ -38,7 +38,8 @@ CGame::~CGame() {
 //////////////////////////////////
 bool CGame::init()
 {
-	CSettings Settings;
+	CSettings Settings(m_option);
+	m_GameControl.mp_option = m_option;
 
 	// Check if there are settings on the PC, otherwise use defaults.
 	if(!Settings.loadDrvCfg())
@@ -56,10 +57,7 @@ bool CGame::init()
 	}
 
 	// Initialize the way the launcher is started
-	if(!m_GameControl.init())
-	{
-		return false;
-	}
+	if(!m_GameControl.init())	return false;
 
 	return true;
 }

@@ -95,10 +95,6 @@ DOWN
 
 
 
-// when falling keen's Y inertia increases at INCREASERATE up to MAXSPEED
-#define PFALL_INCREASERATE       3
-#define PFALL_MAXSPEED           19
-
 // friction when player is pushed by yorp's, ball's, etc.
 #define PLAYPUSH_DECREASERATE   1
 
@@ -106,19 +102,6 @@ DOWN
 // into JUMP, POGO, and FIRE.
 #define CTRLALT_DEBOUNCETIME    20
 
-
-// various tile indexes
-#define BG_GRAY            143
-#define BG_GRAY_PRIORITY   304
-#define BG_BLACK           155
-#define BG_DARK_EP2        147
-#define TILE_FELLOFFMAP_EP1    582
-#define TILE_FELLOFFMAP_EP3    0
-#define TILE_ICE_LEFTCORNER   403
-#define TILE_ICE_RIGHTCORNER  404
-#define TILE_ICE              405
-#define TILE_ICE_CUBE         394
-#define TILE_GLOWCELL      241
 
 // special sprites (they either weren't in the game originally,
 // or are used for internal engine stuff).
@@ -165,11 +148,6 @@ DOWN
 #define ENEMYRAYEP2        123
 #define ENEMYRAYEP3        103
 #define RAY_VERT_EP3       104
-
-// if player[].psupportingtile contains this value the player is actually
-// supported by an object and you should look in player[].psupportingobj
-// for it's index.
-#define PSUPPORTEDBYOBJECT         0
 
 void gameloop(stCloneKeenPlus *pCKP);
 void gameloop_initialize(int episode, bool show_keensleft);

@@ -15,6 +15,7 @@
 #include "../common/CObject.h"
 #include "../common/CMenu.h"
 #include "../common/CMap.h"
+#include "../common/options.h"
 #include <SDL/SDL.h>
 #include <string>
 #include <vector>
@@ -38,7 +39,7 @@ enum e_levelcommands
 
 	CPlayGame( char episode, char level, 
 			char numplayers, char difficulty,
-			std::string &gamepath );
+			std::string &gamepath, stOption *p_option );
 
 	bool init();
 	bool loadGameState( std::string &statefile );
@@ -48,11 +49,12 @@ enum e_levelcommands
 	bool scrollTriggers();
 
 	// Collision stuff stored in CPlayGameCollision.cpp
-	void checkPlayerCollisions(int cp);
-	char checkisSolidr(int x, int y, int cp);
-	bool checkisSolidl(int x, int y, int cp);
-	char checkDoorBlock(int t, int cp, int which);
-	int checkObjSolid(unsigned int x, unsigned int y, unsigned int cp);
+	void checkPlayerCollisions(CPlayer *p_player);
+	bool checkisSolidr(int x, int y, CPlayer *p_player);
+	bool checkisSolidl(int x, int y, CPlayer *p_player);
+	char checkDoorBlock(int t, CPlayer *p_player, int which);
+	int checkObjSolid(unsigned int x, unsigned int y, CPlayer *p_player);
+	void processPlayerfallings(CPlayer *p_player);
 
 	// Dialog processes stored in CPlayGameDialogs.cpp
 	void processPauseDialogs();
@@ -85,6 +87,7 @@ private:
 	CMap *mp_Map;
 	CMenu *mp_Menu;
 	CPlayer *mp_Player;
+	stOption *mp_option;
 	int m_theplayer;
 	std::vector<CObject> m_Object;
 };

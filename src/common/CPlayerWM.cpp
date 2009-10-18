@@ -35,6 +35,9 @@ void CPlayer::processWorldMap()
     InertiaAndFriction_X();
     InertiaAndFriction_Y();
 
+    x = goto_x;
+    y = goto_y;
+
     selectFrameOnWorldMap();
 }
 
@@ -73,35 +76,35 @@ void CPlayer::setWMblockedlrud()
    if ((m_cheats_enabled && g_pInput->getHoldedKey(KTAB)) || m_godmode) return;
 
    // R
-   if (isWMSolid((x>>5)+8, (y>>5)+1))
+   if (isWMSolid((goto_x>>5)+8, (goto_y>>5)+1))
       { blockedr = 1; }
-   else if (isWMSolid((x>>5)+8, (y>>5)+8))
+   else if (isWMSolid((goto_x>>5)+8, (goto_y>>5)+8))
       { blockedr = 1; }
-   else if (isWMSolid((x>>5)+8, (y>>5)+13))
+   else if (isWMSolid((goto_x>>5)+8, (goto_y>>5)+13))
       { blockedr = 1; }
 
    // L
-   if (isWMSolid((x>>5)+0, (y>>5)+1))
+   if (isWMSolid((goto_x>>5)+0, (goto_y>>5)+1))
       { blockedl = 1; }
-   else if (isWMSolid((x>>5)+0, (y>>5)+8))
+   else if (isWMSolid((goto_x>>5)+0, (goto_y>>5)+8))
       { blockedl = 1; }
-   else if (isWMSolid((x>>5)+0, (y>>5)+13))
+   else if (isWMSolid((goto_x>>5)+0, (goto_y>>5)+13))
       { blockedl = 1; }
 
    // U
-   if (isWMSolid((x>>5)+1, (y>>5)-1))
+   if (isWMSolid((goto_x>>5)+1, (goto_y>>5)-1))
       { blockedu = 1; }
-   else if (isWMSolid((x>>5)+4, (y>>5)-1))
+   else if (isWMSolid((goto_x>>5)+4, (goto_y>>5)-1))
       { blockedu = 1; }
-   else if (isWMSolid((x>>5)+7, (y>>5)-1))
+   else if (isWMSolid((goto_x>>5)+7, (goto_y>>5)-1))
       { blockedu = 1; }
 
    // D
-   if (isWMSolid((x>>5)+1, (y>>5)+14))
+   if (isWMSolid((goto_x>>5)+1, (goto_y>>5)+14))
       { blockedd = 1; }
-   else if (isWMSolid((x>>5)+4, (y>>5)+14))
+   else if (isWMSolid((goto_x>>5)+4, (goto_y>>5)+14))
       { blockedd = 1; }
-   else if (isWMSolid((x>>5)+7, (y>>5)+14))
+   else if (isWMSolid((goto_x>>5)+7, (goto_y>>5)+14))
       { blockedd = 1; }
 }
 

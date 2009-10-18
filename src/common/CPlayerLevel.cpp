@@ -9,6 +9,7 @@
 
 #include "../keen.h"
 #include "../sdl/sound/CSound.h"
+#include "../sdl/CInput.h"
 #include "../graphics/CGfxEngine.h"
 
 #define PDIEFRAME             22
@@ -17,8 +18,6 @@
 // Process the stuff of the player when playing in a normal level
 void CPlayer::processInLevel()
 {
-	bool doFall;
-
     StatusBox();
 
     if (pdie)
@@ -51,21 +50,8 @@ void CPlayer::processInLevel()
 	  playpushed();
 	  InertiaAndFriction_X();
 
+	  TogglePogo_and_Switches();
 	  JumpAndPogo();
-
-	  // decide if player should fall
-	  doFall = true;
-	  if (inhibitfall) doFall = true;
-
-	  if (doFall)
-		  falling();
-	  else
-	  {
-		  if(pjumping == PJUMPED)
-			  pfalling = 0;
-		  psupportingtile = 145;
-		  psupportingobject = 0;
-	  }
 	}
     SelectFrame();
 }
@@ -245,7 +231,7 @@ void CPlayer::getgoodies()
 // handle playpushed_x: for yorps/scrubs/etc pushing keen
 void CPlayer::playpushed()
 {
-    /*//if (pCKP->Option[OPT_CHEATS].value && g_pInput->getHoldedKey(KTAB)) return;
+    /*//if (mp_option[OPT_CHEATS].value && g_pInput->getHoldedKey(KTAB)) return;
 
     // if we're being pushed...
     if (playpushed_x)
@@ -445,11 +431,6 @@ CSprite *standsprite = g_pGfxEngine->Sprite[PSTANDFRAME];
 
 void CPlayer::JumpAndPogo()
 {
-	/*stLevelControl *p_levelcontrol = &(pCKP->Control.levelcontrol);
-
-	// allow him to toggle the pogo stick
-	TogglePogo_and_Switches(cp, p_levelcontrol);
-
    // handle the JUMP key, both for normal jumps and (high) pogo jumps
    if (!pjumping && !pfalling && !pfiring)
    {
@@ -476,12 +457,12 @@ void CPlayer::JumpAndPogo()
           if (pjumpanimtimer>PPOGO_PREPARE_TIME)
           {
              // continously bounce while pogo stick is out
-        	  g_pSound->playStereofromCoord(SOUND_KEEN_JUMP, PLAY_NOW, objects[useObject].scrx);
+        	  g_pSound->playStereofromCoord(SOUND_KEEN_JUMP, PLAY_NOW, mp_object->scrx);
 
         	  // jump high if JUMP key down, else bounce low
         	  if (playcontrol[PA_JUMP])
         	  {
-				   if (!pCKP->Option[OPT_SUPERPOGO].value)
+				   if (!mp_option[OPT_SUPERPOGO].value)
 				   {  // normal high pogo jump
 					  if(playcontrol[PA_JUMP] > 12)
 						  pjumpupspeed = ((PPOGOUP_SPEED-PJUMPUP_SPEED)*playcontrol[PA_JUMP]) / 50 + PJUMPUP_SPEED;
@@ -495,7 +476,7 @@ void CPlayer::JumpAndPogo()
 					  pjumpupspeed = PPOGOUP_SPEED_SUPER;
 					  pjumptime = PJUMP_NORMALTIME_POGO_LONG_SUPER;
 					  pjumpupdecreaserate = PJUMP_UPDECREASERATE_POGO_LONG_SUPER;
-				   //}
+				   }
         	  }
         	  else
         	  {
@@ -578,7 +559,7 @@ void CPlayer::JumpAndPogo()
 
                     pjumpframe = PJUMP_PREPARE_LAST_FRAME;
 
-                    g_pSound->playStereofromCoord(SOUND_KEEN_JUMP, PLAY_NOW, objects[useObject].scrx);
+                    g_pSound->playStereofromCoord(SOUND_KEEN_JUMP, PLAY_NOW, mp_object->scrx);
                     pjumping = PJUMPUP;
                     pjumpupspeed_decreasetimer = 0;
                     pjustjumped = 1;
@@ -589,7 +570,7 @@ void CPlayer::JumpAndPogo()
                     pwalking = 1;
                     pwalkanimtimer = 0;
                     pwalkframe = 1;
-                    if (TileProperty[psupportingtile][BEHAVIOR] == 3)
+                    if ( g_pGfxEngine->Tilemap->mp_tiles[psupportingtile].behaviour == 3)
                     { // on ice, always jump direction facing
                       if (pshowdir==LEFT)
                         {  pdir=LEFT; }
@@ -599,9 +580,9 @@ void CPlayer::JumpAndPogo()
                     else
                       pjumpdir = UP;
 
-                    if (player[0].playcontrol[PA_X] < 0)
+                    if (playcontrol[PA_X] < 0)
                     	pinertia_x--;
-                    if (player[0].playcontrol[PA_X] > 0)
+                    if (playcontrol[PA_X] > 0)
                     	pinertia_x++;
 
                     pwalkincreasetimer = 0;
@@ -621,7 +602,7 @@ void CPlayer::JumpAndPogo()
          if (blockedu)   // did we bonk something?
          {  // immediatly abort the jump
             pjumping = PNOJUMP;
-            g_pSound->playStereofromCoord(SOUND_KEEN_BUMPHEAD, PLAY_NOW, objects[useObject].scrx);
+            g_pSound->playStereofromCoord(SOUND_KEEN_BUMPHEAD, PLAY_NOW, mp_object->scrx);
          }
 
          // do the jump
@@ -637,160 +618,14 @@ void CPlayer::JumpAndPogo()
          }
          else pjumptime--;
 
-         y -= pjumpupspeed;
+         goto_y -= pjumpupspeed;
          break;
     }
 
     // If we are in Godmode, use the Pogo, and pressing the jump button, make the player fly
     if( godmode && ppogostick &&
-    		g_pInput->getHoldedCommand(cp, IC_JUMP) && !blockedu )
-    	y -= PPOGOUP_SPEED;*/
-}
-
-void CPlayer::falling()
-{
-/*unsigned int temp;
-int objsupport;
-short tilsupport;
-
-	CSprite *p_sprite = g_pGfxEngine->Sprite[0];
-	pfalling = 0;         // assume not falling if not jumped to the maximum height
-
-    // do not fall if we're jumping
-    if (pjumping)
-    {
-      psemisliding = 0;
-      return;
-    }
-
-    // ** determine if player should fall (nothing solid is beneath him) **
-
-    psupportingtile = BG_GRAY;
-    psupportingobject = 0;
-    // test if tile under player is solid; if so set psupportingtile
-    objsupport = checkobjsolid(x+(4<<CSF), y+( p_sprite->getHeight()<<CSF),cp);
-
-    tilsupport = TileProperty[getmaptileat((x>>CSF)+5, (y>>CSF)+p_sprite->getHeight())][BUP];
-    if(TileProperty[getmaptileat((x>>CSF)+4, (y>>CSF)+p_sprite->getHeight())][BEHAVIOR] >= 2&&
-       TileProperty[getmaptileat((x>>CSF)+4, (y>>CSF)+p_sprite->getHeight())][BEHAVIOR] <= 5)
-    	tilsupport = 1; // This workaround prevents the player from falling through doors.
-
-    if (!tilsupport && !objsupport)
-    { // lower-left isn't solid
-      objsupport = checkobjsolid(x+(12<<CSF), y+(p_sprite->getHeight()<<CSF),cp);
-      tilsupport = TileProperty[getmaptileat((x>>CSF)+10, (y>>CSF)+p_sprite->getHeight())][BUP];
-      if (!tilsupport && !objsupport)
-      {  // lower-right isn't solid
-         pfalling = 1;        // so fall.
-         pjustfell = 1;
-      }
-      else
-      {  // lower-left isn't solid but lower-right is
-        if (objsupport)
-        {
-          psupportingtile = PSUPPORTEDBYOBJECT;
-          psupportingobject = objsupport;
-        }
-      }
-    }
-    else
-    {   // lower-left is solid
-        if (objsupport)
-        {
-          psupportingtile = PSUPPORTEDBYOBJECT;
-          psupportingobject = objsupport;
-        }
-    }
-
-    // if not on a tile boundary, always fall, prevents being able
-    // to land in the middle of a tile.
-    if (!pfalling && psupportingtile!=PSUPPORTEDBYOBJECT)
-    {
-       temp = (y>>CSF)+p_sprite->getHeight();    // bottom of player
-       if ((temp>>4)<<4 != temp)   // true if it's not a multiple of 16
-       {
-          pfalling = 1;   // not on a tile boundary. fall.
-          pjustfell = 1;
-          psupportingtile = BG_GRAY;
-          psupportingobject = 0;
-       }
-    }
-    // if supported by an object make sure we're at the top of
-    // the object else fall
-    if (!pfalling && psupportingtile==PSUPPORTEDBYOBJECT)
-    {
-       if ((y>>CSF)+p_sprite->getHeight() > (objects[psupportingobject].y>>CSF)+4)
-       {
-          if (!tilsupport)
-          {
-            pfalling = 1;
-            pjustfell = 1;
-            psupportingtile = BG_GRAY;
-            psupportingobject = 0;
-          }
-       }
-    }
-
-    // the first time we land on an object, line us up to be exactly on
-    // top of the object
-    if (psupportingobject && !lastsupportingobject)
-    {
-       y = objects[psupportingobject].y - (p_sprite->getHeight()<<CSF);
-    }
-    lastsupportingobject = psupportingobject;
-
-    // ** if the player should be falling, well what are we waiting for?
-    //    make him fall! **
-    //if (pCKP->Option[OPT_CHEATS].value && g_pInput->getHoldedKey(KPLUS)) { pfalling = 1; pjustfell = 1; }
-
-    if (pfalling)
-    {  // nothing solid under player, let's make him fall
-       psemisliding = 0;
-
-       // just now started falling? (wasn't falling last time)
-       if (plastfalling == 0)
-       {
-         // set initial fall speed and make the AAAAAUUUUHHHHH noise
-         pfallspeed = 1;
-         pfallspeed_increasetimer = 0;
-         if (!pjustjumped)
-        	 g_pSound->playStereofromCoord(SOUND_KEEN_FALL, PLAY_NOW, objects[useObject].scrx);
-       }
-
-       // gradually increase the fall speed up to maximum rate
-       if (pfallspeed_increasetimer>PFALL_INCREASERATE)
-       {
-          if (pfallspeed<PFALL_MAXSPEED)
-            pfallspeed++;
-
-          pfallspeed_increasetimer=0;
-       } else pfallspeed_increasetimer++;
-
-       // add current fall speed to player Y or make him fly in godmode with pogo
-       if( !godmode || !ppogostick || !g_pInput->getHoldedCommand(cp, IC_JUMP) )
-           y += pfallspeed;
-    }
-    else
-    {  // not falling
-       if (plastfalling)
-       {  // just now stopped falling
-          if (pdie != PDIE_FELLOFFMAP)
-        	  g_pSound->stopSound(SOUND_KEEN_FALL);  // terminate fall noise
-          // thud noise
-          if (!ppogostick)
-        	  g_pSound->playStereofromCoord(SOUND_KEEN_LAND, PLAY_NOW, objects[useObject].scrx);
-          // fix "sliding" effect when you fall, go one way, then
-          // before you land turn around and as you hit the ground
-          // you're starting to move the other direction
-          // (set inertia to 0 if it's contrary to player's current dir)
-       }
-    }   // close "not falling"
-
-    // save fall state so we can detect the high/low-going edges
-    plastfalling = pfalling;
-
-    // ensure no sliding if we fall or jump off of ice
-    if (pfalling||pjumping) psliding=0;*/
+    		g_pInput->getHoldedCommand(0, IC_JUMP) && !blockedu )
+    	goto_y -= PPOGOUP_SPEED;
 }
 
 // wouldn't it be cool if keen had a raygun, and he could shoot things?
@@ -812,11 +647,11 @@ int canRefire;
      pfiring = 1;           // flag that we're firing
      ppogostick = false;        // put away pogo stick if out
 
-     if (!lastplaycontrol[PA_FIRE] || pCKP->Option[OPT_FULLYAUTOMATIC].value)
+     if (!lastplaycontrol[PA_FIRE] || mp_option[OPT_FULLYAUTOMATIC].value)
      { // fire is newly pressed
 
        // limit how quickly shots can be fired
-       if (pCKP->Option[OPT_FULLYAUTOMATIC].value)
+       if ( mp_option[OPT_FULLYAUTOMATIC].value )
        {
          if (pfireframetimer < PFIRE_LIMIT_SHOT_FREQ_FA)
          {
