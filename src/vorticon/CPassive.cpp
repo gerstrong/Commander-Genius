@@ -109,20 +109,20 @@ void CPassive::process()
 	{
 		mp_TitleScreen->process();
 
-		if( mp_TitleScreen->isFinished() )
+		/*if( mp_TitleScreen->isFinished() )
 		{
 			// The Title screen was shown enough time, shut it down
 			// and load Demo environment
 			cleanup();
 			init(DEMO);
-		}
+		}*/
 	}
 	else if( m_mode == DEMO )
 	{
 		// TODO: Demo modes are processed here!
 		// TODO: Implement Demos here!
 		cleanup();
-		init(INTRO);
+		init(TITLE);
 	}
 
 	// Animate the tiles

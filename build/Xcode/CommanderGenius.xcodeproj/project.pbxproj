@@ -56,8 +56,6 @@
 		235755FC101A5E5900275638 /* finale.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9A91013ABCA001643FA /* finale.cpp */; };
 		235755FD101A5E5900275638 /* game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9AB1013ABCA001643FA /* game.cpp */; };
 		235755FE101A5E5900275638 /* gamedo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9AC1013ABCA001643FA /* gamedo.cpp */; };
-		235755FF101A5E5900275638 /* gamepdo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9AE1013ABCA001643FA /* gamepdo.cpp */; };
-		23575600101A5E5900275638 /* gm_pdowm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9AF1013ABCA001643FA /* gm_pdowm.cpp */; };
 		23575602101A5E5900275638 /* CMusic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9B31013ABCA001643FA /* CMusic.cpp */; };
 		23575603101A5E5900275638 /* hq_sound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9B51013ABCA001643FA /* hq_sound.cpp */; };
 		23575604101A5E5900275638 /* lz.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9D11013ABCA001643FA /* lz.cpp */; };
@@ -172,11 +170,15 @@
 		6350FB3710449E2B00A992D5 /* changelog.txt in Copy Text Files */ = {isa = PBXBuildFile; fileRef = 6350FB0910449DAA00A992D5 /* changelog.txt */; };
 		6350FB3810449E2B00A992D5 /* future.txt in Copy Text Files */ = {isa = PBXBuildFile; fileRef = 6350FB0A10449DAA00A992D5 /* future.txt */; };
 		6350FB3910449E2B00A992D5 /* readme.txt in Copy Text Files */ = {isa = PBXBuildFile; fileRef = 6350FB0B10449DAA00A992D5 /* readme.txt */; };
+		63640500108836F4001799CE /* crc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 636404FE108836F4001799CE /* crc.cpp */; };
+		636BC8571087729200996B46 /* CStatusScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 636BC8551087729200996B46 /* CStatusScreen.cpp */; };
+		636BC859108772B600996B46 /* CPlayGameDialogs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 636BC858108772B600996B46 /* CPlayGameDialogs.cpp */; };
 		637FC63710559B5600C2EA77 /* CBitmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 637FC63310559B5600C2EA77 /* CBitmap.cpp */; };
 		637FC63810559B5600C2EA77 /* CPalette.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 637FC63510559B5600C2EA77 /* CPalette.cpp */; };
 		63AB8C2F107C62D0001EE22F /* cglogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63AB8C2E107C62D0001EE22F /* cglogo.icns */; };
 		63BE59E3108501BF009C7293 /* CPlayGameCollision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63BE59E0108501BF009C7293 /* CPlayGameCollision.cpp */; };
 		63BE59E4108501BF009C7293 /* CTeleporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63BE59E1108501BF009C7293 /* CTeleporter.cpp */; };
+		63D34908108B64990033C412 /* CPlayGamePhysics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63D34907108B64990033C412 /* CPlayGamePhysics.cpp */; };
 		63D4A702107FEB7C00E43500 /* 100.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6EF107FEB7C00E43500 /* 100.tga */; };
 		63D4A703107FEB7C00E43500 /* 1000.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6F0107FEB7C00E43500 /* 1000.tga */; };
 		63D4A704107FEB7C00E43500 /* 200.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6F1107FEB7C00E43500 /* 200.tga */; };
@@ -429,9 +431,6 @@
 		23D3E9AA1013ABCA001643FA /* funcdefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = funcdefs.h; path = ../../src/funcdefs.h; sourceTree = SOURCE_ROOT; };
 		23D3E9AB1013ABCA001643FA /* game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = game.cpp; path = ../../src/game.cpp; sourceTree = SOURCE_ROOT; };
 		23D3E9AC1013ABCA001643FA /* gamedo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gamedo.cpp; path = ../../src/gamedo.cpp; sourceTree = SOURCE_ROOT; };
-		23D3E9AD1013ABCA001643FA /* gameorg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gameorg.h; path = ../../src/gameorg.h; sourceTree = SOURCE_ROOT; };
-		23D3E9AE1013ABCA001643FA /* gamepdo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gamepdo.cpp; path = ../../src/gamepdo.cpp; sourceTree = SOURCE_ROOT; };
-		23D3E9AF1013ABCA001643FA /* gm_pdowm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gm_pdowm.cpp; path = ../../src/gm_pdowm.cpp; sourceTree = SOURCE_ROOT; };
 		23D3E9B31013ABCA001643FA /* CMusic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMusic.cpp; sourceTree = "<group>"; };
 		23D3E9B41013ABCA001643FA /* CMusic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMusic.h; sourceTree = "<group>"; };
 		23D3E9B51013ABCA001643FA /* hq_sound.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hq_sound.cpp; sourceTree = "<group>"; };
@@ -608,6 +607,11 @@
 		6350FB0910449DAA00A992D5 /* changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = changelog.txt; path = ../../changelog.txt; sourceTree = SOURCE_ROOT; };
 		6350FB0A10449DAA00A992D5 /* future.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = future.txt; path = ../../future.txt; sourceTree = SOURCE_ROOT; };
 		6350FB0B10449DAA00A992D5 /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = readme.txt; path = ../../readme.txt; sourceTree = SOURCE_ROOT; };
+		636404FE108836F4001799CE /* crc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = crc.cpp; path = ../../src/fileio/crc.cpp; sourceTree = SOURCE_ROOT; };
+		636404FF108836F4001799CE /* crc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = crc.h; path = ../../src/fileio/crc.h; sourceTree = SOURCE_ROOT; };
+		636BC8551087729200996B46 /* CStatusScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CStatusScreen.cpp; path = ../../src/common/CStatusScreen.cpp; sourceTree = SOURCE_ROOT; };
+		636BC8561087729200996B46 /* CStatusScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CStatusScreen.h; path = ../../src/common/CStatusScreen.h; sourceTree = SOURCE_ROOT; };
+		636BC858108772B600996B46 /* CPlayGameDialogs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CPlayGameDialogs.cpp; path = ../../src/vorticon/CPlayGameDialogs.cpp; sourceTree = SOURCE_ROOT; };
 		637FC63310559B5600C2EA77 /* CBitmap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBitmap.cpp; sourceTree = "<group>"; };
 		637FC63410559B5600C2EA77 /* CBitmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBitmap.h; sourceTree = "<group>"; };
 		637FC63510559B5600C2EA77 /* CPalette.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPalette.cpp; sourceTree = "<group>"; };
@@ -617,6 +621,9 @@
 		63BE59E1108501BF009C7293 /* CTeleporter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CTeleporter.cpp; path = ../../src/vorticon/CTeleporter.cpp; sourceTree = SOURCE_ROOT; };
 		63BE59E2108501BF009C7293 /* CTeleporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTeleporter.h; path = ../../src/vorticon/CTeleporter.h; sourceTree = SOURCE_ROOT; };
 		63BE59E5108501CF009C7293 /* Playerdefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Playerdefines.h; path = ../../src/common/Playerdefines.h; sourceTree = SOURCE_ROOT; };
+		63C6D70A108AE1A200A3805C /* inventory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = inventory.h; path = ../../src/common/inventory.h; sourceTree = SOURCE_ROOT; };
+		63D34906108B648A0033C412 /* options.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = options.h; sourceTree = "<group>"; };
+		63D34907108B64990033C412 /* CPlayGamePhysics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CPlayGamePhysics.cpp; path = ../../src/vorticon/CPlayGamePhysics.cpp; sourceTree = SOURCE_ROOT; };
 		63D4A6EF107FEB7C00E43500 /* 100.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = 100.tga; sourceTree = "<group>"; };
 		63D4A6F0107FEB7C00E43500 /* 1000.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = 1000.tga; sourceTree = "<group>"; };
 		63D4A6F1107FEB7C00E43500 /* 200.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = 200.tga; sourceTree = "<group>"; };
@@ -740,9 +747,6 @@
 				23D3E9AA1013ABCA001643FA /* funcdefs.h */,
 				23D3E9AB1013ABCA001643FA /* game.cpp */,
 				23D3E9AC1013ABCA001643FA /* gamedo.cpp */,
-				23D3E9AD1013ABCA001643FA /* gameorg.h */,
-				23D3E9AE1013ABCA001643FA /* gamepdo.cpp */,
-				23D3E9AF1013ABCA001643FA /* gm_pdowm.cpp */,
 				23D3E9CF1013ABCA001643FA /* keen.h */,
 				23D3E9D11013ABCA001643FA /* lz.cpp */,
 				23D3E9D21013ABCA001643FA /* lz.h */,
@@ -787,8 +791,10 @@
 				231FC3411083642B00E7869E /* CGameLauncher.cpp */,
 				231FC3421083642B00E7869E /* CGameLauncher.h */,
 				231FC3431083642B00E7869E /* CMap.cpp */,
+				63D34907108B64990033C412 /* CPlayGamePhysics.cpp */,
 				231FC3441083642B00E7869E /* CMap.h */,
 				231FC3451083642B00E7869E /* CMapLoader.cpp */,
+				63D34906108B648A0033C412 /* options.h */,
 				231FC3461083642B00E7869E /* CMapLoader.h */,
 				231FC3471083642B00E7869E /* CMenu.cpp */,
 				231FC3481083642B00E7869E /* CMenu.h */,
@@ -862,9 +868,15 @@
 			isa = PBXGroup;
 			children = (
 				6350F76A1044782400A992D5 /* autoray.cpp */,
+				636404FE108836F4001799CE /* crc.cpp */,
+				636404FF108836F4001799CE /* crc.h */,
+				636BC8551087729200996B46 /* CStatusScreen.cpp */,
+				636BC8561087729200996B46 /* CStatusScreen.h */,
 				23D3E9751013ABC9001643FA /* baby.cpp */,
 				2321F1AF101DA0CE00510514 /* baby.h */,
+				636BC858108772B600996B46 /* CPlayGameDialogs.cpp */,
 				23D3E9761013ABC9001643FA /* balljack.cpp */,
+				63C6D70A108AE1A200A3805C /* inventory.h */,
 				63BE59E5108501CF009C7293 /* Playerdefines.h */,
 				23C637DC103181D700FEEFEE /* balljack.h */,
 				23D3E9781013ABC9001643FA /* butler.cpp */,
@@ -1319,8 +1331,6 @@
 				235755FC101A5E5900275638 /* finale.cpp in Sources */,
 				235755FD101A5E5900275638 /* game.cpp in Sources */,
 				235755FE101A5E5900275638 /* gamedo.cpp in Sources */,
-				235755FF101A5E5900275638 /* gamepdo.cpp in Sources */,
-				23575600101A5E5900275638 /* gm_pdowm.cpp in Sources */,
 				23575602101A5E5900275638 /* CMusic.cpp in Sources */,
 				23575603101A5E5900275638 /* hq_sound.cpp in Sources */,
 				23575604101A5E5900275638 /* lz.cpp in Sources */,
@@ -1402,6 +1412,10 @@
 				231FC3591083642B00E7869E /* tga.cpp in Sources */,
 				63BE59E3108501BF009C7293 /* CPlayGameCollision.cpp in Sources */,
 				63BE59E4108501BF009C7293 /* CTeleporter.cpp in Sources */,
+				636BC8571087729200996B46 /* CStatusScreen.cpp in Sources */,
+				636BC859108772B600996B46 /* CPlayGameDialogs.cpp in Sources */,
+				63640500108836F4001799CE /* crc.cpp in Sources */,
+				63D34908108B64990033C412 /* CPlayGamePhysics.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

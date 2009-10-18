@@ -39,7 +39,7 @@ class CMenu {
 public:
 	// Which Menu has to be shown?
 	enum menutypes{
-		MAIN, NEW, LOAD, DIFFICULTY, OPTIONS, QUIT
+		MAIN, NEW, LOAD, START, DIFFICULTY, OPTIONS, GRAPHICS, CONTROLS, AUDIO, GAMES, QUIT
 	};
 
 	// Active means, when the player is playing, PASSIVE when the Player is not playing
@@ -55,6 +55,8 @@ public:
 	void process();
 	void processMainMenu();
 	void processNumPlayersMenu();
+	void processDifficultyMenu();
+	void processOptionsMenu();
 	void showPage(const std::string& str_text, int textsize);
 
 	void cleanup();
@@ -63,7 +65,7 @@ public:
 	char getNumPlayers() { return m_NumPlayers; }
 	char getDifficulty() { return m_Difficulty; }
 	bool mustEndGame() { return m_Endgame; }
-	bool mustStartGame() { return (m_NumPlayers > 0); }
+	bool mustStartGame() { return (m_NumPlayers > 0 and m_Difficulty > -1); }
 	bool getExitEvent() { return (m_menu_type==QUIT); }
 	bool getShowStory() { return (m_selection==2); }
 	bool mustBeClosed() { return m_goback; }
@@ -76,6 +78,8 @@ public:
 private:
 	void initMainMenu();
 	void initNumPlayersMenu();
+	void initDifficultyMenu();
+	void initOptionsMenu();
 
 	CDialog *mp_Dialog;
 	CTextViewer *mp_TextViewer;

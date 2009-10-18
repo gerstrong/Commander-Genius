@@ -15,7 +15,7 @@ CMenu::CMenu( char menu_mode )
 	// Create the Main Menu
 	mp_MenuSurface = g_pVideoDriver->FGLayerSurface;
 	m_menu_mode = menu_mode;
-	m_Difficulty = 0; // easy if none chosen
+	m_Difficulty = -1; // no difficulty chosen...
 	m_NumPlayers = 0; // no player chosen...
 	m_demoback = false;
 	m_choosegame = false;
@@ -31,6 +31,7 @@ CMenu::CMenu( char menu_mode )
 bool CMenu::init( char menu_type )
 {
 	m_menu_type = menu_type;
+	m_goback = false;
 	m_selection = -1; // Nothing has been selected yet.
 
 	if( m_menu_type == MAIN )
@@ -41,6 +42,14 @@ bool CMenu::init( char menu_type )
 	{
 		initNumPlayersMenu();
 	}
+	else if( m_menu_type == DIFFICULTY )
+	{
+		initDifficultyMenu();
+	}
+	else if( m_menu_type == OPTIONS )
+	{
+		initOptionsMenu();
+	}
 
 	// Use the standard Menu-Frame used in the old DOS-Games
 	mp_Dialog->setFrameTheme( DLG_THEME_OLDSCHOOL );
@@ -49,7 +58,7 @@ bool CMenu::init( char menu_type )
 
 void CMenu::initMainMenu()
 {
-	mp_Dialog = new CDialog(mp_MenuSurface, 18, 13);
+	mp_Dialog = new CDialog(mp_MenuSurface, 18, 12);
 
 	// When in Intro, Title, Demo mode
 	if( m_menu_mode == PASSIVE )
@@ -58,7 +67,7 @@ void CMenu::initMainMenu()
 		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 2, "Load Game");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 3, "Story");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 4, "Highscores");
-		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 5, "Options");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 5, "Options");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 6, "Choose Game");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 7, "Back to Demo");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 8, "About CG");
@@ -74,7 +83,7 @@ void CMenu::initMainMenu()
 		mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 2, "Save/Load Game");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 3, "Story");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 4, "Highscores");
-		mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 5, "Options");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "Options");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 6, "Back to Game");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "Back to Title");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 8, "About CG");
@@ -85,11 +94,31 @@ void CMenu::initMainMenu()
 
 void CMenu::initNumPlayersMenu()
 {
-	mp_Dialog = new CDialog(mp_MenuSurface, 18, 13);
+	mp_Dialog = new CDialog(mp_MenuSurface, 15, 6);
 
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "One Player");
 	mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 2, "Two Player");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 4, "Back");
+}
+
+void CMenu::initDifficultyMenu()
+{
+	mp_Dialog = new CDialog(mp_MenuSurface, 11, 6);
+
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Normal");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 2, "Hard");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 4, "Back");
+}
+
+void CMenu::initOptionsMenu()
+{
+	mp_Dialog = new CDialog(mp_MenuSurface, 13, 8);
+
+	mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 1, "Graphics");
+	mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 2, "Audio");
+	mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 3, "Game");
+	mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 4, "Controls");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Back");
 }
 
 ////
@@ -115,6 +144,8 @@ void CMenu::process()
 	// Which menu is open and what do we have to do?
 	if( m_menu_type == MAIN ) processMainMenu();
 	else if( m_menu_type == NEW ) processNumPlayersMenu();
+	else if( m_menu_type == DIFFICULTY ) processDifficultyMenu();
+	else if( m_menu_type == OPTIONS ) processOptionsMenu();
 }
 
 void CMenu::processMainMenu()
@@ -156,6 +187,8 @@ void CMenu::processMainMenu()
 	}
 	if( m_selection == 4 ) // Options
 	{
+		cleanup();
+		init(OPTIONS);
 	}
 	if( m_selection == 7 ) // About CG
 	{
@@ -178,10 +211,55 @@ void CMenu::processNumPlayersMenu()
 	if( m_selection < 2 )
 	{
 		m_NumPlayers = m_selection + 1;	
+		init(DIFFICULTY);
 	}
 	else
 	{
 		m_goback = true;
+	}
+
+	if(m_goback)
+	{
+		cleanup();
+		init(MAIN);
+	}
+
+}
+
+void CMenu::processDifficultyMenu()
+{
+	if( m_selection == -1) return;
+
+	cleanup();
+	if( m_selection < 2 )
+	{
+		m_Difficulty = m_selection;	
+	}
+	else
+	{
+		m_goback = true;
+	}
+
+	if(m_goback)
+	{
+		cleanup();
+		init(NEW);
+	}
+
+}
+
+void CMenu::processOptionsMenu()
+{
+	if( m_selection == -1) return;
+
+	cleanup();
+	if( m_selection == 4 )
+	{
+		m_goback = true;	
+	}
+	else
+	{
+		return;
 	}
 
 	if(m_goback)
