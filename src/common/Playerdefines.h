@@ -53,7 +53,7 @@
 // jump heights, defined below.
 #define PPREPAREJUMPFRAME        8
 #define PJUMP_PREPARE_LAST_FRAME 13
-#define PJUMP_PREPARE_ANIM_RATE  11
+#define PJUMP_PREPARE_ANIM_RATE  1
 
 // time to show player in his "pogo compressed" frame before jumping
 #define PPOGO_PREPARE_TIME       50

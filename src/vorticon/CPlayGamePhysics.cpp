@@ -18,7 +18,7 @@
 void CPlayGame::processPlayerfallings(CPlayer *p_player)
 {
 stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
-Uint8 loweredge=(p_player->y+p_player->h)>>CSF;
+Uint8 loweredge=(p_player->y+p_player->h+1)>>CSF;
 
 	if(TileProperty[mp_Map->at(p_player->x>>CSF,loweredge)].bup)
 	{
@@ -26,9 +26,9 @@ Uint8 loweredge=(p_player->y+p_player->h)>>CSF;
 	}
 	else
 	{
-		p_player->pfallspeed = 10;
+		p_player->pfallspeed = 1;
 	}
-	//p_player->y += p_player->pfallspeed;
+	p_player->goto_y += p_player->pfallspeed;
 
 	// TODO: Also Sound support is missing here! But it must only be played once
     /*if (!p_player->pjustjumped)

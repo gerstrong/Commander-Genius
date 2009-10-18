@@ -370,13 +370,21 @@ int max_scroll_x, max_scroll_y;
 	   // left-right scrolling
 	   if(px > SCROLLTRIGGERRIGHT && scroll_x < max_scroll_x)
 	   {
-	      mp_Map->scrollRight();
-	      scrollchanged = true;
+		   do{
+			   scroll_x = mp_Map->m_scrollx;
+			   px = (mp_Player[m_theplayer].x>>5)-scroll_x;
+			   mp_Map->scrollRight();
+		   }while(px > 226);
+		   scrollchanged = true;
 	   }
 	   else if(px < SCROLLTRIGGERLEFT && scroll_x > 32)
 	   {
-	      mp_Map->scrollLeft();
-	      scrollchanged = true;
+		   do{
+			   scroll_x = mp_Map->m_scrollx;
+			   px = (mp_Player[m_theplayer].x>>5)-scroll_x;
+			   mp_Map->scrollLeft();
+		   }while(px < 80);
+		   scrollchanged = true;
 	   }
 
 	   // up-down scrolling
@@ -390,7 +398,6 @@ int max_scroll_x, max_scroll_y;
 	      mp_Map->scrollUp();
 	      scrollchanged = true;
 	   }
-
 	   return scrollchanged;
 }
 

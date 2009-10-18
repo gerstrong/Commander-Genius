@@ -47,11 +47,12 @@ public:
 
 	// In Level specific
 	void processInLevel();
+	void walkbehindexitdoor();
+	void dieanim();
 	void setDir();
 	void getgoodies();
 	void playpushed();
 	void keencicle();
-	void Jump();
 	void TogglePogo_and_Switches();
 	void JumpAndPogo();
 	void raygun();
@@ -71,6 +72,7 @@ public:
 	///
 	// variables
 	// these coordinates are CSFed
+	int playerbaseframe;	// Standframe of the player normally. May be different for other players.
 	unsigned long x;
 	unsigned int y;
 	unsigned long goto_x;

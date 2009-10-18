@@ -20,10 +20,7 @@ void CPlayer::processInLevel()
 {
     StatusBox();
 
-    if (pdie)
-	{
-	   //dieanim(); TODO: Should go into the CPlayGame since there is the decision of changing the level.
-	}
+    if (pdie) dieanim();
 	else
 	{
 	  inhibitwalking = false;
@@ -56,30 +53,30 @@ void CPlayer::processInLevel()
     SelectFrame();
 }
 
-/*void CPlayer::walkbehindexitdoor()
+void CPlayer::walkbehindexitdoor()
 {
-int x, diff, width;
+/*int xb, diff, width;
 
     // don't draw keen as he walks through the door (past exitXpos)
     // X pixel position of right side of player
-    x = (x >> CSF) + PLAYERSPRITE_WIDTH;
-    diff = (x - pCKP->Control.levelcontrol.exitXpos);        // dist between keen and door
+    xb = (x >> CSF) + PLAYERSPRITE_WIDTH;
+    diff = (xb - pCKP->Control.levelcontrol.exitXpos);        // dist between keen and door
     if (diff >= 0)                             // past exitXpos?
     {
        width = (PLAYERSPRITE_WIDTH - diff);    // get new width of sprite
        if (width < 0) width = 0;               // don't set to negative
 
        // set new width of all player walk frames
-       g_pGfxEngine->Sprite[playerbaseframes[cp]+0]->setWidth(width);
-       g_pGfxEngine->Sprite[playerbaseframes[cp]+1]->setWidth(width);
-       g_pGfxEngine->Sprite[playerbaseframes[cp]+2]->setWidth(width);
-       g_pGfxEngine->Sprite[playerbaseframes[cp]+3]->setWidth(width);
-    }
-}*/
+       g_pGfxEngine->Sprite[playerbaseframe+0]->setWidth(width);
+       g_pGfxEngine->Sprite[playerbaseframe+1]->setWidth(width);
+       g_pGfxEngine->Sprite[playerbaseframe+2]->setWidth(width);
+       g_pGfxEngine->Sprite[playerbaseframe+3]->setWidth(width);
+    }*/
+}
 
-/*void CPlayer::dieanim()
+void CPlayer::dieanim() // Bad word for that. It's the entire die code
 {
-   if (!pdie) return;                // should never happen...
+   /*if (!pdie) return;                // should never happen...
    if (pdie==PDIE_DEAD) return;      // if true animation is over
    if (pdie==PDIE_FELLOFFMAP)
    {
@@ -138,12 +135,13 @@ int x, diff, width;
    {  // not yet time to fly off screen, decrement timer
      pdietillfly--;
    }  // end "time to fly"
-}*/
+   */
+}
 
 void CPlayer::keencicle()
 {
    // keencicle code (when keen gets hit by an ice chunk)
-   /*if (pfrozentime)
+   if(pfrozentime)
    {
      if (pfrozentime > PFROZEN_THAW)
      {
@@ -156,15 +154,15 @@ void CPlayer::keencicle()
      }
      else
      { // thawing out, show the thaw frame
-        if (pCKP->Control.levelcontrol.episode==3)
+        if (m_episode==3)
           pfrozenframe = 2;
         else
           pfrozenframe = 3;
      }
 
      pfrozentime--;
-     inhibitwalking = 1;
-   }*/
+     inhibitwalking = true;
+   }
 }
 
 // if player not sliding and not jumping, allow
@@ -256,78 +254,6 @@ void CPlayer::playpushed()
       if (playpushed_x > 0 && blockedr) playpushed_x = 0;
       if (playpushed_x < 0 && blockedl) playpushed_x = 0;
     }*/
-}
-
-void CPlayer::Jump()
-{
-	/*   // handle the JUMP key, both for normal jumps and (high) pogo jumps
-	   if (!pjumping && !pfalling && !pfiring)
-	   {
-		 pboost_x = 0;
-	     // give em the chance to jump
-	     if (playcontrol[PA_JUMP] && !ppogostick && !pfrozentime)
-	     {
-	       pjumping = PPREPAREJUMP;
-	       pjumpframe = PPREPAREJUMPFRAME;
-	       pjumpanimtimer = 0;
-	       pwalking = 0;
-	     }
-	     else if (ppogostick)
-	     {
-	       pjumping = PPREPAREPOGO;
-	       pjumpanimtimer = 0;
-	       pwalking = 0;
-	     }
-	   }
-
-	   // Preparing to jump. Charge the jump here
-	   if(pjumping == PPREPAREJUMP)
-	   {
-		   pjumping = PJUMPUP;
-		   pinertia_y = -25;
-
-		   // Code for the charge jump which really collects pinertia_y
-	   }
-
-	   // He is jumping up
-	   if(pjumping == PJUMPUP)
-	   {
-		   // handle the jump upwards. Works like friction. The inertia_y is lost by a unit at every loop
-
-		   // Did he bonk the ceiling
-		   if(!blockedu)
-			   y += pinertia_y;
-		   else
-		   {
-    		   pinertia_y = 0;
-    		   pjumpfloattimer = 0;
-    		   pjumping = PJUMPED;
-		   }
-	       pjumpfloattimer++;
-
-	       if(pjumpfloattimer >= 5)
-	       {
-	    	   pjumpfloattimer = 0;
-	    	   if(pinertia_y < 0)
-	    	   {
-	    		   pinertia_y++;
-	    	   }
-	    	   else
-	    	   {
-	    		   pinertia_y = 0;
-	    		   pjumpfloattimer = 0;
-	    		   pjumping = PJUMPED;
-	    	   }
-	       }
-	   }
-
-	   // The player has jumped and should be about to fall
-	   if(pjumping == PJUMPED)
-	   {
-			  // Maybe not needed!
-		   pjumping = 0;
-		   pfalling = 1;
-	   }*/
 }
 
 // called when a switch is flipped. mx,my is the pixel coords of the switch,

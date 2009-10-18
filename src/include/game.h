@@ -58,14 +58,6 @@ DOWN
 #define PPREPAREPOGO  4                 // "pogo compressed" anim frame
 #define PPOGOING      5                 // pogoing
 
-// the different jumping frames. when CTRL is held down the player will
-// go from frame PPREPAREJUMPFRAME to PJUMP_PREPARE_LAST_FRAME at a rate
-// of PJUMP_PREPARE_ANIM_RATE until either CTRL is released or the player
-// reaches the last frame. How far he got will select one of the various
-// jump heights, defined below.
-#define PPREPAREJUMPFRAME        8
-#define PJUMP_PREPARE_LAST_FRAME 13
-#define PJUMP_PREPARE_ANIM_RATE  11
 
 // time to show player in his "pogo compressed" frame before jumping
 #define PPOGO_PREPARE_TIME       50

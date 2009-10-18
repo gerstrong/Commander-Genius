@@ -57,19 +57,19 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 	// Continue with Y-Coordinates
 	if( p_player->goto_y > p_player->y )
 	{
-		// The player walked right
+		// The player is falling
 		while(p_player->goto_y > p_player->y)
 		{
-			// TODO: checksolid for Upper edge is missing here!
+			// TODO: checksolid for Lower edge is missing here!
 			p_player->y++;
 		}
 	}
 	else if( p_player->goto_y < p_player->y )
 	{
-		// The player walked left
+		// The player jumped or flew up!
 		while(p_player->goto_y < p_player->y)
 		{
-			// TODO: checksolid for Lower edge is missing here!
+			// TODO: checksolid for Upper edge is missing here!
 			p_player->y--;
 		}
 	}
