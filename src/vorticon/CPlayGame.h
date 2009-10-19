@@ -52,6 +52,8 @@ enum e_levelcommands
 	void checkPlayerCollisions(CPlayer *p_player);
 	bool checkisSolidr(int x, int y, CPlayer *p_player);
 	bool checkisSolidl(int x, int y, CPlayer *p_player);
+	bool checkisSolidd(int x, int y, CPlayer *p_player);
+	bool checkisSolidu(int x, int y, CPlayer *p_player);
 	char checkDoorBlock(int t, CPlayer *p_player, int which);
 	int checkObjSolid(unsigned int x, unsigned int y, CPlayer *p_player);
 	void processPlayerfallings(CPlayer *p_player);

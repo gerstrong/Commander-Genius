@@ -106,8 +106,8 @@ public:
 	unsigned char pwalking,playspeed;
 	unsigned char pslowingdown;
 	unsigned char pwalkframe,pwalkframea,pwalkanimtimer;
-	unsigned char pwalkincreasetimer, pfriction_timer_x, pfriction_timer_y;
-	signed int pinertia_x,pboost_x,playpushed_x;
+	unsigned char pwalkincreasetimer;
+	signed int m_speed_x,playpushed_x;
 	int chargedjump;
 	unsigned char playpushed_decreasetimer;
 	bool widejump;

@@ -284,7 +284,7 @@ p_levelcontrol = &(pCKP->Control.levelcontrol);
 
 bool CPlayer::isWMSolid(int xb, int yb)
 {
-int level_coordinates;
+/*int level_coordinates;
 
   stTile *p_tiles = g_pGfxEngine->Tilemap->mp_tiles;
 
@@ -302,7 +302,7 @@ int level_coordinates;
 	  {	  return false;	}
 	  else
 	  {	  return true;	}
-  }
+  }*/
   return false;
 }
 

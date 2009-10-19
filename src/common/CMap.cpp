@@ -208,6 +208,6 @@ int num_h_tiles= mp_scrollsurface->h/16;
   {
       c = mp_data[(y+m_mapy)*m_width + mpx];
       mp_Tilemap->drawTile(mp_scrollsurface, x, ((y<<4)+m_mapystripepos)&511, c);
-      mp_Tilemap->registerAnimation( x, ((y<<4)+m_mapxstripepos)&511, c );
+      mp_Tilemap->registerAnimation( x, ((y<<4)+m_mapystripepos)&511, c );
   }
 }

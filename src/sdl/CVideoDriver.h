@@ -103,10 +103,10 @@ public:
 	bool getAspectCorrection(void) { return m_aspect_correction; }
 	SDL_Rect getGameResRect() { return game_resolution_rect; }
 
-	SDL_Surface *screen;                   // the actual video memory/window
+	SDL_Surface *screen;                // the actual video memory/window
 	SDL_Surface *BlitSurface;
-	SDL_Surface *FGLayerSurface;       // Scroll buffer for Messages
-	SDL_Surface *ScrollSurface;       // 512x512 scroll buffer
+	SDL_Surface *FGLayerSurface;       	// Scroll buffer for Messages
+	SDL_Surface *ScrollSurface;       	// 512x512 scroll buffer
 	SDL_Surface *FXSurface;
 
 	bool m_fading;

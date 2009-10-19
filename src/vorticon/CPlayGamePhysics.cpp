@@ -26,7 +26,7 @@ Uint8 loweredge=(p_player->y+p_player->h+1)>>CSF;
 	}
 	else
 	{
-		p_player->pfallspeed = 1;
+		p_player->pfallspeed = 10;
 	}
 	p_player->goto_y += p_player->pfallspeed;
 

@@ -25,11 +25,11 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 		// The player walked right
 		while(p_player->goto_x > p_player->x)
 		{
-			if( checkisSolidl( p_player->x+p_player->w, p_player->y, p_player)
+			if( checkisSolidl( p_player->x+p_player->w, p_player->y+1, p_player)
 				or checkisSolidl( p_player->x+p_player->w, p_player->y + p_player->h/2, p_player)
 				or checkisSolidl( p_player->x+p_player->w, p_player->y + p_player->h-1, p_player) )
 			{
-				p_player->pinertia_x = 0;
+				p_player->m_speed_x = 0;
 				break;
 			}
 
@@ -45,7 +45,7 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 				or checkisSolidr( p_player->x, p_player->y + p_player->h/2, p_player)
 				or checkisSolidl( p_player->x, p_player->y + p_player->h-1, p_player) )
 			{
-				p_player->pinertia_x = 0;
+				p_player->m_speed_x = 0;
 				break;
 			}
 
@@ -60,7 +60,10 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 		// The player is falling
 		while(p_player->goto_y > p_player->y)
 		{
-			// TODO: checksolid for Lower edge is missing here!
+			if( checkisSolidu( p_player->x, p_player->y+p_player->h, p_player) )
+			{
+				break;
+			}
 			p_player->y++;
 		}
 	}
@@ -69,7 +72,10 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 		// The player jumped or flew up!
 		while(p_player->goto_y < p_player->y)
 		{
-			// TODO: checksolid for Upper edge is missing here!
+			if( checkisSolidd( p_player->x, p_player->y, p_player) )
+			{
+				break;
+			}
 			p_player->y--;
 		}
 	}
@@ -77,7 +83,7 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 	p_player->goto_y = p_player->y;
 
     // Check if the player is going out of the level map
-    if( p_player->y <= 0 ) // Upper edge or ceiling
+    if( p_player->y <= 1<<CSF ) // Upper edge or ceiling
     	p_player->blockedu = true;
     else if( p_player->y >= ( mp_Map->m_height<<CSF ) ) // lower edge or floor
     {
@@ -138,6 +144,34 @@ int t = mp_Map->at(x>>CSF, y>>CSF);
     // don't let player walk through doors he doesn't have the key to
     if (checkDoorBlock(t, p_player, g_pGfxEngine->Tilemap->mp_tiles[t].behaviour))
       return true;
+  }
+  return false;
+}
+
+bool CPlayGame::checkisSolidd(int x, int y, CPlayer *p_player)
+{
+int t = mp_Map->at(x>>CSF, y>>CSF);
+  if(g_pGfxEngine->Tilemap->mp_tiles[t].bdown)
+  {
+    return true;
+  }
+  else if (checkObjSolid(x>>5,y>>5, p_player))
+  {
+    return true;
+  }
+  return false;
+}
+
+bool CPlayGame::checkisSolidu(int x, int y, CPlayer *p_player)
+{
+int t = mp_Map->at(x>>CSF, y>>CSF);
+  if(g_pGfxEngine->Tilemap->mp_tiles[t].bup)
+  {
+    return true;
+  }
+  else if (checkObjSolid(x>>(CSF-4),y>>(CSF-4), p_player))
+  {
+    return true;
   }
   return false;
 }
