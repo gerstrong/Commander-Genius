@@ -59,9 +59,9 @@ void CLogFile::CreateLogfile(const char *LogName)
 // Function for writing the topic
 void CLogFile::WriteTopic(const char *Topic, int Size)
 {
-	textOut("<table cellspacing='0' cellpadding='0' width='100%%' ");
-	textOut("bgcolor='#DFDFE5'>\n<tr>\n<tr>\n<td>\n<font face='arial' ");
-	ftextOut("size='+%i'>\n", Size);
+	textOut("<table cellspacing='0' cellpadding='0' width='100%%' bgcolor='#DFDFE5'>\n");
+	textOut("<tr>\n<tr>\n<td>\n");
+	ftextOut("<font face='arial' size='+%i'>\n", Size);
 	textOut(Topic);
 	textOut("</font>\n</td>\n</tr>\n</table>\n<br>");
 	fflush(m_Logfile);

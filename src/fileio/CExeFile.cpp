@@ -211,7 +211,7 @@ int CExeFile::getEXEVersion()
     }
 }
 
-int CExeFile::GetEXEOriginal()
+int CExeFile::getEXECrc()
 {
     int version = getEXEVersion();
 

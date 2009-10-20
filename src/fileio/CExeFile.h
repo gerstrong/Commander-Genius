@@ -23,7 +23,7 @@ public:
 
 	bool readData();
 	int getEXEVersion();
-	int GetEXEOriginal();
+	int getEXECrc();
 	unsigned char* getData();
 
 private:

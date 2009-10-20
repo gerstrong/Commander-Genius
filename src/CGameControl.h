@@ -18,6 +18,11 @@
 #include "vorticon/CPlayGame.h"
 #include <string>
 
+#define LOADGFX 0x01
+#define LOADSTR 0x02
+#define LOADSND 0x04
+#define LOADALL 0xFF
+
 class CGameControl {
 public:
 
@@ -30,7 +35,7 @@ public:
 
 	bool init(int argc, char *argv[]);
 	bool init(char mode=GAMELAUNCHER);
-	bool loadResources(unsigned short Episode, const std::string& DataDirectory);
+	bool loadResources(unsigned short Episode, const std::string& DataDirectory, Uint8 flags=LOADALL);
 
 	void process();
 
@@ -41,7 +46,7 @@ public:
 
 	// getters and setters
 	bool mustShutdown(){ return (m_mode==SHUTDOWN); }
-	
+
 	char m_mode;
 	stOption *mp_option;
 

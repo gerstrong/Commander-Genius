@@ -72,7 +72,7 @@ bool CGameControl::init(char mode)
             return false;
         }
         // Resources for the main menu
-		if(!loadResources(1, mp_GameLauncher->getEP1Directory() ))	return false;
+		if(!loadResources(1, mp_GameLauncher->getEP1Directory(), LOADGFX ))	return false;
 		if(!mp_GameLauncher->drawMenu()) return false;
 
 		return true;
@@ -95,7 +95,7 @@ bool CGameControl::init(char mode)
 	return false;
 }
 
-bool CGameControl::loadResources(unsigned short Episode, const std::string& DataDirectory)
+bool CGameControl::loadResources(unsigned short Episode, const std::string& DataDirectory, Uint8 flags)
 {
 CExeFile ExeFile(Episode, DataDirectory);
 int version;
@@ -128,20 +128,29 @@ unsigned char *p_exedata;
 		Patcher.patchMemory();
 	}
 
-	// Decode the entire graphics for the game (EGALATCH, EGASPRIT, etc.)
-	if(m_EGAGraphics) delete m_EGAGraphics; // except for the first start of a game this always happens
-	m_EGAGraphics = new CEGAGraphics(Episode, DataDirectory ); // Path is relative to the data dir
-    	if(!m_EGAGraphics) return false;
+    if( (flags & LOADGFX) == LOADGFX )
+    {
+        // Decode the entire graphics for the game (EGALATCH, EGASPRIT, etc.)
+        if(m_EGAGraphics) delete m_EGAGraphics; // except for the first start of a game this always happens
+        m_EGAGraphics = new CEGAGraphics(Episode, DataDirectory ); // Path is relative to the data dir
+            if(!m_EGAGraphics) return false;
 
-    	m_EGAGraphics->loadData( version, p_exedata );
+            m_EGAGraphics->loadData( version, p_exedata );
+    }
 
+    if( (flags & LOADGFX) == LOADSTR )
+    {
     	// load the strings. TODO: After that this one will replace loadstrings
     	//m_Messages = new CMessages();
     	//m_Messages->readData(Episode, p_exedata, version, DataDirectory);
-	loadstrings();
+        loadstrings();
+    }
 
-	// Load the sound data
-	g_pSound->loadSoundData(Episode, DataDirectory);
+    if( (flags & LOADSND) == LOADSND )
+    {
+        // Load the sound data
+        g_pSound->loadSoundData(Episode, DataDirectory);
+    }
 	return true;
 }
 

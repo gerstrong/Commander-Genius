@@ -18,13 +18,12 @@
 #include <fstream>
 
 CGameLauncher::CGameLauncher() {
-    m_mustquit = false;
+    m_mustquit      = false;
     m_hasbeenchosen = false;
-    m_numGames = 0;
-    m_chosenGame = 0;
-    mp_map = NULL;
-    mp_LaunchMenu = NULL;
-    m_ep1slot = -1;
+    m_chosenGame    = 0;
+    mp_map          = NULL;
+    mp_LaunchMenu   = NULL;
+    m_ep1slot       = -1;
 
     m_ExeList.clear();
     m_ExeList.push_back( KEENEXE1 );
@@ -50,24 +49,30 @@ bool CGameLauncher::init()
     // Scan for games...
     gamedetected = false;
     m_DirList.clear();
-    m_EpiList.clear();
+    m_Entries.clear();
 
     g_pLogFile->ftextOut("Game Autodetection Started<br>" );
 
-    mp_LaunchMenu->addObject(DLG_OBJ_DISABLED,1,1, "Episode Mod Ver Folder");
+    // Process any custom labels
+    getLabels();
 
+    // Scan VFS root for exe's
     root = ".";
     if (scanExecutables(root))
         gamedetected = true;
 
+    // Recursivly scan into VFS subdir's for exe's
     if (scanSubDirectories(root))
         gamedetected = true;
 
+    // No games detected then quit
     if(!gamedetected)
         return false;
 
-    m_numGames = m_DirList.size();
-    mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,m_numGames+2, "Quit");
+    // Save any custom labels
+    putLabels();
+
+    mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,m_Entries.size()+1, "Quit");
 
     g_pLogFile->ftextOut("Game Autodetection Finished<br>" );
 
@@ -83,7 +88,7 @@ bool CGameLauncher::drawMenu()
     mp_map = new CMap(g_pVideoDriver->getScrollSurface(), g_pGfxEngine->Tilemap);
     CMapLoader MapLoader(mp_map);
 
-    if(!MapLoader.load(1, 90, m_DirList.at(m_ep1slot))) return false;
+    if(!MapLoader.load(1, 90, m_Entries.at(m_ep1slot).path)) return false;
 
     mp_map->gotoPos(32,32);
 
@@ -136,10 +141,10 @@ bool CGameLauncher::scanSubDirectories( std::string& root )
 
 bool CGameLauncher::scanExecutables(std::string& path)
 {
-    bool result, original;
-    int version, episode;
+    bool result;
     unsigned int i=0;
-    std::string file, label;
+    std::string file;
+    GameEntry newentry;
     CExeFile* executable;
 
     g_pLogFile->ftextOut("Search: %s<br>", path.c_str() );
@@ -150,36 +155,37 @@ bool CGameLauncher::scanExecutables(std::string& path)
         file = path + '/' + m_ExeList.at(i);
         if (IsFileAvailable(file))
         {
+            // Load the exe into memory
             executable = new CExeFile(i+1, path);
-
             executable->readData();
-            original = executable->GetEXEOriginal();
-            version = executable->getEXEVersion();
-            episode = i+1;
-            m_DirList.push_back(path);
-            m_EpiList.push_back(episode);
+            // Process the exe for type
+            newentry.crcpass = executable->getEXECrc();
+            newentry.version = executable->getEXEVersion();
+            newentry.episode = i+1;
+            newentry.path    = path;
+            // Check for an existing custom label for the menu
+            newentry.name    = scanLabels(file);
 
-                                   //Episode
-            label = itoa(episode) + "       ";
-            if (original) {
-                        //Mod
-                label += "No  ";
-            } else {
-                label += "Yes ";
-            }
-                                    //Ver Folder
-            label += itoa(version) + " " + path;
-            mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,m_DirList.size()+1, label);
-
-            g_pLogFile->ftextOut("Detected game Name: %s Version: %d Original: %d<br>", file.c_str()
-                                                                        , version
-                                                                        , original );
-            // The original episode 1 exe is needed to load gfx's for game launcher menu
-            if ( m_ep1slot <= -1 && original == true )
+            if( newentry.name.length() <= 0 )
             {
-                m_ep1slot = m_DirList.size()-1;
+                newentry.name = "Episode: " + itoa(newentry.episode);
+                newentry.name += " v" +itoa(newentry.version) + " " + newentry.path;
+            }
+            // Save the type information about the exe
+            m_Entries.push_back(newentry);
+            // Add a new menu item
+            mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, m_Entries.size(), newentry.name);
+
+            g_pLogFile->ftextOut("Detected game Name: %s Version: %d<br>", file.c_str()
+                                                                        , newentry.version );
+            // The original episode 1 exe is needed to load gfx's for game launcher menu
+            if ( m_ep1slot <= -1 && newentry.crcpass == true )
+            {
+                m_ep1slot = m_Entries.size()-1;
                 g_pLogFile->ftextOut("   Using for in-game menu resources<br>" );
             }
+
+            // Cleanup
             delete executable;
 
             result = true;
@@ -197,8 +203,8 @@ void CGameLauncher::process()
     // Gather input states
     if( g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedKey(KENTER) )
     {
-        signed char selection = mp_LaunchMenu->getSelection()-1;
-        if( selection >= m_numGames )
+        Uint8 selection = mp_LaunchMenu->getSelection();
+        if( selection >= m_Entries.size() )
         {
             // outside the number of games, that exist. This means exit was triggered.
             m_mustquit = true;
@@ -227,17 +233,87 @@ void CGameLauncher::process()
     mp_LaunchMenu->draw();
 }
 
-/*
-// When the game is chosen, read the episode number by looking which exe file is present
-Uint8 CGameLauncher::retrievetEpisode(short chosengame)
+void CGameLauncher::getLabels()
 {
-    if(IsFileAvailable("games/" + m_DirList.at(chosengame) + "/keen1.exe")) return 1;
-    if(IsFileAvailable("games/" + m_DirList.at(chosengame) + "/keen2.exe")) return 2;
-    if(IsFileAvailable("games/" + m_DirList.at(chosengame) + "/keen3.exe")) return 3;
+    bool found;
+    Uint16 i;
+    std::string line, dir;
+    std::ifstream gamescfg;
 
-    return 0;
+    m_Names.clear();
+    m_Paths.clear();
+
+    OpenGameFileR(gamescfg, GAMESCFG);
+    if (gamescfg.is_open())
+    {
+        while ( !gamescfg.eof() )
+        {
+            getline(gamescfg,line);
+
+            if (strncmp(line.c_str(),GAMESCFG_DIR,strlen(GAMESCFG_DIR)) == 0)
+            {
+                dir = line.substr(strlen(GAMESCFG_DIR));
+
+                // Check for duplicates
+                found = false;
+                for ( i=0; i<m_Paths.size(); i++ )
+                {
+                    if (strncmp(m_Paths.at(i).c_str(),dir.c_str(),dir.length()) == 0)
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+
+                // If not a duplicate get the custom name
+                if (!found)
+                {
+                    getline(gamescfg,line);
+                    if (strncmp(line.c_str(),GAMESCFG_NAME,strlen(GAMESCFG_NAME)) == 0)
+                    {
+                        m_Paths.push_back( dir );
+                        m_Names.push_back( line.substr(strlen(GAMESCFG_NAME)) );
+                    }
+                }
+            }
+        }
+        gamescfg.close();
+    }
 }
-*/
+
+std::string CGameLauncher::scanLabels(std::string& path)
+{
+    Uint16 i;
+
+    for ( i=0; i<m_Paths.size(); i++ )
+    {
+        if (strncmp(m_Paths.at(i).c_str(),path.c_str(),path.length()) == 0)
+        {
+            return m_Names.at(i);
+        }
+    }
+    return "";
+}
+
+void CGameLauncher::putLabels()
+{
+    Uint16 i;
+    std::string line;
+    std::ofstream gamescfg;
+
+    OpenGameFileW(gamescfg, GAMESCFG);
+    if (gamescfg.is_open())
+    {
+        for ( i=0; i<m_Entries.size(); i++ )
+        {
+            line = GAMESCFG_DIR + m_Entries.at(i).path + '/' + m_ExeList.at(m_Entries.at(i).episode-1);
+            gamescfg << line << std::endl;
+            line = GAMESCFG_NAME + m_Entries.at(i).name;
+            gamescfg << line << std::endl << std::endl;
+        }
+        gamescfg.close();
+    }
+}
 
 ////
 // Cleanup Routine
