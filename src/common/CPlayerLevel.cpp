@@ -45,7 +45,7 @@ void CPlayer::processInLevel()
 	  }
 
 	  playpushed();
-	  //InertiaAndFriction_X();
+	  InertiaAndFriction_X();
 
 	  TogglePogo_and_Switches();
 	  JumpAndPogo();
@@ -360,20 +360,21 @@ void CPlayer::JumpAndPogo()
    // handle the JUMP key, both for normal jumps and (high) pogo jumps
    if (!pjumping && !pfalling && !pfiring)
    {
-	   m_speed_x = 0;
      // give em the chance to jump
      if (playcontrol[PA_JUMP] && !ppogostick && !pfrozentime)
      {
+  	   pinertia_x = 0;
        pjumping = PPREPAREJUMP;
        pjumpframe = PPREPAREJUMPFRAME;
        pjumpanimtimer = 0;
-       pwalking = 0;
+       pwalking = false;
      }
      else if (ppogostick)
      {
+  	   pinertia_x = 0;
        pjumping = PPREPAREPOGO;
        pjumpanimtimer = 0;
-       pwalking = 0;
+       pwalking = false;
      }
    }
 
@@ -506,9 +507,9 @@ void CPlayer::JumpAndPogo()
                       pjumpdir = UP;
 
                     if (playcontrol[PA_X] < 0)
-                    	m_speed_x--;
+                    	pinertia_x--;
                     if (playcontrol[PA_X] > 0)
-                    	m_speed_x++;
+                    	pinertia_x++;
 
                     pwalkincreasetimer = 0;
                   }
@@ -520,7 +521,7 @@ void CPlayer::JumpAndPogo()
              } else pjumpanimtimer++;
              break;
         case PJUMPUP:
-        	m_speed_x += chargedjump;
+        	//pinertia_x += chargedjump;
         	chargedjump = 0;
         case PPOGOING:
         // check for hitting a ceiling

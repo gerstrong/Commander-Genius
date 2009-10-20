@@ -16,10 +16,8 @@
 // set blockedl/r/u...is Keen up against a solid object or a the edge of the level?
 void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 {
-	p_player->blockedl = p_player->blockedr = false;
-	p_player->blockedu = p_player->blockedd =false;
-
 	// Start with X-Coordinates
+	p_player->blockedl = p_player->blockedr = false;
 	if( p_player->goto_x > p_player->x )
 	{
 		// The player walked right
@@ -29,10 +27,9 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 				or checkisSolidl( p_player->x+p_player->w, p_player->y + p_player->h/2, p_player)
 				or checkisSolidl( p_player->x+p_player->w, p_player->y + p_player->h-1, p_player) )
 			{
-				p_player->m_speed_x = 0;
+				p_player->pinertia_x = 0;
 				break;
 			}
-
 			p_player->x++;
 		}
 	}
@@ -41,27 +38,28 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 		// The player walked left
 		while(p_player->goto_x < p_player->x)
 		{
-			if( checkisSolidr( p_player->x, p_player->y, p_player)
+			if( checkisSolidr( p_player->x, p_player->y+1, p_player)
 				or checkisSolidr( p_player->x, p_player->y + p_player->h/2, p_player)
 				or checkisSolidl( p_player->x, p_player->y + p_player->h-1, p_player) )
 			{
-				p_player->m_speed_x = 0;
+				p_player->pinertia_x = 0;
 				break;
 			}
-
 			p_player->x--;
 		}
 	}
 	p_player->goto_x = p_player->x;
 
 	// Continue with Y-Coordinates
+	p_player->blockedu = p_player->blockedd = false;
 	if( p_player->goto_y > p_player->y )
 	{
 		// The player is falling
 		while(p_player->goto_y > p_player->y)
 		{
-			if( checkisSolidu( p_player->x, p_player->y+p_player->h, p_player) )
+			if( checkisSolidu( p_player->x+1, p_player->y+p_player->h, p_player) )
 			{
+				p_player->blockedd = true;
 				break;
 			}
 			p_player->y++;
@@ -72,8 +70,9 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 		// The player jumped or flew up!
 		while(p_player->goto_y < p_player->y)
 		{
-			if( checkisSolidd( p_player->x, p_player->y, p_player) )
+			if( checkisSolidd( p_player->x+1, p_player->y, p_player) )
 			{
+				p_player->blockedu = true;
 				break;
 			}
 			p_player->y--;

@@ -94,6 +94,9 @@ bool CPlayGame::init()
 		// Set the pointers to the map and object data
 		mp_Player[i].setMapData(mp_Map);
 	}
+
+	g_pInput->flushAll();
+
 	return true;
 }
 

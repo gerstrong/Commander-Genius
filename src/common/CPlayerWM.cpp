@@ -32,8 +32,8 @@ void CPlayer::processWorldMap()
     Walking();
     WalkingAnimation();
 
-    //InertiaAndFriction_X();
-    //InertiaAndFriction_Y();
+    InertiaAndFriction_X();
+    InertiaAndFriction_Y();
 
     x = goto_x;
     y = goto_y;

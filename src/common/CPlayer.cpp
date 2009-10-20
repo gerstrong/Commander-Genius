@@ -36,10 +36,12 @@ CPlayer::CPlayer() {
     hideplayer = false;
     mounted = false;
     ppogostick = false;
+    blockedu = blockedd = blockedl = blockedr = false;
     pjumping = 0;
     pfalling = false;
     pwalking = playspeed = 0;
-    m_speed_x = pinertia_y = 0;
+    pinertia_x = pinertia_y = 0;
+    pboost_x = 0;
     playpushed_x = 0;
     pfiring = 0;
     psliding = psemisliding = 0;
@@ -62,46 +64,243 @@ CPlayer::CPlayer() {
 // handles walking. the walking animation is handled by gamepdo_walkinganim()
 void CPlayer::Walking()
 {
-	/*// Walk to the left or right!
-	if (playcontrol[PA_X] > 0)
-    { // RIGHT key down
-     	  m_speed_x += playcontrol[PA_X];
+	int cur_pfastincrate;
+    if (inhibitwalking && !psliding)
+    {
+      if (!pfrozentime||m_episode!=1)
+        if (!pjumping && !pfalling)
+        	pinertia_x = 0;
+      return;
     }
-    else if (playcontrol[PA_X] < 0)
-    { // LEFT key down
-		  m_speed_x += playcontrol[PA_X];
-    }*/
+
+    // this prevents a "slipping" effect if you jump, say, right, then
+    // start walking left just as you hit the ground
+    if (pjustjumped && ((pinertia_x > 0 && pdir==LEFT) ||\
+                        (pinertia_x < 0 && pdir==RIGHT)))\
+    {
+    	if(!ppogostick)
+    		pinertia_x = 0;
+    }
+
+    // this code makes it so that if you jump/fall onto a semi-sliding
+    // block you'll start moving a little
+    if (!pjumping && !pfalling)
+    {
+      // on left/right press clear pjustjumped
+      if ( (playcontrol[PA_X] < 0) || (playcontrol[PA_X] > 0) )
+      {
+        pjustjumped = 0;
+        pjustfell = 0;
+      }
+
+      // if we fall onto a semislide tile with no inertia
+      // don't move!.
+      if (pjustfell && psemisliding)
+      {
+        if (pdir==RIGHT)
+        {
+          if (blockedr)
+          {
+            pjustjumped = 0;
+            pjustfell = 0;
+          }
+          else
+          {
+            pshowdir = pdir;
+          }
+        }
+        else
+        {
+          if (blockedl)
+          {
+            pjustjumped = 0;
+            pjustfell = 0;
+          }
+          else
+          {
+            pshowdir = pdir;
+          }
+        }
+      }
+    }
+
+    // test if we're trying to walk
+    if ((psemisliding && pinertia_x!=0) || (((playcontrol[PA_X] < 0) || (playcontrol[PA_X] > 0) || (( (playcontrol[PA_Y] < 0) || (playcontrol[PA_Y] > 0)) && m_playingmode == WORLDMAP )) && !inhibitwalking))
+    {
+      // we just started walking or we changed directions suddenly?
+      if (pwalking == 0 || ((lastpdir==RIGHT && pdir==LEFT)||(lastpdir==LEFT && pdir==RIGHT)))
+      {
+    	widejump = false;
+        pwalkanimtimer = 0;
+        pwalkframe = 1;
+        pwalkincreasetimer = 0;
+
+        if (!pjumping && !pfalling)
+        {
+            if(!ppogostick) // Only if he stays on the ground (No pogoing)
+            	pinertia_x /= 2;
+          pinertia_y = 0;
+        }
+
+        lastpdir = pdir;
+        pwalking = 1;
+      }
+    }
+    else
+    {   // end "d-pad down and bit sliding"
+    	if(pinertia_x != 0)
+    		pslowingdown=1;
+    	else
+    	{
+    		pslowingdown=0;
+    		pwalking = 0;
+    	}
+    }
+
+      // when sliding on ice force maximum speed
+      if (psliding)
+      {
+         if (pjumping != PPREPAREJUMP &&
+             pjumping != PPREPAREPOGO)
+         {
+           // reset walk frame because we have no walk animation while on ice
+           pwalkframe = 0;
+           // keep player sliding at maximum speed
+           if (pdir==RIGHT)
+           {
+        	   pinertia_x = PMAXSPEED;
+           }
+           else if (pdir==LEFT)
+           {
+        	   pinertia_x = -PMAXSPEED;
+           }
+         }
+         return;
+      }
+      else if (!pwalking) return;    // don't run rest of sub if not walking
+      // if we get here we're walking and not sliding
+
+     // increase player inertia while walk key held down
+     if (ppogostick)
+        cur_pfastincrate = PFASTINCRATE_POGO;
+      else
+        cur_pfastincrate = PFASTINCRATE;
+
+	  if((pjumpdir != UP) && (pjumping != 0))
+	  {
+		  return;
+	  }
+
+      if (playcontrol[PA_X] > 0)
+      { // RIGHT key down
+          // quickly reach PLAYER_FASTINCMAXSPEED
+          if (pwalkincreasetimer>=cur_pfastincrate && pinertia_x<PFASTINCMAXSPEED)
+          {
+        	  pinertia_x++;
+        	  pwalkincreasetimer=0;
+          }
+          else	pwalkincreasetimer++;
+
+          // prevent sliding on map
+          if ( m_playingmode == WORLDMAP )
+          {
+        	  if(pinertia_x < 0)  pinertia_x = 0;
+        	  else	pinertia_x = playcontrol[PA_X]*PFASTINCMAXSPEED/100;
+          }
+
+          // increase up to max speed every time frame is changed
+          if (!pwalkanimtimer && pinertia_x < PMAXSPEED)  pinertia_x++;
+      }
+      else if (playcontrol[PA_X] < 0)
+      { // LEFT key down
+          // quickly reach PFASTINCMAXSPEED
+          if (pwalkincreasetimer>=cur_pfastincrate && pinertia_x<-PFASTINCMAXSPEED)
+          {
+        	  pinertia_x--;
+        	  pwalkincreasetimer=0;
+          }
+          else	pwalkincreasetimer++;
+
+          // prevent sliding on map
+          if ( m_playingmode == WORLDMAP )
+          {
+        	  if(pinertia_x > 0)  pinertia_x = 0;
+        	  else	pinertia_x = playcontrol[PA_X]*PFASTINCMAXSPEED/100;
+          }
+
+          // decrease down to max speed every time frame is changed
+          if (!pwalkanimtimer && pinertia_x > -PMAXSPEED)  pinertia_x--;
+      }
+
+      if (playcontrol[PA_Y] > 0)
+      {
+          // quickly reach PFASTINCMAXSPEED
+          if (pwalkincreasetimer>=PFASTINCRATE && pinertia_y<PFASTINCMAXSPEED)
+          {
+             pinertia_y++;
+             pwalkincreasetimer=0;
+          }
+          else
+          {
+             pwalkincreasetimer++;
+          }
+          // increase up to max speed every time frame is changed
+          if (!pwalkanimtimer && pinertia_y<PMAXSPEED)
+          {
+             pinertia_y++;
+          }
+
+          // prevent sliding on map
+          if ( m_playingmode == WORLDMAP )
+          {
+        	  if(pinertia_y < 0)
+        	  {
+        		  pinertia_y = 0;
+        	  }
+        	  else
+        	  {
+        		  pinertia_y=playcontrol[PA_Y]*PFASTINCMAXSPEED/100;
+        	  }
+          }
+
+      }
+      else if (playcontrol[PA_Y] < 0)
+      {
+          // quickly reach PFASTINCMAXSPEED
+          if (pwalkincreasetimer>=PFASTINCRATE && pinertia_y>-PFASTINCMAXSPEED)
+          {
+             pinertia_y--;
+             pwalkincreasetimer=0;
+          }
+          else
+          {
+             pwalkincreasetimer++;
+          }
+          // increase up to max speed every time frame is changed
+          if (!pwalkanimtimer && pinertia_y>-PMAXSPEED)
+          {
+             pinertia_y--;
+          }
+
+          // prevent sliding on map
+          if ( m_playingmode == WORLDMAP )
+          {
+        	  if(pinertia_y > 0)
+        	  {
+        		  pinertia_y = 0;
+        	  }
+        	  else
+        	  {
+        		  pinertia_y=playcontrol[PA_Y]*PFASTINCMAXSPEED/100;
+        	  }
+          }
+      }
 }
 
 // animation for walking
 void CPlayer::WalkingAnimation()
 {
-	if(!ppogostick && !pjumping && blockedu) // he is standing or walking on something
-	{
-		// Now Animation rate depends on player speed
-		// Make him change frame if timer is up
-		if(pwalkanimtimer >= 2400)
-		{
-			// increase walk frame and wrap it to 1st frame if needed
-			if (pwalkframea < 4)
-			{ pwalkframea++; }
-			else
-			{ pwalkframea=1; }
-
-			// if this happens add speed points to the player
-			m_speed_x += 512;
-			pwalkanimtimer = 0;
-		}
-		else
-			pwalkanimtimer += PLAYER_MAXSPEED;
-
-        // set walk frame: map frame "4" to frame "2", this gives a
-        // sequence of 1,2,3,2,1,2,3,2,1,2,3,2....
-        if (pwalkframea==4) pwalkframe = 2;
-        else pwalkframe = pwalkframea;
-	}
-
-    /*// no walk animation while sliding
+    // no walk animation while sliding
     if (inhibitwalking || psliding ) return;
 
     // should we do walk animation?
@@ -109,9 +308,14 @@ void CPlayer::WalkingAnimation()
     {
     	int walkanimrate; // walk animation speed according to player speed
 
-   		walkanimrate = PWALKANIMRATE;
-			if(walkanimrate > 150)
-        		walkanimrate = 150;
+    	if(!psemisliding)
+    	{
+    		walkanimrate = 101*PWALKANIMRATE/(treshold+1);
+        	if(walkanimrate > 150)
+        			walkanimrate = 150;
+    	}
+    	else
+    		walkanimrate = PWALKANIMRATE;
 
     	// ** do walk animation **
         if (pwalkanimtimer > walkanimrate)
@@ -174,166 +378,212 @@ void CPlayer::WalkingAnimation()
 
         // set walk frame: map frame "4" to frame "2", this gives a
         // sequence of 1,2,3,2,1,2,3,2,1,2,3,2....
-        if (pwalkframea==4) pwalkframe = 2;
-        else pwalkframe = pwalkframea;
-    }*/
+        if (pwalkframea==4)
+        {
+          pwalkframe = 2;
+        }
+        else
+        {
+          pwalkframe = pwalkframea;
+        }
+    }
 }
 
 // handles inertia and friction for the X direction
 // (this is where the inertia/playpushed_x is actually applied to playx)
 void CPlayer::InertiaAndFriction_X()
 {
-   int friction;
+	   int friction_rate;
 
-   if (hideplayer)
-   {
-	 m_speed_x = 0;
-     return;
-   }
-   // don't move when firing
-   if (pfiring && !pjumping && !pfalling)
-   {
-	 m_speed_x = 0;
-   }
-
-   // Check walking boost and pogoing. It is similar to inertia
-   if(pjumping || pfalling)
-   {
-	   if (playcontrol[PA_X] < 0 && !pfrozentime)
+	   if (hideplayer)
 	   {
-		   if( !ppogostick )
+	     pinertia_x = 0;
+	     return;
+	   }
+	   // don't move when firing
+	   if (pfiring && !pjumping && !pfalling)
+	   {
+	     pinertia_x = 0;
+	   }
+
+	   // Check walking boost and pogoing. It is similar to inertia
+	   if(pjumping || pfalling)
+	   {
+		   if (playcontrol[PA_X] < 0 && !pfrozentime)
 		   {
-			   m_speed_x /= 2;
+			   if(pboost_x > 0 && !ppogostick)
+			   {
+				   pboost_x = 0;
+				   pinertia_x /= 2;
+			   }
+			   else
+			   {
+				   pboost_x-= ppogostick ? 2 : 1;
+			   }
+		   }
+		   if (playcontrol[PA_X] > 0 && !pfrozentime)
+		   {
+			   if(pboost_x < 0 && !ppogostick)
+			   {
+				   pboost_x = 0;
+				   pinertia_x /= 2;
+			   }
+			   else
+			   {
+				   pboost_x+= ppogostick ? 2 : 1;
+			   }
+		   }
+
+		   if(pboost_x >= PJUMPINERTIA ||
+				   pboost_x <= -PJUMPINERTIA)
+		   {
+			   if(ppogostick)
+			   {
+				   pinertia_x += 3*pboost_x/(PJUMPINERTIA*2);
+			   }
+			   else
+			   {
+				   // This is a normal jump without obstacles
+				   if(widejump)
+				   {
+					   pinertia_x += 2*pboost_x/PJUMPINERTIA + chargedjump;
+					   chargedjump = 0;
+				   }
+
+				   // When falling get some inertia
+				   if(pfalling)
+				   {
+					   pinertia_x += 2*pboost_x/PJUMPINERTIA;
+				   }
+				   else
+				   {
+					   pinertia_x += 2*pboost_x/PJUMPINERTIA;
+				   }
+			   }
+			   pboost_x = 0;
 		   }
 	   }
-	   if (playcontrol[PA_X] > 0 && !pfrozentime)
-	   {
-		   if( !ppogostick )
-		   {
-			   m_speed_x /= 2;
-		   }
-	   }
-   }
 
-   // Calculate Threshold of your analog device for walking animation speed!
-   if(!pfrozentime)
-	   treshold = playcontrol[PA_X];
+	   // Calculate Threshold of your analog device for walking animation speed!
+	   if(!pfrozentime)
+		   treshold = playcontrol[PA_X];
 
-  int pmaxspeed = 0;
+	  int pmaxspeed = 0;
 
-  if(!pjumping && !pfalling &&
-	 !psemisliding && !psliding && !ppogostick && !pslowingdown)
-  {
-	  if(treshold < playcontrol[PA_Y] && playcontrol[PA_Y] > 0 )
-		  treshold = playcontrol[PA_Y];
-
-	  if(treshold > playcontrol[PA_Y] && playcontrol[PA_Y] < 0 )
-		  treshold = playcontrol[PA_Y];
-
-	  if(treshold < 0)
-		  treshold *= (-1);
-  }
-  else
-  {
-	  treshold = 100;
-  }
-
-  // if we hit a solid object do not move, and keep inertia...
-  // * at slow speed: if we're falling or jumping and we're facing
-  //                  the right direction, we want to keep
-  //                  a small amount of inertia pent up so we can
-  //                  easily get into tight spaces.
-  // * at zero:       otherwise, or if we're not walking, we want
-  //                  to hold the inertia at zero so we don't "shoot"
-  //                  off of platforms, etc which looks weird.
-  if (m_speed_x < 0 && blockedl)
-  {
-      if (!pwalking || (!pfalling && !pjumping) || pdir==RIGHT || (pfrozentime && m_episode==1))
-      {
-    	  m_speed_x = 0;
-    	  widejump = false;
-      }
-      else if (m_speed_x < -PLAYER_FASTINCMAXSPEED)
-      {
-    	  m_speed_x /= 2;
-      }
-      return;
-  }
-  else if (m_speed_x > 0 && blockedr)
-  {
-	  if (!pwalking || (!pfalling && !pjumping) || pdir==LEFT || (pfrozentime && m_episode==1))
+	  if(!pjumping && !pfalling &&
+		 !psemisliding && !psliding && !ppogostick && !pslowingdown)
 	  {
-		  m_speed_x = 0;
-		  widejump = false;
-      }
-      else if (m_speed_x > PLAYER_FASTINCMAXSPEED)
-      {
-    	  m_speed_x /= 2;
-      }
-   	  return;
-  }
+		  if(treshold < playcontrol[PA_Y] && playcontrol[PA_Y] > 0 )
+			  treshold = playcontrol[PA_Y];
 
-  pmaxspeed = treshold*PLAYER_MAXSPEED/100;
+		  if(treshold > playcontrol[PA_Y] && playcontrol[PA_Y] < 0 )
+			  treshold = playcontrol[PA_Y];
 
-	  if(m_speed_x > pmaxspeed)
-		  m_speed_x = pmaxspeed;
-	  if(m_speed_x < -pmaxspeed)
-		  m_speed_x = -pmaxspeed;
+		  if(treshold < 0)
+			  treshold *= (-1);
+	  }
+	  else
+	  {
+		  treshold = 100;
+	  }
 
-   // apply pinertia_x and playpushed_x inertia
-   // (unless we're about to make a pogo jump)
-   if ( pjumping != PPREPAREPOGO)
-   {
-	   int dx = m_speed_x + playpushed_x;
-	   // check first if the player is not blocked
-	   if( (!blockedr and dx>0) or (!blockedl and dx<0) )
-		   goto_x += dx;
-   }
+	  // if we hit a solid object do not move, and keep inertia...
+	  // * at slow speed: if we're falling or jumping and we're facing
+	  //                  the right direction, we want to keep
+	  //                  a small amount of inertia pent up so we can
+	  //                  easily get into tight spaces.
+	  // * at zero:       otherwise, or if we're not walking, we want
+	  //                  to hold the inertia at zero so we don't "shoot"
+	  //                  off of platforms, etc which looks weird.
+	  if (pinertia_x < 0 && blockedl)
+	  {
+	      if (!pwalking || (!pfalling && !pjumping) || pdir==RIGHT || (pfrozentime && m_episode==1))
+	      {
+			 pinertia_x = pboost_x = 0;
+			 widejump = false;
+	      }
+	      else if (pinertia_x < -PFASTINCMAXSPEED)
+	      {
+	    	  pinertia_x >>= 1;
+	      }
+	      return;
+	  }
+	  else if (pinertia_x > 0 && blockedr)
+	  {
+		  if (!pwalking || (!pfalling && !pjumping) || pdir==LEFT || (pfrozentime && m_episode==1))
+		  {
+	    	 pinertia_x = pboost_x = 0;
+	    	 widejump = false;
+	      }
+	      else if (pinertia_x > PFASTINCMAXSPEED)
+	      {
+	    	  pinertia_x >>= 1;
+	      }
+	   	  return;
+	  }
+
+	  pmaxspeed = treshold*PMAXSPEED/100;
+
+		  if(pinertia_x > pmaxspeed)
+			  pinertia_x = pmaxspeed;
+		  if(pinertia_x < -pmaxspeed)
+			  pinertia_x = -pmaxspeed;
 
 
-   // if we stopped walking (i.e. left or right not held down) apply friction
-   // there's no friction if we're semisliding
-   if (!(playcontrol[PA_X] < 0) && !(playcontrol[PA_X] > 0) && \
-       !psemisliding)
-   {
-     // determine friction rate--different rates for on ground and in air
-     if (m_playingmode == WORLDMAP)
-     {
-       friction = PFRICTION_RATE_WM;
-     }
-     else
-     {
-        if (!pfalling & !pjumping)
-        {
-          friction = PFRICTION_RATE_ONGROUND;
-        }
-        else
-        {
-          friction = PFRICTION_RATE_INAIR;
-        }
-     }
+	   // apply pinertia_x and playpushed_x inertia
+	   // (unless we're about to make a pogo jump)
+	   if ( pjumping != PPREPAREPOGO)
+	   {
+		   int dx=((pinertia_x + playpushed_x)<<4);
+		   // check first if the player is not blocked
+		   if( (!blockedr and dx>0) or (!blockedl and dx<0) )
+			   goto_x += dx;
+	   }
 
-     // and apply friction to pinertia_x
-     // when pogoing apply friction till we get down to PLAYER_FASTINCMAXSPEED
-     // then stop the friction
-     if ( !ppogostick || m_speed_x>PLAYER_FASTINCMAXSPEED || m_speed_x<-PLAYER_FASTINCMAXSPEED )
-     {
-         if ( !pfrozentime || m_episode != 1 )
-         {  // disable friction while frozen
-        	// here the wall animation must be applied!
-            if (m_speed_x < 0)
-            {
-            	m_speed_x += friction;
-            	if(m_speed_x>0) m_speed_x = 0;
-            }
-            else if (m_speed_x > 0)
-            {
-            	m_speed_x -= friction;
-            	if(m_speed_x<0) m_speed_x = 0;
-            }
-         }
-     }
-   }
+
+	   // if we stopped walking (i.e. left or right not held down) apply friction
+	   // there's no friction if we're semisliding
+	   if (!(playcontrol[PA_X] < 0) && !(playcontrol[PA_X] > 0) && \
+	       !psemisliding)
+	   {
+	     // determine friction rate--different rates for on ground and in air
+	     if (m_playingmode == WORLDMAP)
+	     {
+	       friction_rate = PFRICTION_RATE_WM;
+	     }
+	     else
+	     {
+	        if (!pfalling & !pjumping)
+	        {
+	          friction_rate = PFRICTION_RATE_ONGROUND;
+	        }
+	        else
+	        {
+	          friction_rate = PFRICTION_RATE_INAIR;
+	        }
+	     }
+
+
+	     // and apply friction to pinertia_x
+	     // when pogoing apply friction till we get down to PFASTINCMAXSPEED
+	     // then stop the friction
+	     if (!ppogostick || (pinertia_x > PFASTINCMAXSPEED) || (pinertia_x < -PFASTINCMAXSPEED))
+	     {
+	        if (pfriction_timer_x > friction_rate)
+	        {
+	          if (!pfrozentime || m_episode!=1)
+	          {  // disable friction while frozen
+	        	  // here the wall animation must be applied!
+	             if (pinertia_x < 0) pinertia_x++;
+	             else if (pinertia_x > 0) pinertia_x--;
+	          }
+
+	          pfriction_timer_x = 0;
+	        }
+	        else pfriction_timer_x++;
+	     }
+	   }
+
 }
 
 // handles inertia and friction for the Y direction
@@ -357,7 +607,7 @@ void CPlayer::InertiaAndFriction_Y()
    }
 
    // apply pinertia_y
-   goto_y += pinertia_y;
+   goto_y += pinertia_y<<4;
 
 	// if we stopped walking (i.e. LRUD not held down) apply friction
     if (playcontrol[PA_Y] == 0)

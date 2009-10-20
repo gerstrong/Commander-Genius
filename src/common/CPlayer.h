@@ -105,9 +105,10 @@ public:
 
 	unsigned char pwalking,playspeed;
 	unsigned char pslowingdown;
-	unsigned char pwalkframe,pwalkframea,pwalkanimtimer;
-	unsigned char pwalkincreasetimer;
-	signed int m_speed_x,playpushed_x;
+	unsigned char pwalkframe,pwalkframea;
+	int pwalkanimtimer;
+	unsigned char pwalkincreasetimer, pfriction_timer_x, pfriction_timer_y;
+	signed int pinertia_x,pboost_x,playpushed_x;
 	int chargedjump;
 	unsigned char playpushed_decreasetimer;
 	bool widejump;
@@ -139,13 +140,8 @@ public:
 	bool ppogostick;
 	int pfrozentime,pfrozenframe,pfrozenanimtimer;
 
-	// New values
 	char playcontrol[PA_MAX_ACTIONS];
 
-	char x_friction;
-	char y_friction;
-
-	// End new values
 
 	unsigned char dpadcount, dpadlastcount;
 

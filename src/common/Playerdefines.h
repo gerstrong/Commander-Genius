@@ -22,20 +22,22 @@
 #define TIME_DIVIDER	500		// For speed and acceleration
 
 // upon starting to walk, keen will quickly increase to
-// PLAYER_FASTINCMAXSPEED. keen can, at a slower rate,
-// reach up to PLAYER_MAXSPEED (increased every walk anim frame)
-#define PLAYER_FASTINCMAXSPEED 	36
-#define PLAYER_MAXSPEED        	120
-#define PJUMPINERTIA     		30
-#define PFASTINCRATE     		64        // accel delay rate up to PFASTINCMAXSPEED
+// PFASTINCMAXSPEED. keen can, at a slower rate,
+// reach up to PMAXSPEED (increased every walk anim frame)
+//#define PFASTINCMAXSPEED 36
+#define PFASTINCMAXSPEED 2
+#define PMAXSPEED        14
+#define PJUMPINERTIA     30
+#define PFASTINCRATE     64        // accel delay rate up to PFASTINCMAXSPEED
 #define PFASTINCRATE_POGO  50      // rate when pogo stick is out
 // rates at which player slows down
 #define PFRICTION_RATE_INAIR      25      //8
-#define PFRICTION_RATE_ONGROUND   20      //2
-#define PFRICTION_RATE_WM         20      // on world map
+#define PFRICTION_RATE_ONGROUND   5      //2
+#define PFRICTION_RATE_WM         1      // on world map
 // rate at which player walking animation is shown
 //#define PWALKANIMRATE             40
 #define PWALKANIMRATE             8
+
 
 // the various jump states
 #define PNOJUMP       0                 // not jumping
