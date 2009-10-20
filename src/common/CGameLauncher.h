@@ -39,6 +39,7 @@ public:
 	void cleanup();
 
 	unsigned char getChosengame(){ return m_chosenGame; }
+	bool setChosenGame(unsigned char chosengame) { m_chosenGame = chosengame; m_hasbeenchosen=true; }
 
 	bool waschosen(){ return m_hasbeenchosen; }
 	void letchooseagain() { m_hasbeenchosen=false; }
@@ -48,9 +49,10 @@ public:
 	Uint8 getEpisode(Uint8 slot) { return m_EpiList.at(slot); }
 	std::string getEP1Directory() { return m_DirList.at(m_ep1slot); }
 
+	Uint8 m_numGames;
+
 private:
 	bool m_mustquit;
-	Uint8 m_numGames;
 	short m_chosenGame;
 	bool m_hasbeenchosen;
 	Uint8 m_episode;

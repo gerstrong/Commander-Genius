@@ -36,7 +36,7 @@ CGame::~CGame() {
 //////////////////////////////////
 // Initialize Game Engine here! //
 //////////////////////////////////
-bool CGame::init()
+bool CGame::init(int argc, char *argv[])
 {
 	CSettings Settings(m_option);
 	m_GameControl.mp_option = m_option;
@@ -57,7 +57,7 @@ bool CGame::init()
 	}
 
 	// Initialize the way the launcher is started
-	if(!m_GameControl.init())	return false;
+	if(!m_GameControl.init(argc, argv))	return false;
 
 	return true;
 }

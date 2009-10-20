@@ -6,10 +6,12 @@
  */
 
 #include "CObject.h"
+#include <string.h>
 
 CObject::CObject() {
-	// TODO Auto-generated constructor stub
-
+	honorPriority=false;
+	exists = false;
+	memset(cansupportplayer, false, MAX_PLAYERS*sizeof(bool));
 }
 
 CObject::~CObject() {

@@ -25,7 +25,7 @@ CPlayGame::CPlayGame( char episode, char level,
 	m_Level = level;
 	m_NumPlayers = numplayers;
 	m_Difficulty = difficulty;
-	m_level_command = GOTO_WORLD_MAP;
+	m_level_command = (level==80) ? GOTO_WORLD_MAP : START_LEVEL;
 	m_NumSprites = g_pGfxEngine->getNumSprites();
 	m_Gamepath = gamepath;
 	m_exitgame = false;
@@ -35,16 +35,15 @@ CPlayGame::CPlayGame( char episode, char level,
 	mp_option = p_option;
 
 	// Create the Player
-	if(m_NumPlayers != 0)
-		mp_Player = new CPlayer[m_NumPlayers];
-	else
-		mp_Player = NULL;
+	if(m_NumPlayers == 0) m_NumPlayers = 1;
+
+	mp_Player = new CPlayer[m_NumPlayers];
 
 	// Create completed level list
 	memset(mp_level_completed,false,16*sizeof(bool));
 
 	// tie puppy objects so the player can interact in the level
-	for (int i=0 ; i<numplayers ; i++)
+	for (int i=0 ; i<m_NumPlayers ; i++)
 	{
 		CObject object;
 		mp_Player[i].m_player_number = i;
@@ -95,7 +94,6 @@ bool CPlayGame::init()
 		// Set the pointers to the map and object data
 		mp_Player[i].setMapData(mp_Map);
 	}
-
 	return true;
 }
 
@@ -411,10 +409,8 @@ void CPlayGame::cleanup()
 }
 
 CPlayGame::~CPlayGame() {
-	bool *p_levels_completed = mp_Player[0].mp_levels_completed;
-	delete [] p_levels_completed;
-
 	if(mp_Player) delete [] mp_Player;
+	mp_Player=NULL;
 }
 
 /////

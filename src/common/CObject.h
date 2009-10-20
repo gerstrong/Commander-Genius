@@ -44,7 +44,7 @@ public:
 
 
 	 char inhibitfall;         // if 1 common_enemy_ai will not do falling
-	 char cansupportplayer[MAX_PLAYERS];
+	 bool cansupportplayer[MAX_PLAYERS];
 
 	 unsigned int blockedl, blockedr, blockedu, blockedd;
 	 signed int xinertia, yinertia;

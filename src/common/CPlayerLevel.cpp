@@ -45,7 +45,7 @@ void CPlayer::processInLevel()
 	  }
 
 	  playpushed();
-	  InertiaAndFriction_X();
+	  //InertiaAndFriction_X();
 
 	  TogglePogo_and_Switches();
 	  JumpAndPogo();

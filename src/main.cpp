@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
 	////////////////////////////
 	// Initialize Game Engine //
 	////////////////////////////
-	if(Game.init())
+	if( Game.init( argc, argv ) )
 	{
 		///////////////////////
 		// Start Game Engine //

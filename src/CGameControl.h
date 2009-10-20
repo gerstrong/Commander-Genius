@@ -28,6 +28,7 @@ public:
 	CGameControl();
 	virtual ~CGameControl();
 
+	bool init(int argc, char *argv[]);
 	bool init(char mode=GAMELAUNCHER);
 	bool loadResources(unsigned short Episode, const std::string& DataDirectory);
 
@@ -50,9 +51,12 @@ private:
 	CPlayGame *mp_PlayGame;
 
 	Uint8 m_Episode;
+	Uint8 m_Numplayers;
 	Uint8 m_ChosenGame;
+	Uint8 m_Difficulty;
 	std::string m_DataDirectory;
 	int current_demo;
+	Uint8 m_startLevel;
 
 	CEGAGraphics *m_EGAGraphics;
 	CMessages *m_Messages;

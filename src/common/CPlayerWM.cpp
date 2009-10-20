@@ -32,8 +32,8 @@ void CPlayer::processWorldMap()
     Walking();
     WalkingAnimation();
 
-    InertiaAndFriction_X();
-    InertiaAndFriction_Y();
+    //InertiaAndFriction_X();
+    //InertiaAndFriction_Y();
 
     x = goto_x;
     y = goto_y;
@@ -284,7 +284,7 @@ p_levelcontrol = &(pCKP->Control.levelcontrol);
 
 bool CPlayer::isWMSolid(int xb, int yb)
 {
-/*int level_coordinates;
+int level_coordinates;
 
   stTile *p_tiles = g_pGfxEngine->Tilemap->mp_tiles;
 
@@ -302,7 +302,7 @@ bool CPlayer::isWMSolid(int xb, int yb)
 	  {	  return false;	}
 	  else
 	  {	  return true;	}
-  }*/
+  }
   return false;
 }
 

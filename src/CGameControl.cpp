@@ -12,20 +12,53 @@
 #include "fileio.h"
 #include "CLogFile.h"
 #include "sdl/sound/CSound.h"
+#include "arguments.h"
+
+// TODO: I think the Options Structure is still missing here!
+// That need to be checked out!
 
 CGameControl::CGameControl() {
 	m_mode = GAMELAUNCHER;
 	m_Episode = 0;
 	m_ChosenGame = 0;
+	m_Numplayers = 0;
 
 	m_EGAGraphics = NULL;
 	m_Messages = NULL;
+	m_startLevel = 0;
 }
 
 
 ////
 // Initialization Routine
 /////*/*/*
+bool CGameControl::init(int argc, char *argv[])
+{
+	bool ok;
+	std::string argument;
+	argument = getArgument( argc, argv, "-game" );
+
+	ok = init();
+
+	if (!ok) return false;
+
+	if(argument != "")
+	{
+		int chosengame;
+		chosengame = atoi(argument.c_str()+strlen("-game"))-1;
+
+		if(chosengame < mp_GameLauncher->m_numGames)
+		{
+			mp_GameLauncher->setChosenGame(chosengame);
+
+			// Now check, if a level was also passed as parameter
+			argument = getArgument( argc, argv, "-level" );
+			m_startLevel = atoi(argument.c_str()+strlen("-level"));
+		}
+	}
+	return ok;
+}
+
 bool CGameControl::init(char mode)
 {
 	m_mode = mode;
@@ -52,18 +85,11 @@ bool CGameControl::init(char mode)
 	}
 	else if(m_mode == PLAYGAME)
 	{
-		char episode, numplayers, difficulty;
-		std::string gamepath;
+		if(m_startLevel == 0) m_startLevel = WORLD_MAP_LEVEL;
 
-		m_mode = PLAYGAME;
-		episode = mp_PassiveMode->getEpisode();
-		numplayers = mp_PassiveMode->getNumPlayers();
-		difficulty = mp_PassiveMode->getDifficulty();
-		gamepath = mp_PassiveMode->getGamePath();
-
-		mp_PlayGame = new CPlayGame(episode, WORLD_MAP_LEVEL,
-						numplayers, difficulty,
-						gamepath, mp_option);
+		mp_PlayGame = new CPlayGame(m_Episode, m_startLevel,
+						m_Numplayers, m_Difficulty,
+						m_DataDirectory, mp_option);
 		return mp_PlayGame->init();
 	}
 	return false;
@@ -148,11 +174,23 @@ void CGameControl::process()
 				// Load the Resources
 				if( loadResources( m_Episode, m_DataDirectory ) )
 				{
-					if(init(PASSIVE)) cleanup(GAMELAUNCHER);
-					else
+					if(m_startLevel == 0)
 					{
-						mp_GameLauncher->letchooseagain();
-						delete mp_PassiveMode;
+						if(init(PASSIVE)) cleanup(GAMELAUNCHER);
+						else
+						{
+							mp_GameLauncher->letchooseagain();
+							delete mp_PassiveMode;
+						}
+					}
+					else // This happens, when a level was passed as argument when launching CG
+					{
+						if(init(PLAYGAME)) cleanup(GAMELAUNCHER);
+						else
+						{
+							mp_GameLauncher->letchooseagain();
+							delete mp_PlayGame;
+						}
 					}
 				}
 			}
@@ -183,6 +221,11 @@ void CGameControl::process()
 
 		if(mp_PassiveMode->mustStartGame())
 		{
+			m_Episode = mp_PassiveMode->getEpisode();
+			m_Numplayers = mp_PassiveMode->getNumPlayers();
+			m_Difficulty = mp_PassiveMode->getDifficulty();
+			m_DataDirectory = mp_PassiveMode->getGamePath();
+
 			init( PLAYGAME );
 			delete mp_PassiveMode;
 			return;

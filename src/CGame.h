@@ -22,7 +22,7 @@ public:
 	CGame();
 	virtual ~CGame();
 
-	bool init();
+	bool init(int argc, char *argv[]);
 	void run();
 	void cleanup();
 
