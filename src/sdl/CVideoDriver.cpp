@@ -505,7 +505,6 @@ SDL_Rect srcrect;
 SDL_Rect dstrect;
 char wraphoz, wrapvrt;
 int save_dstx, save_dstw, save_srcx, save_srcw;
-char tempbuf[80];
 
    dstrect.x = 0; dstrect.y = 0;
    dstrect.w = game_resolution_rect.w;
@@ -583,17 +582,6 @@ char tempbuf[80];
    }
 
    drawConsoleMessages();
-   if (showfps)
-   {
-
-#ifdef DEBUG
-     sprintf(tempbuf, "LPS: %03d FPS: %03d; x = %ld ; y = %d", g_pTimer->getLoopsPerSec(),
-							       g_pTimer->getFramesPerSec()/*, player[0].x >>CSF, player[0].y >>CSF*/);
-#else
-     sprintf(tempbuf, "FPS: %03d", g_pTimer->getFramesPerSec() );
-#endif
-     g_pGfxEngine->Font->drawFont( FGLayerSurface, tempbuf, game_resolution_rect.w-3-(strlen( (char *) tempbuf)<<3), 3, 1);
-   }
 }
 
 void CVideoDriver::update_screen(void)

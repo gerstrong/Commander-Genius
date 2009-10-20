@@ -115,6 +115,7 @@ public:
 	Uint16 m_scrollx_buf;
 	Uint16 m_scrolly_buf;
 
+	bool showfps;
 
 private:
 #ifdef USE_OPENGL
@@ -132,7 +133,6 @@ private:
 	unsigned short Zoom;
 	unsigned short FrameSkip;
 	unsigned int m_targetfps;	// Used for automatic frame skipping
-	bool showfps;
 	bool m_opengl;
 	int m_opengl_filter;
 	bool m_aspect_correction;

@@ -14,6 +14,7 @@
 #include "../sdl/CInput.h"
 #include "../common/CMapLoader.h"
 #include "../graphics/CGfxEngine.h"
+#include "../StringUtils.h"
 
 ////
 // Creation Routine
@@ -259,6 +260,22 @@ void CPlayGame::process()
 
 	// Draw objects to the screen
 	drawObjects();
+
+	if (g_pVideoDriver->showfps)
+	{
+		std::string tempbuf;
+		SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
+		#ifdef DEBUG
+			 tempbuf = "LPS: " + itoa(g_pTimer->getLoopsPerSec()) + " FPS: " +
+					 itoa(g_pTimer->getFramesPerSec()) + "; x = " + itoa(mp_Player[0].x) +
+					 " ; y = " + itoa(mp_Player[0].y);
+		#else
+			 tempbuf = "LPS: " + itoa(g_pTimer->getLoopsPerSec()) + " FPS: " +
+					 g_pTimer->getFramesPerSec();
+		#endif
+	     g_pGfxEngine->Font->drawFont( sfc, tempbuf, 320-3-(tempbuf.size()<<3), 3, 1);
+	}
+
 
 	// Open the Main Menu if ESC Key pressed and mp_Menu not opened
 	if(!mp_Menu && g_pInput->getPressedKey(KQUIT))
