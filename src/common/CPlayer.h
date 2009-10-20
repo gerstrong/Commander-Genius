@@ -101,7 +101,7 @@ public:
 
 	unsigned char playframe;
 
-	unsigned char pfalling,plastfalling,pfallspeed,pfallspeed_increasetimer;
+	unsigned char pfalling,plastfalling,pfallspeed;
 
 	unsigned char pwalking,playspeed;
 	unsigned char pslowingdown;
@@ -116,8 +116,9 @@ public:
 	bool blockedl,blockedr,blockedu,blockedd;
 	unsigned int blockedby;
 
-	unsigned char pjumping, pjumptime, pjumpupspeed_decreasetimer, pjumpdir;
-	unsigned char pjumpframe, pjumpanimtimer, pjumpupspeed;
+	unsigned char pjumping, pjumptime, pjumpupspeed_decrease, pjumpdir;
+	unsigned char pjumpframe, pjumpanimtimer;
+	int pjumpupspeed;
 	unsigned char pjumpnormaltime, pjumpupdecreaserate, pjustjumped;
 	unsigned char pjustfell;
 	unsigned char pjumpfloattimer;

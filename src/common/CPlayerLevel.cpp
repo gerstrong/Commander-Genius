@@ -364,6 +364,7 @@ void CPlayer::JumpAndPogo()
      if (playcontrol[PA_JUMP] && !ppogostick && !pfrozentime)
      {
   	   pinertia_x = 0;
+  	   pboost_x = 0;
        pjumping = PPREPAREJUMP;
        pjumpframe = PPREPAREJUMPFRAME;
        pjumpanimtimer = 0;
@@ -372,6 +373,7 @@ void CPlayer::JumpAndPogo()
      else if (ppogostick)
      {
   	   pinertia_x = 0;
+  	   pboost_x = 0;
        pjumping = PPREPAREPOGO;
        pjumpanimtimer = 0;
        pwalking = false;
@@ -396,13 +398,13 @@ void CPlayer::JumpAndPogo()
 					  else
 						  pjumpupspeed = (PPOGOUP_SPEED*11) / 10; // Impossible Pogo Trick
 					  pjumptime = PJUMP_NORMALTIME_POGO_LONG;
-					  pjumpupdecreaserate = PJUMP_UPDECREASERATE_POGO_LONG;
+					  pjumpupspeed_decrease = PJUMP_UPDECREASERATE_POGO_LONG;
 				   }
 				   else
 				   {
 					  pjumpupspeed = PPOGOUP_SPEED_SUPER;
 					  pjumptime = PJUMP_NORMALTIME_POGO_LONG_SUPER;
-					  pjumpupdecreaserate = PJUMP_UPDECREASERATE_POGO_LONG_SUPER;
+					  pjumpupspeed_decrease = PJUMP_UPDECREASERATE_POGO_LONG_SUPER;
 				   }
         	  }
         	  else
@@ -411,12 +413,12 @@ void CPlayer::JumpAndPogo()
         		  {
         			  pjumpupspeed = PJUMPUP_SPEED;
         			  pjumptime = PJUMP_NORMALTIME_POGO_SHORT;
-        			  pjumpupdecreaserate = PJUMP_UPDECREASERATE_POGO_SHORT;
+        			  pjumpupspeed_decrease = PJUMP_UPDECREASERATE_POGO_SHORT;
         		  }
         	  }
         	  pjumpframe = PJUMP_PREPARE_LAST_FRAME;
         	  pjumping = PPOGOING;
-        	  pjumpupspeed_decreasetimer = 0;
+        	  pjumpupspeed_decrease = 0;
         	  pjustjumped = 1;
 
           } else pjumpanimtimer++;
@@ -429,7 +431,7 @@ void CPlayer::JumpAndPogo()
    				 if(pdir == LEFT)
    					 chargedjump-=2;
    				 else if(pdir == RIGHT)
-   					chargedjump+=2;
+   					 chargedjump+=2;
    			 }
    			 else
    			 {
@@ -449,37 +451,37 @@ void CPlayer::JumpAndPogo()
                        {
                        case PPREPAREJUMPFRAME:
                             pjumptime = PJUMP_NORMALTIME_6;
-                            pjumpupdecreaserate = PJUMP_UPDECREASERATE_6;
+                            pjumpupspeed_decrease = PJUMP_UPDECREASERATE_6;
                             pjumpupspeed = 1;
                             chargedjump = chargedjump >> 5;
                             break;
                        case PPREPAREJUMPFRAME+1:
                             pjumptime = PJUMP_NORMALTIME_5;
-                            pjumpupdecreaserate = PJUMP_UPDECREASERATE_5;
+                            pjumpupspeed_decrease = PJUMP_UPDECREASERATE_5;
                             pjumpupspeed = 2;
                             chargedjump = chargedjump >> 4;
                             break;
                        case PPREPAREJUMPFRAME+2:
                             pjumptime = PJUMP_NORMALTIME_4;
-                            pjumpupdecreaserate = PJUMP_UPDECREASERATE_4;
+                            pjumpupspeed_decrease = PJUMP_UPDECREASERATE_4;
                             pjumpupspeed = 4;
                             chargedjump = chargedjump >> 3;
                             break;
                        case PPREPAREJUMPFRAME+3:
                             pjumptime = PJUMP_NORMALTIME_3;
-                            pjumpupdecreaserate = PJUMP_UPDECREASERATE_3;
+                            pjumpupspeed_decrease = PJUMP_UPDECREASERATE_3;
                             pjumpupspeed = 8;
                             chargedjump = chargedjump >> 2;
                             break;
                        case PPREPAREJUMPFRAME+4:
                             pjumptime = PJUMP_NORMALTIME_2;
-                            pjumpupdecreaserate = PJUMP_UPDECREASERATE_2;
+                            pjumpupspeed_decrease = PJUMP_UPDECREASERATE_2;
                             pjumpupspeed = 16;
                             chargedjump = chargedjump >> 1;
                             break;
                        default:
                             pjumptime = PJUMP_NORMALTIME_1;
-                            pjumpupdecreaserate = PJUMP_UPDECREASERATE_1;
+                            pjumpupspeed_decrease = PJUMP_UPDECREASERATE_1;
                             break;
                        }
 
@@ -487,7 +489,7 @@ void CPlayer::JumpAndPogo()
 
                     g_pSound->playStereofromCoord(SOUND_KEEN_JUMP, PLAY_NOW, mp_object->scrx);
                     pjumping = PJUMPUP;
-                    pjumpupspeed_decreasetimer = 0;
+                    //pjumpupspeed_decrease = 0;
                     pjustjumped = 1;
                     pjumpfloattimer = 0;
 
@@ -534,13 +536,15 @@ void CPlayer::JumpAndPogo()
          // do the jump
          if (!pjumptime)
          {
-           if (pjumpupspeed_decreasetimer>pjumpupdecreaserate)
-           {
-       		   if (!pjumpupspeed) pjumping = PNOJUMP;
-       		   else pjumpupspeed--;
-
-       		   pjumpupspeed_decreasetimer=0;
-           } else pjumpupspeed_decreasetimer++;
+   		   if (pjumpupspeed <= 0)
+   		   {
+   			   pjumpupspeed = 0;
+   			   pjumping = PNOJUMP;
+   		   }
+   		   else
+   		   {
+   			   pjumpupspeed-=pjumpupspeed_decrease;
+   		   }
          }
          else pjumptime--;
 

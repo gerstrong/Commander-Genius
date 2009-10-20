@@ -450,15 +450,15 @@ void CPlayer::InertiaAndFriction_X()
 					   chargedjump = 0;
 				   }
 
-				   // When falling get some inertia
-				   if(pfalling)
+				   // When fallin*g get some inertia
+				   /*if(pfalling)
 				   {
 					   pinertia_x += 2*pboost_x/PJUMPINERTIA;
 				   }
 				   else
 				   {
 					   pinertia_x += 2*pboost_x/PJUMPINERTIA;
-				   }
+				   }*/
 			   }
 			   pboost_x = 0;
 		   }

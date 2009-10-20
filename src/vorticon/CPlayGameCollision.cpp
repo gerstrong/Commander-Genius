@@ -99,8 +99,8 @@ bool CPlayGame::checkisSolidl(CPlayer *p_player)
 {
 int x=p_player->x+p_player->w;
 int y1=p_player->y+1;
-int y2=p_player->y+p_player->w/2+1;
-int y3=p_player->y+p_player->w+1;
+int y2=p_player->y+p_player->h/2+1;
+int y3=p_player->y+p_player->h-1;
 
 int t1 = mp_Map->at(x>>CSF, y1>>CSF);
 int t2 = mp_Map->at(x>>CSF, y2>>CSF);
@@ -146,8 +146,8 @@ bool CPlayGame::checkisSolidr(CPlayer *p_player)
 {
 int x=p_player->x;
 int y1=p_player->y+1;
-int y2=p_player->y+p_player->w/2+1;
-int y3=p_player->y+p_player->w+1;
+int y2=p_player->y+p_player->h/2;
+int y3=p_player->y+p_player->h-1;
 
 int t1 = mp_Map->at(x>>CSF, y1>>CSF);
 int t2 = mp_Map->at(x>>CSF, y2>>CSF);
@@ -189,7 +189,7 @@ bool CPlayGame::checkisSolidd(CPlayer *p_player)
 {
 int x1 = p_player->x+1;
 int y = p_player->y;
-int x2 = p_player->x+p_player->w+1;
+int x2 = p_player->x+p_player->w-1;
 int t1 = mp_Map->at(x1>>CSF, y>>CSF);
 int t2 = mp_Map->at(x2>>CSF, y>>CSF);
   if(g_pGfxEngine->Tilemap->mp_tiles[t1].bdown || g_pGfxEngine->Tilemap->mp_tiles[t2].bdown )
@@ -212,16 +212,18 @@ int y = p_player->y+p_player->h;
 int t1 = mp_Map->at(x1>>CSF, y>>CSF);
 int t2 = mp_Map->at(x2>>CSF, y>>CSF);
 
-  if(g_pGfxEngine->Tilemap->mp_tiles[t1].bup || g_pGfxEngine->Tilemap->mp_tiles[t2].bup)
-  {
-    return true;
-  }
-  else if (checkObjSolid(x1>>(CSF-4),y>>(CSF-4), p_player->m_player_number)
-		  || checkObjSolid(x2>>(CSF-4),y>>(CSF-4), p_player->m_player_number) )
-  {
-    return true;
-  }
-  return false;
+	if(y != (y>>CSF)<<CSF) return false;
+
+	if(g_pGfxEngine->Tilemap->mp_tiles[t1].bup || g_pGfxEngine->Tilemap->mp_tiles[t2].bup)
+	{
+		return true;
+	}
+	else if (checkObjSolid(x1>>(CSF-4),y>>(CSF-4), p_player->m_player_number)
+			|| checkObjSolid(x2>>(CSF-4),y>>(CSF-4), p_player->m_player_number) )
+	{
+		return true;
+	}
+	return false;
 }
 
 // this is so objects can block the player,

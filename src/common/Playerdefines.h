@@ -73,7 +73,7 @@
 
 // initial negative inertia to provide player at
 // start of a normal jump and a (high) pogo jump
-#define PJUMPUP_SPEED            20
+#define PJUMPUP_SPEED            40
 #define PPOGOUP_SPEED            24
 
 // various tile indexes
@@ -99,23 +99,23 @@
 // when expired his jump slows down at a rate
 // of DECREASERATE.
 
-#define PJUMP_NORMALTIME_1         6
+#define PJUMP_NORMALTIME_1         32
 #define PJUMP_UPDECREASERATE_1     6
 
-#define PJUMP_NORMALTIME_2         5
+#define PJUMP_NORMALTIME_2         16
 #define PJUMP_UPDECREASERATE_2     5
 
-#define PJUMP_NORMALTIME_3         4
+#define PJUMP_NORMALTIME_3         16
 #define PJUMP_UPDECREASERATE_3     4
 
-#define PJUMP_NORMALTIME_4         3
+#define PJUMP_NORMALTIME_4         8
 #define PJUMP_UPDECREASERATE_4     2
 
 #define PJUMP_NORMALTIME_5         2
 #define PJUMP_UPDECREASERATE_5     1
 
 #define PJUMP_NORMALTIME_6         1
-#define PJUMP_UPDECREASERATE_6     0
+#define PJUMP_UPDECREASERATE_6     1
 
 
 // for short pogo jumps, uses -PJUMPUP_SPEED
@@ -133,9 +133,9 @@
 #define PJUMP_NORMALTIME_POGO_LONG_SUPER        10
 #define PJUMP_UPDECREASERATE_POGO_LONG_SUPER    4
 
-// when falling keen's Y inertia increases at INCREASERATE up to MAXSPEED
-#define PFALL_INCREASERATE       3
-#define PFALL_MAXSPEED           19
+// when falling keen's Y inertia increases by INCREASE up to MAXSPEED
+#define PFALL_INCREASE       	3
+#define PFALL_MAXSPEED          50
 
 // pogo frames
 #define PFRAME_POGO           24
