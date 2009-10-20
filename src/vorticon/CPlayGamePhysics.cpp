@@ -17,26 +17,7 @@
 
 void CPlayGame::processPlayerfallings(CPlayer *p_player)
 {
-	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
-	Uint8 loweredge=(p_player->y+p_player->h)>>CSF;
-
-		if(TileProperty[mp_Map->at(p_player->x>>CSF,loweredge)].bup)
-		{
-			p_player->pfallspeed = 0;
-		}
-		else
-		{
-			p_player->pfallspeed = 10;
-		}
-		//p_player->y += p_player->pfallspeed;
-
-		// TODO: Also Sound support is missing here! But it must only be played once
-	    /*if (!p_player->pjustjumped)
-	   	 g_pSound->playStereofromCoord(SOUND_KEEN_FALL, PLAY_NOW, p_player->mp_object->scrx);*/
-
-	    // TODO: Also special objects like platforms of Episode has to be supported
-
-	/*unsigned int temp;
+	unsigned int temp;
 	int objsupport=false;
 	short tilsupport;
 	Uint8 height=p_player->h>>(CSF-4);
@@ -156,7 +137,7 @@ void CPlayGame::processPlayerfallings(CPlayer *p_player)
 
 		       // add current fall speed to player Y or make him fly in godmode with pogo
 		       if( !p_player->godmode || !p_player->ppogostick || !g_pInput->getHoldedCommand(IC_JUMP) )
-		    	   p_player->y += p_player->pfallspeed;
+		    	   p_player->goto_y += p_player->pfallspeed;
 		    }
 		    else
 		    {  // not falling
@@ -178,6 +159,6 @@ void CPlayGame::processPlayerfallings(CPlayer *p_player)
 		    p_player->plastfalling = p_player->pfalling;
 
 		    // ensure no sliding if we fall or jump off of ice
-		    if (p_player->pfalling || p_player->pjumping) p_player->psliding=0;*/
+		    if (p_player->pfalling || p_player->pjumping) p_player->psliding=0;
 }
 

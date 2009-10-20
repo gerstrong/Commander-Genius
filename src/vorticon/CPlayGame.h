@@ -50,12 +50,12 @@ enum e_levelcommands
 
 	// Collision stuff stored in CPlayGameCollision.cpp
 	void checkPlayerCollisions(CPlayer *p_player);
-	bool checkisSolidr(int x, int y, CPlayer *p_player);
-	bool checkisSolidl(int x, int y, CPlayer *p_player);
-	bool checkisSolidd(int x, int y, CPlayer *p_player);
-	bool checkisSolidu(int x, int y, CPlayer *p_player);
+	bool checkisSolidr(CPlayer *p_player);
+	bool checkisSolidl(CPlayer *p_player);
+	bool checkisSolidd(CPlayer *p_player);
+	bool checkisSolidu(CPlayer *p_player);
 	char checkDoorBlock(int t, CPlayer *p_player, int which);
-	int checkObjSolid(unsigned int x, unsigned int y, CPlayer *p_player);
+	int checkObjSolid(unsigned int x, unsigned int y, int cp);
 	void processPlayerfallings(CPlayer *p_player);
 
 	// Dialog processes stored in CPlayGameDialogs.cpp

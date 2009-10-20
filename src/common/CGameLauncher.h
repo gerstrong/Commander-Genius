@@ -39,7 +39,7 @@ public:
 	void cleanup();
 
 	unsigned char getChosengame(){ return m_chosenGame; }
-	bool setChosenGame(unsigned char chosengame) { m_chosenGame = chosengame; m_hasbeenchosen=true; }
+	bool setChosenGame(unsigned char chosengame) { m_chosenGame = chosengame; return (m_hasbeenchosen=true); }
 
 	bool waschosen(){ return m_hasbeenchosen; }
 	void letchooseagain() { m_hasbeenchosen=false; }

@@ -178,7 +178,6 @@ void CPassive::process()
 		{
 			delete mp_Menu;
 			mp_Menu = NULL;
-			//cleanup();  This cleanup is called by GameControls also
 			m_modeg = true;
 		}
 	}

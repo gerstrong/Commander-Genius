@@ -23,9 +23,7 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 		// The player walked right
 		while(p_player->goto_x > p_player->x)
 		{
-			if( checkisSolidl( p_player->x+p_player->w, p_player->y+1, p_player)
-				or checkisSolidl( p_player->x+p_player->w, p_player->y + p_player->h/2, p_player)
-				or checkisSolidl( p_player->x+p_player->w, p_player->y + p_player->h-1, p_player) )
+			if( checkisSolidl(p_player) )
 			{
 				p_player->pinertia_x = 0;
 				break;
@@ -38,9 +36,7 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 		// The player walked left
 		while(p_player->goto_x < p_player->x)
 		{
-			if( checkisSolidr( p_player->x, p_player->y+1, p_player)
-				or checkisSolidr( p_player->x, p_player->y + p_player->h/2, p_player)
-				or checkisSolidl( p_player->x, p_player->y + p_player->h-1, p_player) )
+			if( checkisSolidr(p_player) )
 			{
 				p_player->pinertia_x = 0;
 				break;
@@ -57,8 +53,9 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 		// The player is falling
 		while(p_player->goto_y > p_player->y)
 		{
-			if( checkisSolidu( p_player->x+1, p_player->y+p_player->h, p_player) )
+			if( checkisSolidu(p_player) )
 			{
+				p_player->pfalling = false;
 				p_player->blockedd = true;
 				break;
 			}
@@ -70,7 +67,7 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 		// The player jumped or flew up!
 		while(p_player->goto_y < p_player->y)
 		{
-			if( checkisSolidd( p_player->x+1, p_player->y, p_player) )
+			if( checkisSolidd(p_player) )
 			{
 				p_player->blockedu = true;
 				break;
@@ -98,16 +95,36 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 
 // checks if tile at (x,y) is solid to the player walking left into it.
 // returns 1 and sets blockedby if so.
-bool CPlayGame::checkisSolidl(int x, int y, CPlayer *p_player)
+bool CPlayGame::checkisSolidl(CPlayer *p_player)
 {
-int t = mp_Map->at(x>>CSF, y>>CSF);
+int x=p_player->x+p_player->w;
+int y1=p_player->y+1;
+int y2=p_player->y+p_player->w/2+1;
+int y3=p_player->y+p_player->w+1;
 
-  if(g_pGfxEngine->Tilemap->mp_tiles[t].bleft)
+int t1 = mp_Map->at(x>>CSF, y1>>CSF);
+int t2 = mp_Map->at(x>>CSF, y2>>CSF);
+int t3 = mp_Map->at(x>>CSF, y3>>CSF);
+
+  if(g_pGfxEngine->Tilemap->mp_tiles[t1].bleft)
   {
-	  p_player->blockedby = t;
-    return true;
+	  p_player->blockedby = t1;
+	  return true;
   }
-  if (checkObjSolid(x>>5,y>>5, p_player))
+  else if(g_pGfxEngine->Tilemap->mp_tiles[t2].bleft)
+  {
+	  p_player->blockedby = t2;
+	  return true;
+  }
+  else if(g_pGfxEngine->Tilemap->mp_tiles[t3].bleft)
+  {
+	  p_player->blockedby = t3;
+	  return true;
+  }
+
+  if (checkObjSolid(x>>(CSF-4),y1>>(CSF-4), p_player->m_player_number)
+	or checkObjSolid(x>>(CSF-4),y2>>(CSF-4), p_player->m_player_number)
+	or checkObjSolid(x>>(CSF-4),y3>>(CSF-4), p_player->m_player_number) )
   {
 	  p_player->blockedby = 0;
     return true;
@@ -115,7 +132,7 @@ int t = mp_Map->at(x>>CSF, y>>CSF);
   else
   {
     // don't let player walk through doors he doesn't have the key to
-    if (checkDoorBlock(t, p_player, g_pGfxEngine->Tilemap->mp_tiles[t].behaviour))
+    if (checkDoorBlock(t2, p_player, g_pGfxEngine->Tilemap->mp_tiles[t2].behaviour))
     {
       return true;
     }
@@ -125,50 +142,82 @@ int t = mp_Map->at(x>>CSF, y>>CSF);
 
 // checks if tile at (x,y) is solid to the player walking right into it.
 // returns 1 and sets blockedby if so.
-bool CPlayGame::checkisSolidr(int x, int y, CPlayer *p_player)
+bool CPlayGame::checkisSolidr(CPlayer *p_player)
 {
-int t = mp_Map->at(x>>CSF, y>>CSF);
-  if(g_pGfxEngine->Tilemap->mp_tiles[t].bright)
-  {
-	  p_player->blockedby = t;
-    return true;
-  }
-  else if (checkObjSolid(x>>5,y>>5, p_player))
-  {
+int x=p_player->x;
+int y1=p_player->y+1;
+int y2=p_player->y+p_player->w/2+1;
+int y3=p_player->y+p_player->w+1;
+
+int t1 = mp_Map->at(x>>CSF, y1>>CSF);
+int t2 = mp_Map->at(x>>CSF, y2>>CSF);
+int t3 = mp_Map->at(x>>CSF, y3>>CSF);
+
+	if(g_pGfxEngine->Tilemap->mp_tiles[t1].bleft)
+	{
+		  p_player->blockedby = t1;
+		  return true;
+	}
+	else if(g_pGfxEngine->Tilemap->mp_tiles[t2].bleft)
+	{
+		  p_player->blockedby = t2;
+		  return true;
+	}
+	else if(g_pGfxEngine->Tilemap->mp_tiles[t3].bleft)
+	{
+		p_player->blockedby = t3;
+		return true;
+	}
+
+	else if (checkObjSolid(x>>(CSF-4),y1>>(CSF-4), p_player->m_player_number)
+		  or checkObjSolid(x>>(CSF-4),y2>>(CSF-4), p_player->m_player_number)
+		  or checkObjSolid(x>>(CSF-4),y3>>(CSF-4), p_player->m_player_number) )
+	{
 	  p_player->blockedby = 0;
+	  return true;
+	}
+	else
+	{
+		// don't let player walk through doors he doesn't have the key to
+		if (checkDoorBlock(t2, p_player, g_pGfxEngine->Tilemap->mp_tiles[t2].behaviour))
+			return true;
+	}
+	return false;
+}
+
+bool CPlayGame::checkisSolidd(CPlayer *p_player)
+{
+int x1 = p_player->x+1;
+int y = p_player->y;
+int x2 = p_player->x+p_player->w+1;
+int t1 = mp_Map->at(x1>>CSF, y>>CSF);
+int t2 = mp_Map->at(x2>>CSF, y>>CSF);
+  if(g_pGfxEngine->Tilemap->mp_tiles[t1].bdown || g_pGfxEngine->Tilemap->mp_tiles[t2].bdown )
+  {
     return true;
   }
-  else
+  else if (checkObjSolid(x1>>(CSF-4),y>>(CSF-4), p_player->m_player_number)
+		  || checkObjSolid(x2>>(CSF-4),y>>(CSF-4), p_player->m_player_number) )
   {
-    // don't let player walk through doors he doesn't have the key to
-    if (checkDoorBlock(t, p_player, g_pGfxEngine->Tilemap->mp_tiles[t].behaviour))
-      return true;
+    return true;
   }
   return false;
 }
 
-bool CPlayGame::checkisSolidd(int x, int y, CPlayer *p_player)
+bool CPlayGame::checkisSolidu(CPlayer *p_player)
 {
-int t = mp_Map->at(x>>CSF, y>>CSF);
-  if(g_pGfxEngine->Tilemap->mp_tiles[t].bdown)
-  {
-    return true;
-  }
-  else if (checkObjSolid(x>>5,y>>5, p_player))
-  {
-    return true;
-  }
-  return false;
-}
+int x1 = p_player->x+1;
+int x2 = p_player->x+p_player->w-1;
+int y = p_player->y+p_player->h;
+int t1 = mp_Map->at(x1>>CSF, y>>CSF);
+int t2 = mp_Map->at(x2>>CSF, y>>CSF);
 
-bool CPlayGame::checkisSolidu(int x, int y, CPlayer *p_player)
-{
-int t = mp_Map->at(x>>CSF, y>>CSF);
-  if(g_pGfxEngine->Tilemap->mp_tiles[t].bup)
+  if(g_pGfxEngine->Tilemap->mp_tiles[t1].bup || g_pGfxEngine->Tilemap->mp_tiles[t2].bup)
   {
     return true;
   }
-  else if (checkObjSolid(x>>(CSF-4),y>>(CSF-4), p_player))
+  else if (checkObjSolid(x1>>(CSF-4),y>>(CSF-4), p_player->m_player_number)
+		  || checkObjSolid(x2>>(CSF-4),y>>(CSF-4), p_player->m_player_number) )
   {
     return true;
   }
@@ -180,7 +229,7 @@ int t = mp_Map->at(x>>CSF, y>>CSF);
 // x and y are the CSFed coordinates to check (e.g. playx and playy)
 // returns nonzero if there is a solid object
 // at that point
-int CPlayGame::checkObjSolid(unsigned int x, unsigned int y, CPlayer *p_player)
+int CPlayGame::checkObjSolid(unsigned int x, unsigned int y, int cp)
 {
   CSprite *sprite;
   int o=0;
@@ -189,7 +238,7 @@ int CPlayGame::checkObjSolid(unsigned int x, unsigned int y, CPlayer *p_player)
    for( p_object=m_Object.begin() ; p_object!=m_Object.end() ; p_object++ )
    {
 	   sprite = g_pGfxEngine->Sprite.at(p_object->sprite);
-	   if (p_object->exists && p_object->cansupportplayer[p_player->m_player_number])
+	   if (p_object->exists && p_object->cansupportplayer[cp])
 	   {
         if (x >= p_object->x+sprite->m_bboxX1)
           if (x <= p_object->x+sprite->m_bboxX2)
