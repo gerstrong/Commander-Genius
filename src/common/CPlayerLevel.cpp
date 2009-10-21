@@ -209,7 +209,13 @@ void CPlayer::setDir()
 // let's have keen be able to pick up goodies
 void CPlayer::getgoodies()
 {
-   /*if ((TileProperty[getmaptileat((x>>CSF)+9, (y>>CSF)+1)][BEHAVIOR] > 0) &&
+stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
+
+	/*if ((TileProperty[mp_map->at((x>>CSF), (y>>CSF))].behaviour > 0) &&
+			   ( TileProperty[mp_map->at((x>>CSF), (y>>CSF))].behaviour < 31 ) )
+	      { keen_get_goodie((x>>CSF), (y>>CSF)); return; }*/
+	/*
+   if ((TileProperty[getmaptileat((x>>CSF)+9, (y>>CSF)+1)][BEHAVIOR] > 0) &&
 		   ( TileProperty[getmaptileat((x>>CSF)+9, (y>>CSF)+1)][BEHAVIOR] < 31 ) )
       { keen_get_goodie((x>>CSF)+9, (y>>CSF)+1, cp, pCKP); return; }
 
@@ -223,13 +229,39 @@ void CPlayer::getgoodies()
 
    else if ((TileProperty[getmaptileat((x>>CSF)+4, (y>>CSF)+23)][BEHAVIOR] > 0) &&
 		   ( TileProperty[getmaptileat((x>>CSF)+4, (y>>CSF)+23)][BEHAVIOR] < 31 ) )
-      { keen_get_goodie((x>>CSF)+4, (y>>CSF)+23, cp, pCKP); return; }*/
+      { keen_get_goodie((x>>CSF)+4, (y>>CSF)+23, cp, pCKP); return; }
+      */
 }
+
+// have keen pick up the goodie at screen pixel position (px, py)
+/*void CPlayer::getGoodie(int px, int py)
+{
+int t;
+stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
+   t = map.mapdata[px][py];
+
+   if ((TileProperty[t].behaviour < 17 && TileProperty[t].behaviour > 5) ||
+	   (TileProperty[t].behaviour > 17 && TileProperty[t].behaviour < 22) ||
+	   (TileProperty[t].behaviour == 27 || TileProperty[t].behaviour == 28)   ) // All pickupable items
+   {  // pick up the goodie, i.e. erase it from the map
+      mp_map->setTile(mpx, mpy, tiles[t].chgtile);
+      if (TileProperty[t].animation != 1) map_deanimate(mpx, mpy);
+   }
+   else if (TileProperty[t].behaviour == 1) // Lethal (Deadly) Behavoir
+   {  // whoah, this "goodie" isn't so good...
+      killplayer(theplayer);
+      return;
+   }
+
+   // do whatever the goodie is supposed to do...
+   procgoodie(t, mpx, mpy, theplayer, pCKP);
+}*/
+
 
 // handle playpushed_x: for yorps/scrubs/etc pushing keen
 void CPlayer::playpushed()
 {
-    /*//if (mp_option[OPT_CHEATS].value && g_pInput->getHoldedKey(KTAB)) return;
+    if (mp_option[OPT_CHEATS].value && g_pInput->getHoldedKey(KTAB)) return;
 
     // if we're being pushed...
     if (playpushed_x)
@@ -253,7 +285,7 @@ void CPlayer::playpushed()
       // if we run up against a wall all push inertia stops
       if (playpushed_x > 0 && blockedr) playpushed_x = 0;
       if (playpushed_x < 0 && blockedl) playpushed_x = 0;
-    }*/
+    }
 }
 
 // called when a switch is flipped. mx,my is the pixel coords of the switch,
@@ -565,20 +597,15 @@ void CPlayer::raygun()
 /*int o;
 int canRefire;
 
-	stOption *p_option;
-	p_option = pCKP->Option;
-
    if (pfireframetimer) pfireframetimer--;
 
    // FIRE button down, and not keencicled?
-   if (playcontrol[PA_FIRE] && !pfrozentime)
-   {
-     inhibitwalking = 1;    // prevent moving
-     pfiring = 1;           // flag that we're firing
-     ppogostick = false;        // put away pogo stick if out
+   //if ( ( g_pInput->getPressedCommand(PA_FIRE) || mp_option[OPT_FULLYAUTOMATIC].value ) && !pfrozentime)
+   { // fire is newly pressed
 
-     if (!lastplaycontrol[PA_FIRE] || mp_option[OPT_FULLYAUTOMATIC].value)
-     { // fire is newly pressed
+       inhibitwalking = 1;    // prevent moving
+       pfiring = 1;           // flag that we're firing
+       ppogostick = false;        // put away pogo stick if out
 
        // limit how quickly shots can be fired
        if ( mp_option[OPT_FULLYAUTOMATIC].value )
@@ -611,39 +638,37 @@ int canRefire;
              inventory.charges--;
              pshowdir = pdir;
 
-             g_pSound->playStereofromCoord(SOUND_KEEN_FIRE, PLAY_NOW, objects[useObject].scrx);
+             g_pSound->playStereofromCoord(SOUND_KEEN_FIRE, PLAY_NOW, mp_object->scrx);
 
              if (pdir==RIGHT)
              {  // fire a blast to the right
                 o = spawn_object(x+((g_pGfxEngine->Sprite[0]->getWidth()-4)<<CSF), y+(9<<CSF), OBJ_RAY);
-                objects[o].ai.ray.direction = RIGHT;
+                mp_object->ai.ray.direction = RIGHT;
              }
              else
              {  // fire a blast to the left
                 o = spawn_object(x-(12<<CSF), y+(9<<CSF), OBJ_RAY);
-                objects[o].ai.ray.direction = LEFT;
+                mp_object->ai.ray.direction = LEFT;
              }
               // if '-nopk' argument set don't kill other players
-              if (p_option[OPT_ALLOWPKING].value)
+              if (mp_option[OPT_ALLOWPKING].value)
               {
-                objects[o].ai.ray.dontHitEnable = 0;
+            	  mp_object->ai.ray.dontHitEnable = 0;
               }
               else
               {
-                objects[o].ai.ray.dontHitEnable = 1;
-                objects[o].ai.ray.dontHit = OBJ_PLAYER;
+            	  mp_object->ai.ray.dontHitEnable = 1;
+            	  mp_object->ai.ray.dontHit = OBJ_PLAYER;
               }
           }
           else
           { // oh shit, out of bullets
             // click!
-        	  g_pSound->playStereofromCoord(SOUND_GUN_CLICK, PLAY_NOW, objects[useObject].scrx);
+        	  g_pSound->playStereofromCoord(SOUND_GUN_CLICK, PLAY_NOW, mp_object->scrx);
 
           }  // end "do we have charges?"
 
        } // end "limit how quickly shots can be fired"
-
-     } // end "fire is newly pressed"
    } // end "fire button down and not keencicled"
    else
    { // FIRE button is NOT down
@@ -657,8 +682,7 @@ int canRefire;
         pfiring = 1;
         inhibitwalking = 1;
       }
-   }
-*/
+   }*/
 }
 
 // select the appropriate player frame based on what he's doing
@@ -704,23 +728,22 @@ void CPlayer::SelectFrame()
 
 void CPlayer::ankh()
 {
-/*int o;
+int o;
   if (!ankhtime) return;
 
   o = ankhshieldobject;
-  objects[o].x = x - (8<<CSF);
-  objects[o].y = y - (8<<CSF);
+  mp_object->x = x - (8<<CSF);
+  mp_object->y = y - (8<<CSF);
 
   ankhtime--;
   if (!ankhtime)
-    objects[o].exists = 0;
+	  mp_object->exists = 0;
 
   else if (ankhtime < ANKH_STAGE3_TIME)
-    objects[o].ai.se.state = ANKH_STATE_FLICKERSLOW;
+	  mp_object->ai.se.state = ANKH_STATE_FLICKERSLOW;
   else if (ankhtime < ANKH_STAGE2_TIME)
-    objects[o].ai.se.state = ANKH_STATE_FLICKERFAST;
+	  mp_object->ai.se.state = ANKH_STATE_FLICKERFAST;
   else
-    objects[o].ai.se.state = ANKH_STATE_NOFLICKER;
-*/
+	  mp_object->ai.se.state = ANKH_STATE_NOFLICKER;
 }
 

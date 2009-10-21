@@ -159,6 +159,22 @@
 #define PDIE_RISE_SPEED    -20
 #define DIE_MAX_XVECT       10
 
+// for ankh shield...
+// stage1 is no flicker of the shield, changes colors
+// in stage2 the shield flickers fast, changes colors
+// in stage3 the shield flashes slow, no color change
+#define ANKH_STAGE1_TIME    3000
+#define ANKH_STAGE2_TIME    1500
+#define ANKH_STAGE3_TIME    500
+#define PLAY_ANKH_TIME      (ANKH_STAGE1_TIME+ANKH_STAGE2_TIME+ANKH_STAGE3_TIME)
+// these correspond stage 1,2 and 3 respectively
+#define ANKH_STATE_NOFLICKER    0
+#define ANKH_STATE_FLICKERFAST  1
+#define ANKH_STATE_FLICKERSLOW  2
+
+// friction when player is pushed by yorp's, ball's, etc.
+#define PLAYPUSH_DECREASERATE   1
+
 // if player[].psupportingtile contains this value the player is actually
 // supported by an object and you should look in player[].psupportingobj
 // for it's index.

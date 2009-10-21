@@ -18,18 +18,6 @@ LEVEL_COMPLETE            // on to the next level!
 // at TOTAL_WAIT_TIME, LEVEL_DONE_FADEOUT is initiated.
 #define LEVEL_DONE_TOTAL_WAIT_TIME       1000
 
-// for ankh shield...
-// stage1 is no flicker of the shield, changes colors
-// in stage2 the shield flickers fast, changes colors
-// in stage3 the shield flashes slow, no color change
-#define ANKH_STAGE1_TIME    3000
-#define ANKH_STAGE2_TIME    1500
-#define ANKH_STAGE3_TIME    500
-#define PLAY_ANKH_TIME      (ANKH_STAGE1_TIME+ANKH_STAGE2_TIME+ANKH_STAGE3_TIME)
-// these correspond stage 1,2 and 3 respectively
-#define ANKH_STATE_NOFLICKER    0
-#define ANKH_STATE_FLICKERFAST  1
-#define ANKH_STATE_FLICKERSLOW  2
 
 // rate at which the periodically firing guns in ep3 will fire
 #define GUN_FIRE_FREQ        800
@@ -84,11 +72,6 @@ DOWN
 #define DIE_TILL_FLY_TIME   320
 #define PDIE_RISE_SPEED    -20
 #define DIE_MAX_XVECT       10
-
-
-
-// friction when player is pushed by yorp's, ball's, etc.
-#define PLAYPUSH_DECREASERATE   1
 
 // uses by the key processing function which changes CTRL, ALT, and CTRL+ALT
 // into JUMP, POGO, and FIRE.
