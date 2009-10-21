@@ -271,7 +271,7 @@ void CPlayGame::process()
 					 " ; y = " + itoa(mp_Player[0].y);
 		#else
 			 tempbuf = "LPS: " + itoa(g_pTimer->getLoopsPerSec()) + " FPS: " +
-					 g_pTimer->getFramesPerSec();
+					 itoa(g_pTimer->getFramesPerSec());
 		#endif
 	     g_pGfxEngine->Font->drawFont( sfc, tempbuf, 320-3-(tempbuf.size()<<3), 3, 1);
 	}

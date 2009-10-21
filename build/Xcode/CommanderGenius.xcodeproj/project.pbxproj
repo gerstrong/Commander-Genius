@@ -198,6 +198,7 @@
 		63D4A712107FEB7C00E43500 /* tile185.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6FF107FEB7C00E43500 /* tile185.tga */; };
 		63D4A713107FEB7C00E43500 /* tile190.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A700107FEB7C00E43500 /* tile190.tga */; };
 		63D4A714107FEB7C00E43500 /* yorpshield.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A701107FEB7C00E43500 /* yorpshield.tga */; };
+		63F4128F108F9BB1003A2E02 /* arguments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63F4128D108F9BB1003A2E02 /* arguments.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -644,6 +645,8 @@
 		63D4A700107FEB7C00E43500 /* tile190.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = tile190.tga; sourceTree = "<group>"; };
 		63D4A701107FEB7C00E43500 /* yorpshield.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = yorpshield.tga; sourceTree = "<group>"; };
 		63DCCCBB104CBC3000B3BC10 /* version.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = version.h; path = ../../version.h; sourceTree = SOURCE_ROOT; };
+		63F4128D108F9BB1003A2E02 /* arguments.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = arguments.cpp; path = ../../src/arguments.cpp; sourceTree = SOURCE_ROOT; };
+		63F4128E108F9BB1003A2E02 /* arguments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = arguments.h; path = ../../src/arguments.h; sourceTree = SOURCE_ROOT; };
 		8D0C4E960486CD37000505A6 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1199,6 +1202,8 @@
 				63D4A6F4107FEB7C00E43500 /* arrowd.tga */,
 				63D4A6F5107FEB7C00E43500 /* arrowlr.tga */,
 				63D4A6F6107FEB7C00E43500 /* arrowu.tga */,
+				63F4128D108F9BB1003A2E02 /* arguments.cpp */,
+				63F4128E108F9BB1003A2E02 /* arguments.h */,
 				63D4A6F7107FEB7C00E43500 /* arrowud.tga */,
 				63D4A6F8107FEB7C00E43500 /* arrowul.tga */,
 				63BE59E0108501BF009C7293 /* CPlayGameCollision.cpp */,
@@ -1416,6 +1421,7 @@
 				636BC859108772B600996B46 /* CPlayGameDialogs.cpp in Sources */,
 				63640500108836F4001799CE /* crc.cpp in Sources */,
 				63D34908108B64990033C412 /* CPlayGamePhysics.cpp in Sources */,
+				63F4128F108F9BB1003A2E02 /* arguments.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
