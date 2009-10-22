@@ -281,9 +281,30 @@ void CVideoDriver::setMode(int width, int height,int depth)
 
 void CVideoDriver::stop(void)
 {
-	if(screen) { SDL_FreeSurface(screen); g_pLogFile->textOut("freed screen<br>"); screen = NULL; }
-	if(ScrollSurface && (ScrollSurface->map != NULL)) { SDL_FreeSurface(ScrollSurface); g_pLogFile->textOut("freed scrollsurface<br>"); ScrollSurface = NULL; }
-	if(blitsurface_alloc) { blitsurface_alloc = 0; SDL_FreeSurface(BlitSurface); g_pLogFile->textOut("freed blitsurface<br>"); BlitSurface=NULL; }
+    if(blitsurface_alloc && BlitSurface)
+    {
+        SDL_FreeSurface(BlitSurface);
+        g_pLogFile->textOut("freed BlitSurface<br>");
+        BlitSurface=NULL;
+    }
+    if(FGLayerSurface)
+    {
+        SDL_FreeSurface(FGLayerSurface);
+        g_pLogFile->textOut("freed FGLayerSurface<br>");
+        FGLayerSurface=NULL;
+    }
+    if(ScrollSurface && (ScrollSurface->map != NULL))
+    {
+        SDL_FreeSurface(ScrollSurface);
+        g_pLogFile->textOut("freed ScrollSurface<br>");
+        ScrollSurface=NULL;
+    }
+    if(FXSurface)
+    {
+        SDL_FreeSurface(FXSurface);
+        g_pLogFile->textOut("freed FXSurface<br>");
+        FXSurface=NULL;
+    }
 #ifdef USE_OPENGL
 	if(mp_OpenGL) { delete mp_OpenGL; mp_OpenGL = NULL; }
 #endif
@@ -432,70 +453,78 @@ void CVideoDriver::setZoom(short value)
 
 bool CVideoDriver::createSurfaces(void)
 {
+	unsigned stretch_blit_yoff = 0;
+
 	// This function creates the surfaces which are needed for the game.
-	SDL_Surface *temp_surface;
-	unsigned stretch_blit_yoff;
+    ScrollSurface = createSurface( "ScrollSurface", true
+                                   , 512
+                                   , 512
+                                   , m_Resolution.depth
+                                   , Mode, screen->format );
 
-	stretch_blit_yoff = 0;
-
-	temp_surface = SDL_CreateRGBSurface( Mode, 512, 512, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
-	ScrollSurface = SDL_DisplayFormatAlpha( temp_surface );
-	SDL_FreeSurface(temp_surface);
-	if (!ScrollSurface)
-	{
-		g_pLogFile->textOut(RED,"VideoDriver: Couldn't create ScrollSurface!<br>");
-		return false;
-	}
-
-    if(m_Resolution.width == 320 && !m_opengl)
+    if (m_Resolution.width == 320 && !m_opengl)
     {
     	g_pLogFile->textOut("Blitsurface = Screen<br>");
     	BlitSurface = screen;
     	blitsurface_alloc = 0;
-    	VRAMPtr = (unsigned char*)screen->pixels +
-    			((m_Resolution.width * stretch_blit_yoff * m_Resolution.depth)>>3)+
-    			screenrect.y*screen->pitch + (screenrect.x*m_Resolution.depth>>3);
     }
     else
     {
     	g_pLogFile->textOut("Blitsurface = creatergbsurfacefrom<br>");
-    	temp_surface = SDL_CreateRGBSurface(Mode, game_resolution_rect.w, game_resolution_rect.h, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
-    	BlitSurface = SDL_DisplayFormatAlpha( temp_surface );
-    	SDL_FreeSurface(temp_surface);
-		if (!BlitSurface)
-		{
-			g_pLogFile->textOut(RED,"VidDrv_Start(): Couldn't create BlitSurface!<br>");
-			return false;
-		}
+        BlitSurface = createSurface( "BlitSurface", true
+                                     , game_resolution_rect.w
+                                     , game_resolution_rect.h
+                                     , m_Resolution.depth
+                                     , Mode, screen->format );
 		blitsurface_alloc = 1;
-		VRAMPtr = (unsigned char*)screen->pixels + ((m_Resolution.width * stretch_blit_yoff * m_Resolution.depth)>>3)+screenrect.y*screen->pitch + (screenrect.x*m_Resolution.depth>>3);
     }
+    VRAMPtr = (unsigned char*)screen->pixels +
+              ((m_Resolution.width * stretch_blit_yoff * m_Resolution.depth)>>3)+
+              screenrect.y*screen->pitch + (screenrect.x*m_Resolution.depth>>3);
 
     // Some surfaces could get 320x240 and the screenspace is extended.
     // The video class must be changed for any further resolutions
     game_resolution_rect.x = 0; game_resolution_rect.y = 0;
 
-	temp_surface = SDL_CreateRGBSurface( Mode, game_resolution_rect.w, game_resolution_rect.h, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
-	FGLayerSurface = SDL_DisplayFormat( temp_surface );
-	if (!FGLayerSurface)
-	{
-		g_pLogFile->textOut(RED,"VideoDriver: Couldn't create FGLayerSurface!<br>");
-		return false;
-	}
+    FGLayerSurface = createSurface( "FGLayerSurface", false
+                                 , game_resolution_rect.w
+                                 , game_resolution_rect.h
+                                 , m_Resolution.depth
+                                 , Mode, screen->format );
+
 	SDL_SetColorKey( FGLayerSurface, SDL_SRCCOLORKEY,
-					SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE) );
+                     SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE) );
 	//Set surface alpha
 	SDL_SetAlpha( FGLayerSurface, SDL_SRCALPHA, 225 );
 
-	FXSurface =  SDL_CreateRGBSurface( Mode, game_resolution_rect.w, game_resolution_rect.h, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
-	if (!FXSurface)
-	{
-		g_pLogFile->textOut(RED,"VideoDriver: Couldn't create FXSurface!<br>");
-	  return false;
-	}
+    FXSurface = createSurface( "FXSurface", false
+                               , game_resolution_rect.w
+                               , game_resolution_rect.h
+                               , m_Resolution.depth
+                               , Mode, screen->format );
+
 	g_pGfxEngine->Palette.setFXSurface( FXSurface );
 
 	return true;
+}
+
+SDL_Surface* CVideoDriver::createSurface( std::string name, bool alpha, int width, int height, int bpp, int mode, SDL_PixelFormat* format )
+{
+    SDL_Surface *temporary, *optimized;
+
+	temporary = SDL_CreateRGBSurface( mode, width, height, bpp, format->Rmask, format->Gmask, format->Bmask, format->Amask);
+	if (alpha) {
+        optimized = SDL_DisplayFormatAlpha( temporary );
+	} else {
+        optimized = SDL_DisplayFormat( temporary );
+	}
+	SDL_FreeSurface(temporary);
+	if (!optimized)
+	{
+		g_pLogFile->textOut(RED,"VideoDriver: Couldn't create surface:" + name +"<br>");
+		return false;
+	}
+	return optimized;
 }
 
 void CVideoDriver::blitScrollSurface(Sint16 sbufferx, Sint16 sbuffery) // This is only for tiles

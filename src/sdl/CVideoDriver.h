@@ -1,5 +1,5 @@
 /*
- * CVideoDriver.h 
+ * CVideoDriver.h
  *
  *  Created on: 17.03.2009
  *      Author: gerstrong
@@ -41,6 +41,7 @@ public:
 
 	bool applyMode(void);
 	bool createSurfaces(void);
+	SDL_Surface* createSurface( std::string name, bool alpha, int width, int height, int bpp, int mode, SDL_PixelFormat* format );
 	void stop(void);
 	bool start(void);
 	void isFullscreen(bool value);
