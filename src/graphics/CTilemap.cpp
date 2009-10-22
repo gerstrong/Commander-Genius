@@ -153,3 +153,18 @@ void CTilemap::registerAnimation(Uint32 x, Uint32 y, int c)
     }
 }
 
+void CTilemap::deAnimateAt(Uint16 px, Uint16 py)
+{
+    // find it!
+    for(int i=1;i<MAX_ANIMTILES-1;i++)
+    {
+      if (m_animtiles[i].x == px && m_animtiles[i].y == py)
+      {
+        m_animtiles[i].slotinuse = 0;
+        m_animtiles[i].offset = 0;
+        m_AnimTileInUse[px>>4][py>>4] = 0;
+        return;
+      }
+    }
+}
+

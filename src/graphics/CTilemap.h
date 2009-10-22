@@ -55,6 +55,7 @@ public:
 	void animateAllTiles(SDL_Surface *dst);
 	void unregisterAnimtiles(int tile);
 	void registerAnimation(Uint32 x, Uint32 y, int c);
+	void deAnimateAt(Uint16 px, Uint16 py);
 
 	stTile *mp_tiles;
 

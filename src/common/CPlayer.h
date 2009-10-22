@@ -159,6 +159,8 @@ public:
 
 private:
 	CStatusScreen *mp_StatusScr;
+
+	bool getGoodie(int px, int py);
 };
 
 #endif /* CPLAYER_H_ */

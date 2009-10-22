@@ -208,7 +208,6 @@ void CPlayGame::process()
 				// Process the falling physics of the player here.
 				// We need to know the objects and tiles which could hinder the fall.
 				// decide if player should fall
-
 				if (!mp_Player[i].inhibitfall) processPlayerfallings(&mp_Player[i]);
 				else
 				{

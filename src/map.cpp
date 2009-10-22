@@ -208,22 +208,6 @@ void drawmap(void)
       map_draw_hstripe(y<<4, y);
 }
 
-// changes the tile at (x,y) in real time
-void map_chgtile(unsigned int x, unsigned int y, int newtile)
-{
-   /*map.mapdata[x][y] = newtile;
-
-   if (x>=mapx && y>=mapy && x<mapx+64 && y<mapy+64)
-   {
-	   g_pGfxEngine->Tilemap->drawTile(g_pVideoDriver->getScrollSurface(),
-			   ((mapxstripepos+((x-mapx)<<4))&511),
-			   ((mapystripepos+((y-mapy)<<4))&511),
-			   newtile);
-   }
-
-   map_redraw();*/
-}
-
 // searches for animated tiles at the map position (X,Y) and
 // unregisters them from animtiles
 void map_deanimate(int x, int y)

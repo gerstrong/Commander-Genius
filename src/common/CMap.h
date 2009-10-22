@@ -27,11 +27,13 @@ public:
 	void drawAll();
 	void drawHstripe( unsigned int y, unsigned int mpy );
 	void drawVstripe( unsigned int x, unsigned int mpx );
+	void deAnimate(int x, int y);
 
 	Uint16 at(Uint16 x, Uint16 y);
 	Uint16 getObjectat(Uint16 x, Uint16 y);
 
 	bool setTile(Uint16 x, Uint16 y, Uint16 t);
+	bool changeTile(Uint16 x, Uint16 y, Uint16 t);
 
 	unsigned int getlevelat(unsigned int x, unsigned int y)	{
 				return m_objectlayer[x>>4][y>>4];	}

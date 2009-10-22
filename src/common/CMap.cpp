@@ -58,7 +58,6 @@ Uint16 CMap::getObjectat(Uint16 x, Uint16 y)
 	return m_objectlayer[x][y];
 }
 
-
 bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t)
 {
 	if( x<m_width && y<m_height )
@@ -68,6 +67,19 @@ bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t)
 	}
 	else
 		return false;
+}
+
+// Called in level. This function does the same as setTile, but also draws directly to the scrollsurface
+// used normally, when items are picked up
+bool CMap::changeTile(Uint16 x, Uint16 y, Uint16 t)
+{
+	if(setTile( x, y, t))
+	{
+		mp_Tilemap->drawTile(mp_scrollsurface, (x<<4)&511, (y<<4)&511, t);
+		mp_Tilemap->registerAnimation( (x<<4)&511, (y<<4)&511, t );
+		return true;
+	}
+	return false;
 }
 
 ////
@@ -211,3 +223,20 @@ int num_h_tiles= mp_scrollsurface->h/16;
       mp_Tilemap->registerAnimation( x, ((y<<4)+m_mapystripepos)&511, c );
   }
 }
+
+///
+// Animation functions
+///
+// searches for animated tiles at the map position (X,Y) and
+// unregisters them from animtiles
+void CMap::deAnimate(int x, int y)
+{
+int px,py;
+	// figure out pixel position of map tile (x,y)
+    px = ((m_mapxstripepos+((x-m_mapx)<<4))&511);
+    py = ((m_mapystripepos+((y-m_mapy)<<4))&511);
+
+    mp_Tilemap->deAnimateAt(px , py);
+}
+
+

@@ -209,54 +209,38 @@ void CPlayer::setDir()
 // let's have keen be able to pick up goodies
 void CPlayer::getgoodies()
 {
-stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
-
-	/*if ((TileProperty[mp_map->at((x>>CSF), (y>>CSF))].behaviour > 0) &&
-			   ( TileProperty[mp_map->at((x>>CSF), (y>>CSF))].behaviour < 31 ) )
-	      { keen_get_goodie((x>>CSF), (y>>CSF)); return; }*/
-	/*
-   if ((TileProperty[getmaptileat((x>>CSF)+9, (y>>CSF)+1)][BEHAVIOR] > 0) &&
-		   ( TileProperty[getmaptileat((x>>CSF)+9, (y>>CSF)+1)][BEHAVIOR] < 31 ) )
-      { keen_get_goodie((x>>CSF)+9, (y>>CSF)+1, cp, pCKP); return; }
-
-   else if ((TileProperty[getmaptileat((x>>CSF)+4, (y>>CSF)+8)][BEHAVIOR] > 0) &&
-		   ( TileProperty[getmaptileat((x>>CSF)+4, (y>>CSF)+8)][BEHAVIOR] < 31 ) )
-      { keen_get_goodie((x>>CSF)+4, (y>>CSF)+8, cp, pCKP); return; }
-
-   else if ((TileProperty[getmaptileat((x>>CSF)+9, (y>>CSF)+16)][BEHAVIOR] > 0) &&
-		   ( TileProperty[getmaptileat((x>>CSF)+9, (y>>CSF)+16)][BEHAVIOR] < 31 ) )
-      { keen_get_goodie((x>>CSF)+9, (y>>CSF)+16, cp, pCKP); return; }
-
-   else if ((TileProperty[getmaptileat((x>>CSF)+4, (y>>CSF)+23)][BEHAVIOR] > 0) &&
-		   ( TileProperty[getmaptileat((x>>CSF)+4, (y>>CSF)+23)][BEHAVIOR] < 31 ) )
-      { keen_get_goodie((x>>CSF)+4, (y>>CSF)+23, cp, pCKP); return; }
-      */
+	if(getGoodie((x>>CSF), (y>>CSF)) ) return;     	// Upper-Left
+	else if(getGoodie(((x+w-1)>>CSF), (y>>CSF)) ) return; // Upper-Right
+	else if(getGoodie((x>>CSF), ((y+h-1)>>CSF)) ) return; // Lower-Left
+	else if(getGoodie(((x+w-1)>>CSF), ((y+h-1)>>CSF)) ) return; // Lower-Right
 }
 
 // have keen pick up the goodie at screen pixel position (px, py)
-/*void CPlayer::getGoodie(int px, int py)
+bool CPlayer::getGoodie(int px, int py)
 {
-int t;
 stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
-   t = map.mapdata[px][py];
+Uint16 tile = mp_map->at(px, py);
+char behaviour = TileProperty[tile].behaviour;
 
-   if ((TileProperty[t].behaviour < 17 && TileProperty[t].behaviour > 5) ||
-	   (TileProperty[t].behaviour > 17 && TileProperty[t].behaviour < 22) ||
-	   (TileProperty[t].behaviour == 27 || TileProperty[t].behaviour == 28)   ) // All pickupable items
-   {  // pick up the goodie, i.e. erase it from the map
-      mp_map->setTile(mpx, mpy, tiles[t].chgtile);
-      if (TileProperty[t].animation != 1) map_deanimate(mpx, mpy);
-   }
-   else if (TileProperty[t].behaviour == 1) // Lethal (Deadly) Behavoir
-   {  // whoah, this "goodie" isn't so good...
-      killplayer(theplayer);
-      return;
-   }
-
-   // do whatever the goodie is supposed to do...
-   procgoodie(t, mpx, mpy, theplayer, pCKP);
-}*/
-
+	if (behaviour>0 && behaviour<31)
+	{
+	   if ((TileProperty[tile].behaviour < 17 && TileProperty[tile].behaviour > 5) ||
+		   (TileProperty[tile].behaviour > 17 && TileProperty[tile].behaviour < 22) ||
+		   (TileProperty[tile].behaviour == 27 || TileProperty[tile].behaviour == 28)   ) // All pickupable items
+	   {  // pick up the goodie, i.e. erase it from the map
+		  mp_map->changeTile(px, py, TileProperty[tile].chgtile);
+		  if (TileProperty[tile].animation != 1) mp_map->deAnimate(px, py);
+	   }
+	   else if (TileProperty[tile].behaviour == 1) // Lethal (Deadly) Behavoir
+	   {  // whoah, this "goodie" isn't so good...
+		  //killplayer(theplayer);
+	   }
+	   // do whatever the goodie is supposed to do...
+	   //procgoodie(t, mpx, mpy, theplayer, pCKP);
+	  return true;
+	}
+	return false;
+}
 
 // handle playpushed_x: for yorps/scrubs/etc pushing keen
 void CPlayer::playpushed()

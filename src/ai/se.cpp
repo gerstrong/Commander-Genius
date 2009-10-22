@@ -1041,7 +1041,7 @@ int newobject;
 
 void set_mortimer_surprised(int yes)
 {
-    if (yes)
+    /*if (yes)
     {
       mortimer_surprisedcount++;
     }
@@ -1064,5 +1064,5 @@ void set_mortimer_surprised(int yes)
 		map_chgtile(12,6,607);
 		map_chgtile(11,6,613);
 		map_chgtile(13,6,616);
-    }
+    }*/
 }
