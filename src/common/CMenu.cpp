@@ -50,6 +50,10 @@ bool CMenu::init( char menu_type )
 	{
 		initOptionsMenu();
 	}
+	else if( m_menu_type == CONTROLPLAYERS)
+	{
+		initNumControlMenu();
+	}
 
 	// Use the standard Menu-Frame used in the old DOS-Games
 	mp_Dialog->setFrameTheme( DLG_THEME_OLDSCHOOL );
@@ -117,7 +121,18 @@ void CMenu::initOptionsMenu()
 	mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 1, "Graphics");
 	mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 2, "Audio");
 	mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 3, "Game");
-	mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 4, "Controls");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Controls");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Back");
+}
+
+void CMenu::initNumControlMenu()
+{
+	mp_Dialog = new CDialog(mp_MenuSurface, 13, 8);
+
+	mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 1, "Player 1");
+	mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 2, "Player 2");
+	mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 3, "Player 3");
+	mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 4, "Player 4");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Back");
 }
 
@@ -146,6 +161,7 @@ void CMenu::process()
 	else if( m_menu_type == NEW ) processNumPlayersMenu();
 	else if( m_menu_type == DIFFICULTY ) processDifficultyMenu();
 	else if( m_menu_type == OPTIONS ) processOptionsMenu();
+	else if( m_menu_type == CONTROLPLAYERS ) processOptionsMenu();
 }
 
 void CMenu::processMainMenu()
@@ -245,10 +261,35 @@ void CMenu::processDifficultyMenu()
 		cleanup();
 		init(NEW);
 	}
-
 }
 
 void CMenu::processOptionsMenu()
+{
+	if( m_selection == -1) return;
+
+	cleanup();
+	if ( m_selection == 3 )
+	{
+		cleanup();
+		init(CONTROLPLAYERS);
+	}
+	else if( m_selection == 4 )
+	{
+		m_goback = true;	
+	}
+	else
+	{
+		return;
+	}
+
+	if(m_goback)
+	{
+		cleanup();
+		init(MAIN);
+	}
+}
+
+void CMenu::processNumControlMenu()
 {
 	if( m_selection == -1) return;
 
@@ -265,9 +306,8 @@ void CMenu::processOptionsMenu()
 	if(m_goback)
 	{
 		cleanup();
-		init(MAIN);
+		init(OPTIONS);
 	}
-
 }
 
 // This function shows the Story of Commander Keen!
