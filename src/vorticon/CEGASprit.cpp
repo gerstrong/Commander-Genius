@@ -15,6 +15,7 @@
 #include "../include/game.h"
 #include "../FindFile.h"
 #include "../sdl/CVideoDriver.h"
+#include "../vorticon/spritedefines.h"
 #include <stdio.h>
 #include <string.h>
 

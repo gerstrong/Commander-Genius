@@ -23,15 +23,22 @@
 CPlayer::CPlayer() {
 	// Set every value in the class to zero.
 
+   	mp_levels_completed = NULL;
+   	mp_object = NULL;
+    mp_map = NULL;
+    mp_StatusScr = NULL;
+    setDatatoZero();
+}
+
+// Sets the player data to the initial value
+void CPlayer::setDatatoZero()
+{
 	// When worldmap is set up, use that frame
 	playframe = PMAPDOWNFRAME;
 
 	hideplayer = false;
   	pwalkframe = 0;
    	m_player_number = 0;
-   	mp_levels_completed = NULL;
-   	mp_object = NULL;
-
     dpadcount = 0;
     hideplayer = false;
     mounted = false;
@@ -53,12 +60,13 @@ CPlayer::CPlayer() {
     pjustjumped = pjustfell = 0;
     psupportingtile = psupportingobject = lastsupportingobject = 0;
 
-    mp_map = NULL;
-    mp_StatusScr = NULL;
-
     m_godmode = false;
     m_cheats_enabled = false;
     m_showStatusScreen = false;
+
+    // Set all the inventory to zero.
+    memset(&inventory, 0, sizeof(stInventory));
+    inventory.extralifeat = 20000;
 }
 
 // handles walking. the walking animation is handled by gamepdo_walkinganim()
@@ -327,16 +335,16 @@ void CPlayer::WalkingAnimation()
             {
                if (pwalkframea&1)
                  {
-            	   g_pSound->playStereofromCoord(SOUND_KEEN_WALK, PLAY_NOW, mp_object->scrx);
+            	   g_pSound->playStereofromCoord(SOUND_KEEN_WALK, PLAY_NOW, mp_object->at(m_player_number).scrx);
                  }
                else
                  {
-            	   g_pSound->playStereofromCoord(SOUND_KEEN_WALK2, PLAY_NOW, mp_object->scrx);
+            	   g_pSound->playStereofromCoord(SOUND_KEEN_WALK2, PLAY_NOW, mp_object->at(m_player_number).scrx);
                  }
 
                if( m_playingmode != WORLDMAP && (blockedr || blockedl) )
                {
-            	   g_pSound->playStereofromCoord(SOUND_KEEN_BUMPHEAD, PLAY_NOW, mp_object->scrx);
+            	   g_pSound->playStereofromCoord(SOUND_KEEN_BUMPHEAD, PLAY_NOW, mp_object->at(m_player_number).scrx);
 				   // It is not bumping a head, but walking in some direction and being blocked
                }
                else if ( m_playingmode == WORLDMAP )
@@ -358,7 +366,7 @@ void CPlayer::WalkingAnimation()
             		   play=1;
 
             	   if (play)
-            		   g_pSound->playStereofromCoord(SOUND_KEEN_BUMPHEAD, PLAY_NOW, mp_object->scrx);
+            		   g_pSound->playStereofromCoord(SOUND_KEEN_BUMPHEAD, PLAY_NOW, mp_object->at(m_player_number).scrx);
                }
 
             }

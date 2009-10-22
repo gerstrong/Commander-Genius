@@ -138,7 +138,7 @@ unsigned char *p_exedata;
             m_EGAGraphics->loadData( version, p_exedata );
     }
 
-    if( (flags & LOADGFX) == LOADSTR )
+    if( (flags & LOADSTR) == LOADSTR )
     {
     	// load the strings. TODO: After that this one will replace loadstrings
     	//m_Messages = new CMessages();

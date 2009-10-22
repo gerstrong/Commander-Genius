@@ -15,6 +15,7 @@
 #include "CStatusScreen.h"
 #include "Playerdefines.h"
 #include "options.h"
+#include <vector>
 
 ///
 // Class definition starts here!
@@ -32,6 +33,7 @@ public:
 	};
 
 	CPlayer();
+	void setDatatoZero();
 	void setMapData(CMap *p_map){	mp_map = p_map;	}
 
 	// World Map specific
@@ -85,7 +87,7 @@ public:
 	char m_episode;
 	int m_player_number;
 	// Pointer to the Object type assign to this player
-	CObject *mp_object;
+	std::vector<CObject> *mp_object;
 
 	char godmode;
 
@@ -160,7 +162,15 @@ public:
 private:
 	CStatusScreen *mp_StatusScr;
 
+	// defined under CPlayerItems.cpp
 	bool getGoodie(int px, int py);
+	void procGoodie(int t, int mpx, int mpy);
+	void riseBonus(int spr, int x, int y);
+	void give_keycard(int doortile);
+	void getBonuspoints(int numpts, int mpx, int mpy);
+	void incScore(int numpts);
+	void openDoor(int doortile, int doorsprite, int mpx, int mpy);
+	void giveAnkh();
 };
 
 #endif /* CPLAYER_H_ */

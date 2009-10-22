@@ -122,7 +122,7 @@ void CPlayGame::processPlayerfallings(CPlayer *p_player)
 		 // set initial fall speed and make the AAAAAUUUUHHHHH noise
 		 p_player->pfallspeed = 1;
 		 if (!p_player->pjustjumped)
-			 g_pSound->playStereofromCoord(SOUND_KEEN_FALL, PLAY_NOW, p_player->mp_object->scrx);
+			 g_pSound->playStereofromCoord(SOUND_KEEN_FALL, PLAY_NOW, p_player->mp_object->at(p_player->m_player_number).scrx);
 	   }
 
 	   // gradually increase the fall speed up to maximum rate
@@ -143,7 +143,7 @@ void CPlayGame::processPlayerfallings(CPlayer *p_player)
 			  g_pSound->stopSound(SOUND_KEEN_FALL);  // terminate fall noise
 		  // thud noise
 		  if (!p_player->ppogostick)
-			  g_pSound->playStereofromCoord(SOUND_KEEN_LAND, PLAY_NOW, p_player->mp_object->scrx);
+			  g_pSound->playStereofromCoord(SOUND_KEEN_LAND, PLAY_NOW, p_player->mp_object->at(p_player->m_player_number).scrx);
 		  // fix "sliding" effect when you fall, go one way, then
 		  // before you land turn around and as you hit the ground
 		  // you're starting to move the other direction

@@ -54,7 +54,7 @@ CPlayGame::CPlayGame( char episode, char level,
 		m_Object.push_back(object);
 		m_Object[i].exists = true;
 		m_Object[i].onscreen = true;
-		mp_Player[i].mp_object = &(m_Object.at(i));
+		mp_Player[i].mp_object = &m_Object;
 		mp_Player[i].mp_option = p_option;
 	}
 

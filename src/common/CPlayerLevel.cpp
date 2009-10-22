@@ -206,42 +206,6 @@ void CPlayer::setDir()
    }
 }
 
-// let's have keen be able to pick up goodies
-void CPlayer::getgoodies()
-{
-	if(getGoodie((x>>CSF), (y>>CSF)) ) return;     	// Upper-Left
-	else if(getGoodie(((x+w-1)>>CSF), (y>>CSF)) ) return; // Upper-Right
-	else if(getGoodie((x>>CSF), ((y+h-1)>>CSF)) ) return; // Lower-Left
-	else if(getGoodie(((x+w-1)>>CSF), ((y+h-1)>>CSF)) ) return; // Lower-Right
-}
-
-// have keen pick up the goodie at screen pixel position (px, py)
-bool CPlayer::getGoodie(int px, int py)
-{
-stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
-Uint16 tile = mp_map->at(px, py);
-char behaviour = TileProperty[tile].behaviour;
-
-	if (behaviour>0 && behaviour<31)
-	{
-	   if ((TileProperty[tile].behaviour < 17 && TileProperty[tile].behaviour > 5) ||
-		   (TileProperty[tile].behaviour > 17 && TileProperty[tile].behaviour < 22) ||
-		   (TileProperty[tile].behaviour == 27 || TileProperty[tile].behaviour == 28)   ) // All pickupable items
-	   {  // pick up the goodie, i.e. erase it from the map
-		  mp_map->changeTile(px, py, TileProperty[tile].chgtile);
-		  if (TileProperty[tile].animation != 1) mp_map->deAnimate(px, py);
-	   }
-	   else if (TileProperty[tile].behaviour == 1) // Lethal (Deadly) Behavoir
-	   {  // whoah, this "goodie" isn't so good...
-		  //killplayer(theplayer);
-	   }
-	   // do whatever the goodie is supposed to do...
-	   //procgoodie(t, mpx, mpy, theplayer, pCKP);
-	  return true;
-	}
-	return false;
-}
-
 // handle playpushed_x: for yorps/scrubs/etc pushing keen
 void CPlayer::playpushed()
 {
@@ -402,7 +366,7 @@ void CPlayer::JumpAndPogo()
           if (pjumpanimtimer>PPOGO_PREPARE_TIME)
           {
              // continously bounce while pogo stick is out
-        	  g_pSound->playStereofromCoord(SOUND_KEEN_JUMP, PLAY_NOW, mp_object->scrx);
+        	  g_pSound->playStereofromCoord(SOUND_KEEN_JUMP, PLAY_NOW, mp_object->at(m_player_number).scrx);
 
         	  // jump high if JUMP key down, else bounce low
         	  if (playcontrol[PA_JUMP])
@@ -503,7 +467,7 @@ void CPlayer::JumpAndPogo()
 
                     pjumpframe = PJUMP_PREPARE_LAST_FRAME;
 
-                    g_pSound->playStereofromCoord(SOUND_KEEN_JUMP, PLAY_NOW, mp_object->scrx);
+                    g_pSound->playStereofromCoord(SOUND_KEEN_JUMP, PLAY_NOW, mp_object->at(m_player_number).scrx);
                     pjumping = PJUMPUP;
                     //pjumpupspeed_decrease = 0;
                     pjustjumped = 1;
@@ -546,7 +510,7 @@ void CPlayer::JumpAndPogo()
          if (blockedu)   // did we bonk something?
          {  // immediatly abort the jump
             pjumping = PNOJUMP;
-            g_pSound->playStereofromCoord(SOUND_KEEN_BUMPHEAD, PLAY_NOW, mp_object->scrx);
+            g_pSound->playStereofromCoord(SOUND_KEEN_BUMPHEAD, PLAY_NOW, mp_object->at(m_player_number).scrx);
          }
 
          // do the jump
@@ -716,18 +680,18 @@ int o;
   if (!ankhtime) return;
 
   o = ankhshieldobject;
-  mp_object->x = x - (8<<CSF);
-  mp_object->y = y - (8<<CSF);
+  mp_object->at(o).x = x - (8<<CSF);
+  mp_object->at(o).y = y - (8<<CSF);
 
   ankhtime--;
   if (!ankhtime)
-	  mp_object->exists = 0;
+	  mp_object->at(o).exists = 0;
 
   else if (ankhtime < ANKH_STAGE3_TIME)
-	  mp_object->ai.se.state = ANKH_STATE_FLICKERSLOW;
+	  mp_object->at(o).ai.se.state = ANKH_STATE_FLICKERSLOW;
   else if (ankhtime < ANKH_STAGE2_TIME)
-	  mp_object->ai.se.state = ANKH_STATE_FLICKERFAST;
+	  mp_object->at(o).ai.se.state = ANKH_STATE_FLICKERFAST;
   else
-	  mp_object->ai.se.state = ANKH_STATE_NOFLICKER;
+	  mp_object->at(o).ai.se.state = ANKH_STATE_NOFLICKER;
 }
 
