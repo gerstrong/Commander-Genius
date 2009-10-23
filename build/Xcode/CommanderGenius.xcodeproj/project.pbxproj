@@ -178,6 +178,7 @@
 		63AB8C2F107C62D0001EE22F /* cglogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63AB8C2E107C62D0001EE22F /* cglogo.icns */; };
 		63BE59E3108501BF009C7293 /* CPlayGameCollision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63BE59E0108501BF009C7293 /* CPlayGameCollision.cpp */; };
 		63BE59E4108501BF009C7293 /* CTeleporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63BE59E1108501BF009C7293 /* CTeleporter.cpp */; };
+		63CD0B781091F8FB00CB7B80 /* CPlayerItems.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD0B771091F8FB00CB7B80 /* CPlayerItems.cpp */; };
 		63D34908108B64990033C412 /* CPlayGamePhysics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63D34907108B64990033C412 /* CPlayGamePhysics.cpp */; };
 		63D4A702107FEB7C00E43500 /* 100.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6EF107FEB7C00E43500 /* 100.tga */; };
 		63D4A703107FEB7C00E43500 /* 1000.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6F0107FEB7C00E43500 /* 1000.tga */; };
@@ -547,6 +548,7 @@
 		23D3EE5A10176098001643FA /* CrashHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CrashHandler.h; sourceTree = "<group>"; };
 		5048396D09E3307300765E4B /* CommanderGeniusProj.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = CommanderGeniusProj.xcconfig; sourceTree = "<group>"; };
 		5048396E09E3307300765E4B /* CommanderGeniusTarget.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = CommanderGeniusTarget.xcconfig; sourceTree = "<group>"; };
+		6312202610910DB200053A0E /* spritedefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = spritedefines.h; sourceTree = "<group>"; };
 		63453BD510798CCC007265F8 /* CGameControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGameControl.cpp; sourceTree = "<group>"; };
 		63453BD610798CCC007265F8 /* CGameControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameControl.h; sourceTree = "<group>"; };
 		63453BDE10798CFE007265F8 /* CPassive.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPassive.cpp; sourceTree = "<group>"; };
@@ -623,6 +625,7 @@
 		63BE59E2108501BF009C7293 /* CTeleporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTeleporter.h; path = ../../src/vorticon/CTeleporter.h; sourceTree = SOURCE_ROOT; };
 		63BE59E5108501CF009C7293 /* Playerdefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Playerdefines.h; path = ../../src/common/Playerdefines.h; sourceTree = SOURCE_ROOT; };
 		63C6D70A108AE1A200A3805C /* inventory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = inventory.h; path = ../../src/common/inventory.h; sourceTree = SOURCE_ROOT; };
+		63CD0B771091F8FB00CB7B80 /* CPlayerItems.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CPlayerItems.cpp; path = ../../src/common/CPlayerItems.cpp; sourceTree = SOURCE_ROOT; };
 		63D34906108B648A0033C412 /* options.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = options.h; sourceTree = "<group>"; };
 		63D34907108B64990033C412 /* CPlayGamePhysics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CPlayGamePhysics.cpp; path = ../../src/vorticon/CPlayGamePhysics.cpp; sourceTree = SOURCE_ROOT; };
 		63D4A6EF107FEB7C00E43500 /* 100.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = 100.tga; sourceTree = "<group>"; };
@@ -818,6 +821,7 @@
 			children = (
 				637FC63310559B5600C2EA77 /* CBitmap.cpp */,
 				637FC63410559B5600C2EA77 /* CBitmap.h */,
+				63CD0B771091F8FB00CB7B80 /* CPlayerItems.cpp */,
 				235266F0104E75250054F00B /* CFont.cpp */,
 				235266F1104E75250054F00B /* CFont.h */,
 				235266FA104E754D0054F00B /* CGfxEngine.cpp */,
@@ -1077,6 +1081,7 @@
 		23D3E9FF1013ABCA001643FA /* vorticon */ = {
 			isa = PBXGroup;
 			children = (
+				6312202610910DB200053A0E /* spritedefines.h */,
 				23C637D9103181BF00FEEFEE /* COrderingInfo.cpp */,
 				23C637DA103181BF00FEEFEE /* COrderingInfo.h */,
 				23D3EC431016973A001643FA /* CEGAGraphics.cpp */,
@@ -1422,6 +1427,7 @@
 				63640500108836F4001799CE /* crc.cpp in Sources */,
 				63D34908108B64990033C412 /* CPlayGamePhysics.cpp in Sources */,
 				63F4128F108F9BB1003A2E02 /* arguments.cpp in Sources */,
+				63CD0B781091F8FB00CB7B80 /* CPlayerItems.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

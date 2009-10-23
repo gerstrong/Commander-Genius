@@ -209,7 +209,7 @@ void CGameLauncher::process()
             // outside the number of games, that exist. This means exit was triggered.
             m_mustquit = true;
         }
-        else if( selection >= 0 )
+        else
         {
             m_hasbeenchosen = true;
             m_chosenGame = selection;
