@@ -127,7 +127,6 @@ public:
 
 	unsigned char pdir,pshowdir,lastpdir;
 
-	bool pfiring, plastfire;
 	char pfireframetimer;
 	bool inhibitwalking, inhibitfall;
 
@@ -162,6 +161,9 @@ public:
 
 private:
 	CStatusScreen *mp_StatusScr;
+
+	bool lastpogo;
+	bool pfiring, plastfire;
 
 	// defined under CPlayerItems.cpp
 	bool getGoodie(int px, int py);

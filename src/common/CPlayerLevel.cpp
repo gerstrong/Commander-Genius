@@ -76,15 +76,16 @@ void CPlayer::walkbehindexitdoor()
 
 void CPlayer::dieanim() // Bad word for that. It's the entire die code
 {
-   /*if (!pdie) return;                // should never happen...
+   if (!pdie) return;                // should never happen...
    if (pdie==PDIE_DEAD) return;      // if true animation is over
    if (pdie==PDIE_FELLOFFMAP)
    {
      // wait for falling sound to complete, then kill the player
      if (!g_pSound->isPlaying(SOUND_KEEN_FALL))
      {
-        pdie = false;
-        killplayer(cp);
+        //pdie = false;
+        //killplayer(cp);
+    	// TODO: Not sure, what must go here! Check out!
      }
      else return;
    }
@@ -100,7 +101,7 @@ void CPlayer::dieanim() // Bad word for that. It's the entire die code
    // is it time to start flying off the screen?
    if (!pdietillfly)
    {  // time to fly off the screen
-     if (((y>>CSF)+96 > scroll_y) && (y>(16<<CSF)))
+     if (((y>>CSF)+96 > mp_map->m_scrolly) && (y>(16<<CSF)))
      {  // player has not reached top of screen
         // make player fly up
         y += PDIE_RISE_SPEED;
@@ -112,30 +113,12 @@ void CPlayer::dieanim() // Bad word for that. It's the entire die code
      else
      {  // reached top of screen. he's done.
        pdie = PDIE_DEAD;
-       if (inventory.lives<0)
-       {
-    	   p_levelcontrol->gameovermode = true;
-    	   g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
-    	   CBitmap *bm_gameover = g_pGfxEngine->getBitmap("GAMEOVER");
-    	   // figure out where to center the gameover bitmap and draw it
-		   int x = (g_pVideoDriver->getGameResRect().w/2)-(bm_gameover->getWidth()/2);
-		   int y = (g_pVideoDriver->getGameResRect().h/2)-(bm_gameover->getHeight()/2);
-		   bm_gameover->draw(g_pVideoDriver->BlitSurface, x, y);
-
-       }
-       else
-       {
-         endlevel(0,p_levelcontrol);
-         p_levelcontrol->chglevelto = WM_MAP_NUM;
-         p_levelcontrol->command = LVLC_CHANGE_LEVEL;
-       }
      }
    }
    else
    {  // not yet time to fly off screen, decrement timer
      pdietillfly--;
    }  // end "time to fly"
-   */
 }
 
 void CPlayer::keencicle()
@@ -236,72 +219,15 @@ void CPlayer::playpushed()
     }
 }
 
-// called when a switch is flipped. mx,my is the pixel coords of the switch,
-// relative to the upper-left corner of the map.
-/*void CPlayer::ExtendingPlatformSwitch(int x, int y, stLevelControl *p_levelcontrol)
-{
-uint ppos;
-int platx, platy;
-signed char pxoff, pyoff;
-int mapx, mapy;
-int o;
-
-	// convert pixel coords to tile coords
-	mapx = (x >> TILE_S);
-	mapy = (y >> TILE_S);
-
-	// figure out where the platform is supposed to extend at
-	// (this is coded in the object layer...
-	// high byte is the Y offset and the low byte is the X offset,
-	// and it's relative to the position of the switch.)
-	ppos = getlevelat(x, y);
-
-	if (!ppos || !p_levelcontrol->PlatExtending)
-	{
-		// flip switch
-		g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, mapx);
-		if (getmaptileat(x, y)==TILE_SWITCH_DOWN)
-			map_chgtile(mapx, mapy, TILE_SWITCH_UP);
-		else
-			map_chgtile(mapx, mapy, TILE_SWITCH_DOWN);
-	}
-
-	// if zero it means he hit the switch on a tantalus ray!
-	if (!ppos)
-	{
-		p_levelcontrol->success = 0;
-		p_levelcontrol->command = LVLC_TANTALUS_RAY;
-		return;
-	}
-	else
-	{
-		// it's a moving platform switch--don't allow player to hit it again while
-		// the plat is still moving as this will glitch
-		if (p_levelcontrol->PlatExtending) return;
-		p_levelcontrol->PlatExtending = 1;
-	}
-
-	pxoff = (ppos & 0x00ff);
-	pyoff = (ppos & 0xff00) >> 8;
-	platx = mapx + pxoff;
-	platy = mapy + pyoff;
-
-	// spawn a "sector effector" to extend/retract the platform
-	o = spawn_object(mapx<<TILE_S<<CSF,mapy<<TILE_S<<CSF,OBJ_SECTOREFFECTOR);
-	objects[o].ai.se.type = SE_EXTEND_PLATFORM;
-	objects[o].ai.se.platx = platx;
-	objects[o].ai.se.platy = platy;
-}*/
-
 // allow Keen to toggle the pogo stick and hit switches
 void CPlayer::TogglePogo_and_Switches()
 {
-/*int i;
+int i;
 int mx, my, t;
 CSprite *standsprite = g_pGfxEngine->Sprite[PSTANDFRAME];
 
 	// detect if KPOGO key only pressed
-	if (playcontrol[PA_POGO] && !lastplaycontrol[PA_POGO] && !pfrozentime)
+	if (playcontrol[PA_POGO] && !lastpogo && !pfrozentime)
 	{
 		// if we are standing near a switch hit the switch instead
 		mx = (x>>CSF)+(standsprite->getWidth()/2);
@@ -310,20 +236,22 @@ CSprite *standsprite = g_pGfxEngine->Sprite[PSTANDFRAME];
 		{
 			my = (y>>CSF)+i;
 
-			t = getmaptileat(mx, my);
+			t = mp_map->at(mx, my);
 
 			// check for extending-platform switch
 			if (t==TILE_SWITCH_UP || t==TILE_SWITCH_DOWN )
 			{
-				ExtendingPlatformSwitch(mx, my, p_levelcontrol);
+				//ExtendingPlatformSwitch(mx, my, p_levelcontrol);
+				// TODO: ADD CODE here, but this must happen outside this function
 				if (!ppogostick) return;
 			}
 			else if (t==TILE_LIGHTSWITCH)
 			{ // lightswitch
-				   p_levelcontrol->dark ^= 1;
+				   /*p_levelcontrol->dark ^= 1;
 				   g_pGfxEngine->Palette.setdark(p_levelcontrol->dark);
 				   g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, objects[useObject].scrx);
-				if (!ppogostick) return;
+				if (!ppogostick) return;*/
+				// TODO: ADD CODE here, but this must happen outside this function
 			}
 		}
 
@@ -332,7 +260,12 @@ CSprite *standsprite = g_pGfxEngine->Sprite[PSTANDFRAME];
 		{
 			ppogostick ^= 1;
 		}
-	}*/
+		lastpogo = true;
+	}
+	else
+	{
+		lastpogo = false;
+	}
 }
 
 void CPlayer::JumpAndPogo()
@@ -542,7 +475,6 @@ void CPlayer::JumpAndPogo()
 // oh wait, he does, and here's the code for it.
 void CPlayer::raygun()
 {
-int o;
 int canRefire;
 CObject *pPlayerObject = &mp_object->at(m_player_number);
 

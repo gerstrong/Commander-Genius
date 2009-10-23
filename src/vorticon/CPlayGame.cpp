@@ -11,6 +11,7 @@
 #include "../keen.h"
 #include "../sdl/CTimer.h"
 #include "../sdl/CVideoDriver.h"
+#include "../sdl/sound/CSound.h"
 #include "../sdl/CInput.h"
 #include "../common/CMapLoader.h"
 #include "../graphics/CGfxEngine.h"
@@ -31,6 +32,7 @@ CPlayGame::CPlayGame( char episode, char level,
 	m_Gamepath = gamepath;
 	m_exitgame = false;
 	m_endgame = false;
+	m_gameover = false;
 	mp_Map = NULL;
 	mp_Menu = NULL;
 	mp_option = p_option;
@@ -283,6 +285,86 @@ void CPlayGame::process()
 		mp_Menu = new CMenu( CMenu::ACTIVE );
 		mp_Menu->init();
 	}
+}
+
+// called when a switch is flipped. mx,my is the pixel coords of the switch,
+// relative to the upper-left corner of the map.
+void CPlayGame::ExtendingPlatformSwitch(int x, int y)
+{
+/*uint ppos;
+int platx, platy;
+signed char pxoff, pyoff;
+int mapx, mapy;
+int o;
+
+	// convert pixel coords to tile coords
+	mapx = (x >> TILE_S);
+	mapy = (y >> TILE_S);
+
+	// figure out where the platform is supposed to extend at
+	// (this is coded in the object layer...
+	// high byte is the Y offset and the low byte is the X offset,
+	// and it's relative to the position of the switch.)
+	ppos = getlevelat(x, y);
+
+	if (!ppos || !p_levelcontrol->PlatExtending)
+	{
+		// flip switch
+		g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, mapx);
+		if (getmaptileat(x, y)==TILE_SWITCH_DOWN)
+			map_chgtile(mapx, mapy, TILE_SWITCH_UP);
+		else
+			map_chgtile(mapx, mapy, TILE_SWITCH_DOWN);
+	}
+
+	// if zero it means he hit the switch on a tantalus ray!
+	if (!ppos)
+	{
+		p_levelcontrol->success = 0;
+		p_levelcontrol->command = LVLC_TANTALUS_RAY;
+		return;
+	}
+	else
+	{
+		// it's a moving platform switch--don't allow player to hit it again while
+		// the plat is still moving as this will glitch
+		if (p_levelcontrol->PlatExtending) return;
+		p_levelcontrol->PlatExtending = 1;
+	}
+
+	pxoff = (ppos & 0x00ff);
+	pyoff = (ppos & 0xff00) >> 8;
+	platx = mapx + pxoff;
+	platy = mapy + pyoff;
+
+	// spawn a "sector effector" to extend/retract the platform
+	o = spawn_object(mapx<<TILE_S<<CSF,mapy<<TILE_S<<CSF,OBJ_SECTOREFFECTOR);
+	objects[o].ai.se.type = SE_EXTEND_PLATFORM;
+	objects[o].ai.se.platx = platx;
+	objects[o].ai.se.platy = platy;*/
+}
+
+void CPlayGame::losePlayer(CPlayer *p_player)
+{
+    if (p_player->inventory.lives<0)
+    {
+ 	   m_gameover = true;
+ 	   g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
+
+ 	   // TODO: The commented out stuff must get an object
+ 	   /*
+ 	   CBitmap *bm_gameover = g_pGfxEngine->getBitmap("GAMEOVER");
+ 	   // figure out where to center the gameover bitmap and draw it
+		   int x = (g_pVideoDriver->getGameResRect().w/2)-(bm_gameover->getWidth()/2);
+		   int y = (g_pVideoDriver->getGameResRect().h/2)-(bm_gameover->getHeight()/2);
+		   bm_gameover->draw(g_pVideoDriver->BlitSurface, x, y);
+		   */
+    }
+    else
+    {
+      m_Level = WM_MAP_NUM;
+      init();
+    }
 }
 
 // This function draws the objects that need to be seen on the screen

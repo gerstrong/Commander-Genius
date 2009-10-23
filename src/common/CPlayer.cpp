@@ -64,6 +64,7 @@ void CPlayer::setDatatoZero()
     m_godmode = false;
     m_cheats_enabled = false;
     m_showStatusScreen = false;
+    lastpogo = false;
 
     // Set all the inventory to zero.
     memset(&inventory, 0, sizeof(stInventory));
