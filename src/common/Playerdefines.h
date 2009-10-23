@@ -61,9 +61,9 @@
 
 #define PSTANDFRAME				 0		// standing, looking right
 #define PFIREFRAME               20     // raygun frame index
-#define PFIRE_SHOWFRAME_TIME     100    // minimum time to show raygun frame
-#define PFIRE_LIMIT_SHOT_FREQ    30     // maximum speed player can shoot
-#define PFIRE_LIMIT_SHOT_FREQ_FA 50     // fully automatic version
+#define PFIRE_SHOWFRAME_TIME     25    // minimum time to show raygun frame
+#define PFIRE_LIMIT_SHOT_FREQ    7     // maximum speed player can shoot
+#define PFIRE_LIMIT_SHOT_FREQ_FA 12     // fully automatic version
 
 // player frame indexes for world map
 #define PMAPRIGHTFRAME   32

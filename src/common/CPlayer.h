@@ -127,7 +127,8 @@ public:
 
 	unsigned char pdir,pshowdir,lastpdir;
 
-	char pfiring,pfireframetimer;
+	bool pfiring, plastfire;
+	char pfireframetimer;
 	bool inhibitwalking, inhibitfall;
 
 	int ctrltimer, alttimer;

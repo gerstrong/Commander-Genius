@@ -43,6 +43,7 @@ void CPlayer::setDatatoZero()
     hideplayer = false;
     mounted = false;
     ppogostick = false;
+    plastfire = false;
     blockedu = blockedd = blockedl = blockedr = false;
     pjumping = 0;
     pfalling = false;

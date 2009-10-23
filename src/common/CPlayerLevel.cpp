@@ -542,21 +542,22 @@ void CPlayer::JumpAndPogo()
 // oh wait, he does, and here's the code for it.
 void CPlayer::raygun()
 {
-/*int o;
+int o;
 int canRefire;
+CObject *pPlayerObject = &mp_object->at(m_player_number);
 
    if (pfireframetimer) pfireframetimer--;
 
    // FIRE button down, and not keencicled?
-   //if ( ( g_pInput->getPressedCommand(PA_FIRE) || mp_option[OPT_FULLYAUTOMATIC].value ) && !pfrozentime)
+   if ( playcontrol[PA_FIRE] && !pfrozentime)
    { // fire is newly pressed
 
        inhibitwalking = 1;    // prevent moving
-       pfiring = 1;           // flag that we're firing
+       pfiring = true;           // flag that we're firing
        ppogostick = false;        // put away pogo stick if out
 
        // limit how quickly shots can be fired
-       if ( mp_option[OPT_FULLYAUTOMATIC].value )
+       if ( !plastfire || mp_option[OPT_FULLYAUTOMATIC].value )
        {
          if (pfireframetimer < PFIRE_LIMIT_SHOT_FREQ_FA)
          {
@@ -564,7 +565,6 @@ int canRefire;
          }
          else canRefire = 0;
        }
-
        else
        {
          if (pfireframetimer < PFIRE_LIMIT_SHOT_FREQ)
@@ -586,37 +586,38 @@ int canRefire;
              inventory.charges--;
              pshowdir = pdir;
 
-             g_pSound->playStereofromCoord(SOUND_KEEN_FIRE, PLAY_NOW, mp_object->scrx);
+             g_pSound->playStereofromCoord(SOUND_KEEN_FIRE, PLAY_NOW, pPlayerObject->scrx);
 
              if (pdir==RIGHT)
              {  // fire a blast to the right
-                o = spawn_object(x+((g_pGfxEngine->Sprite[0]->getWidth()-4)<<CSF), y+(9<<CSF), OBJ_RAY);
-                mp_object->ai.ray.direction = RIGHT;
+                //o = spawn_object(x+((g_pGfxEngine->Sprite[0]->getWidth()-4)<<CSF), y+(9<<CSF), OBJ_RAY);
+                // TODO : The Blasts are not working yet! Code here!
+                pPlayerObject->ai.ray.direction = RIGHT;
              }
              else
              {  // fire a blast to the left
-                o = spawn_object(x-(12<<CSF), y+(9<<CSF), OBJ_RAY);
-                mp_object->ai.ray.direction = LEFT;
+                //o = spawn_object(x-(12<<CSF), y+(9<<CSF), OBJ_RAY);
+                // TODO : The Blasts are not working yet! Code here!
+                pPlayerObject->ai.ray.direction = LEFT;
              }
-              // if '-nopk' argument set don't kill other players
-              if (mp_option[OPT_ALLOWPKING].value)
-              {
-            	  mp_object->ai.ray.dontHitEnable = 0;
-              }
-              else
-              {
-            	  mp_object->ai.ray.dontHitEnable = 1;
-            	  mp_object->ai.ray.dontHit = OBJ_PLAYER;
-              }
+             if (mp_option[OPT_ALLOWPKING].value)
+             {
+            	 pPlayerObject->ai.ray.dontHitEnable = 0;
+             }
+             else
+             {
+            	 pPlayerObject->ai.ray.dontHitEnable = 1;
+            	 pPlayerObject->ai.ray.dontHit = OBJ_PLAYER;
+             }
           }
           else
           { // oh shit, out of bullets
             // click!
-        	  g_pSound->playStereofromCoord(SOUND_GUN_CLICK, PLAY_NOW, mp_object->scrx);
+        	  g_pSound->playStereofromCoord(SOUND_GUN_CLICK, PLAY_NOW, pPlayerObject->scrx);
 
           }  // end "do we have charges?"
-
        } // end "limit how quickly shots can be fired"
+       plastfire = true;
    } // end "fire button down and not keencicled"
    else
    { // FIRE button is NOT down
@@ -630,7 +631,8 @@ int canRefire;
         pfiring = 1;
         inhibitwalking = 1;
       }
-   }*/
+      plastfire = false;
+   }
 }
 
 // select the appropriate player frame based on what he's doing
