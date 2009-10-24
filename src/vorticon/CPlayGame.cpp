@@ -56,6 +56,7 @@ CPlayGame::CPlayGame( char episode, char level,
 		m_Object.push_back(object);
 		m_Object[i].exists = true;
 		m_Object[i].onscreen = true;
+		m_Object[i].honorPriority = true;
 		mp_Player[i].mp_object = &m_Object;
 		mp_Player[i].mp_option = p_option;
 	}
@@ -396,8 +397,8 @@ void CPlayGame::drawObjects()
 	   {
 	      if (p_object->exists && p_object->onscreen)
 	      {
-	    	  p_object->scrx = ((p_object->x<<4)>>CSF)-mp_Map->m_scrollx;
-	    	  p_object->scry = ((p_object->y<<4)>>CSF)-mp_Map->m_scrolly;
+	    	  p_object->scrx = (p_object->x>>(CSF-4))-mp_Map->m_scrollx;
+	    	  p_object->scry = (p_object->y>>(CSF-4))-mp_Map->m_scrolly;
 
 	    	  //g_pGraphics->drawSprite(objects[i].scrx, objects[i].scry, objects[i].sprite, i);
 	    	  g_pGfxEngine->Sprite[p_object->sprite]->drawSprite( g_pVideoDriver->BlitSurface,
@@ -409,17 +410,19 @@ void CPlayGame::drawObjects()
 	        	CSprite *sprite = g_pGfxEngine->Sprite[p_object->sprite];
 	            // handle priority tiles and tiles with masks
 	            // get the upper-left coordinates to start checking for tiles
-	            x = (((p_object->x>>CSF)-1)>>4)<<4;
-	            y = (((p_object->y>>CSF)-1)>>4)<<4;
+	            x = (p_object->x>>CSF);
+	            y = (p_object->y>>CSF);
 
 	            // get the xsize/ysize of this sprite--round up to the nearest 16
-	            xsize = ((sprite->getWidth())>>4<<4);
+	            xsize = ((sprite->getWidth()>>4)<<4);
 	            if (xsize != sprite->getWidth()) xsize+=16;
 
-	            ysize = ((g_pGfxEngine->Sprite[p_object->sprite]->getHeight())>>4<<4);
+	            ysize = ((g_pGfxEngine->Sprite[p_object->sprite]->getHeight()>>4)<<4);
 	            if (ysize != sprite->getHeight()) ysize+=16;
 
-	            tl = getmaptileat(x,y);
+	            tl = mp_Map->at(x,y);
+	            x<<=4;
+	            y<<=4;
 
 	            // now redraw any priority/masked tiles that we covered up
 	            // with the sprite
@@ -431,7 +434,7 @@ void CPlayGame::drawObjects()
 	            {
 	              for(xa=0;xa<=xsize;xa+=16)
 	              {
-	                tl = getmaptileat(x+xa,y+ya);
+	                tl = mp_Map->at((x+xa)>>4,(y+ya)>>4);
 	                if(g_pGfxEngine->Tilemap->mp_tiles[tl].behaviour == -2)
 	                	g_pGfxEngine->Tilemap->drawTile(sfc, x+xa-mp_Map->m_scrollx, y+ya-mp_Map->m_scrolly, tl+1);
 	                else if (g_pGfxEngine->Tilemap->mp_tiles[tl].behaviour == -1)

@@ -121,7 +121,6 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path )
     {
     	t = filebuf[c];
 
-        //if (m_worldmap) addObjectlayerTile(t,  episode,  levels_completed);
     	if (mp_map->m_worldmap) addWorldMapObject(t, curmapx, curmapy,  episode );
         else addEnemyObject(t, curmapx, curmapy, episode, level);
 
@@ -158,6 +157,8 @@ void CMapLoader::addTile( Uint16 t, Uint16 x, Uint16 y )
 //bool NessieAlreadySpawned;
 void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episode)
 {
+  // This function add sprites on the map. Most of the objects are invisible.
+  // TODO : Please convert this into ifs. There are more conditions than just switch.
   switch(t)
   {
    case 0: break;       // blank
@@ -179,18 +180,22 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
      }
    break;*/
    default:             // level marker
-     if ((t&0x7fff) < 256 && mp_Player->mp_levels_completed[t&0x00ff])
+     //if ((t&0x7fff) < 256 && mp_Player->mp_levels_completed[t&0x00ff])
+	 if ((t&0x7fff) < 256 && mp_Player->mp_levels_completed[t&0x00ff])
      {
+
    		 mp_map->m_objectlayer[x][y] = t;
 
+   		 // Change the level tile to a done sign
     	 int newtile = g_pGfxEngine->Tilemap->mp_tiles[mp_map->at(x,y)].chgtile;
 
     	 // Consistency check! Some Mods have issues with that.
     	 if(episode == 1 || episode == 2)
     	 {
-    		 if(newtile<77 || newtile>81)
+    		 /*if(newtile>77 && newtile<81)
     			 // something went wrong. Use default tile
-    			 newtile = 77;
+    			 newtile = 77;*/
+    		 // TODO: Small tiles cannot be shown
 
     		 // try to guess, if it is a 32x32 (4 16x16) Tile
     		 if(mp_map->at(x-1,y-1) == (unsigned int) newtile &&
@@ -231,7 +236,6 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 
 void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode, int level)
 {
-//int o,x;
   mp_map->m_objectlayer[x][y] = t;
 
   if (t)
