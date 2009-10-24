@@ -23,6 +23,8 @@ public:
 	virtual ~CGame();
 
 	bool init(int argc, char *argv[]);
+	bool loadCKPDrivers();
+
 	void run();
 	void cleanup();
 

@@ -77,10 +77,6 @@ int GetStringAttribute(const std::string& stringName, const char *attrName);
 char KeyDrv_Start(void);
 void KeyDrv_Stop(void);
 
-// misc.c
-void banner(void);
-void statusbox(void);
-
 int savegameiswm(char *fname);
 void usage(void);
 void SetAllCanSupportPlayer(int o, int state);

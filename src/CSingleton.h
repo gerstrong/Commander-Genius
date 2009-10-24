@@ -43,6 +43,6 @@ public:
 };
 
 template <class T>
-T* CSingleton<T>::m_pSingleton = 0;
+T* CSingleton<T>::m_pSingleton = NULL;
 
 #endif /* CSINGLETON_H_ */

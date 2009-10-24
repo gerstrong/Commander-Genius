@@ -27,10 +27,6 @@
 */
 
 #include "keen.h"
-#include "sdl/CInput.h"
-#include "sdl/CTimer.h"
-#include "sdl/sound/CSound.h"
-#include "sdl/CVideoDriver.h"
 #include "hqp/CMusic.h"
 #include "include/misc.h"
 #include "include/CStartScreen.h"
@@ -67,9 +63,7 @@ char loadinggame, loadslot;
 
 unsigned int objdefsprites[NUM_OBJ_TYPES+1];
 
-int thisplayer;
-unsigned char primaryplayer;
-unsigned char numplayers;
+void banner(void);
 
 int main(int argc, char *argv[])
 {
@@ -91,9 +85,6 @@ int main(int argc, char *argv[])
 	
 	InitSearchPaths();
 	
-	stCloneKeenPlus CKP; // This is the future main structure of CloneKeen. It will be one variable which controls all
-						 // the program instead of having global variables around somewhere.
-
 	g_pLogFile->CreateLogfile("CGLog.html");
 
 	/*		g_pLogFile->textOut(RED,"Parsing Command line flags.<br>");
@@ -121,6 +112,8 @@ int main(int argc, char *argv[])
 	// Cleanup Game Engine //
 	/////////////////////////
 	Game.cleanup();
+
+	g_pLogFile->Del();
 
 	/*g_pLogFile->textOut(RED,"Loading Games Menu.<br>");
 
@@ -189,45 +182,14 @@ int main(int argc, char *argv[])
 	return 0;
 }
 
-void cleanupResources(stCloneKeenPlus *pCKP)
-{
-	cleanup(pCKP);
-	return;
-}
-
-// TODO: Those mmust go to a new class. Let's call it CDevices
-bool loadCKPDrivers()
-{
-	// initialize/activate all drivers
-	g_pLogFile->ftextOut("Starting graphics driver...<br>");
-
-	// The graphics are very important, if the other subsystems fail, warn but continue
-	if (!g_pVideoDriver->start()) return false;
-
-	g_pLogFile->ftextOut("Starting sound driver...<br>");
-	g_pSound->init();
-
-	g_pLogFile->ftextOut("Starting the input driver...<br>");
-	g_pInput->loadControlconfig();
-
-	return true;
-}
-
-short abortCKP(stCloneKeenPlus *pCKP)
-{
-	  g_pLogFile->ftextOut("Fatal error, cleaning up.<br>");
-	  cleanup(pCKP);
-	  g_pLogFile->ftextOut("A fatal error has occurred; game is shutting down.<br>");
-	  return 1;
-}
 
 // plays the demo file specified in fname
 // returns:
 //  DEMO_RESULT_FILE_BAD               demo does not exist or file corrupt
 //  DEMO_RESULT_COMPLETED              demo played all the way through
 //  DEMO_RESULT_CANCELED               user canceled the demo
-char play_demo(int demonum, stCloneKeenPlus *pCKP, int s)
-{
+//char play_demo(int demonum, stCloneKeenPlus *pCKP, int s)
+//{
 /*int i;
 int byt;
 int lvl;
@@ -416,6 +378,6 @@ short readCommandLine(int argc, char *argv[], stCloneKeenPlus *pCKP)
 	        return 1;
 	      }
 	    }
-	  }*/
-	  return 0;
-}
+	  }
+	  return 0;*/
+//}
