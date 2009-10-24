@@ -37,7 +37,7 @@ void CPlayer::setDatatoZero()
 	playframe = PMAPDOWNFRAME;
 
 	hideplayer = false;
-  	pwalkframe = 0;
+  	pwalkframe = pwalkframea = 0;
    	m_player_number = 0;
     dpadcount = 0;
     hideplayer = false;
@@ -51,14 +51,19 @@ void CPlayer::setDatatoZero()
     pinertia_x = pinertia_y = 0;
     pboost_x = 0;
     playpushed_x = 0;
-    pfiring = 0;
+    plastfire = pfiring = false;
     psliding = psemisliding = 0;
-    pdie = 0;
+    pdie = false;
+    pwalkanimtimer = 0;
+    inhibitfall = false;
+    playerbaseframe = 0;
+    mapplayx = mapplayy = 0;
 
     pfrozentime = 0;
     ankhtime = 0;
     keyprocstate = 0;         // KPROC_IDLE
-    pjustjumped = pjustfell = 0;
+    pjustjumped = pjustfell = true;
+    pfireframetimer = 0;
     psupportingtile = psupportingobject = lastsupportingobject = 0;
 
     m_godmode = false;
