@@ -1,4 +1,4 @@
-Commander Genius Release v0.3.0.5 (CloneKeenPlus):
+Commander Genius Release v0.3.1.0 (CloneKeenPlus):
 --------------------------------------------------
 24-09-2009
 - New Map System. Now maps of any size can be used for CG

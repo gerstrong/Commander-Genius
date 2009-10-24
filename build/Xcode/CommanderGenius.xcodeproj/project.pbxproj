@@ -178,6 +178,7 @@
 		63AB8C2F107C62D0001EE22F /* cglogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63AB8C2E107C62D0001EE22F /* cglogo.icns */; };
 		63BE59E3108501BF009C7293 /* CPlayGameCollision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63BE59E0108501BF009C7293 /* CPlayGameCollision.cpp */; };
 		63BE59E4108501BF009C7293 /* CTeleporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63BE59E1108501BF009C7293 /* CTeleporter.cpp */; };
+		63CA3DB41093C38F007D209D /* CEGABitmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CA3DB21093C38F007D209D /* CEGABitmap.cpp */; };
 		63CD0B781091F8FB00CB7B80 /* CPlayerItems.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD0B771091F8FB00CB7B80 /* CPlayerItems.cpp */; };
 		63D34908108B64990033C412 /* CPlayGamePhysics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63D34907108B64990033C412 /* CPlayGamePhysics.cpp */; };
 		63D4A702107FEB7C00E43500 /* 100.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6EF107FEB7C00E43500 /* 100.tga */; };
@@ -620,14 +621,17 @@
 		637FC63510559B5600C2EA77 /* CPalette.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPalette.cpp; sourceTree = "<group>"; };
 		637FC63610559B5600C2EA77 /* CPalette.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPalette.h; sourceTree = "<group>"; };
 		63AB8C2E107C62D0001EE22F /* cglogo.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = cglogo.icns; sourceTree = "<group>"; };
-		63BE59E0108501BF009C7293 /* CPlayGameCollision.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CPlayGameCollision.cpp; path = ../../src/vorticon/CPlayGameCollision.cpp; sourceTree = SOURCE_ROOT; };
-		63BE59E1108501BF009C7293 /* CTeleporter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CTeleporter.cpp; path = ../../src/vorticon/CTeleporter.cpp; sourceTree = SOURCE_ROOT; };
-		63BE59E2108501BF009C7293 /* CTeleporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTeleporter.h; path = ../../src/vorticon/CTeleporter.h; sourceTree = SOURCE_ROOT; };
+		63BE59E0108501BF009C7293 /* CPlayGameCollision.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CPlayGameCollision.cpp; path = vorticon/CPlayGameCollision.cpp; sourceTree = "<group>"; };
+		63BE59E1108501BF009C7293 /* CTeleporter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CTeleporter.cpp; path = vorticon/CTeleporter.cpp; sourceTree = "<group>"; };
+		63BE59E2108501BF009C7293 /* CTeleporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTeleporter.h; path = vorticon/CTeleporter.h; sourceTree = "<group>"; };
 		63BE59E5108501CF009C7293 /* Playerdefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Playerdefines.h; path = ../../src/common/Playerdefines.h; sourceTree = SOURCE_ROOT; };
 		63C6D70A108AE1A200A3805C /* inventory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = inventory.h; path = ../../src/common/inventory.h; sourceTree = SOURCE_ROOT; };
-		63CD0B771091F8FB00CB7B80 /* CPlayerItems.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CPlayerItems.cpp; path = ../../src/common/CPlayerItems.cpp; sourceTree = SOURCE_ROOT; };
+		63CA3A0610939A93007D209D /* objenums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objenums.h; sourceTree = "<group>"; };
+		63CA3DB21093C38F007D209D /* CEGABitmap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CEGABitmap.cpp; sourceTree = "<group>"; };
+		63CA3DB31093C38F007D209D /* CEGABitmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGABitmap.h; sourceTree = "<group>"; };
+		63CD0B771091F8FB00CB7B80 /* CPlayerItems.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlayerItems.cpp; sourceTree = "<group>"; };
 		63D34906108B648A0033C412 /* options.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = options.h; sourceTree = "<group>"; };
-		63D34907108B64990033C412 /* CPlayGamePhysics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CPlayGamePhysics.cpp; path = ../../src/vorticon/CPlayGamePhysics.cpp; sourceTree = SOURCE_ROOT; };
+		63D34907108B64990033C412 /* CPlayGamePhysics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlayGamePhysics.cpp; sourceTree = "<group>"; };
 		63D4A6EF107FEB7C00E43500 /* 100.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = 100.tga; sourceTree = "<group>"; };
 		63D4A6F0107FEB7C00E43500 /* 1000.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = 1000.tga; sourceTree = "<group>"; };
 		63D4A6F1107FEB7C00E43500 /* 200.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = 200.tga; sourceTree = "<group>"; };
@@ -648,8 +652,8 @@
 		63D4A700107FEB7C00E43500 /* tile190.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = tile190.tga; sourceTree = "<group>"; };
 		63D4A701107FEB7C00E43500 /* yorpshield.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = yorpshield.tga; sourceTree = "<group>"; };
 		63DCCCBB104CBC3000B3BC10 /* version.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = version.h; path = ../../version.h; sourceTree = SOURCE_ROOT; };
-		63F4128D108F9BB1003A2E02 /* arguments.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = arguments.cpp; path = ../../src/arguments.cpp; sourceTree = SOURCE_ROOT; };
-		63F4128E108F9BB1003A2E02 /* arguments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = arguments.h; path = ../../src/arguments.h; sourceTree = SOURCE_ROOT; };
+		63F4128D108F9BB1003A2E02 /* arguments.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = arguments.cpp; sourceTree = "<group>"; };
+		63F4128E108F9BB1003A2E02 /* arguments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = arguments.h; sourceTree = "<group>"; };
 		8D0C4E960486CD37000505A6 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -682,15 +686,10 @@
 			isa = PBXGroup;
 			children = (
 				5048396909E3304600765E4B /* Configuration Files */,
-				20286C2AFDCF999611CA2CEA /* src */,
-				20286C2CFDCF999611CA2CEA /* Resources */,
 				20286C32FDCF999611CA2CEA /* External Frameworks and Libraries */,
 				195DF8CFFE9D517E11CA2CBB /* Products */,
-				23D3EA691013AC7B001643FA /* SDL.framework */,
-				23D3EA831013AEB5001643FA /* OpenGL.framework */,
-				23D3EA911013AF1D001643FA /* Cocoa.framework */,
-				2357564C101A5F8F00275638 /* Ogg.framework */,
-				2357564D101A5F8F00275638 /* Vorbis.framework */,
+				20286C2CFDCF999611CA2CEA /* Resources */,
+				20286C2AFDCF999611CA2CEA /* src */,
 			);
 			name = CommanderGenius;
 			sourceTree = "<group>";
@@ -698,10 +697,14 @@
 		20286C2AFDCF999611CA2CEA /* src */ = {
 			isa = PBXGroup;
 			children = (
-				23D3E9741013ABC9001643FA /* ai */,
-				23C637C61031812500FEEFEE /* dialog */,
-				231FC3401083642B00E7869E /* common */,
+				63F4128D108F9BB1003A2E02 /* arguments.cpp */,
+				63F4128E108F9BB1003A2E02 /* arguments.h */,
+				63BE59E0108501BF009C7293 /* CPlayGameCollision.cpp */,
+				63BE59E1108501BF009C7293 /* CTeleporter.cpp */,
+				63BE59E2108501BF009C7293 /* CTeleporter.h */,
 				23C637BC1031812500FEEFEE /* cinematics */,
+				231FC3401083642B00E7869E /* common */,
+				23C637C61031812500FEEFEE /* dialog */,
 				23D3E9A11013ABCA001643FA /* fileio */,
 				235266DA104E74430054F00B /* graphics */,
 				23D3E9B01013ABCA001643FA /* hqp */,
@@ -770,7 +773,6 @@
 		20286C2CFDCF999611CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				63DCCCBB104CBC3000B3BC10 /* version.h */,
 				63AB8C2E107C62D0001EE22F /* cglogo.icns */,
 				6350FB0910449DAA00A992D5 /* changelog.txt */,
 				6350F7A11044797300A992D5 /* data */,
@@ -779,6 +781,7 @@
 				0867D6AAFE840B52C02AAC07 /* InfoPlist.strings */,
 				1DDD57E20DA1CFC700B32029 /* main.xib */,
 				6350FB0B10449DAA00A992D5 /* readme.txt */,
+				63DCCCBB104CBC3000B3BC10 /* version.h */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -787,6 +790,11 @@
 			isa = PBXGroup;
 			children = (
 				20286C33FDCF999611CA2CEA /* Carbon.framework */,
+				23D3EA911013AF1D001643FA /* Cocoa.framework */,
+				2357564C101A5F8F00275638 /* Ogg.framework */,
+				23D3EA831013AEB5001643FA /* OpenGL.framework */,
+				23D3EA691013AC7B001643FA /* SDL.framework */,
+				2357564D101A5F8F00275638 /* Vorbis.framework */,
 			);
 			name = "External Frameworks and Libraries";
 			sourceTree = "<group>";
@@ -794,10 +802,11 @@
 		231FC3401083642B00E7869E /* common */ = {
 			isa = PBXGroup;
 			children = (
+				63CA3A0610939A93007D209D /* objenums.h */,
+				63CD0B771091F8FB00CB7B80 /* CPlayerItems.cpp */,
 				231FC3411083642B00E7869E /* CGameLauncher.cpp */,
 				231FC3421083642B00E7869E /* CGameLauncher.h */,
 				231FC3431083642B00E7869E /* CMap.cpp */,
-				63D34907108B64990033C412 /* CPlayGamePhysics.cpp */,
 				231FC3441083642B00E7869E /* CMap.h */,
 				231FC3451083642B00E7869E /* CMapLoader.cpp */,
 				63D34906108B648A0033C412 /* options.h */,
@@ -821,7 +830,6 @@
 			children = (
 				637FC63310559B5600C2EA77 /* CBitmap.cpp */,
 				637FC63410559B5600C2EA77 /* CBitmap.h */,
-				63CD0B771091F8FB00CB7B80 /* CPlayerItems.cpp */,
 				235266F0104E75250054F00B /* CFont.cpp */,
 				235266F1104E75250054F00B /* CFont.h */,
 				235266FA104E754D0054F00B /* CGfxEngine.cpp */,
@@ -874,6 +882,7 @@
 		23D3E9741013ABC9001643FA /* ai */ = {
 			isa = PBXGroup;
 			children = (
+				23D3E9B91013ABCA001643FA /* enemyai.h */,
 				6350F76A1044782400A992D5 /* autoray.cpp */,
 				636404FE108836F4001799CE /* crc.cpp */,
 				636404FF108836F4001799CE /* crc.h */,
@@ -883,6 +892,8 @@
 				2321F1AF101DA0CE00510514 /* baby.h */,
 				636BC858108772B600996B46 /* CPlayGameDialogs.cpp */,
 				23D3E9761013ABC9001643FA /* balljack.cpp */,
+				63CA3DB21093C38F007D209D /* CEGABitmap.cpp */,
+				63CA3DB31093C38F007D209D /* CEGABitmap.h */,
 				63C6D70A108AE1A200A3805C /* inventory.h */,
 				63BE59E5108501CF009C7293 /* Playerdefines.h */,
 				23C637DC103181D700FEEFEE /* balljack.h */,
@@ -921,9 +932,8 @@
 				235756C8101BE31A00275638 /* vortelite.h */,
 				23D3E9911013ABCA001643FA /* yorp.cpp */,
 			);
-			name = ai;
-			path = ../../src/ai;
-			sourceTree = SOURCE_ROOT;
+			path = ai;
+			sourceTree = "<group>";
 		};
 		23D3E9A11013ABCA001643FA /* fileio */ = {
 			isa = PBXGroup;
@@ -963,7 +973,6 @@
 			children = (
 				23D3E9CA1013ABCA001643FA /* CStartScreen.h */,
 				23D3E9B81013ABCA001643FA /* declarations.h */,
-				23D3E9B91013ABCA001643FA /* enemyai.h */,
 				23D3E9BD1013ABCA001643FA /* fileio */,
 				23D3E9C11013ABCA001643FA /* fileio.h */,
 				23D3E9C21013ABCA001643FA /* game.h */,
@@ -1081,6 +1090,8 @@
 		23D3E9FF1013ABCA001643FA /* vorticon */ = {
 			isa = PBXGroup;
 			children = (
+				63D34907108B64990033C412 /* CPlayGamePhysics.cpp */,
+				23D3E9741013ABC9001643FA /* ai */,
 				6312202610910DB200053A0E /* spritedefines.h */,
 				23C637D9103181BF00FEEFEE /* COrderingInfo.cpp */,
 				23C637DA103181BF00FEEFEE /* COrderingInfo.h */,
@@ -1126,9 +1137,9 @@
 		6350F7A11044797300A992D5 /* data */ = {
 			isa = PBXGroup;
 			children = (
-				63D4A6ED107FEB7C00E43500 /* res */,
 				6350F7A31044797300A992D5 /* controls.dat */,
 				6350F7A41044797300A992D5 /* games */,
+				63D4A6ED107FEB7C00E43500 /* res */,
 				6350F7DD1044797300A992D5 /* resolutions.cfg */,
 				6350F7DE1044797300A992D5 /* strings.dat */,
 			);
@@ -1207,13 +1218,8 @@
 				63D4A6F4107FEB7C00E43500 /* arrowd.tga */,
 				63D4A6F5107FEB7C00E43500 /* arrowlr.tga */,
 				63D4A6F6107FEB7C00E43500 /* arrowu.tga */,
-				63F4128D108F9BB1003A2E02 /* arguments.cpp */,
-				63F4128E108F9BB1003A2E02 /* arguments.h */,
 				63D4A6F7107FEB7C00E43500 /* arrowud.tga */,
 				63D4A6F8107FEB7C00E43500 /* arrowul.tga */,
-				63BE59E0108501BF009C7293 /* CPlayGameCollision.cpp */,
-				63BE59E1108501BF009C7293 /* CTeleporter.cpp */,
-				63BE59E2108501BF009C7293 /* CTeleporter.h */,
 				63D4A6F9107FEB7C00E43500 /* arrowur.tga */,
 				63D4A6FA107FEB7C00E43500 /* cklogo1.tga */,
 				63D4A6FB107FEB7C00E43500 /* cklogo2.tga */,
@@ -1428,6 +1434,7 @@
 				63D34908108B64990033C412 /* CPlayGamePhysics.cpp in Sources */,
 				63F4128F108F9BB1003A2E02 /* arguments.cpp in Sources */,
 				63CD0B781091F8FB00CB7B80 /* CPlayerItems.cpp in Sources */,
+				63CA3DB41093C38F007D209D /* CEGABitmap.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

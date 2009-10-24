@@ -125,19 +125,19 @@ void CVideoDriver::initResolutionList()
 		  //if(getFullscreen())
 		  //{
 			  /* Get available fullscreen/hardware modes */
-		  modes = SDL_ListModes(NULL, SDL_FULLSCREEN | SDL_OPENGLBLIT);
+		  //modes = SDL_ListModes(NULL, SDL_FULLSCREEN | SDL_OPENGLBLIT);
 
 			  /* Check if there are any modes available */
-			  if (modes == (SDL_Rect**)0) {
+			  //if (modes == (SDL_Rect**)0) {
 				  g_pLogFile->textOut(RED,"No modes available!  Using resolution list.<br>");
-				  std::list<st_resolution> :: iterator i;
+				  //std::list<st_resolution> :: iterator i;
 				  while(!ResolutionFile.eof())
 				  {
 				  ResolutionFile.getline(buf,256);
-				   if(sscanf(buf,"%ix%ix%i", &resolution.width,
-				   &resolution.height,
-				   &resolution.depth) == 3)
+				   if(sscanf(buf,"%ix%i", &resolution.width,
+				   &resolution.height) == 2)
 				   // Now check if it's possible to use this resolution
+					   resolution.depth = 32;
 				   resolution.depth = SDL_VideoModeOK(resolution.width, resolution.height,
 				   resolution.depth, SDL_FULLSCREEN);
 
@@ -152,8 +152,8 @@ void CVideoDriver::initResolutionList()
 				   m_Resolutionlist.push_back(resolution);
 				   }
 				  }
-			  }
-			  else if (modes == (SDL_Rect**)-1) {
+			  //}
+			  /*else if (modes == (SDL_Rect**)-1) {
 				  g_pLogFile->textOut(RED,"All resolutions available.<br>");
 				  for (e=0; modes[e]; ++e)
 				  {
@@ -199,7 +199,7 @@ void CVideoDriver::initResolutionList()
 					  }
 					  }
 				  }
-			  }
+			  }*/
 		  //}
 		  if(!getFullscreen())
 		  {

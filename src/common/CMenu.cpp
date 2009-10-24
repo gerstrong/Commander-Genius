@@ -3,6 +3,8 @@
 
 
 #include "CMenu.h"
+#include "CObject.h"
+#include "../StringUtils.h"
 #include "../CGameControl.h"
 #include "../vorticon/CPassive.h"
 #include "../sdl/CVideoDriver.h"
@@ -69,7 +71,7 @@ void CMenu::initMainMenu()
 	{
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "New Game");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 2, "Load Game");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 3, "Story");
+		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 3, "Story");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 4, "Highscores");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 5, "Options");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 6, "Choose Game");
@@ -98,11 +100,15 @@ void CMenu::initMainMenu()
 
 void CMenu::initNumPlayersMenu()
 {
-	mp_Dialog = new CDialog(mp_MenuSurface, 15, 6);
+	mp_Dialog = new CDialog(mp_MenuSurface, 13, MAX_PLAYERS+4);
+	int i;
 
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "One Player");
-	mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 2, "Two Player");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 4, "Back");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "1 Player");
+	for(i=2;i<=MAX_PLAYERS;i++)
+	{
+	mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, i, itoa(i)+" Player");
+	}
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, MAX_PLAYERS+2, "Back");
 }
 
 void CMenu::initDifficultyMenu()
@@ -127,13 +133,15 @@ void CMenu::initOptionsMenu()
 
 void CMenu::initNumControlMenu()
 {
-	mp_Dialog = new CDialog(mp_MenuSurface, 13, 8);
+	mp_Dialog = new CDialog(mp_MenuSurface, 13, MAX_PLAYERS+4);
+	int i;
 
-	mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 1, "Player 1");
-	mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 2, "Player 2");
-	mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 3, "Player 3");
-	mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 4, "Player 4");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Back");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Player 1");
+	for(i=2;i<=MAX_PLAYERS;i++)
+	{
+	mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, i, "Player "+itoa(i));
+	}
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, MAX_PLAYERS+2, "Back");
 }
 
 ////
@@ -197,6 +205,8 @@ void CMenu::processMainMenu()
 	}
 	if( m_selection == 2 ) // Story
 	{
+		cleanup();
+		m_menu_type = STORY;
 	}
 	if( m_selection == 3 ) // Highscores
 	{
@@ -224,7 +234,7 @@ void CMenu::processNumPlayersMenu()
 	if( m_selection == -1) return;
 
 	cleanup();
-	if( m_selection < 2 )
+	if( m_selection < MAX_PLAYERS )
 	{
 		m_NumPlayers = m_selection + 1;	
 		init(DIFFICULTY);
@@ -273,13 +283,9 @@ void CMenu::processOptionsMenu()
 		cleanup();
 		init(CONTROLPLAYERS);
 	}
-	else if( m_selection == 4 )
-	{
-		m_goback = true;	
-	}
 	else
 	{
-		return;
+		m_goback = true;	
 	}
 
 	if(m_goback)
@@ -294,13 +300,13 @@ void CMenu::processNumControlMenu()
 	if( m_selection == -1) return;
 
 	cleanup();
-	if( m_selection == 4 )
+	if( m_selection <= MAX_PLAYERS )
 	{
-		m_goback = true;	
+		
 	}
 	else
 	{
-		return;
+		m_goback = true;	
 	}
 
 	if(m_goback)
@@ -313,9 +319,9 @@ void CMenu::processNumControlMenu()
 // This function shows the Story of Commander Keen!
 void CMenu::showPage(const std::string& str_text, int textsize)
 {
-	mp_TextViewer = new CTextViewer(mp_MenuSurface, 0, 0, 320, 136);
-	mp_TextViewer->loadText(str_text);
-	mp_TextViewer->processCycle();
+	//mp_TextViewer = new CTextViewer(mp_MenuSurface, 0, 0, 320, 136);
+	//mp_TextViewer->loadText(str_text);
+	//mp_TextViewer->processCycle();
     return;
 }
 

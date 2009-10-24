@@ -1,7 +1,6 @@
 Here are the features that we still want to implement:
 ------------------------------------------------------
-until 0.3.5:
-- Read all the text out of EXE-files. This should provide better support for mods!
+until 0.3.1.5:
 - Improve the logic of Keen.exe reading for a better mod compatibility
 
 until 0.4:

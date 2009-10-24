@@ -163,7 +163,7 @@ void CPassive::process()
 			cleanup();
 			m_mode = SHUTDOWN;
 		}
-		else if(mp_Menu->getShowStory())
+		/*else if(mp_Menu->getShowStory())
 		{
 			delete mp_Menu;
 			mp_Menu = NULL;
@@ -180,7 +180,7 @@ void CPassive::process()
 				free(m_text);
 			}
 			cleanup();
-		}
+		}*/
 		else if(mp_Menu->getChooseGame())
 		{
 			delete mp_Menu;

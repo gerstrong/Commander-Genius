@@ -39,7 +39,7 @@ class CMenu {
 public:
 	// Which Menu has to be shown?
 	enum menutypes{
-		MAIN, NEW, CONTROLPLAYERS, LOAD, START, DIFFICULTY, OPTIONS, GRAPHICS, CONTROLS, AUDIO, GAMES, QUIT
+		MAIN, NEW, CONTROLPLAYERS, STORY, HIGHSCORES, ABOUT, ORDERING, LOAD, START, DIFFICULTY, OPTIONS, GRAPHICS, CONTROLS, AUDIO, GAMES, QUIT
 	};
 
 	// Active means, when the player is playing, PASSIVE when the Player is not playing
@@ -68,7 +68,7 @@ public:
 	bool mustEndGame() { return m_Endgame; }
 	bool mustStartGame() { return (m_NumPlayers > 0 and m_Difficulty > -1); }
 	bool getExitEvent() { return (m_menu_type==QUIT); }
-	bool getShowStory() { return (m_selection==2); }
+	bool getShowStory() { return (m_menu_type==STORY); }
 	bool mustBeClosed() { return m_goback; }
 	bool getBacktoDemo() { return m_demoback; }
 	bool getChooseGame() { return m_choosegame; }

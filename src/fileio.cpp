@@ -334,20 +334,29 @@ int i,c;
 int attrIndex=0;
 int waitChar, gotoState;
 char highlight;
+char* path;
 
   #define STSTATE_WAITCHAR      0
   #define STSTATE_READNAME      1
   #define STSTATE_READSTRING    2
   #define STSTATE_READATTR      3
 
-  g_pLogFile->ftextOut("loadstrings(): Opening string file 'strings.dat'.<br>");
-  fp = fopen("data/strings.dat", "rb");
+	//strcpy (path, GetBinaryDir().c_str());
+	//g_pLogFile->ftextOut(GetBinaryDir().c_str());
+	#if defined(__APPLE__)
+	path = "./Commander Genius.app/Contents/Resources/data/strings.dat";
+	#else
+	path = "/data/string.dat";
+	#endif
+	g_pLogFile->ftextOut(path);
+  g_pLogFile->ftextOut("<br>loadstrings(): Opening string file 'strings.dat'.<br>");
+  fp = fopen(path, "rb");
   // TODO: Temporary solution, because with search-path it makes problems. It will be removed soon!
-  if (!fp)
-  {
-	  g_pLogFile->ftextOut("loadstrings(): String file unable to open.<br>");
-    return 1;
-  }
+	if (!fp)
+	{
+		g_pLogFile->ftextOut("loadstrings(): String file unable to open.<br>");
+		return 1;
+	}
 
   // go through all the strings and NULL out the entries...this will
   // let us know which ones are in use (and need to be free()d at shutdown)
@@ -472,6 +481,7 @@ char highlight;
         // copy the string info to the newly malloc()'d memory area
 		  strings[numStrings].name = stName;
 		  strings[numStrings].stringptr = stString;
+		  g_pLogFile->textOut(RED, strings[numStrings].name+"  /  "+strings[numStrings].stringptr+"<br>");
 		  stName = "";
 		  stString = "";
 		  
