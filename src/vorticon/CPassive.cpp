@@ -46,7 +46,7 @@ bool CPassive::init(char mode)
 	}
 	else if( m_mode == TITLE )
 	{
-		mp_TitleScreen = new CTitle();
+		mp_TitleScreen = new CTitle(&m_object);
 		mp_Map = new CMap( mp_Scrollsurface, mp_Tilemap);
 		CMapLoader MapLoader( mp_Map );
 		MapLoader.load( m_Episode, 90, m_DataDirectory);
@@ -134,6 +134,13 @@ void CPassive::process()
 
 	// Blit the background
 	g_pVideoDriver->blitScrollSurface(mp_Map->m_scrollx_buf, mp_Map->m_scrolly_buf);
+
+	// Make the Objects do its jobs
+	std::vector<CObject*>::iterator i;
+	for( i=m_object.begin() ; i!=m_object.end() ; i++ )
+	{
+		(*i)->process();
+	}
 
 	// If Menu is open show it!
 	if( mp_Menu != NULL )

@@ -1,7 +1,7 @@
-#include "../keen.h"
-#include "../include/game.h"
+#include "../../keen.h"
+#include "../../include/game.h"
 
-#include "../include/enemyai.h"
+#include "enemyai.h"
 
 
 // vertically-moving platform (ep3)

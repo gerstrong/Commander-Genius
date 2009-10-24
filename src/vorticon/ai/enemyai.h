@@ -5,7 +5,7 @@
  *      Author: gerstrong
  */
 
-#include "../graphics/CGfxEngine.h"
+#include "../../graphics/CGfxEngine.h"
 
 // .ai functions
 // ep1

@@ -18,7 +18,9 @@
 #include "CTitle.h"
 #include "../common/CMenu.h"
 #include "../common/CMap.h"
+#include "../common/CObject.h"
 #include <string>
+#include <vector>
 
 
 class CPassive {
@@ -54,6 +56,8 @@ private:
 
 	CTilemap *mp_Tilemap;
 	SDL_Surface *mp_Scrollsurface;
+
+	std::vector<CObject*> m_object;
 
 	int m_textsize;
 	bool m_GoDemo;

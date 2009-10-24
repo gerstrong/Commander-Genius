@@ -8,7 +8,7 @@
 #include "../sdl/CVideoDriver.h"
 #include "../graphics/CGfxEngine.h"
 #include "../include/CStartScreen.h"
-#include "../include/enemyai.h"
+//#include "../include/enemyai.h"
 #include "../include/gamedo.h"
 #include "EndingSequenceEp2.h"
 #include "CommonEnding.h"

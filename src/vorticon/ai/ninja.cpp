@@ -1,8 +1,8 @@
-#include "../sdl/sound/CSound.h"
-#include "../keen.h"
-#include "../include/game.h"
+#include "../../sdl/sound/CSound.h"
+#include "../../keen.h"
+#include "../../include/game.h"
 
-#include "../include/enemyai.h"
+#include "enemyai.h"
 
 // Ninja AI (the black, bear-like karate-kicking creature in ep3)
 enum ninja_actions{

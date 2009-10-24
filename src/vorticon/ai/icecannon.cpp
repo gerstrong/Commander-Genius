@@ -1,11 +1,11 @@
-#include "../keen.h"
-#include "../include/game.h"
+#include "../../keen.h"
+#include "../../include/game.h"
 
-#include "../include/enemyai.h"
+#include "enemyai.h"
 
 #include "icecannon.h"
 
-#include "../sdl/sound/CSound.h"
+#include "../../sdl/sound/CSound.h"
 
 // the chunks of ice shot out by an ice cannon (ep1)
 #define ICECHUNK_SPEED        		15

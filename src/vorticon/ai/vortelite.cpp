@@ -1,8 +1,8 @@
-#include "../keen.h"
+#include "../../keen.h"
 #include "vortelite.h"
-#include "../include/game.h"
-#include "../sdl/sound/CSound.h"
-#include "../graphics/CGfxEngine.h"
+#include "../../include/game.h"
+#include "../../sdl/sound/CSound.h"
+#include "../../graphics/CGfxEngine.h"
 
 
 // the "Vorticon Elite" enemies in ep2

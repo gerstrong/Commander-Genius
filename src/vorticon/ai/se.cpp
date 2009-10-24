@@ -1,14 +1,14 @@
 
-#include "../keen.h"
+#include "../../keen.h"
 
 #include "ray.h"
 #include "se.h"
 
-#include "../include/game.h"
-#include "../include/enemyai.h"
+#include "../../include/game.h"
+#include "enemyai.h"
 
-#include "../sdl/sound/CSound.h"
-#include "../CLogFile.h"
+#include "../../sdl/sound/CSound.h"
+#include "../../CLogFile.h"
 
 char PlatExtending=0;
 

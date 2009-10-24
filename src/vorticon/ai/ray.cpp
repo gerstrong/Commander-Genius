@@ -1,8 +1,8 @@
-#include "../sdl/sound/CSound.h"
-#include "../keen.h"
-#include "../include/game.h"
+#include "../../sdl/sound/CSound.h"
+#include "../../keen.h"
+#include "../../include/game.h"
 
-#include "../include/enemyai.h"
+#include "enemyai.h"
 
 // raygun blast, shot by keen, and by the tank robots in ep1&2.
 #include "ray.h"

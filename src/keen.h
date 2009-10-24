@@ -111,59 +111,6 @@ struct stString
 
 #include "externals.h"
 
-#define NUM_OBJ_TYPES      41
-
-enum enumerated_Objects{
-// ** objects from KEEN1
-OBJ_YORP,
-OBJ_GARG,
-OBJ_VORT,
-OBJ_BUTLER,
-OBJ_TANK,
-OBJ_RAY,                // keen's raygun blast
-OBJ_DOOR,               // an opening door
-OBJ_ICECHUNK,           // ice chunk from ice cannon
-OBJ_ICEBIT,             // piece of shattered ice chunk
-OBJ_PLAYER,
-OBJ_TELEPORTER,        // world map teleporter
-OBJ_ROPE,
-
-// ** objects from KEEN2 (some of these are in ep3 as well)
-OBJ_SCRUB,
-OBJ_TANKEP2,
-OBJ_PLATFORM,
-OBJ_VORTELITE,
-OBJ_SECTOREFFECTOR,
-OBJ_BABY,
-OBJ_EXPLOSION,
-OBJ_EARTHCHUNK,
-OBJ_SPARK,
-
-// ** objects from KEEN3
-OBJ_FOOB,
-OBJ_NINJA,
-OBJ_MEEP,
-OBJ_SNDWAVE,
-OBJ_MOTHER,
-OBJ_FIREBALL,
-OBJ_BALL,
-OBJ_JACK,
-OBJ_PLATVERT,
-OBJ_NESSIE,
-
-OBJ_DEMOMSG,
-
-// the guns that shoot periodically
-OBJ_AUTORAY,
-OBJ_AUTORAY_V,
-OBJ_ICECANNON,
-
-OBJ_GOTPOINTS,		// this thing is the rising point numbers
-OBJ_GHOST,			// ghosted object from map editor
-OBJ_EGA_BITMAP,		// Used for bitmaps which are loaded into the system. Keen Bitmaps
-LAST_OBJ_TYPE
-};
-
 // default sprites...when an object is spawned it's sprite is set to this
 // sprite. the object AI will immediately reset the sprite frame, so it
 // wouldn't really matter what these are...except that it does because

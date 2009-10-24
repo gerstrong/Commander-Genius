@@ -14,14 +14,17 @@
 #define MAX_PLAYERS            8
 
 // structures for each AI module's data
-#include "../ai/enemydata.h"
+#include "../vorticon/ai/enemydata.h"
+
+// Enumerations are here
+#include "objenums.h"
 
 class CObject {
 public:
 	CObject();
 	virtual ~CObject();
 
-	 unsigned int type;        // yorp, vorticon, etc.
+	 unsigned int m_type;        // yorp, vorticon, etc.
 	 bool exists;
 	 bool onscreen;    // 1=(scrx,scry) position is visible onscreen
 	 bool hasbeenonscreen;
@@ -41,7 +44,6 @@ public:
 	 int zapped;              // number of times got hit by keen's raygun
 	 int zapx, zapy, zapd;	   // x,y, and direction of last shot at time of impact
 	 char zappedbyenemy;	   // if 1, it was an ENEMYRAY and not keen that shot it
-
 
 	 char inhibitfall;         // if 1 common_enemy_ai will not do falling
 	 bool cansupportplayer[MAX_PLAYERS];
@@ -92,12 +94,11 @@ public:
 			stMotherData mother;
 			stBallJackData bj;
 			stNessieData nessie;
-
 	 } ai;
 
-private:
+	 void setPos( int px, int py );
 
-
+	 virtual void process() { }
 };
 
 #endif /* COBJECT_H_ */

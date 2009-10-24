@@ -1,10 +1,10 @@
-#include "../sdl/sound/CSound.h"
-#include "../sdl/CVideoDriver.h"
-#include "../keen.h"
+#include "../../sdl/sound/CSound.h"
+#include "../../sdl/CVideoDriver.h"
+#include "../../keen.h"
 #include "vort.h"
-#include "../include/game.h"
+#include "../../include/game.h"
 
-#include "../include/enemyai.h"
+#include "enemyai.h"
 
 
 

@@ -1,9 +1,9 @@
-#include "../sdl/sound/CSound.h"
+#include "../../sdl/sound/CSound.h"
 
-#include "../keen.h"
-#include "../include/game.h"
+#include "../../keen.h"
+#include "../../include/game.h"
 
-#include "../include/enemyai.h"
+#include "enemyai.h"
 
 
 #define MEEP_WALK       0

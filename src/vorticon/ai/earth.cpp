@@ -1,6 +1,6 @@
-#include "../keen.h"
+#include "../../keen.h"
 
-#include "../include/enemyai.h"
+#include "enemyai.h"
 
 #include "earth.h"
 

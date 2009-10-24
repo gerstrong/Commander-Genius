@@ -10,26 +10,35 @@
 #include "CTitle.h"
 #include "../sdl/CTimer.h"
 #include "../sdl/CVideoDriver.h"
+#include "ai/CEGABitmap.h"
 
 ////
 // Creation Routine
 ////
-CTitle::CTitle() {
+CTitle::CTitle(std::vector<CObject*> *pObjects) {
 	m_finished = false;
 	m_time = 0;
-	mp_bmp_surface = g_pVideoDriver->FGLayerSurface;
+	mp_objects = pObjects;
 }
 
 bool CTitle::init()
 {
+CObject *p_object;
+SDL_Surface *pSurface;
+CBitmap *pBitmap;
 	g_pTimer->ResetSecondsTimer();
 	m_time = 10; // show the title screen for 10 sec
-	mp_bitmap_title = g_pGfxEngine->getBitmap("TITLE");
-	mp_bitmap_f1help = g_pGfxEngine->getBitmap("F1HELP");
+	pSurface = g_pVideoDriver->BlitSurface;
 
-	// draw those Bitmaps just once as only animated tiles are redrawn here.
-	mp_bitmap_title->draw( mp_bmp_surface, 160, 0);
-	mp_bitmap_f1help->draw( mp_bmp_surface, 160, 160);
+	pBitmap = g_pGfxEngine->getBitmap("TITLE");
+	p_object = new CEGABitmap( pSurface, pBitmap );
+	p_object->setPos( 160-(pBitmap->getWidth()/2), 0 );
+	mp_objects->push_back(p_object);
+
+	pBitmap = g_pGfxEngine->getBitmap("F1HELP");
+	p_object = new CEGABitmap( pSurface, pBitmap );
+	p_object->setPos( 96, 180 );
+	mp_objects->push_back(p_object);
 
 	return true;
 }
@@ -48,7 +57,11 @@ void CTitle::process()
 ////
 void CTitle::cleanup()
 {
-	
+	while( !mp_objects->empty() )
+	{
+		delete *( mp_objects->end() );
+		mp_objects->pop_back();
+	}
 }
 
 CTitle::~CTitle() {

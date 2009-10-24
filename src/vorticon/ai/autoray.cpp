@@ -7,9 +7,9 @@
  */
 
 
-#include "../keen.h"
-#include "../include/game.h"
-#include "../sdl/sound/CSound.h"
+#include "../../keen.h"
+#include "../../include/game.h"
+#include "../../sdl/sound/CSound.h"
 
 // Reference to ../game.cpp
 unsigned char spawn_object(int x, int y, int otype);

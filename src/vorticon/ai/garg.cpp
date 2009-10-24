@@ -1,8 +1,8 @@
-#include "../sdl/sound/CSound.h"
+#include "../../sdl/sound/CSound.h"
 
-#include "../keen.h"
-#include "../include/game.h"
-#include "../graphics/CGfxEngine.h"
+#include "../../keen.h"
+#include "../../include/game.h"
+#include "../../graphics/CGfxEngine.h"
 
 enum garg_states{
 GARG_LOOK,

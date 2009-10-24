@@ -96,9 +96,6 @@ void PlayerTouchedExit(int theplayer, stCloneKeenPlus *pCKP);
 
 void endlevel(int reason_for_leaving, stLevelControl *levelcontrol);
 
-char checkissolidl(int x, int y, int cp, stCloneKeenPlus *pCKP);
-char checkissolidr(int x, int y, int cp, stCloneKeenPlus *pCKP);
-
 void gamedo_enemyai(stLevelControl *p_levelcontrol);
 
 // Referenzed from cinematics/EndingSequenceEp3.cpp

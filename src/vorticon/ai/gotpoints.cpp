@@ -5,7 +5,7 @@
  *      Author: gerstrong
  */
 
-#include "../keen.h"
+#include "../../keen.h"
 
 // GotPoints object (rising numbers when you get a bonus item)
 // (this wasn't in original Keen)

@@ -17,12 +17,14 @@
 #define CTITLE_H_
 
 #include <SDL/SDL.h>
+#include <vector>
 #include "../graphics/CGfxEngine.h"
+#include "../common/CObject.h"
 
 class CTitle {
 public:
 
-	CTitle();
+	CTitle(std::vector<CObject*> *Objects);
 	virtual ~CTitle();
 
 	bool init();
@@ -33,9 +35,7 @@ public:
 		{ return m_finished; }
 
 private:
-	CBitmap *mp_bitmap_title;
-	CBitmap *mp_bitmap_f1help;
-	SDL_Surface *mp_bmp_surface;
+	std::vector<CObject*> *mp_objects;
 	bool m_finished;
 	unsigned int m_time;
 };

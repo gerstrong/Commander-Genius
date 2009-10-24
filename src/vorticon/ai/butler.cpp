@@ -1,11 +1,11 @@
-#include "../keen.h"
+#include "../../keen.h"
 
-#include "../include/game.h"
+#include "../../include/game.h"
 
-#include "../include/enemyai.h"
+#include "enemyai.h"
 
-#include "../sdl/sound/CSound.h"
-#include "../graphics/CGfxEngine.h"
+#include "../../sdl/sound/CSound.h"
+#include "../../graphics/CGfxEngine.h"
 
 // AI for "butler" robot (ep1)
 #define BUTLER_TURN     0

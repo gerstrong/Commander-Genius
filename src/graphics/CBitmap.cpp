@@ -13,11 +13,6 @@ CBitmap::CBitmap() {
 	m_name = "";
 }
 
-CBitmap::~CBitmap() {
-	if(m_BitmapSurface) SDL_FreeSurface(m_BitmapSurface);
-	m_BitmapSurface = NULL;
-}
-
 ///
 // Creation Routines
 ///
@@ -75,4 +70,12 @@ void CBitmap::draw(SDL_Surface *dst, Uint16 x, Uint16 y)
 
 	if( dst_rect.w>0 && dst_rect.h>0 )
 		SDL_BlitSurface(m_BitmapSurface, NULL, dst, &dst_rect);
+}
+
+///
+// Freeing Routines
+///
+CBitmap::~CBitmap() {
+	if(m_BitmapSurface) SDL_FreeSurface(m_BitmapSurface);
+	m_BitmapSurface = NULL;
 }

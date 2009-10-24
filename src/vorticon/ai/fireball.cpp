@@ -1,10 +1,10 @@
-#include "../keen.h"
+#include "../../keen.h"
 #include "ray.h"
-#include "../include/game.h"
+#include "../../include/game.h"
 
-#include "../include/enemyai.h"
+#include "enemyai.h"
 
-#include "../sdl/sound/CSound.h"
+#include "../../sdl/sound/CSound.h"
 #include "fireball.h"
 
 // fireball projectile shot out by Vorticon Mother (Ep3)

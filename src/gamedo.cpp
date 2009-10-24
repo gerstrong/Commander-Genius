@@ -20,7 +20,7 @@
 #include "StringUtils.h"
 #include <string>
 
-#include "include/enemyai.h"
+//#include "include/enemyai.h"
 
 // do object and enemy AI
 void gamedo_enemyai(stLevelControl *p_levelcontrol)
