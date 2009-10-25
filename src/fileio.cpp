@@ -212,7 +212,7 @@ char* path;
 	#if defined(__APPLE__)
 	path = "./Commander Genius.app/Contents/Resources/data/strings.dat";
 	#else
-	path = "/data/string.dat";
+	path = "data/strings.dat";
 	#endif
 	g_pLogFile->ftextOut(path);
   g_pLogFile->ftextOut("<br>loadstrings(): Opening string file 'strings.dat'.<br>");
