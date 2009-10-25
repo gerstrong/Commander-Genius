@@ -12,7 +12,6 @@ void give_keycard(int doortile, int p);
 void take_keycard(int doortile, int p);
 void extralifeat(int p);
 unsigned char spawn_object(int x, int y, int otype);
-void common_enemy_ai(int o);
 char hitdetect(int object1, int object2);
 void freezeplayer(int theplayer);
 void unregister_animtiles(int tile);

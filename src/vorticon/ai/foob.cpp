@@ -1,6 +1,6 @@
 #include "../../sdl/sound/CSound.h"
 #include "../../keen.h"
-#include "../../include/game.h"
+#include "../../game.h"
 #include "../../graphics/CGfxEngine.h"
 
 // AI for the foobs (yellow "scaredy cat" creatures) (ep3)

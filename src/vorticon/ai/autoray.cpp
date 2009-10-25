@@ -8,7 +8,7 @@
 
 
 #include "../../keen.h"
-#include "../../include/game.h"
+#include "../../game.h"
 #include "../../sdl/sound/CSound.h"
 
 // Reference to ../game.cpp

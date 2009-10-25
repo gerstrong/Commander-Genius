@@ -13,7 +13,7 @@
 #include "../sdl/CInput.h"
 #include "../sdl/CVideoDriver.h"
 
-#include "../include/game.h"
+#include "../game.h"
 #include "../include/gamedo.h"
 
 #define LETTER_SHOW_SPD          30
@@ -47,7 +47,7 @@ int endsequence(stCloneKeenPlus *pCKP)
   pCKP->Control.levelcontrol.gameovermode = true;
   // Remove all the items.
 
-  start_gameover(pCKP);
+  //start_gameover(pCKP);
 
   return 0;
 }

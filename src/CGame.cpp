@@ -12,7 +12,7 @@
 #include "keen.h"
 #include "CGame.h"
 #include "common/CMenu.h"
-#include "include/game.h"
+#include "game.h"
 #include "include/misc.h"
 #include "include/main.h"
 #include "include/CStartScreen.h"

@@ -4,7 +4,7 @@
 #include "ray.h"
 #include "se.h"
 
-#include "../../include/game.h"
+#include "../../game.h"
 #include "enemyai.h"
 
 #include "../../sdl/sound/CSound.h"

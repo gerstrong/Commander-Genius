@@ -6,7 +6,7 @@
 #include "include/CStartScreen.h"
 #include "include/misc.h"
 #include "sdl/CVideoDriver.h"
-#include "include/game.h"
+#include "game.h"
 #include "sdl/CTimer.h"
 #include "sdl/sound/CSound.h"
 #include "include/fileio.h"

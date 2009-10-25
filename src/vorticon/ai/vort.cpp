@@ -2,7 +2,7 @@
 #include "../../sdl/CVideoDriver.h"
 #include "../../keen.h"
 #include "vort.h"
-#include "../../include/game.h"
+#include "../../game.h"
 
 #include "enemyai.h"
 

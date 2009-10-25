@@ -491,19 +491,13 @@ CObject *pPlayerObject = &mp_object->at(m_player_number);
        // limit how quickly shots can be fired
        if ( !plastfire || mp_option[OPT_FULLYAUTOMATIC].value )
        {
-         if (pfireframetimer < PFIRE_LIMIT_SHOT_FREQ_FA)
-         {
-           canRefire = 1;
-         }
-         else canRefire = 0;
+         if (pfireframetimer < PFIRE_LIMIT_SHOT_FREQ_FA) canRefire = true;
+         else canRefire = false;
        }
        else
        {
-         if (pfireframetimer < PFIRE_LIMIT_SHOT_FREQ)
-         {
-           canRefire = 1;
-         }
-         else canRefire = 0;
+         if (pfireframetimer < PFIRE_LIMIT_SHOT_FREQ) canRefire = true;
+         else canRefire = false;
        }
 
        if (canRefire)
@@ -514,33 +508,24 @@ CObject *pPlayerObject = &mp_object->at(m_player_number);
           // try to fire off a blast
           if (inventory.charges)
           {  // we have enough charges
+        	  int xdir, ydir;
+        	  CObject rayobject;
+        	  inventory.charges--;
+        	  pshowdir = pdir;
 
-             inventory.charges--;
-             pshowdir = pdir;
+        	  g_pSound->playStereofromCoord(SOUND_KEEN_FIRE, PLAY_NOW, pPlayerObject->scrx);
 
-             g_pSound->playStereofromCoord(SOUND_KEEN_FIRE, PLAY_NOW, pPlayerObject->scrx);
+        	  ydir = y+(9<<CSF);
+        	  if (pdir==RIGHT) xdir = x+((g_pGfxEngine->Sprite[0]->getWidth()-4)<<(CSF-4));
+        	  else xdir = x-(12<<CSF);
 
-             if (pdir==RIGHT)
-             {  // fire a blast to the right
-                //o = spawn_object(x+((g_pGfxEngine->Sprite[0]->getWidth()-4)<<CSF), y+(9<<CSF), OBJ_RAY);
-                // TODO : The Blasts are not working yet! Code here!
-                pPlayerObject->ai.ray.direction = RIGHT;
-             }
-             else
-             {  // fire a blast to the left
-                //o = spawn_object(x-(12<<CSF), y+(9<<CSF), OBJ_RAY);
-                // TODO : The Blasts are not working yet! Code here!
-                pPlayerObject->ai.ray.direction = LEFT;
-             }
-             if (mp_option[OPT_ALLOWPKING].value)
-             {
-            	 pPlayerObject->ai.ray.dontHitEnable = 0;
-             }
-             else
-             {
-            	 pPlayerObject->ai.ray.dontHitEnable = 1;
-            	 pPlayerObject->ai.ray.dontHit = OBJ_PLAYER;
-             }
+        	  rayobject.spawn(xdir, ydir, OBJ_RAY);
+        	  rayobject.ai.ray.direction = pdir;
+
+    		  rayobject.ai.ray.dontHitEnable = false;
+        	  if (!mp_option[OPT_ALLOWPKING].value)
+        		  rayobject.ai.ray.dontHit = OBJ_PLAYER;
+        	  mp_object->push_back(rayobject);
           }
           else
           { // oh shit, out of bullets

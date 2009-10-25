@@ -76,29 +76,14 @@ DOWN
 #define YORPSTATUEHEAD     22
 #define YORPSTATUEHEADUSED 485
 #define YORPSTATUEBOTTOM   22
-#define ENEMYRAY           109
-#define ENEMYRAYEP2        123
-#define ENEMYRAYEP3        103
-#define RAY_VERT_EP3       104
 
-void gameloop(stCloneKeenPlus *pCKP);
 void gameloop_initialize(int episode, bool show_keensleft);
-void initsprites(stCloneKeenPlus *pCKP, int s);
 
 void recalc_highest_objslot(void);
 char IsStopPoint(int x, int y, int o);
 
-int initgamefirsttime(stCloneKeenPlus *pCKP, int s);
-
-void open_door(int doortile, int doorsprite, int mpx, int mpy, int cp, stCloneKeenPlus *pCKP);
 void killplayer(int theplayer);
-void PlayerTouchedExit(int theplayer, stCloneKeenPlus *pCKP);
-
-void endlevel(int reason_for_leaving, stLevelControl *levelcontrol);
-
-void gamedo_enemyai(stLevelControl *p_levelcontrol);
 
 // Referenzed from cinematics/EndingSequenceEp3.cpp
 void eseq3_Mortimer();
 
-void start_gameover(stCloneKeenPlus *pCKP);

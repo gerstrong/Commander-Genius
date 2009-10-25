@@ -7,7 +7,7 @@
 #include "demobox.h"
 #include "CGame.h"
 #include "common/CMenu.h"
-#include "include/game.h"
+#include "game.h"
 #include "sdl/CInput.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/sound/CSound.h"

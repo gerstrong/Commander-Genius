@@ -30,7 +30,7 @@
 #include "hqp/CMusic.h"
 #include "include/misc.h"
 #include "include/CStartScreen.h"
-#include "include/game.h"
+#include "game.h"
 #include "include/fileio.h"
 #include "include/fileio/story.h"
 #include "include/main.h"
@@ -60,8 +60,6 @@ char ScreenIsScrolling;
 int gunfiretimer, gunfirefreq;
 
 char loadinggame, loadslot;
-
-unsigned int objdefsprites[NUM_OBJ_TYPES+1];
 
 void banner(void);
 

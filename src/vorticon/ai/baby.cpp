@@ -1,7 +1,7 @@
 #include "../../sdl/sound/CSound.h"
 
 #include "../../keen.h"
-#include "../../include/game.h"
+#include "../../game.h"
 
 #include "baby.h"
 

@@ -15,6 +15,7 @@
 
 // structures for each AI module's data
 #include "../vorticon/ai/enemydata.h"
+#include "options.h"
 
 // Enumerations are here
 #include "objenums.h"
@@ -46,7 +47,7 @@ public:
 	 char zappedbyenemy;	   // if 1, it was an ENEMYRAY and not keen that shot it
 
 	 char inhibitfall;         // if 1 common_enemy_ai will not do falling
-	 bool cansupportplayer[MAX_PLAYERS];
+	 bool cansupportplayers;
 
 	 unsigned int blockedl, blockedr, blockedu, blockedd;
 	 signed int xinertia, yinertia;
@@ -96,9 +97,16 @@ public:
 			stNessieData nessie;
 	 } ai;
 
+	 void setupObjectType();
 	 void setPos( int px, int py );
+	 bool spawn(int x0, int y0, int otype);
+
+#include "../vorticon/ai/enemyai.h"
 
 	 virtual void process() { }
+
+	 void performAI(int episode, stOption *p_option);
+	 void performCommonAI();
 };
 
 #endif /* COBJECT_H_ */

@@ -5,16 +5,16 @@
  *      Author: gerstrong
  */
 
-#include "../../graphics/CGfxEngine.h"
+#ifndef ENEMYAI_H_
+#define ENEMYAI_H_
 
 // .ai functions
 // ep1
-void yorp_ai(int o, stLevelControl levelcontrol);
+/*void yorp_ai(int o, stLevelControl levelcontrol);
 void garg_ai(int o, bool hardmode);
 void vort_ai(int o, stLevelControl *p_levelcontrol);
 void butler_ai(int o, bool hardmode);
 void tank_ai(int o, bool hardmode);
-void ray_ai(int o, int episode, bool automatic_raygun, char pShotSpeed);
 void icechunk_ai(int o);
 void icebit_ai(int o);
 void icecannon_ai(int o);
@@ -45,4 +45,8 @@ void nessie_ai(int o);
 
 // Specials
 void autoray_ai(int o);
-void gotpoints_ai(int o);
+void gotpoints_ai(int o);*/
+
+void ray_ai( int episode, bool automatic_raygun, char pShotSpeed );
+
+#endif /* ENEMYAI_H_ */

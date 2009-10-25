@@ -12,7 +12,7 @@
 #include "CEGASprit.h"
 #include "CPlanes.h"
 #include "../keen.h"
-#include "../include/game.h"
+#include "../game.h"
 #include "../FindFile.h"
 #include "../sdl/CVideoDriver.h"
 #include "../vorticon/spritedefines.h"

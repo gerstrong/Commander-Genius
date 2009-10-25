@@ -1,6 +1,6 @@
 #include "../../keen.h"
 #include "vortelite.h"
-#include "../../include/game.h"
+#include "../../game.h"
 #include "../../sdl/sound/CSound.h"
 #include "../../graphics/CGfxEngine.h"
 

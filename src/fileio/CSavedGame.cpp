@@ -9,7 +9,7 @@
 
 #include "../keen.h"
 #include "../externals.h"
-#include "../include/game.h"
+#include "../game.h"
 #include "../CLogFile.h"
 #include "../FindFile.h"
 #include "../graphics/CGfxEngine.h"

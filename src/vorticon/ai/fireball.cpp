@@ -1,6 +1,6 @@
 #include "../../keen.h"
 #include "ray.h"
-#include "../../include/game.h"
+#include "../../game.h"
 
 #include "enemyai.h"
 

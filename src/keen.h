@@ -30,7 +30,6 @@
 
 #define WM_MAP_NUM      80
 
-#define MAX_SPRITES  500
 #define MAX_SPRITE_WIDTH	80
 #define MAX_SPRITE_HEIGHT	62
 #define MAX_FONT     256
@@ -118,41 +117,6 @@ struct stString
 // the object because active the first time it scrolls onto the screen
 // from the top or left. if the default sprite is wrong the object may
 // suddenly appear on the screen instead of smoothly scrolling on.
-#define OBJ_YORP_DEFSPRITE       50
-#define OBJ_GARG_DEFSPRITE       60
-#define OBJ_VORT_DEFSPRITE_EP1   78
-#define OBJ_VORT_DEFSPRITE_EP2   82
-#define OBJ_VORT_DEFSPRITE_EP3   71
-#define OBJ_BUTLER_DEFSPRITE     88
-#define OBJ_TANK_DEFSPRITE       98
-#define OBJ_RAY_DEFSPRITE_EP1    108
-#define OBJ_RAY_DEFSPRITE_EP2    122
-#define OBJ_RAY_DEFSPRITE_EP3    102
-#define OBJ_ICECHUNK_DEFSPRITE   112
-#define OBJ_ICEBIT_DEFSPRITE     113
-#define OBJ_ROPE_DEFSPRITE       114
-#define OBJ_TELEPORTER_DEFSPRITE 180
-
-
-#define OBJ_PLATFORM_DEFSPRITE_EP2   126
-#define OBJ_PLATFORM_DEFSPRITE_EP3   107
-#define OBJ_SCRUB_DEFSPRITE     102
-#define OBJ_TANKEP2_DEFSPRITE    112
-
-#define OBJ_VORTELITE_DEFSPRITE  88
-
-#define OBJ_FOOB_DEFSPRITE			95
-#define OBJ_NINJA_DEFSPRITE			77
-#define OBJ_MOTHER_DEFSPRITE		87
-#define OBJ_BALL_DEFSPRITE			109
-#define OBJ_JACK_DEFSPRITE			110
-#define OBJ_MEEP_DEFSPRITE			118
-#define OBJ_NESSIE_DEFSPRITE		132
-
-#define OBJ_BABY_DEFSPRITE_EP2   52
-#define OBJ_BABY_DEFSPRITE_EP3   51
-
-#define OBJ_SPARK_DEFSPRITE_EP2		128
 
 // some directions (mostly for OBJ_ICECHUNK and OBJ_ICEBIT)
 #define DUPRIGHT         0

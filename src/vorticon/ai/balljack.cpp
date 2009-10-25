@@ -1,7 +1,7 @@
 // ai for the ball and the jack in ep3
 #include "../../keen.h"
 
-#include "../../include/game.h"
+#include "../../game.h"
 #include "../../graphics/CGfxEngine.h"
 
 #include "balljack.h"

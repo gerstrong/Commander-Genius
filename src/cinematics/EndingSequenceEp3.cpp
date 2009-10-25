@@ -6,7 +6,7 @@
 
 #include "../keen.h"
 
-#include "../include/game.h"
+#include "../game.h"
 #include "../include/gamedo.h"
 #include "../include/CStartScreen.h"
 

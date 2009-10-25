@@ -57,6 +57,7 @@ CPlayGame::CPlayGame( char episode, char level,
 		m_Object[i].exists = true;
 		m_Object[i].onscreen = true;
 		m_Object[i].honorPriority = true;
+		m_Object[i].m_type = OBJ_PLAYER;
 		mp_Player[i].mp_object = &m_Object;
 		mp_Player[i].mp_option = p_option;
 	}
@@ -197,6 +198,11 @@ void CPlayGame::process()
 		else
 		{
 			// Perform AIs
+			std::vector<CObject>::iterator i_object;
+			for( i_object=m_Object.begin() ; i_object!=m_Object.end() ; i_object++ )
+			{
+				i_object->performAI( m_Episode, mp_option );
+			}
 
 			// Perform physics
 

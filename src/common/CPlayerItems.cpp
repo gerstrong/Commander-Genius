@@ -312,13 +312,12 @@ short tilefix=0;
 
 void CPlayer::giveAnkh()
 {
-int o;
   if (ankhtime == 0)
   {
-    //o = spawn_object(x, y, OBJ_SECTOREFFECTOR);
-	// TODO: This must be adapted too.
-    mp_object->at(o).ai.se.type = SE_ANKHSHIELD;
-    ankhshieldobject = o;
+	CObject Object;
+	Object.ai.se.type = SE_ANKHSHIELD;
+    ankhshieldobject = Object.spawn(x, y, OBJ_SECTOREFFECTOR);
+    mp_object->push_back(Object);
   }
 
   g_pSound->playSound(SOUND_ANKH, PLAY_NOW);

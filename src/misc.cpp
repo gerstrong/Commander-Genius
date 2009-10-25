@@ -13,7 +13,7 @@
 #include "sdl/sound/CSound.h"
 
 #include "include/misc.h"
-#include "include/game.h"
+#include "game.h"
 #include "include/gamedo.h"
 #include "fileio/CSavedGame.h"
 #include "CLogFile.h"
