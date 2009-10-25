@@ -108,7 +108,7 @@ struct FileListAdder {
     }
 };
 
-Uint8 CGameLauncher::scanDirectories(std::string& path, DirList& dir)
+Uint8 CGameLauncher::scanDirectories(const std::string& path, DirList& dir)
 {
     std::set<std::string> dirs;
     FileListAdder fileListAdder;
@@ -119,7 +119,7 @@ Uint8 CGameLauncher::scanDirectories(std::string& path, DirList& dir)
     return dir.size();
 }
 
-bool CGameLauncher::scanSubDirectories( std::string& root )
+bool CGameLauncher::scanSubDirectories(const std::string& root)
 {
     unsigned int i;
     bool gamedetected = false;
@@ -139,7 +139,7 @@ bool CGameLauncher::scanSubDirectories( std::string& root )
     return gamedetected;
 }
 
-bool CGameLauncher::scanExecutables(std::string& path)
+bool CGameLauncher::scanExecutables(const std::string& path)
 {
     bool result;
     unsigned int i=0;
@@ -281,7 +281,7 @@ void CGameLauncher::getLabels()
     }
 }
 
-std::string CGameLauncher::scanLabels(std::string& path)
+std::string CGameLauncher::scanLabels(const std::string& path)
 {
     Uint16 i;
 

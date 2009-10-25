@@ -72,12 +72,12 @@ private:
 	CDialog *mp_LaunchMenu;
 	CMap *mp_map;
 
-    Uint8 scanDirectories(std::string& path, DirList& dir);
-	bool scanSubDirectories( std::string& root );
-	bool scanExecutables(std::string& path);
+    Uint8 scanDirectories(const std::string& path, DirList& dir);
+	bool scanSubDirectories(const std::string& root);
+	bool scanExecutables(const std::string& path);
 
     void getLabels();
-    std::string scanLabels(std::string& path);
+    std::string scanLabels(const std::string& path);
     void putLabels();
 };
 
