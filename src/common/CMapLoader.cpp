@@ -181,7 +181,7 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
    break;*/
    default:             // level marker
      //if ((t&0x7fff) < 256 && mp_Player->mp_levels_completed[t&0x00ff])
-	 if ((t&0x7fff) < 256 && mp_Player->mp_levels_completed[t&0x00ff])
+	 if ((t&0x7fff) < 256 && mp_Player->mp_levels_completed[t&0x00ff] && t<(t&0x00ff) )
      {
 
    		 mp_map->m_objectlayer[x][y] = t;
