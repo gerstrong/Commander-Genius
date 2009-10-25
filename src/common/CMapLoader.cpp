@@ -158,7 +158,7 @@ void CMapLoader::addTile( Uint16 t, Uint16 x, Uint16 y )
 void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episode)
 {
   // This function add sprites on the map. Most of the objects are invisible.
-  // TODO : Please convert this into ifs. There are more conditions than just switch.
+  // TODO : Please convert this into ifs. There are more conditions than just switch.agree
   switch(t)
   {
    case 0: break;       // blank
