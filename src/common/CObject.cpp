@@ -107,25 +107,24 @@ void CObject::setPos( int px, int py )
 	scry = py;
 }
 
+//////////////////
+// AI Processes //
+//////////////////
 ///
 // do object and enemy AI
 ///
-void CObject::performAI( CMap *p_map, stOption *p_option, char episode )
+bool CObject::checkforAIObject( CMap *p_map )
 {
-	if ( !exists || m_type==OBJ_PLAYER ) return;
+	if ( !exists || m_type==OBJ_PLAYER ) return false;
 
     //gamedo_calcenemyvisibility(i);
 
     // This will do the function gamedo_calcenemyvisibility(i);
     // check if object is really in the map!!!
-    if (x < 0 || y < 0) return;
+    if (x < 0 || y < 0) return false;
 
-/*    if (x > (map.xsize << (CSF-4) || objects[i].y > (map.ysize << CSF << 4))
-    	  return;*/
-    // TODO: This check should work again
-
-    // Bitmaps are also part of the object, but only print them directly
-    //if ( m_type==OBJ_EGA_BITMAP ) return;
+    if (x > (p_map->m_width<<CSF) || y > (p_map->m_height<<CSF) )
+    	  return false;
 
     if (scrx < -(g_pGfxEngine->Sprite[sprite]->getWidth()) || scrx > g_pVideoDriver->getGameResRect().w
           || scry < -(g_pGfxEngine->Sprite[sprite]->getHeight()) || scry > g_pVideoDriver->getGameResRect().h)
@@ -146,64 +145,66 @@ void CObject::performAI( CMap *p_map, stOption *p_option, char episode )
 			m_type==OBJ_PLATVERT || m_type==OBJ_YORP ||
 			m_type==OBJ_FOOB || m_type==OBJ_SCRUB)
 
-    {
-		 performCommonAI(p_map);
-       	 switch(m_type)
-       	 {
-       	 /*//KEEN1
-		  case OBJ_YORP: yorp_ai(i, *p_levelcontrol); break;
-		  case OBJ_GARG: garg_ai(i, p_levelcontrol->hardmode); break;
-		  case OBJ_VORT: vort_ai(i, p_levelcontrol ); break;
-		  case OBJ_BUTLER: butler_ai(i, p_levelcontrol->hardmode); break;
-		  case OBJ_TANK: tank_ai(i, p_levelcontrol->hardmode); break;
-		  case OBJ_DOOR: door_ai(i, p_levelcontrol->cepvars.DoorOpenDir); break;
-		  case OBJ_ICECANNON: icecannon_ai(i); break;
-		  case OBJ_ICECHUNK: icechunk_ai(i); break;
-		  case OBJ_ICEBIT: icebit_ai(i); break;
-		  case OBJ_TELEPORTER: teleporter_ai(i, *p_levelcontrol); break;
-		  case OBJ_ROPE: rope_ai(i); break;
-
-		  //KEEN2
-		  case OBJ_SCRUB: scrub_ai(i, *p_levelcontrol); break;
-		  case OBJ_TANKEP2: tankep2_ai(i, p_levelcontrol->hardmode); break;
-		  case OBJ_PLATFORM: platform_ai(i, *p_levelcontrol); break;
-		  case OBJ_VORTELITE: vortelite_ai(i, p_levelcontrol->dark); break;
-		  case OBJ_SECTOREFFECTOR: se_ai(i, p_levelcontrol ); break;
-		  case OBJ_BABY: baby_ai(i, p_levelcontrol->episode,
-							  p_levelcontrol->hardmode); break;
-		  case OBJ_EXPLOSION: explosion_ai(i); break;
-		  case OBJ_EARTHCHUNK: earthchunk_ai(i); break;
-		  case OBJ_SPARK: spark_ai(i, &(p_levelcontrol->sparks_left) ); break;
-
-		  //KEEN3
-		  case OBJ_FOOB: foob_ai(i, p_levelcontrol->hardmode); break;
-		  case OBJ_NINJA: ninja_ai( i, p_levelcontrol->hardmode); break;
-		  case OBJ_MEEP: meep_ai( i, *p_levelcontrol ); break;
-		  case OBJ_SNDWAVE: sndwave_ai( i, p_levelcontrol->hardmode); break;
-		  case OBJ_MOTHER: mother_ai( i, *p_levelcontrol ); break;
-		  case OBJ_FIREBALL: fireball_ai( i, p_levelcontrol->hardmode ); break;
-		  case OBJ_BALL: ballandjack_ai(i); break;
-		  case OBJ_JACK: ballandjack_ai(i); break;
-		  case OBJ_PLATVERT: platvert_ai(i); break;
-		  case OBJ_NESSIE: nessie_ai(i); break;
-
-		  //Specials*/
-		  case OBJ_RAY: ray_ai( episode, p_option[OPT_FULLYAUTOMATIC].value, 1); break;
-		  //case OBJ_AUTORAY: case OBJ_AUTORAY_V: autoray_ai(i); break;
-		  //case OBJ_GOTPOINTS: gotpoints_ai(i); break;
-
-		  //case OBJ_DEMOMSG: break;
-
-		  default:
-			  g_pLogFile->ftextOut("gamedo_enemy_ai: Object is of invalid type %d\n",  m_type);
-       	  break;
-         }
-      }
+	{
+		return true;
+    }
+	return false;
 }
 
-///
-//
-///
+void CObject::performSpecialAI( stOption *p_option, char episode )
+{
+  	 switch(m_type)
+  	 {
+  	 /*//KEEN1
+	  case OBJ_YORP: yorp_ai(i, *p_levelcontrol); break;
+	  case OBJ_GARG: garg_ai(i, p_levelcontrol->hardmode); break;
+	  case OBJ_VORT: vort_ai(i, p_levelcontrol ); break;
+	  case OBJ_BUTLER: butler_ai(i, p_levelcontrol->hardmode); break;
+	  case OBJ_TANK: tank_ai(i, p_levelcontrol->hardmode); break;
+	  case OBJ_DOOR: door_ai(i, p_levelcontrol->cepvars.DoorOpenDir); break;
+	  case OBJ_ICECANNON: icecannon_ai(i); break;
+	  case OBJ_ICECHUNK: icechunk_ai(i); break;
+	  case OBJ_ICEBIT: icebit_ai(i); break;
+	  case OBJ_TELEPORTER: teleporter_ai(i, *p_levelcontrol); break;
+	  case OBJ_ROPE: rope_ai(i); break;
+
+	  //KEEN2
+	  case OBJ_SCRUB: scrub_ai(i, *p_levelcontrol); break;
+	  case OBJ_TANKEP2: tankep2_ai(i, p_levelcontrol->hardmode); break;
+	  case OBJ_PLATFORM: platform_ai(i, *p_levelcontrol); break;
+	  case OBJ_VORTELITE: vortelite_ai(i, p_levelcontrol->dark); break;
+	  case OBJ_SECTOREFFECTOR: se_ai(i, p_levelcontrol ); break;
+	  case OBJ_BABY: baby_ai(i, p_levelcontrol->episode,
+						  p_levelcontrol->hardmode); break;
+	  case OBJ_EXPLOSION: explosion_ai(i); break;
+	  case OBJ_EARTHCHUNK: earthchunk_ai(i); break;
+	  case OBJ_SPARK: spark_ai(i, &(p_levelcontrol->sparks_left) ); break;
+
+	  //KEEN3
+	  case OBJ_FOOB: foob_ai(i, p_levelcontrol->hardmode); break;
+	  case OBJ_NINJA: ninja_ai( i, p_levelcontrol->hardmode); break;
+	  case OBJ_MEEP: meep_ai( i, *p_levelcontrol ); break;
+	  case OBJ_SNDWAVE: sndwave_ai( i, p_levelcontrol->hardmode); break;
+	  case OBJ_MOTHER: mother_ai( i, *p_levelcontrol ); break;
+	  case OBJ_FIREBALL: fireball_ai( i, p_levelcontrol->hardmode ); break;
+	  case OBJ_BALL: ballandjack_ai(i); break;
+	  case OBJ_JACK: ballandjack_ai(i); break;
+	  case OBJ_PLATVERT: platvert_ai(i); break;
+	  case OBJ_NESSIE: nessie_ai(i); break;
+
+	  //Specials*/
+	  case OBJ_RAY: ray_ai( episode, p_option[OPT_FULLYAUTOMATIC].value, 1); break;
+	  //case OBJ_AUTORAY: case OBJ_AUTORAY_V: autoray_ai(i); break;
+	  //case OBJ_GOTPOINTS: gotpoints_ai(i); break;
+
+	  //case OBJ_DEMOMSG: break;
+
+	  default:
+		  g_pLogFile->ftextOut("gamedo_enemy_ai: Object is of invalid type %d\n",  m_type);
+  	  break;
+    }
+}
+
 // common enemy/object ai, such as falling, setting blocked variables,
 // detecting player contact, etc.
 void CObject::performCommonAI(CMap *p_map)
@@ -265,104 +266,99 @@ stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 
 	// If the object is out of map
 	if(y0 <= (2<<4)) blockedu = true;
-/*
- // set blockedl
+
+	// set blockedl
     blockedl = false;
     x0 = (x>>(CSF-TILE_S))-1;
     y0 = (y>>(CSF-TILE_S))+1;
     for(ya=0;ya<ysize;ya+=16)
     {
-
-        if (TileProperty[getmaptileat(x,y+ya)][BRIGHT] || IsStopPoint(x,y+ya,o))
+        if (TileProperty[p_map->at(x0>>TILE_S,(y0+ya)>>TILE_S)].bright )
         {
-          blockedl = 1;
+          blockedl = true;
           goto blockedl_set;
         }
     }
-    if (TileProperty[getmaptileat(x, ((y>>CSF)+ysize-1))][BRIGHT] ||
-    		IsStopPoint(x, (y>>CSF)+ysize-1, o))
-      blockedl = 1;
+    if ( TileProperty[p_map->at(x0>>TILE_S, ((y0>>(CSF-TILE_S))+ysize-1)>>TILE_S)].bright )
+      blockedl = true;
 
     blockedl_set: ;
 
 	// If the object is out of map
-	if(x <= (2<<4)) blockedl = 1;
+	if(x <= (2<<4)) blockedl = true;
 
  // set blockedr
-    blockedr = 0;
-    x = (x>>CSF)+xsize;
-    y = (y>>CSF)+1;
+    blockedr = false;
+    x0 = (x>>(CSF-TILE_S))+xsize;
+    y0 = (y>>(CSF-TILE_S))+1;
     for(ya=0;ya<ysize;ya+=16)
     {
-        if (TileProperty[getmaptileat(x,y+ya)][BLEFT] || IsStopPoint(x,y+ya,o))
+        if ( TileProperty[p_map->at(x0>>TILE_S,(y0+ya)>>TILE_S)].bleft )
         {
-          blockedr = 1;
+          blockedr = true;
           goto blockedr_set;
         }
     }
-    if (TileProperty[getmaptileat(x, ((y>>CSF)+ysize-1))][BLEFT] ||
-		IsStopPoint(x, (y>>CSF)+ysize-1, o))
+    if ( TileProperty[p_map->at(x0>>TILE_S, ((y0+ysize-1)>>TILE_S))].bleft )
     {
-      blockedr = 1;
+      blockedr = true;
     }
     blockedr_set: ;
 
-    if(x >= (int)((map.xsize-2)<<4)) blockedr = 1;
+    if(x >= (p_map->m_width-2)<<4) blockedr = true;
 
-    // hit detection with players
-    touchPlayer = 0;
-    for(cplayer=0;cplayer<MAX_PLAYERS;cplayer++)
-    {
-      if (player[cplayer].isPlaying)
+    // have object fall if it should
+      if (!inhibitfall)
       {
-        objects[player[cplayer].useObject].x = player[cplayer].x;
-        objects[player[cplayer].useObject].y = player[cplayer].y;
-        objects[player[cplayer].useObject].sprite = 0;
-        if (!player[cplayer].pdie)
-        {
-          if (hitdetect(o, player[cplayer].useObject))
-          {
-			if (!player[cplayer].godmode)
-			{
-	            touchPlayer = 1;
-	            touchedBy = cplayer;
-			}
-			else
-			{
-				if (type==OBJ_MOTHER || type==OBJ_BABY ||\
-					type==OBJ_MEEP || type==OBJ_YORP)
-				{
-					if (canbezapped)
-						zapped += 100;
-				}
-			}
-            break;
-          }
-        }
+           #define OBJFALLSPEED   20
+           if (blockedd)
+           {
+             yinertia = 0;
+           }
+           else
+           {
+    #define OBJ_YINERTIA_RATE  5
+             if (yinertiatimer>OBJ_YINERTIA_RATE)
+             {
+               if (yinertia < OBJFALLSPEED) yinertia++;
+               yinertiatimer = 0;
+             } else yinertiatimer++;
+           }
+           y += yinertia;
       }
-    }
-
-// have object fall if it should
-  if (!inhibitfall)
-  {
-       #define OBJFALLSPEED   20
-       if (blockedd)
-       {
-         yinertia = 0;
-       }
-       else
-       {
-#define OBJ_YINERTIA_RATE  5
-         if (yinertiatimer>OBJ_YINERTIA_RATE)
-         {
-           if (yinertia < OBJFALLSPEED) yinertia++;
-           yinertiatimer = 0;
-         } else yinertiatimer++;
-       }
-       y += yinertia;
-  }*/
 }
 
+// returns nonzero if object1 overlaps object2
+bool CObject::hitdetect(CObject *p_hitobject)
+{
+CSprite *spr1, *spr2;
+unsigned int rect1x1, rect1y1, rect1x2, rect1y2;
+unsigned int rect2x1, rect2y1, rect2x2, rect2y2;
+
+  // get the sprites used by the two objects
+  spr1 = g_pGfxEngine->Sprite.at(sprite);
+  spr2 = g_pGfxEngine->Sprite.at(p_hitobject->sprite);
+
+  // get the bounding rectangle of the first object
+  rect1x1 = x + spr1->m_bboxX1;
+  rect1y1 = y + spr1->m_bboxY1;
+  rect1x2 = x + spr1->m_bboxX2;
+  rect1y2 = y + spr1->m_bboxY2;
+
+  // get the bounding rectangle of the second object
+  rect2x1 = p_hitobject->x + spr2->m_bboxX1;
+  rect2y1 = p_hitobject->y + spr2->m_bboxY1;
+  rect2x2 = p_hitobject->x + spr2->m_bboxX2;
+  rect2y2 = p_hitobject->y + spr2->m_bboxY2;
+
+  // find out if the rectangles overlap
+  if ((rect1x1 < rect2x1) && (rect1x2 < rect2x1)) return false;
+  if ((rect1x1 > rect2x2) && (rect1x2 > rect2x2)) return false;
+  if ((rect1y1 < rect2y1) && (rect1y2 < rect2y1)) return false;
+  if ((rect1y1 > rect2y2) && (rect1y2 > rect2y2)) return false;
+
+  return true;
+}
 
 ///
 // Cleanup Routine

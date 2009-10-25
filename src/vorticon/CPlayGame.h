@@ -45,6 +45,7 @@ enum e_levelcommands
 	bool loadGameState( std::string &statefile );
 
 	void process();
+	void processObjectsAI();
 	void drawObjects();
 	bool scrollTriggers();
 

@@ -555,37 +555,6 @@ void kill_all_intersecting_tile(int mpx, int mpy)
 					killobject(i);*/
 }
 
-// returns nonzero if object1 overlaps object2
-char hitdetect(int object1, int object2)
-{
-/*CSprite *spr1, *spr2;
-unsigned int rect1x1, rect1y1, rect1x2, rect1y2;
-unsigned int rect2x1, rect2y1, rect2x2, rect2y2;
-
-  // get the sprites used by the two objects
-  spr1 = g_pGfxEngine->Sprite.at(objects[object1].sprite);
-  spr2 = g_pGfxEngine->Sprite.at(objects[object2].sprite);
-
-  // get the bounding rectangle of the first object
-  rect1x1 = objects[object1].x + spr1->m_bboxX1;
-  rect1y1 = objects[object1].y + spr1->m_bboxY1;
-  rect1x2 = objects[object1].x + spr1->m_bboxX2;
-  rect1y2 = objects[object1].y + spr1->m_bboxY2;
-
-  // get the bounding rectangle of the second object
-  rect2x1 = objects[object2].x + spr2->m_bboxX1;
-  rect2y1 = objects[object2].y + spr2->m_bboxY1;
-  rect2x2 = objects[object2].x + spr2->m_bboxX2;
-  rect2y2 = objects[object2].y + spr2->m_bboxY2;
-
-  // find out if the rectangles overlap
-  if ((rect1x1 < rect2x1) && (rect1x2 < rect2x1)) return 0;
-  if ((rect1x1 > rect2x2) && (rect1x2 > rect2x2)) return 0;
-  if ((rect1y1 < rect2y1) && (rect1y2 < rect2y1)) return 0;
-  if ((rect1y1 > rect2y2) && (rect1y2 > rect2y2)) return 0;*/
-
-  return 1;
-}
 
 /*void killplayer(int theplayer)
 {

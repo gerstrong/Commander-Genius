@@ -106,8 +106,10 @@ public:
 
 	 virtual void process() { }
 
-	 void performAI( CMap *p_map, stOption *p_option, char episode );
+	 bool checkforAIObject( CMap *p_map );
+	 void performSpecialAI( stOption *p_option, char episode );
 	 void performCommonAI(CMap *p_map);
+	 bool hitdetect(CObject *p_hitobject);
 };
 
 #endif /* COBJECT_H_ */
