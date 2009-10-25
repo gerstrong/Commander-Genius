@@ -48,9 +48,9 @@ bool CMenu::init( char menu_type )
 	{
 		initDifficultyMenu();
 	}
-	else if( m_menu_type == OPTIONS )
+	else if( m_menu_type == CONFIGURE )
 	{
-		initOptionsMenu();
+		initConfigureMenu();
 	}
 	else if( m_menu_type == CONTROLPLAYERS)
 	{
@@ -64,21 +64,19 @@ bool CMenu::init( char menu_type )
 
 void CMenu::initMainMenu()
 {
-	mp_Dialog = new CDialog(mp_MenuSurface, 18, 12);
+	mp_Dialog = new CDialog(mp_MenuSurface, 17, 10);
 
 	// When in Intro, Title, Demo mode
 	if( m_menu_mode == PASSIVE )
 	{
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "New Game");
-		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 2, "Load Game");
-		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 3, "Story");
-		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 4, "Highscores");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 5, "Options");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 6, "Choose Game");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 7, "Back to Demo");
-		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 8, "About CG");
-		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 9, "Ordering Info");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 10, "Quit");
+		mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 2, "Load Game");
+		mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 3, "Save Game");
+		mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 4, "Highscores");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "Configure");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Back to Demo");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "Choose Game");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Quit");
 	}
 
 	// When Player is playing
@@ -86,15 +84,13 @@ void CMenu::initMainMenu()
 	if( m_menu_mode == ACTIVE )
 	{
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "New Game");
-		mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 2, "Save/Load Game");
-		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 3, "Story");
+		mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 2, "Load Game");
+		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 3, "Save Game");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 4, "Highscores");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "Options");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "Configure");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 6, "Back to Game");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "Back to Title");
-		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 8, "About CG");
-		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 9, "Ordering Info");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 10, "Quit");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "End Game");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Quit");
 	}
 }
 
@@ -116,17 +112,17 @@ void CMenu::initDifficultyMenu()
 	mp_Dialog = new CDialog(mp_MenuSurface, 11, 6);
 
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Normal");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 2, "Hard");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 4, "Back");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Hard");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Back");
 }
 
-void CMenu::initOptionsMenu()
+void CMenu::initConfigureMenu()
 {
 	mp_Dialog = new CDialog(mp_MenuSurface, 13, 8);
 
 	mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 1, "Graphics");
-	mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 2, "Audio");
-	mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 3, "Game");
+	mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 2, "Audio");
+	mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 3, "Options");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Controls");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Back");
 }
@@ -142,6 +138,17 @@ void CMenu::initNumControlMenu()
 	mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, i, "Player "+itoa(i));
 	}
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, MAX_PLAYERS+2, "Back");
+}
+
+void CMenu::initF1Menu()
+{
+	mp_Dialog = new CDialog(mp_MenuSurface, 18, 7);
+
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "The Game");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "The Story");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Ordering Info");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "About ID");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "About CG");
 }
 
 ////
@@ -168,21 +175,22 @@ void CMenu::process()
 	if( m_menu_type == MAIN ) processMainMenu();
 	else if( m_menu_type == NEW ) processNumPlayersMenu();
 	else if( m_menu_type == DIFFICULTY ) processDifficultyMenu();
-	else if( m_menu_type == OPTIONS ) processOptionsMenu();
-	else if( m_menu_type == CONTROLPLAYERS ) processOptionsMenu();
+	else if( m_menu_type == CONFIGURE ) processConfigureMenu();
+	else if( m_menu_type == CONTROLPLAYERS ) processNumControlMenu();
+	else if( m_menu_type == F1 ) processF1Menu();
 }
 
 void CMenu::processMainMenu()
 {
 	if( m_menu_mode == PASSIVE )
 	{
-		if( m_selection == 5 ) // Choose Game
-		{
-			m_choosegame = true;
-		}
-		if( m_selection == 6 ) // Back to Demo
+		if( m_selection == 5 ) // Back to Demo
 		{
 			m_demoback = true;
+		}
+		if( m_selection == 6 ) // Choose Game
+		{
+			m_choosegame = true;
 		}
 	}
 	else if( m_menu_mode == ACTIVE )
@@ -191,7 +199,7 @@ void CMenu::processMainMenu()
 		{
 			m_goback = true;
 		}
-		if( m_selection == 6 ) // Back to Title
+		if( m_selection == 6 ) // End Game
 		{
 			cleanup();
 			m_Endgame = true;
@@ -203,10 +211,11 @@ void CMenu::processMainMenu()
 		cleanup();
 		init(NEW);
 	}
-	if( m_selection == 2 ) // Story
+	if( m_selection == 1 ) // Load Game
 	{
-		cleanup();
-		m_menu_type = STORY;
+	}
+	if( m_selection == 2 ) // Save Game
+	{
 	}
 	if( m_selection == 3 ) // Highscores
 	{
@@ -214,15 +223,9 @@ void CMenu::processMainMenu()
 	if( m_selection == 4 ) // Options
 	{
 		cleanup();
-		init(OPTIONS);
+		init(CONFIGURE);
 	}
-	if( m_selection == 7 ) // About CG
-	{
-	}
-	if( m_selection == 8 ) // Ordering Info
-	{
-	}
-	if( m_selection == 9 ) // Quit
+	if( m_selection == 7 ) // Quit
 	{
 		cleanup();
 		m_menu_type = QUIT;
@@ -273,7 +276,7 @@ void CMenu::processDifficultyMenu()
 	}
 }
 
-void CMenu::processOptionsMenu()
+void CMenu::processConfigureMenu()
 {
 	if( m_selection == -1) return;
 
@@ -315,6 +318,12 @@ void CMenu::processNumControlMenu()
 		init(OPTIONS);
 	}
 }
+
+void CMenu::processF1Menu()
+{
+
+}
+
 
 // This function shows the Story of Commander Keen!
 void CMenu::showPage(const std::string& str_text, int textsize)

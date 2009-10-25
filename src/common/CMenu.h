@@ -39,7 +39,7 @@ class CMenu {
 public:
 	// Which Menu has to be shown?
 	enum menutypes{
-		MAIN, NEW, CONTROLPLAYERS, STORY, HIGHSCORES, ABOUT, ORDERING, LOAD, START, DIFFICULTY, OPTIONS, GRAPHICS, CONTROLS, AUDIO, GAMES, QUIT
+		MAIN, NEW, CONTROLPLAYERS, STORY, HIGHSCORES, ABOUTCG, ABOUTID, ORDERING, LOAD, START, DIFFICULTY, CONFIGURE, GRAPHICS, CONTROLS, AUDIO, OPTIONS, F1, HELP, QUIT
 	};
 
 	// Active means, when the player is playing, PASSIVE when the Player is not playing
@@ -56,8 +56,9 @@ public:
 	void processMainMenu();
 	void processNumPlayersMenu();
 	void processDifficultyMenu();
-	void processOptionsMenu();
+	void processConfigureMenu();
 	void processNumControlMenu();
+	void processF1Menu();
 	void showPage(const std::string& str_text, int textsize);
 
 	void cleanup();
@@ -80,8 +81,9 @@ private:
 	void initMainMenu();
 	void initNumPlayersMenu();
 	void initDifficultyMenu();
-	void initOptionsMenu();
+	void initConfigureMenu();
 	void initNumControlMenu();
+	void initF1Menu();
 
 	CDialog *mp_Dialog;
 	CTextViewer *mp_TextViewer;
