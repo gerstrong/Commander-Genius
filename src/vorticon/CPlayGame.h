@@ -69,6 +69,7 @@ enum e_levelcommands
 
 	bool getEndGame() { return m_endgame; }
 	bool getExitEvent() { return m_exitgame; }
+	char getEpisode(){	return m_Episode; }
 
 	void cleanup();
 	virtual ~CPlayGame();

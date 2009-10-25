@@ -10,6 +10,7 @@
 #include "../vorticon/spritedefines.h"
 #include "../sdl/CVideoDriver.h"
 #include "../graphics/CGfxEngine.h"
+#include "../keen.h"
 #include <string.h>
 
 ///
@@ -109,7 +110,7 @@ void CObject::setPos( int px, int py )
 ///
 // do object and enemy AI
 ///
-void CObject::performAI(int episode, stOption *p_option)
+void CObject::performAI( CMap *p_map, stOption *p_option, char episode )
 {
 	if ( !exists || m_type==OBJ_PLAYER ) return;
 
@@ -146,7 +147,7 @@ void CObject::performAI(int episode, stOption *p_option)
 			m_type==OBJ_FOOB || m_type==OBJ_SCRUB)
 
     {
-		 performCommonAI();
+		 performCommonAI(p_map);
        	 switch(m_type)
        	 {
        	 /*//KEEN1
@@ -205,119 +206,111 @@ void CObject::performAI(int episode, stOption *p_option)
 ///
 // common enemy/object ai, such as falling, setting blocked variables,
 // detecting player contact, etc.
-void CObject::performCommonAI()
+void CObject::performCommonAI(CMap *p_map)
 {
-/*int x,y,xa,ya,xsize,ysize;
+int x0,y0,xa,ya,xsize,ysize;
 int temp;
-int cplayer;
+stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 
-	if (objects[o].type==OBJ_GOTPOINTS) return;
+	if (m_type==OBJ_GOTPOINTS) return;
 
+	ysize = g_pGfxEngine->Sprite[sprite]->getHeight()<<(CSF-4);
+	xsize = g_pGfxEngine->Sprite[sprite]->getWidth()<<(CSF-4);
 
-	ysize = g_pGfxEngine->Sprite[objects[o].sprite]->getHeight();
-	xsize = g_pGfxEngine->Sprite[objects[o].sprite]->getWidth();
-
- // set value of blockedd--should object fall?
-	temp = (objects[o].y>>CSF)+ysize;
-	if ((temp>>TILE_S)<<TILE_S != temp)
-	{
-		objects[o].blockedd = 0;
-	}
+	// set value of blockedd--should object fall?
+	temp = (y>>(CSF-4))+ysize;
+	if ((temp>>TILE_S)<<TILE_S != temp)	blockedd = false;
 	else
 	{ // on a tile boundary, test if tile under object is solid
-		objects[o].blockedd = 0;
-		x = (objects[o].x>>CSF);
-		y = (objects[o].y>>CSF)+ysize+1;
+		blockedd = 0;
+		x0 = (x>>(CSF-TILE_S));
+		y0 = (y>>(CSF-TILE_S))+ysize+1;
 		for(xa=0;xa<xsize-2;xa+=16)
 		{
-			if (TileProperty[getmaptileat(x+xa,y)][BUP] || IsStopPoint(x+xa,y,o))
+			if ( TileProperty[p_map->at((x0+xa)>>TILE_S,y0>>TILE_S)].bup )
 			{
-				objects[o].blockedd = 1;
-				break;
+				blockedd = true;
+				return;
 			}
 		}
 
-		if (!objects[o].blockedd)	// check final point
+		if (!blockedd)	// check final point
 		{
-			if (TileProperty[getmaptileat(x+xsize-2, y)][BUP] || IsStopPoint(x+xsize-2,y,o))
-			{
-				objects[o].blockedd = 1;
-			}
+			if ( TileProperty[p_map->at((x0+xsize-2)>>TILE_S, y0>>TILE_S)].bup )
+				blockedd = true;
 		}
 
 		// If the object is out of map
-		if(y >= (int)((map.ysize-2)<<4))	objects[o].blockedd = 1;
+		if(y0 >= (int)((p_map->m_height-2)<<TILE_S))	blockedd = true;
 	}
 
 // set blockedu
-	objects[o].blockedu = 0;
-	x = (objects[o].x>>CSF);
-	y = (objects[o].y>>CSF)-1;
+	blockedu = false;
+	x0 = (x>>(CSF-TILE_S));
+	y0 = (y>>(CSF-TILE_S))-1;
 	for(xa=1;xa<xsize;xa+=16)		// change start pixel to xa=1 for icecannon in ep1l8
 	{
-		if (TileProperty[getmaptileat(x+xa,y)][BDOWN] || IsStopPoint(x+xa,y,o))
+		if ( TileProperty[getmaptileat(x+xa,y)].bdown )
 		{
-			objects[o].blockedu = 1;
+			blockedu = 1;
 			break;
 		}
     }
 
-	if (!objects[o].blockedu)		// check final point
+	if (!blockedu)	// check final point
 	{
-		if (TileProperty[getmaptileat(x+xsize-2, y)][BDOWN] || IsStopPoint(x+xsize-2,y,o))
-		{
-			objects[o].blockedu = 1;
-		}
+		if ( TileProperty[p_map->at((x0+xsize-2)>>TILE_S, y0>>TILE_S)].bdown )
+			blockedu = true;
 	}
 
 	// If the object is out of map
-	if(y <= (2<<4)) objects[o].blockedu = 1;
-
+	if(y0 <= (2<<4)) blockedu = true;
+/*
  // set blockedl
-    objects[o].blockedl = 0;
-    x = (objects[o].x>>CSF)-1;
-    y = (objects[o].y>>CSF)+1;
+    blockedl = false;
+    x0 = (x>>(CSF-TILE_S))-1;
+    y0 = (y>>(CSF-TILE_S))+1;
     for(ya=0;ya<ysize;ya+=16)
     {
 
         if (TileProperty[getmaptileat(x,y+ya)][BRIGHT] || IsStopPoint(x,y+ya,o))
         {
-          objects[o].blockedl = 1;
+          blockedl = 1;
           goto blockedl_set;
         }
     }
-    if (TileProperty[getmaptileat(x, ((objects[o].y>>CSF)+ysize-1))][BRIGHT] ||
-    		IsStopPoint(x, (objects[o].y>>CSF)+ysize-1, o))
-      objects[o].blockedl = 1;
+    if (TileProperty[getmaptileat(x, ((y>>CSF)+ysize-1))][BRIGHT] ||
+    		IsStopPoint(x, (y>>CSF)+ysize-1, o))
+      blockedl = 1;
 
     blockedl_set: ;
 
 	// If the object is out of map
-	if(x <= (2<<4)) objects[o].blockedl = 1;
+	if(x <= (2<<4)) blockedl = 1;
 
  // set blockedr
-    objects[o].blockedr = 0;
-    x = (objects[o].x>>CSF)+xsize;
-    y = (objects[o].y>>CSF)+1;
+    blockedr = 0;
+    x = (x>>CSF)+xsize;
+    y = (y>>CSF)+1;
     for(ya=0;ya<ysize;ya+=16)
     {
         if (TileProperty[getmaptileat(x,y+ya)][BLEFT] || IsStopPoint(x,y+ya,o))
         {
-          objects[o].blockedr = 1;
+          blockedr = 1;
           goto blockedr_set;
         }
     }
-    if (TileProperty[getmaptileat(x, ((objects[o].y>>CSF)+ysize-1))][BLEFT] ||
-		IsStopPoint(x, (objects[o].y>>CSF)+ysize-1, o))
+    if (TileProperty[getmaptileat(x, ((y>>CSF)+ysize-1))][BLEFT] ||
+		IsStopPoint(x, (y>>CSF)+ysize-1, o))
     {
-      objects[o].blockedr = 1;
+      blockedr = 1;
     }
     blockedr_set: ;
 
-    if(x >= (int)((map.xsize-2)<<4)) objects[o].blockedr = 1;
+    if(x >= (int)((map.xsize-2)<<4)) blockedr = 1;
 
     // hit detection with players
-    objects[o].touchPlayer = 0;
+    touchPlayer = 0;
     for(cplayer=0;cplayer<MAX_PLAYERS;cplayer++)
     {
       if (player[cplayer].isPlaying)
@@ -331,16 +324,16 @@ int cplayer;
           {
 			if (!player[cplayer].godmode)
 			{
-	            objects[o].touchPlayer = 1;
-	            objects[o].touchedBy = cplayer;
+	            touchPlayer = 1;
+	            touchedBy = cplayer;
 			}
 			else
 			{
-				if (objects[o].type==OBJ_MOTHER || objects[o].type==OBJ_BABY ||\
-					objects[o].type==OBJ_MEEP || objects[o].type==OBJ_YORP)
+				if (type==OBJ_MOTHER || type==OBJ_BABY ||\
+					type==OBJ_MEEP || type==OBJ_YORP)
 				{
-					if (objects[o].canbezapped)
-						objects[o].zapped += 100;
+					if (canbezapped)
+						zapped += 100;
 				}
 			}
             break;
@@ -350,23 +343,23 @@ int cplayer;
     }
 
 // have object fall if it should
-  if (!objects[o].inhibitfall)
+  if (!inhibitfall)
   {
        #define OBJFALLSPEED   20
-       if (objects[o].blockedd)
+       if (blockedd)
        {
-         objects[o].yinertia = 0;
+         yinertia = 0;
        }
        else
        {
 #define OBJ_YINERTIA_RATE  5
-         if (objects[o].yinertiatimer>OBJ_YINERTIA_RATE)
+         if (yinertiatimer>OBJ_YINERTIA_RATE)
          {
-           if (objects[o].yinertia < OBJFALLSPEED) objects[o].yinertia++;
-           objects[o].yinertiatimer = 0;
-         } else objects[o].yinertiatimer++;
+           if (yinertia < OBJFALLSPEED) yinertia++;
+           yinertiatimer = 0;
+         } else yinertiatimer++;
        }
-       objects[o].y += objects[o].yinertia;
+       y += yinertia;
   }*/
 }
 

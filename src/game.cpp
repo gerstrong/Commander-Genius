@@ -555,46 +555,6 @@ void kill_all_intersecting_tile(int mpx, int mpy)
 					killobject(i);*/
 }
 
-// returns whether pix position x,y is a stop point for object o.
-// stop points are invisible blockers that act solid only to certain
-// kinds of enemies. They're used to help make the enemies seem smarter
-// and keep them from falling off certain platforms. Stoppoints are manually
-// placed from fileio.c.
-char IsStopPoint(int x, int y, int o)
-{
-	/*switch(objects[o].type)
-	{
-		case OBJ_YORP:
-		case OBJ_GARG:
-		case OBJ_MOTHER:
-		case OBJ_VORT:
-		case OBJ_VORTELITE:
-		case OBJ_TANK:
-		case OBJ_TANKEP2:
-			//if (getlevelat(x,y)==ENEMY_STOPPOINT) return 1;
-		case OBJ_SCRUB:
-		case OBJ_PLATFORM:
-		case OBJ_PLATVERT:
-		case OBJ_BABY:
-			//if (IsDoor(getmaptileat(x,y))) return 1;
-		break;
-
-		case OBJ_RAY:
-			if (getoption(OPT_DOORSBLOCKRAY)) // TODO: The option must has to be implemented
-			{
-				if (IsDoor(getmaptileat(x,y))) return 1;
-			}
-		break;
-
-		case OBJ_BALL:
-			if (getlevelat(x,y)==BALL_NOPASSPOINT) return 1;
-			//if (IsDoor(getmaptileat(x,y))) return 1;
-		break;
-	}*/
-
-	return 0;
-}
-
 // returns nonzero if object1 overlaps object2
 char hitdetect(int object1, int object2)
 {

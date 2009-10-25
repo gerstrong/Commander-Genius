@@ -15,6 +15,7 @@
 
 // structures for each AI module's data
 #include "../vorticon/ai/enemydata.h"
+#include "../common/CMap.h"
 #include "options.h"
 
 // Enumerations are here
@@ -105,8 +106,8 @@ public:
 
 	 virtual void process() { }
 
-	 void performAI(int episode, stOption *p_option);
-	 void performCommonAI();
+	 void performAI( CMap *p_map, stOption *p_option, char episode );
+	 void performCommonAI(CMap *p_map);
 };
 
 #endif /* COBJECT_H_ */

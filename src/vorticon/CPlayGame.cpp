@@ -201,7 +201,7 @@ void CPlayGame::process()
 			std::vector<CObject>::iterator i_object;
 			for( i_object=m_Object.begin() ; i_object!=m_Object.end() ; i_object++ )
 			{
-				i_object->performAI( m_Episode, mp_option );
+				i_object->performAI( mp_Map, mp_option, m_Episode );
 			}
 
 			// Perform physics
