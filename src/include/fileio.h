@@ -10,8 +10,6 @@
 
 #include <string>
 
-unsigned int loadmap(const std::string& filename, const std::string& path,
-									int lvlnum, stLevelControl* p_levelcontrol);
 short checkConsistencyofGameData(stGameData *p_GameData);
 std::string formatPathString(const std::string& path);
 void assignChangeTileAttribute(stTile *tile, int episode);
