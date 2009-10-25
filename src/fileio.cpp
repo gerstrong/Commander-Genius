@@ -209,11 +209,7 @@ char* path;
 
 	//strcpy (path, GetBinaryDir().c_str());
 	//g_pLogFile->ftextOut(GetBinaryDir().c_str());
-	#if defined(__APPLE__)
-	path = "./Commander Genius.app/Contents/Resources/data/strings.dat";
-	#else
 	path = "data/strings.dat";
-	#endif
 	g_pLogFile->ftextOut(path);
   g_pLogFile->ftextOut("<br>loadstrings(): Opening string file 'strings.dat'.<br>");
   fp = fopen(path, "rb");
