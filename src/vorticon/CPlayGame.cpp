@@ -20,7 +20,7 @@
 ////
 // Creation Routine
 ////
-CPlayGame::CPlayGame( char episode, char level, 
+CPlayGame::CPlayGame( char episode, char level,
 			char numplayers, char difficulty,
 			std::string &gamepath, stOption *p_option ) {
 	m_Episode = episode;
@@ -270,12 +270,10 @@ void CPlayGame::process()
 		std::string tempbuf;
 		SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
 		#ifdef DEBUG
-			 tempbuf = "LPS: " + itoa(g_pTimer->getLoopsPerSec()) + " FPS: " +
-					 itoa(g_pTimer->getFramesPerSec()) + "; x = " + itoa(mp_Player[0].x) +
-					 " ; y = " + itoa(mp_Player[0].y);
+			 tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec()) +
+                       "; x = " + itoa(mp_Player[0].x) + " ; y = " + itoa(mp_Player[0].y);
 		#else
-			 tempbuf = "LPS: " + itoa(g_pTimer->getLoopsPerSec()) + " FPS: " +
-					 itoa(g_pTimer->getFramesPerSec());
+			 tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec());
 		#endif
 	     g_pGfxEngine->Font->drawFont( sfc, tempbuf, 320-3-(tempbuf.size()<<3), 3, 1);
 	}

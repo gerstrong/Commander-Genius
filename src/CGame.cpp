@@ -89,20 +89,21 @@ void CGame::run()
 {
 	do
 	{
-	   if( g_pTimer->TimeToRender() )
-	   {
-		   // Poll Inputs
-		   g_pInput->pollEvents();
+        // Perform game logic
+        if (g_pTimer->TimeToLogic()) {
+            // Poll Inputs
+            g_pInput->pollEvents();
+            // Process Game Control
+            m_GameControl.process();
+        }
 
-		   // Process Game Control
-		   m_GameControl.process();
+        // Render the Screen
+        if (g_pTimer->TimeToRender()) {
+            g_pVideoDriver->update_screen();
+        }
 
-		   // Render the Screen
-		   g_pVideoDriver->update_screen();
-
-		   // wait the time until next frame
-		   g_pTimer->TimeToDelay();
-	   }
+        // delay time remaining in current loop
+        g_pTimer->TimeToDelay();
 	} while(!m_GameControl.mustShutdown());
 }
 

@@ -12,6 +12,11 @@
 #include "../CSingleton.h"
 #define g_pTimer	CTimer::Get()
 
+#define MSPERSEC        1000
+#define DEFAULT_CHUNK   3
+#define DEFAULT_LPS     60
+#define DEFAULT_FPS     60
+
 typedef unsigned long  ulong;
 
 class CTimer : public CSingleton<CTimer>
@@ -20,31 +25,31 @@ public:
 	CTimer();
 	virtual ~CTimer();
 
-	void InitTimers();
-	void CalculateRate( void );
+	void CalculateIntervals( void );
+	bool TimeToLogic();
 	bool TimeToRender();
 	void TimeToDelay();
 
 	void ResetSecondsTimer();
 	bool HasSecElapsed();
 
-	int getFrameRate() { return m_FPSRate; }
-	void setFrameRate(int value);
+	int getLogicRate() { return m_LogicRate; }
+	int getFrameRate() { return m_FrameRate; }
+	void setFrameRate( int logicrate, int framerate,int chunkrate );
 
-	int getLoopsPerSec( void ) { return m_LPS; }
+    int getLogicPerSec( void ) { return m_LPS; }
 	int getFramesPerSec( void ) { return m_FPS; }
+
 private:
+    int m_LPS, m_LogicCount, m_LogicRate, m_LogicInterval;
+    int m_FPS, m_FrameCount, m_FrameRate, m_FrameInterval;
+    int m_LoopPS, m_LoopRate, m_LoopCount, m_LoopDuration;
+    int m_ChunkCount, m_ChunkRate;
 
-	ulong m_LogicRenderStart, m_CountTime, m_LastSecTime;
-	int m_LoopsTotal;
-	int m_FramesTotal;
-	int m_LogicRateMS;
-	int m_FPSRate;
-	int m_RenderInterval;
-	int m_RenderIntervalCount;
 
-	int m_LPS;
-	int m_FPS;
+    ulong m_LPSCountTime, m_FPSCountTime;
+	ulong m_LoopStartTime;
+	ulong m_LastSecTime;
 };
 
 #endif /* CTIMER_H_ */
