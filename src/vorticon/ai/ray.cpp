@@ -1,29 +1,31 @@
-#include "../../common/CObject.h"
+#include "CObjectAI.h"
 #include "../../sdl/sound/CSound.h"
 
 // raygun blast, shot by keen, and by the tank robots in ep1&2.
 #include "ray.h"
-#include "../../game.h"
+#include "../spritedefines.h"
 
 #define Sprite g_pGfxEngine->Sprite
 
-void CObject::ray_ai( int episode, bool automatic_raygun, char pShotSpeed )
+void CObjectAI::ray_ai( bool automatic_raygun, char pShotSpeed )
 {
-/*int i;
+/*std::vector<CObject>::iterator p_object;
+int i;
 int hitlethal;
 int rayspeed;
+stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
   if (needinit)
   {
     ai.ray.state = RAY_STATE_FLY;
-    inhibitfall = 1;
-    needinit = 0;
+    inhibitfall = true;
+    needinit = false;
 
     // if we shoot directly up against a wall have
     // the ZAP appear next to the wall, not in it
     if (ai.ray.direction==RIGHT && blockedr)
     {
-       x = (x >> 4 >> CSF) << 4 << CSF;
-       if (TileProperty[getmaptileat(x>>CSF,y>>CSF)][BLEFT])
+       x = (x >> CSF) << CSF;
+       if (TileProperty[p_map->at(x>>CSF,y>>CSF)].bleft)
     	   x -= (16<<CSF);
 
        ai.ray.state = RAY_STATE_SETZAPZOT;
@@ -33,8 +35,8 @@ int rayspeed;
     }
     else if (ai.ray.direction==LEFT && blockedl)
     {
-       x = (x >> 4 >> CSF) << 4 << CSF;
-       if (TileProperty[getmaptileat(x>>CSF,y>>CSF)][BRIGHT]) x += (16<<CSF);
+       x = (x >> CSF) << CSF;
+       if (TileProperty[p_map->at(x>>CSF,y>>CSF)].bright) x -= (16<<CSF);
        //if (tiles[getmaptileat(x>>CSF,y>>CSF)].solidl) x -= (16<<CSF);
        ai.ray.state = RAY_STATE_SETZAPZOT;
        if (onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, scrx);
@@ -42,7 +44,7 @@ int rayspeed;
   }
 
   // shots from "fully automatic" raygun go faster
-  if (sprite!=objdefsprites[OBJ_RAY] || !automatic_raygun)
+  if (sprite!=OBJ_RAY_DEFSPRITE_EP1 || !automatic_raygun)
   {
 	if (!pShotSpeed)
 		rayspeed = RAY_SPEED;
@@ -57,29 +59,29 @@ int rayspeed;
   {
   case RAY_STATE_FLY:
        // test if it hit a baddie
-       for(i=1 ; i<highest_objslot ; i++)
+       for( p_object=p_objvect->begin() ; p_object!=p_objvect->end() ; p_object++)
        {
-         if (!objects[i].exists || i==o) continue;
+         if (!p_object->exists || p_object==this ) continue;
          if (ai.ray.dontHitEnable)
          {
-           if (objects[i].type==ai.ray.dontHit) continue;
+           if (p_object->type==ai.ray.dontHit) continue;
          }
 
-		 if (objects[i].type==OBJ_RAY) continue;
+		 if (p_object->type==OBJ_RAY) continue;
 
-		 if (objects[i].canbezapped && objects[i].onscreen)
+		 if (p_object->canbezapped && p_object->onscreen)
          {
             if (hitdetect(i, o))
             {
               ai.ray.state = RAY_STATE_SETZAPZOT;
-              objects[i].zapped++;
-              objects[i].zapx = x;
-              objects[i].zapy = y;
-              objects[i].zapd = ai.ray.direction;
+              p_object->zapped++;
+              p_object->zapx = x;
+              p_object->zapy = y;
+              p_object->zapd = ai.ray.direction;
               if (sprite==ENEMYRAY || sprite==ENEMYRAYEP2 || sprite==ENEMYRAYEP3)
-					objects[i].zappedbyenemy = 1;
+					p_object->zappedbyenemy = 1;
               else
-					objects[i].zappedbyenemy = 0;
+					p_object->zappedbyenemy = 0;
 
             }
          }
@@ -87,7 +89,7 @@ int rayspeed;
        // check if ray hit keen. if canpk=0, only enemy rays can hurt keen
        if (touchPlayer)
        {
-         if (player[touchedBy].pfrozentime > PFROZEN_THAW && episode==1)
+         if (mp_Player[touchedBy].pfrozentime > PFROZEN_THAW && episode==1)
          {
             // shot a frozen player--melt the ice
             player[touchedBy].pfrozentime = PFROZEN_THAW;
@@ -107,12 +109,12 @@ int rayspeed;
        {
            // don't go through bonklethal tiles, even if they're not solid
            // (for the arms on mortimer's machine)
-       	   if (TileProperty[getmaptileat((x>>CSF)+Sprite[sprite]->getWidth(), (y>>CSF)+1)][BEHAVIOR] == 1)
-              hitlethal = 1;
-           else if (TileProperty[getmaptileat((x>>CSF)+Sprite[sprite]->getWidth(), (y>>CSF)+(Sprite[sprite]->getHeight()-1))][BEHAVIOR] == 1)
-              hitlethal = 1;
+       	   if (TileProperty[p_map->at(((x>>(CSF-4))+Sprite[sprite]->getWidth())>>4, (y>>CSF)+1)].behaviour == 1)
+              hitlethal = true;
+           else if (TileProperty[p_map->at(((x>>(CSF-4))+Sprite[sprite]->getWidth())>>4, ((y>>(CSF-4))+(Sprite[sprite]->getHeight()-1))>>4)].behaviour == 1)
+              hitlethal = true;
            else
-        	  hitlethal = 0;
+        	  hitlethal = false;
 
            if (blockedr)
            {
@@ -125,12 +127,12 @@ int rayspeed;
        }
        else if (ai.ray.direction == LEFT)
        {
-           if (TileProperty[getmaptileat((x>>CSF)-1, (y>>CSF)+1)][BEHAVIOR] == 1)
-              hitlethal = 1;
-           else if (TileProperty[getmaptileat((x>>CSF)-1, (y>>CSF)+(Sprite[sprite]->getHeight()-1))][BEHAVIOR] == 1)
-              hitlethal = 1;
+           if (TileProperty[p_map->at((x-1)>>CSF, (y+1)>>CSF)].behaviour == 1)
+              hitlethal = true;
+           else if (TileProperty[p_map->at((x-1)>>CSF, ((y>>(CSF-4))+(Sprite[sprite]->getHeight()-1))>>4)].behaviour == 1)
+              hitlethal = true;
            else
-        	  hitlethal = 0;
+        	  hitlethal = false;
 
            if (blockedl)
            {
@@ -188,7 +190,7 @@ int rayspeed;
        // ... and fall through
   case RAY_STATE_ZAPZOT:
        if (!ai.ray.zapzottimer)
-         { delete_object(o); }
+         { delete_object(this); }
        else ai.ray.zapzottimer--;
   break;
   }*/

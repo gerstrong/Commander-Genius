@@ -491,17 +491,6 @@ int find_next_object(unsigned int type)
 	return -1;
 }
 
-void delete_object(int o)
-{
-	/*if(o<0)	return;
-
-	if (objects[o].exists)
-	{
-		objects[o].exists = 0;
-		if (o+1==highest_objslot) highest_objslot--;
-	}*/
-}
-
 void delete_all_objects(void)
 {
 /*int i;
@@ -512,6 +501,7 @@ void delete_all_objects(void)
 	}
 	recalc_highest_objslot();*/
 }
+
 void recalc_highest_objslot(void)
 {
 /*int i;

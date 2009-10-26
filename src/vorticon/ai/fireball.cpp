@@ -2,7 +2,7 @@
 #include "ray.h"
 #include "../../game.h"
 
-#include "enemyai.h"
+//#include "enemyai.h"
 
 #include "../../sdl/sound/CSound.h"
 #include "fireball.h"

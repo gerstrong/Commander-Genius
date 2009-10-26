@@ -17,6 +17,7 @@
 #include "../vorticon/ai/enemydata.h"
 #include "../common/CMap.h"
 #include "options.h"
+#include <vector>
 
 // Enumerations are here
 #include "objenums.h"
@@ -102,13 +103,8 @@ public:
 	 void setPos( int px, int py );
 	 bool spawn(int x0, int y0, int otype);
 
-#include "../vorticon/ai/enemyai.h"
-
 	 virtual void process() { }
 
-	 bool checkforAIObject( CMap *p_map );
-	 void performSpecialAI( stOption *p_option, char episode );
-	 void performCommonAI(CMap *p_map);
 	 bool hitdetect(CObject *p_hitobject);
 };
 

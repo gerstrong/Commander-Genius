@@ -3,7 +3,7 @@
 #include "vort.h"
 #include "../../game.h"
 
-#include "enemyai.h"
+//#include "enemyai.h"
 
 // The rope holding the stone which kills the final Vorticon (ep1)
 // (Oh shit, was that a spoiler? I'm sorry)

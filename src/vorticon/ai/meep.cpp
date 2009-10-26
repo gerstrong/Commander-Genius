@@ -3,7 +3,7 @@
 #include "../../keen.h"
 #include "../../game.h"
 
-#include "enemyai.h"
+//#include "enemyai.h"
 
 
 #define MEEP_WALK       0

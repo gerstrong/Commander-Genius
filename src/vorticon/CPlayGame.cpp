@@ -102,6 +102,9 @@ bool CPlayGame::init()
 
 	g_pInput->flushAll();
 
+	// Initialize the AI
+	mp_ObjectAI = new CObjectAI(mp_Map, &m_Object, mp_Player, mp_option, m_NumPlayers, m_Episode);
+
 	return true;
 }
 
@@ -198,7 +201,7 @@ void CPlayGame::process()
 		else
 		{
 			// Perform AIs
-			processObjectsAI();
+			mp_ObjectAI->process();
 
 			// Perform physics
 
@@ -288,55 +291,7 @@ void CPlayGame::process()
 	}
 }
 
-void CPlayGame::processObjectsAI()
-{
-	CPlayer *p_player;
-	std::vector<CObject>::iterator i_object;
-	for( i_object=m_Object.begin() ; i_object!=m_Object.end() ; i_object++ )
-	{
-		if(i_object->checkforAIObject(mp_Map))
-		{
-			i_object->performCommonAI(mp_Map);
 
-		    // hit detection with players
-			i_object->touchPlayer = false;
-		    for( int cplayer=0 ; cplayer<m_NumPlayers ; cplayer++)
-		    {
-		    	p_player = &mp_Player[cplayer];
-				//if (p_player->isPlaying)
-				{
-		    		CObject *p_playerobj;
-		    		p_playerobj = &m_Object.at(p_player->m_player_number);
-		    		p_playerobj->x = p_player->x;
-		    		p_playerobj->y = p_player->y;
-		    		p_playerobj->sprite = 0;
-					if (!p_player->pdie)
-					{
-					  if ( i_object->hitdetect(p_playerobj) )
-					  {
-						if (!p_player->godmode)
-						{
-							p_playerobj->touchPlayer = true;
-							p_playerobj->touchedBy = cplayer;
-						}
-						else
-						{
-							if (i_object->m_type==OBJ_MOTHER || i_object->m_type==OBJ_BABY ||\
-									i_object->m_type==OBJ_MEEP || i_object->m_type==OBJ_YORP)
-							{
-								if (i_object->canbezapped)
-									i_object->zapped += 100;
-							}
-						}
-						break;
-					  }
-					}
-				}
-		    }
-			i_object->performSpecialAI( mp_option, m_Episode );
-		}
-	}
-}
 
 // called when a switch is flipped. mx,my is the pixel coords of the switch,
 // relative to the upper-left corner of the map.
@@ -558,8 +513,8 @@ int max_scroll_x, max_scroll_y;
 ////
 void CPlayGame::cleanup()
 {
-	delete mp_Map;
-	mp_Map = NULL;
+	delete mp_Map; mp_Map = NULL;
+	delete mp_ObjectAI; mp_ObjectAI = NULL;
 }
 
 CPlayGame::~CPlayGame() {

@@ -16,6 +16,7 @@
 #include "../common/CMenu.h"
 #include "../common/CMap.h"
 #include "../common/options.h"
+#include "ai/CObjectAI.h"
 #include <SDL/SDL.h>
 #include <string>
 #include <vector>
@@ -94,6 +95,7 @@ private:
 	CMap *mp_Map;
 	CMenu *mp_Menu;
 	CPlayer *mp_Player;
+	CObjectAI *mp_ObjectAI;
 	stOption *mp_option;
 	int m_theplayer;
 	std::vector<CObject> m_Object;

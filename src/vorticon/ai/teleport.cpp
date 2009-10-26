@@ -3,7 +3,7 @@
 #include "../../game.h"
 #include "../../include/gamedo.h"
 
-#include "enemyai.h"
+//#include "enemyai.h"
 
 #include "../../sdl/sound/CSound.h"
 

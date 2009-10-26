@@ -2,7 +2,7 @@
 #include "../../keen.h"
 #include "../../game.h"
 
-#include "enemyai.h"
+//#include "enemyai.h"
 
 // The red creatures that follow the wall (ep2)
 
