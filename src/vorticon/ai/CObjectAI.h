@@ -8,10 +8,13 @@
 #ifndef COBJECTAI_H_
 #define COBJECTAI_H_
 
+#include "../../keen.h"
+#include "../../game.h"
 #include "../../common/CMap.h"
 #include "../../common/CObject.h"
 #include "../../common/options.h"
 #include "../../common/CPlayer.h"
+#include "../../graphics/CGfxEngine.h"
 #include <vector>
 
 class CObjectAI {
@@ -27,7 +30,7 @@ private:
 
 	// main AI functions
 	bool checkforAIObject( CObject *p_object );
-	void performSpecialAIType( unsigned int type );
+	void performSpecialAIType( CObject *p_object );
 	void performCommonAI( CObject *p_object );
 	void deleteObj(CObject *p_object);
 
@@ -68,7 +71,7 @@ private:
 	// Specials
 	void autoray_ai(int o);
 	void gotpoints_ai(int o);*/
-	void ray_ai( bool automatic_raygun, char pShotSpeed );
+	void ray_ai( CObject *p_object, bool automatic_raygun, char pShotSpeed );
 
 	// Variables
 	CMap *mp_Map;

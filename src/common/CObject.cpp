@@ -30,7 +30,7 @@ bool CObject::spawn(int x0, int y0, int otype)
      x = x0;
      y = y0;
      m_type = otype;
-     exists = 1;
+     exists = true;
      needinit = true;
      dead = false;
      onscreen = 0;
@@ -41,7 +41,7 @@ bool CObject::spawn(int x0, int y0, int otype)
      honorPriority = true;
   	 cansupportplayers = false;
 
-  	setupObjectType();
+  	 setupObjectType();
 
      return true;
    }

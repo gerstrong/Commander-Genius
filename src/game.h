@@ -1,3 +1,5 @@
+#ifndef _GAME_H_
+#define _GAME_H_
 // various states we go through when a level is completed
 // to do the walking out the exit door animation
 enum levelstate
@@ -87,3 +89,4 @@ void killplayer(int theplayer);
 // Referenzed from cinematics/EndingSequenceEp3.cpp
 void eseq3_Mortimer();
 
+#endif //_GAME_H_

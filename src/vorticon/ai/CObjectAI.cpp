@@ -6,10 +6,8 @@
  */
 
 #include "CObjectAI.h"
-#include "../../graphics/CGfxEngine.h"
 #include "../../sdl/CVideoDriver.h"
 #include "../../CLogFile.h"
-#include "../../keen.h"
 
 CObjectAI::CObjectAI(CMap *p_map, std::vector<CObject> *p_objvect, CPlayer *p_player,
 		  stOption *p_options, int NumPlayers, int episode) {
@@ -30,9 +28,9 @@ void CObjectAI::process()
 	std::vector<CObject>::iterator i_object;
 	for( i_object=mp_Objvect->begin() ; i_object!=mp_Objvect->end() ; i_object++ )
 	{
-		if( checkforAIObject(i_object.base()) )
+		if( checkforAIObject(&(*i_object)) )
 		{
-			performCommonAI(i_object.base());
+			performCommonAI(&(*i_object));
 
 		    // hit detection with players
 			i_object->touchPlayer = false;
@@ -69,7 +67,7 @@ void CObjectAI::process()
 					}
 				}
 		    }
-			performSpecialAIType( i_object->m_type );
+			performSpecialAIType( &(*i_object) );
 		}
 	}
 }
@@ -119,9 +117,9 @@ unsigned int type = p_object->m_type;
 	return false;
 }
 
-void CObjectAI::performSpecialAIType( unsigned int type )
+void CObjectAI::performSpecialAIType( CObject *p_object )
 {
-  	 switch(type)
+  	 switch(p_object->m_type)
   	 {
   	 /*//KEEN1
 	  case OBJ_YORP: yorp_ai(i, *p_levelcontrol); break;
@@ -161,14 +159,14 @@ void CObjectAI::performSpecialAIType( unsigned int type )
 	  case OBJ_NESSIE: nessie_ai(i); break;
 
 	  //Specials*/
-	  case OBJ_RAY: ray_ai( mp_Options[OPT_FULLYAUTOMATIC].value, 1 ); break;
+	  case OBJ_RAY: ray_ai( p_object, mp_Options[OPT_FULLYAUTOMATIC].value, 1 ); break;
 	  //case OBJ_AUTORAY: case OBJ_AUTORAY_V: autoray_ai(i); break;
 	  //case OBJ_GOTPOINTS: gotpoints_ai(i); break;
 
 	  //case OBJ_DEMOMSG: break;
 
 	  default:
-		  g_pLogFile->ftextOut("gamedo_enemy_ai: Object is of invalid type %d\n", type);
+		  g_pLogFile->ftextOut("gamedo_enemy_ai: Object is of invalid type %d\n", p_object->m_type);
   	  break;
     }
 }
