@@ -35,7 +35,7 @@ public:
 
 	int getLogicRate() { return m_LogicRate; }
 	int getFrameRate() { return m_FrameRate; }
-	void setFrameRate( int logicrate, int framerate,int chunkrate );
+	void setFrameRate( int logicrate, int framerate, int chunkrate );
 
     int getLogicPerSec( void ) { return m_LPS; }
 	int getFramesPerSec( void ) { return m_FPS; }

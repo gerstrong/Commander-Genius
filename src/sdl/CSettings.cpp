@@ -90,7 +90,7 @@ bool CSettings::loadDrvCfg()
 		g_pVideoDriver->isFullscreen(((Parser.getIntValue("fullscreen","Video")) == 1));
 		g_pVideoDriver->setOGLFilter(Parser.getIntValue("OGLfilter","Video"));
 		g_pVideoDriver->setZoom(Parser.getIntValue("scale","Video"));
-		g_pTimer->setFrameRate(DEFAULT_LPS, Parser.getIntValue("autoframeskip","Video"));
+		g_pTimer->setFrameRate(DEFAULT_LPS, Parser.getIntValue("autoframeskip","Video"), DEFAULT_CHUNK);
 
 		g_pVideoDriver->setFilter(Parser.getIntValue("filter","Video"));
 
