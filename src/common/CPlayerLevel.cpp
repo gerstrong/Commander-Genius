@@ -515,9 +515,9 @@ CObject *pPlayerObject = &mp_object->at(m_player_number);
 
         	  g_pSound->playStereofromCoord(SOUND_KEEN_FIRE, PLAY_NOW, pPlayerObject->scrx);
 
-        	  ydir = y+(9<<CSF);
+        	  ydir = y+(9<<(CSF-4));
         	  if (pdir==RIGHT) xdir = x+((g_pGfxEngine->Sprite[0]->getWidth()-4)<<(CSF-4));
-        	  else xdir = x-(12<<CSF);
+        	  else xdir = x-(12<<(CSF-4));
 
         	  rayobject.spawn(xdir, ydir, OBJ_RAY);
         	  rayobject.ai.ray.direction = pdir;

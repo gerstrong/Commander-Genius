@@ -25,7 +25,7 @@ std::vector<CObject>::iterator it_obj;
     {
        p_object->x = (p_object->x >> CSF) << CSF;
        if (TileProperty[mp_Map->at(p_object->x>>CSF,p_object->y>>CSF)].bleft)
-    	   p_object->x -= (1<<CSF);
+    	   p_object->x --;
 
        p_object->ai.ray.state = RAY_STATE_SETZAPZOT;
 
