@@ -100,7 +100,7 @@ public:
 	 } ai;
 
 	 void setupObjectType();
-	 void setPos( int px, int py );
+	 void setScrPos( int px, int py );
 	 bool spawn(int x0, int y0, int otype);
 
 	 virtual void process() { }

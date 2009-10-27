@@ -35,7 +35,7 @@ std::vector<CObject>::iterator it_obj;
     else if (p_object->ai.ray.direction==LEFT && p_object->blockedl)
     {
        p_object->x = (p_object->x >> CSF) << CSF;
-       if (TileProperty[mp_Map->at(p_object->x>>CSF,p_object->y>>CSF)].bright) p_object->x -= (1<<CSF);
+       if (TileProperty[mp_Map->at(p_object->x>>CSF,p_object->y>>CSF)].bright) p_object->x--;
        //if (tiles[getmaptileat(x>>CSF,y>>CSF)].solidl) x -= (16<<CSF);
        p_object->ai.ray.state = RAY_STATE_SETZAPZOT;
        if (p_object->onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, p_object->scrx);
@@ -110,7 +110,7 @@ std::vector<CObject>::iterator it_obj;
            // (for the arms on mortimer's machine)
        	   if (TileProperty[mp_Map->at(((p_object->x>>(CSF-4))+Sprite[p_object->sprite]->getWidth())>>4, (p_object->y>>CSF)+1)].behaviour == 1)
        		   hitlethal = true;
-           else if (TileProperty[mp_Map->at(((p_object->x>>(CSF-4))+Sprite[p_object->sprite]->getWidth())>>4, ((p_object->y>>(CSF-4))+(Sprite[p_object->sprite]->getHeight()-1))>>4)].behaviour == 1)
+           else if (TileProperty[mp_Map->at(((p_object->x>>(CSF-4))+Sprite[p_object->sprite]->getWidth())>>4, ((p_object->y>>(CSF-4))+(Sprite[p_object->sprite]->getHeight()-1))>>(CSF-4))].behaviour == 1)
         	   hitlethal = true;
            else
         	   hitlethal = false;
@@ -128,7 +128,7 @@ std::vector<CObject>::iterator it_obj;
        {
            if (TileProperty[mp_Map->at((p_object->x-1)>>CSF, (p_object->y+1)>>CSF)].behaviour == 1)
         	   hitlethal = true;
-           else if (TileProperty[mp_Map->at((p_object->x-1)>>CSF, ((p_object->y>>(CSF-4))+(Sprite[p_object->sprite]->getHeight()-1))>>4)].behaviour == 1)
+           else if (TileProperty[mp_Map->at((p_object->x-1)>>CSF, ((p_object->y>>(CSF-4))+(Sprite[p_object->sprite]->getHeight()-1))>>(CSF-4))].behaviour == 1)
         	   hitlethal = true;
            else
         	   hitlethal = false;
@@ -180,15 +180,15 @@ std::vector<CObject>::iterator it_obj;
 
        if (p_object->ai.ray.direction==LEFT || p_object->ai.ray.direction==RIGHT)
        {
-    	   p_object->y -= (2<<CSF);
+    	   p_object->y -= 2;
        }
        else
        {
-    	   p_object->x -= (4<<CSF);
+    	   p_object->x -= 4;
        }
        // ... and fall through
   case RAY_STATE_ZAPZOT:
-       if (!p_object->ai.ray.zapzottimer)
+       if (p_object->ai.ray.zapzottimer == 0)
          { deleteObj(p_object); }
        else p_object->ai.ray.zapzottimer--;
   break;

@@ -20,6 +20,8 @@ CObject::CObject() {
 	honorPriority = false;
 	exists = false;
 	cansupportplayers = false;
+	blockedu = blockedd = false;
+	blockedl = blockedr = false;
 }
 
 bool CObject::spawn(int x0, int y0, int otype)
@@ -33,8 +35,8 @@ bool CObject::spawn(int x0, int y0, int otype)
      exists = true;
      needinit = true;
      dead = false;
-     onscreen = 0;
-     hasbeenonscreen = 0;
+     onscreen = false;
+     hasbeenonscreen = false;
      zapped = false;
      canbezapped = 0;
      inhibitfall = false;
@@ -101,7 +103,7 @@ void CObject::setupObjectType()
 	  }*/
 }
 
-void CObject::setPos( int px, int py )
+void CObject::setScrPos( int px, int py )
 {
 	scrx = px;
 	scry = py;

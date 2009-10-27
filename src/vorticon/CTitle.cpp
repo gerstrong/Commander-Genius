@@ -32,12 +32,12 @@ CBitmap *pBitmap;
 
 	pBitmap = g_pGfxEngine->getBitmap("TITLE");
 	p_object = new CEGABitmap( pSurface, pBitmap );
-	p_object->setPos( 160-(pBitmap->getWidth()/2), 0 );
+	p_object->setScrPos( 160-(pBitmap->getWidth()/2), 0 );
 	mp_objects->push_back(p_object);
 
 	pBitmap = g_pGfxEngine->getBitmap("F1HELP");
 	p_object = new CEGABitmap( pSurface, pBitmap );
-	p_object->setPos( 96, 180 );
+	p_object->setScrPos( 96, 180 );
 	mp_objects->push_back(p_object);
 
 	return true;

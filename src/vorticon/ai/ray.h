@@ -1,7 +1,7 @@
 
-#define RAY_SPEED   		20
-#define RAY_AUTO_SPEED		40
-#define RAY_ZAPZOT_TIME    50
+#define RAY_SPEED   		40
+#define RAY_AUTO_SPEED		80
+#define RAY_ZAPZOT_TIME    	10
 
 #define RAY_FRAME_ZAP_EP1     110
 #define RAY_FRAME_ZOT_EP1     111
