@@ -38,6 +38,7 @@ class CMenu {
 
 public:
 	// Which Menu has to be shown?
+	
 	enum menutypes{
 		MAIN, NEW, CONTROLPLAYERS, STORY, HIGHSCORES, ABOUTCG, ABOUTID, ORDERING, LOAD, START, DIFFICULTY, CONFIGURE, GRAPHICS, CONTROLS, AUDIO, OPTIONS, F1, HELP, QUIT
 	};
@@ -54,6 +55,7 @@ public:
 
 	void process();
 	void processMainMenu();
+	void processQuitMenu();
 	void processNumPlayersMenu();
 	void processDifficultyMenu();
 	void processConfigureMenu();
@@ -68,7 +70,7 @@ public:
 	char getDifficulty() { return m_Difficulty; }
 	bool mustEndGame() { return m_Endgame; }
 	bool mustStartGame() { return (m_NumPlayers > 0 and m_Difficulty > -1); }
-	bool getExitEvent() { return (m_menu_type==QUIT); }
+	bool getExitEvent() { return (m_quit); }
 	bool getShowStory() { return (m_menu_type==STORY); }
 	bool mustBeClosed() { return m_goback; }
 	bool getBacktoDemo() { return m_demoback; }
@@ -79,6 +81,7 @@ public:
 
 private:
 	void initMainMenu();
+	void initQuitMenu();
 	void initNumPlayersMenu();
 	void initDifficultyMenu();
 	void initConfigureMenu();
@@ -92,6 +95,7 @@ private:
 	bool m_choosegame;
 	bool m_goback;
 	bool m_Endgame;
+	bool m_quit;
 	char m_selection;
 	char m_menu_type;
 	char m_menu_mode;

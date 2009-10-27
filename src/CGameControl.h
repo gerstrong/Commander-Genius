@@ -55,6 +55,7 @@ private:
 	CPassive *mp_PassiveMode;
 	CPlayGame *mp_PlayGame;
 
+	bool m_endgame;
 	Uint8 m_Episode;
 	Uint8 m_Numplayers;
 	Uint8 m_ChosenGame;

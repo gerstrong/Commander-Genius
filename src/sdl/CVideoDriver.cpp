@@ -101,8 +101,7 @@ void CVideoDriver::initResolutionList()
 	  st_resolution resolution;
 	  char buf[256];
 	m_Resolutionlist.clear();
-	SDL_Rect** modes;
-	int e,g,j;
+	int g,j;
 
 	  ifstream ResolutionFile; OpenGameFileR(ResolutionFile, "resolutions.cfg");
 	  if(!ResolutionFile)
@@ -122,16 +121,9 @@ void CVideoDriver::initResolutionList()
 
 
 		  std::list<st_resolution> :: iterator i;
-		  //if(getFullscreen())
-		  //{
-			  /* Get available fullscreen/hardware modes */
-		  //modes = SDL_ListModes(NULL, SDL_FULLSCREEN | SDL_OPENGLBLIT);
 
-			  /* Check if there are any modes available */
-			  //if (modes == (SDL_Rect**)0) {
-				  g_pLogFile->textOut(RED,"No modes available!  Using resolution list.<br>");
-				  //std::list<st_resolution> :: iterator i;
-				  while(!ResolutionFile.eof())
+			  /* Load the resolutions from the file. */
+				while(!ResolutionFile.eof())
 				  {
 				  ResolutionFile.getline(buf,256);
 				   if(sscanf(buf,"%ix%i", &resolution.width,
@@ -152,57 +144,8 @@ void CVideoDriver::initResolutionList()
 				   m_Resolutionlist.push_back(resolution);
 				   }
 				  }
-			  //}
-			  /*else if (modes == (SDL_Rect**)-1) {
-				  g_pLogFile->textOut(RED,"All resolutions available.<br>");
-				  for (e=0; modes[e]; ++e)
-				  {
-					  resolution.width = modes[e]->w;
-					  resolution.height = modes[e]->h;
-					  resolution.depth = 32;
-					  resolution.depth = SDL_VideoModeOK(resolution.width, resolution.height,
-														 resolution.depth, SDL_FULLSCREEN);
-
-					  if(resolution.depth)
-					  {
-					  for( i = m_Resolutionlist.begin() ; i != m_Resolutionlist.end() ; i++ )
-						  if(i->width == resolution.width &&
-							 i->height == resolution.height &&
-							 i->depth == resolution.depth) break;
-
-					  if(i == m_Resolutionlist.end())
-					  {
-						  m_Resolutionlist.push_front(resolution);
-					  }
-					  }
-				  }
-			  }
-			  else{
-				  for (e=0; modes[e]; ++e)
-				  {
-					  resolution.width = modes[e]->w;
-					  resolution.height = modes[e]->h;
-					  resolution.depth = 32;
-					  resolution.depth = SDL_VideoModeOK(resolution.width, resolution.height,
-														 resolution.depth, SDL_FULLSCREEN);
-
-					  if(resolution.depth)
-					  {
-					  for( i = m_Resolutionlist.begin() ; i != m_Resolutionlist.end() ; i++ )
-						  if(i->width == resolution.width &&
-							 i->height == resolution.height &&
-							 i->depth == resolution.depth) break;
-
-					  if(i == m_Resolutionlist.end())
-					  {
-						  m_Resolutionlist.push_front(resolution);
-					  }
-					  }
-				  }
-			  }*/
-		  //}
-		  if(!getFullscreen())
-		  {
+				if(!getFullscreen())
+				{
 			  for (g=1; g != 20; g++) {
 				  if (g*320>m_Resolutionlist.back().width or g*200>m_Resolutionlist.back().height)
 				  {

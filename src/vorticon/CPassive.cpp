@@ -80,8 +80,11 @@ void CPassive::process()
 			cleanup();
 			init(TITLE);
 		}
+		else
+		{
 		mp_Menu = new CMenu( CMenu::PASSIVE );
 		mp_Menu->init();
+		}
 	}
 	else if( mp_Menu!=NULL )
 	{
@@ -109,13 +112,16 @@ void CPassive::process()
 	{
 		mp_TitleScreen->process();
 
-		/*if( mp_TitleScreen->isFinished() )
+		if( mp_Menu == NULL )
+		{
+		if( mp_TitleScreen->isFinished() )
 		{
 			// The Title screen was shown enough time, shut it down
 			// and load Demo environment
 			cleanup();
 			init(DEMO);
-		}*/
+		}
+		}
 	}
 	else if( m_mode == DEMO )
 	{
@@ -202,6 +208,7 @@ void CPassive::cleanup()
 	}
 	else if( m_mode == TITLE )
 	{
+		mp_TitleScreen->cleanup();
 		delete mp_TitleScreen;
 		delete mp_Map;
 	}

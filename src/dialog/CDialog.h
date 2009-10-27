@@ -24,7 +24,7 @@ public:
 
 	int getSelection();
 
-	void processInput();
+	void processInput(char dir);
 	void draw();
 	void drawTwirl();
 
@@ -34,7 +34,8 @@ private:
 	Uint16 m_w;
 	Uint16 m_h;
 
-	Uint8 m_selected_ID;
+	int m_selected_ID;
+	int m_dlg_size;
 	Uint8 m_switch;
 	Uint8 m_scroll;
 

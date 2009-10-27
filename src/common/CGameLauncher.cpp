@@ -90,7 +90,7 @@ bool CGameLauncher::drawMenu()
 
     if(!MapLoader.load(1, 90, m_Entries.at(m_ep1slot).path)) return false;
 
-    mp_map->gotoPos(32,32);
+    mp_map->gotoPos(1664,32);
 
     // Draw Background. This is only needed once, since Scrollsurface
     // won't be cleared every update screen
@@ -201,7 +201,7 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 void CGameLauncher::process()
 {
     // Gather input states
-    if( g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedKey(KENTER) )
+    if( g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_STATUS) )
     {
         Uint8 selection = mp_LaunchMenu->getSelection();
         if( selection >= m_Entries.size() )
@@ -221,7 +221,7 @@ void CGameLauncher::process()
         m_mustquit = true;
 
     // Process Menu Input
-    mp_LaunchMenu->processInput();
+    mp_LaunchMenu->processInput('u');
 
     // Animate the tiles of the map
     g_pGfxEngine->Tilemap->animateAllTiles(g_pVideoDriver->ScrollSurface);

@@ -86,9 +86,16 @@ int CDialog::getSelection()
 ///
 // Process routine
 ///
-void CDialog::processInput()
+void CDialog::processInput(char dir)
 {
-	if(g_pInput->getPulsedCommand(IC_DOWN, 60))
+		do
+		{
+		if(!m_dlgobject.at(m_selected_ID)->m_selectable)
+		{
+			m_selected_ID++;
+		}
+		}while(!m_dlgobject.at(m_selected_ID)->m_selectable);
+	if(g_pInput->getPulsedCommand((dir == 'u') ? IC_DOWN : IC_RIGHT, 60))
 	{
 		do
 		{
@@ -96,6 +103,10 @@ void CDialog::processInput()
 			{
 				m_switch=1;
 				m_scroll=0;
+				if(m_selected_ID >= m_h-2+m_scroll)
+				m_selected_ID = m_dlgobject.size()-1;
+				else
+				m_selected_ID = 0;
 			}
 			else
 			{
@@ -103,21 +114,26 @@ void CDialog::processInput()
 
 				if(m_selected_ID >= m_h-2+m_scroll)
 					m_scroll++;
+				
+				if(!m_dlgobject.at(m_selected_ID)->m_selectable)
+				{
+					m_selected_ID++;
+				}
 			}
 
-		} while(!m_dlgobject[m_selected_ID]->m_selectable);
+		}while(!m_dlgobject.at(m_selected_ID)->m_selectable);
 	}
-	else if(g_pInput->getPulsedCommand(IC_UP, 60))
+	else if(g_pInput->getPulsedCommand((dir == 'u') ? IC_UP : IC_LEFT, 60))
 	{
 		do
 		{
-			if(m_selected_ID <= 0 )
+			if(m_selected_ID <= 1 )
 			{
 				m_switch=2;
 				
 				if(m_dlgobject.size() > m_h)
 					m_scroll = m_selected_ID-(m_h-2)+1;
-				break;
+				m_selected_ID = m_dlgobject.size()-1;
 			}
 			else
 			{
@@ -125,10 +141,15 @@ void CDialog::processInput()
 
 				if(m_selected_ID < m_scroll)
 					m_scroll--;
+				
+				if(!m_dlgobject.at(m_selected_ID)->m_selectable)
+				{
+					m_selected_ID--;
+				}
 			}
-		} while(!m_dlgobject[m_selected_ID]->m_selectable);
+		}while(!m_dlgobject.at(m_selected_ID)->m_selectable);
 	}
-}
+	}
 
 void CDialog::draw()
 {
@@ -191,10 +212,6 @@ void CDialog::drawTwirl()
 		if(m_switch == 1)
 		{
 			m_switch = 0;
-			if(!m_dlgobject[m_selected_ID]->m_selectable)
-				m_selected_ID = m_dlgobject.size()-1;
-			else
-				m_selected_ID = 0;
 
 			m_twirl.posy = m_dlgobject[m_selected_ID]->m_y;
 		}
@@ -210,7 +227,6 @@ void CDialog::drawTwirl()
 	{
 		if(m_switch == 2)
 		{
-			m_selected_ID = m_dlgobject.size()-1;
 			m_switch = 0;
 			m_twirl.posy = m_dlgobject[m_selected_ID]->m_y;
 		}

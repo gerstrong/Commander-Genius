@@ -20,6 +20,7 @@ CMenu::CMenu( char menu_mode )
 	m_Difficulty = -1; // no difficulty chosen...
 	m_NumPlayers = 0; // no player chosen...
 	m_demoback = false;
+	m_quit = false;
 	m_choosegame = false;
 	m_goback = false;
 	m_Endgame = false;
@@ -40,6 +41,10 @@ bool CMenu::init( char menu_type )
 	{
 		initMainMenu();
 	}
+	else if( m_menu_type == QUIT )
+	{
+		initQuitMenu();
+	}
 	else if( m_menu_type == NEW )
 	{
 		initNumPlayersMenu();
@@ -56,9 +61,14 @@ bool CMenu::init( char menu_type )
 	{
 		initNumControlMenu();
 	}
+	else if( m_menu_type == F1)
+	{
+		initF1Menu();
+	}
 
 	// Use the standard Menu-Frame used in the old DOS-Games
 	mp_Dialog->setFrameTheme( DLG_THEME_OLDSCHOOL );
+	
 	return true;
 }
 
@@ -83,7 +93,7 @@ void CMenu::initMainMenu()
 	// TODO: This still must be adapted to ingame situation
 	if( m_menu_mode == ACTIVE )
 	{
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "New Game");
+		mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 1, "New Game");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 2, "Load Game");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 3, "Save Game");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 4, "Highscores");
@@ -151,6 +161,15 @@ void CMenu::initF1Menu()
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "About CG");
 }
 
+void CMenu::initQuitMenu()
+{
+	mp_Dialog = new CDialog(mp_MenuSurface, 20, 5);
+
+	mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 1, " Are you certain? ");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Yes");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 13, 3, "No");
+}
+
 ////
 // Process Routines
 ////
@@ -161,15 +180,20 @@ void CMenu::process()
 	{
 		m_selection = mp_Dialog->getSelection();
 	}
-	else if( g_pInput->getPressedKey(KQUIT) )
+	else if( g_pInput->getPressedCommand(IC_HELP) )
+	{
+		cleanup();
+		init(F1);
+	}
+	else if( g_pInput->getPressedCommand(IC_QUIT) )
 	{
 		m_goback = true;
 	}
-	mp_Dialog->processInput();
+	(m_menu_type == QUIT) ? mp_Dialog->processInput('l') : mp_Dialog->processInput('u');
 
 	// Draw the menu
 	mp_Dialog->draw();
-
+	
 	// Process the Menu Type logic.
 	// Which menu is open and what do we have to do?
 	if( m_menu_type == MAIN ) processMainMenu();
@@ -178,10 +202,13 @@ void CMenu::process()
 	else if( m_menu_type == CONFIGURE ) processConfigureMenu();
 	else if( m_menu_type == CONTROLPLAYERS ) processNumControlMenu();
 	else if( m_menu_type == F1 ) processF1Menu();
+	else if( m_menu_type == QUIT ) processQuitMenu();
 }
 
 void CMenu::processMainMenu()
-{
+{	
+	if( m_selection != -1)
+	{
 	if( m_menu_mode == PASSIVE )
 	{
 		if( m_selection == 5 ) // Back to Demo
@@ -228,14 +255,24 @@ void CMenu::processMainMenu()
 	if( m_selection == 7 ) // Quit
 	{
 		cleanup();
-		m_menu_type = QUIT;
+		init(QUIT);
+	}
+	}
+	
+	if( m_menu_mode == PASSIVE )
+	{
+	if(m_goback)
+	{
+		cleanup();
+		init(QUIT);
+	}
 	}
 }
 
 void CMenu::processNumPlayersMenu()
 {
-	if( m_selection == -1) return;
-
+	if( m_selection != -1)
+	{
 	cleanup();
 	if( m_selection < MAX_PLAYERS )
 	{
@@ -246,19 +283,20 @@ void CMenu::processNumPlayersMenu()
 	{
 		m_goback = true;
 	}
-
+		}
+	
 	if(m_goback)
 	{
 		cleanup();
 		init(MAIN);
 	}
-
+	return;
 }
 
 void CMenu::processDifficultyMenu()
 {
-	if( m_selection == -1) return;
-
+	if( m_selection != -1)
+	{
 	cleanup();
 	if( m_selection < 2 )
 	{
@@ -268,18 +306,20 @@ void CMenu::processDifficultyMenu()
 	{
 		m_goback = true;
 	}
-
+		}
+		
 	if(m_goback)
 	{
 		cleanup();
 		init(NEW);
 	}
+	return;
 }
 
 void CMenu::processConfigureMenu()
 {
-	if( m_selection == -1) return;
-
+	if( m_selection != -1)
+	{
 	cleanup();
 	if ( m_selection == 3 )
 	{
@@ -290,38 +330,73 @@ void CMenu::processConfigureMenu()
 	{
 		m_goback = true;	
 	}
-
+		}
+	
 	if(m_goback)
 	{
 		cleanup();
 		init(MAIN);
 	}
+	return;
 }
 
 void CMenu::processNumControlMenu()
 {
-	if( m_selection == -1) return;
-
-	cleanup();
-	if( m_selection <= MAX_PLAYERS )
+	if( m_selection != -1)
 	{
-		
+	//cleanup();
+	if( m_selection < MAX_PLAYERS )
+	{
 	}
 	else
 	{
 		m_goback = true;	
 	}
-
+		}
+	
 	if(m_goback)
 	{
 		cleanup();
-		init(OPTIONS);
+		init(CONFIGURE);
 	}
+	return;
 }
 
 void CMenu::processF1Menu()
 {
-
+	if( m_selection != -1)
+	{
+	
+	}
+	
+	if(m_goback)
+	{
+		cleanup();
+		init(MAIN);
+	}
+	return;
+}
+void CMenu::processQuitMenu()
+{
+	if( m_selection != -1)
+	{
+		if ( m_selection == 1 )
+		{
+			cleanup();
+			m_quit = true;
+		}
+		else if ( m_selection == 2 )
+		{
+			m_goback = true;
+		}
+	}
+	
+	if(m_goback)
+	{
+		cleanup();
+		init(MAIN);
+	}
+	return;
 }
 
 
@@ -642,11 +717,11 @@ short GraphicsDlg(stCloneKeenPlus *pCKP, int ingame)
 	int selection;
 	int x;
 	Uint16 width, height;
-	Uint8 depth, zoom = 1, filter = 0, gl_filter = 0;
+	Uint16 depth, zoom = 1, filter = 0, gl_filter = 0;
 	bool fsmode, aspect;
 	std::string buf;
 	short retval = 0;
-	Uint8 autoframeskip = 0;
+	Uint16 autoframeskip = 0;
 	CBitmap *bm_title = g_pGfxEngine->getBitmap("TITLE"),
 			*bm_f1help = g_pGfxEngine->getBitmap("F1HELP");
 

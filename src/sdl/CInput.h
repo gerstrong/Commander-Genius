@@ -120,15 +120,17 @@ IC_STATUS,
 IC_LEFT,
 IC_UP,
 IC_RIGHT,
-IC_DOWN
+IC_DOWN,
+IC_HELP,
+IC_QUIT
 };
 
-#define NUMBER_OF_COMMANDS	8
-#define NUM_INPUTS			2
+#define NUMBER_OF_COMMANDS	10
+#define NUM_INPUTS			1
 
 #define ETYPE_NO_JOYSTICK 	0
 #define ETYPE_JOYAXIS 		1
-#define ETYPE_JOYBUTTON 	2
+#define ETYPE_JOYBUTTON 	5
 
 typedef struct stInputCommand
 {
@@ -139,7 +141,7 @@ typedef struct stInputCommand
 	SDLKey 	keysym;
 
 	unsigned int joyeventtype;
-	Uint8 which;
+	int which;
 	int joyaxis;
 	unsigned short joybutton;
 	int joyvalue;
@@ -160,12 +162,12 @@ public:
 
 	bool getPressedAnyCommand();
 	bool getPulsedCommand(int command, int msec);
-	bool getPulsedCommand(Uint8 player, int command, int msec);
-	bool getHoldedCommand(Uint8 player, int command);
+	bool getPulsedCommand(int player, int command, int msec);
+	bool getHoldedCommand(int player, int command);
 	bool getHoldedCommand(int command);
 	bool getPressedCommand(int command);
-	bool getPressedCommand(Uint8 player, int command);
-	bool getPressedAnyCommand(Uint8 player);
+	bool getPressedCommand(int player, int command);
+	bool getPressedAnyCommand(int player);
 	bool getExitEvent(void);
 	void cancelExitEvent(void);
 

@@ -76,7 +76,7 @@ bool CGame::loadCKPDrivers()
 	g_pSound->init();
 
 	g_pLogFile->ftextOut("Starting the input driver...<br>");
-	g_pInput->loadControlconfig();
+	g_pInput->resetControls();
 
 	return true;
 }

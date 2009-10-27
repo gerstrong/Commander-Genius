@@ -47,11 +47,14 @@ public:
 	bool getExitEvent() { return (m_mode==SHUTDOWN); }
 
 	void cleanup();
+	
+	char m_mode;
+	
+	CMenu *mp_Menu;
 
 private:
 	CIntro *mp_IntroScreen;
 	CTitle *mp_TitleScreen;
-	CMenu *mp_Menu;
 	CMap *mp_Map;
 
 	CTilemap *mp_Tilemap;
@@ -67,7 +70,5 @@ private:
 	char m_NumPlayers;
 	char m_Difficulty;
 	std::string m_DataDirectory;
-
-	char m_mode;
 };
 #endif /* CPASSIVE_H_ */

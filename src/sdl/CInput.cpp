@@ -34,7 +34,7 @@ CInput::~CInput() {
 }
 
 void CInput::resetControls() {
-	Uint8 i;
+	int i;
 
 	m_exit = false;
 	m_cmdpulse = 0;
@@ -45,7 +45,7 @@ void CInput::resetControls() {
 
 	for(i=0 ; i<NUMBER_OF_COMMANDS ; i++)
 	{
-		for(Uint8 player=0 ; player<NUM_INPUTS ; player++)
+		for(int player=0 ; player<NUM_INPUTS ; player++)
 			InputCommand[player][i].active = false;
 	}
 
@@ -61,6 +61,9 @@ void CInput::resetControls() {
 		InputCommand[i][IC_POGO].keysym = SDLK_LALT;
 		InputCommand[i][IC_FIRE].keysym = SDLK_SPACE;
 		InputCommand[i][IC_STATUS].keysym = SDLK_RETURN;
+		
+		InputCommand[i][IC_HELP].keysym = SDLK_F1;
+		InputCommand[i][IC_QUIT].keysym = SDLK_ESCAPE;
 
 		// And those are the default joystick handlings
 		InputCommand[i][IC_LEFT].joyeventtype = ETYPE_JOYAXIS;
@@ -92,6 +95,12 @@ void CInput::resetControls() {
 		InputCommand[i][IC_STATUS].joyeventtype = ETYPE_JOYBUTTON;
 		InputCommand[i][IC_STATUS].joybutton = 3;
 		InputCommand[i][IC_STATUS].which = 0;
+		InputCommand[i][IC_HELP].joyeventtype = ETYPE_JOYBUTTON;
+		InputCommand[i][IC_HELP].joybutton = 4;
+		InputCommand[i][IC_HELP].which = 0;
+		InputCommand[i][IC_QUIT].joyeventtype = ETYPE_JOYBUTTON;
+		InputCommand[i][IC_QUIT].joybutton = 5;
+		InputCommand[i][IC_QUIT].which = 0;
 	}
 }
 
@@ -222,8 +231,8 @@ void CInput::pollEvents()
 	// copy all the input of the last poll to a space for checking pressing or holding a button
 	memcpy(last_immediate_keytable, immediate_keytable, KEYTABLE_SIZE*sizeof(char));
 
-	for(Uint8 i=0 ; i<NUMBER_OF_COMMANDS ; i++)
-		for(Uint8 j=0 ; j<NUM_INPUTS ; j++)
+	for(int i=0 ; i<NUMBER_OF_COMMANDS ; i++)
+		for(int j=0 ; j<NUM_INPUTS ; j++)
 		InputCommand[j][i].lastactive = InputCommand[j][i].active;
 
 	//While there's an event to handle
@@ -293,9 +302,9 @@ void CInput::pollEvents()
 
 void CInput::processJoystickAxis(void)
 {
-	for(Uint8 j=0 ; j<NUM_INPUTS ; j++)
+	for(int j=0 ; j<NUM_INPUTS ; j++)
 	{
-		for(Uint8 i=0 ; i<NUMBER_OF_COMMANDS ; i++)
+		for(int i=0 ; i<NUMBER_OF_COMMANDS ; i++)
 		{
 			if(InputCommand[j][i].joyeventtype == ETYPE_JOYAXIS)
 			{
@@ -318,9 +327,9 @@ void CInput::processJoystickButton(int value)
 #ifdef WIZGP2X
 	WIZ_EmuKeyboard( Event.jbutton.button, value );
 #else
-	for(Uint8 j=0 ; j<NUM_INPUTS ; j++)
+	for(int j=0 ; j<NUM_INPUTS ; j++)
 	{
-		for(Uint8 i=0 ; i<NUMBER_OF_COMMANDS ; i++)
+		for(int i=0 ; i<NUMBER_OF_COMMANDS ; i++)
 		{
 		// TODO: Check all NUM_INPUTS, if they can be reduced to another variable
 			if(InputCommand[j][i].joyeventtype == ETYPE_JOYBUTTON)
@@ -338,16 +347,22 @@ void CInput::sendKey(int key){	immediate_keytable[key] = true;	}
 
 void CInput::processKeys(int value)
 {
-	for(Uint8 i=0 ; i<NUMBER_OF_COMMANDS ; i++)
+	for(int i=0 ; i<NUMBER_OF_COMMANDS ; i++)
 	{
-		for(Uint8 j=0 ; j<NUM_INPUTS ; j++)
+		for(int j=0 ; j<NUM_INPUTS ; j++)
 		{
 			if(InputCommand[j][i].keysym == Event.key.keysym.sym)
 			{
 				if(value)
+				{
 					InputCommand[j][i].active = true;
+					g_pLogFile->textOut(RED, itoa(i)+" is true.");
+				}
 				else
+				{
 					InputCommand[j][i].active = false;
+					g_pLogFile->textOut(RED, itoa(i)+" is false.");
+				}
 			}
 		}
 	}
@@ -463,12 +478,12 @@ bool CInput::getPressedAnyKey(void)
 bool CInput::getHoldedCommand(int command)
 {
 	bool retval = false;
-	for( Uint8 player=0; player<NUM_INPUTS ; player++ )
+	for( int player=0; player<NUM_INPUTS ; player++ )
 		retval |= getHoldedCommand(player, command);
 	return retval;
 }
 
-bool CInput::getHoldedCommand(Uint8 player, int command)
+bool CInput::getHoldedCommand(int player, int command)
 {
 	if(InputCommand[player][command].active)
 		return true;
@@ -479,12 +494,12 @@ bool CInput::getHoldedCommand(Uint8 player, int command)
 bool CInput::getPressedCommand(int command)
 {
 	bool retval = false;
-	for(Uint8 player=0; player<NUM_INPUTS ; player++ )
+	for(int player=0; player<NUM_INPUTS ; player++ )
 		retval |= getPressedCommand(player, command);
 	return retval;
 }
 
-bool CInput::getPressedCommand(Uint8 player, int command)
+bool CInput::getPressedCommand(int player, int command)
 {
 	if(InputCommand[player][command].active && !InputCommand[player][command].lastactive)
 	{
@@ -498,12 +513,12 @@ bool CInput::getPressedCommand(Uint8 player, int command)
 bool CInput::getPulsedCommand(int command, int msec)
 {
 	bool retval = false;
-	for(Uint8 player=0; player<NUM_INPUTS ; player++ )
+	for(int player=0; player<NUM_INPUTS ; player++ )
 		retval |= getPulsedCommand(player, command, msec);
 	return retval;
 }
 
-bool CInput::getPulsedCommand(Uint8 player, int command, int msec)
+bool CInput::getPulsedCommand(int player, int command, int msec)
 {
 	if(InputCommand[player][command].active)
 	{
@@ -525,16 +540,16 @@ bool CInput::getPulsedCommand(Uint8 player, int command, int msec)
 bool CInput::getPressedAnyCommand()
 {
 	bool retval = false;
-	for(Uint8 player=0 ; player<NUM_INPUTS ; player++)
+	for(int player=0 ; player<NUM_INPUTS ; player++)
 		retval |= getPressedAnyCommand(player);
 	return retval;
 }
 
-bool CInput::getPressedAnyCommand(Uint8 player)
+bool CInput::getPressedAnyCommand(int player)
 {
 	int i;
 
-	for(i=0 ; i<4 ; i++)
+	for(i=0 ; i<10 ; i++)
 		if(getPressedCommand(player,i))
 			return true;
 

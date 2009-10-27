@@ -59,7 +59,6 @@ void CTitle::cleanup()
 {
 	while( !mp_objects->empty() )
 	{
-		delete *( mp_objects->end() );
 		mp_objects->pop_back();
 	}
 }

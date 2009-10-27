@@ -22,6 +22,7 @@ CGameControl::CGameControl() {
 	m_Episode = 0;
 	m_ChosenGame = 0;
 	m_Numplayers = 0;
+	m_endgame = false;
 
 	m_EGAGraphics = NULL;
 	m_Messages = NULL;
@@ -81,7 +82,14 @@ bool CGameControl::init(char mode)
 	{
 		// Create mp_PassiveMode object used for the screens while Player is not playing
 		mp_PassiveMode = new CPassive( m_Episode, m_DataDirectory );
+		if( m_endgame == true )
+		{
+			if( mp_PassiveMode->init(mp_PassiveMode->TITLE) ) return true;
+		}
+		else
+		{
 		if( mp_PassiveMode->init() ) return true;
+		}
 	}
 	else if(m_mode == PLAYGAME)
 	{
@@ -218,6 +226,13 @@ void CGameControl::process()
 	// Intro, Title screen, and demo mode are performed by the passive class CPassive
 	else if(m_mode == PASSIVE)
 	{
+		if(mp_PlayGame != NULL)
+		{
+		if( mp_PlayGame->getEndGame() )
+		{
+			mp_PassiveMode->m_mode = 2;
+		}
+		}
 		mp_PassiveMode->process();
 
 		// check here what the player chose from the menu over the passive mode.
@@ -252,8 +267,8 @@ void CGameControl::process()
 
 		if( mp_PlayGame->getEndGame() )
 		{
-			cleanup();
 			init(PASSIVE);
+			delete mp_PlayGame;
 		}
 		else if( mp_PlayGame->getExitEvent() )
 			m_mode = SHUTDOWN;
