@@ -118,6 +118,7 @@
 		23C637D31031812500FEEFEE /* CWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637C91031812500FEEFEE /* CWindow.cpp */; };
 		23C637DB103181BF00FEEFEE /* COrderingInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637D9103181BF00FEEFEE /* COrderingInfo.cpp */; };
 		23C637E4103181D700FEEFEE /* icecannon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637E1103181D700FEEFEE /* icecannon.cpp */; };
+		6312FEC310963B2500DDFFA7 /* CObjectAI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6312FEC110963B2500DDFFA7 /* CObjectAI.cpp */; };
 		63453BD710798CCC007265F8 /* CGameControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63453BD510798CCC007265F8 /* CGameControl.cpp */; };
 		63453BE410798CFE007265F8 /* CPassive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63453BDE10798CFE007265F8 /* CPassive.cpp */; };
 		63453BE510798CFE007265F8 /* CPlayGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63453BE010798CFE007265F8 /* CPlayGame.cpp */; };
@@ -550,6 +551,9 @@
 		5048396D09E3307300765E4B /* CommanderGeniusProj.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = CommanderGeniusProj.xcconfig; sourceTree = "<group>"; };
 		5048396E09E3307300765E4B /* CommanderGeniusTarget.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = CommanderGeniusTarget.xcconfig; sourceTree = "<group>"; };
 		6312202610910DB200053A0E /* spritedefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = spritedefines.h; sourceTree = "<group>"; };
+		6312FEC110963B2500DDFFA7 /* CObjectAI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CObjectAI.cpp; sourceTree = "<group>"; };
+		6312FEC210963B2500DDFFA7 /* CObjectAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CObjectAI.h; sourceTree = "<group>"; };
+		6312FEC410963B3400DDFFA7 /* game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = game.h; path = ../../src/game.h; sourceTree = SOURCE_ROOT; };
 		63453BD510798CCC007265F8 /* CGameControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGameControl.cpp; sourceTree = "<group>"; };
 		63453BD610798CCC007265F8 /* CGameControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameControl.h; sourceTree = "<group>"; };
 		63453BDE10798CFE007265F8 /* CPassive.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPassive.cpp; sourceTree = "<group>"; };
@@ -897,6 +901,8 @@
 				63C6D70A108AE1A200A3805C /* inventory.h */,
 				63BE59E5108501CF009C7293 /* Playerdefines.h */,
 				23C637DC103181D700FEEFEE /* balljack.h */,
+				6312FEC110963B2500DDFFA7 /* CObjectAI.cpp */,
+				6312FEC210963B2500DDFFA7 /* CObjectAI.h */,
 				23D3E9781013ABC9001643FA /* butler.cpp */,
 				23D3E9791013ABC9001643FA /* door.cpp */,
 				23C637DD103181D700FEEFEE /* door.h */,
@@ -1106,6 +1112,7 @@
 				23D3EC4B1016973A001643FA /* CPlanes.cpp */,
 				23D3EC4C1016973A001643FA /* CPlanes.h */,
 				23D3EA001013ABCA001643FA /* CCredits.cpp */,
+				6312FEC410963B3400DDFFA7 /* game.h */,
 				23D3EA011013ABCA001643FA /* CCredits.h */,
 				63453BDE10798CFE007265F8 /* CPassive.cpp */,
 				63453BDF10798CFE007265F8 /* CPassive.h */,
@@ -1435,6 +1442,7 @@
 				63F4128F108F9BB1003A2E02 /* arguments.cpp in Sources */,
 				63CD0B781091F8FB00CB7B80 /* CPlayerItems.cpp in Sources */,
 				63CA3DB41093C38F007D209D /* CEGABitmap.cpp in Sources */,
+				6312FEC310963B2500DDFFA7 /* CObjectAI.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
