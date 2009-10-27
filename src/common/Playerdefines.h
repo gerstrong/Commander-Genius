@@ -99,23 +99,23 @@
 // when expired his jump slows down at a rate
 // of DECREASERATE.
 
-#define PJUMP_NORMALTIME_1         32
-#define PJUMP_UPDECREASERATE_1     6
+#define PJUMP_NORMALTIME_1         24
+#define PJUMP_UPDECREASERATE_1     128
 
-#define PJUMP_NORMALTIME_2         16
-#define PJUMP_UPDECREASERATE_2     5
+#define PJUMP_NORMALTIME_2         12
+#define PJUMP_UPDECREASERATE_2     64
 
-#define PJUMP_NORMALTIME_3         16
-#define PJUMP_UPDECREASERATE_3     4
+#define PJUMP_NORMALTIME_3         6
+#define PJUMP_UPDECREASERATE_3     32
 
-#define PJUMP_NORMALTIME_4         8
-#define PJUMP_UPDECREASERATE_4     2
+#define PJUMP_NORMALTIME_4         3
+#define PJUMP_UPDECREASERATE_4     16
 
 #define PJUMP_NORMALTIME_5         2
-#define PJUMP_UPDECREASERATE_5     1
+#define PJUMP_UPDECREASERATE_5     8
 
 #define PJUMP_NORMALTIME_6         1
-#define PJUMP_UPDECREASERATE_6     1
+#define PJUMP_UPDECREASERATE_6     4
 
 
 // for short pogo jumps, uses -PJUMPUP_SPEED

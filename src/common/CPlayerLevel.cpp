@@ -277,7 +277,6 @@ void CPlayer::JumpAndPogo()
      if (playcontrol[PA_JUMP] && !ppogostick && !pfrozentime)
      {
   	   pinertia_x = 0;
-  	   pboost_x = 0;
        pjumping = PPREPAREJUMP;
        pjumpframe = PPREPAREJUMPFRAME;
        pjumpanimtimer = 0;
@@ -286,7 +285,6 @@ void CPlayer::JumpAndPogo()
      else if (ppogostick)
      {
   	   pinertia_x = 0;
-  	   pboost_x = 0;
        pjumping = PPREPAREPOGO;
        pjumpanimtimer = 0;
        pwalking = false;
@@ -337,23 +335,6 @@ void CPlayer::JumpAndPogo()
           } else pjumpanimtimer++;
           break;
       case PPREPAREJUMP:
-			 widejump = true;
-
-   			 if(psliding)
-   			 {
-   				 if(pdir == LEFT)
-   					 chargedjump-=2;
-   				 else if(pdir == RIGHT)
-   					 chargedjump+=2;
-   			 }
-   			 else
-   			 {
-   	   			 if(g_pInput->getHoldedCommand(IC_LEFT))
-   	   				 chargedjump-=2;
-   	   			 else if(g_pInput->getHoldedCommand(IC_RIGHT))
-   	   				 chargedjump+=2;
-   			 }
-
              if (pjumpanimtimer > PJUMP_PREPARE_ANIM_RATE)
              {
                   if (pjumpframe == PJUMP_PREPARE_LAST_FRAME || !playcontrol[PA_JUMP])
@@ -366,31 +347,30 @@ void CPlayer::JumpAndPogo()
                             pjumptime = PJUMP_NORMALTIME_6;
                             pjumpupspeed_decrease = PJUMP_UPDECREASERATE_6;
                             pjumpupspeed = 1;
-                            chargedjump = chargedjump >> 5;
+                            //chargedjump = chargedjump >> 5;
                             break;
                        case PPREPAREJUMPFRAME+1:
                             pjumptime = PJUMP_NORMALTIME_5;
                             pjumpupspeed_decrease = PJUMP_UPDECREASERATE_5;
                             pjumpupspeed = 2;
-                            chargedjump = chargedjump >> 4;
+                            //chargedjump = chargedjump >> 4;
                             break;
                        case PPREPAREJUMPFRAME+2:
                             pjumptime = PJUMP_NORMALTIME_4;
                             pjumpupspeed_decrease = PJUMP_UPDECREASERATE_4;
                             pjumpupspeed = 4;
-                            chargedjump = chargedjump >> 3;
+                            //chargedjump = chargedjump >> 3;
                             break;
                        case PPREPAREJUMPFRAME+3:
                             pjumptime = PJUMP_NORMALTIME_3;
                             pjumpupspeed_decrease = PJUMP_UPDECREASERATE_3;
                             pjumpupspeed = 8;
-                            chargedjump = chargedjump >> 2;
+                            //chargedjump = chargedjump >> 2;
                             break;
                        case PPREPAREJUMPFRAME+4:
                             pjumptime = PJUMP_NORMALTIME_2;
                             pjumpupspeed_decrease = PJUMP_UPDECREASERATE_2;
                             pjumpupspeed = 16;
-                            chargedjump = chargedjump >> 1;
                             break;
                        default:
                             pjumptime = PJUMP_NORMALTIME_1;
@@ -404,7 +384,6 @@ void CPlayer::JumpAndPogo()
                     pjumping = PJUMPUP;
                     //pjumpupspeed_decrease = 0;
                     pjustjumped = 1;
-                    pjumpfloattimer = 0;
 
                     // make so if we're jumping left or right
                     // the walk code will start at full speed
@@ -436,8 +415,6 @@ void CPlayer::JumpAndPogo()
              } else pjumpanimtimer++;
              break;
         case PJUMPUP:
-        	//pinertia_x += chargedjump;
-        	chargedjump = 0;
         case PPOGOING:
         // check for hitting a ceiling
          if (blockedu)   // did we bonk something?
@@ -461,7 +438,7 @@ void CPlayer::JumpAndPogo()
          }
          else pjumptime--;
 
-         goto_y -= pjumpupspeed;
+         goto_y -= (2*pjumpupspeed);
          break;
     }
 

@@ -45,11 +45,12 @@ void CPlayer::setDatatoZero()
     ppogostick = false;
     plastfire = false;
     blockedu = blockedd = blockedl = blockedr = false;
-    pjumping = 0;
+
+    pjumping = pjumptime = 0;
+
     pfalling = false;
     pwalking = playspeed = 0;
     pinertia_x = pinertia_y = 0;
-    pboost_x = 0;
     playpushed_x = 0;
     plastfire = pfiring = false;
     psliding = psemisliding = 0;
@@ -426,56 +427,11 @@ void CPlayer::InertiaAndFriction_X()
 	   {
 		   if (playcontrol[PA_X] < 0 && !pfrozentime)
 		   {
-			   if(pboost_x > 0 && !ppogostick)
-			   {
-				   pboost_x = 0;
-				   pinertia_x /= 2;
-			   }
-			   else
-			   {
-				   pboost_x-= ppogostick ? 2 : 1;
-			   }
+			   pinertia_x--;
 		   }
 		   if (playcontrol[PA_X] > 0 && !pfrozentime)
 		   {
-			   if(pboost_x < 0 && !ppogostick)
-			   {
-				   pboost_x = 0;
-				   pinertia_x /= 2;
-			   }
-			   else
-			   {
-				   pboost_x+= ppogostick ? 2 : 1;
-			   }
-		   }
-
-		   if(pboost_x >= PJUMPINERTIA ||
-				   pboost_x <= -PJUMPINERTIA)
-		   {
-			   if(ppogostick)
-			   {
-				   pinertia_x += 3*pboost_x/(PJUMPINERTIA*2);
-			   }
-			   else
-			   {
-				   // This is a normal jump without obstacles
-				   if(widejump)
-				   {
-					   pinertia_x += 2*pboost_x/PJUMPINERTIA + chargedjump;
-					   chargedjump = 0;
-				   }
-
-				   // When fallin*g get some inertia
-				   /*if(pfalling)
-				   {
-					   pinertia_x += 2*pboost_x/PJUMPINERTIA;
-				   }
-				   else
-				   {
-					   pinertia_x += 2*pboost_x/PJUMPINERTIA;
-				   }*/
-			   }
-			   pboost_x = 0;
+			   pinertia_x++;
 		   }
 	   }
 
@@ -514,7 +470,7 @@ void CPlayer::InertiaAndFriction_X()
 	  {
 	      if (!pwalking || (!pfalling && !pjumping) || pdir==RIGHT || (pfrozentime && m_episode==1))
 	      {
-			 pinertia_x = pboost_x = 0;
+			 pinertia_x = 0;
 			 widejump = false;
 	      }
 	      else if (pinertia_x < -PFASTINCMAXSPEED)
@@ -527,7 +483,7 @@ void CPlayer::InertiaAndFriction_X()
 	  {
 		  if (!pwalking || (!pfalling && !pjumping) || pdir==LEFT || (pfrozentime && m_episode==1))
 		  {
-	    	 pinertia_x = pboost_x = 0;
+	    	 pinertia_x = 0;
 	    	 widejump = false;
 	      }
 	      else if (pinertia_x > PFASTINCMAXSPEED)
