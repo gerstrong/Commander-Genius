@@ -347,25 +347,21 @@ void CPlayer::JumpAndPogo()
                             pjumptime = PJUMP_NORMALTIME_6;
                             pjumpupspeed_decrease = PJUMP_UPDECREASERATE_6;
                             pjumpupspeed = 1;
-                            //chargedjump = chargedjump >> 5;
                             break;
                        case PPREPAREJUMPFRAME+1:
                             pjumptime = PJUMP_NORMALTIME_5;
                             pjumpupspeed_decrease = PJUMP_UPDECREASERATE_5;
                             pjumpupspeed = 2;
-                            //chargedjump = chargedjump >> 4;
                             break;
                        case PPREPAREJUMPFRAME+2:
                             pjumptime = PJUMP_NORMALTIME_4;
                             pjumpupspeed_decrease = PJUMP_UPDECREASERATE_4;
                             pjumpupspeed = 4;
-                            //chargedjump = chargedjump >> 3;
                             break;
                        case PPREPAREJUMPFRAME+3:
                             pjumptime = PJUMP_NORMALTIME_3;
                             pjumpupspeed_decrease = PJUMP_UPDECREASERATE_3;
                             pjumpupspeed = 8;
-                            //chargedjump = chargedjump >> 2;
                             break;
                        case PPREPAREJUMPFRAME+4:
                             pjumptime = PJUMP_NORMALTIME_2;
@@ -378,34 +374,31 @@ void CPlayer::JumpAndPogo()
                             break;
                        }
 
-                    pjumpframe = PJUMP_PREPARE_LAST_FRAME;
+                       pjumpframe = PJUMP_PREPARE_LAST_FRAME;
 
-                    g_pSound->playStereofromCoord(SOUND_KEEN_JUMP, PLAY_NOW, mp_object->at(m_player_number).scrx);
-                    pjumping = PJUMPUP;
-                    //pjumpupspeed_decrease = 0;
-                    pjustjumped = 1;
+                       g_pSound->playStereofromCoord(SOUND_KEEN_JUMP, PLAY_NOW, mp_object->at(m_player_number).scrx);
+                       pjumping = PJUMPUP;
+                       pjustjumped = 1;
 
-                    // make so if we're jumping left or right
-                    // the walk code will start at full speed
-                    pwalking = 1;
-                    pwalkanimtimer = 0;
-                    pwalkframe = 1;
-                    if ( g_pGfxEngine->Tilemap->mp_tiles[psupportingtile].behaviour == 3)
-                    { // on ice, always jump direction facing
-                      if (pshowdir==LEFT)
-                        {  pdir=LEFT; }
-                      else
-                        {  pdir=RIGHT; }
-                    }
-                    else
-                      pjumpdir = UP;
+                       // make so if we're jumping left or right
+                       // the walk code will start at full speed
+                       pwalking = 1;
+                       pwalkanimtimer = 0;
+                       pwalkframe = 1;
+                       if ( g_pGfxEngine->Tilemap->mp_tiles[psupportingtile].behaviour == 3)
+                       { // on ice, always jump direction facing
+                    	   if (pshowdir==LEFT)
+                    	   {  pdir=LEFT; }
+                    	   else
+                    	   {  pdir=RIGHT; }
+                       }
+                       else
+                    	   pjumpdir = UP;
 
-                    if (playcontrol[PA_X] < 0)
-                    	pinertia_x--;
-                    if (playcontrol[PA_X] > 0)
-                    	pinertia_x++;
+                       pwalkincreasetimer = 0;
 
-                    pwalkincreasetimer = 0;
+                       if(playcontrol[PA_X] < 0)	pinertia_x = -80;
+                       if(playcontrol[PA_X] > 0)	pinertia_x = 80;
                   }
                   else
                   {
@@ -440,6 +433,26 @@ void CPlayer::JumpAndPogo()
 
          goto_y -= (2*pjumpupspeed);
          break;
+    }
+
+    // Now check how much the direction of the player is given
+    if(pjumping)
+    {
+    	if (playcontrol[PA_X] < 0)
+    		pinertia_x-=1;
+    	if (playcontrol[PA_X] > 0)
+			pinertia_x+=1;
+    }
+
+    if(pfalling)
+    {
+   		if(pinertia_x<0) pinertia_x+=2;
+   		if(pinertia_x>0) pinertia_x-=2;
+
+       	if (playcontrol[PA_X] < 0)
+       		pinertia_x-=2;
+       	if (playcontrol[PA_X] > 0)
+   			pinertia_x+=2;
     }
 
     // If we are in Godmode, use the Pogo, and pressing the jump button, make the player fly

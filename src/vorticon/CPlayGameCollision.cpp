@@ -25,7 +25,7 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 		{
 			if( checkisSolidl(p_player) )
 			{
-				p_player->pinertia_x = 0;
+				//p_player->pinertia_x = 0;
 				break;
 			}
 			p_player->x++;
@@ -38,7 +38,7 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 		{
 			if( checkisSolidr(p_player) )
 			{
-				p_player->pinertia_x = 0;
+				//p_player->pinertia_x = 0;
 				break;
 			}
 			p_player->x--;

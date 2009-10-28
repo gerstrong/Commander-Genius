@@ -25,15 +25,15 @@
 // PFASTINCMAXSPEED. keen can, at a slower rate,
 // reach up to PMAXSPEED (increased every walk anim frame)
 //#define PFASTINCMAXSPEED 36
-#define PFASTINCMAXSPEED 2
-#define PMAXSPEED        7
+#define PFASTINCMAXSPEED 40
+#define PMAXSPEED        70
 #define PJUMPINERTIA     30
-#define PFASTINCRATE     64        // accel delay rate up to PFASTINCMAXSPEED
+#define PFASTINCRATE     4        // accel delay rate up to PFASTINCMAXSPEED
 #define PFASTINCRATE_POGO  50      // rate when pogo stick is out
 // rates at which player slows down
-#define PFRICTION_RATE_INAIR      25      //8
-#define PFRICTION_RATE_ONGROUND   5      //2
-#define PFRICTION_RATE_WM         1      // on world map
+#define PFRICTION_RATE_INAIR      20      //8
+#define PFRICTION_RATE_ONGROUND   2      //2
+#define PFRICTION_RATE_WM         1    // on world map
 // rate at which player walking animation is shown
 //#define PWALKANIMRATE             40
 #define PWALKANIMRATE             8
@@ -71,11 +71,6 @@
 #define PMAPLEFTFRAME    40
 #define PMAPUPFRAME      44
 
-// initial negative inertia to provide player at
-// start of a normal jump and a (high) pogo jump
-#define PJUMPUP_SPEED            40
-#define PPOGOUP_SPEED            24
-
 // various tile indexes
 #define BG_GRAY            143
 #define BG_GRAY_PRIORITY   304
@@ -89,6 +84,12 @@
 #define TILE_ICE_CUBE         394
 #define TILE_GLOWCELL      241
 
+
+// initial negative inertia to provide player at
+// start of a normal jump and a (high) pogo jump
+#define PJUMPUP_SPEED            40
+#define PPOGOUP_SPEED            24
+#define PJUMPX_SPEED			 8
 // These control the various jump heights.
 // one of these pairs is selected depending on how
 // long the CTRL key was held down while Keen
@@ -99,7 +100,7 @@
 // when expired his jump slows down at a rate
 // of DECREASERATE.
 
-#define PJUMP_NORMALTIME_1         24
+#define PJUMP_NORMALTIME_1         22
 #define PJUMP_UPDECREASERATE_1     128
 
 #define PJUMP_NORMALTIME_2         12
@@ -134,8 +135,8 @@
 #define PJUMP_UPDECREASERATE_POGO_LONG_SUPER    4
 
 // when falling keen's Y inertia increases by INCREASE up to MAXSPEED
-#define PFALL_INCREASE       	3
-#define PFALL_MAXSPEED          50
+#define PFALL_INCREASE       	30
+#define PFALL_MAXSPEED          60
 
 // pogo frames
 #define PFRAME_POGO           24

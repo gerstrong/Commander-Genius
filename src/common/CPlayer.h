@@ -112,7 +112,6 @@ public:
 	unsigned char pwalkincreasetimer, pfriction_timer_x, pfriction_timer_y;
 	signed int pinertia_x, playpushed_x;
 	unsigned char playpushed_decreasetimer;
-	bool widejump;
 
 	bool blockedl,blockedr,blockedu,blockedd;
 	unsigned int blockedby;
