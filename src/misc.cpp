@@ -23,7 +23,6 @@
 
 #include "fileio/CExeFile.h"
 
-#include "dialog/CWindow.h"
 #include "dialog/CTextViewer.h"
 
 #include <fstream>
@@ -126,8 +125,8 @@ bool showGameHint(int mpx, int mpy, int episode, int level)
     	g_pVideoDriver->update_screen();
     } while(!g_pInput->getPressedAnyCommand());
 
-    delete InfoTextWindow;*/
-    return true;
+    delete InfoTextWindow;
+    return true;*/
 }
 
 void inventory_draw_ep1(int p)
@@ -836,7 +835,7 @@ void SetAllCanSupportPlayer(int o, int state)
 
 void showTextMB(const std::string& Text)
 {
-	CTextBox* TextBox;
+/*	CTextBox* TextBox;
 	CWindow *InfoTextWindow = new CWindow( g_pVideoDriver->FGLayerSurface, 60, 50, 200, 100 );
 
 	TextBox = new CTextBox( g_pVideoDriver->FGLayerSurface, 60, 50, 200, 100, Text, true);
@@ -856,6 +855,7 @@ void showTextMB(const std::string& Text)
     } while(!g_pInput->getPressedAnyCommand());
 
     delete InfoTextWindow;
+    */
 }
 
 // This function shows up the helping text when F1 is pushed
