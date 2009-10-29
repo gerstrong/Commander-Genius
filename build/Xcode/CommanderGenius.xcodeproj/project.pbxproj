@@ -115,7 +115,6 @@
 		23C637D01031812500FEEFEE /* EndingSequenceEp2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637C21031812500FEEFEE /* EndingSequenceEp2.cpp */; };
 		23C637D11031812500FEEFEE /* EndingSequenceEp3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637C41031812500FEEFEE /* EndingSequenceEp3.cpp */; };
 		23C637D21031812500FEEFEE /* CTextBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637C71031812500FEEFEE /* CTextBox.cpp */; };
-		23C637D31031812500FEEFEE /* CWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637C91031812500FEEFEE /* CWindow.cpp */; };
 		23C637DB103181BF00FEEFEE /* COrderingInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637D9103181BF00FEEFEE /* COrderingInfo.cpp */; };
 		23C637E4103181D700FEEFEE /* icecannon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637E1103181D700FEEFEE /* icecannon.cpp */; };
 		6312FEC310963B2500DDFFA7 /* CObjectAI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6312FEC110963B2500DDFFA7 /* CObjectAI.cpp */; };
@@ -379,8 +378,6 @@
 		23C637C51031812500FEEFEE /* EndingSequenceEp3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EndingSequenceEp3.h; sourceTree = "<group>"; };
 		23C637C71031812500FEEFEE /* CTextBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CTextBox.cpp; sourceTree = "<group>"; };
 		23C637C81031812500FEEFEE /* CTextBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTextBox.h; sourceTree = "<group>"; };
-		23C637C91031812500FEEFEE /* CWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CWindow.cpp; sourceTree = "<group>"; };
-		23C637CA1031812500FEEFEE /* CWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CWindow.h; sourceTree = "<group>"; };
 		23C637CC1031812500FEEFEE /* externals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = externals.h; sourceTree = "<group>"; };
 		23C637D9103181BF00FEEFEE /* COrderingInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = COrderingInfo.cpp; sourceTree = "<group>"; };
 		23C637DA103181BF00FEEFEE /* COrderingInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COrderingInfo.h; sourceTree = "<group>"; };
@@ -440,12 +437,10 @@
 		23D3E9B51013ABCA001643FA /* hq_sound.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hq_sound.cpp; sourceTree = "<group>"; };
 		23D3E9B61013ABCA001643FA /* hq_sound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hq_sound.h; sourceTree = "<group>"; };
 		23D3E9B81013ABCA001643FA /* declarations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = declarations.h; sourceTree = "<group>"; };
-		23D3E9B91013ABCA001643FA /* enemyai.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = enemyai.h; sourceTree = "<group>"; };
 		23D3E9BE1013ABCA001643FA /* lzexe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lzexe.h; sourceTree = "<group>"; };
 		23D3E9BF1013ABCA001643FA /* rle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rle.h; sourceTree = "<group>"; };
 		23D3E9C01013ABCA001643FA /* story.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = story.h; sourceTree = "<group>"; };
 		23D3E9C11013ABCA001643FA /* fileio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fileio.h; sourceTree = "<group>"; };
-		23D3E9C21013ABCA001643FA /* game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = game.h; sourceTree = "<group>"; };
 		23D3E9C31013ABCA001643FA /* gamedo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gamedo.h; sourceTree = "<group>"; };
 		23D3E9C41013ABCA001643FA /* gamepdo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gamepdo.h; sourceTree = "<group>"; };
 		23D3E9C51013ABCA001643FA /* gm_pdowm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gm_pdowm.h; sourceTree = "<group>"; };
@@ -877,8 +872,6 @@
 				23C637C81031812500FEEFEE /* CTextBox.h */,
 				6350F77A1044784900A992D5 /* CTextViewer.cpp */,
 				6350F77B1044784900A992D5 /* CTextViewer.h */,
-				23C637C91031812500FEEFEE /* CWindow.cpp */,
-				23C637CA1031812500FEEFEE /* CWindow.h */,
 			);
 			path = dialog;
 			sourceTree = "<group>";
@@ -886,7 +879,6 @@
 		23D3E9741013ABC9001643FA /* ai */ = {
 			isa = PBXGroup;
 			children = (
-				23D3E9B91013ABCA001643FA /* enemyai.h */,
 				6350F76A1044782400A992D5 /* autoray.cpp */,
 				636404FE108836F4001799CE /* crc.cpp */,
 				636404FF108836F4001799CE /* crc.h */,
@@ -981,7 +973,6 @@
 				23D3E9B81013ABCA001643FA /* declarations.h */,
 				23D3E9BD1013ABCA001643FA /* fileio */,
 				23D3E9C11013ABCA001643FA /* fileio.h */,
-				23D3E9C21013ABCA001643FA /* game.h */,
 				23D3E9C31013ABCA001643FA /* gamedo.h */,
 				23D3E9C41013ABCA001643FA /* gamepdo.h */,
 				23D3E9C51013ABCA001643FA /* gm_pdowm.h */,
@@ -1404,7 +1395,6 @@
 				23C637D01031812500FEEFEE /* EndingSequenceEp2.cpp in Sources */,
 				23C637D11031812500FEEFEE /* EndingSequenceEp3.cpp in Sources */,
 				23C637D21031812500FEEFEE /* CTextBox.cpp in Sources */,
-				23C637D31031812500FEEFEE /* CWindow.cpp in Sources */,
 				23C637DB103181BF00FEEFEE /* COrderingInfo.cpp in Sources */,
 				23C637E4103181D700FEEFEE /* icecannon.cpp in Sources */,
 				6350F76C1044782400A992D5 /* autoray.cpp in Sources */,
@@ -1524,7 +1514,7 @@
 				);
 				PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES;
 				PRODUCT_NAME = "Commander Genius";
-				SDKROOT = macosx10.4;
+				SDKROOT = macosx10.5;
 			};
 			name = Release;
 		};
