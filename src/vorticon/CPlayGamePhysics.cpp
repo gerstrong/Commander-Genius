@@ -112,7 +112,7 @@ void CPlayGame::processPlayerfallings(CPlayer *p_player)
 
 	// ** if the player should be falling, well what are we waiting for?
 	//    make him fall! **
-	if (mp_option[OPT_CHEATS].value && g_pInput->getHoldedKey(KPLUS)) { p_player->pfalling = true; p_player->pjustfell = 1; }
+	if (mp_option[OPT_CHEATS].value && g_pInput->getHoldedKey(KPLUS)) { p_player->pfalling = true; p_player->pjustfell = true; }
 
 	if (p_player->pfalling)
 	{  // nothing solid under player, let's make him fall

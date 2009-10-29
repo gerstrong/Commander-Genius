@@ -49,6 +49,7 @@ enum e_levelcommands
 	void goBacktoMap();
 	void processObjectsAI();
 	void drawObjects();
+	void handleFKeys();
 	bool scrollTriggers();
 
 	// Collision stuff stored in CPlayGameCollision.cpp

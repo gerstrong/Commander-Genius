@@ -44,14 +44,13 @@ void CPlayer::processWorldMap()
 // select proper player direction
 void CPlayer::setWorldMapdir()
 {
-bool exception;
+bool exception=false;
    dpadcount = 0;
    if (playcontrol[PA_X] < 0) { pdir = LEFT; dpadcount++; }
    if (playcontrol[PA_X] > 0) { pdir = RIGHT; dpadcount++; }
    if (playcontrol[PA_Y] < 0) { pdir = UP; dpadcount++; }
    if (playcontrol[PA_Y] > 0) { pdir = DOWN; dpadcount++; }
 
-   exception = false;
    if ( pshowdir==UP && !playcontrol[PA_Y] < 0) exception = true;
    if ( pshowdir==DOWN && !playcontrol[PA_Y] > 0) exception = true;
    if ( pshowdir==LEFT && !playcontrol[PA_X] < 0) exception = true;

@@ -165,7 +165,7 @@ stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 	y0 = p_object->y;
 	for(xa=1;xa<xsize;xa+=(1<<CSF))		// change start pixel to xa=1 for icecannon in ep1l8
 	{
-		if ( TileProperty[getmaptileat((x0+xa)>>CSF,y0>>CSF)].bdown )
+		if ( TileProperty[mp_Map->at((x0+xa)>>CSF,y0>>CSF)].bdown )
 		{
 			p_object->blockedu = true;
 			break;

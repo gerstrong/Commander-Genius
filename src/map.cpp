@@ -19,193 +19,10 @@ unsigned char scrollpixy = 0;    // (0-7) for tracking when to draw a stripe
 unsigned int mapy = 0;           // map Y location shown at scrollbuffer column 0
 unsigned int mapystripepos = 0;  // Y pixel position of next stripe column
 
-// note that the scroll buffer is 512x512, this is where all the 511 and 512
-// numbers come from.
-
-// scrolls the map one pixel right
-void map_scroll_right(void)
-{
-     scroll_x++;
-     if(scrollx_buf>=511) scrollx_buf=0; else scrollx_buf++;
-
-     scrollpix++;
-     if (scrollpix>15)
-     {  // need to draw a new stripe
-       map_draw_vstripe(mapxstripepos, mapx + 32);
-       mapx++;
-       mapxstripepos += 16;
-       if (mapxstripepos >= 512) mapxstripepos = 0;
-       scrollpix = 0;
-     }
-}
-
-// scrolls the map one pixel left
-void map_scroll_left(void)
-{
-     scroll_x--;
-     if(scrollx_buf==0) scrollx_buf=511; else scrollx_buf--;
-
-     if (scrollpix==0)
-     {  // need to draw a new stripe
-       mapx--;
-       if (mapxstripepos == 0)
-       {
-         mapxstripepos = (512 - 16);
-       }
-       else
-       {
-         mapxstripepos -= 16;
-       }
-       map_draw_vstripe(mapxstripepos, mapx);
-
-       scrollpix = 15;
-     } else scrollpix--;
-}
-
-void map_scroll_down(void)
-{
-  scroll_y++;
-  if(scrolly_buf>=511) scrolly_buf=0; else scrolly_buf++;
-
-     scrollpixy++;
-     if (scrollpixy>15)
-     {  // need to draw a new stripe
-       map_draw_hstripe(mapystripepos, mapy + 32);
-       mapy++;
-       mapystripepos += 16;
-       if (mapystripepos >= 512) mapystripepos = 0;
-       scrollpixy = 0;
-     }
-}
-
-void map_scroll_up(void)
-{
-  scroll_y--;
-  if(scrolly_buf==0) scrolly_buf=511; else scrolly_buf--;
-
-     if (scrollpixy==0)
-     {  // need to draw a new stripe
-       mapy--;
-       if (mapystripepos == 0)
-       {
-         mapystripepos = (512 - 16);
-       }
-       else
-       {
-         mapystripepos -= 16;
-       }
-       map_draw_hstripe(mapystripepos, mapy);
-
-       scrollpixy = 15;
-     } else scrollpixy--;
-}
-
-
-// draws a vertical stripe from map position mapx to scrollbuffer position x
-void map_draw_vstripe(unsigned int x, unsigned int mpx)
-{
-/*int i,y,c;
-  for(y=0;y<SCROLLBUF_NUMTILESY;y++)
-  {
-      c = map.mapdata[mpx][y+mapy];
-	  g_pGfxEngine->Tilemap->drawTile(g_pVideoDriver->getScrollSurface(), x, ((y<<4)+mapystripepos)&511, c);
-
-      if (AnimTileInUse[x>>4][(((y<<4)+mapystripepos)&511)>>4])
-      { // we just drew over an animated tile which we must unregister
-        animtiles[AnimTileInUse[x>>4][(((y<<4)+mapystripepos)&511)>>4]].slotinuse = 0;
-        AnimTileInUse[x>>4][(((y<<4)+mapystripepos)&511)>>4] = 0;
-      }
-      if ( TileProperty[c][ANIMATION] > 1 )
-      { // we just drew an animated tile which we will now register
-          for(i=1;i<MAX_ANIMTILES-1;i++)
-          {
-            if ( !animtiles[i].slotinuse)
-            {  // we found an unused slot
-                animtiles[i].x = x;
-                animtiles[i].y = (((y<<4)+mapystripepos)&511);
-                animtiles[i].baseframe = c - tiles[c].animOffset;
-                animtiles[i].offset = tiles[c].animOffset;
-                animtiles[i].slotinuse = 1;
-                AnimTileInUse[x>>4][((((y<<4)+mapystripepos)&511))>>4] = i;
-                goto stop;             // and drop out of the loop
-            }
-          }
-          stop: ;
-      }
-  }*/
-}
-// draw a horizontal stripe, for vertical scrolling
-void map_draw_hstripe(unsigned int y, unsigned int mpy)
-{
-/*int i,x,c;
-  for(x=0;x<SCROLLBUF_NUMTILESX;x++)
-  {
-      c = map.mapdata[x+mapx][mpy];
-	  g_pGfxEngine->Tilemap->drawTile(g_pVideoDriver->getScrollSurface(), ((x<<4)+mapxstripepos)&511, y, c);
-
-      if (AnimTileInUse[(((x<<4)+mapxstripepos)&511)>>4][y>>4])
-      { // we just drew over an animated tile which we must unregister
-        animtiles[AnimTileInUse[(((x<<4)+mapxstripepos)&511)>>4][y>>4]].slotinuse = 0;
-        AnimTileInUse[(((x<<4)+mapxstripepos)&511)>>4][y>>4] = 0;
-      }
-      if ( TileProperty[c][ANIMATION] > 1 )
-      { // we just drew an animated tile which we will now register
-
-        for(i=1;i<MAX_ANIMTILES-1;i++)
-        {
-          if (!animtiles[i].slotinuse)
-          {  // we found an unused slot
-              animtiles[i].x = ((x<<4)+mapxstripepos)&511;
-              animtiles[i].y = y;
-              animtiles[i].baseframe = c - tiles[c].animOffset;
-              animtiles[i].offset = tiles[c].animOffset;
-              animtiles[i].slotinuse = 1;
-              AnimTileInUse[(((x<<4)+mapxstripepos)&511)>>4][y>>4] = i;
-              goto stop;            // and drop out of the loop
-          }
-        }
-        stop: ;
-      }
-  }*/
-}
-
-// returns the map tile at map position (x,y)
-unsigned int getmaptileat(unsigned int x, unsigned int y)
-{
-/*int xa = x>>4;
-int ya = y>>4;
-
-  if (xa<=255 && ya<=255)
-  {
-	  return map.mapdata[xa][ya];
-  }
-  else
-  {
-	  if(xa > 255)
-		  xa = 255;
-
-	  if(ya > 254)
-		  ya = 255;
-
-	  return map.mapdata[xa][ya];
-  }*/
-	return 0;
-}
 unsigned int getlevelat(unsigned int x, unsigned int y)
 {
   //return map.objectlayer[x>>4][y>>4];
 	return 0;
-}
-
-// called at start of level to draw the upper-left corner of the map
-// onto the scrollbuffer...from then on the map will only be drawn
-// in stripes as it scrolls around.
-void drawmap(void)
-{
-	int y;
-
-    for(y=0;y<SCROLLBUF_NUMTILESY;y++)
-      map_draw_hstripe(y<<4, y);
 }
 
 // searches for animated tiles at the map position (X,Y) and
@@ -359,7 +176,7 @@ char map_findtile(unsigned int tile, int *xout, int *yout)
 // refreshes the map at the current scroll position
 // (unlike drawmap() which does not honor the scroll and will
 // glitch up if scrollx/y is != 0)
-void map_redraw(void)
+/*void map_redraw(void)
 {
 int x,mpx;
 
@@ -371,4 +188,4 @@ int x,mpx;
 		x+=16;
 		x&=511;
 	}
-}
+}*/

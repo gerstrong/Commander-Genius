@@ -141,9 +141,9 @@ public:
 	char psemisliding;
 	bool ppogostick;
 	int pfrozentime,pfrozenframe,pfrozenanimtimer;
+	bool pfiring, plastfire;
 
 	char playcontrol[PA_MAX_ACTIONS];
-
 
 	unsigned char dpadcount, dpadlastcount;
 
@@ -162,7 +162,6 @@ private:
 	CStatusScreen *mp_StatusScr;
 
 	bool lastpogo;
-	bool pfiring, plastfire;
 
 	// defined under CPlayerItems.cpp
 	bool getGoodie(int px, int py);

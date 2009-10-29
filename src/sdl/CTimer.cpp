@@ -44,16 +44,12 @@ Normal duration: 8.33 ms Sync of 3 duration: 25 ms
 
 CTimer::CTimer()
 {
-	m_LoopPS = m_LPS = m_FPS = 0;
+	m_FPSCountTime = m_LoopPS = m_LPS = m_FPS = 0;
 	m_SyncCount = m_LoopCount = m_LogicCount = m_FrameCount = 0;
 
 	setFrameRate(DEFAULT_LPS, DEFAULT_FPS, DEFAULT_SYNC);
     m_SyncStartTime = m_LoopStartTime = SDL_GetTicks();
 	g_pLogFile->textOut(GREEN, true, "Starting timer driver...\n");
-}
-
-CTimer::~CTimer()
-{
 }
 
 void CTimer::setFrameRate( int logicrate, int framerate, int syncrate )
@@ -195,4 +191,8 @@ bool CTimer::HasSecElapsed(void)
 		return true;
 	}
 	return false;
+}
+
+CTimer::~CTimer()
+{
 }

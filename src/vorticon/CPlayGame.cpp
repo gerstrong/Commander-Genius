@@ -60,7 +60,8 @@ CPlayGame::CPlayGame( char episode, char level,
 		m_Object[i].onscreen = true;
 		m_Object[i].honorPriority = true;
 		m_Object[i].m_type = OBJ_PLAYER;
-		mp_Player[i].mp_object = &m_Object;
+		mp_Player[i].mp_object=&m_Object;
+		//mp_Player[i].mp_object = &m_Object;
 		mp_Player[i].mp_option = p_option;
 	}
 
@@ -281,6 +282,8 @@ void CPlayGame::process()
 	// Draw objects to the screen
 	drawObjects();
 
+	handleFKeys();
+
 	if (g_pVideoDriver->showfps)
 	{
 		std::string tempbuf;
@@ -400,6 +403,109 @@ void CPlayGame::losePlayer(CPlayer *p_player)
       m_Level = WM_MAP_NUM;
       init();
     }
+}
+
+void CPlayGame::handleFKeys()
+{
+	int i;
+
+    if (g_pInput->getHoldedKey(KC) &&
+    		g_pInput->getHoldedKey(KT) &&
+    		g_pInput->getHoldedKey(KSPACE))
+       {
+			g_pInput->flushAll();
+			for(i=0;i<m_NumPlayers;i++)
+			{
+				mp_Player[i].pfiring = false;
+				if (mp_Player[i].m_playingmode)
+				{
+					/*give_keycard(DOOR_YELLOW, i);
+				  give_keycard(DOOR_RED, i);
+				  give_keycard(DOOR_GREEN, i);
+				  give_keycard(DOOR_BLUE, i);*/
+
+					mp_Player[i].inventory.charges = 999;
+					mp_Player[i].inventory.HasPogo = 1;
+					mp_Player[i].inventory.lives = 10;
+
+					// Show a message like in the original game
+					/*char **text;
+					int i;
+
+					text = (char**) malloc(4*sizeof(char*));
+
+					for(i=0;i<4;i++)
+					{
+						static const int MAX_STRING_LENGTH = 256;
+						text[i]= (char*) malloc(MAX_STRING_LENGTH*sizeof(char));
+					}
+
+					std::string Text;
+
+					Text = 	"You are now cheating!\n";
+					Text +=	"You got more lives\n";
+					Text +=	"all the key cards, and\n";
+					Text +=	"lots of ray gun charges!\n";
+
+					showTextMB(Text);*/
+				}
+			}
+			g_pVideoDriver->AddConsoleMsg("All items cheat");
+       }
+
+		/*
+       // GOD cheat -- toggle god mode
+       if (g_pInput->getHoldedKey(KG) && g_pInput->getHoldedKey(KO) && g_pInput->getHoldedKey(KD))
+       {
+           for(i=0;i<MAX_PLAYERS;i++)
+              player[i].godmode ^= 1;
+
+           g_pVideoDriver->DeleteConsoleMsgs();
+           if (player[0].godmode)
+        	   g_pVideoDriver->AddConsoleMsg("God mode ON");
+           else
+        	   g_pVideoDriver->AddConsoleMsg("God mode OFF");
+
+           g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
+
+           // Show a message like in the original game
+           showTextMB(player[0].godmode ? "Godmode enabled" : "Godmode disabled");
+       }
+
+    if (pCKP->Option[OPT_CHEATS].value)
+    {
+            if (g_pInput->getHoldedKey(KTAB)) // noclip/revive
+            {
+              // resurrect any dead players. the rest of the KTAB magic is
+              // scattered throughout the various functions.
+              for(i=0;i<MAX_PLAYERS;i++)
+              {
+                 if (player[i].pdie)
+                 {
+                   player[i].pdie = PDIE_NODIE;
+                   player[i].y -= (8<<CSF);
+                 }
+                 player[i].pfrozentime = 0;
+              }
+            }
+
+            // F9 - exit level immediately
+            if(g_pInput->getPressedKey(KF9))
+            {
+               endlevel(1, &(pCKP->Control.levelcontrol) );
+            }
+    }*/
+
+    // F10 - change primary player
+    /*if(g_pInput->getPressedKey(KF10))
+    {
+        primaryplayer++;
+        if (primaryplayer>=numplayers) primaryplayer=0;
+    }
+    // F3 - save game
+    if (g_pInput->getPressedKey(KF3))
+       game_save_interface(pCKP);*/
+
 }
 
 // This function draws the objects that need to be seen on the screen

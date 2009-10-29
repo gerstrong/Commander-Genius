@@ -34,7 +34,7 @@ int x,y,w,h;
   eseq_showmsg(getstring("EP3_MORTIMER4"),x,y,w,h, false);
   eseq_showmsg(getstring("EP3_MORTIMER5"),x,y,w,h, false);
 
-  map_redraw();
+  //map_redraw();
   g_pSound->playSound(SOUND_FOOTSLAM, PLAY_NOW);
 }
 

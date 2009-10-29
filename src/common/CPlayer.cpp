@@ -22,11 +22,11 @@
 ///
 CPlayer::CPlayer() {
 	// Set every value in the class to zero.
-
    	mp_levels_completed = NULL;
    	mp_object = NULL;
     mp_map = NULL;
     mp_StatusScr = NULL;
+    mp_option = NULL;
     setDatatoZero();
 }
 
@@ -36,7 +36,8 @@ void CPlayer::setDatatoZero()
 	// When worldmap is set up, use that frame
 	playframe = PMAPDOWNFRAME;
 
-	godmode = hideplayer = false;
+	pshowdir = pshowdir = DOWN;
+	godmode  = hideplayer = false;
   	pwalkframe = pwalkframea = 0;
    	m_player_number = 0;
     dpadcount = 0;
@@ -48,7 +49,7 @@ void CPlayer::setDatatoZero()
 
     pjumping = pjumptime = 0;
 
-    pfalling = false;
+    pjustfell = plastfalling = pfalling = false;
     pwalking = playspeed = 0;
     pinertia_x = pinertia_y = 0;
     playpushed_x = 0;
@@ -72,8 +73,14 @@ void CPlayer::setDatatoZero()
     m_showStatusScreen = false;
     lastpogo = false;
 
+    ppogostick=0;
+    pinertia_x=0;
+  	pfriction_timer_x=0;
+  	dpadcount = dpadlastcount = 0;
+
     // Set all the inventory to zero.
     memset(&inventory, 0, sizeof(stInventory));
+    memset(playcontrol, 0, PA_MAX_ACTIONS*sizeof(char));
     inventory.extralifeat = 20000;
 }
 
@@ -85,7 +92,7 @@ void CPlayer::Walking()
     {
       if (!pfrozentime||m_episode!=1)
         if (!pjumping && !pfalling);
-        	//pinertia_x = 0;
+        	pinertia_x = 0;
       return;
     }
 
@@ -95,7 +102,7 @@ void CPlayer::Walking()
                         (pinertia_x < 0 && pdir==RIGHT)))\
     {
     	if(!ppogostick);
-    		//pinertia_x = 0;
+    		pinertia_x = 0;
     }
 
     // this code makes it so that if you jump/fall onto a semi-sliding
@@ -153,7 +160,7 @@ void CPlayer::Walking()
         if (!pjumping && !pfalling)
         {
             if(!ppogostick) // Only if he stays on the ground (No pogoing)
-            	//pinertia_x /= 2;
+            	pinertia_x /= 2;
           pinertia_y = 0;
         }
 
@@ -183,11 +190,11 @@ void CPlayer::Walking()
            // keep player sliding at maximum speed
            if (pdir==RIGHT)
            {
-        	   //pinertia_x = PMAXSPEED;
+        	   pinertia_x = PMAXSPEED;
            }
            else if (pdir==LEFT)
            {
-        	   //pinertia_x = -PMAXSPEED;
+        	   pinertia_x = -PMAXSPEED;
            }
          }
          return;
@@ -212,7 +219,6 @@ void CPlayer::Walking()
           if (pwalkincreasetimer>=cur_pfastincrate && pinertia_x<PFASTINCMAXSPEED)
           {
         	  pinertia_x+=(1<<4);
-        	  //pinertia_x++;
         	  pwalkincreasetimer=0;
           }
           else	pwalkincreasetimer++;
@@ -233,7 +239,6 @@ void CPlayer::Walking()
           if (pwalkincreasetimer>=cur_pfastincrate && pinertia_x<-PFASTINCMAXSPEED)
           {
         	  pinertia_x-=(1<<4);
-        	  //pinertia_x--;
         	  pwalkincreasetimer=0;
           }
           else	pwalkincreasetimer++;

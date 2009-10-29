@@ -23,11 +23,7 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 		// The player walked right
 		while(p_player->goto_x > p_player->x)
 		{
-			if( checkisSolidl(p_player) )
-			{
-				//p_player->pinertia_x = 0;
-				break;
-			}
+			if( checkisSolidl(p_player) )	break;
 			p_player->x++;
 		}
 	}
@@ -36,11 +32,7 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 		// The player walked left
 		while(p_player->goto_x < p_player->x)
 		{
-			if( checkisSolidr(p_player) )
-			{
-				//p_player->pinertia_x = 0;
-				break;
-			}
+			if( checkisSolidr(p_player) )	break;
 			p_player->x--;
 		}
 	}
