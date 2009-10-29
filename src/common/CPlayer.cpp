@@ -36,7 +36,7 @@ void CPlayer::setDatatoZero()
 	// When worldmap is set up, use that frame
 	playframe = PMAPDOWNFRAME;
 
-	hideplayer = false;
+	godmode = hideplayer = false;
   	pwalkframe = pwalkframea = 0;
    	m_player_number = 0;
     dpadcount = 0;
@@ -54,11 +54,11 @@ void CPlayer::setDatatoZero()
     playpushed_x = 0;
     plastfire = pfiring = false;
     psliding = psemisliding = 0;
-    pdie = false;
     pwalkanimtimer = 0;
     inhibitfall = false;
     playerbaseframe = 0;
     mapplayx = mapplayy = 0;
+    pdie = 0;
 
     pfrozentime = 0;
     ankhtime = 0;

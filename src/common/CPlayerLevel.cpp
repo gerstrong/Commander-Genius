@@ -74,6 +74,25 @@ void CPlayer::walkbehindexitdoor()
     }*/
 }
 
+void CPlayer::kill()
+{
+   if (godmode || g_pInput->getHoldedKey(KTAB)) return;
+   if (ankhtime) return;
+   if (!pdie)
+   {
+      pdie = PDIE_DYING;
+      pdieframe = 0;
+      pdietimer = 0;
+      pdietillfly = DIE_TILL_FLY_TIME;
+      pdie_xvect = rand()%(DIE_MAX_XVECT*2);
+      pdie_xvect -= DIE_MAX_XVECT;
+      inventory.lives--;
+      SelectFrame();
+      //g_pMusicPlayer->stop();
+      g_pSound->playSound(SOUND_KEEN_DIE, PLAY_NOW);
+   }
+}
+
 void CPlayer::dieanim() // Bad word for that. It's the entire die code
 {
    if (!pdie) return;                // should never happen...
@@ -83,8 +102,8 @@ void CPlayer::dieanim() // Bad word for that. It's the entire die code
      // wait for falling sound to complete, then kill the player
      if (!g_pSound->isPlaying(SOUND_KEEN_FALL))
      {
-        //pdie = false;
-        //killplayer(cp);
+        pdie = 0;
+        kill();
     	// TODO: Not sure, what must go here! Check out!
      }
      else return;
@@ -101,13 +120,13 @@ void CPlayer::dieanim() // Bad word for that. It's the entire die code
    // is it time to start flying off the screen?
    if (!pdietillfly)
    {  // time to fly off the screen
-     if (((y>>CSF)+96 > mp_map->m_scrolly) && (y>(16<<CSF)))
+     if (((y>>(CSF-4))+96 > mp_map->m_scrolly) && (y>(16<<(CSF-4))))
      {  // player has not reached top of screen
         // make player fly up
-        y += PDIE_RISE_SPEED;
+        goto_y += PDIE_RISE_SPEED;
         if (x > (4<<CSF))
         {
-          x += pdie_xvect;
+          goto_x += pdie_xvect;
         }
      }
      else

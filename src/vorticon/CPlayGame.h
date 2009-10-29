@@ -46,6 +46,7 @@ enum e_levelcommands
 	bool loadGameState( std::string &statefile );
 
 	void process();
+	void goBacktoMap();
 	void processObjectsAI();
 	void drawObjects();
 	bool scrollTriggers();
@@ -88,9 +89,12 @@ private:
 	char m_level_command;
 	bool m_paused;
 	bool m_gameover;
+	bool m_alldead;
 	bool m_showPauseDialog;
 	std::string m_Gamepath;
 	bool mp_level_completed[16];
+	int m_checkpoint_x, m_checkpoint_y;
+	bool m_checkpointset;
 
 	CMap *mp_Map;
 	CMenu *mp_Menu;

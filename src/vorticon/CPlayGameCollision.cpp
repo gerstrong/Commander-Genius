@@ -106,6 +106,8 @@ int t1 = mp_Map->at(x>>CSF, y1>>CSF);
 int t2 = mp_Map->at(x>>CSF, y2>>CSF);
 int t3 = mp_Map->at(x>>CSF, y3>>CSF);
 
+  if(p_player->pdie) return false;
+
   if(g_pGfxEngine->Tilemap->mp_tiles[t1].bleft)
   {
 	  p_player->blockedby = t1;
@@ -153,6 +155,8 @@ int t1 = mp_Map->at(x>>CSF, y1>>CSF);
 int t2 = mp_Map->at(x>>CSF, y2>>CSF);
 int t3 = mp_Map->at(x>>CSF, y3>>CSF);
 
+	if(p_player->pdie) return false;
+
 	if(g_pGfxEngine->Tilemap->mp_tiles[t1].bleft)
 	{
 		  p_player->blockedby = t1;
@@ -192,6 +196,9 @@ int y = p_player->y;
 int x2 = p_player->x+p_player->w-1;
 int t1 = mp_Map->at(x1>>CSF, y>>CSF);
 int t2 = mp_Map->at(x2>>CSF, y>>CSF);
+
+  if(p_player->pdie) return false;
+
   if(g_pGfxEngine->Tilemap->mp_tiles[t1].bdown || g_pGfxEngine->Tilemap->mp_tiles[t2].bdown )
   {
     return true;
@@ -211,6 +218,8 @@ int x2 = p_player->x+p_player->w-1;
 int y = p_player->y+p_player->h;
 int t1 = mp_Map->at(x1>>CSF, y>>CSF);
 int t2 = mp_Map->at(x2>>CSF, y>>CSF);
+
+	if(p_player->pdie) return false;
 
 	if(y != (y>>CSF)<<CSF) return false;
 

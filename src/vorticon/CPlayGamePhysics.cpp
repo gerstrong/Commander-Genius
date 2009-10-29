@@ -25,6 +25,8 @@ void CPlayGame::processPlayerfallings(CPlayer *p_player)
 
 	p_player->pfalling = 0;         // assume not falling if not jumped to the maximum height
 
+	if(p_player->pdie) return;
+
 	// do not fall if we're jumping
 	if (p_player->pjumping)
 	{

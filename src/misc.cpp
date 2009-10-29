@@ -125,8 +125,8 @@ bool showGameHint(int mpx, int mpy, int episode, int level)
     	g_pVideoDriver->update_screen();
     } while(!g_pInput->getPressedAnyCommand());
 
-    delete InfoTextWindow;
-    return true;*/
+    delete InfoTextWindow;*/
+    return true;
 }
 
 void inventory_draw_ep1(int p)

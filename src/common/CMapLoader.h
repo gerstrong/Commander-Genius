@@ -23,6 +23,8 @@ public:
 	void addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episode);
 	void addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode, int level);
 
+	bool m_checkpointset;
+
 private:
 	CMap *mp_map;
 	CPlayer *mp_Player;

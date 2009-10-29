@@ -155,10 +155,10 @@
 #define PDIE_DEAD       2
 #define PDIE_FELLOFFMAP 3
 
-#define DIE_ANIM_RATE       50
-#define DIE_TILL_FLY_TIME   320
-#define PDIE_RISE_SPEED    -20
-#define DIE_MAX_XVECT       10
+#define DIE_ANIM_RATE       5
+#define DIE_TILL_FLY_TIME   80
+#define PDIE_RISE_SPEED    -160
+#define DIE_MAX_XVECT       320
 
 // for ankh shield...
 // stage1 is no flicker of the shield, changes colors

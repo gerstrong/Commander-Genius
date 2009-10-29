@@ -60,17 +60,6 @@ DOWN
 #define PMAPLEFTFRAME    40
 #define PMAPUPFRAME      44
 
-// player dieing states
-#define PDIE_NODIE      0
-#define PDIE_DYING      1
-#define PDIE_DEAD       2
-#define PDIE_FELLOFFMAP 3
-
-#define DIE_ANIM_RATE       50
-#define DIE_TILL_FLY_TIME   320
-#define PDIE_RISE_SPEED    -20
-#define DIE_MAX_XVECT       10
-
 // uses by the key processing function which changes CTRL, ALT, and CTRL+ALT
 // into JUMP, POGO, and FIRE.
 #define CTRLALT_DEBOUNCETIME    20

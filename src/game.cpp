@@ -545,27 +545,6 @@ void kill_all_intersecting_tile(int mpx, int mpy)
 					killobject(i);*/
 }
 
-
-/*void killplayer(int theplayer)
-{
-   if (godmode || g_pInput->getHoldedKey(KTAB)) return;
-   if (ankhtime) return;
-   if (!pdie)
-   {
-      pdie = PDIE_DYING;
-      pdieframe = 0;
-      pdietimer = 0;
-      pdietillfly = DIE_TILL_FLY_TIME;
-      pdie_xvect = rand()%(DIE_MAX_XVECT*2);
-      pdie_xvect -= DIE_MAX_XVECT;
-      inventory.lives--;
-      y += (8<<CSF);
-      SelectFrame();
-      //g_pMusicPlayer->stop();
-      g_pSound->playSound(SOUND_KEEN_DIE, PLAY_NOW);
-   }
-}*/
-
 void freezeplayer(int theplayer)
 {
    /*if ( player[theplayer].godmode ) return;

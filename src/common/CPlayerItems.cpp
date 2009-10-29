@@ -48,8 +48,7 @@ char behaviour = TileProperty[tile].behaviour;
 	   }
 	   else if (TileProperty[tile].behaviour == 1) // Lethal (Deadly) Behavoir
 	   {  // whoah, this "goodie" isn't so good...
-		   pdie = true;
-		  //killplayer(theplayer);
+		   kill();
 	   }
 	   // do whatever the goodie is supposed to do...
 	   procGoodie(tile, px, py);

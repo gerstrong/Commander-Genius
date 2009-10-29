@@ -78,7 +78,6 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path )
 	mp_map->m_height = filebuf[3];
 
 	Uint32 mapsize;
-
 	mapsize = ((mp_map->m_width+32)*(mp_map->m_height+32));
 	mp_map->mp_data = new Uint16[mapsize];
 
@@ -163,9 +162,12 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
   {
    case 0: break;       // blank
    case 255:            // player start
-	   mp_Player[0].goto_x = mp_Player[0].x = x << CSF;
-	   mp_Player[0].goto_y = mp_Player[0].y = y << CSF;
-	   mp_map->m_objectlayer[x][y] = 0;
+       if(!m_checkpointset)
+       {
+    	   mp_Player[0].goto_x = mp_Player[0].x = x << CSF;
+		   mp_Player[0].goto_y = mp_Player[0].y = y << CSF;
+		   mp_map->m_objectlayer[x][y] = 0;
+       }
      break;
    /*case NESSIE_PATH:          // spawn nessie at first occurance of her path
      if (episode==3)
@@ -248,8 +250,8 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
         if(y >= mp_map->m_height-2) // Edge bug. Keen would fall in some levels without this.
       	   x = 4;
 
-        mp_Player[0].goto_x = mp_Player[0].x = x << 9;
-        mp_Player[0].goto_y = mp_Player[0].y = ((y << 4) + 8) << 5;
+       	mp_Player[0].goto_x = mp_Player[0].x = x << 9;
+       	mp_Player[0].goto_y = mp_Player[0].y = ((y << 4) + 8) << 5;
     }
     /*else
     {

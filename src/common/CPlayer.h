@@ -50,6 +50,7 @@ public:
 	// In Level specific
 	void processInLevel();
 	void walkbehindexitdoor();
+	void kill();
 	void dieanim();
 	void setDir();
 	void getgoodies();
