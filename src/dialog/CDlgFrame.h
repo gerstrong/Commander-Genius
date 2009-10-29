@@ -12,7 +12,8 @@
 
 enum themes{
 	DLG_THEME_NONE,
-	DLG_THEME_OLDSCHOOL
+	DLG_THEME_OLDSCHOOL,
+	DLG_THEME_RED
 };
 
 class CDlgFrame {
@@ -34,7 +35,8 @@ private:
 
 	Uint8 m_theme;
 
-	void drawOldShoolFrame(SDL_Surface *dst);
+	void drawOldSchoolFrame(SDL_Surface *dst);
+	void drawRedFrame(SDL_Surface *dst);
 };
 
 #endif /* CDLGFRAME_H_ */
