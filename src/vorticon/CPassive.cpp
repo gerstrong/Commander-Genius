@@ -14,11 +14,14 @@
 #include "../sdl/CVideoDriver.h"
 #include "../sdl/CInput.h"
 
+#define SAFE_DELETE(x) if(x!=NULL){ delete x;	x = NULL;}
+
 CPassive::CPassive(char Episode, std::string DataDirectory) {
 	mp_IntroScreen = NULL;
 	mp_TitleScreen = NULL;
 	mp_Menu = NULL;
 	mp_Map = NULL;
+	mp_PressAnyBox=NULL;
 
 	m_modeg = false;
 	m_GoDemo = false;
@@ -36,6 +39,7 @@ bool CPassive::init(char mode)
 	m_mode = mode;
 	if( m_mode == INTRO )
 	{
+		mp_PressAnyBox = new CTextBox(100, 150, "Press Any Key");
 		mp_IntroScreen = new CIntro();
 		mp_Map = new CMap( mp_Scrollsurface, mp_Tilemap);
 		CMapLoader MapLoader( mp_Map );
@@ -74,6 +78,9 @@ void CPassive::process()
 	// Open the Main-Menu or close the opened one?
 	if( g_pInput->getPressedAnyKey() && mp_Menu==NULL )
 	{
+		// Close the "Press Any Key" box
+		SAFE_DELETE(mp_PressAnyBox);
+
 		g_pInput->flushAll();
 		if (m_mode != TITLE)
 		{
@@ -86,12 +93,13 @@ void CPassive::process()
 		mp_Menu->init();
 		}
 	}
-	else if( mp_Menu!=NULL )
+	else if( mp_Menu!=NULL ) // Close menu
 	{
 		if ( mp_Menu->m_demoback )
 		{
 			delete mp_Menu;
 			mp_Menu = NULL;
+			mp_PressAnyBox = new CTextBox(100, 150, "Press Any Key");
 		}
 	}
 
@@ -134,10 +142,6 @@ void CPassive::process()
 	// Animate the tiles
 	g_pGfxEngine->Tilemap->animateAllTiles( mp_Scrollsurface );
 
-	// We may need to draw sprites here when in Demo mode. Check out
-	// how to simplify that!
-	// vectorize sprites. When they must be drawn the size is greater than 0
-
 	// Blit the background
 	g_pVideoDriver->blitScrollSurface(mp_Map->m_scrollx_buf, mp_Map->m_scrolly_buf);
 
@@ -147,6 +151,10 @@ void CPassive::process()
 	{
 		(*i)->process();
 	}
+
+	// If Menu is not open show "Press Any Key"
+	if(mp_PressAnyBox != NULL)
+		mp_PressAnyBox->process();
 
 	// If Menu is open show it!
 	if( mp_Menu != NULL )

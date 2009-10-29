@@ -15,20 +15,14 @@
 
 class CTextBox {
 public:
-	CTextBox(SDL_Surface *surface, int x, int y, int w, int h,
-			const std::string& text, bool border_rel = true);
+	CTextBox(int x, int y, const std::string& message);
+	CTextBox(SDL_Surface *surface, int x, int y, const std::string& message);
 
-	void setFontDimensions(int width, int height = 0.0f);
-	void format();
-	void draw();
-
-	int getNumberOfTextlines();
-
+	void process();
 private:
 
 	std::string m_String;
-	std::vector <std::string> m_Textline;
-	int m_x, m_y, m_w, m_h;
+	SDL_Rect m_rect;
 	int m_fontwidth, m_fontheight;
 	bool m_border_relative;
 	SDL_Surface *m_surface;

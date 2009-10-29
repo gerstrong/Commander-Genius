@@ -16,6 +16,7 @@
 
 #include "CIntro.h"
 #include "CTitle.h"
+#include "../dialog/CTextBox.h"
 #include "../common/CMenu.h"
 #include "../common/CMap.h"
 #include "../common/CObject.h"
@@ -56,6 +57,7 @@ private:
 	CIntro *mp_IntroScreen;
 	CTitle *mp_TitleScreen;
 	CMap *mp_Map;
+	CTextBox *mp_PressAnyBox;
 
 	CTilemap *mp_Tilemap;
 	SDL_Surface *mp_Scrollsurface;
