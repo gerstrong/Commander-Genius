@@ -27,6 +27,7 @@ CGameControl::CGameControl() {
 	m_EGAGraphics = NULL;
 	m_Messages = NULL;
 	m_startLevel = 0;
+	mp_PlayGame = NULL;
 }
 
 

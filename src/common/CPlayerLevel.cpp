@@ -528,6 +528,9 @@ CObject *pPlayerObject = &mp_object->at(m_player_number);
         	  if (pdir==RIGHT) xdir = x+((g_pGfxEngine->Sprite[0]->getWidth()-4)<<(CSF-4));
         	  else xdir = x-(12<<(CSF-4));
 
+        	  printf("%d : (%d;%d)\n", rayobject.m_type,xdir,ydir);
+        	  printf("(%d;%d)\n", rayobject.x, rayobject.y);
+
         	  rayobject.spawn(xdir, ydir, OBJ_RAY);
         	  rayobject.ai.ray.direction = pdir;
 
@@ -535,6 +538,10 @@ CObject *pPlayerObject = &mp_object->at(m_player_number);
         	  if (!mp_option[OPT_ALLOWPKING].value)
         		  rayobject.ai.ray.dontHit = OBJ_PLAYER;
         	  mp_object->push_back(rayobject);
+
+        	  int last=mp_object->size()-1;
+
+        	  printf("(%d;%d)\n", mp_object->at(last).x, mp_object->at(last).y);
           }
           else
           { // oh shit, out of bullets

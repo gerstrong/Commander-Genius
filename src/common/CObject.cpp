@@ -22,6 +22,8 @@ CObject::CObject() {
 	cansupportplayers = false;
 	blockedu = blockedd = false;
 	blockedl = blockedr = false;
+
+    yinertiatimer = yinertia = 0;
 }
 
 bool CObject::spawn(int x0, int y0, int otype)
