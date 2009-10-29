@@ -40,7 +40,7 @@ public:
 	// Which Menu has to be shown?
 	
 	enum menutypes{
-		MAIN, NEW, CONTROLPLAYERS, STORY, HIGHSCORES, ABOUTCG, ABOUTID, ORDERING, LOAD, START, DIFFICULTY, CONFIGURE, GRAPHICS, CONTROLS, AUDIO, OPTIONS, F1, HELP, QUIT
+		MAIN, NEW, CONTROLPLAYERS, STORY, HIGHSCORES, ABOUTCG, ABOUTID, ORDERING, LOAD, START, DIFFICULTY, CONFIGURE, GRAPHICS, CONTROLS, AUDIO, OPTIONS, F1, HELP, ENDGAME, QUIT
 	};
 
 	// Active means, when the player is playing, PASSIVE when the Player is not playing
@@ -61,6 +61,7 @@ public:
 	void processConfigureMenu();
 	void processNumControlMenu();
 	void processF1Menu();
+	void processEndGameMenu();
 	void showPage(const std::string& str_text, int textsize);
 
 	void cleanup();
@@ -81,7 +82,7 @@ public:
 
 private:
 	void initMainMenu();
-	void initQuitMenu();
+	void initConfirmMenu();
 	void initNumPlayersMenu();
 	void initDifficultyMenu();
 	void initConfigureMenu();

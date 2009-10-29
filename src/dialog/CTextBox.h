@@ -15,8 +15,8 @@
 
 class CTextBox {
 public:
-	CTextBox(int x, int y, const std::string& message);
-	CTextBox(SDL_Surface *surface, int x, int y, const std::string& message);
+	CTextBox(int y, const std::string& message);
+	CTextBox(SDL_Surface *surface, int y, const std::string& message);
 
 	void process();
 private:

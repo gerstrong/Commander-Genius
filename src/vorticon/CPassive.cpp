@@ -39,7 +39,6 @@ bool CPassive::init(char mode)
 	m_mode = mode;
 	if( m_mode == INTRO )
 	{
-		mp_PressAnyBox = new CTextBox(100, 150, "Press Any Key");
 		mp_IntroScreen = new CIntro();
 		mp_Map = new CMap( mp_Scrollsurface, mp_Tilemap);
 		CMapLoader MapLoader( mp_Map );
@@ -50,6 +49,7 @@ bool CPassive::init(char mode)
 	}
 	else if( m_mode == TITLE )
 	{
+		mp_PressAnyBox = new CTextBox(150," PRESS ANY KEY ");
 		mp_TitleScreen = new CTitle(&m_object);
 		mp_Map = new CMap( mp_Scrollsurface, mp_Tilemap);
 		CMapLoader MapLoader( mp_Map );
@@ -79,7 +79,6 @@ void CPassive::process()
 	if( g_pInput->getPressedAnyKey() && mp_Menu==NULL )
 	{
 		// Close the "Press Any Key" box
-		SAFE_DELETE(mp_PressAnyBox);
 
 		g_pInput->flushAll();
 		if (m_mode != TITLE)
@@ -89,6 +88,7 @@ void CPassive::process()
 		}
 		else
 		{
+		SAFE_DELETE(mp_PressAnyBox);
 		mp_Menu = new CMenu( CMenu::PASSIVE );
 		mp_Menu->init();
 		}
@@ -99,7 +99,7 @@ void CPassive::process()
 		{
 			delete mp_Menu;
 			mp_Menu = NULL;
-			mp_PressAnyBox = new CTextBox(100, 150, "Press Any Key");
+			mp_PressAnyBox = new CTextBox(150," PRESS ANY KEY ");
 		}
 	}
 

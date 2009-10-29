@@ -43,7 +43,11 @@ bool CMenu::init( char menu_type )
 	}
 	else if( m_menu_type == QUIT )
 	{
-		initQuitMenu();
+		initConfirmMenu();
+	}
+	else if( m_menu_type == ENDGAME )
+	{
+		initConfirmMenu();
 	}
 	else if( m_menu_type == NEW )
 	{
@@ -161,7 +165,7 @@ void CMenu::initF1Menu()
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "About CG");
 }
 
-void CMenu::initQuitMenu()
+void CMenu::initConfirmMenu()
 {
 	mp_Dialog = new CDialog(mp_MenuSurface, 20, 5);
 
@@ -189,7 +193,7 @@ void CMenu::process()
 	{
 		m_goback = true;
 	}
-	(m_menu_type == QUIT) ? mp_Dialog->processInput('l') : mp_Dialog->processInput('u');
+	(m_menu_type == QUIT or m_menu_type == ENDGAME) ? mp_Dialog->processInput('l') : mp_Dialog->processInput('u');
 
 	// Draw the menu
 	mp_Dialog->draw();
@@ -203,6 +207,7 @@ void CMenu::process()
 	else if( m_menu_type == CONTROLPLAYERS ) processNumControlMenu();
 	else if( m_menu_type == F1 ) processF1Menu();
 	else if( m_menu_type == QUIT ) processQuitMenu();
+	else if( m_menu_type == ENDGAME ) processEndGameMenu();
 }
 
 void CMenu::processMainMenu()
@@ -229,7 +234,7 @@ void CMenu::processMainMenu()
 		if( m_selection == 6 ) // End Game
 		{
 			cleanup();
-			m_Endgame = true;
+			init(ENDGAME);
 		}
 	}
 
@@ -376,6 +381,7 @@ void CMenu::processF1Menu()
 	}
 	return;
 }
+
 void CMenu::processQuitMenu()
 {
 	if( m_selection != -1)
@@ -384,6 +390,29 @@ void CMenu::processQuitMenu()
 		{
 			cleanup();
 			m_quit = true;
+		}
+		else if ( m_selection == 2 )
+		{
+			m_goback = true;
+		}
+	}
+	
+	if(m_goback)
+	{
+		cleanup();
+		init(MAIN);
+	}
+	return;
+}
+
+void CMenu::processEndGameMenu()
+{
+	if( m_selection != -1)
+	{
+		if ( m_selection == 1 )
+		{
+			cleanup();
+			m_Endgame = true;
 		}
 		else if ( m_selection == 2 )
 		{
