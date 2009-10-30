@@ -26,6 +26,11 @@ void CPlayer::processInLevel()
 	  inhibitwalking = false;
 	  inhibitfall = false;
 
+	  // when walking through the exit door don't show keen's sprite past
+	  // the door frame (so it looks like he walks "through" the door)
+	  if (level_done==LEVEL_DONE_WALK)
+			walkbehindexitdoor();
+
 	  ProcessInput();
 
 	  setDir();
@@ -53,25 +58,49 @@ void CPlayer::processInLevel()
     SelectFrame();
 }
 
+void CPlayer::touchedExit()
+{
+       if (!pjumping && !pfalling  &&
+    	   !ppogostick && level_done==LEVEL_NOT_DONE)
+       {
+            // don't allow player to walk through a door if he's standing
+            // on an object such as a platform or an enemy
+            if (psupportingobject)	return;
+
+            // if player has ankh shut it off
+            if (ankhtime)
+            {
+              ankhtime = 0;
+              mp_object->at(ankhshieldobject).exists = false;
+            }
+
+            ppogostick = false;
+
+            //g_pMusicPlayer->stop();
+            g_pSound->playSound(SOUND_LEVEL_DONE, PLAY_NOW);
+            level_done = LEVEL_DONE_WALK;
+       }
+}
+
 void CPlayer::walkbehindexitdoor()
 {
-/*int xb, diff, width;
+int xb, diff, width;
 
     // don't draw keen as he walks through the door (past exitXpos)
     // X pixel position of right side of player
-    xb = (x >> CSF) + PLAYERSPRITE_WIDTH;
-    diff = (xb - pCKP->Control.levelcontrol.exitXpos);        // dist between keen and door
+    xb = (x+w)>>(CSF-4);
+    diff = (xb - exitXpos);        // dist between keen and door
     if (diff >= 0)                             // past exitXpos?
     {
-       width = (PLAYERSPRITE_WIDTH - diff);    // get new width of sprite
-       if (width < 0) width = 0;               // don't set to negative
+        width = (w>>(CSF-4)) - diff;    // get new width of sprite
+        if (width < 0) width = 0;               // don't set to negative
 
-       // set new width of all player walk frames
-       g_pGfxEngine->Sprite[playerbaseframe+0]->setWidth(width);
-       g_pGfxEngine->Sprite[playerbaseframe+1]->setWidth(width);
-       g_pGfxEngine->Sprite[playerbaseframe+2]->setWidth(width);
-       g_pGfxEngine->Sprite[playerbaseframe+3]->setWidth(width);
-    }*/
+        // set new width of all player walk frames
+        g_pGfxEngine->Sprite[playerbaseframe+0]->setWidth(width);
+        g_pGfxEngine->Sprite[playerbaseframe+1]->setWidth(width);
+		g_pGfxEngine->Sprite[playerbaseframe+2]->setWidth(width);
+		g_pGfxEngine->Sprite[playerbaseframe+3]->setWidth(width);
+    }
 }
 
 void CPlayer::kill()

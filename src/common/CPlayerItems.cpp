@@ -120,7 +120,7 @@ Uint8 behaviour = TileProperty[t].behaviour;
          break;
 
     case 15:           // raygun
-		 riseBonus(GUNUP_SPRITE, (mpx<<4<<CSF)-(2<<CSF), (mpy<<4<<CSF)-(2<<CSF));
+		 riseBonus(GUNUP_SPRITE, mpx-(2<<CSF), mpy-(2<<CSF));
          inventory.charges += 5;
     break;
     case 16:           // the Holy Pogo Stick
@@ -170,13 +170,12 @@ Uint8 behaviour = TileProperty[t].behaviour;
     case 28:
       inventory.charges++;
       g_pSound->playSound(SOUND_GET_ITEM, PLAY_NOW);
-	  riseBonus(SHOTUP_SPRITE, (mpx<<4<<CSF)-(2<<CSF), (mpy<<4<<CSF)-(2<<CSF));
+	  riseBonus(SHOTUP_SPRITE, mpx-(2<<CSF), mpy-(2<<CSF));
       break;
 
     case 17:
-      /*pCKP->Control.levelcontrol.exitXpos = (mpx+2)<<4;
-      PlayerTouchedExit(theplayer, pCKP);*/
-      // TODO: THis must be done differently
+      exitXpos = (mpx+2)<<4;
+      touchedExit();
       break;
 
     case 23:break;	// these are switches. They cannot not be picked up!

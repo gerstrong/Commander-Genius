@@ -15,6 +15,7 @@
 #include "../keen.h"
 #include "../sdl/CInput.h"
 #include "../sdl/sound/CSound.h"
+#include "../graphics/CGfxEngine.h"
 #include <stdlib.h>
 
 ///
@@ -60,6 +61,7 @@ void CPlayer::setDatatoZero()
     playerbaseframe = 0;
     mapplayx = mapplayy = 0;
     pdie = 0;
+    level_done = LEVEL_NOT_DONE;
 
     pfrozentime = 0;
     ankhtime = 0;
@@ -75,8 +77,10 @@ void CPlayer::setDatatoZero()
 
     ppogostick=0;
     pinertia_x=0;
-  	pfriction_timer_x=0;
+    level_done_timer = pfriction_timer_x = 0;
   	dpadcount = dpadlastcount = 0;
+
+  	exitXpos = 0;
 
     // Set all the inventory to zero.
     memset(&inventory, 0, sizeof(stInventory));
@@ -577,21 +581,16 @@ void CPlayer::ProcessInput()
 		 // The possibility to charge jumps. This is mainly used for the pogo.
 		 if( playcontrol[PA_JUMP] > 50) playcontrol[PA_JUMP] = 50;
 
-	/*stLevelControl *p_levelcontrol;
-
-		p_levelcontrol = &(pCKP->Control.levelcontrol);
-
 	   // are we doing the keen-walking-through-exit door animation?
-	   if (pCKP->Control.levelcontrol.level_done &&
-			   pCKP->Control.levelcontrol.level_finished_by==cp)
+	   if (level_done)
 	   {
-	     // don't let player control keen
+	      // don't let player control keen
 
-		 memset(playcontrol,0,PA_MAX_ACTIONS);
+		  memset(playcontrol,0,PA_MAX_ACTIONS);
 
-	      inhibitfall = 1;
-	     if (pCKP->Control.levelcontrol.level_done==LEVEL_DONE_WALK)
-	     {
+	      inhibitfall = true;
+	      if (level_done==LEVEL_DONE_WALK)
+	      {
 	        // keep him going right
 	        pdir = pshowdir = RIGHT;
 	        // make keen walk slowly through the exit door
@@ -600,35 +599,33 @@ void CPlayer::ProcessInput()
 	        {
 	          pinertia_x = PMAXEXITDOORSPEED;
 	        }
-	     }
-	     else
-	     {
+	      }
+	      else
+	      {
 	        // he's all the way through the door; hold him still
 	        pinertia_x = 0;
-	        pwalking = 0;
-	     }
+	        pwalking = false;
+	      }
 
-	     if (p_levelcontrol->level_done_timer > LEVEL_DONE_TOTAL_WAIT_TIME)
-	     {
-	       if (p_levelcontrol->level_done != LEVEL_DONE_FADEOUT)
-	       {
-	    	   p_levelcontrol->level_done = LEVEL_DONE_FADEOUT;
-	    	   endlevel(1, &(pCKP->Control.levelcontrol));
-	    	   p_levelcontrol->chglevelto = WM_MAP_NUM;
-	    	   p_levelcontrol->command = LVLC_CHANGE_LEVEL;
-	    	   p_levelcontrol->levels_completed[p_levelcontrol->curlevel] = 1;
-	       }
-	     }
-	     else if (p_levelcontrol->level_done_timer > LEVEL_DONE_STOPWALKING_TIME)
-	     {
-	    	 p_levelcontrol->level_done = LEVEL_DONE_WAIT;
-	     }
+	      if (level_done_timer > LEVEL_DONE_TOTAL_WAIT_TIME)
+	      {
+				// Now, that the level is complete, sprite can be shown again, and now goto map!
+    	    	int width = w>>(CSF-4);
+    	    	g_pGfxEngine->Sprite[playerbaseframe+0]->setWidth(width);
+    	    	g_pGfxEngine->Sprite[playerbaseframe+1]->setWidth(width);
+				g_pGfxEngine->Sprite[playerbaseframe+2]->setWidth(width);
+    			g_pGfxEngine->Sprite[playerbaseframe+3]->setWidth(width);
+    			level_done_timer = 0;
+    			level_done = LEVEL_COMPLETE;
+	      }
+	      else if (level_done_timer > LEVEL_DONE_STOPWALKING_TIME)
+	    	  level_done = LEVEL_DONE_WAIT;
 
-	     p_levelcontrol->level_done_timer++;
-	     return;
+	      level_done_timer++;
+	      return;
 	   }
 
-	   if(options[OPT_TWOBUTTON].value)
+	   if(mp_option[OPT_TWOBUTTON].value)
 	   {
 		   if(playcontrol[PA_JUMP] && playcontrol[PA_POGO])
 		   {
@@ -643,13 +640,13 @@ void CPlayer::ProcessInput()
 	       g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
 
 		   // Open the Pause Dialog
-	       showTextMB("Game Paused");
+	       //showTextMB("Game Paused");
 	   }
 	   else if(g_pInput->getPressedKey(KF1))
 	   {
 		   // Show the typical F1 Help
-	       showF1HelpText(pCKP->Control.levelcontrol.episode, pCKP->Resources.GameDataDirectory);
-	   }*/
+	       //showF1HelpText(pCKP->Control.levelcontrol.episode, pCKP->Resources.GameDataDirectory);
+	   }
 }
 
 void CPlayer::StatusBox()

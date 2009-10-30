@@ -49,6 +49,7 @@ public:
 
 	// In Level specific
 	void processInLevel();
+	void touchedExit();
 	void walkbehindexitdoor();
 	void kill();
 	void dieanim();
@@ -154,6 +155,7 @@ public:
 	bool m_godmode, m_cheats_enabled;
 	bool *mp_levels_completed;
 	bool m_showStatusScreen;
+	char level_done;
 
 	CMap *mp_map;
 	stOption *mp_option;
@@ -162,6 +164,10 @@ private:
 	CStatusScreen *mp_StatusScr;
 
 	bool lastpogo;
+
+	// Level control specific functions, especially for exit
+	int exitXpos;
+	int level_done_timer;
 
 	// defined under CPlayerItems.cpp
 	bool getGoodie(int px, int py);

@@ -35,17 +35,36 @@
 #define PFRICTION_RATE_ONGROUND   2      //2
 #define PFRICTION_RATE_WM         1    // on world map
 // rate at which player walking animation is shown
-//#define PWALKANIMRATE             40
 #define PWALKANIMRATE             8
 
+// at STOPWALKING time after starting the exit door animation,
+// keen stops walking and we go to LEVEL_DONE_WAIT.
+#define LEVEL_DONE_STOPWALKING_TIME      100
+// at TOTAL_WAIT_TIME, LEVEL_DONE_FADEOUT is initiated.
+#define LEVEL_DONE_TOTAL_WAIT_TIME       200
 
+// speed at which player walks through the exit door
+#define PMAXEXITDOORSPEED       12
+
+// various states we go through when a level is completed
+// to do the walking out the exit door animation
+enum levelstate{
+LEVEL_NOT_DONE,           // not completed
+LEVEL_DONE_WALK,           // walking through exit door
+LEVEL_DONE_WAIT,          // finished walk through door, wait a bit
+LEVEL_DONE_FADEOUT,        // fading out
+LEVEL_COMPLETE            // on to the next level!
+};
+
+enum jumpstates{
 // the various jump states
-#define PNOJUMP       0                 // not jumping
-#define PPREPAREJUMP  1                 // doing the jump animation
-#define PJUMPUP       2                 // jumping
-#define PJUMPED       3                 // Player has jumped
-#define PPREPAREPOGO  4                 // "pogo compressed" anim frame
-#define PPOGOING      5                 // pogoing
+PNOJUMP,                        // not jumping
+PPREPAREJUMP,                   // doing the jump animation
+PJUMPUP,                        // jumping
+PJUMPED,                        // Player has jumped
+PPREPAREPOGO,                   // "pogo compressed" anim frame
+PPOGOING                        // pogoing
+};
 
 // the different jumping frames. when CTRL is held down the player will
 // go from frame PPREPAREJUMPFRAME to PJUMP_PREPARE_LAST_FRAME at a rate

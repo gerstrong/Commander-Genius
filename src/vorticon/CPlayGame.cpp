@@ -239,9 +239,14 @@ void CPlayGame::process()
 				// Check if the first player is dead, and if the other also are...
 				if(i==0) m_alldead = (mp_Player[i].pdie == PDIE_DEAD);
 				else m_alldead &= (mp_Player[i].pdie == PDIE_DEAD);
-			}
 
-			// finished the level
+				// finished the level
+				if(mp_Player[i].level_done == LEVEL_COMPLETE)
+				{
+			    	mp_level_completed[m_Level] = true;
+					goBacktoMap();
+				}
+			}
 
 			// gets to bonus level
 
@@ -316,6 +321,7 @@ void CPlayGame::goBacktoMap()
 	// Now that the new level/map will be loaded, the players aren't dead anymore!
 	for( int i=0 ; i<m_NumPlayers ; i++ )
 	{
+		mp_Player[i].level_done = LEVEL_NOT_DONE;
 		mp_Player[i].pdie = PDIE_NODIE;
 		// Restore checkpoint
 		mp_Player[i].x = mp_Player[i].goto_x = m_checkpoint_x;

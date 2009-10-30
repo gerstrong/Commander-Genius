@@ -84,7 +84,7 @@ private:
 	bool m_exitgame;
 	int  m_NumSprites;
 	char m_Episode;
-	char m_Level;
+	short m_Level;
 	char m_NumPlayers;
 	char m_Difficulty;
 	char m_level_command;

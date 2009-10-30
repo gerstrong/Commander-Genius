@@ -35,6 +35,7 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path )
 	if(level < 10) fname += "0";
 	fname += itoa(level) + ".ck" + itoa(episode);
 
+
 	std::ifstream MapFile; OpenGameFileR(MapFile, fname, std::ios::binary);
 
 	mp_map->m_worldmap = (level == 80);
@@ -158,6 +159,12 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 {
   // This function add sprites on the map. Most of the objects are invisible.
   // TODO : Please convert this into ifs. There are more conditions than just switch.agree
+
+	if(t == 1)
+	{
+		printf("Stop!\n");
+	}
+
   switch(t)
   {
    case 0: break;       // blank
@@ -182,10 +189,8 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
      }
    break;*/
    default:             // level marker
-     //if ((t&0x7fff) < 256 && mp_Player->mp_levels_completed[t&0x00ff])
-	 if ((t&0x7fff) < 256 && mp_Player->mp_levels_completed[t&0x00ff] && t<(t&0x00ff) )
+	 if ((t&0x7fff) < 256 && mp_Player->mp_levels_completed[t&0x00ff] )
      {
-
    		 mp_map->m_objectlayer[x][y] = t;
 
    		 // Change the level tile to a done sign
@@ -198,6 +203,11 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
     			 // something went wrong. Use default tile
     			 newtile = 77;*/
     		 // TODO: Small tiles cannot be shown
+
+    		 if(newtile == 1)
+    		 {
+    			 printf("Checkpoint!\n");
+    		 }
 
     		 // try to guess, if it is a 32x32 (4 16x16) Tile
     		 if(mp_map->at(x-1,y-1) == (unsigned int) newtile &&
