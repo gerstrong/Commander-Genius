@@ -55,7 +55,6 @@
 		235755FB101A5E5900275638 /* fileio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9A71013ABCA001643FA /* fileio.cpp */; };
 		235755FC101A5E5900275638 /* finale.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9A91013ABCA001643FA /* finale.cpp */; };
 		235755FD101A5E5900275638 /* game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9AB1013ABCA001643FA /* game.cpp */; };
-		235755FE101A5E5900275638 /* gamedo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9AC1013ABCA001643FA /* gamedo.cpp */; };
 		23575602101A5E5900275638 /* CMusic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9B31013ABCA001643FA /* CMusic.cpp */; };
 		23575603101A5E5900275638 /* hq_sound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9B51013ABCA001643FA /* hq_sound.cpp */; };
 		23575604101A5E5900275638 /* lz.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9D11013ABCA001643FA /* lz.cpp */; };
@@ -431,7 +430,6 @@
 		23D3E9A91013ABCA001643FA /* finale.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = finale.cpp; path = ../../src/finale.cpp; sourceTree = SOURCE_ROOT; };
 		23D3E9AA1013ABCA001643FA /* funcdefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = funcdefs.h; path = ../../src/funcdefs.h; sourceTree = SOURCE_ROOT; };
 		23D3E9AB1013ABCA001643FA /* game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = game.cpp; path = ../../src/game.cpp; sourceTree = SOURCE_ROOT; };
-		23D3E9AC1013ABCA001643FA /* gamedo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gamedo.cpp; path = ../../src/gamedo.cpp; sourceTree = SOURCE_ROOT; };
 		23D3E9B31013ABCA001643FA /* CMusic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMusic.cpp; sourceTree = "<group>"; };
 		23D3E9B41013ABCA001643FA /* CMusic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMusic.h; sourceTree = "<group>"; };
 		23D3E9B51013ABCA001643FA /* hq_sound.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hq_sound.cpp; sourceTree = "<group>"; };
@@ -754,7 +752,6 @@
 				23D3E9A91013ABCA001643FA /* finale.cpp */,
 				23D3E9AA1013ABCA001643FA /* funcdefs.h */,
 				23D3E9AB1013ABCA001643FA /* game.cpp */,
-				23D3E9AC1013ABCA001643FA /* gamedo.cpp */,
 				23D3E9CF1013ABCA001643FA /* keen.h */,
 				23D3E9D11013ABCA001643FA /* lz.cpp */,
 				23D3E9D21013ABCA001643FA /* lz.h */,
@@ -1344,7 +1341,6 @@
 				235755FB101A5E5900275638 /* fileio.cpp in Sources */,
 				235755FC101A5E5900275638 /* finale.cpp in Sources */,
 				235755FD101A5E5900275638 /* game.cpp in Sources */,
-				235755FE101A5E5900275638 /* gamedo.cpp in Sources */,
 				23575602101A5E5900275638 /* CMusic.cpp in Sources */,
 				23575603101A5E5900275638 /* hq_sound.cpp in Sources */,
 				23575604101A5E5900275638 /* lz.cpp in Sources */,
