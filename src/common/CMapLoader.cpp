@@ -159,12 +159,6 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 {
   // This function add sprites on the map. Most of the objects are invisible.
   // TODO : Please convert this into ifs. There are more conditions than just switch.agree
-
-	if(t == 1)
-	{
-		printf("Stop!\n");
-	}
-
   switch(t)
   {
    case 0: break;       // blank
@@ -189,7 +183,7 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
      }
    break;*/
    default:             // level marker
-	 if ((t&0x7fff) < 256 && mp_Player->mp_levels_completed[t&0x00ff] )
+	 if ((t&0x7fff) <= 16 && mp_Player->mp_levels_completed[t&0x00ff] )
      {
    		 mp_map->m_objectlayer[x][y] = t;
 
@@ -199,15 +193,8 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
     	 // Consistency check! Some Mods have issues with that.
     	 if(episode == 1 || episode == 2)
     	 {
-    		 /*if(newtile>77 && newtile<81)
-    			 // something went wrong. Use default tile
-    			 newtile = 77;*/
-    		 // TODO: Small tiles cannot be shown
-
-    		 if(newtile == 1)
-    		 {
-    			 printf("Checkpoint!\n");
-    		 }
+    		 //Use default small tile
+    		 newtile = 77;
 
     		 // try to guess, if it is a 32x32 (4 16x16) Tile
     		 if(mp_map->at(x-1,y-1) == (unsigned int) newtile &&
@@ -222,9 +209,7 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
     	 }
     	 else if(episode == 3)
     	 {
-    		 if(newtile<52 || newtile>56)
-    			 // something went wrong. Use default tile
-    			 newtile = 56;
+   			 newtile = 56;
     		 // try to guess, if it is a 32x32 (4 16x16) Tile
     		 if(mp_map->at(x-1, y-1) == (unsigned int) newtile &&
     				 mp_map->at(x, y-1) == (unsigned int) newtile  &&
