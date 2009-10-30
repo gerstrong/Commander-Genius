@@ -127,29 +127,6 @@ int c, i;
       why_term_ptr = "Unable to animate tile at x/y=crashflag1/2";*/
 }
 
-// searches the map's object layer for object OBJ.
-// if it is found returns nonzero and places the
-// coordinates of the first occurance of the object
-// in (xout,yout)
-char map_findobject(unsigned int obj, int *xout, int *yout)
-{
-/*unsigned int x,y;
-
-  for(y=2;y<map.ysize-2;y++)
-  {
-    for(x=2;x<map.xsize-2;x++)
-    {
-      if (map.objectlayer[x][y]==obj)
-      {
-        *xout = x;
-        *yout = y;
-        return 1;
-      }
-    }
-  }*/
-  return 0;
-}
-
 // searches the map's tile layer for tile TILE.
 // if it is found returns nonzero and places the
 // coordinates of the first occurance of the tile

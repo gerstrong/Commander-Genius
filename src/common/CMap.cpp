@@ -58,6 +58,29 @@ Uint16 CMap::getObjectat(Uint16 x, Uint16 y)
 	return m_objectlayer[x][y];
 }
 
+// searches the map's object layer for object OBJ.
+// if it is found returns nonzero and places the
+// coordinates of the first occurance of the object
+// in (xout,yout)
+bool CMap::findObject(unsigned int obj, int *xout, int *yout)
+{
+unsigned int x,y;
+
+  for(y=2;y<m_height-2;y++)
+  {
+    for(x=2;x<m_width-2;x++)
+    {
+      if (m_objectlayer[x][y]==obj)
+      {
+        *xout = x;
+        *yout = y;
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t)
 {
 	if( x<m_width && y<m_height )

@@ -16,6 +16,7 @@
 #include "../common/CMapLoader.h"
 #include "../graphics/CGfxEngine.h"
 #include "../StringUtils.h"
+#include "CTeleporter.h"
 
 ////
 // Creation Routine
@@ -163,44 +164,50 @@ void CPlayGame::process()
 
 				// entered a level, used ship, teleporter, etc.
 				useobject = mp_Player[i].getNewObject();
-				if( useobject != 0)
+				if( useobject != 0 )
 				{	// A new object was chosen by the player
-					// TODO: Code the stuff for entering the level
+					CTeleporter Teleporter(*mp_Map, m_Episode);
 
 					// If it is teleporter, make the Player teleport
-					// player[i].teleport(x1, y1, x2, y2);
-
-					// If it is level, change the playgame mode and load the new map.
-					switch(useobject)
-				    {
-					  case NESSIE_PATH: break;
-					  case NESSIE_PAUSE: break;
-					  case NESSIE_MOUNTPOINT: break;
-
-					  case LVLS_SHIP:
-						if (m_Episode==1)
+					if(Teleporter.readTeleporterInfo(useobject) == true)
+					{
+						Teleporter.teleportPlayer(m_Object, mp_Player[i]);
+					}
+					else
+					{
+						// If it is level, change the playgame mode and load the new map. Nessie is
+						// a special case in Episode 3
+						switch(useobject)
 						{
-						  //YourShipNeedsTheseParts(pCKP);
-						}
-						else
-						{
-						  //ShipEp3(pCKP);
-						}
-						break;
+						  case NESSIE_PATH: break;
+						  case NESSIE_PAUSE: break;
+						  case NESSIE_MOUNTPOINT: break;
 
-					  default:      // a regular level
-						  m_level_command = START_LEVEL;
-						  m_Level = useobject & 0x7fff;
-						  //g_pMusicPlayer->stop();
-						  g_pSound->playStereofromCoord(SOUND_ENTER_LEVEL, PLAY_NOW, m_Object[mp_Player[i].m_player_number].scrx);
-						  // save where on the map, the player entered. This is a checkpoint!
-						  m_checkpoint_x = mp_Player[i].x;
-						  m_checkpoint_y = mp_Player[i].y;
-						  m_checkpointset = true;
-						  cleanup();
-						  init();
-						break;
-				    } // end switch(level)
+						  case LVLS_SHIP:
+							if (m_Episode==1)
+							{
+							  //YourShipNeedsTheseParts(pCKP);
+							}
+							else
+							{
+							  //ShipEp3(pCKP);
+							}
+							break;
+
+						  default:      // a regular level
+							  m_level_command = START_LEVEL;
+							  m_Level = useobject & 0x7fff;
+							  //g_pMusicPlayer->stop();
+							  g_pSound->playStereofromCoord(SOUND_ENTER_LEVEL, PLAY_NOW, m_Object[mp_Player[i].m_player_number].scrx);
+							  // save where on the map, the player entered. This is a checkpoint!
+							  m_checkpoint_x = mp_Player[i].x;
+							  m_checkpoint_y = mp_Player[i].y;
+							  m_checkpointset = true;
+							  cleanup();
+							  init();
+							break;
+						}
+					}
 				}
 
 				// in episode 3 he can ride on nessie

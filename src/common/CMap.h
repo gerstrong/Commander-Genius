@@ -31,6 +31,7 @@ public:
 
 	Uint16 at(Uint16 x, Uint16 y);
 	Uint16 getObjectat(Uint16 x, Uint16 y);
+	bool findObject(unsigned int obj, int *xout, int *yout);
 
 	bool setTile(Uint16 x, Uint16 y, Uint16 t);
 	bool changeTile(Uint16 x, Uint16 y, Uint16 t);
