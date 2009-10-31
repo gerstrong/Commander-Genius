@@ -59,41 +59,44 @@ bool CTeleporter::readTeleporterInfo(int lvl)
     	return false;
       }
     }
+    return false;
 }
 
 void CTeleporter::teleportPlayer(std::vector<CObject> &p_vect_object, CPlayer &player)
 {
 int destx, desty;
 
-	destx = player.x<<(CSF-4);
-	desty = player.y<<(CSF-4);
+	destx = player.x>>CSF;
+	desty = player.y>>CSF;
     // need to teleport somewhere?
     if (telfrom)
     {
        if (m_map.findObject(teldest, &destx, &desty))
        {
-   		  CObject teleporter;
-   		  teleporter.spawn(player.x,player.y, OBJ_TELEPORTER);
-   		  teleporter.ai.teleport.direction = TELEPORTING_OUT;
-   		  teleporter.ai.teleport.destx = destx;
-   		  teleporter.ai.teleport.desty = desty;
-   		  teleporter.ai.teleport.whichplayer = player.m_player_number;
-   		  teleporter.ai.teleport.NoExitingTeleporter = 0;
-   		  teleporter.ai.teleport.snap = telsnap;
-          if (m_episode==3)
-          {
+    	   int origx, origy;
+    	   CObject teleporter;
+    	   m_map.findObject(telfrom, &origx, &origy);
+    	   teleporter.spawn( origx<<CSF, origy<<CSF, OBJ_TELEPORTER );
+    	   teleporter.ai.teleport.direction = TELEPORTING_OUT;
+    	   teleporter.ai.teleport.destx = destx;
+    	   teleporter.ai.teleport.desty = desty;
+    	   teleporter.ai.teleport.whichplayer = player.m_player_number;
+    	   teleporter.ai.teleport.NoExitingTeleporter = 0;
+    	   teleporter.ai.teleport.snap = telsnap;
+    	   if (m_episode==3)
+    	   {
         	  teleporter.ai.teleport.baseframe = TELEPORT_BASEFRAME_EP3;
         	  teleporter.ai.teleport.idleframe = TELEPORT_IDLEFRAME_EP3;
-          }
-          else
-          { // the teleporter in ep1
+    	   }
+    	   else
+    	   { // the teleporter in ep1
         	  teleporter.ai.teleport.baseframe = TELEPORT_GRAY_BASEFRAME_EP1;
         	  teleporter.ai.teleport.idleframe = TELEPORT_GRAY_IDLEFRAME_EP1;
-          }
-          g_pSound->playStereofromCoord(SOUND_TELEPORT, PLAY_NOW, p_vect_object[player.m_player_number].scrx);
+		   }
+    	   g_pSound->playStereofromCoord(SOUND_TELEPORT, PLAY_NOW, p_vect_object[player.m_player_number].scrx);
 
-          player.hideplayer = true;
-          p_vect_object.push_back(teleporter);
+    	   player.hideplayer = true;
+    	   p_vect_object.push_back(teleporter);
        }
     }
 

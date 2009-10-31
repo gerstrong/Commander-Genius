@@ -23,22 +23,25 @@ void CPlayer::processWorldMap()
 
     StatusBox();
 
-    ProcessInput();
-    setWorldMapdir();
+   	ProcessInput();
+   	setWorldMapdir();
 
-    setWMblockedlrud();
-    AllowEnterLevelonWM();
+   	setWMblockedlrud();
+   	AllowEnterLevelonWM();
 
-    Walking();
-    WalkingAnimation();
+    if(!hideplayer)
+    {
+    	Walking();
+    }
+   	WalkingAnimation();
 
-    InertiaAndFriction_X();
-    InertiaAndFriction_Y();
+   	InertiaAndFriction_X();
+   	InertiaAndFriction_Y();
 
-    x = goto_x;
-    y = goto_y;
+   	x = goto_x;
+   	y = goto_y;
 
-    selectFrameOnWorldMap();
+   	selectFrameOnWorldMap();
 }
 
 // select proper player direction
