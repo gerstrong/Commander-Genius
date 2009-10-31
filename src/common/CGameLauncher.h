@@ -15,12 +15,15 @@
 #include <vector>
 #include <ostream>
 
-#define GAMESCFG_DIR  "&Dir="
-#define GAMESCFG_NAME "/Name="
-#define GAMESCFG "games.cfg"
-#define KEENEXE1 "keen1.exe"
-#define KEENEXE2 "keen2.exe"
-#define KEENEXE3 "keen3.exe"
+#define SUBDIR_MAX      2
+#define DEFAULT_ROOT    "."
+#define GAMESCFG_ROOT   "&Root="
+#define GAMESCFG_DIR    "&Dir="
+#define GAMESCFG_NAME   "/Name="
+#define GAMESCFG        "games.cfg"
+#define KEENEXE1        "keen1.exe"
+#define KEENEXE2        "keen2.exe"
+#define KEENEXE3        "keen3.exe"
 
 struct GameEntry {
     std::string path;
@@ -66,6 +69,8 @@ private:
 	DirList m_DirList;
 	ExeList m_ExeList;
 	Sint8 m_ep1slot;
+	Sint8 m_SearchDepth;
+	std::string m_Root;
     std::vector<GameEntry> m_Entries;
 	std::vector<std::string> m_Paths;
 	std::vector<std::string> m_Names;
