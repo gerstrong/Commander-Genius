@@ -13,7 +13,6 @@
 #include "../common/CMapLoader.h"
 #include "../StringUtils.h"
 #include "../FindFile.h"
-#include <dirent.h>
 #include <iostream>
 #include <fstream>
 
@@ -145,18 +144,15 @@ bool CGameLauncher::scanSubDirectories(const std::string& path)
 
 bool CGameLauncher::scanExecutables(const std::string& path)
 {
-    bool result;
-    unsigned int i=0;
-    std::string file;
+    bool result = false;
     GameEntry newentry;
     CExeFile* executable;
 
     g_pLogFile->ftextOut("Search: %s<br>", path.c_str() );
 
-    result = false;
-    for (i=0; i < m_ExeList.size(); i++)
+    for (size_t i=0; i < m_ExeList.size(); i++)
     {
-        file = path + '/' + m_ExeList.at(i);
+		std::string file = path + '/' + m_ExeList.at(i);
         if (IsFileAvailable(file))
         {
             // Load the exe into memory
