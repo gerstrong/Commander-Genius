@@ -115,10 +115,14 @@ bool CMap::gotoPos(int x, int y)
 	dy = y - m_scrolly;
 
 	if( dx > 0 )
-		for(int scrollx=0 ; scrollx<dx ;scrollx++) scrollRight();
+		for( int scrollx=0 ; scrollx<dx ; scrollx++) scrollRight();
+	else if( dx < 0 )
+		for( int scrollx=0 ; scrollx<-dx ; scrollx++) scrollLeft();
 
 	if( dy > 0 )
-		for(int scrolly=0 ; scrolly<dy ;scrolly++) scrollDown();
+		for( int scrolly=0 ; scrolly<dy ; scrolly++) scrollDown();
+	else if( dy > 0 )
+		for( int scrolly=0 ; scrolly<-dy ; scrolly++) scrollUp();
 
 	return true;
 }
@@ -208,6 +212,12 @@ void CMap::scrollUp(void)
 // called at start of level to draw the upper-left corner of the map
 // onto the scrollbuffer...from then on the map will only be drawn
 // in stripes as it scrolls around.
+void CMap::redrawAt(int mx, int my)
+{
+	int c = mp_data[my*m_width + mx];
+	mp_Tilemap->drawTile(mp_scrollsurface, (mx<<4)&511, (my<<4)&511, c);
+}
+
 void CMap::drawAll()
 {
 	int y;

@@ -44,7 +44,6 @@ private:
 	void icebit_ai(int o);
 	void icecannon_ai(int o);
 	void door_ai(int o, char DoorOpenDir);
-	void teleporter_ai(int o, stLevelControl levelcontrol);
 	void rope_ai(int o);
 
 	// ep2
@@ -72,6 +71,7 @@ private:
 	void autoray_ai(int o);
 	void gotpoints_ai(int o);*/
 	void ray_ai( CObject *p_object, bool automatic_raygun, char pShotSpeed );
+	void teleporter_ai(CObject *p_object);
 
 	// Variables
 	CMap *mp_Map;

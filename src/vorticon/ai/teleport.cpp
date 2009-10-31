@@ -1,19 +1,12 @@
+#include "CObjectAI.h"
 #include "../../sdl/sound/CSound.h"
 #include "../../keen.h"
-#include "../../game.h"
-#include "../../include/gamedo.h"
-
-//#include "enemyai.h"
-
-#include "../../sdl/sound/CSound.h"
-
 
 // Teleporter on world map
 // (animates the teleporter and moves the player)
 // (ep1&3)
 
 // rate at which the frame will change
-//#define TELEPORTER_ANIM_RATE_EP3    35                //original speed
 #define TELEPORTER_ANIM_RATE_EP3    16
 // number of times to change the frame before stopping
 #define TELEPORTER_NUMFRAMES_EP3      16
@@ -21,15 +14,12 @@
 #define TELEPORTER_ANIM_RATE_EP1    16
 #define TELEPORTER_NUMFRAMES_EP1    20
 
-// Reference to ../game.cpp
-void delete_object(int o);
-
-void teleporter_ai(int o, stLevelControl levelcontrol)
+void CObjectAI::teleporter_ai(CObject *p_object)
 {
-/*int mx,my;
+int mx,my;
 int timeout;
 int animrate, numframes;
-   if (levelcontrol.episode!=3)
+   if (m_Episode!=3)
    {
      animrate = TELEPORTER_ANIM_RATE_EP1;
      numframes = TELEPORTER_NUMFRAMES_EP1;
@@ -39,58 +29,48 @@ int animrate, numframes;
      animrate = TELEPORTER_ANIM_RATE_EP3;
      numframes = TELEPORTER_NUMFRAMES_EP3;
    }
-
-   if (objects[o].needinit)
+   if (p_object->needinit)
    {  // first time initialization
-     objects[o].needinit = 0;
-     objects[o].canbezapped = 0;
-     objects[o].inhibitfall = 1;
+     p_object->needinit = false;
+     p_object->canbezapped = false;
+     p_object->inhibitfall = true;
 
-     objects[o].sprite = BlankSprite;
-     objects[o].ai.teleport.animtimer = animrate + 1;
-     objects[o].ai.teleport.animframe = 0;
-     objects[o].ai.teleport.numframechanges = 0;
+     //p_object->sprite = BlankSprite;
+     p_object->sprite = 0;
+     p_object->ai.teleport.animtimer = animrate + 1;
+     p_object->ai.teleport.animframe = 0;
+     p_object->ai.teleport.numframechanges = 0;
    }
 
-   if (objects[o].ai.teleport.animtimer > animrate)
+   if (p_object->ai.teleport.animtimer > animrate)
    {
-     mx = objects[o].x >> CSF >> 4;
-     my = objects[o].y >> CSF >> 4;
+     mx = p_object->x >> CSF;
+     my = p_object->y >> CSF;
 
-     objects[o].ai.teleport.animframe++;
-     objects[o].ai.teleport.animframe &= 3;
-     objects[o].ai.teleport.numframechanges++;
-     objects[o].ai.teleport.animtimer = 0;
+     p_object->ai.teleport.animframe++;
+     p_object->ai.teleport.animframe &= 3;
+     p_object->ai.teleport.numframechanges++;
+     p_object->ai.teleport.animtimer = 0;
 
-     if (objects[o].ai.teleport.numframechanges > numframes)
+     if (p_object->ai.teleport.numframechanges > numframes)
      { // animation is done
-       map_chgtile(mx, my, objects[o].ai.teleport.idleframe);
-       if (objects[o].ai.teleport.direction==TELEPORTING_OUT)
+    	 mp_Map->setTile(mx, my, p_object->ai.teleport.idleframe);
+       if (p_object->ai.teleport.direction==TELEPORTING_OUT)
        {  // teleporting out, go to new teleporter and new teleport in anim
-         objects[o].x = objects[o].ai.teleport.destx;
-         objects[o].y = objects[o].ai.teleport.desty;
-         player[objects[o].ai.teleport.whichplayer].x = objects[o].ai.teleport.destx;
-         player[objects[o].ai.teleport.whichplayer].y = objects[o].ai.teleport.desty;
-         player[objects[o].ai.teleport.whichplayer].pdir = DOWN;
-         objects[o].ai.teleport.direction = TELEPORTING_IN;
-         objects[o].needinit = 1;
-         g_pSound->playStereofromCoord(SOUND_TELEPORT, PLAY_NOW, objects[o].scrx);
+         p_object->x = p_object->ai.teleport.destx;
+         p_object->y = p_object->ai.teleport.desty;
+         mp_Player[p_object->ai.teleport.whichplayer].x = p_object->ai.teleport.destx;
+         mp_Player[p_object->ai.teleport.whichplayer].y = p_object->ai.teleport.desty;
+         mp_Player[p_object->ai.teleport.whichplayer].pdir = DOWN;
+         p_object->ai.teleport.direction = TELEPORTING_IN;
+         p_object->needinit = true;
+         g_pSound->playStereofromCoord(SOUND_TELEPORT, PLAY_NOW, p_object->scrx);
          // if we were told to snap the screen to the new position instead
          // of scrolling over to it, do that.
-         if (objects[o].ai.teleport.snap)
-         {
-           timeout = 0;
-           while(gamedo_ScrollTriggers(primaryplayer))
-           {
-             if (++timeout>10000)
-             {
-               crashflag = 1;
-               why_term_ptr = "teleport_ai(): timed out snapping screen to new position.";
-               return;
-             }
-           }
-         }
-         if (objects[o].ai.teleport.NoExitingTeleporter)
+         if (p_object->ai.teleport.snap)
+           mp_Map->gotoPos( p_object->ai.teleport.destx, p_object->ai.teleport.desty);
+
+         if (p_object->ai.teleport.NoExitingTeleporter)
          {  // for the teleporter to exit the bonus area in ep1
             // which has no teleporter animation on the destination
             goto tport_done;
@@ -99,24 +79,22 @@ int animrate, numframes;
        else
        { // tport in and anim end: teleport complete so destroy tport object
 tport_done: ;
-         player[objects[o].ai.teleport.whichplayer].hideplayer = 0;
-         if (levelcontrol.tobonuslevel)
+		 mp_Player[p_object->ai.teleport.whichplayer].hideplayer = false;
+         /*if (tobonuslevel)
          {
-           player[objects[o].ai.teleport.whichplayer].pdir = UP;
+           player[p_object->ai.teleport.whichplayer].pdir = UP;
            levelcontrol.tobonuslevel = 0;
-         }
-         delete_object(o);
+         }*/
+         deleteObj(p_object);
        }
        return;
      }
      else
      { // teleport animation is not done. show the next frame
-       map_chgtile(mx, my, objects[o].ai.teleport.baseframe + objects[o].ai.teleport.animframe);
+    	 mp_Map->setTile(mx, my, p_object->ai.teleport.baseframe + p_object->ai.teleport.animframe);
+    	 mp_Map->redrawAt(mx, my);
      }
    }
    else
-   {
-     objects[o].ai.teleport.animtimer++;
-   }
-*/
+	 p_object->ai.teleport.animtimer++;
 }

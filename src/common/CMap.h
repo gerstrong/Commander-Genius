@@ -24,6 +24,7 @@ public:
 	void scrollUp(void);
 	void scrollDown(void);
 
+	void redrawAt(int mx, int my);
 	void drawAll();
 	void drawHstripe( unsigned int y, unsigned int mpy );
 	void drawVstripe( unsigned int x, unsigned int mpx );

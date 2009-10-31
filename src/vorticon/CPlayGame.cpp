@@ -150,7 +150,10 @@ void CPlayGame::process()
 	}
 	else if(!m_paused) // Game is not paused
 	{
-		/// The following function must be worldmap dependent
+		// Perform AIs
+		mp_ObjectAI->process();
+
+		/// The following functions must be worldmap dependent
 		if( m_Level == WORLD_MAP_LEVEL )
 		{
 			int useobject;
@@ -219,9 +222,6 @@ void CPlayGame::process()
 		}
 		else
 		{
-			// Perform AIs
-			mp_ObjectAI->process();
-
 			// Perform player Objects...
 			for( int i=0 ; i<m_NumPlayers ; i++ )
 			{

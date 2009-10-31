@@ -255,9 +255,9 @@ void CObjectAI::performSpecialAIType( CObject *p_object )
 	  case OBJ_DOOR: door_ai(i, p_levelcontrol->cepvars.DoorOpenDir); break;
 	  case OBJ_ICECANNON: icecannon_ai(i); break;
 	  case OBJ_ICECHUNK: icechunk_ai(i); break;
-	  case OBJ_ICEBIT: icebit_ai(i); break;
-	  case OBJ_TELEPORTER: teleporter_ai(i, *p_levelcontrol); break;
-	  case OBJ_ROPE: rope_ai(i); break;
+	  case OBJ_ICEBIT: icebit_ai(i); break;*/
+	  case OBJ_TELEPORTER: teleporter_ai(p_object); break;
+	  /*case OBJ_ROPE: rope_ai(i); break;
 
 	  //KEEN2
 	  case OBJ_SCRUB: scrub_ai(i, *p_levelcontrol); break;
