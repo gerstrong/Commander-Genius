@@ -45,8 +45,6 @@ bool CGameLauncher::init()
     mp_LaunchMenu = new CDialog(g_pVideoDriver->FGLayerSurface, 36, 20);
 
     // Scan for games...
-    m_SearchDepth = 0;
-    gamedetected = false;
     m_DirList.clear();
     m_Entries.clear();
 
@@ -56,13 +54,17 @@ bool CGameLauncher::init()
     getLabels();
 
     // Scan VFS root for exe's
-    if (scanExecutables(m_Root))
+    if (scanExecutables("."))
         gamedetected = true;
 
     // Recursivly scan into VFS subdir's for exe's
-    if (scanSubDirectories(m_Root))
+    if (scanSubDirectories(".", 0))
         gamedetected = true;
 
+    // Recursivly scan into VFS subdir's for exe's
+    if (scanSubDirectories("games", 0))
+        gamedetected = true;
+	
     // No games detected then quit
     if(!gamedetected)
         return false;
@@ -106,39 +108,25 @@ struct FileListAdder {
     }
 };
 
-Uint8 CGameLauncher::scanDirectories(const std::string& path, DirList& dir)
+bool CGameLauncher::scanSubDirectories(const std::string& path, size_t maxdepth)
 {
-    std::set<std::string> dirs;
-    FileListAdder fileListAdder;
-
-    GetFileList(dirs, fileListAdder, path, false, FM_DIR);
-    dir = DirList(dirs.begin(), dirs.end());
-
-    return dir.size();
-}
-
-bool CGameLauncher::scanSubDirectories(const std::string& path)
-{
-    unsigned int i;
     bool gamedetected = false;
-    std::string newpath;
-    DirList dirlist;
 
-    m_SearchDepth++;
+	std::set<std::string> dirs;
+	FileListAdder fileListAdder;	
+	GetFileList(dirs, fileListAdder, path, false, FM_DIR);
 
-    if (m_SearchDepth<=SUBDIR_MAX)
-    {
-        scanDirectories(path, dirlist);
-        for ( i=0; i<dirlist.size(); i++ )
-        {
-            newpath = path + '/' + dirlist.at(i);
-            if (scanExecutables(newpath))
-                gamedetected = true;
+	for(std::set<std::string>::iterator i = dirs.begin(); i != dirs.end(); ++i)
+	{
+		std::string newpath = path + '/' + *i;
+		
+		if(scanExecutables(newpath))
+			gamedetected = true;
 
-            if (scanSubDirectories(newpath))
-                gamedetected = true;
-        }
-    }
+		if(maxdepth > 0 && scanSubDirectories(newpath, maxdepth - 1))
+			gamedetected = true;
+	}
+
     return gamedetected;
 }
 

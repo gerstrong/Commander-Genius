@@ -69,7 +69,6 @@ private:
 	DirList m_DirList;
 	ExeList m_ExeList;
 	Sint8 m_ep1slot;
-	Sint8 m_SearchDepth;
 	std::string m_Root;
     std::vector<GameEntry> m_Entries;
 	std::vector<std::string> m_Paths;
@@ -77,8 +76,7 @@ private:
 	CDialog *mp_LaunchMenu;
 	CMap *mp_map;
 
-    Uint8 scanDirectories(const std::string& path, DirList& dir);
-	bool scanSubDirectories(const std::string& root);
+	bool scanSubDirectories(const std::string& root, size_t maxdepth = 0);
 	bool scanExecutables(const std::string& path);
 
     void getLabels();
