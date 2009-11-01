@@ -15,11 +15,16 @@
 #include <vector>
 #include <ostream>
 
-#define SUBDIR_MAX      2
-#define DEFAULT_ROOT    "."
-#define GAMESCFG_ROOT   "&Root="
+// The directory/path to start the search at
+#define DIR_ROOT        "."
+#define DIR_GAMES       "games"
+// The number of sub directories to search below the starting directory
+#define DEPTH_MAX_ROOT  1
+#define DEPTH_MAX_GAMES 2
+// Config file identifers
 #define GAMESCFG_DIR    "&Dir="
 #define GAMESCFG_NAME   "/Name="
+// Filenames
 #define GAMESCFG        "games.cfg"
 #define KEENEXE1        "keen1.exe"
 #define KEENEXE2        "keen2.exe"
@@ -69,7 +74,6 @@ private:
 	DirList m_DirList;
 	ExeList m_ExeList;
 	Sint8 m_ep1slot;
-	std::string m_Root;
     std::vector<GameEntry> m_Entries;
 	std::vector<std::string> m_Paths;
 	std::vector<std::string> m_Names;

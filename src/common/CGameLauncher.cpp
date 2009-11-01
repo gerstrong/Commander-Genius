@@ -53,18 +53,17 @@ bool CGameLauncher::init()
     // Process any custom labels
     getLabels();
 
-    // Scan VFS root for exe's
-    if (scanExecutables("."))
+    // Scan VFS DIR_ROOT for exe's
+    if (scanExecutables(DIR_ROOT))
+        gamedetected = true;
+    // Recursivly scan into DIR_ROOT VFS subdir's for exe's
+    if (scanSubDirectories(DIR_ROOT, DEPTH_MAX_ROOT))
         gamedetected = true;
 
-    // Recursivly scan into VFS subdir's for exe's
-    if (scanSubDirectories(".", 0))
+    // Recursivly scan into DIR_GAMES subdir's for exe's
+    if (scanSubDirectories(DIR_GAMES, DEPTH_MAX_GAMES))
         gamedetected = true;
 
-    // Recursivly scan into VFS subdir's for exe's
-    if (scanSubDirectories("games", 0))
-        gamedetected = true;
-	
     // No games detected then quit
     if(!gamedetected)
         return false;
@@ -113,17 +112,17 @@ bool CGameLauncher::scanSubDirectories(const std::string& path, size_t maxdepth)
     bool gamedetected = false;
 
 	std::set<std::string> dirs;
-	FileListAdder fileListAdder;	
+	FileListAdder fileListAdder;
 	GetFileList(dirs, fileListAdder, path, false, FM_DIR);
 
 	for(std::set<std::string>::iterator i = dirs.begin(); i != dirs.end(); ++i)
 	{
-		std::string newpath = path + '/' + *i;
-		
+		std::string newpath = path + '/' +  *i;
+
 		if(scanExecutables(newpath))
 			gamedetected = true;
 
-		if(maxdepth > 0 && scanSubDirectories(newpath, maxdepth - 1))
+		if(maxdepth > 1 && scanSubDirectories(newpath, maxdepth - 1))
 			gamedetected = true;
 	}
 
@@ -238,14 +237,7 @@ void CGameLauncher::getLabels()
         {
             getline(gamescfg,line);
 
-            if (strncmp(line.c_str(),GAMESCFG_ROOT,strlen(GAMESCFG_ROOT)) == 0)
-            {
-                if (m_Root.length()<=0)
-                {
-                    m_Root = line.substr(strlen(GAMESCFG_ROOT));
-                }
-            }
-            else if (strncmp(line.c_str(),GAMESCFG_DIR,strlen(GAMESCFG_DIR)) == 0)
+            if (strncmp(line.c_str(),GAMESCFG_DIR,strlen(GAMESCFG_DIR)) == 0)
             {
                 dir = line.substr(strlen(GAMESCFG_DIR));
 
@@ -274,12 +266,6 @@ void CGameLauncher::getLabels()
         }
         gamescfg.close();
     }
-
-    // Set the default root for the search
-    if (m_Root.length()<=0)
-    {
-        m_Root = DEFAULT_ROOT;
-    }
 }
 
 std::string CGameLauncher::scanLabels(const std::string& path)
@@ -305,9 +291,6 @@ void CGameLauncher::putLabels()
     OpenGameFileW(gamescfg, GAMESCFG);
     if (gamescfg.is_open())
     {
-        line = GAMESCFG_ROOT + m_Root;
-        gamescfg << line << std::endl << std::endl;
-
         for ( i=0; i<m_Entries.size(); i++ )
         {
             line = GAMESCFG_DIR + m_Entries.at(i).path + '/' + m_ExeList.at(m_Entries.at(i).episode-1);
