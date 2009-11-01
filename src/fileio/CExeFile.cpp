@@ -67,6 +67,7 @@ bool CExeFile::readData()
 
 	m_crc = getcrc32( m_data, m_datasize );
 
+	// TODO: Why is printf used here! Please change that to g_pLogFile->Textout
     printf( "EXE processed with size of %d and crc of %X\n", m_datasize, m_crc );
 
 	return true;
