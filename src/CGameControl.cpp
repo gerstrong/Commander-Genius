@@ -150,9 +150,9 @@ unsigned char *p_exedata;
     if( (flags & LOADSTR) == LOADSTR )
     {
     	// load the strings. TODO: After that this one will replace loadstrings
-    	//m_Messages = new CMessages();
-    	//m_Messages->readData(Episode, p_exedata, version, DataDirectory);
-        loadstrings();
+    	m_Messages = new CMessages();
+    	m_Messages->readData(Episode, version, DataDirectory);
+        //loadstrings();
     }
 
     if( (flags & LOADSND) == LOADSND )

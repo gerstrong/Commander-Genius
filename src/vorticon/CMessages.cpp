@@ -26,8 +26,8 @@ CMessages::~CMessages() {
 // version - version of the exe-file
 bool CMessages::readData(/*char *buf,*/ int episode, int version, const std::string& DataDirectory)
 {
-	long offset_start;
-	long offset_end;
+	long offset_start = 0;
+	long offset_end = 0;
 	unsigned char *text_data = NULL;
 	//std::string Text;
 	
@@ -44,8 +44,10 @@ bool CMessages::readData(/*char *buf,*/ int episode, int version, const std::str
 			switch(version)
 		{
 			case 131:
-				offset_start = 0x14FAB-512;
-				offset_end = 0x16801-512;
+				//offset_start = 85419;
+				offset_start = 85600;
+				offset_end = 85650;
+				//offset_end = 89729;
 				break;
 		}
 			break;

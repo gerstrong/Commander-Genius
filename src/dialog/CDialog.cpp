@@ -238,7 +238,7 @@ void CDialog::processInput(char dir)
 	{
 		do
 		{
-			if(m_selected_ID <= 1 )
+			if(m_selected_ID <= 0 )
 			{
 				m_switch=2;
 				

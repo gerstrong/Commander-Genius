@@ -44,6 +44,8 @@ void CLogFile::CreateLogfile(const char *LogName)
 		textOut("PLATFORM: LINUX<br>");
 	#elif TARGET_WIN32
 		textOut("PLATFORM: WINDOWS<br>");
+	#elif __APPLE__
+		textOut("PLATFORM: MAC OS X<br>");
 	#else
 		textOut("PLATFORM: UNKNOWN<br>");
 	#endif
