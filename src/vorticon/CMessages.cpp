@@ -24,11 +24,11 @@ CMessages::~CMessages() {
 // buf -  is the uncompressed buffer of the exe-file (keen1.exe for example)
 // episode - the game's episode
 // version - version of the exe-file
-bool CMessages::readData(unsigned char *buf, int episode, int version, const std::string& DataDirectory)
+bool CMessages::readData(unsigned char *p_exe, int episode, int version, const std::string& DataDirectory)
 {
 	long offset_start = 0;
 	long offset_end = 0;
-	unsigned char *text_data = NULL;
+	//unsigned char *text_data = NULL;
 	//std::string Text;
 	
 	// TODO: This function still has bugs when reading the text. Check this closer!
@@ -67,20 +67,25 @@ bool CMessages::readData(unsigned char *buf, int episode, int version, const std
 	delete ExeFile;*/
 
 	// Now read the stuff and store it to a list
+	FILE *fp=fopen("dump.raw","wb");
+   fwrite(p_exe+85419, sizeof(char), 89729-85419, fp);
+   fclose(fp);
+	
 	for(int pos=offset_start ; pos<offset_end ; pos++)
 	{
 		std::string Text;
 
-		while(buf[pos] != 0)
+		while(p_exe[pos] != 0)
 		{
-			Text += buf[pos];
+			Text += p_exe[pos];
 			pos++;
 		}
-		pos++;
 
 		if(!Text.empty()) // not empty
+		{
 			StringList.push_back(Text);
 		g_pLogFile->textOut(RED,Text);
+		}
 	}
 
 	std::list<std::string> :: iterator i;
