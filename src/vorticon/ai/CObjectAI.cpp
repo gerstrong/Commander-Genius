@@ -125,24 +125,25 @@ unsigned int type = p_object->m_type;
 // detecting player contact, etc.
 void CObjectAI::performCommonAI( CObject *p_object )
 {
+#define STC (CSF-TILE_S)
 int x0,y0,xa,ya,xsize,ysize;
 int temp;
 stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 
 	if (p_object->m_type==OBJ_GOTPOINTS) return;
 
-	ysize = g_pGfxEngine->Sprite[p_object->sprite]->getHeight()<<(CSF-TILE_S);
-	xsize = g_pGfxEngine->Sprite[p_object->sprite]->getWidth()<<(CSF-TILE_S);
+	ysize = g_pGfxEngine->Sprite[p_object->sprite]->getHeight()<<STC;
+	xsize = g_pGfxEngine->Sprite[p_object->sprite]->getWidth()<<STC;
 
 	// set value of blockedd--should object fall?
 	temp = p_object->y+ysize;
-	if ((temp>>CSF)<<CSF != temp) p_object->blockedd = false;
+	if ((temp>>STC)<<STC != temp) p_object->blockedd = false;
 	else
 	{ // on a tile boundary, test if tile under object is solid
 		p_object->blockedd = false;
 		x0 = p_object->x;
 		y0 = p_object->y+ysize+1;
-		for(xa=0;xa<xsize-2;xa+=(1<<CSF))
+		for(xa=0;xa<xsize-2;xa+=(1<<STC))
 		{
 			if ( TileProperty[mp_Map->at((x0+xa)>>CSF,y0>>CSF)].bup )
 			{
@@ -165,7 +166,7 @@ stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 	p_object->blockedu = false;
 	x0 = p_object->x;
 	y0 = p_object->y;
-	for(xa=1;xa<xsize;xa+=(1<<CSF))		// change start pixel to xa=1 for icecannon in ep1l8
+	for(xa=1;xa<xsize;xa+=(1<<(CSF-TILE_S)))		// change start pixel to xa=1 for icecannon in ep1l8
 	{
 		if ( TileProperty[mp_Map->at((x0+xa)>>CSF,y0>>CSF)].bdown )
 		{
@@ -187,7 +188,7 @@ stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 	p_object->blockedl = false;
     x0 = p_object->x-1;
     y0 = p_object->y+1;
-    for(ya=0;ya<ysize;ya+=(1<<CSF))
+    for(ya=0;ya<ysize;ya+=(1<<(CSF-TILE_S)))
     {
         if (TileProperty[mp_Map->at(x0>>CSF,(y0+ya)>>CSF)].bright )
         {
@@ -207,7 +208,7 @@ stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 	p_object->blockedr = false;
     x0 = p_object->x+xsize;
     y0 = p_object->y+1;
-    for(ya=0;ya<ysize;ya+=(1<<CSF))
+    for(ya=0;ya<ysize;ya+=(1<<(CSF-TILE_S)))
     {
         if ( TileProperty[mp_Map->at(x0>>CSF,(y0+ya)>>CSF)].bleft )
         {
@@ -233,7 +234,7 @@ stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
            }
            else
            {
-    #define OBJ_YINERTIA_RATE  5
+			 #define OBJ_YINERTIA_RATE  5
              if (p_object->yinertiatimer>OBJ_YINERTIA_RATE)
              {
                if (p_object->yinertia < OBJFALLSPEED) p_object->yinertia++;

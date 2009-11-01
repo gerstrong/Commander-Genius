@@ -222,7 +222,8 @@ void CPlayer::Walking()
           // quickly reach PLAYER_FASTINCMAXSPEED
           if (pwalkincreasetimer>=cur_pfastincrate && pinertia_x<PFASTINCMAXSPEED)
           {
-        	  pinertia_x+=(1<<4);
+        	  if(pfalling) pinertia_x+=(1<<2);
+        	  else pinertia_x+=(1<<4);
         	  pwalkincreasetimer=0;
           }
           else	pwalkincreasetimer++;
@@ -242,7 +243,8 @@ void CPlayer::Walking()
           // quickly reach PFASTINCMAXSPEED
           if (pwalkincreasetimer>=cur_pfastincrate && pinertia_x<-PFASTINCMAXSPEED)
           {
-        	  pinertia_x-=(1<<4);
+        	  if(pfalling) pinertia_x-=(1<<2);
+        	  else pinertia_x-=(1<<4);
         	  pwalkincreasetimer=0;
           }
           else	pwalkincreasetimer++;

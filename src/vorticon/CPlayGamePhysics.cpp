@@ -23,7 +23,7 @@ void CPlayGame::processPlayerfallings(CPlayer *p_player)
 	Uint8 height=p_player->h>>(CSF-4);
 	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 
-	p_player->pfalling = 0;         // assume not falling if not jumped to the maximum height
+	p_player->pfalling = false;         // assume not falling if not jumped to the maximum height
 
 	if(p_player->pdie) return;
 
@@ -106,7 +106,7 @@ void CPlayGame::processPlayerfallings(CPlayer *p_player)
 	// top of the object
 	if (p_player->psupportingobject && !p_player->lastsupportingobject)
 	{
-		p_player->y = m_Object[p_player->psupportingobject].y - (height<<CSF);
+		p_player->goto_y = m_Object[p_player->psupportingobject].y - (height<<CSF);
 	}
 	p_player->lastsupportingobject = p_player->psupportingobject;
 

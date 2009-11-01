@@ -43,7 +43,7 @@ void CPlayer::processInLevel()
 
 	  keencicle();
 
-	  if(!pjumping && !pfalling)
+	  if(!pjumping)
 	  {
 		  Walking();
 		  WalkingAnimation();
