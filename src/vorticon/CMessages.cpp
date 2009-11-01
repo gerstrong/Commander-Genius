@@ -24,17 +24,12 @@ CMessages::~CMessages() {
 // buf -  is the uncompressed buffer of the exe-file (keen1.exe for example)
 // episode - the game's episode
 // version - version of the exe-file
-bool CMessages::readData(/*char *buf,*/ int episode, int version, const std::string& DataDirectory)
+bool CMessages::readData(unsigned char *buf, int episode, int version, const std::string& DataDirectory)
 {
 	long offset_start = 0;
 	long offset_end = 0;
 	unsigned char *text_data = NULL;
 	//std::string Text;
-	
-	CExeFile *ExeFile = new CExeFile(episode, DataDirectory);
-	ExeFile->readData();
-	
-	//if(!ExeFile->getData()) return;
 	
 	// TODO: This function still has bugs when reading the text. Check this closer!
 	// This part of switches is used to get the proper addresses of the message text.
@@ -62,8 +57,6 @@ bool CMessages::readData(/*char *buf,*/ int episode, int version, const std::str
 			return false;
 	}
 	
-	text_data = ExeFile->getData();
-	
 	/*for(unsigned long i=offset_start ; i<offset_end ; i++ )
 	{
 		Text += text_data[i];
@@ -78,9 +71,9 @@ bool CMessages::readData(/*char *buf,*/ int episode, int version, const std::str
 	{
 		std::string Text;
 
-		while(text_data[pos] != 0)
+		while(buf[pos] != 0)
 		{
-			Text += text_data[pos];
+			Text += buf[pos];
 			pos++;
 		}
 		pos++;

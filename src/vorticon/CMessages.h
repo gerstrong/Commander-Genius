@@ -19,7 +19,7 @@ public:
 	CMessages();
 	virtual ~CMessages();
 
-	bool readData(/*char *buf,*/ int episode, int version, const std::string& DataDirectory);
+	bool readData(unsigned char *buf, int episode, int version, const std::string& DataDirectory);
 	char *getString(const char *IDtext);
 
 private:

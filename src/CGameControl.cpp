@@ -151,7 +151,7 @@ unsigned char *p_exedata;
     {
     	// load the strings. TODO: After that this one will replace loadstrings
     	m_Messages = new CMessages();
-    	m_Messages->readData(Episode, version, DataDirectory);
+    	m_Messages->readData(p_exedata, Episode, version, DataDirectory);
         //loadstrings();
     }
 
