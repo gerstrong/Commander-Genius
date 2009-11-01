@@ -22,7 +22,7 @@ CPassive::CPassive(char Episode, std::string DataDirectory) {
 	mp_Menu = NULL;
 	mp_Map = NULL;
 	mp_PressAnyBox=NULL;
-
+	
 	m_modeg = false;
 	m_GoDemo = false;
 	m_mode = INTRO;
@@ -64,7 +64,7 @@ bool CPassive::init(char mode)
 	}
 	else
 		return false;
-
+	
 	return true;
 }
 
@@ -74,12 +74,12 @@ bool CPassive::init(char mode)
 void CPassive::process()
 {
 	// Check Inputs
-
+	
 	// Open the Main-Menu or close the opened one?
 	if( g_pInput->getPressedAnyKey() && mp_Menu==NULL )
 	{
 		// Close the "Press Any Key" box
-
+		
 		g_pInput->flushAll();
 		if (m_mode != TITLE)
 		{
@@ -88,9 +88,9 @@ void CPassive::process()
 		}
 		else
 		{
-		SAFE_DELETE(mp_PressAnyBox);
-		mp_Menu = new CMenu( CMenu::PASSIVE );
-		mp_Menu->init();
+			SAFE_DELETE(mp_PressAnyBox);
+			mp_Menu = new CMenu( CMenu::PASSIVE );
+			mp_Menu->init();
 		}
 	}
 	else if( mp_Menu!=NULL ) // Close menu
@@ -102,13 +102,13 @@ void CPassive::process()
 			mp_PressAnyBox = new CTextBox(150," PRESS ANY KEY ");
 		}
 	}
-
+	
 	// Modes. We have three: Intro, Main-tile and Demos. We could add more.
 	if( m_mode == INTRO )
 	{
 		// Intro code goes here!
 		mp_IntroScreen->process();
-
+		
 		if( mp_IntroScreen->isFinished() )
 		{
 			// Shutdown mp_IntroScreen and show load Title Screen
@@ -119,16 +119,16 @@ void CPassive::process()
 	else if( m_mode == TITLE )
 	{
 		mp_TitleScreen->process();
-
+		
 		if( mp_Menu == NULL )
 		{
-		if( mp_TitleScreen->isFinished() )
-		{
-			// The Title screen was shown enough time, shut it down
-			// and load Demo environment
-			cleanup();
-			init(DEMO);
-		}
+			if( mp_TitleScreen->isFinished() )
+			{
+				// The Title screen was shown enough time, shut it down
+				// and load Demo environment
+				cleanup();
+				init(DEMO);
+			}
 		}
 	}
 	else if( m_mode == DEMO )
@@ -138,29 +138,29 @@ void CPassive::process()
 		cleanup();
 		init(TITLE);
 	}
-
+	
 	// Animate the tiles
 	g_pGfxEngine->Tilemap->animateAllTiles( mp_Scrollsurface );
-
+	
 	// Blit the background
 	g_pVideoDriver->blitScrollSurface(mp_Map->m_scrollx_buf, mp_Map->m_scrolly_buf);
-
+	
 	// Make the Objects do its jobs
 	std::vector<CObject*>::iterator i;
 	for( i=m_object.begin() ; i!=m_object.end() ; i++ )
 	{
 		(*i)->process();
 	}
-
+	
 	// If Menu is not open show "Press Any Key"
 	if(mp_PressAnyBox != NULL)
 		mp_PressAnyBox->process();
-
+	
 	// If Menu is open show it!
 	if( mp_Menu != NULL )
 	{
 		mp_Menu->process();
-
+		
 		if(mp_Menu->mustStartGame())
 		{
 			m_NumPlayers = mp_Menu->getNumPlayers();
@@ -178,23 +178,23 @@ void CPassive::process()
 			m_mode = SHUTDOWN;
 		}
 		/*else if(mp_Menu->getShowStory())
-		{
-			delete mp_Menu;
-			mp_Menu = NULL;
-			m_textsize = readStoryText(&m_text, m_Episode, m_DataDirectory); // Read text from
-			// and store it at the text pointer
-
-			if(m_textsize > 0)
-			{
-				CMapLoader MapLoader( mp_Map );
-				MapLoader.load( m_Episode, 90, m_DataDirectory);
-				mp_Map->drawAll();
-				mp_Menu->showPage(m_text,m_textsize);
-
-				free(m_text);
-			}
-			cleanup();
-		}*/
+		 {
+		 delete mp_Menu;
+		 mp_Menu = NULL;
+		 m_textsize = readStoryText(&m_text, m_Episode, m_DataDirectory); // Read text from
+		 // and store it at the text pointer
+		 
+		 if(m_textsize > 0)
+		 {
+		 CMapLoader MapLoader( mp_Map );
+		 MapLoader.load( m_Episode, 90, m_DataDirectory);
+		 mp_Map->drawAll();
+		 mp_Menu->showPage(m_text,m_textsize);
+		 
+		 free(m_text);
+		 }
+		 cleanup();
+		 }*/
 		else if(mp_Menu->getChooseGame())
 		{
 			delete mp_Menu;

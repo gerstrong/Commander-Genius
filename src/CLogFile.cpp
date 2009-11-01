@@ -26,34 +26,34 @@ void CLogFile::CreateLogfile(const char *LogName)
 {
 	// Open and empty the log file
 	m_Logfile = OpenGameFile(LogName, "wt");
-
+	
 	// Write the head
 	textOut("<html><head><title>LogFile</title></head>");
 	textOut("<body><font face='courier new'>");
 	WriteTopic("Logfile", 3);
 	textOut(BLUE,REVISION);
-
+	
 	// Mark the Build and Platform
-	#ifdef DEBUG
-		textOut("BUILD: DEBUG<br>");
-	#else
-		textOut("BUILD: RELEASE<br>");
-	#endif
-
-	#ifdef TARGET_LNX
-		textOut("PLATFORM: LINUX<br>");
-	#elif TARGET_WIN32
-		textOut("PLATFORM: WINDOWS<br>");
-	#elif __APPLE__
-		textOut("PLATFORM: MAC OS X<br>");
-	#else
-		textOut("PLATFORM: UNKNOWN<br>");
-	#endif
-
+#ifdef DEBUG
+	textOut("BUILD: DEBUG<br>");
+#else
+	textOut("BUILD: RELEASE<br>");
+#endif
+	
+#ifdef TARGET_LNX
+	textOut("PLATFORM: LINUX<br>");
+#elif TARGET_WIN32
+	textOut("PLATFORM: WINDOWS<br>");
+#elif __APPLE__
+	textOut("PLATFORM: MAC OS X<br>");
+#else
+	textOut("PLATFORM: UNKNOWN<br>");
+#endif
+	
 	// Show my e-mail adress
 	textOut("<a href='mailto:gerstrong@gmail.com?subject=CG Logfile'>");
 	textOut("Send E-Mail to me</a><br><br>");
-
+	
 	fclose(m_Logfile);
 	m_Logfile = OpenGameFile(LogName, "at");
 }
@@ -84,26 +84,26 @@ void CLogFile::textOut(FONTCOLORS Color, bool List, const std::string& Text)
 {
 	if(List == true)
 		textOut("<li>");
-
+	
 	// write color tag
 	switch(Color)
 	{
-	  case BLACK:
-		textOut("<font color=black>"); break;
-	  case RED:
-		textOut("<font color=red>"); break;
-	  case GREEN:
-		textOut("<font color=green>"); break;
-	  case BLUE:
-		textOut("<font color=blue>"); break;
-	  case PURPLE:
-		textOut("<font color=purple>"); break;
+		case BLACK:
+			textOut("<font color=black>"); break;
+		case RED:
+			textOut("<font color=red>"); break;
+		case GREEN:
+			textOut("<font color=green>"); break;
+		case BLUE:
+			textOut("<font color=blue>"); break;
+		case PURPLE:
+			textOut("<font color=purple>"); break;
 	};
-
+	
 	// Write the text
 	textOut(Text);
 	textOut("</font>");
-
+	
 	if (List == false)
 		textOut("<br>");
 	else
@@ -115,25 +115,25 @@ std::string CLogFile::removeHTML(const std::string& input)
 {
     std::string::size_type left, right;
     std::string output;
-
+	
     output = input;
     do {
         left  = output.find_first_of('<', 0);
         right = output.find_first_of('>', 0);
-
+		
         if( left == std::string::npos || right == std::string::npos )
             break;
-
+		
         output = output.erase( left, right-left+1 );
     } while( 1 );
-
+	
     return output;
 }
 
 void CLogFile::textOut(const std::string& Text)
 {
     std::string output;
-
+	
     output = removeHTML(Text);
     if( output.length() > 0 ) {
         notes << output << endl;
@@ -146,11 +146,11 @@ void CLogFile::ftextOut(const char *Text, ...)
 {
 	char buffer[MAX_BUFFER];
 	va_list pArgList;
-
+	
 	va_start(pArgList, Text);
 	vsprintf(buffer, Text, pArgList);
 	va_end(pArgList);
-
+	
 	textOut(buffer);
 }
 
@@ -158,11 +158,11 @@ void CLogFile::fltextOut(FONTCOLORS Color, bool List, const char *Text, ...)
 {
 	char buffer[MAX_BUFFER];
 	va_list pArgList;
-
+	
 	va_start(pArgList, Text);
 	vsprintf(buffer, Text, pArgList);
 	va_end(pArgList);
-
+	
 	textOut(Color, List, buffer);
 }
 
@@ -170,11 +170,11 @@ void CLogFile::ftextOut(FONTCOLORS Color, const char *Text, ...)
 {
 	char buffer[MAX_BUFFER];
 	va_list pArgList;
-
+	
 	va_start(pArgList, Text);
 	vsprintf(buffer, Text, pArgList);
 	va_end(pArgList);
-
+	
 	textOut(Color, buffer);
 }
 

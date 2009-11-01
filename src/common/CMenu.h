@@ -30,29 +30,29 @@
 #define TWIRL_NUM_FRAMES        5
 
 /*char controlsmenu();
-char configmenu(stCloneKeenPlus *pCKP,int ingame);
-void keensleft(int episode);
-int getDifficulty(stCloneKeenPlus *pCKP);*/
+ char configmenu(stCloneKeenPlus *pCKP,int ingame);
+ void keensleft(int episode);
+ int getDifficulty(stCloneKeenPlus *pCKP);*/
 
 class CMenu {
-
+	
 public:
 	// Which Menu has to be shown?
 	
 	enum menutypes{
 		MAIN, NEW, CONTROLPLAYERS, STORY, HIGHSCORES, ABOUTCG, ABOUTID, ORDERING, LOAD, START, DIFFICULTY, CONFIGURE, GRAPHICS, CONTROLS, AUDIO, OPTIONS, F1, HELP, ENDGAME, QUIT
 	};
-
+	
 	// Active means, when the player is playing, PASSIVE when the Player is not playing
 	enum menumodes{
 		ACTIVE, PASSIVE
 	};
-
+	
 	CMenu( char menu_mode );
 	virtual ~CMenu();
-
+	
 	bool init( char menu_type = MAIN );
-
+	
 	void process();
 	void processMainMenu();
 	void processQuitMenu();
@@ -63,9 +63,9 @@ public:
 	void processF1Menu();
 	void processEndGameMenu();
 	void showPage(const std::string& str_text, int textsize);
-
+	
 	void cleanup();
-
+	
 	// Getters
 	char getNumPlayers() { return m_NumPlayers; }
 	char getDifficulty() { return m_Difficulty; }
@@ -79,7 +79,7 @@ public:
 	
 	bool m_demoback;
 	char m_mode;
-
+	
 private:
 	void initMainMenu();
 	void initConfirmMenu();
@@ -88,11 +88,11 @@ private:
 	void initConfigureMenu();
 	void initNumControlMenu();
 	void initF1Menu();
-
+	
 	CDialog *mp_Dialog;
 	CTextViewer *mp_TextViewer;
 	SDL_Surface *mp_MenuSurface;
-
+	
 	bool m_choosegame;
 	bool m_goback;
 	bool m_Endgame;

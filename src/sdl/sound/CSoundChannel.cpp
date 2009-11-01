@@ -18,13 +18,13 @@ CSoundChannel::CSoundChannel() {
 	m_sound_paused = true;
 	m_sound_forced = false;
 	m_pSoundSlot = NULL;
-
+	
 	m_desiredfreq = 0;     	// current desired frequency in hz
 	m_changerate = 0;      	// frequency in samples (calculated)
 	m_freqtimer = 0;       	// time when to change waveform state
 	m_waveState = 0;       	// current position of the output waveform
 	m_balance = 0;
-
+	
 	m_format	= 0;
 	m_volume	= 0;
 	m_silence	= 0;
@@ -39,10 +39,10 @@ void CSoundChannel::setFrequencyCorrection(int freq)
 {
 	switch (freq)
 	{
-	case 44100: m_freq_corr = 15; break;
-	case 22050: m_freq_corr = 14; break;
-	case 11025: m_freq_corr = 12; break;
-	default: m_freq_corr = 0; break;
+		case 44100: m_freq_corr = 15; break;
+		case 22050: m_freq_corr = 14; break;
+		case 11025: m_freq_corr = 12; break;
+		default: m_freq_corr = 0; break;
 	}
 }
 
@@ -86,17 +86,17 @@ void CSoundChannel::setFormat( Uint16 format )
 			m_wavein	= WAVE_IN_S16;
 			break;
 	}
-
+	
 	m_waveState = m_wavein;
 }
 
 
 void CSoundChannel::setupSound(unsigned short current_sound,
-								unsigned int sound_timer,
-								bool playing,
-								unsigned int freqtimer,
-								bool sound_forced,
-								Uint16 format)
+							   unsigned int sound_timer,
+							   bool playing,
+							   unsigned int freqtimer,
+							   bool sound_forced,
+							   Uint16 format)
 {
 	setFormat( format );
 	m_current_sound = current_sound;
@@ -116,19 +116,19 @@ void CSoundChannel::generateWaveform16(Uint8 *waveform, unsigned int len, int fr
 	unsigned int index;
 	char firsttime;
 	Uint16 *WaveBuffer;
-
+	
 	WaveBuffer = new Uint16[len];
-
+	
 	halffreq = (frequency>>1);
-
+	
 	if(m_freq_corr == 16)
 		waittime = (frequency / SLOW_RATE);
 	else
 		waittime = (((m_freq_corr*frequency)>>4) / SLOW_RATE);
-
+	
 	// setup so we process a new byte of the sound first time through
 	firsttime = 1;
-
+	
 	for(index=0 ; index<len ; index++)
 	{
 		if (!m_sound_timer || firsttime)
@@ -139,7 +139,7 @@ void CSoundChannel::generateWaveform16(Uint8 *waveform, unsigned int len, int fr
 				m_desiredfreq = m_pSoundSlot[m_current_sound].getSoundData()[m_sound_ptr];
 			else
 				m_desiredfreq = 0xffff;
-
+			
 			if (m_desiredfreq==0xffff)
 			{  // end of sound...fill rest of buffer with silence
 				for(;index<len;index++)
@@ -147,32 +147,32 @@ void CSoundChannel::generateWaveform16(Uint8 *waveform, unsigned int len, int fr
 					WaveBuffer[index] = m_silence;
 				}
 				m_sound_playing = false;
-
+				
 				memcpy(waveform, WaveBuffer,len*sizeof(Uint16));
-
+				
 				m_sound_ptr = 0;
-
+				
 				// Only copy the rest of the remaing buffer space and return.
 				delete[] WaveBuffer;
-
+				
 				return;
-			 }
-			 else if (m_desiredfreq == 0x0000)
-			 {
+			}
+			else if (m_desiredfreq == 0x0000)
+			{
 				m_waveState = m_waveout;
-			 }
-			 else
-			 {  // compute change rate
+			}
+			else
+			{  // compute change rate
 				m_changerate = (halffreq / m_desiredfreq);
-			 }
-
-			 m_sound_ptr++;
-			 if (!firsttime) m_sound_timer = waittime;
-				firsttime = 0;
+			}
+			
+			m_sound_ptr++;
+			if (!firsttime) m_sound_timer = waittime;
+			firsttime = 0;
 		}
-
+		
 		if (m_sound_timer) m_sound_timer--;
-
+		
 		if (m_desiredfreq==0x0000)
 		{   // silence
 			WaveBuffer[index] = m_silence;
@@ -183,23 +183,23 @@ void CSoundChannel::generateWaveform16(Uint8 *waveform, unsigned int len, int fr
 			if (m_freqtimer > m_changerate)
 			{  // toggle waveform, generating a square wave
 				i=0;
-
+				
 				if(m_sound_ptr > 0)
 					i=m_volume;
-
+				
 				if (m_waveState == m_silence-i)
 					m_waveState = m_silence+i;
 				else
 					m_waveState = m_silence-i;
-
+				
 				m_freqtimer = 0;
 			}
 			else m_freqtimer++;
-
+			
 			// put wave data into buffer
 			WaveBuffer[index] = m_waveState;
 		}
-
+		
 		if(stereo) // Primitive stereo transformation
 		{
 			if(index < len)
@@ -222,19 +222,19 @@ void CSoundChannel::generateWaveform8(Uint8 *waveform, unsigned int len, int fre
 	unsigned int index;
 	char firsttime;
 	Uint8 *WaveBuffer;
-
+	
 	WaveBuffer = new Uint8[len];
-
+	
 	halffreq = (frequency>>1);
-
+	
 	if(m_freq_corr == 16)
 		waittime = (frequency / SLOW_RATE);
 	else
 		waittime = (((m_freq_corr*frequency)>>4) / SLOW_RATE);
-
+	
 	// setup so we process a new byte of the sound first time through
 	firsttime = 1;
-
+	
 	for(index=0 ; index<len ; index++)
 	{
 		if (!m_sound_timer || firsttime)
@@ -245,7 +245,7 @@ void CSoundChannel::generateWaveform8(Uint8 *waveform, unsigned int len, int fre
 				m_desiredfreq = m_pSoundSlot[m_current_sound].getSoundData()[m_sound_ptr];
 			else
 				m_desiredfreq = 0xffff;
-
+			
 			if (m_desiredfreq==0xffff)
 			{  // end of sound...fill rest of buffer with silence
 				for(;index<len;index++)
@@ -253,32 +253,32 @@ void CSoundChannel::generateWaveform8(Uint8 *waveform, unsigned int len, int fre
 					WaveBuffer[index] = m_silence;
 				}
 				m_sound_playing = false;
-
+				
 				memcpy(waveform, WaveBuffer,len*sizeof(Uint8));
-
+				
 				m_sound_ptr = 0;
-
+				
 				// Only copy the rest of the remaing buffer space and return.
 				delete[] WaveBuffer;
-
+				
 				return;
-			 }
-			 else if (m_desiredfreq == 0x0000)
-			 {
+			}
+			else if (m_desiredfreq == 0x0000)
+			{
 				m_waveState = m_waveout;
-			 }
-			 else
-			 {  // compute change rate
+			}
+			else
+			{  // compute change rate
 				m_changerate = (halffreq / m_desiredfreq);
-			 }
-
-			 m_sound_ptr++;
-			 if (!firsttime) m_sound_timer = waittime;
-				firsttime = 0;
+			}
+			
+			m_sound_ptr++;
+			if (!firsttime) m_sound_timer = waittime;
+			firsttime = 0;
 		}
-
+		
 		if (m_sound_timer) m_sound_timer--;
-
+		
 		if (m_desiredfreq==0x0000)
 		{   // silence
 			WaveBuffer[index] = m_silence;
@@ -289,23 +289,23 @@ void CSoundChannel::generateWaveform8(Uint8 *waveform, unsigned int len, int fre
 			if (m_freqtimer > m_changerate)
 			{  // toggle waveform, generating a square wave
 				i=0;
-
+				
 				if(m_sound_ptr > 0)
 					i=m_volume;
-
+				
 				if (m_waveState == m_silence-i)
 					m_waveState = m_silence+i;
 				else
 					m_waveState = m_silence-i;
-
+				
 				m_freqtimer = 0;
 			}
 			else m_freqtimer++;
-
+			
 			// put wave data into buffer
 			WaveBuffer[index] = m_waveState;
 		}
-
+		
 		if(stereo) // Primitive stereo transformation
 		{
 			if(index < len)
@@ -325,10 +325,10 @@ void CSoundChannel::transintoStereoChannels(Uint8* waveform, unsigned int len)
 	if(m_balance != 0) // Because, if it is not zero, there is no balance, and waves must be adapted
 	{
 		// -127 is only for the left speaker, while 127 is for the right speaker. 0 Is center
-
+		
 		unsigned int index;
 		float f_value; // Needed for better calculation of mixing the stereo channels
-
+		
 		if(m_hq)
 		{
 			// balance the left channel.
@@ -340,7 +340,7 @@ void CSoundChannel::transintoStereoChannels(Uint8* waveform, unsigned int len)
 				if(m_silence + f_value < 255)
 					waveform[index] = m_silence + f_value;
 			}
-
+			
 			// balance the right channel.
 			for( index = 1 ; index < len; index += 2 )
 			{
@@ -360,7 +360,7 @@ void CSoundChannel::transintoStereoChannels(Uint8* waveform, unsigned int len)
 				f_value = ( (127 - (m_balance)) * ( waveform[index] - m_silence ) ) / 127 ;
 				waveform[index] = m_silence + f_value;
 			}
-
+			
 			// balance the right channel.
 			for( index = 1 ; index < len; index += 2 )
 			{
@@ -378,34 +378,34 @@ void CSoundChannel::readWaveform(Uint8* waveform, int len, Uint8 channels, int f
     {
     	if(!m_hq) // There is no hq sound in the buffer
      	{
-		if ( m_format == AUDIO_U16 || m_format == AUDIO_S16 )
-		{
-			generateWaveform16( waveform, len/2, frequency, (channels==2) ? true : false );
-		}
-		else
-		{
-			generateWaveform8( waveform, len, frequency, (channels==2) ? true : false );
-		}
+			if ( m_format == AUDIO_U16 || m_format == AUDIO_S16 )
+			{
+				generateWaveform16( waveform, len/2, frequency, (channels==2) ? true : false );
+			}
+			else
+			{
+				generateWaveform8( waveform, len, frequency, (channels==2) ? true : false );
+			}
      	}
      	else
      	{
      		stHQSound* hqsound = m_pSoundSlot[m_current_sound].getHQSoundPtr();
-
+			
      		memcpy(waveform, hqsound->sound_buffer + m_sound_ptr, len);
          	m_sound_ptr += len;
-
+			
          	if ((m_sound_ptr + len) > hqsound->sound_len)
          	{
          		m_sound_ptr = 0;
          		m_sound_playing = false;
          	}
      	}
-
+		
     	if(channels == 2 && m_format == AUDIO_U8)
-	{
-		transintoStereoChannels(waveform, len);
-	}
-
+		{
+			transintoStereoChannels(waveform, len);
+		}
+		
     }
 	else
 		memset(waveform,m_silence,len);

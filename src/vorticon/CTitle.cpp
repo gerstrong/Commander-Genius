@@ -23,23 +23,23 @@ CTitle::CTitle(std::vector<CObject*> *pObjects) {
 
 bool CTitle::init()
 {
-CObject *p_object;
-SDL_Surface *pSurface;
-CBitmap *pBitmap;
+	CObject *p_object;
+	SDL_Surface *pSurface;
+	CBitmap *pBitmap;
 	g_pTimer->ResetSecondsTimer();
 	m_time = 10; // show the title screen for 10 sec
 	pSurface = g_pVideoDriver->BlitSurface;
-
+	
 	pBitmap = g_pGfxEngine->getBitmap("TITLE");
 	p_object = new CEGABitmap( pSurface, pBitmap );
 	p_object->setScrPos( 160-(pBitmap->getWidth()/2), 0 );
 	mp_objects->push_back(p_object);
-
+	
 	pBitmap = g_pGfxEngine->getBitmap("F1HELP");
 	p_object = new CEGABitmap( pSurface, pBitmap );
 	p_object->setScrPos( 96, 180 );
 	mp_objects->push_back(p_object);
-
+	
 	return true;
 }
 
@@ -64,6 +64,6 @@ void CTitle::cleanup()
 }
 
 CTitle::~CTitle() {
-
+	
 }
 

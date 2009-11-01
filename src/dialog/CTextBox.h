@@ -17,10 +17,10 @@ class CTextBox {
 public:
 	CTextBox(int y, const std::string& message);
 	CTextBox(SDL_Surface *surface, int y, const std::string& message);
-
+	
 	void process();
 private:
-
+	
 	std::string m_String;
 	SDL_Rect m_rect;
 	int m_fontwidth, m_fontheight;

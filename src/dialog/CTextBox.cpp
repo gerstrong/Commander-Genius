@@ -27,6 +27,6 @@ void CTextBox::process()
 {
 	SDL_FillRect(m_surface, &m_rect, SDL_MapRGB(m_surface->format, 0,0,0));
 	g_pGfxEngine->Font->drawFont(m_surface, m_String, m_rect.x+1, m_rect.y+1, 1); 	// 0 is blank colour
-																		// NOTE: Preloaded fonts.
-																		// not all colours are supported
+	// NOTE: Preloaded fonts.
+	// not all colours are supported
 }

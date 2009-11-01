@@ -25,10 +25,10 @@
 class CTeleporter {
 public:
 	CTeleporter(CMap &map, short episode);
-
+	
 	bool readTeleporterInfo(int lvl);
 	void teleportPlayer(std::vector<CObject> &p_vect_object, CPlayer &player);
-
+	
 private:
 	CMap &m_map;
     int telfrom;

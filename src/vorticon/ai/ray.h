@@ -13,9 +13,9 @@
 #define RAY_FRAME_ZOT_EP3     106
 
 enum ray_state{
-RAY_STATE_FLY,
-RAY_STATE_SETZAPZOT,
-RAY_STATE_ZAPZOT
+	RAY_STATE_FLY,
+	RAY_STATE_SETZAPZOT,
+	RAY_STATE_ZAPZOT
 };
 
 // reference to ../game.cpp

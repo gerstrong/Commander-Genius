@@ -11,9 +11,9 @@ unsigned int crctab[256];
 void crc32_init(void)
 {
     int i,j;
-
+	
     unsigned int crc;
-
+	
     for (i = 0; i < 256; i++)
     {
         crc = i << 24;
@@ -33,9 +33,9 @@ unsigned int getcrc32(unsigned char *data, int len)
     unsigned int        result;
     unsigned int        *p = (unsigned int *)data;
     unsigned int        *e = (unsigned int *)(data + len);
-
-//    if (len < 4) abort();
-
+	
+	//    if (len < 4) abort();
+	
     result = ~*p++;
     while( p<e )
     {
@@ -53,6 +53,6 @@ unsigned int getcrc32(unsigned char *data, int len)
         result ^= *p++;
 #endif
     }
-
+	
     return ~result;
 }

@@ -37,12 +37,12 @@ void StringBuf::adjustBlank()
 	// Check
 	if (sStr.size() < 3)
 		return;
-
+	
 	// Initialize iterators
 	std::string::const_iterator it = sStr.begin();
 	std::string::const_iterator prev = it;
 	it++;
-
+	
 	// Get the adjusted string
 	std::string res;
 	res += *sStr.begin(); // First character, sStr != "" here
@@ -57,7 +57,7 @@ void StringBuf::adjustBlank()
 		}
 		res += *it; // Normal character
 	}
-
+	
 	sStr = res;
 	tPos = sStr.begin();
 }
@@ -69,11 +69,11 @@ void StringBuf::trimBlank()
 	// Start
 	while (sStr.size() && isspace((unsigned char)(*(sStr.begin()))))
 		sStr.erase(sStr.begin());
-
+	
 	// End
 	while (sStr.size() && isspace((unsigned char)(*(sStr.rbegin()))))
 		sStr.erase(sStr.size() - 1, 1);
-
+	
 	tPos = sStr.begin();
 }
 
@@ -92,18 +92,18 @@ std::vector<std::string> StringBuf::splitByBlank()
 				res.push_back(token); // Add the token
 				token = "";
 			}
-
+			
 			was_space = true;
 			continue;
 		}
-
+		
 		was_space = false;
 		token += *it;
 	}
-
+	
 	// Last token
 	res.push_back(token);
-
+	
 	return res;
 }
 
@@ -119,13 +119,13 @@ std::vector<std::string> StringBuf::splitBy(char c)
 			token = "";
 			continue;
 		}
-
+		
 		token += *it;
 	}
-
+	
 	// Last token
 	res.push_back(token);
-
+	
 	return res;
 }
 
@@ -138,11 +138,11 @@ std::string StringBuf::readUntil(char c)
 		res += *tPos;
 		incPos();
 	}
-
+	
 	// Skip the breaking character
 	if (!atEnd())
 		incPos();
-
+	
 	return res;
 }
 
@@ -155,11 +155,11 @@ std::string StringBuf::readUntil(const std::string& char_array)
 		res += *tPos;
 		incPos();
 	}
-
+	
 	// Skip the breaking character
 	if (!atEnd())
 		incPos();
-
+	
 	return res;
 }
 

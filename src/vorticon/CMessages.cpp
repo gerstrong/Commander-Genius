@@ -14,7 +14,7 @@
 #include "../fileio/CExeFile.h"
 
 CMessages::CMessages() {
-
+	
 }
 
 CMessages::~CMessages() {
@@ -58,34 +58,35 @@ bool CMessages::readData(unsigned char *p_exe, int episode, int version, const s
 	}
 	
 	/*for(unsigned long i=offset_start ; i<offset_end ; i++ )
-	{
-		Text += text_data[i];
-		//Text.push_back(text_data[i]);
-	g_pLogFile->textOut(RED,Text);
-		}
+	 {
+	 Text += text_data[i];
+	 //Text.push_back(text_data[i]);
+	 g_pLogFile->textOut(RED,Text);
+	 }
+	 
+	 delete ExeFile;*/
 	
-	delete ExeFile;*/
-
 	// Now read the stuff and store it to a list
 	for(int pos=offset_start ; pos<offset_end ; pos++)
 	{
 		std::string Text;
-
+		
 		while(p_exe[pos] != 0)
 		{
 			Text += p_exe[pos];
 			pos++;
 		}
-
+		
 		if(!Text.empty()) // not empty
 		{
 			StringList.push_back(Text);
-		g_pLogFile->textOut(RED,Text);
+			g_pLogFile->textOut(RED,Text);
+			g_pLogFile->textOut(RED,StringList.front());
 		}
 	}
-
+	
 	std::list<std::string> :: iterator i;
-
+	
 #include <iostream>
 	for(i=StringList.begin() ; i!=StringList.end() ; i++)
 	{

@@ -39,12 +39,12 @@ int		GetRandomInt(int max); // get a random int from [0,max]
 int		Round(float x);
 
 /*#ifdef _MSC_VER
-float	cos(float _v)  {return cosf(_v); }
-float	sin(float _v)  {return sinf(_v); }
-float	tan(float _v)  {return tanf(_v); }
-float	atan(float _v)  {return atanf(_v); }
-float	sqrt(float _v)  {return sqrtf(_v); }
-#endif*/
+ float	cos(float _v)  {return cosf(_v); }
+ float	sin(float _v)  {return sinf(_v); }
+ float	tan(float _v)  {return tanf(_v); }
+ float	atan(float _v)  {return atanf(_v); }
+ float	sqrt(float _v)  {return sqrtf(_v); }
+ #endif*/
 
 
 float	CalculateDistance(CVec p1, CVec p2);
@@ -91,11 +91,11 @@ public:
 	SquareMatrix(VectorD2<_T> _v1 = VectorD2<_T>(0,0), VectorD2<_T> _v2 = VectorD2<_T>(0,0)) {
 		v1 = _v1; v2 = _v2;
 	}
-
+	
 	static SquareMatrix Identity() {
-		 return SquareMatrix(VectorD2<_T>(1,0), VectorD2<_T>(0,1));
+		return SquareMatrix(VectorD2<_T>(1,0), VectorD2<_T>(0,1));
 	}
-
+	
 	static SquareMatrix RotateMatrix(float angle) {
 		SquareMatrix m;
 		m.v1.x = cos(angle);
@@ -104,7 +104,7 @@ public:
 		m.v2.y = m.v1.x;
 		return m;
 	}
-
+	
 	CVec operator()(const VectorD2<_T>& v) const {
 		return CVec(v.x*v1.x + v.y*v2.x, v.x*v1.y + v.y*v2.y);
 	}
@@ -133,23 +133,23 @@ public:
 		else
 			return SquareMatrix(VectorD2<_T>(v2.y,-v1.y),VectorD2<_T>(-v2.x,v1.x))/tdet;
 	}
-
+	
 	// v1 is the upper-left, v2 the right-bottom
 	bool isInDefinedArea(const VectorD2<_T>& p) const {
 		return v1.x <= p.x && p.x <= v2.x && v1.y <= p.y && p.y <= v2.y;
 	}
-
+	
 	VectorD2<_T> getCenter() const {
 		return (v1 + v2) / 2;
 	}
-
+	
 	SquareMatrix getInsersectionWithArea(const SquareMatrix& a) const {
 		return SquareMatrix(
-			VectorD2<_T>( MAX(a.v1.x, v1.x), MAX(a.v1.y, v1.y) ),
-			VectorD2<_T>( MIN(a.v2.x, v2.x), MIN(a.v2.y, v2.y) )
-			);
+							VectorD2<_T>( MAX(a.v1.x, v1.x), MAX(a.v1.y, v1.y) ),
+							VectorD2<_T>( MIN(a.v2.x, v2.x), MIN(a.v2.y, v2.y) )
+							);
 	}
-
+	
 };
 
 
@@ -162,11 +162,11 @@ public:
 	Parabola(const Parabola& p) { a = p.a; b = p.b; c = p.c; }
 	Parabola(CVec p1, CVec p2, CVec p3);
 	Parabola(CVec p1, float angleP1, CVec p2);
-
+	
 	inline bool operator==(const Parabola& p) const {
 		return (a == p.a && b == p.b && c == p.c);
 	}
-
+	
 	float getLength(CVec p1, CVec p2);
 	float getLength(float pa, float pb);
 	bool isPointAtParabola(CVec p1)  {
@@ -183,12 +183,12 @@ public:
 class SyncedRandom
 {
 public:
-
+	
 	SyncedRandom( unsigned long s = getRandomSeed() )
 	{
 		if (!s)
 			s = 1UL; /* default seed is 1 */
-
+		
   		z1 = LCG (s);
 		if (z1 < 2UL)
 			z1 += 2UL;
@@ -201,7 +201,7 @@ public:
 		z4 = LCG (z3);
 		if (z4 < 128UL)
 			z4 += 128UL;
-
+		
 		/* Calling RNG ten times to satify recurrence condition */
 		getInt(); getInt(); getInt(); getInt();	getInt();
 		getInt(); getInt(); getInt(); getInt();	getInt();
@@ -211,19 +211,19 @@ public:
 	unsigned long getInt()
 	{
 		unsigned long b1, b2, b3, b4;
-
+		
 		b1 = ((((z1 << 6UL) & MASK) ^ z1) >> 13UL);
 		z1 = ((((z1 & 4294967294UL) << 18UL) & MASK) ^ b1);
-
+		
 		b2 = ((((z2 << 2UL) & MASK) ^ z2) >> 27UL);
 		z2 = ((((z2 & 4294967288UL) << 2UL) & MASK) ^ b2);
-
+		
 		b3 = ((((z3 << 13UL) & MASK) ^ z3) >> 21UL);
 		z3 = ((((z3 & 4294967280UL) << 7UL) & MASK) ^ b3);
-
+		
 		b4 = ((((z4 << 3UL) & MASK) ^ z4) >> 12UL);
 		z4 = ((((z4 & 4294967168UL) << 13UL) & MASK) ^ b4);
-
+		
 		return (z1 ^ z2 ^ z3 ^ z4);
 	};
 	
@@ -240,7 +240,7 @@ public:
 		save_z3 = z3;
 		save_z4 = z4;
 	};
-
+	
 	void restore()
 	{
 		z1 = save_z1;
@@ -251,14 +251,14 @@ public:
 	
 	// Returns random seed based on time() and SDL_GetTicks() functions
 	static unsigned long getRandomSeed();
-
+	
 private:
-
+	
 	static const unsigned long MASK = 0xffffffffUL;
 	unsigned long LCG(unsigned long n) { return ((69069UL * n) & MASK); };
 	
 	unsigned long z1, z2, z3, z4;
-
+	
 	unsigned long save_z1, save_z2, save_z3, save_z4;
 };
 

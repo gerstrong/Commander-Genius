@@ -148,27 +148,27 @@ static void scale2x(void* void_dst, unsigned dst_slice, const void* void_src, un
 	unsigned char* dst = (unsigned char*)void_dst;
 	const unsigned char* src = (const unsigned char*)void_src;
 	unsigned count;
-
+	
 	assert(height >= 2);
-
+	
 	count = height;
-
+	
 	stage_scale2x(SCDST(0), SCDST(1), SCSRC(0), SCSRC(0), SCSRC(1), pixel, width);
-
+	
 	dst = SCDST(2);
-
+	
 	count -= 2;
 	while (count) {
 		stage_scale2x(SCDST(0), SCDST(1), SCSRC(0), SCSRC(1), SCSRC(2), pixel, width);
-
+		
 		dst = SCDST(2);
 		src = SCSRC(1);
-
+		
 		--count;
 	}
-
+	
 	stage_scale2x(SCDST(0), SCDST(1), SCSRC(0), SCSRC(1), SCSRC(1), pixel, width);
-
+	
 #if defined(__GNUC__) && defined(__i386__)
 	scale2x_mmx_emms();
 #endif
@@ -193,27 +193,27 @@ static void scale2x3(void* void_dst, unsigned dst_slice, const void* void_src, u
 	unsigned char* dst = (unsigned char*)void_dst;
 	const unsigned char* src = (const unsigned char*)void_src;
 	unsigned count;
-
+	
 	assert(height >= 2);
-
+	
 	count = height;
-
+	
 	stage_scale2x3(SCDST(0), SCDST(1), SCDST(2), SCSRC(0), SCSRC(0), SCSRC(1), pixel, width);
-
+	
 	dst = SCDST(3);
-
+	
 	count -= 2;
 	while (count) {
 		stage_scale2x3(SCDST(0), SCDST(1), SCDST(2), SCSRC(0), SCSRC(1), SCSRC(2), pixel, width);
-
+		
 		dst = SCDST(3);
 		src = SCSRC(1);
-
+		
 		--count;
 	}
-
+	
 	stage_scale2x3(SCDST(0), SCDST(1), SCDST(2), SCSRC(0), SCSRC(1), SCSRC(1), pixel, width);
-
+	
 #if defined(__GNUC__) && defined(__i386__)
 	scale2x_mmx_emms();
 #endif
@@ -238,27 +238,27 @@ static void scale2x4(void* void_dst, unsigned dst_slice, const void* void_src, u
 	unsigned char* dst = (unsigned char*)void_dst;
 	const unsigned char* src = (const unsigned char*)void_src;
 	unsigned count;
-
+	
 	assert(height >= 2);
-
+	
 	count = height;
-
+	
 	stage_scale2x4(SCDST(0), SCDST(1), SCDST(2), SCDST(3), SCSRC(0), SCSRC(0), SCSRC(1), pixel, width);
-
+	
 	dst = SCDST(4);
-
+	
 	count -= 2;
 	while (count) {
 		stage_scale2x4(SCDST(0), SCDST(1), SCDST(2), SCDST(3), SCSRC(0), SCSRC(1), SCSRC(2), pixel, width);
-
+		
 		dst = SCDST(4);
 		src = SCSRC(1);
-
+		
 		--count;
 	}
-
+	
 	stage_scale2x4(SCDST(0), SCDST(1), SCDST(2), SCDST(3), SCSRC(0), SCSRC(1), SCSRC(1), pixel, width);
-
+	
 #if defined(__GNUC__) && defined(__i386__)
 	scale2x_mmx_emms();
 #endif
@@ -283,25 +283,25 @@ static void scale3x(void* void_dst, unsigned dst_slice, const void* void_src, un
 	unsigned char* dst = (unsigned char*)void_dst;
 	const unsigned char* src = (const unsigned char*)void_src;
 	unsigned count;
-
+	
 	assert(height >= 2);
-
+	
 	count = height;
-
+	
 	stage_scale3x(SCDST(0), SCDST(1), SCDST(2), SCSRC(0), SCSRC(0), SCSRC(1), pixel, width);
-
+	
 	dst = SCDST(3);
-
+	
 	count -= 2;
 	while (count) {
 		stage_scale3x(SCDST(0), SCDST(1), SCDST(2), SCSRC(0), SCSRC(1), SCSRC(2), pixel, width);
-
+		
 		dst = SCDST(3);
 		src = SCSRC(1);
-
+		
 		--count;
 	}
-
+	
 	stage_scale3x(SCDST(0), SCDST(1), SCDST(2), SCSRC(0), SCSRC(1), SCSRC(1), pixel, width);
 }
 
@@ -332,11 +332,11 @@ static void scale4x_buf(void* void_dst, unsigned dst_slice, void* void_mid, unsi
 	const unsigned char* src = (const unsigned char*)void_src;
 	unsigned count;
 	unsigned char* mid[6];
-
+	
 	assert(height >= 4);
-
+	
 	count = height;
-
+	
 	/* set the 6 buffer pointers */
 	mid[0] = (unsigned char*)void_mid;
 	mid[1] = mid[0] + mid_slice;
@@ -344,28 +344,28 @@ static void scale4x_buf(void* void_dst, unsigned dst_slice, void* void_mid, unsi
 	mid[3] = mid[2] + mid_slice;
 	mid[4] = mid[3] + mid_slice;
 	mid[5] = mid[4] + mid_slice;
-
+	
 	stage_scale2x(SCMID(-2+6), SCMID(-1+6), SCSRC(0), SCSRC(0), SCSRC(1), pixel, width);
 	stage_scale2x(SCMID(0), SCMID(1), SCSRC(0), SCSRC(1), SCSRC(2), pixel, width);
 	stage_scale2x(SCMID(2), SCMID(3), SCSRC(1), SCSRC(2), SCSRC(3), pixel, width);
 	stage_scale4x(SCDST(0), SCDST(1), SCDST(2), SCDST(3), SCMID(-2+6), SCMID(-2+6), SCMID(-1+6), SCMID(0), pixel, width);
-
+	
 	dst = SCDST(4);
-
+	
 	stage_scale4x(SCDST(0), SCDST(1), SCDST(2), SCDST(3), SCMID(-1+6), SCMID(0), SCMID(1), SCMID(2), pixel, width);
-
+	
 	dst = SCDST(4);
-
+	
 	count -= 4;
 	while (count) {
 		unsigned char* tmp;
-
+		
 		stage_scale2x(SCMID(4), SCMID(5), SCSRC(2), SCSRC(3), SCSRC(4), pixel, width);
 		stage_scale4x(SCDST(0), SCDST(1), SCDST(2), SCDST(3), SCMID(1), SCMID(2), SCMID(3), SCMID(4), pixel, width);
-
+		
 		dst = SCDST(4);
 		src = SCSRC(1);
-
+		
 		tmp = SCMID(0); /* shift by 2 position */
 		SCMID(0) = SCMID(2);
 		SCMID(2) = SCMID(4);
@@ -374,17 +374,17 @@ static void scale4x_buf(void* void_dst, unsigned dst_slice, void* void_mid, unsi
 		SCMID(1) = SCMID(3);
 		SCMID(3) = SCMID(5);
 		SCMID(5) = tmp;
-
+		
 		--count;
 	}
-
+	
 	stage_scale2x(SCMID(4), SCMID(5), SCSRC(2), SCSRC(3), SCSRC(3), pixel, width);
 	stage_scale4x(SCDST(0), SCDST(1), SCDST(2), SCDST(3), SCMID(1), SCMID(2), SCMID(3), SCMID(4), pixel, width);
-
+	
 	dst = SCDST(4);
-
+	
 	stage_scale4x(SCDST(0), SCDST(1), SCDST(2), SCDST(3), SCMID(3), SCMID(4), SCMID(5), SCMID(5), pixel, width);
-
+	
 #if defined(__GNUC__) && defined(__i386__)
 	scale2x_mmx_emms();
 #endif
@@ -410,24 +410,24 @@ static void scale4x(void* void_dst, unsigned dst_slice, const void* void_src, un
 {
 	unsigned mid_slice;
 	void* mid;
-
+	
 	mid_slice = 2 * pixel * width; /* required space for 1 row buffer */
-
+	
 	mid_slice = (mid_slice + 0x7) & ~0x7; /* align to 8 bytes */
-
+	
 #if HAVE_ALLOCA
 	mid = alloca(6 * mid_slice); /* allocate space for 6 row buffers */
-
+	
 	assert(mid != 0); /* alloca should never fails */
 #else
 	mid = malloc(6 * mid_slice); /* allocate space for 6 row buffers */
-
+	
 	if (!mid)
 		return;
 #endif
-
+	
 	scale4x_buf(void_dst, dst_slice, mid, mid_slice, void_src, src_slice, pixel, width, height);
-
+	
 #if !HAVE_ALLOCA
 	free(mid);
 #endif
@@ -447,29 +447,29 @@ int scale_precondition(unsigned scale, unsigned pixel, unsigned width, unsigned 
 {
 	if (pixel != 1 && pixel != 2 && pixel != 4)
 		return -1;
-
+	
 	switch (scale) {
-	case 202 :
-	case 203 :
-	case 204 :
-	case 2 :
-	case 303 :
-	case 3 :
-		if (height < 2)
+		case 202 :
+		case 203 :
+		case 204 :
+		case 2 :
+		case 303 :
+		case 3 :
+			if (height < 2)
+				return -1;
+			break;
+		case 404 :
+		case 4 :
+			if (height < 4)
+				return -1;
+			break;
+		default:
 			return -1;
-		break;
-	case 404 :
-	case 4 :
-		if (height < 4)
-			return -1;
-		break;
-	default:
-		return -1;
 	}
-
+	
 	if (width < 2)
 		return -1;
-
+	
 	return 0;
 }
 
@@ -488,24 +488,24 @@ int scale_precondition(unsigned scale, unsigned pixel, unsigned width, unsigned 
 void scale(unsigned scale, void* void_dst, unsigned dst_slice, const void* void_src, unsigned src_slice, unsigned pixel, unsigned width, unsigned height)
 {
 	switch (scale) {
-	case 202 :
-	case 2 :
-		scale2x(void_dst, dst_slice, void_src, src_slice, pixel, width, height);
-		break;
-	case 203 :
-		scale2x3(void_dst, dst_slice, void_src, src_slice, pixel, width, height);
-		break;
-	case 204 :
-		scale2x4(void_dst, dst_slice, void_src, src_slice, pixel, width, height);
-		break;
-	case 303 :
-	case 3 :
-		scale3x(void_dst, dst_slice, void_src, src_slice, pixel, width, height);
-		break;
-	case 404 :
-	case 4 :
-		scale4x(void_dst, dst_slice, void_src, src_slice, pixel, width, height);
-		break;
+		case 202 :
+		case 2 :
+			scale2x(void_dst, dst_slice, void_src, src_slice, pixel, width, height);
+			break;
+		case 203 :
+			scale2x3(void_dst, dst_slice, void_src, src_slice, pixel, width, height);
+			break;
+		case 204 :
+			scale2x4(void_dst, dst_slice, void_src, src_slice, pixel, width, height);
+			break;
+		case 303 :
+		case 3 :
+			scale3x(void_dst, dst_slice, void_src, src_slice, pixel, width, height);
+			break;
+		case 404 :
+		case 4 :
+			scale4x(void_dst, dst_slice, void_src, src_slice, pixel, width, height);
+			break;
 	}
 }
 

@@ -18,15 +18,10 @@ class CMessages {
 public:
 	CMessages();
 	virtual ~CMessages();
-
+	
 	bool readData(unsigned char *buf, int episode, int version, const std::string& DataDirectory);
 	char *getString(const char *IDtext);
 	
-	struct stEXEString {
-		int start;
-		int end;
-	};
-
 private:
 	std::list<std::string> StringList;
 	std::list<std::string> StringIDList;

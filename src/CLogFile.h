@@ -27,10 +27,10 @@ enum FONTCOLORS
 class CLogFile : public CSingleton <CLogFile>
 {
 public:
-
+	
 	CLogFile();
 	virtual ~CLogFile();
-
+	
 	void CreateLogfile	(const char *LogName);
 	void WriteTopic	(const char *Topic, int Size);
 	void textOut		(const std::string& Text);
@@ -40,11 +40,11 @@ public:
 	void ftextOut		(FONTCOLORS Color, const char *Text, ...);
 	void fltextOut		(FONTCOLORS Color, bool List, const char *Text, ...);
 	void FunctionResult	(const char *Name, bool Result);
-
+	
 private:
-
+	
 	FILE *m_Logfile;
-
+	
     std::string removeHTML(const std::string& input);
 };
 

@@ -1,11 +1,11 @@
 /*
-	OpenLieroX
-
-	general iterator interface
-
-	created by Albert Zeyer on 27-05-2008
-	code under LGPL
-*/
+ OpenLieroX
+ 
+ general iterator interface
+ 
+ created by Albert Zeyer on 27-05-2008
+ code under LGPL
+ */
 
 #ifndef __OLX_ITERATOR_H__
 #define __OLX_ITERATOR_H__
@@ -29,7 +29,7 @@ public:
 	bool operator!=(const Iterator& other) const { return ! ((*this) == other); }
 	virtual _Obj get() = 0; // this has to return a valid obj if valid == true
 	//_Obj* operator->() { return &get(); }
-
+	
 	typedef ::Ref< Iterator > Ref;
 };
 

@@ -37,7 +37,7 @@ struct Logger {
 	Logger(int o, int ingame, int callst, const std::string& p);
 	~Logger();
 	void lock(); void unlock();
-
+	
 	struct LockedStreamWrapper {
 		Logger* logger;
 		LockedStreamWrapper(Logger* l) : logger(l) {}

@@ -34,8 +34,8 @@ bool CTileLoader::setProperOffset()
 				case 110: m_offset = 0x131F8; break;
 				case 131: m_offset = 0x130F8; break;
 				case 134: m_offset = 0x130F8; // This is incorrect! Sure?
-						  g_pLogFile->textOut(PURPLE,"If you want to use Episode 1 Version 1.34, assure that is was unpacked before (with unpklite for example).<br>");
-						  break;
+					g_pLogFile->textOut(PURPLE,"If you want to use Episode 1 Version 1.34, assure that is was unpacked before (with unpklite for example).<br>");
+					break;
 			}
 			break;
 		}
@@ -66,7 +66,7 @@ bool CTileLoader::setProperOffset()
 		}
 	}
 	m_data += m_offset;
-
+	
 	return true;
 }
 
@@ -74,17 +74,17 @@ bool CTileLoader::load()
 {
 	std::string fname;
 	int j; // standard counters
-
+	
 	if(!setProperOffset()) return false;
-
+	
 	mp_TileProperty = new stTile[m_numtiles];
-
+	
 	if(!mp_TileProperty)
 	{
-	     g_pLogFile->textOut(RED,"TileLoader: Memory couldn't be allocated for this version of game!<br>");
-	     return false;
+		g_pLogFile->textOut(RED,"TileLoader: Memory couldn't be allocated for this version of game!<br>");
+		return false;
 	}
-
+	
 	for(j=0 ; j < m_numtiles ; j++)
 	{
 		mp_TileProperty[j].masktile = 0;
@@ -100,12 +100,12 @@ bool CTileLoader::load()
 		mp_TileProperty[j].bleft = m_data[10*(m_numtiles)+2*j];
 		mp_TileProperty[j].bleft += m_data[10*(m_numtiles)+2*j+1] << 8;
 	}
-
+	
 	int value;
 	for( j=0 ; j < m_numtiles ; )
 	{
 		value = mp_TileProperty[j].animation;
-
+		
 		// stuff for animated tiles
 		if(value == 1)
 		{
@@ -124,10 +124,10 @@ bool CTileLoader::load()
 			mp_TileProperty[j++].animOffset = 3;   // starting offset from the base frame
 		}
 	}
-
+	
 	// This function assigns the correct tiles that have to be changed
 	assignChangeTileAttribute();
-
+	
 	return true;
 }
 
@@ -138,13 +138,13 @@ void CTileLoader::assignChangeTileAttribute()
 	// Everything to zero in order to avoid bugs in mods
 	for(int i=0 ; i<m_numtiles ; i++)
 		mp_TileProperty[i].chgtile = 0;
-
+	
 	// At any other case, than the special ones, the tile is always 143 for pickuppable items
 	// 17 is tile for an exit. Until row 19, this seems to be valid
 	for(int i=0 ; i<m_numtiles ; i++)
 		if(canbePickedup(i) || isaDoor(i) )
 			mp_TileProperty[i].chgtile = 143;
-
+	
 	switch(m_episode)
 	{
 		case 1:
@@ -154,14 +154,14 @@ void CTileLoader::assignChangeTileAttribute()
 			for(int i=38*13 ; i<39*13 ; i++) // Workaround for silcar 1. Row 38
 				if( canbePickedup(i) )
 					mp_TileProperty[i].chgtile = 439;
-
+			
 			for(int i=35*13 ; i<36*13 ; i++) // Workaround for silcar 4. Row 35
 				if( canbePickedup(i) )
 					mp_TileProperty[i].chgtile = 335;
-
+			
 			for(int i=23*13 ; i<24*13 ; i++) // Workaround in Level 12 of Episode 2, where the tiles are solid after a taken item.
-					mp_TileProperty[i].chgtile = 276;   // Row 23
-
+				mp_TileProperty[i].chgtile = 276;   // Row 23
+			
 			break;
 		}
 		case 3:
@@ -172,12 +172,12 @@ void CTileLoader::assignChangeTileAttribute()
 				// Only items!!
 				if(canbePickedup(i))
 					mp_TileProperty[i].chgtile = (i/13)*13;
-
+				
 				// Only for Doors! Tile is always 182
 				if(isaDoor(i))
 					mp_TileProperty[i].chgtile = 182;
 			}
-
+			
 			break;
 		}
 	}
@@ -186,8 +186,8 @@ void CTileLoader::assignChangeTileAttribute()
 bool CTileLoader::canbePickedup(int tile)
 {
 	return ((mp_TileProperty[tile].behaviour >= 6 &&
-			mp_TileProperty[tile].behaviour <= 21 &&
-			mp_TileProperty[tile].behaviour != 17) ||
+			 mp_TileProperty[tile].behaviour <= 21 &&
+			 mp_TileProperty[tile].behaviour != 17) ||
 			mp_TileProperty[tile].behaviour == 27 ||
 			mp_TileProperty[tile].behaviour == 28);
 }
@@ -198,5 +198,5 @@ bool CTileLoader::isaDoor(int tile)
 }
 
 CTileLoader::~CTileLoader() {
-
+	
 }

@@ -23,7 +23,7 @@ public:
 	void saveGameCfg();
 	void loadDefaultGameCfg();
 	void setOption( int opt, const std::string &name, char value);
-
+	
 private:
 	stOption *mp_option;
 };

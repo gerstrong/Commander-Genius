@@ -12,7 +12,7 @@
 
 // Common Ending functions
 void eseq_showmsg(const std::string& text, int boxleft, int boxtop,
-		int boxwidth, int boxheight, bool autodismiss, SDL_Surface *spritesurface = NULL);
+				  int boxwidth, int boxheight, bool autodismiss, SDL_Surface *spritesurface = NULL);
 
 // For Episode 1
 int eseq1_ShipFlys(stCloneKeenPlus *pCKP, bool flyback);

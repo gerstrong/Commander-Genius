@@ -31,11 +31,11 @@ void CDlgObject::create(Uint8 type, Uint16 ID, Uint16 x, Uint16 y, const std::st
 {
 	m_type = type;
 	m_ID = ID;
-
+	
 	m_x = x;
 	m_y = y;
-
-
+	
+	
 	if( m_type == DLG_OBJ_OPTION_TEXT || m_type == DLG_OBJ_DISABLED || m_type == DLG_OBJ_TEXT )
 	{
 		m_selectable = (m_type == DLG_OBJ_OPTION_TEXT) ? true : false;

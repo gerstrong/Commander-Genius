@@ -18,16 +18,16 @@ class CMapLoader {
 public:
 	CMapLoader(CMap* p_map, CPlayer *p_Player = NULL);
 	virtual ~CMapLoader();
-
+	
 	bool load( Uint8 episode, Uint8 level, const std::string& path );
-
+	
 	void addTile( Uint16 t, Uint16 x, Uint16 y );
 	void addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episode);
 	void addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode, int level);
-
+	
 	bool m_checkpointset;
 	std::vector<CObject> *mp_objvect;
-
+	
 private:
 	CMap *mp_map;
 	CPlayer *mp_Player;

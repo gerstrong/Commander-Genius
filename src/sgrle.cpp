@@ -1,11 +1,11 @@
 /* SGRLE.C
-  RLE compression and decompression functions for the SGRLE format...
-  These are used for saved games (hence the name SG RLE). Could be used
-  for other things too, I guess.
-
-  After opening a file for decompression you must call sgrle_reset() before
-  the first time you use sgrle_decompress().
-*/
+ RLE compression and decompression functions for the SGRLE format...
+ These are used for saved games (hence the name SG RLE). Could be used
+ for other things too, I guess.
+ 
+ After opening a file for decompression you must call sgrle_reset() before
+ the first time you use sgrle_decompress().
+ */
 
 #include "keen.h"
 #include "fileio.h"
@@ -50,18 +50,18 @@ void sgrle_initdecompression(void)
 /* file pointer *fp to the memory area pointed to by *ptr. */
 char sgrle_decompress(FILE *fp, unsigned char *ptr, unsigned long nbytes)
 {
-unsigned long i;
-unsigned long bytes;
-
+	unsigned long i;
+	unsigned long bytes;
+	
 	bytes = fgetl(fp);
 	if (bytes != nbytes)
 	{
 		g_pLogFile->ftextOut("sgrle_decompress: bytes stored != bytes asked for ($%08x / $%08x)\n", bytes, nbytes);
 		return 1;
 	}
-
+	
 	sgrle_runlen = 0;
-
+	
 	for(i=0;i<nbytes;i++)
 		ptr[i] = sgrle_get_next_byte(fp);
 	return 0;
@@ -71,20 +71,20 @@ unsigned long bytes;
 /* using the SGRLE algorithm and saves it to file *fp */
 void sgrle_compress(FILE *fp, unsigned char *ptr, unsigned long nbytes)
 {
-int byt;
-unsigned long compress_index, run_ahead_index;
-unsigned int runlength;
-int readbyt;
-unsigned int i;
-
+	int byt;
+	unsigned long compress_index, run_ahead_index;
+	unsigned int runlength;
+	int readbyt;
+	unsigned int i;
+	
 	fputl(nbytes, fp);
-
+	
 	compress_index = 0;
 	while(compress_index < nbytes)
 	{
 		// read a byte from the buffer
 		readbyt = ptr[compress_index];
-
+		
 		/* is the next byte the same? if so find the length of the run */
 		if ((compress_index+1 < nbytes) && ptr[compress_index+1]==readbyt)
 		{
@@ -94,7 +94,7 @@ unsigned int i;
 			do
 			{
 				byt = ptr[run_ahead_index];
-
+				
 				// the run is over when either the byte is different
 				// or run_ahead_index is at the end of the buffer,
 				// or runlength is approaching FFFF (max possible RLE run length)
@@ -105,7 +105,7 @@ unsigned int i;
 				run_ahead_index++;
 				runlength++;
 			} while(1);
-
+			
 			// it takes 4 bytes to code a RLE run, so if the run is less than
 			// 4 bytes, it would actually be smaller if we didn't compress it
 			if (runlength < 4 && readbyt != SGRLE_RLEMARKER)
@@ -141,12 +141,12 @@ unsigned int i;
 			compress_index++;
 		}
 	}
-
+	
 }
 
 /* resets the decompression engine. (must call this before the first
-   time you use sgrle_decompress(), each time you open a new file) */
+ time you use sgrle_decompress(), each time you open a new file) */
 void sgrle_reset(void)
 {
-  sgrle_runlen = 0;
+	sgrle_runlen = 0;
 }

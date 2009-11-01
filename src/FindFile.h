@@ -46,8 +46,8 @@
 #	include <windows.h>
 #	include <io.h>
 #	include <direct.h>
-	// wrappers to provide the standards
-	inline int mkdir(const char *path, int mode) { return _mkdir(Utf8ToSystemNative(path).c_str()); }
+// wrappers to provide the standards
+inline int mkdir(const char *path, int mode) { return _mkdir(Utf8ToSystemNative(path).c_str()); }
 #	define stat _stat
 #ifndef S_ISREG
 #	define S_IFLNK 0120000
@@ -133,13 +133,13 @@ bool GetExactFileName(const std::string& abs_searchname, std::string& filename);
 
 inline bool GetExactFileName(const std::string& abs_searchname, std::string& filename) {
 	filename = abs_searchname;
-
+	
 	if(abs_searchname.size() == 0) {
 		return true;
 	}
-
+	
 	ReplaceFileVariables(filename);
-
+	
 	// Remove the ending slash, else stat will fail
 	if (filename[filename.length()-1]== '/' || filename[filename.length()-1]== '\\')
 		// Don't remove, if this is a root directory, else stat will fail (really crazy)
@@ -147,14 +147,14 @@ inline bool GetExactFileName(const std::string& abs_searchname, std::string& fil
 		if (filename[filename.length()-2] != ':')
 #endif
 			filename.erase(filename.length()-1);
-
+	
 	struct stat finfo;
-
+	
 	if(stat(Utf8ToSystemNative(filename).c_str(), &finfo) != 0) {
 		// problems stating file
 		return false;
 	}
-
+	
 	// we got some info, so there is something ...
 	return true;
 }
@@ -245,7 +245,7 @@ void ForEachSearchpath(_handler& handler) {
 	std::list<std::string> handled_dirs;
 	std::string path;
 	searchpathlist::const_iterator i;
-
+	
 	{
 		const std::string* themeDir = getSpecialSearchPathForTheme();
 		if(themeDir) {
@@ -253,20 +253,20 @@ void ForEachSearchpath(_handler& handler) {
 			handled_dirs.push_back(*themeDir);
 		}
 	}
-
+	
 	for(
-			i = tSearchPaths.begin();
-			i != tSearchPaths.end(); i++) {
+		i = tSearchPaths.begin();
+		i != tSearchPaths.end(); i++) {
 		path = *i;
 		if(!PathListIncludes(handled_dirs, path)) {
 			if(!handler(path + "/")) return;
 			handled_dirs.push_back(path);
 		}
 	}
-
+	
 	for(
-			i = basesearchpaths.begin();
-			i != basesearchpaths.end(); i++) {
+		i = basesearchpaths.begin();
+		i != basesearchpaths.end(); i++) {
 		if(!FileListIncludesExact(&tSearchPaths, *i)) {
 			path = *i;
 			if(!PathListIncludes(handled_dirs, path)) {
@@ -287,22 +287,22 @@ public:
 	const std::string& namefilter;
 	const filemodes_t modefilter;
 	_filehandler& filehandler;
-
+	
 	FindFilesHandler(
-			const std::string& dir_,
-			const std::string& namefilter_,
-			const filemodes_t modefilter_,
-			_filehandler& filehandler_) :
-		dir(dir_),
-		namefilter(namefilter_),
-		modefilter(modefilter_),
-		filehandler(filehandler_) {}
-
+					 const std::string& dir_,
+					 const std::string& namefilter_,
+					 const filemodes_t modefilter_,
+					 _filehandler& filehandler_) :
+	dir(dir_),
+	namefilter(namefilter_),
+	modefilter(modefilter_),
+	filehandler(filehandler_) {}
+	
 	bool operator() (const std::string& path) {
 		std::string abs_path = path;
 		if(!GetExactFileName(path + dir, abs_path)) return true;
 		bool ret = true;
-
+		
 #ifdef WIN32  // uses UTF16
 		struct _finddata_t fileinfo;
 		abs_path.append("/");
@@ -311,20 +311,20 @@ public:
 			//If file is not self-directory or parent-directory
 			if(fileinfo.name[0] != '.' || (fileinfo.name[1] != '\0' && (fileinfo.name[1] != '.' || fileinfo.name[2] != '\0'))) {
 				if((!(fileinfo.attrib&_A_SUBDIR) && modefilter&FM_REG)
-				|| fileinfo.attrib&_A_SUBDIR && modefilter&FM_DIR)
+				   || fileinfo.attrib&_A_SUBDIR && modefilter&FM_DIR)
 					if(!filehandler(abs_path + SystemNativeToUtf8(fileinfo.name))) {
 						ret = false;
 						break;
 					}
 			}
-
+			
 			if(_findnext(handle,&fileinfo))
 				break;
 		}
-
+		
 		_findclose(handle);
 #else /* not WIN32 */
-
+		
 		std::string filename;
 		dirent* entry;
 		struct stat s;
@@ -336,8 +336,8 @@ public:
 				filename = abs_path + "/" + entry->d_name;
 				if(stat(filename.c_str(), &s) == 0)
 					if((S_ISREG(s.st_mode) && modefilter&FM_REG)
-					|| (S_ISDIR(s.st_mode) && modefilter&FM_DIR)
-					|| (S_ISLNK(s.st_mode) && modefilter&FM_LNK))
+					   || (S_ISDIR(s.st_mode) && modefilter&FM_DIR)
+					   || (S_ISLNK(s.st_mode) && modefilter&FM_LNK))
 						if(!filehandler(filename)) {
 							ret = false;
 							break;
@@ -356,12 +356,12 @@ public:
 // if it returns false, it will break
 template<typename _handler>
 void FindFiles(
-	_handler& handler,
-	const std::string& dir,
-	bool absolutePath = false,
-	const filemodes_t modefilter = -1,
-	const std::string& namefilter = ""
-) {
+			   _handler& handler,
+			   const std::string& dir,
+			   bool absolutePath = false,
+			   const filemodes_t modefilter = -1,
+			   const std::string& namefilter = ""
+			   ) {
 	if(namefilter != "*" && namefilter != "")
 		warnings << "FindFiles: filter " << namefilter <<" isn't handled yet" << endl;
 	if(absolutePath)
@@ -385,12 +385,12 @@ struct GetFileList_FileListAdder {
 
 template <typename _List, typename _CheckFct>
 void GetFileList(
-	_List& filelist,
-	_CheckFct& checkFct,
-	const std::string& dir,
-	bool absolutePath = false,
-	const filemodes_t modefilter = -1,
-	const std::string& namefilter = "")
+				 _List& filelist,
+				 _CheckFct& checkFct,
+				 const std::string& dir,
+				 bool absolutePath = false,
+				 const filemodes_t modefilter = -1,
+				 const std::string& namefilter = "")
 {
 	GetFileList_FileListAdder<_List,_CheckFct> adder(checkFct, filelist);
 	FindFiles(adder, dir, absolutePath, modefilter, namefilter);
@@ -465,7 +465,7 @@ public:
 				  const filemodes_t _modefilter = FM_REG,
 				  const std::string& _namefilter = "")
 	: FileListCacheIntf(_name), dir(_dir), absolutePath(_absPath), modefilter(_modefilter), namefilter(_namefilter) {}
-
+	
 	virtual void update() {
 		static _CheckFct fct;
 		FileList newList;
@@ -493,7 +493,7 @@ inline bool StatFile( const std::string & file, struct stat * st )
 		return false;
 	if( stat( Utf8ToSystemNative(fname).c_str(), st ) != 0 )
 		return false;
-
+	
 	return true;
 }
 

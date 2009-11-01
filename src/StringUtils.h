@@ -1,12 +1,12 @@
 /*
-	OpenLieroX
-
-	string utilities
-	
-	code under LGPL
-	created 01-05-2007
-	by Albert Zeyer and Dark Charlie
-*/
+ OpenLieroX
+ 
+ string utilities
+ 
+ code under LGPL
+ created 01-05-2007
+ by Albert Zeyer and Dark Charlie
+ */
 
 #ifndef __STRINGUTILS_H__
 #define __STRINGUTILS_H__
@@ -30,42 +30,42 @@
 // Secure c-string handling macros
 // WARNING: don't use expressions like buf[i++] with the macros, because the "i" variable will be incremented twice in some macros!
 #define		fix_markend(chrarray) \
-				chrarray[sizeof(chrarray)-1] = '\0';
+chrarray[sizeof(chrarray)-1] = '\0';
 #define		fix_strnlen(chrarray) \
-				strnlen(chrarray,sizeof(chrarray))
+strnlen(chrarray,sizeof(chrarray))
 #define		fix_strncpy(chrarray, src) \
-			{	strncpy(chrarray, src, sizeof(chrarray)); \
-			 	chrarray[sizeof(chrarray)-1] = '\0'; }
+{	strncpy(chrarray, src, sizeof(chrarray)); \
+chrarray[sizeof(chrarray)-1] = '\0'; }
 #define		fix_strncat(chrarray, src) \
-			{	size_t destlen = strnlen(chrarray, sizeof(chrarray)); \
-				strncpy(&chrarray[destlen], src, sizeof(chrarray)-destlen); \
-				chrarray[sizeof(chrarray)-1] = '\0'; }
+{	size_t destlen = strnlen(chrarray, sizeof(chrarray)); \
+strncpy(&chrarray[destlen], src, sizeof(chrarray)-destlen); \
+chrarray[sizeof(chrarray)-1] = '\0'; }
 #define		dyn_markend(dest, len) \
-				dest[len-1] = '\0';
+dest[len-1] = '\0';
 #define		dyn_strncpy(dest, src, len) \
-			{	strncpy(dest, src, len); \
-				dest[len-1] = '\0'; }
+{	strncpy(dest, src, len); \
+dest[len-1] = '\0'; }
 #define		dyn_strncat(dest, src, len) \
-			{	size_t destlen = strnlen(dest, len); \
-				strncpy(&dest[destlen], src, len-destlen); \
-				dest[len-1] = '\0'; }
+{	size_t destlen = strnlen(dest, len); \
+strncpy(&dest[destlen], src, len-destlen); \
+dest[len-1] = '\0'; }
 
 
 // Strnlen definition for compilers that don't have it
 #if !defined(__USE_GNU) && _MSC_VER <= 1200
-	inline size_t strnlen(const char *str, size_t maxlen) {
-		register size_t i;
-		for(i = 0; (i < maxlen) && str[i]; ++i) {}
-		return i;
-	}
+inline size_t strnlen(const char *str, size_t maxlen) {
+	register size_t i;
+	for(i = 0; (i < maxlen) && str[i]; ++i) {}
+	return i;
+}
 #endif
 
 // Misc cross-compiler compatibility problem solutions
 #ifdef WIN32
 #if (defined(_MSC_VER) && (_MSC_VER <= 1200))
-	inline int strncasecmp(const char *str1, const char *str2, size_t l) {
-		return _strnicmp(str1, str2, l);
-	}
+inline int strncasecmp(const char *str1, const char *str2, size_t l) {
+	return _strnicmp(str1, str2, l);
+}
 #endif
 #	define vsnprintf _vsnprintf
 #	define snprintf	 _snprintf
@@ -94,12 +94,12 @@ int chrcasecmp(const char c1, const char c2);
 inline char* itoa(int val, char* buf, int base) {
 	int i = 29; // TODO: bad style
 	buf[i+1] = '\0';
-
+	
     do {
         buf = "0123456789abcdefghijklmnopqrstuvwxyz"[val % base] + buf;
         --i, val /= base;
     } while(val && i);
-
+	
     return &buf[i+1];
 }
 
@@ -290,18 +290,18 @@ inline std::string ftoa(float val, int precision = -1)
 			res = res.substr(0, dotpos + precision);
 		}
 	}
-
+	
 	return res;
 }
 
 inline std::string itoa(unsigned long num, short base=10)  {
 	std::string buf;
-
+	
 	do {	
 		buf = "0123456789abcdefghijklmnopqrstuvwxyz"[num % base] + buf;
 		num /= base;
 	} while(num);
-
+	
 	return buf;
 }
 
@@ -320,12 +320,12 @@ inline std::string itoa(unsigned int num, short base=10)  { return itoa((unsigne
 #ifdef ULLONG_MAX
 inline std::string itoa(unsigned long long num, short base=10)  {
 	std::string buf;
-
+	
 	do {	
 		buf = "0123456789abcdefghijklmnopqrstuvwxyz"[num % base] + buf;
 		num /= base;
 	} while(num);
-
+	
 	return buf;
 }
 #endif
@@ -354,7 +354,7 @@ struct stringcaseless {
 struct const_string_iterator {
 	const std::string& str;
 	size_t pos;
-
+	
 	const_string_iterator(const std::string& s, size_t p = 0) : str(s), pos(p) {}
 	const_string_iterator& operator++() { pos++; return *this; }
 	const_string_iterator& operator--() { assert(pos > 0); pos--; return *this; }
@@ -363,7 +363,7 @@ struct const_string_iterator {
 		return &str == &i.str && (pos == i.pos || (pos > str.size() && i.pos > str.size()));
 	}
 	bool operator!=(const const_string_iterator& i) const { return !(*this == i); }
-
+	
 	char operator*() const { return str[pos]; }
 };
 

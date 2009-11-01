@@ -1,12 +1,12 @@
 /*
-	OpenLieroX
-
-	various utilities
-
-	code under LGPL
-	created 01-05-2007
-	by Albert Zeyer and Dark Charlie
-*/
+ OpenLieroX
+ 
+ various utilities
+ 
+ code under LGPL
+ created 01-05-2007
+ by Albert Zeyer and Dark Charlie
+ */
 
 #ifndef __UTILS_H__
 #define __UTILS_H__
@@ -25,8 +25,8 @@ bool isSameType(const _src& obj1, const _dst& obj2) {
 
 
 /*
-	some very basic math functions
-*/
+ some very basic math functions
+ */
 
 
 template <class Iter> void SafeAdvance(Iter& it, size_t count, const Iter& end)  {

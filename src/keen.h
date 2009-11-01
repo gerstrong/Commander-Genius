@@ -6,7 +6,7 @@
 #include <cstdlib>
 
 #ifdef TARGET_WIN32
-  #include <windows.h>
+#include <windows.h>
 #endif
 
 #include "vorticon/sounds.h"
@@ -56,40 +56,40 @@
 #define BLITBUF_XSIZE  320
 #define BLITBUF_YSIZE  200
 #define BLITBUF_MEMSIZE ((BLITBUF_XSIZE)*(BLITBUF_YSIZE+30))
- // for each entry in the animtileinuse array that is nonzero, that
- // location on the display is an animated tile which is currently registered
- // in animtiles[]. Used in map_draw_hstripe and map_draw_vstripe.
- // When drawing a new stripe over one that previously contained an animated
- // tile, this lets it know it needs to unregister the animated tile that
- // used to be there. the nonzero value corresponds to the associated entry
- // in animtiles[]. the x,y pixel position is the index in here * 16.
- #define ATILEINUSE_SIZEX               33
- #define ATILEINUSE_SIZEY               33
+// for each entry in the animtileinuse array that is nonzero, that
+// location on the display is an animated tile which is currently registered
+// in animtiles[]. Used in map_draw_hstripe and map_draw_vstripe.
+// When drawing a new stripe over one that previously contained an animated
+// tile, this lets it know it needs to unregister the animated tile that
+// used to be there. the nonzero value corresponds to the associated entry
+// in animtiles[]. the x,y pixel position is the index in here * 16.
+#define ATILEINUSE_SIZEX               33
+#define ATILEINUSE_SIZEY               33
 
- #define WORLD_MAP              80
- #define FINAL_MAP              16
+#define WORLD_MAP              80
+#define FINAL_MAP              16
 
 // values returned by gameloop()
 
- #define LVLC_NOCOMMAND         0
- #define LVLC_CHANGE_LEVEL      1
- #define LVLC_END_SEQUENCE      2
- #define LVLC_GAME_OVER         3
- #define LVLC_TANTALUS_RAY      4       // switch on tantalus ray pressed
- #define LVLC_START_LEVEL       5
+#define LVLC_NOCOMMAND         0
+#define LVLC_CHANGE_LEVEL      1
+#define LVLC_END_SEQUENCE      2
+#define LVLC_GAME_OVER         3
+#define LVLC_TANTALUS_RAY      4       // switch on tantalus ray pressed
+#define LVLC_START_LEVEL       5
 
 #define WON_LEVEL				LVLC_CHANGE_LEVEL
 
 
 struct stMap
 {
- unsigned int xsize, ysize;            // size of the map
- bool isworldmap;             // if 1, this is the world map
- unsigned int mapdata[256][256];       // the map data
- // in-game, contains monsters and special object tags like for switches
- // on world map contains level numbers and flags for things like teleporters
- unsigned int objectlayer[256][256];
- bool firsttime;  // used when generating multiplayer positions on world map
+	unsigned int xsize, ysize;            // size of the map
+	bool isworldmap;             // if 1, this is the world map
+	unsigned int mapdata[256][256];       // the map data
+	// in-game, contains monsters and special object tags like for switches
+	// on world map contains level numbers and flags for things like teleporters
+	unsigned int objectlayer[256][256];
+	bool firsttime;  // used when generating multiplayer positions on world map
 };
 
 
@@ -102,10 +102,10 @@ struct stString
 {
 	std::string name;    // pointer to malloc'd area containing string name
 	std::string stringptr;    // pointer to malloc'd area containing string
-
-  int numAttributes;
-  unsigned char *attrnames[MAX_ATTRIBUTES+1];
-  unsigned int attrvalues[MAX_ATTRIBUTES+1];
+	
+	int numAttributes;
+	unsigned char *attrnames[MAX_ATTRIBUTES+1];
+	unsigned int attrvalues[MAX_ATTRIBUTES+1];
 };
 
 #include "externals.h"
@@ -147,9 +147,9 @@ struct stString
 
 typedef struct stShipQueue
 {
-  int cmd;
-  int time;
-  int flag1;
+	int cmd;
+	int time;
+	int flag1;
 } stShipQueue;
 
 
@@ -175,22 +175,22 @@ typedef struct stShipQueue
 #define BONUSLEVEL_RESPAWN_X    31812
 #define BONUSLEVEL_RESPAWN_Y    18936
 
-    #define MAINMNU_1PLAYER      	0
-    #define MAINMNU_2PLAYER      	1
-    #define MAINMNU_LOADGAME     	2
-	#define MAINMNU_STORY	     	3
-	#define MAINMNU_HIGHSCORES   	4
-	#define MAINMNU_OPTIONS      	5
-    #define MAINMNU_DEMO         	6
-	#define MAINMNU_NEW_GAME     	7
-	#define MAINMNU_ABOUT        	8
-	#define MAINMNU_ORDERING_INFO 	9
-	#define MAINMNU_QUIT         	10
-    #define MAINMNU_TIMEOUT      	11     // going to demo due to timeout
-    #define RESTART_GAME         	12
-	#define BACK2MAINMENU		 	13
+#define MAINMNU_1PLAYER      	0
+#define MAINMNU_2PLAYER      	1
+#define MAINMNU_LOADGAME     	2
+#define MAINMNU_STORY	     	3
+#define MAINMNU_HIGHSCORES   	4
+#define MAINMNU_OPTIONS      	5
+#define MAINMNU_DEMO         	6
+#define MAINMNU_NEW_GAME     	7
+#define MAINMNU_ABOUT        	8
+#define MAINMNU_ORDERING_INFO 	9
+#define MAINMNU_QUIT         	10
+#define MAINMNU_TIMEOUT      	11     // going to demo due to timeout
+#define RESTART_GAME         	12
+#define BACK2MAINMENU		 	13
 
-    #define MAINMENU_NUM_OPTIONS        MAINMNU_QUIT
+#define MAINMENU_NUM_OPTIONS        MAINMNU_QUIT
 
 #define TILE_SWITCH_UP             480
 #define TILE_SWITCH_DOWN           493
@@ -199,16 +199,16 @@ typedef struct stShipQueue
 
 // "Sector Effector" types
 enum sector_effector_type{
-SE_EXTEND_PLATFORM,
-SE_RETRACT_PLATFORM,
-SE_ANKHSHIELD,
-SE_MORTIMER_ARM,
-SE_MORTIMER_LEG_LEFT,
-SE_MORTIMER_LEG_RIGHT,
-SE_MORTIMER_SPARK,
-SE_MORTIMER_HEART,
-SE_MORTIMER_ZAPSUP,
-SE_MORTIMER_RANDOMZAPS
+	SE_EXTEND_PLATFORM,
+	SE_RETRACT_PLATFORM,
+	SE_ANKHSHIELD,
+	SE_MORTIMER_ARM,
+	SE_MORTIMER_LEG_LEFT,
+	SE_MORTIMER_LEG_RIGHT,
+	SE_MORTIMER_SPARK,
+	SE_MORTIMER_HEART,
+	SE_MORTIMER_ZAPSUP,
+	SE_MORTIMER_RANDOMZAPS
 };
 
 

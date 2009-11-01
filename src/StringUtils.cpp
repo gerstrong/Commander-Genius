@@ -1,12 +1,12 @@
 /*
-	OpenLieroX
-
-	string utilities
-
-	code under LGPL
-	created 01-05-2007
-	by Albert Zeyer and Dark Charlie
-*/
+ OpenLieroX
+ 
+ string utilities
+ 
+ code under LGPL
+ created 01-05-2007
+ by Albert Zeyer and Dark Charlie
+ */
 
 #ifdef _MSC_VER
 #pragma warning(disable: 4786)  // WARNING: identifier XXX was truncated to 255 characters in the debug info...
@@ -30,7 +30,7 @@ void TrimSpaces(std::string& szLine) {
 	for(p = szLine.begin(); p != szLine.end(); p++, n++)
 		if(!isspace((unsigned char)*p) || isgraph((unsigned char)*p)) break;
 	if(n>0) szLine.erase(0,n);
-
+	
 	n = 0;
 	std::string::reverse_iterator p2;
 	for(p2 = szLine.rbegin(); p2 != szLine.rend(); p2++, n++)
@@ -52,7 +52,7 @@ bool replace(const std::string& text, const std::string& what, const std::string
 std::string replacemax(const std::string& text, const std::string& what, const std::string& with, std::string& result, int max)
 {
 	result = text;
-
+	
 	size_t pos = 0;
 	size_t what_len = what.length();
 	size_t with_len = with.length();
@@ -60,7 +60,7 @@ std::string replacemax(const std::string& text, const std::string& what, const s
 		result.replace(pos, what_len, with);
 		pos += with_len;
 	}
-
+	
 	return result;
 }
 
@@ -77,7 +77,7 @@ bool replace(std::string& text, const std::string& what, const std::string& with
 	if (!what.size())  {
 		return false;
 	}
-
+	
 	bool one_repl = false;
 	size_t pos = 0;
 	while((pos = text.find(what, pos)) != std::string::npos) {
@@ -131,7 +131,7 @@ std::string	ReadUntil(FILE* fp, char until_character) {
 			res.append(buf,sizeof(buf));
 		}
 	}
-
+	
 	return res;
 }
 
@@ -200,14 +200,14 @@ Iterator<char>::Ref HexDump(Iterator<char>::Ref start, PrintOutFct printOutFct, 
 Color GetColorByName(const std::string& str, bool& fail)
 {
 	fail = false;
-
+	
 	struct ColorEntry  {
 		std::string sName;
 		Uint8 r, g, b, a;
 	};
 #define OP SDL_ALPHA_OPAQUE
 #define TR SDL_ALPHA_TRANSPARENT
-
+	
 	// TODO: more? These are taken from the HTML specification
 	static const ColorEntry predefined[] = {
 		{ "white", 255, 255, 255,OP },
@@ -230,13 +230,13 @@ Color GetColorByName(const std::string& str, bool& fail)
 		{ "gold", 255, 215, 0, OP },
 		{ "transparent", 0, 0, 0, TR }
 	};
-
+	
 	for (size_t i = 0; i < sizeof(predefined) / sizeof(ColorEntry); ++i)
 		if (stringcaseequal(str, predefined[i].sName))
 			return Color(predefined[i].r, predefined[i].g, predefined[i].b, predefined[i].a);
-
+	
 	fail = true;
-
+	
 	return Color();
 }
 
@@ -259,7 +259,7 @@ static Color HexToCol(const std::string& hex, bool& fail)
 {
 	fail = false;
 	Color res;
-
+	
 	// For example FFF for white
 	if (hex.size() == 3)  {
 		std::string tmp;
@@ -268,10 +268,10 @@ static Color HexToCol(const std::string& hex, bool& fail)
 		tmp += hex[2]; tmp += hex[2];
 		
 		HexToCol_Pure(tmp, res, fail);
-
+		
 		return res;
 	}
-
+	
 	// Same as the above but with alpha
 	if (hex.size() == 4)  {
 		std::string tmp;
@@ -281,22 +281,22 @@ static Color HexToCol(const std::string& hex, bool& fail)
 		tmp += hex[3]; tmp += hex[3];
 		
 		HexToCol_Pure(tmp, res, fail);
-
+		
 		return res;
 	}
-
+	
 	// For example FFFFFF for white
 	if (hex.size() == 6)  {
 		HexToCol_Pure(hex, res, fail);
 		return res;
 	}
-
+	
 	// Same as the above but with alpha
 	if (hex.size() >= 8)  {
 		HexToCol_Pure(hex, res, fail);
 		return res;
 	}
-
+	
 	fail = true;
 	return Color();
 }
@@ -308,7 +308,7 @@ std::string ColToHex(Color col) {
 	buf += FixedWidthStr_LeftFill(itoa(col.b, 16), 2, '0');
 	if(col.a != SDL_ALPHA_OPAQUE)
 		buf += FixedWidthStr_LeftFill(itoa(col.a, 16), 2, '0');
-		
+	
 	return "#" + buf;
 }
 
@@ -327,12 +327,12 @@ static bool is_percent(const std::string& str)
 static Color ColFromFunc(const std::string& func, bool& fail)
 {
 	StringBuf tmp(func);
-
+	
 	tmp.trimBlank();
 	tmp.adjustBlank();
 	std::string func_name = tmp.readUntil('(');
 	TrimSpaces(func_name);
-
+	
 	// Get the params
 	StringBuf params = tmp.readUntil(')');
 	std::vector<std::string> tokens = params.splitBy(',');
@@ -340,12 +340,12 @@ static Color ColFromFunc(const std::string& func, bool& fail)
 		fail = true;
 		return Color();
 	}
-
+	
 	// Adjust the tokens
 	for (std::vector<std::string>::iterator it = tokens.begin(); it != tokens.end(); it++)  {
 		TrimSpaces(*it);
 	}
-
+	
 	// The param count is >= 3
 	Color res;
 	res.r = MIN(255, from_string<int>(tokens[0], fail)); if (is_percent(tokens[0])) res.r = (Uint8)MIN(255.0f, (float)res.r * 2.55f);
@@ -355,7 +355,7 @@ static Color ColFromFunc(const std::string& func, bool& fail)
 		res.a = MIN(255, from_string<int>(tokens[3], fail)); if (is_percent(tokens[3])) res.a = (Uint8)MIN(255.0f, (float)res.a * 2.55f);
 	} else
 		res.a = SDL_ALPHA_OPAQUE;
-
+	
 	return res;
 }
 
@@ -365,7 +365,7 @@ static Color ColFromSeperatedNums(const std::string& txt, bool& fail) {
 		fail = true;
 		return Color();
 	}
-
+	
 	Color res;
 	res.r = MIN(255, from_string<int>(tokens[0], fail)); if (is_percent(tokens[0])) res.r = (Uint8)MIN(255.0f, (float)res.r * 2.55f);
 	res.g = MIN(255, from_string<int>(tokens[1], fail)); if (is_percent(tokens[1])) res.g = (Uint8)MIN(255.0f, (float)res.g * 2.55f);
@@ -382,7 +382,7 @@ static Color ColFromSeperatedNums(const std::string& txt, bool& fail) {
 // Converts a string to a colour
 Color StrToCol(const std::string& str, bool& fail) {
 	fail = false;
-
+	
 	// Create the temp and copy it there
 	std::string temp = str;
 	TrimSpaces(temp);
@@ -404,7 +404,7 @@ Color StrToCol(const std::string& str, bool& fail) {
 		stringlwr(temp);
 		return HexToCol(temp, fail);
 	}
-
+	
 	// Is the function-style present?
 	if (temp.size() >= 4)
 		if (stringcaseequal(temp.substr(0, 4), "rgba"))
@@ -412,7 +412,7 @@ Color StrToCol(const std::string& str, bool& fail) {
 	if (temp.size() >= 3)
 		if (stringcaseequal(temp.substr(0, 3), "rgb"))
 			return ColFromFunc(temp, fail);
-
+	
 	// like "r,g,b", e.g. this is used in gamescripts
 	if(temp.find(",") != std::string::npos)
 		return ColFromSeperatedNums(temp, fail);
@@ -442,10 +442,10 @@ short stringcasecmp(const std::string& s1, const std::string& s2) {
 		if(p2 == s2.end())
 			// not at end of s1
 			return 1; // s1 > s2
-
+		
 		dif = (short)(unsigned char)tolower((unsigned char)*p1) - (short)(unsigned char)tolower((unsigned char)*p2);
 		if(dif != 0) return dif; // dif > 0  <=>  s1 > s2
-
+		
 		p1++; p2++;
 	}
 }
@@ -503,7 +503,7 @@ size_t maxStartingCaseEqualStr(const std::list<std::string>& strs) {
 
 std::vector<std::string> explode(const std::string& str, const std::string& delim) {
 	std::vector<std::string> result;
-
+	
 	size_t delim_len = delim.size();
 	std::string rest = str;
 	size_t pos;
@@ -512,18 +512,18 @@ std::vector<std::string> explode(const std::string& str, const std::string& deli
 		rest.erase(0,pos+delim_len);
 	}
 	result.push_back(rest);
-
+	
 	return result;
 }
 
 // reads up to maxlen-1 chars from fp
 void freadstr(std::string& result, size_t maxlen, FILE *fp) {
 	if (!fp) return;
-
+	
 	char buf[1024];
 	size_t ret, c;
 	result = "";
-
+	
 	for(size_t len = 0; len < maxlen; len += sizeof(buf)) {
 		c = MIN(sizeof(buf), maxlen - len);
 		ret = fread(buf, 1, c, fp);
@@ -619,10 +619,10 @@ std::list<std::string> SplitFilename(const std::string& filename, size_t numPart
 void ucfirst(std::string& text)
 {
 	if (text == "") return;
-
+	
 	text[0] = toupper(text[0]);
 	bool wasalpha = isalpha((unsigned char)text[0]) != 0;
-
+	
 	for (std::string::iterator it=text.begin()+1;it != text.end();it++)  {
 		if (isalpha((unsigned char)*it))  {
 			if (wasalpha)
@@ -634,8 +634,8 @@ void ucfirst(std::string& text)
 			wasalpha = false;
 		}
 	}
-
-
+	
+	
 }
 
 
@@ -646,18 +646,18 @@ size_t stringcasefind(const std::string& text, const std::string& search_for)
 {
 	if (text.size() == 0 || search_for.size() == 0 || search_for.size() > text.size())
 		return std::string::npos;
-
+	
 	std::string::const_iterator it1 = text.begin();
 	std::string::const_iterator it2 = search_for.begin();
-
+	
 	size_t number_of_same = 0;
 	size_t result = 0;
-
+	
 	// Go through the text
 	while (it1 != text.end())  {
 		char c1 = (char)tolower((unsigned char)*it1);
 		char c2 = (char)tolower((unsigned char)*it2);
-
+		
 		// The two characters are the same
 		if (c1 == c2)  {
 			number_of_same++;  // If number of same characters equals to the size of the substring, we've found it!
@@ -668,11 +668,11 @@ size_t stringcasefind(const std::string& text, const std::string& search_for)
 			number_of_same = 0;
 			it2 = search_for.begin();
 		}
-
+		
 		result++;
 		it1++;
 	}
-
+	
 	return std::string::npos; // Not found
 }
 
@@ -682,21 +682,21 @@ size_t stringcasefind(const std::string& text, const std::string& search_for)
 size_t stringcaserfind(const std::string& text, const std::string& search_for)
 {
 	// HINT: simply the above one with reverse iterators
-
+	
 	if (text.size() == 0 || search_for.size() == 0 || search_for.size() > text.size())
 		return std::string::npos;
-
+	
 	std::string::const_reverse_iterator it1 = text.rbegin();
 	std::string::const_reverse_iterator it2 = search_for.rbegin();
-
+	
 	size_t number_of_same = 0;
 	size_t result = 0;
-
+	
 	// Go through the text
 	while (it1 != text.rend())  {
 		char c1 = (char)tolower((unsigned char)*it1);
 		char c2 = (char)tolower((unsigned char)*it2);
-
+		
 		// The two characters are the same
 		if (c1 == c2)  {
 			number_of_same++;  // If number of same characters equals to the size of the substring, we've found it!
@@ -707,11 +707,11 @@ size_t stringcaserfind(const std::string& text, const std::string& search_for)
 			number_of_same = 0;
 			it2 = search_for.rbegin();
 		}
-
+		
 		result++;
 		it1++;
 	}
-
+	
 	return std::string::npos; // Not found
 }
 
@@ -722,11 +722,11 @@ std::string GetNextWord(std::string::const_iterator it, const std::string& str)
 	// Check
 	if (str == "" || it == str.end())
 		return "";
-
+	
 	// Check
 	if (it == str.end())
 		return "";
-
+	
 	// Get the word
 	std::string res;
 	while (it != str.end())  {
@@ -735,7 +735,7 @@ std::string GetNextWord(std::string::const_iterator it, const std::string& str)
 		res += *it;
 		it++;
 	}
-
+	
 	return res;
 }
 
@@ -746,7 +746,7 @@ std::string HtmlEntityUnpairedBrackets(const std::string &txt)
 	// Check
 	if (!txt.size())
 		return "";
-
+	
 	// Get the positions of unclosed brackets
 	bool wait_for_close = false;
 	size_t wait_for_close_pos = 0;
@@ -759,7 +759,7 @@ std::string HtmlEntityUnpairedBrackets(const std::string &txt)
 			wait_for_close = true;
 			wait_for_close_pos = curpos;
 		}
-
+		
 		// One character after the < character
 		if (wait_for_close && curpos == wait_for_close_pos + 1)  {
 			// Make sure it's a a-z A-Z letter or a slash
@@ -769,17 +769,17 @@ std::string HtmlEntityUnpairedBrackets(const std::string &txt)
 				wait_for_close_pos = 0;
 			}
 		}
-
+		
 		// Closing bracket
 		if (wait_for_close && *it == '>')  {
 			wait_for_close = false;
 			wait_for_close_pos = 0;
 		}
 	}
-
+	
 	if (wait_for_close)
 		unpaired_pos.push_back(wait_for_close_pos);
-
+	
 	// Replace the unclosed brackets with html entities
 	std::string result;
 	size_t startpos = 0;
@@ -787,11 +787,11 @@ std::string HtmlEntityUnpairedBrackets(const std::string &txt)
 		result += txt.substr(startpos, *it - startpos) + "&lt;";
 		startpos = *it + 1;
 	}
-
+	
 	// Last chunk
 	if (startpos < txt.size())
 		result += txt.substr(startpos);
-
+	
 	return result;
 }
 
@@ -800,43 +800,43 @@ std::string HtmlEntityUnpairedBrackets(const std::string &txt)
 // Helper function for AutoDetectLinks
 static std::string GetLink(std::string::const_iterator& it, const std::string::const_iterator& end, size_t& pos)
 {
-/*
-The URI standard, RFC 2396, <http://www.ietf.org/rfc/rfc2396.txt>
-
-; HTTP
-
-httpurl = "http://" hostport [ "/" hpath [ "?" search ]]
-hpath = hsegment *[ "/" hsegment ]
-hsegment = *[ char | ";" | ":" | "@" | "&" | "=" ]
-search = *[ char | ";" | ":" | "@" | "&" | "=" ]
-
-lowalpha = ...
-hialpha = ...
-digit = ...
-
-alpha = lowalpha | hialpha
-safe = "$" | "-" | "_" | "." | "+"
-extra = "!" | "*" | "'" | "(" | ")" | ","
-national = "{" | "}" | "|" | "\" | "^" | "~" | "[" | "]" | "`"
-punctuation = "<" | ">" | "#" | "%" | <">
-
-reserved = ";" | "/" | "?" | ":" | "@" | "&" | "="
-hex = digit | "A" | "B" | "C" | "D" | "E" | "F" | "a" | "b" | "c" | "d" | "e" | "f"
-escape = "%" hex hex
-
-unreserved = alpha | digit | safe | extra
-char = unreserved | escape
-xchar = unreserved | reserved | escape
-digits = 1*digit
-*/
-
+	/*
+	 The URI standard, RFC 2396, <http://www.ietf.org/rfc/rfc2396.txt>
+	 
+	 ; HTTP
+	 
+	 httpurl = "http://" hostport [ "/" hpath [ "?" search ]]
+	 hpath = hsegment *[ "/" hsegment ]
+	 hsegment = *[ char | ";" | ":" | "@" | "&" | "=" ]
+	 search = *[ char | ";" | ":" | "@" | "&" | "=" ]
+	 
+	 lowalpha = ...
+	 hialpha = ...
+	 digit = ...
+	 
+	 alpha = lowalpha | hialpha
+	 safe = "$" | "-" | "_" | "." | "+"
+	 extra = "!" | "*" | "'" | "(" | ")" | ","
+	 national = "{" | "}" | "|" | "\" | "^" | "~" | "[" | "]" | "`"
+	 punctuation = "<" | ">" | "#" | "%" | <">
+	 
+	 reserved = ";" | "/" | "?" | ":" | "@" | "&" | "="
+	 hex = digit | "A" | "B" | "C" | "D" | "E" | "F" | "a" | "b" | "c" | "d" | "e" | "f"
+	 escape = "%" hex hex
+	 
+	 unreserved = alpha | digit | safe | extra
+	 char = unreserved | escape
+	 xchar = unreserved | reserved | escape
+	 digits = 1*digit
+	 */
+	
 	const std::string valid_url_chars = "/" "%" "?" // reserved
-										";" ":" "@" "&" "=" // search
-										"$" "-" "_" "." "+" // safe
-										"!" "*" "'" "(" ")" "," // extra
-										"{" "}" "|" "\\" "^" "~" "[" "]" "`" // national
-										"#" "\"";	// punctuation (part of)
-
+	";" ":" "@" "&" "=" // search
+	"$" "-" "_" "." "+" // safe
+	"!" "*" "'" "(" ")" "," // extra
+	"{" "}" "|" "\\" "^" "~" "[" "]" "`" // national
+	"#" "\"";	// punctuation (part of)
+	
 	std::string link;
 	bool was_dot = false;
 	bool was_ques = false;
@@ -850,7 +850,7 @@ digits = 1*digit
 			}
 			break;
 		}
-
+		
 		// Multiple question marks
 		if (*it == '?')  {
 			if (was_ques)  {
@@ -862,7 +862,7 @@ digits = 1*digit
 			was_ques = true;
 		} else
 			was_ques = false;
-
+		
 		// Multiple dots
 		if (*it == '.')  {
 			if (was_dot)  {
@@ -874,16 +874,16 @@ digits = 1*digit
 			was_dot = true;
 		} else
 			was_dot = false;
-
+		
 		link += *it;
 	}
-
+	
 	if ((was_ques || was_dot) && link.size())  {
 		link.resize(link.size() - 1);
 	}
-
+	
 	TrimSpaces(link);
-
+	
 	return link;
 }
 
@@ -892,7 +892,7 @@ digits = 1*digit
 std::string AutoDetectLinks(const std::string& text)
 {
 	static const std::string prefixes[] = { "www.", "http://", "https://", "mailto:", "ftp://" };
-
+	
 	std::string result;
 	size_t pos = 0;
 	bool in_tag = false;
@@ -902,39 +902,39 @@ std::string AutoDetectLinks(const std::string& text)
 			result += *it;
 			continue;
 		}
-
+		
 		if (*it == '>')  {
 			in_tag = false;
 			result += *it;
 			continue;
 		}
-
+		
 		// Do not search inside html tags
 		if (in_tag)  {
 			result += *it;
 			continue;
 		}
-
+		
 		for (size_t i = 0; i < sizeof(prefixes)/sizeof(std::string); ++i)  {
 			if (text.size() - pos > prefixes[i].size() + 4)  {  // 4 = minimum length of the address, for example a.de
 				if (stringcaseequal(text.substr(pos, prefixes[i].size()), prefixes[i]))  {
-
+					
 					// Get the link
 					std::string link = GetLink(it, text.end(), pos);
-
+					
 					// Add the link
 					result += "<a href=\"" + link + "\">" + link + "</a>";
 					break;
 				}
 			}
 		}
-
+		
 		if (it != text.end())
 			result += *it;
 		else
 			break;
 	}
-
+	
 	return result;
 }
 
@@ -956,46 +956,46 @@ std::string EscapeHtmlTags( const std::string & src )
 std::string Base64Encode(const std::string &data)
 {
 	std::string dest;
-  /* Conversion table.  */
-  static const char tbl[64] = {
-    'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P',
-    'Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f',
-    'g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v',
-    'w','x','y','z','0','1','2','3','4','5','6','7','8','9','+','/'
-  };
-  /* Access bytes in DATA as unsigned char, otherwise the shifts below
+	/* Conversion table.  */
+	static const char tbl[64] = {
+		'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P',
+		'Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f',
+		'g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v',
+		'w','x','y','z','0','1','2','3','4','5','6','7','8','9','+','/'
+	};
+	/* Access bytes in DATA as unsigned char, otherwise the shifts below
      don't work for data with MSB set. */
-  const unsigned char *s = (const unsigned char *)data.c_str();
-  /* Theoretical ANSI violation when length < 3. */
-  const unsigned char *end = s + data.length() - 2;
-
-  /* Transform the 3x8 bits to 4x6 bits, as required by base64.  */
-  for (; s < end; s += 3)
+	const unsigned char *s = (const unsigned char *)data.c_str();
+	/* Theoretical ANSI violation when length < 3. */
+	const unsigned char *end = s + data.length() - 2;
+	
+	/* Transform the 3x8 bits to 4x6 bits, as required by base64.  */
+	for (; s < end; s += 3)
     {
-      dest += tbl[s[0] >> 2];
-      dest += tbl[((s[0] & 3) << 4) + (s[1] >> 4)];
-      dest += tbl[((s[1] & 0xf) << 2) + (s[2] >> 6)];
-      dest += tbl[s[2] & 0x3f];
+		dest += tbl[s[0] >> 2];
+		dest += tbl[((s[0] & 3) << 4) + (s[1] >> 4)];
+		dest += tbl[((s[1] & 0xf) << 2) + (s[2] >> 6)];
+		dest += tbl[s[2] & 0x3f];
     }
-
-  /* Pad the result if necessary...  */
-  switch (data.length() % 3)
+	
+	/* Pad the result if necessary...  */
+	switch (data.length() % 3)
     {
-    case 1:
-      dest += tbl[s[0] >> 2];
-      dest += tbl[(s[0] & 3) << 4];
-      dest += '=';
-      dest += '=';
-      break;
-    case 2:
-      dest += tbl[s[0] >> 2];
-      dest += tbl[((s[0] & 3) << 4) + (s[1] >> 4)];
-      dest += tbl[((s[1] & 0xf) << 2)];
-      dest += '=';
-      break;
+		case 1:
+			dest += tbl[s[0] >> 2];
+			dest += tbl[(s[0] & 3) << 4];
+			dest += '=';
+			dest += '=';
+			break;
+		case 2:
+			dest += tbl[s[0] >> 2];
+			dest += tbl[((s[0] & 3) << 4) + (s[1] >> 4)];
+			dest += tbl[((s[1] & 0xf) << 2)];
+			dest += '=';
+			break;
     }
-
-  return dest;
+	
+	return dest;
 }
 
 // Substitute space with + and all non-alphanum symbols with %XX

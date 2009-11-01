@@ -22,12 +22,12 @@ class CSound : public CSingleton<CSound>
 public:
 	CSound();
 	virtual ~CSound();
-
+	
 	bool init(void);
 	void stop(void);
 	bool loadSoundData(unsigned short Episode, const std::string& DataDirectory);
 	void stopAllSounds(void);
-
+	
 	bool forcedisPlaying(void);
 	char sound_load_all(const std::string& path);
 	void transform_into_logaritmic_sound(int *pcmstream, int len);
@@ -40,23 +40,23 @@ public:
 	bool isPlaying(int snd);
 	void stopSound(int snd);
 	void destroy(void);
-
+	
 	SDL_AudioSpec	getAudioSpec(void) { return AudioSpec; }
 	unsigned short 	getMixingchannels(void) { return m_mixing_channels; }
-
+	
 	void setSoundmode(int freq, bool stereo, Uint16 format);
-
+	
 	char extractOfExeFile(const std::string& inputpath, int episode); // This is a special funktion. It doesn't belong here!
-
+	
 private:
 	CSoundChannel	*m_soundchannel;
 	CSoundSlot		*m_soundslot;
-
+	
 	SDL_AudioSpec AudioSpec;
-
+	
 	bool m_active;
 	unsigned short m_mixing_channels;
-
+	
     Uint8 *m_MixedForm;			// Mainly used by the callback function. Declared once and allocated
 };
 

@@ -1,11 +1,11 @@
 /*
-	OpenLieroX CrashHandler
-
-	registers a crash handler in the OS and handles the crashes
-
-	code under LGPL
-	created 09-07-2008 by Albert Zeyer
-*/
+ OpenLieroX CrashHandler
+ 
+ registers a crash handler in the OS and handles the crashes
+ 
+ code under LGPL
+ created 09-07-2008 by Albert Zeyer
+ */
 
 #include "CrashHandler.h"
 #include "StringUtils.h"
@@ -25,8 +25,8 @@ void SetCrashHandlerReturnPoint(const char* name) {
 		hints << "returned from sigsetjmp in " << name << endl;
 		if(/*tLXOptions->bFullscreen*/ false) {
 			notes << "we are in fullscreen, going to window mode now" << endl;
-		//	tLXOptions->bFullscreen = false;
-		//	doSetVideoModeInMainThread();
+			//	tLXOptions->bFullscreen = false;
+			//	doSetVideoModeInMainThread();
 			notes << "back in window mode" << endl;
 		}
 	}
@@ -58,12 +58,12 @@ public:
 		_CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 #endif // _DEBUG
-
+		
 		SetUnhandledExceptionFilter(CustomUnhandledExceptionFilter);
-
+		
 		notes << "Win32 Exception Filter installed" << endl;
 	}
-
+	
 };
 
 extern void OlxWriteCoreDump_Win32(const char* fileName, PEXCEPTION_POINTERS pExInfo);
@@ -89,10 +89,10 @@ LONG WINAPI CustomUnhandledExceptionFilter(PEXCEPTION_POINTERS pExInfo)
 	}
 	CreateDirectory(buf, NULL);
 	strncat(buf, "\\", sizeof(buf));
-
+	
 	// Get the file name
 	char checkname[1024];
-
+	
 	char tmp[32];
 	FILE *f = NULL;
 	for (int i=1;1;i++)  {
@@ -107,41 +107,41 @@ LONG WINAPI CustomUnhandledExceptionFilter(PEXCEPTION_POINTERS pExInfo)
 			break;
 		fclose(f);
 	}
-
+	
 	OlxWriteCoreDump_Win32(checkname, pExInfo);
-
+	
 	// Try to free the cache, it eats a lot of memory
 	__try {
 		cCache.Clear();
 	} 
 	__except(EXCEPTION_EXECUTE_HANDLER) {}
-
+	
 	// Quit SDL
 	__try  {
 		SDL_Quit();
 	} 
 	__except(EXCEPTION_EXECUTE_HANDLER) {}
-
+	
 	// End conversation logging (to make the XML valid)
 	__try  {
 		if (convoLogger)
 			delete convoLogger;
 	}
 	__except(EXCEPTION_EXECUTE_HANDLER) {}
-
+	
 	// Close all opened files
 	fcloseall();
-
-
+	
+	
 	strncpy(&buf[1], checkname, sizeof(buf) - 1);
 	buf[0] = '\"';
 	strncat(buf, "\"", sizeof(buf));
 	fix_markend(buf);
-
+	
 	// If ded server is running as service user won't see any dialog anyway
 	if (!bDedicated)
 		ShellExecute(NULL,"open","BugReport.exe",buf,NULL,SW_SHOWNORMAL);
-
+	
 	// If running as a dedicated server, restart the application (there usually isn't any person sitting
 	// at the computer to fix this problem)
 	// If ded server is running as service it's restarted automatically
@@ -152,7 +152,7 @@ LONG WINAPI CustomUnhandledExceptionFilter(PEXCEPTION_POINTERS pExInfo)
 		//ShellExecute(NULL, "open", GetAppPath(), "-dedicated", NULL, SW_SHOWNORMAL);
 	}
 #endif
-
+	
 	return EXCEPTION_EXECUTE_HANDLER;
 }
 
@@ -191,44 +191,44 @@ struct signal_def { char name[10]; int id; char description[40]; } ;
 
 static signal_def signal_data[] =
 {
-{ "SIGHUP", SIGHUP, "Hangup (POSIX)" },
-{ "SIGINT", SIGINT, "Interrupt (ANSI)" },
-{ "SIGQUIT", SIGQUIT, "Quit (POSIX)" },
-{ "SIGILL", SIGILL, "Illegal instruction (ANSI)" },
-{ "SIGTRAP", SIGTRAP, "Trace trap (POSIX)" },
-{ "SIGABRT", SIGABRT, "Abort (ANSI)" },
-{ "SIGIOT", SIGIOT, "IOT trap (4.2 BSD)" },
-{ "SIGBUS", SIGBUS, "BUS error (4.2 BSD)" },
-{ "SIGFPE", SIGFPE, "Floating-point exception (ANSI)" },
-{ "SIGKILL", SIGKILL, "Kill, unblockable (POSIX)" },
-{ "SIGUSR1", SIGUSR1, "User-defined signal 1 (POSIX)" },
-{ "SIGSEGV", SIGSEGV, "Segmentation violation (ANSI)" },
-{ "SIGUSR2", SIGUSR2, "User-defined signal 2 (POSIX)" },
-{ "SIGPIPE", SIGPIPE, "Broken pipe (POSIX)" },
-{ "SIGALRM", SIGALRM, "Alarm clock (POSIX)" },
-{ "SIGTERM", SIGTERM, "Termination (ANSI)" },
-//{ "SIGSTKFLT", SIGSTKFLT, "Stack fault" },
-{ "SIGCHLD", SIGCHLD, "Child status has changed (POSIX)" },
-//{ "SIGCLD", SIGCLD, "Same as SIGCHLD (System V)" },
-{ "SIGCONT", SIGCONT, "Continue (POSIX)" },
-{ "SIGSTOP", SIGSTOP, "Stop, unblockable (POSIX)" },
-{ "SIGTSTP", SIGTSTP, "Keyboard stop (POSIX)" },
-{ "SIGTTIN", SIGTTIN, "Background read from tty (POSIX)" },
-{ "SIGTTOU", SIGTTOU, "Background write to tty (POSIX)" },
-{ "SIGURG", SIGURG, "Urgent condition on socket (4.2 BSD)" },
-{ "SIGXCPU", SIGXCPU, "CPU limit exceeded (4.2 BSD)" },
-{ "SIGXFSZ", SIGXFSZ, "File size limit exceeded (4.2 BSD)" },
-{ "SIGVTALRM", SIGVTALRM, "Virtual alarm clock (4.2 BSD)" },
-{ "SIGPROF", SIGPROF, "Profiling alarm clock (4.2 BSD)" },
-{ "SIGWINCH", SIGWINCH, "Window size change (4.3 BSD, Sun)" },
-{ "SIGIO", SIGIO, "I/O now possible (4.2 BSD)" },
-//{ "SIGPOLL", SIGPOLL, "Pollable event occurred (System V)" },
-//{ "SIGPWR", SIGPWR, "Power failure restart (System V)" },
-{ "SIGSYS", SIGSYS, "Bad system call" },
+	{ "SIGHUP", SIGHUP, "Hangup (POSIX)" },
+	{ "SIGINT", SIGINT, "Interrupt (ANSI)" },
+	{ "SIGQUIT", SIGQUIT, "Quit (POSIX)" },
+	{ "SIGILL", SIGILL, "Illegal instruction (ANSI)" },
+	{ "SIGTRAP", SIGTRAP, "Trace trap (POSIX)" },
+	{ "SIGABRT", SIGABRT, "Abort (ANSI)" },
+	{ "SIGIOT", SIGIOT, "IOT trap (4.2 BSD)" },
+	{ "SIGBUS", SIGBUS, "BUS error (4.2 BSD)" },
+	{ "SIGFPE", SIGFPE, "Floating-point exception (ANSI)" },
+	{ "SIGKILL", SIGKILL, "Kill, unblockable (POSIX)" },
+	{ "SIGUSR1", SIGUSR1, "User-defined signal 1 (POSIX)" },
+	{ "SIGSEGV", SIGSEGV, "Segmentation violation (ANSI)" },
+	{ "SIGUSR2", SIGUSR2, "User-defined signal 2 (POSIX)" },
+	{ "SIGPIPE", SIGPIPE, "Broken pipe (POSIX)" },
+	{ "SIGALRM", SIGALRM, "Alarm clock (POSIX)" },
+	{ "SIGTERM", SIGTERM, "Termination (ANSI)" },
+	//{ "SIGSTKFLT", SIGSTKFLT, "Stack fault" },
+	{ "SIGCHLD", SIGCHLD, "Child status has changed (POSIX)" },
+	//{ "SIGCLD", SIGCLD, "Same as SIGCHLD (System V)" },
+	{ "SIGCONT", SIGCONT, "Continue (POSIX)" },
+	{ "SIGSTOP", SIGSTOP, "Stop, unblockable (POSIX)" },
+	{ "SIGTSTP", SIGTSTP, "Keyboard stop (POSIX)" },
+	{ "SIGTTIN", SIGTTIN, "Background read from tty (POSIX)" },
+	{ "SIGTTOU", SIGTTOU, "Background write to tty (POSIX)" },
+	{ "SIGURG", SIGURG, "Urgent condition on socket (4.2 BSD)" },
+	{ "SIGXCPU", SIGXCPU, "CPU limit exceeded (4.2 BSD)" },
+	{ "SIGXFSZ", SIGXFSZ, "File size limit exceeded (4.2 BSD)" },
+	{ "SIGVTALRM", SIGVTALRM, "Virtual alarm clock (4.2 BSD)" },
+	{ "SIGPROF", SIGPROF, "Profiling alarm clock (4.2 BSD)" },
+	{ "SIGWINCH", SIGWINCH, "Window size change (4.3 BSD, Sun)" },
+	{ "SIGIO", SIGIO, "I/O now possible (4.2 BSD)" },
+	//{ "SIGPOLL", SIGPOLL, "Pollable event occurred (System V)" },
+	//{ "SIGPWR", SIGPWR, "Power failure restart (System V)" },
+	{ "SIGSYS", SIGSYS, "Bad system call" },
 };
 
 static int handlerSignalList[] = {
-SIGSEGV, SIGTRAP, SIGABRT, SIGHUP, SIGBUS, SIGILL, SIGFPE, SIGSYS, SIGUSR1, SIGUSR2
+	SIGSEGV, SIGTRAP, SIGABRT, SIGHUP, SIGBUS, SIGILL, SIGFPE, SIGSYS, SIGUSR1, SIGUSR2
 };
 
 typedef const char * cchar;
@@ -241,21 +241,21 @@ public:
 		if(CrashHandler_RecoverAfterCrash) {
 			setSignalHandlers();
 			DumpCallstack(NullOut); // dummy call to force loading dynamic lib at this point (with sane heap) for backtrace and friends
-
+			
 			notes << "registered simple resuming signal handler" << endl;
 		}
 		else
 			notes << "no signal handler with these settings" << endl;
 	}
 	
-
+	
 	static void setSignalHandlers() {
 		struct sigaction sa;
 		
 		sa.sa_sigaction = SimpleSignalHandler;
 		sigemptyset (&sa.sa_mask);
 		sa.sa_flags = SA_RESTART | SA_SIGINFO;
-
+		
 		for (unsigned int i = 0; i < sizeof(handlerSignalList) / sizeof(int); i++)
 			sigaction(handlerSignalList[i], &sa, NULL);
 	}
@@ -270,7 +270,7 @@ public:
 	
 	static void SimpleSignalHandler(int signr, siginfo_t *info, void *secret) {
 		signal(signr, SIG_IGN); // discard all remaining signals
-
+		
 		signal_def *d = NULL;
 		for (unsigned int i = 0; i < sizeof(signal_data) / sizeof(signal_def); i++)
 			if (signr == signal_data[i].id)
@@ -353,7 +353,7 @@ public:
 		
 		if (signr == SIGSEGV || signr == SIGBUS)
 			printf("Faulty address is %p, called from %p\n", info->si_addr, pnt);
-
+		
 		/* The first two entries in the stack frame chain when you
 		 * get into the signal handler contain, respectively, a
 		 * return address inside your signal handler and one inside
@@ -371,7 +371,7 @@ public:
 		// look at signal(2) for a list of safe functions
 		
 		DumpCallstackPrintf(pnt);
-
+		
 #ifdef DEBUG
 		// commented out for now because it still doesn't work that good
 		//OlxWriteCoreDump(d ? d->name : NULL);
@@ -382,9 +382,9 @@ public:
 			fflush(stdout);
 			abort();
 #ifdef DEBUG
-//        	raise(SIGQUIT);
+			//        	raise(SIGQUIT);
 #else
-//			exit(-1);
+			//			exit(-1);
 #endif
 			return;
         }
@@ -395,7 +395,7 @@ public:
 		setSignalHandlers();
 		siglongjmp(longJumpBuffer, 1); // jump back to main loop, maybe we'll be able to continue somehow
 	}
-
+	
 	/////////////////////////////////////////////////////////////////////////////
 	//
 	// Attempts to cleanup and call drkonqi to process the crash
@@ -404,11 +404,11 @@ public:
 	static void DrKonqiSignalHandler(int Sig) {
 		// Don't get into an infinite loop
 		signal(SIGSEGV, SIG_DFL);
-
+		
 		// Our pid
 		int MyPid = getpid();
 		printf("CrashHandler trigger MyPid=%i\n", MyPid);
-
+		
 		// Fork to run the crash handler
 		pid_t Pid = fork();
 		if (Pid <= 0)
@@ -418,33 +418,33 @@ public:
 			cchar Arg[32];
 			memset(Arg, 0, sizeof(Arg));
 			char SigName[16], PidName[16], Version[32];
-
+			
 			// TODO: sprintf allocates memory on the heap internally, is it safe to do it here?
 			sprintf(SigName, "%i", Sig);
 			sprintf(PidName, "%i", MyPid);
-//			strcpy( Version, GetFullGameName() );
-
+			//			strcpy( Version, GetFullGameName() );
+			
 			Arg[Args++] = "drkonqi";
 			//Arg[Args++] = "--display";
 			//Arg[Args++] = XDisplayString(o.XDisplay());
 			Arg[Args++] = "--appname";
-//			Arg[Args++] = GetFullGameName();
+			//			Arg[Args++] = GetFullGameName();
 			Arg[Args++] = "--programname";
-//			Arg[Args++] = GetFullGameName();
+			//			Arg[Args++] = GetFullGameName();
 			Arg[Args++] = "--appversion";
 			Arg[Args++] = Version;
 			Arg[Args++] = "--apppath";
-//			Arg[Args++] = GetAppPath(); // should be save to call
+			//			Arg[Args++] = GetAppPath(); // should be save to call
 			Arg[Args++] = "--signal";
 			Arg[Args++] = SigName;
 			Arg[Args++] = "--pid";
 			Arg[Args++] = PidName;
 			Arg[Args++] = "--bugaddress";
 			Arg[Args++] = "openlierox@az2000.de";
-
+			
 			setgid(getgid());
 			setuid(getuid());
-
+			
 			execvp("drkonqi", (char* const*)Arg);
 		}
 		else
@@ -454,16 +454,16 @@ public:
 			_exit(253);
 		}
 	}
-
+	
 	// Attempts to cleanup and call bug-buddy to process the crash
 	static void BugBuddySignalHandler(int Sig) {
 		// Don't get into an infinite loop
 		signal(SIGSEGV, SIG_DFL);
-
+		
 		// Our pid
 		int MyPid = getpid();
 		printf("CrashHandler trigger MyPid=%i\n", MyPid);
-
+		
 		// Fork to run the crash handler
 		pid_t Pid = fork();
 		if (Pid <= 0)
@@ -473,11 +473,11 @@ public:
 			cchar Arg[32];
 			memset(Arg, 0, sizeof(Arg));
 			char SigName[16], PidName[16], Version[40];
-
+			
 			sprintf(SigName, "%i", Sig);
 			sprintf(PidName, "%i", MyPid);
-//			strcpy( Version, GetFullGameName() );
-
+			//			strcpy( Version, GetFullGameName() );
+			
 			Arg[Args++] = "bug-buddy";
 			//Arg[Args++] = "--display";
 			//Arg[Args++] = XDisplayString(o.XDisplay());
@@ -489,10 +489,10 @@ public:
 			Arg[Args++] = "Albert Zeyer";
 			Arg[Args++] = "--email";
 			Arg[Args++] = "openlierox@az2000.de";
-
+			
 			setgid(getgid());
 			setuid(getuid());
-
+			
 			execvp("bug-buddy", (char* const*)Arg);
 		}
 		else
@@ -502,8 +502,8 @@ public:
 			_exit(253);
 		}
 	}
-
-
+	
+	
 };
 
 

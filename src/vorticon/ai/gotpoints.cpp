@@ -19,22 +19,22 @@ void delete_object(int o);
 
 void gotpoints_ai(int o)
 {
-
+	
 	/*if (objects[o].needinit)
-	{
-		objects[o].ai.ray.offscreentime = GOTPOINTS_LIFETIME;
-		objects[o].inhibitfall = 1;
-		objects[o].honorPriority = 0;
-		objects[o].needinit = 0;
-	}
-
-	// delete it after it's existed for a certain amount of time
-	if (!objects[o].ai.ray.offscreentime)
-	{
-		delete_object(o);
-		return;
-	}
-	else objects[o].ai.ray.offscreentime--;
-	*/
+	 {
+	 objects[o].ai.ray.offscreentime = GOTPOINTS_LIFETIME;
+	 objects[o].inhibitfall = 1;
+	 objects[o].honorPriority = 0;
+	 objects[o].needinit = 0;
+	 }
+	 
+	 // delete it after it's existed for a certain amount of time
+	 if (!objects[o].ai.ray.offscreentime)
+	 {
+	 delete_object(o);
+	 return;
+	 }
+	 else objects[o].ai.ray.offscreentime--;
+	 */
 }
 

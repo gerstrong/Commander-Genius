@@ -14,17 +14,17 @@ class CSoundSlot {
 public:
 	CSoundSlot();
 	virtual ~CSoundSlot();
-
+	
 	bool loadSound(const std::string& fname, const std::string& searchname, unsigned int loadnum);
-
+	
 	void setpAudioSpec(SDL_AudioSpec *pAudioSpec){ m_pAudioSpec = pAudioSpec; }
-
+	
 	unsigned char getPriority(void){ return m_priority; }
 	bool isHighQuality(void){ return m_hqsound.enabled; }
 	unsigned int *getSoundData(void){ return m_sounddata; }
 	unsigned int getSoundlength(void) { return m_soundlength; }
 	stHQSound	*getHQSoundPtr(void) { return &m_hqsound; }
-
+	
 private:
 	unsigned char m_priority;
 	unsigned int *m_sounddata;

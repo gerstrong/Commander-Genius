@@ -26,18 +26,18 @@ class CDlgObject {
 public:
 	CDlgObject();
 	virtual ~CDlgObject();
-
+	
 	void create(Uint8 type, Uint16 ID, Uint16 x, Uint16 y, const std::string &text, unsigned int delimiter);
 	void change(const std::string &text, unsigned int delimiter);
-
+	
 	void render(SDL_Surface *dst, Uint8 scrollamt, Uint8 highlight);
-
+	
 	CDlgOptionText 	*m_OptionText;
-
+	
 	Uint16 m_ID;
 	Uint8 m_type;
 	bool m_selectable;
-
+	
 	Uint16 m_x;
 	Uint16 m_y;
 };

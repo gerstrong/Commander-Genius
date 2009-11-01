@@ -25,22 +25,22 @@ class CMusic : public CSingleton<CMusic>
 public:
 	CMusic();
 	virtual ~CMusic();
-
+	
 	int load(SDL_AudioSpec AudioSpec, const std::string &musicfile);
 	void unload(void);
 	void play(void);
 	void stop(void);
 	Uint8 *passBuffer(int length); // returns the buffer that has to be played in every callback
 	bool LoadfromMusicTable(const std::string levelfilename);
-
+	
 	int playing(void){return playmode;}
-
+	
 private:
 	Uint8 *music_buffer;
 	long music_len;
 	int music_pos;
 	int playmode;
-
+	
 };
 
 #endif /* CMUSIC_H_ */

@@ -12,7 +12,7 @@ class CCredits {
 public:
 	CCredits();
 	virtual ~CCredits();
-
+	
 	void Render(stCloneKeenPlus *pCKP);
 };
 

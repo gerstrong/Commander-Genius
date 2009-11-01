@@ -27,102 +27,102 @@
 
 // TODO: Change this to enums
 enum keys{
-KQUIT,
-KLEFT,
-KRIGHT,
-KUP,
-KDOWN,
-KCTRL,           // simply, CTRL, mapped to JUMP or FIRE
-KALT,            // simply, ALT, mapped to POGO or fire
-KENTER,
-KSPACE,
-KF1,
-KF2,
-KF3,
-KF4,
-KF5,
-KF6,
-KF7,
-KF8,
-KF9,
-KF10,
-
-KLEFT2,
-KRIGHT2,
-KUP2,
-KDOWN2,
-KCTRL2,
-KALT2,
-
-KLEFT3,
-KRIGHT3,
-KUP3,
-KDOWN3,
-KCTRL3,
-KALT3,
-
-KPLUS,
-KMINUS,
-
-KNUM1,
-KNUM2,
-KNUM3,
-KNUM4,
-KNUM5,
-KNUM6,
-KNUM7,
-KNUM8,
-KNUM9,
-
-KTAB,
-
-KBCKSPCE,
-
-// New keys
-KA,
-KB,
-KC,
-KD,
-KE,
-KF,
-KG,
-KH,
-KI,
-KJ,
-KK,
-KL,
-KM,
-KN,
-KO,
-KP,
-KQ,
-KR,
-KS,
-KT,
-KU,
-KV,
-KW,
-KX,
-KY,
-KZ,
-KSHIFT,
-KPGUP,
-KPGDN
+	KQUIT,
+	KLEFT,
+	KRIGHT,
+	KUP,
+	KDOWN,
+	KCTRL,           // simply, CTRL, mapped to JUMP or FIRE
+	KALT,            // simply, ALT, mapped to POGO or fire
+	KENTER,
+	KSPACE,
+	KF1,
+	KF2,
+	KF3,
+	KF4,
+	KF5,
+	KF6,
+	KF7,
+	KF8,
+	KF9,
+	KF10,
+	
+	KLEFT2,
+	KRIGHT2,
+	KUP2,
+	KDOWN2,
+	KCTRL2,
+	KALT2,
+	
+	KLEFT3,
+	KRIGHT3,
+	KUP3,
+	KDOWN3,
+	KCTRL3,
+	KALT3,
+	
+	KPLUS,
+	KMINUS,
+	
+	KNUM1,
+	KNUM2,
+	KNUM3,
+	KNUM4,
+	KNUM5,
+	KNUM6,
+	KNUM7,
+	KNUM8,
+	KNUM9,
+	
+	KTAB,
+	
+	KBCKSPCE,
+	
+	// New keys
+	KA,
+	KB,
+	KC,
+	KD,
+	KE,
+	KF,
+	KG,
+	KH,
+	KI,
+	KJ,
+	KK,
+	KL,
+	KM,
+	KN,
+	KO,
+	KP,
+	KQ,
+	KR,
+	KS,
+	KT,
+	KU,
+	KV,
+	KW,
+	KX,
+	KY,
+	KZ,
+	KSHIFT,
+	KPGUP,
+	KPGDN
 };
 
 #define KEYTABLE_SIZE   90
 
 enum InputCommands{
-IC_JUMP,
-IC_POGO,
-IC_FIRE,
-IC_STATUS,
-IC_LEFT,
-IC_UP,
-IC_RIGHT,
-IC_DOWN,
-IC_HELP,
-IC_QUIT
+	IC_JUMP,
+	IC_POGO,
+	IC_FIRE,
+	IC_STATUS,
+	IC_LEFT,
+	IC_UP,
+	IC_RIGHT,
+	IC_DOWN,
+	IC_HELP,
+	IC_QUIT
 };
 
 #define NUMBER_OF_COMMANDS	10
@@ -137,9 +137,9 @@ typedef struct stInputCommand
 	bool active;
 	bool lastactive;
 	//int value;
-
+	
 	SDLKey 	keysym;
-
+	
 	unsigned int joyeventtype;
 	int which;
 	int joyaxis;
@@ -152,14 +152,14 @@ class CInput : public CSingleton<CInput>
 public:
 	CInput();
 	virtual ~CInput();
-
+	
 	void pollEvents();
-
+	
 	bool getHoldedKey(int key);
 	bool getPressedKey(int key);
 	bool getPressedAnyKey(void);
 	void sendKey(int key);
-
+	
 	bool getPressedAnyCommand();
 	bool getPulsedCommand(int command, int msec);
 	bool getPulsedCommand(int player, int command, int msec);
@@ -170,35 +170,35 @@ public:
 	bool getPressedAnyCommand(int player);
 	bool getExitEvent(void);
 	void cancelExitEvent(void);
-
+	
 	void getEventName(int position, unsigned char input, std::string &buf);
 	bool readNewEvent(Uint8 device, int position);
-
+	
 	short loadControlconfig();
 	void resetControls();
 	bool startJoyDriver();
 	short saveControlconfig();
-
+	
 	void flushKeys(void);
 	void flushCommands(void);
 	void flushAll(void);
-
+	
 private:
 	SDL_Event Event;
 	SDL_Joystick *mp_Joystick;
-
+	
 	stInputCommand InputCommand[NUM_INPUTS][NUMBER_OF_COMMANDS];
 	bool m_exit;
 	int m_cmdpulse;
 	short m_joydeadzone;
-
+	
 	bool immediate_keytable[KEYTABLE_SIZE];
 	bool last_immediate_keytable[KEYTABLE_SIZE];
 #ifdef WIZGP2X
 	int volume;
 	int volume_direction;
 #endif
-
+	
 	void processKeys(int value);
 	void processJoystickAxis(void);
 	void processJoystickButton(int value);

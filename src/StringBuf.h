@@ -26,7 +26,7 @@ public:
 private:
 	std::string::iterator tPos;
 	std::string sStr;
-
+	
 public:
 	StringBuf& operator=(const StringBuf& b2)  {
 		if (&b2 != this)  {
@@ -35,19 +35,19 @@ public:
 		}
 		return *this;
 	}
-
+	
 	StringBuf& operator=(const std::string& s)  {
 		sStr = s;
 		tPos = sStr.begin();
 		return *this;
 	}
-
+	
 	StringBuf& operator=(const char *s)  {
 		sStr = s;
 		tPos = sStr.begin();
 		return *this;
 	}
-
+	
 	char getC()		{ return tPos == sStr.end() ? 0 : *tPos; }
 	void setC(char c) { if (!atEnd()) *tPos = c; }
 	void incPos()	{ tPos++; }

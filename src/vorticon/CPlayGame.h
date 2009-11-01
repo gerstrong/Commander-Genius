@@ -30,28 +30,28 @@
 
 class CPlayGame {
 public:
-
-enum e_levelcommands
-{
-	NONE,
-	GOTO_WORLD_MAP,
-	START_LEVEL,
-};
-
+	
+	enum e_levelcommands
+	{
+		NONE,
+		GOTO_WORLD_MAP,
+		START_LEVEL,
+	};
+	
 	CPlayGame( char episode, char level, 
-			char numplayers, char difficulty,
-			std::string &gamepath, stOption *p_option );
-
+			  char numplayers, char difficulty,
+			  std::string &gamepath, stOption *p_option );
+	
 	bool init();
 	bool loadGameState( std::string &statefile );
-
+	
 	void process();
 	void goBacktoMap();
 	void processObjectsAI();
 	void drawObjects();
 	void handleFKeys();
 	bool scrollTriggers();
-
+	
 	// Collision stuff stored in CPlayGameCollision.cpp
 	void checkPlayerCollisions(CPlayer *p_player);
 	bool checkisSolidr(CPlayer *p_player);
@@ -63,21 +63,21 @@ enum e_levelcommands
 	void processPlayerfallings(CPlayer *p_player);
 	void ExtendingPlatformSwitch(int x, int y);
 	void losePlayer(CPlayer *p_player);
-
+	
 	// Dialog processes stored in CPlayGameDialogs.cpp
 	void processPauseDialogs();
 	void showPausedGameDlg();
-
+	
 	bool isFinished() 
-		{ return m_finished; }
-
+	{ return m_finished; }
+	
 	bool getEndGame() { return m_endgame; }
 	bool getExitEvent() { return m_exitgame; }
 	char getEpisode(){	return m_Episode; }
-
+	
 	void cleanup();
 	virtual ~CPlayGame();
-
+	
 private:
 	bool m_finished;
 	bool m_endgame;
@@ -96,7 +96,7 @@ private:
 	bool mp_level_completed[16];
 	int m_checkpoint_x, m_checkpoint_y;
 	bool m_checkpointset;
-
+	
 	CMap *mp_Map;
 	CMenu *mp_Menu;
 	CPlayer *mp_Player;

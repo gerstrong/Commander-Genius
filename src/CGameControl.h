@@ -25,36 +25,36 @@
 
 class CGameControl {
 public:
-
+	
 	enum GameMode{
 		GAMELAUNCHER, PASSIVE, PLAYGAME, SHUTDOWN
 	};
-
+	
 	CGameControl();
 	virtual ~CGameControl();
-
+	
 	bool init(int argc, char *argv[]);
 	bool init(char mode=GAMELAUNCHER);
 	bool loadResources(unsigned short Episode, const std::string& DataDirectory, Uint8 flags=LOADALL);
-
+	
 	void process();
-
-
+	
+	
 	void cleanup(char mode);
 	void cleanup() { cleanup(m_mode); }
-
-
+	
+	
 	// getters and setters
 	bool mustShutdown(){ return (m_mode==SHUTDOWN); }
-
+	
 	char m_mode;
 	stOption *mp_option;
-
+	
 private:
 	CGameLauncher *mp_GameLauncher;
 	CPassive *mp_PassiveMode;
 	CPlayGame *mp_PlayGame;
-
+	
 	bool m_endgame;
 	Uint8 m_Episode;
 	Uint8 m_Numplayers;
@@ -63,7 +63,7 @@ private:
 	std::string m_DataDirectory;
 	int current_demo;
 	Uint8 m_startLevel;
-
+	
 	CEGAGraphics *m_EGAGraphics;
 	CMessages *m_Messages;
 };

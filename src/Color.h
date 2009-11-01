@@ -1,11 +1,11 @@
 /*
-	OpenLieroX
-
-	color type and related functions
-
-	code under LGPL
-	created 10-01-2007
-*/
+ OpenLieroX
+ 
+ color type and related functions
+ 
+ code under LGPL
+ created 10-01-2007
+ */
 
 #ifndef __COLOR_H__
 #define __COLOR_H__
@@ -42,22 +42,22 @@ inline Uint32 NativeColourToSDLColour(Uint32 pixel, short bpp) {
 // Get the specified component from the pixel (grabbed from SDL)
 inline Uint8 GetR(Uint32 pixel, SDL_PixelFormat *fmt)  {
 	return  (Uint8)((((pixel & fmt->Rmask) >> fmt->Rshift) << fmt->Rloss) +
-			(((pixel & fmt->Rmask) >> fmt->Rshift) >> (8 - (fmt->Rloss << 1))));
+					(((pixel & fmt->Rmask) >> fmt->Rshift) >> (8 - (fmt->Rloss << 1))));
 }
 
 inline Uint8 GetG(Uint32 pixel, SDL_PixelFormat *fmt)  {
 	return  (Uint8)((((pixel & fmt->Gmask) >> fmt->Gshift) << fmt->Gloss) +
-			(((pixel & fmt->Gmask) >> fmt->Gshift) >> (8 - (fmt->Gloss << 1))));
+					(((pixel & fmt->Gmask) >> fmt->Gshift) >> (8 - (fmt->Gloss << 1))));
 }
 
 inline Uint8 GetB(Uint32 pixel, SDL_PixelFormat *fmt)  {
 	return  (Uint8)((((pixel & fmt->Bmask) >> fmt->Bshift) << fmt->Bloss) +
-			(((pixel & fmt->Bmask) >> fmt->Bshift) >> (8 - (fmt->Bloss << 1))));
+					(((pixel & fmt->Bmask) >> fmt->Bshift) >> (8 - (fmt->Bloss << 1))));
 }
 
 inline Uint8 GetA(Uint32 pixel, SDL_PixelFormat *fmt)  {
 	return  (Uint8)((((pixel & fmt->Amask) >> fmt->Ashift) << fmt->Aloss) +
-			(((pixel & fmt->Amask) >> fmt->Ashift) >> (8 - (fmt->Aloss << 1))));
+					(((pixel & fmt->Amask) >> fmt->Ashift) >> (8 - (fmt->Aloss << 1))));
 }
 
 extern SDL_PixelFormat* mainPixelFormat;
@@ -97,12 +97,12 @@ struct Color {
 	Color(SDL_PixelFormat *f, Uint32 cl) { SDL_GetRGBA(cl, f, &r, &g, &b, &a); }
 	explicit Color(Uint32 cl)	{ set(getMainPixelFormat(), cl); }
 	Color(const SDL_Color& cl) : r(cl.r), g(cl.g), b(cl.b), a(SDL_ALPHA_OPAQUE) {}
-
+	
 	Uint8 r;
 	Uint8 g;
 	Uint8 b;
 	Uint8 a;
-
+	
 	Uint32 get() const { return get(getMainPixelFormat()); }
 	Uint32 get(SDL_PixelFormat *f) const { return SDL_MapRGBA(f, r, g, b, a); }
 	Uint32 getDefault() const { return (Uint32(r) << 24) | (Uint32(g) << 16) | (Uint32(b) << 8) | Uint32(a); }

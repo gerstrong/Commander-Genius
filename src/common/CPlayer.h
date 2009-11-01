@@ -22,20 +22,20 @@
 ///
 class CPlayer {
 public:
-
+	
 	// direction defines used for various things
 	enum e_directions{
-	RIGHT,LEFT,	UP,	DOWN
+		RIGHT,LEFT,	UP,	DOWN
 	};
-
+	
 	enum e_playingmodes{
 		NONE, WORLDMAP, LEVELPLAY
 	};
-
+	
 	CPlayer();
 	void setDatatoZero();
 	void setMapData(CMap *p_map){	mp_map = p_map;	}
-
+	
 	// World Map specific
 	void processWorldMap();
 	void setWorldMapdir();
@@ -46,7 +46,7 @@ public:
 	void InertiaAndFriction_Y();
 	void AllowMountUnmountNessie();
 	int getNewObject();
-
+	
 	// In Level specific
 	void processInLevel();
 	void touchedExit();
@@ -63,7 +63,7 @@ public:
 	void ankh();
 	void bump( int pushamt, bool solid );
 	void SelectFrame();
-
+	
 	// Used for both situations
 	void InertiaAndFriction_X();
 	void Walking();
@@ -71,9 +71,9 @@ public:
 	void StatusBox();
 	void ProcessInput();
 	bool drawStatusScreen();
-
+	
 	virtual ~CPlayer();
-
+	
 	///
 	// variables
 	// these coordinates are CSFed
@@ -82,32 +82,32 @@ public:
 	unsigned int y;
 	unsigned long goto_x;
 	unsigned int goto_y;
-
+	
 	unsigned int w;
 	unsigned int h;
-
+	
 	char m_playingmode;
 	char m_episode;
 	int m_player_number;
 	// Pointer to the Object type assign to this player
 	std::vector<CObject> *mp_object;
-
+	
 	char godmode;
-
+	
 	// used on world map only
 	char hideplayer;
 	char mounted;
-
+	
 	short treshold;		// This is used for analog devices like joysticks
 	signed int pinertia_y;
-
+	
 	unsigned long mapplayx;
 	signed int mapplayy;
-
+	
 	unsigned char playframe;
-
+	
 	unsigned char pfalling,plastfalling,pfallspeed;
-
+	
 	unsigned char pwalking,playspeed;
 	unsigned char pslowingdown;
 	unsigned char pwalkframe,pwalkframea;
@@ -115,26 +115,26 @@ public:
 	unsigned char pwalkincreasetimer, pfriction_timer_x, pfriction_timer_y;
 	signed int pinertia_x, playpushed_x;
 	unsigned char playpushed_decreasetimer;
-
+	
 	bool blockedl,blockedr,blockedu,blockedd;
 	unsigned int blockedby;
-
+	
 	unsigned char pjumping, pjumptime, pjumpupspeed_decrease, pjumpdir;
 	unsigned char pjumpframe, pjumpanimtimer;
 	int pjumpupspeed;
 	unsigned char pjumpnormaltime, pjumpupdecreaserate, pjustjumped;
 	unsigned char pjustfell;
 	unsigned char pjumpfloattimer;
-
+	
 	unsigned char pdir,pshowdir,lastpdir;
-
+	
 	char pfireframetimer;
 	bool inhibitwalking, inhibitfall;
-
+	
 	int ctrltimer, alttimer;
 	char keyprocstate;
 	char wm_lastenterstate;
-
+	
 	char pdie, pdieframe, pdietimer;
 	int pdietillfly;
 	signed int pdie_xvect;
@@ -144,32 +144,32 @@ public:
 	bool ppogostick;
 	int pfrozentime,pfrozenframe,pfrozenanimtimer;
 	bool pfiring, plastfire;
-
+	
 	char playcontrol[PA_MAX_ACTIONS];
-
+	
 	unsigned char dpadcount, dpadlastcount;
-
+	
 	unsigned int ankhtime, ankhshieldobject;
-
+	
 	stInventory inventory;
-
+	
 	bool m_godmode, m_cheats_enabled;
 	bool *mp_levels_completed;
 	bool m_showStatusScreen;
 	char level_done;
-
+	
 	CMap *mp_map;
 	stOption *mp_option;
-
+	
 private:
 	CStatusScreen *mp_StatusScr;
-
+	
 	bool lastpogo;
-
+	
 	// Level control specific functions, especially for exit
 	int exitXpos;
 	int level_done_timer;
-
+	
 	// defined under CPlayerItems.cpp
 	bool getGoodie(int px, int py);
 	void procGoodie(int t, int mpx, int mpy);

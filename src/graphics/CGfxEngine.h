@@ -26,32 +26,32 @@ class CGfxEngine : public CSingleton<CGfxEngine>
 public:
 	CGfxEngine();
 	virtual ~CGfxEngine();
-
+	
 	CSprite *createEmptySprites(Uint16 num_sprites);
 	CBitmap *createEmptyBitmaps(Uint16 num_bmps);
 	CTilemap *createEmptyTilemap(stTile *pTileProperty, int numtiles);
 	CFont *createEmptyFontmap();
-
+	
 	void freeBitmaps();
 	void freeSprites();
 	void freeTilemap();
 	void freeFonts();
-
+	
 	void copyTileToSprite( Uint16 t, Uint16 s, Uint16 ntilestocopy );
-
+	
 	void drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w, int h);
 	int getNumSprites() { return Sprite.size(); }
-
+	
 	CBitmap *getBitmap(const std::string &name);
-
+	
 	void fade(Uint8 alpha);
-
+	
 	CFont *Font;
 	CTilemap *Tilemap;
 	CPalette Palette;
 	std::vector<CSprite*> Sprite;
 	std::vector<CBitmap*> Bitmap;
-
+	
 private:
 	SDL_Surface *m_fxsurface;
 };

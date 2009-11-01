@@ -14,24 +14,24 @@
 class CEGALatch {
 public:
 	CEGALatch( int planesize,
-			long bitmaptablelocation,
-			short fonttiles,
-			long fontlocation,
-			long screentiles,
-			long screenlocation,
-			short num16tiles,
-			long tiles16location,
-			short bitmaps,
-			long bitmaplocation);
+			  long bitmaptablelocation,
+			  short fonttiles,
+			  long fontlocation,
+			  long screentiles,
+			  long screenlocation,
+			  short num16tiles,
+			  long tiles16location,
+			  short bitmaps,
+			  long bitmaplocation);
 	virtual ~CEGALatch();
-
+	
 	bool loadHead(char *data, short m_episode );
 	bool loadData( std::string &path, short episode, int version, unsigned char *data, bool compresseddata );
-
+	
 	void applyMasks();
-
+	
 	char *RawData;
-
+	
 private:
 	int m_num_Latches;
 	int m_latchplanesize;

@@ -9,7 +9,6 @@
 #include "COrderingInfo.h"
 #include "../sdl/CInput.h"
 #include "../CLogFile.h"
-#include "../include/CStartScreen.h"
 #include "../include/gamedo.h"
 #include "../fileio/CExeFile.h"
 #include "../graphics/CGfxEngine.h"
@@ -17,22 +16,22 @@
 COrderingInfo::COrderingInfo(SDL_Surface *Surface, int episode, std::string& datadirectory) {
 	CExeFile *Exefile = new CExeFile(episode, datadirectory);
 	m_Surface = Surface;
-
+	
 	// load the exe file
 	Exefile->readData();
-
+	
 	// Get the offset where in the data the info is...
 	size_t offset = 0;
 	switch(episode)
 	{
-	case 1:
-		m_starty = 4; // start of y-coordinate in textheights
-		m_numberoflines = 21; // numberof lines to print
-		if(Exefile->getEXEVersion() == 131)
-			offset = 0x1632C;
-		break;
+		case 1:
+			m_starty = 4; // start of y-coordinate in textheights
+			m_numberoflines = 21; // numberof lines to print
+			if(Exefile->getEXEVersion() == 131)
+				offset = 0x1632C;
+			break;
 	}
-
+	
 	// Read the strings and save them the string array of the class
 	if(offset)
 	{
@@ -54,10 +53,10 @@ COrderingInfo::COrderingInfo(SDL_Surface *Surface, int episode, std::string& dat
 			}
 			data++;
 			m_Textline.push_back(buf);
-
+			
 			buf.clear();
 		}
-
+		
 		// That part is a bit tricky. The Episodes have different X-Coordinates for evry text to center it properly
 		if(episode == 1)
 		{
@@ -74,9 +73,9 @@ COrderingInfo::COrderingInfo(SDL_Surface *Surface, int episode, std::string& dat
 				m_Text_Coordinate.push_back( 0*8 ); // Coordinate-x to get the lines centered, like in the original game.
 			m_Text_Coordinate.push_back( 3*8 ); // Coordinate-x to get the lines centered, like in the original game.
 		}
-
+		
 	}
-
+	
 	delete Exefile;
 }
 
@@ -87,33 +86,33 @@ COrderingInfo::~COrderingInfo() {
 void COrderingInfo::Render(stCloneKeenPlus *pCKP)
 {
 	/*bool cancel = false;
-
-	if(!m_Textline.size())
-	{
-		g_pLogFile->textOut(RED,"Sorry, but the ordering information text could not be read. Returning to the main menu...<br>");
-		return;
-	}
-
-	//showmapatpos(90, 22<<4, 32, pCKP);
-
-	do
-	{
-		gamedo_AnimatedTiles();
-
-		for(int i=0 ; i<m_numberoflines ; i++)
-		{
-			g_pGfxEngine->Font->drawFont(m_Surface, m_Textline[i], m_Text_Coordinate[i], 8*(i+m_starty), true);
-		}
-
-		if( g_pInput->getPressedAnyCommand() )
-			cancel = true;
-
-		if(g_pInput->getExitEvent()) cancel=true;
-
-		g_pInput->pollEvents();
-		// blit the scrollbuffer to the display
-		gamedo_frameskipping_blitonly();
-
-	} while( !cancel );
-*/
+	 
+	 if(!m_Textline.size())
+	 {
+	 g_pLogFile->textOut(RED,"Sorry, but the ordering information text could not be read. Returning to the main menu...<br>");
+	 return;
+	 }
+	 
+	 //showmapatpos(90, 22<<4, 32, pCKP);
+	 
+	 do
+	 {
+	 gamedo_AnimatedTiles();
+	 
+	 for(int i=0 ; i<m_numberoflines ; i++)
+	 {
+	 g_pGfxEngine->Font->drawFont(m_Surface, m_Textline[i], m_Text_Coordinate[i], 8*(i+m_starty), true);
+	 }
+	 
+	 if( g_pInput->getPressedAnyCommand() )
+	 cancel = true;
+	 
+	 if(g_pInput->getExitEvent()) cancel=true;
+	 
+	 g_pInput->pollEvents();
+	 // blit the scrollbuffer to the display
+	 gamedo_frameskipping_blitonly();
+	 
+	 } while( !cancel );
+	 */
 }

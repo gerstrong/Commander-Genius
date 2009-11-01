@@ -21,15 +21,15 @@ class CGame {
 public:
 	CGame();
 	virtual ~CGame();
-
+	
 	bool init(int argc, char *argv[]);
 	bool loadCKPDrivers();
-
+	
 	void run();
 	void cleanup();
-
+	
 	stOption m_option[NUM_OPTIONS];
-
+	
 private:
 	CGameControl m_GameControl;
 };

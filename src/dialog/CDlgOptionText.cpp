@@ -15,7 +15,7 @@ CDlgOptionText::CDlgOptionText(const std::string &text, unsigned int delimit) {
 
 void CDlgOptionText::setText(const std::string &text, unsigned int delimit) {
 	m_text = text;
-
+	
 	if(m_text.size() > delimit )
 	{
 		m_text.erase(delimit-3);

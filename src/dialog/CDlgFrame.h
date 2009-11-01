@@ -20,21 +20,21 @@ class CDlgFrame {
 public:
 	CDlgFrame(int x, int y, int w, int h, Uint8 theme);
 	virtual ~CDlgFrame();
-
+	
 	void draw(SDL_Surface *dst);
-
+	
 	int m_x;
 	int m_y;
 	int m_w;
 	int m_h;
-
+	
 private:
-
+	
 	int m_8x8tileheight;
 	int m_8x8tilewidth;
-
+	
 	Uint8 m_theme;
-
+	
 	void drawOldSchoolFrame(SDL_Surface *dst);
 	void drawRedFrame(SDL_Surface *dst);
 };

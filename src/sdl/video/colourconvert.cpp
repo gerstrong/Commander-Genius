@@ -12,7 +12,7 @@ Uint16 convert4to16BPPcolor(Uint8 c, SDL_Surface *BlitSurface)
 {
 	// This function converts the colour from the keen palette to 16-bit format
 	int alpha = 128;
-
+	
 	if(c == 16)
 		return SDL_MapRGBA(BlitSurface->format,1,0,0,alpha);
 	else if(c == COLOUR_BLACK)
@@ -56,9 +56,9 @@ Uint32 convert4to32BPPcolor(Uint8 c, SDL_Surface *BlitSurface)
 {
 	// This function converts the colour from the keen palette to 16-bit format
 	int alpha;
-
+	
 	alpha = 255;
-
+	
 	if(c == 16)
 		return SDL_MapRGBA(BlitSurface->format,1,0,0,alpha);
 	else if(c == COLOUR_BLACK)

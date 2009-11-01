@@ -1,12 +1,12 @@
 /*
-	OpenLieroX
-
-	UTF8/Unicode conversions
-	
-	code under LGPL
-	created 01-05-2007
-	by Albert Zeyer and Dark Charlie
-*/
+ OpenLieroX
+ 
+ UTF8/Unicode conversions
+ 
+ code under LGPL
+ created 01-05-2007
+ by Albert Zeyer and Dark Charlie
+ */
 
 #ifdef _MSC_VER
 #pragma warning(disable: 4786)  // WARNING: identifier XXX was truncated to 255 characters in the debug info
@@ -116,7 +116,7 @@ ConversionItem tConversionTable[] = {
 	{ 0xFD, {0xC3, 0xBD, 0x00, 0x00}, 'y'},
 	{ 0xFE, {0xC3, 0xBE, 0x00, 0x00}, 'b'},
 	{ 0xFF, {0xC3, 0xBF, 0x00, 0x00}, 'y'},
-
+	
 	{ 0x0100, {0xC4, 0x80, 0x00, 0x00}, 'A'},
 	{ 0x0101, {0xC4, 0x81, 0x00, 0x00}, 'a'},
 	{ 0x0102, {0xC4, 0x82, 0x00, 0x00}, 'A'},
@@ -181,7 +181,7 @@ ConversionItem tConversionTable[] = {
 	{ 0x013D, {0xC4, 0xBD, 0x00, 0x00}, 'L'},
 	{ 0x013E, {0xC4, 0xBE, 0x00, 0x00}, 'l'},
 	{ 0x013F, {0xC4, 0xBF, 0x00, 0x00}, 'L'},
-
+	
 	{ 0x0140, {0xC5, 0x80, 0x00, 0x00}, 'l'},
 	{ 0x0141, {0xC5, 0x81, 0x00, 0x00}, 'L'},
 	{ 0x0142, {0xC5, 0x82, 0x00, 0x00}, 'l'},
@@ -246,14 +246,14 @@ ConversionItem tConversionTable[] = {
 	{ 0x017D, {0xC5, 0xBD, 0x00, 0x00}, 'Z'},
 	{ 0x017E, {0xC5, 0xBE, 0x00, 0x00}, 'z'},
 	{ 0x017F, {0xC5, 0xBF, 0x00, 0x00}, 'S'},
-
+	
 	{ 0x018F, {0xC6, 0x8F, 0x00, 0x00}, 'e'},
 	{ 0x0192, {0xC6, 0x92, 0x00, 0x00}, 'f'},
 	{ 0x01A0, {0xC6, 0xA0, 0x00, 0x00}, 'O'},
 	{ 0x01A1, {0xC6, 0xA1, 0x00, 0x00}, 'o'},
 	{ 0x01AF, {0xC6, 0xAF, 0x00, 0x00}, 'U'},
 	{ 0x01B0, {0xC6, 0xB0, 0x00, 0x00}, 'u'},
-
+	
 	{ 0x01CD, {0xC7, 0x8D, 0x00, 0x00}, 'A'},
 	{ 0x01CE, {0xC7, 0x8E, 0x00, 0x00}, 'a'},
 	{ 0x01CF, {0xC7, 0x8F, 0x00, 0x00}, 'I'},
@@ -270,28 +270,28 @@ ConversionItem tConversionTable[] = {
 	{ 0x01DA, {0xC7, 0x9A, 0x00, 0x00}, 'u'},
 	{ 0x01DB, {0xC7, 0x9B, 0x00, 0x00}, 'U'},
 	{ 0x01DC, {0xC7, 0x9C, 0x00, 0x00}, 'u'},
-
+	
 	{ 0x01FA, {0xC7, 0xBA, 0x00, 0x00}, 'A'},
 	{ 0x01FB, {0xC7, 0xBB, 0x00, 0x00}, 'a'},
 	{ 0x01FC, {0xC7, 0xBC, 0x00, 0x00}, 'A'},
 	{ 0x01FD, {0xC7, 0xBD, 0x00, 0x00}, 'a'},
 	{ 0x01FE, {0xC7, 0xBE, 0x00, 0x00}, 'O'},
 	{ 0x01FF, {0xC7, 0xBF, 0x00, 0x00}, 'o'},
-
+	
 	{ 0x0259, {0xC9, 0x99, 0x00, 0x00}, 'e'},
-
+	
 	{ 0x02C9, {0xCB, 0x89, 0x00, 0x00}, '-'},
 	{ 0x02DA, {0xCB, 0x9A, 0x00, 0x00}, '*'},
 	{ 0x02DC, {0xCB, 0x9C, 0x00, 0x00}, '\"'},
 	{ 0x02DD, {0xCB, 0x9D, 0x00, 0x00}, '\"'},
-
+	
 	{ 0x0300, {0xCC, 0x80, 0x00, 0x00}, '\''},
 	{ 0x0301, {0xCC, 0x81, 0x00, 0x00}, '\''},
 	{ 0x0303, {0xCC, 0x83, 0x00, 0x00}, '\"'},
 	{ 0x0323, {0xCC, 0xA3, 0x00, 0x00}, '.'},
-
+	
 	{ 0x037E, {0xCD, 0xBE, 0x00, 0x00}, ';'},
-
+	
 	{ 0x0384, {0xCE, 0x84, 0x00, 0x00}, '\''},
 	{ 0x0386, {0xCE, 0x86, 0x00, 0x00}, 'A'},
 	{ 0x0387, {0xCE, 0x87, 0x00, 0x00}, '.'},
@@ -302,7 +302,7 @@ ConversionItem tConversionTable[] = {
 	{ 0x038E, {0xCE, 0x8E, 0x00, 0x00}, 'Y'},
 	{ 0x038F, {0xCE, 0x8F, 0x00, 0x00}, 'O'},
 	{ 0x0390, {0xCE, 0x90, 0x00, 0x00}, 'i'},
-
+	
 	{ 0x0391, {0xCE, 0x91, 0x00, 0x00}, 'A'},
 	{ 0x0392, {0xCE, 0x92, 0x00, 0x00}, 'B'},
 	{ 0x0393, {0xCE, 0x93, 0x00, 0x00}, 'G'},
@@ -349,7 +349,7 @@ ConversionItem tConversionTable[] = {
 	{ 0x03BD, {0xCE, 0xBD, 0x00, 0x00}, 'm'},
 	{ 0x03BE, {0xCE, 0xBE, 0x00, 0x00}, 'n'},
 	{ 0x03BF, {0xCE, 0xBF, 0x00, 0x00}, 'x'},
-
+	
 	{ 0x03C0, {0xCF, 0x80, 0x00, 0x00}, 'o'},
 	{ 0x03C1, {0xCF, 0x81, 0x00, 0x00}, 'p'},
 	{ 0x03C2, {0xCF, 0x82, 0x00, 0x00}, 'r'},
@@ -365,7 +365,7 @@ ConversionItem tConversionTable[] = {
 	{ 0x03CC, {0xCF, 0x8C, 0x00, 0x00}, 'o'},
 	{ 0x03CD, {0xCF, 0x8D, 0x00, 0x00}, 'y'},
 	{ 0x03CE, {0xCF, 0x8E, 0x00, 0x00}, 'w'},
-
+	
 	// TODO: finish cyrilic
 	{ 0x0401, {0xD0, 0x81, 0x00, 0x00}, 'E'},
 	{ 0x0404, {0xD0, 0x84, 0x00, 0x00}, 'E'},
@@ -382,9 +382,9 @@ ConversionItem tConversionTable[] = {
 	{ 0x0435, {0xD0, 0xB5, 0x00, 0x00}, 'e'},
 	{ 0x043A, {0xD0, 0xBA, 0x00, 0x00}, 'k'},
 	{ 0x043C, {0xD0, 0xBC, 0x00, 0x00}, 'm'},
-
+	
 	// TODO: hebrew
-
+	
 	{ 0x1E80, {0xE1, 0xBA, 0x80, 0x00}, 'W'},
 	{ 0x1E81, {0xE1, 0xBA, 0x81, 0x00}, 'w'},
 	{ 0x1E82, {0xE1, 0xBA, 0x82, 0x00}, 'W'},
@@ -423,7 +423,7 @@ ConversionItem tConversionTable[] = {
 	{ 0x1EBD, {0xE1, 0xBA, 0xBD, 0x00}, 'e'},
 	{ 0x1EBE, {0xE1, 0xBA, 0xBE, 0x00}, 'E'},
 	{ 0x1EBF, {0xE1, 0xBA, 0xBF, 0x00}, 'e'},
-
+	
 	{ 0x1EC0, {0xE1, 0xBB, 0x80, 0x00}, 'E'},
 	{ 0x1EC1, {0xE1, 0xBB, 0x81, 0x00}, 'e'},
 	{ 0x1EC2, {0xE1, 0xBB, 0x82, 0x00}, 'E'},
@@ -482,7 +482,7 @@ ConversionItem tConversionTable[] = {
 	{ 0x1EF7, {0xE1, 0xBB, 0xB7, 0x00}, 'y'},
 	{ 0x1EF8, {0xE1, 0xBB, 0xB8, 0x00}, 'Y'},
 	{ 0x1EF9, {0xE1, 0xBB, 0xB9, 0x00}, 'y'},
-
+	
 	{ 0x2013, {0xE2, 0x80, 0x93, 0x00}, '-'},
 	{ 0x2014, {0xE2, 0x80, 0x94, 0x00}, '-'},
 	{ 0x2015, {0xE2, 0x80, 0x95, 0x00}, '-'},
@@ -497,7 +497,7 @@ ConversionItem tConversionTable[] = {
 	{ 0x2020, {0xE2, 0x80, 0xA0, 0x00}, '+'},
 	{ 0x2021, {0xE2, 0x80, 0xA1, 0x00}, '+'},
 	{ 0x2022, {0xE2, 0x80, 0xA2, 0x00}, '*'}
-
+	
 	// TODO: more :)
 };
 
@@ -508,7 +508,7 @@ ConversionItem tConversionTable[] = {
 static void UNICODE_to_UTF8(unsigned char *utf8, UnicodeChar unicode)
 {
     int j=0;
-
+	
     if (unicode < 0x80)
     {
         utf8[j] = unicode & 0x7F;
@@ -550,7 +550,7 @@ static void UNICODE_to_UTF8(unsigned char *utf8, UnicodeChar unicode)
     }
     else
     	utf8[j] = 0;
-
+	
     utf8[++j] = 0;
 }
 
@@ -580,29 +580,29 @@ UnicodeChar GetNextUnicodeFromUtf8(std::string::const_iterator &it, const std::s
 		res |=  (ch&0x3F) << 6; it++;  num_skipped++; if(it == last) return 0; ch = *it;
 		res |=  (ch&0x3F);
 	} else
-	if ( ch >= 0xF8 ) {
-		res  =  (ch&0x03) << 24; num_skipped++; it++; if(it == last) return 0; ch = *it;
-		res |=  (ch&0x3F) << 18; num_skipped++; it++; if(it == last) return 0; ch = *it;
-		res |=  (ch&0x3F) << 12; num_skipped++; it++; if(it == last) return 0; ch = *it;
-		res |=  (ch&0x3F) << 6;  num_skipped++; it++; if(it == last) return 0; ch = *it;
-		res |=  (ch&0x3F);
-	} else
-	if ( ch >= 0xF0 ) {
-		res  =  (ch&0x07) << 18; it++; num_skipped++; if(it == last) return 0; ch = *it;
-		res |=  (ch&0x3F) << 12; it++; num_skipped++; if(it == last) return 0; ch = *it;
-		res |=  (ch&0x3F) << 6; it++;  num_skipped++; if(it == last) return 0; ch = *it;
-		res |=  (ch&0x3F);
-	} else
-	if ( ch >= 0xE0 ) {
-		res  =  (ch&0x0F) << 12; it++; num_skipped++; if(it == last) return 0; ch = *it;
-		res |=  (ch&0x3F) << 6; it++; num_skipped++; if(it == last) return 0; ch = *it;
-		res |=  (ch&0x3F);
-	} else
-	if ( ch >= 0xC0 ) {
-		res  =  (ch&0x1F) << 6; it++; num_skipped++; if(it == last) return 0; ch = *it;
-		res |=  (ch&0x3F);
-	}
-
+		if ( ch >= 0xF8 ) {
+			res  =  (ch&0x03) << 24; num_skipped++; it++; if(it == last) return 0; ch = *it;
+			res |=  (ch&0x3F) << 18; num_skipped++; it++; if(it == last) return 0; ch = *it;
+			res |=  (ch&0x3F) << 12; num_skipped++; it++; if(it == last) return 0; ch = *it;
+			res |=  (ch&0x3F) << 6;  num_skipped++; it++; if(it == last) return 0; ch = *it;
+			res |=  (ch&0x3F);
+		} else
+			if ( ch >= 0xF0 ) {
+				res  =  (ch&0x07) << 18; it++; num_skipped++; if(it == last) return 0; ch = *it;
+				res |=  (ch&0x3F) << 12; it++; num_skipped++; if(it == last) return 0; ch = *it;
+				res |=  (ch&0x3F) << 6; it++;  num_skipped++; if(it == last) return 0; ch = *it;
+				res |=  (ch&0x3F);
+			} else
+				if ( ch >= 0xE0 ) {
+					res  =  (ch&0x0F) << 12; it++; num_skipped++; if(it == last) return 0; ch = *it;
+					res |=  (ch&0x3F) << 6; it++; num_skipped++; if(it == last) return 0; ch = *it;
+					res |=  (ch&0x3F);
+				} else
+					if ( ch >= 0xC0 ) {
+						res  =  (ch&0x1F) << 6; it++; num_skipped++; if(it == last) return 0; ch = *it;
+						res |=  (ch&0x3F);
+					}
+	
 	it++; num_skipped++;
 	return res;
 }
@@ -614,22 +614,22 @@ UnicodeChar GetNextUnicodeFromUtf8(std::string::const_iterator &it, const std::s
 int FindTableIndex(UnicodeChar c)
 {
 	int left, right, middle;
-
+	
 	left = 0;
 	right = sizeof(tConversionTable)/sizeof(ConversionItem) - 1;
-
+	
 	// Binary search
 	while (left <= right)  {
 		middle = (left + right) / 2;
 		if (tConversionTable[middle].Unicode == c)
 			return middle;
-
+		
 		if (c < tConversionTable[middle].Unicode)
 			right = middle - 1;
 		else
 			left = middle + 1;
 	}
-
+	
 	return -1; // No conversion available
 }
 
@@ -641,15 +641,15 @@ char UnicodeCharToAsciiChar(UnicodeChar c)
 	// Regular ascii, just continue
 	if (c <= 0x80)
 		return (char) c;
-
-
+	
+	
 	// Unicode, try to convert
 	int index = FindTableIndex(c);
 	if (index == -1)  // Cannot convert
 		return (char)0xFF;
 	else
 		return tConversionTable[index].Ascii;
-
+	
 }
 
 ////////////////////////
@@ -659,58 +659,58 @@ UnicodeChar	UnicodeToLower(UnicodeChar c)
 	// ASCII
 	if (c < 0xC0)
 		return (UnicodeChar)tolower(c);
-
+	
 	// Who the hell invented so crazzy mappings? :S
-
+	
 	// European characters
 	if (c >= 0xC0 && c <= 0xD6)
 		return c + 0x20;
-
+	
 	if (c >= 0xD8 && c <= 0xDE)
 		return c + 0x20;
-
+	
 	if (c >= 0x100 && c <= 0x177 && !(c & 1))
 		return c + 1;
-
+	
 	if (c == 0x178)
 		return 0xFF;
-
+	
 	if (c >= 0x179 && c <= 0x17E && (c & 1))
 		return c + 1;
-
+	
 	if (c == 0x18F)
 		return 0x259;
-
+	
 	if (c >= 0x1A0 && c <= 0x1FF && !(c & 1))
 		return c + 1;
-
+	
 	// Greece alphabet
 	if (c == 0x386)
 		return 0x3AC;
-
+	
 	if (c >= 0x388 && c <= 0x38A)
 		return c + 0x25;
-
+	
 	if (c >= 0x38C && c <= 0x38F)
 		return c + 0x40;
-
+	
 	if (c >= 0x391 && c <= 0x3AB)
 		return c + 0x1B;
-
+	
 	// Cyrilic
 	if (c >= 0x401 && c <= 0x40F)
 		return c + 0x50;
-
+	
 	if (c >= 0x410 && c <= 0x42F)
 		return c + 0x20;
-
+	
 	if (c >= 0x490 && c <= 0x4E9 && !(c & 1))
 		return c + 1;
-
+	
 	// More European characters
 	if (c >= 0x1E80 && c <= 0x1EF9 && !(c & 1))
 		return c + 1;
-
+	
 	// This character doesn't have lowercase
 	return c;
 }
@@ -722,58 +722,58 @@ UnicodeChar	UnicodeToUpper(UnicodeChar c)
 	// ASCII
 	if (c < 0xC0)
 		return (UnicodeChar)toupper(c);
-
+	
 	// Who the hell invented so crazzy mappings? :S
-
+	
 	// European characters
 	if (c >= 0xE0 && c <= 0xF6)
 		return c - 0x20;
-
+	
 	if (c >= 0xF8 && c <= 0xFE)
 		return c - 0x20;
-
+	
 	if (c == 0xFF)
 		return 0x178;
-
+	
 	if (c >= 0x100 && c <= 0x177 && (c & 1))
 		return c - 1;
-
+	
 	if (c >= 0x179 && c <= 0x17E && !(c & 1))
 		return c - 1;
-
+	
 	if (c == 0x259)
 		return 0x18F;
-
+	
 	if (c >= 0x1A0 && c <= 0x1FF && (c & 1))
 		return c - 1;
-
+	
 	// Greece alphabet
 	if (c == 0x3AC)
 		return 0x386;
-
+	
 	if (c >= 0x3AD && c <= 0x3AF)
 		return c - 0x25;
-
+	
 	if (c >= 0x3CC && c <= 0x3CF)
 		return c - 0x40;
-
+	
 	if (c >= 0x3B1 && c <= 0x3CB)
 		return c - 0x1B;
-
+	
 	// Cyrilic
 	if (c >= 0x451 && c <= 0x45F)
 		return c - 0x50;
-
+	
 	if (c >= 0x430 && c <= 0x44F)
 		return c - 0x20;
-
+	
 	if (c >= 0x490 && c <= 0x4E9 && (c & 1))
 		return c - 1;
-
+	
 	// More European characters
 	if (c >= 0x1E80 && c <= 0x1EF9 && (c & 1))
 		return c - 1;
-
+	
 	// This character doesn't have uppercase
 	return c;
 }
@@ -785,23 +785,23 @@ size_t Utf8StringCaseFind(const std::string& text, const std::string& search_for
 {
 	// HINT: same as stringcasefind, only using UTF8 functions instead (a bit slower)
 	size_t search_for_size = Utf8StringSize(search_for);
-
+	
 	if (text.size() == 0 || search_for_size == 0 || search_for_size > Utf8StringSize(text))
 		return std::string::npos;
-
+	
 	std::string::const_iterator it1 = text.begin();
 	std::string::const_iterator it2 = search_for.begin();
-
+	
 	size_t number_of_same = 0;
 	size_t number_of_same_bytes = 0;
 	size_t result = 0;
-
+	
 	// Go through the text
 	while (it1 != text.end())  {
 		size_t num_skipped = 0;
 		UnicodeChar c1 = UnicodeToLower(GetNextUnicodeFromUtf8(it1, text.end(), num_skipped));
 		UnicodeChar c2 = UnicodeToLower(GetNextUnicodeFromUtf8(it2, search_for.end()));
-
+		
 		// The two characters are the same
 		if (c1 == c2)  {
 			number_of_same++;  // If number of same characters equals to the size of the substring, we've found it!
@@ -813,10 +813,10 @@ size_t Utf8StringCaseFind(const std::string& text, const std::string& search_for
 			number_of_same_bytes = 0;
 			it2 = search_for.begin();
 		}
-
+		
 		result += num_skipped;
 	}
-
+	
 	return std::string::npos; // Not found
 }
 
@@ -827,7 +827,7 @@ std::string OldLxCompatibleString(const std::string &Utf8String)
 	std::string result = "";
 	std::string::const_iterator utf8_it = Utf8String.begin();
 	std::string::const_iterator last_it = Utf8String.begin();
-
+	
 	UnicodeChar current;
 	int index;
 	while (utf8_it != Utf8String.end())  {
@@ -837,7 +837,7 @@ std::string OldLxCompatibleString(const std::string &Utf8String)
 			last_it = utf8_it;
 			continue;
 		}
-
+		
 		// Unicode character
 		index = FindTableIndex(current);
 		result += std::string(last_it, utf8_it); // Keep the UTF8, old LX will ignore it
@@ -845,10 +845,10 @@ std::string OldLxCompatibleString(const std::string &Utf8String)
 			result += UNKNOWN_CHARACTER; // For characters that cannot be converted
 		else
 			result += tConversionTable[index].Ascii;
-
+		
 		last_it = utf8_it;
 	}
-
+	
 	return result;
 }
 
@@ -860,7 +860,7 @@ std::string Utf8String(const std::string& OldLxString)
 	std::string result = "";
 	std::string::const_iterator utf8_it = OldLxString.begin();
 	std::string::const_iterator last_it = OldLxString.begin();
-
+	
 	UnicodeChar current;
 	while (utf8_it != OldLxString.end())  {
 		current = GetNextUnicodeFromUtf8(utf8_it, OldLxString.end());
@@ -869,23 +869,23 @@ std::string Utf8String(const std::string& OldLxString)
 			last_it = utf8_it;
 			continue;
 		}
-
+		
 		// Unicode character
-
+		
 		result += std::string(last_it, utf8_it); // Keep the UTF8
 		if(utf8_it == OldLxString.end()) break;
 		if ((unsigned char)(*utf8_it) <= 0x80)  { // If after the unicode character comes another one, just continue
-
+			
 			// Ignore if the converted character comes after UTF8 character
 			// NOTE: the check if the character is really a valid converted UTF8 is not made because
 			// of forward compatibility - in future versions the conversion table can slightly change
 			// which would make it incompatible
 			utf8_it++;
 		}
-
+		
 		last_it = utf8_it;
 	}
-
+	
 	return result;
 }
 
@@ -895,7 +895,7 @@ std::string RemoveSpecialChars(const std::string &Utf8String)
 {
 	std::string result = "";
 	std::string::const_iterator utf8_it = Utf8String.begin();
-
+	
 	UnicodeChar current;
 	int index;
 	while (utf8_it != Utf8String.end())  {
@@ -907,9 +907,9 @@ std::string RemoveSpecialChars(const std::string &Utf8String)
 			if (index != -1)
 				result += tConversionTable[index].Ascii;
 		}
-	
+		
 	}
-
+	
 	return result;
 }
 
@@ -930,7 +930,7 @@ std::string Utf16ToUtf8(const Utf16String& str)
     Uint32 c, d = 0;
 	std::string result;
     int bits, iters;
-
+	
 	for (Utf16String::const_iterator in = str.begin(); in != str.end();)  {
 		c = *in;
 		in++;
@@ -943,12 +943,12 @@ std::string Utf16ToUtf8(const Utf16String& str)
 			} else {
 				return result;
 			}
-
+			
 			in++;
         }
-
+		
 		// assertion: c is a single UTF-4 value
-
+		
 		if (c < 0x80)  {
 			result += (char)c;
 			bits= 0;
@@ -966,12 +966,12 @@ std::string Utf16ToUtf8(const Utf16String& str)
 			bits= 12;
 			iters = 3;
 		}
- 
+		
 		for ( ; iters; --iters) {
 			result += (char)(((c >> bits) & 0x3F) | 0x80);
 		}
 	}
-
+	
 	return result;
 }
 
@@ -981,11 +981,11 @@ Utf16String Utf8ToUtf16(const std::string& str)
 {
     Uint32 c, d, trailing;
 	Utf16String result;
-
+	
 	for (std::string::const_iterator in = str.begin(); in != str.end();)  {
 		d = (unsigned char)*in;
 		in++;
-
+		
 		if (d < 0x80)  {
 			c = d;
 			trailing = 0;
@@ -1003,7 +1003,7 @@ Utf16String Utf8ToUtf16(const std::string& str)
 		} else  {
 			return result; // no chance for this in UTF-16
 		}
-
+		
 		for ( ; trailing; trailing--) {
 			if (in == str.end())
 				return result;
@@ -1012,7 +1012,7 @@ Utf16String Utf8ToUtf16(const std::string& str)
 			c <<= 6;
 			c |= d & 0x3F;
 		}
-
+		
 		// assertion: c is a single UTF-4 value
 		if (c < 0x10000) {
 			result += (Utf16Char) c;
@@ -1036,7 +1036,7 @@ std::string UnicodeToUtf8(const UnicodeString& str)
 	for (UnicodeString::const_iterator i = str.begin(); i != str.end(); i++)  {
 		result += GetUtf8FromUnicode(*i);
 	}
-
+	
 	return result;
 }
 
@@ -1047,7 +1047,7 @@ UnicodeString Utf8ToUnicode(const std::string& str)
 	UnicodeString result;
 	for (std::string::const_iterator it = str.begin(); it != str.end();)
 		result += GetNextUnicodeFromUtf8(it, str.end());
-
+	
 	return result;
 }
 
@@ -1074,7 +1074,7 @@ std::string Utf8ToSystemNative(const std::string& utf8str)
 			return "";
 	}
 	buf[MIN(len, u16str.size() + 127)] = '\0';
-
+	
 	std::string res(buf);
 	delete[] buf;
 	return res;
@@ -1086,7 +1086,7 @@ std::string SystemNativeToUtf8(const std::string& natstr)
 {
 	if (natstr.size() == 0)	
 		return "";
-
+	
 	wchar_t *buf = new wchar_t[natstr.size() + 128]; // 128 for safety
 	int len = MultiByteToWideChar(CP_ACP, 0, natstr.c_str(), natstr.size(), buf, natstr.size() + 128);
 	if (len == 0)

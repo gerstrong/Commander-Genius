@@ -14,15 +14,15 @@ class CSavedGame {
 public:
 	CSavedGame(stLevelControl *lvlcontrol, stCloneKeenPlus *poutsideCKP);
 	virtual ~CSavedGame();
-
+	
 	char save(int slot);
 	char IsValidSaveGame(std::string fname);
 	bool load(int slot);
-
+	
 private:
 	void readHeader(FILE *fp, uchar *episode, uchar *level, uchar *lives, uchar *num_players);
 	std::string		DataDirectory;
-
+	
 	stCloneKeenPlus *pCKP;
 	stLevelControl *mp_levelcontrol;
 };

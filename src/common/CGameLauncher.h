@@ -42,31 +42,31 @@ class CGameLauncher {
 public:
 	CGameLauncher();
 	virtual ~CGameLauncher();
-
+	
 	typedef std::vector<std::string> DirList;
 	typedef std::vector<std::string> ExeList;
-
+	
 	bool init();
     void cleanup();
-
+	
     bool drawMenu();
 	void process();
 	Uint8 retrievetEpisode(short chosengame);
-
+	
 	unsigned char getChosengame(){ return m_chosenGame; }
 	bool setChosenGame(unsigned char chosengame) { m_chosenGame = chosengame; return (m_hasbeenchosen=true); }
 	bool waschosen(){ return m_hasbeenchosen; }
 	void letchooseagain() { m_hasbeenchosen=false; }
-
+	
 	bool getQuit(){ return m_mustquit; }
 	std::string getDirectory(Uint8 slot) { return m_Entries.at(slot).path; }
 	Uint8 getEpisode(Uint8 slot) { return m_Entries.at(slot).episode; }
 	std::string getEP1Directory() { return m_Entries.at(m_ep1slot).path; }
-
+	
 	Uint8 m_numGames;
-
+	
 private:
-
+	
 	bool m_mustquit;
 	short m_chosenGame;
 	bool m_hasbeenchosen;
@@ -79,10 +79,10 @@ private:
 	std::vector<std::string> m_Names;
 	CDialog *mp_LaunchMenu;
 	CMap *mp_map;
-
+	
 	bool scanSubDirectories(const std::string& root, size_t maxdepth = 0);
 	bool scanExecutables(const std::string& path);
-
+	
     void getLabels();
     std::string scanLabels(const std::string& path);
     void putLabels();

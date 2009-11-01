@@ -60,8 +60,8 @@ void scale2x4_32_mmx(scale2x_uint32* dst0, scale2x_uint32* dst1, scale2x_uint32*
 static inline void scale2x_mmx_emms(void)
 {
 	__asm__ __volatile__ (
-		"emms"
-	);
+						  "emms"
+						  );
 }
 
 #endif

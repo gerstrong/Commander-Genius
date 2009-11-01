@@ -25,7 +25,7 @@ pixel_t pixel_get( int x, int y, const unsigned char* pix, unsigned slice, unsig
 	const unsigned char* p;
 	unsigned i;
 	pixel_t v;
-
+	
 	if (opt_tes) {
 		if (x < 0)
 			x += dx;
@@ -45,13 +45,13 @@ pixel_t pixel_get( int x, int y, const unsigned char* pix, unsigned slice, unsig
 		if (y >= dy)
 			y = dy - 1;
 	}
-
+	
 	p = pix + (y * slice) + (x * pixel);
-
+	
 	v = 0;
 	for(i=0;i<pixel;++i)
 		v |= ((pixel_t)p[i]) << (i*8);
-
+	
 	return v;
 }
 
@@ -59,9 +59,9 @@ void pixel_put(int x, int y, unsigned char* pix, unsigned slice, unsigned pixel,
 {
 	unsigned char* p;
 	unsigned i;
-
+	
 	p = pix + (y * slice) + (x * pixel);
-
+	
 	for(i=0;i<pixel;++i) {
 		p[i] = v >> (i*8);
 	}

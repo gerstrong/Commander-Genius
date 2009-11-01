@@ -1,12 +1,12 @@
 /*
-	OpenLieroX
-
-	UTF8/Unicode conversions
-	
-	code under LGPL
-	created 01-05-2007
-	by Albert Zeyer and Dark Charlie
-*/
+ OpenLieroX
+ 
+ UTF8/Unicode conversions
+ 
+ code under LGPL
+ created 01-05-2007
+ by Albert Zeyer and Dark Charlie
+ */
 
 #ifndef __UNICODE_H__
 #define __UNICODE_H__
@@ -40,7 +40,7 @@ inline size_t IncUtf8StringIterator(_Iterator1& it, const _Iterator2& last) {
 		c = *it;
 		if(!(c&0x80) || ((c&0xC0) == 0xC0)) break;
 	}
-
+	
 	return res;
 }
 
@@ -51,7 +51,7 @@ inline size_t MultIncUtf8StringIterator(_Iterator& it, const _Iterator& last, si
 		if(it == last) break;
 		res += IncUtf8StringIterator(it, last);
 	}
-
+	
 	return res;
 }
 
@@ -67,7 +67,7 @@ inline size_t DecUtf8StringIterator(_Iterator1& it, const _Iterator2& first) {
 		c = *it;
 		if(!(c&0x80) || ((c&0xC0) == 0xC0)) break;
 	}
-
+	
 	return res;
 }
 
@@ -114,7 +114,7 @@ inline size_t Utf8StringSize(const std::string& str)  {
 	std::string::const_iterator it = str.begin();
 	for(; it != str.end(); IncUtf8StringIterator(it, str.end()))
 		res++;
-
+	
 	return res;
 }
 
@@ -123,8 +123,8 @@ inline std::string Utf8SubStr(const std::string& str, size_t start, size_t n = (
 		return std::string(Utf8PositionToIterator(str, start), str.end());
 	else
 		return std::string(
-			Utf8PositionToIterator(str, start),
-			Utf8PositionToIterator(str, start + n));
+						   Utf8PositionToIterator(str, start),
+						   Utf8PositionToIterator(str, start + n));
 }
 
 inline void Utf8Erase(std::string& str, size_t start, size_t n = (size_t)-1) {

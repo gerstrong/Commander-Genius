@@ -29,14 +29,14 @@ public:
 	enum Modes{
 		INTRO, TITLE, DEMO, STARTGAME, SHUTDOWN
 	};
-
+	
 	CPassive(char Episode, std::string DataDirectory);
 	virtual ~CPassive();
-
+	
 	bool init(char mode = INTRO);
-
+	
 	void process();
-
+	
 	// Getters
 	char getEpisode() { return m_Episode; }
 	char getNumPlayers() { return m_NumPlayers; }
@@ -46,24 +46,24 @@ public:
 	bool getchooseGame() { return m_modeg; }
 	bool mustStartGame() { return (m_mode==STARTGAME); }
 	bool getExitEvent() { return (m_mode==SHUTDOWN); }
-
+	
 	void cleanup();
 	
 	char m_mode;
 	
 	CMenu *mp_Menu;
-
+	
 private:
 	CIntro *mp_IntroScreen;
 	CTitle *mp_TitleScreen;
 	CMap *mp_Map;
 	CTextBox *mp_PressAnyBox;
-
+	
 	CTilemap *mp_Tilemap;
 	SDL_Surface *mp_Scrollsurface;
-
+	
 	std::vector<CObject*> m_object;
-
+	
 	int m_textsize;
 	bool m_GoDemo;
 	bool m_modeg;

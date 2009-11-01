@@ -47,71 +47,71 @@ bool CTeleporter::readTeleporterInfo(int lvl)
     telfrom = 0;
     for(int i=0;i<NUM_TPORTS;i++)
     {
-      if (teleport_from[i]==lvl)
-      { // we found it! it IS a teleporter!
-        telfrom = teleport_from[i];
-        teldest = teleport_dest[i];
-        telsnap = teleport_snap[i];
-        return true;
-      }
-      else if (teleport_from[i]==0)
-      { // nope. it's not a teleporter.
-    	return false;
-      }
+		if (teleport_from[i]==lvl)
+		{ // we found it! it IS a teleporter!
+			telfrom = teleport_from[i];
+			teldest = teleport_dest[i];
+			telsnap = teleport_snap[i];
+			return true;
+		}
+		else if (teleport_from[i]==0)
+		{ // nope. it's not a teleporter.
+			return false;
+		}
     }
     return false;
 }
 
 void CTeleporter::teleportPlayer(std::vector<CObject> &p_vect_object, CPlayer &player)
 {
-int destx, desty;
-
+	int destx, desty;
+	
 	destx = player.x>>CSF;
 	desty = player.y>>CSF;
     // need to teleport somewhere?
     if (telfrom)
     {
-       if (m_map.findObject(teldest, &destx, &desty))
-       {
-    	   int origx, origy;
-    	   CObject teleporter;
-    	   m_map.findObject(telfrom, &origx, &origy);
-    	   teleporter.spawn( origx<<CSF, origy<<CSF, OBJ_TELEPORTER );
-    	   teleporter.ai.teleport.direction = TELEPORTING_OUT;
-    	   teleporter.ai.teleport.destx = destx;
-    	   teleporter.ai.teleport.desty = desty;
-    	   teleporter.ai.teleport.whichplayer = player.m_player_number;
-    	   teleporter.ai.teleport.NoExitingTeleporter = 0;
-    	   teleporter.ai.teleport.snap = telsnap;
-    	   if (m_episode==3)
-    	   {
-        	  teleporter.ai.teleport.baseframe = TELEPORT_BASEFRAME_EP3;
-        	  teleporter.ai.teleport.idleframe = TELEPORT_IDLEFRAME_EP3;
-    	   }
-    	   else
-    	   { // the teleporter in ep1
-        	  teleporter.ai.teleport.baseframe = TELEPORT_GRAY_BASEFRAME_EP1;
-        	  teleporter.ai.teleport.idleframe = TELEPORT_GRAY_IDLEFRAME_EP1;
-		   }
-    	   g_pSound->playStereofromCoord(SOUND_TELEPORT, PLAY_NOW, p_vect_object[player.m_player_number].scrx);
-
-    	   player.hideplayer = true;
-    	   p_vect_object.push_back(teleporter);
-       }
+		if (m_map.findObject(teldest, &destx, &desty))
+		{
+			int origx, origy;
+			CObject teleporter;
+			m_map.findObject(telfrom, &origx, &origy);
+			teleporter.spawn( origx<<CSF, origy<<CSF, OBJ_TELEPORTER );
+			teleporter.ai.teleport.direction = TELEPORTING_OUT;
+			teleporter.ai.teleport.destx = destx;
+			teleporter.ai.teleport.desty = desty;
+			teleporter.ai.teleport.whichplayer = player.m_player_number;
+			teleporter.ai.teleport.NoExitingTeleporter = 0;
+			teleporter.ai.teleport.snap = telsnap;
+			if (m_episode==3)
+			{
+				teleporter.ai.teleport.baseframe = TELEPORT_BASEFRAME_EP3;
+				teleporter.ai.teleport.idleframe = TELEPORT_IDLEFRAME_EP3;
+			}
+			else
+			{ // the teleporter in ep1
+				teleporter.ai.teleport.baseframe = TELEPORT_GRAY_BASEFRAME_EP1;
+				teleporter.ai.teleport.idleframe = TELEPORT_GRAY_IDLEFRAME_EP1;
+			}
+			g_pSound->playStereofromCoord(SOUND_TELEPORT, PLAY_NOW, p_vect_object[player.m_player_number].scrx);
+			
+			player.hideplayer = true;
+			p_vect_object.push_back(teleporter);
+		}
     }
-
+	
     // ep1 bonus teleporter
     // TODO: This must be coded more extensive
 	/*case LVLS_TELEPORTER_BONUS:
-	o = spawn_object(x<<CSF,y<<CSF,OBJ_TELEPORTER);
-	m_Object[o].ai.teleport.direction = TELEPORTING_OUT;
-	m_Object[o].ai.teleport.destx = TELEPORT_BONUS_DESTX;
-	m_Object[o].ai.teleport.desty = TELEPORT_BONUS_DESTY;
-	m_Object[o].ai.teleport.whichplayer = cp;
-	m_Object[o].ai.teleport.baseframe = TELEPORT_RED_BASEFRAME_EP1;
-	m_Object[o].ai.teleport.idleframe = TELEPORT_RED_IDLEFRAME_EP1;
-	m_Object[o].ai.teleport.NoExitingTeleporter = 1;
-	m_Object[o].ai.teleport.snap = 1;
-	mp_Player[cp].hideplayer = 1;
-	break;*/
+	 o = spawn_object(x<<CSF,y<<CSF,OBJ_TELEPORTER);
+	 m_Object[o].ai.teleport.direction = TELEPORTING_OUT;
+	 m_Object[o].ai.teleport.destx = TELEPORT_BONUS_DESTX;
+	 m_Object[o].ai.teleport.desty = TELEPORT_BONUS_DESTY;
+	 m_Object[o].ai.teleport.whichplayer = cp;
+	 m_Object[o].ai.teleport.baseframe = TELEPORT_RED_BASEFRAME_EP1;
+	 m_Object[o].ai.teleport.idleframe = TELEPORT_RED_IDLEFRAME_EP1;
+	 m_Object[o].ai.teleport.NoExitingTeleporter = 1;
+	 m_Object[o].ai.teleport.snap = 1;
+	 mp_Player[cp].hideplayer = 1;
+	 break;*/
 }

@@ -14,13 +14,13 @@ class CIntro {
 public:
 	CIntro();
 	virtual ~CIntro();
-
+	
 	void init();
-
+	
 	void process();
-
+	
 	bool isFinished() { return m_finished; }
-
+	
 private:
 	CBitmap* mp_bm[6];
 	SDL_Surface *mp_bmp_surface;

@@ -1,11 +1,11 @@
 /*
-	OpenLieroX
-
-	event class
-
-	created on 27-05-2008 by Albert Zeyer
-	code under LGPL
-*/
+ OpenLieroX
+ 
+ event class
+ 
+ created on 27-05-2008 by Albert Zeyer
+ code under LGPL
+ */
 
 #ifndef __EVENT_H__
 #define __EVENT_H__
@@ -19,7 +19,7 @@
 
 struct EventData {
 	EventData(void* own = NULL) : owner(own) {}
-
+	
 	void* owner;
 };
 
@@ -27,11 +27,11 @@ struct EventData {
 class _Event {};
 
 /*
-	This is an Event class, which represents a possible event.
-	It handles all the event handlers.
-	
-	_Data should provide at least an owner field like EventData
-*/
+ This is an Event class, which represents a possible event.
+ It handles all the event handlers.
+ 
+ _Data should provide at least an owner field like EventData
+ */
 template< typename _Data = EventData >
 class Event : public _Event {
 public:
@@ -43,7 +43,7 @@ public:
 		virtual bool operator==(const Handler& hndl) = 0;
 		virtual Handler* copy() const = 0;
 	};
-
+	
 	typedef std::list< Ref<Handler> > HandlerList;
 	
 protected:
@@ -62,7 +62,7 @@ protected:
 				}
 			return *this;
 		}
-
+		
 		const typename Event::HandlerList& get() { return base->m_handlers; }
 	};
 	
@@ -76,9 +76,9 @@ public:
 	Event(const Event& e) { (*this) = e; }
 	Event& operator=(const Event& e) { m_handlers = e.m_handlers; return *this; }
 	HandlerAccessor handler() { return HandlerAccessor(this); }
-
+	
 	void pushToMainQueue(_Data data) { if(mainQueue) mainQueue->push(new EventThrower<_Data>(this, data)); }
-
+	
 	void occurred(_Data data) {
 		callHandlers(m_handlers, data);
 	}
@@ -99,7 +99,7 @@ private:
 public:
 	MemberFunction(_Base* obj, Function fct) : m_obj(obj), m_fct(fct) {}
 	MemberFunction(const MemberFunction& other) : m_obj(other.m_obj), m_fct(other.m_fct) {}
-
+	
 	virtual void operator()(_Data data) { (*m_obj.*m_fct)(data); }
 	virtual bool operator==(const typename Event<_Data>::Handler& hndl) {
 		const MemberFunction* hPtr = dynamic_cast<const MemberFunction*>(&hndl);
@@ -119,7 +119,7 @@ private:
 public:
 	StaticFunction(Function fct) : m_fct(fct) {}
 	StaticFunction(const StaticFunction& other) : m_fct(other.m_fct) {}
-
+	
 	virtual void operator()(_Data data) { (m_fct)(data); }
 	virtual bool operator==(const typename Event<_Data>::Handler& hndl) {
 		const StaticFunction* hPtr = dynamic_cast<const StaticFunction*>(&hndl);

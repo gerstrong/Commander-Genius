@@ -23,17 +23,17 @@
 
 class CTitle {
 public:
-
+	
 	CTitle(std::vector<CObject*> *Objects);
 	virtual ~CTitle();
-
+	
 	bool init();
 	void process();
 	void cleanup();
-
+	
 	bool isFinished() 
-		{ return m_finished; }
-
+	{ return m_finished; }
+	
 private:
 	std::vector<CObject*> *mp_objects;
 	bool m_finished;

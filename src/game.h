@@ -8,10 +8,10 @@
 
 // direction defines used for various things
 enum directions{
-RIGHT,
-LEFT,
-UP,
-DOWN
+	RIGHT,
+	LEFT,
+	UP,
+	DOWN
 };
 
 #define ANKH_SHIELD_FRAME       61

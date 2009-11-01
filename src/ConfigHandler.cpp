@@ -50,12 +50,12 @@ bool AddKeyword(const std::string& key, int value)
 bool ReadKeyword(const std::string& filename, const std::string& section, const std::string& key, int *value, int defaultv)
 {
 	std::string string;
-
+	
 	*value = defaultv;
-
+	
 	if(!GetString(filename,section,key,string))
 		return false;
-
+	
 	// Try and find a keyword with matching keys
 	KeywordMap::iterator f = Keywords.find(string);
 	if(f != Keywords.end()) {
@@ -84,12 +84,12 @@ bool ReadKeyword(const std::string& filename, const std::string& section, const 
 bool ReadKeywordList(const std::string& filename, const std::string& section, const std::string& key, int *value, int defaultv)
 {
 	std::string string;
-
+	
 	*value = defaultv;
-
+	
 	if(!GetString(filename,section,key,string))
 		return false;
-
+	
 	std::vector<std::string> split = explode(string, ",");
 	for (std::vector<std::string>::iterator it = split.begin(); it != split.end(); it++)  {
 		TrimSpaces(*it);
@@ -97,7 +97,7 @@ bool ReadKeywordList(const std::string& filename, const std::string& section, co
 		if (key != Keywords.end())
 			*value |= key->second;
 	}
-
+	
 	return true;
 }
 
@@ -107,14 +107,14 @@ bool ReadKeywordList(const std::string& filename, const std::string& section, co
 bool ReadInteger(const std::string& filename, const std::string& section, const std::string& key, int *value, int defaultv)
 {
 	std::string string;
-
+	
 	*value = defaultv;
-
+	
 	if(!GetString(filename,section,key,string))
 		return false;
-
+	
 	*value = from_string<int>(string);
-
+	
 	return true;
 }
 
@@ -124,15 +124,15 @@ bool ReadInteger(const std::string& filename, const std::string& section, const 
 bool ReadString(const std::string& filename, const std::string& section, const std::string& key, std::string& value, std::string defaultv, bool abs_fn)
 {
 	value = defaultv;
-
+	
 	return GetString(filename,section,key,value, abs_fn);
-
+	
 	/*int result = GetString(filename,section,key,value);
-
-	if (strlen(value) <= 0)
-		strcpy(value,defaultv);
-
-	return result;*/
+	 
+	 if (strlen(value) <= 0)
+	 strcpy(value,defaultv);
+	 
+	 return result;*/
 }
 
 
@@ -142,14 +142,14 @@ bool ReadString(const std::string& filename, const std::string& section, const s
 bool ReadFloat(const std::string& filename, const std::string& section, const std::string& key, float *value, float defaultv)
 {
 	std::string string;
-
+	
 	*value = defaultv;
-
+	
 	if(!GetString(filename,section,key,string))
 		return false;
-
+	
 	*value = (float)atof(string);
-
+	
 	return true;
 }
 
@@ -173,14 +173,14 @@ bool ReadColour(const std::string& filename, const std::string& section, const s
 bool ReadIntArray(const std::string& filename, const std::string& section, const std::string& key, int *array, int num_items)
 {
 	std::string string;
-
+	
 	if (!GetString(filename,section,key,string))
 		return false;
-
+	
 	std::vector<std::string> arr = explode(string,",");
 	for (register int i=0; i<MIN(num_items,(int)arr.size()); i++)
 		array[i] = from_string<int>(arr[i]);
-
+	
 	return num_items == (int)arr.size();
 }
 
@@ -199,22 +199,22 @@ static bool GetString(const std::string& filename, const std::string& section, c
 	size_t	chardest = 0;
 	int		Position;
 	bool	found = false;
-
+	
 	if(filename == "")
 		return false;
-
+	
 	if(abs_fn) {
 		config = OpenGameFile(filename.c_str(), "rt");
 	} else
 		config = OpenGameFile(filename,"rt");
 	if(!config)
 		return false;
-
+	
 	//string="";
 	curSection="";
 	temp="";
 	curKey="";
-
+	
 	// Check for UTF-8 encoded file and skip the UTF-8 mark if it is
 	unsigned char utf8mark[3] = {0,0,0};
 	if(fread(utf8mark, sizeof(utf8mark), 1, config) == 0) {
@@ -223,19 +223,19 @@ static bool GetString(const std::string& filename, const std::string& section, c
 	}
 	if (utf8mark[0] != 0xEF || utf8mark[1] != 0xBB || utf8mark[2] != 0xBF)
 		fseek(config, 0, SEEK_SET); // Not a UTF-8 file, jump back to the beginning
-
-
+	
+	
 	while(!feof(config) && !ferror(config))
 	{
 		// Parse the lines
 		Line = ReadUntil(config, '\n');
 		TrimSpaces(Line);
-
+		
 		///////////////////
 		// Comment, Ignore
 		if(Line.size() == 0 || Line[0] == '#')
 			continue;
-
+		
 		////////////
 		// Sections
 		if(Line[0] == '[' && Line[Line.size()-1] == ']')
@@ -244,7 +244,7 @@ static bool GetString(const std::string& filename, const std::string& section, c
 			curSection.erase(curSection.size()-1);
 			continue;
 		}
-
+		
 		////////
 		// Keys
 		chardest = Line.find('=');
@@ -256,7 +256,7 @@ static bool GetString(const std::string& filename, const std::string& section, c
 			tmpLine.erase(Position);
 			TrimSpaces(tmpLine);
 			curKey = tmpLine;
-
+			
 			// Check if this is the key were looking for under the section were looking for
 			if(stringcasecmp(curKey,key) == 0 && stringcasecmp(curSection,section) == 0)
 			{
@@ -270,9 +270,9 @@ static bool GetString(const std::string& filename, const std::string& section, c
 			continue;
 		}
 	}
-
+	
 	fclose(config);
-
+	
 	return found;
 }
 

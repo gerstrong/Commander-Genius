@@ -30,21 +30,21 @@ class CFont {
 public:
 	CFont();
 	virtual ~CFont();
-
+	
 	bool CreateSurface(SDL_Color *Palette, Uint32 Flags);
 	bool optimizeSurface();
 	SDL_Surface *getSDLSurface();
-
+	
 	void generateGlowFonts();
 	void generateSpecialTwirls();
 	void generateInverseFonts();
 	void generateDisabledFonts();
-
+	
 	void drawTwirl(SDL_Surface* dst, int twirlframe, Uint16 x, Uint16 y);
-
+	
 	void drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff);
 	void drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, Uint8 lettertype = LETTER_TYPE_NORMAL);
-
+	
 private:
 	SDL_Surface *m_FontSurface;
 };

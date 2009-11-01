@@ -20,20 +20,20 @@ int pal_getcolor(unsigned char r, unsigned char g, unsigned char b);
 class CEGASprit {
 public:
 	CEGASprit(int planesize,
-			long spritestartloc,
-			int numsprites,
-			long spriteloc);
+			  long spritestartloc,
+			  int numsprites,
+			  long spriteloc);
 	virtual ~CEGASprit();
-
+	
 	bool loadHead(char *data);
 	bool loadData(const std::string& filename, bool compresseddata);
-
+	
 private:
 	int m_numsprites;
 	int m_planesize;
 	long m_spritestartloc;
 	long m_spriteloc;
-
+	
 	struct st_sprite{
 		short width;
 		short height;
@@ -48,7 +48,7 @@ private:
 		// There are 3 copies of the same Elements in the file. There were used for performance
 		// in DOS but are ignored here.
 	}*Sprite;
-
+	
 	char LoadTGASprite( const std::string &filename, CSprite *sprite );
 	void LoadSpecialSprites( std::vector<CSprite*> &sprite );
 	void DeriveSpecialSprites( CTilemap *tilemap, std::vector<CSprite*> &sprites );

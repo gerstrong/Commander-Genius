@@ -41,7 +41,7 @@ std::string CParser::parseline(FILE *fp)
 bool CParser::loadParseFile() // Open, read the list and close the file
 {
 	FILE *fp;
-
+	
 	if((fp=OpenGameFile(m_configfile.c_str(),"rt")))
 	{
 		while(!feof(fp))
@@ -53,7 +53,7 @@ bool CParser::loadParseFile() // Open, read the list and close the file
 		fclose(fp);
 		return true;
 	}
-
+	
 	g_pLogFile->ftextOut(GREEN,"Parser : The file has not been found. When CKP is trying to save the file it will create a new one.");
 	return false;
 }
@@ -62,16 +62,16 @@ bool CParser::loadParseFile() // Open, read the list and close the file
 bool CParser::saveParseFile() // open, write on the file and close
 {
 	FILE *fp;
-
+	
 	if((fp=OpenGameFile(m_configfile.c_str(),"wt")))
 	{
 		for(std::list<std::string>::iterator i = m_filebuffer.begin() ; i != m_filebuffer.end() ; ++i )
 			fprintf(fp,"%s\n",i->c_str());
-
+		
 		fclose(fp);
 		return true;
 	}
-
+	
 	g_pLogFile->ftextOut(RED,"Parser : Error opening the file for write operations. Check your permissions or if the disk is full");
 	return false;
 }
@@ -93,7 +93,7 @@ std::string CParser::getValue(const std::string& keyword, const std::string& cat
 				for(line++; line != m_filebuffer.end(); line++) {
 					if(*line == "") continue;
 					if((*line)[0] == '[') break;
-
+					
 					if(subStrCaseEqual(*line, keyword + " =", keyword.size() + 2))
 						return line->substr(keyword.size() + 2);
 				}
@@ -113,9 +113,9 @@ void CParser::saveValue(const std::string& keyword, const std::string& category,
 	// 1.- category doesn't exist
 	// 2.- category exists, but keyword not
 	// 3.- category and keyword exist, only the value must be changed
-
+	
 	std::string newline = keyword + " = " + value;
-
+	
 	for(std::list<std::string>::iterator line = m_filebuffer.begin() ; line != m_filebuffer.end() ; ++line )
 	{
 		if(*line == "") continue;
@@ -125,7 +125,7 @@ void CParser::saveValue(const std::string& keyword, const std::string& category,
 			if(stringcaseequal(*line, "[" + category + "]")) // is it the category we are looking for?
 			{
 				std::list<std::string>::iterator lastnonempty = line;
-
+				
 				for(line++; line != m_filebuffer.end(); line++) {
 					if(*line == "") continue;
 					if((*line)[0] == '[') break;
@@ -137,13 +137,13 @@ void CParser::saveValue(const std::string& keyword, const std::string& category,
 						return;
 					}
 				}
-
+				
 				// not found! case 2: category found, but no keyword
 				
 				lastnonempty++;
 				m_filebuffer.insert(lastnonempty, newline);
 				return;
-
+				
 			}
 		}
 	}
@@ -159,7 +159,7 @@ void CParser::saveValue(const std::string& keyword, const std::string& category,
 int CParser::getIntValue(const std::string& keyword, const std::string& category, int def) {
 	std::string str = getValue(keyword, category);
 	if(str == "") return def;
-
+	
 	bool fail = false;
 	int v = from_string<int>(str, fail);
 	if(fail) return def;

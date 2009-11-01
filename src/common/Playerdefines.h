@@ -49,21 +49,21 @@
 // various states we go through when a level is completed
 // to do the walking out the exit door animation
 enum levelstate{
-LEVEL_NOT_DONE,           // not completed
-LEVEL_DONE_WALK,           // walking through exit door
-LEVEL_DONE_WAIT,          // finished walk through door, wait a bit
-LEVEL_DONE_FADEOUT,        // fading out
-LEVEL_COMPLETE            // on to the next level!
+	LEVEL_NOT_DONE,           // not completed
+	LEVEL_DONE_WALK,           // walking through exit door
+	LEVEL_DONE_WAIT,          // finished walk through door, wait a bit
+	LEVEL_DONE_FADEOUT,        // fading out
+	LEVEL_COMPLETE            // on to the next level!
 };
 
 enum jumpstates{
-// the various jump states
-PNOJUMP,                        // not jumping
-PPREPAREJUMP,                   // doing the jump animation
-PJUMPUP,                        // jumping
-PJUMPED,                        // Player has jumped
-PPREPAREPOGO,                   // "pogo compressed" anim frame
-PPOGOING                        // pogoing
+	// the various jump states
+	PNOJUMP,                        // not jumping
+	PPREPAREJUMP,                   // doing the jump animation
+	PJUMPUP,                        // jumping
+	PJUMPED,                        // Player has jumped
+	PPREPAREPOGO,                   // "pogo compressed" anim frame
+	PPOGOING                        // pogoing
 };
 
 // the different jumping frames. when CTRL is held down the player will

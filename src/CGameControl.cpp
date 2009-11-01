@@ -23,7 +23,7 @@ CGameControl::CGameControl() {
 	m_ChosenGame = 0;
 	m_Numplayers = 0;
 	m_endgame = false;
-
+	
 	m_EGAGraphics = NULL;
 	m_Messages = NULL;
 	m_startLevel = 0;
@@ -39,20 +39,20 @@ bool CGameControl::init(int argc, char *argv[])
 	bool ok;
 	std::string argument;
 	argument = getArgument( argc, argv, "-game" );
-
+	
 	ok = init();
-
+	
 	if (!ok) return false;
-
+	
 	if(argument != "")
 	{
 		int chosengame;
 		chosengame = atoi(argument.c_str()+strlen("-game"))-1;
-
+		
 		if(chosengame < mp_GameLauncher->m_numGames)
 		{
 			mp_GameLauncher->setChosenGame(chosengame);
-
+			
 			// Now check, if a level was also passed as parameter
 			argument = getArgument( argc, argv, "-level" );
 			m_startLevel = atoi(argument.c_str()+strlen("-level"));
@@ -76,7 +76,7 @@ bool CGameControl::init(char mode)
         // Resources for the main menu
 		if(!loadResources(1, mp_GameLauncher->getEP1Directory(), LOADGFX ))	return false;
 		if(!mp_GameLauncher->drawMenu()) return false;
-
+		
 		return true;
 	}
 	else if(m_mode == PASSIVE)
@@ -89,16 +89,16 @@ bool CGameControl::init(char mode)
 		}
 		else
 		{
-		if( mp_PassiveMode->init() ) return true;
+			if( mp_PassiveMode->init() ) return true;
 		}
 	}
 	else if(m_mode == PLAYGAME)
 	{
 		if(m_startLevel == 0) m_startLevel = WORLD_MAP_LEVEL;
-
+		
 		mp_PlayGame = new CPlayGame(m_Episode, m_startLevel,
-						m_Numplayers, m_Difficulty,
-						m_DataDirectory, mp_option);
+									m_Numplayers, m_Difficulty,
+									m_DataDirectory, mp_option);
 		return mp_PlayGame->init();
 	}
 	return false;
@@ -106,47 +106,47 @@ bool CGameControl::init(char mode)
 
 bool CGameControl::loadResources(unsigned short Episode, const std::string& DataDirectory, Uint8 flags)
 {
-CExeFile ExeFile(Episode, DataDirectory);
-int version;
-unsigned char *p_exedata;
-
+	CExeFile ExeFile(Episode, DataDirectory);
+	int version;
+	unsigned char *p_exedata;
+	
 	m_Episode = Episode;
 	m_DataDirectory = DataDirectory;
-
+	
 	// TODO: not very readable. Check if there is a function for handling that.
 	if( m_DataDirectory.size() > 0 && m_DataDirectory[m_DataDirectory.size()-1] != '/' )
 		m_DataDirectory += "/";
-
+	
     // Get the EXE of the game and decompress it if needed.
     if(!ExeFile.readData()) return false;
-
+	
     version = ExeFile.getEXEVersion();
 	p_exedata = ExeFile.getData();
-
+	
 	g_pLogFile->ftextOut("Commander Keen Episode %d (Version %d.%d) was detected.<br>", Episode, version/100, version%100);
 	if(version == 134) g_pLogFile->ftextOut("This version of the game is not supported!<br>");
-
+	
 	if(ExeFile.getData() == NULL) {
 		g_pLogFile->textOut(RED, "CGameControl::loadResources: Could not load data from the EXE File<br>");
 		return false;
 	}
-
+	
 	// Patch the EXE-File-Data directly in the memory.
 	{
 		CPatcher Patcher(Episode, version, p_exedata, DataDirectory);
 		Patcher.patchMemory();
 	}
-
+	
     if( (flags & LOADGFX) == LOADGFX )
     {
         // Decode the entire graphics for the game (EGALATCH, EGASPRIT, etc.)
         if(m_EGAGraphics) delete m_EGAGraphics; // except for the first start of a game this always happens
         m_EGAGraphics = new CEGAGraphics(Episode, DataDirectory ); // Path is relative to the data dir
-            if(!m_EGAGraphics) return false;
-
-            m_EGAGraphics->loadData( version, p_exedata );
+		if(!m_EGAGraphics) return false;
+		
+		m_EGAGraphics->loadData( version, p_exedata );
     }
-
+	
     if( (flags & LOADSTR) == LOADSTR )
     {
     	// load the strings. TODO: After that this one will replace loadstrings
@@ -154,7 +154,7 @@ unsigned char *p_exedata;
     	m_Messages->readData(p_exedata, Episode, version, DataDirectory);
         //loadstrings();
     }
-
+	
     if( (flags & LOADSND) == LOADSND )
     {
         // Load the sound data
@@ -177,16 +177,16 @@ void CGameControl::process()
 		// Launch the code of the Startmenu here! The one for choosing the games
 		mp_GameLauncher->process();
 		m_ChosenGame = mp_GameLauncher->getChosengame();
-
+		
 		if( mp_GameLauncher->waschosen() )
 		{
 			//// Game has been chosen. Launch it!
 			// Get the path were to Launch the game
 			m_DataDirectory = mp_GameLauncher->getDirectory( m_ChosenGame );
-
+			
 			// We have to check which Episode is used
 			m_Episode = mp_GameLauncher->getEpisode( m_ChosenGame );
-
+			
 			if( m_Episode > 0 ) // The game has to have a valid episode!
 			{
 				// Load the Resources
@@ -229,13 +229,13 @@ void CGameControl::process()
 	{
 		if(mp_PlayGame != NULL)
 		{
-		if( mp_PlayGame->getEndGame() )
-		{
-			mp_PassiveMode->m_mode = 2;
-		}
+			if( mp_PlayGame->getEndGame() )
+			{
+				mp_PassiveMode->m_mode = 2;
+			}
 		}
 		mp_PassiveMode->process();
-
+		
 		// check here what the player chose from the menu over the passive mode.
 		// NOTE: Demo is not part of playgame anymore!!
 		if(mp_PassiveMode->getchooseGame())
@@ -243,19 +243,19 @@ void CGameControl::process()
 			cleanup();
 			init( GAMELAUNCHER );
 		}
-
+		
 		if(mp_PassiveMode->mustStartGame())
 		{
 			m_Episode = mp_PassiveMode->getEpisode();
 			m_Numplayers = mp_PassiveMode->getNumPlayers();
 			m_Difficulty = mp_PassiveMode->getDifficulty();
 			m_DataDirectory = mp_PassiveMode->getGamePath();
-
+			
 			init( PLAYGAME );
 			delete mp_PassiveMode;
 			return;
 		}
-
+		
 		// User wants to exit. Called from the PassiveMode
 		if(mp_PassiveMode->getExitEvent())
 			m_mode = SHUTDOWN;
@@ -265,7 +265,7 @@ void CGameControl::process()
 	{
 		// The player is playing the game. It also includes scenes like ending
 		mp_PlayGame->process();
-
+		
 		if( mp_PlayGame->getEndGame() )
 		{
 			init(PASSIVE);
@@ -280,7 +280,7 @@ void CGameControl::process()
 		// Something went wrong here! send warning and load startmenu
 		m_mode = GAMELAUNCHER;
 	}
-
+	
 }
 
 void CGameControl::cleanup(char mode)

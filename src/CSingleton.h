@@ -12,26 +12,26 @@
 
 template <class T>
 class CSingleton {
-
-
+	
+	
 protected:
 	static T *m_pSingleton; // Static Object
-
-
+	
+	
 public:
 	//CSingleton();
 	virtual ~CSingleton()
 	{
 	}
-
+	
 	inline static T* Get()
 	{
 		if(!m_pSingleton)
 			m_pSingleton = new T;
-
+		
 		return (m_pSingleton);
 	}
-
+	
 	static void Del()
 	{
 		if(m_pSingleton)
