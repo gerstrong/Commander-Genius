@@ -44,10 +44,10 @@ bool CMessages::readData(/*char *buf,*/ int episode, int version, const std::str
 			switch(version)
 		{
 			case 131:
-				//offset_start = 85419;
-				offset_start = 85600;
-				offset_end = 85650;
-				//offset_end = 89729;
+				offset_start = 85419;
+				//offset_start = 85600;
+				//offset_end = 85650;
+				offset_end = 89729;
 				break;
 		}
 			break;
