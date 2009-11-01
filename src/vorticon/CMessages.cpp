@@ -2,7 +2,7 @@
  * CMessages.cpp
  *
  *  Created on: 16.07.2009
- *      Author: gerstrong
+ *      Author: Pizza2004 and Gerstrong
  *
  *  This special class reads all the strings
  *  out of an exe-file. It also can identify
@@ -67,10 +67,6 @@ bool CMessages::readData(unsigned char *p_exe, int episode, int version, const s
 	delete ExeFile;*/
 
 	// Now read the stuff and store it to a list
-	FILE *fp=fopen("dump.raw","wb");
-   fwrite(p_exe+85419, sizeof(char), 89729-85419, fp);
-   fclose(fp);
-	
 	for(int pos=offset_start ; pos<offset_end ; pos++)
 	{
 		std::string Text;

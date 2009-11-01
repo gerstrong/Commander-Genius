@@ -290,45 +290,6 @@ int initgamefirsttime(stCloneKeenPlus *pCKP, int s)
    return 0;
 }
 
-unsigned char spawn_object(int x, int y, int otype)
-{
-/*int i;
- // find an unused object slot
- for(i=1;i<MAX_OBJECTS;i++)
- {
-   if (!objects[i].exists && objects[i].type != OBJ_PLAYER)
-   {
-     objects[i].x = x;
-     objects[i].y = y;
-     objects[i].type = otype;
-     objects[i].sprite = objdefsprites[otype];
-     objects[i].exists = 1;
-     objects[i].needinit = true;
-     objects[i].dead = false;
-     objects[i].onscreen = 0;
-     objects[i].hasbeenonscreen = 0;
-     objects[i].zapped = 0;
-     objects[i].canbezapped = 0;
-     objects[i].inhibitfall = 0;
-     objects[i].honorPriority = 1;
-
-     if(otype == OBJ_EGA_BITMAP)
-     {
-    	 objects[i].onscreen = 1;
-     }
-
-     SetAllCanSupportPlayer(i, 0);
-
-     if( i >= highest_objslot )
-    	 highest_objslot = i+1;
-
-     return i;
-   }
- }
-	// object could not be created
-	g_pLogFile->ftextOut("Object of type %d could not be created at %d,%d (out of object slots)<br>",otype,x,y);*/
-	return 0;
-}
 
 int find_next_object(unsigned int type)
 {
@@ -461,35 +422,6 @@ void initsprites(stCloneKeenPlus *pCKP, int s)
     // create the sprites for player 3
     // Unsupported for now...
 }
-
-
-
-// yorp/scrub etc "bump".
-// if solid = false, player can possibly force his way through.
-// if solid = true, object acts like a solid "wall".
-void bumpplayer(int p, int pushamt, bool solid)
-{
-	/*player[p].playpushed_x = pushamt;
-
-	if (solid)
-	{
-		if (pushamt > 0)
-		{
-			if (player[p].pinertia_x < 0)
-				player[p].pinertia_x = 0;
-		}
-		else
-		{
-			if (player[p].pinertia_x > 0)
-				player[p].pinertia_x = 0;
-		}
-	}
-
-	player[p].playpushed_decreasetimer = 0;
-	if (!player[p].pjumping)
-		player[p].pdir = player[p].pshowdir = (pushamt<0)?LEFT:RIGHT;*/
-}
-
 
 void gameloop_initialize(int episode, bool show_keensleft = false)
 {

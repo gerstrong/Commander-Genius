@@ -10,7 +10,9 @@
 #include "../../CLogFile.h"
 
 CObjectAI::CObjectAI(CMap *p_map, std::vector<CObject> *p_objvect, CPlayer *p_player,
-		  stOption *p_options, int NumPlayers, int episode) {
+		  stOption *p_options, int NumPlayers, int episode, char difficulty)  :
+		  m_difficulty(difficulty)
+{
 	mp_Map = p_map;
 	mp_Objvect = p_objvect;
 	mp_Options = p_options;
@@ -246,9 +248,9 @@ void CObjectAI::performSpecialAIType( CObject *p_object )
 {
   	 switch(p_object->m_type)
   	 {
-  	 /*//KEEN1
-	  case OBJ_YORP: yorp_ai(i, *p_levelcontrol); break;
-	  case OBJ_GARG: garg_ai(i, p_levelcontrol->hardmode); break;
+  	 //KEEN1
+	  case OBJ_YORP: yorp_ai(p_object, mp_Player, m_difficulty); break;
+	 /* case OBJ_GARG: garg_ai(i, p_levelcontrol->hardmode); break;
 	  case OBJ_VORT: vort_ai(i, p_levelcontrol ); break;
 	  case OBJ_BUTLER: butler_ai(i, p_levelcontrol->hardmode); break;
 	  case OBJ_TANK: tank_ai(i, p_levelcontrol->hardmode); break;

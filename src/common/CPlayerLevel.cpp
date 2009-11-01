@@ -652,3 +652,29 @@ int o;
 	  mp_object->at(o).ai.se.state = ANKH_STATE_NOFLICKER;
 }
 
+// yorp/scrub etc "bump".
+// if solid = false, player can possibly force his way through.
+// if solid = true, object acts like a solid "wall".
+void CPlayer::bump( int pushamt, bool solid )
+{
+	playpushed_x = pushamt;
+
+	if (solid)
+	{
+		if (pushamt > 0)
+		{
+			if (pinertia_x < 0)
+				pinertia_x = 0;
+		}
+		else
+		{
+			if (pinertia_x > 0)
+				pinertia_x = 0;
+		}
+	}
+
+	playpushed_decreasetimer = 0;
+	if (!pjumping)
+		pdir = pshowdir = (pushamt<0)?LEFT:RIGHT;
+}
+

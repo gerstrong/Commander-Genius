@@ -14,7 +14,9 @@
 #include "../include/fileio/rle.h"
 #include "../graphics/CGfxEngine.h"
 
-CMapLoader::CMapLoader(CMap* p_map, CPlayer *p_Player) {
+CMapLoader::CMapLoader(CMap* p_map, CPlayer *p_Player)
+{
+	mp_objvect = NULL;
 	mp_map = p_map;
 	mp_Player = p_Player;
 }
@@ -117,23 +119,26 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path )
 	curmapx = curmapy = numruns = 0;
     resetcnt = resetpt = 0;
 
-    for( c=planesize+18 ; c<2*planesize+18 ; c++ )
-    {
-    	t = filebuf[c];
+	if(mp_objvect)
+	{
+		for( c=planesize+18 ; c<2*planesize+18 ; c++ )
+		{
+			t = filebuf[c];
 
-    	if (mp_map->m_worldmap) addWorldMapObject(t, curmapx, curmapy,  episode );
-        else addEnemyObject(t, curmapx, curmapy, episode, level);
+			if (mp_map->m_worldmap) addWorldMapObject(t, curmapx, curmapy,  episode );
+			else addEnemyObject(t, curmapx, curmapy, episode, level);
 
-        curmapx++;
-        if (curmapx >= mp_map->m_width)
-        {
-        	curmapx = 0;
-        	curmapy++;
-        	if (curmapy >= mp_map->m_height) break;
-        }
+			curmapx++;
+			if (curmapx >= mp_map->m_width)
+			{
+				curmapx = 0;
+				curmapy++;
+				if (curmapy >= mp_map->m_height) break;
+			}
 
-        if (++resetcnt==resetpt) curmapx=curmapy=0;
-    }
+			if (++resetcnt==resetpt) curmapx=curmapy=0;
+		}
+	}
     filebuf.clear();
     MapFile.close();
 
@@ -233,6 +238,7 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 
 void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode, int level)
 {
+stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
   mp_map->m_objectlayer[x][y] = t;
 
   if (t)
@@ -248,8 +254,10 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
        	mp_Player[0].goto_x = mp_Player[0].x = x << 9;
        	mp_Player[0].goto_y = mp_Player[0].y = ((y << 4) + 8) << 5;
     }
-    /*else
+    else
     {
+      CObject enemyobject;
+
       switch(t)
       {
       case 0: break;
@@ -257,12 +265,11 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
       case 1:  // yorp (ep1) vort (ep2&3)
            if (episode==1)
            {
-              x = curmapx;
-
-              if (TileProperty[map.mapdata[x][curmapy+1]][BLEFT]) x--;
-              spawn_object(x<<4<<CSF, ((curmapy<<4)+8)<<CSF, OBJ_YORP);
+              if ( TileProperty[mp_map->at(x ,y+1)].bleft ) x--;
+              enemyobject.spawn(x<<CSF, y<<CSF, OBJ_YORP);
+              mp_objvect->push_back(enemyobject);
            }
-           else
+           /*else
            {
               // in ep2 level 16 there a vorticon embedded in the floor for
               // some reason! that's what the if() is for--to fix it.
@@ -450,11 +457,11 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
           objects[o].ai.se.type = SE_MORTIMER_LEG_RIGHT;
           objects[o].hasbeenonscreen = 1;
       break;
-      default:
-           g_pLogFile->ftextOut(PURPLE,"unknown enemy type %d at (%d,%d)<br>", t, curmapx, curmapy);
+      default:*/
+           g_pLogFile->ftextOut(PURPLE,"unknown enemy type %d at (%d,%d)<br>", t, x, y);
            break;
       }
-    }*/
+    }
   }
 }
 

@@ -10,7 +10,9 @@
 
 #include "CMap.h"
 #include "CPlayer.h"
+#include "CObject.h"
 #include <string>
+#include <vector>
 
 class CMapLoader {
 public:
@@ -24,6 +26,7 @@ public:
 	void addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode, int level);
 
 	bool m_checkpointset;
+	std::vector<CObject> *mp_objvect;
 
 private:
 	CMap *mp_map;

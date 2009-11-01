@@ -201,12 +201,12 @@ Uint8 behaviour = TileProperty[t].behaviour;
 // make some sprite fly (Points, and items) :-)
 void CPlayer::riseBonus(int spr, int x, int y)
 {
-int o;
+/*int o;
 	if (mp_option[OPT_RISEBONUS].value)
 	{
 		o = spawn_object(x, y, OBJ_GOTPOINTS);
 		mp_object->at(o).sprite = spr;
-	}
+	}*/
 }
 
 // gives keycard for door doortile to player p

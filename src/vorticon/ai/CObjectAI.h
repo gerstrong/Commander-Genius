@@ -20,7 +20,7 @@
 class CObjectAI {
 public:
 	CObjectAI(CMap *p_map, std::vector<CObject> *p_objvect, CPlayer *p_player,
-			  stOption *p_options, int NumPlayers, int episode);
+			  stOption *p_options, int NumPlayers, int episode, char difficulty);
 	virtual ~CObjectAI();
 
 	// main functions
@@ -35,8 +35,8 @@ private:
 	void deleteObj(CObject *p_object);
 
 	// ep1
-	/*void yorp_ai(int o, stLevelControl levelcontrol);
-	void garg_ai(int o, bool hardmode);
+	void yorp_ai(CObject *p_object, CPlayer *p_player, bool hardmode);
+	/*void garg_ai(int o, bool hardmode);
 	void vort_ai(int o, stLevelControl *p_levelcontrol);
 	void butler_ai(int o, bool hardmode);
 	void tank_ai(int o, bool hardmode);
@@ -80,6 +80,7 @@ private:
 	stOption *mp_Options;
 	int m_Episode;
 	int m_NumPlayers;
+	char m_difficulty;
 };
 
 #endif /* COBJECTAI_H_ */

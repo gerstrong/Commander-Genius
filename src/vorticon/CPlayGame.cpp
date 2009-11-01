@@ -77,6 +77,7 @@ bool CPlayGame::init()
 	mp_Map = new CMap( g_pVideoDriver->getScrollSurface(), g_pGfxEngine->Tilemap);
 	CMapLoader MapLoader( mp_Map, mp_Player );
 	MapLoader.m_checkpointset = m_checkpointset;
+	MapLoader.mp_objvect = &m_Object;
 
 	// load level map
 	if( !mp_Map ) return false;
@@ -112,7 +113,8 @@ bool CPlayGame::init()
 	g_pInput->flushAll();
 
 	// Initialize the AI
-	mp_ObjectAI = new CObjectAI(mp_Map, &m_Object, mp_Player, mp_option, m_NumPlayers, m_Episode);
+	mp_ObjectAI = new CObjectAI(mp_Map, &m_Object, mp_Player, mp_option,
+								m_NumPlayers, m_Episode, m_Difficulty);
 
 	return true;
 }
@@ -157,8 +159,6 @@ void CPlayGame::process()
 		if( m_Level == WORLD_MAP_LEVEL )
 		{
 			int useobject;
-
-			// Perform wm AIs
 
 			// Perform player Objects...
 			for( int i=0 ; i<m_NumPlayers ; i++ )

@@ -61,6 +61,7 @@ public:
 	void JumpAndPogo();
 	void raygun();
 	void ankh();
+	void bump( int pushamt, bool solid );
 	void SelectFrame();
 
 	// Used for both situations
