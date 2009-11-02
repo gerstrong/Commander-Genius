@@ -1,6 +1,8 @@
 /* MAP.C
  Functions that deal with the level map. Most notably in here
  you'll find the 4-way scrolling engine.
+ 
+ MARKED FOR DELETION
  */
 
 #include "keen.h"
