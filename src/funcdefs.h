@@ -11,7 +11,6 @@ void scrolltest(void);
 void give_keycard(int doortile, int p);
 void take_keycard(int doortile, int p);
 void extralifeat(int p);
-char hitdetect(int object1, int object2);
 void freezeplayer(int theplayer);
 void unregister_animtiles(int tile);
 void GiveAnkh(int cp);

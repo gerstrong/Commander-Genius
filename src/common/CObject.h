@@ -53,7 +53,7 @@ public:
 	
 	unsigned int blockedl, blockedr, blockedu, blockedd;
 	signed int xinertia, yinertia;
-	unsigned char xinertiatimer, yinertiatimer;
+	unsigned char xinertiatimer;
 	
 	unsigned char touchPlayer;      // 1=hit detection with player
 	unsigned char touchedBy;        // which player was hit

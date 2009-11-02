@@ -16,6 +16,10 @@
 #include "include/playeraction.h"
 
 #define CSF    9
+#define TILE_W			16
+#define TILE_H			16
+#define TILE_S			4
+#define STC (CSF-TILE_S)
 
 //#define OVSIZE    3000
 
@@ -47,9 +51,6 @@
 #define SCROLLBUF_XSIZE  512
 #define SCROLLBUF_YSIZE  512
 #define SCROLLBUF_MEMSIZE ((SCROLLBUF_XSIZE)*(SCROLLBUF_YSIZE+300))
-#define TILE_W			16
-#define TILE_H			16
-#define TILE_S			4
 #define SCROLLBUF_NUMTILESX (SCROLLBUF_XSIZE / 16)
 #define SCROLLBUF_NUMTILESY (SCROLLBUF_YSIZE / 16)
 

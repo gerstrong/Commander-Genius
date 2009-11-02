@@ -53,8 +53,8 @@ void CObjectAI::process()
 						{
 							if (!p_player->godmode)
 							{
-								p_playerobj->touchPlayer = true;
-								p_playerobj->touchedBy = cplayer;
+								i_object->touchPlayer = true;
+								i_object->touchedBy = cplayer;
 							}
 							else
 							{
@@ -122,126 +122,80 @@ bool CObjectAI::checkforAIObject( CObject *p_object )
 }
 
 // common enemy/object ai, such as falling, setting blocked variables,
-// detecting player contact, etc.
+// It's more like collision detection
+// NOTE: This collision check is pixel based
 void CObjectAI::performCommonAI( CObject *p_object )
 {
-#define STC (CSF-TILE_S)
-	int x0,y0,xa,ya,xsize,ysize;
-	int temp;
-	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
+long x1,y1,x2,y2;
+long c;
+stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
+CSprite *sprite = g_pGfxEngine->Sprite.at(p_object->sprite);
 	
-	if (p_object->m_type==OBJ_GOTPOINTS) return;
+	// Set all blocking to false and test later.
+	p_object->blockedu = p_object->blockedd = false;
+	p_object->blockedl = p_object->blockedr = false;
+
+	// Get Rect values of the object
+	x1 = (p_object->x + sprite->m_bboxX1)>>STC;
+	y1 = (p_object->y + sprite->m_bboxY1)>>STC;
+	x2 = (p_object->x + sprite->m_bboxX2)>>STC;
+	y2 = (p_object->y + sprite->m_bboxY2)>>STC;
 	
-	ysize = g_pGfxEngine->Sprite[p_object->sprite]->getHeight()<<STC;
-	xsize = g_pGfxEngine->Sprite[p_object->sprite]->getWidth()<<STC;
-	
-	// set value of blockedd--should object fall?
-	temp = p_object->y+ysize;
-	if ((temp>>STC)<<STC != temp) p_object->blockedd = false;
-	else
-	{ // on a tile boundary, test if tile under object is solid
-		p_object->blockedd = false;
-		x0 = p_object->x;
-		y0 = p_object->y+ysize+1;
-		for(xa=0;xa<xsize-2;xa+=(1<<STC))
-		{
-			if ( TileProperty[mp_Map->at((x0+xa)>>CSF,y0>>CSF)].bup )
-			{
-				p_object->blockedd = true;
-				return;
-			}
-		}
-		
-		if (!p_object->blockedd)	// check final point
-		{
-			if ( TileProperty[mp_Map->at((x0+xsize-2)>>CSF, y0>>CSF)].bup )
-				p_object->blockedd = true;
-		}
-		
-		// If the object is out of map
-		if(y0 >= (int)((mp_Map->m_height-2)<<CSF)) p_object->blockedd = true;
-	}
-	
-	// set blockedu
-	p_object->blockedu = false;
-	x0 = p_object->x;
-	y0 = p_object->y;
-	for(xa=1;xa<xsize;xa+=(1<<(CSF-TILE_S)))		// change start pixel to xa=1 for icecannon in ep1l8
+	// Check for up from the object
+	for( c=x1+1 ; c<=x2-1 ; c++)
 	{
-		if ( TileProperty[mp_Map->at((x0+xa)>>CSF,y0>>CSF)].bdown )
+		if(TileProperty[mp_Map->at(c>>TILE_S, y1>>TILE_S)].bdown)
 		{
 			p_object->blockedu = true;
 			break;
 		}
-    }
-	
-	if (!p_object->blockedu)	// check final point
-	{
-		if ( TileProperty[mp_Map->at((x0+xsize-2)>>CSF, y0>>CSF)].bdown )
-			p_object->blockedu = true;
 	}
+	if( y1 < (2<<TILE_S) ) p_object->blockedu = true; // Out of map?
 	
-	// If the object is out of map
-	if(y0 <= (2<<CSF)) p_object->blockedu = true;
+	// Check for down from the object
+	for( c=x1+1 ; c<=x2-1 ; c++)
+	{
+		if(TileProperty[mp_Map->at(c>>TILE_S, y2>>TILE_S)].bup)
+		{
+			p_object->blockedd = true;
+			break;
+		}
+	}
+	if( y2 > ((mp_Map->m_height-2)<<TILE_S) ) p_object->blockedd = true; // Out of map?
 	
-	// set blockedl
-	p_object->blockedl = false;
-    x0 = p_object->x-1;
-    y0 = p_object->y+1;
-    for(ya=0;ya<ysize;ya+=(1<<(CSF-TILE_S)))
-    {
-        if (TileProperty[mp_Map->at(x0>>CSF,(y0+ya)>>CSF)].bright )
-        {
+	// Check for left from the object
+	for( c=y1+1 ; c<=y2-1 ; c++)
+	{
+		if(TileProperty[mp_Map->at(x1>>TILE_S, c>>TILE_S)].bright)
+		{
 			p_object->blockedl = true;
-			goto blockedl_set;
-        }
-    }
-    if ( TileProperty[mp_Map->at(x0>>CSF, (y0+ysize-1)>>CSF)].bright )
-    	p_object->blockedl = true;
-	
-blockedl_set: ;
-	
-	// If the object is out of map
-	if(p_object->x <= (2<<CSF)) p_object->blockedl = true;
-	
-	// set blockedr
-	p_object->blockedr = false;
-    x0 = p_object->x+xsize;
-    y0 = p_object->y+1;
-    for(ya=0;ya<ysize;ya+=(1<<(CSF-TILE_S)))
-    {
-        if ( TileProperty[mp_Map->at(x0>>CSF,(y0+ya)>>CSF)].bleft )
-        {
-        	p_object->blockedr = true;
-			goto blockedr_set;
-        }
-    }
-    if ( TileProperty[mp_Map->at(x0>>CSF, ((y0+ysize-1)>>CSF))].bleft )
-    {
-    	p_object->blockedr = true;
-    }
-blockedr_set: ;
-	
-    if(p_object->x >= (mp_Map->m_width-2)<<CSF) p_object->blockedr = true;
-	
-    // have object fall if it should
+			break;
+		}
+	}
+	if( x1 < (2<<TILE_S) ) p_object->blockedl = true; // Out of map?
+
+	// Check for right from the object
+	for( c=y1+1 ; c<=y2-1 ; c++)
+	{
+		if(TileProperty[mp_Map->at(x2>>TILE_S, c>>TILE_S)].bleft)
+		{
+			p_object->blockedr = true;
+			break;
+		}
+	}
+	if( x2 > ((mp_Map->m_width-2)<<TILE_S) ) p_object->blockedr = true; // Out of map?
+
+	// Make object fall if it must
+	#define OBJFALLSPEED   80
+	#define OBJ_YINERTIA_TIME  1
 	if (!p_object->inhibitfall)
 	{
-#define OBJFALLSPEED   20
-		if (p_object->blockedd)
-		{
-			p_object->yinertia = 0;
-		}
+		if (p_object->blockedd)	p_object->yinertia = 0;
 		else
 		{
-#define OBJ_YINERTIA_RATE  5
-			if (p_object->yinertiatimer>OBJ_YINERTIA_RATE)
-			{
-				if (p_object->yinertia < OBJFALLSPEED) p_object->yinertia++;
-				p_object->yinertiatimer = 0;
-			} else p_object->yinertiatimer++;
+			if (p_object->yinertia < OBJFALLSPEED) p_object->yinertia++;
+			p_object->y += p_object->yinertia;
 		}
-		p_object->y += p_object->yinertia;
 	}
 }
 

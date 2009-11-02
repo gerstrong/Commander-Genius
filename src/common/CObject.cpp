@@ -23,7 +23,7 @@ CObject::CObject() {
 	blockedu = blockedd = false;
 	blockedl = blockedr = false;
 	
-    yinertiatimer = yinertia = 0;
+    yinertia = 0;
 }
 
 bool CObject::spawn(int x0, int y0, int otype)
@@ -44,6 +44,7 @@ bool CObject::spawn(int x0, int y0, int otype)
 		inhibitfall = false;
 		honorPriority = true;
 		cansupportplayers = false;
+		touchPlayer = touchedBy = 0;
 		
 		setupObjectType();
 		
@@ -75,34 +76,34 @@ void CObject::setupObjectType()
 		case OBJ_RAY: sprite = OBJ_RAY_DEFSPRITE_EP1; break;
 		default: sprite = BLANKSPRITE; break;
 	}
-	/*else if (p_levelcontrol->episode==2)
-	 {
-	 objdefsprites[OBJ_SCRUB] = OBJ_SCRUB_DEFSPRITE;
-	 objdefsprites[OBJ_TANKEP2] = OBJ_TANKEP2_DEFSPRITE;
-	 objdefsprites[OBJ_VORTELITE] = OBJ_VORTELITE_DEFSPRITE;
+
+	/*if(Episode == 2)
+		case OBJ_SCRUB: sprite = OBJ_SCRUB_DEFSPRITE; break;
+		case OBJ_TANKEP2: sprite = OBJ_TANKEP2_DEFSPRITE; break;
+		case OBJ_VORTELITE: sprite = OBJ_VORTELITE_DEFSPRITE; break;
 	 
-	 objdefsprites[OBJ_RAY] = OBJ_RAY_DEFSPRITE_EP2;
-	 objdefsprites[OBJ_VORT] = OBJ_VORT_DEFSPRITE_EP2;
-	 objdefsprites[OBJ_PLATFORM] = OBJ_PLATFORM_DEFSPRITE_EP2;
-	 objdefsprites[OBJ_BABY] = OBJ_BABY_DEFSPRITE_EP2;
-	 objdefsprites[OBJ_SPARK] = OBJ_SPARK_DEFSPRITE_EP2;
-	 }
-	 else if (p_levelcontrol->episode==3)
-	 {
-	 objdefsprites[OBJ_FOOB] = OBJ_FOOB_DEFSPRITE;
-	 objdefsprites[OBJ_NINJA] = OBJ_NINJA_DEFSPRITE;
-	 objdefsprites[OBJ_MOTHER] = OBJ_MOTHER_DEFSPRITE;
-	 objdefsprites[OBJ_MEEP] = OBJ_MEEP_DEFSPRITE;
-	 objdefsprites[OBJ_BALL] = OBJ_BALL_DEFSPRITE;
-	 objdefsprites[OBJ_JACK] = OBJ_JACK_DEFSPRITE;
-	 objdefsprites[OBJ_NESSIE] = OBJ_NESSIE_DEFSPRITE;
+		case OBJ_RAY: sprite = OBJ_RAY_DEFSPRITE_EP2; break;
+		case OBJ_VORT: sprite = OBJ_VORT_DEFSPRITE_EP2; break;
+		case OBJ_PLATFORM: sprite = OBJ_PLATFORM_DEFSPRITE_EP2; break;
+		case OBJ_BABY: sprite = OBJ_BABY_DEFSPRITE_EP2; break;
+		case OBJ_SPARK: sprite = OBJ_SPARK_DEFSPRITE_EP2; break;
+		default: sprite = BLANKSPRITE; break;
+	else if(Episode == 3)
+		case OBJ_FOOB: sprite = OBJ_FOOB_DEFSPRITE; break;
+		case OBJ_NINJA: sprite = OBJ_NINJA_DEFSPRITE; break;
+		case OBJ_MOTHER: sprite = OBJ_MOTHER_DEFSPRITE; break;
+		case OBJ_MEEP: sprite = OBJ_MEEP_DEFSPRITE; break;
+		case OBJ_BALL: sprite = OBJ_BALL_DEFSPRITE; break;
+		case OBJ_JACK: sprite = OBJ_JACK_DEFSPRITE; break;
+		case OBJ_NESSIE: sprite = OBJ_NESSIE_DEFSPRITE; break;
 	 
-	 objdefsprites[OBJ_RAY] = OBJ_RAY_DEFSPRITE_EP3;
-	 objdefsprites[OBJ_VORT] = OBJ_VORT_DEFSPRITE_EP3;
-	 objdefsprites[OBJ_PLATFORM] = OBJ_PLATFORM_DEFSPRITE_EP3;
-	 objdefsprites[OBJ_PLATVERT] = OBJ_PLATFORM_DEFSPRITE_EP3;
-	 objdefsprites[OBJ_BABY] = OBJ_BABY_DEFSPRITE_EP3;
-	 }*/
+		case OBJ_RAY: sprite = OBJ_RAY_DEFSPRITE_EP3; break;
+		case OBJ_VORT: sprite = OBJ_VORT_DEFSPRITE_EP3; break;
+		case OBJ_PLATFORM: sprite = OBJ_PLATFORM_DEFSPRITE_EP3; break;
+		case OBJ_PLATVERT: sprite = OBJ_PLATFORM_DEFSPRITE_EP3; break;
+		case OBJ_BABY: sprite = OBJ_BABY_DEFSPRITE_EP3; break;
+		default: sprite = BLANKSPRITE; break;
+	 		*/
 }
 
 void CObject::setScrPos( int px, int py )

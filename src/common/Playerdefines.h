@@ -122,20 +122,20 @@ enum jumpstates{
 #define PJUMP_NORMALTIME_1         22
 #define PJUMP_UPDECREASERATE_1     128
 
-#define PJUMP_NORMALTIME_2         12
-#define PJUMP_UPDECREASERATE_2     64
+#define PJUMP_NORMALTIME_2         18
+#define PJUMP_UPDECREASERATE_2     102
 
-#define PJUMP_NORMALTIME_3         6
-#define PJUMP_UPDECREASERATE_3     32
+#define PJUMP_NORMALTIME_3         14
+#define PJUMP_UPDECREASERATE_3     96
 
-#define PJUMP_NORMALTIME_4         3
-#define PJUMP_UPDECREASERATE_4     16
+#define PJUMP_NORMALTIME_4         10
+#define PJUMP_UPDECREASERATE_4     80
 
-#define PJUMP_NORMALTIME_5         2
-#define PJUMP_UPDECREASERATE_5     8
+#define PJUMP_NORMALTIME_5         6
+#define PJUMP_UPDECREASERATE_5     64
 
-#define PJUMP_NORMALTIME_6         1
-#define PJUMP_UPDECREASERATE_6     4
+#define PJUMP_NORMALTIME_6         2
+#define PJUMP_UPDECREASERATE_6     48
 
 
 // for short pogo jumps, uses -PJUMPUP_SPEED

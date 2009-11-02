@@ -2,8 +2,7 @@
 #include "../../sdl/sound/CSound.h"
 #include "../../keen.h"
 
-// Yorp (ep1)
-
+// Yorp (ep1)y
 enum
 {
 	YORP_LOOK,     // yorp is "looking around" (waving his eye)
@@ -13,19 +12,19 @@ enum
 	YORP_DEAD      // they look so sad when they're dead
 };
 
-#define YORP_LOOK_TIME  100   // time each frame of YORP_LOOK is shown
-#define YORP_STUN_ANIM_TIME  40
-#define YORP_WALK_ANIM_TIME  50
-#define YORP_WALK_SPEED      3
-#define YORP_WALK_ANIM_TIME_FAST  18
-#define YORP_WALK_SPEED_FAST      7
+#define YORP_LOOK_TIME  24   // time each frame of YORP_LOOK is shown
+#define YORP_STUN_ANIM_TIME  10
+#define YORP_WALK_ANIM_TIME  12
+#define YORP_WALK_SPEED      12
+#define YORP_WALK_ANIM_TIME_FAST  72
+#define YORP_WALK_SPEED_FAST      28
 
 #define YORP_NUM_LOOKS  9      // number of times yorp look frame is changed
-#define YORP_STUNTIME   28     // YORP_NUM_LOOKS for stun
+#define YORP_STUNTIME   7     // YORP_NUM_LOOKS for stun
 
 // for INCREASE_DIFFICULTY
-#define YORP_NUM_LOOKS_FAST  3      // number of times yorp look frame is changed
-#define YORP_STUNTIME_FAST   12     // YORP_NUM_LOOKS for stun
+#define YORP_NUM_LOOKS_FAST  12      // number of times yorp look frame is changed
+#define YORP_STUNTIME_FAST   48     // YORP_NUM_LOOKS for stun
 
 #define YORP_LOOK_LEFT  49
 #define YORP_STAND      50
@@ -35,20 +34,17 @@ enum
 #define YORP_STUNFRAME  56
 
 #define YORP_JUMP_PROB      40
-#define YORP_JUMP_HEIGHT    -7
+#define YORP_JUMP_HEIGHT    -21
 
 #define YORP_DYING_FRAME   58
 #define YORP_DEAD_FRAME    59
-#define YORP_DIE_TIME      90
+#define YORP_DIE_TIME      22
 
-#define YORPDIE_START_INERTIA      -10
-#define YORPDIE_MAX_INERTIA         32
-#define YORPDIE_INERTIA_DECREASE    2
+#define YORPDIE_START_INERTIA      -40
+#define YORPDIE_MAX_INERTIA         120
+#define YORPDIE_INERTIA_DECREASE    8
 
 unsigned int rnd(void);
-
-// Reference to ../game.cpp
-void bumpplayer(int p, int pushamt, bool solid);
 
 void CObjectAI::yorp_ai(CObject *p_object, CPlayer *p_player, bool hardmode)
 {
@@ -60,7 +56,7 @@ void CObjectAI::yorp_ai(CObject *p_object, CPlayer *p_player, bool hardmode)
 	// come back hours later and they're still doing the stun animation
 	if (p_object->wasoffscreen)
 	{
-		p_object->wasoffscreen = 0;
+		p_object->wasoffscreen = false;
 		if (p_object->ai.yorp.state==YORP_STUNNED)
 			p_object->needinit = 1;
 	}
@@ -77,21 +73,19 @@ void CObjectAI::yorp_ai(CObject *p_object, CPlayer *p_player, bool hardmode)
 	// but return to the calling procedure.
 	if (p_object->ai.yorp.state==YORP_DEAD) return;
 	
-	//if (p_object->ai.yorp.state != YORP_DYING) levelcontrol.numyorps++;
 	if (!p_object->hasbeenonscreen) return;
-	
-	
+
 	tb = p_object->touchedBy;
 	
 	// code for the yorps to push keen, and code for them to get stunned
-	if (p_object->touchPlayer && p_object->ai.yorp.state != YORP_STUNNED\
+	if (p_object->touchPlayer && p_object->ai.yorp.state != YORP_STUNNED
 		&& p_object->ai.yorp.state != YORP_DYING  && !p_player[tb].pdie)
 	{
 		if (p_player[tb].pfalling)
 		{  // falling, see if he bonked the yorp on the head
 			// this happens if keen's feet are higher than the top
 			// half of the yorp
-			if ((p_player[tb].y>>CSF)+16 < (p_object->y>>CSF)+12)
+			if ((p_player[tb].y>>STC)+16 < (p_object->y>>STC)+12)
 			{
 				// must have pogo out to stun yorps in High Difficulty
 				if (!hardmode || p_player[tb].ppogostick)

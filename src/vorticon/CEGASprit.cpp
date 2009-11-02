@@ -127,10 +127,10 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	for(int i=0 ; i<m_numsprites ; i++)
 	{
 		g_pGfxEngine->Sprite[i]->setSize( Sprite[i].width, Sprite[i].height );
-		g_pGfxEngine->Sprite[i]->setBouncingBoxCoordinates( (Sprite[i].hitbox_l << CSF),
-														   (Sprite[i].hitbox_u << CSF),
-														   (Sprite[i].hitbox_r << CSF),
-														   (Sprite[i].hitbox_b << CSF) );
+		g_pGfxEngine->Sprite[i]->setBouncingBoxCoordinates( (Sprite[i].hitbox_l << (CSF-TILE_S)),
+														    (Sprite[i].hitbox_u << (CSF-TILE_S)),
+														    (Sprite[i].hitbox_r << (CSF-TILE_S)),
+														    (Sprite[i].hitbox_b << (CSF-TILE_S)) );
 		g_pGfxEngine->Sprite[i]->createSurface( g_pVideoDriver->BlitSurface->flags,
 											   g_pGfxEngine->Palette.m_Palette );
 	}
