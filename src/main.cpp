@@ -23,7 +23,7 @@
  
  CloneKeen 		2003-2005 Caitlin Shaw
  CloneKeenPlus 	2008-2009 Gerstrong
- Commander Genius 	2009	  Tulip, Pickle, DaVince and Albert
+ Commander Genius 	2009  Tulip, Pickle, DaVince, Albert and Pizza2004
  */
 
 #include "keen.h"
@@ -55,11 +55,6 @@ unsigned int demo_data_index;
 stString strings[MAX_STRINGS+1];
 int numStrings = 0;
 
-char ScreenIsScrolling;
-int gunfiretimer, gunfirefreq;
-
-char loadinggame, loadslot;
-
 void banner(void);
 
 int main(int argc, char *argv[])
@@ -84,15 +79,6 @@ int main(int argc, char *argv[])
 	
 	g_pLogFile->CreateLogfile("CGLog.html");
 	
-	/*		g_pLogFile->textOut(RED,"Parsing Command line flags.<br>");
-	 if(readCommandLine(argc, argv, &CKP) != 0)
-	 {
-	 g_pLogFile->textOut(RED,"Sorry, but CKP needs correct command line parameters.<br>");
-	 printf("Sorry, but CKP needs correct command line parameters.\n");
-	 }
-	 
-	 * */
-	
 	CGame Game;
 	////////////////////////////
 	// Initialize Game Engine //
@@ -111,69 +97,7 @@ int main(int argc, char *argv[])
 	Game.cleanup();
 	
 	g_pLogFile->Del();
-	
-	/*g_pLogFile->textOut(RED,"Loading Games Menu.<br>");
-	 
-	 CStartMenu StartMenu = new CStartMenu;
-	 if(StartMenu->loadResources(&CKP, &Game))
-	 {
-	 
-	 delete StartMenu;
-	 }
-	 else
-	 {
-	 g_pLogFile->textOut(RED,"Error! Resources for start menu cannot be loaded! Maybe you need to copy the data files!<br>");
-	 delete StartMenu;
-	 }
-	 
-	 
-	 
-	 // Must clean up.
-	 
-	 if(!CKP.Control.skipstarting)
-	 {
-	 
-	 while(!loadStartMenu(&CKP))
-	 g_pLogFile->textOut(PURPLE,"Error! You have chosen a Game that doesn't exist. Please correct the \"games.cfg\" File under \"games\" and choose another game.<br>");
-	 }
-	 
-	 if(!g_pInput->getExitEvent())
-	 {
-	 
-	 CKP.Control.levelcontrol.episode = CKP.GameData[CKP.Resources.GameSelected-1].Episode; // Assign the correct Episode
-	 
-	 options = CKP.Option;
-	 if(Game.loadResources(CKP.Control.levelcontrol.episode, CKP.GameData[CKP.Resources.GameSelected-1].DataDirectory))
-	 CKP.shutdown = SHUTDOWN_BOOTUP; // Prepare game for starting
-	 else
-	 CKP.shutdown = SHUTDOWN_NEW_GAME;
-	 
-	 while( CKP.shutdown == SHUTDOWN_RESTART || CKP.shutdown == SHUTDOWN_BOOTUP || CKP.shutdown == SHUTDOWN_NEW_GAME )
-	 {
-	 if(CKP.shutdown != SHUTDOWN_NEW_GAME) {
-	 CKP.shutdown = SHUTDOWN_NONE; // Game is runnning
-	 
-	 Game.runCycle(&CKP);
-	 }
-	 
-	 if(CKP.shutdown == SHUTDOWN_NEW_GAME)
-	 {
-	 while(!loadStartMenu(&CKP))
-	 g_pLogFile->textOut(PURPLE,"Error! You have chosen a Game that doesn't exist. Please correct the \"games.cfg\" File under \"games\" and choose another game.<br>");
-	 
-	 //loadResourcesforGame(pCKP);
-	 if(Game.loadResources(CKP.Control.levelcontrol.episode, CKP.GameData[CKP.Resources.GameSelected-1].DataDirectory))
-	 CKP.shutdown = SHUTDOWN_RESTART;
-	 else
-	 CKP.shutdown = SHUTDOWN_NEW_GAME;
-	 }
-	 }
-	 }
-	 
-	 Settings.saveGameCfg(CKP.Option);
-	 cleanupResources(&CKP);
-	 Settings.saveDrvCfg();*/
-	
+
 	printf("Thank you very much for playing this wonderful game!");
 	
 	return 0;
