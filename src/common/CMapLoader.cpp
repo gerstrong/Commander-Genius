@@ -456,10 +456,9 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 					 o = spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_SECTOREFFECTOR);
 					 objects[o].ai.se.type = SE_MORTIMER_LEG_RIGHT;
 					 objects[o].hasbeenonscreen = 1;
-					 break;
-					 default:*/
-					g_pLogFile->ftextOut(PURPLE,"unknown enemy type %d at (%d,%d)<br>", t, x, y);
-					break;
+					 break;*/
+				default:
+					g_pLogFile->ftextOut(PURPLE,"unknown enemy type %d at (%d,%d)<br>", t, x, y); break;
 			}
 		}
 	}

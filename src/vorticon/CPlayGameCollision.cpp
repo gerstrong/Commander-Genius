@@ -89,10 +89,12 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 // returns 1 and sets blockedby if so.
 bool CPlayGame::checkisSolidl(CPlayer *p_player)
 {
-	int x=p_player->x+p_player->w;
-	int y1=p_player->y+1;
-	int y2=p_player->y+p_player->h/2+1;
-	int y3=p_player->y+p_player->h-1;
+CSprite *sprite = g_pGfxEngine->Sprite[p_player->playframe];
+
+	int x=p_player->x+sprite->m_bboxX2;
+	int y1=p_player->y+sprite->m_bboxY1+1;
+	int y2=p_player->y+sprite->m_bboxY2/2;
+	int y3=p_player->y+sprite->m_bboxY2-1;
 	
 	int t1 = mp_Map->at(x>>CSF, y1>>CSF);
 	int t2 = mp_Map->at(x>>CSF, y2>>CSF);
@@ -138,10 +140,12 @@ bool CPlayGame::checkisSolidl(CPlayer *p_player)
 // returns 1 and sets blockedby if so.
 bool CPlayGame::checkisSolidr(CPlayer *p_player)
 {
-	int x=p_player->x;
-	int y1=p_player->y+1;
-	int y2=p_player->y+p_player->h/2;
-	int y3=p_player->y+p_player->h-1;
+CSprite *sprite = g_pGfxEngine->Sprite[p_player->playframe];
+
+	int x=p_player->x+sprite->m_bboxX1;
+	int y1=p_player->y+sprite->m_bboxY1+1;
+	int y2=p_player->y+sprite->m_bboxY2/2;
+	int y3=p_player->y+sprite->m_bboxY2-1;
 	
 	int t1 = mp_Map->at(x>>CSF, y1>>CSF);
 	int t2 = mp_Map->at(x>>CSF, y2>>CSF);
@@ -183,9 +187,11 @@ bool CPlayGame::checkisSolidr(CPlayer *p_player)
 
 bool CPlayGame::checkisSolidd(CPlayer *p_player)
 {
-	int x1 = p_player->x+1;
-	int y = p_player->y;
-	int x2 = p_player->x+p_player->w-1;
+CSprite *sprite = g_pGfxEngine->Sprite[p_player->playframe];
+
+	int x1 = p_player->x+sprite->m_bboxX1+1;
+	int x2 = p_player->x+sprite->m_bboxX2-1;
+	int y = p_player->y+sprite->m_bboxY1-1;
 	int t1 = mp_Map->at(x1>>CSF, y>>CSF);
 	int t2 = mp_Map->at(x2>>CSF, y>>CSF);
 	
@@ -205,9 +211,11 @@ bool CPlayGame::checkisSolidd(CPlayer *p_player)
 
 bool CPlayGame::checkisSolidu(CPlayer *p_player)
 {
-	int x1 = p_player->x+1;
-	int x2 = p_player->x+p_player->w-1;
-	int y = p_player->y+p_player->h;
+CSprite *sprite = g_pGfxEngine->Sprite[p_player->playframe];
+
+	int x1 = p_player->x+sprite->m_bboxX1+1;
+	int x2 = p_player->x+sprite->m_bboxX2-1;
+	int y = p_player->y+sprite->m_bboxY2+1;
 	int t1 = mp_Map->at(x1>>CSF, y>>CSF);
 	int t2 = mp_Map->at(x2>>CSF, y>>CSF);
 	

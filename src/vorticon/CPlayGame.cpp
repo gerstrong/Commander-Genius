@@ -48,24 +48,8 @@ CPlayGame::CPlayGame( char episode, char level,
 	// Create completed level list
 	memset(mp_level_completed,false,16*sizeof(bool));
 	
-	// tie puppy objects so the player can interact in the level
-	for (int i=0 ; i<m_NumPlayers ; i++)
-	{
-		CObject object;
-		mp_Player[i].m_player_number = i;
-		mp_Player[i].m_episode = m_Episode;
-		mp_Player[i].mp_levels_completed = mp_level_completed;
-		
-		m_Object.push_back(object);
-		m_Object[i].exists = true;
-		m_Object[i].onscreen = true;
-		m_Object[i].honorPriority = true;
-		m_Object[i].m_type = OBJ_PLAYER;
-		mp_Player[i].mp_object=&m_Object;
-		//mp_Player[i].mp_object = &m_Object;
-		mp_Player[i].mp_option = p_option;
-	}
-	
+	createPlayerObjects();
+
 	m_theplayer = 0;
 	m_paused = false;
 	m_showPauseDialog = false;
@@ -106,18 +90,39 @@ bool CPlayGame::init()
 		// Set the pointers to the map and object data
 		mp_Player[i].setMapData(mp_Map);
 	}
-	
+
 	// Well, all players are living because they were newly spawn.
 	m_alldead = false;
-	
+
 	g_pInput->flushAll();
 	
 	// Initialize the AI
 	mp_ObjectAI = new CObjectAI(mp_Map, &m_Object, mp_Player, mp_option,
 								m_NumPlayers, m_Episode, m_Difficulty);
-	
+
 	return true;
 }
+
+void CPlayGame::createPlayerObjects()
+{
+	// tie puppy objects so the player can interact in the level
+	for (int i=0 ; i<m_NumPlayers ; i++)
+	{
+		CObject object;
+		mp_Player[i].m_player_number = i;
+		mp_Player[i].m_episode = m_Episode;
+		mp_Player[i].mp_levels_completed = mp_level_completed;
+
+		object.exists = true;
+		object.onscreen = true;
+		object.honorPriority = true;
+		object.m_type = OBJ_PLAYER;
+		mp_Player[i].mp_option = mp_option;
+		m_Object.push_back(object);
+		mp_Player[i].mp_object=&m_Object;
+	}
+}
+
 
 bool CPlayGame::loadGameState( std::string &statefile )
 {
@@ -321,6 +326,12 @@ void CPlayGame::process()
 
 void CPlayGame::goBacktoMap()
 {
+	// before he can go back to map, he must tie up the objects.
+	// This means, all objects except the puppy ones of the player....
+	m_Object.clear();
+
+	createPlayerObjects();
+
 	m_level_command = START_LEVEL;
 	m_Level = WM_MAP_NUM;
 	//g_pMusicPlayer->stop();

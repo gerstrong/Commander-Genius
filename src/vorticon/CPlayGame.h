@@ -43,6 +43,7 @@ public:
 			  std::string &gamepath, stOption *p_option );
 	
 	bool init();
+	void createPlayerObjects();
 	bool loadGameState( std::string &statefile );
 	
 	void process();
