@@ -1,5 +1,5 @@
 
-#define RAY_SPEED   		60
+#define RAY_SPEED   		100
 #define RAY_AUTO_SPEED		120
 #define RAY_ZAPZOT_TIME    	10
 

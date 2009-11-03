@@ -215,7 +215,7 @@ CSprite *sprite = g_pGfxEngine->Sprite[p_player->playframe];
 
 	int x1 = p_player->x+sprite->m_bboxX1+1;
 	int x2 = p_player->x+sprite->m_bboxX2-1;
-	int y = p_player->y+sprite->m_bboxY2+1;
+	int y = p_player->y+sprite->m_bboxY2+(1<<STC);
 	int t1 = mp_Map->at(x1>>CSF, y>>CSF);
 	int t2 = mp_Map->at(x2>>CSF, y>>CSF);
 	

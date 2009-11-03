@@ -241,7 +241,7 @@ void CObjectAI::performSpecialAIType( CObject *p_object )
 			 case OBJ_NESSIE: nessie_ai(i); break;
 			 
 			 //Specials*/
-		case OBJ_RAY: ray_ai( p_object, mp_Options[OPT_FULLYAUTOMATIC].value, 1 ); break;
+		case OBJ_RAY: ray_ai( p_object, mp_Options[OPT_FULLYAUTOMATIC].value ); break;
 			//case OBJ_AUTORAY: case OBJ_AUTORAY_V: autoray_ai(i); break;
 			//case OBJ_GOTPOINTS: gotpoints_ai(i); break;
 			

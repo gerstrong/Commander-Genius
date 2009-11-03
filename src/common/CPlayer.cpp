@@ -28,6 +28,8 @@ CPlayer::CPlayer() {
     mp_map = NULL;
     mp_StatusScr = NULL;
     mp_option = NULL;
+    memset(&inventory, 0, sizeof(stInventory));
+    inventory.extralifeat = 20000;
     setDatatoZero();
 }
 
@@ -83,9 +85,7 @@ void CPlayer::setDatatoZero()
   	exitXpos = 0;
 	
     // Set all the inventory to zero.
-    memset(&inventory, 0, sizeof(stInventory));
     memset(playcontrol, 0, PA_MAX_ACTIONS*sizeof(char));
-    inventory.extralifeat = 20000;
 }
 
 // handles walking. the walking animation is handled by gamepdo_walkinganim()
@@ -95,8 +95,8 @@ void CPlayer::Walking()
     if (inhibitwalking && !psliding)
     {
 		if (!pfrozentime||m_episode!=1)
-			if (!pjumping && !pfalling);
-		pinertia_x = 0;
+			if (!pjumping && !pfalling)
+				pinertia_x = 0;
 		return;
     }
 	
@@ -105,8 +105,8 @@ void CPlayer::Walking()
     if (pjustjumped && ((pinertia_x > 0 && pdir==LEFT) ||\
                         (pinertia_x < 0 && pdir==RIGHT)))\
     {
-    	if(!ppogostick);
-		pinertia_x = 0;
+    	if(!ppogostick)
+			pinertia_x = 0;
     }
 	
     // this code makes it so that if you jump/fall onto a semi-sliding
@@ -211,12 +211,7 @@ void CPlayer::Walking()
         cur_pfastincrate = PFASTINCRATE_POGO;
 	else
         cur_pfastincrate = PFASTINCRATE;
-	
-	/*if((pjumpdir != UP) && (pjumping != 0))
-	 {
-	 return;
-	 }*/
-	
+
 	if (playcontrol[PA_X] > 0)
 	{ // RIGHT key down
 		// quickly reach PLAYER_FASTINCMAXSPEED
@@ -422,6 +417,7 @@ void CPlayer::WalkingAnimation()
 void CPlayer::InertiaAndFriction_X()
 {
 	int friction_rate;
+	treshold = 0;
 	
 	// Calculate Threshold of your analog device for walking animation speed!
 	if(!pfrozentime)
@@ -429,8 +425,8 @@ void CPlayer::InertiaAndFriction_X()
 	
 	int pmaxspeed = 0;
 	
-	if(!pjumping && !pfalling &&
-	   !psemisliding && !psliding && !ppogostick && !pslowingdown)
+	if( (!pjumping && !pfalling &&
+	   !psemisliding && !psliding && !ppogostick && !pslowingdown) || m_playingmode==WORLDMAP )
 	{
 		if(treshold < playcontrol[PA_Y] && playcontrol[PA_Y] > 0 )
 			treshold = playcontrol[PA_Y];

@@ -269,6 +269,7 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 						enemyobject.spawn(x<<CSF, y<<CSF, OBJ_YORP);
 						mp_objvect->push_back(enemyobject);
 					}
+					break;
 					/*else
 					 {
 					 // in ep2 level 16 there a vorticon embedded in the floor for

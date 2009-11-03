@@ -70,7 +70,7 @@ private:
 	 // Specials
 	 void autoray_ai(int o);
 	 void gotpoints_ai(int o);*/
-	void ray_ai( CObject *p_object, bool automatic_raygun, char pShotSpeed );
+	void ray_ai( CObject *p_object, bool automatic_raygun, char pShotSpeed=0 );
 	void teleporter_ai(CObject *p_object);
 	
 	// Variables

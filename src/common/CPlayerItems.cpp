@@ -24,9 +24,9 @@
 // let's have keen be able to pick up goodies
 void CPlayer::getgoodies()
 {
-	if(getGoodie((x>>CSF), (y>>CSF)) ) return;     	// Upper-Left
-	else if(getGoodie(((x+w-1)>>CSF), (y>>CSF)) ) return; // Upper-Right
-	else if(getGoodie((x>>CSF), ((y+h-1)>>CSF)) ) return; // Lower-Left
+	if( getGoodie((x+1)>>CSF, (y+1)>>CSF) ) return;     	// Upper-Left
+	else if(getGoodie((x+w-1)>>CSF, (y+1)>>CSF) ) return; // Upper-Right
+	else if(getGoodie(((x+1)>>CSF), ((y+h-1)>>CSF)) ) return; // Lower-Left
 	else if(getGoodie(((x+w-1)>>CSF), ((y+h-1)>>CSF)) ) return; // Lower-Right
 }
 

@@ -16,9 +16,6 @@ enum directions{
 
 #define ANKH_SHIELD_FRAME       61
 
-// time to show player in his "pogo compressed" frame before jumping
-#define PPOGO_PREPARE_TIME       50
-
 #define PSTANDFRAME				 0		// standing, looking right
 
 // player frame indexes for world map

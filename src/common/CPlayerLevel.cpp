@@ -281,7 +281,7 @@ void CPlayer::TogglePogo_and_Switches()
 	CSprite *standsprite = g_pGfxEngine->Sprite[PSTANDFRAME];
 	
 	// detect if KPOGO key only pressed
-	if (playcontrol[PA_POGO] && !lastpogo && !pfrozentime)
+	if ( playcontrol[PA_POGO] && !pfrozentime && !lastpogo )
 	{
 		// if we are standing near a switch hit the switch instead
 		mx = (x>>CSF)+(standsprite->getWidth()/2);
@@ -316,10 +316,8 @@ void CPlayer::TogglePogo_and_Switches()
 		}
 		lastpogo = true;
 	}
-	else
-	{
-		lastpogo = false;
-	}
+
+	if(!playcontrol[PA_POGO])	lastpogo = false;
 }
 
 void CPlayer::JumpAndPogo()
@@ -338,7 +336,6 @@ void CPlayer::JumpAndPogo()
 		}
 		else if (ppogostick)
 		{
-			pinertia_x = 0;
 			pjumping = PPREPAREPOGO;
 			pjumpanimtimer = 0;
 			pwalking = false;
@@ -383,7 +380,7 @@ void CPlayer::JumpAndPogo()
 				}
 				pjumpframe = PJUMP_PREPARE_LAST_FRAME;
 				pjumping = PPOGOING;
-				pjumpupspeed_decrease = 0;
+				//pjumpupspeed_decrease = 0;
 				pjustjumped = 1;
 				
 			} else pjumpanimtimer++;
@@ -489,25 +486,28 @@ void CPlayer::JumpAndPogo()
 			break;
     }
 	
-    // Now check how much the direction of the player is given
-    if(pjumping)
-    {
-    	if (playcontrol[PA_X] < 0)
-    		pinertia_x-=1;
-    	if (playcontrol[PA_X] > 0)
-			pinertia_x+=1;
-    }
-	
-    if(pfalling)
-    {
-   		if(pinertia_x<0) pinertia_x+=2;
-   		if(pinertia_x>0) pinertia_x-=2;
+    //if(!ppogostick)
+    //{
+		// Now check how much the direction of the player is given
+		if(pjumping)
+		{
+			if (playcontrol[PA_X] < 0)
+				pinertia_x-=1;
+			if (playcontrol[PA_X] > 0)
+				pinertia_x+=1;
+		}
 		
-       	if (playcontrol[PA_X] < 0)
-       		pinertia_x-=2;
-       	if (playcontrol[PA_X] > 0)
-   			pinertia_x+=2;
-    }
+		if(pfalling && !ppogostick)
+		{
+			if(pinertia_x<0) pinertia_x+=2;
+			if(pinertia_x>0) pinertia_x-=2;
+
+			if (playcontrol[PA_X] < 0)
+				pinertia_x-=2;
+			if (playcontrol[PA_X] > 0)
+				pinertia_x+=2;
+		}
+    //}
 	
     // If we are in Godmode, use the Pogo, and pressing the jump button, make the player fly
     if( godmode && ppogostick &&

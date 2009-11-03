@@ -120,8 +120,8 @@ int CPlayer::getNewObject()
     {   // trying to enter a level (or use a teleporter, etc)
 		
         // get level/object marker beneath player
-        xb = (x>>(CSF-4))+4;
-        yb = (y>>(CSF-4))+4;
+        xb = (x>>STC)+4;
+        yb = (y>>STC)+4;
         lvl = mp_map->getObjectat(xb>>4, yb>>4);
         if (!lvl)
         {
