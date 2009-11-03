@@ -644,6 +644,7 @@
 		637FC63510559B5600C2EA77 /* CPalette.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPalette.cpp; sourceTree = "<group>"; };
 		637FC63610559B5600C2EA77 /* CPalette.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPalette.h; sourceTree = "<group>"; };
 		63AB8C2E107C62D0001EE22F /* cglogo.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = cglogo.icns; sourceTree = "<group>"; };
+		63BE4E3710A08CB700E36F5A /* stringdefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stringdefines.h; sourceTree = "<group>"; };
 		63BE59E0108501BF009C7293 /* CPlayGameCollision.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CPlayGameCollision.cpp; path = vorticon/CPlayGameCollision.cpp; sourceTree = "<group>"; };
 		63BE59E1108501BF009C7293 /* CTeleporter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CTeleporter.cpp; path = vorticon/CTeleporter.cpp; sourceTree = "<group>"; };
 		63BE59E2108501BF009C7293 /* CTeleporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTeleporter.h; path = vorticon/CTeleporter.h; sourceTree = "<group>"; };
@@ -1144,6 +1145,7 @@
 				6312FEC410963B3400DDFFA7 /* game.h */,
 				23D3EA0C1013ABCA001643FA /* sounds.h */,
 				6312202610910DB200053A0E /* spritedefines.h */,
+				63BE4E3710A08CB700E36F5A /* stringdefines.h */,
 			);
 			name = vorticon;
 			path = ../../src/vorticon;
