@@ -198,6 +198,11 @@
 		63D4A712107FEB7C00E43500 /* tile185.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6FF107FEB7C00E43500 /* tile185.tga */; };
 		63D4A713107FEB7C00E43500 /* tile190.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A700107FEB7C00E43500 /* tile190.tga */; };
 		63D4A714107FEB7C00E43500 /* yorpshield.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A701107FEB7C00E43500 /* yorpshield.tga */; };
+		63FFE146109FA45A002FF190 /* LEVEL15.CK2 in Copy Keen 2 Fix Files */ = {isa = PBXBuildFile; fileRef = 63FFE144109FA45A002FF190 /* LEVEL15.CK2 */; };
+		63FFE147109FA45A002FF190 /* LEVEL80.CK2 in Copy Keen 2 Fix Files */ = {isa = PBXBuildFile; fileRef = 63FFE145109FA45A002FF190 /* LEVEL80.CK2 */; };
+		63FFE14E109FA49E002FF190 /* EGALATCH.CK3 in Copy Keen 3 Fix Files */ = {isa = PBXBuildFile; fileRef = 63FFE14B109FA49E002FF190 /* EGALATCH.CK3 */; };
+		63FFE14F109FA49E002FF190 /* LEVEL08.CK3 in Copy Keen 3 Fix Files */ = {isa = PBXBuildFile; fileRef = 63FFE14C109FA49E002FF190 /* LEVEL08.CK3 */; };
+		63FFE150109FA49E002FF190 /* LEVEL15.CK3 in Copy Keen 3 Fix Files */ = {isa = PBXBuildFile; fileRef = 63FFE14D109FA49E002FF190 /* LEVEL15.CK3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -322,6 +327,31 @@
 				63D4A714107FEB7C00E43500 /* yorpshield.tga in Copy Res Files */,
 			);
 			name = "Copy Res Files";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		63FFE15D109FA521002FF190 /* Copy Keen 2 Fix Files */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = data/games/EP2;
+			dstSubfolderSpec = 7;
+			files = (
+				63FFE146109FA45A002FF190 /* LEVEL15.CK2 in Copy Keen 2 Fix Files */,
+				63FFE147109FA45A002FF190 /* LEVEL80.CK2 in Copy Keen 2 Fix Files */,
+			);
+			name = "Copy Keen 2 Fix Files";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		63FFE15E109FA521002FF190 /* Copy Keen 3 Fix Files */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = data/games/EP3;
+			dstSubfolderSpec = 7;
+			files = (
+				63FFE14E109FA49E002FF190 /* EGALATCH.CK3 in Copy Keen 3 Fix Files */,
+				63FFE14F109FA49E002FF190 /* LEVEL08.CK3 in Copy Keen 3 Fix Files */,
+				63FFE150109FA49E002FF190 /* LEVEL15.CK3 in Copy Keen 3 Fix Files */,
+			);
+			name = "Copy Keen 3 Fix Files";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -647,6 +677,11 @@
 		63DCCCBB104CBC3000B3BC10 /* version.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = version.h; path = ../../version.h; sourceTree = SOURCE_ROOT; };
 		63F4128D108F9BB1003A2E02 /* arguments.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = arguments.cpp; sourceTree = "<group>"; };
 		63F4128E108F9BB1003A2E02 /* arguments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = arguments.h; sourceTree = "<group>"; };
+		63FFE144109FA45A002FF190 /* LEVEL15.CK2 */ = {isa = PBXFileReference; lastKnownFileType = file; name = LEVEL15.CK2; path = EP2/LEVEL15.CK2; sourceTree = "<group>"; };
+		63FFE145109FA45A002FF190 /* LEVEL80.CK2 */ = {isa = PBXFileReference; lastKnownFileType = file; name = LEVEL80.CK2; path = EP2/LEVEL80.CK2; sourceTree = "<group>"; };
+		63FFE14B109FA49E002FF190 /* EGALATCH.CK3 */ = {isa = PBXFileReference; lastKnownFileType = file; name = EGALATCH.CK3; path = EP3/EGALATCH.CK3; sourceTree = "<group>"; };
+		63FFE14C109FA49E002FF190 /* LEVEL08.CK3 */ = {isa = PBXFileReference; lastKnownFileType = file; name = LEVEL08.CK3; path = EP3/LEVEL08.CK3; sourceTree = "<group>"; };
+		63FFE14D109FA49E002FF190 /* LEVEL15.CK3 */ = {isa = PBXFileReference; lastKnownFileType = file; name = LEVEL15.CK3; path = EP3/LEVEL15.CK3; sourceTree = "<group>"; };
 		8D0C4E960486CD37000505A6 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1141,6 +1176,8 @@
 			isa = PBXGroup;
 			children = (
 				637F48C8105C97D900DE486C /* EP1 */,
+				63FFE148109FA461002FF190 /* EP2 */,
+				63FFE151109FA4A4002FF190 /* EP3 */,
 				6350F7AA1044797300A992D5 /* games.cfg */,
 				6350F7C41044797300A992D5 /* renlower.sh */,
 			);
@@ -1222,6 +1259,25 @@
 			path = gfx;
 			sourceTree = "<group>";
 		};
+		63FFE148109FA461002FF190 /* EP2 */ = {
+			isa = PBXGroup;
+			children = (
+				63FFE144109FA45A002FF190 /* LEVEL15.CK2 */,
+				63FFE145109FA45A002FF190 /* LEVEL80.CK2 */,
+			);
+			name = EP2;
+			sourceTree = "<group>";
+		};
+		63FFE151109FA4A4002FF190 /* EP3 */ = {
+			isa = PBXGroup;
+			children = (
+				63FFE14B109FA49E002FF190 /* EGALATCH.CK3 */,
+				63FFE14C109FA49E002FF190 /* LEVEL08.CK3 */,
+				63FFE14D109FA49E002FF190 /* LEVEL15.CK3 */,
+			);
+			name = EP3;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1231,6 +1287,8 @@
 			buildPhases = (
 				235755D1101A5E5900275638 /* Resources */,
 				6350FA7E104490F300A992D5 /* Copy Keen 1 Files */,
+				63FFE15D109FA521002FF190 /* Copy Keen 2 Fix Files */,
+				63FFE15E109FA521002FF190 /* Copy Keen 3 Fix Files */,
 				637F48BC105C96AF00DE486C /* Copy Game Data Files */,
 				6350FA7D104490F300A992D5 /* Copy Data Files */,
 				63D4A718107FEC1100E43500 /* Copy Res Files */,

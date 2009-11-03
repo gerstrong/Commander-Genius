@@ -67,6 +67,12 @@ void CPlayer::touchedExit()
 		// on an object such as a platform or an enemy
 		if (psupportingobject)	return;
 		
+		// TODO: in episode 2 on level 13 aka Rome Tantalus Ray, if
+		// keen hasn't flipped the switch he shouldn't be able to
+		// leave the level, this is a bug from the original game
+		// that needs fixing, hopefully we will fix all of those
+		
+		
 		// if player has ankh shut it off
 		if (ankhtime)
 		{
