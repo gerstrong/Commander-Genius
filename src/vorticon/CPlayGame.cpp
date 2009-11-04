@@ -109,6 +109,9 @@ void CPlayGame::createPlayerObjects()
 	// tie puppy objects so the player can interact in the level
 	for (int i=0 ; i<m_NumPlayers ; i++)
 	{
+		// if player died before substract one life. Never happens, when game was just started
+		if(mp_Player[i].pdie == PDIE_DEAD) mp_Player[i].inventory.lives--;
+
 		CObject object;
 		mp_Player[i].setDatatoZero();
 		mp_Player[i].m_player_number = i;

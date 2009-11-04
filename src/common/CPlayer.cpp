@@ -30,6 +30,7 @@ CPlayer::CPlayer() {
     mp_option = NULL;
     memset(&inventory, 0, sizeof(stInventory));
     inventory.extralifeat = 20000;
+    inventory.lives = 4;
     setDatatoZero();
 }
 
