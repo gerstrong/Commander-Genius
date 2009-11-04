@@ -97,6 +97,7 @@ private:
 	bool mp_level_completed[16];
 	int m_checkpoint_x, m_checkpoint_y;
 	bool m_checkpointset;
+	bool m_isFinished;
 	
 	CMap *mp_Map;
 	CMenu *mp_Menu;

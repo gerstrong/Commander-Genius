@@ -39,6 +39,7 @@ CPlayGame::CPlayGame( char episode, char level,
 	mp_option = p_option;
 	m_checkpoint_x = m_checkpoint_y = 0;
 	m_checkpointset = false;
+	m_isFinished = false;
 	
 	// Create the Player
 	if(m_NumPlayers == 0) m_NumPlayers = 1;
@@ -158,132 +159,138 @@ void CPlayGame::process()
 	}
 	else if(!m_paused) // Game is not paused
 	{
-		// Perform AIs
-		mp_ObjectAI->process();
-		
-		/// The following functions must be worldmap dependent
-		if( m_Level == WORLD_MAP_LEVEL )
+		if (!m_isFinished) // Has the game been finished?
 		{
-			int useobject;
+			// Perform AIs
+			mp_ObjectAI->process();
 			
-			// Perform player Objects...
-			for( int i=0 ; i<m_NumPlayers ; i++ )
+			/// The following functions must be worldmap dependent
+			if( m_Level == WORLD_MAP_LEVEL )
 			{
-				mp_Player[i].processWorldMap();
+				int useobject;
 				
-				// entered a level, used ship, teleporter, etc.
-				useobject = mp_Player[i].getNewObject();
-				if( useobject != 0 )
-				{	// A new object was chosen by the player
-					CTeleporter Teleporter(*mp_Map, m_Episode);
+				// Perform player Objects...
+				for( int i=0 ; i<m_NumPlayers ; i++ )
+				{
+					mp_Player[i].processWorldMap();
 					
-					// If it is teleporter, make the Player teleport
-					if(Teleporter.readTeleporterInfo(useobject) == true)
-					{
-						Teleporter.teleportPlayer(m_Object, mp_Player[i]);
-					}
-					else
-					{
-						// If it is level, change the playgame mode and load the new map. Nessie is
-						// a special case in Episode 3
-						switch(useobject)
+					// entered a level, used ship, teleporter, etc.
+					useobject = mp_Player[i].getNewObject();
+					if( useobject != 0 )
+					{	// A new object was chosen by the player
+						CTeleporter Teleporter(*mp_Map, m_Episode);
+
+						// If it is teleporter, make the Player teleport
+						if(Teleporter.readTeleporterInfo(useobject) == true)
 						{
-							case NESSIE_PATH: break;
-							case NESSIE_PAUSE: break;
-							case NESSIE_MOUNTPOINT: break;
-								
-							case LVLS_SHIP:
-								if (m_Episode==1)
-								{
-									//YourShipNeedsTheseParts(pCKP);
-								}
-								else
-								{
-									//ShipEp3(pCKP);
-								}
-								break;
-								
-							default:      // a regular level
-								m_level_command = START_LEVEL;
-								m_Level = useobject & 0x7fff;
-								//g_pMusicPlayer->stop();
-								g_pSound->playStereofromCoord(SOUND_ENTER_LEVEL, PLAY_NOW, m_Object[mp_Player[i].m_player_number].scrx);
-								// save where on the map, the player entered. This is a checkpoint!
-								m_checkpoint_x = mp_Player[i].x;
-								m_checkpoint_y = mp_Player[i].y;
-								m_checkpointset = true;
-								cleanup();
-								init();
-								break;
+							Teleporter.teleportPlayer(m_Object, mp_Player[i]);
+						}
+						else
+						{
+							// If it is level, change the playgame mode and load the new map. Nessie is
+							// a special case in Episode 3
+							switch(useobject)
+							{
+								case NESSIE_PATH: break;
+								case NESSIE_PAUSE: break;
+								case NESSIE_MOUNTPOINT: break;
+
+								case LVLS_SHIP:
+									if (m_Episode==1)
+									{
+										//YourShipNeedsTheseParts(pCKP);
+									}
+									else
+									{
+										//ShipEp3(pCKP);
+									}
+									break;
+
+								default:      // a regular level
+									m_level_command = START_LEVEL;
+									m_Level = useobject & 0x7fff;
+									//g_pMusicPlayer->stop();
+									g_pSound->playStereofromCoord(SOUND_ENTER_LEVEL, PLAY_NOW, m_Object[mp_Player[i].m_player_number].scrx);
+									// save where on the map, the player entered. This is a checkpoint!
+									m_checkpoint_x = mp_Player[i].x;
+									m_checkpoint_y = mp_Player[i].y;
+									m_checkpointset = true;
+									cleanup();
+									init();
+									break;
+							}
 						}
 					}
+
+					// in episode 3 he can ride on nessie
+					if (m_Episode==3)
+					{
+						mp_Player[i].AllowMountUnmountNessie();
+					}
 				}
 				
-				// in episode 3 he can ride on nessie
-				if (m_Episode==3)
-				{
-					mp_Player[i].AllowMountUnmountNessie();
-				}
+				// end(s) the game.
+				// TODO: Check if game is finished
 			}
-		}
-		else
-		{
-			// Perform player Objects...
+			else
+			{
+				// Perform player Objects...
+				for( int i=0 ; i<m_NumPlayers ; i++ )
+				{
+					// Process the other stuff like, items, jump, etc.
+					mp_Player[i].processInLevel();
+
+					// Process the falling physics of the player here.
+					// We need to know the objects and tiles which could hinder the fall.
+					// decide if player should fall
+					if (!mp_Player[i].inhibitfall) processPlayerfallings(&mp_Player[i]);
+					else
+					{
+						if(mp_Player[i].pjumping == PJUMPED)
+							mp_Player[i].pfalling = 0;
+						mp_Player[i].psupportingtile = 145;
+						mp_Player[i].psupportingobject = 0;
+					}
+
+					// Check Collisions and only move player, if it is not blocked
+					checkPlayerCollisions(&mp_Player[i]);
+
+					// Check if the first player is dead, and if the other also are...
+					if(i==0) m_alldead = (mp_Player[i].pdie == PDIE_DEAD);
+					else m_alldead &= (mp_Player[i].pdie == PDIE_DEAD);
+
+					// finished the level
+					if(mp_Player[i].level_done == LEVEL_COMPLETE)
+					{
+						mp_level_completed[m_Level] = true;
+						goBacktoMap();
+					}
+				}
+				
+				// gets to bonus level
+				
+				// Check if all player are dead. In that case, go back to map
+				if(m_alldead) goBacktoMap();
+			}
+			// Did the someone press 'p' for Pause?
+
+			// Does one of the players need to pause the game?
 			for( int i=0 ; i<m_NumPlayers ; i++ )
 			{
-				// Process the other stuff like, items, jump, etc.
-				mp_Player[i].processInLevel();
+				// Did he open the status screen?
+				if(mp_Player[i].m_showStatusScreen)
+					m_paused = true; // this is processed in processPauseDialogs!
 				
-				// Process the falling physics of the player here.
-				// We need to know the objects and tiles which could hinder the fall.
-				// decide if player should fall
-				if (!mp_Player[i].inhibitfall) processPlayerfallings(&mp_Player[i]);
-				else
-				{
-					if(mp_Player[i].pjumping == PJUMPED)
-						mp_Player[i].pfalling = 0;
-					mp_Player[i].psupportingtile = 145;
-					mp_Player[i].psupportingobject = 0;
-				}
-				
-				// Check Collisions and only move player, if it is not blocked
-				checkPlayerCollisions(&mp_Player[i]);
-				
-				// Check if the first player is dead, and if the other also are...
-				if(i==0) m_alldead = (mp_Player[i].pdie == PDIE_DEAD);
-				else m_alldead &= (mp_Player[i].pdie == PDIE_DEAD);
-				
-				// finished the level
-				if(mp_Player[i].level_done == LEVEL_COMPLETE)
-				{
-			    	mp_level_completed[m_Level] = true;
-					goBacktoMap();
-				}
+				// TODO: Did he hit a hint box, like yorp statue in Episode 1.
 			}
-			
-			// gets to bonus level
-			
-			// Check if all player are dead. In that case, go back to map
-			if(m_alldead) goBacktoMap();
-			
-			// end(s) the game.
+		}
+		else // In this case the Game has been finished, goto to the cutscenes
+		{
+			//mp_Finale->process()
 		}
 		
 		// Handle the Scrolling here!
 		scrollTriggers();
-		
-		// Did the someone press 'p' for Pause?
-		
-		// Does one of the players need to pause the game?
-		for( int i=0 ; i<m_NumPlayers ; i++ )
-		{
-			// Did he open the status screen?
-			if(mp_Player[i].m_showStatusScreen)
-				m_paused = true; // this is processed in processPauseDialogs!
-			
-			// TODO: Did he hit a hint box, like yorp statue in Episode 1.
-		}
-		
 	}
 	else // In this case the game is paused
 	{
