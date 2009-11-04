@@ -72,6 +72,7 @@ void CObjectAI::process()
 		    }
 			performSpecialAIType( &(*i_object) );
 		}
+		i_object->process();
 	}
 	
 }

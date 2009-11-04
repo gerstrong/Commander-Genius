@@ -109,9 +109,6 @@ void CPlayGame::createPlayerObjects()
 	// tie puppy objects so the player can interact in the level
 	for (int i=0 ; i<m_NumPlayers ; i++)
 	{
-		// if player died before substract one life. Never happens, when game was just started
-		if(mp_Player[i].pdie == PDIE_DEAD) mp_Player[i].inventory.lives--;
-
 		CObject object;
 		mp_Player[i].setDatatoZero();
 		mp_Player[i].m_player_number = i;
@@ -234,71 +231,73 @@ void CPlayGame::process()
 			}
 			else
 			{
-				bool nobodyhaslifes = true;
-
-				// Perform player Objects...
-				for( int i=0 ; i<m_NumPlayers ; i++ )
+				if(!m_gameover)
 				{
-					// check if someone has lifes
-					if(mp_Player[i].inventory.lives == 0)
+					// Perform player Objects...
+					for( int i=0 ; i<m_NumPlayers ; i++ )
 					{
-						nobodyhaslifes &= false;
-						continue;
+						// check if someone has lifes
+						if(mp_Player[i].inventory.lives==0 && mp_Player[i].pdie==PDIE_DEAD)
+							continue;
+
+						// Process the other stuff like, items, jump, etc.
+						mp_Player[i].processInLevel();
+
+						// Process the falling physics of the player here.
+						// We need to know the objects and tiles which could hinder the fall.
+						// decide if player should fall
+						if (!mp_Player[i].inhibitfall) processPlayerfallings(&mp_Player[i]);
+						else
+						{
+							if(mp_Player[i].pjumping == PJUMPED)
+								mp_Player[i].pfalling = 0;
+
+							mp_Player[i].psupportingtile = 145;
+							mp_Player[i].psupportingobject = 0;
+						}
+
+						// Check Collisions and only move player, if it is not blocked
+						checkPlayerCollisions(&mp_Player[i]);
+
+						// Check if the first player is dead, and if the other also are...
+						if(i==0) m_alldead = (mp_Player[i].pdie == PDIE_DEAD);
+						else m_alldead &= (mp_Player[i].pdie == PDIE_DEAD);
+
+						// finished the level
+						if(mp_Player[i].level_done == LEVEL_COMPLETE)
+						{
+							mp_level_completed[m_Level] = true;
+							goBacktoMap();
+							break;
+						}
 					}
 
-					// Process the other stuff like, items, jump, etc.
-					mp_Player[i].processInLevel();
+					// gets to bonus level
 
-					// Process the falling physics of the player here.
-					// We need to know the objects and tiles which could hinder the fall.
-					// decide if player should fall
-					if (!mp_Player[i].inhibitfall) processPlayerfallings(&mp_Player[i]);
-					else
+					// Check if all players are dead. In that case, go back to map
+					if(m_alldead)
 					{
-						if(mp_Player[i].pjumping == PJUMPED)
-							mp_Player[i].pfalling = 0;
+						m_gameover = true; // proof contrary case
+						for( int i=0 ; i<m_NumPlayers ; i++ )
+							m_gameover &= ( mp_Player[i].inventory.lives <= 0 );
 
-						mp_Player[i].psupportingtile = 145;
-						mp_Player[i].psupportingobject = 0;
-					}
+						if(m_gameover) // Check if no player has lifes left and must go in game over mode.
+						{
+							g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
 
-					// Check Collisions and only move player, if it is not blocked
-					checkPlayerCollisions(&mp_Player[i]);
-
-					// Check if the first player is dead, and if the other also are...
-					if(i==0) m_alldead = (mp_Player[i].pdie == PDIE_DEAD);
-					else m_alldead &= (mp_Player[i].pdie == PDIE_DEAD);
-
-					// finished the level
-					if(mp_Player[i].level_done == LEVEL_COMPLETE)
-					{
-						mp_level_completed[m_Level] = true;
-						goBacktoMap();
-						break;
+							// TODO: Bitmap must be created. NOTE: Use m_object.push(new CBitmap) for that!
+							// or let me do that :-), Gerstrong
+							/*CBitmap *bm_gameover = g_pGfxEngine->getBitmap("GAMEOVER");
+							// figure out where to center the gameover bitmap and draw it
+							int x = (g_pVideoDriver->getGameResRect().w/2)-(bm_gameover->getWidth()/2);
+							int y = (g_pVideoDriver->getGameResRect().h/2)-(bm_gameover->getHeight()/2);
+							bm_gameover->draw(g_pVideoDriver->BlitSurface, x, y);*/
+						}
+						else
+							goBacktoMap();
 					}
 				}
-				
-				// gets to bonus level
-				
-				// Check if no player has lifes left. If it's the case, stays in the level
-				// but show game over
-			    /*if (mp_Player[i].inventory.lives<0)
-			    {
-					m_gameover = true;
-					g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
 
-					// TODO: The commented out stuff must get an object
-
-					 CBitmap *bm_gameover = g_pGfxEngine->getBitmap("GAMEOVER");
-					 // figure out where to center the gameover bitmap and draw it
-					 int x = (g_pVideoDriver->getGameResRect().w/2)-(bm_gameover->getWidth()/2);
-					 int y = (g_pVideoDriver->getGameResRect().h/2)-(bm_gameover->getHeight()/2);
-					 bm_gameover->draw(g_pVideoDriver->BlitSurface, x, y);
-
-			    }*/
-
-				// Check if all players are dead. In that case, go back to map
-				if(m_alldead) goBacktoMap();
 			}
 			// Did the someone press 'p' for Pause?
 

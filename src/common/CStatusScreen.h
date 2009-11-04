@@ -13,7 +13,7 @@
 
 class CStatusScreen {
 public:
-	CStatusScreen(char episode, stInventory *p_inventory);
+	CStatusScreen(char episode, stInventory *p_inventory,  int baseframe);
 	
 	void draw();
 	void drawInventoryEp1();
@@ -23,6 +23,7 @@ public:
 	virtual ~CStatusScreen();
 private:
 	char m_episode;
+	int m_baseframe;
 	stInventory *mp_inventory;
 	
 	SDL_Surface *mp_surface;

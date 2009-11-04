@@ -15,11 +15,12 @@
 #include "../sdl/CVideoDriver.h"
 #include "../StringUtils.h"
 
-CStatusScreen::CStatusScreen(char episode, stInventory *p_inventory) {
+CStatusScreen::CStatusScreen(char episode, stInventory *p_inventory, int baseframe) {
 	// TODO Auto-generated constructor stub
 	m_episode = episode;
 	mp_surface = g_pVideoDriver->FGLayerSurface;
 	mp_inventory = p_inventory;
+	m_baseframe = baseframe;
 }
 
 void CStatusScreen::draw()
@@ -117,7 +118,7 @@ void CStatusScreen::drawInventoryEp1()
 	if (i>7) i=7;
 	for(j=0;j<i;j++)
 	{
-		//g_pGfxEngine->Sprite[playerbaseframes[p]]->drawSprite(  mp_surface, x, (dlgY+4)<<3);
+		g_pGfxEngine->Sprite[m_baseframe]->drawSprite(  mp_surface, x, (dlgY+4)<<3);
 		// TODO: Playbaseframe is somewhere else. It's needed, so the player is displayed at right colour
 		x += g_pGfxEngine->Sprite[0]->getWidth();
 	}
