@@ -17,6 +17,9 @@
 #include "../common/CMap.h"
 #include "../common/options.h"
 #include "ai/CObjectAI.h"
+#include "finale/CEndingEp1.h"
+#include "finale/CEndingEp2.h"
+#include "finale/CEndingEp3.h"
 #include <SDL/SDL.h>
 #include <string>
 #include <vector>
@@ -64,6 +67,7 @@ public:
 	void processPlayerfallings(CPlayer *p_player);
 	void ExtendingPlatformSwitch(int x, int y);
 	void losePlayer(CPlayer *p_player);
+	void verifyfinishedGame();
 	
 	// Dialog processes stored in CPlayGameDialogs.cpp
 	void processPauseDialogs();
@@ -97,12 +101,12 @@ private:
 	bool mp_level_completed[16];
 	int m_checkpoint_x, m_checkpoint_y;
 	bool m_checkpointset;
-	bool m_isFinished;
 	
 	CMap *mp_Map;
 	CMenu *mp_Menu;
 	CPlayer *mp_Player;
 	CObjectAI *mp_ObjectAI;
+	CFinale *mp_Finale;
 	stOption *mp_option;
 	int m_theplayer;
 	std::vector<CObject> m_Object;

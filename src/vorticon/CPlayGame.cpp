@@ -36,10 +36,10 @@ CPlayGame::CPlayGame( char episode, char level,
 	m_gameover = false;
 	mp_Map = NULL;
 	mp_Menu = NULL;
+	mp_Finale = NULL;
 	mp_option = p_option;
 	m_checkpoint_x = m_checkpoint_y = 0;
 	m_checkpointset = false;
-	m_isFinished = false;
 	
 	// Create the Player
 	if(m_NumPlayers == 0) m_NumPlayers = 1;
@@ -115,7 +115,7 @@ void CPlayGame::createPlayerObjects()
 		mp_Player[i].m_episode = m_Episode;
 		mp_Player[i].mp_levels_completed = mp_level_completed;
 
-		object.exists = true;
+	    object.exists = true;
 		object.onscreen = true;
 		object.honorPriority = true;
 		object.m_type = OBJ_PLAYER;
@@ -159,7 +159,7 @@ void CPlayGame::process()
 	}
 	else if(!m_paused) // Game is not paused
 	{
-		if (!m_isFinished) // Has the game been finished?
+		if (!mp_Finale) // Has the game been finished?
 		{
 			// Perform AIs
 			mp_ObjectAI->process();
@@ -228,15 +228,21 @@ void CPlayGame::process()
 						mp_Player[i].AllowMountUnmountNessie();
 					}
 				}
-				
-				// end(s) the game.
-				// TODO: Check if game is finished
 			}
 			else
 			{
+				bool nobodyhaslifes = true;
+
 				// Perform player Objects...
 				for( int i=0 ; i<m_NumPlayers ; i++ )
 				{
+					// check if someone has lifes
+					if(mp_Player[i].inventory.lives == 0)
+					{
+						nobodyhaslifes &= false;
+						continue;
+					}
+
 					// Process the other stuff like, items, jump, etc.
 					mp_Player[i].processInLevel();
 
@@ -248,6 +254,7 @@ void CPlayGame::process()
 					{
 						if(mp_Player[i].pjumping == PJUMPED)
 							mp_Player[i].pfalling = 0;
+
 						mp_Player[i].psupportingtile = 145;
 						mp_Player[i].psupportingobject = 0;
 					}
@@ -264,12 +271,30 @@ void CPlayGame::process()
 					{
 						mp_level_completed[m_Level] = true;
 						goBacktoMap();
+						break;
 					}
 				}
 				
 				// gets to bonus level
 				
-				// Check if all player are dead. In that case, go back to map
+				// Check if no player has lifes left. If it's the case, stays in the level
+				// but show game over
+			    /*if (mp_Player[i].inventory.lives<0)
+			    {
+					m_gameover = true;
+					g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
+
+					// TODO: The commented out stuff must get an object
+
+					 CBitmap *bm_gameover = g_pGfxEngine->getBitmap("GAMEOVER");
+					 // figure out where to center the gameover bitmap and draw it
+					 int x = (g_pVideoDriver->getGameResRect().w/2)-(bm_gameover->getWidth()/2);
+					 int y = (g_pVideoDriver->getGameResRect().h/2)-(bm_gameover->getHeight()/2);
+					 bm_gameover->draw(g_pVideoDriver->BlitSurface, x, y);
+
+			    }*/
+
+				// Check if all players are dead. In that case, go back to map
 				if(m_alldead) goBacktoMap();
 			}
 			// Did the someone press 'p' for Pause?
@@ -286,7 +311,7 @@ void CPlayGame::process()
 		}
 		else // In this case the Game has been finished, goto to the cutscenes
 		{
-			//mp_Finale->process()
+			mp_Finale->process();
 		}
 		
 		// Handle the Scrolling here!
@@ -339,7 +364,11 @@ void CPlayGame::goBacktoMap()
 	// This means, all objects except the puppy ones of the player....
 	m_Object.clear();
 
+	// Recreate the Players and tie them to the objects
 	createPlayerObjects();
+
+	// Check, if the game can be finished
+	verifyfinishedGame();
 
 	m_level_command = START_LEVEL;
 	m_Level = WM_MAP_NUM;
@@ -360,6 +389,7 @@ void CPlayGame::goBacktoMap()
 
 // called when a switch is flipped. mx,my is the pixel coords of the switch,
 // relative to the upper-left corner of the map.
+// TODO: Should be part of an object
 void CPlayGame::ExtendingPlatformSwitch(int x, int y)
 {
 	/*uint ppos;
@@ -413,29 +443,6 @@ void CPlayGame::ExtendingPlatformSwitch(int x, int y)
 	 objects[o].ai.se.type = SE_EXTEND_PLATFORM;
 	 objects[o].ai.se.platx = platx;
 	 objects[o].ai.se.platy = platy;*/
-}
-
-void CPlayGame::losePlayer(CPlayer *p_player)
-{
-    if (p_player->inventory.lives<0)
-    {
-		m_gameover = true;
-		g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
-		
-		// TODO: The commented out stuff must get an object
-		/*
-		 CBitmap *bm_gameover = g_pGfxEngine->getBitmap("GAMEOVER");
-		 // figure out where to center the gameover bitmap and draw it
-		 int x = (g_pVideoDriver->getGameResRect().w/2)-(bm_gameover->getWidth()/2);
-		 int y = (g_pVideoDriver->getGameResRect().h/2)-(bm_gameover->getHeight()/2);
-		 bm_gameover->draw(g_pVideoDriver->BlitSurface, x, y);
-		 */
-    }
-    else
-    {
-		m_Level = WM_MAP_NUM;
-		init();
-    }
 }
 
 void CPlayGame::handleFKeys()
@@ -681,6 +688,45 @@ bool CPlayGame::scrollTriggers()
 	return scrollchanged;
 }
 
+void CPlayGame::verifyfinishedGame()
+{
+	// first we need to know which Episode we were on
+
+	if(m_Episode == 1)
+	{
+		bool hasBattery, hasWiskey, hasJoystick, hasVaccum;
+		hasBattery = hasWiskey = hasJoystick = hasVaccum = false;
+
+		// Check if one of the Players has the items
+		for( int i=0 ;i < m_NumPlayers ; i++)
+		{
+			hasBattery |= mp_Player[i].inventory.HasBattery;
+			hasWiskey |= mp_Player[i].inventory.HasWiskey;
+			hasJoystick |= mp_Player[i].inventory.HasJoystick;
+			hasVaccum |= mp_Player[i].inventory.HasVacuum;
+		}
+
+		// If they have have the items, we can go home
+		if(hasBattery && hasWiskey && hasJoystick && hasVaccum)
+		{
+			mp_Finale = new CEndingEp1();
+		}
+	}
+	/*else if(m_Episode == 2)
+	{
+		mp_Finale = new CEndingEp2();
+	}
+	else if(m_Episode == 2)
+	{
+		mp_Finale = new CEndingEp3();
+	}*/
+	else
+	{
+		// Unknown game. just shutdown down the game.
+		// TODO: make it happen
+	}
+}
+
 ////
 // Cleanup Routine
 ////
@@ -693,6 +739,8 @@ void CPlayGame::cleanup()
 CPlayGame::~CPlayGame() {
 	if(mp_Player) delete [] mp_Player;
 	mp_Player=NULL;
+	if(mp_Finale) delete mp_Finale;
+	mp_Finale = NULL;
 }
 
 /////

@@ -39,7 +39,9 @@ public:
 	
     int getLogicPerSec( void ) { return m_LPS; }
 	int getFramesPerSec( void ) { return m_FPS; }
-	
+
+	Uint32 getTicks() { return SDL_GetTicks(); }
+
 private:
     int m_LPS, m_LogicCount, m_LogicRate, m_LogicInterval;
     int m_FPS, m_FrameCount, m_FrameRate, m_FrameInterval;
