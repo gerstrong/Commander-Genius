@@ -8,7 +8,7 @@
  *  showhint Message, Game paused, etc.
  */
 
-#include "../CPlayGame.h"
+#include "CPlayGame.h"
 
 void CPlayGame::processPauseDialogs()
 {

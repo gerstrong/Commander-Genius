@@ -7,7 +7,7 @@
  *  Performs physics between and in common objects
  */
 
-#include "../CPlayGame.h"
+#include "CPlayGame.h"
 #include "../sounds.h"
 #include "../../keen.h"
 #include "../../sdl/CInput.h"
