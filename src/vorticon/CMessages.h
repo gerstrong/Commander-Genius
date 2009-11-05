@@ -15,7 +15,7 @@
 // TODO: Make the strings a class, but it must read from the exe-files basing on uncompressed buffer
 
 class CMessages {
-public:
+public:	
 	CMessages();
 	virtual ~CMessages();
 	
@@ -24,7 +24,7 @@ public:
 	
 private:
 	std::list<std::string> StringList;
-	std::list<std::string> StringIDList;
+	std::list<int> StringIDList;
 };
 
 #endif /* CMESSAGES_H_ */

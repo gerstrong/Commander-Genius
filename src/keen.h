@@ -10,7 +10,6 @@
 #endif
 
 #include "vorticon/sounds.h"
-#include "vorticon/stringdefines.h"
 #include "funcdefs.h"
 #include "fileio/CTileLoader.h"
 
@@ -98,7 +97,7 @@ struct stMap
 struct SDL_Surface;
 
 // for strings loaded from "strings.dat"
-//#define MAX_STRINGS             100
+#define MAX_STRINGS             100
 #define MAX_ATTRIBUTES          16
 struct stString
 {

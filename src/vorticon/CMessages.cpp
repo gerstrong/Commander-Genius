@@ -9,7 +9,10 @@
  *  what string the program needs.
  */
 
+#include <iostream>
+
 #include "CMessages.h"
+#include "StringUtils.h"
 #include "../CLogFile.h"
 #include "../fileio/CExeFile.h"
 
@@ -70,6 +73,7 @@ bool CMessages::readData(unsigned char *p_exe, int episode, int version, const s
 	for(int pos=offset_start ; pos<offset_end ; pos++)
 	{
 		std::string Text;
+		int n = StringList.size();
 		
 		while(p_exe[pos] != 0)
 		{
@@ -80,14 +84,12 @@ bool CMessages::readData(unsigned char *p_exe, int episode, int version, const s
 		if(!Text.empty()) // not empty
 		{
 			StringList.push_back(Text);
-			g_pLogFile->textOut(RED,Text);
-			g_pLogFile->textOut(RED,StringList.front());
+			g_pLogFile->textOut(RED,itoa(n)+" "+Text);
 		}
 	}
 	
 	std::list<std::string> :: iterator i;
 	
-#include <iostream>
 	for(i=StringList.begin() ; i!=StringList.end() ; i++)
 	{
 		std::cout << *i << std::endl;

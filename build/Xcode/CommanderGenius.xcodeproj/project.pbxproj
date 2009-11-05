@@ -18,6 +18,10 @@
 		2357564F101A5F8F00275638 /* Vorbis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564D101A5F8F00275638 /* Vorbis.framework */; };
 		23575696101A6BE600275638 /* Ogg.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564C101A5F8F00275638 /* Ogg.framework */; };
 		23575697101A6BE600275638 /* Vorbis.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564D101A5F8F00275638 /* Vorbis.framework */; };
+		634A33DF10A233D50051193D /* CEndingEp1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 634A33D710A233D50051193D /* CEndingEp1.cpp */; };
+		634A33E010A233D50051193D /* CEndingEp2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 634A33D910A233D50051193D /* CEndingEp2.cpp */; };
+		634A33E110A233D50051193D /* CEndingEp3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 634A33DB10A233D50051193D /* CEndingEp3.cpp */; };
+		634A33E210A233D50051193D /* CFinale.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 634A33DD10A233D50051193D /* CFinale.cpp */; };
 		6350FA41104490B600A992D5 /* controls.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7A31044797300A992D5 /* controls.dat */; };
 		6350FA42104490B600A992D5 /* EGAHEAD.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7A51044797300A992D5 /* EGAHEAD.CK1 */; };
 		6350FA43104490B600A992D5 /* EGALATCH.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7A61044797300A992D5 /* EGALATCH.CK1 */; };
@@ -581,6 +585,14 @@
 		63453BE110798CFE007265F8 /* CPlayGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPlayGame.h; sourceTree = "<group>"; };
 		63453BE210798CFE007265F8 /* CTitle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CTitle.cpp; sourceTree = "<group>"; };
 		63453BE310798CFE007265F8 /* CTitle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTitle.h; sourceTree = "<group>"; };
+		634A33D710A233D50051193D /* CEndingEp1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEndingEp1.cpp; path = vorticon/finale/CEndingEp1.cpp; sourceTree = "<group>"; };
+		634A33D810A233D50051193D /* CEndingEp1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEndingEp1.h; path = vorticon/finale/CEndingEp1.h; sourceTree = "<group>"; };
+		634A33D910A233D50051193D /* CEndingEp2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEndingEp2.cpp; path = vorticon/finale/CEndingEp2.cpp; sourceTree = "<group>"; };
+		634A33DA10A233D50051193D /* CEndingEp2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEndingEp2.h; path = vorticon/finale/CEndingEp2.h; sourceTree = "<group>"; };
+		634A33DB10A233D50051193D /* CEndingEp3.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CEndingEp3.cpp; path = vorticon/finale/CEndingEp3.cpp; sourceTree = "<group>"; };
+		634A33DC10A233D50051193D /* CEndingEp3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CEndingEp3.h; path = vorticon/finale/CEndingEp3.h; sourceTree = "<group>"; };
+		634A33DD10A233D50051193D /* CFinale.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CFinale.cpp; path = vorticon/finale/CFinale.cpp; sourceTree = "<group>"; };
+		634A33DE10A233D50051193D /* CFinale.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CFinale.h; path = vorticon/finale/CFinale.h; sourceTree = "<group>"; };
 		6350F76A1044782400A992D5 /* autoray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = autoray.cpp; sourceTree = "<group>"; };
 		6350F76B1044782400A992D5 /* gotpoints.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gotpoints.cpp; sourceTree = "<group>"; };
 		6350F7741044784900A992D5 /* CDlgFrame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CDlgFrame.cpp; sourceTree = "<group>"; };
@@ -644,7 +656,6 @@
 		637FC63510559B5600C2EA77 /* CPalette.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPalette.cpp; sourceTree = "<group>"; };
 		637FC63610559B5600C2EA77 /* CPalette.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPalette.h; sourceTree = "<group>"; };
 		63AB8C2E107C62D0001EE22F /* cglogo.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = cglogo.icns; sourceTree = "<group>"; };
-		63BE4E3710A08CB700E36F5A /* stringdefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stringdefines.h; sourceTree = "<group>"; };
 		63BE59E0108501BF009C7293 /* CPlayGameCollision.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CPlayGameCollision.cpp; path = vorticon/CPlayGameCollision.cpp; sourceTree = "<group>"; };
 		63BE59E1108501BF009C7293 /* CTeleporter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CTeleporter.cpp; path = vorticon/CTeleporter.cpp; sourceTree = "<group>"; };
 		63BE59E2108501BF009C7293 /* CTeleporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTeleporter.h; path = vorticon/CTeleporter.h; sourceTree = "<group>"; };
@@ -756,6 +767,7 @@
 				23D3E9A11013ABCA001643FA /* fileio */,
 				23D3E9A71013ABCA001643FA /* fileio.cpp */,
 				23D3E9A81013ABCA001643FA /* fileio.h */,
+				634A33E310A233DB0051193D /* finale */,
 				23D3E9A91013ABCA001643FA /* finale.cpp */,
 				235751EF1019D0C000275638 /* FindFile.cpp */,
 				23D3ED7510175A97001643FA /* FindFile.h */,
@@ -1145,7 +1157,6 @@
 				6312FEC410963B3400DDFFA7 /* game.h */,
 				23D3EA0C1013ABCA001643FA /* sounds.h */,
 				6312202610910DB200053A0E /* spritedefines.h */,
-				63BE4E3710A08CB700E36F5A /* stringdefines.h */,
 			);
 			name = vorticon;
 			path = ../../src/vorticon;
@@ -1158,6 +1169,21 @@
 				5048396E09E3307300765E4B /* CommanderGeniusTarget.xcconfig */,
 			);
 			name = "Configuration Files";
+			sourceTree = "<group>";
+		};
+		634A33E310A233DB0051193D /* finale */ = {
+			isa = PBXGroup;
+			children = (
+				634A33D710A233D50051193D /* CEndingEp1.cpp */,
+				634A33D810A233D50051193D /* CEndingEp1.h */,
+				634A33D910A233D50051193D /* CEndingEp2.cpp */,
+				634A33DA10A233D50051193D /* CEndingEp2.h */,
+				634A33DB10A233D50051193D /* CEndingEp3.cpp */,
+				634A33DC10A233D50051193D /* CEndingEp3.h */,
+				634A33DD10A233D50051193D /* CFinale.cpp */,
+				634A33DE10A233D50051193D /* CFinale.h */,
+			);
+			name = finale;
 			sourceTree = "<group>";
 		};
 		6350F7A11044797300A992D5 /* data */ = {
@@ -1484,6 +1510,10 @@
 				63626770109E5A6000C18BAA /* COrderingInfo.cpp in Sources */,
 				63626771109E5A6100C18BAA /* CHighScores.cpp in Sources */,
 				63626772109E5A6700C18BAA /* Unicode.cpp in Sources */,
+				634A33DF10A233D50051193D /* CEndingEp1.cpp in Sources */,
+				634A33E010A233D50051193D /* CEndingEp2.cpp in Sources */,
+				634A33E110A233D50051193D /* CEndingEp3.cpp in Sources */,
+				634A33E210A233D50051193D /* CFinale.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
