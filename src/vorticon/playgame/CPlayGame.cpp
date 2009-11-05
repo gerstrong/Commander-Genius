@@ -8,15 +8,14 @@
  */
 
 #include "CPlayGame.h"
-#include "../keen.h"
-#include "../sdl/CTimer.h"
-#include "../sdl/CVideoDriver.h"
-#include "../sdl/sound/CSound.h"
-#include "../sdl/CInput.h"
-#include "../common/CMapLoader.h"
-#include "../graphics/CGfxEngine.h"
-#include "../StringUtils.h"
-#include "CTeleporter.h"
+#include "../../keen.h"
+#include "../../sdl/CTimer.h"
+#include "../../sdl/CVideoDriver.h"
+#include "../../sdl/sound/CSound.h"
+#include "../../sdl/CInput.h"
+#include "../../common/CMapLoader.h"
+#include "../../graphics/CGfxEngine.h"
+#include "../../StringUtils.h"
 
 ////
 // Creation Routine
@@ -41,7 +40,7 @@ CPlayGame::CPlayGame( char episode, char level,
 	mp_option = p_option;
 	m_checkpoint_x = m_checkpoint_y = 0;
 	m_checkpointset = false;
-	
+
 	// Create the Player
 	if(m_NumPlayers == 0) m_NumPlayers = 1;
 	
@@ -95,12 +94,19 @@ bool CPlayGame::init()
 
 	// Well, all players are living because they were newly spawn.
 	m_alldead = false;
+	g_pTimer->ResetSecondsTimer();
 
 	g_pInput->flushAll();
 	
 	// Initialize the AI
 	mp_ObjectAI = new CObjectAI(mp_Map, &m_Object, mp_Player, mp_option,
 								m_NumPlayers, m_Episode, m_Difficulty);
+
+	if(m_Level == WORLD_MAP_LEVEL)
+	{
+		m_showKeensLeft = true;
+		g_pSound->playSound(SOUND_KEENSLEFT, PLAY_NOW);
+	}
 
 	return true;
 }
@@ -168,124 +174,11 @@ void CPlayGame::process()
 			/// The following functions must be worldmap dependent
 			if( m_Level == WORLD_MAP_LEVEL )
 			{
-				int useobject;
-				
-				// Perform player Objects...
-				for( int i=0 ; i<m_NumPlayers ; i++ )
-				{
-					mp_Player[i].processWorldMap();
-					
-					// entered a level, used ship, teleporter, etc.
-					useobject = mp_Player[i].getNewObject();
-					if( useobject != 0 )
-					{	// A new object was chosen by the player
-						CTeleporter Teleporter(*mp_Map, m_Episode);
-
-						// If it is teleporter, make the Player teleport
-						if(Teleporter.readTeleporterInfo(useobject) == true)
-						{
-							Teleporter.teleportPlayer(m_Object, mp_Player[i]);
-						}
-						else
-						{
-							// If it is level, change the playgame mode and load the new map. Nessie is
-							// a special case in Episode 3
-							switch(useobject)
-							{
-								case NESSIE_PATH: break;
-								case NESSIE_PAUSE: break;
-								case NESSIE_MOUNTPOINT: break;
-
-								case LVLS_SHIP:
-									if (m_Episode==1)
-									{
-										//YourShipNeedsTheseParts(pCKP);
-									}
-									else
-									{
-										//ShipEp3(pCKP);
-									}
-									break;
-
-								default:      // a regular level
-									m_level_command = START_LEVEL;
-									m_Level = useobject & 0x7fff;
-									//g_pMusicPlayer->stop();
-									g_pSound->playStereofromCoord(SOUND_ENTER_LEVEL, PLAY_NOW, m_Object[mp_Player[i].m_player_number].scrx);
-									// save where on the map, the player entered. This is a checkpoint!
-									m_checkpoint_x = mp_Player[i].x;
-									m_checkpoint_y = mp_Player[i].y;
-									m_checkpointset = true;
-									cleanup();
-									init();
-									break;
-							}
-						}
-					}
-
-					// in episode 3 he can ride on nessie
-					if (m_Episode==3)
-					{
-						mp_Player[i].AllowMountUnmountNessie();
-					}
-				}
+				processOnWorldMap();
 			}
 			else
 			{
-				if(!m_gameover)
-				{
-					// Perform player Objects...
-					for( int i=0 ; i<m_NumPlayers ; i++ )
-					{
-						// check if someone has lifes
-						if(mp_Player[i].inventory.lives==0 && mp_Player[i].pdie==PDIE_DEAD)
-							continue;
-
-						// Process the other stuff like, items, jump, etc.
-						mp_Player[i].processInLevel();
-
-						// Process the falling physics of the player here.
-						// We need to know the objects and tiles which could hinder the fall.
-						// decide if player should fall
-						if (!mp_Player[i].inhibitfall) processPlayerfallings(&mp_Player[i]);
-						else
-						{
-							if(mp_Player[i].pjumping == PJUMPED)
-								mp_Player[i].pfalling = 0;
-
-							mp_Player[i].psupportingtile = 145;
-							mp_Player[i].psupportingobject = 0;
-						}
-
-						// Check Collisions and only move player, if it is not blocked
-						checkPlayerCollisions(&mp_Player[i]);
-
-						// Check if the first player is dead, and if the other also are...
-						if(i==0) m_alldead = (mp_Player[i].pdie == PDIE_DEAD);
-						else m_alldead &= (mp_Player[i].pdie == PDIE_DEAD);
-
-						// finished the level
-						if(mp_Player[i].level_done == LEVEL_COMPLETE)
-						{
-							mp_level_completed[m_Level] = true;
-							goBacktoMap();
-							break;
-						}
-					}
-
-					// gets to bonus level
-
-					// Check if all players are dead. In that case, go back to map
-					if(m_alldead)
-					{
-						m_gameover = true; // proof contrary case
-						for( int i=0 ; i<m_NumPlayers ; i++ )
-							m_gameover &= ( mp_Player[i].inventory.lives <= 0 );
-
-						if(!m_gameover) // Check if no player has lifes left and must go in game over mode.
-							goBacktoMap();
-					}
-				}
+				processInLevel();
 			}
 			// Did the someone press 'p' for Pause?
 
@@ -371,92 +264,6 @@ void CPlayGame::process()
 	}
 }
 
-void CPlayGame::goBacktoMap()
-{
-	// before he can go back to map, he must tie up the objects.
-	// This means, all objects except the puppy ones of the player....
-	m_Object.clear();
-
-	// Recreate the Players and tie them to the objects
-	createPlayerObjects();
-
-	// Check, if the game can be finished
-	verifyfinishedGame();
-
-	m_level_command = START_LEVEL;
-	m_Level = WM_MAP_NUM;
-	//g_pMusicPlayer->stop();
-	//g_pSound->playStereofromCoord(SOUND_ENTER_LEVEL, PLAY_NOW, m_Object[mp_Player[i].useObject].scrx);
-	// Now that the new level/map will be loaded, the players aren't dead anymore!
-	for( int i=0 ; i<m_NumPlayers ; i++ )
-	{
-		mp_Player[i].level_done = LEVEL_NOT_DONE;
-		mp_Player[i].pdie = PDIE_NODIE;
-		// Restore checkpoint
-		mp_Player[i].x = mp_Player[i].goto_x = m_checkpoint_x;
-		mp_Player[i].y = mp_Player[i].goto_y = m_checkpoint_y;
-	}
-	cleanup();
-	init();
-}
-
-// called when a switch is flipped. mx,my is the pixel coords of the switch,
-// relative to the upper-left corner of the map.
-// TODO: Should be part of an object
-void CPlayGame::ExtendingPlatformSwitch(int x, int y)
-{
-	/*uint ppos;
-	 int platx, platy;
-	 signed char pxoff, pyoff;
-	 int mapx, mapy;
-	 int o;
-	 
-	 // convert pixel coords to tile coords
-	 mapx = (x >> TILE_S);
-	 mapy = (y >> TILE_S);
-	 
-	 // figure out where the platform is supposed to extend at
-	 // (this is coded in the object layer...
-	 // high byte is the Y offset and the low byte is the X offset,
-	 // and it's relative to the position of the switch.)
-	 ppos = getlevelat(x, y);
-	 
-	 if (!ppos || !p_levelcontrol->PlatExtending)
-	 {
-	 // flip switch
-	 g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, mapx);
-	 if (getmaptileat(x, y)==TILE_SWITCH_DOWN)
-	 map_chgtile(mapx, mapy, TILE_SWITCH_UP);
-	 else
-	 map_chgtile(mapx, mapy, TILE_SWITCH_DOWN);
-	 }
-	 
-	 // if zero it means he hit the switch on a tantalus ray!
-	 if (!ppos)
-	 {
-	 p_levelcontrol->success = 0;
-	 p_levelcontrol->command = LVLC_TANTALUS_RAY;
-	 return;
-	 }
-	 else
-	 {
-	 // it's a moving platform switch--don't allow player to hit it again while
-	 // the plat is still moving as this will glitch
-	 if (p_levelcontrol->PlatExtending) return;
-	 p_levelcontrol->PlatExtending = 1;
-	 }
-	 
-	 pxoff = (ppos & 0x00ff);
-	 pyoff = (ppos & 0xff00) >> 8;
-	 platx = mapx + pxoff;
-	 platy = mapy + pyoff;
-	 
-	 // spawn a "sector effector" to extend/retract the platform
-	 o = spawn_object(mapx<<TILE_S<<CSF,mapy<<TILE_S<<CSF,OBJ_SECTOREFFECTOR);
-	 objects[o].ai.se.type = SE_EXTEND_PLATFORM;
-	 objects[o].ai.se.platx = platx;
-	 objects[o].ai.se.platy = platy;*/
-}
 
 void CPlayGame::handleFKeys()
 {

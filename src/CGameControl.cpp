@@ -150,9 +150,9 @@ bool CGameControl::loadResources(unsigned short Episode, const std::string& Data
     if( (flags & LOADSTR) == LOADSTR )
     {
     	// load the strings. TODO: After that this one will replace loadstrings
-    	m_Messages = new CMessages();
-    	m_Messages->readData(p_exedata, Episode, version, DataDirectory);
-        //loadstrings();
+    	//m_Messages = new CMessages();
+    	//m_Messages->readData(p_exedata, Episode, version, DataDirectory);
+        loadstrings();
     }
 	
     if( (flags & LOADSND) == LOADSND )

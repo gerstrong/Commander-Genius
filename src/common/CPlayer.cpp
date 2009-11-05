@@ -29,7 +29,6 @@ CPlayer::CPlayer() {
     mp_StatusScr = NULL;
     mp_option = NULL;
     memset(&inventory, 0, sizeof(stInventory));
-    inventory.extralifeat = 20000;
     setDefaultStartValues();
     setDatatoZero();
 }
@@ -93,8 +92,9 @@ void CPlayer::setDatatoZero()
 // NOTE: This must only be called once, per new game.
 void CPlayer::setDefaultStartValues()
 {
-    //inventory.lives = 4;
-    inventory.lives = 1;
+    inventory.extralifeat = 20000;
+    inventory.lives = 4;
+    // TODO: Add code for other defaults settings like the rays keen has depending on which episode
 }
 
 // handles walking. the walking animation is handled by gamepdo_walkinganim()

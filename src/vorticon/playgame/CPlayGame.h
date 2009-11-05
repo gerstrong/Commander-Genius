@@ -10,17 +10,17 @@
 #ifndef CPlayGame_H_
 #define CPlayGame_H_
 
-#include "../graphics/CGfxEngine.h"
-#include "../common/CPlayer.h"
-#include "../common/CObject.h"
-#include "../common/CMenu.h"
-#include "../common/CMap.h"
-#include "../common/options.h"
-#include "ai/CObjectAI.h"
-#include "ai/CEGABitmap.h"
-#include "finale/CEndingEp1.h"
-#include "finale/CEndingEp2.h"
-#include "finale/CEndingEp3.h"
+#include "../../graphics/CGfxEngine.h"
+#include "../../common/CPlayer.h"
+#include "../../common/CObject.h"
+#include "../../common/CMenu.h"
+#include "../../common/CMap.h"
+#include "../../common/options.h"
+#include "../ai/CObjectAI.h"
+#include "../ai/CEGABitmap.h"
+#include "../finale/CEndingEp1.h"
+#include "../finale/CEndingEp2.h"
+#include "../finale/CEndingEp3.h"
 #include <SDL/SDL.h>
 #include <string>
 #include <vector>
@@ -51,6 +51,9 @@ public:
 	bool loadGameState( std::string &statefile );
 	
 	void process();
+	void processOnWorldMap();
+	void processInLevel();
+	void showKeensLeft();
 	void goBacktoMap();
 	void processObjectsAI();
 	void drawObjects();
@@ -110,6 +113,7 @@ private:
 	CFinale *mp_Finale;
 	CEGABitmap *mp_gameoverbmp;
 	stOption *mp_option;
+	bool m_showKeensLeft;
 	int m_theplayer;
 	std::vector<CObject> m_Object;
 };

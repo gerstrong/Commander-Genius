@@ -7,13 +7,13 @@
  *  Performs physics between and in common objects
  */
 
-#include "CPlayGame.h"
-#include "sounds.h"
-#include "../keen.h"
-#include "../sdl/CInput.h"
-#include "../sdl/sound/CSound.h"
-#include "../graphics/CGfxEngine.h"
-#include "../common/Playerdefines.h"
+#include "../CPlayGame.h"
+#include "../sounds.h"
+#include "../../keen.h"
+#include "../../sdl/CInput.h"
+#include "../../sdl/sound/CSound.h"
+#include "../../graphics/CGfxEngine.h"
+#include "../../common/Playerdefines.h"
 
 void CPlayGame::processPlayerfallings(CPlayer *p_player)
 {

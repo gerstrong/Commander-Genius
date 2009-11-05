@@ -193,6 +193,18 @@ bool CTimer::HasSecElapsed(void)
 	return false;
 }
 
+bool CTimer::HasTimeElapsed(int msecs)
+{
+    ulong CurTime = SDL_GetTicks();
+	if (CurTime - m_LastSecTime >= msecs)
+	{
+		m_LastSecTime = CurTime;
+		return true;
+	}
+	return false;
+}
+
+
 CTimer::~CTimer()
 {
 }

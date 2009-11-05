@@ -255,9 +255,6 @@ int initgamefirsttime(stCloneKeenPlus *pCKP, int s)
 	 
 	 for(i=0;i<MAX_PLAYERS;i++)
 	 {
-	 memset(&player[i].inventory, 0, sizeof(player[i].inventory));
-	 player[i].inventory.extralifeat = 20000;
-	 player[i].inventory.lives = 4;
 	 player[i].godmode = 0;
 	 
 	 if (pCKP->Control.levelcontrol.episode==1)

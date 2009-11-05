@@ -15,7 +15,7 @@
 #include "vorticon/CEGAGraphics.h"
 #include "vorticon/CMessages.h"
 #include "vorticon/CPassive.h"
-#include "vorticon/CPlayGame.h"
+#include "vorticon/playgame/CPlayGame.h"
 #include <string>
 
 #define LOADGFX 0x01

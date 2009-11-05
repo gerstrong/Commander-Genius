@@ -32,6 +32,7 @@ public:
 	
 	void ResetSecondsTimer();
 	bool HasSecElapsed();
+	bool HasTimeElapsed(int msecs);
 	
 	int getLogicRate() { return m_LogicRate; }
 	int getFrameRate() { return m_FrameRate; }

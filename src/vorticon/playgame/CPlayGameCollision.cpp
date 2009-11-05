@@ -6,12 +6,12 @@
  */
 
 #include "CPlayGame.h"
-#include "../keen.h"
-#include "../sdl/CTimer.h"
-#include "../sdl/CVideoDriver.h"
-#include "../sdl/CInput.h"
-#include "../common/CMapLoader.h"
-#include "../graphics/CGfxEngine.h"
+#include "../../keen.h"
+#include "../../sdl/CTimer.h"
+#include "../../sdl/CVideoDriver.h"
+#include "../../sdl/CInput.h"
+#include "../../common/CMapLoader.h"
+#include "../../graphics/CGfxEngine.h"
 
 // set blockedl/r/u...is Keen up against a solid object or a the edge of the level?
 void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
