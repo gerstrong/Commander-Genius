@@ -34,7 +34,8 @@ public:
 	
 	CPlayer();
 	void setDatatoZero();
-	void setMapData(CMap *p_map){	mp_map = p_map;	}
+	void setDefaultStartValues();
+	void setMapData(CMap *p_map){ mp_map=p_map; }
 	
 	// World Map specific
 	void processWorldMap();

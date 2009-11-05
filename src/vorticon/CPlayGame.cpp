@@ -37,6 +37,7 @@ CPlayGame::CPlayGame( char episode, char level,
 	mp_Map = NULL;
 	mp_Menu = NULL;
 	mp_Finale = NULL;
+	mp_gameoverbmp = NULL;
 	mp_option = p_option;
 	m_checkpoint_x = m_checkpoint_y = 0;
 	m_checkpointset = false;
@@ -281,23 +282,10 @@ void CPlayGame::process()
 						for( int i=0 ; i<m_NumPlayers ; i++ )
 							m_gameover &= ( mp_Player[i].inventory.lives <= 0 );
 
-						if(m_gameover) // Check if no player has lifes left and must go in game over mode.
-						{
-							g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
-
-							// TODO: Bitmap must be created. NOTE: Use m_object.push(new CBitmap) for that!
-							// or let me do that :-), Gerstrong
-							/*CBitmap *bm_gameover = g_pGfxEngine->getBitmap("GAMEOVER");
-							// figure out where to center the gameover bitmap and draw it
-							int x = (g_pVideoDriver->getGameResRect().w/2)-(bm_gameover->getWidth()/2);
-							int y = (g_pVideoDriver->getGameResRect().h/2)-(bm_gameover->getHeight()/2);
-							bm_gameover->draw(g_pVideoDriver->BlitSurface, x, y);*/
-						}
-						else
+						if(!m_gameover) // Check if no player has lifes left and must go in game over mode.
 							goBacktoMap();
 					}
 				}
-
 			}
 			// Did the someone press 'p' for Pause?
 
@@ -324,18 +312,41 @@ void CPlayGame::process()
 		// Finally draw Dialogs like status screen, game paused, etc.
 		processPauseDialogs();
 	}
-	
+
 	// Animate the tiles of the map
 	g_pGfxEngine->Tilemap->animateAllTiles(g_pVideoDriver->ScrollSurface);
-	
+
 	// Blit the background
 	g_pVideoDriver->blitScrollSurface(mp_Map->m_scrollx_buf, mp_Map->m_scrolly_buf);
 	
 	// Draw objects to the screen
 	drawObjects();
 	
-	handleFKeys();
-	
+	// Check if we are in gameover mode. If yes, than show the bitmaps and block the FKeys().
+	// Only confirmation button is allowes
+	if(m_gameover) // game over mode
+	{
+		if(mp_gameoverbmp != NULL)
+		{
+			mp_gameoverbmp->process();
+
+			if( g_pInput->getPressedKey(KENTER) || g_pInput->getPressedAnyCommand() )
+				m_endgame = true;
+		}
+		else // Bitmap must first be created
+		{
+			CBitmap *pBitmap = g_pGfxEngine->getBitmap("GAMEOVER");
+			g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
+			mp_gameoverbmp = new CEGABitmap(g_pVideoDriver->BlitSurface, pBitmap);
+			mp_gameoverbmp->setScrPos( 160-(pBitmap->getWidth()/2), 100-(pBitmap->getHeight()/2) );
+		}
+	}
+	else // No game over
+	{
+		// Handle special functional key for god mode, all items, etc.
+		handleFKeys();
+	}
+
 	if (g_pVideoDriver->showfps)
 	{
 		std::string tempbuf;
@@ -743,6 +754,8 @@ CPlayGame::~CPlayGame() {
 	mp_Player=NULL;
 	if(mp_Finale) delete mp_Finale;
 	mp_Finale = NULL;
+	if(mp_gameoverbmp) delete mp_gameoverbmp;
+	mp_gameoverbmp = NULL;
 }
 
 /////

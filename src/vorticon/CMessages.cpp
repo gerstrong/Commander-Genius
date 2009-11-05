@@ -12,7 +12,10 @@
 #include <iostream>
 
 #include "CMessages.h"
-#include "StringUtils.h"
+//#include "StringUtils.h"
+
+// Changed, because on my system it works the second way
+#include "../StringUtils.h"
 #include "../CLogFile.h"
 #include "../fileio/CExeFile.h"
 

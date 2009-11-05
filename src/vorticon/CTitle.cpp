@@ -16,7 +16,6 @@
 // Creation Routine
 ////
 CTitle::CTitle(std::vector<CObject*> *pObjects) {
-	m_finished = false;
 	m_time = 0;
 	mp_objects = pObjects;
 }
@@ -40,6 +39,8 @@ bool CTitle::init()
 	p_object->setScrPos( 96, 180 );
 	mp_objects->push_back(p_object);
 	
+	m_finished = false;
+
 	return true;
 }
 

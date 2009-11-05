@@ -207,7 +207,7 @@ void CGameControl::process()
 						else
 						{
 							mp_GameLauncher->letchooseagain();
-							delete mp_PlayGame;
+							delete mp_PlayGame;	mp_PlayGame = NULL;
 						}
 					}
 				}
@@ -269,7 +269,7 @@ void CGameControl::process()
 		if( mp_PlayGame->getEndGame() )
 		{
 			init(PASSIVE);
-			delete mp_PlayGame;
+			delete mp_PlayGame; mp_PlayGame = NULL;
 		}
 		else if( mp_PlayGame->getExitEvent() )
 			m_mode = SHUTDOWN;
@@ -301,7 +301,7 @@ void CGameControl::cleanup(char mode)
 	{
 		// Tie up when in game play
 		mp_PlayGame->cleanup();
-		delete mp_PlayGame;
+		delete mp_PlayGame;	mp_PlayGame = NULL;
 	}
 }
 

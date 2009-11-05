@@ -17,6 +17,7 @@
 #include "../common/CMap.h"
 #include "../common/options.h"
 #include "ai/CObjectAI.h"
+#include "ai/CEGABitmap.h"
 #include "finale/CEndingEp1.h"
 #include "finale/CEndingEp2.h"
 #include "finale/CEndingEp3.h"
@@ -107,6 +108,7 @@ private:
 	CPlayer *mp_Player;
 	CObjectAI *mp_ObjectAI;
 	CFinale *mp_Finale;
+	CEGABitmap *mp_gameoverbmp;
 	stOption *mp_option;
 	int m_theplayer;
 	std::vector<CObject> m_Object;

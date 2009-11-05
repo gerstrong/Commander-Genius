@@ -30,7 +30,7 @@ CPlayer::CPlayer() {
     mp_option = NULL;
     memset(&inventory, 0, sizeof(stInventory));
     inventory.extralifeat = 20000;
-    inventory.lives = 4;
+    setDefaultStartValues();
     setDatatoZero();
 }
 
@@ -87,6 +87,14 @@ void CPlayer::setDatatoZero()
 	
     // Set all the inventory to zero.
     memset(playcontrol, 0, PA_MAX_ACTIONS*sizeof(char));
+}
+
+// sets the lifes and some shots, and other stuff, depending what game it is.
+// NOTE: This must only be called once, per new game.
+void CPlayer::setDefaultStartValues()
+{
+    //inventory.lives = 4;
+    inventory.lives = 1;
 }
 
 // handles walking. the walking animation is handled by gamepdo_walkinganim()
