@@ -286,10 +286,10 @@ void CPlayGame::handleFKeys()
 			mp_Player[i].pfiring = false;
 			if (mp_Player[i].m_playingmode)
 			{
-				/*give_keycard(DOOR_YELLOW, i);
-				 give_keycard(DOOR_RED, i);
-				 give_keycard(DOOR_GREEN, i);
-				 give_keycard(DOOR_BLUE, i);*/
+				mp_Player[i].give_keycard(DOOR_YELLOW);
+				mp_Player[i].give_keycard(DOOR_RED);
+				mp_Player[i].give_keycard(DOOR_GREEN);
+				mp_Player[i].give_keycard(DOOR_BLUE);
 				
 				mp_Player[i].inventory.charges = 999;
 				mp_Player[i].inventory.HasPogo = 1;

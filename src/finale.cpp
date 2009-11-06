@@ -40,7 +40,6 @@ void finale_plot( SDL_Surface *sfc, int pix )
 			}
 			else
 			{  // merge with previous planes
-				//g_pGraphics->sb_setpixel(finale_x, finale_y, g_pGraphics->sb_getpixel(finale_x, finale_y) | finale_planecol);
 				if( finale_y*finale_x < 320*200 )
 					pixel[finale_y*320 + finale_x] |= finale_planecol;
 			}

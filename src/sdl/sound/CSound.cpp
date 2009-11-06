@@ -413,7 +413,7 @@ bool CSound::loadSoundData(unsigned short Episode, const std::string& DataDirect
 }
 
 
-/*  char sound_extraction_of_exe_files(char *inputfname, char *outputfname)
+/*  char extractOfExeFile(const std::string& inputpath, int episode)
  
  Utility to extract the embedded sounds from Commander Keen
  Episode 2 (keen2.exe) and Episode 3 (keen3.exe)

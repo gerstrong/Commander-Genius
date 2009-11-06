@@ -32,8 +32,6 @@ enum directions{
 #define YORPSTATUEHEADUSED 485
 #define YORPSTATUEBOTTOM   22
 
-void gameloop_initialize(int episode, bool show_keensleft);
-
 void recalc_highest_objslot(void);
 
 void killplayer(int theplayer);

@@ -51,6 +51,8 @@ void CEndingEp1::ReturnsToShip()
 		mp_Player[0].y = 19968;
 		mp_Player[0].playframe = PMAPLEFTFRAME;
 
+		while(mp_Player[0].scrollTriggers());
+
 		m_mustsetup = false;
 	}
 

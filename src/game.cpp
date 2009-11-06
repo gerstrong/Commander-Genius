@@ -62,19 +62,6 @@ void start_gameover(stCloneKeenPlus *pCKP)
      p_levelcontrol->command = LVLC_GAME_OVER;*/
 }
 
-// take away the specified keycard from player p
-void take_keycard(int doortile, int p)
-{
-	/*if (doortile==DOOR_YELLOW && player[p].inventory.HasCardYellow > 0)
-	 player[p].inventory.HasCardYellow--;
-	 else if (doortile==DOOR_RED && player[p].inventory.HasCardRed > 0)
-	 player[p].inventory.HasCardRed--;
-	 else if (doortile==DOOR_GREEN && player[p].inventory.HasCardGreen > 0)
-	 player[p].inventory.HasCardGreen--;
-	 else if (doortile==DOOR_BLUE && player[p].inventory.HasCardBlue > 0)
-	 player[p].inventory.HasCardBlue--;*/
-}
-
 void initgame(stLevelControl *p_levelcontrol)
 {
 	/*int x,y;
@@ -367,13 +354,6 @@ void freezeplayer(int theplayer)
 	 player[theplayer].ppogostick = false;*/
 }
 
-
-void endlevel(int reason_for_leaving, stLevelControl *levelcontrol)
-{
-    levelcontrol->success = reason_for_leaving;
-    levelcontrol->tobonuslevel = 0;
-}
-
 // initialize sprites that come from tiles, such as the doors
 void initsprites(stCloneKeenPlus *pCKP, int s)
 {
@@ -417,108 +397,4 @@ void initsprites(stCloneKeenPlus *pCKP, int s)
 	
     // create the sprites for player 3
     // Unsupported for now...
-}
-
-void gameloop_initialize(int episode, bool show_keensleft = false)
-{
-	/*unsigned int x,y,i;
-	 int timeout;
-	 
-	 if (episode == 3)
-	 {
-     // coat the top of the map ("oh no!" border) with a non-solid tile
-     // so keen can jump partially off the top of the screen
-     for(x=1;x<map.xsize-2;x++)
-     {
-	 map.mapdata[x][1] = 143;
-     }
-	 
-     // make it lethal to fall off the bottom of the map
-     // the "oh no" border is set solidceil=0, and here we're
-     // going to coat the bottom of the map, below the "oh no"
-     // border, with a special tile that has standgoodie set
-     // and will trigger the "fell off the map" kill
-     y = map.ysize;
-     for(x=2;x<map.xsize-2;x++)
-     {
-	 map.mapdata[x][y] = TILE_FELLOFFMAP_EP3;
-     }
-	 }
-	 
-	 if (episode==1)
-	 {
-	 // coat the bottom of the map below the border.
-	 // since the border has solidceil=1 this provides
-	 // a platform to catch yorps that fall off the map
-	 y = map.ysize;
-	 for(x=2;x<map.xsize-2;x++)
-	 {
-	 map.mapdata[x][y] = TILE_FELLOFFMAP_EP1;
-	 }
-	 }
-	 
-	 // draw map first time
-	 //drawmap();
-	 
-	 // generate other player's start positions
-	 // don't generate player positions for the world
-	 // map, except the first time
-	 if (!map.isworldmap || map.firsttime)
-	 {
-     x = player[0].x;
-     for(i=1;i<numplayers;i++)
-     {
-	 if (player[0].x>>CSF>>4 < (map.xsize/2) || episode==1)
-	 {
-	 x += (18<<CSF);
-	 }
-	 else
-	 {
-	 x -= (18<<CSF);
-	 }
-	 player[i].x = x;
-	 player[i].y = player[0].y;
-     }
-	 }
-	 map.firsttime = 0;
-	 // set the maximum amount the map is allowed to scroll
-	 max_scroll_x = (map.xsize-2-(320/16))<<4;
-	 max_scroll_y = (map.ysize<<4)-g_pVideoDriver->getGameResRect().h-32;
-	 
-	 // players start facing left if the start position
-	 // is on the left half of the map, else right
-	 // for ep1 it's always facing right (because of level08)
-	 for(i=0;i<MAX_PLAYERS;i++)
-	 {
-	 if (map.isworldmap)
-	 player[i].pdir = player[i].pshowdir = DOWN;
-	 else
-	 {
-	 if (player[i].x>>CSF>>4 < (map.xsize/2) || episode==1)
-	 player[i].pdir = player[i].pshowdir = RIGHT;
-	 else
-	 player[i].pdir = player[i].pshowdir = LEFT;
-	 }
-	 }
-	 
-	 // scroll past the first two tiles (the level border), they'll
-	 // now never be visible because you're not allowed to scroll
-	 // left past X=32.
-	 for(i=0;i<2*16;i++)
-	 {
-	 //map_scroll_right();
-	 //map_scroll_down();
-	 }
-	 
-	 // scroll the screen until the primary player is onscreen
-	 // enough to where he doesn't set off the scroll triggers
-	 for(timeout=0;timeout<10000;timeout++)
-	 {
-	 if (!gamedo_ScrollTriggers(primaryplayer)) break;
-	 }
-	 
-	 // "keens left" when returning to world map after dying
-	 //if (show_keensleft)
-	 //	keensleft(episode);
-	 */
 }

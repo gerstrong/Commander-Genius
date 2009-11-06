@@ -79,6 +79,8 @@ public:
 	void ProcessInput();
 	bool drawStatusScreen();
 	bool scrollTriggers();
+	void give_keycard(int doortile);
+	void take_keycard(int doortile);
 	
 	virtual ~CPlayer();
 	
@@ -182,7 +184,6 @@ private:
 	bool getGoodie(int px, int py);
 	void procGoodie(int t, int mpx, int mpy);
 	void riseBonus(int spr, int x, int y);
-	void give_keycard(int doortile);
 	void getBonuspoints(int numpts, int mpx, int mpy);
 	void incScore(int numpts);
 	void openDoor(int doortile, int doorsprite, int mpx, int mpy);

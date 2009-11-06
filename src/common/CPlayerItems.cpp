@@ -224,6 +224,20 @@ void CPlayer::give_keycard(int doortile)
 		inventory.HasCardBlue++;
 }
 
+// take away the specified keycard from the player
+void CPlayer::take_keycard(int doortile)
+{
+	if (doortile==DOOR_YELLOW && inventory.HasCardYellow > 0)
+		inventory.HasCardYellow--;
+	else if (doortile==DOOR_RED && inventory.HasCardRed > 0)
+		inventory.HasCardRed--;
+	else if (doortile==DOOR_GREEN && inventory.HasCardGreen > 0)
+		inventory.HasCardGreen--;
+	else if (doortile==DOOR_BLUE && inventory.HasCardBlue > 0)
+		inventory.HasCardBlue--;
+}
+
+
 void CPlayer::getBonuspoints(int numpts, int mpx, int mpy)
 {
 	int spr;
@@ -264,48 +278,43 @@ void CPlayer::incScore(int numpts)
 
 void CPlayer::openDoor(int doortile, int doorsprite, int mpx, int mpy)
 {
-	/*int o,chgtotile;
-	 short tilefix=0;
+int chgtotile;
+short tilefix=0;
+stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 	 
 	 g_pSound->playSound(SOUND_DOOR_OPEN, PLAY_NOW);
-	 
-	 take_keycard(doortile, cp);
+	 take_keycard(doortile);
 	 
 	 // erase door from map
-	 if (pCKP->Control.levelcontrol.episode==3)
-	 {
-     chgtotile = map.mapdata[mpx-1][mpy];
-	 }
+	 if (m_episode==3)
+		 chgtotile = mp_map->at(mpx-1, mpy);
 	 else
-	 {
-     chgtotile = tiles[map.mapdata[mpx][mpy]].chgtile;
-	 }
+		 chgtotile = TileProperty[mp_map->at(mpx ,mpy)].chgtile;
 	 
-	 if(TileProperty[map.mapdata[mpx][mpy-1]][BEHAVIOR] > 1 &&
-	 TileProperty[map.mapdata[mpx][mpy-1]][BEHAVIOR] < 6) // This happens because, sometimes the player opens the door
-	 // from a lower part.
-	 {
-	 map_chgtile(mpx, mpy-1, chgtotile);
-	 tilefix=1;
-	 
+	 if(TileProperty[mp_map->at(mpx ,mpy-1)].behaviour>1 &&
+	 TileProperty[mp_map->at(mpx ,mpy-1)].behaviour<6 ) // This happens because, sometimes the player opens the door
+	 {	// from a lower part.
+		 mp_map->setTile(mpx, mpy-1, chgtotile);
+		 tilefix=1;
 	 }
-	 if(TileProperty[map.mapdata[mpx][mpy]][BEHAVIOR] > 1 &&
-	 TileProperty[map.mapdata[mpx][mpy]][BEHAVIOR] < 6) // This happens because, sometimes the player opens the door
-	 // from a lower part.
-	 {
-	 map_chgtile(mpx, mpy, chgtotile); // upper?
-	 
+	 if(TileProperty[mp_map->at(mpx ,mpy)].behaviour>1 &&
+	 TileProperty[mp_map->at(mpx ,mpy)].behaviour<6) // This happens because, sometimes the player opens the door
+	 { // from a lower part.
+		 mp_map->setTile(mpx, mpy, chgtotile); // upper?
 	 }
-	 if(TileProperty[map.mapdata[mpx][mpy+1]][BEHAVIOR] > 1 &&
-	 TileProperty[map.mapdata[mpx][mpy+1]][BEHAVIOR] < 6) // This happens because, sometimes the player opens the door
-	 // from a lower part.
-	 {
-	 map_chgtile(mpx, mpy+1, chgtotile); // When he stands in front of the door!
+	 if(TileProperty[mp_map->at(mpx, mpy+1)].behaviour>1 &&
+	 TileProperty[mp_map->at(mpx, mpy+1)].behaviour<6) // This happens because, sometimes the player opens the door
+	 { // from a lower part.
+		 mp_map->setTile(mpx, mpy+1, chgtotile); // When he stands in front of the door!
 	 }
 	 
 	 // replace the door tiles with a door object, which will do the animation
-	 o = spawn_object(mpx<<4<<CSF,(mpy-tilefix)<<4<<CSF,OBJ_DOOR);
-	 objects[o].sprite = doorsprite;*/
+	 CObject doorobj;
+
+	 doorobj.spawn(mpx<<CSF,(mpy-tilefix)<<CSF, OBJ_DOOR);
+	 doorobj.sprite = doorsprite;
+
+	 mp_object->push_back(doorobj);
 }
 
 void CPlayer::giveAnkh()

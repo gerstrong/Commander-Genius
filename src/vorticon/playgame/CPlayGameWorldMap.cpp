@@ -100,6 +100,10 @@ void CPlayGame::goBacktoMap()
 		// Restore checkpoint
 		mp_Player[i].x = mp_Player[i].goto_x = m_checkpoint_x;
 		mp_Player[i].y = mp_Player[i].goto_y = m_checkpoint_y;
+		mp_Player[i].inventory.HasCardYellow = 0;
+		mp_Player[i].inventory.HasCardBlue = 0;
+		mp_Player[i].inventory.HasCardGreen = 0;
+		mp_Player[i].inventory.HasCardRed = 0;
 	}
 	cleanup();
 	init();
