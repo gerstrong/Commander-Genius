@@ -75,8 +75,6 @@ bool CPlayGame::init()
 	// Now Scroll to the position of the player and center him
 	
 	mp_Map->gotoPos( 32, 32 ); // Assure that the edges are never seen
-	while(scrollTriggers()); // Scroll the map to players position
-	// TODO: Must be changed. It is just a workaround while scrolling doesn't work.
 	
 	m_showKeensLeft=false;
 	for (int i=0 ; i<m_NumPlayers ; i++)
@@ -96,6 +94,8 @@ bool CPlayGame::init()
 		// Set the pointers to the map and object data
 		mp_Player[i].setMapData(mp_Map);
 	}
+
+	while(mp_Player[0].scrollTriggers());   // Scroll the map to players position
 
 	// Well, all players are living because they were newly spawn.
 	m_alldead = false;
@@ -195,6 +195,9 @@ void CPlayGame::process()
 					m_paused = true; // this is processed in processPauseDialogs!
 				
 				// TODO: Did he hit a hint box, like yorp statue in Episode 1?
+
+				// Handle the Scrolling here!
+				mp_Player[i].scrollTriggers();
 			}
 		}
 		else // In this case the Game has been finished, goto to the cutscenes
@@ -203,9 +206,6 @@ void CPlayGame::process()
 
 			//m_endgame = mp_Finale->getEndGame();
 		}
-		
-		// Handle the Scrolling here!
-		scrollTriggers();
 	}
 	else // In this case the game is paused
 	{
@@ -396,7 +396,7 @@ void CPlayGame::verifyCutscenes()
 		// If they have have the items, we can go home
 		if(hasBattery && hasWiskey && hasJoystick && hasVaccum)
 		{
-			mp_Finale = new CEndingEp1();
+			mp_Finale = new CEndingEp1(mp_Map, mp_Player);
 		}
 	}
 	/*else if(m_Episode == 2)
@@ -490,63 +490,6 @@ void CPlayGame::drawObjects()
 	        }
 		}
 	}
-}
-
-// scroll triggers
-#define SCROLLTRIGGERRIGHT     194
-#define SCROLLTRIGGERLEFT      110
-#define SCROLLTRIGGERUP        80
-#define SCROLLTRIGGERDOWN      114
-
-bool CPlayGame::scrollTriggers()
-{
-	int px, py;
-	bool scrollchanged=false;
-	int scroll_x, scroll_y;
-	int max_scroll_x, max_scroll_y;
-	
-	scroll_x = mp_Map->m_scrollx;
-	scroll_y = mp_Map->m_scrolly;
-	max_scroll_x = mp_Map->m_maxscrollx<<4;
-	max_scroll_y = mp_Map->m_maxscrolly<<4;
-	
-	if (mp_Player[m_theplayer].pdie && (m_Level != WM_MAP_NUM) ) return false;
-	
-	px = (mp_Player[m_theplayer].x>>5)-scroll_x;
-	py = (mp_Player[m_theplayer].y>>5)-scroll_y;
-	
-	// left-right scrolling
-	if(px > SCROLLTRIGGERRIGHT && scroll_x < max_scroll_x)
-	{
-		do{
-			scroll_x = mp_Map->m_scrollx;
-			px = (mp_Player[m_theplayer].x>>5)-scroll_x;
-			mp_Map->scrollRight();
-		}while(px > 226);
-		scrollchanged = true;
-	}
-	else if(px < SCROLLTRIGGERLEFT && scroll_x > 32)
-	{
-		do{
-			scroll_x = mp_Map->m_scrollx;
-			px = (mp_Player[m_theplayer].x>>5)-scroll_x;
-			mp_Map->scrollLeft();
-		}while(px < 80);
-		scrollchanged = true;
-	}
-	
-	// up-down scrolling
-	if (py > SCROLLTRIGGERDOWN && scroll_y < max_scroll_y)
-	{
-		mp_Map->scrollDown();
-		scrollchanged = true;
-	}
-	else if (py < SCROLLTRIGGERUP && scroll_y > 32)
-	{
-		mp_Map->scrollUp();
-		scrollchanged = true;
-	}
-	return scrollchanged;
 }
 
 ////

@@ -111,6 +111,7 @@ bool CMap::changeTile(Uint16 x, Uint16 y, Uint16 t)
 bool CMap::gotoPos(int x, int y)
 {
 	int dx,dy;
+	bool retval = false;
 	dx = x - m_scrollx;
 	dy = y - m_scrolly;
 	
@@ -118,13 +119,15 @@ bool CMap::gotoPos(int x, int y)
 		for( int scrollx=0 ; scrollx<dx ; scrollx++) scrollRight();
 	else if( dx < 0 )
 		for( int scrollx=0 ; scrollx<-dx ; scrollx++) scrollLeft();
+	else retval = true;
 	
 	if( dy > 0 )
 		for( int scrolly=0 ; scrolly<dy ; scrolly++) scrollDown();
 	else if( dy > 0 )
 		for( int scrolly=0 ; scrolly<-dy ; scrolly++) scrollUp();
+	else retval = true;
 	
-	return true;
+	return retval;
 }
 
 // scrolls the map one pixel right

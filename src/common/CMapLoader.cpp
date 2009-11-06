@@ -19,6 +19,7 @@ CMapLoader::CMapLoader(CMap* p_map, CPlayer *p_Player)
 	mp_objvect = NULL;
 	mp_map = p_map;
 	mp_Player = p_Player;
+	m_checkpointset = false;
 }
 
 // Loads the map into the memory

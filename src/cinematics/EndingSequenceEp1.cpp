@@ -29,9 +29,6 @@
 #define SHIPFLY_X       32
 #define SHIPFLY_Y       0
 
-// worldmap scroll position for eseq1_ReturnsToShip()
-#define WM_X            40
-#define WM_Y            540
 
 #define LETTER_SHOW_SPD          30
 #define RETURNTOSHIP_WAIT_TIME   600
@@ -49,10 +46,13 @@
 
 int eseq1_ReturnsToShip(stCloneKeenPlus *pCKP)
 {
-	/*int i;
+	// We are already on the map, so don't load it again. It's availabel
+	/*
+	mp_Map->gotoPos( 32, 32 ); // Assure that the edges are never seen
+	while(scrollTriggers());   // Scroll the map to players position
 	 
-	 for(i=0;i<MAX_LEVELS;i++)
-	 pCKP->Control.levelcontrol.levels_completed[i] = 0;
+	for(i=0;i<MAX_LEVELS;i++)
+	pCKP->Control.levelcontrol.levels_completed[i] = 0;
 	 
 	 //showmapatpos(80, WM_X, WM_Y, pCKP);
 	 

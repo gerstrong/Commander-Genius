@@ -59,7 +59,6 @@ public:
 	void drawObjects();
 	void handleFKeys();
 	void verifyCutscenes();
-	bool scrollTriggers();
 	
 	// Collision stuff stored in CPlayGameCollision.cpp
 	void checkPlayerCollisions(CPlayer *p_player);

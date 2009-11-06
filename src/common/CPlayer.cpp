@@ -97,6 +97,57 @@ void CPlayer::setDefaultStartValues()
     // TODO: Add code for other defaults settings like the rays keen has depending on which episode
 }
 
+bool CPlayer::scrollTriggers()
+{
+	int px, py;
+	bool scrollchanged=false;
+	int scroll_x, scroll_y;
+	int max_scroll_x, max_scroll_y;
+
+	scroll_x = mp_map->m_scrollx;
+	scroll_y = mp_map->m_scrolly;
+	max_scroll_x = mp_map->m_maxscrollx<<4;
+	max_scroll_y = mp_map->m_maxscrolly<<4;
+
+	if (pdie) return scrollchanged;
+
+	px = (x>>STC)-scroll_x;
+	py = (y>>STC)-scroll_y;
+
+	// left-right scrolling
+	if(px > SCROLLTRIGGERRIGHT && scroll_x < max_scroll_x)
+	{
+		do{
+			scroll_x = mp_map->m_scrollx;
+			px = (x>>STC)-scroll_x;
+			mp_map->scrollRight();
+		}while(px > 226);
+		scrollchanged = true;
+	}
+	else if(px < SCROLLTRIGGERLEFT && scroll_x > 32)
+	{
+		do{
+			scroll_x = mp_map->m_scrollx;
+			px = (x>>STC)-scroll_x;
+			mp_map->scrollLeft();
+		}while(px < 80);
+		scrollchanged = true;
+	}
+
+	// up-down scrolling
+	if (py > SCROLLTRIGGERDOWN && scroll_y < max_scroll_y)
+	{
+		mp_map->scrollDown();
+		scrollchanged = true;
+	}
+	else if (py < SCROLLTRIGGERUP && scroll_y > 32)
+	{
+		mp_map->scrollUp();
+		scrollchanged = true;
+	}
+	return scrollchanged;
+}
+
 // handles walking. the walking animation is handled by gamepdo_walkinganim()
 void CPlayer::Walking()
 {
