@@ -29,6 +29,7 @@ CPlayer::CPlayer() {
     mp_StatusScr = NULL;
     mp_option = NULL;
     memset(&inventory, 0, sizeof(stInventory));
+    pdie = PDIE_DEAD; // At first time he is revived when map is started
     setDefaultStartValues();
     setDatatoZero();
 }
@@ -62,7 +63,6 @@ void CPlayer::setDatatoZero()
     inhibitfall = false;
     playerbaseframe = 0;
     mapplayx = mapplayy = 0;
-    pdie = 0;
     level_done = LEVEL_NOT_DONE;
 	
     pfrozentime = 0;

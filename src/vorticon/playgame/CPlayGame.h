@@ -58,6 +58,7 @@ public:
 	void processObjectsAI();
 	void drawObjects();
 	void handleFKeys();
+	void verifyCutscenes();
 	bool scrollTriggers();
 	
 	// Collision stuff stored in CPlayGameCollision.cpp
@@ -71,7 +72,6 @@ public:
 	void processPlayerfallings(CPlayer *p_player);
 	void ExtendingPlatformSwitch(int x, int y);
 	void losePlayer(CPlayer *p_player);
-	void verifyfinishedGame();
 	
 	// Dialog processes stored in CPlayGameDialogs.cpp
 	void processPauseDialogs();

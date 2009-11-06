@@ -78,10 +78,15 @@ bool CPlayGame::init()
 	while(scrollTriggers()); // Scroll the map to players position
 	// TODO: Must be changed. It is just a workaround while scrolling doesn't work.
 	
+	m_showKeensLeft=false;
 	for (int i=0 ; i<m_NumPlayers ; i++)
 	{
 		if( m_Level == WORLD_MAP_LEVEL )
+		{
 			mp_Player[i].m_playingmode = CPlayer::WORLDMAP;
+			m_showKeensLeft |= ( mp_Player[i].pdie == PDIE_DEAD );
+			mp_Player[i].pdie = PDIE_NODIE;
+		}
 		else
 			mp_Player[i].m_playingmode = CPlayer::LEVELPLAY;
 		
@@ -102,11 +107,10 @@ bool CPlayGame::init()
 	mp_ObjectAI = new CObjectAI(mp_Map, &m_Object, mp_Player, mp_option,
 								m_NumPlayers, m_Episode, m_Difficulty);
 
-	if(m_Level == WORLD_MAP_LEVEL)
-	{
-		m_showKeensLeft = true;
-		g_pSound->playSound(SOUND_KEENSLEFT, PLAY_NOW);
-	}
+	// Check if Player meets the conditions to show a cutscene. This also happens, when finale of episode has reached
+	verifyCutscenes();
+
+	if(m_showKeensLeft)	g_pSound->playSound(SOUND_KEENSLEFT, PLAY_NOW);
 
 	return true;
 }
@@ -180,6 +184,7 @@ void CPlayGame::process()
 			{
 				processInLevel();
 			}
+
 			// Did the someone press 'p' for Pause?
 
 			// Does one of the players need to pause the game?
@@ -189,12 +194,14 @@ void CPlayGame::process()
 				if(mp_Player[i].m_showStatusScreen)
 					m_paused = true; // this is processed in processPauseDialogs!
 				
-				// TODO: Did he hit a hint box, like yorp statue in Episode 1.
+				// TODO: Did he hit a hint box, like yorp statue in Episode 1?
 			}
 		}
 		else // In this case the Game has been finished, goto to the cutscenes
 		{
 			mp_Finale->process();
+
+			//m_endgame = mp_Finale->getEndGame();
 		}
 		
 		// Handle the Scrolling here!
@@ -368,6 +375,40 @@ void CPlayGame::handleFKeys()
 	
 }
 
+// The Ending and mortimer cutscenes for example
+void CPlayGame::verifyCutscenes()
+{
+	// first we need to know which Episode we were on
+	if(m_Episode == 1)
+	{
+		bool hasBattery, hasWiskey, hasJoystick, hasVaccum;
+		hasBattery = hasWiskey = hasJoystick = hasVaccum = false;
+
+		// Check if one of the Players has the items
+		for( int i=0 ;i < m_NumPlayers ; i++)
+		{
+			hasBattery |= mp_Player[i].inventory.HasBattery;
+			hasWiskey |= mp_Player[i].inventory.HasWiskey;
+			hasJoystick |= mp_Player[i].inventory.HasJoystick;
+			hasVaccum |= mp_Player[i].inventory.HasVacuum;
+		}
+
+		// If they have have the items, we can go home
+		if(hasBattery && hasWiskey && hasJoystick && hasVaccum)
+		{
+			mp_Finale = new CEndingEp1();
+		}
+	}
+	/*else if(m_Episode == 2)
+	{
+		mp_Finale = new CEndingEp2();
+	}
+	else if(m_Episode == 2)
+	{
+		mp_Finale = new CEndingEp3();
+	}*/
+}
+
 // This function draws the objects that need to be seen on the screen
 void CPlayGame::drawObjects()
 {
@@ -469,7 +510,7 @@ bool CPlayGame::scrollTriggers()
 	max_scroll_x = mp_Map->m_maxscrollx<<4;
 	max_scroll_y = mp_Map->m_maxscrolly<<4;
 	
-	if (mp_Player[m_theplayer].pdie) return false;
+	if (mp_Player[m_theplayer].pdie && (m_Level != WM_MAP_NUM) ) return false;
 	
 	px = (mp_Player[m_theplayer].x>>5)-scroll_x;
 	py = (mp_Player[m_theplayer].y>>5)-scroll_y;
@@ -506,45 +547,6 @@ bool CPlayGame::scrollTriggers()
 		scrollchanged = true;
 	}
 	return scrollchanged;
-}
-
-void CPlayGame::verifyfinishedGame()
-{
-	// first we need to know which Episode we were on
-
-	if(m_Episode == 1)
-	{
-		bool hasBattery, hasWiskey, hasJoystick, hasVaccum;
-		hasBattery = hasWiskey = hasJoystick = hasVaccum = false;
-
-		// Check if one of the Players has the items
-		for( int i=0 ;i < m_NumPlayers ; i++)
-		{
-			hasBattery |= mp_Player[i].inventory.HasBattery;
-			hasWiskey |= mp_Player[i].inventory.HasWiskey;
-			hasJoystick |= mp_Player[i].inventory.HasJoystick;
-			hasVaccum |= mp_Player[i].inventory.HasVacuum;
-		}
-
-		// If they have have the items, we can go home
-		if(hasBattery && hasWiskey && hasJoystick && hasVaccum)
-		{
-			mp_Finale = new CEndingEp1();
-		}
-	}
-	/*else if(m_Episode == 2)
-	{
-		mp_Finale = new CEndingEp2();
-	}
-	else if(m_Episode == 2)
-	{
-		mp_Finale = new CEndingEp3();
-	}*/
-	else
-	{
-		// Unknown game. just shutdown down the game.
-		// TODO: make it happen
-	}
 }
 
 ////

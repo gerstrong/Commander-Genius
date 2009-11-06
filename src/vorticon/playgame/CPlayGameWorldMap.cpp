@@ -89,9 +89,6 @@ void CPlayGame::goBacktoMap()
 	// Recreate the Players and tie them to the objects
 	createPlayerObjects();
 
-	// Check, if the game can be finished
-	verifyfinishedGame();
-
 	m_level_command = START_LEVEL;
 	m_Level = WM_MAP_NUM;
 	//g_pMusicPlayer->stop();
@@ -100,7 +97,6 @@ void CPlayGame::goBacktoMap()
 	for( int i=0 ; i<m_NumPlayers ; i++ )
 	{
 		mp_Player[i].level_done = LEVEL_NOT_DONE;
-		mp_Player[i].pdie = PDIE_NODIE;
 		// Restore checkpoint
 		mp_Player[i].x = mp_Player[i].goto_x = m_checkpoint_x;
 		mp_Player[i].y = mp_Player[i].goto_y = m_checkpoint_y;
