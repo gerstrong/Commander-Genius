@@ -101,7 +101,7 @@ private:
 	bool m_alldead;
 	bool m_showPauseDialog;
 	std::string m_Gamepath;
-	bool mp_level_completed[16];
+	bool mp_level_completed[MAX_LEVELS];
 	int m_checkpoint_x, m_checkpoint_y;
 	bool m_checkpointset;
 	
