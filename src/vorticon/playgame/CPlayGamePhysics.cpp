@@ -17,11 +17,16 @@
 
 void CPlayGame::processPlayerfallings(CPlayer *p_player)
 {
-	unsigned int temp;
-	int objsupport=false;
-	short tilsupport;
-	Uint8 height=p_player->h>>(CSF-4);
-	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
+unsigned int temp;
+int objsupport=false;
+short tilsupport;
+char behaviour;
+int sprite = m_Object[p_player->m_player_number].sprite;
+Uint16 x1 = g_pGfxEngine->Sprite[sprite]->m_bboxX1-1;
+Uint16 x2 = g_pGfxEngine->Sprite[sprite]->m_bboxX2+1;
+Uint16 y1 = g_pGfxEngine->Sprite[sprite]->m_bboxY1-1;
+Uint16 y2 = g_pGfxEngine->Sprite[sprite]->m_bboxY2+1;
+stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 	
 	p_player->pfalling = false;         // assume not falling if not jumped to the maximum height
 	
@@ -41,19 +46,19 @@ void CPlayGame::processPlayerfallings(CPlayer *p_player)
 	// test if tile under player is solid; if so set psupportingtile
 	//objsupport = checkobjsolid(x+(4<<CSF), y+( height<<(CSF-4)),cp);
 	
-	tilsupport = TileProperty[mp_Map->at((p_player->x>>CSF)+5, (p_player->y>>CSF)+height)].bup;
-	if(TileProperty[mp_Map->at((p_player->x>>CSF)+4, (p_player->y>>CSF)+height)].behaviour >= 2&&
-	   TileProperty[mp_Map->at((p_player->x>>CSF)+4, (p_player->y>>CSF)+height)].behaviour <= 5)
-		tilsupport = 1; // This workaround prevents the player from falling through doors.
+	behaviour = TileProperty[mp_Map->at((p_player->x+x1)>>CSF, (p_player->y+y2)>>CSF)].behaviour;
+	tilsupport = TileProperty[mp_Map->at((p_player->x+x1)>>CSF, (p_player->y+y2)>>CSF)].bup;
+	if( behaviour>=2 && behaviour<=5 )
+		tilsupport = true; // This workaround prevents the player from falling through doors.
 	
-	if (!tilsupport && !objsupport)
+	/*if (!tilsupport && !objsupport)
 	{ // lower-left isn't solid
 		//objsupport = checkobjsolid(x+(12<<CSF), y+(height<<CSF),cp);
-		tilsupport = TileProperty[mp_Map->at((p_player->x>>CSF)+10, (p_player->y>>CSF)+height)].bup;
+		tilsupport = TileProperty[mp_Map->at((p_player->x+x2)>>CSF, (p_player->y+y2)>>CSF)].bup;
 		if (!tilsupport && !objsupport)
 		{  // lower-right isn't solid
-			p_player->pfalling = 1;        // so fall.
-			p_player->pjustfell = 1;
+			p_player->pfalling = true;        // so fall.
+			p_player->pjustfell = true;
 		}
 		else
 		{  // lower-left isn't solid but lower-right is
@@ -71,13 +76,14 @@ void CPlayGame::processPlayerfallings(CPlayer *p_player)
 			p_player->psupportingtile = PSUPPORTEDBYOBJECT;
 			p_player->psupportingobject = objsupport;
 		}
-	}
+	}*/
+	p_player->pfalling = true;
 	
 	// if not on a tile boundary, always fall, prevents being able
 	// to land in the middle of a tile.
 	if (!p_player->pfalling && p_player->psupportingtile != PSUPPORTEDBYOBJECT)
 	{
-		temp = (p_player->y>>CSF)+height;    // bottom of player
+		temp = (p_player->y+y2)>>CSF;    // bottom of player
 		if ((temp>>4)<<4 != temp)   // true if it's not a multiple of 16
 		{
 			p_player->pfalling = 1;   // not on a tile boundary. fall.
@@ -90,7 +96,7 @@ void CPlayGame::processPlayerfallings(CPlayer *p_player)
 	// the object else fall
 	if (!p_player->pfalling && p_player->psupportingtile == PSUPPORTEDBYOBJECT)
 	{
-		if ((p_player->y>>CSF)+height > (m_Object[p_player->psupportingobject].y>>CSF)+4)
+		if ((p_player->y+y2)>>CSF > (m_Object[p_player->psupportingobject].y+y1)>>CSF )
 		{
 			if (!tilsupport)
 			{
@@ -106,7 +112,7 @@ void CPlayGame::processPlayerfallings(CPlayer *p_player)
 	// top of the object
 	if (p_player->psupportingobject && !p_player->lastsupportingobject)
 	{
-		p_player->goto_y = m_Object[p_player->psupportingobject].y - (height<<CSF);
+		p_player->goto_y = m_Object[p_player->psupportingobject].y - y2;
 	}
 	p_player->lastsupportingobject = p_player->psupportingobject;
 	

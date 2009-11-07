@@ -137,12 +137,20 @@ bool CPlayer::scrollTriggers()
 	// up-down scrolling
 	if (py > SCROLLTRIGGERDOWN && scroll_y < max_scroll_y)
 	{
-		mp_map->scrollDown();
+		do{
+			scroll_y = mp_map->m_scrolly;
+			py = (y>>STC)-scroll_y;
+			mp_map->scrollDown();
+		}while(py > 150);
 		scrollchanged = true;
 	}
 	else if (py < SCROLLTRIGGERUP && scroll_y > 32)
 	{
-		mp_map->scrollUp();
+		do{
+			scroll_y = mp_map->m_scrolly;
+			py = (y>>STC)-scroll_y;
+			mp_map->scrollUp();
+		}while(py < 50);
 		scrollchanged = true;
 	}
 	return scrollchanged;
