@@ -286,10 +286,8 @@ stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 	 take_keycard(doortile);
 	 
 	 // erase door from map
-	 if (m_episode==3)
-		 chgtotile = mp_map->at(mpx-1, mpy);
-	 else
-		 chgtotile = TileProperty[mp_map->at(mpx ,mpy)].chgtile;
+	 if (m_episode==3)	chgtotile = mp_map->at(mpx-1, mpy);
+	 else	chgtotile = TileProperty[mp_map->at(mpx ,mpy)].chgtile;
 	 
 	 if(TileProperty[mp_map->at(mpx ,mpy-1)].behaviour>1 &&
 	 TileProperty[mp_map->at(mpx ,mpy-1)].behaviour<6 ) // This happens because, sometimes the player opens the door

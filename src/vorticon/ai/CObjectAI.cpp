@@ -210,7 +210,6 @@ void CObjectAI::performSpecialAIType( CObject *p_object )
 			 case OBJ_VORT: vort_ai(i, p_levelcontrol ); break;
 			 case OBJ_BUTLER: butler_ai(i, p_levelcontrol->hardmode); break;
 			 case OBJ_TANK: tank_ai(i, p_levelcontrol->hardmode); break;
-			 case OBJ_DOOR: door_ai(i, p_levelcontrol->cepvars.DoorOpenDir); break;
 			 case OBJ_ICECANNON: icecannon_ai(i); break;
 			 case OBJ_ICECHUNK: icechunk_ai(i); break;
 			 case OBJ_ICEBIT: icebit_ai(i); break;*/
@@ -241,8 +240,9 @@ void CObjectAI::performSpecialAIType( CObject *p_object )
 			 case OBJ_PLATVERT: platvert_ai(i); break;
 			 case OBJ_NESSIE: nessie_ai(i); break;
 			 
-			 //Specials*/
+			 //Common Objects*/
 		case OBJ_RAY: ray_ai( p_object, mp_Options[OPT_FULLYAUTOMATIC].value ); break;
+		case OBJ_DOOR: door_ai( p_object, DOWN); break;
 			//case OBJ_AUTORAY: case OBJ_AUTORAY_V: autoray_ai(i); break;
 			//case OBJ_GOTPOINTS: gotpoints_ai(i); break;
 			

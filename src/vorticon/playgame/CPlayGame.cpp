@@ -48,7 +48,9 @@ CPlayGame::CPlayGame( char episode, char level,
 	
 	// Create completed level list
 	memset(mp_level_completed,false,16*sizeof(bool));
-	
+
+	// Player are tied to objects like enemys, sprites, etc, so they
+	// can be drawn the same way.
 	createPlayerObjects();
 
 	m_theplayer = 0;

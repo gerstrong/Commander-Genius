@@ -1,6 +1,6 @@
-#include "../../keen.h"
+#include "CObjectAI.h"
 
-#include "door.h"
+#include "../../keen.h"
 #include "../../graphics/CGfxEngine.h"
 
 // "AI" for the door object (to do the animation when a door
@@ -10,28 +10,31 @@
 
 #define DOOR_OPEN_SPEED    10
 
-void door_ai(int o, char DoorOpenDir)
+void CObjectAI::door_ai( CObject *p_object, char DoorOpenDir )
 {
-	/*if (objects[o].needinit)
-	 {
-	 objects[o].ai.door.timer = 0;
-	 g_pGfxEngine->Sprite[objects[o].sprite]->setHeight(32);
-	 objects[o].inhibitfall = 1;
-	 objects[o].needinit = 0;
-	 }
+	if (p_object->needinit)
+	{
+		p_object->ai.door.timer = 0;
+		g_pGfxEngine->Sprite[p_object->sprite]->setHeight(32);
+		p_object->inhibitfall = true;
+		p_object->needinit = false;
+		mp_Map->redrawAt(p_object->x>>CSF, p_object->y>>CSF);
+		mp_Map->redrawAt(p_object->x>>CSF, (p_object->y>>CSF)+1);
+	}
 	 
-	 if (objects[o].ai.door.timer > DOOR_OPEN_SPEED)
-	 {
-	 // TODO: Create a flag for mods in which the door can be opened in another direction
-	 if (DoorOpenDir==DOWN) objects[o].y += (1<<CSF);
-	 g_pGfxEngine->Sprite[objects[o].sprite]->setHeight(g_pGfxEngine->Sprite[objects[o].sprite]->getHeight()-1);
-	 if (g_pGfxEngine->Sprite[objects[o].sprite]->getHeight() == 0)
-	 {
-	 delete_object(o);
-	 }
-	 objects[o].ai.door.timer = 0;
-	 }
-	 else objects[o].ai.door.timer++;*/
+	if (p_object->ai.door.timer > DOOR_OPEN_SPEED)
+	{
+		// TODO: Create a flag for mods in which the door can be opened in another direction
+		if (DoorOpenDir==DOWN) p_object->y += (1<<STC);
+		g_pGfxEngine->Sprite[p_object->sprite]->setHeight(g_pGfxEngine->Sprite[p_object->sprite]->getHeight()-1);
+		if (g_pGfxEngine->Sprite[p_object->sprite]->getHeight() == 0)
+		{
+			p_object->ai.door.timer = 0;
+			deleteObj(p_object);
+			return;
+		}
+	}
+	else p_object->ai.door.timer++;
 }
 
 

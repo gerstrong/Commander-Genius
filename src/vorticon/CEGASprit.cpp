@@ -23,6 +23,11 @@
 // section of defines //
 ////////////////////////
 
+#define DOOR_YELLOW        2
+#define DOOR_RED           3
+#define DOOR_GREEN         4
+#define DOOR_BLUE          5
+
 // Reference to ../common/tga.cpp
 char LoadTGA(const std::string &file, unsigned char **image, int *widthout, int *heightout);
 
@@ -199,9 +204,9 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 		g_pGfxEngine->Sprite[s]->applyTransparency();
 	}
 	
-	// Now create special sprites for some neat effects!
+	// Now create special sprites, like those for effects and the doors!
 	DeriveSpecialSprites( g_pGfxEngine->Tilemap, g_pGfxEngine->Sprite );
-	
+
 	return true;
 }
 
@@ -297,23 +302,68 @@ void CEGASprit::LoadSpecialSprites( std::vector<CSprite*> &sprite )
 // collected
 void CEGASprit::DeriveSpecialSprites( CTilemap *tilemap, std::vector<CSprite*> &sprites )
 {
+	stTile *TileProperty = tilemap->mp_tiles;
+	// Yellow sprites a special effect when items are collected
 	for( Uint16 t=0 ; t<tilemap->m_numtiles ; t++)
 	{
 		// The Gun!
-		if( tilemap->mp_tiles[t].behaviour==15 )
+		if( TileProperty[t].behaviour==15 )
 			CreateYellowSpriteofTile( tilemap, t, sprites.at(GUNUP_SPRITE) );
 		
 		// Keycards
-		if( tilemap->mp_tiles[t].behaviour>=18 && tilemap->mp_tiles[t].behaviour<=21 )
+		if( TileProperty[t].behaviour>=18 && tilemap->mp_tiles[t].behaviour<=21 )
 			CreateYellowSpriteofTile( tilemap, t, sprites.at(PTCARDB_SPRITE+tilemap->mp_tiles[t].behaviour-18));
 		
 		// Single Bullet in Ep3
-		if( tilemap->mp_tiles[t].behaviour==28 )
+		if( TileProperty[t].behaviour==28 )
 			CreateYellowSpriteofTile( tilemap, t, sprites.at(SHOTUP_SPRITE) );
 		
-		if( tilemap->mp_tiles[t].behaviour==27 )
+		if( TileProperty[t].behaviour==27 )
 			CreateYellowSpriteofTile( tilemap, t, sprites.at(ANKHUP_SPRITE) );
 	}
+
+	for(int i=0 ; i < g_pGfxEngine->Tilemap->m_numtiles ; i++ )
+	{
+		if(TileProperty[i].behaviour == DOOR_YELLOW)
+			g_pGfxEngine->copyTileToSprite(i-1, DOOR_YELLOW_SPRITE, 2);
+
+		if(TileProperty[i].behaviour == DOOR_RED)
+			g_pGfxEngine->copyTileToSprite(i-1, DOOR_RED_SPRITE, 2);
+
+		if(TileProperty[i].behaviour == DOOR_GREEN)
+			g_pGfxEngine->copyTileToSprite(i-1, DOOR_GREEN_SPRITE, 2);
+
+		if(TileProperty[i].behaviour == DOOR_BLUE)
+			g_pGfxEngine->copyTileToSprite(i-1, DOOR_BLUE_SPRITE, 2);
+	 }
+
+    // TODO: Demo-Sprite must be added. This time loaded from one TGA File! The TGA is already there!
+
+	// TODO: Those sprite for second player, and so on should go into the CPlayer Class, because,
+	// first we don't often need them and second, we can only load, if the sprites are set up, which is not the case
+    // create BLANKSPRITE
+	//CSprite** sprite = &g_pGfxEngine->Sprite[0];
+    //sprite[s]->setSize(0, 0);
+
+
+    // create the sprites for player 2
+    /*s++;
+	playerbaseframes[1] = s;
+	for(i=0;i<48;i++)
+	{
+	 sprite[i]->copy( sprite[s], g_pGfxEngine->Palette.m_Palette );
+	 sprite[s]->replaceSpriteColor( 13, 10 ,0 );
+	 sprite[s]->replaceSpriteColor( 5, 2 ,0 );
+	 sprite[s]->replaceSpriteColor( 9, 14 ,8 );
+	 sprite[s]->replaceSpriteColor( 1, 6 ,8 );
+	 sprite[s]->replaceSpriteColor( 12, 11 ,0 );
+	 sprite[s]->replaceSpriteColor( 4, 3 ,0 );
+	 s++;
+	}
+
+    // create the sprites for player 3
+    // Unsupported for now...
+     */
 }
 
 void CEGASprit::CreateYellowSpriteofTile( CTilemap *tilemap, Uint16 tile, CSprite* sprite )

@@ -357,24 +357,6 @@ void freezeplayer(int theplayer)
 // initialize sprites that come from tiles, such as the doors
 void initsprites(stCloneKeenPlus *pCKP, int s)
 {
-	//int i;
-	//CSprite** sprite = &g_pGfxEngine->Sprite[0];
-	
-	/*for(i=0 ; i < numtiles ; i++ )
-	 {
-	 if(TileProperty[i][BEHAVIOR] == DOOR_YELLOW)
-	 g_pGfxEngine->copyTileToSprite(i-1, DOOR_YELLOW_SPRITE, 2);
-	 
-	 if(TileProperty[i][BEHAVIOR] == DOOR_RED)
-	 g_pGfxEngine->copyTileToSprite(i-1, DOOR_RED_SPRITE, 2);
-	 
-	 if(TileProperty[i][BEHAVIOR] == DOOR_GREEN)
-	 g_pGfxEngine->copyTileToSprite(i-1, DOOR_GREEN_SPRITE, 2);
-	 
-	 if(TileProperty[i][BEHAVIOR] == DOOR_BLUE)
-	 g_pGfxEngine->copyTileToSprite(i-1, DOOR_BLUE_SPRITE, 2);
-	 }*/
-	
     // create BLANKSPRITE
     //sprite[s]->setSize(0, 0);
 	

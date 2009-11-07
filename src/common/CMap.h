@@ -35,6 +35,7 @@ public:
 	bool findObject(unsigned int obj, int *xout, int *yout);
 	
 	bool setTile(Uint16 x, Uint16 y, Uint16 t);
+	bool setTile(Uint16 x, Uint16 y, Uint16 t, bool update);
 	bool changeTile(Uint16 x, Uint16 y, Uint16 t);
 	
 	unsigned int getlevelat(unsigned int x, unsigned int y)	{

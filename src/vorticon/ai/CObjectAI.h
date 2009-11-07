@@ -43,7 +43,6 @@ private:
 	 void icechunk_ai(int o);
 	 void icebit_ai(int o);
 	 void icecannon_ai(int o);
-	 void door_ai(int o, char DoorOpenDir);
 	 void rope_ai(int o);
 	 
 	 // ep2
@@ -67,10 +66,11 @@ private:
 	 void platvert_ai(int o);
 	 void nessie_ai(int o);
 	 
-	 // Specials
+	 // Common Objects
 	 void autoray_ai(int o);
 	 void gotpoints_ai(int o);*/
 	void ray_ai( CObject *p_object, bool automatic_raygun, char pShotSpeed=0 );
+	void door_ai( CObject *p_object, char DoorOpenDir );
 	void teleporter_ai(CObject *p_object);
 	
 	// Variables

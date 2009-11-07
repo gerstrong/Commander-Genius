@@ -92,6 +92,16 @@ bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t)
 		return false;
 }
 
+bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t, bool update)
+{
+	if(setTile( x, y, t))
+	{
+		if(update) redrawAt(x,y);
+		return true;
+	}
+	else return false;
+}
+
 // Called in level. This function does the same as setTile, but also draws directly to the scrollsurface
 // used normally, when items are picked up
 bool CMap::changeTile(Uint16 x, Uint16 y, Uint16 t)
