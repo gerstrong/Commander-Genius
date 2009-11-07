@@ -38,7 +38,6 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path )
 	if(level < 10) fname += "0";
 	fname += itoa(level) + ".ck" + itoa(episode);
 	
-	
 	std::ifstream MapFile; OpenGameFileR(MapFile, fname, std::ios::binary);
 	
 	mp_map->m_worldmap = (level == 80);
@@ -47,10 +46,10 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path )
 	{
 		// only record this error message on build platforms that log errors
 		// to a file and not to the screen.
-		g_pLogFile->ftextOut("loadmap(): unable to open file %s<br>", fname.c_str());
+		g_pLogFile->ftextOut("MapLoader: unable to open file %s<br>", fname.c_str());
 		return false;
 	}
-	g_pLogFile->ftextOut("loadmap(): file %s opened. Loading...<br>", fname.c_str());
+	g_pLogFile->ftextOut("MapLoader: file %s opened. Loading...<br>", fname.c_str());
 	
     // decompress map RLEW data
 	std::vector<Uint16> filebuf;

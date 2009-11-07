@@ -33,6 +33,7 @@ CPlayGame::CPlayGame( char episode, char level,
 	m_exitgame = false;
 	m_endgame = false;
 	m_gameover = false;
+	m_alldead = false;
 	mp_Map = NULL;
 	mp_Menu = NULL;
 	mp_Finale = NULL;
@@ -88,7 +89,10 @@ bool CPlayGame::init()
 			mp_Player[i].pdie = PDIE_NODIE;
 		}
 		else
+		{
+			mp_Player[i].pdie = PDIE_NODIE;
 			mp_Player[i].m_playingmode = CPlayer::LEVELPLAY;
+		}
 		
 		mp_Player[i].w = g_pGfxEngine->Sprite[PSTANDFRAME]->getWidth()<<(CSF-4);
 		mp_Player[i].h = g_pGfxEngine->Sprite[PSTANDFRAME]->getHeight()<<(CSF-4);
@@ -100,7 +104,6 @@ bool CPlayGame::init()
 	while(mp_Player[0].scrollTriggers());   // Scroll the map to players position
 
 	// Well, all players are living because they were newly spawn.
-	m_alldead = false;
 	g_pTimer->ResetSecondsTimer();
 
 	g_pInput->flushAll();

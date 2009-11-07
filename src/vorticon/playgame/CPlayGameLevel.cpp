@@ -37,7 +37,7 @@ void CPlayGame::processInLevel()
 			// Check Collisions and only move player, if it is not blocked
 			checkPlayerCollisions(&mp_Player[i]);
 
-			// Check if the first player is dead, and if the other also are...
+			// Check if the first player is dead, and if the others also are...
 			if(i==0) m_alldead = (mp_Player[i].pdie == PDIE_DEAD);
 			else m_alldead &= (mp_Player[i].pdie == PDIE_DEAD);
 

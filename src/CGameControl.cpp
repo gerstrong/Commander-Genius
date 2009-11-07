@@ -231,7 +231,7 @@ void CGameControl::process()
 		{
 			if( mp_PlayGame->getEndGame() )
 			{
-				mp_PassiveMode->m_mode = 2;
+				mp_PassiveMode->m_mode = PLAYGAME;
 			}
 		}
 		mp_PassiveMode->process();
