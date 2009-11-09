@@ -18,12 +18,12 @@
 void CPlayGame::processPlayerfallings(CPlayer *p_player)
 {
 unsigned int temp;
-int objsupport=false;
+//int objsupport=false;
 short tilsupport;
 char behaviour;
 int sprite = m_Object[p_player->m_player_number].sprite;
 Uint16 x1 = g_pGfxEngine->Sprite[sprite]->m_bboxX1-1;
-Uint16 x2 = g_pGfxEngine->Sprite[sprite]->m_bboxX2+1;
+//Uint16 x2 = g_pGfxEngine->Sprite[sprite]->m_bboxX2+1;
 Uint16 y1 = g_pGfxEngine->Sprite[sprite]->m_bboxY1-1;
 Uint16 y2 = g_pGfxEngine->Sprite[sprite]->m_bboxY2+1;
 stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;

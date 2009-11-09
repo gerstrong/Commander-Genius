@@ -18,7 +18,7 @@ enum themes{
 
 class CDlgFrame {
 public:
-	CDlgFrame(int x, int y, int w, int h, Uint8 theme);
+	CDlgFrame(int x, int y, int w, int h, Uint8 theme = DLG_THEME_OLDSCHOOL);
 	virtual ~CDlgFrame();
 	
 	void draw(SDL_Surface *dst);

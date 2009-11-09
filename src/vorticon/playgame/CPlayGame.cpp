@@ -22,7 +22,8 @@
 ////
 CPlayGame::CPlayGame( char episode, char level,
 					 char numplayers, char difficulty,
-					 std::string &gamepath, stOption *p_option ) {
+					 std::string &gamepath, stOption *p_option,
+					 bool finale) {
 	m_Episode = episode;
 	m_Level = level;
 	m_NumPlayers = numplayers;
@@ -57,6 +58,7 @@ CPlayGame::CPlayGame( char episode, char level,
 	m_theplayer = 0;
 	m_paused = false;
 	m_showPauseDialog = false;
+	if(finale) m_level_command = GOTO_FINALE;
 }
 
 bool CPlayGame::init()
@@ -115,7 +117,10 @@ bool CPlayGame::init()
 	// Check if Player meets the conditions to show a cutscene. This also happens, when finale of episode has reached
 	verifyCutscenes();
 
-	if(m_showKeensLeft)	g_pSound->playSound(SOUND_KEENSLEFT, PLAY_NOW);
+	if(m_level_command == GOTO_FINALE)
+		createFinale();
+	else
+		if(m_showKeensLeft)	g_pSound->playSound(SOUND_KEENSLEFT, PLAY_NOW);
 
 	return true;
 }
@@ -209,7 +214,7 @@ void CPlayGame::process()
 		{
 			mp_Finale->process();
 
-			//m_endgame = mp_Finale->getEndGame();
+			m_endgame = mp_Finale->getHasFinished();
 		}
 	}
 	else // In this case the game is paused
@@ -400,9 +405,7 @@ void CPlayGame::verifyCutscenes()
 
 		// If they have have the items, we can go home
 		if(hasBattery && hasWiskey && hasJoystick && hasVaccum)
-		{
-			mp_Finale = new CEndingEp1(mp_Map, mp_Player);
-		}
+			createFinale();
 	}
 	/*else if(m_Episode == 2)
 	{
@@ -412,6 +415,16 @@ void CPlayGame::verifyCutscenes()
 	{
 		mp_Finale = new CEndingEp3();
 	}*/
+}
+
+void CPlayGame::createFinale()
+{
+	if(m_Episode == 1)
+		mp_Finale = new CEndingEp1(mp_Map, mp_Player);
+	/*else if(m_Episode == 2)
+		mp_Finale = new CEndingEp2(mp_Map, mp_Player);
+	else if(m_Episode == 3)
+		mp_Finale = new CEndingEp3(mp_Map, mp_Player);*/
 }
 
 // This function draws the objects that need to be seen on the screen

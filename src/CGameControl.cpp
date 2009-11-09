@@ -58,6 +58,19 @@ bool CGameControl::init(int argc, char *argv[])
 			m_startLevel = atoi(argument.c_str()+strlen("-level"));
 		}
 	}
+
+	// Check if finale cutscenes must be shown
+	if(getBooleanArgument( argc, argv, "-finale" ))
+	{
+		int finalegame;
+		argument = getArgument( argc, argv, "-finale" );
+		finalegame = atoi(argument.c_str()+strlen("-finale"))-1;
+		mp_GameLauncher->setChosenGame(finalegame);
+		m_startLevel = WM_MAP_NUM;
+		m_show_finale = true;
+	}
+	else m_show_finale = false;
+
 	return ok;
 }
 
@@ -98,7 +111,7 @@ bool CGameControl::init(char mode)
 		
 		mp_PlayGame = new CPlayGame(m_Episode, m_startLevel,
 									m_Numplayers, m_Difficulty,
-									m_DataDirectory, mp_option);
+									m_DataDirectory, mp_option, m_show_finale);
 		return mp_PlayGame->init();
 	}
 	return false;

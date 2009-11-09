@@ -11,6 +11,8 @@
 #include "CFinale.h"
 #include "../../common/CMap.h"
 #include "../../common/CPlayer.h"
+#include "../../dialog/CTextBox.h"
+#include "../../dialog/CDlgFrame.h"
 #include <SDL.h>
 
 class CEndingEp1 : public CFinale {
@@ -32,6 +34,8 @@ private:
 
 	CMap *mp_Map;
 	CPlayer *mp_Player;
+	CTextBox *mp_Textbox;
+	CDlgFrame *mp_DlgFrame;
 };
 
 #endif /* CENDINGEP1_H_ */

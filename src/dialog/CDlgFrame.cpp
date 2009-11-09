@@ -21,10 +21,6 @@ CDlgFrame::CDlgFrame(int x, int y, int w, int h, Uint8 theme) {
 	m_theme = theme;
 }
 
-CDlgFrame::~CDlgFrame() {
-	// TODO Auto-generated destructor stub
-}
-
 void CDlgFrame::draw(SDL_Surface *dst)
 {
 	if(m_theme == DLG_THEME_OLDSCHOOL)
@@ -105,4 +101,8 @@ void CDlgFrame::drawRedFrame(SDL_Surface *dst)
 	g_pGfxEngine->Font->drawCharacter(dst, 25, m_x + m_w - m_8x8tilewidth, m_y ); // Upper-Right corner
 	g_pGfxEngine->Font->drawCharacter(dst, 28, m_x, m_y + m_h - m_8x8tileheight ); // Lower-Left corner
 	g_pGfxEngine->Font->drawCharacter(dst, 30, m_x + m_w - m_8x8tilewidth, m_y + m_h - m_8x8tileheight ); // Lower-Right corner
+}
+
+CDlgFrame::~CDlgFrame() {
+	// TODO Auto-generated destructor stub
 }

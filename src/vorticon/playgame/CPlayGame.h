@@ -40,11 +40,13 @@ public:
 		NONE,
 		GOTO_WORLD_MAP,
 		START_LEVEL,
+		GOTO_FINALE
 	};
 	
 	CPlayGame( char episode, char level, 
 			  char numplayers, char difficulty,
-			  std::string &gamepath, stOption *p_option );
+			  std::string &gamepath, stOption *p_option,
+			  bool finale = false);
 	
 	bool init();
 	void createPlayerObjects();
@@ -59,6 +61,7 @@ public:
 	void drawObjects();
 	void handleFKeys();
 	void verifyCutscenes();
+	void createFinale();
 	
 	// Collision stuff stored in CPlayGameCollision.cpp
 	void checkPlayerCollisions(CPlayer *p_player);

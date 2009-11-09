@@ -15,8 +15,12 @@ public:
 	void init_ToBeContinued();
 
 	virtual void process() {}
+	bool getHasFinished() { return m_mustfinishgame; }
 
 	virtual ~CFinale();
+
+protected:
+	bool m_mustfinishgame;
 };
 
 #endif /* CFINALE_H_ */

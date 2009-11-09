@@ -49,7 +49,9 @@ bool CPassive::init(char mode)
 	}
 	else if( m_mode == TITLE )
 	{
-		mp_PressAnyBox = new CTextBox(150," PRESS ANY KEY ");
+		mp_PressAnyBox = new CTextBox(150, 10," PRESS ANY KEY ");
+		mp_PressAnyBox->setAttribs(0, LETTER_TYPE_RED);
+		mp_PressAnyBox->enableBorders(true);
 		mp_TitleScreen = new CTitle(&m_object);
 		mp_Map = new CMap( mp_Scrollsurface, mp_Tilemap);
 		CMapLoader MapLoader( mp_Map );
@@ -99,7 +101,8 @@ void CPassive::process()
 		{
 			delete mp_Menu;
 			mp_Menu = NULL;
-			mp_PressAnyBox = new CTextBox(150," PRESS ANY KEY ");
+			mp_PressAnyBox = new CTextBox(150, 10, " PRESS ANY KEY ");
+			mp_PressAnyBox->setAttribs(0, LETTER_TYPE_INVERSE);
 		}
 	}
 	

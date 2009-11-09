@@ -11,5 +11,6 @@
 #include <string>
 
 std::string getArgument( int argc, char *argv[], const std::string text );
+bool getBooleanArgument( int argc, char *argv[], const std::string text );
 
 #endif /* ARGUMENTS_H_ */

@@ -56,6 +56,7 @@ private:
 	CPlayGame *mp_PlayGame;
 	
 	bool m_endgame;
+	bool m_show_finale;
 	Uint8 m_Episode;
 	Uint8 m_Numplayers;
 	Uint8 m_ChosenGame;
