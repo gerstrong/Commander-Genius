@@ -7,16 +7,14 @@
 
 #include "CShipFlySys.h"
 
-CShipFlySys::CShipFlySys(CPlayer *p_Player, CMap *p_Map) :
-	mp_Map(p_Map), mp_player(p_Player)
+CShipFlySys::CShipFlySys(CPlayer *p_Player, CMap *p_Map)
 {
 	// TODO Auto-generated constructor stub
+	mp_Map = p_Map;
+	mp_player = p_Player;
 	m_finished = false;
-}
-
-void CShipFlySys::setInitialPostion(int x, int y)
-{
-
+	m_scrollingon = true;
+	m_ShipQueuePtr = 0;
 }
 
 void CShipFlySys::addShipQueue(int cmd, int time, int flag1)
@@ -29,78 +27,67 @@ void CShipFlySys::addShipQueue(int cmd, int time, int flag1)
 
 void CShipFlySys::process()
 {
+	int x, y;
 	/*std::vector<CObject> &objvect = *(mp_player[0].mp_object);
+	CObject
 	objvect[MARK_SPR_NUM].type = OBJ_YORP;                // doesn't matter
 	objvect[MARK_SPR_NUM].exists = 0;
-	objvect[MARK_SPR_NUM].sprite = SPR_QUESTION;
+	objvect[MARK_SPR_NUM].sprite = SPR_QUESTION;*/
 
-	// place the player at the center of mars or earth
-	if (mp_Map->findTile()map_findtile( flyback ? 586 : 593, &x, &y))
-	{ // found the tile at the center of mars or earth
-		mp_player[0].x = ((x<<4)+1)<<CSF;
-		mp_player[0].y = ((y<<4)-3)<<CSF;
-	}
-	else
-	{
-		crashflag = 1;
-		why_term_ptr = "eseq1_shipflys(): unable to find center of Mars.";
-		return 1;
-	}
+	 mp_player[0].playframe = SPR_SHIP_RIGHT;
 
-	 player[0].playframe = SPR_SHIP_RIGHT;
-
-	 ShipQueuePtr = 0;
-	 max_scroll_x = max_scroll_y = 20000;
+	 //max_scroll_x = max_scroll_y = 20000;
 
 	 // keep the question or exclamation mark sprite next to the player
-	 objects[MARK_SPR_NUM].x = player[0].x + (20<<CSF);
-	 objects[MARK_SPR_NUM].y = player[0].y - (10<<CSF);
+	 /*objects[MARK_SPR_NUM].x = mp_player[0].x + (20<<CSF);
+	 objects[MARK_SPR_NUM].y = mp_player[0].y - (10<<CSF);
 	 objects[MARK_SPR_NUM].onscreen = 1;
 	 objects[MARK_SPR_NUM].scrx = (objects[MARK_SPR_NUM].x>>CSF)-scroll_x;
-	 objects[MARK_SPR_NUM].scry = (objects[MARK_SPR_NUM].y>>CSF)-scroll_y;
+	 objects[MARK_SPR_NUM].scry = (objects[MARK_SPR_NUM].y>>CSF)-scroll_y;*/
 
 	 // execute the current command in the queue
-	 switch(shipqueue[ShipQueuePtr].cmd)
+	 switch(m_shipqueue[m_ShipQueuePtr].cmd)
 	 {
 	 case CMD_MOVE:
-		 switch(shipqueue[ShipQueuePtr].flag1)
+		 switch(m_shipqueue[m_ShipQueuePtr].flag1)
 		 {
 		 case DUP:
-			 player[0].y-=SHIPSPD;
-			 player[0].playframe = SPR_SHIP_RIGHT;
+			 mp_player[0].y-=SHIPSPD;
+			 mp_player[0].playframe = SPR_SHIP_RIGHT;
 			 break;
 		 case DDOWN:
-			 player[0].y+=SHIPSPD/2;
-			 player[0].playframe = SPR_SHIP_RIGHT;
+			 mp_player[0].y+=SHIPSPD/2;
+			 mp_player[0].playframe = SPR_SHIP_RIGHT;
 			 break;
 		 case DLEFT:
-			 player[0].x-=SHIPSPD;
-			 player[0].playframe = SPR_SHIP_LEFT;
+			 mp_player[0].x-=SHIPSPD;
+			 mp_player[0].playframe = SPR_SHIP_LEFT;
 			 break;
 		 case DRIGHT:
-			 player[0].x+=SHIPSPD;
-			 player[0].playframe = SPR_SHIP_RIGHT;
+			 mp_player[0].x+=SHIPSPD;
+			 mp_player[0].playframe = SPR_SHIP_RIGHT;
 			 break;
 		 case DDOWNRIGHT:
-			 player[0].x+=SHIPSPD*2;
-			 player[0].y+=SHIPSPD*0.8;
-			 player[0].playframe = SPR_SHIP_RIGHT;
+			 mp_player[0].x+=SHIPSPD*2;
+			 mp_player[0].y+=SHIPSPD*0.8;
+			 mp_player[0].playframe = SPR_SHIP_RIGHT;
 			 break;
-	 }
+		 }
+		 mp_player[0].scrollTriggers();
 	 break;
 	 case CMD_SPAWNSPR:
-		 objects[MARK_SPR_NUM].sprite = shipqueue[ShipQueuePtr].flag1;
-		 objects[MARK_SPR_NUM].exists = 1;
+		 //objects[MARK_SPR_NUM].sprite = shipqueue[ShipQueuePtr].flag1;
+		 //objects[MARK_SPR_NUM].exists = 1;
 		 break;
 	 case CMD_REMOVESPR:
-		 objects[MARK_SPR_NUM].sprite = shipqueue[ShipQueuePtr].flag1;
-		 objects[MARK_SPR_NUM].exists = 0;
+		 //objects[MARK_SPR_NUM].sprite = shipqueue[ShipQueuePtr].flag1;
+		 //objects[MARK_SPR_NUM].exists = 0;
 		 break;
 	 case CMD_ENABLESCROLLING:
-		 scrollingon = 1;
+		 m_scrollingon = true;
 		 break;
 	 case CMD_DISABLESCROLLING:
-		 scrollingon = 0;
+		 m_scrollingon = false;
 		 break;
 	 case CMD_WAIT:
 		 break;
@@ -110,11 +97,12 @@ void CShipFlySys::process()
 	 default: break;
 	 }
 
-	 if (shipqueue[ShipQueuePtr].time != 0) // decrease the time remaining
-		 shipqueue[ShipQueuePtr].time--;
+	 if (m_shipqueue[m_ShipQueuePtr].time > 0) // decrease the time remaining
+		 m_shipqueue[m_ShipQueuePtr].time--;
 	 else // no time left on this command, go to next cmd
-		 ShipQueuePtr++;
-	*/
+	 {
+		 m_ShipQueuePtr++;
+	 }
 }
 
 

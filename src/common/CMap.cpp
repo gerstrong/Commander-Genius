@@ -20,27 +20,27 @@ CMap::CMap(SDL_Surface *p_scrollsurface, CTilemap *p_Tilemap) {
 	m_width = m_height = 0;
 	m_worldmap = false;
 	
-	m_scrollx = m_scrolly = 0;
-	
-	m_scrollx_buf = m_scrolly_buf = 0;
-	
-	m_scrollpix = m_scrollpixy = 0;
-	m_mapx = m_mapy = 0;           // map X location shown at scrollbuffer row 0
-	m_mapxstripepos = m_mapystripepos = 0;  // X pixel position of next stripe row
-	
+	resetScrolls();
 	mp_scrollsurface = p_scrollsurface;
 	mp_Tilemap = p_Tilemap;
 	mp_data = NULL;
 	memset(m_objectlayer, 0, sizeof(m_objectlayer));
 }
 
-CMap::~CMap() {
-	if(mp_data) delete[] mp_data;
-}
-
 ////////////////////////////
 // Initialization Routine //
 ////////////////////////////
+
+void CMap::resetScrolls()
+{
+	m_scrollx = m_scrolly = 0;
+
+	m_scrollx_buf = m_scrolly_buf = 0;
+
+	m_scrollpix = m_scrollpixy = 0;
+	m_mapx = m_mapy = 0;           // map X location shown at scrollbuffer row 0
+	m_mapxstripepos = m_mapystripepos = 0;  // X pixel position of next stripe row
+}
 
 /////////////////////////
 // Getters and Setters //
@@ -85,7 +85,7 @@ bool CMap::findObject(unsigned int obj, int *xout, int *yout)
 // if it is found returns nonzero and places the
 // coordinates of the first occurance of the tile
 // in (xout,yout)
-bool CMap::findtile(unsigned int tile, int *xout, int *yout)
+bool CMap::findTile(unsigned int tile, int *xout, int *yout)
 {
 	unsigned int x,y;
 
@@ -307,5 +307,10 @@ void CMap::deAnimate(int x, int y)
 	
     mp_Tilemap->deAnimateAt(px , py);
 }
+
+CMap::~CMap() {
+	if(mp_data) delete[] mp_data;
+}
+
 
 

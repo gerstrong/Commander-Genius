@@ -19,6 +19,7 @@ public:
 	virtual ~CMap();
 	
 	bool gotoPos( int x, int y );
+	void resetScrolls();
 	void scrollLeft(void);
 	void scrollRight(void);
 	void scrollUp(void);
@@ -33,7 +34,7 @@ public:
 	Uint16 at(Uint16 x, Uint16 y);
 	Uint16 getObjectat(Uint16 x, Uint16 y);
 	bool findObject(unsigned int obj, int *xout, int *yout);
-	bool findtile(unsigned int tile, int *xout, int *yout);
+	bool findTile(unsigned int tile, int *xout, int *yout);
 	
 	bool setTile(Uint16 x, Uint16 y, Uint16 t);
 	bool setTile(Uint16 x, Uint16 y, Uint16 t, bool update);
@@ -57,6 +58,8 @@ public:
 	bool m_worldmap;             // if 1, this is the world map
 	
 	unsigned int m_maxscrollx, m_maxscrolly;
+	std::string m_gamepath;
+
 private:
 	
 	Uint8 m_scrollpix;     	// (0-7) for tracking when to draw a stripe

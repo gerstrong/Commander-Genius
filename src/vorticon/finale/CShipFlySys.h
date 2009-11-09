@@ -24,7 +24,7 @@
 #define SPR_SHIP_LEFT   116
 #define SPR_EXCLAMATION 117
 #define SPR_QUESTION    118
-#define SHIPSPD         4
+#define SHIPSPD         16
 
 // start x,y map scroll position for eseq1_ShipFlys()
 #define SHIPFLY_X       32
@@ -40,16 +40,17 @@ typedef struct stShipQueue
 class CShipFlySys {
 public:
 	CShipFlySys(CPlayer *p_Player, CMap *p_Map);
-	void setInitialPostion(int x, int y);
 	void addShipQueue(int cmd, int time, int flag1);
 	bool EndOfQueue() { return m_finished; }
 	void process();
 	virtual ~CShipFlySys();
 
+	int m_ShipQueuePtr;
+
 private:
 	stShipQueue m_shipqueue[32];
-	int m_ShipQueuePtr;
 	bool m_finished;
+	bool m_scrollingon;
 	CPlayer *mp_player;
 	CMap *mp_Map;
 };

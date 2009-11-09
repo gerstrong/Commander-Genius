@@ -21,9 +21,6 @@
 
 #define BACKHOME_SHORT_WAIT_TIME   250
 
-#define MARK_SPR_NUM          2
-
-
 int eseq1_ReturnsToShip(stCloneKeenPlus *pCKP)
 {
 	// We are already on the map, so don't load it again. It's availabel

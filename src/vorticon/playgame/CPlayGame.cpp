@@ -460,14 +460,11 @@ void CPlayGame::drawObjects()
 		
 		if (p_object->exists && p_object->onscreen)
 		{
-			p_object->scrx = (p_object->x>>(CSF-4))-mp_Map->m_scrollx;
-			p_object->scry = (p_object->y>>(CSF-4))-mp_Map->m_scrolly;
-			
-			//g_pGraphics->drawSprite(objects[i].scrx, objects[i].scry, objects[i].sprite, i);
+			p_object->scrx = (p_object->x>>STC)-mp_Map->m_scrollx;
+			p_object->scry = (p_object->y>>STC)-mp_Map->m_scrolly;
 			
 			g_pGfxEngine->Sprite[p_object->sprite]->drawSprite( g_pVideoDriver->BlitSurface,
 															   p_object->scrx, p_object->scry );
-			
 			
 	        if (p_object->honorPriority)
 	        {
