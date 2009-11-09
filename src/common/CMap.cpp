@@ -81,6 +81,29 @@ bool CMap::findObject(unsigned int obj, int *xout, int *yout)
 	return false;
 }
 
+// searches the map's tile layer for tile TILE.
+// if it is found returns nonzero and places the
+// coordinates of the first occurance of the tile
+// in (xout,yout)
+bool CMap::findtile(unsigned int tile, int *xout, int *yout)
+{
+	unsigned int x,y;
+
+	for(y=2;y<m_height-2;y++)
+	{
+		for(x=2;x<m_width-2;x++)
+		{
+			if (mp_data[y*m_width + x]==tile)
+			{
+				*xout = x;
+				*yout = y;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t)
 {
 	if( x<m_width && y<m_height )

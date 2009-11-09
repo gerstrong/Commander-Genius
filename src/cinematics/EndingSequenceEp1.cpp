@@ -16,28 +16,8 @@
 #include "CommonEnding.h"
 
 
-#define CMD_MOVE                0
-#define CMD_WAIT                1
-#define CMD_SPAWNSPR            2
-#define CMD_REMOVESPR           3
-#define CMD_FADEOUT             4
-#define CMD_ENDOFQUEUE          5
-#define CMD_ENABLESCROLLING     6
-#define CMD_DISABLESCROLLING    7
-
-// start x,y map scroll position for eseq1_ShipFlys()
-#define SHIPFLY_X       32
-#define SHIPFLY_Y       0
-
-
 #define LETTER_SHOW_SPD          30
 #define RETURNTOSHIP_WAIT_TIME   600
-
-#define SPR_SHIP_RIGHT  115
-#define SPR_SHIP_LEFT   116
-#define SPR_EXCLAMATION 117
-#define SPR_QUESTION    118
-#define SHIPSPD         4
 
 #define BACKHOME_SHORT_WAIT_TIME   250
 
@@ -70,15 +50,6 @@ int eseq1_ReturnsToShip(stCloneKeenPlus *pCKP)
 	return 0;
 }
 
-
-void addshipqueue(int cmd, int time, int flag1)
-{
-	/*shipqueue[ShipQueuePtr].cmd = cmd;
-	 shipqueue[ShipQueuePtr].time = time;
-	 shipqueue[ShipQueuePtr].flag1 = flag1;
-	 ShipQueuePtr++;*/
-}
-
 int eseq1_ShipFlys(stCloneKeenPlus *pCKP, bool flyback)
 {
 	/*char enter,lastenterstate;
@@ -95,30 +66,7 @@ int eseq1_ShipFlys(stCloneKeenPlus *pCKP, bool flyback)
 	 
 	 if(!flyback) // When Keen flies back from mars
 	 {
-	 addshipqueue(CMD_MOVE, 230, DUP);
-	 addshipqueue(CMD_WAIT, 50, 0);
-	 addshipqueue(CMD_MOVE, 2690, DDOWNRIGHT);
-	 addshipqueue(CMD_WAIT, 100, 0);
-	 addshipqueue(CMD_MOVE, 480, DDOWN);
-	 addshipqueue(CMD_WAIT, 150, 0);
-	 addshipqueue(CMD_SPAWNSPR, 0, SPR_QUESTION);
-	 addshipqueue(CMD_DISABLESCROLLING, 0, 0);
-	 addshipqueue(CMD_WAIT, 350, 0);
-	 addshipqueue(CMD_REMOVESPR, 0, 0);
-	 addshipqueue(CMD_WAIT, 50, 0);
-	 addshipqueue(CMD_MOVE, 700, DLEFT);
-	 addshipqueue(CMD_WAIT, 150, 0);
-	 addshipqueue(CMD_SPAWNSPR, 0, SPR_EXCLAMATION);
-	 addshipqueue(CMD_WAIT, 500, 0);
-	 addshipqueue(CMD_REMOVESPR, 0, 0);
-	 addshipqueue(CMD_WAIT, 50, 0);
-	 addshipqueue(CMD_MOVE, 700, DRIGHT);
-	 addshipqueue(CMD_WAIT, 25, 0);
-	 addshipqueue(CMD_ENABLESCROLLING, 0, 0);
-	 addshipqueue(CMD_MOVE, 465, DDOWN);
-	 addshipqueue(CMD_FADEOUT, 0, 0);
-	 addshipqueue(CMD_MOVE, 100, DDOWN);
-	 addshipqueue(CMD_ENDOFQUEUE, 0, 0);
+
 	 
 	 //showmapatpos(81, SHIPFLY_X, SHIPFLY_Y, pCKP);
 	 }
@@ -135,96 +83,7 @@ int eseq1_ShipFlys(stCloneKeenPlus *pCKP, bool flyback)
 	 //showmapatpos(81, SHIPFLY_X+600, SHIPFLY_Y+200, pCKP);
 	 }
 	 
-	 
-	 objects[MARK_SPR_NUM].type = OBJ_YORP;                // doesn't matter
-	 objects[MARK_SPR_NUM].exists = 0;
-	 objects[MARK_SPR_NUM].sprite = SPR_QUESTION;
-	 
-	 numplayers = 1;
-	 // place the player at the center of mars or earth
-	 if (map_findtile( flyback ? 586 : 593, &x, &y))
-	 { // found the tile at the center of mars or earth
-	 player[0].x = ((x<<4)+1)<<CSF;
-	 player[0].y = ((y<<4)-3)<<CSF;
-	 }
-	 else
-	 {
-	 crashflag = 1;
-	 why_term_ptr = "eseq1_shipflys(): unable to find center of Mars.";
-	 return 1;
-	 }
-	 
-	 player[0].playframe = SPR_SHIP_RIGHT;
-	 
-	 ShipQueuePtr = 0;
-	 max_scroll_x = max_scroll_y = 20000;
-	 do
-	 {
-	 // keep the question or exclamation mark sprite next to the player
-	 objects[MARK_SPR_NUM].x = player[0].x + (20<<CSF);
-	 objects[MARK_SPR_NUM].y = player[0].y - (10<<CSF);
-	 objects[MARK_SPR_NUM].onscreen = 1;
-	 objects[MARK_SPR_NUM].scrx = (objects[MARK_SPR_NUM].x>>CSF)-scroll_x;
-	 objects[MARK_SPR_NUM].scry = (objects[MARK_SPR_NUM].y>>CSF)-scroll_y;
-	 
-	 // execute the current command in the queue
-	 switch(shipqueue[ShipQueuePtr].cmd)
-	 {
-	 case CMD_MOVE:
-	 switch(shipqueue[ShipQueuePtr].flag1)
-	 {
-	 case DUP:
-	 player[0].y-=SHIPSPD;
-	 player[0].playframe = SPR_SHIP_RIGHT;
-	 break;
-	 case DDOWN:
-	 player[0].y+=SHIPSPD/2;
-	 player[0].playframe = SPR_SHIP_RIGHT;
-	 break;
-	 case DLEFT:
-	 player[0].x-=SHIPSPD;
-	 player[0].playframe = SPR_SHIP_LEFT;
-	 break;
-	 case DRIGHT:
-	 player[0].x+=SHIPSPD;
-	 player[0].playframe = SPR_SHIP_RIGHT;
-	 break;
-	 case DDOWNRIGHT:
-	 player[0].x+=SHIPSPD*2;
-	 player[0].y+=SHIPSPD*0.8;
-	 player[0].playframe = SPR_SHIP_RIGHT;
-	 break;
-	 }
-	 break;
-	 case CMD_SPAWNSPR:
-	 objects[MARK_SPR_NUM].sprite = shipqueue[ShipQueuePtr].flag1;
-	 objects[MARK_SPR_NUM].exists = 1;
-	 break;
-	 case CMD_REMOVESPR:
-	 objects[MARK_SPR_NUM].sprite = shipqueue[ShipQueuePtr].flag1;
-	 objects[MARK_SPR_NUM].exists = 0;
-	 break;
-	 case CMD_ENABLESCROLLING:
-	 scrollingon = 1;
-	 break;
-	 case CMD_DISABLESCROLLING:
-	 scrollingon = 0;
-	 break;
-	 case CMD_WAIT:
-	 break;
-	 case CMD_FADEOUT:
-	 return 0;
-	 break;
-	 default: break;
-	 }
-	 // decrease the time remaining
-	 if (shipqueue[ShipQueuePtr].time)
-	 shipqueue[ShipQueuePtr].time--;
-	 else
-	 // no time left on this command, go to next cmd
-	 ShipQueuePtr++;
-	 //}
-	 
+
 	 enter = ( g_pInput->getPressedKey(KENTER) || g_pInput->getPressedKey(KCTRL) || g_pInput->getPressedKey(KALT) );
 	 if (enter)
 	 return 0;

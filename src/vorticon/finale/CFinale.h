@@ -8,6 +8,8 @@
 #ifndef CFINALE_H_
 #define CFINALE_H_
 
+#include "CShipFlySys.h"
+
 class CFinale {
 public:
 	CFinale();

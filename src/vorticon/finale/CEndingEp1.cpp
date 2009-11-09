@@ -87,7 +87,50 @@ void CEndingEp1::ReturnsToShip()
 
 void CEndingEp1::ShipFlys(bool flyback)
 {
-	m_step++;
+	if(m_mustsetup)
+	{
+		//Initialization
+		mp_ShipFlySys = new CShipFlySys( mp_Player, mp_Map );
+
+		mp_ShipFlySys->setInitialPostion(SHIPFLY_X, SHIPFLY_Y);
+		mp_ShipFlySys->addShipQueue(CMD_MOVE, 230, DUP);
+		mp_ShipFlySys->addShipQueue(CMD_WAIT, 50, 0);
+		mp_ShipFlySys->addShipQueue(CMD_MOVE, 2690, DDOWNRIGHT);
+		mp_ShipFlySys->addShipQueue(CMD_WAIT, 100, 0);
+		mp_ShipFlySys->addShipQueue(CMD_MOVE, 480, DDOWN);
+		mp_ShipFlySys->addShipQueue(CMD_WAIT, 150, 0);
+		mp_ShipFlySys->addShipQueue(CMD_SPAWNSPR, 0, SPR_QUESTION);
+		mp_ShipFlySys->addShipQueue(CMD_DISABLESCROLLING, 0, 0);
+		mp_ShipFlySys->addShipQueue(CMD_WAIT, 350, 0);
+		mp_ShipFlySys->addShipQueue(CMD_REMOVESPR, 0, 0);
+		mp_ShipFlySys->addShipQueue(CMD_WAIT, 50, 0);
+		mp_ShipFlySys->addShipQueue(CMD_MOVE, 700, DLEFT);
+		mp_ShipFlySys->addShipQueue(CMD_WAIT, 150, 0);
+		mp_ShipFlySys->addShipQueue(CMD_SPAWNSPR, 0, SPR_EXCLAMATION);
+		mp_ShipFlySys->addShipQueue(CMD_WAIT, 500, 0);
+		mp_ShipFlySys->addShipQueue(CMD_REMOVESPR, 0, 0);
+		mp_ShipFlySys->addShipQueue(CMD_WAIT, 50, 0);
+		mp_ShipFlySys->addShipQueue(CMD_MOVE, 700, DRIGHT);
+		mp_ShipFlySys->addShipQueue(CMD_WAIT, 25, 0);
+		mp_ShipFlySys->addShipQueue(CMD_ENABLESCROLLING, 0, 0);
+		mp_ShipFlySys->addShipQueue(CMD_MOVE, 465, DDOWN);
+		mp_ShipFlySys->addShipQueue(CMD_FADEOUT, 0, 0);
+		mp_ShipFlySys->addShipQueue(CMD_MOVE, 100, DDOWN);
+		mp_ShipFlySys->addShipQueue(CMD_ENDOFQUEUE, 0, 0);
+
+		m_mustsetup = false;
+	}
+
+	if( !mp_ShipFlySys->EndOfQueue() || g_pInput->getPressedAnyCommand() )
+	{
+		// perform a machine typing like dialog.
+	}
+	else
+	{
+		// Shutdown code here!
+		m_step++;
+		m_mustsetup = true;
+	}
 }
 
 void CEndingEp1::BackAtHome()

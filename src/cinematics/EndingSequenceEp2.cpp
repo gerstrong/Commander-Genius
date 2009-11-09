@@ -24,7 +24,7 @@ enum cmd_actions{
 	CMD_DISABLESCROLLING
 };
 
-stShipQueue shipqueue[32];
+//stShipQueue shipqueue[32];
 int ShipQueuePtr;
 
 // start x,y map scroll position for eseq2_TantalusRay()

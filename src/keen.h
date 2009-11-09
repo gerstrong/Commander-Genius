@@ -146,13 +146,6 @@ struct stString
 #define EC_DOWNLEFT         12
 #define EC_DOWNRIGHT        13
 
-typedef struct stShipQueue
-{
-	int cmd;
-	int time;
-	int flag1;
-} stShipQueue;
-
 
 #define TILE_LITTLE_DONE     77
 #define TILE_BIG_DONE1       78

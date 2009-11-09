@@ -99,7 +99,7 @@ public:
 	char m_playingmode;
 	char m_episode;
 	int m_player_number;
-	// Pointer to the Object type assign to this player
+	// Pointer to the Objects
 	std::vector<CObject> *mp_object;
 	
 	char godmode;

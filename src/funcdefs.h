@@ -33,9 +33,6 @@ void usage(void);
 void SetAllCanSupportPlayer(int o, int state);
 void AllPlayersInvisible(void);
 
-// eseq_ep1.c
-void addshipqueue(int cmd, int time, int flag1);
-
 // lz.c
 char lz_decompress(FILE *lzfile, unsigned char *outbuffer);
 

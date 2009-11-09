@@ -129,28 +129,7 @@ void map_animate(int x, int y)
 	 why_term_ptr = "Unable to animate tile at x/y=crashflag1/2";*/
 }
 
-// searches the map's tile layer for tile TILE.
-// if it is found returns nonzero and places the
-// coordinates of the first occurance of the tile
-// in (xout,yout)
-char map_findtile(unsigned int tile, int *xout, int *yout)
-{
-	/*unsigned int x,y;
-	 
-	 for(y=2;y<map.ysize-2;y++)
-	 {
-	 for(x=2;x<map.xsize-2;x++)
-	 {
-	 if (map.mapdata[x][y]==tile)
-	 {
-	 *xout = x;
-	 *yout = y;
-	 return 1;
-	 }
-	 }
-	 }*/
-	return 0;
-}
+
 
 // refreshes the map at the current scroll position
 // (unlike drawmap() which does not honor the scroll and will
