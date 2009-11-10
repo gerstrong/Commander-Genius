@@ -21,8 +21,9 @@ public:
 	void process();
 
 	void ReturnsToShip();
-	void ShipFlys(bool flyback);
+	void ShipFlyMarsToEarth();
 	void BackAtHome();
+	void ShipFlyEarthToMShip();
 
 	virtual ~CEndingEp1();
 

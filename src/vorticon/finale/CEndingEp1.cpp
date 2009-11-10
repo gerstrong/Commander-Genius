@@ -31,13 +31,12 @@ void CEndingEp1::process()
 	switch(m_step)
 	{
 	case 0: ReturnsToShip(); break;
-	case 1: ShipFlys(false); break;
+	case 1: ShipFlyMarsToEarth(); break;
 	case 2: BackAtHome(); break;
-	case 3: ShipFlys(true); break;
+	case 3: ShipFlyEarthToMShip(); break;
 	case 4: /*showEndingText(pCKP->Resources.GameDataDirectory);*/ m_step++; break;
 	case 5:
 		 if (g_pInput->getPressedAnyCommand()) m_step++;
-		 g_pInput->pollEvents();
 		 //eseq_showmsg(text, dlgX, dlgY, dlgW, dlgH, 0, extrascreen);
 		 break;
 	default:
@@ -85,7 +84,7 @@ void CEndingEp1::ReturnsToShip()
 	}
 }
 
-void CEndingEp1::ShipFlys(bool flyback)
+void CEndingEp1::ShipFlyMarsToEarth()
 {
 	if(m_mustsetup)
 	{
@@ -94,10 +93,10 @@ void CEndingEp1::ShipFlys(bool flyback)
 		CMapLoader MapLoader(mp_Map, mp_Player);
 		MapLoader.load(1, 81, path);
 
-		mp_ShipFlySys = new CShipFlySys( mp_Player, mp_Map );
-
-		mp_Player[0].x = (6<<CSF); // This is little trick that the ship
+		mp_Player[0].x = (6<<CSF);
 		mp_Player[0].y = (5<<CSF);
+
+		mp_ShipFlySys = new CShipFlySys( mp_Player, mp_Map );
 
 		mp_Map->gotoPos(0,0);
 		mp_ShipFlySys->addShipQueue(CMD_MOVE, 60, DUP);
@@ -124,6 +123,49 @@ void CEndingEp1::ShipFlys(bool flyback)
 		mp_ShipFlySys->addShipQueue(CMD_FADEOUT, 0, 0);
 		mp_ShipFlySys->addShipQueue(CMD_MOVE, 25, DDOWN);
 		mp_ShipFlySys->addShipQueue(CMD_ENDOFQUEUE, 0, 0);
+		mp_Map->drawAll();
+		mp_ShipFlySys->m_ShipQueuePtr = 0;
+
+		m_mustsetup = false;
+	}
+
+	if( !mp_ShipFlySys->EndOfQueue() || g_pInput->getPressedAnyCommand() )
+	{
+		// process the normal ship flying level and do all the inited commands
+		mp_ShipFlySys->process();
+	}
+	else
+	{
+		// Shutdown code here!
+		delete mp_ShipFlySys;
+		mp_ShipFlySys = NULL;
+		m_step++;
+		m_mustsetup = true;
+	}
+}
+
+void CEndingEp1::ShipFlyEarthToMShip()
+{
+	if(m_mustsetup)
+	{
+		//Initialization
+		std::string path = mp_Map->m_gamepath;
+		CMapLoader MapLoader(mp_Map, mp_Player);
+		MapLoader.load(1, 81, path);
+
+		mp_Player[0].x = (48<<CSF);
+		mp_Player[0].y = (23<<CSF);
+
+		mp_ShipFlySys = new CShipFlySys( mp_Player, mp_Map );
+
+		mp_ShipFlySys->addShipQueue(CMD_MOVE, 58, DUP);
+		mp_ShipFlySys->addShipQueue(CMD_DISABLESCROLLING, 0, 0);
+		mp_ShipFlySys->addShipQueue(CMD_WAIT, 13, DUPLEFT);
+		mp_ShipFlySys->addShipQueue(CMD_MOVE, 208, DLEFT);
+		mp_ShipFlySys->addShipQueue(CMD_FADEOUT, 0, 0);
+		mp_ShipFlySys->addShipQueue(CMD_MOVE, 25, DDOWN);
+		mp_ShipFlySys->addShipQueue(CMD_ENDOFQUEUE, 0, 0);
+
 		mp_Map->drawAll();
 		mp_ShipFlySys->m_ShipQueuePtr = 0;
 

@@ -24,7 +24,7 @@
 int endsequence(stCloneKeenPlus *pCKP)
 {
 	
-	if (pCKP->Control.levelcontrol.episode==1)
+	/*if (pCKP->Control.levelcontrol.episode==1)
 	{
 		if (eseq1_ReturnsToShip(pCKP)) return 0;
 		if (eseq1_ShipFlys(pCKP,false)) return 0;
@@ -48,7 +48,7 @@ int endsequence(stCloneKeenPlus *pCKP)
 	// Remove all the items.
 	
 	//start_gameover(pCKP);
-	
+	*/
 	return 0;
 }
 

@@ -52,6 +52,7 @@ private:
 	bool m_finished;
 	bool m_scrollingon;
 	CPlayer *mp_player;
+	CObject *mp_mark;
 	CMap *mp_Map;
 };
 

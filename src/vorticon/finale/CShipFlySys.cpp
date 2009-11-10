@@ -3,18 +3,37 @@
  *
  *  Created on: 09.11.2009
  *      Author: gerstrong
+ *
+ *  This is used for the scene you see in EP1 and EP2
+ *  when the player flies with his ship from point A to B.
+ *  TODO: This class might be extended to the Tantalus shoot to earth
+ *  scene
  */
 
 #include "CShipFlySys.h"
 
 CShipFlySys::CShipFlySys(CPlayer *p_Player, CMap *p_Map)
 {
-	// TODO Auto-generated constructor stub
 	mp_Map = p_Map;
-	mp_player = p_Player;
+	mp_player = &p_Player[0]; // in this case the player will be the ship flying home
 	m_finished = false;
 	m_scrollingon = true;
 	m_ShipQueuePtr = 0;
+	mp_player[0].playframe = SPR_SHIP_RIGHT;
+
+	// Now, that everything is initialized, create a mark that will be used
+	// as ! or ? Sprite
+	CObject mark;
+	mark.m_type = OBJ_YORP;                // doesn't matter
+	mark.exists = 0;
+	mark.sprite = SPR_QUESTION;
+
+	// keep the question or exclamation mark sprite next to the player
+	mark.onscreen = true;
+
+	mp_player[0].mp_object->push_back(mark);
+
+	mp_mark = &(*(p_Player[0].mp_object->end()-1)); // We still need to manipulate it!
 }
 
 void CShipFlySys::addShipQueue(int cmd, int time, int flag1)
@@ -27,24 +46,6 @@ void CShipFlySys::addShipQueue(int cmd, int time, int flag1)
 
 void CShipFlySys::process()
 {
-	int x, y;
-	/*std::vector<CObject> &objvect = *(mp_player[0].mp_object);
-	CObject
-	objvect[MARK_SPR_NUM].type = OBJ_YORP;                // doesn't matter
-	objvect[MARK_SPR_NUM].exists = 0;
-	objvect[MARK_SPR_NUM].sprite = SPR_QUESTION;*/
-
-	 mp_player[0].playframe = SPR_SHIP_RIGHT;
-
-	 //max_scroll_x = max_scroll_y = 20000;
-
-	 // keep the question or exclamation mark sprite next to the player
-	 /*objects[MARK_SPR_NUM].x = mp_player[0].x + (20<<CSF);
-	 objects[MARK_SPR_NUM].y = mp_player[0].y - (10<<CSF);
-	 objects[MARK_SPR_NUM].onscreen = 1;
-	 objects[MARK_SPR_NUM].scrx = (objects[MARK_SPR_NUM].x>>CSF)-scroll_x;
-	 objects[MARK_SPR_NUM].scry = (objects[MARK_SPR_NUM].y>>CSF)-scroll_y;*/
-
 	 // execute the current command in the queue
 	 switch(m_shipqueue[m_ShipQueuePtr].cmd)
 	 {
@@ -74,14 +75,17 @@ void CShipFlySys::process()
 			 break;
 		 }
 		 mp_player[0].scrollTriggers();
+
+		 mp_mark->x = mp_player[0].x + (1<<CSF);
+		 mp_mark->y = mp_player[0].y - (1<<CSF);
 	 break;
 	 case CMD_SPAWNSPR:
-		 //objects[MARK_SPR_NUM].sprite = shipqueue[ShipQueuePtr].flag1;
-		 //objects[MARK_SPR_NUM].exists = 1;
+		 mp_mark->sprite = m_shipqueue[m_ShipQueuePtr].flag1;
+		 mp_mark->exists = true;
 		 break;
 	 case CMD_REMOVESPR:
-		 //objects[MARK_SPR_NUM].sprite = shipqueue[ShipQueuePtr].flag1;
-		 //objects[MARK_SPR_NUM].exists = 0;
+		 mp_mark->sprite = m_shipqueue[m_ShipQueuePtr].flag1;
+		 mp_mark->exists = false;
 		 break;
 	 case CMD_ENABLESCROLLING:
 		 m_scrollingon = true;
@@ -91,7 +95,7 @@ void CShipFlySys::process()
 		 break;
 	 case CMD_WAIT:
 		 break;
-	 case CMD_FADEOUT:
+	 case CMD_ENDOFQUEUE:
 		 m_finished = true;
 		 break;
 	 default: break;
@@ -107,5 +111,5 @@ void CShipFlySys::process()
 
 
 CShipFlySys::~CShipFlySys() {
-	// TODO Auto-generated destructor stub
+	mp_player[0].mp_object->pop_back();
 }
