@@ -7,9 +7,11 @@
 
 #include "CEndingEp1.h"
 #include "../../funcdefs.h"
+#include "../../StringUtils.h"
 #include "../../sdl/CTimer.h"
 #include "../../sdl/CInput.h"
 #include "../../sdl/CVideoDriver.h"
+#include "../../graphics/CGfxEngine.h"
 #include "../../common/CMapLoader.h"
 #include "../../common/Playerdefines.h"
 
@@ -53,6 +55,7 @@ void CEndingEp1::ReturnsToShip()
 		mp_Map->gotoPos( 40, 540 );
 
   	    // draw keen next to his ship
+		mp_Player[0].hideplayer = false;
 		mp_Player[0].x = 6636;
 		mp_Player[0].y = 19968;
 		mp_Player[0].playframe = PMAPLEFTFRAME;
@@ -93,6 +96,7 @@ void CEndingEp1::ShipFlyMarsToEarth()
 		CMapLoader MapLoader(mp_Map, mp_Player);
 		MapLoader.load(1, 81, path);
 
+		mp_Player[0].hideplayer = false;
 		mp_Player[0].x = (6<<CSF);
 		mp_Player[0].y = (5<<CSF);
 
@@ -129,7 +133,7 @@ void CEndingEp1::ShipFlyMarsToEarth()
 		m_mustsetup = false;
 	}
 
-	if( !mp_ShipFlySys->EndOfQueue() || g_pInput->getPressedAnyCommand() )
+	if( !mp_ShipFlySys->EndOfQueue() && !g_pInput->getPressedAnyCommand() )
 	{
 		// process the normal ship flying level and do all the inited commands
 		mp_ShipFlySys->process();
@@ -144,6 +148,44 @@ void CEndingEp1::ShipFlyMarsToEarth()
 	}
 }
 
+void CEndingEp1::BackAtHome()
+{
+	if(m_mustsetup)
+	{
+		//Initialization
+		mp_Map->gotoPos(0,0);
+		mp_Map->resetScrolls(); // The Scrollsurface must be (0,0) so the bitmap is correctly drawn
+		g_pGfxEngine->Tilemap->m_animation_enabled = false; // Needed, because the other map is still loaded
+		mp_Player[0].hideplayer = true;
+		mp_FinaleStaticScene = new CFinaleStaticScene(mp_Map->m_gamepath, "finale.ck1");
+
+		mp_FinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE1", 6000);
+		mp_FinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE2", 6000);
+		mp_FinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE3", 6000);
+		mp_FinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE4", 5000);
+		mp_FinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE5", 5000);
+		mp_FinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE6", 6000);
+		mp_FinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE7", 6000);
+		mp_FinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE8", 8000);
+
+		m_mustsetup = false;
+	}
+
+	if( !mp_FinaleStaticScene->mustclose() )
+	{
+		mp_FinaleStaticScene->process();
+	}
+	else
+	{
+		// Shutdown code here!
+		delete mp_FinaleStaticScene;
+		mp_FinaleStaticScene = NULL;
+		g_pGfxEngine->Tilemap->m_animation_enabled = true;
+		m_step++;
+		m_mustsetup = true;
+	}
+}
+
 void CEndingEp1::ShipFlyEarthToMShip()
 {
 	if(m_mustsetup)
@@ -153,8 +195,11 @@ void CEndingEp1::ShipFlyEarthToMShip()
 		CMapLoader MapLoader(mp_Map, mp_Player);
 		MapLoader.load(1, 81, path);
 
+		mp_Player[0].hideplayer = false;
 		mp_Player[0].x = (48<<CSF);
 		mp_Player[0].y = (23<<CSF);
+
+		mp_Map->gotoPos((mp_Player[0].x>>STC)-100, (mp_Player[0].y>>STC)-160);
 
 		mp_ShipFlySys = new CShipFlySys( mp_Player, mp_Map );
 
@@ -172,7 +217,7 @@ void CEndingEp1::ShipFlyEarthToMShip()
 		m_mustsetup = false;
 	}
 
-	if( !mp_ShipFlySys->EndOfQueue() || g_pInput->getPressedAnyCommand() )
+	if( !mp_ShipFlySys->EndOfQueue() && !g_pInput->getPressedAnyCommand() )
 	{
 		// process the normal ship flying level and do all the inited commands
 		mp_ShipFlySys->process();
@@ -187,11 +232,29 @@ void CEndingEp1::ShipFlyEarthToMShip()
 	}
 }
 
-void CEndingEp1::BackAtHome()
+// TODO: Next TODO!!!
+/*void eseq1_showEndingText(std::string &Path)
 {
-	m_step++;
-}
+	std::string text;
+	unsigned char *filebuf;
+	unsigned long startflag=0x1652A-512, endflag=0x1679A-512; // where story begins and ends!
 
+	CExeFile *ExeFile = new CExeFile(1, Path);
+	if(!ExeFile) return;
+	if(!ExeFile->readData()) return;
+	filebuf = ExeFile->getData() + startflag;
+
+	for( unsigned long i=0 ; i<endflag-startflag ; i++ )
+	{
+		if(filebuf[i])
+			text.push_back(filebuf[i]);
+	}
+
+	delete ExeFile;
+
+	text.clear();
+}
+*/
 CEndingEp1::~CEndingEp1() {
 	// TODO Auto-generated destructor stub
 }

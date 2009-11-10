@@ -58,6 +58,7 @@ public:
 	void deAnimateAt(Uint16 px, Uint16 py);
 	
 	stTile *mp_tiles;
+	bool m_animation_enabled;
 	
 	int m_numtiles;
 	

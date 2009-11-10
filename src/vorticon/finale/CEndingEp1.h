@@ -36,6 +36,7 @@ private:
 	CMap *mp_Map;
 	CPlayer *mp_Player;
 	CShipFlySys *mp_ShipFlySys;
+	CFinaleStaticScene *mp_FinaleStaticScene;
 	CTextBox *mp_Textbox;
 	CDlgFrame *mp_DlgFrame;
 };

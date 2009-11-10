@@ -81,7 +81,7 @@ void finale_plot( SDL_Surface *sfc, int pix )
 	if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
 }
 
-// draws a finale.ck? file into the upper-left corner of the scrollbuffer
+// draws a filename file into the SDL_Surface we are using
 void finale_draw( SDL_Surface *sfc, const std::string& filename, const std::string& path)
 {
 	FILE *fp;
@@ -142,3 +142,4 @@ void finale_draw( SDL_Surface *sfc, const std::string& filename, const std::stri
 	
 	fclose(fp);
 }
+

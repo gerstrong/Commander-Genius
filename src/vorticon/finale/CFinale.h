@@ -9,6 +9,7 @@
 #define CFINALE_H_
 
 #include "CShipFlySys.h"
+#include "CFinaleStaticScene.h"
 
 class CFinale {
 public:

@@ -17,6 +17,7 @@ CTilemap::CTilemap(stTile *pTileProperties, int numtiles) {
 	m_animtiletimer = m_curanimtileframe = 0;
 	mp_tiles = pTileProperties;
 	m_numtiles = numtiles;
+	m_animation_enabled = true;
 }
 
 CTilemap::~CTilemap() {
@@ -90,7 +91,7 @@ void CTilemap::drawTile(SDL_Surface *dst, Uint16 x, Uint16 y, Uint16 t)
 void CTilemap::animateAllTiles(SDL_Surface *dst)
 {
 	/* animate animated tiles */
-	if (m_animtiletimer>ANIM_TILE_TIME)
+	if (m_animtiletimer>ANIM_TILE_TIME && m_animation_enabled)
 	{
 		/* advance to next frame */
 		m_curanimtileframe = (m_curanimtileframe+1)&7;

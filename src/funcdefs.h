@@ -36,8 +36,5 @@ void AllPlayersInvisible(void);
 // lz.c
 char lz_decompress(FILE *lzfile, unsigned char *outbuffer);
 
-// finale.c
-void finale_draw( SDL_Surface *sfc, const std::string& filename, const std::string& path);
-
 #endif
 
