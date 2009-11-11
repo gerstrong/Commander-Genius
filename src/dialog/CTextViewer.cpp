@@ -13,24 +13,21 @@
 #include "../graphics/CGfxEngine.h"
 
 CTextViewer::CTextViewer(SDL_Surface *TextVSfc, int x, int y, int w, int h) {
-	m_x = x;
-	m_y = y;
-	m_w = w;
-	m_h = h;
+	m_x = x;	m_y = y;
+	m_w = w;	m_h = h;
 	
-	m_linepos = 0;
-	m_scrollpos = 0;
-	
-	m_8x8tileheight = 8;
-	m_8x8tilewidth = 8;
-	
+	m_scrollpos = m_linepos = 0;
+	m_8x8tilewidth = m_8x8tileheight = 8;
 	m_TextVSfc = TextVSfc;
+	m_mustclose = false;	m_timer = 0;
 }
 
 void CTextViewer::scrollDown()
 {
 	if( m_scrollpos < m_8x8tileheight )
-		m_scrollpos++;
+	{
+		m_scrollpos+=4;
+	}
 	else
 	{
 		if( m_linepos < (int)m_textline.size() - (m_h/m_8x8tileheight) )
@@ -44,7 +41,9 @@ void CTextViewer::scrollDown()
 void CTextViewer::scrollUp()
 {
 	if( m_scrollpos > 0 )
-		m_scrollpos--;
+	{
+		m_scrollpos-=4;
+	}
 	else
 	{
 		if( m_linepos > 0 )
@@ -65,7 +64,7 @@ void CTextViewer::setPosition(int pos)
 {	if( pos>=0 && pos < (int) m_textline.size() - (m_h/m_8x8tileheight-1) )
 	m_linepos = pos;	}
 
-void CTextViewer::loadText(const std::string text)
+void CTextViewer::loadText(const std::string &text)
 {
 	mp_text = text;
 	
@@ -146,56 +145,39 @@ void CTextViewer::drawTextlines()
 }
 
 // Most common render function for this TextViewer
-void CTextViewer::processCycle()
+void CTextViewer::process()
 {
-	/*char timer=0;
-	 bool cancel = false;
-	 
-	 do
-	 {
-	 gamedo_AnimatedTiles();
-	 
-	 g_pInput->pollEvents();
-	 
 	 // Normal Keys/Axes
 	 if( g_pInput->getHoldedCommand(IC_DOWN) )
 	 {
-	 timer++;
-	 if(timer >= 4)
-	 scrollDown();
+		 m_timer++;
+		 if(m_timer >= 2)
+			 scrollDown();
 	 }
 	 if( g_pInput->getHoldedCommand(IC_UP) )
 	 {
-	 timer++;
-	 if(timer >= 4)
-	 scrollUp();
+		 m_timer++;
+		 if(m_timer >= 2)
+			 scrollUp();
 	 }
 	 
 	 // Page Keys
 	 if( g_pInput->getPressedKey(KPGDN) )
-	 {
-	 setPosition(m_linepos+16);
-	 }
+		 setPosition(m_linepos+16);
 	 if( g_pInput->getPressedKey(KPGUP) )
-	 {
-	 setPosition(m_linepos-16);
-	 }
+		 setPosition(m_linepos-16);
 	 
-	 if(timer>=8) timer=0;
+	 if(m_timer>=8) m_timer=0;
 	 
-	 cancel = g_pInput->getPressedKey(KQUIT);
+	 if(g_pInput->getPressedKey(KQUIT))
+		 m_mustclose = true;
 	 
-	 gamedo_RenderScreen();
 	 renderBox(); // This comes after, because it does transparent overlay
-	 } while(!cancel);*/
 }
 
 // This function shows the Story of Commander Keen!
 void CTextViewer::renderBox()
 {
-	// However it should be blit to a memory map and then rendered every time. If not, no new effects can
-	// be improved.
-	
 	// first draw the blank rect
 	int i, j;
 	for(j = 0 ; j < m_h - m_8x8tileheight ; j+= m_8x8tileheight )

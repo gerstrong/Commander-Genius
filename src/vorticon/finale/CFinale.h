@@ -8,14 +8,19 @@
 #ifndef CFINALE_H_
 #define CFINALE_H_
 
+#include "../../dialog/CTextViewer.h"
+#include "../../common/CMap.h"
 #include "CShipFlySys.h"
 #include "CFinaleStaticScene.h"
+#include <string>
 
 class CFinale {
 public:
 	CFinale();
 
 	void init_ToBeContinued();
+	void showEndingText();
+	void initEpilogue(std::string &text);
 
 	virtual void process() {}
 	bool getHasFinished() { return m_mustfinishgame; }
@@ -23,7 +28,12 @@ public:
 	virtual ~CFinale();
 
 protected:
+	char m_step;
 	bool m_mustfinishgame;
+	CTextViewer *mp_TextViewer; // Used for Epilogue
+	std::string m_epilogue_text;
+	int m_Episode;
+	CMap *mp_Map;
 };
 
 #endif /* CFINALE_H_ */

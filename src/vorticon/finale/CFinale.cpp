@@ -6,10 +6,10 @@
  */
 
 #include "CFinale.h"
+#include "../../sdl/CVideoDriver.h"
+#include "../../fileio/CExeFile.h"
 
-CFinale::CFinale() {
-	// TODO Auto-generated constructor stub
-
+CFinale::CFinale() : mp_TextViewer(NULL) {
 }
 
 void CFinale::init_ToBeContinued()
@@ -29,6 +29,44 @@ void CFinale::init_ToBeContinued()
 	 dlgH = GetStringAttribute("TO_BE_CONTINUED", "HEIGHT");*/
 }
 
+void CFinale::showEndingText()
+{
+	if(!mp_TextViewer)
+	{
+		std::string text;
+		initEpilogue(text);
+		mp_TextViewer = new CTextViewer(g_pVideoDriver->FGLayerSurface, 0, 0, 320, 120);
+		mp_TextViewer->loadText(text);
+	}
+
+	mp_TextViewer->process();
+
+	if(mp_TextViewer->hasClosed())
+	{
+		delete mp_TextViewer;
+		mp_TextViewer = NULL;
+		m_step++;
+	}
+}
+
+void CFinale::initEpilogue(std::string &text)
+{
+	unsigned char *filebuf;
+	unsigned long startflag=0x1652A-512, endflag=0x1679A-512; // where story begins and ends!
+
+	CExeFile *ExeFile = new CExeFile(m_Episode, mp_Map->m_gamepath);
+	if(!ExeFile) return;
+	if(!ExeFile->readData()) return;
+	filebuf = ExeFile->getData() + startflag;
+
+	for( unsigned long i=0 ; i<endflag-startflag ; i++ )
+	{
+		if(filebuf[i])
+			text.push_back(filebuf[i]);
+	}
+	delete ExeFile;
+}
+
 CFinale::~CFinale() {
-	// TODO Auto-generated destructor stub
+	if(mp_TextViewer)	delete mp_TextViewer;
 }

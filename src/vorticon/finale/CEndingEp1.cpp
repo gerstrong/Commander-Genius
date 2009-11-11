@@ -15,7 +15,11 @@
 #include "../../common/CMapLoader.h"
 #include "../../common/Playerdefines.h"
 
-CEndingEp1::CEndingEp1(CMap *p_map, CPlayer *p_Player) : mp_Map(p_map), mp_Player(p_Player) {
+CEndingEp1::CEndingEp1(CMap *p_map, CPlayer *p_Player) :
+	mp_Player(p_Player)
+{
+	mp_Map = p_map;
+	m_Episode = 1;
 	m_step = 0;
 	m_starttime = g_pTimer->getTicks();
 	m_timepassed = 0;
@@ -36,11 +40,7 @@ void CEndingEp1::process()
 	case 1: ShipFlyMarsToEarth(); break;
 	case 2: BackAtHome(); break;
 	case 3: ShipFlyEarthToMShip(); break;
-	case 4: /*showEndingText(pCKP->Resources.GameDataDirectory);*/ m_step++; break;
-	case 5:
-		 if (g_pInput->getPressedAnyCommand()) m_step++;
-		 //eseq_showmsg(text, dlgX, dlgY, dlgW, dlgH, 0, extrascreen);
-		 break;
+	case 4: showEndingText(); break;
 	default:
 		m_mustfinishgame = true;
 		break;
@@ -232,29 +232,6 @@ void CEndingEp1::ShipFlyEarthToMShip()
 	}
 }
 
-// TODO: Next TODO!!!
-/*void eseq1_showEndingText(std::string &Path)
-{
-	std::string text;
-	unsigned char *filebuf;
-	unsigned long startflag=0x1652A-512, endflag=0x1679A-512; // where story begins and ends!
-
-	CExeFile *ExeFile = new CExeFile(1, Path);
-	if(!ExeFile) return;
-	if(!ExeFile->readData()) return;
-	filebuf = ExeFile->getData() + startflag;
-
-	for( unsigned long i=0 ; i<endflag-startflag ; i++ )
-	{
-		if(filebuf[i])
-			text.push_back(filebuf[i]);
-	}
-
-	delete ExeFile;
-
-	text.clear();
-}
-*/
 CEndingEp1::~CEndingEp1() {
 	// TODO Auto-generated destructor stub
 }

@@ -28,12 +28,10 @@ public:
 	virtual ~CEndingEp1();
 
 private:
-	char m_step;
 	bool m_mustsetup;
 	Uint32 m_starttime;
 	Uint32 m_timepassed;
 
-	CMap *mp_Map;
 	CPlayer *mp_Player;
 	CShipFlySys *mp_ShipFlySys;
 	CFinaleStaticScene *mp_FinaleStaticScene;

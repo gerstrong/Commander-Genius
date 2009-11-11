@@ -861,7 +861,7 @@ void showTextMB(const std::string& Text)
 // This function shows up the helping text when F1 is pushed
 void showF1HelpText(int episode, std::string DataDirectory)
 {
-	std::string helptext;
+/*	std::string helptext;
 	
 	if(episode==1)
 	{
@@ -917,8 +917,8 @@ void showF1HelpText(int episode, std::string DataDirectory)
 	
 	Textviewer->loadText(helptext);
 	
-	Textviewer->processCycle();
+	Textviewer->process();
 	
-	delete Textviewer;
+	delete Textviewer;*/
 }
 
