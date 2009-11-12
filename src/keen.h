@@ -93,10 +93,8 @@ struct stMap
 	bool firsttime;  // used when generating multiplayer positions on world map
 };
 
-
 struct SDL_Surface;
 
-// for strings loaded from "strings.dat"
 #define MAX_STRINGS             100
 #define MAX_ATTRIBUTES          16
 struct stString

@@ -125,10 +125,15 @@ void CGfxEngine::copyTileToSprite( Uint16 t, Uint16 s, Uint16 ntilestocopy )
 
 // draw an empty dialog box, for youseeinyourmind(), etc.
 // Maybe this should go to CFont, because it's drawn by fonts...
-void CGfxEngine::drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w, int h)
+void CGfxEngine::drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w, int h, Uint32 colour)
 {
 	int x,y,i,j;
+	SDL_Rect rect;
+	rect.x = x1*9; rect.w = w*8;
+	rect.y = y1*9; rect.h = h*8;
 	
+	SDL_FillRect(DialogSurface, &rect, colour);
+
 	Font->drawCharacter(DialogSurface, 1, x1*8, y1*8);
 	Font->drawCharacter(DialogSurface, 3, (x1+w)*8, y1*8);
 	for(x=(x1*8)+8,i=0;i<w-1;i++)
@@ -143,7 +148,6 @@ void CGfxEngine::drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w
 		{
 			if (i==0) Font->drawCharacter(DialogSurface, 4, x, y);
 			else if (i==w) Font->drawCharacter(DialogSurface, 5, x, y);
-			else Font->drawCharacter(DialogSurface, ' ', x, y);
 			x+=8;
 		}
 		y+=8;

@@ -21,6 +21,10 @@
 #include "../CSingleton.h"
 #define g_pGfxEngine CGfxEngine::Get()
 
+enum backgroundcolours{
+	WHITE, GRAY
+};
+
 class CGfxEngine : public CSingleton<CGfxEngine>
 {
 public:
@@ -39,7 +43,7 @@ public:
 	
 	void copyTileToSprite( Uint16 t, Uint16 s, Uint16 ntilestocopy );
 	
-	void drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w, int h);
+	void drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w, int h, Uint32 colour = 0xFFFFFF);
 	int getNumSprites() { return Sprite.size(); }
 	
 	CBitmap *getBitmap(const std::string &name);

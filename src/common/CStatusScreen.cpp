@@ -46,11 +46,11 @@ void CStatusScreen::drawInventoryEp1()
 	
 	dlgX = 5;
 	dlgY = 5;
-	dlgW = 30;
+	dlgW = 29;
 	dlgH = 15;
 	
-	g_pGfxEngine->drawDialogBox( mp_surface, dlgX,dlgY,dlgW,dlgH);
-	g_pGfxEngine->Font->drawFont( mp_surface, getstring("EP1_StatusBox"), (dlgX+1)<<3, (dlgY+1)<<3, 0);
+	g_pGfxEngine->drawDialogBox( mp_surface, dlgX,dlgY,dlgW,dlgH, SDL_MapRGB(mp_surface->format, 172, 172, 172));
+	g_pGfxEngine->Font->drawFont( mp_surface, getstring("EP1_StatusBox"), (dlgX+1)<<3, (dlgY+1)<<3, LETTER_TYPE_RED);
 	
 	// fill in what we have
 	// 321: joystick/battery/vacuum/fuel not gotten

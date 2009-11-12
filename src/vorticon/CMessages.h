@@ -8,23 +8,30 @@
 #ifndef CMESSAGES_H_
 #define CMESSAGES_H_
 
-#include <list>
+#include "../keen.h"
 #include <string>
-#include <iostream>
-
-// TODO: Make the strings a class, but it must read from the exe-files basing on uncompressed buffer
+#include <map>
 
 class CMessages {
 public:	
-	CMessages();
+	CMessages(unsigned char *p_exebuf, char episode, int version);
+	
+	bool extractGlobalStrings();
+	
 	virtual ~CMessages();
-	
-	bool readData(unsigned char *buf, int episode, int version, const std::string& DataDirectory);
-	char *getString(const char *IDtext);
-	
 private:
-	std::list<std::string> StringList;
-	std::list<int> StringIDList;
+	void formatString(std::string &Text);
+
+	std::pair<std::string, std::string>
+	extractString( std::string matchingstring, unsigned long start, unsigned long end );
+
+	void createPredefinedStringsEp1(std::map<std::string, std::string> &StringMap);
+	void createPredefinedStringsEp2(std::map<std::string, std::string> &StringMap);
+	void createPredefinedStringsEp3(std::map<std::string, std::string> &StringMap);
+
+	unsigned char *mp_exe;
+	char m_episode;
+	int m_version;
 };
 
 #endif /* CMESSAGES_H_ */
