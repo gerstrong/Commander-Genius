@@ -27,7 +27,7 @@ public:
 	CTitle(std::vector<CObject*> *Objects);
 	virtual ~CTitle();
 	
-	bool init();
+	bool init(int Episode);
 	void process();
 	void cleanup();
 	

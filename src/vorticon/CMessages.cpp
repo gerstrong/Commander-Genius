@@ -99,9 +99,20 @@ bool CMessages::extractGlobalStrings()
 			{
 				case 131:
 				{
-					StringMap.insert( extractString( "EP2_StatusBox" , 0x15052, 0x150F5 ) );
-					StringMap.insert( extractString( "EP1_SHIP" , 0x15052, 0x150F5 ) );
-					StringMap.insert( extractString( "EP1_StatusBox" , 0x15052, 0x150F5 ) );
+					StringMap.insert( extractString( "EP2_StatusBox" , 0x19C40, 0x19CCE ) );
+					StringMap.insert( extractString( "LIVES_LEFT" , 0x1A9B2, 0x1A9BF ) );
+					StringMap.insert( extractString( "EP2_VE_NOJUMPINDARK" , 0x1A2D2, 0x1A391 ) );
+					StringMap.insert( extractString( "EP2_VE_EVILBELTS" , 0x1A391, 0x1A4A6) );
+					StringMap.insert( extractString( "EP2_LVL4_TargetName" , 0x19CCF, 0x19CD5) );
+					StringMap.insert( extractString( "EP2_LVL6_TargetName" , 0x19CD6, 0x19CDB) );
+					StringMap.insert( extractString( "EP2_LVL7_TargetName" , 0x19CDC, 0x19CE2) );
+					StringMap.insert( extractString( "EP2_LVL9_TargetName" , 0x19CE3, 0x19CEB) );
+					StringMap.insert( extractString( "EP2_LVL11_TargetName" , 0x19CEC, 0x19CF1) );
+					StringMap.insert( extractString( "EP2_LVL13_TargetName" , 0x19CF2, 0x19CF6) );
+					StringMap.insert( extractString( "EP2_LVL15_TargetName" , 0x19CF7, 0x19CFD) );
+					StringMap.insert( extractString( "EP2_LVL16_TargetName" , 0x19CFE, 0x19D07) );
+					// Message Boxes
+					StringMap.insert( extractString( "EP2_ESEQ_PART1" , 0x1A4A7, 0x1A558) );
 				} break;
 			}
 		} break;
@@ -119,19 +130,23 @@ bool CMessages::extractGlobalStrings()
 
 	// Now pass all the Map to the global text structure
 	// Still a bad idea, because it's global string.
-	std::map<std::string, std::string>::iterator i = StringMap.begin();
-	for(int c=0 ; c<MAX_STRINGS ; c++)
+	if(!StringMap.empty())
 	{
-		strings[c].name = i->first;
-		strings[c].stringptr = i->second;
+		std::map<std::string, std::string>::iterator i = StringMap.begin();
+		for(int c=0 ; c<MAX_STRINGS ; c++)
+		{
+			strings[c].name = i->first;
+			strings[c].stringptr = i->second;
 
-		i++;
-		if( i == StringMap.end() )
-			break;
+			i++;
+			if( i == StringMap.end() )
+				break;
+		}
+		numStrings = StringMap.size();
+		g_pLogFile->ftextOut("Loaded %d strings from the exe-file.<br>", numStrings);
+		return true;
 	}
-	numStrings = StringMap.size();
-	g_pLogFile->ftextOut("Loaded %d strings from the exe-file.<br>", numStrings);
-	return true;
+	return false;
 }
 
 CMessages::~CMessages() {

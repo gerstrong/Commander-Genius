@@ -20,7 +20,7 @@ CTitle::CTitle(std::vector<CObject*> *pObjects) {
 	mp_objects = pObjects;
 }
 
-bool CTitle::init()
+bool CTitle::init(int Episode)
 {
 	CObject *p_object;
 	SDL_Surface *pSurface;
@@ -36,7 +36,10 @@ bool CTitle::init()
 	
 	pBitmap = g_pGfxEngine->getBitmap("F1HELP");
 	p_object = new CEGABitmap( pSurface, pBitmap );
-	p_object->setScrPos( 96, 180 );
+
+	if(Episode == 3) p_object->setScrPos( 128, 180 );
+	else p_object->setScrPos( 96, 180 );
+
 	mp_objects->push_back(p_object);
 	
 	m_finished = false;

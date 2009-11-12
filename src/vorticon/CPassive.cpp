@@ -58,7 +58,7 @@ bool CPassive::init(char mode)
 		MapLoader.load( m_Episode, 90, m_DataDirectory);
 		mp_Map->gotoPos( 32, 32); // Coordinates of title screen
 		mp_Map->drawAll();
-		mp_TitleScreen->init();
+		mp_TitleScreen->init(m_Episode);
 	}
 	else if( m_mode == DEMO )
 	{
