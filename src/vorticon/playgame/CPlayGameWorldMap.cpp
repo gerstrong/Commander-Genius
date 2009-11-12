@@ -128,8 +128,7 @@ SDL_Surface *boxsurface = g_pVideoDriver->FGLayerSurface;
 		 m_showKeensLeft = false;
 
 	 g_pGfxEngine->drawDialogBox( boxsurface, KEENSLEFT_X, boxY,KEENSLEFT_W,boxH);
-	 g_pGfxEngine->Font->drawFont( boxsurface, getstring("LIVES_LEFT_BACKGROUND"),(KEENSLEFT_X+1)*8,(boxY+1)*8,0);
-	 g_pGfxEngine->Font->drawFont( boxsurface, getstring("LIVES_LEFT"),((KEENSLEFT_X+7)*8)+4,(boxY+1)*8,0);
+	 g_pGfxEngine->Font->drawFont( boxsurface, getstring("LIVES_LEFT"),((KEENSLEFT_X+7)*8)+4,(boxY+1)*8, LETTER_TYPE_RED);
 
 	 y = ((boxY+2)*8)+4;
 	 for(p=0; p<m_NumPlayers ; p++)

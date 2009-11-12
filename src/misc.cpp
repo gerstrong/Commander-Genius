@@ -444,12 +444,12 @@ void ShipEp3(stCloneKeenPlus *pCKP)
 	// display one of four random strings
 	sprintf(strname, "EP3_SHIP%d", (rand()%4)+1);
 	
-	dlgX = GetStringAttribute(strname, "LEFT");
+	/*dlgX = GetStringAttribute(strname, "LEFT");
 	dlgY = GetStringAttribute(strname, "TOP");
 	dlgW = GetStringAttribute(strname, "WIDTH");
 	dlgH = GetStringAttribute(strname, "HEIGHT");
 	twirlX = GetStringAttribute(strname, "TWIRLX");
-	twirlY = GetStringAttribute(strname, "TWIRLY");
+	twirlY = GetStringAttribute(strname, "TWIRLY");*/
 	
 	g_pGfxEngine->drawDialogBox( boxsurface, dlgX,dlgY,dlgW,dlgH);
 	g_pGfxEngine->Font->drawFont( boxsurface, getstring(strname), (dlgX+1)<<3, (dlgY+1)<<3,0);

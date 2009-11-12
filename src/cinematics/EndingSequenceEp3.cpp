@@ -19,19 +19,19 @@
 
 void eseq3_Mortimer()
 {
-	int x,y,w,h;
+	//int x,y,w,h;
 	g_pSound->playSound(SOUND_MORTIMER, PLAY_FORCE);
 	
-	x = GetStringAttribute("EP3_MORTIMER", "LEFT");
+	/*x = GetStringAttribute("EP3_MORTIMER", "LEFT");
 	y = GetStringAttribute("EP3_MORTIMER", "TOP");
 	w = GetStringAttribute("EP3_MORTIMER", "WIDTH");
-	h = GetStringAttribute("EP3_MORTIMER", "HEIGHT");
+	h = GetStringAttribute("EP3_MORTIMER", "HEIGHT");*/
 	
-	eseq_showmsg(getstring("EP3_MORTIMER"),x,y,w,h, false);
+	/*eseq_showmsg(getstring("EP3_MORTIMER"),x,y,w,h, false);
 	eseq_showmsg(getstring("EP3_MORTIMER2"),x,y,w,h, false);
 	eseq_showmsg(getstring("EP3_MORTIMER3"),x,y,w,h, false);
 	eseq_showmsg(getstring("EP3_MORTIMER4"),x,y,w,h, false);
-	eseq_showmsg(getstring("EP3_MORTIMER5"),x,y,w,h, false);
+	eseq_showmsg(getstring("EP3_MORTIMER5"),x,y,w,h, false);*/
 	
 	//map_redraw();
 	g_pSound->playSound(SOUND_FOOTSLAM, PLAY_NOW);
