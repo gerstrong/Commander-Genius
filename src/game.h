@@ -34,8 +34,6 @@ enum directions{
 
 void recalc_highest_objslot(void);
 
-void killplayer(int theplayer);
-
 // Referenzed from cinematics/EndingSequenceEp3.cpp
 void eseq3_Mortimer();
 

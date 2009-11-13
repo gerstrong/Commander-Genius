@@ -20,7 +20,7 @@
 class CObjectAI {
 public:
 	CObjectAI(CMap *p_map, std::vector<CObject> *p_objvect, CPlayer *p_player,
-			  stOption *p_options, int NumPlayers, int episode, char difficulty);
+			 stOption *p_options, int NumPlayers, int episode, int level ,char difficulty);
 	virtual ~CObjectAI();
 	
 	// main functions
@@ -36,9 +36,11 @@ private:
 	
 	// ep1
 	void yorp_ai(CObject *p_object, CPlayer *p_player, bool hardmode);
-	/*void garg_ai(int o, bool hardmode);
-	 void vort_ai(int o, stLevelControl *p_levelcontrol);
-	 void butler_ai(int o, bool hardmode);
+	// void garg_ai(int o, bool hardmode);
+	void vort_ai(CObject *p_object, int level, int episode, char difficulty, bool dark);
+	void vort_initiatejump(CObject *p_object);
+
+	/*void butler_ai(int o, bool hardmode);
 	 void tank_ai(int o, bool hardmode);
 	 void icechunk_ai(int o);
 	 void icebit_ai(int o);
@@ -73,11 +75,14 @@ private:
 	void door_ai( CObject *p_object, char DoorOpenDir );
 	void teleporter_ai(CObject *p_object);
 	
+	void killplayer(int theplayer);
+
 	// Variables
 	CMap *mp_Map;
 	std::vector<CObject> *mp_Objvect;
 	CPlayer *mp_Player;
 	stOption *mp_Options;
+	int m_Level;
 	int m_Episode;
 	int m_NumPlayers;
 	char m_difficulty;

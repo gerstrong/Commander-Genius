@@ -10,12 +10,13 @@
 #include "../../CLogFile.h"
 
 CObjectAI::CObjectAI(CMap *p_map, std::vector<CObject> *p_objvect, CPlayer *p_player,
-					 stOption *p_options, int NumPlayers, int episode, char difficulty)  :
+					 stOption *p_options, int NumPlayers, int episode, int level ,char difficulty)  :
 m_difficulty(difficulty)
 {
 	mp_Map = p_map;
 	mp_Objvect = p_objvect;
 	mp_Options = p_options;
+	m_Level = level;
 	m_Episode = episode;
 	m_NumPlayers = NumPlayers;
 	mp_Player = p_player;
@@ -82,8 +83,8 @@ void CObjectAI::process()
 ///
 bool CObjectAI::checkforAIObject( CObject *p_object )
 {
-	int scrx = (p_object->x>>(CSF-4))-mp_Map->m_scrollx;
-	int scry = (p_object->y>>(CSF-4))-mp_Map->m_scrolly;
+	int scrx = (p_object->x>>STC)-mp_Map->m_scrollx;
+	int scry = (p_object->y>>STC)-mp_Map->m_scrolly;
 	unsigned int type = p_object->m_type;
 	
 	if ( !p_object->exists || type==OBJ_PLAYER ) return false;
@@ -187,14 +188,13 @@ CSprite *sprite = g_pGfxEngine->Sprite.at(p_object->sprite);
 	if( x2 > ((mp_Map->m_width-2)<<TILE_S) ) p_object->blockedr = true; // Out of map?
 
 	// Make object fall if it must
-	#define OBJFALLSPEED   80
-	#define OBJ_YINERTIA_TIME  1
+	#define OBJFALLSPEED   160
 	if (!p_object->inhibitfall)
 	{
 		if (p_object->blockedd)	p_object->yinertia = 0;
 		else
 		{
-			if (p_object->yinertia < OBJFALLSPEED) p_object->yinertia++;
+			if (p_object->yinertia < OBJFALLSPEED) p_object->yinertia += (1<<TILE_S);
 			p_object->y += p_object->yinertia;
 		}
 	}
@@ -206,10 +206,10 @@ void CObjectAI::performSpecialAIType( CObject *p_object )
 	{
 			//KEEN1
 		case OBJ_YORP: yorp_ai(p_object, mp_Player, m_difficulty); break;
-			/* case OBJ_GARG: garg_ai(i, p_levelcontrol->hardmode); break;
-			 case OBJ_VORT: vort_ai(i, p_levelcontrol ); break;
-			 case OBJ_BUTLER: butler_ai(i, p_levelcontrol->hardmode); break;
-			 case OBJ_TANK: tank_ai(i, p_levelcontrol->hardmode); break;
+			// case OBJ_GARG: garg_ai(i, p_levelcontrol->hardmode); break;
+		case OBJ_VORT: vort_ai(p_object, m_Level, m_Episode, m_difficulty, false ); break;
+			 //case OBJ_BUTLER: butler_ai(i, p_levelcontrol->hardmode); break;
+			 /*case OBJ_TANK: tank_ai(i, p_levelcontrol->hardmode); break;
 			 case OBJ_ICECANNON: icecannon_ai(i); break;
 			 case OBJ_ICECHUNK: icechunk_ai(i); break;
 			 case OBJ_ICEBIT: icebit_ai(i); break;*/
@@ -249,9 +249,14 @@ void CObjectAI::performSpecialAIType( CObject *p_object )
 			//case OBJ_DEMOMSG: break;
 			
 		default:
-			g_pLogFile->ftextOut("gamedo_enemy_ai: Object is of invalid type %d\n", p_object->m_type);
+			//g_pLogFile->ftextOut("gamedo_enemy_ai: Object is of invalid type %d\n", p_object->m_type);
 			break;
     }
+}
+
+void CObjectAI::killplayer(int theplayer)
+{
+	mp_Player[theplayer].kill();
 }
 
 ///

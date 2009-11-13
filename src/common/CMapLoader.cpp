@@ -274,196 +274,188 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 						if ( TileProperty[mp_map->at(x ,y+1)].bleft ) x--;
 						enemyobject.spawn(x<<CSF, y<<CSF, OBJ_YORP);
 						mp_objvect->push_back(enemyobject);
+						break;
 					}
-					break;
-					/*else
-					 {
-					 // in ep2 level 16 there a vorticon embedded in the floor for
-					 // some reason! that's what the if() is for--to fix it.
-					 // TODO: Is this still needed?
-					 if (TileProperty[map.mapdata[curmapx][curmapy+1]][BLEFT])
-					 {
-					 spawn_object(curmapx<<4<<CSF, ((curmapy<<4)-16)<<CSF, OBJ_VORT);
-					 }
-					 else
-					 {
-					 spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_VORT);
-					 }
+					else
+					{
+						// in ep2 level 16 there a vorticon embedded in the floor for
+						// some reason! that's what the if() is for--to fix it.
+						// TODO: Is this still needed?
+						enemyobject.spawn(x<<CSF, y<<CSF, OBJ_VORT);
+						mp_objvect->push_back(enemyobject);
 					 }
 					 break;
-					 case 2:    // garg (ep1) baby vorticon (ep2&3)
+				case 2:    // garg (ep1) baby vorticon (ep2&3)
 					 if (episode==1)
 					 {
-					 // those bastards. sometimes embedding garg's in the floor in
-					 // the original maps.
-					 if(TileProperty[map.mapdata[curmapx+1][curmapy+1]][BLEFT])
-					 {
-					 if (chglevelto==7)
-					 {
-					 spawn_object(curmapx<<4<<CSF, (curmapy-1)<<4<<CSF, OBJ_GARG);
+						 // those bastards. sometimes embedding garg's in the floor in
+						 // the original maps.
+						 if(TileProperty[mp_map->at(x+1, y+1)].bleft)
+						 {
+							 if (level==7)
+								 enemyobject.spawn(x<<CSF, (y-1)<<CSF, OBJ_GARG);
+							 else
+								 enemyobject.spawn((x-1)<<CSF, y<<CSF, OBJ_GARG);
+						 }
+						 else
+							 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_GARG);
 					 }
 					 else
-					 {
-					 spawn_object((curmapx-1)<<4<<CSF, (curmapy)<<4<<CSF, OBJ_GARG);
-					 }
-					 }
-					 else
-					 {
-					 spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_GARG);
-					 }
-					 }
-					 else
-					 {
-					 spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_BABY);
-					 }
+						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_BABY);
+
+					 mp_objvect->push_back(enemyobject);
+						 break;
+				case 3:    // vorticon (ep1) Vorticon Commander (ep2)
+						 if (episode==1)
+							 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_VORT);
+						 else if (episode==2)
+							 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_VORTELITE);
+						 else if (episode==3)
+							 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_MOTHER);
+						 mp_objvect->push_back(enemyobject);
+						 break;
+				case 4:    // butler (ep1) OR scrub (ep2) OR meep (ep3)
+					 if (episode==1)
+						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_BUTLER);
+					 else if (episode==2)
+						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SCRUB);
+					 else if (episode==3)
+						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_MEEP);
+					 mp_objvect->push_back(enemyobject);
 					 break;
-					 case 3:    // vorticon (ep1) Vorticon Commander (ep2)
+				case 5:    // tank robot (ep1&2) karate bear (ep3)
 					 if (episode==1)
 					 {
-					 spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_VORT);
+						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_TANK);
+						 // set tank robot guarding bonus level to be active at startup
+						 if (level==13)
+							 enemyobject.hasbeenonscreen = true;
 					 }
 					 else if (episode==2)
-					 {
-					 spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_VORTELITE);
-					 }
+						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_TANKEP2);
 					 else if (episode==3)
 					 {
-					 spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_MOTHER);
+						 if(TileProperty[mp_map->at(x,y+1)].bleft)
+							 enemyobject.spawn(x<<CSF, (y-1)<<CSF, OBJ_NINJA);
+						 else
+							 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_NINJA);
 					 }
+					 mp_objvect->push_back(enemyobject);
 					 break;
-					 case 4:    // butler (ep1) OR scrub (ep2) OR meep (ep3)
-					 if (episode==1)
-					 spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_BUTLER);
-					 else if (episode==2)
-					 spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_SCRUB);
-					 else if (episode==3)
-					 spawn_object(curmapx<<4<<CSF, ((curmapy<<4)+8)<<CSF, OBJ_MEEP);
-					 break;
-					 case 5:    // tank robot (ep1&2) karate bear (ep3)
-					 if (episode==1)
-					 {
-					 o = spawn_object(curmapx<<4<<CSF, ((curmapy<<4)+8)<<CSF, OBJ_TANK);
-					 // set tank robot guarding bonus level to be active at startup
-					 if (chglevelto==13)
-					 {
-					 objects[o].hasbeenonscreen = 1;
-					 }
-					 }
-					 else if (episode==2)
-					 spawn_object(curmapx<<4<<CSF, ((curmapy<<4)+0)<<CSF, OBJ_TANKEP2);
-					 else if (episode==3)
-					 {
-					 if(TileProperty[map.mapdata[curmapx][curmapy+1]][BLEFT])
-					 {
-					 spawn_object(curmapx<<4<<CSF, (curmapy-1)<<4<<CSF, OBJ_NINJA);
-					 }
-					 else
-					 {
-					 spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_NINJA);
-					 }
-					 }
-					 break;
-					 case 6:    // up-right-flying ice chunk (ep1) horiz platform (ep2)
+				case 6:    // up-right-flying ice chunk (ep1) horiz platform (ep2)
 					 // foob (ep3)
 					 if (episode==1)
 					 {
-					 o = spawn_object((((curmapx+1)<<4)+4)<<CSF, ((curmapy<<4)-4)<<CSF, OBJ_ICECANNON);
-					 objects[o].ai.icechunk.vector_x = 1;
-					 objects[o].ai.icechunk.vector_y = -1;
+						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_ICECANNON);
+						 enemyobject.ai.icechunk.vector_x = 1;
+						 enemyobject.ai.icechunk.vector_y = -1;
 					 }
 					 else if (episode==2)
 					 {
-					 o = spawn_object(curmapx<<4<<CSF, ((curmapy<<4)-3)<<CSF, OBJ_PLATFORM);
+						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_PLATFORM);
 					 }
 					 else if (episode==3)
 					 {
-					 o = spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_FOOB);
+						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_FOOB);
 					 }
+					 mp_objvect->push_back(enemyobject);
 					 break;
-					 case 7:   // spark (ep2) ball (ep3)
+				case 7:   // spark (ep2) ball (ep3)
 					 if (episode==2)
 					 {
-					 o = spawn_object(curmapx<<4<<CSF,curmapy<<4<<CSF,OBJ_SPARK);
+						 enemyobject.spawn(x<<CSF, y<<CSF,OBJ_SPARK);
 					 }
 					 else if (episode==3)
 					 {
-					 o = spawn_object(curmapx<<4<<CSF,curmapy<<4<<CSF,OBJ_BALL);
-					 objects[o].hasbeenonscreen = 1;
+						 enemyobject.spawn(x<<CSF,y<<CSF,OBJ_BALL);
+						 enemyobject.hasbeenonscreen = 1;
 					 }
+					 mp_objvect->push_back(enemyobject);
 					 break;
-					 case 8:    // jack (ep3)
+				case 8:    // jack (ep3)
 					 if (episode==3)
 					 {
-					 o = spawn_object(curmapx<<4<<CSF,curmapy<<4<<CSF,OBJ_JACK);
-					 objects[o].hasbeenonscreen = 1;
+						 enemyobject.spawn(x<<CSF, y<<CSF,OBJ_JACK);
+						 enemyobject.hasbeenonscreen = 1;
 					 }
+					 mp_objvect->push_back(enemyobject);
 					 break;
-					 case 9:    // up-left-flying ice chunk (ep1) horiz platform (ep3)
+				case 9:    // up-left-flying ice chunk (ep1) horiz platform (ep3)
 					 if (episode==1)
 					 {
-					 o = spawn_object(((curmapx<<4)-4)<<CSF, ((curmapy<<4)-4)<<CSF, OBJ_ICECANNON);
-					 objects[o].ai.icechunk.vector_x = -1;
-					 objects[o].ai.icechunk.vector_y = -1;
+						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_ICECANNON);
+						 enemyobject.ai.icechunk.vector_x = -1;
+						 enemyobject.ai.icechunk.vector_y = -1;
 					 }
 					 else if (episode==3)
 					 {
-					 o = spawn_object(curmapx<<4<<CSF, (((curmapy)<<4)-4)<<CSF, OBJ_PLATFORM);
+						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_PLATFORM);
 					 }
+					 mp_objvect->push_back(enemyobject);
 					 break;
-					 case 10:   // rope holding the stone above the final vorticon (ep1)
+				case 10:   // rope holding the stone above the final vorticon (ep1)
 					 // vert platform (ep3)
 					 if (episode==1)
 					 {
-					 spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_ROPE);
+						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_ROPE);
 					 }
 					 else if (episode==3)
 					 {
-					 spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_PLATVERT);
+						 enemyobject.spawn(x<<CSF, y<<4<<CSF, OBJ_PLATVERT);
 					 }
+					 mp_objvect->push_back(enemyobject);
 					 break;
-					 case 11:   // jumping vorticon (ep3)
+				case 11:   // jumping vorticon (ep3)
 					 if (episode==3)
 					 {
-					 spawn_object(curmapx<<4<<CSF, ((curmapy<<4)-8)<<CSF, OBJ_VORT);
+						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_VORT);
 					 }
+					 mp_objvect->push_back(enemyobject);
 					 break;
-					 case 12:   // sparks in mortimer's machine
-					 o = spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_SECTOREFFECTOR);
-					 objects[o].ai.se.type = SE_MORTIMER_SPARK;
-					 objects[o].hasbeenonscreen = 1;
+				case 12:   // sparks in mortimer's machine
+					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR);
+					 enemyobject.ai.se.type = SE_MORTIMER_SPARK;
+					 enemyobject.hasbeenonscreen = 1;
+					 mp_objvect->push_back(enemyobject);
 					 break;
-					 case 13:   // mortimer's heart
-					 o = spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_SECTOREFFECTOR);
-					 objects[o].ai.se.type = SE_MORTIMER_HEART;
-					 objects[o].hasbeenonscreen = 1;
+				case 13:   // mortimer's heart
+					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR);
+					 enemyobject.ai.se.type = SE_MORTIMER_HEART;
+					 enemyobject.hasbeenonscreen = 1;
+					 mp_objvect->push_back(enemyobject);
 					 break;
-					 case 14:   // right-pointing raygun (ep3)
+				case 14:   // right-pointing raygun (ep3)
 					 if (episode==3)
 					 {
-					 o = spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_AUTORAY);
+						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_AUTORAY);
 					 }
+					 mp_objvect->push_back(enemyobject);
 					 break;
-					 case 15:   // vertical raygun (ep3)
+				case 15:   // vertical raygun (ep3)
 					 if (episode==3)
 					 {
-					 o = spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_AUTORAY_V);
+						enemyobject.spawn(x<<CSF, y<<CSF, OBJ_AUTORAY_V);
 					 }
+					 mp_objvect->push_back(enemyobject);
 					 break;
-					 case 16:  // mortimer's arms
-					 o = spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_SECTOREFFECTOR);
-					 objects[o].ai.se.type = SE_MORTIMER_ARM;
-					 objects[o].hasbeenonscreen = 1;
+				case 16:  // mortimer's arms
+					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR);
+					 enemyobject.ai.se.type = SE_MORTIMER_ARM;
+					 enemyobject.hasbeenonscreen = 1;
+					 mp_objvect->push_back(enemyobject);
 					 break;
-					 case 17:  // mortimer's left leg
-					 o = spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_SECTOREFFECTOR);
-					 objects[o].ai.se.type = SE_MORTIMER_LEG_LEFT;
-					 objects[o].hasbeenonscreen = 1;
+				case 17:  // mortimer's left leg
+					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR);
+					 enemyobject.ai.se.type = SE_MORTIMER_LEG_LEFT;
+					 enemyobject.hasbeenonscreen = 1;
+					 mp_objvect->push_back(enemyobject);
 					 break;
-					 case 18:  // mortimer's right leg
-					 o = spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_SECTOREFFECTOR);
-					 objects[o].ai.se.type = SE_MORTIMER_LEG_RIGHT;
-					 objects[o].hasbeenonscreen = 1;
-					 break;*/
+				case 18:  // mortimer's right leg
+					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR);
+					 enemyobject.ai.se.type = SE_MORTIMER_LEG_RIGHT;
+					 enemyobject.hasbeenonscreen = 1;
+					 mp_objvect->push_back(enemyobject);
+					 break;
 				default:
 					g_pLogFile->ftextOut(PURPLE,"unknown enemy type %d at (%d,%d)<br>", t, x, y); break;
 			}

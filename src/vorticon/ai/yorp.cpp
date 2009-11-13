@@ -40,8 +40,8 @@ enum
 #define YORP_DEAD_FRAME    59
 #define YORP_DIE_TIME      22
 
-#define YORPDIE_START_INERTIA      -40
-#define YORPDIE_MAX_INERTIA         120
+#define YORPDIE_START_INERTIA      -10
+#define YORPDIE_MAX_INERTIA         480
 #define YORPDIE_INERTIA_DECREASE    8
 
 unsigned int rnd(void);
@@ -67,7 +67,7 @@ void CObjectAI::yorp_ai(CObject *p_object, CPlayer *p_player, bool hardmode)
 		p_object->ai.yorp.timer = 0;
 		p_object->ai.yorp.lookposition = 0;
 		p_object->needinit = 0;
-		p_object->canbezapped = 1;
+		p_object->canbezapped = true;
 	}
 	// hey after all, dead yorps don't talk. Or do anything
 	// but return to the calling procedure.
@@ -150,7 +150,7 @@ void CObjectAI::yorp_ai(CObject *p_object, CPlayer *p_player, bool hardmode)
 		// what'd you kill an innocent yorp for, you bastard!
 		p_object->ai.yorp.state = YORP_DYING;
 		p_object->ai.yorp.dietimer = 0;
-		p_object->canbezapped = 0;
+		p_object->canbezapped = false;
 		p_object->sprite = YORP_DYING_FRAME;
 		p_object->zapped = 0;
 		p_object->ai.yorp.yorpdie_inertia_y = YORPDIE_START_INERTIA;
@@ -166,7 +166,7 @@ void CObjectAI::yorp_ai(CObject *p_object, CPlayer *p_player, bool hardmode)
 			if (p_object->ai.yorp.dietimer>YORPDIE_INERTIA_DECREASE)
 			{
 				if (p_object->ai.yorp.yorpdie_inertia_y < YORPDIE_MAX_INERTIA)
-					p_object->ai.yorp.yorpdie_inertia_y++;
+					p_object->ai.yorp.yorpdie_inertia_y += (1<<TILE_S);
 				p_object->ai.yorp.dietimer = 0;
 			}
 			else p_object->ai.yorp.dietimer++;

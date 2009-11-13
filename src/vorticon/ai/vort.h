@@ -1,30 +1,32 @@
-#define VORT_WALK       0
-#define VORT_JUMP       1
-#define VORT_LOOK       2
-#define VORT_DYING      3
-#define VORT_DEAD       4
-// die animation for ep2
-#define VORT2_DYING     5
+enum Vorticon_actions{
+VORT_WALK,
+VORT_JUMP,
+VORT_LOOK,
+VORT_DYING,
+VORT_DEAD,
+VORT2_DYING
+};
 
-#define VORT_JUMP_PROB          450
+#define VORT_JUMP_PROB          220
 
-#define VORT_MIN_JUMP_HEIGHT    15
-#define VORT_MAX_JUMP_HEIGHT    25
-#define VORT_MAX_FALL_SPEED     20
+#define VORT_MIN_JUMP_HEIGHT    60
+#define VORT_MAX_JUMP_HEIGHT    100
+#define VORT_MAX_FALL_SPEED     320
 #define VORT_JUMP_FRICTION      5
 #define VORT_JUMP_SPEED         0
 
-#define VORT_WALK_SPEED         5
-#define VORT_WALK_ANIM_TIME     60
+#define VORT_WALK_SPEED         25
+#define VORT_WALK_ANIM_TIME     15
+
 
 // number of shots to kill
 #define VORT_HP                 4
 #define VORT_COMMANDER_HP       105
 
-#define VORT_DIE_ANIM_TIME      125
-#define VORT2_DIE_ANIM_TIME     125
+#define VORT_DIE_ANIM_TIME      25
+#define VORT2_DIE_ANIM_TIME     25
 
-#define VORT_LOOK_ANIM_TIME     60
+#define VORT_LOOK_ANIM_TIME     15
 
 #define VORT1_WALK_LEFT_FRAME    70
 #define VORT1_WALK_RIGHT_FRAME   74

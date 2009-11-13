@@ -58,9 +58,8 @@ void CObjectAI::ray_ai( CObject *p_object, bool automatic_raygun, char pShotSpee
 	{
 		case RAY_STATE_FLY:
 			// test if it hit a baddie
-			for( it_obj = mp_Objvect->begin() ; it_obj!=mp_Objvect->begin() ; it_obj++)
+			for( it_obj = mp_Objvect->begin() ; it_obj!=mp_Objvect->end() ; it_obj++)
 			{
-				if (!it_obj->exists || &(*it_obj)==p_object ) continue;
 				if (p_object->ai.ray.dontHitEnable)
 				{
 					if (it_obj->m_type==p_object->ai.ray.dontHit) continue;

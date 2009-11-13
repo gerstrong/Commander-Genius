@@ -35,6 +35,10 @@ public:
 	unsigned int x, y;        // x,y location in map coords, CSFed
 	int scrx, scry;           // x,y pixel position on screen
 	
+	// Bouncing Boxes
+	Uint32 bboxX1, bboxX2;
+	Uint32 bboxY1, bboxY2;
+
 	// if type is OBJ_PLAYER, this contains the player number that this object
 	// is associated with
 	int AssociatedWithPlayer;
