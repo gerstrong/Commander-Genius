@@ -6,6 +6,8 @@
  */
 
 #include "../keen.h"
+#include "StringUtils.h"
+#include "../CLogFile.h"
 #include "../include/gamedo.h"
 #include "../sdl/CTimer.h"
 #include "../sdl/CInput.h"
@@ -91,111 +93,60 @@ void CDialog::processInput(char dir)
 	if( dir == 't' )
 	{
 		// This cycle will wait for the input of name and hit of enter
-		/*bool blink = true;
-		 int blinkctr = 0;
-		 do
-		 {
-		 bm_highscore->draw( m_sfc, x1, y1 );
-		 bm_name->draw( m_sfc, x2, y2 );
-		 bm_score->draw( m_sfc, x3, y2);
-		 if( bm_extra ) bm_extra->draw( m_sfc, x4, y3);
-		 
-		 // Blit all the text and images
-		 for(i=KA ; i<=KZ ; i++)
-		 {
-		 if (g_pInput->getHoldedKey(KSHIFT) && g_pInput->getPressedKey(i) && WrittenName.length() < 13)
-		 {
-		 sprintf(buf,"%c",'A' + i - KA);
-		 WrittenName.append(buf);
-		 copy(WrittenName.data(),WrittenName.data()+WrittenName.length(),Name[place]);
-		 WrittenName.copy(buf,WrittenName.length(),0);
-		 }
-		 else if(g_pInput->getPressedKey(i) && WrittenName.length() < 13)
-		 {
-		 sprintf(buf,"%c",'a' + i - KA);
-		 WrittenName.append(buf);
-		 copy(WrittenName.data(),WrittenName.data()+WrittenName.length(),Name[place]);
-		 WrittenName.copy(buf,WrittenName.length(),0);
-		 }
-		 
-		 }
-		 if(g_pInput->getPressedKey(KBCKSPCE) && (WrittenName.length() > 0))
-		 {
-		 memset(buf,0,256);
-		 g_pGfxEngine->Font->drawFont(m_sfc, "              ",40,64+(place<<4), LETTER_TYPE_RED);
-		 
-		 WrittenName.erase(WrittenName.length()-1);
-		 WrittenName.copy(buf,WrittenName.length(),0);
-		 memset(Name[place],0,16);
-		 WrittenName.copy(Name[place],WrittenName.length(),0);
-		 }
-		 
-		 // Here it must be split up in Episodes 1, 2 and 3.
-		 // Print the labels
-		 for( i=0 ; i<7 ; i++ )
-		 {
-		 if(pCKP->Control.levelcontrol.episode == 3)
-		 {
-		 if(i != place)
-		 g_pGfxEngine->Font->drawFont(m_sfc, Name[i],69,64+(i<<4), LETTER_TYPE_RED);
-		 else
-		 {
-		 g_pGfxEngine->Font->drawFont(m_sfc, buf,69,64+(i<<4), LETTER_TYPE_RED);
-		 
-		 if(blink)
-		 g_pGfxEngine->Font->drawFont(m_sfc, "_",69+(strlen(buf)<<3),64+(i<<4), LETTER_TYPE_RED);
-		 else
-		 g_pGfxEngine->Font->drawFont(m_sfc, " ",69+(strlen(buf)<<3),64+(i<<4), LETTER_TYPE_RED);
-		 }
-		 g_pGfxEngine->Font->drawFont(m_sfc, Score[i],253-(strlen(Score[i])<<3),64+(i<<4), LETTER_TYPE_RED);
-		 
-		 }
-		 else
-		 {
-		 if(i != place)
-		 g_pGfxEngine->Font->drawFont(m_sfc, Name[i],40,64+(i<<4), LETTER_TYPE_RED);
-		 else
-		 {
-		 g_pGfxEngine->Font->drawFont(m_sfc, buf,40,64+(i<<4), LETTER_TYPE_RED);
-		 
-		 if(blink)
-		 g_pGfxEngine->Font->drawFont(m_sfc, "_",40+(strlen(buf)<<3),64+(i<<4), LETTER_TYPE_RED);
-		 else
-		 g_pGfxEngine->Font->drawFont(m_sfc, " ",40+(strlen(buf)<<3),64+(i<<4), LETTER_TYPE_RED);
-		 }
-		 g_pGfxEngine->Font->drawFont(m_sfc, Score[i],200-(strlen(Score[i])<<3),64+(i<<4), LETTER_TYPE_RED);
-		 }
-		 
-		 if(pCKP->Control.levelcontrol.episode == 1)
-		 {
-		 if(Extra[i][0])
-		 g_pGfxEngine->Tilemap->drawTile(m_sfc, 224,60+(i<<4),ItemTiles[0]);
-		 if(Extra[i][1])
-		 g_pGfxEngine->Tilemap->drawTile(m_sfc, 240,60+(i<<4),ItemTiles[1]);
-		 if(Extra[i][2])
-		 g_pGfxEngine->Tilemap->drawTile(m_sfc, 256,60+(i<<4),ItemTiles[2]);
-		 if(Extra[i][3])
-		 g_pGfxEngine->Tilemap->drawTile(m_sfc, 272,60+(i<<4),ItemTiles[3]);
-		 }
-		 else if(pCKP->Control.levelcontrol.episode == 2)
-		 {
-		 for( i=0 ; i<7 ; i++ )
-		 g_pGfxEngine->Font->drawFont(m_sfc, itoa(Cities[i]) ,252,64+(i<<4), LETTER_TYPE_RED);
-		 }
-		 }
-		 
-		 gamedo_AnimatedTiles();
-		 g_pInput->pollEvents();
-		 
-		 blinkctr++; // The blinking cursor
-		 if(blinkctr > 100)
-		 {
-		 blink = !blink;
-		 blinkctr = 0;
-		 }
-		 
-		 gamedo_RenderScreen();
-		 }while(!g_pInput->getPressedKey(KENTER));*/
+		bool blink = true;
+		int blinkctr = 0;
+		int i;
+		std::string name = m_dlgobject.at(m_selected_ID)->m_OptionText->m_text;
+		char* buf;
+			
+		if(name.substr(name.length()-1) == "|")
+		{
+			name = m_dlgobject.at(m_selected_ID)->m_OptionText->m_text;
+			name.erase(name.length()-1);
+		}
+		do
+		{
+		// Get the input
+		for(i=KA ; i<=KZ ; i++)
+		{
+			if (g_pInput->getHoldedKey(KSHIFT) && g_pInput->getPressedKey(i) && name.length() < 15)
+			{
+				sprintf(buf,"%d",'A' + i - KA);
+				g_pLogFile->textOut(RED, itoa(i));
+				name.append(buf);
+			}
+			else if(g_pInput->getPressedKey(i) && name.length() < 15)
+			{
+				sprintf(buf,"%d",'a' + i - KA);
+				g_pLogFile->textOut(RED, buf);	
+				name.append(buf);
+			}
+			
+		}
+		if(g_pInput->getPressedKey(KBCKSPCE) && (name.length() > 0))
+		{
+			name.erase(name.length()-1);
+		}
+		
+		if(blink)
+			setObjectText(m_selected_ID, name + "|");
+		else
+			setObjectText(m_selected_ID, name);
+		
+		blinkctr++; // The blinking cursor
+		if(blinkctr > 100)
+		{
+			blink = !blink;
+			blinkctr = 0;
+		}
+		
+			//g_pLogFile->textOut(RED, name);
+			g_pInput->pollEvents();
+		draw();
+		
+		}while(!g_pInput->getPressedKey(KENTER));
+		//setObjectText(m_selected_ID, name);
+		//}
 	}
 	else
 	{

@@ -97,7 +97,7 @@ void CMenu::initMainMenu()
 	// TODO: This still must be adapted to ingame situation
 	if( m_menu_mode == ACTIVE )
 	{
-		mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 1, "New Game");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "New Game");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 2, "Load Game");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 3, "Save Game");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 4, "Highscores");

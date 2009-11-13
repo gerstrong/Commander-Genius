@@ -15,7 +15,7 @@ public:
 	CSavedGame(stLevelControl *lvlcontrol, stCloneKeenPlus *poutsideCKP);
 	virtual ~CSavedGame();
 	
-	char save(int slot);
+	char save(int slot, char name);
 	char IsValidSaveGame(std::string fname);
 	bool load(int slot);
 	

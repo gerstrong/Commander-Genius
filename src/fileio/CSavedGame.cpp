@@ -35,7 +35,7 @@ CSavedGame::~CSavedGame() {
 	// TODO Auto-generated destructor stub
 }
 
-char CSavedGame::save(int slot)
+char CSavedGame::save(int slot, char name)
 {
 	/*FILE *fp;
 	 std::string fname;

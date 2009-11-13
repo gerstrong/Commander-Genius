@@ -458,6 +458,7 @@ bool CInput::getPressedKey(int key)
 	if(immediate_keytable[key] && !last_immediate_keytable[key])
 	{
 		immediate_keytable[key] = false;
+		g_pLogFile->textOut(RED, itoa(key)+" is true.");
 		return true;
 	}
 	

@@ -83,6 +83,7 @@ public:
 	{ return m_finished; }
 	
 	bool getEndGame() { return m_endgame; }
+	bool getStartGame() { return m_startgame; }
 	bool getExitEvent() { return m_exitgame; }
 	char getEpisode(){	return m_Episode; }
 	
@@ -92,6 +93,7 @@ public:
 private:
 	bool m_finished;
 	bool m_endgame;
+	bool m_startgame;
 	bool m_exitgame;
 	int  m_NumSprites;
 	char m_Episode;

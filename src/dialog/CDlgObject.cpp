@@ -47,7 +47,7 @@ void CDlgObject::change(const std::string &text, unsigned int delimiter)
 {
 	if( m_type == DLG_OBJ_OPTION_TEXT || m_type == DLG_OBJ_DISABLED || m_type == DLG_OBJ_TEXT )
 	{
-		m_selectable = true;
+		m_selectable = (m_type == DLG_OBJ_OPTION_TEXT) ? true : false;
 		m_OptionText->setText(text, delimiter);
 	}
 }

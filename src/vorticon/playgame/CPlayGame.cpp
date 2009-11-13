@@ -33,6 +33,7 @@ CPlayGame::CPlayGame( char episode, char level,
 	m_Gamepath = gamepath;
 	m_exitgame = false;
 	m_endgame = false;
+	m_startgame = false;
 	m_gameover = false;
 	m_alldead = false;
 	mp_Map = NULL;
@@ -161,13 +162,16 @@ void CPlayGame::process()
 	// If the menu is open process it!
 	if(mp_Menu)
 	{
-		if( mp_Menu->mustBeClosed() || mp_Menu->getExitEvent() || mp_Menu->mustEndGame() )
+		if( mp_Menu->mustBeClosed() || mp_Menu->getExitEvent() || mp_Menu->mustEndGame() || mp_Menu->mustStartGame() )
 		{
 			if( mp_Menu->getExitEvent() )
 				m_exitgame = true;
 			
 			if( mp_Menu->mustEndGame() )
 				m_endgame = true;
+			
+			if( mp_Menu->mustStartGame() )
+				m_startgame = true;
 			
 			mp_Menu->cleanup();
 			delete mp_Menu;

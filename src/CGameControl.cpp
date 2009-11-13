@@ -98,6 +98,7 @@ bool CGameControl::init(char mode)
 		mp_PassiveMode = new CPassive( m_Episode, m_DataDirectory );
 		if( m_endgame == true )
 		{
+			m_endgame = false;
 			if( mp_PassiveMode->init(mp_PassiveMode->TITLE) ) return true;
 		}
 		else
@@ -283,8 +284,15 @@ void CGameControl::process()
 		
 		if( mp_PlayGame->getEndGame() )
 		{
+			m_startLevel = 0;
+			m_endgame = true;
 			init(PASSIVE);
 			delete mp_PlayGame; mp_PlayGame = NULL;
+		}
+		else if( mp_PlayGame->getStartGame() )
+		{
+			delete mp_PlayGame; mp_PlayGame = NULL;
+			init(PLAYGAME);
 		}
 		else if( mp_PlayGame->getExitEvent() )
 			m_mode = SHUTDOWN;
