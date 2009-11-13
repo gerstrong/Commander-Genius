@@ -129,8 +129,8 @@ void CGfxEngine::drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w
 {
 	int x,y,i,j;
 	SDL_Rect rect;
-	rect.x = x1*9; rect.w = w*8;
-	rect.y = y1*9; rect.h = h*8;
+	rect.x = x1*8; rect.w = w*8;
+	rect.y = y1*8; rect.h = h*8;
 	
 	SDL_FillRect(DialogSurface, &rect, colour);
 

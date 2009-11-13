@@ -31,29 +31,7 @@
 \h           \H \h
 \H     PLEASE PRESS A KEY      \h
 
-[EP2_ESEQ_PART2]
-The Vorticon ship limps back
-towards Vorticon VI to tell of
-their defeat at the hands of
-Commander Keen.  The Grand
-Intellect will not be pleased.
-[EP2_ESEQ_PART3_PAGE1] LEFT=2 TOP=17 WIDTH=26 HEIGHT=7
-Look honey it snowed
-outside! There's no
-school!
-[EP2_ESEQ_PART3_PAGE2] LEFT=2 TOP=17 WIDTH=26 HEIGHT=7
-Wonderful. That gives me
-time to travel to
-Vorticon VI and solve the
-mystery of the Grand
-Intellect!
-[EP2_ESEQ_PART3_PAGE3] LEFT=2 TOP=17 WIDTH=26 HEIGHT=7
-Ok, hun, but you'd better
-eat a nourishing vitamin
-fortified bowl of Sugar
-Stoopies first.
-[EP2_ESEQ_PART3_PAGE4] LEFT=2 TOP=17 WIDTH=26 HEIGHT=7 LASTPAGE=1
-Ok Mom...
+
 [EP3_SHIP1] LEFT=3 TOP=9 WIDTH=33 HEIGHT=8 TWIRLX=21 TWIRLY=6
 You enter your ship, sit around
 for a while, get bored, then

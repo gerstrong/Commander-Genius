@@ -6,7 +6,7 @@
  */
 
 #include "../keen.h"
-#include "StringUtils.h"
+#include "../StringUtils.h"
 #include "../CLogFile.h"
 #include "../include/gamedo.h"
 #include "../sdl/CTimer.h"
