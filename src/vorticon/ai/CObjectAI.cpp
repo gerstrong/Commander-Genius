@@ -152,17 +152,19 @@ CSprite *sprite = g_pGfxEngine->Sprite.at(p_object->sprite);
 			break;
 		}
 	}
+
 	if( y1 < (2<<CSF) ) p_object->blockedu = true; // Out of map?
 	
 	// Check for down from the object
 	for( c=x1+1 ; c<=x2-1 ; c++)
 	{
-		if(TileProperty[mp_Map->at(c>>CSF, (y2+1)>>CSF)].bup)
+		if(TileProperty[mp_Map->at(c>>CSF, (y2+(1<<STC))>>CSF)].bup)
 		{
 			p_object->blockedd = true;
 			break;
 		}
 	}
+
 	if( y2 > ((mp_Map->m_height-2)<<CSF) ) p_object->blockedd = true; // Out of map?
 	
 	// Check for left from the object
@@ -194,7 +196,7 @@ CSprite *sprite = g_pGfxEngine->Sprite.at(p_object->sprite);
 		if (p_object->blockedd)	p_object->yinertia = 0;
 		else
 		{
-			if (p_object->yinertia < OBJFALLSPEED) p_object->yinertia += (1<<CSF);
+			if (p_object->yinertia < OBJFALLSPEED) p_object->yinertia++;
 			p_object->y += p_object->yinertia;
 		}
 	}
