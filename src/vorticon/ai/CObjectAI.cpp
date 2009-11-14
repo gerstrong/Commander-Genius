@@ -138,54 +138,54 @@ CSprite *sprite = g_pGfxEngine->Sprite.at(p_object->sprite);
 	p_object->blockedl = p_object->blockedr = false;
 
 	// Get Rect values of the object
-	x1 = (p_object->x + sprite->m_bboxX1)>>STC;
-	y1 = (p_object->y + sprite->m_bboxY1)>>STC;
-	x2 = (p_object->x + sprite->m_bboxX2)>>STC;
-	y2 = (p_object->y + sprite->m_bboxY2)>>STC;
+	x1 = p_object->x + sprite->m_bboxX1;
+	y1 = p_object->y + sprite->m_bboxY1;
+	x2 = p_object->x + sprite->m_bboxX2;
+	y2 = p_object->y + sprite->m_bboxY2;
 	
 	// Check for up from the object
 	for( c=x1+1 ; c<=x2-1 ; c++)
 	{
-		if(TileProperty[mp_Map->at(c>>TILE_S, y1>>TILE_S)].bdown)
+		if(TileProperty[mp_Map->at(c>>CSF, y1>>CSF)].bdown)
 		{
 			p_object->blockedu = true;
 			break;
 		}
 	}
-	if( y1 < (2<<TILE_S) ) p_object->blockedu = true; // Out of map?
+	if( y1 < (2<<CSF) ) p_object->blockedu = true; // Out of map?
 	
 	// Check for down from the object
 	for( c=x1+1 ; c<=x2-1 ; c++)
 	{
-		if(TileProperty[mp_Map->at(c>>TILE_S, y2>>TILE_S)].bup)
+		if(TileProperty[mp_Map->at(c>>CSF, (y2+1)>>CSF)].bup)
 		{
 			p_object->blockedd = true;
 			break;
 		}
 	}
-	if( y2 > ((mp_Map->m_height-2)<<TILE_S) ) p_object->blockedd = true; // Out of map?
+	if( y2 > ((mp_Map->m_height-2)<<CSF) ) p_object->blockedd = true; // Out of map?
 	
 	// Check for left from the object
 	for( c=y1+1 ; c<=y2-1 ; c++)
 	{
-		if(TileProperty[mp_Map->at(x1>>TILE_S, c>>TILE_S)].bright)
+		if(TileProperty[mp_Map->at(x1>>CSF, c>>CSF)].bright)
 		{
 			p_object->blockedl = true;
 			break;
 		}
 	}
-	if( x1 < (2<<TILE_S) ) p_object->blockedl = true; // Out of map?
+	if( x1 < (2<<CSF) ) p_object->blockedl = true; // Out of map?
 
 	// Check for right from the object
 	for( c=y1+1 ; c<=y2-1 ; c++)
 	{
-		if(TileProperty[mp_Map->at(x2>>TILE_S, c>>TILE_S)].bleft)
+		if(TileProperty[mp_Map->at(x2>>CSF, c>>CSF)].bleft)
 		{
 			p_object->blockedr = true;
 			break;
 		}
 	}
-	if( x2 > ((mp_Map->m_width-2)<<TILE_S) ) p_object->blockedr = true; // Out of map?
+	if( x2 > ((mp_Map->m_width-2)<<CSF) ) p_object->blockedr = true; // Out of map?
 
 	// Make object fall if it must
 	#define OBJFALLSPEED   160
@@ -194,7 +194,7 @@ CSprite *sprite = g_pGfxEngine->Sprite.at(p_object->sprite);
 		if (p_object->blockedd)	p_object->yinertia = 0;
 		else
 		{
-			if (p_object->yinertia < OBJFALLSPEED) p_object->yinertia += (1<<TILE_S);
+			if (p_object->yinertia < OBJFALLSPEED) p_object->yinertia += (1<<CSF);
 			p_object->y += p_object->yinertia;
 		}
 	}
@@ -209,7 +209,7 @@ void CObjectAI::performSpecialAIType( CObject *p_object )
 		// case OBJ_GARG: garg_ai(i, p_levelcontrol->hardmode); break;
 		case OBJ_VORT: vort_ai(p_object, m_Level, m_Episode, m_difficulty, false ); break;
 		case OBJ_BUTLER: butler_ai(p_object, m_difficulty); break;
-		//case OBJ_TANK: tank_ai(i, p_levelcontrol->hardmode); break;
+		case OBJ_TANK: tank_ai(p_object, m_difficulty>1); break;
 		//case OBJ_ICECANNON: icecannon_ai(i); break;
 		//case OBJ_ICECHUNK: icechunk_ai(i); break;
 		//case OBJ_ICEBIT: icebit_ai(i); break;

@@ -59,8 +59,8 @@ void CObjectAI::teleporter_ai(CObject *p_object)
 			{  // teleporting out, go to new teleporter and new teleport in anim
 				p_object->x = p_object->ai.teleport.destx<<CSF;
 				p_object->y = p_object->ai.teleport.desty<<CSF;
-				mp_Player[p_object->ai.teleport.whichplayer].goto_x = p_object->x;
-				mp_Player[p_object->ai.teleport.whichplayer].goto_y = p_object->y;
+				mp_Player[p_object->ai.teleport.whichplayer].x = p_object->x;
+				mp_Player[p_object->ai.teleport.whichplayer].y = p_object->y;
 				mp_Player[p_object->ai.teleport.whichplayer].pdir = DOWN;
 				p_object->ai.teleport.direction = TELEPORTING_IN;
 				p_object->needinit = true;
