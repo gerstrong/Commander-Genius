@@ -181,6 +181,7 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 				mp_map->m_objectlayer[x][y] = 0;
 			}
 			break;
+			// TODO: Nessie is still disabled. Reenable it!
 			/*case NESSIE_PATH:          // spawn nessie at first occurance of her path
 			 if (episode==3)
 			 {

@@ -206,13 +206,13 @@ void CObjectAI::performSpecialAIType( CObject *p_object )
 	{
 			//KEEN1
 		case OBJ_YORP: yorp_ai(p_object, mp_Player, m_difficulty); break;
-			// case OBJ_GARG: garg_ai(i, p_levelcontrol->hardmode); break;
+		// case OBJ_GARG: garg_ai(i, p_levelcontrol->hardmode); break;
 		case OBJ_VORT: vort_ai(p_object, m_Level, m_Episode, m_difficulty, false ); break;
-			 //case OBJ_BUTLER: butler_ai(i, p_levelcontrol->hardmode); break;
-			 /*case OBJ_TANK: tank_ai(i, p_levelcontrol->hardmode); break;
-			 case OBJ_ICECANNON: icecannon_ai(i); break;
-			 case OBJ_ICECHUNK: icechunk_ai(i); break;
-			 case OBJ_ICEBIT: icebit_ai(i); break;*/
+		case OBJ_BUTLER: butler_ai(p_object, m_difficulty); break;
+		//case OBJ_TANK: tank_ai(i, p_levelcontrol->hardmode); break;
+		//case OBJ_ICECANNON: icecannon_ai(i); break;
+		//case OBJ_ICECHUNK: icechunk_ai(i); break;
+		//case OBJ_ICEBIT: icebit_ai(i); break;
 		case OBJ_TELEPORTER: teleporter_ai(p_object); break;
 			/*case OBJ_ROPE: rope_ai(i); break;
 			 

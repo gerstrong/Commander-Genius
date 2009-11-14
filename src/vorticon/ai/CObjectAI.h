@@ -39,9 +39,8 @@ private:
 	// void garg_ai(int o, bool hardmode);
 	void vort_ai(CObject *p_object, int level, int episode, char difficulty, bool dark);
 	void vort_initiatejump(CObject *p_object);
-
-	/*void butler_ai(int o, bool hardmode);
-	 void tank_ai(int o, bool hardmode);
+	void butler_ai(CObject *p_object, char difficulty);
+	/* void tank_ai(int o, bool hardmode);
 	 void icechunk_ai(int o);
 	 void icebit_ai(int o);
 	 void icecannon_ai(int o);

@@ -22,6 +22,7 @@ CObject::CObject() {
 	cansupportplayers = false;
 	blockedu = blockedd = false;
 	blockedl = blockedr = false;
+	sprite=BLANKSPRITE;
 	
     yinertia = 0;
 }
