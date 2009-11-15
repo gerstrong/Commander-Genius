@@ -43,12 +43,14 @@ private:
 	void tank_ai(CObject *p_object, bool hardmode);
 	bool tank_CanMoveLeft(CObject *p_object, int h);
 	bool tank_CanMoveRight(CObject *p_object, int w, int h);
-	/*
-	 void icechunk_ai(int o);
-	 void icebit_ai(int o);
-	 void icecannon_ai(int o);
-	 void rope_ai(int o);
-	 
+
+	void icechunk_ai(CObject *p_object);
+	void smash(CObject *p_object);
+	void icebit_ai(CObject *p_object);
+	void icecannon_ai(CObject *p_object);
+	void rope_ai(CObject *p_object);
+	void rope_movestone(CObject *p_object);
+	 /*
 	 // ep2
 	 void scrub_ai(int o, stLevelControl levelcontrol);
 	 void tankep2_ai(int o, bool hardmode);
