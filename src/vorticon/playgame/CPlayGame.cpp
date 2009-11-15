@@ -267,7 +267,7 @@ void CPlayGame::process()
 		SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
 #ifdef DEBUG
 		tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec()) +
-		"; x = " + itoa(mp_Player[0].x) + " ; y = " + itoa(mp_Player[0].y);
+			"; x = " + itoa(mp_Player[0].x) + " ; y = " + itoa(mp_Player[0].y);
 
 #else
 		tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec());
@@ -453,10 +453,8 @@ void CPlayGame::drawObjects()
 		m_Object.at(o).y = mp_Player[i].y;
 	}
 	
-	
 	// draw all objects. drawn in reverse order because the player sprites
 	// are in the first few indexes and we want them to come out on top.
-	//std::vector<CObject>::reverse_iterator p_object;
 	CObject *p_object;
 	for ( i=m_Object.size()-1 ; i>=0 ; i--)
 	{
@@ -467,8 +465,7 @@ void CPlayGame::drawObjects()
 			CSprite *Sprite = g_pGfxEngine->Sprite[p_object->sprite];
 			p_object->scrx = (p_object->x>>STC)-mp_Map->m_scrollx;
 			p_object->scry = (p_object->y>>STC)-mp_Map->m_scrolly;
-			
-			
+
 			Sprite->drawSprite( g_pVideoDriver->BlitSurface, p_object->scrx, p_object->scry );
 
 			p_object->bboxX1 = Sprite->m_bboxX1;

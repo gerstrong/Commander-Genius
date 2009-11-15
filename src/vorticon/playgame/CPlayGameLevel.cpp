@@ -6,6 +6,7 @@
  */
 
 #include "CPlayGame.h"
+#include "../../sdl/sound/CSound.h"
 
 void CPlayGame::processInLevel()
 {
@@ -27,9 +28,6 @@ void CPlayGame::processInLevel()
 			if (!mp_Player[i].inhibitfall) processPlayerfallings(&mp_Player[i]);
 			else
 			{
-				if(mp_Player[i].pjumping == PJUMPED)
-					mp_Player[i].pfalling = 0;
-
 				mp_Player[i].psupportingtile = 145;
 				mp_Player[i].psupportingobject = 0;
 			}
@@ -40,6 +38,9 @@ void CPlayGame::processInLevel()
 			// Check if the first player is dead, and if the others also are...
 			if(i==0) m_alldead = (mp_Player[i].pdie == PDIE_DEAD);
 			else m_alldead &= (mp_Player[i].pdie == PDIE_DEAD);
+
+			// Now draw the player to the screen
+			mp_Player[i].SelectFrame();
 
 			// finished the level
 			if(mp_Player[i].level_done == LEVEL_COMPLETE)

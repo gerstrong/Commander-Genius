@@ -181,10 +181,10 @@ void CPlayer::Walking()
     // block you'll start moving a little
     if (!pjumping && !pfalling)
     {
+    	pjustjumped = false;
 		// on left/right press clear pjustjumped
 		if ( (playcontrol[PA_X] < 0) || (playcontrol[PA_X] > 0) )
 		{
-			pjustjumped = 0;
 			pjustfell = 0;
 		}
 		
@@ -196,7 +196,6 @@ void CPlayer::Walking()
 			{
 				if (blockedr)
 				{
-					pjustjumped = 0;
 					pjustfell = 0;
 				}
 				else
@@ -208,7 +207,6 @@ void CPlayer::Walking()
 			{
 				if (blockedl)
 				{
-					pjustjumped = 0;
 					pjustfell = 0;
 				}
 				else

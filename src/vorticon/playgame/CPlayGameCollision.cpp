@@ -47,11 +47,12 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 		{
 			if( checkisSolidu(p_player) )
 			{
-				p_player->pfalling = false;
 				p_player->blockedd = true;
+				p_player->pfalling = false;
 				break;
 			}
 			p_player->y++;
+			p_player->pfalling = true;
 		}
 	}
 	else if( p_player->goto_y < p_player->y )
@@ -71,17 +72,17 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 	p_player->goto_y = p_player->y;
 	
     // Check if the player is going out of the level map
-    if( p_player->y <= 1<<CSF ) // Upper edge or ceiling
+    if( p_player->goto_y <= 2<<CSF ) // Upper edge or ceiling
     	p_player->blockedu = true;
-    else if( p_player->y >= ( mp_Map->m_height<<CSF ) ) // lower edge or floor
+    else if( p_player->goto_y >= ((mp_Map->m_height-2)<<CSF) ) // lower edge or floor
     {
     	p_player->blockedd = true;
     	p_player->pdie = true;
     }
 	
-    if( (p_player->x) >= ( mp_Map->m_width<<CSF ) ) // right edge
+    if( (p_player->goto_x) >= ((mp_Map->m_width-3)<<CSF) ) // right edge
     	p_player->blockedr = true;
-    else if( p_player->x <= 0 ) // left edge
+    else if( p_player->goto_x <= 2<<CSF ) // left edge
     	p_player->blockedl = true;
 }
 
@@ -94,7 +95,7 @@ CSprite *sprite = g_pGfxEngine->Sprite[p_player->playframe];
 	int x=p_player->x+sprite->m_bboxX2;
 	int y1=p_player->y+sprite->m_bboxY1+1;
 	int y2=p_player->y+sprite->m_bboxY2/2;
-	int y3=p_player->y+sprite->m_bboxY2-1;
+	int y3=p_player->y+sprite->m_bboxY2+(1<<STC)-1;
 	
 	int t1 = mp_Map->at(x>>CSF, y1>>CSF);
 	int t2 = mp_Map->at(x>>CSF, y2>>CSF);
@@ -145,7 +146,7 @@ CSprite *sprite = g_pGfxEngine->Sprite[p_player->playframe];
 	int x=p_player->x+sprite->m_bboxX1;
 	int y1=p_player->y+sprite->m_bboxY1+1;
 	int y2=p_player->y+sprite->m_bboxY2/2;
-	int y3=p_player->y+sprite->m_bboxY2-1;
+	int y3=p_player->y+sprite->m_bboxY2+(1<<STC)-1;
 	
 	int t1 = mp_Map->at(x>>CSF, y1>>CSF);
 	int t2 = mp_Map->at(x>>CSF, y2>>CSF);

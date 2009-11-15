@@ -55,7 +55,6 @@ void CPlayer::processInLevel()
 		TogglePogo_and_Switches();
 		JumpAndPogo();
 	}
-    SelectFrame();
 }
 
 void CPlayer::touchedExit()
@@ -94,11 +93,11 @@ void CPlayer::walkbehindexitdoor()
 	
     // don't draw keen as he walks through the door (past exitXpos)
     // X pixel position of right side of player
-    xb = (x+w)>>(CSF-4);
+    xb = (x+w)>>(STC);
     diff = (xb - exitXpos);        // dist between keen and door
     if (diff >= 0)                             // past exitXpos?
     {
-        width = (w>>(CSF-4)) - diff;    // get new width of sprite
+        width = (w>>(STC)) - diff;    // get new width of sprite
         if (width < 0) width = 0;               // don't set to negative
 		
         // set new width of all player walk frames
@@ -380,8 +379,6 @@ void CPlayer::JumpAndPogo()
 				}
 				pjumpframe = PJUMP_PREPARE_LAST_FRAME;
 				pjumping = PPOGOING;
-				//pjumpupspeed_decrease = 0;
-				pjustjumped = 1;
 				
 			} else pjumpanimtimer++;
 			break;
@@ -429,7 +426,6 @@ void CPlayer::JumpAndPogo()
 					
 					g_pSound->playStereofromCoord(SOUND_KEEN_JUMP, PLAY_NOW, mp_object->at(m_player_number).scrx);
 					pjumping = PJUMPUP;
-					pjustjumped = 1;
 					
 					// make so if we're jumping left or right
 					// the walk code will start at full speed
@@ -483,6 +479,8 @@ void CPlayer::JumpAndPogo()
 			else pjumptime--;
 			
 			goto_y -= (2*pjumpupspeed);
+			pjustjumped = true;
+
 			break;
     }
 	
@@ -513,6 +511,7 @@ void CPlayer::JumpAndPogo()
     if( godmode && ppogostick &&
 	   g_pInput->getHoldedCommand(0, IC_JUMP) && !blockedu )
     	goto_y -= PPOGOUP_SPEED;
+
 }
 
 // wouldn't it be cool if keen had a raygun, and he could shoot things?
