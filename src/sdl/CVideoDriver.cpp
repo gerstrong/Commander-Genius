@@ -147,7 +147,7 @@ void CVideoDriver::initResolutionList()
 		if(!getFullscreen())
 		{
 			for (g=1; g != 20; g++) {
-				if (g*320>m_Resolutionlist.back().width or g*200>m_Resolutionlist.back().height)
+				if (g*320>m_Resolutionlist.back().width or g*240>m_Resolutionlist.back().height)
 				{
 					j=g;
 					break;
@@ -156,7 +156,7 @@ void CVideoDriver::initResolutionList()
 			m_Resolutionlist.clear();
 			for (g=1; g!=j; g++) {
 				resolution.width=g*320;
-				resolution.height=g*200;
+				resolution.height=g*240;
 				resolution.depth=32;
 				m_Resolutionlist.push_back(resolution);
 			}
@@ -344,7 +344,7 @@ bool CVideoDriver::applyMode(void)
     }
     else
     {
-		game_resolution_rect.h = 200;
+		game_resolution_rect.h = 240;
     }
 	
 	// Now we decide if it will be fullscreen or windowed mode.

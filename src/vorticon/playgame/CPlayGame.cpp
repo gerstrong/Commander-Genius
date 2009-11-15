@@ -80,7 +80,7 @@ bool CPlayGame::init()
 	
 	// Now Scroll to the position of the player and center him
 	
-	mp_Map->gotoPos( 32, 32 ); // Assure that the edges are never seen
+	mp_Map->gotoPos( 32, 64 ); // Assure that the edges are never seen
 	
 	m_showKeensLeft=false;
 	for (int i=0 ; i<m_NumPlayers ; i++)

@@ -65,7 +65,6 @@
 		6350FA63104490B600A992D5 /* STORYTXT.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C61044797300A992D5 /* STORYTXT.CK1 */; };
 		6350FA64104490B600A992D5 /* VENDOR.DOC in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C71044797300A992D5 /* VENDOR.DOC */; };
 		6350FA7A104490B600A992D5 /* resolutions.cfg in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7DD1044797300A992D5 /* resolutions.cfg */; };
-		6350FA7B104490B600A992D5 /* strings.dat in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7DE1044797300A992D5 /* strings.dat */; };
 		6350FB3710449E2B00A992D5 /* changelog.txt in Copy Text Files */ = {isa = PBXBuildFile; fileRef = 6350FB0910449DAA00A992D5 /* changelog.txt */; };
 		6350FB3810449E2B00A992D5 /* future.txt in Copy Text Files */ = {isa = PBXBuildFile; fileRef = 6350FB0A10449DAA00A992D5 /* future.txt */; };
 		6350FB3910449E2B00A992D5 /* readme.txt in Copy Text Files */ = {isa = PBXBuildFile; fileRef = 6350FB0B10449DAA00A992D5 /* readme.txt */; };
@@ -235,7 +234,6 @@
 			files = (
 				6350FA41104490B600A992D5 /* controls.dat in Copy Data Files */,
 				6350FA7A104490B600A992D5 /* resolutions.cfg in Copy Data Files */,
-				6350FA7B104490B600A992D5 /* strings.dat in Copy Data Files */,
 			);
 			name = "Copy Data Files";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -648,7 +646,6 @@
 		6350F7C61044797300A992D5 /* STORYTXT.CK1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = STORYTXT.CK1; sourceTree = "<group>"; };
 		6350F7C71044797300A992D5 /* VENDOR.DOC */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VENDOR.DOC; sourceTree = "<group>"; };
 		6350F7DD1044797300A992D5 /* resolutions.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = resolutions.cfg; sourceTree = "<group>"; };
-		6350F7DE1044797300A992D5 /* strings.dat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = strings.dat; sourceTree = "<group>"; };
 		6350FB0910449DAA00A992D5 /* changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = changelog.txt; path = ../../changelog.txt; sourceTree = SOURCE_ROOT; };
 		6350FB0A10449DAA00A992D5 /* future.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = future.txt; path = ../../future.txt; sourceTree = SOURCE_ROOT; };
 		6350FB0B10449DAA00A992D5 /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = readme.txt; path = ../../readme.txt; sourceTree = SOURCE_ROOT; };
@@ -1212,7 +1209,6 @@
 				6350F7A41044797300A992D5 /* games */,
 				63D4A6ED107FEB7C00E43500 /* res */,
 				6350F7DD1044797300A992D5 /* resolutions.cfg */,
-				6350F7DE1044797300A992D5 /* strings.dat */,
 			);
 			includeInIndex = 1;
 			name = data;

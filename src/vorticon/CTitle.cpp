@@ -37,8 +37,8 @@ bool CTitle::init(int Episode)
 	pBitmap = g_pGfxEngine->getBitmap("F1HELP");
 	p_object = new CEGABitmap( pSurface, pBitmap );
 
-	if(Episode == 3) p_object->setScrPos( 128, 180 );
-	else p_object->setScrPos( 96, 180 );
+	if(Episode == 3) p_object->setScrPos( 128, 212 );
+	else p_object->setScrPos( 96, 212 );
 
 	mp_objects->push_back(p_object);
 	

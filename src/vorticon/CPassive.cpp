@@ -43,7 +43,7 @@ bool CPassive::init(char mode)
 		mp_Map = new CMap( mp_Scrollsurface, mp_Tilemap);
 		CMapLoader MapLoader( mp_Map );
 		MapLoader.load( m_Episode, 90, m_DataDirectory);
-		mp_Map->gotoPos( 64+5*320, 32); // Coordinates of star sky
+		mp_Map->gotoPos( 64+5*320, 16); // Coordinates of star sky
 		mp_Map->drawAll();
 		mp_IntroScreen->init();
 	}
@@ -56,7 +56,7 @@ bool CPassive::init(char mode)
 		mp_Map = new CMap( mp_Scrollsurface, mp_Tilemap);
 		CMapLoader MapLoader( mp_Map );
 		MapLoader.load( m_Episode, 90, m_DataDirectory);
-		mp_Map->gotoPos( 32, 32); // Coordinates of title screen
+		mp_Map->gotoPos( 32, 0); // Coordinates of title screen
 		mp_Map->drawAll();
 		mp_TitleScreen->init(m_Episode);
 	}

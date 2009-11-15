@@ -150,8 +150,8 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path )
 	
     // Do some post calculations
     // Limit the scroll screens so the blocking (blue in EP1) tiles are3 never seen
-    mp_map->m_maxscrollx = mp_map->m_width-((320+32+8)>>4);
-    mp_map->m_maxscrolly = mp_map->m_height-((200+32+8)>>4);
+    mp_map->m_maxscrollx = mp_map->m_width-((320+32)>>4);
+    mp_map->m_maxscrolly = mp_map->m_height-((240+32)>>4);
 	
     return true;
 }

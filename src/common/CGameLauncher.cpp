@@ -89,7 +89,7 @@ bool CGameLauncher::drawMenu()
 	
     if(!MapLoader.load(1, 90, m_Entries.at(m_ep1slot).path)) return false;
 	
-    mp_map->gotoPos(1664,32);
+    mp_map->gotoPos(1664,16);
 	
     // Draw Background. This is only needed once, since Scrollsurface
     // won't be cleared every update screen

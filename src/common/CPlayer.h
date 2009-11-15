@@ -18,10 +18,10 @@
 #include <vector>
 
 // scroll triggers
-#define SCROLLTRIGGERRIGHT     194
-#define SCROLLTRIGGERLEFT      110
-#define SCROLLTRIGGERUP        80
-#define SCROLLTRIGGERDOWN      114
+#define SCROLLTRIGGERRIGHT     192
+#define SCROLLTRIGGERLEFT      128
+#define SCROLLTRIGGERUP        96
+#define SCROLLTRIGGERDOWN      134
 
 ///
 // Class definition starts here!
