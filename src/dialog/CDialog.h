@@ -25,7 +25,7 @@ public:
 	
 	int getSelection();
 	
-	void processInput(char dir);
+	void processInput(char key);
 	void draw();
 	void drawTwirl();
 	

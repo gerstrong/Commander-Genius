@@ -11,9 +11,17 @@ until 0.4:
 
 until 0.5:
 - OpenGL new effects
-- Maybe Keen Dreams
-- Well functioning 2-Player support, and maybe 3 and/or 4 Player support.
+- Possibly Keen Dreams depending on how cracking the encryption is going
+- Sidekick and CK Bros. multiplayer modes implemented.
+- Improved resolution support for more dynamic resolution solutions.
 
 until 0.6:
+- Party multiplayer mode implemented, this is the free for all battle mode.
 - Level Editor for all Keen Games built in.
-- Tools for mod creation using Commander Genius.
+
+until 0.7-0.9:
+
+- Extravagances with graphics and improved gameplay are most likely to be added during these versions, nothing specific.
+
+until 1.0:
+- Support for Keen Dreams, until that is achieved we simply don't release this version

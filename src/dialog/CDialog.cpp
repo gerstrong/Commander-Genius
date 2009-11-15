@@ -105,9 +105,9 @@ int CDialog::getSelection()
 ///
 // Process routine
 ///
-void CDialog::processInput(char dir)
+void CDialog::processInput(char key)
 {
-	if( dir == 't' )
+	if( key == 't' )
 	{
 		// This cycle will wait for the input of name and hit of enter
 		bool blink = true;
@@ -174,7 +174,7 @@ void CDialog::processInput(char dir)
 				m_selected_ID++;
 			}
 		}while(!m_dlgobject.at(m_selected_ID)->m_selectable);
-		if(g_pInput->getPulsedCommand((dir == 'u') ? IC_DOWN : IC_RIGHT, 60))
+		if(g_pInput->getPulsedCommand((key == 'u') ? IC_DOWN : IC_RIGHT, 60))
 		{
 			do
 			{
@@ -202,7 +202,7 @@ void CDialog::processInput(char dir)
 				
 			}while(!m_dlgobject.at(m_selected_ID)->m_selectable);
 		}
-		else if(g_pInput->getPulsedCommand((dir == 'u') ? IC_UP : IC_LEFT, 60))
+		else if(g_pInput->getPulsedCommand((key == 'u') ? IC_UP : IC_LEFT, 60))
 		{
 			do
 			{
