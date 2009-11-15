@@ -214,7 +214,9 @@ int main(int argc, char *argv[])
 	cleanupResources(&CKP);
 
 	Settings.saveDrvCfg();
-	
+
+	// TODO: that crashes on iPhone
+	//SDL_Quit();
 	printf("Thank you very much for playing this wonderful game!");
 
 	return 0;
