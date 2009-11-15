@@ -34,7 +34,8 @@ void CObjectAI::process()
 		i_object = &mp_Objvect->at(i);
 		if( checkforAIObject(&(*i_object)) )
 		{
-			performCommonAI(&(*i_object));
+			i_object->processFalling();
+			i_object->performCollision(mp_Map);
 			
 		    // hit detection with players
 			i_object->touchPlayer = false;
@@ -200,6 +201,8 @@ CSprite *sprite = g_pGfxEngine->Sprite.at(p_object->sprite);
 			p_object->y += p_object->yinertia;
 		}
 	}
+
+
 }
 
 void CObjectAI::performSpecialAIType( CObject *p_object )

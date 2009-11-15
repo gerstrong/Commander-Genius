@@ -78,8 +78,8 @@ void CObjectAI::tank_ai(CObject *p_object, bool hardmode)
     		 }
     	 }
      }
-	 
-	 switch(p_object->ai.tank.state)
+
+     switch(p_object->ai.tank.state)
 	 {
 	 case TANK_LOOK:
 		 p_object->sprite = TANK_LOOK_FRAME + p_object->ai.tank.frame;

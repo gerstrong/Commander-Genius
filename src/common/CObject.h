@@ -25,14 +25,14 @@
 class CObject {
 public:
 	CObject();
-	virtual ~CObject();
 	
 	unsigned int m_type;        // yorp, vorticon, etc.
 	bool exists;
-	bool onscreen;    // 1=(scrx,scry) position is visible onscreen
+	bool onscreen;    			// true=(scrx,scry) position is visible onscreen
 	bool hasbeenonscreen;
-	unsigned int sprite;      // which sprite should this object be drawn with
-	unsigned int x, y;        // x,y location in map coords, CSFed
+	unsigned int sprite;      			// which sprite should this object be drawn with
+	unsigned int x, y;        			// x,y location in map coords, CSFed
+	unsigned int new_x, new_y;        // x,y next location in map coords, CSFed, used for collision only
 	int scrx, scry;           // x,y pixel position on screen
 	
 	// Bouncing Boxes
@@ -110,6 +110,17 @@ public:
 	virtual void process() { }
 	
 	bool hitdetect(CObject *p_hitobject);
+
+	// Collision parts
+	void performCollision(CMap *p_map);
+	bool checkSolidR(stTile *TileProperty, CMap *p_map, int x2, int y1, int y2);
+	bool checkSolidL(stTile *TileProperty, CMap *p_map, int x1, int y1, int y2);
+	bool checkSolidU(stTile *TileProperty, CMap *p_map, int x1, int x2, int y1);
+	bool checkSolidD(stTile *TileProperty, CMap *p_map, int x1, int x2, int y2);
+
+	void processFalling();
+
+	virtual ~CObject();
 };
 
 #endif /* COBJECT_H_ */
