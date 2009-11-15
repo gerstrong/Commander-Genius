@@ -50,7 +50,7 @@ CPlayGame::CPlayGame( char episode, char level,
 	mp_Player = new CPlayer[m_NumPlayers];
 	
 	// Create completed level list
-	memset(mp_level_completed,false,16*sizeof(bool));
+	memset(mp_level_completed,false,MAX_LEVELS*sizeof(bool));
 
 	// Player are tied to objects like enemys, sprites, etc, so they
 	// can be drawn the same way.

@@ -158,8 +158,9 @@ struct stString
 #define LVLS_TELEPORTER_BONUS      46            // bonus teleporter in ep1
 #define LVLS_SHIP                  20
 
-#define TELEPORTING_OUT         0
-#define TELEPORTING_IN          1
+enum teleporation_states{
+TELEPORTING_OUT,TELEPORTING_IN
+};
 
 #define TELEPORT_BONUS_DESTX    ((((23085>>CSF)+2)<<CSF)-(8<<CSF))
 #define TELEPORT_BONUS_DESTY    (((12501>>CSF)+2)<<CSF)
@@ -167,20 +168,22 @@ struct stString
 #define BONUSLEVEL_RESPAWN_X    31812
 #define BONUSLEVEL_RESPAWN_Y    18936
 
-#define MAINMNU_1PLAYER      	0
-#define MAINMNU_2PLAYER      	1
-#define MAINMNU_LOADGAME     	2
-#define MAINMNU_STORY	     	3
-#define MAINMNU_HIGHSCORES   	4
-#define MAINMNU_OPTIONS      	5
-#define MAINMNU_DEMO         	6
-#define MAINMNU_NEW_GAME     	7
-#define MAINMNU_ABOUT        	8
-#define MAINMNU_ORDERING_INFO 	9
-#define MAINMNU_QUIT         	10
-#define MAINMNU_TIMEOUT      	11     // going to demo due to timeout
-#define RESTART_GAME         	12
-#define BACK2MAINMENU		 	13
+enum MainMenuOptions{
+MAINMNU_1PLAYER,
+MAINMNU_2PLAYER,
+MAINMNU_LOADGAME,
+MAINMNU_STORY,
+MAINMNU_HIGHSCORES,
+MAINMNU_OPTIONS,
+MAINMNU_DEMO,
+MAINMNU_NEW_GAME,
+MAINMNU_ABOUT,
+MAINMNU_ORDERING_INFO,
+MAINMNU_QUIT,
+MAINMNU_TIMEOUT,      	     // going to demo due to timeout
+RESTART_GAME,
+BACK2MAINMENU,
+};
 
 #define MAINMENU_NUM_OPTIONS        MAINMNU_QUIT
 
@@ -223,18 +226,21 @@ enum sector_effector_type{
 #define DEMO_RESULT_FILE_BAD     2
 
 // Runtime of CKP
-#define SHUTDOWN_NONE			 0
-#define SHUTDOWN_NO_ERRORS		 0
-#define SHUTDOWN_BOOTUP			 1
-#define SHUTDOWN_RESTART		 2
-#define SHUTDOWN_NEW_GAME		 3
-#define SHUTDOWN_EXIT		 	 4
+enum Shutdown_Mode{
+SHUTDOWN_NONE,
+SHUTDOWN_BOOTUP,
+SHUTDOWN_RESTART,
+SHUTDOWN_NEW_GAME,
+SHUTDOWN_EXIT
+};
 
 
 // Video Modes
-#define VIDEO_MODE_SOFTWARE		 0
-#define VIDEO_MODE_HARDWARE		 1
-#define VIDEO_MODE_OPENGL		 2
+enum VideoRendering_Modes{
+VIDEO_MODE_SOFTWARE,
+VIDEO_MODE_HARDWARE,
+VIDEO_MODE_OPENGL,
+};
 
 // directory "special" sprites and VGASprites are under
 #define GFXDIR					"data/res/gfx/"

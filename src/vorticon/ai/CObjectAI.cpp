@@ -124,92 +124,11 @@ bool CObjectAI::checkforAIObject( CObject *p_object )
 	return false;
 }
 
-// common enemy/object ai, such as falling, setting blocked variables,
-// It's more like collision detection
-// NOTE: This collision check is pixel based
-void CObjectAI::performCommonAI( CObject *p_object )
-{
-long x1,y1,x2,y2;
-long c;
-stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
-CSprite *sprite = g_pGfxEngine->Sprite.at(p_object->sprite);
-	
-	// Set all blocking to false and test later.
-	p_object->blockedu = p_object->blockedd = false;
-	p_object->blockedl = p_object->blockedr = false;
-
-	// Get Rect values of the object
-	x1 = p_object->x + sprite->m_bboxX1;
-	y1 = p_object->y + sprite->m_bboxY1;
-	x2 = p_object->x + sprite->m_bboxX2;
-	y2 = p_object->y + sprite->m_bboxY2;
-	
-	// Check for up from the object
-	for( c=x1+1 ; c<=x2-1 ; c++)
-	{
-		if(TileProperty[mp_Map->at(c>>CSF, y1>>CSF)].bdown)
-		{
-			p_object->blockedu = true;
-			break;
-		}
-	}
-
-	if( y1 < (2<<CSF) ) p_object->blockedu = true; // Out of map?
-	
-	// Check for down from the object
-	for( c=x1+1 ; c<=x2-1 ; c++)
-	{
-		if(TileProperty[mp_Map->at(c>>CSF, (y2+(1<<STC))>>CSF)].bup)
-		{
-			p_object->blockedd = true;
-			break;
-		}
-	}
-
-	if( y2 > ((mp_Map->m_height-2)<<CSF) ) p_object->blockedd = true; // Out of map?
-	
-	// Check for left from the object
-	for( c=y1+1 ; c<=y2-1 ; c++)
-	{
-		if(TileProperty[mp_Map->at(x1>>CSF, c>>CSF)].bright)
-		{
-			p_object->blockedl = true;
-			break;
-		}
-	}
-	if( x1 < (2<<CSF) ) p_object->blockedl = true; // Out of map?
-
-	// Check for right from the object
-	for( c=y1+1 ; c<=y2-1 ; c++)
-	{
-		if(TileProperty[mp_Map->at(x2>>CSF, c>>CSF)].bleft)
-		{
-			p_object->blockedr = true;
-			break;
-		}
-	}
-	if( x2 > ((mp_Map->m_width-2)<<CSF) ) p_object->blockedr = true; // Out of map?
-
-	// Make object fall if it must
-	#define OBJFALLSPEED   160
-	if (!p_object->inhibitfall)
-	{
-		if (p_object->blockedd)	p_object->yinertia = 0;
-		else
-		{
-			if (p_object->yinertia < OBJFALLSPEED) p_object->yinertia++;
-			p_object->y += p_object->yinertia;
-		}
-	}
-
-
-}
-
 void CObjectAI::performSpecialAIType( CObject *p_object )
 {
 	switch(p_object->m_type)
 	{
-			//KEEN1
+		//KEEN1
 		case OBJ_YORP: yorp_ai(p_object, mp_Player, m_difficulty); break;
 		// case OBJ_GARG: garg_ai(i, p_levelcontrol->hardmode); break;
 		case OBJ_VORT: vort_ai(p_object, m_Level, m_Episode, m_difficulty, false ); break;

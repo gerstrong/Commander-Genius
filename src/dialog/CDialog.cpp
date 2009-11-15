@@ -115,7 +115,7 @@ void CDialog::processInput(char key)
 		int i;
 		std::string name = m_dlgobject.at(m_selected_ID)->m_OptionText->m_text;
 		char* buf;
-			
+
 		if(name.substr(name.length()-1) == "|")
 		{
 			name = m_dlgobject.at(m_selected_ID)->m_OptionText->m_text;
@@ -123,44 +123,44 @@ void CDialog::processInput(char key)
 		}
 		do
 		{
-		// Get the input
-		for(i=KA ; i<=KZ ; i++)
-		{
-			if (g_pInput->getHoldedKey(KSHIFT) && g_pInput->getPressedKey(i) && name.length() < 15)
+			// Get the input
+			for(i=KA ; i<=KZ ; i++)
 			{
-				sprintf(buf,"%d",'A' + i - KA);
-				g_pLogFile->textOut(RED, itoa(i));
-				name.append(buf);
+				if (g_pInput->getHoldedKey(KSHIFT) && g_pInput->getPressedKey(i) && name.length() < 15)
+				{
+					sprintf(buf,"%d",'A' + i - KA);
+					g_pLogFile->textOut(RED, itoa(i));
+					name.append(buf);
+				}
+				else if(g_pInput->getPressedKey(i) && name.length() < 15)
+				{
+					sprintf(buf,"%d",'a' + i - KA);
+					g_pLogFile->textOut(RED, buf);
+					name.append(buf);
+				}
+
 			}
-			else if(g_pInput->getPressedKey(i) && name.length() < 15)
+			if(g_pInput->getPressedKey(KBCKSPCE) && (name.length() > 0))
 			{
-				sprintf(buf,"%d",'a' + i - KA);
-				g_pLogFile->textOut(RED, buf);	
-				name.append(buf);
+				name.erase(name.length()-1);
 			}
-			
-		}
-		if(g_pInput->getPressedKey(KBCKSPCE) && (name.length() > 0))
-		{
-			name.erase(name.length()-1);
-		}
-		
-		if(blink)
-			setObjectText(m_selected_ID, name + "|");
-		else
-			setObjectText(m_selected_ID, name);
-		
-		blinkctr++; // The blinking cursor
-		if(blinkctr > 100)
-		{
-			blink = !blink;
-			blinkctr = 0;
-		}
-		
+
+			if(blink)
+				setObjectText(m_selected_ID, name + "|");
+			else
+				setObjectText(m_selected_ID, name);
+
+			blinkctr++; // The blinking cursor
+			if(blinkctr > 100)
+			{
+				blink = !blink;
+				blinkctr = 0;
+			}
+
 			//g_pLogFile->textOut(RED, name);
 			g_pInput->pollEvents();
-		draw();
-		
+			draw();
+
 		}while(!g_pInput->getPressedKey(KENTER));
 		//setObjectText(m_selected_ID, name);
 		//}
@@ -190,16 +190,16 @@ void CDialog::processInput(char key)
 				else
 				{
 					m_selected_ID++;
-					
+
 					if(m_selected_ID >= m_h-2+m_scroll)
 						m_scroll++;
-					
+
 					if(!m_dlgobject.at(m_selected_ID)->m_selectable)
 					{
 						m_selected_ID++;
 					}
 				}
-				
+
 			}while(!m_dlgobject.at(m_selected_ID)->m_selectable);
 		}
 		else if(g_pInput->getPulsedCommand((key == 'u') ? IC_UP : IC_LEFT, 60))
@@ -209,7 +209,7 @@ void CDialog::processInput(char key)
 				if(m_selected_ID <= 0 )
 				{
 					m_switch=2;
-					
+
 					if(m_dlgobject.size() > m_h)
 						m_scroll = m_selected_ID-(m_h-2)+1;
 					m_selected_ID = m_dlgobject.size()-1;
@@ -217,10 +217,10 @@ void CDialog::processInput(char key)
 				else
 				{
 					m_selected_ID--;
-					
+
 					if(m_selected_ID < m_scroll)
 						m_scroll--;
-					
+
 					if(!m_dlgobject.at(m_selected_ID)->m_selectable)
 					{
 						m_selected_ID--;

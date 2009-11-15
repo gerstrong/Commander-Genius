@@ -55,21 +55,22 @@ void CObjectAI::teleporter_ai(CObject *p_object)
 		if (p_object->ai.teleport.numframechanges > numframes)
 		{ // animation is done
 			mp_Map->setTile(mx, my, p_object->ai.teleport.idleframe);
-			if (p_object->ai.teleport.direction==TELEPORTING_OUT)
+			mp_Map->redrawAt(mx, my);
+			if (p_object->ai.teleport.direction == TELEPORTING_OUT)
 			{  // teleporting out, go to new teleporter and new teleport in anim
+				int player = p_object->ai.teleport.whichplayer;
 				p_object->x = p_object->ai.teleport.destx<<CSF;
 				p_object->y = p_object->ai.teleport.desty<<CSF;
-				mp_Player[p_object->ai.teleport.whichplayer].x = p_object->x;
-				mp_Player[p_object->ai.teleport.whichplayer].y = p_object->y;
-				mp_Player[p_object->ai.teleport.whichplayer].pdir = DOWN;
+				mp_Player[player].goto_x = mp_Player[player].x = p_object->x;
+				mp_Player[player].goto_y = mp_Player[player].y = p_object->y;
+				mp_Player[player].pdir = DOWN;
 				p_object->ai.teleport.direction = TELEPORTING_IN;
 				p_object->needinit = true;
 				g_pSound->playStereofromCoord(SOUND_TELEPORT, PLAY_NOW, p_object->scrx);
-				mp_Map->drawAll();
 				// if we were told to snap the screen to the new position instead
 				// of scrolling over to it, do that.
-				if (p_object->ai.teleport.snap)
-					mp_Map->gotoPos( p_object->ai.teleport.destx, p_object->ai.teleport.desty);
+				//if (p_object->ai.teleport.snap)
+					//mp_Map->gotoPos( p_object->ai.teleport.destx, p_object->ai.teleport.desty);
 				
 				if (p_object->ai.teleport.NoExitingTeleporter)
 				{  // for the teleporter to exit the bonus area in ep1
@@ -81,7 +82,6 @@ void CObjectAI::teleporter_ai(CObject *p_object)
 			{ // tport in and anim end: teleport complete so destroy tport object
 			tport_done: ;
 				mp_Player[p_object->ai.teleport.whichplayer].hideplayer = false;
-				mp_Map->drawAll();
 				
 				/*if (tobonuslevel)
 				 {

@@ -159,7 +159,7 @@ bool CMap::gotoPos(int x, int y)
 	else if( dy > 0 )
 		for( int scrolly=0 ; scrolly<-dy ; scrolly++) scrollUp();
 	else retval = true;
-	
+
 	return retval;
 }
 
@@ -254,6 +254,9 @@ void CMap::redrawAt(int mx, int my)
 	mp_Tilemap->drawTile(mp_scrollsurface, (mx<<4)&511, (my<<4)&511, c);
 }
 
+// redraws all the map area. This is used for the title screen, when game starts and other passive scenes.
+// Don't use it, when the game is scrolling. Use redrawAt instead,
+// for the correct and fast update of tiles
 void CMap::drawAll()
 {
 	int y;

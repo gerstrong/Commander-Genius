@@ -75,6 +75,9 @@ void CPlayGame::processOnWorldMap()
 		{
 			mp_Player[i].AllowMountUnmountNessie();
 		}
+
+		// Check Collisions and only move player, if it is not blocked
+		checkPlayerCollisions(&mp_Player[i]);
 	}
 
 	if(m_showKeensLeft)	showKeensLeft();

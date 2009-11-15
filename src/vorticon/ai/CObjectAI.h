@@ -31,7 +31,6 @@ private:
 	// main AI functions
 	bool checkforAIObject( CObject *p_object );
 	void performSpecialAIType( CObject *p_object );
-	void performCommonAI( CObject *p_object );
 	void deleteObj(CObject *p_object);
 	
 	// ep1
