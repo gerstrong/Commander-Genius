@@ -141,6 +141,14 @@ void CInput::getEventName(int position, unsigned char input, char *buf)
 
 bool CInput::readNewEvent(Uint8 device, int position)
 {
+	// This function is used to configure new input keys.
+	// For iPhone, we have emulation via touchpad and we don't want to have custom keys.
+	// We should fix the menu for iPhone so that this function doesn't get called.
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+	printf("WARNING: called readNewEvent on iphone\n");
+	return true;
+#endif
+	
 	while( SDL_PollEvent( &Event ) )
 	{
 		switch ( Event.type )
@@ -186,7 +194,7 @@ void CInput::pollEvents()
 
 	//While there's an event to handle
 	while( SDL_PollEvent( &Event ) )
-	{
+	{		
       switch( Event.type )
       {
         case SDL_QUIT:
@@ -208,6 +216,11 @@ void CInput::pollEvents()
 	    case SDL_JOYBUTTONUP:
 	      	processJoystickButton(0);
 	       	break;
+		case SDL_MOUSEBUTTONDOWN:
+		case SDL_MOUSEBUTTONUP:
+		case SDL_MOUSEMOTION:
+			processMouse();
+			break;
 	   }
 	}
 
@@ -505,6 +518,78 @@ void CInput::flushKeys(void)
 	memset(last_immediate_keytable,false,KEYTABLE_SIZE);
 }
 void CInput::flushAll(void){ flushKeys(); flushCommands(); }
+
+void CInput::processMouse() {
+	switch(Event.type) {
+		case SDL_MOUSEBUTTONDOWN:
+			processMouse(Event.button.x, Event.button.y, true);
+			break;
+			
+		case SDL_MOUSEBUTTONUP:
+			processMouse(Event.button.x, Event.button.y, false);
+			break;
+			
+		case SDL_MOUSEMOTION:
+			processMouse(Event.motion.x - Event.motion.xrel, Event.motion.y - Event.motion.yrel, false);			
+			processMouse(Event.motion.x, Event.motion.y, true);
+			break;
+	}	
+}
+
+void CInput::processMouse(int x, int y, bool down) {
+
+	struct TouchButton {
+		stInputCommand* cmd;
+		int immediateIndex;
+		int x, y, w, h;
+		
+		bool isInside(int _x, int _y) const {
+			return
+			x <= _x && _x < x + w &&
+			y <= _y && _y < y + h;
+		}
+	};
+	
+	// no idea actually...
+	const int w = 600, h = 800;
+	const int middlex = w / 2;
+	const int middley = h / 2;
+	
+	TouchButton buttons[] = {
+		{ &InputCommand[0][IC_LEFT],	KLEFT,	0, middley, w / 6, h / 2},
+		{ &InputCommand[0][IC_UP],		KUP,	w / 6, middley, w / 6, h / 4},
+		{ &InputCommand[0][IC_RIGHT],	KRIGHT,	w / 3, middley, w / 6, h / 2},
+		{ &InputCommand[0][IC_DOWN],	KDOWN,	w / 6, middley + h / 4, w / 6, h / 4},
+		
+		{ &InputCommand[0][IC_JUMP],	-1,		middlex, middley, w / 6, h / 2},
+		{ &InputCommand[0][IC_POGO],	-1,		middlex + w / 6, middley, w / 6, h / 2},
+		{ &InputCommand[0][IC_FIRE],	KENTER,	middlex + w / 3, middley, w / 6, h / 2},
+
+		{ &InputCommand[0][IC_STATUS],	KSPACE,	0, 0, w, h}
+	};
+	const int buttonN = sizeof(buttons) / sizeof(TouchButton);
+	
+	for(int i = 0; i < buttonN; ++i) {
+		TouchButton& b = buttons[i];
+		if(b.isInside(x, y)) {
+
+			// handle active
+			if(down)
+				b.cmd->active++;
+			else {
+				if(b.cmd->active > 0)
+					b.cmd->active--;
+			}
+			
+			// handle immediate keys
+			if(b.immediateIndex >= 0) {
+				immediate_keytable[b.immediateIndex] = down;
+			}			
+		}
+	}
+
+}
+
 
 #ifdef WIZ
 void CInput::WIZ_EmuKeyboard( int button, int value )
