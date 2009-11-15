@@ -78,7 +78,7 @@ bool CMenu::init( char menu_type )
 
 void CMenu::initMainMenu()
 {
-	mp_Dialog = new CDialog(mp_MenuSurface, 0, 40, 17, 10);
+	mp_Dialog = new CDialog(mp_MenuSurface, 17, 10);
 	
 	// When in Intro, Title, Demo mode
 	if( m_menu_mode == PASSIVE )
@@ -110,7 +110,7 @@ void CMenu::initMainMenu()
 
 void CMenu::initNumPlayersMenu()
 {
-	mp_Dialog = new CDialog(mp_MenuSurface, 0, 40, 13, MAX_PLAYERS+4);
+	mp_Dialog = new CDialog(mp_MenuSurface, 13, MAX_PLAYERS+4);
 	int i;
 	
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "1 Player");
@@ -123,7 +123,7 @@ void CMenu::initNumPlayersMenu()
 
 void CMenu::initDifficultyMenu()
 {
-	mp_Dialog = new CDialog(mp_MenuSurface, 0, 40, 11, 6);
+	mp_Dialog = new CDialog(mp_MenuSurface, 11, 6);
 	
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Normal");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Hard");
@@ -132,7 +132,7 @@ void CMenu::initDifficultyMenu()
 
 void CMenu::initConfigureMenu()
 {
-	mp_Dialog = new CDialog(mp_MenuSurface, 0, 40, 13, 8);
+	mp_Dialog = new CDialog(mp_MenuSurface, 13, 8);
 	
 	mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 1, "Graphics");
 	mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 2, "Audio");
@@ -143,7 +143,7 @@ void CMenu::initConfigureMenu()
 
 void CMenu::initNumControlMenu()
 {
-	mp_Dialog = new CDialog(mp_MenuSurface, 0, 40, 13, MAX_PLAYERS+4);
+	mp_Dialog = new CDialog(mp_MenuSurface, 13, MAX_PLAYERS+4);
 	int i;
 	
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Player 1");
@@ -156,7 +156,7 @@ void CMenu::initNumControlMenu()
 
 void CMenu::initF1Menu()
 {
-	mp_Dialog = new CDialog(mp_MenuSurface, 0, 40, 18, 7);
+	mp_Dialog = new CDialog(mp_MenuSurface, 18, 7);
 	
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "The Game");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "The Story");
@@ -167,7 +167,7 @@ void CMenu::initF1Menu()
 
 void CMenu::initConfirmMenu()
 {
-	mp_Dialog = new CDialog(mp_MenuSurface, 0, 40, 20, 5);
+	mp_Dialog = new CDialog(mp_MenuSurface, 20, 5);
 	
 	mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 1, " Are you certain? ");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Yes");
