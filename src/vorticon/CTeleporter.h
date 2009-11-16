@@ -33,7 +33,6 @@ private:
 	CMap &m_map;
     int telfrom;
     int teldest;
-    int telsnap;
     short m_episode;
 };
 

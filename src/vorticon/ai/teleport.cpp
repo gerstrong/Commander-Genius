@@ -69,8 +69,7 @@ void CObjectAI::teleporter_ai(CObject *p_object)
 				//g_pSound->playStereofromCoord(SOUND_TELEPORT, PLAY_NOW, p_object->scrx);
 				// if we were told to snap the screen to the new position instead
 				// of scrolling over to it, do that.
-				if (p_object->ai.teleport.snap)
-					mp_Map->gotoPos( p_object->ai.teleport.destx+260, p_object->ai.teleport.desty );
+				mp_Map->gotoPos( p_object->ai.teleport.destx+260, p_object->ai.teleport.desty );
 				
 				if (p_object->ai.teleport.NoExitingTeleporter)
 				{  // for the teleporter to exit the bonus area in ep1

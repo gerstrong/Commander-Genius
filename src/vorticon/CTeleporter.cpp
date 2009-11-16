@@ -31,13 +31,11 @@
 #define NUM_TPORTS    20
 const int teleport_from[NUM_TPORTS+1] = {4014,4032,3842,4063,4094,4072,3980,3859,3889,3911,3877,3922,3947,4025,3988,3955,41,38,0};
 const int teleport_dest[NUM_TPORTS+1] = {4072,3842,3877,4094,4072,3980,4032,3889,3859,3955,3922,3877,4025,3988,3911,3889,38,41,0};
-const int teleport_snap[NUM_TPORTS+1] = {1   ,1   ,1   ,1   ,1   ,1   ,1   ,1   ,1   ,1   ,1   ,1   ,1   ,1   ,1   ,1   ,1 ,1 ,0};
 
 CTeleporter::CTeleporter(CMap &map, short episode) : m_map(map) {
 	m_episode = episode;
     telfrom = 0;
     teldest = 0;
-    telsnap = 0;
 }
 
 bool CTeleporter::readTeleporterInfo(int lvl)
@@ -51,7 +49,6 @@ bool CTeleporter::readTeleporterInfo(int lvl)
 		{ // we found it! it IS a teleporter!
 			telfrom = teleport_from[i];
 			teldest = teleport_dest[i];
-			telsnap = teleport_snap[i];
 			return true;
 		}
 		else if (teleport_from[i]==0)
@@ -82,7 +79,6 @@ void CTeleporter::teleportPlayer(std::vector<CObject> &p_vect_object, CPlayer &p
 			teleporter.ai.teleport.desty = desty;
 			teleporter.ai.teleport.whichplayer = player.m_player_number;
 			teleporter.ai.teleport.NoExitingTeleporter = 0;
-			teleporter.ai.teleport.snap = telsnap;
 			if (m_episode==3)
 			{
 				teleporter.ai.teleport.baseframe = TELEPORT_BASEFRAME_EP3;
