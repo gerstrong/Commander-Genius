@@ -114,6 +114,8 @@ bool CPlayer::scrollTriggers()
 	px = (x>>STC)-scroll_x;
 	py = (y>>STC)-scroll_y;
 
+	if(!hideplayer)
+	{
 	// left-right scrolling
 	if(px > SCROLLTRIGGERRIGHT && scroll_x < max_scroll_x)
 	{
@@ -152,6 +154,7 @@ bool CPlayer::scrollTriggers()
 			mp_map->scrollUp();
 		}while(py < 50);
 		scrollchanged = true;
+	}
 	}
 	return scrollchanged;
 }

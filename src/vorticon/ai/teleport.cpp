@@ -7,8 +7,8 @@
 // (ep1&3)
 
 // rate at which the frame will change
-#define TELEPORTER_ANIM_RATE_EP1    4
-#define TELEPORTER_ANIM_RATE_EP3    4
+#define TELEPORTER_ANIM_RATE_EP1    1
+#define TELEPORTER_ANIM_RATE_EP3    1
 
 // number of times to change the frame before stopping
 #define TELEPORTER_NUMFRAMES_EP3      16
@@ -37,12 +37,12 @@ void CObjectAI::teleporter_ai(CObject *p_object)
 		
 		//p_object->sprite = BlankSprite;
 		//p_object->sprite = 0;
-		p_object->ai.teleport.animtimer = animrate + 1;
+		p_object->ai.teleport.animtimer = animrate;
 		p_object->ai.teleport.animframe = 0;
 		p_object->ai.teleport.numframechanges = 0;
 	}
 	
-	if (p_object->ai.teleport.animtimer > animrate)
+	if (p_object->ai.teleport.animtimer >= animrate)
 	{
 		mx = p_object->x >> CSF;
 		my = p_object->y >> CSF;
@@ -66,11 +66,11 @@ void CObjectAI::teleporter_ai(CObject *p_object)
 				mp_Player[player].pdir = DOWN;
 				p_object->ai.teleport.direction = TELEPORTING_IN;
 				p_object->needinit = true;
-				g_pSound->playStereofromCoord(SOUND_TELEPORT, PLAY_NOW, p_object->scrx);
+				//g_pSound->playStereofromCoord(SOUND_TELEPORT, PLAY_NOW, p_object->scrx);
 				// if we were told to snap the screen to the new position instead
 				// of scrolling over to it, do that.
-				//if (p_object->ai.teleport.snap)
-					//mp_Map->gotoPos( p_object->ai.teleport.destx, p_object->ai.teleport.desty);
+				if (p_object->ai.teleport.snap)
+					mp_Map->gotoPos( p_object->ai.teleport.destx+260, p_object->ai.teleport.desty );
 				
 				if (p_object->ai.teleport.NoExitingTeleporter)
 				{  // for the teleporter to exit the bonus area in ep1

@@ -23,7 +23,7 @@ void CPlayer::processWorldMap()
 	
     StatusBox();
 	
-   	ProcessInput();
+   	if(!hideplayer) ProcessInput();
    	setWorldMapdir();
 	
    	setWMblockedlrud();

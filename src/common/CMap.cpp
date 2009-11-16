@@ -150,13 +150,17 @@ bool CMap::gotoPos(int x, int y)
 	
 	if( dx > 0 )
 		for( int scrollx=0 ; scrollx<dx ; scrollx++) scrollRight();
-	else if( dx < 0 )
+	else retval = true;
+	
+	if( dx < 0 )
 		for( int scrollx=0 ; scrollx<-dx ; scrollx++) scrollLeft();
 	else retval = true;
 	
 	if( dy > 0 )
 		for( int scrolly=0 ; scrolly<dy ; scrolly++) scrollDown();
-	else if( dy > 0 )
+	else retval = true;
+	
+	if( dy < 0 )
 		for( int scrolly=0 ; scrolly<-dy ; scrolly++) scrollUp();
 	else retval = true;
 
@@ -170,7 +174,7 @@ void CMap::scrollRight(void)
 	if(m_scrollx_buf>=511) m_scrollx_buf=0; else m_scrollx_buf++;
 	
 	m_scrollpix++;
-	if (m_scrollpix>15)
+	if (m_scrollpix>=16)
 	{  // need to draw a new stripe
 		drawVstripe(m_mapxstripepos, m_mapx + 32);
 		m_mapx++;
@@ -209,7 +213,7 @@ void CMap::scrollDown(void)
 	if(m_scrolly_buf>=511) m_scrolly_buf=0; else m_scrolly_buf++;
 	
 	m_scrollpixy++;
-	if (m_scrollpixy>15)
+	if (m_scrollpixy>=16)
 	{  // need to draw a new stripe
 		drawHstripe(m_mapystripepos, m_mapy + 32);
 		m_mapy++;
