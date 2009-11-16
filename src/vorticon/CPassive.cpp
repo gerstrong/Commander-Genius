@@ -81,7 +81,6 @@ void CPassive::process()
 	if( g_pInput->getPressedAnyKey() && mp_Menu==NULL )
 	{
 		// Close the "Press Any Key" box
-		
 		g_pInput->flushAll();
 		if (m_mode != TITLE)
 		{

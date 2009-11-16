@@ -193,13 +193,13 @@ void CGameControl::process()
 		// Launch the code of the Startmenu here! The one for choosing the games
 		mp_GameLauncher->process();
 		m_ChosenGame = mp_GameLauncher->getChosengame();
-		
+
 		if( mp_GameLauncher->waschosen() )
 		{
 			//// Game has been chosen. Launch it!
 			// Get the path were to Launch the game
 			m_DataDirectory = mp_GameLauncher->getDirectory( m_ChosenGame );
-			
+
 			// We have to check which Episode is used
 			m_Episode = mp_GameLauncher->getEpisode( m_ChosenGame );
 			
@@ -251,7 +251,7 @@ void CGameControl::process()
 			}
 		}
 		mp_PassiveMode->process();
-		
+
 		// check here what the player chose from the menu over the passive mode.
 		// NOTE: Demo is not part of playgame anymore!!
 		if(mp_PassiveMode->getchooseGame())
@@ -259,19 +259,19 @@ void CGameControl::process()
 			cleanup();
 			init( GAMELAUNCHER );
 		}
-		
+
 		if(mp_PassiveMode->mustStartGame())
 		{
 			m_Episode = mp_PassiveMode->getEpisode();
 			m_Numplayers = mp_PassiveMode->getNumPlayers();
 			m_Difficulty = mp_PassiveMode->getDifficulty();
 			m_DataDirectory = mp_PassiveMode->getGamePath();
-			
+
 			init( PLAYGAME );
 			delete mp_PassiveMode;
 			return;
 		}
-		
+
 		// User wants to exit. Called from the PassiveMode
 		if(mp_PassiveMode->getExitEvent())
 			m_mode = SHUTDOWN;
@@ -303,7 +303,7 @@ void CGameControl::process()
 		// Something went wrong here! send warning and load startmenu
 		m_mode = GAMELAUNCHER;
 	}
-	
+
 }
 
 void CGameControl::cleanup(char mode)

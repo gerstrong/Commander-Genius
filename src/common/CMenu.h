@@ -15,6 +15,7 @@
 #include <SDL/SDL.h>
 #include "../dialog/CDialog.h"
 #include "../dialog/CTextViewer.h"
+#include "infoscenes/CInfoScene.h"
 
 #define TWIRL_SPEED_SLOW        100
 #define TWIRL_SPEED_FAST        20
@@ -29,18 +30,21 @@
 #define TWIRL_SPEED             30
 #define TWIRL_NUM_FRAMES        5
 
-/*char controlsmenu();
- char configmenu(stCloneKeenPlus *pCKP,int ingame);
- void keensleft(int episode);
- int getDifficulty(stCloneKeenPlus *pCKP);*/
-
 class CMenu {
 	
 public:
 	// Which Menu has to be shown?
 	
 	enum menutypes{
-		MAIN, NEW, CONTROLPLAYERS, STORY, HIGHSCORES, ABOUTCG, ABOUTID, ORDERING, LOAD, START, DIFFICULTY, CONFIGURE, GRAPHICS, CONTROLS, AUDIO, OPTIONS, F1, HELP, ENDGAME, QUIT
+		MAIN, NEW,
+		CONTROLPLAYERS, STORY,
+		HIGHSCORES, ABOUTCG,
+		ABOUTID, ORDERING,
+		LOAD, START,
+		DIFFICULTY, CONFIGURE,
+		GRAPHICS, CONTROLS,
+		AUDIO, OPTIONS,
+		F1, HELP, ENDGAME, QUIT
 	};
 	
 	// Active means, when the player is playing, PASSIVE when the Player is not playing
@@ -91,6 +95,7 @@ private:
 	
 	CDialog *mp_Dialog;
 	CTextViewer *mp_TextViewer;
+	CInfoScene *mp_InfoScene;
 	SDL_Surface *mp_MenuSurface;
 	
 	bool m_choosegame;

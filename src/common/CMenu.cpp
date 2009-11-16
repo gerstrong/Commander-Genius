@@ -10,6 +10,8 @@
 #include "../sdl/CVideoDriver.h"
 #include "../sdl/CInput.h"
 
+#define SAFE_DELETE(x) if(x) { delete x; x=NULL; }
+
 #define SELMOVE_SPD         3
 
 CMenu::CMenu( char menu_mode )
@@ -26,6 +28,7 @@ CMenu::CMenu( char menu_mode )
 	m_Endgame = false;
 	mp_Dialog = NULL;
 	mp_TextViewer = NULL;
+	mp_InfoScene = NULL;
 }
 
 ////
@@ -179,35 +182,46 @@ void CMenu::initConfirmMenu()
 ////
 void CMenu::process()
 {
-	// Get Input for selection
-	if( g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_STATUS) )
+	// Information Mode
+	if(!mp_InfoScene) // show a normal menu
 	{
-		m_selection = mp_Dialog->getSelection();
+		// Get Input for selection
+		if( g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_STATUS) )
+		{
+			m_selection = mp_Dialog->getSelection();
+		}
+		else if( g_pInput->getPressedCommand(IC_HELP) )
+		{
+			cleanup();
+			init(F1);
+		}
+		else if( g_pInput->getPressedCommand(IC_QUIT) )
+		{
+			m_goback = true;
+		}
+		(m_menu_type == QUIT or m_menu_type == ENDGAME) ? mp_Dialog->processInput('l') : mp_Dialog->processInput('u');
+
+		// Draw the menu
+		mp_Dialog->draw();
+
+		// Process the Menu Type logic.
+		// Which menu is open and what do we have to do?
+		if( m_menu_type == MAIN ) processMainMenu();
+		else if( m_menu_type == NEW ) processNumPlayersMenu();
+		else if( m_menu_type == DIFFICULTY ) processDifficultyMenu();
+		else if( m_menu_type == CONFIGURE ) processConfigureMenu();
+		else if( m_menu_type == CONTROLPLAYERS ) processNumControlMenu();
+		else if( m_menu_type == F1 ) processF1Menu();
+		else if( m_menu_type == QUIT ) processQuitMenu();
+		else if( m_menu_type == ENDGAME ) processEndGameMenu();
 	}
-	else if( g_pInput->getPressedCommand(IC_HELP) )
+	else // InfoScene is enabled! show it instead of the menu
 	{
-		cleanup();
-		init(F1);
+		mp_InfoScene->process();
+
+		if(mp_InfoScene->destroyed())
+			SAFE_DELETE(mp_InfoScene); // Destroy the InfoScene and go back to the menu!!!
 	}
-	else if( g_pInput->getPressedCommand(IC_QUIT) )
-	{
-		m_goback = true;
-	}
-	(m_menu_type == QUIT or m_menu_type == ENDGAME) ? mp_Dialog->processInput('l') : mp_Dialog->processInput('u');
-	
-	// Draw the menu
-	mp_Dialog->draw();
-	
-	// Process the Menu Type logic.
-	// Which menu is open and what do we have to do?
-	if( m_menu_type == MAIN ) processMainMenu();
-	else if( m_menu_type == NEW ) processNumPlayersMenu();
-	else if( m_menu_type == DIFFICULTY ) processDifficultyMenu();
-	else if( m_menu_type == CONFIGURE ) processConfigureMenu();
-	else if( m_menu_type == CONTROLPLAYERS ) processNumControlMenu();
-	else if( m_menu_type == F1 ) processF1Menu();
-	else if( m_menu_type == QUIT ) processQuitMenu();
-	else if( m_menu_type == ENDGAME ) processEndGameMenu();
 }
 
 void CMenu::processMainMenu()
@@ -325,7 +339,7 @@ void CMenu::processConfigureMenu()
 {
 	if( m_selection != -1)
 	{
-		cleanup();
+		//cleanup(); One cleanup too much here!
 		if ( m_selection == 3 )
 		{
 			cleanup();
@@ -371,7 +385,11 @@ void CMenu::processF1Menu()
 {
 	if( m_selection != -1)
 	{
-		
+		if ( m_selection == 3 )
+		{
+			cleanup();
+			init(CONTROLPLAYERS);
+		}
 	}
 	
 	if(m_goback)
