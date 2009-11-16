@@ -266,8 +266,10 @@ void CPlayGame::process()
 		std::string tempbuf;
 		SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
 #ifdef DEBUG
-		tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec()) +
-			"; x = " + itoa(mp_Player[0].x) + " ; y = " + itoa(mp_Player[0].y);
+//		tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec()) +
+	//		"; x = " + itoa(mp_Player[0].x) + " ; y = " + itoa(mp_Player[0].y);
+
+		tempbuf = "Playpushed_x: " + itoa(mp_Player[0].playpushed_x);
 
 #else
 		tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec());

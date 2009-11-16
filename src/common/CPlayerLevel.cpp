@@ -256,11 +256,13 @@ void CPlayer::playpushed()
 			// push playpushed_x towards zero
 			if (playpushed_x < 0)
 			{
-				playpushed_x++;
+				playpushed_x+= 4;
+				if(playpushed_x > 0) playpushed_x=0;
 			}
 			else
 			{
-				playpushed_x--;
+				playpushed_x-= 4;
+				if(playpushed_x < 0) playpushed_x=0;
 			}
 			playpushed_decreasetimer = 0;
 		}
@@ -664,6 +666,9 @@ void CPlayer::bump( int pushamt, bool solid )
 {
 	playpushed_x = pushamt;
 	
+	if (pushamt > 0 && pinertia_x < pushamt) pinertia_x = pushamt;
+	else if (pinertia_x > pushamt) pinertia_x = pushamt;
+
 	if (solid)
 	{
 		if (pushamt > 0)

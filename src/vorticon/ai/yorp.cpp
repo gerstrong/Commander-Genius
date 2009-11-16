@@ -44,6 +44,15 @@ enum
 #define YORPDIE_MAX_INERTIA         480
 #define YORPDIE_INERTIA_DECREASE    8
 
+// How much Yorps pushes keen
+#define YORP_PUSH_AMT_NO_WALK	18
+
+#define YORP_PUSH_AMT_P_WALK_HARD	35
+#define YORP_PUSH_AMT_P_WALK		25
+
+#define YORP_PUSH_AMT_P_STAND_HARD	24
+#define YORP_PUSH_AMT_P_STAND		18
+
 unsigned int rnd(void);
 
 void CObjectAI::yorp_ai(CObject *p_object, CPlayer *p_player, bool hardmode)
@@ -116,32 +125,38 @@ void CObjectAI::yorp_ai(CObject *p_object, CPlayer *p_player, bool hardmode)
 			// if yorp is moving, also push in direction he's moving
 			// in. this allows walking through a yorp if he is walking
 			// away from Keen
+			pushamt = 0;
 			if (p_object->ai.yorp.state==YORP_MOVE)
 			{
 				if (p_player[tb].pshowdir != p_object->ai.yorp.movedir)
 				{	// p_player pushing against yorp
 					if (p_player[tb].pwalking)
-						pushamt = hardmode ? 35:25;
+						pushamt = hardmode ? YORP_PUSH_AMT_P_WALK_HARD : YORP_PUSH_AMT_P_WALK;
 					else
-						pushamt = hardmode ? 24:18;
+						pushamt = hardmode ? YORP_PUSH_AMT_P_STAND_HARD : YORP_PUSH_AMT_P_STAND;
 					
 					if (p_object->ai.yorp.movedir==LEFT) pushamt = -pushamt;
 				}
-				else
-					// yorp not moving
-					pushamt = (p_player[tb].x < p_object->x) ? -18:18;
+				else // yorp not moving
+					pushamt = (p_player[tb].x < p_object->x) ? -YORP_PUSH_AMT_NO_WALK:YORP_PUSH_AMT_NO_WALK;
+			}
+			else
+			{   // player "walking through" yorp--provide resistance
+					pushamt = (p_player[tb].pshowdir==LEFT) ? YORP_PUSH_AMT_NO_WALK/2:-YORP_PUSH_AMT_NO_WALK/2;
+			}
+
 				
-				
- 				if (p_player[tb].pwalking)
- 				{
- 					if (pushamt > 0 && p_player[tb].blockedr) pushamt = 0;
- 					if (pushamt < 0 && p_player[tb].blockedl) pushamt = 0;
- 				}
-				
- 				if (pushamt)
- 					p_player[tb].bump( pushamt, false );
+ 			if (p_player[tb].pwalking)
+ 			{
+ 				if (pushamt > 0 && p_player[tb].blockedr) pushamt = 0;
+ 				if (pushamt < 0 && p_player[tb].blockedl) pushamt = 0;
  			}
- 		}
+				
+ 			if (pushamt)
+ 			{
+ 				p_player[tb].bump( pushamt, false );
+ 			}
+		}
  	}
 	
 	// did the poor guy get shot?
