@@ -123,7 +123,7 @@
 
 typedef struct stInputCommand
 {
-	Uint8 active;
+	bool active;
 	bool lastactive;
 	//int value;
 
