@@ -900,6 +900,12 @@ int dlgX,dlgY,dlgW,dlgH;
 
 int VerifyQuit()
 {
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+	// On iPhone, we just want to quit immediatly.
+	QuitState = QUIT_TO_TITLE;
+	return QuitState;
+#endif
+	
 int dlgX,dlgY,dlgW,dlgH;
 	std::string text;
 
