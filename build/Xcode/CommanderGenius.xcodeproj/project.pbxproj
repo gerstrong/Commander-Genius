@@ -104,6 +104,7 @@
 		23575697101A6BE600275638 /* Vorbis.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564D101A5F8F00275638 /* Vorbis.framework */; };
 		235756C2101B766800275638 /* Unicode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 235756C1101B766800275638 /* Unicode.cpp */; };
 		235756C9101BE31A00275638 /* vortelite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 235756C7101BE31A00275638 /* vortelite.cpp */; };
+		2373646610B0FCE400CD49D4 /* libSDLiPhoneOSDevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2373646510B0FCE400CD49D4 /* libSDLiPhoneOSDevice.a */; };
 		23B8F38A10AEBD83004B4555 /* baby.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9751013ABC9001643FA /* baby.cpp */; };
 		23B8F38B10AEBD83004B4555 /* balljack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9761013ABC9001643FA /* balljack.cpp */; };
 		23B8F38C10AEBD83004B4555 /* butler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9781013ABC9001643FA /* butler.cpp */; };
@@ -198,7 +199,7 @@
 		23B8F3E710AEBD83004B4555 /* COrderingInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637D9103181BF00FEEFEE /* COrderingInfo.cpp */; };
 		23B8F3E810AEBD83004B4555 /* icecannon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637E1103181D700FEEFEE /* icecannon.cpp */; };
 		23B8F3E910AEBD95004B4555 /* cglogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 230715FF1036E85300DE25FC /* cglogo.icns */; };
-		23B8F49010B04683004B4555 /* libSDLiPhoneOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 23B8F48F10B04683004B4555 /* libSDLiPhoneOS.a */; };
+		23B8F49010B04683004B4555 /* libSDLiPhoneOSSimulator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 23B8F48F10B04683004B4555 /* libSDLiPhoneOSSimulator.a */; };
 		23B8F49310B04696004B4555 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23B8F49210B04696004B4555 /* OpenGLES.framework */; };
 		23B8F49610B046C3004B4555 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23B8F49510B046C3004B4555 /* CoreAudio.framework */; };
 		23B8F4B610B04C28004B4555 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23B8F4B510B04C28004B4555 /* AudioToolbox.framework */; };
@@ -251,10 +252,11 @@
 		235756C1101B766800275638 /* Unicode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Unicode.cpp; sourceTree = "<group>"; };
 		235756C7101BE31A00275638 /* vortelite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vortelite.cpp; sourceTree = "<group>"; };
 		235756C8101BE31A00275638 /* vortelite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vortelite.h; sourceTree = "<group>"; };
+		2373646510B0FCE400CD49D4 /* libSDLiPhoneOSDevice.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDLiPhoneOSDevice.a; path = "../../../SDL-1.3-trunk/Xcode-iPhoneOS/SDL/build/Release-iphoneos/libSDLiPhoneOSDevice.a"; sourceTree = SOURCE_ROOT; };
 		23B8F37410AEBCF2004B4555 /* Commander Genius iPhone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Commander Genius iPhone.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		23B8F37610AEBCF2004B4555 /* Commander Genius iPhone-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Commander Genius iPhone-Info.plist"; sourceTree = "<group>"; };
 		23B8F42010B027FF004B4555 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
-		23B8F48F10B04683004B4555 /* libSDLiPhoneOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDLiPhoneOS.a; path = "../../../SDL-1.3-trunk/Xcode-iPhoneOS/SDL/build/Release-iphonesimulator/libSDLiPhoneOS.a"; sourceTree = SOURCE_ROOT; };
+		23B8F48F10B04683004B4555 /* libSDLiPhoneOSSimulator.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDLiPhoneOSSimulator.a; path = "../../../SDL-1.3-trunk/Xcode-iPhoneOS/SDL/build/Release-iphonesimulator/libSDLiPhoneOSSimulator.a"; sourceTree = SOURCE_ROOT; };
 		23B8F49210B04696004B4555 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		23B8F49510B046C3004B4555 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		23B8F49810B046D1004B4555 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
@@ -487,12 +489,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				23B8F49010B04683004B4555 /* libSDLiPhoneOS.a in Frameworks */,
+				23B8F49010B04683004B4555 /* libSDLiPhoneOSSimulator.a in Frameworks */,
 				23B8F49310B04696004B4555 /* OpenGLES.framework in Frameworks */,
 				23B8F49610B046C3004B4555 /* CoreAudio.framework in Frameworks */,
 				23B8F4B610B04C28004B4555 /* AudioToolbox.framework in Frameworks */,
 				23B8F4BB10B05A77004B4555 /* CoreGraphics.framework in Frameworks */,
 				23B8F4C010B05AF0004B4555 /* QuartzCore.framework in Frameworks */,
+				2373646610B0FCE400CD49D4 /* libSDLiPhoneOSDevice.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -511,8 +514,9 @@
 		20286C29FDCF999611CA2CEA /* CommanderGenius */ = {
 			isa = PBXGroup;
 			children = (
+				2373646510B0FCE400CD49D4 /* libSDLiPhoneOSDevice.a */,
 				23B8F5EC10B061B0004B4555 /* data */,
-				23B8F48F10B04683004B4555 /* libSDLiPhoneOS.a */,
+				23B8F48F10B04683004B4555 /* libSDLiPhoneOSSimulator.a */,
 				230715FF1036E85300DE25FC /* cglogo.icns */,
 				5048396909E3304600765E4B /* Configuration Files */,
 				20286C2AFDCF999611CA2CEA /* src */,
@@ -1281,7 +1285,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "Don't Code Sign";
+				CODE_SIGN_IDENTITY = "Albert Zeyer iPhone";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1297,6 +1301,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../../SDL-1.3-trunk/Xcode-iPhoneOS/SDL/build/Release-iphonesimulator\"",
+					"\"$(SRCROOT)/../../../SDL-1.3-trunk/Xcode-iPhoneOS/SDL/build/Release-iphoneos\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				OTHER_LDFLAGS = (
@@ -1307,7 +1312,8 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = "Commander Genius iPhone";
-				SDKROOT = iphonesimulator2.2.1;
+				PROVISIONING_PROFILE = "";
+				SDKROOT = iphoneos2.2.1;
 				SDLTRUNK = "/Users/az/Programmierung/SDL-1.3-trunk";
 			};
 			name = Debug;
@@ -1316,7 +1322,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Albert Zeyer iPhone";
 				COPY_PHASE_STRIP = YES;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = BUILD_SDL;
@@ -1331,6 +1337,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../../SDL-1.3-trunk/Xcode-iPhoneOS/SDL/build/Release-iphonesimulator\"",
+					"\"$(SRCROOT)/../../../SDL-1.3-trunk/Xcode-iPhoneOS/SDL/build/Release-iphoneos\"",
 				);
 				OTHER_LDFLAGS = (
 					"-framework",
@@ -1340,7 +1347,8 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = "Commander Genius iPhone";
-				SDKROOT = iphonesimulator2.2.1;
+				PROVISIONING_PROFILE = "";
+				SDKROOT = iphoneos2.2.1;
 				SDLTRUNK = "/Users/az/Programmierung/SDL-1.3-trunk";
 				ZERO_LINK = NO;
 			};
