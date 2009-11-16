@@ -102,7 +102,7 @@ void CVideoDriver::resetSettings() {
 	Zoom = 1;
 	Filtermode = 0;
 	FrameSkip=1;
-	m_targetfps = 40;
+	m_targetfps = 30;
 	m_aspect_correction = false;
 	
 #else
@@ -583,11 +583,14 @@ char tempbuf[80];
 
 #ifdef DEBUG
      sprintf(tempbuf, "FPS: %03d; x = %ld ; y = %d", fps, player[0].x >>CSF, player[0].y >>CSF);
+	   g_pGraphics->drawFont( tempbuf, 320-3-(strlen( (char *) tempbuf)<<3), 3, 1);
 
 #else
-     sprintf(tempbuf, "FPS: %03d", fps);
+	   // Note: commented this out, probably only for devs important
+	   // If there is request for it, we can make an option to enable this even in release.
+	   // But the majority probably want to have that disabled.
+     //sprintf(tempbuf, "FPS: %03d", fps);
 #endif
-     g_pGraphics->drawFont( tempbuf, 320-3-(strlen( (char *) tempbuf)<<3), 3, 1);
    }
 
    update_screen();
