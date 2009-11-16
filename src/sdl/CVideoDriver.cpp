@@ -47,51 +47,51 @@ int NumConsoleMessages = 0;
 int ConsoleExpireTimer = 0;
 
 
-CVideoDriver::CVideoDriver() {
+void CVideoDriver::resetSettings() {
 	// Default values
-
+	
 	m_updateFG = false;
-
-	  showfps=true;
+	
+	showfps=true;
 #ifdef WIZ
-	  m_Resolution.width=320;
-	  m_Resolution.height=240;
-	  m_Resolution.depth=16;
-	  Mode=0;
-	  Fullscreen=true;
-	  Filtermode=0;
-	  Zoom=1;
-	  FrameSkip=0;
-	  m_targetfps = 30;	// Enable automatic frameskipping by default at 30
+	m_Resolution.width=320;
+	m_Resolution.height=240;
+	m_Resolution.depth=16;
+	Mode=0;
+	Fullscreen=true;
+	Filtermode=0;
+	Zoom=1;
+	FrameSkip=0;
+	m_targetfps = 30;	// Enable automatic frameskipping by default at 30
 #else
-	  m_Resolution.width=640;
-	  m_Resolution.height=480;
-	  m_Resolution.depth=0;
-	  Mode=0;
-	  Fullscreen=false;
-	  Filtermode=1;
-	  Zoom=2;
-	  FrameSkip=2;
-	  m_targetfps = 50;
+	m_Resolution.width=640;
+	m_Resolution.height=480;
+	m_Resolution.depth=0;
+	Mode=0;
+	Fullscreen=false;
+	Filtermode=1;
+	Zoom=2;
+	FrameSkip=2;
+	m_targetfps = 50;
 #endif
-	  m_opengl = false;
+	m_opengl = false;
 #ifdef USE_OPENGL
-	  m_opengl_filter = GL_NEAREST;
-	  mp_OpenGL = NULL;
+	m_opengl_filter = GL_NEAREST;
+	mp_OpenGL = NULL;
 	m_opengl = true; // use it if possible
 #endif
-	  m_aspect_correction = true;
-
-	  screenrect.x=0;
-	  screenrect.y=0;
-	  screenrect.h=0;
-	  screenrect.w=0;
-
-	  ScrollSurface=NULL;       // 512x512 scroll buffer
-	  FGLayerSurface=NULL;       // Scroll buffer for Messages
-	  BGLayerSurface=NULL;
-	  BlitSurface=NULL;
-
+	m_aspect_correction = true;
+	
+	screenrect.x=0;
+	screenrect.y=0;
+	screenrect.h=0;
+	screenrect.w=0;
+	
+	ScrollSurface=NULL;       // 512x512 scroll buffer
+	FGLayerSurface=NULL;       // Scroll buffer for Messages
+	BGLayerSurface=NULL;
+	BlitSurface=NULL;
+	
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	m_Resolution.width = 320; //  320;
 	m_Resolution.height = 200; //  480;
@@ -106,9 +106,13 @@ CVideoDriver::CVideoDriver() {
 	m_aspect_correction = false;
 	
 #else
-	  m_Resolution_pos = m_Resolutionlist.begin();
-	  initResolutionList();
-#endif
+	m_Resolution_pos = m_Resolutionlist.begin();
+	initResolutionList();
+#endif	
+}
+
+CVideoDriver::CVideoDriver() {
+	resetSettings();
 }
 
 CVideoDriver::~CVideoDriver() {
@@ -279,6 +283,13 @@ bool CVideoDriver::initOpenGL()
 
 bool CVideoDriver::applyMode(void)
 {
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+	// Force the default settings on iPhone.
+	// There is no reason yet to play with it, most likely other settings will
+	// either not work, will crash or will just be totally screwed up.
+	resetSettings();
+#endif
+	
 	// Check if some zoom/filter modes are illogical
 	// TODO: Make this call clearer to understand
 	// TODO: Improve this function.

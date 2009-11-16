@@ -39,6 +39,7 @@ public:
 	CVideoDriver();
 	virtual ~CVideoDriver();
 
+	void resetSettings();
 	bool applyMode(void);
 	bool createSurfaces(void);
 	void stop(void);
