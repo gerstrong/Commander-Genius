@@ -90,9 +90,18 @@ CVideoDriver::CVideoDriver() {
 	  BGLayerSurface=NULL;
 	  BlitSurface=NULL;
 
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+	st_resolution resolution = {320, 480, 32};
+	m_Resolutionlist.push_back(resolution);
+	m_Resolution_pos = m_Resolutionlist.begin();
+	
+	Zoom = 1;
+	Filtermode = 0;
+	
+#else
 	  m_Resolution_pos = m_Resolutionlist.begin();
-
 	  initResolutionList();
+#endif
 }
 
 CVideoDriver::~CVideoDriver() {
@@ -205,6 +214,9 @@ void CVideoDriver::stop(void)
 	g_pLogFile->textOut(GREEN,"CVideoDriver Close%s<br>", SDL_GetError());
 }
 
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+extern "C" void iPhoneRotateScreen();
+#endif
 
 bool CVideoDriver::start(void)
 {
@@ -217,10 +229,8 @@ bool CVideoDriver::start(void)
 	  }
 	  else
 		  g_pLogFile->textOut(GREEN,"SDL was successfully initialized!<br>");
-
+	
 	  SDL_WM_SetCaption("Commander Genius (CKP)", NULL);
-	  // When the program is through executing, call SDL_Quit
-	  atexit(SDL_Quit);
 
 	  if(!applyMode())
 	  {
@@ -229,6 +239,10 @@ bool CVideoDriver::start(void)
 		  return false;
 	  }
 
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+	iPhoneRotateScreen();
+#endif
+	
 	  retval = createSurfaces();
 	  initOpenGL();
 
@@ -420,6 +434,21 @@ void CVideoDriver::pal_apply(void)
   }
 }
 
+static void sb_lowblit(SDL_Surface* src, SDL_Rect* srcrect, SDL_Surface* dst, SDL_Rect* dstrect) {
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+	// SDL_BlitSurface doesn't work for some reason
+	int _xend = srcrect->x + dstrect->w;
+	int _yend = srcrect->y + dstrect->h;
+	int _dst_xdiff = dstrect->x - srcrect->x;
+	int _dst_ydiff = dstrect->y - srcrect->y;
+	for(int x = srcrect->x; x < _xend; ++x)
+		for(int y = srcrect->y; y < _yend; ++y)
+			SDL_DrawPoint(dst, x + _dst_xdiff, y + _dst_ydiff, convert4to32BPPcolor( ((Uint8*)src->pixels)[y * 512 + x], dst ));
+#else
+	SDL_BlitSurface(src, srcrect, dst, dstrect);
+#endif
+}
+
 void CVideoDriver::sb_blit(void)
 {
 SDL_Rect srcrect;
@@ -457,8 +486,8 @@ char tempbuf[80];
      wrapvrt = 0;
    }
 
-   SDL_BlitSurface(ScrollSurface, &srcrect, BlitSurface, &dstrect);
-
+   sb_lowblit(ScrollSurface, &srcrect, BlitSurface, &dstrect);
+	
    if (wraphoz && wrapvrt)
    {
       // first do same thing we do for wraphoz
@@ -470,7 +499,7 @@ char tempbuf[80];
       dstrect.w = 320 - dstrect.x;
       srcrect.x = 0;
       srcrect.w = (320 - srcrect.w);
-      SDL_BlitSurface(ScrollSurface, &srcrect, BlitSurface, &dstrect);
+      sb_lowblit(ScrollSurface, &srcrect, BlitSurface, &dstrect);
 
       // now repeat for the bottom
       // (lower-right square)
@@ -478,13 +507,13 @@ char tempbuf[80];
       dstrect.h = 200 - dstrect.y;
       srcrect.y = 0;
       srcrect.h = (200 - srcrect.h);
-      SDL_BlitSurface(ScrollSurface, &srcrect, BlitSurface, &dstrect);
+      sb_lowblit(ScrollSurface, &srcrect, BlitSurface, &dstrect);
       // (lower-left square)
       dstrect.x = save_dstx;
       dstrect.w = save_dstw;
       srcrect.x = save_srcx;
       srcrect.w = save_srcw;
-      SDL_BlitSurface(ScrollSurface, &srcrect, BlitSurface, &dstrect);
+      sb_lowblit(ScrollSurface, &srcrect, BlitSurface, &dstrect);
    }
    else if (wraphoz)
    {
@@ -492,7 +521,7 @@ char tempbuf[80];
       dstrect.w = 320 - dstrect.x;
       srcrect.x = 0;
       srcrect.w = (320 - srcrect.w);
-      SDL_BlitSurface(ScrollSurface, &srcrect, BlitSurface, &dstrect);
+      sb_lowblit(ScrollSurface, &srcrect, BlitSurface, &dstrect);
    }
    else if (wrapvrt)
    {
@@ -500,7 +529,7 @@ char tempbuf[80];
       dstrect.h = 200 - dstrect.y;
       srcrect.y = 0;
       srcrect.h = (200 - srcrect.h);
-      SDL_BlitSurface(ScrollSurface, &srcrect, BlitSurface, &dstrect);
+      sb_lowblit(ScrollSurface, &srcrect, BlitSurface, &dstrect);
    }
 
    drawConsoleMessages();
@@ -539,8 +568,8 @@ void CVideoDriver::update_screen(void)
 	   UnlockSurface(FGLayerSurface);
    }
    else // No OpenGL but Software Rendering
-   {
 #endif
+   {
 	   SDL_BlitSurface(FGLayerSurface, NULL, BlitSurface, NULL);
 
 	   // if we're doing zoom then we have copied the scroll buffer into
@@ -648,7 +677,7 @@ void CVideoDriver::update_screen(void)
 		   UnlockSurface(screen);
 		   UnlockSurface(BlitSurface);
 	   }
-
+	   
 	   SDL_Flip(screen);
 	   //SDL_UpdateRect(screen, screenrect.x, screenrect.y, screenrect.w, screenrect.h);
 
@@ -657,9 +686,7 @@ void CVideoDriver::update_screen(void)
 	   memset(FGLayerSurface->pixels,SDL_MapRGB(FGLayerSurface->format, 0, 0, 0),
 			   GAME_STD_WIDTH*GAME_STD_HEIGHT*FGLayerSurface->format->BytesPerPixel);
 	   UnlockSurface(FGLayerSurface);
-#ifdef USE_OPENGL
    }
-#endif
 }
 
 void CVideoDriver::noscale(char *dest, char *src, short bbp)
