@@ -80,7 +80,8 @@ public:
 #endif
 	SDL_Surface *getScrollSurface(void);
 	SDL_Surface *getBGLayerSurface(void);
-
+	void updateBG();
+	
 	void setMode(int width, int height,int depth);
 	void setFrameskip(unsigned short value);
 	void setFilter(short value);
@@ -139,5 +140,6 @@ private:
 	// buffer of 320x200.
 	SDL_Surface *BlitSurface;
 
+	bool m_updateFG;
 };
 #endif /* CVIDEODRIVER_H_ */

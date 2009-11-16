@@ -13,7 +13,14 @@
 #define __CG_COPENGL_H__
 
 #include <SDL.h>
+
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+#include <OpenGLES/ES1/gl.h>
+#include <OpenGLES/ES1/glext.h>
+#else
 #include <SDL_opengl.h>
+#endif
+
 #include "../scale2x/scalebit.h"
 
 class COpenGL {
@@ -21,11 +28,13 @@ public:
 	COpenGL();
 	virtual ~COpenGL();
 
-	void render(void);
+	void render(bool withFG);
 	bool initGL(unsigned Width, unsigned Height, unsigned char Depth,
 				GLint oglfilter, unsigned char scalex, bool aspect);
 
 	void setSurface(SDL_Surface *blitsurface);
+	void reloadBG(SDL_Surface* surf);
+	void reloadFG(SDL_Surface* surf);
 
 private:
 	SDL_Surface	*m_blitsurface;
@@ -33,6 +42,10 @@ private:
 	unsigned char	m_Depth;
 	unsigned char	m_ScaleX;
 	unsigned int	m_texparam;
+	GLuint	m_texture;
+	
+	GLuint	m_texBG, m_texFG;
+	
 };
 
 #endif

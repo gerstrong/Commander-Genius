@@ -733,6 +733,7 @@ Uint8 *CGraphics::getScrollbuffer(void)
 
 void CGraphics::renderHQBitmap()
 {
+#ifndef USE_OPENGL	
 	if(HQBitmap)
 	{
 		SDL_Rect srcrect;
@@ -745,6 +746,7 @@ void CGraphics::renderHQBitmap()
 
 		HQBitmap->updateHQBitmap(g_pVideoDriver->getBGLayerSurface(), &srcrect, NULL);
 	}
+#endif
 }
 
 void CGraphics::loadHQGraphics(unsigned char episode, unsigned char level, const std::string& datadir)

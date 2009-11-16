@@ -20,6 +20,25 @@ COpenGL::~COpenGL() {
 	if(m_opengl_buffer){ delete[] m_opengl_buffer; m_opengl_buffer = NULL; }
 }
 
+static void createTexture(GLuint& tex, int oglfilter, bool withAlpha = false) {
+	glGenTextures(1, &tex);
+	glBindTexture(GL_TEXTURE_2D, tex);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, oglfilter);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, oglfilter);
+
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+	if(withAlpha)
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 512, 256, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	else
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 512, 256, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+}
+
 bool COpenGL::initGL(unsigned Width, unsigned Height, unsigned char Depth,
 									GLint oglfilter, unsigned char scalex, bool aspect)
 {
@@ -32,7 +51,7 @@ bool COpenGL::initGL(unsigned Width, unsigned Height, unsigned char Depth,
 	if(aspect)
 		glViewport(0,(Height-(Height*200)/240)/2,Width, (Height*200)/240);
 	else
-		glViewport(0,0,Width, Height);
+		glViewport(0,0,Height, Width);
 
 	// Set clear colour
 	glClearColor(0,0,0,0);
@@ -40,7 +59,7 @@ bool COpenGL::initGL(unsigned Width, unsigned Height, unsigned char Depth,
 	// Set projection
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
-	glOrtho( 0 , 1, 1, 0 , -1 , 1 );
+	glOrthof( 0.0f , 1.0f, 1.0f, 0.0f , -1.0f , 1.0f );
 
 	// Now Initialize modelview matrix
 	glMatrixMode( GL_MODELVIEW );
@@ -72,20 +91,11 @@ bool COpenGL::initGL(unsigned Width, unsigned Height, unsigned char Depth,
     glGetTexLevelParameterfv.*/
 
 
-	glEnable (m_texparam);
-	glBindTexture(m_texparam, 1);
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-	glTexParameteri(m_texparam, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri (m_texparam, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-
-	glTexParameteri (m_texparam, GL_TEXTURE_MAG_FILTER, oglfilter);
-	glTexParameteri (m_texparam, GL_TEXTURE_MIN_FILTER, oglfilter);
-
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-
+	glEnable(GL_TEXTURE_2D);
+	createTexture(m_texture, oglfilter);
+	createTexture(m_texBG, oglfilter);
+	createTexture(m_texFG, oglfilter, true);
+	
 	if(scalex > 1)
 		m_opengl_buffer = new char[GAME_STD_HEIGHT*GAME_STD_WIDTH*scalex*Depth];
 	else
@@ -110,13 +120,88 @@ bool COpenGL::initGL(unsigned Width, unsigned Height, unsigned char Depth,
 void COpenGL::setSurface(SDL_Surface *blitsurface)
 {	m_blitsurface = blitsurface; }
 
-void COpenGL::render(void)
-{
-	   //Clear the screen
-	   glClear(GL_COLOR_BUFFER_BIT);		// Clear The Screen
+static void loadSurface(GLuint texture, SDL_Surface* surface) {
+	glBindTexture(GL_TEXTURE_2D, texture);
+	LockSurface(surface);
+	if(surface->format->BitsPerPixel == 24)
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 512, 256, 0, GL_RGB, GL_UNSIGNED_BYTE, surface->pixels);
+	else {
+		// we assume RGBA
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 512, 256, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->pixels);		
+	}
+	UnlockSurface(surface);
+}
 
+void COpenGL::reloadBG(SDL_Surface* surf) {
+	loadSurface(m_texBG, surf);
+}
+
+void COpenGL::reloadFG(SDL_Surface* surf) {
+	loadSurface(m_texFG, surf);	
+}
+
+static void renderTexture(GLuint texture, bool withAlpha = false) {
+	glViewport(0,200,512, 256);
+	glLoadIdentity();
+	//glOrthof(0, 1, 0, 1, 0, 1);
+	//glOrthof(0, 1, 0, 1, 0, 1);
+	
+	
+	// Set up an array of values to use as the sprite vertices.
+	GLfloat vertices[] =
+	{
+		0, 0,
+		1, 0,
+		1, 1,
+		0, 1,
+	};
+	
+	// Set up an array of values for the texture coordinates.
+	GLfloat texcoords[] =
+	{
+		0, 0,
+		1, 0,
+		1, 1,
+		0, 1,
+	};
+	
+	//Render the vertices by pointing to the arrays.
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	
+	glVertexPointer(2, GL_FLOAT, 0, vertices);
+	glTexCoordPointer(2, GL_FLOAT, 0, texcoords);
+	
+	glEnable(GL_BLEND);
+	if(withAlpha)
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	else
+		glBlendFunc(GL_ONE, GL_ZERO /*GL_SRC_COLOR*/);
+	
+	glBindTexture (GL_TEXTURE_2D, texture);
+	
+	// Set the texture parameters to use a linear filter when minifying.
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	
+	//Finally draw the arrays.
+	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+	glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	
+	glDisable(GL_BLEND);
+	
+}
+
+void COpenGL::render(bool withFG)
+{	
+	//glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	
+	renderTexture(m_texBG);
+	
 	   LockSurface(m_blitsurface);
 
+	glBindTexture (GL_TEXTURE_2D, m_texture);
+	
 	   if(m_ScaleX == 2) //Scale 2x
 	   {
 		   scale(2, m_opengl_buffer, (GAME_STD_WIDTH<<1)*(m_Depth>>3), m_blitsurface->pixels,
@@ -141,26 +226,14 @@ void COpenGL::render(void)
 		   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, GAME_STD_WIDTH<<2, GAME_STD_HEIGHT<<2, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
 	   }
 	   else
-		   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, GAME_STD_WIDTH, GAME_STD_HEIGHT, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_blitsurface->pixels);
+		   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 512, 256, 0, GL_RGB, GL_UNSIGNED_BYTE, m_blitsurface->pixels);
 
+	UnlockSurface(m_blitsurface);
 
-	   glBindTexture (GL_TEXTURE_2D, 1);
+	renderTexture(m_texture);
 
-	   glBegin (GL_QUADS);
-		   glTexCoord2f (0.0, 0.0);
-		   glVertex3f (0.0, 0.0, 0.0);
-		   glTexCoord2f (1.0, 0.0);
-		   glVertex3f (1.0, 0.0, 0.0);
-		   glTexCoord2f (1.0, 1.0);
-		   glVertex3f (1.0, 1.0, 0.0);
-		   glTexCoord2f (0.0, 1.0);
-		   glVertex3f (0.0, 1.0, 0.0);
-	   glEnd();
-
-	   UnlockSurface(m_blitsurface);
-
-	   // Reset (Position?)
-	   glLoadIdentity();
-
-	   SDL_GL_SwapBuffers();
+	if(withFG)
+		renderTexture(m_texFG, true);
+	
+	SDL_GL_SwapBuffers();
 }

@@ -50,6 +50,8 @@ int ConsoleExpireTimer = 0;
 CVideoDriver::CVideoDriver() {
 	// Default values
 
+	m_updateFG = false;
+
 	  showfps=true;
 #ifdef WIZ
 	  m_Resolution.width=320;
@@ -91,14 +93,17 @@ CVideoDriver::CVideoDriver() {
 	  BlitSurface=NULL;
 
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
-	st_resolution resolution = {320, 480, 32};
-	m_Resolutionlist.push_back(resolution);
+	m_Resolution.width = 320; //  320;
+	m_Resolution.height = 200; //  480;
+	m_Resolution.depth = 32;
+	m_Resolutionlist.push_back(m_Resolution);
 	m_Resolution_pos = m_Resolutionlist.begin();
 	
 	Zoom = 1;
 	Filtermode = 0;
 	FrameSkip=1;
 	m_targetfps = 40;
+	m_aspect_correction = false;
 	
 #else
 	  m_Resolution_pos = m_Resolutionlist.begin();
@@ -221,7 +226,7 @@ extern "C" void iPhoneRotateScreen();
 #endif
 
 bool CVideoDriver::start(void)
-{
+{	
 	bool retval = false;
 
 	  if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO) < 0)
@@ -296,7 +301,8 @@ bool CVideoDriver::applyMode(void)
 	if(m_opengl)
 	{
 		SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
-		SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 1);
+		// TODO: unknown in SDL 1.3. important?
+//		SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 1);
 		Mode |= SDL_OPENGL;
 	}
 #endif
@@ -354,6 +360,20 @@ void CVideoDriver::setZoom(short value)
 
 bool CVideoDriver::createSurfaces(void)
 {
+	static const Uint32 RGBA[] = {
+#if SDL_BYTEORDER == SDL_LIL_ENDIAN // OpenGL RGBA masks 
+	0x000000FF, 
+	0x0000FF00, 
+	0x00FF0000, 
+	0xFF000000
+#else
+	0xFF000000,
+	0x00FF0000, 
+	0x0000FF00, 
+	0x000000FF
+#endif
+	};
+	
 	// This function creates the surfaces which are needed for the game.
 	unsigned stretch_blit_yoff;
 
@@ -367,15 +387,16 @@ bool CVideoDriver::createSurfaces(void)
 	  return false;
 	}
 
-	BGLayerSurface = SDL_CreateRGBSurface(Mode,320, 200, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
+	BGLayerSurface = SDL_CreateRGBSurface(SDL_SWSURFACE/*Mode*/,512, 256, 24, 0x0000ff, 0x00ff00, 0xff0000, 0x0);
+	//BGLayerSurface = SDL_CreateRGBSurface(SDL_SWSURFACE/*Mode*/,320, 200, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
 	if (!BGLayerSurface)
 	{
 		g_pLogFile->textOut(RED,"VideoDriver: Couldn't create BGLayerSurface!<br>");
 	  return false;
 	}
 
-
-	FGLayerSurface = SDL_CreateRGBSurface(Mode,320, 200, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
+	FGLayerSurface = SDL_CreateRGBSurface(SDL_SWSURFACE/*Mode*/,512, 256, 32, RGBA[0], RGBA[1], RGBA[2], RGBA[3]);
+	//FGLayerSurface = SDL_CreateRGBSurface(SDL_SWSURFACE/*Mode*/,320, 200, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
 	if (!FGLayerSurface)
 	{
 		g_pLogFile->textOut(RED,"VideoDriver: Couldn't create FGLayerSurface!<br>");
@@ -387,6 +408,10 @@ bool CVideoDriver::createSurfaces(void)
 	//Set surface alpha
 	SDL_SetAlpha( FGLayerSurface, SDL_SRCALPHA, 225 );
 
+	SDL_Rect r = {0, 0, 512, 256};
+	SDL_FillRect(FGLayerSurface, &r, SDL_MapRGBA(FGLayerSurface->format, 0, 0, 0, 0));
+	
+	
     if(m_Resolution.width == 320 && !m_opengl)
     {
     	g_pLogFile->textOut("Blitsurface = Screen<br>");
@@ -399,7 +424,14 @@ bool CVideoDriver::createSurfaces(void)
     else
     {
     	g_pLogFile->textOut("Blitsurface = creatergbsurfacefrom<br>");
-    	BlitSurface = SDL_CreateRGBSurface(Mode,GAME_STD_WIDTH, GAME_STD_HEIGHT, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
+#ifdef USE_OPENGL
+		// We must create a surface with the size being a power of two.
+		// Also, we will use a handy format.
+    	BlitSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, 512, 256, 24, 0x0000ff, 0x00ff00, 0xff0000, 0x0);
+#else
+		BlitSurface = SDL_CreateRGBSurface(SDL_SWSURFACE /*Mode & ~SDL_DOUBLEBUF & ~SDL_HWPALETTE & ~SDL_HWSURFACE*/,GAME_STD_WIDTH, GAME_STD_HEIGHT, m_Resolution.depth,  screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
+#endif
+		
 		if (!BlitSurface)
 		{
 			g_pLogFile->textOut(RED,"VidDrv_Start(): Couldn't create BlitSurface!<br>");
@@ -437,7 +469,7 @@ void CVideoDriver::pal_apply(void)
 }
 
 static void sb_lowblit(SDL_Surface* src, SDL_Rect* srcrect, SDL_Surface* dst, SDL_Rect* dstrect) {
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+#if !defined(USE_OPENGL) && (defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR))
 	// SDL_BlitSurface doesn't work for some reason
 	int _xend = srcrect->x + dstrect->w;
 	int _yend = srcrect->y + dstrect->h;
@@ -551,7 +583,9 @@ char tempbuf[80];
 }
 void CVideoDriver::blitBGLayer(void)
 {
+#ifndef USE_OPENGL	
 	SDL_BlitSurface(BGLayerSurface, NULL, BlitSurface, NULL);
+#endif
 }
 
 void CVideoDriver::update_screen(void)
@@ -559,15 +593,18 @@ void CVideoDriver::update_screen(void)
 #ifdef USE_OPENGL
    if(m_opengl)
    {
-	   SDL_BlitSurface(FGLayerSurface, NULL, BlitSurface, NULL);
+	   if(m_updateFG)
+		   mp_OpenGL->reloadFG(FGLayerSurface);
+	   
+	   mp_OpenGL->render(m_updateFG);
 
-	   mp_OpenGL->render();
+	   if(m_updateFG) {
+		   // Flush the layers
+		   SDL_Rect r = {0, 0, 512, 256};
+		   SDL_FillRect(FGLayerSurface, &r, SDL_MapRGBA(FGLayerSurface->format, 0, 0, 0, 0));
 
-	   LockSurface(FGLayerSurface);
-	   // Flush the layers
-	   memset(FGLayerSurface->pixels,SDL_MapRGB(FGLayerSurface->format, 0, 0, 0),
-			   GAME_STD_WIDTH*GAME_STD_HEIGHT*FGLayerSurface->format->BytesPerPixel);
-	   UnlockSurface(FGLayerSurface);
+		   m_updateFG = false;
+	   }
    }
    else // No OpenGL but Software Rendering
 #endif
@@ -780,27 +817,29 @@ void CVideoDriver::setpixel(unsigned int x, unsigned int y, unsigned char c)
 	if( x >= GAME_STD_WIDTH || y >= GAME_STD_HEIGHT ) // out of Bonds!!!
 		return;
 
-    if(BlitSurface->format->BitsPerPixel == 16)
+    if(FGLayerSurface->format->BitsPerPixel == 16)
     {
     	Uint16 *ubuff16;
         ubuff16 = (Uint16*) FGLayerSurface->pixels;
-    	ubuff16 += (y * 320) + x;
-    	*ubuff16 = convert4to16BPPcolor(c, BlitSurface);
+    	ubuff16 += (y * FGLayerSurface->pitch/FGLayerSurface->format->BytesPerPixel) + x;
+    	*ubuff16 = convert4to16BPPcolor(c, FGLayerSurface);
     }
-    else if(BlitSurface->format->BitsPerPixel == 32)
+    else if(FGLayerSurface->format->BitsPerPixel == 32)
     {
     	Uint32 *ubuff32;
         ubuff32 = (Uint32*) FGLayerSurface->pixels;
-    	ubuff32 += (y * 320) + x;
-    	*ubuff32 = convert4to32BPPcolor(c, BlitSurface);
+    	ubuff32 += (y * FGLayerSurface->pitch/FGLayerSurface->format->BytesPerPixel) + x;
+    	*ubuff32 = convert4to32BPPcolor(c, FGLayerSurface);
     }
     else
-    {
+    { // 8bit surface assumed
     	Uint8 *ubuff8;
         ubuff8 = (Uint8*) FGLayerSurface->pixels;
-    	ubuff8 += (y * 320) + x;
+    	ubuff8 += (y * FGLayerSurface->pitch) + x;
     	*ubuff8 = (Uint8) c;
     }
+	
+	m_updateFG = true;
 }
 unsigned char CVideoDriver::getpixel(int x, int y)
 {
@@ -889,4 +928,10 @@ SDL_Surface *CVideoDriver::getScrollSurface(void)
 SDL_Surface *CVideoDriver::getBGLayerSurface(void)
 {	return BGLayerSurface; }
 
+void CVideoDriver::updateBG() {
+#ifdef USE_OPENGL
+	if(m_opengl)
+		mp_OpenGL->reloadBG(BGLayerSurface);
+#endif
+}
 
