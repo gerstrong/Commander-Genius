@@ -243,21 +243,21 @@ bool CGame::loadResources(unsigned short Episode, const std::string& DataDirecto
     // Patch the EXE-File-Data directly in the memory.
 	CPatcher *Patcher = new CPatcher(Episode, ExeFile->getEXEVersion(), ExeFile->getData(), DataDirectory);
 	Patcher->patchMemory();
-	delete Patcher;
+	delete Patcher; Patcher = NULL;
 
     // Load tile attributes.
-	if(TileLoader) delete TileLoader;
+	if(TileLoader) delete TileLoader; TileLoader = NULL;
 	
 	if(ExeFile->getData() == NULL) {
 		g_pLogFile->textOut(RED, "CGame::loadResources: Could not load data out of EXE<br>");
-		delete ExeFile;
+		delete ExeFile; ExeFile = NULL;
 		return false;
 	}
 	
 	TileLoader = new CTileLoader(Episode, ExeFile->getEXEVersion(), ExeFile->getData());
 	if(!TileLoader->load()) {
 		g_pLogFile->textOut(RED, "CGame::loadResources: Could not load data with TileLoader<br>");
-		delete ExeFile;
+		delete ExeFile; ExeFile = NULL;
 		return false;
 	}
 	
@@ -266,7 +266,7 @@ bool CGame::loadResources(unsigned short Episode, const std::string& DataDirecto
     //m_Messages->readData(char *buf, int episode, int version);
 	loadstrings("strings.dat");
 
-    delete ExeFile;
+    delete ExeFile; ExeFile = NULL;
 
 	// Load the sound data
 	bool ok = g_pSound->loadSoundData(m_Episode, DataDirectory);
