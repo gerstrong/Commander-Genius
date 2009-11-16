@@ -199,7 +199,6 @@
 		23B8F3E610AEBD83004B4555 /* externals.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637CB1031812500FEEFEE /* externals.cpp */; };
 		23B8F3E710AEBD83004B4555 /* COrderingInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637D9103181BF00FEEFEE /* COrderingInfo.cpp */; };
 		23B8F3E810AEBD83004B4555 /* icecannon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637E1103181D700FEEFEE /* icecannon.cpp */; };
-		23B8F3E910AEBD95004B4555 /* cglogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 230715FF1036E85300DE25FC /* cglogo.icns */; };
 		23B8F49010B04683004B4555 /* libSDLiPhoneOSSimulator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 23B8F48F10B04683004B4555 /* libSDLiPhoneOSSimulator.a */; };
 		23B8F49310B04696004B4555 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23B8F49210B04696004B4555 /* OpenGLES.framework */; };
 		23B8F49610B046C3004B4555 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23B8F49510B046C3004B4555 /* CoreAudio.framework */; };
@@ -219,6 +218,7 @@
 		23C637D41031812500FEEFEE /* externals.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637CB1031812500FEEFEE /* externals.cpp */; };
 		23C637DB103181BF00FEEFEE /* COrderingInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637D9103181BF00FEEFEE /* COrderingInfo.cpp */; };
 		23C637E4103181D700FEEFEE /* icecannon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637E1103181D700FEEFEE /* icecannon.cpp */; };
+		23EEE91110B1AE7F003C9526 /* cglogo-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 23EEE91010B1AE7F003C9526 /* cglogo-iphone.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -467,6 +467,7 @@
 		23D3EE571017602E001643FA /* Debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Debug.cpp; sourceTree = "<group>"; };
 		23D3EE5910176098001643FA /* CrashHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CrashHandler.cpp; sourceTree = "<group>"; };
 		23D3EE5A10176098001643FA /* CrashHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CrashHandler.h; sourceTree = "<group>"; };
+		23EEE91010B1AE7F003C9526 /* cglogo-iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cglogo-iphone.png"; sourceTree = "<group>"; };
 		5048396D09E3307300765E4B /* CommanderGeniusProj.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = CommanderGeniusProj.xcconfig; sourceTree = "<group>"; };
 		5048396E09E3307300765E4B /* CommanderGeniusTarget.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = CommanderGeniusTarget.xcconfig; sourceTree = "<group>"; };
 		8D0C4E960486CD37000505A6 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -515,6 +516,7 @@
 		20286C29FDCF999611CA2CEA /* CommanderGenius */ = {
 			isa = PBXGroup;
 			children = (
+				23EEE91010B1AE7F003C9526 /* cglogo-iphone.png */,
 				2373646510B0FCE400CD49D4 /* libSDLiPhoneOSDevice.a */,
 				23B8F5EC10B061B0004B4555 /* data */,
 				23B8F48F10B04683004B4555 /* libSDLiPhoneOSSimulator.a */,
@@ -991,8 +993,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				23B8F3E910AEBD95004B4555 /* cglogo.icns in Resources */,
 				23B8F62C10B061B0004B4555 /* data in Resources */,
+				23EEE91110B1AE7F003C9526 /* cglogo-iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
