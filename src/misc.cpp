@@ -718,8 +718,6 @@ char save_slot_box(int issave, stCloneKeenPlus *pCKP)
 {
 char saveslot;
 FILE *fp;
-	std::string fname;
-char slotexists;
 int x, bmnum;
 int dlgX,dlgY,dlgW,dlgH;
 
@@ -746,6 +744,9 @@ top: ;
      g_pGraphics->drawBitmap(x, 0, bmnum);
   }
 
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+	int tmpslot = 1;
+#endif
   saveslot = 0;
   do
   {
@@ -753,21 +754,27 @@ top: ;
     gamedo_render_drawobjects();
 
     sb_dialogbox(dlgX,dlgY,dlgW,dlgH);
-    if (issave)
-    {
-    	g_pGraphics->sb_font_draw( getstring("WhichSlotSave"),(dlgX+1)<<3,(dlgY+1)<<3);
-    }
-    else
-    {
-    	g_pGraphics->sb_font_draw( getstring("WhichSlotLoad"),(dlgX+1)<<3,(dlgY+1)<<3);
-    	gamedo_AnimatedTiles();
-    }
+	std::string text = getstring("WhichSlotSave");
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+	text += " -> " + itoa(tmpslot);
+#endif
+	g_pGraphics->sb_font_draw( text,(dlgX+1)<<3,(dlgY+1)<<3);
+	if(!issave) gamedo_AnimatedTiles();
 
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)	  
+	  if(g_pInput->getPressedKey(KRIGHT) || g_pInput->getPressedKey(KDOWN))
+		  if(tmpslot < 9) tmpslot++;
+	  if(g_pInput->getPressedKey(KLEFT) || g_pInput->getPressedKey(KUP))
+		  if(tmpslot > 1) tmpslot--;
+	  if(g_pInput->getPressedKey(KENTER))
+		  saveslot = tmpslot;
+#else
     for (int i=0 ; i<9  ; i++)
     {
     	if (g_pInput->getPressedKey(KNUM1+i)) saveslot = 1+i;
     }
-
+#endif
+	  
     g_pVideoDriver->sb_blit();
     gamedo_render_eraseobjects();
 
@@ -777,18 +784,12 @@ top: ;
   } while(!g_pInput->getPressedKey(KQUIT) && !saveslot);
 
   /* check if the selected save file exists */
-	fname = "ep";
+	std::string fname = "ep";
 	fname += p_levelcontrol->episode+'0';
 	fname += "save";
 	fname += saveslot+'0';
 	fname += ".dat";
-  slotexists = 0;
-  fp = OpenGameFile(fname.c_str(), "rb");
-  if (fp)
-  {
-    fclose(fp);
-    slotexists = 1;
-  }
+  bool slotexists = IsFileAvailable(fname);
 
   if ((issave && !slotexists) || (!issave && slotexists))
   {
@@ -822,12 +823,22 @@ top: ;
     if (issave)
     {
       g_pGraphics->sb_font_draw( getstring("SaveSlotOverwrite"),(dlgX+1)<<3,(dlgY+1)<<3);
-      if (g_pInput->getPressedKey(KN))
+      if (g_pInput->getPressedKey(
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)	  		
+		KQUIT))
+#else
+		KN))		  
+#endif
       {
         map_redraw();
         goto top;
       }
-      else if (g_pInput->getPressedKey(KY))
+      else if (g_pInput->getPressedKey(
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)	  		
+		KENTER))
+#else
+		KY))
+#endif
       {
         map_redraw();
         return saveslot;
@@ -901,9 +912,9 @@ int dlgX,dlgY,dlgW,dlgH;
 int VerifyQuit()
 {
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
-	// On iPhone, we just want to quit immediatly.
-	QuitState = QUIT_PROGRAM;
-	return 0;
+	// On iPhone, we just return to title.
+	QuitState = QUIT_TO_TITLE;
+	return QuitState;
 #endif
 	
 int dlgX,dlgY,dlgW,dlgH;
