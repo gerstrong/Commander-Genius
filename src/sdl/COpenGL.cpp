@@ -47,11 +47,12 @@ bool COpenGL::initGL(unsigned Width, unsigned Height, unsigned char Depth,
 	//m_texparam = GL_TEXTURE_RECTANGLE_ARB;
 	m_texparam = GL_TEXTURE_2D;
 
+	// TODO: do that in the render section
 	// Set the proper resolution for OpenGL. Very important, when user changes the resolution
-	if(aspect)
+	/*if(aspect)
 		glViewport(0,(Height-(Height*200)/240)/2,Width, (Height*200)/240);
-	else
-		glViewport(0,0,Height, Width);
+	else*/
+		//glViewport(0,0,Width,Height);
 
 	// Set clear colour
 	glClearColor(0,0,0,0);
@@ -59,24 +60,15 @@ bool COpenGL::initGL(unsigned Width, unsigned Height, unsigned char Depth,
 	// Set projection
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
-	glOrthof( 0.0f , 1.0f, 1.0f, 0.0f , -1.0f , 1.0f );
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)	// TODO: dont check for iphone but for opengles
+#define glOrtho glOrthof
+#endif
+	glOrtho( 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f );
 
 	// Now Initialize modelview matrix
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
 
-	// Enable Texture loading for the blit screen
-	/*  uint textureID;
-
-	  glEnable (GL_TEXTURE_2D);
-	  glGenTextures(1, &textureID);
-	  glBindTexture(GL_TEXTURE_RECTANGLE_ARB, textureID);
-	  //glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	  glTexParameteri(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	  glTexParameteri(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	  glTexParameteri(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	  glTexParameteri(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-*/
 
     /*Using the standard OpenGL API for specifying a 2D texture
     image: glTexImage2D, glSubTexImage2D, glCopyTexImage2D,
@@ -141,11 +133,9 @@ void COpenGL::reloadFG(SDL_Surface* surf) {
 }
 
 static void renderTexture(GLuint texture, bool withAlpha = false) {
+	// strange constants here; 225 seems good for pc. 200 is better for iphone
+	// the size is the same as the texture buffers
 	glViewport(0,200,512, 256);
-	glLoadIdentity();
-	//glOrthof(0, 1, 0, 1, 0, 1);
-	//glOrthof(0, 1, 0, 1, 0, 1);
-	
 	
 	// Set up an array of values to use as the sprite vertices.
 	GLfloat vertices[] =
@@ -202,7 +192,7 @@ void COpenGL::render(bool withFG)
 
 	glBindTexture (GL_TEXTURE_2D, m_texture);
 	
-	   if(m_ScaleX == 2) //Scale 2x
+/*	   if(m_ScaleX == 2) //Scale 2x
 	   {
 		   scale(2, m_opengl_buffer, (GAME_STD_WIDTH<<1)*(m_Depth>>3), m_blitsurface->pixels,
 			     GAME_STD_WIDTH*(m_Depth>>3), (m_Depth>>3), GAME_STD_WIDTH, GAME_STD_HEIGHT);
@@ -225,7 +215,7 @@ void COpenGL::render(bool withFG)
 
 		   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, GAME_STD_WIDTH<<2, GAME_STD_HEIGHT<<2, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
 	   }
-	   else
+	   else */
 		   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 512, 256, 0, GL_RGB, GL_UNSIGNED_BYTE, m_blitsurface->pixels);
 
 	UnlockSurface(m_blitsurface);

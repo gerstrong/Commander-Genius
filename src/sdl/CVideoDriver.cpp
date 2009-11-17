@@ -393,7 +393,7 @@ bool CVideoDriver::createSurfaces(void)
 
 	stretch_blit_yoff = 0;
 
-	ScrollSurface = SDL_CreateRGBSurfaceFrom(g_pGraphics->getScrollbuffer(), 512, 512, 8, 512, screen->format->Rmask, screen->format->Gmask, screen->format->Bmask, screen->format->Amask);
+	ScrollSurface = SDL_CreateRGBSurfaceFrom(g_pGraphics->getScrollbuffer(), 512, 512, 8, 512, /* masks are ignored because we use palette */ 0,0,0,0);
 	SDL_SetColorKey(ScrollSurface, SDL_SRCCOLORKEY, COLOUR_MASK);
 	if (!ScrollSurface)
 	{
