@@ -7,6 +7,7 @@
 #include "COpenGL.h"
 #include "CVideoDriver.h"
 #include "../CLogFile.h"
+#include "CInput.h" // for CInput::renderOverlay
 
 #define GAME_STD_WIDTH            320
 #define GAME_STD_HEIGHT           200
@@ -164,11 +165,12 @@ static void renderTexture(GLuint texture, bool withAlpha = false) {
 	
 	glEnable(GL_BLEND);
 	if(withAlpha)
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 	else
 		glBlendFunc(GL_ONE, GL_ZERO /*GL_SRC_COLOR*/);
 	
 	glBindTexture (GL_TEXTURE_2D, texture);
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	
 	// Set the texture parameters to use a linear filter when minifying.
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -183,9 +185,7 @@ static void renderTexture(GLuint texture, bool withAlpha = false) {
 }
 
 void COpenGL::render(bool withFG)
-{	
-	//glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	
+{		
 	renderTexture(m_texBG);
 	
 	   LockSurface(m_blitsurface);
@@ -224,6 +224,8 @@ void COpenGL::render(bool withFG)
 
 	if(withFG)
 		renderTexture(m_texFG, true);
+	
+	g_pInput->renderOverlay();
 	
 	SDL_GL_SwapBuffers();
 }

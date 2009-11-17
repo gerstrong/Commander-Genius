@@ -171,6 +171,8 @@ public:
 	void flushCommands(void);
 	void flushAll(void);
 
+	void renderOverlay(); // for mouse wrapper gfx or other stuff
+
 private:
 	SDL_Event Event;
 	stInputCommand InputCommand[NUM_INPUTS][NUMBER_OF_COMMANDS];
