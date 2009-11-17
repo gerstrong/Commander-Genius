@@ -92,23 +92,16 @@ void CVideoDriver::resetSettings() {
 	BGLayerSurface=NULL;
 	BlitSurface=NULL;
 	
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
-	m_Resolution.width = 320; //  320;
-	m_Resolution.height = 200; //  480;
-	m_Resolution.depth = 32;
-	m_Resolutionlist.push_back(m_Resolution);
-	m_Resolution_pos = m_Resolutionlist.begin();
-	
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)	
 	Zoom = 1;
 	Filtermode = 0;
 	FrameSkip=1;
 	m_targetfps = 30;
 	m_aspect_correction = false;
+#endif	
 	
-#else
 	m_Resolution_pos = m_Resolutionlist.begin();
 	initResolutionList();
-#endif	
 }
 
 CVideoDriver::CVideoDriver() {
@@ -121,6 +114,16 @@ CVideoDriver::~CVideoDriver() {
 
 void CVideoDriver::initResolutionList()
 {
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+	m_Resolution.width = 320; //  320;
+	m_Resolution.height = 200; //  480;
+	m_Resolution.depth = 32;
+	m_Resolutionlist.push_back(m_Resolution);
+	m_Resolution_pos = m_Resolutionlist.begin();
+	
+	return;
+#endif	
+	
 	  st_resolution resolution;
 	  char buf[256];
 
