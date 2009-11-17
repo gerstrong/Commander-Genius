@@ -18,6 +18,10 @@
 #include "gp2x.h"
 #endif
 
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)	
+#define MOUSEWRAPPER 1
+#endif
+
 CInput::CInput() {
 	resetControls();
 }
@@ -216,16 +220,20 @@ void CInput::pollEvents()
 	    case SDL_JOYBUTTONUP:
 	      	processJoystickButton(0);
 	       	break;
+#ifdef MOUSEWRAPPER			  
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_MOUSEBUTTONUP:
 		case SDL_MOUSEMOTION:
 			processMouse(Event);
 			break;
+#endif
 	   }
 	}
+#ifdef MOUSEWRAPPER
 	// Handle mouse emulation layer
 	processMouse();
-
+#endif
+	
 	// Check, if LALT+ENTER was pressed
 	if(getHoldedKey(KLALT) && getPressedKey(KENTER))
 	{
