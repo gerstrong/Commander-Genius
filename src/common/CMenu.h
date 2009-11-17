@@ -15,6 +15,7 @@
 #include <SDL/SDL.h>
 #include "../dialog/CDialog.h"
 #include "../dialog/CTextViewer.h"
+
 #include "infoscenes/CInfoScene.h"
 
 #define TWIRL_SPEED_SLOW        100

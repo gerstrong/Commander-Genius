@@ -1,9 +1,10 @@
 //MENU.C
 //  The main menu, intro, and other such stuff.
 
-
 #include "CMenu.h"
 #include "CObject.h"
+#include "infoscenes/CStory.h"
+
 #include "../StringUtils.h"
 #include "../CGameControl.h"
 #include "../vorticon/CPassive.h"
@@ -385,10 +386,24 @@ void CMenu::processF1Menu()
 {
 	if( m_selection != -1)
 	{
-		if ( m_selection == 3 )
+		// no cleanups here, because later we return back to that menu
+		switch(m_selection)
 		{
-			cleanup();
-			init(CONTROLPLAYERS);
+		/*case 0:
+			mp_InfoScene = new CAboutGame();
+			break;*/
+		case 1:
+			mp_InfoScene = new CStory();
+			break;
+		/*case 2:
+			mp_InfoScene = new COrdering();
+			break;
+		case 3:
+			mp_InfoScene = new CAboutID();
+			break;
+		case 4:
+			mp_InfoScene = new CCredits();
+			break;*/
 		}
 	}
 	
