@@ -25,6 +25,7 @@
 #include "sdl/sound/CSound.h"
 #include "sdl/CVideoDriver.h"
 #include "vorticon/COrderingInfo.h"
+#include "Debug.h"
 
 CGame::CGame() {
 	m_Episode = 0;
@@ -213,6 +214,8 @@ short CGame::runCycle(stCloneKeenPlus *pCKP)
 		  if(pCKP->shutdown == SHUTDOWN_NEW_GAME) return 0;
 
 	      g_pLogFile->ftextOut("bottom of game control loop opt=%d crashflag=%d<br>", opt, crashflag);
+		  if(crashflag)
+			  errors << "crash: " << why_term_ptr << " ; " << crashflag2 << " ; " << crashflag3 << endl;
 	      if(pCKP->shutdown == SHUTDOWN_EXIT) break;
 	    } while(opt != MAINMNU_QUIT && opt != MAINMNU_NEW_GAME && !crashflag);
 
