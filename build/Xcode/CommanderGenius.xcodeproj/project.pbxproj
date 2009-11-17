@@ -219,6 +219,7 @@
 		23C637DB103181BF00FEEFEE /* COrderingInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637D9103181BF00FEEFEE /* COrderingInfo.cpp */; };
 		23C637E4103181D700FEEFEE /* icecannon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637E1103181D700FEEFEE /* icecannon.cpp */; };
 		23EEE91110B1AE7F003C9526 /* cglogo-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 23EEE91010B1AE7F003C9526 /* cglogo-iphone.png */; };
+		23EEEA0E10B2F40E003C9526 /* data in Resources */ = {isa = PBXBuildFile; fileRef = 23B8F5EC10B061B0004B4555 /* data */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -983,6 +984,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23EEEA0E10B2F40E003C9526 /* data in Resources */,
 				235755D2101A5E5900275638 /* InfoPlist.strings in Resources */,
 				235755D3101A5E5900275638 /* main.xib in Resources */,
 				230716001036E85300DE25FC /* cglogo.icns in Resources */,
