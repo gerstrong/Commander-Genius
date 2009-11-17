@@ -95,7 +95,7 @@ void CVideoDriver::resetSettings() {
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)	
 	Zoom = 1;
 	Filtermode = 0;
-	FrameSkip=1;
+	FrameSkip = 15;
 	m_targetfps = 30;
 	m_aspect_correction = false;
 #endif	
