@@ -169,7 +169,7 @@ void CTextViewer::process()
 	 
 	 if(m_timer>=8) m_timer=0;
 	 
-	 if(g_pInput->getPressedKey(KQUIT))
+	 if(g_pInput->getPressedKey(KQUIT) || g_pInput->getPressedKey(KQ) )
 		 m_mustclose = true;
 	 
 	 renderBox(); // This comes after, because it does transparent overlay

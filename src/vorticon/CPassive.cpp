@@ -78,7 +78,7 @@ void CPassive::process()
 	// Check Inputs
 	
 	// Open the Main-Menu or close the opened one?
-	if( g_pInput->getPressedAnyKey() && mp_Menu==NULL )
+	if( mp_Menu==NULL && g_pInput->getPressedAnyKey()  )
 	{
 		// Close the "Press Any Key" box
 		g_pInput->flushAll();
@@ -90,7 +90,7 @@ void CPassive::process()
 		else
 		{
 			SAFE_DELETE(mp_PressAnyBox);
-			mp_Menu = new CMenu( CMenu::PASSIVE );
+			mp_Menu = new CMenu( CMenu::PASSIVE, m_DataDirectory, m_Episode );
 			mp_Menu->init();
 		}
 	}

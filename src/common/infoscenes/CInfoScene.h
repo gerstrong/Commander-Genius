@@ -20,7 +20,7 @@ public:
 
 	virtual ~CInfoScene();
 
-private:
+protected:
 	bool m_destroy_me;
 };
 

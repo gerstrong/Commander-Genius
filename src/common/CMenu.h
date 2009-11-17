@@ -10,7 +10,6 @@
 #ifndef CMENU_H_
 #define CMENU_H_
 
-#include <vector>
 #include <string>
 #include <SDL/SDL.h>
 #include "../dialog/CDialog.h"
@@ -53,7 +52,7 @@ public:
 		ACTIVE, PASSIVE
 	};
 	
-	CMenu( char menu_mode );
+	CMenu( char menu_mode, std::string &GamePath, char &Episode );
 	virtual ~CMenu();
 	
 	bool init( char menu_type = MAIN );
@@ -98,6 +97,8 @@ private:
 	CTextViewer *mp_TextViewer;
 	CInfoScene *mp_InfoScene;
 	SDL_Surface *mp_MenuSurface;
+	char &m_Episode;
+	std::string &m_GamePath;
 	
 	bool m_choosegame;
 	bool m_goback;

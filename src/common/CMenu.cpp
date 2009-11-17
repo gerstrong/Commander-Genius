@@ -15,7 +15,8 @@
 
 #define SELMOVE_SPD         3
 
-CMenu::CMenu( char menu_mode )
+CMenu::CMenu( char menu_mode, std::string &GamePath, char &Episode ) :
+m_Episode(Episode), m_GamePath(GamePath)
 {
 	// Create the Main Menu
 	mp_MenuSurface = g_pVideoDriver->FGLayerSurface;
@@ -393,7 +394,7 @@ void CMenu::processF1Menu()
 			mp_InfoScene = new CAboutGame();
 			break;*/
 		case 1:
-			mp_InfoScene = new CStory();
+			mp_InfoScene = new CStory(m_GamePath, m_Episode);
 			break;
 		/*case 2:
 			mp_InfoScene = new COrdering();
@@ -405,6 +406,7 @@ void CMenu::processF1Menu()
 			mp_InfoScene = new CCredits();
 			break;*/
 		}
+		m_selection = -1;
 	}
 	
 	if(m_goback)
