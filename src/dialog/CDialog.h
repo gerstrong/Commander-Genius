@@ -9,7 +9,7 @@
 #define CDIALOG_H_
 
 #include <vector>
-#include <SDL.h>
+#include <SDL/SDL.h>
 #include "CDlgObject.h"
 
 class CDialog {
@@ -17,40 +17,40 @@ public:
 	CDialog(SDL_Surface *DialogSurface, Uint16 w, Uint16 h);
 	CDialog(SDL_Surface *DialogSurface, Uint16 x, Uint16 y, Uint16 w, Uint16 h);
 	virtual ~CDialog();
-	
+
 	void setFrameTheme( Uint8 theme );
 	void addObject( Uint8 type, Uint16 x, Uint16 y,const std::string text="" );
 	void setObjectText( Uint8 ID, const std::string &text );
 	void setSDLSurface( SDL_Surface* Surface ) { m_DialogSurface = Surface; }
-	
+
 	int getSelection();
-	
+
 	void processInput(char key);
 	void draw();
 	void drawTwirl();
-	
+
 private:
 	Uint16 m_x;
 	Uint16 m_y;
 	Uint16 m_w;
 	Uint16 m_h;
-	
+
 	int m_selected_ID;
 	int m_dlg_size;
 	Uint8 m_switch;
 	Uint8 m_scroll;
-	
+
 	CDlgFrame *m_Frame;
 	Uint8 m_alpha;
-	
+
 	struct{
 		Uint8  frame;
 		Uint8  timer;
 		Uint16 posy;
 	} m_twirl;
-	
+
 	SDL_Surface *m_DialogSurface;
-	
+
 	std::vector<CDlgObject*> m_dlgobject;
 };
 

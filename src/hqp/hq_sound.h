@@ -8,7 +8,7 @@
 #ifndef __CG_HQ_SOUND_H__
 #define __CG_HQ_SOUND_H__
 
-#include <SDL.h>
+#include <SDL/SDL.h>
 #include <string>
 
 struct stHQSound

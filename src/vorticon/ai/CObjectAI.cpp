@@ -36,7 +36,7 @@ void CObjectAI::process()
 		{
 			i_object->processFalling();
 			i_object->performCollision(mp_Map);
-			
+
 		    // hit detection with players
 			i_object->touchPlayer = false;
 		    for( int cplayer=0 ; cplayer<m_NumPlayers ; cplayer++)
@@ -76,7 +76,7 @@ void CObjectAI::process()
 		}
 		i_object->process();
 	}
-	
+
 }
 
 ///
@@ -87,18 +87,18 @@ bool CObjectAI::checkforAIObject( CObject *p_object )
 	int scrx = (p_object->x>>STC)-mp_Map->m_scrollx;
 	int scry = (p_object->y>>STC)-mp_Map->m_scrolly;
 	unsigned int type = p_object->m_type;
-	
+
 	if ( !p_object->exists || type==OBJ_PLAYER ) return false;
-	
+
     //gamedo_calcenemyvisibility(i);
-	
+
     // This will do the function gamedo_calcenemyvisibility(i);
     // check if object is really in the map!!!
     if (p_object->x < 0 || p_object->y < 0) return false;
-	
+
     if (p_object->x > (mp_Map->m_width<<CSF) || p_object->y > (mp_Map->m_height<<CSF) )
 		return false;
-	
+
     if (scrx < -(g_pGfxEngine->Sprite[p_object->sprite]->getWidth()) || scrx > g_pVideoDriver->getGameResRect().w
 		|| scry < -(g_pGfxEngine->Sprite[p_object->sprite]->getHeight()) || scry > g_pVideoDriver->getGameResRect().h)
     {
@@ -111,13 +111,13 @@ bool CObjectAI::checkforAIObject( CObject *p_object )
     	p_object->onscreen = true;
     	p_object->hasbeenonscreen = true;
     }
-	
+
 	if (p_object->hasbeenonscreen || p_object->zapped ||
 		type==OBJ_RAY || \
 		type==OBJ_ICECHUNK || type==OBJ_PLATFORM ||
 		type==OBJ_PLATVERT || type==OBJ_YORP ||
 		type==OBJ_FOOB || type==OBJ_SCRUB)
-		
+
 	{
 		return true;
     }
@@ -130,7 +130,7 @@ void CObjectAI::performSpecialAIType( CObject *p_object )
 	{
 		//KEEN1
 		case OBJ_YORP: yorp_ai(p_object, mp_Player, m_difficulty); break;
-		// case OBJ_GARG: garg_ai(i, p_levelcontrol->hardmode); break;
+		case OBJ_GARG: garg_ai(p_object, mp_Player, m_difficulty); break;
 		case OBJ_VORT: vort_ai(p_object, m_Level, m_Episode, m_difficulty, false ); break;
 		case OBJ_BUTLER: butler_ai(p_object, m_difficulty); break;
 		case OBJ_TANK: tank_ai(p_object, m_difficulty>1); break;
@@ -151,7 +151,7 @@ void CObjectAI::performSpecialAIType( CObject *p_object )
 			 case OBJ_EXPLOSION: explosion_ai(i); break;
 			 case OBJ_EARTHCHUNK: earthchunk_ai(i); break;
 			 case OBJ_SPARK: spark_ai(i, &(p_levelcontrol->sparks_left) ); break;
-			 
+
 			 //KEEN3
 			 case OBJ_FOOB: foob_ai(i, p_levelcontrol->hardmode); break;
 			 case OBJ_NINJA: ninja_ai( i, p_levelcontrol->hardmode); break;
@@ -163,15 +163,15 @@ void CObjectAI::performSpecialAIType( CObject *p_object )
 			 case OBJ_JACK: ballandjack_ai(i); break;
 			 case OBJ_PLATVERT: platvert_ai(i); break;
 			 case OBJ_NESSIE: nessie_ai(i); break;
-			 
+
 			 //Common Objects*/
 		case OBJ_RAY: ray_ai( p_object, mp_Options[OPT_FULLYAUTOMATIC].value ); break;
 		case OBJ_DOOR: door_ai( p_object, DOWN); break;
 			//case OBJ_AUTORAY: case OBJ_AUTORAY_V: autoray_ai(i); break;
 			//case OBJ_GOTPOINTS: gotpoints_ai(i); break;
-			
+
 			//case OBJ_DEMOMSG: break;
-			
+
 		default:
 			//g_pLogFile->ftextOut("gamedo_enemy_ai: Object is of invalid type %d\n", p_object->m_type);
 			break;
@@ -189,7 +189,7 @@ void CObjectAI::killplayer(int theplayer)
 void CObjectAI::deleteObj(CObject *p_object)
 {
 	p_object->exists = false;
-	
+
 	// The real delete happens, when all the AI is done
 	// If the last object was deleted, throw it out of the list
 	if( mp_Objvect->at(mp_Objvect->size()-1).exists == false )

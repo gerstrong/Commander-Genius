@@ -8,7 +8,7 @@
 #ifndef CEGALATCH_H_
 #define CEGALATCH_H_
 
-#include <SDL.h>
+#include <SDL/SDL.h>
 #include <string>
 
 class CEGALatch {
@@ -24,14 +24,14 @@ public:
 			  short bitmaps,
 			  long bitmaplocation);
 	virtual ~CEGALatch();
-	
+
 	bool loadHead(char *data, short m_episode );
 	bool loadData( std::string &path, short episode, int version, unsigned char *data, bool compresseddata );
-	
+
 	void applyMasks();
-	
+
 	char *RawData;
-	
+
 private:
 	int m_num_Latches;
 	int m_latchplanesize;

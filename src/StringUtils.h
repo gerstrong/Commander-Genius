@@ -1,8 +1,8 @@
 /*
  OpenLieroX
- 
+
  string utilities
- 
+
  code under LGPL
  created 01-05-2007
  by Albert Zeyer and Dark Charlie
@@ -11,7 +11,7 @@
 #ifndef __STRINGUTILS_H__
 #define __STRINGUTILS_H__
 
-#include <SDL.h> // for Uint32
+#include <SDL/SDL.h> // for Uint32
 #include <cstdio> // for FILE
 #include <string>
 #include <sstream>
@@ -94,12 +94,12 @@ int chrcasecmp(const char c1, const char c2);
 inline char* itoa(int val, char* buf, int base) {
 	int i = 29; // TODO: bad style
 	buf[i+1] = '\0';
-	
+
     do {
         buf = "0123456789abcdefghijklmnopqrstuvwxyz"[val % base] + buf;
         --i, val /= base;
     } while(val && i);
-	
+
     return &buf[i+1];
 }
 
@@ -193,7 +193,7 @@ inline std::string FixedWidthStr_LeftFill(const std::string& str, size_t w, char
 inline void StripQuotes(std::string& value) {
 	if( value.size() >= 2 )
 		if( value[0] == '"' && value[value.size()-1] == '"' )
-			value = value.substr( 1, value.size()-2 );	
+			value = value.substr( 1, value.size()-2 );
 }
 
 ////////////////////
@@ -290,18 +290,18 @@ inline std::string ftoa(float val, int precision = -1)
 			res = res.substr(0, dotpos + precision);
 		}
 	}
-	
+
 	return res;
 }
 
 inline std::string itoa(unsigned long num, short base=10)  {
 	std::string buf;
-	
-	do {	
+
+	do {
 		buf = "0123456789abcdefghijklmnopqrstuvwxyz"[num % base] + buf;
 		num /= base;
 	} while(num);
-	
+
 	return buf;
 }
 
@@ -320,12 +320,12 @@ inline std::string itoa(unsigned int num, short base=10)  { return itoa((unsigne
 #ifdef ULLONG_MAX
 inline std::string itoa(unsigned long long num, short base=10)  {
 	std::string buf;
-	
-	do {	
+
+	do {
 		buf = "0123456789abcdefghijklmnopqrstuvwxyz"[num % base] + buf;
 		num /= base;
 	} while(num);
-	
+
 	return buf;
 }
 #endif
@@ -354,16 +354,16 @@ struct stringcaseless {
 struct const_string_iterator {
 	const std::string& str;
 	size_t pos;
-	
+
 	const_string_iterator(const std::string& s, size_t p = 0) : str(s), pos(p) {}
 	const_string_iterator& operator++() { pos++; return *this; }
 	const_string_iterator& operator--() { assert(pos > 0); pos--; return *this; }
-	
+
 	bool operator==(const const_string_iterator& i) const {
 		return &str == &i.str && (pos == i.pos || (pos > str.size() && i.pos > str.size()));
 	}
 	bool operator!=(const const_string_iterator& i) const { return !(*this == i); }
-	
+
 	char operator*() const { return str[pos]; }
 };
 

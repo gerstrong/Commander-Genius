@@ -23,7 +23,7 @@ CGameControl::CGameControl() {
 	m_ChosenGame = 0;
 	m_Numplayers = 0;
 	m_endgame = false;
-	
+
 	m_EGAGraphics = NULL;
 	m_Messages = NULL;
 	m_startLevel = 0;
@@ -39,20 +39,20 @@ bool CGameControl::init(int argc, char *argv[])
 	bool ok;
 	std::string argument;
 	argument = getArgument( argc, argv, "-game" );
-	
+
 	ok = init();
-	
+
 	if (!ok) return false;
-	
+
 	if(argument != "")
 	{
 		int chosengame;
 		chosengame = atoi(argument.c_str()+strlen("-game"))-1;
-		
-		if(chosengame < mp_GameLauncher->m_numGames)
+
+		if(chosengame >= 0 && chosengame < mp_GameLauncher->m_numGames)
 		{
 			mp_GameLauncher->setChosenGame(chosengame);
-			
+
 			// Now check, if a level was also passed as parameter
 			argument = getArgument( argc, argv, "-level" );
 			m_startLevel = atoi(argument.c_str()+strlen("-level"));
@@ -89,7 +89,7 @@ bool CGameControl::init(char mode)
         // Resources for the main menu
 		if(!loadResources(1, mp_GameLauncher->getEP1Directory(), LOADGFX ))	return false;
 		if(!mp_GameLauncher->drawMenu()) return false;
-		
+
 		return true;
 	}
 	else if(m_mode == PASSIVE)
@@ -109,7 +109,7 @@ bool CGameControl::init(char mode)
 	else if(m_mode == PLAYGAME)
 	{
 		if(m_startLevel == 0) m_startLevel = WORLD_MAP_LEVEL;
-		
+
 		mp_PlayGame = new CPlayGame(m_Episode, m_startLevel,
 									m_Numplayers, m_Difficulty,
 									m_DataDirectory, mp_option, m_show_finale);
@@ -124,44 +124,44 @@ bool CGameControl::loadResources(unsigned short Episode, const std::string& Data
 	CExeFile ExeFile(Episode, DataDirectory);
 	int version;
 	unsigned char *p_exedata;
-	
+
 	m_Episode = Episode;
 	m_DataDirectory = DataDirectory;
-	
+
 	// TODO: not very readable. Check if there is a function for handling that.
 	if( m_DataDirectory.size() > 0 && m_DataDirectory[m_DataDirectory.size()-1] != '/' )
 		m_DataDirectory += "/";
-	
+
     // Get the EXE of the game and decompress it if needed.
     if(!ExeFile.readData()) return false;
-	
+
     version = ExeFile.getEXEVersion();
 	p_exedata = ExeFile.getData();
-	
+
 	g_pLogFile->ftextOut("Commander Keen Episode %d (Version %d.%d) was detected.<br>", Episode, version/100, version%100);
 	if(version == 134) g_pLogFile->ftextOut("This version of the game is not supported!<br>");
-	
+
 	if(ExeFile.getData() == NULL) {
 		g_pLogFile->textOut(RED, "CGameControl::loadResources: Could not load data from the EXE File<br>");
 		return false;
 	}
-	
+
 	// Patch the EXE-File-Data directly in the memory.
 	{
 		CPatcher Patcher(Episode, version, p_exedata, DataDirectory);
 		Patcher.patchMemory();
 	}
-	
+
     if( (flags & LOADGFX) == LOADGFX )
     {
         // Decode the entire graphics for the game (EGALATCH, EGASPRIT, etc.)
         if(m_EGAGraphics) delete m_EGAGraphics; // except for the first start of a game this always happens
         m_EGAGraphics = new CEGAGraphics(Episode, DataDirectory ); // Path is relative to the data dir
 		if(!m_EGAGraphics) return false;
-		
+
 		m_EGAGraphics->loadData( version, p_exedata );
     }
-	
+
     if( (flags & LOADSTR) == LOADSTR )
     {
     	// load the strings. TODO: After that this one will replace loadstrings
@@ -170,7 +170,7 @@ bool CGameControl::loadResources(unsigned short Episode, const std::string& Data
     	delete m_Messages;	m_Messages = NULL;
         //loadstrings();
     }
-	
+
     if( (flags & LOADSND) == LOADSND )
     {
         // Load the sound data
@@ -202,7 +202,7 @@ void CGameControl::process()
 
 			// We have to check which Episode is used
 			m_Episode = mp_GameLauncher->getEpisode( m_ChosenGame );
-			
+
 			if( m_Episode > 0 ) // The game has to have a valid episode!
 			{
 				// Load the Resources
@@ -281,7 +281,7 @@ void CGameControl::process()
 	{
 		// The player is playing the game. It also includes scenes like ending
 		mp_PlayGame->process();
-		
+
 		if( mp_PlayGame->getEndGame() )
 		{
 			m_startLevel = 0;

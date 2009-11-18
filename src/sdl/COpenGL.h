@@ -12,21 +12,21 @@
 #ifndef __CG_COPENGL_H__
 #define __CG_COPENGL_H__
 
-#include <SDL.h>
-#include <SDL_opengl.h>
+#include <SDL/SDL.h>
+#include <SDL/SDL_opengl.h>
 #include "../scale2x/scalebit.h"
 
 class COpenGL {
 public:
 	COpenGL();
 	virtual ~COpenGL();
-	
+
 	void render(void);
 	bool initGL(float Width, float Height, unsigned char Depth,
 				GLint oglfilter, unsigned char scalex, bool aspect);
-	
+
 	void setSurface(SDL_Surface *blitsurface);
-	
+
 private:
 	SDL_Surface	*m_blitsurface;
 	char*		m_opengl_buffer;	// Used for internal ScaleX filtering

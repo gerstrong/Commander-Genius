@@ -8,7 +8,7 @@
 #ifndef CSOUNDCHANNEL_H_
 #define CSOUNDCHANNEL_H_
 
-#include <SDL.h>
+#include <SDL/SDL.h>
 #include "CSoundSlot.h"
 
 // 8 bit sound
@@ -36,7 +36,7 @@ class CSoundChannel {
 public:
 	CSoundChannel();
 	virtual ~CSoundChannel();
-	
+
 	void stopSound(void);
 	bool isPlaying() { return m_sound_playing; }
 	bool isForcedPlaying() { return (m_sound_playing && m_sound_forced); }
@@ -45,12 +45,12 @@ public:
 	void generateWaveform8(Uint8 *waveform, unsigned int len, int frequency, bool stereo);
 	void generateWaveform16(Uint8 *waveform, unsigned int len, int frequency, bool stereo);
 	void transintoStereoChannels(Uint8* waveform, unsigned int len);
-	
+
 	short getBalance() { return m_balance; }
 	void setBalance(short value) { m_balance = value; }
 	void setFrequencyCorrection(int freq);
 	void enableHighQuality(bool value) { m_hq = value; }
-	
+
 	void setFormat( Uint16 format );
 	void setupSound(unsigned short current_sound,
 					unsigned int sound_timer,
@@ -58,9 +58,9 @@ public:
 					unsigned int freqtimer,
 					bool sound_forced,
 					Uint16 format);
-	
+
 	void setSoundSlotPtr(CSoundSlot	*pSoundSlot) { m_pSoundSlot = pSoundSlot;}
-	
+
 private:
     bool m_sound_playing;           	// true = a sound is currently playing
     bool m_hq;					   		// true = the sound is high quality
@@ -69,20 +69,20 @@ private:
     unsigned int m_sound_timer;     	// used to slow down the rate of playback
 	bool m_sound_paused;             	// true = pause playback
     bool m_sound_forced;
-	
+
     unsigned int m_desiredfreq;     	// current desired frequency in hz
     unsigned int m_changerate;      	// frequency in samples (calculated)
     unsigned int m_freqtimer;       	// time when to change waveform state
     Sint32 m_waveState;                	// current position of the output waveform
     short m_balance;					// This variable is used for stereo sound, and to calculate where the sound must be played!
     unsigned int m_freq_corr;				// used for correcting PC-Speaker sampling for different frequencies
-	
+
     Uint16 m_format;
     Sint32 m_waveout;
     Sint32 m_wavein;
     Sint32 m_silence;
     Sint32 m_volume;
-	
+
     CSoundSlot	*m_pSoundSlot;			// Pointer to the Soundslots of CSound
 };
 

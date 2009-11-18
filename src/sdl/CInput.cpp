@@ -5,7 +5,7 @@
  *      Author: gerstrong
  */
 
-#include <SDL.h>
+#include <SDL/SDL.h>
 #include <stdio.h>
 
 #include "CInput.h"
@@ -35,20 +35,20 @@ CInput::~CInput() {
 
 void CInput::resetControls() {
 	int i;
-	
+
 	m_exit = false;
 	m_cmdpulse = 0;
 	m_joydeadzone = 16384;
-	
+
 	memset(immediate_keytable,false,KEYTABLE_SIZE);
 	memset(last_immediate_keytable,false,KEYTABLE_SIZE);
-	
+
 	for(i=0 ; i<NUMBER_OF_COMMANDS ; i++)
 	{
 		for(int player=0 ; player<NUM_INPUTS ; player++)
 			InputCommand[player][i].active = false;
 	}
-	
+
 	for(i=0 ; i<NUM_INPUTS ; i++)
 	{
 		// These are the default keyboard commands
@@ -56,15 +56,15 @@ void CInput::resetControls() {
 		InputCommand[i][IC_UP].keysym = SDLK_UP;
 		InputCommand[i][IC_RIGHT].keysym = SDLK_RIGHT;
 		InputCommand[i][IC_DOWN].keysym = SDLK_DOWN;
-		
+
 		InputCommand[i][IC_JUMP].keysym = SDLK_LCTRL;
 		InputCommand[i][IC_POGO].keysym = SDLK_LALT;
 		InputCommand[i][IC_FIRE].keysym = SDLK_SPACE;
 		InputCommand[i][IC_STATUS].keysym = SDLK_RETURN;
-		
+
 		InputCommand[i][IC_HELP].keysym = SDLK_F1;
 		InputCommand[i][IC_QUIT].keysym = SDLK_ESCAPE;
-		
+
 		// And those are the default joystick handlings
 		InputCommand[i][IC_LEFT].joyeventtype = ETYPE_JOYAXIS;
 		InputCommand[i][IC_LEFT].joyaxis = 0;
@@ -82,7 +82,7 @@ void CInput::resetControls() {
 		InputCommand[i][IC_DOWN].joyaxis = 1;
 		InputCommand[i][IC_DOWN].joyvalue = 32767;
 		InputCommand[i][IC_DOWN].which = 0;
-		
+
 		InputCommand[i][IC_JUMP].joyeventtype = ETYPE_JOYBUTTON;
 		InputCommand[i][IC_JUMP].joybutton = 0;
 		InputCommand[i][IC_JUMP].which = 0;
@@ -107,7 +107,7 @@ void CInput::resetControls() {
 bool CInput::startJoyDriver()
 {
 	g_pLogFile->textOut("JoyDrv_Start() : ");
-	
+
 	if (SDL_Init( SDL_INIT_JOYSTICK ) < 0)
 	{
 		g_pLogFile->ftextOut("JoyDrv_Start() : Couldn't initialize SDL: %s<br>", SDL_GetError());
@@ -125,7 +125,7 @@ bool CInput::startJoyDriver()
 			else
 				g_pLogFile->ftextOut("%i joysticks were found.<br>\n", joynum );
 			g_pLogFile->textOut("The names of the joysticks are:<br>");
-			
+
 			for( i=0; i < SDL_NumJoysticks(); i++ )
 			{
 				g_pLogFile->ftextOut("    %s<br>", SDL_JoystickName(i));
@@ -136,10 +136,10 @@ bool CInput::startJoyDriver()
 			g_pLogFile->ftextOut("No joysticks were found.<br>\n");
 		}
 	}
-	
+
 	SDL_JoystickEventState(SDL_ENABLE);
 	mp_Joystick = SDL_JoystickOpen(0);
-	
+
 	return 0;
 }
 
@@ -168,7 +168,7 @@ short CInput::saveControlconfig(void)
 		fclose(fp);
 		return 0;
 	}
-	
+
 	return 1;
 }
 void CInput::getEventName(int position, unsigned char input, std::string &buf)
@@ -230,11 +230,11 @@ void CInput::pollEvents()
 {
 	// copy all the input of the last poll to a space for checking pressing or holding a button
 	memcpy(last_immediate_keytable, immediate_keytable, KEYTABLE_SIZE*sizeof(char));
-	
+
 	for(int i=0 ; i<NUMBER_OF_COMMANDS ; i++)
 		for(int j=0 ; j<NUM_INPUTS ; j++)
 			InputCommand[j][i].lastactive = InputCommand[j][i].active;
-	
+
 	//While there's an event to handle
 	while( SDL_PollEvent( &Event ) )
 	{
@@ -261,7 +261,7 @@ void CInput::pollEvents()
 				break;
 		}
 	}
-	
+
 	// Check, if LALT+ENTER was pressed
 	if((getHoldedKey(KALT)) && getPressedKey(KENTER))
 	{
@@ -270,7 +270,7 @@ void CInput::pollEvents()
 		value = !value;
 		g_pLogFile->textOut(GREEN,"Fullscreen mode triggered by user!<br>");
 		g_pVideoDriver->isFullscreen(value);
-		
+
 		// initialize/activate all drivers
 		g_pLogFile->ftextOut("Restarting graphics driver...<br>");
 		if (!g_pVideoDriver->applyMode())
@@ -281,20 +281,20 @@ void CInput::pollEvents()
 		}
 		else
 			g_pVideoDriver->initOpenGL();
-		
-		
+
+
 		if(value) g_pVideoDriver->AddConsoleMsg("Fullscreen enabled");
 		else g_pVideoDriver->AddConsoleMsg("Fullscreen disabled");
 	}
-	
+
 	// Check, if LALT+Q or LALT+F4 was pressed
 	if(getHoldedKey(KALT) && (getPressedKey(KF4) || getPressedKey(KQ)) )
 	{
 		g_pLogFile->textOut("User exit request!");
 		m_exit = true;
 	}
-	
-	
+
+
 #ifdef WIZGP2X
 	WIZ_AdjustVolume( volume_direction );
 #endif
@@ -366,7 +366,7 @@ void CInput::processKeys(int value)
 			}
 		}
 	}
-	
+
     switch(Event.key.keysym.sym)
 	{
 			// These are only used for ingame stuff or menu, but not for controlling the player anymore
@@ -374,12 +374,12 @@ void CInput::processKeys(int value)
 		case SDLK_UP:	immediate_keytable[KUP]		= value;  break;
 		case SDLK_RIGHT:	immediate_keytable[KRIGHT]	= value;  break;
 		case SDLK_DOWN:	immediate_keytable[KDOWN]	= value;  break;
-			
+
 			// Page Keys
 		case SDLK_PAGEUP:	immediate_keytable[KPGUP]	= value;  break;
 		case SDLK_PAGEDOWN:	immediate_keytable[KPGDN]		= value;  break;
-			
-			
+
+
 		case SDLK_RETURN:immediate_keytable[KENTER]	= value;  break;
 		case SDLK_RCTRL:immediate_keytable[KCTRL]	= value;  break;
 		case SDLK_LCTRL:immediate_keytable[KCTRL]	= value;  break;
@@ -390,9 +390,9 @@ void CInput::processKeys(int value)
 		case SDLK_LSHIFT:immediate_keytable[KSHIFT]	= value;  break;
 		case SDLK_RSHIFT:immediate_keytable[KSHIFT]	= value;  break;
 		case SDLK_ESCAPE:immediate_keytable[KQUIT]	= value;  break;
-			
+
 		case SDLK_BACKSPACE:immediate_keytable[KBCKSPCE] = value; break;
-			
+
 		case SDLK_a:immediate_keytable[KA]	= value;  break;
 		case SDLK_b:immediate_keytable[KB]	= value;  break;
 		case SDLK_c:immediate_keytable[KC]	= value;  break;
@@ -419,7 +419,7 @@ void CInput::processKeys(int value)
 		case SDLK_x:immediate_keytable[KX]	= value;  break;
 		case SDLK_y:immediate_keytable[KY]	= value;  break;
 		case SDLK_z:immediate_keytable[KZ]	= value;  break;
-			
+
 		case SDLK_F1:immediate_keytable[KF1]	= value;  break;
 		case SDLK_F2:immediate_keytable[KF2]	= value;  break;
 		case SDLK_F3:immediate_keytable[KF3]	= value;  break;
@@ -430,7 +430,7 @@ void CInput::processKeys(int value)
 		case SDLK_F8:immediate_keytable[KF8]	= value;  break;
 		case SDLK_F9:immediate_keytable[KF9]	= value;  break;
 		case SDLK_F10:immediate_keytable[KF10]	= value;  break;
-			
+
 		case SDLK_1:immediate_keytable[KNUM1] = value;  break;
 		case SDLK_2:immediate_keytable[KNUM2] = value;  break;
 		case SDLK_3:immediate_keytable[KNUM3] = value;  break;
@@ -440,7 +440,7 @@ void CInput::processKeys(int value)
 		case SDLK_7:immediate_keytable[KNUM7] = value;  break;
 		case SDLK_8:immediate_keytable[KNUM8] = value;  break;
 		case SDLK_9:immediate_keytable[KNUM9] = value;  break;
-			
+
 		default: break;
 	}
 }
@@ -449,7 +449,7 @@ bool CInput::getHoldedKey(int key)
 {
 	if(immediate_keytable[key])
 		return true;
-	
+
 	return false;
 }
 
@@ -461,14 +461,14 @@ bool CInput::getPressedKey(int key)
 		g_pLogFile->textOut(RED, itoa(key)+" is true.");
 		return true;
 	}
-	
+
 	return false;
 }
 
 bool CInput::getPressedAnyKey(void)
 {
 	int i;
-	
+
 	for(i=0 ; i<KEYTABLE_SIZE ; i++)
 	{
 		if(getPressedKey(i))
@@ -507,7 +507,7 @@ bool CInput::getPressedCommand(int player, int command)
 		InputCommand[player][command].active = false;
 		return true;
 	}
-	
+
 	return false;
 }
 
@@ -524,7 +524,7 @@ bool CInput::getPulsedCommand(int player, int command, int msec)
 	if(InputCommand[player][command].active)
 	{
 		bool value = true;
-		
+
 		if(m_cmdpulse % msec != 0)
 		{
 			value = false;
@@ -534,7 +534,7 @@ bool CInput::getPulsedCommand(int player, int command, int msec)
 	}
 	if(!InputCommand[player][command].active && InputCommand[player][command].lastactive )
 		m_cmdpulse = 0;
-	
+
 	return false;
 }
 
@@ -549,11 +549,11 @@ bool CInput::getPressedAnyCommand()
 bool CInput::getPressedAnyCommand(int player)
 {
 	int i;
-	
+
 	for(i=0 ; i<10 ; i++)
 		if(getPressedCommand(player,i))
 			return true;
-	
+
 	return false;
 }
 
@@ -575,15 +575,15 @@ void CInput::flushAll(void){ flushKeys(); flushCommands(); }
 void CInput::WIZ_EmuKeyboard( int button, int value )
 {
 	SDL_Event fakeevent1, fakeevent2;
-	
+
 	//printf( "Button %d Value %d\n", button, value );
-	
+
 	if( value == 1 ) {
 		fakeevent1.type			= SDL_KEYDOWN;
 		fakeevent1.key.state		= SDL_PRESSED;
 		fakeevent1.key.type		= SDL_KEYDOWN;
 		fakeevent1.key.keysym.mod		= KMOD_NONE;
-		
+
 		fakeevent2.type			= SDL_KEYDOWN;
 		fakeevent2.key.state		= SDL_PRESSED;
 		fakeevent2.key.type		= SDL_KEYDOWN;
@@ -594,13 +594,13 @@ void CInput::WIZ_EmuKeyboard( int button, int value )
 		fakeevent1.key.state		= SDL_RELEASED;
 		fakeevent1.key.type		= SDL_KEYUP;
 		fakeevent1.key.keysym.mod		= KMOD_NONE;
-		
+
 		fakeevent2.type			= SDL_KEYUP;
 		fakeevent2.key.state		= SDL_RELEASED;
 		fakeevent2.key.type		= SDL_KEYUP;
 		fakeevent2.key.keysym.mod		= KMOD_NONE;
 	}
-	
+
 	//printf( "Button %d %d\n", button, value );
 	fakeevent1.key.keysym.sym = SDLK_UNKNOWN;
 	fakeevent2.key.keysym.sym = SDLK_UNKNOWN;
@@ -658,12 +658,12 @@ void CInput::WIZ_EmuKeyboard( int button, int value )
 				volume_direction = VOLUME_NOCHG;
 			break;
 	}
-	
+
 	if( fakeevent1.key.keysym.sym != SDLK_UNKNOWN )
 	{
 		SDL_PushEvent (&fakeevent1);
 	}
-	
+
 	if( fakeevent2.key.keysym.sym != SDLK_UNKNOWN )
 	{
 		SDL_PushEvent (&fakeevent2);
@@ -684,12 +684,12 @@ void CInput::WIZ_AdjustVolume( int direction )
 			if( direction == VOLUME_UP )   volume += VOLUME_CHANGE_RATE;
 			if( direction == VOLUME_DOWN ) volume -= VOLUME_CHANGE_RATE;
 		}
-		
+
 		if( volume < VOLUME_MIN ) volume = VOLUME_MIN;
 		if( volume > VOLUME_MAX ) volume = VOLUME_MAX;
-		
+
 		printf( "Volume Change: %i\n", volume );
-		
+
 		unsigned long soundDev = open("/dev/mixer", O_RDWR);
 		if(soundDev)
 		{
