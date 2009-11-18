@@ -128,7 +128,7 @@ void CTilemap::unregisterAnimtiles(int tile)
 // register the tiles which has to be animated
 void CTilemap::registerAnimation(Uint32 x, Uint32 y, int c)
 {
-	// we just drew over an animated tile which we must unregisterp
+	// we just drew over an animated tile which we must unregister
     if (m_AnimTileInUse[x>>4][y>>4])
     {
 		m_animtiles[m_AnimTileInUse[x>>4][y>>4]].slotinuse = 0;

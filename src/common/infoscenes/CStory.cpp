@@ -25,8 +25,8 @@ CStory::CStory(std::string &DataDirectory, char &episode)
 	readStoryText(&c_text, episode, DataDirectory);
 	Text = c_text;
 	Maploader.load(episode, 90, DataDirectory);
-	mp_Map->gotoPos(500,0); // Coords of the story background
-	mp_Map->drawAll();
+	//mp_Map->gotoPos(500,0); // Coords of the story background
+	//mp_Map->drawAll();
 
 	// Create the Text ViewerBox and stores the text there!
 	mp_TextViewer = new CTextViewer(g_pVideoDriver->FGLayerSurface, 0, 0, 320, 160);
@@ -40,6 +40,7 @@ void CStory::process() {
 
 	// NOTE: Animation and blit are performed here too, because the story plane is drawn over the other
 	// map that is open. That is intention!
+	//mp_Map->drawAll();
 
 	mp_TextViewer->process();
 
