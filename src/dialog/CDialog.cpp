@@ -97,8 +97,14 @@ void CDialog::addObject(Uint8 type, Uint16 x, Uint16 y,const std::string text)
 
 void CDialog::setObjectText(Uint8 ID, const std::string &text)
 {
-	if( m_dlgobject[ID]->m_type == DLG_OBJ_OPTION_TEXT )
-		m_dlgobject[ID]->change( text, m_w-((m_dlgobject[ID]->m_x-m_x)/8)-5 );
+	Uint8 type = m_dlgobject[ID]->m_type;
+		m_dlgobject[ID]->change( m_w-((m_dlgobject[ID]->m_x-m_x)/8)-5, text, type );
+}
+
+void CDialog::setObjectType(Uint8 ID, Uint8 type)
+{
+	std::string text = m_dlgobject[ID]->m_OptionText->m_text;
+		m_dlgobject[ID]->change( m_w-((m_dlgobject[ID]->m_x-m_x)/8)-5, text, type );
 }
 
 ///
@@ -116,26 +122,26 @@ void CDialog::processInput()
 	if( m_key == 't' )
 	{
 		// This cycle will wait for the input of name and hit of enter
-		std::string name = m_dlgobject.at(m_selected_ID)->m_OptionText->m_text;
+		m_name = m_dlgobject.at(m_selected_ID)->m_OptionText->m_text;
 		
-		if(name.substr(name.length()-1) == "|")
+		if(m_name.substr(m_name.length()-1) == "|")
 		{
-			name = m_dlgobject.at(m_selected_ID)->m_OptionText->m_text;
-			name.erase(name.length()-1);
+			m_name = m_dlgobject.at(m_selected_ID)->m_OptionText->m_text;
+			m_name.erase(m_name.length()-1);
 		}
-		else if(name == "     EMPTY       ")
+		else if(m_name == "     EMPTY       ")
 		{
-			name = "";
+			m_name = "";
 		}
 		// Get the input
-		if(g_pInput->getPressedIsTypingKey() && (name.length() < 15))
+		if(g_pInput->getPressedIsTypingKey() && (m_name.length() < 15))
 		{
-			name.append(g_pInput->getPressedTypingKey());
+			m_name.append(g_pInput->getPressedTypingKey());
 		}
 		
-		if(g_pInput->getPulsedKey(KBCKSPCE, 5) && (name.length() > 0))
+		if(g_pInput->getPulsedKey(KBCKSPCE, 5) && (m_name.length() > 0))
 		{
-			name.erase(name.length()-1);
+			m_name.erase(m_name.length()-1);
 		}
 		
 		if( m_blinkctr >= 30 )
@@ -146,11 +152,11 @@ void CDialog::processInput()
 		else m_blinkctr++;
 		
 		if(m_blink)
-			setObjectText(m_selected_ID, name + "|");
-		else if(name == "")
+			setObjectText(m_selected_ID, m_name + "|");
+		else if(m_name == "")
 			setObjectText(m_selected_ID, "|");
 		else
-			setObjectText(m_selected_ID, name);
+			setObjectText(m_selected_ID, m_name);
 	}
 	else
 	{

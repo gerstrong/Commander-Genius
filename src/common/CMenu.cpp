@@ -70,6 +70,10 @@ bool CMenu::init( char menu_type )
 	{
 		initNumControlMenu();
 	}
+	else if( m_menu_type == CONTROLS)
+	{
+		initControlMenu();
+	}
 	else if( m_menu_type == F1)
 	{
 		initF1Menu();
@@ -160,6 +164,50 @@ void CMenu::initNumControlMenu()
 	}
 }
 
+void CMenu::initControlMenu()
+{
+	std::string buf;
+	std::string buf2;
+	int player = m_NumPlayers - 1;
+	mp_Dialog = new CDialog(mp_MenuSurface, 36, 14);
+	
+g_pInput->getEventName(IC_LEFT, player, buf2);
+ buf = "P1 Left:   " + buf2;
+ mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, buf);
+ 
+ g_pInput->getEventName(IC_UP, player, buf2);
+ buf = "P1 Up:     " + buf2;
+ mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, buf);
+ 
+	g_pInput->getEventName(IC_RIGHT, player, buf2);
+ buf = "P1 Right:  " + buf2;
+ mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, buf);
+ 
+ g_pInput->getEventName(IC_DOWN, player, buf2);
+ buf = "P1 Down:   " + buf2;
+ mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, buf);
+ 
+ g_pInput->getEventName(IC_JUMP, player, buf2);
+ buf = "P1 Jump:   " + buf2;
+ mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, buf);
+ 
+ g_pInput->getEventName(IC_POGO, player, buf2);
+ buf = "P1 Pogo:   " + buf2;
+ mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, buf);
+ 
+ g_pInput->getEventName(IC_FIRE, player, buf2);
+ buf = "P1 Fire:   " + buf2;
+ mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, buf);
+ 
+ g_pInput->getEventName(IC_STATUS, player, buf2);
+ buf = "P1 Status: " + buf2;
+ mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, buf);
+	
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 2, 9, "Reset Controls");
+ mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 11, "");
+ mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 12, "Return");
+}
+
 void CMenu::initF1Menu()
 {
 	mp_Dialog = new CDialog(mp_MenuSurface, 18, 7);
@@ -225,6 +273,7 @@ void CMenu::process()
 		else if( m_menu_type == DIFFICULTY ) processDifficultyMenu();
 		else if( m_menu_type == CONFIGURE ) processConfigureMenu();
 		else if( m_menu_type == CONTROLPLAYERS ) processNumControlMenu();
+		else if( m_menu_type == CONTROLS ) processControlMenu();
 		else if( m_menu_type == F1 ) processF1Menu();
 		else if( m_menu_type == QUIT ) processQuitMenu();
 		else if( m_menu_type == ENDGAME ) processEndGameMenu();
@@ -380,9 +429,11 @@ void CMenu::processNumControlMenu()
 {
 	if( m_selection != -1)
 	{
-		//cleanup();
+		cleanup();
 		if( m_selection < MAX_PLAYERS )
 		{
+			m_NumPlayers = m_selection + 1;	
+			init(CONTROLS);
 		}
 		else
 		{
@@ -396,6 +447,26 @@ void CMenu::processNumControlMenu()
 		init(CONFIGURE);
 	}
 	return;
+}
+
+void CMenu::processControlMenu()
+{
+	if( m_selection != -1)
+	{
+		if( m_selection < 9 )
+		{
+		mp_Dialog->setObjectText(9, "Save and Return");
+		mp_Dialog->setObjectType(9, DLG_OBJ_OPTION_TEXT);
+		mp_Dialog->setObjectText(10, "Cancel");
+		}
+	}
+	
+	if(m_goback)
+	{
+		cleanup();
+		m_NumPlayers = 0;
+		init(CONTROLPLAYERS);
+	}
 }
 
 void CMenu::processF1Menu()
@@ -490,6 +561,10 @@ void CMenu::processSaveMenu()
 		else if (mp_Dialog->m_key = 't')
 		{
 			mp_Dialog->m_key = 'u';
+			if(mp_Dialog->m_name == "")
+				mp_Dialog->setObjectText(m_selection, "Untitled");
+			else
+				mp_Dialog->setObjectText(m_selection, mp_Dialog->m_name);
 			m_selection = -1;
 		}
 

@@ -21,6 +21,7 @@ public:
 	void setFrameTheme( Uint8 theme );
 	void addObject( Uint8 type, Uint16 x, Uint16 y,const std::string text="" );
 	void setObjectText( Uint8 ID, const std::string &text );
+	void setObjectType( Uint8 ID, Uint8 type );
 	void setSDLSurface( SDL_Surface* Surface ) { m_DialogSurface = Surface; }
 
 	int getSelection();
@@ -30,6 +31,7 @@ public:
 	void drawTwirl();
 
 	char m_key;
+	std::string m_name;
 	
 private:
 	Uint16 m_x;

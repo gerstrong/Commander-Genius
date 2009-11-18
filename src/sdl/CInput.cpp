@@ -475,36 +475,28 @@ void CInput::processKeys(int value)
 	
 	if(getHoldedKey(KSHIFT))
 	   {
+		   if(getPressedKey(KBACKQUOTE)) immediate_keytable[KTILDE] = value;
+		    if(getPressedKey(KNUM1)) immediate_keytable[KEXCLAIM] = value;
+		    if(getPressedKey(KNUM2)) immediate_keytable[KAT] = value;
+		    if(getPressedKey(KNUM3)) immediate_keytable[KHASH] = value;
+		    if(getPressedKey(KNUM4)) immediate_keytable[KDOLLAR] = value;
 		   if(getPressedKey(KNUM5)) immediate_keytable[KPERCENT] = value;
+		    if(getPressedKey(KNUM6)) immediate_keytable[KCARET] = value;
+		    if(getPressedKey(KNUM7)) immediate_keytable[KAMPERSAND] = value;
+		    if(getPressedKey(KNUM8)) immediate_keytable[KAST] = value;
+		    if(getPressedKey(KNUM9)) immediate_keytable[KLEFTPAREN] = value;
+		    if(getPressedKey(KNUM0)) immediate_keytable[KRIGHTPAREN] = value;
+		    if(getPressedKey(KMINUS)) immediate_keytable[KUNDERSCORE] = value;
+		    if(getPressedKey(KEQUAL)) immediate_keytable[KPLUS] = value;
+		   //if(getPressedKey(KBACKSLASH)) immediate_keytable[KLINE] = value;
+		    if(getPressedKey(KLEFTBRACKET)) immediate_keytable[KLEFTBRACE] = value;
+		    if(getPressedKey(KRIGHTBRACKET)) immediate_keytable[KRIGHTBRACE] = value;
+		    if(getPressedKey(KSEMICOLON)) immediate_keytable[KCOLON] = value;
+		    if(getPressedKey(KQUOTE)) immediate_keytable[KDBLQUOTE] = value;
+		    if(getPressedKey(KCOMMA)) immediate_keytable[KLESS] = value;
+		    if(getPressedKey(KPERIOD)) immediate_keytable[KGREATER] = value;
+		    if(getPressedKey(KSLASH)) immediate_keytable[KQUESTION] = value;
 	   }
-	
-		/*case SDLK_LSHIFT & SDLK_LEFTBRACKET:immediate_keytable[KLEFTBRACE] = value; break;
-		case SDLK_LSHIFT & SDLK_BACKSLASH:immediate_keytable[KLINE] = value; break;
-		case SDLK_LSHIFT & SDLK_RIGHTBRACKET:immediate_keytable[KRIGHTBRACE] = value; break;
-		case SDLK_LSHIFT & SDLK_BACKQUOTE:immediate_keytable[KTILDE] = value; break;
-			
-		case SDLK_RSHIFT & SDLK_LEFTBRACKET:immediate_keytable[KLEFTBRACE] = value; break;
-		case SDLK_RSHIFT & SDLK_BACKSLASH:immediate_keytable[KLINE] = value; break;
-		case SDLK_RSHIFT & SDLK_RIGHTBRACKET:immediate_keytable[KRIGHTBRACE] = value; break;
-		case SDLK_RSHIFT & SDLK_BACKQUOTE:immediate_keytable[KTILDE] = value; break;
-		 
-		case SDLK_EXCLAIM:immediate_keytable[KEXCLAIM]	= value;  break;
-		case SDLK_QUOTEDBL:immediate_keytable[KDBLQUOTE]	= value;  break;
-		case SDLK_HASH:immediate_keytable[KHASH]	= value;  break;
-		case SDLK_DOLLAR:immediate_keytable[KDOLLAR]	= value;  break;
-		case SDLK_AMPERSAND:immediate_keytable[KAMPERSAND]	= value;  break;
-		case SDLK_ASTERISK:immediate_keytable[KAST]	= value;  break;
-		case SDLK_LEFTPAREN:immediate_keytable[KLEFTPAREN]	= value;  break;
-		case SDLK_RIGHTPAREN:immediate_keytable[KRIGHTPAREN]	= value;  break;
-		case SDLK_COLON:immediate_keytable[KCOLON]	= value;  break;
-		case SDLK_LESS:immediate_keytable[KLESS]	= value;  break;
-		case SDLK_GREATER:immediate_keytable[KGREATER]	= value;  break;
-		case SDLK_QUESTION:immediate_keytable[KQUESTION]	= value;  break;
-		case SDLK_AT:immediate_keytable[KAT]	= value;  break;
-		case SDLK_CARET:immediate_keytable[KCARET]	= value;  break;
-		case SDLK_UNDERSCORE:immediate_keytable[KUNDERSCORE]	= value;  break;
-		case SDLK_UNDERSCORE:immediate_keytable[KMINUS]	= value;  break;
-		case SDLK_UNDERSCORE:immediate_keytable[KPLUS]	= value;  break;*/
 }
 
 bool CInput::getHoldedKey(int key)

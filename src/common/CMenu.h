@@ -64,6 +64,7 @@ public:
 	void processDifficultyMenu();
 	void processConfigureMenu();
 	void processNumControlMenu();
+	void processControlMenu();
 	void processF1Menu();
 	void processEndGameMenu();
 	void processSaveMenu();
@@ -92,6 +93,7 @@ private:
 	void initConfigureMenu();
 	void initSaveMenu();
 	void initNumControlMenu();
+	void initControlMenu();
 	void initF1Menu();
 	
 	CDialog *mp_Dialog;

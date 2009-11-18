@@ -28,7 +28,7 @@ public:
 	virtual ~CDlgObject();
 	
 	void create(Uint8 type, Uint16 ID, Uint16 x, Uint16 y, const std::string &text, unsigned int delimiter);
-	void change(const std::string &text, unsigned int delimiter);
+	void change(unsigned int delimiter, const std::string &text, Uint8 type);
 	
 	void render(SDL_Surface *dst, Uint8 scrollamt, Uint8 highlight);
 	

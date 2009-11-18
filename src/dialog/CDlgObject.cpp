@@ -43,8 +43,9 @@ void CDlgObject::create(Uint8 type, Uint16 ID, Uint16 x, Uint16 y, const std::st
 	}
 }
 
-void CDlgObject::change(const std::string &text, unsigned int delimiter)
+void CDlgObject::change(unsigned int delimiter, const std::string &text, Uint8 type)
 {
+	m_type = type;
 	if( m_type == DLG_OBJ_OPTION_TEXT || m_type == DLG_OBJ_DISABLED || m_type == DLG_OBJ_TEXT )
 	{
 		m_selectable = (m_type == DLG_OBJ_OPTION_TEXT) ? true : false;
