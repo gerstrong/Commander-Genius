@@ -212,6 +212,8 @@ void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uin
 {
 	unsigned int i,x=xoff,y=yoff;
 	
+	if(text.size() != 0)
+	{
 	for(i=0;i<text.size();i++)
 	{
 	    unsigned char c = text[i];
@@ -234,5 +236,6 @@ void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uin
 			x=xoff;
 			y+=8;
 	    }
+	}
 	}
 }

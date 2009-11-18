@@ -40,7 +40,7 @@ public:
 		CONTROLPLAYERS, STORY,
 		HIGHSCORES, ABOUTCG,
 		ABOUTID, ORDERING,
-		LOAD, START,
+		LOAD, SAVE, START,
 		DIFFICULTY, CONFIGURE,
 		GRAPHICS, CONTROLS,
 		AUDIO, OPTIONS,
@@ -66,7 +66,7 @@ public:
 	void processNumControlMenu();
 	void processF1Menu();
 	void processEndGameMenu();
-	void showPage(const std::string& str_text, int textsize);
+	void processSaveMenu();
 	
 	void cleanup();
 	
@@ -90,6 +90,7 @@ private:
 	void initNumPlayersMenu();
 	void initDifficultyMenu();
 	void initConfigureMenu();
+	void initSaveMenu();
 	void initNumControlMenu();
 	void initF1Menu();
 	

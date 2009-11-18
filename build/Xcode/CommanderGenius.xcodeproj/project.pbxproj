@@ -185,6 +185,8 @@
 		638F025D10AC656A0083A97C /* CFinaleStaticScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 638F025910AC656A0083A97C /* CFinaleStaticScene.cpp */; };
 		638F025E10AC656A0083A97C /* CShipFlySys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 638F025B10AC656A0083A97C /* CShipFlySys.cpp */; };
 		638F026010AC65A30083A97C /* CMessagesPredefined.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 638F025F10AC65A30083A97C /* CMessagesPredefined.cpp */; };
+		63A4D2EA10B2F2FF00F353C0 /* CInfoScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63A4D2E610B2F2FF00F353C0 /* CInfoScene.cpp */; };
+		63A4D2EB10B2F2FF00F353C0 /* CStory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63A4D2E810B2F2FF00F353C0 /* CStory.cpp */; };
 		63AB8C2F107C62D0001EE22F /* cglogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63AB8C2E107C62D0001EE22F /* cglogo.icns */; };
 		63D4A702107FEB7C00E43500 /* 100.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6EF107FEB7C00E43500 /* 100.tga */; };
 		63D4A703107FEB7C00E43500 /* 1000.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6F0107FEB7C00E43500 /* 1000.tga */; };
@@ -662,6 +664,10 @@
 		638F025B10AC656A0083A97C /* CShipFlySys.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CShipFlySys.cpp; sourceTree = "<group>"; };
 		638F025C10AC656A0083A97C /* CShipFlySys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CShipFlySys.h; sourceTree = "<group>"; };
 		638F025F10AC65A30083A97C /* CMessagesPredefined.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMessagesPredefined.cpp; sourceTree = "<group>"; };
+		63A4D2E610B2F2FF00F353C0 /* CInfoScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CInfoScene.cpp; sourceTree = "<group>"; };
+		63A4D2E710B2F2FF00F353C0 /* CInfoScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CInfoScene.h; sourceTree = "<group>"; };
+		63A4D2E810B2F2FF00F353C0 /* CStory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CStory.cpp; sourceTree = "<group>"; };
+		63A4D2E910B2F2FF00F353C0 /* CStory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CStory.h; sourceTree = "<group>"; };
 		63AB8C2E107C62D0001EE22F /* cglogo.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = cglogo.icns; sourceTree = "<group>"; };
 		63BE59E1108501BF009C7293 /* CTeleporter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CTeleporter.cpp; path = vorticon/CTeleporter.cpp; sourceTree = "<group>"; };
 		63BE59E2108501BF009C7293 /* CTeleporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTeleporter.h; path = vorticon/CTeleporter.h; sourceTree = "<group>"; };
@@ -859,6 +865,7 @@
 				63CD0B771091F8FB00CB7B80 /* CPlayerItems.cpp */,
 				231FC34D1083642B00E7869E /* CPlayerLevel.cpp */,
 				231FC34E1083642B00E7869E /* CPlayerWM.cpp */,
+				63A4D2EC10B2F31800F353C0 /* infoscenes */,
 				63CA3A0610939A93007D209D /* objenums.h */,
 				63D34906108B648A0033C412 /* options.h */,
 				231FC34F1083642B00E7869E /* tga.cpp */,
@@ -1268,6 +1275,17 @@
 			path = EP1;
 			sourceTree = "<group>";
 		};
+		63A4D2EC10B2F31800F353C0 /* infoscenes */ = {
+			isa = PBXGroup;
+			children = (
+				63A4D2E610B2F2FF00F353C0 /* CInfoScene.cpp */,
+				63A4D2E710B2F2FF00F353C0 /* CInfoScene.h */,
+				63A4D2E810B2F2FF00F353C0 /* CStory.cpp */,
+				63A4D2E910B2F2FF00F353C0 /* CStory.h */,
+			);
+			path = infoscenes;
+			sourceTree = "<group>";
+		};
 		63D4A6ED107FEB7C00E43500 /* res */ = {
 			isa = PBXGroup;
 			children = (
@@ -1533,6 +1551,8 @@
 				638F025D10AC656A0083A97C /* CFinaleStaticScene.cpp in Sources */,
 				638F025E10AC656A0083A97C /* CShipFlySys.cpp in Sources */,
 				638F026010AC65A30083A97C /* CMessagesPredefined.cpp in Sources */,
+				63A4D2EA10B2F2FF00F353C0 /* CInfoScene.cpp in Sources */,
+				63A4D2EB10B2F2FF00F353C0 /* CStory.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

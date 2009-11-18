@@ -15,7 +15,7 @@
 class CDialog {
 public:
 	CDialog(SDL_Surface *DialogSurface, Uint16 w, Uint16 h);
-	CDialog(SDL_Surface *DialogSurface, Uint16 x, Uint16 y, Uint16 w, Uint16 h);
+	CDialog(SDL_Surface *DialogSurface, Uint16 x, Uint16 y, Uint16 w, Uint16 h, char key);
 	virtual ~CDialog();
 
 	void setFrameTheme( Uint8 theme );
@@ -25,10 +25,12 @@ public:
 
 	int getSelection();
 
-	void processInput(char key);
+	void processInput();
 	void draw();
 	void drawTwirl();
 
+	char m_key;
+	
 private:
 	Uint16 m_x;
 	Uint16 m_y;
@@ -39,7 +41,9 @@ private:
 	int m_dlg_size;
 	Uint8 m_switch;
 	Uint8 m_scroll;
-
+	int m_blinkctr;
+	bool m_blink;
+	
 	CDlgFrame *m_Frame;
 	Uint8 m_alpha;
 

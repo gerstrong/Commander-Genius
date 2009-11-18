@@ -24,6 +24,9 @@ CDialog::CDialog(SDL_Surface *DialogSurface, Uint16 w, Uint16 h)
 	m_twirl.frame = 0;
 	m_twirl.timer = 0;
 	
+	m_key = 'u';
+	m_blink = true;
+	m_blinkctr = 0;
 	m_selected_ID = 0;
 	m_switch = 0;
 	m_scroll = 0;
@@ -32,7 +35,7 @@ CDialog::CDialog(SDL_Surface *DialogSurface, Uint16 w, Uint16 h)
 	m_DialogSurface = DialogSurface;
 }
 
-CDialog::CDialog(SDL_Surface *DialogSurface, Uint16 x, Uint16 y, Uint16 w, Uint16 h)
+CDialog::CDialog(SDL_Surface *DialogSurface, Uint16 x, Uint16 y, Uint16 w, Uint16 h, char key)
 {
 	m_x = (300/2)-(w*4)+10+x;	m_y = (240/2)-(h*4)+y;
 	m_w = w;	m_h = h;
@@ -41,6 +44,9 @@ CDialog::CDialog(SDL_Surface *DialogSurface, Uint16 x, Uint16 y, Uint16 w, Uint1
 	m_twirl.frame = 0;
 	m_twirl.timer = 0;
 	
+	m_blink = true;
+	m_blinkctr = 0;
+	m_key = key;
 	m_selected_ID = 0;
 	m_switch = 0;
 	m_scroll = 0;
@@ -105,65 +111,46 @@ int CDialog::getSelection()
 ///
 // Process routine
 ///
-void CDialog::processInput(char key)
+void CDialog::processInput()
 {
-	if( key == 't' )
+	if( m_key == 't' )
 	{
 		// This cycle will wait for the input of name and hit of enter
-		bool blink = true;
-		int blinkctr = 0;
-		int i;
 		std::string name = m_dlgobject.at(m_selected_ID)->m_OptionText->m_text;
-		char* buf;
-
+		
 		if(name.substr(name.length()-1) == "|")
 		{
 			name = m_dlgobject.at(m_selected_ID)->m_OptionText->m_text;
 			name.erase(name.length()-1);
 		}
-		do
+		else if(name == "     EMPTY       ")
 		{
-			// Get the input
-			for(i=KA ; i<=KZ ; i++)
-			{
-				if (g_pInput->getHoldedKey(KSHIFT) && g_pInput->getPressedKey(i) && name.length() < 15)
-				{
-					sprintf(buf,"%d",'A' + i - KA);
-					g_pLogFile->textOut(RED, itoa(i));
-					name.append(buf);
-				}
-				else if(g_pInput->getPressedKey(i) && name.length() < 15)
-				{
-					sprintf(buf,"%d",'a' + i - KA);
-					g_pLogFile->textOut(RED, buf);
-					name.append(buf);
-				}
-
-			}
-			if(g_pInput->getPressedKey(KBCKSPCE) && (name.length() > 0))
-			{
-				name.erase(name.length()-1);
-			}
-
-			if(blink)
-				setObjectText(m_selected_ID, name + "|");
-			else
-				setObjectText(m_selected_ID, name);
-
-			blinkctr++; // The blinking cursor
-			if(blinkctr > 100)
-			{
-				blink = !blink;
-				blinkctr = 0;
-			}
-
-			//g_pLogFile->textOut(RED, name);
-			g_pInput->pollEvents();
-			draw();
-
-		}while(!g_pInput->getPressedKey(KENTER));
-		//setObjectText(m_selected_ID, name);
-		//}
+			name = "";
+		}
+		// Get the input
+		if(g_pInput->getPressedIsTypingKey() && (name.length() < 15))
+		{
+			name.append(g_pInput->getPressedTypingKey());
+		}
+		
+		if(g_pInput->getPulsedKey(KBCKSPCE, 5) && (name.length() > 0))
+		{
+			name.erase(name.length()-1);
+		}
+		
+		if( m_blinkctr >= 30 )
+		{
+			m_blink = !m_blink;
+			m_blinkctr = 0;
+		}
+		else m_blinkctr++;
+		
+		if(m_blink)
+			setObjectText(m_selected_ID, name + "|");
+		else if(name == "")
+			setObjectText(m_selected_ID, "|");
+		else
+			setObjectText(m_selected_ID, name);
 	}
 	else
 	{
@@ -174,7 +161,7 @@ void CDialog::processInput(char key)
 				m_selected_ID++;
 			}
 		}while(!m_dlgobject.at(m_selected_ID)->m_selectable);
-		if(g_pInput->getPulsedCommand((key == 'u') ? IC_DOWN : IC_RIGHT, 60))
+		if(g_pInput->getPulsedCommand((m_key == 'u') ? IC_DOWN : IC_RIGHT, 60))
 		{
 			do
 			{
@@ -202,7 +189,7 @@ void CDialog::processInput(char key)
 
 			}while(!m_dlgobject.at(m_selected_ID)->m_selectable);
 		}
-		else if(g_pInput->getPulsedCommand((key == 'u') ? IC_UP : IC_LEFT, 60))
+		else if(g_pInput->getPulsedCommand((m_key == 'u') ? IC_UP : IC_LEFT, 60))
 		{
 			do
 			{

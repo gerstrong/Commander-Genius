@@ -208,7 +208,7 @@ void CGameLauncher::process()
         m_mustquit = true;
 	
     // Process Menu Input
-    mp_LaunchMenu->processInput('u');
+    mp_LaunchMenu->processInput();
 	
     // Animate the tiles of the map
     g_pGfxEngine->Tilemap->animateAllTiles(g_pVideoDriver->ScrollSurface);

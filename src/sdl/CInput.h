@@ -22,48 +22,29 @@
 #define g_pInput	CInput::Get()
 
 // key defines, locations in keytable[]
-//#define KEYTABLE_SIZE            54
+//#define KEYTABLE_SIZE            160
 //#define KEYTABLE_REALKEYS_SIZE   49
 
 // TODO: Change this to enums
 enum keys{
-	KQUIT,
-	KLEFT,
-	KRIGHT,
-	KUP,
-	KDOWN,
-	KCTRL,           // simply, CTRL, mapped to JUMP or FIRE
-	KALT,            // simply, ALT, mapped to POGO or fire
-	KENTER,
-	KSPACE,
-	KF1,
-	KF2,
-	KF3,
-	KF4,
-	KF5,
-	KF6,
-	KF7,
-	KF8,
-	KF9,
-	KF10,
-	
-	KLEFT2,
-	KRIGHT2,
-	KUP2,
-	KDOWN2,
-	KCTRL2,
-	KALT2,
-	
-	KLEFT3,
-	KRIGHT3,
-	KUP3,
-	KDOWN3,
-	KCTRL3,
-	KALT3,
-	
+	// Ascii keys
+	KSPACE = 32,
+	KEXCLAIM,
+	KDBLQUOTE,
+	KHASH,
+	KDOLLAR,
+	KPERCENT,
+	KAMPERSAND,
+	KQUOTE,
+	KLEFTPAREN,
+	KRIGHTPAREN,
+	KAST,
 	KPLUS,
+	KCOMMA,
 	KMINUS,
-	
+	KPERIOD,
+	KSLASH,
+	KNUM0,
 	KNUM1,
 	KNUM2,
 	KNUM3,
@@ -73,12 +54,19 @@ enum keys{
 	KNUM7,
 	KNUM8,
 	KNUM9,
-	
-	KTAB,
-	
-	KBCKSPCE,
-	
-	// New keys
+	KCOLON,
+	KSEMICOLON,
+	KLESS,
+	KEQUAL,
+	KGREATER,
+	KQUESTION,
+	KAT,
+	KLEFTBRACKET = 91,
+	KBACKSLASH,
+	KRIGHTBRACKET,
+	KCARET,
+	KUNDERSCORE,
+	KBACKQUOTE,
 	KA,
 	KB,
 	KC,
@@ -105,12 +93,41 @@ enum keys{
 	KX,
 	KY,
 	KZ,
+	KLEFTBRACE,
+	KLINE,
+	KRIGHTBRACE,
+	KTILDE,
+	
+	// Non Ascii Keys
 	KSHIFT,
 	KPGUP,
-	KPGDN
+	KPGDN,
+	
+	KQUIT,
+	KLEFT,
+	KRIGHT,
+	KUP,
+	KDOWN,
+	KCTRL,           // simply, CTRL, mapped to JUMP or FIRE
+	KALT,            // simply, ALT, mapped to POGO or fire
+	KENTER,
+	KF1,
+	KF2,
+	KF3,
+	KF4,
+	KF5,
+	KF6,
+	KF7,
+	KF8,
+	KF9,
+	KF10,
+	
+	KTAB,
+	
+	KBCKSPCE,
 };
 
-#define KEYTABLE_SIZE   90
+#define KEYTABLE_SIZE   160
 
 enum InputCommands{
 	IC_JUMP,
@@ -157,6 +174,9 @@ public:
 	
 	bool getHoldedKey(int key);
 	bool getPressedKey(int key);
+	bool getPulsedKey(int key, int msec);
+	bool getPressedIsTypingKey(void);
+	std::string getPressedTypingKey(void);
 	bool getPressedAnyKey(void);
 	void sendKey(int key);
 	

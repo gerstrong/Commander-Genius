@@ -379,7 +379,6 @@ void CInput::processKeys(int value)
 		case SDLK_PAGEUP:	immediate_keytable[KPGUP]	= value;  break;
 		case SDLK_PAGEDOWN:	immediate_keytable[KPGDN]		= value;  break;
 
-
 		case SDLK_RETURN:immediate_keytable[KENTER]	= value;  break;
 		case SDLK_RCTRL:immediate_keytable[KCTRL]	= value;  break;
 		case SDLK_LCTRL:immediate_keytable[KCTRL]	= value;  break;
@@ -393,6 +392,17 @@ void CInput::processKeys(int value)
 
 		case SDLK_BACKSPACE:immediate_keytable[KBCKSPCE] = value; break;
 
+		case SDLK_QUOTE:immediate_keytable[KQUOTE]	= value;  break;
+		case SDLK_COMMA:immediate_keytable[KCOMMA]	= value;  break;
+		case SDLK_PERIOD:immediate_keytable[KPERIOD]	= value;  break;
+		case SDLK_SLASH:immediate_keytable[KSLASH]	= value;  break;
+		case SDLK_SEMICOLON:immediate_keytable[KSEMICOLON]	= value;  break;
+		case SDLK_EQUALS:immediate_keytable[KEQUAL]	= value;  break;
+		case SDLK_LEFTBRACKET:immediate_keytable[KLEFTBRACKET]	= value;  break;
+		case SDLK_BACKSLASH:immediate_keytable[KBACKSLASH]	= value;  break;
+		case SDLK_RIGHTBRACKET:immediate_keytable[KRIGHTBRACKET]	= value;  break;
+		case SDLK_BACKQUOTE:immediate_keytable[KBACKQUOTE]	= value;  break;
+			
 		case SDLK_a:immediate_keytable[KA]	= value;  break;
 		case SDLK_b:immediate_keytable[KB]	= value;  break;
 		case SDLK_c:immediate_keytable[KC]	= value;  break;
@@ -431,6 +441,7 @@ void CInput::processKeys(int value)
 		case SDLK_F9:immediate_keytable[KF9]	= value;  break;
 		case SDLK_F10:immediate_keytable[KF10]	= value;  break;
 
+		case SDLK_0:immediate_keytable[KNUM0] = value;  break;
 		case SDLK_1:immediate_keytable[KNUM1] = value;  break;
 		case SDLK_2:immediate_keytable[KNUM2] = value;  break;
 		case SDLK_3:immediate_keytable[KNUM3] = value;  break;
@@ -441,8 +452,59 @@ void CInput::processKeys(int value)
 		case SDLK_8:immediate_keytable[KNUM8] = value;  break;
 		case SDLK_9:immediate_keytable[KNUM9] = value;  break;
 
+		case SDLK_EXCLAIM:immediate_keytable[KEXCLAIM]	= value;  break;
+		case SDLK_QUOTEDBL:immediate_keytable[KDBLQUOTE]	= value;  break;
+		case SDLK_HASH:immediate_keytable[KHASH]	= value;  break;
+		case SDLK_DOLLAR:immediate_keytable[KDOLLAR]	= value;  break;
+		case SDLK_AMPERSAND:immediate_keytable[KAMPERSAND]	= value;  break;
+		case SDLK_ASTERISK:immediate_keytable[KAST]	= value;  break;
+		case SDLK_LEFTPAREN:immediate_keytable[KLEFTPAREN]	= value;  break;
+		case SDLK_RIGHTPAREN:immediate_keytable[KRIGHTPAREN]	= value;  break;
+		case SDLK_COLON:immediate_keytable[KCOLON]	= value;  break;
+		case SDLK_LESS:immediate_keytable[KLESS]	= value;  break;
+		case SDLK_GREATER:immediate_keytable[KGREATER]	= value;  break;
+		case SDLK_QUESTION:immediate_keytable[KQUESTION]	= value;  break;
+		case SDLK_AT:immediate_keytable[KAT]	= value;  break;
+		case SDLK_CARET:immediate_keytable[KCARET]	= value;  break;
+		case SDLK_UNDERSCORE:immediate_keytable[KUNDERSCORE]	= value;  break;
+		case SDLK_MINUS:immediate_keytable[KMINUS]	= value;  break;
+		case SDLK_PLUS:immediate_keytable[KPLUS]	= value;  break;
+			
 		default: break;
 	}
+	
+	if(getHoldedKey(KSHIFT))
+	   {
+		   if(getPressedKey(KNUM5)) immediate_keytable[KPERCENT] = value;
+	   }
+	
+		/*case SDLK_LSHIFT & SDLK_LEFTBRACKET:immediate_keytable[KLEFTBRACE] = value; break;
+		case SDLK_LSHIFT & SDLK_BACKSLASH:immediate_keytable[KLINE] = value; break;
+		case SDLK_LSHIFT & SDLK_RIGHTBRACKET:immediate_keytable[KRIGHTBRACE] = value; break;
+		case SDLK_LSHIFT & SDLK_BACKQUOTE:immediate_keytable[KTILDE] = value; break;
+			
+		case SDLK_RSHIFT & SDLK_LEFTBRACKET:immediate_keytable[KLEFTBRACE] = value; break;
+		case SDLK_RSHIFT & SDLK_BACKSLASH:immediate_keytable[KLINE] = value; break;
+		case SDLK_RSHIFT & SDLK_RIGHTBRACKET:immediate_keytable[KRIGHTBRACE] = value; break;
+		case SDLK_RSHIFT & SDLK_BACKQUOTE:immediate_keytable[KTILDE] = value; break;
+		 
+		case SDLK_EXCLAIM:immediate_keytable[KEXCLAIM]	= value;  break;
+		case SDLK_QUOTEDBL:immediate_keytable[KDBLQUOTE]	= value;  break;
+		case SDLK_HASH:immediate_keytable[KHASH]	= value;  break;
+		case SDLK_DOLLAR:immediate_keytable[KDOLLAR]	= value;  break;
+		case SDLK_AMPERSAND:immediate_keytable[KAMPERSAND]	= value;  break;
+		case SDLK_ASTERISK:immediate_keytable[KAST]	= value;  break;
+		case SDLK_LEFTPAREN:immediate_keytable[KLEFTPAREN]	= value;  break;
+		case SDLK_RIGHTPAREN:immediate_keytable[KRIGHTPAREN]	= value;  break;
+		case SDLK_COLON:immediate_keytable[KCOLON]	= value;  break;
+		case SDLK_LESS:immediate_keytable[KLESS]	= value;  break;
+		case SDLK_GREATER:immediate_keytable[KGREATER]	= value;  break;
+		case SDLK_QUESTION:immediate_keytable[KQUESTION]	= value;  break;
+		case SDLK_AT:immediate_keytable[KAT]	= value;  break;
+		case SDLK_CARET:immediate_keytable[KCARET]	= value;  break;
+		case SDLK_UNDERSCORE:immediate_keytable[KUNDERSCORE]	= value;  break;
+		case SDLK_UNDERSCORE:immediate_keytable[KMINUS]	= value;  break;
+		case SDLK_UNDERSCORE:immediate_keytable[KPLUS]	= value;  break;*/
 }
 
 bool CInput::getHoldedKey(int key)
@@ -465,6 +527,99 @@ bool CInput::getPressedKey(int key)
 	return false;
 }
 
+bool CInput::getPulsedKey(int key, int msec)
+{
+	if(immediate_keytable[key])
+	{
+		bool value = true;
+		
+		if(m_cmdpulse % msec != 0)
+		{
+			value = false;
+		}
+		m_cmdpulse++;
+		return value;
+	}
+	if(!immediate_keytable[key] && last_immediate_keytable[key])
+		m_cmdpulse = 0;
+	
+	return false;
+}
+
+std::string CInput::getPressedTypingKey(void)
+{
+	int i;
+	std::string buf;
+	
+	for(i=KA ; i<=KZ ; i++)
+	{
+		if (getHoldedKey(KSHIFT) && getPressedKey(i))
+		{
+			buf = 'A' + i - KA;
+			g_pLogFile->textOut(RED, buf);
+			return buf;
+		}
+		else if(getPressedKey(i))
+		{
+			buf = 'a' + i - KA;
+			g_pLogFile->textOut(RED, buf);
+			return buf;
+		}
+	}
+	for(i=KSPACE ; i<=KAT ; i++)
+	{
+		if(getPressedKey(i))
+		{
+			buf = 32 + i - KSPACE;
+			g_pLogFile->textOut(RED, buf);
+			return buf;
+		}
+	}
+		for(i=KLEFTBRACKET ; i<=KBACKQUOTE ; i++)
+	{
+		if(getPressedKey(i))
+		{
+			buf = '[' + i - KLEFTBRACKET;
+			g_pLogFile->textOut(RED, buf);
+			return buf;
+		}
+	}
+		for(i=KLEFTBRACE ; i<=KTILDE ; i++)
+	{
+		if(getPressedKey(i))
+		{
+			buf = '{' + i - KLEFTBRACE;
+			g_pLogFile->textOut(RED, buf);
+			return buf;
+		}
+	}
+	return buf;
+}
+
+bool CInput::getPressedIsTypingKey(void)
+{
+	int i;
+	
+	if(getHoldedKey(KSHIFT))
+	   {
+		   return true;
+	   }
+	   else
+	   {
+	for(i=KSPACE ; i<=KAT ; i++)
+	{
+		if(getHoldedKey(i))
+			return true;
+	}
+	for(i=KLEFTBRACKET ; i<=KTILDE ; i++)
+	{
+		if(getHoldedKey(i))
+			return true;
+	}
+	return false;
+	   }
+}
+
 bool CInput::getPressedAnyKey(void)
 {
 	int i;
@@ -476,6 +631,7 @@ bool CInput::getPressedAnyKey(void)
 	}
 	return false;
 }
+
 bool CInput::getHoldedCommand(int command)
 {
 	bool retval = false;
