@@ -32,6 +32,7 @@ public:
 
 	char m_key;
 	std::string m_name;
+	std::vector<CDlgObject*> m_dlgobject;
 	
 private:
 	Uint16 m_x;
@@ -56,8 +57,6 @@ private:
 	} m_twirl;
 
 	SDL_Surface *m_DialogSurface;
-
-	std::vector<CDlgObject*> m_dlgobject;
 };
 
 #endif /* CDIALOG_H_ */

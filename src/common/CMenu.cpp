@@ -23,13 +23,14 @@ m_Episode(Episode), m_GamePath(GamePath)
 	m_menu_mode = menu_mode;
 	m_Difficulty = -1; // no difficulty chosen...
 	m_NumPlayers = 0; // no player chosen...
+	
 	m_demoback = false;
+	m_overwrite = false;
 	m_quit = false;
 	m_choosegame = false;
 	m_goback = false;
 	m_Endgame = false;
 	mp_Dialog = NULL;
-	mp_TextViewer = NULL;
 	mp_InfoScene = NULL;
 }
 
@@ -81,6 +82,10 @@ bool CMenu::init( char menu_type )
 	else if( m_menu_type == SAVE)
 	{
 		initSaveMenu();
+	}
+	else if( m_menu_type == OVERWRITE)
+	{
+		initConfirmMenu();
 	}
 	
 	// Use the standard Menu-Frame used in the old DOS-Games
@@ -160,7 +165,7 @@ void CMenu::initNumControlMenu()
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Player 1");
 	for(i=2;i<=MAX_PLAYERS;i++)
 	{
-		mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, i, "Player "+itoa(i));
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, i, "Player "+itoa(i));
 	}
 }
 
@@ -169,43 +174,51 @@ void CMenu::initControlMenu()
 	std::string buf;
 	std::string buf2;
 	int player = m_NumPlayers - 1;
-	mp_Dialog = new CDialog(mp_MenuSurface, 36, 14);
+	mp_Dialog = new CDialog(mp_MenuSurface, 36, 16);
 	
 g_pInput->getEventName(IC_LEFT, player, buf2);
- buf = "P1 Left:   " + buf2;
+ buf = "P"+itoa(m_NumPlayers)+" Left:   " + buf2;
  mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, buf);
  
  g_pInput->getEventName(IC_UP, player, buf2);
- buf = "P1 Up:     " + buf2;
+ buf = "P"+itoa(m_NumPlayers)+" Up:     " + buf2;
  mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, buf);
  
 	g_pInput->getEventName(IC_RIGHT, player, buf2);
- buf = "P1 Right:  " + buf2;
+ buf = "P"+itoa(m_NumPlayers)+" Right:  " + buf2;
  mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, buf);
  
  g_pInput->getEventName(IC_DOWN, player, buf2);
- buf = "P1 Down:   " + buf2;
+ buf = "P"+itoa(m_NumPlayers)+" Down:   " + buf2;
  mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, buf);
  
  g_pInput->getEventName(IC_JUMP, player, buf2);
- buf = "P1 Jump:   " + buf2;
+ buf = "P"+itoa(m_NumPlayers)+" Jump:   " + buf2;
  mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, buf);
  
  g_pInput->getEventName(IC_POGO, player, buf2);
- buf = "P1 Pogo:   " + buf2;
+ buf = "P"+itoa(m_NumPlayers)+" Pogo:   " + buf2;
  mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, buf);
  
  g_pInput->getEventName(IC_FIRE, player, buf2);
- buf = "P1 Fire:   " + buf2;
+ buf = "P"+itoa(m_NumPlayers)+" Fire:   " + buf2;
  mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, buf);
  
  g_pInput->getEventName(IC_STATUS, player, buf2);
- buf = "P1 Status: " + buf2;
+ buf = "P"+itoa(m_NumPlayers)+" Status: " + buf2;
  mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, buf);
 	
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 2, 9, "Reset Controls");
- mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 11, "");
- mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 12, "Return");
+ g_pInput->getEventName(IC_HELP, player, buf2);
+ buf = "P"+itoa(m_NumPlayers)+" Help:   " + buf2;
+ mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 9, buf);
+	
+ g_pInput->getEventName(IC_QUIT, player, buf2);
+ buf = "P"+itoa(m_NumPlayers)+" Quit:   " + buf2;
+ mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 10, buf);
+	
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 2, 11, "Reset Controls");
+ mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 13, "");
+ mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 14, "Return");
 }
 
 void CMenu::initF1Menu()
@@ -221,11 +234,11 @@ void CMenu::initF1Menu()
 
 void CMenu::initConfirmMenu()
 {
-	mp_Dialog = new CDialog(mp_MenuSurface, 0, 0, 20, 5, 'l');
+	mp_Dialog = new CDialog(mp_MenuSurface, 0, 0, 22, 5, 'l');
 	
-	mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 1, " Are you certain? ");
+	mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 1, "  Are you certain?  ");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Yes");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 13, 3, "No");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 15, 3, "No");
 }
 
 void CMenu::initSaveMenu()
@@ -278,6 +291,7 @@ void CMenu::process()
 		else if( m_menu_type == QUIT ) processQuitMenu();
 		else if( m_menu_type == ENDGAME ) processEndGameMenu();
 		else if( m_menu_type == SAVE ) processSaveMenu();
+		else if( m_menu_type == OVERWRITE ) processOverwriteMenu();
 	}
 	else // InfoScene is enabled! show it instead of the menu
 	{
@@ -453,11 +467,49 @@ void CMenu::processControlMenu()
 {
 	if( m_selection != -1)
 	{
-		if( m_selection < 9 )
+		if( m_selection < 11 )
 		{
-		mp_Dialog->setObjectText(9, "Save and Return");
-		mp_Dialog->setObjectType(9, DLG_OBJ_OPTION_TEXT);
-		mp_Dialog->setObjectText(10, "Cancel");
+			if(m_selection < MAX_COMMANDS)
+			{
+				int item = m_selection;
+				std::string buf;
+				std::string buf2;
+				
+				buf = mp_Dialog->m_dlgobject[m_selection]->m_OptionText->m_text;
+				buf = buf.erase(11);
+				
+				buf2 = "*Waiting for Input*";
+				mp_Dialog->setObjectText(m_selection, buf + buf2);
+				mp_Dialog->m_key = 'n';
+				
+				do
+				{
+					if(g_pInput->readNewEvent(m_NumPlayers-1,item))
+					{
+						g_pInput->getEventName(item, m_NumPlayers-1, buf2);
+						mp_Dialog->setObjectText(m_selection, buf + buf2);
+						mp_Dialog->m_key = 'u';
+						m_selection = -1;
+					}
+				} while (buf2 == "*Waiting for Input*");
+			}
+			else
+			{
+				g_pInput->resetControls();
+				cleanup();
+				init(CONTROLS);
+			}
+			mp_Dialog->setObjectText(11, "Save and Return");
+			mp_Dialog->setObjectType(11, DLG_OBJ_OPTION_TEXT);
+			mp_Dialog->setObjectText(12, "Cancel");
+		}
+		else
+		{
+			if(m_selection == 11)
+			{
+				g_pInput->saveControlconfig();
+			}
+			m_goback = true;
 		}
 	}
 	
@@ -505,6 +557,7 @@ void CMenu::processF1Menu()
 
 void CMenu::processQuitMenu()
 {
+	mp_Dialog->setObjectText(0, "   Quit the game?   ");
 	if( m_selection != -1)
 	{
 		if ( m_selection == 1 )
@@ -528,6 +581,7 @@ void CMenu::processQuitMenu()
 
 void CMenu::processEndGameMenu()
 {
+	mp_Dialog->setObjectText(0, "   End your game?   ");
 	if( m_selection != -1)
 	{
 		if ( m_selection == 1 )
@@ -555,16 +609,30 @@ void CMenu::processSaveMenu()
 	{
 		if(mp_Dialog->m_key == 'u')
 		{
+			if(mp_Dialog->m_name == "     EMPTY       ")
+			{
+				mp_Dialog->m_name = "";
+			}
+			else if(mp_Dialog->m_name != "")
+			{
+				cleanup();
+				init(OVERWRITE);
+			}
 			mp_Dialog->m_key = 't';
 			m_selection = -1;
 		}
 		else if (mp_Dialog->m_key = 't')
 		{
-			mp_Dialog->m_key = 'u';
 			if(mp_Dialog->m_name == "")
+			{
 				mp_Dialog->setObjectText(m_selection, "Untitled");
+			}
 			else
+			{
 				mp_Dialog->setObjectText(m_selection, mp_Dialog->m_name);
+				
+			}
+			mp_Dialog->m_key = 'u';
 			m_selection = -1;
 		}
 
@@ -577,6 +645,31 @@ void CMenu::processSaveMenu()
 	}
 	return;
 }
+					 
+void CMenu::processOverwriteMenu()
+{
+	mp_Dialog->setObjectText(0, "Overwrite this save?");
+	if( m_selection != -1)
+	{
+		if ( m_selection == 1 )
+		{
+			m_overwrite = true;
+			m_goback = true;
+		}
+		else if ( m_selection == 2 )
+		{
+			m_overwrite = false;
+			m_goback = true;
+		}
+	}
+	
+	if(m_goback)
+	{
+		cleanup();
+		init(SAVE);
+	}
+	return;
+}
 
 ////
 // Cleanup Routines
@@ -584,8 +677,6 @@ void CMenu::processSaveMenu()
 void CMenu::cleanup()
 {
 	delete mp_Dialog;
-	delete mp_TextViewer;
-	mp_TextViewer = NULL;
 	mp_Dialog = NULL;
 }
 

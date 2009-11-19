@@ -36,7 +36,7 @@ public:
 	// Which Menu has to be shown?
 	
 	enum menutypes{
-		MAIN, NEW,
+		MAIN, NEW, OVERWRITE,
 		CONTROLPLAYERS, STORY,
 		HIGHSCORES, ABOUTCG,
 		ABOUTID, ORDERING,
@@ -68,6 +68,7 @@ public:
 	void processF1Menu();
 	void processEndGameMenu();
 	void processSaveMenu();
+	void processOverwriteMenu();
 	
 	void cleanup();
 	
@@ -97,13 +98,13 @@ private:
 	void initF1Menu();
 	
 	CDialog *mp_Dialog;
-	CTextViewer *mp_TextViewer;
 	CInfoScene *mp_InfoScene;
 	SDL_Surface *mp_MenuSurface;
 	char &m_Episode;
 	std::string &m_GamePath;
 	
 	bool m_choosegame;
+	bool m_overwrite;
 	bool m_goback;
 	bool m_Endgame;
 	bool m_quit;

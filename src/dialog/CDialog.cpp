@@ -121,18 +121,6 @@ void CDialog::processInput()
 {
 	if( m_key == 't' )
 	{
-		// This cycle will wait for the input of name and hit of enter
-		m_name = m_dlgobject.at(m_selected_ID)->m_OptionText->m_text;
-		
-		if(m_name.substr(m_name.length()-1) == "|")
-		{
-			m_name = m_dlgobject.at(m_selected_ID)->m_OptionText->m_text;
-			m_name.erase(m_name.length()-1);
-		}
-		else if(m_name == "     EMPTY       ")
-		{
-			m_name = "";
-		}
 		// Get the input
 		if(g_pInput->getPressedIsTypingKey() && (m_name.length() < 15))
 		{
@@ -158,6 +146,10 @@ void CDialog::processInput()
 		else
 			setObjectText(m_selected_ID, m_name);
 	}
+	else if(m_key == 'n')
+	{
+		//do nothing (n = nothing)
+	}
 	else
 	{
 		do
@@ -165,6 +157,7 @@ void CDialog::processInput()
 			if(!m_dlgobject.at(m_selected_ID)->m_selectable)
 			{
 				m_selected_ID++;
+				m_name = m_dlgobject.at(m_selected_ID)->m_OptionText->m_text;
 			}
 		}while(!m_dlgobject.at(m_selected_ID)->m_selectable);
 		if(g_pInput->getPulsedCommand((m_key == 'u') ? IC_DOWN : IC_RIGHT, 60))
@@ -176,13 +169,20 @@ void CDialog::processInput()
 					m_switch=1;
 					m_scroll=0;
 					if(m_selected_ID >= m_h-2+m_scroll)
+					{
 						m_selected_ID = m_dlgobject.size()-1;
+						m_name = m_dlgobject.at(m_selected_ID)->m_OptionText->m_text;
+					}
 					else
+					{
 						m_selected_ID = 0;
+						m_name = m_dlgobject.at(m_selected_ID)->m_OptionText->m_text;
+					}
 				}
 				else
 				{
 					m_selected_ID++;
+					m_name = m_dlgobject.at(m_selected_ID)->m_OptionText->m_text;
 
 					if(m_selected_ID >= m_h-2+m_scroll)
 						m_scroll++;
@@ -190,6 +190,7 @@ void CDialog::processInput()
 					if(!m_dlgobject.at(m_selected_ID)->m_selectable)
 					{
 						m_selected_ID++;
+						m_name = m_dlgobject.at(m_selected_ID)->m_OptionText->m_text;
 					}
 				}
 
@@ -206,10 +207,12 @@ void CDialog::processInput()
 					if(m_dlgobject.size() > m_h)
 						m_scroll = m_selected_ID-(m_h-2)+1;
 					m_selected_ID = m_dlgobject.size()-1;
+					m_name = m_dlgobject.at(m_selected_ID)->m_OptionText->m_text;
 				}
 				else
 				{
 					m_selected_ID--;
+					m_name = m_dlgobject.at(m_selected_ID)->m_OptionText->m_text;
 
 					if(m_selected_ID < m_scroll)
 						m_scroll--;
@@ -217,6 +220,7 @@ void CDialog::processInput()
 					if(!m_dlgobject.at(m_selected_ID)->m_selectable)
 					{
 						m_selected_ID--;
+						m_name = m_dlgobject.at(m_selected_ID)->m_OptionText->m_text;
 					}
 				}
 			}while(!m_dlgobject.at(m_selected_ID)->m_selectable);

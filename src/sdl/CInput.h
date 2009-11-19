@@ -130,20 +130,20 @@ enum keys{
 #define KEYTABLE_SIZE   160
 
 enum InputCommands{
-	IC_JUMP,
-	IC_POGO,
-	IC_FIRE,
-	IC_STATUS,
 	IC_LEFT,
 	IC_UP,
 	IC_RIGHT,
 	IC_DOWN,
+	IC_JUMP,
+	IC_POGO,
+	IC_FIRE,
+	IC_STATUS,
 	IC_HELP,
 	IC_QUIT
 };
 
 #define NUMBER_OF_COMMANDS	10
-#define NUM_INPUTS			1
+#define NUM_INPUTS			4
 
 #define ETYPE_NO_JOYSTICK 	0
 #define ETYPE_JOYAXIS 		1

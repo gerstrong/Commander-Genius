@@ -23,7 +23,7 @@ CInput::CInput() {
 	WIZ_AdjustVolume(VOLUME_UP);
 #endif
 	memset(&Event,0,sizeof(Event));
-	resetControls();
+	loadControlconfig();
 	startJoyDriver();
 }
 
@@ -488,7 +488,7 @@ void CInput::processKeys(int value)
 		    if(getPressedKey(KNUM0)) immediate_keytable[KRIGHTPAREN] = value;
 		    if(getPressedKey(KMINUS)) immediate_keytable[KUNDERSCORE] = value;
 		    if(getPressedKey(KEQUAL)) immediate_keytable[KPLUS] = value;
-		   //if(getPressedKey(KBACKSLASH)) immediate_keytable[KLINE] = value;
+		   if(getPressedKey(KBACKSLASH)) immediate_keytable[KLINE] = value;
 		    if(getPressedKey(KLEFTBRACKET)) immediate_keytable[KLEFTBRACE] = value;
 		    if(getPressedKey(KRIGHTBRACKET)) immediate_keytable[KRIGHTBRACE] = value;
 		    if(getPressedKey(KSEMICOLON)) immediate_keytable[KCOLON] = value;
