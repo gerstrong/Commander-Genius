@@ -5,7 +5,7 @@
  *      Author: gerstrong
  */
 
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include "colourtable.h"
 
 Uint16 convert4to16BPPcolor(Uint8 c, SDL_Surface *BlitSurface)

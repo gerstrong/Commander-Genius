@@ -12,7 +12,7 @@
 #include <vector>
 
 #include "../graphics/CFont.h"
-#include <SDL/SDL.h>
+#include <SDL.h>
 
 class CTextBox {
 public:
@@ -23,14 +23,14 @@ public:
 	void setDelay(Uint32 msecs) { m_textdelay = msecs; }
 	void setAttribs(Uint8 typewriterspeed, Uint8 lettertype );
 	void enableBorders(bool border){ m_border = border; }
-	
+
 	bool hasFinished();
 
 	void process();
 
 private:
 	void setup(int y, int h, const std::string& message);
-	
+
 	std::string m_String;
 	int m_fontwidth, m_fontheight;
 	bool m_border;

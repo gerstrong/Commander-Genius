@@ -9,7 +9,7 @@
 #define CEGASPRIT_H_
 
 #include <string>
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include <vector>
 #include "../graphics/CGfxEngine.h"
 
@@ -24,16 +24,16 @@ public:
 			  int numsprites,
 			  long spriteloc);
 	virtual ~CEGASprit();
-	
+
 	bool loadHead(char *data);
 	bool loadData(const std::string& filename, bool compresseddata);
-	
+
 private:
 	int m_numsprites;
 	int m_planesize;
 	long m_spritestartloc;
 	long m_spriteloc;
-	
+
 	struct st_sprite{
 		short width;
 		short height;
@@ -48,7 +48,7 @@ private:
 		// There are 3 copies of the same Elements in the file. There were used for performance
 		// in DOS but are ignored here.
 	}*Sprite;
-	
+
 	char LoadTGASprite( const std::string &filename, CSprite *sprite );
 	void LoadSpecialSprites( std::vector<CSprite*> &sprite );
 	void DeriveSpecialSprites( CTilemap *tilemap, std::vector<CSprite*> &sprites );

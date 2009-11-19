@@ -9,18 +9,18 @@
 #define CDLGOPTIONTEXT_H_
 
 #include <string>
-#include <SDL/SDL.h>
+#include <SDL.h>
 
 class CDlgOptionText {
 public:
 	CDlgOptionText(const std::string &text, unsigned int delimit);
 	virtual ~CDlgOptionText();
-	
+
 	void setText(const std::string &text, unsigned int delimit);
 	void draw(SDL_Surface *Textsurface, Uint16 x,Uint16 y, Uint8 highlight);
-	
+
 	std::string	m_text;
-	
+
 private:
 	bool m_selected;
 };

@@ -18,7 +18,7 @@ struct st_resolution
 #include "COpenGL.h"
 #endif
 
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include <iostream>
 #include <list>
 

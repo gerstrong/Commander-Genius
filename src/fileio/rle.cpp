@@ -8,7 +8,7 @@
 #include <vector>
 #include <fstream>
 #include <stdio.h>
-#include <SDL/SDL.h>
+#include <SDL.h>
 
 unsigned long unRLEW(std::ifstream& file, std::vector<Uint16>& filebuf)
 {
@@ -29,10 +29,10 @@ unsigned long unRLEW(std::ifstream& file, std::vector<Uint16>& filebuf)
 	Uint32 finsize;
 	Uint16 value;
 	Uint8 high_byte, low_byte;
-	
+
 	/* File can read have more stuff. We read a relative start */
 	int startpos = file.tellg();
-	
+
 	while(!file.eof()) // Detect, if the file is really RLEW compressed!
 	{
 		low_byte = file.get();
@@ -45,36 +45,36 @@ unsigned long unRLEW(std::ifstream& file, std::vector<Uint16>& filebuf)
 			break;
 		}
 	}
-	
+
 	file.seekg(startpos);
-	
+
 	if( cursize == 0 )
 	{
 		file.clear();
 		return 0; // This file is not RLEW compressed!
 	}
-	
-	
+
+
 	low_byte = file.get();
 	high_byte = file.get();
 	finsize = (high_byte<<8) | low_byte;
-	
+
     while( filebuf.size() < finsize )
     {
 		low_byte = file.get();
 		high_byte = file.get();
 		value = (high_byte<<8) | low_byte;
-		
+
 		if (value == 0xFEFE)
 		{
 			low_byte = file.get();
 			high_byte = file.get();
 			howmany = (high_byte<<8) | low_byte;
-			
+
 			low_byte = file.get();
 			high_byte = file.get();
 			value = (high_byte<<8) | low_byte;
-			
+
 			for(Uint32 i=0;i<howmany;i++)
 				filebuf.push_back(value);
 		}

@@ -21,7 +21,7 @@
 #include "../finale/CEndingEp1.h"
 #include "../finale/CEndingEp2.h"
 #include "../finale/CEndingEp3.h"
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include <string>
 #include <vector>
 
@@ -34,7 +34,7 @@
 
 class CPlayGame {
 public:
-	
+
 	enum e_levelcommands
 	{
 		NONE,
@@ -42,16 +42,16 @@ public:
 		START_LEVEL,
 		GOTO_FINALE
 	};
-	
-	CPlayGame( char episode, char level, 
+
+	CPlayGame( char episode, char level,
 			  char numplayers, char difficulty,
 			  std::string &gamepath, stOption *p_option,
 			  bool finale = false);
-	
+
 	bool init();
 	void createPlayerObjects();
 	bool loadGameState( std::string &statefile );
-	
+
 	void process();
 	void processOnWorldMap();
 	void processInLevel();
@@ -62,7 +62,7 @@ public:
 	void handleFKeys();
 	void verifyCutscenes();
 	void createFinale();
-	
+
 	// Collision stuff stored in CPlayGameCollision.cpp
 	void checkPlayerCollisions(CPlayer *p_player);
 	bool checkisSolidr(CPlayer *p_player);
@@ -74,22 +74,22 @@ public:
 	void processPlayerfallings(CPlayer *p_player);
 	void ExtendingPlatformSwitch(int x, int y);
 	void losePlayer(CPlayer *p_player);
-	
+
 	// Dialog processes stored in CPlayGameDialogs.cpp
 	void processPauseDialogs();
 	void showPausedGameDlg();
-	
-	bool isFinished() 
+
+	bool isFinished()
 	{ return m_finished; }
-	
+
 	bool getEndGame() { return m_endgame; }
 	bool getStartGame() { return m_startgame; }
 	bool getExitEvent() { return m_exitgame; }
 	char getEpisode(){	return m_Episode; }
-	
+
 	void cleanup();
 	virtual ~CPlayGame();
-	
+
 private:
 	bool m_finished;
 	bool m_endgame;
@@ -109,7 +109,7 @@ private:
 	bool mp_level_completed[MAX_LEVELS];
 	int m_checkpoint_x, m_checkpoint_y;
 	bool m_checkpointset;
-	
+
 	CMap *mp_Map;
 	CMenu *mp_Menu;
 	CPlayer *mp_Player;

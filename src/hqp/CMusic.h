@@ -14,7 +14,7 @@ enum playstatus{
 	PLAY_MODE_PLAY
 };
 
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include <string>
 
 #include "../CSingleton.h"

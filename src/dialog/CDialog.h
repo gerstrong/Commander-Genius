@@ -9,7 +9,7 @@
 #define CDIALOG_H_
 
 #include <vector>
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include "CDlgObject.h"
 
 class CDialog {

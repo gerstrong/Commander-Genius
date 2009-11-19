@@ -5,10 +5,11 @@
  *      Author: gerstrong
  */
 #ifdef BUILD_WITH_OGG
-#include <SDL/SDL.h>
+#include <SDL.h>
+// vorbis headers
+#include <codec.h>
+#include <vorbisfile.h>
 
-#include <vorbis/codec.h>
-#include <vorbis/vorbisfile.h>
 #include <cstdio>
 #include <iostream>
 #include <vector>

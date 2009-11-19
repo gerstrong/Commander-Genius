@@ -11,7 +11,7 @@
 #define CMENU_H_
 
 #include <string>
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include "../dialog/CDialog.h"
 #include "../dialog/CTextViewer.h"
 
@@ -31,10 +31,10 @@
 #define TWIRL_NUM_FRAMES        5
 
 class CMenu {
-	
+
 public:
 	// Which Menu has to be shown?
-	
+
 	enum menutypes{
 		MAIN, NEW, OVERWRITE,
 		CONTROLPLAYERS, STORY,
@@ -46,17 +46,17 @@ public:
 		AUDIO, OPTIONS,
 		F1, HELP, ENDGAME, QUIT
 	};
-	
+
 	// Active means, when the player is playing, PASSIVE when the Player is not playing
 	enum menumodes{
 		ACTIVE, PASSIVE
 	};
-	
+
 	CMenu( char menu_mode, std::string &GamePath, char &Episode );
 	virtual ~CMenu();
-	
+
 	bool init( char menu_type = MAIN );
-	
+
 	void process();
 	void processMainMenu();
 	void processQuitMenu();
@@ -69,9 +69,9 @@ public:
 	void processEndGameMenu();
 	void processSaveMenu();
 	void processOverwriteMenu();
-	
+
 	void cleanup();
-	
+
 	// Getters
 	char getNumPlayers() { return m_NumPlayers; }
 	char getDifficulty() { return m_Difficulty; }
@@ -82,10 +82,10 @@ public:
 	bool mustBeClosed() { return m_goback; }
 	bool getBacktoDemo() { return m_demoback; }
 	bool getChooseGame() { return m_choosegame; }
-	
+
 	bool m_demoback;
 	char m_mode;
-	
+
 private:
 	void initMainMenu();
 	void initConfirmMenu();
@@ -96,13 +96,13 @@ private:
 	void initNumControlMenu();
 	void initControlMenu();
 	void initF1Menu();
-	
+
 	CDialog *mp_Dialog;
 	CInfoScene *mp_InfoScene;
 	SDL_Surface *mp_MenuSurface;
 	char &m_Episode;
 	std::string &m_GamePath;
-	
+
 	bool m_choosegame;
 	bool m_overwrite;
 	bool m_goback;

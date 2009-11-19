@@ -13,7 +13,7 @@
 #include "../../common/CPlayer.h"
 #include "../../dialog/CTextBox.h"
 #include "../../dialog/CDlgFrame.h"
-#include <SDL/SDL.h>
+#include <SDL.h>
 
 class CEndingEp1 : public CFinale {
 public:

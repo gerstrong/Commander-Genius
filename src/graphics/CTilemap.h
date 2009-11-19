@@ -24,7 +24,7 @@
 
 #define MAX_TILES    800
 
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include <string>
 
 typedef struct
@@ -33,7 +33,7 @@ typedef struct
 	int chgtile;         // tile to change to when level completed (for wm)
 	// or tile to change to when picked up (in-level)
 	unsigned int animOffset;   // starting offset from the base frame
-	
+
 	// Tile Properties start here!
 	char animation;
 	char behaviour;
@@ -44,27 +44,27 @@ class CTilemap {
 public:
 	CTilemap(stTile *pTileProperties, int numtiles);
 	virtual ~CTilemap();
-	
+
 	bool CreateSurface(SDL_Color *Palette, Uint32 Flags);
 	bool loadHiresTile( const std::string& filename );
 	bool optimizeSurface();
 	SDL_Surface *getSDLSurface();
-	
+
 	void drawTile(SDL_Surface *dst, Uint16 x, Uint16 y, Uint16 t);
-	
+
 	void animateAllTiles(SDL_Surface *dst);
 	void unregisterAnimtiles(int tile);
 	void registerAnimation(Uint32 x, Uint32 y, int c);
 	void deAnimateAt(Uint16 px, Uint16 py);
-	
+
 	stTile *mp_tiles;
 	bool m_animation_enabled;
-	
+
 	int m_numtiles;
-	
+
 private:
 	SDL_Surface *m_Tilesurface;
-	
+
 	// (map) stripe attribute structures, for animated tiles
 	// slot 0 is not used. data starts at slot 1. see description
 	// of AnimTileInUse in map structure to see why.
@@ -75,7 +75,7 @@ private:
 		int baseframe;        // base frame, i.e. the first frame of animation
 		int offset;           // offset from base frame
 	} m_animtiles[MAX_ANIMTILES+1];
-	
+
 	unsigned int m_AnimTileInUse[ATILEINUSE_SIZEX][ATILEINUSE_SIZEY];
 	int m_animtiletimer, m_curanimtileframe;
 };

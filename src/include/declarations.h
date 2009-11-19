@@ -2,7 +2,7 @@
 #define __CG_DECLARATIONS_H__
 
 #include <string>
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include <cstdlib>
 
 #define MAX_COMMANDS 8

@@ -10,7 +10,7 @@
 
 #include "../../dialog/CTextBox.h"
 #include "../../dialog/CDlgFrame.h"
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include <string>
 #include <list>
 

@@ -12,7 +12,7 @@
 #define g_pSound CSound::Get()
 
 #include <string>
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include "CSoundChannel.h"
 #include "CSoundSlot.h"
 

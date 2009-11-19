@@ -12,7 +12,7 @@
 
 #include "../../graphics/CBitmap.h"
 #include "../../common/CObject.h"
-#include <SDL/SDL.h>
+#include <SDL.h>
 
 class CEGABitmap : public CObject {
 public:
@@ -20,9 +20,9 @@ public:
 	void setPos(int px, int py);
 	void process();
 	virtual ~CEGABitmap();
-	
+
 	//int scrx, scry;
-	
+
 private:
 	SDL_Surface *mp_Surface;
 	CBitmap *mp_Bitmap;

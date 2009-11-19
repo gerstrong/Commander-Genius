@@ -12,8 +12,8 @@
 #ifndef __CG_COPENGL_H__
 #define __CG_COPENGL_H__
 
-#include <SDL/SDL.h>
-#include <SDL/SDL_opengl.h>
+#include <SDL.h>
+#include <SDL_opengl.h>
 #include "../scale2x/scalebit.h"
 
 class COpenGL {

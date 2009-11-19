@@ -5,7 +5,7 @@
  *      Author: gerstrong
  */
 
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include <stdio.h>
 
 #include "CInput.h"

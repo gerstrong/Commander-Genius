@@ -3,7 +3,7 @@
 #define __CG_FUNCDEFS_H__
 
 #include <string>
-#include <SDL/SDL.h>
+#include <SDL.h>
 
 // game.c
 void freezeplayer(int theplayer);

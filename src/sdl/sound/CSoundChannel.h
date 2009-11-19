@@ -8,7 +8,7 @@
 #ifndef CSOUNDCHANNEL_H_
 #define CSOUNDCHANNEL_H_
 
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include "CSoundSlot.h"
 
 // 8 bit sound

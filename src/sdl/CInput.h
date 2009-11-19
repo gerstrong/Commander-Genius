@@ -8,7 +8,7 @@
 #ifndef CINPUT_H_
 #define CINPUT_H_
 
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include <string>
 
 #ifdef WIZGP2X
@@ -154,9 +154,9 @@ typedef struct stInputCommand
 	bool active;
 	bool lastactive;
 	//int value;
-	
+
 	SDLKey 	keysym;
-	
+
 	unsigned int joyeventtype;
 	int which;
 	int joyaxis;
@@ -169,9 +169,9 @@ class CInput : public CSingleton<CInput>
 public:
 	CInput();
 	virtual ~CInput();
-	
+
 	void pollEvents();
-	
+
 	bool getHoldedKey(int key);
 	bool getPressedKey(int key);
 	bool getPulsedKey(int key, int msec);
@@ -179,7 +179,7 @@ public:
 	std::string getPressedTypingKey(void);
 	bool getPressedAnyKey(void);
 	void sendKey(int key);
-	
+
 	bool getPressedAnyCommand();
 	bool getPulsedCommand(int command, int msec);
 	bool getPulsedCommand(int player, int command, int msec);
@@ -190,35 +190,35 @@ public:
 	bool getPressedAnyCommand(int player);
 	bool getExitEvent(void);
 	void cancelExitEvent(void);
-	
+
 	void getEventName(int position, unsigned char input, std::string &buf);
 	bool readNewEvent(Uint8 device, int position);
-	
+
 	short loadControlconfig();
 	void resetControls();
 	bool startJoyDriver();
 	short saveControlconfig();
-	
+
 	void flushKeys(void);
 	void flushCommands(void);
 	void flushAll(void);
-	
+
 private:
 	SDL_Event Event;
 	SDL_Joystick *mp_Joystick;
-	
+
 	stInputCommand InputCommand[NUM_INPUTS][NUMBER_OF_COMMANDS];
 	bool m_exit;
 	int m_cmdpulse;
 	short m_joydeadzone;
-	
+
 	bool immediate_keytable[KEYTABLE_SIZE];
 	bool last_immediate_keytable[KEYTABLE_SIZE];
 #ifdef WIZGP2X
 	int volume;
 	int volume_direction;
 #endif
-	
+
 	void processKeys(int value);
 	void processJoystickAxis(void);
 	void processJoystickButton(int value);

@@ -7,7 +7,7 @@
  */
 
 #include "keen.h"
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include "sdl/CInput.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/sound/CSound.h"

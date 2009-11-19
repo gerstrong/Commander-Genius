@@ -13,7 +13,7 @@
 #include "../funcdefs.h"
 #include "../keen.h"
 #include "../FindFile.h"
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -38,7 +38,7 @@ CEGALatch::CEGALatch( int planesize,
 	m_tiles16location = tiles16location;
 	m_bitmaps = bitmaps;
 	m_bitmaplocation = bitmaplocation;
-	
+
 	RawData = NULL;
 }
 
@@ -50,9 +50,9 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 {
 	Uint16 height, width;
 	char name[9];
-	
+
 	data += m_bitmaptablelocation;
-	
+
 	g_pGfxEngine->createEmptyBitmaps(m_bitmaps);
 	for(int i=0 ; i<m_bitmaps ; i++)
 	{
@@ -60,7 +60,7 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 		memcpy(&height,data+16*i+2,2);
 		memcpy(name,data+16*i+8,8);
 		width *= 8; // The width is always divided by eight when read
-		
+
 		name[8] = 0; // Ensure null-terminated!
 		if( name[0] != 0 ) g_pGfxEngine->Bitmap[i]->setName( name );
 		else {
@@ -80,10 +80,10 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 				g_pGfxEngine->Bitmap[i]->setName( default_names[i] );
 			}
 		}
-		
+
 		g_pGfxEngine->Bitmap[i]->setDimensions(width,height);
 	}
-	
+
 	return true;
 }
 
@@ -94,7 +94,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
     CBitmap *bitmap;
     Uint16 width, height;
     SDL_Surface *sfc;
-	
+
     // First, retrieve the Tile properties so the tilemap gets properly formatted
     // Important especially for masks
 	// Load tile attributes.
@@ -104,15 +104,15 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 		g_pLogFile->textOut(RED, "CGameControl::loadResources: Could not load data for the tiles<br>");
 		return false;
 	}
-	
+
 	if(path == "") filename = "games/egalatch.ck" + itoa(episode);
 	else filename = path + "/egalatch.ck" + itoa(episode);
-	
+
 	FILE* latchfile = OpenGameFile(filename,"rb");
-	
+
 	if(!latchfile)
 		return false;
-	
+
 	RawData = new char[m_latchplanesize * 4];
     // get the data out of the file into the memory, decompressing it if necessary.
     if (compresseddata)
@@ -125,20 +125,20 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
     	for(int i=0 ; i<(m_latchplanesize*4) ; i++)
     		RawData[i] = fgetc(latchfile);
     }
-	
+
     fclose(latchfile);
-	
+
 	// these are the offsets of the different video planes as
 	// relative to each other--that is if a pixel in plane1
 	// is at N, the byte for that same pixel in plane3 will be
 	// at (N + plane3).
 	unsigned long plane1, plane2, plane3, plane4;
-	
+
 	plane1 = 0;
 	plane2 = (m_latchplanesize * 1);
 	plane3 = (m_latchplanesize * 2);
 	plane4 = (m_latchplanesize * 3);
-	
+
 	// ** read the 8x8 tiles **
 	// set up the getbit() function of CPlanes class
 	CPlanes *Planes = new CPlanes(plane1 + m_fontlocation,
@@ -178,18 +178,18 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 		}
 	}
 	if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
-	
+
 	Font->generateSpecialTwirls();
 	Font->generateGlowFonts();
 	Font->generateInverseFonts();
 	Font->generateDisabledFonts();
 	Font->optimizeSurface();
-	
+
 	delete Planes;
-	
+
 	// Load 32x32 Tiles
 	// TODO: Add a read method for 32x32 Tiles
-	
+
 	// ** read the 16x16 tiles **
 	Planes = new CPlanes(plane1 + m_tiles16location,
 						 plane2 + m_tiles16location,
@@ -203,7 +203,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	sfc = Tilemap->getSDLSurface();
 	if(SDL_MUSTLOCK(sfc))	SDL_LockSurface(sfc);
 	Uint8 *u_pixel = (Uint8*) sfc->pixels;
-	
+
 	Uint8 tiledata[MAX_TILES+1][16][16];
 	for(int p=0;p<4;p++)
 	{
@@ -224,43 +224,43 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 		}
 	}
 	if(SDL_MUSTLOCK(sfc))	SDL_UnlockSurface(sfc);
-	
+
 	// Load Hires, VGA, SVGA Tiles into the tilemap
 	if(path == "") filename = "games/ck" + itoa(episode) + "tiles.bmp";
 	else filename = path + "/ck" + itoa(episode) + "tiles.bmp";
 	if(Tilemap->loadHiresTile(filename))
 		g_pLogFile->textOut(GREEN, "Hi-res Bitmap for Tiles was loaded successfully!");
-	
+
 	// Adapt the tilemap to the display, so they are faster blit
 	Tilemap->optimizeSurface();
-	
+
 	// make masked tiles according to it's surfaces
 	applyMasks();
-	
+
 	delete Planes;
-	
+
 	////////////////////
 	/// Load Bitmaps ///
 	////////////////////
-	
+
 	// set up the getbit() function
 	Planes = new CPlanes(plane1 + m_bitmaplocation,
 						 plane2 + m_bitmaplocation,
 						 plane3 + m_bitmaplocation,
 						 plane4 + m_bitmaplocation,
 						 0);
-	
+
 	// decode bitmaps into the BitmapData structure. The bitmaps are
 	// loaded into one continuous stream of image data, with the bitmaps[]
 	// array giving pointers to where each bitmap starts within the stream.
-	
+
 	// In case there is a strange mod or defect episode, put some names to them!
 	for(int b=0 ; b<m_bitmaps ; b++)
 	{
 		bitmap = g_pGfxEngine->Bitmap[b];
 		bitmap->createSurface(g_pVideoDriver->getScrollSurface()->flags, g_pGfxEngine->Palette.m_Palette);
 	}
-	
+
 	for(int p=0 ; p<4 ; p++)
 	{
 		for(int b=0 ; b<m_bitmaps ; b++)
@@ -268,7 +268,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 			// this points to the location that we're currently
 			// decoding bitmap data to
 			bitmap = g_pGfxEngine->Bitmap[b];
-			
+
 			sfc= bitmap->getSDLSurface();
 			if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
 			Uint8* pixel = (Uint8*) sfc->pixels;
@@ -288,9 +288,9 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 		}
 	}
 	delete Planes;
-	
+
 	if(RawData){ delete[] RawData; RawData = NULL;}
-	
+
 	return true;
 }
 
@@ -303,14 +303,14 @@ void CEGALatch::applyMasks()
 	Uint8 bpp;
 	Uint8 r,g,b,alpha;
 	Uint8 *u_offset;
-	
+
 	sfc = g_pGfxEngine->Tilemap->getSDLSurface();
-	
+
 	if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
-	
+
 	bpp = sfc->format->BytesPerPixel;
 	rect.w = rect.h = 1;
-	
+
 	for( Uint16 t=0 ; t<m_num16tiles ; t++ )
 	{
 		if( g_pGfxEngine->Tilemap->mp_tiles[t].behaviour == -2 )  // This is for masked tiles.
@@ -322,10 +322,10 @@ void CEGALatch::applyMasks()
 					u_offset = (Uint8*)sfc->pixels + bpp*((y+16*((t+1)/13))*13*16 + 16*((t+1)%13) + x);
 					memcpy( &u_colour, u_offset, bpp);
 					SDL_GetRGB( u_colour, sfc->format, &r, &g, &b);
-					
+
 					rect.x = 16*((t+1)%13) + x;
 					rect.y = y+16*((t+1)/13);
-					
+
 					if( r>=250 && g>=250 && b>=250 ) //In this case set colourkey
 					{
 						SDL_FillRect(sfc, &rect, SDL_MapRGBA(sfc->format, 0, 0, 0, 0));
@@ -342,6 +342,6 @@ void CEGALatch::applyMasks()
 			}
 		}
 	}
-	
+
 	if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
 }

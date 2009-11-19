@@ -11,7 +11,7 @@
 #define __EVENT_H__
 
 #include <list>
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include "Ref.h"
 #include "SmartPointer.h"
 #include "EventQueue.h"

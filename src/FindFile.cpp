@@ -998,7 +998,7 @@ std::string JoinPaths(const std::string& path1, const std::string& path2)
 // We cannot use SDL's function for this under WIN32 because it doesn't allow
 // passing file pointers to a dll
 
-#include <SDL/SDL.h>
+#include <SDL.h>
 
 // These are taken from SDL_rwops.c
 #ifdef WIN32

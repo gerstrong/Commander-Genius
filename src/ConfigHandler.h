@@ -24,7 +24,7 @@
 #include "StringUtils.h"
 #include "MathLib.h"
 #include <string>
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include <vector>
 
 #define		MAX_STRING_LENGTH	4096

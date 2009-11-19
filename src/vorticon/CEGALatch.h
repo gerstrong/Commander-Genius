@@ -8,7 +8,7 @@
 #ifndef CEGALATCH_H_
 #define CEGALATCH_H_
 
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include <string>
 
 class CEGALatch {

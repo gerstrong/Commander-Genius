@@ -8,7 +8,7 @@
 #ifndef COMMONENDING_H_
 #define COMMONENDING_H_
 
-#include <SDL/SDL.h>
+#include <SDL.h>
 
 // Common Ending functions
 void eseq_showmsg(const std::string& text, int boxleft, int boxtop,

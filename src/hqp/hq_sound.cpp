@@ -4,7 +4,7 @@
  *  Created on: 05.01.2009
  *      Author: gerstrong
  */
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include "../hqp/hq_sound.h"
 #include "../keen.h"
 #include "../sdl/CVideoDriver.h"
