@@ -546,7 +546,7 @@ void CMenu::processF1Menu()
 			mp_InfoScene = new CStory(m_GamePath, m_Episode);
 			break;
 		/*case 2:
-			mp_InfoScene = new COrdering();
+			mp_InfoScene = new COrderingInfo();
 			break;
 		case 3:
 			mp_InfoScene = new CAboutID();
