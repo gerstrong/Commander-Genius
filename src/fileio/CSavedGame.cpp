@@ -58,6 +58,7 @@ char CSavedGame::save(int slot, char name)
 	 //fputc(player[0].inventory.lives, fp);
 	 fputc(numplayers, fp);
 	 fputc(primaryplayer, fp);
+	 fputc(name, fp);
 	 
 	 sgrle_compress(fp, (unsigned char *) mp_levelcontrol, sizeof(*mp_levelcontrol));
 	 sgrle_compress(fp, (unsigned char *)&scroll_x, sizeof(scroll_x));
@@ -124,13 +125,14 @@ char CSavedGame::IsValidSaveGame(std::string fname)
 
 // this is seperated out of game_load for modularity because menumanager.c
 // also uses it, in it's save-game "preview" menu on the load game screen
-void CSavedGame::readHeader(FILE *fp, uchar *episode, uchar *level, uchar *lives, uchar *num_players)
+void CSavedGame::readHeader(FILE *fp, uchar *episode, uchar *level, uchar *num_players, uchar *primary_player, uchar *name)
 {
 	fseek(fp, SG_HEADERSIZE, SEEK_SET);		// skip past the CKSAVE%c
 	*episode = fgetc(fp);
 	*level = fgetc(fp);
-	*lives = fgetc(fp);
 	*num_players = fgetc(fp);
+	*primary_player = fgetc(fp);
+	*name = fgetc(fp);
 }
 
 bool CSavedGame::load(int slot)

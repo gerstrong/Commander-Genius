@@ -1597,7 +1597,11 @@
 					"_GLIBCXX_DEBUG=1",
 					"_GLIBCXX_DEBUG_PEDANTIC=1",
 				);
-				HEADER_SEARCH_PATHS = /Library/Frameworks/SDL.framework/Headers;
+				HEADER_SEARCH_PATHS = (
+					/Library/Frameworks/SDL.framework/Headers,
+					/Library/Frameworks/Vorbis.framework/Headers,
+					/Library/Frameworks/Ogg.framework/Headers,
+				);
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
 					"-DBUILD_SDL",
@@ -1623,7 +1627,11 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
-				HEADER_SEARCH_PATHS = /Library/Frameworks/SDL.framework/Headers;
+				HEADER_SEARCH_PATHS = (
+					/Library/Frameworks/SDL.framework/Headers,
+					/Library/Frameworks/Vorbis.framework/Headers,
+					/Library/Frameworks/Ogg.framework/Headers,
+				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				MACOSX_DEPLOYMENT_TARGET = 10.3;

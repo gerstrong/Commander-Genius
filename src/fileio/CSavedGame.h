@@ -20,7 +20,7 @@ public:
 	bool load(int slot);
 	
 private:
-	void readHeader(FILE *fp, uchar *episode, uchar *level, uchar *lives, uchar *num_players);
+	void readHeader(FILE *fp, uchar *episode, uchar *level, uchar *num_players, uchar *primary_player, uchar *name);
 	std::string		DataDirectory;
 	
 	stCloneKeenPlus *pCKP;
