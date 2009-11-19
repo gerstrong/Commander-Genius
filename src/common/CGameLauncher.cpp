@@ -211,10 +211,10 @@ void CGameLauncher::process()
     mp_LaunchMenu->processInput();
 	
     // Animate the tiles of the map
-    g_pGfxEngine->Tilemap->animateAllTiles(g_pVideoDriver->ScrollSurface);
+    mp_map->animateAllTiles();
 	
     // Blit the background
-    g_pVideoDriver->blitScrollSurface(mp_map->m_scrollx_buf, mp_map->m_scrolly_buf);
+    g_pVideoDriver->blitScrollSurface();
 	
     // Draw the Start-Menu
     mp_LaunchMenu->draw();

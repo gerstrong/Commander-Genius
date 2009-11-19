@@ -282,8 +282,6 @@ bool CPlayer::isWMSolid(int xb, int yb)
 {
 	int level_coordinates;
 	
-	stTile *p_tiles = g_pGfxEngine->Tilemap->mp_tiles;
-	
 	// Now check if the levels must block the player
 	level_coordinates = mp_map->getObjectat(xb>>4, yb>>4);
 	

@@ -13,6 +13,20 @@
 
 #include "../graphics/CTilemap.h"
 
+// animation rate of animated tiles
+#define ANIM_TILE_TIME        8
+#define MAX_ANIMTILES  200
+
+// for each entry in the animtileinuse array that is nonzero, that
+// location on the display is an animated tile which is currently registered
+// in animtiles[]. Used in map_draw_hstripe and map_draw_vstripe.
+// When drawing a new stripe over one that previously contained an animated
+// tile, this lets it know it needs to unregister the animated tile that
+// used to be there. the nonzero value corresponds to the associated entry
+// in animtiles[]. the x,y pixel position is the index in here * 16.
+#define ATILEINUSE_SIZEX               33
+#define ATILEINUSE_SIZEY               33
+
 class CMap {
 public:
 	CMap( SDL_Surface *p_scrollsurface, CTilemap *p_Tilemap);
@@ -29,7 +43,6 @@ public:
 	void drawAll();
 	void drawHstripe( unsigned int y, unsigned int mpy );
 	void drawVstripe( unsigned int x, unsigned int mpx );
-	void deAnimate(int x, int y);
 
 	Uint16 at(Uint16 x, Uint16 y);
 	Uint16 getObjectat(Uint16 x, Uint16 y);
@@ -39,6 +52,12 @@ public:
 	bool setTile(Uint16 x, Uint16 y, Uint16 t);
 	bool setTile(Uint16 x, Uint16 y, Uint16 t, bool update);
 	bool changeTile(Uint16 x, Uint16 y, Uint16 t);
+
+	// Animation methods
+	void deAnimate(int x, int y);
+	void animateAllTiles();
+	void unregisterAnimtiles(int tile);
+	void registerAnimation(Uint32 x, Uint32 y, int c);
 
 	unsigned int getlevelat(unsigned int x, unsigned int y)	{
 		return m_objectlayer[x>>4][y>>4];	}
@@ -60,6 +79,10 @@ public:
 	unsigned int m_maxscrollx, m_maxscrolly;
 	std::string m_gamepath;
 
+	bool m_animation_enabled;
+
+	stTile *mp_tiles;
+
 private:
 
 	Uint8 m_scrollpix;     	// (0-7) for tracking when to draw a stripe
@@ -72,6 +95,20 @@ private:
 
 	SDL_Surface *mp_scrollsurface;
 	CTilemap *mp_Tilemap;
+
+	// (map) stripe attribute structures, for animated tiles
+	// slot 0 is not used. data starts at slot 1. see description
+	// of AnimTileInUse in map structure to see why.
+	struct {
+		bool slotinuse;        // if 0, this entry should not be drawn
+		int x;                // x pixel position in scrollbuf[] where tile is
+		int y;                // y pixel position in scrollbuf[]
+		int baseframe;        // base frame, i.e. the first frame of animation
+		int offset;           // offset from base frame
+	} m_animtiles[MAX_ANIMTILES+1];
+
+	unsigned int m_AnimTileInUse[ATILEINUSE_SIZEX][ATILEINUSE_SIZEY];
+	int m_animtiletimer, m_curanimtileframe;
 };
 
 #endif /* CMAP_H_ */

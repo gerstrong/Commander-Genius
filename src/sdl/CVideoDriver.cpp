@@ -84,10 +84,9 @@ CVideoDriver::CVideoDriver() {
 	BlitSurface=NULL;
 	m_fading = false;
 	
-	m_scrollx_buf = m_scrolly_buf = 0;
-	
 	m_Resolution_pos = m_Resolutionlist.begin();
 	
+	mp_sbufferx = mp_sbuffery = NULL;
 	
 	initResolutionList();
 }
@@ -470,21 +469,31 @@ SDL_Surface* CVideoDriver::createSurface( std::string name, bool alpha, int widt
 	return optimized;
 }
 
-void CVideoDriver::blitScrollSurface(Sint16 sbufferx, Sint16 sbuffery) // This is only for tiles
+// defines the scroll-buffer that is used for blitScrollSurface(). It's normally passed by a CMap Object
+// It might have when a level-map is loaded.
+void CVideoDriver::setScrollBuffer(Sint16 *pbufx, Sint16 *pbufy)
+{
+	mp_sbufferx = pbufx;
+	mp_sbuffery = pbufy;
+}
+
+void CVideoDriver::blitScrollSurface() // This is only for tiles
 // The name should be changed
 {
 	SDL_Rect srcrect;
 	SDL_Rect dstrect;
+	Sint16 sbufferx, sbuffery;
 	char wraphoz, wrapvrt;
 	int save_dstx, save_dstw, save_srcx, save_srcw;
 	
 	dstrect.x = 0; dstrect.y = 0;
-	dstrect.w = game_resolution_rect.w;
-	dstrect.h = game_resolution_rect.h;
 	
-	srcrect.x = sbufferx;
-	srcrect.y = sbuffery;
+	srcrect.x = sbufferx = *mp_sbufferx;
+	srcrect.y = sbuffery = *mp_sbuffery;
 	
+	dstrect.w = game_resolution_rect.w-sbufferx;
+	dstrect.h = game_resolution_rect.h-sbuffery;
+
 	if (sbufferx > (Uint16)(512-game_resolution_rect.w))
 	{ // need to wrap right side
 		srcrect.w = (512-sbufferx);

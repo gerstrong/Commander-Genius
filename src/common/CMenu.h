@@ -14,6 +14,7 @@
 #include <SDL.h>
 #include "../dialog/CDialog.h"
 #include "../dialog/CTextViewer.h"
+#include "CMap.h"
 
 #include "infoscenes/CInfoScene.h"
 
@@ -52,7 +53,7 @@ public:
 		ACTIVE, PASSIVE
 	};
 
-	CMenu( char menu_mode, std::string &GamePath, char &Episode );
+	CMenu( char menu_mode, std::string &GamePath, char &Episode, CMap &Map );
 	virtual ~CMenu();
 
 	bool init( char menu_type = MAIN );
@@ -85,6 +86,7 @@ public:
 
 	bool m_demoback;
 	char m_mode;
+	bool m_hideobjects;
 
 private:
 	void initMainMenu();
@@ -102,6 +104,7 @@ private:
 	SDL_Surface *mp_MenuSurface;
 	char &m_Episode;
 	std::string &m_GamePath;
+	CMap &m_Map;
 
 	bool m_choosegame;
 	bool m_overwrite;

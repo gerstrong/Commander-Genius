@@ -15,8 +15,8 @@
 
 #define SELMOVE_SPD         3
 
-CMenu::CMenu( char menu_mode, std::string &GamePath, char &Episode ) :
-m_Episode(Episode), m_GamePath(GamePath)
+CMenu::CMenu( char menu_mode, std::string &GamePath, char &Episode, CMap &Map ) :
+m_Episode(Episode), m_GamePath(GamePath), m_Map(Map)
 {
 	// Create the Main Menu
 	mp_MenuSurface = g_pVideoDriver->FGLayerSurface;
@@ -32,6 +32,7 @@ m_Episode(Episode), m_GamePath(GamePath)
 	m_Endgame = false;
 	mp_Dialog = NULL;
 	mp_InfoScene = NULL;
+	m_hideobjects = false;
 }
 
 ////
@@ -230,6 +231,9 @@ void CMenu::initF1Menu()
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Ordering Info");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "About ID");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "About CG");
+
+	// In the Help system let's hide all objects like Bitmaps, players, enemies, etc.
+	m_hideobjects = true;
 }
 
 void CMenu::initConfirmMenu()
@@ -298,7 +302,13 @@ void CMenu::process()
 		mp_InfoScene->process();
 
 		if(mp_InfoScene->destroyed())
+		{
 			SAFE_DELETE(mp_InfoScene); // Destroy the InfoScene and go back to the menu!!!
+			// Restore the old map, that was hidden behind the scene
+			g_pVideoDriver->setScrollBuffer(&m_Map.m_scrollx_buf, &m_Map.m_scrolly_buf);
+			m_Map.drawAll();
+			m_Map.m_animation_enabled = true;
+		}
 	}
 }
 
@@ -532,6 +542,7 @@ void CMenu::processF1Menu()
 			mp_InfoScene = new CAboutGame();
 			break;*/
 		case 1:
+			m_Map.m_animation_enabled = false;
 			mp_InfoScene = new CStory(m_GamePath, m_Episode);
 			break;
 		/*case 2:
@@ -621,7 +632,7 @@ void CMenu::processSaveMenu()
 			mp_Dialog->m_key = 't';
 			m_selection = -1;
 		}
-		else if (mp_Dialog->m_key = 't')
+		else if (mp_Dialog->m_key == 't')
 		{
 			if(mp_Dialog->m_name == "")
 			{
@@ -676,6 +687,8 @@ void CMenu::processOverwriteMenu()
 ////
 void CMenu::cleanup()
 {
+	m_Map.m_animation_enabled = true;
+	m_hideobjects = false;
 	delete mp_Dialog;
 	mp_Dialog = NULL;
 }

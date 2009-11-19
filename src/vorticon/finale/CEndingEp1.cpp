@@ -155,7 +155,7 @@ void CEndingEp1::BackAtHome()
 		//Initialization
 		mp_Map->gotoPos(0,0);
 		mp_Map->resetScrolls(); // The Scrollsurface must be (0,0) so the bitmap is correctly drawn
-		g_pGfxEngine->Tilemap->m_animation_enabled = false; // Needed, because the other map is still loaded
+		mp_Map->m_animation_enabled = false; // Needed, because the other map is still loaded
 		mp_Player[0].hideplayer = true;
 		mp_FinaleStaticScene = new CFinaleStaticScene(mp_Map->m_gamepath, "finale.ck1");
 
@@ -180,7 +180,7 @@ void CEndingEp1::BackAtHome()
 		// Shutdown code here!
 		delete mp_FinaleStaticScene;
 		mp_FinaleStaticScene = NULL;
-		g_pGfxEngine->Tilemap->m_animation_enabled = true;
+		mp_Map->m_animation_enabled = true;
 		m_step++;
 		m_mustsetup = true;
 	}

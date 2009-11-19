@@ -67,6 +67,7 @@ private:
 	int m_textsize;
 	bool m_GoDemo;
 	bool m_modeg;
+	bool m_hideobjects;
 	char *m_text;
 	char m_Episode;
 	char m_NumPlayers;

@@ -32,6 +32,7 @@ CPassive::CPassive(char Episode, std::string DataDirectory) {
 	mp_Scrollsurface = g_pVideoDriver->ScrollSurface;
 	m_textsize = 0;
 	m_NumPlayers = 0; // because no game chosen
+	m_hideobjects = false;
 }
 
 bool CPassive::init(char mode)
@@ -90,7 +91,7 @@ void CPassive::process()
 		else
 		{
 			SAFE_DELETE(mp_PressAnyBox);
-			mp_Menu = new CMenu( CMenu::PASSIVE, m_DataDirectory, m_Episode );
+			mp_Menu = new CMenu( CMenu::PASSIVE, m_DataDirectory, m_Episode, *mp_Map );
 			mp_Menu->init();
 		}
 	}
@@ -140,18 +141,21 @@ void CPassive::process()
 		cleanup();
 		init(TITLE);
 	}
-	
+
 	// Animate the tiles
-	g_pGfxEngine->Tilemap->animateAllTiles( mp_Scrollsurface );
-	
+	mp_Map->animateAllTiles();
+
 	// Blit the background
-	g_pVideoDriver->blitScrollSurface(mp_Map->m_scrollx_buf, mp_Map->m_scrolly_buf);
-	
-	// Make the Objects do its jobs
-	std::vector<CObject*>::iterator i;
-	for( i=m_object.begin() ; i!=m_object.end() ; i++ )
+	g_pVideoDriver->blitScrollSurface();
+
+	if(!m_hideobjects)
 	{
-		(*i)->process();
+		// Make the Objects do its jobs
+		std::vector<CObject*>::iterator i;
+		for( i=m_object.begin() ; i!=m_object.end() ; i++ )
+		{
+			(*i)->process();
+		}
 	}
 	
 	// If Menu is not open show "Press Any Key"
@@ -163,6 +167,9 @@ void CPassive::process()
 	{
 		mp_Menu->process();
 		
+		// Let the menu control, if objects are to be seen or hidden
+		m_hideobjects = mp_Menu->m_hideobjects;
+
 		if(mp_Menu->mustStartGame())
 		{
 			m_NumPlayers = mp_Menu->getNumPlayers();

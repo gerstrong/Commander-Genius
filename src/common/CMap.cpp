@@ -20,11 +20,18 @@ CMap::CMap(SDL_Surface *p_scrollsurface, CTilemap *p_Tilemap) {
 	m_width = m_height = 0;
 	m_worldmap = false;
 	
+	memset( m_AnimTileInUse, 0, sizeof(m_AnimTileInUse));
+	memset( m_animtiles, 0, sizeof(m_animtiles));
+	m_animtiletimer = m_curanimtileframe = 0;
+	m_animation_enabled = true;
+
 	resetScrolls();
 	mp_scrollsurface = p_scrollsurface;
 	mp_Tilemap = p_Tilemap;
 	mp_data = NULL;
 	memset(m_objectlayer, 0, sizeof(m_objectlayer));
+
+	mp_tiles = mp_Tilemap->mp_tiles;
 }
 
 ////////////////////////////
@@ -132,7 +139,7 @@ bool CMap::changeTile(Uint16 x, Uint16 y, Uint16 t)
 	if(setTile( x, y, t))
 	{
 		mp_Tilemap->drawTile(mp_scrollsurface, (x<<4)&511, (y<<4)&511, t);
-		mp_Tilemap->registerAnimation( (x<<4)&511, (y<<4)&511, t );
+		registerAnimation( (x<<4)&511, (y<<4)&511, t );
 		return true;
 	}
 	return false;
@@ -258,17 +265,22 @@ void CMap::redrawAt(int mx, int my)
 	mp_Tilemap->drawTile(mp_scrollsurface, (mx<<4)&511, (my<<4)&511, c);
 }
 
-// redraws all the map area. This is used for the title screen, when game starts and other passive scenes.
+// draws all the map area. This is used for the title screen, when game starts and other passive scenes.
 // Don't use it, when the game is scrolling. Use redrawAt instead,
 // for the correct and fast update of tiles
 void CMap::drawAll()
 {
-	int y;
-	int num_h_tiles= mp_scrollsurface->h/16;
-	
+	int x, y, c;
+	int num_h_tiles = mp_scrollsurface->h/16;
+	int num_v_tiles = mp_scrollsurface->w/16;
+
     for(y=0;y<num_h_tiles;y++)
     {
-		drawHstripe(y<<4, y);
+    	for(x=0;x<num_v_tiles;x++)
+    	{
+    		c = mp_data[(m_mapy+y)*m_width + x+m_mapx];
+			mp_Tilemap->drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511, ((y<<4)+m_mapystripepos)&511, c);
+    	}
     }
 }
 
@@ -283,7 +295,7 @@ void CMap::drawHstripe(unsigned int y, unsigned int mpy)
 		c = mp_data[mpy*m_width + x+m_mapx];
 		
 		mp_Tilemap->drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511, y, c);
-		mp_Tilemap->registerAnimation( ((x<<4)+m_mapxstripepos)&511, y, c );
+		registerAnimation( ((x<<4)+m_mapxstripepos)&511, y, c );
 	}
 }
 
@@ -296,13 +308,13 @@ void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 	{
 		c = mp_data[(y+m_mapy)*m_width + mpx];
 		mp_Tilemap->drawTile(mp_scrollsurface, x, ((y<<4)+m_mapystripepos)&511, c);
-		mp_Tilemap->registerAnimation( x, ((y<<4)+m_mapystripepos)&511, c );
+		registerAnimation( x, ((y<<4)+m_mapystripepos)&511, c );
 	}
 }
 
-///
-// Animation functions
-///
+/////////////////////////
+// Animation functions //
+/////////////////////////
 // searches for animated tiles at the map position (X,Y) and
 // unregisters them from animtiles
 void CMap::deAnimate(int x, int y)
@@ -312,7 +324,81 @@ void CMap::deAnimate(int x, int y)
     px = ((m_mapxstripepos+((x-m_mapx)<<4))&511);
     py = ((m_mapystripepos+((y-m_mapy)<<4))&511);
 	
-    mp_Tilemap->deAnimateAt(px , py);
+    // find it!
+    for(int i=1;i<MAX_ANIMTILES-1;i++)
+    {
+		if (m_animtiles[i].x == px && m_animtiles[i].y == py)
+		{
+			m_animtiles[i].slotinuse = 0;
+			m_animtiles[i].offset = 0;
+			m_AnimTileInUse[px>>4][py>>4] = 0;
+			return;
+		}
+    }
+}
+
+void CMap::animateAllTiles()
+{
+	/* animate animated tiles */
+	if (m_animtiletimer>ANIM_TILE_TIME && m_animation_enabled)
+	{
+		/* advance to next frame */
+		m_curanimtileframe = (m_curanimtileframe+1)&7;
+
+		/* re-draw all animated tiles */
+		for(int i=1;i<MAX_ANIMTILES-1;i++)
+		{
+			if ( m_animtiles[i].slotinuse )
+			{
+				mp_Tilemap->drawTile( mp_scrollsurface, m_animtiles[i].x, m_animtiles[i].y,
+						 m_animtiles[i].baseframe+
+						 ((m_animtiles[i].offset+m_curanimtileframe)%
+						  mp_tiles[m_animtiles[i].baseframe].animation));
+			}
+		}
+		m_animtiletimer = 0;
+	}
+	else m_animtiletimer++;
+}
+
+// unregisters all animated tiles with baseframe tile
+void CMap::unregisterAnimtiles(int tile)
+{
+	int i;
+	for(i=0;i<MAX_ANIMTILES-1;i++)
+	{
+        if (m_animtiles[i].baseframe == tile)
+			m_animtiles[i].slotinuse = 0;
+	}
+}
+
+// register the tiles which has to be animated
+void CMap::registerAnimation(Uint32 x, Uint32 y, int c)
+{
+	// we just drew over an animated tile which we must unregister
+    if (m_AnimTileInUse[x>>4][y>>4])
+    {
+		m_animtiles[m_AnimTileInUse[x>>4][y>>4]].slotinuse = 0;
+		m_AnimTileInUse[x>>4][y>>4] = 0;
+    }
+
+    // we just drew an animated tile which we will now register
+    if ( mp_tiles[c].animation > 1 )
+    {
+		for(int i=1 ; i<MAX_ANIMTILES-1 ; i++)
+		{
+			if (!m_animtiles[i].slotinuse)
+			{  // we found an unused slot
+				m_animtiles[i].x = x;
+				m_animtiles[i].y = y;
+				m_animtiles[i].baseframe = c - mp_tiles[c].animOffset;
+				m_animtiles[i].offset = mp_tiles[c].animOffset;
+				m_animtiles[i].slotinuse = 1;
+				m_AnimTileInUse[x>>4][y>>4] = i;
+				break;
+			}
+		}
+    }
 }
 
 CMap::~CMap() {

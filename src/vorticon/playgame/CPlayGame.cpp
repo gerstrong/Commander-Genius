@@ -36,6 +36,7 @@ CPlayGame::CPlayGame( char episode, char level,
 	m_startgame = false;
 	m_gameover = false;
 	m_alldead = false;
+	m_hideobjects = false;
 	mp_Map = NULL;
 	mp_Menu = NULL;
 	mp_Finale = NULL;
@@ -176,10 +177,12 @@ void CPlayGame::process()
 			mp_Menu->cleanup();
 			delete mp_Menu;
 			mp_Menu = NULL;
+			m_hideobjects = false;
 		}
 		else
 		{
 			mp_Menu->process();
+			m_hideobjects = mp_Menu->m_hideobjects;
 		}
 	}
 	else if(!m_paused) // Game is not paused
@@ -226,13 +229,12 @@ void CPlayGame::process()
 		// Finally draw Dialogs like status screen, game paused, etc.
 		processPauseDialogs();
 	}
-
 	// Animate the tiles of the map
-	g_pGfxEngine->Tilemap->animateAllTiles(g_pVideoDriver->ScrollSurface);
-
-	// Blit the background
-	g_pVideoDriver->blitScrollSurface(mp_Map->m_scrollx_buf, mp_Map->m_scrolly_buf);
+	mp_Map->animateAllTiles();
 	
+	// Blit the background
+	g_pVideoDriver->blitScrollSurface();
+
 	// Draw objects to the screen
 	drawObjects();
 	
@@ -282,7 +284,7 @@ void CPlayGame::process()
 	if(!mp_Menu && g_pInput->getPressedKey(KQUIT))
 	{
 		// Open the menu
-		mp_Menu = new CMenu( CMenu::ACTIVE, m_Gamepath, m_Episode );
+		mp_Menu = new CMenu( CMenu::ACTIVE, m_Gamepath, m_Episode, *mp_Map );
 		mp_Menu->init();
 	}
 }
@@ -440,6 +442,8 @@ void CPlayGame::drawObjects()
 	int x,y,o,tl,xsize,ysize;
 	int xa,ya;
 	
+	if(m_hideobjects) return;
+
 	// copy player data to their associated objects show they can get drawn
 	// in the object-drawing loop with the rest of the objects
 	for( i=0 ;i < m_NumPlayers ; i++)
@@ -505,9 +509,9 @@ void CPlayGame::drawObjects()
 					for(xa=0;xa<=xsize;xa+=16)
 					{
 						tl = mp_Map->at((x+xa)>>4,(y+ya)>>4);
-						if(g_pGfxEngine->Tilemap->mp_tiles[tl].behaviour == -2)
+						if(mp_Map->mp_tiles[tl].behaviour == -2)
 							g_pGfxEngine->Tilemap->drawTile(sfc, x+xa-mp_Map->m_scrollx, y+ya-mp_Map->m_scrolly, tl+1);
-						else if (g_pGfxEngine->Tilemap->mp_tiles[tl].behaviour == -1)
+						else if (mp_Map->mp_tiles[tl].behaviour == -1)
 							g_pGfxEngine->Tilemap->drawTile(sfc, x+xa-mp_Map->m_scrollx, y+ya-mp_Map->m_scrolly, tl);
 					}
 	            }
