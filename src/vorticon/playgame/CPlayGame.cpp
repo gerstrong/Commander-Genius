@@ -17,6 +17,8 @@
 #include "../../graphics/CGfxEngine.h"
 #include "../../StringUtils.h"
 
+#define SAFE_DELETE(x) if(x) { delete x; x = NULL; }
+
 ////
 // Creation Routine
 ////
@@ -156,7 +158,8 @@ void CPlayGame::process()
 	// If the menu is open process it!
 	if(mp_Menu)
 	{
-		if( mp_Menu->mustBeClosed() || mp_Menu->getExitEvent() || mp_Menu->mustEndGame() || mp_Menu->mustStartGame() )
+		if( mp_Menu->mustBeClosed() || mp_Menu->getExitEvent() ||
+			mp_Menu->mustEndGame() || mp_Menu->mustStartGame()	)
 		{
 			if( mp_Menu->getExitEvent() )
 				m_exitgame = true;
@@ -168,14 +171,30 @@ void CPlayGame::process()
 				m_startgame = true;
 			
 			mp_Menu->cleanup();
-			delete mp_Menu;
-			mp_Menu = NULL;
+			SAFE_DELETE(mp_Menu);
 			m_hideobjects = false;
 		}
 		else
 		{
 			mp_Menu->process();
 			m_hideobjects = mp_Menu->m_hideobjects;
+
+			char command = mp_Menu->getCommand();
+			switch(command)
+			{
+			case CMenu::GAME_STATE_SAVE:
+				saveGameState(mp_Menu->m_gamestate_file);
+				break;
+			case CMenu::GAME_STATE_LOAD:
+				loadGameState(mp_Menu->m_gamestate_file);
+				break;
+			}
+
+			if(command != CMenu::NONE) {
+				mp_Menu->removeCommand();
+				SAFE_DELETE(mp_Menu);
+			}
+
 		}
 	}
 	else if(!m_paused) // Game is not paused

@@ -36,6 +36,14 @@ class CMenu {
 public:
 	// Which Menu has to be shown?
 
+	// Those commands are only used to pass them to another class and process there
+	enum menu_commands{
+		NONE,
+		GAME_STATE_LOAD,
+		GAME_STATE_SAVE
+	};
+
+	// Menu types, some of those are also states.
 	enum menutypes{
 		MAIN, NEW, OVERWRITE,
 		CONTROLPLAYERS, STORY,
@@ -83,10 +91,14 @@ public:
 	bool mustBeClosed() { return m_goback; }
 	bool getBacktoDemo() { return m_demoback; }
 	bool getChooseGame() { return m_choosegame; }
+	char getCommand() { return m_command; }
+	void removeCommand() { m_command = NONE; }
 
 	bool m_demoback;
 	char m_mode;
 	bool m_hideobjects;
+
+	std::string m_gamestate_file;
 
 private:
 	void initMainMenu();
@@ -107,6 +119,7 @@ private:
 	CMap &m_Map;
 
 	bool m_choosegame;
+	char m_command;
 	bool m_overwrite;
 	bool m_goback;
 	bool m_Endgame;

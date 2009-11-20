@@ -628,6 +628,9 @@ void CMenu::processSaveMenu()
 			{
 				cleanup();
 				init(OVERWRITE);
+
+				m_command = GAME_STATE_SAVE;
+				m_gamestate_file = mp_Dialog->m_name;
 			}
 			mp_Dialog->m_key = 't';
 			m_selection = -1;

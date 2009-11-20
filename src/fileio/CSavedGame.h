@@ -16,7 +16,7 @@
 
 class CSavedGame {
 public:
-	CSavedGame(const std::string &SaveDirectory);
+	CSavedGame(const std::string &SavePath);
 
 	// Encoder/Decoder Classes
 	template <class T>
@@ -34,7 +34,7 @@ public:
 
 private:
 	void readHeader(FILE *fp, uchar *episode, uchar *level, uchar *num_players, uchar *primary_player, uchar *name);
-	std::string	m_DataDirectory;
+	std::string	m_DataPath;
 	std::vector<uchar> m_datablock;
 };
 

@@ -24,9 +24,9 @@ char sgrle_decompress(FILE *fp, unsigned char *ptr, unsigned long nbytes);
 
 void initgame(stLevelControl *p_levelcontrol);
 
-CSavedGame::CSavedGame(const std::string &SaveDirectory) {
+CSavedGame::CSavedGame(const std::string &SavePath) {
 	// TODO Auto-generated constructor stub
-	m_DataDirectory = SaveDirectory;
+	m_DataPath = SavePath;
 }
 
 #include <stdio.h>

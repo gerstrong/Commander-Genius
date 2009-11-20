@@ -9,13 +9,13 @@
 ///////////////////////////
 // Game State Management //
 ///////////////////////////
-bool CPlayGame::loadGameState()
+bool CPlayGame::loadGameState(std::string statefile)
 {
 	// TODO: Add Code here!
 	return false;
 }
 
-bool CPlayGame::createGameState()
+bool CPlayGame::saveGameState(std::string statefile)
 {
 	int i;
 	int size;
