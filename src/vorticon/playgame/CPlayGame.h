@@ -11,6 +11,7 @@
 #define CPlayGame_H_
 
 #include "../../graphics/CGfxEngine.h"
+#include "../../fileio/CSavedGame.h"
 #include "../../common/CPlayer.h"
 #include "../../common/CObject.h"
 #include "../../common/CMenu.h"
@@ -50,7 +51,9 @@ public:
 
 	bool init();
 	void createPlayerObjects();
-	bool loadGameState( std::string &statefile );
+
+	bool loadGameState();
+	bool createGameState();
 
 	void process();
 	void processOnWorldMap();

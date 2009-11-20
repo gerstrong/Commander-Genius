@@ -24,19 +24,48 @@ char sgrle_decompress(FILE *fp, unsigned char *ptr, unsigned long nbytes);
 
 void initgame(stLevelControl *p_levelcontrol);
 
-CSavedGame::CSavedGame(stLevelControl *lvlcontrol, stCloneKeenPlus *poutsideCKP) {
+CSavedGame::CSavedGame(const std::string &SaveDirectory) {
 	// TODO Auto-generated constructor stub
-	pCKP = poutsideCKP;
-	mp_levelcontrol = lvlcontrol;
-	DataDirectory = pCKP->Resources.GameDataDirectory;
+	m_DataDirectory = SaveDirectory;
 }
 
-CSavedGame::~CSavedGame() {
-	// TODO Auto-generated destructor stub
+#include <stdio.h>
+
+template < typename T >
+T max(T x, T y)
+{
+  if (x < y)
+    return y>>x;
+  else
+    return x;
+}
+
+// Adds data of size to the main data block
+void CSavedGame::addData(uchar *data, Uint32 size) {
+	for(Uint32 i=0 ; i<size ; i++ )
+		m_datablock.push_back(data[i]);
 }
 
 char CSavedGame::save(int slot, char name)
 {
+	// TODO: Many things have to done here!
+
+	// open a file
+
+	// store the episode, level
+
+	// Get number of player
+
+	// save the inventory of every player
+
+	// save the number of objects on screen
+
+	// save all the objects states
+	// Be careful, their must be distinctions, as those objects maybe of different types
+
+	// Load the map_data as it was left lastly
+
+
 	/*FILE *fp;
 	 std::string fname;
 	 
@@ -50,9 +79,9 @@ char CSavedGame::save(int slot, char name)
 	 
 	 g_pLogFile->textOut("Saving game...\n");
 	 fp = OpenGameFile(fname, "wb");
-	 if (!fp) return 1;
-	 
-	 fprintf(fp, "CKSAVE%c", SAVEGAMEVERSION);
+	 if (!fp) return 1;*/
+
+	 /*fprintf(fp, "CKSAVE%c", SAVEGAMEVERSION);
 	 fputc(mp_levelcontrol->episode, fp);
 	 fputc(mp_levelcontrol->curlevel, fp);
 	 //fputc(player[0].inventory.lives, fp);
@@ -214,3 +243,8 @@ bool CSavedGame::load(int slot)
 	 g_pLogFile->ftextOut("Load game OK\n");*/
 	return true;
 }
+
+CSavedGame::~CSavedGame() {
+	// TODO Auto-generated destructor stub
+}
+

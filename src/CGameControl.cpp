@@ -108,13 +108,23 @@ bool CGameControl::init(char mode)
 	}
 	else if(m_mode == PLAYGAME)
 	{
+		bool ok = true;
+
 		if(m_startLevel == 0) m_startLevel = WORLD_MAP_LEVEL;
 
 		mp_PlayGame = new CPlayGame(m_Episode, m_startLevel,
 									m_Numplayers, m_Difficulty,
 									m_DataDirectory, mp_option, m_show_finale);
 		m_show_finale = false; // just show it once!!
-		return mp_PlayGame->init();
+
+		ok &= mp_PlayGame->init();
+
+		/*if(mp_SaveGame)
+		{
+			mp_PlayGame->setupGameState(mp_SaveGame->getGameData());
+		}*/
+
+		return ok;
 	}
 	return false;
 }

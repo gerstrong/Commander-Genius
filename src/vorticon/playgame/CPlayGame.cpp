@@ -148,13 +148,6 @@ void CPlayGame::createPlayerObjects()
 	}
 }
 
-
-bool CPlayGame::loadGameState( std::string &statefile )
-{
-	// TODO: Add Code here!
-	return false;
-}
-
 ////
 // Process Routine
 ////
