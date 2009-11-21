@@ -15,6 +15,7 @@
 #include "../dialog/CDialog.h"
 #include "../dialog/CTextViewer.h"
 #include "CMap.h"
+#include "options.h"
 
 #include "infoscenes/CInfoScene.h"
 
@@ -36,14 +37,6 @@ class CMenu {
 public:
 	// Which Menu has to be shown?
 
-	// Those commands are only used to pass them to another class and process there
-	enum menu_commands{
-		NONE,
-		GAME_STATE_LOAD,
-		GAME_STATE_SAVE
-	};
-
-	// Menu types, some of those are also states.
 	enum menutypes{
 		MAIN, NEW, OVERWRITE,
 		CONTROLPLAYERS, STORY,
@@ -77,7 +70,11 @@ public:
 	void processF1Menu();
 	void processEndGameMenu();
 	void processSaveMenu();
+	void processLoadMenu();
 	void processOverwriteMenu();
+	void processGraphicsMenu();
+	void processOptionsMenu();
+	void processAudioMenu();
 
 	void cleanup();
 
@@ -91,14 +88,16 @@ public:
 	bool mustBeClosed() { return m_goback; }
 	bool getBacktoDemo() { return m_demoback; }
 	bool getChooseGame() { return m_choosegame; }
-	char getCommand() { return m_command; }
-	void removeCommand() { m_command = NONE; }
+	bool getSaveGame() { return (m_saveload == 's'); }
+	bool getLoadGame() { return (m_saveload == 'l'); }
+	int  getSaveSlot() { return m_saveslot; m_saveload = NULL; }
 
 	bool m_demoback;
-	char m_mode;
 	bool m_hideobjects;
-
-	std::string m_gamestate_file;
+	char m_mode;
+	char m_saveload;
+	
+	CDialog *mp_Dialog;
 
 private:
 	void initMainMenu();
@@ -110,16 +109,18 @@ private:
 	void initNumControlMenu();
 	void initControlMenu();
 	void initF1Menu();
+	void initGraphicsMenu();
+	void initOptionsMenu();
+	void initAudioMenu();
 
-	CDialog *mp_Dialog;
 	CInfoScene *mp_InfoScene;
 	SDL_Surface *mp_MenuSurface;
 	char &m_Episode;
 	std::string &m_GamePath;
 	CMap &m_Map;
+	stOption *mp_option;
 
 	bool m_choosegame;
-	char m_command;
 	bool m_overwrite;
 	bool m_goback;
 	bool m_Endgame;
@@ -129,6 +130,7 @@ private:
 	char m_menu_mode;
 	char m_NumPlayers;
 	char m_Difficulty;
+	int  m_saveslot;
 };
 
 #endif /* CMENU_H_ */

@@ -9,13 +9,13 @@
 ///////////////////////////
 // Game State Management //
 ///////////////////////////
-bool CPlayGame::loadGameState(std::string statefile)
+bool CPlayGame::loadGameState(int slot)
 {
 	// TODO: Add Code here!
 	return false;
 }
 
-bool CPlayGame::saveGameState(std::string statefile)
+bool CPlayGame::saveGameState(int slot, std::string name)
 {
 	int i;
 	int size;
@@ -28,20 +28,11 @@ bool CPlayGame::saveGameState(std::string statefile)
 	SavedGame.encodeVariable(m_Level);
 	SavedGame.encodeVariable(m_Difficulty);
 
-	// Get number of players
-	SavedGame.encodeVariable(m_NumPlayers);
-
 	// Also the last checkpoint is stored. This is the level entered from map
 	// in Commander Keen games
 	SavedGame.encodeVariable(m_checkpointset);
 	SavedGame.encodeVariable(m_checkpoint_x);
 	SavedGame.encodeVariable(m_checkpoint_y);
-
-	// save the inventory of every player
-	SavedGame.encodeVariable(m_NumPlayers);
-	for( i=0 ; i<m_NumPlayers ; i++) {
-		SavedGame.encodeStruct(mp_Player[i].inventory);
-	}
 
 	size = m_Object.size();
 	// save the number of objects on screen
@@ -64,7 +55,7 @@ bool CPlayGame::saveGameState(std::string statefile)
 	// store completed levels
 	SavedGame.addData( (uchar*)(mp_level_completed), MAX_LEVELS );
 
-	//SavedGame.save();
+	//SavedGame.saveGame();
 
 	return true;
 }

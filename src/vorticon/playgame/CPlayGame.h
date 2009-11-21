@@ -53,8 +53,8 @@ public:
 	void createPlayerObjects();
 
 	// Game states
-	bool loadGameState(std::string statefile);
-	bool saveGameState(std::string statefile);
+	bool loadGameState(int slot);
+	bool saveGameState(int slot, std::string name);
 
 	void process();
 	void processOnWorldMap();

@@ -25,10 +25,10 @@ public:
 	void encodeStruct(S structure);
 
 	void addData(uchar *data, Uint32 size);
+	void saveGame(int slot, char name);
+	void loadGame(int slot);
 
-	char save(int slot, char name);
-	char IsValidSaveGame(std::string fname);
-	bool load(int slot);
+	bool IsValidSaveGame(std::string fname);
 	
 	virtual ~CSavedGame();
 

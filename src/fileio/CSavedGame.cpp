@@ -46,7 +46,7 @@ void CSavedGame::addData(uchar *data, Uint32 size) {
 		m_datablock.push_back(data[i]);
 }
 
-char CSavedGame::save(int slot, char name)
+void CSavedGame::saveGame(int slot, char name)
 {
 	// TODO: Many things have to done here!
 
@@ -123,33 +123,32 @@ char CSavedGame::save(int slot, char name)
 	 fputc(sprites[DOOR_BLUE_SPRITE]->getWidth(), fp);
 	 
 	 fclose(fp);*/
-	return 0;
 }
 
 
-char CSavedGame::IsValidSaveGame(std::string fname)
+bool CSavedGame::IsValidSaveGame(std::string fname)
 {
 	FILE *fp;
 	unsigned int i;
 	const char *verify = "CKSAVE";
 	fp = OpenGameFile(fname, "rb");
-	if (!fp) return 0;
+	if (!fp) return false;
 	
 	for(i=0;i<strlen(verify);i++)
 	{
 		if (fgetc(fp) != verify[i])
 		{
 			fclose(fp);
-			return 0;
+			return false;
 		}
 	}
 	if (fgetc(fp) != SAVEGAMEVERSION)
 	{
 		fclose(fp);
-		return 0;
+		return false;
 	}
 	fclose(fp);
-	return 1;
+	return true;
 }
 
 // this is seperated out of game_load for modularity because menumanager.c
@@ -164,7 +163,7 @@ void CSavedGame::readHeader(FILE *fp, uchar *episode, uchar *level, uchar *num_p
 	*name = fgetc(fp);
 }
 
-bool CSavedGame::load(int slot)
+void CSavedGame::loadGame(int slot)
 {
 	/*FILE *fp;
 	 std::string fname;
@@ -241,7 +240,6 @@ bool CSavedGame::load(int slot)
 	 
 	 g_pLogFile->ftextOut("Structures restored: map size: %d,%d\n", map.xsize, map.ysize);
 	 g_pLogFile->ftextOut("Load game OK\n");*/
-	return true;
 }
 
 CSavedGame::~CSavedGame() {

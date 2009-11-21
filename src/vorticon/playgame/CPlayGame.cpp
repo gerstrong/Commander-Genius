@@ -179,22 +179,14 @@ void CPlayGame::process()
 			mp_Menu->process();
 			m_hideobjects = mp_Menu->m_hideobjects;
 
-			char command = mp_Menu->getCommand();
-			switch(command)
+			if(mp_Menu->getSaveGame())
 			{
-			case CMenu::GAME_STATE_SAVE:
-				saveGameState(mp_Menu->m_gamestate_file);
-				break;
-			case CMenu::GAME_STATE_LOAD:
-				loadGameState(mp_Menu->m_gamestate_file);
-				break;
+				saveGameState(mp_Menu->getSaveSlot(), mp_Menu->mp_Dialog->m_name);
 			}
-
-			if(command != CMenu::NONE) {
-				mp_Menu->removeCommand();
-				SAFE_DELETE(mp_Menu);
+			else if(mp_Menu->getLoadGame())
+			{
+				loadGameState(mp_Menu->getSaveSlot());
 			}
-
 		}
 	}
 	else if(!m_paused) // Game is not paused
