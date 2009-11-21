@@ -11,12 +11,15 @@
 #include "../externals.h"
 #include "../game.h"
 #include "../CLogFile.h"
-#include "../FindFile.h"
 #include "../graphics/CGfxEngine.h"
+#include "../FindFile.h"
+#include <iostream>
+#include <fstream>
+
 #include "CSavedGame.h"
-#include <string>
 
 #define SG_HEADERSIZE			7
+#define SAVEGAMEVERSION 		'6'
 
 void sgrle_initdecompression(void);
 void sgrle_compress(FILE *fp, unsigned char *ptr, unsigned long nbytes);
@@ -27,17 +30,7 @@ void initgame(stLevelControl *p_levelcontrol);
 CSavedGame::CSavedGame(const std::string &SavePath) {
 	// TODO Auto-generated constructor stub
 	m_DataPath = SavePath;
-}
-
-#include <stdio.h>
-
-template < typename T >
-T max(T x, T y)
-{
-  if (x < y)
-    return y>>x;
-  else
-    return x;
+	m_datablock.push_back(SAVEGAMEVERSION);
 }
 
 // Adds data of size to the main data block
@@ -46,26 +39,23 @@ void CSavedGame::addData(uchar *data, Uint32 size) {
 		m_datablock.push_back(data[i]);
 }
 
-void CSavedGame::saveGame(int slot, char name)
+bool CSavedGame::save()
 {
-	// TODO: Many things have to done here!
+    std::ofstream SaveFile;
 
-	// open a file
+    OpenGameFileW( SaveFile, m_DataPath.c_str(), std::ofstream::binary );
 
-	// store the episode, level
+    if (!SaveFile.is_open()) return false;
 
-	// Get number of player
+	// TODO: Compression has still to be done!
 
-	// save the inventory of every player
+	// Now write all the data to the file
+    SaveFile.write( (const char*)m_datablock.data(), m_datablock.size() );
+	SaveFile.close();
 
-	// save the number of objects on screen
+	return true;
 
-	// save all the objects states
-	// Be careful, their must be distinctions, as those objects maybe of different types
-
-	// Load the map_data as it was left lastly
-
-
+	// Depreciated Code
 	/*FILE *fp;
 	 std::string fname;
 	 
@@ -128,7 +118,7 @@ void CSavedGame::saveGame(int slot, char name)
 
 bool CSavedGame::IsValidSaveGame(std::string fname)
 {
-	FILE *fp;
+	/*FILE *fp;
 	unsigned int i;
 	const char *verify = "CKSAVE";
 	fp = OpenGameFile(fname, "rb");
@@ -148,7 +138,7 @@ bool CSavedGame::IsValidSaveGame(std::string fname)
 		return false;
 	}
 	fclose(fp);
-	return true;
+	return true;*/
 }
 
 // this is seperated out of game_load for modularity because menumanager.c

@@ -54,7 +54,7 @@ public:
 
 	// Game states
 	bool loadGameState(int slot);
-	bool saveGameState(int slot, std::string name);
+	bool saveGameState(int slot, const std::string &name);
 
 	void process();
 	void processOnWorldMap();

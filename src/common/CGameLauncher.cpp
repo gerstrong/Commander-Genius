@@ -287,7 +287,7 @@ void CGameLauncher::putLabels()
     Uint16 i;
     std::string line;
     std::ofstream gamescfg;
-	
+
     OpenGameFileW(gamescfg, GAMESCFG);
     if (gamescfg.is_open())
     {

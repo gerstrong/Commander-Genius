@@ -28,7 +28,9 @@ public:
 	void saveGame(int slot, char name);
 	void loadGame(int slot);
 
+	bool save();
 	bool IsValidSaveGame(std::string fname);
+	bool load(int slot);
 	
 	virtual ~CSavedGame();
 

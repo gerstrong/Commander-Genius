@@ -29,9 +29,6 @@
 // the sysbeep will not sound.
 #define QUIT_NONFATAL   555
 
-#define SAVEGAMEVERSION '5'
-#define ATTRFILEVERSION  1
-
 #define WM_MAP_NUM      80
 
 #define MAX_SPRITE_WIDTH	80
