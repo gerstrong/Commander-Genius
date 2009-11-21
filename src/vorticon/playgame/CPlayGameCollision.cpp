@@ -250,14 +250,17 @@ int CPlayGame::checkObjSolid(unsigned int x, unsigned int y, int cp)
 	for( p_object=m_Object.begin() ; p_object!=m_Object.end() ; p_object++ )
 	{
 		sprite = g_pGfxEngine->Sprite.at(p_object->sprite);
-		if (p_object->exists && p_object->cansupportplayers)
+		for(int  i=0 ; i<m_NumPlayers ; i++)
 		{
-			if (x >= p_object->x+sprite->m_bboxX1)
-				if (x <= p_object->x+sprite->m_bboxX2)
-					if (y >= p_object->y+sprite->m_bboxY1)
-						if (y <= p_object->y+sprite->m_bboxY2)
-							return o;
-			o++;
+			if (p_object->exists && p_object->cansupportplayer[i])
+			{
+				if (x >= p_object->x+sprite->m_bboxX1)
+					if (x <= p_object->x+sprite->m_bboxX2)
+						if (y >= p_object->y+sprite->m_bboxY1)
+							if (y <= p_object->y+sprite->m_bboxY2)
+								return o;
+				o++;
+			}
 		}
 	}
 	return 0;

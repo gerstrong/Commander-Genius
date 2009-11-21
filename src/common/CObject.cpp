@@ -13,16 +13,20 @@
 #include "../keen.h"
 #include <string.h>
 
+#define SAFE_DELETE_ARRAY(x) if(x) { delete [] x; x = NULL; }
+#define SAFE_DELETE(x) if(x) { delete x; x = NULL; }
+
 ///
 // Initialization Routine
 ///
-CObject::CObject() {
+CObject::CObject(int num_players) {
 	honorPriority = false;
 	exists = false;
-	cansupportplayers = false;
 	blockedu = blockedd = false;
 	blockedl = blockedr = false;
 	sprite=BLANKSPRITE;
+
+	cansupportplayer.assign(num_players, false);
 	
     yinertia = 0;
 }
@@ -44,8 +48,8 @@ bool CObject::spawn(int x0, int y0, int otype)
 		canbezapped = 0;
 		inhibitfall = false;
 		honorPriority = true;
-		cansupportplayers = false;
 		touchPlayer = touchedBy = 0;
+		cansupportplayer.assign(cansupportplayer.size(), false);
 		
 		setupObjectType();
 		
@@ -276,7 +280,7 @@ void CObject::processFalling()
 		if (blockedd) yinertia = 0;
 		else
 		{
-			if (yinertia < OBJFALLSPEED) yinertia++;
+			if (yinertia < OBJFALLSPEED) yinertia+=4;
 			y += yinertia;
 		}
 	}
@@ -287,6 +291,5 @@ void CObject::processFalling()
 // Cleanup Routine
 ///
 CObject::~CObject() {
-	// TODO Auto-generated destructor stub
 }
 

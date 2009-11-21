@@ -805,13 +805,6 @@ unsigned int rnd(void)
 	return rand();
 }
 
-void SetAllCanSupportPlayer(int o, int state)
-{
-	/*unsigned int i;
-	 for(i=0;i<numplayers;i++)
-	 objects[o].cansupportplayer[i] = state;*/
-}
-
 void showTextMB(const std::string& Text)
 {
 	/*	CTextBox* TextBox;

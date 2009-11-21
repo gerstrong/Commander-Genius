@@ -49,18 +49,19 @@ private:
 	void icecannon_ai(CObject *p_object);
 	void rope_ai(CObject *p_object);
 	void rope_movestone(CObject *p_object);
-	 /*
-	 // ep2
-	 void scrub_ai(int o, stLevelControl levelcontrol);
-	 void tankep2_ai(int o, bool hardmode);
-	 void platform_ai(int o, stLevelControl levelcontrol);
-	 void vortelite_ai(int o, bool darkness);
-	 void se_ai(int o, stLevelControl *p_levelcontrol);
-	 void explosion_ai(int o);
-	 void earthchunk_ai(int o);
-	 void spark_ai(int o, int *p_sparks_left);
 
-	 // ep3
+	// ep2
+	//void baby_ai(CObject &object, int episode, bool hard)
+	//void scrub_ai(int o, stLevelControl levelcontrol);
+	//void tankep2_ai(int o, bool hardmode);
+	//void platform_ai(int o, stLevelControl levelcontrol);
+	//void vortelite_ai(int o, bool darkness);
+	//void se_ai(int o, stLevelControl *p_levelcontrol);
+	//void explosion_ai(int o);
+	//void earthchunk_ai(int o);
+	//void spark_ai(int o, int *p_sparks_left);
+
+	 /*// ep3
 	 void foob_ai(int o, bool hardmode);
 	 void ninja_ai(int o, bool hardmode);
 	 void meep_ai(int o, stLevelControl levelcontrol);
@@ -79,6 +80,7 @@ private:
 	void teleporter_ai(CObject *p_object);
 
 	void killplayer(int theplayer);
+	void SetAllCanSupportPlayer(CObject &object, int state);
 
 	// Variables
 	CMap *mp_Map;

@@ -23,7 +23,7 @@ CShipFlySys::CShipFlySys(CPlayer *p_Player, CMap *p_Map)
 
 	// Now, that everything is initialized, create a mark that will be used
 	// as ! or ? Sprite
-	CObject mark;
+	CObject mark(1);
 	mark.m_type = OBJ_YORP;                // doesn't matter
 	mark.exists = 0;
 	mark.sprite = SPR_QUESTION;

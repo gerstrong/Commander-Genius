@@ -139,36 +139,36 @@ void CObjectAI::performSpecialAIType( CObject *p_object )
 		case OBJ_ICEBIT: icebit_ai(p_object); break;
 		case OBJ_TELEPORTER: teleporter_ai(p_object); break;
 		case OBJ_ROPE: rope_ai(p_object); break;
-			 /*
-			 //KEEN2
-			 case OBJ_SCRUB: scrub_ai(i, *p_levelcontrol); break;
-			 case OBJ_TANKEP2: tankep2_ai(i, p_levelcontrol->hardmode); break;
-			 case OBJ_PLATFORM: platform_ai(i, *p_levelcontrol); break;
-			 case OBJ_VORTELITE: vortelite_ai(i, p_levelcontrol->dark); break;
-			 case OBJ_SECTOREFFECTOR: se_ai(i, p_levelcontrol ); break;
-			 case OBJ_BABY: baby_ai(i, p_levelcontrol->episode,
-			 p_levelcontrol->hardmode); break;
-			 case OBJ_EXPLOSION: explosion_ai(i); break;
-			 case OBJ_EARTHCHUNK: earthchunk_ai(i); break;
-			 case OBJ_SPARK: spark_ai(i, &(p_levelcontrol->sparks_left) ); break;
 
-			 //KEEN3
-			 case OBJ_FOOB: foob_ai(i, p_levelcontrol->hardmode); break;
-			 case OBJ_NINJA: ninja_ai( i, p_levelcontrol->hardmode); break;
-			 case OBJ_MEEP: meep_ai( i, *p_levelcontrol ); break;
-			 case OBJ_SNDWAVE: sndwave_ai( i, p_levelcontrol->hardmode); break;
-			 case OBJ_MOTHER: mother_ai( i, *p_levelcontrol ); break;
-			 case OBJ_FIREBALL: fireball_ai( i, p_levelcontrol->hardmode ); break;
-			 case OBJ_BALL: ballandjack_ai(i); break;
-			 case OBJ_JACK: ballandjack_ai(i); break;
-			 case OBJ_PLATVERT: platvert_ai(i); break;
-			 case OBJ_NESSIE: nessie_ai(i); break;
+		//KEEN2
+		//case OBJ_SCRUB: scrub_ai(p_object); break;
+		//case OBJ_TANKEP2: tankep2_ai(i, p_levelcontrol->hardmode); break;
+		//case OBJ_PLATFORM: platform_ai(i, *p_levelcontrol); break;
+		//case OBJ_VORTELITE: vortelite_ai(i, p_levelcontrol->dark); break;
+		//case OBJ_SECTOREFFECTOR: se_ai(i, p_levelcontrol ); break;
+		//case OBJ_BABY: baby_ai(i, p_levelcontrol->episode,
+		//p_levelcontrol->hardmode); break;
+		//case OBJ_EXPLOSION: explosion_ai(i); break;
+		//case OBJ_EARTHCHUNK: earthchunk_ai(i); break;
+		//case OBJ_SPARK: spark_ai(i, &(p_levelcontrol->sparks_left) ); break;
+
+		//KEEN3
+		//case OBJ_FOOB: foob_ai(i, p_levelcontrol->hardmode); break;
+		//case OBJ_NINJA: ninja_ai( i, p_levelcontrol->hardmode); break;
+		//case OBJ_MEEP: meep_ai( i, *p_levelcontrol ); break;
+		//case OBJ_SNDWAVE: sndwave_ai( i, p_levelcontrol->hardmode); break;
+		//case OBJ_MOTHER: mother_ai( i, *p_levelcontrol ); break;
+		//case OBJ_FIREBALL: fireball_ai( i, p_levelcontrol->hardmode ); break;
+		//case OBJ_BALL: ballandjack_ai(i); break;
+		//case OBJ_JACK: ballandjack_ai(i); break;
+		//case OBJ_PLATVERT: platvert_ai(i); break;
+		//case OBJ_NESSIE: nessie_ai(i); break;
 
 			 //Common Objects*/
 		case OBJ_RAY: ray_ai( p_object, mp_Options[OPT_FULLYAUTOMATIC].value ); break;
 		case OBJ_DOOR: door_ai( p_object, DOWN); break;
-			//case OBJ_AUTORAY: case OBJ_AUTORAY_V: autoray_ai(i); break;
-			//case OBJ_GOTPOINTS: gotpoints_ai(i); break;
+		//case OBJ_AUTORAY: case OBJ_AUTORAY_V: autoray_ai(i); break;
+		//case OBJ_GOTPOINTS: gotpoints_ai(i); break;
 
 			//case OBJ_DEMOMSG: break;
 
@@ -176,6 +176,13 @@ void CObjectAI::performSpecialAIType( CObject *p_object )
 			//g_pLogFile->ftextOut("gamedo_enemy_ai: Object is of invalid type %d\n", p_object->m_type);
 			break;
     }
+}
+
+void CObjectAI::SetAllCanSupportPlayer(CObject &object, int state)
+{
+	unsigned int i;
+	 for(i=0;i<m_NumPlayers;i++)
+		 object.cansupportplayer[i] = state;
 }
 
 void CObjectAI::killplayer(int theplayer)

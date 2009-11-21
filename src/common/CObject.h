@@ -24,7 +24,7 @@
 
 class CObject {
 public:
-	CObject();
+	CObject(int num_players=1);
 	
 	unsigned int m_type;        // yorp, vorticon, etc.
 	bool exists;
@@ -53,7 +53,7 @@ public:
 	char zappedbyenemy;	   // if 1, it was an ENEMYRAY and not keen that shot it
 	
 	char inhibitfall;         // if 1 common_enemy_ai will not do falling
-	bool cansupportplayers;
+	std::vector<bool> cansupportplayer;
 	
 	unsigned int blockedl, blockedr, blockedu, blockedd;
 	signed int xinertia, yinertia;

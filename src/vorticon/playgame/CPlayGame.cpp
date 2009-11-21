@@ -134,7 +134,7 @@ void CPlayGame::createPlayerObjects()
 	// tie puppy objects so the player can interact in the level
 	for (int i=0 ; i<m_NumPlayers ; i++)
 	{
-		CObject object;
+		CObject object(m_NumPlayers);
 		mp_Player[i].setDatatoZero();
 		mp_Player[i].m_player_number = i;
 		mp_Player[i].m_episode = m_Episode;
