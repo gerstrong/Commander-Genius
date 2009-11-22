@@ -36,6 +36,22 @@ void CSavedGame::setEpisode(char Episode){
 	m_Episode = Episode;
 }
 
+// Retrieves the data size of the next block
+Uint32 CSavedGame::getDataSize(std::ifstream &StateFile) {
+	Uint32 size;
+	for(int i=0 ; i<sizeof(Uint32) ; i++) {
+		size += StateFile.get() << (i*8);
+	}
+}
+
+// Read the data of size and stores it in the buffer
+void CSavedGame::readData(char *buffer, Uint32 size, std::ifstream &StateFile) {
+	for(int i=0 ; i<size ; i++) {
+		buffer[i] = StateFile.get() << (i*8);
+	}
+}
+
+
 // Adds data of size to the main data block
 void CSavedGame::addData(uchar *data, Uint32 size) {
 	for(Uint32 i=0 ; i<sizeof(Uint32) ; i++ )
@@ -44,14 +60,80 @@ void CSavedGame::addData(uchar *data, Uint32 size) {
 		m_datablock.push_back(data[i]);
 }
 
+// Used here for filtering the filetypes
+struct StateFileListFiller {
+	std::set<std::string> list;
+
+	bool operator() (const std::string& filename) {
+		std::string ext = GetFileExtension(filename);
+		if (stringcaseequal(ext, "ck1") ||
+			stringcaseequal(ext, "ck2") ||
+			stringcaseequal(ext, "ck3") )
+			list.insert(filename);
+
+		return true;
+	}
+};
 // This method returns the the list of files we can use for the menu
 // It will filter by episode and sort the list by number of slot
 // It also takes care of the slotname resolution
-std::vector<std::string> CSavedGame::getSlotList(){
+std::vector<std::string> CSavedGame::getSlotList()
+{
+	std::vector<std::string> filelist;
+	std::string buf;
 
-	// TODO: The Code is still missing.
+	//Get the list of ".ck?" files
+	StateFileListFiller sfilelist;
+	FindFiles(sfilelist, "", false, FM_REG);
 
-	return "";
+	// TODO: The conversion to the names is still missing!
+
+	printf("-------------------------------------------------------\n");
+	printf("------------StateList----------------------------------\n");
+	std::set<std::string>::iterator i;
+	for( i=sfilelist.list.begin() ; i!=sfilelist.list.end() ; i++ )
+	{
+		buf = i->substr(i->size()-1);
+
+		if(atoi(buf) == m_Episode)
+		{
+			buf = getSlotName(*i);
+			printf("%s\n", buf.c_str());
+			filelist.push_back(buf);
+		}
+	}
+	printf("-------------------------------------------------------\n");
+
+
+	return filelist;
+}
+
+// This method returns the name of the slot
+std::string CSavedGame::getSlotName(const std::string &filename)
+{
+	char version;
+	std::ifstream StateFile;
+	std::string SlotName;
+	OpenGameFileR( StateFile, filename, std::ofstream::binary );
+
+	// Check Savegame version
+	version = StateFile.get();
+
+	if(version != SAVEGAMEVERSION) {
+		SlotName = "File Incompatible";
+	}
+	else {
+		// read the slot name
+		/*Uint32 size = getDataSize(StateFile);
+		char buf[size];
+		readData( buf, size, StateFile);
+		SlotName = buf;*/
+		SlotName = "Work In Progress!";
+	}
+
+	StateFile.close();
+
+	return SlotName;
 }
 
 // This method is called by the menu. It assures that the
@@ -102,6 +184,7 @@ bool CSavedGame::save()
 	StateFile.close();
 
 	m_datablock.clear();
+	m_datablock.push_back(SAVEGAMEVERSION);
 
 	// Done!
 	g_pLogFile->textOut("File \""+ fullpath +"\" was sucessfully saved. Size: "+itoa(size)+"\n");

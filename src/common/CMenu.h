@@ -116,6 +116,7 @@ private:
 	std::string &m_GamePath;
 	CMap &m_Map;
 	CSavedGame &m_SavedGame;
+	std::vector<std::string> m_StateFileList;
 	stOption *mp_option;
 
 	bool m_choosegame;

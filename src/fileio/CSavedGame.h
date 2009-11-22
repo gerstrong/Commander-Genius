@@ -24,8 +24,15 @@ public:
 
 	// Initialization
 	CSavedGame();
+
+	// Setters
 	void setEpisode(char Episode);
-	std::vector<std::string> CSavedGame::getSlotList();
+
+	// Getters
+	std::vector<std::string> getSlotList();
+	std::string getSlotName(const std::string &filename);
+	Uint32 getDataSize(std::ifstream &StateFile);
+	void readData(char *buffer, Uint32 size, std::ifstream &StateFile);
 
 	bool prepareSaveGame( int SaveSlot, const std::string &Name);
 
