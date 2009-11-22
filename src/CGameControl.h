@@ -12,6 +12,7 @@
 
 #include "common/CGameLauncher.h"
 #include "common/options.h"
+#include "fileio/CSavedGame.h"
 #include "vorticon/CEGAGraphics.h"
 #include "vorticon/CMessages.h"
 #include "vorticon/CPassive.h"
@@ -54,6 +55,7 @@ private:
 	CGameLauncher *mp_GameLauncher;
 	CPassive *mp_PassiveMode;
 	CPlayGame *mp_PlayGame;
+	CSavedGame m_SavedGame;
 	
 	bool m_endgame;
 	bool m_show_finale;

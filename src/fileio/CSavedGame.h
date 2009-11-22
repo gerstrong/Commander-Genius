@@ -13,10 +13,21 @@
 #include <string>
 #include <vector>
 #include <SDL.h>
+#include <iostream>
+#include <fstream>
 
 class CSavedGame {
 public:
-	CSavedGame(const std::string &SavePath);
+	enum SavedGameCommands{
+		NONE, SAVE, LOAD
+	};
+
+	// Initialization
+	CSavedGame();
+	void setEpisode(char Episode);
+	std::vector<std::string> CSavedGame::getSlotList();
+
+	bool prepareSaveGame( int SaveSlot, const std::string &Name);
 
 	// Encoder/Decoder Classes
 	template <class T>
@@ -25,23 +36,28 @@ public:
 	void encodeStruct(S structure);
 
 	void addData(uchar *data, Uint32 size);
-	void saveGame(int slot, char name);
-	void loadGame(int slot);
 
 	bool save();
 	bool IsValidSaveGame(std::string fname);
 	bool load(int slot);
 	
+	char getCommand() { return m_Command; }
+
+	// shutdown
 	virtual ~CSavedGame();
 
 private:
 	void readHeader(FILE *fp, uchar *episode, uchar *level, uchar *num_players, uchar *primary_player, uchar *name);
-	std::string	m_DataPath;
-	std::vector<uchar> m_datablock;
+	std::string m_statefilename;
+	std::string m_statename;
+	char m_Episode;
+	char m_Command;
+
+	std::vector<char> m_datablock;
 };
 
 ////
-// Definition of special template classes
+// Definition of special template functions
 ////
 
 // This function is used for enconding a variable to the game data format.
@@ -49,7 +65,10 @@ private:
 // Special case, because the usage must be known for the compiler in order to get it build correctly!
 template <class T>
 void CSavedGame::encodeVariable(T value){
-	for( Uint32 i=0 ; i<sizeof(T) ; i++ )
+	Uint32 size = sizeof(T);
+	for( Uint32 i=0 ; i<sizeof(Uint32) ; i++ )
+		m_datablock.push_back(size>>(i*8));
+	for( Uint32 i=0 ; i<size ; i++ )
 		m_datablock.push_back( static_cast<uchar>(value>>(i*8)) );
 }
 
@@ -58,6 +77,9 @@ template <class S>
 void CSavedGame::encodeStruct(S structure){
 	size_t size = sizeof(S);
 	uchar buf[size];
+
+	for( Uint32 i=0 ; i<sizeof(Uint32) ; i++ )
+		m_datablock.push_back(size>>(i*8));
 
 	memcpy(buf, &structure, size);
 

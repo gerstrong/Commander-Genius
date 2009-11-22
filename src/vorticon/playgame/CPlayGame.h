@@ -47,14 +47,14 @@ public:
 	CPlayGame( char episode, char level,
 			  char numplayers, char difficulty,
 			  std::string &gamepath, stOption *p_option,
-			  bool finale = false);
+			  bool finale, CSavedGame &SavedGame);
 
 	bool init();
 	void createPlayerObjects();
 
 	// Game states
 	bool loadGameState(int slot);
-	bool saveGameState(int slot, const std::string &name);
+	bool saveGameState();
 
 	void process();
 	void processOnWorldMap();
@@ -122,6 +122,7 @@ private:
 	CFinale *mp_Finale;
 	CEGABitmap *mp_gameoverbmp;
 	stOption *mp_option;
+	CSavedGame &m_SavedGame;
 	bool m_showKeensLeft;
 	int m_theplayer;
 	std::vector<CObject> m_Object;

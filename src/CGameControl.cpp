@@ -95,7 +95,7 @@ bool CGameControl::init(char mode)
 	else if(m_mode == PASSIVE)
 	{
 		// Create mp_PassiveMode object used for the screens while Player is not playing
-		mp_PassiveMode = new CPassive( m_Episode, m_DataDirectory );
+		mp_PassiveMode = new CPassive( m_Episode, m_DataDirectory, m_SavedGame );
 		if( m_endgame == true )
 		{
 			m_endgame = false;
@@ -114,7 +114,9 @@ bool CGameControl::init(char mode)
 
 		mp_PlayGame = new CPlayGame(m_Episode, m_startLevel,
 									m_Numplayers, m_Difficulty,
-									m_DataDirectory, mp_option, m_show_finale);
+									m_DataDirectory, mp_option,
+									m_show_finale, m_SavedGame );
+
 		m_show_finale = false; // just show it once!!
 
 		ok &= mp_PlayGame->init();
@@ -137,6 +139,7 @@ bool CGameControl::loadResources(unsigned short Episode, const std::string& Data
 
 	m_Episode = Episode;
 	m_DataDirectory = DataDirectory;
+	m_SavedGame.setEpisode(m_Episode);
 
 	// TODO: not very readable. Check if there is a function for handling that.
 	if( m_DataDirectory.size() > 0 && m_DataDirectory[m_DataDirectory.size()-1] != '/' )

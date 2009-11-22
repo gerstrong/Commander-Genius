@@ -44,7 +44,7 @@
 #define QUIT_PROGRAM            1
 #define QUIT_TO_TITLE           2
 
-#define MAX_LEVELS     100
+#define MAX_LEVELS     20
 #define SCROLLBUF_XSIZE  512
 #define SCROLLBUF_YSIZE  512
 #define SCROLLBUF_MEMSIZE ((SCROLLBUF_XSIZE)*(SCROLLBUF_YSIZE+300))

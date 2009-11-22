@@ -13,8 +13,7 @@
 #include "../CLogFile.h"
 #include "../graphics/CGfxEngine.h"
 #include "../FindFile.h"
-#include <iostream>
-#include <fstream>
+#include "../CLogFile.h"
 
 #include "CSavedGame.h"
 
@@ -27,31 +26,88 @@ char sgrle_decompress(FILE *fp, unsigned char *ptr, unsigned long nbytes);
 
 void initgame(stLevelControl *p_levelcontrol);
 
-CSavedGame::CSavedGame(const std::string &SavePath) {
-	// TODO Auto-generated constructor stub
-	m_DataPath = SavePath;
+// Initialization Routines
+CSavedGame::CSavedGame() {
+	m_Command = NONE;
 	m_datablock.push_back(SAVEGAMEVERSION);
+}
+
+void CSavedGame::setEpisode(char Episode){
+	m_Episode = Episode;
 }
 
 // Adds data of size to the main data block
 void CSavedGame::addData(uchar *data, Uint32 size) {
+	for(Uint32 i=0 ; i<sizeof(Uint32) ; i++ )
+		m_datablock.push_back(size>>(i*8));
 	for(Uint32 i=0 ; i<size ; i++ )
 		m_datablock.push_back(data[i]);
 }
 
+// This method returns the the list of files we can use for the menu
+// It will filter by episode and sort the list by number of slot
+// It also takes care of the slotname resolution
+std::vector<std::string> CSavedGame::getSlotList(){
+
+	// TODO: The Code is still missing.
+
+	return "";
+}
+
+// This method is called by the menu. It assures that the
+// PlayGame instance will call save() and get the right data.
+bool CSavedGame::prepareSaveGame( int SaveSlot, const std::string &Name)
+{
+	m_statefilename = "cksave"+itoa(SaveSlot)+".ck"+itoa(m_Episode);
+	m_statename = Name;
+
+	// This will make the CPlayGame instance call save
+	m_Command = SAVE;
+
+	return true;
+}
+
+// This function writes all the data from the CPlayGame and CMenu Instances to a file,
+// closes it and flushes the data block.
 bool CSavedGame::save()
 {
-    std::ofstream SaveFile;
+	std::ofstream StateFile;
+	std::string fullpath = GetFullFileName(m_statefilename);
+	OpenGameFileW( StateFile, m_statefilename, std::ofstream::binary );
 
-    OpenGameFileW( SaveFile, m_DataPath.c_str(), std::ofstream::binary );
+    if (!StateFile.is_open()) {
+    	g_pLogFile->textOut("Error saving \"" + fullpath + "\". Please check the status of that path.\n" );
+    	return false;
+    }
 
-    if (!SaveFile.is_open()) return false;
+	// Save the name of the gamestate (not the filename)
+    // NOTE: This part stays uncompressed in future, so the list of the menu is generated
+    // in no time!
+	addData( (uchar*)m_statename.c_str(), m_statename.size() );
 
 	// TODO: Compression has still to be done!
 
+	// Convert everything to a primitive data structure
+	Uint32 size = m_datablock.size();
+	char *primitive_buffer = new char[size];
+
+	std::vector<char>::iterator pos = m_datablock.begin();
+	for( Uint32 i=0; i<size ; i++ ){
+		primitive_buffer[i] = *pos;
+		pos++;
+	}
+
 	// Now write all the data to the file
-    SaveFile.write( (const char*)m_datablock.data(), m_datablock.size() );
-	SaveFile.close();
+    StateFile.write( primitive_buffer, size );
+	StateFile.close();
+
+	m_datablock.clear();
+
+	// Done!
+	g_pLogFile->textOut("File \""+ fullpath +"\" was sucessfully saved. Size: "+itoa(size)+"\n");
+	m_Command = NONE;
+	m_statefilename.clear();
+	m_statename.clear();
 
 	return true;
 
@@ -137,8 +193,8 @@ bool CSavedGame::IsValidSaveGame(std::string fname)
 		fclose(fp);
 		return false;
 	}
-	fclose(fp);
-	return true;*/
+	fclose(fp);*/
+	return true;
 }
 
 // this is seperated out of game_load for modularity because menumanager.c
@@ -153,7 +209,7 @@ void CSavedGame::readHeader(FILE *fp, uchar *episode, uchar *level, uchar *num_p
 	*name = fgetc(fp);
 }
 
-void CSavedGame::loadGame(int slot)
+/*void CSavedGame::loadGame(int slot)
 {
 	/*FILE *fp;
 	 std::string fname;
@@ -229,8 +285,8 @@ void CSavedGame::loadGame(int slot)
 	 fclose(fp);
 	 
 	 g_pLogFile->ftextOut("Structures restored: map size: %d,%d\n", map.xsize, map.ysize);
-	 g_pLogFile->ftextOut("Load game OK\n");*/
-}
+	 g_pLogFile->ftextOut("Load game OK\n");
+}*/
 
 CSavedGame::~CSavedGame() {
 	// TODO Auto-generated destructor stub

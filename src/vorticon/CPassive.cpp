@@ -16,7 +16,9 @@
 
 #define SAFE_DELETE(x) if(x!=NULL){ delete x;	x = NULL;}
 
-CPassive::CPassive(char Episode, std::string DataDirectory) {
+CPassive::CPassive(char Episode, std::string DataDirectory, CSavedGame &SavedGame) :
+	m_SavedGame(SavedGame)
+{
 	mp_IntroScreen = NULL;
 	mp_TitleScreen = NULL;
 	mp_Menu = NULL;
@@ -91,7 +93,7 @@ void CPassive::process()
 		else
 		{
 			SAFE_DELETE(mp_PressAnyBox);
-			mp_Menu = new CMenu( CMenu::PASSIVE, m_DataDirectory, m_Episode, *mp_Map );
+			mp_Menu = new CMenu( CMenu::PASSIVE, m_DataDirectory, m_Episode, *mp_Map, m_SavedGame );
 			mp_Menu->init();
 		}
 	}

@@ -19,8 +19,10 @@
 
 #define SELMOVE_SPD         3
 
-CMenu::CMenu( char menu_mode, std::string &GamePath, char &Episode, CMap &Map ) :
-m_Episode(Episode), m_GamePath(GamePath), m_Map(Map)
+CMenu::CMenu( char menu_mode, std::string &GamePath,
+			  char &Episode, CMap &Map, CSavedGame &SavedGame ) :
+			  m_Episode(Episode), m_GamePath(GamePath),
+			  m_Map(Map), m_SavedGame(SavedGame)
 {
 	// Create the Main Menu
 	mp_MenuSurface = g_pVideoDriver->FGLayerSurface;
@@ -1017,6 +1019,7 @@ void CMenu::processEndGameMenu()
 	return;
 }
 
+// TODO: PLease put more comments in order to understand what is supposed to be done.
 void CMenu::processSaveMenu()
 {
 	if( m_selection != -1)
@@ -1033,6 +1036,7 @@ void CMenu::processSaveMenu()
 			{
 				cleanup();
 				init(OVERWRITE);
+				// TODO: And what if we don't have to overwrite??
 			}
 			else
 			{
@@ -1050,13 +1054,12 @@ void CMenu::processSaveMenu()
 			else
 			{
 				mp_Dialog->setObjectText(m_selection, mp_Dialog->m_name);
-				m_saveload = 's';
 				m_saveslot = int(m_selection) + 1;
+				m_SavedGame.prepareSaveGame(m_saveslot, mp_Dialog->m_name);
 			}
 			mp_Dialog->m_key = 'u';
 			m_selection = -1;
 		}
-		
 	}
 	
 	if(m_goback)
@@ -1069,10 +1072,10 @@ void CMenu::processSaveMenu()
 
 void CMenu::processLoadMenu()
 {
-	if( m_selection != -1)
+	/*if( m_selection != -1)
 	{
 		m_saveload = 'l';
-	}
+	}*/
 	
 	if(m_goback)
 	{
@@ -1082,6 +1085,8 @@ void CMenu::processLoadMenu()
 	return;
 }
 
+// TODO: You really should see to get that dialog type (Yes/No) making it more universal and templatized.
+// If you don't you may loose the your own insight into the code.
 void CMenu::processOverwriteMenu()
 {
 	mp_Dialog->setObjectText(0, "Overwrite this save?");

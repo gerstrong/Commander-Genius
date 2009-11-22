@@ -14,6 +14,7 @@
 #include <SDL.h>
 #include "../dialog/CDialog.h"
 #include "../dialog/CTextViewer.h"
+#include "../fileio/CSavedGame.h"
 #include "CMap.h"
 #include "options.h"
 
@@ -54,7 +55,7 @@ public:
 		ACTIVE, PASSIVE
 	};
 
-	CMenu( char menu_mode, std::string &GamePath, char &Episode, CMap &Map );
+	CMenu( char menu_mode, std::string &GamePath, char &Episode, CMap &Map, CSavedGame &SavedGame );
 	virtual ~CMenu();
 
 	bool init( char menu_type = MAIN );
@@ -88,14 +89,10 @@ public:
 	bool mustBeClosed() { return m_goback; }
 	bool getBacktoDemo() { return m_demoback; }
 	bool getChooseGame() { return m_choosegame; }
-	bool getSaveGame() { return (m_saveload == 's'); }
-	bool getLoadGame() { return (m_saveload == 'l'); }
-	int  getSaveSlot() { return m_saveslot; m_saveload = NULL; }
 
 	bool m_demoback;
 	bool m_hideobjects;
 	char m_mode;
-	char m_saveload;
 	
 	CDialog *mp_Dialog;
 
@@ -118,6 +115,7 @@ private:
 	char &m_Episode;
 	std::string &m_GamePath;
 	CMap &m_Map;
+	CSavedGame &m_SavedGame;
 	stOption *mp_option;
 
 	bool m_choosegame;

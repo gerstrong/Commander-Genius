@@ -25,7 +25,8 @@
 CPlayGame::CPlayGame( char episode, char level,
 					 char numplayers, char difficulty,
 					 std::string &gamepath, stOption *p_option,
-					 bool finale) {
+					 bool finale, CSavedGame &SavedGame) :
+					 m_SavedGame(SavedGame) {
 	m_Episode = episode;
 	m_Level = level;
 	m_NumPlayers = numplayers;
@@ -179,14 +180,14 @@ void CPlayGame::process()
 			mp_Menu->process();
 			m_hideobjects = mp_Menu->m_hideobjects;
 
-			if(mp_Menu->getSaveGame())
+			if(m_SavedGame.getCommand() == CSavedGame::SAVE)
 			{
-				saveGameState(mp_Menu->getSaveSlot(), mp_Menu->mp_Dialog->m_name);
+				saveGameState();
 			}
-			else if(mp_Menu->getLoadGame())
+			/*else if(mp_Menu->getLoadGame())
 			{
 				loadGameState(mp_Menu->getSaveSlot());
-			}
+			}*/
 		}
 	}
 	else if(!m_paused) // Game is not paused
@@ -288,7 +289,7 @@ void CPlayGame::process()
 	if(!mp_Menu && g_pInput->getPressedKey(KQUIT))
 	{
 		// Open the menu
-		mp_Menu = new CMenu( CMenu::ACTIVE, m_Gamepath, m_Episode, *mp_Map );
+		mp_Menu = new CMenu( CMenu::ACTIVE, m_Gamepath, m_Episode, *mp_Map, m_SavedGame );
 		mp_Menu->init();
 	}
 }
