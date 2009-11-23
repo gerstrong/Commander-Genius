@@ -125,6 +125,7 @@ private:
 	bool m_Endgame;
 	bool m_quit;
 	char m_selection;
+	char m_lastselect;
 	char m_menu_type;
 	char m_menu_mode;
 	char m_NumPlayers;

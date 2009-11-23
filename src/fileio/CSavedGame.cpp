@@ -161,6 +161,18 @@ bool CSavedGame::prepareSaveGame( int SaveSlot, const std::string &Name)
 	return true;
 }
 
+// This method is called by the menu. It assures that the
+// PlayGame instance will call load() and get the right data.
+bool CSavedGame::prepareLoadGame( int SaveSlot)
+{
+	m_statefilename = "cksave"+itoa(SaveSlot)+".ck"+itoa(m_Episode);
+
+	// This will make the CPlayGame instance call save
+	m_Command = LOAD;
+
+	return true;
+}
+
 // This function writes all the data from the CPlayGame and CMenu Instances to a file,
 // closes it and flushes the data block.
 bool CSavedGame::save()

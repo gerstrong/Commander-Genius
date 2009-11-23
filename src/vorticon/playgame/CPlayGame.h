@@ -53,7 +53,7 @@ public:
 	void createPlayerObjects();
 
 	// Game states
-	bool loadGameState(int slot);
+	bool loadGameState();
 	bool saveGameState();
 
 	void process();

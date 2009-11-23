@@ -20,9 +20,9 @@
 #define SELMOVE_SPD         3
 
 CMenu::CMenu( char menu_mode, std::string &GamePath,
-			  char &Episode, CMap &Map, CSavedGame &SavedGame ) :
-			  m_Episode(Episode), m_GamePath(GamePath),
-			  m_Map(Map), m_SavedGame(SavedGame)
+			 char &Episode, CMap &Map, CSavedGame &SavedGame ) :
+m_Episode(Episode), m_GamePath(GamePath),
+m_Map(Map), m_SavedGame(SavedGame)
 {
 	// Create the Main Menu
 	mp_MenuSurface = g_pVideoDriver->FGLayerSurface;
@@ -30,6 +30,7 @@ CMenu::CMenu( char menu_mode, std::string &GamePath,
 	m_Difficulty = -1; // no difficulty chosen...
 	m_NumPlayers = 0; // no player chosen...
 	
+	m_lastselect = -1;
 	m_demoback = false;
 	m_overwrite = false;
 	m_quit = false;
@@ -86,7 +87,7 @@ bool CMenu::init( char menu_type )
 	
 	// Load the state-file list
 	m_StateFileList = m_SavedGame.getSlotList();
-
+	
 	return true;
 }
 
@@ -249,7 +250,10 @@ void CMenu::initSaveMenu()
 	{
 		text = "";
 		if(i <= m_StateFileList.size())
+		{
 			text = m_StateFileList.at(i-1);
+			mp_Dialog->m_name = text;
+		}
 		if(text == "")
 			text = "     EMPTY       ";
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, i, text);
@@ -1030,6 +1034,7 @@ void CMenu::processEndGameMenu()
 // TODO: PLease put more comments in order to understand what is supposed to be done.
 void CMenu::processSaveMenu()
 {
+	std::string text;
 	if( m_selection != -1)
 	{
 		if(mp_Dialog->m_key == 'u')
@@ -1040,11 +1045,20 @@ void CMenu::processSaveMenu()
 				mp_Dialog->m_key = 't';
 				m_selection = -1;
 			}
+			else if(m_overwrite == true)
+			{
+				mp_Dialog->processInput(int(m_lastselect));
+				mp_Dialog->m_name = "";
+				mp_Dialog->m_key = 't';
+				m_selection = -1;
+				m_lastselect = -1;
+				m_overwrite = false;
+			}
 			else if(mp_Dialog->m_name != "")
 			{
+				m_lastselect = m_selection;
 				cleanup();
 				init(OVERWRITE);
-				// TODO: And what if we don't have to overwrite??
 			}
 			else
 			{
@@ -1058,6 +1072,8 @@ void CMenu::processSaveMenu()
 			{
 				mp_Dialog->setObjectText(m_selection, "Untitled");
 				mp_Dialog->m_name = "Untitled";
+				m_saveslot = int(m_selection) + 1;
+				m_SavedGame.prepareSaveGame(m_saveslot, mp_Dialog->m_name);
 			}
 			else
 			{
@@ -1069,21 +1085,26 @@ void CMenu::processSaveMenu()
 			m_selection = -1;
 		}
 	}
+	else
+	{
+		m_selection = m_lastselect;
+	}
 	
 	if(m_goback)
 	{
-		cleanup();
-		init(MAIN);
+			cleanup();
+			init(MAIN);
 	}
 	return;
 }
 
 void CMenu::processLoadMenu()
 {
-	/*if( m_selection != -1)
-	{
-		m_saveload = 'l';
-	}*/
+	if( m_selection != -1)
+	 {
+	 m_saveslot = int(m_selection) + 1;
+	 m_SavedGame.prepareLoadGame(m_saveslot);
+	 }
 	
 	if(m_goback)
 	{

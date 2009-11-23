@@ -117,7 +117,7 @@ int CDialog::getSelection()
 ///
 // Process routine
 ///
-void CDialog::processInput()
+void CDialog::processInput(int move)
 {
 	if( m_key == 't' )
 	{
@@ -152,6 +152,8 @@ void CDialog::processInput()
 	}
 	else
 	{
+		if(move != 0)
+			m_selected_ID += move;
 		do
 		{
 			if(!m_dlgobject.at(m_selected_ID)->m_selectable)

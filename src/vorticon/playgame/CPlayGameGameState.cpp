@@ -10,10 +10,10 @@
 ///////////////////////////
 // Game State Management //
 ///////////////////////////
-bool CPlayGame::loadGameState(int slot)
+bool CPlayGame::loadGameState()
 {
 	// TODO: Add Code here!
-	return false;
+	return m_SavedGame.load();
 }
 
 bool CPlayGame::saveGameState()

@@ -184,10 +184,10 @@ void CPlayGame::process()
 			{
 				saveGameState();
 			}
-			/*else if(mp_Menu->getLoadGame())
+			else if(m_SavedGame.getCommand() == CSavedGame::LOAD)
 			{
-				loadGameState(mp_Menu->getSaveSlot());
-			}*/
+				loadGameState();
+			}
 		}
 	}
 	else if(!m_paused) // Game is not paused

@@ -36,6 +36,7 @@ public:
 	void readData(char *buffer, Uint32 size, std::ifstream &StateFile);
 
 	bool prepareSaveGame( int SaveSlot, const std::string &Name);
+	bool prepareLoadGame( int SaveSlot);
 
 	// Encoder/Decoder Classes
 	template <class T>
@@ -46,7 +47,7 @@ public:
 	void addData(uchar *data, Uint32 size);
 
 	bool save();
-	bool load(int slot);
+	bool load() { return false; }
 	
 	char getCommand() { return m_Command; }
 
