@@ -30,6 +30,7 @@ public:
 
 	// Getters
 	std::vector<std::string> getSlotList();
+	Uint32 getSlotNumber(const std::string &filename);
 	std::string getSlotName(const std::string &filename);
 	Uint32 getDataSize(std::ifstream &StateFile);
 	void readData(char *buffer, Uint32 size, std::ifstream &StateFile);

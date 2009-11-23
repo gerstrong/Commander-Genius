@@ -29,7 +29,6 @@ void initgame(stLevelControl *p_levelcontrol);
 // Initialization Routines
 CSavedGame::CSavedGame() {
 	m_Command = NONE;
-	m_datablock.push_back(SAVEGAMEVERSION);
 }
 
 void CSavedGame::setEpisode(char Episode){
@@ -38,16 +37,17 @@ void CSavedGame::setEpisode(char Episode){
 
 // Retrieves the data size of the next block
 Uint32 CSavedGame::getDataSize(std::ifstream &StateFile) {
-	Uint32 size;
-	for(int i=0 ; i<sizeof(Uint32) ; i++) {
+	Uint32 size=0;
+	for(Uint32 i=0 ; i<sizeof(Uint32) ; i++) {
 		size += StateFile.get() << (i*8);
 	}
+	return size;
 }
 
 // Read the data of size and stores it in the buffer
 void CSavedGame::readData(char *buffer, Uint32 size, std::ifstream &StateFile) {
-	for(int i=0 ; i<size ; i++) {
-		buffer[i] = StateFile.get() << (i*8);
+	for(Uint32 i=0 ; i<size ; i++) {
+		buffer[i] = StateFile.get();
 	}
 }
 
@@ -55,7 +55,7 @@ void CSavedGame::readData(char *buffer, Uint32 size, std::ifstream &StateFile) {
 // Adds data of size to the main data block
 void CSavedGame::addData(uchar *data, Uint32 size) {
 	for(Uint32 i=0 ; i<sizeof(Uint32) ; i++ )
-		m_datablock.push_back(size>>(i*8));
+		m_datablock.push_back((size>>(i*8))&0xFF);
 	for(Uint32 i=0 ; i<size ; i++ )
 		m_datablock.push_back(data[i]);
 }
@@ -86,26 +86,39 @@ std::vector<std::string> CSavedGame::getSlotList()
 	StateFileListFiller sfilelist;
 	FindFiles(sfilelist, "", false, FM_REG);
 
-	// TODO: The conversion to the names is still missing!
-
-	printf("-------------------------------------------------------\n");
-	printf("------------StateList----------------------------------\n");
 	std::set<std::string>::iterator i;
+	Uint32 slot_counter = 1;
 	for( i=sfilelist.list.begin() ; i!=sfilelist.list.end() ; i++ )
 	{
 		buf = i->substr(i->size()-1);
 
+		// Check if the file fits to this episode
 		if(atoi(buf) == m_Episode)
 		{
 			buf = getSlotName(*i);
-			printf("%s\n", buf.c_str());
+
+			while(getSlotNumber(*i) != slot_counter)
+			{
+				filelist.push_back("");
+				slot_counter++;
+			}
+
 			filelist.push_back(buf);
+			slot_counter++;
 		}
 	}
-	printf("-------------------------------------------------------\n");
-
 
 	return filelist;
+}
+
+// From judging the filename it tells you at what position this slot was saved!
+Uint32 CSavedGame::getSlotNumber(const std::string &filename)
+{
+	int pos = filename.find("cksave") + strlen("cksave");
+	std::string buf = filename.substr(pos);
+	buf = buf.substr(0, buf.size()-sizeof(".ck"));
+
+	return atoi(buf);
 }
 
 // This method returns the name of the slot
@@ -119,16 +132,20 @@ std::string CSavedGame::getSlotName(const std::string &filename)
 	// Check Savegame version
 	version = StateFile.get();
 
-	if(version != SAVEGAMEVERSION) {
-		SlotName = "File Incompatible";
+	if(version != SAVEGAMEVERSION)
+	{
+		SlotName = "- File Incompatible -";
 	}
-	else {
+	else
+	{
 		// read the slot name
-		/*Uint32 size = getDataSize(StateFile);
-		char buf[size];
+		Uint32 size = StateFile.get();
+		char *buf;
+		buf = new char[size+1];
 		readData( buf, size, StateFile);
-		SlotName = buf;*/
-		SlotName = "Work In Progress!";
+		buf[size] = '\0';
+		SlotName = buf;
+		delete buf;
 	}
 
 	StateFile.close();
@@ -167,15 +184,34 @@ bool CSavedGame::save()
     // in no time!
 	addData( (uchar*)m_statename.c_str(), m_statename.size() );
 
+	// TODO: No go! This data must be written as header...
+
 	// TODO: Compression has still to be done!
 
 	// Convert everything to a primitive data structure
-	Uint32 size = m_datablock.size();
+	// First pass the header, which is only version,
+	// sizeofname and name of slot itself
+	Uint32 offset = 0;
+	Uint32 size = sizeof(SAVEGAMEVERSION)
+				+ sizeof(char)
+				+ m_statename.size()*sizeof(char);
+
+	size += m_datablock.size();
+	// Headersize + Datablock size
 	char *primitive_buffer = new char[size];
 
+	// Write the header
+	primitive_buffer[offset++] = SAVEGAMEVERSION;
+	primitive_buffer[offset++] = m_statename.size();
+
+	for( Uint32 i=0; i<m_statename.size() ; i++ ){
+		primitive_buffer[offset++] = m_statename[i];
+	}
+
+	// Write the collected data block
 	std::vector<char>::iterator pos = m_datablock.begin();
-	for( Uint32 i=0; i<size ; i++ ){
-		primitive_buffer[i] = *pos;
+	for( Uint32 i=0; i<m_datablock.size() ; i++ ){
+		primitive_buffer[offset++] = *pos;
 		pos++;
 	}
 
@@ -184,7 +220,6 @@ bool CSavedGame::save()
 	StateFile.close();
 
 	m_datablock.clear();
-	m_datablock.push_back(SAVEGAMEVERSION);
 
 	// Done!
 	g_pLogFile->textOut("File \""+ fullpath +"\" was sucessfully saved. Size: "+itoa(size)+"\n");
