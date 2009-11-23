@@ -5,6 +5,8 @@
 #include "CObject.h"
 #include "options.h"
 #include "infoscenes/CStory.h"
+#include "../vorticon/COrderingInfo.h"
+#include "CCredits.h"
 
 #include "../StringUtils.h"
 #include "../CGameControl.h"
@@ -220,13 +222,15 @@ void CMenu::initControlMenu()
 
 void CMenu::initF1Menu()
 {
-	mp_Dialog = new CDialog(mp_MenuSurface, 18, 7);
+	mp_Dialog = new CDialog(mp_MenuSurface, 18, 9);
 	
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "The Game");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "The Story");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Ordering Info");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "About ID");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "About CG");
+	mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 1, "The Menu");
+	mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 2, "The Game");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "The Story");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Ordering Info");
+	mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 5, "About ID");
+	mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 6, "About CG");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "Credits");
 	
 	// In the Help system let's hide all objects like Bitmaps, players, enemies, etc.
 	m_hideobjects = true;
@@ -956,21 +960,27 @@ void CMenu::processF1Menu()
 		switch(m_selection)
 		{
 				/*case 0:
-				 mp_InfoScene = new CAboutGame();
+				 mp_InfoScene = new CHelp(m_GamePath, m_Episode, "Menu");
+				 break;
+				 case 1:
+				 mp_InfoScene = new CHelp(m_GamePath, m_Episode, "Game");
 				 break;*/
-			case 1:
+			case 2:
 				m_Map.m_animation_enabled = false;
 				mp_InfoScene = new CStory(m_GamePath, m_Episode);
 				break;
-				/*case 2:
-				 mp_InfoScene = new COrderingInfo();
+				case 3:
+				mp_InfoScene = new COrderingInfo(m_GamePath, m_Episode);
+				break;
+				/*case 4:
+				 mp_InfoScene = new CAbout(m_GamePath, m_Episode, "ID");
 				 break;
-				 case 3:
-				 mp_InfoScene = new CAboutID();
-				 break;
-				 case 4:
-				 mp_InfoScene = new CCredits();
+				 case 5:
+				 mp_InfoScene = new CAbout(m_GamePath, m_Episode, "CG");
 				 break;*/
+				 case 6:
+				 mp_InfoScene = new CCredits(m_GamePath, m_Episode);
+				 break;
 		}
 		m_selection = -1;
 	}

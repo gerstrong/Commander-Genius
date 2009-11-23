@@ -10,13 +10,15 @@
 
 #include <vector>
 #include <string>
+#include "../common/infoscenes/CInfoScene.h"
+#include "../common/CMap.h"
 
-class COrderingInfo {
+class COrderingInfo : public CInfoScene {
 public:
-	COrderingInfo(SDL_Surface *Surface, int episode, std::string& datadirectory);
+	COrderingInfo(std::string &datadirectory, char &episode);
 	virtual ~COrderingInfo();
 	
-	void Render(stCloneKeenPlus *pCKP);
+	void process();
 	
 private:
 	std::vector<int> m_Text_Coordinate;
@@ -24,7 +26,9 @@ private:
 	
 	int m_starty;			// start of y-coordinate in textheights
 	int m_numberoflines;	// number of lines to print
-	SDL_Surface *m_Surface;
+	
+	CMap *mp_Map;
+	SDL_Surface *mp_Scrollsurface;
 };
 
 #endif /* CORDERINGINFO_H_ */

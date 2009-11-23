@@ -8,12 +8,21 @@
 #ifndef CCREDITS_H_
 #define CCREDITS_H_
 
-class CCredits {
+#include <vector>
+#include <string>
+#include "../common/infoscenes/CInfoScene.h"
+#include "../common/CMap.h"
+
+class CCredits : public CInfoScene {
 public:
-	CCredits();
+	CCredits(std::string &datadirectory, char &episode);
 	virtual ~CCredits();
 	
-	void Render(stCloneKeenPlus *pCKP);
+	void process();
+	
+private:
+	CMap *mp_Map;
+	SDL_Surface *mp_Scrollsurface;
 };
 
 #endif /* CCREDITS_H_ */

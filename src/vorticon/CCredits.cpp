@@ -11,22 +11,28 @@
 #include "../sdl/CVideoDriver.h"
 #include "../graphics/CGfxEngine.h"
 #include "../include/gamedo.h"
+#include "../common/CMapLoader.h"
 
-CCredits::CCredits() {
+CCredits::CCredits(std::string &datadirectory, char &episode) {
+	mp_Scrollsurface = g_pVideoDriver->ScrollSurface;
+	mp_Map = new CMap(mp_Scrollsurface, g_pGfxEngine->Tilemap);
+	CMapLoader Maploader(mp_Map);
+	
+	Maploader.load(episode, 90, datadirectory);
+	mp_Map->gotoPos( 104<<4, 32 );
 }
 
 CCredits::~CCredits() {
-	// TODO Auto-generated destructor stub
+
 }
 
-void CCredits::Render(stCloneKeenPlus *pCKP)
+void CCredits::process()
 {
 	/*int mid[52];
 	 char scrolltext[52][80];
 	 unsigned char pagenumber = 0;
 	 int timer = 8;
 	 int scrolly = -52*8;
-	 bool cancel = false;
 	 
 	 //showmapatpos(90, 104<<4, 32, pCKP);
 	 g_pInput->flushAll();
@@ -115,15 +121,10 @@ void CCredits::Render(stCloneKeenPlus *pCKP)
 	 if(scrolly+(j<<3) > -8 && scrolly+(j<<3) < g_pVideoDriver->getGameResRect().w)
 	 g_pGfxEngine->Font->drawFont( g_pVideoDriver->FGLayerSurface, scrolltext[j], mid[j], scrolly+(j<<3), LETTER_TYPE_INVERSE);
 	 
-	 if( g_pInput->getPressedAnyCommand() )
-	 cancel = true;
-	 
-	 if(g_pInput->getExitEvent()) cancel=true;
-	 
-	 g_pInput->pollEvents();
-	 
 	 // blit the scrollbuffer to the display
 	 gamedo_frameskipping_blitonly();
 	 } while( !cancel );
 	 */
+		 if( g_pInput->getPressedAnyKey() )
+	 m_destroy_me = true;
 }

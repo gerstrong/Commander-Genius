@@ -12,10 +12,17 @@
 #include "../include/gamedo.h"
 #include "../fileio/CExeFile.h"
 #include "../graphics/CGfxEngine.h"
+#include "../sdl/CVideoDriver.h"
+#include "../common/CMapLoader.h"
 
-COrderingInfo::COrderingInfo(SDL_Surface *Surface, int episode, std::string& datadirectory) {
+COrderingInfo::COrderingInfo(std::string &datadirectory, char &episode) {
 	CExeFile *Exefile = new CExeFile(episode, datadirectory);
-	m_Surface = Surface;
+	mp_Scrollsurface = g_pVideoDriver->ScrollSurface;
+	mp_Map = new CMap(mp_Scrollsurface, g_pGfxEngine->Tilemap);
+	CMapLoader Maploader(mp_Map);
+	
+	Maploader.load(episode, 90, datadirectory);
+	mp_Map->gotoPos( 22<<4, 32 );
 	
 	// load the exe file
 	Exefile->readData();
@@ -83,36 +90,21 @@ COrderingInfo::~COrderingInfo() {
 	// TODO Auto-generated destructor stub
 }
 
-void COrderingInfo::Render(stCloneKeenPlus *pCKP)
-{
-	/*bool cancel = false;
-	 
+void COrderingInfo::process()
+{	 
 	 if(!m_Textline.size())
 	 {
 	 g_pLogFile->textOut(RED,"Sorry, but the ordering information text could not be read. Returning to the main menu...<br>");
 	 return;
 	 }
 	 
-	 //showmapatpos(90, 22<<4, 32, pCKP);
-	 
-	 do
-	 {
-	 gamedo_AnimatedTiles();
+	 mp_Map->animateAllTiles();
 	 
 	 for(int i=0 ; i<m_numberoflines ; i++)
 	 {
-	 g_pGfxEngine->Font->drawFont(m_Surface, m_Textline[i], m_Text_Coordinate[i], 8*(i+m_starty), true);
+	 g_pGfxEngine->Font->drawFont(mp_Scrollsurface, m_Textline[i], m_Text_Coordinate[i]-160, 8*(i+4+m_starty), 1);
 	 }
-	 
-	 if( g_pInput->getPressedAnyCommand() )
-	 cancel = true;
-	 
-	 if(g_pInput->getExitEvent()) cancel=true;
-	 
-	 g_pInput->pollEvents();
-	 // blit the scrollbuffer to the display
-	 gamedo_frameskipping_blitonly();
-	 
-	 } while( !cancel );
-	 */
+	
+	if(g_pInput->getPressedAnyKey())
+		m_destroy_me=true;
 }
