@@ -242,11 +242,17 @@ void CMenu::initConfirmMenu()
 
 void CMenu::initSaveMenu()
 {
+	std::string text;
 	mp_Dialog = new CDialog(mp_MenuSurface, 0, 0, 22, 12, 'u');
 	
 	for(int i=1;i<=10;i++)
 	{
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, i, "     EMPTY       ");
+		text = "";
+		if(i <= m_StateFileList.size())
+			text = m_StateFileList.at(i-1);
+		if(text == "")
+			text = "     EMPTY       ";
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, i, text);
 	}
 }
 

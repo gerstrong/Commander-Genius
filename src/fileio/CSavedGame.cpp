@@ -8,7 +8,6 @@
  */
 
 #include "../keen.h"
-#include "../externals.h"
 #include "../game.h"
 #include "../CLogFile.h"
 #include "../graphics/CGfxEngine.h"
@@ -87,7 +86,6 @@ std::vector<std::string> CSavedGame::getSlotList()
 	FindFiles(sfilelist, "", false, FM_REG);
 
 	std::set<std::string>::iterator i;
-	Uint32 slot_counter = 1;
 	for( i=sfilelist.list.begin() ; i!=sfilelist.list.end() ; i++ )
 	{
 		buf = i->substr(i->size()-1);
@@ -95,16 +93,13 @@ std::vector<std::string> CSavedGame::getSlotList()
 		// Check if the file fits to this episode
 		if(atoi(buf) == m_Episode)
 		{
+			Uint32 pos = getSlotNumber(*i)-1;
 			buf = getSlotName(*i);
 
-			while(getSlotNumber(*i) != slot_counter)
-			{
-				filelist.push_back("");
-				slot_counter++;
-			}
+			if(pos+1 > filelist.size())
+				filelist.resize(pos+1, "");
 
-			filelist.push_back(buf);
-			slot_counter++;
+			filelist.at(pos) = buf;
 		}
 	}
 
@@ -179,15 +174,6 @@ bool CSavedGame::save()
     	return false;
     }
 
-	// Save the name of the gamestate (not the filename)
-    // NOTE: This part stays uncompressed in future, so the list of the menu is generated
-    // in no time!
-	addData( (uchar*)m_statename.c_str(), m_statename.size() );
-
-	// TODO: No go! This data must be written as header...
-
-	// TODO: Compression has still to be done!
-
 	// Convert everything to a primitive data structure
 	// First pass the header, which is only version,
 	// sizeofname and name of slot itself
@@ -215,6 +201,8 @@ bool CSavedGame::save()
 		pos++;
 	}
 
+	// TODO: Compression has still to be done!
+
 	// Now write all the data to the file
     StateFile.write( primitive_buffer, size );
 	StateFile.close();
@@ -228,183 +216,7 @@ bool CSavedGame::save()
 	m_statename.clear();
 
 	return true;
-
-	// Depreciated Code
-	/*FILE *fp;
-	 std::string fname;
-	 
-	 fname = "";
-	 fname += DataDirectory;
-	 fname += "/ep";
-	 fname += mp_levelcontrol->episode + '0';
-	 fname += "save";
-	 fname += slot+'0';
-	 fname += ".dat";
-	 
-	 g_pLogFile->textOut("Saving game...\n");
-	 fp = OpenGameFile(fname, "wb");
-	 if (!fp) return 1;*/
-
-	 /*fprintf(fp, "CKSAVE%c", SAVEGAMEVERSION);
-	 fputc(mp_levelcontrol->episode, fp);
-	 fputc(mp_levelcontrol->curlevel, fp);
-	 //fputc(player[0].inventory.lives, fp);
-	 fputc(numplayers, fp);
-	 fputc(primaryplayer, fp);
-	 fputc(name, fp);
-	 
-	 sgrle_compress(fp, (unsigned char *) mp_levelcontrol, sizeof(*mp_levelcontrol));
-	 sgrle_compress(fp, (unsigned char *)&scroll_x, sizeof(scroll_x));
-	 sgrle_compress(fp, (unsigned char *)&scrollx_buf, sizeof(scrollx_buf));
-	 sgrle_compress(fp, (unsigned char *)&scrollpix, sizeof(scrollpix));
-	 sgrle_compress(fp, (unsigned char *)&mapx, sizeof(mapx));
-	 sgrle_compress(fp, (unsigned char *)&mapxstripepos, sizeof(mapxstripepos));
-	 
-	 sgrle_compress(fp, (unsigned char *)&scroll_y, sizeof(scroll_y));
-	 sgrle_compress(fp, (unsigned char *)&scrolly_buf, sizeof(scrolly_buf));
-	 sgrle_compress(fp, (unsigned char *)&scrollpixy, sizeof(scrollpixy));
-	 sgrle_compress(fp, (unsigned char *)&mapy, sizeof(mapy));
-	 sgrle_compress(fp, (unsigned char *)&mapystripepos, sizeof(mapystripepos));
-	 
-	 sgrle_compress(fp, (unsigned char *)&max_scroll_x, sizeof(max_scroll_x));
-	 sgrle_compress(fp, (unsigned char *)&max_scroll_y, sizeof(max_scroll_y));
-	 
-	 sgrle_compress(fp, (unsigned char *)&map, sizeof(map));
-	 
-	 fputi(highest_objslot, fp);
-	 //sgrle_compress(fp, (unsigned char *)&objects[0], sizeof(objects));
-	 sgrle_compress(fp, (unsigned char *)&tiles[0], sizeof(tiles));
-	 
-	 for(unsigned i=0;i<numplayers;i++)
-	 //sgrle_compress(fp, (unsigned char *)&player[i], sizeof(player[i]));
-	 
-	 // save state of partially-opened doors
-	 CSprite **sprites = &g_pGfxEngine->Sprite[0];
-	 
-	 fputc(sprites[DOOR_YELLOW_SPRITE]->getWidth(), fp);
-	 fputc(sprites[DOOR_RED_SPRITE]->getWidth(), fp);
-	 fputc(sprites[DOOR_GREEN_SPRITE]->getWidth(), fp);
-	 fputc(sprites[DOOR_BLUE_SPRITE]->getWidth(), fp);
-	 
-	 fclose(fp);*/
 }
-
-
-bool CSavedGame::IsValidSaveGame(std::string fname)
-{
-	/*FILE *fp;
-	unsigned int i;
-	const char *verify = "CKSAVE";
-	fp = OpenGameFile(fname, "rb");
-	if (!fp) return false;
-	
-	for(i=0;i<strlen(verify);i++)
-	{
-		if (fgetc(fp) != verify[i])
-		{
-			fclose(fp);
-			return false;
-		}
-	}
-	if (fgetc(fp) != SAVEGAMEVERSION)
-	{
-		fclose(fp);
-		return false;
-	}
-	fclose(fp);*/
-	return true;
-}
-
-// this is seperated out of game_load for modularity because menumanager.c
-// also uses it, in it's save-game "preview" menu on the load game screen
-void CSavedGame::readHeader(FILE *fp, uchar *episode, uchar *level, uchar *num_players, uchar *primary_player, uchar *name)
-{
-	fseek(fp, SG_HEADERSIZE, SEEK_SET);		// skip past the CKSAVE%c
-	*episode = fgetc(fp);
-	*level = fgetc(fp);
-	*num_players = fgetc(fp);
-	*primary_player = fgetc(fp);
-	*name = fgetc(fp);
-}
-
-/*void CSavedGame::loadGame(int slot)
-{
-	/*FILE *fp;
-	 std::string fname;
-	 unsigned char episode, level, lives;
-	 unsigned int i;
-	 
-	 fname = "";
-	 fname += DataDirectory;
-	 fname += "/ep";
-	 fname += mp_levelcontrol->episode + '0';
-	 fname += "save";
-	 fname += slot+'0';
-	 fname += ".dat";
-	 
-	 if (!IsValidSaveGame(fname))
-	 {
-	 g_pLogFile->ftextOut("%s is not a valid save-game.\n", fname.c_str());
-	 return false;
-	 }
-	 
-	 g_pLogFile->ftextOut("Loading game from file %s\n", fname.c_str());
-	 fp = OpenGameFile(fname, "rb");
-	 if (!fp) { g_pLogFile->ftextOut("unable to open %s\n",fname.c_str()); return 1; }
-	 
-	 readHeader(fp, &episode, &level, &lives, &numplayers);
-	 
-	 mp_levelcontrol->episode = episode;
-	 mp_levelcontrol->curlevel = level;
-	 //player[0].inventory.lives = lives;
-	 
-	 g_pLogFile->ftextOut("game_load: restoring structures...\n");
-	 primaryplayer = fgetc(fp);
-	 
-	 sgrle_compress(fp, (unsigned char *) mp_levelcontrol, sizeof(*mp_levelcontrol));
-	 
-	 // note that we don't have to load the LEVEL, because the state
-	 // of the map is already saved inside the save-game.
-	 sgrle_initdecompression();
-	 if (sgrle_decompress(fp, (unsigned char *) mp_levelcontrol, sizeof(*mp_levelcontrol))) return 1;
-	 
-	 if (sgrle_decompress(fp, (unsigned char *)&scroll_x, sizeof(scroll_x))) return 1;
-	 if (sgrle_decompress(fp, (unsigned char *)&scrollx_buf, sizeof(scrollx_buf))) return 1;
-	 if (sgrle_decompress(fp, (unsigned char *)&scrollpix, sizeof(scrollpix))) return 1;
-	 if (sgrle_decompress(fp, (unsigned char *)&mapx, sizeof(mapx))) return 1;
-	 if (sgrle_decompress(fp, (unsigned char *)&mapxstripepos, sizeof(mapxstripepos))) return 1;
-	 
-	 if (sgrle_decompress(fp, (unsigned char *)&scroll_y, sizeof(scroll_y))) return 1;
-	 if (sgrle_decompress(fp, (unsigned char *)&scrolly_buf, sizeof(scrolly_buf))) return 1;
-	 if (sgrle_decompress(fp, (unsigned char *)&scrollpixy, sizeof(scrollpixy))) return 1;
-	 if (sgrle_decompress(fp, (unsigned char *)&mapy, sizeof(mapy))) return 1;
-	 if (sgrle_decompress(fp, (unsigned char *)&mapystripepos, sizeof(mapystripepos))) return 1;
-	 
-	 if (sgrle_decompress(fp, (unsigned char *)&max_scroll_x, sizeof(max_scroll_x))) return 1;
-	 if (sgrle_decompress(fp, (unsigned char *)&max_scroll_y, sizeof(max_scroll_y))) return 1;
-	 
-	 if (sgrle_decompress(fp, (unsigned char *)&map, sizeof(map))) return 1;
-	 
-	 highest_objslot = fgeti(fp);
-	 //if (sgrle_decompress(fp, (unsigned char *)&objects[0], sizeof(objects))) return 1;
-	 if (sgrle_decompress(fp, (unsigned char *)&tiles[0], sizeof(tiles))) return 1;
-	 
-	 for(i=0;i<numplayers;i++)
-	 {
-	 //if (sgrle_decompress(fp, (unsigned char *)&player[i], sizeof(player[i]))) return 1;
-	 }
-	 
-	 CSprite **sprites = &g_pGfxEngine->Sprite[0];
-	 sprites[DOOR_YELLOW_SPRITE]->setHeight(fgetc(fp));
-	 sprites[DOOR_RED_SPRITE]->setHeight(fgetc(fp));
-	 sprites[DOOR_GREEN_SPRITE]->setHeight(fgetc(fp));
-	 sprites[DOOR_BLUE_SPRITE]->setHeight(fgetc(fp));
-	 
-	 fclose(fp);
-	 
-	 g_pLogFile->ftextOut("Structures restored: map size: %d,%d\n", map.xsize, map.ysize);
-	 g_pLogFile->ftextOut("Load game OK\n");
-}*/
 
 CSavedGame::~CSavedGame() {
 	// TODO Auto-generated destructor stub

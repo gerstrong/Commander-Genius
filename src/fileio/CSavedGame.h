@@ -46,7 +46,6 @@ public:
 	void addData(uchar *data, Uint32 size);
 
 	bool save();
-	bool IsValidSaveGame(std::string fname);
 	bool load(int slot);
 	
 	char getCommand() { return m_Command; }
@@ -55,7 +54,6 @@ public:
 	virtual ~CSavedGame();
 
 private:
-	void readHeader(FILE *fp, uchar *episode, uchar *level, uchar *num_players, uchar *primary_player, uchar *name);
 	std::string m_statefilename;
 	std::string m_statename;
 	char m_Episode;
