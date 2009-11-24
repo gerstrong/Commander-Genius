@@ -20,111 +20,98 @@ CCredits::CCredits(std::string &datadirectory, char &episode) {
 	
 	Maploader.load(episode, 90, datadirectory);
 	mp_Map->gotoPos( 104<<4, 32 );
+	
+	strcpy(m_scrolltext[0],"Commander Genius");
+	strcpy(m_scrolltext[1],"aka CloneKeenPlus");
+	strcpy(m_scrolltext[2],"");
+	strcpy(m_scrolltext[3],"");
+	strcpy(m_scrolltext[4],"based on the engine of");
+	strcpy(m_scrolltext[5],"CloneKeen by Shaw");
+	strcpy(m_scrolltext[6],"");
+	strcpy(m_scrolltext[7],"");
+	strcpy(m_scrolltext[8],"");
+	strcpy(m_scrolltext[9],"Developers:");
+	strcpy(m_scrolltext[10],"");
+	strcpy(m_scrolltext[11],"Main Developers:");
+	strcpy(m_scrolltext[12],"         Gerstrong");
+	strcpy(m_scrolltext[13],"         Albert Zeyer");
+	strcpy(m_scrolltext[14],"         Pizza2004");
+	strcpy(m_scrolltext[15],"         Pickle");
+	strcpy(m_scrolltext[16],"");
+	strcpy(m_scrolltext[17],"Handheld Devices:");
+	strcpy(m_scrolltext[18],"         Pickle");
+	strcpy(m_scrolltext[19],"         Albert Zeyer");
+	strcpy(m_scrolltext[20],"");
+	strcpy(m_scrolltext[21],"Resources:");
+	strcpy(m_scrolltext[22],"         Tulip");
+	strcpy(m_scrolltext[23],"         DaVince");
+	strcpy(m_scrolltext[24],"");
+	strcpy(m_scrolltext[25],"");
+	strcpy(m_scrolltext[26],"Commander Keen");
+	strcpy(m_scrolltext[27],"Developed by");
+	strcpy(m_scrolltext[28],"ID Software");
+	strcpy(m_scrolltext[29],"");
+	strcpy(m_scrolltext[30],"Tom Hall");
+	strcpy(m_scrolltext[31],"");
+	strcpy(m_scrolltext[32],"John D. Carmack");
+	strcpy(m_scrolltext[33],"");
+	strcpy(m_scrolltext[34],"John Romero");
+	strcpy(m_scrolltext[35],"");
+	strcpy(m_scrolltext[36],"Adrian Carmack");
+	strcpy(m_scrolltext[37],"");
+	strcpy(m_scrolltext[38],"Published by");
+	strcpy(m_scrolltext[39],"Apogee");
+	strcpy(m_scrolltext[40],"");
+	strcpy(m_scrolltext[41],"Scott Miller");
+	strcpy(m_scrolltext[42],"");
+	strcpy(m_scrolltext[43],"Music by");
+	strcpy(m_scrolltext[44],"Bobby Prince");
+	strcpy(m_scrolltext[45],"");
+	strcpy(m_scrolltext[46],"Special Thanks to");
+	strcpy(m_scrolltext[47],"Katy, for making the");
+	strcpy(m_scrolltext[48],"CloneKeen Engine");
+	strcpy(m_scrolltext[49],"in the first place.");
+	strcpy(m_scrolltext[50],"");
+	strcpy(m_scrolltext[51],"The Commander Keen");
+	strcpy(m_scrolltext[52],"Community for all of");
+	strcpy(m_scrolltext[53],"the support they give.");
+	
+	m_timer = 0;
+	m_scrolly = -54*8;
 }
 
 CCredits::~CCredits() {
-
+	
 }
 
 void CCredits::process()
 {
-	/*int mid[52];
-	 char scrolltext[52][80];
-	 unsigned char pagenumber = 0;
-	 int timer = 8;
-	 int scrolly = -52*8;
-	 
-	 //showmapatpos(90, 104<<4, 32, pCKP);
-	 g_pInput->flushAll();
-	 memset(scrolltext,0,51*80);
-	 
-	 do
-	 {
-	 // do fades
-	 gamedo_AnimatedTiles();
-	 
-	 if(timer<15) timer++;
-	 else
-	 {
-	 timer=0;
-	 if(scrolly>-51*8) scrolly--;
-	 else
-	 {
-	 scrolly = g_pVideoDriver->getGameResRect().w;
-	 switch(pagenumber)
-	 {
-	 case 0:
-	 strcpy(scrolltext[0],"Commander Genius");
-	 strcpy(scrolltext[1],"Interpreter of");
-	 strcpy(scrolltext[2],"Commander Keen 1-3");
-	 strcpy(scrolltext[3],"Credits");
-	 strcpy(scrolltext[4],"");
-	 strcpy(scrolltext[5],"");
-	 strcpy(scrolltext[6],"");
-	 strcpy(scrolltext[7],"");
-	 strcpy(scrolltext[8],"based on the engine of");
-	 strcpy(scrolltext[9],"CloneKeen by Shaw");
-	 strcpy(scrolltext[10],"and");
-	 strcpy(scrolltext[11],"CloneKeenPlus by Gerstrong");
-	 strcpy(scrolltext[12],"");
-	 strcpy(scrolltext[13],"");
-	 strcpy(scrolltext[14],"");
-	 strcpy(scrolltext[15],"");
-	 strcpy(scrolltext[16],"Developers");
-	 strcpy(scrolltext[17],"of");
-	 strcpy(scrolltext[18],"Commander Genius");
-	 strcpy(scrolltext[19],"");
-	 strcpy(scrolltext[20],"Aka CloneKeenPlus");
-	 strcpy(scrolltext[21],"");
-	 strcpy(scrolltext[22],"Main Developers:");
-	 strcpy(scrolltext[23],"         Gerstrong");
-	 strcpy(scrolltext[24],"         Albert Zeyer");
-	 strcpy(scrolltext[25],"         Pizza2004");
-	 strcpy(scrolltext[26],"Handheld Devices (Wiz):");
-	 strcpy(scrolltext[27],"         Pickle");
-	 strcpy(scrolltext[28],"Resources:");
-	 strcpy(scrolltext[29],"         Tulip");
-	 strcpy(scrolltext[30],"         DaVince");
-	 strcpy(scrolltext[31],"");
-	 strcpy(scrolltext[32],"");
-	 strcpy(scrolltext[33],"\"As a child, I spent way too");
-	 strcpy(scrolltext[34],"much time playing these games.");
-	 strcpy(scrolltext[35],"Thanks to ID Software");
-	 strcpy(scrolltext[36],"for the wonderful");
-	 strcpy(scrolltext[37],"\"Commander Keen\" series.");
-	 strcpy(scrolltext[38],"");
-	 strcpy(scrolltext[39],"And now I have spent way");
-	 strcpy(scrolltext[40],"too much time programming");
-	 strcpy(scrolltext[41],"this game.");
-	 strcpy(scrolltext[42],"");
-	 strcpy(scrolltext[43],"...");
-	 strcpy(scrolltext[44],"Hmmm... Does history repeat itself?");
-	 strcpy(scrolltext[45],":)");
-	 strcpy(scrolltext[46],"");
-	 strcpy(scrolltext[47],"This is my tribute to");
-	 strcpy(scrolltext[48],"the \"Keen legacy\".");
-	 strcpy(scrolltext[49],"");
-	 strcpy(scrolltext[50],"Enjoy the Game.\"");
-	 strcpy(scrolltext[51],"               -Katy");
-	 break;
-	 
-	 default: cancel = true; break;
-	 }
-	 
-	 for(int j=0 ; j<52 ; j++)
-	 mid[j] = (320-(strlen(scrolltext[j])<<3))>>1;
-	 pagenumber++;
-	 }
-	 }
-	 
-	 for(int j=0 ; j<52 ; j++)
-	 if(scrolly+(j<<3) > -8 && scrolly+(j<<3) < g_pVideoDriver->getGameResRect().w)
-	 g_pGfxEngine->Font->drawFont( g_pVideoDriver->FGLayerSurface, scrolltext[j], mid[j], scrolly+(j<<3), LETTER_TYPE_INVERSE);
-	 
-	 // blit the scrollbuffer to the display
-	 gamedo_frameskipping_blitonly();
-	 } while( !cancel );
-	 */
-		 if( g_pInput->getPressedAnyKey() )
-	 m_destroy_me = true;
+	int mid[54];
+	
+	memset(m_scrolltext,0,53*80);
+	
+	// do fades
+	mp_Map->animateAllTiles();
+	
+	if(m_timer<15) m_timer++;
+	else
+	{
+		m_timer=0;
+		if(m_scrolly>-54*8) m_scrolly--;
+		else
+		{
+			m_scrolly = g_pVideoDriver->getGameResRect().h;
+			
+			
+			for(int j=0 ; j<54 ; j++)
+				mid[j] = (320-(strlen(m_scrolltext[j])<<3))>>1;
+		}
+	}
+	
+	for(int j=0 ; j<54 ; j++)
+		if(m_scrolly+(j<<3) > -8 && m_scrolly+(j<<3) < g_pVideoDriver->getGameResRect().h)
+			g_pGfxEngine->Font->drawFont( g_pVideoDriver->FGLayerSurface, m_scrolltext[j], mid[j], m_scrolly+(j<<3), LETTER_TYPE_INVERSE);
+	
+	if( g_pInput->getPressedAnyKey() )
+		m_destroy_me = true;
 }

@@ -295,6 +295,7 @@ void CEGASprit::LoadSpecialSprites( std::vector<CSprite*> &sprite )
 	LoadTGASprite("arrowur.tga", sprite[ARROWUR_SPRITE] );
 	LoadTGASprite("arrowu.tga", sprite[ARROWU_SPRITE] );
 	LoadTGASprite("arrowd.tga", sprite[ARROWD_SPRITE] );
+	LoadTGASprite("cglogo.tga", sprite[CG_LOGO] );
 }
 
 // This function has the task to make some items-tiles

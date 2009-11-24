@@ -21,6 +21,10 @@ public:
 	void process();
 	
 private:
+	char m_scrolltext[54][80];
+	int m_timer;
+	int m_scrolly;
+	
 	CMap *mp_Map;
 	SDL_Surface *mp_Scrollsurface;
 };
