@@ -8,7 +8,6 @@
  */
 
 #include "../FindFile.h"
-#include "../CLogFile.h"
 
 #include "CSavedGame.h"
 
@@ -22,6 +21,7 @@ char sgrle_decompress(FILE *fp, unsigned char *ptr, unsigned long nbytes);
 // Initialization Routines
 CSavedGame::CSavedGame() {
 	m_Command = NONE;
+	m_offset = 0;
 }
 
 void CSavedGame::setEpisode(char Episode){
@@ -152,17 +152,57 @@ bool CSavedGame::prepareSaveGame( int SaveSlot, const std::string &Name)
 	// This will make the CPlayGame instance call save
 	m_Command = SAVE;
 
+	m_offset = 0;
+
 	return true;
 }
 
 // This method is called by the menu. It assures that the
 // PlayGame instance will call load() and get the right data.
-bool CSavedGame::prepareLoadGame( int SaveSlot)
+bool CSavedGame::prepareLoadGame(int SaveSlot)
 {
 	m_statefilename = "cksave"+itoa(SaveSlot)+".ck"+itoa(m_Episode);
 
 	// This will make the CPlayGame instance call save
 	m_Command = LOAD;
+
+	return true;
+}
+
+bool CSavedGame::load()
+{
+	Uint32 size;
+	std::ifstream StateFile;
+	std::string fullpath = GetFullFileName(m_statefilename);
+	OpenGameFileR( StateFile, m_statefilename, std::ofstream::binary );
+
+    if (!StateFile.is_open()) {
+    	g_pLogFile->textOut("Error loading \"" + fullpath + "\". Please check the status of that file.\n" );
+    	return false;
+    }
+
+    // Skip the header as we already chose the game
+    StateFile.get(); // Skip the version info
+    size = StateFile.get(); // get the size of the slotname and...
+    for(Uint32 i=0 ; i<size ; i++)	// skip that name string
+    	StateFile.get();
+
+    m_datablock.clear();	// empty the datablock and...
+    while(!StateFile.eof()) // read it everything in
+    {
+    	m_datablock.push_back(StateFile.get());
+    }
+
+	// TODO: Decompression has still to be done!
+
+	// Now write all the data to the file
+	StateFile.close();
+
+	// Done!
+	g_pLogFile->textOut("File \""+ fullpath +"\" was sucessfully loaded. Size: "+itoa(m_datablock.size())+"\n");
+	m_Command = NONE;
+	m_statefilename.clear();
+	m_statename.clear();
 
 	return true;
 }

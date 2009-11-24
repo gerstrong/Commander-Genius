@@ -87,10 +87,7 @@ bool CMenu::init( char menu_type )
 	
 	// Use the standard Menu-Frame used in the old DOS-Games
 	mp_Dialog->setFrameTheme( DLG_THEME_OLDSCHOOL );
-	
-	// Load the state-file list
-	m_StateFileList = m_SavedGame.getSlotList();
-	
+
 	return true;
 }
 
@@ -250,6 +247,9 @@ void CMenu::initSaveMenu()
 {
 	std::string text;
 	mp_Dialog = new CDialog(mp_MenuSurface, 0, 0, 22, 12, 'u');
+
+	// Load the state-file list
+	m_StateFileList = m_SavedGame.getSlotList();
 	
 	for(Uint32 i=1;i<=10;i++)
 	{

@@ -16,6 +16,9 @@
 #include <iostream>
 #include <fstream>
 
+#include "../CLogFile.h"
+#include "../StringUtils.h"
+
 class CSavedGame {
 public:
 	enum SavedGameCommands{
@@ -43,11 +46,15 @@ public:
 	void encodeVariable(T value);
 	template <class S>
 	void encodeStruct(S structure);
+	template <class T>
+	void decodeVariable(T &variable);
+	template <class S>
+	void decodeStruct(S &structure);
 
 	void addData(uchar *data, Uint32 size);
 
 	bool save();
-	bool load() { return false; }
+	bool load();
 	
 	char getCommand() { return m_Command; }
 
@@ -59,40 +66,11 @@ private:
 	std::string m_statename;
 	char m_Episode;
 	char m_Command;
+	Uint32 m_offset;
 
 	std::vector<char> m_datablock;
 };
 
-////
-// Definition of special template functions
-////
-
-// This function is used for enconding a variable to the game data format.
-// It makes everything platform independent
-// Special case, because the usage must be known for the compiler in order to get it build correctly!
-template <class T>
-void CSavedGame::encodeVariable(T value){
-	Uint32 size = sizeof(T);
-	for( Uint32 i=0 ; i<sizeof(Uint32) ; i++ )
-		m_datablock.push_back(size>>(i*8));
-	for( Uint32 i=0 ; i<size ; i++ )
-		m_datablock.push_back( static_cast<uchar>(value>>(i*8)) );
-}
-
-// Same case as above but for structures
-template <class S>
-void CSavedGame::encodeStruct(S structure){
-	size_t size = sizeof(S);
-	uchar buf[size];
-
-	for( Uint32 i=0 ; i<sizeof(Uint32) ; i++ )
-		m_datablock.push_back(size>>(i*8));
-
-	memcpy(buf, &structure, size);
-
-	for( Uint32 i=0 ; i<size ; i++ )
-		m_datablock.push_back( buf[i] );
-}
-
+#include "CSavedGameCoder.h"
 
 #endif /* CSAVEDGAME_H_ */

@@ -13,8 +13,22 @@
 ///////////////////////////
 bool CPlayGame::loadGameState()
 {
-	// TODO: Add Code here!
-	return m_SavedGame.load();
+	// This will fill the datablock of CSavedGame object
+	if(m_SavedGame.load())
+	{
+		// Now let's decode!!
+
+		/// Save the Game in the CSavedGame object
+		// store the episode, level and difficulty
+		m_SavedGame.decodeVariable(m_Episode);
+		//m_Level = m_SavedGame.decodeVariable();
+		//m_Difficulty = m_SavedGame.decodeVariable();
+
+		// TODO: Add more Code here!
+		return true;
+	}
+
+	return false;
 }
 
 bool CPlayGame::saveGameState()
