@@ -280,6 +280,7 @@ void CMap::drawAll()
     	{
     		c = mp_data[(m_mapy+y)*m_width + x+m_mapx];
 			mp_Tilemap->drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511, ((y<<4)+m_mapystripepos)&511, c);
+			registerAnimation( ((x<<4)+m_mapxstripepos)&511, ((y<<4)+m_mapystripepos)&511, c );
     	}
     }
 }

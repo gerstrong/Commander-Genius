@@ -12,19 +12,19 @@ enum garg_states{
 
 #define GARG_MINTRAVELDIST          1000
 #define GARG_LOOK_PROB              800
-#define GARG_WALK_SPEED             3
-#define GARG_WALK_ANIM_TIME         50
-#define GARG_WALK_SPEED_FAST        5
-#define GARG_WALK_ANIM_TIME_FAST    30
-#define GARG_CHARGE_SPEED           14
-#define GARG_CHARGE_ANIM_TIME       30
-#define GARG_JUMP_HEIGHT            40
+#define GARG_WALK_SPEED             12
+#define GARG_WALK_ANIM_TIME         12
+#define GARG_WALK_SPEED_FAST        20
+#define GARG_WALK_ANIM_TIME_FAST    7
+#define GARG_CHARGE_SPEED           56
+#define GARG_CHARGE_ANIM_TIME       7
+#define GARG_JUMP_HEIGHT            160
 
-#define GARG_LOOK_TIME  70
+#define GARG_LOOK_TIME  17
 #define GARG_NUM_LOOKS  3
 
 // amount of time keen must be on same level before garg will charge
-#define GARG_SAME_LEVEL_TIME     200
+#define GARG_SAME_LEVEL_TIME     50
 
 #define GARG_STAND         60
 #define GARG_WALK_RIGHT    64
@@ -32,8 +32,7 @@ enum garg_states{
 #define GARG_DYING_FRAME   68
 #define GARG_DEAD_FRAME    69
 
-#define GARGDIE_START_INERTIA      -10
-#define GARGDIE_INERTIA_DECREASE    2
+#define GARGDIE_START_INERTIA      -80
 
 unsigned int rnd(void);
 
@@ -69,7 +68,6 @@ void CObjectAI::garg_ai(CObject *p_object, CPlayer *p_player, bool hardmode)
 	{
 		// die, you stupid garg, die!
 		p_object->ai.garg.state = GARG_DYING;
-		p_object->ai.garg.dietimer = 0;
 		p_object->canbezapped = 0;
 		p_object->sprite = GARG_DYING_FRAME;
 		p_object->zapped=0;
@@ -83,12 +81,7 @@ void CObjectAI::garg_ai(CObject *p_object, CPlayer *p_player, bool hardmode)
 	{
 		case GARG_DYING:
 			p_object->y += p_object->ai.garg.gargdie_inertia_y;
-			if (p_object->ai.garg.dietimer>GARGDIE_INERTIA_DECREASE)
-			{
-				p_object->ai.garg.gargdie_inertia_y++;
-				p_object->ai.garg.dietimer = 0;
-			}
-			else p_object->ai.garg.dietimer++;
+			p_object->ai.garg.gargdie_inertia_y+=16;
 
 			if (p_object->ai.garg.gargdie_inertia_y >= 0 && p_object->blockedd)
 			{

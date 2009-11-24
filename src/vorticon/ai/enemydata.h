@@ -30,7 +30,7 @@ typedef struct stGargData
 	int jumpheight;
 	
 	unsigned char looktimes,lookframe;
-	unsigned char timer, dietimer, keenonsameleveltimer;
+	unsigned char timer, keenonsameleveltimer;
 	unsigned char about_to_charge;
 	unsigned char walkframe;
 	unsigned int dist_traveled;
