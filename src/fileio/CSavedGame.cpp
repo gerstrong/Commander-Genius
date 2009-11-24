@@ -7,10 +7,6 @@
  *  Routines for handling save&load of savegames
  */
 
-#include "../keen.h"
-#include "../game.h"
-#include "../CLogFile.h"
-#include "../graphics/CGfxEngine.h"
 #include "../FindFile.h"
 #include "../CLogFile.h"
 
@@ -22,8 +18,6 @@
 void sgrle_initdecompression(void);
 void sgrle_compress(FILE *fp, unsigned char *ptr, unsigned long nbytes);
 char sgrle_decompress(FILE *fp, unsigned char *ptr, unsigned long nbytes);
-
-void initgame(stLevelControl *p_levelcontrol);
 
 // Initialization Routines
 CSavedGame::CSavedGame() {

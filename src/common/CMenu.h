@@ -18,7 +18,7 @@
 #include "CMap.h"
 #include "options.h"
 
-#include "infoscenes/CInfoScene.h"
+#include "../vorticon/infoscenes/CInfoScene.h"
 
 #define TWIRL_SPEED_SLOW        100
 #define TWIRL_SPEED_FAST        20
@@ -124,7 +124,7 @@ private:
 	bool m_goback;
 	bool m_Endgame;
 	bool m_quit;
-	char m_selection;
+	int m_selection;
 	char m_lastselect;
 	char m_menu_type;
 	char m_menu_mode;

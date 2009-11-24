@@ -9,28 +9,21 @@
 
 #include <stdlib.h>
 
-#include "keen.h"
+//#include "keen.h"
 #include "CGame.h"
 #include "common/CMenu.h"
-#include "game.h"
-#include "include/misc.h"
-#include "include/main.h"
-#include "include/fileio/story.h"
-#include "vorticon/CHighScores.h"
-#include "vorticon/CIntro.h"
-#include "vorticon/CCredits.h"
+//#include "game.h"
+//#include "include/misc.h"
+//#include "include/main.h"
+//#include "include/fileio/story.h"
 #include "CLogFile.h"
-#include "fileio.h"
+//#include "fileio.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/CInput.h"
 #include "sdl/CTimer.h"
 #include "sdl/sound/CSound.h"
-#include "vorticon/COrderingInfo.h"
 
 CGame::CGame() {
-}
-
-CGame::~CGame() {
 }
 
 //////////////////////////////////
@@ -120,3 +113,7 @@ void CGame::cleanup()
     g_pVideoDriver->Del();
     g_pTimer->Del();
 }
+
+CGame::~CGame() {
+}
+

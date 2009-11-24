@@ -4,9 +4,10 @@
 #include "CMenu.h"
 #include "CObject.h"
 #include "options.h"
-#include "infoscenes/CStory.h"
-#include "../vorticon/COrderingInfo.h"
-#include "CCredits.h"
+
+#include "../vorticon/infoscenes/CStory.h"
+#include "../vorticon/infoscenes/CCredits.h"
+#include "../vorticon/infoscenes/COrderingInfo.h"
 
 #include "../StringUtils.h"
 #include "../CGameControl.h"
@@ -250,7 +251,7 @@ void CMenu::initSaveMenu()
 	std::string text;
 	mp_Dialog = new CDialog(mp_MenuSurface, 0, 0, 22, 12, 'u');
 	
-	for(int i=1;i<=10;i++)
+	for(Uint32 i=1;i<=10;i++)
 	{
 		text = "";
 		if(i <= m_StateFileList.size())
@@ -684,7 +685,9 @@ void CMenu::processGraphicsMenu()
 {
 	Uint16 width = g_pVideoDriver->getWidth(), height = g_pVideoDriver->getHeight(), depth = g_pVideoDriver->getDepth();
 	Uint16 zoom = g_pVideoDriver->getZoomValue(), filter = g_pVideoDriver->getFiltermode(), gl_filter = g_pVideoDriver->getOGLFilter(), autoframeskip = g_pTimer->getFrameRate();
-	bool fsmode, aspect = g_pVideoDriver->getAspectCorrection(), opengl = g_pVideoDriver->isOpenGL();
+	bool fsmode = g_pVideoDriver->getFullscreen(),
+		 aspect = g_pVideoDriver->getAspectCorrection(),
+		 opengl = g_pVideoDriver->isOpenGL();
 	std::string buf;
 	
 	g_pVideoDriver->initResolutionList();
