@@ -52,6 +52,7 @@ public:
 	void decodeStruct(S &structure);
 
 	void addData(uchar *data, Uint32 size);
+	void readDataBlock(uchar *data);
 
 	bool save();
 	bool load();

@@ -39,7 +39,7 @@ void CSavedGame::decodeVariable(T &variable)
 
 	datasize = m_datablock[m_offset++];
 	for( Uint32 i=datasize ; i>0 ; i-- )
-		variable += m_datablock[m_offset++] << (i*8);
+		variable += m_datablock[m_offset++] << ((i-1)*8);
 
 	if(datasize != reqsize) // Check if we get the size we request
 	{

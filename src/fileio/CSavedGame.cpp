@@ -44,15 +44,6 @@ void CSavedGame::readData(char *buffer, Uint32 size, std::ifstream &StateFile) {
 	}
 }
 
-
-// Adds data of size to the main data block
-void CSavedGame::addData(uchar *data, Uint32 size) {
-	for(Uint32 i=0 ; i<sizeof(Uint32) ; i++ )
-		m_datablock.push_back((size>>(i*8))&0xFF);
-	for(Uint32 i=0 ; i<size ; i++ )
-		m_datablock.push_back(data[i]);
-}
-
 // Used here for filtering the filetypes
 struct StateFileListFiller {
 	std::set<std::string> list;
@@ -262,6 +253,29 @@ bool CSavedGame::save()
 	m_statename.clear();
 
 	return true;
+}
+
+// Adds data of size to the main data block
+void CSavedGame::addData(uchar *data, Uint32 size) {
+	for(Uint32 i=sizeof(Uint32) ; i>0 ; i-- )
+	{
+		Uint32 data;
+		data = size&(0xFF<<((i-1)*8));
+		data >>= ((i-1)*8);
+		m_datablock.push_back( static_cast<uchar>(data) );
+	}
+	for(Uint32 i=0 ; i<size ; i++ )
+		m_datablock.push_back(data[i]);
+}
+
+// Read data of size from the main data block
+void CSavedGame::readDataBlock(uchar *data) {
+	Uint32 datasize=0;
+	for(Uint32 i=sizeof(Uint32) ; i>0 ; i-- )
+		datasize += m_datablock[m_offset++] << ((i-1)*8);
+
+	memcpy(data, &m_datablock[m_offset], datasize);
+	m_offset += datasize;
 }
 
 CSavedGame::~CSavedGame() {
