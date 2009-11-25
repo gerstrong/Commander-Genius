@@ -22,27 +22,12 @@ void CSavedGame::encodeVariable(T value){
 	uchar size = sizeof(T);
 	Uint32 data;
 	m_datablock.push_back(size);
-	for( Uint32 i=size-1 ; i>=0 ; i-- )
+	for( Uint32 i=size ; i>0 ; i-- )
 	{
-		data = value&(0xFF<<(i*8));
-		data >>= (i*8);
+		data = value&(0xFF<<((i-1)*8));
+		data >>= ((i-1)*8);
 		m_datablock.push_back( static_cast<uchar>(data) );
 	}
-}
-
-// Same case as above but for structures
-template <class S>
-void CSavedGame::encodeStruct(S structure){
-	size_t size = sizeof(S);
-	uchar buf[size];
-
-	for( Uint32 i=0 ; i<sizeof(Uint32) ; i++ )
-		m_datablock.push_back(size>>(i*8));
-
-	memcpy(buf, &structure, size);
-
-	for( Uint32 i=0 ; i<size ; i++ )
-		m_datablock.push_back( buf[i] );
 }
 
 template <class T>
@@ -53,8 +38,8 @@ void CSavedGame::decodeVariable(T &variable)
 	uchar reqsize = sizeof(T);
 
 	datasize = m_datablock[m_offset++];
-	for( Uint32 i=datasize ; i>=0 ; i-- )
-		variable += m_datablock[m_offset++] <<(i*8);
+	for( Uint32 i=datasize ; i>0 ; i-- )
+		variable += m_datablock[m_offset++] << (i*8);
 
 	if(datasize != reqsize) // Check if we get the size we request
 	{
@@ -66,10 +51,52 @@ void CSavedGame::decodeVariable(T &variable)
 	}
 }
 
+// Same case as above but for structures
+template <class S>
+void CSavedGame::encodeStruct(S structure)
+{
+	size_t size = sizeof(S);
+	uchar buf[size];
+
+	for( Uint32 i=sizeof(Uint32) ; i>0 ; i-- )
+	{
+		Uint32 data;
+		data = size&(0xFF<<((i-1)*8));
+		data >>= ((i-1)*8);
+		m_datablock.push_back( static_cast<uchar>(data) );
+	}
+
+	memcpy(buf, &structure, size);
+
+	for( Uint32 i=0 ; i<size ; i++ )
+		m_datablock.push_back( buf[i] );
+}
+
 template <class S>
 void CSavedGame::decodeStruct(S &structure)
 {
+	size_t det_size = 0;
+	size_t req_size = sizeof(S);
 
+	for( Uint32 i=sizeof(Uint32) ; i>0 ; i-- )
+		det_size += m_datablock[m_offset++]<<((i-1)*8);
+
+	if( det_size > req_size ) // This implementation is used for fixing errors in the file
+	{
+		uchar data[req_size];
+		for(size_t i=0 ; i<req_size ; i++)
+			data[i]=m_datablock[m_offset++];
+
+		memcpy(&structure, data, req_size);
+	}
+	else
+	{
+		uchar data[det_size];
+		for(size_t i=0 ; i<det_size ; i++)
+			data[i]=m_datablock[m_offset++];
+
+		memcpy(&structure, data, det_size);
+	}
 }
 
 #endif /* CSAVEDGAMECODER_H_ */
