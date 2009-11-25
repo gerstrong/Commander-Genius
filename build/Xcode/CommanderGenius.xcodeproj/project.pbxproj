@@ -18,6 +18,8 @@
 		2357564F101A5F8F00275638 /* Vorbis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564D101A5F8F00275638 /* Vorbis.framework */; };
 		23575696101A6BE600275638 /* Ogg.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564C101A5F8F00275638 /* Ogg.framework */; };
 		23575697101A6BE600275638 /* Vorbis.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564D101A5F8F00275638 /* Vorbis.framework */; };
+		6306E1D510BC922900E08CB9 /* CAbout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6306E1D110BC922900E08CB9 /* CAbout.cpp */; };
+		6306E1D610BC922900E08CB9 /* CHelp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6306E1D310BC922900E08CB9 /* CHelp.cpp */; };
 		630713BF10B77990004837D2 /* CPlayGameGameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 630713BE10B77990004837D2 /* CPlayGameGameState.cpp */; };
 		630CB33A10BC3BC100E7EEAA /* cgabout.tga in Resources */ = {isa = PBXBuildFile; fileRef = 630CB33910BC3BC000E7EEAA /* cgabout.tga */; };
 		634A33DF10A233D50051193D /* CEndingEp1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 634A33D710A233D50051193D /* CEndingEp1.cpp */; };
@@ -576,6 +578,10 @@
 		23D3EE5A10176098001643FA /* CrashHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CrashHandler.h; sourceTree = "<group>"; };
 		5048396D09E3307300765E4B /* CommanderGeniusProj.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = CommanderGeniusProj.xcconfig; sourceTree = "<group>"; };
 		5048396E09E3307300765E4B /* CommanderGeniusTarget.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = CommanderGeniusTarget.xcconfig; sourceTree = "<group>"; };
+		6306E1D110BC922900E08CB9 /* CAbout.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAbout.cpp; sourceTree = "<group>"; };
+		6306E1D210BC922900E08CB9 /* CAbout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAbout.h; sourceTree = "<group>"; };
+		6306E1D310BC922900E08CB9 /* CHelp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CHelp.cpp; sourceTree = "<group>"; };
+		6306E1D410BC922900E08CB9 /* CHelp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHelp.h; sourceTree = "<group>"; };
 		630713BE10B77990004837D2 /* CPlayGameGameState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlayGameGameState.cpp; sourceTree = "<group>"; };
 		630CB2F610BC334600E7EEAA /* CSavedGameCoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSavedGameCoder.h; sourceTree = "<group>"; };
 		630CB33910BC3BC000E7EEAA /* cgabout.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = cgabout.tga; sourceTree = "<group>"; };
@@ -1288,6 +1294,10 @@
 				23C637D9103181BF00FEEFEE /* COrderingInfo.cpp */,
 				23C637DA103181BF00FEEFEE /* COrderingInfo.h */,
 				63A4D2E810B2F2FF00F353C0 /* CStory.cpp */,
+				6306E1D110BC922900E08CB9 /* CAbout.cpp */,
+				6306E1D210BC922900E08CB9 /* CAbout.h */,
+				6306E1D310BC922900E08CB9 /* CHelp.cpp */,
+				6306E1D410BC922900E08CB9 /* CHelp.h */,
 				63A4D2E910B2F2FF00F353C0 /* CStory.h */,
 			);
 			path = infoscenes;
@@ -1563,6 +1573,8 @@
 				63A4D2EA10B2F2FF00F353C0 /* CInfoScene.cpp in Sources */,
 				63A4D2EB10B2F2FF00F353C0 /* CStory.cpp in Sources */,
 				630713BF10B77990004837D2 /* CPlayGameGameState.cpp in Sources */,
+				6306E1D510BC922900E08CB9 /* CAbout.cpp in Sources */,
+				6306E1D610BC922900E08CB9 /* CHelp.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

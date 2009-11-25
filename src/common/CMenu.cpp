@@ -8,6 +8,8 @@
 #include "../vorticon/infoscenes/CStory.h"
 #include "../vorticon/infoscenes/CCredits.h"
 #include "../vorticon/infoscenes/COrderingInfo.h"
+#include "../vorticon/infoscenes/CAbout.h"
+#include "../vorticon/infoscenes/CHelp.h"
 
 #include "../StringUtils.h"
 #include "../CGameControl.h"
@@ -87,7 +89,7 @@ bool CMenu::init( char menu_type )
 	
 	// Use the standard Menu-Frame used in the old DOS-Games
 	mp_Dialog->setFrameTheme( DLG_THEME_OLDSCHOOL );
-
+	
 	return true;
 }
 
@@ -222,12 +224,12 @@ void CMenu::initF1Menu()
 {
 	mp_Dialog = new CDialog(mp_MenuSurface, 18, 9);
 	
-	mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 1, "The Menu");
-	mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 2, "The Game");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "The Menu");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "The Game");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "The Story");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Ordering Info");
-	mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 5, "About ID");
-	mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 6, "About CG");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "About ID");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "About CG");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "Credits");
 	
 	// In the Help system let's hide all objects like Bitmaps, players, enemies, etc.
@@ -247,7 +249,7 @@ void CMenu::initSaveMenu()
 {
 	std::string text;
 	mp_Dialog = new CDialog(mp_MenuSurface, 0, 0, 22, 12, 'u');
-
+	
 	// Load the state-file list
 	m_StateFileList = m_SavedGame.getSlotList();
 	
@@ -686,8 +688,8 @@ void CMenu::processGraphicsMenu()
 	Uint16 width = g_pVideoDriver->getWidth(), height = g_pVideoDriver->getHeight(), depth = g_pVideoDriver->getDepth();
 	Uint16 zoom = g_pVideoDriver->getZoomValue(), filter = g_pVideoDriver->getFiltermode(), gl_filter = g_pVideoDriver->getOGLFilter(), autoframeskip = g_pTimer->getFrameRate();
 	bool fsmode = g_pVideoDriver->getFullscreen(),
-		 aspect = g_pVideoDriver->getAspectCorrection(),
-		 opengl = g_pVideoDriver->isOpenGL();
+	aspect = g_pVideoDriver->getAspectCorrection(),
+	opengl = g_pVideoDriver->isOpenGL();
 	std::string buf;
 	
 	g_pVideoDriver->initResolutionList();
@@ -962,28 +964,28 @@ void CMenu::processF1Menu()
 		// no cleanups here, because later we return back to that menu
 		switch(m_selection)
 		{
-				/*case 0:
-				 mp_InfoScene = new CHelp(m_GamePath, m_Episode, "Menu");
-				 break;
-				 case 1:
-				 mp_InfoScene = new CHelp(m_GamePath, m_Episode, "Game");
-				 break;*/
+			case 0:
+				mp_InfoScene = new CHelp(m_GamePath, m_Episode, "Menu");
+				break;
+			case 1:
+				mp_InfoScene = new CHelp(m_GamePath, m_Episode, "Game");
+				break;
 			case 2:
 				m_Map.m_animation_enabled = false;
 				mp_InfoScene = new CStory(m_GamePath, m_Episode);
 				break;
-				case 3:
+			case 3:
 				mp_InfoScene = new COrderingInfo(m_GamePath, m_Episode);
 				break;
-				/*case 4:
-				 mp_InfoScene = new CAbout(m_GamePath, m_Episode, "ID");
-				 break;
-				 case 5:
-				 mp_InfoScene = new CAbout(m_GamePath, m_Episode, "CG");
-				 break;*/
-				 case 6:
-				 mp_InfoScene = new CCredits(m_GamePath, m_Episode);
-				 break;
+			case 4:
+				mp_InfoScene = new CAbout(m_GamePath, m_Episode, "ID");
+				break;
+			case 5:
+				mp_InfoScene = new CAbout(m_GamePath, m_Episode, "CG");
+				break;
+			case 6:
+				mp_InfoScene = new CCredits(m_GamePath, m_Episode);
+				break;
 		}
 		m_selection = -1;
 	}
@@ -1105,8 +1107,8 @@ void CMenu::processSaveMenu()
 	
 	if(m_goback)
 	{
-			cleanup();
-			init(MAIN);
+		cleanup();
+		init(MAIN);
 	}
 	return;
 }
@@ -1114,10 +1116,10 @@ void CMenu::processSaveMenu()
 void CMenu::processLoadMenu()
 {
 	if( m_selection != -1)
-	 {
-	 m_saveslot = int(m_selection) + 1;
-	 m_SavedGame.prepareLoadGame(m_saveslot);
-	 }
+	{
+		m_saveslot = int(m_selection) + 1;
+		m_SavedGame.prepareLoadGame(m_saveslot);
+	}
 	
 	if(m_goback)
 	{
