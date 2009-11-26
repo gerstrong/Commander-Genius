@@ -30,7 +30,6 @@
 class CMap {
 public:
 	CMap( SDL_Surface *p_scrollsurface, CTilemap *p_Tilemap);
-	virtual ~CMap();
 
 	bool gotoPos( int x, int y );
 	void resetScrolls();
@@ -61,6 +60,9 @@ public:
 
 	unsigned int getlevelat(unsigned int x, unsigned int y)	{
 		return m_objectlayer[x>>4][y>>4];	}
+
+	virtual ~CMap();
+
 
 	Sint16 m_scrollx_buf;		// Amount to move surface in X.
 	Sint16 m_scrolly_buf; 		// Amount to move surface in Y.

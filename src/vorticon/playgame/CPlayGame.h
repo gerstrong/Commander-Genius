@@ -49,6 +49,7 @@ public:
 			  std::string &gamepath, stOption *p_option,
 			  bool finale, CSavedGame &SavedGame);
 
+	void setupPlayers();
 	bool init();
 	void createPlayerObjects();
 

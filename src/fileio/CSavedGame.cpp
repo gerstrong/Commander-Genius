@@ -139,6 +139,7 @@ bool CSavedGame::prepareSaveGame( int SaveSlot, const std::string &Name)
 {
 	m_statefilename = "cksave"+itoa(SaveSlot)+".ck"+itoa(m_Episode);
 	m_statename = Name;
+	m_datablock.clear();
 
 	// This will make the CPlayGame instance call save
 	m_Command = SAVE;
@@ -153,6 +154,7 @@ bool CSavedGame::prepareSaveGame( int SaveSlot, const std::string &Name)
 bool CSavedGame::prepareLoadGame(int SaveSlot)
 {
 	m_statefilename = "cksave"+itoa(SaveSlot)+".ck"+itoa(m_Episode);
+    m_datablock.clear();
 
 	// This will make the CPlayGame instance call save
 	m_Command = LOAD;
@@ -178,7 +180,6 @@ bool CSavedGame::load()
     for(Uint32 i=0 ; i<size ; i++)	// skip that name string
     	StateFile.get();
 
-    m_datablock.clear();	// empty the datablock and...
     while(!StateFile.eof()) // read it everything in
     {
     	m_datablock.push_back(StateFile.get());
@@ -192,6 +193,7 @@ bool CSavedGame::load()
 	// Done!
 	g_pLogFile->textOut("File \""+ fullpath +"\" was sucessfully loaded. Size: "+itoa(m_datablock.size())+"\n");
 	m_Command = NONE;
+	m_offset = 0;
 	m_statefilename.clear();
 	m_statename.clear();
 
@@ -232,7 +234,7 @@ bool CSavedGame::save()
 	}
 
 	// Write the collected data block
-	std::vector<char>::iterator pos = m_datablock.begin();
+	std::vector<uchar>::iterator pos = m_datablock.begin();
 	for( Uint32 i=0; i<m_datablock.size() ; i++ ){
 		primitive_buffer[offset++] = *pos;
 		pos++;
@@ -257,12 +259,12 @@ bool CSavedGame::save()
 
 // Adds data of size to the main data block
 void CSavedGame::addData(uchar *data, Uint32 size) {
-	for(Uint32 i=sizeof(Uint32) ; i>0 ; i-- )
+	for(Uint32 i=0 ; i<sizeof(Uint32) ; i++ )
 	{
-		Uint32 data;
-		data = size&(0xFF<<((i-1)*8));
-		data >>= ((i-1)*8);
-		m_datablock.push_back( static_cast<uchar>(data) );
+		Uint32 datasize;
+		datasize = size&( 0xFF<<(i*8) );
+		datasize >>= (i*8);
+		m_datablock.push_back( static_cast<uchar>(datasize) );
 	}
 	for(Uint32 i=0 ; i<size ; i++ )
 		m_datablock.push_back(data[i]);
@@ -271,8 +273,8 @@ void CSavedGame::addData(uchar *data, Uint32 size) {
 // Read data of size from the main data block
 void CSavedGame::readDataBlock(uchar *data) {
 	Uint32 datasize=0;
-	for(Uint32 i=sizeof(Uint32) ; i>0 ; i-- )
-		datasize += m_datablock[m_offset++] << ((i-1)*8);
+	memcpy(&datasize, &m_datablock[m_offset], sizeof(Uint32));
+	m_offset += sizeof(Uint32);
 
 	memcpy(data, &m_datablock[m_offset], datasize);
 	m_offset += datasize;
@@ -281,4 +283,3 @@ void CSavedGame::readDataBlock(uchar *data) {
 CSavedGame::~CSavedGame() {
 	// TODO Auto-generated destructor stub
 }
-

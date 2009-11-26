@@ -404,6 +404,8 @@ void CMap::registerAnimation(Uint32 x, Uint32 y, int c)
 
 CMap::~CMap() {
 	if(mp_data) delete[] mp_data;
+	memset( m_AnimTileInUse, 0, sizeof(m_AnimTileInUse));
+	memset( m_animtiles, 0, sizeof(m_animtiles));
 }
 
 

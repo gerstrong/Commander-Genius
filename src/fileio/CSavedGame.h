@@ -45,11 +45,11 @@ public:
 	template <class T>
 	void encodeVariable(T value);
 	template <class S>
-	void encodeStruct(S structure);
+	void encodeData(S structure);
 	template <class T>
 	void decodeVariable(T &variable);
 	template <class S>
-	void decodeStruct(S &structure);
+	void decodeData(S &structure);
 
 	void addData(uchar *data, Uint32 size);
 	void readDataBlock(uchar *data);
@@ -69,7 +69,7 @@ private:
 	char m_Command;
 	Uint32 m_offset;
 
-	std::vector<char> m_datablock;
+	std::vector<uchar> m_datablock;
 };
 
 #include "CSavedGameCoder.h"

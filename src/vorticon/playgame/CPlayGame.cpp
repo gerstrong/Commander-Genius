@@ -66,26 +66,9 @@ CPlayGame::CPlayGame( char episode, char level,
 	if(finale) m_level_command = GOTO_FINALE;
 }
 
-bool CPlayGame::init()
+// Setup all the player, when one level is started
+void CPlayGame::setupPlayers()
 {
-	// Create an empty map
-	mp_Map = new CMap( g_pVideoDriver->getScrollSurface(), g_pGfxEngine->Tilemap);
-	CMapLoader MapLoader( mp_Map, mp_Player );
-	MapLoader.m_checkpointset = m_checkpointset;
-	MapLoader.mp_objvect = &m_Object;
-	
-	// load level map
-	if( !mp_Map ) return false;
-	if( !MapLoader.load( m_Episode, m_Level, m_Gamepath ) ) return false;
-	
-	//// If those worked fine, continue the initialization
-	// draw level map
-	mp_Map->drawAll();
-	
-	// Now Scroll to the position of the player and center him
-	
-	mp_Map->gotoPos( 32, 64 ); // Assure that the edges are never seen
-	
 	m_showKeensLeft=false;
 	for (int i=0 ; i<m_NumPlayers ; i++)
 	{
@@ -93,13 +76,13 @@ bool CPlayGame::init()
 		{
 			mp_Player[i].m_playingmode = CPlayer::WORLDMAP;
 			m_showKeensLeft |= ( mp_Player[i].pdie == PDIE_DEAD );
-			mp_Player[i].pdie = PDIE_NODIE;
 		}
 		else
 		{
-			mp_Player[i].pdie = PDIE_NODIE;
 			mp_Player[i].m_playingmode = CPlayer::LEVELPLAY;
+			mp_Player[i].playframe = PSTANDFRAME;
 		}
+		mp_Player[i].pdie = PDIE_NODIE;
 		
 		mp_Player[i].w = g_pGfxEngine->Sprite[PSTANDFRAME]->getWidth()<<(CSF-4);
 		mp_Player[i].h = g_pGfxEngine->Sprite[PSTANDFRAME]->getHeight()<<(CSF-4);
@@ -109,6 +92,29 @@ bool CPlayGame::init()
 	}
 
 	while(mp_Player[0].scrollTriggers());   // Scroll the map to players position
+}
+
+bool CPlayGame::init()
+{
+	// Create an empty map
+	mp_Map = new CMap( g_pVideoDriver->getScrollSurface(), g_pGfxEngine->Tilemap);
+	CMapLoader MapLoader( mp_Map, mp_Player );
+	MapLoader.m_checkpointset = m_checkpointset;
+	MapLoader.mp_objvect = &m_Object;
+
+	// load level map
+	if( !mp_Map ) return false;
+	if( !MapLoader.load( m_Episode, m_Level, m_Gamepath ) ) return false;
+
+	//// If those worked fine, continue the initialization
+	// draw level map
+	mp_Map->drawAll();
+
+	// Now Scroll to the position of the player and center him
+
+	mp_Map->gotoPos( 32, 64 ); // Assure that the edges are never seen
+
+	setupPlayers();
 
 	// Well, all players are living because they were newly spawn.
 	g_pTimer->ResetSecondsTimer();

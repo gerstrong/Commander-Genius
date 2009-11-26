@@ -1119,6 +1119,7 @@ void CMenu::processLoadMenu()
 	{
 		m_saveslot = int(m_selection) + 1;
 		m_SavedGame.prepareLoadGame(m_saveslot);
+		m_selection = -1;
 	}
 	
 	if(m_goback)
