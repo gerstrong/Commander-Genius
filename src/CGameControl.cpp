@@ -119,12 +119,11 @@ bool CGameControl::init(char mode)
 
 		m_show_finale = false; // just show it once!!
 
-		ok &= mp_PlayGame->init();
+		if(m_SavedGame.getCommand() == CSavedGame::LOAD)
+			ok &= mp_PlayGame->loadGameState();
+		else
+			ok &= mp_PlayGame->init();
 
-		/*if(mp_SaveGame)
-		{
-			mp_PlayGame->setupGameState(mp_SaveGame->getGameData());
-		}*/
 
 		return ok;
 	}

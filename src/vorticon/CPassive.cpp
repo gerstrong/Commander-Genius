@@ -172,7 +172,7 @@ void CPassive::process()
 		// Let the menu control, if objects are to be seen or hidden
 		m_hideobjects = mp_Menu->m_hideobjects;
 
-		if(mp_Menu->mustStartGame())
+		if(mp_Menu->mustStartGame() || m_SavedGame.getCommand() == CSavedGame::LOAD) // Start a normal game
 		{
 			m_NumPlayers = mp_Menu->getNumPlayers();
 			m_Difficulty = mp_Menu->getDifficulty();

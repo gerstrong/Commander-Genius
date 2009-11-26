@@ -85,21 +85,16 @@ bool CPlayGame::loadGameState()
 		// TODO: An algorithm for comparing the number of players saved and we actually have need to be in sync
 
 		// Load the map_data as it was left last
-		//m_SavedGame.decodeData(mp_Map->m_width);
-		//m_SavedGame.decodeData(mp_Map->m_height);
-		//SAFE_DELETE_ARRAY(mp_Map->mp_data);
-		//mp_Map->mp_data = new Uint16[mp_Map->m_height*mp_Map->m_width];
-		//m_SavedGame.readDataBlock( (uchar*)(mp_Map->mp_data));
+		m_SavedGame.decodeData(mp_Map->m_width);
+		m_SavedGame.decodeData(mp_Map->m_height);
+		m_SavedGame.readDataBlock( (uchar*)(mp_Map->mp_data));
 
 		// Load completed levels
-		//m_SavedGame.readDataBlock( (uchar*)(mp_level_completed));
+		m_SavedGame.readDataBlock( (uchar*)(mp_level_completed));
 
-		//if(mp_ObjectAI) { delete mp_ObjectAI; mp_ObjectAI = NULL; }
-		//mp_ObjectAI = new CObjectAI(mp_Map, &m_Object, mp_Player, mp_option,
-			//						m_NumPlayers, m_Episode, m_Level, m_Difficulty);
-
-		//mp_Map->drawAll();
 		while(mp_Player[0].scrollTriggers()); // Scroll to the right position on the map
+
+		mp_Map->drawAll();
 
 		return true;
 	}
