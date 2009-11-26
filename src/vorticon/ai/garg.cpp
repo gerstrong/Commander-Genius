@@ -39,9 +39,9 @@ unsigned int rnd(void);
 void CObjectAI::garg_ai(CObject *p_object, CPlayer *p_player, bool hardmode)
 {
 	unsigned int i;
-	Uint16 garg_width = g_pGfxEngine->Sprite[p_object->sprite]->getWidth();
-	Uint16 garg_height = g_pGfxEngine->Sprite[p_object->sprite]->getHeight();
-	Uint16 player_height = g_pGfxEngine->Sprite[0]->getHeight();
+	Uint16 garg_width = g_pGfxEngine->Sprite[p_object->sprite]->getWidth()<<STC;
+	Uint16 garg_height = g_pGfxEngine->Sprite[p_object->sprite]->getHeight()<<STC;
+	Uint16 player_height = g_pGfxEngine->Sprite[0]->getHeight()<<STC;
     stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 
 	if (p_object->needinit)
@@ -140,7 +140,7 @@ void CObjectAI::garg_ai(CObject *p_object, CPlayer *p_player, bool hardmode)
 			{
 				if (p_player[i].y >= p_object->y-(8<<CSF))
 				{
-					if ((p_player[i].y>>CSF)+player_height <= (p_object->y>>CSF)+garg_height+16)
+					if ((p_player[i].y+player_height)>>CSF <= (p_object->y+garg_height+(1<<CSF))>>CSF)
 					{
 						p_object->ai.garg.detectedPlayer = 1;
 						p_object->ai.garg.detectedPlayerIndex = i;
@@ -242,7 +242,7 @@ void CObjectAI::garg_ai(CObject *p_object, CPlayer *p_player, bool hardmode)
 			if( p_object->ai.garg.jumpheight > 0 )
 				p_object->ai.garg.jumpheight--;
 
-			if(TileProperty[mp_Map->at((p_object->x>>CSF)+garg_width/2, (p_object->y>>CSF)+garg_height+1)].bdown) // There is floor
+			if(TileProperty[mp_Map->at((p_object->x+garg_width/2)>>CSF, (p_object->y+garg_height+1)>>CSF)].bdown) // There is floor
 				p_object->ai.garg.state = GARG_CHARGE;
 			else
 				p_object->y-=12;
@@ -264,7 +264,7 @@ void CObjectAI::garg_ai(CObject *p_object, CPlayer *p_player, bool hardmode)
 				}
 
 				// if Garg is about to fall while charged make him jump
-				if( TileProperty[mp_Map->at((p_object->x>>CSF)-garg_width/2, (p_object->y>>CSF)+garg_height+1)].bdown )
+				if( !TileProperty[mp_Map->at((p_object->x+garg_width/2)>>CSF, (p_object->y+garg_height+1)>>CSF)].bdown )
 				{
 					p_object->ai.garg.state = GARG_JUMP;
 					p_object->ai.garg.jumpheight = GARG_JUMP_HEIGHT<<CSF;
@@ -286,7 +286,7 @@ void CObjectAI::garg_ai(CObject *p_object, CPlayer *p_player, bool hardmode)
 				}
 
 				// if Garg is about to fall while charged make him jump
-				if( TileProperty[mp_Map->at((p_object->x>>CSF)+garg_width/2, (p_object->y>>CSF)+garg_height+1)].bdown )
+				if( !TileProperty[mp_Map->at((p_object->x+garg_width/2)>>CSF, (p_object->y+garg_height+1)>>CSF)].bdown )
 				{
 					p_object->ai.garg.state = GARG_JUMP;
 					p_object->ai.garg.jumpheight = GARG_JUMP_HEIGHT<<CSF;

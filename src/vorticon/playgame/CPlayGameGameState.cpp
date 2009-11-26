@@ -57,22 +57,30 @@ bool CPlayGame::loadGameState()
 		}
 
 		// load the number of objects on screen
-		//Uint32 size;
-		//m_Object.clear();
-		//m_SavedGame.decodeData(size);
-		/*for( Uint32 i=0 ; i<size ; i++) {
+		Uint32 size;
+		m_SavedGame.decodeData(size);
+		for( Uint32 i=0 ; i<size ; i++) {
 			// save all the objects states
 			int x0, y0, otype;
-			CObject object;
-			m_SavedGame.decodeData(otype);
-			m_SavedGame.decodeData(x0);
-			m_SavedGame.decodeData(y0);
-			if(otype != OBJ_PLAYER) object.spawn(x0, y0, otype);
+			CObject &object=m_Object.at(i);
+
+			m_SavedGame.decodeData(object.m_type);
+			m_SavedGame.decodeData(object.x);
+			m_SavedGame.decodeData(object.y);
+			object.new_x = object.x;
+			object.new_y = object.y;
 			m_SavedGame.decodeData(object.dead);
+			m_SavedGame.decodeData(object.needinit);
+			m_SavedGame.decodeData(object.onscreen);
+			m_SavedGame.decodeData(object.hasbeenonscreen);
 			m_SavedGame.decodeData(object.exists);
+			m_SavedGame.decodeData(object.zapped);
+			m_SavedGame.decodeData(object.canbezapped);
+			m_SavedGame.decodeData(object.inhibitfall);
+			m_SavedGame.decodeData(object.honorPriority);
+			m_SavedGame.decodeData(object.sprite);
 			m_SavedGame.decodeData(object.ai);
-			m_Object.push_back(object);
-		}*/
+		}
 
 		// TODO: An algorithm for comparing the number of players saved and we actually have need to be in sync
 
@@ -86,9 +94,9 @@ bool CPlayGame::loadGameState()
 		// Load completed levels
 		//m_SavedGame.readDataBlock( (uchar*)(mp_level_completed));
 
-		/*if(mp_ObjectAI) { delete mp_ObjectAI; mp_ObjectAI = NULL; }
-		mp_ObjectAI = new CObjectAI(mp_Map, &m_Object, mp_Player, mp_option,
-									m_NumPlayers, m_Episode, m_Level, m_Difficulty);*/
+		//if(mp_ObjectAI) { delete mp_ObjectAI; mp_ObjectAI = NULL; }
+		//mp_ObjectAI = new CObjectAI(mp_Map, &m_Object, mp_Player, mp_option,
+			//						m_NumPlayers, m_Episode, m_Level, m_Difficulty);
 
 		//mp_Map->drawAll();
 		while(mp_Player[0].scrollTriggers()); // Scroll to the right position on the map
@@ -131,11 +139,20 @@ bool CPlayGame::saveGameState()
 	m_SavedGame.encodeData(size);
 	for( i=0 ; i<size ; i++) {
 		// save all the objects states
+
 		m_SavedGame.encodeData(m_Object[i].m_type);
 		m_SavedGame.encodeData(m_Object[i].x);
 		m_SavedGame.encodeData(m_Object[i].y);
 		m_SavedGame.encodeData(m_Object[i].dead);
+		m_SavedGame.encodeData(m_Object[i].needinit);
+		m_SavedGame.encodeData(m_Object[i].onscreen);
+		m_SavedGame.encodeData(m_Object[i].hasbeenonscreen);
 		m_SavedGame.encodeData(m_Object[i].exists);
+		m_SavedGame.encodeData(m_Object[i].zapped);
+		m_SavedGame.encodeData(m_Object[i].canbezapped);
+		m_SavedGame.encodeData(m_Object[i].inhibitfall);
+		m_SavedGame.encodeData(m_Object[i].honorPriority);
+		m_SavedGame.encodeData(m_Object[i].sprite);
 		m_SavedGame.encodeData(m_Object[i].ai);
 	}
 
