@@ -14,6 +14,7 @@
 #include "CMap.h"
 #include "CStatusScreen.h"
 #include "Playerdefines.h"
+#include "CPhysicsSettings.h"
 #include "options.h"
 #include <vector>
 
@@ -42,6 +43,7 @@ public:
 	void setDatatoZero();
 	void setDefaultStartValues();
 	void setMapData(CMap *p_map){ mp_map=p_map; }
+	void setPhysics(CPhysicsSettings *physics) { mp_PhysicsSettings = physics; }
 
 	// World Map specific
 	void processWorldMap();
@@ -173,6 +175,7 @@ public:
 
 private:
 	CStatusScreen *mp_StatusScr;
+	CPhysicsSettings *mp_PhysicsSettings;
 
 	bool lastpogo;
 

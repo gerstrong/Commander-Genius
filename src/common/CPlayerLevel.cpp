@@ -11,6 +11,7 @@
 #include "../sdl/sound/CSound.h"
 #include "../sdl/CInput.h"
 #include "../graphics/CGfxEngine.h"
+#include "CPhysicsSettings.h"
 
 #define PDIEFRAME             22
 
@@ -323,6 +324,52 @@ void CPlayer::TogglePogo_and_Switches()
 
 void CPlayer::JumpAndPogo()
 {
+//////
+// For Debugging purpose only
+/////
+
+	if(g_pInput->getHoldedKey(KH))
+	{
+		mp_PhysicsSettings->player.maxjumpspeed--;
+	}
+	else if(g_pInput->getHoldedKey(KJ))
+	{
+		mp_PhysicsSettings->player.maxjumpspeed++;
+	}
+
+	if(g_pInput->getHoldedKey(KB))
+	{
+		mp_PhysicsSettings->player.defaultdecreasespeed--;
+	}
+	else if(g_pInput->getHoldedKey(KN))
+	{
+		mp_PhysicsSettings->player.defaultdecreasespeed++;
+	}
+
+	if(g_pInput->getHoldedKey(KX))
+	{
+		mp_PhysicsSettings->player.fallspeed_decrease--;
+	}
+	else if(g_pInput->getHoldedKey(KC))
+	{
+		mp_PhysicsSettings->player.fallspeed_decrease++;
+	}
+
+	if(g_pInput->getHoldedKey(KS))
+	{
+		mp_PhysicsSettings->player.max_fallspeed--;
+	}
+	else if(g_pInput->getHoldedKey(KD))
+	{
+		mp_PhysicsSettings->player.max_fallspeed++;
+	}
+
+
+//////
+// For Debugging proporses only (End)
+/////
+
+
 	// handle the JUMP key, both for normal jumps and (high) pogo jumps
 	if (!pjumping && !pfalling && !pfiring)
 	{
@@ -390,39 +437,42 @@ void CPlayer::JumpAndPogo()
 				if (pjumpframe == PJUMP_PREPARE_LAST_FRAME || !playcontrol[PA_JUMP])
 				{  	// time to start the jump
 					// select a jump depending on how long keen was preparing
-					pjumpupspeed = PJUMPUP_SPEED;
-					switch(pjumpframe)
+					pjumpupspeed = mp_PhysicsSettings->player.maxjumpspeed;
+					pjumpupspeed_decrease = mp_PhysicsSettings->player.defaultdecreasespeed;
+					//pjumpupspeed = PJUMPUP_SPEED;
+					//pjumpupspeed_decrease = PJUMP_UPDECREASERATE;
+					/*switch(pjumpframe)
 					{
 						case PPREPAREJUMPFRAME:
                             pjumptime = PJUMP_NORMALTIME_6;
                             pjumpupspeed_decrease = PJUMP_UPDECREASERATE_6;
-                            pjumpupspeed = 1;
+                            pjumpupspeed = 2;
                             break;
 						case PPREPAREJUMPFRAME+1:
                             pjumptime = PJUMP_NORMALTIME_5;
                             pjumpupspeed_decrease = PJUMP_UPDECREASERATE_5;
-                            pjumpupspeed = 2;
+                            pjumpupspeed = 4;
                             break;
 						case PPREPAREJUMPFRAME+2:
                             pjumptime = PJUMP_NORMALTIME_4;
                             pjumpupspeed_decrease = PJUMP_UPDECREASERATE_4;
-                            pjumpupspeed = 4;
+                            pjumpupspeed = 8;
                             break;
 						case PPREPAREJUMPFRAME+3:
                             pjumptime = PJUMP_NORMALTIME_3;
                             pjumpupspeed_decrease = PJUMP_UPDECREASERATE_3;
-                            pjumpupspeed = 8;
+                            pjumpupspeed = 16;
                             break;
 						case PPREPAREJUMPFRAME+4:
                             pjumptime = PJUMP_NORMALTIME_2;
                             pjumpupspeed_decrease = PJUMP_UPDECREASERATE_2;
-                            pjumpupspeed = 16;
+                            pjumpupspeed = 32;
                             break;
 						default:
                             pjumptime = PJUMP_NORMALTIME_1;
                             pjumpupspeed_decrease = PJUMP_UPDECREASERATE_1;
                             break;
-					}
+					}*/
 					
 					pjumpframe = PJUMP_PREPARE_LAST_FRAME;
 					
@@ -480,7 +530,7 @@ void CPlayer::JumpAndPogo()
 			}
 			else pjumptime--;
 			
-			goto_y -= (2*pjumpupspeed);
+			goto_y -= pjumpupspeed;
 			pjustjumped = true;
 
 			break;

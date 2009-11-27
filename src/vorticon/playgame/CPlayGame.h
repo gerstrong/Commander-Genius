@@ -17,6 +17,7 @@
 #include "../../common/CMenu.h"
 #include "../../common/CMap.h"
 #include "../../common/options.h"
+#include "../../common/CPhysicsSettings.h"
 #include "../ai/CObjectAI.h"
 #include "../ai/CEGABitmap.h"
 #include "../finale/CEndingEp1.h"
@@ -124,6 +125,7 @@ private:
 	CEGABitmap *mp_gameoverbmp;
 	stOption *mp_option;
 	CSavedGame &m_SavedGame;
+	CPhysicsSettings m_PhysicsSettings;
 	bool m_showKeensLeft;
 	int m_theplayer;
 	std::vector<CObject> m_Object;

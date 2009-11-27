@@ -106,8 +106,9 @@ enum jumpstates{
 
 // initial negative inertia to provide player at
 // start of a normal jump and a (high) pogo jump
-#define PJUMPUP_SPEED            40
+#define PJUMPUP_SPEED            200
 #define PJUMPX_SPEED			 8
+#define PJUMP_UPDECREASERATE	 4
 // These control the various jump heights.
 // one of these pairs is selected depending on how
 // long the CTRL key was held down while Keen
@@ -119,22 +120,22 @@ enum jumpstates{
 // of DECREASERATE.
 
 #define PJUMP_NORMALTIME_1         22
-#define PJUMP_UPDECREASERATE_1     128
+#define PJUMP_UPDECREASERATE_1     1
 
 #define PJUMP_NORMALTIME_2         18
-#define PJUMP_UPDECREASERATE_2     102
+#define PJUMP_UPDECREASERATE_2     1
 
 #define PJUMP_NORMALTIME_3         14
-#define PJUMP_UPDECREASERATE_3     96
+#define PJUMP_UPDECREASERATE_3     1
 
 #define PJUMP_NORMALTIME_4         10
-#define PJUMP_UPDECREASERATE_4     80
+#define PJUMP_UPDECREASERATE_4     1
 
 #define PJUMP_NORMALTIME_5         6
-#define PJUMP_UPDECREASERATE_5     64
+#define PJUMP_UPDECREASERATE_5     1
 
 #define PJUMP_NORMALTIME_6         2
-#define PJUMP_UPDECREASERATE_6     48
+#define PJUMP_UPDECREASERATE_6     1
 
 
 /// pogoing
@@ -156,10 +157,6 @@ enum jumpstates{
 #define PPOGOUP_SPEED_SUPER                     176
 #define PJUMP_NORMALTIME_POGO_LONG_SUPER        20
 #define PJUMP_UPDECREASERATE_POGO_LONG_SUPER    128
-
-// when falling keen's Y inertia increases by INCREASE up to MAXSPEED
-#define PFALL_INCREASE       	30
-#define PFALL_MAXSPEED          60
 
 // pogo frames
 #define PFRAME_POGO           24

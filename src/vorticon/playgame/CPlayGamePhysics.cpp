@@ -14,6 +14,7 @@
 #include "../../sdl/sound/CSound.h"
 #include "../../graphics/CGfxEngine.h"
 #include "../../common/Playerdefines.h"
+#include "../../common/CPhysicsSettings.h"
 
 void CPlayGame::processPlayerfallings(CPlayer *p_player)
 {
@@ -137,10 +138,10 @@ void CPlayGame::processPlayerfallings(CPlayer *p_player)
 			p_player->psemisliding = 0;
 
 			// gradually increase the fall speed up to maximum rate
-			if (p_player->pfallspeed>PFALL_MAXSPEED)
-				p_player->pfallspeed = PFALL_MAXSPEED;
-			else if (p_player->pfallspeed<PFALL_MAXSPEED)
-				p_player->pfallspeed += PFALL_INCREASE;
+			if (p_player->pfallspeed>m_PhysicsSettings.player.max_fallspeed)
+				p_player->pfallspeed = m_PhysicsSettings.player.max_fallspeed;
+			else if (p_player->pfallspeed<m_PhysicsSettings.player.max_fallspeed)
+				p_player->pfallspeed += m_PhysicsSettings.player.fallspeed_decrease;
 
 			// add current fall speed to player Y or make him fly in godmode with pogo
 			if( !p_player->godmode || !p_player->ppogostick || !g_pInput->getHoldedCommand(IC_JUMP) )

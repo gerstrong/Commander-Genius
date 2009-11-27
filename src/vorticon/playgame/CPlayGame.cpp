@@ -89,6 +89,7 @@ void CPlayGame::setupPlayers()
 		
 		// Set the pointers to the map and object data
 		mp_Player[i].setMapData(mp_Map);
+		mp_Player[i].setPhysics(&m_PhysicsSettings);
 	}
 
 	while(mp_Player[0].scrollTriggers());   // Scroll the map to players position
@@ -278,16 +279,24 @@ void CPlayGame::process()
 	{
 		std::string tempbuf;
 		SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
-#ifdef DEBUG
-//		tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec()) +
-	//		"; x = " + itoa(mp_Player[0].x) + " ; y = " + itoa(mp_Player[0].y);
+//#ifdef DEBUG
+		tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec()) +
+			"; x = " + itoa(mp_Player[0].x) + " ; y = " + itoa(mp_Player[0].y);
 
-		tempbuf = "Playpushed_x: " + itoa(mp_Player[0].playpushed_x);
+		tempbuf = "Jumpmaxspeed: " + itoa(m_PhysicsSettings.player.maxjumpspeed);
+		tempbuf += " | Decrease_rate: ";
+		tempbuf	+= itoa(m_PhysicsSettings.player.defaultdecreasespeed);
 
-#else
-		tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec());
-#endif
+//#else
+	//	tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec());
+//#endif
 		g_pGfxEngine->Font->drawFont( sfc, tempbuf, 320-3-(tempbuf.size()<<3), 3, 1);
+
+		tempbuf	= "MAX_FALL: " + itoa(m_PhysicsSettings.player.max_fallspeed);
+		tempbuf += " | FALL_DECREASE: " + itoa(m_PhysicsSettings.player.fallspeed_decrease);
+
+		g_pGfxEngine->Font->drawFont( sfc, tempbuf, 320-3-(tempbuf.size()<<3), 12, 1);
+
 	}
 	
 	
