@@ -3,7 +3,6 @@
 
 #include "CMenu.h"
 #include "CObject.h"
-#include "options.h"
 
 #include "../vorticon/infoscenes/CStory.h"
 #include "../vorticon/infoscenes/CCredits.h"
@@ -25,9 +24,13 @@
 #define SELMOVE_SPD         3
 
 CMenu::CMenu( char menu_mode, std::string &GamePath,
-			 char &Episode, CMap &Map, CSavedGame &SavedGame ) :
-m_Episode(Episode), m_GamePath(GamePath),
-m_Map(Map), m_SavedGame(SavedGame)
+			 char &Episode, CMap &Map, CSavedGame &SavedGame,
+			 stOption *pOption ) :
+m_Episode(Episode),
+m_GamePath(GamePath),
+m_Map(Map),
+m_SavedGame(SavedGame),
+mp_option(pOption)
 {
 	// Create the Main Menu
 	mp_MenuSurface = g_pVideoDriver->FGLayerSurface;
@@ -333,7 +336,7 @@ void CMenu::initGraphicsMenu()
 	if(opengl)
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, buf);
 	else
-		mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 7, buf);
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, buf);
 	
 	mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 9, "");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 10, "Return");
@@ -591,6 +594,7 @@ void CMenu::processConfigureMenu()
 		{
 			m_goback = true;	
 		}
+		m_selection = -1;
 	}
 	
 	if(m_goback)
@@ -662,7 +666,7 @@ void CMenu::processControlMenu()
 				init(CONTROLS);
 			}
 			mp_Dialog->setObjectText(11, "Save and Return");
-			mp_Dialog->setObjectType(11, DLG_OBJ_DISABLED);
+			//mp_Dialog->setObjectType(11, DLG_OBJ_DISABLED);
 			mp_Dialog->setObjectText(12, "Cancel");
 		}
 		else
@@ -692,9 +696,10 @@ void CMenu::processGraphicsMenu()
 	opengl = g_pVideoDriver->isOpenGL();
 	std::string buf;
 	
-	g_pVideoDriver->initResolutionList();
+	//g_pVideoDriver->initResolutionList();
 	
-	g_pVideoDriver->setMode(width, height, depth);
+	//g_pVideoDriver->setMode(width, height, depth);
+	// No!, you cannot init or set mode 60 times per sec. Only once if triggered. Only then...
 	
 	if( m_selection != -1)
 	{
@@ -765,13 +770,9 @@ void CMenu::processGraphicsMenu()
 			else if(m_selection == 3)
 			{
 				if(opengl)
-				{
 					filter = (filter >= 3) ? 0 : filter+1;
-				}
 				else
-				{
 					filter = (filter > 0) ? 0 : zoom-1;
-				}
 				
 				if(filter == 0)
 					mp_Dialog->setObjectText(3,"No Filter");
@@ -833,11 +834,12 @@ void CMenu::processGraphicsMenu()
 				g_pTimer->setFrameRate(DEFAULT_LPS, autoframeskip, DEFAULT_SYNC);
 				g_pVideoDriver->setAspectCorrection(aspect);
 				
-				CSettings Settings(0);
+				CSettings Settings(mp_option);
 				Settings.saveDrvCfg();
 			}
 			m_goback = true;
 		}
+		m_selection = -1;
 	}
 	
 	if(m_goback)
@@ -870,18 +872,19 @@ void CMenu::processOptionsMenu()
 			
 			mp_Dialog->setObjectText(m_selection, buf);
 			mp_Dialog->setObjectText(NUM_OPTIONS, "Save and Return");
-			mp_Dialog->setObjectType(NUM_OPTIONS, DLG_OBJ_DISABLED);
+			//mp_Dialog->setObjectType(NUM_OPTIONS, DLG_OBJ_DISABLED);
 			mp_Dialog->setObjectText(NUM_OPTIONS+1, "Cancel");
 		}
 		else
 		{
 			if(m_selection == NUM_OPTIONS)
 			{
-				CSettings Settings(0); // Pressed Save,
+				CSettings Settings(mp_option); // Pressed Save,
 				Settings.saveGameCfg();
 			}
 			m_goback = true;
 		}
+		m_selection = -1;
 	}
 	
 	if(m_goback)
@@ -933,14 +936,14 @@ void CMenu::processAudioMenu()
 					mp_Dialog->setObjectText(2,"Mode: Stereo");
 			}
 			mp_Dialog->setObjectText(3, "Save and Return");
-			mp_Dialog->setObjectType(3, DLG_OBJ_DISABLED);
+			//mp_Dialog->setObjectType(3, DLG_OBJ_DISABLED);
 			mp_Dialog->setObjectText(4, "Cancel");
 		}
 		else
 		{
 			if(m_selection == 3)
 			{
-				CSettings Settings(0);
+				CSettings Settings(mp_option);
 				g_pSound->destroy();
 				g_pSound->setSoundmode(rate, mode ? true : false, format);
 				Settings.saveDrvCfg();
@@ -949,6 +952,7 @@ void CMenu::processAudioMenu()
 			}
 			m_goback = true;
 		}
+		m_selection = -1;
 	}
 	
 	if(m_goback)

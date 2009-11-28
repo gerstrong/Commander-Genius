@@ -26,31 +26,9 @@
  Commander Genius 	2009  Tulip, Pickle, DaVince, Albert and Pizza2004
  */
 
-#include "keen.h"
-#include "hqp/CMusic.h"
-#include "include/misc.h"
-#include "game.h"
-#include "include/fileio.h"
-#include "include/fileio/story.h"
-#include "include/main.h"
-#include "fileio/CParser.h"
-#include "vorticon/CHighScores.h"
 #include "CLogFile.h"
 #include "CGame.h"
-#include "sdl/CSettings.h"
 #include "FindFile.h"
-#include "fileio/CSavedGame.h"
-
-int IntroCanceled;
-int NessieObjectHandle;
-int DemoObjectHandle;
-int DemoSprite;
-int fps=0, curfps=0;
-
-
-unsigned int demo_RLERunLen;
-unsigned char demo_data[DEMO_MAX_SIZE+1];
-unsigned int demo_data_index;
 
 stString strings[MAX_STRINGS+1];
 int numStrings = 0;

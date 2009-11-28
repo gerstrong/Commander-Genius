@@ -95,7 +95,7 @@ bool CGameControl::init(char mode)
 	else if(m_mode == PASSIVE)
 	{
 		// Create mp_PassiveMode object used for the screens while Player is not playing
-		mp_PassiveMode = new CPassive( m_Episode, m_DataDirectory, m_SavedGame );
+		mp_PassiveMode = new CPassive( m_Episode, m_DataDirectory, m_SavedGame, mp_option );
 		if( m_endgame == true )
 		{
 			m_endgame = false;

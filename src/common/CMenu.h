@@ -55,7 +55,9 @@ public:
 		ACTIVE, PASSIVE
 	};
 
-	CMenu( char menu_mode, std::string &GamePath, char &Episode, CMap &Map, CSavedGame &SavedGame );
+	CMenu( char menu_mode, std::string &GamePath,
+			char &Episode, CMap &Map,
+			CSavedGame &SavedGame, stOption *pOption );
 	virtual ~CMenu();
 
 	bool init( char menu_type = MAIN );

@@ -21,9 +21,6 @@ CSettings::CSettings(stOption *p_option) {
 	mp_option = p_option;
 }
 
-CSettings::~CSettings() {}
-
-
 short CSettings::saveDrvCfg()
 {
 	short retval = 0;
@@ -157,3 +154,4 @@ void CSettings::saveGameCfg()
 	Parser.saveParseFile();
 }
 
+CSettings::~CSettings() {}

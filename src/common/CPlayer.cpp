@@ -413,18 +413,14 @@ void CPlayer::WalkingAnimation()
         if (pwalkanimtimer > walkanimrate)
         { // time to change walking frame
 			// make walk noise
-			if (!pjumping && !pfalling)
+			if ( (!pjumping && !pfalling) || m_playingmode == WORLDMAP )
 			{
 				if (!pfrozentime && pwalking)
 				{
 					if (pwalkframea&1)
-					{
 						g_pSound->playStereofromCoord(SOUND_KEEN_WALK, PLAY_NOW, mp_object->at(m_player_number).scrx);
-					}
 					else
-					{
 						g_pSound->playStereofromCoord(SOUND_KEEN_WALK2, PLAY_NOW, mp_object->at(m_player_number).scrx);
-					}
 					
 					if( m_playingmode != WORLDMAP && (blockedr || blockedl) )
 					{

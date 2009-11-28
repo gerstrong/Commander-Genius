@@ -16,7 +16,7 @@ enum e_OptionKeywords
 	OPT_TWOBUTTON, OPT_ANALOGJOYSTICK,
 	OPT_LVLREPLAYABILITY, OPT_RISEBONUS };
 
-#define NUM_OPTIONS    8
+const int NUM_OPTIONS=8;
 
 struct stOption
 {

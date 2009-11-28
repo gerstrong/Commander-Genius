@@ -32,7 +32,6 @@ public:
 	};
 	
 	CGameControl();
-	virtual ~CGameControl();
 	
 	bool init(int argc, char *argv[]);
 	bool init(char mode=GAMELAUNCHER);
@@ -51,6 +50,8 @@ public:
 	char m_mode;
 	stOption *mp_option;
 	
+	virtual ~CGameControl();
+
 private:
 	CGameLauncher *mp_GameLauncher;
 	CPassive *mp_PassiveMode;

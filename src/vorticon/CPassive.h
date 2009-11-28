@@ -30,7 +30,8 @@ public:
 		INTRO, TITLE, DEMO, STARTGAME, SHUTDOWN
 	};
 	
-	CPassive(char Episode, std::string DataDirectory, CSavedGame &SavedGame);
+	CPassive(char Episode, std::string DataDirectory,
+			 CSavedGame &SavedGame, stOption *p_Option);
 	virtual ~CPassive();
 	
 	bool init(char mode = INTRO);
@@ -60,6 +61,7 @@ private:
 	CTextBox *mp_PressAnyBox;
 	CTilemap *mp_Tilemap;
 	CSavedGame &m_SavedGame;
+	stOption *mp_Option;
 	
 	SDL_Surface *mp_Scrollsurface;
 	
