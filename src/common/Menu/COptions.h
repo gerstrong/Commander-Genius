@@ -8,9 +8,12 @@
 #ifndef COPTIONS_H_
 #define COPTIONS_H_
 
-class COptions {
+#include "CBaseMenu.h"
+
+class COptions : public CBaseMenu {
 public:
-	COptions();
+	COptions(char &menu_type);
+	void processSpecific();
 	virtual ~COptions();
 };
 

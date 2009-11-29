@@ -251,7 +251,10 @@ void CPlayer::Walking()
     		pwalking = 0;
     	}
     }
-	
+
+	int pmaxspeed;
+	pmaxspeed = (pjumping || pfalling) ? mp_PhysicsSettings->player.max_x_speed_air : mp_PhysicsSettings->player.max_x_speed_ground;
+
 	// when sliding on ice force maximum speed
 	if (psliding)
 	{
@@ -263,11 +266,11 @@ void CPlayer::Walking()
 			// keep player sliding at maximum speed
 			if (pdir==RIGHT)
 			{
-				pinertia_x = PMAXSPEED;
+				pinertia_x = pmaxspeed;
 			}
 			else if (pdir==LEFT)
 			{
-				pinertia_x = -PMAXSPEED;
+				pinertia_x = -pmaxspeed;
 			}
 		}
 		return;
@@ -300,7 +303,7 @@ void CPlayer::Walking()
 		}
 		
 		// increase up to max speed every time frame is changed
-		if (!pwalkanimtimer && pinertia_x < PMAXSPEED)	pinertia_x+=(1<<4);
+		if (!pwalkanimtimer && pinertia_x < pmaxspeed)	pinertia_x+=(1<<4);
 	}
 	else if (playcontrol[PA_X] < 0)
 	{ // LEFT key down
@@ -321,7 +324,7 @@ void CPlayer::Walking()
 		}
 		
 		// decrease down to max speed every time frame is changed
-		if (!pwalkanimtimer && pinertia_x > -PMAXSPEED)	pinertia_x-=(1<<4);
+		if (!pwalkanimtimer && pinertia_x > -pmaxspeed)	pinertia_x-=(1<<4);
 	}
 	
 	if (playcontrol[PA_Y] > 0)
@@ -337,7 +340,7 @@ void CPlayer::Walking()
 			pwalkincreasetimer++;
 		}
 		// increase up to max speed every time frame is changed
-		if (!pwalkanimtimer && pinertia_y<PMAXSPEED)
+		if (!pwalkanimtimer && pinertia_y<pmaxspeed)
 		{
 			pinertia_y++;
 		}
@@ -369,7 +372,7 @@ void CPlayer::Walking()
 			pwalkincreasetimer++;
 		}
 		// increase up to max speed every time frame is changed
-		if (!pwalkanimtimer && pinertia_y>-PMAXSPEED)
+		if (!pwalkanimtimer && pinertia_y>-pmaxspeed)
 		{
 			pinertia_y--;
 		}
@@ -488,7 +491,10 @@ void CPlayer::InertiaAndFriction_X()
 	if(!pfrozentime)
 		treshold = playcontrol[PA_X];
 	
-	int pmaxspeed = 0;
+	int pmaxspeed;
+	int pmaxmovespeed = (pjumping || pfalling) ?
+			mp_PhysicsSettings->player.max_x_speed_air : mp_PhysicsSettings->player.max_x_speed_ground;
+
 	
 	if( (!pjumping && !pfalling &&
 	   !psemisliding && !psliding && !ppogostick && !pslowingdown) || m_playingmode==WORLDMAP )
@@ -504,7 +510,7 @@ void CPlayer::InertiaAndFriction_X()
 	}
 	else	treshold = 100;
 	
-	pmaxspeed = treshold*PMAXSPEED/100;
+	pmaxspeed = treshold*pmaxmovespeed/100;
 	
 	if(!pjumping)
 	{

@@ -8,9 +8,12 @@
 #ifndef CCONTROLSETTINGS_H_
 #define CCONTROLSETTINGS_H_
 
-class CControlsettings {
+#include "CBaseMenu.h"
+
+class CControlsettings : public CBaseMenu {
 public:
-	CControlsettings();
+	CControlsettings(char &menu_type);
+	void processSpecific();
 	virtual ~CControlsettings();
 };
 

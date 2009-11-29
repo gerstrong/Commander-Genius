@@ -484,11 +484,7 @@ char CSound::extractOfExeFile(const std::string& inputpath, int episode)
 
 void CSound::setSoundmode(int freq, bool stereo, Uint16 format)
 {
-	if(stereo)
-		AudioSpec.channels = 2;
-	else
-		AudioSpec.channels = 1;
-	
+	AudioSpec.channels = (stereo==true) ? 2 : 1;
 	AudioSpec.format = format;
 	
 	switch(freq)

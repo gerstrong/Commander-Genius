@@ -21,7 +21,11 @@ public:
 
 	struct playersettings{
 		int maxjumpspeed;
-		int defaultdecreasespeed;
+		int defaultjumpupdecreasespeed;
+		int jumpdecrease_x;
+		int max_x_speed_air;
+		int max_x_speed_ground;
+
 		int max_fallspeed;
 		int fallspeed_decrease;
 	}player;

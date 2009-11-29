@@ -280,22 +280,20 @@ void CPlayGame::process()
 		std::string tempbuf;
 		SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
 //#ifdef DEBUG
-		tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec()) +
-			"; x = " + itoa(mp_Player[0].x) + " ; y = " + itoa(mp_Player[0].y);
+//		tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec()) +
+	//		"; x = " + itoa(mp_Player[0].x) + " ; y = " + itoa(mp_Player[0].y);
 
-		tempbuf = "Jumpmaxspeed: " + itoa(m_PhysicsSettings.player.maxjumpspeed);
-		tempbuf += " | Decrease_rate: ";
-		tempbuf	+= itoa(m_PhysicsSettings.player.defaultdecreasespeed);
+		tempbuf = "Jump_X_Decrease: " + itoa(m_PhysicsSettings.player.jumpdecrease_x);
+		tempbuf += " | Speed_x: " + itoa(mp_Player[0].pinertia_x);
 
 //#else
 	//	tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec());
 //#endif
 		g_pGfxEngine->Font->drawFont( sfc, tempbuf, 320-3-(tempbuf.size()<<3), 3, 1);
 
-		tempbuf	= "MAX_FALL: " + itoa(m_PhysicsSettings.player.max_fallspeed);
-		tempbuf += " | FALL_DECREASE: " + itoa(m_PhysicsSettings.player.fallspeed_decrease);
+		tempbuf = "Jump_X_Air_MaxSpeed: " + itoa(m_PhysicsSettings.player.max_x_speed_air);
 
-		g_pGfxEngine->Font->drawFont( sfc, tempbuf, 320-3-(tempbuf.size()<<3), 12, 1);
+		g_pGfxEngine->Font->drawFont( sfc, tempbuf, 320-3-(tempbuf.size()<<3), 11, 1);
 
 	}
 	

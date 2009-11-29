@@ -26,7 +26,6 @@
 // reach up to PMAXSPEED (increased every walk anim frame)
 //#define PFASTINCMAXSPEED 36
 #define PFASTINCMAXSPEED 40
-#define PMAXSPEED        70
 #define PJUMPINERTIA     30
 #define PFASTINCRATE     4        // accel delay rate up to PFASTINCMAXSPEED
 #define PFASTINCRATE_POGO  2      // rate when pogo stick is out

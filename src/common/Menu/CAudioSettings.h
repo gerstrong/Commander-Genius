@@ -8,10 +8,19 @@
 #ifndef CAUDIOSETTINGS_H_
 #define CAUDIOSETTINGS_H_
 
-class CAudioSettings {
+#include "CBaseMenu.h"
+#include <SDL.h>
+
+class CAudioSettings : public CBaseMenu {
 public:
-	CAudioSettings();
+	CAudioSettings(char &menu_type);
+	void processSpecific();
 	virtual ~CAudioSettings();
+
+private:
+	int m_Rate;
+	Uint16 m_Format;
+	char m_Mode;
 };
 
 #endif /* CAUDIOSETTINGS_H_ */

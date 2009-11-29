@@ -330,40 +330,21 @@ void CPlayer::JumpAndPogo()
 
 	if(g_pInput->getHoldedKey(KH))
 	{
-		mp_PhysicsSettings->player.maxjumpspeed--;
+		mp_PhysicsSettings->player.jumpdecrease_x--;
 	}
 	else if(g_pInput->getHoldedKey(KJ))
 	{
-		mp_PhysicsSettings->player.maxjumpspeed++;
+		mp_PhysicsSettings->player.jumpdecrease_x++;
 	}
 
 	if(g_pInput->getHoldedKey(KB))
 	{
-		mp_PhysicsSettings->player.defaultdecreasespeed--;
+		mp_PhysicsSettings->player.max_x_speed_air--;
 	}
 	else if(g_pInput->getHoldedKey(KN))
 	{
-		mp_PhysicsSettings->player.defaultdecreasespeed++;
+		mp_PhysicsSettings->player.max_x_speed_air++;
 	}
-
-	if(g_pInput->getHoldedKey(KX))
-	{
-		mp_PhysicsSettings->player.fallspeed_decrease--;
-	}
-	else if(g_pInput->getHoldedKey(KC))
-	{
-		mp_PhysicsSettings->player.fallspeed_decrease++;
-	}
-
-	if(g_pInput->getHoldedKey(KS))
-	{
-		mp_PhysicsSettings->player.max_fallspeed--;
-	}
-	else if(g_pInput->getHoldedKey(KD))
-	{
-		mp_PhysicsSettings->player.max_fallspeed++;
-	}
-
 
 //////
 // For Debugging proporses only (End)
@@ -438,7 +419,7 @@ void CPlayer::JumpAndPogo()
 				{  	// time to start the jump
 					// select a jump depending on how long keen was preparing
 					pjumpupspeed = mp_PhysicsSettings->player.maxjumpspeed;
-					pjumpupspeed_decrease = mp_PhysicsSettings->player.defaultdecreasespeed;
+					pjumpupspeed_decrease = mp_PhysicsSettings->player.defaultjumpupdecreasespeed;
 					//pjumpupspeed = PJUMPUP_SPEED;
 					//pjumpupspeed_decrease = PJUMP_UPDECREASERATE;
 					/*switch(pjumpframe)
@@ -496,8 +477,8 @@ void CPlayer::JumpAndPogo()
 					
 					pwalkincreasetimer = 0;
 					
-					if(playcontrol[PA_X] < 0)	pinertia_x = -80;
-					if(playcontrol[PA_X] > 0)	pinertia_x = 80;
+					if(playcontrol[PA_X] < 0)	pinertia_x = -mp_PhysicsSettings->player.jumpdecrease_x;
+					if(playcontrol[PA_X] > 0)	pinertia_x = mp_PhysicsSettings->player.jumpdecrease_x;
 				}
 				else
 				{

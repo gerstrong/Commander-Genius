@@ -11,6 +11,9 @@
 #include "../vorticon/infoscenes/CHelp.h"
 
 #include "Menu/CVideoSettings.h"
+#include "Menu/CAudioSettings.h"
+#include "Menu/CControlsettings.h"
+#include "Menu/COptions.h"
 
 #include "../StringUtils.h"
 #include "../CGameControl.h"
@@ -79,7 +82,10 @@ bool CMenu::init( char menu_type )
 	else if( m_menu_type == CONTROLPLAYERS )
 		initNumControlMenu();
 	else if( m_menu_type == CONTROLS )
-		initControlMenu();
+	{
+		mp_Menu = new CControlsettings(m_menu_type);
+		return true;
+	}
 	else if( m_menu_type == F1 )
 		initF1Menu();
 	else if( m_menu_type == SAVE )
@@ -91,13 +97,18 @@ bool CMenu::init( char menu_type )
 	else if( m_menu_type == GRAPHICS )
 	{
 		mp_Menu = new CVideoSettings(m_menu_type);
-		//initGraphicsMenu();
 		return true;
 	}
 	else if( m_menu_type == OPTIONS )
-		initOptionsMenu();
+	{
+		mp_Menu = new COptions(m_menu_type);
+		return true;
+	}
 	else if( m_menu_type == AUDIO )
-		initAudioMenu();
+	{
+		mp_Menu = new CAudioSettings(m_menu_type);
+		return true;
+	}
 	
 	// Use the standard Menu-Frame used in the old DOS-Games
 	mp_Dialog->setFrameTheme( DLG_THEME_OLDSCHOOL );
@@ -180,58 +191,6 @@ void CMenu::initNumControlMenu()
 	}
 }
 
-void CMenu::initControlMenu()
-{
-	std::string buf;
-	std::string buf2;
-	int player = m_NumPlayers - 1;
-	mp_Dialog = new CDialog(mp_MenuSurface, 36, 16);
-	
-	g_pInput->getEventName(IC_LEFT, player, buf2);
-	buf = "P"+itoa(m_NumPlayers)+" Left:   " + buf2;
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, buf);
-	
-	g_pInput->getEventName(IC_UP, player, buf2);
-	buf = "P"+itoa(m_NumPlayers)+" Up:     " + buf2;
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, buf);
-	
-	g_pInput->getEventName(IC_RIGHT, player, buf2);
-	buf = "P"+itoa(m_NumPlayers)+" Right:  " + buf2;
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, buf);
-	
-	g_pInput->getEventName(IC_DOWN, player, buf2);
-	buf = "P"+itoa(m_NumPlayers)+" Down:   " + buf2;
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, buf);
-	
-	g_pInput->getEventName(IC_JUMP, player, buf2);
-	buf = "P"+itoa(m_NumPlayers)+" Jump:   " + buf2;
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, buf);
-	
-	g_pInput->getEventName(IC_POGO, player, buf2);
-	buf = "P"+itoa(m_NumPlayers)+" Pogo:   " + buf2;
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, buf);
-	
-	g_pInput->getEventName(IC_FIRE, player, buf2);
-	buf = "P"+itoa(m_NumPlayers)+" Fire:   " + buf2;
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, buf);
-	
-	g_pInput->getEventName(IC_STATUS, player, buf2);
-	buf = "P"+itoa(m_NumPlayers)+" Status: " + buf2;
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, buf);
-	
-	g_pInput->getEventName(IC_HELP, player, buf2);
-	buf = "P"+itoa(m_NumPlayers)+" Help:   " + buf2;
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 9, buf);
-	
-	g_pInput->getEventName(IC_QUIT, player, buf2);
-	buf = "P"+itoa(m_NumPlayers)+" Quit:   " + buf2;
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 10, buf);
-	
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 2, 11, "Reset Controls");
-	mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 13, "");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 14, "Return");
-}
-
 void CMenu::initF1Menu()
 {
 	mp_Dialog = new CDialog(mp_MenuSurface, 18, 9);
@@ -277,56 +236,6 @@ void CMenu::initSaveMenu()
 			text = "     EMPTY       ";
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, i, text);
 	}
-}
-
-void CMenu::initOptionsMenu()
-{
-	mp_Dialog = new CDialog(mp_MenuSurface, 22, NUM_OPTIONS+5);
-	int i;
-	std::string buf;
-	
-	for( i = 0 ; i < NUM_OPTIONS ; i++ )
-	{
-		buf = mp_option[i].name + ": ";
-		
-		if(mp_option[i].value)
-			buf += "Enabled";
-		else
-			buf += "Disabled";
-		
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, i+1, buf);
-	}
-	
-	mp_Dialog->addObject(DLG_OBJ_TEXT, 1, NUM_OPTIONS+2, "");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, NUM_OPTIONS+3, "Return");
-}
-
-void CMenu::initAudioMenu()
-{
-	mp_Dialog = new CDialog(mp_MenuSurface, 22, 8);
-	int rate = 0;
-	Uint16 format = 0;
-	short mode=0;
-	
-	rate = g_pSound->getAudioSpec().freq;
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Rate: " + itoa(rate) +" kHz");
-	
-	format = g_pSound->getAudioSpec().format;
-	std::string buf;
-	if(format == AUDIO_S16)
-		buf = "Format: 16 bits";
-	else
-		buf = "Format: 8 bits";
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, buf);
-	
-	mode = g_pSound->getAudioSpec().channels - 1;
-	if(mode == 1)
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Mode: Stereo");
-	else
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Mode: Mono");
-	
-	mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 5, "");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Return");
 }
 
 ////
@@ -396,7 +305,7 @@ void CMenu::process()
 			//else if( m_menu_type == AUDIO ) processAudioMenu();
 
 			// Draw the menu
-			if(!mp_Menu) mp_Dialog->draw();
+			if(!mp_Menu && mp_Dialog) mp_Dialog->draw();
 		}
 	}
 	else // InfoScene is enabled! show it instead of the menu
@@ -592,176 +501,6 @@ void CMenu::processNumControlMenu()
 	return;
 }
 
-void CMenu::processControlMenu()
-{
-	if( m_selection != -1)
-	{
-		if( m_selection < 11 )
-		{
-			if(m_selection < MAX_COMMANDS)
-			{
-				int item = m_selection;
-				std::string buf;
-				std::string buf2;
-				
-				buf = mp_Dialog->m_dlgobject[m_selection]->m_OptionText->m_text;
-				buf = buf.erase(11);
-				
-				buf2 = "*Waiting for Input*";
-				mp_Dialog->setObjectText(m_selection, buf + buf2);
-				mp_Dialog->m_key = 'n';
-				
-				do
-				{
-					if(g_pInput->readNewEvent(m_NumPlayers-1,item))
-					{
-						g_pInput->getEventName(item, m_NumPlayers-1, buf2);
-						mp_Dialog->setObjectText(m_selection, buf + buf2);
-						mp_Dialog->m_key = 'u';
-						m_selection = -1;
-					}
-				} while (buf2 == "*Waiting for Input*");
-			}
-			else
-			{
-				g_pInput->resetControls();
-				cleanup();
-				init(CONTROLS);
-			}
-			mp_Dialog->setObjectText(11, "Save and Return");
-			//mp_Dialog->setObjectType(11, DLG_OBJ_DISABLED);
-			mp_Dialog->setObjectText(12, "Cancel");
-		}
-		else
-		{
-			if(m_selection == 11)
-			{
-				g_pInput->saveControlconfig();
-			}
-			m_goback = true;
-		}
-	}
-	
-	if(m_goback)
-	{
-		cleanup();
-		m_NumPlayers = 0;
-		init(CONTROLPLAYERS);
-	}
-}
-
-void CMenu::processOptionsMenu()
-{
-	std::string buf;
-	
-	if( m_selection != -1)
-	{
-		if(m_selection < NUM_OPTIONS)
-		{
-			buf = mp_option[m_selection].name + ": ";
-			
-			if(mp_option[m_selection].value)
-			{
-				mp_option[m_selection].value = 0;
-				buf += "Disabled";
-			}
-			else
-			{
-				mp_option[m_selection].value = 1;
-				buf += "Enabled";
-			}
-			
-			mp_Dialog->setObjectText(m_selection, buf);
-			mp_Dialog->setObjectText(NUM_OPTIONS, "Save and Return");
-			//mp_Dialog->setObjectType(NUM_OPTIONS, DLG_OBJ_DISABLED);
-			mp_Dialog->setObjectText(NUM_OPTIONS+1, "Cancel");
-		}
-		else
-		{
-			if(m_selection == NUM_OPTIONS)
-			{
-				CSettings Settings(mp_option); // Pressed Save,
-				Settings.saveGameCfg();
-			}
-			m_goback = true;
-		}
-		m_selection = -1;
-	}
-	
-	if(m_goback)
-	{
-		cleanup();
-		init(CONFIGURE);
-	}
-}
-
-void CMenu::processAudioMenu()
-{
-	int ok=0, rate = 0;
-	Uint16 format = 0;
-	short mode=0;
-	
-	std::string buf;
-	
-	if( m_selection != -1)
-	{
-		if(m_selection < 3)
-		{
-			if(m_selection == 0)
-			{
-				switch(rate)
-				{
-					case 22050: rate = 44100; break;
-					case 11025: rate = 22050; break;
-					default: rate = 11025; break;
-				}
-				mp_Dialog->setObjectText(0, "Rate: " + itoa(rate) + " kHz");
-			}
-			
-			if(m_selection == 1)
-			{
-				if( format == AUDIO_S16 ) format = AUDIO_U8;
-				else if( format == AUDIO_U8 ) format = AUDIO_S16;
-				if(format == AUDIO_S16)
-					buf = "Format: 16 bits";
-				else
-					buf = "Format: 8 bits";
-				mp_Dialog->setObjectText(1, buf);
-			}
-			else if(m_selection == 2)
-			{
-				mode = !mode;
-				if(!mode)
-					mp_Dialog->setObjectText(2,"Mode: Mono");
-				else
-					mp_Dialog->setObjectText(2,"Mode: Stereo");
-			}
-			mp_Dialog->setObjectText(3, "Save and Return");
-			//mp_Dialog->setObjectType(3, DLG_OBJ_DISABLED);
-			mp_Dialog->setObjectText(4, "Cancel");
-		}
-		else
-		{
-			if(m_selection == 3)
-			{
-				CSettings Settings(mp_option);
-				g_pSound->destroy();
-				g_pSound->setSoundmode(rate, mode ? true : false, format);
-				Settings.saveDrvCfg();
-				g_pSound->init();
-				ok = g_pSound->loadSoundData(m_Episode, m_GamePath);
-			}
-			m_goback = true;
-		}
-		m_selection = -1;
-	}
-	
-	if(m_goback)
-	{
-		cleanup();
-		init(CONFIGURE);
-	}
-}
 void CMenu::processF1Menu()
 {
 	if( m_selection != -1)

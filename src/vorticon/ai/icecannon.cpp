@@ -38,12 +38,12 @@ void CObjectAI::icechunk_ai(CObject *p_object)
 			if (p_object->ai.icechunk.vector_x > 0)
 			{
 				mp_Player[p_object->touchedBy].pdir = mp_Player[p_object->touchedBy].pshowdir = RIGHT;
-				mp_Player[p_object->touchedBy].pinertia_x = PMAXSPEED;
+				//mp_Player[p_object->touchedBy].pinertia_x = PMAXSPEED;
 			}
 			else if (p_object->ai.icechunk.vector_x < 0)
 			{
 				mp_Player[p_object->touchedBy].pdir = mp_Player[p_object->touchedBy].pshowdir = LEFT;
-				mp_Player[p_object->touchedBy].pinertia_x = -PMAXSPEED;
+				//mp_Player[p_object->touchedBy].pinertia_x = -PMAXSPEED;
 			}
 			else	// perfectly vertical ice cannons
 			{
