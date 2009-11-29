@@ -304,7 +304,7 @@ void CPlayGame::process()
 	if(!mp_Menu && g_pInput->getPressedKey(KQUIT))
 	{
 		// Open the menu
-		mp_Menu = new CMenu( CMenu::ACTIVE, m_Gamepath, m_Episode, *mp_Map, m_SavedGame, mp_option );
+		mp_Menu = new CMenu( ACTIVE, m_Gamepath, m_Episode, *mp_Map, m_SavedGame, mp_option );
 		mp_Menu->init();
 	}
 }

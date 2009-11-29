@@ -15,17 +15,22 @@
 
 class CSettings {
 public:
-	CSettings(stOption *p_option);
-	virtual ~CSettings();
+	// NOTE: If no option structure is passed, you must be no means use
+	// 	loadGameCfg(), saveGameCfg(), loadDefaultGameCfg(); setOption(..);
+	// Those depend on that structure.
+	CSettings(stOption *p_option=NULL);
 	short saveDrvCfg();
 	bool loadDrvCfg();
-	short loadGameCfg();
+	bool loadGameCfg();
 	void saveGameCfg();
 	void loadDefaultGameCfg();
 	void setOption( int opt, const std::string &name, char value);
+	virtual ~CSettings();
 	
 private:
 	stOption *mp_option;
+
+	bool checkOptionPtr();
 };
 
 #endif /* CSETTINGS_H_ */

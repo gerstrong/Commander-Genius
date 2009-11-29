@@ -87,6 +87,7 @@ public:
 #endif
 	SDL_Surface *getScrollSurface(void);
 
+	void setMode(st_resolution Resolution);
 	void setMode(int width, int height,int depth);
 	void setFilter(short value);
 	void setZoom(short vale);
@@ -98,7 +99,7 @@ public:
 	void enableOpenGL(bool value) { m_opengl = false; }
 	void setOGLFilter(unsigned char value) { m_opengl_filter = 0; }
 #endif
-	st_resolution setNextResolution();
+	st_resolution getNextResolution();
 
 	void showFPS(bool value);
 

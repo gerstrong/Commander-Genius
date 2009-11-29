@@ -189,7 +189,7 @@ void CVideoDriver::initResolutionList()
 #endif
 }
 
-st_resolution CVideoDriver::setNextResolution()
+st_resolution CVideoDriver::getNextResolution()
 {
 	m_Resolution_pos++;
 	
@@ -197,6 +197,11 @@ st_resolution CVideoDriver::setNextResolution()
 		m_Resolution_pos = m_Resolutionlist.begin();
 	
 	return *m_Resolution_pos;
+}
+
+void CVideoDriver::setMode(st_resolution Resolution)
+{
+	setMode(Resolution.width, Resolution.height, Resolution.depth);
 }
 
 void CVideoDriver::setMode(int width, int height,int depth)
@@ -832,10 +837,8 @@ short CVideoDriver::getZoomValue(void){ return Zoom; }
 
 void CVideoDriver::showFPS(bool value){ showfps = value; }
 
-void CVideoDriver::isFullscreen(bool value)
-{
+void CVideoDriver::isFullscreen(bool value) {
 	Fullscreen = value;
-	return;
 }
 
 short CVideoDriver::getFiltermode(void)

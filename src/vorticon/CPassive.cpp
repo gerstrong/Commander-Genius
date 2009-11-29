@@ -95,7 +95,7 @@ void CPassive::process()
 		else
 		{
 			SAFE_DELETE(mp_PressAnyBox);
-			mp_Menu = new CMenu( CMenu::PASSIVE, m_DataDirectory,
+			mp_Menu = new CMenu( PASSIVE, m_DataDirectory,
 								m_Episode, *mp_Map, m_SavedGame, mp_Option );
 			mp_Menu->init();
 		}

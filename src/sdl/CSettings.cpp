@@ -101,14 +101,22 @@ bool CSettings::loadDrvCfg()
 	return true;
 }
 
+bool CSettings::checkOptionPtr() {
+	if(mp_option) return true;
+	g_pLogFile->textOut("ERROR in Code implementation! There is an error in the source code. Pointer mp_option cannot be used here!\n");
+	return false;
+}
+
 void CSettings::setOption( int opt, const std::string &name, char value)
 {
+	if(!checkOptionPtr()) return;
 	mp_option[opt].name = name;
 	mp_option[opt].value = value;
 }
 
 void CSettings::loadDefaultGameCfg()
 {
+	if(!checkOptionPtr()) return;
 	setOption( OPT_FULLYAUTOMATIC, "autogun", 0 );
 	setOption( OPT_SUPERPOGO, "superpogo", 0 );
 	setOption( OPT_ALLOWPKING, "pking", 1 );
@@ -119,14 +127,16 @@ void CSettings::loadDefaultGameCfg()
 	setOption( OPT_RISEBONUS, "rise bonus", 1 );
 }
 
-short CSettings::loadGameCfg()
+bool CSettings::loadGameCfg()
 {
 	int i;
 	CParser Parser;
 	
+	if(!checkOptionPtr()) return false;
+
 	if(!Parser.loadParseFile()) {
 		loadDefaultGameCfg();
-		return 1;
+		return false;
 	}
 	
 	for (i = 0; i < NUM_OPTIONS; i++)
@@ -140,7 +150,7 @@ short CSettings::loadGameCfg()
 	}
 	
 	g_pLogFile->ftextOut("<br>Your personal settings were loaded successfully...<br>");
-	return 0;
+	return true;
 }
 
 void CSettings::saveGameCfg()
@@ -148,6 +158,8 @@ void CSettings::saveGameCfg()
 	CParser Parser;
 	Parser.loadParseFile();
 	
+	if(!checkOptionPtr()) return;
+
 	for (int i = 0; i < NUM_OPTIONS; i++)
 		Parser.saveIntValue(mp_option[i].name,"Game",mp_option[i].value);
 	

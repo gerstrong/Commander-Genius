@@ -15,6 +15,7 @@
 #include "../dialog/CDialog.h"
 #include "../dialog/CTextViewer.h"
 #include "../fileio/CSavedGame.h"
+#include "Menu/CBaseMenu.h"
 #include "CMap.h"
 #include "options.h"
 
@@ -36,24 +37,6 @@
 class CMenu {
 
 public:
-	// Which Menu has to be shown?
-
-	enum menutypes{
-		MAIN, NEW, OVERWRITE,
-		CONTROLPLAYERS, STORY,
-		HIGHSCORES, ABOUTCG,
-		ABOUTID, ORDERING,
-		LOAD, SAVE, START,
-		DIFFICULTY, CONFIGURE,
-		GRAPHICS, CONTROLS,
-		AUDIO, OPTIONS,
-		F1, HELP, ENDGAME, QUIT
-	};
-
-	// Active means, when the player is playing, PASSIVE when the Player is not playing
-	enum menumodes{
-		ACTIVE, PASSIVE
-	};
 
 	CMenu( char menu_mode, std::string &GamePath,
 			char &Episode, CMap &Map,
@@ -75,7 +58,6 @@ public:
 	void processSaveMenu();
 	void processLoadMenu();
 	void processOverwriteMenu();
-	void processGraphicsMenu();
 	void processOptionsMenu();
 	void processAudioMenu();
 
@@ -108,11 +90,11 @@ private:
 	void initNumControlMenu();
 	void initControlMenu();
 	void initF1Menu();
-	void initGraphicsMenu();
 	void initOptionsMenu();
 	void initAudioMenu();
 
 	CInfoScene *mp_InfoScene;
+	CBaseMenu *mp_Menu;
 	SDL_Surface *mp_MenuSurface;
 	char &m_Episode;
 	std::string &m_GamePath;

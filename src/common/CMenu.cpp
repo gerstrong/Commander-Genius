@@ -10,14 +10,16 @@
 #include "../vorticon/infoscenes/CAbout.h"
 #include "../vorticon/infoscenes/CHelp.h"
 
+#include "Menu/CVideoSettings.h"
+
 #include "../StringUtils.h"
 #include "../CGameControl.h"
 #include "../vorticon/CPassive.h"
-#include "../sdl/CVideoDriver.h"
 #include "../sdl/CInput.h"
 #include "../sdl/CTimer.h"
 #include "../sdl/CSettings.h"
 #include "../sdl/sound/CSound.h"
+#include "../sdl/CVideoDriver.h"
 
 #define SAFE_DELETE(x) if(x) { delete x; x=NULL; }
 
@@ -48,6 +50,9 @@ mp_option(pOption)
 	mp_Dialog = NULL;
 	mp_InfoScene = NULL;
 	m_hideobjects = false;
+
+	// Special Pointer used for Menus that are declared in separated classes
+	mp_Menu = NULL;
 }
 
 ////
@@ -58,7 +63,7 @@ bool CMenu::init( char menu_type )
 	m_menu_type = menu_type;
 	m_goback = false;
 	m_selection = -1; // Nothing has been selected yet.
-	
+
 	if( m_menu_type == MAIN )
 		initMainMenu();
 	else if( m_menu_type == QUIT )
@@ -84,7 +89,11 @@ bool CMenu::init( char menu_type )
 	else if( m_menu_type == OVERWRITE )
 		initConfirmMenu();
 	else if( m_menu_type == GRAPHICS )
-		initGraphicsMenu();
+	{
+		mp_Menu = new CVideoSettings(m_menu_type);
+		//initGraphicsMenu();
+		return true;
+	}
 	else if( m_menu_type == OPTIONS )
 		initOptionsMenu();
 	else if( m_menu_type == AUDIO )
@@ -270,78 +279,6 @@ void CMenu::initSaveMenu()
 	}
 }
 
-void CMenu::initGraphicsMenu()
-{
-	Uint16 width = g_pVideoDriver->getWidth(), height = g_pVideoDriver->getHeight(), depth = g_pVideoDriver->getDepth();
-	Uint16 zoom = g_pVideoDriver->getZoomValue(), filter = g_pVideoDriver->getFiltermode(), gl_filter = g_pVideoDriver->getOGLFilter(), autoframeskip = g_pTimer->getFrameRate();
-	bool fsmode, aspect = g_pVideoDriver->getAspectCorrection(), opengl = g_pVideoDriver->isOpenGL();
-	std::string buf;
-	
-	g_pVideoDriver->initResolutionList();
-	
-	g_pVideoDriver->setMode(width, height, depth);
-	
-	mp_Dialog = new CDialog(mp_MenuSurface, 32, 12);
-	
-	buf = "Resolution: " + itoa(width) + "x" + itoa(height) + "x" + itoa(depth);
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, buf);
-	if(g_pVideoDriver->getFullscreen())
-	{
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Fullscreen mode");
-		fsmode = true;
-	}
-	else
-	{
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Windowed mode");
-		fsmode = false;
-	}
-	
-	if(!opengl)
-	{
-		if(zoom == 1)
-			mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "No Scale");
-		else
-			mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Scale: " + itoa(zoom) );
-	}
-	else
-	{
-		if(gl_filter == 1)
-			mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "OGL Filter: Linear");
-		else
-			mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "OGL Filter: Nearest");
-	}
-	
-	if(filter == 0)
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "No Filter");
-	else if(filter == 1)
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Scale2x Filter");
-	else if(filter == 2)
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Scale3x Filter");
-	else if(filter == 3)
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Scale4x Filter");
-	else
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Unknown Filter");
-	
-	if(opengl)
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "OpenGL Acceleration");
-	else
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "Software Rendering");
-	
-	if(autoframeskip)
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Auto-Frameskip : " + itoa(autoframeskip) + " fps");
-	
-	buf = "OGL Aspect Ratio ";
-	buf += aspect ? "enabled" : "disabled";
-	
-	if(opengl)
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, buf);
-	else
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, buf);
-	
-	mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 9, "");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 10, "Return");
-}
-
 void CMenu::initOptionsMenu()
 {
 	mp_Dialog = new CDialog(mp_MenuSurface, 22, NUM_OPTIONS+5);
@@ -395,46 +332,72 @@ void CMenu::initAudioMenu()
 ////
 // Process Routines
 ////
+/// Main Process method fo the menu
 void CMenu::process()
 {
 	// Information Mode
 	if(!mp_InfoScene) // show a normal menu
 	{
-		// Get Input for selection
-		if( g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_STATUS) )
-		{
-			m_selection = mp_Dialog->getSelection();
-		}
-		else if( g_pInput->getPressedCommand(IC_HELP) )
+		if( g_pInput->getPressedCommand(IC_HELP) )
 		{
 			cleanup();
 			init(F1);
 		}
-		else if( g_pInput->getPressedCommand(IC_QUIT) )
+
+		if( mp_Menu )
 		{
-			m_goback = true;
+			mp_Menu->processCommon();
+
+			mp_Menu->processSpecific();
+
+			mp_Menu->postProcess();
+
+			if(mp_Menu->mustClose())
+			{
+				SAFE_DELETE(mp_Menu);
+				init(m_menu_type);
+			}
 		}
-		mp_Dialog->processInput();
-		
-		// Draw the menu
-		mp_Dialog->draw();
-		
-		// Process the Menu Type logic.
-		// Which menu is open and what do we have to do?
-		if( m_menu_type == MAIN ) processMainMenu();
-		else if( m_menu_type == NEW ) processNumPlayersMenu();
-		else if( m_menu_type == DIFFICULTY ) processDifficultyMenu();
-		else if( m_menu_type == CONFIGURE ) processConfigureMenu();
-		else if( m_menu_type == CONTROLPLAYERS ) processNumControlMenu();
-		else if( m_menu_type == CONTROLS ) processControlMenu();
-		else if( m_menu_type == F1 ) processF1Menu();
-		else if( m_menu_type == QUIT ) processQuitMenu();
-		else if( m_menu_type == ENDGAME ) processEndGameMenu();
-		else if( m_menu_type == SAVE ) processSaveMenu();
-		else if( m_menu_type == LOAD ) processLoadMenu();
-		else if( m_menu_type == OVERWRITE ) processOverwriteMenu();
-		else if( m_menu_type == GRAPHICS ) processGraphicsMenu();
-		else if( m_menu_type == AUDIO ) processAudioMenu();
+		else
+		{
+			// Get Input for selection
+			if( g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_STATUS) )
+			{
+				m_selection = mp_Dialog->getSelection();
+			}
+			else if( g_pInput->getPressedCommand(IC_QUIT) )
+			{
+				m_goback = true;
+			}
+			mp_Dialog->processInput();
+
+			// Process the Menu Type logic.
+			// Which menu is open and what do we have to do?
+
+			// NOTE: Some menus are now inherited classes by a base-class
+			// Some variables must be hidden, and it can be achieved through that method
+			// I (Gerstrong) would recommend making the others menu also this way.
+			// You'd have more files but small ones and better to control than a big one, where
+			// you have to seek and seek
+
+			if( m_menu_type == MAIN ) processMainMenu();
+			else if( m_menu_type == NEW ) processNumPlayersMenu();
+			else if( m_menu_type == DIFFICULTY ) processDifficultyMenu();
+			else if( m_menu_type == CONFIGURE ) processConfigureMenu();
+			else if( m_menu_type == CONTROLPLAYERS ) processNumControlMenu();
+			//else if( m_menu_type == CONTROLS ) processControlMenu();
+			else if( m_menu_type == F1 ) processF1Menu();
+			else if( m_menu_type == QUIT ) processQuitMenu();
+			else if( m_menu_type == ENDGAME ) processEndGameMenu();
+			else if( m_menu_type == SAVE ) processSaveMenu();
+			else if( m_menu_type == LOAD ) processLoadMenu();
+			else if( m_menu_type == OVERWRITE ) processOverwriteMenu();
+			//else if( m_menu_type == GRAPHICS ) processGraphicsMenu();
+			//else if( m_menu_type == AUDIO ) processAudioMenu();
+
+			// Draw the menu
+			if(!mp_Menu) mp_Dialog->draw();
+		}
 	}
 	else // InfoScene is enabled! show it instead of the menu
 	{
@@ -684,168 +647,6 @@ void CMenu::processControlMenu()
 		cleanup();
 		m_NumPlayers = 0;
 		init(CONTROLPLAYERS);
-	}
-}
-
-void CMenu::processGraphicsMenu()
-{
-	Uint16 width = g_pVideoDriver->getWidth(), height = g_pVideoDriver->getHeight(), depth = g_pVideoDriver->getDepth();
-	Uint16 zoom = g_pVideoDriver->getZoomValue(), filter = g_pVideoDriver->getFiltermode(), gl_filter = g_pVideoDriver->getOGLFilter(), autoframeskip = g_pTimer->getFrameRate();
-	bool fsmode = g_pVideoDriver->getFullscreen(),
-	aspect = g_pVideoDriver->getAspectCorrection(),
-	opengl = g_pVideoDriver->isOpenGL();
-	std::string buf;
-	
-	//g_pVideoDriver->initResolutionList();
-	
-	//g_pVideoDriver->setMode(width, height, depth);
-	// No!, you cannot init or set mode 60 times per sec. Only once if triggered. Only then...
-	
-	if( m_selection != -1)
-	{
-		if( m_selection < 7 )
-		{
-			if(m_selection == 0)
-			{
-				// Now the part of the resolution list
-				st_resolution Resolution;
-				Resolution = g_pVideoDriver->setNextResolution();
-				
-				buf = "Resolution: " + itoa(Resolution.width) + "x" + itoa(Resolution.height) + "x" + itoa(Resolution.depth);
-				mp_Dialog->setObjectText(0,buf);
-			}
-			else if(m_selection == 1)
-			{
-				fsmode = !fsmode;
-				if(fsmode)
-					g_pVideoDriver->isFullscreen(true);
-				else
-					g_pVideoDriver->isFullscreen(false);
-				if(fsmode)
-				{
-					mp_Dialog->setObjectText(1,"Fullscreen mode");
-					g_pVideoDriver->initResolutionList();
-					buf = "Resolution: " + itoa(g_pVideoDriver->m_Resolutionlist.back().width) + "x" + itoa(g_pVideoDriver->m_Resolutionlist.back().height) + "x" + itoa(g_pVideoDriver->m_Resolutionlist.back().depth);
-					mp_Dialog->setObjectText(0,buf);
-					g_pVideoDriver->setMode(g_pVideoDriver->m_Resolutionlist.back().width, g_pVideoDriver->m_Resolutionlist.back().height, g_pVideoDriver->m_Resolutionlist.back().depth);
-				}
-				else
-				{
-					mp_Dialog->setObjectText(1,"Windowed mode");
-					g_pVideoDriver->initResolutionList();
-					buf = "Resolution: " + itoa(g_pVideoDriver->m_Resolutionlist.front().width) + "x" + itoa(g_pVideoDriver->m_Resolutionlist.front().height) + "x" + itoa(g_pVideoDriver->m_Resolutionlist.front().depth);
-					mp_Dialog->setObjectText(0,buf);
-				}
-				if(!fsmode)
-					g_pVideoDriver->isFullscreen(true);
-				else
-					g_pVideoDriver->isFullscreen(false);
-			}
-			else if(m_selection == 2)
-			{
-				if(opengl)
-				{
-					gl_filter = (gl_filter==1) ? 0 : 1;
-					buf = (gl_filter == 1) ? "OGL Filter: Linear" : "OGL Filter: Nearest";
-					mp_Dialog->setObjectText(2,buf);
-				}
-				else
-				{
-					zoom = (zoom >= 4) ? 1 : zoom+1;
-					buf = (zoom == 1) ? "No scale" : "Scale: " + itoa(zoom);
-					if(filter>0)
-						filter = zoom-1;
-				}
-				mp_Dialog->setObjectText(2,buf);
-				
-				if(filter == 0)
-					mp_Dialog->setObjectText(3,"No Filter");
-				else if(filter == 1)
-					mp_Dialog->setObjectText(3,"Scale2x Filter");
-				else if(filter == 2)
-					mp_Dialog->setObjectText(3,"Scale3x Filter");
-				else if(filter == 3)
-					mp_Dialog->setObjectText(3,"Scale4x Filter");
-			}
-			else if(m_selection == 3)
-			{
-				if(opengl)
-					filter = (filter >= 3) ? 0 : filter+1;
-				else
-					filter = (filter > 0) ? 0 : zoom-1;
-				
-				if(filter == 0)
-					mp_Dialog->setObjectText(3,"No Filter");
-				else if(filter == 1)
-					mp_Dialog->setObjectText(3,"Scale2x Filter");
-				else if(filter == 2)
-					mp_Dialog->setObjectText(3,"Scale3x Filter");
-				else if(filter == 3)
-					mp_Dialog->setObjectText(3,"Scale4x Filter");
-			}
-			else if(m_selection == 4)
-			{
-				opengl = !opengl; // switch the mode!!
-				
-				if(opengl)
-					mp_Dialog->setObjectText(4,"OpenGL Acceleration");
-				else
-					mp_Dialog->setObjectText(4,"Software Rendering");
-			}
-			else if(m_selection == 5)
-			{
-				if(autoframeskip < 120)
-					autoframeskip += 10;
-				else
-					autoframeskip = 10;
-				buf = "Auto-Frameskip : " + itoa(autoframeskip) + " fps";
-				
-				mp_Dialog->setObjectText(5, buf);
-			}
-			else if(m_selection == 6)
-			{
-				aspect = !aspect;
-				
-				if(aspect)
-					mp_Dialog->setObjectText(6,"OGL Aspect Ratio Enabled");
-				else
-					mp_Dialog->setObjectText(6,"OGL Aspect Ratio Disabled");
-				
-			}
-			mp_Dialog->setObjectText(7, "Save and Return");
-			mp_Dialog->setObjectType(7, DLG_OBJ_DISABLED);
-			mp_Dialog->setObjectText(8, "Cancel");
-		}
-		else
-		{
-			if(m_selection == 7)
-			{
-				g_pVideoDriver->stop();
-				
-				if(fsmode)
-					g_pVideoDriver->isFullscreen(true);
-				else
-					g_pVideoDriver->isFullscreen(false);
-				
-				g_pVideoDriver->enableOpenGL(opengl);
-				g_pVideoDriver->setOGLFilter(gl_filter);
-				g_pVideoDriver->setZoom(zoom);
-				g_pVideoDriver->setFilter(filter);
-				g_pTimer->setFrameRate(DEFAULT_LPS, autoframeskip, DEFAULT_SYNC);
-				g_pVideoDriver->setAspectCorrection(aspect);
-				
-				CSettings Settings(mp_option);
-				Settings.saveDrvCfg();
-			}
-			m_goback = true;
-		}
-		m_selection = -1;
-	}
-	
-	if(m_goback)
-	{
-		cleanup();
-		init(CONFIGURE);
 	}
 }
 
@@ -1168,10 +969,13 @@ void CMenu::cleanup()
 {
 	m_Map.m_animation_enabled = true;
 	m_hideobjects = false;
-	delete mp_Dialog;
-	mp_Dialog = NULL;
+	// Close the old menu
+	SAFE_DELETE(mp_Menu);
+	SAFE_DELETE(mp_Dialog);
 }
 
 CMenu::~CMenu()
 {
+	SAFE_DELETE(mp_Menu);
+	SAFE_DELETE(mp_InfoScene);
 }
