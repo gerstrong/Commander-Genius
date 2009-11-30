@@ -72,6 +72,7 @@
 		6350FB3710449E2B00A992D5 /* changelog.txt in Copy Text Files */ = {isa = PBXBuildFile; fileRef = 6350FB0910449DAA00A992D5 /* changelog.txt */; };
 		6350FB3810449E2B00A992D5 /* future.txt in Copy Text Files */ = {isa = PBXBuildFile; fileRef = 6350FB0A10449DAA00A992D5 /* future.txt */; };
 		6350FB3910449E2B00A992D5 /* readme.txt in Copy Text Files */ = {isa = PBXBuildFile; fileRef = 6350FB0B10449DAA00A992D5 /* readme.txt */; };
+		6356F47110C0CFA900707F5B /* CPhysicsSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6356F46F10C0CFA900707F5B /* CPhysicsSettings.cpp */; };
 		63626651109E56E300C18BAA /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9D31013ABCA001643FA /* main.cpp */; };
 		63626654109E56EC00C18BAA /* MacMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 23D3EA8C1013AEF3001643FA /* MacMain.m */; };
 		63626657109E56FF00C18BAA /* CLogFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E99A1013ABCA001643FA /* CLogFile.cpp */; };
@@ -186,6 +187,11 @@
 		63626770109E5A6000C18BAA /* COrderingInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637D9103181BF00FEEFEE /* COrderingInfo.cpp */; };
 		63626771109E5A6100C18BAA /* CHighScores.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3EA041013ABCA001643FA /* CHighScores.cpp */; };
 		63626772109E5A6700C18BAA /* Unicode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 235756C1101B766800275638 /* Unicode.cpp */; };
+		636F9FED10C38FC400CF09A2 /* CAudioSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 636F9FE310C38FC400CF09A2 /* CAudioSettings.cpp */; };
+		636F9FEE10C38FC400CF09A2 /* CBaseMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 636F9FE510C38FC400CF09A2 /* CBaseMenu.cpp */; };
+		636F9FEF10C38FC400CF09A2 /* CControlsettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 636F9FE710C38FC400CF09A2 /* CControlsettings.cpp */; };
+		636F9FF010C38FC400CF09A2 /* COptions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 636F9FE910C38FC400CF09A2 /* COptions.cpp */; };
+		636F9FF110C38FC400CF09A2 /* CVideoSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 636F9FEB10C38FC400CF09A2 /* CVideoSettings.cpp */; };
 		638F025D10AC656A0083A97C /* CFinaleStaticScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 638F025910AC656A0083A97C /* CFinaleStaticScene.cpp */; };
 		638F025E10AC656A0083A97C /* CShipFlySys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 638F025B10AC656A0083A97C /* CShipFlySys.cpp */; };
 		638F026010AC65A30083A97C /* CMessagesPredefined.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 638F025F10AC65A30083A97C /* CMessagesPredefined.cpp */; };
@@ -662,10 +668,22 @@
 		6350FB0910449DAA00A992D5 /* changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = changelog.txt; path = ../../changelog.txt; sourceTree = SOURCE_ROOT; };
 		6350FB0A10449DAA00A992D5 /* future.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = future.txt; path = ../../future.txt; sourceTree = SOURCE_ROOT; };
 		6350FB0B10449DAA00A992D5 /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = readme.txt; path = ../../readme.txt; sourceTree = SOURCE_ROOT; };
+		6356F46F10C0CFA900707F5B /* CPhysicsSettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPhysicsSettings.cpp; sourceTree = "<group>"; };
+		6356F47010C0CFA900707F5B /* CPhysicsSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPhysicsSettings.h; sourceTree = "<group>"; };
 		636404FE108836F4001799CE /* crc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = crc.cpp; path = ../../fileio/crc.cpp; sourceTree = "<group>"; };
 		636404FF108836F4001799CE /* crc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = crc.h; path = ../../fileio/crc.h; sourceTree = "<group>"; };
 		636BC8551087729200996B46 /* CStatusScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CStatusScreen.cpp; path = ../../common/CStatusScreen.cpp; sourceTree = "<group>"; };
 		636BC8561087729200996B46 /* CStatusScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CStatusScreen.h; path = ../../common/CStatusScreen.h; sourceTree = "<group>"; };
+		636F9FE310C38FC400CF09A2 /* CAudioSettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAudioSettings.cpp; sourceTree = "<group>"; };
+		636F9FE410C38FC400CF09A2 /* CAudioSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAudioSettings.h; sourceTree = "<group>"; };
+		636F9FE510C38FC400CF09A2 /* CBaseMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBaseMenu.cpp; sourceTree = "<group>"; };
+		636F9FE610C38FC400CF09A2 /* CBaseMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBaseMenu.h; sourceTree = "<group>"; };
+		636F9FE710C38FC400CF09A2 /* CControlsettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CControlsettings.cpp; sourceTree = "<group>"; };
+		636F9FE810C38FC400CF09A2 /* CControlsettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CControlsettings.h; sourceTree = "<group>"; };
+		636F9FE910C38FC400CF09A2 /* COptions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = COptions.cpp; sourceTree = "<group>"; };
+		636F9FEA10C38FC400CF09A2 /* COptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COptions.h; sourceTree = "<group>"; };
+		636F9FEB10C38FC400CF09A2 /* CVideoSettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVideoSettings.cpp; sourceTree = "<group>"; };
+		636F9FEC10C38FC400CF09A2 /* CVideoSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVideoSettings.h; sourceTree = "<group>"; };
 		637FC63310559B5600C2EA77 /* CBitmap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBitmap.cpp; sourceTree = "<group>"; };
 		637FC63410559B5600C2EA77 /* CBitmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBitmap.h; sourceTree = "<group>"; };
 		637FC63510559B5600C2EA77 /* CPalette.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPalette.cpp; sourceTree = "<group>"; };
@@ -871,11 +889,14 @@
 				231FC3481083642B00E7869E /* CMenu.h */,
 				231FC3491083642B00E7869E /* CObject.cpp */,
 				231FC34A1083642B00E7869E /* CObject.h */,
+				6356F46F10C0CFA900707F5B /* CPhysicsSettings.cpp */,
+				6356F47010C0CFA900707F5B /* CPhysicsSettings.h */,
 				231FC34B1083642B00E7869E /* CPlayer.cpp */,
 				231FC34C1083642B00E7869E /* CPlayer.h */,
 				63CD0B771091F8FB00CB7B80 /* CPlayerItems.cpp */,
 				231FC34D1083642B00E7869E /* CPlayerLevel.cpp */,
 				231FC34E1083642B00E7869E /* CPlayerWM.cpp */,
+				636F9FF210C38FE100CF09A2 /* Menu */,
 				63CA3A0610939A93007D209D /* objenums.h */,
 				63D34906108B648A0033C412 /* options.h */,
 				231FC34F1083642B00E7869E /* tga.cpp */,
@@ -1244,6 +1265,23 @@
 			path = games;
 			sourceTree = "<group>";
 		};
+		636F9FF210C38FE100CF09A2 /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				636F9FE310C38FC400CF09A2 /* CAudioSettings.cpp */,
+				636F9FE410C38FC400CF09A2 /* CAudioSettings.h */,
+				636F9FE510C38FC400CF09A2 /* CBaseMenu.cpp */,
+				636F9FE610C38FC400CF09A2 /* CBaseMenu.h */,
+				636F9FE710C38FC400CF09A2 /* CControlsettings.cpp */,
+				636F9FE810C38FC400CF09A2 /* CControlsettings.h */,
+				636F9FE910C38FC400CF09A2 /* COptions.cpp */,
+				636F9FEA10C38FC400CF09A2 /* COptions.h */,
+				636F9FEB10C38FC400CF09A2 /* CVideoSettings.cpp */,
+				636F9FEC10C38FC400CF09A2 /* CVideoSettings.h */,
+			);
+			path = Menu;
+			sourceTree = "<group>";
+		};
 		637F48C8105C97D900DE486C /* EP1 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1575,6 +1613,12 @@
 				630713BF10B77990004837D2 /* CPlayGameGameState.cpp in Sources */,
 				6306E1D510BC922900E08CB9 /* CAbout.cpp in Sources */,
 				6306E1D610BC922900E08CB9 /* CHelp.cpp in Sources */,
+				6356F47110C0CFA900707F5B /* CPhysicsSettings.cpp in Sources */,
+				636F9FED10C38FC400CF09A2 /* CAudioSettings.cpp in Sources */,
+				636F9FEE10C38FC400CF09A2 /* CBaseMenu.cpp in Sources */,
+				636F9FEF10C38FC400CF09A2 /* CControlsettings.cpp in Sources */,
+				636F9FF010C38FC400CF09A2 /* COptions.cpp in Sources */,
+				636F9FF110C38FC400CF09A2 /* CVideoSettings.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
