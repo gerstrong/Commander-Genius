@@ -73,6 +73,7 @@ public:
 	bool mustBeClosed() { return m_goback; }
 	bool getBacktoDemo() { return m_demoback; }
 	bool getChooseGame() { return m_choosegame; }
+	bool restartVideo() { return m_RestartVideo; }
 
 	bool m_demoback;
 	bool m_hideobjects;
@@ -115,6 +116,7 @@ private:
 	char m_NumPlayers;
 	char m_Difficulty;
 	int  m_saveslot;
+	bool m_RestartVideo;
 };
 
 #endif /* CMENU_H_ */

@@ -43,6 +43,7 @@ public:
 	void postProcess();
 
 	bool mustClose() { return m_mustclose; }
+	bool restartVideo() { return m_restartVideo; }
 
 	virtual ~CBaseMenu();
 
@@ -51,6 +52,7 @@ protected:
 	char &m_MenuType;
 	int m_selection;
 	CDialog *mp_Dialog;
+	bool m_restartVideo;
 };
 
 #endif /* CBASEMENU_H_ */

@@ -24,7 +24,7 @@
 class CTitle {
 public:
 
-	CTitle(std::vector<CObject*> *Objects);
+	CTitle(std::vector<CObject*> &Objects);
 	virtual ~CTitle();
 
 	bool init(int Episode);
@@ -35,7 +35,7 @@ public:
 	{ return m_finished; }
 
 private:
-	std::vector<CObject*> *mp_objects;
+	std::vector<CObject*> &m_objects;
 	bool m_finished;
 	unsigned int m_time;
 };

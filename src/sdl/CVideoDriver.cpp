@@ -17,7 +17,6 @@
 #include "../FindFile.h"
 #include <iostream>
 #include <fstream>
-using namespace std;
 
 #define CKLOGFILENAME            	"genius.log"
 
@@ -91,10 +90,8 @@ CVideoDriver::CVideoDriver() {
 	initResolutionList();
 }
 
-CVideoDriver::~CVideoDriver() {
-	stop();
-}
-
+// initResolutionList() reads the local list of availabel resolution.
+// This function can only be called internally
 void CVideoDriver::initResolutionList()
 {
 	st_resolution resolution;
@@ -102,7 +99,7 @@ void CVideoDriver::initResolutionList()
 	m_Resolutionlist.clear();
 	int g,j;
 	
-	ifstream ResolutionFile; OpenGameFileR(ResolutionFile, "resolutions.cfg");
+	std::ifstream ResolutionFile; OpenGameFileR(ResolutionFile, "resolutions.cfg");
 	if(!ResolutionFile)
 	{
 		g_pLogFile->textOut(PURPLE,"Warning: resolutions.cfg could not be read! Maybe your files weren't extracted correctly!<br>");
@@ -161,10 +158,10 @@ void CVideoDriver::initResolutionList()
 			}
 		}
 		ResolutionFile.close();
-		
-		//SDL_Quit();
-		
+		SDL_Quit();
 		// shutdown SDL, so the game can initialize it correctly
+		// It must happen, because this is a test for resolutions
+		// are checked against your graphics adapter
 	}
 	
 	if(m_Resolutionlist.empty()) {
@@ -183,8 +180,9 @@ void CVideoDriver::initResolutionList()
 	
 	// will set the default mode; CSettings::loadDrvConfig will reset this if config file loaded successfully
 #ifdef WIZGP2X
-	setMode(320, 240, 16, 320, 240, 16);
+	setMode(320, 240, 16, 320, 240, 16); // Still a workaround. I hope we can change that soon, if we support screenspace feature
 #else
+	// take the first default resolution. It might be change if there is a config file already created
 	setMode(m_Resolutionlist.front().width, m_Resolutionlist.front().height, m_Resolutionlist.front().depth);
 #endif
 }
@@ -199,6 +197,7 @@ st_resolution CVideoDriver::getNextResolution()
 	return *m_Resolution_pos;
 }
 
+// Sets the resolution. you can pass st_resolution-structure or the variables separated.
 void CVideoDriver::setMode(st_resolution Resolution)
 {
 	setMode(Resolution.width, Resolution.height, Resolution.depth);
@@ -209,8 +208,7 @@ void CVideoDriver::setMode(int width, int height,int depth)
 	m_Resolution.width = width;
 	m_Resolution.height = height;
 	m_Resolution.depth = depth;
-	
-	
+
 	// TODO: Cycle through the list until the matching resolution is matched. If it doesn't exist
 	// add it;
 	for(m_Resolution_pos = m_Resolutionlist.begin() ; m_Resolution_pos != m_Resolutionlist.end() ; m_Resolution_pos++)
@@ -309,17 +307,22 @@ bool CVideoDriver::initOpenGL()
 	return m_opengl;
 }
 
-bool CVideoDriver::applyMode(void)
+bool CVideoDriver::applyMode()
 {
 	// Check if some zoom/filter modes are illogical
-	// TODO: Make this call clearer to understand
-	// TODO: Improve this function.
+	// TODO: Make this call better to understand
 	// It must be able to change the resolution, and if it fails, roll back.
+
+	// bool rollback=false;
+	//if(!checkMode())
+	// rollback = true;
+
 	if( (Zoom == 3 && Filtermode == 1) && !m_opengl )
 		Zoom = 2;
 	
 	m_Resolution = *m_Resolution_pos;
 	
+	// Setup mode depending on some systems.
 #ifdef WIZGP2X
 #ifdef GP2X
     Mode = SDL_DOUBLEBUF | SDL_HWSURFACE;
@@ -342,14 +345,7 @@ bool CVideoDriver::applyMode(void)
 #endif
 	
     game_resolution_rect.w = 320;
-    if( m_Resolution.height % 240 == 0 )
-    {
-		game_resolution_rect.h = 240;
-    }
-    else
-    {
-		game_resolution_rect.h = 240;
-    }
+	game_resolution_rect.h = 200;
 	
 	// Now we decide if it will be fullscreen or windowed mode.
 	if(Fullscreen)
@@ -359,55 +355,48 @@ bool CVideoDriver::applyMode(void)
 	while(((m_Resolution.width/game_resolution_rect.w) < Zoom || (m_Resolution.height/game_resolution_rect.h) < Zoom) && (Zoom > 1))
 		Zoom--;
 	
-    // Try to center the screen!
-	screenrect.w = blitrect.w = game_resolution_rect.w*Zoom;
-	screenrect.h = blitrect.h = game_resolution_rect.h*Zoom;
-	screenrect.x = (m_Resolution.width-screenrect.w)>>1;
-	
-	//if(m_Resolution.width == 320)
-	screenrect.y = 0;
-	//else
-	//	screenrect.y = (m_Resolution.height-screenrect.h)>>1;
+    // Center the screen!
     blitrect.x = 0;
     blitrect.y = 0;
+	screenrect.w = blitrect.w = game_resolution_rect.w*Zoom;
+	screenrect.h = blitrect.h = game_resolution_rect.h*Zoom;
+	screenrect.x = (m_Resolution.width-screenrect.w)/2;
+	screenrect.y = (m_Resolution.height-screenrect.h)/2;
 	
-	// And Display can be setup.
+	
+	// And leave the rest to SDL!
 	screen = SDL_SetVideoMode(m_Resolution.width,m_Resolution.height,m_Resolution.depth,Mode);
 	
-	if( !screen )
+	if(!screen)
 	{
 		g_pLogFile->textOut(RED,"VidDrv_Start(): Couldn't create a SDL surface: %s<br>", SDL_GetError());
 		return false;
 	}
 	
+	// Now SDL will tell if the bpp works or changes it, if not supported.
+	// this value is updated here!
 	m_Resolution.depth = screen->format->BitsPerPixel;
 	
- 	if(!Fullscreen)
-		SDL_ShowCursor(SDL_ENABLE);
-	else
-		SDL_ShowCursor(SDL_DISABLE);
+	// If Fullscreenm hide the mouse cursor.
+	// Anyway, it just can point and does not interact
+ 	SDL_ShowCursor(!Fullscreen);
 	
 	return true;
 }
-void CVideoDriver::setFilter(short value)
-{
-	Filtermode = value;
-}
-void CVideoDriver::setZoom(short value)
-{
-	Zoom = value;
-}
+void CVideoDriver::setFilter(short value) { Filtermode = value; }
 
-bool CVideoDriver::createSurfaces(void)
+void CVideoDriver::setZoom(short value) { Zoom = value; }
+
+bool CVideoDriver::createSurfaces()
 {
 	unsigned stretch_blit_yoff = 0;
 	
 	// This function creates the surfaces which are needed for the game.
-    ScrollSurface = createSurface( "ScrollSurface", true
-								  , 512
-								  , 512
-								  , m_Resolution.depth
-								  , Mode, screen->format );
+    ScrollSurface = createSurface( "ScrollSurface", true,
+								  512,
+								  512,
+								  m_Resolution.depth,
+								  Mode, screen->format );
 	
     if (m_Resolution.width == 320 && !m_opengl)
     {
@@ -418,11 +407,11 @@ bool CVideoDriver::createSurfaces(void)
     else
     {
     	g_pLogFile->textOut("Blitsurface = creatergbsurfacefrom<br>");
-        BlitSurface = createSurface( "BlitSurface", true
-									, game_resolution_rect.w
-									, game_resolution_rect.h
-									, m_Resolution.depth
-									, Mode, screen->format );
+        BlitSurface = createSurface( "BlitSurface", true,
+									game_resolution_rect.w,
+									game_resolution_rect.h,
+									m_Resolution.depth,
+									Mode, screen->format );
 		blitsurface_alloc = 1;
     }
     VRAMPtr = (unsigned char*)screen->pixels +
@@ -433,11 +422,11 @@ bool CVideoDriver::createSurfaces(void)
     // The video class must be changed for any further resolutions
     game_resolution_rect.x = 0; game_resolution_rect.y = 0;
 	
-    FGLayerSurface = createSurface( "FGLayerSurface", false
-								   , game_resolution_rect.w
-								   , game_resolution_rect.h
-								   , m_Resolution.depth
-								   , Mode, screen->format );
+    FGLayerSurface = createSurface( "FGLayerSurface", false,
+								   game_resolution_rect.w,
+								   game_resolution_rect.h,
+								   m_Resolution.depth,
+								   Mode, screen->format );
 	
 	SDL_SetColorKey( FGLayerSurface, SDL_SRCCOLORKEY,
 					SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE) );
@@ -847,6 +836,7 @@ short CVideoDriver::getFiltermode(void)
 		Filtermode = 0;
 	return Filtermode;
 }
+
 bool CVideoDriver::getFullscreen(void)
 {	return Fullscreen;	}
 unsigned int CVideoDriver::getWidth(void)
@@ -858,4 +848,7 @@ unsigned short CVideoDriver::getDepth(void)
 SDL_Surface *CVideoDriver::getScrollSurface(void)
 {	return ScrollSurface; }
 
+CVideoDriver::~CVideoDriver() {
+	stop();
+}
 

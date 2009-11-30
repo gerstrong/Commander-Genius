@@ -147,7 +147,7 @@ void CVideoSettings::processSpecific(){
 		}
 		else if(m_selection == 8) // Set the chosen settings! (Confirm)
 		{
-			//g_pVideoDriver->stop();
+			g_pVideoDriver->stop();
 			g_pVideoDriver->isFullscreen(m_FSmode);
 			g_pVideoDriver->enableOpenGL(m_Opengl);
 			g_pVideoDriver->setOGLFilter(m_OGL_filter);
@@ -156,7 +156,7 @@ void CVideoSettings::processSpecific(){
 			g_pTimer->setFrameRate(DEFAULT_LPS, m_Autoframeskip, DEFAULT_SYNC);
 			g_pVideoDriver->setAspectCorrection(m_AspectCorrection);
 			g_pVideoDriver->setMode(m_Resolution);
-			g_pVideoDriver->applyMode();
+			g_pVideoDriver->start();
 
 			CSettings Settings;
 			Settings.saveDrvCfg();
@@ -164,6 +164,9 @@ void CVideoSettings::processSpecific(){
 			// And close this menu...
 			m_mustclose = true;
 			m_MenuType = CONFIGURE;
+			m_restartVideo = true;
+			m_mustclose = true;
+			mp_Dialog->setSDLSurface(g_pVideoDriver->FGLayerSurface);
 		}
 		else if(m_selection == 9) // Cancel (don't save)
 		{
@@ -176,5 +179,6 @@ void CVideoSettings::processSpecific(){
 }
 
 CVideoSettings::~CVideoSettings() {
+	mp_Dialog->setSDLSurface(g_pVideoDriver->FGLayerSurface);
 	delete mp_Dialog;
 }

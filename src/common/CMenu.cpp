@@ -35,7 +35,8 @@ m_Episode(Episode),
 m_GamePath(GamePath),
 m_Map(Map),
 m_SavedGame(SavedGame),
-mp_option(pOption)
+mp_option(pOption),
+m_RestartVideo(false)
 {
 	// Create the Main Menu
 	mp_MenuSurface = g_pVideoDriver->FGLayerSurface;
@@ -66,6 +67,9 @@ bool CMenu::init( char menu_type )
 	m_menu_type = menu_type;
 	m_goback = false;
 	m_selection = -1; // Nothing has been selected yet.
+	mp_MenuSurface = g_pVideoDriver->FGLayerSurface;
+	if(mp_Dialog)
+		mp_Dialog->setSDLSurface(mp_MenuSurface);
 
 	if( m_menu_type == MAIN )
 		initMainMenu();
@@ -265,6 +269,7 @@ void CMenu::process()
 			{
 				SAFE_DELETE(mp_Menu);
 				init(m_menu_type);
+				m_RestartVideo=true;
 			}
 		}
 		else

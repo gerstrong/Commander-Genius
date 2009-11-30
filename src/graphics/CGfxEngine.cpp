@@ -13,13 +13,6 @@ CGfxEngine::CGfxEngine() {
 	m_fxsurface = NULL;
 }
 
-CGfxEngine::~CGfxEngine() {
-	freeBitmaps();
-	freeSprites();
-	freeFonts();
-	freeTilemap();
-}
-
 ///
 // Creation Routines
 ///
@@ -159,4 +152,11 @@ void CGfxEngine::drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w
 		else Font->drawCharacter(DialogSurface, 7, x, y);
 		x+=8;
     }
+}
+
+CGfxEngine::~CGfxEngine() {
+	freeBitmaps();
+	freeSprites();
+	freeFonts();
+	freeTilemap();
 }

@@ -187,6 +187,14 @@ void CPlayGame::process()
 			mp_Menu->process();
 			m_hideobjects = mp_Menu->m_hideobjects;
 
+			if(mp_Menu->restartVideo()) // Happens when in Game resolution was changed!
+			{
+				mp_Menu->cleanup();
+				SAFE_DELETE(mp_Menu);
+				mp_Map->setSDLSurface(g_pVideoDriver->getScrollSurface());
+				mp_Map->drawAll();
+			}
+
 			if(m_SavedGame.getCommand() == CSavedGame::SAVE)
 			{
 				saveGameState();
@@ -265,7 +273,7 @@ void CPlayGame::process()
 		{
 			CBitmap *pBitmap = g_pGfxEngine->getBitmap("GAMEOVER");
 			g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
-			mp_gameoverbmp = new CEGABitmap(g_pVideoDriver->BlitSurface, pBitmap);
+			mp_gameoverbmp = new CEGABitmap(g_pVideoDriver->getBlitSurface(), pBitmap);
 			mp_gameoverbmp->setScrPos( 160-(pBitmap->getWidth()/2), 100-(pBitmap->getHeight()/2) );
 		}
 	}
@@ -490,7 +498,7 @@ void CPlayGame::drawObjects()
 			p_object->scrx = (p_object->x>>STC)-mp_Map->m_scrollx;
 			p_object->scry = (p_object->y>>STC)-mp_Map->m_scrolly;
 
-			Sprite->drawSprite( g_pVideoDriver->BlitSurface, p_object->scrx, p_object->scry );
+			Sprite->drawSprite( g_pVideoDriver->getBlitSurface(), p_object->scrx, p_object->scry );
 
 			p_object->bboxX1 = Sprite->m_bboxX1;
 			p_object->bboxX2 = Sprite->m_bboxX2;
@@ -518,7 +526,7 @@ void CPlayGame::drawObjects()
 				
 	            // now redraw any priority/masked tiles that we covered up
 	            // with the sprite
-	            SDL_Surface *sfc = g_pVideoDriver->BlitSurface;
+	            SDL_Surface *sfc = g_pVideoDriver->getBlitSurface();
 	            SDL_Rect sfc_rect;
 	            sfc_rect.w = sfc_rect.h = 16;
 				

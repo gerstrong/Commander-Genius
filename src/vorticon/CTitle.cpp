@@ -15,9 +15,10 @@
 ////
 // Creation Routine
 ////
-CTitle::CTitle(std::vector<CObject*> *pObjects) {
+CTitle::CTitle(std::vector<CObject*> &Objects) :
+m_objects(Objects)
+{
 	m_time = 0;
-	mp_objects = pObjects;
 }
 
 bool CTitle::init(int Episode)
@@ -32,7 +33,7 @@ bool CTitle::init(int Episode)
 	pBitmap = g_pGfxEngine->getBitmap("TITLE");
 	p_object = new CEGABitmap( pSurface, pBitmap );
 	p_object->setScrPos( 160-(pBitmap->getWidth()/2), 0 );
-	mp_objects->push_back(p_object);
+	m_objects.push_back(p_object);
 	
 	pBitmap = g_pGfxEngine->getBitmap("F1HELP");
 	p_object = new CEGABitmap( pSurface, pBitmap );
@@ -40,7 +41,7 @@ bool CTitle::init(int Episode)
 	if(Episode == 3) p_object->setScrPos( 128, 212 );
 	else p_object->setScrPos( 96, 212 );
 
-	mp_objects->push_back(p_object);
+	m_objects.push_back(p_object);
 	
 	m_finished = false;
 
@@ -61,9 +62,9 @@ void CTitle::process()
 ////
 void CTitle::cleanup()
 {
-	while( !mp_objects->empty() )
+	while( !m_objects.empty() )
 	{
-		mp_objects->pop_back();
+		m_objects.pop_back();
 	}
 }
 

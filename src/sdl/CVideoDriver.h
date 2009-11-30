@@ -39,14 +39,12 @@ public:
 	CVideoDriver();
 	virtual ~CVideoDriver();
 
-	bool applyMode(void);
-	bool createSurfaces(void);
+	bool applyMode();
 	SDL_Surface* createSurface( std::string name, bool alpha, int width, int height, int bpp, int mode, SDL_PixelFormat* format );
 	void stop(void);
 	bool start(void);
 	void isFullscreen(bool value);
 	void drawConsoleMessages(void);
-	void initResolutionList();
 
 	void pal_set(short colour, Uint8 red, Uint8 green, Uint8 blue);
 	void pal_apply(void);
@@ -70,15 +68,9 @@ public:
 	unsigned int getWidth(void);
 	unsigned int getHeight(void);
 	unsigned short getDepth(void);
-	unsigned int getWidthw(void);
-	unsigned int getHeightw(void);
-	unsigned short getDepthw(void);
-	unsigned int getWidthf(void);
-	unsigned int getHeightf(void);
-	unsigned short getDepthf(void);
-	std::string getWidthwf(void);
-	std::string getHeightwf(void);
-	std::string getDepthwf(void);
+
+	SDL_Surface *getBlitSurface() { return BlitSurface; }
+
 	bool isOpenGL(void) { return m_opengl; }
 #ifdef USE_OPENGL
 	unsigned char getOGLFilter(void) { return (m_opengl_filter==GL_LINEAR); }
@@ -99,6 +91,7 @@ public:
 	void enableOpenGL(bool value) { m_opengl = false; }
 	void setOGLFilter(unsigned char value) { m_opengl_filter = 0; }
 #endif
+	st_resolution getResolution(){ return *m_Resolution_pos; }
 	st_resolution getNextResolution();
 
 	void showFPS(bool value);
@@ -107,7 +100,6 @@ public:
 	bool getAspectCorrection(void) { return m_aspect_correction; }
 	SDL_Rect getGameResRect() { return game_resolution_rect; }
 
-	SDL_Surface *screen;                // the actual video memory/window
 	SDL_Surface *BlitSurface;
 	SDL_Surface *FGLayerSurface;       	// Scroll buffer for Messages
 	SDL_Surface *ScrollSurface;       	// 512x512 scroll buffer
@@ -119,10 +111,12 @@ public:
 	bool showfps;
 
 private:
+	void initResolutionList();
+	bool createSurfaces();
+
 #ifdef USE_OPENGL
 	COpenGL	*mp_OpenGL;
 #endif
-
 	st_resolution m_Resolution;
 
 	std::list<st_resolution> m_Resolutionlistempty;
@@ -140,9 +134,11 @@ private:
 
 	SDL_Rect screenrect;
 	SDL_Rect blitrect;
+	SDL_Rect game_resolution_rect;	// Also called Screenspace. Yet very limited.
 
 	Sint16 *mp_sbufferx, *mp_sbuffery;
 
-	SDL_Rect game_resolution_rect;
+
+	SDL_Surface *screen;                // the actual video memory/window
 };
 #endif /* CVIDEODRIVER_H_ */

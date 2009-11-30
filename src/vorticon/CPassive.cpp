@@ -14,7 +14,7 @@
 #include "../sdl/CVideoDriver.h"
 #include "../sdl/CInput.h"
 
-#define SAFE_DELETE(x) if(x!=NULL){ delete x;	x = NULL;}
+#define SAFE_DELETE(x) if(x!=NULL){ delete x; x = NULL;}
 
 CPassive::CPassive(char Episode, std::string DataDirectory,
 					CSavedGame &SavedGame, stOption *p_Option) :
@@ -32,8 +32,6 @@ CPassive::CPassive(char Episode, std::string DataDirectory,
 	m_mode = INTRO;
 	m_Episode = Episode;
 	m_DataDirectory = DataDirectory;
-	mp_Tilemap = g_pGfxEngine->Tilemap;
-	mp_Scrollsurface = g_pVideoDriver->ScrollSurface;
 	m_textsize = 0;
 	m_NumPlayers = 0; // because no game chosen
 	m_hideobjects = false;
@@ -41,6 +39,8 @@ CPassive::CPassive(char Episode, std::string DataDirectory,
 
 bool CPassive::init(char mode)
 {
+	mp_Scrollsurface = g_pVideoDriver->ScrollSurface;
+	mp_Tilemap = g_pGfxEngine->Tilemap;
 	m_mode = mode;
 	if( m_mode == INTRO )
 	{
@@ -57,7 +57,7 @@ bool CPassive::init(char mode)
 		mp_PressAnyBox = new CTextBox(150, 10," PRESS ANY KEY ");
 		mp_PressAnyBox->setAttribs(0, LETTER_TYPE_RED);
 		mp_PressAnyBox->enableBorders(true);
-		mp_TitleScreen = new CTitle(&m_object);
+		mp_TitleScreen = new CTitle(m_object);
 		mp_Map = new CMap( mp_Scrollsurface, mp_Tilemap);
 		CMapLoader MapLoader( mp_Map );
 		MapLoader.load( m_Episode, 90, m_DataDirectory);
@@ -71,7 +71,7 @@ bool CPassive::init(char mode)
 	}
 	else
 		return false;
-	
+
 	return true;
 }
 
@@ -80,8 +80,6 @@ bool CPassive::init(char mode)
 ////
 void CPassive::process()
 {
-	// Check Inputs
-	
 	// Open the Main-Menu or close the opened one?
 	if( mp_Menu==NULL && g_pInput->getPressedAnyKey()  )
 	{
@@ -104,10 +102,16 @@ void CPassive::process()
 	{
 		if ( mp_Menu->m_demoback )
 		{
-			delete mp_Menu;
-			mp_Menu = NULL;
+			SAFE_DELETE(mp_Menu);
 			mp_PressAnyBox = new CTextBox(150, 10, " PRESS ANY KEY ");
 			mp_PressAnyBox->setAttribs(0, LETTER_TYPE_INVERSE);
+			mp_Map->drawAll();
+		}
+		else if( mp_Menu->restartVideo())
+		{
+			SAFE_DELETE(mp_Menu);
+			cleanup();
+			init(m_mode);
 		}
 	}
 	
@@ -215,6 +219,14 @@ void CPassive::process()
 			mp_Menu = NULL;
 			m_modeg = true;
 		}
+		else if(mp_Menu->restartVideo()) // When some video settings has been changed
+		{
+			//mp_Map->drawAll();
+			delete mp_Menu;
+			mp_Menu = NULL;
+			cleanup();
+			init(m_mode);
+		}
 	}
 }
 
@@ -223,6 +235,8 @@ void CPassive::process()
 ////
 void CPassive::cleanup()
 {
+	m_object.clear();
+
 	if( m_mode == INTRO )
 	{
 		delete mp_IntroScreen;
