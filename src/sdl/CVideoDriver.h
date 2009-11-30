@@ -68,6 +68,7 @@ public:
 	unsigned int getWidth(void);
 	unsigned int getHeight(void);
 	unsigned short getDepth(void);
+	SDL_Rect getGameResolution() { return game_resolution_rect; }
 
 	SDL_Surface *getBlitSurface() { return BlitSurface; }
 
@@ -124,7 +125,7 @@ private:
 
 	unsigned int Mode;
 	bool Fullscreen;
-	short Filtermode;
+	short m_ScaleXFilter;
 	unsigned short Zoom;
 	unsigned short FrameSkip;
 	unsigned int m_targetfps;	// Used for automatic frame skipping

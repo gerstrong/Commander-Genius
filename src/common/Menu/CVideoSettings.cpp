@@ -18,7 +18,7 @@ CBaseMenu(menu_type) {
 	m_Resolution.height = g_pVideoDriver->getHeight();
 	m_Resolution.depth = g_pVideoDriver->getDepth();
 	m_Zoom = g_pVideoDriver->getZoomValue();
-	m_Filter = g_pVideoDriver->getFiltermode();
+	m_ScaleXFilter = g_pVideoDriver->getFiltermode();
 	m_OGL_filter = g_pVideoDriver->getOGLFilter();
 	m_Autoframeskip = g_pTimer->getFrameRate();
 	m_FSmode =  g_pVideoDriver->getFullscreen();
@@ -46,8 +46,8 @@ CBaseMenu(menu_type) {
 		buf += (m_OGL_filter==1) ? "Linear" : "Nearest";
 	}
 
-	if(m_Filter <= 3 && m_Filter >= 0)
-		buf = (!m_Filter) ? "No Filter" : "Scale"+itoa(m_Filter+1)+"x Filter";
+	if(m_ScaleXFilter <= 3 && m_ScaleXFilter >= 0)
+		buf = (!m_ScaleXFilter) ? "No Filter" : "Scale"+itoa(m_ScaleXFilter)+"x Filter";
 	else
 		buf = "Unknown Filter";
 
@@ -105,21 +105,19 @@ void CVideoSettings::processSpecific(){
 			{
 				m_Zoom = (m_Zoom >= 4) ? 1 : m_Zoom+1;
 				buf = (m_Zoom==1) ? "No scale" : "Scale: " + itoa(m_Zoom);
-				if(m_Filter>0)
-					m_Filter = m_Zoom-1;
+				if(m_ScaleXFilter>0)
+					m_ScaleXFilter = m_Zoom;
 			}
 			mp_Dialog->setObjectText(2,buf);
 
-			buf = (m_Filter==0) ? "No Filter" : "Scale"+itoa(m_Filter-1)+"x Filter";
+			buf = (m_ScaleXFilter==0) ? "No Filter" : "Scale"+itoa(m_ScaleXFilter)+"x Filter";
+			mp_Dialog->setObjectText(3, buf);
 		}
 		else if(m_selection == 3)
 		{
-			if(m_Opengl)
-				m_Filter = (m_Filter >= 3) ? 0 : m_Filter+1;
-			else
-				m_Filter = (m_Filter > 0) ? 0 : m_Zoom-1;
+			m_ScaleXFilter = (m_ScaleXFilter >= 4) ? 1 : m_ScaleXFilter+1;
 
-			buf = (m_Filter==0) ? "No Filter": "Scale"+itoa(m_Filter-1)+"x Filter";
+			buf = (m_ScaleXFilter==0) ? "No Filter" : "Scale"+itoa(m_ScaleXFilter)+"x Filter";
 			mp_Dialog->setObjectText(3, buf);
 		}
 		else if(m_selection == 4)
@@ -152,7 +150,7 @@ void CVideoSettings::processSpecific(){
 			g_pVideoDriver->enableOpenGL(m_Opengl);
 			g_pVideoDriver->setOGLFilter(m_OGL_filter);
 			g_pVideoDriver->setZoom(m_Zoom);
-			g_pVideoDriver->setFilter(m_Filter);
+			g_pVideoDriver->setFilter(m_ScaleXFilter);
 			g_pTimer->setFrameRate(DEFAULT_LPS, m_Autoframeskip, DEFAULT_SYNC);
 			g_pVideoDriver->setAspectCorrection(m_AspectCorrection);
 			g_pVideoDriver->setMode(m_Resolution);

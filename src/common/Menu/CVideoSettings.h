@@ -20,7 +20,7 @@ public:
 	virtual ~CVideoSettings();
 
 private:
-	Uint16 m_Zoom, m_Filter, m_OGL_filter, m_Autoframeskip;
+	Uint16 m_Zoom, m_ScaleXFilter, m_OGL_filter, m_Autoframeskip;
 	bool m_FSmode, m_AspectCorrection, m_Opengl;
 	st_resolution m_Resolution;
 };

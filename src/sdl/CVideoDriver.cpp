@@ -61,7 +61,7 @@ CVideoDriver::CVideoDriver() {
 	m_Resolution.depth=32;
 	Mode=0;
 	Fullscreen=false;
-	Filtermode=1;
+	m_ScaleXFilter=1;
 	Zoom=2;
 	FrameSkip=2;
 	m_targetfps = 60;
@@ -103,6 +103,7 @@ void CVideoDriver::initResolutionList()
 	if(!ResolutionFile)
 	{
 		g_pLogFile->textOut(PURPLE,"Warning: resolutions.cfg could not be read! Maybe your files weren't extracted correctly!<br>");
+		g_pLogFile->textOut(PURPLE,"Using default resolution<br>");
 	}
 	else
 	{
@@ -115,9 +116,7 @@ void CVideoDriver::initResolutionList()
 		else
 			g_pLogFile->textOut(GREEN,"SDL-Video was successfully initialized for mode detections!<br>");
 		
-		
-		std::list<st_resolution> :: iterator i;
-		
+
 		/* Load the resolutions from the file. */
 		while(!ResolutionFile.eof())
 		{
@@ -131,6 +130,7 @@ void CVideoDriver::initResolutionList()
 			
 			if(resolution.depth)
 			{
+				std::list<st_resolution> :: iterator i;
 				for( i = m_Resolutionlist.begin() ; i != m_Resolutionlist.end() ; i++ )
 					if(i->width == resolution.width &&
 					   i->height == resolution.height &&
@@ -138,23 +138,6 @@ void CVideoDriver::initResolutionList()
 				
 				if(i == m_Resolutionlist.end())
 					m_Resolutionlist.push_back(resolution);
-			}
-		}
-		if(!getFullscreen())
-		{
-			for (g=1; g != 20; g++) {
-				if (g*320>m_Resolutionlist.back().width or g*240>m_Resolutionlist.back().height)
-				{
-					j=g;
-					break;
-				}
-			}
-			m_Resolutionlist.clear();
-			for (g=1; g!=j; g++) {
-				resolution.width=g*320;
-				resolution.height=g*240;
-				resolution.depth=32;
-				m_Resolutionlist.push_back(resolution);
 			}
 		}
 		ResolutionFile.close();
@@ -317,7 +300,7 @@ bool CVideoDriver::applyMode()
 	//if(!checkMode())
 	// rollback = true;
 
-	if( (Zoom == 3 && Filtermode == 1) && !m_opengl )
+	if( (Zoom == 3 && m_ScaleXFilter == 1) && !m_opengl )
 		Zoom = 2;
 	
 	m_Resolution = *m_Resolution_pos;
@@ -383,7 +366,7 @@ bool CVideoDriver::applyMode()
 	
 	return true;
 }
-void CVideoDriver::setFilter(short value) { Filtermode = value; }
+void CVideoDriver::setFilter(short value) { m_ScaleXFilter = value; } // 1 means no filter of course
 
 void CVideoDriver::setZoom(short value) { Zoom = value; }
 
@@ -398,7 +381,7 @@ bool CVideoDriver::createSurfaces()
 								  m_Resolution.depth,
 								  Mode, screen->format );
 	
-    if (m_Resolution.width == 320 && !m_opengl)
+    if (m_Resolution.width == game_resolution_rect.w && !m_opengl)
     {
     	g_pLogFile->textOut("Blitsurface = Screen<br>");
     	BlitSurface = screen;
@@ -433,11 +416,11 @@ bool CVideoDriver::createSurfaces()
 	//Set surface alpha
 	SDL_SetAlpha( FGLayerSurface, SDL_SRCALPHA, 225 );
 	
-    FXSurface = createSurface( "FXSurface", false
-							  , game_resolution_rect.w
-							  , game_resolution_rect.h
-							  , m_Resolution.depth
-							  , Mode, screen->format );
+    FXSurface = createSurface( "FXSurface", false,
+							  game_resolution_rect.w,
+							  game_resolution_rect.h,
+							  m_Resolution.depth,
+							  Mode, screen->format );
 	
 	g_pGfxEngine->Palette.setFXSurface( FXSurface );
 	
@@ -579,12 +562,12 @@ void CVideoDriver::update_screen(void)
 #endif
 		// if we're doing zoom then we have copied the scroll buffer into
 		// another offscreen buffer, and must now stretchblit it to the screen
-		if (Zoom == 1 && m_Resolution.width != 320 )
+		if (Zoom == 1 && m_Resolution.width != game_resolution_rect.w )
 		{
 			LockSurface(BlitSurface);
 			LockSurface(screen);
 			
-			if(Filtermode == 0)
+			if(m_ScaleXFilter == 1)
 			{
 				noscale((char*)VRAMPtr, (char*)BlitSurface->pixels, (m_Resolution.depth>>3));
 			}
@@ -592,7 +575,7 @@ void CVideoDriver::update_screen(void)
 			{
 				g_pLogFile->textOut(PURPLE,"Sorry, but this filter doesn't work at that zoom mode<br>");
 				g_pLogFile->textOut(PURPLE,"Try to use a higher zoom factor. Switching to no-filter<br>");
-				Filtermode = 0;
+				m_ScaleXFilter = 1;
 			}
 			UnlockSurface(screen);
 			UnlockSurface(BlitSurface);
@@ -602,11 +585,11 @@ void CVideoDriver::update_screen(void)
 			LockSurface(BlitSurface);
 			LockSurface(screen);
 			
-			if(Filtermode == 0)
+			if(m_ScaleXFilter == 1)
 			{
 				scale2xnofilter((char*)VRAMPtr, (char*)BlitSurface->pixels, (m_Resolution.depth>>3));
 			}
-			else if(Filtermode == 1)
+			else if(m_ScaleXFilter == 2)
 			{
 				scale(2, VRAMPtr, m_Resolution.width*(m_Resolution.depth>>3), BlitSurface->pixels,
 					  game_resolution_rect.w*(m_Resolution.depth>>3), (m_Resolution.depth>>3),
@@ -616,7 +599,7 @@ void CVideoDriver::update_screen(void)
 			{
 				g_pLogFile->textOut(PURPLE,"Sorry, but this filter doesn't work at that zoom mode<br>");
 				g_pLogFile->textOut(PURPLE,"Try to use a higher zoom factor. Switching to no-filter<br>");
-				Filtermode = 0;
+				m_ScaleXFilter = 1;
 			}
 			
 			UnlockSurface(screen);
@@ -627,16 +610,16 @@ void CVideoDriver::update_screen(void)
 			LockSurface(BlitSurface);
 			LockSurface(screen);
 			
-			if(Filtermode == 0)
+			if(m_ScaleXFilter == 1)
 			{
 				scale3xnofilter((char*)VRAMPtr, (char*)BlitSurface->pixels, (m_Resolution.depth>>3));
 			}
-			else if(Filtermode == 1)
+			else if(m_ScaleXFilter == 2)
 			{
 				scale(2, VRAMPtr, m_Resolution.width*(m_Resolution.depth>>3), BlitSurface->pixels,
 					  game_resolution_rect.w*(m_Resolution.depth>>3), (m_Resolution.depth>>3), game_resolution_rect.w, game_resolution_rect.h);
 			}
-			else if(Filtermode == 2)
+			else if(m_ScaleXFilter == 3)
 			{
 				scale(3, VRAMPtr, m_Resolution.width*(m_Resolution.depth>>3), BlitSurface->pixels,
 					  game_resolution_rect.w*(m_Resolution.depth>>3), (m_Resolution.depth>>3), game_resolution_rect.w, game_resolution_rect.h);
@@ -645,7 +628,7 @@ void CVideoDriver::update_screen(void)
 			{
 				g_pLogFile->textOut(PURPLE,"Sorry, but this filter doesn't work at that zoom mode<br>");
 				g_pLogFile->textOut(PURPLE,"Try to use a higher zoom factor. Switching to no-filter<br>");
-				Filtermode = 0;
+				m_ScaleXFilter = 1;
 			}
 			UnlockSurface(screen);
 			UnlockSurface(BlitSurface);
@@ -655,21 +638,21 @@ void CVideoDriver::update_screen(void)
 			LockSurface(BlitSurface);
 			LockSurface(screen);
 			
-			if(Filtermode == 0)
+			if(m_ScaleXFilter == 1)
 			{
 				scale4xnofilter((char*)VRAMPtr, (char*)BlitSurface->pixels, (m_Resolution.depth>>3));
 			}
-			else if(Filtermode == 1)
+			else if(m_ScaleXFilter == 2)
 			{
 				scale(2, VRAMPtr, m_Resolution.width*(m_Resolution.depth>>3), BlitSurface->pixels,
 					  game_resolution_rect.w*(m_Resolution.depth>>3), (m_Resolution.depth>>3), game_resolution_rect.w, game_resolution_rect.h);
 			}
-			else if(Filtermode == 2)
+			else if(m_ScaleXFilter == 3)
 			{
 				scale(3, VRAMPtr, m_Resolution.width*(m_Resolution.depth>>3), BlitSurface->pixels,
 					  game_resolution_rect.w*(m_Resolution.depth>>3), (m_Resolution.depth>>3), game_resolution_rect.w, game_resolution_rect.h);
 			}
-			else if(Filtermode == 3)
+			else if(m_ScaleXFilter == 4)
 			{
 				scale(4, VRAMPtr, m_Resolution.width*(m_Resolution.depth>>3), BlitSurface->pixels,
 					  game_resolution_rect.w*(m_Resolution.depth>>3), (m_Resolution.depth>>3), game_resolution_rect.w, game_resolution_rect.h);
@@ -678,7 +661,7 @@ void CVideoDriver::update_screen(void)
 			{
 				g_pLogFile->textOut(PURPLE,"Sorry, but this filter doesn't work at that zoom mode<br>");
 				g_pLogFile->textOut(PURPLE,"Try to use a higher zoom factor. Switching to no-filter<br>");
-				Filtermode = 0;
+				m_ScaleXFilter = 1;
 			}
 			UnlockSurface(screen);
 			UnlockSurface(BlitSurface);
@@ -706,13 +689,13 @@ void CVideoDriver::scale2xnofilter(char *dest, char *src, short bbp)
 {
 	// workaround for copying correctly stuff to the screen, so the screen is scaled normally
     // to 2x (without filter). This applies to 16 and 32-bit colour depth.
-	// use bit shifting method for faster blit!
+	// It uses bit shifting method for faster blit!
 	bbp >>= 1;
 	
 	int i,j;
-	for(i=0 ; i < g_pVideoDriver->getGameResRect().w ; i++)
+	for(i=0 ; i < game_resolution_rect.h ; i++)
 	{
-		for(j = 0; j < g_pVideoDriver->getGameResRect().w ; j++)
+		for(j = 0; j < game_resolution_rect.w ; j++)
 		{
 			memcpy(dest+((j<<1)<<bbp)+(((i<<1)*m_Resolution.width)<<bbp),src+(j<<bbp)+((i*game_resolution_rect.w)<<bbp),bbp<<1);
 			memcpy(dest+(((j<<1)+1)<<bbp)+(((i<<1)*m_Resolution.width)<<bbp),src+(j<<bbp)+((i*game_resolution_rect.w)<<bbp),bbp<<1);
@@ -729,9 +712,9 @@ void CVideoDriver::scale3xnofilter(char *dest, char *src, short bbp)
 	bbp >>= 1;
 	
 	int i,j;
-	for(i=0 ; i < g_pVideoDriver->getGameResRect().w ; i++)
+	for(i=0 ; i < game_resolution_rect.h ; i++)
 	{
-		for(j = 0; j < g_pVideoDriver->getGameResRect().h ; j++)
+		for(j = 0; j < game_resolution_rect.w ; j++)
 		{
 			// j*3 = (j<<1) + j
 			memcpy(dest+(((j<<1)+j)<<bbp)+((((i<<1) + i)*m_Resolution.width)<<bbp),src+(j<<bbp)+((i*game_resolution_rect.w)<<bbp),bbp<<1);
@@ -832,9 +815,9 @@ void CVideoDriver::isFullscreen(bool value) {
 
 short CVideoDriver::getFiltermode(void)
 {
-	if(Filtermode < 0)
-		Filtermode = 0;
-	return Filtermode;
+	if(m_ScaleXFilter < 1)
+		m_ScaleXFilter = 1;
+	return m_ScaleXFilter;
 }
 
 bool CVideoDriver::getFullscreen(void)
