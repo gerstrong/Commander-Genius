@@ -97,7 +97,6 @@ void CVideoDriver::initResolutionList()
 	st_resolution resolution;
 	char buf[256];
 	m_Resolutionlist.clear();
-	int g,j;
 	
 	std::ifstream ResolutionFile; OpenGameFileR(ResolutionFile, "resolutions.cfg");
 	if(!ResolutionFile)
@@ -276,7 +275,7 @@ bool CVideoDriver::initOpenGL()
 	{
 		mp_OpenGL = new COpenGL();
 		if(!(mp_OpenGL->initGL(m_Resolution.width, m_Resolution.height, m_Resolution.depth,
-							   m_opengl_filter, Filtermode+1, m_aspect_correction)))
+							   m_opengl_filter, m_ScaleXFilter, m_aspect_correction)))
 		{
 			delete mp_OpenGL;
 			mp_OpenGL = NULL;

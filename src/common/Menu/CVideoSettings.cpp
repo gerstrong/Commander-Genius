@@ -17,15 +17,26 @@ CBaseMenu(menu_type) {
 	m_Resolution.width = g_pVideoDriver->getWidth();
 	m_Resolution.height = g_pVideoDriver->getHeight();
 	m_Resolution.depth = g_pVideoDriver->getDepth();
+	m_FSmode =  g_pVideoDriver->getFullscreen();
+
+	const unsigned short BUFFER_SIZE=256;
+	char Buffer[BUFFER_SIZE];
+
+	// Obtain the video driver name
+	if (!SDL_VideoDriverName(Buffer, BUFFER_SIZE))
+		m_usedSoftwareVideoDriver = Buffer;
+	else
+		m_usedSoftwareVideoDriver = "SDL";
+
+	m_Opengl = g_pVideoDriver->isOpenGL();
+
 	m_Zoom = g_pVideoDriver->getZoomValue();
 	m_ScaleXFilter = g_pVideoDriver->getFiltermode();
 	m_OGL_filter = g_pVideoDriver->getOGLFilter();
 	m_Autoframeskip = g_pTimer->getFrameRate();
-	m_FSmode =  g_pVideoDriver->getFullscreen();
-	m_AspectCorrection = g_pVideoDriver->getAspectCorrection(),
-	m_Opengl = g_pVideoDriver->isOpenGL();
-	std::string buf;
+	m_AspectCorrection = g_pVideoDriver->getAspectCorrection();
 
+	std::string buf;
 	mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 32, 13);
 	mp_Dialog->setFrameTheme(DLG_THEME_OLDSCHOOL);
 
@@ -35,37 +46,36 @@ CBaseMenu(menu_type) {
 	buf = m_FSmode ? "Fullscreen mode" : "Windowed mode";
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, buf);
 
-	if(!m_Opengl)
-	{
-		buf = (m_Zoom == 1) ? "No Scale" : "Scale: " + itoa(m_Zoom);
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, buf);
+	buf = "Mode: ";
+	buf += (m_Opengl) ? "OpenGL" : m_usedSoftwareVideoDriver;
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, buf);
+
+	if(!m_Opengl) {
+		buf = "Zoom: ";
+		buf += (m_Zoom == 1) ? "None" : itoa(m_Zoom) + "x";
 	}
-	else
-	{
-		buf = "OGL Filter: ";
+	else {
+		buf = "GL Filter: ";
 		buf += (m_OGL_filter==1) ? "Linear" : "Nearest";
 	}
-
-	if(m_ScaleXFilter <= 3 && m_ScaleXFilter >= 0)
-		buf = (!m_ScaleXFilter) ? "No Filter" : "Scale"+itoa(m_ScaleXFilter)+"x Filter";
-	else
-		buf = "Unknown Filter";
-
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, buf);
 
-	buf = (m_Opengl) ? "OpenGL Acceleration" : "Software Rendering";
+	buf = "Filter: ";
+	if(m_ScaleXFilter <= 4)
+		buf += (!m_ScaleXFilter) ? "None" : itoa(m_ScaleXFilter)+"x";
+	else
+		buf += "Unknown Filter";
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, buf);
 
-	buf = "Frameskip : " + itoa(m_Autoframeskip) + " fps";
+	buf = "Frameskip: " + itoa(m_Autoframeskip) + " fps";
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, buf);
 
 	buf = "OGL Aspect Ratio ";
 	buf += m_AspectCorrection ? "enabled" : "disabled";
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, buf);
+	mp_Dialog->addObject( (!m_Opengl) ? DLG_OBJ_DISABLED : DLG_OBJ_OPTION_TEXT, 1, 7, buf);
 
-	mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 9, "");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 10, "Confirm");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 11, "Cancel");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 9, "Confirm");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 10, "Cancel");
 }
 
 void CVideoSettings::processSpecific(){
@@ -91,40 +101,48 @@ void CVideoSettings::processSpecific(){
 		{
 			m_FSmode = !m_FSmode;
 			mp_Dialog->setObjectText(1,(m_FSmode) ? "Fullscreen mode" : "Windowed mode");
-			mp_Dialog->setObjectText(0,buf);
 		}
 		else if(m_selection == 2)
 		{
-			if(m_Opengl)
-			{
-				m_OGL_filter = (m_OGL_filter==1) ? 0 : 1;
-				buf = (m_OGL_filter == 1) ? "OGL Filter: Linear" : "OGL Filter: Nearest";
-				mp_Dialog->setObjectText(2,buf);
-			}
-			else
-			{
-				m_Zoom = (m_Zoom >= 4) ? 1 : m_Zoom+1;
-				buf = (m_Zoom==1) ? "No scale" : "Scale: " + itoa(m_Zoom);
-				if(m_ScaleXFilter>0)
-					m_ScaleXFilter = m_Zoom;
-			}
+			m_Opengl = !m_Opengl;
+			buf = "Mode: ";
+			buf += (m_Opengl) ? "OpenGL            " : m_usedSoftwareVideoDriver;
 			mp_Dialog->setObjectText(2,buf);
 
-			buf = (m_ScaleXFilter==0) ? "No Filter" : "Scale"+itoa(m_ScaleXFilter)+"x Filter";
-			mp_Dialog->setObjectText(3, buf);
+			if(!m_Opengl) {
+				buf = "Zoom: ";
+				buf += (m_Zoom == 1) ? "None" : itoa(m_Zoom) + "x";
+				mp_Dialog->setObjectType(6, DLG_OBJ_DISABLED);
+			}
+			else {
+				buf = "GL Filter: ";
+				buf += (m_OGL_filter==1) ? "Linear" : "Nearest";
+				mp_Dialog->setObjectType(6, DLG_OBJ_OPTION_TEXT);
+			}
+			mp_Dialog->setObjectText(3,buf);
 		}
 		else if(m_selection == 3)
 		{
-			m_ScaleXFilter = (m_ScaleXFilter >= 4) ? 1 : m_ScaleXFilter+1;
-
-			buf = (m_ScaleXFilter==0) ? "No Filter" : "Scale"+itoa(m_ScaleXFilter)+"x Filter";
-			mp_Dialog->setObjectText(3, buf);
+			if(!m_Opengl) {
+				m_Zoom++; if(m_Zoom>4) m_Zoom = 1;
+				buf = "Scale: ";
+				buf += (m_Zoom == 1) ? "None" : itoa(m_Zoom) + "x";
+			}
+			else {
+				m_OGL_filter = !m_OGL_filter;
+				buf = "GL Filter: ";
+				buf += (m_OGL_filter==1) ? "Linear" : "Nearest";
+			}
+			mp_Dialog->setObjectText(3,buf);
 		}
 		else if(m_selection == 4)
 		{
-			m_Opengl = !m_Opengl; // switch the mode!!
-
-			buf = (m_Opengl) ? "OpenGL Acceleration" : "Software Rendering";
+			m_ScaleXFilter++; if(m_ScaleXFilter>4) m_ScaleXFilter=1;
+			buf = "Filter: ";
+			if(m_ScaleXFilter <= 4)
+				buf += (!m_ScaleXFilter) ? "None" : itoa(m_ScaleXFilter)+"x";
+			else
+				buf += "Unknown Filter";
 			mp_Dialog->setObjectText(4, buf);
 		}
 		else if(m_selection == 5)
@@ -132,7 +150,7 @@ void CVideoSettings::processSpecific(){
 			if(m_Autoframeskip < 120) m_Autoframeskip += 10;
 			else m_Autoframeskip = 10;
 
-			buf = "Auto-Frameskip : " + itoa(m_Autoframeskip) + " fps";
+			buf = "Frameskip: " + itoa(m_Autoframeskip) + " fps";
 			mp_Dialog->setObjectText(5, buf);
 		}
 		else if(m_selection == 6)
@@ -140,10 +158,10 @@ void CVideoSettings::processSpecific(){
 			m_AspectCorrection = !m_AspectCorrection;
 
 			buf = "OGL Aspect Ratio ";
-			buf += (m_AspectCorrection) ? "Enabled" : "Disabled";
+			buf += m_AspectCorrection ? "enabled" : "disabled";
 			mp_Dialog->setObjectText(6, buf);
 		}
-		else if(m_selection == 8) // Set the chosen settings! (Confirm)
+		else if(m_selection == 7) // Set the chosen settings! (Confirm)
 		{
 			g_pVideoDriver->stop();
 			g_pVideoDriver->isFullscreen(m_FSmode);
@@ -166,7 +184,7 @@ void CVideoSettings::processSpecific(){
 			m_mustclose = true;
 			mp_Dialog->setSDLSurface(g_pVideoDriver->FGLayerSurface);
 		}
-		else if(m_selection == 9) // Cancel (don't save)
+		else if(m_selection == 8) // Cancel (don't save)
 		{
 			// And close this menu...
 			m_mustclose = true;

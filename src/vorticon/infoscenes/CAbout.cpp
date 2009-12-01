@@ -26,9 +26,6 @@ CAbout::CAbout(std::string &datadirectory, char &episode, std::string type) {
 	
 }
 
-CAbout::~CAbout() {
-	// TODO Auto-generated destructor stub
-}
 
 void CAbout::process()
 {	 
@@ -36,4 +33,8 @@ void CAbout::process()
 	
 	if(g_pInput->getPressedAnyKey())
 		m_destroy_me=true;
+}
+
+CAbout::~CAbout() {
+	// TODO Auto-generated destructor stub
 }
