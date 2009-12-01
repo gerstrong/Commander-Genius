@@ -147,23 +147,12 @@ void CVideoDriver::initResolutionList()
 	}
 	
 	if(m_Resolutionlist.empty()) {
-#ifdef WIZGP2X
 		resolution.width = 320;
 		resolution.height = 240;
 		resolution.depth = 16;
 		m_Resolutionlist.push_back(resolution);
-#else
-		resolution.width = 640;
-		resolution.height = 480;
-		resolution.depth = 32;
-		m_Resolutionlist.push_back(resolution);
-#endif
 	}
 	
-	// will set the default mode; CSettings::loadDrvConfig will reset this if config file loaded successfully
-#ifdef WIZGP2X
-	setMode(320, 240, 16, 320, 240, 16); // Still a workaround. I hope we can change that soon, if we support screenspace feature
-#else
 	// take the first default resolution. It might be change if there is a config file already created
 	setMode(m_Resolutionlist.front().width, m_Resolutionlist.front().height, m_Resolutionlist.front().depth);
 #endif
