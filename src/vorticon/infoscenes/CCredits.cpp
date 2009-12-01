@@ -100,7 +100,7 @@ void CCredits::process()
 		if(m_scrolly>-54*8) m_scrolly--;
 		else
 		{
-			m_scrolly = g_pVideoDriver->getGameResRect().h;
+			m_scrolly = g_pVideoDriver->getGameResolution().h;
 			
 			
 			for(int j=0 ; j<54 ; j++)
@@ -109,7 +109,7 @@ void CCredits::process()
 	}
 	
 	for(int j=0 ; j<54 ; j++)
-		if(m_scrolly+(j<<3) > -8 && m_scrolly+(j<<3) < g_pVideoDriver->getGameResRect().h)
+		if(m_scrolly+(j<<3) > -8 && m_scrolly+(j<<3) < g_pVideoDriver->getGameResolution().h)
 			g_pGfxEngine->Font->drawFont( g_pVideoDriver->FGLayerSurface, m_scrolltext[j], mid[j], m_scrolly+(j<<3), LETTER_TYPE_INVERSE);
 	
 	if( g_pInput->getPressedAnyKey() )

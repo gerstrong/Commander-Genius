@@ -326,9 +326,13 @@ bool CVideoDriver::applyMode()
 	}
 #endif
 	
+	// This is the default game resolution
     game_resolution_rect.w = 320;
 	game_resolution_rect.h = 200;
 	
+	// Here we check, if we can enhance the screen-resolution and do it if yes
+	game_resolution_rect = adaptGameResolution();
+
 	// Now we decide if it will be fullscreen or windowed mode.
 	if(Fullscreen)
 		Mode |= SDL_FULLSCREEN;
@@ -365,6 +369,21 @@ bool CVideoDriver::applyMode()
 	
 	return true;
 }
+
+// This function adapts the gamescreenspace to the monitor format.
+// 16:9, 16:10, 4:3, everthing is supported as far it fits to the height!
+SDL_Rect CVideoDriver::adaptGameResolution()
+{
+	float scalefactor;
+	SDL_Rect Gamerect;
+
+	Gamerect = game_resolution_rect;
+	scalefactor = ((float)m_Resolution.width) / ((float)Gamerect.w);
+	Gamerect.h = (int)( ((float)m_Resolution.height) / scalefactor );
+
+	return Gamerect;
+}
+
 void CVideoDriver::setFilter(short value) { m_ScaleXFilter = value; } // 1 means no filter of course
 
 void CVideoDriver::setZoom(short value) { Zoom = value; }
@@ -680,7 +699,7 @@ void CVideoDriver::noscale(char *dest, char *src, short bbp)
 {
 	// just passes a blitsurface to the screen
 	int i;
-	for(i=0 ; i < g_pVideoDriver->getGameResRect().h ; i++)
+	for(i=0 ; i < game_resolution_rect.h ; i++)
 		memcpy(dest+(i*m_Resolution.width)*bbp,src+(i*game_resolution_rect.w)*bbp,320*bbp);
 }
 

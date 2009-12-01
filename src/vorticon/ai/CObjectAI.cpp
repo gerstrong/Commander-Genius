@@ -99,8 +99,8 @@ bool CObjectAI::checkforAIObject( CObject *p_object )
     if (p_object->x > (mp_Map->m_width<<CSF) || p_object->y > (mp_Map->m_height<<CSF) )
 		return false;
 
-    if (scrx < -(g_pGfxEngine->Sprite[p_object->sprite]->getWidth()) || scrx > g_pVideoDriver->getGameResRect().w
-		|| scry < -(g_pGfxEngine->Sprite[p_object->sprite]->getHeight()) || scry > g_pVideoDriver->getGameResRect().h)
+    if (scrx < -(g_pGfxEngine->Sprite[p_object->sprite]->getWidth()) || scrx > g_pVideoDriver->getGameResolution().w
+		|| scry < -(g_pGfxEngine->Sprite[p_object->sprite]->getHeight()) || scry > g_pVideoDriver->getGameResolution().h)
     {
     	p_object->onscreen = false;
     	p_object->wasoffscreen = true;

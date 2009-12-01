@@ -16,10 +16,9 @@
 // Creation Routine
 ////
 CTitle::CTitle(std::vector<CObject*> &Objects) :
-m_objects(Objects)
-{
-	m_time = 0;
-}
+m_objects(Objects),
+m_time(0)
+{}
 
 bool CTitle::init(int Episode)
 {
@@ -38,8 +37,8 @@ bool CTitle::init(int Episode)
 	pBitmap = g_pGfxEngine->getBitmap("F1HELP");
 	p_object = new CEGABitmap( pSurface, pBitmap );
 
-	if(Episode == 3) p_object->setScrPos( 128, 212 );
-	else p_object->setScrPos( 96, 212 );
+	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
+	p_object->setScrPos( (Episode == 3) ? 128 : 96, gameres.h-18 );
 
 	m_objects.push_back(p_object);
 	

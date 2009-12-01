@@ -153,8 +153,8 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path )
     // Do some post calculations
     // Limit the scroll screens so the blocking (blue in EP1) tiles are3 never seen
     SDL_Rect gamerect = g_pVideoDriver->getGameResolution();
-    mp_map->m_maxscrollx = mp_map->m_width-((gamerect.w+32)>>4);
-    mp_map->m_maxscrolly = mp_map->m_height-((gamerect.h+40)>>4);
+    mp_map->m_maxscrollx = (mp_map->m_width<<4) - gamerect.w - 36;
+    mp_map->m_maxscrolly = (mp_map->m_height<<4) - gamerect.h - 36;
 
     // Set Scrollbuffer
     g_pVideoDriver->setScrollBuffer(&mp_map->m_scrollx_buf, &mp_map->m_scrolly_buf);

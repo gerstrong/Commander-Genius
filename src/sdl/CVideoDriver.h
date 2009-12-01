@@ -40,6 +40,7 @@ public:
 	virtual ~CVideoDriver();
 
 	bool applyMode();
+	SDL_Rect adaptGameResolution();
 	SDL_Surface* createSurface( std::string name, bool alpha, int width, int height, int bpp, int mode, SDL_PixelFormat* format );
 	void stop(void);
 	bool start(void);
@@ -99,7 +100,6 @@ public:
 
 	void setAspectCorrection(bool value) { m_aspect_correction = value; }
 	bool getAspectCorrection(void) { return m_aspect_correction; }
-	SDL_Rect getGameResRect() { return game_resolution_rect; }
 
 	SDL_Surface *BlitSurface;
 	SDL_Surface *FGLayerSurface;       	// Scroll buffer for Messages

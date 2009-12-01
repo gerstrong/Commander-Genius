@@ -193,6 +193,8 @@ void CPlayGame::process()
 				SAFE_DELETE(mp_Menu);
 				mp_Map->setSDLSurface(g_pVideoDriver->getScrollSurface());
 				mp_Map->drawAll();
+				for( int i=0 ; i<m_NumPlayers ; i++ )
+					while(mp_Player[i].scrollTriggers());
 			}
 
 			if(m_SavedGame.getCommand() == CSavedGame::SAVE)
