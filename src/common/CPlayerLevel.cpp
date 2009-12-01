@@ -330,21 +330,22 @@ void CPlayer::JumpAndPogo()
 
 	if(g_pInput->getHoldedKey(KH))
 	{
-		mp_PhysicsSettings->player.jumpdecrease_x--;
+		mp_PhysicsSettings->player.max_fallspeed--;
 	}
 	else if(g_pInput->getHoldedKey(KJ))
 	{
-		mp_PhysicsSettings->player.jumpdecrease_x++;
+		mp_PhysicsSettings->player.max_fallspeed++;
 	}
 
 	if(g_pInput->getHoldedKey(KB))
 	{
-		mp_PhysicsSettings->player.max_x_speed_air--;
+		mp_PhysicsSettings->player.fallspeed_decrease--;
 	}
 	else if(g_pInput->getHoldedKey(KN))
 	{
-		mp_PhysicsSettings->player.max_x_speed_air++;
+		mp_PhysicsSettings->player.fallspeed_decrease++;
 	}
+
 
 //////
 // For Debugging proporses only (End)

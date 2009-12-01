@@ -19,12 +19,12 @@
 void CPlayGame::processPlayerfallings(CPlayer *p_player)
 {
 	unsigned int temp;
-	//int objsupport=false;
+	int objsupport=false;
 	short tilsupport;
 	char behaviour;
 	int sprite = m_Object[p_player->m_player_number].sprite;
 	Uint16 x1 = g_pGfxEngine->Sprite[sprite]->m_bboxX1-1;
-	//Uint16 x2 = g_pGfxEngine->Sprite[sprite]->m_bboxX2+1;
+	Uint16 x2 = g_pGfxEngine->Sprite[sprite]->m_bboxX2+1;
 	Uint16 y1 = g_pGfxEngine->Sprite[sprite]->m_bboxY1-1;
 	Uint16 y2 = g_pGfxEngine->Sprite[sprite]->m_bboxY2+1;
 	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
@@ -41,8 +41,6 @@ void CPlayGame::processPlayerfallings(CPlayer *p_player)
 		// save fall state so we can detect the high/low-going edges
 		p_player->plastfalling = p_player->pfalling;
 
-		p_player->pfalling = false;         // assume not falling if not jumped to the maximum height
-
 		if(p_player->pdie) return;
 
 		// do not fall if we're jumping
@@ -58,6 +56,7 @@ void CPlayGame::processPlayerfallings(CPlayer *p_player)
 		p_player->psupportingobject = 0;
 		// test if tile under player is solid; if so set psupportingtile
 		//objsupport = checkobjsolid(x+(4<<CSF), y+( height<<(CSF-4)),cp);
+		//objsupport = true;
 
 		behaviour = TileProperty[mp_Map->at((p_player->x+x1)>>CSF, (p_player->y+y2)>>CSF)].behaviour;
 		tilsupport = TileProperty[mp_Map->at((p_player->x+x1)>>CSF, (p_player->y+y2)>>CSF)].bup;
@@ -90,7 +89,7 @@ void CPlayGame::processPlayerfallings(CPlayer *p_player)
 				p_player->psupportingobject = objsupport;
 			}
 		}*/
-		p_player->pfalling = true;
+		//p_player->pfalling = true;
 
 		// if not on a tile boundary, always fall, prevents being able
 		// to land in the middle of a tile.
@@ -99,7 +98,7 @@ void CPlayGame::processPlayerfallings(CPlayer *p_player)
 			temp = (p_player->y+y2)>>CSF;    // bottom of player
 			if ((temp>>4)<<4 != temp)   // true if it's not a multiple of 16
 			{
-				p_player->pfalling = 1;   // not on a tile boundary. fall.
+				p_player->pfalling = true;   // not on a tile boundary. fall.
 				p_player->pjustfell = 1;
 				p_player->psupportingtile = BG_GRAY;
 				p_player->psupportingobject = 0;

@@ -49,6 +49,7 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 			{
 				p_player->blockedd = true;
 				p_player->pfalling = false;
+				p_player->pfallspeed = 0;
 				break;
 			}
 			p_player->y++;

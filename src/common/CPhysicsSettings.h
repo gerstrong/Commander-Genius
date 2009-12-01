@@ -23,8 +23,7 @@ public:
 		int maxjumpspeed;
 		int defaultjumpupdecreasespeed;
 		int jumpdecrease_x;
-		int max_x_speed_air;
-		int max_x_speed_ground;
+		int max_x_speed;
 
 		int max_fallspeed;
 		int fallspeed_decrease;

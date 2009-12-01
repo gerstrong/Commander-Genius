@@ -253,7 +253,7 @@ void CPlayer::Walking()
     }
 
 	int pmaxspeed;
-	pmaxspeed = (pjumping || pfalling) ? mp_PhysicsSettings->player.max_x_speed_air : mp_PhysicsSettings->player.max_x_speed_ground;
+	pmaxspeed = mp_PhysicsSettings->player.max_x_speed;
 
 	// when sliding on ice force maximum speed
 	if (psliding)
@@ -492,8 +492,7 @@ void CPlayer::InertiaAndFriction_X()
 		treshold = playcontrol[PA_X];
 	
 	int pmaxspeed;
-	int pmaxmovespeed = (pjumping || pfalling) ?
-			mp_PhysicsSettings->player.max_x_speed_air : mp_PhysicsSettings->player.max_x_speed_ground;
+	int pmaxmovespeed = mp_PhysicsSettings->player.max_x_speed;
 
 	
 	if( (!pjumping && !pfalling &&

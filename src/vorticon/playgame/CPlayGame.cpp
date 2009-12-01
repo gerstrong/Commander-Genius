@@ -291,15 +291,15 @@ void CPlayGame::process()
 //		tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec()) +
 	//		"; x = " + itoa(mp_Player[0].x) + " ; y = " + itoa(mp_Player[0].y);
 
-		tempbuf = "Jump_X_Decrease: " + itoa(m_PhysicsSettings.player.jumpdecrease_x);
-		tempbuf += " | Speed_x: " + itoa(mp_Player[0].pinertia_x);
+		tempbuf = "Fallspeed_Decrease: " + itoa(m_PhysicsSettings.player.fallspeed_decrease);
+		tempbuf += " | FallSpeed: " + itoa(mp_Player[0].pfallspeed);
 
 //#else
 	//	tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec());
 //#endif
 		g_pGfxEngine->Font->drawFont( sfc, tempbuf, 320-3-(tempbuf.size()<<3), 3, 1);
 
-		tempbuf = "Jump_X_Air_MaxSpeed: " + itoa(m_PhysicsSettings.player.max_x_speed_air);
+		tempbuf = "Max_Fallspeed: " + itoa(m_PhysicsSettings.player.max_fallspeed);
 
 		g_pGfxEngine->Font->drawFont( sfc, tempbuf, 320-3-(tempbuf.size()<<3), 11, 1);
 
