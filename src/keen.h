@@ -156,7 +156,9 @@ struct stString
 #define LVLS_SHIP                  20
 
 enum teleporation_states{
-TELEPORTING_OUT,TELEPORTING_IN
+TELEPORTING_OUT,
+TELEPORTING_SCROLL,
+TELEPORTING_IN
 };
 
 #define TELEPORT_BONUS_DESTX    ((((23085>>CSF)+2)<<CSF)-(8<<CSF))

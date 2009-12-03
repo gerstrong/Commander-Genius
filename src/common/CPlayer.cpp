@@ -82,6 +82,7 @@ void CPlayer::setDatatoZero()
     pinertia_x=0;
     level_done_timer = pfriction_timer_x = 0;
   	dpadcount = dpadlastcount = 0;
+  	beingteleported = false;
 	
   	exitXpos = 0;
 	
@@ -112,47 +113,44 @@ bool CPlayer::scrollTriggers()
 	px = (x>>STC)-scroll_x;
 	py = (y>>STC)-scroll_y;
 
-	if(!hideplayer)
+	// left-right scrolling
+	if(px > SCROLLTRIGGERRIGHT && scroll_x < mp_map->m_maxscrollx)
 	{
-		// left-right scrolling
-		if(px > SCROLLTRIGGERRIGHT && scroll_x < mp_map->m_maxscrollx)
-		{
-			do{
-				scroll_x = mp_map->m_scrollx;
-				px = (x>>STC)-scroll_x;
-				mp_map->scrollRight();
-			}while(px > 226);
-			scrollchanged = true;
-		}
-		else if(px < SCROLLTRIGGERLEFT && scroll_x > 32)
-		{
-			do{
-				scroll_x = mp_map->m_scrollx;
-				px = (x>>STC)-scroll_x;
-				mp_map->scrollLeft();
-			}while(px < 80);
-			scrollchanged = true;
-		}
+		do{
+			scroll_x = mp_map->m_scrollx;
+			px = (x>>STC)-scroll_x;
+			mp_map->scrollRight();
+		}while(px > 226);
+		scrollchanged = true;
+	}
+	else if(px < SCROLLTRIGGERLEFT && scroll_x > 32)
+	{
+		do{
+			scroll_x = mp_map->m_scrollx;
+			px = (x>>STC)-scroll_x;
+			mp_map->scrollLeft();
+		}while(px < 80);
+		scrollchanged = true;
+	}
 
-		// up-down scrolling
-		if (py > SCROLLTRIGGERDOWN && scroll_y < mp_map->m_maxscrolly)
-		{
-			do{
-				scroll_y = mp_map->m_scrolly;
-				py = (y>>STC)-scroll_y;
-				mp_map->scrollDown();
-			}while(py > 150);
-			scrollchanged = true;
-		}
-		else if (py < SCROLLTRIGGERUP && scroll_y > 32)
-		{
-			do{
-				scroll_y = mp_map->m_scrolly;
-				py = (y>>STC)-scroll_y;
-				mp_map->scrollUp();
-			}while(py < 50);
-			scrollchanged = true;
-		}
+	// up-down scrolling
+	if (py > SCROLLTRIGGERDOWN && scroll_y < mp_map->m_maxscrolly)
+	{
+		do{
+			scroll_y = mp_map->m_scrolly;
+			py = (y>>STC)-scroll_y;
+			mp_map->scrollDown();
+		}while(py > 150);
+		scrollchanged = true;
+	}
+	else if (py < SCROLLTRIGGERUP && scroll_y > 32)
+	{
+		do{
+			scroll_y = mp_map->m_scrolly;
+			py = (y>>STC)-scroll_y;
+			mp_map->scrollUp();
+		}while(py < 50);
+		scrollchanged = true;
 	}
 	return scrollchanged;
 }

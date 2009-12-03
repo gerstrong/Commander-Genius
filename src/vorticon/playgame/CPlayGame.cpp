@@ -192,9 +192,12 @@ void CPlayGame::process()
 				mp_Menu->cleanup();
 				SAFE_DELETE(mp_Menu);
 				mp_Map->setSDLSurface(g_pVideoDriver->getScrollSurface());
-				mp_Map->drawAll();
+			    SDL_Rect gamerect = g_pVideoDriver->getGameResolution();
+			    mp_Map->m_maxscrollx = (mp_Map->m_width<<4) - gamerect.w - 36;
+			    mp_Map->m_maxscrolly = (mp_Map->m_height<<4) - gamerect.h - 36;
 				for( int i=0 ; i<m_NumPlayers ; i++ )
 					while(mp_Player[i].scrollTriggers());
+				mp_Map->drawAll();
 			}
 
 			if(m_SavedGame.getCommand() == CSavedGame::SAVE)
@@ -289,21 +292,13 @@ void CPlayGame::process()
 	{
 		std::string tempbuf;
 		SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
-//#ifdef DEBUG
-//		tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec()) +
-	//		"; x = " + itoa(mp_Player[0].x) + " ; y = " + itoa(mp_Player[0].y);
-
-		tempbuf = "Fallspeed_Decrease: " + itoa(m_PhysicsSettings.player.fallspeed_decrease);
-		tempbuf += " | FallSpeed: " + itoa(mp_Player[0].pfallspeed);
-
-//#else
-	//	tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec());
-//#endif
+#ifdef DEBUG
+		tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec()) +
+			"; x = " + itoa(mp_Player[0].x) + " ; y = " + itoa(mp_Player[0].y);
+#else
+		tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec());
+#endif
 		g_pGfxEngine->Font->drawFont( sfc, tempbuf, 320-3-(tempbuf.size()<<3), 3, 1);
-
-		tempbuf = "Max_Fallspeed: " + itoa(m_PhysicsSettings.player.max_fallspeed);
-
-		g_pGfxEngine->Font->drawFont( sfc, tempbuf, 320-3-(tempbuf.size()<<3), 11, 1);
 
 	}
 	
@@ -478,7 +473,7 @@ void CPlayGame::drawObjects()
 	{
 		o = mp_Player[i].m_player_number;
 		
-		if (!mp_Player[i].hideplayer)
+		if (!mp_Player[i].hideplayer && !mp_Player[i].beingteleported)
 			m_Object.at(o).sprite = mp_Player[i].playframe;
 		else
 			m_Object.at(o).sprite = m_NumSprites-1;

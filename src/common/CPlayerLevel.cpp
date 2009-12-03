@@ -324,34 +324,6 @@ void CPlayer::TogglePogo_and_Switches()
 
 void CPlayer::JumpAndPogo()
 {
-//////
-// For Debugging purpose only
-/////
-
-	if(g_pInput->getHoldedKey(KH))
-	{
-		mp_PhysicsSettings->player.max_fallspeed--;
-	}
-	else if(g_pInput->getHoldedKey(KJ))
-	{
-		mp_PhysicsSettings->player.max_fallspeed++;
-	}
-
-	if(g_pInput->getHoldedKey(KB))
-	{
-		mp_PhysicsSettings->player.fallspeed_decrease--;
-	}
-	else if(g_pInput->getHoldedKey(KN))
-	{
-		mp_PhysicsSettings->player.fallspeed_decrease++;
-	}
-
-
-//////
-// For Debugging proporses only (End)
-/////
-
-
 	// handle the JUMP key, both for normal jumps and (high) pogo jumps
 	if (!pjumping && !pfalling && !pfiring)
 	{
@@ -421,6 +393,18 @@ void CPlayer::JumpAndPogo()
 					// select a jump depending on how long keen was preparing
 					pjumpupspeed = mp_PhysicsSettings->player.maxjumpspeed;
 					pjumpupspeed_decrease = mp_PhysicsSettings->player.defaultjumpupdecreasespeed;
+
+					if(pjumpframe > PPREPAREJUMPFRAME+4)
+					{
+						pjumpupspeed = mp_PhysicsSettings->player.maxjumpspeed;
+						pjumpupspeed_decrease = mp_PhysicsSettings->player.defaultjumpupdecreasespeed;
+					}
+					else
+					{
+						pjumpupspeed = (mp_PhysicsSettings->player.maxjumpspeed*(pjumpframe-PPREPAREJUMPFRAME))/5;
+						pjumpupspeed_decrease = mp_PhysicsSettings->player.defaultjumpupdecreasespeed;
+					}
+
 					//pjumpupspeed = PJUMPUP_SPEED;
 					//pjumpupspeed_decrease = PJUMP_UPDECREASERATE;
 					/*switch(pjumpframe)

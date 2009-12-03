@@ -292,7 +292,7 @@ bool CVideoDriver::applyMode()
 
 	m_Resolution = *m_Resolution_pos;
 
-	// Setup mode depending on some systems.
+	// Setup mode depends on some systems.
 #ifdef WIZGP2X
 #ifdef GP2X
     Mode = SDL_DOUBLEBUF | SDL_HWSURFACE;

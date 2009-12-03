@@ -9,7 +9,7 @@
 
 CPhysicsSettings::CPhysicsSettings() {
 	// used for jumping
-	player.maxjumpspeed = 103 ;
+	player.maxjumpspeed = 103;
 	player.defaultjumpupdecreasespeed = 3;	// TODO Auto-generated constructor stub
 	player.jumpdecrease_x = 54;
 
@@ -17,7 +17,7 @@ CPhysicsSettings::CPhysicsSettings() {
 
 	// when falling keen's Y inertia increases up to maximum
 	player.max_fallspeed = 103;
-	player.fallspeed_decrease = 12;
+	player.fallspeed_decrease = 9;
 }
 
 CPhysicsSettings::~CPhysicsSettings() {

@@ -712,9 +712,6 @@ void CMenu::processOverwriteMenu()
 void CMenu::cleanup()
 {
 	m_Map.m_animation_enabled = true;
-    SDL_Rect gamerect = g_pVideoDriver->getGameResolution();
-    m_Map.m_maxscrollx = (m_Map.m_width<<4) - gamerect.w - 36;
-    m_Map.m_maxscrolly = (m_Map.m_height<<4) - gamerect.h - 36;
 	m_hideobjects = false;
 	// Close the old menu
 	SAFE_DELETE(mp_Menu);

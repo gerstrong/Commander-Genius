@@ -10,31 +10,31 @@
 
 #define DOOR_OPEN_SPEED    10
 
-void CObjectAI::door_ai( CObject *p_object, char DoorOpenDir )
+void CObjectAI::door_ai( CObject &object, char DoorOpenDir )
 {
-	if (p_object->needinit)
+	if (object.needinit)
 	{
-		p_object->ai.door.timer = 0;
-		g_pGfxEngine->Sprite[p_object->sprite]->setHeight(32);
-		p_object->inhibitfall = true;
-		p_object->needinit = false;
-		mp_Map->redrawAt(p_object->x>>CSF, p_object->y>>CSF);
-		mp_Map->redrawAt(p_object->x>>CSF, (p_object->y>>CSF)+1);
+		object.ai.door.timer = 0;
+		g_pGfxEngine->Sprite[object.sprite]->setHeight(32);
+		object.inhibitfall = true;
+		object.needinit = false;
+		mp_Map->redrawAt(object.x>>CSF, object.y>>CSF);
+		mp_Map->redrawAt(object.x>>CSF, (object.y>>CSF)+1);
 	}
 	 
-	if (p_object->ai.door.timer > DOOR_OPEN_SPEED)
+	if (object.ai.door.timer > DOOR_OPEN_SPEED)
 	{
 		// TODO: Create a flag for mods in which the door can be opened in another direction
-		if (DoorOpenDir==DOWN) p_object->y += (1<<STC);
-		g_pGfxEngine->Sprite[p_object->sprite]->setHeight(g_pGfxEngine->Sprite[p_object->sprite]->getHeight()-1);
-		if (g_pGfxEngine->Sprite[p_object->sprite]->getHeight() == 0)
+		if (DoorOpenDir==DOWN) object.y += (1<<STC);
+		g_pGfxEngine->Sprite[object.sprite]->setHeight(g_pGfxEngine->Sprite[object.sprite]->getHeight()-1);
+		if (g_pGfxEngine->Sprite[object.sprite]->getHeight() == 0)
 		{
-			p_object->ai.door.timer = 0;
-			deleteObj(p_object);
+			object.ai.door.timer = 0;
+			deleteObj(object);
 			return;
 		}
 	}
-	else p_object->ai.door.timer++;
+	else object.ai.door.timer++;
 }
 
 

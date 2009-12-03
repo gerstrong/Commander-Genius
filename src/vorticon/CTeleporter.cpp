@@ -74,7 +74,7 @@ void CTeleporter::teleportPlayer(std::vector<CObject> &p_vect_object, CPlayer &p
 			CObject teleporter;
 			m_map.findObject(telfrom, &origx, &origy);
 			teleporter.spawn( origx<<CSF, origy<<CSF, OBJ_TELEPORTER );
-			teleporter.ai.teleport.direction = TELEPORTING_OUT;
+			teleporter.ai.teleport.direction = TELEPORTING_IN;
 			teleporter.ai.teleport.destx = destx;
 			teleporter.ai.teleport.desty = desty;
 			teleporter.ai.teleport.whichplayer = player.m_player_number;
@@ -91,7 +91,7 @@ void CTeleporter::teleportPlayer(std::vector<CObject> &p_vect_object, CPlayer &p
 			}
 			g_pSound->playStereofromCoord(SOUND_TELEPORT, PLAY_NOW, p_vect_object[player.m_player_number].scrx);
 			
-			player.hideplayer = true;
+			//player.hideplayer = true;
 			p_vect_object.push_back(teleporter);
 		}
     }

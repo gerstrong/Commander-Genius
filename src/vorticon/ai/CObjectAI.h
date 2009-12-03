@@ -29,26 +29,26 @@ public:
 private:
 
 	// main AI functions
-	bool checkforAIObject( CObject *p_object );
-	void performSpecialAIType( CObject *p_object );
-	void deleteObj(CObject *p_object);
+	bool checkforAIObject( CObject &object );
+	void performSpecialAIType( CObject &object );
+	void deleteObj(CObject &object);
 
 	// ep1
-	void yorp_ai(CObject *p_object, CPlayer *p_player, bool hardmode);
-	void garg_ai(CObject *p_object, CPlayer *p_player, bool hardmode);
-	void vort_ai(CObject *p_object, int level, int episode, char difficulty, bool dark);
-	void vort_initiatejump(CObject *p_object);
-	void butler_ai(CObject *p_object, char difficulty);
-	void tank_ai(CObject *p_object, bool hardmode);
-	bool tank_CanMoveLeft(CObject *p_object, int h);
-	bool tank_CanMoveRight(CObject *p_object, int w, int h);
+	void yorp_ai(CObject &object, CPlayer *p_player, bool hardmode);
+	void garg_ai(CObject &object, CPlayer *p_player, bool hardmode);
+	void vort_ai(CObject &object, int level, int episode, char difficulty, bool dark);
+	void vort_initiatejump(CObject &object);
+	void butler_ai(CObject &object, char difficulty);
+	void tank_ai(CObject &object, bool hardmode);
+	bool tank_CanMoveLeft(CObject &object, int h);
+	bool tank_CanMoveRight(CObject &object, int w, int h);
 
-	void icechunk_ai(CObject *p_object);
-	void smash(CObject *p_object);
-	void icebit_ai(CObject *p_object);
-	void icecannon_ai(CObject *p_object);
-	void rope_ai(CObject *p_object);
-	void rope_movestone(CObject *p_object);
+	void icechunk_ai(CObject &object);
+	void smash(CObject &object);
+	void icebit_ai(CObject &object);
+	void icecannon_ai(CObject &object);
+	void rope_ai(CObject &object);
+	void rope_movestone(CObject &object);
 
 	// ep2
 	//void baby_ai(CObject &object, int episode, bool hard)
@@ -75,9 +75,9 @@ private:
 	 // Common Objects
 	 void autoray_ai(int o);
 	 void gotpoints_ai(int o);*/
-	void ray_ai( CObject *p_object, bool automatic_raygun, char pShotSpeed=0 );
-	void door_ai( CObject *p_object, char DoorOpenDir );
-	void teleporter_ai(CObject *p_object);
+	void ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed=0 );
+	void door_ai( CObject &object, char DoorOpenDir );
+	void teleporter_ai(CObject &object);
 
 	void killplayer(int theplayer);
 	void SetAllCanSupportPlayer(CObject &object, int state);

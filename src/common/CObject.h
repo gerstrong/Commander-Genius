@@ -109,7 +109,7 @@ public:
 	
 	virtual void process() { }
 	
-	bool hitdetect(CObject *p_hitobject);
+	bool hitdetect(CObject &hitobject);
 
 	// Collision parts
 	void performCollision(CMap *p_map);

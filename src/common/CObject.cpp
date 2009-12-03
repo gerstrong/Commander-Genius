@@ -119,27 +119,26 @@ void CObject::setScrPos( int px, int py )
 
 
 // returns nonzero if object1 overlaps object2
-bool CObject::hitdetect(CObject *p_hitobject)
+bool CObject::hitdetect(CObject &hitobject)
 {
-	CSprite *spr1, *spr2;
 	unsigned int rect1x1, rect1y1, rect1x2, rect1y2;
 	unsigned int rect2x1, rect2y1, rect2x2, rect2y2;
 	
 	// get the sprites used by the two objects
-	spr1 = g_pGfxEngine->Sprite.at(sprite);
-	spr2 = g_pGfxEngine->Sprite.at(p_hitobject->sprite);
+	CSprite &spr1 = *g_pGfxEngine->Sprite.at(sprite);
+	CSprite &spr2 = *g_pGfxEngine->Sprite.at(hitobject.sprite);
 	
 	// get the bounding rectangle of the first object
-	rect1x1 = x + spr1->m_bboxX1;
-	rect1y1 = y + spr1->m_bboxY1;
-	rect1x2 = x + spr1->m_bboxX2;
-	rect1y2 = y + spr1->m_bboxY2;
+	rect1x1 = x + spr1.m_bboxX1;
+	rect1y1 = y + spr1.m_bboxY1;
+	rect1x2 = x + spr1.m_bboxX2;
+	rect1y2 = y + spr1.m_bboxY2;
 	
 	// get the bounding rectangle of the second object
-	rect2x1 = p_hitobject->x + spr2->m_bboxX1;
-	rect2y1 = p_hitobject->y + spr2->m_bboxY1;
-	rect2x2 = p_hitobject->x + spr2->m_bboxX2;
-	rect2y2 = p_hitobject->y + spr2->m_bboxY2;
+	rect2x1 = hitobject.x + spr2.m_bboxX1;
+	rect2y1 = hitobject.y + spr2.m_bboxY1;
+	rect2x2 = hitobject.x + spr2.m_bboxX2;
+	rect2y2 = hitobject.y + spr2.m_bboxY2;
 	
 	// find out if the rectangles overlap
 	if ((rect1x1 < rect2x1) && (rect1x2 < rect2x1)) return false;
@@ -222,7 +221,7 @@ CSprite *Sprite = g_pGfxEngine->Sprite.at(sprite);
 bool CObject::checkSolidR(stTile *TileProperty, CMap *p_map, int x2, int y1, int y2)
 {
 	// Check for right from the object
-	for(int c=y1+1 ; c<=y2-1 ; c++)
+	for(int c=y1+1 ; c<=y2-(1<<STC) ; c++)
 	{
 		if(TileProperty[p_map->at(x2>>CSF, c>>CSF)].bleft)
 			return true;
@@ -235,7 +234,7 @@ bool CObject::checkSolidR(stTile *TileProperty, CMap *p_map, int x2, int y1, int
 bool CObject::checkSolidL(stTile *TileProperty, CMap *p_map, int x1, int y1, int y2)
 {
 	// Check for right from the object
-	for(int c=y1+1 ; c<=y2-1 ; c++)
+	for(int c=y1+1 ; c<=y2-(1<<STC) ; c++)
 	{
 		if(TileProperty[p_map->at(x1>>CSF, c>>CSF)].bright)
 			return true;

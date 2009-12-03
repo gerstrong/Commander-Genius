@@ -16,8 +16,12 @@
 // set blockedl/r/u...is Keen up against a solid object or a the edge of the level?
 void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 {
-	// Start with X-Coordinates
 	p_player->blockedl = p_player->blockedr = false;
+	p_player->blockedu = p_player->blockedd = false;
+
+	if(p_player->beingteleported) return;
+
+	// Start with X-Coordinates
 	if( p_player->goto_x > p_player->x )
 	{
 		// The player walked right
@@ -39,7 +43,6 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 	p_player->goto_x = p_player->x;
 	
 	// Continue with Y-Coordinates
-	p_player->blockedu = p_player->blockedd = false;
 	if( p_player->goto_y > p_player->y )
 	{
 		// The player is falling

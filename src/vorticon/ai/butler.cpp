@@ -28,26 +28,26 @@ enum Butleractionn{
 #define BUTLER_TURNLEFT_FRAME    96
 #define BUTLER_TURNRIGHT_FRAME   97
 
-void  CObjectAI::butler_ai(CObject *p_object, char difficulty)
+void  CObjectAI::butler_ai(CObject &object, char difficulty)
 {
 	 char not_about_to_fall;
 	 Uint16 butler_height, butler_width;
 	 
-	 if (p_object->needinit)
+	 if (object.needinit)
 	 {
-		 p_object->ai.butler.state = BUTLER_WALK;
-		 p_object->ai.butler.movedir = RIGHT;
-		 p_object->ai.butler.animtimer = 0;
-		 p_object->canbezapped = 1;  // will stop bullets but are not harmed
-		 p_object->needinit = 0;
-		 p_object->y -= 8;
+		 object.ai.butler.state = BUTLER_WALK;
+		 object.ai.butler.movedir = RIGHT;
+		 object.ai.butler.animtimer = 0;
+		 object.canbezapped = 1;  // will stop bullets but are not harmed
+		 object.needinit = 0;
+		 object.y -= 8;
 	 }
 	 // push keen
-     if (p_object->touchPlayer && !mp_Player[p_object->touchedBy].pdie)
+     if (object.touchPlayer && !mp_Player[object.touchedBy].pdie)
      {
-    	 if(!((mp_Player[0].pdir == p_object->ai.butler.movedir) && (mp_Player[0].pwalking)))
+    	 if(!((mp_Player[0].pdir == object.ai.butler.movedir) && (mp_Player[0].pwalking)))
     	 {
-    		 g_pSound->playStereofromCoord(SOUND_YORP_BUMP, PLAY_NORESTART, p_object->scrx);
+    		 g_pSound->playStereofromCoord(SOUND_YORP_BUMP, PLAY_NORESTART, object.scrx);
 	 
     		 short butlerpushamount;
 	 
@@ -55,88 +55,88 @@ void  CObjectAI::butler_ai(CObject *p_object, char difficulty)
 	 
     		 if(mp_Player[0].pwalking) butlerpushamount = 3*BUTLERPUSHAMOUNT/2;
 	 
-    		 if (mp_Player[0].x < p_object->x)
+    		 if (mp_Player[0].x < object.x)
     		 {
-    			 mp_Player[p_object->touchedBy].playpushed_x = -butlerpushamount;
-    			 if (difficulty>3) mp_Player[p_object->touchedBy].playpushed_x -= BUTLERPUSHAMOUNTFAST;
-    			 mp_Player[p_object->touchedBy].playpushed_decreasetimer = 0;
-    			 mp_Player[p_object->touchedBy].pdir = mp_Player[p_object->touchedBy].pshowdir = LEFT;
+    			 mp_Player[object.touchedBy].playpushed_x = -butlerpushamount;
+    			 if (difficulty>3) mp_Player[object.touchedBy].playpushed_x -= BUTLERPUSHAMOUNTFAST;
+    			 mp_Player[object.touchedBy].playpushed_decreasetimer = 0;
+    			 mp_Player[object.touchedBy].pdir = mp_Player[object.touchedBy].pshowdir = LEFT;
     		 }
     		 else
     		 {
-    			 mp_Player[p_object->touchedBy].playpushed_x = butlerpushamount;
-    			 if (difficulty>3) mp_Player[p_object->touchedBy].playpushed_x += BUTLERPUSHAMOUNTFAST;
-    			 mp_Player[p_object->touchedBy].playpushed_decreasetimer = 0;
-    			 mp_Player[p_object->touchedBy].pdir = mp_Player[p_object->touchedBy].pshowdir = RIGHT;
+    			 mp_Player[object.touchedBy].playpushed_x = butlerpushamount;
+    			 if (difficulty>3) mp_Player[object.touchedBy].playpushed_x += BUTLERPUSHAMOUNTFAST;
+    			 mp_Player[object.touchedBy].playpushed_decreasetimer = 0;
+    			 mp_Player[object.touchedBy].pdir = mp_Player[object.touchedBy].pshowdir = RIGHT;
     		 }
     	 }
      }
 	 
-	 switch(p_object->ai.butler.state)
+	 switch(object.ai.butler.state)
 	 {
 	 case BUTLER_TURN:
-		 if (p_object->ai.butler.timer > BUTLER_TURN_TIME)
+		 if (object.ai.butler.timer > BUTLER_TURN_TIME)
 		 {
-			 p_object->ai.butler.movedir ^= 1;
-			 p_object->ai.butler.animtimer = 0;
-			 p_object->ai.butler.state = BUTLER_WALK;
-		 } else p_object->ai.butler.timer++;
+			 object.ai.butler.movedir ^= 1;
+			 object.ai.butler.animtimer = 0;
+			 object.ai.butler.state = BUTLER_WALK;
+		 } else object.ai.butler.timer++;
 		 break;
 	 case BUTLER_WALK:
 		 CSprite *sprite = g_pGfxEngine->Sprite[BUTLER_WALK_LEFT_FRAME];
 		 stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 		 butler_height = sprite->getHeight()<<STC;
 		 butler_width = sprite->getWidth()<<STC;
-		 if (p_object->ai.butler.movedir==LEFT)
+		 if (object.ai.butler.movedir==LEFT)
 		 {  // move left
-			 not_about_to_fall = TileProperty[mp_Map->at((p_object->x-BUTLER_LOOK_AHEAD_DIST)>>CSF, (p_object->y+butler_height)>>CSF)].bup;
-			 p_object->sprite = BUTLER_WALK_LEFT_FRAME + p_object->ai.butler.frame;
-			 if (!p_object->blockedl && not_about_to_fall)
+			 not_about_to_fall = TileProperty[mp_Map->at((object.x-BUTLER_LOOK_AHEAD_DIST)>>CSF, (object.y+butler_height)>>CSF)].bup;
+			 object.sprite = BUTLER_WALK_LEFT_FRAME + object.ai.butler.frame;
+			 if (!object.blockedl && not_about_to_fall)
 			 {
 				 if (difficulty>3)
-					 p_object->x -= BUTLER_WALK_SPEED_FAST;
+					 object.x -= BUTLER_WALK_SPEED_FAST;
 				 else
-					 p_object->x -= BUTLER_WALK_SPEED;
+					 object.x -= BUTLER_WALK_SPEED;
 			 }
 			 else
 			 {
-				 p_object->sprite = BUTLER_TURNRIGHT_FRAME;
-				 p_object->ai.butler.frame = 0;
-				 p_object->ai.butler.timer = 0;
-				 p_object->ai.butler.animtimer = 0;
-				 p_object->ai.butler.state = BUTLER_TURN;
+				 object.sprite = BUTLER_TURNRIGHT_FRAME;
+				 object.ai.butler.frame = 0;
+				 object.ai.butler.timer = 0;
+				 object.ai.butler.animtimer = 0;
+				 object.ai.butler.state = BUTLER_TURN;
 			 }
 		 }
 		 else
 		 {  // move right
 	 
-			 not_about_to_fall = TileProperty[mp_Map->at((p_object->x+butler_width+BUTLER_LOOK_AHEAD_DIST)>>CSF, (p_object->y+butler_height)>>CSF)].bup;
-			 p_object->sprite = BUTLER_WALK_RIGHT_FRAME + p_object->ai.butler.frame;
-			 if (!p_object->blockedr && not_about_to_fall)
+			 not_about_to_fall = TileProperty[mp_Map->at((object.x+butler_width+BUTLER_LOOK_AHEAD_DIST)>>CSF, (object.y+butler_height)>>CSF)].bup;
+			 object.sprite = BUTLER_WALK_RIGHT_FRAME + object.ai.butler.frame;
+			 if (!object.blockedr && not_about_to_fall)
 			 {
 				 if (difficulty>3)
-					 p_object->x += BUTLER_WALK_SPEED_FAST;
+					 object.x += BUTLER_WALK_SPEED_FAST;
 				 else
-					 p_object->x += BUTLER_WALK_SPEED;
+					 object.x += BUTLER_WALK_SPEED;
 			 }
 			 else
 			 {
-				 p_object->sprite = BUTLER_TURNLEFT_FRAME;
-				 p_object->ai.butler.frame = 0;
-				 p_object->ai.butler.timer = 0;
-				 p_object->ai.butler.animtimer = 0;
-				 p_object->ai.butler.state = BUTLER_TURN;
+				 object.sprite = BUTLER_TURNLEFT_FRAME;
+				 object.ai.butler.frame = 0;
+				 object.ai.butler.timer = 0;
+				 object.ai.butler.animtimer = 0;
+				 object.ai.butler.state = BUTLER_TURN;
 			 }
 		 }
 		 // walk animation
-		 if (p_object->ai.butler.animtimer > BUTLER_WALK_ANIM_TIME ||
-				 (p_object->ai.butler.animtimer > BUTLER_WALK_ANIM_TIME_FAST && difficulty>3))
+		 if (object.ai.butler.animtimer > BUTLER_WALK_ANIM_TIME ||
+				 (object.ai.butler.animtimer > BUTLER_WALK_ANIM_TIME_FAST && difficulty>3))
 		 {
-			 if (p_object->ai.butler.frame>=3) p_object->ai.butler.frame=0;
-			 else p_object->ai.butler.frame++;
-			 p_object->ai.butler.animtimer = 0;
+			 if (object.ai.butler.frame>=3) object.ai.butler.frame=0;
+			 else object.ai.butler.frame++;
+			 object.ai.butler.animtimer = 0;
 		 }
-		 else p_object->ai.butler.animtimer++;
+		 else object.ai.butler.animtimer++;
 		 break;
 	 }
 }

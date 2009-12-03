@@ -169,6 +169,7 @@ public:
 	bool *mp_levels_completed;
 	bool m_showStatusScreen;
 	char level_done;
+	bool beingteleported;
 
 	CMap *mp_map;
 	stOption *mp_option;

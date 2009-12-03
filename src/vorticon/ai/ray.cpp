@@ -7,43 +7,43 @@
 
 #define Sprite g_pGfxEngine->Sprite
 
-void CObjectAI::ray_ai( CObject *p_object, bool automatic_raygun, char pShotSpeed )
+void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed )
 {
 	int hitlethal;
 	int rayspeed;
 	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 	std::vector<CObject>::iterator it_obj;
-	if (p_object->needinit)
+	if (object.needinit)
 	{
-		p_object->ai.ray.state = RAY_STATE_FLY;
-		p_object->inhibitfall = true;
-		p_object->needinit = false;
+		object.ai.ray.state = RAY_STATE_FLY;
+		object.inhibitfall = true;
+		object.needinit = false;
 		
 		// if we shoot directly up against a wall have
 		// the ZAP appear next to the wall, not in it
-		if (p_object->ai.ray.direction==RIGHT && p_object->blockedr)
+		if (object.ai.ray.direction==RIGHT && object.blockedr)
 		{
-			p_object->x = (p_object->x >> CSF) << CSF;
-			if (TileProperty[mp_Map->at(p_object->x>>CSF,p_object->y>>CSF)].bleft)
-				p_object->x--;
+			object.x = (object.x >> CSF) << CSF;
+			if (TileProperty[mp_Map->at(object.x>>CSF,object.y>>CSF)].bleft)
+				object.x--;
 			
-			p_object->ai.ray.state = RAY_STATE_SETZAPZOT;
+			object.ai.ray.state = RAY_STATE_SETZAPZOT;
 			
-			if (p_object->onscreen)
-				g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, p_object->scrx);
+			if (object.onscreen)
+				g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, object.scrx);
 		}
-		else if (p_object->ai.ray.direction==LEFT && p_object->blockedl)
+		else if (object.ai.ray.direction==LEFT && object.blockedl)
 		{
-			p_object->x = (p_object->x >> CSF) << CSF;
-			if (TileProperty[mp_Map->at(p_object->x>>CSF,p_object->y>>CSF)].bright) p_object->x--;
+			object.x = (object.x >> CSF) << CSF;
+			if (TileProperty[mp_Map->at(object.x>>CSF,object.y>>CSF)].bright) object.x--;
 			//if (tiles[getmaptileat(x>>CSF,y>>CSF)].solidl) x -= (16<<CSF);
-			p_object->ai.ray.state = RAY_STATE_SETZAPZOT;
-			if (p_object->onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, p_object->scrx);
+			object.ai.ray.state = RAY_STATE_SETZAPZOT;
+			if (object.onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, object.scrx);
 		}
 	}
 	
 	// shots from "fully automatic" raygun go faster
-	if (p_object->sprite!=OBJ_RAY_DEFSPRITE_EP1 || !automatic_raygun)
+	if (object.sprite!=OBJ_RAY_DEFSPRITE_EP1 || !automatic_raygun)
 	{
 		if (!pShotSpeed)
 			rayspeed = RAY_SPEED;
@@ -54,29 +54,29 @@ void CObjectAI::ray_ai( CObject *p_object, bool automatic_raygun, char pShotSpee
 		rayspeed = RAY_AUTO_SPEED;
 	
 	
-	switch(p_object->ai.ray.state)
+	switch(object.ai.ray.state)
 	{
 		case RAY_STATE_FLY:
 			// test if it hit a baddie
 			for( it_obj = mp_Objvect->begin() ; it_obj!=mp_Objvect->end() ; it_obj++)
 			{
-				if (p_object->ai.ray.dontHitEnable)
+				if (object.ai.ray.dontHitEnable)
 				{
-					if (it_obj->m_type==p_object->ai.ray.dontHit) continue;
+					if (it_obj->m_type==object.ai.ray.dontHit) continue;
 				}
 				
 				if (it_obj->m_type==OBJ_RAY) continue;
 				
 				if (it_obj->canbezapped && it_obj->onscreen)
 				{
-					if (it_obj->hitdetect(p_object))
+					if (it_obj->hitdetect(object))
 					{
-						p_object->ai.ray.state = RAY_STATE_SETZAPZOT;
+						object.ai.ray.state = RAY_STATE_SETZAPZOT;
 						it_obj->zapped++;
 						it_obj->zapx = it_obj->x;
 						it_obj->zapy = it_obj->y;
 						it_obj->zapd = it_obj->ai.ray.direction;
-						if (p_object->sprite==ENEMYRAY || p_object->sprite==ENEMYRAYEP2 || p_object->sprite==ENEMYRAYEP3)
+						if (object.sprite==ENEMYRAY || object.sprite==ENEMYRAYEP2 || object.sprite==ENEMYRAYEP3)
 							it_obj->zappedbyenemy = true;
 						else
 							it_obj->zappedbyenemy = false;
@@ -85,111 +85,107 @@ void CObjectAI::ray_ai( CObject *p_object, bool automatic_raygun, char pShotSpee
 				}
 			}
 			// check if ray hit keen. if canpk=0, only enemy rays can hurt keen
-			if (p_object->touchPlayer)
+			if (object.touchPlayer)
 			{
-				if (mp_Player[p_object->touchedBy].pfrozentime > PFROZEN_THAW && m_Episode==1)
+				if (mp_Player[object.touchedBy].pfrozentime > PFROZEN_THAW && m_Episode==1)
 				{
 					// shot a frozen player--melt the ice
-					mp_Player[p_object->touchedBy].pfrozentime = PFROZEN_THAW;
-					p_object->ai.ray.state = RAY_STATE_SETZAPZOT;
+					mp_Player[object.touchedBy].pfrozentime = PFROZEN_THAW;
+					object.ai.ray.state = RAY_STATE_SETZAPZOT;
 				}
 				else
 				{
-					if (p_object->ai.ray.dontHitEnable==0 || p_object->ai.ray.dontHit!=OBJ_PLAYER)
+					if (object.ai.ray.dontHitEnable==0 || object.ai.ray.dontHit!=OBJ_PLAYER)
 					{
-						//killplayer(p_object->touchedBy);
-						p_object->ai.ray.state = RAY_STATE_SETZAPZOT;
+						//killplayer(object.touchedBy);
+						object.ai.ray.state = RAY_STATE_SETZAPZOT;
 					}
 				}
 			}
 			
-			if (p_object->ai.ray.direction == RIGHT)
+			if (object.ai.ray.direction == RIGHT)
 			{
 				// don't go through bonklethal tiles, even if they're not solid
 				// (for the arms on mortimer's machine)
-				if (TileProperty[mp_Map->at(((p_object->x>>(CSF-4))+Sprite[p_object->sprite]->getWidth())>>4, (p_object->y>>CSF)+1)].behaviour == 1)
+				if (TileProperty[mp_Map->at(((object.x>>(CSF-4))+Sprite[object.sprite]->getWidth())>>4, (object.y>>CSF)+1)].behaviour == 1)
 					hitlethal = true;
-				else if (TileProperty[mp_Map->at(((p_object->x>>(CSF-4))+Sprite[p_object->sprite]->getWidth())>>4, ((p_object->y>>(CSF-4))+(Sprite[p_object->sprite]->getHeight()-1))>>(CSF-4))].behaviour == 1)
-					hitlethal = true;
-				else
-					hitlethal = false;
-				
-				if (p_object->blockedr)
-				{
-					p_object->ai.ray.state = RAY_STATE_SETZAPZOT;
-					if (p_object->onscreen)
-						g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, p_object->scrx);
-				}
-				
-				p_object->x += rayspeed;
-			}
-			else if (p_object->ai.ray.direction == LEFT)
-			{
-				if (TileProperty[mp_Map->at((p_object->x-1)>>CSF, (p_object->y+1)>>CSF)].behaviour == 1)
-					hitlethal = true;
-				else if (TileProperty[mp_Map->at((p_object->x-1)>>CSF, ((p_object->y>>(CSF-4))+(Sprite[p_object->sprite]->getHeight()-1))>>(CSF-4))].behaviour == 1)
+				else if (TileProperty[mp_Map->at(((object.x>>(CSF-4))+Sprite[object.sprite]->getWidth())>>4, ((object.y>>(CSF-4))+(Sprite[object.sprite]->getHeight()-1))>>(CSF-4))].behaviour == 1)
 					hitlethal = true;
 				else
 					hitlethal = false;
 				
-				if (p_object->blockedl)
+				if (object.blockedr)
 				{
-					p_object->ai.ray.state = RAY_STATE_SETZAPZOT;
-					if (p_object->onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, p_object->scrx);
+					object.ai.ray.state = RAY_STATE_SETZAPZOT;
+					if (object.onscreen)
+						g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, object.scrx);
 				}
 				
-				p_object->x -= rayspeed;
+				object.x += rayspeed;
 			}
-			else if (p_object->ai.ray.direction == DOWN)
+			else if (object.ai.ray.direction == LEFT)
 			{
-				if (p_object->blockedd || p_object->blockedu)
+				if (TileProperty[mp_Map->at((object.x-1)>>CSF, (object.y+1)>>CSF)].behaviour == 1)
+					hitlethal = true;
+				else if (TileProperty[mp_Map->at((object.x-1)>>CSF, ((object.y>>(CSF-4))+(Sprite[object.sprite]->getHeight()-1))>>(CSF-4))].behaviour == 1)
+					hitlethal = true;
+				else
+					hitlethal = false;
+				
+				if (object.blockedl)
 				{
-					p_object->ai.ray.state = RAY_STATE_SETZAPZOT;
-					if (p_object->onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, p_object->scrx);
+					object.ai.ray.state = RAY_STATE_SETZAPZOT;
+					if (object.onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, object.scrx);
 				}
 				
-				p_object->y += rayspeed;
+				object.x -= rayspeed;
+			}
+			else if (object.ai.ray.direction == DOWN)
+			{
+				if (object.blockedd || object.blockedu)
+				{
+					object.ai.ray.state = RAY_STATE_SETZAPZOT;
+					if (object.onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, object.scrx);
+				}
+				
+				object.y += rayspeed;
 			}
 			break;
 		case RAY_STATE_SETZAPZOT:
-			p_object->ai.ray.state = RAY_STATE_ZAPZOT;
-			p_object->ai.ray.zapzottimer = RAY_ZAPZOT_TIME;
+			object.ai.ray.state = RAY_STATE_ZAPZOT;
+			object.ai.ray.zapzottimer = RAY_ZAPZOT_TIME;
 			
 			if (m_Episode==1)
 			{
 				if (rnd()&1)
-				{ p_object->sprite = RAY_FRAME_ZAP_EP1; }
+				{ object.sprite = RAY_FRAME_ZAP_EP1; }
 				else
-				{ p_object->sprite = RAY_FRAME_ZOT_EP1; }
+				{ object.sprite = RAY_FRAME_ZOT_EP1; }
 			}
 			else if (m_Episode==2)
 			{
 				if (rnd()&1)
-				{ p_object->sprite = RAY_FRAME_ZAP_EP2; }
+				{ object.sprite = RAY_FRAME_ZAP_EP2; }
 				else
-				{ p_object->sprite = RAY_FRAME_ZOT_EP2; }
+				{ object.sprite = RAY_FRAME_ZOT_EP2; }
 			}
 			else
 			{
 				if (rnd()&1)
-				{ p_object->sprite = RAY_FRAME_ZAP_EP3; }
+				{ object.sprite = RAY_FRAME_ZAP_EP3; }
 				else
-				{ p_object->sprite = RAY_FRAME_ZOT_EP3; }
+				{ object.sprite = RAY_FRAME_ZOT_EP3; }
 			}
 			
-			if (p_object->ai.ray.direction==LEFT || p_object->ai.ray.direction==RIGHT)
-			{
-				p_object->y -= 2;
-			}
+			if (object.ai.ray.direction==LEFT || object.ai.ray.direction==RIGHT)
+				object.y -= 2;
 			else
-			{
-				p_object->x -= 4;
-			}
+				object.x -= 4;
+
 			// ... and fall through
 		case RAY_STATE_ZAPZOT:
-			if (p_object->ai.ray.zapzottimer == 0)
-			{ deleteObj(p_object); }
-			else p_object->ai.ray.zapzottimer--;
+			if (object.ai.ray.zapzottimer == 0) deleteObj(object);
+			else object.ai.ray.zapzottimer--;
 			break;
 	}
 }

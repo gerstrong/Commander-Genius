@@ -11,91 +11,91 @@
 
 unsigned int rnd(void);
 
-void CObjectAI::icechunk_ai(CObject *p_object)
+void CObjectAI::icechunk_ai(CObject &object)
 {
-	if (p_object->needinit)
+	if (object.needinit)
 	{  // first time initialization
 		int speed;
 
-		if (p_object->ai.icechunk.vector_x && p_object->ai.icechunk.vector_y)
+		if (object.ai.icechunk.vector_x && object.ai.icechunk.vector_y)
 			speed = ICECHUNK_SPEED;
 		else
 			speed = ICECHUNK_STRAIGHT_SPEED;
 
-		p_object->ai.icechunk.veloc_x = speed * p_object->ai.icechunk.vector_x;
-		p_object->ai.icechunk.veloc_y = speed * p_object->ai.icechunk.vector_y;
-		p_object->inhibitfall = 1;
-		p_object->canbezapped = 0;
-		p_object->needinit = 0;
+		object.ai.icechunk.veloc_x = speed * object.ai.icechunk.vector_x;
+		object.ai.icechunk.veloc_y = speed * object.ai.icechunk.vector_y;
+		object.inhibitfall = 1;
+		object.canbezapped = 0;
+		object.needinit = 0;
 	}
 
 	// freeze the player if it touches him
-	if (p_object->touchPlayer)
+	if (object.touchPlayer)
 	{
-		if (!mp_Player[p_object->touchPlayer].pfrozentime)
+		if (!mp_Player[object.touchPlayer].pfrozentime)
 		{
 			// make him start sliding in the direction of the impact
-			if (p_object->ai.icechunk.vector_x > 0)
+			if (object.ai.icechunk.vector_x > 0)
 			{
-				mp_Player[p_object->touchedBy].pdir = mp_Player[p_object->touchedBy].pshowdir = RIGHT;
-				//mp_Player[p_object->touchedBy].pinertia_x = PMAXSPEED;
+				mp_Player[object.touchedBy].pdir = mp_Player[object.touchedBy].pshowdir = RIGHT;
+				//mp_Player[object.touchedBy].pinertia_x = PMAXSPEED;
 			}
-			else if (p_object->ai.icechunk.vector_x < 0)
+			else if (object.ai.icechunk.vector_x < 0)
 			{
-				mp_Player[p_object->touchedBy].pdir = mp_Player[p_object->touchedBy].pshowdir = LEFT;
-				//mp_Player[p_object->touchedBy].pinertia_x = -PMAXSPEED;
+				mp_Player[object.touchedBy].pdir = mp_Player[object.touchedBy].pshowdir = LEFT;
+				//mp_Player[object.touchedBy].pinertia_x = -PMAXSPEED;
 			}
 			else	// perfectly vertical ice cannons
 			{
 #define UPDNCANNON_PUSHAMT		4
-				if (mp_Player[p_object->touchedBy].pinertia_x < UPDNCANNON_PUSHAMT)
+				if (mp_Player[object.touchedBy].pinertia_x < UPDNCANNON_PUSHAMT)
 				{
 					if (rnd()&1)
-						mp_Player[p_object->touchedBy].pinertia_x = UPDNCANNON_PUSHAMT;
+						mp_Player[object.touchedBy].pinertia_x = UPDNCANNON_PUSHAMT;
 					else
-						mp_Player[p_object->touchedBy].pinertia_x = -UPDNCANNON_PUSHAMT;
+						mp_Player[object.touchedBy].pinertia_x = -UPDNCANNON_PUSHAMT;
 				}
 			}
 		}
 
-		freezeplayer(p_object->touchedBy);
-		smash(p_object);
+		freezeplayer(object.touchedBy);
+		smash(object);
 		return;
 	}
 
 	// smash the chunk if it hits something
-	if (p_object->ai.icechunk.vector_x > 0)
+	if (object.ai.icechunk.vector_x > 0)
 	{
-		if (p_object->blockedr) { smash(p_object); return; }
+		if (object.blockedr) { smash(object); return; }
 	}
-	else if (p_object->ai.icechunk.vector_x < 0)
+	else if (object.ai.icechunk.vector_x < 0)
 	{
-		if (p_object->blockedl) { smash(p_object); return; }
+		if (object.blockedl) { smash(object); return; }
 	}
 
-	if (p_object->ai.icechunk.vector_y > 0)
+	if (object.ai.icechunk.vector_y > 0)
 	{
-		if (p_object->blockedd) { smash(p_object); return; }
+		if (object.blockedd) { smash(object); return; }
 	}
-	else if (p_object->ai.icechunk.vector_y < 0)
+	else if (object.ai.icechunk.vector_y < 0)
 	{
-		if (p_object->blockedu) { smash(p_object); return; }
+		if (object.blockedu) { smash(object); return; }
 	}
 
 	// fly through the air
-	p_object->x += p_object->ai.icechunk.veloc_x;
-	p_object->y += p_object->ai.icechunk.veloc_y;
+	object.x += object.ai.icechunk.veloc_x;
+	object.y += object.ai.icechunk.veloc_y;
 }
 
 
-void CObjectAI::smash(CObject *p_object)
+void CObjectAI::smash(CObject &object)
 {
 	CObject chunk;
 
-	if (p_object->onscreen)
+	if (object.onscreen)
 	{
-		g_pSound->playStereofromCoord(SOUND_CHUNKSMASH, PLAY_NOW, p_object->x);
-		chunk.spawn(p_object->x, p_object->y, OBJ_ICEBIT);
+		g_pSound->playStereofromCoord(SOUND_CHUNKSMASH, PLAY_NOW, object.x);
+		chunk.spawn(object.x, object.y, OBJ_ICEBIT);
 
 		// upleft
 		chunk.ai.icechunk.vector_x = -1;
@@ -124,43 +124,42 @@ void CObjectAI::smash(CObject *p_object)
 // a wall or a player. (Ep1)
 #define ICEBIT_SPEED        20
 
-void CObjectAI::icebit_ai(CObject *p_object)
+void CObjectAI::icebit_ai(CObject &object)
 {
-	if (p_object->needinit)
+	if (object.needinit)
 	{  // first time initilization
-		p_object->ai.icechunk.veloc_x = ICEBIT_SPEED * p_object->ai.icechunk.vector_x;
-		p_object->ai.icechunk.veloc_y = ICEBIT_SPEED * p_object->ai.icechunk.vector_y;
-		p_object->inhibitfall = 1;
-		p_object->canbezapped = 0;
-		p_object->needinit = 0;
+		object.ai.icechunk.veloc_x = ICEBIT_SPEED * object.ai.icechunk.vector_x;
+		object.ai.icechunk.veloc_y = ICEBIT_SPEED * object.ai.icechunk.vector_y;
+		object.inhibitfall = 1;
+		object.canbezapped = 0;
+		object.needinit = 0;
 	}
 
-	p_object->x += p_object->ai.icechunk.veloc_x;
-	p_object->y += p_object->ai.icechunk.veloc_y;
+	object.x += object.ai.icechunk.veloc_x;
+	object.y += object.ai.icechunk.veloc_y;
 
-	if (!p_object->onscreen)
+	if (!object.onscreen)
 	{
-		deleteObj(p_object);
+		deleteObj(object);
 	}
 }
 
 
 // the ice cannon itself
-void CObjectAI::icecannon_ai(CObject *p_object)
+void CObjectAI::icecannon_ai(CObject &object)
 {
 	CObject chunk;
 	 
 	 // keep spawner object invisible and properly positioned
-	 p_object->sprite = BLANKSPRITE;
-	 p_object->inhibitfall = 1;
+	 object.sprite = BLANKSPRITE;
+	 object.inhibitfall = 1;
 	 
 	 //if (!gunfiretimer)
 	 //{
-
-		 chunk.spawn(p_object->x, p_object->y, OBJ_ICECHUNK);
+		 chunk.spawn(object.x, object.y, OBJ_ICECHUNK);
 	 
-		 chunk.ai.icechunk.vector_x = p_object->ai.icechunk.vector_x;
-		 chunk.ai.icechunk.vector_y = p_object->ai.icechunk.vector_y;
+		 chunk.ai.icechunk.vector_x = object.ai.icechunk.vector_x;
+		 chunk.ai.icechunk.vector_y = object.ai.icechunk.vector_y;
 	 //}
 }
 
