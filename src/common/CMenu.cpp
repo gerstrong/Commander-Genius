@@ -105,12 +105,12 @@ bool CMenu::init( char menu_type )
 	}
 	else if( m_menu_type == OPTIONS )
 	{
-		mp_Menu = new COptions(m_menu_type);
+		mp_Menu = new COptions(m_menu_type, mp_option);
 		return true;
 	}
 	else if( m_menu_type == AUDIO )
 	{
-		mp_Menu = new CAudioSettings(m_menu_type);
+		mp_Menu = new CAudioSettings(m_menu_type, m_GamePath, m_Episode);
 		return true;
 	}
 	
@@ -179,7 +179,7 @@ void CMenu::initConfigureMenu()
 	
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Graphics");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Audio");
-	mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 3, "Options");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Options");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Controls");
 }
 

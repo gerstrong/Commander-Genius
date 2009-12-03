@@ -376,7 +376,7 @@ void CSoundChannel::readWaveform(Uint8* waveform, int len, Uint8 channels, int f
 {
     if (m_sound_playing)
     {
-    	if(!m_hq) // There is no hq sound in the buffer
+    	if(!m_hq) // There is no HQ sound in the buffer
      	{
 			if ( m_format == AUDIO_U16 || m_format == AUDIO_S16 )
 			{
@@ -405,7 +405,6 @@ void CSoundChannel::readWaveform(Uint8* waveform, int len, Uint8 channels, int f
 		{
 			transintoStereoChannels(waveform, len);
 		}
-		
     }
 	else
 		memset(waveform,m_silence,len);

@@ -159,6 +159,7 @@ public:
 
 	char playcontrol[PA_MAX_ACTIONS];
 
+	bool object_chosen;
 	unsigned char dpadcount, dpadlastcount;
 
 	unsigned int ankhtime, ankhshieldobject;

@@ -83,6 +83,7 @@ void CPlayer::setDatatoZero()
     level_done_timer = pfriction_timer_x = 0;
   	dpadcount = dpadlastcount = 0;
   	beingteleported = false;
+  	object_chosen = false;
 	
   	exitXpos = 0;
 	

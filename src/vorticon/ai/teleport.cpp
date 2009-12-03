@@ -1,19 +1,19 @@
 #include "CObjectAI.h"
 #include "../../sdl/sound/CSound.h"
-#include "../../keen.h"
 
 // Teleporter on world map
 // (animates the teleporter and moves the player)
 // (ep1&3)
 
 // rate at which the frame will change
-#define TELEPORTER_ANIM_RATE_EP1    1
-#define TELEPORTER_ANIM_RATE_EP3    1
+const int TELEPORTER_ANIM_RATE_EP1 = 1;
+const int TELEPORTER_ANIM_RATE_EP3 = 1;
+
+const int TELEPORTATION_SPEED = 128;
 
 // number of times to change the frame before stopping
-#define TELEPORTER_NUMFRAMES_EP3      16
-
-#define TELEPORTER_NUMFRAMES_EP1    20
+const int TELEPORTER_NUMFRAMES_EP3 = 16;
+const int TELEPORTER_NUMFRAMES_EP1 = 20;
 
 void CObjectAI::teleporter_ai(CObject &object)
 {
@@ -35,6 +35,7 @@ void CObjectAI::teleporter_ai(CObject &object)
 		object.ai.teleport.animtimer = animrate;
 		object.ai.teleport.animframe = 0;
 		object.ai.teleport.numframechanges = 0;
+		g_pSound->playStereofromCoord(SOUND_TELEPORT, PLAY_NOW, object.scrx);
 	}
 	
 	mx = object.x >> CSF;
@@ -80,12 +81,12 @@ void CObjectAI::teleporter_ai(CObject &object)
 			// of scrolling over to it, do that.
 			//mp_Map->gotoPos( object.ai.teleport.destx+260, object.ai.teleport.desty );
 
-			if(object.x < mp_Player[player].x) mp_Player[player].goto_x-=16;
-			else if(object.x > mp_Player[player].x) mp_Player[player].goto_x+=16;
+			if(object.x < mp_Player[player].x) mp_Player[player].goto_x-=TELEPORTATION_SPEED;
+			else if(object.x > mp_Player[player].x) mp_Player[player].goto_x+=TELEPORTATION_SPEED;
 			mp_Player[player].x = mp_Player[player].goto_x;
 
-			if(object.y < mp_Player[player].y) mp_Player[player].goto_y-=16;
-			else if(object.y > mp_Player[player].y) mp_Player[player].goto_y+=16;
+			if(object.y < mp_Player[player].y) mp_Player[player].goto_y-=TELEPORTATION_SPEED;
+			else if(object.y > mp_Player[player].y) mp_Player[player].goto_y+=TELEPORTATION_SPEED;
 			mp_Player[player].y = mp_Player[player].goto_y;
 
 			int diff_x = object.x - mp_Player[player].x;
@@ -94,7 +95,7 @@ void CObjectAI::teleporter_ai(CObject &object)
 			diff_x = (diff_x<0) ? -diff_x : diff_x;
 			diff_y = (diff_y<0) ? -diff_y : diff_y;
 
-			if(!mp_Player[player].scrollTriggers() && diff_x<16 && diff_y<16)
+			if(!mp_Player[player].scrollTriggers() && diff_x<=TELEPORTATION_SPEED && diff_y<=TELEPORTATION_SPEED)
 			{
 				mp_Player[player].x = object.x;
 				mp_Player[player].y = object.y;

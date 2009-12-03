@@ -89,7 +89,6 @@ void CTeleporter::teleportPlayer(std::vector<CObject> &p_vect_object, CPlayer &p
 				teleporter.ai.teleport.baseframe = TELEPORT_GRAY_BASEFRAME_EP1;
 				teleporter.ai.teleport.idleframe = TELEPORT_GRAY_IDLEFRAME_EP1;
 			}
-			g_pSound->playStereofromCoord(SOUND_TELEPORT, PLAY_NOW, p_vect_object[player.m_player_number].scrx);
 			
 			//player.hideplayer = true;
 			p_vect_object.push_back(teleporter);

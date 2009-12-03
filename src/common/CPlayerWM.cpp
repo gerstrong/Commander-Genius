@@ -110,8 +110,9 @@ int CPlayer::getNewObject()
 	int xb, yb;
 	int lvl;
 	
-    if ( playcontrol[PA_JUMP] || playcontrol[PA_POGO] )
+    if ( !object_chosen && (playcontrol[PA_JUMP] || playcontrol[PA_POGO]) )
     {   // trying to enter a level (or use a teleporter, etc)
+    	object_chosen = true;
 		
         // get level/object marker beneath player
         xb = (x>>STC)+4;
@@ -125,6 +126,10 @@ int CPlayer::getNewObject()
         printf("Object selected: %d\n", lvl);
         return lvl;
     }
+
+    if (!playcontrol[PA_JUMP] && !playcontrol[PA_POGO])
+    	object_chosen = false;
+
     return 0;
 }
 

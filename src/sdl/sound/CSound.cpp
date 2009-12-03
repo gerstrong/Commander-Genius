@@ -301,14 +301,16 @@ startsound: ;
 	// don't play more than once instance
 	// of the same sound in a seperate channel--
 	// instead restart the currently playing sound
-	for(i=0;i<m_mixing_channels;i++)
+	/*for(i=0;i<m_mixing_channels;i++)
 	{
 		if (m_soundchannel[i].getCurrentsound() == snd)
 		{
 			chnl = i;
 			break;
 		}
-	}
+	}*/
+	// NOTE: Now that we have more channels, we can allow that.
+    // This code might be removed in future
 	
 playsound: ;
 	// stop SOUND_KEEN_FALL if playing
