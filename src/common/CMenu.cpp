@@ -87,7 +87,7 @@ bool CMenu::init( char menu_type )
 		initNumControlMenu();
 	else if( m_menu_type == CONTROLS )
 	{
-		mp_Menu = new CControlsettings(m_menu_type);
+		mp_Menu = new CControlsettings(m_menu_type, m_NumPlayers);
 		return true;
 	}
 	else if( m_menu_type == F1 )

@@ -249,7 +249,7 @@ VIDEO_MODE_OPENGL,
 
 struct stCloneKeenPlus
 {
-	stCommand Command[MAX_COMMANDS];
+	//stCommand Command[MAX_COMMANDS];
 	SDL_Joystick *Joystick;
 	SDL_Event Event;
 	stResources Resources;

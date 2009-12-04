@@ -127,7 +127,7 @@ enum keys{
 	KBCKSPCE,
 };
 
-#define KEYTABLE_SIZE   160
+const int KEYTABLE_SIZE = 160;
 
 enum InputCommands{
 	IC_LEFT,
@@ -141,6 +141,8 @@ enum InputCommands{
 	IC_HELP,
 	IC_QUIT
 };
+
+const int MAX_COMMANDS = 10;
 
 #define NUMBER_OF_COMMANDS	10
 #define NUM_INPUTS			4

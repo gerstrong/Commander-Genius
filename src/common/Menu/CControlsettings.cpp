@@ -8,71 +8,109 @@
 #include "CControlsettings.h"
 #include "../../sdl/CInput.h"
 #include "../../sdl/CSettings.h"
+#include "../../sdl/CVideoDriver.h"
 #include "../../StringUtils.h"
 
-CControlsettings::CControlsettings(char &menu_type) :
-CBaseMenu(menu_type) {
+CControlsettings::CControlsettings(char &menu_type, int chosenPlayerNumber) :
+CBaseMenu(menu_type),
+m_chosenPlayer(chosenPlayerNumber),
+m_waiting_for_input(false)
+{
+	drawInitialCommands();
+}
+
+void CControlsettings::drawInitialCommands()
+{
 	std::string buf;
 	std::string buf2;
-	//int player = m_NumPlayers - 1;
-	//mp_Dialog = new CDialog(mp_MenuSurface, 36, 16);
+	mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 36, 16);
+	mp_Dialog->setFrameTheme(DLG_THEME_OLDSCHOOL);
 
-	/*g_pInput->getEventName(IC_LEFT, player, buf2);
-	buf = "P"+itoa(m_NumPlayers)+" Left:   " + buf2;
+	g_pInput->getEventName(IC_LEFT, m_chosenPlayer-1, buf2);
+	buf = "P"+itoa(m_chosenPlayer)+" Left:   " + buf2;
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, buf);
 
-	g_pInput->getEventName(IC_UP, player, buf2);
-	buf = "P"+itoa(m_NumPlayers)+" Up:     " + buf2;
+	g_pInput->getEventName(IC_UP, m_chosenPlayer-1, buf2);
+	buf = "P"+itoa(m_chosenPlayer)+" Up:     " + buf2;
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, buf);
 
-	g_pInput->getEventName(IC_RIGHT, player, buf2);
-	buf = "P"+itoa(m_NumPlayers)+" Right:  " + buf2;
+	g_pInput->getEventName(IC_RIGHT, m_chosenPlayer-1, buf2);
+	buf = "P"+itoa(m_chosenPlayer)+" Right:  " + buf2;
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, buf);
 
-	g_pInput->getEventName(IC_DOWN, player, buf2);
-	buf = "P"+itoa(m_NumPlayers)+" Down:   " + buf2;
+	g_pInput->getEventName(IC_DOWN, m_chosenPlayer-1, buf2);
+	buf = "P"+itoa(m_chosenPlayer)+" Down:   " + buf2;
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, buf);
 
-	g_pInput->getEventName(IC_JUMP, player, buf2);
-	buf = "P"+itoa(m_NumPlayers)+" Jump:   " + buf2;
+	g_pInput->getEventName(IC_JUMP, m_chosenPlayer-1, buf2);
+	buf = "P"+itoa(m_chosenPlayer)+" Jump:   " + buf2;
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, buf);
 
-	g_pInput->getEventName(IC_POGO, player, buf2);
-	buf = "P"+itoa(m_NumPlayers)+" Pogo:   " + buf2;
+	g_pInput->getEventName(IC_POGO, m_chosenPlayer-1, buf2);
+	buf = "P"+itoa(m_chosenPlayer)+" Pogo:   " + buf2;
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, buf);
 
-	g_pInput->getEventName(IC_FIRE, player, buf2);
-	buf = "P"+itoa(m_NumPlayers)+" Fire:   " + buf2;
+	g_pInput->getEventName(IC_FIRE, m_chosenPlayer-1, buf2);
+	buf = "P"+itoa(m_chosenPlayer)+" Fire:   " + buf2;
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, buf);
 
-	g_pInput->getEventName(IC_STATUS, player, buf2);
-	buf = "P"+itoa(m_NumPlayers)+" Status: " + buf2;
+	g_pInput->getEventName(IC_STATUS, m_chosenPlayer-1, buf2);
+	buf = "P"+itoa(m_chosenPlayer)+" Status: " + buf2;
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, buf);
 
-	g_pInput->getEventName(IC_HELP, player, buf2);
-	buf = "P"+itoa(m_NumPlayers)+" Help:   " + buf2;
+	g_pInput->getEventName(IC_HELP, m_chosenPlayer-1, buf2);
+	buf = "P"+itoa(m_chosenPlayer)+" Help:   " + buf2;
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 9, buf);
 
-	g_pInput->getEventName(IC_QUIT, player, buf2);
-	buf = "P"+itoa(m_NumPlayers)+" Quit:   " + buf2;
+	g_pInput->getEventName(IC_QUIT, m_chosenPlayer-1, buf2);
+	buf = "P"+itoa(m_chosenPlayer)+" Quit:   " + buf2;
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 10, buf);
 
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 2, 11, "Reset Controls");
-	mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 13, "");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 14, "Return");*/
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 13, "Return");
 }
 
 void CControlsettings::processSpecific()
 {
-	/*if( m_selection != -1)
+	if(m_waiting_for_input) // This part onloy happens, when waiting for an input
+	{
+		processWaitInput();
+	}
+	else
+	{
+		processSelection();
+	}
+}
+
+void CControlsettings::processWaitInput()
+{
+	int item = m_selection;
+	while( !g_pInput->readNewEvent(m_chosenPlayer-1,item) );
+
+	std::string buf;
+	std::string buf2;
+
+	buf = mp_Dialog->m_dlgobject[m_selection]->m_OptionText->m_text;
+	buf = buf.erase(11);
+	g_pInput->getEventName(item, m_chosenPlayer-1, buf2);
+	mp_Dialog->setObjectText(m_selection, buf + buf2);
+	mp_Dialog->m_key = 'u';
+	m_selection = -1;
+	m_waiting_for_input = false;
+}
+
+void CControlsettings::processSelection()
+{
+	if( m_selection != -1) // Normal selection function
 	{
 		if( m_selection < 11 )
 		{
 			if(m_selection < MAX_COMMANDS)
 			{
-				int item = m_selection;
 				std::string buf;
 				std::string buf2;
+				m_waiting_for_input = true;
+				g_pInput->flushAll();
 
 				buf = mp_Dialog->m_dlgobject[m_selection]->m_OptionText->m_text;
 				buf = buf.erase(11);
@@ -80,46 +118,26 @@ void CControlsettings::processSpecific()
 				buf2 = "*Waiting for Input*";
 				mp_Dialog->setObjectText(m_selection, buf + buf2);
 				mp_Dialog->m_key = 'n';
-
-				do
-				{
-					if(g_pInput->readNewEvent(m_NumPlayers-1,item))
-					{
-						g_pInput->getEventName(item, m_NumPlayers-1, buf2);
-						mp_Dialog->setObjectText(m_selection, buf + buf2);
-						mp_Dialog->m_key = 'u';
-						m_selection = -1;
-					}
-				} while (buf2 == "*Waiting for Input*");
 			}
-			else
+			else if(m_selection == MAX_COMMANDS)
 			{
 				g_pInput->resetControls();
-				cleanup();
-				init(CONTROLS);
+				delete mp_Dialog;
+				drawInitialCommands();
+				m_selection = -1;
 			}
-			mp_Dialog->setObjectText(11, "Save and Return");
-			//mp_Dialog->setObjectType(11, DLG_OBJ_DISABLED);
-			mp_Dialog->setObjectText(12, "Cancel");
 		}
-		else
+		else if(m_selection == MAX_COMMANDS+1)
 		{
-			if(m_selection == 11)
-			{
-				g_pInput->saveControlconfig();
-			}
-			m_goback = true;
+			g_pInput->saveControlconfig();
+			// And close this menu...
+			m_MenuType = CONTROLPLAYERS;
+			m_mustclose = true;
+			m_selection = -1;
 		}
 	}
-
-	if(m_goback)
-	{
-		cleanup();
-		m_NumPlayers = 0;
-		init(CONTROLPLAYERS);
-	}*/
 }
 
 CControlsettings::~CControlsettings() {
-	//delete mp_Dialog;
+	delete mp_Dialog;
 }

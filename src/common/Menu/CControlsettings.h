@@ -12,9 +12,19 @@
 
 class CControlsettings : public CBaseMenu {
 public:
-	CControlsettings(char &menu_type);
+	CControlsettings(char &menu_type, int chosenPlayerNumber);
+	void drawInitialCommands();
+
 	void processSpecific();
 	virtual ~CControlsettings();
+
+private:
+
+	void processWaitInput();
+	void processSelection();
+
+	int m_chosenPlayer;
+	bool m_waiting_for_input;
 };
 
 #endif /* CCONTROLSETTINGS_H_ */

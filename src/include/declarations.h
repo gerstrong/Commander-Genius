@@ -5,7 +5,6 @@
 #include <SDL.h>
 #include <cstdlib>
 
-#define MAX_COMMANDS 8
 #define MAX_SOUND_LENGTH      1024
 #define MAX_SOUNDS            50
 

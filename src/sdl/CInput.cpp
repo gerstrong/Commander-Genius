@@ -215,7 +215,7 @@ bool CInput::readNewEvent(Uint8 device, int position)
 				InputCommand[device][position].joyeventtype = ETYPE_JOYAXIS;
 				InputCommand[device][position].joyaxis = Event.jaxis.axis;
 				InputCommand[device][position].which = Event.jaxis.which;
-				InputCommand[device][position].joyvalue = Event.jaxis.value;
+				InputCommand[device][position].joyvalue = (Event.jaxis.value>0) ? 32767 : -32767;
 				return true;
 				break;
 		}
