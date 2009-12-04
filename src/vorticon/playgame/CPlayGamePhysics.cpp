@@ -63,7 +63,7 @@ void CPlayGame::processPlayerfallings(CPlayer *p_player)
 		if( behaviour>=2 && behaviour<=5 )
 			tilsupport = true; // This workaround prevents the player from falling through doors.
 
-		/*if (!tilsupport && !objsupport)
+		if (!tilsupport && !objsupport)
 		{ // lower-left isn't solid
 			//objsupport = checkobjsolid(x+(12<<CSF), y+(height<<CSF),cp);
 			tilsupport = TileProperty[mp_Map->at((p_player->x+x2)>>CSF, (p_player->y+y2)>>CSF)].bup;
@@ -88,7 +88,7 @@ void CPlayGame::processPlayerfallings(CPlayer *p_player)
 				p_player->psupportingtile = PSUPPORTEDBYOBJECT;
 				p_player->psupportingobject = objsupport;
 			}
-		}*/
+		}
 		//p_player->pfalling = true;
 
 		// if not on a tile boundary, always fall, prevents being able

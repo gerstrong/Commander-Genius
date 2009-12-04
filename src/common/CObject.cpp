@@ -107,8 +107,8 @@ void CObject::setupObjectType()
 		case OBJ_PLATFORM: sprite = OBJ_PLATFORM_DEFSPRITE_EP3; break;
 		case OBJ_PLATVERT: sprite = OBJ_PLATFORM_DEFSPRITE_EP3; break;
 		case OBJ_BABY: sprite = OBJ_BABY_DEFSPRITE_EP3; break;
-		default: sprite = BLANKSPRITE; break;
-	 		*/
+		default sprite = BLANKSPRITE; break;*/
+
 }
 
 void CObject::setScrPos( int px, int py )

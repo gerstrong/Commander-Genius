@@ -13,13 +13,15 @@
 #include "../sdl/CTimer.h"
 #include "../sdl/CInput.h"
 
-CTextBox::CTextBox(int y, int h, const std::string& message)
+CTextBox::CTextBox(int y, int h, const std::string& message) :
+m_tw_waittime(0)
 {
 	setup(y, h, message);
 	m_surface = g_pVideoDriver->FGLayerSurface;
 }
 
-CTextBox::CTextBox(SDL_Surface *surface, int y, int h, const std::string& message)
+CTextBox::CTextBox(SDL_Surface *surface, int y, int h, const std::string& message) :
+m_tw_waittime(0)
 {
 	setup(y, h, message);
 	m_surface = surface;
@@ -35,6 +37,7 @@ void CTextBox::setup(int y, int h, const std::string& message)
 	m_rect.x = (300/2)-(m_rect.w/2)+10;	m_rect.y = y;
 	m_String = message;
 	m_textdelay = 0;
+	g_pInput->flushAll();
 	resetTimer();
 }
 
@@ -87,7 +90,9 @@ void CTextBox::process()
 
 bool CTextBox::hasFinished()
 {
-	if( m_time_passed >= m_textdelay )	return true;
+	//if( m_time_passed >= m_textdelay && m_tw_waittime!=0  )	return true;
+
+	//if( m_tw_waittime==0 && g_pInput->getPressedAnyCommand() ) return true;
 
 	return false;
 }

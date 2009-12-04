@@ -12,6 +12,7 @@
 
 #include "../../graphics/CGfxEngine.h"
 #include "../../fileio/CSavedGame.h"
+#include "../../dialog/CMessageBox.h"
 #include "../../common/CPlayer.h"
 #include "../../common/CObject.h"
 #include "../../common/CMenu.h"
@@ -27,10 +28,12 @@
 #include <string>
 #include <vector>
 
-#define DOOR_YELLOW        2
-#define DOOR_RED           3
-#define DOOR_GREEN         4
-#define DOOR_BLUE          5
+enum door_colours{
+DOOR_YELLOW = 2,
+DOOR_RED = 3,
+DOOR_GREEN = 4,
+DOOR_BLUE =  5
+};
 
 #define WORLD_MAP_LEVEL 80
 
@@ -126,6 +129,7 @@ private:
 	stOption *mp_option;
 	CSavedGame &m_SavedGame;
 	CPhysicsSettings m_PhysicsSettings;
+	CMessageBox *mp_MessageBox;
 	bool m_showKeensLeft;
 	int m_theplayer;
 	std::vector<CObject> m_Object;

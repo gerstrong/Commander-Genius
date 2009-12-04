@@ -44,7 +44,7 @@ void CObjectAI::process()
 				playerobj.x = player.x;
 				playerobj.y = player.y;
 				playerobj.sprite = 0;
-				if (player.pdie)
+				if (!player.pdie)
 				{
 					if ( object.hitdetect(playerobj) )
 					{
