@@ -63,9 +63,8 @@ bool CGame::loadCKPDrivers()
 	g_pLogFile->ftextOut("Starting sound driver...<br>");
 	g_pSound->init();
 	
-	g_pLogFile->ftextOut("Starting the input driver...<br>");
-	g_pInput->resetControls();
-	
+	// g_pInput is started automatically when needed!
+
 	return true;
 }
 
