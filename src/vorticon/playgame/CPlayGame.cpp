@@ -212,7 +212,7 @@ void CPlayGame::process()
 			}
 		}
 	}
-	else if(!m_paused) // Game is not paused
+	else if(!m_paused && !mp_MessageBox) // Game is not paused
 	{
 		if (!mp_Finale) // Has the game been finished?
 		{

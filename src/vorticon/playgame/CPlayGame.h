@@ -66,6 +66,8 @@ public:
 	void processInLevel();
 	void showKeensLeft();
 	void goBacktoMap();
+	void YourShipNeedsTheseParts();
+	void ShipEp3();
 	void processObjectsAI();
 	void drawObjects();
 	void handleFKeys();

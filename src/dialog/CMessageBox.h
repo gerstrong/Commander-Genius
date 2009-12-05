@@ -15,11 +15,26 @@
 #include <string>
 #include <vector>
 
+// Holder for some tile that have to be drawn
+struct TileHolder{
+	Uint16 tile;
+	Uint16 x;
+	Uint16 y;
+};
+
 class CMessageBox {
 public:
+	// Init functions
 	CMessageBox(const std::string& Text);
+	void addTileAt(Uint16 tile, Uint16 x, Uint16 y);
+
+	// Processing
 	void process();
+
+	// Getters
 	bool isFinished();
+
+	// destructors
 	virtual ~CMessageBox();
 
 private:
@@ -27,6 +42,8 @@ private:
 	std::vector<std::string> m_Lines;
 	CDlgFrame *mp_DlgFrame;
 	SDL_Rect m_gamerect;
+
+	std::vector<TileHolder> m_Tiles;
 };
 
 #endif /* CMESSAGEBOX_H_ */

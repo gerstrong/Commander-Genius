@@ -48,11 +48,11 @@ void CPlayGame::processOnWorldMap()
 						case LVLS_SHIP:
 							if (m_Episode==1)
 							{
-								//YourShipNeedsTheseParts(pCKP);
+								YourShipNeedsTheseParts();
 							}
-							else
+							else if (m_Episode==3)
 							{
-								//ShipEp3(pCKP);
+								ShipEp3(pCKP);
 							}
 							break;
 							
@@ -115,6 +115,35 @@ void CPlayGame::goBacktoMap()
 	init();
 }
 
+void CPlayGame::YourShipNeedsTheseParts()
+{
+	mp_MessageBox = new CMessageBox(getstring("EP1_SHIP"));
+
+	bool joy, bat, vac, wis;
+	joy = bat = vac = wis = false;
+
+	// The Multiplayer support for this dialog. You collect those parts together if more than one player.
+	for(int i=0 ; i<m_NumPlayers ; i++)
+	{
+		joy |= mp_Player[i].inventory.HasJoystick;
+		bat |= mp_Player[i].inventory.HasBattery;
+		vac |= mp_Player[i].inventory.HasVacuum;
+		wis |= mp_Player[i].inventory.HasWiskey;
+	}
+
+	// draw needed parts
+	if (!joy) mp_MessageBox->addTileAt(448,5<<3, 4<<3);
+	if (!bat) mp_MessageBox->addTileAt(449,8<<3, 4<<3);
+	if (!vac) mp_MessageBox->addTileAt(450,11<<3,4<<3);
+	if (!wis) mp_MessageBox->addTileAt(451,14<<3,4<<3);
+}
+
+void CPlayGame::ShipEp3()
+{
+	// get one of four random strings and display it!!
+	std::string strname = "EP3_SHIP"+ itoa((rand()%4)+1);
+	mp_MessageBox = new CMessageBox(getstring(strname));
+}
 
 void CPlayGame::showKeensLeft()
 {
