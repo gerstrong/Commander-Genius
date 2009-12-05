@@ -115,8 +115,8 @@ int CPlayer::getNewObject()
     	object_chosen = true;
 		
         // get level/object marker beneath player
-        xb = (x>>STC)+4;
-        yb = (y>>STC)+4;
+        xb = ((x+w/2)>>STC);
+        yb = ((y+h/2)>>STC);
         lvl = mp_map->getObjectat(xb>>4, yb>>4);
         if (!lvl)
         {

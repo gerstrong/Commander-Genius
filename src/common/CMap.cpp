@@ -263,6 +263,7 @@ void CMap::redrawAt(int mx, int my)
 {
 	int c = mp_data[my*m_width + mx];
 	mp_Tilemap->drawTile(mp_scrollsurface, (mx<<4)&511, (my<<4)&511, c);
+	registerAnimation( (mx<<4)&511, (my<<4)&511, c );
 }
 
 // draws all the map area. This is used for the title screen, when game starts and other passive scenes.

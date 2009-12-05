@@ -12,9 +12,11 @@
 #include "CPlayer.h"
 
 #include "../keen.h"
+#include "../dialog/CMessageBox.h"
 #include "../sdl/sound/CSound.h"
 #include "../graphics/CGfxEngine.h"
 #include "../vorticon/spritedefines.h"
+#include "../StringUtils.h"
 
 #define DOOR_YELLOW        2
 #define DOOR_RED           3
@@ -24,9 +26,9 @@
 // let's have keen be able to pick up goodies
 void CPlayer::getgoodies()
 {
-	if( getGoodie((x+1)>>CSF, (y+1)>>CSF) ) return;     	// Upper-Left
-	else if(getGoodie((x+w-1)>>CSF, (y+1)>>CSF) ) return; // Upper-Right
-	else if(getGoodie(((x+1)>>CSF), ((y+h-1)>>CSF)) ) return; // Lower-Left
+	if( getGoodie((x+1)>>CSF, (y+1)>>CSF) ) return;     		// Upper-Left
+	else if(getGoodie((x+w-1)>>CSF, (y+1)>>CSF) ) return; 		// Upper-Right
+	else if(getGoodie(((x+1)>>CSF), ((y+h-1)>>CSF)) ) return; 	// Lower-Left
 	else if(getGoodie(((x+w-1)>>CSF), ((y+h-1)>>CSF)) ) return; // Lower-Right
 }
 
@@ -57,13 +59,13 @@ bool CPlayer::getGoodie(int px, int py)
 	return false;
 }
 
-void CPlayer::procGoodie(int t, int mpx, int mpy)
+void CPlayer::procGoodie(int tile, int mpx, int mpy)
 {
 	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
-	Uint8 behaviour = TileProperty[t].behaviour;
+	Uint8 behaviour = TileProperty[tile].behaviour;
 	if ( (behaviour > 5 && behaviour < 11) || (behaviour > 17 && behaviour < 22) )
 	{
-		if((x*y) % 2 == 1)
+		if( x%2 == 1 )
 			g_pSound->playStereofromCoord(SOUND_GET_BONUS, PLAY_NOW, 0);
 		else
 			g_pSound->playStereofromCoord(SOUND_GET_BONUS, PLAY_NOW, 320);
@@ -102,7 +104,6 @@ void CPlayer::procGoodie(int t, int mpx, int mpy)
 			if (inventory.HasCardBlue)
 				openDoor(DOOR_BLUE, DOOR_BLUE_SPRITE, mpx, mpy);
 			break;
-			
 		case 7:    // What gives you 100 Points
 			getBonuspoints(100, mpx, mpy);
 			break;
@@ -118,7 +119,6 @@ void CPlayer::procGoodie(int t, int mpx, int mpy)
 		case 10:    // What gives you 5000 Points
 			getBonuspoints(5000, mpx, mpy);
 			break;
-			
 		case 15:           // raygun
 			riseBonus(GUNUP_SPRITE, mpx-(2<<CSF), mpy-(2<<CSF));
 			inventory.charges += 5;
@@ -158,9 +158,7 @@ void CPlayer::procGoodie(int t, int mpx, int mpy)
 			break;
 			
 		case 22: // Game info block (Youseein your mind or vorticon elder...)
-			/*if(showGameHint(mpx, mpy, m_episode, m_curlevel))
-			 pCKP->Control.levelcontrol.usedhintmb = true;*/
-			// TODO: Also this must be done!
+			showGameHint(mpx, mpy);
 			break;
 			
 		case 27:
@@ -237,6 +235,51 @@ void CPlayer::take_keycard(int doortile)
 		inventory.HasCardBlue--;
 }
 
+bool CPlayer::showGameHint(int mpx, int mpy)
+{
+	if(m_episode == 1)
+	{
+		if(mp_map->at(mpx, mpy) >= 435 && mp_map->at(mpx, mpy) <= 438)
+		{
+			// it's a garg statue
+			mp_map->setTile(mpx, mpy, 434, true);
+		}
+		else // It's a yorp statue.. or something else
+		{
+			mp_map->setTile(mpx, mpy, 315, true);
+		}
+
+		hintstring =  "EP1_YSIYM_LVL" + itoa(m_level);
+	}
+	else if(m_episode == 2)
+	{
+		// make the switch stop glowing
+		switch(m_level)
+		{
+		case 8:
+			hintstring = "EP2_VE_NOJUMPINDARK";
+			break;
+		case 10:
+			hintstring = "EP2_VE_EVILBELTS";
+			break;
+		default:
+			return false;
+		}
+		mp_map->setTile(mpx, mpy+1, 432,true);
+	}
+	return true;
+}
+
+std::string CPlayer::pollHintMessage()
+{
+	if(hintstring != "")
+	{
+		std::string text = hintstring;
+		hintstring = "";
+		return text;
+	}
+	return hintstring;
+}
 
 void CPlayer::getBonuspoints(int numpts, int mpx, int mpy)
 {

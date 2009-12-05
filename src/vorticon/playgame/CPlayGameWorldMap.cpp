@@ -52,7 +52,7 @@ void CPlayGame::processOnWorldMap()
 							}
 							else if (m_Episode==3)
 							{
-								ShipEp3(pCKP);
+								ShipEp3();
 							}
 							break;
 							

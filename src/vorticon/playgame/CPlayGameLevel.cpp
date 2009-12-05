@@ -22,6 +22,11 @@ void CPlayGame::processInLevel()
 			// Process the other stuff like, items, jump, etc.
 			mp_Player[i].processInLevel();
 
+			// If the player touched did in which we have to show a Message, do it so
+			std::string hinttext;
+			if( (hinttext=mp_Player[i].pollHintMessage()) != "")
+				mp_MessageBox = new CMessageBox(getstring(hinttext));
+
 			// Process the falling physics of the player here.
 			// We need to know the objects and tiles which could hinder the fall.
 			// decide if player should fall

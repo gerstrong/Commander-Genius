@@ -699,19 +699,6 @@ void CPlayer::ProcessInput()
 			playcontrol[PA_POGO] = 0;
 		}
 	}
-	
-	if(g_pInput->getPressedKey(KP))
-	{
-		g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
-		
-		// Open the Pause Dialog
-		//showTextMB("Game Paused");
-	}
-	else if(g_pInput->getPressedKey(KF1))
-	{
-		// Show the typical F1 Help
-		//showF1HelpText(pCKP->Control.levelcontrol.episode, pCKP->Resources.GameDataDirectory);
-	}
 }
 
 void CPlayer::StatusBox()

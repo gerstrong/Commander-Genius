@@ -48,66 +48,6 @@ void banner(void)
 	printf("\n");
 }
 
-bool showGameHint(int mpx, int mpy, int episode, int level)
-{
-	/*std::string strname;
-
-	 if(episode == 1)
-	 {
-	 if(map.mapdata[mpx][mpy] >= 435 && map.mapdata[mpx][mpy] <= 438)
-	 {
-	 // it's a garg statue
-	 map_chgtile(mpx, mpy, 434);
-	 }
-	 else
-	 {
-	 map_deanimate(mpx, mpy);
-	 map_chgtile(mpx, mpy, 315);
-	 }
-
-	 strname =  "EP1_YSIYM_LVL" + itoa(level);
-	 }
-	 else if(episode == 2)
-	 {
-	 // make the switch stop glowing
-	 switch(level)
-	 {
-	 case 8:
-	 strname = "EP2_VE_NOJUMPINDARK";
-	 break;
-	 case 10:
-	 strname = "EP2_VE_EVILBELTS";
-	 break;
-	 default:
-	 return false;
-	 }
-	 map_chgtile(mpx, mpy+1, 432);
-	 }
-
-	 CTextBox* TextBox;
-	 CWindow *InfoTextWindow = new CWindow( g_pVideoDriver->FGLayerSurface, 50, 50, 220, 100 );
-
-	 TextBox = new CTextBox( g_pVideoDriver->FGLayerSurface, 50, 50, 204, 84, getstring(strname), true);
-	 TextBox->setFontDimensions(8, 8);
-	 InfoTextWindow->addObject(TextBox);
-
-	 // The Text will be too big, so resize in knowing the height of the first text.
-	 InfoTextWindow->Resize(InfoTextWindow->getWidth(),
-	 (InfoTextWindow->m_TextBox[0]->getNumberOfTextlines()+2)*8);
-
-	 g_pInput->flushAll();
-
-	 do
-	 {
-	 g_pInput->pollEvents();
-	 InfoTextWindow->render();
-	 g_pVideoDriver->update_screen();
-	 } while(!g_pInput->getPressedAnyCommand());
-
-	 delete InfoTextWindow;*/
-    return true;
-}
-
 void inventory_draw_ep2(int p, bool *levels_completed)
 {
 	/*int x,i,j;
@@ -392,31 +332,6 @@ unsigned int rnd(void)
 	//random_seed = random_seed * 1103515245 + 12345;
 	//return (uint)(random_seed / 65536) % 32768;
 	return rand();
-}
-
-void showTextMB(const std::string& Text)
-{
-	/*	CTextBox* TextBox;
-	 CWindow *InfoTextWindow = new CWindow( g_pVideoDriver->FGLayerSurface, 60, 50, 200, 100 );
-
-	 TextBox = new CTextBox( g_pVideoDriver->FGLayerSurface, 60, 50, 200, 100, Text, true);
-	 TextBox->setFontDimensions(8, 8);
-	 InfoTextWindow->addObject(TextBox);
-
-	 // The Text will be too big, so resize in knowing the height of the first text.
-	 InfoTextWindow->Resize(InfoTextWindow->getWidth(),
-	 (InfoTextWindow->m_TextBox[0]->getNumberOfTextlines()+2)*8 );
-
-	 g_pInput->flushAll();
-	 do
-	 {
-	 g_pInput->pollEvents();
-	 InfoTextWindow->render();
-	 g_pVideoDriver->update_screen();
-	 } while(!g_pInput->getPressedAnyCommand());
-
-	 delete InfoTextWindow;
-	 */
 }
 
 // This function shows up the helping text when F1 is pushed

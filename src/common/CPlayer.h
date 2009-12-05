@@ -17,6 +17,7 @@
 #include "CPhysicsSettings.h"
 #include "options.h"
 #include <vector>
+#include <string>
 
 // scroll triggers
 #define SCROLLTRIGGERRIGHT     210
@@ -83,6 +84,8 @@ public:
 	bool scrollTriggers();
 	void give_keycard(int doortile);
 	void take_keycard(int doortile);
+	bool showGameHint(int mpx, int mpy);
+	std::string pollHintMessage();
 
 	virtual ~CPlayer();
 
@@ -100,6 +103,7 @@ public:
 
 	char m_playingmode;
 	char m_episode;
+	char m_level;
 	int m_player_number;
 	// Pointer to the Objects
 	std::vector<CObject> *mp_object;
@@ -172,6 +176,8 @@ public:
 	char level_done;
 	bool beingteleported;
 
+	std::string hintstring;
+
 	CMap *mp_map;
 	stOption *mp_option;
 
@@ -187,7 +193,7 @@ private:
 
 	// defined under CPlayerItems.cpp
 	bool getGoodie(int px, int py);
-	void procGoodie(int t, int mpx, int mpy);
+	void procGoodie(int tile, int mpx, int mpy);
 	void riseBonus(int spr, int x, int y);
 	void getBonuspoints(int numpts, int mpx, int mpy);
 	void incScore(int numpts);

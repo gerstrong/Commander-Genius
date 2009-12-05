@@ -72,7 +72,6 @@ void CPlayer::touchedExit()
 		// leave the level, this is a bug from the original game
 		// that needs fixing, hopefully we will fix all of those
 		
-		
 		// if player has ankh shut it off
 		if (ankhtime)
 		{

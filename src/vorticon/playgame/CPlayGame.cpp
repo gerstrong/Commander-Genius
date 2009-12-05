@@ -88,6 +88,7 @@ void CPlayGame::setupPlayers()
 		
 		mp_Player[i].w = g_pGfxEngine->Sprite[PSTANDFRAME]->getWidth()<<(CSF-4);
 		mp_Player[i].h = g_pGfxEngine->Sprite[PSTANDFRAME]->getHeight()<<(CSF-4);
+		mp_Player[i].m_level = m_Level;
 		
 		// Set the pointers to the map and object data
 		mp_Player[i].setMapData(mp_Map);
@@ -286,7 +287,7 @@ void CPlayGame::process()
 	}
 	else // No game over
 	{
-		// Handle special functional key for god mode, all items, etc.
+		// Handle special functional keys for paused game, F1 Help, god mode, all items, etc.
 		handleFKeys();
 	}
 
@@ -303,7 +304,6 @@ void CPlayGame::process()
 		g_pGfxEngine->Font->drawFont( sfc, tempbuf, 320-3-(tempbuf.size()<<3), 3, 1);
 
 	}
-	
 	
 	// Open the Main Menu if ESC Key pressed and mp_Menu not opened
 	if(!mp_Menu && g_pInput->getPressedKey(KQUIT))
@@ -394,6 +394,17 @@ void CPlayGame::handleFKeys()
     		mp_Player[0].level_done = LEVEL_COMPLETE;
     	}
     }
+
+	if(g_pInput->getPressedKey(KP))
+	{
+		g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
+		mp_MessageBox = new CMessageBox("Game Paused");
+	}
+	else if(g_pInput->getPressedKey(KF1))
+	{
+		// Show the typical F1 Help
+		//showF1HelpText(pCKP->Control.levelcontrol.episode, pCKP->Resources.GameDataDirectory);
+	}
 
     // F3 - save game
     /*if (g_pInput->getPressedKey(KF3))
