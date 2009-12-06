@@ -94,8 +94,6 @@ void CPlayGame::setupPlayers()
 		mp_Player[i].setMapData(mp_Map);
 		mp_Player[i].setPhysics(&m_PhysicsSettings);
 	}
-
-	while(mp_Player[0].scrollTriggers());   // Scroll the map to players position
 }
 
 bool CPlayGame::init()
@@ -115,10 +113,11 @@ bool CPlayGame::init()
 	mp_Map->drawAll();
 
 	// Now Scroll to the position of the player and center him
-
 	mp_Map->gotoPos( 32, 64 ); // Assure that the edges are never seen
 
 	setupPlayers();
+
+	while(mp_Player[0].scrollTriggers());   // Scroll the map to players position
 
 	// Well, all players are living because they were newly spawn.
 	g_pTimer->ResetSecondsTimer();
@@ -230,16 +229,12 @@ void CPlayGame::process()
 				processInLevel();
 			}
 
-			// Did the someone press 'p' for Pause?
-
 			// Does one of the players need to pause the game?
 			for( int i=0 ; i<m_NumPlayers ; i++ )
 			{
 				// Did he open the status screen?
 				if(mp_Player[i].m_showStatusScreen)
 					m_paused = true; // this is processed in processPauseDialogs!
-				
-				// TODO: Did he hit a hint box, like yorp statue in Episode 1?
 
 				// Handle the Scrolling here!
 				mp_Player[i].scrollTriggers();
@@ -400,15 +395,22 @@ void CPlayGame::handleFKeys()
 		g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
 		mp_MessageBox = new CMessageBox("Game Paused");
 	}
-	else if(g_pInput->getPressedKey(KF1))
+
+	if(g_pInput->getPressedKey(KF1))
 	{
 		// Show the typical F1 Help
+		// Open the menu
+		mp_Menu = new CMenu( ACTIVE, m_Gamepath, m_Episode, *mp_Map, m_SavedGame, mp_option );
+		mp_Menu->init(F1);
 		//showF1HelpText(pCKP->Control.levelcontrol.episode, pCKP->Resources.GameDataDirectory);
 	}
 
     // F3 - save game
-    /*if (g_pInput->getPressedKey(KF3))
-	 game_save_interface(pCKP);*/
+    if (g_pInput->getPressedKey(KF3))
+    {
+		mp_Menu = new CMenu( ACTIVE, m_Gamepath, m_Episode, *mp_Map, m_SavedGame, mp_option );
+		mp_Menu->init(SAVE);
+    }
 }
 
 // The Ending and mortimer cutscenes for example

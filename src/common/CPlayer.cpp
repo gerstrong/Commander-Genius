@@ -121,7 +121,7 @@ bool CPlayer::scrollTriggers()
 			scroll_x = mp_map->m_scrollx;
 			px = (x>>STC)-scroll_x;
 			mp_map->scrollRight();
-		}while(px > 226);
+		}while(px > 226 && scroll_x < mp_map->m_maxscrollx);
 		scrollchanged = true;
 	}
 	else if(px < SCROLLTRIGGERLEFT && scroll_x > 32)
@@ -141,10 +141,10 @@ bool CPlayer::scrollTriggers()
 			scroll_y = mp_map->m_scrolly;
 			py = (y>>STC)-scroll_y;
 			mp_map->scrollDown();
-		}while(py > 150);
+		}while(py > 150 && scroll_y < mp_map->m_maxscrolly);
 		scrollchanged = true;
 	}
-	else if (py < SCROLLTRIGGERUP && scroll_y > 32)
+	else if ( py < SCROLLTRIGGERUP && scroll_y > 32  )
 	{
 		do{
 			scroll_y = mp_map->m_scrolly;
@@ -153,6 +153,7 @@ bool CPlayer::scrollTriggers()
 		}while(py < 50);
 		scrollchanged = true;
 	}
+
 	return scrollchanged;
 }
 

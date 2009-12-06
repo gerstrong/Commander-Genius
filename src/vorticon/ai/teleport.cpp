@@ -77,9 +77,6 @@ void CObjectAI::teleporter_ai(CObject &object)
 			object.y = object.ai.teleport.desty<<CSF;
 			mp_Player[player].pdir = DOWN;
 			mp_Player[player].beingteleported = true;
-			// if we were told to snap the screen to the new position instead
-			// of scrolling over to it, do that.
-			//mp_Map->gotoPos( object.ai.teleport.destx+260, object.ai.teleport.desty );
 
 			if(object.x < mp_Player[player].x) mp_Player[player].goto_x-=TELEPORTATION_SPEED;
 			else if(object.x > mp_Player[player].x) mp_Player[player].goto_x+=TELEPORTATION_SPEED;

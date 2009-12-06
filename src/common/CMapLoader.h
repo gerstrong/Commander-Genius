@@ -17,7 +17,6 @@
 class CMapLoader {
 public:
 	CMapLoader(CMap* p_map, CPlayer *p_Player = NULL);
-	virtual ~CMapLoader();
 	
 	bool load( Uint8 episode, Uint8 level, const std::string& path );
 	
@@ -27,7 +26,9 @@ public:
 	
 	bool m_checkpointset;
 	std::vector<CObject> *mp_objvect;
-	
+
+	virtual ~CMapLoader();
+
 private:
 	CMap *mp_map;
 	CPlayer *mp_Player;

@@ -23,6 +23,7 @@ CInput::CInput() {
 	WIZ_AdjustVolume(VOLUME_UP);
 #endif
 	g_pLogFile->ftextOut("Starting the input driver...<br>");
+	resetControls();
 	memset(&Event,0,sizeof(Event));
 	loadControlconfig();
 	startJoyDriver();
