@@ -70,11 +70,11 @@ private:
 	 void fireball_ai(int o, bool hard);
 	 void ballandjack_ai(int o);
 	 void platvert_ai(int o);
-	 void nessie_ai(int o);
+	 void nessie_ai(int o);*/
 
 	 // Common Objects
-	 void autoray_ai(int o);
-	 void gotpoints_ai(int o);*/
+	void autoray_ai(CObject &object);
+	void gotpoints_ai(CObject &Object);
 	void ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed=0 );
 	void door_ai( CObject &object, char DoorOpenDir );
 	void teleporter_ai(CObject &object);

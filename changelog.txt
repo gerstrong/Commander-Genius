@@ -1,7 +1,8 @@
 Commander Genius Release v0.3.1.0 (CloneKeenPlus):
 --------------------------------------------------
-
 06-12-2009
+- Now the YourPartsAremissing has the original icons
+- The pogo is frozen. I did that for testing
 - Player doesn't fall anymore when level starts
 - Autoraygun option is working correctly again!
 - Godmode on map is working correctly again

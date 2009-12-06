@@ -283,10 +283,10 @@ void CPlayer::Walking()
 	else
         cur_pfastincrate = PFASTINCRATE;
 
-	if (playcontrol[PA_X] > 0)
+	if (playcontrol[PA_X] > 0 && !ppogostick)
 	{ // RIGHT key down
 		// quickly reach PLAYER_FASTINCMAXSPEED
-		if (pwalkincreasetimer>=cur_pfastincrate && pinertia_x<PFASTINCMAXSPEED)
+		if (pwalkincreasetimer>=cur_pfastincrate && pinertia_x<mp_PhysicsSettings->player.max_x_speed)
 		{
 			if(pfalling) pinertia_x+=(1<<2);
 			else pinertia_x+=(1<<4);
@@ -298,16 +298,16 @@ void CPlayer::Walking()
 		if ( m_playingmode == WORLDMAP )
 		{
 			if(pinertia_x < 0)  pinertia_x = 0;
-			else	pinertia_x = playcontrol[PA_X]*PFASTINCMAXSPEED/100;
+			else	pinertia_x = playcontrol[PA_X]*mp_PhysicsSettings->player.max_x_speed/150;
 		}
 		
 		// increase up to max speed every time frame is changed
-		if (!pwalkanimtimer && pinertia_x < pmaxspeed)	pinertia_x+=(1<<4);
+		//if (!pwalkanimtimer && pinertia_x < pmaxspeed)	pinertia_x+=(1<<4);
 	}
-	else if (playcontrol[PA_X] < 0)
+	else if (playcontrol[PA_X] < 0 && !ppogostick)
 	{ // LEFT key down
 		// quickly reach PFASTINCMAXSPEED
-		if (pwalkincreasetimer>=cur_pfastincrate && pinertia_x<-PFASTINCMAXSPEED)
+		if (pwalkincreasetimer>=cur_pfastincrate && pinertia_x<-mp_PhysicsSettings->player.max_x_speed)
 		{
 			if(pfalling) pinertia_x-=(1<<2);
 			else pinertia_x-=(1<<4);
@@ -319,7 +319,7 @@ void CPlayer::Walking()
 		if ( m_playingmode == WORLDMAP )
 		{
 			if(pinertia_x > 0)  pinertia_x = 0;
-			else	pinertia_x = playcontrol[PA_X]*PFASTINCMAXSPEED/100;
+			else	pinertia_x = playcontrol[PA_X]*mp_PhysicsSettings->player.max_x_speed/150;
 		}
 		
 		// decrease down to max speed every time frame is changed
@@ -329,7 +329,7 @@ void CPlayer::Walking()
 	if (playcontrol[PA_Y] > 0)
 	{
 		// quickly reach PFASTINCMAXSPEED
-		if (pwalkincreasetimer>=PFASTINCRATE && pinertia_y<PFASTINCMAXSPEED)
+		if (pwalkincreasetimer>=PFASTINCRATE && pinertia_y<mp_PhysicsSettings->player.max_x_speed)
 		{
 			pinertia_y++;
 			pwalkincreasetimer=0;
@@ -353,7 +353,7 @@ void CPlayer::Walking()
 			}
 			else
 			{
-				pinertia_y=playcontrol[PA_Y]*PFASTINCMAXSPEED/100;
+				pinertia_y=playcontrol[PA_Y]*mp_PhysicsSettings->player.max_x_speed/150;
 			}
 		}
 		
@@ -361,7 +361,7 @@ void CPlayer::Walking()
 	else if (playcontrol[PA_Y] < 0)
 	{
 		// quickly reach PFASTINCMAXSPEED
-		if (pwalkincreasetimer>=PFASTINCRATE && pinertia_y>-PFASTINCMAXSPEED)
+		if (pwalkincreasetimer>=PFASTINCRATE && pinertia_y>-mp_PhysicsSettings->player.max_x_speed)
 		{
 			pinertia_y--;
 			pwalkincreasetimer=0;
@@ -385,7 +385,7 @@ void CPlayer::Walking()
 			}
 			else
 			{
-				pinertia_y=playcontrol[PA_Y]*PFASTINCMAXSPEED/100;
+				pinertia_y=playcontrol[PA_Y]*mp_PhysicsSettings->player.max_x_speed/150;
 			}
 		}
 	}
@@ -510,13 +510,10 @@ void CPlayer::InertiaAndFriction_X()
 	
 	pmaxspeed = treshold*pmaxmovespeed/100;
 	
-	if(!pjumping)
-	{
-		if(pinertia_x > pmaxspeed)
-			pinertia_x = pmaxspeed;
-		if(pinertia_x < -pmaxspeed)
-			pinertia_x = -pmaxspeed;
-	}
+	if(pinertia_x > pmaxspeed)
+		pinertia_x = pmaxspeed;
+	if(pinertia_x < -pmaxspeed)
+		pinertia_x = -pmaxspeed;
 	
 	// apply pinertia_x and playpushed_x inertia
 	// (unless we're about to make a pogo jump)
@@ -530,7 +527,7 @@ void CPlayer::InertiaAndFriction_X()
 	
 	// if we stopped walking (i.e. left or right not held down) apply friction
 	// there's no friction if we're semisliding
-	if (!(playcontrol[PA_X] < 0) && !(playcontrol[PA_X] > 0) && \
+	if (!(playcontrol[PA_X] < 0) && !(playcontrol[PA_X] > 0) &&
 		!psemisliding)
 	{
 		// determine friction rate--different rates for on ground and in air
@@ -550,16 +547,16 @@ void CPlayer::InertiaAndFriction_X()
 	        }
 		}
 		
-		
 		// and apply friction to pinertia_x
 		// when pogoing apply friction till we get down to PFASTINCMAXSPEED
 		// then stop the friction
-		if (!ppogostick || (pinertia_x > PFASTINCMAXSPEED) || (pinertia_x < -PFASTINCMAXSPEED))
+		if (!ppogostick || (pinertia_x >  mp_PhysicsSettings->player.max_x_speed) ||
+						   (pinertia_x < -mp_PhysicsSettings->player.max_x_speed) )
 		{
 	        if (pfriction_timer_x > friction_rate)
 	        {
 				if (!pfrozentime || m_episode!=1)
-				{  // disable friction while frozen
+				{   // disable friction while frozen
 					// here the wall animation must be applied!
 					if (pinertia_x < 0)
 					{
@@ -572,7 +569,6 @@ void CPlayer::InertiaAndFriction_X()
 						if (pinertia_x < 0) pinertia_x = 0;
 					}
 				}
-				
 				pfriction_timer_x = 0;
 	        }
 	        else pfriction_timer_x++;
@@ -622,6 +618,24 @@ void CPlayer::InertiaAndFriction_Y()
 
 void CPlayer::ProcessInput()
 {
+/////
+//
+// Debug Code
+//
+/////
+
+	if(g_pInput->getHoldedKey(KB))
+		mp_PhysicsSettings->player.pogoforce_x--;
+	else if(g_pInput->getHoldedKey(KN))
+		mp_PhysicsSettings->player.pogoforce_x++;
+
+/////
+//
+// Debug Code (END)
+//
+/////
+
+
 	// Entry for every player
 	playcontrol[PA_X] = 0;
 	playcontrol[PA_Y] = 0;

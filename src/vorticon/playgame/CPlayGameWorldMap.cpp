@@ -136,10 +136,10 @@ void CPlayGame::YourShipNeedsTheseParts()
 	}
 
 	// draw needed parts
-	if (!joy) mp_MessageBox->addTileAt(448,5<<3, 4<<3);
-	if (!bat) mp_MessageBox->addTileAt(449,8<<3, 4<<3);
-	if (!vac) mp_MessageBox->addTileAt(450,11<<3,4<<3);
-	if (!wis) mp_MessageBox->addTileAt(451,14<<3,4<<3);
+	if (!joy) mp_MessageBox->addTileAt(321,5<<3, 4<<3);
+	if (!bat) mp_MessageBox->addTileAt(322,8<<3, 4<<3);
+	if (!vac) mp_MessageBox->addTileAt(323,11<<3,4<<3);
+	if (!wis) mp_MessageBox->addTileAt(324,14<<3,4<<3);
 }
 
 void CPlayGame::ShipEp3()

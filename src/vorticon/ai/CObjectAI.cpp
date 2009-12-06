@@ -30,6 +30,7 @@ void CObjectAI::process()
 	for( size_t i = 0 ; i<mp_Objvect->size() ; i++ )
 	{
 		CObject &object = mp_Objvect->at(i);
+
 		if( checkforAIObject(object) )
 		{
 			object.processFalling();
@@ -162,8 +163,8 @@ void CObjectAI::performSpecialAIType( CObject &object )
 			 //Common Objects*/
 		case OBJ_RAY: ray_ai( object, mp_Options[OPT_FULLYAUTOMATIC].value ); break;
 		case OBJ_DOOR: door_ai( object, DOWN); break;
-		//case OBJ_AUTORAY: case OBJ_AUTORAY_V: autoray_ai(i); break;
-		//case OBJ_GOTPOINTS: gotpoints_ai(i); break;
+		case OBJ_AUTORAY: case OBJ_AUTORAY_V: autoray_ai(object); break;
+		case OBJ_GOTPOINTS: gotpoints_ai(object); break;
 
 			//case OBJ_DEMOMSG: break;
 

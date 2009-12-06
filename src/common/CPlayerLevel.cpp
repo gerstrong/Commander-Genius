@@ -346,43 +346,51 @@ void CPlayer::JumpAndPogo()
     switch(pjumping)
     {
 		case PPREPAREPOGO:
-			if (pjumpanimtimer>PPOGO_PREPARE_TIME)
+			if(ppogostick)
 			{
-				// continously bounce while pogo stick is out
-				g_pSound->playStereofromCoord(SOUND_KEEN_JUMP, PLAY_NOW, mp_object->at(m_player_number).scrx);
-				
-				// jump high if JUMP key down, else bounce low
-				if (playcontrol[PA_JUMP])
+				if (pjumpanimtimer>PPOGO_PREPARE_TIME)
 				{
-					if (!mp_option[OPT_SUPERPOGO].value)
-					{  // normal high pogo jump
-						if(playcontrol[PA_JUMP] > 12)
-							pjumpupspeed = ((PPOGOUP_SPEED-PJUMPUP_SPEED)*playcontrol[PA_JUMP]) / 50 + PJUMPUP_SPEED;
+					pjumpupspeed = mp_PhysicsSettings->player.maxjumpspeed;
+					pjumpupspeed_decrease = mp_PhysicsSettings->player.defaultjumpupdecreasespeed;
+
+					pjumpframe = PJUMP_PREPARE_LAST_FRAME;
+					pjumping = PPOGOING;
+
+					// continously bounce while pogo stick is out
+					g_pSound->playStereofromCoord(SOUND_KEEN_JUMP, PLAY_NOW, mp_object->at(m_player_number).scrx);
+
+					/*// jump high if JUMP key down, else bounce low
+					if (playcontrol[PA_JUMP])
+					{
+						if (!mp_option[OPT_SUPERPOGO].value)
+						{  // normal high pogo jump
+							if(playcontrol[PA_JUMP] > 12)
+								pjumpupspeed = ((PPOGOUP_SPEED-PJUMPUP_SPEED)*playcontrol[PA_JUMP]) / 50 + PJUMPUP_SPEED;
+							else
+								pjumpupspeed = (PPOGOUP_SPEED*11) / 10; // Impossible Pogo Trick
+							pjumptime = PJUMP_NORMALTIME_POGO_LONG;
+							pjumpupspeed_decrease = PJUMP_UPDECREASERATE_POGO_LONG;
+						}
 						else
-							pjumpupspeed = (PPOGOUP_SPEED*11) / 10; // Impossible Pogo Trick
-						pjumptime = PJUMP_NORMALTIME_POGO_LONG;
-						pjumpupspeed_decrease = PJUMP_UPDECREASERATE_POGO_LONG;
+						{
+							pjumpupspeed = PPOGOUP_SPEED_SUPER;
+							pjumptime = PJUMP_NORMALTIME_POGO_LONG_SUPER;
+							pjumpupspeed_decrease = PJUMP_UPDECREASERATE_POGO_LONG_SUPER;
+						}
 					}
 					else
 					{
-						pjumpupspeed = PPOGOUP_SPEED_SUPER;
-						pjumptime = PJUMP_NORMALTIME_POGO_LONG_SUPER;
-						pjumpupspeed_decrease = PJUMP_UPDECREASERATE_POGO_LONG_SUPER;
+						if(ppogostick)
+						{
+							pjumpupspeed = PJUMPUP_SPEED;
+							pjumptime = PJUMP_NORMALTIME_POGO_SHORT;
+							pjumpupspeed_decrease = PJUMP_UPDECREASERATE_POGO_SHORT;
+						}
 					}
-				}
-				else
-				{
-					if(ppogostick)
-					{
-						pjumpupspeed = PJUMPUP_SPEED;
-						pjumptime = PJUMP_NORMALTIME_POGO_SHORT;
-						pjumpupspeed_decrease = PJUMP_UPDECREASERATE_POGO_SHORT;
-					}
-				}
-				pjumpframe = PJUMP_PREPARE_LAST_FRAME;
-				pjumping = PPOGOING;
-				
-			} else pjumpanimtimer++;
+					pjumpframe = PJUMP_PREPARE_LAST_FRAME;
+					pjumping = PPOGOING;*/
+				} else pjumpanimtimer++;
+			}
 			break;
 		case PPREPAREJUMP:
 			if (pjumpanimtimer > PJUMP_PREPARE_ANIM_RATE)
@@ -403,44 +411,8 @@ void CPlayer::JumpAndPogo()
 						pjumpupspeed = (mp_PhysicsSettings->player.maxjumpspeed*(pjumpframe-PPREPAREJUMPFRAME))/5;
 						pjumpupspeed_decrease = mp_PhysicsSettings->player.defaultjumpupdecreasespeed;
 					}
-
-					//pjumpupspeed = PJUMPUP_SPEED;
-					//pjumpupspeed_decrease = PJUMP_UPDECREASERATE;
-					/*switch(pjumpframe)
-					{
-						case PPREPAREJUMPFRAME:
-                            pjumptime = PJUMP_NORMALTIME_6;
-                            pjumpupspeed_decrease = PJUMP_UPDECREASERATE_6;
-                            pjumpupspeed = 2;
-                            break;
-						case PPREPAREJUMPFRAME+1:
-                            pjumptime = PJUMP_NORMALTIME_5;
-                            pjumpupspeed_decrease = PJUMP_UPDECREASERATE_5;
-                            pjumpupspeed = 4;
-                            break;
-						case PPREPAREJUMPFRAME+2:
-                            pjumptime = PJUMP_NORMALTIME_4;
-                            pjumpupspeed_decrease = PJUMP_UPDECREASERATE_4;
-                            pjumpupspeed = 8;
-                            break;
-						case PPREPAREJUMPFRAME+3:
-                            pjumptime = PJUMP_NORMALTIME_3;
-                            pjumpupspeed_decrease = PJUMP_UPDECREASERATE_3;
-                            pjumpupspeed = 16;
-                            break;
-						case PPREPAREJUMPFRAME+4:
-                            pjumptime = PJUMP_NORMALTIME_2;
-                            pjumpupspeed_decrease = PJUMP_UPDECREASERATE_2;
-                            pjumpupspeed = 32;
-                            break;
-						default:
-                            pjumptime = PJUMP_NORMALTIME_1;
-                            pjumpupspeed_decrease = PJUMP_UPDECREASERATE_1;
-                            break;
-					}*/
 					
 					pjumpframe = PJUMP_PREPARE_LAST_FRAME;
-					
 					g_pSound->playStereofromCoord(SOUND_KEEN_JUMP, PLAY_NOW, mp_object->at(m_player_number).scrx);
 					pjumping = PJUMPUP;
 					
@@ -460,7 +432,6 @@ void CPlayer::JumpAndPogo()
 						pjumpdir = UP;
 					
 					pwalkincreasetimer = 0;
-					
 					if(playcontrol[PA_X] < 0)	pinertia_x = -mp_PhysicsSettings->player.jumpdecrease_x;
 					if(playcontrol[PA_X] > 0)	pinertia_x = mp_PhysicsSettings->player.jumpdecrease_x;
 				}
@@ -501,28 +472,35 @@ void CPlayer::JumpAndPogo()
 			break;
     }
 	
-    //if(!ppogostick)
-    //{
-		// Now check how much the direction of the player is given
-		if(pjumping)
+	// Now check how much the direction of the player is given
+    // (The real inertia in x-direction)
+	if(pjumping)
+	{
+		if(!ppogostick)
 		{
 			if (playcontrol[PA_X] < 0)
 				pinertia_x-=1;
 			if (playcontrol[PA_X] > 0)
 				pinertia_x+=1;
 		}
-		
-		if(pfalling && !ppogostick)
+		else if(ppogostick)
 		{
-			if(pinertia_x<0) pinertia_x+=2;
-			if(pinertia_x>0) pinertia_x-=2;
-
 			if (playcontrol[PA_X] < 0)
-				pinertia_x-=2;
+				pinertia_x -= (mp_PhysicsSettings->player.pogoforce_x/10);
 			if (playcontrol[PA_X] > 0)
-				pinertia_x+=2;
+				pinertia_x += (mp_PhysicsSettings->player.pogoforce_x/10);
 		}
-    //}
+	}
+	else if(pfalling && !ppogostick)
+	{
+		if(pinertia_x<0) pinertia_x+=2;
+		if(pinertia_x>0) pinertia_x-=2;
+
+		if (playcontrol[PA_X] < 0)
+			pinertia_x-=2;
+		if (playcontrol[PA_X] > 0)
+			pinertia_x+=2;
+	}
 	
     // If we are in Godmode, use the Pogo, and pressing the jump button, make the player fly
     if( godmode && ppogostick &&

@@ -8,24 +8,18 @@
 #ifndef PLAYERDEFINES_H_
 #define PLAYERDEFINES_H_
 
-#define	PA_X		0
-#define	PA_Y   		1
-#define	PA_JUMP		2
-#define	PA_POGO		3
-#define	PA_FIRE		4
-#define	PA_STATUS	5
-
+enum player_actions{
+PA_X, PA_Y,
+PA_JUMP, PA_POGO,
+PA_FIRE, PA_STATUS
+};
 #define	PA_MAX_ACTIONS 6
-
-#define MAX_SPEED		7000
-#define MAX_BOOST		200
-#define TIME_DIVIDER	500		// For speed and acceleration
 
 // upon starting to walk, keen will quickly increase to
 // PFASTINCMAXSPEED. keen can, at a slower rate,
 // reach up to PMAXSPEED (increased every walk anim frame)
 //#define PFASTINCMAXSPEED 36
-#define PFASTINCMAXSPEED 40
+//#define PFASTINCMAXSPEED 40
 #define PJUMPINERTIA     30
 #define PFASTINCRATE     4        // accel delay rate up to PFASTINCMAXSPEED
 #define PFASTINCRATE_POGO  2      // rate when pogo stick is out
@@ -108,34 +102,6 @@ enum jumpstates{
 #define PJUMPUP_SPEED            200
 #define PJUMPX_SPEED			 8
 #define PJUMP_UPDECREASERATE	 4
-// These control the various jump heights.
-// one of these pairs is selected depending on how
-// long the CTRL key was held down while Keen
-// was preparing to jump. #1 causes the highest
-// jump and they get lower from there.
-// NORMAL_TIME is the amount of time keen will
-// jump straight up at speed -PJUMPUP_SPEED.
-// when expired his jump slows down at a rate
-// of DECREASERATE.
-
-#define PJUMP_NORMALTIME_1         22
-#define PJUMP_UPDECREASERATE_1     1
-
-#define PJUMP_NORMALTIME_2         18
-#define PJUMP_UPDECREASERATE_2     1
-
-#define PJUMP_NORMALTIME_3         14
-#define PJUMP_UPDECREASERATE_3     1
-
-#define PJUMP_NORMALTIME_4         10
-#define PJUMP_UPDECREASERATE_4     1
-
-#define PJUMP_NORMALTIME_5         6
-#define PJUMP_UPDECREASERATE_5     1
-
-#define PJUMP_NORMALTIME_6         2
-#define PJUMP_UPDECREASERATE_6     1
-
 
 /// pogoing
 #define PPOGOUP_SPEED            80

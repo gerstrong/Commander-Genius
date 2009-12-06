@@ -27,6 +27,9 @@ public:
 
 		int max_fallspeed;
 		int fallspeed_decrease;
+
+		// pogo settings
+		int pogoforce_x;
 	}player;
 
 

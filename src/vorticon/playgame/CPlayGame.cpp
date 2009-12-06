@@ -26,8 +26,8 @@ CPlayGame::CPlayGame( char episode, char level,
 					 char numplayers, char difficulty,
 					 std::string &gamepath, stOption *p_option,
 					 bool finale, CSavedGame &SavedGame) :
-					 m_SavedGame(SavedGame),
-					 mp_MessageBox(NULL)
+m_SavedGame(SavedGame),
+mp_MessageBox(NULL)
 {
 	m_Episode = episode;
 	m_Level = level;
@@ -296,8 +296,10 @@ void CPlayGame::process()
 		std::string tempbuf;
 		SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
 #ifdef DEBUG
-		tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec()) +
-			"; x = " + itoa(mp_Player[0].x) + " ; y = " + itoa(mp_Player[0].y);
+		//tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec()) +
+			//"; x = " + itoa(mp_Player[0].x) + " ; y = " + itoa(mp_Player[0].y);
+		tempbuf = "speed_x: " + itoa(mp_Player[0].pinertia_x);
+		tempbuf += " | pogo_force_x: " + itoa(m_PhysicsSettings.player.pogoforce_x);
 #else
 		tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec());
 #endif

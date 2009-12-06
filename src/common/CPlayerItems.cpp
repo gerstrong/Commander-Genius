@@ -76,16 +76,16 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 	{
 			// keycards
 		case 18: give_keycard(DOOR_YELLOW);
-			riseBonus(PTCARDY_SPRITE, (mpx<<CSF)-(2<<CSF), (mpy<<CSF)-(2<<CSF));
+			riseBonus(PTCARDY_SPRITE, mpx-(2<<CSF), mpy-(2<<CSF));
 			break;
 		case 19: give_keycard(DOOR_RED);
-			riseBonus(PTCARDR_SPRITE, (mpx<<CSF)-(2<<CSF), (mpy<<CSF)-(2<<CSF));
+			riseBonus(PTCARDR_SPRITE, mpx-(2<<CSF), mpy-(2<<CSF));
 			break;
 		case 20: give_keycard(DOOR_GREEN);
-			riseBonus(PTCARDG_SPRITE, (mpx<<CSF)-(2<<CSF), (mpy<<CSF)-(2<<CSF));
+			riseBonus(PTCARDG_SPRITE, mpx-(2<<CSF), mpy-(2<<CSF));
 			break;
 		case 21: give_keycard(DOOR_BLUE);
-			riseBonus(PTCARDB_SPRITE, (mpx<<CSF)-(2<<CSF), (mpy<<CSF)-(2<<CSF));
+			riseBonus(PTCARDB_SPRITE, mpx-(2<<CSF), mpy-(2<<CSF));
 			break;
 			
 		case DOOR_YELLOW:
@@ -120,7 +120,7 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 			getBonuspoints(5000, mpx, mpy);
 			break;
 		case 15:           // raygun
-			riseBonus(GUNUP_SPRITE, mpx-(2<<CSF), mpy-(2<<CSF));
+			riseBonus(GUNUP_SPRITE, mpx, mpy);
 			inventory.charges += 5;
 			break;
 		case 16:           // the Holy Pogo Stick
@@ -163,7 +163,7 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 			
 		case 27:
 			giveAnkh();
-			riseBonus(ANKHUP_SPRITE, (mpx<<4<<CSF)-(2<<CSF), (mpy<<4<<CSF)-(2<<CSF));
+			riseBonus(ANKHUP_SPRITE, (mpx)-(2<<CSF), (mpy)-(2<<CSF));
 			break;
 		case 28:
 			inventory.charges++;
@@ -199,12 +199,14 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 // make some sprite fly (Points, and items) :-)
 void CPlayer::riseBonus(int spr, int x, int y)
 {
-	/*int o;
 	 if (mp_option[OPT_RISEBONUS].value)
 	 {
-	 o = spawn_object(x, y, OBJ_GOTPOINTS);
-	 mp_object->at(o).sprite = spr;
-	 }*/
+		 CObject GotPointsObj;
+		 printf("Creating %d \n", OBJ_GOTPOINTS);
+		 GotPointsObj.spawn(x<<CSF, y<<CSF, OBJ_GOTPOINTS);
+		 GotPointsObj.sprite = spr;
+		 mp_object->push_back(GotPointsObj);
+	 }
 }
 
 // gives keycard for door doortile to player p
@@ -283,25 +285,23 @@ std::string CPlayer::pollHintMessage()
 
 void CPlayer::getBonuspoints(int numpts, int mpx, int mpy)
 {
-	int spr;
-	int x,y;
-	
 	g_pSound->playStereofromCoord(SOUND_GET_BONUS, PLAY_NOW, rand()%160);
 	incScore(numpts);
 	
-	switch(numpts)
+	if(mp_option[OPT_RISEBONUS].value)
 	{
+		int spr;
+		switch(numpts)
+		{
 		case 100: spr = PT100_SPRITE; break;
 		case 200: spr = PT200_SPRITE; break;
 		case 500: spr = PT500_SPRITE; break;
 		case 1000: spr = PT1000_SPRITE; break;
 		case 5000: spr = PT5000_SPRITE; break;
 		default: spr = 0;
-	}
-	if (spr)
-	{
-		x = mpx<<4<<CSF; y = mpy<<4<<CSF;
-		riseBonus(spr, x-(2<<CSF), y-(2<<CSF));
+		}
+
+		if (spr) riseBonus(spr, mpx, mpy);
 	}
 }
 

@@ -6,41 +6,40 @@
  *      Port by: Gerstrong
  */
 
-
-#include "../../keen.h"
-#include "../../game.h"
+#include "../spritedefines.h"
 #include "../../sdl/sound/CSound.h"
+#include "CObjectAI.h"
 
-// Reference to ../game.cpp
-unsigned char spawn_object(int x, int y, int otype);
-
-void autoray_ai(int o)
+void CObjectAI::autoray_ai(CObject &Object)
 {
-	/*int newobject;
-	 if (objects[o].needinit)
-	 {
-	 objects[o].ai.se.timer = 0;
-	 objects[o].sprite = BLANKSPRITE;
-	 objects[o].inhibitfall = 1;
-	 objects[o].needinit = 0;
-	 }
-	 
-	 if (!gunfiretimer)
-	 {
-	 if (objects[o].type==OBJ_AUTORAY_V)
-	 {
-	 newobject = spawn_object(objects[o].x, objects[o].y, OBJ_RAY);
-	 objects[newobject].sprite = RAY_VERT_EP3;
-	 objects[newobject].ai.ray.direction = DOWN;
-	 }
-	 else
-	 {
-	 newobject = spawn_object(objects[o].x, objects[o].y, OBJ_RAY);
-	 objects[newobject].sprite = ENEMYRAYEP3;
-	 objects[newobject].ai.ray.direction = RIGHT;
-	 }
-	 if (objects[o].onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, objects[o].x);
-	 }*/
+	if (Object.needinit)
+	{
+		Object.ai.se.timer = 0;
+		Object.sprite = BLANKSPRITE;
+		Object.inhibitfall = 1;
+		Object.needinit = 0;
+	}
+
+	/*if (!gunfiretimer)
+	{
+		CObject NewRay;
+		NewRay.spawn(Object.x, Object.y, OBJ_RAY);
+
+		if (Object.type==OBJ_AUTORAY_V)
+		{
+			NewRay.sprite = RAY_VERT_EP3;
+			NewRay.ai.ray.direction = DOWN;
+		}
+		else
+		{
+			NewRay.sprite = ENEMYRAYEP3;
+			NewRay.ai.ray.direction = RIGHT;
+		}
+
+		mp_Objvect->push_back(NewRay);
+
+		if (Object.onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, Object.x);
+	}*/
 }
 
 
