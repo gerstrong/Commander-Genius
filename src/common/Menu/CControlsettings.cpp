@@ -23,7 +23,7 @@ void CControlsettings::drawInitialCommands()
 {
 	std::string buf;
 	std::string buf2;
-	mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 36, 16);
+	mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 36, 13);
 	mp_Dialog->setFrameTheme(DLG_THEME_OLDSCHOOL);
 
 	g_pInput->getEventName(IC_LEFT, m_chosenPlayer-1, buf2);
@@ -67,11 +67,10 @@ void CControlsettings::drawInitialCommands()
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 10, buf);
 
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 2, 11, "Reset Controls");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 13, "Return");
 }
 
 void CControlsettings::processSpecific()
-{
+{	
 	if(m_waiting_for_input) // This part onloy happens, when waiting for an input
 	{
 		processWaitInput();
@@ -101,6 +100,15 @@ void CControlsettings::processWaitInput()
 
 void CControlsettings::processSelection()
 {
+	if( g_pInput->getPressedCommand(IC_QUIT) )
+	{
+			g_pInput->saveControlconfig();
+			// And close this menu...
+			m_MenuType = CONTROLPLAYERS;
+			m_mustclose = true;
+			m_selection = -1;
+	}
+	
 	if( m_selection != -1) // Normal selection function
 	{
 		if( m_selection < 11 )
@@ -121,19 +129,11 @@ void CControlsettings::processSelection()
 			}
 			else if(m_selection == MAX_COMMANDS)
 			{
-				g_pInput->resetControls();
+				g_pInput->resetControls(m_chosenPlayer);
 				delete mp_Dialog;
 				drawInitialCommands();
 				m_selection = -1;
 			}
-		}
-		else if(m_selection == MAX_COMMANDS+1)
-		{
-			g_pInput->saveControlconfig();
-			// And close this menu...
-			m_MenuType = CONTROLPLAYERS;
-			m_mustclose = true;
-			m_selection = -1;
 		}
 	}
 }

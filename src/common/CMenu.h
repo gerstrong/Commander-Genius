@@ -74,6 +74,8 @@ public:
 	bool getBacktoDemo() { return m_demoback; }
 	bool getChooseGame() { return m_choosegame; }
 	bool restartVideo() { return m_RestartVideo; }
+	
+	void videoRestarted() { m_RestartVideo = false; }
 
 	bool m_demoback;
 	bool m_hideobjects;

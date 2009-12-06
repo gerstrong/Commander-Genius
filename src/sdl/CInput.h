@@ -197,7 +197,7 @@ public:
 	bool readNewEvent(Uint8 device, int position);
 
 	short loadControlconfig();
-	void resetControls();
+	void resetControls(int player);
 	bool startJoyDriver();
 	short saveControlconfig();
 

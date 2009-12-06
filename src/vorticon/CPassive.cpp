@@ -54,9 +54,6 @@ bool CPassive::init(char mode)
 	}
 	else if( m_mode == TITLE )
 	{
-		mp_PressAnyBox = new CTextBox(150, 10," PRESS ANY KEY ");
-		mp_PressAnyBox->setAttribs(0, LETTER_TYPE_RED);
-		mp_PressAnyBox->enableBorders(true);
 		mp_TitleScreen = new CTitle(m_object);
 		mp_Map = new CMap( mp_Scrollsurface, mp_Tilemap);
 		CMapLoader MapLoader( mp_Map );
@@ -82,8 +79,17 @@ bool CPassive::init(char mode)
 void CPassive::process()
 {
 	// Open the Main-Menu or close the opened one?
-	if( mp_Menu==NULL && g_pInput->getPressedAnyKey()  )
+	if( mp_Menu==NULL )
 	{
+		if (mp_PressAnyBox==NULL && m_mode == TITLE)
+		{
+		mp_PressAnyBox = new CTextBox(150, 10," PRESS ANY KEY ");
+		mp_PressAnyBox->setAttribs(0, LETTER_TYPE_RED);
+		mp_PressAnyBox->enableBorders(true);
+		}
+		
+		if (g_pInput->getPressedAnyKey())
+		{
 		// Close the "Press Any Key" box
 		g_pInput->flushAll();
 		if (m_mode != TITLE)
@@ -98,21 +104,20 @@ void CPassive::process()
 								m_Episode, *mp_Map, m_SavedGame, mp_Option );
 			mp_Menu->init();
 		}
+		}
 	}
 	else if( mp_Menu!=NULL ) // Close menu
 	{
 		if ( mp_Menu->m_demoback )
 		{
 			SAFE_DELETE(mp_Menu);
-			mp_PressAnyBox = new CTextBox(150, 10, " PRESS ANY KEY ");
-			mp_PressAnyBox->setAttribs(0, LETTER_TYPE_RED);
 			mp_Map->drawAll();
 		}
 		else if( mp_Menu->restartVideo())
 		{
-			SAFE_DELETE(mp_Menu);
 			cleanup();
 			init(m_mode);
+			mp_Menu->videoRestarted();
 		}
 	}
 	
@@ -196,24 +201,6 @@ void CPassive::process()
 			cleanup();
 			m_mode = SHUTDOWN;
 		}
-		/*else if(mp_Menu->getShowStory())
-		 {
-		 delete mp_Menu;
-		 mp_Menu = NULL;
-		 m_textsize = readStoryText(&m_text, m_Episode, m_DataDirectory); // Read text from
-		 // and store it at the text pointer
-		 
-		 if(m_textsize > 0)
-		 {
-		 CMapLoader MapLoader( mp_Map );
-		 MapLoader.load( m_Episode, 90, m_DataDirectory);
-		 mp_Map->drawAll();
-		 mp_Menu->showPage(m_text,m_textsize);
-		 
-		 free(m_text);
-		 }
-		 cleanup();
-		 }*/
 		else if(mp_Menu->getChooseGame())
 		{
 			delete mp_Menu;
@@ -222,11 +209,9 @@ void CPassive::process()
 		}
 		else if(mp_Menu->restartVideo()) // When some video settings has been changed
 		{
-			//mp_Map->drawAll();
-			delete mp_Menu;
-			mp_Menu = NULL;
 			cleanup();
 			init(m_mode);
+			mp_Menu->videoRestarted();
 		}
 	}
 }

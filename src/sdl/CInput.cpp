@@ -23,7 +23,10 @@ CInput::CInput() {
 	WIZ_AdjustVolume(VOLUME_UP);
 #endif
 	g_pLogFile->ftextOut("Starting the input driver...<br>");
-	resetControls();
+	for(int i=0 ; i<NUM_INPUTS ; i++)
+	{
+	resetControls(i);
+	}
 	memset(&Event,0,sizeof(Event));
 	loadControlconfig();
 	startJoyDriver();
@@ -35,7 +38,7 @@ CInput::~CInput() {
 		SDL_JoystickClose(mp_Joystick);
 }
 
-void CInput::resetControls() {
+void CInput::resetControls(int player) {
 	int i;
 
 	m_exit = false;
@@ -47,12 +50,11 @@ void CInput::resetControls() {
 
 	for(i=0 ; i<NUMBER_OF_COMMANDS ; i++)
 	{
-		for(int player=0 ; player<NUM_INPUTS ; player++)
+		//for(int player=0 ; player<NUM_INPUTS ; player++)
 			InputCommand[player][i].active = false;
 	}
 
-	for(i=0 ; i<NUM_INPUTS ; i++)
-	{
+	i=player-1;
 		// These are the default keyboard commands
 		InputCommand[i][IC_LEFT].keysym = SDLK_LEFT;
 		InputCommand[i][IC_UP].keysym = SDLK_UP;
@@ -103,7 +105,6 @@ void CInput::resetControls() {
 		InputCommand[i][IC_QUIT].joyeventtype = ETYPE_JOYBUTTON;
 		InputCommand[i][IC_QUIT].joybutton = 5;
 		InputCommand[i][IC_QUIT].which = 0;
-	}
 }
 
 bool CInput::startJoyDriver()

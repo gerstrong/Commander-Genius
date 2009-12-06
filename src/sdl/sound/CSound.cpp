@@ -244,7 +244,6 @@ void CSound::playStereosound(int snd, char mode, short balance)
 	if(!(m_mixing_channels && m_active)) return;
 	
 	short chnl = 0;
-	int i;
 	
 	if (mode==PLAY_NORESTART)
 	{

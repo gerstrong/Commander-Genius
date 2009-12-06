@@ -56,8 +56,8 @@ CVideoDriver::CVideoDriver() {
 	FrameSkip=2;
 	m_targetfps = 50;	// Enable automatic frameskipping by default at 30
 #else
-	m_Resolution.width=640;
-	m_Resolution.height=400;
+	m_Resolution.width=320;
+	m_Resolution.height=200;
 	m_Resolution.depth=32;
 	Mode=0;
 	Fullscreen=false;
@@ -97,6 +97,7 @@ void CVideoDriver::initResolutionList()
 	st_resolution resolution;
 	char buf[256];
 	m_Resolutionlist.clear();
+	int g,j;
 
 	std::ifstream ResolutionFile; OpenGameFileR(ResolutionFile, "resolutions.cfg");
 	if(!ResolutionFile)
@@ -139,6 +140,23 @@ void CVideoDriver::initResolutionList()
 					m_Resolutionlist.push_back(resolution);
 			}
 		}
+		if(!getFullscreen())
+		{
+			for (g=1; g != 20; g++) {
+				if (g*320>m_Resolutionlist.back().width or g*200>m_Resolutionlist.back().height)
+				{
+					j=g;
+					break;
+				}
+			}
+			m_Resolutionlist.clear();
+			for (g=1; g!=j; g++) {
+				resolution.width=g*320;
+				resolution.height=g*200;
+				resolution.depth=32;
+				m_Resolutionlist.push_back(resolution);
+			}
+		}
 		ResolutionFile.close();
 		SDL_Quit();
 		// shutdown SDL, so the game can initialize it correctly
@@ -148,7 +166,7 @@ void CVideoDriver::initResolutionList()
 
 	if(m_Resolutionlist.empty()) {
 		resolution.width = 320;
-		resolution.height = 240;
+		resolution.height = 200;
 		resolution.depth = 16;
 		m_Resolutionlist.push_back(resolution);
 	}

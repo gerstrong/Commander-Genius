@@ -6,6 +6,7 @@
  */
 
 #include "CAudioSettings.h"
+#include "../../sdl/CInput.h"
 #include "../../sdl/CVideoDriver.h"
 #include "../../sdl/CSettings.h"
 #include "../../sdl/sound/CSound.h"
@@ -17,7 +18,7 @@ CBaseMenu(menu_type),
 m_Gamepath(Gamepath),
 m_Episode(Episode)
 {
-	mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 22, 8);
+	mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 22, 5);
 	mp_Dialog->setFrameTheme(DLG_THEME_OLDSCHOOL);
 
 	m_Rate = g_pSound->getAudioSpec().freq;
@@ -35,14 +36,23 @@ m_Episode(Episode)
 	buf = "Mode: ";
 	buf += m_Mode ? "Stereo": "Mono";
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, buf);
-
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "Confirm");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Cancel");
 }
 
 void CAudioSettings::processSpecific()
 {
 	std::string buf;
+	
+	if( g_pInput->getPressedCommand(IC_QUIT) )
+	{
+			CSettings Settings;
+			g_pSound->destroy();
+			g_pSound->setSoundmode(m_Rate, m_Mode ? true : false, m_Format);
+			Settings.saveDrvCfg();
+			g_pSound->init();
+			g_pSound->loadSoundData(m_Episode, m_Gamepath);
+			m_MenuType = CONFIGURE;
+			m_mustclose = true;
+	}
 
 	if( m_selection != -1)
 	{
@@ -71,23 +81,6 @@ void CAudioSettings::processSpecific()
 			buf = "Mode: ";
 			buf += m_Mode ? "Stereo" : "Mono";
 			mp_Dialog->setObjectText(2, buf);
-		}
-		else if(m_selection == 3) // Confirm
-		{
-			// TODO: Cannot save, because m_Gamepath and m_Episode need to be passed as reference
-			CSettings Settings;
-			g_pSound->destroy();
-			g_pSound->setSoundmode(m_Rate, m_Mode ? true : false, m_Format);
-			Settings.saveDrvCfg();
-			g_pSound->init();
-			g_pSound->loadSoundData(m_Episode, m_Gamepath);
-			m_MenuType = CONFIGURE;
-			m_mustclose = true;
-		}
-		else if(m_selection == 4) // Cancel
-		{
-			m_MenuType = CONFIGURE;
-			m_mustclose = true;
 		}
 		m_selection = -1;
 	}

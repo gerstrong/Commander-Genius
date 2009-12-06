@@ -17,7 +17,7 @@
 
 CDialog::CDialog(SDL_Surface *DialogSurface, Uint16 w, Uint16 h)
 {
-	m_x = (300/2)-(w*4)+10;	m_y = (240/2)-(h*4);
+	m_x = (300/2)-(w*4)+10;	m_y = (200/2)-(h*4);
 	m_w = w;	m_h = h;
 	
 	m_twirl.posy = m_y;
@@ -37,7 +37,7 @@ CDialog::CDialog(SDL_Surface *DialogSurface, Uint16 w, Uint16 h)
 
 CDialog::CDialog(SDL_Surface *DialogSurface, Uint16 x, Uint16 y, Uint16 w, Uint16 h, char key)
 {
-	m_x = (300/2)-(w*4)+10+x;	m_y = (240/2)-(h*4)+y;
+	m_x = (300/2)-(w*4)+10+x;	m_y = (200/2)-(h*4)+y;
 	m_w = w;	m_h = h;
 	
 	m_twirl.posy = m_y;

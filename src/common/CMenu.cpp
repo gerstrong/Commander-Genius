@@ -267,9 +267,9 @@ void CMenu::process()
 
 			if(mp_Menu->mustClose())
 			{
+				m_RestartVideo=mp_Menu->restartVideo();
 				SAFE_DELETE(mp_Menu);
 				init(m_menu_type);
-				m_RestartVideo=true;
 			}
 		}
 		else
@@ -299,15 +299,12 @@ void CMenu::process()
 			else if( m_menu_type == DIFFICULTY ) processDifficultyMenu();
 			else if( m_menu_type == CONFIGURE ) processConfigureMenu();
 			else if( m_menu_type == CONTROLPLAYERS ) processNumControlMenu();
-			//else if( m_menu_type == CONTROLS ) processControlMenu();
 			else if( m_menu_type == F1 ) processF1Menu();
 			else if( m_menu_type == QUIT ) processQuitMenu();
 			else if( m_menu_type == ENDGAME ) processEndGameMenu();
 			else if( m_menu_type == SAVE ) processSaveMenu();
 			else if( m_menu_type == LOAD ) processLoadMenu();
 			else if( m_menu_type == OVERWRITE ) processOverwriteMenu();
-			//else if( m_menu_type == GRAPHICS ) processGraphicsMenu();
-			//else if( m_menu_type == AUDIO ) processAudioMenu();
 
 			// Draw the menu
 			if(!mp_Menu && mp_Dialog) mp_Dialog->draw();

@@ -13,6 +13,8 @@
 
 CVideoSettings::CVideoSettings(char &menu_type) :
 CBaseMenu(menu_type) {
+	
+	m_changed = false;
 
 	m_Resolution.width = g_pVideoDriver->getWidth();
 	m_Resolution.height = g_pVideoDriver->getHeight();
@@ -37,7 +39,7 @@ CBaseMenu(menu_type) {
 	m_AspectCorrection = g_pVideoDriver->getAspectCorrection();
 
 	std::string buf;
-	mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 32, 12);
+	mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 32, 9);
 	mp_Dialog->setFrameTheme(DLG_THEME_OLDSCHOOL);
 
 	buf = "Resolution: " + itoa(m_Resolution.width) + "x" + itoa(m_Resolution.height) + "x" + itoa(m_Resolution.depth);
@@ -73,9 +75,6 @@ CBaseMenu(menu_type) {
 	buf = "OGL Aspect Ratio ";
 	buf += m_AspectCorrection ? "enabled" : "disabled";
 	mp_Dialog->addObject( (!m_Opengl) ? DLG_OBJ_DISABLED : DLG_OBJ_OPTION_TEXT, 1, 7, buf);
-
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 9, "Confirm");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 10, "Cancel");
 }
 
 void CVideoSettings::processSpecific(){
@@ -83,12 +82,42 @@ void CVideoSettings::processSpecific(){
 
 	if( g_pInput->getPressedCommand(IC_QUIT) )
 	{
+		if(m_changed)
+		{
+			g_pVideoDriver->stop();
+			g_pVideoDriver->isFullscreen(m_FSmode);
+			g_pVideoDriver->enableOpenGL(m_Opengl);
+			g_pVideoDriver->setOGLFilter(m_OGL_filter);
+			g_pVideoDriver->setZoom(m_Zoom);
+			g_pVideoDriver->setFilter(m_ScaleXFilter);
+			g_pTimer->setFrameRate(DEFAULT_LPS, m_Autoframeskip, DEFAULT_SYNC);
+			g_pVideoDriver->setAspectCorrection(m_AspectCorrection);
+			g_pVideoDriver->setMode(m_Resolution);
+			g_pVideoDriver->start();
+
+			CSettings Settings;
+			Settings.saveDrvCfg();
+
+			// And close this menu...
+			m_MenuType = CONFIGURE;
+			m_restartVideo = true;
+			m_mustclose = true;
+			mp_Dialog->setSDLSurface(g_pVideoDriver->FGLayerSurface);	
+		}
+		else
+		{
 		m_mustclose = true;
-		m_MenuType = MAIN;
+		m_MenuType = CONFIGURE;
+		}
 	}
 
 	if( m_selection != -1)
 	{
+		if(m_selection < 7)
+		{
+			m_changed = true;
+		}
+		
 		if(m_selection == 0)
 		{
 			// Now the part of the resolution list
@@ -160,34 +189,6 @@ void CVideoSettings::processSpecific(){
 			buf = "OGL Aspect Ratio ";
 			buf += m_AspectCorrection ? "enabled" : "disabled";
 			mp_Dialog->setObjectText(6, buf);
-		}
-		else if(m_selection == 7) // Set the chosen settings! (Confirm)
-		{
-			g_pVideoDriver->stop();
-			g_pVideoDriver->isFullscreen(m_FSmode);
-			g_pVideoDriver->enableOpenGL(m_Opengl);
-			g_pVideoDriver->setOGLFilter(m_OGL_filter);
-			g_pVideoDriver->setZoom(m_Zoom);
-			g_pVideoDriver->setFilter(m_ScaleXFilter);
-			g_pTimer->setFrameRate(DEFAULT_LPS, m_Autoframeskip, DEFAULT_SYNC);
-			g_pVideoDriver->setAspectCorrection(m_AspectCorrection);
-			g_pVideoDriver->setMode(m_Resolution);
-			g_pVideoDriver->start();
-
-			CSettings Settings;
-			Settings.saveDrvCfg();
-
-			// And close this menu...
-			m_MenuType = CONFIGURE;
-			m_restartVideo = true;
-			m_mustclose = true;
-			mp_Dialog->setSDLSurface(g_pVideoDriver->FGLayerSurface);
-		}
-		else if(m_selection == 8) // Cancel (don't save)
-		{
-			// And close this menu...
-			m_mustclose = true;
-			m_MenuType = CONFIGURE;
 		}
 		m_selection = -1;
 	}

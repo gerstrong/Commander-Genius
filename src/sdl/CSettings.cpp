@@ -139,12 +139,14 @@ bool CSettings::loadGameCfg()
 		return false;
 	}
 	
+	loadDefaultGameCfg();
+	
 	for (i = 0; i < NUM_OPTIONS; i++)
 	{
 		mp_option[i].value = Parser.getIntValue(mp_option[i].name,"Game");
 		if(mp_option[i].value == -1)
 		{
-			loadDefaultGameCfg();
+			//loadDefaultGameCfg();
 			return 1;
 		}
 	}

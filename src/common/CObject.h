@@ -11,7 +11,7 @@
 #ifndef COBJECT_H_
 #define COBJECT_H_
 
-#define MAX_PLAYERS            2
+#define MAX_PLAYERS            4
 
 // structures for each AI module's data
 #include "../vorticon/ai/enemydata.h"
