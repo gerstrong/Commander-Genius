@@ -171,7 +171,7 @@ void CObjectAI::yorp_ai(CObject &object, CPlayer *p_player, bool hardmode)
 		object.ai.yorp.yorpdie_inertia_y = YORPDIE_START_INERTIA;
 		object.y -= 10;
 		object.inhibitfall = 1;
-		g_pSound->playStereofromCoord(SOUND_VORT_DIE, PLAY_NOW, object.scrx);
+		g_pSound->playStereofromCoord(SOUND_YORP_DIE, PLAY_NOW, object.scrx);
 	}
 	
 	switch(object.ai.yorp.state)

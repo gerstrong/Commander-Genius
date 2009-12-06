@@ -33,7 +33,7 @@ CPlayGame::CPlayGame( char episode, char level,
 	m_Level = level;
 	m_NumPlayers = numplayers;
 	m_Difficulty = difficulty;
-	m_level_command = (level==80) ? GOTO_WORLD_MAP : START_LEVEL;
+	m_level_command = (level==WORLD_MAP_LEVEL) ? GOTO_WORLD_MAP : START_LEVEL;
 	m_NumSprites = g_pGfxEngine->getNumSprites();
 	m_Gamepath = gamepath;
 	m_exitgame = false;
@@ -86,8 +86,13 @@ void CPlayGame::setupPlayers()
 		}
 		mp_Player[i].pdie = PDIE_NODIE;
 		
-		mp_Player[i].w = g_pGfxEngine->Sprite[PSTANDFRAME]->getWidth()<<(CSF-4);
-		mp_Player[i].h = g_pGfxEngine->Sprite[PSTANDFRAME]->getHeight()<<(CSF-4);
+		// Calibrate Player to the right position, so it won't fall when level starts
+		CSprite *sprite = g_pGfxEngine->Sprite[PSTANDFRAME];
+		mp_Player[i].w = sprite->getWidth()<<STC;
+		mp_Player[i].h = sprite->getHeight()<<STC;
+		mp_Player[i].y += (2<<CSF);
+		mp_Player[i].y -= mp_Player[i].h;
+		mp_Player[i].goto_y = mp_Player[i].y;
 		mp_Player[i].m_level = m_Level;
 		
 		// Set the pointers to the map and object data

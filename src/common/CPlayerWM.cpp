@@ -69,7 +69,7 @@ void CPlayer::setWMblockedlrud()
 	blockedu = blockedd = false;
 	
 	// cheat: holding down TAB will turn off clipping. or if you are in godmode
-	if ((m_cheats_enabled && g_pInput->getHoldedKey(KTAB)) || m_godmode) return;
+	if ((m_cheats_enabled && g_pInput->getHoldedKey(KTAB)) || godmode) return;
 	
 	// R
 	if (isWMSolid((goto_x>>5)+8, (goto_y>>5)+1))

@@ -21,6 +21,12 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 
 	if(p_player->beingteleported) return;
 
+	if(p_player->godmode && p_player->m_level == WORLD_MAP_LEVEL) // on map and god mode
+	{
+		p_player->x = p_player->goto_x;
+		p_player->y = p_player->goto_y;
+	}
+
 	// Start with X-Coordinates
 	if( p_player->goto_x > p_player->x )
 	{

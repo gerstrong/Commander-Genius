@@ -535,18 +535,17 @@ void CPlayer::JumpAndPogo()
 // oh wait, he does, and here's the code for it.
 void CPlayer::raygun()
 {
-	int canRefire;
+	bool canRefire;
 	CObject *pPlayerObject = &mp_object->at(m_player_number);
 	
 	if (pfireframetimer) pfireframetimer--;
 	
 	// FIRE button down, and not keencicled?
 	if ( playcontrol[PA_FIRE] && !pfrozentime)
-	{ // fire is newly pressed
-		
-		inhibitwalking = 1;    // prevent moving
-		pfiring = true;           // flag that we're firing
-		ppogostick = false;        // put away pogo stick if out
+	{ // fire is pressed
+		inhibitwalking = 1;            // prevent moving
+		pfiring = true;  // flag that we're firing
+		ppogostick = false;            // put away pogo stick if out
 		
 		// limit how quickly shots can be fired
 		if ( !plastfire || mp_option[OPT_FULLYAUTOMATIC].value )
@@ -556,7 +555,7 @@ void CPlayer::raygun()
 		}
 		else
 		{
-			if (pfireframetimer < PFIRE_LIMIT_SHOT_FREQ) canRefire = true;
+			if (pfireframetimer<PFIRE_LIMIT_SHOT_FREQ && !plastfire) canRefire = true;
 			else canRefire = false;
 		}
 		

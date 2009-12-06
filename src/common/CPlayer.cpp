@@ -22,15 +22,15 @@
 ///
 // Initialization Part
 ///
-CPlayer::CPlayer() {
+CPlayer::CPlayer() :
+mp_object(NULL),
+mp_levels_completed(NULL),
+mp_map(NULL),
+mp_option(NULL),
+mp_StatusScr(NULL)
+{
 	// Set every value in the class to zero.
-   	mp_levels_completed = NULL;
-   	mp_object = NULL;
-    mp_map = NULL;
-    mp_StatusScr = NULL;
-    mp_option = NULL;
     memset(&inventory, 0, sizeof(stInventory));
-    pdie = PDIE_DEAD; // At first time he is revived when map is started
     setDefaultStartValues();
     setDatatoZero();
 }
@@ -42,7 +42,7 @@ void CPlayer::setDatatoZero()
 	playframe = PMAPDOWNFRAME;
 	
 	pshowdir = pshowdir = DOWN;
-	godmode  = hideplayer = false;
+	hideplayer = false;
   	pwalkframe = pwalkframea = 0;
    	m_player_number = 0;
     dpadcount = 0;
@@ -73,7 +73,6 @@ void CPlayer::setDatatoZero()
     pfireframetimer = 0;
     psupportingtile = psupportingobject = lastsupportingobject = 0;
 	
-    m_godmode = false;
     m_cheats_enabled = false;
     m_showStatusScreen = false;
     lastpogo = false;
@@ -95,6 +94,8 @@ void CPlayer::setDatatoZero()
 // NOTE: This must only be called once, per new game.
 void CPlayer::setDefaultStartValues()
 {
+    pdie = PDIE_DEAD; // At first time he is revived when map is started
+	godmode  = false;
     inventory.extralifeat = 20000;
     inventory.lives = 4;
     // TODO: Add code for other defaults settings like the rays keen has depending on which episode
@@ -104,7 +105,7 @@ bool CPlayer::scrollTriggers()
 {
 	int px, py;
 	bool scrollchanged=false;
-	int scroll_x, scroll_y;
+	unsigned int scroll_x, scroll_y;
 
 	scroll_x = mp_map->m_scrollx;
 	scroll_y = mp_map->m_scrolly;

@@ -35,7 +35,7 @@ DOOR_GREEN = 4,
 DOOR_BLUE =  5
 };
 
-#define WORLD_MAP_LEVEL 80
+const int WORLD_MAP_LEVEL=80;
 
 class CPlayGame {
 public:

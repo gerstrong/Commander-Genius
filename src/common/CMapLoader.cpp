@@ -264,8 +264,8 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 			if(y >= mp_map->m_height-2) // Edge bug. Keen would fall in some levels without this.
 				x = 4;
 
-			mp_Player[0].goto_x = mp_Player[0].x = x<<CSF;
-			mp_Player[0].goto_y = mp_Player[0].y = y<<CSF;
+			mp_Player[0].goto_x = mp_Player[0].x = (x<<CSF);
+			mp_Player[0].goto_y = mp_Player[0].y = (y<<CSF);
 			mp_Player[0].plastfalling = true;
 			mp_Player[0].pfalling = true;
 			mp_Player[0].pshowdir = RIGHT;

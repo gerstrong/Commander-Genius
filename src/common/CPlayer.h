@@ -20,10 +20,10 @@
 #include <string>
 
 // scroll triggers
-#define SCROLLTRIGGERRIGHT     210
-#define SCROLLTRIGGERLEFT      130
-#define SCROLLTRIGGERUP        100
-#define SCROLLTRIGGERDOWN      140
+const int SCROLLTRIGGERRIGHT = 210;
+const int SCROLLTRIGGERLEFT = 130;
+const int SCROLLTRIGGERUP = 100;
+const int SCROLLTRIGGERDOWN = 140;
 
 ///
 // Class definition starts here!
@@ -170,7 +170,7 @@ public:
 
 	stInventory inventory;
 
-	bool m_godmode, m_cheats_enabled;
+	bool m_cheats_enabled;
 	bool *mp_levels_completed;
 	bool m_showStatusScreen;
 	char level_done;

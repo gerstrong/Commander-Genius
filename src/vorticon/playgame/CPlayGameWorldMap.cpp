@@ -56,17 +56,21 @@ void CPlayGame::processOnWorldMap()
 							}
 							break;
 							
-						default:      // a regular level
-							m_level_command = START_LEVEL;
-							m_Level = useobject & 0x7fff;
-							//g_pMusicPlayer->stop();
-							g_pSound->playStereofromCoord(SOUND_ENTER_LEVEL, PLAY_NOW, m_Object[mp_Player[i].m_player_number].scrx);
-							// save where on the map, the player entered. This is a checkpoint!
-							m_checkpoint_x = mp_Player[i].x;
-							m_checkpoint_y = mp_Player[i].y;
-							m_checkpointset = true;
-							cleanup();
-							init();
+						default: // a regular level
+							// Check if Level has been completed or the Level-Replayability is enabled
+							if( !mp_level_completed[useobject & 0x7fff] || mp_option[OPT_LVLREPLAYABILITY].value )
+							{
+								m_level_command = START_LEVEL;
+								m_Level = useobject & 0x7fff;
+								//g_pMusicPlayer->stop();
+								g_pSound->playStereofromCoord(SOUND_ENTER_LEVEL, PLAY_NOW, m_Object[mp_Player[i].m_player_number].scrx);
+								// save where on the map, the player entered. This is a checkpoint!
+								m_checkpoint_x = mp_Player[i].x;
+								m_checkpoint_y = mp_Player[i].y;
+								m_checkpointset = true;
+								cleanup();
+								init();
+							}
 							break;
 					}
 				}
