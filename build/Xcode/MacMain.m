@@ -43,7 +43,7 @@ static BOOL   gFinderLaunch;
 /* Set the working directory to the .app's parent directory */
 - (void) setupWorkingDirectory:(BOOL)shouldChdir
 {
-	/*    char parentdir[MAXPATHLEN];
+	 char parentdir[MAXPATHLEN];
 	 char *c;
 	 
 	 strncpy ( parentdir, gArgv[0], sizeof(parentdir) );
@@ -61,7 +61,7 @@ static BOOL   gFinderLaunch;
 	 {
 	 assert ( chdir (parentdir) == 0 );   // chdir to the binary app's parent
 	 assert ( chdir ("../../../") == 0 ); // chdir to the .app's parent
-	 }*/
+	 }
 }
 
 void setupAppleMenu(void)

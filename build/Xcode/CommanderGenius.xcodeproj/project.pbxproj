@@ -22,6 +22,7 @@
 		6306E1D610BC922900E08CB9 /* CHelp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6306E1D310BC922900E08CB9 /* CHelp.cpp */; };
 		630713BF10B77990004837D2 /* CPlayGameGameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 630713BE10B77990004837D2 /* CPlayGameGameState.cpp */; };
 		630CB33A10BC3BC100E7EEAA /* cgabout.tga in Resources */ = {isa = PBXBuildFile; fileRef = 630CB33910BC3BC000E7EEAA /* cgabout.tga */; };
+		630F429310CB08D800F96495 /* CMessageBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 630F429110CB08D800F96495 /* CMessageBox.cpp */; };
 		634A33DF10A233D50051193D /* CEndingEp1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 634A33D710A233D50051193D /* CEndingEp1.cpp */; };
 		634A33E010A233D50051193D /* CEndingEp2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 634A33D910A233D50051193D /* CEndingEp2.cpp */; };
 		634A33E110A233D50051193D /* CEndingEp3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 634A33DB10A233D50051193D /* CEndingEp3.cpp */; };
@@ -487,7 +488,6 @@
 		23D3E9C51013ABCA001643FA /* gm_pdowm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gm_pdowm.h; sourceTree = "<group>"; };
 		23D3E9C61013ABCA001643FA /* graphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = graphics.h; sourceTree = "<group>"; };
 		23D3E9C81013ABCA001643FA /* dialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dialog.h; sourceTree = "<group>"; };
-		23D3E9C91013ABCA001643FA /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = "<group>"; };
 		23D3E9CB1013ABCA001643FA /* misc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = misc.h; sourceTree = "<group>"; };
 		23D3E9CC1013ABCA001643FA /* playeraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = playeraction.h; sourceTree = "<group>"; };
 		23D3E9CE1013ABCA001643FA /* oggsupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = oggsupport.h; sourceTree = "<group>"; };
@@ -591,6 +591,8 @@
 		630713BE10B77990004837D2 /* CPlayGameGameState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlayGameGameState.cpp; sourceTree = "<group>"; };
 		630CB2F610BC334600E7EEAA /* CSavedGameCoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSavedGameCoder.h; sourceTree = "<group>"; };
 		630CB33910BC3BC000E7EEAA /* cgabout.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = cgabout.tga; sourceTree = "<group>"; };
+		630F429110CB08D800F96495 /* CMessageBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMessageBox.cpp; sourceTree = "<group>"; };
+		630F429210CB08D800F96495 /* CMessageBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMessageBox.h; sourceTree = "<group>"; };
 		6312202610910DB200053A0E /* spritedefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = spritedefines.h; sourceTree = "<group>"; };
 		6312FEC110963B2500DDFFA7 /* CObjectAI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CObjectAI.cpp; sourceTree = "<group>"; };
 		6312FEC210963B2500DDFFA7 /* CObjectAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CObjectAI.h; sourceTree = "<group>"; };
@@ -942,6 +944,8 @@
 			isa = PBXGroup;
 			children = (
 				23D3EA021013ABCA001643FA /* CDialog.cpp */,
+				630F429110CB08D800F96495 /* CMessageBox.cpp */,
+				630F429210CB08D800F96495 /* CMessageBox.h */,
 				23D3EA031013ABCA001643FA /* CDialog.h */,
 				6350F7741044784900A992D5 /* CDlgFrame.cpp */,
 				6350F7751044784900A992D5 /* CDlgFrame.h */,
@@ -1057,7 +1061,6 @@
 				23D3E9C51013ABCA001643FA /* gm_pdowm.h */,
 				23D3E9C61013ABCA001643FA /* graphics.h */,
 				23D3E9C71013ABCA001643FA /* gui */,
-				23D3E9C91013ABCA001643FA /* main.h */,
 				23D3E9CB1013ABCA001643FA /* misc.h */,
 				23D3E9CC1013ABCA001643FA /* playeraction.h */,
 				23D3E9CD1013ABCA001643FA /* vorbis */,
@@ -1619,6 +1622,7 @@
 				636F9FEF10C38FC400CF09A2 /* CControlsettings.cpp in Sources */,
 				636F9FF010C38FC400CF09A2 /* COptions.cpp in Sources */,
 				636F9FF110C38FC400CF09A2 /* CVideoSettings.cpp in Sources */,
+				630F429310CB08D800F96495 /* CMessageBox.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
