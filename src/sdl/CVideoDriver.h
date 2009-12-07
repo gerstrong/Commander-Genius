@@ -131,7 +131,6 @@ private:
 	unsigned int m_targetfps;	// Used for automatic frame skipping
 	bool m_opengl;
 	int m_opengl_filter;
-	float m_maxresratio;
 	bool m_aspect_correction;
 	float m_aspect_ratio;
 

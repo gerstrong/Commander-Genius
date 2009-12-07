@@ -18,14 +18,15 @@
 
 class COpenGL {
 public:
-	COpenGL();
-	virtual ~COpenGL();
+	COpenGL(SDL_Rect &gamestdrect);
 
 	void render(void);
 	bool initGL(float Width, float Height, unsigned char Depth,
 				GLint oglfilter, unsigned char scalex, float aspect);
 
 	void setSurface(SDL_Surface *blitsurface);
+
+	virtual ~COpenGL();
 
 private:
 	SDL_Surface	*m_blitsurface;
@@ -34,6 +35,7 @@ private:
 	unsigned char	m_ScaleX;
 	unsigned int	m_texparam;
 	float	m_aspectratio;
+	SDL_Rect m_GameStdRect;
 };
 
 #endif

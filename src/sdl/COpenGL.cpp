@@ -10,17 +10,13 @@
 #include "CVideoDriver.h"
 #include "../CLogFile.h"
 
-#define GAME_STD_WIDTH            320
-#define GAME_STD_HEIGHT           200
-
-COpenGL::COpenGL() {
-	m_blitsurface = NULL;
-	m_Depth = 4; // 32-bit colour depth
-}
-
-COpenGL::~COpenGL() {
-	if(m_opengl_buffer){ delete[] m_opengl_buffer; m_opengl_buffer = NULL; }
-}
+// gamerect is the base resolution for the game which is scaled with the filter
+// depending on what resolution has been chosen, it is mostly 320x200 or 320x240
+COpenGL::COpenGL(SDL_Rect &gamestdrect) :
+m_blitsurface(NULL),
+m_Depth(4),	// 32-bit colour depth is default
+m_GameStdRect(gamestdrect)
+{ }
 
 bool COpenGL::initGL(float Width, float Height, unsigned char Depth,
 					 GLint oglfilter, unsigned char scalex, float aspect)
@@ -122,7 +118,7 @@ bool COpenGL::initGL(float Width, float Height, unsigned char Depth,
 	
 	
 	if(scalex > 1)
-		m_opengl_buffer = new char[GAME_STD_HEIGHT*GAME_STD_WIDTH*scalex*Depth];
+		m_opengl_buffer = new char[m_GameStdRect.h*m_GameStdRect.w*scalex*Depth];
 	else
 		m_opengl_buffer = NULL;
 	
@@ -154,29 +150,29 @@ void COpenGL::render(void)
 	
 	if(m_ScaleX == 2) //Scale 2x
 	{
-		scale(2, m_opengl_buffer, (GAME_STD_WIDTH<<1)*(m_Depth>>3), m_blitsurface->pixels,
-			  GAME_STD_WIDTH*(m_Depth>>3), (m_Depth>>3), GAME_STD_WIDTH, GAME_STD_HEIGHT);
+		scale(2, m_opengl_buffer, (m_GameStdRect.w<<1)*(m_Depth>>3), m_blitsurface->pixels,
+				m_GameStdRect.w*(m_Depth>>3), (m_Depth>>3), m_GameStdRect.w, m_GameStdRect.h);
 		
-		glTexImage2D(m_texparam, 0, GL_RGBA, GAME_STD_WIDTH<<1, GAME_STD_HEIGHT<<1, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
-		//glTexImage2D(GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA, GAME_STD_WIDTH<<1, GAME_STD_HEIGHT<<1, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
-		//glTexImage2D(GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA8, GAME_STD_WIDTH<<1, GAME_STD_HEIGHT<<1, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
+		glTexImage2D(m_texparam, 0, GL_RGBA, m_GameStdRect.w<<1, m_GameStdRect.h<<1, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
+		//glTexImage2D(GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA, GAME_STD_WIDTH<<1, m_GameStdRect.h<<1, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
+		//glTexImage2D(GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA8, GAME_STD_WIDTH<<1, m_GameStdRect.h<<1, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
 	}
 	else if(m_ScaleX == 3) //Scale 3x
 	{
-		scale(3, m_opengl_buffer, (GAME_STD_WIDTH*3)*(m_Depth>>3), m_blitsurface->pixels,
-			  GAME_STD_WIDTH*(m_Depth>>3), (m_Depth>>3), GAME_STD_WIDTH, GAME_STD_HEIGHT);
+		scale(3, m_opengl_buffer, (m_GameStdRect.w*3)*(m_Depth>>3), m_blitsurface->pixels,
+			  m_GameStdRect.w*(m_Depth>>3), (m_Depth>>3), m_GameStdRect.w, m_GameStdRect.h);
 		
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, GAME_STD_WIDTH*3, GAME_STD_HEIGHT*3, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_GameStdRect.w*3, m_GameStdRect.h*3, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
 	}
 	else if(m_ScaleX == 4) //Scale 4x
 	{
-		scale(4, m_opengl_buffer, (GAME_STD_WIDTH<<2)*(m_Depth>>3), m_blitsurface->pixels,
-			  GAME_STD_WIDTH*(m_Depth>>3), (m_Depth>>3), GAME_STD_WIDTH, GAME_STD_HEIGHT);
+		scale(4, m_opengl_buffer, (m_GameStdRect.w<<2)*(m_Depth>>3), m_blitsurface->pixels,
+			  m_GameStdRect.w*(m_Depth>>3), (m_Depth>>3), m_GameStdRect.w, m_GameStdRect.h);
 		
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, GAME_STD_WIDTH<<2, GAME_STD_HEIGHT<<2, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_GameStdRect.w<<2, m_GameStdRect.h<<2, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
 	}
 	else
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, GAME_STD_WIDTH, GAME_STD_HEIGHT, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_blitsurface->pixels);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_GameStdRect.w, m_GameStdRect.h, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_blitsurface->pixels);
 	
 	
 	glBindTexture (GL_TEXTURE_2D, 1);
@@ -198,6 +194,10 @@ void COpenGL::render(void)
 	glLoadIdentity();
 	
 	SDL_GL_SwapBuffers();
+}
+
+COpenGL::~COpenGL() {
+	if(m_opengl_buffer){ delete[] m_opengl_buffer; m_opengl_buffer = NULL; }
 }
 
 #endif

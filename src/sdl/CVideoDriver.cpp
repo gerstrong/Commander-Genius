@@ -73,7 +73,6 @@ CVideoDriver::CVideoDriver() {
 #endif
 	m_aspect_correction = true;
 	m_aspect_ratio = 8.0f/5.0f;
-	m_maxresratio = 8.0f/5.0f;
 
 	screenrect.x=0;
 	screenrect.y=0;
@@ -99,7 +98,6 @@ void CVideoDriver::initResolutionList()
 	st_resolution resolution;
 	char buf[256];
 	m_Resolutionlist.clear();
-	int g,j;
 
 	std::ifstream ResolutionFile; OpenGameFileR(ResolutionFile, "resolutions.cfg");
 	if(!ResolutionFile)
@@ -123,10 +121,9 @@ void CVideoDriver::initResolutionList()
 		while(!ResolutionFile.eof())
 		{
 			ResolutionFile.getline(buf,256);
-			if(sscanf(buf,"%ix%i", &resolution.width,
-					  &resolution.height) == 2)
-				// Now check if it's possible to use this resolution
+			if(sscanf(buf,"%ix%i", &resolution.width, &resolution.height) == 2) // Now check if it's possible to use this resolution
 				resolution.depth = 32;
+
 			resolution.depth = SDL_VideoModeOK(resolution.width, resolution.height,
 											   resolution.depth, SDL_FULLSCREEN);
 
@@ -134,9 +131,11 @@ void CVideoDriver::initResolutionList()
 			{
 				std::list<st_resolution> :: iterator i;
 				for( i = m_Resolutionlist.begin() ; i != m_Resolutionlist.end() ; i++ )
+				{
 					if(i->width == resolution.width &&
 					   i->height == resolution.height &&
-					   i->depth == resolution.depth) break;
+				       i->depth == resolution.depth) break;
+				}
 
 				if(i == m_Resolutionlist.end())
 					m_Resolutionlist.push_back(resolution);
@@ -144,32 +143,6 @@ void CVideoDriver::initResolutionList()
 		}
 		ResolutionFile.close();
 		
-		if(!getFullscreen())
-		{
-			for (g=1; g != 20; g++) {
-				if (g*320>m_Resolutionlist.back().width or g*200>m_Resolutionlist.back().height)
-				{
-					j=g;
-					break;
-				}
-			}
-			m_Resolutionlist.clear();
-			for (g=1; g!=j; g++) {
-				resolution.width=g*320;
-				resolution.height=g*200;
-				resolution.depth=32;
-				m_Resolutionlist.push_back(resolution);
-			}
-		}
-		else
-		{
-			resolution.width=m_Resolutionlist.back().width;
-			resolution.height=m_Resolutionlist.back().height;
-			resolution.depth=m_Resolutionlist.back().depth;
-			m_Resolutionlist.clear();
-			m_Resolutionlist.push_back(resolution);
-			m_maxresratio = resolution.width/resolution.height;
-		}
 		SDL_Quit();
 		// shutdown SDL, so the game can initialize it correctly
 		// It must happen, because this is a test for resolutions
@@ -291,7 +264,7 @@ bool CVideoDriver::initOpenGL()
 #ifdef USE_OPENGL
 	if(m_opengl) // If OpenGL could be set, initialize the matrices
 	{
-		mp_OpenGL = new COpenGL();
+		mp_OpenGL = new COpenGL(game_resolution_rect);
 		if(!(mp_OpenGL->initGL(m_Resolution.width, m_Resolution.height, m_Resolution.depth,
 							   m_opengl_filter, m_ScaleXFilter, m_aspect_ratio)))
 		{
@@ -366,7 +339,6 @@ bool CVideoDriver::applyMode()
 	screenrect.h = blitrect.h = game_resolution_rect.h*Zoom;
 	screenrect.x = (m_Resolution.width-screenrect.w)/2;
 	screenrect.y = (m_Resolution.height-screenrect.h)/2;
-
 
 	// And leave the rest to SDL!
 	screen = SDL_SetVideoMode(m_Resolution.width,m_Resolution.height,m_Resolution.depth,Mode);
