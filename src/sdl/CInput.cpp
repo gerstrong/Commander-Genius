@@ -25,7 +25,7 @@ CInput::CInput() {
 	g_pLogFile->ftextOut("Starting the input driver...<br>");
 	for(int i=0 ; i<NUM_INPUTS ; i++)
 	{
-	resetControls(i);
+	resetControls(i+1);
 	}
 	memset(&Event,0,sizeof(Event));
 	loadControlconfig();
@@ -41,6 +41,8 @@ CInput::~CInput() {
 void CInput::resetControls(int player) {
 	int i;
 
+	if(player == 0)
+		player = 1;
 	m_exit = false;
 	m_cmdpulse = 0;
 	m_joydeadzone = 16384;
