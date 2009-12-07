@@ -136,12 +136,12 @@ void CVideoSettings::processSpecific(){
 			if(!m_Opengl) {
 				buf = "Zoom: ";
 				buf += (m_Zoom == 1) ? "None" : itoa(m_Zoom) + "x";
-				mp_Dialog->setObjectType(6, DLG_OBJ_DISABLED);
+				//mp_Dialog->setObjectType(6, DLG_OBJ_DISABLED);
 			}
 			else {
 				buf = "GL Filter: ";
 				buf += (m_OGL_filter==1) ? "Linear" : "Nearest";
-				mp_Dialog->setObjectType(6, DLG_OBJ_OPTION_TEXT);
+				//mp_Dialog->setObjectType(6, DLG_OBJ_OPTION_TEXT);
 			}
 			mp_Dialog->setObjectText(3,buf);
 		}
