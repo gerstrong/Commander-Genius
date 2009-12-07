@@ -323,6 +323,12 @@ void CPlayer::TogglePogo_and_Switches()
 
 void CPlayer::JumpAndPogo()
 {
+	if (m_difficulty == 0)
+	{
+	mp_PhysicsSettings->player.maxjumpspeed = 92;
+	mp_PhysicsSettings->player.defaultjumpupdecreasespeed = 2;	// TODO Auto-generated constructor stub
+	mp_PhysicsSettings->player.jumpdecrease_x = 73;
+	}
 	// handle the JUMP key, both for normal jumps and (high) pogo jumps
 	if (!pjumping && !pfalling && !pfiring)
 	{

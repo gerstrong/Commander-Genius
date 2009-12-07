@@ -105,6 +105,7 @@ public:
 	char m_episode;
 	char m_level;
 	int m_player_number;
+	int m_difficulty;
 	// Pointer to the Objects
 	std::vector<CObject> *mp_object;
 

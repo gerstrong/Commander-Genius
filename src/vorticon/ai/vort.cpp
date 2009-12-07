@@ -36,7 +36,7 @@ void CObjectAI::vort_ai(CObject &object, int level, int episode, char difficulty
 				 object.ai.vort.hp = 4;
 		 }
 		 else
-			 object.ai.vort.hp = (difficulty > 3) ? 4 : 1;
+			 object.ai.vort.hp = (difficulty > 1) ? 4 : 1;
 		 // In EP2 and 3 the Vorticons are much weaker, when no hardmode selected
 	 
 		 // copy in animation frame indexes for the current ep

@@ -58,14 +58,14 @@ void  CObjectAI::butler_ai(CObject &object, char difficulty)
     		 if (mp_Player[0].x < object.x)
     		 {
     			 mp_Player[object.touchedBy].playpushed_x = -butlerpushamount;
-    			 if (difficulty>3) mp_Player[object.touchedBy].playpushed_x -= BUTLERPUSHAMOUNTFAST;
+    			 if (difficulty>1) mp_Player[object.touchedBy].playpushed_x -= BUTLERPUSHAMOUNTFAST;
     			 mp_Player[object.touchedBy].playpushed_decreasetimer = 0;
     			 mp_Player[object.touchedBy].pdir = mp_Player[object.touchedBy].pshowdir = LEFT;
     		 }
     		 else
     		 {
     			 mp_Player[object.touchedBy].playpushed_x = butlerpushamount;
-    			 if (difficulty>3) mp_Player[object.touchedBy].playpushed_x += BUTLERPUSHAMOUNTFAST;
+    			 if (difficulty>1) mp_Player[object.touchedBy].playpushed_x += BUTLERPUSHAMOUNTFAST;
     			 mp_Player[object.touchedBy].playpushed_decreasetimer = 0;
     			 mp_Player[object.touchedBy].pdir = mp_Player[object.touchedBy].pshowdir = RIGHT;
     		 }
@@ -93,7 +93,7 @@ void  CObjectAI::butler_ai(CObject &object, char difficulty)
 			 object.sprite = BUTLER_WALK_LEFT_FRAME + object.ai.butler.frame;
 			 if (!object.blockedl && not_about_to_fall)
 			 {
-				 if (difficulty>3)
+				 if (difficulty>1)
 					 object.x -= BUTLER_WALK_SPEED_FAST;
 				 else
 					 object.x -= BUTLER_WALK_SPEED;
@@ -114,7 +114,7 @@ void  CObjectAI::butler_ai(CObject &object, char difficulty)
 			 object.sprite = BUTLER_WALK_RIGHT_FRAME + object.ai.butler.frame;
 			 if (!object.blockedr && not_about_to_fall)
 			 {
-				 if (difficulty>3)
+				 if (difficulty>1)
 					 object.x += BUTLER_WALK_SPEED_FAST;
 				 else
 					 object.x += BUTLER_WALK_SPEED;
@@ -130,7 +130,7 @@ void  CObjectAI::butler_ai(CObject &object, char difficulty)
 		 }
 		 // walk animation
 		 if (object.ai.butler.animtimer > BUTLER_WALK_ANIM_TIME ||
-				 (object.ai.butler.animtimer > BUTLER_WALK_ANIM_TIME_FAST && difficulty>3))
+				 (object.ai.butler.animtimer > BUTLER_WALK_ANIM_TIME_FAST && difficulty>1))
 		 {
 			 if (object.ai.butler.frame>=3) object.ai.butler.frame=0;
 			 else object.ai.butler.frame++;

@@ -31,8 +31,6 @@ public:
 		// pogo settings
 		int pogoforce_x;
 	}player;
-
-
 	virtual ~CPhysicsSettings();
 };
 

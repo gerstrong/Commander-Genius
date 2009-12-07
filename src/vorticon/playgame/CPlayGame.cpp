@@ -54,6 +54,7 @@ mp_MessageBox(NULL)
 	if(m_NumPlayers == 0) m_NumPlayers = 1;
 	
 	mp_Player = new CPlayer[m_NumPlayers];
+	mp_Player->m_difficulty = difficulty;
 	
 	// Create completed level list
 	memset(mp_level_completed,false,MAX_LEVELS*sizeof(bool));

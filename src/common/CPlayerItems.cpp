@@ -121,6 +121,9 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 			break;
 		case 15:           // raygun
 			riseBonus(GUNUP_SPRITE, mpx, mpy);
+			if (m_difficulty == 0)
+				inventory.charges += 8;
+			else 
 			inventory.charges += 5;
 			break;
 		case 16:           // the Holy Pogo Stick

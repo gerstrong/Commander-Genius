@@ -168,7 +168,7 @@ void CMenu::initDifficultyMenu()
 {
 	mp_Dialog = new CDialog(mp_MenuSurface, 11, 5);
 	
-	mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 1, "Easy");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Easy");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Normal");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Hard");
 }
@@ -422,14 +422,7 @@ void CMenu::processDifficultyMenu()
 	if( m_selection != -1)
 	{
 		cleanup();
-		if( m_selection > 0 )
-		{
-			m_Difficulty = m_selection-1;	
-		}
-		else
-		{
-			m_goback = true;
-		}
+			m_Difficulty = m_selection;	
 	}
 	
 	if(m_goback)
