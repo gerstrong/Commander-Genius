@@ -72,6 +72,8 @@ CVideoDriver::CVideoDriver() {
 	m_opengl = false; // Must stay optional for better compatibility
 #endif
 	m_aspect_correction = true;
+	m_aspect_ratio = 8.0f/5.0f;
+	m_maxresratio = 8.0f/5.0f;
 
 	screenrect.x=0;
 	screenrect.y=0;
@@ -140,6 +142,8 @@ void CVideoDriver::initResolutionList()
 					m_Resolutionlist.push_back(resolution);
 			}
 		}
+		ResolutionFile.close();
+		
 		if(!getFullscreen())
 		{
 			for (g=1; g != 20; g++) {
@@ -157,7 +161,15 @@ void CVideoDriver::initResolutionList()
 				m_Resolutionlist.push_back(resolution);
 			}
 		}
-		ResolutionFile.close();
+		else
+		{
+			resolution.width=m_Resolutionlist.back().width;
+			resolution.height=m_Resolutionlist.back().height;
+			resolution.depth=m_Resolutionlist.back().depth;
+			m_Resolutionlist.clear();
+			m_Resolutionlist.push_back(resolution);
+			m_maxresratio = resolution.width/resolution.height;
+		}
 		SDL_Quit();
 		// shutdown SDL, so the game can initialize it correctly
 		// It must happen, because this is a test for resolutions
@@ -281,7 +293,7 @@ bool CVideoDriver::initOpenGL()
 	{
 		mp_OpenGL = new COpenGL();
 		if(!(mp_OpenGL->initGL(m_Resolution.width, m_Resolution.height, m_Resolution.depth,
-							   m_opengl_filter, m_ScaleXFilter, m_aspect_correction)))
+							   m_opengl_filter, m_ScaleXFilter, m_aspect_ratio)))
 		{
 			delete mp_OpenGL;
 			mp_OpenGL = NULL;

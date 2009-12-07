@@ -39,7 +39,7 @@ CBaseMenu(menu_type) {
 	m_AspectCorrection = g_pVideoDriver->getAspectCorrection();
 
 	std::string buf;
-	mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 32, 9);
+	mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 32, 8);
 	mp_Dialog->setFrameTheme(DLG_THEME_OLDSCHOOL);
 
 	buf = "Resolution: " + itoa(m_Resolution.width) + "x" + itoa(m_Resolution.height) + "x" + itoa(m_Resolution.depth);
@@ -71,10 +71,6 @@ CBaseMenu(menu_type) {
 
 	buf = "Frameskip: " + itoa(m_Autoframeskip) + " fps";
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, buf);
-
-	buf = "OGL Aspect Ratio ";
-	buf += m_AspectCorrection ? "enabled" : "disabled";
-	mp_Dialog->addObject( (!m_Opengl) ? DLG_OBJ_DISABLED : DLG_OBJ_OPTION_TEXT, 1, 7, buf);
 }
 
 void CVideoSettings::processSpecific(){
@@ -91,7 +87,6 @@ void CVideoSettings::processSpecific(){
 			g_pVideoDriver->setZoom(m_Zoom);
 			g_pVideoDriver->setFilter(m_ScaleXFilter);
 			g_pTimer->setFrameRate(DEFAULT_LPS, m_Autoframeskip, DEFAULT_SYNC);
-			g_pVideoDriver->setAspectCorrection(m_AspectCorrection);
 			g_pVideoDriver->setMode(m_Resolution);
 			g_pVideoDriver->start();
 
@@ -181,14 +176,6 @@ void CVideoSettings::processSpecific(){
 
 			buf = "Frameskip: " + itoa(m_Autoframeskip) + " fps";
 			mp_Dialog->setObjectText(5, buf);
-		}
-		else if(m_selection == 6)
-		{
-			m_AspectCorrection = !m_AspectCorrection;
-
-			buf = "OGL Aspect Ratio ";
-			buf += m_AspectCorrection ? "enabled" : "disabled";
-			mp_Dialog->setObjectText(6, buf);
 		}
 		m_selection = -1;
 	}

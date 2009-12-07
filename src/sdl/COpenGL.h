@@ -23,7 +23,7 @@ public:
 
 	void render(void);
 	bool initGL(float Width, float Height, unsigned char Depth,
-				GLint oglfilter, unsigned char scalex, bool aspect);
+				GLint oglfilter, unsigned char scalex, float aspect);
 
 	void setSurface(SDL_Surface *blitsurface);
 

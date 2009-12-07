@@ -23,7 +23,7 @@ COpenGL::~COpenGL() {
 }
 
 bool COpenGL::initGL(float Width, float Height, unsigned char Depth,
-					 GLint oglfilter, unsigned char scalex, bool aspect)
+					 GLint oglfilter, unsigned char scalex, float aspect)
 {
 	m_Depth = Depth;
 	m_ScaleX = scalex;
@@ -32,17 +32,42 @@ bool COpenGL::initGL(float Width, float Height, unsigned char Depth,
 	m_texparam = GL_TEXTURE_2D;
 	
 	// Set the proper resolution for OpenGL. Very important, when user changes the resolution
-	if(aspect)
+	if(aspect == 4.0f/3.0f)
 	{
-		if(m_aspectratio < 8.0f/5.0f)
-			glViewport(0,(Height-((Width/320)*200))/2,Width, (Width/320)*200);
-		else if(m_aspectratio > 8.0f/5.0f)
-			glViewport((Width-((Height/200)*320))/2,0, (Height/200)*320, Height);
-		else
-			glViewport(0,0,Width, Height);
-	}
+	if(m_aspectratio < 4.0f/3.0f)
+		glViewport(0,(Height-((Width/320)*240))/2,Width, (Width/320)*240);
+	else if(m_aspectratio > 3.0f/2.0f)
+		glViewport((Width-((Height/240)*320))/2,0, (Height/240)*320, Height);
 	else
 		glViewport(0,0,Width, Height);
+	}
+	else if(aspect == 3.0f/2.0f)
+	{
+			if(m_aspectratio < 3.0f/3.0f)
+		glViewport(0,(Height-((Width/720)*480))/2,Width, (Width/720)*480);
+	else if(m_aspectratio > 3.0f/2.0f)
+		glViewport((Width-((Height/480)*720))/2,0, (Height/480)*720, Height);
+	else
+		glViewport(0,0,Width, Height);
+	}
+	else if(aspect == 8.0f/5.0f)
+	{
+	if(m_aspectratio < 8.0f/5.0f)
+		glViewport(0,(Height-((Width/320)*200))/2,Width, (Width/320)*200);
+	else if(m_aspectratio > 8.0f/5.0f)
+		glViewport((Width-((Height/200)*320))/2,0, (Height/200)*320, Height);
+	else
+		glViewport(0,0,Width, Height);
+	}
+	else if(aspect == 16.0f/9.0f)
+	{
+			if(m_aspectratio < 16.0f/9.0f)
+		glViewport(0,(Height-((Width/320)*180))/2,Width, (Width/320)*180);
+	else if(m_aspectratio > 16.0f/9.0f)
+		glViewport((Width-((Height/180)*320))/2,0, (Height/180)*320, Height);
+	else
+		glViewport(0,0,Width, Height);
+	}
 	
 	// Set clear colour
 	glClearColor(0,0,0,0);
