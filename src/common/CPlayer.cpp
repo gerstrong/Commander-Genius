@@ -729,6 +729,25 @@ void CPlayer::StatusBox()
 		m_showStatusScreen=true; // PlayGame class detects that variable and launches drawStatusScreen()
 }
 
+void CPlayer::freeze()
+{
+	if ( godmode ) return;
+	if ( ankhtime) return;
+	// give the player a little "kick"
+	//pjumptime = PJUMP_NORMALTIME_1;
+	//pjumpupdecreaserate = PJUMP_UPDECREASERATE_1;
+	pjumpupspeed = 15;
+	pjumping = PJUMPUP;
+	//pjumpupspeed_decreasetimer = 0;
+	pjustjumped = true;
+
+	// and freeze him (stun him on ep2/3)
+	pfrozentime = PFROZEN_TIME;
+	pfrozenframe = 0;
+	pfrozenanimtimer = 0;
+	ppogostick = false;
+}
+
 // Draws the Status screen and return false, when it's still open.
 bool CPlayer::drawStatusScreen()
 {

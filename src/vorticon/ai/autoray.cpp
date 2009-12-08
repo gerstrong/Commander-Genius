@@ -20,12 +20,12 @@ void CObjectAI::autoray_ai(CObject &Object)
 		Object.needinit = 0;
 	}
 
-	/*if (!gunfiretimer)
+	if (!m_gunfiretimer)
 	{
 		CObject NewRay;
 		NewRay.spawn(Object.x, Object.y, OBJ_RAY);
 
-		if (Object.type==OBJ_AUTORAY_V)
+		if (Object.m_type==OBJ_AUTORAY_V)
 		{
 			NewRay.sprite = RAY_VERT_EP3;
 			NewRay.ai.ray.direction = DOWN;
@@ -36,10 +36,10 @@ void CObjectAI::autoray_ai(CObject &Object)
 			NewRay.ai.ray.direction = RIGHT;
 		}
 
-		mp_Objvect->push_back(NewRay);
+		m_Objvect.push_back(NewRay);
 
 		if (Object.onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, Object.x);
-	}*/
+	}
 }
 
 

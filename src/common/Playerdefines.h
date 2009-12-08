@@ -129,10 +129,10 @@ enum jumpstates{
 
 // frame and animation speed for frozen keen (ep1) and stunned keen (ep2&3)
 #define PFRAME_FROZEN         28
-#define PFROZENANIMTIME       100
+#define PFROZENANIMTIME       25
 // how long keen should stay frozen when hit by an ice chunk
-#define PFROZEN_TIME          1000
-#define PFROZEN_THAW          100
+#define PFROZEN_TIME          250
+#define PFROZEN_THAW          20
 
 // player dieing states
 #define PDIE_NODIE      0

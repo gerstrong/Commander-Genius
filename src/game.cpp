@@ -270,25 +270,6 @@ void recalc_highest_objslot(void)
 	 }*/
 }
 
-void freezeplayer(int theplayer)
-{
-	/*if ( player[theplayer].godmode ) return;
-	 if (player[theplayer].ankhtime) return;
-	 // give the player a little "kick"
-	 player[theplayer].pjumptime = PJUMP_NORMALTIME_1;
-	 player[theplayer].pjumpupdecreaserate = PJUMP_UPDECREASERATE_1;
-	 player[theplayer].pjumpupspeed = 15;
-	 player[theplayer].pjumping = PJUMPUP;
-	 player[theplayer].pjumpupspeed_decreasetimer = 0;
-	 player[theplayer].pjustjumped = 1;
-	 
-	 // and freeze him (stun him on ep2/3)
-	 player[theplayer].pfrozentime = PFROZEN_TIME;
-	 player[theplayer].pfrozenframe = 0;
-	 player[theplayer].pfrozenanimtimer = 0;
-	 player[theplayer].ppogostick = false;*/
-}
-
 // initialize sprites that come from tiles, such as the doors
 void initsprites(stCloneKeenPlus *pCKP, int s)
 {

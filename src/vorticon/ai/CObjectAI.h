@@ -92,6 +92,7 @@ private:
 	int m_Episode;
 	int m_NumPlayers;
 	char m_difficulty;
+	int m_gunfiretimer;
 };
 
 #endif /* COBJECTAI_H_ */

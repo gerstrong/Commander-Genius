@@ -5,9 +5,9 @@
 #include "../../sdl/sound/CSound.h"
 
 // the chunks of ice shot out by an ice cannon (ep1)
-#define ICECHUNK_SPEED        		60
-#define ICECHUNK_STRAIGHT_SPEED     80
-#define ICECHUNK_WAIT_TIME    		38
+const int ICECHUNK_SPEED = 60;
+const int ICECHUNK_STRAIGHT_SPEED = 80;
+const int ICECHUNK_WAIT_TIME = 38;
 
 unsigned int rnd(void);
 
@@ -24,7 +24,7 @@ void CObjectAI::icechunk_ai(CObject &object)
 
 		object.ai.icechunk.veloc_x = speed * object.ai.icechunk.vector_x;
 		object.ai.icechunk.veloc_y = speed * object.ai.icechunk.vector_y;
-		object.inhibitfall = 1;
+		object.inhibitfall = true;
 		object.canbezapped = 0;
 		object.needinit = 0;
 	}
@@ -58,7 +58,7 @@ void CObjectAI::icechunk_ai(CObject &object)
 			}
 		}
 
-		freezeplayer(object.touchedBy);
+		mp_Player[object.touchedBy].freeze();
 		smash(object);
 		return;
 	}
@@ -117,12 +117,13 @@ void CObjectAI::smash(CObject &object)
 		chunk.ai.icechunk.vector_y = 1;
 		m_Objvect.push_back(chunk);
 	}
+	deleteObj(object);
 }
 
 
 // the little pieces that break off of an OBJ_ICECHUNK when it hits
 // a wall or a player. (Ep1)
-#define ICEBIT_SPEED        20
+#define ICEBIT_SPEED        80
 
 void CObjectAI::icebit_ai(CObject &object)
 {
@@ -130,15 +131,15 @@ void CObjectAI::icebit_ai(CObject &object)
 	{  // first time initilization
 		object.ai.icechunk.veloc_x = ICEBIT_SPEED * object.ai.icechunk.vector_x;
 		object.ai.icechunk.veloc_y = ICEBIT_SPEED * object.ai.icechunk.vector_y;
-		object.inhibitfall = 1;
-		object.canbezapped = 0;
-		object.needinit = 0;
+		object.inhibitfall = true;
+		object.canbezapped = false;
+		object.needinit = false;
 	}
 
 	object.x += object.ai.icechunk.veloc_x;
 	object.y += object.ai.icechunk.veloc_y;
 
-	if (!object.onscreen)
+	if (!object.onscreen or !m_gunfiretimer)
 	{
 		deleteObj(object);
 	}
@@ -148,19 +149,18 @@ void CObjectAI::icebit_ai(CObject &object)
 // the ice cannon itself
 void CObjectAI::icecannon_ai(CObject &object)
 {
-	CObject chunk;
-	 
 	 // keep spawner object invisible and properly positioned
 	 object.sprite = BLANKSPRITE;
 	 object.inhibitfall = 1;
 	 
-	 //if (!gunfiretimer)
-	 //{
-		 chunk.spawn(object.x, object.y, OBJ_ICECHUNK);
-	 
+	 if (!m_gunfiretimer)
+	 {
+		 CObject chunk;
+		 chunk.spawn( object.x+512, object.y, OBJ_ICECHUNK );
 		 chunk.ai.icechunk.vector_x = object.ai.icechunk.vector_x;
 		 chunk.ai.icechunk.vector_y = object.ai.icechunk.vector_y;
-	 //}
+		 m_Objvect.push_back(chunk);
+	 }
 }
 
 

@@ -20,6 +20,7 @@ m_difficulty(difficulty)
 	m_Episode = episode;
 	m_NumPlayers = NumPlayers;
 	mp_Player = p_player;
+	m_gunfiretimer = 0;
 }
 
 //////////////////
@@ -72,7 +73,8 @@ void CObjectAI::process()
 		}
 		object.process();
 	}
-
+	if(m_gunfiretimer<120) m_gunfiretimer++;
+	else m_gunfiretimer=0;
 }
 
 ///
@@ -109,7 +111,7 @@ bool CObjectAI::checkforAIObject( CObject &object )
     }
 
 	if (object.hasbeenonscreen || object.zapped ||
-		type==OBJ_RAY || \
+		type==OBJ_RAY ||
 		type==OBJ_ICECHUNK || type==OBJ_PLATFORM ||
 		type==OBJ_PLATVERT || type==OBJ_YORP ||
 		type==OBJ_FOOB || type==OBJ_SCRUB)

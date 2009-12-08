@@ -10,7 +10,7 @@
 CPhysicsSettings::CPhysicsSettings() {
 	// used for jumping
 	player.maxjumpspeed = 103;
-	player.defaultjumpupdecreasespeed = 3;	// TODO Auto-generated constructor stub
+	player.defaultjumpupdecreasespeed = 3;
 	player.jumpdecrease_x = 54;
 
 	player.max_x_speed = 73;

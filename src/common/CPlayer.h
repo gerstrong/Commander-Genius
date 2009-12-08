@@ -84,6 +84,7 @@ public:
 	bool scrollTriggers();
 	void give_keycard(int doortile);
 	void take_keycard(int doortile);
+	void freeze();
 	bool showGameHint(int mpx, int mpy);
 	std::string pollHintMessage();
 
