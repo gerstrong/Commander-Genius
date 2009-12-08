@@ -18,7 +18,8 @@ void CObjectAI::gotpoints_ai(CObject &Object)
 	if (Object.needinit)
 	{
 		Object.ai.ray.offscreentime = GOTPOINTS_LIFETIME;
-		Object.inhibitfall = 1;
+		Object.inhibitfall = true;
+		Object.solid = false;
 		Object.honorPriority = 0;
 		Object.needinit = 0;
 	}

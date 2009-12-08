@@ -58,7 +58,7 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 	{
 		case RAY_STATE_FLY:
 			// test if it hit a baddie
-			for( it_obj = mp_Objvect->begin() ; it_obj!=mp_Objvect->end() ; it_obj++)
+			for( it_obj = m_Objvect.begin() ; it_obj!=m_Objvect.end() ; it_obj++)
 			{
 				if (object.ai.ray.dontHitEnable)
 				{
@@ -97,7 +97,7 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 				{
 					if (object.ai.ray.dontHitEnable==0 || object.ai.ray.dontHit!=OBJ_PLAYER)
 					{
-						//killplayer(object.touchedBy);
+						mp_Player[object.touchedBy].kill();
 						object.ai.ray.state = RAY_STATE_SETZAPZOT;
 					}
 				}

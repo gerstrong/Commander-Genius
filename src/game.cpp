@@ -233,43 +233,7 @@ void initgame(stLevelControl *p_levelcontrol)
 
 int initgamefirsttime(stCloneKeenPlus *pCKP, int s)
 {
-	/*int i;
-	 
-	 map.firsttime = 1;
-	 
-	 for(i=0;i<MAX_LEVELS;i++)
-	 pCKP->Control.levelcontrol.levels_completed[i] = 0;
-	 
-	 for(i=0;i<MAX_PLAYERS;i++)
-	 {
-	 player[i].godmode = 0;
-	 
-	 if (pCKP->Control.levelcontrol.episode==1)
-	 {
-	 player[i].inventory.charges = 0;
-	 }
-	 else if (pCKP->Control.levelcontrol.episode==2)
-	 {
-	 player[i].inventory.charges = 3;
-	 }
-	 else
-	 {
-	 player[i].inventory.charges = 5;
-	 }
-	 
-	 // start with pogo stick in all episodes but 1
-	 if (pCKP->Control.levelcontrol.episode!=1 || pCKP->Control.levelcontrol.demomode)
-	 { player[i].inventory.HasPogo = 1; }
-	 else
-	 { player[i].inventory.HasPogo = 0; }
-	 }
-	 
-	 initsprites(pCKP, s);
-	 
-	 if (pCKP->Control.levelcontrol.demomode) srand(375);
-	 
-	 primaryplayer = 0;
-	 */
+
 	return 0;
 }
 
@@ -304,35 +268,6 @@ void recalc_highest_objslot(void)
 	 break;
 	 }
 	 }*/
-}
-
-void killobject(int o)
-{
-	/*if (objects[o].exists)
-	 {
-	 if (objects[o].type==OBJ_PLAYER)
-	 {
-	 killplayer(o);
-	 }
-	 else
-	 {
-	 if (objects[o].zapped < 500 && objects[o].canbezapped)
-	 objects[o].zapped += 500;
-	 }
-	 }*/
-}
-
-// anything (players/enemies) occupying the map tile at [mpx,mpy] is killed
-void kill_all_intersecting_tile(int mpx, int mpy)
-{
-	/*unsigned int xpix,ypix;
-	 xpix = mpx<<TILE_S<<CSF;
-	 ypix = mpy<<TILE_S<<CSF;
-	 for(int i=0 ; i<highest_objslot ; i++)
-	 if (objects[i].exists)
-	 if (xpix <= objects[i].x && xpix+(16<<CSF) >= objects[i].x)
-	 if (ypix <= objects[i].y && ypix+(16<<CSF) >= objects[i].y)
-	 killobject(i);*/
 }
 
 void freezeplayer(int theplayer)

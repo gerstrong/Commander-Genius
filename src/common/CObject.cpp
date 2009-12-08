@@ -25,6 +25,7 @@ CObject::CObject(int num_players) {
 	blockedu = blockedd = false;
 	blockedl = blockedr = false;
 	sprite=BLANKSPRITE;
+	solid = true;
 
 	cansupportplayer.assign(num_players, false);
 	
@@ -169,7 +170,7 @@ CSprite *Sprite = g_pGfxEngine->Sprite.at(sprite);
 	{
 		do
 		{
-			if( checkSolidR(TileProperty, p_map, x2, y1, y2) )
+			if( checkSolidR(TileProperty, p_map, x2, y1, y2) && solid )
 			{
 				blockedr = true;
 				break;
@@ -181,7 +182,7 @@ CSprite *Sprite = g_pGfxEngine->Sprite.at(sprite);
 	{
 		do
 		{
-			if( checkSolidL(TileProperty, p_map, x1, y1, y2) )
+			if( checkSolidL(TileProperty, p_map, x1, y1, y2) && solid )
 			{
 				blockedl = true;
 				break;
@@ -195,7 +196,7 @@ CSprite *Sprite = g_pGfxEngine->Sprite.at(sprite);
 	{
 		do
 		{
-			if( checkSolidU(TileProperty, p_map, x1, x2, y1) )
+			if( checkSolidU(TileProperty, p_map, x1, x2, y1) && solid )
 			{
 				blockedu = true;
 				break;
@@ -207,7 +208,7 @@ CSprite *Sprite = g_pGfxEngine->Sprite.at(sprite);
 	{
 		do
 		{
-			if( checkSolidD(TileProperty, p_map, x1, x2, y2) )
+			if( checkSolidD(TileProperty, p_map, x1, x2, y2) && solid )
 			{
 				blockedd = true;
 				break;
@@ -285,6 +286,11 @@ void CObject::processFalling()
 	}
 }
 
+void CObject::kill()
+{
+	if ( exists && zapped < 500 && canbezapped )
+		zapped += 500;
+}
 
 ///
 // Cleanup Routine

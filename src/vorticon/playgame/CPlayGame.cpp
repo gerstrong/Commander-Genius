@@ -59,7 +59,7 @@ mp_MessageBox(NULL)
 	// Create completed level list
 	memset(mp_level_completed,false,MAX_LEVELS*sizeof(bool));
 
-	// Player are tied to objects like enemys, sprites, etc, so they
+	// Player are tied to objects like enemies, sprites, etc., so they
 	// can be drawn the same way.
 	createPlayerObjects();
 
@@ -131,7 +131,7 @@ bool CPlayGame::init()
 	g_pInput->flushAll();
 	
 	// Initialize the AI
-	mp_ObjectAI = new CObjectAI(mp_Map, &m_Object, mp_Player, mp_option,
+	mp_ObjectAI = new CObjectAI(mp_Map, m_Object, mp_Player, mp_option,
 								m_NumPlayers, m_Episode, m_Level, m_Difficulty);
 
 	// Check if Player meets the conditions to show a cutscene. This also happens, when finale of episode has reached
@@ -496,16 +496,16 @@ void CPlayGame::drawObjects()
 		
 		if (p_object->exists && p_object->onscreen)
 		{
-			CSprite *Sprite = g_pGfxEngine->Sprite[p_object->sprite];
+			CSprite &Sprite = *g_pGfxEngine->Sprite[p_object->sprite];
 			p_object->scrx = (p_object->x>>STC)-mp_Map->m_scrollx;
 			p_object->scry = (p_object->y>>STC)-mp_Map->m_scrolly;
 
-			Sprite->drawSprite( g_pVideoDriver->getBlitSurface(), p_object->scrx, p_object->scry );
+			Sprite.drawSprite( g_pVideoDriver->getBlitSurface(), p_object->scrx, p_object->scry );
 
-			p_object->bboxX1 = Sprite->m_bboxX1;
-			p_object->bboxX2 = Sprite->m_bboxX2;
-			p_object->bboxY1 = Sprite->m_bboxY1;
-			p_object->bboxY2 = Sprite->m_bboxY2;
+			p_object->bboxX1 = Sprite.m_bboxX1;
+			p_object->bboxX2 = Sprite.m_bboxX2;
+			p_object->bboxY1 = Sprite.m_bboxY1;
+			p_object->bboxY2 = Sprite.m_bboxY2;
 
 	        if (p_object->honorPriority)
 	        {

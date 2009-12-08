@@ -25,7 +25,7 @@ CInput::CInput() {
 	g_pLogFile->ftextOut("Starting the input driver...<br>");
 	for(int i=0 ; i<NUM_INPUTS ; i++)
 	{
-	resetControls(i+1);
+		resetControls(i+1);
 	}
 	memset(&Event,0,sizeof(Event));
 	loadControlconfig();
@@ -42,7 +42,13 @@ void CInput::resetControls(int player) {
 	int i;
 
 	if(player == 0)
+	{
 		player = 1;
+		g_pLogFile->textOut("Error when resetting controls. The function has been used incorrectly");
+	}
+	// not a good idea, beause it would write twice in one array, and forget about the last one. (for example 4)
+	// At least this warning will tell the people, that something is not right here!
+
 	m_exit = false;
 	m_cmdpulse = 0;
 	m_joydeadzone = 16384;

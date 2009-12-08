@@ -9,12 +9,12 @@
 #include "../../sdl/CVideoDriver.h"
 #include "../../CLogFile.h"
 
-CObjectAI::CObjectAI(CMap *p_map, std::vector<CObject> *p_objvect, CPlayer *p_player,
+CObjectAI::CObjectAI(CMap *p_map, std::vector<CObject> &objvect, CPlayer *p_player,
 					 stOption *p_options, int NumPlayers, int episode, int level ,char difficulty)  :
+m_Objvect(objvect),
 m_difficulty(difficulty)
 {
 	mp_Map = p_map;
-	mp_Objvect = p_objvect;
 	mp_Options = p_options;
 	m_Level = level;
 	m_Episode = episode;
@@ -27,9 +27,9 @@ m_difficulty(difficulty)
 //////////////////
 void CObjectAI::process()
 {
-	for( size_t i = 0 ; i<mp_Objvect->size() ; i++ )
+	for( size_t i = 0 ; i<m_Objvect.size() ; i++ )
 	{
-		CObject &object = mp_Objvect->at(i);
+		CObject &object = m_Objvect.at(i);
 
 		if( checkforAIObject(object) )
 		{
@@ -41,7 +41,7 @@ void CObjectAI::process()
 		    for( int cplayer=0 ; cplayer<m_NumPlayers ; cplayer++)
 		    {
 		    	CPlayer &player = mp_Player[cplayer];
-				CObject &playerobj = mp_Objvect->at(player.m_player_number);
+				CObject &playerobj = m_Objvect.at(player.m_player_number);
 				playerobj.x = player.x;
 				playerobj.y = player.y;
 				playerobj.sprite = 0;
@@ -185,6 +185,23 @@ void CObjectAI::killplayer(int theplayer)
 	mp_Player[theplayer].kill();
 }
 
+// anything (players/enemies) occupying the map tile at [mpx,mpy] is killed
+void CObjectAI::kill_all_intersecting_tile(int mpx, int mpy)
+{
+	 unsigned int xpix,ypix;
+	 xpix = mpx<<CSF;
+	 ypix = mpy<<CSF;
+
+	 std::vector<CObject>::iterator object;
+	 for( object=m_Objvect.begin() ; object!=m_Objvect.end() ; object++ )
+	 {
+		 if (object->exists)
+			 if (xpix <= object->x && xpix+(1<<CSF) >= object->x)
+				 if (ypix <= object->y && ypix+(1<<CSF) >= object->y)
+					 object->kill();
+	 }
+}
+
 ///
 // Cleanup Routine
 ///
@@ -194,8 +211,8 @@ void CObjectAI::deleteObj(CObject &object)
 
 	// The real delete happens, when all the AI is done
 	// If the last object was deleted, throw it out of the list
-	if( mp_Objvect->at(mp_Objvect->size()-1).exists == false )
-		mp_Objvect->pop_back();
+	if( m_Objvect.at(m_Objvect.size()-1).exists == false )
+		m_Objvect.pop_back();
 }
 
 CObjectAI::~CObjectAI() {

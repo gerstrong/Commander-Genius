@@ -100,22 +100,22 @@ void CObjectAI::smash(CObject &object)
 		// upleft
 		chunk.ai.icechunk.vector_x = -1;
 		chunk.ai.icechunk.vector_y = -1;
-		mp_Objvect->push_back(chunk);
+		m_Objvect.push_back(chunk);
 
 		// upright
 		chunk.ai.icechunk.vector_x = 1;
 		chunk.ai.icechunk.vector_y = -1;
-		mp_Objvect->push_back(chunk);
+		m_Objvect.push_back(chunk);
 
 		// downleft
 		chunk.ai.icechunk.vector_x = -1;
 		chunk.ai.icechunk.vector_y = 1;
-		mp_Objvect->push_back(chunk);
+		m_Objvect.push_back(chunk);
 
 		// downright
 		chunk.ai.icechunk.vector_x = 1;
 		chunk.ai.icechunk.vector_y = 1;
-		mp_Objvect->push_back(chunk);
+		m_Objvect.push_back(chunk);
 	}
 }
 

@@ -16,7 +16,7 @@ ROPE_IDLE, ROPE_DROPSTONE
 #define STONE_WIDTH          9
 #define STONE_HEIGHT         2
 
-#define STONE_DROP_RATE      25
+#define STONE_DROP_RATE      6
 
 void delete_object(int o);
 //void static rope_movestone(int o);
@@ -32,8 +32,7 @@ void CObjectAI::rope_ai(CObject &object)
 		object.canbezapped = 1;
 		object.inhibitfall = 1;
 		object.sprite = OBJ_ROPE_DEFSPRITE;
-
-		object.needinit = 0;
+		object.needinit = false;
 	}
 
 	switch(object.ai.rope.state)
@@ -47,8 +46,8 @@ void CObjectAI::rope_ai(CObject &object)
 			// hide the rope
 			object.sprite = BLANKSPRITE;
 			// get upper left corner of the stone
-			object.ai.rope.stoneX = (object.x >> CSF >> 4) - 4;
-			object.ai.rope.stoneY = (object.y >> CSF >> 4) + 1;
+			object.ai.rope.stoneX = (object.x >> CSF) - 4;
+			object.ai.rope.stoneY = (object.y >> CSF) + 1;
 			// get color of background
 			object.ai.rope.bgtile = mp_Map->at(object.x>>CSF, object.y>>CSF);
 		}
@@ -92,7 +91,7 @@ void CObjectAI::rope_movestone(CObject &object)
 			mp_Map->setTile(x+xa,y+ya,mp_Map->at(x+xa, y+ya-1), true);
 
 			// if the stone hits any enemies, kill them
-			//kill_all_intersecting_tile(x+xa, y+ya);
+			kill_all_intersecting_tile(x+xa, y+ya);
 		}
 	}
 

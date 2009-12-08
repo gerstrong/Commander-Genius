@@ -102,7 +102,7 @@ void CObjectAI::vort_ai(CObject &object, int level, int episode, char difficulty
 	 }
 	 // deadly to the touch
 	 if (object.touchPlayer && object.canbezapped)
-		 killplayer(object.touchedBy);
+		 mp_Player[object.touchedBy].kill();
 	 
 	 vort_reprocess: ;
 	 switch(object.ai.vort.state)

@@ -19,7 +19,7 @@
 
 class CObjectAI {
 public:
-	CObjectAI(CMap *p_map, std::vector<CObject> *p_objvect, CPlayer *p_player,
+	CObjectAI(CMap *p_map, std::vector<CObject> &objvect, CPlayer *p_player,
 			 stOption *p_options, int NumPlayers, int episode, int level ,char difficulty);
 	virtual ~CObjectAI();
 
@@ -81,10 +81,11 @@ private:
 
 	void killplayer(int theplayer);
 	void SetAllCanSupportPlayer(CObject &object, int state);
+	void kill_all_intersecting_tile(int mpx, int mpy);
 
 	// Variables
 	CMap *mp_Map;
-	std::vector<CObject> *mp_Objvect;
+	std::vector<CObject> &m_Objvect;
 	CPlayer *mp_Player;
 	stOption *mp_Options;
 	int m_Level;

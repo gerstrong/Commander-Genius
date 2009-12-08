@@ -98,7 +98,13 @@ void CPlayer::setDefaultStartValues()
 	godmode  = false;
     inventory.extralifeat = 20000;
     inventory.lives = 4;
-    // TODO: Add code for other defaults settings like the rays keen has depending on which episode
+
+    if (m_episode==1) inventory.charges = 0;
+	else if (m_episode==2) inventory.charges = 3;
+	else if (m_episode==3) inventory.charges = 5;
+
+	// start with pogo stick in all episodes but 1
+	inventory.HasPogo = (m_episode==1) ? false : true;
 }
 
 bool CPlayer::scrollTriggers()

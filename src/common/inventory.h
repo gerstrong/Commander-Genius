@@ -12,7 +12,7 @@ struct stInventory {
 	unsigned long extralifeat;
 	unsigned int charges;        // ray gun ammo
 	signed char lives;
-	unsigned char HasPogo;
+	bool HasPogo;
 	unsigned char HasCardYellow;
 	unsigned char HasCardRed;
 	unsigned char HasCardGreen;

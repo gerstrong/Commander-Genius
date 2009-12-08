@@ -111,7 +111,7 @@ typedef struct stTankData
 	unsigned char alreadyfiredcauseonsamelevel;
 	unsigned char fireafterlook;
 	
-	unsigned char detectedPlayer;         // 1 if player on same level
+	bool detectedPlayer;         		  // true if player on same level
 	unsigned char detectedPlayerIndex;    // index of player that was detected
 	
 	// for tank2

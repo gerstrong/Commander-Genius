@@ -46,13 +46,14 @@ public:
 	// if zero, priority tiles will not be honored and object will always
 	// appear in front of the background
 	bool honorPriority;
+	bool solid;
 	
 	bool canbezapped;         // if 0 ray will not stop on hitdetect
 	int zapped;              // number of times got hit by keen's raygun
 	int zapx, zapy, zapd;	   // x,y, and direction of last shot at time of impact
 	char zappedbyenemy;	   // if 1, it was an ENEMYRAY and not keen that shot it
 	
-	char inhibitfall;         // if 1 common_enemy_ai will not do falling
+	char inhibitfall;         // if true common_enemy_ai will not do falling
 	std::vector<bool> cansupportplayer;
 	
 	unsigned int blockedl, blockedr, blockedu, blockedd;
@@ -110,6 +111,7 @@ public:
 	virtual void process() { }
 	
 	bool hitdetect(CObject &hitobject);
+	void kill();
 
 	// Collision parts
 	void performCollision(CMap *p_map);

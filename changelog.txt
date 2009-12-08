@@ -1,5 +1,18 @@
-Commander Genius Release v0.3.1.0 (CloneKeenPlus):
---------------------------------------------------
+Commander Genius Release (CloneKeenPlus):
+=========================================
+
+v0.3.1.0:
+---------
+08-12-2009
+- Corrected start inventory for all Episodes
+- The Stone with Rope in Episode 1 Level 16 is working again!
+- The Tank Robot of Episode 1 is working again!
+
+
+07-12-2009
+- Added Easy mode. It's still has no function
+- Menus have been stripped down a bit (Pizza2004)
+
 06-12-2009
 - Now the YourPartsAreMissing has the original icons
 - The pogo is frozen. I did that for testing
@@ -17,8 +30,9 @@ Commander Genius Release v0.3.1.0 (CloneKeenPlus):
 - New Physics [WIP] (Tulip)
 - Better timer that makes the game much faster (Pickle)
 
-Commander Genius Release v0.3.0.4 (CloneKeenPlus):
---------------------------------------------------
+v0.3.0.4:
+---------
+
 24-09-2009
 - New Map System. Now maps of any size can be used for CG
 
