@@ -50,12 +50,28 @@ mp_MessageBox(NULL)
 	m_checkpoint_x = m_checkpoint_y = 0;
 	m_checkpointset = false;
 
-	// Create the Player
+	// Create the Players
 	if(m_NumPlayers == 0) m_NumPlayers = 1;
 	
-	mp_Player = new CPlayer[m_NumPlayers];
-	mp_Player->m_difficulty = difficulty;
-	
+	for(short i=0 ; i<m_NumPlayers ; i++)
+	{
+		// tie puppy object so the player can interact in the level
+		CObject object(m_NumPlayers);
+	    object.exists = true;
+		object.onscreen = true;
+		object.honorPriority = true;
+		object.m_type = OBJ_PLAYER;
+		m_Object.push_back(object);
+
+		// Create the new Player and also tell him to which object it belongs to...
+		CPlayer Player(m_Episode, m_Level, m_Difficulty,
+						i, mp_level_completed, mp_option,
+						m_Object);
+		Player.setDatatoZero();
+
+		m_Player.push_back(Player);
+	}
+
 	// Create completed level list
 	memset(mp_level_completed,false,MAX_LEVELS*sizeof(bool));
 
@@ -63,7 +79,6 @@ mp_MessageBox(NULL)
 	// can be drawn the same way.
 	createPlayerObjects();
 
-	m_theplayer = 0;
 	m_paused = false;
 	m_showPauseDialog = false;
 	if(finale) m_level_command = GOTO_FINALE;
@@ -77,28 +92,28 @@ void CPlayGame::setupPlayers()
 	{
 		if( m_Level == WORLD_MAP_LEVEL )
 		{
-			mp_Player[i].m_playingmode = CPlayer::WORLDMAP;
-			m_showKeensLeft |= ( mp_Player[i].pdie == PDIE_DEAD );
+			m_Player[i].m_playingmode = CPlayer::WORLDMAP;
+			m_showKeensLeft |= ( m_Player[i].pdie == PDIE_DEAD );
 		}
 		else
 		{
-			mp_Player[i].m_playingmode = CPlayer::LEVELPLAY;
-			mp_Player[i].playframe = PSTANDFRAME;
+			m_Player[i].m_playingmode = CPlayer::LEVELPLAY;
+			m_Player[i].playframe = PSTANDFRAME;
 		}
-		mp_Player[i].pdie = PDIE_NODIE;
+		m_Player[i].pdie = PDIE_NODIE;
 		
 		// Calibrate Player to the right position, so it won't fall when level starts
 		CSprite *sprite = g_pGfxEngine->Sprite[PSTANDFRAME];
-		mp_Player[i].w = sprite->getWidth()<<STC;
-		mp_Player[i].h = sprite->getHeight()<<STC;
-		mp_Player[i].y += (2<<CSF);
-		mp_Player[i].y -= mp_Player[i].h;
-		mp_Player[i].goto_y = mp_Player[i].y;
-		mp_Player[i].m_level = m_Level;
+		m_Player[i].w = sprite->getWidth()<<STC;
+		m_Player[i].h = sprite->getHeight()<<STC;
+		m_Player[i].y += (2<<CSF);
+		m_Player[i].y -= m_Player[i].h;
+		m_Player[i].goto_y = m_Player[i].y;
+		m_Player[i].m_level = m_Level;
 		
 		// Set the pointers to the map and object data
-		mp_Player[i].setMapData(mp_Map);
-		mp_Player[i].setPhysics(&m_PhysicsSettings);
+		m_Player[i].setMapData(mp_Map);
+		m_Player[i].setPhysics(&m_PhysicsSettings);
 	}
 }
 
@@ -106,7 +121,7 @@ bool CPlayGame::init()
 {
 	// Create an empty map
 	mp_Map = new CMap( g_pVideoDriver->getScrollSurface(), g_pGfxEngine->Tilemap);
-	CMapLoader MapLoader( mp_Map, mp_Player );
+	CMapLoader MapLoader( mp_Map, &m_Player[0] );
 	MapLoader.m_checkpointset = m_checkpointset;
 	MapLoader.mp_objvect = &m_Object;
 
@@ -123,7 +138,7 @@ bool CPlayGame::init()
 
 	setupPlayers();
 
-	while(mp_Player[0].scrollTriggers());   // Scroll the map to players position
+	while(m_Player[0].scrollTriggers());   // Scroll the map to players position
 
 	// Well, all players are living because they were newly spawn.
 	g_pTimer->ResetSecondsTimer();
@@ -131,7 +146,7 @@ bool CPlayGame::init()
 	g_pInput->flushAll();
 	
 	// Initialize the AI
-	mp_ObjectAI = new CObjectAI(mp_Map, m_Object, mp_Player, mp_option,
+	mp_ObjectAI = new CObjectAI(mp_Map, m_Object, m_Player, mp_option,
 								m_NumPlayers, m_Episode, m_Level,
 								m_Difficulty, m_PhysicsSettings);
 
@@ -152,18 +167,18 @@ void CPlayGame::createPlayerObjects()
 	for (int i=0 ; i<m_NumPlayers ; i++)
 	{
 		CObject object(m_NumPlayers);
-		mp_Player[i].setDatatoZero();
-		mp_Player[i].m_player_number = i;
-		mp_Player[i].m_episode = m_Episode;
-		mp_Player[i].mp_levels_completed = mp_level_completed;
+		m_Player[i].setDatatoZero();
+		m_Player[i].m_player_number = i;
+		m_Player[i].m_episode = m_Episode;
+		m_Player[i].mp_levels_completed = mp_level_completed;
 
 	    object.exists = true;
 		object.onscreen = true;
 		object.honorPriority = true;
 		object.m_type = OBJ_PLAYER;
-		mp_Player[i].mp_option = mp_option;
+		m_Player[i].mp_option = mp_option;
 		m_Object.push_back(object);
-		mp_Player[i].mp_object=&m_Object;
+		m_Player[i].mp_object=&m_Object;
 	}
 }
 
@@ -205,7 +220,7 @@ void CPlayGame::process()
 			    mp_Map->m_maxscrollx = (mp_Map->m_width<<4) - gamerect.w - 36;
 			    mp_Map->m_maxscrolly = (mp_Map->m_height<<4) - gamerect.h - 36;
 				for( int i=0 ; i<m_NumPlayers ; i++ )
-					while(mp_Player[i].scrollTriggers());
+					while(m_Player[i].scrollTriggers());
 				mp_Map->drawAll();
 			}
 
@@ -240,11 +255,11 @@ void CPlayGame::process()
 			for( int i=0 ; i<m_NumPlayers ; i++ )
 			{
 				// Did he open the status screen?
-				if(mp_Player[i].m_showStatusScreen)
+				if(m_Player[i].m_showStatusScreen)
 					m_paused = true; // this is processed in processPauseDialogs!
 
 				// Handle the Scrolling here!
-				mp_Player[i].scrollTriggers();
+				m_Player[i].scrollTriggers();
 			}
 		}
 		else // In this case the Game has been finished, goto to the cutscenes
@@ -299,8 +314,8 @@ void CPlayGame::process()
 		SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
 #ifdef DEBUG
 		//tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec()) +
-			//"; x = " + itoa(mp_Player[0].x) + " ; y = " + itoa(mp_Player[0].y);
-		tempbuf = "speed_x: " + itoa(mp_Player[0].pinertia_x);
+			//"; x = " + itoa(m_Player[0].x) + " ; y = " + itoa(m_Player[0].y);
+		tempbuf = "speed_x: " + itoa(m_Player[0].pinertia_x);
 		tempbuf += " | pogo_force_x: " + itoa(m_PhysicsSettings.player.pogoforce_x);
 #else
 		tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec());
@@ -330,17 +345,17 @@ void CPlayGame::handleFKeys()
 		g_pInput->flushAll();
 		for(i=0;i<m_NumPlayers;i++)
 		{
-			mp_Player[i].pfiring = false;
-			if (mp_Player[i].m_playingmode)
+			m_Player[i].pfiring = false;
+			if (m_Player[i].m_playingmode)
 			{
-				mp_Player[i].give_keycard(DOOR_YELLOW);
-				mp_Player[i].give_keycard(DOOR_RED);
-				mp_Player[i].give_keycard(DOOR_GREEN);
-				mp_Player[i].give_keycard(DOOR_BLUE);
+				m_Player[i].give_keycard(DOOR_YELLOW);
+				m_Player[i].give_keycard(DOOR_RED);
+				m_Player[i].give_keycard(DOOR_GREEN);
+				m_Player[i].give_keycard(DOOR_BLUE);
 				
-				mp_Player[i].inventory.charges = 999;
-				mp_Player[i].inventory.HasPogo = 1;
-				mp_Player[i].inventory.lives = 10;
+				m_Player[i].inventory.charges = 999;
+				m_Player[i].inventory.HasPogo = 1;
+				m_Player[i].inventory.lives = 10;
 
 				std::string Text;
 				Text = 	"You are now cheating!\n";
@@ -359,10 +374,10 @@ void CPlayGame::handleFKeys()
     if ( g_pInput->getHoldedKey(KG) && g_pInput->getHoldedKey(KO) && g_pInput->getHoldedKey(KD) )
     {
     	for(i=0;i<MAX_PLAYERS;i++)
-    		mp_Player[i].godmode ^= 1;
+    		m_Player[i].godmode ^= 1;
 
     	g_pVideoDriver->DeleteConsoleMsgs();
-    	if (mp_Player[0].godmode)
+    	if (m_Player[0].godmode)
     		g_pVideoDriver->AddConsoleMsg("God mode ON");
     	else
     		g_pVideoDriver->AddConsoleMsg("God mode OFF");
@@ -370,7 +385,7 @@ void CPlayGame::handleFKeys()
     	g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
 
     	// Show a message like in the original game
-    	mp_MessageBox = new CMessageBox(mp_Player[0].godmode ? "Godmode enabled" : "Godmode disabled");
+    	mp_MessageBox = new CMessageBox(m_Player[0].godmode ? "Godmode enabled" : "Godmode disabled");
     	m_paused = true;
     	g_pInput->flushKeys();
     }
@@ -383,19 +398,19 @@ void CPlayGame::handleFKeys()
     		// scattered throughout the various functions.
     		for(i=0;i<m_NumPlayers;i++)
     		{
-    			if (mp_Player[i].pdie)
+    			if (m_Player[i].pdie)
     			{
-    				mp_Player[i].pdie = PDIE_NODIE;
-    				mp_Player[i].y -= (8<<CSF);
+    				m_Player[i].pdie = PDIE_NODIE;
+    				m_Player[i].y -= (8<<CSF);
     			}
-    			mp_Player[i].pfrozentime = 0;
+    			m_Player[i].pfrozentime = 0;
     		}
     	}
 
     	// F9 - exit level immediately
     	if(g_pInput->getPressedKey(KF9))
     	{
-    		mp_Player[0].level_done = LEVEL_COMPLETE;
+    		m_Player[0].level_done = LEVEL_COMPLETE;
     	}
     }
 
@@ -434,10 +449,10 @@ void CPlayGame::verifyCutscenes()
 		// Check if one of the Players has the items
 		for( int i=0 ;i < m_NumPlayers ; i++)
 		{
-			hasBattery |= mp_Player[i].inventory.HasBattery;
-			hasWiskey |= mp_Player[i].inventory.HasWiskey;
-			hasJoystick |= mp_Player[i].inventory.HasJoystick;
-			hasVaccum |= mp_Player[i].inventory.HasVacuum;
+			hasBattery |= m_Player[i].inventory.HasBattery;
+			hasWiskey |= m_Player[i].inventory.HasWiskey;
+			hasJoystick |= m_Player[i].inventory.HasJoystick;
+			hasVaccum |= m_Player[i].inventory.HasVacuum;
 		}
 
 		// If they have have the items, we can go home
@@ -457,11 +472,11 @@ void CPlayGame::verifyCutscenes()
 void CPlayGame::createFinale()
 {
 	if(m_Episode == 1)
-		mp_Finale = new CEndingEp1(mp_Map, mp_Player);
+		mp_Finale = new CEndingEp1(mp_Map, m_Player);
 	/*else if(m_Episode == 2)
-		mp_Finale = new CEndingEp2(mp_Map, mp_Player);
+		mp_Finale = new CEndingEp2(mp_Map, m_Player);
 	else if(m_Episode == 3)
-		mp_Finale = new CEndingEp3(mp_Map, mp_Player);*/
+		mp_Finale = new CEndingEp3(mp_Map, m_Player);*/
 }
 
 // This function draws the objects that need to be seen on the screen
@@ -477,15 +492,15 @@ void CPlayGame::drawObjects()
 	// in the object-drawing loop with the rest of the objects
 	for( i=0 ;i < m_NumPlayers ; i++)
 	{
-		o = mp_Player[i].m_player_number;
+		o = m_Player[i].m_player_number;
 		
-		if (!mp_Player[i].hideplayer && !mp_Player[i].beingteleported)
-			m_Object.at(o).sprite = mp_Player[i].playframe;
+		if (!m_Player[i].hideplayer && !m_Player[i].beingteleported)
+			m_Object.at(o).sprite = m_Player[i].playframe;
 		else
 			m_Object.at(o).sprite = m_NumSprites-1;
 		
-		m_Object.at(o).x = mp_Player[i].x;
-		m_Object.at(o).y = mp_Player[i].y;
+		m_Object.at(o).x = m_Player[i].x;
+		m_Object.at(o).y = m_Player[i].y;
 	}
 	
 	// draw all objects. drawn in reverse order because the player sprites
@@ -559,8 +574,7 @@ void CPlayGame::cleanup()
 }
 
 CPlayGame::~CPlayGame() {
-	if(mp_Player) delete [] mp_Player;
-	mp_Player=NULL;
+	m_Player.clear();
 	if(mp_Finale) delete mp_Finale;
 	mp_Finale = NULL;
 	if(mp_gameoverbmp) delete mp_gameoverbmp;

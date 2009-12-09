@@ -13,11 +13,12 @@
 #include "../../common/CPlayer.h"
 #include "../../dialog/CTextBox.h"
 #include "../../dialog/CDlgFrame.h"
+#include <vector>
 #include <SDL.h>
 
 class CEndingEp1 : public CFinale {
 public:
-	CEndingEp1(CMap *p_map, CPlayer *p_Player);
+	CEndingEp1(CMap *p_map, std::vector<CPlayer> &Player);
 	void process();
 
 	void ReturnsToShip();
@@ -32,7 +33,7 @@ private:
 	Uint32 m_starttime;
 	Uint32 m_timepassed;
 
-	CPlayer *mp_Player;
+	std::vector<CPlayer> &m_Player;
 	CShipFlySys *mp_ShipFlySys;
 	CFinaleStaticScene *mp_FinaleStaticScene;
 	CTextBox *mp_Textbox;

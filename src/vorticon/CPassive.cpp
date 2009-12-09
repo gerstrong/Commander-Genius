@@ -19,12 +19,12 @@
 CPassive::CPassive(char Episode, std::string DataDirectory,
 					CSavedGame &SavedGame, stOption *p_Option) :
 	m_SavedGame(SavedGame),
+	mp_Map(NULL),
 	mp_Option(p_Option)
 {
 	mp_IntroScreen = NULL;
 	mp_TitleScreen = NULL;
 	mp_Menu = NULL;
-	mp_Map = NULL;
 	mp_PressAnyBox=NULL;
 	
 	m_modeg = false;
@@ -226,13 +226,13 @@ void CPassive::cleanup()
 	if( m_mode == INTRO )
 	{
 		delete mp_IntroScreen;
-		delete mp_Map;
+		SAFE_DELETE(mp_Map);
 	}
 	else if( m_mode == TITLE )
 	{
 		mp_TitleScreen->cleanup();
 		delete mp_TitleScreen;
-		delete mp_Map;
+		SAFE_DELETE(mp_Map);
 	}
 	else if( m_mode == DEMO )
 	{

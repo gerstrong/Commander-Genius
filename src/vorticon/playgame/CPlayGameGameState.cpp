@@ -31,8 +31,7 @@ bool CPlayGame::loadGameState()
 		m_SavedGame.decodeData(m_NumPlayers);
 
 		// Now load the inventory of every player
-		SAFE_DELETE_ARRAY(mp_Player);
-		mp_Player = new CPlayer[m_NumPlayers];
+		m_Player.clear();
 		m_Object.clear();
 
 		// Recreate the Players and tie them to the objects
@@ -48,12 +47,15 @@ bool CPlayGame::loadGameState()
 		cleanup();
 		init();
 
-		for( int i=0 ; i<m_NumPlayers ; i++ ) {
-			m_SavedGame.decodeData(mp_Player[i].x);
-			m_SavedGame.decodeData(mp_Player[i].y);
-			m_SavedGame.decodeData(mp_Player[i].inventory);
-			mp_Player[i].goto_x = mp_Player[i].x;
-			mp_Player[i].goto_y = mp_Player[i].y;
+		for( short i=0 ; i<m_NumPlayers ; i++ ) {
+			CPlayer Player(m_Episode, m_Level, m_Difficulty,
+					 i, mp_level_completed, mp_option, m_Object);
+			m_SavedGame.decodeData(Player.x);
+			m_SavedGame.decodeData(Player.y);
+			m_SavedGame.decodeData(Player.inventory);
+			Player.goto_x = Player.x;
+			Player.goto_y = Player.y;
+			m_Player.push_back(Player);
 		}
 
 		// load the number of objects on screen
@@ -91,7 +93,7 @@ bool CPlayGame::loadGameState()
 		// Load completed levels
 		m_SavedGame.readDataBlock( (uchar*)(mp_level_completed));
 
-		while(mp_Player[0].scrollTriggers()); // Scroll to the right position on the map
+		while(m_Player[0].scrollTriggers()); // Scroll to the right position on the map
 
 		mp_Map->drawAll();
 
@@ -123,9 +125,9 @@ bool CPlayGame::saveGameState()
 
 	// Now save the inventory of every player
 	for( i=0 ; i<m_NumPlayers ; i++ ) {
-		m_SavedGame.encodeData(mp_Player[i].x);
-		m_SavedGame.encodeData(mp_Player[i].y);
-		m_SavedGame.encodeData(mp_Player[i].inventory);
+		m_SavedGame.encodeData(m_Player[i].x);
+		m_SavedGame.encodeData(m_Player[i].y);
+		m_SavedGame.encodeData(m_Player[i].inventory);
 	}
 
 	size = m_Object.size();

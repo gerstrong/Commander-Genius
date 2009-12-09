@@ -16,39 +16,39 @@ void CPlayGame::processInLevel()
 		for( int i=0 ; i<m_NumPlayers ; i++ )
 		{
 			// check if someone has lifes
-			if(mp_Player[i].inventory.lives==0 && mp_Player[i].pdie==PDIE_DEAD)
+			if(m_Player[i].inventory.lives==0 && m_Player[i].pdie==PDIE_DEAD)
 				continue;
 
 			// Process the other stuff like, items, jump, etc.
-			mp_Player[i].processInLevel();
+			m_Player[i].processInLevel();
 
 			// If the player touched did in which we have to show a Message, do it so
 			std::string hinttext;
-			if( (hinttext=mp_Player[i].pollHintMessage()) != "")
+			if( (hinttext=m_Player[i].pollHintMessage()) != "")
 				mp_MessageBox = new CMessageBox(getstring(hinttext));
 
 			// Process the falling physics of the player here.
 			// We need to know the objects and tiles which could hinder the fall.
 			// decide if player should fall
-			if (!mp_Player[i].inhibitfall) processPlayerfallings(&mp_Player[i]);
+			if (!m_Player[i].inhibitfall) processPlayerfallings(&m_Player[i]);
 			else
 			{
-				mp_Player[i].psupportingtile = 145;
-				mp_Player[i].psupportingobject = 0;
+				m_Player[i].psupportingtile = 145;
+				m_Player[i].psupportingobject = 0;
 			}
 
 			// Check Collisions and only move player, if it is not blocked
-			checkPlayerCollisions(&mp_Player[i]);
+			checkPlayerCollisions(&m_Player[i]);
 
 			// Check if the first player is dead, and if the others also are...
-			if(i==0) m_alldead = (mp_Player[i].pdie == PDIE_DEAD);
-			else m_alldead &= (mp_Player[i].pdie == PDIE_DEAD);
+			if(i==0) m_alldead = (m_Player[i].pdie == PDIE_DEAD);
+			else m_alldead &= (m_Player[i].pdie == PDIE_DEAD);
 
 			// Now draw the player to the screen
-			mp_Player[i].SelectFrame();
+			m_Player[i].SelectFrame();
 
 			// finished the level
-			if(mp_Player[i].level_done == LEVEL_COMPLETE)
+			if(m_Player[i].level_done == LEVEL_COMPLETE)
 			{
 				mp_level_completed[m_Level] = true;
 				goBacktoMap();
@@ -63,7 +63,7 @@ void CPlayGame::processInLevel()
 		{
 			m_gameover = true; // proof contrary case
 			for( int i=0 ; i<m_NumPlayers ; i++ )
-				m_gameover &= ( mp_Player[i].inventory.lives <= 0 );
+				m_gameover &= ( m_Player[i].inventory.lives <= 0 );
 
 			if(!m_gameover) // Check if no player has lifes left and must go in game over mode.
 				goBacktoMap();

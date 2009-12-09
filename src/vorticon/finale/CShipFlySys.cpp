@@ -12,14 +12,14 @@
 
 #include "CShipFlySys.h"
 
-CShipFlySys::CShipFlySys(CPlayer *p_Player, CMap *p_Map)
+CShipFlySys::CShipFlySys(CPlayer &Player, CMap *p_Map) :
+m_player(Player) // in this case the player will be the ship flying home
 {
 	mp_Map = p_Map;
-	mp_player = &p_Player[0]; // in this case the player will be the ship flying home
 	m_finished = false;
 	m_scrollingon = true;
 	m_ShipQueuePtr = 0;
-	mp_player[0].playframe = SPR_SHIP_RIGHT;
+	m_player.playframe = SPR_SHIP_RIGHT;
 
 	// Now, that everything is initialized, create a mark that will be used
 	// as ! or ? Sprite
@@ -31,9 +31,9 @@ CShipFlySys::CShipFlySys(CPlayer *p_Player, CMap *p_Map)
 	// keep the question or exclamation mark sprite next to the player
 	mark.onscreen = true;
 
-	mp_player[0].mp_object->push_back(mark);
+	m_player.mp_object->push_back(mark);
 
-	mp_mark = &(*(p_Player[0].mp_object->end()-1)); // We still need to manipulate it!
+	mp_mark = &(*(m_player.mp_object->end()-1)); // We still need to manipulate it!
 }
 
 void CShipFlySys::addShipQueue(int cmd, int time, int flag1)
@@ -53,31 +53,31 @@ void CShipFlySys::process()
 		 switch(m_shipqueue[m_ShipQueuePtr].flag1)
 		 {
 		 case DUP:
-			 mp_player[0].y-=SHIPSPD;
-			 mp_player[0].playframe = SPR_SHIP_RIGHT;
+			 m_player.y-=SHIPSPD;
+			 m_player.playframe = SPR_SHIP_RIGHT;
 			 break;
 		 case DDOWN:
-			 mp_player[0].y+=SHIPSPD/2;
-			 mp_player[0].playframe = SPR_SHIP_RIGHT;
+			 m_player.y+=SHIPSPD/2;
+			 m_player.playframe = SPR_SHIP_RIGHT;
 			 break;
 		 case DLEFT:
-			 mp_player[0].x-=SHIPSPD;
-			 mp_player[0].playframe = SPR_SHIP_LEFT;
+			 m_player.x-=SHIPSPD;
+			 m_player.playframe = SPR_SHIP_LEFT;
 			 break;
 		 case DRIGHT:
-			 mp_player[0].x+=SHIPSPD;
-			 mp_player[0].playframe = SPR_SHIP_RIGHT;
+			 m_player.x+=SHIPSPD;
+			 m_player.playframe = SPR_SHIP_RIGHT;
 			 break;
 		 case DDOWNRIGHT:
-			 mp_player[0].x+=SHIPSPD*2;
-			 mp_player[0].y+=SHIPSPD*0.8;
-			 mp_player[0].playframe = SPR_SHIP_RIGHT;
+			 m_player.x+=SHIPSPD*2;
+			 m_player.y+=SHIPSPD*0.8;
+			 m_player.playframe = SPR_SHIP_RIGHT;
 			 break;
 		 }
-		 mp_player[0].scrollTriggers();
+		 m_player.scrollTriggers();
 
-		 mp_mark->x = mp_player[0].x + (1<<CSF);
-		 mp_mark->y = mp_player[0].y - (1<<CSF);
+		 mp_mark->x = m_player.x + (1<<CSF);
+		 mp_mark->y = m_player.y - (1<<CSF);
 	 break;
 	 case CMD_SPAWNSPR:
 		 mp_mark->sprite = m_shipqueue[m_ShipQueuePtr].flag1;
@@ -111,5 +111,5 @@ void CShipFlySys::process()
 
 
 CShipFlySys::~CShipFlySys() {
-	mp_player[0].mp_object->pop_back();
+	m_player.mp_object->pop_back();
 }

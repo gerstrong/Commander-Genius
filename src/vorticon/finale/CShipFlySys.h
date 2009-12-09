@@ -39,7 +39,7 @@ typedef struct stShipQueue
 
 class CShipFlySys {
 public:
-	CShipFlySys(CPlayer *p_Player, CMap *p_Map);
+	CShipFlySys(CPlayer &Player, CMap *p_Map);
 	void addShipQueue(int cmd, int time, int flag1);
 	bool EndOfQueue() { return m_finished; }
 	void process();
@@ -51,7 +51,7 @@ private:
 	stShipQueue m_shipqueue[32];
 	bool m_finished;
 	bool m_scrollingon;
-	CPlayer *mp_player;
+	CPlayer &m_player;
 	CObject *mp_mark;
 	CMap *mp_Map;
 };

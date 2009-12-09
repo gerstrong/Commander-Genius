@@ -66,23 +66,23 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 	int width = object.bboxX2-object.bboxX1;
 
 	// stop keen from walking through our sprite
-	if (object.touchPlayer && !mp_Player[object.touchedBy].pdie)
+	if (object.touchPlayer && !m_Player[object.touchedBy].pdie)
 	{
 		g_pSound->playStereofromCoord(SOUND_YORP_BUMP, PLAY_NORESTART, object.scrx);
 
-		if (!((mp_Player[object.touchedBy].y) < (object.y - 300))) // give the mp_Player a little jump-over room
+		if (!((m_Player[object.touchedBy].y) < (object.y - 300))) // give the m_Player a little jump-over room
 		{
-			if (mp_Player[object.touchedBy].x < object.x)
+			if (m_Player[object.touchedBy].x < object.x)
 			{
-				mp_Player[object.touchedBy].playpushed_x = -TANKPUSHAMOUNT;
-				mp_Player[object.touchedBy].playpushed_decreasetimer = 0;
-				mp_Player[object.touchedBy].pdir = mp_Player[object.touchedBy].pshowdir = LEFT;
+				m_Player[object.touchedBy].playpushed_x = -TANKPUSHAMOUNT;
+				m_Player[object.touchedBy].playpushed_decreasetimer = 0;
+				m_Player[object.touchedBy].pdir = m_Player[object.touchedBy].pshowdir = LEFT;
 			}
 			else
 			{
-				mp_Player[object.touchedBy].playpushed_x = TANKPUSHAMOUNT;
-				mp_Player[object.touchedBy].playpushed_decreasetimer = 0;
-				mp_Player[object.touchedBy].pdir = mp_Player[object.touchedBy].pshowdir = RIGHT;
+				m_Player[object.touchedBy].playpushed_x = TANKPUSHAMOUNT;
+				m_Player[object.touchedBy].playpushed_decreasetimer = 0;
+				m_Player[object.touchedBy].pdir = m_Player[object.touchedBy].pshowdir = RIGHT;
 			}
 		}
 	}
@@ -118,8 +118,8 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 				object.ai.tank.dist_traveled = 0;
 			}
 			else
-			{ // yes, face towards mp_Player and fire.
-				if (mp_Player[object.ai.tank.detectedPlayerIndex].x < object.x)
+			{ // yes, face towards m_Player and fire.
+				if (m_Player[object.ai.tank.detectedPlayerIndex].x < object.x)
 				{
 					object.ai.tank.movedir = LEFT;
 					object.sprite = TANK_WALK_LEFT_FRAME;
@@ -140,9 +140,9 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 		object.ai.tank.detectedPlayer = false;
 		for(int i=0;i<m_NumPlayers;i++)
 		{
-			if (mp_Player[i].y >= object.y-(3<<CSF))
+			if (m_Player[i].y >= object.y-(3<<CSF))
 			{
-				if ( mp_Player[i].y+mp_Player[i].h <= object.y+height+(3<<CSF) )
+				if ( m_Player[i].y+m_Player[i].h <= object.y+height+(3<<CSF) )
 				{
 					object.ai.tank.detectedPlayer = true;
 					object.ai.tank.detectedPlayerIndex = i;
@@ -164,8 +164,8 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 					// facing keen?
 					object.ai.tank.timer = 0;
 					object.ai.tank.alreadyfiredcauseonsamelevel = 1;
-					if (((mp_Player[object.ai.tank.detectedPlayerIndex].x < object.x) && object.ai.tank.movedir==LEFT) ||
-						((mp_Player[object.ai.tank.detectedPlayerIndex].x > object.x) && object.ai.tank.movedir==RIGHT))
+					if (((m_Player[object.ai.tank.detectedPlayerIndex].x < object.x) && object.ai.tank.movedir==LEFT) ||
+						((m_Player[object.ai.tank.detectedPlayerIndex].x > object.x) && object.ai.tank.movedir==RIGHT))
 					{ // yes, we're facing him, we see him, we fire!
 						object.ai.tank.state = TANK_FIRE;
 						object.ai.tank.ponsameleveltime = 0;

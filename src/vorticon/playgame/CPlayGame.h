@@ -124,7 +124,7 @@ private:
 
 	CMap *mp_Map;
 	CMenu *mp_Menu;
-	CPlayer *mp_Player;
+	std::vector<CPlayer> m_Player;
 	CObjectAI *mp_ObjectAI;
 	CFinale *mp_Finale;
 	CEGABitmap *mp_gameoverbmp;
@@ -133,7 +133,6 @@ private:
 	CPhysicsSettings m_PhysicsSettings;
 	CMessageBox *mp_MessageBox;
 	bool m_showKeensLeft;
-	int m_theplayer;
 	std::vector<CObject> m_Object;
 };
 #endif /* CPlayGame_H_ */

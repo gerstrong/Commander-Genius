@@ -43,30 +43,30 @@ void  CObjectAI::butler_ai(CObject &object, char difficulty)
 		 object.y -= 8;
 	 }
 	 // push keen
-     if (object.touchPlayer && !mp_Player[object.touchedBy].pdie)
+     if (object.touchPlayer && !m_Player[object.touchedBy].pdie)
      {
-    	 if(!((mp_Player[0].pdir == object.ai.butler.movedir) && (mp_Player[0].pwalking)))
+    	 if(!((m_Player[0].pdir == object.ai.butler.movedir) && (m_Player[0].pwalking)))
     	 {
     		 g_pSound->playStereofromCoord(SOUND_YORP_BUMP, PLAY_NORESTART, object.scrx);
 	 
     		 short butlerpushamount;
     		 butlerpushamount = BUTLERPUSHAMOUNT;
 	 
-    		 if(mp_Player[0].pwalking) butlerpushamount = 3*BUTLERPUSHAMOUNT/2;
+    		 if(m_Player[0].pwalking) butlerpushamount = 3*BUTLERPUSHAMOUNT/2;
 	 
-    		 if (mp_Player[0].x < object.x)
+    		 if (m_Player[0].x < object.x)
     		 {
-    			 mp_Player[object.touchedBy].playpushed_x = -butlerpushamount;
-    			 if (difficulty>1) mp_Player[object.touchedBy].playpushed_x -= BUTLERPUSHAMOUNTFAST;
-    			 mp_Player[object.touchedBy].playpushed_decreasetimer = 0;
-    			 mp_Player[object.touchedBy].pdir = mp_Player[object.touchedBy].pshowdir = LEFT;
+    			 m_Player[object.touchedBy].playpushed_x = -butlerpushamount;
+    			 if (difficulty>1) m_Player[object.touchedBy].playpushed_x -= BUTLERPUSHAMOUNTFAST;
+    			 m_Player[object.touchedBy].playpushed_decreasetimer = 0;
+    			 m_Player[object.touchedBy].pdir = m_Player[object.touchedBy].pshowdir = LEFT;
     		 }
     		 else
     		 {
-    			 mp_Player[object.touchedBy].playpushed_x = butlerpushamount;
-    			 if (difficulty>1) mp_Player[object.touchedBy].playpushed_x += BUTLERPUSHAMOUNTFAST;
-    			 mp_Player[object.touchedBy].playpushed_decreasetimer = 0;
-    			 mp_Player[object.touchedBy].pdir = mp_Player[object.touchedBy].pshowdir = RIGHT;
+    			 m_Player[object.touchedBy].playpushed_x = butlerpushamount;
+    			 if (difficulty>1) m_Player[object.touchedBy].playpushed_x += BUTLERPUSHAMOUNTFAST;
+    			 m_Player[object.touchedBy].playpushed_decreasetimer = 0;
+    			 m_Player[object.touchedBy].pdir = m_Player[object.touchedBy].pshowdir = RIGHT;
     		 }
     	 }
      }

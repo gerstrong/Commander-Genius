@@ -87,17 +87,17 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 			// check if ray hit keen. if canpk=0, only enemy rays can hurt keen
 			if (object.touchPlayer)
 			{
-				if (mp_Player[object.touchedBy].pfrozentime > PFROZEN_THAW && m_Episode==1)
+				if (m_Player[object.touchedBy].pfrozentime > PFROZEN_THAW && m_Episode==1)
 				{
 					// shot a frozen player--melt the ice
-					mp_Player[object.touchedBy].pfrozentime = PFROZEN_THAW;
+					m_Player[object.touchedBy].pfrozentime = PFROZEN_THAW;
 					object.ai.ray.state = RAY_STATE_SETZAPZOT;
 				}
 				else
 				{
 					if (object.ai.ray.dontHitEnable==0 || object.ai.ray.dontHit!=OBJ_PLAYER)
 					{
-						mp_Player[object.touchedBy].kill();
+						m_Player[object.touchedBy].kill();
 						object.ai.ray.state = RAY_STATE_SETZAPZOT;
 					}
 				}

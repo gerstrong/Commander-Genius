@@ -102,7 +102,7 @@ void CObjectAI::vort_ai(CObject &object, int level, int episode, char difficulty
 	 }
 	 // deadly to the touch
 	 if (object.touchPlayer && object.canbezapped)
-		 mp_Player[object.touchedBy].kill();
+		 m_Player[object.touchedBy].kill();
 	 
 	 vort_reprocess: ;
 	 switch(object.ai.vort.state)
@@ -160,7 +160,7 @@ void CObjectAI::vort_ai(CObject &object, int level, int episode, char difficulty
 					 { object.ai.vort.movedir = LEFT; }
 					 else
 					 { // not blocked on either side, head towards player
-						 if ( mp_Player[0].x < object.x)
+						 if ( m_Player[0].x < object.x)
 						 { object.ai.vort.movedir = LEFT; }
 						 else
 						 { object.ai.vort.movedir = RIGHT; }

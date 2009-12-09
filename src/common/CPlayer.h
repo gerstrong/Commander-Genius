@@ -40,7 +40,9 @@ public:
 		NONE, WORLDMAP, LEVELPLAY
 	};
 
-	CPlayer();
+	CPlayer(char &Episode, short &Level, char &Difficulty,
+			 short &player_index, bool *mp_level_completed, stOption *mp_option,
+			 std::vector<CObject> &m_Object);
 	void setDatatoZero();
 	void setDefaultStartValues();
 	void setMapData(CMap *p_map){ mp_map=p_map; }
@@ -105,8 +107,9 @@ public:
 	char m_playingmode;
 	char m_episode;
 	char m_level;
-	int m_player_number;
 	int m_difficulty;
+	int m_player_number;
+
 	// Pointer to the Objects
 	std::vector<CObject> *mp_object;
 

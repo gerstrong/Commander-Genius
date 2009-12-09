@@ -20,7 +20,7 @@
 
 class CObjectAI {
 public:
-	CObjectAI(CMap *p_map, std::vector<CObject> &objvect, CPlayer *p_player,
+	CObjectAI(CMap *p_map, std::vector<CObject> &objvect, std::vector<CPlayer> &Player,
 			 stOption *p_options, int NumPlayers, int episode, int level,
 			 char difficulty, CPhysicsSettings &PhysicsSettings);
 
@@ -88,7 +88,7 @@ private:
 	// Variables
 	CMap *mp_Map;
 	std::vector<CObject> &m_Objvect;
-	CPlayer *mp_Player;
+	std::vector<CPlayer> &m_Player;
 	stOption *mp_Options;
 	CPhysicsSettings m_PhysicsSettings;
 	int m_Level;

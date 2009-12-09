@@ -20,12 +20,12 @@ void CPlayGame::processOnWorldMap()
 	// Perform player Objects...
 	for( int i=0 ; i<m_NumPlayers ; i++ )
 	{
-		mp_Player[i].processWorldMap();
+		m_Player[i].processWorldMap();
 
 		// entered a level, used ship, teleporter, etc.
-		if( !mp_Player[i].hideplayer )
+		if( !m_Player[i].hideplayer )
 		{
-			useobject = mp_Player[i].getNewObject();
+			useobject = m_Player[i].getNewObject();
 			if( useobject != 0 )
 			{	// A new object was chosen by the player
 				CTeleporter Teleporter(*mp_Map, m_Episode);
@@ -33,7 +33,7 @@ void CPlayGame::processOnWorldMap()
 				// If it is teleporter, make the Player teleport
 				if(Teleporter.readTeleporterInfo(useobject) == true)
 				{
-					Teleporter.teleportPlayer(m_Object, mp_Player[i]);
+					Teleporter.teleportPlayer(m_Object, m_Player[i]);
 				}
 				else
 				{
@@ -63,10 +63,10 @@ void CPlayGame::processOnWorldMap()
 								m_level_command = START_LEVEL;
 								m_Level = useobject & 0x7fff;
 								//g_pMusicPlayer->stop();
-								g_pSound->playStereofromCoord(SOUND_ENTER_LEVEL, PLAY_NOW, m_Object[mp_Player[i].m_player_number].scrx);
+								g_pSound->playStereofromCoord(SOUND_ENTER_LEVEL, PLAY_NOW, m_Object[m_Player[i].m_player_number].scrx);
 								// save where on the map, the player entered. This is a checkpoint!
-								m_checkpoint_x = mp_Player[i].x;
-								m_checkpoint_y = mp_Player[i].y;
+								m_checkpoint_x = m_Player[i].x;
+								m_checkpoint_y = m_Player[i].y;
 								m_checkpointset = true;
 								cleanup();
 								init();
@@ -80,11 +80,11 @@ void CPlayGame::processOnWorldMap()
 		// in episode 3 he can ride on nessie
 		if (m_Episode==3)
 		{
-			mp_Player[i].AllowMountUnmountNessie();
+			m_Player[i].AllowMountUnmountNessie();
 		}
 
 		// Check Collisions and only move player, if it is not blocked
-		checkPlayerCollisions(&mp_Player[i]);
+		checkPlayerCollisions(&m_Player[i]);
 	}
 
 	if(m_showKeensLeft)	showKeensLeft();
@@ -102,18 +102,18 @@ void CPlayGame::goBacktoMap()
 	m_level_command = START_LEVEL;
 	m_Level = WM_MAP_NUM;
 	//g_pMusicPlayer->stop();
-	//g_pSound->playStereofromCoord(SOUND_ENTER_LEVEL, PLAY_NOW, m_Object[mp_Player[i].useObject].scrx);
+	//g_pSound->playStereofromCoord(SOUND_ENTER_LEVEL, PLAY_NOW, m_Object[m_Player[i].useObject].scrx);
 	// Now that the new level/map will be loaded, the players aren't dead anymore!
 	for( int i=0 ; i<m_NumPlayers ; i++ )
 	{
-		mp_Player[i].level_done = LEVEL_NOT_DONE;
+		m_Player[i].level_done = LEVEL_NOT_DONE;
 		// Restore checkpoint
-		mp_Player[i].x = mp_Player[i].goto_x = m_checkpoint_x;
-		mp_Player[i].y = mp_Player[i].goto_y = m_checkpoint_y;
-		mp_Player[i].inventory.HasCardYellow = 0;
-		mp_Player[i].inventory.HasCardBlue = 0;
-		mp_Player[i].inventory.HasCardGreen = 0;
-		mp_Player[i].inventory.HasCardRed = 0;
+		m_Player[i].x = m_Player[i].goto_x = m_checkpoint_x;
+		m_Player[i].y = m_Player[i].goto_y = m_checkpoint_y;
+		m_Player[i].inventory.HasCardYellow = 0;
+		m_Player[i].inventory.HasCardBlue = 0;
+		m_Player[i].inventory.HasCardGreen = 0;
+		m_Player[i].inventory.HasCardRed = 0;
 	}
 	cleanup();
 	init();
@@ -129,10 +129,10 @@ void CPlayGame::YourShipNeedsTheseParts()
 	// The Multiplayer support for this dialog. You collect those parts together if more than one player.
 	for(int i=0 ; i<m_NumPlayers ; i++)
 	{
-		joy |= mp_Player[i].inventory.HasJoystick;
-		bat |= mp_Player[i].inventory.HasBattery;
-		vac |= mp_Player[i].inventory.HasVacuum;
-		wis |= mp_Player[i].inventory.HasWiskey;
+		joy |= m_Player[i].inventory.HasJoystick;
+		bat |= m_Player[i].inventory.HasBattery;
+		vac |= m_Player[i].inventory.HasVacuum;
+		wis |= m_Player[i].inventory.HasWiskey;
 	}
 
 	// draw needed parts
@@ -177,9 +177,9 @@ SDL_Surface *boxsurface = g_pVideoDriver->FGLayerSurface;
 	 for(p=0; p<m_NumPlayers ; p++)
 	 {
 		 x = ((KEENSLEFT_X+1)*8)+4;
-		 for(i=0;i<mp_Player[0].inventory.lives&&i<=10;i++)
+		 for(i=0;i<m_Player[0].inventory.lives&&i<=10;i++)
 		 {
-			 g_pGfxEngine->Sprite[mp_Player[0].playerbaseframe]->drawSprite(g_pVideoDriver->FGLayerSurface, x, y );
+			 g_pGfxEngine->Sprite[m_Player[0].playerbaseframe]->drawSprite(g_pVideoDriver->FGLayerSurface, x, y );
 			 x+=16;
 		 }
 		 y += 32;

@@ -22,12 +22,18 @@
 ///
 // Initialization Part
 ///
-CPlayer::CPlayer() :
-mp_object(NULL),
-mp_levels_completed(NULL),
+CPlayer::CPlayer(char &Episode, short &Level, char &Difficulty,
+				 short &player_index, bool *mp_level_completed, stOption *mp_option,
+				 std::vector<CObject> &m_Object) :
+mp_object(&m_Object),
+mp_levels_completed(mp_level_completed),
 mp_map(NULL),
-mp_option(NULL),
-mp_StatusScr(NULL)
+mp_option(mp_option),
+mp_StatusScr(NULL),
+m_episode(Episode),
+m_level(Level),
+m_difficulty(Difficulty),
+m_player_number(player_index)
 {
 	// Set every value in the class to zero.
     memset(&inventory, 0, sizeof(stInventory));

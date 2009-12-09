@@ -32,33 +32,33 @@ void CObjectAI::icechunk_ai(CObject &object)
 	// freeze the player if it touches him
 	if (object.touchPlayer)
 	{
-		if (!mp_Player[object.touchPlayer].pfrozentime)
+		if (!m_Player[object.touchPlayer].pfrozentime)
 		{
 			// make him start sliding in the direction of the impact
 			if (object.ai.icechunk.vector_x > 0)
 			{
-				mp_Player[object.touchedBy].pdir = mp_Player[object.touchedBy].pshowdir = RIGHT;
-				mp_Player[object.touchedBy].pinertia_x = m_PhysicsSettings.player.max_x_speed;
+				m_Player[object.touchedBy].pdir = m_Player[object.touchedBy].pshowdir = RIGHT;
+				m_Player[object.touchedBy].pinertia_x = m_PhysicsSettings.player.max_x_speed;
 			}
 			else if (object.ai.icechunk.vector_x < 0)
 			{
-				mp_Player[object.touchedBy].pdir = mp_Player[object.touchedBy].pshowdir = LEFT;
-				mp_Player[object.touchedBy].pinertia_x = -m_PhysicsSettings.player.max_x_speed;
+				m_Player[object.touchedBy].pdir = m_Player[object.touchedBy].pshowdir = LEFT;
+				m_Player[object.touchedBy].pinertia_x = -m_PhysicsSettings.player.max_x_speed;
 			}
 			else	// perfectly vertical ice cannons
 			{
 				const int UPDNCANNON_PUSHAMT = 16;
-				if (mp_Player[object.touchedBy].pinertia_x < UPDNCANNON_PUSHAMT)
+				if (m_Player[object.touchedBy].pinertia_x < UPDNCANNON_PUSHAMT)
 				{
 					if (rnd()&1)
-						mp_Player[object.touchedBy].pinertia_x = UPDNCANNON_PUSHAMT;
+						m_Player[object.touchedBy].pinertia_x = UPDNCANNON_PUSHAMT;
 					else
-						mp_Player[object.touchedBy].pinertia_x = -UPDNCANNON_PUSHAMT;
+						m_Player[object.touchedBy].pinertia_x = -UPDNCANNON_PUSHAMT;
 				}
 			}
 		}
 
-		mp_Player[object.touchedBy].freeze();
+		m_Player[object.touchedBy].freeze();
 		smash(object);
 		return;
 	}

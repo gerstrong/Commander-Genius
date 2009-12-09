@@ -9,10 +9,11 @@
 #include "../../sdl/CVideoDriver.h"
 #include "../../CLogFile.h"
 
-CObjectAI::CObjectAI(CMap *p_map, std::vector<CObject> &objvect, CPlayer *p_player,
+CObjectAI::CObjectAI(CMap *p_map, std::vector<CObject> &objvect, std::vector<CPlayer> &Player,
 					 stOption *p_options, int NumPlayers, int episode, int level,
 					 char difficulty, CPhysicsSettings &PhysicsSettings)  :
 m_Objvect(objvect),
+m_Player(Player),
 m_PhysicsSettings(PhysicsSettings),
 m_difficulty(difficulty)
 {
@@ -21,7 +22,6 @@ m_difficulty(difficulty)
 	m_Level = level;
 	m_Episode = episode;
 	m_NumPlayers = NumPlayers;
-	mp_Player = p_player;
 	m_gunfiretimer = 0;
 }
 
@@ -43,7 +43,7 @@ void CObjectAI::process()
 			object.touchPlayer = false;
 		    for( int cplayer=0 ; cplayer<m_NumPlayers ; cplayer++)
 		    {
-		    	CPlayer &player = mp_Player[cplayer];
+		    	CPlayer &player = m_Player[cplayer];
 				CObject &playerobj = m_Objvect.at(player.m_player_number);
 				playerobj.x = player.x;
 				playerobj.y = player.y;
@@ -129,8 +129,8 @@ void CObjectAI::performSpecialAIType( CObject &object )
 	switch(object.m_type)
 	{
 		//KEEN1
-		case OBJ_YORP: yorp_ai(object, mp_Player, m_difficulty>1); break;
-		case OBJ_GARG: garg_ai(object, mp_Player, m_difficulty>1); break;
+		case OBJ_YORP: yorp_ai(object, &m_Player[0], m_difficulty>1); break;
+		case OBJ_GARG: garg_ai(object, &m_Player[0], m_difficulty>1); break;
 		case OBJ_VORT: vort_ai(object, m_Level, m_Episode, m_difficulty, false ); break;
 		case OBJ_BUTLER: butler_ai(object, m_difficulty); break;
 		case OBJ_TANK: tank_ai(object, m_difficulty>1); break;
@@ -186,7 +186,7 @@ void CObjectAI::SetAllCanSupportPlayer(CObject &object, int state)
 
 void CObjectAI::killplayer(int theplayer)
 {
-	mp_Player[theplayer].kill();
+	m_Player[theplayer].kill();
 }
 
 // anything (players/enemies) occupying the map tile at [mpx,mpy] is killed

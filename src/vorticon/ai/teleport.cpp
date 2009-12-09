@@ -45,7 +45,7 @@ void CObjectAI::teleporter_ai(CObject &object)
 	{
 	case TELEPORTING_IN:
 		{
-			mp_Player[player].beingteleported = true;
+			m_Player[player].beingteleported = true;
 			if (object.ai.teleport.animtimer >= animrate)
 			{
 				object.ai.teleport.animframe++;
@@ -75,27 +75,27 @@ void CObjectAI::teleporter_ai(CObject &object)
 			// In this part the player must be invisible and go to the new position, then get teleported out.
 			object.x = object.ai.teleport.destx<<CSF;
 			object.y = object.ai.teleport.desty<<CSF;
-			mp_Player[player].pdir = DOWN;
-			mp_Player[player].beingteleported = true;
+			m_Player[player].pdir = DOWN;
+			m_Player[player].beingteleported = true;
 
-			if(object.x < mp_Player[player].x) mp_Player[player].goto_x-=TELEPORTATION_SPEED;
-			else if(object.x > mp_Player[player].x) mp_Player[player].goto_x+=TELEPORTATION_SPEED;
-			mp_Player[player].x = mp_Player[player].goto_x;
+			if(object.x < m_Player[player].x) m_Player[player].goto_x-=TELEPORTATION_SPEED;
+			else if(object.x > m_Player[player].x) m_Player[player].goto_x+=TELEPORTATION_SPEED;
+			m_Player[player].x = m_Player[player].goto_x;
 
-			if(object.y < mp_Player[player].y) mp_Player[player].goto_y-=TELEPORTATION_SPEED;
-			else if(object.y > mp_Player[player].y) mp_Player[player].goto_y+=TELEPORTATION_SPEED;
-			mp_Player[player].y = mp_Player[player].goto_y;
+			if(object.y < m_Player[player].y) m_Player[player].goto_y-=TELEPORTATION_SPEED;
+			else if(object.y > m_Player[player].y) m_Player[player].goto_y+=TELEPORTATION_SPEED;
+			m_Player[player].y = m_Player[player].goto_y;
 
-			int diff_x = object.x - mp_Player[player].x;
-			int diff_y = object.y - mp_Player[player].y;
+			int diff_x = object.x - m_Player[player].x;
+			int diff_y = object.y - m_Player[player].y;
 
 			diff_x = (diff_x<0) ? -diff_x : diff_x;
 			diff_y = (diff_y<0) ? -diff_y : diff_y;
 
-			if(!mp_Player[player].scrollTriggers() && diff_x<=TELEPORTATION_SPEED && diff_y<=TELEPORTATION_SPEED)
+			if(!m_Player[player].scrollTriggers() && diff_x<=TELEPORTATION_SPEED && diff_y<=TELEPORTATION_SPEED)
 			{
-				mp_Player[player].x = object.x;
-				mp_Player[player].y = object.y;
+				m_Player[player].x = object.x;
+				m_Player[player].y = object.y;
 				object.ai.teleport.direction = TELEPORTING_OUT;
 				g_pSound->playStereofromCoord(SOUND_TELEPORT, PLAY_NOW, object.scrx);
 			}
@@ -118,7 +118,7 @@ void CObjectAI::teleporter_ai(CObject &object)
 					object.needinit = true;
 
 					deleteObj(object);
-					mp_Player[player].beingteleported = false;
+					m_Player[player].beingteleported = false;
 
 					/*if (object.ai.teleport.NoExitingTeleporter)
 					{  // for the teleporter to exit the bonus area in ep1

@@ -16,11 +16,11 @@
 #include "../graphics/CGfxEngine.h"
 #include "../sdl/CVideoDriver.h"
 
-CMapLoader::CMapLoader(CMap* p_map, CPlayer *p_Player)
+CMapLoader::CMapLoader(CMap* p_map, CPlayer *p_Player) :
+mp_Player(p_Player)
 {
 	mp_objvect = NULL;
 	mp_map = p_map;
-	mp_Player = p_Player;
 	m_checkpointset = false;
 }
 
@@ -182,8 +182,8 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 		case 255:            // player start
 			if(!m_checkpointset)
 			{
-				mp_Player[0].goto_x = mp_Player[0].x = x << CSF;
-				mp_Player[0].goto_y = mp_Player[0].y = y << CSF;
+				mp_Player->goto_x = mp_Player[0].x = x << CSF;
+				mp_Player->goto_y = mp_Player[0].y = y << CSF;
 				mp_map->m_objectlayer[x][y] = 0;
 			}
 			break;
