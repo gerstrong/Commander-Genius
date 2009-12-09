@@ -77,8 +77,7 @@ void CPlayer::setDatatoZero()
     m_showStatusScreen = false;
     lastpogo = false;
 	
-    ppogostick=0;
-    pinertia_x=0;
+    ppogostick=false;
     level_done_timer = pfriction_timer_x = 0;
   	dpadcount = dpadlastcount = 0;
   	beingteleported = false;
@@ -289,7 +288,7 @@ void CPlayer::Walking()
 	else
         cur_pfastincrate = PFASTINCRATE;
 
-	if (playcontrol[PA_X] > 0 && !ppogostick)
+	if (playcontrol[PA_X] > 0 && !ppogostick && !playpushed_x)
 	{ // RIGHT key down
 		// quickly reach PLAYER_FASTINCMAXSPEED
 		if (pwalkincreasetimer>=cur_pfastincrate && pinertia_x<mp_PhysicsSettings->player.max_x_speed)
@@ -310,7 +309,7 @@ void CPlayer::Walking()
 		// increase up to max speed every time frame is changed
 		//if (!pwalkanimtimer && pinertia_x < pmaxspeed)	pinertia_x+=(1<<4);
 	}
-	else if (playcontrol[PA_X] < 0 && !ppogostick)
+	else if (playcontrol[PA_X] < 0 && !ppogostick && !playpushed_x)
 	{ // LEFT key down
 		// quickly reach PFASTINCMAXSPEED
 		if (pwalkincreasetimer>=cur_pfastincrate && pinertia_x<-mp_PhysicsSettings->player.max_x_speed)
@@ -736,7 +735,9 @@ void CPlayer::freeze()
 	// give the player a little "kick"
 	//pjumptime = PJUMP_NORMALTIME_1;
 	//pjumpupdecreaserate = PJUMP_UPDECREASERATE_1;
-	pjumpupspeed = 15;
+	pjumpupspeed = mp_PhysicsSettings->player.maxjumpspeed;
+	pjumpupspeed_decrease = mp_PhysicsSettings->player.defaultjumpupdecreasespeed;
+
 	pjumping = PJUMPUP;
 	//pjumpupspeed_decreasetimer = 0;
 	pjustjumped = true;

@@ -50,7 +50,6 @@ void  CObjectAI::butler_ai(CObject &object, char difficulty)
     		 g_pSound->playStereofromCoord(SOUND_YORP_BUMP, PLAY_NORESTART, object.scrx);
 	 
     		 short butlerpushamount;
-	 
     		 butlerpushamount = BUTLERPUSHAMOUNT;
 	 
     		 if(mp_Player[0].pwalking) butlerpushamount = 3*BUTLERPUSHAMOUNT/2;

@@ -14,18 +14,20 @@
 #include "../../common/CObject.h"
 #include "../../common/options.h"
 #include "../../common/CPlayer.h"
+#include "../../common/CPhysicsSettings.h"
 #include "../../graphics/CGfxEngine.h"
 #include <vector>
 
 class CObjectAI {
 public:
 	CObjectAI(CMap *p_map, std::vector<CObject> &objvect, CPlayer *p_player,
-			 stOption *p_options, int NumPlayers, int episode, int level ,char difficulty);
-	virtual ~CObjectAI();
+			 stOption *p_options, int NumPlayers, int episode, int level,
+			 char difficulty, CPhysicsSettings &PhysicsSettings);
 
 	// main functions
 	void process();
 
+	virtual ~CObjectAI();
 private:
 
 	// main AI functions
@@ -88,6 +90,7 @@ private:
 	std::vector<CObject> &m_Objvect;
 	CPlayer *mp_Player;
 	stOption *mp_Options;
+	CPhysicsSettings m_PhysicsSettings;
 	int m_Level;
 	int m_Episode;
 	int m_NumPlayers;

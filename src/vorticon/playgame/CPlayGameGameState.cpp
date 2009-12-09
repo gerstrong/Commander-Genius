@@ -61,7 +61,6 @@ bool CPlayGame::loadGameState()
 		m_SavedGame.decodeData(size);
 		for( Uint32 i=0 ; i<size ; i++) {
 			// save all the objects states
-			int x0, y0, otype;
 			CObject &object=m_Object.at(i);
 
 			m_SavedGame.decodeData(object.m_type);

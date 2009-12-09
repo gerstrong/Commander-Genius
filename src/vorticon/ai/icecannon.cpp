@@ -38,16 +38,16 @@ void CObjectAI::icechunk_ai(CObject &object)
 			if (object.ai.icechunk.vector_x > 0)
 			{
 				mp_Player[object.touchedBy].pdir = mp_Player[object.touchedBy].pshowdir = RIGHT;
-				//mp_Player[object.touchedBy].pinertia_x = PMAXSPEED;
+				mp_Player[object.touchedBy].pinertia_x = m_PhysicsSettings.player.max_x_speed;
 			}
 			else if (object.ai.icechunk.vector_x < 0)
 			{
 				mp_Player[object.touchedBy].pdir = mp_Player[object.touchedBy].pshowdir = LEFT;
-				//mp_Player[object.touchedBy].pinertia_x = -PMAXSPEED;
+				mp_Player[object.touchedBy].pinertia_x = -m_PhysicsSettings.player.max_x_speed;
 			}
 			else	// perfectly vertical ice cannons
 			{
-#define UPDNCANNON_PUSHAMT		4
+				const int UPDNCANNON_PUSHAMT = 16;
 				if (mp_Player[object.touchedBy].pinertia_x < UPDNCANNON_PUSHAMT)
 				{
 					if (rnd()&1)

@@ -3,6 +3,9 @@ Commander Genius Release (CloneKeenPlus):
 
 v0.3.1.0:
 ---------
+09-12-2009
+- Fixed ice cannons to the engine. Now they are working again
+
 08-12-2009
 - Corrected start inventory for all Episodes
 - The Stone with Rope in Episode 1 Level 16 is working again!

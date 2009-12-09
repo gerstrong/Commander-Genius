@@ -132,7 +132,8 @@ bool CPlayGame::init()
 	
 	// Initialize the AI
 	mp_ObjectAI = new CObjectAI(mp_Map, m_Object, mp_Player, mp_option,
-								m_NumPlayers, m_Episode, m_Level, m_Difficulty);
+								m_NumPlayers, m_Episode, m_Level,
+								m_Difficulty, m_PhysicsSettings);
 
 	// Check if Player meets the conditions to show a cutscene. This also happens, when finale of episode has reached
 	verifyCutscenes();

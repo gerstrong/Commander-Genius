@@ -271,6 +271,8 @@ void CPlayer::playpushed()
 		// if we run up against a wall all push inertia stops
 		if (playpushed_x > 0 && blockedr) playpushed_x = 0;
 		if (playpushed_x < 0 && blockedl) playpushed_x = 0;
+
+		pinertia_x = 0;
     }
 }
 
