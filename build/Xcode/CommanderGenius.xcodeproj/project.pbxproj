@@ -21,7 +21,7 @@
 		6306E1D510BC922900E08CB9 /* CAbout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6306E1D110BC922900E08CB9 /* CAbout.cpp */; };
 		6306E1D610BC922900E08CB9 /* CHelp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6306E1D310BC922900E08CB9 /* CHelp.cpp */; };
 		630713BF10B77990004837D2 /* CPlayGameGameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 630713BE10B77990004837D2 /* CPlayGameGameState.cpp */; };
-		630CB33A10BC3BC100E7EEAA /* cgabout.tga in Resources */ = {isa = PBXBuildFile; fileRef = 630CB33910BC3BC000E7EEAA /* cgabout.tga */; };
+		630CB33A10BC3BC100E7EEAA /* cgabout.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 630CB33910BC3BC000E7EEAA /* cgabout.tga */; };
 		630F429310CB08D800F96495 /* CMessageBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 630F429110CB08D800F96495 /* CMessageBox.cpp */; };
 		634A33DF10A233D50051193D /* CEndingEp1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 634A33D710A233D50051193D /* CEndingEp1.cpp */; };
 		634A33E010A233D50051193D /* CEndingEp2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 634A33D910A233D50051193D /* CEndingEp2.cpp */; };
@@ -196,6 +196,7 @@
 		638F025D10AC656A0083A97C /* CFinaleStaticScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 638F025910AC656A0083A97C /* CFinaleStaticScene.cpp */; };
 		638F025E10AC656A0083A97C /* CShipFlySys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 638F025B10AC656A0083A97C /* CShipFlySys.cpp */; };
 		638F026010AC65A30083A97C /* CMessagesPredefined.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 638F025F10AC65A30083A97C /* CMessagesPredefined.cpp */; };
+		63999E3A10D151BA00EDB6CD /* fonts.bmp in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 63999E3910D151BA00EDB6CD /* fonts.bmp */; };
 		63A4D2EA10B2F2FF00F353C0 /* CInfoScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63A4D2E610B2F2FF00F353C0 /* CInfoScene.cpp */; };
 		63A4D2EB10B2F2FF00F353C0 /* CStory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63A4D2E810B2F2FF00F353C0 /* CStory.cpp */; };
 		63AB8C2F107C62D0001EE22F /* cglogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63AB8C2E107C62D0001EE22F /* cglogo.icns */; };
@@ -257,6 +258,7 @@
 			dstPath = data/games/EP1;
 			dstSubfolderSpec = 7;
 			files = (
+				63999E3A10D151BA00EDB6CD /* fonts.bmp in Copy Keen 1 Files */,
 				6350FA42104490B600A992D5 /* EGAHEAD.CK1 in Copy Keen 1 Files */,
 				6350FA43104490B600A992D5 /* EGALATCH.CK1 in Copy Keen 1 Files */,
 				6350FA44104490B600A992D5 /* EGASPRIT.CK1 in Copy Keen 1 Files */,
@@ -325,6 +327,7 @@
 			dstPath = data/res/gfx;
 			dstSubfolderSpec = 7;
 			files = (
+				630CB33A10BC3BC100E7EEAA /* cgabout.tga in Copy Res Files */,
 				63D4A702107FEB7C00E43500 /* 100.tga in Copy Res Files */,
 				63D4A703107FEB7C00E43500 /* 1000.tga in Copy Res Files */,
 				63D4A704107FEB7C00E43500 /* 200.tga in Copy Res Files */,
@@ -695,6 +698,7 @@
 		638F025B10AC656A0083A97C /* CShipFlySys.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CShipFlySys.cpp; sourceTree = "<group>"; };
 		638F025C10AC656A0083A97C /* CShipFlySys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CShipFlySys.h; sourceTree = "<group>"; };
 		638F025F10AC65A30083A97C /* CMessagesPredefined.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMessagesPredefined.cpp; sourceTree = "<group>"; };
+		63999E3910D151BA00EDB6CD /* fonts.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = fonts.bmp; sourceTree = "<group>"; };
 		63A4D2E610B2F2FF00F353C0 /* CInfoScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CInfoScene.cpp; sourceTree = "<group>"; };
 		63A4D2E710B2F2FF00F353C0 /* CInfoScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CInfoScene.h; sourceTree = "<group>"; };
 		63A4D2E810B2F2FF00F353C0 /* CStory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CStory.cpp; sourceTree = "<group>"; };
@@ -1356,7 +1360,6 @@
 			isa = PBXGroup;
 			children = (
 				63D4A6EF107FEB7C00E43500 /* 100.tga */,
-				630CB33910BC3BC000E7EEAA /* cgabout.tga */,
 				63D4A6F0107FEB7C00E43500 /* 1000.tga */,
 				63D4A6F1107FEB7C00E43500 /* 200.tga */,
 				63D4A6F2107FEB7C00E43500 /* 500.tga */,
@@ -1367,9 +1370,11 @@
 				63D4A6F7107FEB7C00E43500 /* arrowud.tga */,
 				63D4A6F8107FEB7C00E43500 /* arrowul.tga */,
 				63D4A6F9107FEB7C00E43500 /* arrowur.tga */,
+				630CB33910BC3BC000E7EEAA /* cgabout.tga */,
 				63D4A6FA107FEB7C00E43500 /* cklogo1.tga */,
 				63D4A6FB107FEB7C00E43500 /* cklogo2.tga */,
 				63D4A6FC107FEB7C00E43500 /* demobox.tga */,
+				63999E3910D151BA00EDB6CD /* fonts.bmp */,
 				63D4A6FD107FEB7C00E43500 /* gunup.tga */,
 				63D4A6FE107FEB7C00E43500 /* shotup.tga */,
 				63D4A6FF107FEB7C00E43500 /* tile185.tga */,
@@ -1456,7 +1461,6 @@
 				235755D2101A5E5900275638 /* InfoPlist.strings in Resources */,
 				235755D3101A5E5900275638 /* main.xib in Resources */,
 				63AB8C2F107C62D0001EE22F /* cglogo.icns in Resources */,
-				630CB33A10BC3BC100E7EEAA /* cgabout.tga in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

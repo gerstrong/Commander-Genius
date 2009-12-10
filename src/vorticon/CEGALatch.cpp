@@ -180,13 +180,12 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	// Load Hi-Colour VGA, SVGA 8x8 Tiles into the fontmap
 	if(path == "") filename = "games/fonts.bmp";
 	else filename = path + "/fonts.bmp";
+	if(Font->loadHiColourFont(filename))
+		g_pLogFile->textOut(GREEN, "VGA Fontmap for the game has been loaded successfully!");
 	Font->generateGlowFonts();
 	Font->generateInverseFonts();
 	Font->generateDisabledFonts();
 	Font->optimizeSurface();
-
-	if(Font->loadHiColourFont(filename))
-		g_pLogFile->textOut(GREEN, "VGA Fontmap for the game has been loaded successfully!");
 	Font->generateSpecialTwirls();
 
 	delete Planes;
