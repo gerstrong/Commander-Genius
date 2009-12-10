@@ -26,7 +26,8 @@ CEGALatch::CEGALatch( int planesize,
 					 short num16tiles,
 					 long tiles16location,
 					 short bitmaps,
-					 long bitmaplocation)
+					 long bitmaplocation) :
+RawData(NULL)
 {
 	m_latchplanesize = planesize;
 	m_bitmaptablelocation = bitmaptablelocation;
@@ -38,8 +39,6 @@ CEGALatch::CEGALatch( int planesize,
 	m_tiles16location = tiles16location;
 	m_bitmaps = bitmaps;
 	m_bitmaplocation = bitmaplocation;
-
-	RawData = NULL;
 }
 
 CEGALatch::~CEGALatch() {
@@ -83,7 +82,6 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 
 		g_pGfxEngine->Bitmap[i]->setDimensions(width,height);
 	}
-
 	return true;
 }
 
@@ -179,11 +177,17 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	}
 	if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
 
-	Font->generateSpecialTwirls();
+	// Load Hi-Colour VGA, SVGA 8x8 Tiles into the fontmap
+	if(path == "") filename = "games/fonts.bmp";
+	else filename = path + "/fonts.bmp";
 	Font->generateGlowFonts();
 	Font->generateInverseFonts();
 	Font->generateDisabledFonts();
 	Font->optimizeSurface();
+
+	if(Font->loadHiColourFont(filename))
+		g_pLogFile->textOut(GREEN, "VGA Fontmap for the game has been loaded successfully!");
+	Font->generateSpecialTwirls();
 
 	delete Planes;
 
@@ -225,11 +229,11 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	}
 	if(SDL_MUSTLOCK(sfc))	SDL_UnlockSurface(sfc);
 
-	// Load Hires, VGA, SVGA Tiles into the tilemap
+	// Load Hi-Colour, VGA, SVGA Tiles into the tilemap
 	if(path == "") filename = "games/ck" + itoa(episode) + "tiles.bmp";
 	else filename = path + "/ck" + itoa(episode) + "tiles.bmp";
 	if(Tilemap->loadHiresTile(filename))
-		g_pLogFile->textOut(GREEN, "Hi-res Bitmap for Tiles was loaded successfully!");
+		g_pLogFile->textOut(GREEN, "VGA Bitmap for Tileset has been loaded successfully!");
 
 	// Adapt the tilemap to the display, so they are faster blit
 	Tilemap->optimizeSurface();

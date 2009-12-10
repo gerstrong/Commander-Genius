@@ -164,7 +164,7 @@ bool CGameLauncher::scanExecutables(const std::string& path)
             mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, m_Entries.size(), newentry.name);
 			
             g_pLogFile->ftextOut("Detected game Name: %s Version: %d<br>", file.c_str()
-								 , newentry.version );
+								 ,newentry.version );
             // The original episode 1 exe is needed to load gfx's for game launcher menu
             if ( m_ep1slot <= -1 && newentry.crcpass == true )
             {

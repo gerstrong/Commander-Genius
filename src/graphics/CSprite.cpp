@@ -9,11 +9,13 @@
 #include "CPalette.h"
 #include "../sdl/CVideoDriver.h"
 
-CSprite::CSprite() {
+CSprite::CSprite() :
+m_surface(NULL),
+m_masksurface(NULL)
+{
 	m_xsize = m_ysize = 0;
 	m_bboxX1 = m_bboxY1 = 0;
 	m_bboxX2 = m_bboxY2 = 0;
-	m_surface = NULL;
 }
 
 CSprite::~CSprite() {
@@ -33,7 +35,7 @@ bool CSprite::createSurface(Uint32 flags, SDL_Color *Palette)
 	SDL_SetColors( m_masksurface, Palette, 0, 255);
 	SDL_SetColorKey( m_masksurface, SDL_SRCCOLORKEY, COLORKEY ); // One black is the color key. There is another black, as normal color
 	
-	return ( m_surface != NULL && m_masksurface != NULL );
+	return ( !m_surface && !m_masksurface );
 }
 
 bool CSprite::optimizeSurface()

@@ -29,7 +29,6 @@ public:
 
 	bool init(int Episode);
 	void process();
-	void cleanup();
 
 	bool isFinished()
 	{ return m_finished; }

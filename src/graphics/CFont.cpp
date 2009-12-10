@@ -47,6 +47,20 @@ SDL_Surface *CFont::getSDLSurface()
 ///// Initialization Routines /////
 ///////////////////////////////////
 
+bool CFont::loadHiColourFont( const std::string& filename )
+{
+	if(m_FontSurface)
+	{
+		SDL_Surface *temp_surface = SDL_LoadBMP(filename.c_str());
+		if(temp_surface)
+		{
+			SDL_BlitSurface(temp_surface, NULL, m_FontSurface, NULL);
+			return true;
+		}
+	}
+	return false;
+}
+
 // Used for the selected text
 void CFont::generateGlowFonts()
 {
@@ -154,25 +168,24 @@ void CFont::generateSpecialTwirls()
 	src = dst = (Uint8*) m_FontSurface->pixels;
 	
 	// for twirl 6 (LB down)
-	//src += (8*10 + 8*128);
-	src += (8*10 + 7*128);
-	dst += (128*128 + 5*8);
+	src += (8*10 + 7*128)*m_FontSurface->format->BytesPerPixel;
+	dst += (128*128 + 5*8)*m_FontSurface->format->BytesPerPixel;
 	for(Uint16 i=0 ; i<8 ; i++ ) // Draw the inverse
 	{
-		memcpy(dst,src,8);
-		src -= 8*16;
-		dst += 8*16;
+		memcpy(dst,src,8*m_FontSurface->format->BytesPerPixel);
+		src -= 8*16*m_FontSurface->format->BytesPerPixel;
+		dst += 8*16*m_FontSurface->format->BytesPerPixel;
 	}
 	src = dst = (Uint8*) m_FontSurface->pixels;
 	
 	// for twirl 7 (LB down left)
-	src += (8*9 + 7*128);
-	dst += (128*128 + 6*8);
+	src += (8*9 + 7*128)*m_FontSurface->format->BytesPerPixel;
+	dst += (128*128 + 6*8)*m_FontSurface->format->BytesPerPixel;
 	for(Uint16 i=0 ; i<8 ; i++ ) // Draw the inverse
 	{
-		memcpy(dst,src,8);
-		src -= 8*16;
-		dst += 8*16;
+		memcpy(dst,src,8*m_FontSurface->format->BytesPerPixel);
+		src -= 8*16*m_FontSurface->format->BytesPerPixel;
+		dst += 8*16*m_FontSurface->format->BytesPerPixel;
 	}
 	SDL_UnlockSurface(m_FontSurface);
 	

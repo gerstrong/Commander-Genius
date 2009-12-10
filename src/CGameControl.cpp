@@ -17,7 +17,11 @@
 // TODO: I think the Options Structure is still missing here!
 // That need to be checked out!
 
-CGameControl::CGameControl() {
+CGameControl::CGameControl() :
+mp_GameLauncher(NULL),
+mp_PassiveMode(NULL),
+mp_PlayGame(NULL)
+{
 	m_mode = GAMELAUNCHER;
 	m_Episode = 0;
 	m_ChosenGame = 0;
@@ -27,7 +31,6 @@ CGameControl::CGameControl() {
 	m_EGAGraphics = NULL;
 	m_Messages = NULL;
 	m_startLevel = 0;
-	mp_PlayGame = NULL;
 }
 
 
@@ -227,6 +230,7 @@ void CGameControl::process()
 						{
 							mp_GameLauncher->letchooseagain();
 							delete mp_PassiveMode;
+							mp_PassiveMode = NULL;
 						}
 					}
 					else // This happens, when a level was passed as argument when launching CG
@@ -268,7 +272,7 @@ void CGameControl::process()
 		// NOTE: Demo is not part of playgame anymore!!
 		if(mp_PassiveMode->getchooseGame())
 		{
-			cleanup();
+			cleanupAll();
 			init( GAMELAUNCHER );
 		}
 
@@ -281,6 +285,7 @@ void CGameControl::process()
 
 			init( PLAYGAME );
 			delete mp_PassiveMode;
+			mp_PassiveMode=NULL;
 			return;
 		}
 
@@ -320,27 +325,49 @@ void CGameControl::process()
 
 void CGameControl::cleanup(char mode)
 {
-	if(mode == GAMELAUNCHER)
+	// Check, whatever is active and clean it up!
+	if(mode == GAMELAUNCHER && mp_GameLauncher)
 	{
-		// Launch the cleanup-code of the Startmenu here! The one for choosing the games
 		mp_GameLauncher->cleanup();
-		delete mp_GameLauncher;
+		delete mp_GameLauncher; mp_GameLauncher = NULL;
 	}
-	else if(mode == PASSIVE)
+	else if(mode == PASSIVE && mp_PassiveMode)
 	{
-		// If in passive mode, cleanup here!
 		mp_PassiveMode->cleanup();
-		delete mp_PassiveMode;
+		delete mp_PassiveMode; mp_PassiveMode = NULL;
 	}
-	else if(mode == PLAYGAME)
+	else if(mode == PLAYGAME && mp_PlayGame)
 	{
-		// Tie up when in game play
 		mp_PlayGame->cleanup();
 		delete mp_PlayGame;	mp_PlayGame = NULL;
 	}
 }
 
+void CGameControl::cleanupAll()
+{
+	// Check, whatever is active and clean it up!
+	if(mp_GameLauncher)
+	{
+		mp_GameLauncher->cleanup();
+		delete mp_GameLauncher; mp_GameLauncher = NULL;
+	}
+
+	if(mp_PassiveMode)
+	{
+		mp_PassiveMode->cleanup();
+		delete mp_PassiveMode; mp_PassiveMode = NULL;
+	}
+
+	if(mp_PlayGame)
+	{
+		mp_PlayGame->cleanup();
+		delete mp_PlayGame;	mp_PlayGame = NULL;
+	}
+}
+
+
 CGameControl::~CGameControl() {
+	cleanupAll();
 	if(m_EGAGraphics) delete m_EGAGraphics;
 	if(m_Messages) delete m_Messages;
 }

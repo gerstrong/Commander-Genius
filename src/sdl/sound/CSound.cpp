@@ -112,7 +112,7 @@ bool CSound::init(void)
 	
 	m_mixing_channels = 7;
 	
-	if(m_soundchannel) delete[] m_soundchannel; m_soundchannel = NULL;
+	if(m_soundchannel) delete[] m_soundchannel;
 	m_soundchannel = new CSoundChannel[m_mixing_channels];
 	
 	for(unsigned short i=0 ; i < m_mixing_channels ; i++) {

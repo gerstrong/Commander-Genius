@@ -67,7 +67,7 @@ void CObjectAI::yorp_ai(CObject &object, CPlayer *p_player, bool hardmode)
 	{
 		object.wasoffscreen = false;
 		if (object.ai.yorp.state==YORP_STUNNED)
-			object.needinit = 1;
+			object.needinit = true;
 	}
 	if (object.needinit)
 	{  // first time initilization

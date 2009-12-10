@@ -7,10 +7,13 @@
 
 #include "CGfxEngine.h"
 
-CGfxEngine::CGfxEngine() {
-	Font = NULL;
-	Tilemap = NULL;
-	m_fxsurface = NULL;
+CGfxEngine::CGfxEngine() :
+Font(NULL),
+Tilemap(NULL),
+m_fxsurface(NULL)
+{
+	std::vector<CSprite*> Sprite;
+	std::vector<CBitmap*> Bitmap;
 }
 
 ///
@@ -99,8 +102,7 @@ void CGfxEngine::copyTileToSprite( Uint16 t, Uint16 s, Uint16 ntilestocopy )
 	
 	src_rect.w = src_rect.h = 16;
 	dst_rect.w = dst_rect.h = 16;
-	
-	
+
 	Sprite[s]->setSize( 16, 16*ntilestocopy );
 	Sprite[s]->createSurface( Tilemap->getSDLSurface()->flags, Palette.m_Palette );
 	

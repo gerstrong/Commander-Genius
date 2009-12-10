@@ -39,10 +39,8 @@ public:
 	
 	void process();
 	
-	
 	void cleanup(char mode);
-	void cleanup() { cleanup(m_mode); }
-	
+	void cleanupAll();
 	
 	// getters and setters
 	bool mustShutdown(){ return (m_mode==SHUTDOWN); }

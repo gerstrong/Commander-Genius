@@ -83,11 +83,11 @@ void CPassive::process()
 	{
 		if (mp_PressAnyBox==NULL && m_mode == TITLE)
 		{
-		mp_PressAnyBox = new CTextBox(150, 10," PRESS ANY KEY ");
-		mp_PressAnyBox->setAttribs(0, LETTER_TYPE_RED);
-		mp_PressAnyBox->enableBorders(true);
+			mp_PressAnyBox = new CTextBox(150, 10," PRESS ANY KEY ");
+			mp_PressAnyBox->setAttribs(0, LETTER_TYPE_RED);
+			mp_PressAnyBox->enableBorders(true);
 		}
-		
+
 		if (g_pInput->getPressedAnyKey())
 		{
 		// Close the "Press Any Key" box
@@ -221,24 +221,16 @@ void CPassive::process()
 ////
 void CPassive::cleanup()
 {
-	m_object.clear();
+	if(!m_object.empty())
+	{
+		for(std::vector<CObject*>::iterator obj = m_object.begin() ; obj!=m_object.end() ; obj++)
+			SAFE_DELETE(*obj);
+		m_object.clear();
+	}
 
-	if( m_mode == INTRO )
-	{
-		delete mp_IntroScreen;
-		SAFE_DELETE(mp_Map);
-	}
-	else if( m_mode == TITLE )
-	{
-		mp_TitleScreen->cleanup();
-		delete mp_TitleScreen;
-		SAFE_DELETE(mp_Map);
-	}
-	else if( m_mode == DEMO )
-	{
-		// Demo modes are processed here!
-		//delete mp_Map;
-	}
+	SAFE_DELETE(mp_IntroScreen);
+	SAFE_DELETE(mp_TitleScreen);
+	SAFE_DELETE(mp_Map);
 }
 
 CPassive::~CPassive() {

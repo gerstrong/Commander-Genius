@@ -16,7 +16,8 @@
 #include "../../common/CMapLoader.h"
 
 CAbout::CAbout(std::string &datadirectory, char &episode, std::string type) {
-	CExeFile *Exefile = new CExeFile(episode, datadirectory);
+	//CExeFile *Exefile = new CExeFile(episode, datadirectory);
+	// Commented out, because it's unused
 	mp_Scrollsurface = g_pVideoDriver->ScrollSurface;
 	mp_Map = new CMap(mp_Scrollsurface, g_pGfxEngine->Tilemap);
 	CMapLoader Maploader(mp_Map);

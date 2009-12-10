@@ -42,7 +42,7 @@ void CIntro::init()
 
 void CIntro::process()
 {
-	if( m_timer<2 ) m_timer++;
+	if( m_timer<1 ) m_timer++;
 	else
 	{
 		m_timer=0;

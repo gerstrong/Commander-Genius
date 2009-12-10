@@ -57,10 +57,10 @@ public:
 private:
 	CIntro *mp_IntroScreen;
 	CTitle *mp_TitleScreen;
-	CMap *mp_Map;
+	CSavedGame &m_SavedGame;
 	CTextBox *mp_PressAnyBox;
 	CTilemap *mp_Tilemap;
-	CSavedGame &m_SavedGame;
+	CMap *mp_Map;
 	stOption *mp_Option;
 	
 	SDL_Surface *mp_Scrollsurface;

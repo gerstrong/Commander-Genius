@@ -16,22 +16,22 @@
 
 std::string formatPathString(const std::string& path);
 
-CMap::CMap(SDL_Surface *p_scrollsurface, CTilemap *p_Tilemap) {
-	m_width = m_height = 0;
-	m_worldmap = false;
-	
+CMap::CMap(SDL_Surface *p_scrollsurface, CTilemap *p_Tilemap):
+mp_data(NULL),
+m_width(0), m_height(0),
+m_worldmap(false),
+m_animation_enabled(true),
+mp_tiles(p_Tilemap->mp_tiles),
+mp_scrollsurface(p_scrollsurface),
+mp_Tilemap(p_Tilemap),
+m_animtiletimer(0),
+m_curanimtileframe(0)
+{
 	memset( m_AnimTileInUse, 0, sizeof(m_AnimTileInUse));
 	memset( m_animtiles, 0, sizeof(m_animtiles));
-	m_animtiletimer = m_curanimtileframe = 0;
-	m_animation_enabled = true;
 
 	resetScrolls();
-	mp_scrollsurface = p_scrollsurface;
-	mp_Tilemap = p_Tilemap;
-	mp_data = NULL;
 	memset(m_objectlayer, 0, sizeof(m_objectlayer));
-
-	mp_tiles = mp_Tilemap->mp_tiles;
 }
 
 ////////////////////////////

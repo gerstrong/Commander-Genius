@@ -116,7 +116,7 @@ public:
 	char godmode;
 
 	// used on world map only
-	char hideplayer;
+	bool hideplayer;
 	char mounted;
 
 	short treshold;		// This is used for analog devices like joysticks

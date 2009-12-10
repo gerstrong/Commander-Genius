@@ -3,6 +3,11 @@ Commander Genius Release (CloneKeenPlus):
 
 v0.3.1.0:
 ---------
+
+10-12-2009
+- Fixed some hidden segfaults and wrong inits, which provoked the yorps getting unstunnable
+- Now using the fonts.bmp file, we can use other font graphics (with hi-colour support!)
+
 09-12-2009
 - Fixed ice cannons to the engine. Now they are working again
 

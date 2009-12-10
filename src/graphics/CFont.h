@@ -35,6 +35,7 @@ public:
 	bool optimizeSurface();
 	SDL_Surface *getSDLSurface();
 
+	bool loadHiColourFont( const std::string& filename );
 	void generateGlowFonts();
 	void generateSpecialTwirls();
 	void generateInverseFonts();

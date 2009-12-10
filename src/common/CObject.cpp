@@ -27,6 +27,11 @@ CObject::CObject(int num_players) {
 	sprite=BLANKSPRITE;
 	solid = true;
 
+	new_x = x = 0;
+	new_y = y = 0;
+
+	memset(&ai, 0, sizeof(ai));
+
 	cansupportplayer.assign(num_players, false);
 	
     yinertia = 0;

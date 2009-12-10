@@ -99,7 +99,7 @@ void CGame::run()
 ///////////////////////////////
 void CGame::cleanup()
 {
-	m_GameControl.cleanup();
+	m_GameControl.cleanupAll();
 	
     g_pInput->Del();
     g_pSound->Del();

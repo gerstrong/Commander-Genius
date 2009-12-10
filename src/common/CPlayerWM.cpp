@@ -56,9 +56,8 @@ void CPlayer::setWorldMapdir()
 	if ((playcontrol[PA_X] < 0) && (playcontrol[PA_X] > 0)) pshowdir = RIGHT;
 	
 	if (dpadcount==1 || dpadlastcount==0 || exception)
-	{
 		pshowdir = pdir;
-	}
+
 	dpadlastcount = dpadcount;
 }
 

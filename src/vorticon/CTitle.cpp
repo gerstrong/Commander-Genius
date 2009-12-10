@@ -26,14 +26,14 @@ bool CTitle::init(int Episode)
 	SDL_Surface *pSurface;
 	CBitmap *pBitmap;
 	g_pTimer->ResetSecondsTimer();
-	m_time = 10; // show the title screen for 10 sec
+	m_time = 10; // show the title screen for 10 secs.
 	pSurface = g_pVideoDriver->BlitSurface;
 	
 	pBitmap = g_pGfxEngine->getBitmap("TITLE");
 	p_object = new CEGABitmap( pSurface, pBitmap );
 	p_object->setScrPos( 160-(pBitmap->getWidth()/2), 0 );
 	m_objects.push_back(p_object);
-	
+
 	pBitmap = g_pGfxEngine->getBitmap("F1HELP");
 	p_object = new CEGABitmap( pSurface, pBitmap );
 
@@ -59,15 +59,8 @@ void CTitle::process()
 ////
 // Cleanup Routine
 ////
-void CTitle::cleanup()
-{
-	while( !m_objects.empty() )
-	{
-		m_objects.pop_back();
-	}
-}
-
 CTitle::~CTitle() {
-	
+	while( !m_objects.empty() )
+		m_objects.pop_back();
 }
 

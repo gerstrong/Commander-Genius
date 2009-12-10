@@ -25,15 +25,15 @@
 CPlayer::CPlayer(char &Episode, short &Level, char &Difficulty,
 				 short &player_index, bool *mp_level_completed, stOption *mp_option,
 				 std::vector<CObject> &m_Object) :
+m_episode(Episode),
+m_level(Level),
+m_difficulty(Difficulty),
+m_player_number(player_index),
 mp_object(&m_Object),
 mp_levels_completed(mp_level_completed),
 mp_map(NULL),
 mp_option(mp_option),
-mp_StatusScr(NULL),
-m_episode(Episode),
-m_level(Level),
-m_difficulty(Difficulty),
-m_player_number(player_index)
+mp_StatusScr(NULL)
 {
 	// Set every value in the class to zero.
     memset(&inventory, 0, sizeof(stInventory));
@@ -41,14 +41,19 @@ m_player_number(player_index)
     setDatatoZero();
 }
 
-// Sets the player data to the initial value
+// Sets the player data to the initial value,
+// We also could put that in the init list of the constructor,
+// but it would be much longer...
 void CPlayer::setDatatoZero()
 {
 	// When worldmap is set up, use that frame
 	playframe = PMAPDOWNFRAME;
-	
-	pshowdir = pshowdir = DOWN;
-	hideplayer = false;
+
+	goto_x = x = 0;
+	goto_y = y = 0;
+	pfallspeed = 0,
+	pshowdir = DOWN;
+	inhibitfall = hideplayer = false;
   	pwalkframe = pwalkframea = 0;
    	m_player_number = 0;
     dpadcount = 0;

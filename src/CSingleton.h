@@ -17,13 +17,8 @@ class CSingleton {
 protected:
 	static T *m_pSingleton; // Static Object
 	
-	
 public:
 	//CSingleton();
-	virtual ~CSingleton()
-	{
-	}
-	
 	inline static T* Get()
 	{
 		if(!m_pSingleton)
@@ -40,6 +35,9 @@ public:
 			m_pSingleton = NULL;
 		}
 	}
+
+	virtual ~CSingleton() // Unused, because this class is never constructed!!
+	{}
 };
 
 template <class T>

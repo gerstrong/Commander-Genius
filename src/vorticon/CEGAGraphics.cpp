@@ -51,6 +51,8 @@ CEGAGraphics::CEGAGraphics(short episode, const std::string& path) {
 CEGAGraphics::~CEGAGraphics() {
 	if(m_Latch) delete m_Latch;
 	if(m_Sprit) delete m_Sprit;
+	m_Latch = NULL;
+	m_Sprit = NULL;
 }
 
 bool CEGAGraphics::loadData( int version, unsigned char *p_exedata )

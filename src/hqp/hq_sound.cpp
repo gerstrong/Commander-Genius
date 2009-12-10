@@ -39,22 +39,16 @@ short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::stri
 #endif
 
 #ifndef BUILD_WITH_OGG
-		g_pLogFile->textOut(PURPLE,"Sorry, OGG-Support is disabled!<br>");
+		g_pLogFile->textOut(PURPLE,"NOTE: OGG-Support is disabled! Get another version or compile it yourself!<br>");
 		buf = "games/hqp/snd/"+ soundfile + ".WAV";
 
 		std::string fullfname = GetFullFileName(buf);
-		if(fullfname.size() == 0) {
-			g_pLogFile->textOut(PURPLE,"Wave file not found: \"%s\". Trying to load the classical sound<br>", buf.c_str());
+		if(fullfname.size() == 0)
 			return 1;
-		}
 
 		// Check, if it is a wav file or go back to classic sounds
 		if (SDL_LoadWAV (Utf8ToSystemNative(fullfname).c_str(), &AudioFileSpec, &(psound->sound_buffer), &(psound->sound_len)) == NULL)
-		{
-			g_pLogFile->ftextOut(PURPLE,"Wave file %s could not be opened: \"%s\". Trying to load the classical sound<br>", buf.c_str(), SDL_GetError());
 			return 1;
-		}
-
 #endif
 	}
 	else
@@ -68,7 +62,7 @@ short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::stri
 		// Check, if it is a wav file or go back to classic sounds
 		if (SDL_LoadWAV (Utf8ToSystemNative(fullfname).c_str(), &AudioFileSpec, &(psound->sound_buffer), &(psound->sound_len)) == NULL)
 		{
-			g_pLogFile->ftextOut(PURPLE, "Wave file %s could not be opened: \"%s\". Trying to load the classical sounds<br>", buf.c_str(), SDL_GetError());
+			g_pLogFile->textOut(GREEN, "Loading the classic sound : " + soundfile);
 			return 1;
 		}
 	}
@@ -84,7 +78,7 @@ short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::stri
 
 	/* Check that the convert was built */
 	if(ret == -1){
-		g_pLogFile->textOut(PURPLE,"Couldn't build converter!<br>");
+		g_pLogFile->textOut(PURPLE,"Couldn't convert the sound correctly!<br>");
 		SDL_FreeWAV(psound->sound_buffer);
 		return 1;
 	}
