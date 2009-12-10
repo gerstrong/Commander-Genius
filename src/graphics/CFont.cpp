@@ -76,12 +76,12 @@ void CFont::generateGlowFonts()
 	// And this code makes the letter create blue edges
 	SDL_LockSurface(m_FontSurface);
 	
-	Uint8 *pixel = (Uint8*) m_FontSurface->pixels + 136*128;
+	Uint8 *pixel = (Uint8*) m_FontSurface->pixels + 136*128*m_FontSurface->format->BytesPerPixel;
 	for(Uint8 y=0 ; y<8*6 ; y++)
 	{
 		for(Uint8 x=0 ; x<128 ; x++)
 		{
-			if( *pixel != 15 ) memset(pixel,1,1);
+			if(*pixel != 15) memset(pixel, 1,1);
 			pixel++;
 		}
 	}
