@@ -14,10 +14,10 @@ enum
 
 #define YORP_LOOK_TIME  24   // time each frame of YORP_LOOK is shown
 #define YORP_STUN_ANIM_TIME  10
-#define YORP_WALK_ANIM_TIME  12
-#define YORP_WALK_SPEED      12
+#define YORP_WALK_ANIM_TIME  48
+#define YORP_WALK_SPEED      10
 #define YORP_WALK_ANIM_TIME_FAST  72
-#define YORP_WALK_SPEED_FAST      28
+#define YORP_WALK_SPEED_FAST      26
 
 #define YORP_NUM_LOOKS  9      // number of times yorp look frame is changed
 #define YORP_STUNTIME   7     // YORP_NUM_LOOKS for stun
@@ -33,8 +33,8 @@ enum
 #define YORP_WALK_LEFT  54
 #define YORP_STUNFRAME  56
 
-#define YORP_JUMP_PROB      20
-#define YORP_JUMP_HEIGHT    -21
+#define YORP_JUMP_PROB      80
+#define YORP_JUMP_HEIGHT    -60
 
 #define YORP_DYING_FRAME   58
 #define YORP_DEAD_FRAME    59
@@ -45,13 +45,13 @@ enum
 #define YORPDIE_INERTIA_DECREASE    8
 
 // How much Yorps pushes keen
-#define YORP_PUSH_AMT_NO_WALK	18
+#define YORP_PUSH_AMT_NO_WALK	50
 
-#define YORP_PUSH_AMT_P_WALK_HARD	35
-#define YORP_PUSH_AMT_P_WALK		25
+#define YORP_PUSH_AMT_P_WALK_HARD	60
+#define YORP_PUSH_AMT_P_WALK		60
 
-#define YORP_PUSH_AMT_P_STAND_HARD	24
-#define YORP_PUSH_AMT_P_STAND		18
+#define YORP_PUSH_AMT_P_STAND_HARD	60
+#define YORP_PUSH_AMT_P_STAND		60
 
 unsigned int rnd(void);
 
@@ -257,18 +257,20 @@ void CObjectAI::yorp_ai(CObject &object, CPlayer *p_player, bool hardmode)
 			}
 			
 			if (object.blockedd)
+			{
 				if (rand()%YORP_JUMP_PROB==1)
 				{
 					object.yinertia = YORP_JUMP_HEIGHT - (rnd()%3);
-					object.y--;
+					object.blockedd = false;
 				}
-			
+			}
+
 			if (object.ai.yorp.movedir==LEFT)
 			{  // yorp is walking left
 				object.sprite = YORP_WALK_LEFT + object.ai.yorp.walkframe;
 				if (!object.blockedl)
 				{
-					object.x -= hardmode ? YORP_WALK_SPEED_FAST:YORP_WALK_SPEED;
+					object.x -= hardmode ? YORP_WALK_SPEED_FAST : YORP_WALK_SPEED;
 					object.ai.yorp.dist_traveled++;
 				}
 				else
@@ -310,8 +312,7 @@ void CObjectAI::yorp_ai(CObject &object, CPlayer *p_player, bool hardmode)
 			object.sprite = YORP_STUNFRAME + object.ai.yorp.walkframe;
 			if (object.ai.yorp.timer > YORP_STUN_ANIM_TIME)
 			{
-				numlooks = hardmode ? YORP_STUNTIME_FAST:YORP_STUNTIME;
-				
+				numlooks = hardmode ? YORP_STUNTIME_FAST : YORP_STUNTIME;
 				if (object.ai.yorp.looktimes>numlooks)
 				{
 					object.ai.yorp.looktimes = 0;

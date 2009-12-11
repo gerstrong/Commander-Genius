@@ -24,9 +24,10 @@
 
 class CObject {
 public:
-	CObject(int num_players=1);
+	CObject(int num_players=1, int index=0);
 	
 	unsigned int m_type;        // yorp, vorticon, etc.
+	unsigned int m_index;        // Like an ID for some objects of ID, that need this implementation
 	bool exists;
 	bool onscreen;    			// true=(scrx,scry) position is visible onscreen
 	bool hasbeenonscreen;

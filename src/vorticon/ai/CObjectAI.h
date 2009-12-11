@@ -54,7 +54,8 @@ private:
 
 	// ep2
 	//void baby_ai(CObject &object, int episode, bool hard)
-	//void scrub_ai(int o, stLevelControl levelcontrol);
+	void scrub_ai(CObject &object);
+	void Scrub_TurnOnCansupportWhereNotKicked(CObject &object);
 	//void tankep2_ai(int o, bool hardmode);
 	//void platform_ai(int o, stLevelControl levelcontrol);
 	//void vortelite_ai(int o, bool darkness);

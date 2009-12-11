@@ -19,7 +19,9 @@
 ///
 // Initialization Routine
 ///
-CObject::CObject(int num_players) {
+CObject::CObject(int num_players, int index) :
+m_index(index)
+{
 	honorPriority = false;
 	exists = false;
 	blockedu = blockedd = false;
@@ -282,7 +284,7 @@ void CObject::processFalling()
 	#define OBJFALLSPEED   160
 	if (!inhibitfall)
 	{
-		if (blockedd) yinertia = 0;
+		if (blockedd  && yinertia>0 ) yinertia = 0;
 		else
 		{
 			if (yinertia < OBJFALLSPEED) yinertia+=4;

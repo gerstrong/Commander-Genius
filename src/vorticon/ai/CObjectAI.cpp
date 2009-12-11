@@ -141,16 +141,16 @@ void CObjectAI::performSpecialAIType( CObject &object )
 		case OBJ_ROPE: rope_ai(object); break;
 
 		//KEEN2
-		//case OBJ_SCRUB: scrub_ai(p_object); break;
-		//case OBJ_TANKEP2: tankep2_ai(i, p_levelcontrol->hardmode); break;
-		//case OBJ_PLATFORM: platform_ai(i, *p_levelcontrol); break;
-		//case OBJ_VORTELITE: vortelite_ai(i, p_levelcontrol->dark); break;
-		//case OBJ_SECTOREFFECTOR: se_ai(i, p_levelcontrol ); break;
-		//case OBJ_BABY: baby_ai(i, p_levelcontrol->episode,
+		case OBJ_SCRUB: scrub_ai(object); break;
+		//case OBJ_TANKEP2: tankep2_ai(object, p_levelcontrol->hardmode); break;
+		//case OBJ_PLATFORM: platform_ai(object, *p_levelcontrol); break;
+		//case OBJ_VORTELITE: vortelite_ai(object, p_levelcontrol->dark); break;
+		//case OBJ_SECTOREFFECTOR: se_ai(object, p_levelcontrol ); break;
+		//case OBJ_BABY: baby_ai(object, p_levelcontrol->episode,
 		//p_levelcontrol->hardmode); break;
-		//case OBJ_EXPLOSION: explosion_ai(i); break;
-		//case OBJ_EARTHCHUNK: earthchunk_ai(i); break;
-		//case OBJ_SPARK: spark_ai(i, &(p_levelcontrol->sparks_left) ); break;
+		//case OBJ_EXPLOSION: explosion_ai(object); break;
+		//case OBJ_EARTHCHUNK: earthchunk_ai(object); break;
+		//case OBJ_SPARK: spark_ai(object, &(p_levelcontrol->sparks_left) ); break;
 
 		//KEEN3
 		//case OBJ_FOOB: foob_ai(i, p_levelcontrol->hardmode); break;
