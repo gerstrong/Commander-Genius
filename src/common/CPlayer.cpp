@@ -645,6 +645,11 @@ void CPlayer::ProcessInput()
 	else if(g_pInput->getHoldedKey(KN))
 		mp_PhysicsSettings->player.pogoforce_x++;
 
+	if(g_pInput->getHoldedKey(KH))
+		mp_PhysicsSettings->player.maxpogospeed--;
+	else if(g_pInput->getHoldedKey(KJ))
+		mp_PhysicsSettings->player.maxpogospeed++;
+
 /////
 //
 // Debug Code (END)

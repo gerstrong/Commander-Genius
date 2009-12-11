@@ -36,6 +36,7 @@ ENDIF (DEBUG)
 # Compilers and other specific variables can be found here:
 # http://www.cmake.org/Wiki/CMake_Useful_Variables
 
+
 # Compilation Flags and executables
 IF (BUILD_TYPE STREQUAL GP2X OR BUILD_TYPE STREQUAL WIZ OR BUILD_TYPE STREQUAL DINGOO)
 	IF (BUILD_TYPE STREQUAL GP2X)
@@ -148,7 +149,6 @@ IF(UNIX)
 		SET(BUILD_DIR Linux64)
 	ELSE(BUILD_TYPE STREQUAL WIN32)
 	ENDIF(BUILD_TYPE STREQUAL WIN32)
-
 
 	SET(OPTIMIZE_COMPILER_FLAG -O3)
 ENDIF(UNIX)

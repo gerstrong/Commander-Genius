@@ -361,38 +361,39 @@ void CPlayer::JumpAndPogo()
 					// continously bounce while pogo stick is out
 					g_pSound->playStereofromCoord(SOUND_KEEN_JUMP, PLAY_NOW, mp_object->at(m_player_number).scrx);
 
-					/*// jump high if JUMP key down, else bounce low
+					// jump high if JUMP key down, else bounce low
 					if (playcontrol[PA_JUMP])
 					{
 						if (!mp_option[OPT_SUPERPOGO].value)
 						{  // normal high pogo jump
 							if(playcontrol[PA_JUMP] > 12)
-								pjumpupspeed = ((PPOGOUP_SPEED-PJUMPUP_SPEED)*playcontrol[PA_JUMP]) / 50 + PJUMPUP_SPEED;
-							else
-								pjumpupspeed = (PPOGOUP_SPEED*11) / 10; // Impossible Pogo Trick
-							pjumptime = PJUMP_NORMALTIME_POGO_LONG;
-							pjumpupspeed_decrease = PJUMP_UPDECREASERATE_POGO_LONG;
+							{
+								int jump = mp_PhysicsSettings->player.maxjumpspeed;
+								int pogo = mp_PhysicsSettings->player.maxpogospeed;
+								pjumpupspeed = (pogo-jump)*playcontrol[PA_JUMP] / 50 + jump;
+								//pjumpupspeed = ((PPOGOUP_SPEED-PJUMPUP_SPEED)*playcontrol[PA_JUMP]) / 50 + PJUMPUP_SPEED;
+							}
+							//pjumptime = PJUMP_NORMALTIME_POGO_LONG;
+							//pjumpupspeed_decrease = PJUMP_UPDECREASERATE_POGO_LONG;
 						}
 						else
 						{
 							pjumpupspeed = PPOGOUP_SPEED_SUPER;
-							pjumptime = PJUMP_NORMALTIME_POGO_LONG_SUPER;
-							pjumpupspeed_decrease = PJUMP_UPDECREASERATE_POGO_LONG_SUPER;
+							//pjumptime = PJUMP_NORMALTIME_POGO_LONG_SUPER;
+							//pjumpupspeed_decrease = PJUMP_UPDECREASERATE_POGO_LONG_SUPER;
 						}
 					}
-					else
+					/*else
 					{
-						if(ppogostick)
-						{
-							pjumpupspeed = PJUMPUP_SPEED;
-							pjumptime = PJUMP_NORMALTIME_POGO_SHORT;
-							pjumpupspeed_decrease = PJUMP_UPDECREASERATE_POGO_SHORT;
-						}
-					}
+						pjumpupspeed = PJUMPUP_SPEED;
+						pjumptime = PJUMP_NORMALTIME_POGO_SHORT;
+						pjumpupspeed_decrease = PJUMP_UPDECREASERATE_POGO_SHORT;
+					}*/
 					pjumpframe = PJUMP_PREPARE_LAST_FRAME;
-					pjumping = PPOGOING;*/
+					pjumping = PPOGOING;
 				} else pjumpanimtimer++;
 			}
+			else pjumping = PNOJUMP;
 			break;
 		case PPREPAREJUMP:
 			if (pjumpanimtimer > PJUMP_PREPARE_ANIM_RATE)
@@ -425,10 +426,8 @@ void CPlayer::JumpAndPogo()
 					pwalkframe = 1;
 					if ( g_pGfxEngine->Tilemap->mp_tiles[psupportingtile].behaviour == 3)
 					{ // on ice, always jump direction facing
-						if (pshowdir==LEFT)
-						{  pdir=LEFT; }
-						else
-						{  pdir=RIGHT; }
+						if (pshowdir==LEFT) pdir=LEFT;
+						else pdir=RIGHT;
 					}
 					else
 						pjumpdir = UP;
@@ -437,10 +436,8 @@ void CPlayer::JumpAndPogo()
 					if(playcontrol[PA_X] < 0)	pinertia_x = -mp_PhysicsSettings->player.jumpdecrease_x;
 					if(playcontrol[PA_X] > 0)	pinertia_x = mp_PhysicsSettings->player.jumpdecrease_x;
 				}
-				else
-				{
-                    pjumpframe++;
-				}
+				else pjumpframe++;
+
 				pjumpanimtimer=0;
 			} else pjumpanimtimer++;
 			break;
@@ -505,10 +502,13 @@ void CPlayer::JumpAndPogo()
 	}
 	
     // If we are in Godmode, use the Pogo, and pressing the jump button, make the player fly
-    if( godmode && ppogostick &&
-	   g_pInput->getHoldedCommand(0, IC_JUMP) && !blockedu )
-    	goto_y -= PPOGOUP_SPEED;
-
+    if( godmode && ppogostick )
+    {
+    	if(playcontrol[PA_X] < 0) pinertia_x-=4;
+    	if(playcontrol[PA_X] > 0) pinertia_x+=4;
+    	if(g_pInput->getHoldedCommand(0, IC_JUMP) && !blockedu)
+    		goto_y -= PPOGOUP_SPEED;
+    }
 }
 
 // wouldn't it be cool if keen had a raygun, and he could shoot things?

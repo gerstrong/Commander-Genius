@@ -312,15 +312,18 @@ void CPlayGame::process()
 	{
 		std::string tempbuf;
 		SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
-#ifdef DEBUG
-		//tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec()) +
+//#ifdef DEBUG
+		//tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec()) +
 			//"; x = " + itoa(m_Player[0].x) + " ; y = " + itoa(m_Player[0].y);
-		tempbuf = "speed_x: " + itoa(m_Player[0].pinertia_x);
-		tempbuf += " | pogo_force_x: " + itoa(m_PhysicsSettings.player.pogoforce_x);
-#else
-		tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec());
-#endif
+		tempbuf = "Inertia_x: " + itoa(m_Player[0].pinertia_x);
+		tempbuf += " Pogoforce_x: " + itoa(m_PhysicsSettings.player.pogoforce_x);
+//#else
+	//	tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec());
+//#endif
 		g_pGfxEngine->Font->drawFont( sfc, tempbuf, 320-3-(tempbuf.size()<<3), 3, 1);
+
+		tempbuf = "MaxPogoUpSpeed: " + itoa(m_PhysicsSettings.player.maxpogospeed);
+		g_pGfxEngine->Font->drawFont( sfc, tempbuf, 320-3-(tempbuf.size()<<3), 11, 1);
 
 	}
 	
