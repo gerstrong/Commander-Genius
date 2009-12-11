@@ -23,7 +23,7 @@ void CControlsettings::drawInitialCommands()
 {
 	std::string buf;
 	std::string buf2;
-	mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 36, 13);
+	mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 36, 14);
 	mp_Dialog->setFrameTheme(DLG_THEME_OLDSCHOOL);
 
 	g_pInput->getEventName(IC_LEFT, m_chosenPlayer-1, buf2);
@@ -66,7 +66,11 @@ void CControlsettings::drawInitialCommands()
 	buf = "P"+itoa(m_chosenPlayer)+" Quit:   " + buf2;
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 10, buf);
 
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 2, 11, "Reset Controls");
+	buf = "Two Button Firing : ";
+	buf += g_pInput->getTwoButtonFiring(m_chosenPlayer-1) ? "(on)" : "(off)";
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 11, buf);
+
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 2, 12, "Reset Controls");
 }
 
 void CControlsettings::processSpecific()
@@ -111,7 +115,7 @@ void CControlsettings::processSelection()
 	
 	if( m_selection != -1) // Normal selection function
 	{
-		if( m_selection < 11 )
+		if( m_selection < 12 )
 		{
 			if(m_selection < MAX_COMMANDS)
 			{
@@ -128,6 +132,17 @@ void CControlsettings::processSelection()
 				mp_Dialog->m_key = 'n';
 			}
 			else if(m_selection == MAX_COMMANDS)
+			{
+				std::string buf;
+				bool twb = g_pInput->getTwoButtonFiring(m_chosenPlayer-1);
+				twb = !twb;
+				g_pInput->setTwoButtonFiring(m_chosenPlayer-1, twb);
+				buf = "Two Button Firing : ";
+				buf += g_pInput->getTwoButtonFiring(m_chosenPlayer-1) ? "(on)" : "(off)";
+				mp_Dialog->setObjectText(m_selection, buf);
+				m_selection = -1;
+			}
+			else if(m_selection == MAX_COMMANDS+1)
 			{
 				g_pInput->resetControls(m_chosenPlayer);
 				delete mp_Dialog;

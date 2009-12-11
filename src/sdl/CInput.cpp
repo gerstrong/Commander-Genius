@@ -62,57 +62,58 @@ void CInput::resetControls(int player) {
 			InputCommand[player][i].active = false;
 	}
 
+	// These are the default keyboard commands
 	i=player-1;
-		// These are the default keyboard commands
-		InputCommand[i][IC_LEFT].keysym = SDLK_LEFT;
-		InputCommand[i][IC_UP].keysym = SDLK_UP;
-		InputCommand[i][IC_RIGHT].keysym = SDLK_RIGHT;
-		InputCommand[i][IC_DOWN].keysym = SDLK_DOWN;
+	InputCommand[i][IC_LEFT].keysym = SDLK_LEFT;
+	InputCommand[i][IC_UP].keysym = SDLK_UP;
+	InputCommand[i][IC_RIGHT].keysym = SDLK_RIGHT;
+	InputCommand[i][IC_DOWN].keysym = SDLK_DOWN;
 
-		InputCommand[i][IC_JUMP].keysym = SDLK_LCTRL;
-		InputCommand[i][IC_POGO].keysym = SDLK_LALT;
-		InputCommand[i][IC_FIRE].keysym = SDLK_SPACE;
-		InputCommand[i][IC_STATUS].keysym = SDLK_RETURN;
+	InputCommand[i][IC_JUMP].keysym = SDLK_LCTRL;
+	InputCommand[i][IC_POGO].keysym = SDLK_LALT;
+	InputCommand[i][IC_FIRE].keysym = SDLK_SPACE;
+	InputCommand[i][IC_STATUS].keysym = SDLK_RETURN;
 
-		InputCommand[i][IC_HELP].keysym = SDLK_F1;
-		InputCommand[i][IC_QUIT].keysym = SDLK_ESCAPE;
+	InputCommand[i][IC_HELP].keysym = SDLK_F1;
+	InputCommand[i][IC_QUIT].keysym = SDLK_ESCAPE;
 
-		// And those are the default joystick handlings
-		InputCommand[i][IC_LEFT].joyeventtype = ETYPE_JOYAXIS;
-		InputCommand[i][IC_LEFT].joyaxis = 0;
-		InputCommand[i][IC_LEFT].joyvalue = -32767;
-		InputCommand[i][IC_LEFT].which = 0;
-		InputCommand[i][IC_UP].joyeventtype = ETYPE_JOYAXIS;
-		InputCommand[i][IC_UP].joyaxis = 1;
-		InputCommand[i][IC_UP].joyvalue = -32767;
-		InputCommand[i][IC_UP].which = 0;
-		InputCommand[i][IC_RIGHT].joyeventtype = ETYPE_JOYAXIS;
-		InputCommand[i][IC_RIGHT].joyaxis = 0;
-		InputCommand[i][IC_RIGHT].joyvalue = 32767;
-		InputCommand[i][IC_RIGHT].which = 0;
-		InputCommand[i][IC_DOWN].joyeventtype = ETYPE_JOYAXIS;
-		InputCommand[i][IC_DOWN].joyaxis = 1;
-		InputCommand[i][IC_DOWN].joyvalue = 32767;
-		InputCommand[i][IC_DOWN].which = 0;
+	// And those are the default joystick handlings
+	InputCommand[i][IC_LEFT].joyeventtype = ETYPE_JOYAXIS;
+	InputCommand[i][IC_LEFT].joyaxis = 0;
+	InputCommand[i][IC_LEFT].joyvalue = -32767;
+	InputCommand[i][IC_LEFT].which = 0;
+	InputCommand[i][IC_UP].joyeventtype = ETYPE_JOYAXIS;
+	InputCommand[i][IC_UP].joyaxis = 1;
+	InputCommand[i][IC_UP].joyvalue = -32767;
+	InputCommand[i][IC_UP].which = 0;
+	InputCommand[i][IC_RIGHT].joyeventtype = ETYPE_JOYAXIS;
+	InputCommand[i][IC_RIGHT].joyaxis = 0;
+	InputCommand[i][IC_RIGHT].joyvalue = 32767;
+	InputCommand[i][IC_RIGHT].which = 0;
+	InputCommand[i][IC_DOWN].joyeventtype = ETYPE_JOYAXIS;
+	InputCommand[i][IC_DOWN].joyaxis = 1;
+	InputCommand[i][IC_DOWN].joyvalue = 32767;
+	InputCommand[i][IC_DOWN].which = 0;
 
-		InputCommand[i][IC_JUMP].joyeventtype = ETYPE_JOYBUTTON;
-		InputCommand[i][IC_JUMP].joybutton = 0;
-		InputCommand[i][IC_JUMP].which = 0;
-		InputCommand[i][IC_POGO].joyeventtype = ETYPE_JOYBUTTON;
-		InputCommand[i][IC_POGO].joybutton = 1;
-		InputCommand[i][IC_POGO].which = 0;
-		InputCommand[i][IC_FIRE].joyeventtype = ETYPE_JOYBUTTON;
-		InputCommand[i][IC_FIRE].joybutton = 2;
-		InputCommand[i][IC_FIRE].which = 0;
-		InputCommand[i][IC_STATUS].joyeventtype = ETYPE_JOYBUTTON;
-		InputCommand[i][IC_STATUS].joybutton = 3;
-		InputCommand[i][IC_STATUS].which = 0;
-		InputCommand[i][IC_HELP].joyeventtype = ETYPE_JOYBUTTON;
-		InputCommand[i][IC_HELP].joybutton = 4;
-		InputCommand[i][IC_HELP].which = 0;
-		InputCommand[i][IC_QUIT].joyeventtype = ETYPE_JOYBUTTON;
-		InputCommand[i][IC_QUIT].joybutton = 5;
-		InputCommand[i][IC_QUIT].which = 0;
+	InputCommand[i][IC_JUMP].joyeventtype = ETYPE_JOYBUTTON;
+	InputCommand[i][IC_JUMP].joybutton = 0;
+	InputCommand[i][IC_JUMP].which = 0;
+	InputCommand[i][IC_POGO].joyeventtype = ETYPE_JOYBUTTON;
+	InputCommand[i][IC_POGO].joybutton = 1;
+	InputCommand[i][IC_POGO].which = 0;
+	InputCommand[i][IC_FIRE].joyeventtype = ETYPE_JOYBUTTON;
+	InputCommand[i][IC_FIRE].joybutton = 2;
+	InputCommand[i][IC_FIRE].which = 0;
+	InputCommand[i][IC_STATUS].joyeventtype = ETYPE_JOYBUTTON;
+	InputCommand[i][IC_STATUS].joybutton = 3;
+	InputCommand[i][IC_STATUS].which = 0;
+	InputCommand[i][IC_HELP].joyeventtype = ETYPE_JOYBUTTON;
+	InputCommand[i][IC_HELP].joybutton = 4;
+	InputCommand[i][IC_HELP].which = 0;
+	InputCommand[i][IC_QUIT].joyeventtype = ETYPE_JOYBUTTON;
+	InputCommand[i][IC_QUIT].joybutton = 5;
+	InputCommand[i][IC_QUIT].which = 0;
+	setTwoButtonFiring(i, false);
 }
 
 bool CInput::startJoyDriver()
@@ -159,7 +160,10 @@ short CInput::loadControlconfig(void)
 	FILE *fp;
 	if((fp=OpenGameFile("controls.dat","rb")) != NULL)
 	{
-		if(fread(InputCommand, sizeof(stInputCommand),NUMBER_OF_COMMANDS*NUM_INPUTS, fp) == 0 )
+		bool ok=true;
+		ok &= (fread(InputCommand, sizeof(stInputCommand),NUMBER_OF_COMMANDS*NUM_INPUTS, fp) != 0);
+		fread(TwoButtonFiring, sizeof(bool),NUM_INPUTS, fp); // This one won't be checked, in order to conserve compatibility
+		if( !ok )
 		{
 			fclose(fp);
 			return 1;
@@ -176,6 +180,7 @@ short CInput::saveControlconfig(void)
 	if((fp=OpenGameFile("controls.dat","wb")) != NULL)
 	{
 		fwrite(InputCommand, sizeof(stInputCommand),NUMBER_OF_COMMANDS*NUM_INPUTS, fp);
+		fwrite(TwoButtonFiring, sizeof(bool),NUM_INPUTS, fp);
 		fclose(fp);
 		return 0;
 	}
@@ -236,6 +241,9 @@ bool CInput::readNewEvent(Uint8 device, int position)
 
 bool CInput::getExitEvent(void) {	return m_exit;	}
 void CInput::cancelExitEvent(void) { m_exit=false; }
+
+bool CInput::getTwoButtonFiring(int player) { return TwoButtonFiring[player]; }
+void CInput::setTwoButtonFiring(int player, bool value) { TwoButtonFiring[player]=value; }
 
 void CInput::pollEvents()
 {

@@ -121,7 +121,6 @@ void CSettings::loadDefaultGameCfg()
 	setOption( OPT_SUPERPOGO, "superpogo", 0 );
 	setOption( OPT_ALLOWPKING, "pking", 1 );
 	setOption( OPT_CHEATS, "allcheats", 0 );
-	setOption( OPT_TWOBUTTON, "two-button-firing", 0 );
 	setOption( OPT_ANALOGJOYSTICK, "analog-joystick", 1 );
 	setOption( OPT_LVLREPLAYABILITY, "level replayability", 0 );
 	setOption( OPT_RISEBONUS, "rise bonus", 1 );

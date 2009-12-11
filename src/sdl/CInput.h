@@ -138,7 +138,6 @@ enum InputCommands{
 	IC_POGO,
 	IC_FIRE,
 	IC_STATUS,
-	IC_TWOBUTTON,
 	IC_HELP,
 	IC_QUIT,
 };
@@ -192,6 +191,10 @@ public:
 	bool getPressedCommand(int player, int command);
 	bool getPressedAnyCommand(int player);
 	bool getExitEvent(void);
+
+	bool getTwoButtonFiring(int player);
+	void setTwoButtonFiring(int player, bool value);
+
 	void cancelExitEvent(void);
 
 	void getEventName(int position, unsigned char input, std::string &buf);
@@ -211,6 +214,8 @@ private:
 	SDL_Joystick *mp_Joystick;
 
 	stInputCommand InputCommand[NUM_INPUTS][NUMBER_OF_COMMANDS];
+	bool TwoButtonFiring[NUM_INPUTS];
+
 	bool m_exit;
 	int m_cmdpulse;
 	short m_joydeadzone;

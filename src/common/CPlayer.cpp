@@ -727,7 +727,7 @@ void CPlayer::ProcessInput()
 		return;
 	}
 	
-	if(mp_option[OPT_TWOBUTTON].value)
+	if(g_pInput->getTwoButtonFiring(m_player_number))
 	{
 		if(playcontrol[PA_JUMP] && playcontrol[PA_POGO])
 		{
