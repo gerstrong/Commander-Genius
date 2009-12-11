@@ -146,8 +146,7 @@ void CObjectAI::performSpecialAIType( CObject &object )
 		//case OBJ_PLATFORM: platform_ai(object, *p_levelcontrol); break;
 		//case OBJ_VORTELITE: vortelite_ai(object, p_levelcontrol->dark); break;
 		//case OBJ_SECTOREFFECTOR: se_ai(object, p_levelcontrol ); break;
-		//case OBJ_BABY: baby_ai(object, p_levelcontrol->episode,
-		//p_levelcontrol->hardmode); break;
+		case OBJ_BABY: baby_ai(object, m_Episode, m_difficulty>1); break;
 		//case OBJ_EXPLOSION: explosion_ai(object); break;
 		//case OBJ_EARTHCHUNK: earthchunk_ai(object); break;
 		//case OBJ_SPARK: spark_ai(object, &(p_levelcontrol->sparks_left) ); break;

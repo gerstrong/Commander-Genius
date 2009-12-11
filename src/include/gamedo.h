@@ -10,5 +10,3 @@ void gamedo_AnimatedTiles();
 
 void gamedo_render_drawobjects();
 
-// Enemies AI Functions used in gamepdo.cpp
-void baby_ai(int o, int episode, bool hard);

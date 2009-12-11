@@ -138,8 +138,9 @@ enum InputCommands{
 	IC_POGO,
 	IC_FIRE,
 	IC_STATUS,
+	IC_TWOBUTTON,
 	IC_HELP,
-	IC_QUIT
+	IC_QUIT,
 };
 
 const int MAX_COMMANDS = 10;

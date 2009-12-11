@@ -53,7 +53,8 @@ private:
 	void rope_movestone(CObject &object);
 
 	// ep2
-	//void baby_ai(CObject &object, int episode, bool hard)
+	void baby_ai(CObject &object, int episode, bool hard);
+	void baby_jump(CObject &object, int big);
 	void scrub_ai(CObject &object);
 	void Scrub_TurnOnCansupportWhereNotKicked(CObject &object);
 	//void tankep2_ai(int o, bool hardmode);
