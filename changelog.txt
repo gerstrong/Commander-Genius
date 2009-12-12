@@ -3,7 +3,10 @@ Commander Genius Release (CloneKeenPlus):
 
 v0.3.1.0:
 ---------
+
 12-12-2009
+- Teleporter in Episode 3 don't need the exe file. But it's calculated now...
+- Teleporter are now read from the Exe-file in Episode 1 
 - Improved AI (Yorp)
 - Removed some ugly tiles on the title screen
 

@@ -22,7 +22,7 @@ void CPlayGame::processOnWorldMap()
 		m_Player[i].processWorldMap();
 
 		// entered a level, used ship, teleporter, etc.
-		if( !m_Player[i].hideplayer )
+		if( !m_Player[i].hideplayer && !m_Player[i].beingteleported )
 		{
 			useobject = m_Player[i].getNewObject();
 			if( useobject != 0 )
@@ -102,8 +102,7 @@ void CPlayGame::goBacktoMap()
 
 	m_level_command = START_LEVEL;
 	m_Level = WM_MAP_NUM;
-	//g_pMusicPlayer->stop();
-	//g_pSound->playStereofromCoord(SOUND_ENTER_LEVEL, PLAY_NOW, m_Object[m_Player[i].useObject].scrx);
+	g_pMusicPlayer->stop();
 	// Now that the new level/map will be loaded, the players aren't dead anymore!
 	for( int i=0 ; i<m_NumPlayers ; i++ )
 	{

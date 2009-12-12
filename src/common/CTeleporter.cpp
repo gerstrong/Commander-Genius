@@ -12,26 +12,6 @@
 #include "../sdl/sound/CSound.h"
 #include "../keen.h"
 
-// 3859 <-> 3889
-// 3911 -> 3955
-// 3877 <-> 3922
-
-// 4032 -> 3842
-// 3842 -> 3877
-// 4063 -> 4094
-// 4094 -> 4072
-// 4072 -> 3980
-// 3980 -> 4032 nosnap
-
-// table of teleporters (mostly for ep3). player will teleport from
-// a teleporter in a teleport_from entry, to the teleporter
-// in the matching teleport_dest entry. Thus 3859 leads to 3889, etc.
-// if the snap entry is 1 the screen will snap to center on the new
-// position, otherwise it will smoothly scroll over to it
-#define NUM_TPORTS    20
-const int teleport_from[NUM_TPORTS+1] = {4014,4032,3842,4063,4094,4072,3980,3859,3889,3911,3877,3922,3947,4025,3988,3955,41,38,0};
-const int teleport_dest[NUM_TPORTS+1] = {4072,3842,3877,4094,4072,3980,4032,3889,3859,3955,3922,3877,4025,3988,3911,3889,38,41,0};
-// TODO: This structure is held for compatibility reasons when compiling. In future it will be removed.
 
 CTeleporter::CTeleporter(std::vector<stTeleporterTable> &TeleportTable, short episode):
 m_episode(episode),
@@ -73,29 +53,24 @@ void CTeleporter::createTeleporterTable(unsigned char *p_exedata)
 		m_TeleportTable[5].x = m_TeleportTable[2].x = getWord(p_exedata+0x158F3);
 		m_TeleportTable[5].y = m_TeleportTable[2].y = getWord(p_exedata+0x158F7);
 	}
-	else if(m_episode == 3)
-	{
-		// TODO: This code is missing!! It's far more complex. Be careful!
-	}
 }
 
 // This function checks, whether it is a teleporter or not.
 int CTeleporter::getTeleporterInfo(int objectID)
 {
-	if(m_episode == 1)
-	{
-		if(objectID > 33 && objectID < 47) return objectID;
+	if(m_episode == 1) {
+		if( objectID > 33 && objectID < 47 ) return objectID;
 	}
-	else if(m_episode == 3)
-	{
-		// TODO: Ya know!
+	else if(m_episode == 3) {
+		if( (objectID & 0xF00) == 0xF00) return objectID;
 	}
 	return 0;
 }
 
-void CTeleporter::readTeleportDestCoordinates(int objectID, int &destx, int &desty)
+void CTeleporter::readTeleportDestCoordinatesEP1(int objectID, int &destx, int &desty)
 {
 	destx = desty = 0;
+
 	for(size_t i=0 ; i<m_TeleportTable.size() ; i++)
 	{
 		if(m_TeleportTable[i].objectnumber2 == objectID || m_TeleportTable[i].objectnumber1 == objectID)
@@ -105,37 +80,58 @@ void CTeleporter::readTeleportDestCoordinates(int objectID, int &destx, int &des
 			return;
 		}
 	}
-	// TODO: Warn here, if the the entry was not found!
+}
+
+void CTeleporter::readTeleportDestCoordinatesEP3(int objectID, CMap &map,int &destx, int &desty)
+{
+	destx = desty = 0;
+
+	int newObject = objectID & 0x00F;
+	newObject <<= 4;
+	newObject += 0xF00; // Now its a teleporter, we only need to find the right one on the map
+
+	for(int i=newObject; i<newObject+0x10 ; i++)
+	{
+		if(map.findObject(i, &destx, &desty))
+		{
+			destx <<= TILE_S;
+			desty <<= TILE_S;
+			return;
+		}
+	}
 }
 
 void CTeleporter::teleportPlayer(int objectID, CMap &map, std::vector<CObject> &p_vect_object, CPlayer &player)
 {
 	int destx, desty;
-	
+
 	int origx, origy;
 	CObject teleporter;
 	map.findObject(objectID, &origx, &origy);
 	teleporter.spawn( origx<<CSF, origy<<CSF, OBJ_TELEPORTER );
 	teleporter.ai.teleport.direction = TELEPORTING_IN;
-	readTeleportDestCoordinates(objectID, destx, desty);
+	if(m_episode == 1)
+		readTeleportDestCoordinatesEP1(objectID, destx, desty);
+	else if(m_episode == 3)
+		readTeleportDestCoordinatesEP3(objectID, map, destx, desty);
 	teleporter.ai.teleport.destx = destx>>TILE_S;
 	teleporter.ai.teleport.desty = desty>>TILE_S;
 	teleporter.ai.teleport.whichplayer = player.m_player_number;
 	teleporter.ai.teleport.NoExitingTeleporter = 0;
 	p_vect_object.push_back(teleporter);
 
-    // ep1 bonus teleporter
-    // TODO: This must be coded more extensive
+	// ep1 bonus teleporter
+	// TODO: This must be coded more extensive
 	/*case LVLS_TELEPORTER_BONUS:
-	 o = spawn_object(x<<CSF,y<<CSF,OBJ_TELEPORTER);
-	 m_Object[o].ai.teleport.direction = TELEPORTING_OUT;
-	 m_Object[o].ai.teleport.destx = TELEPORT_BONUS_DESTX;
-	 m_Object[o].ai.teleport.desty = TELEPORT_BONUS_DESTY;
-	 m_Object[o].ai.teleport.whichplayer = cp;
-	 m_Object[o].ai.teleport.baseframe = TELEPORT_RED_BASEFRAME_EP1;
-	 m_Object[o].ai.teleport.idleframe = TELEPORT_RED_IDLEFRAME_EP1;
-	 m_Object[o].ai.teleport.NoExitingTeleporter = 1;
-	 m_Object[o].ai.teleport.snap = 1;
-	 mp_Player[cp].hideplayer = 1;
-	 break;*/
+	o = spawn_object(x<<CSF,y<<CSF,OBJ_TELEPORTER);
+	m_Object[o].ai.teleport.direction = TELEPORTING_OUT;
+	m_Object[o].ai.teleport.destx = TELEPORT_BONUS_DESTX;
+	m_Object[o].ai.teleport.desty = TELEPORT_BONUS_DESTY;
+	m_Object[o].ai.teleport.whichplayer = cp;
+	m_Object[o].ai.teleport.baseframe = TELEPORT_RED_BASEFRAME_EP1;
+	m_Object[o].ai.teleport.idleframe = TELEPORT_RED_IDLEFRAME_EP1;
+	m_Object[o].ai.teleport.NoExitingTeleporter = 1;
+	m_Object[o].ai.teleport.snap = 1;
+	mp_Player[cp].hideplayer = 1;
+	break;*/
 }
