@@ -12,7 +12,8 @@
 #include <cstdlib>
 #include <string>
 
-CTileLoader::CTileLoader(int episode, int version, unsigned char *data) {
+CTileLoader::CTileLoader(int episode, int version, unsigned char *data)
+{
 	m_episode = episode;
 	m_version = version;
 	m_data = data;
@@ -136,10 +137,12 @@ void CTileLoader::assignChangeTileAttribute()
 	// This special call is used for workarounds which are wrong in the tiles attributes file of CG.
 	// I hope those attributes can be read out of the exe-files in future.
 	// Everything to zero in order to avoid bugs in mods
+	// It also assigns the special background tile which is sometimes used in the game for changes
+	// to real backgrounds
 	for(int i=0 ; i<m_numtiles ; i++)
 		mp_TileProperty[i].chgtile = 0;
 	
-	// At any other case, than the special ones, the tile is always 143 for pickuppable items
+	// At any other case, except some special ones, the tile is always 143 for pickuppable items
 	// 17 is tile for an exit. Until row 19, this seems to be valid
 	for(int i=0 ; i<m_numtiles ; i++)
 		if(canbePickedup(i) || isaDoor(i) )

@@ -36,6 +36,8 @@ public:
 	bool optimizeSurface();
 	SDL_Surface *getSDLSurface();
 
+	int EmptyBackgroundTile() { return m_EmptyBackgroundTile; }
+
 	void drawTile(SDL_Surface *dst, Uint16 x, Uint16 y, Uint16 t);
 
 	stTile *mp_tiles;
@@ -44,5 +46,6 @@ public:
 
 private:
 	SDL_Surface *m_Tilesurface;
+	int m_EmptyBackgroundTile;
 };
 #endif /* CTILEMAP_H_ */

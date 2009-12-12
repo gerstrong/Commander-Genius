@@ -1,6 +1,5 @@
 #include "CObjectAI.h"
 #include "../../sdl/sound/CSound.h"
-#include "../../keen.h"
 
 // Yorp (ep1)y
 enum
@@ -15,16 +14,16 @@ enum
 #define YORP_LOOK_TIME  24   // time each frame of YORP_LOOK is shown
 #define YORP_STUN_ANIM_TIME  10
 #define YORP_WALK_ANIM_TIME  48
-#define YORP_WALK_SPEED      10
-#define YORP_WALK_ANIM_TIME_FAST  72
-#define YORP_WALK_SPEED_FAST      26
+#define YORP_WALK_SPEED      20
+#define YORP_WALK_ANIM_TIME_FAST  6
+#define YORP_WALK_SPEED_FAST      20
 
 #define YORP_NUM_LOOKS  9      // number of times yorp look frame is changed
 #define YORP_STUNTIME   7     // YORP_NUM_LOOKS for stun
 
 // for INCREASE_DIFFICULTY
 #define YORP_NUM_LOOKS_FAST  12      // number of times yorp look frame is changed
-#define YORP_STUNTIME_FAST   48     // YORP_NUM_LOOKS for stun
+#define YORP_STUNTIME_FAST   6     // YORP_NUM_LOOKS for stun
 
 #define YORP_LOOK_LEFT  49
 #define YORP_STAND      50

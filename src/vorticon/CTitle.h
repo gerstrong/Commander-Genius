@@ -20,11 +20,12 @@
 #include <vector>
 #include "../graphics/CGfxEngine.h"
 #include "../common/CObject.h"
+#include "../common/CMap.h"
 
 class CTitle {
 public:
 
-	CTitle(std::vector<CObject*> &Objects);
+	CTitle(std::vector<CObject*> &Objects, CMap &map);
 	virtual ~CTitle();
 
 	bool init(int Episode);
@@ -37,5 +38,6 @@ private:
 	std::vector<CObject*> &m_objects;
 	bool m_finished;
 	unsigned int m_time;
+	CMap &m_map;
 };
 #endif /* CTITLE_H_ */

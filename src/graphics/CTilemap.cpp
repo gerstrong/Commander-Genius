@@ -10,7 +10,9 @@
 #include "CPalette.h"
 #include <stdlib.h>
 
-CTilemap::CTilemap(stTile *pTileProperties, int numtiles) {
+CTilemap::CTilemap(stTile *pTileProperties, int numtiles) :
+m_EmptyBackgroundTile(143)
+{
 	m_Tilesurface = NULL;
 	mp_tiles = pTileProperties;
 	m_numtiles = numtiles;

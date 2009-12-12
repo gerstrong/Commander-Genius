@@ -54,13 +54,13 @@ bool CPassive::init(char mode)
 	}
 	else if( m_mode == TITLE )
 	{
-		mp_TitleScreen = new CTitle(m_object);
 		mp_Map = new CMap( mp_Scrollsurface, mp_Tilemap);
 		CMapLoader MapLoader( mp_Map );
 		MapLoader.load( m_Episode, 90, m_DataDirectory);
 		SDL_Rect gamerect = g_pVideoDriver->getGameResolution();
 		mp_Map->gotoPos( 32, (gamerect.h<240) ? 32 : 0); // Coordinates of title screen
 		mp_Map->drawAll();
+		mp_TitleScreen = new CTitle(m_object, *mp_Map);
 		mp_TitleScreen->init(m_Episode);
 	}
 	else if( m_mode == DEMO )
@@ -146,6 +146,7 @@ void CPassive::process()
 				// and load Demo environment
 				cleanup();
 				init(DEMO);
+				return;
 			}
 		}
 	}

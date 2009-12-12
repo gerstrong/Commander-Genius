@@ -134,9 +134,4 @@ typedef struct stCommand
 	short state;
 } stCommand;
 
-typedef struct stNewPlayer
-{
-	stCommand Command;
-} stNewPlayer;
-
 #endif

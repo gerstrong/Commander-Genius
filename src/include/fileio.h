@@ -10,7 +10,6 @@
 
 #include <string>
 
-short checkConsistencyofGameData(stGameData *p_GameData);
 std::string formatPathString(const std::string& path);
 void assignChangeTileAttribute(stTile *tile, int episode);
 
