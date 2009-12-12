@@ -90,9 +90,9 @@ void CTextBox::process()
 
 bool CTextBox::hasFinished()
 {
-	//if( m_time_passed >= m_textdelay && m_tw_waittime!=0  )	return true;
+	if( m_time_passed >= m_textdelay && m_tw_waittime!=0  )	return true;
 
-	//if( m_tw_waittime==0 && g_pInput->getPressedAnyCommand() ) return true;
+	if( m_tw_waittime==0 && g_pInput->getPressedAnyCommand() ) return true;
 
 	return false;
 }

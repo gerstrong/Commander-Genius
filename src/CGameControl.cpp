@@ -14,9 +14,6 @@
 #include "sdl/sound/CSound.h"
 #include "arguments.h"
 
-// TODO: I think the Options Structure is still missing here!
-// That need to be checked out!
-
 CGameControl::CGameControl() :
 mp_GameLauncher(NULL),
 mp_PassiveMode(NULL),
@@ -118,7 +115,8 @@ bool CGameControl::init(char mode)
 		mp_PlayGame = new CPlayGame(m_Episode, m_startLevel,
 									m_Numplayers, m_Difficulty,
 									m_DataDirectory, mp_option,
-									m_show_finale, m_SavedGame );
+									m_show_finale, m_SavedGame,
+									m_TeleporterTable);
 
 		m_show_finale = false; // just show it once!!
 
@@ -166,6 +164,9 @@ bool CGameControl::loadResources(unsigned short Episode, const std::string& Data
 		CPatcher Patcher(Episode, version, p_exedata, DataDirectory);
 		Patcher.patchMemory();
 	}
+
+	CTeleporter Teleporter(m_TeleporterTable, Episode);
+	Teleporter.createTeleporterTable(p_exedata);
 
     if( (flags & LOADGFX) == LOADGFX )
     {

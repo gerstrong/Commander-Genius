@@ -122,7 +122,7 @@ int CPlayer::getNewObject()
 			yb = (y>>CSF)+8;
 			lvl = mp_map->getObjectat(xb>>4, yb>>4);
         }
-        printf("Object selected: %d\n", lvl);
+        printf("Object selected: %d at (%d,%d)\n", lvl, xb>>4, yb>>4);
         return lvl;
     }
 

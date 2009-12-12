@@ -11,6 +11,7 @@
 #define CGAMECONTROL_H_
 
 #include "common/CGameLauncher.h"
+#include "common/CTeleporter.h"
 #include "common/options.h"
 #include "fileio/CSavedGame.h"
 #include "vorticon/CEGAGraphics.h"
@@ -19,10 +20,12 @@
 #include "vorticon/playgame/CPlayGame.h"
 #include <string>
 
-#define LOADGFX 0x01
-#define LOADSTR 0x02
-#define LOADSND 0x04
-#define LOADALL 0xFF
+enum load_states{
+LOADGFX=0x01,
+LOADSTR=0x02,
+LOADSND=0x04,
+LOADALL=0xFF
+};
 
 class CGameControl {
 public:
@@ -66,6 +69,8 @@ private:
 	int current_demo;
 	Uint8 m_startLevel;
 	
+	std::vector<stTeleporterTable> m_TeleporterTable; // Teleporter table used for the destinations
+
 	CEGAGraphics *m_EGAGraphics;
 	CMessages *m_Messages;
 };

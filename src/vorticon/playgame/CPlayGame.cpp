@@ -25,9 +25,11 @@
 CPlayGame::CPlayGame( char episode, char level,
 					 char numplayers, char difficulty,
 					 std::string &gamepath, stOption *p_option,
-					 bool finale, CSavedGame &SavedGame) :
+					 bool finale, CSavedGame &SavedGame,
+					 std::vector<stTeleporterTable> &TeleporterTable) :
 m_SavedGame(SavedGame),
-mp_MessageBox(NULL)
+mp_MessageBox(NULL),
+m_TeleporterTable(TeleporterTable)
 {
 	m_Episode = episode;
 	m_Level = level;

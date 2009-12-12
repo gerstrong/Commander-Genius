@@ -5,6 +5,15 @@
 // (animates the teleporter and moves the player)
 // (ep1&3)
 
+#define TELEPORT_GRAY_BASEFRAME_EP1  342
+#define TELEPORT_GRAY_IDLEFRAME_EP1  99
+
+#define TELEPORT_RED_BASEFRAME_EP1   338
+#define TELEPORT_RED_IDLEFRAME_EP1   325
+
+#define TELEPORT_BASEFRAME_EP3  130
+#define TELEPORT_IDLEFRAME_EP3  134
+
 // rate at which the frame will change
 const int TELEPORTER_ANIM_RATE_EP1 = 1;
 const int TELEPORTER_ANIM_RATE_EP3 = 1;
@@ -35,6 +44,15 @@ void CObjectAI::teleporter_ai(CObject &object)
 		object.ai.teleport.animtimer = animrate;
 		object.ai.teleport.animframe = 0;
 		object.ai.teleport.numframechanges = 0;
+
+		object.ai.teleport.idleframe = mp_Map->at(object.x>>CSF,object.y>>CSF);
+		if(object.ai.teleport.idleframe == TELEPORT_GRAY_IDLEFRAME_EP1)
+			object.ai.teleport.baseframe = TELEPORT_GRAY_BASEFRAME_EP1;
+		else if(object.ai.teleport.idleframe == TELEPORT_RED_IDLEFRAME_EP1)
+			object.ai.teleport.baseframe = TELEPORT_RED_BASEFRAME_EP1;
+		else if(object.ai.teleport.idleframe == TELEPORT_IDLEFRAME_EP3)
+			object.ai.teleport.baseframe = TELEPORT_BASEFRAME_EP3;
+
 		g_pSound->playStereofromCoord(SOUND_TELEPORT, PLAY_NOW, object.scrx);
 	}
 	
@@ -97,6 +115,14 @@ void CObjectAI::teleporter_ai(CObject &object)
 				m_Player[player].x = object.x;
 				m_Player[player].y = object.y;
 				object.ai.teleport.direction = TELEPORTING_OUT;
+
+				object.ai.teleport.idleframe = mp_Map->at(object.x>>CSF,object.y>>CSF);
+				if(object.ai.teleport.idleframe == TELEPORT_GRAY_IDLEFRAME_EP1)
+					object.ai.teleport.baseframe = TELEPORT_GRAY_BASEFRAME_EP1;
+				else if(object.ai.teleport.idleframe == TELEPORT_RED_IDLEFRAME_EP1)
+					object.ai.teleport.baseframe = TELEPORT_RED_BASEFRAME_EP1;
+				else if(object.ai.teleport.idleframe == TELEPORT_IDLEFRAME_EP3)
+					object.ai.teleport.baseframe = TELEPORT_BASEFRAME_EP3;
 				g_pSound->playStereofromCoord(SOUND_TELEPORT, PLAY_NOW, object.scrx);
 			}
 		} break;

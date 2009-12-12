@@ -19,6 +19,7 @@
 #include "../../common/CMap.h"
 #include "../../common/options.h"
 #include "../../common/CPhysicsSettings.h"
+#include "../../common/CTeleporter.h"
 #include "../ai/CObjectAI.h"
 #include "../ai/CEGABitmap.h"
 #include "../finale/CEndingEp1.h"
@@ -51,7 +52,8 @@ public:
 	CPlayGame( char episode, char level,
 			  char numplayers, char difficulty,
 			  std::string &gamepath, stOption *p_option,
-			  bool finale, CSavedGame &SavedGame);
+			  bool finale, CSavedGame &SavedGame,
+			  std::vector<stTeleporterTable> &TeleporterTable);
 
 	void setupPlayers();
 	bool init();
@@ -132,6 +134,7 @@ private:
 	CSavedGame &m_SavedGame;
 	CPhysicsSettings m_PhysicsSettings;
 	CMessageBox *mp_MessageBox;
+	std::vector<stTeleporterTable> &m_TeleporterTable;
 	bool m_showKeensLeft;
 	std::vector<CObject> m_Object;
 };

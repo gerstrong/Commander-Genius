@@ -135,7 +135,7 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path )
 			
 			if (mp_map->m_worldmap) addWorldMapObject(t, curmapx, curmapy,  episode );
 			else addEnemyObject(t, curmapx, curmapy, episode, level);
-			
+
 			curmapx++;
 			if (curmapx >= mp_map->m_width)
 			{
