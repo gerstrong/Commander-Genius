@@ -10,7 +10,7 @@
 CPhysicsSettings::CPhysicsSettings() {
 	// used for jumping
 	player.maxjumpspeed = 103;
-	player.maxpogospeed = 150;
+	player.maxpogospeed = 142;
 	player.defaultjumpupdecreasespeed = 3;
 	player.jumpdecrease_x = 54;
 
@@ -21,7 +21,7 @@ CPhysicsSettings::CPhysicsSettings() {
 	player.fallspeed_decrease = 9;
 
 	// Pogo values
-	player.pogoforce_x = 20;
+	player.pogoforce_x = 30;
 }
 
 CPhysicsSettings::~CPhysicsSettings() {

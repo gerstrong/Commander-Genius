@@ -102,7 +102,7 @@ void CPlayGame::goBacktoMap()
 
 	m_level_command = START_LEVEL;
 	m_Level = WM_MAP_NUM;
-	g_pMusicPlayer->stop();
+	//g_pMusicPlayer->stop();
 	// Now that the new level/map will be loaded, the players aren't dead anymore!
 	for( int i=0 ; i<m_NumPlayers ; i++ )
 	{

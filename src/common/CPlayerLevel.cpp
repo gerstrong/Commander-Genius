@@ -490,15 +490,18 @@ void CPlayer::JumpAndPogo()
 				pinertia_x += (mp_PhysicsSettings->player.pogoforce_x/10);
 		}
 	}
-	else if(pfalling && !ppogostick)
+	else if(pfalling)
 	{
-		if(pinertia_x<0) pinertia_x+=2;
-		if(pinertia_x>0) pinertia_x-=2;
+		int speed = ppogostick ? 2 : 1;
+		if(!ppogostick) {
+			if(pinertia_x<0) pinertia_x+=2;
+			if(pinertia_x>0) pinertia_x-=2;
+		}
 
 		if (playcontrol[PA_X] < 0)
-			pinertia_x-=2;
+			pinertia_x-=speed;
 		if (playcontrol[PA_X] > 0)
-			pinertia_x+=2;
+			pinertia_x+=speed;
 	}
 	
     // If we are in Godmode, use the Pogo, and pressing the jump button, make the player fly

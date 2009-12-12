@@ -5,6 +5,8 @@ v0.3.1.0:
 ---------
 
 12-12-2009
+- Added Tank-Robot of Episode 2 back
+- Physics improvements
 - Teleporter in Episode 3 don't need the exe file. But it's calculated now...
 - Teleporter are now read from the Exe-file in Episode 1 
 - Improved AI (Yorp)

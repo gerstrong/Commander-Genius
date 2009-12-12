@@ -55,9 +55,14 @@ private:
 	// ep2
 	void baby_ai(CObject &object, int episode, bool hard);
 	void baby_jump(CObject &object, int big);
+
 	void scrub_ai(CObject &object);
 	void Scrub_TurnOnCansupportWhereNotKicked(CObject &object);
-	//void tankep2_ai(int o, bool hardmode);
+
+	void tankep2_ai(CObject &object, bool hardmode);
+	void tank2_fire(CObject &object);
+	void tank_searchplayers(CObject &object);
+
 	//void platform_ai(int o, stLevelControl levelcontrol);
 	//void vortelite_ai(int o, bool darkness);
 	//void se_ai(int o, stLevelControl *p_levelcontrol);
