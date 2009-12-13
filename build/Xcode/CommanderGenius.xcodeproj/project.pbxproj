@@ -414,7 +414,6 @@
 		23575688101A6AE600275638 /* Commander Genius.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Commander Genius.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		235756C1101B766800275638 /* Unicode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Unicode.cpp; sourceTree = "<group>"; };
 		235756C7101BE31A00275638 /* vortelite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vortelite.cpp; sourceTree = "<group>"; };
-		235756C8101BE31A00275638 /* vortelite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vortelite.h; sourceTree = "<group>"; };
 		23C637BD1031812500FEEFEE /* BlowupWorld.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BlowupWorld.cpp; sourceTree = "<group>"; };
 		23C637BE1031812500FEEFEE /* CommonEnding.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommonEnding.cpp; sourceTree = "<group>"; };
 		23C637BF1031812500FEEFEE /* CommonEnding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonEnding.h; sourceTree = "<group>"; };
@@ -814,6 +813,7 @@
 				23D3ED7510175A97001643FA /* FindFile.h */,
 				23D3E9AA1013ABCA001643FA /* funcdefs.h */,
 				23D3EDA310175CEF001643FA /* Functors.h */,
+				6366B9A510D5A390009801ED /* galaxy */,
 				23D3E9AB1013ABCA001643FA /* game.cpp */,
 				235266DA104E74430054F00B /* graphics */,
 				23D3E9B01013ABCA001643FA /* hqp */,
@@ -1012,7 +1012,6 @@
 				23D3E98E1013ABC9001643FA /* vort.cpp */,
 				23D3E98F1013ABCA001643FA /* vort.h */,
 				235756C7101BE31A00275638 /* vortelite.cpp */,
-				235756C8101BE31A00275638 /* vortelite.h */,
 				23D3E9911013ABCA001643FA /* yorp.cpp */,
 			);
 			path = ai;
@@ -1268,6 +1267,13 @@
 			);
 			includeInIndex = 1;
 			path = games;
+			sourceTree = "<group>";
+		};
+		6366B9A510D5A390009801ED /* galaxy */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = galaxy;
 			sourceTree = "<group>";
 		};
 		636F9FF210C38FE100CF09A2 /* Menu */ = {
