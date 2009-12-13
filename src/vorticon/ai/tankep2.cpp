@@ -288,7 +288,7 @@ void CObjectAI::tank2_fire(CObject &object)
 void CObjectAI::tank_searchplayers(CObject &object)
 {
 	object.ai.tank.detectedPlayer = 0;
-	for( unsigned int i=0 ; i<m_NumPlayers ; i++ )
+	for( int i=0 ; i<m_NumPlayers ; i++ )
 	{
 		if (m_Player[i].y >= object.y-(12<<STC))
 		{

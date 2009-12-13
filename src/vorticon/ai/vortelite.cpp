@@ -1,37 +1,36 @@
-#include "../../keen.h"
-#include "vortelite.h"
 #include "../../game.h"
 #include "../../sdl/sound/CSound.h"
 #include "../../graphics/CGfxEngine.h"
+#include "../spritedefines.h"
 
+#include "CObjectAI.h"
 
 // the "Vorticon Elite" enemies in ep2
-#define VORTELITE_WALK          0
-#define VORTELITE_JUMP          1
-#define VORTELITE_ABOUTTOFIRE   2
-#define VORTELITE_FIRED         3
-#define VORTELITE_DYING         4
-#define VORTELITE_DEAD          5
+enum vortelite_actions{
+	VORTELITE_WALK, VORTELITE_JUMP,
+	VORTELITE_ABOUTTOFIRE, VORTELITE_FIRED,
+	VORTELITE_DYING, VORTELITE_DEAD,
+};
 
 #define VORTELITE_JUMP_PROB          400
 #define VORTELITE_FIRE_PROB          320
 
-#define VORTELITE_MIN_TIME_BETWEEN_FIRE    100
-#define VORTELITE_HOLD_GUN_OUT_TIME         90
-#define VORTELITE_HOLD_GUN_AFTER_FIRE_TIME  75
+#define VORTELITE_MIN_TIME_BETWEEN_FIRE    	25
+#define VORTELITE_HOLD_GUN_OUT_TIME         22
+#define VORTELITE_HOLD_GUN_AFTER_FIRE_TIME  20
 
-#define VORTELITE_MIN_JUMP_HEIGHT    15
-#define VORTELITE_MAX_JUMP_HEIGHT    25
-#define VORTELITE_MAX_FALL_SPEED     20
+#define VORTELITE_MIN_JUMP_HEIGHT    60
+#define VORTELITE_MAX_JUMP_HEIGHT    100
+#define VORTELITE_MAX_FALL_SPEED     80
 #define VORTELITE_JUMP_FRICTION      6
 
-#define VORTELITE_WALK_SPEED         7
-#define VORTELITE_WALK_ANIM_TIME     50
+#define VORTELITE_WALK_SPEED         28
+#define VORTELITE_WALK_ANIM_TIME     12
 
 // number of shots to kill
 #define VORTELITE_HP                 4
 
-#define VORTELITE_DIE_ANIM_TIME     180
+#define VORTELITE_DIE_ANIM_TIME     45
 
 #define VORTELITE_LOOK_ANIM_TIME     60
 
@@ -49,17 +48,14 @@
 #define VORTELITE_TRAPPED_DIST        150
 
 #define sprites g_pGfxEngine->Sprite
-/*
-
-void objectvortelite_initiatejump(CObject &object);
 
 void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 {
 	int bonk;
-	int newobject;
+	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 
 	if (object.needinit)
-	{  // first time initilization
+	{  // first time initialization
 		object.ai.vortelite.state = VORTELITE_WALK;
 		object.ai.vortelite.movedir = LEFT;
 		object.sprite = VORTELITE_WALK_LEFT_FRAME;
@@ -80,7 +76,7 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 	if (object.canbezapped)
 	{
 		// if we touch a glowcell, we die!
-		if (getmaptileat((object.x>>CSF)+12, (object.y>>CSF)+16)==TILE_GLOWCELL)
+		if (mp_Map->at((object.x>>CSF)+1, (object.y>>CSF)+1)==TILE_GLOWCELL)
 		{
 			object.zapped += VORTELITE_HP;
 		}
@@ -109,7 +105,7 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 
 		if (rand()%VORTELITE_JUMP_PROB == (VORTELITE_JUMP_PROB/2) && !darkness && !object.blockedu)
 		{  // let's jump.
-			vortelite_initiatejump(o);
+			vortelite_initiatejump(object);
 			goto reprocess;
 		}
 		else
@@ -121,7 +117,7 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 					// usually shoot toward keen
 					if (rand()%5 != 0)
 					{
-						if (object.x < player[primaryplayer].x)
+						if (object.x < m_Player[0].x)
 						{
 							object.ai.vortelite.movedir = RIGHT;
 						}
@@ -153,7 +149,7 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 				// to jump out of it
 				if (object.ai.vortelite.dist_traveled < VORTELITE_TRAPPED_DIST && !darkness && object.blockedd)
 				{
-					vortelite_initiatejump(o);
+					vortelite_initiatejump(object);
 					goto reprocess;
 				}
 				else object.ai.vortelite.dist_traveled = 0;
@@ -175,7 +171,7 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 				// to jump out of it
 				if (object.ai.vortelite.dist_traveled < VORTELITE_TRAPPED_DIST && !darkness && object.blockedd)
 				{
-					vortelite_initiatejump(o);
+					vortelite_initiatejump(object);
 					goto reprocess;
 				}
 				else object.ai.vortelite.dist_traveled = 0;
@@ -205,9 +201,9 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 		// check if the bear has bonked into a ceiling, if so,
 		// immediately terminate the jump
 		bonk = 0;
-		if (TileProperty[getmaptileat((object.x>>CSF)+1, (object.y>>CSF))][BDOWN]) bonk = 1;
-		else if (TileProperty[getmaptileat((object.x>>CSF)+16, (object.y>>CSF))][BDOWN]) bonk = 1;
-		else if (TileProperty[getmaptileat((object.x>>CSF)+23, (object.y>>CSF))][BDOWN]) bonk = 1;
+		if (TileProperty[mp_Map->at((object.x>>CSF), (object.y>>CSF))].bdown) bonk = true;
+		else if (TileProperty[mp_Map->at((object.x>>CSF)+1, (object.y>>CSF))].bdown) bonk = true;
+		else if (TileProperty[mp_Map->at(((object.x+200)>>CSF), (object.y>>CSF))].bdown) bonk = true;
 		if (bonk && object.ai.vortelite.inertiay < 0)
 		{
 			object.ai.vortelite.inertiay = 0;
@@ -235,20 +231,22 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 			object.ai.vortelite.timer = 0;
 			object.ai.vortelite.state = VORTELITE_FIRED;
 
+			CObject newobject;
 			if (object.ai.vortelite.movedir==RIGHT)
 			{
-				newobject = spawn_object(object.x+(sprites[ENEMYRAYEP2]->getWidth()<<CSF), object.y+(7<<CSF), OBJ_RAY);
-				objects[newobject].ai.ray.direction = RIGHT;
+				newobject.spawn(object.x+(sprites[ENEMYRAYEP2]->getWidth()<<STC), object.y+(7<<CSF), OBJ_RAY);
+				newobject.ai.ray.direction = RIGHT;
 			}
 			else
 			{
-				newobject = spawn_object(object.x-(sprites[ENEMYRAYEP2]->getWidth()<<CSF), object.y+(9<<CSF), OBJ_RAY);
-				objects[newobject].ai.ray.direction = LEFT;
+				newobject.spawn(object.x-(sprites[ENEMYRAYEP2]->getWidth()<<STC), object.y+(9<<CSF), OBJ_RAY);
+				newobject.ai.ray.direction = LEFT;
 			}
-			objects[newobject].sprite = ENEMYRAYEP2;
+			newobject.sprite = ENEMYRAYEP2;
 			// don't shoot other vorticon elite
-			objects[newobject].ai.ray.dontHitEnable = 1;
-			objects[newobject].ai.ray.dontHit = OBJ_VORTELITE;
+			newobject.ai.ray.dontHitEnable = 1;
+			newobject.ai.ray.dontHit = OBJ_VORTELITE;
+			m_Objvect.push_back(newobject);
 
 			if (object.onscreen) g_pSound->playStereofromCoord(SOUND_KEEN_FIRE, PLAY_NOW, object.scrx);
 		}
@@ -267,7 +265,7 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 			object.ai.vortelite.timesincefire = 0;
 			object.ai.vortelite.state = VORTELITE_WALK;
 			// head toward keen
-			if (object.x < player[primaryplayer].x)
+			if (object.x < m_Player[0].x)
 			{
 				object.ai.vortelite.movedir = RIGHT;
 			}
@@ -311,4 +309,4 @@ void CObjectAI::vortelite_initiatejump(CObject &object)
 	object.inhibitfall = 1;
 	object.ai.vortelite.state = VORTELITE_JUMP;
 }
-*/
+

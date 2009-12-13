@@ -1,126 +1,125 @@
-#include "../../keen.h"
 #include "../../game.h"
 
-//#include "enemyai.h"
+#include "CObjectAI.h"
 
 // horizontally-moving platform (ep2 & 3)
+#define OBJ_PLATFORM_DEFSPRITE_EP2   126
+#define OBJ_PLATFORM_DEFSPRITE_EP3   107
 
 #define PLATFORM_MOVE   0
 #define PLATFORM_WAIT   1
 
-#define PLATFORM_WAITTIME       150
-#define PLATFORM_MOVE_SPD       3
+#define PLATFORM_WAITTIME       50
+#define PLATFORM_MOVE_SPD       12
 
-#define PLATFORM_ANIM_RATE      60
+#define PLATFORM_ANIM_RATE      15
 
-#define PLATFORMPUSHAMOUNT      10
+#define PLATFORMPUSHAMOUNT      40
 
-/*
-void CObjectAI::platform_ai(CObject *p_object)
+
+void CObjectAI::platform_ai(CObject &object)
 {
 	unsigned int i;
 
-	if (objects[o].needinit)
+	if (object.needinit)
 	{  // first time initilization
-		objects[o].ai.platform.animframe = 0;
-		objects[o].ai.platform.animtimer = 0;
-		objects[o].ai.platform.movedir = RIGHT;
-		objects[o].ai.platform.state = PLATFORM_MOVE;
+		object.ai.platform.animframe = 0;
+		object.ai.platform.animtimer = 0;
+		object.ai.platform.movedir = RIGHT;
+		object.ai.platform.state = PLATFORM_MOVE;
 
-		objects[o].inhibitfall = 1;
-		objects[o].needinit = 0;
-		objects[o].canbezapped = 1;
-		SetAllCanSupportPlayer(o, 1);
+		object.inhibitfall = 1;
+		object.needinit = 0;
+		object.canbezapped = 1;
+		SetAllCanSupportPlayer(object, 1);
 	}
 
 	// push player horizontally
-	if (objects[o].touchPlayer && !player[objects[o].touchedBy].pdie && player[objects[o].touchedBy].psupportingobject!=o)
+	if (object.touchPlayer && !m_Player[object.touchedBy].pdie && m_Player[object.touchedBy].psupportingobject!=object.m_index)
 	{
-		if (player[objects[o].touchedBy].x < objects[o].x)
+		if (m_Player[object.touchedBy].x < object.x)
 		{
-			player[objects[o].touchedBy].playpushed_x = -PLATFORMPUSHAMOUNT;
-			if (player[objects[o].touchedBy].pinertia_x > 0) player[objects[o].touchedBy].pinertia_x = 0;
-			player[objects[o].touchedBy].playpushed_decreasetimer = 0;
+			m_Player[object.touchedBy].playpushed_x = -PLATFORMPUSHAMOUNT;
+			if (m_Player[object.touchedBy].pinertia_x > 0) m_Player[object.touchedBy].pinertia_x = 0;
+			m_Player[object.touchedBy].playpushed_decreasetimer = 0;
 		}
 		else
 		{
-			player[objects[o].touchedBy].playpushed_x = PLATFORMPUSHAMOUNT;
-			if (player[objects[o].touchedBy].pinertia_x < 0) player[objects[o].touchedBy].pinertia_x = 0;
-			player[objects[o].touchedBy].playpushed_decreasetimer = 0;
+			m_Player[object.touchedBy].playpushed_x = PLATFORMPUSHAMOUNT;
+			if (m_Player[object.touchedBy].pinertia_x < 0) m_Player[object.touchedBy].pinertia_x = 0;
+			m_Player[object.touchedBy].playpushed_decreasetimer = 0;
 		}
 	}
 
-	if (levelcontrol.episode==2)
+	if (m_Episode==2)
 	{
-		objects[o].sprite = OBJ_PLATFORM_DEFSPRITE_EP2 + objects[o].ai.platform.animframe;
+		object.sprite = OBJ_PLATFORM_DEFSPRITE_EP2 + object.ai.platform.animframe;
 	}
 	else
 	{
-		objects[o].sprite = OBJ_PLATFORM_DEFSPRITE_EP3 + objects[o].ai.platform.animframe;
+		object.sprite = OBJ_PLATFORM_DEFSPRITE_EP3 + object.ai.platform.animframe;
 	}
 
-	if (objects[o].ai.platform.animtimer > PLATFORM_ANIM_RATE)
+	if (object.ai.platform.animtimer > PLATFORM_ANIM_RATE)
 	{
-		objects[o].ai.platform.animframe ^= 1;
-		objects[o].ai.platform.animtimer = 0;
+		object.ai.platform.animframe ^= 1;
+		object.ai.platform.animtimer = 0;
 	}
-	else objects[o].ai.platform.animtimer++;
+	else object.ai.platform.animtimer++;
 
-	switch(objects[o].ai.platform.state)
+	switch(object.ai.platform.state)
 	{
 	case PLATFORM_MOVE:
 
-		if (objects[o].ai.platform.movedir==RIGHT)
+		if (object.ai.platform.movedir==RIGHT)
 		{
-			if (objects[o].blockedr)
+			if (object.blockedr)
 			{
-				objects[o].ai.platform.movedir = LEFT;
-				objects[o].ai.platform.waittimer = 0;
-				objects[o].ai.platform.state = PLATFORM_WAIT;
+				object.ai.platform.movedir = LEFT;
+				object.ai.platform.waittimer = 0;
+				object.ai.platform.state = PLATFORM_WAIT;
 			}
 			else
 			{
-				objects[o].x += PLATFORM_MOVE_SPD;
-				for(i=0;i<numplayers;i++)
+				object.x += PLATFORM_MOVE_SPD;
+				for(i=0;i<m_NumPlayers;i++)
 				{
-					if(player[i].psupportingobject==o && (player[i].pjumping==PNOJUMP||player[i].pjumping==PPREPAREJUMP||player[i].pjumping==PPREPAREPOGO))
+					if(m_Player[i].psupportingobject==object.m_index && (m_Player[i].pjumping==PNOJUMP||m_Player[i].pjumping==PPREPAREJUMP||m_Player[i].pjumping==PPREPAREPOGO))
 					{
-						if (!player[i].blockedr)
-							player[i].x += PLATFORM_MOVE_SPD;
+						if (!m_Player[i].blockedr)
+							m_Player[i].x += PLATFORM_MOVE_SPD;
 					}
 				}
 			}
 		}
-		else if (objects[o].ai.platform.movedir==LEFT)
+		else if (object.ai.platform.movedir==LEFT)
 		{
-			if (objects[o].blockedl)
+			if (object.blockedl)
 			{
-				objects[o].ai.platform.movedir = RIGHT;
-				objects[o].ai.platform.waittimer = 0;
-				objects[o].ai.platform.state = PLATFORM_WAIT;
+				object.ai.platform.movedir = RIGHT;
+				object.ai.platform.waittimer = 0;
+				object.ai.platform.state = PLATFORM_WAIT;
 			}
 			else
 			{
-				objects[o].x -= PLATFORM_MOVE_SPD;
-				for(i=0;i<numplayers;i++)
+				object.x -= PLATFORM_MOVE_SPD;
+				for(i=0;i<m_NumPlayers;i++)
 				{
-					if(player[i].psupportingobject==o && (player[i].pjumping==PNOJUMP||player[i].pjumping==PPREPAREJUMP||player[i].pjumping==PPREPAREPOGO))
+					if(m_Player[i].psupportingobject==object.m_index && (m_Player[i].pjumping==PNOJUMP||m_Player[i].pjumping==PPREPAREJUMP||m_Player[i].pjumping==PPREPAREPOGO))
 					{
-						if (!player[i].blockedl)
-							player[i].x -= PLATFORM_MOVE_SPD;
+						if (!m_Player[i].blockedl)
+							m_Player[i].x -= PLATFORM_MOVE_SPD;
 					}
 				}
 			}
 		}
 		break;
 	case PLATFORM_WAIT:
-		if (objects[o].ai.platform.waittimer > PLATFORM_WAITTIME)
+		if (object.ai.platform.waittimer > PLATFORM_WAITTIME)
 		{
-			objects[o].ai.platform.state = PLATFORM_MOVE;
+			object.ai.platform.state = PLATFORM_MOVE;
 		}
-		else objects[o].ai.platform.waittimer++;
+		else object.ai.platform.waittimer++;
 		break;
 	}
 }
-
-*/

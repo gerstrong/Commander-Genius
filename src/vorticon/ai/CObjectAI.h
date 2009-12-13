@@ -63,8 +63,11 @@ private:
 	void tank2_fire(CObject &object);
 	void tank_searchplayers(CObject &object);
 
-	//void platform_ai(int o, stLevelControl levelcontrol);
-	//void vortelite_ai(int o, bool darkness);
+	void platform_ai(CObject &object);
+
+	void vortelite_ai(CObject &object, bool darkness);
+	void vortelite_initiatejump(CObject &object);
+
 	//void se_ai(int o, stLevelControl *p_levelcontrol);
 	//void explosion_ai(int o);
 	//void earthchunk_ai(int o);

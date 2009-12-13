@@ -143,8 +143,8 @@ void CObjectAI::performSpecialAIType( CObject &object )
 		//KEEN2
 		case OBJ_SCRUB: scrub_ai(object); break;
 		case OBJ_TANKEP2: tankep2_ai(object, m_difficulty>1); break;
-		//case OBJ_PLATFORM: platform_ai(object, *p_levelcontrol); break;
-		//case OBJ_VORTELITE: vortelite_ai(object, p_levelcontrol->dark); break;
+		case OBJ_PLATFORM: platform_ai(object); break;
+		case OBJ_VORTELITE: vortelite_ai(object, /*m_dark*/false); break;
 		//case OBJ_SECTOREFFECTOR: se_ai(object, p_levelcontrol ); break;
 		case OBJ_BABY: baby_ai(object, m_Episode, m_difficulty>1); break;
 		//case OBJ_EXPLOSION: explosion_ai(object); break;
