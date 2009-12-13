@@ -234,7 +234,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	if(SDL_MUSTLOCK(sfc))	SDL_UnlockSurface(sfc);
 
 	// Load Hi-Colour, VGA, SVGA Tiles into the tilemap
-	if(path == "") filename = "games/ck" + itoa(episode) + "tiles.bmp";
+	if(path == "") filename = "ck" + itoa(episode) + "tiles.bmp";
 	else filename = path + "/ck" + itoa(episode) + "tiles.bmp";
 	if(Tilemap->loadHiresTile(filename))
 		g_pLogFile->textOut(GREEN, "VGA Bitmap for Tileset has been loaded successfully!");

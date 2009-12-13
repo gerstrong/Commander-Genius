@@ -75,7 +75,7 @@ private:
     unsigned int m_freqtimer;       	// time when to change waveform state
     Sint32 m_waveState;                	// current position of the output waveform
     short m_balance;					// This variable is used for stereo sound, and to calculate where the sound must be played!
-    unsigned int m_freq_corr;				// used for correcting PC-Speaker sampling for different frequencies
+    unsigned int m_freq_corr;			// used for correcting PC-Speaker sampling for different frequencies
 
     Uint16 m_format;
     Sint32 m_waveout;

@@ -40,7 +40,7 @@ short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::stri
 
 #ifndef BUILD_WITH_OGG
 		g_pLogFile->textOut(PURPLE,"NOTE: OGG-Support is disabled! Get another version or compile it yourself!<br>");
-		buf = "games/hqp/snd/"+ soundfile + ".WAV";
+		buf = "games/hqp/snd/"+ soundname + ".WAV";
 
 		std::string fullfname = GetFullFileName(buf);
 		if(fullfname.size() == 0)
