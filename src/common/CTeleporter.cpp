@@ -117,21 +117,21 @@ void CTeleporter::teleportPlayer(int objectID, CMap &map, std::vector<CObject> &
 	teleporter.ai.teleport.destx = destx>>TILE_S;
 	teleporter.ai.teleport.desty = desty>>TILE_S;
 	teleporter.ai.teleport.whichplayer = player.m_player_number;
-	teleporter.ai.teleport.NoExitingTeleporter = 0;
 	p_vect_object.push_back(teleporter);
+}
 
-	// ep1 bonus teleporter
-	// TODO: This must be coded more extensive
-	/*case LVLS_TELEPORTER_BONUS:
-	o = spawn_object(x<<CSF,y<<CSF,OBJ_TELEPORTER);
-	m_Object[o].ai.teleport.direction = TELEPORTING_OUT;
-	m_Object[o].ai.teleport.destx = TELEPORT_BONUS_DESTX;
-	m_Object[o].ai.teleport.desty = TELEPORT_BONUS_DESTY;
-	m_Object[o].ai.teleport.whichplayer = cp;
-	m_Object[o].ai.teleport.baseframe = TELEPORT_RED_BASEFRAME_EP1;
-	m_Object[o].ai.teleport.idleframe = TELEPORT_RED_IDLEFRAME_EP1;
-	m_Object[o].ai.teleport.NoExitingTeleporter = 1;
-	m_Object[o].ai.teleport.snap = 1;
-	mp_Player[cp].hideplayer = 1;
-	break;*/
+void CTeleporter::teleportPlayerFromLevel(CMap &map, std::vector<CObject> &p_vect_object, CPlayer &player, int origx, int origy)
+{
+	int destx, desty;
+
+	CObject teleporter;
+	player.beingteleported = true;
+	destx = m_TeleportTable[5].x;
+	desty = m_TeleportTable[5].y;
+	teleporter.spawn( origx, origy, OBJ_TELEPORTER );
+	teleporter.ai.teleport.direction = TELEPORTING_SCROLL;
+	teleporter.ai.teleport.destx = destx>>TILE_S;
+	teleporter.ai.teleport.desty = desty>>TILE_S;
+	teleporter.ai.teleport.whichplayer = player.m_player_number;
+	p_vect_object.push_back(teleporter);
 }

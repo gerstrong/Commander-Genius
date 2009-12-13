@@ -26,10 +26,15 @@
 // let's have keen be able to pick up goodies
 void CPlayer::getgoodies()
 {
-	if( getGoodie((x+1)>>CSF, (y+1)>>CSF) ) return;     		// Upper-Left
-	else if(getGoodie((x+w-1)>>CSF, (y+1)>>CSF) ) return; 		// Upper-Right
-	else if(getGoodie(((x+1)>>CSF), ((y+h-1)>>CSF)) ) return; 	// Lower-Left
-	else if(getGoodie(((x+w-1)>>CSF), ((y+h-1)>>CSF)) ) return; // Lower-Right
+	Uint32 boxX1 = mp_object->at(m_player_number).bboxX1;
+	Uint32 boxX2 = mp_object->at(m_player_number).bboxX2;
+	Uint32 boxY1 = mp_object->at(m_player_number).bboxY1;
+	Uint32 boxY2 = mp_object->at(m_player_number).bboxY2;
+
+	if( getGoodie((x+boxX1)>>CSF, (y+boxY1)>>CSF) ) return;     		// Upper-Left
+	else if(getGoodie((x+boxX2)>>CSF, (y+boxY1)>>CSF) ) return; 		// Upper-Right
+	else if(getGoodie(((x+boxX1)>>CSF), ((y+boxY2)>>CSF)) ) return; 	// Lower-Left
+	else if(getGoodie(((x+boxX2)>>CSF), ((y+boxY2)>>CSF)) ) return; // Lower-Right
 }
 
 // have keen pick up the goodie at screen pixel position (px, py)
@@ -150,14 +155,10 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 			g_pSound->playSound(SOUND_GET_PART, PLAY_NOW);
 			break;
 			
+		case 24:
 			// in-level teleporter
 			// (in level13.ck1 that takes you to the bonus level)
-		case 24:
-			/*endlevel(0, &(pCKP->Control.levelcontrol) );
-			 pCKP->Control.levelcontrol.tobonuslevel = 1;
-			 pCKP->Control.levelcontrol.command = LVLC_CHANGE_LEVEL;
-			 pCKP->Control.levelcontrol.chglevelto = WM_MAP_NUM;*/
-			// TODO: Add code here!
+			level_done = LEVEL_TELEPORTER;
 			break;
 			
 		case 22: // Game info block (Youseein your mind or vorticon elder...)
@@ -168,6 +169,7 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 			giveAnkh();
 			riseBonus(ANKHUP_SPRITE, (mpx)-(2<<CSF), (mpy)-(2<<CSF));
 			break;
+
 		case 28:
 			inventory.charges++;
 			g_pSound->playSound(SOUND_GET_ITEM, PLAY_NOW);

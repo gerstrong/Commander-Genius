@@ -54,9 +54,14 @@ void CPlayGame::processInLevel()
 				goBacktoMap();
 				break;
 			}
+			else if(m_Player[i].level_done == LEVEL_TELEPORTER)
+			{	// This happens, when keen used the inlevel teleporter...
+				CTeleporter Teleporter( m_TeleporterTable, m_Episode);
+				goBacktoMap();
+				Teleporter.teleportPlayerFromLevel(*mp_Map, m_Object, m_Player[i], m_checkpoint_x, m_checkpoint_y);
+				break;
+			}
 		}
-
-		// gets to bonus level
 
 		// Check if all players are dead. In that case, go back to map
 		if(m_alldead)

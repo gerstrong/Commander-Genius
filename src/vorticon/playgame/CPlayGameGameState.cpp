@@ -38,32 +38,44 @@ bool CPlayGame::loadGameState()
 		createPlayerObjects();
 
 		m_level_command = START_LEVEL;
-		//g_pMusicPlayer->stop();
+		g_pMusicPlayer->stop();
 		//g_pSound->playStereofromCoord(SOUND_ENTER_LEVEL, PLAY_NOW, m_Object[mp_Player[i].useObject].scrx);
 		// Now that the new level/map will be loaded, the players aren't dead anymore!
 
 		// Prepare for loading the new level map and the players.
-
 		cleanup();
-		init();
 
 		for( short i=0 ; i<m_NumPlayers ; i++ ) {
 			CPlayer Player(m_Episode, m_Level, m_Difficulty,
 					 i, mp_level_completed, mp_option, m_Object);
-			m_SavedGame.decodeData(Player.x);
-			m_SavedGame.decodeData(Player.y);
-			m_SavedGame.decodeData(Player.inventory);
-			Player.goto_x = Player.x;
-			Player.goto_y = Player.y;
+			CObject object(m_NumPlayers);
+		    object.exists = true;
+			object.onscreen = true;
+			object.honorPriority = true;
+			object.m_type = OBJ_PLAYER;
+			m_Object.push_back(object);
+			Player.setDatatoZero();
 			m_Player.push_back(Player);
+		}
+
+		init();
+
+		std::vector<CPlayer> :: iterator player;
+		for( player=m_Player.begin() ; player != m_Player.end() ; player++ ) {
+			m_SavedGame.decodeData(player->x);
+			m_SavedGame.decodeData(player->y);
+			m_SavedGame.decodeData(player->inventory);
+			player->goto_x = player->x;
+			player->goto_y = player->y;
 		}
 
 		// load the number of objects on screen
 		Uint32 size;
+		m_Object.clear();
 		m_SavedGame.decodeData(size);
 		for( Uint32 i=0 ; i<size ; i++) {
 			// save all the objects states
-			CObject &object=m_Object.at(i);
+			CObject object(m_NumPlayers, i);
 
 			m_SavedGame.decodeData(object.m_type);
 			m_SavedGame.decodeData(object.x);
@@ -81,6 +93,7 @@ bool CPlayGame::loadGameState()
 			m_SavedGame.decodeData(object.honorPriority);
 			m_SavedGame.decodeData(object.sprite);
 			m_SavedGame.decodeData(object.ai);
+			m_Object.push_back(object);
 		}
 
 		// TODO: An algorithm for comparing the number of players saved and we actually have need to be in sync
@@ -93,6 +106,7 @@ bool CPlayGame::loadGameState()
 		// Load completed levels
 		m_SavedGame.readDataBlock( (uchar*)(mp_level_completed));
 
+		m_Player[0].mp_map = mp_Map;
 		while(m_Player[0].scrollTriggers()); // Scroll to the right position on the map
 
 		mp_Map->drawAll();

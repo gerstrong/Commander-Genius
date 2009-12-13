@@ -19,7 +19,7 @@ struct stHQSound
 	bool enabled;
 };
 
-short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::string& soundfile);
+short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::string& gamepath, const std::string& soundname);
 void HQSndDrv_Unload(stHQSound *psound);
 
 #endif

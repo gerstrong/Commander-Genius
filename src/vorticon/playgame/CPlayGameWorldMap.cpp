@@ -63,7 +63,7 @@ void CPlayGame::processOnWorldMap()
 						{
 							m_level_command = START_LEVEL;
 							m_Level = useobject & 0x7fff;
-							//g_pMusicPlayer->stop();
+							g_pMusicPlayer->stop();
 							g_pSound->playStereofromCoord(SOUND_ENTER_LEVEL, PLAY_NOW, m_Object[m_Player[i].m_player_number].scrx);
 							// save where on the map, the player entered. This is a checkpoint!
 							m_checkpoint_x = m_Player[i].x;
@@ -102,14 +102,14 @@ void CPlayGame::goBacktoMap()
 
 	m_level_command = START_LEVEL;
 	m_Level = WM_MAP_NUM;
-	//g_pMusicPlayer->stop();
+	g_pMusicPlayer->stop();
 	// Now that the new level/map will be loaded, the players aren't dead anymore!
 	for( int i=0 ; i<m_NumPlayers ; i++ )
 	{
 		m_Player[i].level_done = LEVEL_NOT_DONE;
 		// Restore checkpoint
 		m_Player[i].x = m_Player[i].goto_x = m_checkpoint_x;
-		m_Player[i].y = m_Player[i].goto_y = m_checkpoint_y;
+		m_Player[i].y = m_Player[i].goto_y = m_checkpoint_y-256;
 		m_Player[i].inventory.HasCardYellow = 0;
 		m_Player[i].inventory.HasCardBlue = 0;
 		m_Player[i].inventory.HasCardGreen = 0;

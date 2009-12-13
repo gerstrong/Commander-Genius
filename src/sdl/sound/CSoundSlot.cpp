@@ -36,7 +36,7 @@ bool CSoundSlot::loadSound(const std::string& fname, const std::string& searchna
 	
 	// If a high quality sound file is available, try to open it.
 	// Otherwise open the classic sounds from the original data files
-	if(HQSndDrv_Load(m_pAudioSpec, &m_hqsound, searchname) == 0)
+	if(HQSndDrv_Load(m_pAudioSpec, &m_hqsound, m_gamepath, searchname) == 0)
 	{
 		return true;
 	}

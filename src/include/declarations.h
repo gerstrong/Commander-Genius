@@ -56,14 +56,6 @@ struct stLevelControl
 	unsigned int level_finished_by;      // index of player that finished level
 	unsigned int exitXpos;
 
-	// for ep2: how many sparks (tantalus ray machines) are left
-	// you must destroy the tantalus ray generator before exiting
-	int sparks_left;
-
-
-	// if true, a moving platform is currently extending/retracting (ep2)
-	bool PlatExtending;
-
 	// if > 0, the screen will shake and it will decrement each frame.
 	// used when you push a switch on a tantalus ray (ep2), and Mortimer's machine
 	int vibratetime;

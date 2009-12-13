@@ -145,13 +145,6 @@ void CObjectAI::teleporter_ai(CObject &object)
 
 					deleteObj(object);
 					m_Player[player].beingteleported = false;
-
-					/*if (object.ai.teleport.NoExitingTeleporter)
-					{  // for the teleporter to exit the bonus area in ep1
-						// which has no teleporter animation on the destination
-						goto tport_done;
-						// TODO: goto is always a bad implementation
-					}	*/
 				}
 				else
 				{ // teleport animation is not done. show the next frame

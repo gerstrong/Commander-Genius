@@ -27,6 +27,7 @@ public:
 	void createTeleporterTable(unsigned char *p_exedata);
 	int getTeleporterInfo(int objectID);
 	void teleportPlayer(int objectID, CMap &map, std::vector<CObject> &p_vect_object, CPlayer &player);
+	void teleportPlayerFromLevel(CMap &map, std::vector<CObject> &p_vect_object, CPlayer &player, int origx, int origy);
 	
 private:
 	//CMap &m_map;

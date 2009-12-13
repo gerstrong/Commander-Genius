@@ -42,11 +42,12 @@ PA_FIRE, PA_STATUS
 // various states we go through when a level is completed
 // to do the walking out the exit door animation
 enum levelstate{
-	LEVEL_NOT_DONE,           // not completed
+	LEVEL_NOT_DONE,            // not completed
 	LEVEL_DONE_WALK,           // walking through exit door
-	LEVEL_DONE_WAIT,          // finished walk through door, wait a bit
+	LEVEL_DONE_WAIT,           // finished walk through door, wait a bit
 	LEVEL_DONE_FADEOUT,        // fading out
-	LEVEL_COMPLETE            // on to the next level!
+	LEVEL_COMPLETE,            // on to the next level!
+	LEVEL_TELEPORTER		   // Happens when Bonus Teleporter in Level was used
 };
 
 enum jumpstates{

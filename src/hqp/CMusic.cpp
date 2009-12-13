@@ -133,10 +133,11 @@ Uint8 *CMusic::passBuffer(int length) // length only refers to the part(buffer) 
 	}
 }
 
-bool CMusic::LoadfromMusicTable(const std::string levelfilename)
+bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &levelfilename)
 {
     std::ifstream Tablefile;
-    OpenGameFileR(Tablefile, "games/hqp/music/table.cfg");
+    std::string musicpath = gamepath+"/music/";
+    OpenGameFileR(Tablefile, musicpath+"table.cfg");
 	
     if(Tablefile)
     {
@@ -153,7 +154,7 @@ bool CMusic::LoadfromMusicTable(const std::string levelfilename)
     			Tablefile.get(c_buf, 256);
     			str_buf = c_buf;
     			TrimSpaces(str_buf);
-    			load(g_pSound->getAudioSpec(), "games/hqp/music/" + str_buf);
+    			load(g_pSound->getAudioSpec(), musicpath + str_buf);
         		play();
     			Tablefile.close();
     			return true;

@@ -9,11 +9,14 @@
 #define CSOUNDSLOT_H_
 
 #include "../../hqp/hq_sound.h"
+#include <string>
 
 class CSoundSlot {
 public:
+
+	std::string m_gamepath;
+
 	CSoundSlot();
-	virtual ~CSoundSlot();
 	
 	bool loadSound(const std::string& fname, const std::string& searchname, unsigned int loadnum);
 	
@@ -25,6 +28,8 @@ public:
 	unsigned int getSoundlength(void) { return m_soundlength; }
 	stHQSound	*getHQSoundPtr(void) { return &m_hqsound; }
 	
+	virtual ~CSoundSlot();
+
 private:
 	unsigned char m_priority;
 	unsigned int *m_sounddata;

@@ -25,6 +25,7 @@
 #include "../finale/CEndingEp1.h"
 #include "../finale/CEndingEp2.h"
 #include "../finale/CEndingEp3.h"
+#include "../../hqp/CMusic.h"
 #include <SDL.h>
 #include <string>
 #include <vector>

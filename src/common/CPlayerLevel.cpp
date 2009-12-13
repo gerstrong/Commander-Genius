@@ -11,6 +11,7 @@
 #include "../sdl/sound/CSound.h"
 #include "../sdl/CInput.h"
 #include "../graphics/CGfxEngine.h"
+#include "../hqp/CMusic.h"
 #include "CPhysicsSettings.h"
 
 #define PDIEFRAME             22
@@ -81,7 +82,7 @@ void CPlayer::touchedExit()
 		
 		ppogostick = false;
 		
-		//g_pMusicPlayer->stop();
+		g_pMusicPlayer->stop();
 		g_pSound->playSound(SOUND_LEVEL_DONE, PLAY_NOW);
 		level_done = LEVEL_DONE_WALK;
 	}
@@ -122,7 +123,7 @@ void CPlayer::kill()
 		pdie_xvect -= DIE_MAX_XVECT;
 		inventory.lives--;
 		SelectFrame();
-		//g_pMusicPlayer->stop();
+		g_pMusicPlayer->stop();
 		g_pSound->playSound(SOUND_KEEN_DIE, PLAY_NOW);
 	}
 }
@@ -492,16 +493,15 @@ void CPlayer::JumpAndPogo()
 	}
 	else if(pfalling)
 	{
-		int speed = ppogostick ? 2 : 1;
 		if(!ppogostick) {
 			if(pinertia_x<0) pinertia_x+=2;
 			if(pinertia_x>0) pinertia_x-=2;
 		}
 
 		if (playcontrol[PA_X] < 0)
-			pinertia_x-=speed;
+			pinertia_x-=2;
 		if (playcontrol[PA_X] > 0)
-			pinertia_x+=speed;
+			pinertia_x+=2;
 	}
 	
     // If we are in Godmode, use the Pogo, and pressing the jump button, make the player fly

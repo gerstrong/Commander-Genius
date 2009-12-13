@@ -1,6 +1,7 @@
 
 //#include "../../keen.h"
 
+/*
 #include "ray.h"
 #include "se.h"
 
@@ -23,7 +24,7 @@ char PlatExtending=0;
 void set_mortimer_surprised(int yes);
 int mortimer_surprisedcount = 0;
 
-void CObjectAI::se_ai(CObject *p_object)
+void CObjectAI::se_ai(CObject &object)
 {
 
 	switch(objects[o].ai.se.type)
@@ -47,7 +48,7 @@ void CObjectAI::se_ai(CObject *p_object)
 }
 
 
-void CObjectAI::se_extend_plat(int o, bool *p_PlatExtending)
+void CObjectAI::se_extend_plat(CObject &object, bool &PlatExtending)
 {
 #define PLAT_EXTEND_RATE        30
 
@@ -64,7 +65,7 @@ void CObjectAI::se_extend_plat(int o, bool *p_PlatExtending)
 		if ( map.mapdata[objects[o].ai.se.platx][objects[o].ai.se.platy]==TILE_EXTENDING_PLATFORM )
 		{
 			objects[o].ai.se.type = SE_RETRACT_PLATFORM;
-			se_retract_plat(o, p_PlatExtending);
+			se_retract_plat(o, PlatExtending);
 			return;
 		}
 
@@ -113,7 +114,7 @@ void CObjectAI::se_extend_plat(int o, bool *p_PlatExtending)
 	else objects[o].ai.se.timer--;
 }
 
-void CObjectAI::se_retract_plat(int o, bool *p_PlatExtending)
+void CObjectAI::se_retract_plat(CObject &object, bool *p_PlatExtending)
 {
 	if (objects[o].needinit)
 	{
@@ -186,7 +187,7 @@ void CObjectAI::se_retract_plat(int o, bool *p_PlatExtending)
 
 
 // AI for the Spark object in the Tantalus Ray Machine's of ep2
-void CObjectAI::spark_ai(CObject *p_object, int *p_sparks_left)
+void CObjectAI::spark_ai(CObject &object, int &sparks_left)
 {
 	int newobject;
 	int mx,my,x,y;
@@ -332,7 +333,7 @@ void CObjectAI::spark_ai(CObject *p_object, int *p_sparks_left)
 
 }
 
-void CObjectAI::se_ankhshield(int o, int episode)
+void CObjectAI::se_ankhshield(CObject &object, int episode)
 {
 #define ANKH_FLICKER_FREQ       12
 
@@ -385,7 +386,7 @@ void CObjectAI::se_ankhshield(int o, int episode)
 
 #define ARM_MOVE_SPEED   50
 #define ARM_WAIT_TIME    70
-void CObjectAI::se_mortimer_arm(int o)
+void CObjectAI::se_mortimer_arm(CObject &object)
 {
 	int mx,my;
 	if (objects[o].needinit)
@@ -499,7 +500,7 @@ void CObjectAI::se_mortimer_arm(int o)
 
 #define MSPARK_IDLE              0
 #define MSPARK_DESTROYARMS       1
-void CObjectAI::se_mortimer_spark(int o, stLevelControl *p_levelcontrol)
+void CObjectAI::se_mortimer_spark(CObject &object, stLevelControl *p_levelcontrol)
 {
 	int x,mx,i;
 	int newobject;
@@ -637,7 +638,7 @@ void CObjectAI::se_mortimer_spark(int o, stLevelControl *p_levelcontrol)
 
 #define ZAPSUP_NORMAL           0
 #define ZAPSUP_ABOUTTOFADEOUT   1
-void CObjectAI::se_mortimer_heart(int o, stLevelControl *p_levelcontrol)
+void CObjectAI::se_mortimer_heart(CObject &object, stLevelControl *p_levelcontrol)
 {
 	int x,i;
 	int newobject;
@@ -1067,3 +1068,4 @@ void CObjectAI::set_mortimer_surprised(int yes)
 	}
 }
 
+*/

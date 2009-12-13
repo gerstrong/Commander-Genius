@@ -29,7 +29,7 @@ void CPlayer::processWorldMap()
    	setWMblockedlrud();
    	AllowEnterLevelonWM();
 	
-    if(!hideplayer)	Walking();
+    if(!hideplayer && !beingteleported)	Walking();
    	WalkingAnimation();
 	
    	InertiaAndFriction_X();

@@ -3,6 +3,8 @@ Commander Genius Release (CloneKeenPlus):
 
 v0.3.1.0:
 ---------
+13-12-2009
+- Added Vorticon Elite back to CG
 
 12-12-2009
 - Added Tank-Robot of Episode 2 back

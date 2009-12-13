@@ -23,6 +23,8 @@ m_difficulty(difficulty)
 	m_Episode = episode;
 	m_NumPlayers = NumPlayers;
 	m_gunfiretimer = 0;
+	sparks_left = 0;
+	PlatExtending = false;
 }
 
 //////////////////

@@ -106,6 +106,13 @@ private:
 	int m_NumPlayers;
 	char m_difficulty;
 	int m_gunfiretimer;
+
+	// for ep2: how many sparks (tantalus ray machines) are left
+	// you must destroy the tantalus ray generator before exiting
+	int sparks_left;
+
+	// if true, a moving platform is currently extending/retracting (ep2)
+	bool PlatExtending;
 };
 
 #endif /* COBJECTAI_H_ */

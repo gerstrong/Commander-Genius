@@ -35,10 +35,11 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path )
 	unsigned int curmapx=0, curmapy=0;
 	
 	std::string buffer = formatPathString(path);
-	std::string fname;
-	fname = buffer + "level";
-	if(level < 10) fname += "0";
-	fname += itoa(level) + ".ck" + itoa(episode);
+	std::string levelname;
+	levelname = "level";
+	if(level < 10) levelname += "0";
+	levelname += itoa(level) + ".ck" + itoa(episode);
+	std::string fname = buffer + levelname;
 	
 	std::ifstream MapFile; OpenGameFileR(MapFile, fname, std::ios::binary);
 	
@@ -46,6 +47,10 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path )
 	mp_map->m_gamepath = path;
 	mp_map->m_worldmap = (level == 80);
 	
+	// HQ Music. Load Music for a level if you have HQP
+	g_pMusicPlayer->stop();
+	g_pMusicPlayer->LoadfromMusicTable(path, levelname);
+
 	if (!MapFile)
 	{
 		// only record this error message on build platforms that log errors

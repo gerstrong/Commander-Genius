@@ -27,6 +27,7 @@ CPlayGame::CPlayGame( char episode, char level,
 					 std::string &gamepath, stOption *p_option,
 					 bool finale, CSavedGame &SavedGame,
 					 std::vector<stTeleporterTable> &TeleporterTable) :
+mp_ObjectAI(NULL),
 m_SavedGame(SavedGame),
 mp_MessageBox(NULL),
 m_TeleporterTable(TeleporterTable)
@@ -574,8 +575,8 @@ void CPlayGame::drawObjects()
 ////
 void CPlayGame::cleanup()
 {
-	delete mp_Map; mp_Map = NULL;
-	delete mp_ObjectAI; mp_ObjectAI = NULL;
+	SAFE_DELETE(mp_Map);
+	SAFE_DELETE(mp_ObjectAI);
 }
 
 CPlayGame::~CPlayGame() {
@@ -694,11 +695,6 @@ CPlayGame::~CPlayGame() {
  
  wm = (p_levelcontrol->curlevel==80) ? 1 : 0 ;
  }
- 
- // HQ Music. Load Music for a level if you have HQP
- g_pMusicPlayer->stop();
- sprintf(levelname, "level%02d.ck%d",  p_levelcontrol->curlevel, p_levelcontrol->episode);
- g_pMusicPlayer->LoadfromMusicTable(levelname);
  
  // Didn't it work? Don't worry. HQP is optional, so continue
  g_pLogFile->ftextOut("Drawing map...\n");

@@ -171,8 +171,6 @@ typedef struct stTeleportData
 	int baseframe;
 	int idleframe;
 	
-	char NoExitingTeleporter;
-	
 	char fadeamt;
 	char fadetimer;
 } stTeleportData;
