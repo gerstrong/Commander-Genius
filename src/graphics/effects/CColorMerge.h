@@ -20,9 +20,11 @@
 class CColorMerge : public CEffects
 {
 public:
-	CColorMerge(Uint8 speed, SDL_Surface *firstsfc=NULL);
+	CColorMerge(Uint8 speed);
 
 	void process();
+
+	void getSnapshot();
 
 	virtual ~CColorMerge();
 

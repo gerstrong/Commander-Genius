@@ -10,36 +10,24 @@
 #include "CColorMerge.h"
 #include "../../sdl/CVideoDriver.h"
 
-CColorMerge::CColorMerge(Uint8 speed, SDL_Surface *firstsfc) :
+CColorMerge::CColorMerge(Uint8 speed) :
 m_Speed(speed),
 m_Alpha(0),
 mp_SourceSurface(NULL),
 mp_TargetSurface(NULL)
+{}
+
+// use this function. If you don't that, the effect won't work.
+void CColorMerge::getSnapshot()
 {
-	needsFirstSfc = true;
-	needsSecondSfc = false;
-	// The Function gets a surface, use it immediately
-	if(firstsfc){
-		mp_SourceSurface = SDL_DisplayFormat(firstsfc);
-		needsFirstSfc = false;
-	}
+	g_pVideoDriver->blitScrollSurface();
+	g_pVideoDriver->collectSurfaces();
+	if(!mp_SourceSurface) mp_SourceSurface = SDL_DisplayFormat(g_pVideoDriver->BlitSurface);
+	else if(!mp_TargetSurface) mp_TargetSurface = SDL_DisplayFormat(g_pVideoDriver->BlitSurface);
 }
 
 void CColorMerge::process()
 {
-	// The first Display must be obtained
-	if(needsFirstSfc)
-	{
-		mp_SourceSurface = SDL_DisplayFormat(g_pVideoDriver->BlitSurface);
-		needsFirstSfc = false;
-	}
-
-	if(needsSecondSfc)
-	{
-		mp_TargetSurface = SDL_DisplayFormat(g_pVideoDriver->BlitSurface);
-		needsSecondSfc = false;
-	}
-
 	// Only process if the surfaces have content
 	if( !mp_SourceSurface || !mp_TargetSurface) return;
 

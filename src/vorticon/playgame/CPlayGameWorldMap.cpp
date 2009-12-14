@@ -11,6 +11,7 @@
 #include "../../sdl/sound/CSound.h"
 #include "../../sdl/CVideoDriver.h"
 #include "../../graphics/CGfxEngine.h"
+#include "../../graphics/effects/CColorMerge.h"
 
 void CPlayGame::processOnWorldMap()
 {
@@ -61,6 +62,10 @@ void CPlayGame::processOnWorldMap()
 					// Check if Level has been completed or the Level-Replayability is enabled
 						if( !mp_level_completed[useobject & 0x7fff] || mp_option[OPT_LVLREPLAYABILITY].value )
 						{
+							// Create the special merge effect
+							CColorMerge *pColorMergeFX = new CColorMerge(8);
+							pColorMergeFX->getSnapshot(); // First Snapshot for merge
+
 							m_level_command = START_LEVEL;
 							m_Level = useobject & 0x7fff;
 							g_pMusicPlayer->stop();
@@ -71,6 +76,10 @@ void CPlayGame::processOnWorldMap()
 							m_checkpointset = true;
 							cleanup();
 							init();
+
+							// Second Snapshot for merge
+							pColorMergeFX->getSnapshot();
+							g_pGfxEngine->pushEffectPtr(pColorMergeFX);
 						}
 						break;
 					}
@@ -93,6 +102,10 @@ void CPlayGame::processOnWorldMap()
 
 void CPlayGame::goBacktoMap()
 {
+	// Create the special merge effect (Fadeout)
+	CColorMerge *pColorMergeFX = new CColorMerge(8);
+	pColorMergeFX->getSnapshot(); // First Snapshot for merge
+
 	// before he can go back to map, he must tie up the objects.
 	// This means, all objects except the puppy ones of the player....
 	m_Object.clear();
@@ -117,6 +130,10 @@ void CPlayGame::goBacktoMap()
 	}
 	cleanup();
 	init();
+
+	// Second Snapshot for merge
+	pColorMergeFX->getSnapshot();
+	g_pGfxEngine->pushEffectPtr(pColorMergeFX);
 }
 
 void CPlayGame::YourShipNeedsTheseParts()

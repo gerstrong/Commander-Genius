@@ -12,6 +12,7 @@
 #include "fileio.h"
 #include "CLogFile.h"
 #include "sdl/sound/CSound.h"
+#include "graphics/effects/CColorMerge.h"
 #include "arguments.h"
 
 CGameControl::CGameControl() :
@@ -123,7 +124,16 @@ bool CGameControl::init(char mode)
 		if(m_SavedGame.getCommand() == CSavedGame::LOAD)
 			ok &= mp_PlayGame->loadGameState();
 		else
+		{
+			// Create the special merge effect (Fadeout)
+			CColorMerge *pColorMergeFX = new CColorMerge(8);
+			pColorMergeFX->getSnapshot(); // First Snapshot for merge
+
 			ok &= mp_PlayGame->init();
+
+			pColorMergeFX->getSnapshot(); // First Snapshot for merge
+			g_pGfxEngine->pushEffectPtr(pColorMergeFX);
+		}
 
 
 		return ok;

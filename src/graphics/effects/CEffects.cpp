@@ -10,15 +10,8 @@
 
 CEffects::CEffects() :
 m_finished(false),
-m_endeffect(false),
-needsFirstSfc(false),
-needsSecondSfc(false)
+m_endeffect(false)
 {}
-
-void CEffects::makeFirstSnapshot()
-{ needsFirstSfc=true; }
-void CEffects::makeSecondSnapshot()
-{ needsSecondSfc=true; }
 
 bool CEffects::finished() { return m_finished; }
 

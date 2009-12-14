@@ -7,6 +7,7 @@
 
 #include "CPlayGame.h"
 #include "../../StringUtils.h"
+#include "../../graphics/effects/CColorMerge.h"
 
 #define SAFE_DELETE_ARRAY(x) if(x) { delete [] x; x = NULL; }
 
@@ -18,6 +19,10 @@ bool CPlayGame::loadGameState()
 	// This fills the datablock from CSavedGame object
 	if(m_SavedGame.load())
 	{
+		// Create the special merge effect (Fadeout)
+		CColorMerge *pColorMergeFX = new CColorMerge(8);
+		pColorMergeFX->getSnapshot(); // First Snapshot for merge
+
 		// get the episode, level and difficulty
 		m_SavedGame.decodeData(m_Episode);
 		m_SavedGame.decodeData(m_Level);
@@ -110,6 +115,10 @@ bool CPlayGame::loadGameState()
 		while(m_Player[0].scrollTriggers()); // Scroll to the right position on the map
 
 		mp_Map->drawAll();
+
+		// Create the special merge effect (Fadeout)
+		pColorMergeFX->getSnapshot(); // First Snapshot for merge
+		g_pGfxEngine->pushEffectPtr(pColorMergeFX);
 
 		return true;
 	}
