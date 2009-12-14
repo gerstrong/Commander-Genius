@@ -1684,7 +1684,7 @@
 				OTHER_CFLAGS = (
 					"-DBUILD_SDL",
 					"-DUSE_OPENGL",
-					"-DBUILD_WITH_OGG",
+					"-DOGG",
 				);
 				PRODUCT_NAME = "Commander Genius";
 			};
@@ -1716,7 +1716,7 @@
 				OTHER_CFLAGS = (
 					"-DBUILD_SDL",
 					"-DUSE_OPENGL",
-					"-DBUILD_WITH_OGG",
+					"-DOGG",
 				);
 				PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES;
 				PRODUCT_NAME = "Commander Genius";

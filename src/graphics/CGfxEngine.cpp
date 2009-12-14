@@ -7,10 +7,13 @@
 
 #include "CGfxEngine.h"
 
+#define SAFE_DELETE(x) 	if(x){ delete x; x=NULL;}
+
 CGfxEngine::CGfxEngine() :
 Font(NULL),
 Tilemap(NULL),
-m_fxsurface(NULL)
+m_fxsurface(NULL),
+mp_Effects(NULL)
 {
 	std::vector<CSprite*> Sprite;
 	std::vector<CBitmap*> Bitmap;
@@ -52,6 +55,13 @@ CBitmap *CGfxEngine::createEmptyBitmaps(Uint16 num_bmps)
 	
 }
 
+// This will store the effect pointer the developer created in one function
+// You need this call to make you effect work!
+void CGfxEngine::pushEffectPtr(CEffects *pEffect) { mp_Effects = pEffect; }
+
+///
+// Destruktor
+///
 void CGfxEngine::freeTilemap()
 {
 	if(Tilemap) delete Tilemap;
@@ -154,6 +164,18 @@ void CGfxEngine::drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w
 		else Font->drawCharacter(DialogSurface, 7, x, y);
 		x+=8;
     }
+}
+
+///
+// Process Routines
+///
+void CGfxEngine::process(){
+	if(mp_Effects){
+		mp_Effects->process();
+
+		if(mp_Effects->finished())
+			SAFE_DELETE(mp_Effects);
+	}
 }
 
 CGfxEngine::~CGfxEngine() {

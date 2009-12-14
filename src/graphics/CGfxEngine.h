@@ -16,6 +16,7 @@
 #include "CSprite.h"
 #include "CBitmap.h"
 #include "CPalette.h"
+#include "effects/CEffects.h"
 #include <vector>
 
 #include "../CSingleton.h"
@@ -36,6 +37,8 @@ public:
 	CTilemap *createEmptyTilemap(stTile *pTileProperty, int numtiles);
 	CFont *createEmptyFontmap();
 	
+	void pushEffectPtr(CEffects *pEffect);
+
 	void freeBitmaps();
 	void freeSprites();
 	void freeTilemap();
@@ -48,7 +51,7 @@ public:
 	
 	CBitmap *getBitmap(const std::string &name);
 	
-	void fade(Uint8 alpha);
+	void process();
 	
 	CFont *Font;
 	CTilemap *Tilemap;
@@ -58,6 +61,7 @@ public:
 	
 private:
 	SDL_Surface *m_fxsurface;
+	CEffects *mp_Effects;
 };
 
 #endif /* CGFXENGINE_H_ */

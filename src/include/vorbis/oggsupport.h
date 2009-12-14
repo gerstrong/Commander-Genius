@@ -5,7 +5,7 @@
  *      Author: gerstrong
  */
 
-#ifdef BUILD_WITH_OGG
+#ifdef OGG
 
 short openOGGSound(FILE *fp, SDL_AudioSpec *pspec, Uint16 format, stHQSound *psound);
 

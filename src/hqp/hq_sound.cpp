@@ -26,7 +26,7 @@ short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::stri
 	buf = gamepath+"snd/" + soundname + ".OGG"; // Start with OGG
 	if((fp = OpenGameFile(buf.c_str(),"rb")) != NULL)
 	{
-#ifdef BUILD_WITH_OGG
+#ifdef OGG
 		if(openOGGSound(fp, &AudioFileSpec, AudioSpec->format, psound) != 0)
 		{
 			std::string buf2;
@@ -38,7 +38,7 @@ short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::stri
 
 #endif
 
-#ifndef BUILD_WITH_OGG
+#ifndef OGG
 		g_pLogFile->textOut(PURPLE,"NOTE: OGG-Support is disabled! Get another version or compile it yourself!<br>");
 		buf = "games/hqp/snd/"+ soundname + ".WAV";
 

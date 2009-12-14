@@ -1,0 +1,4 @@
+
+- Add effects class. When Vorticon is dying in Episode 1, it has to be applied
+- We also need this class for SE Effects.
+- Implement grafical effects

@@ -1,7 +1,9 @@
 #include "CObjectAI.h"
 #include "../../sdl/sound/CSound.h"
+#include "../../graphics/effects/CVibrate.h"
+#include "../../graphics/CGfxEngine.h"
 
-// Yorp (ep1)y
+// Yorp (ep1)
 enum
 {
 	YORP_LOOK,     // yorp is "looking around" (waving his eye)

@@ -29,7 +29,7 @@ int CMusic::load(SDL_AudioSpec AudioSpec, const std::string &musicfile)
 	if(AudioSpec.format != 0)
 	{
 		
-#ifdef BUILD_WITH_OGG
+#ifdef OGG
 		SDL_AudioSpec AudioFileSpec;
 		SDL_AudioCVT  Audio_cvt;
 		

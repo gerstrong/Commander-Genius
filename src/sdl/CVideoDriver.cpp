@@ -550,12 +550,16 @@ void CVideoDriver::blitScrollSurface() // This is only for tiles
 	drawConsoleMessages();
 }
 
-void CVideoDriver::update_screen(void)
+void CVideoDriver::collectSurfaces()
 {
 	SDL_BlitSurface(FGLayerSurface, NULL, BlitSurface, NULL);
 
 	if(FXSurface->format->alpha)
 		SDL_BlitSurface(FXSurface, NULL, BlitSurface, NULL);
+}
+
+void CVideoDriver::updateScreen()
+{
 
 #ifdef USE_OPENGL
 	if(m_opengl)

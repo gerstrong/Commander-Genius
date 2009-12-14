@@ -53,7 +53,8 @@ public:
 	void blitScrollSurface();
 	void setScrollBuffer(Sint16 *pbufx, Sint16 *pbufy);
 
-	void update_screen(void);
+	void collectSurfaces();
+	void updateScreen();
 	void noscale(char *dest, char *src, short bbp);
 	void scale2xnofilter(char *dest, char *src, short bbp);
 	void scale3xnofilter(char *dest, char *src, short bbp);

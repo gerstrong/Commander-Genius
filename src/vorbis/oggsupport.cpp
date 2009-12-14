@@ -4,7 +4,7 @@
  *  Created on: 06.01.2009
  *      Author: gerstrong
  */
-#ifdef BUILD_WITH_OGG
+#ifdef OGG
 #include <SDL.h>
 // vorbis headers
 #include <codec.h>
