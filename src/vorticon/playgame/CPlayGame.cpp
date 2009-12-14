@@ -15,6 +15,7 @@
 #include "../../sdl/CInput.h"
 #include "../../common/CMapLoader.h"
 #include "../../graphics/CGfxEngine.h"
+#include "../../graphics/effects/CColorMerge.h"
 #include "../../StringUtils.h"
 
 #define SAFE_DELETE(x) if(x) { delete x; x = NULL; }
@@ -122,6 +123,10 @@ void CPlayGame::setupPlayers()
 
 bool CPlayGame::init()
 {
+	// Create the special merge effect
+	CColorMerge *pColorMergeFX = new CColorMerge(8, g_pVideoDriver->BlitSurface);
+	g_pGfxEngine->pushEffectPtr(pColorMergeFX);
+
 	// Create an empty map
 	mp_Map = new CMap( g_pVideoDriver->getScrollSurface(), g_pGfxEngine->Tilemap);
 	CMapLoader MapLoader( mp_Map, &m_Player[0] );
@@ -160,6 +165,10 @@ bool CPlayGame::init()
 		createFinale();
 	else
 		if(m_showKeensLeft)	g_pSound->playSound(SOUND_KEENSLEFT, PLAY_NOW);
+
+	g_pVideoDriver->blitScrollSurface();
+	g_pVideoDriver->collectSurfaces();
+	pColorMergeFX->makeSecondSnapshot();
 
 	return true;
 }

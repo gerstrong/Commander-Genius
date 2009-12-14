@@ -1,7 +1,5 @@
 #include "CObjectAI.h"
 #include "../../sdl/sound/CSound.h"
-#include "../../graphics/effects/CVibrate.h"
-#include "../../graphics/CGfxEngine.h"
 
 // Yorp (ep1)
 enum

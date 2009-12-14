@@ -1,6 +1,7 @@
 #include "CObjectAI.h"
 #include "../../sdl/sound/CSound.h"
 #include "../../graphics/CGfxEngine.h"
+#include "../../graphics/effects/CFlash.h"
 #include "vort.h"
 
 // Vorticon (all episodes, albeit the behavior changes slightly
@@ -87,11 +88,10 @@ void CObjectAI::vort_ai(CObject &object, int level, int episode, char difficulty
 			 object.canbezapped = false;
 			 object.ai.vort.animtimer = 0;
 			 object.ai.vort.frame = 0;
-			 object.ai.vort.palflashtimer = VORT_PALETTE_FLASH_TIME + 1;
-			 object.ai.vort.palflashamt = 255;
 			 if (episode == 1)
 			 {
-				 // TODO: Flash animation must be performed here!
+				 // White Fade and back
+				 g_pGfxEngine->pushEffectPtr(new CFlash(3000, 8, 0xFFFFFF, 200 ));
 				 object.ai.vort.state = VORT_DYING;
 			 }
 			 else

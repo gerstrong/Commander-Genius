@@ -8,11 +8,10 @@
 #include "CVibrate.h"
 #include "../../sdl/CVideoDriver.h"
 
-CVibrate::CVibrate(Uint32 msecs)
-{
-	m_StartTime = g_pTimer->getTicks();
-	m_RunTime = msecs;
-}
+CVibrate::CVibrate(Uint32 msecs) :
+m_StartTime(g_pTimer->getTicks()),
+m_RunTime(msecs)
+{}
 
 // Spawns the vibration effect
 void CVibrate::process()

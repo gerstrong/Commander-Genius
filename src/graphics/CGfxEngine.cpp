@@ -57,7 +57,10 @@ CBitmap *CGfxEngine::createEmptyBitmaps(Uint16 num_bmps)
 
 // This will store the effect pointer the developer created in one function
 // You need this call to make you effect work!
-void CGfxEngine::pushEffectPtr(CEffects *pEffect) { mp_Effects = pEffect; }
+void CGfxEngine::pushEffectPtr(CEffects *pEffect) {
+	SAFE_DELETE(mp_Effects);
+	mp_Effects = pEffect;
+}
 
 ///
 // Destruktor
@@ -167,6 +170,12 @@ void CGfxEngine::drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w
 }
 
 ///
+// Getters
+///
+CEffects *CGfxEngine::Effect()
+{ return mp_Effects; }
+
+///
 // Process Routines
 ///
 void CGfxEngine::process(){
@@ -179,6 +188,7 @@ void CGfxEngine::process(){
 }
 
 CGfxEngine::~CGfxEngine() {
+	SAFE_DELETE(mp_Effects);
 	freeBitmaps();
 	freeSprites();
 	freeFonts();

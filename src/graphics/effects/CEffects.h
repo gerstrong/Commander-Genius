@@ -13,6 +13,8 @@
 #ifndef CEFFECTS_H_
 #define CEFFECTS_H_
 
+#include <SDL.h>
+
 class CEffects
 {
 public:
@@ -22,10 +24,18 @@ public:
 
 	virtual void process() = 0;
 
+	void makeFirstSnapshot();
+	void makeSecondSnapshot();
+
 	virtual ~CEffects();
 
 protected:
 	bool m_finished;
+	bool m_endeffect;
+
+	// those are used when the derived effect need two different surfaces
+	bool needsFirstSfc;
+	bool needsSecondSfc;
 };
 
 #endif /* CEFFECTS_H_ */

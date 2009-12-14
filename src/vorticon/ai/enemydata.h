@@ -47,7 +47,6 @@ typedef struct stVortData
 	
 	unsigned char timer,timer2;
 	unsigned int animtimer;
-	unsigned char palflashtimer, palflashamt;
 	unsigned char frame;
 	unsigned int dist_traveled;
 	signed int inertiay;
