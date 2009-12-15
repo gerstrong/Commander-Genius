@@ -64,7 +64,6 @@ void CPlayGame::processOnWorldMap()
 						{
 							// Create the special merge effect
 							CColorMerge *pColorMergeFX = new CColorMerge(8);
-							pColorMergeFX->getSnapshot(); // First Snapshot for merge
 
 							m_level_command = START_LEVEL;
 							m_Level = useobject & 0x7fff;
@@ -78,7 +77,6 @@ void CPlayGame::processOnWorldMap()
 							init();
 
 							// Second Snapshot for merge
-							pColorMergeFX->getSnapshot();
 							g_pGfxEngine->pushEffectPtr(pColorMergeFX);
 						}
 						break;
@@ -104,7 +102,6 @@ void CPlayGame::goBacktoMap()
 {
 	// Create the special merge effect (Fadeout)
 	CColorMerge *pColorMergeFX = new CColorMerge(8);
-	pColorMergeFX->getSnapshot(); // First Snapshot for merge
 
 	// before he can go back to map, he must tie up the objects.
 	// This means, all objects except the puppy ones of the player....
@@ -132,7 +129,6 @@ void CPlayGame::goBacktoMap()
 	init();
 
 	// Second Snapshot for merge
-	pColorMergeFX->getSnapshot();
 	g_pGfxEngine->pushEffectPtr(pColorMergeFX);
 }
 

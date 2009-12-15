@@ -21,7 +21,6 @@ bool CPlayGame::loadGameState()
 	{
 		// Create the special merge effect (Fadeout)
 		CColorMerge *pColorMergeFX = new CColorMerge(8);
-		pColorMergeFX->getSnapshot(); // First Snapshot for merge
 
 		// get the episode, level and difficulty
 		m_SavedGame.decodeData(m_Episode);
@@ -117,7 +116,6 @@ bool CPlayGame::loadGameState()
 		mp_Map->drawAll();
 
 		// Create the special merge effect (Fadeout)
-		pColorMergeFX->getSnapshot(); // First Snapshot for merge
 		g_pGfxEngine->pushEffectPtr(pColorMergeFX);
 
 		return true;

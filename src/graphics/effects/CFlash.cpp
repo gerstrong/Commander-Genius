@@ -16,8 +16,11 @@ m_Color(color),
 m_Alpha(0),
 m_FadeDir(FADE_IN),
 m_Style(FADE_PULSE),
-m_MaxAlpha(255)
-{}
+m_MaxAlpha(255),
+mp_FadeSurface(SDL_DisplayFormat(g_pVideoDriver->BlitSurface))
+{
+	SDL_FillRect(mp_FadeSurface, NULL, m_Color);
+}
 
 CFlash::CFlash(Uint32 msecs, Uint8 speed, Uint32 color, Uint8 m_maxalpha) :
 m_StartTime(g_pTimer->getTicks()),
@@ -27,25 +30,22 @@ m_Color(color),
 m_Alpha(0),
 m_FadeDir(FADE_IN),
 m_Style(FADE_NORMAL),
-m_MaxAlpha(m_maxalpha)
-{}
+m_MaxAlpha(m_maxalpha),
+mp_FadeSurface(SDL_DisplayFormat(g_pVideoDriver->BlitSurface))
+{
+	SDL_FillRect(mp_FadeSurface, NULL, m_Color);
+}
 
 // Process the flashing effect here
 void CFlash::process()
 {
 	Uint32 ElapsedTime = g_pTimer->getTicks() - m_StartTime;
-	SDL_Surface *sfc = g_pVideoDriver->BlitSurface;
 	SDL_Rect gamerect = g_pVideoDriver->getGameResolution();
 
-	// then erase the entire old surface ...
-	SDL_Surface *temp = SDL_DisplayFormat(sfc);
-	SDL_FillRect(temp, &gamerect, m_Color);
-
-	SDL_SetAlpha(sfc, SDL_SRCALPHA, m_Alpha);
+	SDL_SetAlpha(mp_FadeSurface, SDL_SRCALPHA, m_Alpha);
 
 	// Blit it and free temp surface
-	SDL_BlitSurface(temp, &gamerect, sfc, &gamerect);
-	SDL_FreeSurface(temp);
+	SDL_BlitSurface(mp_FadeSurface, &gamerect, g_pVideoDriver->BlitSurface, &gamerect);
 
 	if(m_FadeDir == FADE_IN)
 	{
@@ -76,4 +76,5 @@ void CFlash::process()
 
 CFlash::~CFlash()
 {
+	SDL_FreeSurface(mp_FadeSurface);
 }

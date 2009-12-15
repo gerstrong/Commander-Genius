@@ -24,11 +24,11 @@ public:
 
 	void process();
 
-	void getSnapshot();
-
 	virtual ~CColorMerge();
 
 private:
+	void getSnapshot();
+
 	Uint8 m_Speed;
 	Uint8 m_Alpha;
 	SDL_Surface *mp_SourceSurface;

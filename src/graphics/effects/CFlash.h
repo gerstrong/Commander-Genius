@@ -40,6 +40,7 @@ private:
 	char m_FadeDir;
 	Uint8 m_Style;
 	Uint8 m_MaxAlpha;
+	SDL_Surface *mp_FadeSurface;
 };
 
 #endif /* CFLASH_H_ */

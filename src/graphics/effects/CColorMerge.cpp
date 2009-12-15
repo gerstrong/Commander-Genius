@@ -15,7 +15,9 @@ m_Speed(speed),
 m_Alpha(0),
 mp_SourceSurface(NULL),
 mp_TargetSurface(NULL)
-{}
+{
+	getSnapshot();
+}
 
 // use this function. If you don't that, the effect won't work.
 void CColorMerge::getSnapshot()
@@ -29,7 +31,11 @@ void CColorMerge::getSnapshot()
 void CColorMerge::process()
 {
 	// Only process if the surfaces have content
-	if( !mp_SourceSurface || !mp_TargetSurface) return;
+	if( !mp_SourceSurface || !mp_TargetSurface)
+	{
+		getSnapshot();
+		//return;
+	}
 
 	SDL_Surface *sfc = g_pVideoDriver->BlitSurface;
 	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
