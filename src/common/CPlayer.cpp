@@ -634,29 +634,6 @@ void CPlayer::InertiaAndFriction_Y()
 
 void CPlayer::ProcessInput()
 {
-/////
-//
-// Debug Code
-//
-/////
-
-	if(g_pInput->getHoldedKey(KB))
-		mp_PhysicsSettings->player.pogoforce_x--;
-	else if(g_pInput->getHoldedKey(KN))
-		mp_PhysicsSettings->player.pogoforce_x++;
-
-	if(g_pInput->getHoldedKey(KH))
-		mp_PhysicsSettings->player.maxpogospeed--;
-	else if(g_pInput->getHoldedKey(KJ))
-		mp_PhysicsSettings->player.maxpogospeed++;
-
-/////
-//
-// Debug Code (END)
-//
-/////
-
-
 	// Entry for every player
 	playcontrol[PA_X] = 0;
 	playcontrol[PA_Y] = 0;

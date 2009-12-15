@@ -3,6 +3,12 @@ Commander Genius Release (CloneKeenPlus):
 
 v0.3.1.0:
 ---------
+
+15-12-2009
+- Minor fixes
+- New effects class. Vibration and Vorticon shot scene in EP1 are working again.
+- New Merge Colour effect, which can be seen, when player enters a level
+
 13-12-2009
 - Added Vorticon Elite back to CG
 

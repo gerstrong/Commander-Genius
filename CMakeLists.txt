@@ -1,6 +1,5 @@
 # CMake file for development of Commander Genius (taken from OLX)
-# This CMake file is used under Linux normally. If someone wants 
-# to adapt windows, he is welcome, to do so.
+# This CMake file is used under Linux normally. 
 
 cmake_minimum_required(VERSION 2.4)
 IF (${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION} GREATER 2.4)
@@ -35,7 +34,6 @@ ENDIF (DEBUG)
 # Platform specific things can be put here
 # Compilers and other specific variables can be found here:
 # http://www.cmake.org/Wiki/CMake_Useful_Variables
-
 
 # Compilation Flags and executables
 IF (BUILD_TYPE STREQUAL GP2X OR BUILD_TYPE STREQUAL WIZ OR BUILD_TYPE STREQUAL DINGOO)
@@ -104,6 +102,7 @@ AUX_SOURCE_DIRECTORY(src/common/Menu MENU_S)
 AUX_SOURCE_DIRECTORY(src/dialog DIALOG_S)
 AUX_SOURCE_DIRECTORY(src/fileio FILEIO_S)
 AUX_SOURCE_DIRECTORY(src/graphics GRAPHICS_S)
+AUX_SOURCE_DIRECTORY(src/graphics/effects EFFECTS_S)
 AUX_SOURCE_DIRECTORY(src/hqp HQP_S)
 #AUX_SOURCE_DIRECTORY(src/include HQP_S)
 AUX_SOURCE_DIRECTORY(src/scale2x SCALE2X_S)
@@ -117,7 +116,9 @@ AUX_SOURCE_DIRECTORY(src/vorticon/finale FINALE_S)
 AUX_SOURCE_DIRECTORY(src/vorticon/playgame PLAYGAME_S)
 AUX_SOURCE_DIRECTORY(src/vorticon/infoscenes INFOSCENES_S)
 
-SET(ALL_SRCS ${ROOT_S} ${AI_S} ${FINALE_S} ${PLAYGAME_S} ${INFOSCENES_S} ${FILEIO_S} ${HQP_S} ${SCALE2X_S} ${SDL_S} ${SDLSOUND_S} ${SDLVIDEO_S} ${VORTICON_S} ${CINEMATICS_S} ${DIALOG_S} ${COMMON_S} ${MENU_S} ${GRAPHICS_S})
+SET(ALL_SRCS ${ROOT_S} ${AI_S} ${FINALE_S} ${PLAYGAME_S} ${INFOSCENES_S} 
+	${FILEIO_S} ${HQP_S} ${SCALE2X_S} ${SDL_S} ${SDLSOUND_S} ${SDLVIDEO_S} 
+	${VORTICON_S} ${CINEMATICS_S} ${DIALOG_S} ${COMMON_S} ${MENU_S} ${GRAPHICS_S} ${EFFECTS_S})
 
 IF(UNIX)
 # Compilation under Linux
@@ -205,10 +206,10 @@ IF(SDL)
 	ENDIF(BUILD_TYPE STREQUAL WIN32)
 ENDIF(SDL)
 
-IF(NOT LINUX64)
-	SET_TARGET_PROPERTIES(commandergenius PROPERTIES LINK_FLAGS -L/usr/lib32)
-	SET_TARGET_PROPERTIES(commandergenius PROPERTIES LINK_FLAGS -m32)
-ENDIF(NOT LINUX64)
+#IF(NOT LINUX64)
+#	SET_TARGET_PROPERTIES(commandergenius PROPERTIES LINK_FLAGS -L/usr/lib32)
+#	SET_TARGET_PROPERTIES(commandergenius PROPERTIES LINK_FLAGS -m32)
+#ENDIF(NOT LINUX64)
 
 IF(BUILD_TYPE STREQUAL WIN32)
 	SET_TARGET_PROPERTIES(commandergenius PROPERTIES LINK_FLAGS -L/usr/i586-mingw32msvc/lib)

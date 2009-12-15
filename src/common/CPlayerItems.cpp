@@ -81,16 +81,16 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 	{
 			// keycards
 		case 18: give_keycard(DOOR_YELLOW);
-			riseBonus(PTCARDY_SPRITE, mpx-(2<<CSF), mpy-(2<<CSF));
+			riseBonus(PTCARDY_SPRITE, mpx, mpy);
 			break;
 		case 19: give_keycard(DOOR_RED);
-			riseBonus(PTCARDR_SPRITE, mpx-(2<<CSF), mpy-(2<<CSF));
+			riseBonus(PTCARDR_SPRITE, mpx, mpy);
 			break;
 		case 20: give_keycard(DOOR_GREEN);
-			riseBonus(PTCARDG_SPRITE, mpx-(2<<CSF), mpy-(2<<CSF));
+			riseBonus(PTCARDG_SPRITE, mpx, mpy);
 			break;
 		case 21: give_keycard(DOOR_BLUE);
-			riseBonus(PTCARDB_SPRITE, mpx-(2<<CSF), mpy-(2<<CSF));
+			riseBonus(PTCARDB_SPRITE, mpx, mpy);
 			break;
 			
 		case DOOR_YELLOW:
@@ -207,7 +207,6 @@ void CPlayer::riseBonus(int spr, int x, int y)
 	 if (mp_option[OPT_RISEBONUS].value)
 	 {
 		 CObject GotPointsObj;
-		 printf("Creating %d \n", OBJ_GOTPOINTS);
 		 GotPointsObj.spawn(x<<CSF, y<<CSF, OBJ_GOTPOINTS);
 		 GotPointsObj.sprite = spr;
 		 mp_object->push_back(GotPointsObj);
