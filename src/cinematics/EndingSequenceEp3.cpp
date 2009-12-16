@@ -7,7 +7,6 @@
 #include "../keen.h"
 
 #include "../game.h"
-#include "../include/gamedo.h"
 
 #include "../sdl/CInput.h"
 #include "../sdl/CVideoDriver.h"

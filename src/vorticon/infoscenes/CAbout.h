@@ -12,6 +12,7 @@
 #include <string>
 #include "CInfoScene.h"
 #include "../../common/CMap.h"
+#include "../../vorticon/ai/CEGABitmap.h"
 
 class CAbout : public CInfoScene {
 public:
@@ -23,6 +24,7 @@ public:
 private:
 	CMap *mp_Map;
 	SDL_Surface *mp_Scrollsurface;
+	SDL_Surface *mp_LogoBMP;
 };
 
 #endif /* CABOUT_H_ */

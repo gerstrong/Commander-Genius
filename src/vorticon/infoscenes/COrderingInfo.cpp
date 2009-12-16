@@ -5,11 +5,10 @@
  *      Author: gerstrong
  */
 
-#include "../../keen.h"
+//#include "../../keen.h"
 #include "COrderingInfo.h"
 #include "../../sdl/CInput.h"
 #include "../../CLogFile.h"
-#include "../../include/gamedo.h"
 #include "../../fileio/CExeFile.h"
 #include "../../graphics/CGfxEngine.h"
 #include "../../sdl/CVideoDriver.h"
@@ -36,9 +35,18 @@ COrderingInfo::COrderingInfo(std::string &datadirectory, char &episode) {
 			m_numberoflines = 21; // numberof lines to print
 			if(Exefile->getEXEVersion() == 131)
 				offset = 0x1632C;
+
+			// Change the ugly lower Tiles which are seen, when using 320x240 base resolution
+			for(int i=0; i<20 ; i++)
+			{
+				mp_Map->changeTile(22+i, 15, 14*13);
+				mp_Map->changeTile(22+i, 16, 14*13+3);
+			}
+
 			break;
 	}
-	
+	mp_Map->drawAll();
+
 	// Read the strings and save them the string array of the class
 	if(offset)
 	{
@@ -63,48 +71,31 @@ COrderingInfo::COrderingInfo(std::string &datadirectory, char &episode) {
 			
 			buf.clear();
 		}
-		
-		// That part is a bit tricky. The Episodes have different X-Coordinates for evry text to center it properly
-		if(episode == 1)
-		{
-			m_Text_Coordinate.push_back( 8*8 ); // Coordinate-x to get the lines centered, like in the original game.
-			m_Text_Coordinate.push_back( 8*8 ); // Coordinate-x to get the lines centered, like in the original game.
-			m_Text_Coordinate.push_back( 11*8 ); // Coordinate-x to get the lines centered, like in the original game.
-			m_Text_Coordinate.push_back( 10*8 ); // Coordinate-x to get the lines centered, like in the original game.
-			for(int i=0; i<3 ; i++ )
-				m_Text_Coordinate.push_back( 8*8 ); // Coordinate-x to get the lines centered, like in the original game.
-			for(int i=0; i<6 ; i++ )
-				m_Text_Coordinate.push_back( 1*8 );
-			m_Text_Coordinate.push_back( 23*8 );
-			for(int i=0; i<6 ; i++ )
-				m_Text_Coordinate.push_back( 0*8 ); // Coordinate-x to get the lines centered, like in the original game.
-			m_Text_Coordinate.push_back( 3*8 ); // Coordinate-x to get the lines centered, like in the original game.
-		}
-		
 	}
 	
 	delete Exefile;
-}
-
-COrderingInfo::~COrderingInfo() {
-	// TODO Auto-generated destructor stub
 }
 
 void COrderingInfo::process()
 {	 
 	 if(!m_Textline.size())
 	 {
-	 g_pLogFile->textOut(RED,"Sorry, but the ordering information text could not be read. Returning to the main menu...<br>");
-	 return;
+		 g_pLogFile->textOut(RED,"Sorry, but the ordering information text could not be read. Returning to the main menu...<br>");
+		 m_destroy_me=true;
+		 return;
 	 }
 	 
-	 mp_Map->animateAllTiles();
+	 //mp_Map->animateAllTiles();
 	 
 	 for(int i=0 ; i<m_numberoflines ; i++)
 	 {
-	 g_pGfxEngine->Font->drawFont(mp_Scrollsurface, m_Textline[i], m_Text_Coordinate[i]-160, 8*(i+4+m_starty), 1);
+		 g_pGfxEngine->Font->drawFont(g_pVideoDriver->FGLayerSurface, m_Textline[i], 160-m_Textline[i].size()*4, 8*(i+m_starty), 1);
 	 }
 	
 	if(g_pInput->getPressedAnyKey())
 		m_destroy_me=true;
+}
+
+COrderingInfo::~COrderingInfo() {
+	delete mp_Map;
 }

@@ -21,7 +21,8 @@ public:
 	void process();
 	
 private:
-	char m_scrolltext[54][80];
+	std::string m_scrolltext[54];
+	int m_mid[54];
 	int m_timer;
 	int m_scrolly;
 	

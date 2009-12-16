@@ -8,7 +8,6 @@
 #include "../keen.h"
 
 #include "../sdl/CInput.h"
-#include "../include/gamedo.h"
 #include "CTextViewer.h"
 #include "../graphics/CGfxEngine.h"
 

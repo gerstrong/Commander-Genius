@@ -14,7 +14,6 @@
 #include "../sdl/CVideoDriver.h"
 
 #include "../game.h"
-#include "../include/gamedo.h"
 
 #define LETTER_SHOW_SPD          30
 

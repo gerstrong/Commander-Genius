@@ -172,8 +172,6 @@ void CTimer::TimeToDelay( void )
 		m_FPS           = m_FrameCount;
 		m_LoopCount = m_LogicCount = m_FrameCount = 0;
 		m_FPSCountTime  = curtime;
-
-        printf( "LoopPS %d LPS %d FPS %d\n", m_LoopPS, m_LPS, m_FPS );
 	}
 }
 

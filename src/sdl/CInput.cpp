@@ -371,18 +371,7 @@ void CInput::processKeys(int value)
 		for(int j=0 ; j<NUM_INPUTS ; j++)
 		{
 			if(InputCommand[j][i].keysym == Event.key.keysym.sym)
-			{
-				if(value)
-				{
-					InputCommand[j][i].active = true;
-					g_pLogFile->textOut(RED, itoa(i)+" is true.");
-				}
-				else
-				{
-					InputCommand[j][i].active = false;
-					g_pLogFile->textOut(RED, itoa(i)+" is false.");
-				}
-			}
+				InputCommand[j][i].active = (value) ? true : false;
 		}
 	}
 

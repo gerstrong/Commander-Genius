@@ -321,6 +321,7 @@ void CPlayGame::process()
 #else
 		tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec());
 #endif
+		g_pGfxEngine->Font->drawFont(sfc,tempbuf,320-tempbuf.size()<<3-1,1);
 	}
 	
 	// Open the Main Menu if ESC Key pressed and mp_Menu not opened

@@ -12,8 +12,6 @@
 #include <cstring>
 
 #include "../keen.h"
-//#include "../include/CStartScreen.h"
-#include "../include/gamedo.h"
 #include "CHighScores.h"
 #include "../sdl/CInput.h"
 #include "../graphics/CGfxEngine.h"

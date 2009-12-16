@@ -21,7 +21,6 @@ public:
 	void process();
 	
 private:
-	std::vector<int> m_Text_Coordinate;
 	std::vector<std::string> m_Textline;
 	
 	int m_starty;			// start of y-coordinate in textheights

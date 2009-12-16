@@ -609,7 +609,7 @@ void CPlayer::SelectFrame()
         else if (ppogostick) playframe = PFRAME_POGO + (pjumping==PPREPAREPOGO);
         else if (pjumping) playframe += pjumpframe;
         else if (pfalling) playframe += 13;
-        else if (pwalking || playpushed_x) playframe += pwalkframe;
+        else if (pwalking || playpushed_x || psemisliding) playframe += pwalkframe;
     }
 	
     // if he's going left switch the frame selected above to the

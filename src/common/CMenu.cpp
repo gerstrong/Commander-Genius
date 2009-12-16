@@ -500,6 +500,7 @@ void CMenu::processF1Menu()
 {
 	if( m_selection != -1)
 	{
+		m_Map.m_animation_enabled = false;
 		// no cleanups here, because later we return back to that menu
 		switch(m_selection)
 		{
@@ -510,7 +511,6 @@ void CMenu::processF1Menu()
 				mp_InfoScene = new CHelp(m_GamePath, m_Episode, "Game");
 				break;
 			case 2:
-				m_Map.m_animation_enabled = false;
 				mp_InfoScene = new CStory(m_GamePath, m_Episode);
 				break;
 			case 3:

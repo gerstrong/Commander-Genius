@@ -31,8 +31,7 @@ private:
 
 	Uint8 m_Speed;
 	Uint8 m_Alpha;
-	SDL_Surface *mp_SourceSurface;
-	SDL_Surface *mp_TargetSurface;
+	SDL_Surface *mp_OldSurface;
 };
 
 #endif /* CCOLORMERGE_H_ */

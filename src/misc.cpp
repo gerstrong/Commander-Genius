@@ -14,7 +14,6 @@
 
 #include "include/misc.h"
 #include "game.h"
-#include "include/gamedo.h"
 #include "fileio/CSavedGame.h"
 #include "CLogFile.h"
 #include "graphics/CGfxEngine.h"
