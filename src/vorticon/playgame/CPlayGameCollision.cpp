@@ -81,6 +81,9 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 	
 	p_player->goto_y = p_player->y;
 	
+	// Here we check, if the player is standing on ice (Episode 1)
+	if(p_player->blockedd)	checkStandingOnIce(*p_player);
+
     // Check if the player is going out of the level map
     if( p_player->goto_y <= 2<<CSF ) // Upper edge or ceiling
     	p_player->blockedu = true;
@@ -234,6 +237,7 @@ CSprite *sprite = g_pGfxEngine->Sprite[p_player->playframe];
 	
 	if(y != (y>>CSF)<<CSF) return false;
 	
+
 	if(g_pGfxEngine->Tilemap->mp_tiles[t1].bup || g_pGfxEngine->Tilemap->mp_tiles[t2].bup)
 	{
 		return true;
@@ -244,6 +248,22 @@ CSprite *sprite = g_pGfxEngine->Sprite[p_player->playframe];
 		return true;
 	}
 	return false;
+}
+
+// This function checks if the player is standing on ice
+void CPlayGame::checkStandingOnIce(CPlayer &player)
+{
+	CSprite &sprite = *g_pGfxEngine->Sprite[player.playframe];
+	int x1 = player.x+sprite.m_bboxX1+1;
+	int x2 = player.x+sprite.m_bboxX2-1;
+	int y = player.y+sprite.m_bboxY2+(1<<STC);
+	int t1 = mp_Map->at(x1>>CSF, y>>CSF);
+	int t2 = mp_Map->at(x2>>CSF, y>>CSF);
+
+	char blocktype = g_pGfxEngine->Tilemap->mp_tiles[t1].bup | g_pGfxEngine->Tilemap->mp_tiles[t2].bup;
+	if( blocktype == 2 ) player.psemisliding = true;
+	else if( blocktype == 3 ) player.psliding = true;
+	else player.psemisliding = player.psliding = false;
 }
 
 // this is so objects can block the player,

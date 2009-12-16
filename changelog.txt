@@ -4,6 +4,9 @@ Commander Genius Release (CloneKeenPlus):
 v0.3.1.0:
 ---------
 
+16-12-2009
+- Slippery ice tiles are working again as before! Keen can semi/slide on them
+
 15-12-2009
 - Minor fixes
 - New effects class. Vibration and Vorticon shot scene in EP1 are working again.

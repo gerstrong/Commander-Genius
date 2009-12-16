@@ -160,8 +160,8 @@ public:
 	int pdietillfly;
 	signed int pdie_xvect;
 	int psupportingtile, psupportingobject, lastsupportingobject;
-	char psliding;
-	char psemisliding;
+	bool psliding;
+	bool psemisliding;
 	bool ppogostick;
 	int pfrozentime,pfrozenframe,pfrozenanimtimer;
 	bool pfiring, plastfire;

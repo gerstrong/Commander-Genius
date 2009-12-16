@@ -61,6 +61,7 @@ void CPlayer::setDatatoZero()
     mounted = false;
     ppogostick = false;
     plastfire = false;
+    psliding = psemisliding = false;
     blockedu = blockedd = blockedl = blockedr = false;
 	
     pjumping = pjumptime = 0;
@@ -70,7 +71,6 @@ void CPlayer::setDatatoZero()
     pinertia_x = pinertia_y = 0;
     playpushed_x = 0;
     plastfire = pfiring = false;
-    psliding = psemisliding = 0;
     pwalkanimtimer = 0;
     inhibitfall = false;
     playerbaseframe = 0;

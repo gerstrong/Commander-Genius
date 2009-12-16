@@ -221,7 +221,7 @@ void CPlayer::setDir()
 			// jumped off an ice block into a wall?
 			if (pjumping || pfalling)
 			{
-				psliding = 0;
+				psliding = false;
 			}
 		}
 		else

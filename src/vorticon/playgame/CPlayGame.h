@@ -83,6 +83,7 @@ public:
 	bool checkisSolidl(CPlayer *p_player);
 	bool checkisSolidd(CPlayer *p_player);
 	bool checkisSolidu(CPlayer *p_player);
+	void checkStandingOnIce(CPlayer &player);
 	char checkDoorBlock(int t, CPlayer *p_player, int which);
 	int checkObjSolid(unsigned int x, unsigned int y, int cp);
 	void processPlayerfallings(CPlayer *p_player);
