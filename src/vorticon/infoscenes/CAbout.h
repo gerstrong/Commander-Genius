@@ -16,7 +16,7 @@
 
 class CAbout : public CInfoScene {
 public:
-	CAbout(std::string &datadirectory, char &episode, std::string type);
+	CAbout(std::string &datadirectory, char &episode, const std::string& type);
 	virtual ~CAbout();
 	
 	void process();
@@ -25,6 +25,9 @@ private:
 	CMap *mp_Map;
 	SDL_Surface *mp_Scrollsurface;
 	SDL_Surface *mp_LogoBMP;
+	SDL_Rect m_logo_rect;
+	std::vector<std::string> m_lines;
+	std::string m_type;
 };
 
 #endif /* CABOUT_H_ */
