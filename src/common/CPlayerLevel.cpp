@@ -555,13 +555,15 @@ void CPlayer::raygun()
 				inventory.charges--;
 				pshowdir = pdir;
 				
+				CSprite &Sprite = *g_pGfxEngine->Sprite.at(playframe);
 				g_pSound->playStereofromCoord(SOUND_KEEN_FIRE, PLAY_NOW, pPlayerObject->scrx);
 				
 				ydir = y+(9<<(CSF-4));
-				if (pdir==RIGHT) xdir = x+((g_pGfxEngine->Sprite[0]->getWidth())<<(STC));
-				else xdir = x-(17<<(STC));
+				if (pdir==RIGHT) xdir = x+Sprite.m_bboxX2+1;
+				else xdir = x-Sprite.m_bboxX2-(1<<STC);
 				
 				rayobject.spawn(xdir, ydir, OBJ_RAY);
+				rayobject.ai.ray.owner = m_player_number;
 				rayobject.ai.ray.direction = pdir;
 				
 				rayobject.ai.ray.dontHitEnable = false;

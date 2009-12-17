@@ -168,6 +168,10 @@ void CEndingEp1::BackAtHome()
 		mp_FinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE7", 6000);
 		mp_FinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE8", 8000);
 
+		// The Bitmaps of the Window Lights on should drawn at Page 4
+		mp_FinaleStaticScene->showBitmapAt("WINDON", 2, 6, 80, 0);
+		mp_FinaleStaticScene->showBitmapAt("WINDOFF", 6, 8, 80, 0);
+
 		m_mustsetup = false;
 	}
 

@@ -68,7 +68,6 @@ bool CGame::loadCKPDrivers()
 	return true;
 }
 
-
 /////////////////////////////
 // Process Game Engine here! //
 /////////////////////////////

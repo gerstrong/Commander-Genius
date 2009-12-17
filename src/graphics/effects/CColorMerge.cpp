@@ -26,6 +26,7 @@ void CColorMerge::getSnapshot()
 	if(!mp_OldSurface) mp_OldSurface = SDL_DisplayFormat(g_pVideoDriver->BlitSurface);
 }
 
+// Effect cycle
 void CColorMerge::process()
 {
 	// Only process if the surfaces have content

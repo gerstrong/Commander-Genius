@@ -165,7 +165,7 @@ void CObjectAI::performSpecialAIType( CObject &object )
 		//case OBJ_PLATVERT: platvert_ai(i); break;
 		//case OBJ_NESSIE: nessie_ai(i); break;
 
-			 //Common Objects*/
+		//Common Objects
 		case OBJ_RAY: ray_ai( object, mp_Options[OPT_FULLYAUTOMATIC].value ); break;
 		case OBJ_DOOR: door_ai( object, DOWN); break;
 		case OBJ_AUTORAY: case OBJ_AUTORAY_V: autoray_ai(object); break;

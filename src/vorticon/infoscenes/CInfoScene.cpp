@@ -7,10 +7,9 @@
 
 #include "CInfoScene.h"
 
-CInfoScene::CInfoScene() {
-	m_destroy_me = false;
-}
+CInfoScene::CInfoScene() :
+m_destroy_me(false)
+{ }
 
-CInfoScene::~CInfoScene() {
-	// TODO Auto-generated destructor stub
-}
+CInfoScene::~CInfoScene()
+{}

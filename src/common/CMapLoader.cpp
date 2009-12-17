@@ -25,7 +25,7 @@ mp_Player(p_Player)
 }
 
 // Loads the map into the memory
-bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path )
+bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool loadNewMusic )
 {
 	int t;
 	Uint32 c=0;
@@ -48,8 +48,11 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path )
 	mp_map->m_worldmap = (level == 80);
 	
 	// HQ Music. Load Music for a level if you have HQP
-	g_pMusicPlayer->stop();
-	g_pMusicPlayer->LoadfromMusicTable(path, levelname);
+	if(loadNewMusic)
+	{
+		g_pMusicPlayer->stop();
+		g_pMusicPlayer->LoadfromMusicTable(path, levelname);
+	}
 
 	if (!MapFile)
 	{

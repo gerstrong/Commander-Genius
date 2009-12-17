@@ -19,6 +19,22 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 		object.inhibitfall = true;
 		object.needinit = false;
 		
+		object.blockedr = object.blockedl = false;
+
+		int x1 = Sprite.at(object.sprite)->m_bboxX1;
+		int x2 = Sprite.at(object.sprite)->m_bboxX2;
+		int y2 = Sprite.at(object.sprite)->m_bboxY2;
+
+		// Check initial collision. This will avoid that ray go through the first blocking element
+		for(int i=x1; i<x2 ; i++)
+		{
+			if (TileProperty[mp_Map->at((object.x+i)>>CSF,(object.y+y2)>>CSF)].bleft)
+				object.blockedr |= true;
+			if (TileProperty[mp_Map->at((object.x+i)>>CSF,(object.y+y2)>>CSF)].bright)
+				object.blockedl |= true;
+		}
+
+
 		// if we shoot directly up against a wall have
 		// the ZAP appear next to the wall, not in it
 		if (object.ai.ray.direction==RIGHT && object.blockedr)
@@ -62,7 +78,7 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 			{
 				if (object.ai.ray.dontHitEnable)
 				{
-					if (it_obj->m_type==object.ai.ray.dontHit) continue;
+					if (it_obj->m_type == object.ai.ray.dontHit) continue;
 				}
 				
 				if (it_obj->m_type==OBJ_RAY) continue;
@@ -95,10 +111,13 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 				}
 				else
 				{
-					if (object.ai.ray.dontHitEnable==0 || object.ai.ray.dontHit!=OBJ_PLAYER)
+					if (m_Player[object.touchedBy].m_player_number != object.ai.ray.owner)
 					{
-						m_Player[object.touchedBy].kill();
-						object.ai.ray.state = RAY_STATE_SETZAPZOT;
+						if (object.ai.ray.dontHitEnable==0 || object.ai.ray.dontHit!=OBJ_PLAYER)
+						{
+							m_Player[object.touchedBy].kill();
+							object.ai.ray.state = RAY_STATE_SETZAPZOT;
+						}
 					}
 				}
 			}

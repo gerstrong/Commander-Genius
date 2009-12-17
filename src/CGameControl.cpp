@@ -132,8 +132,6 @@ bool CGameControl::init(char mode)
 
 			g_pGfxEngine->pushEffectPtr(pColorMergeFX);
 		}
-
-
 		return ok;
 	}
 	return false;

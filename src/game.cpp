@@ -16,50 +16,7 @@
 #include "include/gm_pdowm.h"
 #include "hqp/CMusic.h"
 #include "graphics/CGfxEngine.h"
-#include "vorticon/CHighScores.h"
 #include "CLogFile.h"
-
-void start_gameover(stCloneKeenPlus *pCKP)
-{
-	/*int cities=0;
-   	 CHighScores *HighScoreTable = new CHighScores(g_pVideoDriver->FGLayerSurface, pCKP);
-	 
-	 bool extras[4] = {false,false,false,false};
-	 
-	 stLevelControl *p_levelcontrol = &(pCKP->Control.levelcontrol);
-	 
-   	 // check inventory or saved cities
-   	 if(p_levelcontrol->episode == 1)
-   	 {
-	 if(player[0].inventory.HasJoystick)
-	 extras[0] = true;
-	 if(player[0].inventory.HasBattery)
-	 extras[1] = true;
-	 if(player[0].inventory.HasVacuum)
-	 extras[2] = true;
-	 if(player[0].inventory.HasWiskey)
-	 extras[3] = true;
-   	 }
-   	 else if(p_levelcontrol->episode == 2)
-   	 {
-	 if (p_levelcontrol->levels_completed[4]) cities++;
-	 if (p_levelcontrol->levels_completed[6]) cities++;
-	 if (p_levelcontrol->levels_completed[7]) cities++;
-	 if (p_levelcontrol->levels_completed[13]) cities++;
-	 if (p_levelcontrol->levels_completed[11]) cities++;
-	 if (p_levelcontrol->levels_completed[9]) cities++;
-	 if (p_levelcontrol->levels_completed[15]) cities++;
-	 if (p_levelcontrol->levels_completed[16]) cities++;
-   	 }
-	 
-   	 HighScoreTable->writeHighScore((int)player[0].inventory.score,extras,cities);
-	 
-   	 HighScoreTable->showHighScore();
-	 
-   	 delete HighScoreTable;
-	 
-     p_levelcontrol->command = LVLC_GAME_OVER;*/
-}
 
 void initgame(stLevelControl *p_levelcontrol)
 {

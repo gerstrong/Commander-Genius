@@ -12,7 +12,7 @@
 #include "../../funcdefs.h"
 
 CFinaleStaticScene::CFinaleStaticScene(const std::string &game_path, const std::string &scene_file):
-	mp_current_tb(NULL), m_mustclose(false)
+	mp_current_tb(NULL), m_mustclose(false), m_count(0)
 {
 	mp_SceneSurface = SDL_CreateRGBSurface( g_pVideoDriver->getBlitSurface()->flags, 320, 240, 8, 0, 0, 0, 0);
 	SDL_SetColors( mp_SceneSurface, g_pGfxEngine->Palette.m_Palette, 0, 255);
@@ -34,6 +34,19 @@ void CFinaleStaticScene::push_string(const std::string &text, Uint32 delay)
 	mp_current_tb = mp_textbox_list.front();
 }
 
+void CFinaleStaticScene::showBitmapAt(const std::string &bitmapname, Uint16 from_count, Uint16 to_count, Uint16 x, Uint16 y)
+{
+	bitmap_structure bmp_struct;
+	bmp_struct.p_bitmap = g_pGfxEngine->getBitmap(bitmapname);
+	bmp_struct.dest_rect.x = x;
+	bmp_struct.dest_rect.y = y;
+	bmp_struct.dest_rect.w = bmp_struct.p_bitmap->getWidth();
+	bmp_struct.dest_rect.h = bmp_struct.p_bitmap->getHeight();
+	bmp_struct.from_count = from_count;
+	bmp_struct.to_count = to_count;
+	m_BitmapVector.push_back(bmp_struct);
+}
+
 void CFinaleStaticScene::process()
 {
 	if( mp_textbox_list.empty() ) { m_mustclose = true; return; }
@@ -44,6 +57,7 @@ void CFinaleStaticScene::process()
 	if( mp_current_tb->hasFinished() )
 	{
 		delete mp_current_tb;
+		m_count++;
 		mp_textbox_list.pop_front();
 		if(!mp_textbox_list.empty())
 		{
@@ -53,6 +67,16 @@ void CFinaleStaticScene::process()
 	}
 	else
 	{
+		// Draw any requested Bitmap
+		for( std::vector<bitmap_structure>::iterator i=m_BitmapVector.begin() ;
+			 i!=m_BitmapVector.end() ; i++ )
+		{
+			if( m_count >= i->from_count && m_count <= i->to_count ) // It is in the interval?
+			{ // show it!
+				i->p_bitmap->draw(g_pVideoDriver->ScrollSurface, i->dest_rect.x, i->dest_rect.y);
+			}
+		}
+
 		// Draw Frame and the text like type writing
 		mp_DlgFrame->draw(g_pVideoDriver->FGLayerSurface);
 		mp_current_tb->process();

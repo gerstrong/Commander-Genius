@@ -10,9 +10,17 @@
 
 #include "../../dialog/CTextBox.h"
 #include "../../dialog/CDlgFrame.h"
+#include "../../graphics/CBitmap.h"
 #include <SDL.h>
 #include <string>
 #include <list>
+
+struct bitmap_structure {
+	CBitmap *p_bitmap;
+	SDL_Rect dest_rect;
+	Uint16 from_count;
+	Uint16 to_count;
+};
 
 // Prototype Reference to finale.cpp. This one still uses old C code.
 void finale_draw( SDL_Surface *sfc, const std::string& filename, const std::string& path);
@@ -22,17 +30,21 @@ public:
 	CFinaleStaticScene(const std::string &game_path, const std::string &scene_file);
 
 	void push_string(const std::string &text, Uint32 delay);
+	void showBitmapAt(const std::string &bitmapname, Uint16 from_count, Uint16 to_count, Uint16 x, Uint16 y);
 	void process();
 	bool mustclose() { return m_mustclose; }
 
 	virtual ~CFinaleStaticScene();
 
 private:
+
 	std::list<CTextBox*> mp_textbox_list;
+	std::vector<bitmap_structure> m_BitmapVector;
 	SDL_Surface *mp_SceneSurface;
 	CDlgFrame *mp_DlgFrame;
 	CTextBox *mp_current_tb;
 	bool m_mustclose;
+	Uint8 m_count;
 };
 
 #endif /* CFINALESTATICSCENE_H_ */

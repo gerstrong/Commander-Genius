@@ -83,7 +83,6 @@ void CTextBox::process()
 				m_textdelay = m_time_passed;
 		}
 	}
-
 	// NOTE: Preloaded fonts.
 	// not all colours are supported
 }

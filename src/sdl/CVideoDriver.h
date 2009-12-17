@@ -37,7 +37,6 @@ class CVideoDriver : public CSingleton<CVideoDriver>
 {
 public:
 	CVideoDriver();
-	virtual ~CVideoDriver();
 
 	bool applyMode();
 	SDL_Rect adaptGameResolution();
@@ -101,6 +100,8 @@ public:
 
 	void setAspectCorrection(bool value) { m_aspect_correction = value; }
 	bool getAspectCorrection(void) { return m_aspect_correction; }
+
+	virtual ~CVideoDriver();
 
 	SDL_Surface *BlitSurface;
 	SDL_Surface *FGLayerSurface;       	// Scroll buffer for Messages

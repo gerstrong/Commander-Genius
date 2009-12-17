@@ -19,7 +19,7 @@ class CMapLoader {
 public:
 	CMapLoader(CMap* p_map, CPlayer *p_Player = NULL);
 	
-	bool load( Uint8 episode, Uint8 level, const std::string& path );
+	bool load( Uint8 episode, Uint8 level, const std::string& path, bool loadNewMusic=true );
 	
 	void addTile( Uint16 t, Uint16 x, Uint16 y );
 	void addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episode);

@@ -90,20 +90,20 @@ void CPassive::process()
 
 		if (g_pInput->getPressedAnyKey())
 		{
-		// Close the "Press Any Key" box
-		g_pInput->flushAll();
-		if (m_mode != TITLE)
-		{
-			cleanup();
-			init(TITLE);
-		}
-		else
-		{
-			SAFE_DELETE(mp_PressAnyBox);
-			mp_Menu = new CMenu( PASSIVE, m_DataDirectory,
-								m_Episode, *mp_Map, m_SavedGame, mp_Option );
-			mp_Menu->init();
-		}
+			// Close the "Press Any Key" box
+			g_pInput->flushAll();
+			if (m_mode != TITLE)
+			{
+				cleanup();
+				init(TITLE);
+			}
+			else
+			{
+				SAFE_DELETE(mp_PressAnyBox);
+				mp_Menu = new CMenu( PASSIVE, m_DataDirectory,
+						m_Episode, *mp_Map, m_SavedGame, mp_Option );
+				mp_Menu->init();
+			}
 		}
 	}
 	else if( mp_Menu!=NULL ) // Close menu
@@ -120,13 +120,13 @@ void CPassive::process()
 			mp_Menu->videoRestarted();
 		}
 	}
-	
+
 	// Modes. We have three: Intro, Main-tile and Demos. We could add more.
 	if( m_mode == INTRO )
 	{
 		// Intro code goes here!
 		mp_IntroScreen->process();
-		
+
 		if( mp_IntroScreen->isFinished() )
 		{
 			// Shutdown mp_IntroScreen and show load Title Screen
@@ -137,7 +137,7 @@ void CPassive::process()
 	else if( m_mode == TITLE )
 	{
 		mp_TitleScreen->process();
-		
+
 		if( mp_Menu == NULL )
 		{
 			if( mp_TitleScreen->isFinished() )
@@ -173,16 +173,16 @@ void CPassive::process()
 			(*i)->process();
 		}
 	}
-	
+
 	// If Menu is not open show "Press Any Key"
 	if(mp_PressAnyBox != NULL)
 		mp_PressAnyBox->process();
-	
+
 	// If Menu is open show it!
 	if( mp_Menu != NULL )
 	{
 		mp_Menu->process();
-		
+
 		// Let the menu control, if objects are to be seen or hidden
 		m_hideobjects = mp_Menu->m_hideobjects;
 

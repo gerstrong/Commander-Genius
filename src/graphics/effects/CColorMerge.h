@@ -16,6 +16,7 @@
 #include <SDL.h>
 
 #include "CEffects.h"
+#include "../CBitmap.h"
 
 class CColorMerge : public CEffects
 {

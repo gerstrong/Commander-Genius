@@ -4,6 +4,7 @@
 #include "CMenu.h"
 #include "CObject.h"
 
+#include "../vorticon/infoscenes/CHighScores.h"
 #include "../vorticon/infoscenes/CStory.h"
 #include "../vorticon/infoscenes/CCredits.h"
 #include "../vorticon/infoscenes/COrderingInfo.h"
@@ -130,7 +131,7 @@ void CMenu::initMainMenu()
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "New Game");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Load Game");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 3, "Save Game");
-		mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 4, "Highscores");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Highscores");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "Configure");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Back to Demo");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "Choose Game");
@@ -144,7 +145,7 @@ void CMenu::initMainMenu()
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "New Game");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Load Game");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 3, "Save Game");
-		mp_Dialog->addObject(DLG_OBJ_DISABLED,  1, 4, "Highscores");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 4, "Highscores");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "Configure");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 6, "Back to Game");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "End Game");
@@ -248,7 +249,7 @@ void CMenu::initSaveMenu()
 /// Main Process method fo the menu
 void CMenu::process()
 {
-	// Information Mode
+	// Information Mode?
 	if(!mp_InfoScene) // show a normal menu
 	{
 		if( g_pInput->getPressedCommand(IC_HELP) )
@@ -318,9 +319,11 @@ void CMenu::process()
 		{
 			SAFE_DELETE(mp_InfoScene); // Destroy the InfoScene and go back to the menu!!!
 									   // Restore the old map, that was hidden behind the scene
+			g_pInput->flushAll();
 			g_pVideoDriver->setScrollBuffer(&m_Map.m_scrollx_buf, &m_Map.m_scrolly_buf);
 			m_Map.drawAll();
 			m_Map.m_animation_enabled = true;
+			m_hideobjects = false;
 		}
 	}
 }
@@ -368,8 +371,12 @@ void CMenu::processMainMenu()
 			cleanup();
 			init(SAVE);
 		}
-		if( m_selection == 3 ) // Highscores
+		if( m_selection == 3 ) // Show Highscores
 		{
+			m_hideobjects = true;
+			m_Map.m_animation_enabled = false;
+			mp_InfoScene = new CHighScores(m_Episode, m_GamePath);
+			m_selection = -1;
 		}
 		if( m_selection == 4 ) // Options
 		{
