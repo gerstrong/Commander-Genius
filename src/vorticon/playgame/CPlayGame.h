@@ -26,6 +26,7 @@
 #include "../finale/CEndingEp2.h"
 #include "../finale/CEndingEp3.h"
 #include "../../hqp/CMusic.h"
+#include "../infoscenes/CHighScores.h"
 #include <SDL.h>
 #include <string>
 #include <vector>
@@ -76,6 +77,7 @@ public:
 	void handleFKeys();
 	void verifyCutscenes();
 	void createFinale();
+	void collectHighScoreInfo();
 
 	// Collision stuff stored in CPlayGameCollision.cpp
 	void checkPlayerCollisions(CPlayer *p_player);
@@ -139,5 +141,6 @@ private:
 	std::vector<stTeleporterTable> &m_TeleporterTable;
 	bool m_showKeensLeft;
 	std::vector<CObject> m_Object;
+	CHighScores *mp_HighScores;
 };
 #endif /* CPlayGame_H_ */

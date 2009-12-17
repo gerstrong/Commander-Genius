@@ -23,6 +23,9 @@ class CHighScores : public CInfoScene {
 public:
 
 	CHighScores(int Episode, const std::string &DataDirectory);
+	void writeEP1HighScore(int score, bool extra[4]);
+	void writeEP2HighScore(int score, int cities_saved);
+	void writeHighScoreCommon(int score);
 	
 	void process();
 
@@ -35,7 +38,6 @@ private:
 	std::string		m_Score[8];
 	bool			m_Extra[7][4];
 	int				m_Cities[7];
-	int				m_ItemTiles[4];
 	int				m_Place;
 	
 	char					m_Episode;
@@ -51,10 +53,6 @@ private:
 	void processShow();
 	void processWriting();
 
-	void writeEP1HighScore(int score, bool extra[4]);
-	void writeEP2HighScore(int score, int cities_saved);
-	void writeHighScoreCommon(int score);
-	void writeName(char *name, int place);
 	bool saveHighScoreTable();
 	bool loadHighScoreTable();
 };

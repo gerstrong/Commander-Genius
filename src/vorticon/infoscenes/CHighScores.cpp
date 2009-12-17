@@ -35,21 +35,21 @@ m_Place(0), m_blink(true), m_blinkctr(0)
 	m_Name[3] = "Pickle";
 	m_Name[4] = "Pizza";
 	m_Name[5] = "DaVince";
-	m_Name[6] = "Keen";
+	m_Name[6] = "The-Fans";
 	
 	for(int i=0 ; i<7 ; i++)
 		m_Score[i] = "100";
 	
-	memset(m_Extra, 0, 7*4*sizeof(unsigned char));
+	memset(m_Extra, 0, 7*4*sizeof(bool));
 	memset(m_Cities, 0, 7*sizeof(unsigned int));
 
 	// Which process function will be cycled trough
 	mp_process = &CHighScores::processShow;
 
-	loadHighScoreTable();
-
 	m_Episode = Episode;
 	m_DataDirectory = DataDirectory;
+
+	loadHighScoreTable();
 
 	// Load the map for the background
 	CMapLoader MapLoader(&m_Map);
@@ -95,28 +95,13 @@ m_Place(0), m_blink(true), m_blinkctr(0)
 		bmp.rect.h = bmp.p_Bitmap->getHeight();
 		m_Bitmaps.push_back(bmp);
 
-		// Prepare some extra items if available (Ep1 + 2)
-		memset(m_ItemTiles,0,4*sizeof(int));
-
-		// Set the tiles if EP1 (collected parts)
-		stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
-		for(int t=0 ; t<g_pGfxEngine->Tilemap->m_numtiles ;t++)
-		{
-			if(TileProperty[t].behaviour >= 11 && TileProperty[t].behaviour <= 14)
-			{
-				m_ItemTiles[TileProperty[t].behaviour-11] = t;
-			}
-		}
-
-
 		// Put the Tiles, of the parts that were collected
 		for( int i=0 ; i<7 ; i++ )
 		{
-			for( int j=0 ; j<4 ; j++ )
-			{
-				if(m_Extra[i][j])
-					m_Map.changeTile(22+j,4+i,m_ItemTiles[j]);
-			}
+			if(m_Extra[i][0]) m_Map.setTile(98,6+i,221, true);
+			if(m_Extra[i][1]) m_Map.setTile(99,6+i,237, true);
+			if(m_Extra[i][2]) m_Map.setTile(100,6+i,241, true);
+			if(m_Extra[i][3]) m_Map.setTile(101,6+i,245, true);
 		}
 	}
 
@@ -183,6 +168,14 @@ void CHighScores::processWriting()
 		m_Name[m_Place].erase(m_Name[m_Place].size()-1);
 	}
 
+	if(g_pInput->getPressedKey(KENTER))
+	{
+		// Save the Table and change to show mode, which can be closed by any other key
+		saveHighScoreTable();
+		mp_process = &CHighScores::processShow;
+	}
+
+
 	int x = (m_Episode == 3) ? 69 : 40;
 	if(m_blink)	g_pGfxEngine->Font->drawFont(sfc, m_Name[m_Place]+"_",x,80+(m_Place<<4), LETTER_TYPE_RED);
 	else g_pGfxEngine->Font->drawFont(sfc, m_Name[m_Place]+" ",x,80+(m_Place<<4), LETTER_TYPE_RED);
@@ -196,14 +189,14 @@ void CHighScores::processWriting()
 
 void CHighScores::writeEP1HighScore(int score, bool extra[4])
 {
-	writeHighScoreCommon(score);
 	memcpy(m_Extra[m_Place], extra,4*sizeof(bool));
+	writeHighScoreCommon(score);
 }
 
 void CHighScores::writeEP2HighScore(int score, int cities_saved)
 {
-	writeHighScoreCommon(score);
 	m_Cities[m_Place] = cities_saved;
+	writeHighScoreCommon(score);
 }
 
 void CHighScores::writeHighScoreCommon(int score)
@@ -244,11 +237,13 @@ void CHighScores::writeHighScoreCommon(int score)
 	// Set the tiles if EP1 (collected parts)
 	if(m_Episode == 1)
 	{
-		stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
-		for(int t=0 ; t<g_pGfxEngine->Tilemap->m_numtiles ;t++)
+		// Put the Tiles, of the parts that were collected
+		for( int i=0 ; i<7 ; i++ )
 		{
-			if(TileProperty[t].behaviour >= 11 && TileProperty[t].behaviour <= 14)
-				m_ItemTiles[TileProperty[t].behaviour-11] = t;
+			if(m_Extra[i][0]) m_Map.setTile(98,6+i,221, true);
+			if(m_Extra[i][1]) m_Map.setTile(99,6+i,237, true);
+			if(m_Extra[i][2]) m_Map.setTile(100,6+i,241, true);
+			if(m_Extra[i][3]) m_Map.setTile(101,6+i,245, true);
 		}
 	}
 }
@@ -256,17 +251,37 @@ void CHighScores::writeHighScoreCommon(int score)
 bool CHighScores::loadHighScoreTable()
 {
 	ifstream ScoreTableFile;
-	OpenGameFileR(ScoreTableFile, "highscoreep"+itoa(m_Episode)+".dat", ios::binary);
+	std::string buf = "highscoreep"+itoa(m_Episode)+".dat";
+	OpenGameFileR(ScoreTableFile, buf, ios::binary);
 
 	if(!ScoreTableFile) return false;
 
-	/*ScoreTableFile.read(m_Name, 7*16*sizeof(char));
+	char c_name[7][16];
+	char c_score[7][8];
+	unsigned char c_extra[7][4];
+	int c_cities[7];
+
+	memset(c_name, 0, 7*16*sizeof(char));
+	memset(c_score, 0, 7*8*sizeof(char));
+	memset(c_extra, 0, 7*4*sizeof(char));
+	memset(c_cities, 0, 7*sizeof(char));
+
+	ScoreTableFile.read((char*)c_name, 7*16*sizeof(char));
 	ScoreTableFile.seekg(7*16*sizeof(char),ios_base::cur);
-	ScoreTableFile.read((*Score), 7*8*sizeof(char));
+	ScoreTableFile.read((char*)c_score, 7*8*sizeof(char));
 	ScoreTableFile.seekg(7*8*sizeof(char),ios_base::cur);
-	ScoreTableFile.read((char*)(*Extra), 7*4*sizeof(unsigned char));
+	ScoreTableFile.read((char*)(c_extra), 7*4*sizeof(unsigned char));
 	ScoreTableFile.seekg(7*4*sizeof(char),ios_base::cur);
-	ScoreTableFile.read((char*)Cities, 7*sizeof(unsigned char));*/
+	ScoreTableFile.read((char*)(c_cities), 7*sizeof(int));
+
+	// Format the name to C++ Strings
+	for(size_t i=0 ; i<7 ; i++)
+	{
+		m_Name[i] = c_name[i];
+		m_Score[i] = c_score[i];
+		memcpy(&m_Extra[i], &c_extra[i], 4);
+		m_Cities[i] = c_cities[i];
+	}
 
 	ScoreTableFile.close();
 
@@ -276,18 +291,37 @@ bool CHighScores::loadHighScoreTable()
 bool CHighScores::saveHighScoreTable()
 {
 	ofstream ScoreTableFile;
-	OpenGameFileW(ScoreTableFile, "highscoreep"+itoa(m_Episode)+".dat", ios::binary);
+	std::string buf = "highscoreep"+itoa(m_Episode)+".dat";
+	OpenGameFileW(ScoreTableFile, buf, ios::binary);
 
 	if(!ScoreTableFile) return false;
 
-	/*ScoreTableFile.write((*Name), 7*16*sizeof(char));
-	ScoreTableFile.seekp(7*16*sizeof(char),ios_base::cur);
-	ScoreTableFile.write((*Score), 7*8*sizeof(char));
-	ScoreTableFile.seekp(7*8*sizeof(char),ios_base::cur);
-	ScoreTableFile.write((char*)(*Extra), 7*4*sizeof(unsigned char));
-	ScoreTableFile.seekp(7*4*sizeof(char),ios_base::cur);
-	ScoreTableFile.write((char*) Cities, 7*sizeof(unsigned char));*/
+	char c_name[7][16];
+	char c_score[7][8];
+	unsigned char c_extra[7][4];
+	int c_cities[7];
 
+	memset(c_name, 0, 7*16*sizeof(char));
+	memset(c_score, 0, 7*8*sizeof(char));
+	memset(c_extra, 0, 7*4*sizeof(char));
+	memset(c_cities, 0, 7*sizeof(char));
+
+	// Format the name to C++ Strings
+	for(size_t i=0 ; i<7 ; i++)
+	{
+		memcpy(&c_name[i], m_Name[i].c_str(), 16);
+		memcpy(&c_score[i], m_Score[i].c_str(), 8);
+		memcpy(&c_extra[i], m_Extra[i], 4);
+		c_cities[i] = m_Cities[i];
+	}
+
+	ScoreTableFile.write((char*)(c_name), 7*16*sizeof(char));
+	ScoreTableFile.seekp(7*16*sizeof(char),ios_base::cur);
+	ScoreTableFile.write((char*)(c_score), 7*8*sizeof(char));
+	ScoreTableFile.seekp(7*8*sizeof(char),ios_base::cur);
+	ScoreTableFile.write((char*)(c_extra), 7*4*sizeof(unsigned char));
+	ScoreTableFile.seekp(7*4*sizeof(char),ios_base::cur);
+	ScoreTableFile.write((char*) c_cities, 7*sizeof(int));
 
 	ScoreTableFile.close();
 

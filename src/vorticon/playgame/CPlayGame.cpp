@@ -30,7 +30,8 @@ CPlayGame::CPlayGame( char episode, char level,
 mp_ObjectAI(NULL),
 m_SavedGame(SavedGame),
 mp_MessageBox(NULL),
-m_TeleporterTable(TeleporterTable)
+m_TeleporterTable(TeleporterTable),
+mp_HighScores(NULL)
 {
 	m_Episode = episode;
 	m_Level = level;
@@ -188,146 +189,166 @@ void CPlayGame::createPlayerObjects()
 ////
 void CPlayGame::process()
 {
-	// If the menu is open process it!
-	if(mp_Menu)
+	if(mp_HighScores)
 	{
-		if( mp_Menu->mustBeClosed() || mp_Menu->getExitEvent() ||
-			mp_Menu->mustEndGame() || mp_Menu->mustStartGame()	)
-		{
-			if( mp_Menu->getExitEvent() )
-				m_exitgame = true;
-			
-			if( mp_Menu->mustEndGame() )
-				m_endgame = true;
-			
-			if( mp_Menu->mustStartGame() )
-				m_startgame = true;
-			
-			mp_Menu->cleanup();
-			SAFE_DELETE(mp_Menu);
-			m_hideobjects = false;
-		}
-		else
-		{
-			mp_Menu->process();
-			m_hideobjects = mp_Menu->m_hideobjects;
+		mp_HighScores->process();
 
-			if(mp_Menu->restartVideo()) // Happens when in Game resolution was changed!
-			{
-				mp_Menu->cleanup();
-				SAFE_DELETE(mp_Menu);
-				mp_Map->setSDLSurface(g_pVideoDriver->getScrollSurface());
-			    SDL_Rect gamerect = g_pVideoDriver->getGameResolution();
-			    mp_Map->m_maxscrollx = (mp_Map->m_width<<4) - gamerect.w - 36;
-			    mp_Map->m_maxscrolly = (mp_Map->m_height<<4) - gamerect.h - 36;
-				for( int i=0 ; i<m_NumPlayers ; i++ )
-					while(m_Player[i].scrollTriggers());
-				mp_Map->drawAll();
-			}
+		// Blit the background
+		g_pVideoDriver->blitScrollSurface();
 
-			if(m_SavedGame.getCommand() == CSavedGame::SAVE)
-			{
-				saveGameState();
-			}
-			else if(m_SavedGame.getCommand() == CSavedGame::LOAD)
-			{
-				loadGameState();
-			}
+		if(mp_HighScores->destroyed())
+		{
+			SAFE_DELETE(mp_HighScores);
+			m_endgame = true;
 		}
 	}
-	else if(!m_paused && !mp_MessageBox) // Game is not paused
+	else
 	{
-		if (!mp_Finale) // Has the game been finished?
+		// If the menu is open process it!
+		if(mp_Menu)
 		{
-			// Perform AIs
-			mp_ObjectAI->process();
-			
-			/// The following functions must be worldmap dependent
-			if( m_Level == WORLD_MAP_LEVEL )
+			if( mp_Menu->mustBeClosed() || mp_Menu->getExitEvent() ||
+					mp_Menu->mustEndGame() || mp_Menu->mustStartGame()	)
 			{
-				processOnWorldMap();
+				if( mp_Menu->getExitEvent() )
+					m_exitgame = true;
+
+				if( mp_Menu->mustEndGame() )
+					m_endgame = true;
+
+				if( mp_Menu->mustStartGame() )
+					m_startgame = true;
+
+				mp_Menu->cleanup();
+				SAFE_DELETE(mp_Menu);
+				m_hideobjects = false;
 			}
 			else
 			{
-				processInLevel();
-			}
+				mp_Menu->process();
+				m_hideobjects = mp_Menu->m_hideobjects;
 
-			// Does one of the players need to pause the game?
-			for( int i=0 ; i<m_NumPlayers ; i++ )
+				if(mp_Menu->restartVideo()) // Happens when in Game resolution was changed!
+				{
+					mp_Menu->cleanup();
+					SAFE_DELETE(mp_Menu);
+					mp_Map->setSDLSurface(g_pVideoDriver->getScrollSurface());
+					SDL_Rect gamerect = g_pVideoDriver->getGameResolution();
+					mp_Map->m_maxscrollx = (mp_Map->m_width<<4) - gamerect.w - 36;
+					mp_Map->m_maxscrolly = (mp_Map->m_height<<4) - gamerect.h - 36;
+					for( int i=0 ; i<m_NumPlayers ; i++ )
+						while(m_Player[i].scrollTriggers());
+					mp_Map->drawAll();
+				}
+
+				if(m_SavedGame.getCommand() == CSavedGame::SAVE)
+				{
+					saveGameState();
+				}
+				else if(m_SavedGame.getCommand() == CSavedGame::LOAD)
+				{
+					loadGameState();
+				}
+			}
+		}
+		else if(!m_paused && !mp_MessageBox) // Game is not paused
+		{
+			if (!mp_Finale) // Has the game been finished?
 			{
-				// Did he open the status screen?
-				if(m_Player[i].m_showStatusScreen)
-					m_paused = true; // this is processed in processPauseDialogs!
+				// Perform AIs
+				mp_ObjectAI->process();
 
-				// Handle the Scrolling here!
-				m_Player[i].scrollTriggers();
+				/// The following functions must be worldmap dependent
+				if( m_Level == WORLD_MAP_LEVEL )
+				{
+					processOnWorldMap();
+				}
+				else
+				{
+					processInLevel();
+				}
+
+				// Does one of the players need to pause the game?
+				for( int i=0 ; i<m_NumPlayers ; i++ )
+				{
+					// Did he open the status screen?
+					if(m_Player[i].m_showStatusScreen)
+						m_paused = true; // this is processed in processPauseDialogs!
+
+					// Handle the Scrolling here!
+					m_Player[i].scrollTriggers();
+				}
+			}
+			else // In this case the Game has been finished, goto to the cutscenes
+			{
+				mp_Finale->process();
+
+				m_endgame = mp_Finale->getHasFinished();
 			}
 		}
-		else // In this case the Game has been finished, goto to the cutscenes
+		else // In this case the game is paused
 		{
-			mp_Finale->process();
-
-			m_endgame = mp_Finale->getHasFinished();
+			// Finally draw Dialogs like status screen, game paused, etc.
+			processPauseDialogs();
 		}
-	}
-	else // In this case the game is paused
-	{
-		// Finally draw Dialogs like status screen, game paused, etc.
-		processPauseDialogs();
-	}
-	// Animate the tiles of the map
-	mp_Map->animateAllTiles();
-	
-	// Blit the background
-	g_pVideoDriver->blitScrollSurface();
+		// Animate the tiles of the map
+		mp_Map->animateAllTiles();
 
-	// Draw objects to the screen
-	drawObjects();
-	
-	// Check if we are in gameover mode. If yes, than show the bitmaps and block the FKeys().
-	// Only confirmation button is allowes
-	if(m_gameover) // game over mode
-	{
-		if(mp_gameoverbmp != NULL)
+		// Blit the background
+		g_pVideoDriver->blitScrollSurface();
+
+		// Draw objects to the screen
+		drawObjects();
+
+		// Check if we are in gameover mode. If yes, than show the bitmaps and block the FKeys().
+		// Only confirmation button is allowes
+		if(m_gameover) // game over mode
 		{
-			mp_gameoverbmp->process();
+			if(mp_gameoverbmp != NULL)
+			{
+				mp_gameoverbmp->process();
 
-			if( g_pInput->getPressedKey(KENTER) || g_pInput->getPressedAnyCommand() )
-				m_endgame = true;
+				if( g_pInput->getPressedKey(KENTER) || g_pInput->getPressedAnyCommand() )
+				{
+					mp_HighScores = new CHighScores(m_Episode, m_Gamepath);
+
+					collectHighScoreInfo();
+				}
+			}
+			else // Bitmap must first be created
+			{
+				CBitmap *pBitmap = g_pGfxEngine->getBitmap("GAMEOVER");
+				g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
+				mp_gameoverbmp = new CEGABitmap(g_pVideoDriver->getBlitSurface(), pBitmap);
+				mp_gameoverbmp->setScrPos( 160-(pBitmap->getWidth()/2), 100-(pBitmap->getHeight()/2) );
+			}
 		}
-		else // Bitmap must first be created
+		else // No game over
 		{
-			CBitmap *pBitmap = g_pGfxEngine->getBitmap("GAMEOVER");
-			g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
-			mp_gameoverbmp = new CEGABitmap(g_pVideoDriver->getBlitSurface(), pBitmap);
-			mp_gameoverbmp->setScrPos( 160-(pBitmap->getWidth()/2), 100-(pBitmap->getHeight()/2) );
+			// Handle special functional keys for paused game, F1 Help, god mode, all items, etc.
+			handleFKeys();
 		}
-	}
-	else // No game over
-	{
-		// Handle special functional keys for paused game, F1 Help, god mode, all items, etc.
-		handleFKeys();
-	}
 
-	if (g_pVideoDriver->showfps)
-	{
-		std::string tempbuf;
-		SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
+		if (g_pVideoDriver->showfps)
+		{
+			std::string tempbuf;
+			SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
 #ifdef DEBUG
-		tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec()) +
-			"; x = " + itoa(m_Player[0].x) + " ; y = " + itoa(m_Player[0].y);
+			tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec()) +
+					"; x = " + itoa(m_Player[0].x) + " ; y = " + itoa(m_Player[0].y);
 #else
-		tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec());
+			tempbuf = " FPS: " + itoa(g_pTimer->getFramesPerSec());
 #endif
-		g_pGfxEngine->Font->drawFont(sfc,tempbuf,320-(tempbuf.size()<<3)-1,1);
-	}
-	
-	// Open the Main Menu if ESC Key pressed and mp_Menu not opened
-	if(!mp_Menu && g_pInput->getPressedKey(KQUIT))
-	{
-		// Open the menu
-		mp_Menu = new CMenu( ACTIVE, m_Gamepath, m_Episode, *mp_Map, m_SavedGame, mp_option );
-		mp_Menu->init();
+			g_pGfxEngine->Font->drawFont(sfc,tempbuf,320-(tempbuf.size()<<3)-1,1);
+		}
+
+		// Open the Main Menu if ESC Key pressed and mp_Menu not opened
+		if(!mp_Menu && g_pInput->getPressedKey(KQUIT))
+		{
+			// Open the menu
+			mp_Menu = new CMenu( ACTIVE, m_Gamepath, m_Episode, *mp_Map, m_SavedGame, mp_option );
+			mp_Menu->init();
+		}
 	}
 }
 
@@ -476,6 +497,29 @@ void CPlayGame::createFinale()
 	else if(m_Episode == 3)
 		mp_Finale = new CEndingEp3(mp_Map, m_Player);*/
 }
+
+void CPlayGame::collectHighScoreInfo()
+{
+	if(m_Episode == 1)
+	{
+		bool extra[4];
+
+		extra[0] = m_Player[0].inventory.HasJoystick;
+		extra[1] = m_Player[0].inventory.HasBattery;
+		extra[2] = m_Player[0].inventory.HasVacuum;
+		extra[3] = m_Player[0].inventory.HasWiskey;
+
+		mp_HighScores->writeEP1HighScore(m_Player[0].inventory.score, extra);
+	}
+	else if(m_Episode == 2)
+	{
+		mp_HighScores->writeHighScoreCommon(m_Player[0].inventory.score);
+		//mp_HighScores->writeEP2HighScore(m_Player[0].inventory.score, m_Player[0].);
+	}
+	else
+		mp_HighScores->writeHighScoreCommon(m_Player[0].inventory.score);
+}
+
 
 // This function draws the objects that need to be seen on the screen
 void CPlayGame::drawObjects()
