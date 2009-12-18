@@ -11,7 +11,6 @@
 #include "sdl/CInput.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/sound/CSound.h"
-#include "include/misc.h"
 #include "include/gamepdo.h"
 #include "include/gm_pdowm.h"
 #include "hqp/CMusic.h"

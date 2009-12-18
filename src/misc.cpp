@@ -12,7 +12,6 @@
 #include "sdl/CVideoDriver.h"
 #include "sdl/sound/CSound.h"
 
-#include "include/misc.h"
 #include "game.h"
 #include "fileio/CSavedGame.h"
 #include "CLogFile.h"
@@ -310,9 +309,7 @@ void usage(void)
 
 unsigned int rnd(void)
 {
-	//random_seed = random_seed * 1103515245 + 12345;
-	//return (uint)(random_seed / 65536) % 32768;
-	return rand();
+	return std::rand();
 }
 
 // This function shows up the helping text when F1 is pushed

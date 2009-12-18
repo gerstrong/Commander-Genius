@@ -242,6 +242,7 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 				newobject.spawn(object.x-(sprites[ENEMYRAYEP2]->getWidth()<<STC), object.y+(9<<CSF), OBJ_RAY);
 				newobject.ai.ray.direction = LEFT;
 			}
+			newobject.ai.ray.owner = object.m_index;
 			newobject.sprite = ENEMYRAYEP2;
 			// don't shoot other vorticon elite
 			newobject.ai.ray.dontHitEnable = 1;

@@ -233,7 +233,7 @@ void CObjectAI::vort_ai(CObject &object, int level, int episode, char difficulty
 					 if (object.ai.vort.dist_traveled < VORT_TRAPPED_DIST && !dark && object.blockedd && !object.blockedu)
 					 {
 						 vort_initiatejump(object);
-						 if (rand()&1)
+						 if (rnd()&1)
 						 {
 							 object.ai.vort.inertiay = -VORT_MAX_JUMP_HEIGHT;
 						 }

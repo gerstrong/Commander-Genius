@@ -7,6 +7,7 @@ VORT_DEAD,
 VORT2_DYING
 };
 
+//#define VORT_JUMP_PROB          220
 #define VORT_JUMP_PROB          220
 
 #define VORT_MIN_JUMP_HEIGHT    60

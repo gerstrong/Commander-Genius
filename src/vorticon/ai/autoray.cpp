@@ -24,6 +24,7 @@ void CObjectAI::autoray_ai(CObject &Object)
 	{
 		CObject NewRay;
 		NewRay.spawn(Object.x, Object.y, OBJ_RAY);
+		NewRay.ai.ray.owner = -1;
 
 		if (Object.m_type==OBJ_AUTORAY_V)
 		{

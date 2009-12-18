@@ -68,7 +68,7 @@ void CPlayGame::processInLevel()
 		{
 			m_gameover = true; // proof contrary case
 			for( int i=0 ; i<m_NumPlayers ; i++ )
-				m_gameover &= ( m_Player[i].inventory.lives <= 0 );
+				m_gameover &= ( m_Player[i].inventory.lives < 0 );
 
 			if(!m_gameover) // Check if no player has lifes left and must go in game over mode.
 				goBacktoMap();

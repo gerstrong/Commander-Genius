@@ -130,16 +130,16 @@ void CHighScores::process()
 	for( Uint8 i=0 ; i<7 ; i++ )
 	{
 		int x = (m_Episode == 3) ? 69 : 40;
-		int y = (m_Episode == 3) ? 253 : 200;
-		g_pGfxEngine->Font->drawFont(sfc, m_Name[i],x,80+(i<<4), LETTER_TYPE_RED);
-		g_pGfxEngine->Font->drawFont(sfc, m_Score[i],y-((m_Score[i].size())<<3),80+(i<<4), LETTER_TYPE_RED);
+		int x2 = (m_Episode == 3) ? 253 : 200;
+		g_pGfxEngine->Font->drawFont(sfc, m_Name[i],x,84+(i<<4), LETTER_TYPE_RED);
+		g_pGfxEngine->Font->drawFont(sfc, m_Score[i],x2-((m_Score[i].size())<<3),84+(i<<4), LETTER_TYPE_RED);
 	}
 
 	// Here it must be split up into Episodes 1, 2 and 3.
 	if(m_Episode == 2)
 	{
 		for( Uint8 i=0 ; i<7 ; i++ )
-			g_pGfxEngine->Font->drawFont(sfc, itoa(m_Cities[i]) ,252,80+(i<<4), LETTER_TYPE_RED);
+			g_pGfxEngine->Font->drawFont(sfc, itoa(m_Cities[i]), 252, 84+(i<<4), LETTER_TYPE_RED);
 	}
 
 	(this->*mp_process)();

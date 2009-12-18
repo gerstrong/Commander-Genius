@@ -147,7 +147,7 @@ bool CPlayer::scrollTriggers()
 			scroll_x = mp_map->m_scrollx;
 			px = (x>>STC)-scroll_x;
 			mp_map->scrollLeft();
-		}while(px < 80);
+		}while(px < 80 && scroll_x > 32);
 		scrollchanged = true;
 	}
 
@@ -167,7 +167,7 @@ bool CPlayer::scrollTriggers()
 			scroll_y = mp_map->m_scrolly;
 			py = (y>>STC)-scroll_y;
 			mp_map->scrollUp();
-		}while(py < 50);
+		}while(py < 50 && scroll_y > 32);
 		scrollchanged = true;
 	}
 

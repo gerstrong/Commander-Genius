@@ -34,6 +34,7 @@ enum garg_states{
 
 #define GARGDIE_START_INERTIA      -80
 
+// Reference to ../misc.cpp
 unsigned int rnd(void);
 
 void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)

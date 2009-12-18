@@ -108,6 +108,7 @@ public:
 	void setupObjectType();
 	void setScrPos( int px, int py );
 	bool spawn(int x0, int y0, int otype);
+	void setIndex(int index);
 	
 	virtual void process() { }
 	

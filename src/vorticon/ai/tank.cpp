@@ -262,6 +262,7 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 				newobject.spawn(object.x-(RaySprite.getWidth()<<STC), object.y+(5<<STC), OBJ_RAY);
 				newobject.ai.ray.direction = LEFT;
 			}
+			newobject.ai.ray.owner = object.m_index;
 			newobject.sprite = ENEMYRAY;
 			newobject.ai.ray.dontHitEnable = 0;
 			m_Objvect.push_back(newobject);

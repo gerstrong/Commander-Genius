@@ -159,6 +159,7 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 					newobject.spawn(object.x-(Sprite[ENEMYRAYEP2]->getWidth()<<CSF), object.y+(6<<CSF), OBJ_RAY);
 					newobject.ai.ray.direction = LEFT;
 				}
+				newobject.ai.ray.owner = object.m_index;
 				newobject.sprite = ENEMYRAYEP2;
 				newobject.ai.ray.dontHitEnable = 0;
 

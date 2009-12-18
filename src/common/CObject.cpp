@@ -70,6 +70,9 @@ bool CObject::spawn(int x0, int y0, int otype)
 	return false;
 }
 
+void CObject::setIndex(int index)
+{ m_index = index; }
+
 void CObject::setupObjectType()
 {
 	switch(m_type)
@@ -88,7 +91,7 @@ void CObject::setupObjectType()
 		case OBJ_ICEBIT: sprite = OBJ_ICEBIT_DEFSPRITE; break;
 		case OBJ_ICECANNON: sprite = OBJ_ICECHUNK_DEFSPRITE; break;
 		case OBJ_ROPE: sprite = OBJ_ROPE_DEFSPRITE; break;
-		case OBJ_RAY: sprite = OBJ_RAY_DEFSPRITE_EP1; break;
+		case OBJ_RAY: sprite = OBJ_RAY_DEFSPRITE_EP1;  break;
 		default: sprite = BLANKSPRITE; break;
 	}
 
@@ -231,7 +234,7 @@ CSprite *Sprite = g_pGfxEngine->Sprite.at(sprite);
 bool CObject::checkSolidR(stTile *TileProperty, CMap *p_map, int x2, int y1, int y2)
 {
 	// Check for right from the object
-	for(int c=y1+1 ; c<=y2-(1<<STC) ; c++)
+	for(int c=y1 ; c<=y2-(1<<STC) ; c++)
 	{
 		if(TileProperty[p_map->at(x2>>CSF, c>>CSF)].bleft)
 			return true;
@@ -244,7 +247,7 @@ bool CObject::checkSolidR(stTile *TileProperty, CMap *p_map, int x2, int y1, int
 bool CObject::checkSolidL(stTile *TileProperty, CMap *p_map, int x1, int y1, int y2)
 {
 	// Check for right from the object
-	for(int c=y1+1 ; c<=y2-(1<<STC) ; c++)
+	for(int c=y1 ; c<=y2-(1<<STC) ; c++)
 	{
 		if(TileProperty[p_map->at(x1>>CSF, c>>CSF)].bright)
 			return true;
@@ -257,9 +260,9 @@ bool CObject::checkSolidL(stTile *TileProperty, CMap *p_map, int x1, int y1, int
 bool CObject::checkSolidU(stTile *TileProperty, CMap *p_map, int x1, int x2, int y1)
 {
 	// Check for right from the object
-	for(int c=x1+1 ; c<=x2-1 ; c++)
+	for(int c=x1+(1<<STC) ; c<=x2-(1<<STC) ; c++)
 	{
-		if(TileProperty[p_map->at(c>>CSF, y1>>CSF)].bdown)
+		if(TileProperty[p_map->at(c>>CSF, (y1-1)>>CSF)].bdown)
 			return true;
 	}
 	if( y1 < (2<<CSF) ) return true; // Out of map?
@@ -270,9 +273,9 @@ bool CObject::checkSolidU(stTile *TileProperty, CMap *p_map, int x1, int x2, int
 bool CObject::checkSolidD(stTile *TileProperty, CMap *p_map, int x1, int x2, int y2)
 {
 	// Check for right from the object
-	for(int c=x1+1 ; c<=x2-1 ; c++)
+	for(int c=x1+(1<<STC) ; c<=x2-(1<<STC) ; c++)
 	{
-		if(TileProperty[p_map->at(c>>CSF, y2>>CSF)].bup)
+		if(TileProperty[p_map->at(c>>CSF, (y2+1)>>CSF)].bup)
 			return true;
 	}
 	if( y2 > ((p_map->m_height-2)<<CSF) ) return true; // Out of map?

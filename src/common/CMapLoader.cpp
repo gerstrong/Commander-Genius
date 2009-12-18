@@ -281,6 +281,7 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 		else
 		{
 			CObject enemyobject;
+			enemyobject.setIndex(mp_objvect->size());
 			
 			switch(t)
 			{
@@ -291,7 +292,6 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 					{
 						if ( TileProperty[mp_map->at(x ,y+1)].bleft ) x--;
 						enemyobject.spawn(x<<CSF, y<<CSF, OBJ_YORP);
-						mp_objvect->push_back(enemyobject);
 						break;
 					}
 					else
@@ -300,7 +300,6 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 						// some reason! that's what the if() is for--to fix it.
 						// TODO: Is this still needed?
 						enemyobject.spawn(x<<CSF, y<<CSF, OBJ_VORT);
-						mp_objvect->push_back(enemyobject);
 					 }
 					 break;
 				case 2:    // garg (ep1) baby vorticon (ep2&3)
@@ -321,7 +320,6 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 					 else
 						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_BABY);
 
-					 mp_objvect->push_back(enemyobject);
 						 break;
 				case 3:    // vorticon (ep1) Vorticon Commander (ep2)
 						 if (episode==1)
@@ -330,7 +328,6 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 							 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_VORTELITE);
 						 else if (episode==3)
 							 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_MOTHER);
-						 mp_objvect->push_back(enemyobject);
 						 break;
 				case 4:    // butler (ep1) OR scrub (ep2) OR meep (ep3)
 					 if (episode==1)
@@ -339,7 +336,6 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SCRUB);
 					 else if (episode==3)
 						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_MEEP);
-					 mp_objvect->push_back(enemyobject);
 					 break;
 				case 5:    // tank robot (ep1&2) karate bear (ep3)
 					 if (episode==1)
@@ -358,7 +354,6 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 						 else
 							 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_NINJA);
 					 }
-					 mp_objvect->push_back(enemyobject);
 					 break;
 				case 6:    // up-right-flying ice chunk (ep1) horiz platform (ep2)
 					 // foob (ep3)
@@ -376,7 +371,6 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 					 {
 						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_FOOB);
 					 }
-					 mp_objvect->push_back(enemyobject);
 					 break;
 				case 7:   // spark (ep2) ball (ep3)
 					 if (episode==2)
@@ -388,7 +382,6 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 						 enemyobject.spawn(x<<CSF,y<<CSF,OBJ_BALL);
 						 enemyobject.hasbeenonscreen = 1;
 					 }
-					 mp_objvect->push_back(enemyobject);
 					 break;
 				case 8:    // jack (ep3)
 					 if (episode==3)
@@ -396,7 +389,6 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 						 enemyobject.spawn(x<<CSF, y<<CSF,OBJ_JACK);
 						 enemyobject.hasbeenonscreen = 1;
 					 }
-					 mp_objvect->push_back(enemyobject);
 					 break;
 				case 9:    // up-left-flying ice chunk (ep1) horiz platform (ep3)
 					 if (episode==1)
@@ -409,7 +401,6 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 					 {
 						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_PLATFORM);
 					 }
-					 mp_objvect->push_back(enemyobject);
 					 break;
 				case 10:   // rope holding the stone above the final vorticon (ep1)
 					 // vert platform (ep3)
@@ -421,62 +412,54 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 					 {
 						 enemyobject.spawn(x<<CSF, y<<4<<CSF, OBJ_PLATVERT);
 					 }
-					 mp_objvect->push_back(enemyobject);
 					 break;
 				case 11:   // jumping vorticon (ep3)
 					 if (episode==3)
 					 {
 						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_VORT);
 					 }
-					 mp_objvect->push_back(enemyobject);
 					 break;
 				case 12:   // sparks in mortimer's machine
 					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR);
 					 enemyobject.ai.se.type = SE_MORTIMER_SPARK;
 					 enemyobject.hasbeenonscreen = 1;
-					 mp_objvect->push_back(enemyobject);
 					 break;
 				case 13:   // mortimer's heart
 					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR);
 					 enemyobject.ai.se.type = SE_MORTIMER_HEART;
 					 enemyobject.hasbeenonscreen = 1;
-					 mp_objvect->push_back(enemyobject);
 					 break;
 				case 14:   // right-pointing raygun (ep3)
 					 if (episode==3)
 					 {
 						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_AUTORAY);
 					 }
-					 mp_objvect->push_back(enemyobject);
 					 break;
 				case 15:   // vertical raygun (ep3)
 					 if (episode==3)
 					 {
 						enemyobject.spawn(x<<CSF, y<<CSF, OBJ_AUTORAY_V);
 					 }
-					 mp_objvect->push_back(enemyobject);
 					 break;
 				case 16:  // mortimer's arms
 					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR);
 					 enemyobject.ai.se.type = SE_MORTIMER_ARM;
 					 enemyobject.hasbeenonscreen = 1;
-					 mp_objvect->push_back(enemyobject);
 					 break;
 				case 17:  // mortimer's left leg
 					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR);
 					 enemyobject.ai.se.type = SE_MORTIMER_LEG_LEFT;
 					 enemyobject.hasbeenonscreen = 1;
-					 mp_objvect->push_back(enemyobject);
 					 break;
 				case 18:  // mortimer's right leg
 					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR);
 					 enemyobject.ai.se.type = SE_MORTIMER_LEG_RIGHT;
 					 enemyobject.hasbeenonscreen = 1;
-					 mp_objvect->push_back(enemyobject);
 					 break;
 				default:
 					g_pLogFile->ftextOut(PURPLE,"unknown enemy type %d at (%d,%d)<br>", t, x, y); break;
 			}
+			mp_objvect->push_back(enemyobject);
 		}
 	}
 }
