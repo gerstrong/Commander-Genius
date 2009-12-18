@@ -375,7 +375,7 @@ void CMenu::processMainMenu()
 		{
 			m_hideobjects = true;
 			m_Map.m_animation_enabled = false;
-			mp_InfoScene = new CHighScores(m_Episode, m_GamePath);
+			mp_InfoScene = new CHighScores(m_Episode, m_GamePath, false);
 			m_selection = -1;
 		}
 		if( m_selection == 4 ) // Options

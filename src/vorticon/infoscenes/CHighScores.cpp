@@ -24,7 +24,7 @@ const int BLINK_TIME = 10;
 using namespace std;
 
 
-CHighScores::CHighScores(int Episode, const std::string &DataDirectory) :
+CHighScores::CHighScores(int Episode, const std::string &DataDirectory, bool saving_mode) :
 m_Map(g_pVideoDriver->ScrollSurface, g_pGfxEngine->Tilemap),
 m_Place(0), m_blink(true), m_blinkctr(0)
 {
@@ -96,12 +96,15 @@ m_Place(0), m_blink(true), m_blinkctr(0)
 		m_Bitmaps.push_back(bmp);
 
 		// Put the Tiles, of the parts that were collected
-		for( int i=0 ; i<7 ; i++ )
+		if(!saving_mode)
 		{
-			if(m_Extra[i][0]) m_Map.setTile(98,6+i,221, true);
-			if(m_Extra[i][1]) m_Map.setTile(99,6+i,237, true);
-			if(m_Extra[i][2]) m_Map.setTile(100,6+i,241, true);
-			if(m_Extra[i][3]) m_Map.setTile(101,6+i,245, true);
+			for( int i=0 ; i<7 ; i++ )
+			{
+				if(m_Extra[i][0]) m_Map.setTile(98,6+i,221, true);
+				if(m_Extra[i][1]) m_Map.setTile(99,6+i,237, true);
+				if(m_Extra[i][2]) m_Map.setTile(100,6+i,241, true);
+				if(m_Extra[i][3]) m_Map.setTile(101,6+i,245, true);
+			}
 		}
 	}
 
@@ -189,14 +192,27 @@ void CHighScores::processWriting()
 
 void CHighScores::writeEP1HighScore(int score, bool extra[4])
 {
-	memcpy(m_Extra[m_Place], extra,4*sizeof(bool));
 	writeHighScoreCommon(score);
+	memcpy(m_Extra[m_Place], extra,4*sizeof(bool));
+
+	// Set the tiles if EP1 (collected parts)
+	if(m_Episode == 1)
+	{
+		// Put the Tiles, of the parts that were collected
+		for( int i=0 ; i<7 ; i++ )
+		{
+			if(m_Extra[i][0]) m_Map.setTile(98,6+i,221, true);
+			if(m_Extra[i][1]) m_Map.setTile(99,6+i,237, true);
+			if(m_Extra[i][2]) m_Map.setTile(100,6+i,241, true);
+			if(m_Extra[i][3]) m_Map.setTile(101,6+i,245, true);
+		}
+	}
 }
 
 void CHighScores::writeEP2HighScore(int score, int cities_saved)
 {
-	m_Cities[m_Place] = cities_saved;
 	writeHighScoreCommon(score);
+	m_Cities[m_Place] = cities_saved;
 }
 
 void CHighScores::writeHighScoreCommon(int score)
@@ -217,6 +233,7 @@ void CHighScores::writeHighScoreCommon(int score)
 		m_Name[m_Place] = m_Name[m_Place-1];
 		m_Score[m_Place] = m_Score[m_Place-1];
 		memcpy(m_Extra[m_Place], m_Extra[m_Place-1], 4);
+		m_Cities[m_Place] = m_Cities[m_Place-1];
 		m_Place--;
 
 		if(m_Place > 0)
@@ -233,19 +250,6 @@ void CHighScores::writeHighScoreCommon(int score)
 		m_Score[m_Place] = "*MAX*";
 
 	m_Name[m_Place] = "";
-
-	// Set the tiles if EP1 (collected parts)
-	if(m_Episode == 1)
-	{
-		// Put the Tiles, of the parts that were collected
-		for( int i=0 ; i<7 ; i++ )
-		{
-			if(m_Extra[i][0]) m_Map.setTile(98,6+i,221, true);
-			if(m_Extra[i][1]) m_Map.setTile(99,6+i,237, true);
-			if(m_Extra[i][2]) m_Map.setTile(100,6+i,241, true);
-			if(m_Extra[i][3]) m_Map.setTile(101,6+i,245, true);
-		}
-	}
 }
 
 bool CHighScores::loadHighScoreTable()

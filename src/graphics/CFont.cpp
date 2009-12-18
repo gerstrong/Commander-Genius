@@ -54,7 +54,11 @@ bool CFont::loadHiColourFont( const std::string& filename )
 		SDL_Surface *temp_surface = SDL_LoadBMP(filename.c_str());
 		if(temp_surface)
 		{
-			SDL_BlitSurface(temp_surface, NULL, m_FontSurface, NULL);
+			SDL_Surface *displaysurface = SDL_DisplayFormat(m_FontSurface);
+			SDL_BlitSurface(temp_surface, NULL, displaysurface, NULL);
+			SDL_BlitSurface(displaysurface, NULL, m_FontSurface, NULL);
+			SDL_FreeSurface(displaysurface);
+			SDL_FreeSurface(temp_surface);
 			return true;
 		}
 	}

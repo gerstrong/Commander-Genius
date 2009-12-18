@@ -25,6 +25,7 @@
 #include "dialog/CTextViewer.h"
 
 #include <fstream>
+#include <cstdlib>
 
 void banner(void)
 {
@@ -240,26 +241,7 @@ void AllPlayersInvisible(void)
 char gameiswon(stCloneKeenPlus *pCKP)
 {
 	/*int partcount;
-	 int i;
-	 stLevelControl *p_levelcontrol;
-	 p_levelcontrol = &(pCKP->Control.levelcontrol);
 
-	 if (p_levelcontrol->episode==1)
-	 {
-	 // episode 1: game is won when all parts are collected
-
-	 // count the number of parts the players have acquired
-	 partcount = 0;
-	 for(i=0;i<MAX_PLAYERS;i++)
-	 {
-	 if (player[i].isPlaying)
-	 {
-	 if (player[i].inventory.HasJoystick) partcount++;
-	 if (player[i].inventory.HasBattery) partcount++;
-	 if (player[i].inventory.HasWiskey) partcount++;
-	 if (player[i].inventory.HasVacuum) partcount++;
-	 }
-	 }
 
 	 // go to end sequence if all the parts have been got
 	 if (partcount >= 4)

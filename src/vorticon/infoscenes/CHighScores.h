@@ -22,7 +22,7 @@ struct stBitmap{
 class CHighScores : public CInfoScene {
 public:
 
-	CHighScores(int Episode, const std::string &DataDirectory);
+	CHighScores(int Episode, const std::string &DataDirectory, bool saving_mode);
 	void writeEP1HighScore(int score, bool extra[4]);
 	void writeEP2HighScore(int score, int cities_saved);
 	void writeHighScoreCommon(int score);

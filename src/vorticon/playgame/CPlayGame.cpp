@@ -310,7 +310,7 @@ void CPlayGame::process()
 
 				if( g_pInput->getPressedKey(KENTER) || g_pInput->getPressedAnyCommand() )
 				{
-					mp_HighScores = new CHighScores(m_Episode, m_Gamepath);
+					mp_HighScores = new CHighScores(m_Episode, m_Gamepath, true);
 
 					collectHighScoreInfo();
 				}
@@ -514,7 +514,19 @@ void CPlayGame::collectHighScoreInfo()
 	else if(m_Episode == 2)
 	{
 		mp_HighScores->writeHighScoreCommon(m_Player[0].inventory.score);
-		//mp_HighScores->writeEP2HighScore(m_Player[0].inventory.score, m_Player[0].);
+
+		// episode 2: game is won when all cities are saved
+		int saved_cities=0;
+		if (mp_level_completed[4]) saved_cities++;
+		if (mp_level_completed[6]) saved_cities++;
+		if (mp_level_completed[7]) saved_cities++;
+		if (mp_level_completed[13]) saved_cities++;
+		if (mp_level_completed[11]) saved_cities++;
+		if (mp_level_completed[9]) saved_cities++;
+		if (mp_level_completed[15]) saved_cities++;
+		if (mp_level_completed[16]) saved_cities++;
+
+		mp_HighScores->writeEP2HighScore(m_Player[0].inventory.score, saved_cities);
 	}
 	else
 		mp_HighScores->writeHighScoreCommon(m_Player[0].inventory.score);
