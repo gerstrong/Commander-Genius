@@ -21,7 +21,6 @@ mp_OldSurface(NULL)
 // use this function. If you don't that, the effect won't work.
 void CColorMerge::getSnapshot()
 {
-	g_pVideoDriver->blitScrollSurface();
 	g_pVideoDriver->collectSurfaces();
 	if(!mp_OldSurface) mp_OldSurface = SDL_DisplayFormat(g_pVideoDriver->BlitSurface);
 }

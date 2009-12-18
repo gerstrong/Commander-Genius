@@ -142,7 +142,6 @@ private:
 
 	Sint16 *mp_sbufferx, *mp_sbuffery;
 
-
 	SDL_Surface *screen;                // the actual video memory/window
 };
 #endif /* CVIDEODRIVER_H_ */
