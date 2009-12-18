@@ -100,26 +100,26 @@ bool CMessages::extractGlobalStrings()
 			{
 				case 131:
 				{
-					StringMap.insert( extractString( "EP2_StatusBox" , 0x19C40, 0x19CCE, -775 ) );
-					StringMap.insert( extractString( "LIVES_LEFT" , 0x1A9B2, 0x1A9BF, -775 ) );
-					StringMap.insert( extractString( "EP2_VE_NOJUMPINDARK" , 0x1A2D2, 0x1A391, -775 ) );
-					StringMap.insert( extractString( "EP2_VE_EVILBELTS" , 0x1A391, 0x1A4A6, -775) );
-					StringMap.insert( extractString( "EP2_LVL4_TargetName" , 0x19CCF, 0x19CD5, -775) );
-					StringMap.insert( extractString( "EP2_LVL6_TargetName" , 0x19CD6, 0x19CDB, -775) );
-					StringMap.insert( extractString( "EP2_LVL7_TargetName" , 0x19CDC, 0x19CE2, -775) );
-					StringMap.insert( extractString( "EP2_LVL9_TargetName" , 0x19CE3, 0x19CEB, -775) );
-					StringMap.insert( extractString( "EP2_LVL11_TargetName" , 0x19CEC, 0x19CF1, -775) );
-					StringMap.insert( extractString( "EP2_LVL13_TargetName" , 0x19CF2, 0x19CF6, -775) );
-					StringMap.insert( extractString( "EP2_LVL15_TargetName" , 0x19CF7, 0x19CFD, -775) );
-					StringMap.insert( extractString( "EP2_LVL16_TargetName" , 0x19CFE, 0x19D07, -775) );
+					StringMap.insert( extractString( "EP2_StatusBox" , 0x19C40, 0x19CCE, -804 ) );
+					StringMap.insert( extractString( "LIVES_LEFT" , 0x1A9B2, 0x1A9BF, -804 ) );
+					StringMap.insert( extractString( "EP2_VE_NOJUMPINDARK" , 0x1A2D2, 0x1A391, -804 ) );
+					StringMap.insert( extractString( "EP2_VE_EVILBELTS" , 0x1A391, 0x1A4A6, -804) );
+					StringMap.insert( extractString( "EP2_LVL4_TargetName" , 0x19CCF, 0x19CD5, -804) );
+					StringMap.insert( extractString( "EP2_LVL6_TargetName" , 0x19CD6, 0x19CDB, -804) );
+					StringMap.insert( extractString( "EP2_LVL7_TargetName" , 0x19CDC, 0x19CE2, -804) );
+					StringMap.insert( extractString( "EP2_LVL9_TargetName" , 0x19CE3, 0x19CEB, -804) );
+					StringMap.insert( extractString( "EP2_LVL11_TargetName" , 0x19CEC, 0x19CF1, -804) );
+					StringMap.insert( extractString( "EP2_LVL13_TargetName" , 0x19CF2, 0x19CF6, -804) );
+					StringMap.insert( extractString( "EP2_LVL15_TargetName" , 0x19CF7, 0x19CFD, -804) );
+					StringMap.insert( extractString( "EP2_LVL16_TargetName" , 0x19CFE, 0x19D07, -804) );
 					// Message Boxes
-					StringMap.insert( extractString( "EP2_ESEQ_PART1" , 0x1A4A7, 0x1A558, -775) );
-					StringMap.insert( extractString( "EP2_ESEQ_PART2" , 0x1A559, 0x1A5F1, -775) );
-					StringMap.insert( extractString( "EP2_ESEQ_PART3_PAGE1" , 0x1A5FD, 0x1A638, -775) );
-					StringMap.insert( extractString( "EP2_ESEQ_PART3_PAGE1" , 0x1A639, 0x1A6CE, -775) );
-					StringMap.insert( extractString( "EP2_ESEQ_PART3_PAGE1" , 0x1A6CF, 0x1A72E, -775) );
-					StringMap.insert( extractString( "EP2_ESEQ_PART3_PAGE1" , 0x1A72F, 0x1A739, -775) );
-					StringMap.insert( extractString( "TO_BE_CONTINUED" , 0x1A73A, 0x1A74D, -775 ) );
+					StringMap.insert( extractString( "EP2_ESEQ_PART1" , 0x1A4A7, 0x1A558, -804) );
+					StringMap.insert( extractString( "EP2_ESEQ_PART2" , 0x1A559, 0x1A5F1, -804) );
+					StringMap.insert( extractString( "EP2_ESEQ_PART3_PAGE1" , 0x1A5FD, 0x1A638, -804) );
+					StringMap.insert( extractString( "EP2_ESEQ_PART3_PAGE1" , 0x1A639, 0x1A6CE, -804) );
+					StringMap.insert( extractString( "EP2_ESEQ_PART3_PAGE1" , 0x1A6CF, 0x1A72E, -804) );
+					StringMap.insert( extractString( "EP2_ESEQ_PART3_PAGE1" , 0x1A72F, 0x1A739, -804) );
+					StringMap.insert( extractString( "TO_BE_CONTINUED" , 0x1A73A, 0x1A74D, -804 ) );
 				} break;
 			}
 		} break;
@@ -130,25 +130,25 @@ bool CMessages::extractGlobalStrings()
 			{
 				case 131:
 				{
-					StringMap.insert( extractString( "EP3_StatusBox" , 0x1BE38, 0x1BEC3 ) );
-					StringMap.insert( extractString( "LIVES_LEFT" , 0x1CAEE, 0x1CAFB ) );
+					StringMap.insert( extractString( "EP3_StatusBox" , 0x1BE38, 0x1BEC3, -837 ) );
+					StringMap.insert( extractString( "LIVES_LEFT" , 0x1CAEE, 0x1CAFB, -804 ) );
 					// Ship Messages
-					StringMap.insert( extractString( "EP3_SHIP1" , 0x1D100, 0x1D173 ) );
-					StringMap.insert( extractString( "EP3_SHIP2" , 0x1D174, 0x1D1D1) );
-					StringMap.insert( extractString( "EP3_SHIP3" , 0x1D1D2, 0x1D24C) );
-					StringMap.insert( extractString( "EP3_SHIP4" , 0x1D24D, 0x1D2C4) );
+					StringMap.insert( extractString( "EP3_SHIP1" , 0x1D100, 0x1D173, -804 ) );
+					StringMap.insert( extractString( "EP3_SHIP2" , 0x1D174, 0x1D1D1, -804) );
+					StringMap.insert( extractString( "EP3_SHIP3" , 0x1D1D2, 0x1D24C, -804) );
+					StringMap.insert( extractString( "EP3_SHIP4" , 0x1D24D, 0x1D2C4, -804) );
 					//Mortimer
-					StringMap.insert( extractString( "EP3_MORTIMER" , 0x1C3B3, 0x1C3D8) );
-					StringMap.insert( extractString( "EP3_MORTIMER2" , 0x1C3D9, 0x1C49B) );
-					StringMap.insert( extractString( "EP3_MORTIMER3" , 0x1C49C, 0x1C53F) );
-					StringMap.insert( extractString( "EP3_MORTIMER4" , 0x1C540, 0x1C607) );
-					StringMap.insert( extractString( "EP3_MORTIMER5" , 0x1C608, 0x1C692) );
+					StringMap.insert( extractString( "EP3_MORTIMER" , 0x1C3B3, 0x1C3D8, -804) );
+					StringMap.insert( extractString( "EP3_MORTIMER2" , 0x1C3D9, 0x1C49B, -804) );
+					StringMap.insert( extractString( "EP3_MORTIMER3" , 0x1C49C, 0x1C53F, -804) );
+					StringMap.insert( extractString( "EP3_MORTIMER4" , 0x1C540, 0x1C607, -804) );
+					StringMap.insert( extractString( "EP3_MORTIMER5" , 0x1C608, 0x1C692, -804) );
 					// Ending Pages
-					StringMap.insert( extractString( "EP3_ESEQ_PAGE1" , 0x1C693, 0x1C730) );
-					StringMap.insert( extractString( "EP3_ESEQ_PAGE2" , 0x1C731, 0x1C7A7) );
-					StringMap.insert( extractString( "EP3_ESEQ_PAGE3" , 0x1C7A8, 0x1C813) );
-					StringMap.insert( extractString( "EP3_ESEQ_PAGE4" , 0x1C813, 0x1C821) );
-					StringMap.insert( extractString( "THE_END" , 0x1C82D, 0x1C847) );
+					StringMap.insert( extractString( "EP3_ESEQ_PAGE1" , 0x1C693, 0x1C730, -804) );
+					StringMap.insert( extractString( "EP3_ESEQ_PAGE2" , 0x1C731, 0x1C7A7, -804) );
+					StringMap.insert( extractString( "EP3_ESEQ_PAGE3" , 0x1C7A8, 0x1C813, -804) );
+					StringMap.insert( extractString( "EP3_ESEQ_PAGE4" , 0x1C813, 0x1C821, -804) );
+					StringMap.insert( extractString( "THE_END" , 0x1C82D, 0x1C847, -804) );
 				} break;
 			}
 		} break;

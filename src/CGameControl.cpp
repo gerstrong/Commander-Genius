@@ -281,6 +281,7 @@ void CGameControl::process()
 		{
 			cleanupAll();
 			init( GAMELAUNCHER );
+			return;
 		}
 
 		if(mp_PassiveMode->mustStartGame())

@@ -7,6 +7,7 @@
 
 #include "CMapLoader.h"
 #include "../keen.h"
+#include "../vorticon/ai/se.h"
 #include "../game.h"
 #include <iostream>
 #include <fstream>
@@ -291,7 +292,7 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 					if (episode==1)
 					{
 						if ( TileProperty[mp_map->at(x ,y+1)].bleft ) x--;
-						enemyobject.spawn(x<<CSF, y<<CSF, OBJ_YORP);
+						enemyobject.spawn(x<<CSF, y<<CSF, OBJ_YORP, episode);
 						break;
 					}
 					else
@@ -299,7 +300,7 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 						// in ep2 level 16 there a vorticon embedded in the floor for
 						// some reason! that's what the if() is for--to fix it.
 						// TODO: Is this still needed?
-						enemyobject.spawn(x<<CSF, y<<CSF, OBJ_VORT);
+						enemyobject.spawn(x<<CSF, y<<CSF, OBJ_VORT, episode);
 					 }
 					 break;
 				case 2:    // garg (ep1) baby vorticon (ep2&3)
@@ -310,149 +311,149 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 						 if(TileProperty[mp_map->at(x+1, y+1)].bleft)
 						 {
 							 if (level==7)
-								 enemyobject.spawn(x<<CSF, (y-1)<<CSF, OBJ_GARG);
+								 enemyobject.spawn(x<<CSF, (y-1)<<CSF, OBJ_GARG, episode);
 							 else
-								 enemyobject.spawn((x-1)<<CSF, y<<CSF, OBJ_GARG);
+								 enemyobject.spawn((x-1)<<CSF, y<<CSF, OBJ_GARG, episode);
 						 }
 						 else
-							 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_GARG);
+							 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_GARG, episode);
 					 }
 					 else
-						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_BABY);
+						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_BABY, episode);
 
 						 break;
 				case 3:    // vorticon (ep1) Vorticon Commander (ep2)
 						 if (episode==1)
-							 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_VORT);
+							 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_VORT, episode);
 						 else if (episode==2)
-							 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_VORTELITE);
+							 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_VORTELITE, episode);
 						 else if (episode==3)
-							 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_MOTHER);
+							 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_MOTHER, episode);
 						 break;
 				case 4:    // butler (ep1) OR scrub (ep2) OR meep (ep3)
 					 if (episode==1)
-						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_BUTLER);
+						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_BUTLER, episode);
 					 else if (episode==2)
-						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SCRUB);
+						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SCRUB, episode);
 					 else if (episode==3)
-						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_MEEP);
+						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_MEEP, episode);
 					 break;
 				case 5:    // tank robot (ep1&2) karate bear (ep3)
 					 if (episode==1)
 					 {
-						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_TANK);
+						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_TANK, episode);
 						 // set tank robot guarding bonus level to be active at startup
 						 if (level==13)
 							 enemyobject.hasbeenonscreen = true;
 					 }
 					 else if (episode==2)
-						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_TANKEP2);
+						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_TANKEP2, episode);
 					 else if (episode==3)
 					 {
 						 if(TileProperty[mp_map->at(x,y+1)].bleft)
-							 enemyobject.spawn(x<<CSF, (y-1)<<CSF, OBJ_NINJA);
+							 enemyobject.spawn(x<<CSF, (y-1)<<CSF, OBJ_NINJA, episode);
 						 else
-							 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_NINJA);
+							 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_NINJA, episode);
 					 }
 					 break;
 				case 6:    // up-right-flying ice chunk (ep1) horiz platform (ep2)
 					 // foob (ep3)
 					 if (episode==1)
 					 {
-						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_ICECANNON);
+						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_ICECANNON, episode);
 						 enemyobject.ai.icechunk.vector_x = 1;
 						 enemyobject.ai.icechunk.vector_y = -1;
 					 }
 					 else if (episode==2)
 					 {
-						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_PLATFORM);
+						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_PLATFORM, episode);
 					 }
 					 else if (episode==3)
 					 {
-						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_FOOB);
+						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_FOOB, episode);
 					 }
 					 break;
 				case 7:   // spark (ep2) ball (ep3)
 					 if (episode==2)
 					 {
-						 enemyobject.spawn(x<<CSF, y<<CSF,OBJ_SPARK);
+						 enemyobject.spawn(x<<CSF, y<<CSF,OBJ_SPARK, episode);
 					 }
 					 else if (episode==3)
 					 {
-						 enemyobject.spawn(x<<CSF,y<<CSF,OBJ_BALL);
+						 enemyobject.spawn(x<<CSF,y<<CSF,OBJ_BALL, episode);
 						 enemyobject.hasbeenonscreen = 1;
 					 }
 					 break;
 				case 8:    // jack (ep3)
 					 if (episode==3)
 					 {
-						 enemyobject.spawn(x<<CSF, y<<CSF,OBJ_JACK);
+						 enemyobject.spawn(x<<CSF, y<<CSF,OBJ_JACK, episode);
 						 enemyobject.hasbeenonscreen = 1;
 					 }
 					 break;
 				case 9:    // up-left-flying ice chunk (ep1) horiz platform (ep3)
 					 if (episode==1)
 					 {
-						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_ICECANNON);
+						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_ICECANNON, episode);
 						 enemyobject.ai.icechunk.vector_x = -1;
 						 enemyobject.ai.icechunk.vector_y = -1;
 					 }
 					 else if (episode==3)
 					 {
-						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_PLATFORM);
+						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_PLATFORM, episode);
 					 }
 					 break;
 				case 10:   // rope holding the stone above the final vorticon (ep1)
 					 // vert platform (ep3)
 					 if (episode==1)
 					 {
-						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_ROPE);
+						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_ROPE, episode);
 					 }
 					 else if (episode==3)
 					 {
-						 enemyobject.spawn(x<<CSF, y<<4<<CSF, OBJ_PLATVERT);
+						 enemyobject.spawn(x<<CSF, y<<4<<CSF, OBJ_PLATVERT, episode);
 					 }
 					 break;
 				case 11:   // jumping vorticon (ep3)
 					 if (episode==3)
 					 {
-						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_VORT);
+						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_VORT, episode);
 					 }
 					 break;
 				case 12:   // sparks in mortimer's machine
-					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR);
+					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR, episode);
 					 enemyobject.ai.se.type = SE_MORTIMER_SPARK;
 					 enemyobject.hasbeenonscreen = 1;
 					 break;
 				case 13:   // mortimer's heart
-					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR);
+					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR, episode);
 					 enemyobject.ai.se.type = SE_MORTIMER_HEART;
 					 enemyobject.hasbeenonscreen = 1;
 					 break;
 				case 14:   // right-pointing raygun (ep3)
 					 if (episode==3)
 					 {
-						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_AUTORAY);
+						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_AUTORAY, episode);
 					 }
 					 break;
 				case 15:   // vertical raygun (ep3)
 					 if (episode==3)
 					 {
-						enemyobject.spawn(x<<CSF, y<<CSF, OBJ_AUTORAY_V);
+						enemyobject.spawn(x<<CSF, y<<CSF, OBJ_AUTORAY_V, episode);
 					 }
 					 break;
 				case 16:  // mortimer's arms
-					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR);
+					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR, episode);
 					 enemyobject.ai.se.type = SE_MORTIMER_ARM;
 					 enemyobject.hasbeenonscreen = 1;
 					 break;
 				case 17:  // mortimer's left leg
-					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR);
+					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR, episode);
 					 enemyobject.ai.se.type = SE_MORTIMER_LEG_LEFT;
 					 enemyobject.hasbeenonscreen = 1;
 					 break;
 				case 18:  // mortimer's right leg
-					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR);
+					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR, episode);
 					 enemyobject.ai.se.type = SE_MORTIMER_LEG_RIGHT;
 					 enemyobject.hasbeenonscreen = 1;
 					 break;

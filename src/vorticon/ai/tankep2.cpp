@@ -151,12 +151,12 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 				if (object.onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, object.scrx);
 				if (object.ai.tank.movedir==RIGHT)
 				{
-					newobject.spawn(object.x+(Sprite[TANK2_WALK_RIGHT_FRAME]->getWidth()<<CSF), object.y+(6<<CSF), OBJ_RAY);
+					newobject.spawn(object.x+(Sprite[TANK2_WALK_RIGHT_FRAME]->getWidth()<<CSF), object.y+(6<<CSF), OBJ_RAY, m_Episode);
 					newobject.ai.ray.direction = RIGHT;
 				}
 				else
 				{
-					newobject.spawn(object.x-(Sprite[ENEMYRAYEP2]->getWidth()<<CSF), object.y+(6<<CSF), OBJ_RAY);
+					newobject.spawn(object.x-(Sprite[ENEMYRAYEP2]->getWidth()<<CSF), object.y+(6<<CSF), OBJ_RAY, m_Episode);
 					newobject.ai.ray.direction = LEFT;
 				}
 				newobject.ai.ray.owner = object.m_index;

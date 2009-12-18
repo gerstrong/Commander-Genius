@@ -11,7 +11,7 @@
 
 CObjectAI::CObjectAI(CMap *p_map, std::vector<CObject> &objvect, std::vector<CPlayer> &Player,
 					 stOption *p_options, int NumPlayers, int episode, int level,
-					 char difficulty, CPhysicsSettings &PhysicsSettings)  :
+					 char difficulty, CPhysicsSettings &PhysicsSettings) :
 m_Objvect(objvect),
 m_Player(Player),
 m_PhysicsSettings(PhysicsSettings),
@@ -147,14 +147,14 @@ void CObjectAI::performSpecialAIType( CObject &object )
 		case OBJ_TANKEP2: tankep2_ai(object, m_difficulty>1); break;
 		case OBJ_PLATFORM: platform_ai(object); break;
 		case OBJ_VORTELITE: vortelite_ai(object, /*m_dark*/false); break;
-		//case OBJ_SECTOREFFECTOR: se_ai(object, p_levelcontrol ); break;
+		case OBJ_SECTOREFFECTOR: se_ai(object); break;
 		case OBJ_BABY: baby_ai(object, m_Episode, m_difficulty>1); break;
-		//case OBJ_EXPLOSION: explosion_ai(object); break;
-		//case OBJ_EARTHCHUNK: earthchunk_ai(object); break;
-		//case OBJ_SPARK: spark_ai(object, &(p_levelcontrol->sparks_left) ); break;
+		case OBJ_EXPLOSION: explosion_ai(object); break;
+		case OBJ_EARTHCHUNK: earthchunk_ai(object); break;
+		case OBJ_SPARK: spark_ai(object, sparks_left ); break;
 
 		//KEEN3
-		//case OBJ_FOOB: foob_ai(i, p_levelcontrol->hardmode); break;
+		case OBJ_FOOB: foob_ai(object, m_difficulty>1); break;
 		//case OBJ_NINJA: ninja_ai( i, p_levelcontrol->hardmode); break;
 		//case OBJ_MEEP: meep_ai( i, *p_levelcontrol ); break;
 		//case OBJ_SNDWAVE: sndwave_ai( i, p_levelcontrol->hardmode); break;

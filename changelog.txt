@@ -4,6 +4,11 @@ Commander Genius Release (CloneKeenPlus):
 v0.3.1.0:
 ---------
 
+18-12-2009
+- Added enemies of Ep 2 back. All are avialable now, but still buggy.
+- fixed minor collision problems
+- fixed other minor issues and segfaults
+
 16-12-2009
 - Slippery ice tiles are working again as before! Keen can semi/slide on them
 

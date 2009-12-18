@@ -51,7 +51,7 @@ void CObjectAI::scrub_ai(CObject &object)
 		object.inhibitfall = 1;
 		object.needinit = 0;
 		object.canbezapped = 1;
-		object.y = (object.y>>CSF>>4)<<4<<CSF;
+		object.y = (object.y>>STC)<<STC;
 		object.blockedd = 1;
 		object.blockedl = 0;
 		object.blockedr = 0;
@@ -116,7 +116,7 @@ void CObjectAI::scrub_ai(CObject &object)
 	if (object.canbezapped)
 	{
 		// if we touch a glowcell, we die!
-		if (mp_Map->at((object.x>>CSF)+8, (object.y>>CSF)+8)==TILE_GLOWCELL)
+		if (mp_Map->at((object.x+256)>>CSF, (object.y+256)>>CSF)==TILE_GLOWCELL)
 		{
 			object.ai.scrub.state = SCRUB_DYING;
 			object.ai.scrub.dietimer = 0;
@@ -157,7 +157,7 @@ void CObjectAI::scrub_ai(CObject &object)
 		{
 			object.sprite = SCRUB_DEAD_FRAME;
 			object.ai.scrub.state = SCRUB_DEAD;
-			object.y = (object.y>>CSF>>4)<<4<<CSF;
+			object.y = (object.y>>STC)<<STC;
 			object.dead = 1;
 			SetAllCanSupportPlayer(object, 0);
 		}
@@ -170,18 +170,18 @@ void CObjectAI::scrub_ai(CObject &object)
 		case LEFT:
 			object.sprite = SCRUB_WALK_LEFT + object.ai.scrub.walkframe;
 
-			walkovertile = TileProperty[mp_Map->at((object.x>>CSF)-8, (object.y>>CSF)+16)].bup;
+			walkovertile = TileProperty[mp_Map->at((object.x-256)>>CSF, (object.y+16)>>CSF)].bup;
 			if (!object.blockedd && !walkovertile)
 			{ // walked off the edge
 				object.sprite = SCRUB_WALK_DOWN + object.ai.scrub.walkframe;
 				object.ai.scrub.walkdir = DOWN;
-				object.y += (2<<CSF);
+				object.y += (2<<STC);
 				for(i=0;i<m_NumPlayers;i++)
 				{
 					if (m_Player[i].psupportingobject==object.m_index && m_Player[i].pjumping!=PJUMPUP && m_Player[i].pjumping!=PPOGOING)
 					{
-						m_Player[i].x -= (1<<CSF);
-						m_Player[i].y += (2<<CSF);
+						m_Player[i].x -= (1<<STC);
+						m_Player[i].y += (2<<STC);
 					}
 				}
 				object.performCollision(mp_Map);
@@ -217,7 +217,7 @@ void CObjectAI::scrub_ai(CObject &object)
 				object.ai.scrub.walkdir = UP;
 				object.sprite = SCRUB_WALK_UP + object.ai.scrub.walkframe;
 				Scrub_TurnOnCansupportWhereNotKicked(object);
-				object.y -= (2<<CSF);
+				object.y -= (2<<STC);
 				object.performCollision(mp_Map);
 				//common_enemy_ai(o);                // recalculate blockedx's
 			}
@@ -239,8 +239,8 @@ void CObjectAI::scrub_ai(CObject &object)
 				object.ai.scrub.walkdir = RIGHT;
 				object.sprite = SCRUB_WALK_RIGHT + object.ai.scrub.walkframe;
 				SetAllCanSupportPlayer(object, 0);
-				object.y += (1<<CSF);
-				object.x += (2<<CSF);
+				object.y += (1<<STC);
+				object.x += (2<<STC);
 				object.performCollision(mp_Map);
 				//common_enemy_ai(o);
 			}
@@ -261,9 +261,9 @@ void CObjectAI::scrub_ai(CObject &object)
 						// in certain situations if player is hanging off the right side
 						// of the scrub a bit)
 						floor = 0;
-						if (!TileProperty[mp_Map->at((m_Player[i].x>>CSF)+4, (m_Player[i].y>>CSF)+Sprite[0]->getHeight())].bup)
+						if (!TileProperty[mp_Map->at((m_Player[i].x+128)>>CSF, (m_Player[i].y+m_Player[i].h)>>CSF)].bup)
 						{ // lower-left isn't solid
-							if (TileProperty[mp_Map->at((m_Player[i].x>>CSF)+12, (m_Player[i].y>>CSF)+Sprite[0]->getHeight())].bup)
+							if (TileProperty[mp_Map->at((m_Player[i].x+384)>>CSF, (m_Player[i].y+m_Player[i].h)>>CSF)].bup)
 								floor = 1;
 						}
 						else floor = 1;
@@ -283,16 +283,16 @@ void CObjectAI::scrub_ai(CObject &object)
 				object.ai.scrub.walkdir = LEFT;
 				object.sprite = SCRUB_WALK_LEFT + object.ai.scrub.walkframe;
 				Scrub_TurnOnCansupportWhereNotKicked(object);
-				object.x -= (2<<CSF);
-				object.y = (((object.y>>CSF>>4)<<4)+1)<<CSF;
+				object.x -= (2<<STC);
+				object.y = (((object.y>>CSF)<<TILE_S)+1)<<STC;
 				object.performCollision(mp_Map);
 				//common_enemy_ai(o);                // recalculate blockedx's
 				for(i=0;i<m_NumPlayers;i++)
 				{
 					if (m_Player[i].psupportingobject==object.m_index && m_Player[i].pjumping!=PJUMPUP && m_Player[i].pjumping!=PPOGOING)
 					{
-						m_Player[i].x -= (2<<CSF);
-						m_Player[i].y = (object.y - (Sprite[0]->getHeight()<<CSF));
+						m_Player[i].x -= (2<<STC);
+						m_Player[i].y = (object.y - (Sprite[0]->getHeight()<<STC));
 					}
 				}
 			}

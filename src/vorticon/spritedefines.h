@@ -3,6 +3,8 @@
  *
  *  Created on: 22.10.2009
  *      Author: gerstrong
+ *
+ *  Spritetable: Indexes where CG must look into to get the proper sprite
  */
 
 #ifndef SPRITEDEFINES_H_
@@ -15,6 +17,10 @@
 #define ENEMYRAYEP2        123
 #define ENEMYRAYEP3        103
 #define RAY_VERT_EP3       104
+
+// horizontally-moving platform (ep2 & 3)
+#define OBJ_PLATFORM_DEFSPRITE_EP2   126
+#define OBJ_PLATFORM_DEFSPRITE_EP3   107
 
 #define OBJ_YORP_DEFSPRITE       50
 #define OBJ_GARG_DEFSPRITE       60

@@ -68,21 +68,34 @@ private:
 	void vortelite_ai(CObject &object, bool darkness);
 	void vortelite_initiatejump(CObject &object);
 
-	//void se_ai(int o, stLevelControl *p_levelcontrol);
-	//void explosion_ai(int o);
-	//void earthchunk_ai(int o);
-	//void spark_ai(int o, int *p_sparks_left);
+	// Sector Effector Members
+	void se_ai(CObject &object);
+	void se_extend_plat(CObject &object, bool &PlatExtending);
+	void se_retract_plat(CObject &object, bool &PlatExtending);
+	void spark_ai(CObject &object, int &sparks_left);
+	void se_ankhshield(CObject &object, int episode);
+	void se_mortimer_arm(CObject &object);
+	void se_mortimer_spark(CObject &object);
+	void se_mortimer_heart(CObject &object);
+	void se_mortimer_zapsup(CObject &object);
+	void se_mortimer_leg_left(CObject &object);
+	void se_mortimer_leg_right(CObject &object);
+	void se_mortimer_randomzaps(CObject &object);
+	void set_mortimer_surprised(bool yes);
 
-	 /*// ep3
-	 void foob_ai(int o, bool hardmode);
-	 void ninja_ai(int o, bool hardmode);
-	 void meep_ai(int o, stLevelControl levelcontrol);
-	 void sndwave_ai(int o, bool hardmode);
-	 void mother_ai(int o, stLevelControl levelcontrol);
-	 void fireball_ai(int o, bool hard);
-	 void ballandjack_ai(int o);
-	 void platvert_ai(int o);
-	 void nessie_ai(int o);*/
+	void explosion_ai(CObject &object);
+	void earthchunk_ai(CObject &object);
+
+	 // ep3
+	 void foob_ai(CObject &object, bool hardmode);
+	 //void ninja_ai(int o, bool hardmode);
+	 //void meep_ai(int o, stLevelControl levelcontrol);
+	 //void sndwave_ai(int o, bool hardmode);
+	 //void mother_ai(int o, stLevelControl levelcontrol);
+	 //void fireball_ai(int o, bool hard);
+	 //void ballandjack_ai(int o);
+	 //void platvert_ai(int o);
+	 //void nessie_ai(int o);
 
 	 // Common Objects
 	void autoray_ai(CObject &object);

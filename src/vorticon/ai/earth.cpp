@@ -1,122 +1,116 @@
-#include "../../keen.h"
-
-//#include "enemyai.h"
-
-#include "earth.h"
-
 // explosion and earth chunk objects, used for the "earth explodes"
 // sequence when you press the switch on a Tantalus Ray in ep2.
+
+#include "CObjectAI.h"
 
 #define EXPLODESPRITE           60
 #define EXPLODE_ANIM_RATE       80
 
 #define SPACETILE               155
 
-/*
-void explosion_ai(CObject *p_object)
+void CObjectAI::explosion_ai(CObject &object)
 {
-	if (objects[o].needinit)
-	 {
-	 objects[o].ai.ray.animframe = 0;
-	 objects[o].ai.ray.animtimer = 0;
-	 objects[o].ai.ray.direction = 1;    // frame forward
-	 objects[o].inhibitfall = 1;
-	 objects[o].needinit = 0;
-	 }
-	 
-	 objects[o].sprite = EXPLODESPRITE + objects[o].ai.ray.animframe;
-	 if (objects[o].ai.ray.animtimer > EXPLODE_ANIM_RATE)
-	 {
-	 if (objects[o].ai.ray.direction==-1 && objects[o].ai.ray.animframe==0)
-	 {
-	 delete_object(o);
-	 }
-	 else
-	 {
-	 objects[o].ai.ray.animframe += objects[o].ai.ray.direction;
-	 if (objects[o].ai.ray.direction==1 && objects[o].ai.ray.animframe==3)
-	 {
-	 objects[o].ai.ray.direction = -1;
-	 map_chgtile(((objects[o].x>>CSF)+8)>>4,((objects[o].y>>CSF)+8)>>4,SPACETILE);
-	 }
-	 }
-	 objects[o].ai.ray.animtimer = 0;
-	 }
-	 else objects[o].ai.ray.animtimer++;
-	 }
-	 
-	 #define EARTHCHUNK_ANIM_RATE       5
-	 
-	 #define CHUNKSPD        20
-	 #define HALFCHUNKSPD    (CHUNKSPD/2)
-	 #define BIGCHUNKSPD     14
-	 
-	 void earthchunk_ai(CObject *p_object)
-	 {
-	 if (objects[o].needinit)
-	 {
-     objects[o].inhibitfall = 1;
-     objects[o].needinit = 0;
-	 }
-	 if (!objects[o].onscreen) delete_object(o);
-	 
-	 switch(objects[o].ai.ray.direction)
-	 {
-	 case EC_UPLEFTLEFT:
-     objects[o].x -= CHUNKSPD;
-     objects[o].y -= HALFCHUNKSPD;
-	 break;
-	 case EC_UPUPLEFT:
-     objects[o].x -= HALFCHUNKSPD;
-     objects[o].y -= CHUNKSPD;
-	 break;
-	 case EC_UP:
-     objects[o].y -= CHUNKSPD;
-	 break;
-	 case EC_UPUPRIGHT:
-     objects[o].x += HALFCHUNKSPD;
-     objects[o].y -= CHUNKSPD;
-	 break;
-	 case EC_UPRIGHTRIGHT:
-     objects[o].x += CHUNKSPD;
-     objects[o].y -= HALFCHUNKSPD;
-	 break;
-	 case EC_DOWNRIGHTRIGHT:
-     objects[o].x += CHUNKSPD;
-     objects[o].y += HALFCHUNKSPD;
-	 break;
-	 case EC_DOWNDOWNRIGHT:
-     objects[o].x += HALFCHUNKSPD;
-     objects[o].y += CHUNKSPD;
-	 break;
-	 case EC_DOWN:
-     objects[o].y += CHUNKSPD;
-	 break;
-	 case EC_DOWNDOWNLEFT:
-     objects[o].x -= HALFCHUNKSPD;
-     objects[o].y += CHUNKSPD;
-	 break;
-	 case EC_DOWNLEFTLEFT:
-     objects[o].x -= CHUNKSPD;
-     objects[o].y += HALFCHUNKSPD;
-	 break;
-	 
-	 case EC_UPLEFT:
-     objects[o].x -= BIGCHUNKSPD;
-     objects[o].y -= BIGCHUNKSPD;
-	 break;
-	 case EC_UPRIGHT:
-     objects[o].x += BIGCHUNKSPD;
-     objects[o].y -= BIGCHUNKSPD;
-	 break;
-	 case EC_DOWNLEFT:
-     objects[o].x -= BIGCHUNKSPD;
-     objects[o].y += BIGCHUNKSPD;
-	 break;
-	 case EC_DOWNRIGHT:
-     objects[o].x += BIGCHUNKSPD;
-     objects[o].y += BIGCHUNKSPD;
-	 break;
-	 }
+	if (object.needinit)
+	{
+		object.ai.ray.animframe = 0;
+		object.ai.ray.animtimer = 0;
+		object.ai.ray.direction = 1;    // frame forward
+		object.inhibitfall = true;
+		object.needinit = false;
+	}
+
+	object.sprite = EXPLODESPRITE + object.ai.ray.animframe;
+	if (object.ai.ray.animtimer > EXPLODE_ANIM_RATE)
+	{
+		if (object.ai.ray.direction==-1 && object.ai.ray.animframe==0)
+		{
+			deleteObj(object);
+		}
+		else
+		{
+			object.ai.ray.animframe += object.ai.ray.direction;
+			if (object.ai.ray.direction==1 && object.ai.ray.animframe==3)
+			{
+				object.ai.ray.direction = -1;
+				mp_Map->setTile(((object.x>>CSF)+8)>>4,((object.y>>CSF)+8)>>4, SPACETILE, true);
+			}
+		}
+		object.ai.ray.animtimer = 0;
+	}
+	else object.ai.ray.animtimer++;
 }
-*/
+
+#define EARTHCHUNK_ANIM_RATE       5
+
+#define CHUNKSPD        20
+#define HALFCHUNKSPD    (CHUNKSPD/2)
+#define BIGCHUNKSPD     14
+
+void CObjectAI::earthchunk_ai(CObject &object)
+{
+	if (object.needinit)
+	{
+		object.inhibitfall = true;
+		object.needinit = false;
+	}
+	if (!object.onscreen) deleteObj(object);
+
+	switch(object.ai.ray.direction)
+	{
+	case EC_UPLEFTLEFT:
+		object.x -= CHUNKSPD;
+		object.y -= HALFCHUNKSPD;
+		break;
+	case EC_UPUPLEFT:
+		object.x -= HALFCHUNKSPD;
+		object.y -= CHUNKSPD;
+		break;
+	case EC_UP:
+		object.y -= CHUNKSPD;
+		break;
+	case EC_UPUPRIGHT:
+		object.x += HALFCHUNKSPD;
+		object.y -= CHUNKSPD;
+		break;
+	case EC_UPRIGHTRIGHT:
+		object.x += CHUNKSPD;
+		object.y -= HALFCHUNKSPD;
+		break;
+	case EC_DOWNRIGHTRIGHT:
+		object.x += CHUNKSPD;
+		object.y += HALFCHUNKSPD;
+		break;
+	case EC_DOWNDOWNRIGHT:
+		object.x += HALFCHUNKSPD;
+		object.y += CHUNKSPD;
+		break;
+	case EC_DOWN:
+		object.y += CHUNKSPD;
+		break;
+	case EC_DOWNDOWNLEFT:
+		object.x -= HALFCHUNKSPD;
+		object.y += CHUNKSPD;
+		break;
+	case EC_DOWNLEFTLEFT:
+		object.x -= CHUNKSPD;
+		object.y += HALFCHUNKSPD;
+		break;
+
+	case EC_UPLEFT:
+		object.x -= BIGCHUNKSPD;
+		object.y -= BIGCHUNKSPD;
+		break;
+	case EC_UPRIGHT:
+		object.x += BIGCHUNKSPD;
+		object.y -= BIGCHUNKSPD;
+		break;
+	case EC_DOWNLEFT:
+		object.x -= BIGCHUNKSPD;
+		object.y += BIGCHUNKSPD;
+		break;
+	case EC_DOWNRIGHT:
+		object.x += BIGCHUNKSPD;
+		object.y += BIGCHUNKSPD;
+		break;
+	}
+}

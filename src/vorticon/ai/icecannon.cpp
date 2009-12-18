@@ -95,7 +95,7 @@ void CObjectAI::smash(CObject &object)
 	if (object.onscreen)
 	{
 		g_pSound->playStereofromCoord(SOUND_CHUNKSMASH, PLAY_NOW, object.x);
-		chunk.spawn(object.x, object.y, OBJ_ICEBIT);
+		chunk.spawn(object.x, object.y, OBJ_ICEBIT, m_Episode);
 
 		// upleft
 		chunk.ai.icechunk.vector_x = -1;
@@ -156,7 +156,7 @@ void CObjectAI::icecannon_ai(CObject &object)
 	 if (!m_gunfiretimer)
 	 {
 		 CObject chunk;
-		 chunk.spawn( object.x+512, object.y, OBJ_ICECHUNK );
+		 chunk.spawn( object.x+512, object.y, OBJ_ICECHUNK, m_Episode);
 		 chunk.ai.icechunk.vector_x = object.ai.icechunk.vector_x;
 		 chunk.ai.icechunk.vector_y = object.ai.icechunk.vector_y;
 		 m_Objvect.push_back(chunk);

@@ -105,9 +105,9 @@ public:
 		stNessieData nessie;
 	} ai;
 	
-	void setupObjectType();
+	void setupObjectType(int Episode);
 	void setScrPos( int px, int py );
-	bool spawn(int x0, int y0, int otype);
+	bool spawn(int x0, int y0, int otype, int Episode);
 	void setIndex(int index);
 	
 	virtual void process() { }

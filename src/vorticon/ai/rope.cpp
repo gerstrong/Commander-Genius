@@ -18,10 +18,6 @@ ROPE_IDLE, ROPE_DROPSTONE
 
 #define STONE_DROP_RATE      6
 
-void delete_object(int o);
-//void static rope_movestone(int o);
-void kill_all_intersecting_tile(int mpx, int mpy);
-
 void CObjectAI::rope_ai(CObject &object)
 {
 	int x;

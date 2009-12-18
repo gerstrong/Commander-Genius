@@ -234,12 +234,12 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 			CObject newobject;
 			if (object.ai.vortelite.movedir==RIGHT)
 			{
-				newobject.spawn(object.x+(sprites[ENEMYRAYEP2]->getWidth()<<STC), object.y+(7<<CSF), OBJ_RAY);
+				newobject.spawn(object.x+(sprites[ENEMYRAYEP2]->getWidth()<<STC), object.y+(7<<CSF), OBJ_RAY, m_Episode);
 				newobject.ai.ray.direction = RIGHT;
 			}
 			else
 			{
-				newobject.spawn(object.x-(sprites[ENEMYRAYEP2]->getWidth()<<STC), object.y+(9<<CSF), OBJ_RAY);
+				newobject.spawn(object.x-(sprites[ENEMYRAYEP2]->getWidth()<<STC), object.y+(9<<CSF), OBJ_RAY, m_Episode);
 				newobject.ai.ray.direction = LEFT;
 			}
 			newobject.ai.ray.owner = object.m_index;

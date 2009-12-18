@@ -39,7 +39,7 @@ m_index(index)
     yinertia = 0;
 }
 
-bool CObject::spawn(int x0, int y0, int otype)
+bool CObject::spawn(int x0, int y0, int otype, int Episode)
 {
 	// find an unused object slot
 	if (!exists && otype != OBJ_PLAYER)
@@ -59,7 +59,7 @@ bool CObject::spawn(int x0, int y0, int otype)
 		touchPlayer = touchedBy = 0;
 		cansupportplayer.assign(cansupportplayer.size(), false);
 		
-		setupObjectType();
+		setupObjectType(Episode);
 		
 		return true;
 	}
@@ -73,10 +73,12 @@ bool CObject::spawn(int x0, int y0, int otype)
 void CObject::setIndex(int index)
 { m_index = index; }
 
-void CObject::setupObjectType()
+void CObject::setupObjectType(int Episode)
 {
-	switch(m_type)
+	if(Episode == 1)
 	{
+		switch(m_type)
+		{
 		case OBJ_AUTORAY: sprite = ENEMYRAYEP3; break;
 		case OBJ_AUTORAY_V: sprite = RAY_VERT_EP3; break;
 		case OBJ_DOOR: sprite = DOOR_YELLOW_SPRITE; break;
@@ -93,20 +95,28 @@ void CObject::setupObjectType()
 		case OBJ_ROPE: sprite = OBJ_ROPE_DEFSPRITE; break;
 		case OBJ_RAY: sprite = OBJ_RAY_DEFSPRITE_EP1;  break;
 		default: sprite = BLANKSPRITE; break;
+		}
 	}
-
-	/*if(Episode == 2)
+	else if(Episode == 2)
+	{
+		switch(m_type)
+		{
 		case OBJ_SCRUB: sprite = OBJ_SCRUB_DEFSPRITE; break;
 		case OBJ_TANKEP2: sprite = OBJ_TANKEP2_DEFSPRITE; break;
 		case OBJ_VORTELITE: sprite = OBJ_VORTELITE_DEFSPRITE; break;
-	 
+
 		case OBJ_RAY: sprite = OBJ_RAY_DEFSPRITE_EP2; break;
 		case OBJ_VORT: sprite = OBJ_VORT_DEFSPRITE_EP2; break;
 		case OBJ_PLATFORM: sprite = OBJ_PLATFORM_DEFSPRITE_EP2; break;
 		case OBJ_BABY: sprite = OBJ_BABY_DEFSPRITE_EP2; break;
 		case OBJ_SPARK: sprite = OBJ_SPARK_DEFSPRITE_EP2; break;
 		default: sprite = BLANKSPRITE; break;
+		}
+	}
 	else if(Episode == 3)
+	{
+		switch(m_type)
+		{
 		case OBJ_FOOB: sprite = OBJ_FOOB_DEFSPRITE; break;
 		case OBJ_NINJA: sprite = OBJ_NINJA_DEFSPRITE; break;
 		case OBJ_MOTHER: sprite = OBJ_MOTHER_DEFSPRITE; break;
@@ -114,14 +124,15 @@ void CObject::setupObjectType()
 		case OBJ_BALL: sprite = OBJ_BALL_DEFSPRITE; break;
 		case OBJ_JACK: sprite = OBJ_JACK_DEFSPRITE; break;
 		case OBJ_NESSIE: sprite = OBJ_NESSIE_DEFSPRITE; break;
-	 
+
 		case OBJ_RAY: sprite = OBJ_RAY_DEFSPRITE_EP3; break;
 		case OBJ_VORT: sprite = OBJ_VORT_DEFSPRITE_EP3; break;
 		case OBJ_PLATFORM: sprite = OBJ_PLATFORM_DEFSPRITE_EP3; break;
 		case OBJ_PLATVERT: sprite = OBJ_PLATFORM_DEFSPRITE_EP3; break;
 		case OBJ_BABY: sprite = OBJ_BABY_DEFSPRITE_EP3; break;
-		default sprite = BLANKSPRITE; break;*/
-
+		default: sprite = BLANKSPRITE; break;
+		}
+	}
 }
 
 void CObject::setScrPos( int px, int py )
@@ -234,7 +245,7 @@ CSprite *Sprite = g_pGfxEngine->Sprite.at(sprite);
 bool CObject::checkSolidR(stTile *TileProperty, CMap *p_map, int x2, int y1, int y2)
 {
 	// Check for right from the object
-	for(int c=y1 ; c<=y2-(1<<STC) ; c++)
+	for(int c=y1+(1<<STC) ; c<=y2-(1<<STC) ; c++)
 	{
 		if(TileProperty[p_map->at(x2>>CSF, c>>CSF)].bleft)
 			return true;
@@ -247,7 +258,7 @@ bool CObject::checkSolidR(stTile *TileProperty, CMap *p_map, int x2, int y1, int
 bool CObject::checkSolidL(stTile *TileProperty, CMap *p_map, int x1, int y1, int y2)
 {
 	// Check for right from the object
-	for(int c=y1 ; c<=y2-(1<<STC) ; c++)
+	for(int c=y1+(1<<STC) ; c<=y2-(1<<STC) ; c++)
 	{
 		if(TileProperty[p_map->at(x1>>CSF, c>>CSF)].bright)
 			return true;
@@ -262,7 +273,7 @@ bool CObject::checkSolidU(stTile *TileProperty, CMap *p_map, int x1, int x2, int
 	// Check for right from the object
 	for(int c=x1+(1<<STC) ; c<=x2-(1<<STC) ; c++)
 	{
-		if(TileProperty[p_map->at(c>>CSF, (y1-1)>>CSF)].bdown)
+		if(TileProperty[p_map->at(c>>CSF, y1>>CSF)].bdown)
 			return true;
 	}
 	if( y1 < (2<<CSF) ) return true; // Out of map?
@@ -275,7 +286,7 @@ bool CObject::checkSolidD(stTile *TileProperty, CMap *p_map, int x1, int x2, int
 	// Check for right from the object
 	for(int c=x1+(1<<STC) ; c<=x2-(1<<STC) ; c++)
 	{
-		if(TileProperty[p_map->at(c>>CSF, (y2+1)>>CSF)].bup)
+		if(TileProperty[p_map->at(c>>CSF, y2>>CSF)].bup)
 			return true;
 	}
 	if( y2 > ((p_map->m_height-2)<<CSF) ) return true; // Out of map?

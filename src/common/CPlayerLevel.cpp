@@ -562,7 +562,7 @@ void CPlayer::raygun()
 				if (pdir==RIGHT) xdir = x+Sprite.m_bboxX2+1;
 				else xdir = x-Sprite.m_bboxX2-(1<<STC);
 				
-				rayobject.spawn(xdir, ydir, OBJ_RAY);
+				rayobject.spawn(xdir, ydir, OBJ_RAY, m_episode);
 				rayobject.ai.ray.owner = m_player_number;
 				rayobject.ai.ray.direction = pdir;
 				

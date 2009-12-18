@@ -1,10 +1,6 @@
-#include "../../game.h"
+#include "../spritedefines.h"
 
 #include "CObjectAI.h"
-
-// horizontally-moving platform (ep2 & 3)
-#define OBJ_PLATFORM_DEFSPRITE_EP2   126
-#define OBJ_PLATFORM_DEFSPRITE_EP3   107
 
 #define PLATFORM_MOVE   0
 #define PLATFORM_WAIT   1

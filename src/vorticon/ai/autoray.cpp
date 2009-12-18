@@ -23,7 +23,7 @@ void CObjectAI::autoray_ai(CObject &Object)
 	if (!m_gunfiretimer)
 	{
 		CObject NewRay;
-		NewRay.spawn(Object.x, Object.y, OBJ_RAY);
+		NewRay.spawn(Object.x, Object.y, OBJ_RAY, m_Episode);
 		NewRay.ai.ray.owner = -1;
 
 		if (Object.m_type==OBJ_AUTORAY_V)
