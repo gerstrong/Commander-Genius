@@ -53,15 +53,6 @@ private:
     ulong m_LPSCountTime, m_FPSCountTime;
 	ulong m_LoopStartTime, m_SyncStartTime;
 	ulong m_LastSecTime;
-#ifdef WIZGP2X
-    volatile uint32_t *memregs32;
-    int memfd;
-
-    void ptimer_init(void);
-    unsigned int ptimer_get_ticks_ms(void);
-    void ptimer_delay_ms( unsigned int delay );
-    void ptimer_cleanup(void);
-#endif
 };
 
 #endif /* CTIMER_H_ */

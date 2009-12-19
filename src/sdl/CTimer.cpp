@@ -43,12 +43,9 @@
 #include "../StringUtils.h"
 
 #ifdef WIZGP2X
-#include <fcntl.h>
-#include <sys/mman.h>
-#include <sys/ioctl.h>
-
-#define getTicks ptimer_get_ticks_ms
-#define timerDelay ptimer_delay_ms
+#include "sys/wizgp2x.h"
+#define getTicks WIZ_ptimer_get_ticks_ms
+#define timerDelay WIZ_ptimer_delay_ms
 #else
 #define getTicks SDL_GetTicks
 #define timerDelay SDL_Delay
@@ -61,7 +58,7 @@ CTimer::CTimer()
 
 	setFrameRate(DEFAULT_LPS, DEFAULT_FPS, DEFAULT_SYNC);
 #ifdef WIZGP2X
-    ptimer_init();
+    WIZ_ptimer_init();
 #endif
     m_SyncStartTime = m_LoopStartTime = getTicks();
 	g_pLogFile->textOut(GREEN, true, "Starting timer driver...\n");
@@ -205,7 +202,7 @@ bool CTimer::HasSecElapsed(void)
 {
     unsigned int CurTime = getTicks();
 
-	if (CurTime - m_LastSecTime >= MSPERSEC)
+	if ((signed int)(CurTime - m_LastSecTime) >= MSPERSEC)
 	{
 		m_LastSecTime = CurTime;
 		return true;
@@ -217,7 +214,7 @@ bool CTimer::HasTimeElapsed(int msecs)
 {
     unsigned int CurTime = getTicks();
 
-	if (CurTime - m_LastSecTime >= msecs)
+	if ((signed int)(CurTime - m_LastSecTime) >= msecs)
 	{
 		m_LastSecTime = CurTime;
 		return true;
@@ -228,66 +225,6 @@ bool CTimer::HasTimeElapsed(int msecs)
 CTimer::~CTimer()
 {
 #ifdef WIZGP2X
-    ptimer_cleanup();
+    WIZ_ptimer_cleanup();
 #endif
 }
-
-#ifdef WIZGP2X
-
-#define TIMER_BASE3 0x1980
-#define TIMER_REG(x) memregs32[(TIMER_BASE3 + x) >> 2]
-
-void CTimer::ptimer_init(void)
-{
-	/* open /dev/mem to access registers */
-	memfd = open("/dev/mem", O_RDWR);
-	if(memfd < 0) {
-		printf( "Could not open /dev/mem!\n" );
-		return;
-	}
-
-	/* get access to the registers */
-	memregs32 = (volatile uint32_t*)mmap(0, 0x20000, PROT_READ|PROT_WRITE, MAP_SHARED, memfd, 0xC0000000);
-	if(memregs32 == (volatile uint32_t*)0xFFFFFFFF) {
-	    printf( "Could not mmap hardware registers!\n" );
-	    return;
-	}
-
-    TIMER_REG(0x44) = 0x922;
-    TIMER_REG(0x40) = 0x0c;
-    TIMER_REG(0x08) = 0x6b;
-
-    printf( "Wiz hardware timer started\n" );
-}
-
-unsigned int CTimer::ptimer_get_ticks_ms(void)
-{
-    unsigned int microsec;
-
-    TIMER_REG(0x08) = 0x4b;  /* run timer, latch value */
-    microsec = TIMER_REG(0);
-    return (microsec/1000);
-}
-
-void CTimer::ptimer_delay_ms( unsigned int delay )
-{
-    unsigned int start;
-
-    start = ptimer_get_ticks_ms();
-    while(ptimer_get_ticks_ms()-start < delay) {usleep(1);}
-}
-
-void CTimer::ptimer_cleanup(void)
-{
-    TIMER_REG(0x40) = 0x0c;
-    TIMER_REG(0x08) = 0x23;
-    TIMER_REG(0x00) = 0;
-    TIMER_REG(0x40) = 0;
-    TIMER_REG(0x44) = 0;
-
-	memregs32 = NULL;
-	close(memfd);
-
-	printf( "Wiz hardware timer stoped\n" );
-}
-#endif
