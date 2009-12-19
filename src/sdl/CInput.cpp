@@ -19,7 +19,8 @@
 
 CInput::CInput() {
 #ifdef WIZGP2X
-	volume = 60-1;
+    volume_direction = VOLUME_NOCHG;
+	volume = 60-VOLUME_CHANGE_RATE;
 	WIZ_AdjustVolume(VOLUME_UP);
 #endif
 	g_pLogFile->ftextOut("Starting the input driver...<br>");
@@ -410,7 +411,7 @@ void CInput::processKeys(int value)
 		case SDLK_BACKSLASH:immediate_keytable[KBACKSLASH]	= value;  break;
 		case SDLK_RIGHTBRACKET:immediate_keytable[KRIGHTBRACKET]	= value;  break;
 		case SDLK_BACKQUOTE:immediate_keytable[KBACKQUOTE]	= value;  break;
-			
+
 		case SDLK_a:immediate_keytable[KA]	= value;  break;
 		case SDLK_b:immediate_keytable[KB]	= value;  break;
 		case SDLK_c:immediate_keytable[KC]	= value;  break;
@@ -477,10 +478,10 @@ void CInput::processKeys(int value)
 		case SDLK_UNDERSCORE:immediate_keytable[KUNDERSCORE]	= value;  break;
 		case SDLK_MINUS:immediate_keytable[KMINUS]	= value;  break;
 		case SDLK_PLUS:immediate_keytable[KPLUS]	= value;  break;
-			
+
 		default: break;
 	}
-	
+
 	if(getHoldedKey(KSHIFT))
 	   {
 		   if(getPressedKey(KBACKQUOTE)) immediate_keytable[KTILDE] = value;
@@ -532,7 +533,7 @@ bool CInput::getPulsedKey(int key, int msec)
 	if(immediate_keytable[key])
 	{
 		bool value = true;
-		
+
 		if(m_cmdpulse % msec != 0)
 		{
 			value = false;
@@ -542,7 +543,7 @@ bool CInput::getPulsedKey(int key, int msec)
 	}
 	if(!immediate_keytable[key] && last_immediate_keytable[key])
 		m_cmdpulse = 0;
-	
+
 	return false;
 }
 
@@ -550,7 +551,7 @@ std::string CInput::getPressedTypingKey(void)
 {
 	int i;
 	std::string buf;
-	
+
 	for(i=KA ; i<=KZ ; i++)
 	{
 		if (getHoldedKey(KSHIFT) && getPressedKey(i))
@@ -599,7 +600,7 @@ std::string CInput::getPressedTypingKey(void)
 bool CInput::getPressedIsTypingKey(void)
 {
 	int i;
-	
+
 	if(getHoldedKey(KSHIFT))
 	   {
 		   return true;
@@ -734,6 +735,8 @@ void CInput::WIZ_EmuKeyboard( int button, int value )
 
 	//printf( "Button %d Value %d\n", button, value );
 
+    volume_direction = VOLUME_NOCHG;
+
 	if( value == 1 ) {
 		fakeevent1.type			= SDL_KEYDOWN;
 		fakeevent1.key.state		= SDL_PRESSED;
@@ -804,14 +807,10 @@ void CInput::WIZ_EmuKeyboard( int button, int value )
 		case GP2X_BUTTON_VOLUP:
 			if( value == 1)
 				volume_direction = VOLUME_UP;
-			else
-				volume_direction = VOLUME_NOCHG;
 			break;
 		case GP2X_BUTTON_VOLDOWN:
 			if( value == 1)
 				volume_direction = VOLUME_DOWN;
-			else
-				volume_direction = VOLUME_NOCHG;
 			break;
 	}
 
