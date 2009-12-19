@@ -138,7 +138,7 @@ void CControlsettings::processSelection()
 				twb = !twb;
 				g_pInput->setTwoButtonFiring(m_chosenPlayer-1, twb);
 				buf = "Two Button Firing : ";
-				buf += g_pInput->getTwoButtonFiring(m_chosenPlayer-1) ? "(on)" : "(off)";
+				buf += g_pInput->getTwoButtonFiring(m_chosenPlayer-1) ? "(On)" : "(Off)";
 				mp_Dialog->setObjectText(m_selection, buf);
 				m_selection = -1;
 			}

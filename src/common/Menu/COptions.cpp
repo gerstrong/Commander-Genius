@@ -17,12 +17,12 @@ mp_option(p_option)
 	int i;
 	std::string buf;
 
-	mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 30, NUM_OPTIONS+2);
+	mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 27, NUM_OPTIONS+2);
 	mp_Dialog->setFrameTheme(DLG_THEME_OLDSCHOOL);
 
 	for( i = 0 ; i < NUM_OPTIONS ; i++ )
 	{
-		buf = mp_option[i].name + " ";
+		buf = mp_option[i].menuname + " ";
 		buf += (mp_option[i].value) ? "(On)" : "(Off)";
 
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, i+1, buf);
@@ -45,7 +45,7 @@ void COptions::processSpecific()
 	if( m_selection != -1)
 	{
 			mp_option[m_selection].value = !mp_option[m_selection].value;
-			buf = mp_option[m_selection].name + " ";
+			buf = mp_option[m_selection].menuname + " ";
 			buf += (mp_option[m_selection].value) ? "(On)" : "(Off)";
 
 			mp_Dialog->setObjectText(m_selection, buf);

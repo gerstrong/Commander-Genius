@@ -24,7 +24,7 @@ public:
 	bool loadGameCfg();
 	void saveGameCfg();
 	void loadDefaultGameCfg();
-	void setOption( int opt, const std::string &name, char value);
+	void setOption( int opt, const std::string &menuname, const std::string &name, char value);
 	virtual ~CSettings();
 	
 private:

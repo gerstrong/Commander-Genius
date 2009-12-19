@@ -18,7 +18,7 @@ CBaseMenu(menu_type),
 m_Gamepath(Gamepath),
 m_Episode(Episode)
 {
-	mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 22, 5);
+	mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 20, 5);
 	mp_Dialog->setFrameTheme(DLG_THEME_OLDSCHOOL);
 
 	m_Rate = g_pSound->getAudioSpec().freq;

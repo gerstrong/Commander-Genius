@@ -107,9 +107,10 @@ bool CSettings::checkOptionPtr() {
 	return false;
 }
 
-void CSettings::setOption( int opt, const std::string &name, char value)
+void CSettings::setOption( int opt, const std::string &menuname, const std::string &name, char value)
 {
 	if(!checkOptionPtr()) return;
+	mp_option[opt].menuname = menuname;
 	mp_option[opt].name = name;
 	mp_option[opt].value = value;
 }
@@ -117,13 +118,13 @@ void CSettings::setOption( int opt, const std::string &name, char value)
 void CSettings::loadDefaultGameCfg()
 {
 	if(!checkOptionPtr()) return;
-	setOption( OPT_FULLYAUTOMATIC, "autogun", 0 );
-	setOption( OPT_SUPERPOGO, "superpogo", 0 );
-	setOption( OPT_ALLOWPKING, "pking", 1 );
-	setOption( OPT_CHEATS, "allcheats", 0 );
-	setOption( OPT_ANALOGJOYSTICK, "analog-joystick", 1 );
-	setOption( OPT_LVLREPLAYABILITY, "level replayability", 0 );
-	setOption( OPT_RISEBONUS, "rise bonus", 1 );
+	setOption( OPT_FULLYAUTOMATIC, "Machine Gun", "autogun", 0 );
+	setOption( OPT_SUPERPOGO, "Super Pogo Stick", "superpogo", 0 );
+	setOption( OPT_ALLOWPKING, "Friendly Fire", "pking", 1 );
+	setOption( OPT_CHEATS, "Extra Cheats", "allcheats", 0 );
+	setOption( OPT_ANALOGJOYSTICK, "Analog Joystick", "analog-joystick", 1 );
+	setOption( OPT_LVLREPLAYABILITY, "Replay Levels", "level replayability", 0 );
+	setOption( OPT_RISEBONUS, "Rising Bonus", "rise bonus", 1 );
 }
 
 bool CSettings::loadGameCfg()

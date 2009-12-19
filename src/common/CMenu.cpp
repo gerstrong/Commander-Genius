@@ -131,7 +131,7 @@ void CMenu::initMainMenu()
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "New Game");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Load Game");
 		mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 3, "Save Game");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Highscores");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "High Scores");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "Configure");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Back to Demo");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "Choose Game");

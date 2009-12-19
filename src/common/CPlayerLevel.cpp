@@ -566,13 +566,13 @@ void CPlayer::raygun()
 				rayobject.ai.ray.owner = m_player_number;
 				rayobject.ai.ray.direction = pdir;
 				
-				rayobject.ai.ray.dontHitEnable = false;
+				rayobject.ai.ray.dontHitEnable = true;
 				if (!mp_option[OPT_ALLOWPKING].value)
 					rayobject.ai.ray.dontHit = OBJ_PLAYER;
 				mp_object->push_back(rayobject);
 			}
 			else
-			{ // oh shit, out of bullets
+			{ // uh oh, out of bullets
 				// click!
 				g_pSound->playStereofromCoord(SOUND_GUN_CLICK, PLAY_NOW, pPlayerObject->scrx);
 				

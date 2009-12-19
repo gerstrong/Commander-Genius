@@ -97,13 +97,13 @@ void CDialog::addObject(Uint8 type, Uint16 x, Uint16 y,const std::string text)
 void CDialog::setObjectText(Uint8 ID, const std::string &text)
 {
 	Uint8 type = m_dlgobject[ID]->m_type;
-		m_dlgobject[ID]->change( m_w-((m_dlgobject[ID]->m_x-m_x)/8)-5, text, type );
+		m_dlgobject[ID]->change( m_w-((m_dlgobject[ID]->m_x-m_x)/8)-4, text, type );
 }
 
 void CDialog::setObjectType(Uint8 ID, Uint8 type)
 {
 	std::string text = m_dlgobject[ID]->m_OptionText->m_text;
-		m_dlgobject[ID]->change( m_w-((m_dlgobject[ID]->m_x-m_x)/8)-5, text, type );
+		m_dlgobject[ID]->change( m_w-((m_dlgobject[ID]->m_x-m_x)/8)-4, text, type );
 }
 
 ///

@@ -20,6 +20,7 @@ const int NUM_OPTIONS=7;
 
 struct stOption
 {
+	std::string menuname;
 	std::string name;
 	char value;
 };

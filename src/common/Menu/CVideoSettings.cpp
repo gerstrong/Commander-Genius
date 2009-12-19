@@ -39,7 +39,7 @@ CBaseMenu(menu_type) {
 	m_AspectCorrection = g_pVideoDriver->getAspectCorrection();
 
 	std::string buf;
-	mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 32, 8);
+	mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 29, 8);
 	mp_Dialog->setFrameTheme(DLG_THEME_OLDSCHOOL);
 
 	buf = "Resolution: " + itoa(m_Resolution.width) + "x" + itoa(m_Resolution.height) + "x" + itoa(m_Resolution.depth);
