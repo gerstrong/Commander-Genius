@@ -42,15 +42,6 @@
 #include "../CLogFile.h"
 #include "../StringUtils.h"
 
-#ifdef WIZGP2X
-#include "sys/wizgp2x.h"
-#define getTicks WIZ_ptimer_get_ticks_ms
-#define timerDelay WIZ_ptimer_delay_ms
-#else
-#define getTicks SDL_GetTicks
-#define timerDelay SDL_Delay
-#endif
-
 CTimer::CTimer()
 {
 	m_FPSCountTime = m_LoopPS = m_LPS = m_FPS = 0;
@@ -60,7 +51,7 @@ CTimer::CTimer()
 #ifdef WIZGP2X
     WIZ_ptimer_init();
 #endif
-    m_SyncStartTime = m_LoopStartTime = getTicks();
+    m_SyncStartTime = m_LoopStartTime = timerTicks();
 	g_pLogFile->textOut(GREEN, true, "Starting timer driver...\n");
 }
 
@@ -147,7 +138,7 @@ void CTimer::TimeToDelay( void )
 {
 	signed int delay;
 
-    unsigned int curtime = getTicks();
+    unsigned int curtime = timerTicks();
     m_LoopCount++;
     m_SyncCount++;
 
@@ -163,7 +154,7 @@ void CTimer::TimeToDelay( void )
         }
 
         m_SyncCount = 0;
-        m_SyncStartTime = m_LoopStartTime = getTicks();
+        m_SyncStartTime = m_LoopStartTime = timerTicks();
     }
     else
     {
@@ -175,7 +166,7 @@ void CTimer::TimeToDelay( void )
             timerDelay(delay);
         }
 
-        m_LoopStartTime = getTicks();
+        m_LoopStartTime = timerTicks();
     }
 
 	// Display the loops/logic/frames per second
@@ -194,13 +185,13 @@ void CTimer::TimeToDelay( void )
 //////////////////////////////////////////////////////////
 void CTimer::ResetSecondsTimer(void)
 {
-	m_LastSecTime = getTicks();
+	m_LastSecTime = timerTicks();
 }
 
 // will return nonzero once per second
 bool CTimer::HasSecElapsed(void)
 {
-    unsigned int CurTime = getTicks();
+    unsigned int CurTime = timerTicks();
 
 	if ((signed int)(CurTime - m_LastSecTime) >= MSPERSEC)
 	{
@@ -212,7 +203,7 @@ bool CTimer::HasSecElapsed(void)
 
 bool CTimer::HasTimeElapsed(int msecs)
 {
-    unsigned int CurTime = getTicks();
+    unsigned int CurTime = timerTicks();
 
 	if ((signed int)(CurTime - m_LastSecTime) >= msecs)
 	{

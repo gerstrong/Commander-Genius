@@ -206,7 +206,7 @@ void WIZ_ptimer_delay_ms( unsigned int delay )
     unsigned int start;
 
     start = WIZ_ptimer_get_ticks_ms();
-    while(WIZ_ptimer_get_ticks_ms()-start < delay) { /*usleep(1);*/}
+    while(WIZ_ptimer_get_ticks_ms()-start < delay) { /*usleep(1);*/ }
 }
 
 void WIZ_ptimer_cleanup(void)

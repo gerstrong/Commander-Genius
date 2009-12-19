@@ -13,6 +13,15 @@
 #include "../CSingleton.h"
 #define g_pTimer	CTimer::Get()
 
+#ifdef WIZGP2X
+#include "sys/wizgp2x.h"
+#define timerTicks WIZ_ptimer_get_ticks_ms
+#define timerDelay WIZ_ptimer_delay_ms
+#else
+#define timerTicks SDL_GetTicks
+#define timerDelay SDL_Delay
+#endif
+
 #define MSPERSEC        1000
 #define DEFAULT_SYNC    3
 #define DEFAULT_LPS     60
@@ -42,7 +51,7 @@ public:
     int getLogicPerSec( void ) { return m_LPS; }
 	int getFramesPerSec( void ) { return m_FPS; }
 
-	Uint32 getTicks() { return SDL_GetTicks(); }
+	Uint32 getTicks() { return timerTicks(); }
 
 private:
     int m_LPS, m_LogicCount, m_LogicRate, m_LogicInterval;

@@ -51,9 +51,8 @@ CVideoDriver::CVideoDriver() {
 	m_Resolution.depth=16;
 	Mode=0;
 	Fullscreen=true;
-	m_ScaleXFilter=0;
+	m_ScaleXFilter=1;
 	Zoom=1;
-	FrameSkip=2;
 	m_targetfps = 60;	// Enable automatic frameskipping by default at 30
 #else
 	m_Resolution.width=320;
@@ -63,7 +62,6 @@ CVideoDriver::CVideoDriver() {
 	Fullscreen=false;
 	m_ScaleXFilter=1;
 	Zoom=2;
-	FrameSkip=2;
 	m_targetfps = 60;
 #endif
 #ifdef USE_OPENGL

@@ -20,7 +20,6 @@ struct stDisplay
 	short Fullscreen;
 	short Filtermode;
 	short Zoom;
-	unsigned short FrameSkip;
 
 	// as long as we only have POD
 	stDisplay() { memset(this, 0, sizeof(stDisplay)); }
