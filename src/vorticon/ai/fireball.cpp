@@ -1,135 +1,133 @@
-#include "../../keen.h"
 #include "ray.h"
-#include "../../game.h"
 
-//#include "enemyai.h"
+#include "CObjectAI.h"
 
 #include "../../sdl/sound/CSound.h"
-#include "fireball.h"
 
 // fireball projectile shot out by Vorticon Mother (Ep3)
 
-#define FIREBALL_SPEED   		8
-#define FIREBALL_HARD_SPEED		19
-#define FIREBALL_ANIM_RATE     80
+#define FIREBALL_SPEED   		32
+#define FIREBALL_HARD_SPEED		80
+#define FIREBALL_ANIM_RATE     20
 
 #define FIREBALL_LEFT_FRAME    57
 #define FIREBALL_RIGHT_FRAME   59
 
-#define FIREBALL_OFFSCREEN_KILL_TIME     100
+#define FIREBALL_OFFSCREEN_KILL_TIME     25
 
-void fireball_ai(int o, bool hard)
+void CObjectAI::fireball_ai(CObject &object, bool hard)
 {
-	/*int i;
-	 int speed;
-	 if (objects[o].needinit)
-	 {
-	 objects[o].ai.ray.animframe = 0;
-	 objects[o].ai.ray.animtimer = 0;
-	 objects[o].inhibitfall = 1;
-	 objects[o].blockedl = objects[o].blockedr = 0;
-	 objects[o].canbezapped = 1;
-	 objects[o].needinit = 0;
-	 }
-	 
-	 // check if it hit keen
-	 if (objects[o].touchPlayer)
-	 {
-     killplayer(objects[o].touchedBy);
-	 // make a ZAP-ZOT animation
-     objects[o].type = OBJ_RAY;
-     objects[o].ai.ray.state = RAY_STATE_SETZAPZOT;
-     objects[o].inhibitfall = 1;
-     objects[o].needinit = 0;
-	 return;
-	 }
-	 
-	 // test if it hit a baddie
-	 for(i=1;i<highest_objslot;i++)
-	 {
-	 if (!objects[i].exists || i==o) continue;
-	 if (objects[i].type==OBJ_RAY || objects[i].type==OBJ_FIREBALL) continue;
-	 
-	 if (objects[i].canbezapped)
-	 {
-	 if (hitdetect(i, o))
-	 {
-	 objects[o].type = OBJ_RAY;
-	 objects[o].ai.ray.state = RAY_STATE_SETZAPZOT;
-	 objects[o].inhibitfall = 1;
-	 objects[o].needinit = 0;
-	 objects[i].zapped++;
-	 objects[i].zapx = objects[o].x;
-	 objects[i].zapy = objects[o].y;
-	 objects[i].zapd = objects[o].ai.ray.direction;
-	 objects[i].zappedbyenemy = 1;
-	 return;
-	 }
-	 }
-	 }
-	 
-	 // check if it was shot
-	 if (objects[o].zapped)
-	 {
-     if (objects[o].onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, objects[o].scrx);
-     objects[o].type = OBJ_RAY;
-     objects[o].ai.ray.state = RAY_STATE_SETZAPZOT;
-     objects[o].inhibitfall = 1;
-     objects[o].needinit = 0;
-     return;
-	 }
-	 
-	 // destroy the sound wave if it's been offscreen for a good amount
-	 // of time. this is to prevent a massive buildup of soundwaves
-	 // slowly traveling through walls all the way across the level
-	 // (which can crash the game due to running out of object slots).
-	 if (!objects[o].onscreen)
-	 {
-	 if (objects[o].ai.ray.offscreentime > FIREBALL_OFFSCREEN_KILL_TIME)
-	 {
-	 delete_object(o);
-	 return;
-	 }
-	 else objects[o].ai.ray.offscreentime++;
-	 }
-	 else objects[o].ai.ray.offscreentime = 0;
-	 
-	 // fly through the air
-	 speed = hard ? FIREBALL_HARD_SPEED : FIREBALL_SPEED;
-	 if (objects[o].ai.ray.direction == RIGHT)
-	 {
-     objects[o].sprite = FIREBALL_RIGHT_FRAME + objects[o].ai.ray.animframe;
-     if (objects[o].blockedr || objects[o].blockedl)
-     {
-	 objects[o].type = OBJ_RAY;
-	 objects[o].ai.ray.state = RAY_STATE_SETZAPZOT;
-	 objects[o].inhibitfall = 1;
-	 objects[o].needinit = 0;
-	 return;
-     }
-     else objects[o].x += speed;
-	 }
-	 else
-	 {
-     objects[o].sprite = FIREBALL_LEFT_FRAME + objects[o].ai.ray.animframe;
-     if (objects[o].blockedr || objects[o].blockedl)
-     {
-	 objects[o].type = OBJ_RAY;
-	 objects[o].ai.ray.state = RAY_STATE_SETZAPZOT;
-	 objects[o].inhibitfall = 1;
-	 objects[o].needinit = 0;
-	 return;
-     }
-     else objects[o].x -= speed;
-	 }
-	 
-	 // animation
-	 if (objects[o].ai.ray.animtimer > FIREBALL_ANIM_RATE)
-	 {
-	 objects[o].ai.ray.animframe ^= 1;
-	 objects[o].ai.ray.animtimer = 0;
-	 }
-	 else objects[o].ai.ray.animtimer++;*/
+	int i;
+	int speed;
+	if (object.needinit)
+	{
+		object.ai.ray.animframe = 0;
+		object.ai.ray.animtimer = 0;
+		object.inhibitfall = 1;
+		object.blockedl = object.blockedr = 0;
+		object.canbezapped = 1;
+		object.needinit = 0;
+	}
+
+	// check if it hit keen
+	if (object.touchPlayer)
+	{
+		killplayer(object.touchedBy);
+		// make a ZAP-ZOT animation
+		object.m_type = OBJ_RAY;
+		object.ai.ray.state = RAY_STATE_SETZAPZOT;
+		object.inhibitfall = 1;
+		object.needinit = 0;
+		return;
+	}
+
+	// test if it hit a baddie
+	std::vector<CObject>::iterator it_obj = m_Objvect.begin()++;
+	for( ; it_obj!=m_Objvect.end() ; it_obj++)
+	{
+		if (!it_obj->exists || it_obj->m_index==object.m_index) continue;
+		if (it_obj->m_type==OBJ_RAY || it_obj->m_type==OBJ_FIREBALL) continue;
+
+		if (it_obj->canbezapped)
+		{
+			if (it_obj->hitdetect(object))
+			{
+				object.m_type = OBJ_RAY;
+				object.ai.ray.state = RAY_STATE_SETZAPZOT;
+				object.inhibitfall = 1;
+				object.needinit = 0;
+				it_obj->zapped++;
+				it_obj->zapx = object.x;
+				it_obj->zapy = object.y;
+				it_obj->zapd = object.ai.ray.direction;
+				it_obj->zappedbyenemy = 1;
+				return;
+			}
+		}
+	}
+
+	// check if it was shot
+	if (object.zapped)
+	{
+		if (object.onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, object.scrx);
+		object.m_type = OBJ_RAY;
+		object.ai.ray.state = RAY_STATE_SETZAPZOT;
+		object.inhibitfall = 1;
+		object.needinit = 0;
+		return;
+	}
+
+	// destroy the sound wave if it's been offscreen for a good amount
+	// of time. this is to prevent a massive buildup of soundwaves
+	// slowly traveling through walls all the way across the level
+	// (which can crash the game due to running out of object slots).
+	if (!object.onscreen)
+	{
+		if (object.ai.ray.offscreentime > FIREBALL_OFFSCREEN_KILL_TIME)
+		{
+			deleteObj(object);
+			return;
+		}
+		else object.ai.ray.offscreentime++;
+	}
+	else object.ai.ray.offscreentime = 0;
+
+	// fly through the air
+	speed = hard ? FIREBALL_HARD_SPEED : FIREBALL_SPEED;
+	if (object.ai.ray.direction == RIGHT)
+	{
+		object.sprite = FIREBALL_RIGHT_FRAME + object.ai.ray.animframe;
+		if (object.blockedr || object.blockedl)
+		{
+			object.m_type = OBJ_RAY;
+			object.ai.ray.state = RAY_STATE_SETZAPZOT;
+			object.inhibitfall = 1;
+			object.needinit = 0;
+			return;
+		}
+		else object.x += speed;
+	}
+	else
+	{
+		object.sprite = FIREBALL_LEFT_FRAME + object.ai.ray.animframe;
+		if (object.blockedr || object.blockedl)
+		{
+			object.m_type = OBJ_RAY;
+			object.ai.ray.state = RAY_STATE_SETZAPZOT;
+			object.inhibitfall = 1;
+			object.needinit = 0;
+			return;
+		}
+		else object.x -= speed;
+	}
+
+	// animation
+	if (object.ai.ray.animtimer > FIREBALL_ANIM_RATE)
+	{
+		object.ai.ray.animframe ^= 1;
+		object.ai.ray.animtimer = 0;
+	}
+	else object.ai.ray.animtimer++;
 }
 
 

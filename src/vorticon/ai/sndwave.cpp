@@ -1,7 +1,4 @@
-#include "../../keen.h"
-#include "../../game.h"
-
-//#include "enemyai.h"
+#include "CObjectAI.h"
 
 // Sound Wave projectile, emitted by Meeps (ep3)
 
@@ -15,76 +12,73 @@
 
 #define SNDWAVE_OFFSCREEN_KILL_TIME     100
 
-// Reference to ../game.cpp
-void delete_object(int o);
-
-void sndwave_ai(int o, bool hardmode)
+void CObjectAI::sndwave_ai(CObject& object, bool hardmode)
 {
-	/*if (objects[o].needinit)
-	 {
-	 objects[o].ai.ray.animframe = 0;
-	 objects[o].ai.ray.animtimer = 0;
-	 objects[o].inhibitfall = 1;
-	 objects[o].needinit = 0;
-	 }
-	 
-	 // check if it hit keen
-	 if (objects[o].touchPlayer)
-	 {
-     killplayer(objects[o].touchedBy);
-	 }
-	 
-	 // destroy the sound wave if it's been offscreen for a good amount
-	 // of time. this is to prevent a massive buildup of soundwaves
-	 // slowly traveling through walls all the way across the level
-	 // (which can crash the game due to running out of object slots).
-	 if (!objects[o].onscreen)
-	 {
-	 if (objects[o].ai.ray.offscreentime > SNDWAVE_OFFSCREEN_KILL_TIME)
-	 {
-	 delete_object(o);
-	 return;
-	 }
-	 else objects[o].ai.ray.offscreentime++;
-	 }
-	 else objects[o].ai.ray.offscreentime = 0;
-	 
-	 // fly through the air
-	 if (objects[o].ai.ray.direction == RIGHT)
-	 {
-     objects[o].sprite = SNDWAVE_RIGHT_FRAME + objects[o].ai.ray.animframe;
-	 
-     if (objects[o].x>>CSF>>4 > map.xsize-2)
-	 delete_object(o);
-     else
-     {
-	 if (hardmode)
-	 objects[o].x += SNDWAVE_SPEED_FAST;
-	 else
-	 objects[o].x += SNDWAVE_SPEED;
-     }
-	 }
-	 else
-	 {
-     objects[o].sprite = SNDWAVE_LEFT_FRAME + objects[o].ai.ray.animframe;
-	 
-     if (objects[o].x>>CSF>>4 < 2)
-	 delete_object(o);
-     else
-     {
-	 if (hardmode)
-	 objects[o].x -= SNDWAVE_SPEED_FAST;
-	 else
-	 objects[o].x -= SNDWAVE_SPEED;
-     }
-	 }
-	 
-	 // animation
-	 if (objects[o].ai.ray.animtimer > SNDWAVE_ANIM_RATE)
-	 {
-	 objects[o].ai.ray.animframe ^= 1;
-	 objects[o].ai.ray.animtimer = 0;
-	 }
-	 else objects[o].ai.ray.animtimer++;*/
+	if (object.needinit)
+	{
+		object.ai.ray.animframe = 0;
+		object.ai.ray.animtimer = 0;
+		object.inhibitfall = 1;
+		object.needinit = 0;
+	}
+
+	// check if it hit keen
+	if (object.touchPlayer)
+	{
+		killplayer(object.touchedBy);
+	}
+
+	// destroy the sound wave if it's been offscreen for a good amount
+	// of time. this is to prevent a massive buildup of soundwaves
+	// slowly traveling through walls all the way across the level
+	// (which can crash the game due to running out of object slots).
+	if (!object.onscreen)
+	{
+		if (object.ai.ray.offscreentime > SNDWAVE_OFFSCREEN_KILL_TIME)
+		{
+			deleteObj(object);
+			return;
+		}
+		else object.ai.ray.offscreentime++;
+	}
+	else object.ai.ray.offscreentime = 0;
+
+	// fly through the air
+	if (object.ai.ray.direction == RIGHT)
+	{
+		object.sprite = SNDWAVE_RIGHT_FRAME + object.ai.ray.animframe;
+
+		if (object.x>>CSF > mp_Map->m_width)
+			deleteObj(object);
+		else
+		{
+			if (hardmode)
+				object.x += SNDWAVE_SPEED_FAST;
+			else
+				object.x += SNDWAVE_SPEED;
+		}
+	}
+	else
+	{
+		object.sprite = SNDWAVE_LEFT_FRAME + object.ai.ray.animframe;
+
+		if (object.x>>CSF < 2)
+			deleteObj(object);
+		else
+		{
+			if (hardmode)
+				object.x -= SNDWAVE_SPEED_FAST;
+			else
+				object.x -= SNDWAVE_SPEED;
+		}
+	}
+
+	// animation
+	if (object.ai.ray.animtimer > SNDWAVE_ANIM_RATE)
+	{
+		object.ai.ray.animframe ^= 1;
+		object.ai.ray.animtimer = 0;
+	}
+	else object.ai.ray.animtimer++;
 }
 

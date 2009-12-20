@@ -1,8 +1,4 @@
-#include "../../keen.h"
-#include "../../game.h"
-
-//#include "enemyai.h"
-
+#include "CObjectAI.h"
 
 // vertically-moving platform (ep3)
 
@@ -16,7 +12,7 @@
 
 #define PLATVERTPUSHAMOUNT      10
 
-void platvert_ai(int o)
+void CObjectAI::platvert_ai(CObject& object)
 {
 	/*unsigned int i,p;
 	 

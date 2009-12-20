@@ -1,7 +1,4 @@
-#include "../../keen.h"
-#include "../../game.h"
-
-//#include "enemyai.h"
+#include "CObjectAI.h"
 
 // Nessie (in ep3) (on the world map)
 
@@ -26,304 +23,300 @@
 
 void nessie_find_next_checkpoint(int o);
 
-void nessie_ai(int o)
+void CObjectAI::nessie_ai(CObject& object)
 {
-	/*unsigned int i;
-	 int isMounted;
-	 
-	 if (objects[o].needinit)
-	 {
-	 objects[o].ai.nessie.baseframe = NESSIE_DOWNLEFT_FRAME;
-	 objects[o].ai.nessie.leftrightdir = LEFT;
-	 objects[o].ai.nessie.updowndir = DOWN;
-	 objects[o].ai.nessie.animframe = 0;
-	 objects[o].ai.nessie.animtimer = 0;
-	 objects[o].ai.nessie.state = NESSIE_SWIMNORMAL;
-	 objects[o].ai.nessie.pausetimer = 0;
-	 objects[o].ai.nessie.mortimer_swim_amt = 0;
-	 objects[o].ai.nessie.destx = 0;
-	 objects[o].ai.nessie.desty = 0;
-	 objects[o].inhibitfall = 1;
-	 objects[o].canbezapped = 0;
-	 objects[o].needinit = 0;
-	 
-	 for(i=0;i<NESSIETRAILLEN;i++)
-	 {
-	 objects[o].ai.nessie.tiletrailX[i] = 0;
-	 objects[o].ai.nessie.tiletrailY[i] = 0;
-	 }
-	 // kick nessie into going counter-clockwise
-	 // (otherwise she'll go clockwise)
-	 objects[o].ai.nessie.tiletrailX[0] = (objects[o].x>>4>>CSF);
-	 objects[o].ai.nessie.tiletrailY[0] = (objects[o].y>>4>>CSF);
-	 objects[o].ai.nessie.tiletrailX[1] = (objects[o].x>>4>>CSF)+1;
-	 objects[o].ai.nessie.tiletrailY[1] = (objects[o].y>>4>>CSF);
-	 objects[o].ai.nessie.tiletrailhead = 2;
-	 
-	 for(i=0;i<MAX_PLAYERS;i++)
-	 {
-	 objects[o].ai.nessie.mounted[i] = 0;
-	 }
-	 
-	 nessie_find_next_checkpoint(o);
-	 }
-	 
-	 // find out if nessie is mounted, and for all players that are
-	 // mounted keep them stuck to nessie
-	 isMounted = 0;
-	 for(i=0;i<numplayers;i++)
-	 {
-	 if (player[i].isPlaying)
-	 {
-	 if (objects[o].ai.nessie.mounted[i])
-	 {
-	 player[i].x = objects[o].x;
-	 player[i].y = objects[o].y;
-	 isMounted = 1;
-	 }
-	 }
-	 }
-	 
-	 // animation
-	 objects[o].sprite = objects[o].ai.nessie.baseframe + objects[o].ai.nessie.animframe;
-	 if (isMounted) objects[o].sprite += 8;
-	 
-	 
-	 if (objects[o].ai.nessie.animtimer > NESSIE_ANIM_RATE)
-	 {
-	 objects[o].ai.nessie.animframe ^= 1;
-	 objects[o].ai.nessie.animtimer = 0;
-	 }
-	 else objects[o].ai.nessie.animtimer++;
-	 
-	 switch(objects[o].ai.nessie.state)
-	 {
-	 case NESSIE_SWIMUPTOMORTIMER:
-     if (!objects[o].ai.nessie.mortimer_swim_amt)
-     {
-	 objects[o].ai.nessie.state = NESSIE_PAUSE_MORTIMER;
-	 objects[o].ai.nessie.pausetimer = NESSIE_PAUSE_TIME;
-	 objects[o].ai.nessie.baseframe = NESSIE_DOWNRIGHT_FRAME;
-     }
-     else
-     {
-	 objects[o].y -= NESSIE_SPEED;
-	 objects[o].ai.nessie.mortimer_swim_amt--;
-     }
-	 break;
-	 
-	 case NESSIE_PAUSE_MORTIMER:
-     if (!objects[o].ai.nessie.pausetimer)
-     {
-	 //       objects[o].ai.nessie.state = NESSIE_SWIMAWAY_MORTIMER;
-	 //     objects[o].ai.nessie.mortimer_swim_amt = NESSIE_MORTIMER_SWIMAWAY_AMT;
-	 objects[o].ai.nessie.state = NESSIE_SWIMNORMAL;
-     }
-     else objects[o].ai.nessie.pausetimer--;
-	 break;
-	 
-	 case NESSIE_SWIMAWAY_MORTIMER:
-     if (!objects[o].ai.nessie.mortimer_swim_amt)
-     {
-	 objects[o].ai.nessie.state = NESSIE_SWIMNORMAL;
-     }
-     else
-     {
-	 objects[o].x += NESSIE_SPEED;
-	 objects[o].y += NESSIE_SPEED;
-	 objects[o].ai.nessie.mortimer_swim_amt--;
-     }
-	 break;
-	 
-	 case NESSIE_SWIMNORMAL:
-	 
-     // arrived at destination?
-     if (objects[o].x>>CSF==objects[o].ai.nessie.destx>>CSF && \
-	 objects[o].y>>CSF==objects[o].ai.nessie.desty>>CSF)
-     {
-	 // if we're approaching the mount point by Mortimer's castle
-	 // go into a special state that aligns her properly with the island
-	 // (i couldn't get this to work right any other way)
-	 if (objects[o].ai.nessie.desty>>CSF>>4 < map.ysize>>2)
-	 {
-	 if (map.objectlayer[(objects[o].ai.nessie.destx>>CSF>>4)+2][(((objects[o].ai.nessie.desty>>CSF)+8)>>4)-1]==NESSIE_PAUSE)
-	 {
-	 objects[o].ai.nessie.state = NESSIE_SWIMUPTOMORTIMER;
-	 objects[o].ai.nessie.mortimer_swim_amt = NESSIE_MORTIMER_SWIM_AMT;
-	 }
-	 }
-	 
-	 nessie_find_next_checkpoint(o);
-	 
-	 // set up/down and left/right direction flags for frame selection
-	 if (objects[o].ai.nessie.destx > objects[o].x)
-	 {
-	 objects[o].ai.nessie.leftrightdir = RIGHT;
-	 }
-	 else if (objects[o].ai.nessie.destx < objects[o].x)
-	 {
-	 objects[o].ai.nessie.leftrightdir = LEFT;
-	 }
-	 
-	 if (objects[o].ai.nessie.desty < objects[o].y)
-	 {
-	 objects[o].ai.nessie.updowndir = UP;
-	 }
-	 else
-	 {
-	 objects[o].ai.nessie.updowndir = DOWN;
-	 }
-     }
-	 
-     if (objects[o].ai.nessie.pausetimer)
-     {
-	 objects[o].ai.nessie.updowndir = DOWN;
-     }
-	 
-     // select proper frame based on up/down and left/right direction flags
-     if (objects[o].ai.nessie.updowndir==DOWN && objects[o].ai.nessie.leftrightdir==LEFT)
-     {
-	 objects[o].ai.nessie.baseframe = NESSIE_DOWNLEFT_FRAME;
-     }
-     else if (objects[o].ai.nessie.updowndir==DOWN && objects[o].ai.nessie.leftrightdir==RIGHT)
-     {
-	 objects[o].ai.nessie.baseframe = NESSIE_DOWNRIGHT_FRAME;
-     }
-     else if (objects[o].ai.nessie.updowndir==UP && objects[o].ai.nessie.leftrightdir==LEFT)
-     {
-	 objects[o].ai.nessie.baseframe = NESSIE_UPLEFT_FRAME;
-     }
-     else if (objects[o].ai.nessie.updowndir==UP && objects[o].ai.nessie.leftrightdir==RIGHT)
-     {
-	 objects[o].ai.nessie.baseframe = NESSIE_UPRIGHT_FRAME;
-     }
-	 
-     // pause if needed
-     if (objects[o].ai.nessie.pausetimer)
-     {
-	 objects[o].ai.nessie.pausetimer--;
-	 return;
-     }
-	 
-     // head to destination
-     if (objects[o].x < objects[o].ai.nessie.destx)
-     {
-	 if (objects[o].ai.nessie.destx - objects[o].x > NESSIE_SPEED)
-	 {
-	 objects[o].x += NESSIE_SPEED;
-	 }
-	 else
-	 {
-	 objects[o].x++;
-	 }
-     }
-     else if (objects[o].x > objects[o].ai.nessie.destx)
-     {
-	 if (objects[o].x - objects[o].ai.nessie.destx > NESSIE_SPEED)
-	 {
-	 objects[o].x -= NESSIE_SPEED;
-	 }
-	 else
-	 {
-	 objects[o].x--;
-	 }
-     }
-	 
-     if (objects[o].y < objects[o].ai.nessie.desty)
-     {
-	 if (objects[o].ai.nessie.desty - objects[o].y > NESSIE_SPEED)
-	 {
-	 objects[o].y += NESSIE_SPEED;
-	 }
-	 else
-	 {
-	 objects[o].y++;
-	 }
-     }
-     else if (objects[o].y > objects[o].ai.nessie.desty)
-     {
-	 if (objects[o].y - objects[o].ai.nessie.desty > NESSIE_SPEED)
-	 {
-	 objects[o].y -= NESSIE_SPEED;
-	 }
-	 else
-	 {
-	 objects[o].y--;
-	 }
-     }
-	 
-	 break;
-	 }*/
+	unsigned int i;
+	int isMounted;
+
+	if (object.needinit)
+	{
+		object.ai.nessie.baseframe = NESSIE_DOWNLEFT_FRAME;
+		object.ai.nessie.leftrightdir = LEFT;
+		object.ai.nessie.updowndir = DOWN;
+		object.ai.nessie.animframe = 0;
+		object.ai.nessie.animtimer = 0;
+		object.ai.nessie.state = NESSIE_SWIMNORMAL;
+		object.ai.nessie.pausetimer = 0;
+		object.ai.nessie.mortimer_swim_amt = 0;
+		object.ai.nessie.destx = 0;
+		object.ai.nessie.desty = 0;
+		object.inhibitfall = 1;
+		object.canbezapped = 0;
+		object.needinit = 0;
+
+		for(i=0;i<NESSIETRAILLEN;i++)
+		{
+			object.ai.nessie.tiletrailX[i] = 0;
+			object.ai.nessie.tiletrailY[i] = 0;
+		}
+		// kick nessie into going counter-clockwise
+		// (otherwise she'll go clockwise)
+		object.ai.nessie.tiletrailX[0] = (object.x>>4>>CSF);
+		object.ai.nessie.tiletrailY[0] = (object.y>>4>>CSF);
+		object.ai.nessie.tiletrailX[1] = (object.x>>4>>CSF)+1;
+		object.ai.nessie.tiletrailY[1] = (object.y>>4>>CSF);
+		object.ai.nessie.tiletrailhead = 2;
+
+		for(i=0;i<MAX_PLAYERS;i++)
+		{
+			object.ai.nessie.mounted[i] = 0;
+		}
+
+		nessie_find_next_checkpoint(object);
+	}
+
+	// find out if nessie is mounted, and for all players that are
+	// mounted keep them stuck to nessie
+	isMounted = 0;
+	for(i=0;i<m_NumPlayers;i++)
+	{
+		if (object.ai.nessie.mounted[i])
+		{
+			m_Player[i].x = object.x;
+			m_Player[i].y = object.y;
+			isMounted = 1;
+		}
+	}
+
+	// animation
+	object.sprite = object.ai.nessie.baseframe + object.ai.nessie.animframe;
+	if (isMounted) object.sprite += 8;
+
+
+	if (object.ai.nessie.animtimer > NESSIE_ANIM_RATE)
+	{
+		object.ai.nessie.animframe ^= 1;
+		object.ai.nessie.animtimer = 0;
+	}
+	else object.ai.nessie.animtimer++;
+
+	switch(object.ai.nessie.state)
+	{
+	case NESSIE_SWIMUPTOMORTIMER:
+		if (!object.ai.nessie.mortimer_swim_amt)
+		{
+			object.ai.nessie.state = NESSIE_PAUSE_MORTIMER;
+			object.ai.nessie.pausetimer = NESSIE_PAUSE_TIME;
+			object.ai.nessie.baseframe = NESSIE_DOWNRIGHT_FRAME;
+		}
+		else
+		{
+			object.y -= NESSIE_SPEED;
+			object.ai.nessie.mortimer_swim_amt--;
+		}
+		break;
+
+	case NESSIE_PAUSE_MORTIMER:
+		if (!object.ai.nessie.pausetimer)
+		{
+			//       object.ai.nessie.state = NESSIE_SWIMAWAY_MORTIMER;
+			//     object.ai.nessie.mortimer_swim_amt = NESSIE_MORTIMER_SWIMAWAY_AMT;
+			object.ai.nessie.state = NESSIE_SWIMNORMAL;
+		}
+		else object.ai.nessie.pausetimer--;
+		break;
+
+	case NESSIE_SWIMAWAY_MORTIMER:
+		if (!object.ai.nessie.mortimer_swim_amt)
+		{
+			object.ai.nessie.state = NESSIE_SWIMNORMAL;
+		}
+		else
+		{
+			object.x += NESSIE_SPEED;
+			object.y += NESSIE_SPEED;
+			object.ai.nessie.mortimer_swim_amt--;
+		}
+		break;
+
+	case NESSIE_SWIMNORMAL:
+
+		// arrived at destination?
+		if (object.x>>CSF==object.ai.nessie.destx>>CSF && \
+				object.y>>CSF==object.ai.nessie.desty>>CSF)
+		{
+			// if we're approaching the mount point by Mortimer's castle
+			// go into a special state that aligns her properly with the island
+			// (i couldn't get this to work right any other way)
+			if (object.ai.nessie.desty>>CSF < mp_Map->m_height>>2)
+			{
+				if (mp_Map->getObjectat((object.ai.nessie.destx>>CSF)+2, (((object.ai.nessie.desty>>STC)+8)>>TILE_S)-1)==NESSIE_PAUSE)
+				{
+					object.ai.nessie.state = NESSIE_SWIMUPTOMORTIMER;
+					object.ai.nessie.mortimer_swim_amt = NESSIE_MORTIMER_SWIM_AMT;
+				}
+			}
+
+			nessie_find_next_checkpoint(object);
+
+			// set up/down and left/right direction flags for frame selection
+			if (object.ai.nessie.destx > object.x)
+			{
+				object.ai.nessie.leftrightdir = RIGHT;
+			}
+			else if (object.ai.nessie.destx < object.x)
+			{
+				object.ai.nessie.leftrightdir = LEFT;
+			}
+
+			if (object.ai.nessie.desty < object.y)
+			{
+				object.ai.nessie.updowndir = UP;
+			}
+			else
+			{
+				object.ai.nessie.updowndir = DOWN;
+			}
+		}
+
+		if (object.ai.nessie.pausetimer)
+		{
+			object.ai.nessie.updowndir = DOWN;
+		}
+
+		// select proper frame based on up/down and left/right direction flags
+		if (object.ai.nessie.updowndir==DOWN && object.ai.nessie.leftrightdir==LEFT)
+		{
+			object.ai.nessie.baseframe = NESSIE_DOWNLEFT_FRAME;
+		}
+		else if (object.ai.nessie.updowndir==DOWN && object.ai.nessie.leftrightdir==RIGHT)
+		{
+			object.ai.nessie.baseframe = NESSIE_DOWNRIGHT_FRAME;
+		}
+		else if (object.ai.nessie.updowndir==UP && object.ai.nessie.leftrightdir==LEFT)
+		{
+			object.ai.nessie.baseframe = NESSIE_UPLEFT_FRAME;
+		}
+		else if (object.ai.nessie.updowndir==UP && object.ai.nessie.leftrightdir==RIGHT)
+		{
+			object.ai.nessie.baseframe = NESSIE_UPRIGHT_FRAME;
+		}
+
+		// pause if needed
+		if (object.ai.nessie.pausetimer)
+		{
+			object.ai.nessie.pausetimer--;
+			return;
+		}
+
+		// head to destination
+		if (object.x < object.ai.nessie.destx)
+		{
+			if (object.ai.nessie.destx - object.x > NESSIE_SPEED)
+			{
+				object.x += NESSIE_SPEED;
+			}
+			else
+			{
+				object.x++;
+			}
+		}
+		else if (object.x > object.ai.nessie.destx)
+		{
+			if (object.x - object.ai.nessie.destx > NESSIE_SPEED)
+			{
+				object.x -= NESSIE_SPEED;
+			}
+			else
+			{
+				object.x--;
+			}
+		}
+
+		if (object.y < object.ai.nessie.desty)
+		{
+			if (object.ai.nessie.desty - object.y > NESSIE_SPEED)
+			{
+				object.y += NESSIE_SPEED;
+			}
+			else
+			{
+				object.y++;
+			}
+		}
+		else if (object.y > object.ai.nessie.desty)
+		{
+			if (object.y - object.ai.nessie.desty > NESSIE_SPEED)
+			{
+				object.y -= NESSIE_SPEED;
+			}
+			else
+			{
+				object.y--;
+			}
+		}
+
+		break;
+	}
 }
 
-void nessie_find_next_checkpoint(int o)
+void CObjectAI::nessie_find_next_checkpoint(CObject& object)
 {
-	/*int x,y,i;
-	 int xa,ya;
-	 unsigned int destx, desty;
-	 int obj;
-	 int oneoflasttiles;
-	 
-	 // search in the 8 surrounding tiles and head to the first pathtile
-	 // we find that's not one of the last 5 we've been to
-	 x = (objects[o].x>>CSF>>4)-1;
-	 y = (((objects[o].y>>CSF)+8)>>4)-1;
-	 destx = desty = 0;
-	 for(ya=0;ya<3;ya++)
-	 {
-	 for(xa=0;xa<3;xa++)
-	 {
-	 destx = x+xa;
-	 desty = y+ya;
-	 
-	 obj = map.objectlayer[destx][desty];
-	 if (obj==NESSIE_PATH || obj==NESSIE_PAUSE)
-	 {
-	 // find out if this is one of the last tiles we've been to
-	 oneoflasttiles = 0;
-	 for(i=0;i<NESSIETRAILLEN;i++)
-	 {
-	 if (objects[o].ai.nessie.tiletrailX[i]==destx &&
-	 objects[o].ai.nessie.tiletrailY[i]==desty)
-	 {
-	 oneoflasttiles = 1;
-	 break;
-	 }
-	 }
-	 
-	 if (!oneoflasttiles)
-	 {
-	 objects[o].ai.nessie.tiletrailX[objects[o].ai.nessie.tiletrailhead] = destx;
-	 objects[o].ai.nessie.tiletrailY[objects[o].ai.nessie.tiletrailhead] = desty;
-	 objects[o].ai.nessie.tiletrailhead++;
-	 if (objects[o].ai.nessie.tiletrailhead>=NESSIETRAILLEN)
-	 {
-	 objects[o].ai.nessie.tiletrailhead = 0;
-	 }
-	 goto foundtile;
-	 } // end if (!oneoflasttiles)
-	 }  // end if(obj==8192 ...
-	 
-	 } // end for(xa...
-	 } // end for(ya...
-	 foundtile: ;
-	 
-	 objects[o].ai.nessie.destx = (destx<<4<<CSF);
-	 objects[o].ai.nessie.desty = (((desty<<4)-8)<<CSF);
-	 
-	 // make nessie pause at pause points, not in the top quarter
-	 // of the map (i.e. not at the mortimer's castle mount point...
-	 // this is done separetly elsewhere with a special state)
-	 if (desty > map.ysize>>2)
-	 {
-	 if (map.objectlayer[destx][desty]==NESSIE_PAUSE)
-	 {
-	 // make nessie pause
-	 objects[o].ai.nessie.pausetimer = NESSIE_PAUSE_TIME;
-	 objects[o].ai.nessie.pausex = destx;
-	 objects[o].ai.nessie.pausey = desty;
-	 }
-	 }*/
-	
+	int x,y,i;
+	int xa,ya;
+	unsigned int destx, desty;
+	int obj;
+	int oneoflasttiles;
+
+	// search in the 8 surrounding tiles and head to the first pathtile
+	// we find that's not one of the last 5 we've been to
+	x = (object.x>>CSF)-1;
+	y = (((object.y>>STC)+8)>>TILE_S)-1;
+	destx = desty = 0;
+	for(ya=0;ya<3;ya++)
+	{
+		for(xa=0;xa<3;xa++)
+		{
+			destx = x+xa;
+			desty = y+ya;
+
+			obj = mp_Map->getObjectat(destx ,desty);
+			if (obj==NESSIE_PATH || obj==NESSIE_PAUSE)
+			{
+				// find out if this is one of the last tiles we've been to
+				oneoflasttiles = 0;
+				for(i=0;i<NESSIETRAILLEN;i++)
+				{
+					if (object.ai.nessie.tiletrailX[i]==destx &&
+							object.ai.nessie.tiletrailY[i]==desty)
+					{
+						oneoflasttiles = 1;
+						break;
+					}
+				}
+
+				if (!oneoflasttiles)
+				{
+					object.ai.nessie.tiletrailX[object.ai.nessie.tiletrailhead] = destx;
+					object.ai.nessie.tiletrailY[object.ai.nessie.tiletrailhead] = desty;
+					object.ai.nessie.tiletrailhead++;
+					if (object.ai.nessie.tiletrailhead>=NESSIETRAILLEN)
+					{
+						object.ai.nessie.tiletrailhead = 0;
+					}
+					goto foundtile;
+				} // end if (!oneoflasttiles)
+			}  // end if(obj==8192 ...
+
+		} // end for(xa...
+	} // end for(ya...
+	foundtile: ;
+
+	object.ai.nessie.destx = (destx<<4<<CSF);
+	object.ai.nessie.desty = (((desty<<4)-8)<<CSF);
+
+	// make nessie pause at pause points, not in the top quarter
+	// of the map (i.e. not at the mortimer's castle mount point...
+	// this is done separetly elsewhere with a special state)
+	if (desty > mp_Map->m_height>>2)
+	{
+		if (mp_Map->getObjectat(destx, desty) == NESSIE_PAUSE)
+		{
+			// make nessie pause
+			object.ai.nessie.pausetimer = NESSIE_PAUSE_TIME;
+			object.ai.nessie.pausex = destx;
+			object.ai.nessie.pausey = desty;
+		}
+	}
 }
 

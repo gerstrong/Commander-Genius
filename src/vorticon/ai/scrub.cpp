@@ -1,6 +1,6 @@
 #include "../../sdl/sound/CSound.h"
-#include "../../keen.h"
-#include "../../game.h"
+//#include "../../keen.h"
+//#include "../../game.h"
 #include "CObjectAI.h"
 
 // The red creatures that follow the wall (ep2)
@@ -16,8 +16,8 @@ enum scrub_actions{
 #define SCRUB_WALK_SPEED      16
 
 #define SCRUB_FALLSPDINCRATE   2
-#define SCRUB_MIN_FALL_SPEED  10
-#define SCRUB_MAX_FALL_SPEED  25
+#define SCRUB_MIN_FALL_SPEED  40
+#define SCRUB_MAX_FALL_SPEED  100
 
 #define SCRUBDIE_START_INERTIA      -10
 #define SCRUBDIE_INERTIA_DECREASE    2
@@ -145,20 +145,16 @@ void CObjectAI::scrub_ai(CObject &object)
 		SetAllCanSupportPlayer(object, 0);
 		object.sprite = SCRUB_FRY_FRAME;
 		object.y += object.ai.scrub.scrubdie_inertia_y;
-		if (object.ai.scrub.dietimer>SCRUBDIE_INERTIA_DECREASE)
+		if (object.ai.scrub.scrubdie_inertia_y < SCRUB_MAX_FALL_SPEED)
 		{
-			if (object.ai.scrub.scrubdie_inertia_y < SCRUB_MAX_FALL_SPEED)
-			{
-				object.ai.scrub.scrubdie_inertia_y++;
-			}
-			object.ai.scrub.dietimer = 0;
+			object.ai.scrub.scrubdie_inertia_y+=2;
 		}
-		else object.ai.scrub.dietimer++;
+		object.ai.scrub.dietimer = 0;
 		if (object.ai.scrub.scrubdie_inertia_y >= 0 && object.blockedd)
 		{
 			object.sprite = SCRUB_DEAD_FRAME;
 			object.ai.scrub.state = SCRUB_DEAD;
-			object.y = (object.y>>STC)<<STC;
+			object.y = (object.y>>CSF)<<CSF;
 			object.dead = 1;
 			SetAllCanSupportPlayer(object, 0);
 		}

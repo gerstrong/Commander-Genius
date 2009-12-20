@@ -4,7 +4,7 @@
 #include "CObjectAI.h"
 
 #define EXPLODESPRITE           60
-#define EXPLODE_ANIM_RATE       80
+#define EXPLODE_ANIM_RATE       20
 
 #define SPACETILE               155
 
@@ -42,9 +42,9 @@ void CObjectAI::explosion_ai(CObject &object)
 
 #define EARTHCHUNK_ANIM_RATE       5
 
-#define CHUNKSPD        20
+#define CHUNKSPD        5
 #define HALFCHUNKSPD    (CHUNKSPD/2)
-#define BIGCHUNKSPD     14
+#define BIGCHUNKSPD     4
 
 void CObjectAI::earthchunk_ai(CObject &object)
 {

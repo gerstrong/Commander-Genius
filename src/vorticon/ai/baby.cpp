@@ -8,13 +8,13 @@
 // Baby Vorticon (the superfast little blue creatures that knock you down)
 // (ep 2 & 3)
 
-#define BABY_RUN        0
-#define BABY_DYING      1
-#define BABY_DEAD       2
+enum vort_baby_actions{
+	BABY_RUN, BABY_DYING, BABY_DEAD
+};
 
-#define BABY_WALK_SPEED         4
+#define BABY_WALK_SPEED         16
 
-#define BABY_WALK_ANIM_RATE     20
+#define BABY_WALK_ANIM_RATE     5
 
 #define BABY_WALK_LEFT_FRAME    48
 #define BABY_WALK_RIGHT_FRAME   52
@@ -24,7 +24,7 @@
 #define BABY_JUMP_PROB			80
 #define BABY_BOUNCE_PROB		10
 
-#define BABY_FRY_TIME           80
+#define BABY_FRY_TIME           20
 #define BABY_DIE_INERTIA        20
 
 #define BABY_JUMP_BIG           1

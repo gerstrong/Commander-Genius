@@ -155,15 +155,15 @@ void CObjectAI::performSpecialAIType( CObject &object )
 
 		//KEEN3
 		case OBJ_FOOB: foob_ai(object, m_difficulty>1); break;
-		//case OBJ_NINJA: ninja_ai( i, p_levelcontrol->hardmode); break;
-		//case OBJ_MEEP: meep_ai( i, *p_levelcontrol ); break;
-		//case OBJ_SNDWAVE: sndwave_ai( i, p_levelcontrol->hardmode); break;
-		//case OBJ_MOTHER: mother_ai( i, *p_levelcontrol ); break;
-		//case OBJ_FIREBALL: fireball_ai( i, p_levelcontrol->hardmode ); break;
-		//case OBJ_BALL: ballandjack_ai(i); break;
-		//case OBJ_JACK: ballandjack_ai(i); break;
-		//case OBJ_PLATVERT: platvert_ai(i); break;
-		//case OBJ_NESSIE: nessie_ai(i); break;
+		case OBJ_NINJA: ninja_ai(object, m_difficulty>1); break;
+		case OBJ_MEEP: meep_ai(object); break;
+		case OBJ_SNDWAVE: sndwave_ai(object, m_difficulty>1); break;
+		case OBJ_MOTHER: mother_ai(object, m_difficulty>1 ); break;
+		case OBJ_FIREBALL: fireball_ai(object, m_difficulty>1 ); break;
+		case OBJ_BALL: ballandjack_ai(object); break;
+		case OBJ_JACK: ballandjack_ai(object); break;
+		case OBJ_PLATVERT: platvert_ai(object); break;
+		case OBJ_NESSIE: nessie_ai(object); break;
 
 		//Common Objects
 		case OBJ_RAY: ray_ai( object, mp_Options[OPT_FULLYAUTOMATIC].value ); break;

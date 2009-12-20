@@ -1,10 +1,6 @@
 // ai for the ball and the jack in ep3
-#include "../../keen.h"
-
-#include "../../game.h"
-#include "../../graphics/CGfxEngine.h"
-
-#include "balljack.h"
+#include "CObjectAI.h"
+#include "../spritedefines.h"
 
 #define BALL_SPEED      15
 #define JACK_SPEED      10
@@ -14,161 +10,164 @@
 
 char BJ_BlockedD(int o);
 
-void ballandjack_ai(int o)
+unsigned int rnd(void);
+
+void CObjectAI::ballandjack_ai(CObject &object)
 {
-	/*if (objects[o].needinit)
-	 {
-	 int i = rnd()%4;
-	 switch(i)
-	 {
-	 case 0: objects[o].ai.bj.dir = DUPLEFT; break;
-	 case 1: objects[o].ai.bj.dir = DUPRIGHT; break;
-	 case 2: objects[o].ai.bj.dir = DDOWNLEFT; break;
-	 case 3: objects[o].ai.bj.dir = DDOWNRIGHT; break;
-	 }
-	 
-	 objects[o].ai.bj.animframe = 0;
-	 objects[o].ai.bj.animtimer = 0;
-	 objects[o].blockedl = 0;
-	 objects[o].blockedr = 0;
-	 objects[o].blockedu = 0;
-	 objects[o].blockedd = 0;
-	 objects[o].inhibitfall = 1;
-	 
-	 if (objects[o].type==OBJ_BALL)
-	 {
-	 objects[o].ai.bj.speed = BALL_SPEED;
-	 objects[o].canbezapped = 1;
-	 }
-	 else
-	 {
-	 objects[o].ai.bj.speed = JACK_SPEED;
-	 objects[o].canbezapped = 0;
-	 }
-	 objects[o].needinit = 0;
-	 }
-	 
-	 if (objects[o].touchPlayer)
-	 {
-	 if (objects[o].type==OBJ_BALL)
-	 {
-	 if (player[objects[o].touchedBy].x < objects[o].x)
-	 {
-	 bumpplayer(objects[o].touchedBy, -BALLPUSHAMOUNT, true);
-	 }
-	 else
-	 {
-	 bumpplayer(objects[o].touchedBy, BALLPUSHAMOUNT, true);
-	 }
-	 
-	 switch(objects[o].ai.bj.dir)
-	 {
-	 case DUPRIGHT: objects[o].ai.bj.dir = DUPLEFT; break;
-	 case DUPLEFT: objects[o].ai.bj.dir = DUPRIGHT; break;
-	 case DDOWNRIGHT: objects[o].ai.bj.dir = DDOWNLEFT; break;
-	 case DDOWNLEFT: objects[o].ai.bj.dir = DDOWNRIGHT; break;
-	 }
-	 }
-	 else killplayer(objects[o].touchedBy);
-	 }
-	 
-	 if (objects[o].zapped)
-	 {
-	 // have ball change direction when zapped
-	 if (objects[o].zapd==LEFT)
-	 {
-	 switch(objects[o].ai.bj.dir)
-	 {
-	 case DUPRIGHT: objects[o].ai.bj.dir = DUPLEFT; break;
-	 case DDOWNRIGHT: objects[o].ai.bj.dir = DDOWNLEFT; break;
-	 }
-	 }
-	 else
-	 {
-	 switch(objects[o].ai.bj.dir)
-	 {
-	 case DUPLEFT: objects[o].ai.bj.dir = DUPRIGHT; break;
-	 case DDOWNLEFT: objects[o].ai.bj.dir = DDOWNRIGHT; break;
-	 }
-	 }
-	 objects[o].zapped = 0;
-	 }
-	 
-	 switch(objects[o].ai.bj.dir)
-	 {
-	 case DUPLEFT:
-     if (objects[o].blockedu) { objects[o].ai.bj.dir = DDOWNLEFT; }
-     else objects[o].y -= objects[o].ai.bj.speed;
-	 
-     if (objects[o].blockedl) { objects[o].ai.bj.dir = DUPRIGHT; }
-     else objects[o].x -= objects[o].ai.bj.speed;
-     break;
-	 case DUPRIGHT:
-     if (objects[o].blockedu) { objects[o].ai.bj.dir = DDOWNRIGHT; }
-     else objects[o].y -= objects[o].ai.bj.speed;
-	 
-     if (objects[o].blockedr) { objects[o].ai.bj.dir = DUPLEFT; }
-     else objects[o].x += objects[o].ai.bj.speed;
-     break;
-	 case DDOWNLEFT:
-     if (BJ_BlockedD(o)) { objects[o].ai.bj.dir = DUPLEFT; }
-     else objects[o].y += objects[o].ai.bj.speed;
-	 
-     if (objects[o].blockedl) { objects[o].ai.bj.dir = DDOWNRIGHT; }
-     else objects[o].x -= objects[o].ai.bj.speed;
-     break;
-	 case DDOWNRIGHT:
-     if (BJ_BlockedD(o)) { objects[o].ai.bj.dir = DUPRIGHT; }
-     else objects[o].y += objects[o].ai.bj.speed;
-	 
-     if (objects[o].blockedr) { objects[o].ai.bj.dir = DDOWNLEFT; }
-     else objects[o].x += objects[o].ai.bj.speed;
-     break;
-	 }
-	 
-	 if (objects[o].type==OBJ_BALL)
-	 {
-	 objects[o].sprite = OBJ_BALL_DEFSPRITE;
-	 }
-	 else
-	 {
-	 objects[o].sprite = OBJ_JACK_DEFSPRITE + objects[o].ai.bj.animframe;
-	 if (objects[o].ai.bj.animtimer > JACK_ANIM_RATE)
-	 {
-	 objects[o].ai.bj.animframe++;
-	 if (objects[o].ai.bj.animframe>3) objects[o].ai.bj.animframe=0;
-	 objects[o].ai.bj.animtimer = 0;
-	 }
-	 else objects[o].ai.bj.animtimer++;
-	 }*/
+	if (object.needinit)
+	{
+		int i = rnd()%4;
+		switch(i)
+		{
+		case 0: object.ai.bj.dir = DUPLEFT; break;
+		case 1: object.ai.bj.dir = DUPRIGHT; break;
+		case 2: object.ai.bj.dir = DDOWNLEFT; break;
+		case 3: object.ai.bj.dir = DDOWNRIGHT; break;
+		}
+
+		object.ai.bj.animframe = 0;
+		object.ai.bj.animtimer = 0;
+		object.blockedl = 0;
+		object.blockedr = 0;
+		object.blockedu = 0;
+		object.blockedd = 0;
+		object.inhibitfall = 1;
+
+		if (object.m_type==OBJ_BALL)
+		{
+			object.ai.bj.speed = BALL_SPEED;
+			object.canbezapped = 1;
+		}
+		else
+		{
+			object.ai.bj.speed = JACK_SPEED;
+			object.canbezapped = 0;
+		}
+		object.needinit = 0;
+	}
+
+	if (object.touchPlayer)
+	{
+		if (object.m_type==OBJ_BALL)
+		{
+			if (m_Player[object.touchedBy].x < object.x)
+			{
+				m_Player[object.touchedBy].bump(-BALLPUSHAMOUNT, true);
+			}
+			else
+			{
+				m_Player[object.touchedBy].bump(BALLPUSHAMOUNT, true);
+			}
+
+			switch(object.ai.bj.dir)
+			{
+			case DUPRIGHT: object.ai.bj.dir = DUPLEFT; break;
+			case DUPLEFT: object.ai.bj.dir = DUPRIGHT; break;
+			case DDOWNRIGHT: object.ai.bj.dir = DDOWNLEFT; break;
+			case DDOWNLEFT: object.ai.bj.dir = DDOWNRIGHT; break;
+			}
+		}
+		else killplayer(object.touchedBy);
+	}
+
+	if (object.zapped)
+	{
+		// have ball change direction when zapped
+		if (object.zapd==LEFT)
+		{
+			switch(object.ai.bj.dir)
+			{
+			case DUPRIGHT: object.ai.bj.dir = DUPLEFT; break;
+			case DDOWNRIGHT: object.ai.bj.dir = DDOWNLEFT; break;
+			}
+		}
+		else
+		{
+			switch(object.ai.bj.dir)
+			{
+			case DUPLEFT: object.ai.bj.dir = DUPRIGHT; break;
+			case DDOWNLEFT: object.ai.bj.dir = DDOWNRIGHT; break;
+			}
+		}
+		object.zapped = 0;
+	}
+
+	switch(object.ai.bj.dir)
+	{
+	case DUPLEFT:
+		if (object.blockedu) { object.ai.bj.dir = DDOWNLEFT; }
+		else object.y -= object.ai.bj.speed;
+
+		if (object.blockedl) { object.ai.bj.dir = DUPRIGHT; }
+		else object.x -= object.ai.bj.speed;
+		break;
+	case DUPRIGHT:
+		if (object.blockedu) { object.ai.bj.dir = DDOWNRIGHT; }
+		else object.y -= object.ai.bj.speed;
+
+		if (object.blockedr) { object.ai.bj.dir = DUPLEFT; }
+		else object.x += object.ai.bj.speed;
+		break;
+	case DDOWNLEFT:
+		if (BJ_BlockedD(object)) { object.ai.bj.dir = DUPLEFT; }
+		else object.y += object.ai.bj.speed;
+
+		if (object.blockedl) { object.ai.bj.dir = DDOWNRIGHT; }
+		else object.x -= object.ai.bj.speed;
+		break;
+	case DDOWNRIGHT:
+		if (BJ_BlockedD(object)) { object.ai.bj.dir = DUPRIGHT; }
+		else object.y += object.ai.bj.speed;
+
+		if (object.blockedr) { object.ai.bj.dir = DDOWNLEFT; }
+		else object.x += object.ai.bj.speed;
+		break;
+	}
+
+	if (object.m_type==OBJ_BALL)
+	{
+		object.sprite = OBJ_BALL_DEFSPRITE;
+	}
+	else
+	{
+		object.sprite = OBJ_JACK_DEFSPRITE + object.ai.bj.animframe;
+		if (object.ai.bj.animtimer > JACK_ANIM_RATE)
+		{
+			object.ai.bj.animframe++;
+			if (object.ai.bj.animframe>3) object.ai.bj.animframe=0;
+			object.ai.bj.animtimer = 0;
+		}
+		else object.ai.bj.animtimer++;
+	}
 }
 
-char BJ_BlockedD(int o)
+char CObjectAI::BJ_BlockedD(CObject &object)
 {
 	// we do our own blockedd, because we don't want the ball/jack to
 	// bounce off the top of platforms that have only solidfall set--
 	// so we test blockedd against solidl/r instead
-	/*CSprite *sprites = g_pGfxEngine->Sprite[objects[o].sprite];
-	 Uint16 obj_width, obj_height;
-	 obj_width = sprites->getWidth();
-	 obj_height = sprites->getHeight();
-	 
-	 if (objects[o].blockedd)
-	 {
-	 // ensure that the tile common_enemy_ai said we hit also has
-	 // solid l/r set
-	 if (TileProperty[getmaptileat((objects[o].x>>CSF)+2, (objects[o].y>>CSF)+obj_height)][BLEFT])
-	 { return 1; }
-	 if (TileProperty[getmaptileat((objects[o].x>>CSF)+(obj_width-2), (objects[o].y>>CSF)+obj_height)][BLEFT])
-	 { return 1; }
-	 
-	 }
-	 
-	 // ensure it's not a ball no-pass point
-	 if (getlevelat((objects[o].x>>CSF)+2, (objects[o].y>>CSF)+obj_height)==BALL_NOPASSPOINT)
-	 { return 1; }
-	 if (getlevelat((objects[o].x>>CSF)+(obj_width-2), (objects[o].y>>CSF)+obj_height)==BALL_NOPASSPOINT)
-	 { return 1; }*/
-	
+	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
+	CSprite *sprites = g_pGfxEngine->Sprite[object.sprite];
+	Uint16 obj_width, obj_height;
+	obj_width = sprites->getWidth();
+	obj_height = sprites->getHeight();
+
+	if (object.blockedd)
+	{
+		// ensure that the tile common_enemy_ai said we hit also has
+		// solid l/r set
+		if (TileProperty[mp_Map->at((object.x>>CSF)+2, (object.y>>CSF)+obj_height)].bleft)
+		{ return 1; }
+		if (TileProperty[mp_Map->at((object.x>>CSF)+(obj_width-2), (object.y>>CSF)+obj_height)].bleft)
+		{ return 1; }
+
+	}
+
+	// ensure it's not a ball no-pass point
+	if (mp_Map->getObjectat((object.x>>CSF)+2, (object.y>>CSF)+obj_height)==BALL_NOPASSPOINT)
+	{ return 1; }
+	if (mp_Map->getObjectat((object.x>>CSF)+(obj_width-2), (object.y>>CSF)+obj_height)==BALL_NOPASSPOINT)
+	{ return 1; }
+
 	return 0;
 }

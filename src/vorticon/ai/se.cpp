@@ -43,7 +43,7 @@ void CObjectAI::se_ai(CObject &object)
 
 void CObjectAI::se_extend_plat(CObject &object, bool &PlatExtending)
 {
-#define PLAT_EXTEND_RATE        30
+#define PLAT_EXTEND_RATE        7
 
 	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 
@@ -183,14 +183,13 @@ void CObjectAI::spark_ai(CObject &object, int &sparks_left)
 	int mx,my,x,y;
 
 #define SPARK_BASEFRAME         OBJ_SPARK_DEFSPRITE_EP2
-#define SPARK_ANIMRATE          20
+#define SPARK_ANIMRATE          5
 
-#define SPARK_ANIMATE           0
-#define SPARK_BLOWUP1           1
-#define SPARK_BLOWUP2           2
-#define SPARK_BLOWUP3           3
+enum spark_actions{
+SPARK_ANIMATE, SPARK_BLOWUP1, SPARK_BLOWUP2, SPARK_BLOWUP3
+};
 
-#define SPARK_BLOW_DELAY        100
+#define SPARK_BLOW_DELAY        25
 
 #define BG_GREY					143
 
@@ -331,7 +330,7 @@ void CObjectAI::spark_ai(CObject &object, int &sparks_left)
 
 void CObjectAI::se_ankhshield(CObject &object, int episode)
 {
-#define ANKH_FLICKER_FREQ       12
+#define ANKH_FLICKER_DELAY       3
 
 	if (object.needinit)
 	{
@@ -368,7 +367,7 @@ void CObjectAI::se_ankhshield(CObject &object, int episode)
 		break;
 	}
 
-	if (object.ai.se.timer > ANKH_FLICKER_FREQ)
+	if (object.ai.se.timer > ANKH_FLICKER_DELAY)
 	{
 		object.ai.se.frame++;
 		if (object.ai.se.frame>8) object.ai.se.frame = 0;
@@ -380,8 +379,8 @@ void CObjectAI::se_ankhshield(CObject &object, int episode)
 #define ARM_GO          0
 #define ARM_WAIT        1
 
-#define ARM_MOVE_SPEED   50
-#define ARM_WAIT_TIME    70
+#define ARM_MOVE_SPEED   200
+#define ARM_WAIT_TIME    26
 void CObjectAI::se_mortimer_arm(CObject &object)
 {
 	int mx,my;
@@ -492,7 +491,7 @@ void CObjectAI::se_mortimer_arm(CObject &object)
 #define MORTIMER_ARMS_YSTART            7
 #define MORTIMER_ARMS_YEND              18
 
-#define ARMS_DESTROY_RATE        50
+#define ARMS_DESTROY_RATE        12
 
 #define MSPARK_IDLE              0
 #define MSPARK_DESTROYARMS       1
@@ -620,7 +619,7 @@ void CObjectAI::se_mortimer_spark(CObject &object)
 }
 
 #define MORTIMER_HEART_BASEFRAME        146
-#define HEART_ANIMRATE                  60
+#define HEART_ANIMRATE                  15
 
 #define HEART_IDLE              0
 #define HEART_ZAPSRUNUP         1
@@ -633,7 +632,7 @@ void CObjectAI::se_mortimer_spark(CObject &object)
 #define MORTIMER_MACHINE_XSTART         8
 #define MORTIMER_MACHINE_XEND           17
 
-#define MACHINE_DESTROY_RATE            50
+#define MACHINE_DESTROY_RATE            12
 #define MORTIMER_ZAPWAVESPACING        200
 #define MORTIMER_NUMZAPWAVES             5
 
@@ -746,7 +745,7 @@ void CObjectAI::se_mortimer_heart(CObject &object)
 	}
 }
 
-#define TIME_AFTER_DESTROY_BEFORE_FADEOUT       2300
+#define TIME_AFTER_DESTROY_BEFORE_FADEOUT       500
 void CObjectAI::se_mortimer_zapsup(CObject &object)
 {
 	int x;
@@ -804,11 +803,11 @@ void CObjectAI::se_mortimer_zapsup(CObject &object)
 #define LEG_GO          0
 #define LEG_WAIT        1
 
-#define LEFTLEG_MOVE_SPEED   60
-#define LEFTLEG_WAIT_TIME    150
+#define LEFTLEG_MOVE_SPEED   240
+#define LEFTLEG_WAIT_TIME    36
 
-#define RIGHTLEG_MOVE_SPEED   80
-#define RIGHTLEG_WAIT_TIME    120
+#define RIGHTLEG_MOVE_SPEED   320
+#define RIGHTLEG_WAIT_TIME    40
 void CObjectAI::se_mortimer_leg_left(CObject &object)
 {
 	int mx,my;
@@ -1013,7 +1012,7 @@ void CObjectAI::se_mortimer_leg_right(CObject &object)
 }
 
 #define NUM_RANDOM_ZAPS         30
-#define TIME_BETWEEN_ZAPS       10
+#define TIME_BETWEEN_ZAPS       2
 void CObjectAI::se_mortimer_randomzaps(CObject &object)
 {
 	int x,y;

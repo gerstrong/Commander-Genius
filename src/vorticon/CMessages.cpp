@@ -101,7 +101,7 @@ bool CMessages::extractGlobalStrings()
 				case 131:
 				{
 					StringMap.insert( extractString( "EP2_StatusBox" , 0x19C40, 0x19CCE, -804 ) );
-					StringMap.insert( extractString( "LIVES_LEFT" , 0x1A9B2, 0x1A9BF, -804 ) );
+					StringMap.insert( extractString( "LIVES_LEFT" , 0x1A9B2, 0x1A9BF, -776 ) );
 					StringMap.insert( extractString( "EP2_VE_NOJUMPINDARK" , 0x1A2D2, 0x1A391, -804 ) );
 					StringMap.insert( extractString( "EP2_VE_EVILBELTS" , 0x1A391, 0x1A4A6, -804) );
 					StringMap.insert( extractString( "EP2_LVL4_TargetName" , 0x19CCF, 0x19CD5, -804) );

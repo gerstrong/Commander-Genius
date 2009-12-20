@@ -88,14 +88,19 @@ private:
 
 	 // ep3
 	 void foob_ai(CObject &object, bool hardmode);
-	 //void ninja_ai(int o, bool hardmode);
-	 //void meep_ai(int o, stLevelControl levelcontrol);
-	 //void sndwave_ai(int o, bool hardmode);
-	 //void mother_ai(int o, stLevelControl levelcontrol);
-	 //void fireball_ai(int o, bool hard);
-	 //void ballandjack_ai(int o);
-	 //void platvert_ai(int o);
-	 //void nessie_ai(int o);
+	 void ninja_ai(CObject &object, bool hardmode);
+	 void meep_ai(CObject& object);
+	 void sndwave_ai(CObject& object, bool hardmode);
+	 void mother_ai(CObject& object, bool hardmode);
+	 void fireball_ai(CObject &object, bool hard);
+
+	 void ballandjack_ai(CObject& object);
+	 char BJ_BlockedD(CObject &object);
+
+	 void platvert_ai(CObject& object);
+
+	 void nessie_ai(CObject& object);
+	 void nessie_find_next_checkpoint(CObject& object);
 
 	 // Common Objects
 	void autoray_ai(CObject &object);
