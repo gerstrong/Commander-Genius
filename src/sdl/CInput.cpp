@@ -13,12 +13,12 @@
 #include "../CLogFile.h"
 #include "../FindFile.h"
 
-#ifdef WIZGP2X
+#if defined(WIZ) || defined(GP2X)
 #include "sys/wizgp2x.h"
 #endif
 
 CInput::CInput() {
-#ifdef WIZGP2X
+#if defined(WIZ) || defined(GP2X)
     volume_direction = VOLUME_NOCHG;
 	volume = 60-VOLUME_CHANGE_RATE;
 	WIZ_AdjustVolume(VOLUME_UP);
@@ -220,7 +220,7 @@ bool CInput::readNewEvent(Uint8 device, int position)
 				return true;
 				break;
 			case SDL_JOYBUTTONDOWN:
-#ifdef WIZGP2X
+#if defined(WIZ) || defined(GP2X)
 				WIZ_EmuKeyboard( Event.jbutton.button, 1 );
 				return false;
 #else
@@ -317,7 +317,7 @@ void CInput::pollEvents()
 	}
 
 
-#ifdef WIZGP2X
+#if defined(WIZ) || defined(GP2X)
 	WIZ_AdjustVolume( volume_direction );
 #endif
 }
@@ -346,7 +346,7 @@ void CInput::processJoystickAxis(void)
 }
 void CInput::processJoystickButton(int value)
 {
-#ifdef WIZGP2X
+#if defined(WIZ) || defined(GP2X)
 	WIZ_EmuKeyboard( Event.jbutton.button, value );
 #else
 	for(int j=0 ; j<NUM_INPUTS ; j++)

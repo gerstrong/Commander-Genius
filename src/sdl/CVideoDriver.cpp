@@ -45,7 +45,7 @@ CVideoDriver::CVideoDriver() {
 	// Default values
 
 	showfps=true;
-#ifdef WIZGP2X
+#if defined(WIZ) || defined(GP2X)
 	m_Resolution.width=320;
 	m_Resolution.height=240;
 	m_Resolution.depth=16;
@@ -294,12 +294,10 @@ bool CVideoDriver::applyMode()
 	m_Resolution = *m_Resolution_pos;
 
 	// Setup mode depends on some systems.
-#ifdef WIZGP2X
-#ifdef GP2X
+#if defined(WIZ)
+    Mode = SDL_SWSURFACE;
+#elif defined(GP2X)
     Mode = SDL_DOUBLEBUF | SDL_HWSURFACE;
-#else
-	Mode = SDL_SWSURFACE;
-#endif
 #else
 	// Support for doublebuffering
 	Mode = SDL_DOUBLEBUF | SDL_HWPALETTE | SDL_HWSURFACE;

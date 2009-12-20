@@ -48,7 +48,7 @@ CTimer::CTimer()
 	m_SyncCount = m_LoopCount = m_LogicCount = m_FrameCount = 0;
 
 	setFrameRate(DEFAULT_LPS, DEFAULT_FPS, DEFAULT_SYNC);
-#ifdef WIZGP2X
+#ifdef WIZ
     WIZ_ptimer_init();
 #endif
     m_SyncStartTime = m_LoopStartTime = timerTicks();
@@ -215,7 +215,7 @@ bool CTimer::HasTimeElapsed(int msecs)
 
 CTimer::~CTimer()
 {
-#ifdef WIZGP2X
+#ifdef WIZ
     WIZ_ptimer_cleanup();
 #endif
 }

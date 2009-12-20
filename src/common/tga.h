@@ -9,6 +9,7 @@
 #define TGA_H_
 
 #include <SDL.h>
+#include <type.h>
 
 #ifdef TARGET_WIN32
 #define ulong unsigned long

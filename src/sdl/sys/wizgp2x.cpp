@@ -1,4 +1,4 @@
-#ifdef WIZGP2X
+#if defined(WIZ) || defined(GP2X)
 
 #include "wizgp2x.h"
 
@@ -166,6 +166,10 @@ void WIZ_AdjustVolume( int direction )
 	}
 }
 
+#endif
+
+#ifdef WIZ
+
 #define TIMER_BASE3 0x1980
 #define TIMER_REG(x) memregs32[(TIMER_BASE3 + x) >> 2]
 
@@ -206,7 +210,7 @@ void WIZ_ptimer_delay_ms( unsigned int delay )
     unsigned int start;
 
     start = WIZ_ptimer_get_ticks_ms();
-    while(WIZ_ptimer_get_ticks_ms()-start < delay) { /*usleep(1);*/ }
+    while(WIZ_ptimer_get_ticks_ms()-start < delay) {}
 }
 
 void WIZ_ptimer_cleanup(void)
