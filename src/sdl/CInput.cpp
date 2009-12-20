@@ -26,10 +26,7 @@ CInput::CInput() {
 	g_pLogFile->ftextOut("Starting the input driver...<br>");
 	memset(InputCommand, 0, NUM_INPUTS*NUMBER_OF_COMMANDS*sizeof(stInputCommand));
 
-	for(int i=0 ; i<NUM_INPUTS ; i++)
-	{
-		resetControls(i+1);
-	}
+	resetControls(1);
 	memset(&Event,0,sizeof(Event));
 	loadControlconfig();
 	startJoyDriver();
