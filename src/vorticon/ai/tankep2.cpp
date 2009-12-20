@@ -5,8 +5,8 @@
 #include "CObjectAI.h"
 
 // Tank Robot (Ep2)
-#define TANK_LOOK       0
-#define TANK_WALK       1
+enum tank2_actions{
+TANK_LOOK, TANK_WALK };
 
 #define TANK2_SAME_LEVEL_TIME   150
 #define TANK_REPEAT_FIRE_TIME  800
@@ -16,11 +16,11 @@
 #define TANK_LOOKFIRE_PROB    500
 #define TANK_MINTRAVELDIST    200
 
-#define TANK_WALK_SPEED         4
-#define TANK_WALK_ANIM_TIME     60
-#define TANK_LOOK_ANIM_TIME     70
-#define TANK_LOOK_TOTALTIME     180
-#define TANK2_PREPAREFIRE_TIME  80
+#define TANK_WALK_SPEED         16
+#define TANK_WALK_ANIM_TIME     15
+#define TANK_LOOK_ANIM_TIME     17
+#define TANK_LOOK_TOTALTIME     45
+#define TANK2_PREPAREFIRE_TIME  20
 
 // frames
 #define TANK2_WALK_LEFT_FRAME       116
@@ -32,20 +32,15 @@
 #define TANK_FIRE_PAUSE_TIME		100
 
 #define TANK2_SHOTS_PER_VOLLEY    4
-#define TANK2_MIN_TIME_TILL_CAN_FIRE  500
-#define TANK2_MAX_TIME_TILL_CAN_FIRE  800
-#define TANK2_TIME_BETWEEN_SHOTS  50
-#define TANK2_TIME_BEFORE_FIRE_WHEN_SEE      100
-#define TANK2_TIME_BETWEEN_FIRE_CAUSE_LEVEL  400
+#define TANK2_MIN_TIME_TILL_CAN_FIRE  125
+#define TANK2_MAX_TIME_TILL_CAN_FIRE  200
+#define TANK2_TIME_BETWEEN_SHOTS  12
+#define TANK2_TIME_BEFORE_FIRE_WHEN_SEE      25
+#define TANK2_TIME_BETWEEN_FIRE_CAUSE_LEVEL  100
 
 #define Sprite g_pGfxEngine->Sprite
 
-// reference to ../misc.cpp
 unsigned int rnd(void);
-
-//void static tank_searchplayers(int o);
-//void static tank2_fire(int o);
-
 
 void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 {
@@ -151,12 +146,12 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 				if (object.onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, object.scrx);
 				if (object.ai.tank.movedir==RIGHT)
 				{
-					newobject.spawn(object.x+(Sprite[TANK2_WALK_RIGHT_FRAME]->getWidth()<<CSF), object.y+(6<<CSF), OBJ_RAY, m_Episode);
+					newobject.spawn(object.x+object.bboxX2, object.y+object.bboxY1, OBJ_RAY, m_Episode);
 					newobject.ai.ray.direction = RIGHT;
 				}
 				else
 				{
-					newobject.spawn(object.x-(Sprite[ENEMYRAYEP2]->getWidth()<<CSF), object.y+(6<<CSF), OBJ_RAY, m_Episode);
+					newobject.spawn(object.x-object.bboxX2, object.y+object.bboxY1, OBJ_RAY, m_Episode);
 					newobject.ai.ray.direction = LEFT;
 				}
 				newobject.ai.ray.owner = object.m_index;
@@ -291,9 +286,10 @@ void CObjectAI::tank_searchplayers(CObject &object)
 	object.ai.tank.detectedPlayer = 0;
 	for( int i=0 ; i<m_NumPlayers ; i++ )
 	{
-		if (m_Player[i].y >= object.y-(12<<STC))
+		int height = m_Objvect[m_Player[i].m_player_number].bboxY2;
+		if (m_Player[i].y >= object.y-object.bboxY1)
 		{
-			if ((m_Player[i].y>>CSF)+Sprite[0]->getHeight() <= (object.y>>STC)+Sprite[object.sprite]->getHeight()+12)
+			if ( (m_Player[i].y+height) <= (object.y+object.bboxY2) )
 			{
 				object.ai.tank.detectedPlayer = 1;
 				object.ai.tank.detectedPlayerIndex = i;
