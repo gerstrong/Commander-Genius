@@ -180,7 +180,7 @@ void CMapLoader::addTile( Uint16 t, Uint16 x, Uint16 y )
 	mp_map->setTile(x, y, t);
 }
 
-//bool NessieAlreadySpawned;
+bool NessieAlreadySpawned;
 void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episode)
 {
 	// This function add sprites on the map. Most of the objects are invisible.
@@ -196,19 +196,19 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 				mp_map->m_objectlayer[x][y] = 0;
 			}
 			break;
-			// TODO: Nessie is still disabled. Reenable it!
-			/*case NESSIE_PATH:          // spawn nessie at first occurance of her path
-			 if (episode==3)
-			 {
-			 if (!NessieAlreadySpawned)
-			 {
-			 o = spawn_object(curmapx<<4<<CSF, curmapy<<4<<CSF, OBJ_NESSIE);
-			 objects[o].hasbeenonscreen = 1;
-			 NessieAlreadySpawned = 1;
-			 NessieObjectHandle = o;
-			 }
-			 }
-			 break;*/
+		case NESSIE_PATH:          // spawn nessie at first occurance of her path
+			if (episode==3)
+			{
+				/*if (!NessieAlreadySpawned)
+				{
+					CObject nessie;
+					nessie.spawn(x<<CSF, y<<CSF, OBJ_NESSIE, 3);
+					nessie.hasbeenonscreen = 1;
+					NessieAlreadySpawned = 1;
+					NessieObjectHandle = o;
+				}*/
+			}
+			break;
 		default:             // level marker
 			if ((t&0x7fff) <= 16 && mp_Player->mp_levels_completed[t&0x00ff] )
 			{

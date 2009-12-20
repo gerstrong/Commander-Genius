@@ -47,7 +47,7 @@ int ShipQueuePtr;
 #define EARTHCHUNK_SMALL_UP     68
 #define EARTHCHUNK_SMALL_DN     70
 
-int eseq2_TantalusRay(stCloneKeenPlus *pCKP)
+int eseq2_TantalusRay()
 {
 	/*char enter;
 	 int x, y, t, o=0, i;
@@ -319,7 +319,7 @@ void eseq2_vibrate()
 #define HEADSFOREARTH_W        33
 #define HEADSFOREARTH_H        8
 
-int eseq2_HeadsForEarth(stCloneKeenPlus *pCKP)
+int eseq2_HeadsForEarth()
 {
 	/*bool enter;
 	 int x, y;
@@ -411,7 +411,7 @@ int eseq2_HeadsForEarth(stCloneKeenPlus *pCKP)
 #define LIMPSHOME_X          0
 #define LIMPSHOME_Y          344
 
-int eseq2_LimpsHome(stCloneKeenPlus *pCKP)
+int eseq2_LimpsHome()
 {
 	/*bool enter;
 	 int downtimer;
@@ -475,7 +475,7 @@ int eseq2_LimpsHome(stCloneKeenPlus *pCKP)
 	return 1;
 }
 
-int eseq2_SnowedOutside(stCloneKeenPlus *pCKP)
+int eseq2_SnowedOutside()
 {
 	/*int curpage;
 	 int lastpage;

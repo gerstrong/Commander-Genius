@@ -11,14 +11,14 @@
 #include "sdl/CInput.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/sound/CSound.h"
-#include "include/gamepdo.h"
-#include "include/gm_pdowm.h"
+//#include "include/gamepdo.h"
+//#include "include/gm_pdowm.h"
 #include "hqp/CMusic.h"
 #include "graphics/CGfxEngine.h"
 #include "CLogFile.h"
 
-void initgame(stLevelControl *p_levelcontrol)
-{
+//void initgame(stLevelControl *p_levelcontrol)
+//{
 	/*int x,y;
 	 unsigned int i;
 	 
@@ -184,13 +184,7 @@ void initgame(stLevelControl *p_levelcontrol)
 	 mapystripepos = 0;
 	 
 	 thisplayer = 0;*/
-}
-
-int initgamefirsttime(stCloneKeenPlus *pCKP, int s)
-{
-
-	return 0;
-}
+//}
 
 
 int find_next_object(unsigned int type)
@@ -226,8 +220,8 @@ void recalc_highest_objslot(void)
 }
 
 // initialize sprites that come from tiles, such as the doors
-void initsprites(stCloneKeenPlus *pCKP, int s)
-{
+//void initsprites(stCloneKeenPlus *pCKP, int s)
+//{
     // create BLANKSPRITE
     //sprite[s]->setSize(0, 0);
 	
@@ -250,4 +244,4 @@ void initsprites(stCloneKeenPlus *pCKP, int s)
 	
     // create the sprites for player 3
     // Unsupported for now...
-}
+//}

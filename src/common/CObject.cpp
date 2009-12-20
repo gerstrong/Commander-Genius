@@ -77,63 +77,74 @@ void CObject::setIndex(int index)
 
 void CObject::setupObjectType(int Episode)
 {
-	if(Episode == 1)
+	switch(m_type)
 	{
-		switch(m_type)
-		{
-		case OBJ_AUTORAY: sprite = ENEMYRAYEP3; break;
-		case OBJ_AUTORAY_V: sprite = RAY_VERT_EP3; break;
-		case OBJ_DOOR: sprite = DOOR_YELLOW_SPRITE; break;
-		case OBJ_TELEPORTER: sprite = OBJ_TELEPORTER_DEFSPRITE; break;
-		case OBJ_SECTOREFFECTOR: sprite = BLANKSPRITE; break;
-		case OBJ_GOTPOINTS: sprite = PT500_SPRITE; break;
-		case OBJ_YORP: sprite = OBJ_YORP_DEFSPRITE; break;
-		case OBJ_GARG: sprite = OBJ_GARG_DEFSPRITE; break;
-		case OBJ_BUTLER: sprite = OBJ_BUTLER_DEFSPRITE; break;
-		case OBJ_TANK: sprite = OBJ_BUTLER_DEFSPRITE; break;
-		case OBJ_ICECHUNK: sprite = OBJ_ICECHUNK_DEFSPRITE; break;
-		case OBJ_ICEBIT: sprite = OBJ_ICEBIT_DEFSPRITE; break;
-		case OBJ_ICECANNON: sprite = OBJ_ICECHUNK_DEFSPRITE; break;
-		case OBJ_ROPE: sprite = OBJ_ROPE_DEFSPRITE; break;
-		case OBJ_RAY: sprite = OBJ_RAY_DEFSPRITE_EP1;  break;
-		default: sprite = BLANKSPRITE; break;
-		}
-	}
-	else if(Episode == 2)
-	{
-		switch(m_type)
-		{
-		case OBJ_SCRUB: sprite = OBJ_SCRUB_DEFSPRITE; break;
-		case OBJ_TANKEP2: sprite = OBJ_TANKEP2_DEFSPRITE; break;
-		case OBJ_VORTELITE: sprite = OBJ_VORTELITE_DEFSPRITE; break;
+	// Mainly Episode 1
+	case OBJ_YORP: sprite = OBJ_YORP_DEFSPRITE; break;
+	case OBJ_GARG: sprite = OBJ_GARG_DEFSPRITE; break;
+	case OBJ_BUTLER: sprite = OBJ_BUTLER_DEFSPRITE; break;
+	case OBJ_TANK: sprite = OBJ_BUTLER_DEFSPRITE; break;
+	case OBJ_ICECHUNK: sprite = OBJ_ICECHUNK_DEFSPRITE; break;
+	case OBJ_ICEBIT: sprite = OBJ_ICEBIT_DEFSPRITE; break;
+	case OBJ_ICECANNON: sprite = OBJ_ICECHUNK_DEFSPRITE; break;
+	case OBJ_ROPE: sprite = OBJ_ROPE_DEFSPRITE; break;
 
-		case OBJ_RAY: sprite = OBJ_RAY_DEFSPRITE_EP2; break;
-		case OBJ_VORT: sprite = OBJ_VORT_DEFSPRITE_EP2; break;
-		case OBJ_PLATFORM: sprite = OBJ_PLATFORM_DEFSPRITE_EP2; break;
-		case OBJ_BABY: sprite = OBJ_BABY_DEFSPRITE_EP2; break;
-		case OBJ_SPARK: sprite = OBJ_SPARK_DEFSPRITE_EP2; break;
-		default: sprite = BLANKSPRITE; break;
-		}
-	}
-	else if(Episode == 3)
-	{
-		switch(m_type)
-		{
-		case OBJ_FOOB: sprite = OBJ_FOOB_DEFSPRITE; break;
-		case OBJ_NINJA: sprite = OBJ_NINJA_DEFSPRITE; break;
-		case OBJ_MOTHER: sprite = OBJ_MOTHER_DEFSPRITE; break;
-		case OBJ_MEEP: sprite = OBJ_MEEP_DEFSPRITE; break;
-		case OBJ_BALL: sprite = OBJ_BALL_DEFSPRITE; break;
-		case OBJ_JACK: sprite = OBJ_JACK_DEFSPRITE; break;
-		case OBJ_NESSIE: sprite = OBJ_NESSIE_DEFSPRITE; break;
+	// Mainly Episode 2
+	case OBJ_SCRUB: sprite = OBJ_SCRUB_DEFSPRITE; break;
+	case OBJ_TANKEP2: sprite = OBJ_TANKEP2_DEFSPRITE; break;
+	case OBJ_VORTELITE: sprite = OBJ_VORTELITE_DEFSPRITE; break;
+	case OBJ_SPARK: sprite = OBJ_SPARK_DEFSPRITE_EP2; break;
 
-		case OBJ_RAY: sprite = OBJ_RAY_DEFSPRITE_EP3; break;
-		case OBJ_VORT: sprite = OBJ_VORT_DEFSPRITE_EP3; break;
-		case OBJ_PLATFORM: sprite = OBJ_PLATFORM_DEFSPRITE_EP3; break;
-		case OBJ_PLATVERT: sprite = OBJ_PLATFORM_DEFSPRITE_EP3; break;
-		case OBJ_BABY: sprite = OBJ_BABY_DEFSPRITE_EP3; break;
-		default: sprite = BLANKSPRITE; break;
-		}
+	// Mainly Episode 3
+	case OBJ_FOOB: sprite = OBJ_FOOB_DEFSPRITE; break;
+	case OBJ_NINJA: sprite = OBJ_NINJA_DEFSPRITE; break;
+	case OBJ_MOTHER: sprite = OBJ_MOTHER_DEFSPRITE; break;
+	case OBJ_MEEP: sprite = OBJ_MEEP_DEFSPRITE; break;
+	case OBJ_BALL: sprite = OBJ_BALL_DEFSPRITE; break;
+	case OBJ_JACK: sprite = OBJ_JACK_DEFSPRITE; break;
+	case OBJ_NESSIE: sprite = OBJ_NESSIE_DEFSPRITE; break;
+	case OBJ_AUTORAY_V: sprite = RAY_VERT_EP3; break;
+
+	// Common Elements and some are Episode dependent
+	case OBJ_RAY:
+		{
+			if(Episode == 1) sprite = OBJ_RAY_DEFSPRITE_EP1;
+			else if(Episode == 2) sprite = OBJ_RAY_DEFSPRITE_EP2;
+			else if(Episode == 3) sprite = OBJ_RAY_DEFSPRITE_EP3;
+		}break;
+
+	case OBJ_VORT:
+		{
+			if(Episode == 1) sprite = OBJ_VORT_DEFSPRITE_EP1;
+			else if(Episode == 2) sprite = OBJ_VORT_DEFSPRITE_EP2;
+			else if(Episode == 3) sprite = OBJ_VORT_DEFSPRITE_EP3;
+		}break;
+
+	case OBJ_BABY:
+	{
+		if(Episode == 2) sprite = OBJ_BABY_DEFSPRITE_EP2;
+		else sprite = OBJ_BABY_DEFSPRITE_EP3;
+	}break;
+
+	case OBJ_PLATFORM:
+	case OBJ_PLATVERT:
+	{
+		if(Episode == 2) sprite = OBJ_PLATFORM_DEFSPRITE_EP2;
+		else sprite = OBJ_PLATFORM_DEFSPRITE_EP3;
+	}break;
+
+
+	case OBJ_AUTORAY: {
+		if(Episode == 1) sprite = ENEMYRAY;
+		else if(Episode == 2) sprite = ENEMYRAYEP2;
+		sprite = ENEMYRAYEP3;
+	}break;
+
+	case OBJ_DOOR: sprite = DOOR_YELLOW_SPRITE; break;
+	case OBJ_TELEPORTER: sprite = OBJ_TELEPORTER_DEFSPRITE; break;
+	case OBJ_SECTOREFFECTOR: sprite = BLANKSPRITE; break;
+	case OBJ_GOTPOINTS: sprite = PT500_SPRITE; break;
+	default: sprite = BLANKSPRITE;
 	}
 }
 

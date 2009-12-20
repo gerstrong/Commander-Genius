@@ -281,26 +281,26 @@ void CPlayer::playpushed()
 void CPlayer::TogglePogo_and_Switches()
 {
 	int i;
-	int mx, my, t;
+	int mx, my;
+	Uint16 t;
 	CSprite *standsprite = g_pGfxEngine->Sprite[PSTANDFRAME];
 	
 	// detect if KPOGO key only pressed
 	if ( playcontrol[PA_POGO] && !pfrozentime && !lastpogo )
 	{
 		// if we are standing near a switch hit the switch instead
-		mx = (x>>CSF)+(standsprite->getWidth()/2);
+		mx = (x+(w/2))>>CSF;
 		
-		for(i=standsprite->getHeight()-1;i>=0;i-=8)
+		for(i=h;i>=0;i-=8)
 		{
-			my = (y>>CSF)+i;
+			my = (y+i)>>CSF;
 			
 			t = mp_map->at(mx, my);
 			
 			// check for extending-platform switch
 			if (t==TILE_SWITCH_UP || t==TILE_SWITCH_DOWN )
 			{
-				//ExtendingPlatformSwitch(mx, my, p_levelcontrol);
-				// TODO: ADD CODE here, but this must happen outside this function
+				m_mustextendPlatform = true;
 				if (!ppogostick) return;
 			}
 			else if (t==TILE_LIGHTSWITCH)
@@ -685,5 +685,14 @@ void CPlayer::bump( int pushamt, bool solid )
 	playpushed_decreasetimer = 0;
 	if (!pjumping)
 		pdir = pshowdir = (pushamt<0)?LEFT:RIGHT;
+}
+
+bool CPlayer::mustExtendPlatform()
+{
+	if(m_mustextendPlatform){
+		m_mustextendPlatform = false;
+		return true;
+	}
+	else return false;
 }
 

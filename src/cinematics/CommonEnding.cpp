@@ -20,7 +20,7 @@
 #define HEADFOREARTH_WAIT_TIME  600
 
 
-int endsequence(stCloneKeenPlus *pCKP)
+int endsequence()
 {
 	
 	/*if (pCKP->Control.levelcontrol.episode==1)

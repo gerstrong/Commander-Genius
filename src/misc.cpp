@@ -237,8 +237,8 @@ void AllPlayersInvisible(void)
 	 }*/
 }
 
-char gameiswon(stCloneKeenPlus *pCKP)
-{
+//char gameiswon(stCloneKeenPlus *pCKP)
+//{
 	/*int partcount;
 
 
@@ -275,8 +275,8 @@ char gameiswon(stCloneKeenPlus *pCKP)
 	 }
 	 }*/
 
-	return 0;
-}
+//	return 0;
+//}
 
 void usage(void)
 {

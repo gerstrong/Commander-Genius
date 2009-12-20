@@ -27,6 +27,10 @@ public:
 	// main functions
 	void process();
 
+	// Getters and Setters
+	bool getPlatExtending();
+	void extendPlat(bool value);
+
 	virtual ~CObjectAI();
 private:
 

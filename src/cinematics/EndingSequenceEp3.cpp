@@ -36,7 +36,7 @@ void eseq3_Mortimer()
 	g_pSound->playSound(SOUND_FOOTSLAM, PLAY_NOW);
 }
 
-char eseq3_AwardBigV(stCloneKeenPlus *pCKP)
+char eseq3_AwardBigV()
 {
 	/*int x,y,w,h;
 	 int c;

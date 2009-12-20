@@ -6,6 +6,8 @@
  */
 
 #include "CPlayGame.h"
+#include "../ai/se.h"
+#include "../../common/objenums.h"
 #include "../../sdl/sound/CSound.h"
 
 void CPlayGame::processInLevel()
@@ -47,6 +49,12 @@ void CPlayGame::processInLevel()
 			// Now draw the player to the screen
 			m_Player[i].SelectFrame();
 
+			// If Player has toggled a switch for platform extend it!
+			if(m_Player[i].mustExtendPlatform())
+			{
+				ExtendingPlatformSwitch(m_Player[i].x, m_Player[i].y);
+			}
+
 			// finished the level
 			if(m_Player[i].level_done == LEVEL_COMPLETE)
 			{
@@ -81,56 +89,58 @@ void CPlayGame::processInLevel()
 // TODO: Should be part of an object
 void CPlayGame::ExtendingPlatformSwitch(int x, int y)
 {
-	/*uint ppos;
-	 int platx, platy;
-	 signed char pxoff, pyoff;
-	 int mapx, mapy;
-	 int o;
+	uint ppos;
+	int platx, platy;
+	signed char pxoff, pyoff;
+	int mapx, mapy;
 
-	 // convert pixel coords to tile coords
-	 mapx = (x >> TILE_S);
-	 mapy = (y >> TILE_S);
+	// convert pixel coords to tile coords
+	mapx = (x >> CSF);
+	mapy = (y >> CSF);
 
-	 // figure out where the platform is supposed to extend at
-	 // (this is coded in the object layer...
-	 // high byte is the Y offset and the low byte is the X offset,
-	 // and it's relative to the position of the switch.)
-	 ppos = getlevelat(x, y);
+	// figure out where the platform is supposed to extend at
+	// (this is coded in the object layer...
+	// high byte is the Y offset and the low byte is the X offset,
+	// and it's relative to the position of the switch.)
+	ppos = mp_Map->getObjectat(x, y);
 
-	 if (!ppos || !p_levelcontrol->PlatExtending)
-	 {
-	 // flip switch
-	 g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, mapx);
-	 if (getmaptileat(x, y)==TILE_SWITCH_DOWN)
-	 map_chgtile(mapx, mapy, TILE_SWITCH_UP);
-	 else
-	 map_chgtile(mapx, mapy, TILE_SWITCH_DOWN);
-	 }
+	if (!ppos || !mp_ObjectAI->getPlatExtending())
+	{
+		// flip switch
+		g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, mapx<<STC);
+		if ( mp_Map->at(x, y) == TILE_SWITCH_DOWN )
+			mp_Map->setTile(mapx, mapy, TILE_SWITCH_UP,true);
+		else
+			mp_Map->setTile(mapx, mapy, TILE_SWITCH_DOWN,true);
+	}
 
-	 // if zero it means he hit the switch on a tantalus ray!
-	 if (!ppos)
-	 {
-	 p_levelcontrol->success = 0;
-	 p_levelcontrol->command = LVLC_TANTALUS_RAY;
-	 return;
-	 }
-	 else
-	 {
-	 // it's a moving platform switch--don't allow player to hit it again while
-	 // the plat is still moving as this will glitch
-	 if (p_levelcontrol->PlatExtending) return;
-	 p_levelcontrol->PlatExtending = 1;
-	 }
+	// if zero it means he hit the switch on a tantalus ray!
+	if (!ppos)
+	{
+		// TODO: Add Code for the tantalus ray trigger
+		/*p_levelcontrol->success = 0;
+		p_levelcontrol->command = LVLC_TANTALUS_RAY;*/
+		return;
+	}
+	else
+	{
+		// it's a moving platform switch--don't allow player to hit it again while
+		// the plat is still moving as this will glitch
+		if (mp_ObjectAI->getPlatExtending()) return;
+		mp_ObjectAI->extendPlat(true);
+	}
 
-	 pxoff = (ppos & 0x00ff);
-	 pyoff = (ppos & 0xff00) >> 8;
-	 platx = mapx + pxoff;
-	 platy = mapy + pyoff;
+	pxoff = (ppos & 0x00ff);
+	pyoff = (ppos & 0xff00) >> 8;
+	platx = mapx + pxoff;
+	platy = mapy + pyoff;
 
-	 // spawn a "sector effector" to extend/retract the platform
-	 o = spawn_object(mapx<<TILE_S<<CSF,mapy<<TILE_S<<CSF,OBJ_SECTOREFFECTOR);
-	 objects[o].ai.se.type = SE_EXTEND_PLATFORM;
-	 objects[o].ai.se.platx = platx;
-	 objects[o].ai.se.platy = platy;*/
+	// spawn a "sector effector" to extend/retract the platform
+	CObject platobject;
+	platobject.spawn(mapx<<CSF,mapy<<CSF,OBJ_SECTOREFFECTOR, m_Episode);
+	platobject.ai.se.type = SE_EXTEND_PLATFORM;
+	platobject.ai.se.platx = platx;
+	platobject.ai.se.platy = platy;
+	m_Object.push_back(platobject);
 }
 

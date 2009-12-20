@@ -235,25 +235,4 @@ VIDEO_MODE_OPENGL,
 #include "include/declarations.h"
 #include "sdl/CSettings.h"
 
-struct stCloneKeenPlus
-{
-	//stCommand Command[MAX_COMMANDS];
-	SDL_Joystick *Joystick;
-	SDL_Event Event;
-	stResources Resources;
-	stGameData *GameData;
-	stControl Control;
-	//stOption Option[NUM_OPTIONS];
-	unsigned short numGames;
-	unsigned short shutdown;
-	
-	stCloneKeenPlus() : Joystick(NULL), GameData(NULL), numGames(0), shutdown(SHUTDOWN_NONE) {
-		memset(&Event, 0, sizeof(Event));
-	}
-};
-
-// keen.c
-void playgame_levelmanager(stCloneKeenPlus *pCKP);
-char play_demo(int demonum, stCloneKeenPlus *pCKP, int s);
-
 #endif

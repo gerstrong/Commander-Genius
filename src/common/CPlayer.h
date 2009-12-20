@@ -47,6 +47,7 @@ public:
 	void setDefaultStartValues();
 	void setMapData(CMap *p_map){ mp_map=p_map; }
 	void setPhysics(CPhysicsSettings *physics) { mp_PhysicsSettings = physics; }
+	bool mustExtendPlatform();
 
 	// World Map specific
 	void processWorldMap();
@@ -195,6 +196,8 @@ private:
 	// Level control specific functions, especially for exit
 	int exitXpos;
 	int level_done_timer;
+
+	bool m_mustextendPlatform;
 
 	// defined under CPlayerItems.cpp
 	bool getGoodie(int px, int py);
