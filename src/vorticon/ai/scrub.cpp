@@ -15,9 +15,9 @@ enum scrub_actions{
 #define SCRUB_WALK_ANIM_TIME  11
 #define SCRUB_WALK_SPEED      16
 
-#define SCRUB_FALLSPDINCRATE   8
-#define SCRUB_MIN_FALL_SPEED  40
-#define SCRUB_MAX_FALL_SPEED  100
+#define SCRUB_FALLSPDINCRATE   2
+#define SCRUB_MIN_FALL_SPEED  10
+#define SCRUB_MAX_FALL_SPEED  25
 
 #define SCRUBDIE_START_INERTIA      -10
 #define SCRUBDIE_INERTIA_DECREASE    2
@@ -36,7 +36,6 @@ enum scrub_actions{
 
 void CObjectAI::scrub_ai(CObject &object)
 {
-	unsigned int p;
 	int i=0;
 	int nopush;
 	int floor;
@@ -49,10 +48,10 @@ void CObjectAI::scrub_ai(CObject &object)
 		object.ai.scrub.walkframe = 0;
 		object.ai.scrub.animtimer = 0;
 		object.inhibitfall = 1;
-		object.needinit = 0;
+		object.needinit = false;
 		object.canbezapped = 1;
 		object.y = (object.y>>STC)<<STC;
-		object.blockedd = 1;
+		object.blockedd = true;
 		object.blockedl = 0;
 		object.blockedr = 0;
 		object.blockedu = 0;
@@ -72,7 +71,7 @@ void CObjectAI::scrub_ai(CObject &object)
 	// after kicking a player, wait until he falls beneath the scrub
 	// before turning cansupportplayer back on...just in case we check
 	// for some other things to (when he stops falling, or if he jumps)
-	for(p=0;p<m_NumPlayers;p++)
+	for(int p=0;p<m_NumPlayers;p++)
 	{
 		if (object.ai.scrub.kickedplayer[p])
 		{
@@ -89,6 +88,8 @@ void CObjectAI::scrub_ai(CObject &object)
 			m_Player[i].psupportingobject!=object.m_index)
 	{
 		nopush = 0;
+		bool level_done = false;
+		for(int i=0 ; i<m_NumPlayers ; i++) level_done |= m_Player[i].level_done;
 		// don't push the player if he's standing on top of the scrub
 		if (m_Player[object.touchedBy].pfalling)
 		{
@@ -104,11 +105,11 @@ void CObjectAI::scrub_ai(CObject &object)
 			nopush = 1;
 		}
 		// don't push the player as he's walking through the exit door
-		/*else if (levelcontrol.level_done && levelcontrol.level_finished_by == object.touchedBy)
+		else if (level_done)
 		{
 			nopush = 1;
 		}
-		 */
+
 		if (!nopush)
 			m_Player[object.touchedBy].bump( (m_Player[object.touchedBy].x < object.x) ? -SCRUBPUSHAMOUNT : SCRUBPUSHAMOUNT, 1);
 	}
@@ -170,7 +171,7 @@ void CObjectAI::scrub_ai(CObject &object)
 		case LEFT:
 			object.sprite = SCRUB_WALK_LEFT + object.ai.scrub.walkframe;
 
-			walkovertile = TileProperty[mp_Map->at((object.x-256)>>CSF, (object.y+16)>>CSF)].bup;
+			walkovertile = TileProperty[mp_Map->at((object.x+object.bboxX1-512)>>CSF, (object.y+object.bboxY2)>>CSF)].bup;
 			if (!object.blockedd && !walkovertile)
 			{ // walked off the edge
 				object.sprite = SCRUB_WALK_DOWN + object.ai.scrub.walkframe;
@@ -180,12 +181,11 @@ void CObjectAI::scrub_ai(CObject &object)
 				{
 					if (m_Player[i].psupportingobject==object.m_index && m_Player[i].pjumping!=PJUMPUP && m_Player[i].pjumping!=PPOGOING)
 					{
-						m_Player[i].x -= (1<<STC);
-						m_Player[i].y += (2<<STC);
+						m_Player[i].goto_x -= (1<<STC);
+						m_Player[i].goto_y += (4<<STC);
 					}
 				}
-				object.performCollision(mp_Map);
-				//common_enemy_ai(o);                // recalculate blockedx's
+				object.performCollision(mp_Map);	// recalculate blockedx's
 				Scrub_TurnOnCansupportWhereNotKicked(object);
 			}
 			else if (object.blockedl)
@@ -203,7 +203,7 @@ void CObjectAI::scrub_ai(CObject &object)
 					{
 						if (!m_Player[i].blockedl)
 						{
-							m_Player[i].x -= SCRUB_WALK_SPEED;
+							m_Player[i].goto_x -= SCRUB_WALK_SPEED;
 						}
 					}
 				}
@@ -218,8 +218,7 @@ void CObjectAI::scrub_ai(CObject &object)
 				object.sprite = SCRUB_WALK_UP + object.ai.scrub.walkframe;
 				Scrub_TurnOnCansupportWhereNotKicked(object);
 				object.y -= (2<<STC);
-				object.performCollision(mp_Map);
-				//common_enemy_ai(o);                // recalculate blockedx's
+				object.performCollision(mp_Map);	// recalculate blockedx's
 			}
 			else if (object.blockedr)
 			{
@@ -239,10 +238,8 @@ void CObjectAI::scrub_ai(CObject &object)
 				object.ai.scrub.walkdir = RIGHT;
 				object.sprite = SCRUB_WALK_RIGHT + object.ai.scrub.walkframe;
 				SetAllCanSupportPlayer(object, 0);
-				object.y += (1<<STC);
 				object.x += (2<<STC);
 				object.performCollision(mp_Map);
-				//common_enemy_ai(o);
 			}
 			else if (object.blockedd)
 			{
@@ -268,10 +265,7 @@ void CObjectAI::scrub_ai(CObject &object)
 						}
 						else floor = 1;
 
-						if (!floor)
-						{
-							m_Player[i].y += SCRUB_WALK_SPEED;
-						}
+						if (!floor) m_Player[i].goto_y += SCRUB_WALK_SPEED;
 					}
 				}
 			}
@@ -285,14 +279,13 @@ void CObjectAI::scrub_ai(CObject &object)
 				Scrub_TurnOnCansupportWhereNotKicked(object);
 				object.x -= (2<<STC);
 				object.y = (((object.y>>CSF)<<TILE_S)+1)<<STC;
-				object.performCollision(mp_Map);
-				//common_enemy_ai(o);                // recalculate blockedx's
+				object.performCollision(mp_Map);	// recalculate blockedx's
 				for(i=0;i<m_NumPlayers;i++)
 				{
 					if (m_Player[i].psupportingobject==object.m_index && m_Player[i].pjumping!=PJUMPUP && m_Player[i].pjumping!=PPOGOING)
 					{
-						m_Player[i].x -= (2<<STC);
-						m_Player[i].y = (object.y - (Sprite[0]->getHeight()<<STC));
+						m_Player[i].goto_x -= (2<<STC);
+						m_Player[i].goto_y = (object.y - (Sprite[0]->getHeight()<<STC));
 					}
 				}
 			}
@@ -302,6 +295,7 @@ void CObjectAI::scrub_ai(CObject &object)
 				object.sprite = SCRUB_WALK_RIGHT + object.ai.scrub.walkframe;
 				SetAllCanSupportPlayer(object, 0);
 			}
+			else
 			{
 				object.y -= SCRUB_WALK_SPEED;
 				for(i=0;i<m_NumPlayers;i++)
@@ -314,7 +308,7 @@ void CObjectAI::scrub_ai(CObject &object)
 							object.cansupportplayer[i] = 0;
 							object.ai.scrub.kickedplayer[i] = 1;
 						}
-						else m_Player[i].y -= SCRUB_WALK_SPEED;
+						else m_Player[i].goto_y -= SCRUB_WALK_SPEED;
 					}
 				}
 			}
@@ -329,6 +323,7 @@ void CObjectAI::scrub_ai(CObject &object)
 		} else object.ai.scrub.animtimer++;
 		break;
 		case SCRUB_FALLING:
+
 			object.sprite = SCRUB_WALK_DOWN;
 			if (object.blockedd)
 			{
@@ -354,7 +349,7 @@ void CObjectAI::scrub_ai(CObject &object)
 			break;
 	}
 
-	// sometimes it's possible for a scrub to fall off, for example
+	// sometimes it's possile for a scrub to fall off, for example
 	// if it's walking left on a platform that has solidfall but not solidlr,
 	// then turns to walk down. in this case we need to go into a falling
 	// state and fall until we reach solid ground again. this keeps it from
@@ -370,11 +365,12 @@ void CObjectAI::scrub_ai(CObject &object)
 			SetAllCanSupportPlayer(object, 0);
 		}
 	}
+
 }
 
 void CObjectAI::Scrub_TurnOnCansupportWhereNotKicked(CObject &object)
 {
-	unsigned int i;
+	int i;
 	for(i=0;i<m_NumPlayers;i++)
 	{
 		if (!object.ai.scrub.kickedplayer[i])

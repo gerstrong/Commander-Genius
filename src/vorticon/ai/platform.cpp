@@ -83,7 +83,7 @@ void CObjectAI::platform_ai(CObject &object)
 					if(m_Player[i].psupportingobject==object.m_index && (m_Player[i].pjumping==PNOJUMP||m_Player[i].pjumping==PPREPAREJUMP||m_Player[i].pjumping==PPREPAREPOGO))
 					{
 						if (!m_Player[i].blockedr)
-							m_Player[i].x += PLATFORM_MOVE_SPD;
+							m_Player[i].goto_x += PLATFORM_MOVE_SPD;
 					}
 				}
 			}
@@ -104,7 +104,7 @@ void CObjectAI::platform_ai(CObject &object)
 					if(m_Player[i].psupportingobject==object.m_index && (m_Player[i].pjumping==PNOJUMP||m_Player[i].pjumping==PPREPAREJUMP||m_Player[i].pjumping==PPREPAREPOGO))
 					{
 						if (!m_Player[i].blockedl)
-							m_Player[i].x -= PLATFORM_MOVE_SPD;
+							m_Player[i].goto_x -= PLATFORM_MOVE_SPD;
 					}
 				}
 			}

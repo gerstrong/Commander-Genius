@@ -159,7 +159,7 @@ public:
 	char pdie, pdieframe, pdietimer;
 	int pdietillfly;
 	signed int pdie_xvect;
-	int psupportingtile, psupportingobject, lastsupportingobject;
+	unsigned int psupportingtile, psupportingobject, lastsupportingobject;
 	bool psliding;
 	bool psemisliding;
 	bool ppogostick;

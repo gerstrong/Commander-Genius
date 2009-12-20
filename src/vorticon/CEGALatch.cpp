@@ -48,13 +48,13 @@ CEGALatch::~CEGALatch() {
 bool CEGALatch::loadHead( char *data, short m_episode )
 {
 	Uint16 height, width;
-	char name[9];
 
 	data += m_bitmaptablelocation;
 
 	g_pGfxEngine->createEmptyBitmaps(m_bitmaps);
 	for(int i=0 ; i<m_bitmaps ; i++)
 	{
+		char name[9];
 		memcpy(&width,data+16*i,2);
 		memcpy(&height,data+16*i+2,2);
 		memcpy(name,data+16*i+8,8);

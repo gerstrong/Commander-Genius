@@ -76,11 +76,6 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 			// test if it hit a baddie
 			for( it_obj = m_Objvect.begin() ; it_obj!=m_Objvect.end() ; it_obj++)
 			{
-				if (object.ai.ray.dontHitEnable)
-				{
-					if (it_obj->m_type == object.ai.ray.dontHit) continue;
-				}
-				
 				if (it_obj->m_type==OBJ_RAY) continue;
 				
 				if (it_obj->canbezapped && it_obj->onscreen)

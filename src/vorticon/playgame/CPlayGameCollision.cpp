@@ -132,9 +132,9 @@ CSprite *sprite = g_pGfxEngine->Sprite[p_player->playframe];
 		return true;
 	}
 	
-	if (checkObjSolid(x>>(CSF-4),y1>>(CSF-4), p_player->m_player_number)
-		or checkObjSolid(x>>(CSF-4),y2>>(CSF-4), p_player->m_player_number)
-		or checkObjSolid(x>>(CSF-4),y3>>(CSF-4), p_player->m_player_number) )
+	if (checkObjSolid(x,y1, p_player->m_player_number)
+		or checkObjSolid(x,y2, p_player->m_player_number)
+		or checkObjSolid(x,y3, p_player->m_player_number) )
 	{
 		p_player->blockedby = 0;
 		return true;
@@ -183,9 +183,9 @@ CSprite *sprite = g_pGfxEngine->Sprite[p_player->playframe];
 		return true;
 	}
 	
-	else if (checkObjSolid(x>>(CSF-4),y1>>(CSF-4), p_player->m_player_number)
-			 or checkObjSolid(x>>(CSF-4),y2>>(CSF-4), p_player->m_player_number)
-			 or checkObjSolid(x>>(CSF-4),y3>>(CSF-4), p_player->m_player_number) )
+	else if (checkObjSolid(x,y1, p_player->m_player_number)
+			 or checkObjSolid(x,y2, p_player->m_player_number)
+			 or checkObjSolid(x,y3, p_player->m_player_number) )
 	{
 		p_player->blockedby = 0;
 		return true;
@@ -215,8 +215,8 @@ CSprite *sprite = g_pGfxEngine->Sprite[p_player->playframe];
 	{
 		return true;
 	}
-	else if (checkObjSolid(x1>>(CSF-4),y>>(CSF-4), p_player->m_player_number)
-			 || checkObjSolid(x2>>(CSF-4),y>>(CSF-4), p_player->m_player_number) )
+	else if (checkObjSolid(x1,y, p_player->m_player_number)
+			 or checkObjSolid(x2,y, p_player->m_player_number) )
 	{
 		return true;
 	}
@@ -235,15 +235,13 @@ CSprite *sprite = g_pGfxEngine->Sprite[p_player->playframe];
 	
 	if(p_player->pdie) return false;
 	
-	if(y != (y>>CSF)<<CSF) return false;
-	
-
 	if(g_pGfxEngine->Tilemap->mp_tiles[t1].bup || g_pGfxEngine->Tilemap->mp_tiles[t2].bup)
 	{
-		return true;
+		if(y != (y>>CSF)<<CSF) return false;
+		else return true;
 	}
-	else if (checkObjSolid(x1>>(CSF-4),y>>(CSF-4), p_player->m_player_number)
-			 || checkObjSolid(x2>>(CSF-4),y>>(CSF-4), p_player->m_player_number) )
+	else if (checkObjSolid(x1,y, p_player->m_player_number)
+			 or checkObjSolid(x2,y, p_player->m_player_number) )
 	{
 		return true;
 	}
@@ -273,27 +271,27 @@ void CPlayGame::checkStandingOnIce(CPlayer &player)
 // at that point
 int CPlayGame::checkObjSolid(unsigned int x, unsigned int y, int cp)
 {
-	CSprite *sprite;
 	int o=0;
 	
 	std::vector<CObject>::iterator p_object;
 	for( p_object=m_Object.begin() ; p_object!=m_Object.end() ; p_object++ )
 	{
-		sprite = g_pGfxEngine->Sprite.at(p_object->sprite);
-		for(int  i=0 ; i<m_NumPlayers ; i++)
+		if (p_object->exists && p_object->cansupportplayer[cp])
 		{
-			if (p_object->exists && p_object->cansupportplayer[i])
-			{
-				if (x >= p_object->x+sprite->m_bboxX1)
-					if (x <= p_object->x+sprite->m_bboxX2)
-						if (y >= p_object->y+sprite->m_bboxY1)
-							if (y <= p_object->y+sprite->m_bboxY2)
-								return o;
-				o++;
-			}
+			if (x >= p_object->x+p_object->bboxX1)
+				if (x <= p_object->x+p_object->bboxX2)
+					if (y >= p_object->y+p_object->bboxY1)
+						if (y <= p_object->y+p_object->bboxY2)
+						{
+							o=p_object->m_index;
+							//m_Player[cp].psupportingtile = PSUPPORTEDBYOBJECT;
+							//m_Player[cp].psupportingobject = o;
+							break;
+						}
 		}
 	}
-	return 0;
+
+	return o;
 }
 
 
