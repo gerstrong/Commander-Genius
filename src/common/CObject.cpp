@@ -201,6 +201,10 @@ CSprite *Sprite = g_pGfxEngine->Sprite.at(sprite);
 	// first the first col-model can't be applied to scrubs. There are very special
 	if(m_type != OBJ_SCRUB)
 	{
+		// Set all blocking to false and test later.
+		blockedu = blockedd = false;
+		blockedl = blockedr = false;
+
 		if( x > new_x )
 		{
 			do
