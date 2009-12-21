@@ -169,6 +169,7 @@ public:
 	bool psliding;
 	bool psemisliding;
 	bool ppogostick;
+	bool pogofirsttime;
 	int pfrozentime,pfrozenframe,pfrozenanimtimer;
 	bool pfiring, plastfire;
 

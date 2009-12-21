@@ -12,6 +12,11 @@ CEndingEp2::CEndingEp2() {
 
 }
 
+void CEndingEp2::process()
+{
+
+}
+
 CEndingEp2::~CEndingEp2() {
 	// TODO Auto-generated destructor stub
 }

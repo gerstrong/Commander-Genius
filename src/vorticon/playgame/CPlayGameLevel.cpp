@@ -9,6 +9,7 @@
 #include "../ai/se.h"
 #include "../../common/objenums.h"
 #include "../../sdl/sound/CSound.h"
+#include "../finale/CTantalusRay.h"
 
 void CPlayGame::processInLevel()
 {
@@ -96,6 +97,7 @@ void CPlayGame::processLevelTrigger(int trigger)
 		/*p_levelcontrol->success = 0;
 		p_levelcontrol->command = LVLC_TANTALUS_RAY;*/
 		printf("Tantalus Ray Triggered!\n");
+		mp_Finale = new CTantalusRay();
 	}
 	else if (trigger == LVLTRIG_BRIDGE)
 	{
@@ -103,7 +105,7 @@ void CPlayGame::processLevelTrigger(int trigger)
 		// the plat is still moving as this will glitch
 		if (mp_ObjectAI->getPlatMoving()) return;
 		mp_ObjectAI->triggerPlat(true);
-		// The spawning of the plat extension is defined in the Player class
+		// The spawning of the plat extension is defined in the CPlayer class
 	}
 
 }

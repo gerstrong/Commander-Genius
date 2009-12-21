@@ -61,8 +61,8 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 				p_player->pfallspeed = 0;
 				break;
 			}
-			p_player->y++;
 			p_player->pfalling = true;
+			p_player->y++;
 		}
 	}
 	else if( p_player->goto_y < p_player->y )
@@ -259,8 +259,12 @@ void CPlayGame::checkStandingOnIce(CPlayer &player)
 	int t2 = mp_Map->at(x2>>CSF, y>>CSF);
 
 	char blocktype = g_pGfxEngine->Tilemap->mp_tiles[t1].bup | g_pGfxEngine->Tilemap->mp_tiles[t2].bup;
-	if( blocktype == 2 ) player.psemisliding = true;
-	else if( blocktype == 3 ) player.psliding = true;
+	if(!player.ppogostick)
+	{
+		if( blocktype == 2 ) player.psemisliding = true;
+		else if( blocktype == 3 ) player.psliding = true;
+		else player.psemisliding = player.psliding = false;
+	}
 	else player.psemisliding = player.psliding = false;
 }
 
@@ -284,8 +288,8 @@ int CPlayGame::checkObjSolid(unsigned int x, unsigned int y, int cp)
 						if (y <= p_object->y+p_object->bboxY2)
 						{
 							o=p_object->m_index;
-							//m_Player[cp].psupportingtile = PSUPPORTEDBYOBJECT;
-							//m_Player[cp].psupportingobject = o;
+							m_Player[cp].psupportingtile = PSUPPORTEDBYOBJECT;
+							m_Player[cp].psupportingobject = o;
 							break;
 						}
 		}

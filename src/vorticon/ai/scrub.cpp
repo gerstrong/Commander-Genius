@@ -253,13 +253,13 @@ void CObjectAI::scrub_ai(CObject &object)
 						// ensure that player is not blocked by a floor (can happen
 						// in certain situations if player is hanging off the right side
 						// of the scrub a bit)
-						floor = 0;
+						bool floor = false;
 						if (!TileProperty[mp_Map->at((m_Player[i].x+128)>>CSF, (m_Player[i].y+m_Player[i].h)>>CSF)].bup)
 						{ // lower-left isn't solid
 							if (TileProperty[mp_Map->at((m_Player[i].x+384)>>CSF, (m_Player[i].y+m_Player[i].h)>>CSF)].bup)
-								floor = 1;
+								floor = true;
 						}
-						else floor = 1;
+						else floor = false;
 
 						if (!floor) m_Player[i].goto_y += SCRUB_WALK_SPEED;
 					}

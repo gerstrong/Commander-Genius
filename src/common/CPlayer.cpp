@@ -60,6 +60,7 @@ void CPlayer::setDatatoZero()
     hideplayer = false;
     mounted = false;
     ppogostick = false;
+    pogofirsttime = false;
     plastfire = false;
     psliding = psemisliding = false;
     blockedu = blockedd = blockedl = blockedr = false;

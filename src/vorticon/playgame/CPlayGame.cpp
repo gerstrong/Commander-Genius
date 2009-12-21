@@ -359,6 +359,7 @@ void CPlayGame::handleFKeys()
 {
 	int i;
 	
+	// CTSpace Cheat
     if (g_pInput->getHoldedKey(KC) &&
 		g_pInput->getHoldedKey(KT) &&
 		g_pInput->getHoldedKey(KSPACE))

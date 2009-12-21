@@ -348,7 +348,10 @@ void CPlayer::TogglePogo_and_Switches()
 		
 		// toggle pogo stick
 		if (inventory.HasPogo && m_Level_Trigger == LVLTRIG_NONE)
+		{
 			ppogostick ^= 1;
+			pogofirsttime = true;
+		}
 
 		lastpogo = true;
 	}
@@ -401,9 +404,17 @@ void CPlayer::JumpAndPogo()
 						{  // normal high pogo jump
 							if(playcontrol[PA_JUMP] > 12)
 							{
-								int jump = mp_PhysicsSettings->player.maxjumpspeed;
-								int pogo = mp_PhysicsSettings->player.maxpogospeed;
-								pjumpupspeed = (pogo-jump)*playcontrol[PA_JUMP] / 50 + jump;
+								if(!pogofirsttime)
+								{
+									int jump = mp_PhysicsSettings->player.maxjumpspeed;
+									int pogo = mp_PhysicsSettings->player.maxpogospeed;
+									pjumpupspeed = (pogo-jump)*playcontrol[PA_JUMP] / 50 + jump;
+									pogofirsttime = false;
+								}
+								else
+								{
+									pjumpupspeed = mp_PhysicsSettings->player.maxpogospeed;
+								}
 								//pjumpupspeed = ((PPOGOUP_SPEED-PJUMPUP_SPEED)*playcontrol[PA_JUMP]) / 50 + PJUMPUP_SPEED;
 							}
 							//pjumptime = PJUMP_NORMALTIME_POGO_LONG;
@@ -416,6 +427,7 @@ void CPlayer::JumpAndPogo()
 							//pjumpupspeed_decrease = PJUMP_UPDECREASERATE_POGO_LONG_SUPER;
 						}
 					}
+					else pogofirsttime = false;
 					/*else
 					{
 						pjumpupspeed = PJUMPUP_SPEED;
@@ -556,7 +568,7 @@ void CPlayer::raygun()
 	if (pfireframetimer) pfireframetimer--;
 	
 	// FIRE button down, and not keencicled?
-	if ( playcontrol[PA_FIRE] && !pfrozentime)
+	if ( playcontrol[PA_FIRE] && !pfrozentime && !(g_pInput->getHoldedKey(KC) && g_pInput->getHoldedKey(KT)) )
 	{ // fire is pressed
 		inhibitwalking = 1;            // prevent moving
 		pfiring = true;  // flag that we're firing

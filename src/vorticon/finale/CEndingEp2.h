@@ -13,6 +13,7 @@
 class CEndingEp2 {
 public:
 	CEndingEp2();
+	void process();
 	virtual ~CEndingEp2();
 };
 

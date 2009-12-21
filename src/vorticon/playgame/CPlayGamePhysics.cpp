@@ -107,7 +107,7 @@ void CPlayGame::processPlayerfallings(CPlayer *p_player)
 		// the object else fall
 		if (!p_player->pfalling && p_player->psupportingtile == PSUPPORTEDBYOBJECT)
 		{
-			if ((p_player->y+y2)>>CSF > (m_Object[p_player->psupportingobject].y+y1)>>CSF )
+			if ((p_player->y+y2) > (m_Object[p_player->psupportingobject].y+y1) )
 			{
 				if (!tilsupport)
 				{
@@ -129,7 +129,11 @@ void CPlayGame::processPlayerfallings(CPlayer *p_player)
 
 		// ** if the player should be falling, well what are we waiting for?
 		//    make him fall! **
-		if (mp_option[OPT_CHEATS].value && g_pInput->getHoldedKey(KPLUS)) { p_player->pfalling = true; p_player->pjustfell = true; }
+		if (mp_option[OPT_CHEATS].value && g_pInput->getHoldedKey(KPLUS))
+		{
+			p_player->pfalling = true;
+			p_player->pjustfell = true;
+		}
 
 		if (p_player->pfalling)
 		{  // nothing solid under player, let's make him fall
