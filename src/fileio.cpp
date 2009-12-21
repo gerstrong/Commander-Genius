@@ -143,8 +143,6 @@ std::string getstring(const std::string& name)
 			// Returning is not enough anymore
 			// Convert the /h and /H into proper colours
 			// This is necessary since the new graphics engine
-			const char *buf = strings[i].stringptr.c_str();
-
 			return strings[i].stringptr;
 		}
 	}

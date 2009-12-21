@@ -207,13 +207,15 @@ void CObjectAI::kill_all_intersecting_tile(int mpx, int mpy)
 	 }
 }
 
-///
-// Getters and Setters
-///
-bool CObjectAI::getPlatExtending()
-{ return PlatExtending; }
-void CObjectAI::extendPlat(bool value)
-{ PlatExtending = value;}
+bool CObjectAI::getPlatMoving()
+{
+	return PlatExtending;
+}
+
+void CObjectAI::triggerPlat(bool value)
+{
+	PlatExtending = value;
+}
 
 ///
 // Cleanup Routine

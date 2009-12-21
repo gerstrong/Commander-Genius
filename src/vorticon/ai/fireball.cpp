@@ -17,7 +17,6 @@
 
 void CObjectAI::fireball_ai(CObject &object, bool hard)
 {
-	int i;
 	int speed;
 	if (object.needinit)
 	{

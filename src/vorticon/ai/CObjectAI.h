@@ -27,9 +27,8 @@ public:
 	// main functions
 	void process();
 
-	// Getters and Setters
-	bool getPlatExtending();
-	void extendPlat(bool value);
+	bool getPlatMoving();
+	void triggerPlat(bool value);
 
 	virtual ~CObjectAI();
 private:

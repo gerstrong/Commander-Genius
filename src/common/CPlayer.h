@@ -25,6 +25,10 @@ const int SCROLLTRIGGERLEFT = 130;
 const int SCROLLTRIGGERUP = 100;
 const int SCROLLTRIGGERDOWN = 140;
 
+enum level_triggers{
+	LVLTRIG_NONE, LVLTRIG_TANTALUS_RAY, LVLTRIG_BRIDGE
+};
+
 ///
 // Class definition starts here!
 ///
@@ -47,7 +51,7 @@ public:
 	void setDefaultStartValues();
 	void setMapData(CMap *p_map){ mp_map=p_map; }
 	void setPhysics(CPhysicsSettings *physics) { mp_PhysicsSettings = physics; }
-	bool mustExtendPlatform();
+	bool getLevelTrigger();
 
 	// World Map specific
 	void processWorldMap();
@@ -76,6 +80,7 @@ public:
 	void ankh();
 	void bump( int pushamt, bool solid );
 	void SelectFrame();
+	int pollLevelTrigger();
 
 	// Used for both situations
 	void InertiaAndFriction_X();
@@ -197,7 +202,7 @@ private:
 	int exitXpos;
 	int level_done_timer;
 
-	bool m_mustextendPlatform;
+	int m_Level_Trigger;
 
 	// defined under CPlayerItems.cpp
 	bool getGoodie(int px, int py);

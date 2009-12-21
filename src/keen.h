@@ -161,12 +161,6 @@ TELEPORTING_SCROLL,
 TELEPORTING_IN
 };
 
-#define TELEPORT_BONUS_DESTX    ((((23085>>CSF)+2)<<CSF)-(8<<CSF))
-#define TELEPORT_BONUS_DESTY    (((12501>>CSF)+2)<<CSF)
-
-#define BONUSLEVEL_RESPAWN_X    31812
-#define BONUSLEVEL_RESPAWN_Y    18936
-
 enum MainMenuOptions{
 MAINMNU_1PLAYER,
 MAINMNU_2PLAYER,
@@ -190,9 +184,6 @@ BACK2MAINMENU,
 #define TILE_SWITCH_DOWN           493
 #define TILE_LIGHTSWITCH           271
 #define TILE_EXTENDING_PLATFORM    270
-
-
-
 
 // special object markers
 #define NESSIE_PATH             8192

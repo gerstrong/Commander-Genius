@@ -50,9 +50,10 @@ void CPlayGame::processInLevel()
 			m_Player[i].SelectFrame();
 
 			// If Player has toggled a switch for platform extend it!
-			if(m_Player[i].mustExtendPlatform())
+			int trigger = m_Player[i].pollLevelTrigger();
+			if( trigger != LVLTRIG_NONE )
 			{
-				ExtendingPlatformSwitch(m_Player[i].x, m_Player[i].y);
+				processLevelTrigger(trigger);
 			}
 
 			// finished the level
@@ -87,60 +88,23 @@ void CPlayGame::processInLevel()
 // called when a switch is flipped. mx,my is the pixel coords of the switch,
 // relative to the upper-left corner of the map.
 // TODO: Should be part of an object
-void CPlayGame::ExtendingPlatformSwitch(int x, int y)
+void CPlayGame::processLevelTrigger(int trigger)
 {
-	uint ppos;
-	int platx, platy;
-	signed char pxoff, pyoff;
-	int mapx, mapy;
-
-	// convert pixel coords to tile coords
-	mapx = (x >> CSF);
-	mapy = (y >> CSF);
-
-	// figure out where the platform is supposed to extend at
-	// (this is coded in the object layer...
-	// high byte is the Y offset and the low byte is the X offset,
-	// and it's relative to the position of the switch.)
-	ppos = mp_Map->getObjectat(x, y);
-
-	if (!ppos || !mp_ObjectAI->getPlatExtending())
-	{
-		// flip switch
-		g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, mapx<<STC);
-		if ( mp_Map->at(x, y) == TILE_SWITCH_DOWN )
-			mp_Map->setTile(mapx, mapy, TILE_SWITCH_UP,true);
-		else
-			mp_Map->setTile(mapx, mapy, TILE_SWITCH_DOWN,true);
-	}
-
-	// if zero it means he hit the switch on a tantalus ray!
-	if (!ppos)
+	if (trigger == LVLTRIG_TANTALUS_RAY)
 	{
 		// TODO: Add Code for the tantalus ray trigger
 		/*p_levelcontrol->success = 0;
 		p_levelcontrol->command = LVLC_TANTALUS_RAY;*/
-		return;
+		printf("Tantalus Ray Triggered!\n");
 	}
-	else
+	else if (trigger == LVLTRIG_BRIDGE)
 	{
 		// it's a moving platform switch--don't allow player to hit it again while
 		// the plat is still moving as this will glitch
-		if (mp_ObjectAI->getPlatExtending()) return;
-		mp_ObjectAI->extendPlat(true);
+		if (mp_ObjectAI->getPlatMoving()) return;
+		mp_ObjectAI->triggerPlat(true);
+		// The spawning of the plat extension is defined in the Player class
 	}
 
-	pxoff = (ppos & 0x00ff);
-	pyoff = (ppos & 0xff00) >> 8;
-	platx = mapx + pxoff;
-	platy = mapy + pyoff;
-
-	// spawn a "sector effector" to extend/retract the platform
-	CObject platobject;
-	platobject.spawn(mapx<<CSF,mapy<<CSF,OBJ_SECTOREFFECTOR, m_Episode);
-	platobject.ai.se.type = SE_EXTEND_PLATFORM;
-	platobject.ai.se.platx = platx;
-	platobject.ai.se.platy = platy;
-	m_Object.push_back(platobject);
 }
 

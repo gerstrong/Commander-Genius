@@ -95,7 +95,7 @@ void CPlayer::setDatatoZero()
   	object_chosen = false;
 	
   	exitXpos = 0;
-  	m_mustextendPlatform = false;
+  	m_Level_Trigger = LVLTRIG_NONE;
 	
     // Set all the inventory to zero.
     memset(playcontrol, 0, PA_MAX_ACTIONS*sizeof(char));

@@ -89,7 +89,7 @@ public:
 	char checkDoorBlock(int t, CPlayer *p_player, int which);
 	int checkObjSolid(unsigned int x, unsigned int y, int cp);
 	void processPlayerfallings(CPlayer *p_player);
-	void ExtendingPlatformSwitch(int x, int y);
+	void processLevelTrigger(int trigger);
 	void losePlayer(CPlayer *p_player);
 
 	// Dialog processes stored in CPlayGameDialogs.cpp

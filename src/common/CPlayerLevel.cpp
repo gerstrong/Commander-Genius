@@ -7,6 +7,7 @@
 
 #include "CPlayer.h"
 
+#include "../vorticon/ai/se.h"
 #include "../keen.h"
 #include "../sdl/sound/CSound.h"
 #include "../sdl/CInput.h"
@@ -283,7 +284,6 @@ void CPlayer::TogglePogo_and_Switches()
 	int i;
 	int mx, my;
 	Uint16 t;
-	CSprite *standsprite = g_pGfxEngine->Sprite[PSTANDFRAME];
 	
 	// detect if KPOGO key only pressed
 	if ( playcontrol[PA_POGO] && !pfrozentime && !lastpogo )
@@ -300,8 +300,41 @@ void CPlayer::TogglePogo_and_Switches()
 			// check for extending-platform switch
 			if (t==TILE_SWITCH_UP || t==TILE_SWITCH_DOWN )
 			{
-				m_mustextendPlatform = true;
-				if (!ppogostick) return;
+				// Flip the switch!
+				g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, x>>STC);
+				if ( mp_map->at(mx, my) == TILE_SWITCH_DOWN )
+					mp_map->setTile(mx, my, TILE_SWITCH_UP,true);
+				else
+					mp_map->setTile(mx, my, TILE_SWITCH_DOWN,true);
+
+				// figure out where the platform is supposed to extend at
+				// (this is coded in the object layer...
+				// high byte is the Y offset and the low byte is the X offset,
+				// and it's relative to the position of the switch.)
+				int bridge = mp_map->getObjectat(mx, my);
+
+				if (bridge==0) // Uh Oh! This means you have enabled a tantalus ray of the ship
+				{
+					m_Level_Trigger = LVLTRIG_TANTALUS_RAY;
+				}
+				else
+				{
+					m_Level_Trigger = LVLTRIG_BRIDGE;
+					int pxoff = (bridge & 0x00ff);
+					int pyoff = (bridge & 0xff00) >> 8;
+					int platx = mx + pxoff;
+					int platy = my + pyoff;
+
+					// spawn a "sector effector" to extend/retract the platform
+					CObject platobject;
+					platobject.spawn(mx<<CSF,my<<CSF,OBJ_SECTOREFFECTOR, m_episode);
+					platobject.ai.se.type = SE_EXTEND_PLATFORM;
+					platobject.ai.se.platx = platx;
+					platobject.ai.se.platy = platy;
+					mp_object->push_back(platobject);
+				}
+
+				if (!ppogostick) break;
 			}
 			else if (t==TILE_LIGHTSWITCH)
 			{ // lightswitch
@@ -314,10 +347,9 @@ void CPlayer::TogglePogo_and_Switches()
 		}
 		
 		// toggle pogo stick
-		if (inventory.HasPogo)
-		{
+		if (inventory.HasPogo && m_Level_Trigger == LVLTRIG_NONE)
 			ppogostick ^= 1;
-		}
+
 		lastpogo = true;
 	}
 
@@ -687,12 +719,10 @@ void CPlayer::bump( int pushamt, bool solid )
 		pdir = pshowdir = (pushamt<0)?LEFT:RIGHT;
 }
 
-bool CPlayer::mustExtendPlatform()
+int CPlayer::pollLevelTrigger()
 {
-	if(m_mustextendPlatform){
-		m_mustextendPlatform = false;
-		return true;
-	}
-	else return false;
+	int trigger = m_Level_Trigger;
+	m_Level_Trigger = LVLTRIG_NONE;
+	return trigger;
 }
 
