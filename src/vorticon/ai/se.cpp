@@ -69,8 +69,10 @@ void CObjectAI::se_extend_plat(CObject &object, bool &PlatExtending)
 		else
 			object.ai.se.dir = LEFT;
 
-		object.needinit = 0;
+		object.needinit = false;
 	}
+
+	printf("plat: (%d;%d)\n", object.ai.se.platx, object.ai.se.platy);
 
 	if (!object.ai.se.timer)
 	{
@@ -81,7 +83,7 @@ void CObjectAI::se_extend_plat(CObject &object, bool &PlatExtending)
 			if(!TileProperty[mp_Map->at(object.ai.se.platx+1, object.ai.se.platy)].bleft)
 				object.ai.se.bgtile = mp_Map->at(object.ai.se.platx, object.ai.se.platy);
 
-			mp_Map->setTile(object.ai.se.platx, object.ai.se.platy, TILE_EXTENDING_PLATFORM, true);
+			mp_Map->changeTile(object.ai.se.platx, object.ai.se.platy, TILE_EXTENDING_PLATFORM);
 			object.ai.se.platx++;
 			kill_all_intersecting_tile(object.ai.se.platx, object.ai.se.platy);
 			object.ai.se.timer = PLAT_EXTEND_RATE;
@@ -93,7 +95,10 @@ void CObjectAI::se_extend_plat(CObject &object, bool &PlatExtending)
 			if(!TileProperty[mp_Map->at(object.ai.se.platx-1, object.ai.se.platy)].bright)
 				object.ai.se.bgtile = mp_Map->at(object.ai.se.platx-1, object.ai.se.platy);
 
-			mp_Map->setTile(object.ai.se.platx, object.ai.se.platy, TILE_EXTENDING_PLATFORM, true);
+			mp_Map->changeTile(object.ai.se.platx, object.ai.se.platy, TILE_EXTENDING_PLATFORM);
+			object.ai.se.platx--;
+			kill_all_intersecting_tile(object.ai.se.platx, object.ai.se.platy);
+			object.ai.se.timer = PLAT_EXTEND_RATE;
 		}
 		else
 		{

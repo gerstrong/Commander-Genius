@@ -337,7 +337,9 @@ void CPlayGame::process()
 			tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec()) +
 					"; x = " + itoa(m_Player[0].x) + " ; y = " + itoa(m_Player[0].y);
 #else
-			tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec());
+			//tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec());
+			tempbuf = "x>>CSF: " + itoa(m_Player[0].x>>CSF);
+			tempbuf += " y>>CSF: " + itoa(m_Player[0].y>>CSF);
 #endif
 			g_pGfxEngine->Font->drawFont(sfc,tempbuf,320-(tempbuf.size()<<3)-1, LETTER_TYPE_RED);
 		}

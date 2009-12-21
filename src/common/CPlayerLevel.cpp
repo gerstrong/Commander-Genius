@@ -303,15 +303,15 @@ void CPlayer::TogglePogo_and_Switches()
 				// Flip the switch!
 				g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, x>>STC);
 				if ( mp_map->at(mx, my) == TILE_SWITCH_DOWN )
-					mp_map->setTile(mx, my, TILE_SWITCH_UP,true);
+					mp_map->changeTile(mx, my, TILE_SWITCH_UP);
 				else
-					mp_map->setTile(mx, my, TILE_SWITCH_DOWN,true);
+					mp_map->changeTile(mx, my, TILE_SWITCH_DOWN);
 
 				// figure out where the platform is supposed to extend at
 				// (this is coded in the object layer...
 				// high byte is the Y offset and the low byte is the X offset,
 				// and it's relative to the position of the switch.)
-				int bridge = mp_map->getObjectat(mx, my);
+				Uint16 bridge = mp_map->getObjectat(mx, my);
 
 				if (bridge==0) // Uh Oh! This means you have enabled a tantalus ray of the ship
 				{
@@ -320,8 +320,8 @@ void CPlayer::TogglePogo_and_Switches()
 				else
 				{
 					m_Level_Trigger = LVLTRIG_BRIDGE;
-					int pxoff = (bridge & 0x00ff);
-					int pyoff = (bridge & 0xff00) >> 8;
+					char pxoff = (bridge & 0x00ff);
+					char pyoff = (bridge & 0xff00) >> 8;
 					int platx = mx + pxoff;
 					int platy = my + pyoff;
 
