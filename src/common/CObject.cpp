@@ -29,8 +29,8 @@ m_index(index)
 	sprite=BLANKSPRITE;
 	solid = true;
 
-	x = 0;
-	y = 0;
+	new_x = x = 0;
+	new_y = y = 0;
 	bboxX1 = bboxX2 = 0;
 	bboxY1 = bboxY2 = 0;
 
@@ -198,19 +198,77 @@ CSprite *Sprite = g_pGfxEngine->Sprite.at(sprite);
 	x2 = x + Sprite->m_bboxX2;
 	y2 = y + Sprite->m_bboxY2;
 
-	// Left
-	blockedl = checkSolidL(TileProperty, p_map, x1, y1, y2);
-	blockedu = checkSolidU(TileProperty, p_map, x1, x2, y1);
-	blockedr = checkSolidR(TileProperty, p_map, x2, y1, y2);
-	blockedd = checkSolidD(TileProperty, p_map, x1, x2, y2);
+	// first the first col-model can't be applied to scrubs. There are very special
+	if(m_type != OBJ_SCRUB)
+	{
+		if( x > new_x )
+		{
+			do
+			{
+				if( checkSolidR(TileProperty, p_map, x2, y1, y2) && solid )
+				{
+					blockedr = true;
+					break;
+				}
+				new_x++;
+			}while( x > new_x );
+		}
+		else if( x < new_x )
+		{
+			do
+			{
+				if( checkSolidL(TileProperty, p_map, x1, y1, y2) && solid )
+				{
+					blockedl = true;
+					break;
+				}
+				new_x--;
+			}while( x < new_x );
+		}
+		x = new_x;
+
+		if( y < new_y )
+		{
+			do
+			{
+				if( checkSolidU(TileProperty, p_map, x1, x2, y1) && solid )
+				{
+					blockedu = true;
+					break;
+				}
+				new_y--;
+			}while( y < new_y );
+		}
+		else if( y > new_y )
+		{
+			do
+			{
+				if( checkSolidD(TileProperty, p_map, x1, x2, y2) && solid )
+				{
+					blockedd = true;
+					break;
+				}
+				new_y++;
+			}while( y > new_y );
+		}
+		y = new_y;
+	}
+	else
+	{
+		blockedu = checkSolidU(TileProperty, p_map, x1, x2, y1);
+		blockedd = checkSolidD(TileProperty, p_map, x1, x2, y2);
+		blockedl = checkSolidL(TileProperty, p_map, x1, y1, y2);
+		blockedr = checkSolidR(TileProperty, p_map, x2, y1, y2);
+	}
 }
 
+const int COLISION_RES = 4;
 bool CObject::checkSolidR(stTile *TileProperty, CMap *p_map, int x2, int y1, int y2)
 {
 	// Check for right from the object
 	if(solid)
 	{
-		for(int c=y1+(1<<STC) ; c<=y2-(1<<STC) ; c++)
+		for(int c=y1+(1<<STC) ; c<=y2-(1<<STC) ; c += COLISION_RES)
 		{
 			if(TileProperty[p_map->at(x2>>CSF, c>>CSF)].bleft)
 				return true;
@@ -226,7 +284,7 @@ bool CObject::checkSolidL(stTile *TileProperty, CMap *p_map, int x1, int y1, int
 	// Check for right from the object
 	if(solid)
 	{
-		for(int c=y1+(1<<STC) ; c<=y2-(1<<STC) ; c++)
+		for(int c=y1+(1<<STC) ; c<=y2-(1<<STC) ; c += COLISION_RES)
 		{
 			if(TileProperty[p_map->at(x1>>CSF, c>>CSF)].bright)
 				return true;
@@ -242,7 +300,7 @@ bool CObject::checkSolidU(stTile *TileProperty, CMap *p_map, int x1, int x2, int
 	// Check for right from the object
 	if(solid)
 	{
-		for(int c=x1+(1<<STC) ; c<=x2-(1<<STC) ; c++)
+		for(int c=x1+(1<<STC) ; c<=x2-(1<<STC) ; c += COLISION_RES)
 		{
 			if(TileProperty[p_map->at(c>>CSF, y1>>CSF)].bdown)
 				return true;
@@ -258,7 +316,7 @@ bool CObject::checkSolidD(stTile *TileProperty, CMap *p_map, int x1, int x2, int
 	// Check for right from the object
 	if(solid)
 	{
-		for(int c=x1+(1<<STC) ; c<=x2-(1<<STC) ; c++)
+		for(int c=x1+(1<<STC) ; c<=x2-(1<<STC) ; c += COLISION_RES)
 		{
 			if(TileProperty[p_map->at(c>>CSF, y2>>CSF)].bup)
 				return true;
@@ -275,13 +333,16 @@ void CObject::processFalling()
 	#define OBJFALLSPEED   160
 	if (!inhibitfall)
 	{
-		if (blockedd) yinertia = 0;
+		if (blockedd)
+		{
+			yinertia = 0;
+		}
 		else
 		{
+			// So it reaches the maximum of fallspeed
 			if (yinertia < OBJFALLSPEED) yinertia+=4;
-			y += yinertia;
-			//if(m_index==2) printf("y: %d\n", y );
-			//y++;
+
+			y+=yinertia;
 		}
 	}
 }

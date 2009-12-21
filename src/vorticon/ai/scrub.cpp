@@ -281,7 +281,7 @@ void CObjectAI::scrub_ai(CObject &object)
 					if (m_Player[i].psupportingobject==object.m_index && m_Player[i].pjumping!=PJUMPUP && m_Player[i].pjumping!=PPOGOING)
 					{
 						m_Player[i].goto_x -= (2<<STC);
-						m_Player[i].goto_y = (object.y - (Sprite[0]->getHeight()<<STC));
+						m_Player[i].goto_y = object.y - ((Sprite[0]->getHeight())<<STC);
 					}
 				}
 			}

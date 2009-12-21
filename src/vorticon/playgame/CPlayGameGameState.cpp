@@ -84,6 +84,8 @@ bool CPlayGame::loadGameState()
 			m_SavedGame.decodeData(object.m_type);
 			m_SavedGame.decodeData(object.x);
 			m_SavedGame.decodeData(object.y);
+			object.new_x = object.x;
+			object.new_y = object.y;
 			m_SavedGame.decodeData(object.dead);
 			m_SavedGame.decodeData(object.needinit);
 			m_SavedGame.decodeData(object.onscreen);

@@ -33,6 +33,7 @@ public:
 	bool hasbeenonscreen;
 	unsigned int sprite;      			// which sprite should this object be drawn with
 	unsigned int x, y;        			// x,y location in map coords, CSFed
+	unsigned int new_x, new_y;        	// x,y location in map coords, CSFed for collision
 	int scrx, scry;           // x,y pixel position on screen
 	
 	// Bouncing Boxes
