@@ -9,7 +9,7 @@
 #include "../../sdl/CVideoDriver.h"
 #include "../../fileio/CExeFile.h"
 
-CFinale::CFinale() : mp_TextViewer(NULL) {
+CFinale::CFinale() : m_mustfinishgame(false), mp_TextViewer(NULL) {
 }
 
 void CFinale::init_ToBeContinued()

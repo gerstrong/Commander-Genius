@@ -31,51 +31,6 @@ int vibe_strength, vibe_getworsetimer;
 int shot_x, shot_y, shot_obj, shot_frame, shot_frametimer;
 int fire_timer;
 char tant_hitearth;
-void seq_tantalus_start(void)
-{
-	int i;
-	int x,y;
-	lprintf(">seq_tantalus_start()\n");
-	overlay.tantalus = 1;
-	sound_stop_all();
-
-	initgame();
-	showmapatpos(81, TANTALUS_X, TANTALUS_Y);
-
-	AllPlayersInvisible();
-
-	// there are no objects in this scene
-	for(i=0;i<MAX_OBJECTS;i++) delete_object(i);
-
-	// place keen next to his ship
-	numplayers = 1;
-	objects[player[0].useObject].exists = 1;
-	highest_objslot = player[0].useObject+1;
-
-	// place the player (which is actually the tantalus ray) at the mouth
-	// of the vorticon mothership
-	if (map_findtile(593, &x, &y))
-	{ // found the tile
-		shot_x = ((x<<4)-1)<<CSF;
-		shot_y = ((y<<4)-0)<<CSF;
-		shot_frame = 0;
-		shot_frametimer = 0;
-	}
-	else
-	{
-		crash("seq_tantalus_start(): unable to find tile 593.");
-		return;
-	}
-
-	player[0].x = shot_x;
-	player[0].y = shot_y;
-	fire_timer = 300;
-	tant_hitearth = 0;
-
-	levelcontrol.dontscroll = 1;
-	fade(FADE_IN, FADE_NORM);
-}
-
 
 void seq_tantalus_run(void)
 {
@@ -95,53 +50,6 @@ void seq_tantalus_run(void)
 }
 
 
-int timer, spawnedcount;
-void static tant_moveshot(void)
-		 {
-	int tl;
-	levelcontrol.dontscroll = 0;
-	player[0].x = shot_x;
-	player[0].y = shot_y;
-
-	if (fire_timer > 0)
-	{
-		fire_timer--;
-		if (!fire_timer)
-		{
-			shot_obj = spawn_object(shot_x, shot_y, OBJ_RAY);
-			objects[shot_obj].onscreen = 1;
-			sound_play(SOUND_KEEN_FIRE, PLAY_FORCE);
-		}
-		else return;
-	}
-
-	objects[shot_obj].sprite = TANTALUS_SPRITE + shot_frame;
-	if (++shot_frametimer > 45)
-	{
-		shot_frametimer = 0;
-		shot_frame ^= 1;
-	}
-
-	objects[shot_obj].x = shot_x;
-	objects[shot_obj].y = shot_y;
-
-	tl = getmaptileat((shot_x>>CSF)+(sprites[TANTALUS_SPRITE].xsize/2), \
-			(shot_y>>CSF)+(sprites[TANTALUS_SPRITE].ysize/2));
-	if (tl==586)
-	{	  // it hit center of earth
-		tant_hitearth = 1;
-		delete_object(shot_obj);
-		srnd(300);
-		spawn_object(shot_x, shot_y, OBJ_EXPLOSION);
-		sound_play(SOUND_EARTHPOW, PLAY_NOW);
-		timer = spawnedcount = 0;
-	}
-	else
-	{
-		shot_x += SHOT_SPD_X;
-		shot_y += SHOT_SPD_Y;
-	}
-		 }
 
 #define EARTHCHUNK_BIG_UP       64
 #define EARTHCHUNK_BIG_DN       66

@@ -27,27 +27,34 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 		p_player->y = p_player->goto_y;
 	}
 
-	// Start with X-Coordinates
-	if( p_player->goto_x > p_player->x )
+	if( g_pInput->getHoldedKey(KSHIFT) && g_pInput->getHoldedKey(KTAB) )
 	{
-		// The player walked right
-		while(p_player->goto_x > p_player->x)
-		{
-			if( checkisSolidl(p_player) )	break;
-			p_player->x++;
-		}
+		p_player->x = p_player->goto_x;
 	}
-	else if( p_player->goto_x < p_player->x )
+	else
 	{
-		// The player walked left
-		while(p_player->goto_x < p_player->x)
+		// Start with X-Coordinates
+		if( p_player->goto_x > p_player->x )
 		{
-			if( checkisSolidr(p_player) )	break;
-			p_player->x--;
+			// The player walked right
+			while(p_player->goto_x > p_player->x)
+			{
+				if( checkisSolidl(p_player) )	break;
+				p_player->x++;
+			}
 		}
+		else if( p_player->goto_x < p_player->x )
+		{
+			// The player walked left
+			while(p_player->goto_x < p_player->x)
+			{
+				if( checkisSolidr(p_player) )	break;
+				p_player->x--;
+			}
+		}
+		p_player->goto_x = p_player->x;
 	}
-	p_player->goto_x = p_player->x;
-	
+
 	// Continue with Y-Coordinates
 	if( p_player->goto_y > p_player->y )
 	{
@@ -103,7 +110,8 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 // returns 1 and sets blockedby if so.
 bool CPlayGame::checkisSolidl(CPlayer *p_player)
 {
-CSprite *sprite = g_pGfxEngine->Sprite[p_player->playframe];
+//CSprite *sprite = g_pGfxEngine->Sprite[p_player->playframe];
+CSprite *sprite = g_pGfxEngine->Sprite[0];
 
 	int x=p_player->x+sprite->m_bboxX2;
 	int y1=p_player->y+sprite->m_bboxY1+1;
@@ -154,7 +162,8 @@ CSprite *sprite = g_pGfxEngine->Sprite[p_player->playframe];
 // returns 1 and sets blockedby if so.
 bool CPlayGame::checkisSolidr(CPlayer *p_player)
 {
-CSprite *sprite = g_pGfxEngine->Sprite[p_player->playframe];
+//CSprite *sprite = g_pGfxEngine->Sprite[p_player->playframe];
+CSprite *sprite = g_pGfxEngine->Sprite[0];
 
 	int x=p_player->x+sprite->m_bboxX1;
 	int y1=p_player->y+sprite->m_bboxY1+1;

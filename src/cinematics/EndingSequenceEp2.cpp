@@ -42,10 +42,7 @@ int ShipQueuePtr;
 #define TAN_STATE_CHUNKS_FLYING         3
 #define TAN_STATE_GAMEOVER              4
 
-#define EARTHCHUNK_BIG_UP       64
-#define EARTHCHUNK_BIG_DN       66
-#define EARTHCHUNK_SMALL_UP     68
-#define EARTHCHUNK_SMALL_DN     70
+
 
 int eseq2_TantalusRay()
 {

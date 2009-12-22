@@ -283,7 +283,16 @@ void CPlayGame::process()
 			{
 				mp_Finale->process();
 
-				m_endgame = mp_Finale->getHasFinished();
+				if(mp_Finale->getHasFinished())
+				{
+					SAFE_DELETE(mp_Finale);
+
+					if(!m_gameover)
+					{
+						mp_HighScores = new CHighScores(m_Episode, m_Gamepath, true);
+						collectHighScoreInfo();
+					}
+				}
 			}
 		}
 		else // In this case the game is paused
@@ -302,7 +311,7 @@ void CPlayGame::process()
 
 		// Check if we are in gameover mode. If yes, than show the bitmaps and block the FKeys().
 		// Only confirmation button is allowes
-		if(m_gameover) // game over mode
+		if(m_gameover && !mp_Finale) // game over mode
 		{
 			if(mp_gameoverbmp != NULL)
 			{

@@ -97,7 +97,8 @@ void CPlayGame::processLevelTrigger(int trigger)
 		/*p_levelcontrol->success = 0;
 		p_levelcontrol->command = LVLC_TANTALUS_RAY;*/
 		printf("Tantalus Ray Triggered!\n");
-		mp_Finale = new CTantalusRay();
+		mp_Finale = new CTantalusRay(*mp_Map, m_Object, *mp_ObjectAI);
+		m_gameover = true;
 	}
 	else if (trigger == LVLTRIG_BRIDGE)
 	{
