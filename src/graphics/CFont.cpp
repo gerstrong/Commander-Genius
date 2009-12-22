@@ -79,13 +79,27 @@ void CFont::generateGlowFonts()
 	// And this code makes the letter create blue edges
 	SDL_LockSurface(m_FontSurface);
 	
-	Uint8 *pixel = (Uint8*) m_FontSurface->pixels + 136*128*m_FontSurface->format->BytesPerPixel;
+	int bpp = m_FontSurface->format->BytesPerPixel;
+	Uint8 *pixel = (Uint8*) m_FontSurface->pixels + 136*128*bpp;
+
 	for(Uint8 y=0 ; y<8*6 ; y++)
 	{
 		for(Uint8 x=0 ; x<128 ; x++)
 		{
-			if(*pixel != 15) memset(pixel, 1,1);
-			pixel++;
+			Uint8 red, blue, green;
+			Uint32 color;
+
+			memcpy(&color, pixel,bpp);
+			SDL_GetRGB(color, m_FontSurface->format, &red, &green, &blue);
+			if(red < 0x0F && blue < 0x0F && green < 0x0F )
+			{
+				red = 0x00;
+				green = 0x00;
+				blue = 0xFF;
+				color = SDL_MapRGB(m_FontSurface->format, red, green, blue);
+				memcpy(pixel, &color, bpp);
+			}
+			pixel+=bpp;
 		}
 	}
 	SDL_UnlockSurface(m_FontSurface);
@@ -106,14 +120,35 @@ void CFont::generateInverseFonts()
 	// And this code makes the letter create blue edges
 	SDL_LockSurface(m_FontSurface);
 	
-	Uint8 *pixel = (Uint8*) m_FontSurface->pixels + fmrect.y*128;
+	int bpp = m_FontSurface->format->BytesPerPixel;
+	Uint8 *pixel = (Uint8*) m_FontSurface->pixels + fmrect.y*128*bpp;
+
 	for(Uint8 y=0 ; y<8*6 ; y++)
 	{
 		for(Uint8 x=0 ; x<128 ; x++)
 		{
-			if( *pixel == 15 ) memset(pixel,0,1);
-			else memset(pixel,11,1);
-			pixel++;
+			Uint8 red, blue, green;
+			Uint32 color;
+
+			memcpy(&color, pixel,bpp);
+			SDL_GetRGB(color, m_FontSurface->format, &red, &green, &blue);
+			if(red < 0x0F && blue < 0x0F && green < 0x0F )
+			{
+				red = 0x00;
+				green = 0x80;
+				blue = 0xFF;
+				color = SDL_MapRGB(m_FontSurface->format, red, green, blue);
+				memcpy(pixel, &color, bpp);
+			}
+			else
+			{
+				red = 0x00;
+				green = 0x00;
+				blue = 0x00;
+				color = SDL_MapRGB(m_FontSurface->format, red, green, blue);
+				memcpy(pixel, &color, bpp);
+			}
+			pixel+=bpp;
 		}
 	}
 	SDL_UnlockSurface(m_FontSurface);
@@ -133,15 +168,28 @@ void CFont::generateDisabledFonts()
 	
 	// And this code makes the letter create blue edges
 	SDL_LockSurface(m_FontSurface);
-	
-	Uint8 *pixel = (Uint8*) m_FontSurface->pixels + fmrect.y*128;
+
+	int bpp = m_FontSurface->format->BytesPerPixel;
+	Uint8 *pixel = (Uint8*) m_FontSurface->pixels + fmrect.y*128*bpp;
+
 	for(Uint8 y=0 ; y<8*6 ; y++)
 	{
 		for(Uint8 x=0 ; x<128 ; x++)
 		{
-			if( *pixel == 15 ) memset(pixel,15,1);
-			else memset(pixel,7,1);
-			pixel++;
+			Uint8 red, blue, green;
+			Uint32 color = 0;
+
+			memcpy(&color, pixel,bpp);
+			SDL_GetRGB(color, m_FontSurface->format, &red, &green, &blue);
+			if(red < 0x0F && blue < 0x0F && green < 0x0F )
+			{
+				red = 0x80;
+				green = 0x80;
+				blue = 0x80;
+				color = SDL_MapRGB(m_FontSurface->format, red, green, blue);
+				memcpy(pixel, &color, bpp);
+			}
+			pixel+=bpp;
 		}
 	}
 	SDL_UnlockSurface(m_FontSurface);

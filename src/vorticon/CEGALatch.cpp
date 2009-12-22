@@ -181,17 +181,13 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	if(path == "") filename = "games/fonts.bmp";
 	else filename = path + "/fonts.bmp";
 
-	Font->loadHiColourFont(filename);
+	Font->optimizeSurface();
+	if(Font->loadHiColourFont(filename)) // This is loaded again in order to get hi-colour fonts
+		g_pLogFile->textOut(GREEN, "VGA Fontmap for the game has been loaded successfully!");
+	Font->generateSpecialTwirls();
 	Font->generateGlowFonts();
 	Font->generateInverseFonts();
 	Font->generateDisabledFonts();
-	Font->optimizeSurface();
-
-	if(Font->loadHiColourFont(filename)) // This is loaded again in order to get hi-colour fonts
-		g_pLogFile->textOut(GREEN, "VGA Fontmap for the game has been loaded successfully!");
-	// the function that are loaded before the first optimizeSurface are are only valid in 8-bit mode.
-	Font->generateSpecialTwirls();
-	Font->optimizeSurface();
 
 	delete Planes;
 
