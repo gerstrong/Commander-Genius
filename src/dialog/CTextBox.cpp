@@ -34,7 +34,7 @@ void CTextBox::setup(int y, int h, const std::string& message)
 	m_border = false; m_numchars = 0;
 	m_timer = 0;
 	m_rect.w = width+2;	m_rect.h = h;
-	m_rect.x = (300/2)-(m_rect.w/2)+10;	m_rect.y = y;
+	m_rect.x = (300/2)-(m_rect.w/2)-2;	m_rect.y = y;
 	m_String = message;
 	m_textdelay = 0;
 	g_pInput->flushAll();

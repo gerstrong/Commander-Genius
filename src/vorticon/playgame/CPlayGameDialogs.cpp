@@ -22,13 +22,13 @@ void CPlayGame::processPauseDialogs()
 	
 	if(!m_MessageBoxes.empty())
 	{
-		CMessageBox *pMB = m_MessageBoxes.back();
+		CMessageBox *pMB = m_MessageBoxes.front();
 		pMB->process();
 
 		if(pMB->isFinished())
 		{
 			SAFE_DELETE(pMB);
-			m_MessageBoxes.pop_back();
+			m_MessageBoxes.pop_front();
 			if(m_MessageBoxes.empty())
 				m_paused = false;
 		}

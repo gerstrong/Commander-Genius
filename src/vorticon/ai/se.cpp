@@ -40,7 +40,6 @@ void CObjectAI::se_ai(CObject &object)
 
 }
 
-
 void CObjectAI::se_extend_plat(CObject &object, bool &PlatExtending)
 {
 #define PLAT_EXTEND_RATE        7
@@ -382,8 +381,8 @@ void CObjectAI::se_ankhshield(CObject &object, int episode)
 #define ARM_GO          0
 #define ARM_WAIT        1
 
-#define ARM_MOVE_SPEED   200
-#define ARM_WAIT_TIME    26
+#define ARM_MOVE_SPEED   800
+#define ARM_WAIT_TIME    8
 void CObjectAI::se_mortimer_arm(CObject &object)
 {
 	int mx,my;
@@ -494,7 +493,7 @@ void CObjectAI::se_mortimer_arm(CObject &object)
 #define MORTIMER_ARMS_YSTART            7
 #define MORTIMER_ARMS_YEND              18
 
-#define ARMS_DESTROY_RATE        12
+#define ARMS_DESTROY_RATE        3
 
 #define MSPARK_IDLE              0
 #define MSPARK_DESTROYARMS       1

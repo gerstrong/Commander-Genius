@@ -557,10 +557,10 @@ void CPlayGame::createFinale()
 	{
 		mp_Finale = new CEndingEp2(mp_Map, m_Player);
 	}
-	/*else if(m_Episode == 3)
+	else if(m_Episode == 3)
 	{
-		mp_Finale = new CEndingEp3();
-	}*/
+		mp_Finale = new CEndingEp3(mp_Map, m_Player);
+	}
 }
 
 void CPlayGame::collectHighScoreInfo()

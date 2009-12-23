@@ -30,6 +30,7 @@
 #include <SDL.h>
 #include <string>
 #include <vector>
+#include <list>
 
 enum door_colours{
 DOOR_YELLOW = 2,
@@ -140,7 +141,7 @@ private:
 	stOption *mp_option;
 	CSavedGame &m_SavedGame;
 	CPhysicsSettings m_PhysicsSettings;
-	std::vector<CMessageBox*> m_MessageBoxes;
+	std::list<CMessageBox*> m_MessageBoxes;
 	std::vector<stTeleporterTable> &m_TeleporterTable;
 	bool m_showKeensLeft;
 	std::vector<CObject> m_Object;
