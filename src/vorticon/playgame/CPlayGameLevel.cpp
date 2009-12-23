@@ -93,21 +93,20 @@ void CPlayGame::processLevelTrigger(int trigger)
 {
 	if (trigger == LVLTRIG_TANTALUS_RAY)
 	{
-		// TODO: Add Code for the tantalus ray trigger
-		/*p_levelcontrol->success = 0;
-		p_levelcontrol->command = LVLC_TANTALUS_RAY;*/
-		printf("Tantalus Ray Triggered!\n");
 		mp_Finale = new CTantalusRay(*mp_Map, m_Object, *mp_ObjectAI);
 		m_gameover = true;
 	}
 	else if (trigger == LVLTRIG_BRIDGE)
-	{
-		// it's a moving platform switch--don't allow player to hit it again while
+	{	// it's a moving platform switch--don't allow player to hit it again while
 		// the plat is still moving as this will glitch
 		if (mp_ObjectAI->getPlatMoving()) return;
 		mp_ObjectAI->triggerPlat(true);
 		// The spawning of the plat extension is defined in the CPlayer class
 	}
-
+	else if (trigger == LVLTRIG_LIGHT)
+	{
+		m_dark = !m_dark;
+		g_pGfxEngine->Palette.setdark(m_dark);
+	}
 }
 

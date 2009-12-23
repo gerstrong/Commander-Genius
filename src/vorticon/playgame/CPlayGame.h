@@ -76,8 +76,8 @@ public:
 	void drawObjects();
 	void handleFKeys();
 	void verifyCutscenes();
-	void createFinale();
 	void collectHighScoreInfo();
+	void createFinale();
 
 	// Collision stuff stored in CPlayGameCollision.cpp
 	void checkPlayerCollisions(CPlayer *p_player);
@@ -99,10 +99,12 @@ public:
 	bool isFinished()
 	{ return m_finished; }
 
-	bool getEndGame() { return m_endgame; }
-	bool getStartGame() { return m_startgame; }
-	bool getExitEvent() { return m_exitgame; }
-	char getEpisode(){	return m_Episode; }
+	bool getEndGame();
+	bool getStartGame();
+	bool getExitEvent();
+	char getEpisode();
+	char getNumPlayers();
+	char getDifficulty();
 
 	void cleanup();
 	virtual ~CPlayGame();
@@ -127,6 +129,7 @@ private:
 	bool mp_level_completed[MAX_LEVELS];
 	int m_checkpoint_x, m_checkpoint_y;
 	bool m_checkpointset;
+	bool m_dark;
 
 	CMap *mp_Map;
 	CMenu *mp_Menu;

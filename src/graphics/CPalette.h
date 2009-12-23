@@ -12,13 +12,14 @@
 #define COLORKEY 16 // Used only for the 8-bit tile. Colour number COLORKEY in the Palette
 
 // Standard Fade speeds
-#define FADE_SPEED_FAST 10
-#define FADE_SPEED_SLOW 2
-#define FADE_SPEED_VERY_SLOW 1
+#define FADE_SPEED_FAST 40
+#define FADE_SPEED_SLOW 8
+#define FADE_SPEED_VERY_SLOW 4
 
 // Standard Darkness for light switches
 #define FADE_DARKNESS_HARD 216
 #define FADE_DARKNESS 200
+#define FADE_DARKNESS_EASY 166
 
 #include <SDL.h>
 

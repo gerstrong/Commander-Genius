@@ -26,7 +26,7 @@ const int SCROLLTRIGGERUP = 100;
 const int SCROLLTRIGGERDOWN = 140;
 
 enum level_triggers{
-	LVLTRIG_NONE, LVLTRIG_TANTALUS_RAY, LVLTRIG_BRIDGE
+	LVLTRIG_NONE, LVLTRIG_TANTALUS_RAY, LVLTRIG_BRIDGE, LVLTRIG_LIGHT
 };
 
 ///
@@ -68,7 +68,7 @@ public:
 	void processInLevel();
 	void touchedExit();
 	void walkbehindexitdoor();
-	void kill();
+	void kill(bool force=false);
 	void dieanim();
 	void setDir();
 	void getgoodies();

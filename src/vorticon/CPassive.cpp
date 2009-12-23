@@ -190,8 +190,7 @@ void CPassive::process()
 		{
 			m_NumPlayers = mp_Menu->getNumPlayers();
 			m_Difficulty = mp_Menu->getDifficulty();
-			delete mp_Menu;
-			mp_Menu = NULL;
+			SAFE_DELETE(mp_Menu);
 			cleanup();
 			m_mode = STARTGAME;
 		}

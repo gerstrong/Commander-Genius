@@ -110,10 +110,13 @@ void CPlayer::walkbehindexitdoor()
     }
 }
 
-void CPlayer::kill()
+void CPlayer::kill(bool force)
 {
-	if (godmode || g_pInput->getHoldedKey(KTAB)) return;
-	if (ankhtime) return;
+	if(!force) // force can happens for example, when player leaves the map to the most lower-side
+	{
+		if (godmode) return;
+		if (ankhtime) return;
+	}
 	if (!pdie)
 	{
 		pdie = PDIE_DYING;
@@ -338,11 +341,8 @@ void CPlayer::TogglePogo_and_Switches()
 			}
 			else if (t==TILE_LIGHTSWITCH)
 			{ // lightswitch
-				/*p_levelcontrol->dark ^= 1;
-				 g_pGfxEngine->Palette.setdark(p_levelcontrol->dark);
-				 g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, objects[useObject].scrx);
-				 if (!ppogostick) return;*/
-				// TODO: ADD CODE here, but this must happen outside this function
+				m_Level_Trigger = LVLTRIG_LIGHT;
+				g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, x>>CSF);
 			}
 		}
 		
@@ -352,7 +352,6 @@ void CPlayer::TogglePogo_and_Switches()
 			ppogostick ^= 1;
 			pogofirsttime = true;
 		}
-
 		lastpogo = true;
 	}
 

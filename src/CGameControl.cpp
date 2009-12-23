@@ -315,7 +315,10 @@ void CGameControl::process()
 			delete mp_PlayGame; mp_PlayGame = NULL;
 		}
 		else if( mp_PlayGame->getStartGame() )
-		{
+		{ // Start another new game
+			m_Numplayers = mp_PlayGame->getNumPlayers();
+			m_Difficulty = mp_PlayGame->getDifficulty();
+
 			delete mp_PlayGame; mp_PlayGame = NULL;
 			init(PLAYGAME);
 		}

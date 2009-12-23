@@ -27,6 +27,7 @@ CPlayGame::CPlayGame( char episode, char level,
 					 std::string &gamepath, stOption *p_option,
 					 bool finale, CSavedGame &SavedGame,
 					 std::vector<stTeleporterTable> &TeleporterTable) :
+m_dark(false),
 mp_ObjectAI(NULL),
 m_SavedGame(SavedGame),
 mp_MessageBox(NULL),
@@ -85,6 +86,14 @@ mp_HighScores(NULL)
 
 	m_paused = false;
 	m_showPauseDialog = false;
+
+	if(difficulty==0)
+		g_pGfxEngine->Palette.setdarkness(FADE_DARKNESS_EASY);
+	else if(difficulty==1)
+		g_pGfxEngine->Palette.setdarkness(FADE_DARKNESS);
+	else
+		g_pGfxEngine->Palette.setdarkness(FADE_DARKNESS_HARD);
+
 	if(finale) m_level_command = GOTO_FINALE;
 }
 
@@ -123,6 +132,13 @@ void CPlayGame::setupPlayers()
 
 bool CPlayGame::init()
 {
+	// Taken from the original CloneKeen. If hard-mode chosen, swap levels 5 and 9 Episode 1
+	if(m_Episode == 1 && m_Difficulty > 1)
+	{
+		if(m_Level == 5) m_Level = 9;
+		if(m_Level == 9) m_Level = 5;
+	}
+
 	// Create an empty map
 	mp_Map = new CMap( g_pVideoDriver->getScrollSurface(), g_pGfxEngine->Tilemap);
 	CMapLoader MapLoader( mp_Map, &m_Player[0] );
@@ -154,6 +170,9 @@ bool CPlayGame::init()
 
 	// Check if Player meets the conditions to show a cutscene. This also happens, when finale of episode has reached
 	verifyCutscenes();
+
+	// When Level starts it's never dark!
+	g_pGfxEngine->Palette.setdark(false);
 
 	if(m_level_command == GOTO_FINALE)
 		createFinale();
@@ -189,7 +208,12 @@ void CPlayGame::createPlayerObjects()
 ////
 void CPlayGame::process()
 {
-	if(mp_HighScores)
+
+	// Check for fading processes if necessary
+	if(g_pGfxEngine->Palette.in_progress())
+		g_pGfxEngine->Palette.applyFade();
+
+	if(mp_HighScores) // Are we requesting Highscores
 	{
 		mp_HighScores->process();
 
@@ -202,7 +226,7 @@ void CPlayGame::process()
 			m_endgame = true;
 		}
 	}
-	else
+	else // No? We are in the middle of the game
 	{
 		// If the menu is open process it!
 		if(mp_Menu)
@@ -217,7 +241,11 @@ void CPlayGame::process()
 					m_endgame = true;
 
 				if( mp_Menu->mustStartGame() )
+				{
+					m_NumPlayers = mp_Menu->getNumPlayers();
+					m_Difficulty = mp_Menu->getDifficulty();
 					m_startgame = true;
+				}
 
 				mp_Menu->cleanup();
 				SAFE_DELETE(mp_Menu);
@@ -346,9 +374,7 @@ void CPlayGame::process()
 			tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec()) +
 					"; x = " + itoa(m_Player[0].x) + " ; y = " + itoa(m_Player[0].y);
 #else
-			//tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec());
-			tempbuf = "x>>CSF: " + itoa(m_Player[0].x>>CSF);
-			tempbuf += " y>>CSF: " + itoa(m_Player[0].y>>CSF);
+			tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec());
 #endif
 			g_pGfxEngine->Font->drawFont(sfc,tempbuf,320-(tempbuf.size()<<3)-1, LETTER_TYPE_RED);
 		}
@@ -490,11 +516,22 @@ void CPlayGame::verifyCutscenes()
 		if(hasBattery && hasWiskey && hasJoystick && hasVaccum)
 			createFinale();
 	}
-	/*else if(m_Episode == 2)
-	{
-		mp_Finale = new CEndingEp2();
-	}
 	else if(m_Episode == 2)
+	{
+		bool allCitiesSaved;
+		allCitiesSaved = mp_level_completed[4];
+		allCitiesSaved &= mp_level_completed[6];
+		allCitiesSaved &= mp_level_completed[7];
+		allCitiesSaved &= mp_level_completed[9];
+		allCitiesSaved &= mp_level_completed[11];
+		allCitiesSaved &= mp_level_completed[13];
+		allCitiesSaved &= mp_level_completed[15];
+		allCitiesSaved &= mp_level_completed[16];
+
+		if(allCitiesSaved)
+			createFinale();
+	}
+	/*else if(m_Episode == 3)
 	{
 		mp_Finale = new CEndingEp3();
 	}*/
@@ -503,11 +540,17 @@ void CPlayGame::verifyCutscenes()
 void CPlayGame::createFinale()
 {
 	if(m_Episode == 1)
+	{
 		mp_Finale = new CEndingEp1(mp_Map, m_Player);
+	}
 	else if(m_Episode == 2)
+	{
 		mp_Finale = new CEndingEp2(mp_Map, m_Player);
+	}
 	/*else if(m_Episode == 3)
-		mp_Finale = new CEndingEp3(mp_Map, m_Player);*/
+	{
+		mp_Finale = new CEndingEp3();
+	}*/
 }
 
 void CPlayGame::collectHighScoreInfo()
@@ -629,6 +672,16 @@ void CPlayGame::drawObjects()
 		}
 	}
 }
+////
+// Getters
+////
+
+bool CPlayGame::getEndGame() { return m_endgame; }
+bool CPlayGame::getStartGame() { return m_startgame; }
+bool CPlayGame::getExitEvent() { return m_exitgame; }
+char CPlayGame::getEpisode() { return m_Episode; }
+char CPlayGame::getNumPlayers() { return m_NumPlayers; }
+char CPlayGame::getDifficulty() { return m_Difficulty; }
 
 ////
 // Cleanup Routine

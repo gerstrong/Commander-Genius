@@ -94,10 +94,10 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
     // Check if the player is going out of the level map
     if( p_player->goto_y <= 2<<CSF ) // Upper edge or ceiling
     	p_player->blockedu = true;
-    else if( p_player->goto_y >= ((mp_Map->m_height-2)<<CSF) ) // lower edge or floor
+    else if( p_player->goto_y >= ((mp_Map->m_height)<<CSF) ) // lower edge or floor
     {
     	p_player->blockedd = true;
-    	p_player->pdie = true;
+    	p_player->kill(true);
     }
 	
     if( (p_player->goto_x) >= ((mp_Map->m_width-3)<<CSF) ) // right edge
