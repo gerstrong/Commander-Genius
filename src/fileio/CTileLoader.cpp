@@ -170,7 +170,7 @@ void CTileLoader::assignChangeTileAttribute()
 		case 3:
 		{
 			// Episode 3 is a special case, because the items are repeated 6 times
-			for(int i=0 ; i<=m_numtiles ; i++)
+			for(int i=0 ; i<m_numtiles ; i++)
 			{
 				// Only items!!
 				if(canbePickedup(i))

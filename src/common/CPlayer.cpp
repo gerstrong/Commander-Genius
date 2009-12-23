@@ -52,7 +52,7 @@ void CPlayer::setDatatoZero()
 	goto_x = x = 0;
 	goto_y = y = 0;
 	pfallspeed = 0,
-	pshowdir = DOWN;
+	pdir = pshowdir = DOWN;
 	inhibitfall = hideplayer = false;
   	pwalkframe = pwalkframea = 0;
    	m_player_number = 0;

@@ -33,6 +33,8 @@ m_index(index)
 	new_y = y = 0;
 	bboxX1 = bboxX2 = 0;
 	bboxY1 = bboxY2 = 0;
+	canbezapped = false;
+	onscreen = false;
 
 	memset(&ai, 0, sizeof(ai));
 
