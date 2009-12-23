@@ -18,14 +18,14 @@ CFinaleStaticScene::CFinaleStaticScene(const std::string &game_path, const std::
 	SDL_SetColors( mp_SceneSurface, g_pGfxEngine->Palette.m_Palette, 0, 255);
 	finale_draw( mp_SceneSurface, scene_file, game_path);
 
-	mp_DlgFrame = new CDlgFrame(0, 134, 40, 8);
+	mp_DlgFrame = new CDlgFrame(0, 127, 40, 9);
 
 	SDL_BlitSurface( mp_SceneSurface, NULL, g_pVideoDriver->ScrollSurface, NULL );
 }
 
 void CFinaleStaticScene::push_string(const std::string &text, Uint32 delay)
 {
-	CTextBox *p_Textbox = new CTextBox(142, 100, getstring(text));
+	CTextBox *p_Textbox = new CTextBox(134, 100, getstring(text));
 	p_Textbox->setDelay(delay);
 	p_Textbox->setAttribs(2, LETTER_TYPE_NORMAL);
 

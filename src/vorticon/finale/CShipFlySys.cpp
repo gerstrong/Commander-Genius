@@ -12,14 +12,17 @@
 
 #include "CShipFlySys.h"
 
-CShipFlySys::CShipFlySys(CPlayer &Player, CMap *p_Map) :
+CShipFlySys::CShipFlySys(CPlayer &Player, CMap *p_Map, int ship_rightsprite, int ship_leftsprite) :
 m_player(Player) // in this case the player will be the ship flying home
 {
+	m_playsprite_right = ship_rightsprite;
+	m_playsprite_left = ship_leftsprite;
+
 	mp_Map = p_Map;
 	m_finished = false;
 	m_scrollingon = true;
 	m_ShipQueuePtr = 0;
-	m_player.playframe = SPR_SHIP_RIGHT;
+	m_player.playframe = m_playsprite_right;
 
 	// Now, that everything is initialized, create a mark that will be used
 	// as ! or ? Sprite
@@ -54,24 +57,29 @@ void CShipFlySys::process()
 		 {
 		 case DUP:
 			 m_player.y-=SHIPSPD;
-			 m_player.playframe = SPR_SHIP_RIGHT;
+			 m_player.playframe = m_playsprite_right;
 			 break;
 		 case DDOWN:
 			 m_player.y+=SHIPSPD/2;
-			 m_player.playframe = SPR_SHIP_RIGHT;
+			 m_player.playframe = m_playsprite_right;
 			 break;
 		 case DLEFT:
 			 m_player.x-=SHIPSPD;
-			 m_player.playframe = SPR_SHIP_LEFT;
+			 m_player.playframe = m_playsprite_left;
 			 break;
 		 case DRIGHT:
 			 m_player.x+=SHIPSPD;
-			 m_player.playframe = SPR_SHIP_RIGHT;
+			 m_player.playframe = m_playsprite_right;
 			 break;
 		 case DDOWNRIGHT:
 			 m_player.x+=SHIPSPD*2;
 			 m_player.y+=SHIPSPD*0.8;
-			 m_player.playframe = SPR_SHIP_RIGHT;
+			 m_player.playframe = m_playsprite_right;
+			 break;
+		 case DUPLEFT:
+			 m_player.x-=SHIPSPD*2;
+			 m_player.y-=SHIPSPD*0.8;
+			 m_player.playframe = m_playsprite_left;
 			 break;
 		 }
 		 m_player.scrollTriggers();

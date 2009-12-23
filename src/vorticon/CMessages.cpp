@@ -113,13 +113,13 @@ bool CMessages::extractGlobalStrings()
 					StringMap.insert( extractString( "EP2_LVL15_TargetName" , 0x19CF7, 0x19CFD, -804) );
 					StringMap.insert( extractString( "EP2_LVL16_TargetName" , 0x19CFE, 0x19D07, -804) );
 					// Message Boxes
-					StringMap.insert( extractString( "EP2_ESEQ_PART1" , 0x1A4A7, 0x1A558, -804) );
-					StringMap.insert( extractString( "EP2_ESEQ_PART2" , 0x1A559, 0x1A5F1, -804) );
-					StringMap.insert( extractString( "EP2_ESEQ_PART3_PAGE1" , 0x1A5FD, 0x1A638, -804) );
-					StringMap.insert( extractString( "EP2_ESEQ_PART3_PAGE1" , 0x1A639, 0x1A6CE, -804) );
-					StringMap.insert( extractString( "EP2_ESEQ_PART3_PAGE1" , 0x1A6CF, 0x1A72E, -804) );
-					StringMap.insert( extractString( "EP2_ESEQ_PART3_PAGE1" , 0x1A72F, 0x1A739, -804) );
-					StringMap.insert( extractString( "TO_BE_CONTINUED" , 0x1A73A, 0x1A74D, -804 ) );
+					StringMap.insert( extractString( "EP2_ESEQ_PART1" , 0x1A4A7, 0x1A558, -775) );
+					StringMap.insert( extractString( "EP2_ESEQ_PART2" , 0x1A559, 0x1A5F1, -775) );
+					StringMap.insert( extractString( "EP2_ESEQ_PART3_PAGE1" , 0x1A5FD, 0x1A638, -775) );
+					StringMap.insert( extractString( "EP2_ESEQ_PART3_PAGE2" , 0x1A639, 0x1A6CE, -775) );
+					StringMap.insert( extractString( "EP2_ESEQ_PART3_PAGE3" , 0x1A6CF, 0x1A72E, -775) );
+					StringMap.insert( extractString( "EP2_ESEQ_PART3_PAGE4" , 0x1A72F, 0x1A739, -775) );
+					StringMap.insert( extractString( "TO_BE_CONTINUED" , 0x1A73A, 0x1A74D, -775 ) );
 				} break;
 			}
 		} break;

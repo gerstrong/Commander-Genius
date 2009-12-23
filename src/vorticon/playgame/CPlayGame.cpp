@@ -354,7 +354,7 @@ void CPlayGame::process()
 		}
 
 		// Open the Main Menu if ESC Key pressed and mp_Menu not opened
-		if(!mp_Menu && g_pInput->getPressedCommand(IC_QUIT))
+		if(!mp_Menu && !mp_Finale && g_pInput->getPressedCommand(IC_QUIT))
 		{
 			// Open the menu
 			mp_Menu = new CMenu( ACTIVE, m_Gamepath, m_Episode, *mp_Map, m_SavedGame, mp_option );
@@ -504,9 +504,9 @@ void CPlayGame::createFinale()
 {
 	if(m_Episode == 1)
 		mp_Finale = new CEndingEp1(mp_Map, m_Player);
-	/*else if(m_Episode == 2)
+	else if(m_Episode == 2)
 		mp_Finale = new CEndingEp2(mp_Map, m_Player);
-	else if(m_Episode == 3)
+	/*else if(m_Episode == 3)
 		mp_Finale = new CEndingEp3(mp_Map, m_Player);*/
 }
 

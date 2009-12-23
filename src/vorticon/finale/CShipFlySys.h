@@ -22,6 +22,11 @@
 
 #define SPR_SHIP_RIGHT  115
 #define SPR_SHIP_LEFT   116
+
+const int SPR_VORTICON_MOTHERSHIP = 72;
+const int SPR_SHIP_RIGHT_EP2 = 132;
+const int SPR_SHIP_LEFT_EP2 = 133;
+
 #define SPR_EXCLAMATION 117
 #define SPR_QUESTION    118
 #define SHIPSPD         16
@@ -39,7 +44,7 @@ typedef struct stShipQueue
 
 class CShipFlySys {
 public:
-	CShipFlySys(CPlayer &Player, CMap *p_Map);
+	CShipFlySys(CPlayer &Player, CMap *p_Map, int ship_rightsprite, int ship_leftsprite);
 	void addShipQueue(int cmd, int time, int flag1);
 	bool EndOfQueue() { return m_finished; }
 	void process();
@@ -54,6 +59,8 @@ private:
 	CPlayer &m_player;
 	CObject *mp_mark;
 	CMap *mp_Map;
+	int m_playsprite_left;
+	int m_playsprite_right;
 };
 
 #endif /* CSHIPFLYSYS_H_ */

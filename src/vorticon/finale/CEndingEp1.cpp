@@ -6,7 +6,7 @@
  */
 
 #include "CEndingEp1.h"
-#include "../../funcdefs.h"
+//#include "../../funcdefs.h"
 #include "../../StringUtils.h"
 #include "../../sdl/CTimer.h"
 #include "../../sdl/CInput.h"
@@ -18,8 +18,8 @@
 CEndingEp1::CEndingEp1(CMap *p_map, std::vector<CPlayer> &Player) :
 	m_Player(Player)
 {
-	mp_Map = p_map;
 	m_Episode = 1;
+	mp_Map = p_map;
 	m_step = 0;
 	m_starttime = g_pTimer->getTicks();
 	m_timepassed = 0;
@@ -100,7 +100,7 @@ void CEndingEp1::ShipFlyMarsToEarth()
 		m_Player[0].x = (6<<CSF);
 		m_Player[0].y = (5<<CSF);
 
-		mp_ShipFlySys = new CShipFlySys( m_Player[0], mp_Map );
+		mp_ShipFlySys = new CShipFlySys( m_Player[0], mp_Map, SPR_SHIP_RIGHT, SPR_SHIP_LEFT);
 
 		mp_Map->gotoPos(0,0);
 		mp_ShipFlySys->addShipQueue(CMD_MOVE, 60, DUP);
@@ -205,7 +205,7 @@ void CEndingEp1::ShipFlyEarthToMShip()
 
 		mp_Map->gotoPos((m_Player[0].x>>STC)-100, (m_Player[0].y>>STC)-160);
 
-		mp_ShipFlySys = new CShipFlySys( m_Player[0], mp_Map );
+		mp_ShipFlySys = new CShipFlySys( m_Player[0], mp_Map, SPR_SHIP_RIGHT, SPR_SHIP_LEFT);
 
 		mp_ShipFlySys->addShipQueue(CMD_MOVE, 58, DUP);
 		mp_ShipFlySys->addShipQueue(CMD_DISABLESCROLLING, 0, 0);
