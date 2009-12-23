@@ -72,8 +72,6 @@ void CObjectAI::se_extend_plat(CObject &object, bool &PlatExtending)
 		object.needinit = false;
 	}
 
-	printf("plat: (%d;%d)\n", object.ai.se.platx, object.ai.se.platy);
-
 	if (!object.ai.se.timer)
 	{
 		if (object.ai.se.dir==RIGHT &&

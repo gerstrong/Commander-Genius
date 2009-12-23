@@ -28,7 +28,7 @@ void CPlayGame::processInLevel()
 			// If the player touched did in which we have to show a Message, do it so
 			std::string hinttext;
 			if( (hinttext=m_Player[i].pollHintMessage()) != "")
-				mp_MessageBox = new CMessageBox(getstring(hinttext));
+				m_MessageBoxes.push_back(new CMessageBox(getstring(hinttext)));
 
 			// Process the falling physics of the player here.
 			// We need to know the objects and tiles which could hinder the fall.
@@ -82,6 +82,8 @@ void CPlayGame::processInLevel()
 
 			if(!m_gameover) // Check if no player has lifes left and must go in game over mode.
 				goBacktoMap();
+			m_dark = false;
+			g_pGfxEngine->Palette.setdark(m_dark);
 		}
 	}
 }

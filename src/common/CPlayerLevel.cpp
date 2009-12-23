@@ -119,6 +119,7 @@ void CPlayer::kill(bool force)
 	}
 	if (!pdie)
 	{
+		godmode = false;
 		pdie = PDIE_DYING;
 		pdieframe = 0;
 		pdietimer = 0;

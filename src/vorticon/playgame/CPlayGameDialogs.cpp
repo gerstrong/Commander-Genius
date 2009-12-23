@@ -20,14 +20,17 @@ void CPlayGame::processPauseDialogs()
 		return;
 	}
 	
-	if(mp_MessageBox)
+	if(!m_MessageBoxes.empty())
 	{
-		mp_MessageBox->process();
+		CMessageBox *pMB = m_MessageBoxes.back();
+		pMB->process();
 
-		if(mp_MessageBox->isFinished())
+		if(pMB->isFinished())
 		{
-			SAFE_DELETE(mp_MessageBox);
-			m_paused = false;
+			SAFE_DELETE(pMB);
+			m_MessageBoxes.pop_back();
+			if(m_MessageBoxes.empty())
+				m_paused = false;
 		}
 		return;
 	}

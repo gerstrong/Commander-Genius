@@ -134,7 +134,7 @@ void CPlayGame::goBacktoMap()
 
 void CPlayGame::YourShipNeedsTheseParts()
 {
-	mp_MessageBox = new CMessageBox(getstring("EP1_SHIP"));
+	CMessageBox *MessageBox = new CMessageBox(getstring("EP1_SHIP"));
 
 	bool joy, bat, vac, wis;
 	joy = bat = vac = wis = false;
@@ -149,17 +149,18 @@ void CPlayGame::YourShipNeedsTheseParts()
 	}
 
 	// draw needed parts
-	if (!joy) mp_MessageBox->addTileAt(321,5<<3, 4<<3);
-	if (!bat) mp_MessageBox->addTileAt(322,8<<3, 4<<3);
-	if (!vac) mp_MessageBox->addTileAt(323,11<<3,4<<3);
-	if (!wis) mp_MessageBox->addTileAt(324,14<<3,4<<3);
+	if (!joy) MessageBox->addTileAt(321,5<<3, 4<<3);
+	if (!bat) MessageBox->addTileAt(322,8<<3, 4<<3);
+	if (!vac) MessageBox->addTileAt(323,11<<3,4<<3);
+	if (!wis) MessageBox->addTileAt(324,14<<3,4<<3);
+	m_MessageBoxes.push_back(MessageBox);
 }
 
 void CPlayGame::ShipEp3()
 {
 	// get one of four random strings and display it!!
 	std::string strname = "EP3_SHIP"+ itoa((rand()%4)+1);
-	mp_MessageBox = new CMessageBox(getstring(strname));
+	m_MessageBoxes.push_back(new CMessageBox(getstring(strname)));
 }
 
 void CPlayGame::showKeensLeft()

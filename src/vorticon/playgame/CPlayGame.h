@@ -140,7 +140,7 @@ private:
 	stOption *mp_option;
 	CSavedGame &m_SavedGame;
 	CPhysicsSettings m_PhysicsSettings;
-	CMessageBox *mp_MessageBox;
+	std::vector<CMessageBox*> m_MessageBoxes;
 	std::vector<stTeleporterTable> &m_TeleporterTable;
 	bool m_showKeensLeft;
 	std::vector<CObject> m_Object;

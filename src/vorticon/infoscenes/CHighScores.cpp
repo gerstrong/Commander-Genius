@@ -180,8 +180,8 @@ void CHighScores::processWriting()
 
 
 	int x = (m_Episode == 3) ? 69 : 40;
-	if(m_blink)	g_pGfxEngine->Font->drawFont(sfc, m_Name[m_Place]+"_",x,80+(m_Place<<4), LETTER_TYPE_RED);
-	else g_pGfxEngine->Font->drawFont(sfc, m_Name[m_Place]+" ",x,80+(m_Place<<4), LETTER_TYPE_RED);
+	if(m_blink)	g_pGfxEngine->Font->drawFont(sfc, m_Name[m_Place]+"_",x,84+(m_Place<<4), LETTER_TYPE_RED);
+	else g_pGfxEngine->Font->drawFont(sfc, m_Name[m_Place]+" ",x,84+(m_Place<<4), LETTER_TYPE_RED);
 
 	if(m_blinkctr > BLINK_TIME){
 		m_blinkctr = 0;
