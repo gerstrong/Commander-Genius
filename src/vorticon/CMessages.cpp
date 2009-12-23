@@ -131,18 +131,18 @@ bool CMessages::extractGlobalStrings()
 				case 131:
 				{
 					StringMap.insert( extractString( "EP3_StatusBox" , 0x1BE38, 0x1BEC3, -837 ) );
-					StringMap.insert( extractString( "LIVES_LEFT" , 0x1CAEE, 0x1CAFB, -804 ) );
+					StringMap.insert( extractString( "LIVES_LEFT" , 0x1CAEE, 0x1CAFB, -806 ) );
 					// Ship Messages
-					StringMap.insert( extractString( "EP3_SHIP1" , 0x1D100, 0x1D173, -804 ) );
-					StringMap.insert( extractString( "EP3_SHIP2" , 0x1D174, 0x1D1D1, -804) );
-					StringMap.insert( extractString( "EP3_SHIP3" , 0x1D1D2, 0x1D24C, -804) );
-					StringMap.insert( extractString( "EP3_SHIP4" , 0x1D24D, 0x1D2C4, -804) );
+					StringMap.insert( extractString( "EP3_SHIP1" , 0x1D100, 0x1D173, -806 ) );
+					StringMap.insert( extractString( "EP3_SHIP2" , 0x1D174, 0x1D1D1, -806) );
+					StringMap.insert( extractString( "EP3_SHIP3" , 0x1D1D2, 0x1D24C, -806) );
+					StringMap.insert( extractString( "EP3_SHIP4" , 0x1D24D, 0x1D2C4, -806) );
 					//Mortimer
-					StringMap.insert( extractString( "EP3_MORTIMER" , 0x1C3B3, 0x1C3D8, -804) );
-					StringMap.insert( extractString( "EP3_MORTIMER2" , 0x1C3D9, 0x1C49B, -804) );
-					StringMap.insert( extractString( "EP3_MORTIMER3" , 0x1C49C, 0x1C53F, -804) );
-					StringMap.insert( extractString( "EP3_MORTIMER4" , 0x1C540, 0x1C607, -804) );
-					StringMap.insert( extractString( "EP3_MORTIMER5" , 0x1C608, 0x1C692, -804) );
+					StringMap.insert( extractString( "EP3_MORTIMER" , 0x1C3B3, 0x1C3D8, -806) );
+					StringMap.insert( extractString( "EP3_MORTIMER2" , 0x1C3D9, 0x1C49B, -806) );
+					StringMap.insert( extractString( "EP3_MORTIMER3" , 0x1C49C, 0x1C53F, -806) );
+					StringMap.insert( extractString( "EP3_MORTIMER4" , 0x1C540, 0x1C607, -806) );
+					StringMap.insert( extractString( "EP3_MORTIMER5" , 0x1C608, 0x1C692, -806) );
 					// Ending Pages
 					StringMap.insert( extractString( "EP3_ESEQ_PAGE1" , 0x1C693, 0x1C730, -807) );
 					StringMap.insert( extractString( "EP3_ESEQ_PAGE2" , 0x1C731, 0x1C7A7, -807) );

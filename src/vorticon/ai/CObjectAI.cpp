@@ -230,6 +230,17 @@ void CObjectAI::deleteObj(CObject &object)
 		m_Objvect.pop_back();
 }
 
+void CObjectAI::deleteAllObjects()
+{
+	// The real delete happens, when all the AI is done
+	// If the last object was deleted, throw it out of the list
+	while(m_Objvect.size() > m_NumPlayers)
+	{
+		m_Objvect.back().exists = false;
+		m_Objvect.pop_back();
+	}
+}
+
 CObjectAI::~CObjectAI() {
 	// TODO Auto-generated destructor stub
 }

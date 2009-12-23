@@ -37,6 +37,7 @@ private:
 	bool checkforAIObject( CObject &object );
 	void performSpecialAIType( CObject &object );
 	void deleteObj(CObject &object);
+	void deleteAllObjects();
 
 	// ep1
 	void yorp_ai(CObject &object, CPlayer *p_player, bool hardmode);

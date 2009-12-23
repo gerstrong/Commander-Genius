@@ -541,10 +541,11 @@ void CPlayGame::verifyCutscenes()
 		if(allCitiesSaved)
 			createFinale();
 	}
-	/*else if(m_Episode == 3)
+	else if(m_Episode == 3)
 	{
-		mp_Finale = new CEndingEp3();
-	}*/
+		if(mp_level_completed[16] == true) // If this level is completed, Mortimer has been killed!
+			createFinale();
+	}
 }
 
 void CPlayGame::createFinale()

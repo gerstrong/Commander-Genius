@@ -381,7 +381,7 @@ void CObjectAI::se_ankhshield(CObject &object, int episode)
 #define ARM_GO          0
 #define ARM_WAIT        1
 
-#define ARM_MOVE_SPEED   800
+#define ARM_MOVE_SPEED   10
 #define ARM_WAIT_TIME    8
 void CObjectAI::se_mortimer_arm(CObject &object)
 {
@@ -444,18 +444,18 @@ void CObjectAI::se_mortimer_arm(CObject &object)
 				else
 				{
 					// create left side of pincher
-					mp_Map->setTile(mx-1, my+1, 618, true);
-					mp_Map->setTile(mx-1, my+2, 620, true);
-					mp_Map->setTile(mx-1, my+3, 619, true);
+					mp_Map->changeTile(mx-1, my+1, 618);
+					mp_Map->changeTile(mx-1, my+2, 620);
+					mp_Map->changeTile(mx-1, my+3, 619);
 					// create right side of pincher
-					mp_Map->setTile(mx+1, my+1, 618, true);
-					mp_Map->setTile(mx+1, my+2, 620, true);
-					mp_Map->setTile(mx+1, my+3, 619, true);
+					mp_Map->changeTile(mx+1, my+1, 618);
+					mp_Map->changeTile(mx+1, my+2, 620);
+					mp_Map->changeTile(mx+1, my+3, 619);
 					// erase the bottom of the pincher we don't need anymore
-					mp_Map->setTile(mx-1, my+4, 169, true);
-					mp_Map->setTile(mx+1, my+4, 169, true);
+					mp_Map->changeTile(mx-1, my+4, 169);
+					mp_Map->changeTile(mx+1, my+4, 169);
 					// erase the pole
-					mp_Map->setTile(mx, my+2, 169);
+					mp_Map->changeTile(mx, my+2, 169);
 
 					object.y -= (1<<CSF);
 				}
@@ -532,7 +532,7 @@ void CObjectAI::se_mortimer_spark(CObject &object)
 		if (object.zapped)
 		{
 			set_mortimer_surprised(true);
-			g_pGfxEngine->pushEffectPtr(new CVibrate(20000));
+			g_pGfxEngine->pushEffectPtr(new CVibrate(200));
 
 			// if there are any sparks left, destroy the spark,
 			// else destroy mortimer's arms
@@ -621,7 +621,7 @@ void CObjectAI::se_mortimer_spark(CObject &object)
 }
 
 #define MORTIMER_HEART_BASEFRAME        146
-#define HEART_ANIMRATE                  15
+#define HEART_ANIMRATE                  4
 
 #define HEART_IDLE              0
 #define HEART_ZAPSRUNUP         1
@@ -634,8 +634,8 @@ void CObjectAI::se_mortimer_spark(CObject &object)
 #define MORTIMER_MACHINE_XSTART         8
 #define MORTIMER_MACHINE_XEND           17
 
-#define MACHINE_DESTROY_RATE            12
-#define MORTIMER_ZAPWAVESPACING        200
+#define MACHINE_DESTROY_RATE            3
+#define MORTIMER_ZAPWAVESPACING        50
 #define MORTIMER_NUMZAPWAVES             5
 
 #define ZAPSUP_NORMAL           0
@@ -673,19 +673,23 @@ void CObjectAI::se_mortimer_heart(CObject &object)
 			set_mortimer_surprised(true);
 
 			// destroy Mortimer's machine
-			g_pGfxEngine->pushEffectPtr(new CVibrate(15000));
+			g_pGfxEngine->pushEffectPtr(new CVibrate(10000));
 
 			// kill all enemies
-			for(std::vector<CObject>::iterator obj = m_Objvect.begin()
-					; obj != m_Objvect.end() ; obj++)
+			std::vector<CObject>::iterator it_obj = m_Objvect.begin();
+			it_obj += m_NumPlayers;
+
+			for( size_t i=m_NumPlayers ; i<m_Objvect.size() ; i++ )
 			{
-				if (obj->m_type!=OBJ_PLAYER && obj->m_index!=object.m_index)
+				if(m_Objvect.at(i).m_type == OBJ_SECTOREFFECTOR &&
+						m_Objvect.at(i).ai.se.type == SE_MORTIMER_HEART ) continue;
+				else
 				{
-					deleteObj(*obj);
+					deleteObj(m_Objvect.at(i));
 				}
 			}
 
-			set_mortimer_surprised(1);
+			set_mortimer_surprised(true);
 			// have waves of zaps run up mortimer's machine
 			object.ai.se.timer = 0;
 			object.ai.se.state = HEART_ZAPSRUNUP;
@@ -756,7 +760,6 @@ void CObjectAI::se_mortimer_zapsup(CObject &object)
 	{
 		if (object.ai.se.state==ZAPSUP_ABOUTTOFADEOUT)
 		{
-			// TODO: End still needs to be implemented
 			m_Player[0].level_done = LEVEL_DONE_FADEOUT;
 			deleteObj(object);
 			return;
@@ -777,7 +780,7 @@ void CObjectAI::se_mortimer_zapsup(CObject &object)
 			if (object.ai.se.destroytiles)
 			{
 				// delete the tile
-				mp_Map->setTile(x,object.ai.se.my,169, true);
+				mp_Map->changeTile(x,object.ai.se.my,169);
 			}
 		}
 
@@ -805,10 +808,10 @@ void CObjectAI::se_mortimer_zapsup(CObject &object)
 #define LEG_GO          0
 #define LEG_WAIT        1
 
-#define LEFTLEG_MOVE_SPEED   240
+#define LEFTLEG_MOVE_SPEED   15
 #define LEFTLEG_WAIT_TIME    36
 
-#define RIGHTLEG_MOVE_SPEED   320
+#define RIGHTLEG_MOVE_SPEED   20
 #define RIGHTLEG_WAIT_TIME    40
 void CObjectAI::se_mortimer_leg_left(CObject &object)
 {
