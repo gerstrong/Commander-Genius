@@ -189,6 +189,7 @@ public:
 	bool beingteleported;
 
 	std::string hintstring;
+	bool hintused;
 
 	CMap *mp_map;
 	stOption *mp_option;

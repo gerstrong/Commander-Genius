@@ -50,7 +50,7 @@
 <listOptionValue builtIn="false" value="vorbisfile"/>
 <listOptionValue builtIn="false" value="ogg"/>
 </option>
-<option id="gnu.cpp.link.option.paths.982917586" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths"/>
+<option id="gnu.cpp.link.option.paths.982917586" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths"/>
 <option id="gnu.cpp.link.option.flags.1653726517" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="" valueType="string"/>
 <inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1278940909" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 <additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -1647,10 +1647,10 @@
 <listOptionValue builtIn="false" value="vorbisfile"/>
 <listOptionValue builtIn="false" value="ogg"/>
 </option>
-<option id="gnu.cpp.link.option.paths.1601673629" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
+<option id="gnu.cpp.link.option.paths.1601673629" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 <listOptionValue builtIn="false" value="/usr/lib32"/>
 </option>
-<option id="gnu.cpp.link.option.flags.1654234518" superClass="gnu.cpp.link.option.flags" value="-m32" valueType="string"/>
+<option id="gnu.cpp.link.option.flags.1654234518" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="-m32" valueType="string"/>
 <inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.860790232" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 <additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 <additionalInput kind="additionalinput" paths="$(LIBS)"/>

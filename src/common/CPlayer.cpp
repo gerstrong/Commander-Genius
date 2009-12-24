@@ -94,6 +94,7 @@ void CPlayer::setDatatoZero()
   	dpadcount = dpadlastcount = 0;
   	beingteleported = false;
   	object_chosen = false;
+  	hintused = false;
 	
   	exitXpos = 0;
   	m_Level_Trigger = LVLTRIG_NONE;

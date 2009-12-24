@@ -244,6 +244,8 @@ void CPlayer::take_keycard(int doortile)
 
 bool CPlayer::showGameHint(int mpx, int mpy)
 {
+	if(hintused) return false;
+
 	if(m_episode == 1)
 	{
 		if(mp_map->at(mpx, mpy) >= 435 && mp_map->at(mpx, mpy) <= 438)
@@ -260,6 +262,12 @@ bool CPlayer::showGameHint(int mpx, int mpy)
 	}
 	else if(m_episode == 2)
 	{
+		// Keen 2 seems to have a bug with those tiles.
+		// On other parts on the map they can be triggered
+		// This small condition should fix that bug
+		int t = mp_map->at(mpx, mpy+1);
+		if(t != 429) return false;
+
 		// make the switch stop glowing
 		switch(m_level)
 		{
@@ -273,7 +281,10 @@ bool CPlayer::showGameHint(int mpx, int mpy)
 			return false;
 		}
 		mp_map->setTile(mpx, mpy+1, 432,true);
+		mp_map->unregisterAnimtiles(429);
+		mp_map->deAnimate(mpx<<STC, (mpy+1)<<STC);
 	}
+	hintused = true;
 	return true;
 }
 

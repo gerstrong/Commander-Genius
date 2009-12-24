@@ -22,7 +22,7 @@ cd Linux64
 cp CommanderGenius ../CGenius
 cd ..
 zip CG-SVN-Linux64-$dt.zip ./CGenius
-zip CG-SVN-Linux64-$dt.zip ./data/resolutions.cfg
+zip CG-SVN-Linux64-$dt.zip ./resolutions.cfg
 zip CG-SVN-Linux64-$dt.zip ./changelog.txt
 zip CG-SVN-Linux64-$dt.zip ./readme.txt
 rm ./CGenius
@@ -34,7 +34,7 @@ cd Linux32
 cp CommanderGenius ../CGenius
 cd ..
 zip CG-SVN-Linux32-$dt.zip ./CGenius
-zip CG-SVN-Linux32-$dt.zip ./data/resolutions.cfg
+zip CG-SVN-Linux32-$dt.zip ./resolutions.cfg
 zip CG-SVN-Linux32-$dt.zip ./changelog.txt
 zip CG-SVN-Linux32-$dt.zip ./readme.txt
 rm ./CGenius
