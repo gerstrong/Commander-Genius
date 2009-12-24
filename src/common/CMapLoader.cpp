@@ -411,7 +411,7 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 					 }
 					 else if (episode==3)
 					 {
-						 enemyobject.spawn(x<<CSF, y<<4<<CSF, OBJ_PLATVERT, episode);
+						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_PLATVERT, episode);
 					 }
 					 break;
 				case 11:   // jumping vorticon (ep3)

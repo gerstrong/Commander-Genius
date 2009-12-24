@@ -16,7 +16,7 @@
 #define SAFE_DELETE_ARRAY(x) if(x) { delete [] x; x = NULL; }
 #define SAFE_DELETE(x) if(x) { delete x; x = NULL; }
 
-const int visibility = 14;
+const int visibility = 21;
 
 ///
 // Initialization Routine
