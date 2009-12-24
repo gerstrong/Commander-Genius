@@ -37,8 +37,6 @@ enum scrub_actions{
 void CObjectAI::scrub_ai(CObject &object)
 {
 	int i=0;
-	int nopush;
-	int floor;
 	bool walkovertile=false;
 
 	if (object.needinit)
@@ -87,7 +85,7 @@ void CObjectAI::scrub_ai(CObject &object)
 	if (object.touchPlayer && !m_Player[object.touchedBy].pdie &&\
 			m_Player[i].psupportingobject!=object.m_index)
 	{
-		nopush = 0;
+		bool nopush = false;
 		bool level_done = false;
 		for(int i=0 ; i<m_NumPlayers ; i++) level_done |= m_Player[i].level_done;
 		// don't push the player if he's standing on top of the scrub
@@ -96,18 +94,18 @@ void CObjectAI::scrub_ai(CObject &object)
 			if (m_Objvect[0].scry+Sprite[0]->getHeight() >
 			object.scry+(Sprite[object.sprite]->getHeight()>>1))
 			{
-				nopush = 1;
+				nopush = true;
 			}
 		}
 		// don't push the player as he falls through us during a kick-off
 		else if (object.ai.scrub.kickedplayer[object.touchedBy])
 		{
-			nopush = 1;
+			nopush = true;
 		}
 		// don't push the player as he's walking through the exit door
 		else if (level_done)
 		{
-			nopush = 1;
+			nopush = true;
 		}
 
 		if (!nopush)

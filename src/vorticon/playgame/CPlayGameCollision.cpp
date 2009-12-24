@@ -111,7 +111,7 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 bool CPlayGame::checkisSolidl(CPlayer *p_player)
 {
 //CSprite *sprite = g_pGfxEngine->Sprite[p_player->playframe];
-CSprite *sprite = g_pGfxEngine->Sprite[0];
+	CSprite *sprite = (m_Level == 80) ? g_pGfxEngine->Sprite[PMAPRIGHTFRAME] : g_pGfxEngine->Sprite[0];
 
 	int x=p_player->x+sprite->m_bboxX2;
 	int y1=p_player->y+sprite->m_bboxY1+1;
@@ -158,12 +158,11 @@ CSprite *sprite = g_pGfxEngine->Sprite[0];
 	return false;
 }
 
-// checks if tile at (x,y) is solid to the player walking right into it.
+// checks if tile at (x,y) is solid to the player walking left into it.
 // returns 1 and sets blockedby if so.
 bool CPlayGame::checkisSolidr(CPlayer *p_player)
 {
-//CSprite *sprite = g_pGfxEngine->Sprite[p_player->playframe];
-CSprite *sprite = g_pGfxEngine->Sprite[0];
+	CSprite *sprite = (m_Level == 80) ? g_pGfxEngine->Sprite[PMAPRIGHTFRAME] : g_pGfxEngine->Sprite[0];
 
 	int x=p_player->x+sprite->m_bboxX1;
 	int y1=p_player->y+sprite->m_bboxY1+1;
@@ -176,17 +175,17 @@ CSprite *sprite = g_pGfxEngine->Sprite[0];
 	
 	if(p_player->pdie) return false;
 	
-	if(g_pGfxEngine->Tilemap->mp_tiles[t1].bleft)
+	if(g_pGfxEngine->Tilemap->mp_tiles[t1].bright)
 	{
 		p_player->blockedby = t1;
 		return true;
 	}
-	else if(g_pGfxEngine->Tilemap->mp_tiles[t2].bleft)
+	else if(g_pGfxEngine->Tilemap->mp_tiles[t2].bright)
 	{
 		p_player->blockedby = t2;
 		return true;
 	}
-	else if(g_pGfxEngine->Tilemap->mp_tiles[t3].bleft)
+	else if(g_pGfxEngine->Tilemap->mp_tiles[t3].bright)
 	{
 		p_player->blockedby = t3;
 		return true;
@@ -210,7 +209,7 @@ CSprite *sprite = g_pGfxEngine->Sprite[0];
 
 bool CPlayGame::checkisSolidd(CPlayer *p_player)
 {
-CSprite *sprite = g_pGfxEngine->Sprite[p_player->playframe];
+	CSprite *sprite = (m_Level == 80) ? g_pGfxEngine->Sprite[PMAPRIGHTFRAME] : g_pGfxEngine->Sprite[0];
 
 	int x1 = p_player->x+sprite->m_bboxX1+1;
 	int x2 = p_player->x+sprite->m_bboxX2-1;
@@ -234,7 +233,7 @@ CSprite *sprite = g_pGfxEngine->Sprite[p_player->playframe];
 
 bool CPlayGame::checkisSolidu(CPlayer *p_player)
 {
-CSprite *sprite = g_pGfxEngine->Sprite[p_player->playframe];
+	CSprite *sprite = (m_Level == 80) ? g_pGfxEngine->Sprite[PMAPRIGHTFRAME] : g_pGfxEngine->Sprite[0];
 
 	int x1 = p_player->x+sprite->m_bboxX1+1;
 	int x2 = p_player->x+sprite->m_bboxX2-1;

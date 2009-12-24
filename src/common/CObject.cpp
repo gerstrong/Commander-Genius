@@ -16,6 +16,8 @@
 #define SAFE_DELETE_ARRAY(x) if(x) { delete [] x; x = NULL; }
 #define SAFE_DELETE(x) if(x) { delete x; x = NULL; }
 
+const int visibility = 14;
+
 ///
 // Initialization Routine
 ///
@@ -156,6 +158,26 @@ void CObject::setScrPos( int px, int py )
 	scry = py;
 }
 
+// This functions checks, if the enemy is near to the player. In case, that it is
+// it will return true. Other case it will return false.
+// This used for objects that only can trigger, when it's really worth to do so.
+bool CObject::calcVisibility( int player_x, int player_y )
+{
+	// check in x
+	Uint32 left = ((player_x-(visibility<<CSF))<0) ? 0 : player_x-(visibility<<CSF);
+	Uint32 right = player_x+(visibility<<CSF);
+	Uint32 up = ((player_y-(visibility<<CSF))<0) ? 0 : player_y-(visibility<<CSF);
+	Uint32 down = player_y+(visibility<<CSF);
+
+	if( right > x && left < x )
+	{
+		if( down > y && up < y )
+		{
+			return true;
+		}
+	}
+	return false;
+}
 
 // returns nonzero if object1 overlaps object2
 bool CObject::hitdetect(CObject &hitobject)
@@ -280,7 +302,7 @@ bool CObject::checkSolidR(stTile *TileProperty, CMap *p_map, int x2, int y1, int
 				return true;
 		}
 	}
-	if( x2 > ((p_map->m_width-2)<<CSF) ) return true; // Out of map?
+	if( x2 > ((p_map->m_width-1)<<CSF) ) return true; // Out of map?
 
 	return false;
 }
@@ -296,7 +318,7 @@ bool CObject::checkSolidL(stTile *TileProperty, CMap *p_map, int x1, int y1, int
 				return true;
 		}
 	}
-	if( x1 < (2<<CSF) ) return true; // Out of map?
+	if( x1 < (1<<CSF) ) return true; // Out of map?
 
 	return false;
 }
@@ -312,7 +334,7 @@ bool CObject::checkSolidU(stTile *TileProperty, CMap *p_map, int x1, int x2, int
 				return true;
 		}
 	}
-	if( y1 < (2<<CSF) ) return true; // Out of map?
+	if( y1 < (1<<CSF) ) return true; // Out of map?
 
 	return false;
 }
@@ -328,7 +350,7 @@ bool CObject::checkSolidD(stTile *TileProperty, CMap *p_map, int x1, int x2, int
 				return true;
 		}
 	}
-	if( y2 > ((p_map->m_height-2)<<CSF) ) return true; // Out of map?
+	if( y2 > ((p_map->m_height-1)<<CSF) ) return true; // Out of map?
 
 	return false;
 }

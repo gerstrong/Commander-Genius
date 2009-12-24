@@ -64,43 +64,44 @@ void CPlayer::setWorldMapdir()
 // set blockedl and blockedr...is Keen up against a solid object?
 void CPlayer::setWMblockedlrud()
 {
+	int x1, x2, y1, y2;
+
 	blockedl = blockedr = false;
 	blockedu = blockedd = false;
 	
 	// cheat: holding down TAB will turn off clipping. or if you are in godmode
 	if ((m_cheats_enabled && g_pInput->getHoldedKey(KTAB)) || godmode) return;
 	
-	// R
-	if (isWMSolid((goto_x>>5)+8, (goto_y>>5)+1))
-	{ blockedr = 1; }
-	else if (isWMSolid((goto_x>>5)+8, (goto_y>>5)+8))
-	{ blockedr = 1; }
-	else if (isWMSolid((goto_x>>5)+8, (goto_y>>5)+13))
-	{ blockedr = 1; }
+	CSprite &sprite = *g_pGfxEngine->Sprite[PMAPRIGHTFRAME];
+	x1 = sprite.m_bboxX1;
+	x2 = sprite.m_bboxX2;
+	y1 = sprite.m_bboxY1;
+	y2 = sprite.m_bboxY2;
+
 	
 	// L
-	if (isWMSolid((goto_x>>5)+0, (goto_y>>5)+1))
-	{ blockedl = 1; }
-	else if (isWMSolid((goto_x>>5)+0, (goto_y>>5)+8))
-	{ blockedl = 1; }
-	else if (isWMSolid((goto_x>>5)+0, (goto_y>>5)+13))
-	{ blockedl = 1; }
+	if (isWMSolid(goto_x+x1, goto_y+y1+(1<<STC)) )
+	{ blockedl = true; }
+	else if (isWMSolid(goto_x+x1, goto_y+y2-(1<<STC)) )
+	{ blockedl = true; }
+
+	// R
+	if (isWMSolid(goto_x+x2, goto_y+y1+(1<<STC)) )
+	{ blockedr = true; }
+	else if (isWMSolid(goto_x+x2, goto_y+y2-(1<<STC)) )
+	{ blockedr = true; }
 	
 	// U
-	if (isWMSolid((goto_x>>5)+1, (goto_y>>5)-1))
+	if (isWMSolid(goto_x+x1+(1<<STC), goto_y+y1) )
 	{ blockedu = 1; }
-	else if (isWMSolid((goto_x>>5)+4, (goto_y>>5)-1))
-	{ blockedu = 1; }
-	else if (isWMSolid((goto_x>>5)+7, (goto_y>>5)-1))
+	else if (isWMSolid(goto_x+x2-(1<<STC), goto_y+y1) )
 	{ blockedu = 1; }
 	
 	// D
-	if (isWMSolid((goto_x>>5)+1, (goto_y>>5)+14))
-	{ blockedd = 1; }
-	else if (isWMSolid((goto_x>>5)+4, (goto_y>>5)+14))
-	{ blockedd = 1; }
-	else if (isWMSolid((goto_x>>5)+7, (goto_y>>5)+14))
-	{ blockedd = 1; }
+	if (isWMSolid(goto_x+x1+(1<<STC), goto_y+y2) )
+	{ blockedd = true; }
+	else if (isWMSolid(goto_x+x2-(1<<STC), goto_y+y2) )
+	{ blockedd = true; }
 }
 
 // tell me, if the player tries to use an object on the map like entering the level
@@ -286,7 +287,7 @@ bool CPlayer::isWMSolid(int xb, int yb)
 	int level_coordinates;
 	
 	// Now check if the levels must block the player
-	level_coordinates = mp_map->getObjectat(xb>>4, yb>>4);
+	level_coordinates = mp_map->getObjectat(xb>>CSF, yb>>CSF);
 	
 	if (level_coordinates & 0x8000)
 	{
