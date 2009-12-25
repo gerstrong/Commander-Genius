@@ -23,25 +23,88 @@ m_type(type)
 	CMapLoader Maploader(mp_Map);
 	
 	Maploader.load(episode, 90, datadirectory);
-	mp_Map->gotoPos( 22<<4, 32 );
-
+	mp_Map->gotoPos( 1008, 28 );
+	
 	// Load the SDL_Bitmap
-	if(type == "CG")
+	if(type == "ID")
 	{
-		std::string path = GetFullFileName("res/CGLogo.bmp");
-		mp_LogoBMP = SDL_LoadBMP(path.c_str());
-
-		m_lines.push_back("Commander Genius is an interpreter");
-		m_lines.push_back("which tries to make the");
-		m_lines.push_back("Commander Keen series playable.");
-		m_lines.push_back("Different than an emulator");
-		m_lines.push_back("it does not replay old hardware,");
-		m_lines.push_back("it tries to simulate");
-		m_lines.push_back("the game behavior.");
-		m_lines.push_back("We also try to support mods as");
-		m_lines.push_back("there are great ones out there!");
+		mp_bmp = g_pGfxEngine->getBitmap("IDLOGO");
+		CExeFile *Exefile = new CExeFile(episode, datadirectory);
+		
+		// load the exe file
+		Exefile->readData();
+		
+		// Get the offset where in the data the info is...
+		size_t offset = 0;
+		size_t offsetend = 0;
+		switch(episode)
+		{
+			case 1:
+				m_numberoflines = 13; // numberof lines to print
+				if(Exefile->getEXEVersion() == 131)
+					offset = 0x16180-512;
+				break;
+			case 2:
+								m_numberoflines = 13; // numberof lines to print
+				if(Exefile->getEXEVersion() == 131)
+					offset = 0x1A954-512;
+				break;
+			case 3:
+								m_numberoflines = 13; // numberof lines to print
+				if(Exefile->getEXEVersion() == 131)
+					offset = 0x1CA70-512;
+				break;
+		}
+		mp_Map->drawAll();
+		
+		// Read the strings and save them the string array of the class
+		if(offset)
+		{
+			char *data;
+			data = (char*)Exefile->getData() + offset;
+			std::string buf;
+			for(int i=0 ; i<m_numberoflines ; i++)
+			{
+				if(*data == '\0')
+				{
+					data++;
+					while(*data == '\0')
+						data++;
+				}
+				while(*data != '\n' and *data != '\0') // For the next line
+				{
+					buf.push_back(*data);
+					data++;
+				}
+				data++;
+				m_lines.push_back(buf);
+				
+				buf.clear();
+			}
+		}
+		
+		delete Exefile;
 	}
-
+	else if(type == "CG")
+	{
+		std::string path = GetFullFileName("res/gfx/CGLogo.bmp");
+		mp_LogoBMP = SDL_LoadBMP(path.c_str());
+		
+		m_lines.push_back("Commander Genius is an interpreter");
+		m_lines.push_back("made with the goal of recreating");
+		m_lines.push_back("the engine that was used to power");
+		m_lines.push_back("the Commander Keen series.");
+		m_lines.push_back("");
+		m_lines.push_back("However, we are also trying to add");
+		m_lines.push_back("better support for modern systems");
+		m_lines.push_back("to the games, so they can run more");
+		m_lines.push_back("smoothly than they did in DOS.");
+		m_lines.push_back("");
+		m_lines.push_back("Thank you for supporting us by");
+		m_lines.push_back("downloading Commander Genius and");
+		m_lines.push_back("we hope you will report any bugs.");
+	}
+	
 	switch(episode)
 	{
 		case 1:
@@ -53,16 +116,16 @@ m_type(type)
 			}
 			break;
 	}
-
+	
 	m_logo_rect.x = m_logo_rect.y = 0;
 	m_logo_rect.h = m_logo_rect.w = 0;
-
+	
 	if(mp_LogoBMP)
 	{
 		m_logo_rect.w = mp_LogoBMP->w;
 		m_logo_rect.h = mp_LogoBMP->h;
 		m_logo_rect.x = 160-m_logo_rect.w/2;
-		m_logo_rect.y = 50;
+		m_logo_rect.y = 22;
 	}
 }
 
@@ -71,15 +134,23 @@ void CAbout::process()
 {	 
 	mp_Map->animateAllTiles();
 	
-	if(m_type == "CG")
+	
+	if(m_type == "ID")
+	{
+		mp_bmp->draw( g_pVideoDriver->FGLayerSurface, 160-mp_bmp->getWidth()/2, 22);
+		
+		for(std::size_t i=0 ; i<m_lines.size() ; i++)
+			g_pGfxEngine->Font->drawFont(g_pVideoDriver->FGLayerSurface, m_lines[i], 24, 72+i*8, LETTER_TYPE_RED);
+	}
+	else if(m_type == "CG")
 	{
 		if(mp_LogoBMP)
 			SDL_BlitSurface(mp_LogoBMP, NULL, g_pVideoDriver->FGLayerSurface, &m_logo_rect);
-
+		
 		for(std::size_t i=0 ; i<m_lines.size() ; i++)
-			g_pGfxEngine->Font->drawFont(g_pVideoDriver->FGLayerSurface, m_lines[i], 160-m_lines[i].size()*4, 100+i*8, LETTER_TYPE_RED);
+			g_pGfxEngine->Font->drawFont(g_pVideoDriver->FGLayerSurface, m_lines[i], 24, 72+i*8, LETTER_TYPE_RED);
 	}
-
+	
 	if(g_pInput->getPressedAnyKey())
 		m_destroy_me=true;
 }

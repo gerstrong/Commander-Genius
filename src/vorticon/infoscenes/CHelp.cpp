@@ -41,6 +41,7 @@ CHelp::CHelp(std::string &DataDirectory, char &episode, std::string type)
 				Text.push_back(File.get());
 			
 			File.close();
+			Text.erase(Text.size()-1);
 		}
 		else
 		{
@@ -61,7 +62,7 @@ CHelp::CHelp(std::string &DataDirectory, char &episode, std::string type)
 			else // Episode 3
 			{
 				startflag = 0x17BD0-512;
-				endflag = 0x1839F-512;
+				endflag = 0x1839B-512;
 			}
 			
 			text_data = ExeFile->getData();
@@ -74,11 +75,26 @@ CHelp::CHelp(std::string &DataDirectory, char &episode, std::string type)
 	}
 	else
 	{
-		Text = "This is the Commander Genius help.";
+			// We suppose that we are using version 131. Maybe it must be extended
+			std::string filename = DataDirectory;
+			if(DataDirectory != "")
+				filename += "/../../";
+			
+			filename += "helptext.ckp";
+			
+			std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);
+			
+			if(!File) return;
+			
+			while(!File.eof())
+				Text.push_back(File.get());
+			
+			File.close();
+			Text.erase(Text.size()-1);
 	}
 	
 	// Create the Text ViewerBox and stores the text there!
-	mp_TextViewer = new CTextViewer(g_pVideoDriver->FGLayerSurface, 0, 0, 320, 160);
+	mp_TextViewer = new CTextViewer(g_pVideoDriver->FGLayerSurface, 0, 8, 320, 160);
 	mp_TextViewer->loadText(Text);
 }
 

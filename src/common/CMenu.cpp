@@ -209,7 +209,6 @@ void CMenu::initF1Menu()
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "Credits");
 	
 	// In the Help system let's hide all objects like Bitmaps, players, enemies, etc.
-	m_hideobjects = true;
 }
 
 void CMenu::initConfirmMenu()
@@ -518,18 +517,23 @@ void CMenu::processF1Menu()
 				mp_InfoScene = new CHelp(m_GamePath, m_Episode, "Game");
 				break;
 			case 2:
+				m_hideobjects = true;
 				mp_InfoScene = new CStory(m_GamePath, m_Episode);
 				break;
 			case 3:
+				m_hideobjects = true;
 				mp_InfoScene = new COrderingInfo(m_GamePath, m_Episode);
 				break;
 			case 4:
+				m_hideobjects = true;
 				mp_InfoScene = new CAbout(m_GamePath, m_Episode, "ID");
 				break;
 			case 5:
+				m_hideobjects = true;
 				mp_InfoScene = new CAbout(m_GamePath, m_Episode, "CG");
 				break;
 			case 6:
+				m_hideobjects = true;
 				mp_InfoScene = new CCredits(m_GamePath, m_Episode);
 				break;
 		}

@@ -25,4 +25,4 @@ private:
 	CTextViewer *mp_TextViewer;
 };
 
-#endif /* CSTORY_H_ */
+#endif /* CHELP_H_ */

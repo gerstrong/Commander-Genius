@@ -97,7 +97,7 @@ void CTextViewer::loadText(const std::string &text)
 	
 	// Afterworks: First, the last line has a delimiter of 26. That really sucks! The rest after that must be trimmed
 	//			   Second, we add two empty lines for a nice style when the text is scrolled.
-	m_textline.push_back(""); // Append two empty lines for a nice style, when scrolling
+	// Append an empty line for a nice style, when scrolling
 	m_textline.push_back("");
 	
 	// Change the colours to read and grey background, when '~' is detected at the beginning

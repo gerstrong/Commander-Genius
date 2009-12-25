@@ -22,6 +22,9 @@ public:
 	void process();
 	
 private:
+	int m_numberoflines;	// number of lines to print
+	CBitmap* mp_bmp;
+	
 	CMap *mp_Map;
 	SDL_Surface *mp_Scrollsurface;
 	SDL_Surface *mp_LogoBMP;

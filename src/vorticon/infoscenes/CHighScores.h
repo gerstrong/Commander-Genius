@@ -36,8 +36,8 @@ private:
 
 	std::string		m_Name[16];
 	std::string		m_Score[8];
-	bool			m_Extra[7][4];
-	int				m_Cities[7];
+	bool			m_Extra[8][4];
+	int				m_Cities[8];
 	int				m_Place;
 	
 	char					m_Episode;

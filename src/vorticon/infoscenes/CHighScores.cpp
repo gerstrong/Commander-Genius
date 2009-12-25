@@ -18,7 +18,7 @@
 #include "../../common/CMapLoader.h"
 
 const int HIGHSCORETABLE_X = 1344;
-const int HIGHSCORETABLE_Y = 16;
+const int HIGHSCORETABLE_Y = 32;
 const int BLINK_TIME = 10;
 
 using namespace std;
@@ -33,15 +33,16 @@ m_Place(0), m_blink(true), m_blinkctr(0)
 	m_Name[1] = "Tulip";
 	m_Name[2] = "Albert";
 	m_Name[3] = "Pickle";
-	m_Name[4] = "Pizza";
+	m_Name[4] = "Pizza2004";
 	m_Name[5] = "DaVince";
-	m_Name[6] = "The-Fans";
+	m_Name[6] = "Katy Shaw";
+	m_Name[7] = "The Fans";
 	
-	for(int i=0 ; i<7 ; i++)
+	for(int i=0 ; i<8 ; i++)
 		m_Score[i] = "100";
 	
-	memset(m_Extra, 0, 7*4*sizeof(bool));
-	memset(m_Cities, 0, 7*sizeof(unsigned int));
+	memset(m_Extra, 0, 8*4*sizeof(bool));
+	memset(m_Cities, 0, 8*sizeof(unsigned int));
 
 	// Which process function will be cycled trough
 	mp_process = &CHighScores::processShow;
@@ -66,14 +67,7 @@ m_Place(0), m_blink(true), m_blinkctr(0)
 
 	bmp.p_Bitmap = g_pGfxEngine->getBitmap("HIGHSCOR");
 	bmp.rect.x = 160-(bmp.p_Bitmap->getWidth()/2);
-	bmp.rect.y = 22;
-	bmp.rect.w = bmp.p_Bitmap->getWidth();
-	bmp.rect.h = bmp.p_Bitmap->getHeight();
-	m_Bitmaps.push_back(bmp);
-
-	bmp.p_Bitmap = g_pGfxEngine->getBitmap("NAME");
-	bmp.rect.x = (m_Episode == 3) ? 69 : 40;
-	bmp.rect.y = 58;
+	bmp.rect.y = 6;
 	bmp.rect.w = bmp.p_Bitmap->getWidth();
 	bmp.rect.h = bmp.p_Bitmap->getHeight();
 	m_Bitmaps.push_back(bmp);
@@ -82,15 +76,18 @@ m_Place(0), m_blink(true), m_blinkctr(0)
 	{
 		bmp.p_Bitmap = g_pGfxEngine->getBitmap("SAVED");
 		bmp.rect.x = 232;
+		bmp.rect.y = 32;
 		bmp.rect.w = bmp.p_Bitmap->getWidth();
 		bmp.rect.h = bmp.p_Bitmap->getHeight();
 		m_Bitmaps.push_back(bmp);
+		bmp.rect.y = 36;
 	}
 	else if(m_Episode == 1)
 	{
 
 		bmp.p_Bitmap = g_pGfxEngine->getBitmap("PARTS");
 		bmp.rect.x = 232;
+		bmp.rect.y = 32;
 		bmp.rect.w = bmp.p_Bitmap->getWidth();
 		bmp.rect.h = bmp.p_Bitmap->getHeight();
 		m_Bitmaps.push_back(bmp);
@@ -98,16 +95,23 @@ m_Place(0), m_blink(true), m_blinkctr(0)
 		// Put the Tiles, of the parts that were collected
 		if(!saving_mode)
 		{
-			for( int i=0 ; i<7 ; i++ )
+			for( int i=0 ; i<8 ; i++ )
 			{
-				if(m_Extra[i][0]) m_Map.setTile(98,6+i,221, true);
-				if(m_Extra[i][1]) m_Map.setTile(99,6+i,237, true);
-				if(m_Extra[i][2]) m_Map.setTile(100,6+i,241, true);
-				if(m_Extra[i][3]) m_Map.setTile(101,6+i,245, true);
+				if(m_Extra[i][0]) m_Map.setTile(98,5+i,221, true);
+				if(m_Extra[i][1]) m_Map.setTile(99,5+i,237, true);
+				if(m_Extra[i][2]) m_Map.setTile(100,5+i,241, true);
+				if(m_Extra[i][3]) m_Map.setTile(101,5+i,245, true);
 			}
 		}
 	}
-
+	else bmp.rect.y = 32;
+	
+	bmp.p_Bitmap = g_pGfxEngine->getBitmap("NAME");
+	bmp.rect.x = (m_Episode == 3) ? 69 : 40;
+	bmp.rect.w = bmp.p_Bitmap->getWidth();
+	bmp.rect.h = bmp.p_Bitmap->getHeight();
+	m_Bitmaps.push_back(bmp);
+	
 	bmp.p_Bitmap = g_pGfxEngine->getBitmap("SCORE");
 	bmp.rect.x = (m_Episode == 3) ? 207 : 154;
 	bmp.rect.w = bmp.p_Bitmap->getWidth();
@@ -127,19 +131,20 @@ void CHighScores::process()
 	}
 
 	// Print the text of the highscores
-	for( Uint8 i=0 ; i<7 ; i++ )
+	for( Uint8 i=0 ; i<8 ; i++ )
 	{
 		int x = (m_Episode == 3) ? 69 : 40;
-		int x2 = (m_Episode == 3) ? 253 : 200;
-		g_pGfxEngine->Font->drawFont(sfc, m_Name[i],x,84+(i<<4), LETTER_TYPE_RED);
-		g_pGfxEngine->Font->drawFont(sfc, m_Score[i],x2-((m_Score[i].size())<<3),84+(i<<4), LETTER_TYPE_RED);
+		int x2 = (m_Episode == 3) ? 255 : 202;
+		int y = (m_Episode == 2) ? 56 : 52;
+		g_pGfxEngine->Font->drawFont(sfc, m_Name[i],x,y+(i<<4), LETTER_TYPE_RED);
+		g_pGfxEngine->Font->drawFont(sfc, m_Score[i],x2-((m_Score[i].size())<<3),y+(i<<4), LETTER_TYPE_RED);
 	}
 
 	// Here it must be split up into Episodes 1, 2 and 3.
 	if(m_Episode == 2)
 	{
-		for( Uint8 i=0 ; i<7 ; i++ )
-			g_pGfxEngine->Font->drawFont(sfc, itoa(m_Cities[i]), 252, 84+(i<<4), LETTER_TYPE_RED);
+		for( Uint8 i=0 ; i<8 ; i++ )
+			g_pGfxEngine->Font->drawFont(sfc, itoa(m_Cities[i]), 252, 56+(i<<4), LETTER_TYPE_RED);
 	}
 
 	(this->*mp_process)();
@@ -180,8 +185,8 @@ void CHighScores::processWriting()
 
 
 	int x = (m_Episode == 3) ? 69 : 40;
-	if(m_blink)	g_pGfxEngine->Font->drawFont(sfc, m_Name[m_Place]+"_",x,84+(m_Place<<4), LETTER_TYPE_RED);
-	else g_pGfxEngine->Font->drawFont(sfc, m_Name[m_Place]+" ",x,84+(m_Place<<4), LETTER_TYPE_RED);
+	if(m_blink)	g_pGfxEngine->Font->drawFont(sfc, m_Name[m_Place]+"_",x,56+(m_Place<<4), LETTER_TYPE_RED);
+	else g_pGfxEngine->Font->drawFont(sfc, m_Name[m_Place]+" ",x,56+(m_Place<<4), LETTER_TYPE_RED);
 
 	if(m_blinkctr > BLINK_TIME){
 		m_blinkctr = 0;
@@ -199,7 +204,7 @@ void CHighScores::writeEP1HighScore(int score, bool extra[4])
 	if(m_Episode == 1)
 	{
 		// Put the Tiles, of the parts that were collected
-		for( int i=0 ; i<7 ; i++ )
+		for( int i=0 ; i<8 ; i++ )
 		{
 			if(m_Extra[i][0]) m_Map.setTile(98,6+i,221, true);
 			if(m_Extra[i][1]) m_Map.setTile(99,6+i,237, true);
@@ -260,26 +265,26 @@ bool CHighScores::loadHighScoreTable()
 
 	if(!ScoreTableFile) return false;
 
-	char c_name[7][16];
-	char c_score[7][8];
-	unsigned char c_extra[7][4];
-	int c_cities[7];
+	char c_name[8][16];
+	char c_score[8][8];
+	unsigned char c_extra[8][4];
+	int c_cities[8];
 
-	memset(c_name, 0, 7*16*sizeof(char));
-	memset(c_score, 0, 7*8*sizeof(char));
-	memset(c_extra, 0, 7*4*sizeof(char));
-	memset(c_cities, 0, 7*sizeof(char));
+	memset(c_name, 0, 8*16*sizeof(char));
+	memset(c_score, 0, 8*8*sizeof(char));
+	memset(c_extra, 0, 8*4*sizeof(char));
+	memset(c_cities, 0, 8*sizeof(char));
 
-	ScoreTableFile.read((char*)c_name, 7*16*sizeof(char));
-	ScoreTableFile.seekg(7*16*sizeof(char),ios_base::cur);
-	ScoreTableFile.read((char*)c_score, 7*8*sizeof(char));
-	ScoreTableFile.seekg(7*8*sizeof(char),ios_base::cur);
-	ScoreTableFile.read((char*)(c_extra), 7*4*sizeof(unsigned char));
-	ScoreTableFile.seekg(7*4*sizeof(char),ios_base::cur);
-	ScoreTableFile.read((char*)(c_cities), 7*sizeof(int));
+	ScoreTableFile.read((char*)c_name, 8*16*sizeof(char));
+	ScoreTableFile.seekg(8*16*sizeof(char),ios_base::cur);
+	ScoreTableFile.read((char*)c_score, 8*8*sizeof(char));
+	ScoreTableFile.seekg(8*8*sizeof(char),ios_base::cur);
+	ScoreTableFile.read((char*)(c_extra), 8*4*sizeof(unsigned char));
+	ScoreTableFile.seekg(8*4*sizeof(char),ios_base::cur);
+	ScoreTableFile.read((char*)(c_cities), 8*sizeof(int));
 
 	// Format the name to C++ Strings
-	for(size_t i=0 ; i<7 ; i++)
+	for(size_t i=0 ; i<8 ; i++)
 	{
 		m_Name[i] = c_name[i];
 		m_Score[i] = c_score[i];
@@ -300,18 +305,18 @@ bool CHighScores::saveHighScoreTable()
 
 	if(!ScoreTableFile) return false;
 
-	char c_name[7][16];
-	char c_score[7][8];
-	unsigned char c_extra[7][4];
-	int c_cities[7];
+	char c_name[8][16];
+	char c_score[8][8];
+	unsigned char c_extra[8][4];
+	int c_cities[8];
 
-	memset(c_name, 0, 7*16*sizeof(char));
-	memset(c_score, 0, 7*8*sizeof(char));
-	memset(c_extra, 0, 7*4*sizeof(char));
-	memset(c_cities, 0, 7*sizeof(char));
+	memset(c_name, 0, 8*16*sizeof(char));
+	memset(c_score, 0, 8*8*sizeof(char));
+	memset(c_extra, 0, 8*4*sizeof(char));
+	memset(c_cities, 0, 8*sizeof(char));
 
 	// Format the name to C++ Strings
-	for(size_t i=0 ; i<7 ; i++)
+	for(size_t i=0 ; i<8 ; i++)
 	{
 		memcpy(&c_name[i], m_Name[i].c_str(), 16);
 		memcpy(&c_score[i], m_Score[i].c_str(), 8);
@@ -319,13 +324,13 @@ bool CHighScores::saveHighScoreTable()
 		c_cities[i] = m_Cities[i];
 	}
 
-	ScoreTableFile.write((char*)(c_name), 7*16*sizeof(char));
-	ScoreTableFile.seekp(7*16*sizeof(char),ios_base::cur);
-	ScoreTableFile.write((char*)(c_score), 7*8*sizeof(char));
-	ScoreTableFile.seekp(7*8*sizeof(char),ios_base::cur);
-	ScoreTableFile.write((char*)(c_extra), 7*4*sizeof(unsigned char));
-	ScoreTableFile.seekp(7*4*sizeof(char),ios_base::cur);
-	ScoreTableFile.write((char*) c_cities, 7*sizeof(int));
+	ScoreTableFile.write((char*)(c_name), 8*16*sizeof(char));
+	ScoreTableFile.seekp(8*16*sizeof(char),ios_base::cur);
+	ScoreTableFile.write((char*)(c_score), 8*8*sizeof(char));
+	ScoreTableFile.seekp(8*8*sizeof(char),ios_base::cur);
+	ScoreTableFile.write((char*)(c_extra), 8*4*sizeof(unsigned char));
+	ScoreTableFile.seekp(8*4*sizeof(char),ios_base::cur);
+	ScoreTableFile.write((char*) c_cities, 8*sizeof(int));
 
 	ScoreTableFile.close();
 
