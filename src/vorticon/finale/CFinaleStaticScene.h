@@ -8,8 +8,7 @@
 #ifndef CFINALESTATICSCENE_H_
 #define CFINALESTATICSCENE_H_
 
-#include "../../dialog/CTextBox.h"
-#include "../../dialog/CDlgFrame.h"
+#include "../../dialog/CMessageBox.h"
 #include "../../graphics/CBitmap.h"
 #include <SDL.h>
 #include <string>
@@ -38,11 +37,10 @@ public:
 
 private:
 
-	std::list<CTextBox*> mp_textbox_list;
+	std::list<CMessageBox*> mp_textbox_list;
 	std::vector<bitmap_structure> m_BitmapVector;
 	SDL_Surface *mp_SceneSurface;
-	CDlgFrame *mp_DlgFrame;
-	CTextBox *mp_current_tb;
+	CMessageBox *mp_current_tb;
 	bool m_mustclose;
 	Uint8 m_count;
 };

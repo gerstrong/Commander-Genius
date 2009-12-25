@@ -77,21 +77,18 @@ void CEndingEp2::HeadsForEarth()
 		m_Player[0].x = (x<<CSF);
 		m_Player[0].y = (y<<CSF);
 
-		mp_Textbox = new CTextBox(142, 108, getstring("EP2_ESEQ_PART1"));
-		mp_DlgFrame = new CDlgFrame(0, 135, 40, 8);
+		mp_Textbox = new CMessageBox(getstring("EP2_ESEQ_PART1"), true);
 
 		m_mustsetup = false;
 	}
 
 	if(mp_Textbox)
 	{
-		mp_DlgFrame->draw(g_pVideoDriver->FGLayerSurface);
 		mp_Textbox->process();
 
-		if(mp_Textbox->hasFinished())
+		if(mp_Textbox->isFinished())
 		{
 			SAFE_DELETE(mp_Textbox);
-			SAFE_DELETE(mp_DlgFrame);
 		}
 	}
 	else
@@ -133,8 +130,7 @@ void CEndingEp2::LimpsHome()
 		mp_Map->drawAll();
 		mp_ShipFlySys->m_ShipQueuePtr = 0;
 
-		mp_Textbox = new CTextBox(142, 100, getstring("EP2_ESEQ_PART2"));
-		mp_DlgFrame = new CDlgFrame(0, 135, 40, 7);
+		mp_Textbox = new CMessageBox(getstring("EP2_ESEQ_PART2"), true);
 
 		m_mustsetup = false;
 	}
@@ -142,13 +138,11 @@ void CEndingEp2::LimpsHome()
 
 	if(mp_Textbox)
 	{
-		mp_DlgFrame->draw(g_pVideoDriver->FGLayerSurface);
 		mp_Textbox->process();
 
-		if(mp_Textbox->hasFinished())
+		if(mp_Textbox->isFinished())
 		{
 			SAFE_DELETE(mp_Textbox);
-			SAFE_DELETE(mp_DlgFrame);
 		}
 	}
 	else

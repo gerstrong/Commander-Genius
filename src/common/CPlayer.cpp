@@ -504,35 +504,37 @@ void CPlayer::InertiaAndFriction_X()
 {
 	int friction_rate;
 	treshold = 0;
-	
+
 	// Calculate Threshold of your analog device for walking animation speed!
 	if(!pfrozentime)
-		treshold = playcontrol[PA_X];
-	
-	int pmaxspeed;
-	int pmaxmovespeed = mp_PhysicsSettings->player.max_x_speed;
-
-	
-	if( (!pjumping && !pfalling &&
-	   !psemisliding && !psliding && !ppogostick && !pslowingdown) || m_playingmode==WORLDMAP )
 	{
-		if(treshold < playcontrol[PA_Y] && playcontrol[PA_Y] > 0 )
-			treshold = playcontrol[PA_Y];
-		
-		if(treshold > playcontrol[PA_Y] && playcontrol[PA_Y] < 0 )
-			treshold = playcontrol[PA_Y];
-		
-		if(treshold < 0)
-			treshold *= (-1);
+		treshold = playcontrol[PA_X];
+
+		int pmaxspeed;
+		int pmaxmovespeed = mp_PhysicsSettings->player.max_x_speed;
+
+
+		if( (!pjumping && !pfalling &&
+				!psemisliding && !psliding && !ppogostick && !pslowingdown) || m_playingmode==WORLDMAP )
+		{
+			if(treshold < playcontrol[PA_Y] && playcontrol[PA_Y] > 0 )
+				treshold = playcontrol[PA_Y];
+
+			if(treshold > playcontrol[PA_Y] && playcontrol[PA_Y] < 0 )
+				treshold = playcontrol[PA_Y];
+
+			if(treshold < 0)
+				treshold *= (-1);
+		}
+		else	treshold = 100;
+
+		pmaxspeed = treshold*pmaxmovespeed/100;
+
+		if(pinertia_x > pmaxspeed)
+			pinertia_x = pmaxspeed;
+		if(pinertia_x < -pmaxspeed)
+			pinertia_x = -pmaxspeed;
 	}
-	else	treshold = 100;
-	
-	pmaxspeed = treshold*pmaxmovespeed/100;
-	
-	if(pinertia_x > pmaxspeed)
-		pinertia_x = pmaxspeed;
-	if(pinertia_x < -pmaxspeed)
-		pinertia_x = -pmaxspeed;
 	
 	// apply pinertia_x and playpushed_x inertia
 	// (unless we're about to make a pogo jump)
@@ -546,6 +548,7 @@ void CPlayer::InertiaAndFriction_X()
 	
 	// if we stopped walking (i.e. left or right not held down) apply friction
 	// there's no friction if we're semisliding
+
 	if (!(playcontrol[PA_X] < 0) && !(playcontrol[PA_X] > 0) &&
 		!psemisliding)
 	{

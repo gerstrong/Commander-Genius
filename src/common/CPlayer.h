@@ -65,7 +65,7 @@ public:
 	int getNewObject();
 
 	// In Level specific
-	void processInLevel();
+	void processInLevel(const bool &platextending);
 	void touchedExit();
 	void walkbehindexitdoor();
 	void kill(bool force=false);
@@ -74,7 +74,7 @@ public:
 	void getgoodies();
 	void playpushed();
 	void keencicle();
-	void TogglePogo_and_Switches();
+	void TogglePogo_and_Switches(const bool &platextending);
 	void JumpAndPogo();
 	void raygun();
 	void ankh();

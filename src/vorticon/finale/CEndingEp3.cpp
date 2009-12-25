@@ -59,11 +59,10 @@ void CEndingEp3::HonorScene()
 		mp_Map->gotoPos(32, 32);
 		mp_Map->drawAll();
 
-		m_TextBoxes.push_back(new CTextBox(142, 108, getstring("EP3_ESEQ_PAGE1")));
-		m_TextBoxes.push_back(new CTextBox(142, 108, getstring("EP3_ESEQ_PAGE2")));
-		m_TextBoxes.push_back(new CTextBox(142, 108, getstring("EP3_ESEQ_PAGE3")));
-		m_TextBoxes.push_back(new CTextBox(142, 108, getstring("EP3_ESEQ_PAGE4")));
-		mp_DlgFrame = new CDlgFrame(0, 135, 40, 8);
+		m_TextBoxes.push_back(new CMessageBox(getstring("EP3_ESEQ_PAGE1"), true));
+		m_TextBoxes.push_back(new CMessageBox(getstring("EP3_ESEQ_PAGE2"), true));
+		m_TextBoxes.push_back(new CMessageBox(getstring("EP3_ESEQ_PAGE3"), true));
+		m_TextBoxes.push_back(new CMessageBox(getstring("EP3_ESEQ_PAGE4"), true));
 
 		int newtile = mp_Map->at(2,12);
 		for(int x=0 ; x<22 ; x++) // This changes to the Oh No! Tiles to normal Stone-Tiles
@@ -77,12 +76,12 @@ void CEndingEp3::HonorScene()
 
 	if(!m_TextBoxes.empty())
 	{
-		CTextBox *pMB = m_TextBoxes.front();
+		CMessageBox *pMB = m_TextBoxes.front();
 
-		mp_DlgFrame->draw(g_pVideoDriver->FGLayerSurface);
+		//mp_DlgFrame->draw(g_pVideoDriver->FGLayerSurface);
 		pMB->process();
 
-		if(pMB->hasFinished())
+		if(pMB->isFinished())
 		{
 			delete pMB;
 			m_TextBoxes.pop_front();
@@ -134,5 +133,4 @@ CEndingEp3::~CEndingEp3() {
 	}
 
 	SAFE_DELETE(mp_FinaleStaticScene);
-	SAFE_DELETE(mp_DlgFrame);
 }

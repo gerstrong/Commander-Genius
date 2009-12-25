@@ -141,7 +141,7 @@ void CObjectAI::vort_ai(CObject &object, int level, int episode, char difficulty
 		 if (object.ai.vort.timer > VORT_JUMP_FRICTION)
 		 { // slowly decrease upgoing rate
 			 if (object.ai.vort.inertiay<VORT_MAX_FALL_SPEED)
-				 object.ai.vort.inertiay+=1<<4;
+				 object.ai.vort.inertiay+=1<<5;
 
 			 object.ai.vort.timer = 0;
 		 }

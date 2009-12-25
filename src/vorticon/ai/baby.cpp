@@ -1,8 +1,5 @@
 #include "../../sdl/sound/CSound.h"
 
-#include "../../keen.h"
-#include "../../game.h"
-
 #include "CObjectAI.h"
 
 // Baby Vorticon (the superfast little blue creatures that knock you down)
@@ -27,8 +24,8 @@ enum vort_baby_actions{
 #define BABY_FRY_TIME           20
 #define BABY_DIE_INERTIA        20
 
-#define BABY_JUMP_BIG           1
-#define BABY_JUMP_SMALL         0
+#define BABY_JUMP_BIG           2
+#define BABY_JUMP_SMALL         1
 
 void CObjectAI::baby_ai(CObject &object, int episode, bool hard)
 {
@@ -102,7 +99,7 @@ void CObjectAI::baby_ai(CObject &object, int episode, bool hard)
 			{
 				object.ai.baby.dietimer = 0;
 				object.ai.baby.state = BABY_DYING;
-				object.ai.baby.jumpdecrate = 5;
+				object.ai.baby.jumpdecrate = 1;
 				object.sprite = BABY_FRY_FRAME - ep3;
 				object.zapped = 0;
 				object.canbezapped = 0;
@@ -203,8 +200,8 @@ void CObjectAI::baby_ai(CObject &object, int episode, bool hard)
 	}
 }
 
-#define BABY_BIGJUMP                 25
-#define BABY_BIGJUMP_DEC_RATE        10
+#define BABY_BIGJUMP                 100
+#define BABY_BIGJUMP_DEC_RATE        2
 
 #define BABY_MIN_SMALLJUMP             23
 #define BABY_SMALLJUMP_MIN_DEC_RATE    18
@@ -221,8 +218,8 @@ void CObjectAI::baby_jump(CObject &object, int big)
 	}
 	else
 	{
-		object.ai.baby.inertia_y = -20;//(rnd()%(BABY_MAX_SMALLJUMP-BABY_MIN_SMALLJUMP))+BABY_MIN_SMALLJUMP;
-		object.ai.baby.jumpdecrate = 10;//(rnd()%(BABY_SMALLJUMP_MAX_DEC_RATE-BABY_SMALLJUMP_MIN_DEC_RATE))+BABY_SMALLJUMP_MIN_DEC_RATE;
+		object.ai.baby.inertia_y = -80;//(rnd()%(BABY_MAX_SMALLJUMP-BABY_MIN_SMALLJUMP))+BABY_MIN_SMALLJUMP;
+		object.ai.baby.jumpdecrate = 2;//(rnd()%(BABY_SMALLJUMP_MAX_DEC_RATE-BABY_SMALLJUMP_MIN_DEC_RATE))+BABY_SMALLJUMP_MIN_DEC_RATE;
 	}
 
 	object.ai.baby.jumpdectimer = 0;

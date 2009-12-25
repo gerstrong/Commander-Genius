@@ -62,9 +62,8 @@ void CEndingEp1::ReturnsToShip()
 
 		while(m_Player[0].scrollTriggers()); // Scroll the map to players position
 
-		mp_Textbox = new CTextBox(150, 100, getstring("EP1_ESEQ_PART1"));
-		mp_Textbox->setAttribs(2, LETTER_TYPE_NORMAL);
-		mp_DlgFrame = new CDlgFrame(0, 142, 40, 7);
+		mp_Textbox = new CMessageBox(getstring("EP1_ESEQ_PART1"), true);
+		//mp_Textbox->setAttribs(2, LETTER_TYPE_NORMAL);
 
 		m_mustsetup = false;
 	}
@@ -72,7 +71,6 @@ void CEndingEp1::ReturnsToShip()
 	if( m_timepassed<50000 && !g_pInput->getPressedAnyCommand() )
 	{
 		// perform a machine typing like dialog.
-		mp_DlgFrame->draw(g_pVideoDriver->FGLayerSurface);
 		mp_Textbox->process();
 	}
 	else
@@ -81,9 +79,7 @@ void CEndingEp1::ReturnsToShip()
 		m_step++;
 		m_mustsetup = true;
 		delete mp_Textbox;
-		delete mp_DlgFrame;
 		mp_Textbox = NULL;
-		mp_DlgFrame = NULL;
 	}
 }
 

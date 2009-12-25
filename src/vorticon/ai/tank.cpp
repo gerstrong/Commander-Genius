@@ -17,15 +17,16 @@ enum{
 
 // when this probability is satisfied, there is 50% probability
 // of a look, 50% probability of a fire.
-#define TANK_LOOKFIRE_PROB    500
+//#define TANK_LOOKFIRE_PROB    500
+#define TANK_LOOKFIRE_PROB    100
 #define TANK_MINTRAVELDIST    200
 
-#define TANK_WALK_SPEED         16
-#define TANK_WALK_ANIM_TIME     3
+#define TANK_WALK_SPEED         32
+#define TANK_WALK_ANIM_TIME     2
 #define TANK_LOOK_ANIM_TIME     4
 #define TANK_LOOK_TOTALTIME     11
-#define TANK_PREPAREFIRE_TIME   11
-#define TANK_PREPAREFIRE_TIME_FAST   20
+#define TANK_PREPAREFIRE_TIME   44
+#define TANK_PREPAREFIRE_TIME_FAST   22
 
 // frames
 #define TANK_WALK_LEFT_FRAME        102

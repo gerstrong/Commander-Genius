@@ -11,8 +11,7 @@
 #include "CFinale.h"
 #include "../../common/CMap.h"
 #include "../../common/CPlayer.h"
-#include "../../dialog/CTextBox.h"
-#include "../../dialog/CDlgFrame.h"
+#include "../../dialog/CMessageBox.h"
 #include <vector>
 #include <list>
 #include <SDL.h>
@@ -34,9 +33,8 @@ private:
 
 	std::vector<CPlayer> &m_Player;
 	CFinaleStaticScene *mp_FinaleStaticScene;
-	CDlgFrame *mp_DlgFrame;
 
-	std::list<CTextBox*> m_TextBoxes;
+	std::list<CMessageBox*> m_TextBoxes;
 };
 
 #endif /* CENDINGEP3_H_ */

@@ -579,8 +579,6 @@ void CPlayGame::collectHighScoreInfo()
 	}
 	else if(m_Episode == 2)
 	{
-		mp_HighScores->writeHighScoreCommon(m_Player[0].inventory.score);
-
 		// episode 2: game is won when all cities are saved
 		int saved_cities=0;
 		if (mp_level_completed[4]) saved_cities++;

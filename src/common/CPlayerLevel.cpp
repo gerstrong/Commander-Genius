@@ -19,7 +19,7 @@
 
 ////
 // Process the stuff of the player when playing in a normal level
-void CPlayer::processInLevel()
+void CPlayer::processInLevel(const bool &platextending)
 {
     StatusBox();
 	
@@ -46,16 +46,18 @@ void CPlayer::processInLevel()
 		
 		keencicle();
 		
-		if(!pjumping)
+		if(!pjumping && !pfrozentime)
 		{
 			Walking();
 			WalkingAnimation();
 		}
 		
-		playpushed();
+		if(!pfrozentime)
+			playpushed();
+
 		InertiaAndFriction_X();
 		
-		TogglePogo_and_Switches();
+		TogglePogo_and_Switches(platextending);
 		JumpAndPogo();
 	}
 }
@@ -283,7 +285,7 @@ void CPlayer::playpushed()
 }
 
 // allow Keen to toggle the pogo stick and hit switches
-void CPlayer::TogglePogo_and_Switches()
+void CPlayer::TogglePogo_and_Switches(const bool &platextending)
 {
 	int i;
 	int mx, my;
@@ -323,19 +325,22 @@ void CPlayer::TogglePogo_and_Switches()
 				}
 				else
 				{
-					m_Level_Trigger = LVLTRIG_BRIDGE;
-					char pxoff = (bridge & 0x00ff);
-					char pyoff = (bridge & 0xff00) >> 8;
-					int platx = mx + pxoff;
-					int platy = my + pyoff;
+					if(!platextending)
+					{
+						m_Level_Trigger = LVLTRIG_BRIDGE;
+						char pxoff = (bridge & 0x00ff);
+						char pyoff = (bridge & 0xff00) >> 8;
+						int platx = mx + pxoff;
+						int platy = my + pyoff;
 
-					// spawn a "sector effector" to extend/retract the platform
-					CObject platobject;
-					platobject.spawn(mx<<CSF,my<<CSF,OBJ_SECTOREFFECTOR, m_episode);
-					platobject.ai.se.type = SE_EXTEND_PLATFORM;
-					platobject.ai.se.platx = platx;
-					platobject.ai.se.platy = platy;
-					mp_object->push_back(platobject);
+						// spawn a "sector effector" to extend/retract the platform
+						CObject platobject;
+						platobject.spawn(mx<<CSF,my<<CSF,OBJ_SECTOREFFECTOR, m_episode);
+						platobject.ai.se.type = SE_EXTEND_PLATFORM;
+						platobject.ai.se.platx = platx;
+						platobject.ai.se.platy = platy;
+						mp_object->push_back(platobject);
+					}
 				}
 
 				if (!ppogostick) break;
@@ -365,7 +370,7 @@ void CPlayer::JumpAndPogo()
 	if (!pjumping && !pfalling && !pfiring)
 	{
 		// give em the chance to jump
-		if (playcontrol[PA_JUMP] && !ppogostick && !pfrozentime)
+		if (playcontrol[PA_JUMP] && !ppogostick && !pfrozentime && !playpushed_x)
 		{
 			pinertia_x = 0;
 			pjumping = PPREPAREJUMP;

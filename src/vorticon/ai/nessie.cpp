@@ -237,22 +237,14 @@ void CObjectAI::nessie_find_next_checkpoint(CObject& object)
 	y = (((object.y>>STC)+8)>>TILE_S)-1;
 	destx = desty = 0;
 
-	printf("\n\nJetzt (%d|%d)\n", x+1,y+1);
-	printf("\n\nTraillist\n");
-	for(i=0;i<=NESSIETRAILLEN;i++)
-	{
-		printf("(%d|%d)\n", object.ai.nessie.tiletrailX[i], object.ai.nessie.tiletrailY[i]);
-	}
 	for(ya=0;ya<3;ya++)
 	{
-		printf("\n");
 		for(xa=0;xa<3;xa++)
 		{
 			destx = x+xa;
 			desty = y+ya;
 
 			int obj = mp_Map->getObjectat(destx, desty);
-			printf("%d (%d|%d) ", obj,destx, desty);
 			if (obj==NESSIE_PATH || obj==NESSIE_PAUSE)
 			{
 				// find out if this is one of the last tiles we've been to
@@ -290,8 +282,6 @@ void CObjectAI::nessie_find_next_checkpoint(CObject& object)
 
 	object.ai.nessie.destx = (destx<<CSF);
 	object.ai.nessie.desty = (((desty<<STC)-8)<<TILE_S);
-	printf("\n\nnext1 (%d|%d)\n", object.ai.nessie.destx>>CSF,object.ai.nessie.desty>>CSF);
-	printf("\n\nnext2 (%d|%d)\n", destx,desty);
 
 	// make nessie pause at pause points, not in the top quarter
 	// of the map (i.e. not at the mortimer's castle mount point...

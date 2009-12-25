@@ -7,7 +7,7 @@
 // the chunks of ice shot out by an ice cannon (ep1)
 const int ICECHUNK_SPEED = 60;
 const int ICECHUNK_STRAIGHT_SPEED = 80;
-const int ICECHUNK_WAIT_TIME = 38;
+const int ICECHUNK_WAIT_TIME = 19;
 
 unsigned int rnd(void);
 
@@ -39,11 +39,13 @@ void CObjectAI::icechunk_ai(CObject &object)
 			{
 				m_Player[object.touchedBy].pdir = m_Player[object.touchedBy].pshowdir = RIGHT;
 				m_Player[object.touchedBy].pinertia_x = m_PhysicsSettings.player.max_x_speed;
+				m_Player[object.touchedBy].bump(m_PhysicsSettings.player.max_x_speed/2, false);
 			}
 			else if (object.ai.icechunk.vector_x < 0)
 			{
 				m_Player[object.touchedBy].pdir = m_Player[object.touchedBy].pshowdir = LEFT;
 				m_Player[object.touchedBy].pinertia_x = -m_PhysicsSettings.player.max_x_speed;
+				m_Player[object.touchedBy].bump(-m_PhysicsSettings.player.max_x_speed/2, false);
 			}
 			else	// perfectly vertical ice cannons
 			{

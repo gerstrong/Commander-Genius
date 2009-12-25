@@ -11,8 +11,7 @@
 #include "CFinale.h"
 #include "../../common/CMap.h"
 #include "../../common/CPlayer.h"
-#include "../../dialog/CTextBox.h"
-#include "../../dialog/CDlgFrame.h"
+#include "../../dialog/CMessageBox.h"
 #include <vector>
 #include <SDL.h>
 
@@ -36,9 +35,8 @@ private:
 	std::vector<CPlayer> &m_Player;
 	CShipFlySys *mp_ShipFlySys;
 	CFinaleStaticScene *mp_FinaleStaticScene;
-	CDlgFrame *mp_DlgFrame;
 
-	CTextBox *mp_Textbox;
+	CMessageBox *mp_Textbox;
 };
 
 #endif /* CENDINGEP2_H_ */

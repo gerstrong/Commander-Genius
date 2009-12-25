@@ -266,7 +266,7 @@ void CPlayGame::checkStandingOnIce(CPlayer &player)
 	int t1 = mp_Map->at(x1>>CSF, y>>CSF);
 	int t2 = mp_Map->at(x2>>CSF, y>>CSF);
 
-	char blocktype = g_pGfxEngine->Tilemap->mp_tiles[t1].bup | g_pGfxEngine->Tilemap->mp_tiles[t2].bup;
+	char blocktype = g_pGfxEngine->Tilemap->mp_tiles[t1].bup & g_pGfxEngine->Tilemap->mp_tiles[t2].bup;
 	if(!player.ppogostick)
 	{
 		if( blocktype == 2 ) player.psemisliding = true;

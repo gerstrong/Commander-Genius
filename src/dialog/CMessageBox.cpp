@@ -10,7 +10,7 @@
 #include "../sdl/CInput.h"
 #include "../graphics/CGfxEngine.h"
 
-CMessageBox::CMessageBox(const std::string& Text) :
+CMessageBox::CMessageBox(const std::string& Text, bool lower) :
 m_mustclose(false)
 {
 	// Split up the text in lines, so can calculate the textbox height
@@ -35,12 +35,22 @@ m_mustclose(false)
 	// try to center that dialog box
 	m_gamerect = g_pVideoDriver->getGameResolution();
 
+	int h = m_gamerect.h;
 	m_gamerect.x = m_gamerect.w/2;
 	m_gamerect.y = m_gamerect.h/2;
 	m_gamerect.h = (m_Lines.size()+2)*8;
 	m_gamerect.w = (width+2)*8;
 	m_gamerect.x -= m_gamerect.w/2;
-	m_gamerect.y -= m_gamerect.h/2;
+
+	if(!lower)
+	{
+		m_gamerect.y -= m_gamerect.h/2;
+	}
+	else
+	{
+		m_gamerect.y = h-m_gamerect.h;
+	}
+
 
 	m_gamerect.h /= 8;
 	m_gamerect.w /= 8;

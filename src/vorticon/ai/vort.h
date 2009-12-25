@@ -7,17 +7,15 @@ VORT_DEAD,
 VORT2_DYING
 };
 
-//#define VORT_JUMP_PROB          220
-#define VORT_JUMP_PROB          220
+#define VORT_JUMP_PROB          60
 
-#define VORT_MIN_JUMP_HEIGHT    60
-#define VORT_MAX_JUMP_HEIGHT    100
+#define VORT_MIN_JUMP_HEIGHT    90
+#define VORT_MAX_JUMP_HEIGHT    150
 #define VORT_MAX_FALL_SPEED     320
 #define VORT_JUMP_FRICTION      5
-#define VORT_JUMP_SPEED         0
 
-#define VORT_WALK_SPEED         25
-#define VORT_WALK_ANIM_TIME     15
+#define VORT_WALK_SPEED         30
+#define VORT_WALK_ANIM_TIME     14
 
 
 // number of shots to kill

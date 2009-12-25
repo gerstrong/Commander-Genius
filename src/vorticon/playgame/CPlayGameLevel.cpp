@@ -23,7 +23,7 @@ void CPlayGame::processInLevel()
 				continue;
 
 			// Process the other stuff like, items, jump, etc.
-			m_Player[i].processInLevel();
+			m_Player[i].processInLevel(mp_ObjectAI->getPlatMoving());
 
 			// If the player touched did in which we have to show a Message, do it so
 			std::string hinttext;
@@ -101,8 +101,10 @@ void CPlayGame::processLevelTrigger(int trigger)
 	else if (trigger == LVLTRIG_BRIDGE)
 	{	// it's a moving platform switch--don't allow player to hit it again while
 		// the plat is still moving as this will glitch
-		if (mp_ObjectAI->getPlatMoving()) return;
-		mp_ObjectAI->triggerPlat(true);
+		if (!mp_ObjectAI->getPlatMoving())
+		{
+			mp_ObjectAI->triggerPlat(true);
+		}
 		// The spawning of the plat extension is defined in the CPlayer class
 	}
 	else if (trigger == LVLTRIG_LIGHT)

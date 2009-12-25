@@ -46,7 +46,7 @@ void CPlayGame::processPlayerfallings(CPlayer *p_player)
 		// do not fall if we're jumping
 		if (p_player->pjumping)
 		{
-			p_player->psemisliding = 0;
+			p_player->psemisliding = false;
 			return;
 		}
 

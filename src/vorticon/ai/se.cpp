@@ -77,8 +77,8 @@ void CObjectAI::se_extend_plat(CObject &object, bool &PlatExtending)
 				!TileProperty[mp_Map->at(object.ai.se.platx, object.ai.se.platy)].bleft)
 		{
 			// get the background tile from the tile above the starting point
-			if(!TileProperty[mp_Map->at(object.ai.se.platx+1, object.ai.se.platy)].bleft)
-				object.ai.se.bgtile = mp_Map->at(object.ai.se.platx, object.ai.se.platy);
+			//if(!TileProperty[mp_Map->at(object.ai.se.platx+1, object.ai.se.platy)].bleft)
+				object.ai.se.bgtile = mp_Map->at(object.ai.se.platx, object.ai.se.platy-1);
 
 			mp_Map->changeTile(object.ai.se.platx, object.ai.se.platy, TILE_EXTENDING_PLATFORM);
 			object.ai.se.platx++;
@@ -89,8 +89,8 @@ void CObjectAI::se_extend_plat(CObject &object, bool &PlatExtending)
 				!TileProperty[mp_Map->at(object.ai.se.platx, object.ai.se.platy)].bright)
 		{
 			// get the background tile from the tile above the starting point
-			if(!TileProperty[mp_Map->at(object.ai.se.platx-1, object.ai.se.platy)].bright)
-				object.ai.se.bgtile = mp_Map->at(object.ai.se.platx-1, object.ai.se.platy);
+			//if(!TileProperty[mp_Map->at(object.ai.se.platx-1, object.ai.se.platy)].bright)
+				object.ai.se.bgtile = mp_Map->at(object.ai.se.platx, object.ai.se.platy-1);
 
 			mp_Map->changeTile(object.ai.se.platx, object.ai.se.platy, TILE_EXTENDING_PLATFORM);
 			object.ai.se.platx--;
@@ -160,7 +160,8 @@ void CObjectAI::se_retract_plat(CObject &object, bool &PlatExtending)
 	{
 		if (mp_Map->at(object.ai.se.platx, object.ai.se.platy) == TILE_EXTENDING_PLATFORM)
 		{
-			mp_Map->setTile(object.ai.se.platx, object.ai.se.platy, object.ai.se.bgtile, true);
+			int newbgtile = mp_Map->at(object.ai.se.platx, object.ai.se.platy-1);
+			mp_Map->setTile(object.ai.se.platx, object.ai.se.platy, newbgtile, true);
 
 			if (object.ai.se.dir==RIGHT)
 				object.ai.se.platx++;

@@ -18,8 +18,5 @@ enum ray_state{
 	RAY_STATE_ZAPZOT
 };
 
-// reference to ../game.cpp
-void delete_object(int o);
-
 // reference to ../misc.cpp
 unsigned int rnd(void);

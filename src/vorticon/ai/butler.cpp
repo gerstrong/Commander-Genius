@@ -9,8 +9,8 @@ enum Butleractionn{
 	BUTLER_TURN, BUTLER_WALK
 };
 
-#define BUTLER_WALK_SPEED        36
-#define BUTLER_WALK_SPEED_FAST   40
+#define BUTLER_WALK_SPEED        32
+#define BUTLER_WALK_SPEED_FAST   38
 #define BUTLER_WALK_ANIM_TIME    6
 #define BUTLER_WALK_ANIM_TIME_FAST    1
 #define BUTLER_TURN_TIME         10
