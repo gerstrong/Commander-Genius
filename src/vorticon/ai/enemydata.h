@@ -320,11 +320,11 @@ typedef struct stNessieData
 	char state;
 	char leftrightdir, updowndir;
 	unsigned int baseframe;
-	
+
 	unsigned int tiletrailX[NESSIETRAILLEN+1];
 	unsigned int tiletrailY[NESSIETRAILLEN+1];
 	int tiletrailhead;
-	
+
 	char animframe, animtimer;
 	unsigned int destx, desty;
 	

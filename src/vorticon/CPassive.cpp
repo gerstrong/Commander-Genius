@@ -7,7 +7,6 @@
  */
 
 #include "CPassive.h"
-#include "../include/fileio/story.h"
 #include "../graphics/CGfxEngine.h"
 #include "../common/CMenu.h"
 #include "../common/CMapLoader.h"

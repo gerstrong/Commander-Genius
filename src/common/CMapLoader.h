@@ -26,6 +26,7 @@ public:
 	void addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode, int level);
 	
 	bool m_checkpointset;
+	bool m_NessieAlreadySpawned;
 	std::vector<CObject> *mp_objvect;
 
 	virtual ~CMapLoader();

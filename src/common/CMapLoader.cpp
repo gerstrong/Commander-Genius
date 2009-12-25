@@ -23,6 +23,7 @@ mp_Player(p_Player)
 	mp_objvect = NULL;
 	mp_map = p_map;
 	m_checkpointset = false;
+	m_NessieAlreadySpawned = false;
 }
 
 // Loads the map into the memory
@@ -180,7 +181,6 @@ void CMapLoader::addTile( Uint16 t, Uint16 x, Uint16 y )
 	mp_map->setTile(x, y, t);
 }
 
-bool NessieAlreadySpawned;
 void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episode)
 {
 	// This function add sprites on the map. Most of the objects are invisible.
@@ -199,14 +199,17 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 		case NESSIE_PATH:          // spawn nessie at first occurance of her path
 			if (episode==3)
 			{
-				/*if (!NessieAlreadySpawned)
+				if (!m_NessieAlreadySpawned)
 				{
 					CObject nessie;
+
+					nessie.setIndex(mp_objvect->size());
 					nessie.spawn(x<<CSF, y<<CSF, OBJ_NESSIE, 3);
-					nessie.hasbeenonscreen = 1;
-					NessieAlreadySpawned = 1;
-					NessieObjectHandle = o;
-				}*/
+					nessie.onscreen = true;
+					m_NessieAlreadySpawned = true;
+					mp_objvect->push_back(nessie);
+				}
+				mp_map->m_objectlayer[x][y] = NESSIE_PATH;
 			}
 			break;
 		default:             // level marker

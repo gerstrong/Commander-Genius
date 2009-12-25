@@ -123,7 +123,7 @@ public:
 
 	// used on world map only
 	bool hideplayer;
-	char mounted;
+	bool mounted;
 
 	short treshold;		// This is used for analog devices like joysticks
 	signed int pinertia_y;

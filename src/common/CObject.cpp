@@ -50,8 +50,8 @@ bool CObject::spawn(int x0, int y0, int otype, int Episode)
 	// find an unused object slot
 	if (!exists && otype != OBJ_PLAYER)
 	{
-		x = x0;
-		y = y0;
+		new_x = x = x0;
+		new_y = y = y0;
 		m_type = otype;
 		exists = true;
 		needinit = true;
@@ -216,6 +216,8 @@ long x1,y1,x2,y2;
 stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 CSprite *Sprite = g_pGfxEngine->Sprite.at(sprite);
 
+	if(m_type == OBJ_NESSIE) return;
+
 	// Get Rect values of the object
 	x1 = x + Sprite->m_bboxX1;
 	y1 = y + Sprite->m_bboxY1;
@@ -357,6 +359,7 @@ bool CObject::checkSolidD(stTile *TileProperty, CMap *p_map, int x1, int x2, int
 
 void CObject::processFalling()
 {
+	if(m_type == OBJ_NESSIE) return;
 	// make object fall if it must
 	#define OBJFALLSPEED   160
 	if (!inhibitfall)
