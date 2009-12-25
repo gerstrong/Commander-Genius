@@ -2,23 +2,20 @@
 #include "../../sdl/sound/CSound.h"
 
 enum garg_states{
-	GARG_LOOK,
-	GARG_MOVE,
-	GARG_CHARGE,
-	GARG_JUMP,
-	GARG_DYING,
-	GARG_DEAD
+	GARG_LOOK, GARG_MOVE, GARG_CHARGE,
+	GARG_JUMP, GARG_DYING, GARG_DEAD
 };
 
 #define GARG_MINTRAVELDIST          1000
-#define GARG_LOOK_PROB              800
+#define GARG_LOOK_PROB              100
 #define GARG_WALK_SPEED             12
 #define GARG_WALK_ANIM_TIME         12
 #define GARG_WALK_SPEED_FAST        20
 #define GARG_WALK_ANIM_TIME_FAST    7
-#define GARG_CHARGE_SPEED           56
+#define GARG_CHARGE_SPEED           73
 #define GARG_CHARGE_ANIM_TIME       7
 #define GARG_JUMP_HEIGHT            160
+#define GARG_JUMP_SPEED				12
 
 #define GARG_LOOK_TIME  17
 #define GARG_NUM_LOOKS  3
@@ -139,9 +136,9 @@ void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 			object.ai.garg.detectedPlayer = 0;
 			for(i=0;i<1;i++) //TODO cycle through players
 			{
-				if (p_player[i].y >= object.y-(8<<CSF))
+				if (p_player[i].y >= object.y-(8<<STC))
 				{
-					if ((p_player[i].y+player_height)>>CSF <= (object.y+garg_height+(1<<CSF))>>CSF)
+					if ((p_player[i].y+player_height) <= (object.y+garg_height+(1<<CSF)))
 					{
 						object.ai.garg.detectedPlayer = 1;
 						object.ai.garg.detectedPlayerIndex = i;
@@ -242,11 +239,17 @@ void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 		case GARG_JUMP:
 			if( object.ai.garg.jumpheight > 0 )
 				object.ai.garg.jumpheight--;
+			else
+				object.ai.garg.state = GARG_CHARGE;
 
 			if(TileProperty[mp_Map->at((object.x+garg_width/2)>>CSF, (object.y+garg_height+1)>>CSF)].bdown) // There is floor
 				object.ai.garg.state = GARG_CHARGE;
 			else
-				object.y-=12;
+			{
+				if(object.y > GARG_JUMP_SPEED )
+					object.y-=GARG_JUMP_SPEED;
+			}
+			break;
 
 		case GARG_CHARGE:
 			if (object.ai.garg.movedir==LEFT)
@@ -265,11 +268,11 @@ void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 				}
 
 				// if Garg is about to fall while charged make him jump
-				if( !TileProperty[mp_Map->at((object.x+garg_width/2)>>CSF, (object.y+garg_height+1)>>CSF)].bdown )
+				/*if( !TileProperty[mp_Map->at((object.x+garg_width/2)>>CSF, (object.y+garg_height+1)>>CSF)].bdown )
 				{
 					object.ai.garg.state = GARG_JUMP;
-					object.ai.garg.jumpheight = GARG_JUMP_HEIGHT<<CSF;
-				}
+					object.ai.garg.jumpheight = GARG_JUMP_HEIGHT;
+				}*/
 			}
 			else
 			{  // garg is charging right
@@ -287,11 +290,11 @@ void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 				}
 
 				// if Garg is about to fall while charged make him jump
-				if( !TileProperty[mp_Map->at((object.x+garg_width/2)>>CSF, (object.y+garg_height+1)>>CSF)].bdown )
+				/*if( !TileProperty[mp_Map->at((object.x+garg_width/2)>>CSF, (object.y+garg_height+1)>>CSF)].bdown )
 				{
 					object.ai.garg.state = GARG_JUMP;
-					object.ai.garg.jumpheight = GARG_JUMP_HEIGHT<<CSF;
-				}
+					object.ai.garg.jumpheight = GARG_JUMP_HEIGHT;
+				}*/
 			}
 
 			// walk animation
