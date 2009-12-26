@@ -43,9 +43,12 @@ void CPlayGame::processOnWorldMap()
 					// a special case in Episode 3
 					switch(useobject)
 					{
+					case NESSIE_WEED:
 					case NESSIE_PATH: break;
-					case NESSIE_PAUSE: break;
-					case NESSIE_MOUNTPOINT: break;
+					case NESSIE_LAND:
+						m_Player[i].MountNessieIfAvailable();
+						g_pInput->flushAll();
+						break;
 
 					case LVLS_SHIP:
 						if (m_Episode==1)
@@ -84,15 +87,19 @@ void CPlayGame::processOnWorldMap()
 				}
 			}
 
-			// in episode 3 he can ride on nessie
-			if (m_Episode==3)
-			{
-				m_Player[i].AllowMountUnmountNessie();
-			}
-
 			// Check Collisions and only move player, if it is not blocked
 			checkPlayerCollisions(&m_Player[i]);
 		}
+
+		if(m_Player[i].mounted)
+		{
+			if(g_pInput->getPressedAnyCommand(i))
+			{
+				m_Player[i].UnmountNessie();
+				g_pInput->flushAll();
+			}
+		}
+
 
 		if(m_showKeensLeft)	showKeensLeft();
 	}

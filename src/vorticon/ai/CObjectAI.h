@@ -104,6 +104,7 @@ private:
 	 void platvert_ai(CObject& object);
 
 	 void nessie_ai(CObject& object);
+	 void move_nessie(CObject& object);
 	 void nessie_find_next_checkpoint(CObject& object);
 
 	 // Common Objects

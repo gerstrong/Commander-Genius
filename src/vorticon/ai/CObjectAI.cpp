@@ -252,5 +252,5 @@ void CObjectAI::deleteAllObjects()
 }
 
 CObjectAI::~CObjectAI() {
-	// TODO Auto-generated destructor stub
+	deleteAllObjects();
 }

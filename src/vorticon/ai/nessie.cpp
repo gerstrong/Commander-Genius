@@ -3,13 +3,12 @@
 // Nessie (in ep3) (on the world map)
 
 enum nessie_actions{
-	NESSIE_SWIMNORMAL, NESSIE_SWIMUPTOMORTIMER,
-	NESSIE_PAUSE_MORTIMER, NESSIE_SWIMAWAY_MORTIMER
+	NESSIE_SWIMNORMAL, NESSIE_PAUSE
 };
 
 #define NESSIE_PAUSE_TIME       250
 
-#define NESSIE_ANIM_RATE        6
+#define NESSIE_ANIM_RATE        4
 
 #define NESSIE_DOWNLEFT_FRAME   130
 #define NESSIE_DOWNRIGHT_FRAME  132
@@ -18,16 +17,10 @@ enum nessie_actions{
 
 #define NESSIE_SPEED            16
 
-#define NESSIE_MORTIMER_SWIM_AMT        ((8<<STC)/NESSIE_SPEED)
-#define NESSIE_MORTIMER_SWIMAWAY_AMT    ((16<<STC)/NESSIE_SPEED)
-
 void nessie_find_next_checkpoint(int o);
 
 void CObjectAI::nessie_ai(CObject& object)
 {
-	unsigned int i;
-	bool isMounted;
-
 	if (object.needinit)
 	{
 		object.ai.nessie.baseframe = NESSIE_DOWNLEFT_FRAME;
@@ -44,7 +37,7 @@ void CObjectAI::nessie_ai(CObject& object)
 		object.canbezapped = 0;
 		object.needinit = 0;
 
-		for(i=0;i<=NESSIETRAILLEN;i++)
+		for(size_t i=0;i<=NESSIETRAILLEN;i++)
 		{
 			object.ai.nessie.tiletrailX[i] = 0;
 			object.ai.nessie.tiletrailY[i] = 0;
@@ -57,9 +50,9 @@ void CObjectAI::nessie_ai(CObject& object)
 		object.ai.nessie.tiletrailY[1] = (object.y>>CSF);
 		object.ai.nessie.tiletrailhead = 2;
 
-		for(i=0;i<MAX_PLAYERS;i++)
+		for(size_t i=0;i<MAX_PLAYERS;i++)
 		{
-			object.ai.nessie.mounted[i] = 0;
+			object.ai.nessie.mounted[i] = false;
 		}
 
 		nessie_find_next_checkpoint(object);
@@ -67,14 +60,14 @@ void CObjectAI::nessie_ai(CObject& object)
 
 	// find out if nessie is mounted, and for all players that are
 	// mounted keep them stuck to nessie
-	isMounted = 0;
-	for(i=0;i<m_NumPlayers;i++)
+	bool isMounted = false;
+	for(int i=0;i<m_NumPlayers;i++)
 	{
 		if (object.ai.nessie.mounted[i])
 		{
 			m_Player[i].x = object.x;
 			m_Player[i].y = object.y;
-			isMounted = 1;
+			isMounted = true;
 		}
 	}
 
@@ -89,140 +82,68 @@ void CObjectAI::nessie_ai(CObject& object)
 	}
 	else object.ai.nessie.animtimer++;
 
-	//printf("nessie state: %d\n", object.ai.nessie.state);
-
 	switch(object.ai.nessie.state)
 	{
-	case NESSIE_SWIMUPTOMORTIMER:
-		if (!object.ai.nessie.mortimer_swim_amt)
-		{
-			object.ai.nessie.state = NESSIE_PAUSE_MORTIMER;
-			object.ai.nessie.pausetimer = NESSIE_PAUSE_TIME;
-			object.ai.nessie.baseframe = NESSIE_DOWNRIGHT_FRAME;
-		}
-		else
-		{
-			object.y -= NESSIE_SPEED;
-			object.ai.nessie.mortimer_swim_amt--;
-		}
-		break;
-
-	case NESSIE_PAUSE_MORTIMER:
-		if (!object.ai.nessie.pausetimer)
-		{
-			//object.ai.nessie.state = NESSIE_SWIMAWAY_MORTIMER;
-			//object.ai.nessie.mortimer_swim_amt = NESSIE_MORTIMER_SWIMAWAY_AMT;
-			object.ai.nessie.state = NESSIE_SWIMNORMAL;
-		}
-		else object.ai.nessie.pausetimer--;
-		break;
-
-	case NESSIE_SWIMAWAY_MORTIMER:
-		if (!object.ai.nessie.mortimer_swim_amt)
-		{
-			object.ai.nessie.state = NESSIE_SWIMNORMAL;
-		}
-		else
-		{
-			object.x += NESSIE_SPEED;
-			object.y += NESSIE_SPEED;
-			object.ai.nessie.mortimer_swim_amt--;
-		}
-		break;
-
 	case NESSIE_SWIMNORMAL:
-
 		// arrived at destination?
-		if ( (object.x>>CSF) == (object.ai.nessie.destx>>CSF)  && \
-				(object.y>>CSF) == (object.ai.nessie.desty>>CSF) )
+		if ( (object.x) > (object.ai.nessie.destx-NESSIE_SPEED/2)  &&
+				(object.x) < (object.ai.nessie.destx+NESSIE_SPEED/2) )
 		{
-			// if we're approaching the mount point by Mortimer's castle
-			// go into a special state that aligns her properly with the island
-			// (i couldn't get this to work right any other way)
-			if (object.ai.nessie.desty>>CSF < mp_Map->m_height>>2)
+			if ( (object.y) > (object.ai.nessie.desty-NESSIE_SPEED/2)  &&
+					(object.y) < (object.ai.nessie.desty+NESSIE_SPEED/2) )
 			{
-				if (mp_Map->getObjectat((object.ai.nessie.destx>>CSF)+2, (((object.ai.nessie.desty>>STC)+8)>>TILE_S)-1) == NESSIE_PAUSE)
-				{
-					object.ai.nessie.state = NESSIE_SWIMUPTOMORTIMER;
-					object.ai.nessie.mortimer_swim_amt = NESSIE_MORTIMER_SWIM_AMT;
-				}
+				nessie_find_next_checkpoint(object);
+
+				// set up/down and left/right direction flags for frame selection
+				if (object.ai.nessie.destx > object.x)
+					object.ai.nessie.leftrightdir = RIGHT;
+				else if (object.ai.nessie.destx < object.x)
+					object.ai.nessie.leftrightdir = LEFT;
+
+				if (object.ai.nessie.desty < object.y)
+					object.ai.nessie.updowndir = UP;
+				else
+					object.ai.nessie.updowndir = DOWN;
 			}
-
-			nessie_find_next_checkpoint(object);
-
-			// set up/down and left/right direction flags for frame selection
-			if (object.ai.nessie.destx > object.x)
-				object.ai.nessie.leftrightdir = RIGHT;
-			else if (object.ai.nessie.destx < object.x)
-				object.ai.nessie.leftrightdir = LEFT;
-
-			if (object.ai.nessie.desty < object.y)
-				object.ai.nessie.updowndir = UP;
-			else
-				object.ai.nessie.updowndir = DOWN;
 		}
-
-		if (object.ai.nessie.pausetimer)
-			object.ai.nessie.updowndir = DOWN;
-
-		// select proper frame based on up/down and left/right direction flags
-		if (object.ai.nessie.updowndir==DOWN && object.ai.nessie.leftrightdir==LEFT)
-			object.ai.nessie.baseframe = NESSIE_DOWNLEFT_FRAME;
-		else if (object.ai.nessie.updowndir==DOWN && object.ai.nessie.leftrightdir==RIGHT)
-			object.ai.nessie.baseframe = NESSIE_DOWNRIGHT_FRAME;
-		else if (object.ai.nessie.updowndir==UP && object.ai.nessie.leftrightdir==LEFT)
-			object.ai.nessie.baseframe = NESSIE_UPLEFT_FRAME;
-		else if (object.ai.nessie.updowndir==UP && object.ai.nessie.leftrightdir==RIGHT)
-			object.ai.nessie.baseframe = NESSIE_UPRIGHT_FRAME;
-
-		// pause if needed
-		if (object.ai.nessie.pausetimer)
+		move_nessie(object);
+		break;
+	case NESSIE_PAUSE:
+		if(object.ai.nessie.pausetimer)
 		{
 			object.ai.nessie.pausetimer--;
-			return;
 		}
-
-		// head to destination
-		if (object.x < object.ai.nessie.destx)
+		else
 		{
-			if (object.ai.nessie.destx - object.x > NESSIE_SPEED)
-			{
-				object.x += NESSIE_SPEED;
-			}
-			else
-			{
-				object.x++;
-			}
+			object.ai.nessie.state = NESSIE_SWIMNORMAL;
+			move_nessie(object);
 		}
-		else if (object.x > object.ai.nessie.destx)
-		{
-			if (object.x - object.ai.nessie.destx > NESSIE_SPEED)
-			{
-				object.x -= NESSIE_SPEED;
-			}
-			else
-			{
-				object.x--;
-			}
-		}
-
-		if (object.y < object.ai.nessie.desty)
-		{
-			if (object.ai.nessie.desty - object.y > NESSIE_SPEED)
-				object.y += NESSIE_SPEED;
-			else
-				object.y++;
-		}
-		else if (object.y > object.ai.nessie.desty)
-		{
-			if (object.y - object.ai.nessie.desty > NESSIE_SPEED)
-				object.y -= NESSIE_SPEED;
-			else
-				object.y--;
-		}
-
 		break;
 	}
+}
+
+void CObjectAI::move_nessie(CObject& object)
+{
+	// select proper frame based on up/down and left/right direction flags
+	if (object.ai.nessie.updowndir==DOWN && object.ai.nessie.leftrightdir==LEFT)
+		object.ai.nessie.baseframe = NESSIE_DOWNLEFT_FRAME;
+	else if (object.ai.nessie.updowndir==DOWN && object.ai.nessie.leftrightdir==RIGHT)
+		object.ai.nessie.baseframe = NESSIE_DOWNRIGHT_FRAME;
+	else if (object.ai.nessie.updowndir==UP && object.ai.nessie.leftrightdir==LEFT)
+		object.ai.nessie.baseframe = NESSIE_UPLEFT_FRAME;
+	else if (object.ai.nessie.updowndir==UP && object.ai.nessie.leftrightdir==RIGHT)
+		object.ai.nessie.baseframe = NESSIE_UPRIGHT_FRAME;
+
+	// head to destination
+	if (object.x < object.ai.nessie.destx)
+		object.x += NESSIE_SPEED;
+	else if (object.x > object.ai.nessie.destx)
+		object.x -= NESSIE_SPEED;
+
+	if (object.y < object.ai.nessie.desty)
+		object.y += NESSIE_SPEED;
+	else if (object.y > object.ai.nessie.desty)
+		object.y -= NESSIE_SPEED;
 }
 
 void CObjectAI::nessie_find_next_checkpoint(CObject& object)
@@ -230,11 +151,14 @@ void CObjectAI::nessie_find_next_checkpoint(CObject& object)
 	int x,y,i;
 	int xa,ya;
 	unsigned int destx, desty;
+	unsigned int midx, midy;
 
 	// search in the 8 surrounding tiles and head to the first pathtile
 	// we find that's not one of the last 5 we've been to
-	x = (object.x>>CSF)-1;
-	y = (((object.y>>STC)+8)>>TILE_S)-1;
+
+	x = ((object.x)>>CSF)-1;
+	y = ((object.y+(8<<STC))>>CSF)-1;
+
 	destx = desty = 0;
 
 	for(ya=0;ya<3;ya++)
@@ -245,7 +169,7 @@ void CObjectAI::nessie_find_next_checkpoint(CObject& object)
 			desty = y+ya;
 
 			int obj = mp_Map->getObjectat(destx, desty);
-			if (obj==NESSIE_PATH || obj==NESSIE_PAUSE)
+			if (obj==NESSIE_PATH || obj==NESSIE_WEED)
 			{
 				// find out if this is one of the last tiles we've been to
 				bool oneoflasttiles = false;
@@ -275,26 +199,20 @@ void CObjectAI::nessie_find_next_checkpoint(CObject& object)
 		} // end for(xa...
 	} // end for(ya...
 
-	//return;
+	// If Nessie went to an dead end. Go back!
+	object.ai.nessie.tiletrailhead = 0;
+	return;
 
 	foundtile: ;
 
-
 	object.ai.nessie.destx = (destx<<CSF);
-	object.ai.nessie.desty = (((desty<<STC)-8)<<TILE_S);
+	object.ai.nessie.desty = (desty<<CSF)-(8<<STC);
 
-	// make nessie pause at pause points, not in the top quarter
-	// of the map (i.e. not at the mortimer's castle mount point...
-	// this is done separetly elsewhere with a special state)
-	if (desty > mp_Map->m_height>>2)
+	int obj = mp_Map->getObjectat(destx, desty);
+	if(obj == NESSIE_WEED || obj == NESSIE_LAND)
 	{
-		if (mp_Map->getObjectat(destx, desty) == NESSIE_PAUSE)
-		{
-			// make nessie pause
-			object.ai.nessie.pausetimer = NESSIE_PAUSE_TIME;
-			object.ai.nessie.pausex = destx;
-			object.ai.nessie.pausey = desty;
-		}
+		object.ai.nessie.state = NESSIE_PAUSE;
+		object.ai.nessie.pausetimer = NESSIE_PAUSE_TIME;
 	}
 }
 

@@ -386,6 +386,9 @@ void CPlayGame::process()
 #else
 			tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec());
 #endif
+			tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec()) +
+					"; x = " + itoa(m_Player[0].x) + " ; y = " + itoa(m_Player[0].y);
+
 			g_pGfxEngine->Font->drawFont(sfc,tempbuf,320-(tempbuf.size()<<3)-1, LETTER_TYPE_RED);
 		}
 

@@ -187,8 +187,8 @@ BACK2MAINMENU,
 
 // special object markers
 #define NESSIE_PATH             8192
-#define NESSIE_PAUSE            8448
-#define NESSIE_MOUNTPOINT       8704
+#define NESSIE_WEED            	8448
+#define NESSIE_LAND		       	8704
 #define GARG_STOPPOINT          1000
 #define BALL_NOPASSPOINT        1001
 

@@ -61,7 +61,8 @@ public:
 	void AllowEnterLevelonWM();
 	bool isWMSolid(int xb, int yb);
 	void InertiaAndFriction_Y();
-	void AllowMountUnmountNessie();
+	void MountNessieIfAvailable();
+	void UnmountNessie();
 	int getNewObject();
 
 	// In Level specific

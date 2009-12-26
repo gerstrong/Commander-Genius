@@ -167,90 +167,71 @@ void CPlayer::selectFrameOnWorldMap()
 }
 
 // if nessie is at a mount point near the player, mounts him!
-/*void CPlayer::MountNessieIfAvailable(int cp)
+void CPlayer::MountNessieIfAvailable()
 {
-char AtSameMountPoint;
+	// Look for the Nessie object
+	std::vector<CObject>::iterator obj = mp_object->begin();
+	for(; obj != mp_object->end() ; obj++)
+	{
+		if(obj->m_type == OBJ_NESSIE)
+		{
+			int dist = 1<<CSF;
+			int nessie_x, nessie_y;
 
-   if (!player[cp].mounted)
-   {
-      // is nessie paused?
-      if (objects[NessieObjectHandle].ai.nessie.pausetimer)
-      {
-         // is she at the same mount point the player is?
-         if (player[cp].y>>CSF>>4 < map.ysize>>2 && objects[NessieObjectHandle].y>>CSF>>4 < map.ysize>>2) AtSameMountPoint = 1;    // both at mortimer's castle
-         else if (player[cp].y>>CSF>>4 > map.ysize>>1 && objects[NessieObjectHandle].y>>CSF>>4 > map.ysize>>1) AtSameMountPoint = 1;    // both at secret island
-         else AtSameMountPoint = 0;
+			nessie_x = obj->x;
+			nessie_y = obj->y;
 
-         if (AtSameMountPoint)
-         {
-            objects[NessieObjectHandle].ai.nessie.mounted[cp] = 1;
-            player[cp].mounted = 1;
-            player[cp].hideplayer = 1;
-         }
-      }
-   }
-}*/
-
-void CPlayer::AllowMountUnmountNessie()
-{
-	/*int objmarker;
-	if (!mounted)
-	{  // not mounted. find out if he's trying to mount
-		// if the upper quarter of the map (mortimer's castle mount point)
-		// he's trying to mount if he's on a NESSIE_MOUNTPOINT object marker
-		// and he's going right and is blockedr and/or is going down and is
-		// blockedd. in the bottom quarter (secret island mount point)
-		// it's up and blockedu.
-
-		// make sure he's on a mount point
-		objmarker = mp_map->getObjectat((player[cp].x+(4<<STC))>>CSF, ((player[0].y)+(9<<STC))>>CSF);
-		if (objmarker != NESSIE_MOUNTPOINT) return;
-
-		// is he trying to mount?
-		if ( (y>>CSF) < mp_map->m_width )
-		{  // at mortimer's castle mount point
-			if ( (playcontrol[PA_X] > 0 && blockedr) ||
-					(playcontrol[PA_Y] > 0 && blockedd))
+			// Look if Nessie is nearby
+			if( (int)x >= nessie_x-dist+obj->bboxX1 and (int)x <= nessie_x+dist+obj->bboxX2 )
 			{
-				// YES! if nessie is at that mount point, mount her!!
-				MountNessieIfAvailable(cp);
+				if( (int)y >= nessie_y-dist+obj->bboxY1 and (int)y <= nessie_y+dist+obj->bboxY2 )
+				{
+					// Mount the Player
+					obj->ai.nessie.mounted[m_player_number] = true;
+		            mounted = true;
+		            hideplayer = true;
+				}
 			}
+			break;
 		}
-		else
-		{  // at secret island mount point
-			if (playcontrol[PA_Y] < 0 && blockedu)
+	}
+
+}
+
+void CPlayer::UnmountNessie()
+{
+	// Check if a NESSIE_LAND_OBJ is nearby the player. Only then he can unmount
+	int dx, dy;
+	for(dy=-2 ; dy <= 2 ; dy++)
+	{
+		for(dx=-2 ; dx <= 2 ; dx++)
+		{
+			// If NESSIE_LAND_OBJ was found, than put the player there!
+			if(mp_map->getObjectat((x>>CSF)+dx, (y>>CSF)+dy) == NESSIE_LAND)
 			{
-				MountNessieIfAvailable(cp);
+				// Look for the Nessie object
+				std::vector<CObject>::iterator obj = mp_object->begin();
+				for(; obj != mp_object->end() ; obj++)
+				{
+					if(obj->m_type == OBJ_NESSIE)
+					{
+						// Check if the there are no blocked tiles there!
+						stTile Tile = g_pGfxEngine->Tilemap->mp_tiles[mp_map->at((x>>CSF)+dx, (y>>CSF)+dy)];
+						if( !Tile.bdown and !Tile.bup and
+							!Tile.bleft and !Tile.bright )
+						{
+							// unmount nessie
+							obj->ai.nessie.mounted[m_player_number] = false;
+							mounted = false;
+							hideplayer = false;
+							goto_x = x = x+(dx<<CSF);
+							goto_y = y = y+(dy<<CSF);
+							break;
+						}
+					}
+				}
 			}
 		}
 	}
-	else
-	{  // mounted. find out if he's trying to unmount.
-		if (objects[NessieObjectHandle].ai.nessie.pausetimer)
-		{  // nessie is paused
-			if (objects[NessieObjectHandle].y>>CSF>>4 < map.ysize>>2)
-			{  // nessie is at mortimer's castle mount point
-				if (player[cp].playcontrol[PA_Y] < 0)
-				{
-					// unmount nessie
-					objects[NessieObjectHandle].ai.nessie.mounted[cp] = 0;
-					player[cp].mounted = 0;
-					player[cp].hideplayer = 0;
-				}
-			}
-			else if (objects[NessieObjectHandle].y>>CSF>>4 > map.ysize>>1)
-			{  // nessie is at secret island mount point
-				if (player[cp].playcontrol[PA_Y] > 0)
-				{
-					// unmount nessie
-					objects[NessieObjectHandle].ai.nessie.mounted[cp] = 0;
-					player[cp].mounted = 0;
-					player[cp].hideplayer = 0;
-					player[cp].y += (18<<CSF);
-					player[cp].x += (8<<CSF);
-				}
-			}
-		}
-	}*/
 }
 

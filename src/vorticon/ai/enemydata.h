@@ -332,7 +332,7 @@ typedef struct stNessieData
 	unsigned int pausex, pausey;
 	
 	unsigned int mortimer_swim_amt;
-	unsigned int mounted[MAX_PLAYERS];
+	bool mounted[MAX_PLAYERS];
 } stNessieData;
 
 #endif /* ENEMYDATA_H_ */
