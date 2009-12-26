@@ -50,7 +50,7 @@ bool CExeFile::readData()
 	File.close();
 
 	vector<unsigned char> decdata;
-
+	// TODO: Here there must be some differences, between Galaxy and Vorticon Engine
 	if(unlzexe(m_data_temp, &decdata))
 	{
 		m_datasize = decdata.size();

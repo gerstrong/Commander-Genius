@@ -420,25 +420,14 @@ void CPlayer::JumpAndPogo()
 								{
 									pjumpupspeed = mp_PhysicsSettings->player.maxpogospeed;
 								}
-								//pjumpupspeed = ((PPOGOUP_SPEED-PJUMPUP_SPEED)*playcontrol[PA_JUMP]) / 50 + PJUMPUP_SPEED;
 							}
-							//pjumptime = PJUMP_NORMALTIME_POGO_LONG;
-							//pjumpupspeed_decrease = PJUMP_UPDECREASERATE_POGO_LONG;
 						}
 						else
 						{
 							pjumpupspeed = PPOGOUP_SPEED_SUPER;
-							//pjumptime = PJUMP_NORMALTIME_POGO_LONG_SUPER;
-							//pjumpupspeed_decrease = PJUMP_UPDECREASERATE_POGO_LONG_SUPER;
 						}
 					}
 					else pogofirsttime = false;
-					/*else
-					{
-						pjumpupspeed = PJUMPUP_SPEED;
-						pjumptime = PJUMP_NORMALTIME_POGO_SHORT;
-						pjumpupspeed_decrease = PJUMP_UPDECREASERATE_POGO_SHORT;
-					}*/
 					pjumpframe = PJUMP_PREPARE_LAST_FRAME;
 					pjumping = PPOGOING;
 				} else pjumpanimtimer++;

@@ -76,6 +76,12 @@ void CPlayGame::processPlayerfallings(CPlayer *p_player)
 			{  // lower-left isn't solid but lower-right is
 				if (objsupport)
 				{
+					while( checkObjSolid(p_player->x+x1+1, p_player->y+y2+(1<<STC)-1, p_player->m_player_number) )
+					{
+						p_player->y--;
+						p_player->goto_y = p_player->y;
+					}
+
 					p_player->psupportingtile = PSUPPORTEDBYOBJECT;
 					p_player->psupportingobject = objsupport;
 				}
@@ -85,6 +91,12 @@ void CPlayGame::processPlayerfallings(CPlayer *p_player)
 		{   // lower-left is solid
 			if (objsupport)
 			{
+				while( checkObjSolid(p_player->x+x1+1, p_player->y+y2+(1<<STC)-1, p_player->m_player_number) )
+				{
+					p_player->y--;
+					p_player->goto_y = p_player->y;
+				}
+
 				p_player->psupportingtile = PSUPPORTEDBYOBJECT;
 				p_player->psupportingobject = objsupport;
 			}
