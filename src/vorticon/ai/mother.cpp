@@ -4,21 +4,21 @@
 
 // Vorticon Mother AI (ep3)
 
-#define MOTHER_WALK     0
-#define MOTHER_SPIT     1
-#define MOTHER_HURT     2
-#define MOTHER_DEAD     3
+enum vortimom_actions{
+MOTHER_WALK, MOTHER_SPIT,
+MOTHER_HURT, MOTHER_DEAD
+};
 
-#define MOTHER_WALK_ANIM_RATE     60
-#define MOTHER_WALK_SPD           3
+#define MOTHER_WALK_ANIM_RATE     15
+#define MOTHER_WALK_SPD           12
 
 #define MOTHER_SPIT_PROB          1100
 #define MOTHER_SPIT_PROB_HARD     400
-#define MOTHER_SPIT_SHOW_TIME     100
+#define MOTHER_SPIT_SHOW_TIME     25
 
 #define MOTHER_HP      5
 
-#define MOTHER_HURT_SHOW_TIME    100
+#define MOTHER_HURT_SHOW_TIME    25
 
 #define SNDWAVE_LEFT_FRAME    128
 
@@ -28,8 +28,6 @@
 #define MOTHER_SPIT_RIGHT_FRAME	 90
 #define MOTHER_HURT_FRAME        91
 #define MOTHER_DEAD_FRAME	 92
-
-#define Sprite g_pGfxEngine->Sprite
 
 void bumpplayer(int p, int pushamt, bool solid);
 unsigned int rnd(void);
@@ -141,12 +139,12 @@ void CObjectAI::mother_ai( CObject& object, bool hardmode )
 			CObject newobject;
 			if (object.ai.mother.dir==RIGHT)
 			{
-				newobject.spawn(object.x+(Sprite[MOTHER_SPIT_RIGHT_FRAME]->getWidth()<<CSF), object.y+(11<<CSF), OBJ_FIREBALL, 3);
+				newobject.spawn(object.x+object.bboxX2+1, object.y+(11<<STC), OBJ_FIREBALL, 3);
 				newobject.ai.ray.direction = RIGHT;
 			}
 			else
 			{
-				newobject.spawn(object.x-(Sprite[MOTHER_SPIT_LEFT_FRAME]->getWidth()<<CSF), object.y+(11<<CSF), OBJ_FIREBALL, 3);
+				newobject.spawn(object.x-(16<<STC), object.y+(11<<STC), OBJ_FIREBALL, 3);
 				newobject.ai.ray.direction = LEFT;
 			}
 

@@ -4,14 +4,15 @@
 
 // Baby Vorticon (the superfast little blue creatures that knock you down)
 // (ep 2 & 3)
+unsigned int rnd(void);
 
 enum vort_baby_actions{
 	BABY_RUN, BABY_DYING, BABY_DEAD
 };
 
-#define BABY_WALK_SPEED         16
+#define BABY_WALK_SPEED         32
 
-#define BABY_WALK_ANIM_RATE     5
+#define BABY_WALK_ANIM_RATE     6
 
 #define BABY_WALK_LEFT_FRAME    48
 #define BABY_WALK_RIGHT_FRAME   52
@@ -39,6 +40,7 @@ void CObjectAI::baby_ai(CObject &object, int episode, bool hard)
 		object.ai.baby.walktimer = 0;
 		object.ai.baby.inertia_x = 0;
 		object.ai.baby.inertia_y = 0;
+		object.ai.baby.jumpdecrate = 1;
 		object.canbezapped = 1;
 		object.needinit = 0;
 		object.blockedl = object.blockedr = object.blockedu = object.blockedd = 1;
@@ -67,15 +69,19 @@ void CObjectAI::baby_ai(CObject &object, int episode, bool hard)
 
 		object.y += object.ai.baby.inertia_y;
 
-		if (object.ai.baby.jumpdectimer >= object.ai.baby.jumpdecrate)
+		/*if (object.ai.baby.jumpdectimer >= object.ai.baby.jumpdecrate)
 		{
 			if (object.ai.baby.inertia_y < (1<<CSF))
 			{
-				object.ai.baby.inertia_y++;
+				object.ai.baby.inertia_y+=(1<<2);
 			}
 			object.ai.baby.jumpdectimer = 0;
 		}
-		else object.ai.baby.jumpdectimer++;
+		else object.ai.baby.jumpdectimer++;*/
+		//if (object.ai.baby.inertia_y < (1<<CSF))
+		{
+			object.ai.baby.inertia_y+=object.ai.baby.jumpdecrate;
+		}
 	}
 	else	// blockedd = 1, and inertia_y >= 0
 	{
@@ -99,7 +105,7 @@ void CObjectAI::baby_ai(CObject &object, int episode, bool hard)
 			{
 				object.ai.baby.dietimer = 0;
 				object.ai.baby.state = BABY_DYING;
-				object.ai.baby.jumpdecrate = 1;
+				object.ai.baby.jumpdecrate = 4;
 				object.sprite = BABY_FRY_FRAME - ep3;
 				object.zapped = 0;
 				object.canbezapped = 0;
@@ -203,10 +209,10 @@ void CObjectAI::baby_ai(CObject &object, int episode, bool hard)
 #define BABY_BIGJUMP                 100
 #define BABY_BIGJUMP_DEC_RATE        2
 
-#define BABY_MIN_SMALLJUMP             23
-#define BABY_SMALLJUMP_MIN_DEC_RATE    18
-#define BABY_MAX_SMALLJUMP             30
-#define BABY_SMALLJUMP_MAX_DEC_RATE    20
+#define BABY_MIN_SMALLJUMP             70
+#define BABY_SMALLJUMP_MIN_DEC_RATE    1
+#define BABY_MAX_SMALLJUMP             120
+#define BABY_SMALLJUMP_MAX_DEC_RATE    2
 
 void CObjectAI::baby_jump(CObject &object, int big)
 {
@@ -218,8 +224,8 @@ void CObjectAI::baby_jump(CObject &object, int big)
 	}
 	else
 	{
-		object.ai.baby.inertia_y = -80;//(rnd()%(BABY_MAX_SMALLJUMP-BABY_MIN_SMALLJUMP))+BABY_MIN_SMALLJUMP;
-		object.ai.baby.jumpdecrate = 2;//(rnd()%(BABY_SMALLJUMP_MAX_DEC_RATE-BABY_SMALLJUMP_MIN_DEC_RATE))+BABY_SMALLJUMP_MIN_DEC_RATE;
+		object.ai.baby.inertia_y = -80;(rnd()%(BABY_MAX_SMALLJUMP-BABY_MIN_SMALLJUMP))+BABY_MIN_SMALLJUMP;
+		object.ai.baby.jumpdecrate = 1;//(rnd()%(BABY_SMALLJUMP_MAX_DEC_RATE-BABY_SMALLJUMP_MIN_DEC_RATE))+BABY_SMALLJUMP_MIN_DEC_RATE;
 	}
 
 	object.ai.baby.jumpdectimer = 0;

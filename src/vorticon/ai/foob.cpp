@@ -11,10 +11,10 @@ enum FOOB_ACTIONS{
 	FOOB_DEAD
 };
 
-#define FOOB_WALK_SPEED      8
-#define FOOB_WALK_ANIM_RATE  20
+#define FOOB_WALK_SPEED      32
+#define FOOB_WALK_ANIM_RATE  4
 
-#define FOOB_FLEE_SPEED      74
+#define FOOB_FLEE_SPEED      77
 #define FOOB_FLEE_ANIM_RATE  4
 
 #define FOOB_SPOOK_SHOW_TIME    12
@@ -23,8 +23,8 @@ enum FOOB_ACTIONS{
 
 #define FOOB_EXPLODE_ANIM_RATE  8
 
-#define FOOB_SPOOK_TIME         35
-#define FOOB_RELAX_TIME         200
+#define FOOB_SPOOK_TIME         10
+#define FOOB_RELAX_TIME         50
 
 #define FOOB_WALK_LEFT_FRAME    93
 #define FOOB_WALK_RIGHT_FRAME   95
@@ -68,12 +68,13 @@ void CObjectAI::foob_ai(CObject &object, bool hardmode)
 	}
 
 	// find out if a player is on the same level as the foob cat
-	Uint16 player_height = g_pGfxEngine->Sprite[0]->getHeight();
-	Uint16 foob_height = g_pGfxEngine->Sprite[object.sprite]->getHeight();
+	Uint16 player_height = g_pGfxEngine->Sprite[0]->getHeight()<<STC;
+	Uint16 foob_height = object.bboxY2;
 	onsamelevel = 0;
 	for(size_t i=0;i<m_NumPlayers;i++)
 	{
-		if ((m_Player[i].y >= object.y-(24<<CSF)) && ((m_Player[i].y>>CSF)+player_height <= (object.y>>CSF)+foob_height+24))
+		if ( (m_Player[i].y >= object.y-(24<<STC)) &&
+			(m_Player[i].y+player_height <= object.y+foob_height+(24<<STC)) )
 		{
 			onsamelevel = 1;
 			object.ai.foob.SpookedByWho = i;

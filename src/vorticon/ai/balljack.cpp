@@ -2,9 +2,9 @@
 #include "CObjectAI.h"
 #include "../spritedefines.h"
 
-#define BALL_SPEED      15
-#define JACK_SPEED      10
-#define JACK_ANIM_RATE  50
+#define BALL_SPEED      60
+#define JACK_SPEED      40
+#define JACK_ANIM_RATE  12
 
 #define BALLPUSHAMOUNT	30
 
@@ -149,24 +149,26 @@ char CObjectAI::BJ_BlockedD(CObject &object)
 	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 	CSprite *sprites = g_pGfxEngine->Sprite[object.sprite];
 	Uint16 obj_width, obj_height;
-	obj_width = sprites->getWidth();
-	obj_height = sprites->getHeight();
+	int x1 = object.bboxX1;
+	int x2 = object.bboxX2;
+	int y1 = object.bboxY1;
+	int y2 = object.bboxY2;
 
 	if (object.blockedd)
 	{
 		// ensure that the tile common_enemy_ai said we hit also has
 		// solid l/r set
-		if (TileProperty[mp_Map->at((object.x>>CSF)+2, (object.y>>CSF)+obj_height)].bleft)
+		if (TileProperty[mp_Map->at((object.x+x1)>>CSF, (object.y+y2)>>CSF)].bleft)
 		{ return 1; }
-		if (TileProperty[mp_Map->at((object.x>>CSF)+(obj_width-2), (object.y>>CSF)+obj_height)].bleft)
+		if (TileProperty[mp_Map->at((object.x+x2)>>CSF, (object.y+y2)>>CSF)].bleft)
 		{ return 1; }
 
 	}
 
 	// ensure it's not a ball no-pass point
-	if (mp_Map->getObjectat((object.x>>CSF)+2, (object.y>>CSF)+obj_height)==BALL_NOPASSPOINT)
+	if (mp_Map->getObjectat((object.x+x1)>>CSF, (object.y+y2)>>CSF)==BALL_NOPASSPOINT)
 	{ return 1; }
-	if (mp_Map->getObjectat((object.x>>CSF)+(obj_width-2), (object.y>>CSF)+obj_height)==BALL_NOPASSPOINT)
+	if (mp_Map->getObjectat((object.x+x2)>>CSF, (object.y+y2)>>CSF)==BALL_NOPASSPOINT)
 	{ return 1; }
 
 	return 0;
