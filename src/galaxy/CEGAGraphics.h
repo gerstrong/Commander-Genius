@@ -9,9 +9,12 @@
 #define CGALAXY_EGAGRAPHICS_H_
 
 #include <string>
+#include <vector>
 
 namespace galaxy
 {
+
+#include "EGAStructs.h"
 
 class CEGAGraphics
 {
@@ -23,8 +26,11 @@ public:
 	virtual ~CEGAGraphics();
 
 private:
+
 	std::string m_path;
 	short m_episode;
+	std::vector<unsigned long> m_egahead;
+	std::vector<ChunkStruct> m_egagraph;
 };
 
 }

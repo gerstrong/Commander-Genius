@@ -227,9 +227,8 @@ bool CGameControl::loadResources(unsigned short Episode, const std::string& Data
 		{
 			// Load the sound data
 		}
-		return true;
-
 	}
+	return true;
 }
 
 
