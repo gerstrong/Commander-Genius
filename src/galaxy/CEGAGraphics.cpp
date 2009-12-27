@@ -226,9 +226,9 @@ bool CEGAGraphics::begin( int version, unsigned char *p_exedata )
 					break;
 				}
 			}
-			if(j == EpisodeInfo[ep].NumChunks)
+			/*if(j == EpisodeInfo[ep].NumChunks)
 				inlen = egagraphlen - offset;
-			Huffman.expand(CompEgaGraphData + offset, m_egagraph[i].data.data(), inlen, outlen);
+			Huffman.expand(CompEgaGraphData + offset, m_egagraph[i].data.data(), inlen, outlen);*/
 		}
 		else
 		{
