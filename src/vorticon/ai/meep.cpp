@@ -24,8 +24,6 @@ enum meep_actions{
 
 #define SNDWAVE_LEFT_FRAME      128
 
-#define Sprite g_pGfxEngine->Sprite
-
 unsigned int rnd(void);
 
 void CObjectAI::meep_ai(CObject& object)
@@ -95,7 +93,7 @@ void CObjectAI::meep_ai(CObject& object)
 		{
 			object.sprite = MEEP_WALK_RIGHT_FRAME + object.ai.meep.animframe;
 
-			not_about_to_fall = TileProperty[mp_Map->at((object.x>>CSF)+Sprite[MEEP_SING_LEFT_FRAME]->getWidth(), (object.y>>CSF)+Sprite[MEEP_SING_LEFT_FRAME]->getHeight())].bup;
+			not_about_to_fall = TileProperty[mp_Map->at((object.x+object.bboxX2)>>CSF, (object.y+object.bboxY2)>>CSF)].bup;
 
 			if (object.blockedr || !not_about_to_fall)
 				object.ai.meep.dir = LEFT;
@@ -105,7 +103,7 @@ void CObjectAI::meep_ai(CObject& object)
 		else
 		{
 			object.sprite = MEEP_WALK_LEFT_FRAME + object.ai.meep.animframe;
-			not_about_to_fall = TileProperty[mp_Map->at((object.x>>CSF)-1, (object.y>>CSF)+Sprite[MEEP_SING_LEFT_FRAME]->getHeight())].bup;
+			not_about_to_fall = TileProperty[mp_Map->at((object.x+object.bboxX1)>>CSF, (object.y+object.bboxY2)>>CSF)].bup;
 
 			if (object.blockedl || !not_about_to_fall)
 			{
@@ -141,12 +139,12 @@ void CObjectAI::meep_ai(CObject& object)
 			CObject newobject;
 			if (object.ai.meep.dir==RIGHT)
 			{
-				newobject.spawn(object.x+(Sprite[MEEP_SING_RIGHT_FRAME]->getWidth()<<CSF), object.y+(5<<CSF), OBJ_SNDWAVE, 3);
+				newobject.spawn((object.x+object.bboxX2)<<CSF, object.y+(5<<STC), OBJ_SNDWAVE, 3);
 				newobject.ai.ray.direction = RIGHT;
 			}
 			else
 			{
-				newobject.spawn(object.x-(Sprite[SNDWAVE_LEFT_FRAME]->getWidth()<<CSF), object.y+(5<<CSF), OBJ_SNDWAVE, 3);
+				newobject.spawn(object.x-(1<<CSF), object.y+(5<<STC), OBJ_SNDWAVE, 3);
 				newobject.ai.ray.direction = LEFT;
 			}
 			m_Objvect.push_back(newobject);

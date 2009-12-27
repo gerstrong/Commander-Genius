@@ -17,8 +17,12 @@
 #include "../CLogFile.h"
 #include "../StringUtils.h"
 #include "../FindFile.h"
+#include "../graphics/CGfxEngine.h"
+#include "../sdl/CVideoDriver.h"
+#include "../vorticon/CPlanes.h"
 #include <fstream>
 #include <cstring>
+#include <SDL.h>
 
 namespace galaxy
 {
@@ -112,6 +116,14 @@ m_episode(episode)
 
 bool CEGAGraphics::loadData( int version, unsigned char *p_exedata )
 {
+	if(!begin(version, p_exedata)) return false;
+	if(!exportBMP()) return false;
+
+	return false;
+}
+
+bool CEGAGraphics::begin( int version, unsigned char *p_exedata )
+{
 	// The stuff is Huffman compressed. Use an instance for that
 	CHuffman Huffman;
 	unsigned long exeheaderlen = 0;
@@ -127,7 +139,7 @@ bool CEGAGraphics::loadData( int version, unsigned char *p_exedata )
 
 	// Read the EGAHEAD
 	unsigned char *p_head = p_exedata+EpisodeInfo[ep].OffEgaHead;
-	unsigned long offset;
+	unsigned long offset = 0;
 	unsigned long offset_limit;
 
 	// For some reason, MultiMania's KDR support uses a slightly different limit
@@ -136,7 +148,7 @@ bool CEGAGraphics::loadData( int version, unsigned char *p_exedata )
 	if (ep < 3) offset_limit = 0x00FFFFFF;
 	else offset_limit = 0xFFFFFFFF;
 
-	for(size_t i = 0; i < EpisodeInfo[ep].NumChunks; i++)
+	for(size_t i = 0 ; i < EpisodeInfo[ep].NumChunks ; i++)
 	{
 		if (ep != 3) 	memcpy(&offset, p_head,3); // Keen 4-6
 		else memcpy(&offset, p_head,4); 		   // KeenDreams
@@ -163,15 +175,15 @@ bool CEGAGraphics::loadData( int version, unsigned char *p_exedata )
 	egagraphlen--;
 	File.seekg(0,std::ios::beg);
 
-	std::vector<unsigned char> CompEgaGraphData;
+	unsigned char *CompEgaGraphData = new unsigned char[egagraphlen];
 
-	CompEgaGraphData.assign(0, egagraphlen);
-	File.read((char*)CompEgaGraphData.data(), egagraphlen);
+	File.read((char*)CompEgaGraphData, egagraphlen);
 
 	// Now lets decompress the graphics
 	m_egagraph.reserve(EpisodeInfo[ep].NumChunks);
 
 	unsigned long inlen, outlen;
+
 	for(size_t i = 0; i < EpisodeInfo[ep].NumChunks; i++)
 	{
 		/* Show that something is happening */
@@ -195,7 +207,7 @@ bool CEGAGraphics::loadData( int version, unsigned char *p_exedata )
 			}
 			else
 			{
-				memcpy(&outlen, CompEgaGraphData.data() + offset, sizeof(unsigned long));
+				memcpy(&outlen, CompEgaGraphData + offset, sizeof(unsigned long));
 				offset += sizeof(unsigned long);
 			}
 
@@ -216,7 +228,7 @@ bool CEGAGraphics::loadData( int version, unsigned char *p_exedata )
 			}
 			if(j == EpisodeInfo[ep].NumChunks)
 				inlen = egagraphlen - offset;
-			Huffman.expand(CompEgaGraphData.data() + offset, m_egagraph[i].data.data(), inlen, outlen);
+			Huffman.expand(CompEgaGraphData + offset, m_egagraph[i].data.data(), inlen, outlen);
 		}
 		else
 		{
@@ -224,9 +236,54 @@ bool CEGAGraphics::loadData( int version, unsigned char *p_exedata )
 		}
 	}
 
-	File.close();
+	/* Set up pointers to bitmap and sprite tables if not doing KDR operations*/
+	//if (ep < 4) {
+		//BmpHead = (BitmapHeadStruct *)m_egagraph[0].data;
+		//BmpMaskedHead = (BitmapHeadStruct *)m_EgaGraph[1].data;
+		//SprHead = (SpriteHeadStruct *)m_EgaGraph[2].data;
+	//}
 
-	return false;
+	delete CompEgaGraphData;
+
+	File.close();
+	return true;
+}
+
+bool CEGAGraphics::exportBMP()
+{
+    int ep = m_episode - 4;
+    BitmapHeadStruct *BmpHead = (BitmapHeadStruct *)m_egagraph[0].data.data();
+
+	for(size_t i = 0; i < EpisodeInfo[ep].NumBitmaps; i++)
+	{
+		SDL_Surface *sfc = SDL_CreateRGBSurface( g_pVideoDriver->getScrollSurface()->flags, BmpHead[i].Width, BmpHead[i].Height, 8, 0, 0, 0, 0);
+		SDL_SetColors( sfc, g_pGfxEngine->Palette.m_Palette, 0, 255);
+		if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
+
+		if(m_egagraph[EpisodeInfo[ep].IndexBitmaps + i].data.data())
+		{
+			/* Decode the bitmap data */
+			for(int p = 0; p < 4; p++)
+			{
+				unsigned char *pointer;
+				/* Decode the lines of the bitmap data */
+				Uint8* pixel = (Uint8*) sfc->pixels;
+
+				/* Decode the lines of the bitmap data */
+				pointer = m_egagraph[EpisodeInfo[ep].IndexBitmaps + i].data.data() + p * BmpHead[i].Width * BmpHead[i].Height;
+				for(size_t y = 0; y < BmpHead[i].Height; y++)
+					memcpy(pixel, pointer + y * BmpHead[i].Width, BmpHead[i].Width);
+			}
+
+			/* Create the bitmap file */
+			std::string filename = "test"+itoa(i)+".bmp";
+			SDL_SaveBMP(sfc, filename.c_str());
+
+			/* Free the memory used */
+			SDL_FreeSurface(sfc);
+		}
+	}
+	return true;
 }
 
 CEGAGraphics::~CEGAGraphics()

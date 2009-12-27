@@ -22,6 +22,8 @@ public:
 	CEGAGraphics(short episode, const std::string& path);
 
 	bool loadData( int version, unsigned char *p_exedata );
+	bool begin( int version, unsigned char *p_exedata );
+	bool exportBMP();
 
 	virtual ~CEGAGraphics();
 

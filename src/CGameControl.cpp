@@ -20,7 +20,8 @@
 CGameControl::CGameControl() :
 mp_GameLauncher(NULL),
 mp_PassiveMode(NULL),
-mp_PlayGame(NULL)
+mp_PlayGame(NULL),
+mp_GalaxyEGAGraphics(NULL)
 {
 	m_mode = GAMELAUNCHER;
 	m_Episode = 0;

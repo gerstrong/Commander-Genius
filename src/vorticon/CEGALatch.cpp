@@ -247,7 +247,6 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	/// Load Bitmaps ///
 	////////////////////
 
-	// set up the getbit() function
 	Planes = new CPlanes(plane1 + m_bitmaplocation,
 						 plane2 + m_bitmaplocation,
 						 plane3 + m_bitmaplocation,

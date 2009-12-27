@@ -13,30 +13,6 @@
 
 #include <vector>
 
-struct BitmapHeadStruct
-{
-	unsigned short Width;
-	unsigned short Height;
-};
-
-struct SpriteHeadStruct
-{
-	unsigned short Width;
-	unsigned short Height;
-	signed short OrgX;
-	signed short OrgY;
-	signed short Rx1, Ry1;
-	signed short Rx2, Ry2;
-	unsigned short Shifts;
-};
-
-struct FontHeadStruct
-{
-	unsigned short Height;
-	unsigned short Offset[256];
-	unsigned char Width[256];
-};
-
 struct EpisodeInfoStruct
 {
 	unsigned long ExeImageSize;
@@ -59,6 +35,30 @@ struct EpisodeInfoStruct
 struct ChunkStruct{
 	unsigned long len;
 	std::vector<unsigned char> data;
+};
+
+struct BitmapHeadStruct
+{
+	unsigned short Width;
+	unsigned short Height;
+};
+
+struct SpriteHeadStruct
+{
+	unsigned short Width;
+	unsigned short Height;
+	signed short OrgX;
+	signed short OrgY;
+	signed short Rx1, Ry1;
+	signed short Rx2, Ry2;
+	unsigned short Shifts;
+};
+
+struct FontHeadStruct
+{
+	unsigned short Height;
+	unsigned short Offset[256];
+	unsigned char Width[256];
 };
 
 #endif /* EGASTRUCTS_H_ */
