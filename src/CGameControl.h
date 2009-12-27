@@ -18,6 +18,9 @@
 #include "vorticon/CMessages.h"
 #include "vorticon/CPassive.h"
 #include "vorticon/playgame/CPlayGame.h"
+
+#include "galaxy/CEGAGraphics.h"
+
 #include <string>
 
 enum load_states{

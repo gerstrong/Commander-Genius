@@ -5,8 +5,8 @@
  *      Author: gerstrong
  */
 
-#ifndef CEGAGRAPHICS_H_
-#define CEGAGRAPHICS_H_
+#ifndef CGALAXY_EGAGRAPHICS_H_
+#define CGALAXY_EGAGRAPHICS_H_
 
 #include <string>
 
@@ -29,4 +29,4 @@ private:
 
 }
 
-#endif /* CEGAGRAPHICS_H_ */
+#endif /* CGALAXY_EGAGRAPHICS_H_ */
