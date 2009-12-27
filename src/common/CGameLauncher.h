@@ -29,6 +29,12 @@
 #define KEENEXE1        "keen1.exe"
 #define KEENEXE2        "keen2.exe"
 #define KEENEXE3        "keen3.exe"
+#define KEENEXE4        "keen4.exe"
+#define KEENEXE4E       "keen4e.exe"
+#define KEENEXE5        "keen5.exe"
+#define KEENEXE5E       "keen5e.exe"
+#define KEENEXE6        "keen6.exe"
+#define KEENEXE6E       "keen6e.exe"
 
 struct GameEntry {
     std::string path;

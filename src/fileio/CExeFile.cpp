@@ -13,8 +13,6 @@
 #include "../FindFile.h"
 #include "../CLogFile.h"
 
-using namespace std;
-
 CExeFile::CExeFile(int episode, const std::string& datadirectory) {
 	m_episode = episode;
 	m_datadirectory = datadirectory;
@@ -32,25 +30,30 @@ bool CExeFile::readData()
 {
 	std::string filename =  m_datadirectory + "keen" + itoa(m_episode) + ".exe";
 
-	std::ifstream File; OpenGameFileR(File, filename, ios::binary);
+	std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);
 
 	if(!File)
 	{
-		g_pLogFile->textOut(RED,"Error the executable \"" + filename + "\" is missing!");
-		return false;
+		// try another filename (Used in Episode 4-6)
+		std::string filename =  m_datadirectory + "keen" + itoa(m_episode) + "e.exe";
+		OpenGameFileR(File, filename, std::ios::binary);
+		if(!File)
+		{
+			g_pLogFile->textOut(RED,"Error the executable \"" + filename + "\" is missing!");
+			return false;
+		}
 	}
 
-	File.seekg(0,ios::end);
+	File.seekg(0,std::ios::end);
 	m_datasize = File.tellg();
-	File.seekg(0,ios::beg);
+	File.seekg(0,std::ios::beg);
 
 	unsigned char * m_data_temp = new unsigned char[m_datasize];
 	File.read((char*)m_data_temp, m_datasize);
 
 	File.close();
 
-	vector<unsigned char> decdata;
-	// TODO: Here there must be some differences, between Galaxy and Vorticon Engine
+	std::vector<unsigned char> decdata;
 	if(unlzexe(m_data_temp, &decdata))
 	{
 		m_datasize = decdata.size();
@@ -101,7 +104,7 @@ int CExeFile::get_bit(int *p_bit_count, unsigned char *fin, int *posin)
 }
 
 // return how much was unpacked or zero if nothing was unpacked
-int CExeFile::unlzexe(unsigned char *fin, vector<unsigned char> *outbuffer)
+int CExeFile::unlzexe(unsigned char *fin, std::vector<unsigned char> *outbuffer)
 {
 	short offset=0;
 	int repeat;
@@ -208,6 +211,12 @@ int CExeFile::getEXEVersion()
 			else
 				return 131;
 
+		case 246944:
+			if(m_episode != 4)
+				return -1;
+			else
+				return 140;
+
 		default: return -2;
     }
 }
@@ -266,6 +275,11 @@ int CExeFile::getEXECrc()
 				else
 					return 1;
 		}
+        case 4:
+        {
+        	// TODO: CRC-Flags for Episode 4 must be implemented here!
+        	return 1;
+        }
 		default: return -2;
     }
 }

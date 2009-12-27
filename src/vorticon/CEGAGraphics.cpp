@@ -48,13 +48,6 @@ CEGAGraphics::CEGAGraphics(short episode, const std::string& path) {
 	m_BitmapsSurface = NULL;
 }
 
-CEGAGraphics::~CEGAGraphics() {
-	if(m_Latch) delete m_Latch;
-	if(m_Sprit) delete m_Sprit;
-	m_Latch = NULL;
-	m_Sprit = NULL;
-}
-
 bool CEGAGraphics::loadData( int version, unsigned char *p_exedata )
 {
 	std::string buf;
@@ -139,5 +132,12 @@ bool CEGAGraphics::loadData( int version, unsigned char *p_exedata )
 }
 
 int CEGAGraphics::getNumSprites() { return NumSprites; }
+
+CEGAGraphics::~CEGAGraphics() {
+	if(m_Latch) delete m_Latch;
+	if(m_Sprit) delete m_Sprit;
+	m_Latch = NULL;
+	m_Sprit = NULL;
+}
 
 

@@ -73,6 +73,8 @@ private:
 
 	CEGAGraphics *m_EGAGraphics;
 	CMessages *m_Messages;
+
+	galaxy::CEGAGraphics *mp_GalaxyEGAGraphics;
 };
 
 #endif /* CGAMECONTROL_H_ */

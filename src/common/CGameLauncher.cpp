@@ -28,6 +28,12 @@ CGameLauncher::CGameLauncher() {
     m_ExeList.push_back( KEENEXE1 );
     m_ExeList.push_back( KEENEXE2 );
     m_ExeList.push_back( KEENEXE3 );
+    m_ExeList.push_back( KEENEXE4 );
+    m_ExeList.push_back( KEENEXE4E );
+    m_ExeList.push_back( KEENEXE5 );
+    m_ExeList.push_back( KEENEXE5E );
+    m_ExeList.push_back( KEENEXE6 );
+    m_ExeList.push_back( KEENEXE6E );
 }
 
 CGameLauncher::~CGameLauncher() {

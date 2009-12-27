@@ -15,6 +15,8 @@
 #include "graphics/effects/CColorMerge.h"
 #include "arguments.h"
 
+#define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
+
 CGameControl::CGameControl() :
 mp_GameLauncher(NULL),
 mp_PassiveMode(NULL),
@@ -158,7 +160,7 @@ bool CGameControl::loadResources(unsigned short Episode, const std::string& Data
 	p_exedata = ExeFile.getData();
 
 	g_pLogFile->ftextOut("Commander Keen Episode %d (Version %d.%d) was detected.<br>", Episode, version/100, version%100);
-	if(version == 134) g_pLogFile->ftextOut("This version of the game is not supported!<br>");
+	if( Episode == 1 && version == 134) g_pLogFile->ftextOut("This version of the game is not supported!<br>");
 
 	if(ExeFile.getData() == NULL) {
 		g_pLogFile->textOut(RED, "CGameControl::loadResources: Could not load data from the EXE File<br>");
@@ -171,34 +173,63 @@ bool CGameControl::loadResources(unsigned short Episode, const std::string& Data
 		Patcher.patchMemory();
 	}
 
-	CTeleporter Teleporter(m_TeleporterTable, Episode);
-	Teleporter.createTeleporterTable(p_exedata);
+	if( Episode == 1 || Episode == 2 || Episode == 3 ) // Vorticon resources
+	{
+		CTeleporter Teleporter(m_TeleporterTable, Episode);
+		Teleporter.createTeleporterTable(p_exedata);
 
-    if( (flags & LOADGFX) == LOADGFX )
-    {
-        // Decode the entire graphics for the game (EGALATCH, EGASPRIT, etc.)
-        if(m_EGAGraphics) delete m_EGAGraphics; // except for the first start of a game this always happens
-        m_EGAGraphics = new CEGAGraphics(Episode, DataDirectory ); // Path is relative to the data dir
-		if(!m_EGAGraphics) return false;
+		if( (flags & LOADGFX) == LOADGFX )
+		{
+			// Decode the entire graphics for the game (EGALATCH, EGASPRIT, etc.)
+			if(m_EGAGraphics) delete m_EGAGraphics; // except for the first start of a game this always happens
+			m_EGAGraphics = new CEGAGraphics(Episode, DataDirectory); // Path is relative to the data dir
+			if(!m_EGAGraphics) return false;
 
-		m_EGAGraphics->loadData( version, p_exedata );
-    }
+			m_EGAGraphics->loadData( version, p_exedata );
+		}
 
-    if( (flags & LOADSTR) == LOADSTR )
-    {
-    	// load the strings. TODO: After that this one will replace loadstrings
-    	m_Messages = new CMessages(p_exedata, Episode, version);
-    	m_Messages->extractGlobalStrings();
-    	delete m_Messages;	m_Messages = NULL;
-        //loadstrings();
-    }
+		if( (flags & LOADSTR) == LOADSTR )
+		{
+			// load the strings.
+			m_Messages = new CMessages(p_exedata, Episode, version);
+			m_Messages->extractGlobalStrings();
+			delete m_Messages;	m_Messages = NULL;
+			//loadstrings();
+		}
 
-    if( (flags & LOADSND) == LOADSND )
-    {
-        // Load the sound data
-        g_pSound->loadSoundData(Episode, DataDirectory);
-    }
-	return true;
+		if( (flags & LOADSND) == LOADSND )
+		{
+			// Load the sound data
+			g_pSound->loadSoundData(Episode, DataDirectory);
+		}
+		return true;
+	}
+	else if( Episode == 4 || Episode == 5 || Episode == 6 ) // Galaxy resources
+	{
+		// TODO: Lots of coding
+		if( (flags & LOADGFX) == LOADGFX )
+		{
+			// Decode the entire graphics for the game (Only EGAGRAPH.CK?)
+			SAFE_DELETE(mp_GalaxyEGAGraphics);
+
+			mp_GalaxyEGAGraphics = new galaxy::CEGAGraphics(Episode, DataDirectory); // Path is relative to the data dir
+			if(!mp_GalaxyEGAGraphics) return false;
+
+			mp_GalaxyEGAGraphics->loadData( version, p_exedata );
+		}
+
+		if( (flags & LOADSTR) == LOADSTR )
+		{
+			// load the strings.
+		}
+
+		if( (flags & LOADSND) == LOADSND )
+		{
+			// Load the sound data
+		}
+		return true;
+
+	}
 }
 
 

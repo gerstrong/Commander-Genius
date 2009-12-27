@@ -93,16 +93,18 @@ bool CObjectAI::checkforAIObject( CObject &object )
 
 	if ( !object.exists || type==OBJ_PLAYER ) return false;
 
-	if(type == OBJ_NESSIE) return true;
-
-	// Check if enemy is near enough. If he isn't, don't make him perform
-	bool is_near_enough=false;
-	for(int i=0 ; i<m_NumPlayers ; i++)
+	// Check if enemy is near enough. If he isn't, don't make him perform. Exception is on the map
+	if(m_Level != 80)
 	{
-		is_near_enough |= object.calcVisibility(m_Player[i].x, m_Player[i].y);
+		bool is_near_enough=false;
+		for(int i=0 ; i<m_NumPlayers ; i++)
+		{
+			is_near_enough |= object.calcVisibility(m_Player[i].x, m_Player[i].y);
+		}
+
+		if(!is_near_enough) return false;
 	}
 
-	if(!is_near_enough) return false;
 
     // This will do the function gamedo_calcenemyvisibility(i);
     // check if object is really in the map!!!
