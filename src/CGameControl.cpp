@@ -213,7 +213,7 @@ bool CGameControl::loadResources(unsigned short Episode, const std::string& Data
 			// Decode the entire graphics for the game (Only EGAGRAPH.CK?)
 			SAFE_DELETE(mp_GalaxyEGAGraphics);
 
-			mp_GalaxyEGAGraphics = new galaxy::CEGAGraphics(Episode, DataDirectory); // Path is relative to the data dir
+			mp_GalaxyEGAGraphics = new CEGAGraphicsGalaxy(Episode, DataDirectory); // Path is relative to the data dir
 			if(!mp_GalaxyEGAGraphics) return false;
 
 			mp_GalaxyEGAGraphics->loadData( version, p_exedata );

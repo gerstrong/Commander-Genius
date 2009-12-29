@@ -12,7 +12,7 @@
  *  All thre files are needed to extract the graphics
  */
 
-#include "CEGAGraphics.h"
+#include "CEGAGraphicsGalaxy.h"
 #include "../fileio/CHuffman.h"
 #include "../CLogFile.h"
 #include "../StringUtils.h"
@@ -24,8 +24,6 @@
 #include <cstring>
 #include <SDL.h>
 
-namespace galaxy
-{
 
 // The ExeImageSize fields are values from the real start of exe image,
 // i.e. KEEN4E.EXE + 0x2E00 to EndOfFile=0x3D740
@@ -106,7 +104,7 @@ static EpisodeInfoStruct EpisodeInfo[] = {
 
 /// Class members start here!
 
-CEGAGraphics::CEGAGraphics(short episode, const std::string& path) :
+CEGAGraphicsGalaxy::CEGAGraphicsGalaxy(short episode, const std::string& path) :
 m_path(path),
 m_episode(episode)
 {
@@ -114,7 +112,7 @@ m_episode(episode)
 
 }
 
-bool CEGAGraphics::loadData( int version, unsigned char *p_exedata )
+bool CEGAGraphicsGalaxy::loadData( int version, unsigned char *p_exedata )
 {
 	if(!begin(version, p_exedata)) return false;
 	if(!exportBMP()) return false;
@@ -122,7 +120,7 @@ bool CEGAGraphics::loadData( int version, unsigned char *p_exedata )
 	return false;
 }
 
-bool CEGAGraphics::begin( int version, unsigned char *p_exedata )
+bool CEGAGraphicsGalaxy::begin( int version, unsigned char *p_exedata )
 {
 	// The stuff is Huffman compressed. Use an instance for that
 	CHuffman Huffman;
@@ -249,7 +247,7 @@ bool CEGAGraphics::begin( int version, unsigned char *p_exedata )
 	return true;
 }
 
-bool CEGAGraphics::exportBMP()
+bool CEGAGraphicsGalaxy::exportBMP()
 {
     int ep = m_episode - 4;
     BitmapHeadStruct *BmpHead = (BitmapHeadStruct *)m_egagraph[0].data.data();
@@ -286,9 +284,7 @@ bool CEGAGraphics::exportBMP()
 	return true;
 }
 
-CEGAGraphics::~CEGAGraphics()
+CEGAGraphicsGalaxy::~CEGAGraphicsGalaxy()
 {
-	// TODO Auto-generated destructor stub
 }
 
-}

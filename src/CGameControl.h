@@ -19,7 +19,7 @@
 #include "vorticon/CPassive.h"
 #include "vorticon/playgame/CPlayGame.h"
 
-#include "galaxy/CEGAGraphics.h"
+#include "galaxy/CEGAGraphicsGalaxy.h"
 
 #include <string>
 
@@ -77,7 +77,7 @@ private:
 	CEGAGraphics *m_EGAGraphics;
 	CMessages *m_Messages;
 
-	galaxy::CEGAGraphics *mp_GalaxyEGAGraphics;
+	CEGAGraphicsGalaxy *mp_GalaxyEGAGraphics;
 };
 
 #endif /* CGAMECONTROL_H_ */

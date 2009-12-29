@@ -11,21 +11,19 @@
 #include <string>
 #include <vector>
 
-namespace galaxy
-{
 
 #include "EGAStructs.h"
 
-class CEGAGraphics
+class CEGAGraphicsGalaxy
 {
 public:
-	CEGAGraphics(short episode, const std::string& path);
+	CEGAGraphicsGalaxy(short episode, const std::string& path);
 
 	bool loadData( int version, unsigned char *p_exedata );
 	bool begin( int version, unsigned char *p_exedata );
 	bool exportBMP();
 
-	virtual ~CEGAGraphics();
+	virtual ~CEGAGraphicsGalaxy();
 
 private:
 
@@ -34,7 +32,5 @@ private:
 	std::vector<unsigned long> m_egahead;
 	std::vector<ChunkStruct> m_egagraph;
 };
-
-}
 
 #endif /* CGALAXY_EGAGRAPHICS_H_ */

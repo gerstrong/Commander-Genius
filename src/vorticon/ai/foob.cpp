@@ -71,7 +71,7 @@ void CObjectAI::foob_ai(CObject &object, bool hardmode)
 	Uint16 player_height = g_pGfxEngine->Sprite[0]->getHeight()<<STC;
 	Uint16 foob_height = object.bboxY2;
 	onsamelevel = 0;
-	for(size_t i=0;i<m_NumPlayers;i++)
+	for(int i=0;i<m_NumPlayers;i++)
 	{
 		if ( (m_Player[i].y >= object.y-(24<<STC)) &&
 			(m_Player[i].y+player_height <= object.y+foob_height+(24<<STC)) )
