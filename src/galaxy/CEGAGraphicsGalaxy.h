@@ -11,7 +11,6 @@
 #include <string>
 #include <vector>
 
-
 #include "EGAStructs.h"
 
 class CEGAGraphicsGalaxy
