@@ -53,7 +53,7 @@ CStory::CStory(std::string &DataDirectory, char &episode)
 		CExeFile *ExeFile = new CExeFile(episode, DataDirectory);
 		ExeFile->readData();
 		
-		if(!ExeFile->getData()) return;
+		if(!ExeFile->getRawData()) return;
 		
 		if(episode == 2)
 		{
@@ -66,7 +66,7 @@ CStory::CStory(std::string &DataDirectory, char &episode)
 			endflag = 0x199F3-512;
 		}
 		
-		text_data = ExeFile->getData();
+		text_data = ExeFile->getRawData();
 		
 		for(unsigned long i=startflag ; i<endflag ; i++ )
 			Text.push_back(text_data[i]);

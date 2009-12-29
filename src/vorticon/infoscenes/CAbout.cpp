@@ -36,7 +36,6 @@ m_type(type)
 		
 		// Get the offset where in the data the info is...
 		size_t offset = 0;
-		size_t offsetend = 0;
 		switch(episode)
 		{
 			case 1:
@@ -61,7 +60,7 @@ m_type(type)
 		if(offset)
 		{
 			char *data;
-			data = (char*)Exefile->getData() + offset;
+			data = (char*)Exefile->getRawData() + offset;
 			std::string buf;
 			for(int i=0 ; i<m_numberoflines ; i++)
 			{

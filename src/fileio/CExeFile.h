@@ -24,17 +24,18 @@ public:
 	bool readData();
 	int getEXEVersion();
 	int getEXECrc();
-	unsigned char* getData();
 	
+	unsigned char* getRawData();
+	unsigned char* getHeaderData();
+
 private:
 	int m_datasize;
 	int m_episode;
 	unsigned int m_crc;
 	unsigned char *m_data;
+	unsigned char *m_headerdata;
+	unsigned char *m_rawdata;
 	std::string m_datadirectory;
-	
-	int get_bit(int *p_bit_count, unsigned char *fin, int *posin);
-	int unlzexe(unsigned char *fin, std::vector<unsigned char> *outbuffer);
 };
 
 #endif /* CEXEFILE_H_ */

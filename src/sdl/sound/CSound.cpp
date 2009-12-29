@@ -473,7 +473,7 @@ char CSound::extractOfExeFile(const std::string& inputpath, int episode)
 		if(!(fout = OpenGameFile(buffer.c_str(),"wb"))) ret = 1;
 		else
 		{
-			fwrite( ExeFile->getData()+sounds_start, 1, (sounds_end-sounds_start), fout);
+			fwrite( ExeFile->getRawData()+sounds_start, 1, (sounds_end-sounds_start), fout);
 			g_pLogFile->ftextOut(GREEN,"Sounds extraction completed successfully<br>");
 			fclose(fout);
 		}

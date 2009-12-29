@@ -24,6 +24,7 @@ public:
 	//CTeleporter(CMap &map, short episode);
 	CTeleporter(std::vector<stTeleporterTable> &TeleportTable, short episode);
 	
+	Uint16 getWord(unsigned char *p_exedata);
 	void createTeleporterTable(unsigned char *p_exedata);
 	int getTeleporterInfo(int objectID);
 	void teleportPlayer(int objectID, CMap &map, std::vector<CObject> &p_vect_object, CPlayer &player);

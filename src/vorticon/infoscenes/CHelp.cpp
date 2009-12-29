@@ -52,20 +52,20 @@ CHelp::CHelp(std::string &DataDirectory, char &episode, std::string type)
 			CExeFile *ExeFile = new CExeFile(episode, DataDirectory);
 			ExeFile->readData();
 			
-			if(!ExeFile->getData()) return;
+			if(!ExeFile->getHeaderData()) return;
 			
 			if(episode == 2)
 			{
-				startflag = 0x15DC0-512;
-				endflag = 0x1659F-512;
+				startflag = 0x15DC0;
+				endflag = 0x1659F;
 			}
 			else // Episode 3
 			{
-				startflag = 0x17BD0-512;
-				endflag = 0x1839B-512;
+				startflag = 0x17BD0;
+				endflag = 0x1839B;
 			}
 			
-			text_data = ExeFile->getData();
+			text_data = ExeFile->getRawData();
 			
 			for(unsigned long i=startflag ; i<endflag ; i++ )
 				Text.push_back(text_data[i]);

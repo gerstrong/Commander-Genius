@@ -158,12 +158,12 @@ bool CGameControl::loadResources(unsigned short Episode, const std::string& Data
     if(!ExeFile.readData()) return false;
 
     version = ExeFile.getEXEVersion();
-	p_exedata = ExeFile.getData();
+	p_exedata = ExeFile.getRawData();
 
 	g_pLogFile->ftextOut("Commander Keen Episode %d (Version %d.%d) was detected.<br>", Episode, version/100, version%100);
 	if( Episode == 1 && version == 134) g_pLogFile->ftextOut("This version of the game is not supported!<br>");
 
-	if(ExeFile.getData() == NULL) {
+	if(ExeFile.getHeaderData() == NULL) {
 		g_pLogFile->textOut(RED, "CGameControl::loadResources: Could not load data from the EXE File<br>");
 		return false;
 	}

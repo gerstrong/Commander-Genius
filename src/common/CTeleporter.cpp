@@ -12,13 +12,12 @@
 #include "../sdl/sound/CSound.h"
 #include "../keen.h"
 
-
 CTeleporter::CTeleporter(std::vector<stTeleporterTable> &TeleportTable, short episode):
 m_episode(episode),
 m_TeleportTable(TeleportTable)
 {}
 
-Uint16 getWord(unsigned char *p_exedata){
+Uint16 CTeleporter::getWord(unsigned char *p_exedata){
 	return ((*p_exedata) + (*(p_exedata+1)<<8));
 }
 // This is called in the beginning and will decrypt the teleporter behavior.

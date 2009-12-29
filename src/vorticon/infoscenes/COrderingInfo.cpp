@@ -64,7 +64,7 @@ COrderingInfo::COrderingInfo(std::string &datadirectory, char &episode) {
 	if(offset)
 	{
 		char *data;
-		data = (char*)Exefile->getData() + offset;
+		data = (char*)Exefile->getRawData() + offset;
 		std::string buf;
 		for(int i=0 ; i<m_numberoflines ; i++)
 		{

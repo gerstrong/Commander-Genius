@@ -26,7 +26,7 @@ CMessages::CMessages(unsigned char *p_exebuf, char episode, int version) :
 // menus are drawn
 void CMessages::formatString(std::string &Text)
 {
-	for( int i=0 ; i<Text.size() ; i++ )
+	for( size_t i=0 ; i<Text.size() ; i++ )
 	{
 		if(Text[i] == 10) // 10 means next line, pass it to...
 			Text[i] = 13;

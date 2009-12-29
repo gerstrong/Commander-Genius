@@ -14,7 +14,7 @@
 #include "../graphics/CTilemap.h"
 
 // animation rate of animated tiles
-#define ANIM_TILE_TIME        8
+#define ANIM_TILE_TIME        4
 #define MAX_ANIMTILES  200
 
 // for each entry in the animtileinuse array that is nonzero, that
