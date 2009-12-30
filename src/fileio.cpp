@@ -13,7 +13,7 @@
 #include "keen.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/sound/CSound.h"
-#include "include/fileio.h"
+#include "fileio.h"
 #include "include/fileio/rle.h"
 #include "CLogFile.h"
 #include "StringUtils.h"
@@ -74,8 +74,6 @@ std::string getstring(const std::string& name)
 			return strings[i].stringptr;
 		}
 	}
-	
-	//dumpstrings();
 	
 	return "UNKNOWN '" + name + "' STRING";
 }

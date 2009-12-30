@@ -13,6 +13,7 @@
 #include "../funcdefs.h"
 #include "../keen.h"
 #include "../FindFile.h"
+#include "../lz.h"
 #include <SDL.h>
 #include <stdio.h>
 #include <string.h>

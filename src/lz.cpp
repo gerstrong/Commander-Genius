@@ -2,7 +2,6 @@
  This file contains the functions which decompress the graphics
  data from Keen 1.
  */
-#include "keen.h"
 #include "CLogFile.h"
 
 #define LZ_STARTBITS        9
@@ -63,12 +62,6 @@ unsigned int lz_readbits(FILE *lzfile, unsigned char numbits, unsigned char rese
 void lz_outputdict(int entry)
 {
 	int i;
-	
-	/*for(i=0;i<lzdict[entry].stringlen;i++)
-	 {
-	 *lz_outbuffer = lzdict[entry].string[i];
-	 lz_outbuffer++;
-	 }*/
 	
 	for(i=0;i<lzdict[entry]->stringlen;i++)
 	{

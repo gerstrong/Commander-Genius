@@ -16,6 +16,7 @@
 #include "../FindFile.h"
 #include "../sdl/CVideoDriver.h"
 #include "../vorticon/spritedefines.h"
+#include "../lz.h"
 #include <stdio.h>
 #include <string.h>
 
