@@ -24,7 +24,8 @@ void CObjectAI::platvert_ai(CObject& object)
 		object.ai.platform.movedir = UP;
 		object.ai.platform.state = PLATVERT_MOVE;
 
-		object.blockedu = object.blockedd = true;
+		object.blockedu = false;
+		object.blockedd = true;
 		object.inhibitfall = 1;
 		object.needinit = 0;
 		object.canbezapped = 1;
