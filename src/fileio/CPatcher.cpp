@@ -71,6 +71,29 @@ void CPatcher::patchMemory()
 					patchMemfromFile(m_datadirectory + "/" + patch_file_name,offset);
 				}
 			}
+			else if( strCaseStartsWith(line,"\%patch") )
+			{
+				std::string newbuf = line.substr(strlen("\%patch"));
+				TrimSpaces(newbuf);
+				size_t p = newbuf.find(' ');
+
+				if( strCaseStartsWith(newbuf,"0x") ){
+					long offset = 0;
+
+					sscanf(newbuf.c_str() ,"%lx", &offset);
+
+					newbuf = newbuf.substr(p);
+
+					TrimSpaces(newbuf);
+
+					if(strCaseStartsWith(newbuf,"\""))
+					{
+						std::string patchtext = newbuf.substr(1);
+						patchtext = patchtext.substr(0, patchtext.find("\""));
+						patchMemFromText(offset, patchtext);
+					}
+				}
+			}
 		}
 		
 		if(!m_TextList.empty())
@@ -152,4 +175,11 @@ void CPatcher::patchMemfromFile(const std::string& patch_file_name, long offset)
 	}
 	
 	Patchfile.close();
+}
+
+// This is used for patching. I didn't think we could get it that small.
+void CPatcher::patchMemFromText(unsigned long offset, std::string &patchtext)
+{
+	memcpy( m_data+offset, patchtext.c_str(), patchtext.size());
+	return;
 }
