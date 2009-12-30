@@ -29,9 +29,6 @@
 // Constants
 #define PI		3.14159265358979323846
 
-
-
-
 // Routines
 float	GetRandomNum(); // get a random float from [-1,1] 
 float	GetRandomPosNum(); // get a random float from [0,1]

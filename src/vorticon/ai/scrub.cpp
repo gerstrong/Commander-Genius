@@ -50,15 +50,16 @@ void CObjectAI::scrub_ai(CObject &object)
 		object.canbezapped = 1;
 		object.y = (object.y>>STC)<<STC;
 		object.blockedd = true;
-		object.blockedl = 0;
-		object.blockedr = 0;
-		object.blockedu = 0;
+		object.blockedl = true;
+		object.blockedr = true;
+		object.blockedu = true;
 		object.dead = 0;
 
 		SetAllCanSupportPlayer(object, 1);
 		for(i=0;i<m_NumPlayers;i++)
 			object.ai.scrub.kickedplayer[i] = 0;
 
+		return;
 	}
 	if (object.ai.scrub.state==SCRUB_DEAD)
 	{

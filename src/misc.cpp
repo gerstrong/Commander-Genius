@@ -1,30 +1,8 @@
-/* MISC.C
- All KINDS of assorted crap :) Has most of the in-game dialog boxes
- such as the status box etc.
 
- Also like I said there's all kinds of assorted crap in here.
- That's why it's called "misc.c" (get it? :))
- */
-
-#include "keen.h"
-#include <SDL.h>
-#include "sdl/CInput.h"
-#include "sdl/CVideoDriver.h"
-#include "sdl/sound/CSound.h"
-
-#include "game.h"
-#include "fileio/CSavedGame.h"
+#include "misc.h"
 #include "CLogFile.h"
-#include "graphics/CGfxEngine.h"
-#include "StringUtils.h"
-#include "FindFile.h"
-
-#include "fileio/CExeFile.h"
-
-#include "dialog/CTextViewer.h"
-
-#include <fstream>
 #include <cstdlib>
+#include <stdio.h>
 
 void banner(void)
 {
@@ -96,3 +74,13 @@ unsigned int rnd(void)
 	return std::rand();
 }
 
+// This functions really calculates the probability of something...
+// It should be used in the enemy AI of any game where needed
+// In many cases it is using workarounds, if you see something like that, please change it!
+// Due the game resolutions, we specify this per thousand, instead per percent.
+// So if you want 80 % you specify 800 here!
+// Don't forget that this odd is checked LPS times. Mostly 10% (100) is already a good value to take
+bool getProbability(unsigned short prob)
+{
+	return ( (rnd()%1000) <= prob ) ? true : false;
+}

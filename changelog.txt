@@ -4,6 +4,13 @@ Commander Genius Release (CloneKeenPlus):
 v0.3.1.0:
 ---------
 
+30-12-2009
+- Added more Keen4 code and fixed errors with the huffman decompression
+- Fixed AI Bugs of baby-vorticon
+- Fixed AI Bugs of meep
+- Fixed minor problems we had with AI
+- Fixed an animation errors with priority tiles
+
 29-12-2009
 - Fixed some enemy issues
 - Integrated some Keen 4 Code, which still is under construction

@@ -145,6 +145,7 @@ bool CGameControl::loadResources(unsigned short Episode, const std::string& Data
 	CExeFile ExeFile(Episode, DataDirectory);
 	int version;
 	unsigned char *p_exedata;
+	unsigned char *p_exeheader;
 
 	m_Episode = Episode;
 	m_DataDirectory = DataDirectory;
@@ -159,20 +160,19 @@ bool CGameControl::loadResources(unsigned short Episode, const std::string& Data
 
     version = ExeFile.getEXEVersion();
 	p_exedata = ExeFile.getRawData();
+	p_exeheader = ExeFile.getHeaderData();
 
 	g_pLogFile->ftextOut("Commander Keen Episode %d (Version %d.%d) was detected.<br>", Episode, version/100, version%100);
 	if( Episode == 1 && version == 134) g_pLogFile->ftextOut("This version of the game is not supported!<br>");
 
-	if(ExeFile.getHeaderData() == NULL) {
+	if(p_exeheader == NULL) {
 		g_pLogFile->textOut(RED, "CGameControl::loadResources: Could not load data from the EXE File<br>");
 		return false;
 	}
 
 	// Patch the EXE-File-Data directly in the memory.
-	{
-		CPatcher Patcher(Episode, version, p_exedata, DataDirectory);
-		Patcher.patchMemory();
-	}
+	CPatcher Patcher(Episode, version, p_exedata, DataDirectory);
+	Patcher.patchMemory();
 
 	if( Episode == 1 || Episode == 2 || Episode == 3 ) // Vorticon resources
 	{
@@ -213,10 +213,10 @@ bool CGameControl::loadResources(unsigned short Episode, const std::string& Data
 			// Decode the entire graphics for the game (Only EGAGRAPH.CK?)
 			SAFE_DELETE(mp_GalaxyEGAGraphics);
 
-			mp_GalaxyEGAGraphics = new CEGAGraphicsGalaxy(Episode, DataDirectory); // Path is relative to the data dir
+			mp_GalaxyEGAGraphics = new CEGAGraphicsGalaxy(Episode, DataDirectory, ExeFile); // Path is relative to the data dir
 			if(!mp_GalaxyEGAGraphics) return false;
 
-			mp_GalaxyEGAGraphics->loadData( version, p_exedata );
+			mp_GalaxyEGAGraphics->loadData();
 		}
 
 		if( (flags & LOADSTR) == LOADSTR )

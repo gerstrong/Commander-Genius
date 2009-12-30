@@ -8,11 +8,11 @@ enum ninja_actions{
 	NINJA_DYING, NINJA_DEAD
 };
 
-#define NINJA_STAND_ANIM_RATE          25
-#define NINJA_DYING_SHOW_TIME          25
+#define NINJA_STAND_ANIM_RATE          6
+#define NINJA_DYING_SHOW_TIME          6
 
-#define NINJA_MIN_TIME_TILL_KICK       75
-#define NINJA_MAX_TIME_TILL_KICK       125
+#define NINJA_MIN_TIME_TILL_KICK       20
+#define NINJA_MAX_TIME_TILL_KICK       30
 
 #define NINJA_KICK_MOVE_RATE           1
 
@@ -81,7 +81,7 @@ void CObjectAI::ninja_ai(CObject &object, bool hardmode)
 	switch(object.ai.ninja.state)
 	{
 	case NINJA_STAND:
-		if (m_Player[0].x < object.x+(8<<CSF))
+		if (m_Player[0].x < object.x+(8<<STC))
 			object.ai.ninja.dir = LEFT;
 		else
 			object.ai.ninja.dir = RIGHT;
@@ -94,22 +94,22 @@ void CObjectAI::ninja_ai(CObject &object, bool hardmode)
 			if (rnd()&1)
 			{
 				// high, short jump
-				object.ai.ninja.XInertia = 25;
+				object.ai.ninja.XInertia = (hardmode) ? 100 : 50;
 				object.ai.ninja.YInertia = -30;
 				object.ai.ninja.XFrictionTimer = 0;
 				object.ai.ninja.YFrictionTimer = 0;
-				object.ai.ninja.XFrictionRate = 10;
-				object.ai.ninja.YFrictionRate = 2;
+				object.ai.ninja.XFrictionRate = 5;
+				object.ai.ninja.YFrictionRate = 1;
 			}
 			else
 			{
 				// low, long jump
-				object.ai.ninja.XInertia = 42;
+				object.ai.ninja.XInertia = (hardmode) ? 168 : 84;
 				object.ai.ninja.YInertia = -15;
 				object.ai.ninja.XFrictionTimer = 0;
 				object.ai.ninja.YFrictionTimer = 0;
-				object.ai.ninja.XFrictionRate = 10;
-				object.ai.ninja.YFrictionRate = 5;
+				object.ai.ninja.XFrictionRate = 5;
+				object.ai.ninja.YFrictionRate = 1;
 			}
 
 			if (object.ai.ninja.dir==LEFT)
@@ -121,7 +121,8 @@ void CObjectAI::ninja_ai(CObject &object, bool hardmode)
 			onsamelevel = 0;
 			for(i=0;i<m_NumPlayers;i++)
 			{
-				if ((m_Player[i].y >= object.y-(96<<CSF)) && ((m_Player[i].y>>CSF)+Sprite[0]->getHeight() <= (object.y>>CSF)+Sprite[object.sprite]->getHeight()+96))
+				if ((m_Player[i].y >= object.y-(96<<STC)) &&
+					(m_Player[i].y+(Sprite[0]->getHeight()<<STC) <= (object.y+object.bboxY2+(96<<STC))))
 				{
 					onsamelevel = 1;
 					break;
@@ -158,18 +159,10 @@ void CObjectAI::ninja_ai(CObject &object, bool hardmode)
 		}
 		else
 			object.sprite = NINJA_DYING_FRAME;
-
-		if (object.ai.ninja.KickMoveTimer < NINJA_KICK_MOVE_RATE)
-		{
-			object.ai.ninja.KickMoveTimer++;
-			break;
-		}
-		object.ai.ninja.KickMoveTimer = 0;
-
 		if (object.ai.ninja.YInertia > 0 && object.blockedd)
 		{
 			if (!object.ai.ninja.isdying)
-				object.needinit = 1;
+				object.needinit = true;
 			else
 				object.ai.ninja.state = NINJA_DYING;
 
@@ -188,12 +181,20 @@ void CObjectAI::ninja_ai(CObject &object, bool hardmode)
 				object.y += object.ai.ninja.YInertia;
 		}
 
+
+		if (object.ai.ninja.KickMoveTimer < NINJA_KICK_MOVE_RATE)
+		{
+			object.ai.ninja.KickMoveTimer++;
+			break;
+		}
+		object.ai.ninja.KickMoveTimer = 0;
+
 		if (object.ai.ninja.XFrictionTimer > object.ai.ninja.XFrictionRate)
 		{
 			if (object.ai.ninja.XInertia>0)
-				object.ai.ninja.XInertia--;
+				object.ai.ninja.XInertia-= 16;
 			else
-				object.ai.ninja.XInertia++;
+				object.ai.ninja.XInertia+= 16;
 
 			object.ai.ninja.XFrictionTimer = 0;
 		}
@@ -202,7 +203,8 @@ void CObjectAI::ninja_ai(CObject &object, bool hardmode)
 
 		if (object.ai.ninja.YFrictionTimer > object.ai.ninja.YFrictionRate)
 		{
-			object.ai.ninja.YInertia++;
+			if(!object.blockedd) object.ai.ninja.YInertia+=4;
+			else object.ai.ninja.YInertia=0;
 			object.ai.ninja.YFrictionTimer = 0;
 		}
 		else

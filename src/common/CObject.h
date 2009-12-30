@@ -123,7 +123,7 @@ public:
 	bool checkSolidU(stTile *TileProperty, CMap *p_map, int x1, int x2, int y1);
 	bool checkSolidD(stTile *TileProperty, CMap *p_map, int x1, int x2, int y2);
 
-	void processFalling();
+	void processFalling(CMap *p_map);
 
 	virtual ~CObject();
 };

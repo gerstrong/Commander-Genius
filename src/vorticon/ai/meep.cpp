@@ -1,5 +1,5 @@
 #include "../../sdl/sound/CSound.h"
-
+#include "../../misc.h"
 #include "CObjectAI.h"
 
 enum meep_actions{
@@ -7,13 +7,13 @@ enum meep_actions{
 	MEEP_DYING, MEEP_DEAD
 };
 
-#define MEEP_WALK_ANIM_RATE     20
-#define MEEP_WALK_SPD           8
+#define MEEP_WALK_ANIM_RATE     8
+#define MEEP_WALK_SPD           26
 
-#define MEEP_SING_PROB          500
-#define MEEP_SING_SHOW_TIME     25
+#define MEEP_SING_PROB          5
+#define MEEP_SING_SHOW_TIME     10
 
-#define MEEP_DYING_SHOW_TIME    25
+#define MEEP_DYING_SHOW_TIME    6
 
 #define MEEP_WALK_RIGHT_FRAME   118
 #define MEEP_WALK_LEFT_FRAME    120
@@ -23,8 +23,6 @@ enum meep_actions{
 #define MEEP_DEAD_FRAME         125
 
 #define SNDWAVE_LEFT_FRAME      128
-
-unsigned int rnd(void);
 
 void CObjectAI::meep_ai(CObject& object)
 {
@@ -42,7 +40,7 @@ void CObjectAI::meep_ai(CObject& object)
 		else
 			object.ai.meep.dir = LEFT;
 
-		object.blockedr = object.blockedl = 0;
+		object.blockedr = object.blockedl = false;
 		object.canbezapped = 1;
 		object.needinit = 0;
 	}
@@ -72,7 +70,7 @@ void CObjectAI::meep_ai(CObject& object)
 	switch(object.ai.meep.state)
 	{
 	case MEEP_WALK:
-		if (rnd()%MEEP_SING_PROB==(MEEP_SING_PROB/2))
+		if (getProbability(MEEP_SING_PROB))
 		{
 			if (object.onscreen)
 			{
@@ -93,7 +91,7 @@ void CObjectAI::meep_ai(CObject& object)
 		{
 			object.sprite = MEEP_WALK_RIGHT_FRAME + object.ai.meep.animframe;
 
-			not_about_to_fall = TileProperty[mp_Map->at((object.x+object.bboxX2)>>CSF, (object.y+object.bboxY2)>>CSF)].bup;
+			not_about_to_fall = TileProperty[mp_Map->at((object.x+object.bboxX2)>>CSF, (object.y+object.bboxY2+(1<<STC))>>CSF)].bup;
 
 			if (object.blockedr || !not_about_to_fall)
 				object.ai.meep.dir = LEFT;
@@ -103,7 +101,7 @@ void CObjectAI::meep_ai(CObject& object)
 		else
 		{
 			object.sprite = MEEP_WALK_LEFT_FRAME + object.ai.meep.animframe;
-			not_about_to_fall = TileProperty[mp_Map->at((object.x+object.bboxX1)>>CSF, (object.y+object.bboxY2)>>CSF)].bup;
+			not_about_to_fall = TileProperty[mp_Map->at((object.x+object.bboxX1)>>CSF, (object.y+object.bboxY2+(1<<STC))>>CSF)].bup;
 
 			if (object.blockedl || !not_about_to_fall)
 			{
@@ -144,7 +142,7 @@ void CObjectAI::meep_ai(CObject& object)
 			}
 			else
 			{
-				newobject.spawn(object.x-(1<<CSF), object.y+(5<<STC), OBJ_SNDWAVE, 3);
+				newobject.spawn(object.x-(5<<STC), object.y+(5<<STC), OBJ_SNDWAVE, 3);
 				newobject.ai.ray.direction = LEFT;
 			}
 			m_Objvect.push_back(newobject);

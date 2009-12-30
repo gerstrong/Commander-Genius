@@ -24,6 +24,7 @@ void CObjectAI::platform_ai(CObject &object)
 		object.ai.platform.movedir = RIGHT;
 		object.ai.platform.state = PLATFORM_MOVE;
 
+		object.blockedl = object.blockedr = true;
 		object.inhibitfall = 1;
 		object.needinit = 0;
 		object.canbezapped = 1;

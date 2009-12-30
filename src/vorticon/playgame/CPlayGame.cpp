@@ -165,7 +165,7 @@ bool CPlayGame::init()
 	// Initialize the AI
 	mp_ObjectAI = new CObjectAI(mp_Map, m_Object, m_Player, mp_option,
 								m_NumPlayers, m_Episode, m_Level,
-								m_Difficulty, m_PhysicsSettings);
+								m_Difficulty, m_PhysicsSettings, m_dark);
 
 	// Check if Player meets the conditions to show a cutscene. This also happens, when finale of episode has reached
 	verifyCutscenes();
@@ -674,10 +674,14 @@ void CPlayGame::drawObjects()
 					for(xa=0;xa<=xsize;xa+=16)
 					{
 						tl = mp_Map->at((x+xa)>>4,(y+ya)>>4);
+						//if(mp_Map->mp_tiles[tl].behaviour == -2)
+							//g_pGfxEngine->Tilemap->drawTile(sfc, x+xa-mp_Map->m_scrollx, y+ya-mp_Map->m_scrolly, tl+1);
+						//else if (mp_Map->mp_tiles[tl].behaviour == -1)
+							//g_pGfxEngine->Tilemap->drawTile(sfc, x+xa-mp_Map->m_scrollx, y+ya-mp_Map->m_scrolly, tl);
 						if(mp_Map->mp_tiles[tl].behaviour == -2)
-							g_pGfxEngine->Tilemap->drawTile(sfc, x+xa-mp_Map->m_scrollx, y+ya-mp_Map->m_scrolly, tl+1);
+							mp_Map->drawAnimatedTile(sfc, x+xa-mp_Map->m_scrollx, y+ya-mp_Map->m_scrolly, tl+1);
 						else if (mp_Map->mp_tiles[tl].behaviour == -1)
-							g_pGfxEngine->Tilemap->drawTile(sfc, x+xa-mp_Map->m_scrollx, y+ya-mp_Map->m_scrolly, tl);
+							mp_Map->drawAnimatedTile(sfc, x+xa-mp_Map->m_scrollx, y+ya-mp_Map->m_scrolly, tl);
 					}
 	            }
 	        }

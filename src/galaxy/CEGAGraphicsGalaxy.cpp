@@ -13,10 +13,10 @@
  */
 
 #include "CEGAGraphicsGalaxy.h"
+#include "../FindFile.h"
 #include "../fileio/CHuffman.h"
 #include "../CLogFile.h"
 #include "../StringUtils.h"
-#include "../FindFile.h"
 #include "../graphics/CGfxEngine.h"
 #include "../sdl/CVideoDriver.h"
 #include "../vorticon/CPlanes.h"
@@ -101,42 +101,46 @@ static EpisodeInfoStruct EpisodeInfo[] = {
 	}
 };
 
-
-/// Class members start here!
-
-CEGAGraphicsGalaxy::CEGAGraphicsGalaxy(short episode, const std::string& path) :
+/////
+// Class members start here!
+/////
+CEGAGraphicsGalaxy::CEGAGraphicsGalaxy(short episode, const std::string& path, CExeFile &ExeFile) :
 m_path(path),
-m_episode(episode)
-{
-	// TODO Auto-generated constructor stub
+m_episode(episode),
+m_Exefile(ExeFile)
+{}
 
-}
-
-bool CEGAGraphicsGalaxy::loadData( int version, unsigned char *p_exedata )
+bool CEGAGraphicsGalaxy::loadData()
 {
-	if(!begin(version, p_exedata)) return false;
+	if(!begin()) return false;
 	if(!exportBMP()) return false;
 
-	return false;
+	return true;
 }
 
-bool CEGAGraphicsGalaxy::begin( int version, unsigned char *p_exedata )
+bool CEGAGraphicsGalaxy::begin()
 {
 	// The stuff is Huffman compressed. Use an instance for that
 	CHuffman Huffman;
 	unsigned long exeheaderlen = 0;
+	unsigned long exeimglen = 0;
 	int ep = m_episode - 4;
 
+	unsigned char *p_data = m_Exefile.getHeaderData();
+
 	//if(m_episode == 7) exeheaderlen = HEADERLEN_KDREAMS;
+	if(!m_Exefile.readExeImageSize( p_data, &exeimglen, &exeheaderlen))
+		return false;
 
 	// We need the EGADICT. Read it to our structure of Huffman, he needs it!
-	Huffman.readDictionary(p_exedata, exeheaderlen + EpisodeInfo[ep].OffEgaDict);
+	Huffman.readDictionary(p_data, exeheaderlen + EpisodeInfo[ep].OffEgaDict);
+	//huff_read_dictionary(exefile, exeheaderlen + EpisodeInfo[ep].OffEgaDict);
 
 	// Now we go to EGAHEAD
 	// TODO: Implement a structure which will look for the files first and take them if possible
 
 	// Read the EGAHEAD
-	unsigned char *p_head = p_exedata+EpisodeInfo[ep].OffEgaHead;
+	unsigned char *p_head = p_data+EpisodeInfo[ep].OffEgaHead;
 	unsigned long offset = 0;
 	unsigned long offset_limit;
 
@@ -224,9 +228,9 @@ bool CEGAGraphicsGalaxy::begin( int version, unsigned char *p_exedata )
 					break;
 				}
 			}
-			/*if(j == EpisodeInfo[ep].NumChunks)
+			if(j == EpisodeInfo[ep].NumChunks)
 				inlen = egagraphlen - offset;
-			Huffman.expand(CompEgaGraphData + offset, m_egagraph[i].data.data(), inlen, outlen);*/
+			Huffman.expand(CompEgaGraphData + offset, m_egagraph[i].data.data(), inlen, outlen);
 		}
 		else
 		{
@@ -285,6 +289,5 @@ bool CEGAGraphicsGalaxy::exportBMP()
 }
 
 CEGAGraphicsGalaxy::~CEGAGraphicsGalaxy()
-{
-}
+{}
 

@@ -339,6 +339,21 @@ void CMap::deAnimate(int x, int y)
     }
 }
 
+void CMap::drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile)
+{
+	/* animate animated tiles */
+	for(int i=1;i<MAX_ANIMTILES-1;i++)
+	{
+		if ( m_animtiles[i].slotinuse && m_animtiles[i].baseframe == tile )
+		{
+			mp_Tilemap->drawTile( dst, mx, my,
+					 m_animtiles[i].baseframe+
+					 ((m_animtiles[i].offset+m_curanimtileframe)%
+					  mp_tiles[m_animtiles[i].baseframe].animation));
+		}
+	}
+}
+
 void CMap::animateAllTiles()
 {
 	/* animate animated tiles */

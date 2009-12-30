@@ -2,10 +2,10 @@
 
 // Sound Wave projectile, emitted by Meeps (ep3)
 
-#define SNDWAVE_SPEED         10
-#define SNDWAVE_SPEED_FAST    20
+#define SNDWAVE_SPEED         40
+#define SNDWAVE_SPEED_FAST    80
 
-#define SNDWAVE_ANIM_RATE     80
+#define SNDWAVE_ANIM_RATE     20
 
 #define SNDWAVE_LEFT_FRAME    128
 #define SNDWAVE_RIGHT_FRAME   126

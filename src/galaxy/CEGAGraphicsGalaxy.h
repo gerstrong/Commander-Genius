@@ -10,16 +10,17 @@
 
 #include <string>
 #include <vector>
+#include "../fileio/CExeFile.h"
 
 #include "EGAStructs.h"
-
+//
 class CEGAGraphicsGalaxy
 {
 public:
-	CEGAGraphicsGalaxy(short episode, const std::string& path);
+	CEGAGraphicsGalaxy(short episode, const std::string& path, CExeFile &ExeFile);
 
-	bool loadData( int version, unsigned char *p_exedata );
-	bool begin( int version, unsigned char *p_exedata );
+	bool loadData();
+	bool begin();
 	bool exportBMP();
 
 	virtual ~CEGAGraphicsGalaxy();
@@ -30,6 +31,7 @@ private:
 	short m_episode;
 	std::vector<unsigned long> m_egahead;
 	std::vector<ChunkStruct> m_egagraph;
+	CExeFile &m_Exefile;
 };
 
 #endif /* CGALAXY_EGAGRAPHICS_H_ */

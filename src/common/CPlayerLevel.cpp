@@ -256,7 +256,7 @@ void CPlayer::playpushed()
     if (mp_option[OPT_CHEATS].value && g_pInput->getHoldedKey(KTAB)) return;
 	
     // if we're being pushed...
-    if (playpushed_x)
+    if (playpushed_x != 0)
     {
 		// do friction on push force...
 		if (playpushed_decreasetimer>PLAYPUSH_DECREASERATE)
@@ -280,7 +280,9 @@ void CPlayer::playpushed()
 		if (playpushed_x > 0 && blockedr) playpushed_x = 0;
 		if (playpushed_x < 0 && blockedl) playpushed_x = 0;
 
-		pinertia_x = 0;
+		if( (!(playcontrol[PA_X]>0) && playpushed_x > 0) or
+			(!(playcontrol[PA_X]<0) && playpushed_x < 0) )
+			pinertia_x = 0;
     }
 }
 
@@ -722,7 +724,7 @@ void CPlayer::bump( int pushamt, bool solid )
 	
 	playpushed_decreasetimer = 0;
 	if (!pjumping)
-		pdir = pshowdir = (pushamt<0)?LEFT:RIGHT;
+		pdir = pshowdir = (pushamt<0) ? LEFT : RIGHT;
 }
 
 int CPlayer::pollLevelTrigger()

@@ -16,11 +16,11 @@ TANK_LOOK, TANK_WALK };
 #define TANK_LOOKFIRE_PROB    500
 #define TANK_MINTRAVELDIST    200
 
-#define TANK_WALK_SPEED         16
-#define TANK_WALK_ANIM_TIME     15
-#define TANK_LOOK_ANIM_TIME     17
-#define TANK_LOOK_TOTALTIME     45
-#define TANK2_PREPAREFIRE_TIME  20
+#define TANK_WALK_SPEED         24
+#define TANK_WALK_ANIM_TIME     6
+#define TANK_LOOK_ANIM_TIME     4
+#define TANK_LOOK_TOTALTIME     100
+#define TANK2_PREPAREFIRE_TIME  6
 
 // frames
 #define TANK2_WALK_LEFT_FRAME       116
@@ -29,14 +29,14 @@ TANK_LOOK, TANK_WALK };
 
 #define TANKPUSHAMOUNT        16
 
-#define TANK_FIRE_PAUSE_TIME		100
+#define TANK_FIRE_PAUSE_TIME		25
 
 #define TANK2_SHOTS_PER_VOLLEY    4
-#define TANK2_MIN_TIME_TILL_CAN_FIRE  125
-#define TANK2_MAX_TIME_TILL_CAN_FIRE  200
+#define TANK2_MIN_TIME_TILL_CAN_FIRE  31
+#define TANK2_MAX_TIME_TILL_CAN_FIRE  50
 #define TANK2_TIME_BETWEEN_SHOTS  12
-#define TANK2_TIME_BEFORE_FIRE_WHEN_SEE      25
-#define TANK2_TIME_BETWEEN_FIRE_CAUSE_LEVEL  100
+#define TANK2_TIME_BEFORE_FIRE_WHEN_SEE      6
+#define TANK2_TIME_BETWEEN_FIRE_CAUSE_LEVEL  25
 
 #define Sprite g_pGfxEngine->Sprite
 
@@ -146,12 +146,12 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 				if (object.onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, object.scrx);
 				if (object.ai.tank.movedir==RIGHT)
 				{
-					newobject.spawn(object.x+object.bboxX2, object.y+object.bboxY1, OBJ_RAY, m_Episode);
+					newobject.spawn(object.x+object.bboxX2+(8<<STC), object.y+object.bboxY1+(5<<STC), OBJ_RAY, m_Episode);
 					newobject.ai.ray.direction = RIGHT;
 				}
 				else
 				{
-					newobject.spawn(object.x-object.bboxX2, object.y+object.bboxY1, OBJ_RAY, m_Episode);
+					newobject.spawn(object.x-(14<<STC), object.y+object.bboxY1+(5<<STC), OBJ_RAY, m_Episode);
 					newobject.ai.ray.direction = LEFT;
 				}
 				newobject.ai.ray.owner = object.m_index;

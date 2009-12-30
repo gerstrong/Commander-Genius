@@ -95,6 +95,8 @@ void CPlayGame::processLevelTrigger(int trigger)
 {
 	if (trigger == LVLTRIG_TANTALUS_RAY)
 	{
+		m_dark = false;
+		g_pGfxEngine->Palette.setdark(m_dark);
 		mp_Finale = new CTantalusRay(*mp_Map, m_Object, *mp_ObjectAI);
 		m_gameover = true;
 	}

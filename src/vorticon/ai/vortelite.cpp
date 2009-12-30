@@ -24,7 +24,7 @@ enum vortelite_actions{
 #define VORTELITE_MAX_FALL_SPEED     60
 #define VORTELITE_JUMP_FRICTION      8
 
-#define VORTELITE_WALK_SPEED         28
+#define VORTELITE_WALK_SPEED         30
 #define VORTELITE_WALK_ANIM_TIME     12
 
 // number of shots to kill
@@ -216,7 +216,7 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 		{ // slowly decrease upgoing rate
 			if (object.ai.vortelite.inertiay<VORTELITE_MAX_FALL_SPEED)
 			{
-				object.ai.vortelite.inertiay+=3;
+				object.ai.vortelite.inertiay+=4;
 			}
 			object.ai.vortelite.timer = 0;
 		} else object.ai.vortelite.timer++;

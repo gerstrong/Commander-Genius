@@ -214,15 +214,16 @@ void CObject::performCollision(CMap *p_map)
 {
 long x1,y1,x2,y2;
 stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
-CSprite *Sprite = g_pGfxEngine->Sprite.at(sprite);
 
 	if(m_type == OBJ_NESSIE) return;
+	if(m_type == OBJ_SNDWAVE) return;
+	if(m_type == OBJ_EARTHCHUNK) return;
 
 	// Get Rect values of the object
-	x1 = x + Sprite->m_bboxX1;
-	y1 = y + Sprite->m_bboxY1;
-	x2 = x + Sprite->m_bboxX2;
-	y2 = y + Sprite->m_bboxY2;
+	x1 = x + bboxX1;
+	y1 = y + bboxY1;
+	x2 = x + bboxX2;
+	y2 = y + bboxY2;
 
 	// first the first col-model can't be applied to scrubs. There are very special
 	if(m_type != OBJ_SCRUB)
@@ -357,16 +358,21 @@ bool CObject::checkSolidD(stTile *TileProperty, CMap *p_map, int x1, int x2, int
 	return false;
 }
 
-void CObject::processFalling()
+void CObject::processFalling(CMap *p_map)
 {
 	if(m_type == OBJ_NESSIE) return;
 	// make object fall if it must
-	#define OBJFALLSPEED   160
+	const int OBJFALLSPEED = 160;
+	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
+
 	if (!inhibitfall)
 	{
 		if (blockedd)
 		{
 			yinertia = 0;
+
+			if(!checkSolidD(TileProperty, p_map, x+bboxX1, x+bboxX2, y+bboxY2+(1<<STC)))
+				y+= (1<<STC);
 		}
 		else
 		{

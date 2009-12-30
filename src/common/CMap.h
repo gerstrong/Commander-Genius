@@ -56,6 +56,7 @@ public:
 
 	// Animation methods
 	void deAnimate(int x, int y);
+	void drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile);
 	void animateAllTiles();
 	void unregisterAnimtiles(int tile);
 	void registerAnimation(Uint32 x, Uint32 y, int c);

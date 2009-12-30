@@ -10,6 +10,7 @@
 #include "../../sdl/CTimer.h"
 #include "../../sdl/CVideoDriver.h"
 #include "../../sdl/CInput.h"
+#include "../../sdl/sound/CSound.h"
 #include "../../common/CMapLoader.h"
 #include "../../graphics/CGfxEngine.h"
 
@@ -39,7 +40,11 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 			// The player walked right
 			while(p_player->goto_x > p_player->x)
 			{
-				if( checkisSolidl(p_player) )	break;
+				if( checkisSolidl(p_player) )
+				{
+					p_player->blockedr = true;
+					break;
+				}
 				p_player->x++;
 			}
 		}
@@ -48,7 +53,11 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 			// The player walked left
 			while(p_player->goto_x < p_player->x)
 			{
-				if( checkisSolidr(p_player) )	break;
+				if( checkisSolidr(p_player) )
+				{
+					p_player->blockedl = true;
+					break;
+				}
 				p_player->x--;
 			}
 		}

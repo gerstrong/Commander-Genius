@@ -181,6 +181,7 @@ bool CPlayer::scrollTriggers()
 void CPlayer::Walking()
 {
 	int cur_pfastincrate;
+
     if (inhibitwalking && !psliding)
     {
 		if (!pfrozentime||m_episode!=1)
@@ -443,6 +444,9 @@ void CPlayer::WalkingAnimation()
 					else
 						g_pSound->playStereofromCoord(SOUND_KEEN_WALK2, PLAY_NOW, mp_object->at(m_player_number).scrx);
 					
+					if(blockedr || blockedl)
+						g_pSound->playStereofromCoord(SOUND_KEEN_BLOK, PLAY_NOW, mp_object->at(m_player_number).scrx);
+
 					if( m_playingmode != WORLDMAP && (blockedr || blockedl) )
 					{
 						g_pSound->playStereofromCoord(SOUND_KEEN_BUMPHEAD, PLAY_NOW, mp_object->at(m_player_number).scrx);

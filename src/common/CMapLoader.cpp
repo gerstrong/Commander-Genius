@@ -302,8 +302,8 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 					{
 						// in ep2 level 16 there a vorticon embedded in the floor for
 						// some reason! that's what the if() is for--to fix it.
-						// TODO: Is this still needed?
-						enemyobject.spawn(x<<CSF, y<<CSF, OBJ_VORT, episode);
+						// I believe, that the rest of the vorticons are supposed to fall!
+						enemyobject.spawn(x<<CSF, (y-1)<<CSF, OBJ_VORT, episode);
 					 }
 					 break;
 				case 2:    // garg (ep1) baby vorticon (ep2&3)
@@ -341,7 +341,7 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 					 else if (episode==3)
 						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_MEEP, episode);
 					 break;
-				case 5:    // tank robot (ep1&2) karate bear (ep3)
+				case 5:    // tank robot (ep1&2) vorticon ninja (ep3)
 					 if (episode==1)
 					 {
 						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_TANK, episode);

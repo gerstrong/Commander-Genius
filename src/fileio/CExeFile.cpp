@@ -205,6 +205,35 @@ int CExeFile::getEXECrc()
     }
 }
 
+const unsigned short EXEMZ = 0x5A4D;
+const unsigned short EXEZM = 0x4D5A;
+
+/* SM: Modified so we can give a value of "headerlen" we're expecting... this way
+ * we might support any exe file in the future */
+bool CExeFile::readExeImageSize(unsigned char *p_data_start, unsigned long *imglen, unsigned long *headerlen)
+{
+	EXE_HEADER head;
+
+	/* Read the header from the file if we can */
+	//if(fread(&head, sizeof(EXE_HEADER), 1, f) == 1)
+	memcpy(&head, p_data_start,sizeof(EXE_HEADER));
+	/* Check that the 'MZ' id is present */
+	if(head.mzid == EXEMZ || head.mzid == EXEZM)
+	{
+		/* Calculate the image size */
+		if (!*headerlen) {
+			*imglen = ((unsigned long)head.image_h - 1) * 512L + head.image_l - (unsigned long)head.header_size * 16L;
+			*headerlen = (unsigned long)head.header_size * 16L;
+		}
+		else *imglen = ((unsigned long)head.image_h - 1) * 512L + head.image_l - *headerlen;
+		return true;
+	}
+
+	// If we got here, something failed
+	*imglen = *headerlen = 0;
+	return false;
+}
+
 unsigned char* CExeFile::getRawData()
 {	return m_rawdata;	}
 

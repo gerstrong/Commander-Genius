@@ -11,11 +11,12 @@
 
 CObjectAI::CObjectAI(CMap *p_map, std::vector<CObject> &objvect, std::vector<CPlayer> &Player,
 					 stOption *p_options, int NumPlayers, int episode, int level,
-					 char difficulty, CPhysicsSettings &PhysicsSettings) :
+					 char difficulty, CPhysicsSettings &PhysicsSettings, bool &dark) :
 m_Objvect(objvect),
 m_Player(Player),
 m_PhysicsSettings(PhysicsSettings),
-m_difficulty(difficulty)
+m_difficulty(difficulty),
+m_dark(dark)
 {
 	mp_Map = p_map;
 	mp_Options = p_options;
@@ -38,7 +39,7 @@ void CObjectAI::process()
 
 		if( checkforAIObject(object) )
 		{
-			object.processFalling();
+			object.processFalling(mp_Map);
 			object.performCollision(mp_Map);
 
 		    // hit detection with players
@@ -158,7 +159,7 @@ void CObjectAI::performSpecialAIType( CObject &object )
 		case OBJ_SCRUB: scrub_ai(object); break;
 		case OBJ_TANKEP2: tankep2_ai(object, m_difficulty>1); break;
 		case OBJ_PLATFORM: platform_ai(object); break;
-		case OBJ_VORTELITE: vortelite_ai(object, /*m_dark*/false); break;
+		case OBJ_VORTELITE: vortelite_ai(object, m_dark); break;
 		case OBJ_SECTOREFFECTOR: se_ai(object); break;
 		case OBJ_BABY: baby_ai(object, m_Episode, m_difficulty>1); break;
 		case OBJ_EXPLOSION: explosion_ai(object); break;

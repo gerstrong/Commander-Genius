@@ -1,16 +1,16 @@
 #include "../../sdl/sound/CSound.h"
 
 #include "CObjectAI.h"
+#include "../../misc.h"
 
 // Baby Vorticon (the superfast little blue creatures that knock you down)
 // (ep 2 & 3)
-unsigned int rnd(void);
 
 enum vort_baby_actions{
 	BABY_RUN, BABY_DYING, BABY_DEAD
 };
 
-#define BABY_WALK_SPEED         32
+#define BABY_WALK_SPEED         64
 
 #define BABY_WALK_ANIM_RATE     6
 
@@ -19,14 +19,15 @@ enum vort_baby_actions{
 #define BABY_FRY_FRAME          56
 #define BABY_DEAD_FRAME         57
 
-#define BABY_JUMP_PROB			80
-#define BABY_BOUNCE_PROB		10
+#define BABY_JUMP_PROB			100
+#define BABY_BOUNCE_PROB		200
 
 #define BABY_FRY_TIME           20
 #define BABY_DIE_INERTIA        20
 
-#define BABY_JUMP_BIG           2
-#define BABY_JUMP_SMALL         1
+enum baby_jump_style{
+BABY_JUMP_BIG, BABY_JUMP_SMALL
+};
 
 void CObjectAI::baby_ai(CObject &object, int episode, bool hard)
 {
@@ -68,30 +69,16 @@ void CObjectAI::baby_ai(CObject &object, int episode, bool hard)
 		}
 
 		object.y += object.ai.baby.inertia_y;
+		object.ai.baby.inertia_y+=object.ai.baby.jumpdecrate;
 
-		/*if (object.ai.baby.jumpdectimer >= object.ai.baby.jumpdecrate)
-		{
-			if (object.ai.baby.inertia_y < (1<<CSF))
-			{
-				object.ai.baby.inertia_y+=(1<<2);
-			}
-			object.ai.baby.jumpdectimer = 0;
-		}
-		else object.ai.baby.jumpdectimer++;*/
-		//if (object.ai.baby.inertia_y < (1<<CSF))
-		{
-			object.ai.baby.inertia_y+=object.ai.baby.jumpdecrate;
-		}
 	}
-	else	// blockedd = 1, and inertia_y >= 0
+	else
 	{
 		object.ai.baby.inertia_y = 0;
 		if (object.ai.baby.state == BABY_RUN)
 		{
-			if (rand()%BABY_JUMP_PROB == (BABY_JUMP_PROB/2))
-			{
+			if(getProbability(BABY_JUMP_PROB))
 				baby_jump(object, BABY_JUMP_SMALL);
-			}
 		}
 	}
 
@@ -173,7 +160,7 @@ void CObjectAI::baby_ai(CObject &object, int episode, bool hard)
 			if (object.blockedr)
 			{
 				object.ai.baby.dir = LEFT;
-				if ((rand()&BABY_BOUNCE_PROB)==BABY_BOUNCE_PROB/2) baby_jump(object, BABY_JUMP_BIG);
+				if(getProbability(BABY_BOUNCE_PROB)) baby_jump(object, BABY_JUMP_BIG);
 			}
 			else
 			{
@@ -186,7 +173,7 @@ void CObjectAI::baby_ai(CObject &object, int episode, bool hard)
 			if (object.blockedl)
 			{
 				object.ai.baby.dir = RIGHT;
-				if ((rand()&BABY_BOUNCE_PROB)==BABY_BOUNCE_PROB/2) baby_jump(object, BABY_JUMP_BIG);
+				if (getProbability(BABY_BOUNCE_PROB)) baby_jump(object, BABY_JUMP_BIG);
 			}
 			else
 			{
@@ -224,7 +211,7 @@ void CObjectAI::baby_jump(CObject &object, int big)
 	}
 	else
 	{
-		object.ai.baby.inertia_y = -80;(rnd()%(BABY_MAX_SMALLJUMP-BABY_MIN_SMALLJUMP))+BABY_MIN_SMALLJUMP;
+		object.ai.baby.inertia_y = -80;//(rnd()%(BABY_MAX_SMALLJUMP-BABY_MIN_SMALLJUMP))+BABY_MIN_SMALLJUMP;
 		object.ai.baby.jumpdecrate = 1;//(rnd()%(BABY_SMALLJUMP_MAX_DEC_RATE-BABY_SMALLJUMP_MIN_DEC_RATE))+BABY_SMALLJUMP_MIN_DEC_RATE;
 	}
 

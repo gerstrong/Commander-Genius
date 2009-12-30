@@ -23,16 +23,17 @@ void CObjectAI::autoray_ai(CObject &Object)
 	if (!m_gunfiretimer)
 	{
 		CObject NewRay;
-		NewRay.spawn(Object.x, Object.y, OBJ_RAY, m_Episode);
 		NewRay.ai.ray.owner = -1;
 
 		if (Object.m_type==OBJ_AUTORAY_V)
 		{
+			NewRay.spawn(Object.x+(4<<STC), Object.y+(1<<CSF), OBJ_RAY, m_Episode);
 			NewRay.sprite = RAY_VERT_EP3;
 			NewRay.ai.ray.direction = DOWN;
 		}
 		else
 		{
+			NewRay.spawn(Object.x+(1<<CSF), Object.y+(4<<STC), OBJ_RAY, m_Episode);
 			NewRay.sprite = ENEMYRAYEP3;
 			NewRay.ai.ray.direction = RIGHT;
 		}

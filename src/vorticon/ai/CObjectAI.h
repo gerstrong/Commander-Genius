@@ -22,7 +22,7 @@ class CObjectAI {
 public:
 	CObjectAI(CMap *p_map, std::vector<CObject> &objvect, std::vector<CPlayer> &Player,
 			 stOption *p_options, int NumPlayers, int episode, int level,
-			 char difficulty, CPhysicsSettings &PhysicsSettings);
+			 char difficulty, CPhysicsSettings &PhysicsSettings, bool &dark);
 
 	// main functions
 	void process();
@@ -129,6 +129,7 @@ private:
 	int m_NumPlayers;
 	char m_difficulty;
 	int m_gunfiretimer;
+	bool &m_dark;
 
 	// for ep2: how many sparks (tantalus ray machines) are left
 	// you must destroy the tantalus ray generator before exiting
