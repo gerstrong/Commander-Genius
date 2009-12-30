@@ -296,7 +296,7 @@ int Cunlzexe::unpack(BYTE *p_input, std::vector<BYTE> &outdata){
         if(p-data>0x4000){
         	if(outdata.size() < 0x2000+outpos)
         		outdata.resize(0x2000+outpos);
-        	memcpy(outdata.data()+outpos, data, (sizeof data[0])*0x2000);
+        	memcpy(&outdata[0]+outpos, data, (sizeof data[0])*0x2000);
         	outpos += 0x2000;
             p-=0x2000;
             //memcpy(data,data+0x2000,p-data);
@@ -344,7 +344,7 @@ int Cunlzexe::unpack(BYTE *p_input, std::vector<BYTE> &outdata){
     	unsigned long vec_size = outdata.size();
     	if(vec_size < size+outpos)
     		outdata.resize(size+outpos);
-        memcpy(outdata.data()+outpos, data, size);
+        memcpy(&outdata[0]+outpos, data, size);
         outpos += size;
     }
     loadsize=outpos-initial_outpos;
@@ -362,7 +362,7 @@ void Cunlzexe::wrhead(std::vector<BYTE> &outdata) {
     ohead[1]=((WORD)loadsize+(ohead[4]<<4)) & 0x1ff;	/* v0.7 */
     ohead[2]=(WORD)((loadsize+((long)ohead[4]<<4)+0x1ff) >> 9); /* v0.7 */
 
-    memcpy(outdata.data(), ohead, (sizeof ohead[0])*0x0e );
+    memcpy(&outdata[0], ohead, (sizeof ohead[0])*0x0e );
 }
 
 /*-------------------------------------------*/

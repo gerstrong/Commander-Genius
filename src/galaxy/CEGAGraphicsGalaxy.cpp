@@ -230,7 +230,7 @@ bool CEGAGraphicsGalaxy::begin()
 			}
 			if(j == EpisodeInfo[ep].NumChunks)
 				inlen = egagraphlen - offset;
-			Huffman.expand(CompEgaGraphData + offset, m_egagraph[i].data.data(), inlen, outlen);
+			Huffman.expand(CompEgaGraphData + offset, &m_egagraph[i].data[0], inlen, outlen);
 		}
 		else
 		{
@@ -254,7 +254,7 @@ bool CEGAGraphicsGalaxy::begin()
 bool CEGAGraphicsGalaxy::exportBMP()
 {
     int ep = m_episode - 4;
-    BitmapHeadStruct *BmpHead = (BitmapHeadStruct *)m_egagraph[0].data.data();
+    BitmapHeadStruct *BmpHead = (BitmapHeadStruct *)m_egagraph[0].data[0];
 
 	for(size_t i = 0; i < EpisodeInfo[ep].NumBitmaps; i++)
 	{
@@ -262,7 +262,7 @@ bool CEGAGraphicsGalaxy::exportBMP()
 		SDL_SetColors( sfc, g_pGfxEngine->Palette.m_Palette, 0, 255);
 		if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
 
-		if(m_egagraph[EpisodeInfo[ep].IndexBitmaps + i].data.data())
+		if(m_egagraph[EpisodeInfo[ep].IndexBitmaps + i].data[0])
 		{
 			/* Decode the bitmap data */
 			for(int p = 0; p < 4; p++)
@@ -272,7 +272,7 @@ bool CEGAGraphicsGalaxy::exportBMP()
 				Uint8* pixel = (Uint8*) sfc->pixels;
 
 				/* Decode the lines of the bitmap data */
-				pointer = m_egagraph[EpisodeInfo[ep].IndexBitmaps + i].data.data() + p * BmpHead[i].Width * BmpHead[i].Height;
+				pointer = &m_egagraph[EpisodeInfo[ep].IndexBitmaps + i].data[0] + p * BmpHead[i].Width * BmpHead[i].Height;
 				for(size_t y = 0; y < BmpHead[i].Height; y++)
 					memcpy(pixel, pointer + y * BmpHead[i].Width, BmpHead[i].Width);
 			}
