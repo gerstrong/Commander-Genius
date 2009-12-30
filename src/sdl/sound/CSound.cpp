@@ -7,7 +7,7 @@
 
 #include "../../keen.h"
 #include "CSound.h"
-#include "../../include/fileio.h"
+#include "../../fileio.h"
 #include "../../CLogFile.h"
 #include "../../hqp/CMusic.h"
 #include "../../vorticon/sounds.h"

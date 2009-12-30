@@ -31,8 +31,6 @@ m_Player(Player)
 	m_mustfinishgame = false;
 
 	mp_Textbox = NULL;
-
-	CFinale::init_ToBeContinued();
 }
 
 void CEndingEp2::process()

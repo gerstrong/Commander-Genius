@@ -18,7 +18,6 @@ class CFinale {
 public:
 	CFinale();
 
-	void init_ToBeContinued();
 	void showEndingText();
 	void initEpilogue(std::string &text);
 

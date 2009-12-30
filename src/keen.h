@@ -13,8 +13,6 @@
 #include "funcdefs.h"
 #include "fileio/CTileLoader.h"
 
-#include "include/playeraction.h"
-
 #define CSF    9
 #define TILE_W			16
 #define TILE_H			16

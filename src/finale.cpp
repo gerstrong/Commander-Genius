@@ -5,7 +5,7 @@
  */
 
 #include "keen.h"
-#include "include/fileio.h"
+#include "fileio.h"
 #include "graphics/CGfxEngine.h"
 #include "sdl/CVideoDriver.h"
 #include "FindFile.h"

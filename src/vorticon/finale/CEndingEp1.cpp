@@ -26,8 +26,6 @@ CEndingEp1::CEndingEp1(CMap *p_map, std::vector<CPlayer> &Player) :
 	m_mustsetup = true;
 	m_mustfinishgame = false;
 	mp_Textbox = NULL;
-
-	CFinale::init_ToBeContinued();
 }
 
 void CEndingEp1::process()

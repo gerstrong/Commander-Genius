@@ -13,6 +13,7 @@
 #include <fstream>
 #include "../FindFile.h"
 #include "../CLogFile.h"
+#include "../fileio.h"
 #include "../include/fileio/rle.h"
 #include "../graphics/CGfxEngine.h"
 #include "../sdl/CVideoDriver.h"

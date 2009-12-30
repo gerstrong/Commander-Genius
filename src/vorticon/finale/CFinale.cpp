@@ -14,23 +14,6 @@
 CFinale::CFinale() : m_mustfinishgame(false), mp_TextViewer(NULL) {
 }
 
-void CFinale::init_ToBeContinued()
-{
-	/*int i;
-	 std::string text;
-	 int dlgX, dlgY, dlgW, dlgH;
-
-	 // remove all objects because eseq_showmsg will call drawobjects
-	 for(i=0;i<MAX_OBJECTS;i++)
-     objects[i].exists = 0;
-
-	 text = getstring("TO_BE_CONTINUED");
-	 dlgX = GetStringAttribute("TO_BE_CONTINUED", "LEFT");
-	 dlgY = GetStringAttribute("TO_BE_CONTINUED", "TOP");
-	 dlgW = GetStringAttribute("TO_BE_CONTINUED", "WIDTH");
-	 dlgH = GetStringAttribute("TO_BE_CONTINUED", "HEIGHT");*/
-}
-
 void CFinale::showEndingText()
 {
 	if(!mp_TextViewer)
