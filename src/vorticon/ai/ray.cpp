@@ -78,7 +78,7 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 			{
 				if (it_obj->m_type==OBJ_RAY) continue;
 				
-				if (it_obj->canbezapped && it_obj->onscreen)
+				if (it_obj->canbezapped && it_obj->onscreen && it_obj->m_index != object.ai.ray.owner)
 				{
 					if (it_obj->hitdetect(object))
 					{
