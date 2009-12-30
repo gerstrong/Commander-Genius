@@ -70,7 +70,6 @@ public:
 	unsigned char hity;
 	
 	bool needinit;    // 1=new object--requires initilization
-	unsigned char wasoffscreen;  // set to 1 when object goes offscreen
 	bool dead;
 	
 	// data for ai and such, used differently depending on

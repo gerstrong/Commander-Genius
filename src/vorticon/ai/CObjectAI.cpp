@@ -88,8 +88,6 @@ void CObjectAI::process()
 ///
 bool CObjectAI::checkforAIObject( CObject &object )
 {
-	int scrx = (object.x>>STC)-mp_Map->m_scrollx;
-	int scry = (object.y>>STC)-mp_Map->m_scrolly;
 	unsigned int type = object.m_type;
 
 	if ( !object.exists || type==OBJ_PLAYER ) return false;
@@ -114,18 +112,8 @@ bool CObjectAI::checkforAIObject( CObject &object )
     if (object.x > (mp_Map->m_width<<CSF) || object.y > (mp_Map->m_height<<CSF) )
 		return false;
 
-    if (scrx < -(g_pGfxEngine->Sprite[object.sprite]->getWidth()) || scrx > g_pVideoDriver->getGameResolution().w
-		|| scry < -(g_pGfxEngine->Sprite[object.sprite]->getHeight()) || scry > g_pVideoDriver->getGameResolution().h)
-    {
-    	object.onscreen = false;
-    	object.wasoffscreen = true;
-        if (type==OBJ_ICEBIT) object.exists = false;
-    }
-    else
-    {
-    	object.onscreen = true;
-    	object.hasbeenonscreen = true;
-    }
+   	object.onscreen = true;
+   	object.hasbeenonscreen = true;
 
 	if (object.hasbeenonscreen || object.zapped ||
 		type==OBJ_RAY ||

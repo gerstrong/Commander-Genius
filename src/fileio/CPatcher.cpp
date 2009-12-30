@@ -94,6 +94,14 @@ void CPatcher::patchMemory()
 					}
 				}
 			}
+			else if( strCaseStartsWith(line,"\%level.hint") )
+			{
+				// You have a level hint. Very good, lets read it and patch!
+				std::string newbuf = line.substr(strlen("\%level.hint"));
+				TrimSpaces(newbuf);
+				PatchLevelhint(atoi(newbuf));
+			}
+
 		}
 		
 		if(!m_TextList.empty())
@@ -182,4 +190,42 @@ void CPatcher::patchMemFromText(unsigned long offset, std::string &patchtext)
 {
 	memcpy( m_data+offset, patchtext.c_str(), patchtext.size());
 	return;
+}
+
+void CPatcher::PatchLevelhint(int level)
+{
+	unsigned char *p_patch;
+	unsigned long offset=0;
+
+	// Check for which level is it for.
+	if(m_episode == 1)
+	{
+		switch(level)
+		{
+		case 2: offset = 0x15080; break;
+		case 6: offset = 0x1511A; break;
+		case 11: offset = 0x152E8; break;
+		case 15: offset = 0x153DB; break;
+		}
+	}
+	else if(m_episode == 2)
+	{
+		// TODO: I don't know those offsets, but it's somewhere in the code. Too laz to look for now...
+	}
+
+	p_patch = m_data + offset;
+
+	std::string buf;
+	do
+	{
+		m_TextList.pop_front();
+		buf = m_TextList.front();
+
+		memcpy(p_patch, buf.c_str(), buf.size());
+		p_patch += buf.size();
+	} while( !m_TextList.empty() && !strCaseStartsWith(buf,"%") &&
+			 !buf.empty() && !strCaseStartsWith(buf,"\r") );
+	*p_patch = '\0';
+
+	// TODO: The ending text is not right yet. Check which offset indicates ending text.
 }

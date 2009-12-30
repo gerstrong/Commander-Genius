@@ -62,12 +62,12 @@ void CObjectAI::yorp_ai(CObject &object, CPlayer *p_player, bool hardmode)
 	
 	// fix where yorps can get stunned, go offscreen, then
 	// come back hours later and they're still doing the stun animation
-	if (object.wasoffscreen)
+	/*if (object.wasoffscreen)
 	{
 		object.wasoffscreen = false;
 		if (object.ai.yorp.state==YORP_STUNNED)
 			object.needinit = true;
-	}
+	}*/
 	if (object.needinit)
 	{  // first time initilization
 		object.ai.yorp.state = YORP_LOOK;

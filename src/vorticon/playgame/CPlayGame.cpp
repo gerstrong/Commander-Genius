@@ -627,6 +627,7 @@ void CPlayGame::drawObjects()
 	// draw all objects. drawn in reverse order because the player sprites
 	// are in the first few indexes and we want them to come out on top.
 	CObject *p_object;
+	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
 	for ( i=m_Object.size()-1 ; i>=0 ; i--)
 	{
 		p_object = &m_Object[i];
@@ -637,7 +638,8 @@ void CPlayGame::drawObjects()
 			p_object->scrx = (p_object->x>>STC)-mp_Map->m_scrollx;
 			p_object->scry = (p_object->y>>STC)-mp_Map->m_scrolly;
 
-			Sprite.drawSprite( g_pVideoDriver->getBlitSurface(), p_object->scrx, p_object->scry );
+			if(p_object->scry < gameres.w && p_object->scry < gameres.h )
+				Sprite.drawSprite( g_pVideoDriver->getBlitSurface(), p_object->scrx, p_object->scry );
 
 			p_object->bboxX1 = Sprite.m_bboxX1;
 			p_object->bboxX2 = Sprite.m_bboxX2;
