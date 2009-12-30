@@ -87,16 +87,6 @@ struct stControl
 	stControl() : eseq(false), dtm(false), skipstarting(false) {}
 };
 
-struct stGameData
-{
-	std::string DataDirectory;
-	short Episode;
-	std::string Name;
-	std::string FileList[MAX_NUMBER_OF_FILES];
-	stGameData() : Episode(0) {}
-};
-
-
 typedef struct stResources
 {
 	unsigned short GameSelected;

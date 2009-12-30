@@ -8,6 +8,8 @@
 #include "../../CLogFile.h"
 #include "../../graphics/effects/CVibrate.h"
 
+#define ANKH_SHIELD_FRAME       61
+
 // "Sector Effector" object (The name comes from D3D)...it's basically
 // an object which can do a number of different things depending on it's
 // .ai.se.type attribute, usually it affects the map or the enviorment

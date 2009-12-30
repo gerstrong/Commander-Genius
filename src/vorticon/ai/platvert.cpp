@@ -15,7 +15,8 @@ PLATVERT_MOVE, PLATVERT_WAIT
 
 void CObjectAI::platvert_ai(CObject& object)
 {
-	unsigned int i,p;
+	unsigned int p;
+	int i;
 
 	if (object.needinit)
 	{  // first time initilization
