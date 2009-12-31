@@ -108,7 +108,7 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	
 	if ( !mp_map->mp_data ) // Is this necessary ?
 	{
-		g_pLogFile->textOut(RED,"loadmap(): not enought memory to load map<br>");
+		g_pLogFile->textOut(RED,"loadmap(): not enough memory to load the map<br>");
 		return false;
 	}
 	
@@ -195,10 +195,8 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 				std::vector<CPlayer>::iterator it_player = mp_vec_Player->begin();
 				for(; it_player != mp_vec_Player->end() ; it_player++ )
 				{
-					int newx = x + (it_player->m_player_number-1)%2;
-					int newy = y + (it_player->m_player_number-1)/2;
-					it_player->goto_x = it_player->x = newx << CSF;
-					it_player->goto_y = it_player->y = newy << CSF;
+					it_player->goto_x = it_player->x = x << CSF;
+					it_player->goto_y = it_player->y = y << CSF;
 				}
 				mp_map->m_objectlayer[x][y] = 0;
 			}
