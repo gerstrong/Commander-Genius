@@ -15,7 +15,6 @@
 
 typedef struct
 {
-	int masktile;        // if nonzero, specifies a mask for this tile
 	int chgtile;         // tile to change to when level completed (for wm)
 	// or tile to change to when picked up (in-level)
 	unsigned int animOffset;   // starting offset from the base frame

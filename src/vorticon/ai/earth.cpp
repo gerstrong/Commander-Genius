@@ -17,6 +17,7 @@ void CObjectAI::explosion_ai(CObject &object)
 		object.ai.ray.direction = 1;    // frame forward
 		object.inhibitfall = true;
 		object.needinit = false;
+		object.onscreen = true;
 	}
 
 	object.sprite = EXPLODESPRITE + object.ai.ray.animframe;
@@ -52,6 +53,7 @@ void CObjectAI::earthchunk_ai(CObject &object)
 	{
 		object.inhibitfall = true;
 		object.needinit = false;
+		object.onscreen = true;
 	}
 	if (!object.onscreen) deleteObj(object);
 

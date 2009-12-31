@@ -92,6 +92,8 @@ bool CObjectAI::checkforAIObject( CObject &object )
 
 	if ( !object.exists || type==OBJ_PLAYER ) return false;
 
+	if( type==OBJ_EXPLOSION || type==OBJ_EARTHCHUNK ) return true;
+
 	// Check if enemy is near enough. If he isn't, don't make him perform. Exception is on the map
 	if(m_Level != 80)
 	{

@@ -217,7 +217,7 @@ stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 
 	if(m_type == OBJ_NESSIE) return;
 	if(m_type == OBJ_SNDWAVE) return;
-	if(m_type == OBJ_EARTHCHUNK) return;
+	//if(m_type == OBJ_EARTHCHUNK) return;
 
 	// Get Rect values of the object
 	x1 = x + bboxX1;

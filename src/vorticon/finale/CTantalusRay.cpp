@@ -15,8 +15,8 @@
 unsigned int rnd(void);
 
 const int TANTALUS_SPRITE = 58;
-const int SHOT_SPD_X = (21*6);
-const int SHOT_SPD_Y = (9*6);
+const int SHOT_SPD_X = (42*6);
+const int SHOT_SPD_Y = (18*6);
 
 const int EARTHCHUNK_BIG_UP = 64;
 const int EARTHCHUNK_BIG_DN = 66;

@@ -10,7 +10,7 @@
 #ifndef SPRITEDEFINES_H_
 #define SPRITEDEFINES_H_
 
-#define MAX_SPRITES  1000
+#define MAX_SPRITES  500
 
 // Normals sprites
 #define ENEMYRAY           109

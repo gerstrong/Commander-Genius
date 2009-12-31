@@ -88,7 +88,6 @@ bool CTileLoader::load()
 	
 	for(j=0 ; j < m_numtiles ; j++)
 	{
-		mp_TileProperty[j].masktile = 0;
 		mp_TileProperty[j].animation = m_data[2*j];
 		mp_TileProperty[j].behaviour = m_data[2*(m_numtiles)+2*j];
 		mp_TileProperty[j].behaviour += m_data[2*(m_numtiles)+2*j+1] << 8;
@@ -100,6 +99,13 @@ bool CTileLoader::load()
 		mp_TileProperty[j].bdown += m_data[8*(m_numtiles)+2*j+1] << 8;
 		mp_TileProperty[j].bleft = m_data[10*(m_numtiles)+2*j];
 		mp_TileProperty[j].bleft += m_data[10*(m_numtiles)+2*j+1] << 8;
+
+		if( mp_TileProperty[j].bleft && mp_TileProperty[j].bright &&
+			mp_TileProperty[j].bup && mp_TileProperty[j].bdown	)
+		{ // This should solve some tile bugs in Episode 2
+			if(mp_TileProperty[j].behaviour == -2 or  mp_TileProperty[j].behaviour == -1)
+				mp_TileProperty[j].behaviour = 0;
+		}
 	}
 	
 	int value;
