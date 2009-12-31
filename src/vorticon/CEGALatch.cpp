@@ -183,8 +183,14 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	else filename = path + "/fonts.bmp";
 
 	Font->optimizeSurface();
-	if(Font->loadHiColourFont(filename)) // This is loaded again in order to get hi-colour fonts
-		g_pLogFile->textOut(GREEN, "VGA Fontmap for the game has been loaded successfully!");
+	if(!Font->loadHiColourFont(filename)) // This is loaded again in order to get hi-colour fonts
+	{
+		filename = "data/gfx/fonts.bmp";
+		if(Font->loadHiColourFont(filename))
+			g_pLogFile->textOut(GREEN, "VGA Fontmap for the game has been loaded successfully!");
+	}
+	else g_pLogFile->textOut(GREEN, "VGA Fontmap for the game has been loaded successfully!");
+
 	Font->generateSpecialTwirls();
 	Font->generateGlowFonts();
 	Font->generateInverseFonts();
@@ -233,7 +239,13 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	// Load Hi-Colour, VGA, SVGA Tiles into the tilemap
 	if(path == "") filename = "ck" + itoa(episode) + "tiles.bmp";
 	else filename = path + "/ck" + itoa(episode) + "tiles.bmp";
-	if(Tilemap->loadHiresTile(filename))
+	if(!Tilemap->loadHiresTile(filename))
+	{
+		filename = "data/gfx/ck" + itoa(episode) + "tiles.bmp";
+		if(Tilemap->loadHiresTile(filename))
+			g_pLogFile->textOut(GREEN, "VGA Bitmap for Tileset has been loaded successfully!");
+	}
+	else
 		g_pLogFile->textOut(GREEN, "VGA Bitmap for Tileset has been loaded successfully!");
 
 	// Adapt the tilemap to the display, so they are faster blit

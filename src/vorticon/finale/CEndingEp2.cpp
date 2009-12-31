@@ -54,7 +54,7 @@ void CEndingEp2::HeadsForEarth()
 	{
 		//Initialization
 		std::string path = mp_Map->m_gamepath;
-		CMapLoader MapLoader(mp_Map, &m_Player[0]);
+		CMapLoader MapLoader(mp_Map, &m_Player);
 		MapLoader.load(2, 81, path);
 
 		m_Player[0].hideplayer = false;
@@ -112,7 +112,7 @@ void CEndingEp2::LimpsHome()
 	{
 		//Initialization
 		std::string path = mp_Map->m_gamepath;
-		CMapLoader MapLoader(mp_Map, &m_Player[0]);
+		CMapLoader MapLoader(mp_Map, &m_Player);
 		MapLoader.load(2, 81, path);
 
 		m_Player[0].hideplayer = false;

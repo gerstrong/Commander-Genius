@@ -140,7 +140,7 @@ bool CPlayGame::init()
 
 	// Create an empty map
 	mp_Map = new CMap( g_pVideoDriver->getScrollSurface(), g_pGfxEngine->Tilemap);
-	CMapLoader MapLoader( mp_Map, &m_Player[0] );
+	CMapLoader MapLoader( mp_Map, &m_Player );
 	MapLoader.m_checkpointset = m_checkpointset;
 	MapLoader.mp_objvect = &m_Object;
 

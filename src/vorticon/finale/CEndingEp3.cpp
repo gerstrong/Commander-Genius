@@ -48,7 +48,7 @@ void CEndingEp3::HonorScene()
 	{
 		//Initialization
 		std::string path = mp_Map->m_gamepath;
-		CMapLoader MapLoader(mp_Map, &m_Player[0]);
+		CMapLoader MapLoader(mp_Map, &m_Player);
 		MapLoader.load(3, 81, path);
 
 		m_Player[0].hideplayer = false;

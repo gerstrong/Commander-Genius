@@ -117,7 +117,8 @@ bool CEGAGraphics::loadData( int version, unsigned char *p_exedata )
     m_Sprit = new CEGASprit(SpritePlaneSize,
 							SpriteStart,
 							NumSprites,
-							SpriteLocation);
+							SpriteLocation,
+							m_path);
     m_Sprit->loadHead(data);
 	
     if(m_path == "")

@@ -39,7 +39,9 @@ char LoadTGA(const std::string &file, unsigned char **image, int *widthout, int 
 CEGASprit::CEGASprit(int planesize,
 					 long spritestartloc,
 					 int numsprites,
-					 long spriteloc)
+					 long spriteloc,
+					 const std::string &gamepath) :
+m_gamepath(gamepath)
 {
 	m_planesize = planesize;
 	m_spritestartloc = spritestartloc;
@@ -225,9 +227,13 @@ char CEGASprit::LoadTGASprite( const std::string &filename, CSprite *sprite )
 	std::string fname;
 	Uint8 *pixel, *maskpx;
 	
-	fname = GFXDIR + filename;
+	fname = m_gamepath + filename;
 	if (LoadTGA(fname, &image, &w, &h))
-		return 1;
+	{
+		fname = GFXDIR + filename;
+		if (LoadTGA(fname, &image, &w, &h))
+			return 1;
+	}
 	
 	if (w > MAX_SPRITE_WIDTH || h > MAX_SPRITE_HEIGHT)
 	{
@@ -341,7 +347,7 @@ void CEGASprit::DeriveSpecialSprites( CTilemap *tilemap, std::vector<CSprite*> &
 
     // TODO: Demo-Sprite must be added. This time loaded from one TGA File! The TGA is already there!
 
-	// TODO: Those sprite for second player, and so on should go into the CPlayer Class, because,
+	// TODO: Those sprite for the other players, and so on should go into the CPlayer Class, because,
 	// first we don't often need them and second, we can only load, if the sprites are set up, which is not the case
     // create BLANKSPRITE
 	//CSprite** sprite = &g_pGfxEngine->Sprite[0];
@@ -361,11 +367,12 @@ void CEGASprit::DeriveSpecialSprites( CTilemap *tilemap, std::vector<CSprite*> &
 	 sprite[s]->replaceSpriteColor( 12, 11 ,0 );
 	 sprite[s]->replaceSpriteColor( 4, 3 ,0 );
 	 s++;
-	}
+	}*/
 
     // create the sprites for player 3
     // Unsupported for now...
-     */
+
+
 }
 
 void CEGASprit::CreateYellowSpriteofTile( CTilemap *tilemap, Uint16 tile, CSprite* sprite )

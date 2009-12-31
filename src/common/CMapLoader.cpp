@@ -18,8 +18,8 @@
 #include "../graphics/CGfxEngine.h"
 #include "../sdl/CVideoDriver.h"
 
-CMapLoader::CMapLoader(CMap* p_map, CPlayer *p_Player) :
-mp_Player(p_Player)
+CMapLoader::CMapLoader(CMap* p_map, std::vector<CPlayer> *p_PlayerVect) :
+mp_vec_Player(p_PlayerVect)
 {
 	mp_objvect = NULL;
 	mp_map = p_map;
@@ -192,8 +192,14 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 		case 255:            // player start
 			if(!m_checkpointset)
 			{
-				mp_Player->goto_x = mp_Player[0].x = x << CSF;
-				mp_Player->goto_y = mp_Player[0].y = y << CSF;
+				std::vector<CPlayer>::iterator it_player = mp_vec_Player->begin();
+				for(; it_player != mp_vec_Player->end() ; it_player++ )
+				{
+					int newx = x + (it_player->m_player_number-1)%2;
+					int newy = y + (it_player->m_player_number-1)/2;
+					it_player->goto_x = it_player->x = newx << CSF;
+					it_player->goto_y = it_player->y = newy << CSF;
+				}
 				mp_map->m_objectlayer[x][y] = 0;
 			}
 			break;
@@ -214,49 +220,53 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 			}
 			break;
 		default:             // level marker
-			if ((t&0x7fff) <= 16 && mp_Player->mp_levels_completed[t&0x00ff] )
+			std::vector<CPlayer>::iterator it_player = mp_vec_Player->begin();
+			for(; it_player != mp_vec_Player->end() ; it_player++ )
 			{
-				mp_map->m_objectlayer[x][y] = t;
-				
-				// Change the level tile to a done sign
-				int newtile = g_pGfxEngine->Tilemap->mp_tiles[mp_map->at(x,y)].chgtile;
-				
-				// Consistency check! Some Mods have issues with that.
-				if(episode == 1 || episode == 2)
+				if ((t&0x7fff) <= 16 && it_player->mp_levels_completed[t&0x00ff] )
 				{
-					//Use default small tile
-					newtile = 77;
-					
-					// try to guess, if it is a 32x32 (4 16x16) Tile
-					if(mp_map->at(x-1,y-1) == (unsigned int) newtile &&
-					   mp_map->at(x,y-1) == (unsigned int) newtile  &&
-					   mp_map->at(x-1,y) == (unsigned int) newtile)
+					mp_map->m_objectlayer[x][y] = t;
+
+					// Change the level tile to a done sign
+					int newtile = g_pGfxEngine->Tilemap->mp_tiles[mp_map->at(x,y)].chgtile;
+
+					// Consistency check! Some Mods have issues with that.
+					if(episode == 1 || episode == 2)
 					{
-						mp_map->setTile(x-1, y-1, 78);
-						mp_map->setTile(x, y-1, 79);
-						mp_map->setTile(x-1, y, 80);
-						newtile = 81; // br. this one
+						//Use default small tile
+						newtile = 77;
+
+						// try to guess, if it is a 32x32 (4 16x16) Tile
+						if(mp_map->at(x-1,y-1) == (unsigned int) newtile &&
+								mp_map->at(x,y-1) == (unsigned int) newtile  &&
+								mp_map->at(x-1,y) == (unsigned int) newtile)
+						{
+							mp_map->setTile(x-1, y-1, 78);
+							mp_map->setTile(x, y-1, 79);
+							mp_map->setTile(x-1, y, 80);
+							newtile = 81; // br. this one
+						}
 					}
+					else if(episode == 3)
+					{
+						newtile = 56;
+						// try to guess, if it is a 32x32 (4 16x16) Tile
+						if(mp_map->at(x-1, y-1) == (unsigned int) newtile &&
+								mp_map->at(x, y-1) == (unsigned int) newtile  &&
+								mp_map->at(x-1, y) == (unsigned int) newtile)
+						{
+							mp_map->setTile(x-1, y-1, 52);
+							mp_map->setTile(x, y-1, 53);
+							mp_map->setTile(x-1, y, 54);
+							newtile = 55;
+						}
+					}
+					mp_map->setTile(x, y, newtile);
 				}
-				else if(episode == 3)
+				else
 				{
-					newtile = 56;
-					// try to guess, if it is a 32x32 (4 16x16) Tile
-					if(mp_map->at(x-1, y-1) == (unsigned int) newtile &&
-					   mp_map->at(x, y-1) == (unsigned int) newtile  &&
-					   mp_map->at(x-1, y) == (unsigned int) newtile)
-					{
-						mp_map->setTile(x-1, y-1, 52);
-						mp_map->setTile(x, y-1, 53);
-						mp_map->setTile(x-1, y, 54);
-						newtile = 55;
-					}
+					mp_map->m_objectlayer[x][y] = t;
 				}
-				mp_map->setTile(x, y, newtile);
-			}
-			else
-			{
-				mp_map->m_objectlayer[x][y] = t;
 			}
 			break;
 	}
@@ -277,11 +287,15 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 			if(y >= mp_map->m_height-2) // Edge bug. Keen would fall in some levels without this.
 				x = 4;
 
-			mp_Player[0].goto_x = mp_Player[0].x = (x<<CSF);
-			mp_Player[0].goto_y = mp_Player[0].y = (y<<CSF);
-			mp_Player[0].plastfalling = true;
-			mp_Player[0].pfalling = true;
-			mp_Player[0].pshowdir = RIGHT;
+			std::vector<CPlayer>::iterator it_player = mp_vec_Player->begin();
+			for(; it_player != mp_vec_Player->end() ; it_player++ )
+			{
+				it_player->goto_x = it_player->x = (x<<CSF);
+				it_player->goto_y = it_player->y = (y<<CSF);
+				it_player->plastfalling = true;
+				it_player->pfalling = true;
+				it_player->pshowdir = RIGHT;
+			}
 		}
 		else
 		{

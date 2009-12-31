@@ -13,6 +13,7 @@
 #include "../CLogFile.h"
 #include "../include/fileio/rle.h"
 #include "../sdl/CVideoDriver.h"
+#include "../graphics/CGfxEngine.h"
 
 std::string formatPathString(const std::string& path);
 
@@ -339,17 +340,26 @@ void CMap::deAnimate(int x, int y)
     }
 }
 
+// Draw an animated tile. If it's not animated draw it anyway
 void CMap::drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile)
 {
-	/* animate animated tiles */
-	for(int i=1;i<MAX_ANIMTILES-1;i++)
-	{
-		if ( m_animtiles[i].slotinuse && m_animtiles[i].baseframe == tile )
+	stTile &TileProperty = g_pGfxEngine->Tilemap->mp_tiles[tile];
+
+	if(TileProperty.animation < 2)
+	{ // Unanimated tiles
+		mp_Tilemap->drawTile( dst, mx, my, tile );
+	}
+	else
+	{ // animate animated tiles
+		for(int i=1;i<MAX_ANIMTILES-1;i++)
 		{
-			mp_Tilemap->drawTile( dst, mx, my,
-					 m_animtiles[i].baseframe+
-					 ((m_animtiles[i].offset+m_curanimtileframe)%
-					  mp_tiles[m_animtiles[i].baseframe].animation));
+			if ( m_animtiles[i].slotinuse && m_animtiles[i].baseframe == tile )
+			{
+				mp_Tilemap->drawTile( dst, mx, my,
+						m_animtiles[i].baseframe+
+						((m_animtiles[i].offset+m_curanimtileframe)%
+								mp_tiles[m_animtiles[i].baseframe].animation) );
+			}
 		}
 	}
 }

@@ -168,35 +168,23 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 			
 		case 27:
 			giveAnkh();
-			riseBonus(ANKHUP_SPRITE, (mpx)-(2<<CSF), (mpy)-(2<<CSF));
+			riseBonus(ANKHUP_SPRITE, mpx, mpy );
 			break;
 
 		case 28:
 			inventory.charges++;
 			g_pSound->playSound(SOUND_GET_ITEM, PLAY_NOW);
-			riseBonus(SHOTUP_SPRITE, mpx-(2<<CSF), mpy-(2<<CSF));
+			riseBonus(SHOTUP_SPRITE, mpx, mpy );
 			break;
 			
 		case 17:
-			exitXpos = (mpx+2)<<4;
+			exitXpos = (mpx+2)<<TILE_S;
 			touchedExit();
 			break;
 			
 		case 23:break;	// these are switches. They cannot not be picked up!
 		case 25:break;  // Refer to JumpandPogo to check the activation code
 		case 26:break;
-			
-			// we fell off the bottom of the map
-			/*case TILE_FELLOFFMAP_EP1:
-			 if (!pdie)
-			 {
-			 g_pSound->playSound(SOUND_KEEN_FALL, PLAY_FORCE);
-			 ankhtime = 0;
-			 godmode = 0;
-			 pdie = PDIE_FELLOFFMAP;
-			 }
-			 break;*/
-			// TODO: This doesn't go here! Please search a new place
 		default:
 			break;
 	}

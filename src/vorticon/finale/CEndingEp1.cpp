@@ -87,7 +87,7 @@ void CEndingEp1::ShipFlyMarsToEarth()
 	{
 		//Initialization
 		std::string path = mp_Map->m_gamepath;
-		CMapLoader MapLoader(mp_Map, &m_Player[0]);
+		CMapLoader MapLoader(mp_Map, &m_Player);
 		MapLoader.load(1, 81, path);
 
 		m_Player[0].hideplayer = false;
@@ -190,7 +190,7 @@ void CEndingEp1::ShipFlyEarthToMShip()
 	{
 		//Initialization
 		std::string path = mp_Map->m_gamepath;
-		CMapLoader MapLoader(mp_Map, &m_Player[0]);
+		CMapLoader MapLoader(mp_Map, &m_Player);
 		MapLoader.load(1, 81, path);
 
 		m_Player[0].hideplayer = false;
