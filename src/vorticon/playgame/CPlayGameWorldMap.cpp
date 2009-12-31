@@ -179,10 +179,10 @@ void CPlayGame::showKeensLeft()
 #define KEENSLEFT_X        7
 #define KEENSLEFT_Y        11
 #define KEENSLEFT_W        24
-#define KEENSLEFT_H        4
+#define KEENSLEFT_H        3
 
 	boxY = KEENSLEFT_Y - m_NumPlayers*2;
-	boxH = KEENSLEFT_H + m_NumPlayers*3;
+	boxH = KEENSLEFT_H + m_NumPlayers*4;
 
 	if( g_pTimer->HasTimeElapsed(3000) || g_pInput->getPressedAnyCommand() )
 		m_showKeensLeft = false;
