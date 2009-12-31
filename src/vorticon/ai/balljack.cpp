@@ -147,7 +147,6 @@ char CObjectAI::BJ_BlockedD(CObject &object)
 	// bounce off the top of platforms that have only solidfall set--
 	// so we test blockedd against solidl/r instead
 	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
-	CSprite *sprites = g_pGfxEngine->Sprite[object.sprite];
 	Uint16 obj_width, obj_height;
 	int x1 = object.bboxX1;
 	int x2 = object.bboxX2;

@@ -119,13 +119,12 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 // returns 1 and sets blockedby if so.
 bool CPlayGame::checkisSolidl(CPlayer *p_player)
 {
-//CSprite *sprite = g_pGfxEngine->Sprite[p_player->playframe];
-	CSprite *sprite = (m_Level == 80) ? g_pGfxEngine->Sprite[PMAPRIGHTFRAME] : g_pGfxEngine->Sprite[0];
+	CSprite &sprite = (m_Level == 80) ? *g_pGfxEngine->Sprite[PMAPRIGHTFRAME] : *g_pGfxEngine->Sprite[0];
 
-	int x=p_player->x+sprite->m_bboxX2;
-	int y1=p_player->y+sprite->m_bboxY1+1;
-	int y2=p_player->y+sprite->m_bboxY2/2;
-	int y3=p_player->y+sprite->m_bboxY2+(1<<STC)-1;
+	int x=p_player->x+sprite.m_bboxX2;
+	int y1=p_player->y+sprite.m_bboxY1+1;
+	int y2=p_player->y+sprite.m_bboxY2/2;
+	int y3=p_player->y+sprite.m_bboxY2+(1<<STC)-1;
 	
 	int t1 = mp_Map->at(x>>CSF, y1>>CSF);
 	int t2 = mp_Map->at(x>>CSF, y2>>CSF);
@@ -171,12 +170,12 @@ bool CPlayGame::checkisSolidl(CPlayer *p_player)
 // returns 1 and sets blockedby if so.
 bool CPlayGame::checkisSolidr(CPlayer *p_player)
 {
-	CSprite *sprite = (m_Level == 80) ? g_pGfxEngine->Sprite[PMAPRIGHTFRAME] : g_pGfxEngine->Sprite[0];
+	CSprite &sprite = (m_Level == 80) ? *g_pGfxEngine->Sprite[PMAPRIGHTFRAME] : *g_pGfxEngine->Sprite[0];
 
-	int x=p_player->x+sprite->m_bboxX1;
-	int y1=p_player->y+sprite->m_bboxY1+1;
-	int y2=p_player->y+sprite->m_bboxY2/2;
-	int y3=p_player->y+sprite->m_bboxY2+(1<<STC)-1;
+	int x=p_player->x+sprite.m_bboxX1;
+	int y1=p_player->y+sprite.m_bboxY1+1;
+	int y2=p_player->y+sprite.m_bboxY2/2;
+	int y3=p_player->y+sprite.m_bboxY2+(1<<STC)-1;
 	
 	int t1 = mp_Map->at(x>>CSF, y1>>CSF);
 	int t2 = mp_Map->at(x>>CSF, y2>>CSF);
@@ -218,11 +217,11 @@ bool CPlayGame::checkisSolidr(CPlayer *p_player)
 
 bool CPlayGame::checkisSolidd(CPlayer *p_player)
 {
-	CSprite *sprite = (m_Level == 80) ? g_pGfxEngine->Sprite[PMAPRIGHTFRAME] : g_pGfxEngine->Sprite[0];
+	CSprite &sprite = (m_Level == 80) ? *g_pGfxEngine->Sprite[PMAPRIGHTFRAME] : *g_pGfxEngine->Sprite[0];
 
-	int x1 = p_player->x+sprite->m_bboxX1+1;
-	int x2 = p_player->x+sprite->m_bboxX2-1;
-	int y = p_player->y+sprite->m_bboxY1-1;
+	int x1 = p_player->x+sprite.m_bboxX1+1;
+	int x2 = p_player->x+sprite.m_bboxX2-1;
+	int y = p_player->y+sprite.m_bboxY1-1;
 	int t1 = mp_Map->at(x1>>CSF, y>>CSF);
 	int t2 = mp_Map->at(x2>>CSF, y>>CSF);
 	
@@ -242,11 +241,11 @@ bool CPlayGame::checkisSolidd(CPlayer *p_player)
 
 bool CPlayGame::checkisSolidu(CPlayer *p_player)
 {
-	CSprite *sprite = (m_Level == 80) ? g_pGfxEngine->Sprite[PMAPRIGHTFRAME] : g_pGfxEngine->Sprite[0];
+	CSprite &sprite = (m_Level == 80) ? *g_pGfxEngine->Sprite[PMAPRIGHTFRAME] : *g_pGfxEngine->Sprite[0];
 
-	int x1 = p_player->x+sprite->m_bboxX1+1;
-	int x2 = p_player->x+sprite->m_bboxX2-1;
-	int y = p_player->y+sprite->m_bboxY2+(1<<STC);
+	int x1 = p_player->x+sprite.m_bboxX1+1;
+	int x2 = p_player->x+sprite.m_bboxX2-1;
+	int y = p_player->y+sprite.m_bboxY2+(1<<STC);
 	int t1 = mp_Map->at(x1>>CSF, y>>CSF);
 	int t2 = mp_Map->at(x2>>CSF, y>>CSF);
 	

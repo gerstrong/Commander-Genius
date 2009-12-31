@@ -82,10 +82,10 @@ void  CObjectAI::butler_ai(CObject &object, char difficulty)
 		 } else object.ai.butler.timer++;
 		 break;
 	 case BUTLER_WALK:
-		 CSprite *sprite = g_pGfxEngine->Sprite[BUTLER_WALK_LEFT_FRAME];
+		 CSprite &sprite = *g_pGfxEngine->Sprite[BUTLER_WALK_LEFT_FRAME];
 		 stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
-		 butler_height = sprite->getHeight()<<STC;
-		 butler_width = sprite->getWidth()<<STC;
+		 butler_height = sprite.getHeight()<<STC;
+		 butler_width = sprite.getWidth()<<STC;
 		 if (object.ai.butler.movedir==LEFT)
 		 {  // move left
 			 not_about_to_fall = TileProperty[mp_Map->at((object.x-BUTLER_LOOK_AHEAD_DIST)>>CSF, (object.y+butler_height)>>CSF)].bup;

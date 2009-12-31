@@ -185,21 +185,17 @@ bool CObject::hitdetect(CObject &hitobject)
 	unsigned int rect1x1, rect1y1, rect1x2, rect1y2;
 	unsigned int rect2x1, rect2y1, rect2x2, rect2y2;
 	
-	// get the sprites used by the two objects
-	CSprite &spr1 = *g_pGfxEngine->Sprite.at(sprite);
-	CSprite &spr2 = *g_pGfxEngine->Sprite.at(hitobject.sprite);
-	
 	// get the bounding rectangle of the first object
-	rect1x1 = x + spr1.m_bboxX1;
-	rect1y1 = y + spr1.m_bboxY1;
-	rect1x2 = x + spr1.m_bboxX2;
-	rect1y2 = y + spr1.m_bboxY2;
+	rect1x1 = x + bboxX1;
+	rect1y1 = y + bboxY1;
+	rect1x2 = x + bboxX2;
+	rect1y2 = y + bboxY2;
 	
 	// get the bounding rectangle of the second object
-	rect2x1 = hitobject.x + spr2.m_bboxX1;
-	rect2y1 = hitobject.y + spr2.m_bboxY1;
-	rect2x2 = hitobject.x + spr2.m_bboxX2;
-	rect2y2 = hitobject.y + spr2.m_bboxY2;
+	rect2x1 = hitobject.x + hitobject.bboxX1;
+	rect2y1 = hitobject.y + hitobject.bboxY1;
+	rect2x2 = hitobject.x + hitobject.bboxX2;
+	rect2y2 = hitobject.y + hitobject.bboxY2;
 	
 	// find out if the rectangles overlap
 	if ((rect1x1 < rect2x1) && (rect1x2 < rect2x1)) return false;

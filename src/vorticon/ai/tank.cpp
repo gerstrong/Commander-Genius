@@ -57,12 +57,6 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 		object.needinit = false;
 	}
 
-	CSprite &Sprite = *g_pGfxEngine->Sprite[object.sprite];
-	object.bboxX1 = Sprite.m_bboxX1;
-	object.bboxX2 = Sprite.m_bboxX2;
-	object.bboxY1 = Sprite.m_bboxY1;
-	object.bboxY2 = Sprite.m_bboxY2;
-
 	int height = object.bboxY2-object.bboxY1;
 	int width = object.bboxX2-object.bboxX1;
 
@@ -251,16 +245,15 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 				(object.ai.tank.timer > TANK_PREPAREFIRE_TIME_FAST && hardmode))
 		{
 			CObject newobject;
-			CSprite &RaySprite = *g_pGfxEngine->Sprite[OBJ_RAY_DEFSPRITE_EP1];
 			if (object.onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, object.scrx);
 			if (object.ai.tank.movedir==RIGHT)
 			{
-				newobject.spawn(object.x+(RaySprite.getWidth()<<STC), object.y+(5<<STC), OBJ_RAY, m_Episode);
+				newobject.spawn(object.x+object.bboxX2, object.y+(5<<STC), OBJ_RAY, m_Episode);
 				newobject.ai.ray.direction = RIGHT;
 			}
 			else
 			{
-				newobject.spawn(object.x-(RaySprite.getWidth()<<STC), object.y+(5<<STC), OBJ_RAY, m_Episode);
+				newobject.spawn(object.x, object.y+(5<<STC), OBJ_RAY, m_Episode);
 				newobject.ai.ray.direction = LEFT;
 			}
 			newobject.ai.ray.owner = object.m_index;

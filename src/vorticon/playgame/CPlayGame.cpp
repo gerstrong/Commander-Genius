@@ -115,9 +115,9 @@ void CPlayGame::setupPlayers()
 		m_Player[i].pdie = PDIE_NODIE;
 		
 		// Calibrate Player to the right position, so it won't fall when level starts
-		CSprite *sprite = g_pGfxEngine->Sprite[PSTANDFRAME];
-		m_Player[i].w = sprite->getWidth()<<STC;
-		m_Player[i].h = sprite->getHeight()<<STC;
+		CSprite &sprite = *g_pGfxEngine->Sprite[PSTANDFRAME];
+		m_Player[i].w = sprite.getWidth()<<STC;
+		m_Player[i].h = sprite.getHeight()<<STC;
 		m_Player[i].y += (2<<CSF);
 		m_Player[i].y -= m_Player[i].h;
 		m_Player[i].goto_y = m_Player[i].y;
@@ -648,18 +648,18 @@ void CPlayGame::drawObjects()
 
 	        if (p_object->honorPriority)
 	        {
-	        	CSprite *sprite = g_pGfxEngine->Sprite[p_object->sprite];
+	        	CSprite &sprite = *g_pGfxEngine->Sprite[p_object->sprite];
 	            // handle priority tiles and tiles with masks
 	            // get the upper-left coordinates to start checking for tiles
 	            x = (p_object->x>>CSF);
 	            y = (p_object->y>>CSF);
 				
 	            // get the xsize/ysize of this sprite--round up to the nearest 16
-	            xsize = ((sprite->getWidth()>>4)<<4);
-	            if (xsize != sprite->getWidth()) xsize+=16;
+	            xsize = ((sprite.getWidth()>>4)<<4);
+	            if (xsize != sprite.getWidth()) xsize+=16;
 				
 	            ysize = ((g_pGfxEngine->Sprite[p_object->sprite]->getHeight()>>4)<<4);
-	            if (ysize != sprite->getHeight()) ysize+=16;
+	            if (ysize != sprite.getHeight()) ysize+=16;
 				
 	            tl = mp_Map->at(x,y);
 	            x<<=4;
