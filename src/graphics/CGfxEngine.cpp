@@ -10,7 +10,6 @@
 #define SAFE_DELETE(x) 	if(x){ delete x; x=NULL;}
 
 CGfxEngine::CGfxEngine() :
-Font(NULL),
 Tilemap(NULL),
 m_fxsurface(NULL),
 mp_Effects(NULL)
@@ -19,34 +18,21 @@ mp_Effects(NULL)
 ///
 // Creation Routines
 ///
-CTilemap *CGfxEngine::createEmptyTilemap(stTile *pTileProperties, int numtiles)
+void CGfxEngine::createEmptyTilemap(stTile *pTileProperties, int numtiles)
 {
 	Tilemap = new CTilemap(pTileProperties, numtiles);
-	return Tilemap;
 }
 
-CFont *CGfxEngine::createEmptyFontmap()
-{
-	Font = new CFont();
-	return Font;
-}
-
-CSprite *CGfxEngine::createEmptySprites(Uint16 num_sprites)
+void CGfxEngine::createEmptySprites(Uint16 num_sprites)
 {
 	CSprite sprite;
 	Sprite.assign(num_sprites, sprite);
-	return &Sprite[0];
 }
 
-CBitmap *CGfxEngine::createEmptyBitmaps(Uint16 num_bmps)
+void CGfxEngine::createEmptyBitmaps(Uint16 num_bmps)
 {
-	Bitmap.reserve(num_bmps);
-	for(Uint16 i=0 ; i<num_bmps ; i++ )
-		Bitmap.push_back( new CBitmap() );
-	
-	if (!Bitmap.empty()) return Bitmap[0];
-	else return NULL;
-	
+	CBitmap bitmap;
+	Bitmap.assign(num_bmps, bitmap);
 }
 
 // This will store the effect pointer the developer created in one function
@@ -65,16 +51,15 @@ void CGfxEngine::freeTilemap()
 }
 void CGfxEngine::freeFonts()
 {
-	if(Font) delete Font;
+	Font.DestroySurface();
 }
 
 void CGfxEngine::freeBitmaps()
 {
-	CBitmap *bitmap;
-	while( Bitmap.size() > 0 )
+	while ( !Bitmap.empty() )
 	{
-		bitmap = *Bitmap.end();
-		if(bitmap) delete bitmap;
+		CBitmap &bitmap = Bitmap.back();
+		bitmap.destroySurface();
 		Bitmap.pop_back();
 	}
 }
@@ -94,10 +79,10 @@ CBitmap *CGfxEngine::getBitmap(const std::string &name)
 	std::string s_name;
 	for(Uint8 i=0 ; i<Bitmap.size() ; i++)
 	{
-		s_name = Bitmap[i]->getName();
+		s_name = Bitmap[i].getName();
 		
 		if(s_name == name)
-			return Bitmap[i];
+			return &Bitmap[i];
 	}
 	return NULL;
 }
@@ -135,11 +120,11 @@ void CGfxEngine::drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w
 	
 	SDL_FillRect(DialogSurface, &rect, colour);
 
-	Font->drawCharacter(DialogSurface, 1, x1*8, y1*8);
-	Font->drawCharacter(DialogSurface, 3, (x1+w)*8, y1*8);
+	Font.drawCharacter(DialogSurface, 1, x1*8, y1*8);
+	Font.drawCharacter(DialogSurface, 3, (x1+w)*8, y1*8);
 	for(x=(x1*8)+8,i=0;i<w-1;i++)
 	{
-		Font->drawCharacter(DialogSurface, 2, x, y1*8);
+		Font.drawCharacter(DialogSurface, 2, x, y1*8);
 		x+=8;
 	}
 	y=(y1+1)*8;
@@ -147,17 +132,17 @@ void CGfxEngine::drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w
 	{
 		for(x=(x1*8),i=0;i<=w;i++)
 		{
-			if (i==0) Font->drawCharacter(DialogSurface, 4, x, y);
-			else if (i==w) Font->drawCharacter(DialogSurface, 5, x, y);
+			if (i==0) Font.drawCharacter(DialogSurface, 4, x, y);
+			else if (i==w) Font.drawCharacter(DialogSurface, 5, x, y);
 			x+=8;
 		}
 		y+=8;
 	}
     for(x=(x1*8),i=0;i<=w;i++)
     {
-		if (i==0) Font->drawCharacter(DialogSurface, 6, x, y);
-		else if (i==w) Font->drawCharacter(DialogSurface, 8, x, y);
-		else Font->drawCharacter(DialogSurface, 7, x, y);
+		if (i==0) Font.drawCharacter(DialogSurface, 6, x, y);
+		else if (i==w) Font.drawCharacter(DialogSurface, 8, x, y);
+		else Font.drawCharacter(DialogSurface, 7, x, y);
 		x+=8;
     }
 }
@@ -167,6 +152,18 @@ void CGfxEngine::drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w
 ///
 CEffects *CGfxEngine::Effect()
 { return mp_Effects; }
+
+CBitmap &CGfxEngine::getBitmap(Uint16 slot)
+{ return Bitmap[slot]; }
+
+CFont &CGfxEngine::getFont()
+{ return Font; }
+
+CSprite &CGfxEngine::getSprite(Uint16 slot)
+{ return Sprite[slot]; }
+
+std::vector<CSprite> &CGfxEngine::getSpriteVec()
+{ return Sprite; }
 
 ///
 // Process Routines

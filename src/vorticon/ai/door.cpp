@@ -12,7 +12,7 @@
 
 void CObjectAI::door_ai( CObject &object, char DoorOpenDir )
 {
-	CSprite &doorsprite = g_pGfxEngine->Sprite[object.sprite];
+	CSprite &doorsprite = g_pGfxEngine->getSprite(object.sprite);
 	if (object.needinit)
 	{
 		object.ai.door.timer = 0;

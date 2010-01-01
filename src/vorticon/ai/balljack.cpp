@@ -147,10 +147,8 @@ char CObjectAI::BJ_BlockedD(CObject &object)
 	// bounce off the top of platforms that have only solidfall set--
 	// so we test blockedd against solidl/r instead
 	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
-	Uint16 obj_width, obj_height;
 	int x1 = object.bboxX1;
 	int x2 = object.bboxX2;
-	int y1 = object.bboxY1;
 	int y2 = object.bboxY2;
 
 	if (object.blockedd)

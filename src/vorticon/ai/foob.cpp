@@ -68,7 +68,7 @@ void CObjectAI::foob_ai(CObject &object, bool hardmode)
 	}
 
 	// find out if a player is on the same level as the foob cat
-	Uint16 player_height = g_pGfxEngine->Sprite[0].getHeight()<<STC;
+	Uint16 player_height = g_pGfxEngine->getSprite(0).getHeight()<<STC;
 	Uint16 foob_height = object.bboxY2;
 	onsamelevel = 0;
 	for(int i=0;i<m_NumPlayers;i++)

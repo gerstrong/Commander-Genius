@@ -71,7 +71,7 @@ void CPlayer::setWMblockedlrud()
 	// cheat: holding down TAB will turn off clipping. or if you are in godmode
 	if ((m_cheats_enabled && g_pInput->getHoldedKey(KTAB)) || godmode) return;
 	
-	CSprite &sprite = g_pGfxEngine->Sprite[PMAPRIGHTFRAME];
+	CSprite &sprite = g_pGfxEngine->getSprite(PMAPRIGHTFRAME);
 	x1 = sprite.m_bboxX1;
 	x2 = sprite.m_bboxX2;
 	y1 = sprite.m_bboxY1;
@@ -174,16 +174,16 @@ void CPlayer::MountNessieIfAvailable()
 	{
 		if(obj->m_type == OBJ_NESSIE)
 		{
-			int dist = 1<<CSF;
-			int nessie_x, nessie_y;
+			Uint16 dist = 1<<CSF;
+			Uint16 nessie_x, nessie_y;
 
 			nessie_x = obj->x;
 			nessie_y = obj->y;
 
 			// Look if Nessie is nearby
-			if( (int)x >= nessie_x-dist+obj->bboxX1 and (int)x <= nessie_x+dist+obj->bboxX2 )
+			if( x >= nessie_x-dist+obj->bboxX1 and x <= nessie_x+dist+obj->bboxX2 )
 			{
-				if( (int)y >= nessie_y-dist+obj->bboxY1 and (int)y <= nessie_y+dist+obj->bboxY2 )
+				if( y >= nessie_y-dist+obj->bboxY1 and y <= nessie_y+dist+obj->bboxY2 )
 				{
 					// Mount the Player
 					obj->ai.nessie.mounted[m_player_number] = true;

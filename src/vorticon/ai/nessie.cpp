@@ -151,7 +151,6 @@ void CObjectAI::nessie_find_next_checkpoint(CObject& object)
 	int x,y,i;
 	int xa,ya;
 	unsigned int destx, desty;
-	unsigned int midx, midy;
 
 	// search in the 8 surrounding tiles and head to the first pathtile
 	// we find that's not one of the last 5 we've been to

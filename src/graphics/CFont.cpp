@@ -9,13 +9,9 @@
 #include "CPalette.h"
 #include <string.h>
 
-CFont::CFont() {
-	m_FontSurface = NULL;
-}
-
-CFont::~CFont() {
-	if(m_FontSurface) SDL_FreeSurface(m_FontSurface);
-}
+CFont::CFont() :
+m_FontSurface(NULL)
+{}
 
 bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags)
 {
@@ -303,3 +299,15 @@ void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uin
 	}
 	}
 }
+
+///
+// Destruction Routines
+///
+void CFont::DestroySurface(){
+	if(m_FontSurface) SDL_FreeSurface(m_FontSurface);
+	m_FontSurface = NULL;
+}
+
+CFont::~CFont() {
+}
+

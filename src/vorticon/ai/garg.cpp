@@ -37,9 +37,9 @@ unsigned int rnd(void);
 void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 {
 	unsigned int i;
-	Uint16 garg_width = g_pGfxEngine->Sprite[object.sprite].getWidth()<<STC;
-	Uint16 garg_height = g_pGfxEngine->Sprite[object.sprite].getHeight()<<STC;
-	Uint16 player_height = g_pGfxEngine->Sprite[0].getHeight()<<STC;
+	Uint16 garg_width = g_pGfxEngine->getSprite(object.sprite).getWidth()<<STC;
+	Uint16 garg_height = g_pGfxEngine->getSprite(object.sprite).getHeight()<<STC;
+	Uint16 player_height = g_pGfxEngine->getSprite(0).getHeight()<<STC;
     stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 
 	if (object.needinit)

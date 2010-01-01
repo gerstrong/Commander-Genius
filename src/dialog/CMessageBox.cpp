@@ -87,7 +87,7 @@ void CMessageBox::process()
 
 	// Draw the Text on our surface
 	for( size_t i=0 ; i<m_Lines.size() ; i++)
-		g_pGfxEngine->Font->drawFont(sfc, m_Lines[i], m_gamerect.x+8, m_gamerect.y+((i+1)*8) );
+		g_pGfxEngine->getFont().drawFont(sfc, m_Lines[i], m_gamerect.x+8, m_gamerect.y+((i+1)*8) );
 
 	// Draw additional tiles on the surface if any where defined
 	for(size_t i=0 ; i<m_Tiles.size() ; i++) {

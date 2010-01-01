@@ -32,12 +32,12 @@ enum scrub_actions{
 #define SCRUB_FRY_FRAME       110
 #define SCRUB_DEAD_FRAME      111
 
-#define Sprite g_pGfxEngine->Sprite
-
 void CObjectAI::scrub_ai(CObject &object)
 {
 	int i=0;
 	bool walkovertile=false;
+	CSprite &ScrubSprite = g_pGfxEngine->getSprite(object.sprite);
+	CSprite &PlayerSprite = g_pGfxEngine->getSprite(0);
 
 	if (object.needinit)
 	{  // first time initialization
@@ -92,8 +92,8 @@ void CObjectAI::scrub_ai(CObject &object)
 		// don't push the player if he's standing on top of the scrub
 		if (m_Player[object.touchedBy].pfalling)
 		{
-			if (m_Objvect[0].scry+Sprite[0].getHeight() >
-			object.scry+(Sprite[object.sprite].getHeight()>>1))
+			if (m_Objvect[0].scry+PlayerSprite.getHeight() >
+			object.scry+(ScrubSprite.getHeight()>>1))
 			{
 				nopush = true;
 			}
@@ -280,7 +280,7 @@ void CObjectAI::scrub_ai(CObject &object)
 					if (m_Player[i].psupportingobject==object.m_index && m_Player[i].pjumping!=PJUMPUP && m_Player[i].pjumping!=PPOGOING)
 					{
 						m_Player[i].goto_x -= (2<<STC);
-						m_Player[i].goto_y = object.y - ((Sprite[0].getHeight())<<STC);
+						m_Player[i].goto_y = object.y - ((PlayerSprite.getHeight())<<STC);
 					}
 				}
 			}

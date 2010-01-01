@@ -136,7 +136,7 @@ unsigned char CTextViewer::getnextwordlength(const std::string nextword)
 void CTextViewer::drawTextlines()
 {
 	for(int i=1 ; i<(m_h/m_8x8tileheight) && i<(int)m_textline.size()-m_linepos ; i++)
-		g_pGfxEngine->Font->drawFont(m_TextVSfc,
+		g_pGfxEngine->getFont().drawFont(m_TextVSfc,
 									 m_textline[i+m_linepos-1],
 									 m_x+m_8x8tilewidth,
 									 m_y + (i)*m_8x8tileheight-m_scrollpos,
@@ -178,12 +178,13 @@ void CTextViewer::process()
 void CTextViewer::renderBox()
 {
 	// first draw the blank rect
+	CFont &Font = g_pGfxEngine->getFont();
 	int i, j;
 	for(j = 0 ; j < m_h - m_8x8tileheight ; j+= m_8x8tileheight )
 	{
 		for(i = 0 ; i < m_w - m_8x8tilewidth ; i+= m_8x8tilewidth )
-			g_pGfxEngine->Font->drawCharacter(m_TextVSfc, 32, m_x + i, m_y + j); // 32 is a blank tile
-		g_pGfxEngine->Font->drawCharacter(m_TextVSfc, 32, m_x + m_w - m_8x8tilewidth, m_y + j);
+			Font.drawCharacter(m_TextVSfc, 32, m_x + i, m_y + j); // 32 is a blank tile
+		Font.drawCharacter(m_TextVSfc, 32, m_x + m_w - m_8x8tilewidth, m_y + j);
 	}
 	
 	if(!m_textline.empty())
@@ -192,38 +193,38 @@ void CTextViewer::renderBox()
 	// then the borders
 	for( i = m_8x8tilewidth ; i < m_w-m_8x8tilewidth ; i+= m_8x8tilewidth )
 	{
-		g_pGfxEngine->Font->drawCharacter(m_TextVSfc, 2, m_x + i, m_y);	// 2 is one upper-border
-		g_pGfxEngine->Font->drawCharacter(m_TextVSfc, 7, m_x + i, m_y + m_h - m_8x8tileheight );  // 7 is also the lower-border
+		Font.drawCharacter(m_TextVSfc, 2, m_x + i, m_y);	// 2 is one upper-border
+		Font.drawCharacter(m_TextVSfc, 7, m_x + i, m_y + m_h - m_8x8tileheight );  // 7 is also the lower-border
 	}
-	g_pGfxEngine->Font->drawCharacter(m_TextVSfc, 2, m_x + m_w - m_8x8tilewidth, m_y );	// for the last tile
-	g_pGfxEngine->Font->drawCharacter(m_TextVSfc, 2, m_x + m_w - m_8x8tilewidth, m_y + m_h - m_8x8tileheight );	// for the last tile
+	Font.drawCharacter(m_TextVSfc, 2, m_x + m_w - m_8x8tilewidth, m_y );	// for the last tile
+	Font.drawCharacter(m_TextVSfc, 2, m_x + m_w - m_8x8tilewidth, m_y + m_h - m_8x8tileheight );	// for the last tile
 	
 	for( j = m_8x8tileheight ; j < m_h-m_8x8tileheight ; j+= m_8x8tileheight )
 	{
-		g_pGfxEngine->Font->drawCharacter(m_TextVSfc, 4, m_x, m_y + j); 		// 4 is one left-border
-		g_pGfxEngine->Font->drawCharacter(m_TextVSfc, 5, m_x + m_w - m_8x8tilewidth, m_y + j); // 5 is the right-border
+		Font.drawCharacter(m_TextVSfc, 4, m_x, m_y + j); 		// 4 is one left-border
+		Font.drawCharacter(m_TextVSfc, 5, m_x + m_w - m_8x8tilewidth, m_y + j); // 5 is the right-border
 	}
 	
 	// At last the corners
-	g_pGfxEngine->Font->drawCharacter(m_TextVSfc, 1, m_x, m_y ); // Upper-Left corner
-	g_pGfxEngine->Font->drawCharacter(m_TextVSfc, 3, m_x + m_w - m_8x8tilewidth, m_y ); // Upper-Right corner
-	g_pGfxEngine->Font->drawCharacter(m_TextVSfc, 6, m_x, m_y + m_h - m_8x8tileheight ); // Lower-Left corner
-	g_pGfxEngine->Font->drawCharacter(m_TextVSfc, 8, m_x + m_w - m_8x8tilewidth, m_y + m_h - m_8x8tileheight ); // Lower-Right corner
+	Font.drawCharacter(m_TextVSfc, 1, m_x, m_y ); // Upper-Left corner
+	Font.drawCharacter(m_TextVSfc, 3, m_x + m_w - m_8x8tilewidth, m_y ); // Upper-Right corner
+	Font.drawCharacter(m_TextVSfc, 6, m_x, m_y + m_h - m_8x8tileheight ); // Lower-Left corner
+	Font.drawCharacter(m_TextVSfc, 8, m_x + m_w - m_8x8tilewidth, m_y + m_h - m_8x8tileheight ); // Lower-Right corner
 	
 	// It has Scroll Controls, so the user knows, that he can scroll down, up and quit
 	// fill the area with grey tiles
 	for( i=m_8x8tilewidth ; i<m_w-m_8x8tilewidth ; i+=m_8x8tilewidth )
 		for( j=0 ; j<2*m_8x8tileheight ; j+=m_8x8tileheight )
-			g_pGfxEngine->Font->drawCharacter(m_TextVSfc, 160, m_x+i, m_y+m_h+j );	// just grey small tile
+			Font.drawCharacter(m_TextVSfc, 160, m_x+i, m_y+m_h+j );	// just grey small tile
 	
-	g_pGfxEngine->Font->drawCharacter(m_TextVSfc, 4, m_x, m_y + m_h ); 						// 4 is one left-border
-	g_pGfxEngine->Font->drawCharacter(m_TextVSfc, 5, m_x + m_w - m_8x8tilewidth, m_y + m_h ); 	// 5 is the right-border
+	Font.drawCharacter(m_TextVSfc, 4, m_x, m_y + m_h ); 						// 4 is one left-border
+	Font.drawCharacter(m_TextVSfc, 5, m_x + m_w - m_8x8tilewidth, m_y + m_h ); 	// 5 is the right-border
 	for( i = m_8x8tilewidth ; i < m_w-m_8x8tilewidth ; i+= m_8x8tilewidth )
-		g_pGfxEngine->Font->drawCharacter(m_TextVSfc, 7, m_x + i, m_y + m_h + m_8x8tileheight ); 					// 7 is also the lower-border
-	g_pGfxEngine->Font->drawCharacter(m_TextVSfc, 6, m_x, m_y + m_h + m_8x8tileheight ); 						// Lower-Left corner
-	g_pGfxEngine->Font->drawCharacter(m_TextVSfc, 8, m_x + m_w - m_8x8tilewidth, m_y + m_h + m_8x8tileheight ); 	// Lower-Right corner
+		Font.drawCharacter(m_TextVSfc, 7, m_x + i, m_y + m_h + m_8x8tileheight ); 					// 7 is also the lower-border
+	Font.drawCharacter(m_TextVSfc, 6, m_x, m_y + m_h + m_8x8tileheight ); 						// Lower-Left corner
+	Font.drawCharacter(m_TextVSfc, 8, m_x + m_w - m_8x8tilewidth, m_y + m_h + m_8x8tileheight ); 	// Lower-Right corner
 	
 	// Now print the helping text
-	g_pGfxEngine->Font->drawFont(m_TextVSfc, "ESC to Exit / \17 \23 to Read",
+	Font.drawFont(m_TextVSfc, "ESC to Exit / \17 \23 to Read",
 								 m_x+m_8x8tilewidth+(m_w/2)-12*m_8x8tilewidth, m_y+m_h, true);
 }

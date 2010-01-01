@@ -15,7 +15,6 @@
 class CBitmap {
 public:
 	CBitmap();
-	virtual ~CBitmap();
 
 	bool createSurface(Uint32 flags, SDL_Color *Palette);
 	bool optimizeSurface();
@@ -29,6 +28,9 @@ public:
 	std::string getName() { return m_name; }
 
 	void draw(SDL_Surface *dst, Uint16 x, Uint16 y);
+
+	void destroySurface();
+	virtual ~CBitmap();
 
 private:
 	Uint16 m_width;

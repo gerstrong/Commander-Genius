@@ -105,10 +105,10 @@ void CPlayer::walkbehindexitdoor()
         if (width < 0) width = 0;               // don't set to negative
 		
         // set new width of all player walk frames
-        g_pGfxEngine->Sprite[playerbaseframe+0].setWidth(width);
-        g_pGfxEngine->Sprite[playerbaseframe+1].setWidth(width);
-		g_pGfxEngine->Sprite[playerbaseframe+2].setWidth(width);
-		g_pGfxEngine->Sprite[playerbaseframe+3].setWidth(width);
+        g_pGfxEngine->getSprite(playerbaseframe+0).setWidth(width);
+        g_pGfxEngine->getSprite(playerbaseframe+1).setWidth(width);
+		g_pGfxEngine->getSprite(playerbaseframe+2).setWidth(width);
+		g_pGfxEngine->getSprite(playerbaseframe+3).setWidth(width);
     }
 }
 

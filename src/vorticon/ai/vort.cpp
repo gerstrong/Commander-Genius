@@ -12,9 +12,11 @@ unsigned int rnd(void);
 
 void CObjectAI::vort_ai(CObject &object, int level, int episode, char difficulty, bool dark)
 {
-	Uint32 bboxX1 = g_pGfxEngine->Sprite.at(object.sprite).m_bboxX1;
-	Uint32 bboxX2 = g_pGfxEngine->Sprite.at(object.sprite).m_bboxX2;
-	Uint32 bboxY1 = g_pGfxEngine->Sprite.at(object.sprite).m_bboxY1;
+	CSprite &VorticonSprite = g_pGfxEngine->getSprite(object.sprite);
+
+	Uint32 bboxX1 = VorticonSprite.m_bboxX1;
+	Uint32 bboxX2 = VorticonSprite.m_bboxX2;
+	Uint32 bboxY1 = VorticonSprite.m_bboxY1;
 	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 
 	bool bonk,kill;

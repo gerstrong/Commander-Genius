@@ -787,7 +787,7 @@ void CVideoDriver::drawConsoleMessages(void)
 	y = CONSOLE_MESSAGE_Y;
 	for(i=0;i<NumConsoleMessages;i++)
 	{
-		g_pGfxEngine->Font->drawFont( FGLayerSurface, cmsg[i].msg, CONSOLE_MESSAGE_X, y, 1);
+		g_pGfxEngine->getFont().drawFont( FGLayerSurface, cmsg[i].msg, CONSOLE_MESSAGE_X, y, 1);
 		y += CONSOLE_MESSAGE_SPACING;
 	}
 }

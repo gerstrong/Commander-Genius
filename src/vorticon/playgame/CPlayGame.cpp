@@ -115,7 +115,7 @@ void CPlayGame::setupPlayers()
 		m_Player[i].pdie = PDIE_NODIE;
 		
 		// Calibrate Player to the right position, so it won't fall when level starts
-		CSprite &sprite = g_pGfxEngine->Sprite[PSTANDFRAME];
+		CSprite &sprite = g_pGfxEngine->getSprite(PSTANDFRAME);
 		m_Player[i].w = sprite.getWidth()<<STC;
 		m_Player[i].h = sprite.getHeight()<<STC;
 		m_Player[i].y += (2<<CSF);
@@ -389,7 +389,7 @@ void CPlayGame::process()
 			tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec()) +
 					"; x = " + itoa(m_Player[0].x) + " ; y = " + itoa(m_Player[0].y);
 
-			g_pGfxEngine->Font->drawFont(sfc,tempbuf,320-(tempbuf.size()<<3)-1, LETTER_TYPE_RED);
+			g_pGfxEngine->getFont().drawFont(sfc,tempbuf,320-(tempbuf.size()<<3)-1, LETTER_TYPE_RED);
 		}
 
 		// Open the Main Menu if ESC Key pressed and mp_Menu not opened
@@ -634,7 +634,7 @@ void CPlayGame::drawObjects()
 		
 		if (p_object->exists && p_object->onscreen)
 		{
-			CSprite &Sprite = g_pGfxEngine->Sprite[p_object->sprite];
+			CSprite &Sprite = g_pGfxEngine->getSprite(p_object->sprite);
 			p_object->scrx = (p_object->x>>STC)-mp_Map->m_scrollx;
 			p_object->scry = (p_object->y>>STC)-mp_Map->m_scrolly;
 
@@ -648,7 +648,7 @@ void CPlayGame::drawObjects()
 
 	        if (p_object->honorPriority)
 	        {
-	        	CSprite &sprite = g_pGfxEngine->Sprite[p_object->sprite];
+	        	CSprite &sprite = g_pGfxEngine->getSprite(p_object->sprite);
 	            // handle priority tiles and tiles with masks
 	            // get the upper-left coordinates to start checking for tiles
 	            x = (p_object->x>>CSF);
@@ -658,7 +658,7 @@ void CPlayGame::drawObjects()
 	            xsize = ((sprite.getWidth()>>4)<<4);
 	            if (xsize != sprite.getWidth()) xsize+=16;
 				
-	            ysize = ((g_pGfxEngine->Sprite[p_object->sprite].getHeight()>>4)<<4);
+	            ysize = ((sprite.getHeight()>>4)<<4);
 	            if (ysize != sprite.getHeight()) ysize+=16;
 				
 	            tl = mp_Map->at(x,y);

@@ -75,7 +75,11 @@ void CBitmap::draw(SDL_Surface *dst, Uint16 x, Uint16 y)
 ///
 // Freeing Routines
 ///
-CBitmap::~CBitmap() {
+
+void CBitmap::destroySurface() {
 	if(m_BitmapSurface) SDL_FreeSurface(m_BitmapSurface);
 	m_BitmapSurface = NULL;
+}
+
+CBitmap::~CBitmap() {
 }

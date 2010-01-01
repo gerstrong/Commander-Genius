@@ -39,15 +39,13 @@ void CStatusScreen::draw()
 		drawInventoryEp3();
 }
 
-CStatusScreen::~CStatusScreen() {
-	// TODO Auto-generated destructor stub
-}
 
 void CStatusScreen::drawInventoryEp1()
 {
 	int x,t,i,j;
 	std::string tempbuf;
 	int dlgX,dlgY,dlgW,dlgH;
+	CFont &Font = g_pGfxEngine->getFont();
 	
 	dlgX = 5;
 	dlgY = 5;
@@ -55,7 +53,7 @@ void CStatusScreen::drawInventoryEp1()
 	dlgH = 15;
 	
 	g_pGfxEngine->drawDialogBox( mp_surface, dlgX,dlgY,dlgW,dlgH, SDL_MapRGB(mp_surface->format, 172, 172, 172));
-	g_pGfxEngine->Font->drawFont( mp_surface, getstring("EP1_StatusBox"), (dlgX+1)<<3, (dlgY+1)<<3, LETTER_TYPE_RED);
+	Font.drawFont( mp_surface, getstring("EP1_StatusBox"), (dlgX+1)<<3, (dlgY+1)<<3, LETTER_TYPE_RED);
 	
 	// Now draw some white rects. Those are the holders for items, numbers, etc.
 	SDL_Rect rect;
@@ -102,28 +100,28 @@ void CStatusScreen::drawInventoryEp1()
 	{
 		g_pGfxEngine->Tilemap->drawTile(mp_surface, (dlgX+20)<<3, ((dlgY+8)<<3)+3, 424);
 		if(mp_inventory->HasCardYellow > 1)
-			g_pGfxEngine->Font->drawFont( mp_surface, itoa(mp_inventory->HasCardYellow),(dlgX+20)<<3,((dlgY+8)<<3)+3,0);
+			Font.drawFont( mp_surface, itoa(mp_inventory->HasCardYellow),(dlgX+20)<<3,((dlgY+8)<<3)+3,0);
 	}
 	if (mp_inventory->HasCardRed)
 	{
 		g_pGfxEngine->Tilemap->drawTile(mp_surface, (dlgX+24)<<3, ((dlgY+8)<<3)+3, 425);
 		
 		if(mp_inventory->HasCardRed > 1)
-			g_pGfxEngine->Font->drawFont( mp_surface, itoa(mp_inventory->HasCardRed),(dlgX+24)<<3,((dlgY+8)<<3)+3,0);
+			Font.drawFont( mp_surface, itoa(mp_inventory->HasCardRed),(dlgX+24)<<3,((dlgY+8)<<3)+3,0);
 	}
 	if (mp_inventory->HasCardGreen)
 	{
 		g_pGfxEngine->Tilemap->drawTile(mp_surface, (dlgX+20)<<3, ((dlgY+10)<<3)+4, 426);
 		
 		if (mp_inventory->HasCardGreen > 1)
-			g_pGfxEngine->Font->drawFont( mp_surface, itoa(mp_inventory->HasCardGreen),(dlgX+20)<<3,((dlgY+10)<<3)+3,0);
+			Font.drawFont( mp_surface, itoa(mp_inventory->HasCardGreen),(dlgX+20)<<3,((dlgY+10)<<3)+3,0);
 	}
 	if (mp_inventory->HasCardBlue)
 	{
 		g_pGfxEngine->Tilemap->drawTile(mp_surface, (dlgX+24)<<3, ((dlgY+10)<<3)+4, 427);
 		
 		if(mp_inventory->HasCardBlue > 1)
-			g_pGfxEngine->Font->drawFont( mp_surface, itoa(mp_inventory->HasCardBlue),(dlgX+24)<<3,((dlgY+10)<<3)+3,0);
+			Font.drawFont( mp_surface, itoa(mp_inventory->HasCardBlue),(dlgX+24)<<3,((dlgY+10)<<3)+3,0);
 	}
 	// ship parts
 	if (mp_inventory->HasJoystick) t=448; else t=321;
@@ -138,25 +136,26 @@ void CStatusScreen::drawInventoryEp1()
 	i = mp_inventory->charges;
 	if (i>999) i=999;
 	tempbuf = itoa(i);
-	g_pGfxEngine->Font->drawFont( mp_surface, tempbuf, (dlgX+4)<<3, (dlgY+12)<<3, 0);
+	Font.drawFont( mp_surface, tempbuf, (dlgX+4)<<3, (dlgY+12)<<3, 0);
 	
 	// score
 	i = mp_inventory->score;
 	tempbuf = itoa(i);
-	g_pGfxEngine->Font->drawFont( mp_surface, tempbuf, (dlgX+11-tempbuf.size())<<3, (dlgY+2)<<3, 0);
+	Font.drawFont( mp_surface, tempbuf, (dlgX+11-tempbuf.size())<<3, (dlgY+2)<<3, 0);
 	// extra life at
 	i = mp_inventory->extralifeat;
 	tempbuf = itoa(i);
-	g_pGfxEngine->Font->drawFont( mp_surface, tempbuf, (dlgX+27-tempbuf.size())<<3, (dlgY+2)<<3, 0);
+	Font.drawFont( mp_surface, tempbuf, (dlgX+27-tempbuf.size())<<3, (dlgY+2)<<3, 0);
 	// lives
 	i = mp_inventory->lives;
 	x = ((dlgX+2)<<3);
 	if (i>6) i=6;
 	for(j=0;j<i;j++)
 	{
-		g_pGfxEngine->Sprite[m_baseframe].drawSprite(  mp_surface, x, (dlgY+4)<<3);
+		CSprite &Sprite = g_pGfxEngine->getSprite(m_baseframe);
+		Sprite.drawSprite(  mp_surface, x, (dlgY+4)<<3);
 		// TODO: Playbaseframe is somewhere else. It's needed, so the player is displayed at right colour
-		x += g_pGfxEngine->Sprite[0].getWidth();
+		x += Sprite.getWidth();
 	}
 }
 
@@ -165,6 +164,7 @@ void CStatusScreen::drawInventoryEp2()
 	int x,i,j;
 	std::string tempbuf;
 	int dlgX,dlgY,dlgW,dlgH;
+	CFont &Font = g_pGfxEngine->getFont();
 
 	dlgX = 5;
 	dlgY = 5;
@@ -173,7 +173,7 @@ void CStatusScreen::drawInventoryEp2()
 
 	tempbuf = getstring("EP2_StatusBox");
 	g_pGfxEngine->drawDialogBox( mp_surface, dlgX,dlgY,dlgW,dlgH, SDL_MapRGB(mp_surface->format, 172, 172, 172));
-	g_pGfxEngine->Font->drawFont( mp_surface, tempbuf, (dlgX+1)<<3, (dlgY+1)<<3, LETTER_TYPE_RED);
+	Font.drawFont( mp_surface, tempbuf, (dlgX+1)<<3, (dlgY+1)<<3, LETTER_TYPE_RED);
 
 	// Now draw some white rects. Those are the holders for items, numbers, etc.
 	SDL_Rect rect;
@@ -207,14 +207,14 @@ void CStatusScreen::drawInventoryEp2()
 		g_pGfxEngine->Tilemap->drawTile(mp_surface, (dlgX+21)<<3, ((dlgY+8)<<3), 424);
 
 		if(mp_inventory->HasCardYellow > 1)
-			  g_pGfxEngine->Font->drawFont( mp_surface, itoa(mp_inventory->HasCardYellow),(dlgX+21)<<3,(dlgY+8)<<3);
+			  Font.drawFont( mp_surface, itoa(mp_inventory->HasCardYellow),(dlgX+21)<<3,(dlgY+8)<<3);
 	}
 	if (mp_inventory->HasCardRed)
 	{
 		g_pGfxEngine->Tilemap->drawTile(mp_surface, (dlgX+25)<<3, ((dlgY+8)<<3), 425);
 
 		if(mp_inventory->HasCardRed > 1)
-			  g_pGfxEngine->Font->drawFont( mp_surface, itoa(mp_inventory->HasCardRed),(dlgX+25)<<3,(dlgY+8)<<3,0);
+			  Font.drawFont( mp_surface, itoa(mp_inventory->HasCardRed),(dlgX+25)<<3,(dlgY+8)<<3,0);
 
 	}
 	if (mp_inventory->HasCardGreen)
@@ -222,49 +222,50 @@ void CStatusScreen::drawInventoryEp2()
 		g_pGfxEngine->Tilemap->drawTile(mp_surface, (dlgX+21)<<3, (dlgY+10)<<3, 426);
 
 		if(mp_inventory->HasCardGreen > 1)
-			  g_pGfxEngine->Font->drawFont( mp_surface, itoa(mp_inventory->HasCardGreen),(dlgX+21)<<3,(dlgY+10)<<3,0);
+			  Font.drawFont( mp_surface, itoa(mp_inventory->HasCardGreen),(dlgX+21)<<3,(dlgY+10)<<3,0);
 	}
 	if (mp_inventory->HasCardBlue)
 	{
 		g_pGfxEngine->Tilemap->drawTile(mp_surface, (dlgX+25)<<3, (dlgY+10)<<3, 427);
 
 		if(mp_inventory->HasCardBlue > 1)
-			  g_pGfxEngine->Font->drawFont( mp_surface, itoa(mp_inventory->HasCardBlue),(dlgX+25)<<3,(dlgY+10)<<3,0);
+			  Font.drawFont( mp_surface, itoa(mp_inventory->HasCardBlue),(dlgX+25)<<3,(dlgY+10)<<3,0);
 	}
 
 	// pistol charges
 	i = mp_inventory->charges;
 	if (i>999) i=999;
 	tempbuf = itoa(i);
-	g_pGfxEngine->Font->drawFont( mp_surface, tempbuf, (dlgX+27-tempbuf.size())<<3, ((dlgY+5)<<3)-1, 0);
+	Font.drawFont( mp_surface, tempbuf, (dlgX+27-tempbuf.size())<<3, ((dlgY+5)<<3)-1, 0);
 
 	// score
 	i = mp_inventory->score;
 	tempbuf = itoa(i);
-	g_pGfxEngine->Font->drawFont( mp_surface, tempbuf, (dlgX+11-tempbuf.size())<<3, (dlgY+2)<<3, 0);
+	Font.drawFont( mp_surface, tempbuf, (dlgX+11-tempbuf.size())<<3, (dlgY+2)<<3, 0);
 	// extra life at
 	i = mp_inventory->extralifeat;
 	tempbuf = itoa(i);
-	g_pGfxEngine->Font->drawFont( mp_surface, tempbuf, (dlgX+27-tempbuf.size())<<3, (dlgY+2)<<3, 0);
+	Font.drawFont( mp_surface, tempbuf, (dlgX+27-tempbuf.size())<<3, (dlgY+2)<<3, 0);
 	// lives
 	i = mp_inventory->lives;
 	x = ((dlgX + 1)<<3)+4;
 	if (i>7) i=7;
 	for(j=0;j<i;j++)
 	{
-		g_pGfxEngine->Sprite[m_baseframe].drawSprite(  mp_surface, x, (dlgY+4)<<3);
-		x += g_pGfxEngine->Sprite[0].getWidth();
+		CSprite &Sprite = g_pGfxEngine->getSprite(m_baseframe);
+		Sprite.drawSprite( mp_surface, x, (dlgY+4)<<3 );
+		x += Sprite.getWidth();
 	}
 
 	// cities saved
-	if (mp_level_completed[4]) g_pGfxEngine->Font->drawFont( mp_surface, getstring("EP2_LVL4_TargetName"), (dlgX+1)<<3, (dlgY+8)<<3, 0);
-	if (mp_level_completed[6]) g_pGfxEngine->Font->drawFont( mp_surface, getstring("EP2_LVL6_TargetName"), (dlgX+8)<<3, (dlgY+8)<<3, 0);
-	if (mp_level_completed[7]) g_pGfxEngine->Font->drawFont( mp_surface, getstring("EP2_LVL7_TargetName"), (dlgX+1)<<3, (dlgY+9)<<3, 0);
-	if (mp_level_completed[13]) g_pGfxEngine->Font->drawFont( mp_surface, getstring("EP2_LVL13_TargetName"), (dlgX+8)<<3, (dlgY+9)<<3, 0);
-	if (mp_level_completed[11]) g_pGfxEngine->Font->drawFont( mp_surface, getstring("EP2_LVL11_TargetName"), (dlgX+1)<<3, (dlgY+10)<<3, 0);
-	if (mp_level_completed[9]) g_pGfxEngine->Font->drawFont( mp_surface, getstring("EP2_LVL9_TargetName"), (dlgX+8)<<3, (dlgY+10)<<3, 0);
-	if (mp_level_completed[15]) g_pGfxEngine->Font->drawFont( mp_surface, getstring("EP2_LVL15_TargetName"), (dlgX+1)<<3, (dlgY+11)<<3, 0);
-	if (mp_level_completed[16]) g_pGfxEngine->Font->drawFont( mp_surface, getstring("EP2_LVL16_TargetName"), (dlgX+8)<<3, (dlgY+11)<<3, 0);
+	if (mp_level_completed[4]) Font.drawFont( mp_surface, getstring("EP2_LVL4_TargetName"), (dlgX+1)<<3, (dlgY+8)<<3, 0);
+	if (mp_level_completed[6]) Font.drawFont( mp_surface, getstring("EP2_LVL6_TargetName"), (dlgX+8)<<3, (dlgY+8)<<3, 0);
+	if (mp_level_completed[7]) Font.drawFont( mp_surface, getstring("EP2_LVL7_TargetName"), (dlgX+1)<<3, (dlgY+9)<<3, 0);
+	if (mp_level_completed[13]) Font.drawFont( mp_surface, getstring("EP2_LVL13_TargetName"), (dlgX+8)<<3, (dlgY+9)<<3, 0);
+	if (mp_level_completed[11]) Font.drawFont( mp_surface, getstring("EP2_LVL11_TargetName"), (dlgX+1)<<3, (dlgY+10)<<3, 0);
+	if (mp_level_completed[9]) Font.drawFont( mp_surface, getstring("EP2_LVL9_TargetName"), (dlgX+8)<<3, (dlgY+10)<<3, 0);
+	if (mp_level_completed[15]) Font.drawFont( mp_surface, getstring("EP2_LVL15_TargetName"), (dlgX+1)<<3, (dlgY+11)<<3, 0);
+	if (mp_level_completed[16]) Font.drawFont( mp_surface, getstring("EP2_LVL16_TargetName"), (dlgX+8)<<3, (dlgY+11)<<3, 0);
 }
 
 void CStatusScreen::drawInventoryEp3()
@@ -272,6 +273,7 @@ void CStatusScreen::drawInventoryEp3()
 	int x,i,j;
 	std::string tempbuf;
 	int dlgX,dlgY,dlgW,dlgH;
+	CFont &Font = g_pGfxEngine->getFont();
 
 	dlgX = 5;
 	dlgY = 5;
@@ -280,7 +282,7 @@ void CStatusScreen::drawInventoryEp3()
 
 	tempbuf = getstring("EP3_StatusBox");
 	g_pGfxEngine->drawDialogBox( mp_surface, dlgX,dlgY,dlgW,dlgH, SDL_MapRGB(mp_surface->format, 172, 172, 172));
-	g_pGfxEngine->Font->drawFont( mp_surface, tempbuf, (dlgX+1)<<3, (dlgY+1)<<3, LETTER_TYPE_RED);
+	Font.drawFont( mp_surface, tempbuf, (dlgX+1)<<3, (dlgY+1)<<3, LETTER_TYPE_RED);
 
 	// Now draw some white rects. Those are the holders for items, numbers, etc.
 	SDL_Rect rect;
@@ -313,7 +315,7 @@ void CStatusScreen::drawInventoryEp3()
 	// ankh time
 	g_pGfxEngine->Tilemap->drawTile(mp_surface, (dlgX+3)<<3, ((dlgY+8)<<3)+3, 214);
 	 
-	g_pGfxEngine->Font->drawFont( mp_surface, itoa(ankhtimepercent), (dlgX+7)<<3, ((dlgY+8)<<3)+7, 0);
+	Font.drawFont( mp_surface, itoa(ankhtimepercent), (dlgX+7)<<3, ((dlgY+8)<<3)+7, 0);
 	
 
 	// cards
@@ -322,51 +324,57 @@ void CStatusScreen::drawInventoryEp3()
 		g_pGfxEngine->Tilemap->drawTile(mp_surface, ((dlgX+13)<<3)+4, ((dlgY+8)<<3)+4, 217);
 
 		if(mp_inventory->HasCardYellow > 1)
-			g_pGfxEngine->Font->drawFont( mp_surface, itoa(mp_inventory->HasCardYellow),(dlgX+12)<<3,((dlgY+8)<<3)+3,0);
+			Font.drawFont( mp_surface, itoa(mp_inventory->HasCardYellow),(dlgX+12)<<3,((dlgY+8)<<3)+3,0);
 	}
 	if (mp_inventory->HasCardRed)
 	{
 		g_pGfxEngine->Tilemap->drawTile(mp_surface, ((dlgX+17)<<3)+4, ((dlgY+8)<<3)+4, 218);
 
 		if(mp_inventory->HasCardRed > 1)
-			g_pGfxEngine->Font->drawFont(mp_surface, itoa(mp_inventory->HasCardRed),(dlgX+16)<<3,((dlgY+8)<<3)+3,0);
+			Font.drawFont(mp_surface, itoa(mp_inventory->HasCardRed),(dlgX+16)<<3,((dlgY+8)<<3)+3,0);
 	}
 	if (mp_inventory->HasCardGreen)
 	{
 		g_pGfxEngine->Tilemap->drawTile(mp_surface, ((dlgX+21)<<3)+4, ((dlgY+8)<<3)+4, 219);
 
 		if(mp_inventory->HasCardGreen > 1)
-			g_pGfxEngine->Font->drawFont(mp_surface, itoa(mp_inventory->HasCardGreen),(dlgX+20)<<3,((dlgY+8)<<3)+3,0);
+			Font.drawFont(mp_surface, itoa(mp_inventory->HasCardGreen),(dlgX+20)<<3,((dlgY+8)<<3)+3,0);
 	}
 	if (mp_inventory->HasCardBlue)
 	{
 		g_pGfxEngine->Tilemap->drawTile(mp_surface, ((dlgX+25)<<3)+4, ((dlgY+8)<<3)+4, 220);
 
 		if(mp_inventory->HasCardBlue > 1)
-			g_pGfxEngine->Font->drawFont(mp_surface, itoa(mp_inventory->HasCardBlue),(dlgX+24)<<3,((dlgY+8)<<3)+3,0);
+			Font.drawFont(mp_surface, itoa(mp_inventory->HasCardBlue),(dlgX+24)<<3,((dlgY+8)<<3)+3,0);
 	}
 
 	// pistol charges
 	i = mp_inventory->charges;
 	if (i>999) i=999;
 	tempbuf = itoa(i);
-	g_pGfxEngine->Font->drawFont( mp_surface, tempbuf, (dlgX+27-tempbuf.size())<<3, ((dlgY+5)<<3)-1, 0);
+	Font.drawFont( mp_surface, tempbuf, (dlgX+27-tempbuf.size())<<3, ((dlgY+5)<<3)-1, 0);
 
 	// score
 	i = mp_inventory->score;
 	tempbuf = itoa(i);
-	g_pGfxEngine->Font->drawFont( mp_surface, tempbuf, (dlgX+11-tempbuf.size())<<3, (dlgY+2)<<3, 0);
+	Font.drawFont( mp_surface, tempbuf, (dlgX+11-tempbuf.size())<<3, (dlgY+2)<<3, 0);
 	// extra life at
 	i = mp_inventory->extralifeat;
 	tempbuf = itoa(i);
-	g_pGfxEngine->Font->drawFont( mp_surface, tempbuf, (dlgX+27-tempbuf.size())<<3, (dlgY+2)<<3, 0);
+	Font.drawFont( mp_surface, tempbuf, (dlgX+27-tempbuf.size())<<3, (dlgY+2)<<3, 0);
 	// lives
 	i = mp_inventory->lives;
 	x = ((dlgX + 1)<<3)+4;
 	if (i>7) i=7;
 	for(j=0;j<i;j++)
 	{
-		g_pGfxEngine->Sprite[m_baseframe].drawSprite(  mp_surface, x, (dlgY+4)<<3);
-		x += g_pGfxEngine->Sprite[0].getWidth();
+		CSprite &Sprite = g_pGfxEngine->getSprite(m_baseframe);
+		Sprite.drawSprite(  mp_surface, x, (dlgY+4)<<3);
+		x += Sprite.getWidth();
 	}
 }
+
+CStatusScreen::~CStatusScreen() {
+	// TODO Auto-generated destructor stub
+}
+

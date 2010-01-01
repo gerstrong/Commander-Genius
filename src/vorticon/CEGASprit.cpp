@@ -131,13 +131,14 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	g_pGfxEngine->createEmptySprites(MAX_SPRITES+1);
 	for(int i=0 ; i<m_numsprites ; i++)
 	{
-		g_pGfxEngine->Sprite[i].setSize( EGASpriteModell[i].width, EGASpriteModell[i].height );
-		g_pGfxEngine->Sprite[i].setBouncingBoxCoordinates( (EGASpriteModell[i].hitbox_l << (CSF-TILE_S)),
+		CSprite &Sprite = g_pGfxEngine->getSprite(i);
+		Sprite.setSize( EGASpriteModell[i].width, EGASpriteModell[i].height );
+		Sprite.setBouncingBoxCoordinates( (EGASpriteModell[i].hitbox_l << (CSF-TILE_S)),
 														    (EGASpriteModell[i].hitbox_u << (CSF-TILE_S)),
 														    (EGASpriteModell[i].hitbox_r << (CSF-TILE_S)),
 														    (EGASpriteModell[i].hitbox_b << (CSF-TILE_S)) );
-		g_pGfxEngine->Sprite[i].createSurface( g_pVideoDriver->BlitSurface->flags,
-											   g_pGfxEngine->Palette.m_Palette );
+		Sprite.createSurface( g_pVideoDriver->BlitSurface->flags,
+							   g_pGfxEngine->Palette.m_Palette );
 	}
 	
 	char c;
@@ -145,7 +146,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	{
 		for(int s=0 ; s<m_numsprites ; s++)
 		{
-			sfc = g_pGfxEngine->Sprite[s].getSDLSurface();
+			sfc = g_pGfxEngine->getSprite(s).getSDLSurface();
 			if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
 			pixel = (Uint8*) sfc->pixels;
 			
@@ -170,8 +171,9 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	// use white on black masks whereas keen uses black on white.
 	for(int s=0 ; s<m_numsprites ; s++)
 	{
-		pixsfc = g_pGfxEngine->Sprite[s].getSDLSurface();
-		sfc = g_pGfxEngine->Sprite[s].getSDLMaskSurface();
+		CSprite &Sprite = g_pGfxEngine->getSprite(s);
+		pixsfc = Sprite.getSDLSurface();
+		sfc = Sprite.getSDLMaskSurface();
 		
 		if(SDL_MUSTLOCK(pixsfc)) SDL_LockSurface(pixsfc);
 		if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
@@ -194,16 +196,17 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	if(RawData){ delete[] RawData; RawData = NULL;}
 	
 	// Now load the special TGA Sprites if some are available
-	LoadSpecialSprites( g_pGfxEngine->Sprite );
+	LoadSpecialSprites( g_pGfxEngine->getSpriteVec() );
 	
-	for(Uint16 s=0 ; s<g_pGfxEngine->Sprite.size() ; s++)
+	for(Uint16 s=0 ; s<g_pGfxEngine->getSpriteVec().size() ; s++)
 	{
-		g_pGfxEngine->Sprite[s].optimizeSurface();
-		g_pGfxEngine->Sprite[s].applyTransparency();
+		CSprite &Sprite = g_pGfxEngine->getSprite(s);
+		Sprite.optimizeSurface();
+		Sprite.applyTransparency();
 	}
 	
 	// Now create special sprites, like those for effects and the doors!
-	DeriveSpecialSprites( g_pGfxEngine->Tilemap, g_pGfxEngine->Sprite );
+	DeriveSpecialSprites( g_pGfxEngine->Tilemap, g_pGfxEngine->getSpriteVec() );
 
 	return true;
 }

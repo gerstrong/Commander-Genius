@@ -700,10 +700,10 @@ void CPlayer::ProcessInput()
 		{
 			// Now, that the level is complete, sprite can be shown again, and now goto map!
 			int width = w>>(CSF-4);
-			g_pGfxEngine->Sprite[playerbaseframe+0].setWidth(width);
-			g_pGfxEngine->Sprite[playerbaseframe+1].setWidth(width);
-			g_pGfxEngine->Sprite[playerbaseframe+2].setWidth(width);
-			g_pGfxEngine->Sprite[playerbaseframe+3].setWidth(width);
+			g_pGfxEngine->getSprite(playerbaseframe+0).setWidth(width);
+			g_pGfxEngine->getSprite(playerbaseframe+1).setWidth(width);
+			g_pGfxEngine->getSprite(playerbaseframe+2).setWidth(width);
+			g_pGfxEngine->getSprite(playerbaseframe+3).setWidth(width);
 			level_done_timer = 0;
 			level_done = LEVEL_COMPLETE;
 		}

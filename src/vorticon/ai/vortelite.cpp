@@ -47,12 +47,11 @@ enum vortelite_actions{
 
 #define VORTELITE_TRAPPED_DIST        150
 
-#define sprites g_pGfxEngine->Sprite
-
 void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 {
 	int bonk;
 	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
+	CSprite &RaySprite = g_pGfxEngine->getSprite(ENEMYRAYEP2);
 
 	if (object.needinit)
 	{  // first time initialization
@@ -239,7 +238,7 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 			}
 			else
 			{
-				newobject.spawn(object.x+object.bboxX1-(sprites[ENEMYRAYEP2].getWidth()<<STC)-1, object.y+(9<<STC), OBJ_RAY, m_Episode);
+				newobject.spawn(object.x+object.bboxX1-(RaySprite.getWidth()<<STC)-1, object.y+(9<<STC), OBJ_RAY, m_Episode);
 				newobject.ai.ray.direction = LEFT;
 			}
 			newobject.ai.ray.owner = object.m_index;

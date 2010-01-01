@@ -119,7 +119,7 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 // returns 1 and sets blockedby if so.
 bool CPlayGame::checkisSolidl(CPlayer *p_player)
 {
-	CSprite &sprite = (m_Level == 80) ? g_pGfxEngine->Sprite[PMAPRIGHTFRAME] : g_pGfxEngine->Sprite[0];
+	CSprite &sprite = (m_Level == 80) ? g_pGfxEngine->getSprite(PMAPRIGHTFRAME) : g_pGfxEngine->getSprite(0);
 
 	int x=p_player->x+sprite.m_bboxX2;
 	int y1=p_player->y+sprite.m_bboxY1+1;
@@ -170,7 +170,7 @@ bool CPlayGame::checkisSolidl(CPlayer *p_player)
 // returns 1 and sets blockedby if so.
 bool CPlayGame::checkisSolidr(CPlayer *p_player)
 {
-	CSprite &sprite = (m_Level == 80) ? g_pGfxEngine->Sprite[PMAPRIGHTFRAME] : g_pGfxEngine->Sprite[0];
+	CSprite &sprite = (m_Level == 80) ? g_pGfxEngine->getSprite(PMAPRIGHTFRAME) : g_pGfxEngine->getSprite(0);
 
 	int x=p_player->x+sprite.m_bboxX1;
 	int y1=p_player->y+sprite.m_bboxY1+1;
@@ -217,7 +217,7 @@ bool CPlayGame::checkisSolidr(CPlayer *p_player)
 
 bool CPlayGame::checkisSolidd(CPlayer *p_player)
 {
-	CSprite &sprite = (m_Level == 80) ? g_pGfxEngine->Sprite[PMAPRIGHTFRAME] : g_pGfxEngine->Sprite[0];
+	CSprite &sprite = (m_Level == 80) ? g_pGfxEngine->getSprite(PMAPRIGHTFRAME) : g_pGfxEngine->getSprite(0);
 
 	int x1 = p_player->x+sprite.m_bboxX1+1;
 	int x2 = p_player->x+sprite.m_bboxX2-1;
@@ -241,7 +241,7 @@ bool CPlayGame::checkisSolidd(CPlayer *p_player)
 
 bool CPlayGame::checkisSolidu(CPlayer *p_player)
 {
-	CSprite &sprite = (m_Level == 80) ? g_pGfxEngine->Sprite[PMAPRIGHTFRAME] : g_pGfxEngine->Sprite[0];
+	CSprite &sprite = (m_Level == 80) ? g_pGfxEngine->getSprite(PMAPRIGHTFRAME) : g_pGfxEngine->getSprite(0);
 
 	int x1 = p_player->x+sprite.m_bboxX1+1;
 	int x2 = p_player->x+sprite.m_bboxX2-1;
@@ -267,7 +267,7 @@ bool CPlayGame::checkisSolidu(CPlayer *p_player)
 // This function checks if the player is standing on ice
 void CPlayGame::checkStandingOnIce(CPlayer &player)
 {
-	CSprite &sprite = g_pGfxEngine->Sprite[player.playframe];
+	CSprite &sprite = g_pGfxEngine->getSprite(player.playframe);
 	int x1 = player.x+sprite.m_bboxX1+1;
 	int x2 = player.x+sprite.m_bboxX2-1;
 	int y = player.y+sprite.m_bboxY2+(1<<STC);

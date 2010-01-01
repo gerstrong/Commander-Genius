@@ -191,7 +191,7 @@ void CPlayGame::showKeensLeft()
 	rect.x = (KEENSLEFT_X+1)*8;	rect.y = (boxY+2)*8;
 	rect.w = (KEENSLEFT_W-1)*8;	rect.h = (boxH-3)*8;
 	g_pGfxEngine->drawDialogBox( boxsurface, KEENSLEFT_X, boxY,KEENSLEFT_W,boxH, SDL_MapRGB(boxsurface->format, 172, 172, 172));
-	g_pGfxEngine->Font->drawFont( boxsurface, getstring("LIVES_LEFT"),((KEENSLEFT_X+4)*8)+4,(boxY+1)*8, LETTER_TYPE_RED);
+	g_pGfxEngine->getFont().drawFont( boxsurface, getstring("LIVES_LEFT"),((KEENSLEFT_X+4)*8)+4,(boxY+1)*8, LETTER_TYPE_RED);
 	SDL_FillRect(boxsurface, &rect, 0xFFFFFF);
 
 	y = ((boxY+2)*8)+4;
@@ -200,7 +200,7 @@ void CPlayGame::showKeensLeft()
 		x = ((KEENSLEFT_X+1)*8)+4;
 		for(i=0;i<m_Player[0].inventory.lives&&i<=10;i++)
 		{
-			g_pGfxEngine->Sprite[m_Player[0].playerbaseframe].drawSprite(g_pVideoDriver->FGLayerSurface, x, y );
+			g_pGfxEngine->getSprite(m_Player[0].playerbaseframe).drawSprite(g_pVideoDriver->FGLayerSurface, x, y );
 			x+=16;
 		}
 		y += 32;

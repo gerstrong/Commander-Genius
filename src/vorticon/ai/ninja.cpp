@@ -23,7 +23,6 @@ enum ninja_actions{
 #define NINJA_DYING_FRAME              83
 #define NINJA_DEAD_FRAME               84
 
-#define Sprite g_pGfxEngine->Sprite
 
 unsigned int rnd(void);
 
@@ -119,10 +118,11 @@ void CObjectAI::ninja_ai(CObject &object, bool hardmode)
 		{
 			// find out if a player is on the same level
 			onsamelevel = 0;
+			CSprite PlayerSprite = g_pGfxEngine->getSprite(0);
 			for(i=0;i<m_NumPlayers;i++)
 			{
 				if ((m_Player[i].y >= object.y-(96<<STC)) &&
-					(m_Player[i].y+(Sprite[0].getHeight()<<STC) <= (object.y+object.bboxY2+(96<<STC))))
+					(m_Player[i].y+(PlayerSprite.getHeight()<<STC) <= (object.y+object.bboxY2+(96<<STC))))
 				{
 					onsamelevel = 1;
 					break;

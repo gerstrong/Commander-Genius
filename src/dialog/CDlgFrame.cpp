@@ -35,6 +35,7 @@ void CDlgFrame::draw(SDL_Surface *dst)
 
 void CDlgFrame::drawOldSchoolFrame(SDL_Surface *dst)
 {
+	CFont &Font = g_pGfxEngine->getFont();
 	// However it should be blit to a memory map and then rendered every time. If not, no new effects can
 	// be improved.
 	
@@ -43,33 +44,34 @@ void CDlgFrame::drawOldSchoolFrame(SDL_Surface *dst)
 	for(j = 0 ; j < m_h - m_8x8tileheight ; j+= m_8x8tileheight )
 	{
 		for(i = 0 ; i < m_w - m_8x8tilewidth ; i+= m_8x8tilewidth )
-			g_pGfxEngine->Font->drawCharacter(dst, 32, m_x + i, m_y + j); // 32 is a blank tile
-		g_pGfxEngine->Font->drawCharacter(dst, 32,m_x + m_w - m_8x8tilewidth, m_y + j); // for the last tile
+			Font.drawCharacter(dst, 32, m_x + i, m_y + j); // 32 is a blank tile
+		Font.drawCharacter(dst, 32,m_x + m_w - m_8x8tilewidth, m_y + j); // for the last tile
 	}
 	
 	// then the borders
 	for( i = m_8x8tilewidth ; i < m_w-m_8x8tilewidth ; i+= m_8x8tilewidth )
 	{
-		g_pGfxEngine->Font->drawCharacter(dst, 2, m_x + i, m_y); // 2 is one upper-border
-		g_pGfxEngine->Font->drawCharacter(dst, 7, m_x + i, m_y + m_h - m_8x8tileheight); // 7 is also the lower-border
+		Font.drawCharacter(dst, 2, m_x + i, m_y); // 2 is one upper-border
+		Font.drawCharacter(dst, 7, m_x + i, m_y + m_h - m_8x8tileheight); // 7 is also the lower-border
 	}
-	g_pGfxEngine->Font->drawCharacter(dst, 2, m_x + m_w - m_8x8tilewidth, m_y); // for the last tile
-	g_pGfxEngine->Font->drawCharacter(dst, 2, m_x + m_w - m_8x8tilewidth, m_y + m_h - m_8x8tileheight); // for the last tile
+	Font.drawCharacter(dst, 2, m_x + m_w - m_8x8tilewidth, m_y); // for the last tile
+	Font.drawCharacter(dst, 2, m_x + m_w - m_8x8tilewidth, m_y + m_h - m_8x8tileheight); // for the last tile
 	for( j = m_8x8tileheight ; j < m_h-m_8x8tileheight ; j+= m_8x8tileheight )
 	{
-		g_pGfxEngine->Font->drawCharacter(dst, 4, m_x, m_y + j ); // 4 is one left-border
-		g_pGfxEngine->Font->drawCharacter(dst, 5, m_x + m_w - m_8x8tilewidth, m_y + j ); // 5 is the right-border
+		Font.drawCharacter(dst, 4, m_x, m_y + j ); // 4 is one left-border
+		Font.drawCharacter(dst, 5, m_x + m_w - m_8x8tilewidth, m_y + j ); // 5 is the right-border
 	}
 	
 	// At last the corners
-	g_pGfxEngine->Font->drawCharacter(dst, 1, m_x, m_y ); // Upper-Left corner
-	g_pGfxEngine->Font->drawCharacter(dst, 3, m_x + m_w - m_8x8tilewidth, m_y ); // Upper-Right corner
-	g_pGfxEngine->Font->drawCharacter(dst, 6, m_x, m_y + m_h - m_8x8tileheight ); // Lower-Left corner
-	g_pGfxEngine->Font->drawCharacter(dst, 8, m_x + m_w - m_8x8tilewidth, m_y + m_h - m_8x8tileheight ); // Lower-Right corner
+	Font.drawCharacter(dst, 1, m_x, m_y ); // Upper-Left corner
+	Font.drawCharacter(dst, 3, m_x + m_w - m_8x8tilewidth, m_y ); // Upper-Right corner
+	Font.drawCharacter(dst, 6, m_x, m_y + m_h - m_8x8tileheight ); // Lower-Left corner
+	Font.drawCharacter(dst, 8, m_x + m_w - m_8x8tilewidth, m_y + m_h - m_8x8tileheight ); // Lower-Right corner
 }
 
 void CDlgFrame::drawRedFrame(SDL_Surface *dst)
 {
+	CFont &Font = g_pGfxEngine->getFont();
 	// However it should be blit to a memory map and then rendered every time. If not, no new effects can
 	// be improved.
 	
@@ -78,29 +80,29 @@ void CDlgFrame::drawRedFrame(SDL_Surface *dst)
 	for(j = 0 ; j < m_h - m_8x8tileheight ; j+= m_8x8tileheight )
 	{
 		for(i = 0 ; i < m_w - m_8x8tilewidth ; i+= m_8x8tilewidth )
-			g_pGfxEngine->Font->drawCharacter(dst, 32, m_x + i, m_y + j); // 32 is a blank tile
-		g_pGfxEngine->Font->drawCharacter(dst, 32,m_x + m_w - m_8x8tilewidth, m_y + j); // for the last tile
+			Font.drawCharacter(dst, 32, m_x + i, m_y + j); // 32 is a blank tile
+		Font.drawCharacter(dst, 32,m_x + m_w - m_8x8tilewidth, m_y + j); // for the last tile
 	}
 	
 	// then the borders
 	for( i = m_8x8tilewidth ; i < m_w-m_8x8tilewidth ; i+= m_8x8tilewidth )
 	{
-		g_pGfxEngine->Font->drawCharacter(dst, 24, m_x + i, m_y); // 2 is one upper-border
-		g_pGfxEngine->Font->drawCharacter(dst, 29, m_x + i, m_y + m_h - m_8x8tileheight); // 7 is also the lower-border
+		Font.drawCharacter(dst, 24, m_x + i, m_y); // 2 is one upper-border
+		Font.drawCharacter(dst, 29, m_x + i, m_y + m_h - m_8x8tileheight); // 7 is also the lower-border
 	}
-	g_pGfxEngine->Font->drawCharacter(dst, 24, m_x + m_w - m_8x8tilewidth, m_y); // for the last tile
-	g_pGfxEngine->Font->drawCharacter(dst, 24, m_x + m_w - m_8x8tilewidth, m_y + m_h - m_8x8tileheight); // for the last tile
+	Font.drawCharacter(dst, 24, m_x + m_w - m_8x8tilewidth, m_y); // for the last tile
+	Font.drawCharacter(dst, 24, m_x + m_w - m_8x8tilewidth, m_y + m_h - m_8x8tileheight); // for the last tile
 	for( j = m_8x8tileheight ; j < m_h-m_8x8tileheight ; j+= m_8x8tileheight )
 	{
-		g_pGfxEngine->Font->drawCharacter(dst, 26, m_x, m_y + j ); // 4 is one left-border
-		g_pGfxEngine->Font->drawCharacter(dst, 27, m_x + m_w - m_8x8tilewidth, m_y + j ); // 5 is the right-border
+		Font.drawCharacter(dst, 26, m_x, m_y + j ); // 4 is one left-border
+		Font.drawCharacter(dst, 27, m_x + m_w - m_8x8tilewidth, m_y + j ); // 5 is the right-border
 	}
 	
 	// At last the corners
-	g_pGfxEngine->Font->drawCharacter(dst, 23, m_x, m_y ); // Upper-Left corner
-	g_pGfxEngine->Font->drawCharacter(dst, 25, m_x + m_w - m_8x8tilewidth, m_y ); // Upper-Right corner
-	g_pGfxEngine->Font->drawCharacter(dst, 28, m_x, m_y + m_h - m_8x8tileheight ); // Lower-Left corner
-	g_pGfxEngine->Font->drawCharacter(dst, 30, m_x + m_w - m_8x8tilewidth, m_y + m_h - m_8x8tileheight ); // Lower-Right corner
+	Font.drawCharacter(dst, 23, m_x, m_y ); // Upper-Left corner
+	Font.drawCharacter(dst, 25, m_x + m_w - m_8x8tilewidth, m_y ); // Upper-Right corner
+	Font.drawCharacter(dst, 28, m_x, m_y + m_h - m_8x8tileheight ); // Lower-Left corner
+	Font.drawCharacter(dst, 30, m_x + m_w - m_8x8tilewidth, m_y + m_h - m_8x8tileheight ); // Lower-Right corner
 }
 
 CDlgFrame::~CDlgFrame() {
