@@ -788,7 +788,6 @@
 				23D3E9951013ABCA001643FA /* CGame.h */,
 				63453BD510798CCC007265F8 /* CGameControl.cpp */,
 				63453BD610798CCC007265F8 /* CGameControl.h */,
-				23C637BC1031812500FEEFEE /* cinematics */,
 				23D3E99A1013ABCA001643FA /* CLogFile.cpp */,
 				23D3E99B1013ABCA001643FA /* CLogFile.h */,
 				23D3ED7310175A17001643FA /* Color.h */,
@@ -928,13 +927,6 @@
 				23526704104E756F0054F00B /* CTilemap.h */,
 			);
 			path = graphics;
-			sourceTree = "<group>";
-		};
-		23C637BC1031812500FEEFEE /* cinematics */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = cinematics;
 			sourceTree = "<group>";
 		};
 		23C637C61031812500FEEFEE /* dialog */ = {
@@ -1691,8 +1683,8 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					/Library/Frameworks/SDL.framework/Headers,
-					/Library/Frameworks/Vorbis.framework/Headers,
-					/Library/Frameworks/Ogg.framework/Headers,
+					"\"$(SRCROOT)\"/Vorbis.framework/Headers",
+					"\"$(SRCROOT)\"/Ogg.framework/Headers",
 				);
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
@@ -1721,8 +1713,8 @@
 				GCC_PREFIX_HEADER = "";
 				HEADER_SEARCH_PATHS = (
 					/Library/Frameworks/SDL.framework/Headers,
-					/Library/Frameworks/Vorbis.framework/Headers,
-					/Library/Frameworks/Ogg.framework/Headers,
+					"\"$(SRCROOT)\"/Vorbis.framework/Headers",
+					"\"$(SRCROOT)\"/Ogg.framework/Headers",
 				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
