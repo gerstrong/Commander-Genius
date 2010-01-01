@@ -13,7 +13,6 @@
 class CSprite {
 public:
 	CSprite();
-	virtual ~CSprite();
 
 	bool createSurface(Uint32 flags, SDL_Color *Palette);
 	bool optimizeSurface();
@@ -32,6 +31,10 @@ public:
 	Uint8 getHeight() { return m_ysize; };
 	void setWidth(Uint8 w) { m_xsize=w; };
 	void setHeight(Uint8 h) { m_ysize=h; };
+
+	void freeSurfaces();
+
+	virtual ~CSprite();
 
 	// bounding box for hit detection
 	Uint32 m_bboxX1, m_bboxY1;

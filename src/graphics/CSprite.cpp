@@ -170,8 +170,12 @@ void CSprite::drawSprite( SDL_Surface *dst, Uint16 x, Uint16 y )
 	SDL_BlitSurface( m_surface, &src_rect, dst, &dst_rect );
 }
 
-CSprite::~CSprite() {
+void CSprite::freeSurfaces()
+{
 	if(m_surface) SDL_FreeSurface(m_surface);
 	if(m_masksurface) SDL_FreeSurface(m_masksurface);
+}
+
+CSprite::~CSprite() {
 }
 

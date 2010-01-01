@@ -15,8 +15,6 @@ Tilemap(NULL),
 m_fxsurface(NULL),
 mp_Effects(NULL)
 {
-	std::vector<CSprite*> Sprite;
-	std::vector<CBitmap*> Bitmap;
 }
 
 ///
@@ -88,10 +86,11 @@ void CGfxEngine::freeBitmaps()
 void CGfxEngine::freeSprites()
 {
 	CSprite *sprite;
-	while( Sprite.size() > 0 )
+	while( !Sprite.empty() )
 	{
-		sprite = *Sprite.end();
-		if(sprite) delete sprite;
+		sprite = Sprite.back();
+		sprite->freeSurfaces();
+		SAFE_DELETE(sprite);
 		Sprite.pop_back();
 	}
 }

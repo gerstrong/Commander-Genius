@@ -49,7 +49,7 @@ private:
 		long hv_offset; // Unused in Keen games. Used in later games such as Shadow Knights
 		// There are 3 copies of the same Elements in the file. There were used for performance
 		// in DOS but are ignored here.
-	}*Sprite;
+	}*EGASpriteModell;
 
 	char LoadTGASprite( const std::string &filename, CSprite *sprite );
 	void LoadSpecialSprites( std::vector<CSprite*> &sprite );

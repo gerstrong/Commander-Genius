@@ -41,17 +41,13 @@ CEGASprit::CEGASprit(int planesize,
 					 int numsprites,
 					 long spriteloc,
 					 const std::string &gamepath) :
-m_gamepath(gamepath)
+m_gamepath(gamepath),
+EGASpriteModell(NULL)
 {
 	m_planesize = planesize;
 	m_spritestartloc = spritestartloc;
 	m_numsprites = numsprites;
 	m_spriteloc = spriteloc;
-	Sprite = NULL;
-}
-
-CEGASprit::~CEGASprit() {
-	if(Sprite) delete [] Sprite, Sprite = NULL;
 }
 
 
@@ -59,26 +55,26 @@ bool CEGASprit::loadHead(char *data)
 {
 	data += m_spritestartloc;
 	
-	Sprite = new st_sprite[m_numsprites];
+	EGASpriteModell = new st_sprite[m_numsprites];
 	
     for(int i=0 ; i<m_numsprites ; i++ )
     {
-    	memcpy(&(Sprite[i].width),data+128*i,2);
-    	memcpy(&(Sprite[i].height),data+128*i+2,2);
-    	memcpy(&(Sprite[i].location_offset),data+128*i+4,2);
-    	memcpy(&(Sprite[i].location),data+128*i+6,2);
-    	memcpy(&(Sprite[i].hitbox_l),data+128*i+8,2);
-    	memcpy(&(Sprite[i].hitbox_u),data+128*i+10,2);
-    	memcpy(&(Sprite[i].hitbox_r),data+128*i+12,2);
-    	memcpy(&(Sprite[i].hitbox_b),data+128*i+14,2);
-    	memcpy(Sprite[i].name,data+128*i+16,12);
-    	memcpy(&(Sprite[i].hv_offset),data+128*i+28,4);
+    	memcpy(&(EGASpriteModell[i].width),data+128*i,2);
+    	memcpy(&(EGASpriteModell[i].height),data+128*i+2,2);
+    	memcpy(&(EGASpriteModell[i].location_offset),data+128*i+4,2);
+    	memcpy(&(EGASpriteModell[i].location),data+128*i+6,2);
+    	memcpy(&(EGASpriteModell[i].hitbox_l),data+128*i+8,2);
+    	memcpy(&(EGASpriteModell[i].hitbox_u),data+128*i+10,2);
+    	memcpy(&(EGASpriteModell[i].hitbox_r),data+128*i+12,2);
+    	memcpy(&(EGASpriteModell[i].hitbox_b),data+128*i+14,2);
+    	memcpy(EGASpriteModell[i].name,data+128*i+16,12);
+    	memcpy(&(EGASpriteModell[i].hv_offset),data+128*i+28,4);
 		
-    	Sprite[i].width *= 8; // Where the width is divided by 8
-    	Sprite[i].hitbox_l >>= 8;
-    	Sprite[i].hitbox_u >>= 8;
-    	Sprite[i].hitbox_r >>= 8;
-    	Sprite[i].hitbox_b >>= 8;
+    	EGASpriteModell[i].width *= 8; // Where the width is divided by 8
+    	EGASpriteModell[i].hitbox_l >>= 8;
+    	EGASpriteModell[i].hitbox_u >>= 8;
+    	EGASpriteModell[i].hitbox_r >>= 8;
+    	EGASpriteModell[i].hitbox_b >>= 8;
     }
 	
     return true;
@@ -131,14 +127,15 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 								  plane5 + m_spriteloc);
 	
 	// load the image data
+	g_pGfxEngine->freeSprites();
 	g_pGfxEngine->createEmptySprites(MAX_SPRITES+1);
 	for(int i=0 ; i<m_numsprites ; i++)
 	{
-		g_pGfxEngine->Sprite[i]->setSize( Sprite[i].width, Sprite[i].height );
-		g_pGfxEngine->Sprite[i]->setBouncingBoxCoordinates( (Sprite[i].hitbox_l << (CSF-TILE_S)),
-														    (Sprite[i].hitbox_u << (CSF-TILE_S)),
-														    (Sprite[i].hitbox_r << (CSF-TILE_S)),
-														    (Sprite[i].hitbox_b << (CSF-TILE_S)) );
+		g_pGfxEngine->Sprite[i]->setSize( EGASpriteModell[i].width, EGASpriteModell[i].height );
+		g_pGfxEngine->Sprite[i]->setBouncingBoxCoordinates( (EGASpriteModell[i].hitbox_l << (CSF-TILE_S)),
+														    (EGASpriteModell[i].hitbox_u << (CSF-TILE_S)),
+														    (EGASpriteModell[i].hitbox_r << (CSF-TILE_S)),
+														    (EGASpriteModell[i].hitbox_b << (CSF-TILE_S)) );
 		g_pGfxEngine->Sprite[i]->createSurface( g_pVideoDriver->BlitSurface->flags,
 											   g_pGfxEngine->Palette.m_Palette );
 	}
@@ -188,8 +185,6 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 				pixel[y*sfc->w + x] = Planes->getbit(RawData, 4) ? ((Uint8*)pixsfc->pixels)[y*pixsfc->w + x] : 15;
 			}
 		}
-		
-		
 		if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
 		if(SDL_MUSTLOCK(pixsfc)) SDL_UnlockSurface(pixsfc);
 	}
@@ -421,4 +416,6 @@ void CEGASprit::CreateYellowSpriteofTile( CTilemap *tilemap, Uint16 tile, CSprit
 	if(SDL_MUSTLOCK(src_sfc)) SDL_UnlockSurface(src_sfc);
 }
 
-
+CEGASprit::~CEGASprit() {
+	if(EGASpriteModell) delete [] EGASpriteModell, EGASpriteModell = NULL;
+}
