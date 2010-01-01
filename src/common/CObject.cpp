@@ -301,7 +301,7 @@ bool CObject::checkSolidR(stTile *TileProperty, CMap *p_map, int x2, int y1, int
 				return true;
 		}
 	}
-	if( (Uint16)x2 > ((p_map->m_width)<<CSF) ) return true; // Out of map?
+	if( (Uint16)x2 > ((p_map->m_width)<<CSF) ) exists=false; // Out of map?
 
 	return false;
 }
@@ -317,7 +317,7 @@ bool CObject::checkSolidL(stTile *TileProperty, CMap *p_map, int x1, int y1, int
 				return true;
 		}
 	}
-	if( x1 < (1<<CSF) ) return true; // Out of map?
+	if( x1 == 0 ) exists=false; // Out of map?
 
 	return false;
 }
@@ -333,7 +333,7 @@ bool CObject::checkSolidU(stTile *TileProperty, CMap *p_map, int x1, int x2, int
 				return true;
 		}
 	}
-	if( y1 < (1<<CSF) ) return true; // Out of map?
+	if( y1 == 0 ) exists=false; // Out of map?
 
 	return false;
 }
@@ -349,7 +349,7 @@ bool CObject::checkSolidD(stTile *TileProperty, CMap *p_map, int x1, int x2, int
 				return true;
 		}
 	}
-	if( (Uint16)y2 > ((p_map->m_height-1)<<CSF) ) return true; // Out of map?
+	if( (Uint16)y2 > ((p_map->m_height)<<CSF) ) exists=false; // Out of map?
 
 	return false;
 }

@@ -200,7 +200,7 @@ void CMap::scrollLeft(void)
 	
 	if (m_scrollpix==0)
 	{  // need to draw a new stripe
-		m_mapx--;
+		if(m_mapx>0) m_mapx--;
 		if (m_mapxstripepos == 0)
 		{
 			m_mapxstripepos = (512 - 16);
@@ -238,7 +238,7 @@ void CMap::scrollUp(void)
 	
 	if (m_scrollpixy==0)
 	{  // need to draw a new stripe
-		m_mapy--;
+		if(m_mapy>0) m_mapy--;
 		if (m_mapystripepos == 0)
 		{
 			m_mapystripepos = (512 - 16);

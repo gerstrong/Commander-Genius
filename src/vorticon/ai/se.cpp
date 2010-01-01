@@ -44,7 +44,7 @@ void CObjectAI::se_ai(CObject &object)
 
 void CObjectAI::se_extend_plat(CObject &object, bool &PlatExtending)
 {
-#define PLAT_EXTEND_RATE        7
+#define PLAT_EXTEND_RATE        3
 
 	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 

@@ -91,9 +91,9 @@ void CPlayer::setWMblockedlrud()
 	
 	// U
 	if (isWMSolid(goto_x+x1+(1<<STC), goto_y+y1) )
-	{ blockedu = 1; }
+	{ blockedu = true; }
 	else if (isWMSolid(goto_x+x2-(1<<STC), goto_y+y1) )
-	{ blockedu = 1; }
+	{ blockedu = true; }
 	
 	// D
 	if (isWMSolid(goto_x+x1+(1<<STC), goto_y+y2) )

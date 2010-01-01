@@ -345,12 +345,14 @@ void CPlayer::TogglePogo_and_Switches(const bool &platextending)
 					}
 				}
 
-				if (!ppogostick) break;
+				if (ppogostick) ppogostick = false;
+				break;
 			}
 			else if (t==TILE_LIGHTSWITCH)
 			{ // lightswitch
 				m_Level_Trigger = LVLTRIG_LIGHT;
 				g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, x>>CSF);
+				break;
 			}
 		}
 		

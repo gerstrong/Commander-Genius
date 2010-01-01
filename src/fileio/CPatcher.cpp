@@ -196,21 +196,29 @@ void CPatcher::PatchLevelhint(int level)
 {
 	unsigned char *p_patch;
 	unsigned long offset=0;
+	unsigned long end=0;
 
 	// Check for which level is it for.
 	if(m_episode == 1)
 	{
 		switch(level)
 		{
-		case 2: offset = 0x15080; break;
-		case 6: offset = 0x1511A; break;
-		case 11: offset = 0x152E8; break;
-		case 15: offset = 0x153DB; break;
+		case 2:  offset = 0x15080; end = 0x15113; break;
+		case 6:  offset = 0x1511A; end = 0x151B3; break;
+		case 9:  offset = 0x151B4, end = 0x1524D; break;
+		case 10: offset = 0x1524E; end = 0x152E7; break;
+		case 11: offset = 0x152E8; end = 0x1523F; break;
+		case 12: offset = 0x15340; end = 0x153DA; break;
+		case 15: offset = 0x153DB; end = 0x1545E; break;
 		}
 	}
 	else if(m_episode == 2)
 	{
-		// TODO: I don't know those offsets, but it's somewhere in the code. Too laz to look for now...
+		switch(level)
+		{
+		case 8:  offset = 0x19FCC; end = 0x1A08B; break;
+		case 12:  offset = 0x1A08B; end = 0x1A1A0; break;
+		}
 	}
 
 	p_patch = m_data + offset;
@@ -223,9 +231,11 @@ void CPatcher::PatchLevelhint(int level)
 
 		memcpy(p_patch, buf.c_str(), buf.size());
 		p_patch += buf.size();
+		if( p_patch == m_data+end ) break;
 	} while( !m_TextList.empty() && !strCaseStartsWith(buf,"%") &&
 			 !buf.empty() && !strCaseStartsWith(buf,"\r") );
-	*p_patch = '\0';
 
-	// TODO: The ending text is not right yet. Check which offset indicates ending text.
+	// Fill the rest with zeros, so the old won't be shown
+	if(end != offset)
+		memset( p_patch, 0, end-offset);
 }

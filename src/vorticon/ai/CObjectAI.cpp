@@ -79,7 +79,7 @@ void CObjectAI::process()
 		object.process();
 	}
 
-	if(m_gunfiretimer<120) m_gunfiretimer++;
+	if(m_gunfiretimer<60) m_gunfiretimer++;
 	else m_gunfiretimer=0;
 }
 

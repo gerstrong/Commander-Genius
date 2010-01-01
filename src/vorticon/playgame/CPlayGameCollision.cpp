@@ -38,6 +38,7 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 		if( p_player->goto_x > p_player->x )
 		{
 			// The player walked right
+			p_player->blockedr = false;
 			while(p_player->goto_x > p_player->x)
 			{
 				if( checkisSolidl(p_player) )
@@ -51,6 +52,7 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 		else if( p_player->goto_x < p_player->x )
 		{
 			// The player walked left
+			p_player->blockedl = false;
 			while(p_player->goto_x < p_player->x)
 			{
 				if( checkisSolidr(p_player) )
@@ -68,6 +70,7 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 	if( p_player->goto_y > p_player->y )
 	{
 		// The player is falling
+		p_player->blockedd = false;
 		while(p_player->goto_y > p_player->y)
 		{
 			if( checkisSolidu(p_player) )
@@ -84,6 +87,7 @@ void CPlayGame::checkPlayerCollisions(CPlayer *p_player)
 	else if( p_player->goto_y < p_player->y )
 	{
 		// The player jumped or flew up!
+		p_player->blockedu = false;
 		while(p_player->goto_y < p_player->y)
 		{
 			if( checkisSolidd(p_player) )

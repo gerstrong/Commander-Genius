@@ -130,7 +130,7 @@ void CObjectAI::smash(CObject &object)
 void CObjectAI::icebit_ai(CObject &object)
 {
 	if (object.needinit)
-	{  // first time initilization
+	{  // first time initialization
 		object.ai.icechunk.veloc_x = ICEBIT_SPEED * object.ai.icechunk.vector_x;
 		object.ai.icechunk.veloc_y = ICEBIT_SPEED * object.ai.icechunk.vector_y;
 		object.inhibitfall = true;

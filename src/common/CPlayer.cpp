@@ -124,10 +124,9 @@ bool CPlayer::scrollTriggers()
 {
 	int px, py;
 	bool scrollchanged=false;
-	unsigned int scroll_x, scroll_y;
 
-	scroll_x = mp_map->m_scrollx;
-	scroll_y = mp_map->m_scrolly;
+	Uint16& scroll_x = mp_map->m_scrollx;
+	Uint16& scroll_y = mp_map->m_scrolly;
 
 	if (pdie) return scrollchanged;
 
@@ -138,7 +137,6 @@ bool CPlayer::scrollTriggers()
 	if(px > SCROLLTRIGGERRIGHT && scroll_x < mp_map->m_maxscrollx)
 	{
 		do{
-			scroll_x = mp_map->m_scrollx;
 			px = (x>>STC)-scroll_x;
 			mp_map->scrollRight();
 		}while(px > 226 && scroll_x < mp_map->m_maxscrollx);
@@ -147,7 +145,6 @@ bool CPlayer::scrollTriggers()
 	else if(px < SCROLLTRIGGERLEFT && scroll_x > 32)
 	{
 		do{
-			scroll_x = mp_map->m_scrollx;
 			px = (x>>STC)-scroll_x;
 			mp_map->scrollLeft();
 		}while(px < 80 && scroll_x > 32);
@@ -158,7 +155,6 @@ bool CPlayer::scrollTriggers()
 	if (py > SCROLLTRIGGERDOWN && scroll_y < mp_map->m_maxscrolly)
 	{
 		do{
-			scroll_y = mp_map->m_scrolly;
 			py = (y>>STC)-scroll_y;
 			mp_map->scrollDown();
 		}while(py > 150 && scroll_y < mp_map->m_maxscrolly);
@@ -167,12 +163,21 @@ bool CPlayer::scrollTriggers()
 	else if ( py < SCROLLTRIGGERUP && scroll_y > 32  )
 	{
 		do{
-			scroll_y = mp_map->m_scrolly;
 			py = (y>>STC)-scroll_y;
 			mp_map->scrollUp();
 		}while(py < 50 && scroll_y > 32);
 		scrollchanged = true;
 	}
+
+	// This will always snap correctly to the edge
+	while(scroll_x < 32)
+		mp_map->scrollRight();
+	while(scroll_x > mp_map->m_maxscrollx)
+		mp_map->scrollLeft();
+	while(scroll_y < 32)
+		mp_map->scrollDown();
+	while(scroll_y > mp_map->m_maxscrolly)
+		mp_map->scrollUp();
 
 	return scrollchanged;
 }
@@ -445,7 +450,10 @@ void CPlayer::WalkingAnimation()
 						g_pSound->playStereofromCoord(SOUND_KEEN_WALK2, PLAY_NOW, mp_object->at(m_player_number).scrx);
 					
 					if(blockedr || blockedl)
-						g_pSound->playStereofromCoord(SOUND_KEEN_BLOK, PLAY_NOW, mp_object->at(m_player_number).scrx);
+					{
+						if(!g_pSound->isPlaying(SOUND_KEEN_BLOK))
+							g_pSound->playStereofromCoord(SOUND_KEEN_BLOK, PLAY_NOW, mp_object->at(m_player_number).scrx);
+					}
 
 					if( m_playingmode != WORLDMAP && (blockedr || blockedl) )
 					{
