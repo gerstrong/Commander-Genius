@@ -122,7 +122,7 @@ void CObjectAI::ninja_ai(CObject &object, bool hardmode)
 			for(i=0;i<m_NumPlayers;i++)
 			{
 				if ((m_Player[i].y >= object.y-(96<<STC)) &&
-					(m_Player[i].y+(Sprite[0]->getHeight()<<STC) <= (object.y+object.bboxY2+(96<<STC))))
+					(m_Player[i].y+(Sprite[0].getHeight()<<STC) <= (object.y+object.bboxY2+(96<<STC))))
 				{
 					onsamelevel = 1;
 					break;

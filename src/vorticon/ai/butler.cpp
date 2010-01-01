@@ -30,8 +30,7 @@ enum Butleractionn{
 
 void  CObjectAI::butler_ai(CObject &object, char difficulty)
 {
-	 char not_about_to_fall;
-	 Uint16 butler_height, butler_width;
+	 bool not_about_to_fall;
 	 
 	 if (object.needinit)
 	 {
@@ -82,13 +81,11 @@ void  CObjectAI::butler_ai(CObject &object, char difficulty)
 		 } else object.ai.butler.timer++;
 		 break;
 	 case BUTLER_WALK:
-		 CSprite &sprite = *g_pGfxEngine->Sprite[BUTLER_WALK_LEFT_FRAME];
 		 stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
-		 butler_height = sprite.getHeight()<<STC;
-		 butler_width = sprite.getWidth()<<STC;
+		 Uint16 butler_height = object.bboxY2+(1<<STC);
 		 if (object.ai.butler.movedir==LEFT)
 		 {  // move left
-			 not_about_to_fall = TileProperty[mp_Map->at((object.x-BUTLER_LOOK_AHEAD_DIST)>>CSF, (object.y+butler_height)>>CSF)].bup;
+			 not_about_to_fall = TileProperty[mp_Map->at((object.x+object.bboxX1-(BUTLER_LOOK_AHEAD_DIST<<STC))>>CSF, (object.y+butler_height)>>CSF)].bup;
 			 object.sprite = BUTLER_WALK_LEFT_FRAME + object.ai.butler.frame;
 			 if (!object.blockedl && not_about_to_fall)
 			 {
@@ -109,7 +106,7 @@ void  CObjectAI::butler_ai(CObject &object, char difficulty)
 		 else
 		 {  // move right
 	 
-			 not_about_to_fall = TileProperty[mp_Map->at((object.x+butler_width+BUTLER_LOOK_AHEAD_DIST)>>CSF, (object.y+butler_height)>>CSF)].bup;
+			 not_about_to_fall = TileProperty[mp_Map->at((object.x+object.bboxX2+(BUTLER_LOOK_AHEAD_DIST<<STC))>>CSF, (object.y+butler_height)>>CSF)].bup;
 			 object.sprite = BUTLER_WALK_RIGHT_FRAME + object.ai.butler.frame;
 			 if (!object.blockedr && not_about_to_fall)
 			 {

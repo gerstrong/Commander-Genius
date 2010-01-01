@@ -105,10 +105,10 @@ void CPlayer::walkbehindexitdoor()
         if (width < 0) width = 0;               // don't set to negative
 		
         // set new width of all player walk frames
-        g_pGfxEngine->Sprite[playerbaseframe+0]->setWidth(width);
-        g_pGfxEngine->Sprite[playerbaseframe+1]->setWidth(width);
-		g_pGfxEngine->Sprite[playerbaseframe+2]->setWidth(width);
-		g_pGfxEngine->Sprite[playerbaseframe+3]->setWidth(width);
+        g_pGfxEngine->Sprite[playerbaseframe+0].setWidth(width);
+        g_pGfxEngine->Sprite[playerbaseframe+1].setWidth(width);
+		g_pGfxEngine->Sprite[playerbaseframe+2].setWidth(width);
+		g_pGfxEngine->Sprite[playerbaseframe+3].setWidth(width);
     }
 }
 
@@ -595,12 +595,11 @@ void CPlayer::raygun()
 				inventory.charges--;
 				pshowdir = pdir;
 				
-				CSprite &Sprite = *g_pGfxEngine->Sprite.at(playframe);
 				g_pSound->playStereofromCoord(SOUND_KEEN_FIRE, PLAY_NOW, pPlayerObject->scrx);
 				
 				ydir = y+(9<<(CSF-4));
-				if (pdir==RIGHT) xdir = x+Sprite.m_bboxX2+1;
-				else xdir = x-Sprite.m_bboxX2-(1<<STC);
+				if (pdir==RIGHT) xdir = x+mp_object->at(m_player_number).bboxX2+pinertia_x;
+				else xdir = x+mp_object->at(m_player_number).bboxX1-(5<<STC)+pinertia_x;
 				
 				rayobject.spawn(xdir, ydir, OBJ_RAY, m_episode);
 				rayobject.ai.ray.owner = m_player_number;

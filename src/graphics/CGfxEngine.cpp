@@ -14,8 +14,7 @@ Font(NULL),
 Tilemap(NULL),
 m_fxsurface(NULL),
 mp_Effects(NULL)
-{
-}
+{}
 
 ///
 // Creation Routines
@@ -34,12 +33,9 @@ CFont *CGfxEngine::createEmptyFontmap()
 
 CSprite *CGfxEngine::createEmptySprites(Uint16 num_sprites)
 {
-	Sprite.reserve(num_sprites);
-	for(Uint16 i=0 ; i<num_sprites ; i++ )
-		Sprite.push_back( new CSprite() );
-	
-	if(!Sprite.empty())	return Sprite[0];
-	else return NULL;
+	CSprite sprite;
+	Sprite.assign(num_sprites, sprite);
+	return &Sprite[0];
 }
 
 CBitmap *CGfxEngine::createEmptyBitmaps(Uint16 num_bmps)
@@ -85,12 +81,10 @@ void CGfxEngine::freeBitmaps()
 
 void CGfxEngine::freeSprites()
 {
-	CSprite *sprite;
 	while( !Sprite.empty() )
 	{
-		sprite = Sprite.back();
-		sprite->freeSurfaces();
-		SAFE_DELETE(sprite);
+		CSprite &sprite = Sprite.back();
+		sprite.freeSurfaces();
 		Sprite.pop_back();
 	}
 }
@@ -115,8 +109,8 @@ void CGfxEngine::copyTileToSprite( Uint16 t, Uint16 s, Uint16 ntilestocopy )
 	src_rect.w = src_rect.h = 16;
 	dst_rect.w = dst_rect.h = 16;
 
-	Sprite[s]->setSize( 16, 16*ntilestocopy );
-	Sprite[s]->createSurface( Tilemap->getSDLSurface()->flags, Palette.m_Palette );
+	Sprite[s].setSize( 16, 16*ntilestocopy );
+	Sprite[s].createSurface( Tilemap->getSDLSurface()->flags, Palette.m_Palette );
 	
 	for(Uint8 i=0 ; i<ntilestocopy ; i++)
 	{
@@ -126,7 +120,7 @@ void CGfxEngine::copyTileToSprite( Uint16 t, Uint16 s, Uint16 ntilestocopy )
 		dst_rect.x = 0;
 		dst_rect.y = 16*i;
 		
-		SDL_BlitSurface( Tilemap->getSDLSurface(), &src_rect, Sprite[s]->getSDLSurface(), &dst_rect);
+		SDL_BlitSurface( Tilemap->getSDLSurface(), &src_rect, Sprite[s].getSDLSurface(), &dst_rect);
 	}
 }
 

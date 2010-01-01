@@ -154,9 +154,9 @@ void CStatusScreen::drawInventoryEp1()
 	if (i>6) i=6;
 	for(j=0;j<i;j++)
 	{
-		g_pGfxEngine->Sprite[m_baseframe]->drawSprite(  mp_surface, x, (dlgY+4)<<3);
+		g_pGfxEngine->Sprite[m_baseframe].drawSprite(  mp_surface, x, (dlgY+4)<<3);
 		// TODO: Playbaseframe is somewhere else. It's needed, so the player is displayed at right colour
-		x += g_pGfxEngine->Sprite[0]->getWidth();
+		x += g_pGfxEngine->Sprite[0].getWidth();
 	}
 }
 
@@ -252,8 +252,8 @@ void CStatusScreen::drawInventoryEp2()
 	if (i>7) i=7;
 	for(j=0;j<i;j++)
 	{
-		g_pGfxEngine->Sprite[m_baseframe]->drawSprite(  mp_surface, x, (dlgY+4)<<3);
-		x += g_pGfxEngine->Sprite[0]->getWidth();
+		g_pGfxEngine->Sprite[m_baseframe].drawSprite(  mp_surface, x, (dlgY+4)<<3);
+		x += g_pGfxEngine->Sprite[0].getWidth();
 	}
 
 	// cities saved
@@ -366,7 +366,7 @@ void CStatusScreen::drawInventoryEp3()
 	if (i>7) i=7;
 	for(j=0;j<i;j++)
 	{
-		g_pGfxEngine->Sprite[m_baseframe]->drawSprite(  mp_surface, x, (dlgY+4)<<3);
-		x += g_pGfxEngine->Sprite[0]->getWidth();
+		g_pGfxEngine->Sprite[m_baseframe].drawSprite(  mp_surface, x, (dlgY+4)<<3);
+		x += g_pGfxEngine->Sprite[0].getWidth();
 	}
 }

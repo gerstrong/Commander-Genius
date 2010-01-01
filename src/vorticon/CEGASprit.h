@@ -51,10 +51,10 @@ private:
 		// in DOS but are ignored here.
 	}*EGASpriteModell;
 
-	char LoadTGASprite( const std::string &filename, CSprite *sprite );
-	void LoadSpecialSprites( std::vector<CSprite*> &sprite );
-	void DeriveSpecialSprites( CTilemap *tilemap, std::vector<CSprite*> &sprites );
-	void CreateYellowSpriteofTile( CTilemap *tilemap, Uint16 tile, CSprite* sprite );
+	char LoadTGASprite( const std::string &filename, CSprite &sprite );
+	void LoadSpecialSprites( std::vector<CSprite> &sprite );
+	void DeriveSpecialSprites( CTilemap *tilemap, std::vector<CSprite> &sprites );
+	void CreateYellowSpriteofTile( CTilemap *tilemap, Uint16 tile, CSprite& sprite );
 };
 
 #endif /* CEGASPRIT_H_ */

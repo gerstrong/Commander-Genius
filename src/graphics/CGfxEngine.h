@@ -57,7 +57,7 @@ public:
 	CFont *Font;
 	CTilemap *Tilemap;
 	CPalette Palette;
-	std::vector<CSprite*> Sprite;
+	std::vector<CSprite> Sprite;
 	std::vector<CBitmap*> Bitmap;
 	
 private:

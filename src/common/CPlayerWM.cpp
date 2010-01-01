@@ -71,13 +71,12 @@ void CPlayer::setWMblockedlrud()
 	// cheat: holding down TAB will turn off clipping. or if you are in godmode
 	if ((m_cheats_enabled && g_pInput->getHoldedKey(KTAB)) || godmode) return;
 	
-	CSprite &sprite = *g_pGfxEngine->Sprite[PMAPRIGHTFRAME];
+	CSprite &sprite = g_pGfxEngine->Sprite[PMAPRIGHTFRAME];
 	x1 = sprite.m_bboxX1;
 	x2 = sprite.m_bboxX2;
 	y1 = sprite.m_bboxY1;
 	y2 = sprite.m_bboxY2;
 
-	
 	// L
 	if (isWMSolid(goto_x+x1, goto_y+y1+(1<<STC)) )
 	{ blockedl = true; }

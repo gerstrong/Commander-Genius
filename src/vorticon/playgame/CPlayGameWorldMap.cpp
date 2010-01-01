@@ -200,7 +200,7 @@ void CPlayGame::showKeensLeft()
 		x = ((KEENSLEFT_X+1)*8)+4;
 		for(i=0;i<m_Player[0].inventory.lives&&i<=10;i++)
 		{
-			g_pGfxEngine->Sprite[m_Player[0].playerbaseframe]->drawSprite(g_pVideoDriver->FGLayerSurface, x, y );
+			g_pGfxEngine->Sprite[m_Player[0].playerbaseframe].drawSprite(g_pVideoDriver->FGLayerSurface, x, y );
 			x+=16;
 		}
 		y += 32;

@@ -21,9 +21,9 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 		
 		object.blockedr = object.blockedl = false;
 
-		int x1 = Sprite.at(object.sprite)->m_bboxX1;
-		int x2 = Sprite.at(object.sprite)->m_bboxX2;
-		int y2 = Sprite.at(object.sprite)->m_bboxY2;
+		int x1 = Sprite.at(object.sprite).m_bboxX1;
+		int x2 = Sprite.at(object.sprite).m_bboxX2;
+		int y2 = Sprite.at(object.sprite).m_bboxY2;
 
 		// Check initial collision. This will avoid that ray go through the first blocking element
 		for(int i=x1; i<x2 ; i++)
@@ -121,9 +121,9 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 			{
 				// don't go through bonklethal tiles, even if they're not solid
 				// (for the arms on mortimer's machine)
-				if (TileProperty[mp_Map->at(((object.x>>(CSF-4))+Sprite[object.sprite]->getWidth())>>4, (object.y>>CSF)+1)].behaviour == 1)
+				if (TileProperty[mp_Map->at(((object.x>>(CSF-4))+Sprite[object.sprite].getWidth())>>4, (object.y>>CSF)+1)].behaviour == 1)
 					hitlethal = true;
-				else if (TileProperty[mp_Map->at(((object.x>>(CSF-4))+Sprite[object.sprite]->getWidth())>>4, ((object.y>>(CSF-4))+(Sprite[object.sprite]->getHeight()-1))>>(CSF-4))].behaviour == 1)
+				else if (TileProperty[mp_Map->at(((object.x>>(CSF-4))+Sprite[object.sprite].getWidth())>>4, ((object.y>>(CSF-4))+(Sprite[object.sprite].getHeight()-1))>>(CSF-4))].behaviour == 1)
 					hitlethal = true;
 				else
 					hitlethal = false;
@@ -141,7 +141,7 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 			{
 				if (TileProperty[mp_Map->at((object.x-1)>>CSF, (object.y+1)>>CSF)].behaviour == 1)
 					hitlethal = true;
-				else if (TileProperty[mp_Map->at((object.x-1)>>CSF, ((object.y>>(CSF-4))+(Sprite[object.sprite]->getHeight()-1))>>(CSF-4))].behaviour == 1)
+				else if (TileProperty[mp_Map->at((object.x-1)>>CSF, ((object.y>>(CSF-4))+(Sprite[object.sprite].getHeight()-1))>>(CSF-4))].behaviour == 1)
 					hitlethal = true;
 				else
 					hitlethal = false;
