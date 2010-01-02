@@ -336,7 +336,7 @@ void CPlayer::TogglePogo_and_Switches(const bool &platextending)
 						int platy = my + pyoff;
 
 						// spawn a "sector effector" to extend/retract the platform
-						CObject platobject;
+						CObject platobject(mp_map);
 						platobject.spawn(mx<<CSF,my<<CSF,OBJ_SECTOREFFECTOR, m_episode);
 						platobject.ai.se.type = SE_EXTEND_PLATFORM;
 						platobject.ai.se.platx = platx;
@@ -593,7 +593,7 @@ void CPlayer::raygun()
 			if (inventory.charges)
 			{  // we have enough charges
 				int xdir, ydir;
-				CObject rayobject;
+				CObject rayobject(mp_map);
 				inventory.charges--;
 				pshowdir = pdir;
 				

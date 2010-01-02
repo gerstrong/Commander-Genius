@@ -134,7 +134,7 @@ void CObjectAI::meep_ai(CObject& object)
 
 		if (object.ai.meep.timer > MEEP_SING_SHOW_TIME)
 		{
-			CObject newobject;
+			CObject newobject(mp_Map);
 			if (object.ai.meep.dir==RIGHT)
 			{
 				newobject.spawn((object.x+object.bboxX2)<<CSF, object.y+(5<<STC), OBJ_SNDWAVE, 3);

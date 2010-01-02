@@ -24,16 +24,14 @@
 
 class CObject {
 public:
-	CObject(int num_players=1, int index=0);
+	CObject(CMap *pmap, int num_players=1, int index=0);
 	
 	unsigned int m_type;        // yorp, vorticon, etc.
-	unsigned int m_index;        // Like an ID for some objects of ID, that need this implementation
+	unsigned int m_index;        // Like an ID for some objects that need this implementation
 	bool exists;
 	bool onscreen;    			// true=(scrx,scry) position is visible onscreen
 	bool hasbeenonscreen;
 	unsigned int sprite;      			// which sprite should this object be drawn with
-	unsigned int x, y;        			// x,y location in map coords, CSFed
-	unsigned int new_x, new_y;        	// x,y location in map coords, CSFed for collision
 	int scrx, scry;           // x,y pixel position on screen
 	
 	// Bouncing Boxes
@@ -110,6 +108,12 @@ public:
 	bool spawn(int x0, int y0, int otype, int Episode);
 	void setIndex(int index);
 	
+	/*void moveTo(int x, int y);
+	void moveLeft(int amount);
+	void moveRight(int amount);
+	void moveUp(int amount);
+	void moveDown(int amount);*/
+
 	virtual void process() { }
 	
 	bool hitdetect(CObject &hitobject);
@@ -117,14 +121,19 @@ public:
 
 	// Collision parts
 	void performCollision(CMap *p_map);
-	bool checkSolidR(stTile *TileProperty, CMap *p_map, int x2, int y1, int y2);
-	bool checkSolidL(stTile *TileProperty, CMap *p_map, int x1, int y1, int y2);
-	bool checkSolidU(stTile *TileProperty, CMap *p_map, int x1, int x2, int y1);
-	bool checkSolidD(stTile *TileProperty, CMap *p_map, int x1, int x2, int y2);
+	bool checkSolidR( int x2, int y1, int y2);
+	bool checkSolidL( int x1, int y1, int y2);
+	bool checkSolidU( int x1, int x2, int y1);
+	bool checkSolidD( int x1, int x2, int y2);
 
 	void processFalling(CMap *p_map);
 
+	unsigned int x, y;        			// x,y location in map coords, CSFed
+
 	virtual ~CObject();
+
+protected:
+	CMap *mp_Map;
 };
 
 #endif /* COBJECT_H_ */

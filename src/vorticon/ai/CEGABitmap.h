@@ -16,7 +16,7 @@
 
 class CEGABitmap : public CObject {
 public:
-	CEGABitmap(SDL_Surface *pSurface, CBitmap *pBitmap);
+	CEGABitmap(CMap *p_Map, SDL_Surface *pSurface, CBitmap *pBitmap);
 	void setPos(int px, int py);
 	void process();
 	virtual ~CEGABitmap();

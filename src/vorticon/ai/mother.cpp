@@ -136,7 +136,7 @@ void CObjectAI::mother_ai( CObject& object, bool hardmode )
 
 		if (object.ai.mother.timer > MOTHER_SPIT_SHOW_TIME)
 		{
-			CObject newobject;
+			CObject newobject(mp_Map);
 			if (object.ai.mother.dir==RIGHT)
 			{
 				newobject.spawn(object.x+object.bboxX2+1, object.y+(11<<STC), OBJ_FIREBALL, 3);

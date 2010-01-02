@@ -1,4 +1,5 @@
 #include "CObjectAI.h"
+#include "../../misc.h"
 #include "../../sdl/sound/CSound.h"
 #include "../../graphics/CGfxEngine.h"
 #include "../../graphics/effects/CFlash.h"
@@ -6,9 +7,6 @@
 
 // Vorticon (all episodes, albeit the behavior changes slightly
 // depending on levelcontrol.episode).
-
-// Reference to ../misc.cpp
-unsigned int rnd(void);
 
 void CObjectAI::vort_ai(CObject &object, int level, int episode, char difficulty, bool dark)
 {
@@ -177,7 +175,7 @@ void CObjectAI::vort_ai(CObject &object, int level, int episode, char difficulty
 	 case VORT_WALK:
 			 object.ai.vort.dist_traveled++;
 	 
-			 if (rnd()%VORT_JUMP_PROB == (VORT_JUMP_PROB/2))
+			 if (getProbability(VORT_JUMP_PROB))
 			 {  // let's jump.
 				 if (!dark && !object.blockedu)
 				 {

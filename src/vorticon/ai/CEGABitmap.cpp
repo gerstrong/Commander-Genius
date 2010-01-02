@@ -10,7 +10,9 @@
 ///
 // Initialization Routine
 ///
-CEGABitmap::CEGABitmap(SDL_Surface *pSurface, CBitmap *pBitmap) {
+CEGABitmap::CEGABitmap(CMap *p_Map, SDL_Surface *pSurface, CBitmap *pBitmap) :
+CObject(p_Map)
+{
 	mp_Surface = pSurface;
 	mp_Bitmap = pBitmap;
 }

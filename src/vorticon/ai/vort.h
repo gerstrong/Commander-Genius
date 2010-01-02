@@ -52,4 +52,4 @@ VORT2_DYING
 
 #define VORT_PALETTE_FLASH_TIME  5
 
-#define VORT_TRAPPED_DIST        150
+#define VORT_TRAPPED_DIST        160

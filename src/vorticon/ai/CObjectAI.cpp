@@ -136,7 +136,7 @@ void CObjectAI::performSpecialAIType( CObject &object )
 		//KEEN1
 		case OBJ_YORP: yorp_ai(object, &m_Player[0], m_difficulty>1); break;
 		case OBJ_GARG: garg_ai(object, &m_Player[0], m_difficulty>1); break;
-		case OBJ_VORT: vort_ai(object, m_Level, m_Episode, m_difficulty, false ); break;
+		case OBJ_VORT: vort_ai(object, m_Level, m_Episode, m_difficulty, m_dark ); break;
 		case OBJ_BUTLER: butler_ai(object, m_difficulty); break;
 		case OBJ_TANK: tank_ai(object, m_difficulty>1); break;
 		case OBJ_ICECANNON: icecannon_ai(object); break;

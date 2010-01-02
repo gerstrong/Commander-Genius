@@ -60,7 +60,7 @@ mp_HighScores(NULL)
 	for(short i=0 ; i<m_NumPlayers ; i++)
 	{
 		// tie puppy object so the player can interact in the level
-		CObject object(m_NumPlayers);
+		CObject object(mp_Map, m_NumPlayers);
 	    object.exists = true;
 		object.onscreen = true;
 		object.honorPriority = true;
@@ -197,7 +197,7 @@ void CPlayGame::createPlayerObjects()
 	// tie puppy objects so the player can interact in the level
 	for (int i=0 ; i<m_NumPlayers ; i++)
 	{
-		CObject object(m_NumPlayers);
+		CObject object(mp_Map, m_NumPlayers);
 		m_Player[i].setDatatoZero();
 		m_Player[i].m_player_number = i;
 		m_Player[i].m_episode = m_Episode;
@@ -366,7 +366,7 @@ void CPlayGame::process()
 			{
 				CBitmap *pBitmap = g_pGfxEngine->getBitmap("GAMEOVER");
 				g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
-				mp_gameoverbmp = new CEGABitmap(g_pVideoDriver->getBlitSurface(), pBitmap);
+				mp_gameoverbmp = new CEGABitmap(mp_Map , g_pVideoDriver->getBlitSurface(), pBitmap);
 				mp_gameoverbmp->setScrPos( 160-(pBitmap->getWidth()/2), 100-(pBitmap->getHeight()/2) );
 			}
 		}
@@ -620,6 +620,7 @@ void CPlayGame::drawObjects()
 		else
 			m_Object.at(o).sprite = m_NumSprites-1;
 		
+		//m_Object.at(o).moveto(m_Player[i].x, m_Player[i].y);
 		m_Object.at(o).x = m_Player[i].x;
 		m_Object.at(o).y = m_Player[i].y;
 	}

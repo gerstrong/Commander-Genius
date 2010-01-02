@@ -11,8 +11,8 @@
 #include <vector>
 #include <string>
 #include "CInfoScene.h"
+#include "../../graphics/CBitmap.h"
 #include "../../common/CMap.h"
-#include "../../vorticon/ai/CEGABitmap.h"
 
 class CAbout : public CInfoScene {
 public:

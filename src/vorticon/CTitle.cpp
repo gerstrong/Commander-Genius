@@ -31,12 +31,12 @@ bool CTitle::init(int Episode)
 	pSurface = g_pVideoDriver->BlitSurface;
 	
 	pBitmap = g_pGfxEngine->getBitmap("TITLE");
-	p_object = new CEGABitmap( pSurface, pBitmap );
+	p_object = new CEGABitmap( &m_map, pSurface, pBitmap );
 	p_object->setScrPos( 160-(pBitmap->getWidth()/2), 0 );
 	m_objects.push_back(p_object);
 
 	pBitmap = g_pGfxEngine->getBitmap("F1HELP");
-	p_object = new CEGABitmap( pSurface, pBitmap );
+	p_object = new CEGABitmap( &m_map, pSurface, pBitmap );
 
 	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
 	p_object->setScrPos( (Episode == 3) ? 128 : 96, gameres.h-18 );

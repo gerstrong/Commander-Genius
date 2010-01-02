@@ -244,7 +244,7 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 		if (object.ai.tank.timer > TANK_PREPAREFIRE_TIME ||
 				(object.ai.tank.timer > TANK_PREPAREFIRE_TIME_FAST && hardmode))
 		{
-			CObject newobject;
+			CObject newobject(mp_Map);
 			if (object.onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, object.scrx);
 			if (object.ai.tank.movedir==RIGHT)
 			{

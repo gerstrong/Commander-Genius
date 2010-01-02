@@ -92,7 +92,7 @@ void CObjectAI::icechunk_ai(CObject &object)
 
 void CObjectAI::smash(CObject &object)
 {
-	CObject chunk;
+	CObject chunk(mp_Map);
 
 	if (object.onscreen)
 	{
@@ -157,7 +157,7 @@ void CObjectAI::icecannon_ai(CObject &object)
 	 
 	 if (!m_gunfiretimer)
 	 {
-		 CObject chunk;
+		 CObject chunk(mp_Map);
 		 chunk.spawn( object.x+512, object.y, OBJ_ICECHUNK, m_Episode);
 		 chunk.ai.icechunk.vector_x = object.ai.icechunk.vector_x;
 		 chunk.ai.icechunk.vector_y = object.ai.icechunk.vector_y;

@@ -195,7 +195,7 @@ void CPlayer::riseBonus(int spr, int x, int y)
 {
 	 if (mp_option[OPT_RISEBONUS].value)
 	 {
-		 CObject GotPointsObj;
+		 CObject GotPointsObj(mp_map);
 		 GotPointsObj.spawn(x<<CSF, y<<CSF, OBJ_GOTPOINTS, m_episode);
 		 GotPointsObj.sprite = spr;
 		 mp_object->push_back(GotPointsObj);
@@ -354,7 +354,7 @@ stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 	 }
 	 
 	 // replace the door tiles with a door object, which will do the animation
-	 CObject doorobj;
+	 CObject doorobj(mp_map);
 
 	 doorobj.spawn(mpx<<CSF,(mpy-tilefix)<<CSF, OBJ_DOOR, m_episode);
 	 doorobj.sprite = doorsprite;
@@ -366,7 +366,7 @@ void CPlayer::giveAnkh()
 {
 	if (ankhtime == 0)
 	{
-		CObject Object;
+		CObject Object(mp_map);
 		Object.ai.se.type = SE_ANKHSHIELD;
 		ankhshieldobject = Object.spawn(x, y, OBJ_SECTOREFFECTOR, m_episode);
 		mp_object->push_back(Object);

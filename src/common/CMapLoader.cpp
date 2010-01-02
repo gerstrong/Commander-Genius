@@ -206,7 +206,7 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 			{
 				if (!m_NessieAlreadySpawned)
 				{
-					CObject nessie;
+					CObject nessie(mp_map);
 
 					nessie.setIndex(mp_objvect->size());
 					nessie.spawn(x<<CSF, y<<CSF, OBJ_NESSIE, 3);
@@ -297,7 +297,7 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 		}
 		else
 		{
-			CObject enemyobject;
+			CObject enemyobject(mp_map);
 			enemyobject.setIndex(mp_objvect->size());
 			
 			switch(t)

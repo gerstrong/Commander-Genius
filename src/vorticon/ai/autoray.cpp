@@ -22,7 +22,7 @@ void CObjectAI::autoray_ai(CObject &Object)
 
 	if (!m_gunfiretimer)
 	{
-		CObject NewRay;
+		CObject NewRay(mp_Map);
 		NewRay.ai.ray.owner = -1;
 
 		if (Object.m_type==OBJ_AUTORAY_V)

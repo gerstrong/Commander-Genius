@@ -52,7 +52,7 @@ bool CPlayGame::loadGameState()
 		for( short i=0 ; i<m_NumPlayers ; i++ ) {
 			CPlayer Player(m_Episode, m_Level, m_Difficulty,
 					 i, mp_level_completed, mp_option, m_Object);
-			CObject object(m_NumPlayers);
+			CObject object(mp_Map, m_NumPlayers);
 		    object.exists = true;
 			object.onscreen = true;
 			object.honorPriority = true;
@@ -79,13 +79,13 @@ bool CPlayGame::loadGameState()
 		m_SavedGame.decodeData(size);
 		for( Uint32 i=0 ; i<size ; i++) {
 			// save all the objects states
-			CObject object(m_NumPlayers, i);
+			CObject object(mp_Map, m_NumPlayers, i);
 
 			m_SavedGame.decodeData(object.m_type);
 			m_SavedGame.decodeData(object.x);
 			m_SavedGame.decodeData(object.y);
-			object.new_x = object.x;
-			object.new_y = object.y;
+			//object.new_x = object.x;
+			//object.new_y = object.y;
 			m_SavedGame.decodeData(object.dead);
 			m_SavedGame.decodeData(object.needinit);
 			m_SavedGame.decodeData(object.onscreen);
