@@ -285,7 +285,7 @@ void CObjectAI::tank2_fire(CObject &object)
 void CObjectAI::tank_searchplayers(CObject &object)
 {
 	object.ai.tank.detectedPlayer = 0;
-	for( size_t i=0 ; i<m_NumPlayers ; i++ )
+	for( size_t i=0 ; i<m_Player.size() ; i++ )
 	{
 		if (m_Player[i].getYPosition() >= object.getXLeftPos())
 		{

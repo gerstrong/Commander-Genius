@@ -51,6 +51,7 @@ void CPlayer::setDatatoZero()
 	// When worldmap is set up, use that frame
 	sprite = PMAPDOWNFRAME;
 
+	m_type = OBJ_PLAYER;
 	moveTo(0,0);
 	pfallspeed = 0,
 	pdir = pshowdir = DOWN;
@@ -65,8 +66,8 @@ void CPlayer::setDatatoZero()
     plastfire = false;
     psliding = psemisliding = false;
     honorPriority = true;
-    exists = true;
     solid = true;
+    bumped = false;
 	
     pjumping = pjumptime = 0;
 	

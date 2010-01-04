@@ -126,7 +126,6 @@ private:
 	CPhysicsSettings m_PhysicsSettings;
 	int m_Level;
 	int m_Episode;
-	size_t m_NumPlayers;
 	char m_difficulty;
 	int m_gunfiretimer;
 	bool &m_dark;

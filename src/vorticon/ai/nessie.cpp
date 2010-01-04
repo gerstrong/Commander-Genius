@@ -64,13 +64,15 @@ void CObjectAI::nessie_ai(CObject& object)
 	// find out if nessie is mounted, and for all players that are
 	// mounted keep them stuck to nessie
 	bool isMounted = false;
-	for(int i=0;i<m_NumPlayers;i++)
+
+	std::vector<CPlayer>::iterator it_player = m_Player.begin();
+	for( ; it_player != m_Player.end() ; it_player++ )
 	{
-		if (object.ai.nessie.mounted[i])
+		if (object.ai.nessie.mounted[it_player->m_player_number])
 		{
 			int x = object.getXPosition();
 			int y = object.getYPosition();
-			m_Player[i].moveTo(x, y);
+			it_player->moveTo(x, y);
 			isMounted = true;
 		}
 	}

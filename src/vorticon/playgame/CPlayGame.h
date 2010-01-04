@@ -76,7 +76,7 @@ public:
 	void processObjectsAI();
 	void drawObjects();
 	void handleFKeys();
-	void verifyCutscenes();
+	void verifyFinales();
 	void collectHighScoreInfo();
 	void createFinale();
 

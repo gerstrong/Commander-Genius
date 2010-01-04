@@ -58,6 +58,8 @@ public:
 	char zappedbyenemy;	   // if 1, it was an ENEMYRAY and not keen that shot it
 	
 	bool inhibitfall;         // if true common_enemy_ai will not do falling
+ 	bool bumped;
+
 	std::vector<bool> cansupportplayer;
 	std::vector<CObject> *mp_object;
 	

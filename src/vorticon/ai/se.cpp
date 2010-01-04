@@ -680,15 +680,13 @@ void CObjectAI::se_mortimer_heart(CObject &object)
 
 			// kill all enemies
 			std::vector<CObject>::iterator it_obj = m_Objvect.begin();
-			it_obj += m_NumPlayers;
-
-			for( size_t i=m_NumPlayers ; i<m_Objvect.size() ; i++ )
+			for( ; it_obj!=m_Objvect.end() ; it_obj++ )
 			{
-				if(m_Objvect.at(i).m_type == OBJ_SECTOREFFECTOR &&
-						m_Objvect.at(i).ai.se.type == SE_MORTIMER_HEART ) continue;
+				if(it_obj->m_type == OBJ_SECTOREFFECTOR &&
+						it_obj->ai.se.type == SE_MORTIMER_HEART ) continue;
 				else
 				{
-					deleteObj(m_Objvect.at(i));
+					deleteObj(*it_obj);
 				}
 			}
 

@@ -28,7 +28,6 @@ unsigned int rnd(void);
 
 void CObjectAI::ninja_ai(CObject &object, bool hardmode)
 {
-	unsigned int i;
 	int onsamelevel;
 
 	if (object.needinit)
@@ -119,10 +118,12 @@ void CObjectAI::ninja_ai(CObject &object, bool hardmode)
 			// find out if a player is on the same level
 			onsamelevel = 0;
 			CSprite PlayerSprite = g_pGfxEngine->getSprite(0);
-			for(i=0;i<m_NumPlayers;i++)
+
+			std::vector<CPlayer>::iterator it_player = m_Player.begin();
+			for( ; it_player != m_Player.end() ; it_player++ )
 			{
-				if ((m_Player[i].getYPosition() >= object.getYPosition()-(96<<STC)) &&
-					(m_Player[i].getYPosition()+(PlayerSprite.getHeight()<<STC) <= (object.getYDownPos()+(96<<STC))))
+				if ((it_player->getYPosition() >= object.getYPosition()-(96<<STC)) &&
+					(it_player->getYPosition()+(PlayerSprite.getHeight()<<STC) <= (object.getYDownPos()+(96<<STC))))
 				{
 					onsamelevel = 1;
 					break;

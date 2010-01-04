@@ -34,8 +34,7 @@ enum scrub_actions{
 
 void CObjectAI::scrub_ai(CObject &object)
 {
-	int i=0;
-	bool walkovertile=false;
+	size_t i=0;
 	CSprite &ScrubSprite = g_pGfxEngine->getSprite(object.sprite);
 	CSprite &PlayerSprite = g_pGfxEngine->getSprite(0);
 
@@ -59,7 +58,7 @@ void CObjectAI::scrub_ai(CObject &object)
 		object.dead = 0;
 
 		SetAllCanSupportPlayer(object, 1);
-		for(i=0;i<m_NumPlayers;i++)
+		for( i=0 ; i<m_Objvect.size() ; i++ )
 			object.ai.scrub.kickedplayer[i] = 0;
 
 		return;
@@ -73,7 +72,7 @@ void CObjectAI::scrub_ai(CObject &object)
 	// after kicking a player, wait until he falls beneath the scrub
 	// before turning cansupportplayer back on...just in case we check
 	// for some other things to (when he stops falling, or if he jumps)
-	for(int p=0;p<m_NumPlayers;p++)
+	for(size_t p=0;p<m_Objvect.size();p++)
 	{
 		if (object.ai.scrub.kickedplayer[p])
 		{
@@ -91,7 +90,7 @@ void CObjectAI::scrub_ai(CObject &object)
 	{
 		bool nopush = false;
 		bool level_done = false;
-		for(size_t i=0 ; i<m_NumPlayers ; i++) level_done |= m_Player[i].level_done;
+		for(size_t i=0 ; i<m_Objvect.size() ; i++) level_done |= m_Player[i].level_done;
 		// don't push the player if he's standing on top of the scrub
 		if (m_Player[object.touchedBy].pfalling)
 		{
@@ -172,22 +171,6 @@ void CObjectAI::scrub_ai(CObject &object)
 		case LEFT:
 			object.sprite = SCRUB_WALK_LEFT + object.ai.scrub.walkframe;
 
-			/*if (!object.blockedd)
-			{ // walked off the edge
-				object.sprite = SCRUB_WALK_DOWN + object.ai.scrub.walkframe;
-				object.ai.scrub.walkdir = DOWN;
-				object.moveDown(2<<STC);
-				for(i=0;i<m_NumPlayers;i++)
-				{
-					if (m_Player[i].psupportingobject==object.m_index && m_Player[i].pjumping!=PJUMPUP && m_Player[i].pjumping!=PPOGOING)
-					{
-						m_Player[i].moveLeft(1<<STC);
-						m_Player[i].moveDown(4<<STC);
-					}
-				}
-				object.performCollision(mp_Map);	// recalculate blockedx's
-				Scrub_TurnOnCansupportWhereNotKicked(object);
-			}*/
 			if (object.blockedl)
 			{
 				object.sprite = SCRUB_WALK_UP + object.ai.scrub.walkframe;
@@ -197,7 +180,7 @@ void CObjectAI::scrub_ai(CObject &object)
 			else
 			{
 				object.moveLeft(SCRUB_WALK_SPEED);
-				for(i=0;i<m_NumPlayers;i++)
+				for(i=0;i<m_Objvect.size();i++)
 				{
 					if (m_Player[i].psupportingobject==object.m_index && m_Player[i].pjumping!=PJUMPUP && m_Player[i].pjumping!=PPOGOING)
 					{
@@ -212,15 +195,7 @@ void CObjectAI::scrub_ai(CObject &object)
 		case RIGHT:
 			object.sprite = SCRUB_WALK_RIGHT + object.ai.scrub.walkframe;
 
-			if (!object.blockedu)
-			{
-				object.ai.scrub.walkdir = UP;
-				object.sprite = SCRUB_WALK_UP + object.ai.scrub.walkframe;
-				Scrub_TurnOnCansupportWhereNotKicked(object);
-				object.moveUp(2<<STC);
-				object.performCollision(mp_Map);	// recalculate blockedx's
-			}
-			else if (object.blockedr)
+			if (object.blockedr)
 			{
 				object.ai.scrub.walkdir = DOWN;
 				object.sprite = SCRUB_WALK_DOWN + object.ai.scrub.walkframe;
@@ -240,18 +215,10 @@ void CObjectAI::scrub_ai(CObject &object)
 				object.sprite = SCRUB_WALK_LEFT + object.ai.scrub.walkframe;
 				Scrub_TurnOnCansupportWhereNotKicked(object);
 			}
-			else if (!object.blockedr)
-			{
-				//object.ai.scrub.walkdir = RIGHT;
-				//object.sprite = SCRUB_WALK_RIGHT + object.ai.scrub.walkframe;
-				//SetAllCanSupportPlayer(object, 0);
-				//object.moveLeft(2<<STC);
-				//object.performCollision(mp_Map);
-			}
 			else
 			{
 				object.moveDown(SCRUB_WALK_SPEED);
-				for(i=0;i<m_NumPlayers;i++)
+				for(i=0;i<m_Objvect.size();i++)
 				{
 					if (m_Player[i].psupportingobject==object.m_index && m_Player[i].pjumping!=PJUMPUP && m_Player[i].pjumping!=PPOGOING)
 					{
@@ -273,25 +240,7 @@ void CObjectAI::scrub_ai(CObject &object)
 			break;
 		case UP:
 			object.sprite = SCRUB_WALK_UP + object.ai.scrub.walkframe;
-			if (!object.blockedl)
-			{
-				object.ai.scrub.walkdir = LEFT;
-				object.sprite = SCRUB_WALK_LEFT + object.ai.scrub.walkframe;
-				Scrub_TurnOnCansupportWhereNotKicked(object);
-				object.moveLeft(2<<STC);
-				int y = ((object.getYPosition()>>CSF)<<TILE_S);
-				object.moveYDir((y+1)<<STC);
-				object.performCollision(mp_Map);	// recalculate blockedx's
-				for(i=0;i<m_NumPlayers;i++)
-				{
-					if (m_Player[i].psupportingobject==object.m_index && m_Player[i].pjumping!=PJUMPUP && m_Player[i].pjumping!=PPOGOING)
-					{
-						m_Player[i].moveLeft(2<<STC);
-						m_Player[i].moveUp((PlayerSprite.getHeight())<<STC);
-					}
-				}
-			}
-			else if (object.blockedu)
+			if (object.blockedu)
 			{
 				object.ai.scrub.walkdir = RIGHT;
 				object.sprite = SCRUB_WALK_RIGHT + object.ai.scrub.walkframe;
@@ -300,7 +249,7 @@ void CObjectAI::scrub_ai(CObject &object)
 			else
 			{
 				object.moveUp(SCRUB_WALK_SPEED);
-				for(i=0;i<m_NumPlayers;i++)
+				for(i=0;i<m_Objvect.size();i++)
 				{
 					if (m_Player[i].psupportingobject==object.m_index && m_Player[i].pjumping!=PJUMPUP && m_Player[i].pjumping!=PPOGOING)
 					{
@@ -351,30 +300,74 @@ void CObjectAI::scrub_ai(CObject &object)
 			break;
 	}
 
-	// sometimes it's possile for a scrub to fall off, for example
-	// if it's walking left on a platform that has solidfall but not solidlr,
-	// then turns to walk down. in this case we need to go into a falling
-	// state and fall until we reach solid ground again. this keeps it from
-	// freaking out and going flying across the screen.
 	if (!object.blockedl && !object.blockedr &&
 			!object.blockedu && !object.blockedd)
 	{
 		if (object.ai.scrub.state!=SCRUB_FALLING)
-		{	// scrub would fall, but we have to check, if he could walk down
+		{	// scrub would fall, but we have to check,
+			// if he could walk to another direction,
+			// before we let him really fall!
 
-			// on vortacola and blocked to all directions scrub can walk down
+			// NOTE: blockedup is intentionally used!
 			int mx = (object.getXPosition())>>CSF;
 			int my = (object.getYPosition())>>CSF;
-			stTile attaching_tile = TileProperty[mp_Map->at(mx+1, my+1)];
 			bool walkovertile = TileProperty[mp_Map->at(mx-1, my)].bup;
 			if (!walkovertile) // Is there a chance to walk over a tile?
 			{
-				if(attaching_tile.bup) // blocking up? Then he can walk on it downwards
-				{
+				if(object.ai.scrub.walkdir == LEFT &&
+						TileProperty[mp_Map->at(mx+1, my+1)].bup) // lower-right, if yes, go just go down
+				{	// Move Down!
+					object.sprite = SCRUB_WALK_DOWN + object.ai.scrub.walkframe;
 					object.ai.scrub.walkdir = DOWN;
-					object.moveDown(1<<STC);
+					object.moveDown(2<<STC);
+					object.moveRight(1<<STC);
+					for(i=0;i<m_Objvect.size();i++)
+					{
+						if (m_Player[i].psupportingobject==object.m_index && m_Player[i].pjumping!=PJUMPUP && m_Player[i].pjumping!=PPOGOING)
+						{
+							m_Player[i].moveLeft(1<<STC);
+							m_Player[i].moveDown(4<<STC);
+						}
+					}
+					Scrub_TurnOnCansupportWhereNotKicked(object);
 				}
-				else // No! Then make him fall
+				else if(object.ai.scrub.walkdir == DOWN &&
+						TileProperty[mp_Map->at(mx+1, my-1)].bup) // upper-right, if yes, go right! (ceiling)
+				{	// Move right
+					object.ai.scrub.walkdir = RIGHT;
+					object.sprite = SCRUB_WALK_RIGHT + object.ai.scrub.walkframe;
+					SetAllCanSupportPlayer(object, 0);
+					object.moveRight(2<<STC);
+					object.moveUp(1<<STC);
+				}
+				else if(object.ai.scrub.walkdir == RIGHT &&
+						TileProperty[mp_Map->at(mx-1, my-1)].bright) // upper-left
+				{	// Move Up!
+					object.ai.scrub.walkdir = UP;
+					object.sprite = SCRUB_WALK_UP + object.ai.scrub.walkframe;
+					Scrub_TurnOnCansupportWhereNotKicked(object);
+					object.moveRight(1<<STC);
+					object.moveUp(2<<STC);
+					object.moveLeft(1<<STC);
+				}
+				else if(object.ai.scrub.walkdir == UP &&
+						TileProperty[mp_Map->at(mx-1, my+1)].bdown) // lower-left
+				{	// Move Left!
+					object.ai.scrub.walkdir = LEFT;
+					object.sprite = SCRUB_WALK_LEFT + object.ai.scrub.walkframe;
+					Scrub_TurnOnCansupportWhereNotKicked(object);
+					object.moveLeft(2<<STC);
+					object.moveDown(1<<STC);
+					for(i=0;i<m_Objvect.size();i++)
+					{
+						if (m_Player[i].psupportingobject==object.m_index && m_Player[i].pjumping!=PJUMPUP && m_Player[i].pjumping!=PPOGOING)
+						{
+							m_Player[i].moveLeft(2<<STC);
+							m_Player[i].moveUp((PlayerSprite.getHeight())<<STC);
+						}
+					}
+				}
+				else
 				{
 					object.ai.scrub.fallinctimer = 0;
 					object.ai.scrub.fallspeed = SCRUB_MIN_FALL_SPEED;
@@ -384,13 +377,11 @@ void CObjectAI::scrub_ai(CObject &object)
 			}
 		}
 	}
-
 }
 
 void CObjectAI::Scrub_TurnOnCansupportWhereNotKicked(CObject &object)
 {
-	int i;
-	for(i=0;i<m_NumPlayers;i++)
+	for(size_t i=0;i<m_Objvect.size();i++)
 	{
 		if (!object.ai.scrub.kickedplayer[i])
 			object.cansupportplayer[i] = 1;

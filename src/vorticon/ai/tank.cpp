@@ -135,7 +135,7 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 	case TANK_WALK:
 		// is keen on same level?
 		object.ai.tank.detectedPlayer = false;
-		for(int i=0;i<m_NumPlayers;i++)
+		for(int i=0 ; i<m_Player.size() ; i++)
 		{
 			if (m_Player[i].getYPosition() >= y-(3<<CSF))
 			{

@@ -69,13 +69,15 @@ void CObjectAI::foob_ai(CObject &object, bool hardmode)
 
 	// find out if a player is on the same level as the foob cat
 	onsamelevel = 0;
-	for(size_t i=0;i<m_NumPlayers;i++)
+
+	std::vector<CPlayer>::iterator it_player = m_Player.begin();
+	for( ; it_player != m_Player.end() ; it_player++ )
 	{
-		if ( (m_Player[i].getYPosition() >= object.getYPosition()-(24<<STC)) &&
-			(m_Player[i].getYDownPos() <= object.getYPosition()+(24<<STC)) )
+		if ( (it_player->getYPosition() >= object.getYPosition()-(24<<STC)) &&
+			(it_player->getYDownPos() <= object.getYPosition()+(24<<STC)) )
 		{
 			onsamelevel = 1;
-			object.ai.foob.SpookedByWho = i;
+			object.ai.foob.SpookedByWho = it_player->m_player_number;
 			break;
 		}
 	}

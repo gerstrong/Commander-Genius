@@ -15,8 +15,6 @@
 
 void CObjectAI::platform_ai(CObject &object)
 {
-	unsigned int i;
-
 	if (object.needinit)
 	{  // first time initilization
 		object.ai.platform.animframe = 0;
@@ -79,12 +77,17 @@ void CObjectAI::platform_ai(CObject &object)
 			else
 			{
 				object.moveRight(PLATFORM_MOVE_SPD);
-				for(i=0;i<m_NumPlayers;i++)
+
+				std::vector<CPlayer>::iterator it_player = m_Player.begin();
+				for( ; it_player != m_Player.end() ; it_player++ )
 				{
-					if(m_Player[i].psupportingobject==object.m_index && (m_Player[i].pjumping==PNOJUMP||m_Player[i].pjumping==PPREPAREJUMP||m_Player[i].pjumping==PPREPAREPOGO))
+					if(it_player->psupportingobject==object.m_index &&
+							(it_player->pjumping==PNOJUMP||
+							it_player->pjumping==PPREPAREJUMP||
+							it_player->pjumping==PPREPAREPOGO) )
 					{
-						//if (!m_Player[i].blockedr)
-							m_Player[i].moveRight(PLATFORM_MOVE_SPD);
+						if (!it_player->blockedr)
+							it_player->moveRight(PLATFORM_MOVE_SPD);
 					}
 				}
 			}
@@ -100,12 +103,17 @@ void CObjectAI::platform_ai(CObject &object)
 			else
 			{
 				object.moveLeft(PLATFORM_MOVE_SPD);
-				for(i=0;i<m_NumPlayers;i++)
+
+				std::vector<CPlayer>::iterator it_player = m_Player.begin();
+				for( ; it_player != m_Player.end() ; it_player++ )
 				{
-					if(m_Player[i].psupportingobject==object.m_index && (m_Player[i].pjumping==PNOJUMP||m_Player[i].pjumping==PPREPAREJUMP||m_Player[i].pjumping==PPREPAREPOGO))
+					if(it_player->psupportingobject==object.m_index &&
+							(it_player->pjumping==PNOJUMP||
+							 it_player->pjumping==PPREPAREJUMP||
+							 it_player->pjumping==PPREPAREPOGO))
 					{
-						//if (!m_Player[i].blockedl)
-							m_Player[i].moveLeft(PLATFORM_MOVE_SPD);
+						if (!it_player->blockedl)
+							it_player->moveLeft(PLATFORM_MOVE_SPD);
 					}
 				}
 			}

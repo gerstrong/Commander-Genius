@@ -172,7 +172,7 @@ void CPlayer::dieanim() // Bad word for that. It's the entire die code
 		if (((getYPosition()>>(CSF-4))+96 > mp_map->m_scrolly) && (getYPosition()>(16<<(CSF-4))))
 		{  // player has not reached top of screen
 			// make player fly up
-			moveUp(PDIE_RISE_SPEED);
+			moveUp(-PDIE_RISE_SPEED);
 			if (getXPosition() > (4<<CSF))
 			{
 				moveXDir(pdie_xvect);
@@ -397,14 +397,6 @@ void CPlayer::JumpAndPogo()
 		}
 	}
 
-	// check for hitting a ceiling
-	if (blockedu)   // did we bonk something?
-	{  // immediatly abort the jump
-		pjumping = PNOJUMP;
-		g_pSound->playStereofromCoord(SOUND_KEEN_BUMPHEAD, PLAY_NOW, mp_object->at(m_player_number).scrx);
-	}
-
-
     switch(pjumping)
     {
 		case PPREPAREPOGO:
@@ -502,6 +494,18 @@ void CPlayer::JumpAndPogo()
         case PJUMPUP:
         case PPOGOING:
 			// do the jump
+        	// check for hitting a ceiling
+        	if (blockedu)   // did we bonk something?
+        	{  // immediatly abort the jump
+        		//pjumping = PNOJUMP;
+        		if(!bumped)
+        		{
+        			g_pSound->playStereofromCoord(SOUND_KEEN_BUMPHEAD, PLAY_NOW, mp_object->at(m_player_number).scrx);
+            		bumped = true;
+        		}
+        		pjumpupspeed-=pjumpupspeed_decrease*2;
+        	}
+
 			if (!pjumptime)
 			{
 				if (pjumpupspeed <= 0)
@@ -576,6 +580,7 @@ stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 
 	if (pfalling)
 	{
+		bumped = false;
 		if (plastfalling == 0)
 		{
 			if (!pjustjumped)

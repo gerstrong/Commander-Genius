@@ -58,14 +58,6 @@ mp_HighScores(NULL)
 	
 	for(short i=0 ; i<m_NumPlayers ; i++)
 	{
-		// tie puppy object so the player can interact in the level
-		CObject object(&m_Map, m_NumPlayers);
-	    object.exists = true;
-		object.onscreen = true;
-		object.honorPriority = true;
-		object.m_type = OBJ_PLAYER;
-		m_Object.push_back(object);
-
 		// Create the new Player and also tell him to which object it belongs to...
 		CPlayer Player(m_Episode, m_Level, m_Difficulty,
 						i, mp_level_completed, mp_option,
@@ -99,31 +91,32 @@ mp_HighScores(NULL)
 void CPlayGame::setupPlayers()
 {
 	m_showKeensLeft=false;
+	std::vector<CPlayer>::iterator it_player = m_Player.begin();
+	for( ; it_player!=m_Player.end() ; it_player++ )
 	for (int i=0 ; i<m_NumPlayers ; i++)
 	{
 		if( m_Level == WORLD_MAP_LEVEL )
 		{
-			m_Player[i].m_playingmode = CPlayer::WORLDMAP;
-			m_showKeensLeft |= ( m_Player[i].pdie == PDIE_DEAD );
+			it_player->m_playingmode = CPlayer::WORLDMAP;
+			m_showKeensLeft |= ( it_player->pdie == PDIE_DEAD );
 		}
 		else
 		{
-			m_Player[i].m_playingmode = CPlayer::LEVELPLAY;
-			m_Player[i].sprite = PSTANDFRAME;
+			it_player->m_playingmode = CPlayer::LEVELPLAY;
+			it_player->sprite = PSTANDFRAME;
 		}
-		m_Player[i].pdie = PDIE_NODIE;
+		it_player->pdie = PDIE_NODIE;
 		
 		// Calibrate Player to the right position, so it won't fall when level starts
 		CSprite &sprite = g_pGfxEngine->getSprite(PSTANDFRAME);
-		m_Player[i].w = sprite.getWidth()<<STC;
-		m_Player[i].h = sprite.getHeight()<<STC;
-		m_Player[i].moveDown(2<<CSF);
-		m_Player[i].moveUp(m_Player[i].h);
-		m_Player[i].m_level = m_Level;
+		it_player->w = sprite.getWidth()<<STC;
+		it_player->h = sprite.getHeight()<<STC;
+		it_player->m_level = m_Level;
 		
 		// Set the pointers to the map and object data
-		m_Player[i].setMapData(&m_Map);
-		m_Player[i].setPhysics(&m_PhysicsSettings);
+		it_player->setMapData(&m_Map);
+		it_player->setPhysics(&m_PhysicsSettings);
+		it_player->exists = true;
 	}
 }
 
@@ -168,7 +161,7 @@ bool CPlayGame::init()
 								m_Difficulty, m_PhysicsSettings, m_dark);
 
 	// Check if Player meets the conditions to show a cutscene. This also happens, when finale of episode has reached
-	verifyCutscenes();
+	verifyFinales();
 
 	// When Level starts it's never dark!
 	g_pGfxEngine->Palette.setdark(false);
@@ -211,7 +204,6 @@ void CPlayGame::createPlayerObjects()
 ////
 void CPlayGame::process()
 {
-
 	// Check for fading processes if necessary
 	if(g_pGfxEngine->Palette.in_progress())
 		g_pGfxEngine->Palette.applyFade();
@@ -272,19 +264,16 @@ void CPlayGame::process()
 					m_Map.drawAll();
 				}
 
+				// Does the player want to load/save a game?
 				if(m_SavedGame.getCommand() == CSavedGame::SAVE)
-				{
 					saveGameState();
-				}
 				else if(m_SavedGame.getCommand() == CSavedGame::LOAD)
-				{
 					loadGameState();
-				}
 			}
 		}
 		else if(!m_paused && m_MessageBoxes.empty()) // Game is not paused
 		{
-			if (!mp_Finale) // Has the game been finished?
+			if (!mp_Finale) // Hasn't the game yet been finished?
 			{
 				// Perform AIs
 				mp_ObjectAI->process();
@@ -506,7 +495,7 @@ void CPlayGame::handleFKeys()
 }
 
 // The Ending and mortimer cutscenes for example
-void CPlayGame::verifyCutscenes()
+void CPlayGame::verifyFinales()
 {
 	// first we need to know which Episode we were on
 	if(m_Episode == 1)
@@ -604,22 +593,15 @@ void CPlayGame::drawObjects()
 	if(m_hideobjects) return;
 
 	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
-	for (size_t i=0 ; i<m_Player.size() ; i++)
-	{
-		CPlayer &player = m_Player[i];
-		player.draw();
-	}
 	
-	// draw all objects. drawn in reverse order because the player sprites
-	// are in the first few indexes and we want them to come out on top.
-	if(!m_Object.empty())
-	{
-		for (size_t i=m_Object.size()-1 ; i>=m_Player.size() ; i--)
-		{
-			CObject &object = m_Object[i];
-			object.draw();
-		}
-	}
+	std::vector<CObject>::iterator it_obj = m_Object.begin();
+	for(; it_obj!=m_Object.end() ; it_obj++)
+		it_obj->draw();
+
+	// We draw the Player as last, because we want to see him in front of the other objects
+	std::vector<CPlayer>::iterator it_player = m_Player.begin();
+	for (; it_player != m_Player.end() ; it_player++)
+		it_player->draw();
 }
 ////
 // Getters

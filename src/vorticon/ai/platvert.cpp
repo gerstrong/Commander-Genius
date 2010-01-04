@@ -31,23 +31,28 @@ void CObjectAI::platvert_ai(CObject& object)
 		object.needinit = 0;
 		object.canbezapped = 1;
 		SetAllCanSupportPlayer(object, 1);
-		for(i=0;i<m_NumPlayers;i++)
+
+		std::vector<CPlayer>::iterator it_player = m_Player.begin();
+		for( ; it_player != m_Player.end() ; it_player++ )
 		{
-			object.ai.platform.kickedplayer[i] = 0;
+			object.ai.platform.kickedplayer[it_player->m_player_number] = 0;
 		}
 	}
 
 	// after kicking a player, wait until he falls beneath the platform
 	// before turning cansupportplayer back on...just in case we also
 	// check for if he stopped falling
-	for(p=0;p<m_NumPlayers;p++)
+
+	std::vector<CPlayer>::iterator it_player = m_Player.begin();
+	for( ; it_player != m_Player.end() ; it_player++ )
 	{
-		if (object.ai.platform.kickedplayer[p])
+		if (object.ai.platform.kickedplayer[it_player->m_player_number])
 		{
-			if (m_Player[p].getYPosition() > object.getYPosition() || (!m_Player[p].pfalling && !m_Player[p].pjumping))
+			if (it_player->getYPosition() > object.getYPosition() ||
+					(!it_player->pfalling && !it_player->pjumping))
 			{
-				object.cansupportplayer[p] = 1;
-				object.ai.platform.kickedplayer[p] = 0;
+				object.cansupportplayer[it_player->m_player_number] = 1;
+				object.ai.platform.kickedplayer[it_player->m_player_number] = 0;
 			}
 		}
 	}
@@ -100,19 +105,22 @@ void CObjectAI::platvert_ai(CObject& object)
 			else
 			{
 				object.moveUp(PLATVERT_MOVE_SPD);
-				for(i=0;i<m_NumPlayers;i++)
+
+				std::vector<CPlayer>::iterator it_player = m_Player.begin();
+				for( ; it_player != m_Player.end() ; it_player++ )
 				{
-					if(m_Player[i].psupportingobject==object.m_index && (m_Player[i].pjumping==PNOJUMP||m_Player[i].pjumping==PPREPAREJUMP||m_Player[i].pjumping==PPREPAREPOGO))
+					if(it_player->psupportingobject==object.m_index &&
+							(it_player->pjumping==PNOJUMP||it_player->pjumping==PPREPAREJUMP||it_player->pjumping==PPREPAREPOGO))
 					{
-						if (!object.ai.platform.kickedplayer[i])
+						if (!object.ai.platform.kickedplayer[it_player->m_player_number])
 						{
-							m_Player[i].moveUp(PLATVERT_MOVE_SPD);
+							it_player->moveUp(PLATVERT_MOVE_SPD);
 						}
 						// kick player off if we're running him into the ceiling
-						//if (m_Player[i].blockedu)
+						if (it_player->blockedu)
 						{
-							object.cansupportplayer[i] = 0;
-							object.ai.platform.kickedplayer[i] = 1;
+							object.cansupportplayer[it_player->m_player_number] = 0;
+							object.ai.platform.kickedplayer[it_player->m_player_number] = 1;
 						}
 					}
 				}
@@ -125,12 +133,15 @@ void CObjectAI::platvert_ai(CObject& object)
 			else
 			{
 				object.moveDown(PLATVERT_MOVE_SPD);
-				for(i=0;i<m_NumPlayers;i++)
+
+				std::vector<CPlayer>::iterator it_player = m_Player.begin();
+				for( ; it_player != m_Player.end() ; it_player++ )
 				{
-					if(m_Player[i].psupportingobject==object.m_index && (m_Player[i].pjumping==PNOJUMP||m_Player[i].pjumping==PPREPAREJUMP||m_Player[i].pjumping==PPREPAREPOGO))
+					if(it_player->psupportingobject==object.m_index &&
+							(it_player->pjumping==PNOJUMP||it_player->pjumping==PPREPAREJUMP||it_player->pjumping==PPREPAREPOGO))
 					{
-						if (!object.ai.platform.kickedplayer[i])
-							m_Player[i].moveDown(PLATVERT_MOVE_SPD);
+						if (!object.ai.platform.kickedplayer[it_player->m_player_number])
+							it_player->moveDown(PLATVERT_MOVE_SPD);
 					}
 				}
 			}

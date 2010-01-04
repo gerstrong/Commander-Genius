@@ -22,7 +22,6 @@ m_dark(dark)
 	mp_Options = p_options;
 	m_Level = level;
 	m_Episode = episode;
-	m_NumPlayers = NumPlayers;
 	m_gunfiretimer = 0;
 	sparks_left = 0;
 	PlatExtending = false;
@@ -44,17 +43,17 @@ void CObjectAI::process()
 
 		    // hit detection with players
 			object.touchPlayer = false;
-		    for( size_t cplayer=0 ; cplayer<m_NumPlayers ; cplayer++)
+			std::vector<CPlayer>::iterator it_player = m_Player.begin();
+			for( ; it_player != m_Player.end() ; it_player++ )
 		    {
-		    	CPlayer &player = m_Player[cplayer];
-				if (!player.pdie)
+				if (!it_player->pdie)
 				{
-					if ( object.hitdetect(player) )
+					if ( object.hitdetect(*it_player) )
 					{
-						if (!player.godmode)
+						if (!it_player->godmode)
 						{
 							object.touchPlayer = true;
-							object.touchedBy = cplayer;
+							object.touchedBy = it_player->m_player_number;
 						}
 						else
 						{
@@ -95,10 +94,12 @@ bool CObjectAI::checkforAIObject( CObject &object )
 	{
 		bool is_near_enough=false;
 		int x, y;
-		for(size_t i=0 ; i<m_NumPlayers ; i++)
+
+		std::vector<CPlayer>::iterator it_player = m_Player.begin();
+		for( ; it_player != m_Player.end() ; it_player++ )
 		{
-			x = m_Player[i].getXPosition();
-			y = m_Player[i].getYPosition();
+			x = it_player->getXPosition();
+			y = it_player->getYPosition();
 			is_near_enough |= object.calcVisibility(x, y);
 		}
 
@@ -168,15 +169,16 @@ void CObjectAI::performSpecialAIType( CObject &object )
 			//case OBJ_DEMOMSG: break;
 
 		default:
-			//g_pLogFile->ftextOut("gamedo_enemy_ai: Object is of invalid type %d\n", object.m_type);
+			g_pLogFile->ftextOut("gamedo_enemy_ai: Object is of invalid type %d\n", object.m_type);
 			break;
     }
 }
 
 void CObjectAI::SetAllCanSupportPlayer(CObject &object, int state)
 {
-	 for(size_t i=0;i<m_NumPlayers;i++)
-		 object.cansupportplayer[i] = state;
+	std::vector<CPlayer>::iterator it_player = m_Player.begin();
+	for( ; it_player != m_Player.end() ; it_player++ )
+		object.cansupportplayer[it_player->m_player_number] = state;
 }
 
 void CObjectAI::killplayer(int theplayer)
@@ -231,11 +233,7 @@ void CObjectAI::deleteAllObjects()
 {
 	// The real delete happens, when all the AI is done
 	// If the last object was deleted, throw it out of the list
-	while(m_Objvect.size() > m_NumPlayers)
-	{
-		m_Objvect.back().exists = false;
-		m_Objvect.pop_back();
-	}
+	m_Objvect.clear();
 }
 
 CObjectAI::~CObjectAI() {

@@ -71,7 +71,7 @@ void CPlayGame::processOnWorldMap()
 							m_level_command = START_LEVEL;
 							m_Level = useobject & 0x7fff;
 							g_pMusicPlayer->stop();
-							g_pSound->playStereofromCoord(SOUND_ENTER_LEVEL, PLAY_NOW, m_Object[m_Player[i].m_player_number].scrx);
+							g_pSound->playStereofromCoord(SOUND_ENTER_LEVEL, PLAY_NOW, m_Player[i].scrx);
 							// save where on the map, the player entered. This is a checkpoint!
 							m_checkpoint_x = m_Player[i].getXPosition();
 							m_checkpoint_y = m_Player[i].getYPosition();
