@@ -195,7 +195,8 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 				std::vector<CPlayer>::iterator it_player = mp_vec_Player->begin();
 				for(; it_player != mp_vec_Player->end() ; it_player++ )
 				{
-					it_player->moveTo(x<<CSF, y<<CSF);
+					it_player->exists = false;
+					it_player->spawn(x<<CSF, y<<CSF, OBJ_PLAYER, episode);
 				}
 				mp_map->m_objectlayer[x][y] = 0;
 			}
@@ -287,7 +288,8 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 			std::vector<CPlayer>::iterator it_player = mp_vec_Player->begin();
 			for(; it_player != mp_vec_Player->end() ; it_player++ )
 			{
-				it_player->moveTo(x<<CSF, y<<CSF);
+				it_player->exists = false;
+				it_player->spawn(x<<CSF, y<<CSF, OBJ_PLAYER, episode);
 				it_player->plastfalling = true;
 				it_player->pfalling = true;
 				it_player->pshowdir = RIGHT;

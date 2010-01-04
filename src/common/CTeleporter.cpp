@@ -125,6 +125,7 @@ void CTeleporter::teleportPlayerFromLevel(CMap &map, std::vector<CObject> &p_vec
 
 	CObject teleporter(&map);
 	player.beingteleported = true;
+	player.solid = false;
 	destx = m_TeleportTable[5].x;
 	desty = m_TeleportTable[5].y;
 	teleporter.spawn( origx, origy, OBJ_TELEPORTER, m_episode );

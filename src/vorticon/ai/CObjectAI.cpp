@@ -39,7 +39,6 @@ void CObjectAI::process()
 		if( checkforAIObject(object) )
 		{
 			object.processFalling();
-			object.performCollision(mp_Map);
 
 		    // hit detection with players
 			object.touchPlayer = false;

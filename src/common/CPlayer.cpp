@@ -87,7 +87,7 @@ void CPlayer::setDatatoZero()
     keyprocstate = 0;         // KPROC_IDLE
     pjustjumped = pjustfell = true;
     pfireframetimer = 0;
-    psupportingtile = psupportingobject = lastsupportingobject = 0;
+    psupportingobject = lastsupportingobject = 0;
 	
     m_cheats_enabled = false;
     m_showStatusScreen = false;

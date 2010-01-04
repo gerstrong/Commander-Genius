@@ -50,7 +50,7 @@ mp_Map(pmap)
 bool CObject::spawn(int x0, int y0, int otype, int Episode)
 {
 	// find an unused object slot
-	if (!exists && otype != OBJ_PLAYER)
+	if (!exists)
 	{
 		x = x0;
 		y = y0;
@@ -343,7 +343,6 @@ void CObject::moveUp(int amount)
 	{ // Yes, we have to check the collision
 		if(checkSolidU(x1, x2, y1-amount))
 		{
-			//amount = y1-tile_y_old-1;
 			y = tile_y_old - bboxY1;
 			blockedu = true;
 		}
@@ -385,7 +384,6 @@ void CObject::moveDown(int amount)
 		y += amount;
 		return;
 	}
-
 
 	// check if we walked into other tiles
 
@@ -491,48 +489,6 @@ void CObject::processFalling()
 	}
 }
 
-void CObject::performCollision(CMap *p_map)
-{
-	//long x1,y1,x2,y2;
-	// TODO: Check if that function is obsolete
-
-	// Get Rect values of the object
-	/*x1 = x + bboxX1;
-	y1 = y + bboxY1;
-	x2 = x + bboxX2;
-	y2 = y + bboxY2;*/
-
-	/*	blockedu = checkSolidU(x1, x2, y1);
-		blockedd = checkSolidD(x1, x2, y2);
-		blockedl = checkSolidL(x1, y1, y2);
-		blockedr = checkSolidR(x2, y1, y2);
-
-		if(m_type != OBJ_SCRUB)
-		{
-			if(blockedu)
-				while(checkSolidU(x1, x2, y1+(1<<STC))){
-					y++;
-					y1 = y + bboxY1;
-				}
-			if(blockedd)
-				while(checkSolidD(x1, x2, y2-(1<<STC))){
-					y--;
-					y2 = y + bboxY2;
-				}
-			if(blockedl)
-				while(checkSolidL(x1-(1<<STC), y1, y2)){
-					x++;
-					x1 = x + bboxX1;
-				}
-			if(blockedr)
-				while(checkSolidR(x2+(1<<STC), y1, y2)){
-					x--;
-					x2 = x + bboxX2;
-				}
-		}*/
-	//}
-}
-
 const int COLISION_RES = 4;
 bool CObject::checkSolidR( int x2, int y1, int y2)
 {
@@ -550,8 +506,19 @@ bool CObject::checkSolidR( int x2, int y1, int y2)
 		if(TileProperty[mp_Map->at(x2>>CSF, y2>>CSF)].bleft)
 			return true;
 	}
-	if( (Uint16)x2 > ((mp_Map->m_width)<<CSF) ) exists=false; // Out of map?
 
+	if( m_type == OBJ_PLAYER )
+	{
+		if( x2 >= ((mp_Map->m_width-2)<<CSF) ) return true;
+	}
+	else
+	{
+		if( (Uint16)x2 > ((mp_Map->m_width)<<CSF) )
+		{
+			exists=false; // Out of map?
+			return true;
+		}
+	}
 	return false;
 }
 
@@ -568,7 +535,19 @@ bool CObject::checkSolidL( int x1, int y1, int y2)
 				return true;
 		}
 	}
-	if( x1 == 0 ) exists=false; // Out of map?
+
+	if( m_type == OBJ_PLAYER )
+	{
+		if( x1 <= (2<<CSF) ) return true;
+	}
+	else
+	{
+		if( x1 == 0 )
+		{
+			exists=false; // Out of map?
+			return true;
+		}
+	}
 
 	return false;
 }
@@ -586,7 +565,20 @@ bool CObject::checkSolidU(int x1, int x2, int y1)
 				return true;
 		}
 	}
-	if( y1 == 0 ) exists=false; // Out of map?
+
+	if( m_type == OBJ_PLAYER )
+	{
+		if( y1 <= (2<<CSF) )
+			return true;
+	}
+	else
+	{
+		if( y1 == 0 )
+		{
+			exists=false; // Out of map?
+			return true;
+		}
+	}
 
 	return false;
 }
@@ -608,7 +600,9 @@ bool CObject::checkSolidD( int x1, int x2, int y2)
 			if(TileProperty[mp_Map->at((x2-(1<<STC))>>CSF, y2>>CSF)].bup)
 				return true;
 	}
-	if( (Uint16)y2 > ((mp_Map->m_height)<<CSF) ) exists=false; // Out of map?
+
+	if( (Uint16)y2 > ((mp_Map->m_height)<<CSF) )
+		exists=false; // Out of map?
 
 	return false;
 }
@@ -631,7 +625,6 @@ int CObject::checkObjSolid(unsigned int x, unsigned int y, int cp)
 						if (y <= p_object->getYDownPos())
 						{
 							o=p_object->m_index;
-							psupportingtile = PSUPPORTEDBYOBJECT;
 							psupportingobject = o;
 							break;
 						}

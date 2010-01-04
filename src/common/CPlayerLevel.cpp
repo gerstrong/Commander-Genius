@@ -62,10 +62,7 @@ void CPlayer::processInLevel(const bool &platextending)
 
 		if(!inhibitfall) Playerfalling();
 		else
-		{
-			psupportingtile = 145;
 			psupportingobject = 0;
-		}
 	}
 }
 
@@ -129,6 +126,7 @@ void CPlayer::kill(bool force)
 	if (!pdie)
 	{
 		godmode = false;
+		solid = false;
 		pdie = PDIE_DYING;
 		pdieframe = 0;
 		pdietimer = 0;
@@ -474,7 +472,7 @@ void CPlayer::JumpAndPogo()
 					pwalking = 1;
 					pwalkanimtimer = 0;
 					pwalkframe = 1;
-					if ( g_pGfxEngine->Tilemap->mp_tiles[psupportingtile].behaviour == 3)
+					if ( psliding )
 					{ // on ice, always jump direction facing
 						if (pshowdir==LEFT) pdir=LEFT;
 						else pdir=RIGHT;
@@ -571,12 +569,9 @@ void CPlayer::JumpAndPogo()
 void CPlayer::Playerfalling()
 {
 //unsigned int temp;
-//int objsupport=0;
-//short tilsupport;
+int objsupport=0;
 char behaviour;
 stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
-
-	//processFalling();
 
 	if (pfalling)
 	{
@@ -602,93 +597,46 @@ stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 
 	// ** determine if player should fall (nothing solid is beneath him) **
 	int xleft  = getXLeftPos();
-	//int xright = getXRightPos();
+	int xright = getXRightPos();
 	int ydown  = getYDownPos();
 
-	psupportingtile = BG_GRAY;
 	psupportingobject = 0;
-	// test if tile under player is solid; if so set psupportingtile
-	//objsupport = checkObjSolid(xleft, ydown+(1<<STC), m_player_number);
+
+	objsupport = checkObjSolid(xleft, ydown+(1<<STC), m_player_number);
 
 	behaviour = TileProperty[mp_map->at(xleft>>CSF, ydown>>CSF)].behaviour;
-	//tilsupport = TileProperty[mp_map->at(xleft>>CSF, ydown>>CSF)].bup;
-//	if( behaviour>=2 && behaviour<=5 )
-	//	tilsupport = true; // This workaround prevents the player from falling through doors.
+	if( behaviour>=2 && behaviour<=5 )
+		blockedu = true; // This workaround prevents the player from falling through doors.
 
-	//if (!tilsupport && !objsupport)
-	if(!blockedd && !pjumping)
+	if(!blockedd && !pjumping && !objsupport)
 	{ // lower-left isn't solid, check right side
-		//objsupport = checkObjSolid(xright-1, ydown+(1<<STC), m_player_number);
-		//tilsupport = TileProperty[mp_map->at(xright>>CSF, ydown>>CSF)].bup;
+		objsupport = checkObjSolid(xright-1, ydown+(1<<STC), m_player_number);
 
-		//if (!tilsupport && !objsupport)
+		if (!objsupport)
 		{  // lower-right isn't solid
 			pfalling = true;        // so fall.
 			pjustfell = true;
 		}
-		/*else
+		else
 		{  // lower-left isn't solid but lower-right is
 			if (objsupport)
 			{
-				while( checkObjSolid(xleft+1, ydown+(1<<STC)-1, m_player_number) )
-				{
-					moveUp(1);
-					ydown  = getYDownPos();
-				}
-
-				psupportingtile = PSUPPORTEDBYOBJECT;
+				blockedd = true;
 				psupportingobject = objsupport;
 			}
-		}*/
+		}
 	}
 	else
 	{   // lower-left is solid
 		pfalling = false;        // so fall.
 		pjustfell = false;
 
-		/*if (objsupport)
+		if (objsupport)
 		{
-			while( checkObjSolid(xleft+1, ydown+(1<<STC)-1, m_player_number) )
-			{
-				moveUp(1);
-				ydown  = getYDownPos();
-			}
-
-			psupportingtile = PSUPPORTEDBYOBJECT;
+			blockedd = true;
 			psupportingobject = objsupport;
-		}*/
-
-	}
-
-	//ydown  = getYDownPos();
-	// if not on a tile boundary, always fall, prevents being able
-	// to land in the middle of a tile.
-	/*if (!pfalling && psupportingtile != PSUPPORTEDBYOBJECT)
-	{
-		temp = (ydown)>>CSF;    // bottom of player
-		if ((temp>>4)<<4 != temp)   // true if it's not a multiple of 16
-		{
-			pfalling = true;   // not on a tile boundary. fall.
-			pjustfell = true;
-			psupportingtile = BG_GRAY;
-			psupportingobject = 0;
 		}
 	}
-	// if supported by an object make sure we're at the top of
-	// the object else fall
-	if (!pfalling && psupportingtile == PSUPPORTEDBYOBJECT)
-	{
-		if ((ydown) > (mp_object->at(psupportingobject).getYPosition()) )
-		{
-			if (!tilsupport)
-			{
-				pfalling = true;
-				pjustfell = 1;
-				psupportingtile = BG_GRAY;
-				psupportingobject = 0;
-			}
-		}
-	}*/
 
 	// the first time we land on an object, line us up to be exactly on
 	// top of the object
@@ -739,6 +687,10 @@ stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 
 	// ensure no sliding if we fall or jump off of ice
 	if (pfalling || pjumping) psliding=0;
+
+	// If he falls to the ground even being god, kill him
+	if( (Uint16)getYDownPos() > ((mp_map->m_height)<<CSF) )
+		kill(true);
 }
 
 // wouldn't it be cool if keen had a raygun, and he could shoot things?

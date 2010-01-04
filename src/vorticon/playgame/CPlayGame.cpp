@@ -117,6 +117,7 @@ void CPlayGame::setupPlayers()
 		it_player->setMapData(&m_Map);
 		it_player->setPhysics(&m_PhysicsSettings);
 		it_player->exists = true;
+		it_player->solid=true;
 	}
 }
 
@@ -601,7 +602,10 @@ void CPlayGame::drawObjects()
 	// We draw the Player as last, because we want to see him in front of the other objects
 	std::vector<CPlayer>::iterator it_player = m_Player.begin();
 	for (; it_player != m_Player.end() ; it_player++)
-		it_player->draw();
+	{
+		if(!it_player->beingteleported)
+			it_player->draw();
+	}
 }
 ////
 // Getters

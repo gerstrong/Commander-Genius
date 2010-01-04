@@ -42,7 +42,6 @@ void CObjectAI::platvert_ai(CObject& object)
 	// after kicking a player, wait until he falls beneath the platform
 	// before turning cansupportplayer back on...just in case we also
 	// check for if he stopped falling
-
 	std::vector<CPlayer>::iterator it_player = m_Player.begin();
 	for( ; it_player != m_Player.end() ; it_player++ )
 	{

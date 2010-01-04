@@ -66,6 +66,7 @@ void CObjectAI::teleporter_ai(CObject &object)
 	case TELEPORTING_IN:
 		{
 			m_Player[player].beingteleported = true;
+			m_Player[player].solid = false;
 			if (object.ai.teleport.animtimer >= animrate)
 			{
 				object.ai.teleport.animframe++;
@@ -98,6 +99,7 @@ void CObjectAI::teleporter_ai(CObject &object)
 			object.moveTo(x, y);
 			m_Player[player].pdir = DOWN;
 			m_Player[player].beingteleported = true;
+			m_Player[player].solid = false;
 
 			if(x < m_Player[player].getXPosition())
 				m_Player[player].moveLeft(TELEPORTATION_SPEED);
@@ -149,6 +151,7 @@ void CObjectAI::teleporter_ai(CObject &object)
 
 					deleteObj(object);
 					m_Player[player].beingteleported = false;
+					m_Player[player].solid = true;
 				}
 				else
 				{ // teleport animation is not done. show the next frame

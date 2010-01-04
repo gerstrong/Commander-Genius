@@ -13,7 +13,6 @@
 
 #define MAX_PLAYERS            4
 
-// if player[].psupportingtile contains this value the player is actually
 // supported by an object and you should look in player[].psupportingobj
 // for it's index.
 #define PSUPPORTEDBYOBJECT         0
@@ -66,7 +65,7 @@ public:
 	unsigned char blockedl, blockedr, blockedu, blockedd;
 	signed int xinertia, yinertia;
 	unsigned char xinertiatimer;
-	unsigned int psupportingtile, psupportingobject, lastsupportingobject;
+	unsigned int psupportingobject, lastsupportingobject;
 	
 	unsigned char touchPlayer;      // 1=hit detection with player
 	unsigned char touchedBy;        // which player was hit
@@ -132,7 +131,6 @@ public:
 	void kill();
 
 	// Collision parts
-	void performCollision(CMap *p_map);
 	bool checkSolidR( int x2, int y1, int y2);
 	bool checkSolidL( int x1, int y1, int y2);
 	bool checkSolidU( int x1, int x2, int y1);
