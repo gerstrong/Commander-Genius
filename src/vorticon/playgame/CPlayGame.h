@@ -88,7 +88,6 @@ public:
 	bool checkisSolidu(CPlayer *p_player);
 	void checkStandingOnIce(CPlayer &player);
 	char checkDoorBlock(int t, CPlayer *p_player, int which);
-	int checkObjSolid(unsigned int x, unsigned int y, int cp);
 	void processPlayerfallings(CPlayer *p_player);
 	void processLevelTrigger(int trigger);
 	void losePlayer(CPlayer *p_player);

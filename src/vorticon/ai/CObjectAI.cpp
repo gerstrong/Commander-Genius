@@ -173,11 +173,11 @@ void CObjectAI::performSpecialAIType( CObject &object )
     }
 }
 
-void CObjectAI::SetAllCanSupportPlayer(CObject &object, int state)
+void CObjectAI::SetAllCanSupportPlayer(CObject &object, bool state)
 {
 	std::vector<CPlayer>::iterator it_player = m_Player.begin();
 	for( ; it_player != m_Player.end() ; it_player++ )
-		object.cansupportplayer[it_player->m_player_number] = state;
+		object.cansupportplayer = state;
 }
 
 void CObjectAI::killplayer(int theplayer)

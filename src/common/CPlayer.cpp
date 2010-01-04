@@ -88,6 +88,7 @@ void CPlayer::setDatatoZero()
     pjustjumped = pjustfell = true;
     pfireframetimer = 0;
     psupportingobject = lastsupportingobject = 0;
+	supportedbyobject = false;
 	
     m_cheats_enabled = false;
     m_showStatusScreen = false;
@@ -684,9 +685,7 @@ void CPlayer::ProcessInput()
 	
 	// are we doing the keen-walking-through-exit door animation?
 	if (level_done)
-	{
-		// don't let player control keen
-		
+	{	// don't let player control keen
 		memset(playcontrol,0,PA_MAX_ACTIONS);
 		
 		inhibitfall = true;

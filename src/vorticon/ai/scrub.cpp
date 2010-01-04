@@ -78,7 +78,7 @@ void CObjectAI::scrub_ai(CObject &object)
 		{
 			if (m_Player[p].getYPosition() > object.getYPosition() || !m_Player[p].pfalling || m_Player[p].pjumping)
 			{
-				object.cansupportplayer[p] = 1;
+				object.cansupportplayer = 1;
 				object.ai.scrub.kickedplayer[p] = 0;
 			}
 		}
@@ -256,7 +256,7 @@ void CObjectAI::scrub_ai(CObject &object)
 						// kick player off if we're running him into the ceiling
 						if (m_Player[i].blockedu)
 						{
-							object.cansupportplayer[i] = 0;
+							object.cansupportplayer = 0;
 							object.ai.scrub.kickedplayer[i] = 1;
 						}
 						else m_Player[i].moveUp(SCRUB_WALK_SPEED);
@@ -384,7 +384,7 @@ void CObjectAI::Scrub_TurnOnCansupportWhereNotKicked(CObject &object)
 	for(size_t i=0;i<m_Objvect.size();i++)
 	{
 		if (!object.ai.scrub.kickedplayer[i])
-			object.cansupportplayer[i] = 1;
+			object.cansupportplayer = 1;
 	}
 }
 

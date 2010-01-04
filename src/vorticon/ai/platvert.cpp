@@ -50,16 +50,17 @@ void CObjectAI::platvert_ai(CObject& object)
 			if (it_player->getYPosition() > object.getYPosition() ||
 					(!it_player->pfalling && !it_player->pjumping))
 			{
-				object.cansupportplayer[it_player->m_player_number] = 1;
+				object.cansupportplayer = 1;
 				object.ai.platform.kickedplayer[it_player->m_player_number] = 0;
 			}
 		}
 	}
 
 	// push player horizontally
-	if (object.touchPlayer && !m_Player[object.touchedBy].pdie && m_Player[object.touchedBy].psupportingobject!=object.m_index)
+	CPlayer &tPlayer = m_Player[object.touchedBy];
+	if ( object.touchPlayer && !tPlayer.pdie && tPlayer.psupportingobject != object.m_index)
 	{
-		if (object.cansupportplayer[object.touchedBy])
+		if (object.cansupportplayer)
 		{
 			// if player is standing around minding his own business and we
 			// come down on his head, change direction. if player is trying
@@ -108,7 +109,7 @@ void CObjectAI::platvert_ai(CObject& object)
 				std::vector<CPlayer>::iterator it_player = m_Player.begin();
 				for( ; it_player != m_Player.end() ; it_player++ )
 				{
-					if(it_player->psupportingobject==object.m_index &&
+					if( it_player->supportedbyobject && it_player->psupportingobject==object.m_index &&
 							(it_player->pjumping==PNOJUMP||it_player->pjumping==PPREPAREJUMP||it_player->pjumping==PPREPAREPOGO))
 					{
 						if (!object.ai.platform.kickedplayer[it_player->m_player_number])
@@ -118,7 +119,7 @@ void CObjectAI::platvert_ai(CObject& object)
 						// kick player off if we're running him into the ceiling
 						if (it_player->blockedu)
 						{
-							object.cansupportplayer[it_player->m_player_number] = 0;
+							object.cansupportplayer = 0;
 							object.ai.platform.kickedplayer[it_player->m_player_number] = 1;
 						}
 					}
@@ -136,7 +137,7 @@ void CObjectAI::platvert_ai(CObject& object)
 				std::vector<CPlayer>::iterator it_player = m_Player.begin();
 				for( ; it_player != m_Player.end() ; it_player++ )
 				{
-					if(it_player->psupportingobject==object.m_index &&
+					if( it_player->supportedbyobject && it_player->psupportingobject==object.m_index &&
 							(it_player->pjumping==PNOJUMP||it_player->pjumping==PPREPAREJUMP||it_player->pjumping==PPREPAREPOGO))
 					{
 						if (!object.ai.platform.kickedplayer[it_player->m_player_number])

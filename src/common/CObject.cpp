@@ -42,7 +42,7 @@ mp_Map(pmap)
 
 	memset(&ai, 0, sizeof(ai));
 
-	cansupportplayer.assign(num_players, false);
+	cansupportplayer = false;
 	
     yinertia = 0;
 }
@@ -65,7 +65,7 @@ bool CObject::spawn(int x0, int y0, int otype, int Episode)
 		inhibitfall = false;
 		honorPriority = true;
 		touchPlayer = touchedBy = 0;
-		cansupportplayer.assign(cansupportplayer.size(), false);
+		cansupportplayer = false;
 		
 		setupObjectType(Episode);
 		
@@ -607,27 +607,30 @@ bool CObject::checkSolidD( int x1, int x2, int y2)
 	return false;
 }
 
-int CObject::checkObjSolid(unsigned int x, unsigned int y, int cp)
+int CObject::checkObjSolid()
 {
 	int o=0;
 
 	std::vector<CObject>::iterator p_object;
 	for( p_object=mp_object->begin() ; p_object!=mp_object->end() ; p_object++ )
 	{
-		if (p_object->exists && p_object->cansupportplayer[cp])
+		if (p_object->exists && p_object->cansupportplayer && p_object->onscreen)
 		{
-			if (x >= p_object->getXLeftPos())
+			if (getXRightPos() >= p_object->getXLeftPos())
 			{
-				if (x <= p_object->getXRightPos())
+				if (getXLeftPos() <= p_object->getXRightPos())
 				{
-					if (y >= p_object->getYUpPos())
-					{
-						if (y <= p_object->getYDownPos())
-						{
+					// up off the object-case
+					if (getYDownPos() >= p_object->getYUpPos()-1 &&
+						getYDownPos() <= p_object->getYDownPos())
+					{	// Standing on the object, so line it up!
 							o=p_object->m_index;
+
+							int dy = getYDownPos()-p_object->getYUpPos()+1;
+							moveYDir(-dy);
+							supportedbyobject = true;
 							psupportingobject = o;
 							break;
-						}
 					}
 				}
 			}

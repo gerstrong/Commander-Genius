@@ -61,8 +61,6 @@ void CPlayer::processInLevel(const bool &platextending)
 		JumpAndPogo();
 
 		if(!inhibitfall) Playerfalling();
-		else
-			psupportingobject = 0;
 	}
 }
 
@@ -102,7 +100,7 @@ void CPlayer::walkbehindexitdoor()
     // don't draw keen as he walks through the door (past exitXpos)
     // X pixel position of right side of player
     xb = (getXRightPos())>>(STC);
-    diff = (xb - exitXpos);        // dist between keen and door
+    diff = (xb - exitXpos) + 6;        // dist between keen and door
     if (diff >= 0)                             // past exitXpos?
     {
         width = (w>>(STC)) - diff;    // get new width of sprite
@@ -600,52 +598,31 @@ stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 	int xright = getXRightPos();
 	int ydown  = getYDownPos();
 
-	psupportingobject = 0;
-
-	objsupport = checkObjSolid(xleft, ydown+(1<<STC), m_player_number);
-
 	behaviour = TileProperty[mp_map->at(xleft>>CSF, ydown>>CSF)].behaviour;
 	if( behaviour>=2 && behaviour<=5 )
 		blockedu = true; // This workaround prevents the player from falling through doors.
 
-	if(!blockedd && !pjumping && !objsupport)
-	{ // lower-left isn't solid, check right side
-		objsupport = checkObjSolid(xright-1, ydown+(1<<STC), m_player_number);
+	supportedbyobject = false;
+	checkObjSolid();
 
-		if (!objsupport)
-		{  // lower-right isn't solid
-			pfalling = true;        // so fall.
-			pjustfell = true;
-		}
-		else
-		{  // lower-left isn't solid but lower-right is
-			if (objsupport)
-			{
-				blockedd = true;
-				psupportingobject = objsupport;
-			}
-		}
+	if(!blockedd && !pjumping && !supportedbyobject)
+	{ // lower-left isn't solid, check right side
+		pfalling = true;        // so fall.
+		pjustfell = true;
 	}
 	else
-	{   // lower-left is solid
-		pfalling = false;        // so fall.
-		pjustfell = false;
-
-		if (objsupport)
-		{
-			blockedd = true;
-			psupportingobject = objsupport;
-		}
+	{
+		pfalling = false;
 	}
 
 	// the first time we land on an object, line us up to be exactly on
 	// top of the object
-	if (psupportingobject && !lastsupportingobject)
+	/*if (psupportingobject && !lastsupportingobject)
 	{
 		//moveYDir();
 		//goto_y = mp_object->at(psupportingobject).getYPosition() - getYDownPos();
 	}
-	lastsupportingobject = psupportingobject;
+	lastsupportingobject = psupportingobject;*/
 
 	// ** if the player should be falling, well what are we waiting for?
 	//    make him fall! **

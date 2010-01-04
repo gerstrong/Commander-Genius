@@ -59,13 +59,14 @@ public:
 	bool inhibitfall;         // if true common_enemy_ai will not do falling
  	bool bumped;
 
-	std::vector<bool> cansupportplayer;
+	bool cansupportplayer;
 	std::vector<CObject> *mp_object;
 	
 	unsigned char blockedl, blockedr, blockedu, blockedd;
 	signed int xinertia, yinertia;
 	unsigned char xinertiatimer;
 	unsigned int psupportingobject, lastsupportingobject;
+	bool supportedbyobject;
 	
 	unsigned char touchPlayer;      // 1=hit detection with player
 	unsigned char touchedBy;        // which player was hit
@@ -135,7 +136,7 @@ public:
 	bool checkSolidL( int x1, int y1, int y2);
 	bool checkSolidU( int x1, int x2, int y1);
 	bool checkSolidD( int x1, int x2, int y2);
-	int checkObjSolid(unsigned int x, unsigned int y, int cp);
+	int checkObjSolid();
 
 	// getters
 	unsigned int getXPosition();
