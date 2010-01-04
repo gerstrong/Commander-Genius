@@ -46,16 +46,16 @@ void CObjectAI::scrub_ai(CObject &object)
 		object.ai.scrub.state = SCRUB_WALK;
 		object.ai.scrub.walkframe = 0;
 		object.ai.scrub.animtimer = 0;
-		object.inhibitfall = 1;
+		object.inhibitfall = true;
 		object.needinit = false;
 		object.canbezapped = 1;
 
 		y = (object.getYPosition()>>STC)<<STC;
 		object.moveYDir(y);
-		object.blockedd = true;
-		object.blockedl = true;
-		object.blockedr = true;
-		object.blockedu = true;
+		object.blockedd = false;
+		object.blockedl = false;
+		object.blockedr = false;
+		object.blockedu = false;
 		object.dead = 0;
 
 		SetAllCanSupportPlayer(object, 1);
@@ -172,8 +172,7 @@ void CObjectAI::scrub_ai(CObject &object)
 		case LEFT:
 			object.sprite = SCRUB_WALK_LEFT + object.ai.scrub.walkframe;
 
-			walkovertile = TileProperty[mp_Map->at((object.getXLeftPos()-512)>>CSF, (object.getYDownPos())>>CSF)].bup;
-			if (!object.blockedd && !walkovertile)
+			/*if (!object.blockedd)
 			{ // walked off the edge
 				object.sprite = SCRUB_WALK_DOWN + object.ai.scrub.walkframe;
 				object.ai.scrub.walkdir = DOWN;
@@ -188,8 +187,8 @@ void CObjectAI::scrub_ai(CObject &object)
 				}
 				object.performCollision(mp_Map);	// recalculate blockedx's
 				Scrub_TurnOnCansupportWhereNotKicked(object);
-			}
-			else if (object.blockedl)
+			}*/
+			if (object.blockedl)
 			{
 				object.sprite = SCRUB_WALK_UP + object.ai.scrub.walkframe;
 				object.ai.scrub.walkdir = UP;
@@ -202,7 +201,7 @@ void CObjectAI::scrub_ai(CObject &object)
 				{
 					if (m_Player[i].psupportingobject==object.m_index && m_Player[i].pjumping!=PJUMPUP && m_Player[i].pjumping!=PPOGOING)
 					{
-						//if (!m_Player[i].blockedl)
+						if (!m_Player[i].blockedl)
 						{
 							m_Player[i].moveLeft(SCRUB_WALK_SPEED);
 						}
@@ -234,19 +233,20 @@ void CObjectAI::scrub_ai(CObject &object)
 			break;
 		case DOWN:
 			object.sprite = SCRUB_WALK_DOWN + object.ai.scrub.walkframe;
-			if (!object.blockedr)
-			{
-				object.ai.scrub.walkdir = RIGHT;
-				object.sprite = SCRUB_WALK_RIGHT + object.ai.scrub.walkframe;
-				SetAllCanSupportPlayer(object, 0);
-				object.moveLeft(2<<STC);
-				object.performCollision(mp_Map);
-			}
-			else if (object.blockedd)
+
+			if (object.blockedd)
 			{
 				object.ai.scrub.walkdir = LEFT;
 				object.sprite = SCRUB_WALK_LEFT + object.ai.scrub.walkframe;
 				Scrub_TurnOnCansupportWhereNotKicked(object);
+			}
+			else if (!object.blockedr)
+			{
+				//object.ai.scrub.walkdir = RIGHT;
+				//object.sprite = SCRUB_WALK_RIGHT + object.ai.scrub.walkframe;
+				//SetAllCanSupportPlayer(object, 0);
+				//object.moveLeft(2<<STC);
+				//object.performCollision(mp_Map);
 			}
 			else
 			{
@@ -305,12 +305,12 @@ void CObjectAI::scrub_ai(CObject &object)
 					if (m_Player[i].psupportingobject==object.m_index && m_Player[i].pjumping!=PJUMPUP && m_Player[i].pjumping!=PPOGOING)
 					{
 						// kick player off if we're running him into the ceiling
-						//if (m_Player[i].blockedu)
+						if (m_Player[i].blockedu)
 						{
 							object.cansupportplayer[i] = 0;
 							object.ai.scrub.kickedplayer[i] = 1;
 						}
-						//else m_Player[i].goto_y -= SCRUB_WALK_SPEED;
+						else m_Player[i].moveUp(SCRUB_WALK_SPEED);
 					}
 				}
 			}
@@ -357,14 +357,31 @@ void CObjectAI::scrub_ai(CObject &object)
 	// state and fall until we reach solid ground again. this keeps it from
 	// freaking out and going flying across the screen.
 	if (!object.blockedl && !object.blockedr &&
-			!object.blockedu && !object.blockedd && !walkovertile)
+			!object.blockedu && !object.blockedd)
 	{
 		if (object.ai.scrub.state!=SCRUB_FALLING)
-		{
-			object.ai.scrub.fallinctimer = 0;
-			object.ai.scrub.fallspeed = SCRUB_MIN_FALL_SPEED;
-			object.ai.scrub.state = SCRUB_FALLING;
-			SetAllCanSupportPlayer(object, 0);
+		{	// scrub would fall, but we have to check, if he could walk down
+
+			// on vortacola and blocked to all directions scrub can walk down
+			int mx = (object.getXPosition())>>CSF;
+			int my = (object.getYPosition())>>CSF;
+			stTile attaching_tile = TileProperty[mp_Map->at(mx+1, my+1)];
+			bool walkovertile = TileProperty[mp_Map->at(mx-1, my)].bup;
+			if (!walkovertile) // Is there a chance to walk over a tile?
+			{
+				if(attaching_tile.bup) // blocking up? Then he can walk on it downwards
+				{
+					object.ai.scrub.walkdir = DOWN;
+					object.moveDown(1<<STC);
+				}
+				else // No! Then make him fall
+				{
+					object.ai.scrub.fallinctimer = 0;
+					object.ai.scrub.fallspeed = SCRUB_MIN_FALL_SPEED;
+					object.ai.scrub.state = SCRUB_FALLING;
+					SetAllCanSupportPlayer(object, 0);
+				}
+			}
 		}
 	}
 

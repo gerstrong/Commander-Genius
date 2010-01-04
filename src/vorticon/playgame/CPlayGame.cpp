@@ -612,10 +612,13 @@ void CPlayGame::drawObjects()
 	
 	// draw all objects. drawn in reverse order because the player sprites
 	// are in the first few indexes and we want them to come out on top.
-	for (size_t i=m_Object.size()-1 ; i>=m_Player.size() ; i--)
+	if(!m_Object.empty())
 	{
-		CObject &object = m_Object[i];
-		object.draw();
+		for (size_t i=m_Object.size()-1 ; i>=m_Player.size() ; i--)
+		{
+			CObject &object = m_Object[i];
+			object.draw();
+		}
 	}
 }
 ////

@@ -66,6 +66,7 @@ void CPlayer::setDatatoZero()
     psliding = psemisliding = false;
     honorPriority = true;
     exists = true;
+    solid = true;
 	
     pjumping = pjumptime = 0;
 	
@@ -447,9 +448,9 @@ void CPlayer::WalkingAnimation()
 				if (!pfrozentime && pwalking)
 				{
 					if (pwalkframea&1)
-						g_pSound->playStereofromCoord(SOUND_KEEN_WALK, PLAY_NOW, mp_object->at(m_player_number).scrx);
+						g_pSound->playStereofromCoord(SOUND_KEEN_WALK, PLAY_NOW, scrx);
 					else
-						g_pSound->playStereofromCoord(SOUND_KEEN_WALK2, PLAY_NOW, mp_object->at(m_player_number).scrx);
+						g_pSound->playStereofromCoord(SOUND_KEEN_WALK2, PLAY_NOW, scrx);
 					
 					/*if(blockedr || blockedl)
 					{
@@ -481,7 +482,7 @@ void CPlayer::WalkingAnimation()
 							play=1;
 						
 						if (play)
-							g_pSound->playStereofromCoord(SOUND_KEEN_BUMPHEAD, PLAY_NOW, mp_object->at(m_player_number).scrx);
+							g_pSound->playStereofromCoord(SOUND_KEEN_BUMPHEAD, PLAY_NOW, scrx);
 					}
 					
 				}

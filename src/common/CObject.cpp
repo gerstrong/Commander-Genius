@@ -222,6 +222,17 @@ void CObject::moveLeft(int amount)
 
 	blockedr = false;
 
+	if( y-amount < 0 )
+		return;
+
+	if(!solid)
+	{
+		blockedr = blockedl = false;
+		blockedu = blockedd = false;
+		x -= amount;
+		return;
+	}
+
 	// check if we walked into other tiles
 	int tile_x_old = (x1>>CSF)<<CSF;
 	int tile_x_new = ((x1-amount)>>CSF)<<CSF;
@@ -264,6 +275,14 @@ void CObject::moveRight(int amount)
 
 	blockedl = false;
 
+	if(!solid)
+	{
+		blockedr = blockedl = false;
+		blockedu = blockedd = false;
+		x += amount;
+		return;
+	}
+
 	// check if we walked into other tiles
 	int tile_x_old = (x2>>CSF)<<CSF;
 	int tile_x_new = ((x2+amount)>>CSF)<<CSF;
@@ -303,11 +322,20 @@ void CObject::moveUp(int amount)
 	int x2 = x + bboxX2;
 	int y1 = y + bboxY1;
 
-	blockedl = blockedr = false;
+	if( y1-amount < 0 )
+		return;
+
+	if(!solid)
+	{
+		blockedr = blockedl = false;
+		blockedu = blockedd = false;
+		y -= amount;
+		return;
+	}
+
 	blockedd = false;
 
 	// check if we walked into other tiles
-
 	int tile_y_old = (y1>>CSF)<<CSF;
 	int tile_y_new = (((y1-amount)>>CSF))<<CSF;
 
@@ -327,6 +355,19 @@ void CObject::moveUp(int amount)
 	}
 	else
 		y -= amount;
+
+	y1 = y + bboxY1;
+	int y2 = y + bboxY2;
+
+	if(x2+1 == (((x2+1)>>CSF)<<CSF))
+		blockedr = checkSolidR(x2+1,y1,y2);
+	else
+		blockedr = false;
+
+	if(x1 == ((x1>>CSF)<<CSF))
+		blockedl = checkSolidL(x1-1,y1,y2);
+	else
+		blockedl = false;
 }
 
 void CObject::moveDown(int amount)
@@ -335,8 +376,16 @@ void CObject::moveDown(int amount)
 	int x2 = x + bboxX2;
 	int y2 = y + bboxY2;
 
-	blockedl = blockedr = false;
 	blockedu = false;
+
+	if(!solid)
+	{
+		blockedr = blockedl = false;
+		blockedu = blockedd = false;
+		y += amount;
+		return;
+	}
+
 
 	// check if we walked into other tiles
 
@@ -358,6 +407,19 @@ void CObject::moveDown(int amount)
 	}
 	else
 		y += amount;
+
+	int y1 = y + bboxY1;
+	y2 = y + bboxY2;
+
+	if(x2+1 == (((x2+1)>>CSF)<<CSF))
+		blockedr = checkSolidR(x2+1,y1,y2);
+	else
+		blockedr = false;
+
+	if(x1 == ((x1>>CSF)<<CSF))
+		blockedl = checkSolidL(x1-1,y1,y2);
+	else
+		blockedl = false;
 }
 
 unsigned int CObject::getXPosition()
@@ -432,10 +494,7 @@ void CObject::processFalling()
 void CObject::performCollision(CMap *p_map)
 {
 	//long x1,y1,x2,y2;
-
-	if(m_type == OBJ_NESSIE) return;
-	if(m_type == OBJ_SNDWAVE) return;
-	//if(m_type == OBJ_EARTHCHUNK) return;
+	// TODO: Check if that function is obsolete
 
 	// Get Rect values of the object
 	/*x1 = x + bboxX1;
@@ -514,7 +573,7 @@ bool CObject::checkSolidL( int x1, int y1, int y2)
 	return false;
 }
 
-bool CObject::checkSolidU( int x1, int x2, int y1)
+bool CObject::checkSolidU(int x1, int x2, int y1)
 {
 	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 
