@@ -36,16 +36,19 @@ void CObjectAI::rope_ai(CObject &object)
 	case ROPE_IDLE:
 		if (object.zapped)
 		{
+			int x, y;
 			// rope got broke! time to drop the stone
 			object.ai.rope.state = ROPE_DROPSTONE;
 			object.ai.rope.droptimer = 0;
 			// hide the rope
 			object.sprite = BLANKSPRITE;
 			// get upper left corner of the stone
-			object.ai.rope.stoneX = (object.x >> CSF) - 4;
-			object.ai.rope.stoneY = (object.y >> CSF) + 1;
+			x = object.getXPosition()>>CSF;
+			y = object.getYPosition()>>CSF;
+			object.ai.rope.stoneX = x - 4;
+			object.ai.rope.stoneY = y + 1;
 			// get color of background
-			object.ai.rope.bgtile = mp_Map->at(object.x>>CSF, object.y>>CSF);
+			object.ai.rope.bgtile = mp_Map->at(x, y);
 		}
 		break;
 

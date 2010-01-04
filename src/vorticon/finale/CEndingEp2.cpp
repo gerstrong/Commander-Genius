@@ -58,7 +58,7 @@ void CEndingEp2::HeadsForEarth()
 		MapLoader.load(2, 81, path);
 
 		m_Player[0].hideplayer = false;
-		m_Player[0].playframe = SPR_VORTICON_MOTHERSHIP;
+		m_Player[0].sprite = SPR_VORTICON_MOTHERSHIP;
 
 		mp_ShipFlySys = new CShipFlySys( m_Player[0], mp_Map, SPR_SHIP_RIGHT_EP2, SPR_SHIP_LEFT_EP2 );
 
@@ -72,8 +72,7 @@ void CEndingEp2::HeadsForEarth()
 
 		int x, y;
 		mp_Map->findTile(593, &x, &y);
-		m_Player[0].x = (x<<CSF);
-		m_Player[0].y = (y<<CSF);
+		m_Player[0].moveTo(x<<CSF, y<<CSF);
 
 		mp_Textbox = new CMessageBox(getstring("EP2_ESEQ_PART1"), true);
 
@@ -109,15 +108,13 @@ void CEndingEp2::HeadsForEarth()
 void CEndingEp2::LimpsHome()
 {
 	if(m_mustsetup)
-	{
-		//Initialization
+	{	//Initialization
 		std::string path = mp_Map->m_gamepath;
 		CMapLoader MapLoader(mp_Map, &m_Player);
 		MapLoader.load(2, 81, path);
 
 		m_Player[0].hideplayer = false;
-		m_Player[0].x = (8<<CSF);
-		m_Player[0].y = (26<<CSF);
+		m_Player[0].moveTo(8<<CSF, 26<<CSF);
 
 		mp_ShipFlySys = new CShipFlySys( m_Player[0], mp_Map, SPR_VORTICON_MOTHERSHIP, SPR_VORTICON_MOTHERSHIP );
 

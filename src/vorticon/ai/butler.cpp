@@ -39,7 +39,7 @@ void  CObjectAI::butler_ai(CObject &object, char difficulty)
 		 object.ai.butler.animtimer = 0;
 		 object.canbezapped = 1;  // will stop bullets but are not harmed
 		 object.needinit = 0;
-		 object.y -= 8;
+		 object.moveDown(8);
 	 }
 	 // push keen
      if (object.touchPlayer && !m_Player[object.touchedBy].pdie)
@@ -53,7 +53,7 @@ void  CObjectAI::butler_ai(CObject &object, char difficulty)
 	 
     		 if(m_Player[0].pwalking) butlerpushamount = 3*BUTLERPUSHAMOUNT/2;
 	 
-    		 if (m_Player[0].x < object.x)
+    		 if (m_Player[0].getXPosition() < object.getXPosition())
     		 {
     			 m_Player[object.touchedBy].playpushed_x = -butlerpushamount;
     			 if (difficulty>1) m_Player[object.touchedBy].playpushed_x -= BUTLERPUSHAMOUNTFAST;
@@ -82,17 +82,16 @@ void  CObjectAI::butler_ai(CObject &object, char difficulty)
 		 break;
 	 case BUTLER_WALK:
 		 stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
-		 Uint16 butler_height = object.bboxY2+(1<<STC);
 		 if (object.ai.butler.movedir==LEFT)
 		 {  // move left
-			 not_about_to_fall = TileProperty[mp_Map->at((object.x+object.bboxX1-(BUTLER_LOOK_AHEAD_DIST<<STC))>>CSF, (object.y+butler_height)>>CSF)].bup;
+			 not_about_to_fall = TileProperty[mp_Map->at((object.getXLeftPos()-(BUTLER_LOOK_AHEAD_DIST<<STC))>>CSF, (object.getYDownPos())>>CSF)].bup;
 			 object.sprite = BUTLER_WALK_LEFT_FRAME + object.ai.butler.frame;
 			 if (!object.blockedl && not_about_to_fall)
 			 {
 				 if (difficulty>1)
-					 object.x -= BUTLER_WALK_SPEED_FAST;
+					 object.moveLeft(BUTLER_WALK_SPEED_FAST);
 				 else
-					 object.x -= BUTLER_WALK_SPEED;
+					 object.moveLeft(BUTLER_WALK_SPEED);
 			 }
 			 else
 			 {
@@ -106,14 +105,14 @@ void  CObjectAI::butler_ai(CObject &object, char difficulty)
 		 else
 		 {  // move right
 	 
-			 not_about_to_fall = TileProperty[mp_Map->at((object.x+object.bboxX2+(BUTLER_LOOK_AHEAD_DIST<<STC))>>CSF, (object.y+butler_height)>>CSF)].bup;
+			 not_about_to_fall = TileProperty[mp_Map->at((object.getXRightPos()+(BUTLER_LOOK_AHEAD_DIST<<STC))>>CSF, (object.getYDownPos())>>CSF)].bup;
 			 object.sprite = BUTLER_WALK_RIGHT_FRAME + object.ai.butler.frame;
 			 if (!object.blockedr && not_about_to_fall)
 			 {
 				 if (difficulty>1)
-					 object.x += BUTLER_WALK_SPEED_FAST;
+					 object.moveRight(BUTLER_WALK_SPEED_FAST);
 				 else
-					 object.x += BUTLER_WALK_SPEED;
+					 object.moveRight(BUTLER_WALK_SPEED);
 			 }
 			 else
 			 {

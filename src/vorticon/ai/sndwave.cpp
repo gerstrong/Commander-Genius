@@ -44,32 +44,33 @@ void CObjectAI::sndwave_ai(CObject& object, bool hardmode)
 	else object.ai.ray.offscreentime = 0;
 
 	// fly through the air
+	int x = object.getXPosition()>>CSF;
 	if (object.ai.ray.direction == RIGHT)
 	{
 		object.sprite = SNDWAVE_RIGHT_FRAME + object.ai.ray.animframe;
 
-		if (object.x>>CSF > mp_Map->m_width)
+		if (x > mp_Map->m_width)
 			deleteObj(object);
 		else
 		{
 			if (hardmode)
-				object.x += SNDWAVE_SPEED_FAST;
+				object.moveRight(SNDWAVE_SPEED_FAST);
 			else
-				object.x += SNDWAVE_SPEED;
+				object.moveRight(SNDWAVE_SPEED);
 		}
 	}
 	else
 	{
 		object.sprite = SNDWAVE_LEFT_FRAME + object.ai.ray.animframe;
 
-		if (object.x>>CSF < 2)
+		if (x < 2)
 			deleteObj(object);
 		else
 		{
 			if (hardmode)
-				object.x -= SNDWAVE_SPEED_FAST;
+				object.moveLeft(SNDWAVE_SPEED_FAST);
 			else
-				object.x -= SNDWAVE_SPEED;
+				object.moveLeft(SNDWAVE_SPEED);
 		}
 	}
 

@@ -90,7 +90,7 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 			{ object.ai.tank.movedir = LEFT; }
 			else if (object.blockedl)
 			{ object.ai.tank.movedir = RIGHT; }
-			else if (object.x > m_Player[0].x)
+			else if (object.getXPosition() > m_Player[0].getXPosition())
 			{ object.ai.tank.movedir = LEFT; }
 			else
 			{ object.ai.tank.movedir = RIGHT; }
@@ -146,12 +146,12 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 				if (object.onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, object.scrx);
 				if (object.ai.tank.movedir==RIGHT)
 				{
-					newobject.spawn(object.x+object.bboxX2+(8<<STC), object.y+object.bboxY1+(5<<STC), OBJ_RAY, m_Episode);
+					newobject.spawn(object.getXRightPos()+(8<<STC), object.getYUpPos()+(5<<STC), OBJ_RAY, m_Episode);
 					newobject.ai.ray.direction = RIGHT;
 				}
 				else
 				{
-					newobject.spawn(object.x-(14<<STC), object.y+object.bboxY1+(5<<STC), OBJ_RAY, m_Episode);
+					newobject.spawn(object.getXPosition()-(14<<STC), object.getYUpPos()+(5<<STC), OBJ_RAY, m_Episode);
 					newobject.ai.ray.direction = LEFT;
 				}
 				newobject.ai.ray.owner = object.m_index;
@@ -194,11 +194,12 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 
 		if (object.ai.tank.detectedPlayer)
 		{
+			int x = object.getXPosition();
 			// facing keen?
 			object.ai.tank.alreadyfiredcauseonsamelevel = 1;
 			// are we facing him?
-			if (((m_Player[object.ai.tank.detectedPlayerIndex].x < object.x) && object.ai.tank.movedir==LEFT) || \
-					((m_Player[object.ai.tank.detectedPlayerIndex].x > object.x) && object.ai.tank.movedir==RIGHT))
+			if (((m_Player[object.ai.tank.detectedPlayerIndex].getXPosition() < x) && object.ai.tank.movedir==LEFT) || \
+					((m_Player[object.ai.tank.detectedPlayerIndex].getXPosition() > x) && object.ai.tank.movedir==RIGHT))
 			{
 				// yes, we're facing him! FIRE!!!
 				if (!object.ai.tank.firetimes)
@@ -239,7 +240,7 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 		{  // move left
 			if (!object.blockedl)
 			{
-				object.x -= TANK_WALK_SPEED;
+				object.moveLeft(TANK_WALK_SPEED);
 				object.ai.tank.dist_traveled++;
 			}
 			else
@@ -255,7 +256,7 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 			object.sprite = TANK2_WALK_RIGHT_FRAME + object.ai.tank.frame;
 			if (!object.blockedr)
 			{
-				object.x += TANK_WALK_SPEED;
+				object.moveRight(TANK_WALK_SPEED);
 				object.ai.tank.dist_traveled++;
 			}
 			else
@@ -284,12 +285,11 @@ void CObjectAI::tank2_fire(CObject &object)
 void CObjectAI::tank_searchplayers(CObject &object)
 {
 	object.ai.tank.detectedPlayer = 0;
-	for( int i=0 ; i<m_NumPlayers ; i++ )
+	for( size_t i=0 ; i<m_NumPlayers ; i++ )
 	{
-		int height = m_Objvect[m_Player[i].m_player_number].bboxY2;
-		if (m_Player[i].y >= object.y-object.bboxY1)
+		if (m_Player[i].getYPosition() >= object.getXLeftPos())
 		{
-			if ( (m_Player[i].y+height) <= (object.y+object.bboxY2) )
+			if ( (m_Player[i].getYDownPos()) <= (object.getYDownPos()) )
 			{
 				object.ai.tank.detectedPlayer = 1;
 				object.ai.tank.detectedPlayerIndex = i;

@@ -44,7 +44,7 @@ void CObjectAI::platvert_ai(CObject& object)
 	{
 		if (object.ai.platform.kickedplayer[p])
 		{
-			if (m_Player[p].y > object.y || (!m_Player[p].pfalling && !m_Player[p].pjumping))
+			if (m_Player[p].getYPosition() > object.getYPosition() || (!m_Player[p].pfalling && !m_Player[p].pjumping))
 			{
 				object.cansupportplayer[p] = 1;
 				object.ai.platform.kickedplayer[p] = 0;
@@ -61,7 +61,7 @@ void CObjectAI::platvert_ai(CObject& object)
 			// come down on his head, change direction. if player is trying
 			// to walk/jump into us horizontally, push him away.
 			// push him away
-			if (m_Player[object.touchedBy].x < object.x)
+			if (m_Player[object.touchedBy].getXPosition() < object.getXPosition())
 			{
 				m_Player[object.touchedBy].playpushed_x = -PLATVERTPUSHAMOUNT;
 				if (m_Player[object.touchedBy].pinertia_x > 0) m_Player[object.touchedBy].pinertia_x = 0;
@@ -99,17 +99,17 @@ void CObjectAI::platvert_ai(CObject& object)
 			}
 			else
 			{
-				object.y -= PLATVERT_MOVE_SPD;
+				object.moveUp(PLATVERT_MOVE_SPD);
 				for(i=0;i<m_NumPlayers;i++)
 				{
 					if(m_Player[i].psupportingobject==object.m_index && (m_Player[i].pjumping==PNOJUMP||m_Player[i].pjumping==PPREPAREJUMP||m_Player[i].pjumping==PPREPAREPOGO))
 					{
 						if (!object.ai.platform.kickedplayer[i])
 						{
-							m_Player[i].goto_y -= PLATVERT_MOVE_SPD;
+							m_Player[i].moveUp(PLATVERT_MOVE_SPD);
 						}
 						// kick player off if we're running him into the ceiling
-						if (m_Player[i].blockedu)
+						//if (m_Player[i].blockedu)
 						{
 							object.cansupportplayer[i] = 0;
 							object.ai.platform.kickedplayer[i] = 1;
@@ -124,13 +124,13 @@ void CObjectAI::platvert_ai(CObject& object)
 				object.ai.platform.movedir = UP;
 			else
 			{
-				object.y += PLATVERT_MOVE_SPD;
+				object.moveDown(PLATVERT_MOVE_SPD);
 				for(i=0;i<m_NumPlayers;i++)
 				{
 					if(m_Player[i].psupportingobject==object.m_index && (m_Player[i].pjumping==PNOJUMP||m_Player[i].pjumping==PPREPAREJUMP||m_Player[i].pjumping==PPREPAREPOGO))
 					{
 						if (!object.ai.platform.kickedplayer[i])
-							m_Player[i].goto_y += PLATVERT_MOVE_SPD;
+							m_Player[i].moveDown(PLATVERT_MOVE_SPD);
 					}
 				}
 			}

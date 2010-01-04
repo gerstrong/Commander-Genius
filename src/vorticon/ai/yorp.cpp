@@ -13,7 +13,7 @@ enum
 
 #define YORP_LOOK_TIME  24   // time each frame of YORP_LOOK is shown
 #define YORP_STUN_ANIM_TIME  10
-#define YORP_WALK_ANIM_TIME  48
+#define YORP_WALK_ANIM_TIME  4
 #define YORP_WALK_SPEED      20
 #define YORP_WALK_ANIM_TIME_FAST  6
 #define YORP_WALK_SPEED_FAST      20
@@ -60,6 +60,9 @@ void CObjectAI::yorp_ai(CObject &object, CPlayer *p_player, bool hardmode)
 	int pushamt;
 	unsigned int tb;
 	
+	int x = object.getXPosition();
+	int y = object.getYPosition();
+
 	// fix where yorps can get stunned, go offscreen, then
 	// come back hours later and they're still doing the stun animation
 	/*if (object.wasoffscreen)
@@ -93,7 +96,7 @@ void CObjectAI::yorp_ai(CObject &object, CPlayer *p_player, bool hardmode)
 		{  // falling, see if he bonked the yorp on the head
 			// this happens if keen's feet are higher than the top
 			// half of the yorp
-			if ((p_player[tb].y>>STC)+16 < (object.y>>STC)+12)
+			if ((p_player[tb].getYPosition()>>STC)+16 < (y>>STC)+12)
 			{
 				// must have pogo out to stun yorps in High Difficulty
 				if (!hardmode || p_player[tb].ppogostick)
@@ -137,7 +140,7 @@ void CObjectAI::yorp_ai(CObject &object, CPlayer *p_player, bool hardmode)
 					if (object.ai.yorp.movedir==LEFT) pushamt = -pushamt;
 				}
 				else // yorp not moving
-					pushamt = (p_player[tb].x < object.x) ? -YORP_PUSH_AMT_NO_WALK:YORP_PUSH_AMT_NO_WALK;
+					pushamt = (p_player[tb].getXPosition() < x) ? -YORP_PUSH_AMT_NO_WALK:YORP_PUSH_AMT_NO_WALK;
 			}
 			else
 			{   // player "walking through" yorp--provide resistance
@@ -147,8 +150,8 @@ void CObjectAI::yorp_ai(CObject &object, CPlayer *p_player, bool hardmode)
 				
  			if (p_player[tb].pwalking)
  			{
- 				if (pushamt > 0 && p_player[tb].blockedr) pushamt = 0;
- 				if (pushamt < 0 && p_player[tb].blockedl) pushamt = 0;
+ 				//if (pushamt > 0 && p_player[tb].blockedr) pushamt = 0;
+ 				//if (pushamt < 0 && p_player[tb].blockedl) pushamt = 0;
  			}
 				
  			if (pushamt)
@@ -168,7 +171,7 @@ void CObjectAI::yorp_ai(CObject &object, CPlayer *p_player, bool hardmode)
 		object.sprite = YORP_DYING_FRAME;
 		object.zapped = 0;
 		object.ai.yorp.yorpdie_inertia_y = YORPDIE_START_INERTIA;
-		object.y -= 10;
+		object.moveUp(10);
 		object.inhibitfall = 1;
 		g_pSound->playStereofromCoord(SOUND_YORP_DIE, PLAY_NOW, object.scrx);
 	}
@@ -176,7 +179,7 @@ void CObjectAI::yorp_ai(CObject &object, CPlayer *p_player, bool hardmode)
 	switch(object.ai.yorp.state)
 	{
 		case YORP_DYING:
-			object.y += object.ai.yorp.yorpdie_inertia_y;
+			object.moveYDir(object.ai.yorp.yorpdie_inertia_y);
 			if (object.ai.yorp.dietimer>YORPDIE_INERTIA_DECREASE)
 			{
 				if (object.ai.yorp.yorpdie_inertia_y < YORPDIE_MAX_INERTIA)
@@ -199,7 +202,7 @@ void CObjectAI::yorp_ai(CObject &object, CPlayer *p_player, bool hardmode)
 				object.ai.yorp.timer==YORP_LOOK_TIME-(YORP_LOOK_TIME/4))
 			{
 				// 75% prob, try to head towards Keen...
-				if (p_player[0].x < object.x)
+				if (p_player[0].getXPosition() < x)
 				{ object.ai.yorp.movedir = LEFT; }
 				else
 				{ object.ai.yorp.movedir = RIGHT; }
@@ -269,7 +272,7 @@ void CObjectAI::yorp_ai(CObject &object, CPlayer *p_player, bool hardmode)
 				object.sprite = YORP_WALK_LEFT + object.ai.yorp.walkframe;
 				if (!object.blockedl)
 				{
-					object.x -= hardmode ? YORP_WALK_SPEED_FAST : YORP_WALK_SPEED;
+					object.moveLeft(hardmode ? YORP_WALK_SPEED_FAST : YORP_WALK_SPEED);
 					object.ai.yorp.dist_traveled++;
 				}
 				else
@@ -285,7 +288,7 @@ void CObjectAI::yorp_ai(CObject &object, CPlayer *p_player, bool hardmode)
 				object.sprite = YORP_WALK_RIGHT + object.ai.yorp.walkframe;
 				if (!object.blockedr)
 				{
-					object.x += hardmode ? YORP_WALK_SPEED_FAST:YORP_WALK_SPEED;
+					object.moveRight(hardmode ? YORP_WALK_SPEED_FAST:YORP_WALK_SPEED);
 					object.ai.yorp.dist_traveled++;
 				}
 				else

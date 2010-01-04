@@ -37,9 +37,6 @@ unsigned int rnd(void);
 void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 {
 	unsigned int i;
-	Uint16 garg_width = g_pGfxEngine->getSprite(object.sprite).getWidth()<<STC;
-	Uint16 garg_height = g_pGfxEngine->getSprite(object.sprite).getHeight()<<STC;
-	Uint16 player_height = g_pGfxEngine->getSprite(0).getHeight()<<STC;
     stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 
 	if (object.needinit)
@@ -70,7 +67,7 @@ void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 		object.sprite = GARG_DYING_FRAME;
 		object.zapped=0;
 		object.ai.garg.gargdie_inertia_y = GARGDIE_START_INERTIA;
-		object.y -= 10;
+		object.moveUp(10);
 		object.inhibitfall = 1;
 		g_pSound->playStereofromCoord(SOUND_GARG_DIE, PLAY_NOW, object.scrx);
 	}
@@ -78,7 +75,7 @@ void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 	switch(object.ai.garg.state)
 	{
 		case GARG_DYING:
-			object.y += object.ai.garg.gargdie_inertia_y;
+			object.moveDown(object.ai.garg.gargdie_inertia_y);
 			object.ai.garg.gargdie_inertia_y+=16;
 
 			if (object.ai.garg.gargdie_inertia_y >= 0 && object.blockedd)
@@ -92,7 +89,7 @@ void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 			if (object.ai.garg.looktimes>GARG_NUM_LOOKS)
 			{
 				// try to head towards Keen...
-				if (p_player[object.ai.garg.detectedPlayerIndex].x < object.x)
+				if (p_player[object.ai.garg.detectedPlayerIndex].getXPosition() < object.getYPosition())
 					object.ai.garg.movedir = LEFT;
 				else
 					object.ai.garg.movedir = RIGHT;
@@ -136,9 +133,9 @@ void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 			object.ai.garg.detectedPlayer = 0;
 			for(i=0;i<1;i++) //TODO cycle through players
 			{
-				if (p_player[i].y >= object.y-(8<<STC))
+				if (p_player[i].getYPosition() >= object.getYPosition()-(8<<STC))
 				{
-					if ((p_player[i].y+player_height) <= (object.y+garg_height+(1<<CSF)))
+					if ((p_player[i].getYDownPos()) <= (object.getYDownPos()+(1<<CSF)))
 					{
 						object.ai.garg.detectedPlayer = 1;
 						object.ai.garg.detectedPlayerIndex = i;
@@ -197,9 +194,9 @@ void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 				if (!object.blockedl)
 				{
 					if (hardmode)
-						object.x -= GARG_WALK_SPEED_FAST;
+						object.moveLeft(GARG_WALK_SPEED_FAST);
 					else
-						object.x -= GARG_WALK_SPEED;
+						object.moveLeft(GARG_WALK_SPEED);
 					object.ai.garg.dist_traveled++;
 				}
 				else
@@ -215,9 +212,9 @@ void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 				if (!object.blockedr)
 				{
 					if (hardmode)
-						object.x += GARG_WALK_SPEED_FAST;
+						object.moveRight(GARG_WALK_SPEED_FAST);
 					else
-						object.x += GARG_WALK_SPEED;
+						object.moveRight(GARG_WALK_SPEED);
 					object.ai.garg.dist_traveled++;
 				}
 				else
@@ -242,12 +239,13 @@ void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 			else
 				object.ai.garg.state = GARG_CHARGE;
 
-			if(TileProperty[mp_Map->at((object.x+garg_width/2)>>CSF, (object.y+garg_height+1)>>CSF)].bdown) // There is floor
+			if(TileProperty[mp_Map->at((object.getXPosition())>>CSF, (object.getYDownPos()+1)>>CSF)].bdown) // There is floor
 				object.ai.garg.state = GARG_CHARGE;
 			else
 			{
-				if(object.y > GARG_JUMP_SPEED )
-					object.y-=GARG_JUMP_SPEED;
+				//if(object.y > GARG_JUMP_SPEED )
+					//object.y-=GARG_JUMP_SPEED;
+				// TODO: That does not make any sense. Fix it!
 			}
 			break;
 
@@ -257,7 +255,7 @@ void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 				object.sprite = GARG_WALK_LEFT + object.ai.garg.walkframe;
 				if (!object.blockedl)
 				{
-					object.x -= GARG_CHARGE_SPEED;
+					object.moveLeft(GARG_CHARGE_SPEED);
 					object.ai.garg.dist_traveled++;
 				}
 				else
@@ -279,7 +277,7 @@ void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 				object.sprite = GARG_WALK_RIGHT + object.ai.garg.walkframe;
 				if (!object.blockedr)
 				{
-					object.x += GARG_CHARGE_SPEED;
+					object.moveLeft(GARG_CHARGE_SPEED);
 					object.ai.garg.dist_traveled++;
 				}
 				else

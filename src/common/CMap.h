@@ -29,9 +29,10 @@
 
 class CMap {
 public:
-	CMap( SDL_Surface *p_scrollsurface, CTilemap *p_Tilemap);
+	CMap();
 
-	void setSDLSurface( SDL_Surface *p_scrollsurface ) { mp_scrollsurface=p_scrollsurface; }
+	void setTileMap( CTilemap *pTilemap );
+	void setScrollSurface( SDL_Surface *surface );
 
 	bool gotoPos( int x, int y );
 	void resetScrolls();

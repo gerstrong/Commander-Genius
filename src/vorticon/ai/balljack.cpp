@@ -50,7 +50,7 @@ void CObjectAI::ballandjack_ai(CObject &object)
 	{
 		if (object.m_type==OBJ_BALL)
 		{
-			if (m_Player[object.touchedBy].x < object.x)
+			if (m_Player[object.touchedBy].getXPosition() < object.getXLeftPos())
 			{
 				m_Player[object.touchedBy].bump(-BALLPUSHAMOUNT, true);
 			}
@@ -96,31 +96,31 @@ void CObjectAI::ballandjack_ai(CObject &object)
 	{
 	case DUPLEFT:
 		if (object.blockedu) { object.ai.bj.dir = DDOWNLEFT; }
-		else object.y -= object.ai.bj.speed;
+		else object.moveUp(object.ai.bj.speed);
 
 		if (object.blockedl) { object.ai.bj.dir = DUPRIGHT; }
-		else object.x -= object.ai.bj.speed;
+		else object.moveLeft(object.ai.bj.speed);
 		break;
 	case DUPRIGHT:
 		if (object.blockedu) { object.ai.bj.dir = DDOWNRIGHT; }
-		else object.y -= object.ai.bj.speed;
+		else object.moveUp(object.ai.bj.speed);
 
 		if (object.blockedr) { object.ai.bj.dir = DUPLEFT; }
-		else object.x += object.ai.bj.speed;
+		else object.moveRight(object.ai.bj.speed);
 		break;
 	case DDOWNLEFT:
 		if (BJ_BlockedD(object)) { object.ai.bj.dir = DUPLEFT; }
-		else object.y += object.ai.bj.speed;
+		else object.moveDown(object.ai.bj.speed);
 
 		if (object.blockedl) { object.ai.bj.dir = DDOWNRIGHT; }
-		else object.x -= object.ai.bj.speed;
+		else object.moveLeft(object.ai.bj.speed);
 		break;
 	case DDOWNRIGHT:
 		if (BJ_BlockedD(object)) { object.ai.bj.dir = DUPRIGHT; }
-		else object.y += object.ai.bj.speed;
+		else object.moveDown(object.ai.bj.speed);
 
 		if (object.blockedr) { object.ai.bj.dir = DDOWNLEFT; }
-		else object.x += object.ai.bj.speed;
+		else object.moveRight(object.ai.bj.speed);
 		break;
 	}
 
@@ -141,32 +141,28 @@ void CObjectAI::ballandjack_ai(CObject &object)
 	}
 }
 
-char CObjectAI::BJ_BlockedD(CObject &object)
+bool CObjectAI::BJ_BlockedD(CObject &object)
 {
 	// we do our own blockedd, because we don't want the ball/jack to
 	// bounce off the top of platforms that have only solidfall set--
 	// so we test blockedd against solidl/r instead
 	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
-	int x1 = object.bboxX1;
-	int x2 = object.bboxX2;
-	int y2 = object.bboxY2;
 
 	if (object.blockedd)
 	{
 		// ensure that the tile common_enemy_ai said we hit also has
 		// solid l/r set
-		if (TileProperty[mp_Map->at((object.x+x1)>>CSF, (object.y+y2)>>CSF)].bleft)
-		{ return 1; }
-		if (TileProperty[mp_Map->at((object.x+x2)>>CSF, (object.y+y2)>>CSF)].bleft)
-		{ return 1; }
-
+		if (TileProperty[mp_Map->at((object.getXLeftPos())>>CSF, (object.getYDownPos())>>CSF)].bleft)
+		{ return true; }
+		if (TileProperty[mp_Map->at((object.getXRightPos())>>CSF, (object.getYDownPos())>>CSF)].bleft)
+		{ return true; }
 	}
 
 	// ensure it's not a ball no-pass point
-	if (mp_Map->getObjectat((object.x+x1)>>CSF, (object.y+y2)>>CSF)==BALL_NOPASSPOINT)
-	{ return 1; }
-	if (mp_Map->getObjectat((object.x+x2)>>CSF, (object.y+y2)>>CSF)==BALL_NOPASSPOINT)
-	{ return 1; }
+	if (mp_Map->getObjectat((object.getXLeftPos())>>CSF, (object.getYDownPos())>>CSF)==BALL_NOPASSPOINT)
+	{ return true; }
+	if (mp_Map->getObjectat((object.getXRightPos())>>CSF, (object.getYDownPos())>>CSF)==BALL_NOPASSPOINT)
+	{ return true; }
 
-	return 0;
+	return false;
 }

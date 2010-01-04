@@ -10,16 +10,11 @@
 
 void CObjectAI::vort_ai(CObject &object, int level, int episode, char difficulty, bool dark)
 {
-	CSprite &VorticonSprite = g_pGfxEngine->getSprite(object.sprite);
-
-	Uint32 bboxX1 = VorticonSprite.m_bboxX1;
-	Uint32 bboxX2 = VorticonSprite.m_bboxX2;
-	Uint32 bboxY1 = VorticonSprite.m_bboxY1;
 	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
-
 	bool bonk,kill;
+
 	 if (object.needinit)
-	 {  // first time initilization
+	 {  // first time initialization
 		 object.ai.vort.frame = 0;
 		 object.ai.vort.animtimer = 0;
 		 object.ai.vort.state = VORT_LOOK;
@@ -79,7 +74,7 @@ void CObjectAI::vort_ai(CObject &object, int level, int episode, char difficulty
 		 kill = false;
 		 // if we touch a glowcell, we die!
 		 if ( object.zapped >= object.ai.vort.hp ) kill = true;
-		 else if (episode==2 && mp_Map->at((object.x + bboxX1)>>CSF, (object.y+bboxY1)>>CSF)==TILE_GLOWCELL)
+		 else if (episode==2 && mp_Map->at((object.getXLeftPos())>>CSF, (object.getYUpPos())>>CSF)==TILE_GLOWCELL)
 			 kill = true;
 	 
 		 if (kill)
@@ -108,14 +103,10 @@ void CObjectAI::vort_ai(CObject &object, int level, int episode, char difficulty
 	 switch(object.ai.vort.state)
 	 {
 	 case VORT_JUMP:
-		 if (object.ai.vort.movedir == RIGHT)
-		 {
-			 if (!object.blockedr) object.x += VORT_WALK_SPEED;
-		 }
-		 else
-		 {
-			 if (!object.blockedl) object.x -= VORT_WALK_SPEED;
-		 }
+		 if (object.ai.vort.movedir == RIGHT && !object.blockedr)
+			 object.moveRight(VORT_WALK_SPEED);
+		 else if (!object.blockedl)
+			 object.moveLeft(VORT_WALK_SPEED);
 	 
 		 if (object.ai.vort.inertiay>0 && object.blockedd)
 		 {  // The Vorticon Has Landed!
@@ -127,8 +118,8 @@ void CObjectAI::vort_ai(CObject &object, int level, int episode, char difficulty
 		 // immediately terminate the jump
 		 bonk = false;
 	 
-		 if (TileProperty[mp_Map->at((object.x + bboxX1)>>CSF, (object.y+bboxY1)>>CSF)].bdown) bonk = true;
-		 else if (TileProperty[mp_Map->at((object.x + bboxX2)>>CSF, (object.y + bboxY1)>>CSF)].bdown) bonk = true;
+		 if (TileProperty[mp_Map->at((object.getXLeftPos())>>CSF, (object.getYUpPos() )>>CSF)].bdown) bonk = true;
+		 else if (TileProperty[mp_Map->at((object.getXRightPos())>>CSF, (object.getYUpPos() )>>CSF)].bdown) bonk = true;
 	 
 		 if (bonk && object.ai.vort.inertiay < 0)
 		 {
@@ -136,7 +127,7 @@ void CObjectAI::vort_ai(CObject &object, int level, int episode, char difficulty
 		 }
 	 
 		 // apply Y inertia
-		 object.y += object.ai.vort.inertiay;
+		 object.moveYDir(object.ai.vort.inertiay);
 	 
 		 if (object.ai.vort.timer > VORT_JUMP_FRICTION)
 		 { // slowly decrease upgoing rate
@@ -160,7 +151,7 @@ void CObjectAI::vort_ai(CObject &object, int level, int episode, char difficulty
 					 { object.ai.vort.movedir = LEFT; }
 					 else
 					 { // not blocked on either side, head towards player
-						 if ( m_Player[0].x < object.x)
+						 if ( m_Player[0].getXPosition() < object.getXPosition() )
 						 { object.ai.vort.movedir = LEFT; }
 						 else
 						 { object.ai.vort.movedir = RIGHT; }
@@ -189,7 +180,7 @@ void CObjectAI::vort_ai(CObject &object, int level, int episode, char difficulty
 	 
 				 if (!object.blockedl)
 				 {
-					 object.x -= VORT_WALK_SPEED;
+					 object.moveLeft(VORT_WALK_SPEED);
 				 }
 				 else
 				 {
@@ -222,7 +213,7 @@ void CObjectAI::vort_ai(CObject &object, int level, int episode, char difficulty
 
 				 if (!object.blockedr)
 				 {
-					 object.x += VORT_WALK_SPEED;
+					 object.moveRight(VORT_WALK_SPEED);
 				 }
 				 else
 				 {

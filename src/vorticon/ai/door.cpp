@@ -15,18 +15,21 @@ void CObjectAI::door_ai( CObject &object, char DoorOpenDir )
 	CSprite &doorsprite = g_pGfxEngine->getSprite(object.sprite);
 	if (object.needinit)
 	{
+		int x, y;
 		object.ai.door.timer = 0;
 		doorsprite.setHeight(32);
 		object.inhibitfall = true;
 		object.needinit = false;
-		mp_Map->redrawAt(object.x>>CSF, object.y>>CSF);
-		mp_Map->redrawAt(object.x>>CSF, (object.y>>CSF)+1);
+		x = object.getXPosition()>>CSF;
+		y = object.getYPosition()>>CSF;
+		mp_Map->redrawAt(x, y);
+		mp_Map->redrawAt(x, y+1);
 	}
 	 
 	if (object.ai.door.timer > DOOR_OPEN_SPEED)
 	{
 		// TODO: Create a flag for mods in which the door can be opened in another direction
-		if (DoorOpenDir==DOWN) object.y += (1<<STC);
+		if (DoorOpenDir==DOWN) object.moveDown(1<<STC);
 		doorsprite.setHeight(doorsprite.getHeight()-1);
 		if (doorsprite.getHeight() == 0)
 		{

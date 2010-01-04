@@ -50,6 +50,7 @@ enum vortelite_actions{
 void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 {
 	int bonk;
+	int x, y;
 	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 	CSprite &RaySprite = g_pGfxEngine->getSprite(ENEMYRAYEP2);
 
@@ -74,8 +75,10 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 
 	if (object.canbezapped)
 	{
+		x = object.getXPosition();
+		y = object.getYPosition();
 		// if we touch a glowcell, we die!
-		if ( mp_Map->at(object.x>>CSF, object.y>>CSF) == TILE_GLOWCELL )
+		if ( mp_Map->at( x>>CSF, y>>CSF) == TILE_GLOWCELL )
 		{
 			object.zapped += VORTELITE_HP;
 		}
@@ -116,7 +119,7 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 					// usually shoot toward keen
 					if (rand()%5 != 0)
 					{
-						if (object.x < m_Player[0].x)
+						if (object.getXPosition() < m_Player[0].getXPosition())
 						{
 							object.ai.vortelite.movedir = RIGHT;
 						}
@@ -137,7 +140,7 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 			object.sprite = VORTELITE_WALK_LEFT_FRAME + object.ai.vortelite.frame;
 			if (!object.blockedl)
 			{
-				object.x -= VORTELITE_WALK_SPEED;
+				object.moveLeft(VORTELITE_WALK_SPEED);
 			}
 			else
 			{
@@ -159,7 +162,7 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 			object.sprite = VORTELITE_WALK_RIGHT_FRAME + object.ai.vortelite.frame;
 			if (!object.blockedr)
 			{
-				object.x += VORTELITE_WALK_SPEED;
+				object.moveRight(VORTELITE_WALK_SPEED);
 			}
 			else
 			{
@@ -187,9 +190,9 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 		break;
 	case VORTELITE_JUMP:
 		if (object.ai.vortelite.movedir == RIGHT)
-		{ if (!object.blockedr) object.x += VORTELITE_WALK_SPEED; }
+		{ if (!object.blockedr) object.moveRight(VORTELITE_WALK_SPEED); }
 		else
-		{ if (!object.blockedl) object.x -= VORTELITE_WALK_SPEED; }
+		{ if (!object.blockedl) object.moveLeft(VORTELITE_WALK_SPEED); }
 
 		if (object.ai.vortelite.inertiay>0 && object.blockedd)
 		{  // the bear has landed
@@ -199,17 +202,19 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 		}
 		// check if the bear has bonked into a ceiling, if so,
 		// immediately terminate the jump
+		x = object.getXPosition();
+		y = object.getYPosition();
 		bonk = 0;
-		if (TileProperty[mp_Map->at((object.x>>CSF), (object.y>>CSF))].bdown) bonk = true;
-		else if (TileProperty[mp_Map->at((object.x>>CSF)+1, (object.y>>CSF))].bdown) bonk = true;
-		else if (TileProperty[mp_Map->at(((object.x+200)>>CSF), (object.y>>CSF))].bdown) bonk = true;
+		if (TileProperty[mp_Map->at((x>>CSF), (y>>CSF))].bdown) bonk = true;
+		else if (TileProperty[mp_Map->at((x>>CSF)+1, (y>>CSF))].bdown) bonk = true;
+		else if (TileProperty[mp_Map->at(((x+200)>>CSF), (y>>CSF))].bdown) bonk = true;
 		if (bonk && object.ai.vortelite.inertiay < 0)
 		{
 			object.ai.vortelite.inertiay = 0;
 		}
 
 		// apply Y inertia
-		object.y += object.ai.vortelite.inertiay;
+		object.moveYDir(object.ai.vortelite.inertiay);
 
 		if (object.ai.vortelite.timer > VORTELITE_JUMP_FRICTION)
 		{ // slowly decrease upgoing rate
@@ -233,12 +238,12 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 			CObject newobject(mp_Map);
 			if (object.ai.vortelite.movedir==RIGHT)
 			{
-				newobject.spawn(object.x+object.bboxX2+1, object.y+(9<<STC), OBJ_RAY, m_Episode);
+				newobject.spawn(object.getXRightPos()+1, object.getYPosition()+(9<<STC), OBJ_RAY, m_Episode);
 				newobject.ai.ray.direction = RIGHT;
 			}
 			else
 			{
-				newobject.spawn(object.x+object.bboxX1-(RaySprite.getWidth()<<STC)-1, object.y+(9<<STC), OBJ_RAY, m_Episode);
+				newobject.spawn(object.getXLeftPos()-(RaySprite.getWidth()<<STC)-1, object.getYPosition()+(9<<STC), OBJ_RAY, m_Episode);
 				newobject.ai.ray.direction = LEFT;
 			}
 			newobject.ai.ray.owner = object.m_index;
@@ -265,7 +270,7 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 			object.ai.vortelite.timesincefire = 0;
 			object.ai.vortelite.state = VORTELITE_WALK;
 			// head toward keen
-			if (object.x < m_Player[0].x)
+			if (object.getXPosition() < m_Player[0].getXPosition())
 			{
 				object.ai.vortelite.movedir = RIGHT;
 			}

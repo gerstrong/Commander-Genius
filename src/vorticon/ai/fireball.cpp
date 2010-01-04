@@ -56,9 +56,7 @@ void CObjectAI::fireball_ai(CObject &object, bool hard)
 				object.inhibitfall = 1;
 				object.needinit = 0;
 				it_obj->zapped++;
-				it_obj->zapx = object.x;
-				it_obj->zapy = object.y;
-				it_obj->zapd = object.ai.ray.direction;
+				it_obj->moveTo(object.getXPosition(), object.getYPosition());
 				it_obj->zappedbyenemy = 1;
 				return;
 			}
@@ -104,7 +102,7 @@ void CObjectAI::fireball_ai(CObject &object, bool hard)
 			object.needinit = 0;
 			return;
 		}
-		else object.x += speed;
+		else object.moveRight(speed);
 	}
 	else
 	{
@@ -117,7 +115,7 @@ void CObjectAI::fireball_ai(CObject &object, bool hard)
 			object.needinit = 0;
 			return;
 		}
-		else object.x -= speed;
+		else object.moveLeft(speed);
 	}
 
 	// animation

@@ -99,7 +99,7 @@ private:
 	 void fireball_ai(CObject &object, bool hard);
 
 	 void ballandjack_ai(CObject& object);
-	 char BJ_BlockedD(CObject &object);
+	 bool BJ_BlockedD(CObject &object);
 
 	 void platvert_ai(CObject& object);
 
@@ -126,7 +126,7 @@ private:
 	CPhysicsSettings m_PhysicsSettings;
 	int m_Level;
 	int m_Episode;
-	int m_NumPlayers;
+	size_t m_NumPlayers;
 	char m_difficulty;
 	int m_gunfiretimer;
 	bool &m_dark;

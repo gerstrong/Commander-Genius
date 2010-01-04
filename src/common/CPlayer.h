@@ -32,7 +32,7 @@ enum level_triggers{
 ///
 // Class definition starts here!
 ///
-class CPlayer {
+class CPlayer : public CObject {
 public:
 
 	// direction defines used for various things
@@ -46,7 +46,7 @@ public:
 
 	CPlayer(char &Episode, short &Level, char &Difficulty,
 			 short &player_index, bool *mp_level_completed, stOption *mp_option,
-			 std::vector<CObject> &m_Object);
+			 std::vector<CObject> &m_Object, CMap &map);
 	void setDatatoZero();
 	void setDefaultStartValues();
 	void setMapData(CMap *p_map){ mp_map=p_map; }
@@ -57,7 +57,6 @@ public:
 	void processWorldMap();
 	void setWorldMapdir();
 	void selectFrameOnWorldMap();
-	void setWMblockedlrud();
 	void AllowEnterLevelonWM();
 	bool isWMSolid(int xb, int yb);
 	void InertiaAndFriction_Y();
@@ -77,6 +76,7 @@ public:
 	void keencicle();
 	void TogglePogo_and_Switches(const bool &platextending);
 	void JumpAndPogo();
+	void Playerfalling();
 	void raygun();
 	void ankh();
 	void bump( int pushamt, bool solid );
@@ -103,10 +103,6 @@ public:
 	// variables
 	// these coordinates are CSFed
 	int playerbaseframe;	// Standframe of the player normally. May be different for other players.
-	unsigned long x;
-	unsigned int y;
-	unsigned long goto_x;
-	unsigned int goto_y;
 
 	unsigned int w;
 	unsigned int h;
@@ -116,9 +112,6 @@ public:
 	char m_level;
 	int m_difficulty;
 	int m_player_number;
-
-	// Pointer to the Objects
-	std::vector<CObject> *mp_object;
 
 	char godmode;
 
@@ -132,8 +125,6 @@ public:
 	unsigned long mapplayx;
 	signed int mapplayy;
 
-	unsigned char playframe;
-
 	unsigned char pfalling,plastfalling,pfallspeed;
 
 	unsigned char pwalking,playspeed;
@@ -144,7 +135,6 @@ public:
 	signed int pinertia_x, playpushed_x;
 	unsigned char playpushed_decreasetimer;
 
-	bool blockedl,blockedr,blockedu,blockedd;
 	unsigned int blockedby;
 
 	unsigned char pjumping, pjumptime, pjumpupspeed_decrease, pjumpdir;
@@ -157,7 +147,7 @@ public:
 	unsigned char pdir,pshowdir,lastpdir;
 
 	char pfireframetimer;
-	bool inhibitwalking, inhibitfall;
+	bool inhibitwalking;
 
 	int ctrltimer, alttimer;
 	char keyprocstate;
@@ -166,7 +156,6 @@ public:
 	char pdie, pdieframe, pdietimer;
 	int pdietillfly;
 	signed int pdie_xvect;
-	unsigned int psupportingtile, psupportingobject, lastsupportingobject;
 	bool psliding;
 	bool psemisliding;
 	bool ppogostick;

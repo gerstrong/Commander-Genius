@@ -24,23 +24,26 @@ void CObjectAI::autoray_ai(CObject &Object)
 	{
 		CObject NewRay(mp_Map);
 		NewRay.ai.ray.owner = -1;
+		unsigned int x,y;
+		x = Object.getXPosition();
+		y = Object.getXPosition();
 
 		if (Object.m_type==OBJ_AUTORAY_V)
 		{
-			NewRay.spawn(Object.x+(4<<STC), Object.y+(1<<CSF), OBJ_RAY, m_Episode);
+			NewRay.spawn(x+(4<<STC), y+(1<<CSF), OBJ_RAY, m_Episode);
 			NewRay.sprite = RAY_VERT_EP3;
 			NewRay.ai.ray.direction = DOWN;
 		}
 		else
 		{
-			NewRay.spawn(Object.x+(1<<CSF), Object.y+(4<<STC), OBJ_RAY, m_Episode);
+			NewRay.spawn(x+(1<<CSF), y+(4<<STC), OBJ_RAY, m_Episode);
 			NewRay.sprite = ENEMYRAYEP3;
 			NewRay.ai.ray.direction = RIGHT;
 		}
 
 		m_Objvect.push_back(NewRay);
 
-		if (Object.onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, Object.x);
+		if (Object.onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, x);
 	}
 }
 

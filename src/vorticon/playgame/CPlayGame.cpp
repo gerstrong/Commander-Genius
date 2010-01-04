@@ -46,7 +46,6 @@ mp_HighScores(NULL)
 	m_gameover = false;
 	m_alldead = false;
 	m_hideobjects = false;
-	mp_Map = NULL;
 	mp_Menu = NULL;
 	mp_Finale = NULL;
 	mp_gameoverbmp = NULL;
@@ -60,7 +59,7 @@ mp_HighScores(NULL)
 	for(short i=0 ; i<m_NumPlayers ; i++)
 	{
 		// tie puppy object so the player can interact in the level
-		CObject object(mp_Map, m_NumPlayers);
+		CObject object(&m_Map, m_NumPlayers);
 	    object.exists = true;
 		object.onscreen = true;
 		object.honorPriority = true;
@@ -70,7 +69,7 @@ mp_HighScores(NULL)
 		// Create the new Player and also tell him to which object it belongs to...
 		CPlayer Player(m_Episode, m_Level, m_Difficulty,
 						i, mp_level_completed, mp_option,
-						m_Object);
+						m_Object, m_Map);
 		Player.setDatatoZero();
 
 		m_Player.push_back(Player);
@@ -110,7 +109,7 @@ void CPlayGame::setupPlayers()
 		else
 		{
 			m_Player[i].m_playingmode = CPlayer::LEVELPLAY;
-			m_Player[i].playframe = PSTANDFRAME;
+			m_Player[i].sprite = PSTANDFRAME;
 		}
 		m_Player[i].pdie = PDIE_NODIE;
 		
@@ -118,13 +117,12 @@ void CPlayGame::setupPlayers()
 		CSprite &sprite = g_pGfxEngine->getSprite(PSTANDFRAME);
 		m_Player[i].w = sprite.getWidth()<<STC;
 		m_Player[i].h = sprite.getHeight()<<STC;
-		m_Player[i].y += (2<<CSF);
-		m_Player[i].y -= m_Player[i].h;
-		m_Player[i].goto_y = m_Player[i].y;
+		m_Player[i].moveDown(2<<CSF);
+		m_Player[i].moveUp(m_Player[i].h);
 		m_Player[i].m_level = m_Level;
 		
 		// Set the pointers to the map and object data
-		m_Player[i].setMapData(mp_Map);
+		m_Player[i].setMapData(&m_Map);
 		m_Player[i].setPhysics(&m_PhysicsSettings);
 	}
 }
@@ -139,21 +137,23 @@ bool CPlayGame::init()
 	}
 
 	// Create an empty map
-	mp_Map = new CMap( g_pVideoDriver->getScrollSurface(), g_pGfxEngine->Tilemap);
-	CMapLoader MapLoader( mp_Map, &m_Player );
+	m_Map.setTileMap(g_pGfxEngine->Tilemap);
+	m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
+	std::vector<CObject>::iterator it_obj = m_Object.begin();
+
+	CMapLoader MapLoader( &m_Map, &m_Player );
 	MapLoader.m_checkpointset = m_checkpointset;
 	MapLoader.mp_objvect = &m_Object;
 
 	// load level map
-	if( !mp_Map ) return false;
 	if( !MapLoader.load( m_Episode, m_Level, m_Gamepath ) ) return false;
 
 	//// If those worked fine, continue the initialization
 	// draw level map
-	mp_Map->drawAll();
+	m_Map.drawAll();
 
 	// Now Scroll to the position of the player and center him
-	mp_Map->gotoPos( 32, 64 ); // Assure that the edges are never seen
+	m_Map.gotoPos( 32, 64 ); // Assure that the edges are never seen
 
 	setupPlayers();
 
@@ -163,7 +163,7 @@ bool CPlayGame::init()
 	g_pInput->flushAll();
 	
 	// Initialize the AI
-	mp_ObjectAI = new CObjectAI(mp_Map, m_Object, m_Player, mp_option,
+	mp_ObjectAI = new CObjectAI(&m_Map, m_Object, m_Player, mp_option,
 								m_NumPlayers, m_Episode, m_Level,
 								m_Difficulty, m_PhysicsSettings, m_dark);
 
@@ -197,18 +197,11 @@ void CPlayGame::createPlayerObjects()
 	// tie puppy objects so the player can interact in the level
 	for (int i=0 ; i<m_NumPlayers ; i++)
 	{
-		CObject object(mp_Map, m_NumPlayers);
 		m_Player[i].setDatatoZero();
 		m_Player[i].m_player_number = i;
 		m_Player[i].m_episode = m_Episode;
 		m_Player[i].mp_levels_completed = mp_level_completed;
-
-	    object.exists = true;
-		object.onscreen = true;
-		object.honorPriority = true;
-		object.m_type = OBJ_PLAYER;
 		m_Player[i].mp_option = mp_option;
-		m_Object.push_back(object);
 		m_Player[i].mp_object=&m_Object;
 	}
 }
@@ -270,13 +263,13 @@ void CPlayGame::process()
 				{
 					mp_Menu->cleanup();
 					SAFE_DELETE(mp_Menu);
-					mp_Map->setSDLSurface(g_pVideoDriver->getScrollSurface());
+					m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
 					SDL_Rect gamerect = g_pVideoDriver->getGameResolution();
-					mp_Map->m_maxscrollx = (mp_Map->m_width<<4) - gamerect.w - 36;
-					mp_Map->m_maxscrolly = (mp_Map->m_height<<4) - gamerect.h - 36;
+					m_Map.m_maxscrollx = (m_Map.m_width<<4) - gamerect.w - 36;
+					m_Map.m_maxscrolly = (m_Map.m_height<<4) - gamerect.h - 36;
 					for( int i=0 ; i<m_NumPlayers ; i++ )
 						while(m_Player[i].scrollTriggers());
-					mp_Map->drawAll();
+					m_Map.drawAll();
 				}
 
 				if(m_SavedGame.getCommand() == CSavedGame::SAVE)
@@ -339,7 +332,7 @@ void CPlayGame::process()
 			processPauseDialogs();
 		}
 		// Animate the tiles of the map
-		mp_Map->animateAllTiles();
+		m_Map.animateAllTiles();
 
 		// Blit the background
 		g_pVideoDriver->blitScrollSurface();
@@ -366,7 +359,7 @@ void CPlayGame::process()
 			{
 				CBitmap *pBitmap = g_pGfxEngine->getBitmap("GAMEOVER");
 				g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
-				mp_gameoverbmp = new CEGABitmap(mp_Map , g_pVideoDriver->getBlitSurface(), pBitmap);
+				mp_gameoverbmp = new CEGABitmap(&m_Map , g_pVideoDriver->getBlitSurface(), pBitmap);
 				mp_gameoverbmp->setScrPos( 160-(pBitmap->getWidth()/2), 100-(pBitmap->getHeight()/2) );
 			}
 		}
@@ -386,8 +379,13 @@ void CPlayGame::process()
 #else
 			tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec());
 #endif
-			tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec()) +
-					"; x = " + itoa(m_Player[0].x) + " ; y = " + itoa(m_Player[0].y);
+		//			tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec()) +
+			//				"; x = " + itoa(m_Player[0].getXPosition()) + " ; y = " + itoa(m_Player[0].getYPosition());
+					tempbuf = "l: " + itoa(m_Player[0].blockedl);
+					tempbuf += " r: " + itoa(m_Player[0].blockedr);
+					tempbuf += " u: " + itoa(m_Player[0].blockedu);
+					tempbuf += " d: " + itoa(m_Player[0].blockedd);
+			tempbuf += " fall: " + itoa(m_Player[0].pfalling);
 
 			g_pGfxEngine->getFont().drawFont(sfc,tempbuf,320-(tempbuf.size()<<3)-1, LETTER_TYPE_RED);
 		}
@@ -396,7 +394,7 @@ void CPlayGame::process()
 		if(!mp_Menu && !mp_Finale && g_pInput->getPressedCommand(IC_QUIT))
 		{
 			// Open the menu
-			mp_Menu = new CMenu( ACTIVE, m_Gamepath, m_Episode, *mp_Map, m_SavedGame, mp_option );
+			mp_Menu = new CMenu( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame, mp_option );
 			mp_Menu->init();
 		}
 	}
@@ -471,7 +469,7 @@ void CPlayGame::handleFKeys()
     			if (m_Player[i].pdie)
     			{
     				m_Player[i].pdie = PDIE_NODIE;
-    				m_Player[i].y -= (8<<CSF);
+    				m_Player[i].moveUp(8<<CSF);
     			}
     			m_Player[i].pfrozentime = 0;
     		}
@@ -494,7 +492,7 @@ void CPlayGame::handleFKeys()
 	{
 		// Show the typical F1 Help
 		// Open the menu
-		mp_Menu = new CMenu( ACTIVE, m_Gamepath, m_Episode, *mp_Map, m_SavedGame, mp_option );
+		mp_Menu = new CMenu( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame, mp_option );
 		mp_Menu->init(F1);
 		//showF1HelpText(pCKP->Control.levelcontrol.episode, pCKP->Resources.GameDataDirectory);
 	}
@@ -502,7 +500,7 @@ void CPlayGame::handleFKeys()
     // F3 - save game
     if (g_pInput->getPressedKey(KF3))
     {
-		mp_Menu = new CMenu( ACTIVE, m_Gamepath, m_Episode, *mp_Map, m_SavedGame, mp_option );
+		mp_Menu = new CMenu( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame, mp_option );
 		mp_Menu->init(SAVE);
     }
 }
@@ -555,15 +553,15 @@ void CPlayGame::createFinale()
 {
 	if(m_Episode == 1)
 	{
-		mp_Finale = new CEndingEp1(mp_Map, m_Player);
+		mp_Finale = new CEndingEp1(&m_Map, m_Player);
 	}
 	else if(m_Episode == 2)
 	{
-		mp_Finale = new CEndingEp2(mp_Map, m_Player);
+		mp_Finale = new CEndingEp2(&m_Map, m_Player);
 	}
 	else if(m_Episode == 3)
 	{
-		mp_Finale = new CEndingEp3(mp_Map, m_Player);
+		mp_Finale = new CEndingEp3(&m_Map, m_Player);
 	}
 }
 
@@ -603,92 +601,21 @@ void CPlayGame::collectHighScoreInfo()
 // This function draws the objects that need to be seen on the screen
 void CPlayGame::drawObjects()
 {
-	int i;
-	int x,y,o,tl,xsize,ysize;
-	int xa,ya;
-	
 	if(m_hideobjects) return;
 
-	// copy player data to their associated objects show they can get drawn
-	// in the object-drawing loop with the rest of the objects
-	for( i=0 ;i < m_NumPlayers ; i++)
+	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
+	for (size_t i=0 ; i<m_Player.size() ; i++)
 	{
-		o = m_Player[i].m_player_number;
-		
-		if (!m_Player[i].hideplayer && !m_Player[i].beingteleported)
-			m_Object.at(o).sprite = m_Player[i].playframe;
-		else
-			m_Object.at(o).sprite = m_NumSprites-1;
-		
-		//m_Object.at(o).moveto(m_Player[i].x, m_Player[i].y);
-		m_Object.at(o).x = m_Player[i].x;
-		m_Object.at(o).y = m_Player[i].y;
+		CPlayer &player = m_Player[i];
+		player.draw();
 	}
 	
 	// draw all objects. drawn in reverse order because the player sprites
 	// are in the first few indexes and we want them to come out on top.
-	CObject *p_object;
-	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
-	for ( i=m_Object.size()-1 ; i>=0 ; i--)
+	for (size_t i=m_Object.size()-1 ; i>=m_Player.size() ; i--)
 	{
-		p_object = &m_Object[i];
-		
-		if (p_object->exists && p_object->onscreen)
-		{
-			CSprite &Sprite = g_pGfxEngine->getSprite(p_object->sprite);
-			p_object->scrx = (p_object->x>>STC)-mp_Map->m_scrollx;
-			p_object->scry = (p_object->y>>STC)-mp_Map->m_scrolly;
-
-			if(p_object->scry < gameres.w && p_object->scry < gameres.h )
-				Sprite.drawSprite( g_pVideoDriver->getBlitSurface(), p_object->scrx, p_object->scry );
-
-			p_object->bboxX1 = Sprite.m_bboxX1;
-			p_object->bboxX2 = Sprite.m_bboxX2;
-			p_object->bboxY1 = Sprite.m_bboxY1;
-			p_object->bboxY2 = Sprite.m_bboxY2;
-
-	        if (p_object->honorPriority)
-	        {
-	        	CSprite &sprite = g_pGfxEngine->getSprite(p_object->sprite);
-	            // handle priority tiles and tiles with masks
-	            // get the upper-left coordinates to start checking for tiles
-	            x = (p_object->x>>CSF);
-	            y = (p_object->y>>CSF);
-				
-	            // get the xsize/ysize of this sprite--round up to the nearest 16
-	            xsize = ((sprite.getWidth()>>4)<<4);
-	            if (xsize != sprite.getWidth()) xsize+=16;
-				
-	            ysize = ((sprite.getHeight()>>4)<<4);
-	            if (ysize != sprite.getHeight()) ysize+=16;
-				
-	            tl = mp_Map->at(x,y);
-	            x<<=4;
-	            y<<=4;
-				
-	            // now redraw any priority/masked tiles that we covered up
-	            // with the sprite
-	            SDL_Surface *sfc = g_pVideoDriver->getBlitSurface();
-	            SDL_Rect sfc_rect;
-	            sfc_rect.w = sfc_rect.h = 16;
-				
-	            for(ya=0;ya<=ysize;ya+=16)
-	            {
-					for(xa=0;xa<=xsize;xa+=16)
-					{
-						tl = mp_Map->at((x+xa)>>4,(y+ya)>>4);
-						//if(mp_Map->mp_tiles[tl].behaviour == -2)
-							//g_pGfxEngine->Tilemap->drawTile(sfc, x+xa-mp_Map->m_scrollx, y+ya-mp_Map->m_scrolly, tl+1);
-						//else if (mp_Map->mp_tiles[tl].behaviour == -1)
-							//g_pGfxEngine->Tilemap->drawTile(sfc, x+xa-mp_Map->m_scrollx, y+ya-mp_Map->m_scrolly, tl);
-						if(mp_Map->mp_tiles[tl].behaviour == -2)
-							mp_Map->drawAnimatedTile(sfc, x+xa-mp_Map->m_scrollx, y+ya-mp_Map->m_scrolly, tl+1);
-						else if (mp_Map->mp_tiles[tl].behaviour == -1)
-							mp_Map->drawAnimatedTile(sfc, x+xa-mp_Map->m_scrollx, y+ya-mp_Map->m_scrolly, tl);
-					}
-	            }
-	        }
-		}
+		CObject &object = m_Object[i];
+		object.draw();
 	}
 }
 ////
@@ -707,7 +634,6 @@ char CPlayGame::getDifficulty() { return m_Difficulty; }
 ////
 void CPlayGame::cleanup()
 {
-	SAFE_DELETE(mp_Map);
 	SAFE_DELETE(mp_ObjectAI);
 }
 

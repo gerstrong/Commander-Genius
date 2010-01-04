@@ -87,7 +87,10 @@ bool CGameLauncher::drawMenu()
     mp_LaunchMenu->setFrameTheme( DLG_THEME_OLDSCHOOL );
 	
     // Load the map for the background
-    mp_map = new CMap(g_pVideoDriver->getScrollSurface(), g_pGfxEngine->Tilemap);
+	mp_map = new CMap;
+	mp_map->setScrollSurface(g_pVideoDriver->getScrollSurface());
+	mp_map->setTileMap(g_pGfxEngine->Tilemap);
+
     CMapLoader MapLoader(mp_map);
 	
     if(!MapLoader.load(1, 90, m_Entries.at(m_ep1slot).path)) return false;

@@ -30,18 +30,8 @@ void CPlayGame::processInLevel()
 			if( (hinttext=m_Player[i].pollHintMessage()) != "")
 				m_MessageBoxes.push_back(new CMessageBox(getstring(hinttext)));
 
-			// Process the falling physics of the player here.
-			// We need to know the objects and tiles which could hinder the fall.
-			// decide if player should fall
-			if (!m_Player[i].inhibitfall) processPlayerfallings(&m_Player[i]);
-			else
-			{
-				m_Player[i].psupportingtile = 145;
-				m_Player[i].psupportingobject = 0;
-			}
-
 			// Check Collisions and only move player, if it is not blocked
-			checkPlayerCollisions(&m_Player[i]);
+			//checkPlayerCollisions(&m_Player[i]);
 
 			// Check if the first player is dead, and if the others also are...
 			if(i==0) m_alldead = (m_Player[i].pdie == PDIE_DEAD);
@@ -68,7 +58,7 @@ void CPlayGame::processInLevel()
 			{	// This happens, when keen used the inlevel teleporter...
 				CTeleporter Teleporter( m_TeleporterTable, m_Episode);
 				goBacktoMap();
-				Teleporter.teleportPlayerFromLevel(*mp_Map, m_Object, m_Player[i], m_checkpoint_x, m_checkpoint_y);
+				Teleporter.teleportPlayerFromLevel(m_Map, m_Object, m_Player[i], m_checkpoint_x, m_checkpoint_y);
 				break;
 			}
 		}
@@ -97,7 +87,7 @@ void CPlayGame::processLevelTrigger(int trigger)
 	{
 		m_dark = false;
 		g_pGfxEngine->Palette.setdark(m_dark);
-		mp_Finale = new CTantalusRay(*mp_Map, m_Object, *mp_ObjectAI);
+		mp_Finale = new CTantalusRay(m_Map, m_Object, *mp_ObjectAI);
 		m_gameover = true;
 	}
 	else if (trigger == LVLTRIG_BRIDGE)

@@ -22,16 +22,16 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 		
 		object.blockedr = object.blockedl = false;
 
-		int x1 = raysprite.m_bboxX1;
-		int x2 = raysprite.m_bboxX2;
 		int y2 = raysprite.m_bboxY2;
+		int x = object.getXPosition();
+		int y = object.getYPosition();
 
 		// Check initial collision. This will avoid that ray go through the first blocking element
-		for(int i=x1; i<x2 ; i++)
+		for(size_t i=raysprite.m_bboxX1; i<raysprite.m_bboxX2 ; i++)
 		{
-			if (TileProperty[mp_Map->at((object.x+i)>>CSF,(object.y+y2)>>CSF)].bleft)
+			if (TileProperty[mp_Map->at((x+i)>>CSF,(y+y2)>>CSF)].bleft)
 				object.blockedr |= true;
-			if (TileProperty[mp_Map->at((object.x+i)>>CSF,(object.y+y2)>>CSF)].bright)
+			if (TileProperty[mp_Map->at((x+i)>>CSF,(y+y2)>>CSF)].bright)
 				object.blockedl |= true;
 		}
 
@@ -40,9 +40,9 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 		// the ZAP appear next to the wall, not in it
 		if (object.ai.ray.direction==RIGHT && object.blockedr)
 		{
-			object.x = (object.x >> CSF) << CSF;
-			if (TileProperty[mp_Map->at(object.x>>CSF,object.y>>CSF)].bleft)
-				object.x--;
+			object.moveXDir((object.getXPosition() >> CSF) << CSF);
+			if (TileProperty[mp_Map->at(object.getXPosition()>>CSF,object.getYPosition()>>CSF)].bleft)
+				object.moveLeft(1);
 			
 			object.ai.ray.state = RAY_STATE_SETZAPZOT;
 			
@@ -51,9 +51,9 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 		}
 		else if (object.ai.ray.direction==LEFT && object.blockedl)
 		{
-			object.x = (object.x >> CSF) << CSF;
-			if (TileProperty[mp_Map->at(object.x>>CSF,object.y>>CSF)].bright) object.x--;
-			//if (tiles[getmaptileat(x>>CSF,y>>CSF)].solidl) x -= (16<<CSF);
+			object.moveXDir((object.getXPosition() >> CSF) << CSF);
+			if (TileProperty[mp_Map->at(object.getXPosition()>>CSF, object.getYPosition()>>CSF)].bright)
+				object.moveLeft(1);
 			object.ai.ray.state = RAY_STATE_SETZAPZOT;
 			if (object.onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, object.scrx);
 		}
@@ -70,6 +70,8 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 	else
 		rayspeed = RAY_AUTO_SPEED;
 	
+	int x = object.getXPosition();
+	int y = object.getYPosition();
 	
 	switch(object.ai.ray.state)
 	{
@@ -85,8 +87,8 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 					{
 						object.ai.ray.state = RAY_STATE_SETZAPZOT;
 						it_obj->zapped++;
-						it_obj->zapx = it_obj->x;
-						it_obj->zapy = it_obj->y;
+						it_obj->zapx = it_obj->getXPosition();
+						it_obj->zapy = it_obj->getYPosition();
 						it_obj->zapd = it_obj->ai.ray.direction;
 						if (object.sprite==ENEMYRAY || object.sprite==ENEMYRAYEP2 || object.sprite==ENEMYRAYEP3)
 							it_obj->zappedbyenemy = true;
@@ -122,9 +124,9 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 			{
 				// don't go through bonklethal tiles, even if they're not solid
 				// (for the arms on mortimer's machine)
-				if (TileProperty[mp_Map->at(((object.x>>(CSF-4))+raysprite.getWidth())>>4, (object.y>>CSF)+1)].behaviour == 1)
+				if (TileProperty[mp_Map->at(((x>>(CSF-4))+raysprite.getWidth())>>4, (y>>CSF)+1)].behaviour == 1)
 					hitlethal = true;
-				else if (TileProperty[mp_Map->at(((object.x>>(CSF-4))+raysprite.getWidth())>>4, ((object.y>>(CSF-4))+(raysprite.getHeight()-1))>>(CSF-4))].behaviour == 1)
+				else if (TileProperty[mp_Map->at(((x>>(CSF-4))+raysprite.getWidth())>>4, ((y>>(CSF-4))+(raysprite.getHeight()-1))>>(CSF-4))].behaviour == 1)
 					hitlethal = true;
 				else
 					hitlethal = false;
@@ -135,14 +137,13 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 					if (object.onscreen)
 						g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, object.scrx);
 				}
-				
-				object.x += rayspeed;
+				object.moveRight(rayspeed);
 			}
 			else if (object.ai.ray.direction == LEFT)
 			{
-				if (TileProperty[mp_Map->at((object.x-1)>>CSF, (object.y+1)>>CSF)].behaviour == 1)
+				if (TileProperty[mp_Map->at((x-1)>>CSF, (y+1)>>CSF)].behaviour == 1)
 					hitlethal = true;
-				else if (TileProperty[mp_Map->at((object.x-1)>>CSF, ((object.y>>(CSF-4))+(raysprite.getHeight()-1))>>(CSF-4))].behaviour == 1)
+				else if (TileProperty[mp_Map->at((x-1)>>CSF, ((y>>(CSF-4))+(raysprite.getHeight()-1))>>(CSF-4))].behaviour == 1)
 					hitlethal = true;
 				else
 					hitlethal = false;
@@ -152,8 +153,7 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 					object.ai.ray.state = RAY_STATE_SETZAPZOT;
 					if (object.onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, object.scrx);
 				}
-				
-				object.x -= rayspeed;
+				object.moveLeft(rayspeed);
 			}
 			else if (object.ai.ray.direction == DOWN)
 			{
@@ -163,7 +163,7 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 					if (object.onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, object.scrx);
 				}
 				
-				object.y += rayspeed;
+				object.moveDown(rayspeed);
 			}
 			break;
 		case RAY_STATE_SETZAPZOT:
@@ -193,9 +193,9 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 			}
 			
 			if (object.ai.ray.direction==LEFT || object.ai.ray.direction==RIGHT)
-				object.y -= 2;
+				object.moveUp(2);
 			else
-				object.x -= 4;
+				object.moveLeft(4);
 
 			// ... and fall through
 		case RAY_STATE_ZAPZOT:

@@ -17,20 +17,18 @@
 
 std::string formatPathString(const std::string& path);
 
-CMap::CMap(SDL_Surface *p_scrollsurface, CTilemap *p_Tilemap):
+CMap::CMap():
 mp_data(NULL),
 m_width(0), m_height(0),
 m_worldmap(false),
 m_animation_enabled(true),
-mp_tiles(p_Tilemap->mp_tiles),
-mp_scrollsurface(p_scrollsurface),
-mp_Tilemap(p_Tilemap),
+mp_tiles(NULL),
+mp_Tilemap(NULL),
 m_animtiletimer(0),
 m_curanimtileframe(0)
 {
 	memset( m_AnimTileInUse, 0, sizeof(m_AnimTileInUse));
 	memset( m_animtiles, 0, sizeof(m_animtiles));
-
 	resetScrolls();
 	memset(m_objectlayer, 0, sizeof(m_objectlayer));
 }
@@ -38,6 +36,13 @@ m_curanimtileframe(0)
 ////////////////////////////
 // Initialization Routine //
 ////////////////////////////
+
+void CMap::setTileMap( CTilemap *pTilemap ){
+	mp_Tilemap = pTilemap;
+	mp_tiles = mp_Tilemap->mp_tiles;
+}
+void CMap::setScrollSurface( SDL_Surface *surface )
+{  mp_scrollsurface = surface; }
 
 void CMap::resetScrolls()
 {
@@ -345,7 +350,7 @@ void CMap::drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile)
 {
 	stTile &TileProperty = g_pGfxEngine->Tilemap->mp_tiles[tile];
 
-	if(TileProperty.animation < 2)
+	if(TileProperty.animation <= 1)
 	{ // Unanimated tiles
 		mp_Tilemap->drawTile( dst, mx, my, tile );
 	}

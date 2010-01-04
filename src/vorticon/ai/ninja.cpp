@@ -37,7 +37,7 @@ void CObjectAI::ninja_ai(CObject &object, bool hardmode)
 		object.ai.ninja.timetillkick = (rnd()%(NINJA_MAX_TIME_TILL_KICK-NINJA_MIN_TIME_TILL_KICK))+NINJA_MIN_TIME_TILL_KICK;
 		if (hardmode) object.ai.ninja.timetillkick /= 3;
 
-		if (m_Player[0].x < object.x)
+		if (m_Player[0].getXPosition() < object.getXPosition())
 			object.ai.ninja.dir = LEFT;
 		else
 			object.ai.ninja.dir = RIGHT;
@@ -80,7 +80,7 @@ void CObjectAI::ninja_ai(CObject &object, bool hardmode)
 	switch(object.ai.ninja.state)
 	{
 	case NINJA_STAND:
-		if (m_Player[0].x < object.x+(8<<STC))
+		if (m_Player[0].getXPosition() < object.getXPosition()+(8<<STC))
 			object.ai.ninja.dir = LEFT;
 		else
 			object.ai.ninja.dir = RIGHT;
@@ -121,8 +121,8 @@ void CObjectAI::ninja_ai(CObject &object, bool hardmode)
 			CSprite PlayerSprite = g_pGfxEngine->getSprite(0);
 			for(i=0;i<m_NumPlayers;i++)
 			{
-				if ((m_Player[i].y >= object.y-(96<<STC)) &&
-					(m_Player[i].y+(PlayerSprite.getHeight()<<STC) <= (object.y+object.bboxY2+(96<<STC))))
+				if ((m_Player[i].getYPosition() >= object.getYPosition()-(96<<STC)) &&
+					(m_Player[i].getYPosition()+(PlayerSprite.getHeight()<<STC) <= (object.getYDownPos()+(96<<STC))))
 				{
 					onsamelevel = 1;
 					break;
@@ -174,11 +174,11 @@ void CObjectAI::ninja_ai(CObject &object, bool hardmode)
 					(object.ai.ninja.XInertia < 0 && !object.blockedl))
 			{
 				if (!object.ai.ninja.isdying)
-					object.x += object.ai.ninja.XInertia;
+					object.moveXDir(object.ai.ninja.XInertia);
 			}
 
 			if (object.ai.ninja.YInertia > 0 || !object.blockedu)
-				object.y += object.ai.ninja.YInertia;
+				object.moveYDir(object.ai.ninja.YInertia);
 		}
 
 

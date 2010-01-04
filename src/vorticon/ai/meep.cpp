@@ -35,7 +35,7 @@ void CObjectAI::meep_ai(CObject& object)
 		object.ai.meep.animframe = 0;
 		object.ai.meep.animtimer = 0;
 
-		if (m_Player[0].x > object.x)
+		if (m_Player[0].getXPosition() > object.getXPosition())
 			object.ai.meep.dir = RIGHT;
 		else
 			object.ai.meep.dir = LEFT;
@@ -51,7 +51,7 @@ void CObjectAI::meep_ai(CObject& object)
 		// don't push the player as he's walking through the exit door
 		if (!m_Player[object.touchedBy].level_done)
 		{
-			if (m_Player[object.touchedBy].x < object.x)
+			if (m_Player[object.touchedBy].getXPosition() < object.getXPosition())
 				m_Player[object.touchedBy].bump(-MEEP_WALK_SPD, true);
 			else
 				m_Player[object.touchedBy].bump(MEEP_WALK_SPD, true);
@@ -80,7 +80,7 @@ void CObjectAI::meep_ai(CObject& object)
 			else
 			{
 				// try to get onscreen by heading towards the player
-				if (m_Player[0].x > object.x)
+				if (m_Player[0].getXPosition() > object.getXPosition())
 					object.ai.meep.dir = RIGHT;
 				else
 					object.ai.meep.dir = LEFT;
@@ -91,17 +91,17 @@ void CObjectAI::meep_ai(CObject& object)
 		{
 			object.sprite = MEEP_WALK_RIGHT_FRAME + object.ai.meep.animframe;
 
-			not_about_to_fall = TileProperty[mp_Map->at((object.x+object.bboxX2)>>CSF, (object.y+object.bboxY2+(1<<STC))>>CSF)].bup;
+			not_about_to_fall = TileProperty[mp_Map->at((object.getXLeftPos())>>CSF, (object.getYDownPos()+(1<<STC))>>CSF)].bup;
 
 			if (object.blockedr || !not_about_to_fall)
 				object.ai.meep.dir = LEFT;
 			else
-				object.x += MEEP_WALK_SPD;
+				object.moveRight(MEEP_WALK_SPD);
 		}
 		else
 		{
 			object.sprite = MEEP_WALK_LEFT_FRAME + object.ai.meep.animframe;
-			not_about_to_fall = TileProperty[mp_Map->at((object.x+object.bboxX1)>>CSF, (object.y+object.bboxY2+(1<<STC))>>CSF)].bup;
+			not_about_to_fall = TileProperty[mp_Map->at((object.getXRightPos())>>CSF, (object.getYDownPos()+(1<<STC))>>CSF)].bup;
 
 			if (object.blockedl || !not_about_to_fall)
 			{
@@ -109,7 +109,7 @@ void CObjectAI::meep_ai(CObject& object)
 			}
 			else
 			{
-				object.x -= MEEP_WALK_SPD;
+				object.moveLeft(MEEP_WALK_SPD);
 			}
 		}
 
@@ -137,12 +137,12 @@ void CObjectAI::meep_ai(CObject& object)
 			CObject newobject(mp_Map);
 			if (object.ai.meep.dir==RIGHT)
 			{
-				newobject.spawn((object.x+object.bboxX2)<<CSF, object.y+(5<<STC), OBJ_SNDWAVE, 3);
+				newobject.spawn((object.getXRightPos())<<CSF, object.getYPosition()+(5<<STC), OBJ_SNDWAVE, 3);
 				newobject.ai.ray.direction = RIGHT;
 			}
 			else
 			{
-				newobject.spawn(object.x-(5<<STC), object.y+(5<<STC), OBJ_SNDWAVE, 3);
+				newobject.spawn(object.getXPosition()-(5<<STC), object.getYPosition()+(5<<STC), OBJ_SNDWAVE, 3);
 				newobject.ai.ray.direction = LEFT;
 			}
 			m_Objvect.push_back(newobject);

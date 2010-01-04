@@ -35,7 +35,7 @@ void CPlayGame::processOnWorldMap()
 				int TeleportID;
 				if( (TeleportID = Teleporter.getTeleporterInfo(useobject)) != 0 )
 				{
-					Teleporter.teleportPlayer(TeleportID, *mp_Map,m_Object, m_Player[i]);
+					Teleporter.teleportPlayer(TeleportID, m_Map,m_Object, m_Player[i]);
 				}
 				else
 				{
@@ -73,8 +73,8 @@ void CPlayGame::processOnWorldMap()
 							g_pMusicPlayer->stop();
 							g_pSound->playStereofromCoord(SOUND_ENTER_LEVEL, PLAY_NOW, m_Object[m_Player[i].m_player_number].scrx);
 							// save where on the map, the player entered. This is a checkpoint!
-							m_checkpoint_x = m_Player[i].x;
-							m_checkpoint_y = m_Player[i].y;
+							m_checkpoint_x = m_Player[i].getXPosition();
+							m_checkpoint_y = m_Player[i].getYPosition();
 							m_checkpointset = true;
 							cleanup();
 							init();
@@ -88,7 +88,7 @@ void CPlayGame::processOnWorldMap()
 			}
 
 			// Check Collisions and only move player, if it is not blocked
-			checkPlayerCollisions(&m_Player[i]);
+			//checkPlayerCollisions(&m_Player[i]);
 		}
 
 		if(m_Player[i].mounted)
@@ -125,8 +125,7 @@ void CPlayGame::goBacktoMap()
 	{
 		m_Player[i].level_done = LEVEL_NOT_DONE;
 		// Restore checkpoint
-		m_Player[i].x = m_Player[i].goto_x = m_checkpoint_x;
-		m_Player[i].y = m_Player[i].goto_y = m_checkpoint_y-256;
+		m_Player[i].moveTo(m_checkpoint_x,m_checkpoint_y-256);
 		m_Player[i].inventory.HasCardYellow = 0;
 		m_Player[i].inventory.HasCardBlue = 0;
 		m_Player[i].inventory.HasCardGreen = 0;

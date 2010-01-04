@@ -32,8 +32,11 @@ void CObjectAI::explosion_ai(CObject &object)
 			object.ai.ray.animframe += object.ai.ray.direction;
 			if (object.ai.ray.direction==1 && object.ai.ray.animframe==3)
 			{
+				int x, y;
+				x = object.getXPosition()>>CSF;
+				y = object.getYPosition()>>CSF;
 				object.ai.ray.direction = -1;
-				mp_Map->setTile(((object.x>>CSF)+8)>>4,((object.y>>CSF)+8)>>4, SPACETILE, true);
+				mp_Map->setTile((x+8)>>4,(y+8)>>4, SPACETILE, true);
 			}
 		}
 		object.ai.ray.animtimer = 0;
@@ -60,59 +63,59 @@ void CObjectAI::earthchunk_ai(CObject &object)
 	switch(object.ai.ray.direction)
 	{
 	case EC_UPLEFTLEFT:
-		object.x -= CHUNKSPD;
-		object.y -= HALFCHUNKSPD;
+		object.moveLeft(CHUNKSPD);
+		object.moveUp(HALFCHUNKSPD);
 		break;
 	case EC_UPUPLEFT:
-		object.x -= HALFCHUNKSPD;
-		object.y -= CHUNKSPD;
+		object.moveLeft(HALFCHUNKSPD);
+		object.moveUp(CHUNKSPD);
 		break;
 	case EC_UP:
-		object.y -= CHUNKSPD;
+		object.moveUp(CHUNKSPD);
 		break;
 	case EC_UPUPRIGHT:
-		object.x += HALFCHUNKSPD;
-		object.y -= CHUNKSPD;
+		object.moveRight(HALFCHUNKSPD);
+		object.moveUp(CHUNKSPD);
 		break;
 	case EC_UPRIGHTRIGHT:
-		object.x += CHUNKSPD;
-		object.y -= HALFCHUNKSPD;
+		object.moveRight(CHUNKSPD);
+		object.moveUp(HALFCHUNKSPD);
 		break;
 	case EC_DOWNRIGHTRIGHT:
-		object.x += CHUNKSPD;
-		object.y += HALFCHUNKSPD;
+		object.moveRight(CHUNKSPD);
+		object.moveDown(HALFCHUNKSPD);
 		break;
 	case EC_DOWNDOWNRIGHT:
-		object.x += HALFCHUNKSPD;
-		object.y += CHUNKSPD;
+		object.moveRight(HALFCHUNKSPD);
+		object.moveDown(CHUNKSPD);
 		break;
 	case EC_DOWN:
-		object.y += CHUNKSPD;
+		object.moveDown(CHUNKSPD);
 		break;
 	case EC_DOWNDOWNLEFT:
-		object.x -= HALFCHUNKSPD;
-		object.y += CHUNKSPD;
+		object.moveLeft(HALFCHUNKSPD);
+		object.moveDown(CHUNKSPD);
 		break;
 	case EC_DOWNLEFTLEFT:
-		object.x -= CHUNKSPD;
-		object.y += HALFCHUNKSPD;
+		object.moveLeft(CHUNKSPD);
+		object.moveDown(HALFCHUNKSPD);
 		break;
 
 	case EC_UPLEFT:
-		object.x -= BIGCHUNKSPD;
-		object.y -= BIGCHUNKSPD;
+		object.moveLeft(BIGCHUNKSPD);
+		object.moveUp(BIGCHUNKSPD);
 		break;
 	case EC_UPRIGHT:
-		object.x += BIGCHUNKSPD;
-		object.y -= BIGCHUNKSPD;
+		object.moveRight(BIGCHUNKSPD);
+		object.moveUp(BIGCHUNKSPD);
 		break;
 	case EC_DOWNLEFT:
-		object.x -= BIGCHUNKSPD;
-		object.y += BIGCHUNKSPD;
+		object.moveLeft(BIGCHUNKSPD);
+		object.moveDown(BIGCHUNKSPD);
 		break;
 	case EC_DOWNRIGHT:
-		object.x += BIGCHUNKSPD;
-		object.y += BIGCHUNKSPD;
+		object.moveRight(BIGCHUNKSPD);
+		object.moveDown(BIGCHUNKSPD);
 		break;
 	}
 }

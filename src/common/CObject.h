@@ -13,6 +13,11 @@
 
 #define MAX_PLAYERS            4
 
+// if player[].psupportingtile contains this value the player is actually
+// supported by an object and you should look in player[].psupportingobj
+// for it's index.
+#define PSUPPORTEDBYOBJECT         0
+
 // structures for each AI module's data
 #include "../vorticon/ai/enemydata.h"
 #include "../common/CMap.h"
@@ -52,12 +57,14 @@ public:
 	int zapx, zapy, zapd;	   // x,y, and direction of last shot at time of impact
 	char zappedbyenemy;	   // if 1, it was an ENEMYRAY and not keen that shot it
 	
-	char inhibitfall;         // if true common_enemy_ai will not do falling
+	bool inhibitfall;         // if true common_enemy_ai will not do falling
 	std::vector<bool> cansupportplayer;
+	std::vector<CObject> *mp_object;
 	
-	unsigned int blockedl, blockedr, blockedu, blockedd;
+	unsigned char blockedl, blockedr, blockedu, blockedd;
 	signed int xinertia, yinertia;
 	unsigned char xinertiatimer;
+	unsigned int psupportingtile, psupportingobject, lastsupportingobject;
 	
 	unsigned char touchPlayer;      // 1=hit detection with player
 	unsigned char touchedBy;        // which player was hit
@@ -108,11 +115,14 @@ public:
 	bool spawn(int x0, int y0, int otype, int Episode);
 	void setIndex(int index);
 	
-	/*void moveTo(int x, int y);
+	// Moving parts
+	void moveTo(int x, int y);
+	void moveXDir(int amount);
+	void moveYDir(int amount);
 	void moveLeft(int amount);
 	void moveRight(int amount);
 	void moveUp(int amount);
-	void moveDown(int amount);*/
+	void moveDown(int amount);
 
 	virtual void process() { }
 	
@@ -125,15 +135,27 @@ public:
 	bool checkSolidL( int x1, int y1, int y2);
 	bool checkSolidU( int x1, int x2, int y1);
 	bool checkSolidD( int x1, int x2, int y2);
+	int checkObjSolid(unsigned int x, unsigned int y, int cp);
 
-	void processFalling(CMap *p_map);
+	// getters
+	unsigned int getXPosition();
+	unsigned int getYPosition();
+	unsigned int getXLeftPos();
+	unsigned int getXRightPos();
+	unsigned int getXMidPos();
+	unsigned int getYUpPos();
+	unsigned int getYDownPos();
+	unsigned int getYMidPos();
 
-	unsigned int x, y;        			// x,y location in map coords, CSFed
+	void processFalling();
+
+	void draw();
 
 	virtual ~CObject();
 
-protected:
+private:
 	CMap *mp_Map;
+	unsigned int x, y;        			// x,y location in map coords, CSFed
 };
 
 #endif /* COBJECT_H_ */

@@ -16,13 +16,14 @@
 #define SAFE_DELETE_ARRAY(x) if(x) { delete [] x; x = NULL; }
 #define SAFE_DELETE(x) if(x) { delete x; x = NULL; }
 
-const int visibility = 21;
+const int VISIBILITY = 21;
 
 ///
 // Initialization Routine
 ///
 CObject::CObject(CMap *pmap, int num_players, int index) :
 m_index(index),
+mp_object(NULL),
 mp_Map(pmap)
 {
 	honorPriority = false;
@@ -164,11 +165,13 @@ void CObject::setScrPos( int px, int py )
 // This used for objects that only can trigger, when it's really worth to do so.
 bool CObject::calcVisibility( int player_x, int player_y )
 {
+	if(m_type == OBJ_PLATFORM || m_type == OBJ_PLATVERT) return true;
+
 	// check in x
-	Uint32 left = ((player_x-(visibility<<CSF))<0) ? 0 : player_x-(visibility<<CSF);
-	Uint32 right = player_x+(visibility<<CSF);
-	Uint32 up = ((player_y-(visibility<<CSF))<0) ? 0 : player_y-(visibility<<CSF);
-	Uint32 down = player_y+(visibility<<CSF);
+	Uint32 left = ((player_x-(VISIBILITY<<CSF))<0) ? 0 : player_x-(VISIBILITY<<CSF);
+	Uint32 right = player_x+(VISIBILITY<<CSF);
+	Uint32 up = ((player_y-(VISIBILITY<<CSF))<0) ? 0 : player_y-(VISIBILITY<<CSF);
+	Uint32 down = player_y+(VISIBILITY<<CSF);
 
 	if( right > x && left < x )
 	{
@@ -180,11 +183,10 @@ bool CObject::calcVisibility( int player_x, int player_y )
 	return false;
 }
 
-/*void CObject::moveTo(int new_x, int new_y)
+void CObject::moveTo(int new_x, int new_y)
 {
-	int check_x, check_y;
-	amount_x = new_x-x;
-	amount_y = new_y-y;
+	int amount_x = new_x-x;
+	int amount_y = new_y-y;
 
 	if(amount_x < 0) // move left
 		moveLeft(-amount_x);
@@ -193,40 +195,187 @@ bool CObject::calcVisibility( int player_x, int player_y )
 
 	if(amount_y < 0) // means up
 		moveUp(-amount_y);
-	else if(amount_y < 0) // means down
+	else if(amount_y > 0) // means down
 		moveDown(amount_y);
 }
+
+void CObject::moveXDir(int amount)
+{
+	if(amount<0)
+		moveLeft(-amount);
+	else if(amount>0)
+		moveRight(amount);
+}
+void CObject::moveYDir(int amount)
+{
+	if(amount<0)
+		moveUp(-amount);
+	else if(amount>0)
+		moveDown(amount);
+}
+
 void CObject::moveLeft(int amount)
 {
+	int x1 = x + bboxX1;
+	int y1 = y + bboxY1;
+	int y2 = y + bboxY2;
 
+	blockedr = false;
+
+	// check if we walked into other tiles
+	int tile_x_old = (x1>>CSF)<<CSF;
+	int tile_x_new = ((x1-amount)>>CSF)<<CSF;
+
+	if( tile_x_old != tile_x_new ) // Did he pass the tile border?
+	{ // Yes, we have to check the collision
+		if(checkSolidL(x1-amount, y1, y2))
+		{
+			x = tile_x_old - bboxX1;
+			blockedl = true;
+		}
+		else
+		{
+			x -= amount;
+			blockedl = false;
+		}
+	}
+	else
+		x -= amount;
+
+	x1 = x + bboxX1;
+	int x2 = x + bboxX2;
+
+	if(y2+1 == (((y2+1)>>CSF)<<CSF))
+		blockedd = checkSolidD(x1, x2, y2+1);
+	else
+		blockedd = false;
+
+	if(y1 == ((y1>>CSF)<<CSF))
+		blockedu = checkSolidU(x1, x2, y1-1);
+	else
+		blockedu = false;
 }
 
 void CObject::moveRight(int amount)
 {
-	int x1 = x + bboxX1;
 	int x2 = x + bboxX2;
 	int y1 = y + bboxY1;
 	int y2 = y + bboxY2;
 
-	if(checkSolidR(x2+amount, y1, y2))
-	{
-		do
+	blockedl = false;
+
+	// check if we walked into other tiles
+	int tile_x_old = (x2>>CSF)<<CSF;
+	int tile_x_new = ((x2+amount)>>CSF)<<CSF;
+
+	if( tile_x_old != tile_x_new ) // Did he pass the tile border?
+	{ // Yes, we have to check the collision
+		if(checkSolidR(x2+amount, y1, y2))
 		{
-			amount_x--;
-		} while(checkSolidR(x2+amount, y1, y2));
-		blockedr = true;
+			blockedr = true;
+			x = tile_x_new - 1 - bboxX2;
+		}
+		else
+		{
+			blockedr = false;
+			x += amount;
+		}
 	}
 	else
-		blockedr = false;
+		x += amount;
 
-	x += amount;
+	int x1 = x + bboxX1 + 1;
+	x2 = x + bboxX2 - 1;
+	if(y2+1 == (((y2+1)>>CSF)<<CSF))
+		blockedd = checkSolidD(x1, x2, y2+1);
+	else
+		blockedd = false;
+
+	if(y1 == ((y1>>CSF)<<CSF))
+		blockedu = checkSolidU(x1, x2, y1-1);
+	else
+		blockedu = false;
 }
 
 void CObject::moveUp(int amount)
-{}
+{
+	int x1 = x + bboxX1;
+	int x2 = x + bboxX2;
+	int y1 = y + bboxY1;
+
+	blockedl = blockedr = false;
+	blockedd = false;
+
+	// check if we walked into other tiles
+
+	int tile_y_old = (y1>>CSF)<<CSF;
+	int tile_y_new = (((y1-amount)>>CSF))<<CSF;
+
+	if( tile_y_old != tile_y_new ) // Did he pass the tile border?
+	{ // Yes, we have to check the collision
+		if(checkSolidU(x1, x2, y1-amount))
+		{
+			//amount = y1-tile_y_old-1;
+			y = tile_y_old - bboxY1;
+			blockedu = true;
+		}
+		else
+		{
+			y -= amount;
+			blockedu = false;
+		}
+	}
+	else
+		y -= amount;
+}
 
 void CObject::moveDown(int amount)
-{}*/
+{
+	int x1 = x + bboxX1;
+	int x2 = x + bboxX2;
+	int y2 = y + bboxY2;
+
+	blockedl = blockedr = false;
+	blockedu = false;
+
+	// check if we walked into other tiles
+
+	int tile_y_old = (y2>>CSF)<<CSF;
+	int tile_y_new = (((y2+amount)>>CSF))<<CSF;
+
+	if( tile_y_old != tile_y_new ) // Did he pass the tile border?
+	{ // Yes, we have to check the collision
+		if(checkSolidD(x1, x2, y2+amount))
+		{
+			y = tile_y_new - 1 - bboxY2;
+			blockedd = true;
+		}
+		else
+		{
+			y += amount;
+			blockedd = false;
+		}
+	}
+	else
+		y += amount;
+}
+
+unsigned int CObject::getXPosition()
+{ return x; }
+unsigned int CObject::getYPosition()
+{ return y; }
+unsigned int CObject::getXLeftPos()
+{ return x+bboxX1; }
+unsigned int CObject::getXRightPos()
+{ return x+bboxX2; }
+unsigned int CObject::getXMidPos()
+{ return x+(bboxX2-bboxX1)/2; }
+unsigned int CObject::getYUpPos()
+{ return y+bboxY1; }
+unsigned int CObject::getYDownPos()
+{ return y+bboxY2; }
+unsigned int CObject::getYMidPos()
+{ return y+(bboxY2-bboxY1)/2; }
 
 // returns nonzero if object1 overlaps object2
 bool CObject::hitdetect(CObject &hitobject)
@@ -255,7 +404,7 @@ bool CObject::hitdetect(CObject &hitobject)
 	return true;
 }
 
-void CObject::processFalling(CMap *p_map)
+void CObject::processFalling()
 {
 	if(m_type == OBJ_NESSIE) return;
 	// make object fall if it must
@@ -264,90 +413,37 @@ void CObject::processFalling(CMap *p_map)
 	if (!inhibitfall)
 	{
 		// So it reaches the maximum of fallspeed
-		if (yinertia < OBJFALLSPEED && !blockedd) yinertia+=4;
-		else yinertia = 1;
+		if(!blockedd)
+		{
+			if (yinertia < OBJFALLSPEED) yinertia+=4;
+			else if(yinertia > OBJFALLSPEED) yinertia = OBJFALLSPEED;
+		}
+		else
+		{
+			if (yinertia > 0) yinertia-=4;
+			else if(yinertia < 0) yinertia = 0;
+		}
 
-		y+=yinertia;
+		// gradually increase the fall speed up to maximum rate
+		moveDown(yinertia);
 	}
 }
 
 void CObject::performCollision(CMap *p_map)
 {
-	long x1,y1,x2,y2;
+	//long x1,y1,x2,y2;
 
 	if(m_type == OBJ_NESSIE) return;
 	if(m_type == OBJ_SNDWAVE) return;
 	//if(m_type == OBJ_EARTHCHUNK) return;
 
 	// Get Rect values of the object
-	x1 = x + bboxX1;
+	/*x1 = x + bboxX1;
 	y1 = y + bboxY1;
 	x2 = x + bboxX2;
-	y2 = y + bboxY2;
+	y2 = y + bboxY2;*/
 
-	// first the first col-model can't be applied to scrubs. There are very special
-	/*if(m_type != OBJ_SCRUB)
-	{
-		// Set all blocking to false and test later.
-		if( x > new_x )
-		{
-			blockedr = false;
-			do
-			{
-				if( checkSolidR(TileProperty, p_map, x2, y1, y2) && solid )
-				{
-					blockedr = true;
-					break;
-				}
-				new_x++;
-			}while( x > new_x );
-		}
-		else if( x < new_x )
-		{
-			blockedl = false;
-			do
-			{
-				if( checkSolidL(TileProperty, p_map, x1, y1, y2) && solid )
-				{
-					blockedl = true;
-					break;
-				}
-				new_x--;
-			}while( x < new_x );
-		}
-		x = new_x;
-
-		if( y < new_y )
-		{
-			blockedu = false;
-			do
-			{
-				if( checkSolidU(TileProperty, p_map, x1, x2, y1) && solid )
-				{
-					blockedu = true;
-					break;
-				}
-				new_y--;
-			}while( y < new_y );
-		}
-		else if( y > new_y )
-		{
-			blockedd = false;
-			do
-			{
-				if( checkSolidD(TileProperty, p_map, x1, x2, y2) && solid )
-				{
-					blockedd = true;
-					break;
-				}
-				new_y++;
-			}while( y > new_y );
-		}
-		y = new_y;
-	}
-	else
-	{*/
-		blockedu = checkSolidU(x1, x2, y1);
+	/*	blockedu = checkSolidU(x1, x2, y1);
 		blockedd = checkSolidD(x1, x2, y2);
 		blockedl = checkSolidL(x1, y1, y2);
 		blockedr = checkSolidR(x2, y1, y2);
@@ -374,7 +470,7 @@ void CObject::performCollision(CMap *p_map)
 					x--;
 					x2 = x + bboxX2;
 				}
-		}
+		}*/
 	//}
 }
 
@@ -386,11 +482,14 @@ bool CObject::checkSolidR( int x2, int y1, int y2)
 	// Check for right from the object
 	if(solid)
 	{
-		for(int c=y1+(1<<STC) ; c<=y2-(1<<STC) ; c += COLISION_RES)
+		for(int c=y1 ; c<=y2 ; c += COLISION_RES)
 		{
 			if(TileProperty[mp_Map->at(x2>>CSF, c>>CSF)].bleft)
 				return true;
 		}
+
+		if(TileProperty[mp_Map->at(x2>>CSF, y2>>CSF)].bleft)
+			return true;
 	}
 	if( (Uint16)x2 > ((mp_Map->m_width)<<CSF) ) exists=false; // Out of map?
 
@@ -404,7 +503,7 @@ bool CObject::checkSolidL( int x1, int y1, int y2)
 	// Check for right from the object
 	if(solid)
 	{
-		for(int c=y1+(1<<STC) ; c<=y2-(1<<STC) ; c += COLISION_RES)
+		for(int c=y1 ; c<=y2 ; c += COLISION_RES)
 		{
 			if(TileProperty[mp_Map->at(x1>>CSF, c>>CSF)].bright)
 				return true;
@@ -422,7 +521,7 @@ bool CObject::checkSolidU( int x1, int x2, int y1)
 	// Check for right from the object
 	if(solid)
 	{
-		for(int c=x1+(1<<STC) ; c<=x2-(1<<STC) ; c += COLISION_RES)
+		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
 		{
 			if(TileProperty[mp_Map->at(c>>CSF, y1>>CSF)].bdown)
 				return true;
@@ -440,21 +539,124 @@ bool CObject::checkSolidD( int x1, int x2, int y2)
 	// Check for right from the object
 	if(solid)
 	{
-		for(int c=x1+(1<<STC) ; c<=x2-(1<<STC) ; c += COLISION_RES)
+		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
 		{
 			if(TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bup)
 				return true;
 		}
+
+		if(x2>(1<<STC))
+			if(TileProperty[mp_Map->at((x2-(1<<STC))>>CSF, y2>>CSF)].bup)
+				return true;
 	}
 	if( (Uint16)y2 > ((mp_Map->m_height)<<CSF) ) exists=false; // Out of map?
 
 	return false;
 }
 
+int CObject::checkObjSolid(unsigned int x, unsigned int y, int cp)
+{
+	int o=0;
+
+	std::vector<CObject>::iterator p_object;
+	for( p_object=mp_object->begin() ; p_object!=mp_object->end() ; p_object++ )
+	{
+		if (p_object->exists && p_object->cansupportplayer[cp])
+		{
+			if (x >= p_object->getXLeftPos())
+			{
+				if (x <= p_object->getXRightPos())
+				{
+					if (y >= p_object->getYUpPos())
+					{
+						if (y <= p_object->getYDownPos())
+						{
+							o=p_object->m_index;
+							psupportingtile = PSUPPORTEDBYOBJECT;
+							psupportingobject = o;
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return o;
+}
+
 void CObject::kill()
 {
 	if ( exists && zapped < 500 && canbezapped )
 		zapped += 500;
+}
+
+////
+// For drawing
+////
+// Functions finally draws the object also considering that there could be a masked
+// or priority tile!
+void CObject::draw()
+{
+	int mx, my;
+	int tl,xsize,ysize;
+	int xa,ya;
+
+	CSprite &Sprite = g_pGfxEngine->getSprite(sprite);
+    SDL_Surface *sfc = g_pVideoDriver->getBlitSurface();
+
+	scrx = (x>>STC)-mp_Map->m_scrollx;
+	scry = (y>>STC)-mp_Map->m_scrolly;
+
+	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
+
+	if(scry < gameres.w && scry < gameres.h && exists)
+	{
+		Sprite.drawSprite( sfc, scrx, scry );
+		hasbeenonscreen = true;
+	}
+
+	// Define the bouncing boxes again, because sprite could have changed meanwhile
+	bboxX1 = Sprite.m_bboxX1;
+	bboxX2 = Sprite.m_bboxX2;
+	bboxY1 = Sprite.m_bboxY1;
+	bboxY2 = Sprite.m_bboxY2;
+
+    if (honorPriority)
+    {
+        // handle priority tiles and tiles with masks
+        // get the upper-left coordinates to start checking for tiles
+        mx = (x>>CSF);
+        my = (y>>CSF);
+
+        // get the xsize/ysize of this sprite--round up to the nearest 16
+        xsize = ((Sprite.getWidth()>>4)<<4);
+        if (xsize != Sprite.getWidth()) xsize+=16;
+
+        ysize = ((Sprite.getHeight()>>4)<<4);
+        if (ysize != Sprite.getHeight()) ysize+=16;
+
+        tl = mp_Map->at(mx,my);
+        mx<<=4;
+        my<<=4;
+
+        // now redraw any priority/masked tiles that we covered up
+        // with the sprite
+        SDL_Rect sfc_rect;
+        sfc_rect.w = sfc_rect.h = 16;
+
+        for(ya=0;ya<=ysize;ya+=16)
+        {
+			for(xa=0;xa<=xsize;xa+=16)
+			{
+				tl = mp_Map->at((mx+xa)>>4,(my+ya)>>4);
+				if(mp_Map->mp_tiles[tl].behaviour == -2)
+					mp_Map->drawAnimatedTile(sfc, mx+xa-mp_Map->m_scrollx, my+ya-mp_Map->m_scrolly, tl+1);
+				else if (mp_Map->mp_tiles[tl].behaviour == -1)
+					mp_Map->drawAnimatedTile(sfc, mx+xa-mp_Map->m_scrollx, my+ya-mp_Map->m_scrolly, tl);
+			}
+        }
+    }
 }
 
 ///

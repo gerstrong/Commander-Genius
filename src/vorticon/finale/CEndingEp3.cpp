@@ -52,9 +52,8 @@ void CEndingEp3::HonorScene()
 		MapLoader.load(3, 81, path);
 
 		m_Player[0].hideplayer = false;
-		m_Player[0].x = 244<<STC;
-		m_Player[0].y = 104<<STC;
-		m_Player[0].playframe = 0;
+		m_Player[0].moveTo(244<<STC, 104<<STC);
+		m_Player[0].sprite = 0;
 
 		mp_Map->gotoPos(32, 32);
 		mp_Map->drawAll();

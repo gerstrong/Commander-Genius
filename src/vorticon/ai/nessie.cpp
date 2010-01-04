@@ -44,10 +44,13 @@ void CObjectAI::nessie_ai(CObject& object)
 		}
 		// kick nessie into going counter-clockwise
 		// (otherwise she'll go clockwise)
-		object.ai.nessie.tiletrailX[0] = (object.x>>CSF);
-		object.ai.nessie.tiletrailY[0] = (object.y>>CSF);
-		object.ai.nessie.tiletrailX[1] = (object.x>>CSF)+1;
-		object.ai.nessie.tiletrailY[1] = (object.y>>CSF);
+		int x, y;
+		x = object.getXPosition()>>CSF;
+		y = object.getYPosition()>>CSF;
+		object.ai.nessie.tiletrailX[0] = x;
+		object.ai.nessie.tiletrailY[0] = y;
+		object.ai.nessie.tiletrailX[1] = x+1;
+		object.ai.nessie.tiletrailY[1] = y;
 		object.ai.nessie.tiletrailhead = 2;
 
 		for(size_t i=0;i<MAX_PLAYERS;i++)
@@ -65,8 +68,9 @@ void CObjectAI::nessie_ai(CObject& object)
 	{
 		if (object.ai.nessie.mounted[i])
 		{
-			m_Player[i].x = object.x;
-			m_Player[i].y = object.y;
+			int x = object.getXPosition();
+			int y = object.getYPosition();
+			m_Player[i].moveTo(x, y);
 			isMounted = true;
 		}
 	}
@@ -86,23 +90,28 @@ void CObjectAI::nessie_ai(CObject& object)
 	{
 	case NESSIE_SWIMNORMAL:
 		// arrived at destination?
-		if ( (object.x) > (object.ai.nessie.destx-NESSIE_SPEED/2)  &&
-				(object.x) < (object.ai.nessie.destx+NESSIE_SPEED/2) )
+		int x,y;
+		x = object.getXPosition();
+		y = object.getYPosition();
+		if ( x > (object.ai.nessie.destx-NESSIE_SPEED/2)  &&
+				x < (object.ai.nessie.destx+NESSIE_SPEED/2) )
 		{
-			if ( (object.y) > (object.ai.nessie.desty-NESSIE_SPEED/2)  &&
-					(object.y) < (object.ai.nessie.desty+NESSIE_SPEED/2) )
+			if ( y > (object.ai.nessie.desty-NESSIE_SPEED/2)  &&
+					y < (object.ai.nessie.desty+NESSIE_SPEED/2) )
 			{
 				nessie_find_next_checkpoint(object);
 
 				// set up/down and left/right direction flags for frame selection
-				if (object.ai.nessie.destx > object.x)
+				x = object.getXPosition();
+				y = object.getYPosition();
+				if (object.ai.nessie.destx > x)
 					object.ai.nessie.leftrightdir = RIGHT;
-				else if (object.ai.nessie.destx < object.x)
+				else if (object.ai.nessie.destx < x)
 					object.ai.nessie.leftrightdir = LEFT;
 
-				if (object.ai.nessie.desty < object.y)
+				if (object.ai.nessie.desty < y)
 					object.ai.nessie.updowndir = UP;
-				else
+				else if (object.ai.nessie.destx > y)
 					object.ai.nessie.updowndir = DOWN;
 			}
 		}
@@ -124,6 +133,9 @@ void CObjectAI::nessie_ai(CObject& object)
 
 void CObjectAI::move_nessie(CObject& object)
 {
+	int x = object.getXPosition();
+	int y = object.getYPosition();
+
 	// select proper frame based on up/down and left/right direction flags
 	if (object.ai.nessie.updowndir==DOWN && object.ai.nessie.leftrightdir==LEFT)
 		object.ai.nessie.baseframe = NESSIE_DOWNLEFT_FRAME;
@@ -135,15 +147,15 @@ void CObjectAI::move_nessie(CObject& object)
 		object.ai.nessie.baseframe = NESSIE_UPRIGHT_FRAME;
 
 	// head to destination
-	if (object.x < object.ai.nessie.destx)
-		object.x += NESSIE_SPEED;
-	else if (object.x > object.ai.nessie.destx)
-		object.x -= NESSIE_SPEED;
+	if (x < object.ai.nessie.destx)
+		object.moveRight(NESSIE_SPEED);
+	else if (x > object.ai.nessie.destx)
+		object.moveLeft(NESSIE_SPEED);
 
-	if (object.y < object.ai.nessie.desty)
-		object.y += NESSIE_SPEED;
-	else if (object.y > object.ai.nessie.desty)
-		object.y -= NESSIE_SPEED;
+	if (y < object.ai.nessie.desty)
+		object.moveDown(NESSIE_SPEED);
+	else if (y > object.ai.nessie.desty)
+		object.moveUp(NESSIE_SPEED);
 }
 
 void CObjectAI::nessie_find_next_checkpoint(CObject& object)
@@ -155,8 +167,8 @@ void CObjectAI::nessie_find_next_checkpoint(CObject& object)
 	// search in the 8 surrounding tiles and head to the first pathtile
 	// we find that's not one of the last 5 we've been to
 
-	x = ((object.x)>>CSF)-1;
-	y = ((object.y+(8<<STC))>>CSF)-1;
+	x = ((object.getXPosition())>>CSF)-1;
+	y = ((object.getYPosition()+(8<<STC))>>CSF)-1;
 
 	destx = desty = 0;
 

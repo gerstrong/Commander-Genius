@@ -22,7 +22,7 @@ m_player(Player) // in this case the player will be the ship flying home
 	m_finished = false;
 	m_scrollingon = true;
 	m_ShipQueuePtr = 0;
-	m_player.playframe = m_playsprite_right;
+	m_player.sprite = m_playsprite_right;
 
 	// Now, that everything is initialized, create a mark that will be used
 	// as ! or ? Sprite
@@ -49,6 +49,7 @@ void CShipFlySys::addShipQueue(int cmd, int time, int flag1)
 
 void CShipFlySys::process()
 {
+	int x,y;
 	 // execute the current command in the queue
 	 switch(m_shipqueue[m_ShipQueuePtr].cmd)
 	 {
@@ -56,36 +57,38 @@ void CShipFlySys::process()
 		 switch(m_shipqueue[m_ShipQueuePtr].flag1)
 		 {
 		 case DUP:
-			 m_player.y-=SHIPSPD;
-			 m_player.playframe = m_playsprite_right;
+			 m_player.moveUp(SHIPSPD);
+			 m_player.sprite = m_playsprite_right;
 			 break;
 		 case DDOWN:
-			 m_player.y+=SHIPSPD/2;
-			 m_player.playframe = m_playsprite_right;
+			 m_player.moveDown(SHIPSPD/2);
+			 m_player.sprite = m_playsprite_right;
 			 break;
 		 case DLEFT:
-			 m_player.x-=SHIPSPD;
-			 m_player.playframe = m_playsprite_left;
+			 m_player.moveLeft(SHIPSPD);
+			 m_player.sprite = m_playsprite_left;
 			 break;
 		 case DRIGHT:
-			 m_player.x+=SHIPSPD;
-			 m_player.playframe = m_playsprite_right;
+			 m_player.moveLeft(SHIPSPD);
+			 m_player.sprite = m_playsprite_right;
 			 break;
 		 case DDOWNRIGHT:
-			 m_player.x+=SHIPSPD*2;
-			 m_player.y+=SHIPSPD*0.8;
-			 m_player.playframe = m_playsprite_right;
+			 m_player.moveRight(SHIPSPD*2);
+			 m_player.moveDown(SHIPSPD*0.8);
+			 m_player.sprite = m_playsprite_right;
 			 break;
 		 case DUPLEFT:
-			 m_player.x-=SHIPSPD*2;
-			 m_player.y-=SHIPSPD*0.8;
-			 m_player.playframe = m_playsprite_left;
+			 m_player.moveLeft(SHIPSPD*2);
+			 m_player.moveUp(SHIPSPD*0.8);
+			 m_player.sprite = m_playsprite_left;
 			 break;
 		 }
 		 m_player.scrollTriggers();
 
-		 mp_mark->x = m_player.x + (1<<CSF);
-		 mp_mark->y = m_player.y - (1<<CSF);
+		 x = m_player.getXPosition();
+		 y = m_player.getYPosition();
+
+		 mp_mark->moveTo(x + (1<<CSF), y - (1<<CSF));
 	 break;
 	 case CMD_SPAWNSPR:
 		 mp_mark->sprite = m_shipqueue[m_ShipQueuePtr].flag1;

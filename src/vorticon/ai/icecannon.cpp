@@ -85,8 +85,7 @@ void CObjectAI::icechunk_ai(CObject &object)
 	}
 
 	// fly through the air
-	object.x += object.ai.icechunk.veloc_x;
-	object.y += object.ai.icechunk.veloc_y;
+	object.moveTo(object.ai.icechunk.veloc_x, object.ai.icechunk.veloc_y);
 }
 
 
@@ -96,8 +95,8 @@ void CObjectAI::smash(CObject &object)
 
 	if (object.onscreen)
 	{
-		g_pSound->playStereofromCoord(SOUND_CHUNKSMASH, PLAY_NOW, object.x);
-		chunk.spawn(object.x, object.y, OBJ_ICEBIT, m_Episode);
+		g_pSound->playStereofromCoord(SOUND_CHUNKSMASH, PLAY_NOW, object.getXPosition());
+		chunk.spawn(object.getXPosition(), object.getYPosition(), OBJ_ICEBIT, m_Episode);
 
 		// upleft
 		chunk.ai.icechunk.vector_x = -1;
@@ -138,8 +137,7 @@ void CObjectAI::icebit_ai(CObject &object)
 		object.needinit = false;
 	}
 
-	object.x += object.ai.icechunk.veloc_x;
-	object.y += object.ai.icechunk.veloc_y;
+	object.moveTo(object.ai.icechunk.veloc_x, object.ai.icechunk.veloc_y);
 
 	if (!object.onscreen or !m_gunfiretimer)
 	{
@@ -158,7 +156,7 @@ void CObjectAI::icecannon_ai(CObject &object)
 	 if (!m_gunfiretimer)
 	 {
 		 CObject chunk(mp_Map);
-		 chunk.spawn( object.x+512, object.y, OBJ_ICECHUNK, m_Episode);
+		 chunk.spawn( object.getXPosition()+512, object.getYPosition(), OBJ_ICECHUNK, m_Episode);
 		 chunk.ai.icechunk.vector_x = object.ai.icechunk.vector_x;
 		 chunk.ai.icechunk.vector_y = object.ai.icechunk.vector_y;
 		 m_Objvect.push_back(chunk);

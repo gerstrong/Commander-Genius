@@ -82,12 +82,12 @@ void CTantalusRay::shootray()
 	}
 	else
 	{
-		mp_ShootObject->x += SHOT_SPD_X;
-		mp_ShootObject->y += SHOT_SPD_Y;
-		shot_x = mp_ShootObject->x;
-		shot_y = mp_ShootObject->y;
-		int x = (mp_ShootObject->x>>STC)-160;
-		int y = (mp_ShootObject->y>>STC)-100;
+		mp_ShootObject->moveRight(SHOT_SPD_X);
+		mp_ShootObject->moveDown(SHOT_SPD_Y);
+		shot_x = mp_ShootObject->getXPosition();
+		shot_y = mp_ShootObject->getYPosition();
+		int x = (shot_x>>STC)-160;
+		int y = (shot_y>>STC)-100;
 		if( x>0 && y>0 )
 			m_Map.gotoPos( x, y);
 

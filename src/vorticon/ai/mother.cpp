@@ -43,7 +43,7 @@ void CObjectAI::mother_ai( CObject& object, bool hardmode )
 		object.ai.mother.animframe = 0;
 		object.ai.mother.animtimer = 0;
 
-		if (m_Player[0].x > object.x)
+		if (m_Player[0].getXPosition() > object.getXPosition())
 			object.ai.mother.dir = RIGHT;
 		else
 			object.ai.mother.dir = LEFT;
@@ -59,7 +59,7 @@ void CObjectAI::mother_ai( CObject& object, bool hardmode )
 		// don't push the player as he's walking through the exit door
 		if (!m_Player[object.touchedBy].level_done)
 		{
-			if (m_Player[object.touchedBy].x < object.x)
+			if (m_Player[object.touchedBy].getXPosition() < object.getXPosition())
 				m_Player[object.touchedBy].bump(-MOTHER_WALK_SPD, true);
 			else
 				m_Player[object.touchedBy].bump(MOTHER_WALK_SPD, true);
@@ -106,7 +106,7 @@ void CObjectAI::mother_ai( CObject& object, bool hardmode )
 			}
 			else
 			{
-				object.x += MOTHER_WALK_SPD;
+				object.moveRight(MOTHER_WALK_SPD);
 			}
 		}
 		else
@@ -116,7 +116,7 @@ void CObjectAI::mother_ai( CObject& object, bool hardmode )
 			if (object.blockedl)
 				object.ai.mother.dir = RIGHT;
 			else
-				object.x -= MOTHER_WALK_SPD;
+				object.moveLeft(MOTHER_WALK_SPD);
 		}
 
 		// walk animation
@@ -139,12 +139,12 @@ void CObjectAI::mother_ai( CObject& object, bool hardmode )
 			CObject newobject(mp_Map);
 			if (object.ai.mother.dir==RIGHT)
 			{
-				newobject.spawn(object.x+object.bboxX2+1, object.y+(11<<STC), OBJ_FIREBALL, 3);
+				newobject.spawn(object.getXRightPos()+1, object.getYPosition()+(11<<STC), OBJ_FIREBALL, 3);
 				newobject.ai.ray.direction = RIGHT;
 			}
 			else
 			{
-				newobject.spawn(object.x-(16<<STC), object.y+(11<<STC), OBJ_FIREBALL, 3);
+				newobject.spawn(object.getXPosition()-(16<<STC), object.getYPosition()+(11<<STC), OBJ_FIREBALL, 3);
 				newobject.ai.ray.direction = LEFT;
 			}
 
@@ -170,7 +170,7 @@ void CObjectAI::mother_ai( CObject& object, bool hardmode )
 			else
 			{
 				object.ai.mother.state = MOTHER_WALK;
-				if (m_Player[0].x > object.x)
+				if (m_Player[0].getXPosition() > object.getXPosition())
 					object.ai.mother.dir = RIGHT;
 				else
 					object.ai.mother.dir = LEFT;

@@ -25,9 +25,11 @@ using namespace std;
 
 
 CHighScores::CHighScores(int Episode, const std::string &DataDirectory, bool saving_mode) :
-m_Map(g_pVideoDriver->ScrollSurface, g_pGfxEngine->Tilemap),
 m_Place(0), m_blink(true), m_blinkctr(0)
 {
+	m_Map.setScrollSurface(g_pVideoDriver->ScrollSurface);
+	m_Map.setTileMap(g_pGfxEngine->Tilemap);
+
 	// Set default Scores
 	m_Name[0] = "Gerstrong";
 	m_Name[1] = "Tulip";

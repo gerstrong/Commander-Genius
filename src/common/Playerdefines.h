@@ -162,9 +162,4 @@ enum jumpstates{
 // friction when player is pushed by yorp's, ball's, etc.
 #define PLAYPUSH_DECREASERATE   1
 
-// if player[].psupportingtile contains this value the player is actually
-// supported by an object and you should look in player[].psupportingobj
-// for it's index.
-#define PSUPPORTEDBYOBJECT         0
-
 #endif /* PLAYERDEFINES_H_ */

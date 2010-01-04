@@ -27,15 +27,10 @@
 // let's have keen be able to pick up goodies
 void CPlayer::getgoodies()
 {
-	Uint32 boxX1 = mp_object->at(m_player_number).bboxX1;
-	Uint32 boxX2 = mp_object->at(m_player_number).bboxX2;
-	Uint32 boxY1 = mp_object->at(m_player_number).bboxY1;
-	Uint32 boxY2 = mp_object->at(m_player_number).bboxY2;
-
-	if( getGoodie((x+boxX1)>>CSF, (y+boxY1)>>CSF) ) return;     		// Upper-Left
-	else if(getGoodie((x+boxX2)>>CSF, (y+boxY1)>>CSF) ) return; 		// Upper-Right
-	else if(getGoodie(((x+boxX1)>>CSF), ((y+boxY2)>>CSF)) ) return; 	// Lower-Left
-	else if(getGoodie(((x+boxX2)>>CSF), ((y+boxY2)>>CSF)) ) return; // Lower-Right
+	if( getGoodie((getXLeftPos())>>CSF, (getYUpPos())>>CSF) ) return;     		// Upper-Left
+	else if(getGoodie((getXRightPos())>>CSF, (getYUpPos())>>CSF) ) return; 		// Upper-Right
+	else if(getGoodie(((getXLeftPos())>>CSF), ((getYDownPos())>>CSF)) ) return; 	// Lower-Left
+	else if(getGoodie(((getXRightPos())>>CSF), ((getYDownPos())>>CSF)) ) return; // Lower-Right
 }
 
 // have keen pick up the goodie at screen pixel position (px, py)
@@ -71,7 +66,7 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 	Uint8 behaviour = TileProperty[tile].behaviour;
 	if ( (behaviour > 5 && behaviour < 11) || (behaviour > 17 && behaviour < 22) )
 	{
-		if( x%2 == 1 )
+		if( getXPosition()%2 == 1 )
 			g_pSound->playStereofromCoord(SOUND_GET_BONUS, PLAY_NOW, 0);
 		else
 			g_pSound->playStereofromCoord(SOUND_GET_BONUS, PLAY_NOW, 320);
@@ -366,8 +361,11 @@ void CPlayer::giveAnkh()
 {
 	if (ankhtime == 0)
 	{
+		int x, y;
 		CObject Object(mp_map);
 		Object.ai.se.type = SE_ANKHSHIELD;
+		x = getXPosition();
+		y = getYPosition();
 		ankhshieldobject = Object.spawn(x, y, OBJ_SECTOREFFECTOR, m_episode);
 		mp_object->push_back(Object);
 	}

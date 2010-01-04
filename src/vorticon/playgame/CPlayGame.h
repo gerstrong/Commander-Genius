@@ -132,7 +132,7 @@ private:
 	bool m_checkpointset;
 	bool m_dark;
 
-	CMap *mp_Map;
+	CMap m_Map;
 	CMenu *mp_Menu;
 	std::vector<CPlayer> m_Player;
 	CObjectAI *mp_ObjectAI;

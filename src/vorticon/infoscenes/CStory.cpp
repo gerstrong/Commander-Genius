@@ -20,7 +20,10 @@
 CStory::CStory(std::string &DataDirectory, char &episode)
 {
 	mp_Scrollsurface = g_pVideoDriver->ScrollSurface;
-	mp_Map = new CMap(mp_Scrollsurface, g_pGfxEngine->Tilemap);
+	mp_Map = new CMap;
+	mp_Map->setScrollSurface(mp_Scrollsurface);
+	mp_Map->setTileMap(g_pGfxEngine->Tilemap);
+
 	CMapLoader Maploader(mp_Map);
 	std::string Text;
 	

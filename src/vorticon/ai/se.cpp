@@ -206,8 +206,8 @@ SPARK_ANIMATE, SPARK_BLOWUP1, SPARK_BLOWUP2, SPARK_BLOWUP3
 		object.inhibitfall = 1;
 		object.needinit = 0;
 
-		object.ai.se.mx = object.x >> CSF;
-		object.ai.se.my = object.y >> CSF;
+		object.ai.se.mx = object.getXPosition() >> CSF;
+		object.ai.se.my = object.getYPosition() >> CSF;
 	}
 
 	if (object.ai.se.state==SPARK_ANIMATE)
@@ -236,7 +236,7 @@ SPARK_ANIMATE, SPARK_BLOWUP1, SPARK_BLOWUP2, SPARK_BLOWUP3
 
 		if (object.zapped)
 		{
-			g_pSound->playStereofromCoord(SOUND_SHOT_HIT,PLAY_NOW, object.x);
+			g_pSound->playStereofromCoord(SOUND_SHOT_HIT,PLAY_NOW, object.getXPosition());
 
 			// break the glass and blow out the electric arcs
 			mp_Map->setTile(object.ai.se.mx - 2, object.ai.se.my, 492, true);
@@ -274,7 +274,7 @@ SPARK_ANIMATE, SPARK_BLOWUP1, SPARK_BLOWUP2, SPARK_BLOWUP3
 			newobject.needinit = 0;
 			newobject.ai.ray.dontHitEnable = 0;
 			m_Objvect.push_back(newobject);
-			g_pSound->playStereofromCoord(SOUND_SHOT_HIT,PLAY_NOW, newobject.x);
+			g_pSound->playStereofromCoord(SOUND_SHOT_HIT,PLAY_NOW, newobject.getXPosition());
 
 			object.ai.se.blowy++;
 			if (object.ai.se.blowy >= 3)
@@ -320,7 +320,7 @@ SPARK_ANIMATE, SPARK_BLOWUP1, SPARK_BLOWUP2, SPARK_BLOWUP3
 				newobject.ai.ray.state = RAY_STATE_SETZAPZOT;
 				newobject.inhibitfall = true;
 				newobject.needinit = false;
-				g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, newobject.x);
+				g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, newobject.getXPosition());
 				m_Objvect.push_back(newobject);
 			}
 
@@ -406,8 +406,8 @@ void CObjectAI::se_mortimer_arm(CObject &object)
 		// polka dot background 169
 		if (object.ai.se.timer > ARM_MOVE_SPEED)
 		{
-			mx = object.x >> CSF;
-			my = object.y >> CSF;
+			mx = object.getXPosition() >> CSF;
+			my = object.getYPosition() >> CSF;
 
 			if (object.ai.se.dir==DOWN)
 			{
@@ -432,7 +432,7 @@ void CObjectAI::se_mortimer_arm(CObject &object)
 					// erase the top of the pincher we don't need anymore
 					mp_Map->setTile(mx-1, my, 169, true);
 					mp_Map->setTile(mx+1, my, 169, true);
-					object.y += (1<<CSF);
+					object.moveDown(1<<CSF);
 				}
 			}
 			else
@@ -460,7 +460,7 @@ void CObjectAI::se_mortimer_arm(CObject &object)
 					// erase the pole
 					mp_Map->changeTile(mx, my+2, 169);
 
-					object.y -= (1<<CSF);
+					object.moveUp(1<<CSF);
 				}
 			}
 			object.ai.se.timer = 0;
@@ -473,12 +473,12 @@ void CObjectAI::se_mortimer_arm(CObject &object)
 			if (object.ai.se.dir==DOWN)
 			{
 				object.ai.se.dir = UP;
-				object.y -= (2<<CSF);
+				object.moveUp(2<<CSF);
 			}
 			else
 			{
 				object.ai.se.dir = DOWN;
-				object.y += (1<<CSF);
+				object.moveDown(1<<CSF);
 			}
 
 			object.ai.se.state = ARM_GO;
@@ -578,7 +578,7 @@ void CObjectAI::se_mortimer_spark(CObject &object)
 	case MSPARK_DESTROYARMS:
 		if (!object.ai.se.timer)
 		{
-			g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, object.x);
+			g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, object.getXPosition());
 			for(x=0;x<3;x++)
 			{
 				mx = MORTIMER_LEFT_ARM_X+x;
@@ -702,10 +702,12 @@ void CObjectAI::se_mortimer_heart(CObject &object)
 
 	case HEART_ZAPSRUNUP:
 		if (!object.ai.se.timer)
-		{
-			// spawn another wave of zaps
+		{	// spawn another wave of zaps
+			int x = object.getXPosition();
+			int y = object.getYPosition();
+
 			CObject newobject(mp_Map);
-			newobject.spawn(object.x, object.y, OBJ_SECTOREFFECTOR, m_Episode);
+			newobject.spawn( x, y, OBJ_SECTOREFFECTOR, m_Episode);
 			newobject.ai.se.type = SE_MORTIMER_ZAPSUP;
 			newobject.ai.se.my = MORTIMER_MACHINE_YEND;
 			newobject.ai.se.timer = 0;
@@ -768,7 +770,7 @@ void CObjectAI::se_mortimer_zapsup(CObject &object)
 			return;
 		}
 
-		g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, object.x);
+		g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, object.getXPosition());
 		for(x=MORTIMER_MACHINE_XSTART;x<MORTIMER_MACHINE_XEND;x++)
 		{
 			// spawn a ZAP! or a ZOT!
@@ -838,8 +840,8 @@ void CObjectAI::se_mortimer_leg_left(CObject &object)
 		// top marker for leg 420
 		if (object.ai.se.timer > LEFTLEG_MOVE_SPEED)
 		{
-			mx = object.x >> CSF;
-			my = object.y >> CSF;
+			mx = object.getXPosition() >> CSF;
+			my = object.getYPosition() >> CSF;
 
 			if (object.ai.se.dir==DOWN)
 			{
@@ -848,7 +850,7 @@ void CObjectAI::se_mortimer_leg_left(CObject &object)
 				{
 					object.ai.se.timer = 0;
 					object.ai.se.state = LEG_WAIT;
-					g_pSound->playStereofromCoord(SOUND_FOOTSLAM, PLAY_NOW, object.x);
+					g_pSound->playStereofromCoord(SOUND_FOOTSLAM, PLAY_NOW, object.getXPosition());
 				}
 				else
 				{
@@ -863,7 +865,7 @@ void CObjectAI::se_mortimer_leg_left(CObject &object)
 					mp_Map->setTile(mx-1,my,169, true);
 					mp_Map->setTile(mx-0,my,597, true);         // add to pole
 
-					object.y += (1<<CSF);
+					object.moveDown(1<<CSF);
 				}
 			}
 			else
@@ -888,7 +890,7 @@ void CObjectAI::se_mortimer_leg_left(CObject &object)
 					mp_Map->setTile(mx-1,my,169, true);
 					mp_Map->setTile(mx-0,my,169, true);
 
-					object.y -= (1<<CSF);
+					object.moveUp(1<<CSF);
 				}
 			}
 			object.ai.se.timer = 0;
@@ -942,8 +944,8 @@ void CObjectAI::se_mortimer_leg_right(CObject &object)
 		// top marker for leg 420
 		if (object.ai.se.timer > RIGHTLEG_MOVE_SPEED)
 		{
-			mx = object.x >> CSF;
-			my = object.y >> CSF;
+			mx = object.getXPosition() >> CSF;
+			my = object.getYPosition() >> CSF;
 
 			if (object.ai.se.dir==DOWN)
 			{
@@ -952,7 +954,7 @@ void CObjectAI::se_mortimer_leg_right(CObject &object)
 				{
 					object.ai.se.timer = 0;
 					object.ai.se.state = LEG_WAIT;
-					g_pSound->playStereofromCoord(SOUND_FOOTSLAM, PLAY_NOW, object.x);
+					g_pSound->playStereofromCoord(SOUND_FOOTSLAM, PLAY_NOW, object.getXPosition());
 				}
 				else
 				{
@@ -967,7 +969,7 @@ void CObjectAI::se_mortimer_leg_right(CObject &object)
 					mp_Map->setTile(mx+1,my,169, true);
 					mp_Map->setTile(mx+0,my,597, true);         // add to pole
 
-					object.y += (1<<CSF);
+					object.moveDown(1<<CSF);
 				}
 			}
 			else
@@ -992,7 +994,7 @@ void CObjectAI::se_mortimer_leg_right(CObject &object)
 					mp_Map->setTile(mx+1,my,169, true);
 					mp_Map->setTile(mx+0,my,169, true);
 
-					object.y -= (1<<CSF);
+					object.moveUp(1<<CSF);
 				}
 			}
 			object.ai.se.timer = 0;

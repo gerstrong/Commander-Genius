@@ -195,8 +195,7 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 				std::vector<CPlayer>::iterator it_player = mp_vec_Player->begin();
 				for(; it_player != mp_vec_Player->end() ; it_player++ )
 				{
-					it_player->goto_x = it_player->x = x << CSF;
-					it_player->goto_y = it_player->y = y << CSF;
+					it_player->moveTo(x<<CSF, y<<CSF);
 				}
 				mp_map->m_objectlayer[x][y] = 0;
 			}
@@ -288,8 +287,7 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 			std::vector<CPlayer>::iterator it_player = mp_vec_Player->begin();
 			for(; it_player != mp_vec_Player->end() ; it_player++ )
 			{
-				it_player->goto_x = it_player->x = (x<<CSF);
-				it_player->goto_y = it_player->y = (y<<CSF);
+				it_player->moveTo(x<<CSF, y<<CSF);
 				it_player->plastfalling = true;
 				it_player->pfalling = true;
 				it_player->pshowdir = RIGHT;
@@ -311,13 +309,17 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 						enemyobject.spawn(x<<CSF, y<<CSF, OBJ_YORP, episode);
 						break;
 					}
-					else
+					else if(episode == 2)
 					{
 						// in ep2 level 16 there a vorticon embedded in the floor for
 						// some reason! that's what the if() is for--to fix it.
 						// I believe, that the rest of the vorticons are supposed to fall!
 						enemyobject.spawn(x<<CSF, (y-1)<<CSF, OBJ_VORT, episode);
-					 }
+					}
+					else if(episode == 3)
+					{
+						enemyobject.spawn(x<<CSF, y<<CSF, OBJ_VORT, episode);
+					}
 					 break;
 				case 2:    // garg (ep1) baby vorticon (ep2&3)
 					 if (episode==1)
@@ -358,9 +360,6 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 					 if (episode==1)
 					 {
 						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_TANK, episode);
-						 // set tank robot guarding bonus level to be active at startup
-						 if (level==13)
-							 enemyobject.hasbeenonscreen = true;
 					 }
 					 else if (episode==2)
 						 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_TANKEP2, episode);
@@ -397,14 +396,12 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 					 else if (episode==3)
 					 {
 						 enemyobject.spawn(x<<CSF,y<<CSF,OBJ_BALL, episode);
-						 enemyobject.hasbeenonscreen = 1;
 					 }
 					 break;
 				case 8:    // jack (ep3)
 					 if (episode==3)
 					 {
 						 enemyobject.spawn(x<<CSF, y<<CSF,OBJ_JACK, episode);
-						 enemyobject.hasbeenonscreen = 1;
 					 }
 					 break;
 				case 9:    // up-left-flying ice chunk (ep1) horiz platform (ep3)
@@ -439,12 +436,10 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				case 12:   // sparks in mortimer's machine
 					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR, episode);
 					 enemyobject.ai.se.type = SE_MORTIMER_SPARK;
-					 enemyobject.hasbeenonscreen = 1;
 					 break;
 				case 13:   // mortimer's heart
 					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR, episode);
 					 enemyobject.ai.se.type = SE_MORTIMER_HEART;
-					 enemyobject.hasbeenonscreen = 1;
 					 break;
 				case 14:   // right-pointing raygun (ep3)
 					 if (episode==3)
@@ -461,17 +456,14 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				case 16:  // mortimer's arms
 					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR, episode);
 					 enemyobject.ai.se.type = SE_MORTIMER_ARM;
-					 enemyobject.hasbeenonscreen = 1;
 					 break;
 				case 17:  // mortimer's left leg
 					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR, episode);
 					 enemyobject.ai.se.type = SE_MORTIMER_LEG_LEFT;
-					 enemyobject.hasbeenonscreen = 1;
 					 break;
 				case 18:  // mortimer's right leg
 					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR, episode);
 					 enemyobject.ai.se.type = SE_MORTIMER_LEG_RIGHT;
-					 enemyobject.hasbeenonscreen = 1;
 					 break;
 				default:
 					g_pLogFile->ftextOut(PURPLE,"unknown enemy type %d at (%d,%d)<br>", t, x, y); break;

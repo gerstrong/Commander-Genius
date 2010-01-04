@@ -20,11 +20,11 @@ void CObjectAI::gotpoints_ai(CObject &Object)
 		Object.ai.ray.offscreentime = GOTPOINTS_LIFETIME;
 		Object.inhibitfall = true;
 		Object.solid = false;
-		Object.honorPriority = 0;
+		Object.honorPriority = false;
 		Object.needinit = 0;
 	}
 
-	Object.y-=GOTPOINTS_SPEED;
+	Object.moveUp(GOTPOINTS_SPEED);
 
 	// delete it after it's existed for a certain amount of time
 	if (!Object.ai.ray.offscreentime)

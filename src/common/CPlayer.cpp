@@ -24,17 +24,19 @@
 ///
 CPlayer::CPlayer(char &Episode, short &Level, char &Difficulty,
 				 short &player_index, bool *mp_level_completed, stOption *mp_option,
-				 std::vector<CObject> &m_Object) :
+				 std::vector<CObject> &m_Object, CMap &map) :
+
+CObject(&map),
 m_episode(Episode),
 m_level(Level),
 m_difficulty(Difficulty),
 m_player_number(player_index),
-mp_object(&m_Object),
 mp_levels_completed(mp_level_completed),
 mp_map(NULL),
 mp_option(mp_option),
 mp_StatusScr(NULL)
 {
+	mp_object = &m_Object;
 	// Set every value in the class to zero.
     memset(&inventory, 0, sizeof(stInventory));
     setDefaultStartValues();
@@ -47,10 +49,9 @@ mp_StatusScr(NULL)
 void CPlayer::setDatatoZero()
 {
 	// When worldmap is set up, use that frame
-	playframe = PMAPDOWNFRAME;
+	sprite = PMAPDOWNFRAME;
 
-	goto_x = x = 0;
-	goto_y = y = 0;
+	moveTo(0,0);
 	pfallspeed = 0,
 	pdir = pshowdir = DOWN;
 	inhibitfall = hideplayer = false;
@@ -63,7 +64,8 @@ void CPlayer::setDatatoZero()
     pogofirsttime = false;
     plastfire = false;
     psliding = psemisliding = false;
-    blockedu = blockedd = blockedl = blockedr = false;
+    honorPriority = true;
+    exists = true;
 	
     pjumping = pjumptime = 0;
 	
@@ -130,14 +132,14 @@ bool CPlayer::scrollTriggers()
 
 	if (pdie) return scrollchanged;
 
-	px = (x>>STC)-scroll_x;
-	py = (y>>STC)-scroll_y;
+	px = (getXPosition()>>STC)-scroll_x;
+	py = (getYPosition()>>STC)-scroll_y;
 
 	// left-right scrolling
 	if(px > SCROLLTRIGGERRIGHT && scroll_x < mp_map->m_maxscrollx)
 	{
 		do{
-			px = (x>>STC)-scroll_x;
+			px = (getXPosition()>>STC)-scroll_x;
 			mp_map->scrollRight();
 		}while(px > 226 && scroll_x < mp_map->m_maxscrollx);
 		scrollchanged = true;
@@ -145,7 +147,7 @@ bool CPlayer::scrollTriggers()
 	else if(px < SCROLLTRIGGERLEFT && scroll_x > 32)
 	{
 		do{
-			px = (x>>STC)-scroll_x;
+			px = (getXPosition()>>STC)-scroll_x;
 			mp_map->scrollLeft();
 		}while(px < 80 && scroll_x > 32);
 		scrollchanged = true;
@@ -155,7 +157,7 @@ bool CPlayer::scrollTriggers()
 	if (py > SCROLLTRIGGERDOWN && scroll_y < mp_map->m_maxscrolly)
 	{
 		do{
-			py = (y>>STC)-scroll_y;
+			py = (getYPosition()>>STC)-scroll_y;
 			mp_map->scrollDown();
 		}while(py > 150 && scroll_y < mp_map->m_maxscrolly);
 		scrollchanged = true;
@@ -163,7 +165,7 @@ bool CPlayer::scrollTriggers()
 	else if ( py < SCROLLTRIGGERUP && scroll_y > 32  )
 	{
 		do{
-			py = (y>>STC)-scroll_y;
+			py = (getYPosition()>>STC)-scroll_y;
 			mp_map->scrollUp();
 		}while(py < 50 && scroll_y > 32);
 		scrollchanged = true;
@@ -449,11 +451,11 @@ void CPlayer::WalkingAnimation()
 					else
 						g_pSound->playStereofromCoord(SOUND_KEEN_WALK2, PLAY_NOW, mp_object->at(m_player_number).scrx);
 					
-					if(blockedr || blockedl)
+					/*if(blockedr || blockedl)
 					{
 						if(!g_pSound->isPlaying(SOUND_KEEN_BLOK))
 							g_pSound->playStereofromCoord(SOUND_KEEN_BLOK, PLAY_NOW, mp_object->at(m_player_number).scrx);
-					}
+					}*/
 
 					if( m_playingmode != WORLDMAP && (blockedr || blockedl) )
 					{
@@ -555,7 +557,7 @@ void CPlayer::InertiaAndFriction_X()
 		int dx=pinertia_x + playpushed_x;
 		// check first if the player is not blocked
 		if( (!blockedr and dx>0) or (!blockedl and dx<0) )
-			goto_x += dx;
+			moveXDir(dx);
 	}
 	
 	// if we stopped walking (i.e. left or right not held down) apply friction
@@ -631,7 +633,7 @@ void CPlayer::InertiaAndFriction_Y()
 	}
 	
 	// apply pinertia_y
-	goto_y += pinertia_y;
+	moveYDir(pinertia_y);
 	
 	// if we stopped walking (i.e. LRUD not held down) apply friction
     if (playcontrol[PA_Y] == 0)

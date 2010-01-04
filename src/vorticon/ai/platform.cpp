@@ -34,7 +34,7 @@ void CObjectAI::platform_ai(CObject &object)
 	// push player horizontally
 	if (object.touchPlayer && !m_Player[object.touchedBy].pdie && m_Player[object.touchedBy].psupportingobject!=object.m_index)
 	{
-		if (m_Player[object.touchedBy].x < object.x)
+		if (m_Player[object.touchedBy].getXPosition() < object.getXPosition())
 		{
 			m_Player[object.touchedBy].playpushed_x = -PLATFORMPUSHAMOUNT;
 			if (m_Player[object.touchedBy].pinertia_x > 0) m_Player[object.touchedBy].pinertia_x = 0;
@@ -78,13 +78,13 @@ void CObjectAI::platform_ai(CObject &object)
 			}
 			else
 			{
-				object.x += PLATFORM_MOVE_SPD;
+				object.moveRight(PLATFORM_MOVE_SPD);
 				for(i=0;i<m_NumPlayers;i++)
 				{
 					if(m_Player[i].psupportingobject==object.m_index && (m_Player[i].pjumping==PNOJUMP||m_Player[i].pjumping==PPREPAREJUMP||m_Player[i].pjumping==PPREPAREPOGO))
 					{
-						if (!m_Player[i].blockedr)
-							m_Player[i].goto_x += PLATFORM_MOVE_SPD;
+						//if (!m_Player[i].blockedr)
+							m_Player[i].moveRight(PLATFORM_MOVE_SPD);
 					}
 				}
 			}
@@ -99,13 +99,13 @@ void CObjectAI::platform_ai(CObject &object)
 			}
 			else
 			{
-				object.x -= PLATFORM_MOVE_SPD;
+				object.moveLeft(PLATFORM_MOVE_SPD);
 				for(i=0;i<m_NumPlayers;i++)
 				{
 					if(m_Player[i].psupportingobject==object.m_index && (m_Player[i].pjumping==PNOJUMP||m_Player[i].pjumping==PPREPAREJUMP||m_Player[i].pjumping==PPREPAREPOGO))
 					{
-						if (!m_Player[i].blockedl)
-							m_Player[i].goto_x -= PLATFORM_MOVE_SPD;
+						//if (!m_Player[i].blockedl)
+							m_Player[i].moveLeft(PLATFORM_MOVE_SPD);
 					}
 				}
 			}

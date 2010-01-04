@@ -68,13 +68,11 @@ void CObjectAI::foob_ai(CObject &object, bool hardmode)
 	}
 
 	// find out if a player is on the same level as the foob cat
-	Uint16 player_height = g_pGfxEngine->getSprite(0).getHeight()<<STC;
-	Uint16 foob_height = object.bboxY2;
 	onsamelevel = 0;
-	for(int i=0;i<m_NumPlayers;i++)
+	for(size_t i=0;i<m_NumPlayers;i++)
 	{
-		if ( (m_Player[i].y >= object.y-(24<<STC)) &&
-			(m_Player[i].y+player_height <= object.y+foob_height+(24<<STC)) )
+		if ( (m_Player[i].getYPosition() >= object.getYPosition()-(24<<STC)) &&
+			(m_Player[i].getYDownPos() <= object.getYPosition()+(24<<STC)) )
 		{
 			onsamelevel = 1;
 			object.ai.foob.SpookedByWho = i;
@@ -107,7 +105,7 @@ void CObjectAI::foob_ai(CObject &object, bool hardmode)
 			}
 			else
 			{
-				object.x += FOOB_WALK_SPEED;
+				object.moveRight(FOOB_WALK_SPEED);
 			}
 		}
 		else
@@ -119,7 +117,7 @@ void CObjectAI::foob_ai(CObject &object, bool hardmode)
 			}
 			else
 			{
-				object.x -= FOOB_WALK_SPEED;
+				object.moveLeft(FOOB_WALK_SPEED);
 			}
 		}
 
@@ -140,7 +138,7 @@ void CObjectAI::foob_ai(CObject &object, bool hardmode)
 			object.ai.foob.state = FOOB_FLEE;
 			object.ai.foob.OffOfSameLevelTime = 0;
 			// run away from the offending player
-			if (m_Player[object.ai.foob.SpookedByWho].x < object.x)
+			if (m_Player[object.ai.foob.SpookedByWho].getXPosition() < object.getXPosition())
 			{
 				object.ai.foob.dir = RIGHT;
 			}
@@ -176,7 +174,7 @@ void CObjectAI::foob_ai(CObject &object, bool hardmode)
 			object.sprite = FOOB_WALK_RIGHT_FRAME + object.ai.foob.animframe;
 			if (!object.blockedr)
 			{
-				object.x += FOOB_FLEE_SPEED;
+				object.moveRight(FOOB_FLEE_SPEED);
 				object.ai.foob.blockedtime = 0;
 			}
 			else if (hardmode)
@@ -193,7 +191,7 @@ void CObjectAI::foob_ai(CObject &object, bool hardmode)
 			object.sprite = FOOB_WALK_LEFT_FRAME + object.ai.foob.animframe;
 			if (!object.blockedl)
 			{
-				object.x -= FOOB_FLEE_SPEED;
+				object.moveLeft(FOOB_FLEE_SPEED);
 				object.ai.foob.blockedtime = 0;
 			}
 			else if (hardmode)

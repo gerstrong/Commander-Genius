@@ -39,21 +39,17 @@ void CObjectAI::process()
 
 		if( checkforAIObject(object) )
 		{
-			object.processFalling(mp_Map);
+			object.processFalling();
 			object.performCollision(mp_Map);
 
 		    // hit detection with players
 			object.touchPlayer = false;
-		    for( int cplayer=0 ; cplayer<m_NumPlayers ; cplayer++)
+		    for( size_t cplayer=0 ; cplayer<m_NumPlayers ; cplayer++)
 		    {
 		    	CPlayer &player = m_Player[cplayer];
-				CObject &playerobj = m_Objvect.at(player.m_player_number);
-				playerobj.x = player.x;
-				playerobj.y = player.y;
-				playerobj.sprite = 0;
 				if (!player.pdie)
 				{
-					if ( object.hitdetect(playerobj) )
+					if ( object.hitdetect(player) )
 					{
 						if (!player.godmode)
 						{
@@ -98,26 +94,20 @@ bool CObjectAI::checkforAIObject( CObject &object )
 	if(m_Level != 80)
 	{
 		bool is_near_enough=false;
-		for(int i=0 ; i<m_NumPlayers ; i++)
+		int x, y;
+		for(size_t i=0 ; i<m_NumPlayers ; i++)
 		{
-			is_near_enough |= object.calcVisibility(m_Player[i].x, m_Player[i].y);
+			x = m_Player[i].getXPosition();
+			y = m_Player[i].getYPosition();
+			is_near_enough |= object.calcVisibility(x, y);
 		}
 
 		if(!is_near_enough) return false;
 	}
 
-
-    // This will do the function gamedo_calcenemyvisibility(i);
-    // check if object is really in the map!!!
-    if (object.x < 0 || object.y < 0) return false;
-
-    if (object.x > (mp_Map->m_width<<CSF) || object.y > (mp_Map->m_height<<CSF) )
-		return false;
-
    	object.onscreen = true;
-   	object.hasbeenonscreen = true;
 
-	if (object.hasbeenonscreen || object.zapped ||
+   	if (object.hasbeenonscreen || object.zapped ||
 		type==OBJ_RAY ||
 		type==OBJ_ICECHUNK || type==OBJ_PLATFORM ||
 		type==OBJ_PLATVERT || type==OBJ_YORP ||
@@ -126,7 +116,8 @@ bool CObjectAI::checkforAIObject( CObject &object )
 	{
 		return true;
     }
-	return false;
+
+   	return false;
 }
 
 void CObjectAI::performSpecialAIType( CObject &object )
@@ -184,7 +175,7 @@ void CObjectAI::performSpecialAIType( CObject &object )
 
 void CObjectAI::SetAllCanSupportPlayer(CObject &object, int state)
 {
-	 for(int i=0;i<m_NumPlayers;i++)
+	 for(size_t i=0;i<m_NumPlayers;i++)
 		 object.cansupportplayer[i] = state;
 }
 
@@ -197,15 +188,18 @@ void CObjectAI::killplayer(int theplayer)
 void CObjectAI::kill_all_intersecting_tile(int mpx, int mpy)
 {
 	 unsigned int xpix,ypix;
+	 unsigned int x, y;
 	 xpix = mpx<<CSF;
 	 ypix = mpy<<CSF;
 
 	 std::vector<CObject>::iterator object;
 	 for( object=m_Objvect.begin() ; object!=m_Objvect.end() ; object++ )
 	 {
+		 x = object->getXPosition();
+		 y = object->getYPosition();
 		 if (object->exists)
-			 if (xpix <= object->x && xpix+(1<<CSF) >= object->x)
-				 if (ypix <= object->y && ypix+(1<<CSF) >= object->y)
+			 if (xpix <= x && xpix+(1<<CSF) >= x)
+				 if (ypix <= y && ypix+(1<<CSF) >= y)
 					 object->kill();
 	 }
 }

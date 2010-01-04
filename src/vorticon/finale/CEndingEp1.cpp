@@ -54,9 +54,8 @@ void CEndingEp1::ReturnsToShip()
 
   	    // draw keen next to his ship
 		m_Player[0].hideplayer = false;
-		m_Player[0].x = 6636;
-		m_Player[0].y = 19968;
-		m_Player[0].playframe = PMAPLEFTFRAME;
+		m_Player[0].moveTo(6636, 19968);
+		m_Player[0].sprite = PMAPLEFTFRAME;
 
 		while(m_Player[0].scrollTriggers()); // Scroll the map to players position
 
@@ -91,8 +90,7 @@ void CEndingEp1::ShipFlyMarsToEarth()
 		MapLoader.load(1, 81, path);
 
 		m_Player[0].hideplayer = false;
-		m_Player[0].x = (6<<CSF);
-		m_Player[0].y = (5<<CSF);
+		m_Player[0].moveTo(6<<CSF, 5<<CSF);
 
 		mp_ShipFlySys = new CShipFlySys( m_Player[0], mp_Map, SPR_SHIP_RIGHT, SPR_SHIP_LEFT);
 
@@ -187,17 +185,18 @@ void CEndingEp1::BackAtHome()
 void CEndingEp1::ShipFlyEarthToMShip()
 {
 	if(m_mustsetup)
-	{
-		//Initialization
+	{	//Initialization
+		int x, y;
 		std::string path = mp_Map->m_gamepath;
 		CMapLoader MapLoader(mp_Map, &m_Player);
 		MapLoader.load(1, 81, path);
 
 		m_Player[0].hideplayer = false;
-		m_Player[0].x = (48<<CSF);
-		m_Player[0].y = (23<<CSF);
+		x = 48<<CSF;
+		y = 23<<CSF;
+		m_Player[0].moveTo(x,y);
 
-		mp_Map->gotoPos((m_Player[0].x>>STC)-100, (m_Player[0].y>>STC)-160);
+		mp_Map->gotoPos((x>>STC)-100, (y>>STC)-160);
 
 		mp_ShipFlySys = new CShipFlySys( m_Player[0], mp_Map, SPR_SHIP_RIGHT, SPR_SHIP_LEFT);
 

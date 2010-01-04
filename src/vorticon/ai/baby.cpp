@@ -68,7 +68,7 @@ void CObjectAI::baby_ai(CObject &object, int episode, bool hard)
 			object.ai.baby.inertia_y = 0;
 		}
 
-		object.y += object.ai.baby.inertia_y;
+		object.moveYDir(object.ai.baby.inertia_y);
 		object.ai.baby.inertia_y+=object.ai.baby.jumpdecrate;
 
 	}
@@ -124,7 +124,7 @@ void CObjectAI::baby_ai(CObject &object, int episode, bool hard)
 			object.ai.baby.inertia_x = 0;
 		}
 
-		object.x += object.ai.baby.inertia_x;
+		object.moveXDir(object.ai.baby.inertia_x);
 		if (object.ai.baby.xdectimer >= 10)
 		{
 			if (object.ai.baby.inertia_x < 0)
@@ -164,7 +164,7 @@ void CObjectAI::baby_ai(CObject &object, int episode, bool hard)
 			}
 			else
 			{
-				object.x += BABY_WALK_SPEED;
+				object.moveXDir(BABY_WALK_SPEED);
 			}
 		}
 		else
@@ -177,7 +177,7 @@ void CObjectAI::baby_ai(CObject &object, int episode, bool hard)
 			}
 			else
 			{
-				object.x -= BABY_WALK_SPEED;
+				object.moveXDir(BABY_WALK_SPEED);
 				object.inhibitfall = 1;
 			}
 		}
