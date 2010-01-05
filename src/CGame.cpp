@@ -96,7 +96,8 @@ void CGame::run()
 		
         // delay time remaining in current loop
         g_pTimer->TimeToDelay();
-	} while(!m_GameControl.mustShutdown());
+
+	} while(!m_GameControl.mustShutdown() && !g_pInput->getExitEvent());
 }
 
 ///////////////////////////////

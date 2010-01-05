@@ -134,6 +134,7 @@ typedef struct stRayData
 	unsigned char dontHitEnable;
 	unsigned int dontHit;         // index of an object type ray will not harm
 	int owner;			  // Object number, from which the ray has been shot.
+	bool shotbyplayer;
 	
 	// for soundwave
 	int animframe, animtimer;

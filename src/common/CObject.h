@@ -20,6 +20,7 @@
 // structures for each AI module's data
 #include "../vorticon/ai/enemydata.h"
 #include "../common/CMap.h"
+#include "../game.h"
 #include "options.h"
 #include <vector>
 
@@ -114,7 +115,7 @@ public:
 	void setupObjectType(int Episode);
 	void setScrPos( int px, int py );
 	bool calcVisibility( int player_x, int player_y );
-	bool spawn(int x0, int y0, int otype, int Episode);
+	bool spawn(int x0, int y0, int otype, int Episode, char dirof = RIGHT );
 	void setIndex(int index);
 	
 	// Moving parts

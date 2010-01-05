@@ -47,7 +47,7 @@ mp_Map(pmap)
     yinertia = 0;
 }
 
-bool CObject::spawn(int x0, int y0, int otype, int Episode)
+bool CObject::spawn(int x0, int y0, int otype, int Episode, char dirof)
 {
 	// find an unused object slot
 	if (!exists)
@@ -69,6 +69,14 @@ bool CObject::spawn(int x0, int y0, int otype, int Episode)
 		
 		setupObjectType(Episode);
 		
+		// check if the objects has to spawn left-off
+		if(dirof == LEFT)
+		{
+			CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+			int dx = rSprite.m_bboxX2-rSprite.m_bboxX1;
+			x-=dx;
+		}
+
 		return true;
 	}
 
@@ -114,6 +122,7 @@ void CObject::setupObjectType(int Episode)
 	// Common Elements and some are Episode dependent
 	case OBJ_RAY:
 		{
+			ai.ray.shotbyplayer = false;
 			if(Episode == 1) sprite = OBJ_RAY_DEFSPRITE_EP1;
 			else if(Episode == 2) sprite = OBJ_RAY_DEFSPRITE_EP2;
 			else if(Episode == 3) sprite = OBJ_RAY_DEFSPRITE_EP3;
@@ -669,6 +678,42 @@ void CObject::draw()
 	{
 		Sprite.drawSprite( sfc, scrx, scry );
 		hasbeenonscreen = true;
+
+	    if (honorPriority)
+	    {
+	        // handle priority tiles and tiles with masks
+	        // get the upper-left coordinates to start checking for tiles
+	        mx = (x>>CSF);
+	        my = (y>>CSF);
+
+	        // get the xsize/ysize of this sprite--round up to the nearest 16
+	        xsize = ((Sprite.getWidth()>>4)<<4);
+	        if (xsize != Sprite.getWidth()) xsize+=16;
+
+	        ysize = ((Sprite.getHeight()>>4)<<4);
+	        if (ysize != Sprite.getHeight()) ysize+=16;
+
+	        tl = mp_Map->at(mx,my);
+	        mx<<=4;
+	        my<<=4;
+
+	        // now redraw any priority/masked tiles that we covered up
+	        // with the sprite
+	        SDL_Rect sfc_rect;
+	        sfc_rect.w = sfc_rect.h = 16;
+
+	        for(ya=0;ya<=ysize;ya+=16)
+	        {
+				for(xa=0;xa<=xsize;xa+=16)
+				{
+					tl = mp_Map->at((mx+xa)>>4,(my+ya)>>4);
+					if(mp_Map->mp_tiles[tl].behaviour == -2)
+						mp_Map->drawAnimatedTile(sfc, mx+xa-mp_Map->m_scrollx, my+ya-mp_Map->m_scrolly, tl+1);
+					else if (mp_Map->mp_tiles[tl].behaviour == -1)
+						mp_Map->drawAnimatedTile(sfc, mx+xa-mp_Map->m_scrollx, my+ya-mp_Map->m_scrolly, tl);
+				}
+	        }
+	    }
 	}
 
 	// Define the bouncing boxes again, because sprite could have changed meanwhile
@@ -676,42 +721,6 @@ void CObject::draw()
 	bboxX2 = Sprite.m_bboxX2;
 	bboxY1 = Sprite.m_bboxY1;
 	bboxY2 = Sprite.m_bboxY2;
-
-    if (honorPriority)
-    {
-        // handle priority tiles and tiles with masks
-        // get the upper-left coordinates to start checking for tiles
-        mx = (x>>CSF);
-        my = (y>>CSF);
-
-        // get the xsize/ysize of this sprite--round up to the nearest 16
-        xsize = ((Sprite.getWidth()>>4)<<4);
-        if (xsize != Sprite.getWidth()) xsize+=16;
-
-        ysize = ((Sprite.getHeight()>>4)<<4);
-        if (ysize != Sprite.getHeight()) ysize+=16;
-
-        tl = mp_Map->at(mx,my);
-        mx<<=4;
-        my<<=4;
-
-        // now redraw any priority/masked tiles that we covered up
-        // with the sprite
-        SDL_Rect sfc_rect;
-        sfc_rect.w = sfc_rect.h = 16;
-
-        for(ya=0;ya<=ysize;ya+=16)
-        {
-			for(xa=0;xa<=xsize;xa+=16)
-			{
-				tl = mp_Map->at((mx+xa)>>4,(my+ya)>>4);
-				if(mp_Map->mp_tiles[tl].behaviour == -2)
-					mp_Map->drawAnimatedTile(sfc, mx+xa-mp_Map->m_scrollx, my+ya-mp_Map->m_scrolly, tl+1);
-				else if (mp_Map->mp_tiles[tl].behaviour == -1)
-					mp_Map->drawAnimatedTile(sfc, mx+xa-mp_Map->m_scrollx, my+ya-mp_Map->m_scrolly, tl);
-			}
-        }
-    }
 }
 
 ///

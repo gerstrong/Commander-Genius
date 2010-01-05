@@ -27,35 +27,26 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 		int y = object.getYPosition();
 
 		// Check initial collision. This will avoid that ray go through the first blocking element
-		for(size_t i=raysprite.m_bboxX1; i<raysprite.m_bboxX2 ; i++)
+		for(size_t i=raysprite.m_bboxX1; i<=raysprite.m_bboxX2+1 ; i++)
 		{
 			if (TileProperty[mp_Map->at((x+i)>>CSF,(y+y2)>>CSF)].bleft)
+			{
 				object.blockedr |= true;
+				break;
+			}
 			if (TileProperty[mp_Map->at((x+i)>>CSF,(y+y2)>>CSF)].bright)
+			{
 				object.blockedl |= true;
+				break;
+			}
 		}
-
 
 		// if we shoot directly up against a wall have
 		// the ZAP appear next to the wall, not in it
-		if (object.ai.ray.direction==RIGHT && object.blockedr)
+		if (object.blockedr || object.blockedl)
 		{
-			object.moveXDir((object.getXPosition() >> CSF) << CSF);
-			if (TileProperty[mp_Map->at(object.getXPosition()>>CSF,object.getYPosition()>>CSF)].bleft)
-				object.moveLeft(1);
-			
 			object.ai.ray.state = RAY_STATE_SETZAPZOT;
-			
-			if (object.onscreen)
-				g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, object.scrx);
-		}
-		else if (object.ai.ray.direction==LEFT && object.blockedl)
-		{
-			object.moveXDir((object.getXPosition() >> CSF) << CSF);
-			if (TileProperty[mp_Map->at(object.getXPosition()>>CSF, object.getYPosition()>>CSF)].bright)
-				object.moveLeft(1);
-			object.ai.ray.state = RAY_STATE_SETZAPZOT;
-			if (object.onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, object.scrx);
+			g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, object.scrx);
 		}
 	}
 	
@@ -81,7 +72,7 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 			{
 				if (it_obj->m_type==OBJ_RAY) continue;
 				
-				if (it_obj->canbezapped && it_obj->onscreen && it_obj->m_index != object.ai.ray.owner)
+				if (it_obj->canbezapped && it_obj->onscreen)
 				{
 					if (it_obj->hitdetect(object))
 					{
@@ -109,12 +100,20 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 				}
 				else
 				{
-					if (m_Player[object.touchedBy].m_player_number != object.ai.ray.owner)
+					if(object.ai.ray.shotbyplayer != true)
 					{
-						if (object.ai.ray.dontHitEnable==0 || object.ai.ray.dontHit!=OBJ_PLAYER)
+						m_Player[object.touchedBy].kill();
+						object.ai.ray.state = RAY_STATE_SETZAPZOT;
+					}
+					else
+					{ // still could be by another player
+						if(m_Player[object.touchedBy].m_player_number != object.ai.ray.owner)
 						{
-							m_Player[object.touchedBy].kill();
-							object.ai.ray.state = RAY_STATE_SETZAPZOT;
+							if (object.ai.ray.dontHitEnable==0 || object.ai.ray.dontHit!=OBJ_PLAYER)
+							{
+								m_Player[object.touchedBy].kill();
+								object.ai.ray.state = RAY_STATE_SETZAPZOT;
+							}
 						}
 					}
 				}

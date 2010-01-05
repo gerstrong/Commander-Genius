@@ -382,8 +382,7 @@ void CPlayGame::process()
 
 		// Open the Main Menu if ESC Key pressed and mp_Menu not opened
 		if(!mp_Menu && !mp_Finale && g_pInput->getPressedCommand(IC_QUIT))
-		{
-			// Open the menu
+		{	// Open the menu
 			mp_Menu = new CMenu( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame, mp_option );
 			mp_Menu->init();
 		}

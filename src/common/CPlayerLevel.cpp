@@ -567,7 +567,6 @@ void CPlayer::JumpAndPogo()
 void CPlayer::Playerfalling()
 {
 //unsigned int temp;
-int objsupport=0;
 char behaviour;
 stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 
@@ -595,7 +594,6 @@ stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 
 	// ** determine if player should fall (nothing solid is beneath him) **
 	int xleft  = getXLeftPos();
-	int xright = getXRightPos();
 	int ydown  = getYDownPos();
 
 	behaviour = TileProperty[mp_map->at(xleft>>CSF, ydown>>CSF)].behaviour;
@@ -715,10 +713,11 @@ void CPlayer::raygun()
 				
 				ydir = getYPosition()+(9<<STC);
 				if (pdir==RIGHT) xdir = getXRightPos()+pinertia_x;
-				else xdir = getXLeftPos()-(5<<STC)+pinertia_x;
+				else xdir = getXLeftPos()+pinertia_x;
 				
-				rayobject.spawn(xdir, ydir, OBJ_RAY, m_episode);
+				rayobject.spawn(xdir, ydir, OBJ_RAY, m_episode, pdir);
 				rayobject.ai.ray.owner = m_player_number;
+				rayobject.ai.ray.shotbyplayer = true;
 				rayobject.ai.ray.direction = pdir;
 				
 				rayobject.ai.ray.dontHitEnable = true;
