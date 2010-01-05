@@ -192,6 +192,17 @@ bool CObject::calcVisibility( int player_x, int player_y )
 	return false;
 }
 
+// Used in some setup mode, like putting the player to
+// the current map position
+void CObject::moveToForce(int new_x, int new_y)
+{
+	bool laststate = solid;
+
+	solid = false;
+	moveTo(new_x, new_y);
+	solid = laststate;
+}
+
 void CObject::moveTo(int new_x, int new_y)
 {
 	int amount_x = new_x-x;

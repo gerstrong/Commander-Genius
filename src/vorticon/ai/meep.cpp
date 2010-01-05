@@ -142,9 +142,10 @@ void CObjectAI::meep_ai(CObject& object)
 			}
 			else
 			{
-				newobject.spawn(object.getXPosition()-(5<<STC), object.getYPosition()+(5<<STC), OBJ_SNDWAVE, 3);
+				newobject.spawn(object.getXLeftPos(), object.getYPosition()+(5<<STC), OBJ_SNDWAVE, 3, LEFT);
 				newobject.ai.ray.direction = LEFT;
 			}
+			newobject.solid = false;
 			m_Objvect.push_back(newobject);
 			g_pSound->playStereofromCoord(SOUND_MEEP, PLAY_NOW, object.scrx);
 			object.ai.meep.state = MEEP_WALK;

@@ -22,7 +22,7 @@ void CObjectAI::platform_ai(CObject &object)
 		object.ai.platform.movedir = RIGHT;
 		object.ai.platform.state = PLATFORM_MOVE;
 
-		object.blockedl = object.blockedr = true;
+		object.blockedl = object.blockedr = false;
 		object.inhibitfall = 1;
 		object.needinit = 0;
 		object.canbezapped = 1;
@@ -81,7 +81,8 @@ void CObjectAI::platform_ai(CObject &object)
 				std::vector<CPlayer>::iterator it_player = m_Player.begin();
 				for( ; it_player != m_Player.end() ; it_player++ )
 				{
-					if(it_player->psupportingobject==object.m_index &&
+					if( it_player->supportedbyobject &&
+							it_player->psupportingobject==object.m_index &&
 							(it_player->pjumping==PNOJUMP||
 							it_player->pjumping==PPREPAREJUMP||
 							it_player->pjumping==PPREPAREPOGO) )
@@ -107,7 +108,8 @@ void CObjectAI::platform_ai(CObject &object)
 				std::vector<CPlayer>::iterator it_player = m_Player.begin();
 				for( ; it_player != m_Player.end() ; it_player++ )
 				{
-					if(it_player->psupportingobject==object.m_index &&
+					if( it_player->supportedbyobject &&
+							it_player->psupportingobject==object.m_index &&
 							(it_player->pjumping==PNOJUMP||
 							 it_player->pjumping==PPREPAREJUMP||
 							 it_player->pjumping==PPREPAREPOGO))

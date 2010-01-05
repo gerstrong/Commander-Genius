@@ -16,11 +16,11 @@
 
 #define SAFE_DELETE(x) if(x) { delete x; x=NULL; }
 
-CEndingEp3::CEndingEp3(CMap *p_map, std::vector<CPlayer> &Player) :
+CEndingEp3::CEndingEp3(CMap &map, std::vector<CPlayer> &Player) :
+CFinale(map),
 m_Player(Player)
 {
 		m_Episode = 3;
-		mp_Map = p_map;
 		m_step = 0;
 		m_starttime = g_pTimer->getTicks();
 		m_timepassed = 0;
@@ -47,27 +47,27 @@ void CEndingEp3::HonorScene()
 	if(m_mustsetup)
 	{
 		//Initialization
-		std::string path = mp_Map->m_gamepath;
-		CMapLoader MapLoader(mp_Map, &m_Player);
+		std::string path = m_Map.m_gamepath;
+		CMapLoader MapLoader(&m_Map, &m_Player);
 		MapLoader.load(3, 81, path);
 
 		m_Player[0].hideplayer = false;
 		m_Player[0].moveTo(244<<STC, 104<<STC);
 		m_Player[0].sprite = 0;
 
-		mp_Map->gotoPos(32, 32);
-		mp_Map->drawAll();
+		m_Map.gotoPos(32, 32);
+		m_Map.drawAll();
 
 		m_TextBoxes.push_back(new CMessageBox(getstring("EP3_ESEQ_PAGE1"), true));
 		m_TextBoxes.push_back(new CMessageBox(getstring("EP3_ESEQ_PAGE2"), true));
 		m_TextBoxes.push_back(new CMessageBox(getstring("EP3_ESEQ_PAGE3"), true));
 		m_TextBoxes.push_back(new CMessageBox(getstring("EP3_ESEQ_PAGE4"), true));
 
-		int newtile = mp_Map->at(2,12);
+		int newtile = m_Map.at(2,12);
 		for(int x=0 ; x<22 ; x++) // This changes to the Oh No! Tiles to normal Stone-Tiles
 		{
-			mp_Map->changeTile( x, 15, newtile);
-			mp_Map->changeTile( x, 16, newtile);
+			m_Map.changeTile( x, 15, newtile);
+			m_Map.changeTile( x, 16, newtile);
 		}
 
 		m_mustsetup = false;
@@ -98,11 +98,11 @@ void CEndingEp3::AwardScene()
 	if(m_mustsetup)
 	{
 		//Initialization
-		mp_Map->gotoPos(0,0);
-		mp_Map->resetScrolls(); // The Scrollsurface must be (0,0) so the bitmap is correctly drawn
-		mp_Map->m_animation_enabled = false; // Needed, because the other map is still loaded
+		m_Map.gotoPos(0,0);
+		m_Map.resetScrolls(); // The Scrollsurface must be (0,0) so the bitmap is correctly drawn
+		m_Map.m_animation_enabled = false; // Needed, because the other map is still loaded
 		m_Player[0].hideplayer = true;
-		mp_FinaleStaticScene = new CFinaleStaticScene(mp_Map->m_gamepath, "finale.ck3");
+		mp_FinaleStaticScene = new CFinaleStaticScene(m_Map.m_gamepath, "finale.ck3");
 
 		mp_FinaleStaticScene->push_string("THE_END", 6000);
 
@@ -118,7 +118,7 @@ void CEndingEp3::AwardScene()
 		// Shutdown code here!
 		delete mp_FinaleStaticScene;
 		mp_FinaleStaticScene = NULL;
-		mp_Map->m_animation_enabled = true;
+		m_Map.m_animation_enabled = true;
 		m_step++;
 		m_mustsetup = true;
 	}

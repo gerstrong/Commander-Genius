@@ -24,10 +24,10 @@ const int EARTHCHUNK_SMALL_UP = 68;
 const int EARTHCHUNK_SMALL_DN = 70;
 
 CTantalusRay::CTantalusRay(CMap &Map, std::vector<CObject> &vect_obj, CObjectAI &objectai) :
+CFinale(Map),
 m_mustsetup(true),
 m_alternate_sprite(0),
 mp_MessageBox(new CMessageBox("Uh-Oh")),
-m_Map(Map),
 m_vect_obj(vect_obj),
 m_objectai(objectai),
 m_timer(0),
@@ -66,14 +66,10 @@ void CTantalusRay::shootray()
 
 		m_Map.drawAll();
 
-		CObject dummy(mp_Map);
-		CObject ShootObject(mp_Map);
+		CObject ShootObject(&m_Map);
 		ShootObject.spawn(4<<CSF, 4<<CSF, OBJ_RAY,2);
+		ShootObject.solid = false;
 		ShootObject.exists = ShootObject.onscreen = true;
-		m_vect_obj.push_back(dummy);
-		m_vect_obj.push_back(dummy);
-		m_vect_obj.push_back(dummy);
-		m_vect_obj.push_back(dummy);
 		m_vect_obj.push_back(ShootObject);
 		mp_ShootObject = &m_vect_obj.back();
 		g_pSound->playSound(SOUND_KEEN_FIRE, PLAY_NOW);
@@ -110,13 +106,13 @@ void CTantalusRay::explodeEarth()
 	{
 		if (m_step<16)
 		{
-			CObject newobject(mp_Map);
+			CObject newobject(&m_Map);
 			newobject.spawn(shot_x+((rnd()%32)<<STC), shot_y+((rnd()%32)<<STC)-(8<<STC), OBJ_EXPLOSION, 2);
 			newobject.solid = false;
 			m_vect_obj.push_back(newobject);
 		}
 
-		CObject newobject(mp_Map);
+		CObject newobject(&m_Map);
 		switch(m_step)
 		{
 		case 0: newobject.spawn(shot_x-(8<<STC), shot_y-(8<<STC), OBJ_EXPLOSION, 2); break;

@@ -17,7 +17,7 @@
 
 class CEndingEp1 : public CFinale {
 public:
-	CEndingEp1(CMap *p_map, std::vector<CPlayer> &Player);
+	CEndingEp1(CMap &map, std::vector<CPlayer> &Player);
 	void process();
 
 	void ReturnsToShip();

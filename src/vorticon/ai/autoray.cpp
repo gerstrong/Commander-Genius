@@ -26,7 +26,7 @@ void CObjectAI::autoray_ai(CObject &Object)
 		NewRay.ai.ray.owner = -1;
 		unsigned int x,y;
 		x = Object.getXPosition();
-		y = Object.getXPosition();
+		y = Object.getYPosition();
 
 		if (Object.m_type==OBJ_AUTORAY_V)
 		{
@@ -43,7 +43,7 @@ void CObjectAI::autoray_ai(CObject &Object)
 
 		m_Objvect.push_back(NewRay);
 
-		if (Object.onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, x);
+		if (Object.onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, NewRay.scr);
 	}
 }
 

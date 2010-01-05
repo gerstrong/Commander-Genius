@@ -18,7 +18,7 @@
 class CEndingEp2 : public CFinale
 {
 public:
-	CEndingEp2(CMap *p_map, std::vector<CPlayer> &Player);
+	CEndingEp2(CMap &map, std::vector<CPlayer> &Player);
 
 	void process();
 	void HeadsForEarth();

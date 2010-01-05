@@ -99,7 +99,8 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	mapsize = ((mp_map->m_width+32)*(mp_map->m_height+32));
 
 	if(mp_map->mp_data)	{
-		delete mp_map->mp_data;
+		delete [] mp_map->mp_data;
+		mp_map->mp_data = NULL;
 	}
 	mp_map->mp_data = new Uint16[mapsize];
 	
@@ -197,6 +198,7 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 				{
 					it_player->exists = false;
 					it_player->spawn(x<<CSF, y<<CSF, OBJ_PLAYER, episode);
+					it_player->solid = it_player->godmode;
 				}
 				mp_map->m_objectlayer[x][y] = 0;
 			}
@@ -211,6 +213,7 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 					nessie.setIndex(mp_objvect->size());
 					nessie.spawn(x<<CSF, y<<CSF, OBJ_NESSIE, 3);
 					nessie.onscreen = true;
+					nessie.solid = false;
 					m_NessieAlreadySpawned = true;
 					mp_objvect->push_back(nessie);
 				}
@@ -291,6 +294,7 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				it_player->exists = false;
 				it_player->spawn(x<<CSF, y<<CSF, OBJ_PLAYER, episode);
 				it_player->plastfalling = true;
+				it_player->solid = true;
 				it_player->pfalling = true;
 				it_player->pshowdir = RIGHT;
 			}
@@ -438,10 +442,12 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				case 12:   // sparks in mortimer's machine
 					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR, episode);
 					 enemyobject.ai.se.type = SE_MORTIMER_SPARK;
+					 enemyobject.solid = false;
 					 break;
 				case 13:   // mortimer's heart
 					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR, episode);
 					 enemyobject.ai.se.type = SE_MORTIMER_HEART;
+					 enemyobject.solid = false;
 					 break;
 				case 14:   // right-pointing raygun (ep3)
 					 if (episode==3)
@@ -458,14 +464,17 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				case 16:  // mortimer's arms
 					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR, episode);
 					 enemyobject.ai.se.type = SE_MORTIMER_ARM;
+					 enemyobject.solid = false;
 					 break;
 				case 17:  // mortimer's left leg
 					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR, episode);
 					 enemyobject.ai.se.type = SE_MORTIMER_LEG_LEFT;
+					 enemyobject.solid = false;
 					 break;
 				case 18:  // mortimer's right leg
 					 enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR, episode);
 					 enemyobject.ai.se.type = SE_MORTIMER_LEG_RIGHT;
+					 enemyobject.solid = false;
 					 break;
 				default:
 					g_pLogFile->ftextOut(PURPLE,"unknown enemy type %d at (%d,%d)<br>", t, x, y); break;

@@ -119,6 +119,7 @@ public:
 	void setIndex(int index);
 	
 	// Moving parts
+	void moveToForce(int new_x, int new_y);
 	void moveTo(int x, int y);
 	void moveXDir(int amount);
 	void moveYDir(int amount);

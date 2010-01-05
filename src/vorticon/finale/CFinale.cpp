@@ -11,8 +11,11 @@
 #include "../../FindFile.h"
 #include <fstream>
 
-CFinale::CFinale() : m_mustfinishgame(false), mp_TextViewer(NULL) {
-}
+CFinale::CFinale(CMap &map) :
+m_mustfinishgame(false),
+mp_TextViewer(NULL),
+m_Map(map)
+{}
 
 void CFinale::showEndingText()
 {
@@ -38,7 +41,7 @@ void CFinale::initEpilogue(std::string &text)
 {
     std::ifstream endfile;
 
-    std::string filename =  mp_Map->m_gamepath + "endtext.ck" + itoa(m_Episode);
+    std::string filename =  m_Map.m_gamepath + "endtext.ck" + itoa(m_Episode);
 
     OpenGameFileR(endfile, filename);
     if (endfile.is_open())

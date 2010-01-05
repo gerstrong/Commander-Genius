@@ -16,7 +16,7 @@
 
 class CFinale {
 public:
-	CFinale();
+	CFinale(CMap &map);
 
 	void showEndingText();
 	void initEpilogue(std::string &text);
@@ -32,7 +32,7 @@ protected:
 	CTextViewer *mp_TextViewer; // Used for Epilogue
 	std::string m_epilogue_text;
 	int m_Episode;
-	CMap *mp_Map;
+	CMap &m_Map;
 };
 
 #endif /* CFINALE_H_ */

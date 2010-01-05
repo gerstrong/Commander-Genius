@@ -61,7 +61,10 @@ void CMap::resetScrolls()
 // returns the tile which is set at the given coordinates
 Uint16 CMap::at(Uint16 x, Uint16 y)
 {
-	return mp_data[y*m_width + x];
+	if(x < m_width && y < m_height )
+		return mp_data[y*m_width + x];
+	else
+		return 0;
 }
 
 //////////////////////////

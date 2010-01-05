@@ -430,8 +430,14 @@ void CPlayGame::handleFKeys()
     // GOD cheat -- toggle god mode
     if ( g_pInput->getHoldedKey(KG) && g_pInput->getHoldedKey(KO) && g_pInput->getHoldedKey(KD) )
     {
-    	for(i=0;i<MAX_PLAYERS;i++)
-    		m_Player[i].godmode ^= 1;
+    	std::vector<CPlayer>::iterator it_player = m_Player.begin();
+    	for( ; it_player != m_Player.end() ; it_player++)
+    	{
+    		it_player->godmode ^= 1;
+    		// If player on map, make disable the solid property of the players
+    		if(m_Level == 80)
+    			it_player->solid = !it_player->godmode;
+    	}
 
     	g_pVideoDriver->DeleteConsoleMsgs();
     	if (m_Player[0].godmode)
@@ -449,17 +455,19 @@ void CPlayGame::handleFKeys()
 
     if (mp_option[OPT_CHEATS].value)
     {
+
     	if (g_pInput->getHoldedKey(KTAB)) // noclip/revive
     	{
-    		// resurrect any dead players. the rest of the KTAB magic is
-    		// scattered throughout the various functions.
     		for(i=0;i<m_NumPlayers;i++)
     		{
+    			// resurrect any dead players. the rest of the KTAB magic is
+    			// scattered throughout the various functions.
     			if (m_Player[i].pdie)
     			{
     				m_Player[i].pdie = PDIE_NODIE;
     				m_Player[i].moveUp(8<<CSF);
     			}
+
     			m_Player[i].pfrozentime = 0;
     		}
     	}
@@ -542,15 +550,15 @@ void CPlayGame::createFinale()
 {
 	if(m_Episode == 1)
 	{
-		mp_Finale = new CEndingEp1(&m_Map, m_Player);
+		mp_Finale = new CEndingEp1(m_Map, m_Player);
 	}
 	else if(m_Episode == 2)
 	{
-		mp_Finale = new CEndingEp2(&m_Map, m_Player);
+		mp_Finale = new CEndingEp2(m_Map, m_Player);
 	}
 	else if(m_Episode == 3)
 	{
-		mp_Finale = new CEndingEp3(&m_Map, m_Player);
+		mp_Finale = new CEndingEp3(m_Map, m_Player);
 	}
 }
 

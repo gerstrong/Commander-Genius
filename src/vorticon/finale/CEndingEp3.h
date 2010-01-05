@@ -18,7 +18,7 @@
 
 class CEndingEp3 : public CFinale {
 public:
-	CEndingEp3(CMap *p_map, std::vector<CPlayer> &Player);
+	CEndingEp3(CMap &map, std::vector<CPlayer> &Player);
 
 	void process();
 	void HonorScene();

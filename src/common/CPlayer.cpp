@@ -560,7 +560,9 @@ void CPlayer::InertiaAndFriction_X()
 		int dx=pinertia_x + playpushed_x;
 		// check first if the player is not blocked
 		if( (!blockedr and dx>0) or (!blockedl and dx<0) )
+		{
 			moveXDir(dx);
+		}
 	}
 	
 	// if we stopped walking (i.e. left or right not held down) apply friction
@@ -786,6 +788,7 @@ bool CPlayer::checkObjSolid()
 					pfalling = false;
 					blockedd = true;
 					supportedbyobject = true;
+					psupportingobject = it_obj->m_index;
 					int dy = it_obj->getYUpPos() - getYDownPos()+1;
 					moveYDir(dy);
 					break;

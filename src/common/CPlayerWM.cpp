@@ -58,48 +58,6 @@ void CPlayer::setWorldMapdir()
 	dpadlastcount = dpadcount;
 }
 
-// set blockedl and blockedr...is Keen up against a solid object?
-//void CPlayer::setWMblockedlrud()
-//{
-//	int x1, x2, y1, y2;
-//
-//	blockedl = blockedr = false;
-//	blockedu = blockedd = false;
-//
-//	// cheat: holding down TAB will turn off clipping. or if you are in godmode
-//	if ((m_cheats_enabled && g_pInput->getHoldedKey(KTAB)) || godmode) return;
-//
-//	CSprite &sprite = g_pGfxEngine->getSprite(PMAPRIGHTFRAME);
-//	x1 = sprite.m_bboxX1;
-//	x2 = sprite.m_bboxX2;
-//	y1 = sprite.m_bboxY1;
-//	y2 = sprite.m_bboxY2;
-//
-//	// L
-//	if (isWMSolid(goto_x+x1, goto_y+y1+(1<<STC)) )
-//	{ blockedl = true; }
-//	else if (isWMSolid(goto_x+x1, goto_y+y2-(1<<STC)) )
-//	{ blockedl = true; }
-//
-//	// R
-//	if (isWMSolid(goto_x+x2, goto_y+y1+(1<<STC)) )
-//	{ blockedr = true; }
-//	else if (isWMSolid(goto_x+x2, goto_y+y2-(1<<STC)) )
-//	{ blockedr = true; }
-//
-//	// U
-//	if (isWMSolid(goto_x+x1+(1<<STC), goto_y+y1) )
-//	{ blockedu = true; }
-//	else if (isWMSolid(goto_x+x2-(1<<STC), goto_y+y1) )
-//	{ blockedu = true; }
-//
-//	// D
-//	if (isWMSolid(goto_x+x1+(1<<STC), goto_y+y2) )
-//	{ blockedd = true; }
-//	else if (isWMSolid(goto_x+x2-(1<<STC), goto_y+y2) )
-//	{ blockedd = true; }
-//}
-
 // tell me, if the player tries to use an object on the map like entering the level
 int CPlayer::getNewObject()
 {

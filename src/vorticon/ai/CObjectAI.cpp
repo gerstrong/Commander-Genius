@@ -32,35 +32,34 @@ m_dark(dark)
 //////////////////
 void CObjectAI::process()
 {
-	for( size_t i=0 ; i<m_Objvect.size() ; i++ )
+	std::vector<CObject>::iterator it_obj = m_Objvect.begin();
+	for( ; it_obj != m_Objvect.end() ; it_obj++ )
 	{
-		CObject &object = m_Objvect.at(i);
-
-		if( checkforAIObject(object) )
+		if( checkforAIObject(*it_obj) )
 		{
-			object.processFalling();
+			it_obj->processFalling();
 
 		    // hit detection with players
-			object.touchPlayer = false;
+			it_obj->touchPlayer = false;
 			std::vector<CPlayer>::iterator it_player = m_Player.begin();
 			for( ; it_player != m_Player.end() ; it_player++ )
 		    {
 				if (!it_player->pdie)
 				{
-					if ( object.hitdetect(*it_player) )
+					if ( it_obj->hitdetect(*it_player) )
 					{
 						if (!it_player->godmode)
 						{
-							object.touchPlayer = true;
-							object.touchedBy = it_player->m_player_number;
+							it_obj->touchPlayer = true;
+							it_obj->touchedBy = it_player->m_player_number;
 						}
 						else
 						{
-							if (object.m_type==OBJ_MOTHER || object.m_type==OBJ_BABY ||\
-								object.m_type==OBJ_MEEP || object.m_type==OBJ_YORP)
+							if (it_obj->m_type==OBJ_MOTHER || it_obj->m_type==OBJ_BABY ||\
+								it_obj->m_type==OBJ_MEEP || it_obj->m_type==OBJ_YORP)
 							{
-								if (object.canbezapped)
-									object.zapped += 100;
+								if (it_obj->canbezapped)
+									it_obj->zapped += 100;
 							}
 						}
 						break;
@@ -68,9 +67,16 @@ void CObjectAI::process()
 				}
 
 		    }
-			performSpecialAIType( object );
+			performSpecialAIType( *it_obj );
 		}
-		object.process();
+		it_obj->process();
+	}
+
+	// Check if the last object has been disabled, than delete it freeing memory
+	if( !m_Objvect.empty() )
+	{
+		while(!m_Objvect.back().exists)
+			m_Objvect.pop_back();
 	}
 
 	if(m_gunfiretimer<60) m_gunfiretimer++;
@@ -221,11 +227,6 @@ void CObjectAI::triggerPlat(bool value)
 void CObjectAI::deleteObj(CObject &object)
 {
 	object.exists = false;
-
-	// The real delete happens, when all the AI is done
-	// If the last object was deleted, throw it out of the list
-	if( m_Objvect.at(m_Objvect.size()-1).exists == false )
-		m_Objvect.pop_back();
 }
 
 void CObjectAI::deleteAllObjects()

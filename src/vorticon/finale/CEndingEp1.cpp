@@ -15,11 +15,11 @@
 #include "../../common/CMapLoader.h"
 #include "../../common/Playerdefines.h"
 
-CEndingEp1::CEndingEp1(CMap *p_map, std::vector<CPlayer> &Player) :
+CEndingEp1::CEndingEp1(CMap &map, std::vector<CPlayer> &Player) :
+	CFinale(map),
 	m_Player(Player)
 {
 	m_Episode = 1;
-	mp_Map = p_map;
 	m_step = 0;
 	m_starttime = g_pTimer->getTicks();
 	m_timepassed = 0;
@@ -50,7 +50,7 @@ void CEndingEp1::ReturnsToShip()
 	if(m_mustsetup)
 	{
 		//Initialization
-		mp_Map->gotoPos( 40, 540 );
+		m_Map.gotoPos( 40, 540 );
 
   	    // draw keen next to his ship
 		m_Player[0].hideplayer = false;
@@ -85,16 +85,16 @@ void CEndingEp1::ShipFlyMarsToEarth()
 	if(m_mustsetup)
 	{
 		//Initialization
-		std::string path = mp_Map->m_gamepath;
-		CMapLoader MapLoader(mp_Map, &m_Player);
+		std::string path = m_Map.m_gamepath;
+		CMapLoader MapLoader(&m_Map, &m_Player);
 		MapLoader.load(1, 81, path);
 
 		m_Player[0].hideplayer = false;
 		m_Player[0].moveTo(6<<CSF, 5<<CSF);
 
-		mp_ShipFlySys = new CShipFlySys( m_Player[0], mp_Map, SPR_SHIP_RIGHT, SPR_SHIP_LEFT);
+		mp_ShipFlySys = new CShipFlySys( m_Player[0], &m_Map, SPR_SHIP_RIGHT, SPR_SHIP_LEFT);
 
-		mp_Map->gotoPos(0,0);
+		m_Map.gotoPos(0,0);
 		mp_ShipFlySys->addShipQueue(CMD_MOVE, 60, DUP);
 		mp_ShipFlySys->addShipQueue(CMD_WAIT, 12, 0);
 		mp_ShipFlySys->addShipQueue(CMD_MOVE, 673, DDOWNRIGHT);
@@ -119,7 +119,7 @@ void CEndingEp1::ShipFlyMarsToEarth()
 		mp_ShipFlySys->addShipQueue(CMD_FADEOUT, 0, 0);
 		mp_ShipFlySys->addShipQueue(CMD_MOVE, 25, DDOWN);
 		mp_ShipFlySys->addShipQueue(CMD_ENDOFQUEUE, 0, 0);
-		mp_Map->drawAll();
+		m_Map.drawAll();
 		mp_ShipFlySys->m_ShipQueuePtr = 0;
 
 		m_mustsetup = false;
@@ -145,11 +145,11 @@ void CEndingEp1::BackAtHome()
 	if(m_mustsetup)
 	{
 		//Initialization
-		mp_Map->gotoPos(0,0);
-		mp_Map->resetScrolls(); // The Scrollsurface must be (0,0) so the bitmap is correctly drawn
-		mp_Map->m_animation_enabled = false; // Needed, because the other map is still loaded
+		m_Map.gotoPos(0,0);
+		m_Map.resetScrolls(); // The Scrollsurface must be (0,0) so the bitmap is correctly drawn
+		m_Map.m_animation_enabled = false; // Needed, because the other map is still loaded
 		m_Player[0].hideplayer = true;
-		mp_FinaleStaticScene = new CFinaleStaticScene(mp_Map->m_gamepath, "finale.ck1");
+		mp_FinaleStaticScene = new CFinaleStaticScene(m_Map.m_gamepath, "finale.ck1");
 
 		mp_FinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE1", 6000);
 		mp_FinaleStaticScene->push_string("EP1_ESEQ_PART2_PAGE2", 6000);
@@ -176,7 +176,7 @@ void CEndingEp1::BackAtHome()
 		// Shutdown code here!
 		delete mp_FinaleStaticScene;
 		mp_FinaleStaticScene = NULL;
-		mp_Map->m_animation_enabled = true;
+		m_Map.m_animation_enabled = true;
 		m_step++;
 		m_mustsetup = true;
 	}
@@ -187,8 +187,8 @@ void CEndingEp1::ShipFlyEarthToMShip()
 	if(m_mustsetup)
 	{	//Initialization
 		int x, y;
-		std::string path = mp_Map->m_gamepath;
-		CMapLoader MapLoader(mp_Map, &m_Player);
+		std::string path = m_Map.m_gamepath;
+		CMapLoader MapLoader(&m_Map, &m_Player);
 		MapLoader.load(1, 81, path);
 
 		m_Player[0].hideplayer = false;
@@ -196,9 +196,9 @@ void CEndingEp1::ShipFlyEarthToMShip()
 		y = 23<<CSF;
 		m_Player[0].moveTo(x,y);
 
-		mp_Map->gotoPos((x>>STC)-100, (y>>STC)-160);
+		m_Map.gotoPos((x>>STC)-100, (y>>STC)-160);
 
-		mp_ShipFlySys = new CShipFlySys( m_Player[0], mp_Map, SPR_SHIP_RIGHT, SPR_SHIP_LEFT);
+		mp_ShipFlySys = new CShipFlySys( m_Player[0], &m_Map, SPR_SHIP_RIGHT, SPR_SHIP_LEFT);
 
 		mp_ShipFlySys->addShipQueue(CMD_MOVE, 58, DUP);
 		mp_ShipFlySys->addShipQueue(CMD_DISABLESCROLLING, 0, 0);
@@ -208,7 +208,7 @@ void CEndingEp1::ShipFlyEarthToMShip()
 		mp_ShipFlySys->addShipQueue(CMD_MOVE, 25, DDOWN);
 		mp_ShipFlySys->addShipQueue(CMD_ENDOFQUEUE, 0, 0);
 
-		mp_Map->drawAll();
+		m_Map.drawAll();
 		mp_ShipFlySys->m_ShipQueuePtr = 0;
 
 		m_mustsetup = false;

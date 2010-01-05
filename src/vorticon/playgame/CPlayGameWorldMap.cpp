@@ -125,7 +125,8 @@ void CPlayGame::goBacktoMap()
 	{
 		m_Player[i].level_done = LEVEL_NOT_DONE;
 		// Restore checkpoint
-		m_Player[i].moveTo(m_checkpoint_x,m_checkpoint_y-256);
+
+		m_Player[i].moveToForce(m_checkpoint_x,m_checkpoint_y-256);
 		m_Player[i].inventory.HasCardYellow = 0;
 		m_Player[i].inventory.HasCardBlue = 0;
 		m_Player[i].inventory.HasCardGreen = 0;
