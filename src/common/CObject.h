@@ -137,7 +137,6 @@ public:
 	bool checkSolidL( int x1, int y1, int y2);
 	bool checkSolidU( int x1, int x2, int y1);
 	bool checkSolidD( int x1, int x2, int y2);
-	int checkObjSolid();
 
 	// getters
 	unsigned int getXPosition();

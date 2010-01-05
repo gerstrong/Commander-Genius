@@ -763,6 +763,39 @@ void CPlayer::freeze()
 	ppogostick = false;
 }
 
+bool CPlayer::checkObjSolid()
+{
+	supportedbyobject = false;
+	std::vector<CObject>::iterator it_obj = mp_object->begin();
+	for( ; it_obj != mp_object->end() ; it_obj++ )
+	{
+		if(it_obj->cansupportplayer)
+		{	// can support player
+			if(getXRightPos() >= it_obj->getXLeftPos()  &&
+					getXLeftPos() <= it_obj->getXRightPos() )
+			{
+				if(getYUpPos() >= it_obj->getYUpPos()-(1<<STC)  &&
+					getYUpPos() <= it_obj->getYDownPos()+1 )
+				{	// In this case stand on the object
+					int dy = it_obj->getYDownPos() - getYUpPos();
+					moveYDir(dy);
+				}
+				else if(getYDownPos() >= it_obj->getYUpPos()-(1<<STC)  &&
+						getYDownPos() <= it_obj->getYDownPos()+1 )
+				{	// In this case stand on the object
+					pfalling = false;
+					blockedd = true;
+					supportedbyobject = true;
+					int dy = it_obj->getYUpPos() - getYDownPos()+1;
+					moveYDir(dy);
+					break;
+				}
+			}
+		}
+	}
+	return true;
+}
+
 // Draws the Status screen and return false, when it's still open.
 bool CPlayer::drawStatusScreen()
 {

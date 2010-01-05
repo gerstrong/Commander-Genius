@@ -395,7 +395,6 @@ void CObject::moveDown(int amount)
 	}
 
 	// check if we walked into other tiles
-
 	int tile_y_old = (y2>>CSF)<<CSF;
 	int tile_y_new = (((y2+amount)>>CSF))<<CSF;
 
@@ -614,39 +613,6 @@ bool CObject::checkSolidD( int x1, int x2, int y2)
 		exists=false; // Out of map?
 
 	return false;
-}
-
-int CObject::checkObjSolid()
-{
-	int o=0;
-
-	std::vector<CObject>::iterator p_object;
-	for( p_object=mp_object->begin() ; p_object!=mp_object->end() ; p_object++ )
-	{
-		if (p_object->exists && p_object->cansupportplayer && p_object->onscreen)
-		{
-			if (getXRightPos() >= p_object->getXLeftPos())
-			{
-				if (getXLeftPos() <= p_object->getXRightPos())
-				{
-					// up off the object-case
-					if (getYDownPos() >= p_object->getYUpPos()-1 &&
-						getYDownPos() <= p_object->getYDownPos())
-					{	// Standing on the object, so line it up!
-							o=p_object->m_index;
-
-							int dy = getYDownPos()-p_object->getYUpPos()+1;
-							moveYDir(-dy);
-							supportedbyobject = true;
-							psupportingobject = o;
-							break;
-					}
-				}
-			}
-		}
-	}
-
-	return o;
 }
 
 void CObject::kill()

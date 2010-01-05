@@ -89,6 +89,9 @@ public:
 	void WalkingAnimation();
 	void StatusBox();
 	void ProcessInput();
+
+	bool checkObjSolid();
+
 	bool drawStatusScreen();
 	bool scrollTriggers();
 	void give_keycard(int doortile);

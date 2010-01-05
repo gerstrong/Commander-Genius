@@ -60,6 +60,8 @@ void CPlayer::processInLevel(const bool &platextending)
 		TogglePogo_and_Switches(platextending);
 		JumpAndPogo();
 
+		// Check collision with other objects
+		checkObjSolid();
 		if(!inhibitfall) Playerfalling();
 	}
 }
@@ -600,9 +602,6 @@ stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 	if( behaviour>=2 && behaviour<=5 )
 		blockedu = true; // This workaround prevents the player from falling through doors.
 
-	supportedbyobject = false;
-	checkObjSolid();
-
 	if(!blockedd && !pjumping && !supportedbyobject)
 	{ // lower-left isn't solid, check right side
 		pfalling = true;        // so fall.
@@ -612,15 +611,6 @@ stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 	{
 		pfalling = false;
 	}
-
-	// the first time we land on an object, line us up to be exactly on
-	// top of the object
-	/*if (psupportingobject && !lastsupportingobject)
-	{
-		//moveYDir();
-		//goto_y = mp_object->at(psupportingobject).getYPosition() - getYDownPos();
-	}
-	lastsupportingobject = psupportingobject;*/
 
 	// ** if the player should be falling, well what are we waiting for?
 	//    make him fall! **

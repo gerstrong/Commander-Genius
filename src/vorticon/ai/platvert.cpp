@@ -60,23 +60,25 @@ void CObjectAI::platvert_ai(CObject& object)
 	CPlayer &tPlayer = m_Player[object.touchedBy];
 	if ( object.touchPlayer && !tPlayer.pdie && tPlayer.psupportingobject != object.m_index)
 	{
-		if (object.cansupportplayer)
+		if (object.cansupportplayer && !tPlayer.supportedbyobject)
 		{
 			// if player is standing around minding his own business and we
 			// come down on his head, change direction. if player is trying
 			// to walk/jump into us horizontally, push him away.
-			// push him away
-			if (m_Player[object.touchedBy].getXPosition() < object.getXPosition())
+			if( m_Player[object.touchedBy].getYDownPos() > object.getYDownPos() )
 			{
-				m_Player[object.touchedBy].playpushed_x = -PLATVERTPUSHAMOUNT;
-				if (m_Player[object.touchedBy].pinertia_x > 0) m_Player[object.touchedBy].pinertia_x = 0;
-				m_Player[object.touchedBy].playpushed_decreasetimer = 0;
-			}
-			else
-			{
-				m_Player[object.touchedBy].playpushed_x = PLATVERTPUSHAMOUNT;
-				if (m_Player[object.touchedBy].pinertia_x < 0) m_Player[object.touchedBy].pinertia_x = 0;
-				m_Player[object.touchedBy].playpushed_decreasetimer = 0;
+				if (m_Player[object.touchedBy].getXPosition() < object.getXPosition())
+				{
+					m_Player[object.touchedBy].playpushed_x = -PLATVERTPUSHAMOUNT;
+					if (m_Player[object.touchedBy].pinertia_x > 0) m_Player[object.touchedBy].pinertia_x = 0;
+					m_Player[object.touchedBy].playpushed_decreasetimer = 0;
+				}
+				else
+				{
+					m_Player[object.touchedBy].playpushed_x = PLATVERTPUSHAMOUNT;
+					if (m_Player[object.touchedBy].pinertia_x < 0) m_Player[object.touchedBy].pinertia_x = 0;
+					m_Player[object.touchedBy].playpushed_decreasetimer = 0;
+				}
 			}
 		}
 	}

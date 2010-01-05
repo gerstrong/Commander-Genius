@@ -375,7 +375,7 @@ void CPlayGame::process()
 					tempbuf += " r: " + itoa(m_Player[0].blockedr);
 					tempbuf += " u: " + itoa(m_Player[0].blockedu);
 					tempbuf += " d: " + itoa(m_Player[0].blockedd);
-			tempbuf += " fall: " + itoa(m_Player[0].pfalling);
+			tempbuf += " sup: " + itoa(m_Player[0].supportedbyobject);
 
 			g_pGfxEngine->getFont().drawFont(sfc,tempbuf,320-(tempbuf.size()<<3)-1, LETTER_TYPE_RED);
 		}
