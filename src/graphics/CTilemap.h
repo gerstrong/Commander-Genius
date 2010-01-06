@@ -28,7 +28,6 @@ typedef struct
 class CTilemap {
 public:
 	CTilemap(stTile *pTileProperties, int numtiles);
-	virtual ~CTilemap();
 
 	bool CreateSurface(SDL_Color *Palette, Uint32 Flags);
 	bool loadHiresTile( const std::string& filename );
@@ -38,6 +37,8 @@ public:
 	int EmptyBackgroundTile() { return m_EmptyBackgroundTile; }
 
 	void drawTile(SDL_Surface *dst, Uint16 x, Uint16 y, Uint16 t);
+
+	virtual ~CTilemap();
 
 	stTile *mp_tiles;
 

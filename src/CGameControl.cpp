@@ -30,7 +30,6 @@ mp_GalaxyEGAGraphics(NULL)
 	m_endgame = false;
 
 	m_EGAGraphics = NULL;
-	m_Messages = NULL;
 	m_startLevel = 0;
 }
 
@@ -192,9 +191,8 @@ bool CGameControl::loadResources(unsigned short Episode, const std::string& Data
 		if( (flags & LOADSTR) == LOADSTR )
 		{
 			// load the strings.
-			m_Messages = new CMessages(p_exedata, Episode, version);
-			m_Messages->extractGlobalStrings();
-			delete m_Messages;	m_Messages = NULL;
+			CMessages Messages(p_exedata, Episode, version);
+			Messages.extractGlobalStrings();
 			//loadstrings();
 		}
 
@@ -258,6 +256,8 @@ void CGameControl::process()
 
 			if( m_Episode > 0 ) // The game has to have a valid episode!
 			{
+				g_pGfxEngine->Del();
+
 				// Load the Resources
 				if( loadResources( m_Episode, m_DataDirectory ) )
 				{
@@ -310,7 +310,9 @@ void CGameControl::process()
 		// NOTE: Demo is not part of playgame anymore!!
 		if(mp_PassiveMode->getchooseGame())
 		{
-			cleanupAll();
+			g_pGfxEngine->Del();
+
+			// TODO: Some of game resources are still not cleaned up here!
 			init( GAMELAUNCHER );
 			return;
 		}
@@ -411,6 +413,5 @@ void CGameControl::cleanupAll()
 CGameControl::~CGameControl() {
 	cleanupAll();
 	if(m_EGAGraphics) delete m_EGAGraphics;
-	if(m_Messages) delete m_Messages;
 }
 

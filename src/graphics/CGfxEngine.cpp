@@ -43,11 +43,12 @@ void CGfxEngine::pushEffectPtr(CEffects *pEffect) {
 }
 
 ///
-// Destruktor
+// Destructors
 ///
 void CGfxEngine::freeTilemap()
 {
 	if(Tilemap) delete Tilemap;
+	Tilemap = NULL;
 }
 void CGfxEngine::freeFonts()
 {
@@ -72,19 +73,6 @@ void CGfxEngine::freeSprites()
 		sprite.freeSurfaces();
 		Sprite.pop_back();
 	}
-}
-
-CBitmap *CGfxEngine::getBitmap(const std::string &name)
-{
-	std::string s_name;
-	for(Uint8 i=0 ; i<Bitmap.size() ; i++)
-	{
-		s_name = Bitmap[i].getName();
-		
-		if(s_name == name)
-			return &Bitmap[i];
-	}
-	return NULL;
 }
 
 void CGfxEngine::copyTileToSprite( Uint16 t, Uint16 s, Uint16 ntilestocopy )
@@ -150,6 +138,20 @@ void CGfxEngine::drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w
 ///
 // Getters
 ///
+
+CBitmap *CGfxEngine::getBitmap(const std::string &name)
+{
+	std::string s_name;
+	for(Uint8 i=0 ; i<Bitmap.size() ; i++)
+	{
+		s_name = Bitmap[i].getName();
+
+		if(s_name == name)
+			return &Bitmap[i];
+	}
+	return NULL;
+}
+
 CEffects *CGfxEngine::Effect()
 { return mp_Effects; }
 

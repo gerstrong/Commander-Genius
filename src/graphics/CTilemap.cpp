@@ -11,16 +11,11 @@
 #include <stdlib.h>
 
 CTilemap::CTilemap(stTile *pTileProperties, int numtiles) :
+m_Tilesurface(NULL),
+mp_tiles(pTileProperties),
+m_numtiles(numtiles),
 m_EmptyBackgroundTile(143)
-{
-	m_Tilesurface = NULL;
-	mp_tiles = pTileProperties;
-	m_numtiles = numtiles;
-}
-
-CTilemap::~CTilemap() {
-	if(mp_tiles) delete [] mp_tiles;
-}
+{ }
 
 bool CTilemap::CreateSurface(SDL_Color *Palette, Uint32 Flags)
 {
@@ -83,3 +78,7 @@ void CTilemap::drawTile(SDL_Surface *dst, Uint16 x, Uint16 y, Uint16 t)
 	SDL_BlitSurface(m_Tilesurface, &src_rect, dst, &dst_rect);
 }
 
+CTilemap::~CTilemap() {
+	if(mp_tiles) delete [] mp_tiles;
+	if(m_Tilesurface) SDL_FreeSurface(m_Tilesurface);
+}
