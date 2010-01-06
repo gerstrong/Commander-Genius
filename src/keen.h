@@ -187,8 +187,6 @@ BACK2MAINMENU,
 #define NESSIE_PATH             8192
 #define NESSIE_WEED            	8448
 #define NESSIE_LAND		       	8704
-#define GARG_STOPPOINT          1000
-#define BALL_NOPASSPOINT        1001
 
 // values for demomode global variable
 #define DEMO_NODEMO             0

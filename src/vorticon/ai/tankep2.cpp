@@ -151,7 +151,7 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 				}
 				else
 				{
-					newobject.spawn(object.getXPosition()-(14<<STC), object.getYUpPos()+(5<<STC), OBJ_RAY, m_Episode);
+					newobject.spawn(object.getXPosition(), object.getYUpPos()+(5<<STC), OBJ_RAY, m_Episode, LEFT);
 					newobject.ai.ray.direction = LEFT;
 				}
 				newobject.ai.ray.owner = object.m_index;

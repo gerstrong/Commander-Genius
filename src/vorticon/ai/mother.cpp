@@ -1,4 +1,5 @@
 #include "../../sdl/sound/CSound.h"
+#include "../../misc.h"
 
 #include "CObjectAI.h"
 
@@ -9,11 +10,11 @@ MOTHER_WALK, MOTHER_SPIT,
 MOTHER_HURT, MOTHER_DEAD
 };
 
-#define MOTHER_WALK_ANIM_RATE     15
+#define MOTHER_WALK_ANIM_RATE     3
 #define MOTHER_WALK_SPD           12
 
-#define MOTHER_SPIT_PROB          1100
-#define MOTHER_SPIT_PROB_HARD     400
+#define MOTHER_SPIT_PROB          10
+#define MOTHER_SPIT_PROB_HARD     40
 #define MOTHER_SPIT_SHOW_TIME     25
 
 #define MOTHER_HP      5
@@ -28,9 +29,6 @@ MOTHER_HURT, MOTHER_DEAD
 #define MOTHER_SPIT_RIGHT_FRAME	 90
 #define MOTHER_HURT_FRAME        91
 #define MOTHER_DEAD_FRAME	 92
-
-void bumpplayer(int p, int pushamt, bool solid);
-unsigned int rnd(void);
 
 void CObjectAI::mother_ai( CObject& object, bool hardmode )
 {
@@ -84,12 +82,11 @@ void CObjectAI::mother_ai( CObject& object, bool hardmode )
 	case MOTHER_WALK:
 
 		prob = hardmode ? MOTHER_SPIT_PROB_HARD : MOTHER_SPIT_PROB;
-		if (rnd()%prob==0)
+		if (getProbability(prob))
 		{
 			if (object.onscreen)
 			{
-				if (rnd()&1)
-					object.ai.mother.dir ^= 1;		// turn around before spitting
+				object.ai.mother.dir ^= 1;		// turn around before spitting
 
 				object.ai.mother.state = MOTHER_SPIT;
 				object.ai.mother.timer = 0;
@@ -144,10 +141,10 @@ void CObjectAI::mother_ai( CObject& object, bool hardmode )
 			}
 			else
 			{
-				newobject.spawn(object.getXPosition()-(16<<STC), object.getYPosition()+(11<<STC), OBJ_FIREBALL, 3);
+				newobject.spawn(object.getXLeftPos()-1, object.getYPosition()+(11<<STC), OBJ_FIREBALL, 3, LEFT);
 				newobject.ai.ray.direction = LEFT;
 			}
-
+			newobject.ai.ray.owner = object.m_index;
 			m_Objvect.push_back(newobject);
 
 			if (object.onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, object.scrx);

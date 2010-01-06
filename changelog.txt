@@ -4,6 +4,13 @@ Commander Genius Release (CloneKeenPlus):
 v0.3.1.0:
 ---------
 
+06-01-2010
+- New collision system which now is shared with all foes and the player
+- improved some AI (Tulip). Some are still missing
+- fixed memory leaks
+- fixed other issues and crashes
+- Small speed up!
+
 30-12-2009
 - Added more Keen4 code and fixed errors with the huffman decompression
 - Fixed AI Bugs of baby-vorticon

@@ -11,7 +11,7 @@
 void CObjectAI::vort_ai(CObject &object, int level, int episode, char difficulty, bool dark)
 {
 	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
-	bool bonk,kill;
+	bool kill;
 
 	 if (object.needinit)
 	 {  // first time initialization
@@ -114,17 +114,11 @@ void CObjectAI::vort_ai(CObject &object, int level, int episode, char difficulty
 			 object.ai.vort.state = VORT_LOOK;
 			 goto vort_reprocess;
 		 }
+
 		 // check if the vorticon has bonked into a ceiling, if so,
 		 // immediately terminate the jump
-		 bonk = false;
-	 
-		 if (TileProperty[mp_Map->at((object.getXLeftPos())>>CSF, (object.getYUpPos() )>>CSF)].bdown) bonk = true;
-		 else if (TileProperty[mp_Map->at((object.getXRightPos())>>CSF, (object.getYUpPos() )>>CSF)].bdown) bonk = true;
-	 
-		 if (bonk && object.ai.vort.inertiay < 0)
-		 {
+		 if (object.blockedu && object.ai.vort.inertiay < 0)
 			 object.ai.vort.inertiay = 0;
-		 }
 	 
 		 // apply Y inertia
 		 object.moveYDir(object.ai.vort.inertiay);

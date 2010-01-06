@@ -243,7 +243,7 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 			}
 			else
 			{
-				newobject.spawn(object.getXLeftPos()-(RaySprite.getWidth()<<STC)-1, object.getYPosition()+(9<<STC), OBJ_RAY, m_Episode);
+				newobject.spawn(object.getXLeftPos()-1, object.getYPosition()+(9<<STC), OBJ_RAY, m_Episode, LEFT);
 				newobject.ai.ray.direction = LEFT;
 			}
 			newobject.ai.ray.owner = object.m_index;

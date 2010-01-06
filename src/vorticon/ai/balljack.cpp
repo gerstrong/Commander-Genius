@@ -146,23 +146,13 @@ bool CObjectAI::BJ_BlockedD(CObject &object)
 	// we do our own blockedd, because we don't want the ball/jack to
 	// bounce off the top of platforms that have only solidfall set--
 	// so we test blockedd against solidl/r instead
-	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
-
 	if (object.blockedd)
-	{
-		// ensure that the tile common_enemy_ai said we hit also has
+	{	// ensure that the tile common_enemy_ai said we hit also has
 		// solid l/r set
-		if (TileProperty[mp_Map->at((object.getXLeftPos())>>CSF, (object.getYDownPos())>>CSF)].bleft)
+		if(object.blockedl)
 		{ return true; }
-		if (TileProperty[mp_Map->at((object.getXRightPos())>>CSF, (object.getYDownPos())>>CSF)].bleft)
+		if(object.blockedr)
 		{ return true; }
 	}
-
-	// ensure it's not a ball no-pass point
-	if (mp_Map->getObjectat((object.getXLeftPos())>>CSF, (object.getYDownPos())>>CSF)==BALL_NOPASSPOINT)
-	{ return true; }
-	if (mp_Map->getObjectat((object.getXRightPos())>>CSF, (object.getYDownPos())>>CSF)==BALL_NOPASSPOINT)
-	{ return true; }
-
 	return false;
 }

@@ -164,7 +164,7 @@ void CObjectAI::baby_ai(CObject &object, int episode, bool hard)
 			}
 			else
 			{
-				object.moveXDir(BABY_WALK_SPEED);
+				object.moveRight(BABY_WALK_SPEED);
 			}
 		}
 		else
@@ -177,7 +177,7 @@ void CObjectAI::baby_ai(CObject &object, int episode, bool hard)
 			}
 			else
 			{
-				object.moveXDir(BABY_WALK_SPEED);
+				object.moveLeft(BABY_WALK_SPEED);
 				object.inhibitfall = 1;
 			}
 		}

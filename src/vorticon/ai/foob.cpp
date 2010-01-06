@@ -23,8 +23,8 @@ enum FOOB_ACTIONS{
 
 #define FOOB_EXPLODE_ANIM_RATE  8
 
-#define FOOB_SPOOK_TIME         10
-#define FOOB_RELAX_TIME         50
+#define FOOB_SPOOK_TIME         80
+#define FOOB_RELAX_TIME         400
 
 #define FOOB_WALK_LEFT_FRAME    93
 #define FOOB_WALK_RIGHT_FRAME   95
@@ -34,7 +34,7 @@ enum FOOB_ACTIONS{
 
 void CObjectAI::foob_ai(CObject &object, bool hardmode)
 {
-	int onsamelevel;
+	bool onsamelevel;
 	if (object.needinit)
 	{
 		object.ai.foob.state = FOOB_WALK;
@@ -68,15 +68,15 @@ void CObjectAI::foob_ai(CObject &object, bool hardmode)
 	}
 
 	// find out if a player is on the same level as the foob cat
-	onsamelevel = 0;
+	onsamelevel = false;
 
 	std::vector<CPlayer>::iterator it_player = m_Player.begin();
 	for( ; it_player != m_Player.end() ; it_player++ )
 	{
-		if ( (it_player->getYPosition() >= object.getYPosition()-(24<<STC)) &&
-			(it_player->getYDownPos() <= object.getYPosition()+(24<<STC)) )
+		if ( (it_player->getYUpPos() >= object.getYUpPos()-(2<<CSF)) &&
+			(it_player->getYDownPos() <= object.getYDownPos()+(1<<CSF)) )
 		{
-			onsamelevel = 1;
+			onsamelevel = true;
 			object.ai.foob.SpookedByWho = it_player->m_player_number;
 			break;
 		}

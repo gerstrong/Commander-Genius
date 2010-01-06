@@ -49,7 +49,7 @@ void CObjectAI::fireball_ai(CObject &object, bool hard)
 
 		if (it_obj->canbezapped)
 		{
-			if (it_obj->hitdetect(object))
+			if (it_obj->hitdetect(object) && object.ai.ray.owner != it_obj->m_index)
 			{
 				object.m_type = OBJ_RAY;
 				object.ai.ray.state = RAY_STATE_SETZAPZOT;

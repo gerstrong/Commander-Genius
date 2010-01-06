@@ -187,8 +187,9 @@ void CHighScores::processWriting()
 
 
 	int x = (m_Episode == 3) ? 69 : 40;
-	if(m_blink)	g_pGfxEngine->getFont().drawFont(sfc, m_Name[m_Place]+"_",x,56+(m_Place<<4), LETTER_TYPE_RED);
-	else g_pGfxEngine->getFont().drawFont(sfc, m_Name[m_Place]+" ",x,56+(m_Place<<4), LETTER_TYPE_RED);
+	int y = (m_Episode == 2) ? 56 : 52;
+	if(m_blink)	g_pGfxEngine->getFont().drawFont(sfc, m_Name[m_Place]+"_",x, y+(m_Place<<4), LETTER_TYPE_RED);
+	else g_pGfxEngine->getFont().drawFont(sfc, m_Name[m_Place]+" ",x, y+(m_Place<<4), LETTER_TYPE_RED);
 
 	if(m_blinkctr > BLINK_TIME){
 		m_blinkctr = 0;

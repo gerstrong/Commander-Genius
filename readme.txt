@@ -25,7 +25,8 @@ data files to work. You can play all three episodes of the game and
 some fanmade mods.
 
 Commander Genius currently runs under Linux/X11, Windows 
-and MacOS X with SDL. Also portable systems are supported (Wiz)  
+and MacOS X with SDL. Also portable systems are supported 
+like Wiz, GP2X and iPhone  
 
 Commander Genius tries to mostly replicate the original game,
 however there are also a number of improvements like:
@@ -33,9 +34,11 @@ however there are also a number of improvements like:
 - MMX Support
 - OpenGL Acceleration (through Hardware on some systems)
 - better graphic effects (transparency, fading)
-- 2-player support (still very incomplete)
+- Multiplayer support
 - high quality packs (for better and more sounds and ingame music)
 - games menu that allows choosing which one to play
+- ingame-Menu
+- Savestyle like in Commander Keen Galaxy Series (No more old nasty numbering slots!)
 - gamepad support (for using your input devices as you want)
 - built in patch system for mods (WIP)
 - better logics like keystacking
@@ -48,13 +51,18 @@ stage of completeness.
 
 Commander Genius is a new edition of CloneKeenPlus.
 The reason we call it is because this version is compiled
-with GNU C++ (previously GNU C). Some functions are 
-now classes. The idea behind that is to provide a faster
-and more stable program. Features like the implementation
-of resolution changes was achieved through classes. 
+with GNU C++ (previously GNU C) and has a different Engine. 
+Some functions are now classes. 
+The idea behind that is to provide a faster and more 
+stable program. Features like the implementation
+of resolution changes was achieved through that engine. 
 Although the program itself looks very similar 
 the skeleton of the program is very different 
-to the one of CloneKeen. 
+to the one of CloneKeen.
+
+In fact the only code that remains of CloneKeen are the
+enemy AI, altough they have been heavily modified. I would
+say, that 5% of CloneKeen Code is in Commander Genius.
 
 The Commander Genius source code may be freely distributed and
 modified as per the GPL, just please remember to give
@@ -63,20 +71,20 @@ credit to the original authors.
 Setting up the data of the game:
 
  * Copy all of the data files from the original game(s) into the
-   "./data/games" folder. This means all of the files with the extension
-   .ck?. If you have the registered versions, you can play the whole game,
-   otherwise download the shareware version and copy the data from it.
-   You also can use mods.  In Macintosh you can find this folder by right
-   clicking on the game and clicking open package then going into resources.
- * If you want to use some patched mods, you can put them into subdirectories.
-   You only have to modify the "games.cfg" which can be found in the
-   "./data/games" folder along with the Keen 1 files. 
+   "./games" folder. If you have the registered versions, 
+   you can play all episodes, otherwise download the shareware version 
+   and copy the data from it. You also can use mods.  In Macintosh you 
+   can find this folder by right clicking on the game and clicking 
+   open package then going into resources.  If you have a bundled version, 
+   you already should be able to play episode 1.
+   NOTE: to start CG you need at least Episode 1!
+ * If you want to use some patched mods just copy them into a subfolder of "./games". 
  * Go into the Release folder and start the interpreter. If you have downloaded 
    the binary version of Commander Genius (for Windows, Linux32/64), then you 
    will find the executable in the root directory of the extracted game.
-   Under Linux it is called "CommanderGenius", under Windows "CGenius.exe".    
+   Under Linux it is called "CGenius", under Windows "CGenius.exe".    
  * If you want better sounds and music, please download the high quality pack (HQP).
-   Extract its contents to the "data" directory together with your game data.
+   Read that readme of HQP for more information how to use those resources.
  * If your monitor and graphic card support a special resolution, you can add it by
    modifying "resolutions.cfg" with your favorite text-editor, it can be found in the
    "./data" folder and you simply have to add in resolutions as "width"x"height"x"depth"
@@ -84,9 +92,9 @@ Setting up the data of the game:
  
 Howto use Commander Genius (If you didn't compile it):
  * Go to the game directory.
- * Under Windows you start "cgenius.exe", under Linux "./CommanderGenius"
+ * Under Windows you start "CGenius.exe", under Linux "./CGenius"
 
-Howto compile it under Ubuntu (testet on Jaunty):
+Howto compile it under Ubuntu (testet on Karmic):
  * This is based on the source code that we provide on our website
  * As I know which packages are needed, because I use Ubuntu, here is an extra guide. 
  * Install through Synaptic or "sudo apt-get install" following packages:
@@ -95,19 +103,22 @@ Howto compile it under Ubuntu (testet on Jaunty):
  	- libsdl1.2-dev
  	- libgl1-mesa-dev
  * extract my source code into "CGenius".
- * cd into the "CGenius/Release" subdirectory.
+ * cd into the "CGenius/Linux32" or "CGenius/Linux64" subdirectory depending on your system.
  * Run "make".
  * Then, you can run "CommanderGenius". Copy the files, wherever you want them together 
    with the data directory. "make install" does not work though.
+ * We also provide CMake for wiz. If you want to compile it for embedded systems.
+   We had support for Linux and Win32, but since there is a bug when build, for
+   different Linux build (32-bit or 64-bit) we only use it for embedded systems.
 
 Compiling CG on Linux/UNIX (other than Ubuntu):
- * If you want to compile the game, you need to have all the standard .
+ * If you want to compile the game, you need to have all the standard
    development libraries and GNU C Compiler (at least version 4) installed 
    on your system.
  * You need to install the "vorbis", "SDL" and "Mesa/OpenGL" development libraries to get 
    it successfully compiled.
- * extract my source code to "ckp". 
- * cd into the "ckp/Release" subdirectory.
+ * extract my source code to "cgenius". 
+ * cd into the "cgenius/Release" subdirectory.
  * Run "make".
  * Then, you can run "CommanderGenius". Copy the files, 
    wherever you want them together with the data directory. 
@@ -121,22 +132,14 @@ you want to support other resolutions that you don't find in the options list ju
 "resolutions.cfg" file by hand. CG always reads this file and checks whether your card and 
 monitor support it.
 
-Caution: This is recommended for advanced users who know what they do. The team won't take 
-responsabilities if you use a wrong configuration. If you want to see other resolutions to 
+CAUTION: This is recommended for advanced users who know what they do. The team won't take 
+responsibilities if you use a wrong configuration. If you want to see other resolutions to 
 in future versions of CG, mail us ;-).
 
 - GAME PLAY -
 Before you play the game, you should take a look at the controls. Normally LAlt, Ctrl, Space and Enter
 are the action keys. You can also assign joystick buttons and axes to those actions.
 
-There are some keys, which cannot be changed and are part of the game
-
-KEY        	ACTION             DESCRIPTION
-LALT+Q	   				       Both Keys make you quit the game. Depending where you are in the game
-LALT+F4		quit			   it will ask you, if you really want that
-LALT+Enter	fullscreen/        This will change between fullscreen and window-mode
-            windows			   
-   
 - CHEAT CODES -
 There are a full assortment of cheat codes available. Some cheats must first
 be enabled with -cheat or through the options->game menu. C+T+SPACE and G+O+D will
@@ -151,18 +154,12 @@ TAB			No clipping		   If you hold down this key you will disable clipping.
 							   However, you cannot fall though floors. 
 
 - SAVE/LOAD GAME -
-The game can be saved by pressing F3 at any point during the game. The game will
-be saved in the exact position it was left (unlike the original which only
+The game can be saved by pressing F3 at any point during the game or using the menu.
+The game will be saved in the exact position it was left (unlike the original which only
 allowed save at the map).
 
 - DEMO -
-Demo doesn't work until you record some. If you want to do that start the interpreter with "-rec" as argument.
-For example: "CGenius.exe -rec -game1 -level01" and you should be off to go recording in game 1 level 1.
-
-When you exit, the demo should be recorded. Restart the interpreter/game and wait a while at 
-the tile screen and the game will cycle through several demos, an added feature not found on the original game.
-
-You can also see them using the demo option in the main menu. Have fun!
+This feature is disabled for now, but we hope to reenable it soon!
 
 - FAQ -
 Q: When I change to opengl-mode, the screen gets white and I can't do anything! I have to kill the program.
@@ -179,25 +176,26 @@ A: Because it requires more memory to write, and the game would get slower than 
    support it. 
 
 Q: Commander Genius is slow? Please help!
-A: You can increase the frameskip under settings->video or you can enable automatic frameskip, what is very
+A: You can increase the frameskip under settings->video what is very
    recommended for any system. OpenGL may also help, but you must have a gfx-card that support NPOT-Textures.
    (OpenGL 2.0 or later). Try to lower the resolution, a lower filter, or decrease some stuff in the sound section.
    Stereo sound requires additional calculations than mono sound. There are many things you can do, to speed up
    the program.
 
 - BUG! -
-So you really found one or more bugs? Please report me those per e-mail (gerstrong@gmail.com)
-and they will be checked. You can also submit them through the bug tracker at Sourceforge.net.
+So you really found one or more bugs? Please report me those per e-mail (gerstrong@gmail.com) or at
+the SourceForge.Net Trac system we offer and they will be checked by all of us. 
 Depending on the priority, I'm going to fix them as soon as possible. 
-Sending me the "CGLog.html" file might help tracking the error.
+Sending me the "CGLog.html" or "stdout.txt" file might help tracking the error.
 
 - ACKNOWLEDGEMENTS -
 Many thanks to people who has helped me so far in this project with their
 suggestions:
 
-
 Sciz CT
 DSL (Nice icon contribution)
+Motorfingers
+Chrisfischtopher
 Commander Spleen
 Napalm (More Keen Data Structure Information)
 Malvineous
@@ -206,8 +204,11 @@ Levellass (Keen EXE-Information)
 ZidaneA (For his music tracks!)
 Iv4n
 
-Also many special thanks to Tulip who has been supporting me all the time in testing
-the Windows version of CKP. Without you it wouldn't be so great now! 
+Also many special thanks to Martin Hauber (Tulip) who has been supporting me all the time in testing
+the Windows version of CKP. Without you it wouldn't be so great now!
+
+And very special thanks to Chad Ian Anderson (Pizza2004), Scott (Pickle) and Albert Zeyer
+for his changes. They helped us a lot on the code. 
 
 I'm sure, there were more people who helped me and I forgot to mention, but
 many thanks to them, too.

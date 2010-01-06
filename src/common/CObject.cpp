@@ -491,6 +491,10 @@ void CObject::processFalling()
 	// make object fall if it must
 	const int OBJFALLSPEED = 160;
 
+	// For jumping or flying objects. Yorps sometimes uses that for small jumps
+	if(yinertia < 0)
+		moveUp(-yinertia);
+
 	if (!inhibitfall)
 	{
 		// So it reaches the maximum of fallspeed
