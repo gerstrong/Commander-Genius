@@ -256,8 +256,6 @@ void CGameControl::process()
 
 			if( m_Episode > 0 ) // The game has to have a valid episode!
 			{
-				g_pGfxEngine->Del();
-
 				// Load the Resources
 				if( loadResources( m_Episode, m_DataDirectory ) )
 				{
@@ -310,8 +308,6 @@ void CGameControl::process()
 		// NOTE: Demo is not part of playgame anymore!!
 		if(mp_PassiveMode->getchooseGame())
 		{
-			g_pGfxEngine->Del();
-
 			// TODO: Some of game resources are still not cleaned up here!
 			init( GAMELAUNCHER );
 			return;
