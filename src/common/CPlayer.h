@@ -80,6 +80,7 @@ public:
 	void raygun();
 	void ankh();
 	void bump( int pushamt, bool solid );
+	void checkSolidDoors();
 	void SelectFrame();
 	int pollLevelTrigger();
 
@@ -137,8 +138,6 @@ public:
 	unsigned char pwalkincreasetimer, pfriction_timer_x, pfriction_timer_y;
 	signed int pinertia_x, playpushed_x;
 	unsigned char playpushed_decreasetimer;
-
-	unsigned int blockedby;
 
 	unsigned char pjumping, pjumptime, pjumpupspeed_decrease, pjumpdir;
 	unsigned char pjumpframe, pjumpanimtimer;

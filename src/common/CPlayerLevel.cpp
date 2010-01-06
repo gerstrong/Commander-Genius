@@ -55,6 +55,8 @@ void CPlayer::processInLevel(const bool &platextending)
 		if(!pfrozentime)
 			playpushed();
 
+		checkSolidDoors();
+
 		InertiaAndFriction_X();
 		
 		TogglePogo_and_Switches(platextending);
@@ -829,6 +831,34 @@ void CPlayer::bump( int pushamt, bool solid )
 	if (!pjumping)
 		pdir = pshowdir = (pushamt<0) ? LEFT : RIGHT;
 }
+
+void CPlayer::checkSolidDoors()
+{
+	int mx1 = getXLeftPos()>>CSF;
+	int mxmid = getXMidPos()>>CSF;
+	int mx2 = getXRightPos()>>CSF;
+	int my1 = getYUpPos()>>CSF;
+	int mymid = getYMidPos()>>CSF;
+	int my2 = getYDownPos()>>CSF;
+	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
+
+	if( (TileProperty[mp_map->at(mx1 ,mymid)].behaviour>1 &&
+			TileProperty[mp_map->at(mx1 ,mymid)].behaviour<6 ) ) {
+		blockedl = true;	}
+
+	if( (TileProperty[mp_map->at(mx2 ,mymid)].behaviour>1 &&
+			TileProperty[mp_map->at(mx2 ,mymid)].behaviour<6 ) ) {
+		blockedr = true;	}
+
+	if( (TileProperty[mp_map->at(mxmid ,my1)].behaviour>1 &&
+			TileProperty[mp_map->at(mxmid ,my1)].behaviour<6 ) ) {
+		blockedd = true;	}
+
+	if( (TileProperty[mp_map->at(mxmid ,my2)].behaviour>1 &&
+			TileProperty[mp_map->at(mxmid ,my2)].behaviour<6 ) ) {
+		blockedu = true;	}
+}
+
 
 int CPlayer::pollLevelTrigger()
 {
