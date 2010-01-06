@@ -14,8 +14,8 @@ enum garg_states{
 #define GARG_WALK_ANIM_TIME_FAST    7
 #define GARG_CHARGE_SPEED           73
 #define GARG_CHARGE_ANIM_TIME       7
-#define GARG_JUMP_HEIGHT            160
-#define GARG_JUMP_SPEED				12
+#define GARG_JUMP_TIME       		160
+#define GARG_JUMP_SPEED				48
 
 #define GARG_LOOK_TIME  17
 #define GARG_NUM_LOOKS  3
@@ -173,24 +173,6 @@ void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 			{  // garg is walking left
 				object.sprite = GARG_WALK_LEFT + object.ai.garg.walkframe;
 
-				// do not go left if:
-				// * we are blockedl, or
-				// * there is empty space for two tiles ahead at floor level,
-				//   and there is not a solid block 1-2 tiles ahead at wall level
-				//not_about_to_fall1 = tiles[getmaptileat((object.x>>CSF)-1, (object.y>>CSF)+sprites[GARG_WALK_LEFT].ysize+2)].solidfall;
-				//not_about_to_fall2 = tiles[getmaptileat((object.x>>CSF)-17, (object.y>>CSF)+sprites[GARG_WALK_LEFT].ysize+2)].solidfall;
-				//GotoLook = 0;
-				//if (object.blockedl)
-					//GotoLook = 1;
-				//else if (!(not_about_to_fall1 || not_about_to_fall2))
-				//{
-                //    blocked_ahead1 = tiles[getmaptileat((object.x>>CSF)-16, (object.y>>CSF)+20)].solidr;
-				//	blocked_ahead2 = tiles[getmaptileat((object.x>>CSF)-28, (object.y>>CSF)+20)].solidr;
-				//	if (!blocked_ahead1 && !blocked_ahead2)
-						//GotoLook = 1;
-				//}
-
-
 				if (!object.blockedl)
 				{
 					if (hardmode)
@@ -234,21 +216,19 @@ void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 			} else object.ai.garg.timer++;
 			break;
 		case GARG_JUMP:
-			if( object.ai.garg.jumpheight > 0 )
-				object.ai.garg.jumpheight--;
+			if( object.ai.garg.jumptime > 0 )
+				object.ai.garg.jumptime--;
 			else
 				object.ai.garg.state = GARG_CHARGE;
 
-			if(TileProperty[mp_Map->at((object.getXPosition())>>CSF, (object.getYDownPos()+1)>>CSF)].bdown) // There is floor
+			if(TileProperty[mp_Map->at((object.getXMidPos())>>CSF, (object.getYDownPos()+1)>>CSF)].bup) // There is floor
 				object.ai.garg.state = GARG_CHARGE;
 			else
 			{
-				//if(object.y > GARG_JUMP_SPEED )
-					//object.y-=GARG_JUMP_SPEED;
-				// TODO: That does not make any sense. Fix it!
+				object.moveUp(GARG_JUMP_SPEED);
 			}
-			break;
 
+		// In this case continue with charge
 		case GARG_CHARGE:
 			if (object.ai.garg.movedir==LEFT)
 			{  // garg is charging left
@@ -264,20 +244,13 @@ void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 					object.ai.garg.timer = 0;
 					object.ai.garg.state = GARG_LOOK;
 				}
-
-				// if Garg is about to fall while charged make him jump
-				/*if( !TileProperty[mp_Map->at((object.x+garg_width/2)>>CSF, (object.y+garg_height+1)>>CSF)].bdown )
-				{
-					object.ai.garg.state = GARG_JUMP;
-					object.ai.garg.jumpheight = GARG_JUMP_HEIGHT;
-				}*/
 			}
 			else
 			{  // garg is charging right
 				object.sprite = GARG_WALK_RIGHT + object.ai.garg.walkframe;
 				if (!object.blockedr)
 				{
-					object.moveLeft(GARG_CHARGE_SPEED);
+					object.moveRight(GARG_CHARGE_SPEED);
 					object.ai.garg.dist_traveled++;
 				}
 				else
@@ -286,13 +259,13 @@ void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 					object.ai.garg.timer = 0;
 					object.ai.garg.state = GARG_LOOK;
 				}
+			}
 
-				// if Garg is about to fall while charged make him jump
-				/*if( !TileProperty[mp_Map->at((object.x+garg_width/2)>>CSF, (object.y+garg_height+1)>>CSF)].bdown )
-				{
-					object.ai.garg.state = GARG_JUMP;
-					object.ai.garg.jumpheight = GARG_JUMP_HEIGHT;
-				}*/
+			// if Garg is about to fall while charged make him jump
+			if( !TileProperty[mp_Map->at((object.getXMidPos())>>CSF, (object.getYDownPos()+1)>>CSF)].bup )
+			{
+				object.ai.garg.state = GARG_JUMP;
+				object.ai.garg.jumptime = GARG_JUMP_TIME;
 			}
 
 			// walk animation

@@ -39,33 +39,35 @@ void  CObjectAI::butler_ai(CObject &object, char difficulty)
 		 object.ai.butler.animtimer = 0;
 		 object.canbezapped = 1;  // will stop bullets but are not harmed
 		 object.needinit = 0;
-		 object.moveDown(8);
+		 //object.moveDown(8);
 	 }
+
 	 // push keen
-     if (object.touchPlayer && !m_Player[object.touchedBy].pdie)
+	 CPlayer &touched_player = m_Player[object.touchedBy];
+     if (object.touchPlayer && !touched_player.pdie)
      {
-    	 if(!((m_Player[0].pdir == object.ai.butler.movedir) && (m_Player[0].pwalking)))
+    	 if(!((touched_player.pdir == object.ai.butler.movedir) && (touched_player.pwalking)))
     	 {
     		 g_pSound->playStereofromCoord(SOUND_YORP_BUMP, PLAY_NORESTART, object.scrx);
 	 
     		 short butlerpushamount;
     		 butlerpushamount = BUTLERPUSHAMOUNT;
 	 
-    		 if(m_Player[0].pwalking) butlerpushamount = 3*BUTLERPUSHAMOUNT/2;
+    		 if(touched_player.pwalking) butlerpushamount = 3*BUTLERPUSHAMOUNT/2;
 	 
-    		 if (m_Player[0].getXPosition() < object.getXPosition())
+    		 if (touched_player.getXPosition() < object.getXPosition())
     		 {
-    			 m_Player[object.touchedBy].playpushed_x = -butlerpushamount;
-    			 if (difficulty>1) m_Player[object.touchedBy].playpushed_x -= BUTLERPUSHAMOUNTFAST;
-    			 m_Player[object.touchedBy].playpushed_decreasetimer = 0;
-    			 m_Player[object.touchedBy].pdir = m_Player[object.touchedBy].pshowdir = LEFT;
+    			 touched_player.playpushed_x = -butlerpushamount;
+    			 if (difficulty>1) touched_player.playpushed_x -= BUTLERPUSHAMOUNTFAST;
+    			 touched_player.playpushed_decreasetimer = 0;
+    			 touched_player.pdir = touched_player.pshowdir = LEFT;
     		 }
     		 else
     		 {
-    			 m_Player[object.touchedBy].playpushed_x = butlerpushamount;
-    			 if (difficulty>1) m_Player[object.touchedBy].playpushed_x += BUTLERPUSHAMOUNTFAST;
-    			 m_Player[object.touchedBy].playpushed_decreasetimer = 0;
-    			 m_Player[object.touchedBy].pdir = m_Player[object.touchedBy].pshowdir = RIGHT;
+    			 touched_player.playpushed_x = butlerpushamount;
+    			 if (difficulty>1) touched_player.playpushed_x += BUTLERPUSHAMOUNTFAST;
+    			 touched_player.playpushed_decreasetimer = 0;
+    			 touched_player.pdir = touched_player.pshowdir = RIGHT;
     		 }
     	 }
      }
@@ -84,7 +86,7 @@ void  CObjectAI::butler_ai(CObject &object, char difficulty)
 		 stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 		 if (object.ai.butler.movedir==LEFT)
 		 {  // move left
-			 not_about_to_fall = TileProperty[mp_Map->at((object.getXLeftPos()-(BUTLER_LOOK_AHEAD_DIST<<STC))>>CSF, (object.getYDownPos())>>CSF)].bup;
+			 not_about_to_fall = TileProperty[mp_Map->at((object.getXLeftPos()-(BUTLER_LOOK_AHEAD_DIST<<STC))>>CSF, (object.getYDownPos()+1)>>CSF)].bup;
 			 object.sprite = BUTLER_WALK_LEFT_FRAME + object.ai.butler.frame;
 			 if (!object.blockedl && not_about_to_fall)
 			 {
@@ -105,7 +107,7 @@ void  CObjectAI::butler_ai(CObject &object, char difficulty)
 		 else
 		 {  // move right
 	 
-			 not_about_to_fall = TileProperty[mp_Map->at((object.getXRightPos()+(BUTLER_LOOK_AHEAD_DIST<<STC))>>CSF, (object.getYDownPos())>>CSF)].bup;
+			 not_about_to_fall = TileProperty[mp_Map->at((object.getXRightPos()+(BUTLER_LOOK_AHEAD_DIST<<STC))>>CSF, (object.getYDownPos()+1)>>CSF)].bup;
 			 object.sprite = BUTLER_WALK_RIGHT_FRAME + object.ai.butler.frame;
 			 if (!object.blockedr && not_about_to_fall)
 			 {

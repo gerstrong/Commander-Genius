@@ -41,8 +41,6 @@ void CObjectAI::autoray_ai(CObject &Object)
 			NewRay.ai.ray.direction = RIGHT;
 		}
 
-		printf("objs: %d\n", m_Objvect.size() );
-
 		m_Objvect.push_back(NewRay);
 
 		if (Object.onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, Object.scrx);
