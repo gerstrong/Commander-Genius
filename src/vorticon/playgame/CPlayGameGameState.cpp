@@ -39,7 +39,7 @@ bool CPlayGame::loadGameState()
 		m_Object.clear();
 
 		// Recreate the Players and tie them to the objects
-		createPlayerObjects();
+		//createPlayerObjects();
 
 		m_level_command = START_LEVEL;
 		g_pMusicPlayer->stop();
@@ -52,13 +52,6 @@ bool CPlayGame::loadGameState()
 		for( short i=0 ; i<m_NumPlayers ; i++ ) {
 			CPlayer Player(m_Episode, m_Level, m_Difficulty,
 					 i, mp_level_completed, mp_option, m_Object, m_Map);
-			CObject object(&m_Map, m_NumPlayers);
-		    object.exists = true;
-			object.onscreen = true;
-			object.honorPriority = true;
-			object.m_type = OBJ_PLAYER;
-			m_Object.push_back(object);
-			Player.setDatatoZero();
 			m_Player.push_back(Player);
 		}
 
@@ -69,7 +62,11 @@ bool CPlayGame::loadGameState()
 			int x, y;
 			m_SavedGame.decodeData(x);
 			m_SavedGame.decodeData(y);
-			player->moveTo(x,y);
+			m_SavedGame.decodeData(player->blockedd);
+			m_SavedGame.decodeData(player->blockedu);
+			m_SavedGame.decodeData(player->blockedl);
+			m_SavedGame.decodeData(player->blockedr);
+			player->moveToForce((x>>CSF)<<CSF,(y>>CSF)<<CSF);
 			m_SavedGame.decodeData(player->inventory);
 		}
 
@@ -80,21 +77,24 @@ bool CPlayGame::loadGameState()
 		m_SavedGame.decodeData(size);
 		for( Uint32 i=0 ; i<size ; i++) {
 			// save all the objects states
-			CObject object(&m_Map, m_NumPlayers, i);
+			CObject object(&m_Map, i);
 
 			m_SavedGame.decodeData(object.m_type);
 			m_SavedGame.decodeData(x);
 			m_SavedGame.decodeData(y);
-			object.moveTo(x,y);
-			//object.new_x = object.x;
-			//object.new_y = object.y;
+			object.moveToForce((x>>CSF)<<CSF,(y>>CSF)<<CSF);
 			m_SavedGame.decodeData(object.dead);
 			m_SavedGame.decodeData(object.needinit);
 			m_SavedGame.decodeData(object.onscreen);
 			m_SavedGame.decodeData(object.hasbeenonscreen);
 			m_SavedGame.decodeData(object.exists);
+			m_SavedGame.decodeData(object.blockedd);
+			m_SavedGame.decodeData(object.blockedu);
+			m_SavedGame.decodeData(object.blockedl);
+			m_SavedGame.decodeData(object.blockedr);
 			m_SavedGame.decodeData(object.zapped);
 			m_SavedGame.decodeData(object.canbezapped);
+			m_SavedGame.decodeData(object.cansupportplayer);
 			m_SavedGame.decodeData(object.inhibitfall);
 			m_SavedGame.decodeData(object.honorPriority);
 			m_SavedGame.decodeData(object.sprite);
@@ -150,6 +150,10 @@ bool CPlayGame::saveGameState()
 	for( i=0 ; i<m_NumPlayers ; i++ ) {
 		m_SavedGame.encodeData(m_Player[i].getXPosition());
 		m_SavedGame.encodeData(m_Player[i].getYPosition());
+		m_SavedGame.encodeData(m_Player[i].blockedd);
+		m_SavedGame.encodeData(m_Player[i].blockedu);
+		m_SavedGame.encodeData(m_Player[i].blockedl);
+		m_SavedGame.encodeData(m_Player[i].blockedr);
 		m_SavedGame.encodeData(m_Player[i].inventory);
 	}
 
@@ -166,8 +170,13 @@ bool CPlayGame::saveGameState()
 		m_SavedGame.encodeData(m_Object[i].onscreen);
 		m_SavedGame.encodeData(m_Object[i].hasbeenonscreen);
 		m_SavedGame.encodeData(m_Object[i].exists);
+		m_SavedGame.encodeData(m_Object[i].blockedd);
+		m_SavedGame.encodeData(m_Object[i].blockedu);
+		m_SavedGame.encodeData(m_Object[i].blockedl);
+		m_SavedGame.encodeData(m_Object[i].blockedr);
 		m_SavedGame.encodeData(m_Object[i].zapped);
 		m_SavedGame.encodeData(m_Object[i].canbezapped);
+		m_SavedGame.encodeData(m_Object[i].cansupportplayer);
 		m_SavedGame.encodeData(m_Object[i].inhibitfall);
 		m_SavedGame.encodeData(m_Object[i].honorPriority);
 		m_SavedGame.encodeData(m_Object[i].sprite);

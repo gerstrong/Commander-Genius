@@ -43,7 +43,8 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 
 		// if we shoot directly up against a wall have
 		// the ZAP appear next to the wall, not in it
-		if (object.blockedr || object.blockedl)
+		if ( ( object.blockedr && object.ai.ray.direction == RIGHT ) ||
+				( object.blockedl && object.ai.ray.direction == LEFT ))
 		{
 			object.ai.ray.state = RAY_STATE_SETZAPZOT;
 			g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, object.scrx);
@@ -107,7 +108,7 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 					}
 					else
 					{ // still could be by another player
-						if(m_Player[object.touchedBy].m_player_number != object.ai.ray.owner)
+						if(m_Player[object.touchedBy].m_index != object.ai.ray.owner)
 						{
 							if (object.ai.ray.dontHitEnable==0 || object.ai.ray.dontHit!=OBJ_PLAYER)
 							{

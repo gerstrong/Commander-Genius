@@ -13,6 +13,8 @@
 #include <vector>
 #include "../graphics/CGfxEngine.h"
 
+#define MAX_PLAYERS 4
+
 // Reference to palette.c
 char pal_addcolor(unsigned char r, unsigned char g, unsigned char b);
 int pal_getcolor(unsigned char r, unsigned char g, unsigned char b);

@@ -60,7 +60,7 @@ public:
 
 	void setupPlayers();
 	bool init();
-	void createPlayerObjects();
+	//void createPlayerObjects();
 
 	// Game states
 	bool loadGameState();

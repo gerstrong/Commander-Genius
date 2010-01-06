@@ -106,36 +106,39 @@ void CSprite::setBouncingBoxCoordinates( Uint16 bboxx1, Uint16 bboxy1, Uint16 bb
 	m_bboxY2 = bboxy2;
 }
 
-void CSprite::copy( CSprite *Destination, SDL_Color *Palette )
+void CSprite::copy( CSprite &Destination, SDL_Color *Palette )
 {
-	Destination->m_bboxX1 = m_bboxX1;
-	Destination->m_bboxY1 = m_bboxY1;
-	Destination->m_bboxX2 = m_bboxX2;
-	Destination->m_bboxY2 = m_bboxY2;
-	Destination->setSize(m_xsize, m_ysize);
+	Destination.m_bboxX1 = m_bboxX1;
+	Destination.m_bboxY1 = m_bboxY1;
+	Destination.m_bboxX2 = m_bboxX2;
+	Destination.m_bboxY2 = m_bboxY2;
+	Destination.setSize(m_xsize, m_ysize);
 	
-	Destination->createSurface( m_surface->flags, Palette );
+	Destination.createSurface( m_surface->flags, Palette );
 	
-	SDL_FillRect(Destination->getSDLSurface(), NULL, COLORKEY);
-	SDL_BlitSurface( m_surface, NULL, Destination->getSDLSurface(), NULL);
+	SDL_FillRect(Destination.getSDLSurface(), NULL, COLORKEY);
+	SDL_BlitSurface( m_surface, NULL, Destination.getSDLSurface(), NULL);
 }
 
 // replaces all instances of color find in sprite s with
 // color replace, as long as the y is greater than miny
-void CSprite::replaceSpriteColor( Uint16 find, Uint16 replace, Uint16 miny )
+void CSprite::replaceSpriteColor( Uint32 find, Uint32 replace, Uint16 miny )
 {
 	Uint16 x,y;
-	Uint8* pixel;
+	Uint8 *pixel;
+	Uint8 bpp;
 	
 	if(SDL_MUSTLOCK(m_surface)) SDL_LockSurface(m_surface);
 	pixel = (Uint8*) m_surface->pixels;
+	bpp = m_surface->format->BytesPerPixel;
 	for(y=miny;y<m_ysize;y++)
 	{
 		for(x=0;x<m_xsize;x++)
 		{
-			if (pixel[y*m_xsize + x] ==find)
-				pixel[y*m_xsize + x] = replace;
+			if (*pixel == find)
+				*pixel = replace;
 		}
+		pixel += bpp;
 	}
 	if(SDL_MUSTLOCK(m_surface)) SDL_UnlockSurface(m_surface);
 }

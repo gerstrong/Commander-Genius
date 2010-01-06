@@ -116,7 +116,7 @@ void CTeleporter::teleportPlayer(int objectID, CMap &map, std::vector<CObject> &
 		readTeleportDestCoordinatesEP3(objectID, map, destx, desty);
 	teleporter.ai.teleport.destx = destx>>TILE_S;
 	teleporter.ai.teleport.desty = desty>>TILE_S;
-	teleporter.ai.teleport.whichplayer = player.m_player_number;
+	teleporter.ai.teleport.whichplayer = player.m_index;
 	p_vect_object.push_back(teleporter);
 }
 
@@ -134,6 +134,6 @@ void CTeleporter::teleportPlayerFromLevel(CMap &map, std::vector<CObject> &p_vec
 	teleporter.ai.teleport.direction = TELEPORTING_SCROLL;
 	teleporter.ai.teleport.destx = destx>>TILE_S;
 	teleporter.ai.teleport.desty = desty>>TILE_S;
-	teleporter.ai.teleport.whichplayer = player.m_player_number;
+	teleporter.ai.teleport.whichplayer = player.m_index;
 	p_vect_object.push_back(teleporter);
 }

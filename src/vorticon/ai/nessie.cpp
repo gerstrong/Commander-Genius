@@ -68,7 +68,7 @@ void CObjectAI::nessie_ai(CObject& object)
 	std::vector<CPlayer>::iterator it_player = m_Player.begin();
 	for( ; it_player != m_Player.end() ; it_player++ )
 	{
-		if (object.ai.nessie.mounted[it_player->m_player_number])
+		if (object.ai.nessie.mounted[it_player->m_index])
 		{
 			int x = object.getXPosition();
 			int y = object.getYPosition();

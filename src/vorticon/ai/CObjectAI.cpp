@@ -52,7 +52,7 @@ void CObjectAI::process()
 						if (!it_player->godmode)
 						{
 							object.touchPlayer = true;
-							object.touchedBy = it_player->m_player_number;
+							object.touchedBy = it_player->m_index;
 						}
 						else
 						{

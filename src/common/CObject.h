@@ -29,7 +29,7 @@
 
 class CObject {
 public:
-	CObject(CMap *pmap, int num_players=1, int index=0);
+	CObject(CMap *pmap, int index=0);
 	
 	unsigned int m_type;        // yorp, vorticon, etc.
 	unsigned int m_index;        // Like an ID for some objects that need this implementation
@@ -121,10 +121,10 @@ public:
 	// Moving parts
 	void moveToForce(int new_x, int new_y);
 	void moveTo(int x, int y);
-	void moveXDir(int amount);
+	void moveXDir(int amount, bool force = false);
 	void moveYDir(int amount);
-	void moveLeft(int amount);
-	void moveRight(int amount);
+	void moveLeft(int amount, bool force = false);
+	void moveRight(int amount, bool force = false);
 	void moveUp(int amount);
 	void moveDown(int amount);
 

@@ -56,7 +56,7 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 		object.ai.tank.timetillcanfire = TANK2_MAX_TIME_TILL_CAN_FIRE;
 		object.ai.tank.firetimes = 0;
 		object.ai.tank.detectedPlayer = 0;
-		object.ai.tank.detectedPlayerIndex = m_Player[0].m_player_number;
+		object.ai.tank.detectedPlayerIndex = m_Player[0].m_index;
 		object.ai.tank.turnaroundtimer = 0;
 
 		object.canbezapped = 1;   // will stop bullets but is not harmed

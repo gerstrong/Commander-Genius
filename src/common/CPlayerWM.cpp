@@ -28,7 +28,7 @@ void CPlayer::processWorldMap()
 	
     if(!hideplayer && !beingteleported)	Walking();
    	WalkingAnimation();
-	
+
    	InertiaAndFriction_X();
    	InertiaAndFriction_Y();
 	
@@ -89,21 +89,42 @@ int CPlayer::getNewObject()
 bool CPlayer::isWMSolid(int xb, int yb)
 {
 	int level_coordinates;
-	
+
 	// Now check if the levels must block the player
 	level_coordinates = mp_map->getObjectat(xb>>CSF, yb>>CSF);
-	
+
 	if (level_coordinates & 0x8000)
 	{
-		if( mp_levels_completed[level_coordinates & 0x7fff] ) // check if level is done, but can be replayed
-		{	  return false;	}
-		
+		if( mp_levels_completed[level_coordinates & 0x7fff] ) // check if level is done
+			  return false;
+
 		if( g_pInput->getHoldedKey(KTAB) && g_pInput->getHoldedKey(KSHIFT) )
-		{	  return false;	}
+			  return false;
 		else
-		{	  return true;	}
+			  return true;
 	}
 	return false;
+}
+
+void CPlayer::verifySolidLevels()
+{
+	if(godmode) return;
+
+	int x1 = getXLeftPos();
+	int x2 = getXRightPos();
+	int y1 = getYUpPos();
+	int y2 = getYDownPos();
+	int ymid = getYMidPos();
+	int xmid = getXMidPos();
+
+	if(isWMSolid(xmid,y1))
+		blockedu = true;
+	if(isWMSolid(xmid,y2))
+		blockedd = true;
+	if(isWMSolid(x1,ymid))
+		blockedl = true;
+	if(isWMSolid(x2,ymid))
+		blockedr = true;
 }
 
 void CPlayer::selectFrameOnWorldMap()
@@ -116,7 +137,7 @@ void CPlayer::selectFrameOnWorldMap()
 	
     // episode 3 map frames start at 31, ep1&2 at 32
     if (m_episode==3) sprite--;
-	
+
     // add in walk frame if walking
     if (pwalking) sprite += pwalkframe;
 }
@@ -137,14 +158,14 @@ void CPlayer::MountNessieIfAvailable()
 			nessie_y = obj->getYPosition();
 
 			// Look if Nessie is nearby
-			int x = getXPosition();
-			int y = getYPosition();
+			Uint32 x = getXPosition();
+			Uint32 y = getYPosition();
 			if( x >= nessie_x-dist+obj->bboxX1 and x <= nessie_x+dist+obj->bboxX2 )
 			{
 				if( y >= nessie_y-dist+obj->bboxY1 and y <= nessie_y+dist+obj->bboxY2 )
 				{
 					// Mount the Player
-					obj->ai.nessie.mounted[m_player_number] = true;
+					obj->ai.nessie.mounted[m_index] = true;
 		            mounted = true;
 		            hideplayer = true;
 				}
@@ -180,7 +201,7 @@ void CPlayer::UnmountNessie()
 							!Tile.bleft and !Tile.bright )
 						{
 							// unmount Messie
-							obj->ai.nessie.mounted[m_player_number] = false;
+							obj->ai.nessie.mounted[m_index] = false;
 							mounted = false;
 							hideplayer = false;
 							moveXDir(dx<<CSF);

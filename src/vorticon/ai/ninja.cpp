@@ -10,9 +10,8 @@ enum ninja_actions{
 
 #define NINJA_STAND_ANIM_RATE          6
 #define NINJA_DYING_SHOW_TIME          6
-
-#define NINJA_MIN_TIME_TILL_KICK       20
-#define NINJA_MAX_TIME_TILL_KICK       30
+#define NINJA_MIN_TIME_TILL_KICK       80
+#define NINJA_MAX_TIME_TILL_KICK       100
 
 #define NINJA_KICK_MOVE_RATE           1
 
@@ -193,9 +192,17 @@ void CObjectAI::ninja_ai(CObject &object, bool hardmode)
 		if (object.ai.ninja.XFrictionTimer > object.ai.ninja.XFrictionRate)
 		{
 			if (object.ai.ninja.XInertia>0)
-				object.ai.ninja.XInertia-= 16;
+			{
+				if(object.ai.ninja.XInertia-16 < 0)
+					object.ai.ninja.XInertia = 0;
+				else object.ai.ninja.XInertia-= 16;
+			}
 			else
-				object.ai.ninja.XInertia+= 16;
+			{
+				if(object.ai.ninja.XInertia+16 > 0)
+					object.ai.ninja.XInertia = 0;
+				else object.ai.ninja.XInertia+= 16;
+			}
 
 			object.ai.ninja.XFrictionTimer = 0;
 		}
@@ -205,7 +212,11 @@ void CObjectAI::ninja_ai(CObject &object, bool hardmode)
 		if (object.ai.ninja.YFrictionTimer > object.ai.ninja.YFrictionRate)
 		{
 			if(!object.blockedd) object.ai.ninja.YInertia+=4;
-			else object.ai.ninja.YInertia=0;
+			else{
+				object.ai.ninja.YInertia=0;
+				object.ai.ninja.state = NINJA_STAND;
+				object.needinit = true;
+			}
 			object.ai.ninja.YFrictionTimer = 0;
 		}
 		else

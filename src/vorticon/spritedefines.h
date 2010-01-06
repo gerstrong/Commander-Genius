@@ -10,7 +10,11 @@
 #ifndef SPRITEDEFINES_H_
 #define SPRITEDEFINES_H_
 
-#define MAX_SPRITES  500
+#define MAX_SPRITES  1000
+
+#define SECOND_PLAYER_BASEFRAME 500
+#define THIRD_PLAYER_BASEFRAME 548
+#define FOURTH_PLAYER_BASEFRAME 596
 
 // Normals sprites
 #define ENEMYRAY           109
@@ -55,7 +59,6 @@
 #define OBJ_BABY_DEFSPRITE_EP3   51
 
 #define OBJ_SPARK_DEFSPRITE_EP2		128
-
 
 // special sprites (they either weren't in the game originally,
 // or are used for internal engine stuff).

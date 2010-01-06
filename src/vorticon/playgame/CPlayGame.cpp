@@ -72,7 +72,7 @@ mp_HighScores(NULL)
 
 	// Player are tied to objects like enemies, sprites, etc., so they
 	// can be drawn the same way.
-	createPlayerObjects();
+	//createPlayerObjects();
 
 	m_paused = false;
 	m_showPauseDialog = false;
@@ -186,19 +186,19 @@ bool CPlayGame::init()
 	return true;
 }
 
-void CPlayGame::createPlayerObjects()
+/*void CPlayGame::createPlayerObjects()
 {
 	// tie puppy objects so the player can interact in the level
 	for (int i=0 ; i<m_NumPlayers ; i++)
 	{
 		m_Player[i].setDatatoZero();
-		m_Player[i].m_player_number = i;
+		m_Player[i].m_index = i;
 		m_Player[i].m_episode = m_Episode;
 		m_Player[i].mp_levels_completed = mp_level_completed;
 		m_Player[i].mp_option = mp_option;
 		m_Player[i].mp_object=&m_Object;
 	}
-}
+}*/
 
 ////
 // Process Routine

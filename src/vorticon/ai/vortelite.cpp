@@ -1,4 +1,5 @@
 #include "../../game.h"
+#include "../../misc.h"
 #include "../../sdl/sound/CSound.h"
 #include "../../graphics/CGfxEngine.h"
 #include "../spritedefines.h"
@@ -12,16 +13,16 @@ enum vortelite_actions{
 	VORTELITE_DYING, VORTELITE_DEAD,
 };
 
-#define VORTELITE_JUMP_PROB          400
-#define VORTELITE_FIRE_PROB          320
+#define VORTELITE_JUMP_PROB          10
+#define VORTELITE_FIRE_PROB          8
 
 #define VORTELITE_MIN_TIME_BETWEEN_FIRE    	25
 #define VORTELITE_HOLD_GUN_OUT_TIME         22
 #define VORTELITE_HOLD_GUN_AFTER_FIRE_TIME  20
 
-#define VORTELITE_MIN_JUMP_HEIGHT    30
-#define VORTELITE_MAX_JUMP_HEIGHT    50
-#define VORTELITE_MAX_FALL_SPEED     60
+#define VORTELITE_MIN_JUMP_HEIGHT    45
+#define VORTELITE_MAX_JUMP_HEIGHT    75
+#define VORTELITE_MAX_FALL_SPEED     120
 #define VORTELITE_JUMP_FRICTION      8
 
 #define VORTELITE_WALK_SPEED         30
@@ -52,7 +53,6 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 	int bonk;
 	int x, y;
 	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
-	CSprite &RaySprite = g_pGfxEngine->getSprite(ENEMYRAYEP2);
 
 	if (object.needinit)
 	{  // first time initialization
@@ -95,9 +95,7 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 	}
 	// deadly to the touch
 	if (object.touchPlayer && object.canbezapped)
-	{
 		killplayer(object.touchedBy);
-	}
 
 	reprocess: ;
 	switch(object.ai.vortelite.state)
@@ -105,7 +103,7 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 	case VORTELITE_WALK:
 		object.ai.vortelite.dist_traveled++;
 
-		if (rand()%VORTELITE_JUMP_PROB == (VORTELITE_JUMP_PROB/2) && !darkness && !object.blockedu)
+		if (getProbability(VORTELITE_JUMP_PROB) && !darkness && !object.blockedu)
 		{  // let's jump.
 			vortelite_initiatejump(object);
 			goto reprocess;
@@ -114,7 +112,7 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 		{
 			if (object.ai.vortelite.timesincefire > VORTELITE_MIN_TIME_BETWEEN_FIRE)
 			{
-				if (rand()%VORTELITE_FIRE_PROB == (VORTELITE_FIRE_PROB/2))
+				if (getProbability(VORTELITE_FIRE_PROB))
 				{  // let's fire
 					// usually shoot toward keen
 					if (rand()%5 != 0)

@@ -115,7 +115,7 @@ void CPlayGame::goBacktoMap()
 	m_Object.clear();
 
 	// Recreate the Players and tie them to the objects
-	createPlayerObjects();
+	//createPlayerObjects();
 
 	m_level_command = START_LEVEL;
 	m_Level = WM_MAP_NUM;
@@ -198,9 +198,9 @@ void CPlayGame::showKeensLeft()
 	for(p=0; p<m_NumPlayers ; p++)
 	{
 		x = ((KEENSLEFT_X+1)*8)+4;
-		for(i=0;i<m_Player[0].inventory.lives&&i<=10;i++)
+		for(i=0;i<m_Player[p].inventory.lives&&i<=10;i++)
 		{
-			g_pGfxEngine->getSprite(m_Player[0].playerbaseframe).drawSprite(g_pVideoDriver->FGLayerSurface, x, y );
+			g_pGfxEngine->getSprite(m_Player[p].playerbaseframe).drawSprite(g_pVideoDriver->FGLayerSurface, x, y );
 			x+=16;
 		}
 		y += 32;

@@ -58,6 +58,7 @@ public:
 	void setWorldMapdir();
 	void selectFrameOnWorldMap();
 	void AllowEnterLevelonWM();
+	void verifySolidLevels();
 	bool isWMSolid(int xb, int yb);
 	void InertiaAndFriction_Y();
 	void MountNessieIfAvailable();
@@ -115,7 +116,6 @@ public:
 	char m_episode;
 	char m_level;
 	int m_difficulty;
-	int m_player_number;
 
 	char godmode;
 

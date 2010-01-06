@@ -35,7 +35,7 @@ void CObjectAI::platvert_ai(CObject& object)
 		std::vector<CPlayer>::iterator it_player = m_Player.begin();
 		for( ; it_player != m_Player.end() ; it_player++ )
 		{
-			object.ai.platform.kickedplayer[it_player->m_player_number] = 0;
+			object.ai.platform.kickedplayer[it_player->m_index] = 0;
 		}
 	}
 
@@ -45,13 +45,13 @@ void CObjectAI::platvert_ai(CObject& object)
 	std::vector<CPlayer>::iterator it_player = m_Player.begin();
 	for( ; it_player != m_Player.end() ; it_player++ )
 	{
-		if (object.ai.platform.kickedplayer[it_player->m_player_number])
+		if (object.ai.platform.kickedplayer[it_player->m_index])
 		{
 			if (it_player->getYPosition() > object.getYPosition() ||
 					(!it_player->pfalling && !it_player->pjumping))
 			{
 				object.cansupportplayer = 1;
-				object.ai.platform.kickedplayer[it_player->m_player_number] = 0;
+				object.ai.platform.kickedplayer[it_player->m_index] = 0;
 			}
 		}
 	}
@@ -114,7 +114,7 @@ void CObjectAI::platvert_ai(CObject& object)
 					if( it_player->supportedbyobject && it_player->psupportingobject==object.m_index &&
 							(it_player->pjumping==PNOJUMP||it_player->pjumping==PPREPAREJUMP||it_player->pjumping==PPREPAREPOGO))
 					{
-						if (!object.ai.platform.kickedplayer[it_player->m_player_number])
+						if (!object.ai.platform.kickedplayer[it_player->m_index])
 						{
 							it_player->moveUp(PLATVERT_MOVE_SPD);
 						}
@@ -122,7 +122,7 @@ void CObjectAI::platvert_ai(CObject& object)
 						if (it_player->blockedu)
 						{
 							object.cansupportplayer = 0;
-							object.ai.platform.kickedplayer[it_player->m_player_number] = 1;
+							object.ai.platform.kickedplayer[it_player->m_index] = 1;
 						}
 					}
 				}
@@ -142,7 +142,7 @@ void CObjectAI::platvert_ai(CObject& object)
 					if( it_player->supportedbyobject && it_player->psupportingobject==object.m_index &&
 							(it_player->pjumping==PNOJUMP||it_player->pjumping==PPREPAREJUMP||it_player->pjumping==PPREPAREPOGO))
 					{
-						if (!object.ai.platform.kickedplayer[it_player->m_player_number])
+						if (!object.ai.platform.kickedplayer[it_player->m_index])
 							it_player->moveDown(PLATVERT_MOVE_SPD);
 					}
 				}

@@ -352,25 +352,41 @@ void CEGASprit::DeriveSpecialSprites( CTilemap *tilemap, std::vector<CSprite> &s
     //sprite[s]->setSize(0, 0);
 
 
-    // create the sprites for player 2
-    /*s++;
-	playerbaseframes[1] = s;
-	for(i=0;i<48;i++)
+    // create the sprites for player 2, 3 and 4
+	size_t s;
+	for(size_t i=0;i<48;i++)
 	{
-	 sprite[i]->copy( sprite[s], g_pGfxEngine->Palette.m_Palette );
-	 sprite[s]->replaceSpriteColor( 13, 10 ,0 );
-	 sprite[s]->replaceSpriteColor( 5, 2 ,0 );
-	 sprite[s]->replaceSpriteColor( 9, 14 ,8 );
-	 sprite[s]->replaceSpriteColor( 1, 6 ,8 );
-	 sprite[s]->replaceSpriteColor( 12, 11 ,0 );
-	 sprite[s]->replaceSpriteColor( 4, 3 ,0 );
-	 s++;
-	}*/
-
-    // create the sprites for player 3
-    // Unsupported for now...
-
-
+		s = SECOND_PLAYER_BASEFRAME+i;
+		sprites.at(i).copy( sprites.at(s), g_pGfxEngine->Palette.m_Palette );
+		/*sprites.at(s).replaceSpriteColor( 0xFFFFFF, 0x000000 ,0 );
+		sprites.at(s).replaceSpriteColor( 5, 2 ,0 );
+		sprites.at(s).replaceSpriteColor( 9, 14 ,8 );
+		sprites.at(s).replaceSpriteColor( 1, 6 ,8 );
+		sprites.at(s).replaceSpriteColor( 12, 11 ,0 );
+		sprites.at(s).replaceSpriteColor( 4, 3 ,0 );*/
+	}
+	for(size_t i=0;i<48;i++)
+	{
+		s = THIRD_PLAYER_BASEFRAME+i;
+		/*sprites.at(i).copy( sprites.at(s), g_pGfxEngine->Palette.m_Palette );
+		sprites.at(s).replaceSpriteColor( 13, 10 ,0 );
+		sprites.at(s).replaceSpriteColor( 5, 2 ,0 );
+		sprites.at(s).replaceSpriteColor( 9, 14 ,8 );
+		sprites.at(s).replaceSpriteColor( 1, 6 ,8 );
+		sprites.at(s).replaceSpriteColor( 12, 11 ,0 );
+		sprites.at(s).replaceSpriteColor( 4, 3 ,0 );*/
+	}
+	for(size_t i=0;i<48;i++)
+	{
+		s = FOURTH_PLAYER_BASEFRAME+i;
+		/*sprites.at(i).copy( sprites.at(s), g_pGfxEngine->Palette.m_Palette );
+		sprites.at(s).replaceSpriteColor( 13, 10 ,0 );
+		sprites.at(s).replaceSpriteColor( 5, 2 ,0 );
+		sprites.at(s).replaceSpriteColor( 9, 14 ,8 );
+		sprites.at(s).replaceSpriteColor( 1, 6 ,8 );
+		sprites.at(s).replaceSpriteColor( 12, 11 ,0 );
+		sprites.at(s).replaceSpriteColor( 4, 3 ,0 );*/
+	}
 }
 
 void CEGASprit::CreateYellowSpriteofTile( CTilemap *tilemap, Uint16 tile, CSprite& sprite )

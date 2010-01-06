@@ -411,7 +411,7 @@ void CPlayer::JumpAndPogo()
 					pjumping = PPOGOING;
 
 					// continously bounce while pogo stick is out
-					g_pSound->playStereofromCoord(SOUND_KEEN_JUMP, PLAY_NOW, mp_object->at(m_player_number).scrx);
+					g_pSound->playStereofromCoord(SOUND_KEEN_JUMP, PLAY_NOW, scrx);
 
 					// jump high if JUMP key down, else bounce low
 					if (playcontrol[PA_JUMP])
@@ -466,7 +466,7 @@ void CPlayer::JumpAndPogo()
 					}
 					
 					pjumpframe = PJUMP_PREPARE_LAST_FRAME;
-					g_pSound->playStereofromCoord(SOUND_KEEN_JUMP, PLAY_NOW, mp_object->at(m_player_number).scrx);
+					g_pSound->playStereofromCoord(SOUND_KEEN_JUMP, PLAY_NOW, scrx);
 					pjumping = PJUMPUP;
 					
 					// make so if we're jumping left or right
@@ -500,7 +500,7 @@ void CPlayer::JumpAndPogo()
         		//pjumping = PNOJUMP;
         		if(!bumped)
         		{
-        			g_pSound->playStereofromCoord(SOUND_KEEN_BUMPHEAD, PLAY_NOW, mp_object->at(m_player_number).scrx);
+        			g_pSound->playStereofromCoord(SOUND_KEEN_BUMPHEAD, PLAY_NOW, scrx);
             		bumped = true;
         		}
         		pjumpupspeed-=pjumpupspeed_decrease*2;
@@ -644,7 +644,7 @@ stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 				g_pSound->stopSound(SOUND_KEEN_FALL);  // terminate fall noise
 			// thud noise
 			if (!ppogostick)
-				g_pSound->playStereofromCoord(SOUND_KEEN_LAND, PLAY_NOW, mp_object->at(m_player_number).scrx);
+				g_pSound->playStereofromCoord(SOUND_KEEN_LAND, PLAY_NOW, scrx);
 			// fix "sliding" effect when you fall, go one way, then
 			// before you land turn around and as you hit the ground
 			// you're starting to move the other direction
@@ -665,7 +665,7 @@ stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 void CPlayer::raygun()
 {
 	bool canRefire;
-	CObject *pPlayerObject = &mp_object->at(m_player_number);
+	CObject *pPlayerObject = &mp_object->at(m_index);
 	
 	if (pfireframetimer) pfireframetimer--;
 	
@@ -708,7 +708,7 @@ void CPlayer::raygun()
 				else xdir = getXLeftPos()+pinertia_x;
 				
 				rayobject.spawn(xdir, ydir, OBJ_RAY, m_episode, pdir);
-				rayobject.ai.ray.owner = m_player_number;
+				rayobject.ai.ray.owner = m_index;
 				rayobject.ai.ray.shotbyplayer = true;
 				rayobject.ai.ray.direction = pdir;
 				
@@ -745,7 +745,7 @@ void CPlayer::raygun()
 // select the appropriate player frame based on what he's doing
 void CPlayer::SelectFrame()
 {
-    sprite = 0;      // basic standing
+    sprite = playerbaseframe;      // basic standing
 	
     // select the frame assuming he's pointing right. ep1 does not select
     // a walk frame while fading--this is for the bonus teleporter in L13.

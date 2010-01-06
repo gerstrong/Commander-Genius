@@ -17,6 +17,7 @@
 #include "../sdl/sound/CSound.h"
 #include "../sdl/CVideoDriver.h"
 #include "../graphics/CGfxEngine.h"
+#include "../vorticon/spritedefines.h"
 #include <stdlib.h>
 
 ///
@@ -26,17 +27,17 @@ CPlayer::CPlayer(char &Episode, short &Level, char &Difficulty,
 				 short &player_index, bool *mp_level_completed, stOption *mp_option,
 				 std::vector<CObject> &m_Object, CMap &map) :
 
-CObject(&map),
+CObject(&map, player_index),
 m_episode(Episode),
 m_level(Level),
 m_difficulty(Difficulty),
-m_player_number(player_index),
 mp_levels_completed(mp_level_completed),
 mp_map(NULL),
 mp_option(mp_option),
 mp_StatusScr(NULL)
 {
 	mp_object = &m_Object;
+
 	// Set every value in the class to zero.
     memset(&inventory, 0, sizeof(stInventory));
     setDefaultStartValues();
@@ -53,11 +54,12 @@ void CPlayer::setDatatoZero()
 
 	m_type = OBJ_PLAYER;
 	moveTo(0,0);
+    exists = true;
+	onscreen = true;
 	pfallspeed = 0,
 	pdir = pshowdir = DOWN;
 	inhibitfall = hideplayer = false;
   	pwalkframe = pwalkframea = 0;
-   	m_player_number = 0;
     dpadcount = 0;
     hideplayer = false;
     mounted = false;
@@ -78,7 +80,6 @@ void CPlayer::setDatatoZero()
     plastfire = pfiring = false;
     pwalkanimtimer = 0;
     inhibitfall = false;
-    playerbaseframe = 0;
     mapplayx = mapplayy = 0;
     level_done = LEVEL_NOT_DONE;
 	
@@ -103,6 +104,9 @@ void CPlayer::setDatatoZero()
 	
   	exitXpos = 0;
   	m_Level_Trigger = LVLTRIG_NONE;
+
+  	// This will setup the proper frames, so second, third and fourth player get the correct sprites
+   	playerbaseframe = (m_index==0) ? 0 : SECOND_PLAYER_BASEFRAME+(m_index-1)*48;
 	
     // Set all the inventory to zero.
     memset(playcontrol, 0, PA_MAX_ACTIONS*sizeof(char));
@@ -454,15 +458,9 @@ void CPlayer::WalkingAnimation()
 					else
 						g_pSound->playStereofromCoord(SOUND_KEEN_WALK2, PLAY_NOW, scrx);
 					
-					/*if(blockedr || blockedl)
-					{
-						if(!g_pSound->isPlaying(SOUND_KEEN_BLOK))
-							g_pSound->playStereofromCoord(SOUND_KEEN_BLOK, PLAY_NOW, mp_object->at(m_player_number).scrx);
-					}*/
-
 					if( m_playingmode != WORLDMAP && (blockedr || blockedl) )
 					{
-						g_pSound->playStereofromCoord(SOUND_KEEN_BUMPHEAD, PLAY_NOW, mp_object->at(m_player_number).scrx);
+						g_pSound->playStereofromCoord(SOUND_KEEN_BUMPHEAD, PLAY_NOW, scrx);
 						// It is not bumping a head, but walking in some direction and being blocked
 					}
 					else if ( m_playingmode == WORLDMAP )
@@ -552,6 +550,9 @@ void CPlayer::InertiaAndFriction_X()
 		if(pinertia_x < -pmaxspeed)
 			pinertia_x = -pmaxspeed;
 	}
+
+	if(m_level == 80) // We are on World map
+		verifySolidLevels();
 	
 	// apply pinertia_x and playpushed_x inertia
 	// (unless we're about to make a pogo jump)
@@ -561,7 +562,7 @@ void CPlayer::InertiaAndFriction_X()
 		// check first if the player is not blocked
 		if( (!blockedr and dx>0) or (!blockedl and dx<0) )
 		{
-			moveXDir(dx);
+			moveXDir(dx, g_pInput->getHoldedKey(KTAB) && mp_option[OPT_CHEATS].value );
 		}
 	}
 	
@@ -629,16 +630,18 @@ void CPlayer::InertiaAndFriction_Y()
 	
 	// if we hit a solid object kill all inertia
 	if (pinertia_y > 0 && blockedd)
-	{
 		pinertia_y = 0;
-	}
 	else if (pinertia_y < 0 && blockedu)
-	{
 		pinertia_y = 0;
-	}
+	else if( isWMSolid(getXMidPos(), getYMidPos()) )
+		pinertia_y = 0;
 	
-	// apply pinertia_y
-	moveYDir(pinertia_y);
+	// check first if the player is not blocked by a level
+	verifySolidLevels();
+
+	// then apply pinertia_y
+	if( (!blockedu && pinertia_y<0) || (!blockedd && pinertia_y>0) )
+		moveYDir(pinertia_y);
 	
 	// if we stopped walking (i.e. LRUD not held down) apply friction
     if (playcontrol[PA_Y] == 0)
@@ -663,24 +666,24 @@ void CPlayer::ProcessInput()
 	playcontrol[PA_X] = 0;
 	playcontrol[PA_Y] = 0;
 	
-	if(g_pInput->getHoldedCommand(m_player_number, IC_LEFT))
+	if(g_pInput->getHoldedCommand(m_index, IC_LEFT))
 		playcontrol[PA_X] -= 100;
-	if(g_pInput->getHoldedCommand(m_player_number, IC_RIGHT))
+	if(g_pInput->getHoldedCommand(m_index, IC_RIGHT))
 		playcontrol[PA_X] += 100;
 	
-	if(g_pInput->getHoldedCommand(m_player_number, IC_UP))
+	if(g_pInput->getHoldedCommand(m_index, IC_UP))
 		playcontrol[PA_Y] -= 100;
-	if(g_pInput->getHoldedCommand(m_player_number, IC_DOWN))
+	if(g_pInput->getHoldedCommand(m_index, IC_DOWN))
 		playcontrol[PA_Y] += 100;
 	
-	if(g_pInput->getHoldedCommand(m_player_number, IC_JUMP))
+	if(g_pInput->getHoldedCommand(m_index, IC_JUMP))
 		playcontrol[PA_JUMP]++;
 	else
 		playcontrol[PA_JUMP] = 0;
 	
-	playcontrol[PA_POGO]   = g_pInput->getHoldedCommand(m_player_number, IC_POGO)   ? 1 : 0;
-	playcontrol[PA_FIRE]   = g_pInput->getHoldedCommand(m_player_number, IC_FIRE)   ? 1 : 0;
-	playcontrol[PA_STATUS] = g_pInput->getHoldedCommand(m_player_number, IC_STATUS) ? 1 : 0;
+	playcontrol[PA_POGO]   = g_pInput->getHoldedCommand(m_index, IC_POGO)   ? 1 : 0;
+	playcontrol[PA_FIRE]   = g_pInput->getHoldedCommand(m_index, IC_FIRE)   ? 1 : 0;
+	playcontrol[PA_STATUS] = g_pInput->getHoldedCommand(m_index, IC_STATUS) ? 1 : 0;
 	
 	// The possibility to charge jumps. This is mainly used for the pogo.
 	if( playcontrol[PA_JUMP] > 50) playcontrol[PA_JUMP] = 50;
@@ -727,7 +730,7 @@ void CPlayer::ProcessInput()
 		return;
 	}
 	
-	if(g_pInput->getTwoButtonFiring(m_player_number))
+	if(g_pInput->getTwoButtonFiring(m_index))
 	{
 		if(playcontrol[PA_JUMP] && playcontrol[PA_POGO])
 		{
@@ -749,8 +752,6 @@ void CPlayer::freeze()
 	if ( godmode ) return;
 	if ( ankhtime) return;
 	// give the player a little "kick"
-	//pjumptime = PJUMP_NORMALTIME_1;
-	//pjumpupdecreaserate = PJUMP_UPDECREASERATE_1;
 	pjumpupspeed = mp_PhysicsSettings->player.maxjumpspeed;
 	pjumpupspeed_decrease = mp_PhysicsSettings->player.defaultjumpupdecreasespeed;
 

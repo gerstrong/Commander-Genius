@@ -21,7 +21,7 @@ const int VISIBILITY = 21;
 ///
 // Initialization Routine
 ///
-CObject::CObject(CMap *pmap, int num_players, int index) :
+CObject::CObject(CMap *pmap, int index) :
 m_index(index),
 mp_object(NULL),
 mp_Map(pmap)
@@ -221,12 +221,12 @@ void CObject::moveTo(int new_x, int new_y)
 		moveDown(amount_y);
 }
 
-void CObject::moveXDir(int amount)
+void CObject::moveXDir(int amount, bool force)
 {
 	if(amount<0)
-		moveLeft(-amount);
+		moveLeft(-amount, force);
 	else if(amount>0)
-		moveRight(amount);
+		moveRight(amount, force);
 }
 void CObject::moveYDir(int amount)
 {
@@ -236,13 +236,18 @@ void CObject::moveYDir(int amount)
 		moveDown(amount);
 }
 
-void CObject::moveLeft(int amount)
+void CObject::moveLeft(int amount, bool force)
 {
 	int x1 = x + bboxX1;
 	int y1 = y + bboxY1;
 	int y2 = y + bboxY2;
 
 	blockedr = false;
+
+	if(force) {
+		x -= amount;
+		return;
+	}
 
 	if( y-amount < 0 )
 		return;
@@ -289,13 +294,18 @@ void CObject::moveLeft(int amount)
 		blockedu = false;
 }
 
-void CObject::moveRight(int amount)
+void CObject::moveRight(int amount, bool force)
 {
 	int x2 = x + bboxX2;
 	int y1 = y + bboxY1;
 	int y2 = y + bboxY2;
 
 	blockedl = false;
+
+	if(force) {
+		x += amount;
+		return;
+	}
 
 	if(!solid)
 	{
@@ -534,7 +544,7 @@ bool CObject::checkSolidR( int x2, int y1, int y2)
 
 	if( m_type == OBJ_PLAYER )
 	{
-		if( x2 >= ((mp_Map->m_width-2)<<CSF) ) return true;
+		if( x2 >= (int)((mp_Map->m_width-2)<<CSF) ) return true;
 	}
 	else
 	{

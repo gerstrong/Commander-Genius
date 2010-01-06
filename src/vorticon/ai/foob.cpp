@@ -77,7 +77,7 @@ void CObjectAI::foob_ai(CObject &object, bool hardmode)
 			(it_player->getYDownPos() <= object.getYDownPos()+(1<<CSF)) )
 		{
 			onsamelevel = true;
-			object.ai.foob.SpookedByWho = it_player->m_player_number;
+			object.ai.foob.SpookedByWho = it_player->m_index;
 			break;
 		}
 	}
