@@ -32,34 +32,35 @@ m_dark(dark)
 //////////////////
 void CObjectAI::process()
 {
-	std::vector<CObject>::iterator it_obj = m_Objvect.begin();
-	for( ; it_obj != m_Objvect.end() ; it_obj++ )
+	//size_t num_objects = m_Objvect.size();
+	for( size_t i=0 ; i < m_Objvect.size() ; i++ )
 	{
-		if( checkforAIObject(*it_obj) )
+		CObject &object = m_Objvect.at(i);
+		if( checkforAIObject(object) )
 		{
-			it_obj->processFalling();
+			object.processFalling();
 
 		    // hit detection with players
-			it_obj->touchPlayer = false;
+			object.touchPlayer = false;
 			std::vector<CPlayer>::iterator it_player = m_Player.begin();
 			for( ; it_player != m_Player.end() ; it_player++ )
 		    {
 				if (!it_player->pdie)
 				{
-					if ( it_obj->hitdetect(*it_player) )
+					if ( object.hitdetect(*it_player) )
 					{
 						if (!it_player->godmode)
 						{
-							it_obj->touchPlayer = true;
-							it_obj->touchedBy = it_player->m_player_number;
+							object.touchPlayer = true;
+							object.touchedBy = it_player->m_player_number;
 						}
 						else
 						{
-							if (it_obj->m_type==OBJ_MOTHER || it_obj->m_type==OBJ_BABY ||\
-								it_obj->m_type==OBJ_MEEP || it_obj->m_type==OBJ_YORP)
+							if (object.m_type==OBJ_MOTHER || object.m_type==OBJ_BABY ||\
+								object.m_type==OBJ_MEEP || object.m_type==OBJ_YORP)
 							{
-								if (it_obj->canbezapped)
-									it_obj->zapped += 100;
+								if (object.canbezapped)
+									object.zapped += 100;
 							}
 						}
 						break;
@@ -67,16 +68,9 @@ void CObjectAI::process()
 				}
 
 		    }
-			performSpecialAIType( *it_obj );
+			performSpecialAIType( object );
 		}
-		it_obj->process();
-	}
-
-	// Check if the last object has been disabled, than delete it freeing memory
-	if( !m_Objvect.empty() )
-	{
-		while(!m_Objvect.back().exists)
-			m_Objvect.pop_back();
+		object.process();
 	}
 
 	if(m_gunfiretimer<60) m_gunfiretimer++;
@@ -233,7 +227,8 @@ void CObjectAI::deleteAllObjects()
 {
 	// The real delete happens, when all the AI is done
 	// If the last object was deleted, throw it out of the list
-	m_Objvect.clear();
+	if(!m_Objvect.empty())
+		m_Objvect.clear();
 }
 
 CObjectAI::~CObjectAI() {

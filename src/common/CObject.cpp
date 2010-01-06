@@ -35,6 +35,7 @@ mp_Map(pmap)
 
 	x = 0;
 	y = 0;
+	m_type = 0;
 	bboxX1 = bboxX2 = 0;
 	bboxY1 = bboxY2 = 0;
 	canbezapped = false;
@@ -54,6 +55,7 @@ bool CObject::spawn(int x0, int y0, int otype, int Episode, char dirof)
 	{
 		x = x0;
 		y = y0;
+		scrx = scry = 0;
 		m_type = otype;
 		exists = true;
 		needinit = true;

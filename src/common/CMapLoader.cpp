@@ -106,7 +106,6 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	
 	memset(mp_map->mp_data,0,mapsize*sizeof(Uint16));
 	
-	
 	if ( !mp_map->mp_data ) // Is this necessary ?
 	{
 		g_pLogFile->textOut(RED,"loadmap(): not enough memory to load the map<br>");
@@ -141,6 +140,10 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	
 	if(mp_objvect)
 	{
+	    if(!mp_objvect->empty())
+	    	mp_objvect->clear();
+	    mp_objvect->reserve(20000);
+
 		for( c=planesize+18 ; c<2*planesize+18 ; c++ )
 		{
 			t = filebuf[c];

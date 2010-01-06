@@ -73,7 +73,7 @@ public:
 	unsigned char touchedBy;        // which player was hit
 	// Y position on this object the hit was detected
 	// this is used for the yorps' bonk-on-the-head thing.
-	// objects are scanned bottom to top, and first pixel
+	// objects arm_typee scanned bottom to top, and first pixel
 	// touching player is what goes in here.
 	unsigned char hity;
 	

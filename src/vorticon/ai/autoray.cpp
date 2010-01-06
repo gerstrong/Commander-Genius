@@ -20,11 +20,11 @@ void CObjectAI::autoray_ai(CObject &Object)
 		Object.needinit = 0;
 	}
 
-	if (!m_gunfiretimer)
+	if (m_gunfiretimer == 0)
 	{
-		CObject NewRay(mp_Map);
-		NewRay.ai.ray.owner = -1;
 		unsigned int x,y;
+		CObject NewRay(mp_Map);
+		NewRay.ai.ray.owner = 0;
 		x = Object.getXPosition();
 		y = Object.getYPosition();
 
@@ -41,9 +41,11 @@ void CObjectAI::autoray_ai(CObject &Object)
 			NewRay.ai.ray.direction = RIGHT;
 		}
 
+		printf("objs: %d\n", m_Objvect.size() );
+
 		m_Objvect.push_back(NewRay);
 
-		if (Object.onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, NewRay.scr);
+		if (Object.onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, Object.scrx);
 	}
 }
 
