@@ -743,7 +743,7 @@ void CPlayer::ProcessInput()
 
 void CPlayer::StatusBox()
 {
-	if( g_pInput->getPressedCommand(IC_STATUS) )
+	if( g_pInput->getPressedCommand(m_index, IC_STATUS) )
 		m_showStatusScreen=true; // PlayGame class detects that variable and launches drawStatusScreen()
 }
 
