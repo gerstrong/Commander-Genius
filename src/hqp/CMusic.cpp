@@ -139,6 +139,11 @@ bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &
     std::string musicpath = gamepath+"/music/";
     OpenGameFileR(Tablefile, musicpath+"table.cfg");
 	
+    if(!Tablefile)    { // try global path
+        musicpath = "data/music/";
+        OpenGameFileR(Tablefile, musicpath+"table.cfg");
+    }
+
     if(Tablefile)
     {
     	std::string str_buf;
@@ -147,6 +152,7 @@ bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &
     	while(!Tablefile.eof())
     	{
         	Tablefile.get(c_buf, 256, ' ');
+    		while(c_buf[0] == '\n') memcpy (c_buf, c_buf+1, 254);
         	str_buf = c_buf;
     		if( str_buf == levelfilename )	// found the level! Load the song!
     		{
@@ -160,7 +166,7 @@ bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &
     			return true;
     		}
     		Tablefile.get(c_buf, 256);
-    		Tablefile.get(); // Skip the '\n' delimiter, so next will be read.
+    		while(!Tablefile.get() == '\n'); // Skip the '\n' delimiters, so next name will be read.
     	}
     	Tablefile.close();
     }

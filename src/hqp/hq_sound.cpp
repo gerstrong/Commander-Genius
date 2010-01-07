@@ -24,7 +24,15 @@ short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::stri
 	FILE *fp;
 
 	buf = gamepath+"snd/" + soundname + ".OGG"; // Start with OGG
-	if((fp = OpenGameFile(buf.c_str(),"rb")) != NULL)
+
+	fp = OpenGameFile(buf.c_str(),"rb");
+
+	if( fp == NULL) { // try global path
+		buf = "data/snd/" + soundname + ".OGG"; // Start with OGG
+		fp = OpenGameFile(buf.c_str(),"rb");
+	}
+
+	if(fp != NULL)
 	{
 #ifdef OGG
 		if(openOGGSound(fp, &AudioFileSpec, AudioSpec->format, psound) != 0)

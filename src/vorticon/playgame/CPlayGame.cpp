@@ -369,13 +369,6 @@ void CPlayGame::process()
 #else
 			tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec());
 #endif
-		//			tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec()) +
-			//				"; x = " + itoa(m_Player[0].getXPosition()) + " ; y = " + itoa(m_Player[0].getYPosition());
-					tempbuf = "l: " + itoa(m_Player[0].blockedl);
-					tempbuf += " r: " + itoa(m_Player[0].blockedr);
-					tempbuf += " u: " + itoa(m_Player[0].blockedu);
-					tempbuf += " d: " + itoa(m_Player[0].blockedd);
-			tempbuf += " sup: " + itoa(m_Player[0].supportedbyobject);
 
 			g_pGfxEngine->getFont().drawFont(sfc,tempbuf,320-(tempbuf.size()<<3)-1, LETTER_TYPE_RED);
 		}
