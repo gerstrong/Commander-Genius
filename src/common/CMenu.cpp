@@ -223,12 +223,12 @@ void CMenu::initConfirmMenu()
 void CMenu::initSaveMenu()
 {
 	std::string text;
-	mp_Dialog = new CDialog(mp_MenuSurface, 0, 0, 22, 12, 'u');
+	mp_Dialog = new CDialog(mp_MenuSurface, 0, 0, 22, 22, 'u');
 	
 	// Load the state-file list
 	m_StateFileList = m_SavedGame.getSlotList();
 	
-	for(Uint32 i=1;i<=10;i++)
+	for(Uint32 i=1;i<=20;i++)
 	{
 		text = "";
 		if(i <= m_StateFileList.size())
