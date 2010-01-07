@@ -18,7 +18,7 @@ public:
 	bool optimizeSurface();
 	void applyTransparency();
 	void copy( CSprite &Destination, SDL_Color *Palette );
-	void replaceSpriteColor( Uint32 find, Uint32 replace, Uint16 miny );
+	void replaceSpriteColor( Uint16 find, Uint16 replace, Uint16 miny );
 
 	void setSize(Uint8 w, Uint8 h);
 	void setBouncingBoxCoordinates( Uint16 bboxx1, Uint16 bboxy1, Uint16 bboxx2, Uint16 bboxy2 );

@@ -197,7 +197,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	
 	// Now load the special TGA Sprites if some are available
 	LoadSpecialSprites( g_pGfxEngine->getSpriteVec() );
-	
+
 	for(Uint16 s=0 ; s<g_pGfxEngine->getSpriteVec().size() ; s++)
 	{
 		CSprite &Sprite = g_pGfxEngine->getSprite(s);
@@ -205,6 +205,9 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 		Sprite.applyTransparency();
 	}
 	
+	// Apply the sprites for player 2,3 and 4
+	DerivePlayerSprites( g_pGfxEngine->getSpriteVec() );
+
 	// Now create special sprites, like those for effects and the doors!
 	DeriveSpecialSprites( g_pGfxEngine->Tilemap, g_pGfxEngine->getSpriteVec() );
 
@@ -303,6 +306,48 @@ void CEGASprit::LoadSpecialSprites( std::vector<CSprite> &sprite )
 	LoadTGASprite("cglogo.tga", sprite[CG_LOGO] );
 }
 
+void CEGASprit::DerivePlayerSprites( std::vector<CSprite> &sprites )
+{
+    // create the sprites for player 2, 3 and 4
+	size_t s;
+	for(size_t i=0;i<48;i++)
+	{
+		s = SECOND_PLAYER_BASEFRAME+i;
+		sprites.at(i).copy( sprites.at(s), g_pGfxEngine->Palette.m_Palette );
+		sprites.at(s).replaceSpriteColor( 13, 10 ,0 );
+		sprites.at(s).replaceSpriteColor( 5, 2 ,0 );
+		sprites.at(s).replaceSpriteColor( 9, 14 ,8 );
+		sprites.at(s).replaceSpriteColor( 1, 6 ,8 );
+		sprites.at(s).replaceSpriteColor( 12, 11 ,0 );
+		sprites.at(s).replaceSpriteColor( 4, 3 ,0 );
+		sprites.at(s).optimizeSurface();
+	}
+	for(size_t i=0;i<48;i++)
+	{
+		s = THIRD_PLAYER_BASEFRAME+i;
+		sprites.at(i).copy( sprites.at(s), g_pGfxEngine->Palette.m_Palette );
+		sprites.at(s).replaceSpriteColor( 13, 10 ,0 );
+		sprites.at(s).replaceSpriteColor( 5, 2 ,0 );
+		sprites.at(s).replaceSpriteColor( 9, 14 ,8 );
+		sprites.at(s).replaceSpriteColor( 1, 6 ,8 );
+		sprites.at(s).replaceSpriteColor( 12, 11 ,0 );
+		sprites.at(s).replaceSpriteColor( 4, 3 ,0 );
+		sprites.at(s).optimizeSurface();
+	}
+	for(size_t i=0;i<48;i++)
+	{
+		s = FOURTH_PLAYER_BASEFRAME+i;
+		sprites.at(i).copy( sprites.at(s), g_pGfxEngine->Palette.m_Palette );
+		sprites.at(s).replaceSpriteColor( 13, 10 ,0 );
+		sprites.at(s).replaceSpriteColor( 5, 2 ,0 );
+		sprites.at(s).replaceSpriteColor( 9, 14 ,8 );
+		sprites.at(s).replaceSpriteColor( 1, 6 ,8 );
+		sprites.at(s).replaceSpriteColor( 12, 11 ,0 );
+		sprites.at(s).replaceSpriteColor( 4, 3 ,0 );
+		sprites.at(s).optimizeSurface();
+	}
+}
+
 // This function has the task to make some items-tiles
 // be painted into yellow, so they look nice, when they are
 // collected
@@ -344,49 +389,6 @@ void CEGASprit::DeriveSpecialSprites( CTilemap *tilemap, std::vector<CSprite> &s
 	 }
 
     // TODO: Demo-Sprite must be added. This time loaded from one TGA File! The TGA is already there!
-
-	// TODO: Those sprite for the other players, and so on should go into the CPlayer Class, because,
-	// first we don't often need them and second, we can only load, if the sprites are set up, which is not the case
-    // create BLANKSPRITE
-	//CSprite** sprite = &g_pGfxEngine->Sprite[0];
-    //sprite[s]->setSize(0, 0);
-
-
-    // create the sprites for player 2, 3 and 4
-	size_t s;
-	for(size_t i=0;i<48;i++)
-	{
-		s = SECOND_PLAYER_BASEFRAME+i;
-		sprites.at(i).copy( sprites.at(s), g_pGfxEngine->Palette.m_Palette );
-		/*sprites.at(s).replaceSpriteColor( 0xFFFFFF, 0x000000 ,0 );
-		sprites.at(s).replaceSpriteColor( 5, 2 ,0 );
-		sprites.at(s).replaceSpriteColor( 9, 14 ,8 );
-		sprites.at(s).replaceSpriteColor( 1, 6 ,8 );
-		sprites.at(s).replaceSpriteColor( 12, 11 ,0 );
-		sprites.at(s).replaceSpriteColor( 4, 3 ,0 );*/
-	}
-	for(size_t i=0;i<48;i++)
-	{
-		s = THIRD_PLAYER_BASEFRAME+i;
-		/*sprites.at(i).copy( sprites.at(s), g_pGfxEngine->Palette.m_Palette );
-		sprites.at(s).replaceSpriteColor( 13, 10 ,0 );
-		sprites.at(s).replaceSpriteColor( 5, 2 ,0 );
-		sprites.at(s).replaceSpriteColor( 9, 14 ,8 );
-		sprites.at(s).replaceSpriteColor( 1, 6 ,8 );
-		sprites.at(s).replaceSpriteColor( 12, 11 ,0 );
-		sprites.at(s).replaceSpriteColor( 4, 3 ,0 );*/
-	}
-	for(size_t i=0;i<48;i++)
-	{
-		s = FOURTH_PLAYER_BASEFRAME+i;
-		/*sprites.at(i).copy( sprites.at(s), g_pGfxEngine->Palette.m_Palette );
-		sprites.at(s).replaceSpriteColor( 13, 10 ,0 );
-		sprites.at(s).replaceSpriteColor( 5, 2 ,0 );
-		sprites.at(s).replaceSpriteColor( 9, 14 ,8 );
-		sprites.at(s).replaceSpriteColor( 1, 6 ,8 );
-		sprites.at(s).replaceSpriteColor( 12, 11 ,0 );
-		sprites.at(s).replaceSpriteColor( 4, 3 ,0 );*/
-	}
 }
 
 void CEGASprit::CreateYellowSpriteofTile( CTilemap *tilemap, Uint16 tile, CSprite& sprite )

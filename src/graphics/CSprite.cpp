@@ -38,7 +38,6 @@ bool CSprite::optimizeSurface()
 	if(m_surface)
 	{
 		SDL_Surface *temp_surface;
-		
 		temp_surface = SDL_DisplayFormatAlpha(m_surface);
 		SDL_FreeSurface(m_surface);
 		m_surface = temp_surface;
@@ -122,23 +121,22 @@ void CSprite::copy( CSprite &Destination, SDL_Color *Palette )
 
 // replaces all instances of color find in sprite s with
 // color replace, as long as the y is greater than miny
-void CSprite::replaceSpriteColor( Uint32 find, Uint32 replace, Uint16 miny )
+// NOTE: This only can be used, when the surface is at 8-bit colours
+// and palettized. Don't use it, after it has been optimized
+void CSprite::replaceSpriteColor( Uint16 find, Uint16 replace, Uint16 miny )
 {
 	Uint16 x,y;
-	Uint8 *pixel;
-	Uint8 bpp;
+	Uint8* pixel;
 	
 	if(SDL_MUSTLOCK(m_surface)) SDL_LockSurface(m_surface);
 	pixel = (Uint8*) m_surface->pixels;
-	bpp = m_surface->format->BytesPerPixel;
 	for(y=miny;y<m_ysize;y++)
 	{
 		for(x=0;x<m_xsize;x++)
 		{
-			if (*pixel == find)
-				*pixel = replace;
+			if (pixel[y*m_xsize + x] ==find)
+				pixel[y*m_xsize + x] = replace;
 		}
-		pixel += bpp;
 	}
 	if(SDL_MUSTLOCK(m_surface)) SDL_UnlockSurface(m_surface);
 }
