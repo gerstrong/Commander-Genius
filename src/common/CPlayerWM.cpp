@@ -130,10 +130,10 @@ void CPlayer::verifySolidLevels()
 void CPlayer::selectFrameOnWorldMap()
 {
     // select base frame for current direction
-    if (pshowdir==RIGHT) sprite = PMAPRIGHTFRAME;
-    else if (pshowdir==LEFT) sprite = PMAPLEFTFRAME;
-    else if (pshowdir==UP) sprite = PMAPUPFRAME;
-    else if (pshowdir==DOWN) sprite = PMAPDOWNFRAME;
+    if (pshowdir==RIGHT) sprite = playerbaseframe + PMAPRIGHTFRAME;
+    else if (pshowdir==LEFT) sprite = playerbaseframe + PMAPLEFTFRAME;
+    else if (pshowdir==UP) sprite = playerbaseframe + PMAPUPFRAME;
+    else if (pshowdir==DOWN) sprite = playerbaseframe + PMAPDOWNFRAME;
 	
     // episode 3 map frames start at 31, ep1&2 at 32
     if (m_episode==3) sprite--;
