@@ -370,6 +370,8 @@ void CPlayGame::process()
 			tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec());
 #endif
 
+			tempbuf = "x_inertia: " + itoa(m_Player[0].xinertia);
+
 			g_pGfxEngine->getFont().drawFont(sfc,tempbuf,320-(tempbuf.size()<<3)-1, LETTER_TYPE_RED);
 		}
 

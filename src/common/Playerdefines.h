@@ -56,6 +56,7 @@ enum jumpstates{
 	PPREPAREJUMP,                   // doing the jump animation
 	PJUMPUP,                        // jumping
 	PJUMPED,                        // Player has jumped
+	PJUMPLAND,                      // When player is in the middle of the air
 	PPREPAREPOGO,                   // "pogo compressed" anim frame
 	PPOGOING                        // pogoing
 };

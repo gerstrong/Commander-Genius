@@ -9,9 +9,14 @@
 
 CPhysicsSettings::CPhysicsSettings() {
 	// used for jumping
-	player.maxjumpspeed = 103;
-	player.maxpogospeed = 142;
-	player.defaultjumpupdecreasespeed = 3;
+	//player.maxjumpspeed = 103;
+	//player.maxpogospeed = 142;
+	//player.defaultjumpupdecreasespeed = 3;
+	player.maxjumpspeed = 120;
+
+	player.maxpogospeed = 162;
+
+	player.defaultjumpupdecreasespeed = 4;
 	player.jumpdecrease_x = 54;
 
 	player.max_x_speed = 73;

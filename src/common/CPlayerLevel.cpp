@@ -505,7 +505,7 @@ void CPlayer::JumpAndPogo()
         			g_pSound->playStereofromCoord(SOUND_KEEN_BUMPHEAD, PLAY_NOW, scrx);
             		bumped = true;
         		}
-        		pjumpupspeed-=pjumpupspeed_decrease*2;
+        		pjumpupspeed-=pjumpupspeed_decrease*4;
         	}
 
 			if (!pjumptime)
@@ -513,7 +513,7 @@ void CPlayer::JumpAndPogo()
 				if (pjumpupspeed <= 0)
 				{
 					pjumpupspeed = 0;
-					pjumping = PNOJUMP;
+					pjumping = PJUMPLAND;
 				}
 				else
 				{
@@ -526,6 +526,30 @@ void CPlayer::JumpAndPogo()
 			pjustjumped = true;
 
 			break;
+        case PJUMPLAND:
+			// do the jump
+
+			if (!pjumptime)
+			{
+				if (blockedd)
+				{
+					pjumpupspeed = 0;
+					pjumping = PNOJUMP;
+				}
+				else
+				{
+					if(pjumpupspeed < mp_PhysicsSettings->player.max_fallspeed)
+						pjumpupspeed+=pjumpupspeed_decrease*2;
+					else
+						pjumpupspeed=mp_PhysicsSettings->player.max_fallspeed;
+				}
+			}
+			else pjumptime--;
+
+			moveDown(pjumpupspeed);
+			pjustjumped = true;
+
+			break;
     }
 	
 	// Now check how much the direction of the player is given
@@ -535,9 +559,9 @@ void CPlayer::JumpAndPogo()
 		if(!ppogostick)
 		{
 			if (playcontrol[PA_X] < 0)
-				xinertia-=1;
+				xinertia-=3;
 			if (playcontrol[PA_X] > 0)
-				xinertia+=1;
+				xinertia+=3;
 		}
 		else if(ppogostick)
 		{

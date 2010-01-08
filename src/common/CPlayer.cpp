@@ -298,13 +298,9 @@ void CPlayer::Walking()
 			pwalkframe = 0;
 			// keep player sliding at maximum speed
 			if (pdir==RIGHT)
-			{
 				xinertia = pmaxspeed;
-			}
 			else if (pdir==LEFT)
-			{
 				xinertia = -pmaxspeed;
-			}
 		}
 		return;
 	}
@@ -336,7 +332,7 @@ void CPlayer::Walking()
 		}
 		
 		// increase up to max speed every time frame is changed
-		//if (!pwalkanimtimer && xinertia < pmaxspeed)	pinertia_x+=(1<<4);
+		if (!pwalkanimtimer && xinertia < pmaxspeed)	xinertia+=(1<<4);
 	}
 	else if (playcontrol[PA_X] < 0 && !ppogostick && !playpushed_x)
 	{ // LEFT key down
