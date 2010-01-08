@@ -49,7 +49,7 @@ void CObjectAI::sndwave_ai(CObject& object, bool hardmode)
 	{
 		object.sprite = SNDWAVE_RIGHT_FRAME + object.ai.ray.animframe;
 
-		if (x > mp_Map->m_width)
+		if (x > static_cast<int>(mp_Map->m_width) )
 			deleteObj(object);
 		else
 		{

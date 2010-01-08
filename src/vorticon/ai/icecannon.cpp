@@ -38,24 +38,24 @@ void CObjectAI::icechunk_ai(CObject &object)
 			if (object.ai.icechunk.vector_x > 0)
 			{
 				m_Player[object.touchedBy].pdir = m_Player[object.touchedBy].pshowdir = RIGHT;
-				m_Player[object.touchedBy].pinertia_x = m_PhysicsSettings.player.max_x_speed;
+				m_Player[object.touchedBy].xinertia = m_PhysicsSettings.player.max_x_speed;
 				m_Player[object.touchedBy].bump(m_PhysicsSettings.player.max_x_speed/2, false);
 			}
 			else if (object.ai.icechunk.vector_x < 0)
 			{
 				m_Player[object.touchedBy].pdir = m_Player[object.touchedBy].pshowdir = LEFT;
-				m_Player[object.touchedBy].pinertia_x = -m_PhysicsSettings.player.max_x_speed;
+				m_Player[object.touchedBy].xinertia = -m_PhysicsSettings.player.max_x_speed;
 				m_Player[object.touchedBy].bump(-m_PhysicsSettings.player.max_x_speed/2, false);
 			}
 			else	// perfectly vertical ice cannons
 			{
 				const int UPDNCANNON_PUSHAMT = 16;
-				if (m_Player[object.touchedBy].pinertia_x < UPDNCANNON_PUSHAMT)
+				if (m_Player[object.touchedBy].xinertia < UPDNCANNON_PUSHAMT)
 				{
 					if (rnd()&1)
-						m_Player[object.touchedBy].pinertia_x = UPDNCANNON_PUSHAMT;
+						m_Player[object.touchedBy].xinertia = UPDNCANNON_PUSHAMT;
 					else
-						m_Player[object.touchedBy].pinertia_x = -UPDNCANNON_PUSHAMT;
+						m_Player[object.touchedBy].xinertia = -UPDNCANNON_PUSHAMT;
 				}
 			}
 		}

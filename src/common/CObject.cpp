@@ -451,6 +451,21 @@ void CObject::moveDown(int amount)
 		blockedl = false;
 }
 
+// This decreases the inertia we have of the object in X-direction.
+// It should be used for objects, where it must be assured, that the inertia can get
+// zero and not pass that limit
+void CObject::decreaseXInertia(unsigned int value)
+{
+	if(xinertia < 0) {
+		if(xinertia+value > 0) xinertia = 0;
+		else xinertia += value;
+	}
+	else if(xinertia > 0) {
+		if(xinertia-value < 0) xinertia = 0;
+		else xinertia -= value;
+	}
+}
+
 unsigned int CObject::getXPosition()
 { return x; }
 unsigned int CObject::getYPosition()

@@ -35,13 +35,13 @@ void CObjectAI::platform_ai(CObject &object)
 		if (m_Player[object.touchedBy].getXPosition() < object.getXPosition())
 		{
 			m_Player[object.touchedBy].playpushed_x = -PLATFORMPUSHAMOUNT;
-			if (m_Player[object.touchedBy].pinertia_x > 0) m_Player[object.touchedBy].pinertia_x = 0;
+			if (m_Player[object.touchedBy].xinertia > 0) m_Player[object.touchedBy].xinertia = 0;
 			m_Player[object.touchedBy].playpushed_decreasetimer = 0;
 		}
 		else
 		{
 			m_Player[object.touchedBy].playpushed_x = PLATFORMPUSHAMOUNT;
-			if (m_Player[object.touchedBy].pinertia_x < 0) m_Player[object.touchedBy].pinertia_x = 0;
+			if (m_Player[object.touchedBy].xinertia < 0) m_Player[object.touchedBy].xinertia = 0;
 			m_Player[object.touchedBy].playpushed_decreasetimer = 0;
 		}
 	}

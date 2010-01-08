@@ -289,7 +289,7 @@ void CPlayer::playpushed()
 
 		if( (!(playcontrol[PA_X]>0) && playpushed_x > 0) or
 			(!(playcontrol[PA_X]<0) && playpushed_x < 0) )
-			pinertia_x = 0;
+			xinertia = 0;
     }
 }
 
@@ -383,7 +383,7 @@ void CPlayer::JumpAndPogo()
 		// give em the chance to jump
 		if (playcontrol[PA_JUMP] && !ppogostick && !pfrozentime && !playpushed_x)
 		{
-			pinertia_x = 0;
+			xinertia = 0;
 			pjumping = PPREPAREJUMP;
 			pjumpframe = PPREPAREJUMPFRAME;
 			pjumpanimtimer = 0;
@@ -428,9 +428,11 @@ void CPlayer::JumpAndPogo()
 									pogofirsttime = false;
 								}
 								else
-								{
 									pjumpupspeed = mp_PhysicsSettings->player.maxpogospeed;
-								}
+							}
+							else if(playcontrol[PA_JUMP] && pogofirsttime)
+							{
+								pjumpupspeed = mp_PhysicsSettings->player.maxpogospeed;
 							}
 						}
 						else
@@ -483,8 +485,8 @@ void CPlayer::JumpAndPogo()
 						pjumpdir = UP;
 					
 					pwalkincreasetimer = 0;
-					if(playcontrol[PA_X] < 0)	pinertia_x = -mp_PhysicsSettings->player.jumpdecrease_x;
-					if(playcontrol[PA_X] > 0)	pinertia_x = mp_PhysicsSettings->player.jumpdecrease_x;
+					if(playcontrol[PA_X] < 0)	xinertia = -mp_PhysicsSettings->player.jumpdecrease_x;
+					if(playcontrol[PA_X] > 0)	xinertia = mp_PhysicsSettings->player.jumpdecrease_x;
 				}
 				else pjumpframe++;
 
@@ -533,36 +535,36 @@ void CPlayer::JumpAndPogo()
 		if(!ppogostick)
 		{
 			if (playcontrol[PA_X] < 0)
-				pinertia_x-=1;
+				xinertia-=1;
 			if (playcontrol[PA_X] > 0)
-				pinertia_x+=1;
+				xinertia+=1;
 		}
 		else if(ppogostick)
 		{
 			if (playcontrol[PA_X] < 0)
-				pinertia_x -= (mp_PhysicsSettings->player.pogoforce_x/10);
+				xinertia -= (mp_PhysicsSettings->player.pogoforce_x/10);
 			if (playcontrol[PA_X] > 0)
-				pinertia_x += (mp_PhysicsSettings->player.pogoforce_x/10);
+				xinertia += (mp_PhysicsSettings->player.pogoforce_x/10);
 		}
 	}
 	else if(pfalling)
 	{
 		if(!ppogostick) {
-			if(pinertia_x<0) pinertia_x+=2;
-			if(pinertia_x>0) pinertia_x-=2;
+			if(xinertia<0) xinertia+=2;
+			if(xinertia>0) xinertia-=2;
 		}
 
 		if (playcontrol[PA_X] < 0)
-			pinertia_x-=2;
+			xinertia-=2;
 		if (playcontrol[PA_X] > 0)
-			pinertia_x+=2;
+			xinertia+=2;
 	}
 	
     // If we are in Godmode, use the Pogo, and pressing the jump button, make the player fly
     if( godmode && ppogostick )
     {
-    	if(playcontrol[PA_X] < 0) pinertia_x-=4;
-    	if(playcontrol[PA_X] > 0) pinertia_x+=4;
+    	if(playcontrol[PA_X] < 0) xinertia-=4;
+    	if(playcontrol[PA_X] > 0) xinertia+=4;
     	if(g_pInput->getHoldedCommand(0, IC_JUMP) && !blockedu)
     		moveUp(PPOGOUP_SPEED);
     }
@@ -704,8 +706,8 @@ void CPlayer::raygun()
 				g_pSound->playStereofromCoord(SOUND_KEEN_FIRE, PLAY_NOW, pPlayerObject->scrx);
 				
 				ydir = getYPosition()+(9<<STC);
-				if (pdir==RIGHT) xdir = getXRightPos()+pinertia_x;
-				else xdir = getXLeftPos()+pinertia_x;
+				if (pdir==RIGHT) xdir = getXRightPos()+xinertia;
+				else xdir = getXLeftPos()+xinertia;
 				
 				rayobject.spawn(xdir, ydir, OBJ_RAY, m_episode, pdir);
 				rayobject.ai.ray.owner = m_index;
@@ -810,20 +812,20 @@ void CPlayer::bump( int pushamt, bool solid )
 {
 	playpushed_x = pushamt;
 	
-	if (pushamt > 0 && pinertia_x < pushamt) pinertia_x = pushamt;
-	else if (pinertia_x > pushamt) pinertia_x = pushamt;
+	if (pushamt > 0 && xinertia < pushamt) xinertia = pushamt;
+	else if (xinertia > pushamt) xinertia = pushamt;
 
 	if (solid)
 	{
 		if (pushamt > 0)
 		{
-			if (pinertia_x < 0)
-				pinertia_x = 0;
+			if (xinertia < 0)
+				xinertia = 0;
 		}
 		else
 		{
-			if (pinertia_x > 0)
-				pinertia_x = 0;
+			if (xinertia > 0)
+				xinertia = 0;
 		}
 	}
 	

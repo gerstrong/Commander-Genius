@@ -128,6 +128,8 @@ public:
 	void moveUp(int amount);
 	void moveDown(int amount);
 
+	void decreaseXInertia(unsigned int value);
+
 	virtual void process() { }
 	
 	bool hitdetect(CObject &hitobject);
