@@ -555,7 +555,8 @@ void CPlayer::InertiaAndFriction_X()
 		verifySolidLevels();
 	
 	// If player is blocked against a wall, decrease the inertia
-	if(blockedl || blockedr) decreaseXInertia(4);
+	if( ( (blockedl && xinertia<0 ) || (blockedr && xinertia>0) ) && pjumping > PJUMPUP )
+		decreaseXInertia(4);
 
 	// apply xinertia and playpushed_x inertia
 	// (unless we're about to make a pogo jump)
@@ -564,9 +565,7 @@ void CPlayer::InertiaAndFriction_X()
 		int dx=xinertia + playpushed_x;
 		// check first if the player is not blocked
 		if( (!blockedr and dx>0) or (!blockedl and dx<0) )
-		{
 			moveXDir(dx, g_pInput->getHoldedKey(KTAB) && mp_option[OPT_CHEATS].value );
-		}
 	}
 	
 	// if we stopped walking (i.e. left or right not held down) apply friction

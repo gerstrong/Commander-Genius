@@ -454,7 +454,7 @@ void CObject::moveDown(int amount)
 // This decreases the inertia we have of the object in X-direction.
 // It should be used for objects, where it must be assured, that the inertia can get
 // zero and not pass that limit
-void CObject::decreaseXInertia(unsigned int value)
+void CObject::decreaseXInertia(int value)
 {
 	if(xinertia < 0) {
 		if(xinertia+value > 0) xinertia = 0;

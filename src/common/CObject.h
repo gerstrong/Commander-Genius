@@ -128,7 +128,7 @@ public:
 	void moveUp(int amount);
 	void moveDown(int amount);
 
-	void decreaseXInertia(unsigned int value);
+	void decreaseXInertia(int value);
 
 	virtual void process() { }
 	
