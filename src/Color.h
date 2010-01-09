@@ -87,8 +87,6 @@ inline Uint32 MakeColour(Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
 	return SDL_MapRGBA(getMainPixelFormat(), r, g, b, a);
 }
 
-
-
 // Device-independent color
 struct Color {
 	Color() : r(0), g(0), b(0), a(SDL_ALPHA_OPAQUE) {}
