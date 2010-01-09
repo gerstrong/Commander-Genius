@@ -10,15 +10,12 @@
 
 #include <SDL.h>
 #include <string>
+#include <list>
 
 #include "../CSingleton.h"
 #define g_pInput	CInput::Get()
 
 // key defines, locations in keytable[]
-//#define KEYTABLE_SIZE            160
-//#define KEYTABLE_REALKEYS_SIZE   49
-
-// TODO: Change this to enums
 enum keys{
 	// Ascii keys
 	KSPACE = 32,
@@ -204,7 +201,7 @@ public:
 
 private:
 	SDL_Event Event;
-	SDL_Joystick *mp_Joystick;
+	std::list<SDL_Joystick*> mp_Joysticks;
 
 	stInputCommand InputCommand[NUM_INPUTS][NUMBER_OF_COMMANDS];
 	bool TwoButtonFiring[NUM_INPUTS];

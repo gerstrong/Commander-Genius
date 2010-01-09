@@ -26,16 +26,11 @@ CInput::CInput() {
 	g_pLogFile->ftextOut("Starting the input driver...<br>");
 	memset(InputCommand, 0, NUM_INPUTS*NUMBER_OF_COMMANDS*sizeof(stInputCommand));
 
-	resetControls(1);
+	for(size_t c=1 ; c<= NUM_INPUTS ; c++)
+		resetControls(c);
 	memset(&Event,0,sizeof(Event));
 	loadControlconfig();
 	startJoyDriver();
-}
-
-CInput::~CInput() {
-	// Shutdown Joysticks
-	if(mp_Joystick)
-		SDL_JoystickClose(mp_Joystick);
 }
 
 void CInput::resetControls(int player) {
@@ -58,8 +53,7 @@ void CInput::resetControls(int player) {
 
 	for(i=0 ; i<NUMBER_OF_COMMANDS ; i++)
 	{
-		//for(int player=0 ; player<NUM_INPUTS ; player++)
-			InputCommand[player][i].active = false;
+		InputCommand[player][i].active = false;
 	}
 
 	// These are the default keyboard commands
@@ -139,8 +133,14 @@ bool CInput::startJoyDriver()
 			g_pLogFile->textOut("The names of the joysticks are:<br>");
 
 			for( i=0; i < SDL_NumJoysticks(); i++ )
-			{
 				g_pLogFile->ftextOut("    %s<br>", SDL_JoystickName(i));
+
+			SDL_JoystickEventState(SDL_ENABLE);
+
+			for(size_t c=0 ; c<joynum ; c++)
+			{
+				SDL_Joystick *p_Joystick = SDL_JoystickOpen(c);
+				mp_Joysticks.push_back(p_Joystick);
 			}
 		}
 		else
@@ -148,9 +148,6 @@ bool CInput::startJoyDriver()
 			g_pLogFile->ftextOut("No joysticks were found.<br>\n");
 		}
 	}
-
-	SDL_JoystickEventState(SDL_ENABLE);
-	mp_Joystick = SDL_JoystickOpen(0);
 
 	return 0;
 }
@@ -726,4 +723,14 @@ void CInput::flushKeys(void)
 	memset(last_immediate_keytable,false,KEYTABLE_SIZE);
 }
 void CInput::flushAll(void){ flushKeys(); flushCommands(); }
+
+CInput::~CInput() {
+	// Shutdown Joysticks
+	while(!mp_Joysticks.empty())
+	{
+		SDL_JoystickClose(mp_Joysticks.back());
+		mp_Joysticks.pop_back();
+	}
+}
+
 

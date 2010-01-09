@@ -40,7 +40,7 @@ private:
 	Uint16 m_w;
 	Uint16 m_h;
 
-	int m_selected_ID;
+	Uint8 m_selected_ID;
 	int m_dlg_size;
 	Uint8 m_switch;
 	Uint8 m_scroll;

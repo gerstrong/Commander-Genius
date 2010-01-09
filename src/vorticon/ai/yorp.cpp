@@ -64,14 +64,6 @@ void CObjectAI::yorp_ai(CObject &object, CPlayer *p_player, bool hardmode)
 	int x = object.getXPosition();
 	int y = object.getYPosition();
 
-	// fix where yorps can get stunned, go offscreen, then
-	// come back hours later and they're still doing the stun animation
-	/*if (object.wasoffscreen)
-	{
-		object.wasoffscreen = false;
-		if (object.ai.yorp.state==YORP_STUNNED)
-			object.needinit = true;
-	}*/
 	if (object.needinit)
 	{  // first time initilization
 		object.ai.yorp.state = YORP_LOOK;
@@ -92,8 +84,8 @@ void CObjectAI::yorp_ai(CObject &object, CPlayer *p_player, bool hardmode)
 	if (object.touchPlayer && object.ai.yorp.state != YORP_STUNNED
 		&& object.ai.yorp.state != YORP_DYING  && !tb_player.pdie)
 	{
-		if (tb_player.pfalling)
-		{  // falling, see if he bonked the yorp on the head
+		if (tb_player.pfalling || (tb_player.pjumping && (tb_player.pjumping != PPREPAREJUMP && tb_player.pjumping != PPREPAREPOGO) ))
+		{   // falling, see if he bonked the yorp on the head
 			// this happens if keen's feet are higher than the top
 			// half of the yorp
 			if ((tb_player.getYPosition()>>STC)+16 < (y>>STC)+12)

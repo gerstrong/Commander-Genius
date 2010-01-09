@@ -220,7 +220,7 @@ void CDialog::processInput(int move)
 
 					if(!m_dlgobject.at(m_selected_ID)->m_selectable)
 					{
-						m_selected_ID--;
+						if(m_selected_ID-1 > 0) m_selected_ID--;
 						m_name = m_dlgobject.at(m_selected_ID)->m_OptionText->m_text;
 					}
 				}
