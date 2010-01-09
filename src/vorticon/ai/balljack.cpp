@@ -2,8 +2,8 @@
 #include "CObjectAI.h"
 #include "../spritedefines.h"
 
-#define BALL_SPEED      60
-#define JACK_SPEED      40
+#define BALL_SPEED      120
+#define JACK_SPEED      120
 #define JACK_ANIM_RATE  12
 
 #define BALLPUSHAMOUNT	30
@@ -149,10 +149,7 @@ bool CObjectAI::BJ_BlockedD(CObject &object)
 	if (object.blockedd)
 	{	// ensure that the tile common_enemy_ai said we hit also has
 		// solid l/r set
-		if(object.blockedl)
-		{ return true; }
-		if(object.blockedr)
-		{ return true; }
+		return true;
 	}
 	return false;
 }

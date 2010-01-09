@@ -225,7 +225,7 @@ void CPlayer::setDir()
 	if (pfrozentime) return;
 	// can't change direction on ice,
 	// UNLESS we're stuck up against a wall
-	if (psliding)
+	if (psliding && pjumping < PJUMPED)
 	{
 		bool stuck = false;
 		if (pshowdir == LEFT && blockedl) stuck = true;
@@ -641,6 +641,16 @@ stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 	else
 	{
 		pfalling = false;
+		psliding = false;
+		psemisliding = false;
+
+		// Check if player is on ice
+		if(!pjumping)
+		{
+			int ice = TileProperty[mp_map->at(getXMidPos()>>CSF, (ydown+1)>>CSF)].bup;
+			if(ice == 2) psemisliding = true;
+			else if(ice == 3) psliding = true;
+		}
 	}
 
 	// ** if the player should be falling, well what are we waiting for?
@@ -775,15 +785,15 @@ void CPlayer::raygun()
 void CPlayer::SelectFrame()
 {
     sprite = playerbaseframe;      // basic standing
-	
+
     // select the frame assuming he's pointing right. ep1 does not select
     // a walk frame while fading--this is for the bonus teleporter in L13.
-    if (pdie) sprite = PDIEFRAME + pdieframe;
+    if (pdie) sprite += PDIEFRAME + pdieframe;
     else
     {
         if (pfrozentime) sprite = PFRAME_FROZEN + pfrozenframe;
-        else if (pfiring) sprite = PFIREFRAME;
-        else if (ppogostick) sprite = PFRAME_POGO + (pjumping==PPREPAREPOGO);
+        else if (pfiring) sprite += PFIREFRAME;
+        else if (ppogostick) sprite += PFRAME_POGO + (pjumping==PPREPAREPOGO);
         else if (pjumping) sprite += pjumpframe;
         else if (pfalling) sprite += 13;
         else if (pwalking || playpushed_x || psemisliding) sprite += pwalkframe;
