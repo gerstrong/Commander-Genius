@@ -96,7 +96,7 @@ void CPlayer::setDatatoZero()
     lastpogo = false;
 	
     ppogostick=false;
-    level_done_timer = pfriction_timer_x = 0;
+    level_done_timer = 0;
   	dpadcount = dpadlastcount = 0;
   	beingteleported = false;
   	object_chosen = false;
@@ -316,7 +316,7 @@ void CPlayer::Walking()
 	if (playcontrol[PA_X] > 0 && !ppogostick && !playpushed_x)
 	{ // RIGHT key down
 		// quickly reach PLAYER_FASTINCMAXSPEED
-		if (pwalkincreasetimer>=cur_pfastincrate && xinertia<mp_PhysicsSettings->player.max_x_speed)
+		if (pwalkincreasetimer>=cur_pfastincrate)
 		{
 			if(pfalling) xinertia+=(1<<2);
 			else xinertia+=(1<<4);
@@ -337,7 +337,7 @@ void CPlayer::Walking()
 	else if (playcontrol[PA_X] < 0 && !ppogostick && !playpushed_x)
 	{ // LEFT key down
 		// quickly reach PFASTINCMAXSPEED
-		if (pwalkincreasetimer>=cur_pfastincrate && xinertia<-mp_PhysicsSettings->player.max_x_speed)
+		if (pwalkincreasetimer>=cur_pfastincrate)
 		{
 			if(pfalling) xinertia-=(1<<2);
 			else xinertia-=(1<<4);
@@ -596,25 +596,11 @@ void CPlayer::InertiaAndFriction_X()
 		if (!ppogostick || (xinertia >  mp_PhysicsSettings->player.max_x_speed) ||
 						   (xinertia < -mp_PhysicsSettings->player.max_x_speed) )
 		{
-	        if (pfriction_timer_x > friction_rate)
-	        {
-				if (!pfrozentime || m_episode!=1)
-				{   // disable friction while frozen
-					// here the wall animation must be applied!
-					if (xinertia < 0)
-					{
-						xinertia+=(1<<5);
-						if (xinertia > 0) xinertia = 0;
-					}
-					else if (xinertia > 0)
-					{
-						xinertia-=(1<<5);
-						if (xinertia < 0) xinertia = 0;
-					}
-				}
-				pfriction_timer_x = 0;
-	        }
-	        else pfriction_timer_x++;
+			if (!pfrozentime || m_episode!=1)
+			{   // disable friction while frozen
+				// here the wall animation must be applied!
+				decreaseXInertia(friction_rate);
+			}
 		}
 	}
 }

@@ -89,7 +89,7 @@ void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 			if (object.ai.garg.looktimes>GARG_NUM_LOOKS)
 			{
 				// try to head towards Keen...
-				if (p_player[object.ai.garg.detectedPlayerIndex].getXPosition() < object.getYPosition())
+				if (p_player[object.ai.garg.detectedPlayerIndex].getXPosition() < object.getXPosition())
 					object.ai.garg.movedir = LEFT;
 				else
 					object.ai.garg.movedir = RIGHT;

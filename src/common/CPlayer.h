@@ -135,7 +135,7 @@ public:
 	unsigned char pslowingdown;
 	unsigned char pwalkframe,pwalkframea;
 	int pwalkanimtimer;
-	unsigned char pwalkincreasetimer, pfriction_timer_x, pfriction_timer_y;
+	unsigned char pwalkincreasetimer, pfriction_timer_y;
 	signed int playpushed_x;
 	unsigned char playpushed_decreasetimer;
 

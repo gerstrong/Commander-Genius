@@ -18,15 +18,13 @@ PA_FIRE, PA_STATUS
 // upon starting to walk, keen will quickly increase to
 // PFASTINCMAXSPEED. keen can, at a slower rate,
 // reach up to PMAXSPEED (increased every walk anim frame)
-//#define PFASTINCMAXSPEED 36
-//#define PFASTINCMAXSPEED 40
-#define PJUMPINERTIA     30
 #define PFASTINCRATE     4        // accel delay rate up to PFASTINCMAXSPEED
 #define PFASTINCRATE_POGO  2      // rate when pogo stick is out
-// rates at which player slows down
-#define PFRICTION_RATE_INAIR      20      //8
-#define PFRICTION_RATE_ONGROUND   2      //2
-#define PFRICTION_RATE_WM         1    // on world map
+// rates at which player slows down while he is walking suddenly player does not
+// move him anymore
+#define PFRICTION_RATE_INAIR      0      //8
+#define PFRICTION_RATE_ONGROUND   32      //2
+#define PFRICTION_RATE_WM         32    // on world map
 // rate at which player walking animation is shown
 #define PWALKANIMRATE             8
 

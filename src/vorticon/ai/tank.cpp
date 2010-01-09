@@ -250,12 +250,12 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 			if (object.onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, object.scrx);
 			if (object.ai.tank.movedir==RIGHT)
 			{
-				newobject.spawn(object.getXRightPos(), y+(5<<STC), OBJ_RAY, m_Episode);
+				newobject.spawn(object.getXRightPos()+1, y+(5<<STC), OBJ_RAY, m_Episode, RIGHT);
 				newobject.ai.ray.direction = RIGHT;
 			}
 			else
 			{
-				newobject.spawn(object.getXLeftPos(), y+(5<<STC), OBJ_RAY, m_Episode, LEFT);
+				newobject.spawn(object.getXLeftPos()-1, y+(5<<STC), OBJ_RAY, m_Episode, LEFT);
 				newobject.ai.ray.direction = LEFT;
 			}
 			newobject.ai.ray.owner = object.m_index;

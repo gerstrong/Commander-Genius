@@ -541,7 +541,10 @@ void CPlayer::JumpAndPogo()
 					if(pjumpupspeed < mp_PhysicsSettings->player.max_fallspeed)
 						pjumpupspeed+=pjumpupspeed_decrease*2;
 					else
+					{
 						pjumpupspeed=mp_PhysicsSettings->player.max_fallspeed;
+						pjumping = PNOJUMP;
+					}
 				}
 			}
 			else pjumptime--;
