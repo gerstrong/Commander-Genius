@@ -66,6 +66,7 @@ void CPlayGame::processInLevel()
 		// Check if all players are dead. In that case, go back to map
 		if(m_alldead)
 		{
+			g_pMusicPlayer->stop();
 			m_gameover = true; // proof contrary case
 			for( int i=0 ; i<m_NumPlayers ; i++ )
 				m_gameover &= ( m_Player[i].inventory.lives < 0 );

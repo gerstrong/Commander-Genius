@@ -153,7 +153,7 @@ void CObjectAI::icecannon_ai(CObject &object)
 	 object.sprite = BLANKSPRITE;
 	 object.inhibitfall = 1;
 	 
-	 if (!m_gunfiretimer)
+	 if (m_gunfiretimer)
 	 {
 		 CObject chunk(mp_Map);
 		 chunk.spawn( object.getXPosition()+512, object.getYPosition(), OBJ_ICECHUNK, m_Episode);

@@ -16,21 +16,23 @@ void CObjectAI::ballandjack_ai(CObject &object)
 {
 	if (object.needinit)
 	{
-		int i = rnd()%4;
-		switch(i)
-		{
-		case 0: object.ai.bj.dir = DUPLEFT; break;
-		case 1: object.ai.bj.dir = DUPRIGHT; break;
-		case 2: object.ai.bj.dir = DDOWNLEFT; break;
-		case 3: object.ai.bj.dir = DDOWNRIGHT; break;
-		}
+		int px = m_Player[0].getXMidPos();
+		int py = m_Player[0].getYMidPos();
+
+		char tempxdir, tempydir;
+		if(px<object.getXMidPos()) tempxdir=LEFT;
+		else tempxdir = RIGHT;
+
+		if(py<object.getYMidPos()) tempydir=UP;
+		else tempydir = DOWN;
+
+		if (tempxdir == LEFT && tempydir == UP) object.ai.bj.dir = DUPLEFT;
+		else if (tempxdir == RIGHT && tempydir == UP) object.ai.bj.dir = DUPRIGHT;
+		else if (tempxdir == LEFT && tempydir == DOWN) object.ai.bj.dir = DDOWNLEFT;
+		else if (tempxdir == RIGHT && tempydir == DOWN) object.ai.bj.dir = DDOWNRIGHT;
 
 		object.ai.bj.animframe = 0;
 		object.ai.bj.animtimer = 0;
-		object.blockedl = 0;
-		object.blockedr = 0;
-		object.blockedu = 0;
-		object.blockedd = 0;
 		object.inhibitfall = 1;
 
 		if (object.m_type==OBJ_BALL)
@@ -43,6 +45,7 @@ void CObjectAI::ballandjack_ai(CObject &object)
 			object.ai.bj.speed = JACK_SPEED;
 			object.canbezapped = 0;
 		}
+		object.checkinitialCollisions();
 		object.needinit = 0;
 	}
 

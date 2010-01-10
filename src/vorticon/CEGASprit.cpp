@@ -206,7 +206,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	}
 	
 	// Apply the sprites for player 2,3 and 4
-	DerivePlayerSprites( g_pGfxEngine->getSpriteVec() );
+	//DerivePlayerSprites( g_pGfxEngine->getSpriteVec() );
 
 	// Now create special sprites, like those for effects and the doors!
 	DeriveSpecialSprites( g_pGfxEngine->Tilemap, g_pGfxEngine->getSpriteVec() );
@@ -229,6 +229,8 @@ char CEGASprit::LoadTGASprite( const std::string &filename, CSprite &sprite )
 	Uint8 *pixel, *maskpx;
 	
 	fname = m_gamepath + filename;
+
+	// Look in local location than in global, if tga was not found!
 	if (LoadTGA(fname, &image, &w, &h))
 	{
 		fname = GFXDIR + filename;
@@ -303,7 +305,6 @@ void CEGASprit::LoadSpecialSprites( std::vector<CSprite> &sprite )
 	LoadTGASprite("arrowur.tga", sprite[ARROWUR_SPRITE] );
 	LoadTGASprite("arrowu.tga", sprite[ARROWU_SPRITE] );
 	LoadTGASprite("arrowd.tga", sprite[ARROWD_SPRITE] );
-	LoadTGASprite("cglogo.tga", sprite[CG_LOGO] );
 }
 
 void CEGASprit::DerivePlayerSprites( std::vector<CSprite> &sprites )

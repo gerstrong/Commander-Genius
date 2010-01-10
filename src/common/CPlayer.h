@@ -51,6 +51,7 @@ public:
 	void setDefaultStartValues();
 	void setMapData(CMap *p_map){ mp_map=p_map; }
 	void setPhysics(CPhysicsSettings *physics) { mp_PhysicsSettings = physics; }
+	void setupforLevelPlay();
 	bool getLevelTrigger();
 
 	// World Map specific

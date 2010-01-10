@@ -142,7 +142,7 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 			// is it time to fire the next shot in the volley?
 			if (!object.ai.tank.timetillnextshot)
 			{
-				CObject newobject(mp_Map);
+				CObject newobject(mp_Map, m_Objvect.size());
 				if (object.onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, object.scrx);
 				if (object.ai.tank.movedir==RIGHT)
 				{

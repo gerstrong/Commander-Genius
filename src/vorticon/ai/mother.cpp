@@ -133,17 +133,9 @@ void CObjectAI::mother_ai( CObject& object, bool hardmode )
 
 		if (object.ai.mother.timer > MOTHER_SPIT_SHOW_TIME)
 		{
-			CObject newobject(mp_Map);
-			if (object.ai.mother.dir==RIGHT)
-			{
-				newobject.spawn(object.getXRightPos()+1, object.getYPosition()+(11<<STC), OBJ_FIREBALL, 3);
-				newobject.ai.ray.direction = RIGHT;
-			}
-			else
-			{
-				newobject.spawn(object.getXLeftPos()-1, object.getYPosition()+(11<<STC), OBJ_FIREBALL, 3, LEFT);
-				newobject.ai.ray.direction = LEFT;
-			}
+			CObject newobject(mp_Map, m_Objvect.size());
+			newobject.spawn(object.getXMidPos()-(3<<STC), object.getYPosition()+(11<<STC), OBJ_FIREBALL, 3, object.ai.mother.dir);
+			newobject.ai.ray.direction = object.ai.mother.dir;
 			newobject.ai.ray.owner = object.m_index;
 			m_Objvect.push_back(newobject);
 

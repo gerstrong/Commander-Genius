@@ -137,7 +137,6 @@ void CPlayer::kill(bool force)
 		pdie_xvect -= DIE_MAX_XVECT;
 		inventory.lives--;
 		SelectFrame();
-		g_pMusicPlayer->stop();
 		g_pSound->playSound(SOUND_KEEN_DIE, PLAY_NOW);
 	}
 }
@@ -647,9 +646,13 @@ stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 		// Check if player is on ice
 		if(!pjumping)
 		{
-			int ice = TileProperty[mp_map->at(getXMidPos()>>CSF, (ydown+1)>>CSF)].bup;
-			if(ice == 2) psemisliding = true;
-			else if(ice == 3) psliding = true;
+			int ice = TileProperty[mp_map->at(getXLeftPos()>>CSF, (ydown+1)>>CSF)].bup;
+			ice |= TileProperty[mp_map->at(getXRightPos()>>CSF, (ydown+1)>>CSF)].bup;
+			if(!blockedl && !blockedr)
+			{
+				if(ice == 2) psemisliding = true;
+				else if(ice == 3) psliding = true;
+			}
 		}
 	}
 

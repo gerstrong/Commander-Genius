@@ -92,7 +92,7 @@ void CGfxEngine::copyTileToSprite( Uint16 t, Uint16 s, Uint16 ntilestocopy )
 		
 		dst_rect.x = 0;
 		dst_rect.y = 16*i;
-		
+
 		SDL_BlitSurface( Tilemap->getSDLSurface(), &src_rect, Sprite[s].getSDLSurface(), &dst_rect);
 	}
 }

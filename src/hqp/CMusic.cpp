@@ -152,7 +152,7 @@ bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &
     	while(!Tablefile.eof())
     	{
         	Tablefile.get(c_buf, 256, ' ');
-    		while(c_buf[0] == '\n') memcpy (c_buf, c_buf+1, 254);
+    		while(c_buf[0] == '\n') memmove (c_buf, c_buf+1, 254);
         	str_buf = c_buf;
     		if( str_buf == levelfilename )	// found the level! Load the song!
     		{

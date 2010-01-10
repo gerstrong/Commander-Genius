@@ -73,7 +73,7 @@ void CObjectAI::process()
 		object.process();
 	}
 
-	if(m_gunfiretimer<60) m_gunfiretimer++;
+	if(m_gunfiretimer< ((m_Episode==3) ? 180 : 60 )) m_gunfiretimer++;
 	else m_gunfiretimer=0;
 }
 

@@ -9,13 +9,13 @@ enum garg_states{
 #define GARG_MINTRAVELDIST          1000
 #define GARG_LOOK_PROB              100
 #define GARG_WALK_SPEED             12
-#define GARG_WALK_ANIM_TIME         12
+#define GARG_WALK_ANIM_TIME         9
 #define GARG_WALK_SPEED_FAST        20
 #define GARG_WALK_ANIM_TIME_FAST    7
 #define GARG_CHARGE_SPEED           73
 #define GARG_CHARGE_ANIM_TIME       7
 #define GARG_JUMP_TIME       		160
-#define GARG_JUMP_SPEED				48
+#define GARG_JUMP_SPEED				96
 
 #define GARG_LOOK_TIME  17
 #define GARG_NUM_LOOKS  3
@@ -63,7 +63,7 @@ void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 	{
 		// die, you stupid garg, die!
 		object.ai.garg.state = GARG_DYING;
-		object.canbezapped = 0;
+		object.canbezapped = false;
 		object.sprite = GARG_DYING_FRAME;
 		object.zapped=0;
 		object.ai.garg.gargdie_inertia_y = GARGDIE_START_INERTIA;

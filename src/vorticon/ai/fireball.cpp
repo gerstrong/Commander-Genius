@@ -45,9 +45,9 @@ void CObjectAI::fireball_ai(CObject &object, bool hard)
 	for( ; it_obj!=m_Objvect.end() ; it_obj++)
 	{
 		if (!it_obj->exists || it_obj->m_index==object.m_index) continue;
-		if (it_obj->m_type==OBJ_RAY || it_obj->m_type==OBJ_FIREBALL) continue;
+		if (/*it_obj->m_type==OBJ_RAY ||*/ it_obj->m_type==OBJ_FIREBALL) continue;
 
-		if (it_obj->canbezapped)
+		if (it_obj->canbezapped || it_obj->m_type==OBJ_RAY)
 		{
 			if (it_obj->hitdetect(object) && object.ai.ray.owner != it_obj->m_index)
 			{

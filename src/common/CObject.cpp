@@ -28,8 +28,6 @@ mp_Map(pmap)
 {
 	honorPriority = false;
 	exists = false;
-	blockedu = blockedd = false;
-	blockedl = blockedr = false;
 	sprite=BLANKSPRITE;
 	solid = true;
 
@@ -70,14 +68,19 @@ bool CObject::spawn(int x0, int y0, int otype, int Episode, char dirof)
 		cansupportplayer = false;
 		
 		setupObjectType(Episode);
+
+		CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+		bboxX1 = rSprite.m_bboxX1;		bboxX2 = rSprite.m_bboxX2;
+		bboxY1 = rSprite.m_bboxY1;		bboxY2 = rSprite.m_bboxY2;
 		
 		// check if the objects has to spawn left-off
 		if(dirof == LEFT)
 		{
-			CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
-			int dx = rSprite.m_bboxX2-rSprite.m_bboxX1;
+			int dx = bboxX2-bboxX1;
 			x-=dx;
 		}
+
+		checkinitialCollisions();
 
 		return true;
 	}
@@ -162,6 +165,26 @@ void CObject::setupObjectType(int Episode)
 	case OBJ_SECTOREFFECTOR: sprite = BLANKSPRITE; break;
 	case OBJ_GOTPOINTS: sprite = PT500_SPRITE; break;
 	default: sprite = BLANKSPRITE;
+	}
+}
+
+// This is needed when a new object is created, because the collision
+// per tile, really checks per tile and not pixel based
+void CObject::checkinitialCollisions()
+{
+	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
+	blockedr = blockedl = false;
+	blockedu = blockedd = false;
+	// Check initial collision. This will avoid that ray go through the first blocking element
+	for(size_t j=bboxY1; j<=bboxY2 ; j+=(1<<STC))
+	{
+		for(size_t i=bboxX1; i<=bboxX2 ; i+=(1<<STC))
+		{
+			blockedr |= TileProperty[mp_Map->at((x+i)>>CSF,(y+j)>>CSF)].bleft;
+			blockedl |= TileProperty[mp_Map->at((x+i)>>CSF,(y+j)>>CSF)].bright;
+			blockedu |= TileProperty[mp_Map->at((x+i)>>CSF,(y+j)>>CSF)].bdown;
+			blockedd |= TileProperty[mp_Map->at((x+i)>>CSF,(y+j)>>CSF)].bup;
+		}
 	}
 }
 
@@ -502,10 +525,10 @@ bool CObject::hitdetect(CObject &hitobject)
 	rect2y2 = hitobject.y + hitobject.bboxY2;
 	
 	// find out if the rectangles overlap
-	if ((rect1x1 < rect2x1) && (rect1x2 < rect2x1)) return false;
-	if ((rect1x1 > rect2x2) && (rect1x2 > rect2x2)) return false;
-	if ((rect1y1 < rect2y1) && (rect1y2 < rect2y1)) return false;
-	if ((rect1y1 > rect2y2) && (rect1y2 > rect2y2)) return false;
+	if ((rect1x1 <= rect2x1) && (rect1x2 <= rect2x1)) return false;
+	if ((rect1x1 >= rect2x2) && (rect1x2 >= rect2x2)) return false;
+	if ((rect1y1 <= rect2y1) && (rect1y2 <= rect2y1)) return false;
+	if ((rect1y1 >= rect2y2) && (rect1y2 >= rect2y2)) return false;
 	
 	return true;
 }

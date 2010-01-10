@@ -63,7 +63,7 @@ public:
 	bool cansupportplayer;
 	std::vector<CObject> *mp_object;
 	
-	unsigned char blockedl, blockedr, blockedu, blockedd;
+	bool blockedl, blockedr, blockedu, blockedd;
 	signed int xinertia, yinertia;
 	unsigned char xinertiatimer;
 	unsigned int psupportingobject, lastsupportingobject;
@@ -113,6 +113,7 @@ public:
 	} ai;
 	
 	void setupObjectType(int Episode);
+	void checkinitialCollisions();
 	void setScrPos( int px, int py );
 	bool calcVisibility( int player_x, int player_y );
 	bool spawn(int x0, int y0, int otype, int Episode, char dirof = RIGHT );

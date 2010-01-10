@@ -233,7 +233,7 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 			object.ai.vortelite.timer = 0;
 			object.ai.vortelite.state = VORTELITE_FIRED;
 
-			CObject newobject(mp_Map);
+			CObject newobject(mp_Map, m_Objvect.size());
 			if (object.ai.vortelite.movedir==RIGHT)
 			{
 				newobject.spawn(object.getXRightPos()+1, object.getYPosition()+(9<<STC), OBJ_RAY, m_Episode);

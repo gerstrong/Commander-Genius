@@ -246,21 +246,22 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 		if (object.ai.tank.timer > TANK_PREPAREFIRE_TIME ||
 				(object.ai.tank.timer > TANK_PREPAREFIRE_TIME_FAST && hardmode))
 		{
-			CObject newobject(mp_Map);
+			CObject newobject(mp_Map, m_Objvect.size());
 			if (object.onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, object.scrx);
 			if (object.ai.tank.movedir==RIGHT)
 			{
-				newobject.spawn(object.getXRightPos()+1, y+(5<<STC), OBJ_RAY, m_Episode, RIGHT);
+				newobject.spawn(object.getXMidPos(), y+(4<<STC), OBJ_RAY, m_Episode, RIGHT);
 				newobject.ai.ray.direction = RIGHT;
 			}
 			else
 			{
-				newobject.spawn(object.getXLeftPos()-1, y+(5<<STC), OBJ_RAY, m_Episode, LEFT);
+				newobject.spawn(object.getXMidPos(), y+(4<<STC), OBJ_RAY, m_Episode, LEFT);
 				newobject.ai.ray.direction = LEFT;
 			}
 			newobject.ai.ray.owner = object.m_index;
 			newobject.sprite = ENEMYRAY;
 			newobject.ai.ray.dontHitEnable = 0;
+			newobject.canbezapped = true;
 			m_Objvect.push_back(newobject);
 
 			object.ai.tank.state = TANK_WALK;

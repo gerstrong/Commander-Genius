@@ -56,27 +56,33 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 	g_pGfxEngine->createEmptyBitmaps(m_bitmaps);
 	for(int i=0 ; i<m_bitmaps ; i++)
 	{
-		char name[9];
+		std::string name;
+		//char name[9];
 		CBitmap &Bitmap = g_pGfxEngine->getBitmap(i);
 		memcpy(&width,data+16*i,2);
 		memcpy(&height,data+16*i+2,2);
-		memcpy(name,data+16*i+8,8);
+		name = (const char*)(data+16*i+8);
 		width *= 8; // The width is always divided by eight when read
 
-		name[8] = 0; // Ensure null-terminated!
-		if( name[0] != 0 ) Bitmap.setName( name );
-		else {
-			if (m_episode == 1) {
+		if( name != "" ) Bitmap.setName( name );
+		else
+		{
+			if (m_episode == 1)
+			{
 				const std::string default_names[] = { "TITLE", "IDLOGO", "F1HELP", "HIGHSCOR",
 					"NAME", "SCORE", "PARTS", "GAMEOVER", "AN", "PRESENT", "APOGEE", "KEENSHIP", "WINDON",
 					"WINDOFF", "ONEMOMEN", "OFAN", "PRODUCT", "IDSOFT" }; // in case the names are empty
 				Bitmap.setName( default_names[i] );
-			}else if (m_episode == 2) {
+			}
+			else if (m_episode == 2)
+			{
 				const std::string default_names[] = { "TITLE", "IDLOGO", "F1HELP", "HIGHSCOR",
 					"NAME", "SCORE", "SAVED", "GAMEOVER", "AN", "PRESENT", "APOGEE", "KEENSHIP", "WINDON",
 					"WINDOFF", "ONEMOMEN", "OFAN", "PRODUCT", "IDSOFT" }; // in case the names are empty
 				Bitmap.setName( default_names[i] );
-			}else if (m_episode == 3) {
+			}
+			else if (m_episode == 3)
+			{
 				const std::string default_names[] = { "TITLE", "IDLOGO", "F1HELP", "HIGHSCOR",
 					"NAME", "SCORE", "GAMEOVER", "AN", "PRESENT", "APOGEE", "ONEMOMEN", "OFAN", "PRODUCT", "IDSOFT" }; // in case the names are empty
 				Bitmap.setName( default_names[i] );

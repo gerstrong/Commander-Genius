@@ -9,6 +9,8 @@
 #include "CPalette.h"
 #include "../sdl/CVideoDriver.h"
 
+#define SAFE_DELETE(x) { if(x) SDL_FreeSurface(x); x = NULL; }
+
 CSprite::CSprite() :
 m_surface(NULL),
 m_masksurface(NULL)
@@ -116,7 +118,7 @@ void CSprite::copy( CSprite &Destination, SDL_Color *Palette )
 	Destination.createSurface( m_surface->flags, Palette );
 	
 	SDL_FillRect(Destination.getSDLSurface(), NULL, COLORKEY);
-	SDL_BlitSurface( m_surface, NULL, Destination.getSDLSurface(), NULL);
+	//SDL_BlitSurface( m_surface, NULL, Destination.getSDLSurface(), NULL);
 }
 
 // replaces all instances of color find in sprite s with
@@ -173,10 +175,11 @@ void CSprite::drawSprite( SDL_Surface *dst, Uint16 x, Uint16 y )
 
 void CSprite::freeSurfaces()
 {
-	if(m_surface) SDL_FreeSurface(m_surface);
-	if(m_masksurface) SDL_FreeSurface(m_masksurface);
+	SAFE_DELETE(m_surface);
+	SAFE_DELETE(m_masksurface);
 }
 
 CSprite::~CSprite() {
+	freeSurfaces();
 }
 

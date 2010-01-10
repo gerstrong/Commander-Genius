@@ -266,7 +266,7 @@ SPARK_ANIMATE, SPARK_BLOWUP1, SPARK_BLOWUP2, SPARK_BLOWUP3
 			my = object.ai.se.my+3+object.ai.se.blowy;
 			mp_Map->setTile(mx, my, 505, true);
 			// spawn a ZAP! or a ZOT!
-			CObject newobject(mp_Map);
+			CObject newobject(mp_Map, m_Objvect.size());
 			newobject.spawn(mx<<CSF, my<<CSF, OBJ_RAY, m_Episode);
 			newobject.ai.ray.state = RAY_STATE_SETZAPZOT;
 			newobject.ai.ray.owner = object.m_index;
@@ -314,7 +314,7 @@ SPARK_ANIMATE, SPARK_BLOWUP1, SPARK_BLOWUP2, SPARK_BLOWUP3
 				my = object.ai.se.my+3+y;
 				mp_Map->setTile(mx, my, 549, true);
 				// spawn a ZAP! or a ZOT!
-				CObject newobject(mp_Map);
+				CObject newobject(mp_Map, m_Objvect.size());
 				newobject.spawn(mx<<CSF, my<<CSF, OBJ_RAY, m_Episode);
 				newobject.ai.ray.owner = object.m_index;
 				newobject.ai.ray.state = RAY_STATE_SETZAPZOT;
@@ -586,7 +586,7 @@ void CObjectAI::se_mortimer_spark(CObject &object)
 				{
 					mp_Map->setTile(mx, object.ai.se.my, 169, true);
 					// spawn a ZAP! or a ZOT!
-					CObject newobject(mp_Map);
+					CObject newobject(mp_Map, m_Objvect.size());
 					newobject.spawn(((mx<<4)+4)<<STC, object.ai.se.my<<4<<STC, OBJ_RAY, m_Episode);
 					newobject.ai.ray.state = RAY_STATE_SETZAPZOT;
 					newobject.ai.ray.direction = DOWN;
@@ -600,7 +600,7 @@ void CObjectAI::se_mortimer_spark(CObject &object)
 				{
 					mp_Map->setTile(mx, object.ai.se.my, 169, true);
 					// spawn a ZAP! or a ZOT!
-					CObject newobject(mp_Map);
+					CObject newobject(mp_Map, m_Objvect.size());
 					newobject.spawn(((mx<<4)+4)<<STC, object.ai.se.my<<4<<STC, OBJ_RAY, m_Episode);
 					newobject.ai.ray.state = RAY_STATE_SETZAPZOT;
 					newobject.ai.ray.direction = DOWN;
@@ -772,7 +772,7 @@ void CObjectAI::se_mortimer_zapsup(CObject &object)
 		for(x=MORTIMER_MACHINE_XSTART;x<MORTIMER_MACHINE_XEND;x++)
 		{
 			// spawn a ZAP! or a ZOT!
-			CObject newobject(mp_Map);
+			CObject newobject(mp_Map, m_Objvect.size());
 			newobject.spawn(((x<<4)+4)<<STC, object.ai.se.my<<4<<STC, OBJ_RAY, m_Episode);
 			newobject.ai.ray.state = RAY_STATE_SETZAPZOT;
 			newobject.ai.ray.direction = DOWN;
@@ -1038,7 +1038,7 @@ void CObjectAI::se_mortimer_randomzaps(CObject &object)
 		y = rand()%((MORTIMER_MACHINE_YENDNOLEGS*16)-(MORTIMER_MACHINE_YSTART*16))+(MORTIMER_MACHINE_YSTART*16);
 
 		// spawn a ZAP! or a ZOT!
-		CObject newobject(mp_Map);
+		CObject newobject(mp_Map, m_Objvect.size());
 		newobject.spawn(x<<CSF, y<<CSF, OBJ_RAY, m_Episode);
 		newobject.ai.ray.state = RAY_STATE_SETZAPZOT;
 		newobject.inhibitfall = true;

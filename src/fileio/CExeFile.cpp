@@ -132,7 +132,7 @@ int CExeFile::getEXEVersion()
 			else
 				return 131;
 
-		case 251712:
+		case 263488:
 			if(m_episode != 4)
 				return -1;
 			else

@@ -23,7 +23,7 @@ void CObjectAI::autoray_ai(CObject &Object)
 	if (m_gunfiretimer == 0)
 	{
 		unsigned int x,y;
-		CObject NewRay(mp_Map);
+		CObject NewRay(mp_Map, m_Objvect.size());
 		NewRay.ai.ray.owner = 0;
 		x = Object.getXPosition();
 		y = Object.getYPosition();

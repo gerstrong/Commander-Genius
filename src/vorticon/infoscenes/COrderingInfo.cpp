@@ -17,13 +17,13 @@
 COrderingInfo::COrderingInfo(std::string &datadirectory, char &episode) {
 	CExeFile *Exefile = new CExeFile(episode, datadirectory);
 	mp_Scrollsurface = g_pVideoDriver->ScrollSurface;
-	mp_Map->setScrollSurface(mp_Scrollsurface);
-	mp_Map->setTileMap(g_pGfxEngine->Tilemap);
+	m_Map.setScrollSurface(mp_Scrollsurface);
+	m_Map.setTileMap(g_pGfxEngine->Tilemap);
 
-	CMapLoader Maploader(mp_Map);
+	CMapLoader Maploader(&m_Map);
 	
 	Maploader.load(episode, 90, datadirectory);
-	mp_Map->gotoPos( 22<<4, 32 );
+	m_Map.gotoPos( 22<<4, 32 );
 	
 	// load the exe file
 	Exefile->readData();
@@ -41,15 +41,15 @@ COrderingInfo::COrderingInfo(std::string &datadirectory, char &episode) {
 			// Change the ugly lower Tiles which are seen, when using 320x240 base resolution
 			for(int i=0; i<20 ; i++)
 			{
-				mp_Map->changeTile(22+i, 15, 14*13);
-				mp_Map->changeTile(22+i, 16, 14*13+3);
+				m_Map.changeTile(22+i, 15, 14*13);
+				m_Map.changeTile(22+i, 16, 14*13+3);
 			}
 
 			break;
 		case 2:
 			m_starty = 3; // start of y-coordinate in textheights
 			m_numberoflines = 19; // numberof lines to print
-			mp_Map->gotoPos( 22<<4, 28 );
+			m_Map.gotoPos( 22<<4, 28 );
 			if(Exefile->getEXEVersion() == 131)
 				offset = 0x1ACD9-512;
 			break;
@@ -60,7 +60,7 @@ COrderingInfo::COrderingInfo(std::string &datadirectory, char &episode) {
 				offset = 0x1CDED-512;
 			break;
 	}
-	mp_Map->drawAll();
+	m_Map.drawAll();
 
 	// Read the strings and save them the string array of the class
 	if(offset)
@@ -150,18 +150,12 @@ void COrderingInfo::process()
 		 return;
 	 }
 	 
-	 //mp_Map->animateAllTiles();
-	 
 	 for(int i=0 ; i<m_numberoflines ; i++)
-	 {
-		 g_pLogFile->textOut(RED,m_Textline[i]);
 		 g_pGfxEngine->getFont().drawFont(g_pVideoDriver->FGLayerSurface, m_Textline[i], 160-m_Textline[i].size()*4, 8*(i+m_starty), 1);
-	 }
 	
 	if(g_pInput->getPressedAnyKey())
 		m_destroy_me=true;
 }
 
 COrderingInfo::~COrderingInfo() {
-	delete mp_Map;
 }

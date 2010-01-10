@@ -129,6 +129,17 @@ void CPlayer::setDefaultStartValues()
 	inventory.HasPogo = (m_episode==1) ? false : true;
 }
 
+// This function should be called, when the worldmap starts or any level is started
+void CPlayer::setupforLevelPlay()
+{
+	plastfalling = true;
+	solid = true;
+	pfalling = true;
+	pshowdir = RIGHT;
+	ppogostick = false;
+	pjumping = PNOJUMP;
+}
+
 bool CPlayer::scrollTriggers()
 {
 	int px, py;
@@ -432,18 +443,22 @@ void CPlayer::WalkingAnimation()
     {
     	int walkanimrate; // walk animation speed according to player speed
 		
-    	if(!psemisliding)
-    	{
+    	if(!psemisliding) {
     		walkanimrate = 101*PWALKANIMRATE/(treshold+1);
         	if(walkanimrate > 150)
 				walkanimrate = 150;
     	}
-    	else
+    	else if(xinertia!=0) {
     		walkanimrate = PWALKANIMRATE;
+    	}
+    	else {
+    		pwalkframe = 0;
+    		return;
+    	}
 		
     	// ** do walk animation **
         if (pwalkanimtimer > walkanimrate)
-        { // time to change walking frame
+        {   // time to change walking frame
 			// make walk noise
 			if ( (!pjumping && !pfalling) || m_playingmode == WORLDMAP )
 			{
