@@ -54,6 +54,7 @@ void CEndingEp1::ReturnsToShip()
 
   	    // draw keen next to his ship
 		m_Player[0].hideplayer = false;
+		m_Player[0].solid = false;
 		m_Player[0].moveTo(6636, 19968);
 		m_Player[0].sprite = PMAPLEFTFRAME;
 

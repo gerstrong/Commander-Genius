@@ -66,7 +66,6 @@ void CPlayer::setDatatoZero()
     ppogostick = false;
     pogofirsttime = false;
     plastfire = false;
-    psliding = psemisliding = false;
     honorPriority = true;
     solid = true;
     bumped = false;
@@ -82,28 +81,13 @@ void CPlayer::setDatatoZero()
     inhibitfall = false;
     mapplayx = mapplayy = 0;
     level_done = LEVEL_NOT_DONE;
-	
-    pfrozentime = 0;
-    ankhtime = 0;
-    keyprocstate = 0;         // KPROC_IDLE
-    pjustjumped = pjustfell = true;
-    pfireframetimer = 0;
-    psupportingobject = lastsupportingobject = 0;
-	supportedbyobject = false;
-	
+
     m_cheats_enabled = false;
     m_showStatusScreen = false;
-    lastpogo = false;
 	
-    ppogostick=false;
     level_done_timer = 0;
   	dpadcount = dpadlastcount = 0;
   	beingteleported = false;
-  	object_chosen = false;
-  	hintused = false;
-	
-  	exitXpos = 0;
-  	m_Level_Trigger = LVLTRIG_NONE;
 
   	// This will setup the proper frames, so second, third and fourth player get the correct sprites
    	playerbaseframe = (m_index==0) ? 0 : SECOND_PLAYER_BASEFRAME+(m_index-1)*48;
@@ -134,10 +118,24 @@ void CPlayer::setupforLevelPlay()
 {
 	plastfalling = true;
 	solid = true;
-	pfalling = true;
+	pfalling = false;
 	pshowdir = RIGHT;
 	ppogostick = false;
 	pjumping = PNOJUMP;
+    psliding = psemisliding = false;
+    pfrozentime = 0;
+    ankhtime = 0;
+    keyprocstate = 0;         // KPROC_IDLE
+    pjustjumped = pjustfell = true;
+    pfireframetimer = 0;
+    psupportingobject = lastsupportingobject = 0;
+	supportedbyobject = false;
+  	object_chosen = false;
+    lastpogo = false;
+  	hintused = false;
+  	exitXpos = 0;
+  	m_Level_Trigger = LVLTRIG_NONE;
+  	checkObjSolid();
 }
 
 bool CPlayer::scrollTriggers()

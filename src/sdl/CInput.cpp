@@ -517,7 +517,6 @@ bool CInput::getPressedKey(int key)
 	if(immediate_keytable[key] && !last_immediate_keytable[key])
 	{
 		immediate_keytable[key] = false;
-		g_pLogFile->textOut(RED, itoa(key)+" is true.");
 		return true;
 	}
 
@@ -553,13 +552,11 @@ std::string CInput::getPressedTypingKey(void)
 		if (getHoldedKey(KSHIFT) && getPressedKey(i))
 		{
 			buf = 'A' + i - KA;
-			g_pLogFile->textOut(RED, buf);
 			return buf;
 		}
 		else if(getPressedKey(i))
 		{
 			buf = 'a' + i - KA;
-			g_pLogFile->textOut(RED, buf);
 			return buf;
 		}
 	}
@@ -568,7 +565,6 @@ std::string CInput::getPressedTypingKey(void)
 		if(getPressedKey(i))
 		{
 			buf = 32 + i - KSPACE;
-			g_pLogFile->textOut(RED, buf);
 			return buf;
 		}
 	}
@@ -577,7 +573,6 @@ std::string CInput::getPressedTypingKey(void)
 		if(getPressedKey(i))
 		{
 			buf = '[' + i - KLEFTBRACKET;
-			g_pLogFile->textOut(RED, buf);
 			return buf;
 		}
 	}
@@ -586,7 +581,6 @@ std::string CInput::getPressedTypingKey(void)
 		if(getPressedKey(i))
 		{
 			buf = '{' + i - KLEFTBRACE;
-			g_pLogFile->textOut(RED, buf);
 			return buf;
 		}
 	}
@@ -598,23 +592,21 @@ bool CInput::getPressedIsTypingKey(void)
 	int i;
 
 	if(getHoldedKey(KSHIFT))
-	   {
-		   return true;
-	   }
-	   else
-	   {
-	for(i=KSPACE ; i<=KAT ; i++)
+		return true;
+	else
 	{
-		if(getHoldedKey(i))
-			return true;
+		for(i=KSPACE ; i<=KAT ; i++)
+		{
+			if(getHoldedKey(i))
+				return true;
+		}
+		for(i=KLEFTBRACKET ; i<=KTILDE ; i++)
+		{
+			if(getHoldedKey(i))
+				return true;
+		}
+		return false;
 	}
-	for(i=KLEFTBRACKET ; i<=KTILDE ; i++)
-	{
-		if(getHoldedKey(i))
-			return true;
-	}
-	return false;
-	   }
 }
 
 bool CInput::getPressedAnyKey(void)
@@ -639,10 +631,7 @@ bool CInput::getHoldedCommand(int command)
 
 bool CInput::getHoldedCommand(int player, int command)
 {
-	if(InputCommand[player][command].active)
-		return true;
-	else
-		return false;
+	return InputCommand[player][command].active;
 }
 
 bool CInput::getPressedCommand(int command)

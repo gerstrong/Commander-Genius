@@ -1,11 +1,10 @@
 #include "CObjectAI.h"
+#include "../../graphics/effects/CVibrate.h"
 #include "../spritedefines.h"
 #include "../../sdl/sound/CSound.h"
 #include "../../keen.h"
 #include "vort.h"
 #include "../../game.h"
-
-//#include "enemyai.h"
 
 // The rope holding the stone which kills the final Vorticon (ep1)
 
@@ -57,6 +56,11 @@ void CObjectAI::rope_ai(CObject &object)
 		{
 			object.ai.rope.droptimer = STONE_DROP_RATE;
 			rope_movestone(object);
+			g_pGfxEngine->pushEffectPtr(new CVibrate(400));
+
+			std::vector<CPlayer>::iterator it_player = m_Player.begin();
+			for(; it_player!=m_Player.end() ; it_player++)
+				it_player->blockedd=false;
 
 			// check if we've hit the ground yet
 			for(x=2;x<STONE_WIDTH-2;x++)

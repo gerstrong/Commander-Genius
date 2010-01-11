@@ -209,10 +209,10 @@ void CHighScores::writeEP1HighScore(int score, bool extra[4])
 		// Put the Tiles, of the parts that were collected
 		for( int i=0 ; i<8 ; i++ )
 		{
-			if(m_Extra[i][0]) m_Map.setTile(98,6+i,221, true);
-			if(m_Extra[i][1]) m_Map.setTile(99,6+i,237, true);
-			if(m_Extra[i][2]) m_Map.setTile(100,6+i,241, true);
-			if(m_Extra[i][3]) m_Map.setTile(101,6+i,245, true);
+			if(m_Extra[i][0]) m_Map.setTile(98,5+i,221, true);
+			if(m_Extra[i][1]) m_Map.setTile(99,5+i,237, true);
+			if(m_Extra[i][2]) m_Map.setTile(100,5+i,241, true);
+			if(m_Extra[i][3]) m_Map.setTile(101,5+i,245, true);
 		}
 	}
 }

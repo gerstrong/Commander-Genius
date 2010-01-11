@@ -60,6 +60,7 @@ bool CPlayGame::loadGameState()
 		std::vector<CPlayer> :: iterator player;
 		for( player=m_Player.begin() ; player != m_Player.end() ; player++ ) {
 			int x, y;
+			player->setupforLevelPlay();
 			m_SavedGame.decodeData(x);
 			m_SavedGame.decodeData(y);
 			m_SavedGame.decodeData(player->blockedd);

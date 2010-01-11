@@ -39,13 +39,13 @@ void CObjectAI::icechunk_ai(CObject &object)
 			{
 				m_Player[object.touchedBy].pdir = m_Player[object.touchedBy].pshowdir = RIGHT;
 				m_Player[object.touchedBy].xinertia = m_PhysicsSettings.player.max_x_speed;
-				m_Player[object.touchedBy].bump(m_PhysicsSettings.player.max_x_speed/2, false);
+				m_Player[object.touchedBy].bump(m_PhysicsSettings.player.max_x_speed/2, true);
 			}
 			else if (object.ai.icechunk.vector_x < 0)
 			{
 				m_Player[object.touchedBy].pdir = m_Player[object.touchedBy].pshowdir = LEFT;
 				m_Player[object.touchedBy].xinertia = -m_PhysicsSettings.player.max_x_speed;
-				m_Player[object.touchedBy].bump(-m_PhysicsSettings.player.max_x_speed/2, false);
+				m_Player[object.touchedBy].bump(-m_PhysicsSettings.player.max_x_speed/2, true);
 			}
 			else	// perfectly vertical ice cannons
 			{
@@ -85,7 +85,8 @@ void CObjectAI::icechunk_ai(CObject &object)
 	}
 
 	// fly through the air
-	object.moveTo(object.ai.icechunk.veloc_x, object.ai.icechunk.veloc_y);
+	object.moveXDir(object.ai.icechunk.veloc_x);
+	object.moveYDir(object.ai.icechunk.veloc_y);
 }
 
 
@@ -137,7 +138,8 @@ void CObjectAI::icebit_ai(CObject &object)
 		object.needinit = false;
 	}
 
-	object.moveTo(object.ai.icechunk.veloc_x, object.ai.icechunk.veloc_y);
+	object.moveXDir(object.ai.icechunk.veloc_x);
+	object.moveYDir(object.ai.icechunk.veloc_y);
 
 	if (!object.onscreen or !m_gunfiretimer)
 	{
@@ -153,7 +155,7 @@ void CObjectAI::icecannon_ai(CObject &object)
 	 object.sprite = BLANKSPRITE;
 	 object.inhibitfall = 1;
 	 
-	 if (m_gunfiretimer)
+	 if (m_gunfiretimer == 0)
 	 {
 		 CObject chunk(mp_Map);
 		 chunk.spawn( object.getXPosition()+512, object.getYPosition(), OBJ_ICECHUNK, m_Episode);
