@@ -579,7 +579,7 @@ void CPlayer::InertiaAndFriction_X()
 		int dx=xinertia + playpushed_x;
 		// check first if the player is not blocked
 		if( (!blockedr and dx>0) or (!blockedl and dx<0) )
-			moveXDir(dx, g_pInput->getHoldedKey(KTAB) && mp_option[OPT_CHEATS].value );
+			moveXDir(dx, (g_pInput->getHoldedKey(KTAB) && mp_option[OPT_CHEATS].value) );
 	}
 	
 	// if we stopped walking (i.e. left or right not held down) apply friction
@@ -780,16 +780,19 @@ bool CPlayer::checkObjSolid()
 					getXLeftPos() <= it_obj->getXRightPos() )
 			{
 				if(getYUpPos() >= it_obj->getYUpPos()-(1<<STC)  &&
-					getYUpPos() <= it_obj->getYDownPos()+1 )
-				{	// In this case stand on the object
+					getYUpPos() <= it_obj->getYDownPos()+(1<<STC) )
+				{	// In this case the object pushs the player down!
+					pjumping = PNOJUMP;
 					int dy = it_obj->getYDownPos() - getYUpPos();
-					moveYDir(dy);
+					moveDown(dy);
 				}
 				else if(getYDownPos() >= it_obj->getYUpPos()-(1<<STC)  &&
-						getYDownPos() <= it_obj->getYDownPos()+1 )
+						getYDownPos() <= it_obj->getYUpPos()+(1<<STC) )
 				{	// In this case stand on the object
 					pfalling = false;
 					blockedd = true;
+					if(pjumping == PJUMPLAND)
+						pjumping = PNOJUMP;
 					supportedbyobject = true;
 					psupportingobject = it_obj->m_index;
 					int dy = it_obj->getYUpPos() - getYDownPos()+1;

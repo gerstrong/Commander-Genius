@@ -18,7 +18,6 @@ enum{
 // when this probability is satisfied, there is 50% probability
 // of a look, 50% probability of a fire.
 //#define TANK_LOOKFIRE_PROB    500
-#define TANK_LOOKFIRE_PROB    100
 #define TANK_MINTRAVELDIST    200
 
 #define TANK_WALK_SPEED         32
@@ -102,7 +101,6 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 			// did we go into this state for the purpose of turning and firing?
 			if (!object.ai.tank.fireafterlook)
 			{ // no
-
 				if ( !tank_CanMoveRight(object, width, height) || (rnd()&1) )
 					object.ai.tank.movedir = LEFT;
 				else if (!tank_CanMoveLeft(object, height) || !(rnd()&1) )
@@ -115,7 +113,7 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 				object.ai.tank.dist_traveled = 0;
 			}
 			else
-			{ // yes, face towards m_Player and fire.
+			{ // yes, face towards m_Player.
 				if (m_Player[object.ai.tank.detectedPlayerIndex].getXPosition() < x)
 				{
 					object.ai.tank.movedir = LEFT;
@@ -128,7 +126,7 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 				}
 				object.ai.tank.timer = 0;
 				object.ai.tank.fireafterlook = 0;
-				object.ai.tank.state = TANK_FIRE;
+				object.ai.tank.state = TANK_WALK;
 			}
 		} else object.ai.tank.timer++;
 		break;
@@ -184,22 +182,8 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 
 		if (object.ai.tank.dist_traveled > TANK_MINTRAVELDIST && object.onscreen)
 		{
-			if (rnd()%TANK_LOOKFIRE_PROB==(TANK_LOOKFIRE_PROB/2))
-			{  // we're either going to look or fire
-				object.ai.tank.timer = 0;
-
-				if (rnd()&1)
-				{ // look
-					object.ai.tank.timer = 0;
-					object.ai.tank.frame = 0;
-					object.ai.tank.state = TANK_LOOK;
-				}
-				else
-				{ // FIRE!
-					object.ai.tank.state = TANK_FIRE;
-				}
-				break;
-			}
+			object.ai.tank.timer = 0;
+			object.ai.tank.state = TANK_FIRE;
 		}
 
 		if (object.ai.tank.movedir==LEFT)
@@ -264,8 +248,10 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 			newobject.canbezapped = true;
 			m_Objvect.push_back(newobject);
 
-			object.ai.tank.state = TANK_WALK;
-
+			object.ai.tank.state = TANK_LOOK;
+			object.ai.tank.frame = 0;
+			object.ai.tank.timer = 0;
+			object.ai.tank.animtimer = 0;
 		} else object.ai.tank.timer++;
 		break;
 	}

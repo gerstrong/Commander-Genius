@@ -15,9 +15,6 @@ PLATVERT_MOVE, PLATVERT_WAIT
 
 void CObjectAI::platvert_ai(CObject& object)
 {
-	unsigned int p;
-	int i;
-
 	if (object.needinit)
 	{  // first time initilization
 		object.ai.platform.animframe = 0;

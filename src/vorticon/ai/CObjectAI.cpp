@@ -177,7 +177,15 @@ void CObjectAI::SetAllCanSupportPlayer(CObject &object, bool state)
 {
 	std::vector<CPlayer>::iterator it_player = m_Player.begin();
 	for( ; it_player != m_Player.end() ; it_player++ )
+	{
 		object.cansupportplayer = state;
+		if(!state && it_player->supportedbyobject)
+		{
+			it_player->pfalling=true;
+			it_player->moveDown(1);
+			it_player->blockedd=false;
+		}
+	}
 }
 
 void CObjectAI::killplayer(int theplayer)

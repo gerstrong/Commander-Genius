@@ -40,7 +40,7 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 	switch(object.ai.ray.state)
 	{
 		case RAY_STATE_FLY:
-			// test if it hit a baddie
+			// test if it hit a baddie. I hate that code! TODO: think about a way to reduce this
 			for( it_obj = m_Objvect.begin() ; it_obj!=m_Objvect.end() ; it_obj++)
 			{
 				if( it_obj->exists && it_obj->m_index != object.m_index )
@@ -49,7 +49,7 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 					{
 						if(it_obj->canbezapped || it_obj->m_type == OBJ_RAY )
 						{
-							if (it_obj->hitdetect(object) && object.ai.ray.owner != it_obj->m_index)
+							if (it_obj->hitdetect(object) && (object.ai.ray.owner != it_obj->m_index || object.ai.ray.shotbyplayer) )
 							{
 								object.ai.ray.state = RAY_STATE_SETZAPZOT;
 								object.canbezapped = false;

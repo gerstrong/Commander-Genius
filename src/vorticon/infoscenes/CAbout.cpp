@@ -88,7 +88,7 @@ m_type(type)
 	}
 	else if(type == "CG")
 	{
-		std::string path = GetFullFileName("res/gfx/CGLogo.bmp");
+		std::string path = GetFullFileName("data/res/gfx/CGLogo.bmp");
 		mp_LogoBMP = SDL_LoadBMP(path.c_str());
 		
 		m_lines.push_back("Commander Genius is an interpreter");
@@ -99,7 +99,7 @@ m_type(type)
 		m_lines.push_back("However, we are also trying to add");
 		m_lines.push_back("better support for modern systems");
 		m_lines.push_back("to the games, so they can run more");
-		m_lines.push_back("smoothly than they did in DOS.");
+		m_lines.push_back("smoothly than they did under DOS.");
 		m_lines.push_back("");
 		m_lines.push_back("Thank you for supporting us by");
 		m_lines.push_back("downloading Commander Genius and");
@@ -110,7 +110,7 @@ m_type(type)
 	{
 		case 1:
 			// Change the ugly lower Tiles which are seen, when using 320x240 base resolution
-			for(int i=0; i<20 ; i++)
+			for(int i=0; i<30 ; i++)
 			{
 				mp_Map->changeTile(22+i, 15, 14*13);
 				mp_Map->changeTile(22+i, 16, 14*13+3);

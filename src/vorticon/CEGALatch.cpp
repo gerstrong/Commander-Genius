@@ -64,6 +64,7 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 		name = (const char*)(data+16*i+8);
 		width *= 8; // The width is always divided by eight when read
 
+		name = name.substr(0,8); // Cut the rest of data down, if junk detected in the exe file
 		if( name != "" ) Bitmap.setName( name );
 		else
 		{

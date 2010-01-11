@@ -129,6 +129,7 @@ private:
 	char m_difficulty;
 	int m_gunfiretimer;
 	bool &m_dark;
+	unsigned int m_bgtile; // Used as holder for bridges
 
 	// for ep2: how many sparks (tantalus ray machines) are left
 	// you must destroy the tantalus ray generator before exiting

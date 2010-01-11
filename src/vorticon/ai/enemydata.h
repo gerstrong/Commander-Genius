@@ -224,7 +224,6 @@ typedef struct stSEData
 	unsigned char state;
 	unsigned int timer;
 	unsigned int platx, platy;
-	unsigned int bgtile;
 	unsigned int dir;
 	
 	int counter,destroytiles;

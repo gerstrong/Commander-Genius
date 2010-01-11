@@ -9,9 +9,9 @@ enum garg_states{
 #define GARG_MINTRAVELDIST          1000
 #define GARG_LOOK_PROB              100
 #define GARG_WALK_SPEED             12
-#define GARG_WALK_ANIM_TIME         9
+#define GARG_WALK_ANIM_TIME         5
 #define GARG_WALK_SPEED_FAST        20
-#define GARG_WALK_ANIM_TIME_FAST    7
+#define GARG_WALK_ANIM_TIME_FAST    3
 #define GARG_CHARGE_SPEED           73
 #define GARG_CHARGE_ANIM_TIME       7
 #define GARG_JUMP_TIME       		160

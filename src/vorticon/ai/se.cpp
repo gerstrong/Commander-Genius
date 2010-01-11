@@ -70,6 +70,12 @@ void CObjectAI::se_extend_plat(CObject &object, bool &PlatExtending)
 		else
 			object.ai.se.dir = LEFT;
 
+		// get the background tile from the tile above the starting point
+		if(object.ai.se.dir == RIGHT)
+			m_bgtile = mp_Map->at(object.ai.se.platx+1, object.ai.se.platy);
+		else
+			m_bgtile = mp_Map->at(object.ai.se.platx-1, object.ai.se.platy);
+
 		object.needinit = false;
 	}
 
@@ -78,10 +84,6 @@ void CObjectAI::se_extend_plat(CObject &object, bool &PlatExtending)
 		if (object.ai.se.dir==RIGHT &&
 				!TileProperty[mp_Map->at(object.ai.se.platx, object.ai.se.platy)].bleft)
 		{
-			// get the background tile from the tile above the starting point
-			//if(!TileProperty[mp_Map->at(object.ai.se.platx+1, object.ai.se.platy)].bleft)
-				object.ai.se.bgtile = mp_Map->at(object.ai.se.platx, object.ai.se.platy-1);
-
 			mp_Map->changeTile(object.ai.se.platx, object.ai.se.platy, TILE_EXTENDING_PLATFORM);
 			object.ai.se.platx++;
 			kill_all_intersecting_tile(object.ai.se.platx, object.ai.se.platy);
@@ -90,10 +92,6 @@ void CObjectAI::se_extend_plat(CObject &object, bool &PlatExtending)
 		else if(object.ai.se.dir==LEFT &&
 				!TileProperty[mp_Map->at(object.ai.se.platx, object.ai.se.platy)].bright)
 		{
-			// get the background tile from the tile above the starting point
-			//if(!TileProperty[mp_Map->at(object.ai.se.platx-1, object.ai.se.platy)].bright)
-				object.ai.se.bgtile = mp_Map->at(object.ai.se.platx, object.ai.se.platy-1);
-
 			mp_Map->changeTile(object.ai.se.platx, object.ai.se.platy, TILE_EXTENDING_PLATFORM);
 			object.ai.se.platx--;
 			kill_all_intersecting_tile(object.ai.se.platx, object.ai.se.platy);
@@ -119,8 +117,10 @@ void CObjectAI::se_retract_plat(CObject &object, bool &PlatExtending)
 
 		if (mp_Map->at(object.ai.se.platx-1, object.ai.se.platy) != TILE_EXTENDING_PLATFORM)
 			object.ai.se.dir = LEFT;
-		else
+		else if(mp_Map->at(object.ai.se.platx+1, object.ai.se.platy) != TILE_EXTENDING_PLATFORM)
 			object.ai.se.dir = RIGHT;
+		else
+			object.ai.se.dir = LEFT;
 
 		// scan across until we find the end of the platform--that will
 		// be where we will start (remove platform in oppisote direction
@@ -162,8 +162,7 @@ void CObjectAI::se_retract_plat(CObject &object, bool &PlatExtending)
 	{
 		if (mp_Map->at(object.ai.se.platx, object.ai.se.platy) == TILE_EXTENDING_PLATFORM)
 		{
-			int newbgtile = mp_Map->at(object.ai.se.platx, object.ai.se.platy-1);
-			mp_Map->setTile(object.ai.se.platx, object.ai.se.platy, newbgtile, true);
+			mp_Map->setTile(object.ai.se.platx, object.ai.se.platy, m_bgtile, true);
 
 			if (object.ai.se.dir==RIGHT)
 				object.ai.se.platx++;
