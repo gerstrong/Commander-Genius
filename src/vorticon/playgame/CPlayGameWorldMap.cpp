@@ -86,9 +86,6 @@ void CPlayGame::processOnWorldMap()
 					}
 				}
 			}
-
-			// Check Collisions and only move player, if it is not blocked
-			//checkPlayerCollisions(&m_Player[i]);
 		}
 
 		if(m_Player[i].mounted)

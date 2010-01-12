@@ -91,7 +91,7 @@ void CObjectAI::rope_movestone(CObject &object)
 	{
 		for(x=0;x<STONE_WIDTH;x++)
 		{
-			mp_Map->setTile(x+xa,y+ya,mp_Map->at(x+xa, y+ya-1), true);
+			mp_Map->setTile(x+xa,y+ya, mp_Map->at(x+xa, y+ya-1), true);
 
 			// if the stone hits any enemies, kill them
 			kill_all_intersecting_tile(x+xa, y+ya);

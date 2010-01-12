@@ -69,7 +69,7 @@ void CShipFlySys::process()
 			 m_player.sprite = m_playsprite_left;
 			 break;
 		 case DRIGHT:
-			 m_player.moveLeft(SHIPSPD);
+			 m_player.moveRight(SHIPSPD);
 			 m_player.sprite = m_playsprite_right;
 			 break;
 		 case DDOWNRIGHT:

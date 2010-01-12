@@ -190,22 +190,29 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 {
 	// This function add sprites on the map. Most of the objects are invisible.
 	// TODO : Please convert this into ifs. There are more conditions than just switch.agree
+	std::vector<CPlayer>::iterator it_player;
 	switch(t)
 	{
 		case 0: break;       // blank
 		case 255:            // player start
 			if(!m_checkpointset)
 			{
-				std::vector<CPlayer>::iterator it_player = mp_vec_Player->begin();
+				it_player = mp_vec_Player->begin();
 				for(; it_player != mp_vec_Player->end() ; it_player++ )
 				{
 					it_player->exists = false;
 					it_player->spawn(x<<CSF, y<<CSF, OBJ_PLAYER, episode);
-					it_player->setupforLevelPlay();
-					it_player->solid = it_player->godmode;
 				}
-				mp_map->m_objectlayer[x][y] = 0;
 			}
+			mp_map->m_objectlayer[x][y] = 0;
+
+			it_player = mp_vec_Player->begin();
+			for(; it_player != mp_vec_Player->end() ; it_player++ )
+			{
+				it_player->setupforLevelPlay();
+				it_player->solid = it_player->godmode;
+			}
+
 			break;
 		case NESSIE_PATH:          // spawn nessie at first occurance of her path
 			if (episode==3)

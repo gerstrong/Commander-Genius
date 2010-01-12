@@ -117,14 +117,22 @@ void CPlayer::verifySolidLevels()
 	int ymid = getYMidPos();
 	int xmid = getXMidPos();
 
-	if(isWMSolid(xmid,y1))
+	if(isWMSolid(xmid,y1)) {
+		moveDown(1);
 		blockedu = true;
-	if(isWMSolid(xmid,y2))
+	}
+	if(isWMSolid(xmid,y2)) {
+		moveUp(1);
 		blockedd = true;
-	if(isWMSolid(x1,ymid))
+	}
+	if(isWMSolid(x1,ymid)) {
+		moveRight(1);
 		blockedl = true;
-	if(isWMSolid(x2,ymid))
+	}
+	if(isWMSolid(x2,ymid)) {
+		moveLeft(1);
 		blockedr = true;
+	}
 }
 
 void CPlayer::selectFrameOnWorldMap()

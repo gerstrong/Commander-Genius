@@ -59,6 +59,7 @@ void CEndingEp2::HeadsForEarth()
 
 		m_Player[0].hideplayer = false;
 		m_Player[0].sprite = SPR_VORTICON_MOTHERSHIP;
+		m_Player[0].solid = false;
 
 		mp_ShipFlySys = new CShipFlySys( m_Player[0], &m_Map, SPR_SHIP_RIGHT_EP2, SPR_SHIP_LEFT_EP2 );
 
@@ -115,6 +116,7 @@ void CEndingEp2::LimpsHome()
 
 		m_Player[0].hideplayer = false;
 		m_Player[0].moveTo(8<<CSF, 26<<CSF);
+		m_Player[0].solid = false;
 
 		mp_ShipFlySys = new CShipFlySys( m_Player[0], &m_Map, SPR_VORTICON_MOTHERSHIP, SPR_VORTICON_MOTHERSHIP );
 

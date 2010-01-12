@@ -30,6 +30,7 @@ bool CPlayGame::loadGameState()
 		m_SavedGame.decodeData(m_checkpointset);
 		m_SavedGame.decodeData(m_checkpoint_x);
 		m_SavedGame.decodeData(m_checkpoint_y);
+		m_SavedGame.decodeData(m_dark);
 
 		// Load number of Players
 		m_SavedGame.decodeData(m_NumPlayers);
@@ -121,6 +122,8 @@ bool CPlayGame::loadGameState()
 		// Create the special merge effect (Fadeout)
 		g_pGfxEngine->pushEffectPtr(pColorMergeFX);
 
+		g_pGfxEngine->Palette.setdark(m_dark);
+
 		return true;
 	}
 
@@ -143,6 +146,7 @@ bool CPlayGame::saveGameState()
 	m_SavedGame.encodeData(m_checkpointset);
 	m_SavedGame.encodeData(m_checkpoint_x);
 	m_SavedGame.encodeData(m_checkpoint_y);
+	m_SavedGame.encodeData(m_dark);
 
 	// Save number of Players
 	m_SavedGame.encodeData(m_NumPlayers);

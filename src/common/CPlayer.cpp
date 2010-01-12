@@ -72,13 +72,6 @@ void CPlayer::setDatatoZero()
 	
     pjumping = pjumptime = 0;
 	
-    pjustfell = plastfalling = pfalling = false;
-    pwalking = playspeed = 0;
-    xinertia = pinertia_y = 0;
-    playpushed_x = 0;
-    plastfire = pfiring = false;
-    pwalkanimtimer = 0;
-    inhibitfall = false;
     mapplayx = mapplayy = 0;
     level_done = LEVEL_NOT_DONE;
 
@@ -134,6 +127,13 @@ void CPlayer::setupforLevelPlay()
     lastpogo = false;
   	hintused = false;
   	exitXpos = 0;
+    pjustfell = plastfalling = pfalling = false;
+    pwalking = playspeed = 0;
+    xinertia = pinertia_y = 0;
+    playpushed_x = 0;
+    plastfire = pfiring = false;
+    pwalkanimtimer = 0;
+    inhibitfall = false;
   	m_Level_Trigger = LVLTRIG_NONE;
   	checkObjSolid();
 }
@@ -778,14 +778,14 @@ bool CPlayer::checkObjSolid()
 					getXLeftPos() <= it_obj->getXRightPos() )
 			{
 				if(getYUpPos() >= it_obj->getYUpPos()-(1<<STC)  &&
-					getYUpPos() <= it_obj->getYDownPos()+(1<<STC) )
+					getYUpPos() <= it_obj->getYMidPos() )
 				{	// In this case the object pushs the player down!
 					pjumping = PNOJUMP;
 					int dy = it_obj->getYDownPos() - getYUpPos();
 					moveDown(dy);
 				}
 				else if(getYDownPos() >= it_obj->getYUpPos()-(1<<STC)  &&
-						getYDownPos() <= it_obj->getYUpPos()+(1<<STC) )
+						getYDownPos() <= it_obj->getYMidPos() )
 				{	// In this case stand on the object
 					pfalling = false;
 					blockedd = true;

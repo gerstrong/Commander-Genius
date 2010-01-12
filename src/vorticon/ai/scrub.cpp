@@ -326,7 +326,8 @@ void CObjectAI::scrub_ai(CObject &object)
 					SetAllCanSupportPlayer(object, 0);
 				}
 				else if(object.ai.scrub.walkdir == RIGHT &&
-						TileProperty[mp_Map->at(mx, my-1)].bright) // upper-left
+						( TileProperty[mp_Map->at(mx-1, my-1)].bright ||
+						  TileProperty[mp_Map->at(mx, my-1)].bright	)) // upper-left
 				{	// Move Up!
 					object.ai.scrub.walkdir = UP;
 					object.sprite = SCRUB_WALK_UP + object.ai.scrub.walkframe;

@@ -204,10 +204,10 @@ void CObjectAI::kill_all_intersecting_tile(int mpx, int mpy)
 	 std::vector<CObject>::iterator object;
 	 for( object=m_Objvect.begin() ; object!=m_Objvect.end() ; object++ )
 	 {
-		 x = object->getXPosition();
-		 y = object->getYPosition();
+		 x = object->getXMidPos();
+		 y = object->getYUpPos();
 		 if (object->exists)
-			 if (xpix <= x && xpix+(1<<CSF) >= x)
+			 if (xpix-(1<<CSF) <= x && xpix+(1<<CSF) >= x)
 				 if (ypix <= y && ypix+(1<<CSF) >= y)
 					 object->kill();
 	 }
