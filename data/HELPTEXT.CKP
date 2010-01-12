@@ -34,23 +34,19 @@ USING THE NEW MENU
 
 When you use the menu, it works a lot like most menus would.
 
-The main things to know are that the High Quality Graphics and Sound can be enabled and disabled in the options menu.  (NOT AVAILABLE YET)
+The main things to know are that the Graphics, Sound and controls can be configured in the options menu. Other than that, there is the saving and loading system, currently it is limited, but eventually we will make it dynamically expand forever to allow you to save more slots.
 
-And also the graphics menu isn't working the best yet, it won't always display the right resolutions to choose from in the menu.
-
-Other than that, there is the saving and loading system, currently it is limited to 10 slots, but eventually we will make it dynamically expand forever to allow you to save as many times as you wish.
-
-The other major change is the introduction of an in game menu, I aimed to make it as similar to Keens 4-6 as I could, but it still might not be ideal.
+The other major change is the introduction of an in game menu, We aimed to make it as similar to Keens 4-6 as I could, but it still might not be ideal.
 
 PLAYING THE GAME
 
-There isn't much difference in the game itself, other than the multiplayer modes that aren't implemented yet.
+There isn't much difference in the game itself, other than the multiplayer modes and some neat effects.
 
 But you will have to worry about a little bit of difference from the original games, as well as an added difficulty option, which changes certain things in the games.
 
-If you are playing a mod, you are warned, while we have made some major steps to implementing better support for mods into our engine.
+If you are playing a mod, you are warned, altough we have made some major steps to implementing better support for mods into our engine.
 
-Currently it only loads strings and graphics from your mods, it does not apply any changes that your patch made to the file.
+Currently it loads anything except special hacks from your mods. It does not apply any changes that your patch made to the file.
 
  —˜ Commander Keen says:
  ™š  "Thanks Commander Genius Team,

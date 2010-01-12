@@ -125,7 +125,7 @@ std::string CSavedGame::getSlotName(const std::string &filename)
 		readData( buf, size, StateFile);
 		buf[size] = '\0';
 		SlotName = buf;
-		delete buf;
+		delete [] buf;
 	}
 
 	StateFile.close();

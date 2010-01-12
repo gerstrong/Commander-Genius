@@ -11,14 +11,16 @@
 #include "CTextViewer.h"
 #include "../graphics/CGfxEngine.h"
 
-CTextViewer::CTextViewer(SDL_Surface *TextVSfc, int x, int y, int w, int h) {
+CTextViewer::CTextViewer(SDL_Surface *TextVSfc, int x, int y, int w, int h) :
+m_timer(0)
+{
 	m_x = x;	m_y = y;
 	m_w = w;	m_h = h;
 	
 	m_scrollpos = m_linepos = 0;
 	m_8x8tilewidth = m_8x8tileheight = 8;
 	m_TextVSfc = TextVSfc;
-	m_mustclose = false;	m_timer = 0;
+	m_mustclose = false;
 }
 
 void CTextViewer::scrollDown()
@@ -68,6 +70,7 @@ void CTextViewer::loadText(const std::string &text)
 	mp_text = text;
 	
 	// Trim strings the way they fit into the textbox
+	// TODO: Use more C++ specific stuff and less code to perform that trimming operations
 	std::string buf;
 	int totlen=0;
 	for(unsigned long i=0 ; i<mp_text.size() ; i++ )
@@ -80,14 +83,21 @@ void CTextViewer::loadText(const std::string &text)
 			buf.clear();
 			continue;
 		}
-		if(mp_text[i+1] == 26)
+
+		if(i+3 < mp_text.size())
 		{
-			mp_text[i+1] = '\n';
-			mp_text[i+2] = ' ';
-			mp_text[i+3] = ' ';
+			if(mp_text[i+1] == 26)
+			{
+				mp_text[i+1] = '\n';
+				mp_text[i+2] = ' ';
+				mp_text[i+3] = ' ';
+			}
 		}
 		
-		totlen=buf.size() + getnextwordlength(mp_text.c_str()+i+1);
+		if(i+1 < mp_text.size())
+			totlen=buf.size() + getnextwordlength(mp_text.c_str()+i+1);
+		else
+			totlen=buf.size() + getnextwordlength(mp_text.c_str()+i);
 		if( totlen > (m_w/m_8x8tilewidth-2) && mp_text[i] != '_' ) // Or does the next fit into the line?
 		{
 			m_textline.push_back(buf);

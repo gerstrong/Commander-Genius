@@ -17,7 +17,7 @@
 #include "../../sdl/CInput.h"
 #include "../../FindFile.h"
 
-CHelp::CHelp(std::string &DataDirectory, char &episode, std::string type)
+CHelp::CHelp(std::string &DataDirectory, char &episode, const std::string &type)
 {
 	std::string Text;
 	
@@ -75,24 +75,22 @@ CHelp::CHelp(std::string &DataDirectory, char &episode, std::string type)
 	}
 	else
 	{
-			// We suppose that we are using version 131. Maybe it must be extended
-			std::string filename = DataDirectory;
-			if(DataDirectory != "")
-				filename += "/../../";
-			
-			filename += "helptext.ckp";
-			
-			std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);
-			
-			if(!File) return;
-			
-			while(!File.eof())
-				Text.push_back(File.get());
-			
-			File.close();
-			Text.erase(Text.size()-1);
+		std::string filename = "data/HELPTEXT.CKP";
+
+		std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);
+
+		if(!File) {
+			Text = "The Text File \"data/HELPTEXT.CKP\" was not found!";
+			return;
+		}
+
+		while(!File.eof())
+			Text.push_back(File.get());
+
+		File.close();
+		Text.erase(Text.size()-1);
 	}
-	
+
 	// Create the Text ViewerBox and stores the text there!
 	mp_TextViewer = new CTextViewer(g_pVideoDriver->FGLayerSurface, 0, 8, 320, 160);
 	mp_TextViewer->loadText(Text);
@@ -101,10 +99,7 @@ CHelp::CHelp(std::string &DataDirectory, char &episode, std::string type)
 void CHelp::process() {
 	// NOTE: Animation is performed here too, because the story plane is drawn over the other
 	// map that is open. That is desired!
-	
-	// Blit the background
-	//g_pVideoDriver->blitScrollSurface();
-	
+
 	mp_TextViewer->process();
 	
 	if(mp_TextViewer->hasClosed())
