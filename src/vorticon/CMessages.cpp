@@ -139,7 +139,8 @@ bool CMessages::extractGlobalStrings()
 					StringMap.insert( extractString( "EP3_MORTIMER2" , 0x1C3D9, 0x1C49B, -806) );
 					StringMap.insert( extractString( "EP3_MORTIMER3" , 0x1C49C, 0x1C53F, -806) );
 					StringMap.insert( extractString( "EP3_MORTIMER4" , 0x1C540, 0x1C607, -806) );
-					StringMap.insert( extractString( "EP3_MORTIMER5" , 0x1C608, 0x1C692, -806) );
+					StringMap.insert( extractString( "EP3_MORTIMER5" , 0x1C608, 0x1C62A, -806) );
+					StringMap.insert( extractString( "EP3_MORTIMER6" , 0x1C62B, 0x1C692, -806) );
 					// Ending Pages
 					StringMap.insert( extractString( "EP3_ESEQ_PAGE1" , 0x1C693, 0x1C730, -807) );
 					StringMap.insert( extractString( "EP3_ESEQ_PAGE2" , 0x1C731, 0x1C7A7, -807) );

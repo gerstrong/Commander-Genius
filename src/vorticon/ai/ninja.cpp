@@ -116,13 +116,12 @@ void CObjectAI::ninja_ai(CObject &object, bool hardmode)
 		{
 			// find out if a player is on the same level
 			onsamelevel = 0;
-			CSprite PlayerSprite = g_pGfxEngine->getSprite(0);
 
 			std::vector<CPlayer>::iterator it_player = m_Player.begin();
 			for( ; it_player != m_Player.end() ; it_player++ )
 			{
 				if ((it_player->getYPosition() >= object.getYPosition()-(96<<STC)) &&
-					(it_player->getYPosition()+(PlayerSprite.getHeight()<<STC) <= (object.getYDownPos()+(96<<STC))))
+					(it_player->getYDownPos() <= (object.getYDownPos()+(96<<STC))))
 				{
 					onsamelevel = 1;
 					break;

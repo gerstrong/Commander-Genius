@@ -175,7 +175,7 @@ void CPlayer::MountNessieIfAvailable()
 					// Mount the Player
 					obj->ai.nessie.mounted[m_index] = true;
 		            mounted = true;
-		            hideplayer = true;
+		            beingteleported = true;
 				}
 			}
 			break;
@@ -211,7 +211,7 @@ void CPlayer::UnmountNessie()
 							// unmount Messie
 							obj->ai.nessie.mounted[m_index] = false;
 							mounted = false;
-							hideplayer = false;
+							beingteleported = false;
 							moveXDir(dx<<CSF);
 							moveYDir(dy<<CSF);
 							break;

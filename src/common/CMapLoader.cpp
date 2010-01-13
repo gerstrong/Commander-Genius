@@ -337,8 +337,7 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 					 break;
 				case 2:    // garg (ep1) baby vorticon (ep2&3)
 					 if (episode==1)
-					 {
-						 // those bastards. sometimes embedding garg's in the floor in
+					 {	 // those bastards. sometimes embedding garg's in the floor in
 						 // the original maps.
 						 if(TileProperty[mp_map->at(x+1, y+1)].bleft)
 						 {

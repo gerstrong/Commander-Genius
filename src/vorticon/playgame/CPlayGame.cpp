@@ -180,6 +180,7 @@ bool CPlayGame::init()
 		m_MessageBoxes.push_back(new CMessageBox(getstring("EP3_MORTIMER3")));
 		m_MessageBoxes.push_back(new CMessageBox(getstring("EP3_MORTIMER4")));
 		m_MessageBoxes.push_back(new CMessageBox(getstring("EP3_MORTIMER5")));
+		m_MessageBoxes.push_back(new CMessageBox(getstring("EP3_MORTIMER6")));
 		g_pSound->playSound(SOUND_MORTIMER, PLAY_FORCE);
 	}
 
