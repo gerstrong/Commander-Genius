@@ -18,12 +18,10 @@
 		2357564F101A5F8F00275638 /* Vorbis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564D101A5F8F00275638 /* Vorbis.framework */; };
 		23575696101A6BE600275638 /* Ogg.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564C101A5F8F00275638 /* Ogg.framework */; };
 		23575697101A6BE600275638 /* Vorbis.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564D101A5F8F00275638 /* Vorbis.framework */; };
-		6304FC4010E3EAD800307EAC /* CGLogo.bmp in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 6304FC3F10E3EAD800307EAC /* CGLogo.bmp */; };
 		6304FE8910E429D000307EAC /* HELPTEXT.CKP in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6304FE8810E429D000307EAC /* HELPTEXT.CKP */; };
 		6306E1D510BC922900E08CB9 /* CAbout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6306E1D110BC922900E08CB9 /* CAbout.cpp */; };
 		6306E1D610BC922900E08CB9 /* CHelp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6306E1D310BC922900E08CB9 /* CHelp.cpp */; };
 		630713BF10B77990004837D2 /* CPlayGameGameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 630713BE10B77990004837D2 /* CPlayGameGameState.cpp */; };
-		630CB33A10BC3BC100E7EEAA /* cgabout.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 630CB33910BC3BC000E7EEAA /* cgabout.tga */; };
 		630F429310CB08D800F96495 /* CMessageBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 630F429110CB08D800F96495 /* CMessageBox.cpp */; };
 		63148DD310E8091E00C9E281 /* CHuffman.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63148DD110E8091E00C9E281 /* CHuffman.cpp */; };
 		634A33DF10A233D50051193D /* CEndingEp1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 634A33D710A233D50051193D /* CEndingEp1.cpp */; };
@@ -327,8 +325,6 @@
 			dstPath = data/res/gfx;
 			dstSubfolderSpec = 7;
 			files = (
-				6304FC4010E3EAD800307EAC /* CGLogo.bmp in Copy Res Files */,
-				630CB33A10BC3BC100E7EEAA /* cgabout.tga in Copy Res Files */,
 				63D4A702107FEB7C00E43500 /* 100.tga in Copy Res Files */,
 				63D4A703107FEB7C00E43500 /* 1000.tga in Copy Res Files */,
 				63D4A704107FEB7C00E43500 /* 200.tga in Copy Res Files */,
