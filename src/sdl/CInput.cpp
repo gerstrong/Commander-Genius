@@ -13,6 +13,8 @@
 #include "../CLogFile.h"
 #include "../FindFile.h"
 
+const std::string CONTROLSDATVERSION = "CG031";
+
 #if defined(WIZ) || defined(GP2X)
 #include "sys/wizgp2x.h"
 #endif
@@ -158,6 +160,17 @@ short CInput::loadControlconfig(void)
 	if((fp=OpenGameFile("controls.dat","rb")) != NULL)
 	{
 		bool ok=true;
+		std::string Fileversion;
+
+		for(size_t i=0 ; i<CONTROLSDATVERSION.size() ; i++)
+			Fileversion.push_back(fgetc(fp));
+
+		if( Fileversion != CONTROLSDATVERSION ) {
+			fclose(fp);
+			g_pLogFile->textOut("The version of the controls settings you have seems to be old. Please reconfigure your controls!");
+			return 1;
+		}
+
 		ok &= (fread(InputCommand, sizeof(stInputCommand),NUMBER_OF_COMMANDS*NUM_INPUTS, fp) != 0);
 		fread(TwoButtonFiring, sizeof(bool),NUM_INPUTS, fp); // This one won't be checked, in order to conserve compatibility
 		if( !ok )
@@ -176,6 +189,7 @@ short CInput::saveControlconfig(void)
 	FILE *fp;
 	if((fp=OpenGameFile("controls.dat","wb")) != NULL)
 	{
+		fwrite(CONTROLSDATVERSION.c_str(), 1,CONTROLSDATVERSION.size(), fp);
 		fwrite(InputCommand, sizeof(stInputCommand),NUMBER_OF_COMMANDS*NUM_INPUTS, fp);
 		fwrite(TwoButtonFiring, sizeof(bool),NUM_INPUTS, fp);
 		fclose(fp);
