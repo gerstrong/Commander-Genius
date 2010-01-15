@@ -512,6 +512,7 @@ void CPlayer::JumpAndPogo()
 				if (pjumpupspeed <= 0)
 				{
 					pjumpupspeed = 0;
+					pfallspeed = mp_PhysicsSettings->player.max_fallspeed;
 					pjumping = PJUMPLAND;
 				}
 				else
@@ -692,6 +693,7 @@ stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 			// you're starting to move the other direction
 			// (set inertia to 0 if it's contrary to player's current dir)
 		}
+		pfallspeed = 0;
 	}   // close "not falling"
 
 	// ensure no sliding if we fall or jump off of ice

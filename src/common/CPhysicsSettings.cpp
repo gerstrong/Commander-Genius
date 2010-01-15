@@ -17,7 +17,8 @@ CPhysicsSettings::CPhysicsSettings() {
 	player.maxpogospeed = 165;
 
 	player.defaultjumpupdecreasespeed = 4;
-	player.jumpdecrease_x = 54;
+	//player.jumpdecrease_x = 54;
+	player.jumpdecrease_x = 64;
 
 	player.max_x_speed = 63;
 
