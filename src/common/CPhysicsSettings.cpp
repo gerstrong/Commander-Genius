@@ -14,12 +14,12 @@ CPhysicsSettings::CPhysicsSettings() {
 	//player.defaultjumpupdecreasespeed = 3;
 	player.maxjumpspeed = 120;
 
-	player.maxpogospeed = 162;
+	player.maxpogospeed = 165;
 
 	player.defaultjumpupdecreasespeed = 4;
 	player.jumpdecrease_x = 54;
 
-	player.max_x_speed = 73;
+	player.max_x_speed = 63;
 
 	// when falling keen's Y inertia increases up to maximum
 	player.max_fallspeed = 93;
