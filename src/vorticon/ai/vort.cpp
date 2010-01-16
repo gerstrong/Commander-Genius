@@ -159,8 +159,16 @@ void CObjectAI::vort_ai(CObject &object, int level, int episode, char difficulty
 			 break;
 	 case VORT_WALK:
 			 object.ai.vort.dist_traveled++;
+			 int odds;
 	 
-			 if (getProbability(VORT_JUMP_PROB))
+			 switch(difficulty)
+			 {
+			 case 0: odds = getProbability(VORT_JUMP_PROB_EASY); break;
+			 case 1: odds = getProbability(VORT_JUMP_PROB); break;
+			 case 2: odds = getProbability(VORT_JUMP_PROB_HARD); break;
+			 }
+
+			 if (odd)
 			 {  // let's jump.
 				 if (!dark && !object.blockedu)
 				 {

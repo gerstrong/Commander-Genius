@@ -13,7 +13,7 @@ MOTHER_HURT, MOTHER_DEAD
 #define MOTHER_WALK_ANIM_RATE     3
 #define MOTHER_WALK_SPD           12
 
-#define MOTHER_SPIT_PROB          10
+#define MOTHER_SPIT_PROB          9
 #define MOTHER_SPIT_PROB_HARD     40
 #define MOTHER_SPIT_SHOW_TIME     25
 
