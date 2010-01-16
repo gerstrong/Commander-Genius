@@ -216,6 +216,7 @@
 		63D4A712107FEB7C00E43500 /* tile185.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6FF107FEB7C00E43500 /* tile185.tga */; };
 		63D4A713107FEB7C00E43500 /* tile190.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A700107FEB7C00E43500 /* tile190.tga */; };
 		63D4A714107FEB7C00E43500 /* yorpshield.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A701107FEB7C00E43500 /* yorpshield.tga */; };
+		63F85894110193E200E78524 /* CGLogo.bmp in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 6304FC3F10E3EAD800307EAC /* CGLogo.bmp */; };
 		63FEB11C10DED2E500A099E2 /* wizgp2x.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63FEB11B10DED2E500A099E2 /* wizgp2x.cpp */; };
 		63FFE146109FA45A002FF190 /* LEVEL15.CK2 in Copy Keen 2 Fix Files */ = {isa = PBXBuildFile; fileRef = 63FFE144109FA45A002FF190 /* LEVEL15.CK2 */; };
 		63FFE147109FA45A002FF190 /* LEVEL80.CK2 in Copy Keen 2 Fix Files */ = {isa = PBXBuildFile; fileRef = 63FFE145109FA45A002FF190 /* LEVEL80.CK2 */; };
@@ -325,6 +326,7 @@
 			dstPath = data/res/gfx;
 			dstSubfolderSpec = 7;
 			files = (
+				63F85894110193E200E78524 /* CGLogo.bmp in Copy Res Files */,
 				63D4A702107FEB7C00E43500 /* 100.tga in Copy Res Files */,
 				63D4A703107FEB7C00E43500 /* 1000.tga in Copy Res Files */,
 				63D4A704107FEB7C00E43500 /* 200.tga in Copy Res Files */,
@@ -558,7 +560,7 @@
 		23D3EE5A10176098001643FA /* CrashHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CrashHandler.h; sourceTree = "<group>"; };
 		5048396D09E3307300765E4B /* CommanderGeniusProj.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = CommanderGeniusProj.xcconfig; sourceTree = "<group>"; };
 		5048396E09E3307300765E4B /* CommanderGeniusTarget.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = CommanderGeniusTarget.xcconfig; sourceTree = "<group>"; };
-		6304FC3F10E3EAD800307EAC /* CGLogo.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; name = CGLogo.bmp; path = ../../res/CGLogo.bmp; sourceTree = SOURCE_ROOT; };
+		6304FC3F10E3EAD800307EAC /* CGLogo.bmp */ = {isa = PBXFileReference; explicitFileType = image.bmp; path = CGLogo.bmp; sourceTree = "<group>"; };
 		6304FE8810E429D000307EAC /* HELPTEXT.CKP */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HELPTEXT.CKP; sourceTree = "<group>"; };
 		6306E1D110BC922900E08CB9 /* CAbout.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAbout.cpp; sourceTree = "<group>"; };
 		6306E1D210BC922900E08CB9 /* CAbout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAbout.h; sourceTree = "<group>"; };
@@ -566,7 +568,6 @@
 		6306E1D410BC922900E08CB9 /* CHelp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHelp.h; sourceTree = "<group>"; };
 		630713BE10B77990004837D2 /* CPlayGameGameState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlayGameGameState.cpp; sourceTree = "<group>"; };
 		630CB2F610BC334600E7EEAA /* CSavedGameCoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSavedGameCoder.h; sourceTree = "<group>"; };
-		630CB33910BC3BC000E7EEAA /* cgabout.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = cgabout.tga; sourceTree = "<group>"; };
 		630F429110CB08D800F96495 /* CMessageBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMessageBox.cpp; sourceTree = "<group>"; };
 		630F429210CB08D800F96495 /* CMessageBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMessageBox.h; sourceTree = "<group>"; };
 		6312202610910DB200053A0E /* spritedefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = spritedefines.h; sourceTree = "<group>"; };
@@ -723,11 +724,11 @@
 		63F4128D108F9BB1003A2E02 /* arguments.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = arguments.cpp; sourceTree = "<group>"; };
 		63F4128E108F9BB1003A2E02 /* arguments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = arguments.h; sourceTree = "<group>"; };
 		63FEB11B10DED2E500A099E2 /* wizgp2x.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wizgp2x.cpp; sourceTree = "<group>"; };
-		63FFE144109FA45A002FF190 /* LEVEL15.CK2 */ = {isa = PBXFileReference; lastKnownFileType = file; name = LEVEL15.CK2; path = EP2/LEVEL15.CK2; sourceTree = "<group>"; };
-		63FFE145109FA45A002FF190 /* LEVEL80.CK2 */ = {isa = PBXFileReference; lastKnownFileType = file; name = LEVEL80.CK2; path = EP2/LEVEL80.CK2; sourceTree = "<group>"; };
-		63FFE14B109FA49E002FF190 /* EGALATCH.CK3 */ = {isa = PBXFileReference; lastKnownFileType = file; name = EGALATCH.CK3; path = EP3/EGALATCH.CK3; sourceTree = "<group>"; };
-		63FFE14C109FA49E002FF190 /* LEVEL08.CK3 */ = {isa = PBXFileReference; lastKnownFileType = file; name = LEVEL08.CK3; path = EP3/LEVEL08.CK3; sourceTree = "<group>"; };
-		63FFE14D109FA49E002FF190 /* LEVEL15.CK3 */ = {isa = PBXFileReference; lastKnownFileType = file; name = LEVEL15.CK3; path = EP3/LEVEL15.CK3; sourceTree = "<group>"; };
+		63FFE144109FA45A002FF190 /* LEVEL15.CK2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL15.CK2; sourceTree = "<group>"; };
+		63FFE145109FA45A002FF190 /* LEVEL80.CK2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL80.CK2; sourceTree = "<group>"; };
+		63FFE14B109FA49E002FF190 /* EGALATCH.CK3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = EGALATCH.CK3; sourceTree = "<group>"; };
+		63FFE14C109FA49E002FF190 /* LEVEL08.CK3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL08.CK3; sourceTree = "<group>"; };
+		63FFE14D109FA49E002FF190 /* LEVEL15.CK3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL15.CK3; sourceTree = "<group>"; };
 		8D0C4E960486CD37000505A6 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1356,7 +1357,6 @@
 				63D4A6F7107FEB7C00E43500 /* arrowud.tga */,
 				63D4A6F8107FEB7C00E43500 /* arrowul.tga */,
 				63D4A6F9107FEB7C00E43500 /* arrowur.tga */,
-				630CB33910BC3BC000E7EEAA /* cgabout.tga */,
 				63D4A6FA107FEB7C00E43500 /* cklogo1.tga */,
 				63D4A6FB107FEB7C00E43500 /* cklogo2.tga */,
 				63D4A6FC107FEB7C00E43500 /* demobox.tga */,
@@ -1385,7 +1385,7 @@
 				63FFE144109FA45A002FF190 /* LEVEL15.CK2 */,
 				63FFE145109FA45A002FF190 /* LEVEL80.CK2 */,
 			);
-			name = EP2;
+			path = EP2;
 			sourceTree = "<group>";
 		};
 		63FFE151109FA4A4002FF190 /* EP3 */ = {
@@ -1395,7 +1395,7 @@
 				63FFE14C109FA49E002FF190 /* LEVEL08.CK3 */,
 				63FFE14D109FA49E002FF190 /* LEVEL15.CK3 */,
 			);
-			name = EP3;
+			path = EP3;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
