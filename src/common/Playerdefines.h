@@ -22,7 +22,7 @@ PA_FIRE, PA_STATUS
 #define PFASTINCRATE_POGO  2      // rate when pogo stick is out
 // rates at which player slows down while he is walking suddenly player does not
 // move him anymore
-#define PFRICTION_RATE_INAIR      0
+#define PFRICTION_RATE_INAIR      2
 #define PFRICTION_RATE_ONGROUND   6
 #define PFRICTION_RATE_WM         32
 // rate at which player walking animation is shown
