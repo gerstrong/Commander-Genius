@@ -79,8 +79,9 @@ bool CParser::saveParseFile() // open, write on the file and close
 // read the value of the to be seeked keyword and returns it as an int.
 // If no value was detected, it returns -1;
 // If something was detected, the file is also rewinded!
-std::string CParser::getValue(const std::string& keyword, const std::string& category, const std::string& def)
+std::string CParser::getValue(const std::string& keyword, const std::string& category)
 {
+	std::string def = "";
 	// The getter will search for category and than for keyword. After that, read the value and return it!
 	for(std::list<std::string>::iterator line = m_filebuffer.begin() ; line != m_filebuffer.end() ; ++line )
 	{
@@ -147,7 +148,6 @@ void CParser::saveValue(const std::string& keyword, const std::string& category,
 			}
 		}
 	}
-	
 	
 	// First case: Category doesn't exist! Create a new one, and as the keyword also cannot exist, create it too!
 	m_filebuffer.push_back("[" + category + "]");

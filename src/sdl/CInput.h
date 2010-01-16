@@ -188,7 +188,7 @@ public:
 	std::string getEventName(int position, unsigned char input);
 	bool readNewEvent(Uint8 device, int position);
 
-	void setupInputCommand( stInputCommand *pInput, const std::string &string );
+	void setupInputCommand( stInputCommand *pInput, int action, const std::string &string );
 
 	void loadControlconfig();
 	void resetControls(int player);

@@ -75,40 +75,40 @@ void CInput::resetControls(int player) {
 	InputCommand[i][IC_HELP].keysym = SDLK_F1;
 	InputCommand[i][IC_QUIT].keysym = SDLK_ESCAPE;
 
-	// And those are the default joystick handlings
-	InputCommand[i][IC_LEFT].joyeventtype = ETYPE_JOYAXIS;
+	// And those are the default joystick handlings, but they are disabled by default
+	InputCommand[i][IC_LEFT].joyeventtype = ETYPE_KEYBOARD;
 	InputCommand[i][IC_LEFT].joyaxis = 0;
 	InputCommand[i][IC_LEFT].joyvalue = -32767;
 	InputCommand[i][IC_LEFT].which = 0;
-	InputCommand[i][IC_UP].joyeventtype = ETYPE_JOYAXIS;
+	InputCommand[i][IC_UP].joyeventtype = ETYPE_KEYBOARD;
 	InputCommand[i][IC_UP].joyaxis = 1;
 	InputCommand[i][IC_UP].joyvalue = -32767;
 	InputCommand[i][IC_UP].which = 0;
-	InputCommand[i][IC_RIGHT].joyeventtype = ETYPE_JOYAXIS;
+	InputCommand[i][IC_RIGHT].joyeventtype = ETYPE_KEYBOARD;
 	InputCommand[i][IC_RIGHT].joyaxis = 0;
 	InputCommand[i][IC_RIGHT].joyvalue = 32767;
 	InputCommand[i][IC_RIGHT].which = 0;
-	InputCommand[i][IC_DOWN].joyeventtype = ETYPE_JOYAXIS;
+	InputCommand[i][IC_DOWN].joyeventtype = ETYPE_KEYBOARD;
 	InputCommand[i][IC_DOWN].joyaxis = 1;
 	InputCommand[i][IC_DOWN].joyvalue = 32767;
 	InputCommand[i][IC_DOWN].which = 0;
 
-	InputCommand[i][IC_JUMP].joyeventtype = ETYPE_JOYBUTTON;
+	InputCommand[i][IC_JUMP].joyeventtype = ETYPE_KEYBOARD;
 	InputCommand[i][IC_JUMP].joybutton = 0;
 	InputCommand[i][IC_JUMP].which = 0;
-	InputCommand[i][IC_POGO].joyeventtype = ETYPE_JOYBUTTON;
+	InputCommand[i][IC_POGO].joyeventtype = ETYPE_KEYBOARD;
 	InputCommand[i][IC_POGO].joybutton = 1;
 	InputCommand[i][IC_POGO].which = 0;
-	InputCommand[i][IC_FIRE].joyeventtype = ETYPE_JOYBUTTON;
+	InputCommand[i][IC_FIRE].joyeventtype = ETYPE_KEYBOARD;
 	InputCommand[i][IC_FIRE].joybutton = 2;
 	InputCommand[i][IC_FIRE].which = 0;
-	InputCommand[i][IC_STATUS].joyeventtype = ETYPE_JOYBUTTON;
+	InputCommand[i][IC_STATUS].joyeventtype = ETYPE_KEYBOARD;
 	InputCommand[i][IC_STATUS].joybutton = 3;
 	InputCommand[i][IC_STATUS].which = 0;
-	InputCommand[i][IC_HELP].joyeventtype = ETYPE_JOYBUTTON;
+	InputCommand[i][IC_HELP].joyeventtype = ETYPE_KEYBOARD;
 	InputCommand[i][IC_HELP].joybutton = 4;
 	InputCommand[i][IC_HELP].which = 0;
-	InputCommand[i][IC_QUIT].joyeventtype = ETYPE_JOYBUTTON;
+	InputCommand[i][IC_QUIT].joyeventtype = ETYPE_KEYBOARD;
 	InputCommand[i][IC_QUIT].joybutton = 5;
 	InputCommand[i][IC_QUIT].which = 0;
 	setTwoButtonFiring(i, false);
@@ -167,17 +167,16 @@ void CInput::loadControlconfig(void)
 	{
 		// setup input from proper string
 		section = "input" + itoa(i);
-		setupInputCommand( InputCommand[i], Parser.getValue("Left", section) );
-		setupInputCommand( InputCommand[i], Parser.getValue("Up", section) );
-		setupInputCommand( InputCommand[i], Parser.getValue("Right", section) );
-		setupInputCommand( InputCommand[i], Parser.getValue("Down", section) );
-		setupInputCommand( InputCommand[i], Parser.getValue("Jump", section) );
-		setupInputCommand( InputCommand[i], Parser.getValue("Pogo", section) );
-		setupInputCommand( InputCommand[i], Parser.getValue("Fire", section) );
-		setupInputCommand( InputCommand[i], Parser.getValue("Status", section) );
-		setupInputCommand( InputCommand[i], Parser.getValue("Help", section) );
-		setupInputCommand( InputCommand[i], Parser.getValue("Quit", section) );
-		setupInputCommand( InputCommand[i], Parser.getValue("TwoButtonFiring", section) );
+		setupInputCommand( InputCommand[i], IC_LEFT, Parser.getValue("Left", section) );
+		setupInputCommand( InputCommand[i], IC_UP, Parser.getValue("Up", section) );
+		setupInputCommand( InputCommand[i], IC_RIGHT, Parser.getValue("Right", section) );
+		setupInputCommand( InputCommand[i], IC_DOWN, Parser.getValue("Down", section) );
+		setupInputCommand( InputCommand[i], IC_JUMP, Parser.getValue("Jump", section) );
+		setupInputCommand( InputCommand[i], IC_POGO, Parser.getValue("Pogo", section) );
+		setupInputCommand( InputCommand[i], IC_FIRE, Parser.getValue("Fire", section) );
+		setupInputCommand( InputCommand[i], IC_STATUS, Parser.getValue("Status", section) );
+		setupInputCommand( InputCommand[i], IC_HELP, Parser.getValue("Help", section) );
+		setupInputCommand( InputCommand[i], IC_QUIT, Parser.getValue("Quit", section) );
 		TwoButtonFiring[i] = Parser.getIntValue("TwoButtonFiring", section);
 	}
 	Parser.saveParseFile();
@@ -225,36 +224,26 @@ std::string CInput::getEventName(int position, unsigned char input)
 	else // In case only keyboard was triggered
 	{
 		buf = "Keysym ";
+		buf += itoa(InputCommand[input][position].keysym);
+		buf += " (";
 		buf += SDL_GetKeyName(InputCommand[input][position].keysym);
+		buf += ")";
 	}
 
 	return buf;
 }
 
-void CInput::setupInputCommand( stInputCommand *pInput, const std::string &string )
+void CInput::setupInputCommand( stInputCommand *pInput, int action, const std::string &string )
 {
 	std::string buf;
 	std::string buf2;
-	int action;
 	size_t pos;
 
-	if(string == "") return;
+	buf = string;
 
-	pos = string.find(' ');
-	buf  = string.substr(pos);
-	buf2 = string.substr(0, pos);
+	TrimSpaces(buf);
 
-	if(buf2 == "Left") action = IC_LEFT;
-	else if(buf2 == "Up") action = IC_UP;
-	else if(buf2 == "Right") action = IC_RIGHT;
-	else if(buf2 == "Down") action = IC_DOWN;
-	else if(buf2 == "Jump") action = IC_JUMP;
-	else if(buf2 == "Pogo") action = IC_POGO;
-	else if(buf2 == "Fire") action = IC_FIRE;
-	else if(buf2 == "Status") action = IC_STATUS;
-	else if(buf2 == "Help") action = IC_HELP;
-	else if(buf2 == "Quit") action = IC_QUIT;
-	else return;
+	if(buf == "") return;
 
 	buf2 = buf.substr(0,3);
 
@@ -271,20 +260,17 @@ void CInput::setupInputCommand( stInputCommand *pInput, const std::string &strin
 
 		if(buf2 == "A")
 		{
-			if(pInput[action].joyeventtype == ETYPE_JOYAXIS)
-			{
-				pos = buf.size()-1;
-				pInput[action].joyaxis = atoi(buf);
-				buf2 = buf.substr(0,pos);
-				pInput[action].joyvalue = (buf2 == "+") ? +1 : -1;
-			}
+			pInput[action].joyeventtype = ETYPE_JOYAXIS;
+			pos = buf.size()-1;
+			buf2 = buf.substr(0,pos);
+			pInput[action].joyaxis = atoi(buf2);
+			buf2 = buf.substr(pos);
+			pInput[action].joyvalue = (buf2 == "+") ? +1 : -1;
 		}
 		else // Should normally be B
 		{
-			if(pInput[action].joyeventtype == ETYPE_JOYBUTTON)
-			{
-				pInput[action].joybutton = atoi(buf);
-			}
+			pInput[action].joyeventtype = ETYPE_JOYBUTTON;
+			pInput[action].joybutton = atoi(buf);
 		}
 		return;
 	}
@@ -292,8 +278,12 @@ void CInput::setupInputCommand( stInputCommand *pInput, const std::string &strin
 	buf2 = buf.substr(0,6);
 	if(buf2 == "Keysym")
 	{
+		pInput[action].joyeventtype = ETYPE_KEYBOARD;
 		buf = buf.substr(7);
-		pInput[action].keysym = (SDLKey) atoi(buf);
+		TrimSpaces(buf);
+		pos = buf.find(' ');
+		buf2 = buf.substr(0,pos);
+		pInput[action].keysym = (SDLKey) atoi(buf2);
 		return;
 	}
 }
@@ -459,15 +449,18 @@ void CInput::sendKey(int key){	immediate_keytable[key] = true;	}
 
 void CInput::processKeys(int value)
 {
+	// Input for player commands
 	for(int i=0 ; i<NUMBER_OF_COMMANDS ; i++)
 	{
 		for(int j=0 ; j<NUM_INPUTS ; j++)
 		{
-			if(InputCommand[j][i].keysym == Event.key.keysym.sym)
+			if(InputCommand[j][i].keysym == Event.key.keysym.sym &&
+					InputCommand[j][i].joyeventtype == ETYPE_KEYBOARD)
 				InputCommand[j][i].active = (value) ? true : false;
 		}
 	}
 
+	// ... and for general keys
     switch(Event.key.keysym.sym)
 	{
 			// These are only used for ingame stuff or menu, but not for controlling the player anymore

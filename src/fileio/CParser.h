@@ -33,7 +33,7 @@ public:
 	// If something was written the file is also rewinded!
 	void saveIntValue(const std::string& keyword, const std::string& category, int value);
 	
-	std::string getValue(const std::string& keyword, const std::string& category, const std::string& def = "");
+	std::string getValue(const std::string& keyword, const std::string& category);
 	void saveValue(const std::string& keyword, const std::string& category, const std::string& value);
 	
 	bool isOpen() {return m_isOpen;}
