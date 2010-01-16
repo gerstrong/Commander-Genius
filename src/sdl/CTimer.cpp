@@ -44,15 +44,18 @@
 
 CTimer::CTimer()
 {
-	m_FPSCountTime = m_LoopPS = m_LPS = m_FPS = 0;
-	m_SyncCount = m_LoopCount = m_LogicCount = m_FrameCount = 0;
+    m_FPSCountTime = m_LoopPS = m_LPS = m_FPS = 0;
+    m_SyncCount = m_LoopCount = m_LogicCount = m_FrameCount = 0;
+    m_FrameCountSkip = m_SkipPS = 0;
+    m_FrameSkip = false;
+    m_Ticks = 0;
 
-	setFrameRate(DEFAULT_LPS, DEFAULT_FPS, DEFAULT_SYNC);
+    setFrameRate(DEFAULT_LPS, DEFAULT_FPS, DEFAULT_SYNC);
 #ifdef WIZ
     WIZ_ptimer_init();
 #endif
     m_SyncStartTime = m_LoopStartTime = timerTicks();
-	g_pLogFile->textOut(GREEN, true, "Starting timer driver...\n");
+    g_pLogFile->textOut(GREEN, true, "Starting timer driver...\n");
 }
 
 void CTimer::setFrameRate( int logicrate, int framerate, int syncrate )
@@ -62,33 +65,33 @@ void CTimer::setFrameRate( int logicrate, int framerate, int syncrate )
     // Set all of the desired rates
     m_SyncRate  = syncrate;
     m_LogicRate = logicrate;
-	m_FrameRate = framerate;
+    m_FrameRate = framerate;
 
     // Check limits
-	if (m_LogicRate <= 0) {
-        m_LogicRate = DEFAULT_LPS;
-	}
-	if (m_FrameRate <= 0) {
-        m_FrameRate = DEFAULT_FPS;
-	}
+    if (m_LogicRate <= 0) {
+	m_LogicRate = DEFAULT_LPS;
+    }
+    if (m_FrameRate <= 0) {
+	m_FrameRate = DEFAULT_FPS;
+    }
 
     // Pick highest rate
-	if (m_FrameRate >= m_LogicRate) {
-        m_LoopRate = m_FrameRate;
-	} else {
-        m_LoopRate = m_LogicRate;
-	}
+    if (m_FrameRate >= m_LogicRate) {
+	m_LoopRate = m_FrameRate;
+    } else {
+	m_LoopRate = m_LogicRate;
+    }
 
     // Find a number that is factor for both rates
     for (factor=0; factor<=10; factor++ )
     {
-        looprate = m_LoopRate+(20*factor);
-        if (looprate%m_LogicRate==0 && looprate%m_FrameRate==0)
-            break;
+	looprate = m_LoopRate+(20*factor);
+	if (looprate%m_LogicRate==0 && looprate%m_FrameRate==0)
+	    break;
     }
     m_LoopRate = looprate;
 
-	CalculateIntervals();
+    CalculateIntervals();
 }
 
 void CTimer::CalculateIntervals( void )
@@ -126,9 +129,16 @@ bool CTimer::TimeToRender( void )
     bool result;
 
     result = false;
-    if (m_LoopCount % m_FrameInterval == 0) {
-        result = true;
-        m_FrameCount++;
+    if (m_FrameSkip == true)
+    {
+	m_FrameCountSkip++;
+    }
+    else
+    {
+	if (m_LoopCount % m_FrameInterval == 0) {
+	    result = true;
+	    m_FrameCount++;
+	}
     }
 
     return result;
@@ -136,7 +146,9 @@ bool CTimer::TimeToRender( void )
 
 void CTimer::TimeToDelay( void )
 {
-	signed int delay;
+    signed int duration;
+    signed int starttime;
+    signed int delay;
 
     unsigned int curtime = timerTicks();
     m_LoopCount++;
@@ -145,39 +157,67 @@ void CTimer::TimeToDelay( void )
     // If the Sync rate is met, check time took
     if (m_SyncCount>=m_SyncRate)
     {
-        // Delay for the remaining time
-        delay = m_SyncDuration - (signed int)(curtime - m_SyncStartTime);
-        if (delay>MSPERSEC)
-            delay = MSPERSEC;
-        if (delay>0) {
-            timerDelay(delay);
-        }
+	duration = m_SyncDuration;
+	starttime = m_SyncStartTime;
+    }
+    else
+    {
+	duration = m_LoopDuration;
+	starttime = m_LoopStartTime;
+    }
+    
+    // Delay for the remaining time
+    delay = duration + m_Ticks - (signed int)(curtime - starttime);
+    // Cap the delay
+    if (delay>duration) {
+	delay = duration/4;
+    }
 
+    if (delay>=0)
+    {
+	m_Ticks = 0;
+	m_FrameSkip = false;
+	
+	if (delay>0)
+	    timerDelay(delay);
+    }
+    else if (delay<0)
+    {
+	m_FrameSkip = true;
+	m_Ticks += (signed int)(curtime - starttime) - duration;
+    }
+    
+    // If the Sync rate is met, check time took
+    if (m_SyncCount>=m_SyncRate)
+    {
         m_SyncCount = 0;
         m_SyncStartTime = m_LoopStartTime = timerTicks();
     }
     else
     {
-        // Delay for the remaining time
-        delay = m_LoopDuration - (signed int)(curtime - m_LoopStartTime);
-        if (delay>MSPERSEC)
-            delay = MSPERSEC;
-        if (delay>0) {
-            timerDelay(delay);
-        }
-
         m_LoopStartTime = timerTicks();
-    }
+    }    
 
-	// Display the loops/logic/frames per second
-	if( curtime - m_FPSCountTime >= MSPERSEC  )
-	{
-	    m_LoopPS        = m_LoopCount;
-        m_LPS           = m_LogicCount;
-		m_FPS           = m_FrameCount;
-		m_LoopCount = m_LogicCount = m_FrameCount = 0;
-		m_FPSCountTime  = curtime;
-	}
+    // Display the loops/logic/frames per second
+    if( curtime - m_FPSCountTime >= MSPERSEC  )
+    {
+	m_LoopPS = m_LoopCount;
+	m_LPS    = m_LogicCount;
+	m_FPS    = m_FrameCount;
+	m_SkipPS = m_FrameCountSkip;
+	m_LoopCount = m_LogicCount = m_FrameCount = m_FrameCountSkip = 0;
+	m_FPSCountTime = curtime;
+/*	
+	// FrameCap Limit Down
+	if (delay>duration/2)
+	    setFrameRate(DEFAULT_LPS, m_FrameRate+20, DEFAULT_SYNC);
+	
+	// FrameCap Limit Down
+	if (m_SkipPS>m_FrameRate/4)
+	    setFrameRate(DEFAULT_LPS, m_FrameRate-20, DEFAULT_SYNC);
+*/	
+	printf( "LOOP %d LPS %d FPS %d Skip %d\n", m_LoopPS, m_LPS, m_FPS, m_SkipPS );
+    }
 }
 
 //////////////////////////////////////////////////////////
@@ -185,7 +225,7 @@ void CTimer::TimeToDelay( void )
 //////////////////////////////////////////////////////////
 void CTimer::ResetSecondsTimer(void)
 {
-	m_LastSecTime = timerTicks();
+    m_LastSecTime = timerTicks();
 }
 
 // will return nonzero once per second
@@ -193,24 +233,24 @@ bool CTimer::HasSecElapsed(void)
 {
     unsigned int CurTime = timerTicks();
 
-	if ((signed int)(CurTime - m_LastSecTime) >= MSPERSEC)
-	{
-		m_LastSecTime = CurTime;
-		return true;
-	}
-	return false;
+    if ((signed int)(CurTime - m_LastSecTime) >= MSPERSEC)
+    {
+	m_LastSecTime = CurTime;
+	return true;
+    }
+    return false;
 }
 
 bool CTimer::HasTimeElapsed(int msecs)
 {
     unsigned int CurTime = timerTicks();
 
-	if ((signed int)(CurTime - m_LastSecTime) >= msecs)
-	{
-		m_LastSecTime = CurTime;
-		return true;
-	}
-	return false;
+    if ((signed int)(CurTime - m_LastSecTime) >= msecs)
+    {
+	m_LastSecTime = CurTime;
+	return true;
+    }
+    return false;
 }
 
 CTimer::~CTimer()

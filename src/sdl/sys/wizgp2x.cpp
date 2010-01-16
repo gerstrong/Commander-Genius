@@ -10,43 +10,48 @@ volatile uint32_t* memregs32;
 
 void WIZ_EmuKeyboard( int button, int value )
 {
-	SDL_Event fakeevent1, fakeevent2;
+	SDL_Event fakeevent1;
 
 	//printf( "Button %d Value %d\n", button, value );
 
-    volume_direction = VOLUME_NOCHG;
+	volume_direction = VOLUME_NOCHG;
 
+	joy_but_pressed[button] = value;
 	if( value == 1 ) {
-	    joy_but_pressed[button] = 1;
-		fakeevent1.type			    = SDL_KEYDOWN;
-		fakeevent1.key.state        = SDL_PRESSED;
-		fakeevent1.key.type		    = SDL_KEYDOWN;
-		fakeevent1.key.keysym.mod	= KMOD_NONE;
-
-		fakeevent2.type			    = SDL_KEYDOWN;
-		fakeevent2.key.state		= SDL_PRESSED;
-		fakeevent2.key.type		    = SDL_KEYDOWN;
-		fakeevent2.key.keysym.mod	= KMOD_NONE;
+		fakeevent1.type	             = SDL_KEYDOWN;
+		fakeevent1.key.state         = SDL_PRESSED;
+		fakeevent1.key.type          = SDL_KEYDOWN;
+		fakeevent1.key.keysym.mod    = KMOD_NONE;
 	}
 	else {
-	    joy_but_pressed[button] = 0;
-		fakeevent1.type			    = SDL_KEYUP;
-		fakeevent1.key.state		= SDL_RELEASED;
-		fakeevent1.key.type		    = SDL_KEYUP;
-		fakeevent1.key.keysym.mod	= KMOD_NONE;
-
-		fakeevent2.type			    = SDL_KEYUP;
-		fakeevent2.key.state		= SDL_RELEASED;
-		fakeevent2.key.type		    = SDL_KEYUP;
-		fakeevent2.key.keysym.mod	= KMOD_NONE;
+		fakeevent1.type              = SDL_KEYUP;
+		fakeevent1.key.state         = SDL_RELEASED;
+		fakeevent1.key.type          = SDL_KEYUP;
+		fakeevent1.key.keysym.mod    = KMOD_NONE;
 	}
 
 	//printf( "Button %d %d\n", button, value );
 	fakeevent1.key.keysym.sym = SDLK_UNKNOWN;
-	fakeevent2.key.keysym.sym = SDLK_UNKNOWN;
 
+	if( button == GP2X_BUTTON_RIGHT )
+	{
+		fakeevent1.key.keysym.unicode = fakeevent1.key.keysym.sym = SDLK_RIGHT;
+	}
+	if( button == GP2X_BUTTON_LEFT )
+	{
+		fakeevent1.key.keysym.unicode = fakeevent1.key.keysym.sym = SDLK_LEFT;
+	}
+	if( button == GP2X_BUTTON_UP )
+	{
+		fakeevent1.key.keysym.unicode = fakeevent1.key.keysym.sym = SDLK_UP;
+	}
+	if( button == GP2X_BUTTON_DOWN )
+	{
+		fakeevent1.key.keysym.unicode = fakeevent1.key.keysym.sym = SDLK_DOWN;
+	}	
+#if 0
 	// Right press
-	if( (button == GP2X_BUTTON_RIGHT || button == GP2X_BUTTON_UPRIGHT || button == GP2X_BUTTON_DOWNRIGHT || button == GP2X_BUTTON_R) &&
+	if( (button == GP2X_BUTTON_RIGHT || button == GP2X_BUTTON_UPRIGHT || button == GP2X_BUTTON_DOWNRIGHT) &&
 	    ((value == 1 &&
 	    (joy_but_pressed[GP2X_BUTTON_RIGHT] ||  joy_but_pressed[GP2X_BUTTON_UPRIGHT] ||  joy_but_pressed[GP2X_BUTTON_DOWNRIGHT])) ||
 	    (value == 0 &&
@@ -56,7 +61,7 @@ void WIZ_EmuKeyboard( int button, int value )
 	}
 
 	// Left press
-	if( (button == GP2X_BUTTON_LEFT || button == GP2X_BUTTON_UPLEFT || button == GP2X_BUTTON_DOWNLEFT || button == GP2X_BUTTON_R) &&
+	if( (button == GP2X_BUTTON_LEFT || button == GP2X_BUTTON_UPLEFT || button == GP2X_BUTTON_DOWNLEFT) &&
 	    ((value == 1 &&
 	    (joy_but_pressed[GP2X_BUTTON_LEFT] ||  joy_but_pressed[GP2X_BUTTON_UPLEFT] ||  joy_but_pressed[GP2X_BUTTON_DOWNLEFT])) ||
 	    (value == 0 &&
@@ -66,7 +71,7 @@ void WIZ_EmuKeyboard( int button, int value )
 	}
 
 	// Up press
-	if( (button == GP2X_BUTTON_UP || button == GP2X_BUTTON_UPLEFT || button == GP2X_BUTTON_UPRIGHT || button == GP2X_BUTTON_R) &&
+	if( (button == GP2X_BUTTON_UP || button == GP2X_BUTTON_UPLEFT || button == GP2X_BUTTON_UPRIGHT) &&
 	    ((value == 1 &&
 	    (joy_but_pressed[GP2X_BUTTON_UP] ||  joy_but_pressed[GP2X_BUTTON_UPLEFT] ||  joy_but_pressed[GP2X_BUTTON_UPRIGHT])) ||
 	    (value == 0 &&
@@ -76,7 +81,7 @@ void WIZ_EmuKeyboard( int button, int value )
 	}
 
 	// Down press
-	if( (button == GP2X_BUTTON_DOWN || button == GP2X_BUTTON_DOWNLEFT || button == GP2X_BUTTON_DOWNRIGHT || button == GP2X_BUTTON_R) &&
+	if( (button == GP2X_BUTTON_DOWN || button == GP2X_BUTTON_DOWNLEFT || button == GP2X_BUTTON_DOWNRIGHT) &&
 	    ((value == 1 &&
 	    (joy_but_pressed[GP2X_BUTTON_DOWN] ||  joy_but_pressed[GP2X_BUTTON_DOWNLEFT] ||  joy_but_pressed[GP2X_BUTTON_DOWNRIGHT])) ||
 	    (value == 0 &&
@@ -84,7 +89,7 @@ void WIZ_EmuKeyboard( int button, int value )
 	{
 	    fakeevent1.key.keysym.unicode = fakeevent1.key.keysym.sym = SDLK_DOWN;
 	}
-
+#endif
 
 	switch(button)
 	{
@@ -93,14 +98,6 @@ void WIZ_EmuKeyboard( int button, int value )
 			break;
 		case GP2X_BUTTON_START:
 			fakeevent1.key.keysym.sym = SDLK_ESCAPE;
-			break;
-		case GP2X_BUTTON_L:
-			fakeevent1.key.keysym.sym = SDLK_q;
-			fakeevent2.key.keysym.sym = SDLK_1;
-			break;
-		case GP2X_BUTTON_R:
-			fakeevent1.key.keysym.sym = SDLK_t;
-			fakeevent2.key.keysym.sym = SDLK_2;
 			break;
 		case GP2X_BUTTON_A:
 			fakeevent1.key.keysym.sym = SDLK_LCTRL;
@@ -112,8 +109,7 @@ void WIZ_EmuKeyboard( int button, int value )
 			fakeevent1.key.keysym.sym = SDLK_SPACE;
 			break;
 		case GP2X_BUTTON_Y:
-			fakeevent1.key.keysym.sym = SDLK_y;
-			fakeevent2.key.keysym.sym = SDLK_F3;
+			fakeevent1.key.keysym.sym = SDLK_F3;
 			break;
 		case GP2X_BUTTON_VOLUP:
 			if( value == 1)
@@ -128,11 +124,6 @@ void WIZ_EmuKeyboard( int button, int value )
 	if( fakeevent1.key.keysym.sym != SDLK_UNKNOWN )
 	{
 		SDL_PushEvent (&fakeevent1);
-	}
-
-	if( fakeevent2.key.keysym.sym != SDLK_UNKNOWN )
-	{
-		SDL_PushEvent (&fakeevent2);
 	}
 }
 

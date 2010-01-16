@@ -32,36 +32,38 @@ typedef unsigned long  ulong;
 class CTimer : public CSingleton<CTimer>
 {
 public:
-	CTimer();
-	virtual ~CTimer();
+    CTimer();
+    virtual ~CTimer();
 
-	void CalculateIntervals( void );
-	bool TimeToLogic();
-	bool TimeToRender();
-	void TimeToDelay();
+    void CalculateIntervals( void );
+    bool TimeToLogic();
+    bool TimeToRender();
+    void TimeToDelay();
 
-	void ResetSecondsTimer();
-	bool HasSecElapsed();
-	bool HasTimeElapsed(int msecs);
+    void ResetSecondsTimer();
+    bool HasSecElapsed();
+    bool HasTimeElapsed(int msecs);
 
-	int getLogicRate() { return m_LogicRate; }
-	int getFrameRate() { return m_FrameRate; }
-	void setFrameRate( int logicrate, int framerate, int syncrate );
+    int getLogicRate() { return m_LogicRate; }
+    int getFrameRate() { return m_FrameRate; }
+    void setFrameRate( int logicrate, int framerate, int syncrate );
 
     int getLogicPerSec( void ) { return m_LPS; }
-	int getFramesPerSec( void ) { return m_FPS; }
+    int getFramesPerSec( void ) { return m_FPS; }
 
-	Uint32 getTicks() { return timerTicks(); }
+    Uint32 getTicks() { return timerTicks(); }
 
 private:
     int m_LPS, m_LogicCount, m_LogicRate, m_LogicInterval;
     int m_FPS, m_FrameCount, m_FrameRate, m_FrameInterval;
     int m_LoopPS, m_LoopRate, m_LoopCount, m_LoopDuration;
+    int m_SkipPS, m_FrameCountSkip, m_Ticks;
     int m_SyncCount, m_SyncRate, m_SyncDuration;
+    bool m_FrameSkip;
 
     ulong m_LPSCountTime, m_FPSCountTime;
-	ulong m_LoopStartTime, m_SyncStartTime;
-	ulong m_LastSecTime;
+    ulong m_LoopStartTime, m_SyncStartTime;
+    ulong m_LastSecTime;
 };
 
 #endif /* CTIMER_H_ */
