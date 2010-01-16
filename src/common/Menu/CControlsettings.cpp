@@ -26,43 +26,43 @@ void CControlsettings::drawInitialCommands()
 	mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 36, 14);
 	mp_Dialog->setFrameTheme(DLG_THEME_OLDSCHOOL);
 
-	g_pInput->getEventName(IC_LEFT, m_chosenPlayer-1, buf2);
+	buf2 = g_pInput->getEventName(IC_LEFT, m_chosenPlayer-1);
 	buf = "P"+itoa(m_chosenPlayer)+" Left:   " + buf2;
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, buf);
 
-	g_pInput->getEventName(IC_UP, m_chosenPlayer-1, buf2);
+	buf2 = g_pInput->getEventName(IC_UP, m_chosenPlayer-1);
 	buf = "P"+itoa(m_chosenPlayer)+" Up:     " + buf2;
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, buf);
 
-	g_pInput->getEventName(IC_RIGHT, m_chosenPlayer-1, buf2);
+	buf2 = g_pInput->getEventName(IC_RIGHT, m_chosenPlayer-1);
 	buf = "P"+itoa(m_chosenPlayer)+" Right:  " + buf2;
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, buf);
 
-	g_pInput->getEventName(IC_DOWN, m_chosenPlayer-1, buf2);
+	buf2 = g_pInput->getEventName(IC_DOWN, m_chosenPlayer-1);
 	buf = "P"+itoa(m_chosenPlayer)+" Down:   " + buf2;
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, buf);
 
-	g_pInput->getEventName(IC_JUMP, m_chosenPlayer-1, buf2);
+	buf2 = g_pInput->getEventName(IC_JUMP, m_chosenPlayer-1);
 	buf = "P"+itoa(m_chosenPlayer)+" Jump:   " + buf2;
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, buf);
 
-	g_pInput->getEventName(IC_POGO, m_chosenPlayer-1, buf2);
+	buf2 = g_pInput->getEventName(IC_POGO, m_chosenPlayer-1);
 	buf = "P"+itoa(m_chosenPlayer)+" Pogo:   " + buf2;
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, buf);
 
-	g_pInput->getEventName(IC_FIRE, m_chosenPlayer-1, buf2);
+	buf2 = g_pInput->getEventName(IC_FIRE, m_chosenPlayer-1);
 	buf = "P"+itoa(m_chosenPlayer)+" Fire:   " + buf2;
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, buf);
 
-	g_pInput->getEventName(IC_STATUS, m_chosenPlayer-1, buf2);
+	buf2 = g_pInput->getEventName(IC_STATUS, m_chosenPlayer-1);
 	buf = "P"+itoa(m_chosenPlayer)+" Status: " + buf2;
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, buf);
 
-	g_pInput->getEventName(IC_HELP, m_chosenPlayer-1, buf2);
+	buf2 = g_pInput->getEventName(IC_HELP, m_chosenPlayer-1);
 	buf = "P"+itoa(m_chosenPlayer)+" Help:   " + buf2;
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 9, buf);
 
-	g_pInput->getEventName(IC_QUIT, m_chosenPlayer-1, buf2);
+	buf2 = g_pInput->getEventName(IC_QUIT, m_chosenPlayer-1);
 	buf = "P"+itoa(m_chosenPlayer)+" Quit:   " + buf2;
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 10, buf);
 
@@ -95,7 +95,7 @@ void CControlsettings::processWaitInput()
 
 	buf = mp_Dialog->m_dlgobject[m_selection]->m_OptionText->m_text;
 	buf = buf.erase(11);
-	g_pInput->getEventName(item, m_chosenPlayer-1, buf2);
+	buf2 = g_pInput->getEventName(item, m_chosenPlayer-1);
 	mp_Dialog->setObjectText(m_selection, buf + buf2);
 	mp_Dialog->m_key = 'u';
 	m_selection = -1;

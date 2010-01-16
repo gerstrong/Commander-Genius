@@ -645,7 +645,7 @@ stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 		psemisliding = false;
 
 		// Check if player is on ice
-		if(!pjumping)
+		if(!pjumping && !ppogostick)
 		{
 			int ice = TileProperty[mp_map->at(getXLeftPos()>>CSF, (ydown+1)>>CSF)].bup;
 			ice |= TileProperty[mp_map->at(getXRightPos()>>CSF, (ydown+1)>>CSF)].bup;

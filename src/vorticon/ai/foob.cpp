@@ -15,7 +15,7 @@ enum FOOB_ACTIONS{
 #define FOOB_WALK_ANIM_RATE  4
 
 #define FOOB_FLEE_SPEED      77
-#define FOOB_FLEE_ANIM_RATE  4
+#define FOOB_FLEE_ANIM_RATE  1
 
 #define FOOB_SPOOK_SHOW_TIME    12
 

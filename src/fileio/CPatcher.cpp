@@ -236,6 +236,6 @@ void CPatcher::PatchLevelhint(int level)
 			 !buf.empty() && !strCaseStartsWith(buf,"\r") );
 
 	// Fill the rest with zeros, so the old won't be shown
-	if(end != offset)
+	if(end > offset)
 		memset( p_patch, 0, end-offset);
 }

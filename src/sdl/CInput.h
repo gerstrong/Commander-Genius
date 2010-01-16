@@ -137,7 +137,7 @@ const int MAX_COMMANDS = 10;
 #define NUMBER_OF_COMMANDS	10
 #define NUM_INPUTS			4
 
-#define ETYPE_NO_JOYSTICK 	0
+#define ETYPE_KEYBOARD	 	0
 #define ETYPE_JOYAXIS 		1
 #define ETYPE_JOYBUTTON 	5
 
@@ -145,7 +145,6 @@ typedef struct stInputCommand
 {
 	bool active;
 	bool lastactive;
-	//int value;
 
 	SDLKey 	keysym;
 
@@ -160,7 +159,6 @@ class CInput : public CSingleton<CInput>
 {
 public:
 	CInput();
-	virtual ~CInput();
 
 	void pollEvents();
 
@@ -187,17 +185,21 @@ public:
 
 	void cancelExitEvent(void);
 
-	void getEventName(int position, unsigned char input, std::string &buf);
+	std::string getEventName(int position, unsigned char input);
 	bool readNewEvent(Uint8 device, int position);
 
-	short loadControlconfig();
+	void setupInputCommand( stInputCommand *pInput, const std::string &string );
+
+	void loadControlconfig();
 	void resetControls(int player);
 	bool startJoyDriver();
-	short saveControlconfig();
+	void saveControlconfig();
 
 	void flushKeys(void);
 	void flushCommands(void);
 	void flushAll(void);
+
+	virtual ~CInput();
 
 private:
 	SDL_Event Event;

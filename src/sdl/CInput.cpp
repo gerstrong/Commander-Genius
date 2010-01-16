@@ -12,6 +12,8 @@
 #include "CVideoDriver.h"
 #include "../CLogFile.h"
 #include "../FindFile.h"
+#include "../StringUtils.h"
+#include "../fileio/CParser.h"
 
 const std::string CONTROLSDATVERSION = "CG031";
 
@@ -154,66 +156,145 @@ bool CInput::startJoyDriver()
 	return 0;
 }
 
-short CInput::loadControlconfig(void)
+void CInput::loadControlconfig(void)
 {
-	FILE *fp;
-	if((fp=OpenGameFile("controls.dat","rb")) != NULL)
+	CParser Parser;
+	Parser.loadParseFile();
+
+	std::string section;
+	std::string entry;
+	for(size_t i=0 ; i<NUM_INPUTS ; i++)
 	{
-		bool ok=true;
-		std::string Fileversion;
-
-		for(size_t i=0 ; i<CONTROLSDATVERSION.size() ; i++)
-			Fileversion.push_back(fgetc(fp));
-
-		if( Fileversion != CONTROLSDATVERSION ) {
-			fclose(fp);
-			g_pLogFile->textOut("The version of the controls settings you have seems to be old. Please reconfigure your controls!");
-			return 1;
-		}
-
-		ok &= (fread(InputCommand, sizeof(stInputCommand),NUMBER_OF_COMMANDS*NUM_INPUTS, fp) != 0);
-		fread(TwoButtonFiring, sizeof(bool),NUM_INPUTS, fp); // This one won't be checked, in order to conserve compatibility
-		if( !ok )
-		{
-			fclose(fp);
-			return 1;
-		}
-		fclose(fp);
-		return 0;
+		// setup input from proper string
+		section = "input" + itoa(i);
+		setupInputCommand( InputCommand[i], Parser.getValue("Left", section) );
+		setupInputCommand( InputCommand[i], Parser.getValue("Up", section) );
+		setupInputCommand( InputCommand[i], Parser.getValue("Right", section) );
+		setupInputCommand( InputCommand[i], Parser.getValue("Down", section) );
+		setupInputCommand( InputCommand[i], Parser.getValue("Jump", section) );
+		setupInputCommand( InputCommand[i], Parser.getValue("Pogo", section) );
+		setupInputCommand( InputCommand[i], Parser.getValue("Fire", section) );
+		setupInputCommand( InputCommand[i], Parser.getValue("Status", section) );
+		setupInputCommand( InputCommand[i], Parser.getValue("Help", section) );
+		setupInputCommand( InputCommand[i], Parser.getValue("Quit", section) );
+		setupInputCommand( InputCommand[i], Parser.getValue("TwoButtonFiring", section) );
+		TwoButtonFiring[i] = Parser.getIntValue("TwoButtonFiring", section);
 	}
-	return 1;
+	Parser.saveParseFile();
 }
 
-short CInput::saveControlconfig(void)
+void CInput::saveControlconfig()
 {
-	FILE *fp;
-	if((fp=OpenGameFile("controls.dat","wb")) != NULL)
-	{
-		fwrite(CONTROLSDATVERSION.c_str(), 1,CONTROLSDATVERSION.size(), fp);
-		fwrite(InputCommand, sizeof(stInputCommand),NUMBER_OF_COMMANDS*NUM_INPUTS, fp);
-		fwrite(TwoButtonFiring, sizeof(bool),NUM_INPUTS, fp);
-		fclose(fp);
-		return 0;
-	}
+	CParser Parser;
+	Parser.loadParseFile();
 
-	return 1;
+	std::string section;
+	for(size_t i=0 ; i<NUM_INPUTS ; i++)
+	{
+		section = "input" + itoa(i);
+		Parser.saveValue("Left", section,getEventName(IC_LEFT, i));
+		Parser.saveValue("Up", section,getEventName(IC_UP, i));
+		Parser.saveValue("Right", section,getEventName(IC_RIGHT, i));
+		Parser.saveValue("Down", section,getEventName(IC_DOWN, i));
+		Parser.saveValue("Jump", section,getEventName(IC_JUMP, i));
+		Parser.saveValue("Pogo", section,getEventName(IC_POGO, i));
+		Parser.saveValue("Fire", section,getEventName(IC_FIRE, i));
+		Parser.saveValue("Status", section,getEventName(IC_STATUS, i));
+		Parser.saveValue("Help", section,getEventName(IC_HELP, i));
+		Parser.saveValue("Quit", section,getEventName(IC_QUIT, i));
+		Parser.saveIntValue("TwoButtonFiring", section, TwoButtonFiring[i]);
+	}
+	Parser.saveParseFile();
 }
-void CInput::getEventName(int position, unsigned char input, std::string &buf)
+
+std::string CInput::getEventName(int position, unsigned char input)
 {
-	buf = SDL_GetKeyName(InputCommand[input][position].keysym);
+	std::string buf;
 	if(InputCommand[input][position].joyeventtype == ETYPE_JOYAXIS)
 	{
-		buf += ", ";
-		buf += "Joy" + itoa(InputCommand[input][position].which) + "-A" + itoa(InputCommand[input][position].joyaxis);
+		buf = "Joy" + itoa(InputCommand[input][position].which) + "-A" + itoa(InputCommand[input][position].joyaxis);
 		if(InputCommand[input][position].joyvalue < 0)
 			buf += "-";
 		else
 			buf += "+";
 	}
-	if(InputCommand[input][position].joyeventtype == ETYPE_JOYBUTTON)
+	else if(InputCommand[input][position].joyeventtype == ETYPE_JOYBUTTON)
 	{
-		buf += ", ";
-		buf += "Joy" + itoa(InputCommand[input][position].which) + "-B" + itoa(InputCommand[input][position].joybutton);
+		buf = "Joy" + itoa(InputCommand[input][position].which) + "-B" + itoa(InputCommand[input][position].joybutton);
+	}
+	else // In case only keyboard was triggered
+	{
+		buf = "Keysym ";
+		buf += SDL_GetKeyName(InputCommand[input][position].keysym);
+	}
+
+	return buf;
+}
+
+void CInput::setupInputCommand( stInputCommand *pInput, const std::string &string )
+{
+	std::string buf;
+	std::string buf2;
+	int action;
+	size_t pos;
+
+	if(string == "") return;
+
+	pos = string.find(' ');
+	buf  = string.substr(pos);
+	buf2 = string.substr(0, pos);
+
+	if(buf2 == "Left") action = IC_LEFT;
+	else if(buf2 == "Up") action = IC_UP;
+	else if(buf2 == "Right") action = IC_RIGHT;
+	else if(buf2 == "Down") action = IC_DOWN;
+	else if(buf2 == "Jump") action = IC_JUMP;
+	else if(buf2 == "Pogo") action = IC_POGO;
+	else if(buf2 == "Fire") action = IC_FIRE;
+	else if(buf2 == "Status") action = IC_STATUS;
+	else if(buf2 == "Help") action = IC_HELP;
+	else if(buf2 == "Quit") action = IC_QUIT;
+	else return;
+
+	buf2 = buf.substr(0,3);
+
+	if(buf2 == "Joy")
+	{
+		buf = buf.substr(3);
+
+		pos = buf.find('-');
+		buf2 = buf.substr(0, pos);
+		pInput[action].which = atoi(buf2);
+		buf = buf.substr(pos+1);
+		buf2 = buf.substr(0,1);
+		buf = buf.substr(1);
+
+		if(buf2 == "A")
+		{
+			if(pInput[action].joyeventtype == ETYPE_JOYAXIS)
+			{
+				pos = buf.size()-1;
+				pInput[action].joyaxis = atoi(buf);
+				buf2 = buf.substr(0,pos);
+				pInput[action].joyvalue = (buf2 == "+") ? +1 : -1;
+			}
+		}
+		else // Should normally be B
+		{
+			if(pInput[action].joyeventtype == ETYPE_JOYBUTTON)
+			{
+				pInput[action].joybutton = atoi(buf);
+			}
+		}
+		return;
+	}
+
+	buf2 = buf.substr(0,6);
+	if(buf2 == "Keysym")
+	{
+		buf = buf.substr(7);
+		pInput[action].keysym = (SDLKey) atoi(buf);
+		return;
 	}
 }
 
@@ -224,6 +305,7 @@ bool CInput::readNewEvent(Uint8 device, int position)
 		switch ( Event.type )
 		{
 			case SDL_KEYDOWN:
+				InputCommand[device][position].joyeventtype = ETYPE_KEYBOARD;
 				InputCommand[device][position].keysym = Event.key.keysym.sym;
 				return true;
 				break;
