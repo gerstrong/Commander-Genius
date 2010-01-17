@@ -4,6 +4,11 @@ Commander Genius Release (CloneKeenPlus):
 v0.3.1.0:
 ---------
 
+17-01-2010
+- Improved AI of Tank Robots, Elite, Ninjas, Gargs
+- Improved the player-physics a bit
+- Fixed many other crashes
+
 07-01-2010
 - Improved Multiplayer experience a bit (Still WIP)
 
