@@ -46,8 +46,8 @@ private:
 	void vort_initiatejump(CObject &object);
 	void butler_ai(CObject &object, char difficulty);
 	void tank_ai(CObject &object, bool hardmode);
-	bool tank_CanMoveLeft(CObject &object, int h);
-	bool tank_CanMoveRight(CObject &object, int w, int h);
+	bool tank_CanMoveLeft(CObject &object);
+	bool tank_CanMoveRight(CObject &object);
 
 	void icechunk_ai(CObject &object);
 	void smash(CObject &object);
