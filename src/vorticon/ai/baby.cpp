@@ -194,7 +194,7 @@ void CObjectAI::baby_ai(CObject &object, int episode, bool hard)
 }
 
 #define BABY_BIGJUMP                 100
-#define BABY_BIGJUMP_DEC_RATE        2
+#define BABY_BIGJUMP_DEC_RATE        8
 
 #define BABY_MIN_SMALLJUMP             70
 #define BABY_SMALLJUMP_MIN_DEC_RATE    1
@@ -212,7 +212,7 @@ void CObjectAI::baby_jump(CObject &object, int big)
 	else
 	{
 		object.ai.baby.inertia_y = -80;//(rnd()%(BABY_MAX_SMALLJUMP-BABY_MIN_SMALLJUMP))+BABY_MIN_SMALLJUMP;
-		object.ai.baby.jumpdecrate = 1;//(rnd()%(BABY_SMALLJUMP_MAX_DEC_RATE-BABY_SMALLJUMP_MIN_DEC_RATE))+BABY_SMALLJUMP_MIN_DEC_RATE;
+		object.ai.baby.jumpdecrate = 4;//(rnd()%(BABY_SMALLJUMP_MAX_DEC_RATE-BABY_SMALLJUMP_MIN_DEC_RATE))+BABY_SMALLJUMP_MIN_DEC_RATE;
 	}
 
 	object.ai.baby.jumpdectimer = 0;
