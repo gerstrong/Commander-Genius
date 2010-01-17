@@ -20,7 +20,7 @@ class COpenGL {
 public:
 	COpenGL(SDL_Rect &gamestdrect);
 
-	void render(void);
+	void render();
 	bool initGL(float Width, float Height, unsigned char Depth,
 				GLint oglfilter, unsigned char scalex, float aspect);
 

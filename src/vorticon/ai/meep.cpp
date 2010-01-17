@@ -22,8 +22,6 @@ enum meep_actions{
 #define MEEP_DYING_FRAME        124
 #define MEEP_DEAD_FRAME         125
 
-#define SNDWAVE_LEFT_FRAME      128
-
 void CObjectAI::meep_ai(CObject& object)
 {
 	int not_about_to_fall;
@@ -137,7 +135,7 @@ void CObjectAI::meep_ai(CObject& object)
 			CObject newobject(mp_Map);
 			if (object.ai.meep.dir==RIGHT)
 			{
-				newobject.spawn((object.getXRightPos())<<CSF, object.getYPosition()+(5<<STC), OBJ_SNDWAVE, 3);
+				newobject.spawn(object.getXRightPos(), object.getYPosition()+(5<<STC), OBJ_SNDWAVE, 3);
 				newobject.ai.ray.direction = RIGHT;
 			}
 			else

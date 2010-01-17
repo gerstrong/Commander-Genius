@@ -123,6 +123,7 @@ void CObject::setupObjectType(int Episode)
 	case OBJ_JACK: sprite = OBJ_JACK_DEFSPRITE; break;
 	case OBJ_NESSIE: sprite = OBJ_NESSIE_DEFSPRITE; break;
 	case OBJ_AUTORAY_V: sprite = RAY_VERT_EP3; break;
+	case OBJ_SNDWAVE: sprite = OBJ_SNDWAVE_DEFSPRITE; break;
 
 	// Common Elements and some are Episode dependent
 	case OBJ_RAY:
@@ -199,7 +200,11 @@ void CObject::setScrPos( int px, int py )
 // This used for objects that only can trigger, when it's really worth to do so.
 bool CObject::calcVisibility( int player_x, int player_y )
 {
+	// Platform are always active
 	if(m_type == OBJ_PLATFORM || m_type == OBJ_PLATVERT) return true;
+
+	// Also  Bullets
+	if(m_type == OBJ_SNDWAVE || m_type == OBJ_RAY || m_type == OBJ_FIREBALL) return true;
 
 	// check in x
 	Uint32 left = ((player_x-(VISIBILITY<<CSF))<0) ? 0 : player_x-(VISIBILITY<<CSF);
