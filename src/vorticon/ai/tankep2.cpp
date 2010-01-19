@@ -51,7 +51,7 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 		object.ai.tank.fireafterlook = 0;
 		object.ai.tank.animtimer = 0;
 		object.ai.tank.timer = 0;
-		object.ai.tank.dist_traveled = 0;
+		object.ai.tank.dist_to_travel = TANK_MINTRAVELDIST;
 		object.ai.tank.pausetime = 0;
 		object.ai.tank.timetillcanfire = TANK2_MAX_TIME_TILL_CAN_FIRE;
 		object.ai.tank.firetimes = 0;
@@ -81,7 +81,6 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 
 		object.sprite = TANK2_LOOK_FRAME + object.ai.tank.frame;
 
-
 		// when time is up go back to moving
 		if (object.ai.tank.timer > TANK_LOOK_TOTALTIME)
 		{
@@ -103,7 +102,7 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 			object.ai.tank.frame = 0;
 			object.ai.tank.animtimer = 0;
 			object.ai.tank.timer = 0;
-			object.ai.tank.dist_traveled = 0;
+			object.ai.tank.dist_to_travel = TANK_MINTRAVELDIST;
 		}
 		else
 			object.ai.tank.timer++;
@@ -241,7 +240,7 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 			if (!object.blockedl)
 			{
 				object.moveLeft(TANK_WALK_SPEED);
-				object.ai.tank.dist_traveled++;
+				object.ai.tank.dist_to_travel--;
 			}
 			else
 			{
@@ -257,7 +256,7 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 			if (!object.blockedr)
 			{
 				object.moveRight(TANK_WALK_SPEED);
-				object.ai.tank.dist_traveled++;
+				object.ai.tank.dist_to_travel--;
 			}
 			else
 			{

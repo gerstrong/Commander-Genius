@@ -20,7 +20,7 @@ CPhysicsSettings::CPhysicsSettings() {
 	//player.jumpdecrease_x = 54;
 	player.jumpdecrease_x = 64;
 
-	player.max_x_speed = 63;
+	player.max_x_speed = 68;
 
 	// when falling keen's Y inertia increases up to maximum
 	player.max_fallspeed = 93;

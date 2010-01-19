@@ -102,7 +102,7 @@ typedef struct stTankData
 	
 	unsigned int timer,animtimer;
 	unsigned char frame;
-	unsigned int dist_traveled;
+	unsigned int dist_to_travel;
 	
 	unsigned char movedir;
 	

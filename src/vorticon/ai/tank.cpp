@@ -17,8 +17,8 @@ enum{
 
 // when this probability is satisfied, there is 50% probability
 // of a look, 50% probability of a fire.
-//#define TANK_LOOKFIRE_PROB    500
-#define TANK_MINTRAVELDIST    200
+#define TANK_MINTRAVELDIST    100
+#define TANK_MAXTRAVELDIST    200
 
 #define TANK_WALK_SPEED         32
 #define TANK_WALK_ANIM_TIME     2
@@ -49,7 +49,7 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 		object.ai.tank.timer = 0;
 		object.ai.tank.ponsameleveltime = 0;
 		object.ai.tank.alreadyfiredcauseonsamelevel = 0;
-		object.ai.tank.dist_traveled = 0;
+		object.ai.tank.dist_to_travel = TANK_MAXTRAVELDIST;
 		object.ai.tank.detectedPlayer = 0;
 		object.ai.tank.detectedPlayerIndex = 0;
 		object.canbezapped = true;  // will stop bullets but are not harmed
@@ -127,7 +127,7 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 	case TANK_WALK:
 		// is keen on same level?
 		object.ai.tank.detectedPlayer = false;
-		for(int i=0 ; i<m_Player.size() ; i++)
+		/*for(size_t i=0 ; i<m_Player.size() ; i++)
 		{
 			if (m_Player[i].getYPosition() >= object.getYUpPos()-(3<<CSF))
 			{
@@ -138,7 +138,7 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 					break;
 				}
 			}
-		}
+		}*/
 
 		if (object.ai.tank.detectedPlayer)
 		{
@@ -174,7 +174,7 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 			object.ai.tank.alreadyfiredcauseonsamelevel = 0;
 		}
 
-		if (object.ai.tank.dist_traveled > TANK_MINTRAVELDIST)
+		if (object.ai.tank.dist_to_travel <= 0)
 		{
 			object.ai.tank.timer = 0;
 			object.ai.tank.state = TANK_FIRE;
@@ -186,7 +186,7 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 			if( tank_CanMoveLeft(object) )
 			{
 				object.moveLeft(TANK_WALK_SPEED);
-				object.ai.tank.dist_traveled++;
+				object.ai.tank.dist_to_travel--;
 			}
 			else
 			{
@@ -202,7 +202,7 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 			if ( tank_CanMoveRight(object) )
 			{
 				object.moveRight(TANK_WALK_SPEED);
-				object.ai.tank.dist_traveled++;
+				object.ai.tank.dist_to_travel--;
 			}
 			else
 			{
@@ -246,7 +246,7 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 			object.ai.tank.frame = 0;
 			object.ai.tank.timer = 0;
 			object.ai.tank.animtimer = 0;
-			object.ai.tank.dist_traveled = 0;
+			object.ai.tank.dist_to_travel = TANK_MINTRAVELDIST + (rnd()%10)*(TANK_MAXTRAVELDIST-TANK_MINTRAVELDIST)/10;
 		} else object.ai.tank.timer++;
 		break;
 	}
@@ -261,7 +261,7 @@ bool CObjectAI::tank_CanMoveLeft(CObject &object)
 
 bool CObjectAI::tank_CanMoveRight(CObject &object)
 {
-	stTile &currentTile = g_pGfxEngine->Tilemap->mp_tiles[mp_Map->at((object.getXLeftPos()+1)>>CSF, (object.getYDownPos()+256)>>CSF)];
+	stTile &currentTile = g_pGfxEngine->Tilemap->mp_tiles[mp_Map->at((object.getXRightPos()+1)>>CSF, (object.getYDownPos()+256)>>CSF)];
 	if (!object.blockedr && currentTile.bup) return true;
 	return false;
 }

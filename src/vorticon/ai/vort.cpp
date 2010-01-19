@@ -10,7 +10,6 @@
 
 void CObjectAI::vort_ai(CObject &object, int level, int episode, char difficulty, bool dark)
 {
-	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 	bool kill;
 
 	 if (object.needinit)
@@ -164,8 +163,8 @@ void CObjectAI::vort_ai(CObject &object, int level, int episode, char difficulty
 			 switch(difficulty)
 			 {
 			 case 0: odds = getProbability(VORT_JUMP_PROB_EASY); break;
-			 case 1: odds = getProbability(VORT_JUMP_PROB); break;
 			 case 2: odds = getProbability(VORT_JUMP_PROB_HARD); break;
+			 default: odds = getProbability(VORT_JUMP_PROB); break;
 			 }
 
 			 if (odds)
