@@ -5,7 +5,8 @@ v0.3.1.0:
 ---------
 
 19-01-2010
-- Change in the Tank Robot AI Ep 1
+- Chnages in the Vortininja Ep3
+- Changes in the Tank Robot AI Ep 1
 
 17-01-2010
 - Improved AI of Tank Robots, Elite, Ninjas, Gargs, Foob, Vortikids. The still need to be checked against doskeen

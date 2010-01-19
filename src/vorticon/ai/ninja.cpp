@@ -4,8 +4,7 @@
 
 // Ninja AI (the black, bear-like karate-kicking creature in ep3)
 enum ninja_actions{
-	NINJA_STAND, NINJA_KICK,
-	NINJA_DYING, NINJA_DEAD
+	NINJA_STAND, NINJA_KICK, NINJA_DYING, NINJA_DEAD
 };
 
 #define NINJA_STAND_ANIM_RATE          5
@@ -21,7 +20,6 @@ enum ninja_actions{
 #define NINJA_KICK_RIGHT_FRAME         82
 #define NINJA_DYING_FRAME              83
 #define NINJA_DEAD_FRAME               84
-
 
 unsigned int rnd(void);
 
@@ -92,7 +90,7 @@ void CObjectAI::ninja_ai(CObject &object, bool hardmode)
 			{
 				// high, short jump
 				object.ai.ninja.XInertia = (hardmode) ? 100 : 50;
-				object.ai.ninja.YInertia = -30;
+				object.ai.ninja.YInertia = -120;
 				object.ai.ninja.XFrictionTimer = 0;
 				object.ai.ninja.YFrictionTimer = 0;
 				object.ai.ninja.XFrictionRate = 5;
@@ -102,7 +100,7 @@ void CObjectAI::ninja_ai(CObject &object, bool hardmode)
 			{
 				// low, long jump
 				object.ai.ninja.XInertia = (hardmode) ? 168 : 84;
-				object.ai.ninja.YInertia = -15;
+				object.ai.ninja.YInertia = -30;
 				object.ai.ninja.XFrictionTimer = 0;
 				object.ai.ninja.YFrictionTimer = 0;
 				object.ai.ninja.XFrictionRate = 5;
@@ -210,7 +208,7 @@ void CObjectAI::ninja_ai(CObject &object, bool hardmode)
 
 		if (object.ai.ninja.YFrictionTimer > object.ai.ninja.YFrictionRate)
 		{
-			if(!object.blockedd) object.ai.ninja.YInertia+=8;
+			if(!object.blockedd) object.ai.ninja.YInertia+=16;
 			else{
 				object.ai.ninja.YInertia=0;
 				object.ai.ninja.state = NINJA_STAND;
