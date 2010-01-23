@@ -27,8 +27,8 @@ public:
 	// main functions
 	void process();
 
-	bool getPlatMoving();
-	void triggerPlat(bool value);
+	bool getPlatMoving() { return PlatExtending; }
+	void triggerPlat(bool value) { PlatExtending = value; }
 
 	virtual ~CObjectAI();
 private:
@@ -36,7 +36,7 @@ private:
 	// main AI functions
 	bool checkforAIObject( CObject &object );
 	void performSpecialAIType( CObject &object );
-	void deleteObj(CObject &object);
+	void deleteObj(CObject &object) { object.exists = false; }
 	void deleteAllObjects();
 
 	// ep1

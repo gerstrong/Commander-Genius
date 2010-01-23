@@ -20,6 +20,7 @@ CBaseMenu(menu_type) {
 	m_Resolution.height = g_pVideoDriver->getHeight();
 	m_Resolution.depth = g_pVideoDriver->getDepth();
 	m_FSmode =  g_pVideoDriver->getFullscreen();
+	g_pVideoDriver->initResolutionList();
 
 	const unsigned short BUFFER_SIZE=256;
 	char Buffer[BUFFER_SIZE];

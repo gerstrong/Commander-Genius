@@ -97,6 +97,7 @@ public:
 	st_resolution getNextResolution();
 
 	void showFPS(bool value);
+	void initResolutionList();
 
 	void setAspectCorrection(bool value) { m_aspect_correction = value; }
 	bool getAspectCorrection(void) { return m_aspect_correction; }
@@ -114,7 +115,6 @@ public:
 	bool showfps;
 
 private:
-	void initResolutionList();
 	bool createSurfaces();
 
 #ifdef USE_OPENGL
@@ -132,6 +132,7 @@ private:
 	unsigned int m_targetfps;	// Used for automatic frame skipping
 	bool m_opengl;
 	int m_opengl_filter;
+	int m_maxwidth;
 	bool m_aspect_correction;
 	float m_aspect_ratio;
 

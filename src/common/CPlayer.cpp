@@ -732,7 +732,11 @@ void CPlayer::ProcessInput()
 	
 	if(g_pInput->getTwoButtonFiring(m_index))
 	{
-		if(playcontrol[PA_JUMP] && playcontrol[PA_POGO])
+		if(playcontrol[PA_FIRE])
+		{
+			playcontrol[PA_FIRE] = 0;
+		}
+		else if(playcontrol[PA_JUMP] && playcontrol[PA_POGO])
 		{
 			playcontrol[PA_FIRE] = 1;
 			playcontrol[PA_JUMP] = 0;

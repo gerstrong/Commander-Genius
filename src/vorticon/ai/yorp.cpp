@@ -12,11 +12,11 @@ enum
 	YORP_DEAD      // they look so sad when they're dead
 };
 
-#define YORP_LOOK_TIME  24   // time each frame of YORP_LOOK is shown
+#define YORP_LOOK_TIME  16   // time each frame of YORP_LOOK is shown
 #define YORP_STUN_ANIM_TIME  10
-#define YORP_WALK_ANIM_TIME  4
-#define YORP_WALK_SPEED      20
-#define YORP_WALK_ANIM_TIME_FAST  6
+#define YORP_WALK_ANIM_TIME  5
+#define YORP_WALK_SPEED      17
+#define YORP_WALK_ANIM_TIME_FAST  5
 #define YORP_WALK_SPEED_FAST      20
 
 #define YORP_NUM_LOOKS  9      // number of times yorp look frame is changed
@@ -34,7 +34,7 @@ enum
 #define YORP_STUNFRAME  56
 
 #define YORP_JUMP_PROB      8
-#define YORP_JUMP_HEIGHT    -45
+#define YORP_JUMP_HEIGHT    -30
 
 #define YORP_DYING_FRAME   58
 #define YORP_DEAD_FRAME    59
@@ -45,13 +45,13 @@ enum
 #define YORPDIE_INERTIA_DECREASE    8
 
 // How much Yorps pushes keen
-#define YORP_PUSH_AMT_NO_WALK	50
+#define YORP_PUSH_AMT_NO_WALK	0
 
-#define YORP_PUSH_AMT_P_WALK_HARD	60
-#define YORP_PUSH_AMT_P_WALK		60
+#define YORP_PUSH_AMT_P_WALK_HARD	100
+#define YORP_PUSH_AMT_P_WALK		75
 
-#define YORP_PUSH_AMT_P_STAND_HARD	60
-#define YORP_PUSH_AMT_P_STAND		60
+#define YORP_PUSH_AMT_P_STAND_HARD	100
+#define YORP_PUSH_AMT_P_STAND		75
 
 unsigned int rnd(void);
 
@@ -198,10 +198,10 @@ void CObjectAI::yorp_ai(CObject &object, CPlayer *p_player, bool hardmode)
 				{ object.ai.yorp.movedir = LEFT; }
 				else
 				{ object.ai.yorp.movedir = RIGHT; }
-				if (rnd()%3==1)
+				/*if (rnd()%3==1)
 				{ // 25% prob go the other way
 					object.ai.yorp.movedir ^= 1;
-				}
+				}*/
 				
 				// unless we're can't go that way
 				if (object.blockedl) object.ai.yorp.movedir = RIGHT;
@@ -234,7 +234,7 @@ void CObjectAI::yorp_ai(CObject &object, CPlayer *p_player, bool hardmode)
 				object.ai.yorp.timer--;
 			break;
 		case YORP_MOVE:
-#define YORP_LOOK_PROB    20
+#define YORP_LOOK_PROB    30
 #define YORP_MINTRAVELDIST    50
 			// looking
 			if (object.ai.yorp.dist_traveled > YORP_MINTRAVELDIST)

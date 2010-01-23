@@ -321,6 +321,7 @@ SPARK_ANIMATE, SPARK_BLOWUP1, SPARK_BLOWUP2, SPARK_BLOWUP3
 				newobject.needinit = false;
 				g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, newobject.getXPosition());
 				m_Objvect.push_back(newobject);
+				
 			}
 
 

@@ -152,21 +152,6 @@ CBitmap *CGfxEngine::getBitmap(const std::string &name)
 	return NULL;
 }
 
-CEffects *CGfxEngine::Effect()
-{ return mp_Effects; }
-
-CBitmap &CGfxEngine::getBitmap(Uint16 slot)
-{ return Bitmap[slot]; }
-
-CFont &CGfxEngine::getFont()
-{ return Font; }
-
-CSprite &CGfxEngine::getSprite(Uint16 slot)
-{ return Sprite[slot]; }
-
-std::vector<CSprite> &CGfxEngine::getSpriteVec()
-{ return Sprite; }
-
 ///
 // Process Routines
 ///

@@ -134,8 +134,6 @@ bool CEGAGraphics::loadData( int version, unsigned char *p_exedata )
     return true;
 }
 
-int CEGAGraphics::getNumSprites() { return NumSprites; }
-
 CEGAGraphics::~CEGAGraphics() {
 	if(m_Latch) delete m_Latch;
 	if(m_Sprit) delete m_Sprit;

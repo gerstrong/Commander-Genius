@@ -20,7 +20,7 @@ class CEffects
 public:
 	CEffects();
 
-	bool finished();
+	bool finished() { return m_finished; }
 
 	virtual void process() = 0;
 

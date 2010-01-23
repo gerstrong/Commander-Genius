@@ -34,7 +34,7 @@ public:
 	
 	void createEmptySprites(Uint16 num_sprites);
 	void createEmptyBitmaps(Uint16 num_bmps);
-	void createEmptyTilemap(stTile *pTileProperty, int numtiles);
+	void createEmptyTilemap(stTile *pTileProperties, int numtiles);
 	
 	void pushEffectPtr(CEffects *pEffect);
 
@@ -48,14 +48,14 @@ public:
 	void drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w, int h, Uint32 colour = 0xFFFFFF);
 	int getNumSprites() { return Sprite.size(); }
 
-	CBitmap &getBitmap(Uint16 slot);
+	CBitmap &getBitmap(Uint16 slot) { return Bitmap[slot]; }
 	CBitmap *getBitmap(const std::string &name);
 
-	CEffects *Effect();
+	CEffects *Effect() { return mp_Effects; }
 	
-	CSprite &getSprite(Uint16 slot);
-	std::vector<CSprite> &getSpriteVec();
-	CFont &getFont();
+	CSprite &getSprite(Uint16 slot) { return Sprite[slot]; }
+	std::vector<CSprite> &getSpriteVec() { return Sprite; }
+	CFont &getFont() { return Font; }
 	
 	void process();
 	

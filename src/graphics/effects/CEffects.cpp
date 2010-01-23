@@ -13,7 +13,5 @@ m_finished(false),
 m_endeffect(false)
 {}
 
-bool CEffects::finished() { return m_finished; }
-
 CEffects::~CEffects()
 {}

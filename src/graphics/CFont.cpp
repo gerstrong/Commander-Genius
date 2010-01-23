@@ -34,11 +34,6 @@ bool CFont::optimizeSurface()
 	return true;
 }
 
-SDL_Surface *CFont::getSDLSurface()
-{
-	return m_FontSurface;
-}
-
 ///////////////////////////////////
 ///// Initialization Routines /////
 ///////////////////////////////////

@@ -99,12 +99,12 @@ public:
 	bool isFinished()
 	{ return m_finished; }
 
-	bool getEndGame();
-	bool getStartGame();
-	bool getExitEvent();
-	char getEpisode();
-	char getNumPlayers();
-	char getDifficulty();
+	bool getEndGame() { return m_endgame; }
+	bool getStartGame() { return m_startgame; }
+	bool getExitEvent() { return m_exitgame; }
+	char getEpisode() { return m_Episode; }
+	char getNumPlayers() { return m_NumPlayers; }
+	char getDifficulty() { return m_Difficulty; }
 
 	void cleanup();
 	virtual ~CPlayGame();

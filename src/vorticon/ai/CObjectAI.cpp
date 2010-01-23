@@ -213,24 +213,9 @@ void CObjectAI::kill_all_intersecting_tile(int mpx, int mpy)
 	 }
 }
 
-bool CObjectAI::getPlatMoving()
-{
-	return PlatExtending;
-}
-
-void CObjectAI::triggerPlat(bool value)
-{
-	PlatExtending = value;
-}
-
 ///
 // Cleanup Routine
 ///
-void CObjectAI::deleteObj(CObject &object)
-{
-	object.exists = false;
-}
-
 void CObjectAI::deleteAllObjects()
 {
 	// The real delete happens, when all the AI is done

@@ -607,16 +607,6 @@ void CPlayGame::drawObjects()
 			it_player->draw();
 	}
 }
-////
-// Getters
-////
-
-bool CPlayGame::getEndGame() { return m_endgame; }
-bool CPlayGame::getStartGame() { return m_startgame; }
-bool CPlayGame::getExitEvent() { return m_exitgame; }
-char CPlayGame::getEpisode() { return m_Episode; }
-char CPlayGame::getNumPlayers() { return m_NumPlayers; }
-char CPlayGame::getDifficulty() { return m_Difficulty; }
 
 ////
 // Cleanup Routine

@@ -25,7 +25,7 @@ public:
 	
 	bool loadData( int version, unsigned char *p_exedata );
 	
-	int getNumSprites();
+	int getNumSprites() { return NumSprites; }
 	
 private:
 	short m_episode;

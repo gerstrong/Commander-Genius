@@ -32,7 +32,7 @@ public:
 
 	bool CreateSurface(SDL_Color *Palette, Uint32 Flags);
 	bool optimizeSurface();
-	SDL_Surface *getSDLSurface();
+	SDL_Surface *getSDLSurface() { return m_FontSurface; }
 
 	bool loadHiColourFont( const std::string& filename );
 	void generateGlowFonts();

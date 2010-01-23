@@ -852,7 +852,7 @@ void CPlayer::ankh()
 // if solid = true, object acts like a solid "wall".
 void CPlayer::bump( int pushamt, bool solid )
 {
-	playpushed_x = pushamt;
+	if (solid) { playpushed_x = pushamt; }
 	
 	if (pushamt > 0 && xinertia < pushamt) xinertia = pushamt;
 	else if (xinertia > pushamt) xinertia = pushamt;
@@ -871,7 +871,7 @@ void CPlayer::bump( int pushamt, bool solid )
 		}
 	}
 	
-	playpushed_decreasetimer = 0;
+	if (solid) { playpushed_decreasetimer = 0; }
 	if (!pjumping)
 		pdir = pshowdir = (pushamt<0) ? LEFT : RIGHT;
 }
@@ -903,11 +903,9 @@ void CPlayer::checkSolidDoors()
 		blockedu = true;	}
 }
 
-
 int CPlayer::pollLevelTrigger()
 {
 	int trigger = m_Level_Trigger;
 	m_Level_Trigger = LVLTRIG_NONE;
 	return trigger;
 }
-
