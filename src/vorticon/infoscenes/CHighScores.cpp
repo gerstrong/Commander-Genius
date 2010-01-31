@@ -99,10 +99,10 @@ m_Place(0), m_blink(true), m_blinkctr(0)
 		{
 			for( int i=0 ; i<8 ; i++ )
 			{
-				if(m_Extra[i][0]) m_Map.setTile(98,5+i,221, true);
-				if(m_Extra[i][1]) m_Map.setTile(99,5+i,237, true);
-				if(m_Extra[i][2]) m_Map.setTile(100,5+i,241, true);
-				if(m_Extra[i][3]) m_Map.setTile(101,5+i,245, true);
+				if(m_Extra[i][0]) m_Map.setTile(98,5+i,221+(i%4), true);
+				if(m_Extra[i][1]) m_Map.setTile(99,5+i,237+((i+1)%4), true);
+				if(m_Extra[i][2]) m_Map.setTile(100,5+i,241+((i+2)%4), true);
+				if(m_Extra[i][3]) m_Map.setTile(101,5+i,245+((i+3)%4), true);
 			}
 		}
 	}

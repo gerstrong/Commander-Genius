@@ -4,8 +4,15 @@ Commander Genius Release (CloneKeenPlus):
 v0.3.1.0:
 ---------
 
+31-01-2010
+- Improved Bump function, which makes Keen push, when touched by a yorp a similar foe
+- Imrpoved the yorp behaviour, when Keen touches him. It should be like in the original also.  
+- Scrubs got stuck when walking over just one tile. fixed...
+- Changes in the Voritcon Elite. It should be like in the original now. Please verify!
+- Changes in the Tank Robot AI Ep 1
+
 19-01-2010
-- Chnages in the Vortininja Ep3
+- Changes in the Vortininja Ep3
 - Changes in the Tank Robot AI Ep 1
 
 17-01-2010

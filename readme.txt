@@ -3,11 +3,11 @@
 *             Commander Genius               * 
 *              (CloneKeenPlus)               *
 *                                            *
-*    (c)2008-2009            Gerstrong       *
-*    (c)2009                 Albert          *
-*    (c)2009                 Pizza2004       *
-*    (c)2009                 Pickle          *
-*    (c)2009                 Tulip           *
+*    (c)2008-2010            Gerstrong       *
+*    (c)2009-2010            Albert          *
+*    (c)2009-2010            Pizza2004       *
+*    (c)2009-2010            Pickle          *
+*    (c)2009-2010            Tulip           *
 *    (c)2009                 DaVince         *
 *    (c)2003-2005 and 2009   Caitlin Shaw    *
 *           Released under GNU/GPL           *
@@ -41,7 +41,7 @@ however there are also a number of improvements like:
 - Savestyle like in Commander Keen Galaxy Series (No more old nasty numbering slots!)
 - gamepad support (for using your input devices as you want)
 - built in patch system for mods (WIP)
-- better logics like keystacking
+- better logics like keycards-stacking. Keen can collect multiple keycards. (Good for mods)
 
 and much more!
 
@@ -53,9 +53,10 @@ Commander Genius is a new edition of CloneKeenPlus.
 The reason we call it is because this version is compiled
 with GNU C++ (previously GNU C) and has a different Engine. 
 Some functions are now classes. 
-The idea behind that is to provide a faster and more 
-stable program. Features like the implementation
-of resolution changes was achieved through that engine. 
+The idea behind that is to provide a faster, more 
+stable program and a better code sylte. Features like 
+the implementation of resolution changes was achieved 
+through that new engine. 
 Although the program itself looks very similar 
 the skeleton of the program is very different 
 to the one of CloneKeen.
@@ -63,6 +64,9 @@ to the one of CloneKeen.
 In fact the only code that remains of CloneKeen are the
 enemy AI, altough they have been heavily modified. I would
 say, that 5% of CloneKeen Code is in Commander Genius.
+
+But we still want to honor Caitlin Shaw how made that engine possible.
+We based our work on her CloneKeen.
 
 The Commander Genius source code may be freely distributed and
 modified as per the GPL, just please remember to give
@@ -78,17 +82,21 @@ Setting up the data of the game:
    open package then going into resources.  If you have a bundled version, 
    you already should be able to play episode 1.
    NOTE: to start CG you need at least Episode 1!
- * If you want to use some patched mods just copy them into a subfolder of "./games". 
+ * If you want to use some patched mods just copy them as a subfolder into "./games". 
  * Go into the Release folder and start the interpreter. If you have downloaded 
    the binary version of Commander Genius (for Windows, Linux32/64), then you 
    will find the executable in the root directory of the extracted game.
    Under Linux it is called "CGenius", under Windows "CGenius.exe".    
  * If you want better sounds and music, please download the high quality pack (HQP).
    Read that readme of HQP for more information how to use those resources.
+   Also try out our new tileset. They are great!
+   Using HQP you might have to copy some resources to the specific game directory so
+   CG would detect it. For example you might want to copy ck1tiles.bmp to ./games/keen1/
  * If your monitor and graphic card support a special resolution, you can add it by
-   modifying "resolutions.cfg" with your favorite text-editor, it can be found in the
-   "./data" folder and you simply have to add in resolutions as "width"x"height"x"depth"
-   (depth should always be 32 in the case of a computer).
+   modifying "resolutions.cfg" with your favorite text-editor. It can be found in the
+   "./data" directory and you simply have to add in resolutions as "width"x"height"x"depth"
+   (depth should always be 32 in the case of a normal computer. Embedded System can use 16 
+   for better performance).
  
 Howto use Commander Genius (If you didn't compile it):
  * Go to the game directory.
@@ -111,7 +119,7 @@ Howto compile it under Ubuntu (testet on Karmic):
    We had support for Linux and Win32, but since there is a bug when build, for
    different Linux build (32-bit or 64-bit) we only use it for embedded systems.
 
-Compiling CG on Linux/UNIX (other than Ubuntu):
+Compiling CG on any Linux/UNIX (other than Ubuntu):
  * If you want to compile the game, you need to have all the standard
    development libraries and GNU C Compiler (at least version 4) installed 
    on your system.
@@ -166,17 +174,17 @@ Q: When I change to opengl-mode, the screen gets white and I can't do anything! 
    What can I do to restore the normal mode?
 
 A: You can delete "cgenius.cfg" or change it the way you need it! Just put "opengl = 0" and it should normal
-   with your previous settings. I'm going to fix that soon! The white screen means, that your graphic card
-   doesn't support NPOT Textures, which is required. A video card with OpenGL 2.0 or later support should not
-   have that problem anymore.
+   with your previous settings. We are working on a solution for that! The white screen means, that your 
+   graphic card doesn't support NPOT Textures, which is required. 
+   A video card with OpenGL 2.0 or later support should not have that problem.
    
 Q: Why not to use POT-Textures?
 A: Because it requires more memory to write, and the game would get slower than with software rendering.
-   I'm working on a new method to get it working with POT Textures and faster, but for now I cannot
+   We are working on a new method to get it working with POT Textures and faster, but for now we cannot
    support it. 
 
 Q: Commander Genius is slow? Please help!
-A: You can increase the frameskip under settings->video what is very
+A: You can decrease the fps under settings->video what is very
    recommended for any system. OpenGL may also help, but you must have a gfx-card that support NPOT-Textures.
    (OpenGL 2.0 or later). Try to lower the resolution, a lower filter, or decrease some stuff in the sound section.
    Stereo sound requires additional calculations than mono sound. There are many things you can do, to speed up
@@ -187,6 +195,8 @@ So you really found one or more bugs? Please report me those per e-mail (gerstro
 the SourceForge.Net Trac system we offer and they will be checked by all of us. 
 Depending on the priority, I'm going to fix them as soon as possible. 
 Sending me the "CGLog.html" or "stdout.txt" file might help tracking the error.
+Also remember to test the version from the testing repo we provide. You error might have been fixed there.
+Those versions are really great!
 
 - ACKNOWLEDGEMENTS -
 Many thanks to people who has helped me so far in this project with their
@@ -197,6 +207,7 @@ DSL (Nice icon contribution)
 Motorfingers
 Chrisfischtopher
 Commander Spleen
+Dreams
 Napalm (More Keen Data Structure Information)
 Malvineous
 Hans de Goede
@@ -205,16 +216,18 @@ ZidaneA (For his music tracks!)
 Iv4n
 
 Also many special thanks to Martin Hauber (Tulip) who has been supporting me all the time in testing
-the Windows version of CKP. Without you it wouldn't be so great now!
+the Windows version of CKP and giving me access to new information. Without you it wouldn't be so great now!
 
-And very special thanks to Chad Ian Anderson (Pizza2004), Scott (Pickle) and Albert Zeyer
+And also special thanks to Chad Ian Anderson (Pizza2004), Scott (Pickle) and Albert Zeyer
 for his changes. They helped us a lot on the code. 
 
 I'm sure, there were more people who helped me and I forgot to mention, but
-many thanks to them, too.
+many thanks to them also.
 
 Many thanks to all of you, the project has gone farther, and will be a nice
 port to Commander Keen!
+
+And yes, it's no rumor, we are working on Keen 4 support!
                             
 ****************************************************************************
 For questions, comments, or updates to the source tree

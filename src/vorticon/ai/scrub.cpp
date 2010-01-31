@@ -289,12 +289,21 @@ void CObjectAI::scrub_ai(CObject &object)
 		{	// scrub would fall, but we have to check,
 			// if he could walk to another direction,
 			// before we let him really fall!
-
-			// NOTE: blockedup is intentionally used!
 			int mx = (object.getXPosition())>>CSF;
 			int my = (object.getYPosition())>>CSF;
-			bool walkovertile = TileProperty[mp_Map->at(mx-1, my)].bup;
-			if (!walkovertile) // Is there a chance to walk over a tile?
+
+			bool walkovertile = false;
+
+			if(object.ai.scrub.walkdir == LEFT)
+			{
+				walkovertile = TileProperty[mp_Map->at(mx-1, my+1)].bup;
+			}
+			else if(object.ai.scrub.walkdir == RIGHT)
+			{
+				walkovertile = TileProperty[mp_Map->at(mx+2, my-1)].bdown;
+			}
+
+			if (!walkovertile) // Is there a chance to walk over one tile?
 			{
 				if(object.ai.scrub.walkdir == LEFT &&
 						TileProperty[mp_Map->at(mx+1, my+1)].bup) // lower-right, if yes, go just go down

@@ -852,26 +852,37 @@ void CPlayer::ankh()
 // if solid = true, object acts like a solid "wall".
 void CPlayer::bump( int pushamt, bool solid )
 {
-	if (solid) { playpushed_x = pushamt; }
-	
-	if (pushamt > 0 && xinertia < pushamt) xinertia = pushamt;
-	else if (xinertia > pushamt) xinertia = pushamt;
+	if (pushamt > 0 && xinertia < pushamt)
+	{
+		pshowdir = pdir = RIGHT;
+		xinertia = pushamt;
+	}
+	else if (xinertia > pushamt)
+	{
+		pshowdir = pdir = LEFT;
+		xinertia = pushamt;
+	}
+
+	pwalking = true;
 
 	if (solid)
 	{
+		playpushed_x = pushamt;
 		if (pushamt > 0)
 		{
+			pshowdir = pdir = RIGHT;
 			if (xinertia < 0)
 				xinertia = 0;
 		}
 		else
 		{
+			pshowdir = pdir = LEFT;
 			if (xinertia > 0)
 				xinertia = 0;
 		}
+		playpushed_decreasetimer = 0;
 	}
 	
-	if (solid) { playpushed_decreasetimer = 0; }
 	if (!pjumping)
 		pdir = pshowdir = (pushamt<0) ? LEFT : RIGHT;
 }

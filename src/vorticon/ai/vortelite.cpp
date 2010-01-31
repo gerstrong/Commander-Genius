@@ -13,19 +13,19 @@ enum vortelite_actions{
 	VORTELITE_DYING, VORTELITE_DEAD,
 };
 
-#define VORTELITE_JUMP_PROB          10
+#define VORTELITE_JUMP_PROB          15
 #define VORTELITE_FIRE_PROB          8
 
 #define VORTELITE_MIN_TIME_BETWEEN_FIRE    	25
 #define VORTELITE_HOLD_GUN_OUT_TIME         22
 #define VORTELITE_HOLD_GUN_AFTER_FIRE_TIME  20
 
-#define VORTELITE_MIN_JUMP_HEIGHT    45
-#define VORTELITE_MAX_JUMP_HEIGHT    75
-#define VORTELITE_MAX_FALL_SPEED     120
-#define VORTELITE_JUMP_FRICTION      8
+#define VORTELITE_MIN_JUMP_HEIGHT    90
+#define VORTELITE_MAX_JUMP_HEIGHT    150
+#define VORTELITE_MAX_FALL_SPEED     240
+#define VORTELITE_JUMP_FRICTION      2
 
-#define VORTELITE_WALK_SPEED         30
+#define VORTELITE_WALK_SPEED         45
 #define VORTELITE_WALK_ANIM_TIME     12
 
 // number of shots to kill
@@ -218,7 +218,7 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 		{ // slowly decrease upgoing rate
 			if (object.ai.vortelite.inertiay<VORTELITE_MAX_FALL_SPEED)
 			{
-				object.ai.vortelite.inertiay+=4;
+				object.ai.vortelite.inertiay+=16;
 			}
 			object.ai.vortelite.timer = 0;
 		} else object.ai.vortelite.timer++;

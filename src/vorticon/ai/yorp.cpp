@@ -45,7 +45,7 @@ enum
 #define YORPDIE_INERTIA_DECREASE    8
 
 // How much Yorps pushes keen
-#define YORP_PUSH_AMT_NO_WALK	0
+#define YORP_PUSH_AMT_NO_WALK		60
 
 #define YORP_PUSH_AMT_P_WALK_HARD	100
 #define YORP_PUSH_AMT_P_WALK		75
@@ -57,12 +57,11 @@ unsigned int rnd(void);
 
 void CObjectAI::yorp_ai(CObject &object, CPlayer *p_player, bool hardmode)
 {
-	char numlooks;
 	int pushamt;
-	unsigned int tb;
-	
-	int x = object.getXPosition();
-	int y = object.getYPosition();
+	char numlooks;
+
+	Uint32 x = object.getXPosition();
+	Uint32 y = object.getYPosition();
 
 	if (object.needinit)
 	{  // first time initilization
@@ -108,7 +107,6 @@ void CObjectAI::yorp_ai(CObject &object, CPlayer *p_player, bool hardmode)
                 p_player[object.touchedBy].pjumpupdecreaserate = 0;
                 p_player[object.touchedBy].pjumpupspeed = 7;
                 p_player[object.touchedBy].pjumping = PJUMPUP;
-                //p_player[object.touchedBy].pjumpupspeed_decreasetimer = 0;
                 p_player[object.touchedBy].pjustjumped = 1;
 			}
 		}
@@ -131,12 +129,12 @@ void CObjectAI::yorp_ai(CObject &object, CPlayer *p_player, bool hardmode)
 					
 					if (object.ai.yorp.movedir==LEFT) pushamt = -pushamt;
 				}
-				else // yorp not moving
+				else
 					pushamt = (tb_player.getXPosition() < x) ? -YORP_PUSH_AMT_NO_WALK:YORP_PUSH_AMT_NO_WALK;
 			}
 			else
 			{   // player "walking through" yorp--provide resistance
-					pushamt = (tb_player.pshowdir==LEFT) ? YORP_PUSH_AMT_NO_WALK/2:-YORP_PUSH_AMT_NO_WALK/2;
+					pushamt = (tb_player.pshowdir==LEFT) ? 0:-YORP_PUSH_AMT_NO_WALK/2;
 			}
 
 				
