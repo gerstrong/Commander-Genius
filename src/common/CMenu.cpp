@@ -172,6 +172,8 @@ void CMenu::initDifficultyMenu()
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Easy");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Normal");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Hard");
+	
+	mp_Dialog->processInput(1);
 }
 
 void CMenu::initConfigureMenu()
@@ -647,7 +649,7 @@ void CMenu::processSaveMenu()
 				m_SavedGame.prepareSaveGame(m_saveslot, mp_Dialog->m_name);
 			}
 			mp_Dialog->m_key = 'u';
-			m_selection = -1;
+			m_goback = true;
 		}
 	}
 	else
@@ -659,6 +661,7 @@ void CMenu::processSaveMenu()
 	{
 		cleanup();
 		init(MAIN);
+		m_goback = true;
 	}
 	return;
 }
@@ -669,13 +672,14 @@ void CMenu::processLoadMenu()
 	{
 		m_saveslot = int(m_selection) + 1;
 		m_SavedGame.prepareLoadGame(m_saveslot);
-		m_selection = -1;
+		m_goback = true;
 	}
 	
 	if(m_goback)
 	{
 		cleanup();
 		init(MAIN);
+		m_goback = true;
 	}
 	return;
 }
