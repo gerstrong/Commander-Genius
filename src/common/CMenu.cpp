@@ -99,6 +99,8 @@ bool CMenu::init( char menu_type )
 		initSaveMenu();
 	else if( m_menu_type == OVERWRITE )
 		initConfirmMenu();
+	else if( m_menu_type == VOLUME )
+		initVolumeMenu();
 	else if( m_menu_type == GRAPHICS )
 	{
 		mp_Menu = new CVideoSettings(m_menu_type);
@@ -280,6 +282,17 @@ void CMenu::process()
 			if( g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_STATUS) )
 			{
 				m_selection = mp_Dialog->getSelection();
+			}
+			else if( mp_Dialog->m_key == 'l' )
+			{
+				if( g_pInput->getPressedKey(KY) )
+				{
+					m_selection = 1;
+				}
+				else if( g_pInput->getPressedKey(KN) )
+				{
+					m_selection = 2;
+				}
 			}
 			else if( g_pInput->getPressedCommand(IC_QUIT) )
 			{

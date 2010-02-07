@@ -107,13 +107,6 @@ void CDialog::setObjectType(Uint8 ID, Uint8 type)
 }
 
 ///
-// Retrieval functions
-///
-int CDialog::getSelection()
-{	return m_selected_ID;
-}
-
-///
 // Process routine
 ///
 void CDialog::processInput(int move)

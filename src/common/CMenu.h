@@ -95,6 +95,7 @@ private:
 	void initF1Menu();
 	void initOptionsMenu();
 	void initAudioMenu();
+	void initVolumeMenu();
 
 	CInfoScene *mp_InfoScene;
 	CBaseMenu *mp_Menu;

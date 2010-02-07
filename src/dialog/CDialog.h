@@ -24,7 +24,7 @@ public:
 	void setObjectType( Uint8 ID, Uint8 type );
 	void setSDLSurface( SDL_Surface* Surface ) { m_DialogSurface = Surface; }
 
-	int getSelection();
+	int getSelection() { return m_selected_ID; }
 
 	void processInput(int move = 0);
 	void draw();
