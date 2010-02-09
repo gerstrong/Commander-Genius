@@ -99,8 +99,6 @@ bool CMenu::init( char menu_type )
 		initSaveMenu();
 	else if( m_menu_type == OVERWRITE )
 		initConfirmMenu();
-	else if( m_menu_type == VOLUME )
-		initVolumeMenu();
 	else if( m_menu_type == GRAPHICS )
 	{
 		mp_Menu = new CVideoSettings(m_menu_type);
