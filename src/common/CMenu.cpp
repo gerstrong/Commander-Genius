@@ -681,9 +681,16 @@ void CMenu::processLoadMenu()
 {
 	if( m_selection != -1)
 	{
+		if(mp_Dialog->m_name == "     EMPTY       ")
+		{
+			
+		}
+		else
+		{
 		m_saveslot = int(m_selection) + 1;
 		m_SavedGame.prepareLoadGame(m_saveslot);
 		m_goback = true;
+		}
 	}
 	
 	if(m_goback)

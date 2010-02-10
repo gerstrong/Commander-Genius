@@ -206,7 +206,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	}
 	
 	// Apply the sprites for player 2,3 and 4
-	//DerivePlayerSprites( g_pGfxEngine->getSpriteVec() );
+	DerivePlayerSprites( g_pGfxEngine->getSpriteVec() );
 
 	// Now create special sprites, like those for effects and the doors!
 	DeriveSpecialSprites( g_pGfxEngine->Tilemap, g_pGfxEngine->getSpriteVec() );
