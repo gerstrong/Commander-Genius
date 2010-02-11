@@ -27,7 +27,7 @@ public:
 	bool readData();
 	int getEXEVersion();
 	int getEXECrc();
-	bool readExeImageSize(unsigned char *p_data_start, unsigned long *imglen, unsigned long *headerlen);
+	bool readExeImageSize(unsigned char *&p_data_start, unsigned long *imglen, unsigned long *headerlen);
 	
 	unsigned char* getRawData();
 	unsigned char* getHeaderData();

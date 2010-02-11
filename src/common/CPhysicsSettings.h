@@ -25,6 +25,7 @@ public:
 		int jumpdecrease_x;
 		int max_x_speed;
 		int maxpogospeed;
+		int impossiblepogospeed;
 
 		int max_fallspeed;
 		int fallspeed_decrease;

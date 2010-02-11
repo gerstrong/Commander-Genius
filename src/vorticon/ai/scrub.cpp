@@ -165,6 +165,12 @@ void CObjectAI::scrub_ai(CObject &object)
 						{
 							it_player->moveLeft(SCRUB_WALK_SPEED);
 						}
+						else
+						{
+							it_player->pfalling = true;
+							it_player->moveUp(1);
+							it_player->moveDown(1);
+						}
 					}
 				}
 			}
@@ -289,8 +295,8 @@ void CObjectAI::scrub_ai(CObject &object)
 		{	// scrub would fall, but we have to check,
 			// if he could walk to another direction,
 			// before we let him really fall!
-			int mx = (object.getXPosition())>>CSF;
-			int my = (object.getYPosition())>>CSF;
+			int mx = (object.getXPosition()+1)>>CSF;
+			int my = (object.getYPosition()+1)>>CSF;
 
 			bool walkovertile = false;
 
@@ -300,13 +306,13 @@ void CObjectAI::scrub_ai(CObject &object)
 			}
 			else if(object.ai.scrub.walkdir == RIGHT)
 			{
-				walkovertile = TileProperty[mp_Map->at(mx+2, my-1)].bdown;
+				walkovertile = TileProperty[mp_Map->at(mx+1, my-1)].bdown;
 			}
 
 			if (!walkovertile) // Is there a chance to walk over one tile?
 			{
 				if(object.ai.scrub.walkdir == LEFT &&
-						TileProperty[mp_Map->at(mx+1, my+1)].bup) // lower-right, if yes, go just go down
+						TileProperty[mp_Map->at(mx+1, my+1)].bleft) // lower-right, if yes, go just go down
 				{	// Move Down!
 					object.sprite = SCRUB_WALK_DOWN + object.ai.scrub.walkframe;
 					object.ai.scrub.walkdir = DOWN;
@@ -326,12 +332,12 @@ void CObjectAI::scrub_ai(CObject &object)
 					Scrub_TurnOnCansupportWhereNotKicked(object);
 				}
 				else if(object.ai.scrub.walkdir == DOWN &&
-						TileProperty[mp_Map->at(mx+1, my-1)].bup) // upper-right, if yes, go right! (ceiling)
+						TileProperty[mp_Map->at(mx+1, my-1)].bdown) // upper-right, if yes, go right! (ceiling)
 				{	// Move right
 					object.ai.scrub.walkdir = RIGHT;
 					object.sprite = SCRUB_WALK_RIGHT + object.ai.scrub.walkframe;
 					object.moveRight(2<<STC);
-					object.moveUp(1<<STC);
+					object.moveUp(2<<STC);
 					SetAllCanSupportPlayer(object, 0);
 				}
 				else if(object.ai.scrub.walkdir == RIGHT &&

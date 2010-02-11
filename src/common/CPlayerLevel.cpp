@@ -431,7 +431,7 @@ void CPlayer::JumpAndPogo()
 							}
 							else if(playcontrol[PA_JUMP] && pogofirsttime)
 							{
-								pjumpupspeed = mp_PhysicsSettings->player.maxpogospeed;
+								pjumpupspeed = mp_PhysicsSettings->player.impossiblepogospeed;
 							}
 						}
 						else
@@ -709,7 +709,6 @@ stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 void CPlayer::raygun()
 {
 	bool canRefire;
-	CObject *pPlayerObject = &mp_object->at(m_index);
 	
 	if (pfireframetimer) pfireframetimer--;
 	
@@ -745,7 +744,7 @@ void CPlayer::raygun()
 				inventory.charges--;
 				pshowdir = pdir;
 				
-				g_pSound->playStereofromCoord(SOUND_KEEN_FIRE, PLAY_NOW, pPlayerObject->scrx);
+				g_pSound->playStereofromCoord(SOUND_KEEN_FIRE, PLAY_NOW, scrx);
 				
 				ydir = getYPosition()+(9<<STC);
 				if (pdir==RIGHT) xdir = getXRightPos()+xinertia;
@@ -764,7 +763,7 @@ void CPlayer::raygun()
 			else
 			{ // uh oh, out of bullets
 				// click!
-				g_pSound->playStereofromCoord(SOUND_GUN_CLICK, PLAY_NOW, pPlayerObject->scrx);
+				g_pSound->playStereofromCoord(SOUND_GUN_CLICK, PLAY_NOW, scrx);
 				
 			}  // end "do we have charges?"
 		} // end "limit how quickly shots can be fired"

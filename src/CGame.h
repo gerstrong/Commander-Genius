@@ -31,7 +31,7 @@ public:
 	stOption m_option[NUM_OPTIONS];
 	
 private:
-	CGameControl m_GameControl;
+	CGameControl m_Engine;
 };
 
 #endif /* CGAME_H_ */

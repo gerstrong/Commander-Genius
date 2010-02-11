@@ -75,8 +75,6 @@ private:
 	std::vector<stTeleporterTable> m_TeleporterTable; // Teleporter table used for the destinations
 
 	CEGAGraphics *m_EGAGraphics;
-
-	CEGAGraphicsGalaxy *mp_GalaxyEGAGraphics;
 };
 
 #endif /* CGAMECONTROL_H_ */

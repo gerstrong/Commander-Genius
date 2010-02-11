@@ -718,6 +718,11 @@ void CMenu::processOverwriteMenu()
 		{
 			m_overwrite = false;
 			m_goback = true;
+			mp_Dialog->processInput(int(m_lastselect));
+			mp_Dialog->m_name = "";
+			mp_Dialog->m_key = 't';
+			m_selection = -1;
+			m_lastselect = -1;
 		}
 	}
 	

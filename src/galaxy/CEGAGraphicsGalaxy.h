@@ -11,10 +11,11 @@
 #include <string>
 #include <vector>
 #include "../fileio/CExeFile.h"
+#include "../vorticon/CEGAGraphics.h"
 
 #include "EGAStructs.h"
 //
-class CEGAGraphicsGalaxy
+class CEGAGraphicsGalaxy : public CEGAGraphics
 {
 public:
 	CEGAGraphicsGalaxy(short episode, const std::string& path, CExeFile &ExeFile);
@@ -26,9 +27,6 @@ public:
 	virtual ~CEGAGraphicsGalaxy();
 
 private:
-
-	std::string m_path;
-	short m_episode;
 	std::vector<unsigned long> m_egahead;
 	std::vector<ChunkStruct> m_egagraph;
 	CExeFile &m_Exefile;

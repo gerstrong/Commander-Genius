@@ -210,14 +210,14 @@ const unsigned short EXEZM = 0x4D5A;
 
 /* SM: Modified so we can give a value of "headerlen" we're expecting... this way
  * we might support any exe file in the future */
-bool CExeFile::readExeImageSize(unsigned char *p_data_start, unsigned long *imglen, unsigned long *headerlen)
+bool CExeFile::readExeImageSize(unsigned char *&p_data_start, unsigned long *imglen, unsigned long *headerlen)
 {
 	EXE_HEADER head;
 
 	/* Read the header from the file if we can */
-	//if(fread(&head, sizeof(EXE_HEADER), 1, f) == 1)
 	memcpy(&head, p_data_start,sizeof(EXE_HEADER));
 	/* Check that the 'MZ' id is present */
+	p_data_start += sizeof(EXE_HEADER);
 	if(head.mzid == EXEMZ || head.mzid == EXEZM)
 	{
 		/* Calculate the image size */

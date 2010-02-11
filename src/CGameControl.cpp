@@ -13,6 +13,7 @@
 #include "CLogFile.h"
 #include "sdl/sound/CSound.h"
 #include "graphics/effects/CColorMerge.h"
+#include "galaxy/CEGAGraphicsGalaxy.h"
 #include "arguments.h"
 
 #define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
@@ -20,8 +21,7 @@
 CGameControl::CGameControl() :
 mp_GameLauncher(NULL),
 mp_PassiveMode(NULL),
-mp_PlayGame(NULL),
-mp_GalaxyEGAGraphics(NULL)
+mp_PlayGame(NULL)
 {
 	m_mode = GAMELAUNCHER;
 	m_Episode = 0;
@@ -209,12 +209,12 @@ bool CGameControl::loadResources(unsigned short Episode, const std::string& Data
 		if( (flags & LOADGFX) == LOADGFX )
 		{
 			// Decode the entire graphics for the game (Only EGAGRAPH.CK?)
-			SAFE_DELETE(mp_GalaxyEGAGraphics);
+			SAFE_DELETE(m_EGAGraphics);
 
-			mp_GalaxyEGAGraphics = new CEGAGraphicsGalaxy(Episode, DataDirectory, ExeFile); // Path is relative to the data dir
-			if(!mp_GalaxyEGAGraphics) return false;
+			m_EGAGraphics = new CEGAGraphicsGalaxy(Episode, DataDirectory, ExeFile); // Path is relative to the data dir
+			if(!m_EGAGraphics) return false;
 
-			mp_GalaxyEGAGraphics->loadData();
+			m_EGAGraphics->loadData();
 		}
 
 		if( (flags & LOADSTR) == LOADSTR )

@@ -26,7 +26,7 @@ CGame::CGame() {
 bool CGame::init(int argc, char *argv[])
 {
 	CSettings Settings(m_option);
-	m_GameControl.mp_option = m_option;
+	m_Engine.mp_option = m_option;
 	
 	// Check if there are settings on the PC, otherwise use defaults.
 	if(!Settings.loadDrvCfg())
@@ -46,7 +46,7 @@ bool CGame::init(int argc, char *argv[])
 	}
 	
 	// Initialize the way the launcher is started
-	if(!m_GameControl.init(argc, argv))	return false;
+	if(!m_Engine.init(argc, argv))	return false;
 	
 	return true;
 }
@@ -80,7 +80,7 @@ void CGame::run()
             // Poll Inputs
             g_pInput->pollEvents();
             // Process Game Control
-            m_GameControl.process();
+            m_Engine.process();
         }
 		
         // Render the Screen
@@ -89,7 +89,7 @@ void CGame::run()
         	g_pVideoDriver->collectSurfaces();
         	// Apply graphical effects if any
         	g_pGfxEngine->process();
-			// Now you really Render the screen
+			// Now you really render the screen
         	// When enabled, it also will apply Filters
             g_pVideoDriver->updateScreen();
         }
@@ -97,7 +97,7 @@ void CGame::run()
         // delay time remaining in current loop
         g_pTimer->TimeToDelay();
 
-	} while(!m_GameControl.mustShutdown() && !g_pInput->getExitEvent());
+	} while(!m_Engine.mustShutdown() && !g_pInput->getExitEvent());
 }
 
 ///////////////////////////////
@@ -105,7 +105,7 @@ void CGame::run()
 ///////////////////////////////
 void CGame::cleanup()
 {
-	m_GameControl.cleanupAll();
+	m_Engine.cleanupAll();
 	
     g_pInput->Del();
     g_pSound->Del();

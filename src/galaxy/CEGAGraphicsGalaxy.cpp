@@ -105,8 +105,7 @@ static EpisodeInfoStruct EpisodeInfo[] = {
 // Class members start here!
 /////
 CEGAGraphicsGalaxy::CEGAGraphicsGalaxy(short episode, const std::string& path, CExeFile &ExeFile) :
-m_path(path),
-m_episode(episode),
+CEGAGraphics(episode, path),
 m_Exefile(ExeFile)
 {}
 
@@ -134,13 +133,12 @@ bool CEGAGraphicsGalaxy::begin()
 
 	// We need the EGADICT. Read it to our structure of Huffman, he needs it!
 	Huffman.readDictionary(p_data, exeheaderlen + EpisodeInfo[ep].OffEgaDict);
-	//huff_read_dictionary(exefile, exeheaderlen + EpisodeInfo[ep].OffEgaDict);
 
 	// Now we go to EGAHEAD
 	// TODO: Implement a structure which will look for the files first and take them if possible
 
 	// Read the EGAHEAD
-	unsigned char *p_head = p_data+EpisodeInfo[ep].OffEgaHead;
+	unsigned char *p_head = p_data + exeheaderlen + EpisodeInfo[ep].OffEgaHead;
 	unsigned long offset = 0;
 	unsigned long offset_limit;
 

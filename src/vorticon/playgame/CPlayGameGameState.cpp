@@ -68,7 +68,7 @@ bool CPlayGame::loadGameState()
 			m_SavedGame.decodeData(player->blockedu);
 			m_SavedGame.decodeData(player->blockedl);
 			m_SavedGame.decodeData(player->blockedr);
-			player->moveToForce((x>>CSF)<<CSF,(y>>CSF)<<CSF);
+			player->moveToForce(x,y-1);
 			m_SavedGame.decodeData(player->inventory);
 		}
 
@@ -84,7 +84,7 @@ bool CPlayGame::loadGameState()
 			m_SavedGame.decodeData(object.m_type);
 			m_SavedGame.decodeData(x);
 			m_SavedGame.decodeData(y);
-			object.moveToForce((x>>CSF)<<CSF,(y>>CSF)<<CSF);
+			object.moveToForce(x,y-1);
 			m_SavedGame.decodeData(object.dead);
 			m_SavedGame.decodeData(object.needinit);
 			m_SavedGame.decodeData(object.onscreen);

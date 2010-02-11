@@ -23,14 +23,16 @@ public:
 	CEGAGraphics(short episode, const std::string& path);
 	virtual ~CEGAGraphics();
 	
+	virtual bool loadData() {return false;};
 	bool loadData( int version, unsigned char *p_exedata );
 	
 	int getNumSprites() { return NumSprites; }
-	
-private:
+
+protected:
 	short m_episode;
 	std::string m_path;
 	
+private:
 	// Part of the EGAHEAD Data Structure
 	// Section 1:
 	long LatchPlaneSize;              	//Size of one plane of latch data
