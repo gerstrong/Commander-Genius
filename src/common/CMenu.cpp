@@ -683,7 +683,7 @@ void CMenu::processLoadMenu()
 	{
 		if(mp_Dialog->m_name == "     EMPTY       ")
 		{
-			
+			//TODO: Message saying can't load, it is empty.  Also, we need to add a check to see if it is corrupt, or something to prevent old saves from crashing due to incompatibility.
 		}
 		else
 		{
@@ -718,11 +718,6 @@ void CMenu::processOverwriteMenu()
 		{
 			m_overwrite = false;
 			m_goback = true;
-			mp_Dialog->processInput(int(m_lastselect));
-			mp_Dialog->m_name = "";
-			mp_Dialog->m_key = 't';
-			m_selection = -1;
-			m_lastselect = -1;
 		}
 	}
 	
