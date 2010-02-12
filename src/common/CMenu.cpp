@@ -18,6 +18,7 @@
 
 #include "../StringUtils.h"
 #include "../CGameControl.h"
+#include "../CLogFile.h"
 #include "../vorticon/CPassive.h"
 #include "../sdl/CInput.h"
 #include "../sdl/CTimer.h"
@@ -55,6 +56,18 @@ m_RestartVideo(false)
 	mp_Dialog = NULL;
 	mp_InfoScene = NULL;
 	m_hideobjects = false;
+	m_menuback[0] = QUIT;
+	m_menuback[1] = MAIN;
+	m_menuback[2] = SAVE;
+	m_menuback[3] = CONFIGURE;
+	m_menuback[9] = MAIN;
+	m_menuback[10] = MAIN;
+	m_menuback[12] = NEW;
+	m_menuback[13] = MAIN;
+	m_menuback[18] = MAIN;
+	m_menuback[20] = MAIN;
+	m_menuback[21] = MAIN;
+	m_menumap.clear();
 
 	// Special Pointer used for Menus that are declared in separated classes
 	mp_Menu = NULL;
@@ -65,6 +78,7 @@ m_RestartVideo(false)
 ////
 bool CMenu::init( char menu_type )
 {
+	cleanup();
 	m_menu_type = menu_type;
 	m_goback = false;
 	m_selection = -1; // Nothing has been selected yet.
@@ -74,9 +88,7 @@ bool CMenu::init( char menu_type )
 
 	if( m_menu_type == MAIN )
 		initMainMenu();
-	else if( m_menu_type == QUIT )
-		initConfirmMenu();
-	else if( m_menu_type == ENDGAME )
+	else if( m_menu_type == QUIT || m_menu_type == ENDGAME || m_menu_type == OVERWRITE )
 		initConfirmMenu();
 	else if( m_menu_type == NEW )
 		initNumPlayersMenu();
@@ -93,12 +105,8 @@ bool CMenu::init( char menu_type )
 	}
 	else if( m_menu_type == F1 )
 		initF1Menu();
-	else if( m_menu_type == SAVE )
+	else if( m_menu_type == SAVE || m_menu_type == LOAD )
 		initSaveMenu();
-	else if( m_menu_type == LOAD )
-		initSaveMenu();
-	else if( m_menu_type == OVERWRITE )
-		initConfirmMenu();
 	else if( m_menu_type == GRAPHICS )
 	{
 		mp_Menu = new CVideoSettings(m_menu_type);
@@ -124,7 +132,8 @@ bool CMenu::init( char menu_type )
 void CMenu::initMainMenu()
 {
 	mp_Dialog = new CDialog(mp_MenuSurface, 17, 10);
-	
+
+	m_menumap.clear();
 	// When in Intro, Title, Demo mode
 	if( m_menu_mode == PASSIVE )
 	{
@@ -137,7 +146,6 @@ void CMenu::initMainMenu()
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "Choose Game");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Quit");
 	}
-	
 	// When Player is playing
 	// TODO: This still must be adapted to ingame situation
 	if( m_menu_mode == ACTIVE )
@@ -150,7 +158,13 @@ void CMenu::initMainMenu()
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 6, "Back to Game");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "End Game");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Quit");
+		m_menumap[6] = ENDGAME;
 	}
+		m_menumap[0] = NEW;
+		m_menumap[1] = LOAD;
+		m_menumap[2] = SAVE;
+		m_menumap[4] = CONFIGURE;
+		m_menumap[7] = QUIT;
 }
 
 void CMenu::initNumPlayersMenu()
@@ -163,6 +177,11 @@ void CMenu::initNumPlayersMenu()
 	{
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, i, itoa(i)+" Player");
 	}
+	m_menumap.clear();
+	m_menumap[0] = DIFFICULTY;
+	m_menumap[1] = DIFFICULTY;
+	m_menumap[2] = DIFFICULTY;
+	m_menumap[3] = DIFFICULTY;
 }
 
 void CMenu::initDifficultyMenu()
@@ -184,6 +203,12 @@ void CMenu::initConfigureMenu()
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Audio");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Options");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Controls");
+	
+	m_menumap.clear();
+	m_menumap[0] = GRAPHICS;
+	m_menumap[1] = AUDIO;
+	m_menumap[2] = OPTIONS;
+	m_menumap[3] = CONTROLPLAYERS;
 }
 
 void CMenu::initNumControlMenu()
@@ -196,6 +221,11 @@ void CMenu::initNumControlMenu()
 	{
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, i, "Player "+itoa(i));
 	}
+	m_menumap.clear();
+	m_menumap[0] = CONTROLS;
+	m_menumap[1] = CONTROLS;
+	m_menumap[2] = CONTROLS;
+	m_menumap[3] = CONTROLS;
 }
 
 void CMenu::initF1Menu()
@@ -281,7 +311,7 @@ void CMenu::process()
 			{
 				m_selection = mp_Dialog->getSelection();
 			}
-			else if( mp_Dialog->m_key == 'l' )
+			if( mp_Dialog->m_key == 'l' )
 			{
 				if( g_pInput->getPressedKey(KY) )
 				{
@@ -292,7 +322,7 @@ void CMenu::process()
 					m_selection = 2;
 				}
 			}
-			else if( g_pInput->getPressedCommand(IC_QUIT) )
+			if( g_pInput->getPressedCommand(IC_QUIT) )
 			{
 				m_goback = true;
 			}
@@ -310,7 +340,6 @@ void CMenu::process()
 			if( m_menu_type == MAIN ) processMainMenu();
 			else if( m_menu_type == NEW ) processNumPlayersMenu();
 			else if( m_menu_type == DIFFICULTY ) processDifficultyMenu();
-			else if( m_menu_type == CONFIGURE ) processConfigureMenu();
 			else if( m_menu_type == CONTROLPLAYERS ) processNumControlMenu();
 			else if( m_menu_type == F1 ) processF1Menu();
 			else if( m_menu_type == QUIT ) processQuitMenu();
@@ -321,6 +350,15 @@ void CMenu::process()
 
 			// Draw the menu
 			if(!mp_Menu && mp_Dialog) mp_Dialog->draw();
+			if(m_goback)
+				init(m_menuback[m_menu_type]);
+			for( std::map<int, int>::iterator iter = m_menumap.begin(); iter != m_menumap.end(); ++iter ) {
+					if( m_selection == (*iter).first )
+					{
+						init((*iter).second);
+						break;
+					}
+				}
 		}
 	}
 	else // InfoScene is enabled! show it instead of the menu
@@ -361,27 +399,6 @@ void CMenu::processMainMenu()
 			{
 				m_goback = true;
 			}
-			if( m_selection == 6 ) // End Game
-			{
-				cleanup();
-				init(ENDGAME);
-			}
-		}
-		
-		if( m_selection == 0 ) // Start Game
-		{
-			cleanup();
-			init(NEW);
-		}
-		if( m_selection == 1 ) // Load Game
-		{
-			cleanup();
-			init(LOAD);
-		}
-		if( m_selection == 2 ) // Save Game
-		{
-			cleanup();
-			init(SAVE);
 		}
 		if( m_selection == 3 ) // Show Highscores
 		{
@@ -389,25 +406,6 @@ void CMenu::processMainMenu()
 			m_Map.m_animation_enabled = false;
 			mp_InfoScene = new CHighScores(m_Episode, m_GamePath, false);
 			m_selection = -1;
-		}
-		if( m_selection == 4 ) // Options
-		{
-			cleanup();
-			init(CONFIGURE);
-		}
-		if( m_selection == 7 ) // Quit
-		{
-			cleanup();
-			init(QUIT);
-		}
-	}
-	
-	if( m_menu_mode == PASSIVE )
-	{
-		if(m_goback)
-		{
-			cleanup();
-			init(QUIT);
 		}
 	}
 }
@@ -420,18 +418,7 @@ void CMenu::processNumPlayersMenu()
 		if( m_selection < MAX_PLAYERS )
 		{
 			m_NumPlayers = m_selection + 1;	
-			init(DIFFICULTY);
 		}
-		else
-		{
-			m_goback = true;
-		}
-	}
-	
-	if(m_goback)
-	{
-		cleanup();
-		init(MAIN);
 	}
 	return;
 }
@@ -443,51 +430,6 @@ void CMenu::processDifficultyMenu()
 		cleanup();
 			m_Difficulty = m_selection;	
 	}
-	
-	if(m_goback)
-	{
-		cleanup();
-		init(NEW);
-	}
-	return;
-}
-
-void CMenu::processConfigureMenu()
-{
-	if( m_selection != -1)
-	{
-		if ( m_selection == 0 )
-		{
-			cleanup();
-			init(GRAPHICS);
-		}
-		else if ( m_selection == 1 )
-		{
-			cleanup();
-			init(AUDIO);
-		}
-		else if ( m_selection == 2 )
-		{
-			cleanup();
-			init(OPTIONS);
-		}
-		else if ( m_selection == 3 )
-		{
-			cleanup();
-			init(CONTROLPLAYERS);
-		}
-		else
-		{
-			m_goback = true;	
-		}
-		m_selection = -1;
-	}
-	
-	if(m_goback)
-	{
-		cleanup();
-		init(MAIN);
-	}
 	return;
 }
 
@@ -498,19 +440,7 @@ void CMenu::processNumControlMenu()
 		if( m_selection < MAX_PLAYERS )
 		{
 			m_NumPlayers = m_selection + 1;	
-			cleanup();
-			init(CONTROLS);
 		}
-		else
-		{
-			m_goback = true;	
-		}
-	}
-	
-	if(m_goback)
-	{
-		cleanup();
-		init(CONFIGURE);
 	}
 	return;
 }
@@ -552,12 +482,6 @@ void CMenu::processF1Menu()
 		}
 		m_selection = -1;
 	}
-	
-	if(m_goback)
-	{
-		cleanup();
-		init(MAIN);
-	}
 	return;
 }
 
@@ -576,12 +500,6 @@ void CMenu::processQuitMenu()
 			m_goback = true;
 		}
 	}
-	
-	if(m_goback)
-	{
-		cleanup();
-		init(MAIN);
-	}
 	return;
 }
 
@@ -599,12 +517,6 @@ void CMenu::processEndGameMenu()
 		{
 			m_goback = true;
 		}
-	}
-	
-	if(m_goback)
-	{
-		cleanup();
-		init(MAIN);
 	}
 	return;
 }
@@ -635,7 +547,6 @@ void CMenu::processSaveMenu()
 			else if(mp_Dialog->m_name != "")
 			{
 				m_lastselect = m_selection;
-				cleanup();
 				init(OVERWRITE);
 			}
 			else
@@ -660,7 +571,7 @@ void CMenu::processSaveMenu()
 				m_SavedGame.prepareSaveGame(m_saveslot, mp_Dialog->m_name);
 			}
 			mp_Dialog->m_key = 'u';
-			m_goback = true;
+			m_goback2 = true;
 		}
 	}
 	else
@@ -668,7 +579,7 @@ void CMenu::processSaveMenu()
 		m_selection = m_lastselect;
 	}
 	
-	if(m_goback)
+	if(m_goback2)
 	{
 		cleanup();
 		init(MAIN);
@@ -687,13 +598,13 @@ void CMenu::processLoadMenu()
 		}
 		else
 		{
-		m_saveslot = int(m_selection) + 1;
-		m_SavedGame.prepareLoadGame(m_saveslot);
-		m_goback = true;
+			m_saveslot = int(m_selection) + 1;
+			m_SavedGame.prepareLoadGame(m_saveslot);
+			m_goback2 = true;
 		}
 	}
 	
-	if(m_goback)
+	if(m_goback2)
 	{
 		cleanup();
 		init(MAIN);
@@ -718,13 +629,8 @@ void CMenu::processOverwriteMenu()
 		{
 			m_overwrite = false;
 			m_goback = true;
+			m_lastselect = -1;
 		}
-	}
-	
-	if(m_goback)
-	{
-		cleanup();
-		init(SAVE);
 	}
 	return;
 }
