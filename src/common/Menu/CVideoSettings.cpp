@@ -102,17 +102,15 @@ void CVideoSettings::processSpecific(){
 		}
 		else
 		{
-		m_mustclose = true;
-		m_MenuType = CONFIGURE;
+			m_mustclose = true;
+			m_MenuType = CONFIGURE;
 		}
 	}
 
 	if( m_selection != -1)
 	{
 		if(m_selection < 7)
-		{
 			m_changed = true;
-		}
 		
 		if(m_selection == 0)
 		{

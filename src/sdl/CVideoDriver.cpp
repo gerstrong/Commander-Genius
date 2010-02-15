@@ -81,9 +81,7 @@ CVideoDriver::CVideoDriver() {
 	FGLayerSurface=NULL;       // Scroll buffer for Messages
 	BlitSurface=NULL;
 	m_fading = false;
-	
-	m_Resolution_pos = m_Resolutionlist.begin();
-	
+
 	mp_sbufferx = mp_sbuffery = NULL;
 	
 	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO) < 0)
@@ -97,6 +95,9 @@ CVideoDriver::CVideoDriver() {
 	}
 	
 	initResolutionList();
+
+	// take the first default resolution. It might be change if there is a config file already created
+	setMode(m_Resolutionlist.front().width, m_Resolutionlist.front().height, m_Resolutionlist.front().depth);
 }
 
 // initResolutionList() reads the local list of availabel resolution.
@@ -115,17 +116,6 @@ void CVideoDriver::initResolutionList()
 	}
 	else
 	{
-		// Init SDL in order to check, if the resolutions are really supported
-		/*if(SDL_Init(SDL_INIT_VIDEO) < 0)
-		{
-			g_pLogFile->textOut(RED,"Could not initialize SDL for mode detection: %s<br>", SDL_GetError());
-			return;
-		}
-		else
-			g_pLogFile->textOut(GREEN,"SDL-Video was successfully initialized for mode detections!<br>");*/
-		
-		
-		/* Load the resolutions from the file. */
 		if(Fullscreen == true)
 		{
 			while(!ResolutionFile.eof())
@@ -180,11 +170,6 @@ void CVideoDriver::initResolutionList()
 				e++;
 			}
 		}
-		
-		//SDL_Quit();
-		// shutdown SDL, so the game can initialize it correctly
-		// It must happen, because this is a test for resolutions
-		// are checked against your graphics adapter
 	}
 	
 	if(m_Resolutionlist.empty()) {
@@ -193,16 +178,15 @@ void CVideoDriver::initResolutionList()
 		resolution.depth = 16;
 		m_Resolutionlist.push_back(resolution);
 	}
-	
-	// take the first default resolution. It might be change if there is a config file already created
-	setMode(m_Resolutionlist.front().width, m_Resolutionlist.front().height, m_Resolutionlist.front().depth);
+
+	m_Resolution_pos = m_Resolutionlist.begin();
 }
 
 st_resolution CVideoDriver::getNextResolution()
 {
 	m_Resolution_pos++;
 	
-	if(m_Resolution_pos == m_Resolutionlist.end())
+	if( m_Resolution_pos == m_Resolutionlist.end() )
 		m_Resolution_pos = m_Resolutionlist.begin();
 	
 	return *m_Resolution_pos;
