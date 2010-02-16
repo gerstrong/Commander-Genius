@@ -210,14 +210,6 @@
 		63D4A70A107FEB7C00E43500 /* arrowud.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6F7107FEB7C00E43500 /* arrowud.tga */; };
 		63D4A70B107FEB7C00E43500 /* arrowul.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6F8107FEB7C00E43500 /* arrowul.tga */; };
 		63D4A70C107FEB7C00E43500 /* arrowur.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6F9107FEB7C00E43500 /* arrowur.tga */; };
-		63D4A70D107FEB7C00E43500 /* cklogo1.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6FA107FEB7C00E43500 /* cklogo1.tga */; };
-		63D4A70E107FEB7C00E43500 /* cklogo2.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6FB107FEB7C00E43500 /* cklogo2.tga */; };
-		63D4A70F107FEB7C00E43500 /* demobox.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6FC107FEB7C00E43500 /* demobox.tga */; };
-		63D4A710107FEB7C00E43500 /* gunup.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6FD107FEB7C00E43500 /* gunup.tga */; };
-		63D4A711107FEB7C00E43500 /* shotup.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6FE107FEB7C00E43500 /* shotup.tga */; };
-		63D4A712107FEB7C00E43500 /* tile185.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6FF107FEB7C00E43500 /* tile185.tga */; };
-		63D4A713107FEB7C00E43500 /* tile190.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A700107FEB7C00E43500 /* tile190.tga */; };
-		63D4A714107FEB7C00E43500 /* yorpshield.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A701107FEB7C00E43500 /* yorpshield.tga */; };
 		63F85894110193E200E78524 /* CGLogo.bmp in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 6304FC3F10E3EAD800307EAC /* CGLogo.bmp */; };
 		63FEB11C10DED2E500A099E2 /* wizgp2x.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63FEB11B10DED2E500A099E2 /* wizgp2x.cpp */; };
 		63FFE146109FA45A002FF190 /* LEVEL15.CK2 in Copy Keen 2 Fix Files */ = {isa = PBXBuildFile; fileRef = 63FFE144109FA45A002FF190 /* LEVEL15.CK2 */; };
@@ -340,14 +332,6 @@
 				63D4A70A107FEB7C00E43500 /* arrowud.tga in Copy Res Files */,
 				63D4A70B107FEB7C00E43500 /* arrowul.tga in Copy Res Files */,
 				63D4A70C107FEB7C00E43500 /* arrowur.tga in Copy Res Files */,
-				63D4A70D107FEB7C00E43500 /* cklogo1.tga in Copy Res Files */,
-				63D4A70E107FEB7C00E43500 /* cklogo2.tga in Copy Res Files */,
-				63D4A70F107FEB7C00E43500 /* demobox.tga in Copy Res Files */,
-				63D4A710107FEB7C00E43500 /* gunup.tga in Copy Res Files */,
-				63D4A711107FEB7C00E43500 /* shotup.tga in Copy Res Files */,
-				63D4A712107FEB7C00E43500 /* tile185.tga in Copy Res Files */,
-				63D4A713107FEB7C00E43500 /* tile190.tga in Copy Res Files */,
-				63D4A714107FEB7C00E43500 /* yorpshield.tga in Copy Res Files */,
 			);
 			name = "Copy Res Files";
 			runOnlyForDeploymentPostprocessing = 0;

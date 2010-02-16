@@ -298,13 +298,13 @@ void CEGASprit::LoadSpecialSprites( std::vector<CSprite> &sprite )
 	LoadTGASprite("500.tga", sprite[PT500_SPRITE] );
 	LoadTGASprite("1000.tga", sprite[PT1000_SPRITE] );
 	LoadTGASprite("5000.tga", sprite[PT5000_SPRITE] );
-	LoadTGASprite("demobox.tga", sprite[DEMOBOX_SPRITE] );
-	LoadTGASprite("arrowlr.tga", sprite[ARROWLR_SPRITE] );
-	LoadTGASprite("arrowud.tga", sprite[ARROWUD_SPRITE] );
-	LoadTGASprite("arrowul.tga", sprite[ARROWUL_SPRITE] );
-	LoadTGASprite("arrowur.tga", sprite[ARROWUR_SPRITE] );
-	LoadTGASprite("arrowu.tga", sprite[ARROWU_SPRITE] );
-	LoadTGASprite("arrowd.tga", sprite[ARROWD_SPRITE] );
+	//LoadTGASprite("demobox.tga", sprite[DEMOBOX_SPRITE] );
+	//LoadTGASprite("arrowlr.tga", sprite[ARROWLR_SPRITE] );
+	//LoadTGASprite("arrowud.tga", sprite[ARROWUD_SPRITE] );
+	//LoadTGASprite("arrowul.tga", sprite[ARROWUL_SPRITE] );
+	//LoadTGASprite("arrowur.tga", sprite[ARROWUR_SPRITE] );
+	//LoadTGASprite("arrowu.tga", sprite[ARROWU_SPRITE] );
+	//LoadTGASprite("arrowd.tga", sprite[ARROWD_SPRITE] );
 }
 
 void CEGASprit::DerivePlayerSprites( std::vector<CSprite> &sprites )

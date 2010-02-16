@@ -97,6 +97,11 @@ void CPlayer::setDefaultStartValues()
 	godmode  = false;
     inventory.extralifeat = 20000;
     inventory.lives = 4;
+	
+	m_scrolltriggerright = 168;
+	m_scrolltriggerleft = 152;
+	m_scrolltriggerup = 92;
+	m_scrolltriggerdown = 108;
 
     if (m_episode==1) inventory.charges = 0;
 	else if (m_episode==2) inventory.charges = 3;
@@ -152,7 +157,7 @@ bool CPlayer::scrollTriggers()
 	py = (getYPosition()>>STC)-scroll_y;
 
 	// left-right scrolling
-	if(px > SCROLLTRIGGERRIGHT && scroll_x < mp_map->m_maxscrollx)
+	if(px > m_scrolltriggerright && scroll_x < mp_map->m_maxscrollx)
 	{
 		do{
 			px = (getXPosition()>>STC)-scroll_x;
@@ -160,7 +165,7 @@ bool CPlayer::scrollTriggers()
 		}while(px > 226 && scroll_x < mp_map->m_maxscrollx);
 		scrollchanged = true;
 	}
-	else if(px < SCROLLTRIGGERLEFT && scroll_x > 32)
+	else if(px < m_scrolltriggerleft && scroll_x > 32)
 	{
 		do{
 			px = (getXPosition()>>STC)-scroll_x;
@@ -170,7 +175,7 @@ bool CPlayer::scrollTriggers()
 	}
 
 	// up-down scrolling
-	if (py > SCROLLTRIGGERDOWN && scroll_y < mp_map->m_maxscrolly)
+	if (py > m_scrolltriggerdown && scroll_y < mp_map->m_maxscrolly)
 	{
 		do{
 			py = (getYPosition()>>STC)-scroll_y;
@@ -178,7 +183,7 @@ bool CPlayer::scrollTriggers()
 		}while(py > 150 && scroll_y < mp_map->m_maxscrolly);
 		scrollchanged = true;
 	}
-	else if ( py < SCROLLTRIGGERUP && scroll_y > 32  )
+	else if ( py < m_scrolltriggerup && scroll_y > 32  )
 	{
 		do{
 			py = (getYPosition()>>STC)-scroll_y;

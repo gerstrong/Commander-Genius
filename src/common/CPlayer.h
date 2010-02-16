@@ -19,12 +19,6 @@
 #include <vector>
 #include <string>
 
-// scroll triggers
-const int SCROLLTRIGGERRIGHT = 168;
-const int SCROLLTRIGGERLEFT = 152;
-const int SCROLLTRIGGERUP = 92;
-const int SCROLLTRIGGERDOWN = 108;
-
 enum level_triggers{
 	LVLTRIG_NONE, LVLTRIG_TANTALUS_RAY, LVLTRIG_BRIDGE, LVLTRIG_LIGHT
 };
@@ -198,6 +192,12 @@ private:
 	int level_done_timer;
 
 	int m_Level_Trigger;
+	
+	// scroll triggers
+	int m_scrolltriggerright;
+	int m_scrolltriggerleft;
+	int m_scrolltriggerup;
+	int m_scrolltriggerdown;
 
 	// defined under CPlayerItems.cpp
 	bool getGoodie(int px, int py);
