@@ -9,6 +9,11 @@ cd Win32
 #make
 cp CommanderGenius.exe ../CGenius.exe
 cd ..
+zip CG-SVN-W32-$dt.zip ./libogg-0.dll
+zip CG-SVN-W32-$dt.zip ./libvorbis-0.dll
+zip CG-SVN-W32-$dt.zip ./libvorbisenc-2.dll
+zip CG-SVN-W32-$dt.zip ./libvorbisfile-3.dll
+zip CG-SVN-W32-$dt.zip ./SDL.dll
 zip CG-SVN-W32-$dt.zip ./CGenius.exe
 zip CG-SVN-W32-$dt.zip ./resolutions.cfg
 zip CG-SVN-W32-$dt.zip ./changelog.txt
