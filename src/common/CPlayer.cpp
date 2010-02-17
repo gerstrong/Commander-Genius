@@ -778,6 +778,13 @@ void CPlayer::freeze()
 bool CPlayer::checkObjSolid()
 {
 	supportedbyobject = false;
+
+	// This code prevents Keen making stick in the air when a supported object leaves him
+	if(getYDownPos()+1 == (((getYDownPos()+1)>>CSF)<<CSF))
+		blockedd = checkSolidD(getXLeftPos(), getXRightPos(), getYDownPos()+1);
+	else
+		blockedd = false;
+
 	std::vector<CObject>::iterator it_obj = mp_object->begin();
 	for( ; it_obj != mp_object->end() ; it_obj++ )
 	{

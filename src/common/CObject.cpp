@@ -665,7 +665,7 @@ bool CObject::checkSolidD( int x1, int x2, int y2)
 {
 	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 
-	// Check for right from the object
+	// Check for down from the object
 	if(solid)
 	{
 		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
