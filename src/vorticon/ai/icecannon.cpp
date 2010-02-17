@@ -98,6 +98,7 @@ void CObjectAI::smash(CObject &object)
 	{
 		g_pSound->playStereofromCoord(SOUND_CHUNKSMASH, PLAY_NOW, object.getXPosition());
 		chunk.spawn(object.getXPosition(), object.getYPosition(), OBJ_ICEBIT, m_Episode);
+		chunk.solid = false;
 
 		// upleft
 		chunk.ai.icechunk.vector_x = -1;
@@ -133,15 +134,18 @@ void CObjectAI::icebit_ai(CObject &object)
 	{  // first time initialization
 		object.ai.icechunk.veloc_x = ICEBIT_SPEED * object.ai.icechunk.vector_x;
 		object.ai.icechunk.veloc_y = ICEBIT_SPEED * object.ai.icechunk.vector_y;
+		object.ai.icechunk.timer = 40;
 		object.inhibitfall = true;
 		object.canbezapped = false;
 		object.needinit = false;
 	}
 
+	object.ai.icechunk.timer--;
+
 	object.moveXDir(object.ai.icechunk.veloc_x);
 	object.moveYDir(object.ai.icechunk.veloc_y);
 
-	if (!object.onscreen or !m_gunfiretimer)
+	if (!object.onscreen or !m_gunfiretimer or object.ai.icechunk.timer <= 0)
 	{
 		deleteObj(object);
 	}
