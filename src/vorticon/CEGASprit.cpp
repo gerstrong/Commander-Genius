@@ -364,8 +364,6 @@ void CEGASprit::DeriveSpecialSprites( CTilemap *tilemap, std::vector<CSprite> &s
 			CreateYellowSpriteofTile( tilemap, t, sprites.at(GUNUP_SPRITE) );
 		
 		// Keycards
-		//if( TileProperty[t].behaviour>=18 && tilemap->mp_tiles[t].behaviour<=21 )
-			//CreateYellowSpriteofTile( tilemap, t, sprites.at(PTCARDB_SPRITE+tilemap->mp_tiles[t].behaviour-18));
 		if( TileProperty[t].behaviour==18 )	CreateYellowSpriteofTile( tilemap, t, sprites.at(PTCARDY_SPRITE));
 		if( TileProperty[t].behaviour==19 )	CreateYellowSpriteofTile( tilemap, t, sprites.at(PTCARDG_SPRITE));
 		if( TileProperty[t].behaviour==20 )	CreateYellowSpriteofTile( tilemap, t, sprites.at(PTCARDR_SPRITE));

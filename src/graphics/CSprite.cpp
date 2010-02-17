@@ -113,7 +113,7 @@ void CSprite::copy( CSprite &Destination, SDL_Color *Palette )
 	Destination.createSurface( m_surface->flags, Palette );
 	
 	SDL_FillRect(Destination.getSDLSurface(), NULL, COLORKEY);
-	//SDL_BlitSurface( m_surface, NULL, Destination.getSDLSurface(), NULL);
+	SDL_BlitSurface( m_surface, NULL, Destination.getSDLSurface(), NULL);
 }
 
 // replaces all instances of color find in sprite s with
