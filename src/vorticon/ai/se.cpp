@@ -795,6 +795,14 @@ void CObjectAI::se_mortimer_zapsup(CObject &object)
 				// last wave, prepare to initiate level fadeout
 				object.ai.se.timer = TIME_AFTER_DESTROY_BEFORE_FADEOUT;
 				object.ai.se.state = ZAPSUP_ABOUTTOFADEOUT;
+
+				// if a keen is standing on that machine, make him fall!
+				std::vector<CPlayer>::iterator player = m_Player.begin();
+				for(; player != m_Player.end() ; player++)
+				{
+					player->pfalling = true;
+				}
+
 				return;
 			}
 			else
