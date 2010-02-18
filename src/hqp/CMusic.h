@@ -26,7 +26,8 @@ public:
 	CMusic();
 	virtual ~CMusic();
 
-	int load(SDL_AudioSpec AudioSpec, const std::string &musicfile);
+	int load(const SDL_AudioSpec AudioSpec, const std::string &musicfile);
+	void reload(const SDL_AudioSpec AudioSpec);
 	void unload(void);
 	void play(void);
 	void stop(void);
@@ -40,7 +41,7 @@ private:
 	long music_len;
 	int music_pos;
 	int playmode;
-
+	std::string usedMusicFile;
 };
 
 #endif /* CMUSIC_H_ */

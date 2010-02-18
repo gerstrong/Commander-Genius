@@ -18,13 +18,14 @@ CMusic::CMusic() {
 	music_buffer = NULL;
 	music_pos = 0;
 	music_len = 0;
+	usedMusicFile = "";
 }
 
 CMusic::~CMusic() {
 	unload();
 }
 
-int CMusic::load(SDL_AudioSpec AudioSpec, const std::string &musicfile)
+int CMusic::load(const SDL_AudioSpec AudioSpec, const std::string &musicfile)
 {
 	if(AudioSpec.format != 0)
 	{
@@ -53,6 +54,7 @@ int CMusic::load(SDL_AudioSpec AudioSpec, const std::string &musicfile)
 		}
 		
 		g_pLogFile->ftextOut("Music Driver(): File \"%s\" opened successfully!<br>", musicfile.c_str());
+		usedMusicFile = musicfile;
 		
 		int ret;
 		
@@ -94,6 +96,12 @@ int CMusic::load(SDL_AudioSpec AudioSpec, const std::string &musicfile)
 		g_pLogFile->textOut(PURPLE,"Music Driver(): I would like to open the music for you. But your Soundcard is disabled!!<br>");
 	
 	return 0;
+}
+
+void CMusic::reload(const SDL_AudioSpec AudioSpec)
+{
+	stop();
+	load(AudioSpec, usedMusicFile);
 }
 
 void CMusic::unload(void)
