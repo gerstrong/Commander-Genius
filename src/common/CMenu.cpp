@@ -56,8 +56,7 @@ m_RestartVideo(false)
 	mp_Dialog = NULL;
 	mp_InfoScene = NULL;
 	m_hideobjects = false;
-	m_menuback[0] = QUIT;
-	m_menuback[1] = MAIN;
+	m_menuback[1] = 22;
 	m_menuback[2] = SAVE;
 	m_menuback[3] = CONFIGURE;
 	m_menuback[9] = MAIN;
@@ -351,7 +350,12 @@ void CMenu::process()
 			// Draw the menu
 			if(!mp_Menu && mp_Dialog) mp_Dialog->draw();
 			if(m_goback)
-				init(m_menuback[m_menu_type]);
+			{
+				if(m_menuback[m_menu_type] == 22)
+					cleanup();
+				else
+					init(m_menuback[m_menu_type]);
+			}
 			for( std::map<int, int>::iterator iter = m_menumap.begin(); iter != m_menumap.end(); ++iter ) {
 					if( m_selection == (*iter).first )
 					{
@@ -406,6 +410,15 @@ void CMenu::processMainMenu()
 			m_Map.m_animation_enabled = false;
 			mp_InfoScene = new CHighScores(m_Episode, m_GamePath, false);
 			m_selection = -1;
+		}
+	}
+	
+	if( m_menu_mode == PASSIVE )
+	{
+		if(m_goback)
+		{
+			cleanup();
+			init(QUIT);
 		}
 	}
 }
