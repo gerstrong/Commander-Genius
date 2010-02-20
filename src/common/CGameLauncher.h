@@ -67,7 +67,7 @@ public:
 	bool getQuit(){ return m_mustquit; }
 	std::string getDirectory(Uint8 slot) { return m_Entries.at(slot).path; }
 	Uint8 getEpisode(Uint8 slot) { return m_Entries.at(slot).episode; }
-	std::string getEP1Directory() { return m_Entries.at(m_ep1slot).path; }
+	std::string getEP1Directory() { return "games/EP1/"; }
 
 	Uint8 m_numGames;
 

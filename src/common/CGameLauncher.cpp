@@ -93,7 +93,7 @@ bool CGameLauncher::drawMenu()
 
     CMapLoader MapLoader(mp_map);
 	
-    if(!MapLoader.load(1, 90, m_Entries.at(m_ep1slot).path)) return false;
+    if(!MapLoader.load(1, 90, "games/EP1/")) return false;
 	
     mp_map->gotoPos(1664,16);
 	
