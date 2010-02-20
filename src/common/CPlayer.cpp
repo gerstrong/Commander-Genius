@@ -38,6 +38,12 @@ mp_StatusScr(NULL)
 {
 	mp_object = &m_Object;
 
+	// Ankhshield is a special object the player is holded.
+	// It's normally seen in Ep3 and when he gets invincible by the ankh
+	pAnkhshield = new CObject(&map);
+	pAnkhshield->solid = false;
+	pAnkhshield->exists = true;
+
 	// Set every value in the class to zero.
     memset(&inventory, 0, sizeof(stInventory));
     setDefaultStartValues();
@@ -817,6 +823,18 @@ bool CPlayer::checkObjSolid()
 		}
 	}
 	return true;
+}
+
+// Draws the Player actual frame
+// Master class CObject is called, but also his puppy
+// object ankhframe if he is in this status.
+void CPlayer::draw()
+{
+	CObject::draw();
+
+	// Here comes the part of the ankhshield
+	if(ankhtime)
+		pAnkhshield->draw();
 }
 
 // Draws the Status screen and return false, when it's still open.

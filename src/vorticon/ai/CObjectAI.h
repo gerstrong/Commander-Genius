@@ -77,7 +77,6 @@ private:
 	void se_extend_plat(CObject &object, bool &PlatExtending);
 	void se_retract_plat(CObject &object, bool &PlatExtending);
 	void spark_ai(CObject &object, int &sparks_left);
-	void se_ankhshield(CObject &object, int episode);
 	void se_mortimer_arm(CObject &object);
 	void se_mortimer_spark(CObject &object);
 	void se_mortimer_heart(CObject &object);

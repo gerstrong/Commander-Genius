@@ -89,6 +89,7 @@ public:
 
 	bool checkObjSolid();
 
+	void draw();
 	bool drawStatusScreen();
 	bool scrollTriggers();
 	void give_keycard(int doortile);
@@ -165,7 +166,8 @@ public:
 	bool object_chosen;
 	unsigned char dpadcount, dpadlastcount;
 
-	unsigned int ankhtime, ankhshieldobject;
+	unsigned int ankhtime;
+	CObject *pAnkhshield;
 
 	stInventory inventory;
 

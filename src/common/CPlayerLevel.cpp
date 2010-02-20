@@ -13,6 +13,7 @@
 #include "../sdl/CInput.h"
 #include "../graphics/CGfxEngine.h"
 #include "../hqp/CMusic.h"
+#include "../vorticon/spritedefines.h"
 #include "CPhysicsSettings.h"
 
 #define PDIEFRAME             22
@@ -83,11 +84,7 @@ void CPlayer::touchedExit()
 		// that needs fixing, hopefully we will fix all of those
 		
 		// if player has ankh shut it off
-		if (ankhtime)
-		{
-			ankhtime = 0;
-			mp_object->at(ankhshieldobject).exists = false;
-		}
+		ankhtime = 0;
 		
 		ppogostick = false;
 		
@@ -828,22 +825,64 @@ void CPlayer::SelectFrame()
 
 void CPlayer::ankh()
 {
-	int o;
+	const unsigned int ANKH_FLICKER_DELAY = 3;
+	const unsigned int ANKH_SHIELD_FRAME = 61;
+
 	if (!ankhtime) return;
-	
-	o = ankhshieldobject;
-	mp_object->at(o).moveTo(getXPosition()-(8<<CSF), getYPosition()-(8<<CSF));
-	
-	ankhtime--;
-	if (!ankhtime)
-		mp_object->at(o).exists = 0;
-	
 	else if (ankhtime < ANKH_STAGE3_TIME)
-		mp_object->at(o).ai.se.state = ANKH_STATE_FLICKERSLOW;
+		pAnkhshield->ai.se.state = ANKH_STATE_FLICKERSLOW;
 	else if (ankhtime < ANKH_STAGE2_TIME)
-		mp_object->at(o).ai.se.state = ANKH_STATE_FLICKERFAST;
+		pAnkhshield->ai.se.state = ANKH_STATE_FLICKERFAST;
 	else
-		mp_object->at(o).ai.se.state = ANKH_STATE_NOFLICKER;
+		pAnkhshield->ai.se.state = ANKH_STATE_NOFLICKER;
+
+	ankhtime--;
+
+	pAnkhshield->moveToForce(getXPosition()-(8<<STC), getYPosition()-(8<<STC));
+
+	if (pAnkhshield->needinit)
+	{
+		pAnkhshield->ai.se.frame = 0;
+		pAnkhshield->ai.se.timer = 0;
+		pAnkhshield->inhibitfall = 1;
+		pAnkhshield->canbezapped = 0;
+		pAnkhshield->needinit = 0;
+
+		pAnkhshield->ai.se.state = ANKH_STATE_NOFLICKER;
+	}
+
+	switch(pAnkhshield->ai.se.state)
+	{
+	case ANKH_STATE_NOFLICKER:
+		pAnkhshield->sprite = ANKH_SHIELD_FRAME + (pAnkhshield->ai.se.frame&1);
+		break;
+	case ANKH_STATE_FLICKERFAST:
+		if (pAnkhshield->ai.se.frame&1)
+			pAnkhshield->sprite = BLANKSPRITE;
+		else
+		{
+			if (pAnkhshield->ai.se.frame&2)
+				pAnkhshield->sprite = ANKH_SHIELD_FRAME+1;
+			else
+				pAnkhshield->sprite = ANKH_SHIELD_FRAME;
+		}
+		break;
+	case ANKH_STATE_FLICKERSLOW:
+		if (pAnkhshield->ai.se.frame>4)
+			pAnkhshield->sprite = BLANKSPRITE;
+		else
+			pAnkhshield->sprite = ANKH_SHIELD_FRAME;
+		break;
+	}
+
+	if (pAnkhshield->ai.se.timer > ANKH_FLICKER_DELAY)
+	{
+		pAnkhshield->ai.se.frame++;
+		if (pAnkhshield->ai.se.frame>8) pAnkhshield->ai.se.frame = 0;
+		pAnkhshield->ai.se.timer = 0;
+	}
+	else pAnkhshield->ai.se.timer++;
+
 }
 
 // yorp/scrub etc "bump".

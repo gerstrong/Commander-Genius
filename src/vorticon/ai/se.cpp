@@ -8,8 +8,6 @@
 #include "../../CLogFile.h"
 #include "../../graphics/effects/CVibrate.h"
 
-#define ANKH_SHIELD_FRAME       61
-
 // "Sector Effector" object (The name comes from D3D)...it's basically
 // an object which can do a number of different things depending on it's
 // .ai.se.type attribute, usually it affects the map or the enviorment
@@ -26,7 +24,6 @@ void CObjectAI::se_ai(CObject &object)
 	{
 	case SE_EXTEND_PLATFORM: se_extend_plat(object, PlatExtending ); break;
 	case SE_RETRACT_PLATFORM: se_retract_plat(object, PlatExtending ); break;
-	case SE_ANKHSHIELD: se_ankhshield(object, m_Episode); break;
 	case SE_MORTIMER_ARM: se_mortimer_arm(object); break;
 	case SE_MORTIMER_LEG_LEFT: se_mortimer_leg_left(object); break;
 	case SE_MORTIMER_LEG_RIGHT: se_mortimer_leg_right(object); break;
@@ -331,54 +328,6 @@ SPARK_ANIMATE, SPARK_BLOWUP1, SPARK_BLOWUP2, SPARK_BLOWUP3
 		break;
 	}  // end of state switch for SE_SPARK
 
-}
-
-void CObjectAI::se_ankhshield(CObject &object, int episode)
-{
-#define ANKH_FLICKER_DELAY       3
-
-	if (object.needinit)
-	{
-		object.ai.se.frame = 0;
-		object.ai.se.timer = 0;
-		object.inhibitfall = 1;
-		object.canbezapped = 0;
-		object.needinit = 0;
-
-		object.ai.se.state = ANKH_STATE_NOFLICKER;
-	}
-
-	switch(object.ai.se.state)
-	{
-	case ANKH_STATE_NOFLICKER:
-		object.sprite = ANKH_SHIELD_FRAME + (object.ai.se.frame&1);
-		break;
-	case ANKH_STATE_FLICKERFAST:
-		if (object.ai.se.frame&1)
-			object.sprite = BLANKSPRITE;
-		else
-		{
-			if (object.ai.se.frame&2)
-				object.sprite = ANKH_SHIELD_FRAME+1;
-			else
-				object.sprite = ANKH_SHIELD_FRAME;
-		}
-		break;
-	case ANKH_STATE_FLICKERSLOW:
-		if (object.ai.se.frame>4)
-			object.sprite = BLANKSPRITE;
-		else
-			object.sprite = (m_Episode==3) ? ANKH_SHIELD_FRAME : YORPSHIELD_SPRITE;
-		break;
-	}
-
-	if (object.ai.se.timer > ANKH_FLICKER_DELAY)
-	{
-		object.ai.se.frame++;
-		if (object.ai.se.frame>8) object.ai.se.frame = 0;
-		object.ai.se.timer = 0;
-	}
-	else object.ai.se.timer++;
 }
 
 #define ARM_GO          0

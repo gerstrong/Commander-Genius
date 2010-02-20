@@ -149,9 +149,9 @@ enum jumpstates{
 // stage1 is no flicker of the shield, changes colors
 // in stage2 the shield flickers fast, changes colors
 // in stage3 the shield flashes slow, no color change
-#define ANKH_STAGE1_TIME    3000
-#define ANKH_STAGE2_TIME    1500
-#define ANKH_STAGE3_TIME    500
+#define ANKH_STAGE1_TIME    750
+#define ANKH_STAGE2_TIME    380
+#define ANKH_STAGE3_TIME    125
 #define PLAY_ANKH_TIME      (ANKH_STAGE1_TIME+ANKH_STAGE2_TIME+ANKH_STAGE3_TIME)
 // these correspond stage 1,2 and 3 respectively
 #define ANKH_STATE_NOFLICKER    0

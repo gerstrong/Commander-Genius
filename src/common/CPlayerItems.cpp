@@ -359,20 +359,7 @@ stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 
 void CPlayer::giveAnkh()
 {
-	if (ankhtime == 0)
-	{
-		int x, y;
-		CObject Object(mp_map);
-		Object.ai.se.type = SE_ANKHSHIELD;
-		x = getXPosition();
-		y = getYPosition();
-		ankhshieldobject = Object.spawn(x, y, OBJ_SECTOREFFECTOR, m_episode);
-		mp_object->push_back(Object);
-	}
-	
 	g_pSound->playSound(SOUND_ANKH, PLAY_NOW);
 	ankhtime = PLAY_ANKH_TIME;
-	//gamepdo_ankh(cp);
-	// TODO: Discover, what this does
 }
 
