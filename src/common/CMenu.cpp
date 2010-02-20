@@ -56,7 +56,6 @@ m_RestartVideo(false)
 	mp_Dialog = NULL;
 	mp_InfoScene = NULL;
 	m_hideobjects = false;
-	m_menuback[1] = 22;
 	m_menuback[2] = SAVE;
 	m_menuback[3] = CONFIGURE;
 	m_menuback[9] = MAIN;
@@ -349,11 +348,8 @@ void CMenu::process()
 
 			// Draw the menu
 			if(!mp_Menu && mp_Dialog) mp_Dialog->draw();
-			if(m_goback)
+			if(m_goback && m_menu_type != MAIN)
 			{
-				if(m_menuback[m_menu_type] == 22)
-					cleanup();
-				else
 					init(m_menuback[m_menu_type]);
 			}
 			for( std::map<int, int>::iterator iter = m_menumap.begin(); iter != m_menumap.end(); ++iter ) {
@@ -417,7 +413,6 @@ void CMenu::processMainMenu()
 	{
 		if(m_goback)
 		{
-			cleanup();
 			init(QUIT);
 		}
 	}
