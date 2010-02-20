@@ -75,14 +75,11 @@ CHelp::CHelp(std::string &DataDirectory, char &episode, const std::string &type)
 	}
 	else
 	{
-		std::string filename = "data/HELPTEXT.CKP";
+		std::string filename = "HELPTEXT.CKP";
 
 		std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);
 
-		if(!File) {
-			Text = "The Text File \"data/HELPTEXT.CKP\" was not found!";
-			return;
-		}
+		if(!File) return;
 
 		while(!File.eof())
 			Text.push_back(File.get());
