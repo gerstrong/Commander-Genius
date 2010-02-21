@@ -441,7 +441,7 @@ void CPlayGame::handleFKeys()
     	g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
 
     	// Show a message like in the original game
-		m_MessageBoxes.push_back(new CMessageBox(m_Player[0].godmode ? "Godmode enabled" : "Godmode disabled"));
+		m_MessageBoxes.push_back(new CMessageBox(m_Player[0].godmode ? "God mode enabled" : "God mode disabled"));
     	m_paused = true;
     	g_pInput->flushKeys();
     }

@@ -131,6 +131,7 @@ void CSettings::loadDefaultGameCfg()
 	setOption( OPT_ANALOGJOYSTICK, "Analog Joystick", "analog-joystick", 1 );
 	setOption( OPT_LVLREPLAYABILITY, "Replay Levels", "level replayability", 0 );
 	setOption( OPT_RISEBONUS, "Rising Bonus", "rise bonus", 1 );
+	setOption( OPT_SWITCHSCORES, "Score Fix (EP3)", "switch scores", 0 );
 }
 
 bool CSettings::loadGameCfg()

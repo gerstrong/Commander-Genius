@@ -214,7 +214,6 @@
 		63FEB11C10DED2E500A099E2 /* wizgp2x.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63FEB11B10DED2E500A099E2 /* wizgp2x.cpp */; };
 		63FFE146109FA45A002FF190 /* LEVEL15.CK2 in Copy Keen 2 Fix Files */ = {isa = PBXBuildFile; fileRef = 63FFE144109FA45A002FF190 /* LEVEL15.CK2 */; };
 		63FFE147109FA45A002FF190 /* LEVEL80.CK2 in Copy Keen 2 Fix Files */ = {isa = PBXBuildFile; fileRef = 63FFE145109FA45A002FF190 /* LEVEL80.CK2 */; };
-		63FFE14E109FA49E002FF190 /* EGALATCH.CK3 in Copy Keen 3 Fix Files */ = {isa = PBXBuildFile; fileRef = 63FFE14B109FA49E002FF190 /* EGALATCH.CK3 */; };
 		63FFE14F109FA49E002FF190 /* LEVEL08.CK3 in Copy Keen 3 Fix Files */ = {isa = PBXBuildFile; fileRef = 63FFE14C109FA49E002FF190 /* LEVEL08.CK3 */; };
 		63FFE150109FA49E002FF190 /* LEVEL15.CK3 in Copy Keen 3 Fix Files */ = {isa = PBXBuildFile; fileRef = 63FFE14D109FA49E002FF190 /* LEVEL15.CK3 */; };
 /* End PBXBuildFile section */
@@ -354,7 +353,6 @@
 			dstPath = data/games/EP3;
 			dstSubfolderSpec = 7;
 			files = (
-				63FFE14E109FA49E002FF190 /* EGALATCH.CK3 in Copy Keen 3 Fix Files */,
 				63FFE14F109FA49E002FF190 /* LEVEL08.CK3 in Copy Keen 3 Fix Files */,
 				63FFE150109FA49E002FF190 /* LEVEL15.CK3 in Copy Keen 3 Fix Files */,
 			);
@@ -716,7 +714,6 @@
 		63FEB11B10DED2E500A099E2 /* wizgp2x.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wizgp2x.cpp; sourceTree = "<group>"; };
 		63FFE144109FA45A002FF190 /* LEVEL15.CK2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL15.CK2; sourceTree = "<group>"; };
 		63FFE145109FA45A002FF190 /* LEVEL80.CK2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL80.CK2; sourceTree = "<group>"; };
-		63FFE14B109FA49E002FF190 /* EGALATCH.CK3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = EGALATCH.CK3; sourceTree = "<group>"; };
 		63FFE14C109FA49E002FF190 /* LEVEL08.CK3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL08.CK3; sourceTree = "<group>"; };
 		63FFE14D109FA49E002FF190 /* LEVEL15.CK3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL15.CK3; sourceTree = "<group>"; };
 		8D0C4E960486CD37000505A6 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1385,7 +1382,6 @@
 		63FFE151109FA4A4002FF190 /* EP3 */ = {
 			isa = PBXGroup;
 			children = (
-				63FFE14B109FA49E002FF190 /* EGALATCH.CK3 */,
 				63FFE14C109FA49E002FF190 /* LEVEL08.CK3 */,
 				63FFE14D109FA49E002FF190 /* LEVEL15.CK3 */,
 			);
