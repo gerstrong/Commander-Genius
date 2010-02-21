@@ -15,7 +15,7 @@ enum nessie_actions{
 #define NESSIE_UPRIGHT_FRAME    134
 #define NESSIE_UPLEFT_FRAME     136
 
-#define NESSIE_SPEED            16
+#define NESSIE_SPEED            32
 
 void nessie_find_next_checkpoint(int o);
 

@@ -175,6 +175,7 @@ void CPlayer::MountNessieIfAvailable()
 					// Mount the Player
 					obj->ai.nessie.mounted[m_index] = true;
 		            mounted = true;
+		            solid = false;
 		            beingteleported = true;
 				}
 			}
@@ -190,9 +191,9 @@ void CPlayer::UnmountNessie()
 	int dx, dy;
 	int x = getXPosition()>>CSF;
 	int y = getYPosition()>>CSF;
-	for(dy=-2 ; dy <= 2 ; dy++)
+	for(dy=-1 ; dy <= 1 ; dy++)
 	{
-		for(dx=-2 ; dx <= 2 ; dx++)
+		for(dx=-1 ; dx <= 1 ; dx++)
 		{
 			// If NESSIE_LAND_OBJ was found, than put the player there!
 			if(mp_map->getObjectat(x+dx, y+dy) == NESSIE_LAND)
@@ -211,6 +212,7 @@ void CPlayer::UnmountNessie()
 							// unmount Messie
 							obj->ai.nessie.mounted[m_index] = false;
 							mounted = false;
+							solid = godmode ? false : true;
 							beingteleported = false;
 							moveXDir(dx<<CSF);
 							moveYDir(dy<<CSF);
