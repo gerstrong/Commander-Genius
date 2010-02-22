@@ -315,37 +315,36 @@ void CEGASprit::DerivePlayerSprites( std::vector<CSprite> &sprites )
 	{
 		s = SECOND_PLAYER_BASEFRAME+i;
 		sprites.at(i).copy( sprites.at(s), g_pGfxEngine->Palette.m_Palette );
-		sprites.at(s).replaceSpriteColor( 13, 10 ,0 );
-		sprites.at(s).replaceSpriteColor( 5, 2 ,0 );
-		sprites.at(s).replaceSpriteColor( 9, 14 ,8 );
-		sprites.at(s).replaceSpriteColor( 1, 6 ,8 );
-		sprites.at(s).replaceSpriteColor( 12, 11 ,0 );
-		sprites.at(s).replaceSpriteColor( 4, 3 ,0 );
+		sprites.at(s).replaceSpriteColor( 13, 11 ,0 );
+		sprites.at(s).replaceSpriteColor( 5, 3 ,0 );
+		//sprites.at(s).replaceSpriteColor( 9, 14 ,8 );
+		//sprites.at(s).replaceSpriteColor( 1, 6 ,8 );
+		sprites.at(s).replaceSpriteColor( 12, 9 ,0 );
+		sprites.at(s).replaceSpriteColor( 4, 1 ,0 );
 		sprites.at(s).optimizeSurface();
 	}
 	for(size_t i=0;i<48;i++)
 	{
 		s = THIRD_PLAYER_BASEFRAME+i;
 		sprites.at(i).copy( sprites.at(s), g_pGfxEngine->Palette.m_Palette );
-		sprites.at(s).replaceSpriteColor( 13, 12, 0 ); // Shirt light
-		sprites.at(s).replaceSpriteColor( 5, 4, 0 ); // Shirt dark
-		sprites.at(s).replaceSpriteColor( 9, 10, 8 ); // Trousers light
-		sprites.at(s).replaceSpriteColor( 1, 2, 8 ); // Trousers dark
-		sprites.at(s).replaceSpriteColor( 12, 4, 16 ); // Shoes light
-		sprites.at(s).replaceSpriteColor( 4, 6, 16 ); // Shoes dark
+		sprites.at(s).replaceSpriteColor( 13, 10, 0 ); // Shirt light
+		sprites.at(s).replaceSpriteColor( 5, 2, 0 ); // Shirt dark
+		//sprites.at(s).replaceSpriteColor( 9, 10, 8 ); // Trousers light
+		//sprites.at(s).replaceSpriteColor( 1, 2, 8 ); // Trousers dark
+		sprites.at(s).replaceSpriteColor( 12, 2, 16 ); // Shoes light
+		sprites.at(s).replaceSpriteColor( 4, 0, 16 ); // Shoes dark
 		sprites.at(s).optimizeSurface();
 	}
 	for(size_t i=0;i<48;i++)
 	{
 		s = FOURTH_PLAYER_BASEFRAME+i;
 		sprites.at(i).copy( sprites.at(s), g_pGfxEngine->Palette.m_Palette );
-		sprites.at(i).copy( sprites.at(s), g_pGfxEngine->Palette.m_Palette );
-		sprites.at(s).replaceSpriteColor( 13, 11, 0 ); // Shirt light
-		sprites.at(s).replaceSpriteColor( 5, 3, 0 ); // Shirt dark
-		sprites.at(s).replaceSpriteColor( 9, 11, 8 ); // Trousers light
-		sprites.at(s).replaceSpriteColor( 1, 9, 8 ); // Trousers dark
-		sprites.at(s).replaceSpriteColor( 12, 4, 16 ); // Shoes light
-		sprites.at(s).replaceSpriteColor( 4, 6, 16 ); // Shoes dark
+		sprites.at(s).replaceSpriteColor( 13, 14, 0 ); // Shirt light
+		sprites.at(s).replaceSpriteColor( 5, 6, 0 ); // Shirt dark
+		//sprites.at(s).replaceSpriteColor( 9, 11, 8 ); // Trousers light
+		//sprites.at(s).replaceSpriteColor( 1, 9, 8 ); // Trousers dark
+		sprites.at(s).replaceSpriteColor( 12, 6, 16 ); // Shoes light
+		sprites.at(s).replaceSpriteColor( 4, 0, 16 ); // Shoes dark
 		sprites.at(s).optimizeSurface();
 	}
 }
