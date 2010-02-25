@@ -87,7 +87,7 @@ mp_HighScores(NULL)
 	if(finale) m_level_command = GOTO_FINALE;
 }
 
-// Setup all the player, when one level is started
+// Setup all the players, when one level is started
 void CPlayGame::setupPlayers()
 {
 	m_showKeensLeft=false;
@@ -99,11 +99,13 @@ void CPlayGame::setupPlayers()
 		{
 			it_player->m_playingmode = CPlayer::WORLDMAP;
 			m_showKeensLeft |= ( it_player->pdie == PDIE_DEAD );
+			if(it_player->godmode) it_player->solid = false;
 		}
 		else
 		{
 			it_player->m_playingmode = CPlayer::LEVELPLAY;
 			it_player->sprite = PSTANDFRAME;
+			it_player->solid=true;
 		}
 		it_player->pdie = PDIE_NODIE;
 		
@@ -117,7 +119,6 @@ void CPlayGame::setupPlayers()
 		it_player->setMapData(&m_Map);
 		it_player->setPhysics(&m_PhysicsSettings);
 		it_player->exists = true;
-		it_player->solid=true;
 	}
 }
 
@@ -186,20 +187,6 @@ bool CPlayGame::init()
 
 	return true;
 }
-
-/*void CPlayGame::createPlayerObjects()
-{
-	// tie puppy objects so the player can interact in the level
-	for (int i=0 ; i<m_NumPlayers ; i++)
-	{
-		m_Player[i].setDatatoZero();
-		m_Player[i].m_index = i;
-		m_Player[i].m_episode = m_Episode;
-		m_Player[i].mp_levels_completed = mp_level_completed;
-		m_Player[i].mp_option = mp_option;
-		m_Player[i].mp_object=&m_Object;
-	}
-}*/
 
 ////
 // Process Routine

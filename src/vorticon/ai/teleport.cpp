@@ -151,7 +151,7 @@ void CObjectAI::teleporter_ai(CObject &object)
 
 					deleteObj(object);
 					m_Player[player].beingteleported = false;
-					m_Player[player].solid = true;
+					m_Player[player].solid = !m_Player[player].godmode;
 				}
 				else
 				{ // teleport animation is not done. show the next frame

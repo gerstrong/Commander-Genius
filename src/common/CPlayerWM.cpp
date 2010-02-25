@@ -49,9 +49,10 @@ void CPlayer::setWorldMapdir()
 	if ( pshowdir==DOWN && !playcontrol[PA_Y] > 0) exception = true;
 	if ( pshowdir==LEFT && !playcontrol[PA_X] < 0) exception = true;
 	if ( pshowdir==RIGHT && !playcontrol[PA_X] > 0) exception = true;
-	if ((playcontrol[PA_Y] < 0) && (playcontrol[PA_Y] > 0)) pshowdir = DOWN;
-	if ((playcontrol[PA_X] < 0) && (playcontrol[PA_X] > 0)) pshowdir = RIGHT;
 	
+	if (playcontrol[PA_Y] < 0) pshowdir = UP;
+	if (playcontrol[PA_Y] > 0) pshowdir = DOWN;
+
 	if (dpadcount==1 || dpadlastcount==0 || exception)
 		pshowdir = pdir;
 
