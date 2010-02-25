@@ -10,7 +10,7 @@ enum vort_baby_actions{
 	BABY_RUN, BABY_DYING, BABY_DEAD
 };
 
-#define BABY_WALK_SPEED         64
+#define BABY_WALK_SPEED         90
 
 #define BABY_WALK_ANIM_RATE     6
 
@@ -193,12 +193,12 @@ void CObjectAI::baby_ai(CObject &object, int episode, bool hard)
 	}
 }
 
-#define BABY_BIGJUMP                 100
-#define BABY_BIGJUMP_DEC_RATE        8
+#define BABY_BIGJUMP                 200
+#define BABY_BIGJUMP_DEC_RATE        4
 
-#define BABY_MIN_SMALLJUMP             70
+#define BABY_MIN_SMALLJUMP             140
 #define BABY_SMALLJUMP_MIN_DEC_RATE    1
-#define BABY_MAX_SMALLJUMP             120
+#define BABY_MAX_SMALLJUMP             150
 #define BABY_SMALLJUMP_MAX_DEC_RATE    2
 
 void CObjectAI::baby_jump(CObject &object, int big)

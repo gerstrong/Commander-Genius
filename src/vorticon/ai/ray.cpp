@@ -50,7 +50,7 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 						if(it_obj->canbezapped || it_obj->m_type == OBJ_RAY )
 						{
 							if (it_obj->hitdetect(object) &&
-									(/*object.ai.ray.owner != it_obj->m_index ||*/ object.ai.ray.shotbyplayer)  )
+								 object.ai.ray.shotbyplayer  )
 							{
 								object.ai.ray.state = RAY_STATE_SETZAPZOT;
 								object.canbezapped = false;
