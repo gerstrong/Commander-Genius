@@ -133,9 +133,9 @@ void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 			object.ai.garg.detectedPlayer = 0;
 			for(i=0;i<1;i++) //TODO cycle through players
 			{
-				if (p_player[i].getYPosition() >= object.getYPosition()-(8<<STC))
+				if (p_player[i].getYPosition() >= object.getYPosition()-(2<<CSF))
 				{
-					if ((p_player[i].getYDownPos()) <= (object.getYDownPos()+(1<<CSF)))
+					if ((p_player[i].getYDownPos()) <= (object.getYDownPos()+(2<<CSF)))
 					{
 						object.ai.garg.detectedPlayer = 1;
 						object.ai.garg.detectedPlayerIndex = i;

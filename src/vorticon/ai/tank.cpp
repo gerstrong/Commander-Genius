@@ -50,7 +50,7 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 		object.ai.tank.ponsameleveltime = 0;
 		object.ai.tank.alreadyfiredcauseonsamelevel = 0;
 		object.ai.tank.dist_to_travel = TANK_MAXTRAVELDIST;
-		object.ai.tank.detectedPlayer = 0;
+		object.ai.tank.detectedPlayer = false;
 		object.ai.tank.detectedPlayerIndex = 0;
 		object.canbezapped = true;  // will stop bullets but are not harmed
 		object.needinit = false;
@@ -89,6 +89,20 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 			object.ai.tank.animtimer = 0;
 		} else object.ai.tank.animtimer++;
 
+		object.ai.tank.detectedPlayer = false;
+		for(size_t i=0 ; i<m_Player.size() ; i++)
+		{
+			if (m_Player[i].getYPosition() >= object.getYUpPos()-(3<<CSF))
+			{
+				if ( m_Player[i].getYDownPos() <= object.getYDownPos()+(3<<CSF) )
+				{
+					object.ai.tank.detectedPlayer = true;
+					object.ai.tank.detectedPlayerIndex = i;
+					break;
+				}
+			}
+		}
+
 		// when time is up go back to moving
 		if (object.ai.tank.timer > TANK_LOOK_TOTALTIME)
 		{
@@ -126,19 +140,6 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 		break;
 	case TANK_WALK:
 		// is keen on same level?
-		object.ai.tank.detectedPlayer = false;
-		/*for(size_t i=0 ; i<m_Player.size() ; i++)
-		{
-			if (m_Player[i].getYPosition() >= object.getYUpPos()-(3<<CSF))
-			{
-				if ( m_Player[i].getYDownPos() <= object.getYDownPos()+(3<<CSF) )
-				{
-					object.ai.tank.detectedPlayer = true;
-					object.ai.tank.detectedPlayerIndex = i;
-					break;
-				}
-			}
-		}*/
 
 		if (object.ai.tank.detectedPlayer)
 		{
@@ -242,7 +243,7 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 			newobject.canbezapped = true;
 			m_Objvect.push_back(newobject);
 
-			object.ai.tank.state = TANK_WALK;
+			object.ai.tank.state = TANK_LOOK;
 			object.ai.tank.frame = 0;
 			object.ai.tank.timer = 0;
 			object.ai.tank.animtimer = 0;
