@@ -8,7 +8,7 @@
 // that looks exactly the old tiles, which then moves down into
 // the floor)
 
-#define DOOR_OPEN_SPEED    10
+#define DOOR_OPEN_SPEED    1
 
 void CObjectAI::door_ai( CObject &object, char DoorOpenDir )
 {
@@ -31,9 +31,9 @@ void CObjectAI::door_ai( CObject &object, char DoorOpenDir )
 		// TODO: Create a flag for mods in which the door can be opened in another direction
 		if (DoorOpenDir==DOWN) object.moveDown(1<<STC);
 		doorsprite.setHeight(doorsprite.getHeight()-1);
+		object.ai.door.timer = 0;
 		if (doorsprite.getHeight() == 0)
 		{
-			object.ai.door.timer = 0;
 			deleteObj(object);
 			return;
 		}
