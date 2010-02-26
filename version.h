@@ -1,7 +1,7 @@
 #ifndef __CG__VERSION_H__
 #define __CG__VERSION_H__
 
-#define CGVERSION	"031beta"
+#define CGVERSION	"031"
 
 #endif
 
