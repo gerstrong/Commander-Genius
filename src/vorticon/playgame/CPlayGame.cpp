@@ -579,10 +579,6 @@ void CPlayGame::drawObjects()
 
 	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
 	
-	std::vector<CObject>::iterator it_obj = m_Object.begin();
-	for(; it_obj!=m_Object.end() ; it_obj++)
-		it_obj->draw();
-
 	// We draw the Player as last, because we want to see him in front of the other objects
 	std::vector<CPlayer>::iterator it_player = m_Player.begin();
 	for (; it_player != m_Player.end() ; it_player++)
@@ -590,6 +586,10 @@ void CPlayGame::drawObjects()
 		if(!it_player->beingteleported)
 			it_player->draw();
 	}
+
+	std::vector<CObject>::iterator it_obj = m_Object.begin();
+	for(; it_obj!=m_Object.end() ; it_obj++)
+		it_obj->draw();
 }
 
 ////
