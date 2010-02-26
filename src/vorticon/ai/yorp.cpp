@@ -20,11 +20,11 @@ enum
 #define YORP_WALK_SPEED_FAST      19
 
 #define YORP_NUM_LOOKS  12      // number of times yorp look frame is changed
-#define YORP_STUNTIME   45     // YORP_NUM_LOOKS for stun
+#define YORP_STUNTIME   24     // YORP_NUM_LOOKS for stun
 
 // for INCREASE_DIFFICULTY
 #define YORP_NUM_LOOKS_FAST  8      // number of times yorp look frame is changed
-#define YORP_STUNTIME_FAST   10     // YORP_NUM_LOOKS for stun
+#define YORP_STUNTIME_FAST   18     // YORP_NUM_LOOKS for stun
 
 #define YORP_LOOK_LEFT  49
 #define YORP_STAND      50
