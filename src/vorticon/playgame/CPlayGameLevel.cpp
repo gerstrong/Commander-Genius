@@ -30,9 +30,6 @@ void CPlayGame::processInLevel()
 			if( (hinttext=m_Player[i].pollHintMessage()) != "")
 				m_MessageBoxes.push_back(new CMessageBox(getstring(hinttext)));
 
-			// Check Collisions and only move player, if it is not blocked
-			//checkPlayerCollisions(&m_Player[i]);
-
 			// Check if the first player is dead, and if the others also are...
 			if(i==0) m_alldead = (m_Player[i].pdie == PDIE_DEAD);
 			else m_alldead &= (m_Player[i].pdie == PDIE_DEAD);

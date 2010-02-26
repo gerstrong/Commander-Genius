@@ -70,10 +70,6 @@ mp_HighScores(NULL)
 	// Create completed level list
 	memset(mp_level_completed,false,MAX_LEVELS*sizeof(bool));
 
-	// Player are tied to objects like enemies, sprites, etc., so they
-	// can be drawn the same way.
-	//createPlayerObjects();
-
 	m_paused = false;
 	m_showPauseDialog = false;
 

@@ -52,13 +52,10 @@ void CPlayGame::processOnWorldMap()
 
 					case LVLS_SHIP:
 						if (m_Episode==1)
-						{
 							YourShipNeedsTheseParts();
-						}
 						else if (m_Episode==3)
-						{
 							ShipEp3();
-						}
+
 						break;
 
 					default: // a regular level
@@ -79,7 +76,6 @@ void CPlayGame::processOnWorldMap()
 							cleanup();
 							init();
 
-							// Second Snapshot for merge
 							g_pGfxEngine->pushEffectPtr(pColorMergeFX);
 						}
 						break;
@@ -110,9 +106,6 @@ void CPlayGame::goBacktoMap()
 	// before he can go back to map, he must tie up the objects.
 	// This means, all objects except the puppy ones of the player....
 	m_Object.clear();
-
-	// Recreate the Players and tie them to the objects
-	//createPlayerObjects();
 
 	m_level_command = START_LEVEL;
 	m_Level = WM_MAP_NUM;
