@@ -232,53 +232,49 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 			}
 			break;
 		default:             // level marker
-			std::vector<CPlayer>::iterator it_player = mp_vec_Player->begin();
-			for(; it_player != mp_vec_Player->end() ; it_player++ )
+			if ((t&0x7fff) <= 16 && mp_vec_Player->front().mp_levels_completed[t&0x00ff] )
 			{
-				if ((t&0x7fff) <= 16 && it_player->mp_levels_completed[t&0x00ff] )
+				mp_map->m_objectlayer[x][y] = t;
+
+				// Change the level tile to a done sign
+				int newtile = g_pGfxEngine->Tilemap->mp_tiles[mp_map->at(x,y)].chgtile;
+
+				// Consistency check! Some Mods have issues with that.
+				if(episode == 1 || episode == 2)
 				{
-					mp_map->m_objectlayer[x][y] = t;
+					//Use default small tile
+					newtile = 77;
 
-					// Change the level tile to a done sign
-					int newtile = g_pGfxEngine->Tilemap->mp_tiles[mp_map->at(x,y)].chgtile;
-
-					// Consistency check! Some Mods have issues with that.
-					if(episode == 1 || episode == 2)
+					// try to guess, if it is a 32x32 (4 16x16) Tile
+					if(mp_map->at(x-1,y-1) == (unsigned int) newtile &&
+							mp_map->at(x,y-1) == (unsigned int) newtile  &&
+							mp_map->at(x-1,y) == (unsigned int) newtile)
 					{
-						//Use default small tile
-						newtile = 77;
-
-						// try to guess, if it is a 32x32 (4 16x16) Tile
-						if(mp_map->at(x-1,y-1) == (unsigned int) newtile &&
-								mp_map->at(x,y-1) == (unsigned int) newtile  &&
-								mp_map->at(x-1,y) == (unsigned int) newtile)
-						{
-							mp_map->setTile(x-1, y-1, 78);
-							mp_map->setTile(x, y-1, 79);
-							mp_map->setTile(x-1, y, 80);
-							newtile = 81; // br. this one
-						}
+						mp_map->setTile(x-1, y-1, 78);
+						mp_map->setTile(x, y-1, 79);
+						mp_map->setTile(x-1, y, 80);
+						newtile = 81; // br. this one
 					}
-					else if(episode == 3)
-					{
-						newtile = 56;
-						// try to guess, if it is a 32x32 (4 16x16) Tile
-						if(mp_map->at(x-1, y-1) == (unsigned int) newtile &&
-								mp_map->at(x, y-1) == (unsigned int) newtile  &&
-								mp_map->at(x-1, y) == (unsigned int) newtile)
-						{
-							mp_map->setTile(x-1, y-1, 52);
-							mp_map->setTile(x, y-1, 53);
-							mp_map->setTile(x-1, y, 54);
-							newtile = 55;
-						}
-					}
-					mp_map->setTile(x, y, newtile);
 				}
-				else
+				else if(episode == 3)
 				{
-					mp_map->m_objectlayer[x][y] = t;
+					newtile = 56;
+					// try to guess, if it is a 32x32 (4 16x16) Tile
+					if(mp_map->at(x-1, y-1) == (unsigned int) newtile &&
+							mp_map->at(x, y-1) == (unsigned int) newtile  &&
+							mp_map->at(x-1, y) == (unsigned int) newtile)
+					{
+						mp_map->setTile(x-1, y-1, 52);
+						mp_map->setTile(x, y-1, 53);
+						mp_map->setTile(x-1, y, 54);
+						newtile = 55;
+					}
 				}
+				mp_map->setTile(x, y, newtile);
+			}
+			else
+			{
+				mp_map->m_objectlayer[x][y] = t;
 			}
 			break;
 	}
