@@ -119,6 +119,7 @@ void CPlayGame::setupPlayers()
 		it_player->setMapData(&m_Map);
 		it_player->setPhysics(&m_PhysicsSettings);
 		it_player->exists = true;
+		it_player->solid=!(it_player->godmode);
 	}
 }
 
