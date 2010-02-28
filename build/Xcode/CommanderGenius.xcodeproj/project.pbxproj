@@ -73,7 +73,6 @@
 		6350FA64104490B600A992D5 /* VENDOR.DOC in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C71044797300A992D5 /* VENDOR.DOC */; };
 		6350FA7A104490B600A992D5 /* resolutions.cfg in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7DD1044797300A992D5 /* resolutions.cfg */; };
 		6350FB3710449E2B00A992D5 /* changelog.txt in Copy Text Files */ = {isa = PBXBuildFile; fileRef = 6350FB0910449DAA00A992D5 /* changelog.txt */; };
-		6350FB3810449E2B00A992D5 /* future.txt in Copy Text Files */ = {isa = PBXBuildFile; fileRef = 6350FB0A10449DAA00A992D5 /* future.txt */; };
 		6350FB3910449E2B00A992D5 /* readme.txt in Copy Text Files */ = {isa = PBXBuildFile; fileRef = 6350FB0B10449DAA00A992D5 /* readme.txt */; };
 		6356F47110C0CFA900707F5B /* CPhysicsSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6356F46F10C0CFA900707F5B /* CPhysicsSettings.cpp */; };
 		63626651109E56E300C18BAA /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9D31013ABCA001643FA /* main.cpp */; };
@@ -296,7 +295,6 @@
 			dstSubfolderSpec = 16;
 			files = (
 				6350FB3710449E2B00A992D5 /* changelog.txt in Copy Text Files */,
-				6350FB3810449E2B00A992D5 /* future.txt in Copy Text Files */,
 				6350FB3910449E2B00A992D5 /* readme.txt in Copy Text Files */,
 			);
 			name = "Copy Text Files";
@@ -637,7 +635,6 @@
 		6350F7C71044797300A992D5 /* VENDOR.DOC */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VENDOR.DOC; sourceTree = "<group>"; };
 		6350F7DD1044797300A992D5 /* resolutions.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = resolutions.cfg; sourceTree = "<group>"; };
 		6350FB0910449DAA00A992D5 /* changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = changelog.txt; path = ../../changelog.txt; sourceTree = SOURCE_ROOT; };
-		6350FB0A10449DAA00A992D5 /* future.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = future.txt; path = ../../future.txt; sourceTree = SOURCE_ROOT; };
 		6350FB0B10449DAA00A992D5 /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = readme.txt; path = ../../readme.txt; sourceTree = SOURCE_ROOT; };
 		6356F46F10C0CFA900707F5B /* CPhysicsSettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPhysicsSettings.cpp; sourceTree = "<group>"; };
 		6356F47010C0CFA900707F5B /* CPhysicsSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPhysicsSettings.h; sourceTree = "<group>"; };
@@ -832,7 +829,6 @@
 				63AB8C2E107C62D0001EE22F /* cglogo.icns */,
 				6350FB0910449DAA00A992D5 /* changelog.txt */,
 				6350F7A11044797300A992D5 /* data */,
-				6350FB0A10449DAA00A992D5 /* future.txt */,
 				8D0C4E960486CD37000505A6 /* Info.plist */,
 				0867D6AAFE840B52C02AAC07 /* InfoPlist.strings */,
 				1DDD57E20DA1CFC700B32029 /* main.xib */,

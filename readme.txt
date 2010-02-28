@@ -8,69 +8,63 @@
 *    (c)2009-2010            Pizza2004       *
 *    (c)2009-2010            Pickle          *
 *    (c)2009-2010            Tulip           *
-*    (c)2009                 DaVince         *
-*    (c)2003-2005 and 2009   Caitlin Shaw    *
+*    (c)2009-2010            DaVince         *
+*    (c)2003-2010			 Caitlin Shaw    *
 *           Released under GNU/GPL           *
 *                                            *
 *            Release v0.3.1.0                *
 *                                            *
 **********************************************
 
-Welcome to Commander Genius (aka CloneKeenPlus)
+Thanks for downloading Commander Genius!
 
-Commander Genius is an almost complete open-source clone of
-the old classic DOS game, Commander Keen: Invasion of the
-Vorticons by ID Software. Commander Genius requires the original game
-data files to work. You can play all three episodes of the game and
-some fanmade mods.
+Commander Genius is an open-source clone of
+Commander Keen, which allows you to play the
+original three games, and a majority of the mods
+made for it.  All of the original data files
+are required to do so, however, we convienently
+include Episode 1 for you enjoyment.
 
-Commander Genius currently runs under Linux/X11, Windows 
-and MacOS X with SDL. Also portable systems are supported 
-like Wiz, GP2X and iPhone  
+Commander Genius runs on Linux/X11, Windows,
+MacOS X, Wiz, GP2X and the iPhone, with plans
+to release on other platforms in the future.
+If you think you would like to port it,
+please send us a message and we will do our
+best to help you understand the code.
 
-Commander Genius tries to mostly replicate the original game,
-however there are also a number of improvements like:
-- smoother scrolling
+The main goal of Commander Genius is to copy
+the original games as much as possible, however
+there are also a number of improvements like:
 - MMX Support
-- OpenGL Acceleration (through Hardware on some systems)
-- better graphic effects (transparency, fading)
-- Multiplayer support
-- high quality packs (for better and more sounds and ingame music)
-- games menu that allows choosing which one to play
-- ingame-Menu
-- Savestyle like in Commander Keen Galaxy Series (No more old nasty numbering slots!)
-- gamepad support (for using your input devices as you want)
-- built in patch system for mods (WIP)
-- better logics like keycards-stacking. Keen can collect multiple keycards. (Good for mods)
+- OpenGL Acceleration
+- Better Graphic Effects
+- Multiplayer Support
+- High Quality Packs
+- In-Game Menu
+- Named Save Slots
+- Unrestricted Joystick Support
+- Many More!
 
-and much more!
+We renamed CloneKeenPlus, because of some major
+rewrites in the code, we now call it Commander
+Genius!  After the all these major rewrites,
+have retained only a very small portion of the
+original CloneKeen code, but it was the base of
+CloneKeen that allowed this to happen. Because
+of that we still honor Caitlin Shaw and all the
+work she did on that engine.
 
-To our knowledge this is the only released attempt at
-writing a third-party Keen game that has reached this
-stage of completeness.
+The Commander Genius source code may be freely
+distributed and modified as per the GPL, just
+please remember to give credit to the original
+authors. We worked hard on it!
 
-Commander Genius is a new edition of CloneKeenPlus.
-The reason we call it is because this version is compiled
-with GNU C++ (previously GNU C) and has a different Engine. 
-Some functions are now classes. 
-The idea behind that is to provide a faster, more 
-stable program and a better code sylte. Features like 
-the implementation of resolution changes was achieved 
-through that new engine. 
-Although the program itself looks very similar 
-the skeleton of the program is very different 
-to the one of CloneKeen.
-
-In fact the only code that remains of CloneKeen are the
-enemy AI, altough they have been heavily modified. I would
-say, that 5% of CloneKeen Code is in Commander Genius.
-
-But we still want to honor Caitlin Shaw how made that engine possible.
-We based our work on her CloneKeen.
-
-The Commander Genius source code may be freely distributed and
-modified as per the GPL, just please remember to give
-credit to the original authors.
+///Old Unchanged for a while part of the readme
+///Sorry, but we don't have the time to sort
+///through this mess and fix it up for the
+///new release, but we will make a much better
+///version of the readme for the next release,
+///you can count on that!
 
 Setting up the data of the game:
 
@@ -135,7 +129,7 @@ Compiling CG on any Linux/UNIX (other than Ubuntu):
 - VIDEO SYSTEM -
 Being cross-platform, there are many methods to detect different resolutions on a system.
 
-Gernerally it is not necessary, because many resolutions are already supported, but if 
+Generally it is not necessary, because many resolutions are already supported, but if 
 you want to support other resolutions that you don't find in the options list just modify the
 "resolutions.cfg" file by hand. CG always reads this file and checks whether your card and 
 monitor support it.
@@ -219,7 +213,7 @@ Also many special thanks to Martin Hauber (Tulip) who has been supporting me all
 the Windows version of CKP and giving me access to new information. Without you it wouldn't be so great now!
 
 And also special thanks to Chad Ian Anderson (Pizza2004), Scott (Pickle) and Albert Zeyer
-for his changes. They helped us a lot on the code. 
+for his changes. They helped out a lot on the code. 
 
 I'm sure, there were more people who helped me and I forgot to mention, but
 many thanks to them also.
