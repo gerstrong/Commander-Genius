@@ -351,7 +351,7 @@ void CEGALatch::applyMasks()
 					rect.x = 16*((t+1)%13) + x;
 					rect.y = y+16*((t+1)/13);
 
-					if( r>=250 && g>=250 && b>=250 ) //In this case set colourkey
+					if( r>=250 && g>=250 && b>=250 ) // In this case set colourkey
 					{
 						SDL_FillRect(sfc, &rect, SDL_MapRGBA(sfc->format, 0, 0, 0, 0));
 					}

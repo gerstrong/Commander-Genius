@@ -20,6 +20,7 @@
 // structures for each AI module's data
 #include "../vorticon/ai/enemydata.h"
 #include "../common/CMap.h"
+#include "../graphics/CGfxEngine.h"
 #include "../game.h"
 #include "options.h"
 #include <vector>
@@ -155,6 +156,7 @@ public:
 	void processFalling();
 
 	void draw();
+	void drawMask(SDL_Surface *dst, CSprite &Sprite, int mx, int my);
 
 	virtual ~CObject();
 

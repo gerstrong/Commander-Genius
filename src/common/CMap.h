@@ -15,7 +15,7 @@
 
 // animation rate of animated tiles
 #define ANIM_TILE_TIME        4
-#define MAX_ANIMTILES  200
+#define MAX_ANIMTILES  		400
 
 // for each entry in the animtileinuse array that is nonzero, that
 // location on the display is an animated tile which is currently registered

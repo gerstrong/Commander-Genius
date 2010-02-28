@@ -36,7 +36,6 @@
 
 
 #define MAX_OBJECTS    100
-#define MAX_ANIMTILES  200
 
 #define NO_QUIT                 0
 #define QUIT_PROGRAM            1

@@ -571,7 +571,6 @@ void CPlayGame::collectHighScoreInfo()
 		mp_HighScores->writeHighScoreCommon(m_Player[0].inventory.score);
 }
 
-
 // This function draws the objects that need to be seen on the screen
 void CPlayGame::drawObjects()
 {
