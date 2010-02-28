@@ -9,7 +9,7 @@
 *    (c)2009-2010            Pickle          *
 *    (c)2009-2010            Tulip           *
 *    (c)2009-2010            DaVince         *
-*    (c)2003-2010			 Caitlin Shaw    *
+*    (c)2003-2010            Caitlin Shaw    *
 *           Released under GNU/GPL           *
 *                                            *
 *            Release v0.3.1.0                *
@@ -98,7 +98,7 @@ Howto use Commander Genius (If you didn't compile it):
 
 Howto compile it under Ubuntu (testet on Karmic):
  * This is based on the source code that we provide on our website
- * As I know which packages are needed, because I use Ubuntu, here is an extra guide. 
+ * As we know which packages are needed, because we use Ubuntu, here is an extra guide. 
  * Install through Synaptic or "sudo apt-get install" following packages:
  	- build-essential
  	- libvorbis-dev
@@ -192,6 +192,8 @@ Sending me the "CGLog.html" or "stdout.txt" file might help tracking the error.
 Also remember to test the version from the testing repo we provide. You error might have been fixed there.
 Those versions are really great!
 
+http://sourceforge.net/apps/trac/clonekeenplus/
+
 - ACKNOWLEDGEMENTS -
 Many thanks to people who has helped me so far in this project with their
 suggestions:
@@ -212,16 +214,19 @@ Iv4n
 Also many special thanks to Martin Hauber (Tulip) who has been supporting me all the time in testing
 the Windows version of CKP and giving me access to new information. Without you it wouldn't be so great now!
 
-And also special thanks to Chad Ian Anderson (Pizza2004), Scott (Pickle) and Albert Zeyer
-for his changes. They helped out a lot on the code. 
+And also special thanks to Chad Ian Anderson (Pizza2004) in helping us in many points of the game. Even in 
+difficult times he always supported us.
 
-I'm sure, there were more people who helped me and I forgot to mention, but
+Furthermore special thanks to Scott (Pickle) and Albert Zeyer
+for his changes. They helped out a lot on the quality of the code and performance incrate.
+
+I'm sure, there were more people who helped us and we forgot to mention, but
 many thanks to them also.
 
 Many thanks to all of you, the project has gone farther, and will be a nice
 port to Commander Keen!
 
-And yes, it's no rumor, we are working on Keen 4 support!
+And yes, it's no rumor, we are working on Keen 4 support! Stay tuned!
                             
 ****************************************************************************
 For questions, comments, or updates to the source tree
