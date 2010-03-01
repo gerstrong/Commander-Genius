@@ -193,7 +193,6 @@ bool CGameControl::loadResources(unsigned short Episode, const std::string& Data
 			// load the strings.
 			CMessages Messages(p_exedata, Episode, version);
 			Messages.extractGlobalStrings();
-			//loadstrings();
 		}
 
 		if( (flags & LOADSND) == LOADSND )

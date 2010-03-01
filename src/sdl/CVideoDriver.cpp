@@ -119,8 +119,9 @@ void CVideoDriver::initResolutionList()
 		while(!ResolutionFile.eof())
 		{
 			ResolutionFile.getline(buf,256);
-			if(sscanf(buf,"%ix%i", &resolution.width, &resolution.height) == 2) // Now check if it's possible to use this resolution
-				resolution.depth = 32;
+			resolution.depth = 32;
+			if(sscanf(buf,"%ix%ix%i", &resolution.width, &resolution.height, &resolution.depth) >= 2)
+				// Now check if it's possible to use this resolution
 
 			resolution.depth = SDL_VideoModeOK(resolution.width, resolution.height,
 											   resolution.depth, SDL_FULLSCREEN);
@@ -136,7 +137,10 @@ void CVideoDriver::initResolutionList()
 				}
 
 				if(i == m_Resolutionlist.end())
+				{
 					m_Resolutionlist.push_back(resolution);
+					printf("%ix%ix%i\n",resolution.width, resolution.height, resolution.depth);
+				}
 			}
 		}
 		ResolutionFile.close();
@@ -416,9 +420,9 @@ bool CVideoDriver::createSurfaces()
 									Mode, screen->format );
 		blitsurface_alloc = 1;
     }
-    VRAMPtr = (unsigned char*)screen->pixels +
-	((m_Resolution.width * stretch_blit_yoff * m_Resolution.depth)>>3)+
-	screenrect.y*screen->pitch + (screenrect.x*m_Resolution.depth>>3);
+    VRAMPtr = (unsigned char*)screen->pixels;// +
+	//((m_Resolution.width * stretch_blit_yoff * m_Resolution.depth)>>3)+
+	//screenrect.y*screen->pitch + (screenrect.x*m_Resolution.depth>>3);
 	
     // Some surfaces could get 320x240 and the screenspace is extended.
     // The video class must be changed for any further resolutions
@@ -592,7 +596,17 @@ void CVideoDriver::updateScreen()
 			
 			if(m_ScaleXFilter == 1)
 			{
-				noscale((char*)VRAMPtr, (char*)BlitSurface->pixels, (m_Resolution.depth>>3));
+				SDL_Rect scrrect, dstrect;
+				scrrect.y = 0;
+				scrrect.x = 0;
+				scrrect.h = game_resolution_rect.h;
+				scrrect.w = game_resolution_rect.w;
+				dstrect.x = (m_Resolution.width-game_resolution_rect.w)/2;
+				dstrect.y = (m_Resolution.height-game_resolution_rect.h)/2;
+				dstrect.w = game_resolution_rect.w;
+				dstrect.h = game_resolution_rect.h;
+
+				SDL_BlitSurface(BlitSurface, &scrrect, screen, &dstrect);
 			}
 			else
 			{
@@ -614,8 +628,8 @@ void CVideoDriver::updateScreen()
 			}
 			else if(m_ScaleXFilter == 2)
 			{
-				scale(2, VRAMPtr, m_Resolution.width*(m_Resolution.depth>>3), BlitSurface->pixels,
-					  game_resolution_rect.w*(m_Resolution.depth>>3), (m_Resolution.depth>>3),
+				scale(2, VRAMPtr, m_Resolution.width<<2, BlitSurface->pixels,
+					  game_resolution_rect.w<<2, 4,
 					  game_resolution_rect.w, game_resolution_rect.h);
 			}
 			else
@@ -635,17 +649,17 @@ void CVideoDriver::updateScreen()
 			
 			if(m_ScaleXFilter == 1)
 			{
-				scale3xnofilter((char*)VRAMPtr, (char*)BlitSurface->pixels, (m_Resolution.depth>>3));
+				scale3xnofilter((char*)VRAMPtr, (char*)BlitSurface->pixels, 4);
 			}
 			else if(m_ScaleXFilter == 2)
 			{
-				scale(2, VRAMPtr, m_Resolution.width*(m_Resolution.depth>>3), BlitSurface->pixels,
-					  game_resolution_rect.w*(m_Resolution.depth>>3), (m_Resolution.depth>>3), game_resolution_rect.w, game_resolution_rect.h);
+				scale(2, VRAMPtr, m_Resolution.width<<2, BlitSurface->pixels,
+					  game_resolution_rect.w<<2, 4, game_resolution_rect.w, game_resolution_rect.h);
 			}
 			else if(m_ScaleXFilter == 3)
 			{
-				scale(3, VRAMPtr, m_Resolution.width*(m_Resolution.depth>>3), BlitSurface->pixels,
-					  game_resolution_rect.w*(m_Resolution.depth>>3), (m_Resolution.depth>>3), game_resolution_rect.w, game_resolution_rect.h);
+				scale(3, VRAMPtr, m_Resolution.width<<2, BlitSurface->pixels,
+					  game_resolution_rect.w<<2, 4, game_resolution_rect.w, game_resolution_rect.h);
 			}
 			else
 			{
@@ -667,18 +681,18 @@ void CVideoDriver::updateScreen()
 			}
 			else if(m_ScaleXFilter == 2)
 			{
-				scale(2, VRAMPtr, m_Resolution.width*(m_Resolution.depth>>3), BlitSurface->pixels,
-					  game_resolution_rect.w*(m_Resolution.depth>>3), (m_Resolution.depth>>3), game_resolution_rect.w, game_resolution_rect.h);
+				scale(2, VRAMPtr, m_Resolution.width<<2, BlitSurface->pixels,
+					  game_resolution_rect.w<<2, 4, game_resolution_rect.w, game_resolution_rect.h);
 			}
 			else if(m_ScaleXFilter == 3)
 			{
-				scale(3, VRAMPtr, m_Resolution.width*(m_Resolution.depth>>3), BlitSurface->pixels,
-					  game_resolution_rect.w*(m_Resolution.depth>>3), (m_Resolution.depth>>3), game_resolution_rect.w, game_resolution_rect.h);
+				scale(3, VRAMPtr, m_Resolution.width<<2, BlitSurface->pixels,
+					  game_resolution_rect.w<<2, 4, game_resolution_rect.w, game_resolution_rect.h);
 			}
 			else if(m_ScaleXFilter == 4)
 			{
-				scale(4, VRAMPtr, m_Resolution.width*(m_Resolution.depth>>3), BlitSurface->pixels,
-					  game_resolution_rect.w*(m_Resolution.depth>>3), (m_Resolution.depth>>3), game_resolution_rect.w, game_resolution_rect.h);
+				scale(4, VRAMPtr, m_Resolution.width<<2, BlitSurface->pixels,
+					  game_resolution_rect.w<<2, 4, game_resolution_rect.w, game_resolution_rect.h);
 			}
 			else
 			{
@@ -698,14 +712,6 @@ void CVideoDriver::updateScreen()
 #ifdef USE_OPENGL
 	}
 #endif
-}
-
-void CVideoDriver::noscale(char *dest, char *src, short bbp)
-{
-	// just passes a blitsurface to the screen
-	int i;
-	for(i=0 ; i < game_resolution_rect.h ; i++)
-		memcpy(dest+(i*m_Resolution.width)*bbp,src+(i*game_resolution_rect.w)*bbp,320*bbp);
 }
 
 void CVideoDriver::scale2xnofilter(char *dest, char *src, short bbp)

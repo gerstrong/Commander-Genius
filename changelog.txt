@@ -4,6 +4,10 @@ Commander Genius Release (CloneKeenPlus):
 v0.3.1.0:
 ---------
 
+01-03-2010
+- Most of the bugs reported on Trac have been fixed.
+- We have finally another release!
+
 31-01-2010
 - Improved Bump function, which makes Keen push, when touched by a yorp a similar foe
 - Imrpoved the yorp behaviour, when Keen touches him. It should be like in the original also.  

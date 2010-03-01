@@ -114,7 +114,6 @@ private:
 	} m_animtiles[MAX_ANIMTILES+1];
 
 	unsigned int m_AnimTileInUse[ATILEINUSE_SIZEX][ATILEINUSE_SIZEY];
-	int m_animtiletimer, m_curanimtileframe;
-};
+	int m_animtiletimer, m_curanimtileframe;};
 
 #endif /* CMAP_H_ */

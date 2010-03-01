@@ -54,7 +54,6 @@ public:
 
 	void collectSurfaces();
 	void updateScreen();
-	void noscale(char *dest, char *src, short bbp);
 	void scale2xnofilter(char *dest, char *src, short bbp);
 	void scale3xnofilter(char *dest, char *src, short bbp);
 	void scale4xnofilter(char *dest, char *src, short bbp);
