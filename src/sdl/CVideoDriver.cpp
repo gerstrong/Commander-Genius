@@ -96,7 +96,7 @@ CVideoDriver::CVideoDriver() {
 	
 	initResolutionList();
 
-	// take the first default resolution. It might be change if there is a config file already created
+	// take the first default resolution. It might be changed if there is a config file already created
 	setMode(m_Resolutionlist.front().width, m_Resolutionlist.front().height, m_Resolutionlist.front().depth);
 }
 
@@ -455,7 +455,7 @@ SDL_Surface* CVideoDriver::createSurface( std::string name, bool alpha, int widt
     SDL_Surface *temporary, *optimized;
 	
 	temporary = SDL_CreateRGBSurface( mode, width, height, bpp, format->Rmask, format->Gmask, format->Bmask, format->Amask);
-	if (alpha) {
+	if (alpha && bpp==32) {
         optimized = SDL_DisplayFormatAlpha( temporary );
 	} else {
         optimized = SDL_DisplayFormat( temporary );
@@ -466,6 +466,7 @@ SDL_Surface* CVideoDriver::createSurface( std::string name, bool alpha, int widt
 		g_pLogFile->textOut(RED,"VideoDriver: Couldn't create surface:" + name +"<br>");
 		return false;
 	}
+	bpp = optimized->format->BitsPerPixel;
 	return optimized;
 }
 
