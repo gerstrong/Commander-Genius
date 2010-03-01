@@ -395,8 +395,6 @@ void CVideoDriver::setZoom(short value) { Zoom = value; }
 
 bool CVideoDriver::createSurfaces()
 {
-	unsigned stretch_blit_yoff = 0;
-	
 	// This function creates the surfaces which are needed for the game.
     ScrollSurface = createSurface( "ScrollSurface", true,
 								  512,
@@ -420,9 +418,8 @@ bool CVideoDriver::createSurfaces()
 									Mode, screen->format );
 		blitsurface_alloc = 1;
     }
-    VRAMPtr = (unsigned char*)screen->pixels;// +
-	//((m_Resolution.width * stretch_blit_yoff * m_Resolution.depth)>>3)+
-	//screenrect.y*screen->pitch + (screenrect.x*m_Resolution.depth>>3);
+    VRAMPtr = (unsigned char*)screen->pixels +
+	screenrect.y*screen->pitch + (screenrect.x*m_Resolution.depth>>3);
 	
     // Some surfaces could get 320x240 and the screenspace is extended.
     // The video class must be changed for any further resolutions
