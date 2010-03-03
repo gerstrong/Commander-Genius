@@ -138,6 +138,12 @@ int CExeFile::getEXEVersion()
 			else
 				return 140;
 
+		case 259232:
+			if(m_episode != 4)
+				return -1;
+			else
+				return 110;
+
 		default: return -2;
     }
 }
@@ -210,7 +216,7 @@ const unsigned short EXEZM = 0x4D5A;
 
 /* SM: Modified so we can give a value of "headerlen" we're expecting... this way
  * we might support any exe file in the future */
-bool CExeFile::readExeImageSize(unsigned char *&p_data_start, unsigned long *imglen, unsigned long *headerlen)
+bool CExeFile::readExeImageSize(unsigned char *p_data_start, unsigned long *imglen, unsigned long *headerlen)
 {
 	EXE_HEADER head;
 

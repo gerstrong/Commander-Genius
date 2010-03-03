@@ -160,11 +160,20 @@ bool CGameLauncher::scanExecutables(const std::string& path)
             // Check for an existing custom label for the menu
             newentry.name    = scanLabels(file);
 			
+            std::string verstr;
+            if(newentry.version<0) // Version couldn't be read!
+            	verstr = "unknown";
+            else
+            	verstr = "v" + itoa(newentry.version/100) + "." + itoa(newentry.version%100);
+
+
             if( newentry.name.length() <= 0 )
             {
                 newentry.name = "Episode: " + itoa(newentry.episode);
-                newentry.name += " v" +itoa(newentry.version) + " " + newentry.path;
+                newentry.name += " " + verstr + " " + newentry.path;
             }
+            newentry.name += " ";
+
             // Save the type information about the exe
             m_Entries.push_back(newentry);
             // Add a new menu item

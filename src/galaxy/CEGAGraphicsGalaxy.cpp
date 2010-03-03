@@ -132,6 +132,7 @@ bool CEGAGraphicsGalaxy::begin()
 		return false;
 
 	// We need the EGADICT. Read it to our structure of Huffman, he needs it!
+	// TODO: Huffman is wrong here!
 	Huffman.readDictionary(p_data, exeheaderlen + EpisodeInfo[ep].OffEgaDict);
 
 	// Now we go to EGAHEAD

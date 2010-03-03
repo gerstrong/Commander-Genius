@@ -39,7 +39,7 @@
 struct GameEntry {
     std::string path;
     std::string name;
-    Uint16 version;
+    short version;
     Uint16 episode;
     bool crcpass;
 };

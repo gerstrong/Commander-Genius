@@ -369,7 +369,7 @@ bool CVideoDriver::applyMode()
 	m_Resolution.depth = screen->format->BitsPerPixel;
 	
 	// If Fullscreenm hide the mouse cursor.
-	// Anyway, it just can point and does not interact
+	// Anyway, it just can point but does not interact yet
  	SDL_ShowCursor(!Fullscreen);
 	
 	return true;
