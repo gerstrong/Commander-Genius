@@ -69,7 +69,7 @@ void CFlash::process()
 		if(m_FadeDir == FADE_OUT && m_Alpha == 0) m_finished = true;
 	}
 
-	// The developer set a time in the constructor. This effect w ill last for the given time.
+	// The developer set a time in the constructor. This effect will last for the given time.
 	if(ElapsedTime >= m_RunTime)
 		m_finished = true;
 }

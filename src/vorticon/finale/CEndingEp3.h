@@ -12,6 +12,7 @@
 #include "../../common/CMap.h"
 #include "../../common/CPlayer.h"
 #include "../../dialog/CMessageBox.h"
+#include "../../sdl/CTimer.h"
 #include <vector>
 #include <list>
 #include <SDL.h>
@@ -22,6 +23,7 @@ public:
 
 	void process();
 	void HonorScene();
+	void PaparazziScene();
 	void AwardScene();
 
 	virtual ~CEndingEp3();
@@ -30,6 +32,8 @@ private:
 	bool m_mustsetup;
 	Uint32 m_starttime;
 	Uint32 m_timepassed;
+	CTimer m_Timer;
+	int m_counter;
 
 	std::vector<CPlayer> &m_Player;
 	CFinaleStaticScene *mp_FinaleStaticScene;
