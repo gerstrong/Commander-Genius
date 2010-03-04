@@ -132,7 +132,6 @@ bool CEGAGraphicsGalaxy::begin()
 		return false;
 
 	// We need the EGADICT. Read it to our structure of Huffman, he needs it!
-	// TODO: Huffman is wrong here!
 	Huffman.readDictionary(p_data, exeheaderlen + EpisodeInfo[ep].OffEgaDict);
 
 	// Now we go to EGAHEAD
@@ -151,11 +150,21 @@ bool CEGAGraphicsGalaxy::begin()
 
 	for(size_t i = 0 ; i < EpisodeInfo[ep].NumChunks ; i++)
 	{
-		if (ep != 3) 	memcpy(&offset, p_head,3); // Keen 4-6
-		else memcpy(&offset, p_head,4); 		   // KeenDreams
-		offset &= offset_limit;
+		if (ep != 3) {
+			memcpy(&offset, p_head,3); // Keen 4-6
+			p_head += 3;
+			offset &= offset_limit;
+		}
+		else {
+			memcpy(&offset, p_head,4); // KeenDreams
+			p_head += 4;
+		}
 		m_egahead.push_back(offset);
 	}
+
+	/////////////////
+	// TODO: Until here everything seems to work fine...
+	/////////////////
 
 	/* Now read the EGAGRAPH */
 	std::string filename;
@@ -180,11 +189,15 @@ bool CEGAGraphicsGalaxy::begin()
 
 	File.read((char*)CompEgaGraphData, egagraphlen);
 
-	// Now lets decompress the graphics
-	m_egagraph.reserve(EpisodeInfo[ep].NumChunks);
+	// Make a clean memory pattern
+	ChunkStruct ChunkTemplate;
+	ChunkTemplate.len=0;
+	m_egagraph.assign(EpisodeInfo[ep].NumChunks, ChunkTemplate);
 
 	unsigned long inlen, outlen;
+	inlen = outlen = 0;
 
+	// Now lets decompress the graphics
 	for(size_t i = 0; i < EpisodeInfo[ep].NumChunks; i++)
 	{
 		/* Show that something is happening */
@@ -208,13 +221,13 @@ bool CEGAGraphicsGalaxy::begin()
 			}
 			else
 			{
-				memcpy(&outlen, CompEgaGraphData + offset, sizeof(unsigned long));
-				offset += sizeof(unsigned long);
+				memcpy(&outlen, CompEgaGraphData + offset, 4);
+				offset += 4;
 			}
 
 			/* Allocate memory and decompress the chunk */
 			m_egagraph[i].len = outlen;
-			m_egagraph[i].data.reserve(outlen);
+			m_egagraph[i].data.assign(outlen, 0);
 
 			inlen = 0;
 			/* Find out the input length */
@@ -244,7 +257,7 @@ bool CEGAGraphicsGalaxy::begin()
 		//SprHead = (SpriteHeadStruct *)m_EgaGraph[2].data;
 	//}
 
-	delete CompEgaGraphData;
+	delete [] CompEgaGraphData;
 
 	File.close();
 	return true;
