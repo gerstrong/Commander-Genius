@@ -266,15 +266,16 @@ bool CEGAGraphicsGalaxy::begin()
 bool CEGAGraphicsGalaxy::exportBMP()
 {
     int ep = m_episode - 4;
-    BitmapHeadStruct *BmpHead = (BitmapHeadStruct *)m_egagraph[0].data[0];
+    BitmapHeadStruct *BmpHead = (BitmapHeadStruct *) &(m_egagraph.at(0).data.at(0));
+    SDL_Color *Palette = g_pGfxEngine->Palette.m_Palette;
 
 	for(size_t i = 0; i < EpisodeInfo[ep].NumBitmaps; i++)
 	{
 		SDL_Surface *sfc = SDL_CreateRGBSurface( g_pVideoDriver->getScrollSurface()->flags, BmpHead[i].Width, BmpHead[i].Height, 8, 0, 0, 0, 0);
-		SDL_SetColors( sfc, g_pGfxEngine->Palette.m_Palette, 0, 255);
+		SDL_SetColors( sfc, Palette, 0, 255);
 		if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
 
-		if(m_egagraph[EpisodeInfo[ep].IndexBitmaps + i].data[0])
+		if(!m_egagraph[EpisodeInfo[ep].IndexBitmaps + i].data.empty())
 		{
 			/* Decode the bitmap data */
 			for(int p = 0; p < 4; p++)
@@ -284,7 +285,7 @@ bool CEGAGraphicsGalaxy::exportBMP()
 				Uint8* pixel = (Uint8*) sfc->pixels;
 
 				/* Decode the lines of the bitmap data */
-				pointer = &m_egagraph[EpisodeInfo[ep].IndexBitmaps + i].data[0] + p * BmpHead[i].Width * BmpHead[i].Height;
+				pointer = &(m_egagraph[EpisodeInfo[ep].IndexBitmaps + i].data[0]) + p * BmpHead[i].Width * BmpHead[i].Height;
 				for(size_t y = 0; y < BmpHead[i].Height; y++)
 					memcpy(pixel, pointer + y * BmpHead[i].Width, BmpHead[i].Width);
 			}
