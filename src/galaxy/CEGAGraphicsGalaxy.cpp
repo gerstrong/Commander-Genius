@@ -263,6 +263,18 @@ bool CEGAGraphicsGalaxy::begin()
 	return true;
 }
 
+// This function gets the bit of an unsigned char variable
+Uint8 CEGAGraphicsGalaxy::getBit(unsigned char data, Uint8 leftshift)
+{
+	Uint8 value;
+
+	value = data & (1<<leftshift);
+	value >>= leftshift;
+
+	return value;
+}
+
+// This one extracts the bitmaps used in Keen 4-6 (Maybe Dreams in future)
 bool CEGAGraphicsGalaxy::exportBMP()
 {
     int ep = m_episode - 4;
@@ -271,23 +283,37 @@ bool CEGAGraphicsGalaxy::exportBMP()
 
 	for(size_t i = 0; i < EpisodeInfo[ep].NumBitmaps; i++)
 	{
-		SDL_Surface *sfc = SDL_CreateRGBSurface( g_pVideoDriver->getScrollSurface()->flags, BmpHead[i].Width, BmpHead[i].Height, 8, 0, 0, 0, 0);
+		SDL_Surface *sfc = SDL_CreateRGBSurface( g_pVideoDriver->getScrollSurface()->flags, BmpHead[i].Width*8, BmpHead[i].Height, 8, 0, 0, 0, 0);
 		SDL_SetColors( sfc, Palette, 0, 255);
 		if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
+		SDL_FillRect(sfc, NULL, 0x00);
 
-		if(!m_egagraph[EpisodeInfo[ep].IndexBitmaps + i].data.empty())
+		if(!m_egagraph.at(EpisodeInfo[ep].IndexBitmaps + i).data.empty())
 		{
-			/* Decode the bitmap data */
+			// Decode the bitmap data
 			for(int p = 0; p < 4; p++)
 			{
 				unsigned char *pointer;
-				/* Decode the lines of the bitmap data */
 				Uint8* pixel = (Uint8*) sfc->pixels;
 
-				/* Decode the lines of the bitmap data */
+				// get location of plane p
 				pointer = &(m_egagraph[EpisodeInfo[ep].IndexBitmaps + i].data[0]) + p * BmpHead[i].Width * BmpHead[i].Height;
+
+				// now try to extract the bits and pass it to the SDL-Surface
 				for(size_t y = 0; y < BmpHead[i].Height; y++)
-					memcpy(pixel, pointer + y * BmpHead[i].Width, BmpHead[i].Width);
+				{
+					for(size_t x = 0; x < BmpHead[i].Width; x++)
+					{
+						Uint8 bit,b;
+						for(b=0 ; b<8 ; b++)
+						{
+							bit = getBit(*pointer, 7-b);
+							*pixel |= (bit<<p);
+							pixel++;
+						}
+						pointer++;
+					}
+				}
 			}
 
 			/* Create the bitmap file */
