@@ -19,7 +19,7 @@
 #include "vorticon/CPassive.h"
 #include "vorticon/playgame/CPlayGame.h"
 
-#include "galaxy/CEGAGraphicsGalaxy.h"
+#include "engine/galaxy/CEGAGraphicsGalaxy.h"
 
 #include <string>
 

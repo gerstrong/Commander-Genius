@@ -13,7 +13,8 @@
 #include "CLogFile.h"
 #include "sdl/sound/CSound.h"
 #include "graphics/effects/CColorMerge.h"
-#include "galaxy/CEGAGraphicsGalaxy.h"
+#include "engine/galaxy/CEGAGraphicsGalaxy.h"
+#include "engine/galaxy/CPassive.h"
 #include "arguments.h"
 
 #define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
@@ -98,10 +99,15 @@ bool CGameControl::init(char mode)
 	else if(m_mode == PASSIVE)
 	{
 		// Create mp_PassiveMode object used for the screens while Player is not playing
-		mp_PassiveMode = new CPassive( m_Episode, m_DataDirectory, m_SavedGame, mp_option );
+		//if(m_Episode >= 4)
+			//mp_PassiveMode = new galaxy::CPassive( m_Episode, m_DataDirectory, m_SavedGame, mp_option );
+		//else
+			mp_PassiveMode = new CPassive( m_Episode, m_DataDirectory, m_SavedGame, mp_option );
+
 		if( m_endgame == true )
 		{
 			m_endgame = false;
+			// TODO: Overload this function for galaxy
 			if( mp_PassiveMode->init(mp_PassiveMode->TITLE) ) return true;
 		}
 		else
@@ -115,6 +121,7 @@ bool CGameControl::init(char mode)
 
 		if(m_startLevel == 0) m_startLevel = WORLD_MAP_LEVEL;
 
+		// TODO: Overload this class for galaxy engine namespace
 		mp_PlayGame = new CPlayGame(m_Episode, m_startLevel,
 									m_Numplayers, m_Difficulty,
 									m_DataDirectory, mp_option,
@@ -210,7 +217,7 @@ bool CGameControl::loadResources(unsigned short Episode, const std::string& Data
 			// Decode the entire graphics for the game (Only EGAGRAPH.CK?)
 			SAFE_DELETE(m_EGAGraphics);
 
-			m_EGAGraphics = new CEGAGraphicsGalaxy(Episode, DataDirectory, ExeFile); // Path is relative to the data dir
+			m_EGAGraphics = new galaxy::CEGAGraphicsGalaxy(Episode, DataDirectory, ExeFile); // Path is relative to the data dir
 			if(!m_EGAGraphics) return false;
 
 			m_EGAGraphics->loadData();
@@ -258,7 +265,7 @@ void CGameControl::process()
 				// Load the Resources
 				if( loadResources( m_Episode, m_DataDirectory ) )
 				{
-					if(m_startLevel == 0)
+					if(m_startLevel == 0) // Starts normally
 					{
 						if(init(PASSIVE)) cleanup(GAMELAUNCHER);
 						else
