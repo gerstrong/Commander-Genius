@@ -7,6 +7,9 @@
 
 #include "CPassive.h"
 
+#include "../../graphics/CGfxEngine.h"
+#include "../../sdl/CVideoDriver.h"
+
 namespace galaxy
 {
 
@@ -15,6 +18,24 @@ CPassiveGalaxy::CPassiveGalaxy(char Episode, std::string DataDirectory,
 CPassive(Episode, DataDirectory, SavedGame, p_Option)
 {
 	// TODO Auto-generated destructor stub
+}
+
+bool CPassiveGalaxy::init(char mode)
+{
+	return true;
+}
+
+void CPassiveGalaxy::process()
+{
+	CBitmap &Bitmap = g_pGfxEngine->getBitmap(103);
+
+	// draw Bitmap here!
+	Bitmap.draw(g_pVideoDriver->BlitSurface, 0, 0);
+}
+
+void CPassiveGalaxy::cleanup()
+{
+
 }
 
 CPassiveGalaxy::~CPassiveGalaxy()

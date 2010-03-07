@@ -10,6 +10,7 @@
 
 #include <string>
 #include <vector>
+#include <SDL.h>
 #include "../../fileio/CExeFile.h"
 #include "../CEGAGraphics.h"
 
@@ -33,6 +34,7 @@ public:
 private:
 	std::vector<unsigned long> m_egahead;
 	std::vector<ChunkStruct> m_egagraph;
+
 	CExeFile &m_Exefile;
 };
 

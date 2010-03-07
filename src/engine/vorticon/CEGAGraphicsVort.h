@@ -20,7 +20,6 @@ public:
 	CEGAGraphicsVort(short episode, const std::string& path);
 
 	bool loadData( int version, unsigned char *p_exedata );
-
 	int getNumSprites() { return NumSprites; }
 
 	virtual ~CEGAGraphicsVort();

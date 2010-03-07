@@ -13,6 +13,7 @@
  */
 
 #include "CEGAGraphicsGalaxy.h"
+#include "../../graphics/CGfxEngine.h"
 #include "../../FindFile.h"
 #include "../../fileio/CHuffman.h"
 #include "../../CLogFile.h"
@@ -227,12 +228,12 @@ bool CEGAGraphicsGalaxy::begin()
 				offset += 4;
 			}
 
-			/* Allocate memory and decompress the chunk */
+			// Allocate memory and decompress the chunk
 			m_egagraph[i].len = outlen;
 			m_egagraph[i].data.assign(outlen, 0);
 
 			inlen = 0;
-			/* Find out the input length */
+			// Find out the input length
 			size_t j;
 			for(j = i + 1; j < EpisodeInfo[ep].NumChunks; j++)
 			{
@@ -252,7 +253,7 @@ bool CEGAGraphicsGalaxy::begin()
 		}
 	}
 
-	/* Set up pointers to bitmap and sprite tables if not doing KDR operations*/
+	// Set up pointers to bitmap and sprite tables if not doing KDR operations
 	//if (ep < 4) {
 		//BmpHead = (BitmapHeadStruct *)m_egagraph[0].data;
 		//BmpMaskedHead = (BitmapHeadStruct *)m_EgaGraph[1].data;
@@ -279,14 +280,20 @@ Uint8 CEGAGraphicsGalaxy::getBit(unsigned char data, Uint8 leftshift)
 // This one extracts the bitmaps used in Keen 4-6 (Maybe Dreams in future)
 bool CEGAGraphicsGalaxy::exportBMP()
 {
-    int ep = m_episode - 4;
-    BitmapHeadStruct *BmpHead = (BitmapHeadStruct *) &(m_egagraph.at(0).data.at(0));
-    SDL_Color *Palette = g_pGfxEngine->Palette.m_Palette;
+	int ep = m_episode - 4;
+	BitmapHeadStruct *BmpHead = (BitmapHeadStruct *) &(m_egagraph.at(0).data.at(0));
+	SDL_Color *Palette = g_pGfxEngine->Palette.m_Palette;
+
+	g_pGfxEngine->createEmptyBitmaps(EpisodeInfo[ep].NumBitmaps);
 
 	for(size_t i = 0; i < EpisodeInfo[ep].NumBitmaps; i++)
 	{
-		SDL_Surface *sfc = SDL_CreateRGBSurface( g_pVideoDriver->getScrollSurface()->flags, BmpHead[i].Width*8, BmpHead[i].Height, 8, 0, 0, 0, 0);
-		SDL_SetColors( sfc, Palette, 0, 255);
+		CBitmap &Bitmap = g_pGfxEngine->getBitmap(i);
+		Bitmap.setDimensions(BmpHead[i].Width*8, BmpHead[i].Height);
+		Bitmap.createSurface(g_pVideoDriver->getScrollSurface()->flags, Palette);
+
+		SDL_Surface* sfc = Bitmap.getSDLSurface();
+
 		if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
 		SDL_FillRect(sfc, NULL, 0x00);
 
@@ -317,19 +324,13 @@ bool CEGAGraphicsGalaxy::exportBMP()
 					}
 				}
 			}
-
-			/* Create the bitmap file */
-			std::string filename = "test"+itoa(i)+".bmp";
-			SDL_SaveBMP(sfc, filename.c_str());
-
-			/* Free the memory used */
-			SDL_FreeSurface(sfc);
 		}
 	}
 	return true;
 }
 
 CEGAGraphicsGalaxy::~CEGAGraphicsGalaxy()
-{}
+{
+}
 
 }

@@ -48,7 +48,7 @@ public:
 	void drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w, int h, Uint32 colour = 0xFFFFFF);
 	int getNumSprites() { return Sprite.size(); }
 
-	CBitmap &getBitmap(Uint16 slot) { return Bitmap[slot]; }
+	CBitmap &getBitmap(Uint16 slot) { return Bitmap.at(slot); }
 	CBitmap *getBitmap(const std::string &name);
 
 	CEffects *Effect() { return mp_Effects; }

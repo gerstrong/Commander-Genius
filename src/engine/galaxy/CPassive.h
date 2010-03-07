@@ -18,6 +18,11 @@ class CPassiveGalaxy : public CPassive
 public:
 	CPassiveGalaxy(char Episode, std::string DataDirectory,
 			CSavedGame &SavedGame, stOption *p_Option);
+
+	bool init(char mode = INTRO);
+	void process();
+	void cleanup();
+
 	virtual ~CPassiveGalaxy();
 };
 
