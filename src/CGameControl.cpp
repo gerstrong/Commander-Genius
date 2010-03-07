@@ -13,6 +13,10 @@
 #include "CLogFile.h"
 #include "sdl/sound/CSound.h"
 #include "graphics/effects/CColorMerge.h"
+
+#include "engine/vorticon/CEGAGraphicsVort.h"
+#include "engine/vorticon/CPassiveVort.h"
+
 #include "engine/galaxy/CEGAGraphicsGalaxy.h"
 #include "engine/galaxy/CPassive.h"
 #include "arguments.h"
@@ -99,10 +103,10 @@ bool CGameControl::init(char mode)
 	else if(m_mode == PASSIVE)
 	{
 		// Create mp_PassiveMode object used for the screens while Player is not playing
-		//if(m_Episode >= 4)
-			//mp_PassiveMode = new galaxy::CPassive( m_Episode, m_DataDirectory, m_SavedGame, mp_option );
-		//else
-			mp_PassiveMode = new CPassive( m_Episode, m_DataDirectory, m_SavedGame, mp_option );
+		if(m_Episode >= 4)
+			mp_PassiveMode = new galaxy::CPassiveGalaxy( m_Episode, m_DataDirectory, m_SavedGame, mp_option );
+		else
+			mp_PassiveMode = new vorticon::CPassiveVort( m_Episode, m_DataDirectory, m_SavedGame, mp_option );
 
 		if( m_endgame == true )
 		{
@@ -189,7 +193,7 @@ bool CGameControl::loadResources(unsigned short Episode, const std::string& Data
 		{
 			// Decode the entire graphics for the game (EGALATCH, EGASPRIT, etc.)
 			if(m_EGAGraphics) delete m_EGAGraphics; // except for the first start of a game this always happens
-			m_EGAGraphics = new CEGAGraphics(Episode, DataDirectory); // Path is relative to the data dir
+			m_EGAGraphics = new vorticon::CEGAGraphicsVort(Episode, DataDirectory); // Path is relative to the data dir
 			if(!m_EGAGraphics) return false;
 
 			m_EGAGraphics->loadData( version, p_exedata );

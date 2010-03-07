@@ -5,19 +5,22 @@
  *      Author: gerstrong
  */
 
-#ifndef CPASSIVE_H_
-#define CPASSIVE_H_
+#ifndef CPASSIVE_GALAXY_H_
+#define CPASSIVE_GALAXY_H_
+
+#include "../CPassive.h"
 
 namespace galaxy
 {
 
-class CPassive
+class CPassiveGalaxy : public CPassive
 {
 public:
-	CPassive();
-	virtual ~CPassive();
+	CPassiveGalaxy(char Episode, std::string DataDirectory,
+			CSavedGame &SavedGame, stOption *p_Option);
+	virtual ~CPassiveGalaxy();
 };
 
 }
 
-#endif /* CPASSIVE_H_ */
+#endif /* CPASSIVE_GALAXY_H_ */

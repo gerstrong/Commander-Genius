@@ -10,12 +10,14 @@
 namespace galaxy
 {
 
-CPassive::CPassive()
+CPassiveGalaxy::CPassiveGalaxy(char Episode, std::string DataDirectory,
+		CSavedGame &SavedGame, stOption *p_Option) :
+CPassive(Episode, DataDirectory, SavedGame, p_Option)
 {
 	// TODO Auto-generated destructor stub
 }
 
-CPassive::~CPassive()
+CPassiveGalaxy::~CPassiveGalaxy()
 {
 	// TODO Auto-generated destructor stub
 }

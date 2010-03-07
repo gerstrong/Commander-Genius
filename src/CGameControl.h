@@ -19,8 +19,6 @@
 #include "engine/CPassive.h"
 #include "engine/playgame/CPlayGame.h"
 
-#include "engine/galaxy/CEGAGraphicsGalaxy.h"
-
 #include <string>
 
 enum load_states{

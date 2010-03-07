@@ -34,9 +34,9 @@ public:
 			 CSavedGame &SavedGame, stOption *p_Option);
 	virtual ~CPassive();
 	
-	bool init(char mode = INTRO);
+	virtual bool init(char mode = INTRO) {return false;};
 	
-	void process();
+	virtual void process() {};
 	
 	// Getters
 	char getEpisode() { return m_Episode; }
@@ -48,33 +48,19 @@ public:
 	bool mustStartGame() { return (m_mode==STARTGAME); }
 	bool getExitEvent() { return (m_mode==SHUTDOWN); }
 	
-	void cleanup();
+	virtual void cleanup() {};
 	
 	char m_mode;
 	
 	CMenu *mp_Menu;
-	
-private:
-	CIntro *mp_IntroScreen;
-	CTitle *mp_TitleScreen;
-	CSavedGame &m_SavedGame;
-	CTextBox *mp_PressAnyBox;
-	CTilemap *mp_Tilemap;
-	CMap *mp_Map;
-	stOption *mp_Option;
-	
-	SDL_Surface *mp_Scrollsurface;
-	
-	std::vector<CObject*> m_object;
-	
-	int m_textsize;
-	bool m_GoDemo;
-	bool m_modeg;
-	bool m_hideobjects;
-	char *m_text;
+
+protected:
 	char m_Episode;
 	char m_NumPlayers;
 	char m_Difficulty;
+	bool m_modeg;
 	std::string m_DataDirectory;
+
+	CSavedGame &m_SavedGame;
 };
 #endif /* CPASSIVE_H_ */
