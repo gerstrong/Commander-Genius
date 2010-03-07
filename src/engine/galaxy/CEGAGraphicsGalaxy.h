@@ -11,14 +11,14 @@
 #include <string>
 #include <vector>
 #include "../../fileio/CExeFile.h"
-#include "../../engine/CEGAGraphics.h"
+#include "../CEGAGraphics.h"
 
 namespace galaxy
 {
 
 #include "EGAStructs.h"
 //
-class CEGAGraphicsGalaxy : public CEGAGraphics
+class CEGAGraphicsGalaxy : public ::CEGAGraphics
 {
 public:
 	CEGAGraphicsGalaxy(short episode, const std::string& path, CExeFile &ExeFile);
