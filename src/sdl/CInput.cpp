@@ -126,7 +126,7 @@ bool CInput::startJoyDriver()
 	else
 	{
 		int i=0;
-		int joynum;
+		size_t joynum;
 		joynum = SDL_NumJoysticks();
 		if(joynum)
 		{
