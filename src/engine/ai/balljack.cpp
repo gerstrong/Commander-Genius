@@ -16,8 +16,8 @@ void CObjectAI::ballandjack_ai(CObject &object)
 {
 	if (object.needinit)
 	{
-		int px = m_Player[0].getXMidPos();
-		int py = m_Player[0].getYMidPos();
+		unsigned int px = m_Player[0].getXMidPos();
+		unsigned int py = m_Player[0].getYMidPos();
 
 		char tempxdir, tempydir;
 		if(px<object.getXMidPos()) tempxdir=LEFT;
