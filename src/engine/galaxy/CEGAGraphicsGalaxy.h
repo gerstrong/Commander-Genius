@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 #include "../../fileio/CExeFile.h"
-#include "../../vorticon/CEGAGraphics.h"
+#include "../../engine/CEGAGraphics.h"
 
 namespace galaxy
 {

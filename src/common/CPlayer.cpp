@@ -17,7 +17,7 @@
 #include "../sdl/sound/CSound.h"
 #include "../sdl/CVideoDriver.h"
 #include "../graphics/CGfxEngine.h"
-#include "../vorticon/spritedefines.h"
+#include "../engine/spritedefines.h"
 #include <stdlib.h>
 
 ///

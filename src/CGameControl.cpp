@@ -13,8 +13,8 @@
 #include "CLogFile.h"
 #include "sdl/sound/CSound.h"
 #include "graphics/effects/CColorMerge.h"
-#include "vorticon/galaxy/CEGAGraphicsGalaxy.h"
-#include "vorticon/galaxy/CPassive.h"
+#include "engine/galaxy/CEGAGraphicsGalaxy.h"
+#include "engine/galaxy/CPassive.h"
 #include "arguments.h"
 
 #define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }

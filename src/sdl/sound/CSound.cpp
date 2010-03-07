@@ -10,7 +10,7 @@
 #include "../../fileio.h"
 #include "../../CLogFile.h"
 #include "../../hqp/CMusic.h"
-#include "../../vorticon/sounds.h"
+#include "../../engine/sounds.h"
 #include "../../fileio/CExeFile.h"
 #include "../../StringUtils.h"
 #include "../../FindFile.h"

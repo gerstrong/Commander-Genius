@@ -7,7 +7,7 @@
 
 #include "CMapLoader.h"
 #include "../keen.h"
-#include "../vorticon/ai/se.h"
+#include "../engine/ai/se.h"
 #include "../game.h"
 #include <iostream>
 #include <fstream>

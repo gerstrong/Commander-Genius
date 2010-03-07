@@ -7,13 +7,13 @@
 
 #include "CPlayer.h"
 
-#include "../vorticon/ai/se.h"
+#include "../engine/ai/se.h"
+#include "../engine/spritedefines.h"
 #include "../keen.h"
 #include "../sdl/sound/CSound.h"
 #include "../sdl/CInput.h"
 #include "../graphics/CGfxEngine.h"
 #include "../hqp/CMusic.h"
-#include "../vorticon/spritedefines.h"
 #include "CPhysicsSettings.h"
 
 #define PDIEFRAME             22

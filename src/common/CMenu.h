@@ -19,7 +19,7 @@
 #include "CMap.h"
 #include "options.h"
 
-#include "../vorticon/infoscenes/CInfoScene.h"
+#include "../engine/infoscenes/CInfoScene.h"
 
 #define TWIRL_SPEED_SLOW        100
 #define TWIRL_SPEED_FAST        20

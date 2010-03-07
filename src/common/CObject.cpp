@@ -7,7 +7,7 @@
 
 #include "CObject.h"
 #include "../CLogFile.h"
-#include "../vorticon/spritedefines.h"
+#include "../engine/spritedefines.h"
 #include "../sdl/CVideoDriver.h"
 #include "../keen.h"
 #include <string.h>

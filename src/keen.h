@@ -9,7 +9,7 @@
 #include <windows.h>
 #endif
 
-#include "vorticon/sounds.h"
+#include "engine/sounds.h"
 #include "funcdefs.h"
 #include "fileio/CTileLoader.h"
 

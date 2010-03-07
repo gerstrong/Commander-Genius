@@ -18,7 +18,7 @@
 #define PSUPPORTEDBYOBJECT         0
 
 // structures for each AI module's data
-#include "../vorticon/ai/enemydata.h"
+#include "../engine/ai/enemydata.h"
 #include "../common/CMap.h"
 #include "../graphics/CGfxEngine.h"
 #include "../game.h"

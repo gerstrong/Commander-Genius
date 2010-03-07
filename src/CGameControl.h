@@ -14,12 +14,12 @@
 #include "common/CTeleporter.h"
 #include "common/options.h"
 #include "fileio/CSavedGame.h"
-#include "vorticon/CEGAGraphics.h"
-#include "vorticon/CMessages.h"
-#include "vorticon/CPassive.h"
-#include "vorticon/playgame/CPlayGame.h"
+#include "engine/CEGAGraphics.h"
+#include "engine/CMessages.h"
+#include "engine/CPassive.h"
+#include "engine/playgame/CPlayGame.h"
 
-#include "vorticon/galaxy/CEGAGraphicsGalaxy.h"
+#include "engine/galaxy/CEGAGraphicsGalaxy.h"
 
 #include <string>
 
