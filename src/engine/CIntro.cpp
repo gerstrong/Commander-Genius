@@ -12,8 +12,8 @@
 
 CIntro::CIntro() {
 	m_timer = 0;
-	m_introtime = 12;  // Total time (in seconds) to elapse until Main menu opens
-	m_scrolly = 240;
+	m_introtime = 10;  // Total time (in seconds) to elapse until Main menu opens
+	m_scrolly = 200;
 	m_finished = false;
 	mp_bmp_surface = g_pVideoDriver->FGLayerSurface;
 	SDL_FillRect(mp_bmp_surface, NULL, 0);
@@ -46,12 +46,12 @@ void CIntro::process()
 	else
 	{
 		m_timer=0;
-		if( m_scrolly>62 )	m_scrolly--;
+		if( m_scrolly>42 )	m_scrolly--;
 	}
 	
 	mp_bm[1]->draw( mp_bmp_surface, m_mid[1], m_scrolly+11);
 	
-	if(m_scrolly<=62) // Show this, when scrolling is finished
+	if(m_scrolly<=42) // Show this, when scrolling is finished
 	{
 		mp_bm[0]->draw( mp_bmp_surface, m_mid[0], m_scrolly);
 		mp_bm[2]->draw( mp_bmp_surface, m_mid[2], m_scrolly+40);

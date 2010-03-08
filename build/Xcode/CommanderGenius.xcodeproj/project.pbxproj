@@ -210,6 +210,18 @@
 		63D4A70B107FEB7C00E43500 /* arrowul.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6F8107FEB7C00E43500 /* arrowul.tga */; };
 		63D4A70C107FEB7C00E43500 /* arrowur.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6F9107FEB7C00E43500 /* arrowur.tga */; };
 		63F85894110193E200E78524 /* CGLogo.bmp in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 6304FC3F10E3EAD800307EAC /* CGLogo.bmp */; };
+		63FC18181144294C00D7BB0C /* CEGAGraphicsVort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63FC18141144294C00D7BB0C /* CEGAGraphicsVort.cpp */; };
+		63FC18191144294C00D7BB0C /* CPassiveVort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63FC18161144294C00D7BB0C /* CPassiveVort.cpp */; };
+		63FC18331144447200D7BB0C /* AUDIO.CK4 in Copy Keen 4 Files */ = {isa = PBXBuildFile; fileRef = 63FC18291144447200D7BB0C /* AUDIO.CK4 */; };
+		63FC18341144447200D7BB0C /* CHKLIST.MS in Copy Keen 4 Files */ = {isa = PBXBuildFile; fileRef = 63FC182A1144447200D7BB0C /* CHKLIST.MS */; };
+		63FC18351144447200D7BB0C /* CONFIG.CK4 in Copy Keen 4 Files */ = {isa = PBXBuildFile; fileRef = 63FC182B1144447200D7BB0C /* CONFIG.CK4 */; };
+		63FC18361144447200D7BB0C /* EGAGRAPH.CK4 in Copy Keen 4 Files */ = {isa = PBXBuildFile; fileRef = 63FC182C1144447200D7BB0C /* EGAGRAPH.CK4 */; };
+		63FC18371144447200D7BB0C /* GAMEMAPS.CK4 in Copy Keen 4 Files */ = {isa = PBXBuildFile; fileRef = 63FC182D1144447200D7BB0C /* GAMEMAPS.CK4 */; };
+		63FC18381144447200D7BB0C /* KEEN4E.EXE in Copy Keen 4 Files */ = {isa = PBXBuildFile; fileRef = 63FC182E1144447200D7BB0C /* KEEN4E.EXE */; };
+		63FC18391144447200D7BB0C /* ORDER.FRM in Copy Keen 4 Files */ = {isa = PBXBuildFile; fileRef = 63FC182F1144447200D7BB0C /* ORDER.FRM */; };
+		63FC183A1144447200D7BB0C /* SAVEGAM0.CK4 in Copy Keen 4 Files */ = {isa = PBXBuildFile; fileRef = 63FC18301144447200D7BB0C /* SAVEGAM0.CK4 */; };
+		63FC183B1144447200D7BB0C /* SAVEGAM1.CK4 in Copy Keen 4 Files */ = {isa = PBXBuildFile; fileRef = 63FC18311144447200D7BB0C /* SAVEGAM1.CK4 */; };
+		63FC183C1144447200D7BB0C /* SAVEGAM2.CK4 in Copy Keen 4 Files */ = {isa = PBXBuildFile; fileRef = 63FC18321144447200D7BB0C /* SAVEGAM2.CK4 */; };
 		63FEB11C10DED2E500A099E2 /* wizgp2x.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63FEB11B10DED2E500A099E2 /* wizgp2x.cpp */; };
 		63FFE146109FA45A002FF190 /* LEVEL15.CK2 in Copy Keen 2 Fix Files */ = {isa = PBXBuildFile; fileRef = 63FFE144109FA45A002FF190 /* LEVEL15.CK2 */; };
 		63FFE147109FA45A002FF190 /* LEVEL80.CK2 in Copy Keen 2 Fix Files */ = {isa = PBXBuildFile; fileRef = 63FFE145109FA45A002FF190 /* LEVEL80.CK2 */; };
@@ -331,6 +343,26 @@
 				63D4A70C107FEB7C00E43500 /* arrowur.tga in Copy Res Files */,
 			);
 			name = "Copy Res Files";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		63FC1860114444B900D7BB0C /* Copy Keen 4 Files */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = data/games/EP4;
+			dstSubfolderSpec = 7;
+			files = (
+				63FC18331144447200D7BB0C /* AUDIO.CK4 in Copy Keen 4 Files */,
+				63FC18341144447200D7BB0C /* CHKLIST.MS in Copy Keen 4 Files */,
+				63FC18351144447200D7BB0C /* CONFIG.CK4 in Copy Keen 4 Files */,
+				63FC18361144447200D7BB0C /* EGAGRAPH.CK4 in Copy Keen 4 Files */,
+				63FC18371144447200D7BB0C /* GAMEMAPS.CK4 in Copy Keen 4 Files */,
+				63FC18381144447200D7BB0C /* KEEN4E.EXE in Copy Keen 4 Files */,
+				63FC18391144447200D7BB0C /* ORDER.FRM in Copy Keen 4 Files */,
+				63FC183A1144447200D7BB0C /* SAVEGAM0.CK4 in Copy Keen 4 Files */,
+				63FC183B1144447200D7BB0C /* SAVEGAM1.CK4 in Copy Keen 4 Files */,
+				63FC183C1144447200D7BB0C /* SAVEGAM2.CK4 in Copy Keen 4 Files */,
+			);
+			name = "Copy Keen 4 Files";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		63FFE15D109FA521002FF190 /* Copy Keen 2 Fix Files */ = {
@@ -555,7 +587,7 @@
 		6312202610910DB200053A0E /* spritedefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = spritedefines.h; sourceTree = "<group>"; };
 		6312FEC110963B2500DDFFA7 /* CObjectAI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CObjectAI.cpp; sourceTree = "<group>"; };
 		6312FEC210963B2500DDFFA7 /* CObjectAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CObjectAI.h; sourceTree = "<group>"; };
-		6312FEC410963B3400DDFFA7 /* game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = game.h; path = ../game.h; sourceTree = "<group>"; };
+		6312FEC410963B3400DDFFA7 /* game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = game.h; sourceTree = "<group>"; };
 		63148DCF10E8091400C9E281 /* EGAStructs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGAStructs.h; sourceTree = "<group>"; };
 		63148DD110E8091E00C9E281 /* CHuffman.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CHuffman.cpp; sourceTree = "<group>"; };
 		63148DD210E8091E00C9E281 /* CHuffman.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHuffman.h; sourceTree = "<group>"; };
@@ -708,6 +740,20 @@
 		63DCCCBB104CBC3000B3BC10 /* version.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = version.h; path = ../../version.h; sourceTree = SOURCE_ROOT; };
 		63F4128D108F9BB1003A2E02 /* arguments.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = arguments.cpp; sourceTree = "<group>"; };
 		63F4128E108F9BB1003A2E02 /* arguments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = arguments.h; sourceTree = "<group>"; };
+		63FC18141144294C00D7BB0C /* CEGAGraphicsVort.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CEGAGraphicsVort.cpp; sourceTree = "<group>"; };
+		63FC18151144294C00D7BB0C /* CEGAGraphicsVort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGAGraphicsVort.h; sourceTree = "<group>"; };
+		63FC18161144294C00D7BB0C /* CPassiveVort.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPassiveVort.cpp; sourceTree = "<group>"; };
+		63FC18171144294C00D7BB0C /* CPassiveVort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPassiveVort.h; sourceTree = "<group>"; };
+		63FC18291144447200D7BB0C /* AUDIO.CK4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = AUDIO.CK4; sourceTree = "<group>"; };
+		63FC182A1144447200D7BB0C /* CHKLIST.MS */ = {isa = PBXFileReference; lastKnownFileType = file; path = CHKLIST.MS; sourceTree = "<group>"; };
+		63FC182B1144447200D7BB0C /* CONFIG.CK4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = CONFIG.CK4; sourceTree = "<group>"; };
+		63FC182C1144447200D7BB0C /* EGAGRAPH.CK4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = EGAGRAPH.CK4; sourceTree = "<group>"; };
+		63FC182D1144447200D7BB0C /* GAMEMAPS.CK4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = GAMEMAPS.CK4; sourceTree = "<group>"; };
+		63FC182E1144447200D7BB0C /* KEEN4E.EXE */ = {isa = PBXFileReference; lastKnownFileType = file; path = KEEN4E.EXE; sourceTree = "<group>"; };
+		63FC182F1144447200D7BB0C /* ORDER.FRM */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ORDER.FRM; sourceTree = "<group>"; };
+		63FC18301144447200D7BB0C /* SAVEGAM0.CK4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = SAVEGAM0.CK4; sourceTree = "<group>"; };
+		63FC18311144447200D7BB0C /* SAVEGAM1.CK4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = SAVEGAM1.CK4; sourceTree = "<group>"; };
+		63FC18321144447200D7BB0C /* SAVEGAM2.CK4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = SAVEGAM2.CK4; sourceTree = "<group>"; };
 		63FEB11B10DED2E500A099E2 /* wizgp2x.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wizgp2x.cpp; sourceTree = "<group>"; };
 		63FFE144109FA45A002FF190 /* LEVEL15.CK2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL15.CK2; sourceTree = "<group>"; };
 		63FFE145109FA45A002FF190 /* LEVEL80.CK2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL80.CK2; sourceTree = "<group>"; };
@@ -788,7 +834,7 @@
 				23D3ED7510175A97001643FA /* FindFile.h */,
 				23D3E9AA1013ABCA001643FA /* funcdefs.h */,
 				23D3EDA310175CEF001643FA /* Functors.h */,
-				6366B9A510D5A390009801ED /* galaxy */,
+				639AA8401143A5A000C990A3 /* engine */,
 				235266DA104E74430054F00B /* graphics */,
 				23D3E9B01013ABCA001643FA /* hqp */,
 				23D3E9B71013ABCA001643FA /* include */,
@@ -797,6 +843,7 @@
 				23D3E9D11013ABCA001643FA /* lz.cpp */,
 				23D3E9D21013ABCA001643FA /* lz.h */,
 				23D3EA8C1013AEF3001643FA /* MacMain.m */,
+				6312FEC410963B3400DDFFA7 /* game.h */,
 				23D3E9D31013ABCA001643FA /* main.cpp */,
 				23D3ED7610175A97001643FA /* MathLib.h */,
 				23D3E9D61013ABCA001643FA /* misc.cpp */,
@@ -1136,13 +1183,13 @@
 				63453BE210798CFE007265F8 /* CTitle.cpp */,
 				63453BE310798CFE007265F8 /* CTitle.h */,
 				634A33E310A233DB0051193D /* finale */,
-				6312FEC410963B3400DDFFA7 /* game.h */,
 				63A4D2EC10B2F31800F353C0 /* infoscenes */,
 				634F871A10A38B2B007673F7 /* playgame */,
 				23D3EA0C1013ABCA001643FA /* sounds.h */,
 				6312202610910DB200053A0E /* spritedefines.h */,
 			);
-			path = vorticon;
+			name = vorticon;
+			path = engine;
 			sourceTree = "<group>";
 		};
 		5048396909E3304600765E4B /* Configuration Files */ = {
@@ -1208,6 +1255,7 @@
 				637F48C8105C97D900DE486C /* EP1 */,
 				63FFE148109FA461002FF190 /* EP2 */,
 				63FFE151109FA4A4002FF190 /* EP3 */,
+				63FC18281144447200D7BB0C /* EP4 */,
 				6350F7C41044797300A992D5 /* renlower.sh */,
 			);
 			includeInIndex = 1;
@@ -1285,6 +1333,15 @@
 			path = EP1;
 			sourceTree = "<group>";
 		};
+		639AA8401143A5A000C990A3 /* engine */ = {
+			isa = PBXGroup;
+			children = (
+				6366B9A510D5A390009801ED /* galaxy */,
+				63FC18131144291500D7BB0C /* vorticon */,
+			);
+			path = engine;
+			sourceTree = "<group>";
+		};
 		63A4D2EC10B2F31800F353C0 /* infoscenes */ = {
 			isa = PBXGroup;
 			children = (
@@ -1357,6 +1414,35 @@
 			path = gfx;
 			sourceTree = "<group>";
 		};
+		63FC18131144291500D7BB0C /* vorticon */ = {
+			isa = PBXGroup;
+			children = (
+				63FC18141144294C00D7BB0C /* CEGAGraphicsVort.cpp */,
+				63FC18151144294C00D7BB0C /* CEGAGraphicsVort.h */,
+				63FC18161144294C00D7BB0C /* CPassiveVort.cpp */,
+				63FC18171144294C00D7BB0C /* CPassiveVort.h */,
+			);
+			path = vorticon;
+			sourceTree = "<group>";
+		};
+		63FC18281144447200D7BB0C /* EP4 */ = {
+			isa = PBXGroup;
+			children = (
+				63FC18291144447200D7BB0C /* AUDIO.CK4 */,
+				63FC182A1144447200D7BB0C /* CHKLIST.MS */,
+				63FC182B1144447200D7BB0C /* CONFIG.CK4 */,
+				63FC182C1144447200D7BB0C /* EGAGRAPH.CK4 */,
+				63FC182D1144447200D7BB0C /* GAMEMAPS.CK4 */,
+				63FC182E1144447200D7BB0C /* KEEN4E.EXE */,
+				63FC182F1144447200D7BB0C /* ORDER.FRM */,
+				63FC18301144447200D7BB0C /* SAVEGAM0.CK4 */,
+				63FC18311144447200D7BB0C /* SAVEGAM1.CK4 */,
+				63FC18321144447200D7BB0C /* SAVEGAM2.CK4 */,
+			);
+			name = EP4;
+			path = ../../games/EP4;
+			sourceTree = SOURCE_ROOT;
+		};
 		63FEB11A10DED2C800A099E2 /* sys */ = {
 			isa = PBXGroup;
 			children = (
@@ -1394,6 +1480,7 @@
 				235755D1101A5E5900275638 /* Resources */,
 				6350FA7E104490F300A992D5 /* Copy Keen 1 Files */,
 				63FFE15D109FA521002FF190 /* Copy Keen 2 Fix Files */,
+				63FC1860114444B900D7BB0C /* Copy Keen 4 Files */,
 				63FFE15E109FA521002FF190 /* Copy Keen 3 Fix Files */,
 				637F48BC105C96AF00DE486C /* Copy Game Data Files */,
 				6350FA7D104490F300A992D5 /* Copy Data Files */,
@@ -1609,6 +1696,8 @@
 				6350A6B810EB8771004B1F27 /* Cunlzexe.cpp in Sources */,
 				631D7796112483BB00D903F6 /* CPassive.cpp in Sources */,
 				631D7797112483BB00D903F6 /* CPlayGame.cpp in Sources */,
+				63FC18181144294C00D7BB0C /* CEGAGraphicsVort.cpp in Sources */,
+				63FC18191144294C00D7BB0C /* CPassiveVort.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
