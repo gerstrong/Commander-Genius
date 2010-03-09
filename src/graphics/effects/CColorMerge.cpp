@@ -28,7 +28,6 @@ void CColorMerge::getSnapshot()
 // Effect cycle
 void CColorMerge::process()
 {
-	// Only process if the surfaces have content
 	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
 
 	// Process the effect
