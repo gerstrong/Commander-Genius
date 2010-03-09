@@ -167,12 +167,12 @@ void CPlayGame::showKeensLeft()
 	SDL_Surface *boxsurface = g_pVideoDriver->FGLayerSurface;
 
 const unsigned int KEENSLEFT_X = 7;
-const unsigned int KEENSLEFT_Y = 11;
+const unsigned int KEENSLEFT_Y = 10;
 const unsigned int KEENSLEFT_W = 24;
-const unsigned int KEENSLEFT_H = 3;
+const unsigned int KEENSLEFT_H = 4;
 
-	boxY = KEENSLEFT_Y - m_NumPlayers*2;
-	boxH = KEENSLEFT_H + m_NumPlayers*4;
+	boxY = KEENSLEFT_Y - m_NumPlayers;
+	boxH = KEENSLEFT_H + m_NumPlayers*2;
 
 	if( g_pTimer->HasTimeElapsed(3000) || g_pInput->getPressedAnyCommand() )
 		m_showKeensLeft = false;
@@ -193,7 +193,7 @@ const unsigned int KEENSLEFT_H = 3;
 			g_pGfxEngine->getSprite(m_Player[p].playerbaseframe+PMAPDOWNFRAME).drawSprite(g_pVideoDriver->FGLayerSurface, x, y );
 			x+=16;
 		}
-		y += 32;
+		y += 16;
 	}
 }
 

@@ -198,6 +198,7 @@
 		63B75D5010DC426600C8E4C9 /* CFlash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63B75D4A10DC426600C8E4C9 /* CFlash.cpp */; };
 		63B75D5110DC426600C8E4C9 /* CVibrate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63B75D4C10DC426600C8E4C9 /* CVibrate.cpp */; };
 		63CB946E10E11E0000713C40 /* CTantalusRay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CB946C10E11E0000713C40 /* CTantalusRay.cpp */; };
+		63CFCB4A11468CE300DBA07E /* CPixelate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CFCB4811468CE300DBA07E /* CPixelate.cpp */; };
 		63D4A702107FEB7C00E43500 /* 100.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6EF107FEB7C00E43500 /* 100.tga */; };
 		63D4A703107FEB7C00E43500 /* 1000.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6F0107FEB7C00E43500 /* 1000.tga */; };
 		63D4A704107FEB7C00E43500 /* 200.tga in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 63D4A6F1107FEB7C00E43500 /* 200.tga */; };
@@ -717,6 +718,8 @@
 		63CB946C10E11E0000713C40 /* CTantalusRay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CTantalusRay.cpp; sourceTree = "<group>"; };
 		63CB946D10E11E0000713C40 /* CTantalusRay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTantalusRay.h; sourceTree = "<group>"; };
 		63CD0B771091F8FB00CB7B80 /* CPlayerItems.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlayerItems.cpp; sourceTree = "<group>"; };
+		63CFCB4811468CE300DBA07E /* CPixelate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPixelate.cpp; sourceTree = "<group>"; };
+		63CFCB4911468CE300DBA07E /* CPixelate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPixelate.h; sourceTree = "<group>"; };
 		63D34906108B648A0033C412 /* options.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = options.h; sourceTree = "<group>"; };
 		63D4A6EF107FEB7C00E43500 /* 100.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = 100.tga; sourceTree = "<group>"; };
 		63D4A6F0107FEB7C00E43500 /* 1000.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = 1000.tga; sourceTree = "<group>"; };
@@ -1176,14 +1179,13 @@
 				23D3EA071013ABCA001643FA /* CIntro.h */,
 				23D3EC491016973A001643FA /* CMessages.cpp */,
 				23D3EC4A1016973A001643FA /* CMessages.h */,
+				63A4D2EC10B2F31800F353C0 /* infoscenes */,
 				63453BDE10798CFE007265F8 /* CPassive.cpp */,
 				63453BDF10798CFE007265F8 /* CPassive.h */,
 				23D3EC4B1016973A001643FA /* CPlanes.cpp */,
 				23D3EC4C1016973A001643FA /* CPlanes.h */,
 				63453BE210798CFE007265F8 /* CTitle.cpp */,
 				63453BE310798CFE007265F8 /* CTitle.h */,
-				634A33E310A233DB0051193D /* finale */,
-				63A4D2EC10B2F31800F353C0 /* infoscenes */,
 				634F871A10A38B2B007673F7 /* playgame */,
 				23D3EA0C1013ABCA001643FA /* sounds.h */,
 				6312202610910DB200053A0E /* spritedefines.h */,
@@ -1366,6 +1368,8 @@
 		63B75D4510DC424000C8E4C9 /* effects */ = {
 			isa = PBXGroup;
 			children = (
+				63CFCB4811468CE300DBA07E /* CPixelate.cpp */,
+				63CFCB4911468CE300DBA07E /* CPixelate.h */,
 				63B75D4610DC426600C8E4C9 /* CColorMerge.cpp */,
 				63B75D4710DC426600C8E4C9 /* CColorMerge.h */,
 				63B75D4810DC426600C8E4C9 /* CEffects.cpp */,
@@ -1417,6 +1421,7 @@
 		63FC18131144291500D7BB0C /* vorticon */ = {
 			isa = PBXGroup;
 			children = (
+				634A33E310A233DB0051193D /* finale */,
 				63FC18141144294C00D7BB0C /* CEGAGraphicsVort.cpp */,
 				63FC18151144294C00D7BB0C /* CEGAGraphicsVort.h */,
 				63FC18161144294C00D7BB0C /* CPassiveVort.cpp */,
@@ -1698,6 +1703,7 @@
 				631D7797112483BB00D903F6 /* CPlayGame.cpp in Sources */,
 				63FC18181144294C00D7BB0C /* CEGAGraphicsVort.cpp in Sources */,
 				63FC18191144294C00D7BB0C /* CPassiveVort.cpp in Sources */,
+				63CFCB4A11468CE300DBA07E /* CPixelate.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
