@@ -23,7 +23,7 @@
 
 // Tank Robot (ep1)
 enum{
-	TANK_WALK,TANK_TURN,TANK_WAIT,TANK_FIRE,TANK_LOOK
+	TANK_WALK,TANK_TURN,TANK_WAIT,TANK_WAIT_LOOK,TANK_FIRE,TANK_LOOK
 };
 
 #define TANK_SAME_LEVEL_TIME   25
@@ -41,8 +41,9 @@ enum{
 #define TANK_WALK_ANIM_TIME     2
 #define TANK_LOOK_ANIM_TIME     4
 #define TANK_LOOK_TOTALTIME     44
-#define TANK_PREPAREFIRE_TIME   44
+#define TANK_PREPAREFIRE_TIME   30
 #define TANK_PREPAREFIRE_TIME_FAST   22
+#define TANK_WAITAFTER_FIRE		14
 
 // frames
 #define TANK_WALK_LEFT_FRAME        102
@@ -200,13 +201,26 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 		newobject.canbezapped = true;
 		m_Objvect.push_back(newobject);
 
-		object.ai.tank.state = TANK_LOOK;
+		object.ai.tank.state = TANK_WAIT_LOOK;
 		object.ai.tank.frame = 0;
 		object.ai.tank.timer = 0;
 		object.ai.tank.animtimer = 0;
 		object.ai.tank.dist_to_travel = TANK_MINTRAVELDIST + (rnd()%10)*(TANK_MAXTRAVELDIST-TANK_MINTRAVELDIST)/10;
 	}
 	break;
+
+	case TANK_WAIT_LOOK:
+		// Happens after Robot has fired
+		if ( object.ai.tank.timer > TANK_WAITAFTER_FIRE )
+		{
+			object.ai.tank.timer = 0;
+			object.ai.tank.state = TANK_LOOK;
+		}
+		else
+			object.ai.tank.timer++;
+
+		break;
+
 	case TANK_LOOK:
 		object.sprite = TANK_LOOK_FRAME + object.ai.tank.frame;
 		// animation
