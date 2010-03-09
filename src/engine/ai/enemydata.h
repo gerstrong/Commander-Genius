@@ -109,10 +109,10 @@ typedef struct stTankData
 	unsigned int ponsameleveltime;
 	unsigned char alreadyfiredcauseonsamelevel;
 	unsigned char fireafterlook;
-	
+
 	bool detectedPlayer;         		  // true if player on same level
 	unsigned char detectedPlayerIndex;    // index of player that was detected
-	
+
 	// for tank2
 	unsigned int timetillnextshot;
 	unsigned int firetimes;

@@ -27,8 +27,8 @@ const int TELEPORTER_NUMFRAMES_EP1 = 20;
 void CObjectAI::teleporter_ai(CObject &object)
 {
 	int mx, my;
-	int x = object.getXPosition();
-	int y = object.getYPosition();
+	unsigned int x = object.getXPosition();
+	unsigned int y = object.getYPosition();
 	int animrate, numframes;
 	int player = object.ai.teleport.whichplayer;
 

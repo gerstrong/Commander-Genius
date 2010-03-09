@@ -193,7 +193,7 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 
 		if (object.ai.tank.detectedPlayer)
 		{
-			int x = object.getXPosition();
+			unsigned int x = object.getXPosition();
 			// facing keen?
 			object.ai.tank.alreadyfiredcauseonsamelevel = 1;
 			// are we facing him?
