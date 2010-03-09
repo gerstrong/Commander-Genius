@@ -166,10 +166,10 @@ void CPlayGame::showKeensLeft()
 	int boxY, boxH;
 	SDL_Surface *boxsurface = g_pVideoDriver->FGLayerSurface;
 
-#define KEENSLEFT_X        7
-#define KEENSLEFT_Y        11
-#define KEENSLEFT_W        24
-#define KEENSLEFT_H        3
+const unsigned int KEENSLEFT_X = 7;
+const unsigned int KEENSLEFT_Y = 11;
+const unsigned int KEENSLEFT_W = 24;
+const unsigned int KEENSLEFT_H = 3;
 
 	boxY = KEENSLEFT_Y - m_NumPlayers*2;
 	boxH = KEENSLEFT_H + m_NumPlayers*4;
@@ -190,7 +190,7 @@ void CPlayGame::showKeensLeft()
 		x = ((KEENSLEFT_X+1)*8)+4;
 		for(i=0;i<m_Player[p].inventory.lives&&i<=10;i++)
 		{
-			g_pGfxEngine->getSprite(m_Player[p].playerbaseframe).drawSprite(g_pVideoDriver->FGLayerSurface, x, y );
+			g_pGfxEngine->getSprite(m_Player[p].playerbaseframe+PMAPDOWNFRAME).drawSprite(g_pVideoDriver->FGLayerSurface, x, y );
 			x+=16;
 		}
 		y += 32;
