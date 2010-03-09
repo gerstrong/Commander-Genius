@@ -6,15 +6,12 @@
  */
 
 #include "CFinaleStaticScene.h"
-#include "../../sdl/CVideoDriver.h"
-#include "../../sdl/CTimer.h"
-#include "../../sdl/sound/CSound.h"
-#include "../sounds.h"
-#include "../../graphics/CGfxEngine.h"
-#include "../../funcdefs.h"
-
-
-
+#include "../../../sdl/CVideoDriver.h"
+#include "../../../sdl/CTimer.h"
+#include "../../../sdl/sound/CSound.h"
+#include "../../sounds.h"
+#include "../../../graphics/CGfxEngine.h"
+#include "../../../funcdefs.h"
 
 CFinaleStaticScene::CFinaleStaticScene(const std::string &game_path, const std::string &scene_file):
 	mp_current_tb(NULL), m_mustclose(false), m_count(0)
@@ -29,8 +26,6 @@ CFinaleStaticScene::CFinaleStaticScene(const std::string &game_path, const std::
 void CFinaleStaticScene::push_string(const std::string &text, Uint32 delay)
 {
 	CMessageBox *p_Textbox = new CMessageBox(getstring(text), true);
-	//p_Textbox->setDelay(delay);
-	//p_Textbox->setAttribs(2, LETTER_TYPE_NORMAL);
 
 	mp_textbox_list.push_back(p_Textbox);
 

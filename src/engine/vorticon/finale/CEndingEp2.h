@@ -9,9 +9,9 @@
 #define CENDINGEP2_H_
 
 #include "CFinale.h"
-#include "../../common/CMap.h"
-#include "../../common/CPlayer.h"
-#include "../../dialog/CMessageBox.h"
+#include "../../../common/CMap.h"
+#include "../../../common/CPlayer.h"
+#include "../../../dialog/CMessageBox.h"
 #include <vector>
 #include <SDL.h>
 

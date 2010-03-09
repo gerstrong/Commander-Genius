@@ -92,7 +92,7 @@ void CObjectAI::nessie_ai(CObject& object)
 	{
 	case NESSIE_SWIMNORMAL:
 		// arrived at destination?
-		int x,y;
+		unsigned int x,y;
 		x = object.getXPosition();
 		y = object.getYPosition();
 		if ( x > (object.ai.nessie.destx-NESSIE_SPEED/2)  &&
@@ -135,8 +135,8 @@ void CObjectAI::nessie_ai(CObject& object)
 
 void CObjectAI::move_nessie(CObject& object)
 {
-	int x = object.getXPosition();
-	int y = object.getYPosition();
+	unsigned int x = object.getXPosition();
+	unsigned int y = object.getYPosition();
 
 	// select proper frame based on up/down and left/right direction flags
 	if (object.ai.nessie.updowndir==DOWN && object.ai.nessie.leftrightdir==LEFT)

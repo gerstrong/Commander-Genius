@@ -9,7 +9,7 @@
 #include "../ai/se.h"
 #include "../../common/objenums.h"
 #include "../../sdl/sound/CSound.h"
-#include "../finale/CTantalusRay.h"
+#include "../vorticon/finale/CTantalusRay.h"
 
 void CPlayGame::processInLevel()
 {

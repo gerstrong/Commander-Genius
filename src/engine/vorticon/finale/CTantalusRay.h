@@ -9,12 +9,12 @@
 #define CTANTALUSRAY_H_
 
 #include "CFinale.h"
-#include "../../dialog/CMessageBox.h"
-#include "../../common/CObject.h"
-#include "../../common/CMap.h"
-#include "../ai/CObjectAI.h"
-#include "../../graphics/CBitmap.h"
-#include "../../sdl/CVideoDriver.h"
+#include "../../../dialog/CMessageBox.h"
+#include "../../../common/CObject.h"
+#include "../../../common/CMap.h"
+#include "../../ai/CObjectAI.h"
+#include "../../../graphics/CBitmap.h"
+#include "../../../sdl/CVideoDriver.h"
 
 class CTantalusRay : public CFinale
 {

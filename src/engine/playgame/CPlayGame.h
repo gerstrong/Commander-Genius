@@ -22,9 +22,9 @@
 #include "../../common/CTeleporter.h"
 #include "../ai/CObjectAI.h"
 #include "../ai/CEGABitmap.h"
-#include "../finale/CEndingEp1.h"
-#include "../finale/CEndingEp2.h"
-#include "../finale/CEndingEp3.h"
+#include "../vorticon/finale/CEndingEp1.h"
+#include "../vorticon/finale/CEndingEp2.h"
+#include "../vorticon/finale/CEndingEp3.h"
 #include "../../hqp/CMusic.h"
 #include "../infoscenes/CHighScores.h"
 #include <SDL.h>

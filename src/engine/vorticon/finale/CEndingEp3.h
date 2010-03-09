@@ -9,10 +9,10 @@
 #define CENDINGEP3_H_
 
 #include "CFinale.h"
-#include "../../common/CMap.h"
-#include "../../common/CPlayer.h"
-#include "../../dialog/CMessageBox.h"
-#include "../../sdl/CTimer.h"
+#include "../../../common/CMap.h"
+#include "../../../common/CPlayer.h"
+#include "../../../dialog/CMessageBox.h"
+#include "../../../sdl/CTimer.h"
 #include <vector>
 #include <list>
 #include <SDL.h>

@@ -6,9 +6,9 @@
  */
 
 #include "CFinale.h"
-#include "../../sdl/CVideoDriver.h"
-#include "../../CLogFile.h"
-#include "../../FindFile.h"
+#include "../../../sdl/CVideoDriver.h"
+#include "../../../CLogFile.h"
+#include "../../../FindFile.h"
 #include <fstream>
 
 CFinale::CFinale(CMap &map) :

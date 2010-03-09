@@ -6,13 +6,13 @@
  */
 
 #include "CEndingEp3.h"
-#include "../../StringUtils.h"
-#include "../../sdl/CInput.h"
-#include "../../sdl/CVideoDriver.h"
-#include "../../graphics/effects/CFlash.h"
-#include "../../graphics/CGfxEngine.h"
-#include "../../common/CMapLoader.h"
-#include "../../common/Playerdefines.h"
+#include "../../../StringUtils.h"
+#include "../../../sdl/CInput.h"
+#include "../../../sdl/CVideoDriver.h"
+#include "../../../graphics/effects/CFlash.h"
+#include "../../../graphics/CGfxEngine.h"
+#include "../../../common/CMapLoader.h"
+#include "../../../common/Playerdefines.h"
 
 #define SAFE_DELETE(x) if(x) { delete x; x=NULL; }
 

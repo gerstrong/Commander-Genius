@@ -8,8 +8,8 @@
 #ifndef CFINALESTATICSCENE_H_
 #define CFINALESTATICSCENE_H_
 
-#include "../../dialog/CMessageBox.h"
-#include "../../graphics/CBitmap.h"
+#include "../../../dialog/CMessageBox.h"
+#include "../../../graphics/CBitmap.h"
 #include <SDL.h>
 #include <string>
 #include <list>

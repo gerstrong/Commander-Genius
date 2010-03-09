@@ -6,11 +6,11 @@
  */
 
 #include "CTantalusRay.h"
-#include "../../graphics/effects/CVibrate.h"
-#include "../../graphics/CGfxEngine.h"
-#include "../../sdl/sound/CSound.h"
-#include "../../sdl/CInput.h"
-#include "../../common/CMapLoader.h"
+#include "../../../graphics/effects/CVibrate.h"
+#include "../../../graphics/CGfxEngine.h"
+#include "../../../sdl/sound/CSound.h"
+#include "../../../sdl/CInput.h"
+#include "../../../common/CMapLoader.h"
 
 unsigned int rnd(void);
 
