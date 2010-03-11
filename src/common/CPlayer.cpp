@@ -90,6 +90,7 @@ void CPlayer::setDatatoZero()
 
   	// This will setup the proper frames, so second, third and fourth player get the correct sprites
    	playerbaseframe = (m_index==0) ? 0 : SECOND_PLAYER_BASEFRAME+(m_index-1)*48;
+	if (m_episode==3) playerbaseframe--;
 	
     // Set all the inventory to zero.
     memset(playcontrol, 0, PA_MAX_ACTIONS*sizeof(char));
@@ -156,7 +157,7 @@ bool CPlayer::scrollTriggers()
 
 	Uint16& scroll_x = mp_map->m_scrollx;
 	Uint16& scroll_y = mp_map->m_scrolly;
-
+	
 	if (pdie) return scrollchanged;
 
 	px = (getXPosition()>>STC)-scroll_x;
@@ -168,7 +169,7 @@ bool CPlayer::scrollTriggers()
 		do{
 			px = (getXPosition()>>STC)-scroll_x;
 			mp_map->scrollRight();
-		}while(px > 226 && scroll_x < mp_map->m_maxscrollx);
+		}while(px > 270 && scroll_x < mp_map->m_maxscrollx);
 		scrollchanged = true;
 	}
 	else if(px < m_scrolltriggerleft && scroll_x > 32)
@@ -176,7 +177,7 @@ bool CPlayer::scrollTriggers()
 		do{
 			px = (getXPosition()>>STC)-scroll_x;
 			mp_map->scrollLeft();
-		}while(px < 80 && scroll_x > 32);
+		}while(px < 50 && scroll_x > 32);
 		scrollchanged = true;
 	}
 

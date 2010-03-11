@@ -143,9 +143,6 @@ void CPlayer::selectFrameOnWorldMap()
     else if (pshowdir==LEFT) sprite = playerbaseframe + PMAPLEFTFRAME;
     else if (pshowdir==UP) sprite = playerbaseframe + PMAPUPFRAME;
     else if (pshowdir==DOWN) sprite = playerbaseframe + PMAPDOWNFRAME;
-	
-    // episode 3 map frames start at 31, ep1&2 at 32
-    if (m_episode==3) sprite--;
 
     // add in walk frame if walking
     if (pwalking) sprite += pwalkframe;

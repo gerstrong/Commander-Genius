@@ -786,6 +786,8 @@ void CPlayer::raygun()
 void CPlayer::SelectFrame()
 {
     sprite = playerbaseframe;      // basic standing
+	
+	if (m_episode==3) sprite++;
 
     // select the frame assuming he's pointing right. ep1 does not select
     // a walk frame while fading--this is for the bonus teleporter in L13.

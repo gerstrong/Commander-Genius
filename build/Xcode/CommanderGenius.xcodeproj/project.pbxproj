@@ -22,6 +22,7 @@
 		6306E1D510BC922900E08CB9 /* CAbout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6306E1D110BC922900E08CB9 /* CAbout.cpp */; };
 		6306E1D610BC922900E08CB9 /* CHelp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6306E1D310BC922900E08CB9 /* CHelp.cpp */; };
 		630713BF10B77990004837D2 /* CPlayGameGameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 630713BE10B77990004837D2 /* CPlayGameGameState.cpp */; };
+		630BAE9C1148AF0200172B6E /* CCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 630BAE9A1148AF0200172B6E /* CCamera.cpp */; };
 		630F429310CB08D800F96495 /* CMessageBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 630F429110CB08D800F96495 /* CMessageBox.cpp */; };
 		63148DD310E8091E00C9E281 /* CHuffman.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63148DD110E8091E00C9E281 /* CHuffman.cpp */; };
 		631D7796112483BB00D903F6 /* CPassive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 631D7792112483BB00D903F6 /* CPassive.cpp */; };
@@ -582,6 +583,8 @@
 		6306E1D310BC922900E08CB9 /* CHelp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CHelp.cpp; sourceTree = "<group>"; };
 		6306E1D410BC922900E08CB9 /* CHelp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHelp.h; sourceTree = "<group>"; };
 		630713BE10B77990004837D2 /* CPlayGameGameState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlayGameGameState.cpp; sourceTree = "<group>"; };
+		630BAE9A1148AF0200172B6E /* CCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCamera.cpp; sourceTree = "<group>"; };
+		630BAE9B1148AF0200172B6E /* CCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCamera.h; sourceTree = "<group>"; };
 		630CB2F610BC334600E7EEAA /* CSavedGameCoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSavedGameCoder.h; sourceTree = "<group>"; };
 		630F429110CB08D800F96495 /* CMessageBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMessageBox.cpp; sourceTree = "<group>"; };
 		630F429210CB08D800F96495 /* CMessageBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMessageBox.h; sourceTree = "<group>"; };
@@ -1421,6 +1424,8 @@
 		63FC18131144291500D7BB0C /* vorticon */ = {
 			isa = PBXGroup;
 			children = (
+				630BAE9A1148AF0200172B6E /* CCamera.cpp */,
+				630BAE9B1148AF0200172B6E /* CCamera.h */,
 				634A33E310A233DB0051193D /* finale */,
 				63FC18141144294C00D7BB0C /* CEGAGraphicsVort.cpp */,
 				63FC18151144294C00D7BB0C /* CEGAGraphicsVort.h */,
@@ -1704,6 +1709,7 @@
 				63FC18181144294C00D7BB0C /* CEGAGraphicsVort.cpp in Sources */,
 				63FC18191144294C00D7BB0C /* CPassiveVort.cpp in Sources */,
 				63CFCB4A11468CE300DBA07E /* CPixelate.cpp in Sources */,
+				630BAE9C1148AF0200172B6E /* CCamera.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
