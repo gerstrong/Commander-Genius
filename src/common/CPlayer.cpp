@@ -624,7 +624,8 @@ void CPlayer::InertiaAndFriction_X()
 			if (!pfrozentime || m_episode!=1)
 			{   // disable friction while frozen
 				// here the wall animation must be applied!
-				decreaseXInertia(friction_rate);
+				if(!psliding)
+					decreaseXInertia(friction_rate);
 			}
 		}
 	}

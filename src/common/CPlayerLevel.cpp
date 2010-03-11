@@ -379,7 +379,7 @@ void CPlayer::JumpAndPogo()
 		// give em the chance to jump
 		if (playcontrol[PA_JUMP] && !ppogostick && !pfrozentime && !playpushed_x)
 		{
-			xinertia = 0;
+			if(!psliding) xinertia = 0;
 			pjumping = PPREPAREJUMP;
 			pjumpframe = PPREPAREJUMPFRAME;
 			pjumpanimtimer = 0;
