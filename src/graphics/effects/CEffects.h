@@ -28,7 +28,6 @@ public:
 
 protected:
 	bool m_finished;
-	bool m_endeffect;
 };
 
 #endif /* CEFFECTS_H_ */

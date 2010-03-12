@@ -9,8 +9,7 @@
 #include <iostream>
 
 CEffects::CEffects() :
-m_finished(false),
-m_endeffect(false)
+m_finished(false)
 {}
 
 CEffects::~CEffects()
