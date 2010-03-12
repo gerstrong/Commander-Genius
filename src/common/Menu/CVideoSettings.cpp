@@ -148,7 +148,7 @@ void CVideoSettings::processSpecific(){
 		{
 			if(!m_Opengl) {
 				m_Zoom++; if(m_Zoom>4) m_Zoom = 1;
-				buf = "Scale: ";
+				buf = "Zoom: ";
 				buf += (m_Zoom == 1) ? "None" : itoa(m_Zoom) + "x";
 			}
 			else {
