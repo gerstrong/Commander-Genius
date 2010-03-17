@@ -11,7 +11,8 @@
 #include "../sdl/CTimer.h"
 #include "../sdl/CVideoDriver.h"
 #include "ai/CEGABitmap.h"
-#include "../graphics/effects/CColorMerge.h"
+//#include "../graphics/effects/CColorMerge.h"
+#include "../graphics/effects/CPixelate.h"
 
 ////
 // Creation Routine
@@ -30,7 +31,8 @@ bool CTitle::init(int Episode)
 	g_pTimer->ResetSecondsTimer();
 	m_time = 10; // show the title screen for 10 secs.
 	pSurface = g_pVideoDriver->BlitSurface;
-	g_pGfxEngine->pushEffectPtr(new CColorMerge(8));
+	//g_pGfxEngine->pushEffectPtr(new CColorMerge(8));
+	g_pGfxEngine->pushEffectPtr(new CPixelate(5));
 	
 	pBitmap = g_pGfxEngine->getBitmap("TITLE");
 	p_object = new CEGABitmap( &m_map, pSurface, pBitmap );

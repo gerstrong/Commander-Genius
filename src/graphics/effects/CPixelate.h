@@ -13,7 +13,7 @@
 class CPixelate  : public CEffects
 {
 public:
-	CPixelate();
+	CPixelate(unsigned short speed);
 	void getSnapshot();
 	void process();
 	virtual ~CPixelate();
@@ -27,7 +27,9 @@ private:
 	unsigned short m_line, m_lines_completed;
 
 	// m_pixel_per_line tells at the given line how many pixels have already been drawn.
-	unsigned short m_pixels_per_line[320];
+	unsigned short *m_pixels_per_line;
+	bool *m_drawmap;
+	unsigned short m_speed;
 };
 
 #endif /* CPIXELATE_H_ */
