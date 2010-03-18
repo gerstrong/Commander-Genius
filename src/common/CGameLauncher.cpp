@@ -45,7 +45,7 @@ bool CGameLauncher::init()
     bool gamedetected = false;
 	
     // Initialize the menu
-    mp_LaunchMenu = new CDialog(g_pVideoDriver->FGLayerSurface, 36, 20);
+    mp_LaunchMenu = new CDialog(g_pVideoDriver->FGLayerSurface, 40, 25);
 	
     // Scan for games...
     m_DirList.clear();
@@ -84,7 +84,7 @@ bool CGameLauncher::init()
 bool CGameLauncher::drawMenu()
 {
     // Use the standard Menu-Frame used in the old DOS-Games
-    mp_LaunchMenu->setFrameTheme( DLG_THEME_OLDSCHOOL );
+    mp_LaunchMenu->setFrameTheme( DLG_THEME_RED );
 	
     // Load the map for the background
 	mp_map = new CMap;
