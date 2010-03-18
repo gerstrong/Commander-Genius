@@ -58,6 +58,7 @@ public:
 	CFont &getFont() { return Font; }
 	
 	void process();
+	void killEffect();
 	
 	CTilemap *Tilemap;
 	CPalette Palette;

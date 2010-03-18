@@ -88,6 +88,9 @@ void CPassiveVort::process()
 		if (g_pInput->getPressedAnyKey())
 		{
 			// Close the "Press Any Key" box
+			if(g_pGfxEngine->Effect()) // some effect is running? Close it!
+				g_pGfxEngine->killEffect();
+
 			g_pInput->flushAll();
 			if (m_mode != TITLE)
 			{

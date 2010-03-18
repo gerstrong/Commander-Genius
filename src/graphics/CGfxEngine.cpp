@@ -7,6 +7,8 @@
 
 #include "CGfxEngine.h"
 
+#include "../sdl/CInput.h"
+
 #define SAFE_DELETE(x) 	if(x){ delete x; x=NULL;}
 
 CGfxEngine::CGfxEngine() :
@@ -160,8 +162,16 @@ void CGfxEngine::process(){
 		mp_Effects->process();
 
 		if(mp_Effects->finished())
-			SAFE_DELETE(mp_Effects);
+		{
+			killEffect();
+		}
 	}
+}
+
+// Kills the effect when called
+void CGfxEngine::killEffect()
+{
+	SAFE_DELETE(mp_Effects);
 }
 
 CGfxEngine::~CGfxEngine() {
