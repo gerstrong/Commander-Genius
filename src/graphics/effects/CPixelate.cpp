@@ -62,11 +62,11 @@ void CPixelate::process()
 	// it will look the same as in Keen Galaxy. We will see, when it's finished
 	for(unsigned short y=m_lines_completed ; y<m_line ; y++)
 	{
+		// Get pointer at start of the line we are now
+		pixelstart = static_cast<Uint8*> (mp_NewSurface->pixels) + y*mp_NewSurface->pitch;
+
 		for(unsigned short drawamt=0 ; drawamt < m_speed ; drawamt++ )
 		{
-			// Get pointer at start of the line we are now
-			pixelstart = static_cast<Uint8*> (mp_NewSurface->pixels) + y*mp_NewSurface->pitch;
-
 			// get a random pixel between 0 and 320
 			x = rand()%gameres.w;
 
@@ -88,7 +88,10 @@ void CPixelate::process()
 			// If there are no more pixels to draw in this line, m_lines_completed++, it won't be scanned again.
 			// This will be checked against m_pixels_per_line
 			if(m_pixels_per_line[y] >= gameres.w )
+			{
 				m_lines_completed++;
+				break;
+			}
 		}
 	}
 
