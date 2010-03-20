@@ -19,6 +19,7 @@ public:
 	void setText(const std::string &text, unsigned int delimit);
 	void draw(SDL_Surface *Textsurface, Uint16 x,Uint16 y, Uint8 highlight);
 
+	int m_value;
 	std::string	m_text;
 
 private:

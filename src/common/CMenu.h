@@ -60,6 +60,7 @@ public:
 	void processOverwriteMenu();
 	void processOptionsMenu();
 	void processAudioMenu();
+	void processDebugMenu();
 
 	void cleanup();
 
@@ -95,6 +96,7 @@ private:
 	void initF1Menu();
 	void initOptionsMenu();
 	void initAudioMenu();
+	void initDebugMenu();
 
 	CInfoScene *mp_InfoScene;
 	CBaseMenu *mp_Menu;

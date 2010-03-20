@@ -93,7 +93,7 @@ void CControlsettings::processWaitInput()
 	std::string buf;
 	std::string buf2;
 
-	buf = mp_Dialog->m_dlgobject[m_selection]->m_OptionText->m_text;
+	buf = mp_Dialog->m_dlgobject[m_selection]->m_Option->m_text;
 	buf = buf.erase(11);
 	buf2 = g_pInput->getEventName(item, m_chosenPlayer-1);
 	mp_Dialog->setObjectText(m_selection, buf + buf2);
@@ -124,7 +124,7 @@ void CControlsettings::processSelection()
 				m_waiting_for_input = true;
 				g_pInput->flushAll();
 
-				buf = mp_Dialog->m_dlgobject[m_selection]->m_OptionText->m_text;
+				buf = mp_Dialog->m_dlgobject[m_selection]->m_Option->m_text;
 				buf = buf.erase(11);
 
 				buf2 = "*Waiting for Input*";

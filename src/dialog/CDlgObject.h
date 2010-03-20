@@ -32,7 +32,7 @@ public:
 
 	void render(SDL_Surface *dst, Uint8 scrollamt, Uint8 highlight);
 
-	CDlgOptionText 	*m_OptionText;
+	CDlgOptionText 	*m_Option;
 
 	Uint16 m_ID;
 	Uint8 m_type;

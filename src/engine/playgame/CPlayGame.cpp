@@ -470,7 +470,14 @@ void CPlayGame::handleFKeys()
 		// Open the menu
 		mp_Menu = new CMenu( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame, mp_option );
 		mp_Menu->init(F1);
-		//showF1HelpText(pCKP->Control.levelcontrol.episode, pCKP->Resources.GameDataDirectory);
+	}
+	
+	if(g_pInput->getPressedKey(KF2))
+	{
+		// Debug Menu
+		// Open the menu
+		mp_Menu = new CMenu( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame, mp_option );
+		mp_Menu->init(DEBUG);
 	}
 
     // F3 - save game

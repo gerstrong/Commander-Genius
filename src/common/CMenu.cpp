@@ -103,14 +103,11 @@ bool CMenu::init( char menu_type )
 	}
 	else if( m_menu_type == F1 )
 		initF1Menu();
+	else if( m_menu_type == DEBUG )
+		initDebugMenu();
 	else if( m_menu_type == SAVE || m_menu_type == LOAD )
 		initSaveMenu();
-	else if( m_menu_type == GRAPHICS )
-	{
-		mp_Menu = new CVideoSettings(m_menu_type);
-		return true;
-	}
-	else if( m_menu_type == BOUNDS )
+	else if( m_menu_type == GRAPHICS || m_menu_type == BOUNDS )
 	{
 		mp_Menu = new CVideoSettings(m_menu_type);
 		return true;
@@ -120,7 +117,7 @@ bool CMenu::init( char menu_type )
 		mp_Menu = new COptions(m_menu_type, mp_option);
 		return true;
 	}
-	else if( m_menu_type == AUDIO )
+	else if( m_menu_type == AUDIO || m_menu_type == VOLUME )
 	{
 		mp_Menu = new CAudioSettings(m_menu_type, m_GamePath, m_Episode);
 		return true;
@@ -196,6 +193,20 @@ void CMenu::initDifficultyMenu()
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Hard");
 	
 	mp_Dialog->processInput(1);
+}
+
+void CMenu::initDebugMenu()
+{
+	mp_Dialog = new CDialog(mp_MenuSurface, 18, 5);
+	
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "<O==========>");
+	mp_Dialog->m_dlgobject.at(0)->m_Option->m_value = 0;
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "<O==========>");
+	mp_Dialog->m_dlgobject.at(1)->m_Option->m_value = 0;
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "<O==========>");
+	mp_Dialog->m_dlgobject.at(2)->m_Option->m_value = 0;
+	
+	mp_Dialog->m_key = 's';
 }
 
 void CMenu::initConfigureMenu()
@@ -350,6 +361,7 @@ void CMenu::process()
 			else if( m_menu_type == SAVE ) processSaveMenu();
 			else if( m_menu_type == LOAD ) processLoadMenu();
 			else if( m_menu_type == OVERWRITE ) processOverwriteMenu();
+			else if( m_menu_type == DEBUG ) processDebugMenu();
 
 			// Draw the menu
 			if(!mp_Menu && mp_Dialog) mp_Dialog->draw();
@@ -455,6 +467,11 @@ void CMenu::processNumControlMenu()
 			m_NumPlayers = m_selection + 1;	
 		}
 	}
+	return;
+}
+
+void CMenu::processDebugMenu()
+{
 	return;
 }
 

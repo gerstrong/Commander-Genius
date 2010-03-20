@@ -188,11 +188,11 @@ void CVideoSettings::processSpecific(){
 			mp_Dialog->m_length = 2;
 		}
 		m_changed = true;
-		m_left = atoi(mp_Dialog->m_dlgobject.at(2)->m_OptionText->m_text);
-		m_right = atoi(mp_Dialog->m_dlgobject.at(4)->m_OptionText->m_text);
-		m_up = atoi(mp_Dialog->m_dlgobject.at(6)->m_OptionText->m_text);
-		m_down = atoi(mp_Dialog->m_dlgobject.at(8)->m_OptionText->m_text);
-		m_speed = atoi(mp_Dialog->m_dlgobject.at(10)->m_OptionText->m_text);
+		m_left = atoi(mp_Dialog->m_dlgobject.at(2)->m_Option->m_text);
+		m_right = atoi(mp_Dialog->m_dlgobject.at(4)->m_Option->m_text);
+		m_up = atoi(mp_Dialog->m_dlgobject.at(6)->m_Option->m_text);
+		m_down = atoi(mp_Dialog->m_dlgobject.at(8)->m_Option->m_text);
+		m_speed = atoi(mp_Dialog->m_dlgobject.at(10)->m_Option->m_text);
 	}
 	
 	

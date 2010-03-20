@@ -36,7 +36,6 @@ public:
 	int m_length;
 	char m_key;
 	std::string m_name;
-	std::string m_num;
 	std::vector<CDlgObject*> m_dlgobject;
 	
 private:

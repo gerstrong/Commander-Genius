@@ -10,7 +10,7 @@
 
 CDlgObject::CDlgObject(){
 	m_selectable = false;
-	m_OptionText = NULL;
+	m_Option = NULL;
 }
 
 ///
@@ -19,7 +19,7 @@ CDlgObject::CDlgObject(){
 CDlgObject::~CDlgObject(){
 	if( m_type == DLG_OBJ_OPTION_TEXT || m_type == DLG_OBJ_DISABLED || m_type == DLG_OBJ_TEXT )
 	{
-		if(m_OptionText) delete m_OptionText;
+		if(m_Option) delete m_Option;
 	}
 }
 
@@ -39,7 +39,7 @@ void CDlgObject::create(Uint8 type, Uint16 ID, Uint16 x, Uint16 y, const std::st
 	if( m_type == DLG_OBJ_OPTION_TEXT || m_type == DLG_OBJ_DISABLED || m_type == DLG_OBJ_TEXT )
 	{
 		m_selectable = (m_type == DLG_OBJ_OPTION_TEXT) ? true : false;
-		m_OptionText = new CDlgOptionText(text, delimiter);
+		m_Option = new CDlgOptionText(text, delimiter);
 	}
 }
 
@@ -49,12 +49,12 @@ void CDlgObject::change(unsigned int delimiter, const std::string &text, Uint8 t
 	if( m_type == DLG_OBJ_OPTION_TEXT || m_type == DLG_OBJ_DISABLED)
 	{
 		m_selectable = (m_type == DLG_OBJ_OPTION_TEXT) ? true : false;
-		m_OptionText->setText(text, delimiter);
+		m_Option->setText(text, delimiter);
 	}
 	else if( m_type == DLG_OBJ_TEXT )
 	{
 		m_selectable = false;
-		m_OptionText->setText(text, delimiter+4);
+		m_Option->setText(text, delimiter+4);
 	}
 }
 
@@ -68,9 +68,9 @@ void CDlgObject::change(unsigned int delimiter, const std::string &text, Uint8 t
 void CDlgObject::render(SDL_Surface *dst, Uint8 scrollamt, Uint8 highlight)
 {
 	if(m_type == DLG_OBJ_OPTION_TEXT)
-		m_OptionText->draw(dst, m_x+16, m_y-8*scrollamt, highlight); // +16 because selection icon needs space
+		m_Option->draw(dst, m_x+16, m_y-8*scrollamt, highlight); // +16 because selection icon needs space
 	else if(m_type == DLG_OBJ_DISABLED)
-		m_OptionText->draw(dst, m_x+16, m_y-8*scrollamt, LETTER_TYPE_DISABLED); // +16 because selection icon needs space
+		m_Option->draw(dst, m_x+16, m_y-8*scrollamt, LETTER_TYPE_DISABLED); // +16 because selection icon needs space
 	else if(m_type == DLG_OBJ_TEXT)
-		m_OptionText->draw(dst, m_x, m_y-8*scrollamt, LETTER_TYPE_RED);
+		m_Option->draw(dst, m_x, m_y-8*scrollamt, LETTER_TYPE_RED);
 }
