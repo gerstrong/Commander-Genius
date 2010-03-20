@@ -16,7 +16,7 @@
 CFinaleStaticScene::CFinaleStaticScene(const std::string &game_path, const std::string &scene_file):
 	mp_current_tb(NULL), m_mustclose(false), m_count(0)
 {
-	mp_SceneSurface = SDL_CreateRGBSurface( g_pVideoDriver->getBlitSurface()->flags, 320, 240, 8, 0, 0, 0, 0);
+	mp_SceneSurface = SDL_CreateRGBSurface( g_pVideoDriver->getBlitSurface()->flags, 320, 200, 8, 0, 0, 0, 0);
 	SDL_SetColors( mp_SceneSurface, g_pGfxEngine->Palette.m_Palette, 0, 255);
 	finale_draw( mp_SceneSurface, scene_file, game_path);
 

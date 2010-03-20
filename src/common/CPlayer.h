@@ -194,12 +194,6 @@ private:
 	int level_done_timer;
 
 	int m_Level_Trigger;
-	
-	// scroll triggers
-	int m_scrolltriggerright;
-	int m_scrolltriggerleft;
-	int m_scrolltriggerup;
-	int m_scrolltriggerdown;
 
 	// defined under CPlayerItems.cpp
 	bool getGoodie(int px, int py);

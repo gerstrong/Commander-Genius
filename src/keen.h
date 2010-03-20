@@ -49,7 +49,7 @@
 #define SCROLLBUF_NUMTILESY (SCROLLBUF_YSIZE / 16)
 
 #define BLITBUF_XSIZE  320
-#define BLITBUF_YSIZE  240
+#define BLITBUF_YSIZE  200
 #define BLITBUF_MEMSIZE ((BLITBUF_XSIZE)*(BLITBUF_YSIZE+30))
 // for each entry in the animtileinuse array that is nonzero, that
 // location on the display is an animated tile which is currently registered

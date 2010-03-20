@@ -337,7 +337,7 @@ bool CVideoDriver::applyMode()
 	game_resolution_rect.h = 200;
 	
 	// Here we check, if we can enhance the screen-resolution and do it if yes
-	game_resolution_rect = adaptGameResolution();
+	//game_resolution_rect = adaptGameResolution();
 	
 	// Now we decide if it will be fullscreen or windowed mode.
 	if(Fullscreen)

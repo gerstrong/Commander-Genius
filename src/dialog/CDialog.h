@@ -30,8 +30,13 @@ public:
 	void draw();
 	void drawTwirl();
 
+	int m_int;
+	int m_min;
+	int m_max;
+	int m_length;
 	char m_key;
 	std::string m_name;
+	std::string m_num;
 	std::vector<CDlgObject*> m_dlgobject;
 	
 private:

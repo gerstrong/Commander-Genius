@@ -23,6 +23,7 @@ public:
 private:
 	Uint16 m_Zoom, m_ScaleXFilter, m_OGL_filter, m_Autoframeskip;
 	bool m_FSmode, m_AspectCorrection, m_Opengl, m_changed;
+	int m_left, m_right, m_up, m_down, m_speed, m_changeint;
 	st_resolution m_Resolution;
 	std::string m_usedSoftwareVideoDriver;
 };

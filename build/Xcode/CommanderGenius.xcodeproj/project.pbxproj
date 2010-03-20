@@ -1067,7 +1067,6 @@
 			children = (
 				23D3E9B81013ABCA001643FA /* declarations.h */,
 				23D3E9BD1013ABCA001643FA /* fileio */,
-				23D3E9C71013ABCA001643FA /* gui */,
 				23D3E9CD1013ABCA001643FA /* vorbis */,
 			);
 			name = include;
@@ -1080,13 +1079,6 @@
 				23D3E9BF1013ABCA001643FA /* rle.h */,
 			);
 			path = fileio;
-			sourceTree = "<group>";
-		};
-		23D3E9C71013ABCA001643FA /* gui */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = gui;
 			sourceTree = "<group>";
 		};
 		23D3E9CD1013ABCA001643FA /* vorbis */ = {

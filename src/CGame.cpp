@@ -12,6 +12,7 @@
 #include "CGame.h"
 #include "common/CMenu.h"
 #include "CLogFile.h"
+#include "engine/vorticon/CCamera.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/CInput.h"
 #include "sdl/CTimer.h"
@@ -32,8 +33,13 @@ bool CGame::init(int argc, char *argv[])
 	if(!Settings.loadDrvCfg())
 	{
 		g_pLogFile->textOut(PURPLE,"First time message: CKP didn't find the driver config file. However, it generated some default values and will save them now.<br>");
+		if(g_pCamera->getScrollLeft() == -1)
+			g_pCamera->init();
 		Settings.saveDrvCfg();
 	}
+	
+			if(g_pCamera->getScrollLeft() == -1)
+			g_pCamera->init();
 	
 	if(!Settings.loadGameCfg())	Settings.loadDefaultGameCfg();
 

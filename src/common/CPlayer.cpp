@@ -18,6 +18,7 @@
 #include "../sdl/CVideoDriver.h"
 #include "../graphics/CGfxEngine.h"
 #include "../engine/spritedefines.h"
+#include "../engine/vorticon/CCamera.h"
 #include <stdlib.h>
 
 ///
@@ -104,11 +105,6 @@ void CPlayer::setDefaultStartValues()
 	godmode  = false;
     inventory.extralifeat = 20000;
     inventory.lives = 4;
-	
-	m_scrolltriggerright = 168;
-	m_scrolltriggerleft = 152;
-	m_scrolltriggerup = 92;
-	m_scrolltriggerdown = 108;
 
     if (m_episode==1) inventory.charges = 0;
 	else if (m_episode==2) inventory.charges = 3;
@@ -152,7 +148,7 @@ void CPlayer::setupforLevelPlay()
 
 bool CPlayer::scrollTriggers()
 {
-	int px, py;
+	int px, py, left, up, right, down, speed;
 	bool scrollchanged=false;
 
 	Uint16& scroll_x = mp_map->m_scrollx;
@@ -162,40 +158,46 @@ bool CPlayer::scrollTriggers()
 
 	px = (getXPosition()>>STC)-scroll_x;
 	py = (getYPosition()>>STC)-scroll_y;
+	
+	left = g_pCamera->getScrollLeft();
+	up = g_pCamera->getScrollUp();
+	right = g_pCamera->getScrollRight();
+	down = g_pCamera->getScrollDown();
+	speed = g_pCamera->getScrollSpeed();
 
 	// left-right scrolling
-	if(px > m_scrolltriggerright && scroll_x < mp_map->m_maxscrollx)
+	if(px > right && scroll_x < mp_map->m_maxscrollx)
 	{
 		do{
 			px = (getXPosition()>>STC)-scroll_x;
 			mp_map->scrollRight();
-		}while(px > 270 && scroll_x < mp_map->m_maxscrollx);
+		}while(px > right+speed && scroll_x < mp_map->m_maxscrollx);
 		scrollchanged = true;
 	}
-	else if(px < m_scrolltriggerleft && scroll_x > 32)
+	else if(px < left && scroll_x > 32)
 	{
 		do{
 			px = (getXPosition()>>STC)-scroll_x;
 			mp_map->scrollLeft();
-		}while(px < 50 && scroll_x > 32);
+		}while(px < left-speed && scroll_x > 32);
 		scrollchanged = true;
 	}
 
 	// up-down scrolling
-	if (py > m_scrolltriggerdown && scroll_y < mp_map->m_maxscrolly)
+	if (py > down && scroll_y < mp_map->m_maxscrolly)
 	{
 		do{
 			py = (getYPosition()>>STC)-scroll_y;
 			mp_map->scrollDown();
-		}while(py > 150 && scroll_y < mp_map->m_maxscrolly);
+		}while(py > down+speed && scroll_y < mp_map->m_maxscrolly);
 		scrollchanged = true;
 	}
-	else if ( py < m_scrolltriggerup && scroll_y > 32  )
+	else if ( py < up && scroll_y > 32  )
 	{
 		do{
 			py = (getYPosition()>>STC)-scroll_y;
 			mp_map->scrollUp();
-		}while(py < 50 && scroll_y > 32);
+		}while(py < up-speed && scroll_y > 32);
 		scrollchanged = true;
 	}
 

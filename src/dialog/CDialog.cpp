@@ -47,6 +47,7 @@ CDialog::CDialog(SDL_Surface *DialogSurface, Uint16 x, Uint16 y, Uint16 w, Uint1
 	m_blinkctr = 0;
 	m_key = key;
 	m_selected_ID = 0;
+	m_length = 15;
 	m_switch = 0;
 	m_scroll = 0;
 	m_Frame = NULL;
@@ -114,9 +115,36 @@ void CDialog::processInput(int move)
 	if( m_key == 't' )
 	{
 		// Get the input
-		if(g_pInput->getPressedIsTypingKey() && (m_name.length() < 15))
+		if(g_pInput->getPressedIsTypingKey() && (m_name.length() < m_length))
 		{
 			m_name.append(g_pInput->getPressedTypingKey());
+		}
+		
+		if(g_pInput->getPulsedKey(KBCKSPCE, 5) && (m_name.length() > 0))
+		{
+			m_name.erase(m_name.length()-1);
+		}
+		
+		if( m_blinkctr >= 30 )
+		{
+			m_blink = !m_blink;
+			m_blinkctr = 0;
+		}
+		else m_blinkctr++;
+		
+		if(m_blink)
+			setObjectText(m_selected_ID, m_name + "|");
+		else if(m_name == "")
+			setObjectText(m_selected_ID, "|");
+		else
+			setObjectText(m_selected_ID, m_name);
+	}
+	else if( m_key == 'i' )
+	{
+		// Get the num input
+		if(g_pInput->getPressedIsNumKey() && (m_name.length() < m_length))
+		{
+			m_name.append(g_pInput->getPressedNumKey());
 		}
 		
 		if(g_pInput->getPulsedKey(KBCKSPCE, 5) && (m_name.length() > 0))
@@ -155,7 +183,7 @@ void CDialog::processInput(int move)
 			}
 		}while(!m_dlgobject.at(m_selected_ID)->m_selectable);
 
-		if(g_pInput->getPulsedCommand((m_key == 'u') ? IC_DOWN : IC_RIGHT, 60))
+		if(g_pInput->getPulsedCommand((m_key == 'u' or m_key == 'c' or m_key == 's') ? IC_DOWN : IC_RIGHT, 60))
 		{
 			do
 			{
@@ -163,16 +191,8 @@ void CDialog::processInput(int move)
 				{
 					m_switch=1;
 					m_scroll=0;
-					if(m_selected_ID >= m_h-2+m_scroll)
-					{
-						m_selected_ID = m_dlgobject.size()-1;
-						m_name = m_dlgobject.at(m_selected_ID)->m_OptionText->m_text;
-					}
-					else
-					{
 						m_selected_ID = 0;
 						m_name = m_dlgobject.at(m_selected_ID)->m_OptionText->m_text;
-					}
 				}
 				else
 				{
@@ -186,14 +206,17 @@ void CDialog::processInput(int move)
 
 					if(!m_dlgobject.at(m_selected_ID)->m_selectable)
 					{
-						m_selected_ID++;
+						if(m_selected_ID+1 <= m_dlgobject.size()-1)
+							m_selected_ID++;
+						else
+							m_selected_ID = 0;
 						m_name = m_dlgobject.at(m_selected_ID)->m_OptionText->m_text;
 					}
 				}
 
 			}while(!m_dlgobject.at(m_selected_ID)->m_selectable);
 		}
-		else if(g_pInput->getPulsedCommand((m_key == 'u') ? IC_UP : IC_LEFT, 60))
+		else if(g_pInput->getPulsedCommand((m_key == 'u' or m_key == 'c' or m_key == 's') ? IC_UP : IC_LEFT, 60))
 		{
 			do
 			{
@@ -201,8 +224,8 @@ void CDialog::processInput(int move)
 				{
 					m_switch=2;
 
-					if(m_dlgobject.size() > m_h)
-						m_scroll = m_selected_ID-(m_h-2)+1;
+					if(m_dlgobject.size() > m_h-2)
+						m_scroll = m_dlgobject.size()-m_h+2;
 					m_selected_ID = m_dlgobject.size()-1;
 					m_name = m_dlgobject.at(m_selected_ID)->m_OptionText->m_text;
 				}
@@ -216,11 +239,31 @@ void CDialog::processInput(int move)
 
 					if(!m_dlgobject.at(m_selected_ID)->m_selectable)
 					{
-						if(m_selected_ID-1 > 0) m_selected_ID--;
+						if(m_selected_ID-1 >= 0)
+							m_selected_ID--;
+						else
+							m_selected_ID = m_dlgobject.size()-1;
 						m_name = m_dlgobject.at(m_selected_ID)->m_OptionText->m_text;
 					}
 				}
 			}while(!m_dlgobject.at(m_selected_ID)->m_selectable);
+		}
+			if(m_key == 's' or m_key == 'c')
+		{
+			m_int = atoi(m_name);
+			//slider and counter
+			if(g_pInput->getPulsedCommand(IC_RIGHT, 60))
+			{
+				if(m_int<m_max)
+				m_int++;
+			}
+			else if(g_pInput->getPulsedCommand(IC_LEFT, 60))
+			{
+				if(m_int>m_min)
+				m_int--;
+			}
+			m_name = itoa(m_int);
+			setObjectText(m_selected_ID, m_name);
 		}
 	}
 }
@@ -245,7 +288,7 @@ void CDialog::draw()
 										  m_Frame->m_y+8);
 	}
 	if( ( m_h-2 < (Uint8) m_dlgobject.size() )  &&
-	   ( m_scroll != m_dlgobject.size()-m_h+2 )) // Down Arrow
+	   ( m_scroll+m_h-2 != m_dlgobject.size() )) // Down Arrow
 	{
 		Font.drawCharacter(m_DialogSurface , 19,
 										  m_Frame->m_x+m_Frame->m_w-16,
@@ -282,13 +325,13 @@ void CDialog::drawTwirl()
 	}
 	else m_twirl.timer++;
 	
-	if(m_dlgobject[m_selected_ID]->m_y < m_twirl.posy or m_switch == 1)
+	if(m_dlgobject[m_selected_ID]->m_y-8*m_scroll < m_twirl.posy or m_switch == 1)
 	{
 		if(m_switch == 1)
 		{
 			m_switch = 0;
 			
-			m_twirl.posy = m_dlgobject[m_selected_ID]->m_y;
+			m_twirl.posy = m_dlgobject[m_selected_ID]->m_y-8*m_scroll;
 		}
 		else if(m_twirl.posy-m_dlgobject[m_selected_ID]->m_y > 8)
 		{
@@ -298,12 +341,12 @@ void CDialog::drawTwirl()
 			m_twirl.posy--;
 		
 	}
-	else if(m_dlgobject[m_selected_ID]->m_y > m_twirl.posy or m_switch == 2)
+	else if(m_dlgobject[m_selected_ID]->m_y-8*m_scroll > m_twirl.posy or m_switch == 2)
 	{
 		if(m_switch == 2)
 		{
 			m_switch = 0;
-			m_twirl.posy = m_dlgobject[m_selected_ID]->m_y;
+			m_twirl.posy = m_dlgobject[m_selected_ID]->m_y-8*m_scroll;
 		}
 		else if(m_dlgobject[m_selected_ID]->m_y-m_twirl.posy > 8)
 		{

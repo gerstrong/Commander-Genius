@@ -28,7 +28,7 @@ bool COpenGL::initGL(float Width, float Height, unsigned char Depth,
 	m_texparam = GL_TEXTURE_2D;
 	
 	// Set the proper resolution for OpenGL. Very important, when user changes the resolution
-	if(aspect == 4.0f/3.0f)
+	/*if(aspect == 4.0f/3.0f)
 	{
 	if(m_aspectratio < 4.0f/3.0f)
 		glViewport(0,(Height-((Width/320)*240))/2,Width, (Width/320)*240);
@@ -46,7 +46,7 @@ bool COpenGL::initGL(float Width, float Height, unsigned char Depth,
 	else
 		glViewport(0,0,Width, Height);
 	}
-	else if(aspect == 8.0f/5.0f)
+	else */if(aspect == 8.0f/5.0f)
 	{
 	if(m_aspectratio < 8.0f/5.0f)
 		glViewport(0,(Height-((Width/320)*200))/2,Width, (Width/320)*200);
@@ -55,7 +55,7 @@ bool COpenGL::initGL(float Width, float Height, unsigned char Depth,
 	else
 		glViewport(0,0,Width, Height);
 	}
-	else if(aspect == 16.0f/9.0f)
+	/*else if(aspect == 16.0f/9.0f)
 	{
 			if(m_aspectratio < 16.0f/9.0f)
 		glViewport(0,(Height-((Width/320)*180))/2,Width, (Width/320)*180);
@@ -63,7 +63,7 @@ bool COpenGL::initGL(float Width, float Height, unsigned char Depth,
 		glViewport((Width-((Height/180)*320))/2,0, (Height/180)*320, Height);
 	else
 		glViewport(0,0,Width, Height);
-	}
+	}*/
 	
 	// Set clear colour
 	glClearColor(0,0,0,0);

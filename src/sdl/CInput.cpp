@@ -676,6 +676,22 @@ std::string CInput::getPressedTypingKey(void)
 	return buf;
 }
 
+std::string CInput::getPressedNumKey(void)
+{
+	int i;
+	std::string buf;
+
+	for(i=KNUM0 ; i<=KNUM9 ; i++)
+	{
+		if(getPressedKey(i))
+		{
+			buf = '0' + i - KNUM0;
+			return buf;
+		}
+	}
+	return buf;
+}
+
 bool CInput::getPressedIsTypingKey(void)
 {
 	int i;
@@ -696,6 +712,18 @@ bool CInput::getPressedIsTypingKey(void)
 		}
 		return false;
 	}
+}
+
+bool CInput::getPressedIsNumKey(void)
+{
+	int i;
+
+		for(i=KNUM0 ; i<=KNUM9 ; i++)
+		{
+			if(getHoldedKey(i))
+				return true;
+		}
+		return false;
 }
 
 bool CInput::getPressedAnyKey(void)

@@ -6,6 +6,7 @@
  */
 
 #include "../common/options.h"
+#include "../engine/vorticon/CCamera.h"
 #include "../fileio/CParser.h"
 #include "../CLogFile.h"
 #include "../FindFile.h"
@@ -52,7 +53,12 @@ short CSettings::saveDrvCfg()
 	Parser.saveIntValue("OGLfilter","Video",g_pVideoDriver->getOGLFilter());
 	Parser.saveIntValue("filter","Video",g_pVideoDriver->getFiltermode());
 	Parser.saveIntValue("autoframeskip","Video",g_pTimer->getFrameRate());
-	Parser.saveIntValue("aspect","Video",g_pVideoDriver->getAspectCorrection() ? 1 : 0);
+	
+	Parser.saveIntValue("left","Bound",g_pCamera->getScrollLeft());
+	Parser.saveIntValue("right","Bound",g_pCamera->getScrollRight());
+	Parser.saveIntValue("up","Bound",g_pCamera->getScrollUp());
+	Parser.saveIntValue("down","Bound",g_pCamera->getScrollDown());
+	Parser.saveIntValue("speed","Bound",g_pCamera->getScrollSpeed());
 	
 	Parser.saveIntValue("channels","Audio",(g_pSound->getAudioSpec()).channels);
 	Parser.saveIntValue("format","Audio",(g_pSound->getAudioSpec()).format);
@@ -71,7 +77,7 @@ bool CSettings::loadDrvCfg()
 	if(!Parser.loadParseFile()) return false;
 	else
 	{
-		int width, height, depth, boundl, boundr, boundu, boundd;
+		int width, height, depth, boundl, boundr, boundu, boundd, sspeed;
 		
 		depth  = Parser.getIntValue("bpp","Video");
 		width  = Parser.getIntValue("width","Video");
@@ -81,6 +87,7 @@ bool CSettings::loadDrvCfg()
 		boundr  = Parser.getIntValue("right","Bound");
 		boundu	= Parser.getIntValue("up","Bound");
 		boundd  = Parser.getIntValue("down","Bound");
+		sspeed  = Parser.getIntValue("speed","Bound");
 
 		if(depth*width*height <= 0)
 		{
@@ -95,11 +102,11 @@ bool CSettings::loadDrvCfg()
 		g_pVideoDriver->setZoom(Parser.getIntValue("scale","Video"));
 		g_pTimer->setFrameRate(DEFAULT_LPS, Parser.getIntValue("autoframeskip","Video"), DEFAULT_SYNC);
 		
+		g_pCamera->setScrollTriggers(boundl,boundu,boundr,boundd,sspeed);
+		
 		g_pVideoDriver->setFilter(Parser.getIntValue("filter","Video"));
 		
 		g_pVideoDriver->enableOpenGL(Parser.getIntValue("OpenGL","Video") == 1);
-		
-		g_pVideoDriver->setAspectCorrection(Parser.getIntValue("aspect","Video") == 1);
 		
 		g_pSound->setSoundmode(Parser.getIntValue("rate","Audio"),
 							   Parser.getIntValue("channels","Audio") == 2, Parser.getIntValue("format","Audio"));

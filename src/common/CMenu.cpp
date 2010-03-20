@@ -110,6 +110,11 @@ bool CMenu::init( char menu_type )
 		mp_Menu = new CVideoSettings(m_menu_type);
 		return true;
 	}
+	else if( m_menu_type == BOUNDS )
+	{
+		mp_Menu = new CVideoSettings(m_menu_type);
+		return true;
+	}
 	else if( m_menu_type == OPTIONS )
 	{
 		mp_Menu = new COptions(m_menu_type, mp_option);
@@ -562,6 +567,7 @@ void CMenu::processSaveMenu()
 				mp_Dialog->m_key = 't';
 				m_selection = -1;
 			}
+			mp_Dialog->m_length = 15;
 		}
 		else if (mp_Dialog->m_key == 't')
 		{
