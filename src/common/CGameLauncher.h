@@ -9,7 +9,6 @@
 #define CGAMELAUNCHER_H_
 
 #include "../dialog/CDialog.h"
-#include "../common/CMap.h"
 #include "../fileio/CExeFile.h"
 #include <string>
 #include <vector>
@@ -84,7 +83,6 @@ private:
 	std::vector<std::string> m_Paths;
 	std::vector<std::string> m_Names;
 	CDialog *mp_LaunchMenu;
-	CMap *mp_map;
 
 	bool scanSubDirectories(const std::string& root, size_t maxdepth = 0);
 	bool scanExecutables(const std::string& path);

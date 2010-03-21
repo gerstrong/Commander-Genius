@@ -9,6 +9,7 @@
 
 #include "../../graphics/CGfxEngine.h"
 #include "../../sdl/CVideoDriver.h"
+#include "../../sdl/CInput.h"
 
 namespace galaxy
 {
@@ -31,6 +32,11 @@ void CPassiveGalaxy::process()
 
 	// draw Bitmap here!
 	Bitmap.draw(g_pVideoDriver->BlitSurface, 0, 0);
+	
+	if (g_pInput->getPressedAnyKey())
+	{
+		m_modeg = true;
+	}
 }
 
 void CPassiveGalaxy::cleanup()

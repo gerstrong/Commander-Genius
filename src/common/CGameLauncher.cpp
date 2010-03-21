@@ -10,7 +10,6 @@
 #include "../sdl/CVideoDriver.h"
 #include "../sdl/CInput.h"
 #include "../graphics/CGfxEngine.h"
-#include "../common/CMapLoader.h"
 #include "../StringUtils.h"
 #include "../FindFile.h"
 #include <iostream>
@@ -20,7 +19,6 @@ CGameLauncher::CGameLauncher() {
     m_mustquit      = false;
     m_hasbeenchosen = false;
     m_chosenGame    = 0;
-    mp_map          = NULL;
     mp_LaunchMenu   = NULL;
     m_ep1slot       = -1;
 	
@@ -85,21 +83,6 @@ bool CGameLauncher::drawMenu()
 {
     // Use the standard Menu-Frame used in the old DOS-Games
     mp_LaunchMenu->setFrameTheme( DLG_THEME_RED );
-	
-    // Load the map for the background
-	mp_map = new CMap;
-	mp_map->setScrollSurface(g_pVideoDriver->getScrollSurface());
-	mp_map->setTileMap(g_pGfxEngine->Tilemap);
-
-    CMapLoader MapLoader(mp_map);
-	
-    if(!MapLoader.load(1, 90, getEP1Directory() )) return false;
-	
-    mp_map->gotoPos(1664,16);
-	
-    // Draw Background. This is only needed once, since Scrollsurface
-    // won't be cleared every update screen
-    mp_map->drawAll();
 	
     return true;
 }
@@ -226,12 +209,6 @@ void CGameLauncher::process()
     // Process Menu Input
     mp_LaunchMenu->processInput();
 	
-    // Animate the tiles of the map
-    mp_map->animateAllTiles();
-	
-    // Blit the background
-    g_pVideoDriver->blitScrollSurface();
-	
     // Draw the Start-Menu
     mp_LaunchMenu->draw();
 }
@@ -322,10 +299,7 @@ void CGameLauncher::putLabels()
 // Cleanup Routine
 ////
 void CGameLauncher::cleanup()
-{
-    // destroy the map
-    if (mp_map) delete mp_map, mp_map = NULL;
-	
+{	
     // destroy the menu
     if (mp_LaunchMenu) delete mp_LaunchMenu, mp_LaunchMenu = NULL;
 }
