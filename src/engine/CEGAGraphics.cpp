@@ -25,11 +25,7 @@ bool CEGAGraphics::loadData()
 	Font.DestroySurface();
 	Font.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE, g_pVideoDriver->getDepth() );
 	Font.optimizeSurface();
-	#if defined(__APPLE__)
-	std::string path = GetFullFileName("res/gfx/menufonts.bmp");
-	#else
 	std::string path = GetFullFileName("data/res/gfx/menufonts.bmp");
-#endif
 	if( Font.loadHiColourFont(path) )
 		g_pLogFile->textOut(GREEN, "VGA Fontmap for the gamemenu has been loaded successfully!");
 
