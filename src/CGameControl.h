@@ -40,6 +40,7 @@ public:
 	bool init(int argc, char *argv[]);
 	bool init(char mode=GAMELAUNCHER);
 	bool loadResources(unsigned short Episode, const std::string& DataDirectory, Uint8 flags=LOADALL);
+	bool loadMenuResources();
 	
 	void process();
 	

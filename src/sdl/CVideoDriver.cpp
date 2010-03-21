@@ -100,7 +100,7 @@ CVideoDriver::CVideoDriver() {
 	setMode(m_Resolutionlist.front().width, m_Resolutionlist.front().height, m_Resolutionlist.front().depth);
 }
 
-// initResolutionList() reads the local list of availabel resolution.
+// initResolutionList() reads the local list of available resolution.
 // This function can only be called internally
 void CVideoDriver::initResolutionList()
 {

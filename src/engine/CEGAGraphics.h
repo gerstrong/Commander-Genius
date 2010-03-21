@@ -23,7 +23,7 @@ public:
 	CEGAGraphics(short episode, const std::string& path);
 	virtual ~CEGAGraphics();
 	
-	virtual bool loadData() {return false;};
+	virtual bool loadData();
 	virtual bool loadData( int version, unsigned char *p_exedata ) {return false;};
 
 	virtual int getNumSprites() {return 0;};

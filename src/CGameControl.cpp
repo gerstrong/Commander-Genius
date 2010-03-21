@@ -95,7 +95,7 @@ bool CGameControl::init(char mode)
             return false;
         }
         // Resources for the main menu
-		if(!loadResources(1, mp_GameLauncher->getEP1Directory(), LOADGFX ))	return false;
+		if(!loadMenuResources())	return false;
 		if(!mp_GameLauncher->drawMenu()) return false;
 
 		return true;
@@ -150,6 +150,24 @@ bool CGameControl::init(char mode)
 	return false;
 }
 
+///
+// Here the Resources for the menu are loaded. The file used here must exist in the directory
+///
+bool CGameControl::loadMenuResources()
+{
+	// Decode the entire graphics for the game (EGALATCH, EGASPRIT, etc.)
+	if(m_EGAGraphics) delete m_EGAGraphics; // except for the first start of a game this always happens
+	m_EGAGraphics = new CEGAGraphics(0, "."); // It has to be the local data path where the interpreter is
+	if(!m_EGAGraphics) return false;
+	m_EGAGraphics->loadData();
+	return true;
+}
+
+
+///
+// This is used for loading all the resources of the game the use has chosen.
+// It loads graphics, sound and text into the memory
+///
 bool CGameControl::loadResources(unsigned short Episode, const std::string& DataDirectory, Uint8 flags)
 {
 	CExeFile ExeFile(Episode, DataDirectory);
