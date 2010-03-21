@@ -139,7 +139,6 @@ void CVideoDriver::initResolutionList()
 				if(i == m_Resolutionlist.end())
 				{
 					m_Resolutionlist.push_back(resolution);
-					printf("%ix%ix%i\n",resolution.width, resolution.height, resolution.depth);
 				}
 			}
 		}

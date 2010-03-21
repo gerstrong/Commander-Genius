@@ -216,7 +216,9 @@ void CTimer::TimeToDelay( void )
 	if (m_SkipPS>m_FrameRate/4)
 	    setFrameRate(DEFAULT_LPS, m_FrameRate-20, DEFAULT_SYNC);
 */	
+#ifdef DEBUG
 	printf( "LOOP %d LPS %d FPS %d Skip %d\n", m_LoopPS, m_LPS, m_FPS, m_SkipPS );
+#endif
     }
 }
 
