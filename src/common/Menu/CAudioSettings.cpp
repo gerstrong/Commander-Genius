@@ -19,7 +19,25 @@ CBaseMenu(menu_type),
 m_Gamepath(Gamepath),
 m_Episode(Episode)
 {
-	mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 20, 5);
+	if(m_MenuType == VOLUME)
+	{
+	mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 18, 7);
+	mp_Dialog->setFrameTheme(DLG_THEME_OLDSCHOOL);
+		
+	mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 1, " Adjust Volume: ");
+	mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 2, "  Music:        ");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "<O==========>");
+	mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 4, "  Sound:        ");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "<O==========>");
+		
+	mp_Dialog->m_dlgobject.at(2)->m_Option->m_value = 0;
+	mp_Dialog->m_dlgobject.at(4)->m_Option->m_value = 0;
+		
+		mp_Dialog->m_key = 's';
+	}
+	else
+	{
+	mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 20, 6);
 	mp_Dialog->setFrameTheme(DLG_THEME_OLDSCHOOL);
 
 	m_Rate = g_pSound->getAudioSpec().freq;
@@ -37,6 +55,8 @@ m_Episode(Episode)
 	buf = "Mode: ";
 	buf += m_Mode ? "Stereo": "Mono";
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, buf);
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Adjust Volume");
+	}
 }
 
 void CAudioSettings::processSpecific()
@@ -45,6 +65,13 @@ void CAudioSettings::processSpecific()
 	
 	if( g_pInput->getPressedCommand(IC_QUIT) )
 	{
+		if(m_MenuType == VOLUME)
+		{
+			m_MenuType = AUDIO;
+			m_mustclose = true;
+		}
+		else
+		{
 			CSettings Settings;
 
 			// Check if the music is playing, stop it and restart it, if necessary
@@ -69,10 +96,17 @@ void CAudioSettings::processSpecific()
 
 			m_MenuType = CONFIGURE;
 			m_mustclose = true;
+		}
 	}
 
 	if( m_selection != -1)
 	{
+		if(m_MenuType == VOLUME)
+		{
+			
+		}
+		else
+		{
 		if(m_selection == 0)
 		{
 			switch(m_Rate)
@@ -98,6 +132,34 @@ void CAudioSettings::processSpecific()
 			buf = "Mode: ";
 			buf += m_Mode ? "Stereo" : "Mono";
 			mp_Dialog->setObjectText(2, buf);
+		}
+		else if(m_selection == 3)
+		{
+					CSettings Settings;
+
+			// Check if the music is playing, stop it and restart it, if necessary
+			bool wasPlaying = g_pMusicPlayer->playing();
+			g_pMusicPlayer->stop();
+
+			// Close the sound driver
+			g_pSound->destroy();
+			g_pSound->setSoundmode(m_Rate, m_Mode ? true : false, m_Format);
+			Settings.saveDrvCfg();
+
+			// Reload the sounds effects, so they work with the new format
+			g_pSound->init();
+			g_pSound->loadSoundData(m_Episode, m_Gamepath);
+
+			// Reload the music if was playing before we changed the settings
+			if(wasPlaying)
+			{
+				g_pMusicPlayer->reload(g_pSound->getAudioSpec());
+				g_pMusicPlayer->play();
+			}
+
+			m_MenuType = VOLUME;
+			m_mustclose = true;	
+		}
 		}
 		m_selection = -1;
 	}

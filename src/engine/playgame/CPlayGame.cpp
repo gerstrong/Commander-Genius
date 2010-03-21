@@ -472,13 +472,13 @@ void CPlayGame::handleFKeys()
 		mp_Menu->init(F1);
 	}
 	
-	if(g_pInput->getPressedKey(KF2))
+	/*if(g_pInput->getPressedKey(KF2))
 	{
 		// Debug Menu
 		// Open the menu
 		mp_Menu = new CMenu( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame, mp_option );
 		mp_Menu->init(DEBUG);
-	}
+	}*/
 
     // F3 - save game
     if (g_pInput->getPressedKey(KF3))
