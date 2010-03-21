@@ -8,6 +8,7 @@
 #include "CEGAGraphics.h"
 #include "../FindFile.h"
 #include "../CLogFile.h"
+#include "../sdl/CVideoDriver.h"
 
 CEGAGraphics::CEGAGraphics(short episode, const std::string& path) {
 	m_episode = episode;
@@ -22,7 +23,7 @@ bool CEGAGraphics::loadData()
 {
 	CFont &Font = g_pGfxEngine->getFont();
 	Font.DestroySurface();
-	Font.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE );
+	Font.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE, g_pVideoDriver->getDepth() );
 	Font.optimizeSurface();
 	#if defined(__APPLE__)
 	std::string path = GetFullFileName("res/gfx/menufonts.bmp");
