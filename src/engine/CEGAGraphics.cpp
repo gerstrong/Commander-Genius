@@ -6,6 +6,7 @@
  */
 
 #include "CEGAGraphics.h"
+#include "../FindFile.h"
 #include "../CLogFile.h"
 
 CEGAGraphics::CEGAGraphics(short episode, const std::string& path) {
@@ -23,7 +24,8 @@ bool CEGAGraphics::loadData()
 	Font.DestroySurface();
 	Font.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE );
 	Font.optimizeSurface();
-	if( Font.loadHiColourFont("data/res/gfx/menufonts.bmp") )
+	std::string path = GetFullFileName("res/gfx/menufonts.bmp");
+	if( Font.loadHiColourFont(path) )
 		g_pLogFile->textOut(GREEN, "VGA Fontmap for the gamemenu has been loaded successfully!");
 
 	Font.generateSpecialTwirls();
