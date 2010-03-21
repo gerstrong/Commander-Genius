@@ -7,6 +7,7 @@
 
 #include "CFont.h"
 #include "CPalette.h"
+#include "../FindFile.h"
 #include <string.h>
 
 CFont::CFont() :
@@ -46,7 +47,7 @@ bool CFont::loadHiColourFont( const std::string& filename )
 {
 	if(m_FontSurface)
 	{
-		SDL_Surface *temp_surface = SDL_LoadBMP(filename.c_str());
+		SDL_Surface *temp_surface = SDL_LoadBMP(GetFullFileName(filename).c_str());
 		if(temp_surface)
 		{
 			SDL_Surface *displaysurface = SDL_ConvertSurface(temp_surface, m_FontSurface->format, m_FontSurface->flags);
