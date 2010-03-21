@@ -31,15 +31,16 @@ CBaseMenu(menu_type) {
 		
 		mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 1, " Adjust Bounds: ");
 		mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 2, " Left (50-270): ");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, itoa(m_left));
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, " "+itoa(m_left));
 		mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 4, " Right (50-270):");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, itoa(m_right));
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, " "+itoa(m_right));
 		mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 6, " Up (50-150):   ");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, itoa(m_up));
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, " "+itoa(m_up));
 		mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 8, " Down (50-150): ");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 9, itoa(m_down));
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 9, " "+itoa(m_down));
 		mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 10, " Speed (1-50):  ");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 11, itoa(m_speed));
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 11, " "+itoa(m_speed));
+		
 		
 		mp_Dialog->m_key = 'c';
 	}
@@ -210,7 +211,7 @@ void CVideoSettings::processSpecific(){
 			{
 				if(mp_Dialog->m_name == "")
 				{
-					mp_Dialog->setObjectText(m_selection, itoa(mp_Dialog->m_int));
+					mp_Dialog->setObjectText(m_selection, " "+itoa(mp_Dialog->m_int));
 					mp_Dialog->m_name = itoa(mp_Dialog->m_int);
 				}
 				else
@@ -219,7 +220,7 @@ void CVideoSettings::processSpecific(){
 						mp_Dialog->m_name = itoa(mp_Dialog->m_max);
 					else if(atoi(mp_Dialog->m_name)<mp_Dialog->m_min)
 						mp_Dialog->m_name = itoa(mp_Dialog->m_min);
-					mp_Dialog->setObjectText(m_selection, mp_Dialog->m_name);
+					mp_Dialog->setObjectText(m_selection, " "+mp_Dialog->m_name);
 				}
 				mp_Dialog->m_key = 'c';
 				m_selection = -1;

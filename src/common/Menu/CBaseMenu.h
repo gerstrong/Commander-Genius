@@ -22,7 +22,8 @@ enum menutypes{
 	GRAPHICS, CONTROLS,
 	AUDIO, OPTIONS,
 	F1, HELP, ENDGAME, QUIT,
-	BOUNDS, VOLUME, DEBUG
+	BOUNDS, VOLUME, DEBUG,
+	MODCONF
 };
 
 // Active means, when the player is playing, PASSIVE when the Player is not playing

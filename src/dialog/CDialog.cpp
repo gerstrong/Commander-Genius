@@ -272,7 +272,7 @@ void CDialog::processInput(int move)
 			if(m_key == 'c')
 			{
 				m_name = itoa(m_int);
-				setObjectText(m_selected_ID, m_name);
+				setObjectText(m_selected_ID, " "+m_name);
 			}
 			else if(m_key == 's')
 			{
@@ -341,6 +341,18 @@ void CDialog::draw()
 	for(Uint16 i=m_scroll ;	i<max ; i++)
 	{
 		m_dlgobject[i]->render(m_DialogSurface, m_scroll, 2*(i==m_selected_ID) );
+	}
+	
+	if(m_key == 'c')
+	{
+		if(m_int>m_min)
+		Font.drawCharacter(m_DialogSurface, 21,
+						   m_dlgobject[m_selected_ID]->m_x+16,
+						   m_dlgobject[m_selected_ID]->m_y);
+		if(m_int<m_max)
+		Font.drawCharacter(m_DialogSurface, 17,
+						   m_dlgobject[m_selected_ID]->m_x+16+m_dlgobject[m_selected_ID]->m_Option->m_text.length()*8,
+						   m_dlgobject[m_selected_ID]->m_y);
 	}
 	
 	// Render the twirl
