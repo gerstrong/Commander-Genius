@@ -24,7 +24,7 @@ bool CEGAGraphics::loadData()
 	Font.DestroySurface();
 	Font.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE );
 	Font.optimizeSurface();
-	std::string path = GetFullFileName("res/gfx/menufonts.bmp");
+	std::string path = GetFullFileName("data/res/gfx/menufonts.bmp");
 	if( Font.loadHiColourFont(path) )
 		g_pLogFile->textOut(GREEN, "VGA Fontmap for the gamemenu has been loaded successfully!");
 

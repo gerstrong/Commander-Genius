@@ -38,7 +38,6 @@ mp_PlayGame(NULL)
 	m_startLevel = 0;
 }
 
-
 ////
 // Initialization Routine
 /////*/*/*

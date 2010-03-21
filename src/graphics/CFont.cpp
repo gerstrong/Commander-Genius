@@ -13,12 +13,16 @@ CFont::CFont() :
 m_FontSurface(NULL)
 {}
 
-bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags)
+bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags, Uint8 bpp)
 {
 	if(m_FontSurface) SDL_FreeSurface(m_FontSurface);
-	m_FontSurface = SDL_CreateRGBSurface(Flags, 128, 512, 8, 0, 0, 0, 0);
-	SDL_SetColors(m_FontSurface, Palette, 0, 255);
-	SDL_SetColorKey(m_FontSurface, SDL_SRCCOLORKEY, COLORKEY);
+	m_FontSurface = SDL_CreateRGBSurface(Flags, 128, 512, bpp, 0, 0, 0, 0);
+
+	if(bpp == 8)
+	{
+		SDL_SetColors(m_FontSurface, Palette, 0, 255);
+		SDL_SetColorKey(m_FontSurface, SDL_SRCCOLORKEY, COLORKEY);
+	}
 	return (m_FontSurface != NULL);
 }
 

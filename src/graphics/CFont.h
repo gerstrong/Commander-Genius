@@ -30,7 +30,7 @@ class CFont {
 public:
 	CFont();
 
-	bool CreateSurface(SDL_Color *Palette, Uint32 Flags);
+	bool CreateSurface(SDL_Color *Palette, Uint32 Flags, Uint8 bpp=8);
 	bool optimizeSurface();
 	SDL_Surface *getSDLSurface() { return m_FontSurface; }
 
