@@ -88,7 +88,11 @@ m_type(type)
 	}
 	else if(type == "CG")
 	{
+		#if defined(__APPLE__)
 		std::string path = GetFullFileName("res/gfx/CGLogo.bmp");
+			#else
+	std::string path = GetFullFileName("data/res/gfx/CGLogo.bmp");
+#endif
 		mp_LogoBMP = SDL_LoadBMP(path.c_str());
 		
 		m_lines.push_back("Commander Genius is an interpreter");
