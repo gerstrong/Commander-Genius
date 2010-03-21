@@ -23,7 +23,7 @@ bool CEGAGraphics::loadData()
 	Font.DestroySurface();
 	Font.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE );
 	Font.optimizeSurface();
-	if(Font.loadHiColourFont("data/res/gfx/menufonts.bmp"))
+	if( Font.loadHiColourFont("data/res/gfx/menufonts.bmp") )
 		g_pLogFile->textOut(GREEN, "VGA Fontmap for the gamemenu has been loaded successfully!");
 
 	Font.generateSpecialTwirls();

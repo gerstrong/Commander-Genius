@@ -64,15 +64,12 @@ bool CGameLauncher::init()
     // Recursivly scan into DIR_GAMES subdir's for exe's
     if (scanSubDirectories(DIR_GAMES, DEPTH_MAX_GAMES))
         gamedetected = true;
-	
-    // No games detected then quit
-    if(!gamedetected)
-        return false;
-	
+
     // Save any custom labels
     putLabels();
-	
-    mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,m_Entries.size()+1, "Quit");
+
+    // No games detected then quit
+   	mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,m_Entries.size()+1, !gamedetected ? "No games found! - Quit" : "Quit");
 	
     g_pLogFile->ftextOut("Game Autodetection Finished<br>" );
 	
