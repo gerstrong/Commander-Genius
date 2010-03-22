@@ -286,6 +286,10 @@ void CGameControl::process()
 				// Load the Resources
 				if( loadResources( m_Episode, m_DataDirectory ) )
 				{
+					// Now look if there are any old savegames that need to be converted
+					CSavedGame savedgames;
+					savedgames.convertAllOldFormats();
+
 					if(m_startLevel == 0) // Starts normally
 					{
 						if(init(PASSIVE)) cleanup(GAMELAUNCHER);

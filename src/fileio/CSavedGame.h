@@ -33,6 +33,9 @@ public:
 
 	// Getters
 	std::vector<std::string> getSlotList();
+
+	void convertAllOldFormats();
+	void convertOldFormat(size_t slot);
 	Uint32 getSlotNumber(const std::string &filename);
 	std::string getSlotName(const std::string &filename);
 	Uint32 getDataSize(std::ifstream &StateFile);

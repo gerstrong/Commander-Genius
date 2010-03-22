@@ -91,6 +91,94 @@ std::vector<std::string> CSavedGame::getSlotList()
 	return filelist;
 }
 
+// This function converts savegame all files from old versions of CG to the new format
+void CSavedGame::convertAllOldFormats()
+{
+	for(size_t slot=0 ; slot<=9 ; slot++ )
+		convertOldFormat(slot);
+}
+
+// Converts one old savegame file to the new format...
+void CSavedGame::convertOldFormat(size_t slot)
+{
+	// TODO: Old CG 0.3.0.4 Code Handle with care
+
+	/*FILE *fp;
+	std::string fname;
+	unsigned char episode, level, lives;
+	unsigned int i;
+
+		fname = "ep";
+		fname += mp_levelcontrol->episode + '0';
+		fname += "save";
+		fname += slot+'0';
+		fname += ".dat";
+
+		if (!IsValidSaveGame(fname))
+		{
+			g_pLogFile->ftextOut("%s is not a valid save-game.\n", fname.c_str());
+			return false;
+		}
+
+		g_pLogFile->ftextOut("Loading game from file %s\n", fname.c_str());
+		fp = OpenGameFile(fname, "rb");
+		if (!fp) { g_pLogFile->ftextOut("unable to open %s\n",fname.c_str()); return 1; }
+
+		readHeader(fp, &episode, &level, &lives, &numplayers);
+
+		mp_levelcontrol->episode = episode;
+		mp_levelcontrol->curlevel = level;
+		player[0].inventory.lives = lives;
+
+		g_pLogFile->ftextOut("game_load: restoring structures...\n");
+		primaryplayer = fgetc(fp);
+
+		sgrle_compress(fp, (unsigned char *) mp_levelcontrol, sizeof(*mp_levelcontrol));
+
+		// note that we don't have to load the LEVEL, because the state
+		// of the map is already saved inside the save-game.
+		sgrle_initdecompression();
+		if (sgrle_decompress(fp, (unsigned char *) mp_levelcontrol, sizeof(*mp_levelcontrol))) return 1;
+
+		if (sgrle_decompress(fp, (unsigned char *)&scroll_x, sizeof(scroll_x))) return 1;
+		if (sgrle_decompress(fp, (unsigned char *)&scrollx_buf, sizeof(scrollx_buf))) return 1;
+		if (sgrle_decompress(fp, (unsigned char *)&scrollpix, sizeof(scrollpix))) return 1;
+		if (sgrle_decompress(fp, (unsigned char *)&mapx, sizeof(mapx))) return 1;
+		if (sgrle_decompress(fp, (unsigned char *)&mapxstripepos, sizeof(mapxstripepos))) return 1;
+
+		if (sgrle_decompress(fp, (unsigned char *)&scroll_y, sizeof(scroll_y))) return 1;
+		if (sgrle_decompress(fp, (unsigned char *)&scrolly_buf, sizeof(scrolly_buf))) return 1;
+		if (sgrle_decompress(fp, (unsigned char *)&scrollpixy, sizeof(scrollpixy))) return 1;
+		if (sgrle_decompress(fp, (unsigned char *)&mapy, sizeof(mapy))) return 1;
+		if (sgrle_decompress(fp, (unsigned char *)&mapystripepos, sizeof(mapystripepos))) return 1;
+
+		if (sgrle_decompress(fp, (unsigned char *)&max_scroll_x, sizeof(max_scroll_x))) return 1;
+		if (sgrle_decompress(fp, (unsigned char *)&max_scroll_y, sizeof(max_scroll_y))) return 1;
+
+		if (sgrle_decompress(fp, (unsigned char *)&map, sizeof(map))) return 1;
+
+		highest_objslot = fgeti(fp);
+		if (sgrle_decompress(fp, (unsigned char *)&objects[0], sizeof(objects))) return 1;
+		if (sgrle_decompress(fp, (unsigned char *)&tiles[0], sizeof(tiles))) return 1;
+
+		for(i=0;i<numplayers;i++)
+		{
+			if (sgrle_decompress(fp, (unsigned char *)&player[i], sizeof(player[i]))) return 1;
+		}
+
+		CSprite **sprites = &g_pGfxEngine->Sprite[0];
+		sprites[DOOR_YELLOW_SPRITE]->setHeight(fgetc(fp));
+		sprites[DOOR_RED_SPRITE]->setHeight(fgetc(fp));
+		sprites[DOOR_GREEN_SPRITE]->setHeight(fgetc(fp));
+		sprites[DOOR_BLUE_SPRITE]->setHeight(fgetc(fp));
+
+		fclose(fp);
+
+		g_pLogFile->ftextOut("Structures restored: map size: %d,%d\n", map.xsize, map.ysize);
+		g_pLogFile->ftextOut("Load game OK\n");
+		return true;*/
+}
+
 // From judging the filename it tells you at what position this slot was saved!
 Uint32 CSavedGame::getSlotNumber(const std::string &filename)
 {
