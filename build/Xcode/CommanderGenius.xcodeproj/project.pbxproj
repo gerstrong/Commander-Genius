@@ -724,6 +724,7 @@
 		63CB946C10E11E0000713C40 /* CTantalusRay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CTantalusRay.cpp; sourceTree = "<group>"; };
 		63CB946D10E11E0000713C40 /* CTantalusRay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTantalusRay.h; sourceTree = "<group>"; };
 		63CD0B771091F8FB00CB7B80 /* CPlayerItems.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlayerItems.cpp; sourceTree = "<group>"; };
+		63CD210F115EBA9C00A4BEF8 /* Oldsavegamestructs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Oldsavegamestructs.h; sourceTree = "<group>"; };
 		63CFCB4811468CE300DBA07E /* CPixelate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPixelate.cpp; sourceTree = "<group>"; };
 		63CFCB4911468CE300DBA07E /* CPixelate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPixelate.h; sourceTree = "<group>"; };
 		63D34906108B648A0033C412 /* options.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = options.h; sourceTree = "<group>"; };
@@ -1032,6 +1033,7 @@
 		23D3E9A11013ABCA001643FA /* fileio */ = {
 			isa = PBXGroup;
 			children = (
+				63CD210F115EBA9C00A4BEF8 /* Oldsavegamestructs.h */,
 				6350A6B610EB8771004B1F27 /* Cunlzexe.cpp */,
 				6350A6B710EB8771004B1F27 /* Cunlzexe.h */,
 				63148DD110E8091E00C9E281 /* CHuffman.cpp */,

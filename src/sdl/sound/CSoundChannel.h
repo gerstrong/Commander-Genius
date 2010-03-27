@@ -52,6 +52,7 @@ public:
 	void enableHighQuality(bool value) { m_hq = value; }
 
 	void setFormat( Uint16 format );
+	void setVolume( int volume );
 	void setupSound(unsigned short current_sound,
 					unsigned int sound_timer,
 					bool playing,
@@ -82,6 +83,7 @@ private:
     Sint32 m_wavein;
     Sint32 m_silence;
     Sint32 m_volume;
+	Sint32 m_maxvolume;
 
     CSoundSlot	*m_pSoundSlot;			// Pointer to the Soundslots of CSound
 };
