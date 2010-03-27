@@ -10,6 +10,7 @@
 #include "../FindFile.h"
 
 #include "CSavedGame.h"
+#include "Oldsavegamestructs.h"
 
 #define SG_HEADERSIZE			7
 #define SAVEGAMEVERSION 		'6'
@@ -91,6 +92,8 @@ std::vector<std::string> CSavedGame::getSlotList()
 	return filelist;
 }
 
+/* --- Functions for older savegames START --- */
+
 // This function converts savegame all files from old versions of CG to the new format
 void CSavedGame::convertAllOldFormats()
 {
@@ -99,85 +102,119 @@ void CSavedGame::convertAllOldFormats()
 }
 
 // Converts one old savegame file to the new format...
-void CSavedGame::convertOldFormat(size_t slot)
+bool CSavedGame::convertOldFormat(size_t slot)
 {
 	// TODO: Old CG 0.3.0.4 Code Handle with care
-
-	/*FILE *fp;
+	FILE *fp;
 	std::string fname;
-	unsigned char episode, level, lives;
-	unsigned int i;
+	unsigned char episode, level, lives, numplayers;
+	//unsigned int i;
+	OldSaveGameFormat old;
 
-		fname = "ep";
-		fname += mp_levelcontrol->episode + '0';
-		fname += "save";
-		fname += slot+'0';
-		fname += ".dat";
+	fname = "ep";
+	fname += m_Episode + '0';
+	fname += "save";
+	fname += slot+'0';
+	fname += ".dat";
 
-		if (!IsValidSaveGame(fname))
-		{
-			g_pLogFile->ftextOut("%s is not a valid save-game.\n", fname.c_str());
-			return false;
-		}
+	if ( !IsOldButValidSaveGame(fname) )
+	{
+		g_pLogFile->ftextOut("%s is not a valid save-game.\n", fname.c_str());
+		return false;
+	}
 
-		g_pLogFile->ftextOut("Loading game from file %s\n", fname.c_str());
-		fp = OpenGameFile(fname, "rb");
-		if (!fp) { g_pLogFile->ftextOut("unable to open %s\n",fname.c_str()); return 1; }
+	g_pLogFile->ftextOut("Loading game from file %s\n", fname.c_str());
+	fp = OpenGameFile(fname, "rb");
+	if (!fp) { g_pLogFile->ftextOut("unable to open %s\n",fname.c_str()); return false; }
 
-		readHeader(fp, &episode, &level, &lives, &numplayers);
+	readOldHeader(fp, &episode, &level, &lives, &numplayers);
 
-		mp_levelcontrol->episode = episode;
-		mp_levelcontrol->curlevel = level;
-		player[0].inventory.lives = lives;
+	g_pLogFile->ftextOut("game_load: restoring structures...\n");
+	/*primaryplayer =*/ fgetc(fp); // primary player doesn't exist anymore! Jump that!
 
-		g_pLogFile->ftextOut("game_load: restoring structures...\n");
-		primaryplayer = fgetc(fp);
+	sgrle_compress(fp, (unsigned char *) &old.LevelControl, sizeof(old.LevelControl));
 
-		sgrle_compress(fp, (unsigned char *) mp_levelcontrol, sizeof(*mp_levelcontrol));
+	// note that we don't have to load the LEVEL, because the state
+	// of the map is already saved inside the save-game.
+	sgrle_initdecompression();
+	if (sgrle_decompress(fp, (unsigned char *) &old.LevelControl, sizeof(old.LevelControl))) return false;
 
-		// note that we don't have to load the LEVEL, because the state
-		// of the map is already saved inside the save-game.
-		sgrle_initdecompression();
-		if (sgrle_decompress(fp, (unsigned char *) mp_levelcontrol, sizeof(*mp_levelcontrol))) return 1;
+	/*if (sgrle_decompress(fp, (unsigned char *)&scroll_x, sizeof(scroll_x))) return false;
+	if (sgrle_decompress(fp, (unsigned char *)&scrollx_buf, sizeof(scrollx_buf))) return false;
+	if (sgrle_decompress(fp, (unsigned char *)&scrollpix, sizeof(scrollpix))) return false;
+	if (sgrle_decompress(fp, (unsigned char *)&mapx, sizeof(mapx))) return false;
+	if (sgrle_decompress(fp, (unsigned char *)&mapxstripepos, sizeof(mapxstripepos))) return false;
 
-		if (sgrle_decompress(fp, (unsigned char *)&scroll_x, sizeof(scroll_x))) return 1;
-		if (sgrle_decompress(fp, (unsigned char *)&scrollx_buf, sizeof(scrollx_buf))) return 1;
-		if (sgrle_decompress(fp, (unsigned char *)&scrollpix, sizeof(scrollpix))) return 1;
-		if (sgrle_decompress(fp, (unsigned char *)&mapx, sizeof(mapx))) return 1;
-		if (sgrle_decompress(fp, (unsigned char *)&mapxstripepos, sizeof(mapxstripepos))) return 1;
+	if (sgrle_decompress(fp, (unsigned char *)&scroll_y, sizeof(scroll_y))) return false;
+	if (sgrle_decompress(fp, (unsigned char *)&scrolly_buf, sizeof(scrolly_buf))) return false;
+	if (sgrle_decompress(fp, (unsigned char *)&scrollpixy, sizeof(scrollpixy))) return false;
+	if (sgrle_decompress(fp, (unsigned char *)&mapy, sizeof(mapy))) return false;
+	if (sgrle_decompress(fp, (unsigned char *)&mapystripepos, sizeof(mapystripepos))) return false;
 
-		if (sgrle_decompress(fp, (unsigned char *)&scroll_y, sizeof(scroll_y))) return 1;
-		if (sgrle_decompress(fp, (unsigned char *)&scrolly_buf, sizeof(scrolly_buf))) return 1;
-		if (sgrle_decompress(fp, (unsigned char *)&scrollpixy, sizeof(scrollpixy))) return 1;
-		if (sgrle_decompress(fp, (unsigned char *)&mapy, sizeof(mapy))) return 1;
-		if (sgrle_decompress(fp, (unsigned char *)&mapystripepos, sizeof(mapystripepos))) return 1;
+	if (sgrle_decompress(fp, (unsigned char *)&max_scroll_x, sizeof(max_scroll_x))) return false;
+	if (sgrle_decompress(fp, (unsigned char *)&max_scroll_y, sizeof(max_scroll_y))) return false;
 
-		if (sgrle_decompress(fp, (unsigned char *)&max_scroll_x, sizeof(max_scroll_x))) return 1;
-		if (sgrle_decompress(fp, (unsigned char *)&max_scroll_y, sizeof(max_scroll_y))) return 1;
+	if (sgrle_decompress(fp, (unsigned char *)&map, sizeof(map))) return false;
 
-		if (sgrle_decompress(fp, (unsigned char *)&map, sizeof(map))) return 1;
+	highest_objslot = fgeti(fp);
+	if (sgrle_decompress(fp, (unsigned char *)&objects[0], sizeof(objects))) return false;
+	if (sgrle_decompress(fp, (unsigned char *)&tiles[0], sizeof(tiles))) return false;
 
-		highest_objslot = fgeti(fp);
-		if (sgrle_decompress(fp, (unsigned char *)&objects[0], sizeof(objects))) return 1;
-		if (sgrle_decompress(fp, (unsigned char *)&tiles[0], sizeof(tiles))) return 1;
+	for(i=0;i<numplayers;i++)
+	{
+		if (sgrle_decompress(fp, (unsigned char *)&player[i], sizeof(player[i]))) return false;
+	}
 
-		for(i=0;i<numplayers;i++)
-		{
-			if (sgrle_decompress(fp, (unsigned char *)&player[i], sizeof(player[i]))) return 1;
-		}
+	CSprite **sprites = &g_pGfxEngine->Sprite[0];
+	sprites[DOOR_YELLOW_SPRITE]->setHeight(fgetc(fp));
+	sprites[DOOR_RED_SPRITE]->setHeight(fgetc(fp));
+	sprites[DOOR_GREEN_SPRITE]->setHeight(fgetc(fp));
+	sprites[DOOR_BLUE_SPRITE]->setHeight(fgetc(fp));
 
-		CSprite **sprites = &g_pGfxEngine->Sprite[0];
-		sprites[DOOR_YELLOW_SPRITE]->setHeight(fgetc(fp));
-		sprites[DOOR_RED_SPRITE]->setHeight(fgetc(fp));
-		sprites[DOOR_GREEN_SPRITE]->setHeight(fgetc(fp));
-		sprites[DOOR_BLUE_SPRITE]->setHeight(fgetc(fp));
+	fclose(fp);
 
-		fclose(fp);
-
-		g_pLogFile->ftextOut("Structures restored: map size: %d,%d\n", map.xsize, map.ysize);
-		g_pLogFile->ftextOut("Load game OK\n");
-		return true;*/
+	g_pLogFile->ftextOut("Structures restored: map size: %d,%d\n", map.xsize, map.ysize);
+	g_pLogFile->ftextOut("Load game OK\n");*/
+	return true;
 }
+
+char CSavedGame::IsOldButValidSaveGame(std::string fname)
+{
+FILE *fp;
+unsigned int i;
+const char *verify = "CKSAVE";
+	fp = OpenGameFile(fname, "rb");
+	if (!fp) return 0;
+
+	for(i=0;i<strlen(verify);i++)
+	{
+		if (fgetc(fp) != verify[i])
+		{
+			fclose(fp);
+			return 0;
+		}
+	}
+	if (fgetc(fp) != SAVEGAMEVERSION)
+	{
+		fclose(fp);
+		return 0;
+	}
+	fclose(fp);
+	return 1;
+}
+
+// this is seperated out of game_load for modularity because menumanager.c
+// also uses it, in it's save-game "preview" menu on the load game screen
+void CSavedGame::readOldHeader(FILE *fp, uchar *episode, uchar *level, uchar *lives, uchar *num_players)
+{
+	fseek(fp, SG_HEADERSIZE, SEEK_SET);		// skip past the CKSAVE%c
+	*episode = fgetc(fp);
+	*level = fgetc(fp);
+	*lives = fgetc(fp);
+	*num_players = fgetc(fp);
+}
+
+/* --- Functions for older savegames END --- */
 
 // From judging the filename it tells you at what position this slot was saved!
 Uint32 CSavedGame::getSlotNumber(const std::string &filename)

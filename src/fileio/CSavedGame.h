@@ -35,7 +35,9 @@ public:
 	std::vector<std::string> getSlotList();
 
 	void convertAllOldFormats();
-	void convertOldFormat(size_t slot);
+	bool convertOldFormat(size_t slot);
+	char IsOldButValidSaveGame(std::string fname);
+	void readOldHeader(FILE *fp, uchar *episode, uchar *level, uchar *lives, uchar *num_players);
 	Uint32 getSlotNumber(const std::string &filename);
 	std::string getSlotName(const std::string &filename);
 	Uint32 getDataSize(std::ifstream &StateFile);
