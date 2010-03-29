@@ -139,42 +139,79 @@ bool CSavedGame::convertOldFormat(size_t slot)
 	sgrle_initdecompression();
 	if (sgrle_decompress(fp, (unsigned char *) &old.LevelControl, sizeof(old.LevelControl))) return false;
 
-	/*if (sgrle_decompress(fp, (unsigned char *)&scroll_x, sizeof(scroll_x))) return false;
-	if (sgrle_decompress(fp, (unsigned char *)&scrollx_buf, sizeof(scrollx_buf))) return false;
-	if (sgrle_decompress(fp, (unsigned char *)&scrollpix, sizeof(scrollpix))) return false;
-	if (sgrle_decompress(fp, (unsigned char *)&mapx, sizeof(mapx))) return false;
-	if (sgrle_decompress(fp, (unsigned char *)&mapxstripepos, sizeof(mapxstripepos))) return false;
+	if (sgrle_decompress(fp, (unsigned char *)&old.scroll_x, sizeof(old.scroll_x))) return false;
+	if (sgrle_decompress(fp, (unsigned char *)&old.scrollx_buf, sizeof(old.scrollx_buf))) return false;
+	if (sgrle_decompress(fp, (unsigned char *)&old.scrollpix, sizeof(old.scrollpix))) return false;
+	if (sgrle_decompress(fp, (unsigned char *)&old.mapx, sizeof(old.mapx))) return false;
+	if (sgrle_decompress(fp, (unsigned char *)&old.mapxstripepos, sizeof(old.mapxstripepos))) return false;
 
-	if (sgrle_decompress(fp, (unsigned char *)&scroll_y, sizeof(scroll_y))) return false;
-	if (sgrle_decompress(fp, (unsigned char *)&scrolly_buf, sizeof(scrolly_buf))) return false;
-	if (sgrle_decompress(fp, (unsigned char *)&scrollpixy, sizeof(scrollpixy))) return false;
-	if (sgrle_decompress(fp, (unsigned char *)&mapy, sizeof(mapy))) return false;
-	if (sgrle_decompress(fp, (unsigned char *)&mapystripepos, sizeof(mapystripepos))) return false;
+	if (sgrle_decompress(fp, (unsigned char *)&old.scroll_y, sizeof(old.scroll_y))) return false;
+	if (sgrle_decompress(fp, (unsigned char *)&old.scrolly_buf, sizeof(old.scrolly_buf))) return false;
+	if (sgrle_decompress(fp, (unsigned char *)&old.scrollpixy, sizeof(old.scrollpixy))) return false;
+	if (sgrle_decompress(fp, (unsigned char *)&old.mapy, sizeof(old.mapy))) return false;
+	if (sgrle_decompress(fp, (unsigned char *)&old.mapystripepos, sizeof(old.mapystripepos))) return false;
 
-	if (sgrle_decompress(fp, (unsigned char *)&max_scroll_x, sizeof(max_scroll_x))) return false;
-	if (sgrle_decompress(fp, (unsigned char *)&max_scroll_y, sizeof(max_scroll_y))) return false;
+	if (sgrle_decompress(fp, (unsigned char *)&old.max_scroll_x, sizeof(old.max_scroll_x))) return false;
+	if (sgrle_decompress(fp, (unsigned char *)&old.max_scroll_y, sizeof(old.max_scroll_y))) return false;
 
-	if (sgrle_decompress(fp, (unsigned char *)&map, sizeof(map))) return false;
+	if (sgrle_decompress(fp, (unsigned char *)&old.map, sizeof(old.map))) return false;
 
-	highest_objslot = fgeti(fp);
-	if (sgrle_decompress(fp, (unsigned char *)&objects[0], sizeof(objects))) return false;
-	if (sgrle_decompress(fp, (unsigned char *)&tiles[0], sizeof(tiles))) return false;
+	// Sizeof old objects: 22624
+	// Sizeof old tiles: 9612
 
-	for(i=0;i<numplayers;i++)
-	{
-		if (sgrle_decompress(fp, (unsigned char *)&player[i], sizeof(player[i]))) return false;
-	}
+	unsigned char *tempbuf;
 
-	CSprite **sprites = &g_pGfxEngine->Sprite[0];
-	sprites[DOOR_YELLOW_SPRITE]->setHeight(fgetc(fp));
-	sprites[DOOR_RED_SPRITE]->setHeight(fgetc(fp));
-	sprites[DOOR_GREEN_SPRITE]->setHeight(fgetc(fp));
-	sprites[DOOR_BLUE_SPRITE]->setHeight(fgetc(fp));
+	tempbuf = new unsigned char[22624];
+
+	/*highest_objslot = */fgetc(fp); fgetc(fp); // No used anymore since objects are held in an vector.
+	if (sgrle_decompress(fp, (unsigned char *)tempbuf, 22624)) return false;
+	if (sgrle_decompress(fp, (unsigned char *)tempbuf, 9612)) return false;
+
+	if (sgrle_decompress(fp, (unsigned char *)&old.Player, sizeof(old.Player))) return false;
 
 	fclose(fp);
 
-	g_pLogFile->ftextOut("Structures restored: map size: %d,%d\n", map.xsize, map.ysize);
-	g_pLogFile->ftextOut("Load game OK\n");*/
+	//
+	// Now let's save it into a new format
+	//
+	/// Save the Game in the CSavedGame object
+	// store the episode, level and difficulty
+	encodeData(old.LevelControl.episode);
+	encodeData(old.LevelControl.curlevel);
+	encodeData(old.LevelControl.hardmode ? 2 : 1);
+
+	// Also the last checkpoint is stored. This is the level entered from map
+	// in Commander Keen games
+	encodeData(false); // No checkpoint set
+	encodeData(0); // Checkpoint X set to zero
+	encodeData(0); // Checkpoint Y set to zero
+	encodeData(old.LevelControl.dark);
+
+	// Save number of Players
+	encodeData(1);
+
+	// Now save the inventory of every player
+	encodeData(old.Player.x<<1);
+	encodeData(old.Player.y<<1);
+	encodeData(old.Player.blockedd);
+	encodeData(old.Player.blockedu);
+	encodeData(old.Player.blockedl);
+	encodeData(old.Player.blockedr);
+	encodeData(old.Player.inventory);
+
+	// save the number of objects on screen.
+	encodeData(0);
+
+	// Save the map_data as it is left
+	encodeData(old.map.xsize);
+	encodeData(old.map.ysize);
+	addData( (uchar*)(old.map.mapdata), 2*old.map.xsize*old.map.ysize );
+
+	// store completed levels
+	addData( (uchar*)(old.LevelControl.levels_completed), MAX_LEVELS );
+
+	g_pLogFile->ftextOut("Structures restored: map size: %d,%d and saved\n", old.map.xsize, old.map.ysize);
+	g_pLogFile->ftextOut("Load game OK\n");
 	return true;
 }
 
