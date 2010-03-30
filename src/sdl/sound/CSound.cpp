@@ -41,6 +41,8 @@ CSound::CSound() {
 #endif
 	AudioSpec.freq = 44100; // high quality
 
+	m_MusicVolume = SDL_MIX_MAXVOLUME;
+	m_SoundVolume = SDL_MIX_MAXVOLUME;
 }
 
 CSound::~CSound() {
@@ -146,6 +148,21 @@ void CSound::destroy(void)
 	g_pLogFile->ftextOut("SoundDrv_Stop(): shut down.<br>");
 }
 
+// Sets the volume for Sound effects
+void CSound::setSoundVolume(Uint8 volume)
+{
+	m_SoundVolume = volume;
+}
+
+// Sets the volume for Game-Music if available
+void CSound::setMusicVolume(Uint8 volume)
+{
+	m_MusicVolume = volume;
+}
+
+// get the current sound volume
+Uint8 CSound::getSoundVolume() { return m_SoundVolume; }
+Uint8 CSound::getMusicVolume() { return m_MusicVolume; }
 
 // stops all currently playing sounds
 void CSound::stopAllSounds(void)
@@ -203,14 +220,14 @@ void CSound::callback(void *unused, Uint8 *stream, int len)
 
     if (g_pMusicPlayer->playing() == PLAY_MODE_PLAY)
     {
-		SDL_MixAudio(stream, g_pMusicPlayer->passBuffer(len), len, SDL_MIX_MAXVOLUME);
+		SDL_MixAudio(stream, g_pMusicPlayer->passBuffer(len), len, m_MusicVolume);
     }
 
     for( i=0 ; i < m_mixing_channels ; i++ )
    	{
    		m_soundchannel[i].readWaveform(m_MixedForm, len, AudioSpec.channels, AudioSpec.freq);
 
-   		SDL_MixAudio(stream, m_MixedForm, len, SDL_MIX_MAXVOLUME);
+   		SDL_MixAudio(stream, m_MixedForm, len, m_SoundVolume);
     }
 }
 

@@ -41,6 +41,11 @@ public:
 	void stopSound(int snd);
 	void destroy(void);
 
+	void setSoundVolume(Uint8 volume);
+	void setMusicVolume(Uint8 volume);
+	Uint8 getSoundVolume();
+	Uint8 getMusicVolume();
+
 	SDL_AudioSpec	getAudioSpec(void) { return AudioSpec; }
 	unsigned short 	getMixingchannels(void) { return m_mixing_channels; }
 
@@ -56,6 +61,8 @@ private:
 
 	bool m_active;
 	unsigned short m_mixing_channels;
+	Uint8 m_MusicVolume;
+	Uint8 m_SoundVolume;
 
     Uint8 *m_MixedForm;			// Mainly used by the callback function. Declared once and allocated
 };
