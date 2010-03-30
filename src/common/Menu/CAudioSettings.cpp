@@ -21,19 +21,22 @@ CAudioSettings::CAudioSettings(char &menu_type,
 {
 	if(m_MenuType == VOLUME)
 	{
-		mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 18, 7);
+		mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 24, 7);
 		mp_Dialog->setFrameTheme(DLG_THEME_OLDSCHOOL);
 
-		mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 1, " Adjust Volume: ");
-		mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 2, "  Music:        ");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "<O==========>");
-		mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 4, "  Sound:        ");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "<O==========>");
+		mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 1, "    Adjust Volume:    ");
+		mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 2, "  Music:              ");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "<O================>");
+		mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 4, "  Sound:              ");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "<O================>");
 
-		mp_Dialog->m_dlgobject.at(2)->m_Option->m_value = 0;
-		mp_Dialog->m_dlgobject.at(4)->m_Option->m_value = 0;
+		mp_Dialog->m_dlgobject.at(2)->m_Option->m_value = g_pSound->getMusicVolume()/8;
+		mp_Dialog->m_dlgobject.at(4)->m_Option->m_value = g_pSound->getSoundVolume()/8;
+		mp_Dialog->setSelection(4);
 
 		mp_Dialog->m_key = 's';
+		mp_Dialog->processInput();
+		mp_Dialog->setSelection(2);
 	}
 	else
 	{
@@ -67,6 +70,8 @@ void CAudioSettings::processSpecific()
 	{
 		if(m_MenuType == VOLUME)
 		{
+			g_pSound->setMusicVolume(mp_Dialog->m_dlgobject.at(2)->m_Option->m_value*8);
+			g_pSound->setSoundVolume(mp_Dialog->m_dlgobject.at(4)->m_Option->m_value*8);
 			m_MenuType = AUDIO;
 			m_mustclose = true;
 		}

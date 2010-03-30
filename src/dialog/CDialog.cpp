@@ -112,6 +112,16 @@ void CDialog::setObjectType(Uint8 ID, Uint8 type)
 ///
 void CDialog::processInput(int move)
 {
+	
+	// 't' == text input
+	// 'i' == integer input
+	// 'n' == do nothing
+	// 'u' == up/down movement, enter selection
+	// 'l' == left/right movement, enter selection
+	// 's' == slider, up/down movement
+	// 'c' == counter, up/down movment
+	// 'o' == option, left/right selection, up/down movement
+	// 'w' == switch, on/off selection, up/down movement
 	if( m_key == 't' )
 	{
 		// Get the input
@@ -166,11 +176,7 @@ void CDialog::processInput(int move)
 		else
 			setObjectText(m_selected_ID, m_name);
 	}
-	else if(m_key == 'n')
-	{
-		//do nothing (n = nothing)
-	}
-	else
+	else if(m_key != 'n')
 	{
 		if(move != 0)
 			m_selected_ID += move;
@@ -183,7 +189,7 @@ void CDialog::processInput(int move)
 			}
 		}while(!m_dlgobject.at(m_selected_ID)->m_selectable);
 		
-		if(g_pInput->getPulsedCommand((m_key == 'u' or m_key == 'c' or m_key == 's') ? IC_DOWN : IC_RIGHT, 60))
+		if(g_pInput->getPulsedCommand((m_key == 'u' or m_key == 'c' or m_key == 's' or m_key == 'o' or m_key == 'w') ? IC_DOWN : IC_RIGHT, 60))
 		{
 			do
 			{
@@ -257,7 +263,7 @@ void CDialog::processInput(int move)
 			{
 				m_int = m_dlgobject.at(m_selected_ID)->m_Option->m_value;
 				m_min = 0;
-				m_max = 10;
+				m_max = 16;
 			}
 			if(g_pInput->getPulsedCommand(IC_RIGHT, 35))
 			{
@@ -278,27 +284,39 @@ void CDialog::processInput(int move)
 			{
 				m_dlgobject.at(m_selected_ID)->m_Option->m_value = m_int;
 				if(m_int == 0)
-					setObjectText(m_selected_ID, "<O==========>");
+					setObjectText(m_selected_ID, "<O================>");
 				else if(m_int == 1)
-					setObjectText(m_selected_ID, "<=O=========>");
+					setObjectText(m_selected_ID, "<=O===============>");
 				else if(m_int == 2)
-					setObjectText(m_selected_ID, "<==O========>");
+					setObjectText(m_selected_ID, "<==O==============>");
 				else if(m_int == 3)
-					setObjectText(m_selected_ID, "<===O=======>");
+					setObjectText(m_selected_ID, "<===O=============>");
 				else if(m_int == 4)
-					setObjectText(m_selected_ID, "<====O======>");
+					setObjectText(m_selected_ID, "<====O============>");
 				else if(m_int == 5)
-					setObjectText(m_selected_ID, "<=====O=====>");
+					setObjectText(m_selected_ID, "<=====O===========>");
 				else if(m_int == 6)
-					setObjectText(m_selected_ID, "<======O====>");
+					setObjectText(m_selected_ID, "<======O==========>");
 				else if(m_int == 7)
-					setObjectText(m_selected_ID, "<=======O===>");
+					setObjectText(m_selected_ID, "<=======O=========>");
 				else if(m_int == 8)
-					setObjectText(m_selected_ID, "<========O==>");
+					setObjectText(m_selected_ID, "<========O========>");
 				else if(m_int == 9)
-					setObjectText(m_selected_ID, "<=========O=>");
+					setObjectText(m_selected_ID, "<=========O=======>");
 				else if(m_int == 10)
-					setObjectText(m_selected_ID, "<==========O>");
+					setObjectText(m_selected_ID, "<==========O======>");
+				else if(m_int == 11)
+					setObjectText(m_selected_ID, "<===========O=====>");
+				else if(m_int == 12)
+					setObjectText(m_selected_ID, "<============O====>");
+				else if(m_int == 13)
+					setObjectText(m_selected_ID, "<=============O===>");
+				else if(m_int == 14)
+					setObjectText(m_selected_ID, "<==============O==>");
+				else if(m_int == 15)
+					setObjectText(m_selected_ID, "<===============O=>");
+				else if(m_int == 16)
+					setObjectText(m_selected_ID, "<================O>");
 			}
 		}
 	}

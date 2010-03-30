@@ -41,10 +41,10 @@ public:
 	void stopSound(int snd);
 	void destroy(void);
 
-	void setSoundVolume(Uint8 volume);
-	void setMusicVolume(Uint8 volume);
-	Uint8 getSoundVolume();
-	Uint8 getMusicVolume();
+	void setSoundVolume(Uint8 volume) { m_SoundVolume = volume; }
+	void setMusicVolume(Uint8 volume) { m_MusicVolume = volume; }
+	Uint8 getSoundVolume() { return m_SoundVolume; }
+	Uint8 getMusicVolume() { return m_MusicVolume; }
 
 	SDL_AudioSpec	getAudioSpec(void) { return AudioSpec; }
 	unsigned short 	getMixingchannels(void) { return m_mixing_channels; }

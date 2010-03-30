@@ -56,44 +56,37 @@ void CSoundChannel::stopSound(void)
     m_freqtimer = 0;
 }
 
-void CSoundChannel::setVolume( int volume )
-{
-	int i = m_maxvolume/10;
-	m_volume = i*volume;
-}
-
 void CSoundChannel::setFormat( Uint16 format )
 {
 	m_format = format;
 	switch( m_format )
 	{
 		case AUDIO_U8:
-			m_maxvolume	= WAVEFORM_VOLUME_8;
+			m_volume	= WAVEFORM_VOLUME_8;
 			m_silence	= WAVE_SILENCE_U8;
 			m_waveout	= WAVE_OUT_U8;
 			m_wavein	= WAVE_IN_U8;
 			break;
 		case AUDIO_S8:
-			m_maxvolume	= WAVEFORM_VOLUME_8;
+			m_volume	= WAVEFORM_VOLUME_8;
 			m_silence	= WAVE_SILENCE_S8;
 			m_waveout	= WAVE_OUT_S8;
 			m_wavein	= WAVE_IN_S8;
 			break;
 		case AUDIO_U16:
-			m_maxvolume	= WAVEFORM_VOLUME_16;
+			m_volume	= WAVEFORM_VOLUME_16;
 			m_silence	= WAVE_SILENCE_U16;
 			m_waveout	= WAVE_OUT_U16;
 			m_wavein	= WAVE_IN_U16;
 			break;
 		case AUDIO_S16:
-			m_maxvolume	= WAVEFORM_VOLUME_16;
+			m_volume	= WAVEFORM_VOLUME_16;
 			m_silence	= WAVE_SILENCE_S16;
 			m_waveout	= WAVE_OUT_S16;
 			m_wavein	= WAVE_IN_S16;
 			break;
 	}
 	
-	m_volume = m_maxvolume;
 	m_waveState = m_wavein;
 }
 

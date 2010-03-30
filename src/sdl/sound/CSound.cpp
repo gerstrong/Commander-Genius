@@ -148,22 +148,6 @@ void CSound::destroy(void)
 	g_pLogFile->ftextOut("SoundDrv_Stop(): shut down.<br>");
 }
 
-// Sets the volume for Sound effects
-void CSound::setSoundVolume(Uint8 volume)
-{
-	m_SoundVolume = volume;
-}
-
-// Sets the volume for Game-Music if available
-void CSound::setMusicVolume(Uint8 volume)
-{
-	m_MusicVolume = volume;
-}
-
-// get the current sound volume
-Uint8 CSound::getSoundVolume() { return m_SoundVolume; }
-Uint8 CSound::getMusicVolume() { return m_MusicVolume; }
-
 // stops all currently playing sounds
 void CSound::stopAllSounds(void)
 {
