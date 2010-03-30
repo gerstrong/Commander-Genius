@@ -288,6 +288,7 @@ void CGameControl::process()
 				{
 					// Now look if there are any old savegames that need to be converted
 					CSavedGame savedgames;
+					savedgames.setEpisode(m_Episode);
 					savedgames.convertAllOldFormats();
 
 					if(m_startLevel == 0) // Starts normally

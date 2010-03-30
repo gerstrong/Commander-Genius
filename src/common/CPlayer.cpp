@@ -91,8 +91,8 @@ void CPlayer::setDatatoZero()
 
   	// This will setup the proper frames, so second, third and fourth player get the correct sprites
    	playerbaseframe = (m_index==0) ? 0 : SECOND_PLAYER_BASEFRAME+(m_index-1)*48;
-	if (m_episode==3) playerbaseframe--;
-	
+	if(m_episode == 3) playerbaseframe--;
+
     // Set all the inventory to zero.
     memset(playcontrol, 0, PA_MAX_ACTIONS*sizeof(char));
 }

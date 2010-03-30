@@ -57,9 +57,12 @@ char sgrle_decompress(FILE *fp, unsigned char *ptr, unsigned long nbytes)
 	if (bytes != nbytes)
 	{
 		g_pLogFile->ftextOut("sgrle_decompress: bytes stored != bytes asked for ($%08x / $%08x)\n", bytes, nbytes);
-		return 1;
+		g_pLogFile->ftextOut("Trying to extract as much as possible...\n");
+		//return 1;
 	}
 	
+	if(bytes < nbytes) nbytes = bytes;
+
 	sgrle_runlen = 0;
 	
 	for(i=0;i<nbytes;i++)

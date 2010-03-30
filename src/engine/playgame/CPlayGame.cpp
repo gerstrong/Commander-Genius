@@ -207,7 +207,7 @@ void CPlayGame::process()
 			m_endgame = true;
 		}
 	}
-	else // No? We are in the middle of the game
+	else // No, we are in the middle of the game
 	{
 		// If the menu is open process it!
 		if(mp_Menu)

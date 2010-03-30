@@ -26,6 +26,7 @@ CStatusScreen::CStatusScreen
 	mp_surface = g_pVideoDriver->FGLayerSurface;
 	mp_inventory = p_inventory;
 	m_baseframe = baseframe;
+	if(m_baseframe<0) m_baseframe=0;
 }
 
 void CStatusScreen::draw()

@@ -14,6 +14,7 @@
 
 #define SG_HEADERSIZE			7
 #define SAVEGAMEVERSION 		'6'
+#define OLDSAVEGAMEVERSION 		'5'
 
 void sgrle_initdecompression(void);
 void sgrle_compress(FILE *fp, unsigned char *ptr, unsigned long nbytes);
@@ -108,20 +109,18 @@ bool CSavedGame::convertOldFormat(size_t slot)
 	FILE *fp;
 	std::string fname;
 	unsigned char episode, level, lives, numplayers;
-	//unsigned int i;
 	OldSaveGameFormat old;
 
 	fname = "ep";
-	fname += m_Episode + '0';
+	fname += itoa(m_Episode);
 	fname += "save";
 	fname += slot+'0';
 	fname += ".dat";
 
 	if ( !IsOldButValidSaveGame(fname) )
-	{
-		g_pLogFile->ftextOut("%s is not a valid save-game.\n", fname.c_str());
 		return false;
-	}
+
+	prepareSaveGame(slot, "oldsave"+itoa(slot));
 
 	g_pLogFile->ftextOut("Loading game from file %s\n", fname.c_str());
 	fp = OpenGameFile(fname, "rb");
@@ -167,6 +166,8 @@ bool CSavedGame::convertOldFormat(size_t slot)
 	if (sgrle_decompress(fp, (unsigned char *)tempbuf, 22624)) return false;
 	if (sgrle_decompress(fp, (unsigned char *)tempbuf, 9612)) return false;
 
+	delete [] tempbuf;
+
 	if (sgrle_decompress(fp, (unsigned char *)&old.Player, sizeof(old.Player))) return false;
 
 	fclose(fp);
@@ -191,12 +192,14 @@ bool CSavedGame::convertOldFormat(size_t slot)
 	encodeData(1);
 
 	// Now save the inventory of every player
-	encodeData(old.Player.x<<1);
-	encodeData(old.Player.y<<1);
+
+	encodeData(old.Player.x>>4);
+	encodeData(old.Player.y>>4);
 	encodeData(old.Player.blockedd);
 	encodeData(old.Player.blockedu);
 	encodeData(old.Player.blockedl);
 	encodeData(old.Player.blockedr);
+	old.Player.inventory.lives++; // in case the player loses due a savegame glitch.
 	encodeData(old.Player.inventory);
 
 	// save the number of objects on screen.
@@ -210,8 +213,11 @@ bool CSavedGame::convertOldFormat(size_t slot)
 	// store completed levels
 	addData( (uchar*)(old.LevelControl.levels_completed), MAX_LEVELS );
 
+	save();
+
 	g_pLogFile->ftextOut("Structures restored: map size: %d,%d and saved\n", old.map.xsize, old.map.ysize);
-	g_pLogFile->ftextOut("Load game OK\n");
+	g_pLogFile->ftextOut("The old savegame has been converted successfully OK\n");
+
 	return true;
 }
 
@@ -231,7 +237,7 @@ const char *verify = "CKSAVE";
 			return 0;
 		}
 	}
-	if (fgetc(fp) != SAVEGAMEVERSION)
+	if (fgetc(fp) != OLDSAVEGAMEVERSION)
 	{
 		fclose(fp);
 		return 0;
