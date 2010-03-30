@@ -66,12 +66,18 @@ void CAudioSettings::processSpecific()
 {
 	std::string buf;
 
+	if(m_MenuType == VOLUME)
+		{
+			if(mp_Dialog->getSelection() == 2)
+				g_pSound->setMusicVolume(mp_Dialog->m_dlgobject.at(2)->m_Option->m_value*8);
+			else if(mp_Dialog->getSelection() == 4)
+				g_pSound->setSoundVolume(mp_Dialog->m_dlgobject.at(4)->m_Option->m_value*8);
+		}
+	
 	if( g_pInput->getPressedCommand(IC_QUIT) )
 	{
 		if(m_MenuType == VOLUME)
 		{
-			g_pSound->setMusicVolume(mp_Dialog->m_dlgobject.at(2)->m_Option->m_value*8);
-			g_pSound->setSoundVolume(mp_Dialog->m_dlgobject.at(4)->m_Option->m_value*8);
 			m_MenuType = AUDIO;
 			m_mustclose = true;
 		}
@@ -108,7 +114,6 @@ void CAudioSettings::processSpecific()
 	{
 		if(m_MenuType == VOLUME)
 		{
-
 		}
 		else
 		{
