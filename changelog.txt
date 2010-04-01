@@ -1,6 +1,12 @@
 Commander Genius Release (CloneKeenPlus):
 =========================================
 
+v0.3.1.1:
+---------
+- Volume sliders
+- Camera Bounds config
+- Older savegame compatibility...
+
 v0.3.1.0:
 ---------
 

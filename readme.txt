@@ -12,7 +12,7 @@
 *    (c)2003-2010            Caitlin Shaw    *
 *           Released under GNU/GPL           *
 *                                            *
-*            Release v0.3.1.0                *
+*            Release v0.3.1.1                *
 *                                            *
 **********************************************
 
