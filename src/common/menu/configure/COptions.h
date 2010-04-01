@@ -8,12 +8,12 @@
 #ifndef COPTIONS_H_
 #define COPTIONS_H_
 
-#include "CBaseMenu.h"
-#include "../options.h"
+#include "../CBaseMenu.h"
+#include "../../options.h"
 
 class COptions : public CBaseMenu {
 public:
-	COptions(char &menu_type, stOption *p_option);
+	COptions(stOption *p_option);
 	void processSpecific();
 	virtual ~COptions();
 

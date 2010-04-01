@@ -8,13 +8,13 @@
 #ifndef CAUDIOSETTINGS_H_
 #define CAUDIOSETTINGS_H_
 
-#include "CBaseMenu.h"
+#include "../CBaseMenu.h"
 #include <SDL.h>
 #include <string>
 
 class CAudioSettings : public CBaseMenu {
 public:
-	CAudioSettings(char &menu_type, std::string &Gamepath, char &Episode);
+	CAudioSettings(std::string &Gamepath, char &Episode);
 	void processSpecific();
 	virtual ~CAudioSettings();
 

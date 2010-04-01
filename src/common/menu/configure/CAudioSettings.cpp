@@ -6,32 +6,38 @@
  */
 
 #include "CAudioSettings.h"
-#include "../../sdl/CInput.h"
-#include "../../sdl/CVideoDriver.h"
-#include "../../sdl/CSettings.h"
-#include "../../sdl/sound/CSound.h"
-#include "../../hqp/CMusic.h"
-#include "../../StringUtils.h"
+#include "../../../sdl/CInput.h"
+#include "../../../sdl/CVideoDriver.h"
+#include "../../../sdl/CSettings.h"
+#include "../../../sdl/sound/CSound.h"
+#include "../../../hqp/CMusic.h"
+#include "../../../StringUtils.h"
 
-CAudioSettings::CAudioSettings(char &menu_type,
-		std::string &Gamepath, char &Episode) :
-		CBaseMenu(menu_type),
+#include "../../../dialog/CSlider.h"
+
+CAudioSettings::CAudioSettings(std::string &Gamepath, char &Episode) :
+		CBaseMenu(),
 		m_Gamepath(Gamepath),
 		m_Episode(Episode)
 {
-	if(m_MenuType == VOLUME)
+	/*if(m_MenuType == VOLUME)
 	{
 		mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 24, 7);
 		mp_Dialog->setFrameTheme(DLG_THEME_OLDSCHOOL);
 
+		CSlider SoundVolumeSlider;
+		CSlider MusicVolumeSlider;
+
 		mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 1, "    Adjust Volume:    ");
 		mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 2, "  Music:              ");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "<O================>");
+		//SoundVolumeSlider.setValue(g_pSound->getMusicVolume()/8);
+		//mp_Dialog->addObject(1, 3, MusicVolumeSlider);
+		//mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "<O================>");
 		mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 4, "  Sound:              ");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "<O================>");
+		//MusicVolumeSlider.setValue(g_pSound->getSoundVolume()/8);
+		//mp_Dialog->addObject(1, 5, SoundVolumeSlider);
+		//mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "<O================>");
 
-		mp_Dialog->m_dlgobject.at(2)->m_Option->m_value = g_pSound->getMusicVolume()/8;
-		mp_Dialog->m_dlgobject.at(4)->m_Option->m_value = g_pSound->getSoundVolume()/8;
 		mp_Dialog->setSelection(4);
 
 		mp_Dialog->m_key = 's';
@@ -40,7 +46,7 @@ CAudioSettings::CAudioSettings(char &menu_type,
 	}
 	else
 	{
-		mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 20, 6);
+		mp_Dialog = new CDialog(20, 6);
 		mp_Dialog->setFrameTheme(DLG_THEME_OLDSCHOOL);
 
 		m_Rate = g_pSound->getAudioSpec().freq;
@@ -59,12 +65,12 @@ CAudioSettings::CAudioSettings(char &menu_type,
 		buf += m_Mode ? "Stereo": "Mono";
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, buf);
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Adjust Volume");
-	}
+	}*/
 }
 
 void CAudioSettings::processSpecific()
 {
-	std::string buf;
+	/*std::string buf;
 
 	if(m_MenuType == VOLUME)
 		{
@@ -172,7 +178,7 @@ void CAudioSettings::processSpecific()
 			}
 		}
 		m_selection = -1;
-	}
+	}*/
 }
 
 CAudioSettings::~CAudioSettings() {

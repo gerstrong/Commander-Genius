@@ -15,7 +15,7 @@
 #include "../dialog/CDialog.h"
 #include "../dialog/CTextViewer.h"
 #include "../fileio/CSavedGame.h"
-#include "Menu/CBaseMenu.h"
+#include "menu/CBaseMenu.h"
 #include "CMap.h"
 #include "options.h"
 
@@ -48,7 +48,6 @@ public:
 	void process();
 	void processMainMenu();
 	void processQuitMenu();
-	void processNumPlayersMenu();
 	void processDifficultyMenu();
 	void processConfigureMenu();
 	void processNumControlMenu();
@@ -86,10 +85,7 @@ public:
 	CDialog *mp_Dialog;
 
 private:
-	void initMainMenu();
 	void initConfirmMenu();
-	void initNumPlayersMenu();
-	void initDifficultyMenu();
 	void initConfigureMenu();
 	void initSaveMenu();
 	void initNumControlMenu();
@@ -122,7 +118,7 @@ private:
 	char m_lastselect;
 	char m_menu_type;
 	char m_menu_mode;
-	char m_NumPlayers;
+	Uint8 m_NumPlayers;
 	char m_Difficulty;
 	int  m_saveslot;
 	bool m_RestartVideo;

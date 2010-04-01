@@ -12,10 +12,10 @@
 #include "../engine/infoscenes/CAbout.h"
 #include "../engine/infoscenes/CHelp.h"
 
-#include "Menu/CVideoSettings.h"
-#include "Menu/CAudioSettings.h"
-#include "Menu/CControlsettings.h"
-#include "Menu/COptions.h"
+#include "menu/CMainMenu.h"
+#include "menu/CConfigureMenu.h"
+#include "menu/CNewGameMenu.h"
+#include "menu/CDiffMenu.h"
 
 #include "../StringUtils.h"
 #include "../CGameControl.h"
@@ -25,6 +25,8 @@
 #include "../sdl/CSettings.h"
 #include "../sdl/sound/CSound.h"
 #include "../sdl/CVideoDriver.h"
+
+#include "../dialog/CDlgOptionText.h"
 
 #define SAFE_DELETE(x) if(x) { delete x; x=NULL; }
 
@@ -85,20 +87,34 @@ bool CMenu::init( char menu_type )
 		mp_Dialog->setSDLSurface(mp_MenuSurface);
 
 	if( m_menu_type == MAIN )
-		initMainMenu();
+	{
+		mp_Menu = new CMainMenu(m_menu_mode, m_quit);
+		return true;
+	}
 	else if( m_menu_type == QUIT || m_menu_type == ENDGAME || m_menu_type == OVERWRITE )
 		initConfirmMenu();
 	else if( m_menu_type == NEW )
-		initNumPlayersMenu();
+	{
+		mp_Menu = new CNewGameMenu(m_NumPlayers);
+		return true;
+	}
 	else if( m_menu_type == DIFFICULTY )
-		initDifficultyMenu();
+	{
+		mp_Menu = new CDiffMenu(m_Difficulty, m_choosegame);
+		return true;
+	}
 	else if( m_menu_type == CONFIGURE )
+	{
+		mp_Menu = new CConfigureMenu();
 		initConfigureMenu();
+	}
 	else if( m_menu_type == CONTROLPLAYERS )
+	{
 		initNumControlMenu();
+	}
 	else if( m_menu_type == CONTROLS )
 	{
-		mp_Menu = new CControlsettings(m_menu_type, m_NumPlayers);
+		//mp_Menu = new CControlsettings(m_NumPlayers);
 		return true;
 	}
 	else if( m_menu_type == F1 )
@@ -111,95 +127,27 @@ bool CMenu::init( char menu_type )
 		initSaveMenu();
 	else if( m_menu_type == GRAPHICS || m_menu_type == BOUNDS )
 	{
-		mp_Menu = new CVideoSettings(m_menu_type);
+		//mp_Menu = new CVideoSettings(m_menu_type);
 		return true;
 	}
 	else if( m_menu_type == OPTIONS )
 	{
-		mp_Menu = new COptions(m_menu_type, mp_option);
+		//mp_Menu = new COptions(mp_option);
 		return true;
 	}
 	else if( m_menu_type == AUDIO || m_menu_type == VOLUME )
 	{
-		mp_Menu = new CAudioSettings(m_menu_type, m_GamePath, m_Episode);
+		//mp_Menu = new CAudioSettings(m_GamePath, m_Episode);
 		return true;
 	}
-	
-	// Use the standard Menu-Frame used in the old DOS-Games
-	mp_Dialog->setFrameTheme( DLG_THEME_OLDSCHOOL );
 	
 	return true;
 }
 
-void CMenu::initMainMenu()
-{
-	mp_Dialog = new CDialog(mp_MenuSurface, 17, 10);
-
-	m_menumap.clear();
-	// When in Intro, Title, Demo mode
-	if( m_menu_mode == PASSIVE )
-	{
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "New Game");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Load Game");
-		mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 3, "Save Game");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "High Scores");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "Configure");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Back to Demo");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "Choose Game");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Quit");
-	}
-	// When Player is playing
-	// TODO: This still must be adapted to ingame situation
-	if( m_menu_mode == ACTIVE )
-	{
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "New Game");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Load Game");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 3, "Save Game");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 4, "High Scores");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "Configure");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 6, "Back to Game");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "End Game");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Quit");
-		m_menumap[6] = ENDGAME;
-	}
-		m_menumap[0] = NEW;
-		m_menumap[1] = LOAD;
-		m_menumap[2] = SAVE;
-		m_menumap[4] = CONFIGURE;
-		m_menumap[7] = QUIT;
-}
-
-void CMenu::initNumPlayersMenu()
-{
-	mp_Dialog = new CDialog(mp_MenuSurface, 13, MAX_PLAYERS+2);
-	int i;
-	
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "1 Player");
-	for(i=2;i<=MAX_PLAYERS;i++)
-	{
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, i, itoa(i)+" Player");
-	}
-	m_menumap.clear();
-	m_menumap[0] = DIFFICULTY;
-	m_menumap[1] = DIFFICULTY;
-	m_menumap[2] = DIFFICULTY;
-	m_menumap[3] = DIFFICULTY;
-}
-
-void CMenu::initDifficultyMenu()
-{
-	mp_Dialog = new CDialog(mp_MenuSurface, 11, 5);
-	
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Easy");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Normal");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Hard");
-	
-	mp_Dialog->processInput(1);
-}
 
 void CMenu::initDebugMenu()
 {
-	mp_Dialog = new CDialog(mp_MenuSurface, 18, 5);
+	/*mp_Dialog = new CDialog(mp_MenuSurface, 18, 5);
 	
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "<O==========>");
 	mp_Dialog->m_dlgobject.at(0)->m_Option->m_value = 0;
@@ -208,12 +156,12 @@ void CMenu::initDebugMenu()
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "<O==========>");
 	mp_Dialog->m_dlgobject.at(2)->m_Option->m_value = 0;
 	
-	mp_Dialog->m_key = 's';
+	mp_Dialog->m_key = 's';*/
 }
 
 void CMenu::initModMenu()
 {
-	mp_Dialog = new CDialog(mp_MenuSurface, 18, 5);
+	/*mp_Dialog = new CDialog(mp_MenuSurface, 18, 5);
 	
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "<O==========>");
 	mp_Dialog->m_dlgobject.at(0)->m_Option->m_value = 0;
@@ -222,12 +170,12 @@ void CMenu::initModMenu()
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "<O==========>");
 	mp_Dialog->m_dlgobject.at(2)->m_Option->m_value = 0;
 	
-	mp_Dialog->m_key = 's';
+	mp_Dialog->m_key = 's';*/
 }
 
 void CMenu::initConfigureMenu()
 {
-	mp_Dialog = new CDialog(mp_MenuSurface, 13, 6);
+	/*mp_Dialog = new CDialog(mp_MenuSurface, 13, 6);
 	
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Graphics");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Audio");
@@ -238,12 +186,12 @@ void CMenu::initConfigureMenu()
 	m_menumap[0] = GRAPHICS;
 	m_menumap[1] = AUDIO;
 	m_menumap[2] = OPTIONS;
-	m_menumap[3] = CONTROLPLAYERS;
+	m_menumap[3] = CONTROLPLAYERS;*/
 }
 
 void CMenu::initNumControlMenu()
 {
-	mp_Dialog = new CDialog(mp_MenuSurface, 13, MAX_PLAYERS+2);
+	/*mp_Dialog = new CDialog(mp_MenuSurface, 13, MAX_PLAYERS+2);
 	int i;
 	
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Player 1");
@@ -255,12 +203,12 @@ void CMenu::initNumControlMenu()
 	m_menumap[0] = CONTROLS;
 	m_menumap[1] = CONTROLS;
 	m_menumap[2] = CONTROLS;
-	m_menumap[3] = CONTROLS;
+	m_menumap[3] = CONTROLS;*/
 }
 
 void CMenu::initF1Menu()
 {
-	mp_Dialog = new CDialog(mp_MenuSurface, 18, 9);
+	/*mp_Dialog = new CDialog(mp_MenuSurface, 18, 9);
 	
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "The Menu");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "The Game");
@@ -268,23 +216,23 @@ void CMenu::initF1Menu()
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Ordering Info");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "About ID");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "About CG");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "Credits");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "Credits");*/
 	
 	// In the Help system let's hide all objects like Bitmaps, players, enemies, etc.
 }
 
 void CMenu::initConfirmMenu()
 {
-	mp_Dialog = new CDialog(mp_MenuSurface, 0, 0, 22, 5, 'l');
+	/*mp_Dialog = new CDialog(mp_MenuSurface, 0, 0, 22, 5, 'l');
 	
 	mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 1, "  Are you certain?  ");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Yes");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 15, 3, "No");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 15, 3, "No");*/
 }
 
 void CMenu::initSaveMenu()
 {
-	std::string text;
+	/*std::string text;
 	mp_Dialog = new CDialog(mp_MenuSurface, 0, 0, 22, 22, 'u');
 	
 	// Load the state-file list
@@ -301,7 +249,7 @@ void CMenu::initSaveMenu()
 		if(text == "")
 			text = "     EMPTY       ";
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, i, text);
-	}
+	}*/
 }
 
 ////
@@ -310,8 +258,33 @@ void CMenu::initSaveMenu()
 /// Main Process method fo the menu
 void CMenu::process()
 {
+	Uint8 nextDlg;
+
+	nextDlg = mp_Menu->getNextDialog();
+	if(nextDlg)
+	{
+		init(nextDlg);
+	}
+
+	if( mp_Menu )
+	{
+		mp_Menu->processCommon();
+
+		mp_Menu->processSpecific();
+
+		mp_Menu->postProcess();
+
+		if(mp_Menu->mustClose())
+		{
+			m_RestartVideo=mp_Menu->restartVideo();
+			SAFE_DELETE(mp_Menu);
+			init(m_menu_type);
+		}
+	}
+
+
 	// Information Mode?
-	if(!mp_InfoScene) // show a normal menu
+	/*if(!mp_InfoScene) // show a normal menu
 	{
 		if( g_pInput->getPressedCommand(IC_HELP) )
 		{
@@ -387,7 +360,7 @@ void CMenu::process()
 			else if( m_menu_type == MODCONF ) processModMenu();
 
 			// Draw the menu
-			if(!mp_Menu && mp_Dialog) mp_Dialog->draw();
+			//if(!mp_Menu && mp_Dialog) mp_Dialog->draw();
 			if(m_goback && m_menu_type != MAIN)
 			{
 					init(m_menuback[m_menu_type]);
@@ -415,7 +388,7 @@ void CMenu::process()
 			m_Map.m_animation_enabled = true;
 			m_hideobjects = false;
 		}
-	}
+	}*/
 }
 
 void CMenu::processMainMenu()
@@ -456,19 +429,6 @@ void CMenu::processMainMenu()
 			init(QUIT);
 		}
 	}
-}
-
-void CMenu::processNumPlayersMenu()
-{
-	if( m_selection != -1)
-	{
-		cleanup();
-		if( m_selection < MAX_PLAYERS )
-		{
-			m_NumPlayers = m_selection + 1;	
-		}
-	}
-	return;
 }
 
 void CMenu::processDifficultyMenu()
@@ -545,7 +505,7 @@ void CMenu::processF1Menu()
 
 void CMenu::processQuitMenu()
 {
-	mp_Dialog->setObjectText(0, "   Quit the game?   ");
+	//mp_Dialog->setObjectText(0, "   Quit the game?   ");
 	if( m_selection != -1)
 	{
 		if ( m_selection == 1 )
@@ -563,7 +523,7 @@ void CMenu::processQuitMenu()
 
 void CMenu::processEndGameMenu()
 {
-	mp_Dialog->setObjectText(0, "   End your game?   ");
+	//mp_Dialog->setObjectText(0, "   End your game?   ");
 	if( m_selection != -1)
 	{
 		if ( m_selection == 1 )
@@ -582,7 +542,7 @@ void CMenu::processEndGameMenu()
 // TODO: PLease put more comments in order to understand what is supposed to be done.
 void CMenu::processSaveMenu()
 {
-	std::string text;
+	/*std::string text;
 	if( m_selection != -1)
 	{
 		if(mp_Dialog->m_key == 'u')
@@ -644,12 +604,12 @@ void CMenu::processSaveMenu()
 		init(MAIN);
 		m_goback = true;
 	}
-	return;
+	return;*/
 }
 
 void CMenu::processLoadMenu()
 {
-	if( m_selection != -1)
+	/*if( m_selection != -1)
 	{
 		if(mp_Dialog->m_name == "     EMPTY       ")
 		{
@@ -669,14 +629,14 @@ void CMenu::processLoadMenu()
 		init(MAIN);
 		m_goback = true;
 	}
-	return;
+	return;*/
 }
 
 // TODO: You really should see to get that dialog type (Yes/No) making it more universal and templatized.
 // If you don't you may loose the your own insight into the code.
 void CMenu::processOverwriteMenu()
 {
-	mp_Dialog->setObjectText(0, "Overwrite this save?");
+	//mp_Dialog->setObjectText(0, "Overwrite this save?");
 	if( m_selection != -1)
 	{
 		if ( m_selection == 1 )

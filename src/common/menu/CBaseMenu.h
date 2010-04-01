@@ -13,7 +13,8 @@
 // Which Menu has to be shown?
 
 enum menutypes{
-	MAIN, NEW, OVERWRITE,
+	MAIN = 1,
+	NEW, OVERWRITE,
 	CONTROLPLAYERS, STORY,
 	HIGHSCORES, ABOUTCG,
 	ABOUTID, ORDERING,
@@ -33,7 +34,7 @@ enum menumodes{
 
 class CBaseMenu {
 public:
-	CBaseMenu(char &MenuType);
+	CBaseMenu();
 
 	// Processes the stuff that the menus have in common
 	void processCommon();
@@ -46,14 +47,15 @@ public:
 
 	bool mustClose() { return m_mustclose; }
 	bool restartVideo() { return m_restartVideo; }
+	Uint8 getNextDialog();
 
 	virtual ~CBaseMenu();
 
 protected:
 	bool m_mustclose;
-	char &m_MenuType;
 	int m_selection;
 	CDialog *mp_Dialog;
+	Uint8 m_nextMenu;
 	bool m_restartVideo;
 };
 

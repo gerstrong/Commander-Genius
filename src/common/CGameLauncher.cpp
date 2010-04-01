@@ -12,6 +12,9 @@
 #include "../graphics/CGfxEngine.h"
 #include "../StringUtils.h"
 #include "../FindFile.h"
+
+#include "../dialog/CDlgOptionText.h"
+
 #include <iostream>
 #include <fstream>
 
@@ -31,10 +34,6 @@ CGameLauncher::CGameLauncher() {
     m_ExeList.push_back( KEENEXE6E );
 }
 
-CGameLauncher::~CGameLauncher() {
-    // TODO Auto-generated destructor stub
-}
-
 ////
 // Initialization Routine
 ////
@@ -43,7 +42,7 @@ bool CGameLauncher::init()
     bool gamedetected = false;
 	
     // Initialize the menu
-    mp_LaunchMenu = new CDialog(g_pVideoDriver->FGLayerSurface, 40, 25);
+    mp_LaunchMenu = new CDialog(40, 25);
 	
     // Scan for games...
     m_DirList.clear();
@@ -69,8 +68,9 @@ bool CGameLauncher::init()
     putLabels();
 
     // No games detected then quit
-   	mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,m_Entries.size()+1, !gamedetected ? "No games found! - Quit" : "Quit");
-	
+    CDlgOptionText *pQuittext;
+    pQuittext = new CDlgOptionText(!gamedetected ? "No games found! - Quit" : "Quit", 20 );
+    mp_LaunchMenu->addObject(pQuittext,	1, m_Entries.size()+1);
     g_pLogFile->ftextOut("Game Autodetection Finished<br>" );
 	
     return true;
@@ -156,11 +156,12 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 
             // Save the type information about the exe
             m_Entries.push_back(newentry);
+
             // Add a new menu item
-            mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, m_Entries.size(), newentry.name);
+            mp_LaunchMenu->addObject(new CDlgOptionText(newentry.name, 32),	1, m_Entries.size());
 			
             g_pLogFile->ftextOut("Detected game Name: %s Version: %d<br>", file.c_str()
-								 ,newentry.version );
+																		 ,newentry.version );
             // The original episode 1 exe is needed to load gfx's for game launcher menu
             if ( m_ep1slot <= -1 && newentry.crcpass == true )
             {
@@ -207,7 +208,7 @@ void CGameLauncher::process()
     mp_LaunchMenu->processInput();
 	
     // Draw the Start-Menu
-    mp_LaunchMenu->draw();
+    mp_LaunchMenu->draw(g_pVideoDriver->FGLayerSurface);
 }
 
 void CGameLauncher::getLabels()
@@ -300,4 +301,8 @@ void CGameLauncher::cleanup()
     // destroy the menu
     if (mp_LaunchMenu) delete mp_LaunchMenu, mp_LaunchMenu = NULL;
 }
+
+CGameLauncher::~CGameLauncher() {
+}
+
 

@@ -8,11 +8,11 @@
 #ifndef CCONTROLSETTINGS_H_
 #define CCONTROLSETTINGS_H_
 
-#include "CBaseMenu.h"
+#include "../CBaseMenu.h"
 
 class CControlsettings : public CBaseMenu {
 public:
-	CControlsettings(char &menu_type, int chosenPlayerNumber);
+	CControlsettings(int chosenPlayerNumber);
 	void drawInitialCommands();
 
 	void processSpecific();

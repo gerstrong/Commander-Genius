@@ -6,16 +6,16 @@
  */
 
 #include "CVideoSettings.h"
-#include "../../engine/vorticon/CCamera.h"
-#include "../../sdl/CInput.h"
-#include "../../sdl/CTimer.h"
-#include "../../sdl/CSettings.h"
-#include "../../StringUtils.h"
+#include "../../../engine/vorticon/CCamera.h"
+#include "../../../sdl/CInput.h"
+#include "../../../sdl/CTimer.h"
+#include "../../../sdl/CSettings.h"
+#include "../../../StringUtils.h"
 
 CVideoSettings::CVideoSettings(char &menu_type) :
-CBaseMenu(menu_type) {
+CBaseMenu() {
 	
-	m_changed = false;
+	/*m_changed = false;
 	
 	if(menu_type == BOUNDS)
 	{
@@ -104,11 +104,11 @@ CBaseMenu(menu_type) {
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, buf);
 		
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "Adjust Camera Bounds");
-	}
+	}*/
 }
 
 void CVideoSettings::processSpecific(){
-	std::string buf;
+	/*std::string buf;
 	
 	if( g_pInput->getPressedCommand(IC_QUIT) )
 	{
@@ -326,7 +326,7 @@ void CVideoSettings::processSpecific(){
 			}
 			m_selection = -1;
 		}
-	}
+	}*/
 }
 
 CVideoSettings::~CVideoSettings() {

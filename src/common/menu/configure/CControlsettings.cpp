@@ -6,13 +6,13 @@
  */
 
 #include "CControlsettings.h"
-#include "../../sdl/CInput.h"
-#include "../../sdl/CSettings.h"
-#include "../../sdl/CVideoDriver.h"
-#include "../../StringUtils.h"
+#include "../../../sdl/CInput.h"
+#include "../../../sdl/CSettings.h"
+#include "../../../sdl/CVideoDriver.h"
+#include "../../../StringUtils.h"
 
-CControlsettings::CControlsettings(char &menu_type, int chosenPlayerNumber) :
-CBaseMenu(menu_type),
+CControlsettings::CControlsettings(int chosenPlayerNumber) :
+CBaseMenu(),
 m_chosenPlayer(chosenPlayerNumber),
 m_waiting_for_input(false)
 {
@@ -21,7 +21,7 @@ m_waiting_for_input(false)
 
 void CControlsettings::drawInitialCommands()
 {
-	std::string buf;
+	/*std::string buf;
 	std::string buf2;
 	mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 36, 14);
 	mp_Dialog->setFrameTheme(DLG_THEME_OLDSCHOOL);
@@ -70,7 +70,7 @@ void CControlsettings::drawInitialCommands()
 	buf += g_pInput->getTwoButtonFiring(m_chosenPlayer-1) ? "(on)" : "(off)";
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 11, buf);
 
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 2, 12, "Reset Controls");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 2, 12, "Reset Controls");*/
 }
 
 void CControlsettings::processSpecific()
@@ -93,11 +93,11 @@ void CControlsettings::processWaitInput()
 	std::string buf;
 	std::string buf2;
 
-	buf = mp_Dialog->m_dlgobject[m_selection]->m_Option->m_text;
+	//buf = mp_Dialog->m_dlgobject[m_selection]->m_Option->m_text;
 	buf = buf.erase(11);
 	buf2 = g_pInput->getEventName(item, m_chosenPlayer-1);
-	mp_Dialog->setObjectText(m_selection, buf + buf2);
-	mp_Dialog->m_key = 'u';
+	//mp_Dialog->setObjectText(m_selection, buf + buf2);
+	//mp_Dialog->m_key = 'u';
 	m_selection = -1;
 	m_waiting_for_input = false;
 }
@@ -108,8 +108,7 @@ void CControlsettings::processSelection()
 	{
 			g_pInput->saveControlconfig();
 			// And close this menu...
-			m_MenuType = CONTROLPLAYERS;
-			m_mustclose = true;
+			m_nextMenu = CONTROLPLAYERS;
 			m_selection = -1;
 	}
 	
@@ -124,11 +123,11 @@ void CControlsettings::processSelection()
 				m_waiting_for_input = true;
 				g_pInput->flushAll();
 
-				buf = mp_Dialog->m_dlgobject[m_selection]->m_Option->m_text;
+				//buf = mp_Dialog->m_dlgobject[m_selection]->m_Option->m_text;
 				buf = buf.erase(11);
 
 				buf2 = "*Waiting for Input*";
-				mp_Dialog->setObjectText(m_selection, buf + buf2);
+				//mp_Dialog->setObjectText(m_selection, buf + buf2);
 				mp_Dialog->m_key = 'n';
 			}
 			else if(m_selection == MAX_COMMANDS)
@@ -139,7 +138,7 @@ void CControlsettings::processSelection()
 				g_pInput->setTwoButtonFiring(m_chosenPlayer-1, twb);
 				buf = "Two Button Firing : ";
 				buf += g_pInput->getTwoButtonFiring(m_chosenPlayer-1) ? "(On)" : "(Off)";
-				mp_Dialog->setObjectText(m_selection, buf);
+				//mp_Dialog->setObjectText(m_selection, buf);
 				m_selection = -1;
 			}
 			else if(m_selection == MAX_COMMANDS+1)

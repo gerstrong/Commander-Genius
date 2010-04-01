@@ -7,14 +7,21 @@
 
 #include "CBaseMenu.h"
 #include "../../sdl/CInput.h"
+#include "../../sdl/CVideoDriver.h"
 
-CBaseMenu::CBaseMenu(char &MenuType) :
+CBaseMenu::CBaseMenu() :
 	m_mustclose(false),
-	m_MenuType(MenuType),
 	m_selection(-1),
 	mp_Dialog(NULL),
+	m_nextMenu(0),
 	m_restartVideo(false)
 {}
+
+// This function tells if there is a dialog that must be opened next.
+// When this happen, the current Dialog will be closed and the next will be
+// opened
+Uint8 CBaseMenu::getNextDialog()
+{	return m_nextMenu;	}
 
 void CBaseMenu::processCommon()
 {
@@ -28,10 +35,8 @@ void CBaseMenu::processCommon()
 void CBaseMenu::postProcess()
 {
 	mp_Dialog->processInput();
-
-	mp_Dialog->draw();
+	mp_Dialog->draw(g_pVideoDriver->FGLayerSurface);
 }
 
 CBaseMenu::~CBaseMenu() {
-	// TODO Auto-generated destructor stub
 }
