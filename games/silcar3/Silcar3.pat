@@ -7,9 +7,9 @@
 %version 1.31
 %patchfile 0x198C8 tiles.tli
 
-%patchfile 0x179D0 HELPTEXT.CK3 #Help
-%patchfile 0x18BD0 STORYTXT.CK3 #Story
-%patchfile 0x181A0 ENDTXT.CK3 #End text
+%patchfile $18BD0 "STORYTXT.CK3" #Story
+%patchfile $179D0 "HELPTEXT.CK3" #Help
+%patchfile $181A4 "ENDTXT.CK3"  #End text
 
 # Menu Items
 %patch 0x01C801 "This Mod   "
