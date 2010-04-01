@@ -79,6 +79,7 @@ bool CMenu::init( char menu_type )
 	cleanup();
 	m_menu_type = menu_type;
 	m_goback = false;
+	m_goback2 = false;
 	m_selection = -1; // Nothing has been selected yet.
 	mp_MenuSurface = g_pVideoDriver->FGLayerSurface;
 	if(mp_Dialog)

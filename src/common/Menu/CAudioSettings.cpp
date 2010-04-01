@@ -145,28 +145,6 @@ void CAudioSettings::processSpecific()
 			}
 			else if(m_selection == 3)
 			{
-				CSettings Settings;
-
-				// Check if the music is playing, stop it and restart it, if necessary
-				bool wasPlaying = g_pMusicPlayer->playing();
-				g_pMusicPlayer->stop();
-
-				// Close the sound driver
-				g_pSound->destroy();
-				g_pSound->setSoundmode(m_Rate, m_Mode ? true : false, m_Format);
-				Settings.saveDrvCfg();
-
-				// Reload the sounds effects, so they work with the new format
-				g_pSound->init();
-				g_pSound->loadSoundData(m_Episode, m_Gamepath);
-
-				// Reload the music if was playing before we changed the settings
-				if(wasPlaying)
-				{
-					g_pMusicPlayer->reload(g_pSound->getAudioSpec());
-					g_pMusicPlayer->play();
-				}
-
 				m_MenuType = VOLUME;
 				m_mustclose = true;
 			}

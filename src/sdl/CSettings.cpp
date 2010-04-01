@@ -64,6 +64,8 @@ short CSettings::saveDrvCfg()
 	Parser.saveIntValue("format","Audio",(g_pSound->getAudioSpec()).format);
 	Parser.saveIntValue("rate","Audio",(g_pSound->getAudioSpec()).freq);
 	Parser.saveIntValue("mixerch","Audio",(g_pSound->getMixingchannels()));
+	Parser.saveIntValue("musicvol","Audio",(g_pSound->getMusicVolume()));
+	Parser.saveIntValue("soundvol","Audio",(g_pSound->getSoundVolume()));
 	
 	Parser.saveParseFile();
 	
@@ -110,6 +112,9 @@ bool CSettings::loadDrvCfg()
 		
 		g_pSound->setSoundmode(Parser.getIntValue("rate","Audio"),
 							   Parser.getIntValue("channels","Audio") == 2, Parser.getIntValue("format","Audio"));
+
+		g_pSound->setMusicVolume(Parser.getIntValue("musicvol","Audio"));
+		g_pSound->setSoundVolume(Parser.getIntValue("soundvol","Audio"));
 	}
 	return true;
 }
