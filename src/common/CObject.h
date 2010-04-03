@@ -152,6 +152,8 @@ public:
 	unsigned int getYUpPos();
 	unsigned int getYDownPos();
 	unsigned int getYMidPos();
+	
+	unsigned int x, y;        			// x,y location in map coords, CSFed
 
 	void processFalling();
 
@@ -162,7 +164,6 @@ public:
 
 private:
 	CMap *mp_Map;
-	unsigned int x, y;        			// x,y location in map coords, CSFed
 };
 
 #endif /* COBJECT_H_ */

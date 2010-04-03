@@ -104,7 +104,7 @@ bool CMenu::init( char menu_type )
 	}
 	else if( m_menu_type == F1 )
 		initF1Menu();
-	else if( m_menu_type == DEBUG )
+	else if( m_menu_type == MENU_DEBUG )
 		initDebugMenu();
 	else if( m_menu_type == MODCONF )
 		initModMenu();
@@ -384,7 +384,7 @@ void CMenu::process()
 			else if( m_menu_type == SAVE ) processSaveMenu();
 			else if( m_menu_type == LOAD ) processLoadMenu();
 			else if( m_menu_type == OVERWRITE ) processOverwriteMenu();
-			else if( m_menu_type == DEBUG ) processDebugMenu();
+			else if( m_menu_type == MENU_DEBUG ) processDebugMenu();
 			else if( m_menu_type == MODCONF ) processModMenu();
 
 			// Draw the menu
