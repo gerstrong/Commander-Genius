@@ -700,7 +700,13 @@ void CVideoDriver::updateScreen()
 			UnlockSurface(screen);
 			UnlockSurface(BlitSurface);
 		}
-		
+
+#ifdef GP2X
+		// Clear the lower 40 lines to black
+		SDL_Rect lower = { 0, 200, 320, 40 };
+		SDL_FillRect(screen, &lower, SDL_MapRGB(screen->format, 0, 0, 0) );
+#endif
+
 		SDL_Flip(screen);
 		
 		// Flush the FG-Layer
