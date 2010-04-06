@@ -12,5 +12,6 @@
 #define GRAPHICSIDS_H_
 
 const int BMP_TITLE = 103;
+const int BMP_KEENSWATCH = 97;
 
 #endif /* GRAPHICSIDS_H_ */
