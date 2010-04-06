@@ -27,7 +27,7 @@ public:
 	bool loadData();
 	bool begin();
 	Uint8 getBit(unsigned char data, Uint8 leftshift);
-	bool exportBMP();
+	bool readBitmaps();
 
 	virtual ~CEGAGraphicsGalaxy();
 

@@ -115,7 +115,7 @@ m_Exefile(ExeFile)
 bool CEGAGraphicsGalaxy::loadData()
 {
 	if(!begin()) return false;
-	if(!exportBMP()) return false;
+	if(!readBitmaps()) return false;
 
 	return true;
 }
@@ -281,7 +281,7 @@ Uint8 CEGAGraphicsGalaxy::getBit(unsigned char data, Uint8 leftshift)
 // The colours are not correct when you select the engine first time. After playing a Keen game they are okay...
 
 // This one extracts the bitmaps used in Keen 4-6 (Maybe Dreams in future)
-bool CEGAGraphicsGalaxy::exportBMP()
+bool CEGAGraphicsGalaxy::readBitmaps()
 {
 	int ep = m_episode - 4;
 	BitmapHeadStruct *BmpHead = (BitmapHeadStruct *) &(m_egagraph.at(0).data.at(0));
