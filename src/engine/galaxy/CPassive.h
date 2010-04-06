@@ -29,6 +29,8 @@ public:
 	void (CPassiveGalaxy::*processMode)();
 
 	virtual ~CPassiveGalaxy();
+
+	CBitmap m_BackgroundBitmap;
 };
 
 }

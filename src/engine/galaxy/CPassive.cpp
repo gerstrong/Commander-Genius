@@ -8,6 +8,7 @@
 #include "CPassive.h"
 
 #include "../../graphics/CGfxEngine.h"
+#include "../../graphics/effects/CPixelate.h"
 #include "../../sdl/CVideoDriver.h"
 #include "../../sdl/CInput.h"
 
@@ -39,20 +40,22 @@ void CPassiveGalaxy::process()
 void CPassiveGalaxy::processIntro()
 {
 	processMode = &CPassiveGalaxy::processTitle;
+
+	m_BackgroundBitmap = g_pGfxEngine->getBitmap(BMP_TITLE);
+
+	g_pGfxEngine->pushEffectPtr(new CPixelate(2));// TODO: Add the pixelation effect here!
+
 }
 
 // Just show the title screen with the pixelation effect
 void CPassiveGalaxy::processTitle()
 {
-	CBitmap &Bitmap = g_pGfxEngine->getBitmap(BMP_TITLE);
-
-	// TODO: Add the pixelation effect here!
-
 	// draw Bitmap here!
-	Bitmap.draw(g_pVideoDriver->BlitSurface, 0, 0);
+	m_BackgroundBitmap.draw(g_pVideoDriver->BlitSurface, 0, 0);
 	
-	if (g_pInput->getPressedAnyKey())
+	if (g_pInput->getPressedAnyKey() && !g_pGfxEngine->applyingEffects())
 	{
+
 		// If we press any key we go to the menu screen
 		m_modeg = true;
 	}
