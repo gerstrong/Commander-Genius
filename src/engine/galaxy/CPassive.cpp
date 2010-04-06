@@ -50,7 +50,7 @@ void CPassiveGalaxy::processIntro()
 // Just show the title screen with the pixelation effect
 void CPassiveGalaxy::processTitle()
 {
-	// draw Bitmap here!
+	// draw the title bitmap here!
 	m_BackgroundBitmap.draw(g_pVideoDriver->BlitSurface, 0, 0);
 	
 	if ( g_pInput->getPressedAnyKey() )
@@ -71,8 +71,10 @@ void CPassiveGalaxy::processTitle()
 // load one, changes options, etc.
 void CPassiveGalaxy::processMenu()
 {
-	// draw Bitmap here!
+	// draw the background!
 	m_BackgroundBitmap.draw(g_pVideoDriver->BlitSurface, 0, 0);
+
+	m_Menu.process();
 
 	if ( g_pInput->getPressedAnyKey() )
 	{

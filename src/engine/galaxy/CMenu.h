@@ -9,6 +9,7 @@
 #define CMENU_GALAXY_H_
 
 #include "../../graphics/CBitmap.h"
+#include "GraphicsIDs.h"
 
 namespace galaxy
 {
@@ -17,11 +18,18 @@ class CMenu
 {
 public:
 	CMenu();
+	void setupMenu();
 	void process();
 	void processMainMenu();
 	virtual ~CMenu();
 
-	CBitmap m_BackgroundBitmap;
+	void (CMenu::*processPtr)();
+	CBitmap m_TitleBmp;
+
+	struct {
+		int x;
+		int y;
+	} m_title_coord;
 };
 
 }
