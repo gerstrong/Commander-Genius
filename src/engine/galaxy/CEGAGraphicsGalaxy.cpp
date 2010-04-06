@@ -165,11 +165,7 @@ bool CEGAGraphicsGalaxy::begin()
 		m_egahead.push_back(offset);
 	}
 
-	/////////////////
-	// TODO: Until here everything seems to work fine...
-	/////////////////
-
-	/* Now read the EGAGRAPH */
+	// Now read the EGAGRAPH
 	std::string filename;
 	if (ep < 3) filename =  m_path + "EGAGRAPH.CK" + itoa(m_episode);
 	else filename =  m_path + "KDREAMS.EGA";
@@ -203,21 +199,21 @@ bool CEGAGraphicsGalaxy::begin()
 	// Now lets decompress the graphics
 	for(size_t i = 0; i < EpisodeInfo[ep].NumChunks; i++)
 	{
-		/* Show that something is happening */
+		// Show that something is happening
 		offset = m_egahead[i];
 
-		/* Make sure the chunk is valid */
+		// Make sure the chunk is valid
 		if(offset != offset_limit)
 		{
-			/* Get the expanded length of the chunk */
+			// Get the expanded length of the chunk
 			if(i >= EpisodeInfo[ep].Index8Tiles && i < EpisodeInfo[ep].Index16MaskedTiles + EpisodeInfo[ep].Num16MaskedTiles)
 			{
-				/* Expanded sizes of 8, 16,and 32 tiles are implicit */
-				if(i >= EpisodeInfo[ep].Index16MaskedTiles) /* 16x16 tiles are one/chunk */
+				// Expanded sizes of 8, 16,and 32 tiles are implicit
+				if(i >= EpisodeInfo[ep].Index16MaskedTiles) // 16x16 tiles are one/chunk
 					outlen = 2 * 16 * 5;
 				else if(i >= EpisodeInfo[ep].Index16Tiles)
 					outlen = 2 * 16 * 4;
-				else if(i >= EpisodeInfo[ep].Index8MaskedTiles)	/* 8x8 tiles are all in one chunk! */
+				else if(i >= EpisodeInfo[ep].Index8MaskedTiles)	// 8x8 tiles are all in one chunk!
 					outlen = EpisodeInfo[ep].Num8MaskedTiles * 8 * 5;
 				else if(i >= EpisodeInfo[ep].Index8Tiles)
 					outlen = EpisodeInfo[ep].Num8Tiles * 8 * 4;
@@ -277,7 +273,6 @@ Uint8 CEGAGraphicsGalaxy::getBit(unsigned char data, Uint8 leftshift)
 	return value;
 }
 
-// TODO: This function must be renamed! Be careful!
 // The colours are not correct when you select the engine first time. After playing a Keen game they are okay...
 
 // This one extracts the bitmaps used in Keen 4-6 (Maybe Dreams in future)
