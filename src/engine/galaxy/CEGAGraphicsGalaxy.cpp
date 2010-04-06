@@ -114,6 +114,9 @@ m_Exefile(ExeFile)
 
 bool CEGAGraphicsGalaxy::loadData()
 {
+	// Set the palette, so the proper colours are loaded
+	g_pGfxEngine->Palette.setupColorPalettes();
+
 	if(!begin()) return false;
 	if(!readBitmaps()) return false;
 
