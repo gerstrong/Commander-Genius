@@ -85,43 +85,46 @@ bool CMenu::init( char menu_type )
 	if(mp_Dialog)
 		mp_Dialog->setSDLSurface(mp_MenuSurface);
 
-	if( m_menu_type == MAIN )
-		initMainMenu();
-	else if( m_menu_type == QUIT || m_menu_type == ENDGAME || m_menu_type == OVERWRITE )
-		initConfirmMenu();
-	else if( m_menu_type == NEW )
-		initNumPlayersMenu();
-	else if( m_menu_type == DIFFICULTY )
-		initDifficultyMenu();
-	else if( m_menu_type == CONFIGURE )
-		initConfigureMenu();
-	else if( m_menu_type == CONTROLPLAYERS )
-		initNumControlMenu();
-	else if( m_menu_type == CONTROLS )
+	switch(m_menu_type)
 	{
+	case MAIN:
+		initMainMenu(); break;
+	case QUIT:
+		initConfirmMenu("   Quit the game?   "); break;
+	case ENDGAME:
+		initConfirmMenu("   End your game?   "); break;
+	case OVERWRITE:
+		initConfirmMenu("Overwrite this save?"); break;
+	case NEW:
+		initNumPlayersMenu(); break;
+	case DIFFICULTY:
+		initDifficultyMenu(); break;
+	case CONFIGURE:
+		initConfigureMenu(); break;
+	case CONTROLPLAYERS:
+		initNumControlMenu(); break;
+	case CONTROLS:
 		mp_Menu = new CControlsettings(m_menu_type, m_NumPlayers);
 		return true;
-	}
-	else if( m_menu_type == F1 )
-		initF1Menu();
-	else if( m_menu_type == MENU_DEBUG )
-		initDebugMenu();
-	else if( m_menu_type == MODCONF )
-		initModMenu();
-	else if( m_menu_type == SAVE || m_menu_type == LOAD )
-		initSaveMenu();
-	else if( m_menu_type == GRAPHICS || m_menu_type == BOUNDS )
-	{
+	case F1:
+		initF1Menu(); break;
+	case MENU_DEBUG:
+		initDebugMenu(); break;
+	case MODCONF:
+		initModMenu(); break;
+	case SAVE:
+	case LOAD:
+		initSaveMenu(); break;
+	case GRAPHICS:
+	case BOUNDS:
+
 		mp_Menu = new CVideoSettings(m_menu_type);
 		return true;
-	}
-	else if( m_menu_type == OPTIONS )
-	{
+	case OPTIONS:
 		mp_Menu = new COptions(m_menu_type, mp_option);
 		return true;
-	}
-	else if( m_menu_type == AUDIO || m_menu_type == VOLUME )
-	{
+	case AUDIO:
+	case VOLUME:
 		mp_Menu = new CAudioSettings(m_menu_type, m_GamePath, m_Episode);
 		return true;
 	}
@@ -274,11 +277,11 @@ void CMenu::initF1Menu()
 	// In the Help system let's hide all objects like Bitmaps, players, enemies, etc.
 }
 
-void CMenu::initConfirmMenu()
+void CMenu::initConfirmMenu(std::string confirmtext)
 {
 	mp_Dialog = new CDialog(mp_MenuSurface, 0, 0, 22, 5, 'l');
 	
-	mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 1, "  Are you certain?  ");
+	mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 1, confirmtext);
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Yes");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 15, 3, "No");
 }
@@ -372,18 +375,18 @@ void CMenu::process()
 			// Some variables must be hidden, and it can be achieved through that method
 			// I (Gerstrong) would recommend making the others menu also this way.
 			// You'd have more files but small ones and better to control than a big one, where
-			// you have to seek and seek
+			// you have to seek and sneek
 
 			if( m_menu_type == MAIN ) processMainMenu();
 			else if( m_menu_type == NEW ) processNumPlayersMenu();
 			else if( m_menu_type == DIFFICULTY ) processDifficultyMenu();
 			else if( m_menu_type == CONTROLPLAYERS ) processNumControlMenu();
 			else if( m_menu_type == F1 ) processF1Menu();
-			else if( m_menu_type == QUIT ) processQuitMenu();
-			else if( m_menu_type == ENDGAME ) processEndGameMenu();
 			else if( m_menu_type == SAVE ) processSaveMenu();
 			else if( m_menu_type == LOAD ) processLoadMenu();
-			else if( m_menu_type == OVERWRITE ) processOverwriteMenu();
+			else if( m_menu_type == OVERWRITE )	processOverwriteMenu();
+			else if( m_menu_type == QUIT ) processQuitMenu();
+			else if( m_menu_type == ENDGAME ) processEndGameMenu();
 			else if( m_menu_type == MENU_DEBUG ) processDebugMenu();
 			else if( m_menu_type == MODCONF ) processModMenu();
 
@@ -544,41 +547,6 @@ void CMenu::processF1Menu()
 	return;
 }
 
-void CMenu::processQuitMenu()
-{
-	mp_Dialog->setObjectText(0, "   Quit the game?   ");
-	if( m_selection != -1)
-	{
-		if ( m_selection == 1 )
-		{
-			cleanup();
-			m_quit = true;
-		}
-		else if ( m_selection == 2 )
-		{
-			m_goback = true;
-		}
-	}
-	return;
-}
-
-void CMenu::processEndGameMenu()
-{
-	mp_Dialog->setObjectText(0, "   End your game?   ");
-	if( m_selection != -1)
-	{
-		if ( m_selection == 1 )
-		{
-			cleanup();
-			m_Endgame = true;
-		}
-		else if ( m_selection == 2 )
-		{
-			m_goback = true;
-		}
-	}
-	return;
-}
 
 // TODO: PLease put more comments in order to understand what is supposed to be done.
 void CMenu::processSaveMenu()
@@ -677,7 +645,6 @@ void CMenu::processLoadMenu()
 // If you don't you may loose the your own insight into the code.
 void CMenu::processOverwriteMenu()
 {
-	mp_Dialog->setObjectText(0, "Overwrite this save?");
 	if( m_selection != -1)
 	{
 		if ( m_selection == 1 )
@@ -690,6 +657,40 @@ void CMenu::processOverwriteMenu()
 			m_overwrite = false;
 			m_goback = true;
 			m_lastselect = -1;
+		}
+	}
+	return;
+}
+
+void CMenu::processQuitMenu()
+{
+	if( m_selection != -1)
+	{
+		if ( m_selection == 1 )
+		{
+			cleanup();
+			m_quit = true;
+		}
+		else if ( m_selection == 2 )
+		{
+			m_goback = true;
+		}
+	}
+	return;
+}
+
+void CMenu::processEndGameMenu()
+{
+	if( m_selection != -1)
+	{
+		if ( m_selection == 1 )
+		{
+			cleanup();
+			m_Endgame = true;
+		}
+		else if ( m_selection == 2 )
+		{
+			m_goback = true;
 		}
 	}
 	return;

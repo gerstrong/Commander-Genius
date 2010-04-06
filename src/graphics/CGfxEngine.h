@@ -52,6 +52,7 @@ public:
 	CBitmap *getBitmap(const std::string &name);
 
 	CEffects *Effect() { return mp_Effects; }
+	bool applyingEffects() { return mp_Effects!=NULL; }
 	
 	CSprite &getSprite(Uint16 slot) { return Sprite[slot]; }
 	std::vector<CSprite> &getSpriteVec() { return Sprite; }

@@ -87,7 +87,7 @@ public:
 
 private:
 	void initMainMenu();
-	void initConfirmMenu();
+	void initConfirmMenu(std::string confirmtext = "  Are you certain?  ");
 	void initNumPlayersMenu();
 	void initDifficultyMenu();
 	void initConfigureMenu();
