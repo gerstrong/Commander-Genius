@@ -61,6 +61,7 @@ public:
 
 	bool save();
 	bool load();
+	bool alreadyExits();
 	
 	char getCommand() { return m_Command; }
 

@@ -122,6 +122,12 @@ bool CSavedGame::convertOldFormat(size_t slot)
 
 	prepareSaveGame(slot, "oldsave"+itoa(slot));
 
+	if(alreadyExits())
+	{
+		g_pLogFile->textOut("You already have \""+m_statefilename+"\". If you want to export an old savegame erase it, or erase the old savegame if it's already exported!" );
+		return false;
+	}
+
 	g_pLogFile->ftextOut("Loading game from file %s\n", fname.c_str());
 	fp = OpenGameFile(fname, "rb");
 	if (!fp) { g_pLogFile->ftextOut("unable to open %s\n",fname.c_str()); return false; }
@@ -366,6 +372,22 @@ bool CSavedGame::load()
 	m_statename.clear();
 
 	return true;
+}
+
+// This function checks if the file we want to read or save already exists
+bool CSavedGame::alreadyExits()
+{
+	std::ifstream StateFile;
+	std::string fullpath = GetFullFileName(m_statefilename);
+	OpenGameFileR( StateFile, m_statefilename, std::ofstream::binary );
+
+    if (!StateFile.is_open())
+    	return false;
+    else
+    {
+    	StateFile.close();
+    	return true;
+    }
 }
 
 // This function writes all the data from the CPlayGame and CMenu Instances to a file,
