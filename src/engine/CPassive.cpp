@@ -22,6 +22,5 @@ CPassive::CPassive(char Episode, std::string DataDirectory,
 }
 
 CPassive::~CPassive() {
-	// TODO Auto-generated destructor stub
 }
 

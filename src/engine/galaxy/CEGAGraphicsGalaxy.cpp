@@ -277,6 +277,9 @@ Uint8 CEGAGraphicsGalaxy::getBit(unsigned char data, Uint8 leftshift)
 	return value;
 }
 
+// TODO: This function must be renamed! Be careful!
+// The colours are not correct when you select the engine first time. After playing a Keen game they are okay...
+
 // This one extracts the bitmaps used in Keen 4-6 (Maybe Dreams in future)
 bool CEGAGraphicsGalaxy::exportBMP()
 {

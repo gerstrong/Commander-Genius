@@ -21,7 +21,12 @@ public:
 
 	bool init(char mode = INTRO);
 	void process();
+	void processIntro();
+	void processTitle();
+	void processMenu();
 	void cleanup();
+
+	void (CPassiveGalaxy::*processMode)();
 
 	virtual ~CPassiveGalaxy();
 };
