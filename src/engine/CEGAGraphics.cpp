@@ -21,7 +21,9 @@ CEGAGraphics::CEGAGraphics(short episode, const std::string& path) {
 ///
 bool CEGAGraphics::loadData()
 {
-	CFont &Font = g_pGfxEngine->getFont();
+	// This is only for the menu. We only need one fontmap
+	g_pGfxEngine->createEmptyFontmaps(1);
+	CFont &Font = g_pGfxEngine->getFont(0);
 	Font.DestroySurface();
 	Font.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE, g_pVideoDriver->getDepth() );
 	Font.optimizeSurface();
@@ -32,6 +34,7 @@ bool CEGAGraphics::loadData()
 	Font.generateGlowFonts();
 	Font.generateInverseFonts();
 	Font.generateDisabledFonts();
+
 	return true;
 }
 

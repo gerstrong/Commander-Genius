@@ -37,6 +37,12 @@ void CGfxEngine::createEmptyBitmaps(Uint16 num_bmps)
 	Bitmap.assign(num_bmps, bitmap);
 }
 
+void CGfxEngine::createEmptyFontmaps(Uint8 num_fonts)
+{
+	CFont font;
+	Font.assign(num_fonts, font);
+}
+
 // This will store the effect pointer the developer created in one function
 // You need this call to make you effect work!
 void CGfxEngine::pushEffectPtr(CEffects *pEffect) {
@@ -54,7 +60,12 @@ void CGfxEngine::freeTilemap()
 }
 void CGfxEngine::freeFonts()
 {
-	Font.DestroySurface();
+	while ( !Font.empty() )
+	{
+		CFont &font = Font.back();
+		font.DestroySurface();
+		Font.pop_back();
+	}
 }
 
 void CGfxEngine::freeBitmaps()
@@ -110,11 +121,11 @@ void CGfxEngine::drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w
 	
 	SDL_FillRect(DialogSurface, &rect, colour);
 
-	Font.drawCharacter(DialogSurface, 1, x1*8, y1*8);
-	Font.drawCharacter(DialogSurface, 3, (x1+w)*8, y1*8);
+	Font[0].drawCharacter(DialogSurface, 1, x1*8, y1*8);
+	Font[0].drawCharacter(DialogSurface, 3, (x1+w)*8, y1*8);
 	for(x=(x1*8)+8,i=0;i<w-1;i++)
 	{
-		Font.drawCharacter(DialogSurface, 2, x, y1*8);
+		Font[0].drawCharacter(DialogSurface, 2, x, y1*8);
 		x+=8;
 	}
 	y=(y1+1)*8;
@@ -122,17 +133,17 @@ void CGfxEngine::drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w
 	{
 		for(x=(x1*8),i=0;i<=w;i++)
 		{
-			if (i==0) Font.drawCharacter(DialogSurface, 4, x, y);
-			else if (i==w) Font.drawCharacter(DialogSurface, 5, x, y);
+			if (i==0) Font[0].drawCharacter(DialogSurface, 4, x, y);
+			else if (i==w) Font[0].drawCharacter(DialogSurface, 5, x, y);
 			x+=8;
 		}
 		y+=8;
 	}
     for(x=(x1*8),i=0;i<=w;i++)
     {
-		if (i==0) Font.drawCharacter(DialogSurface, 6, x, y);
-		else if (i==w) Font.drawCharacter(DialogSurface, 8, x, y);
-		else Font.drawCharacter(DialogSurface, 7, x, y);
+		if (i==0) Font[0].drawCharacter(DialogSurface, 6, x, y);
+		else if (i==w) Font[0].drawCharacter(DialogSurface, 8, x, y);
+		else Font[0].drawCharacter(DialogSurface, 7, x, y);
 		x+=8;
     }
 }

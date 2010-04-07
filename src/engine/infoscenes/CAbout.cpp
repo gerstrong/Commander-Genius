@@ -141,7 +141,7 @@ void CAbout::process()
 		mp_bmp->draw( g_pVideoDriver->FGLayerSurface, 160-mp_bmp->getWidth()/2, 22);
 		
 		for(std::size_t i=0 ; i<m_lines.size() ; i++)
-			g_pGfxEngine->getFont().drawFont(g_pVideoDriver->FGLayerSurface, m_lines[i], 24, 72+i*8, LETTER_TYPE_RED);
+			g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->FGLayerSurface, m_lines[i], 24, 72+i*8, LETTER_TYPE_RED);
 	}
 	else if(m_type == "CG")
 	{
@@ -149,7 +149,7 @@ void CAbout::process()
 			SDL_BlitSurface(mp_LogoBMP, NULL, g_pVideoDriver->FGLayerSurface, &m_logo_rect);
 		
 		for(std::size_t i=0 ; i<m_lines.size() ; i++)
-			g_pGfxEngine->getFont().drawFont(g_pVideoDriver->FGLayerSurface, m_lines[i], 24, 72+i*8, LETTER_TYPE_RED);
+			g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->FGLayerSurface, m_lines[i], 24, 72+i*8, LETTER_TYPE_RED);
 	}
 	
 	if(g_pInput->getPressedAnyKey())

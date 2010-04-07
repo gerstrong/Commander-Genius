@@ -154,8 +154,11 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 								  plane4 + m_fontlocation,
 								  0);
 	// Load these graphics into the CFont Class of CGfxEngine
+	// The original vorticon engine only uses one fontmap, but we use another for
+	// extra icons. For example sliders are in that map
 	char *offset;
-	CFont &Font = g_pGfxEngine->getFont();
+	g_pGfxEngine->createEmptyFontmaps(2);
+	CFont &Font = g_pGfxEngine->getFont(0);
 	Font.DestroySurface();
 	Font.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE );
 	sfc = Font.getSDLSurface();
@@ -206,6 +209,10 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	Font.generateDisabledFonts();
 
 	delete Planes;
+
+
+	// TODO: The second fontmap of the extra tilemap code goes here! (for example Sliders)
+
 
 	// Load 32x32 Tiles
 	// TODO: Add a read method for 32x32 Tiles

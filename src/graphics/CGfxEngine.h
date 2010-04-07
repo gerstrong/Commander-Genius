@@ -34,6 +34,7 @@ public:
 	
 	void createEmptySprites(Uint16 num_sprites);
 	void createEmptyBitmaps(Uint16 num_bmps);
+	void createEmptyFontmaps(Uint8 num_fonts);
 	void createEmptyTilemap(stTile *pTileProperties, int numtiles);
 	
 	void pushEffectPtr(CEffects *pEffect);
@@ -56,7 +57,7 @@ public:
 	
 	CSprite &getSprite(Uint16 slot) { return Sprite[slot]; }
 	std::vector<CSprite> &getSpriteVec() { return Sprite; }
-	CFont &getFont() { return Font; }
+	CFont &getFont(Uint8 index) { return Font.at(index); }
 	
 	void process();
 	void killEffect();
@@ -65,7 +66,7 @@ public:
 	CPalette Palette;
 	
 private:
-	CFont Font;
+	std::vector<CFont> Font;
 	SDL_Surface *m_fxsurface;
 	CEffects *mp_Effects;
 	std::vector<CBitmap> Bitmap;

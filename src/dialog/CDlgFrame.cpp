@@ -35,7 +35,7 @@ void CDlgFrame::draw(SDL_Surface *dst)
 
 void CDlgFrame::drawOldSchoolFrame(SDL_Surface *dst)
 {
-	CFont &Font = g_pGfxEngine->getFont();
+	CFont &Font = g_pGfxEngine->getFont(0);
 	// However it should be blit to a memory map and then rendered every time. If not, no new effects can
 	// be improved.
 	
@@ -71,7 +71,7 @@ void CDlgFrame::drawOldSchoolFrame(SDL_Surface *dst)
 
 void CDlgFrame::drawRedFrame(SDL_Surface *dst)
 {
-	CFont &Font = g_pGfxEngine->getFont();
+	CFont &Font = g_pGfxEngine->getFont(0);
 	// However it should be blit to a memory map and then rendered every time. If not, no new effects can
 	// be improved.
 	

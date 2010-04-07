@@ -356,7 +356,7 @@ void CPlayGame::process()
 			//tempbuf = "inertia_x: " + itoa(m_Player[0].xinertia);
 
 #endif
-			g_pGfxEngine->getFont().drawFont(sfc,tempbuf,320-(tempbuf.size()<<3)-1, LETTER_TYPE_RED);
+			g_pGfxEngine->getFont(0).drawFont(sfc,tempbuf,320-(tempbuf.size()<<3)-1, LETTER_TYPE_RED);
 		}
 
 		// Open the Main Menu if ESC Key pressed and mp_Menu not opened

@@ -46,7 +46,7 @@ void CStatusScreen::drawInventoryEp1()
 	int x,t,i,j;
 	std::string tempbuf;
 	int dlgX,dlgY,dlgW,dlgH;
-	CFont &Font = g_pGfxEngine->getFont();
+	CFont &Font = g_pGfxEngine->getFont(0);
 	
 	dlgX = 5;
 	dlgY = 5;
@@ -165,7 +165,7 @@ void CStatusScreen::drawInventoryEp2()
 	int x,i,j;
 	std::string tempbuf;
 	int dlgX,dlgY,dlgW,dlgH;
-	CFont &Font = g_pGfxEngine->getFont();
+	CFont &Font = g_pGfxEngine->getFont(0);
 
 	dlgX = 5;
 	dlgY = 5;
@@ -274,7 +274,7 @@ void CStatusScreen::drawInventoryEp3()
 	int x,i,j;
 	std::string tempbuf;
 	int dlgX,dlgY,dlgW,dlgH;
-	CFont &Font = g_pGfxEngine->getFont();
+	CFont &Font = g_pGfxEngine->getFont(0);
 
 	dlgX = 5;
 	dlgY = 5;

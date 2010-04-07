@@ -288,6 +288,78 @@ Uint8 CEGAGraphicsGalaxy::getBit(unsigned char data, Uint8 leftshift)
 	return value;
 }
 
+//bool CEGAGraphicsGalaxy::readfonts()
+//{
+//	BITMAP16 *font, *bmp;
+//	FontHeadStruct *FontHead;
+//	char filename[PATH_MAX];
+//	int i, j, w, bw, y;
+//	unsigned char *pointer;
+//	int ep = Switches->Episode - 4;
+//
+//	if(!ExportInitialised)
+//		quit("Trying to export fonts before initialisation!");
+//
+//	/* Export all the fonts into separate bitmaps*/
+//	printf("Exporting fonts: ");
+//
+//	for(i = 0; i < EpisodeInfo[ep].NumFonts; i++)
+//	{
+//		/* Show that something is happening */
+//		showprogress((i * 100) / EpisodeInfo[ep].NumFonts);
+//
+//		if(EgaGraph[EpisodeInfo[ep].IndexFonts + i].data)
+//		{
+//			FontHead = (FontHeadStruct *)EgaGraph[EpisodeInfo[ep].IndexFonts + i].data;
+//
+//			/* Find out the maximum character width */
+//			w = 0;
+//			for(j = 0; j < 256; j++)
+//				if(FontHead->Width[j] > w)
+//					w = FontHead->Width[j];
+//
+//			font = bmp_create(w * 16, FontHead->Height * 16, 4);
+//
+//			/* Create a 1bpp bitmap for the character */
+//			bmp = bmp_create(w, FontHead->Height, 1);
+//
+//			/* Now decode the characters */
+//			pointer = EgaGraph[EpisodeInfo[ep].IndexFonts + i].data;
+//		   	for(j = 0; j < 256; j++)
+//		   	{
+//		   		/* Get the width of the character in bytes */
+//		   		bw = (FontHead->Width[j] + 7) / 8;
+//
+//		   		/* Clear the bitmap */
+//	   			bmp_rect(bmp, 0, 0, bmp->width - 1, bmp->height - 1, 8);
+//
+//				/* Decode the lines of the character data */
+//		   		if(FontHead->Width[j] > 0)
+//					for(y = 0; y < FontHead->Height; y++)
+//						memcpy(bmp->lines[y], pointer + FontHead->Offset[j] + (y * bw), bw);
+//
+//				/* Copy the character into the grid */
+//				bmp_blit(bmp, 0, 0, font, (j % 16) * w, (j / 16) * FontHead->Height, w, FontHead->Height);
+//
+//		   		/* Fill the remainder of the bitmap with Grey */
+//	   			bmp_rect(font, (j % 16) * w + FontHead->Width[j], (j / 16) * FontHead->Height,
+//	   				(j % 16) * w + w - 1, (j / 16) * FontHead->Height +  FontHead->Height - 1, 8);
+//			}
+//
+//			/* Create the bitmap file */
+//			sprintf(filename, "%s/%cFON%04d.bmp", Switches->OutputPath, '0' + Switches->Episode, i);
+//			if(!bmp_save(font, filename, Switches->Backup))
+//				quit("Can't open bitmap file %s!", filename);
+//
+//			/* Free the memory used */
+//			bmp_free(font);
+//			bmp_free(bmp);
+//		}
+//		//printf("\x8\x8\x8\x8");
+//	}
+//	completemsg();
+//}
+
 // This one extracts the bitmaps used in Keen 4-6 (Maybe Dreams in future)
 bool CEGAGraphicsGalaxy::readBitmaps()
 {

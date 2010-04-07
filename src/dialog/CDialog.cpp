@@ -333,7 +333,7 @@ void CDialog::draw()
 	// Render the empty Dialog frame if any
 	if(m_Frame) m_Frame->draw(m_DialogSurface);
 	
-	CFont &Font = g_pGfxEngine->getFont();
+	CFont &Font = g_pGfxEngine->getFont(0);
 	// Draw the to icon up or down accordingly
 	if( m_scroll>0 ) // Up Arrow
 	{
@@ -423,7 +423,7 @@ void CDialog::drawTwirl()
 		
 	}
 	
-	g_pGfxEngine->getFont().drawTwirl( m_DialogSurface, m_twirl.frame,
+	g_pGfxEngine->getFont(0).drawTwirl( m_DialogSurface, m_twirl.frame,
 									  m_dlgobject[m_selected_ID]->m_x,
 									  m_twirl.posy );
 }
