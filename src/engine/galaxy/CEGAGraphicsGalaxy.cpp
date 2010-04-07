@@ -118,7 +118,19 @@ bool CEGAGraphicsGalaxy::loadData()
 	g_pGfxEngine->Palette.setupColorPalettes();
 
 	if(!begin()) return false;
+
+	//k456_export_fonts();
 	if(!readBitmaps()) return false;
+	//k456_export_masked_bitmaps();
+	//k456_export_tiles();
+	//k456_export_masked_tiles();
+	//k456_export_8_tiles();
+	//k456_export_8_masked_tiles();
+	//k456_export_sprites();
+	//k456_export_texts();
+	//k456_export_misc();
+	//k456_export_demos();
+	//k456_export_end();
 
 	return true;
 }
@@ -276,8 +288,6 @@ Uint8 CEGAGraphicsGalaxy::getBit(unsigned char data, Uint8 leftshift)
 	return value;
 }
 
-// The colours are not correct when you select the engine first time. After playing a Keen game they are okay...
-
 // This one extracts the bitmaps used in Keen 4-6 (Maybe Dreams in future)
 bool CEGAGraphicsGalaxy::readBitmaps()
 {
@@ -329,6 +339,379 @@ bool CEGAGraphicsGalaxy::readBitmaps()
 	}
 	return true;
 }
+
+//void k456_export_masked_bitmaps()
+//{
+//	BITMAP16 *bmp, *mbmp, *planes[5];
+//	char filename[PATH_MAX];
+//	int i, p, y;
+//	unsigned char *pointer;
+//	int ep = Switches->Episode - 4;
+//
+//	if(!ExportInitialised)
+//		quit("Trying to export masked bitmaps before initialisation!");
+//
+//	/* Export all the bitmaps */
+//	printf("Exporting masked bitmaps: ");
+//
+//	for(i = 0; i < EpisodeInfo[ep].NumMaskedBitmaps; i++)
+//	{
+//		/* Show that something is happening */
+//		showprogress((i * 100) / EpisodeInfo[ep].NumMaskedBitmaps);
+//
+//		if(EgaGraph[EpisodeInfo[ep].IndexMaskedBitmaps + i].data)
+//		{
+//			mbmp = bmp_create(BmpMaskedHead[i].Width * 8 * 2, BmpMaskedHead[i].Height, 4);
+//
+//			/* Decode the transparency mask */
+//			planes[4] = bmp_create(BmpMaskedHead[i].Width * 8, BmpMaskedHead[i].Height, 1);
+//			pointer = EgaGraph[EpisodeInfo[ep].IndexMaskedBitmaps + i].data;
+//			for(y = 0; y < BmpMaskedHead[i].Height; y++)
+//				memcpy(planes[4]->lines[y], pointer + y * BmpMaskedHead[i].Width, BmpMaskedHead[i].Width);
+//			bmp_blit(planes[4], 0, 0, mbmp, BmpMaskedHead[i].Width * 8, 0, BmpMaskedHead[i].Width * 8, BmpMaskedHead[i].Height);
+//
+//			/* Decode the bitmap data */
+//			for(p = 0; p < 4; p++)
+//			{
+//				/* Create a 1bpp bitmap for each plane */
+//				planes[p] = bmp_create(BmpMaskedHead[i].Width * 8, BmpMaskedHead[i].Height, 1);
+//
+//				/* Decode the lines of the bitmap data */
+//				pointer = EgaGraph[EpisodeInfo[ep].IndexMaskedBitmaps + i].data + (p + 1) * BmpMaskedHead[i].Width * BmpMaskedHead[i].Height;
+//				for(y = 0; y < BmpMaskedHead[i].Height; y++)
+//					memcpy(planes[p]->lines[y], pointer + y * BmpMaskedHead[i].Width, BmpMaskedHead[i].Width);
+//			}
+//
+//			/* Create the bitmap file */
+//			sprintf(filename, "%s/%cMBM%04d.bmp", Switches->OutputPath, '0' + Switches->Episode, i);
+//			bmp = bmp_merge(planes[2], planes[1], planes[0], planes[3]);
+//			bmp_blit(bmp, 0, 0, mbmp, 0, 0, BmpMaskedHead[i].Width * 8, BmpMaskedHead[i].Height);
+//			if(!bmp_save(mbmp, filename, Switches->Backup))
+//				quit("Can't open bitmap file %s!", filename);
+//
+//			/* Free the memory used */
+//			for(p = 0; p < 5; p++)
+//				bmp_free(planes[p]);
+//			bmp_free(bmp);
+//			bmp_free(mbmp);
+//		}
+//		//printf("\x8\x8\x8\x8");
+//	}
+//	completemsg();
+//}
+//
+//void k456_export_tiles()
+//{
+//	BITMAP16 *tiles, *bmp, *planes[4];
+//	char filename[PATH_MAX];
+//	int i, p, y;
+//	unsigned char *pointer;
+//	int ep = Switches->Episode - 4;
+//
+//	if(!ExportInitialised)
+//		quit("Trying to export tiles before initialisation!");
+//
+//	/* Export all the tiles into one bitmap*/
+//	printf("Exporting tiles: ");
+//
+//	tiles = bmp_create(16 * 18, 16 * ((EpisodeInfo[ep].Num16Tiles + 17) / 18), 4);
+//
+//	/* Create a 1bpp bitmap for each plane */
+//	for(p = 0; p < 4; p++)
+//		planes[p] = bmp_create(16, 16, 1);
+//
+//	for(i = 0; i < EpisodeInfo[ep].Num16Tiles; i++)
+//	{
+//		/* Show that something is happening */
+//		showprogress((i * 100) / EpisodeInfo[ep].Num16Tiles);
+//
+//		if(EgaGraph[EpisodeInfo[ep].Index16Tiles + i].data)
+//		{
+//			/* Decode the image data */
+//			for(p = 0; p < 4; p++)
+//			{
+//				/* Decode the lines of the bitmap data */
+//				pointer = EgaGraph[EpisodeInfo[ep].Index16Tiles + i].data + p * 2 * 16;
+//				for(y = 0; y < 16; y++)
+//					memcpy(planes[p]->lines[y], pointer + y * 2, 2);
+//			}
+//
+//			bmp = bmp_merge(planes[2], planes[1], planes[0], planes[3]);
+//			bmp_blit(bmp, 0, 0, tiles, 16 * (i % 18), 16 * (i / 18), 16, 16);
+//			bmp_free(bmp);
+//		}
+//		//printf("\x8\x8\x8\x8");
+//	}
+//	completemsg();
+//
+//	/* Create the bitmap file */
+//	sprintf(filename, "%s/%cTIL0000.bmp", Switches->OutputPath, '0' + Switches->Episode);
+//	if(!bmp_save(tiles, filename, Switches->Backup))
+//		quit("Can't open bitmap file %s!", filename);
+//
+//	/* Free the memory used */
+//	for(p = 0; p < 4; p++)
+//		bmp_free(planes[p]);
+//	bmp_free(tiles);
+//}
+//
+//void k456_export_masked_tiles()
+//{
+//	BITMAP16 *tiles, *bmp, *planes[5];
+//	char filename[PATH_MAX];
+//	int i, p, y;
+//	unsigned char *pointer;
+//	int ep = Switches->Episode - 4;
+//
+//	if(!ExportInitialised)
+//		quit("Trying to export masked tiles before initialisation!");
+//
+//	/* Export all the masked tiles into one bitmap*/
+//	printf("Exporting masked tiles: ");
+//
+//	tiles = bmp_create(16 * 18 * 2, 16 * ((EpisodeInfo[ep].Num16MaskedTiles + 17) / 18), 4);
+//
+//	/* Create a 1bpp bitmap for each plane */
+//	for(p = 0; p < 5; p++)
+//		planes[p] = bmp_create(16, 16, 1);
+//
+//	for(i = 0; i < EpisodeInfo[ep].Num16MaskedTiles; i++)
+//	{
+//		/* Show that something is happening */
+//		showprogress((i * 100) / EpisodeInfo[ep].Num16MaskedTiles);
+//
+//		if(EgaGraph[EpisodeInfo[ep].Index16MaskedTiles + i].data)
+//		{
+//			/* Decode the mask data */
+//			pointer = EgaGraph[EpisodeInfo[ep].Index16MaskedTiles + i].data;
+//			for(y = 0; y < 16; y++)
+//			{
+//				memcpy(planes[4]->lines[y], pointer + y * 2, 2);
+//			}
+//			bmp_blit(planes[4], 0, 0, tiles, 16 * 18 + 16 * (i % 18), 16 * (i / 18), 16, 16);
+//
+//			/* Decode the image data */
+//			for(p = 0; p < 4; p++)
+//			{
+//				/* Decode the lines of the bitmap data */
+//				pointer = EgaGraph[EpisodeInfo[ep].Index16MaskedTiles + i].data + (p + 1) * 2 * 16;
+//				for(y = 0; y < 16; y++)
+//					memcpy(planes[p]->lines[y], pointer + y * 2, 2);
+//			}
+//
+//			bmp = bmp_merge(planes[2], planes[1], planes[0], planes[3]);
+//			bmp_blit(bmp, 0, 0, tiles, 16 * (i % 18), 16 * (i / 18), 16, 16);
+//			bmp_free(bmp);
+//		}
+//		//printf("\x8\x8\x8\x8");
+//	}
+//	completemsg();
+//
+//	/* Create the bitmap file */
+//	sprintf(filename, "%s/%cTIL0001.bmp", Switches->OutputPath, '0' + Switches->Episode);
+//	if(!bmp_save(tiles, filename, Switches->Backup))
+//		quit("Can't open bitmap file %s!", filename);
+//
+//	/* Free the memory used */
+//	for(p = 0; p < 5; p++)
+//		bmp_free(planes[p]);
+//	bmp_free(tiles);
+//}
+//
+//void k456_export_8_tiles()
+//{
+//	BITMAP16 *tiles, *bmp, *planes[4];
+//	char filename[PATH_MAX];
+//	int i, p, y;
+//	unsigned char *pointer;
+//	int ep = Switches->Episode - 4;
+//
+//	if(!ExportInitialised)
+//		quit("Trying to export 8x8 tiles before initialisation!");
+//
+//	/* Export all the 8x8 tiles into one bitmap*/
+//	printf("Exporting 8x8 tiles: ");
+//
+//	tiles = bmp_create(8, 8 * EpisodeInfo[ep].Num8Tiles, 4);
+//
+//	/* Create a 1bpp bitmap for each plane */
+//	for(p = 0; p < 4; p++)
+//		planes[p] = bmp_create(8, 8, 1);
+//
+//	if(EgaGraph[EpisodeInfo[ep].Index8Tiles].data)
+//	{
+//		for(i = 0; i < EpisodeInfo[ep].Num8Tiles; i++)
+//		{
+//			/* Show that something is happening */
+//			showprogress((i * 100) / EpisodeInfo[ep].Num8Tiles);
+//
+//			/* Decode the image data */
+//			for(p = 0; p < 4; p++)
+//			{
+//				/* Decode the lines of the bitmap data */
+//				pointer = EgaGraph[EpisodeInfo[ep].Index8Tiles].data + (i * 4 * 8) + p * 8;
+//				for(y = 0; y < 8; y++)
+//					memcpy(planes[p]->lines[y], pointer + y, 1);
+//			}
+//
+//			bmp = bmp_merge(planes[2], planes[1], planes[0], planes[3]);
+//			bmp_blit(bmp, 0, 0, tiles, 0, 8 * i, 8, 8);
+//			bmp_free(bmp);
+//			//printf("\x8\x8\x8\x8");
+//		}
+//		completemsg();
+//	}
+//
+//	/* Create the bitmap file */
+//	sprintf(filename, "%s/%cTIL0002.bmp", Switches->OutputPath, '0' + Switches->Episode);
+//	if(!bmp_save(tiles, filename, Switches->Backup))
+//		quit("Can't open bitmap file %s!", filename);
+//
+//	/* Free the memory used */
+//	for(p = 0; p < 4; p++)
+//		bmp_free(planes[p]);
+//	bmp_free(tiles);
+//}
+//
+//void k456_export_8_masked_tiles()
+//{
+//	BITMAP16 *tiles, *bmp, *planes[5];
+//	char filename[PATH_MAX];
+//	int i, p, y;
+//	unsigned char *pointer;
+//	int ep = Switches->Episode - 4;
+//
+//	if(!ExportInitialised)
+//		quit("Trying to export 8x8 masked tiles before initialisation!");
+//
+//	/* Export all the 8x8 masked tiles into one bitmap*/
+//	printf("Exporting 8x8 masked tiles: ");
+//
+//	tiles = bmp_create(8 * 2, 8 * EpisodeInfo[ep].Num8MaskedTiles, 4);
+//
+//	/* Create a 1bpp bitmap for each plane */
+//	for(p = 0; p < 5; p++)
+//		planes[p] = bmp_create(8, 8, 1);
+//
+//	if(EgaGraph[EpisodeInfo[ep].Index8MaskedTiles].data)
+//	{
+//		for(i = 0; i < EpisodeInfo[ep].Num8MaskedTiles; i++)
+//		{
+//			/* Show that something is happening */
+//			showprogress((i * 100) / EpisodeInfo[ep].Num8MaskedTiles);
+//
+//			/* Decode the mask data */
+//			pointer = EgaGraph[EpisodeInfo[ep].Index8MaskedTiles].data + (i * 5 * 8);
+//			for(y = 0; y < 8; y++)
+//				memcpy(planes[4]->lines[y], pointer + y, 1);
+//			bmp_blit(planes[4], 0, 0, tiles, 8, 8 * i, 8, 8);
+//
+//			/* Decode the image data */
+//			for(p = 0; p < 4; p++)
+//			{
+//				/* Decode the lines of the bitmap data */
+//				pointer = EgaGraph[EpisodeInfo[ep].Index8MaskedTiles].data + (i * 5 * 8) + (p + 1) * 8;
+//				for(y = 0; y < 8; y++)
+//					memcpy(planes[p]->lines[y], pointer + y, 1);
+//			}
+//
+//			bmp = bmp_merge(planes[2], planes[1], planes[0], planes[3]);
+//			bmp_blit(bmp, 0, 0, tiles, 0, 8 * i, 8, 8);
+//			bmp_free(bmp);
+//
+//			//printf("\x8\x8\x8\x8");
+//		}
+//		completemsg();
+//	}
+//
+//	/* Create the bitmap file */
+//	sprintf(filename, "%s/%cTIL0003.bmp", Switches->OutputPath, '0' + Switches->Episode);
+//	if(!bmp_save(tiles, filename, Switches->Backup))
+//		quit("Can't open bitmap file %s!", filename);
+//
+//	/* Free the memory used */
+//	for(p = 0; p < 5; p++)
+//		bmp_free(planes[p]);
+//	bmp_free(tiles);
+//}
+//
+//void k456_export_sprites()
+//{
+//	BITMAP16 *bmp, *spr, *planes[5];
+//	FILE *f;
+//	char filename[PATH_MAX];
+//	int i, p, y;
+//	unsigned char *pointer;
+//	int ep = Switches->Episode - 4;
+//
+//	if(!ExportInitialised)
+//		quit("Trying to export sprites before initialisation!");
+//
+//	/* Export all the sprites */
+//	printf("Exporting sprites: ");
+//
+//	/* Open a text file for the clipping and origin info */
+//	sprintf(filename, "%s/%cSPRITES.txt", Switches->OutputPath, '0' + Switches->Episode);
+//	f = openfile(filename, "w", Switches->Backup);
+//
+//	for(i = 0; i < EpisodeInfo[ep].NumSprites; i++)
+//	{
+//		/* Show that something is happening */
+//		showprogress((i * 100) / EpisodeInfo[ep].NumSprites);
+//
+//		if(EgaGraph[EpisodeInfo[ep].IndexSprites + i].data)
+//		{
+//			spr = bmp_create(SprHead[i].Width * 8 * 3, SprHead[i].Height, 4);
+//
+//			/* Decode the transparency mask */
+//			planes[4] = bmp_create(SprHead[i].Width * 8, SprHead[i].Height, 1);
+//			pointer = EgaGraph[EpisodeInfo[ep].IndexSprites + i].data;
+//			for(y = 0; y < SprHead[i].Height; y++)
+//				memcpy(planes[4]->lines[y], pointer + y * SprHead[i].Width, SprHead[i].Width);
+//			bmp_blit(planes[4], 0, 0, spr, SprHead[i].Width * 8, 0, SprHead[i].Width * 8, SprHead[i].Height);
+//
+//			/* Decode the sprite image data */
+//			for(p = 0; p < 4; p++)
+//			{
+//				/* Create a 1bpp bitmap for each plane */
+//				planes[p] = bmp_create(SprHead[i].Width * 8, SprHead[i].Height, 1);
+//
+//				/* Decode the lines of the bitmap data */
+//				pointer = EgaGraph[EpisodeInfo[ep].IndexSprites + i].data + (p + 1) * SprHead[i].Width * SprHead[i].Height;
+//				for(y = 0; y < SprHead[i].Height; y++)
+//					memcpy(planes[p]->lines[y], pointer + y * SprHead[i].Width, SprHead[i].Width);
+//			}
+//
+//			/* Draw the collision rectangle */
+//			bmp_rect(spr, 2 * SprHead[i].Width * 8, 0, spr->width - 1, spr->height - 1, 8);
+//			bmp_rect(spr, 2 * SprHead[i].Width * 8 + ((SprHead[i].Rx1 - SprHead[i].OrgX) >> 4), ((SprHead[i].Ry1 - SprHead[i].OrgY) >> 4),
+//					2 * SprHead[i].Width * 8 + ((SprHead[i].Rx2 - SprHead[i].OrgX) >> 4), ((SprHead[i].Ry2 - SprHead[i].OrgY) >> 4), 12);
+//
+//			/* Output the collision rectangle and origin information */
+//			fprintf(f, "%d: [%d, %d, %d, %d], [%d, %d], %d\n", i, (SprHead[i].Rx1 - SprHead[i].OrgX) >> 4,
+//				(SprHead[i].Ry1 - SprHead[i].OrgY) >> 4, (SprHead[i].Rx2 - SprHead[i].OrgX) >> 4,
+//				(SprHead[i].Ry2 - SprHead[i].OrgY) >> 4, SprHead[i].OrgX >> 4, SprHead[i].OrgY >> 4,
+//				SprHead[i].Shifts);
+//
+//			/* Create the bitmap file */
+//			sprintf(filename, "%s/%cSPR%04d.bmp", Switches->OutputPath, '0' + Switches->Episode, i);
+//			bmp = bmp_merge(planes[2], planes[1], planes[0], planes[3]);
+//			bmp_blit(bmp, 0, 0, spr, 0, 0, SprHead[i].Width * 8, SprHead[i].Height);
+//			if(!bmp_save(spr, filename, Switches->Backup))
+//				quit("Can't open bitmap file %s!", filename);
+//
+//			/* Free the memory used */
+//			for(p = 0; p < 5; p++)
+//				bmp_free(planes[p]);
+//			bmp_free(bmp);
+//			bmp_free(spr);
+//
+//		}
+//		//printf("\x8\x8\x8\x8");
+//	}
+//	completemsg();
+//	fclose(f);
+//}
 
 CEGAGraphicsGalaxy::~CEGAGraphicsGalaxy()
 {

@@ -39,12 +39,13 @@ void CMenu::setupMenu()
 ///
 void CMenu::process()
 {
+	m_TitleBmp.draw(g_pVideoDriver->BlitSurface, m_title_coord.x, m_title_coord.y);
 	(this->*processPtr)();
 }
 
 void CMenu::processMainMenu()
 {
-	m_TitleBmp.draw(g_pVideoDriver->BlitSurface, m_title_coord.x, m_title_coord.y);
+	// TODO: Code for the main menu goes here!
 }
 
 CMenu::~CMenu()

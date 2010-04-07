@@ -69,6 +69,7 @@ private:
 	SDL_Surface *m_fxsurface;
 	CEffects *mp_Effects;
 	std::vector<CBitmap> Bitmap;
+	std::vector<CBitmap> maskedBitmap;
 	std::vector<CSprite> Sprite;
 };
 
