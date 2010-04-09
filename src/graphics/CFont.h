@@ -40,6 +40,8 @@ public:
 	void generateInverseFonts();
 	void generateDisabledFonts();
 
+	void setWidthToCharacter(Uint8 width, Uint16 letter);
+
 	void drawTwirl(SDL_Surface* dst, int twirlframe, Uint16 x, Uint16 y);
 
 	void drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff);
@@ -50,6 +52,7 @@ public:
 
 private:
 	SDL_Surface *m_FontSurface;
+	std::vector<Uint8> m_widthtable;
 };
 
 #endif /* CFONT_H_ */

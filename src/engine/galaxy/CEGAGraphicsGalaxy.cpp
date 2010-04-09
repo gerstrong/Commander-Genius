@@ -119,7 +119,7 @@ bool CEGAGraphicsGalaxy::loadData()
 
 	if(!begin()) return false;
 
-	//k456_export_fonts();
+	if(!readfonts()) return false;
 	if(!readBitmaps()) return false;
 	//k456_export_masked_bitmaps();
 	//k456_export_tiles();
@@ -288,36 +288,33 @@ Uint8 CEGAGraphicsGalaxy::getBit(unsigned char data, Uint8 leftshift)
 	return value;
 }
 
-//bool CEGAGraphicsGalaxy::readfonts()
-//{
+// Read the fonts to Gfx-Engine
+bool CEGAGraphicsGalaxy::readfonts()
+{
 //	BITMAP16 *font, *bmp;
 //	FontHeadStruct *FontHead;
 //	char filename[PATH_MAX];
-//	int i, j, w, bw, y;
+	int bw, y;
 //	unsigned char *pointer;
 //	int ep = Switches->Episode - 4;
-//
-//	if(!ExportInitialised)
-//		quit("Trying to export fonts before initialisation!");
-//
-//	/* Export all the fonts into separate bitmaps*/
-//	printf("Exporting fonts: ");
-//
-//	for(i = 0; i < EpisodeInfo[ep].NumFonts; i++)
-//	{
-//		/* Show that something is happening */
-//		showprogress((i * 100) / EpisodeInfo[ep].NumFonts);
-//
-//		if(EgaGraph[EpisodeInfo[ep].IndexFonts + i].data)
-//		{
-//			FontHead = (FontHeadStruct *)EgaGraph[EpisodeInfo[ep].IndexFonts + i].data;
-//
-//			/* Find out the maximum character width */
-//			w = 0;
-//			for(j = 0; j < 256; j++)
-//				if(FontHead->Width[j] > w)
-//					w = FontHead->Width[j];
-//
+
+	int ep = m_episode - 4;
+	SDL_Color *Palette = g_pGfxEngine->Palette.m_Palette;
+
+	g_pGfxEngine->createEmptyFontmaps(EpisodeInfo[ep].NumFonts);
+	for(Uint16 i = 0; i < EpisodeInfo[ep].NumFonts; i++)
+	{
+		if(m_egagraph.at(EpisodeInfo[ep].IndexFonts + i).data.at(0))
+		{
+			FontHeadStruct *FontHead =
+					(FontHeadStruct*) &(m_egagraph.at(EpisodeInfo[ep].IndexFonts + i).data.at(0));
+
+			/* Find out the maximum character width */
+			int w = 0;
+			for(Uint16 j = 0; j < 256; j++)
+				if(FontHead->Width[j] > w)
+					w = FontHead->Width[j];
+
 //			font = bmp_create(w * 16, FontHead->Height * 16, 4);
 //
 //			/* Create a 1bpp bitmap for the character */
@@ -354,11 +351,10 @@ Uint8 CEGAGraphicsGalaxy::getBit(unsigned char data, Uint8 leftshift)
 //			/* Free the memory used */
 //			bmp_free(font);
 //			bmp_free(bmp);
-//		}
-//		//printf("\x8\x8\x8\x8");
-//	}
-//	completemsg();
-//}
+		}
+	}
+	return true;
+}
 
 // This one extracts the bitmaps used in Keen 4-6 (Maybe Dreams in future)
 bool CEGAGraphicsGalaxy::readBitmaps()

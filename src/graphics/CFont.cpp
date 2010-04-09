@@ -10,9 +10,15 @@
 #include "../FindFile.h"
 #include <string.h>
 
+// TODO: That Font class need some improvements...
+// let's make the fontmap smaller but give the ability, to have more than one
+// and switch between them.
+
 CFont::CFont() :
 m_FontSurface(NULL)
-{}
+{
+	m_widthtable.assign(1024,8);
+}
 
 bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags, Uint8 bpp)
 {
@@ -238,9 +244,17 @@ void CFont::generateSpecialTwirls()
 	
 	// Now copy the last twirl (8) taking the original 6th one
 	twrect.x=14*8;	twrect.y=0;
-	twrect.w = fmrect.w = twrect.h = fmrect.h = 8 ;
-	fmrect.x=7*8;	fmrect.y=128;
+	twrect.w = fmrect.w = twrect.h = fmrect.h = 8;
+	fmrect.x = 7*8;	fmrect.y = 128;
 	SDL_BlitSurface(m_FontSurface, &twrect, m_FontSurface, &fmrect);
+}
+
+// This sets the width of the characters so the text is printed nicely.
+// This is by default 8 pixels in vorticons and it is normally only used
+// in the galaxy engine.
+void CFont::setWidthToCharacter(Uint8 width, Uint16 letter)
+{
+	m_widthtable.at(letter) = width;
 }
 
 ////////////////////////////
