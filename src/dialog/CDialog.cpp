@@ -273,40 +273,15 @@ void CDialog::processInput(int move)
 			else if(m_key == 's')
 			{
 				m_dlgobject.at(m_selected_ID)->m_Option->m_value = m_int;
-				if(m_int == 0)
-					setObjectText(m_selected_ID, "<O================>");
-				else if(m_int == 1)
-					setObjectText(m_selected_ID, "<=O===============>");
-				else if(m_int == 2)
-					setObjectText(m_selected_ID, "<==O==============>");
-				else if(m_int == 3)
-					setObjectText(m_selected_ID, "<===O=============>");
-				else if(m_int == 4)
-					setObjectText(m_selected_ID, "<====O============>");
-				else if(m_int == 5)
-					setObjectText(m_selected_ID, "<=====O===========>");
-				else if(m_int == 6)
-					setObjectText(m_selected_ID, "<======O==========>");
-				else if(m_int == 7)
-					setObjectText(m_selected_ID, "<=======O=========>");
-				else if(m_int == 8)
-					setObjectText(m_selected_ID, "<========O========>");
-				else if(m_int == 9)
-					setObjectText(m_selected_ID, "<=========O=======>");
-				else if(m_int == 10)
-					setObjectText(m_selected_ID, "<==========O======>");
-				else if(m_int == 11)
-					setObjectText(m_selected_ID, "<===========O=====>");
-				else if(m_int == 12)
-					setObjectText(m_selected_ID, "<============O====>");
-				else if(m_int == 13)
-					setObjectText(m_selected_ID, "<=============O===>");
-				else if(m_int == 14)
-					setObjectText(m_selected_ID, "<==============O==>");
-				else if(m_int == 15)
-					setObjectText(m_selected_ID, "<===============O=>");
-				else if(m_int == 16)
-					setObjectText(m_selected_ID, "<================O>");
+
+				std::string asciislider = "<";
+
+				// Why does it go from 0 to 16. If we have a resolution of 16 steps
+				// It might have to go from 0 to 15
+				for(Uint16 i=0 ; i<=16 ; i++)
+					asciislider += (m_int == i) ? "O" : "=";
+
+				asciislider += ">";
 			}
 		}
 	}
