@@ -16,6 +16,7 @@
 #include "CSprite.h"
 #include "CBitmap.h"
 #include "CPalette.h"
+#include "CCursor.h"
 #include "effects/CEffects.h"
 #include <vector>
 
@@ -36,6 +37,7 @@ public:
 	void createEmptyBitmaps(Uint16 num_bmps);
 	void createEmptyFontmaps(Uint8 num_fonts);
 	void createEmptyTilemap(stTile *pTileProperties, int numtiles);
+	void createEmptyCursorMap(SDL_Surface *surface);
 	
 	void pushEffectPtr(CEffects *pEffect);
 
@@ -58,6 +60,7 @@ public:
 	CSprite &getSprite(Uint16 slot) { return Sprite[slot]; }
 	std::vector<CSprite> &getSpriteVec() { return Sprite; }
 	CFont &getFont(Uint8 index) { return Font.at(index); }
+	CCursor *getCursor() { return mp_Cursor; }
 	
 	void process();
 	void killEffect();
@@ -72,6 +75,7 @@ private:
 	std::vector<CBitmap> Bitmap;
 	std::vector<CBitmap> maskedBitmap;
 	std::vector<CSprite> Sprite;
+	CCursor *mp_Cursor;
 };
 
 #endif /* CGFXENGINE_H_ */

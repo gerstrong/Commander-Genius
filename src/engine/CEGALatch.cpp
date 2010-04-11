@@ -203,7 +203,10 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	}
 	else g_pLogFile->textOut(GREEN, "VGA Fontmap for the game has been loaded successfully!");
 
-	Font.generateSpecialTwirls();
+	g_pGfxEngine->createEmptyCursorMap(Font.getSDLSurface());
+	CCursor *pCursor = g_pGfxEngine->getCursor();
+	pCursor->generateTwirls(Font);
+	//Font.generateSpecialTwirls();
 	Font.generateGlowFonts();
 	Font.generateInverseFonts();
 	Font.generateDisabledFonts();

@@ -29,14 +29,12 @@ public:
 
 	bool loadHiColourFont( const std::string& filename );
 	void generateGlowFonts();
-	void generateSpecialTwirls();
+	//void generateSpecialTwirls();
 	void generateInverseFonts();
 	void generateDisabledFonts();
 
 	void setWidthToCharacter(Uint8 width, Uint16 letter);
 	void copyFontmap(CFont &Font);
-
-	void drawTwirl(SDL_Surface* dst, int twirlframe, Uint16 x, Uint16 y);
 
 	void drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff);
 	void drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, bool highlight = false );

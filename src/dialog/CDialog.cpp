@@ -423,7 +423,7 @@ void CDialog::drawTwirl()
 		
 	}
 	
-	g_pGfxEngine->getFont(0).drawTwirl( m_DialogSurface, m_twirl.frame,
+	g_pGfxEngine->getCursor()->draw( m_DialogSurface, m_twirl.frame,
 									  m_dlgobject[m_selected_ID]->m_x,
 									  m_twirl.posy );
 }

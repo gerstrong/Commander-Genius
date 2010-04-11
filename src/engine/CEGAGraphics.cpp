@@ -30,7 +30,10 @@ bool CEGAGraphics::loadData()
 	if( Font.loadHiColourFont("data/res/gfx/menufonts.bmp") )
 		g_pLogFile->textOut(GREEN, "VGA Fontmap for the gamemenu has been loaded successfully!");
 
-	Font.generateSpecialTwirls();
+	g_pGfxEngine->createEmptyCursorMap(Font.getSDLSurface());
+	CCursor *pCursor = g_pGfxEngine->getCursor();
+	//Font.generateSpecialTwirls();
+	pCursor->generateTwirls(Font);
 	Font.generateGlowFonts();
 	Font.generateInverseFonts();
 	Font.generateDisabledFonts();

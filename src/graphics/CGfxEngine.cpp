@@ -14,7 +14,8 @@
 CGfxEngine::CGfxEngine() :
 Tilemap(NULL),
 m_fxsurface(NULL),
-mp_Effects(NULL)
+mp_Effects(NULL),
+mp_Cursor(NULL)
 {}
 
 ///
@@ -41,6 +42,11 @@ void CGfxEngine::createEmptyFontmaps(Uint8 num_fonts)
 {
 	CFont font;
 	Font.assign(num_fonts, font);
+}
+
+void CGfxEngine::createEmptyCursorMap(SDL_Surface *surface)
+{
+	mp_Cursor = new CCursor(surface);
 }
 
 // This will store the effect pointer the developer created in one function
@@ -187,6 +193,7 @@ void CGfxEngine::killEffect()
 
 CGfxEngine::~CGfxEngine() {
 	SAFE_DELETE(mp_Effects);
+	SAFE_DELETE(mp_Cursor);
 	freeBitmaps();
 	freeSprites();
 	freeFonts();

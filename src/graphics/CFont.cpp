@@ -17,13 +17,13 @@
 CFont::CFont() :
 m_FontSurface(NULL)
 {
-	m_widthtable.assign(1024,8);
+	m_widthtable.assign(256,8);
 }
 
 bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags, Uint8 bpp)
 {
 	if(m_FontSurface) SDL_FreeSurface(m_FontSurface);
-	m_FontSurface = SDL_CreateRGBSurface(Flags, 128, 256, bpp, 0, 0, 0, 0);
+	m_FontSurface = SDL_CreateRGBSurface(Flags, 128, 128, bpp, 0, 0, 0, 0);
 
 	if(bpp == 8)
 	{
@@ -197,57 +197,57 @@ void CFont::generateDisabledFonts()
 //	SDL_UnlockSurface(m_FontSurface);
 }
 
-void CFont::generateSpecialTwirls()
-{
-	// The positions from the fonts are from 9 to 14
-	// You see, just six direction
-	// What to do is to copy the first five twirls to the new row of the font tile
-	// Copy the some inverted twirls and then put the last one at the end.
-	// By that way the font tile will get smoother
-	SDL_Rect twrect, fmrect;
-	
-	// Copy the first 5 tiles
-	twrect.x=9*8;
-	twrect.y = fmrect.x = 0;
-	twrect.w = fmrect.w = 5*8;
-	twrect.h = fmrect.h = 8;	fmrect.y=128;
-	SDL_BlitSurface(m_FontSurface, &twrect, m_FontSurface, &fmrect);
-	
-	// now the complex stuff for the extra two tiles
-	// Draw tile 9 and 10 inverted
-	SDL_LockSurface(m_FontSurface);
-	
-	Uint8 *src, *dst;
-	src = dst = (Uint8*) m_FontSurface->pixels;
-	
-	// for twirl 6 (LB down)
-	src += (8*10 + 7*128)*m_FontSurface->format->BytesPerPixel;
-	dst += (128*128 + 5*8)*m_FontSurface->format->BytesPerPixel;
-	for(Uint16 i=0 ; i<8 ; i++ ) // Draw the inverse
-	{
-		memcpy(dst,src,8*m_FontSurface->format->BytesPerPixel);
-		src -= 8*16*m_FontSurface->format->BytesPerPixel;
-		dst += 8*16*m_FontSurface->format->BytesPerPixel;
-	}
-	src = dst = (Uint8*) m_FontSurface->pixels;
-	
-	// for twirl 7 (LB down left)
-	src += (8*9 + 7*128)*m_FontSurface->format->BytesPerPixel;
-	dst += (128*128 + 6*8)*m_FontSurface->format->BytesPerPixel;
-	for(Uint16 i=0 ; i<8 ; i++ ) // Draw the inverse
-	{
-		memcpy(dst,src,8*m_FontSurface->format->BytesPerPixel);
-		src -= 8*16*m_FontSurface->format->BytesPerPixel;
-		dst += 8*16*m_FontSurface->format->BytesPerPixel;
-	}
-	SDL_UnlockSurface(m_FontSurface);
-	
-	// Now copy the last twirl (8) taking the original 6th one
-	twrect.x=14*8;	twrect.y=0;
-	twrect.w = fmrect.w = twrect.h = fmrect.h = 8;
-	fmrect.x = 7*8;	fmrect.y = 128;
-	SDL_BlitSurface(m_FontSurface, &twrect, m_FontSurface, &fmrect);
-}
+//void CFont::generateSpecialTwirls()
+//{
+//	// The positions from the fonts are from 9 to 14
+//	// You see, just six direction
+//	// What to do is to copy the first five twirls to the new row of the font tile
+//	// Copy the some inverted twirls and then put the last one at the end.
+//	// By that way the font tile will get smoother
+//	SDL_Rect twrect, fmrect;
+//
+//	// Copy the first 5 tiles
+//	twrect.x=9*8;
+//	twrect.y = fmrect.x = 0;
+//	twrect.w = fmrect.w = 5*8;
+//	twrect.h = fmrect.h = 8;	fmrect.y=128;
+//	SDL_BlitSurface(m_FontSurface, &twrect, m_FontSurface, &fmrect);
+//
+//	// now the complex stuff for the extra two tiles
+//	// Draw tile 9 and 10 inverted
+//	SDL_LockSurface(m_FontSurface);
+//
+//	Uint8 *src, *dst;
+//	src = dst = (Uint8*) m_FontSurface->pixels;
+//
+//	// for twirl 6 (LB down)
+//	src += (8*10 + 7*128)*m_FontSurface->format->BytesPerPixel;
+//	dst += (128*128 + 5*8)*m_FontSurface->format->BytesPerPixel;
+//	for(Uint16 i=0 ; i<8 ; i++ ) // Draw the inverse
+//	{
+//		memcpy(dst,src,8*m_FontSurface->format->BytesPerPixel);
+//		src -= 8*16*m_FontSurface->format->BytesPerPixel;
+//		dst += 8*16*m_FontSurface->format->BytesPerPixel;
+//	}
+//	src = dst = (Uint8*) m_FontSurface->pixels;
+//
+//	// for twirl 7 (LB down left)
+//	src += (8*9 + 7*128)*m_FontSurface->format->BytesPerPixel;
+//	dst += (128*128 + 6*8)*m_FontSurface->format->BytesPerPixel;
+//	for(Uint16 i=0 ; i<8 ; i++ ) // Draw the inverse
+//	{
+//		memcpy(dst,src,8*m_FontSurface->format->BytesPerPixel);
+//		src -= 8*16*m_FontSurface->format->BytesPerPixel;
+//		dst += 8*16*m_FontSurface->format->BytesPerPixel;
+//	}
+//	SDL_UnlockSurface(m_FontSurface);
+//
+//	// Now copy the last twirl (8) taking the original 6th one
+//	twrect.x=14*8;	twrect.y=0;
+//	twrect.w = fmrect.w = twrect.h = fmrect.h = 8;
+//	fmrect.x = 7*8;	fmrect.y = 128;
+//	SDL_BlitSurface(m_FontSurface, &twrect, m_FontSurface, &fmrect);
+//}
 
 // This sets the width of the characters so the text is printed nicely.
 // This is by default 8 pixels in vorticons and it is normally only used
@@ -266,17 +266,6 @@ void copyFontmap(CFont &Font)
 ////////////////////////////
 ///// Drawing Routines /////
 ////////////////////////////
-void CFont::drawTwirl(SDL_Surface* dst, int twirlframe, Uint16 x, Uint16 y)
-{
-	SDL_Rect twrect, fmrect;
-	
-	twrect.x = twirlframe*8;	twrect.y = 128;
-	fmrect.x = x;	fmrect.y = y;
-	fmrect.w = fmrect.h = twrect.w = twrect.h = 8;
-	
-	SDL_BlitSurface(m_FontSurface, &twrect, dst, &fmrect);
-}
-
 void CFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff)
 {
 	SDL_Rect scrrect, dstrect;
