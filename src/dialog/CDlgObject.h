@@ -29,6 +29,7 @@ public:
 
 	void create(Uint8 type, Uint16 ID, Uint16 x, Uint16 y, const std::string &text, unsigned int delimiter);
 	void change(unsigned int delimiter, const std::string &text, Uint8 type);
+	void setSelection(bool value);
 
 	void render(SDL_Surface *dst, Uint8 scrollamt, bool highlight);
 
@@ -37,6 +38,8 @@ public:
 	Uint16 m_ID;
 	Uint8 m_type;
 	bool m_selectable;
+	bool m_selected;
+	Uint32 m_colour;
 
 	Uint16 m_x;
 	Uint16 m_y;

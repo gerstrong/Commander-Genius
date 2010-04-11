@@ -19,7 +19,7 @@ public:
 	virtual ~CDialog();
 
 	void setFrameTheme( Uint8 theme );
-	void setSelection( Uint8 selection) { m_selected_ID = selection; }
+	void setSelection( Uint8 selection);
 	void addObject( Uint8 type, Uint16 x, Uint16 y,const std::string text="" );
 	void setObjectText( Uint8 ID, const std::string &text );
 	void setObjectType( Uint8 ID, Uint8 type );

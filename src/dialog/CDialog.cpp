@@ -55,20 +55,6 @@ CDialog::CDialog(SDL_Surface *DialogSurface, Uint16 x, Uint16 y, Uint16 w, Uint1
 	m_DialogSurface = DialogSurface;
 }
 
-CDialog::~CDialog(){
-	
-	for(Uint8 i=0 ; i<m_dlgobject.size() ; i++ )
-		delete m_dlgobject[i]; // the first vector element must be cleared
-	
-	while(!m_dlgobject.empty())
-		m_dlgobject.pop_back();
-	
-	m_alpha = 225;
-	SDL_SetAlpha(m_DialogSurface, SDL_SRCALPHA, m_alpha );
-	
-	if(m_Frame) delete m_Frame;
-}
-
 ///
 // Creation Routines for Objects
 ///
@@ -77,15 +63,20 @@ void CDialog::setFrameTheme(Uint8 theme)
 	m_Frame = new CDlgFrame(m_x, m_y, m_w, m_h, theme);
 }
 
+void CDialog::setSelection(Uint8 selection)
+{
+	m_selected_ID = selection;
+}
+
 void CDialog::addObject(Uint8 type, Uint16 x, Uint16 y,const std::string text)
 {
 	CDlgObject *DlgObject = new CDlgObject();
 	DlgObject->create( type, m_dlgobject.size(), m_x+(x*8), m_y+(y*8), text, m_w-((x-m_x)/8)-5 );
 	m_dlgobject.push_back(DlgObject);
-	
+
 	// Check if the ID is not out of bounds.
 	if( m_selected_ID < m_dlgobject.size() ) return;
-	
+
 	for(Uint8 i=0 ; i<m_dlgobject.size() ; i++) // go the next selectable item
 	{
 		if(!m_dlgobject.at(m_selected_ID)->m_selectable)
@@ -112,7 +103,6 @@ void CDialog::setObjectType(Uint8 ID, Uint8 type)
 ///
 void CDialog::processInput(int move)
 {
-	
 	// 't' == text input
 	// 'i' == integer input
 	// 'n' == do nothing
@@ -358,8 +348,10 @@ void CDialog::draw()
 	// they are processed by ID of course
 	for(Uint16 i=m_scroll ;	i<max ; i++)
 	{
+		m_dlgobject[i]->setSelection( i+m_scroll==m_selected_ID ? true : false);
 		m_dlgobject[i]->render(m_DialogSurface, m_scroll, false );
 	}
+	Font.setColour(0x0); // Set black letter color for the other elements
 	
 	if(m_key == 'c')
 	{
@@ -429,6 +421,18 @@ void CDialog::drawTwirl()
 }
 
 ///
-// Misc Routines
+// Destruction Routines
 ///
+CDialog::~CDialog(){
 
+	for(Uint8 i=0 ; i<m_dlgobject.size() ; i++ )
+		delete m_dlgobject[i]; // the first vector element must be cleared
+
+	while(!m_dlgobject.empty())
+		m_dlgobject.pop_back();
+
+	m_alpha = 225;
+	SDL_SetAlpha(m_DialogSurface, SDL_SRCALPHA, m_alpha );
+
+	if(m_Frame) delete m_Frame;
+}

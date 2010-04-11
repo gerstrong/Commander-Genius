@@ -23,9 +23,13 @@ void CDlgOptionText::setText(const std::string &text, unsigned int delimit) {
 	}
 }
 
-void CDlgOptionText::draw(SDL_Surface *Textsurface, Uint16 x, Uint16 y, bool highlight)
+void CDlgOptionText::draw(SDL_Surface *Textsurface, Uint16 x, Uint16 y, bool highlight, Uint32 colour)
 {
-	g_pGfxEngine->getFont(0).drawFont(Textsurface, m_text, x, y, highlight);
+	CFont &Font = g_pGfxEngine->getFont(0);
+
+	if(Font.getColour() != colour)	Font.setColour(colour);
+
+	Font.drawFont(Textsurface, m_text, x, y, highlight);
 }
 
 CDlgOptionText::~CDlgOptionText() {

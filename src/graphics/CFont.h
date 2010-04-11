@@ -35,7 +35,8 @@ public:
 	void generateDisabledFonts();
 
 	void setWidthToCharacter(Uint8 width, Uint16 letter);
-	void setColour(Uint32 colour);
+	void setColour(Uint32 colour, bool force=false);
+	Uint32 getColour();
 
 	void drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff, Uint32 colour = 0x0);
 	void drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, bool highlight = false, Uint32 colour=0x0 );
@@ -46,6 +47,7 @@ public:
 
 private:
 	SDL_Surface *m_FontSurface, *m_ColouredSurface;
+	Uint32 m_colour;
 	std::vector<Uint8> m_widthtable;
 };
 

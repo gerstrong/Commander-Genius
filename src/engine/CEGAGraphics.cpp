@@ -33,7 +33,7 @@ bool CEGAGraphics::loadData()
 	Font.generateGlowFonts();
 	Font.generateInverseFonts();
 	Font.generateDisabledFonts();
-	Font.setColour(0x0);
+	Font.setColour(0x0, true);
 
 	g_pGfxEngine->createEmptyCursorMap(Font.getSDLColouredSurface());
 	CCursor *pCursor = g_pGfxEngine->getCursor();

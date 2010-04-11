@@ -16,7 +16,8 @@
 
 CFont::CFont() :
 m_FontSurface(NULL),
-m_ColouredSurface(NULL)
+m_ColouredSurface(NULL),
+m_colour(0x0)
 {
 	m_widthtable.assign(256,8);
 }
@@ -216,10 +217,20 @@ void CFont::setWidthToCharacter(Uint8 width, Uint16 letter)
 }
 
 // Sets the colour used for printing the text
-void CFont::setColour(Uint32 colour)
+void CFont::setColour(Uint32 colour, bool force)
 {
-	SDL_FillRect(m_ColouredSurface, NULL, colour);
-	SDL_BlitSurface(m_FontSurface, NULL, m_ColouredSurface, NULL);
+	if( m_colour != colour || force )
+	{
+		m_colour = colour;
+		SDL_FillRect(m_ColouredSurface, NULL, colour);
+		SDL_BlitSurface(m_FontSurface, NULL, m_ColouredSurface, NULL);
+	}
+}
+
+//
+Uint32 CFont::getColour()
+{
+	return m_colour;
 }
 
 ////////////////////////////

@@ -206,7 +206,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	Font.generateGlowFonts();
 	Font.generateInverseFonts();
 	Font.generateDisabledFonts();
-	Font.setColour(0x0);
+	Font.setColour(0x0, true);
 
 	// Setup the twirl
 	g_pGfxEngine->createEmptyCursorMap(Font.getSDLColouredSurface());
