@@ -216,8 +216,22 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	delete Planes;
 
 
-	// TODO: The second fontmap of the extra tilemap code goes here! (for example Sliders)
+	// The second fontmap of the extra tilemap code goes here! (for example Sliders)
+	CFont &Font2 = g_pGfxEngine->getFont(1);
+	Font2.destroySurface();
+	Font2.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE );
+	Font2.optimizeSurface();
 
+	if(path == "") filename = "games/extratiles.bmp";
+	else filename = path + "/extratiles.bmp";
+
+	if(!Font2.loadHiColourFont(filename)) // This is loaded again in order to get hi-colour fonts
+	{
+		filename = "data/gfx/extratiles.bmp";
+		if(Font2.loadHiColourFont(filename))
+			g_pLogFile->textOut(GREEN, "Extra tiles for the game has been loaded successfully!");
+	}
+	else g_pLogFile->textOut(GREEN, "Extra tiles for the game has been loaded successfully!");
 
 	// Load 32x32 Tiles
 	// TODO: Add a read method for 32x32 Tiles
