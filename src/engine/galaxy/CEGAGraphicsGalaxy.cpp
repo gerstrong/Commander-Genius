@@ -304,16 +304,22 @@ bool CEGAGraphicsGalaxy::readfonts()
 	g_pGfxEngine->createEmptyFontmaps(EpisodeInfo[ep].NumFonts);
 	for(Uint16 i = 0; i < EpisodeInfo[ep].NumFonts; i++)
 	{
+		CFont &Font = g_pGfxEngine->getFont(0);
 		if(m_egagraph.at(EpisodeInfo[ep].IndexFonts + i).data.at(0))
 		{
 			FontHeadStruct *FontHead =
 					(FontHeadStruct*) &(m_egagraph.at(EpisodeInfo[ep].IndexFonts + i).data.at(0));
 
-			/* Find out the maximum character width */
+			// Find out the maximum character width
 			int w = 0;
 			for(Uint16 j = 0; j < 256; j++)
+			{
 				if(FontHead->Width[j] > w)
+				{
 					w = FontHead->Width[j];
+					Font.setWidthToCharacter(w,j);
+				}
+			}
 
 //			font = bmp_create(w * 16, FontHead->Height * 16, 4);
 //

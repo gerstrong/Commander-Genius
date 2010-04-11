@@ -76,12 +76,12 @@ bool CPassiveVort::init(char mode)
 void CPassiveVort::process()
 {
 	// Open the Main-Menu or close the opened one?
-	if( mp_Menu==NULL )
+	if( !mp_Menu )
 	{
 		if (mp_PressAnyBox==NULL && m_mode == TITLE)
 		{
 			mp_PressAnyBox = new CTextBox(150, 10," PRESS ANY KEY ");
-			mp_PressAnyBox->setAttribs(0, LETTER_TYPE_RED);
+			mp_PressAnyBox->setAttribs(0, true);
 			mp_PressAnyBox->enableBorders(true);
 		}
 
@@ -106,7 +106,7 @@ void CPassiveVort::process()
 			}
 		}
 	}
-	else if( mp_Menu!=NULL ) // Close menu
+	else // Close menu
 	{
 		if ( mp_Menu->m_demoback )
 		{

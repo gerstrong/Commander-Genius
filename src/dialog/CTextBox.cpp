@@ -47,10 +47,10 @@ void CTextBox::resetTimer()
 	m_time_passed = 0;
 }
 
-void CTextBox::setAttribs(Uint8 tw_waittime, Uint8 lettertype )
+void CTextBox::setAttribs(Uint8 tw_waittime, bool highlight )
 {
 	m_tw_waittime = tw_waittime;
-	m_lettertype = lettertype;
+	m_highlighted = highlight;
 }
 
 void CTextBox::process()
@@ -61,7 +61,7 @@ void CTextBox::process()
 	if(m_border) SDL_FillRect(m_surface, &m_rect, SDL_MapRGB(m_surface->format, 0,0,0));
 	if( m_tw_waittime == 0) // means no typewritting mode!
 	{
-		Font.drawFont(m_surface, m_String, m_rect.x+1, m_rect.y+1, m_lettertype); 	// 0 is blank colour
+		Font.drawFont(m_surface, m_String, m_rect.x+1, m_rect.y+1, m_highlighted);
 	}
 	else
 	{
@@ -73,7 +73,7 @@ void CTextBox::process()
 		} else m_timer++;
 
 		text = m_String.substr(0, m_numchars);
-		Font.drawFont(m_surface, text, m_rect.x+1, m_rect.y+1, m_lettertype); 	// 0 is blank colour
+		Font.drawFont(m_surface, text, m_rect.x+1, m_rect.y+1, m_highlighted);
 
 		// Process Input here!
 		if( g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedCommand(IC_JUMP) )
@@ -84,8 +84,6 @@ void CTextBox::process()
 				m_textdelay = m_time_passed;
 		}
 	}
-	// NOTE: Preloaded fonts.
-	// not all colours are supported
 }
 
 bool CTextBox::hasFinished()

@@ -159,7 +159,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	char *offset;
 	g_pGfxEngine->createEmptyFontmaps(2);
 	CFont &Font = g_pGfxEngine->getFont(0);
-	Font.DestroySurface();
+	Font.destroySurface();
 	Font.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE );
 	sfc = Font.getSDLSurface();
 	if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);

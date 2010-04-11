@@ -21,7 +21,7 @@ public:
 
 	void resetTimer();
 	void setDelay(Uint32 msecs) { m_textdelay = msecs; }
-	void setAttribs(Uint8 typewriterspeed, Uint8 lettertype );
+	void setAttribs(Uint8 typewriterspeed, bool highlight=false );
 	void enableBorders(bool border){ m_border = border; }
 
 	bool hasFinished();
@@ -36,7 +36,7 @@ private:
 	bool m_border;
 	SDL_Rect m_rect;
 	Uint8 m_tw_waittime;
-	Uint8 m_lettertype;
+	bool m_highlighted;
 	SDL_Surface *m_surface;
 	Uint32 m_numchars;
 	Uint32 m_textdelay, m_time_passed, m_time_start;

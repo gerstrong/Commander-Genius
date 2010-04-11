@@ -46,12 +46,12 @@ m_type(type)
 					offset = 0x16180-512;
 				break;
 			case 2:
-								m_numberoflines = 13; // numberof lines to print
+								m_numberoflines = 13; // number of lines to print
 				if(Exefile->getEXEVersion() == 131)
 					offset = 0x1A954-512;
 				break;
 			case 3:
-								m_numberoflines = 13; // numberof lines to print
+								m_numberoflines = 13; // number of lines to print
 				if(Exefile->getEXEVersion() == 131)
 					offset = 0x1CA70-512;
 				break;
@@ -141,7 +141,7 @@ void CAbout::process()
 		mp_bmp->draw( g_pVideoDriver->FGLayerSurface, 160-mp_bmp->getWidth()/2, 22);
 		
 		for(std::size_t i=0 ; i<m_lines.size() ; i++)
-			g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->FGLayerSurface, m_lines[i], 24, 72+i*8, LETTER_TYPE_RED);
+			g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->FGLayerSurface, m_lines[i], 24, 72+i*8, false);
 	}
 	else if(m_type == "CG")
 	{
@@ -149,7 +149,7 @@ void CAbout::process()
 			SDL_BlitSurface(mp_LogoBMP, NULL, g_pVideoDriver->FGLayerSurface, &m_logo_rect);
 		
 		for(std::size_t i=0 ; i<m_lines.size() ; i++)
-			g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->FGLayerSurface, m_lines[i], 24, 72+i*8, LETTER_TYPE_RED);
+			g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->FGLayerSurface, m_lines[i], 24, 72+i*8, false);
 	}
 	
 	if(g_pInput->getPressedAnyKey())

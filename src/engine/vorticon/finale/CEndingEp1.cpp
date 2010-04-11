@@ -60,7 +60,6 @@ void CEndingEp1::ReturnsToShip()
 		while(m_Player[0].scrollTriggers()); // Scroll the map to players position
 
 		mp_Textbox = new CMessageBox(getstring("EP1_ESEQ_PART1"), true);
-		//mp_Textbox->setAttribs(2, LETTER_TYPE_NORMAL);
 
 		m_mustsetup = false;
 	}

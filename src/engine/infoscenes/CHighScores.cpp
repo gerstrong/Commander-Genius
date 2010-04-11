@@ -138,15 +138,15 @@ void CHighScores::process()
 		int x = (m_Episode == 3) ? 69 : 40;
 		int x2 = (m_Episode == 3) ? 255 : 202;
 		int y = (m_Episode == 2) ? 56 : 52;
-		g_pGfxEngine->getFont(0).drawFont(sfc, m_Name[i],x,y+(i<<4), LETTER_TYPE_RED);
-		g_pGfxEngine->getFont(0).drawFont(sfc, m_Score[i],x2-((m_Score[i].size())<<3),y+(i<<4), LETTER_TYPE_RED);
+		g_pGfxEngine->getFont(0).drawFont(sfc, m_Name[i],x,y+(i<<4), true);
+		g_pGfxEngine->getFont(0).drawFont(sfc, m_Score[i],x2-((m_Score[i].size())<<3),y+(i<<4), true);
 	}
 
 	// Here it must be split up into Episodes 1, 2 and 3.
 	if(m_Episode == 2)
 	{
 		for( Uint8 i=0 ; i<8 ; i++ )
-			g_pGfxEngine->getFont(0).drawFont(sfc, itoa(m_Cities[i]), 252, 56+(i<<4), LETTER_TYPE_RED);
+			g_pGfxEngine->getFont(0).drawFont(sfc, itoa(m_Cities[i]), 252, 56+(i<<4), true);
 	}
 
 	(this->*mp_process)();
@@ -188,8 +188,8 @@ void CHighScores::processWriting()
 
 	int x = (m_Episode == 3) ? 69 : 40;
 	int y = (m_Episode == 2) ? 56 : 52;
-	if(m_blink)	g_pGfxEngine->getFont(0).drawFont(sfc, m_Name[m_Place]+"_",x, y+(m_Place<<4), LETTER_TYPE_RED);
-	else g_pGfxEngine->getFont(0).drawFont(sfc, m_Name[m_Place]+" ",x, y+(m_Place<<4), LETTER_TYPE_RED);
+	if(m_blink)	g_pGfxEngine->getFont(0).drawFont(sfc, m_Name[m_Place]+"_",x, y+(m_Place<<4), true);
+	else g_pGfxEngine->getFont(0).drawFont(sfc, m_Name[m_Place]+" ",x, y+(m_Place<<4), true);
 
 	if(m_blinkctr > BLINK_TIME){
 		m_blinkctr = 0;

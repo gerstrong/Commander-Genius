@@ -358,7 +358,7 @@ void CDialog::draw()
 	// they are processed by ID of course
 	for(Uint16 i=m_scroll ;	i<max ; i++)
 	{
-		m_dlgobject[i]->render(m_DialogSurface, m_scroll, 2*(i==m_selected_ID) );
+		m_dlgobject[i]->render(m_DialogSurface, m_scroll, false );
 	}
 	
 	if(m_key == 'c')

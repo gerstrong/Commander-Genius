@@ -5,7 +5,7 @@ v0.3.1.1:
 ---------
 - Volume sliders
 - Camera Bounds config
-- Older savegame compatibility...
+- Older savegame compatibility... (to version 0.3.0.4)
 
 v0.3.1.0:
 ---------

@@ -63,7 +63,7 @@ void CGfxEngine::freeFonts()
 	while ( !Font.empty() )
 	{
 		CFont &font = Font.back();
-		font.DestroySurface();
+		font.destroySurface();
 		Font.pop_back();
 	}
 }

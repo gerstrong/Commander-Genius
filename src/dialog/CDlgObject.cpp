@@ -14,19 +14,8 @@ CDlgObject::CDlgObject(){
 }
 
 ///
-// Erase Routine
-///
-CDlgObject::~CDlgObject(){
-	if( m_type == DLG_OBJ_OPTION_TEXT || m_type == DLG_OBJ_DISABLED || m_type == DLG_OBJ_TEXT )
-	{
-		if(m_Option) delete m_Option;
-	}
-}
-
-///
 // Creation Routine
 ///
-
 void CDlgObject::create(Uint8 type, Uint16 ID, Uint16 x, Uint16 y, const std::string &text, unsigned int delimiter)
 {
 	m_type = type;
@@ -34,7 +23,6 @@ void CDlgObject::create(Uint8 type, Uint16 ID, Uint16 x, Uint16 y, const std::st
 	
 	m_x = x;
 	m_y = y;
-	
 	
 	if( m_type == DLG_OBJ_OPTION_TEXT || m_type == DLG_OBJ_DISABLED || m_type == DLG_OBJ_TEXT )
 	{
@@ -65,12 +53,22 @@ void CDlgObject::change(unsigned int delimiter, const std::string &text, Uint8 t
 ///
 // Rendering Routine
 ///
-void CDlgObject::render(SDL_Surface *dst, Uint8 scrollamt, Uint8 highlight)
+void CDlgObject::render(SDL_Surface *dst, Uint8 scrollamt, bool highlight)
 {
 	if(m_type == DLG_OBJ_OPTION_TEXT)
 		m_Option->draw(dst, m_x+16, m_y-8*scrollamt, highlight); // +16 because selection icon needs space
 	else if(m_type == DLG_OBJ_DISABLED)
-		m_Option->draw(dst, m_x+16, m_y-8*scrollamt, LETTER_TYPE_DISABLED); // +16 because selection icon needs space
+		m_Option->draw(dst, m_x+16, m_y-8*scrollamt, highlight); // +16 because selection icon needs space
 	else if(m_type == DLG_OBJ_TEXT)
-		m_Option->draw(dst, m_x, m_y-8*scrollamt, LETTER_TYPE_RED);
+		m_Option->draw(dst, m_x, m_y-8*scrollamt, true);
+}
+
+///
+// Erase Routine
+///
+CDlgObject::~CDlgObject(){
+	if( m_type == DLG_OBJ_OPTION_TEXT || m_type == DLG_OBJ_DISABLED || m_type == DLG_OBJ_TEXT )
+	{
+		if(m_Option) delete m_Option;
+	}
 }

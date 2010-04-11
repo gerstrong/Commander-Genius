@@ -114,7 +114,7 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 
     m_Latch->loadHead( data, m_episode);
 
-    m_Latch->loadData( m_path, m_episode, version, p_exedata, (compressed>>1)); // The second bit tells, if latch is compressed.
+    m_Latch->loadData( m_path, m_episode, version, p_exedata, (compressed>>1) ); // The second bit tells, if latch is compressed.
 
 
     m_Sprit = new CEGASprit(SpritePlaneSize,

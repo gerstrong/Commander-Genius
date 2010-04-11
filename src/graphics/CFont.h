@@ -17,14 +17,7 @@
 
 #include <SDL.h>
 #include <string>
-
-enum{
-	LETTER_TYPE_NORMAL,
-	LETTER_TYPE_RED,
-	LETTER_TYPE_BLUE,
-	LETTER_TYPE_INVERSE,
-	LETTER_TYPE_DISABLED
-};
+#include <vector>
 
 class CFont {
 public:
@@ -41,13 +34,15 @@ public:
 	void generateDisabledFonts();
 
 	void setWidthToCharacter(Uint8 width, Uint16 letter);
+	void copyFontmap(CFont &Font);
 
 	void drawTwirl(SDL_Surface* dst, int twirlframe, Uint16 x, Uint16 y);
 
 	void drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff);
-	void drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, Uint8 lettertype = LETTER_TYPE_NORMAL);
+	void drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, bool highlight = false );
 
-	void DestroySurface();
+
+	void destroySurface();
 	virtual ~CFont();
 
 private:
