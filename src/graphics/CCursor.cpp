@@ -41,8 +41,8 @@ void CCursor::generateTwirls(CFont &Font)
 	src = dst = (Uint8*) mp_Surface->pixels;
 
 	// for twirl 6 (LB down)
-	src += (8*10 + 7*128)*mp_Surface->format->BytesPerPixel;
-	dst += (128*128 + 5*8)*mp_Surface->format->BytesPerPixel;
+	src += (1*8 + 7*128)*mp_Surface->format->BytesPerPixel;
+	dst += (5*8)*mp_Surface->format->BytesPerPixel;
 	for(Uint16 i=0 ; i<8 ; i++ ) // Draw the inverse
 	{
 		memcpy(dst,src,8*mp_Surface->format->BytesPerPixel);
@@ -52,8 +52,8 @@ void CCursor::generateTwirls(CFont &Font)
 	src = dst = (Uint8*) mp_Surface->pixels;
 
 	// for twirl 7 (LB down left)
-	src += (8*9 + 7*128)*mp_Surface->format->BytesPerPixel;
-	dst += (128*128 + 6*8)*mp_Surface->format->BytesPerPixel;
+	src += (0*8 + 7*128)*mp_Surface->format->BytesPerPixel;
+	dst += (6*8)*mp_Surface->format->BytesPerPixel;
 	for(Uint16 i=0 ; i<8 ; i++ ) // Draw the inverse
 	{
 		memcpy(dst,src,8*mp_Surface->format->BytesPerPixel);
@@ -65,8 +65,8 @@ void CCursor::generateTwirls(CFont &Font)
 	// Now copy the last twirl (8) taking the original 6th one
 	twrect.x=14*8;	twrect.y=0;
 	twrect.w = fmrect.w = twrect.h = fmrect.h = 8;
-	fmrect.x = 7*8;	fmrect.y = 128;
-	SDL_BlitSurface(mp_Surface, &twrect, mp_Surface, &fmrect);
+	fmrect.x = 7*8;	fmrect.y = 0;
+	SDL_BlitSurface(srcsfc, &twrect, mp_Surface, &fmrect);
 }
 
 void CCursor::draw(SDL_Surface* dst, Uint8 character, Uint16 x, Uint16 y)
