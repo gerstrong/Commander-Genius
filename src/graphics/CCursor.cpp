@@ -14,6 +14,7 @@
 CCursor::CCursor(SDL_Surface *p_screen)
 {
 	mp_Surface = SDL_DisplayFormat(p_screen);
+	SDL_FillRect(mp_Surface ,NULL, 0x0);
 }
 
 void CCursor::generateTwirls(CFont &Font)
@@ -24,7 +25,7 @@ void CCursor::generateTwirls(CFont &Font)
 	// Copy the some inverted twirls and then put the last one at the end.
 	// By that way the font tile will get smoother
 	SDL_Rect twrect, fmrect;
-	SDL_Surface *srcsfc = Font.getSDLSurface();
+	SDL_Surface *srcsfc = Font.getSDLColouredSurface();
 
 	// Copy the first 5 tiles
 	twrect.x=9*8;

@@ -26,6 +26,7 @@ public:
 	bool CreateSurface(SDL_Color *Palette, Uint32 Flags, Uint8 bpp=8);
 	bool optimizeSurface();
 	SDL_Surface *getSDLSurface() { return m_FontSurface; }
+	SDL_Surface *getSDLColouredSurface() { return m_ColouredSurface; }
 
 	bool loadHiColourFont( const std::string& filename );
 	void generateGlowFonts();
@@ -34,17 +35,17 @@ public:
 	void generateDisabledFonts();
 
 	void setWidthToCharacter(Uint8 width, Uint16 letter);
-	void copyFontmap(CFont &Font);
+	void setColour(Uint32 colour);
 
-	void drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff);
-	void drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, bool highlight = false );
+	void drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff, Uint32 colour = 0x0);
+	void drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, bool highlight = false, Uint32 colour=0x0 );
 
 
 	void destroySurface();
 	virtual ~CFont();
 
 private:
-	SDL_Surface *m_FontSurface;
+	SDL_Surface *m_FontSurface, *m_ColouredSurface;
 	std::vector<Uint8> m_widthtable;
 };
 

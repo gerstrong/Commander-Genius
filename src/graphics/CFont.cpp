@@ -15,7 +15,8 @@
 // and switch between them.
 
 CFont::CFont() :
-m_FontSurface(NULL)
+m_FontSurface(NULL),
+m_ColouredSurface(NULL)
 {
 	m_widthtable.assign(256,8);
 }
@@ -23,6 +24,7 @@ m_FontSurface(NULL)
 bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags, Uint8 bpp)
 {
 	if(m_FontSurface) SDL_FreeSurface(m_FontSurface);
+	if(m_ColouredSurface) SDL_FreeSurface(m_ColouredSurface);
 	m_FontSurface = SDL_CreateRGBSurface(Flags, 128, 128, bpp, 0, 0, 0, 0);
 
 	if(bpp == 8)
@@ -30,7 +32,10 @@ bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags, Uint8 bpp)
 		SDL_SetColors(m_FontSurface, Palette, 0, 255);
 		SDL_SetColorKey(m_FontSurface, SDL_SRCCOLORKEY, COLORKEY);
 	}
-	return (m_FontSurface != NULL);
+
+	m_ColouredSurface = SDL_DisplayFormat(m_FontSurface);
+
+	return (m_FontSurface != NULL && m_ColouredSurface != NULL );
 }
 
 bool CFont::optimizeSurface()
@@ -41,6 +46,11 @@ bool CFont::optimizeSurface()
 		temp_surface = SDL_DisplayFormat(m_FontSurface);
 		SDL_FreeSurface(m_FontSurface);
 		m_FontSurface = temp_surface;
+		SDL_SetColorKey(m_FontSurface, SDL_SRCCOLORKEY, 0x0);
+
+		temp_surface = SDL_DisplayFormat(m_ColouredSurface);
+		SDL_FreeSurface(m_ColouredSurface);
+		m_ColouredSurface = temp_surface;
 	}
 	return true;
 }
@@ -205,16 +215,17 @@ void CFont::setWidthToCharacter(Uint8 width, Uint16 letter)
 	m_widthtable.at(letter) = width;
 }
 
-// This function will copy the contents of the graphical surface of the font map
-void copyFontmap(CFont &Font)
+// Sets the colour used for printing the text
+void CFont::setColour(Uint32 colour)
 {
-	// TODO: Some code for that
+	SDL_FillRect(m_ColouredSurface, NULL, colour);
+	SDL_BlitSurface(m_FontSurface, NULL, m_ColouredSurface, NULL);
 }
 
 ////////////////////////////
 ///// Drawing Routines /////
 ////////////////////////////
-void CFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff)
+void CFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff, Uint32 colour)
 {
 	SDL_Rect scrrect, dstrect;
 	
@@ -222,13 +233,13 @@ void CFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint1
 	scrrect.w = dstrect.w = 8;	scrrect.h = dstrect.h = 8;
 	dstrect.x = xoff;	dstrect.y = yoff;
 	
-	SDL_BlitSurface(m_FontSurface, &scrrect, dst, &dstrect);
+	SDL_BlitSurface(m_ColouredSurface, &scrrect, dst, &dstrect);
 }
 
-void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, bool highlight)
+void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, bool highlight, Uint32 colour)
 {
 	unsigned int i,x=xoff,y=yoff;
-	
+
 	if(text.size() != 0)
 	{
 		for(i=0;i<text.size();i++)
@@ -238,7 +249,7 @@ void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uin
 			{
 				if(highlight) c |= 128;
 
-				drawCharacter(dst, c, x, y);
+				drawCharacter(dst, c, x, y, colour);
 
 				x+=m_widthtable[c];
 			}
@@ -256,7 +267,8 @@ void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uin
 ///
 void CFont::destroySurface(){
 	if(m_FontSurface) SDL_FreeSurface(m_FontSurface);
-	m_FontSurface = NULL;
+	if(m_ColouredSurface) SDL_FreeSurface(m_ColouredSurface);
+	m_ColouredSurface = m_FontSurface = NULL;
 }
 
 CFont::~CFont() {
