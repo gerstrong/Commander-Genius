@@ -50,19 +50,17 @@ public:
 	void processQuitMenu();
 	void processNumPlayersMenu();
 	void processDifficultyMenu();
-	void processConfigureMenu();
 	void processNumControlMenu();
-	void processControlMenu();
 	void processF1Menu();
 	void processEndGameMenu();
 	void processSaveMenu();
 	void processLoadMenu();
 	void processOverwriteMenu();
-	void processOptionsMenu();
-	void processAudioMenu();
 	void processDebugMenu();
 	void processModMenu();
 
+	void (CMenu::*processPtr)();
+	
 	void cleanup();
 
 	// Getters

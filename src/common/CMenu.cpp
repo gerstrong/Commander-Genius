@@ -56,6 +56,7 @@ m_RestartVideo(false)
 	mp_Dialog = NULL;
 	mp_InfoScene = NULL;
 	m_hideobjects = false;
+	m_menuback[1] = MAIN;
 	m_menuback[2] = SAVE;
 	m_menuback[3] = CONFIGURE;
 	m_menuback[9] = MAIN;
@@ -65,6 +66,8 @@ m_RestartVideo(false)
 	m_menuback[18] = MAIN;
 	m_menuback[20] = MAIN;
 	m_menuback[21] = MAIN;
+	m_menuback[24] = MAIN;
+	m_menuback[25] = MAIN;
 	m_menumap.clear();
 
 	// Special Pointer used for Menus that are declared in separated classes
@@ -88,33 +91,34 @@ bool CMenu::init( char menu_type )
 	switch(m_menu_type)
 	{
 	case MAIN:
-		initMainMenu(); break;
+		initMainMenu(); processPtr = &CMenu::processMainMenu; break;
 	case QUIT:
-		initConfirmMenu("   Quit the game?   "); break;
+		initConfirmMenu("   Quit the game?   "); processPtr = &CMenu::processQuitMenu; break;
 	case ENDGAME:
-		initConfirmMenu("   End your game?   "); break;
+		initConfirmMenu("   End your game?   "); processPtr = &CMenu::processEndGameMenu; break;
 	case OVERWRITE:
-		initConfirmMenu("Overwrite this save?"); break;
+		initConfirmMenu("Overwrite this save?"); processPtr = &CMenu::processOverwriteMenu; break;
 	case NEW:
-		initNumPlayersMenu(); break;
+		initNumPlayersMenu(); processPtr = &CMenu::processNumPlayersMenu; break;
 	case DIFFICULTY:
-		initDifficultyMenu(); break;
+		initDifficultyMenu(); processPtr = &CMenu::processDifficultyMenu; break;
 	case CONFIGURE:
-		initConfigureMenu(); break;
+		initConfigureMenu(); processPtr = NULL; break;
 	case CONTROLPLAYERS:
-		initNumControlMenu(); break;
+		initNumControlMenu(); processPtr = &CMenu::processNumControlMenu; break;
 	case CONTROLS:
 		mp_Menu = new CControlsettings(m_menu_type, m_NumPlayers);
 		return true;
 	case F1:
-		initF1Menu(); break;
+		initF1Menu(); processPtr = &CMenu::processF1Menu; break;
 	case MENU_DEBUG:
-		initDebugMenu(); break;
+		initDebugMenu(); processPtr = &CMenu::processDebugMenu; break;
 	case MODCONF:
-		initModMenu(); break;
+		initModMenu(); processPtr = &CMenu::processModMenu; break;
 	case SAVE:
+		initSaveMenu(); processPtr = &CMenu::processSaveMenu; break;
 	case LOAD:
-		initSaveMenu(); break;
+		initSaveMenu(); processPtr = &CMenu::processLoadMenu; break;
 	case GRAPHICS:
 	case BOUNDS:
 
@@ -376,19 +380,8 @@ void CMenu::process()
 			// I (Gerstrong) would recommend making the others menu also this way.
 			// You'd have more files but small ones and better to control than a big one, where
 			// you have to seek and sneek
-
-			if( m_menu_type == MAIN ) processMainMenu();
-			else if( m_menu_type == NEW ) processNumPlayersMenu();
-			else if( m_menu_type == DIFFICULTY ) processDifficultyMenu();
-			else if( m_menu_type == CONTROLPLAYERS ) processNumControlMenu();
-			else if( m_menu_type == F1 ) processF1Menu();
-			else if( m_menu_type == SAVE ) processSaveMenu();
-			else if( m_menu_type == LOAD ) processLoadMenu();
-			else if( m_menu_type == OVERWRITE )	processOverwriteMenu();
-			else if( m_menu_type == QUIT ) processQuitMenu();
-			else if( m_menu_type == ENDGAME ) processEndGameMenu();
-			else if( m_menu_type == MENU_DEBUG ) processDebugMenu();
-			else if( m_menu_type == MODCONF ) processModMenu();
+			if(processPtr != NULL)
+			   (this->*processPtr)();
 
 			// Draw the menu
 			if(!mp_Menu && mp_Dialog) mp_Dialog->draw();
