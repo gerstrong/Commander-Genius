@@ -29,10 +29,6 @@ public:
 	SDL_Surface *getSDLColouredSurface() { return m_ColouredSurface; }
 
 	bool loadHiColourFont( const std::string& filename );
-	void generateGlowFonts();
-	//void generateSpecialTwirls();
-	void generateInverseFonts();
-	void generateDisabledFonts();
 
 	void setWidthToCharacter(Uint8 width, Uint16 letter);
 	void setColour(Uint32 colour, bool force=false);

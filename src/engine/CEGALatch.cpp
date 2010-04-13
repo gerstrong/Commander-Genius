@@ -203,9 +203,6 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	}
 	else g_pLogFile->textOut(GREEN, "VGA Fontmap for the game has been loaded successfully!");
 
-	Font.generateGlowFonts();
-	Font.generateInverseFonts();
-	Font.generateDisabledFonts();
 	Font.setColour(0x0, true);
 
 	// Setup the twirl
@@ -214,7 +211,6 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	pCursor->generateTwirls(Font);
 
 	delete Planes;
-
 
 	// The second fontmap of the extra tilemap code goes here! (for example Sliders)
 	CFont &Font2 = g_pGfxEngine->getFont(1);
@@ -232,6 +228,8 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 			g_pLogFile->textOut(GREEN, "Extra tiles for the game has been loaded successfully!");
 	}
 	else g_pLogFile->textOut(GREEN, "Extra tiles for the game has been loaded successfully!");
+
+	Font2.setColour(0x0, true);
 
 	// Load 32x32 Tiles
 	// TODO: Add a read method for 32x32 Tiles
