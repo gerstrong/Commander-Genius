@@ -24,6 +24,19 @@ CGame::CGame() {
 //////////////////////////////////
 // Initialize Game Engine here! //
 //////////////////////////////////
+
+/**
+ * \brief  This is the function where CG beings
+ *
+ * \param	argc	number of arguments
+ * \param	argv	pointer to  char arrays where
+ * 					where the passed arguments are stored
+ * 					in the process
+ * \return			If the function could setup
+ * 					the game, it will return true, else it
+ * 					will be false.
+ *
+ */
 bool CGame::init(int argc, char *argv[])
 {
 	CSettings Settings(m_option);

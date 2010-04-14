@@ -35,6 +35,18 @@ int numStrings = 0;
 
 void banner(void);
 
+/**
+ * \brief  This is the function where CG beings
+ *
+ * \param	argc   	number of arguments
+ * \param	argv   	pointer to  char arrays where
+ * 					where the passed arguments are stored
+ * 					in the process
+ * \return	        This always returns 0. If
+ * 					some errors appear, please take a look
+ * 					at the Logfile.
+ *
+ */
 int main(int argc, char *argv[])
 {
 	banner(); // Intro on the text-console.
