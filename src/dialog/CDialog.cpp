@@ -255,6 +255,7 @@ void CDialog::processInput(int move)
 				m_min = 0;
 				m_max = 16;
 			}
+
 			if(g_pInput->getPulsedCommand(IC_RIGHT, 35))
 			{
 				if(m_int<m_max)
@@ -265,6 +266,7 @@ void CDialog::processInput(int move)
 				if(m_int>m_min)
 					m_int--;
 			}
+
 			if(m_key == 'c')
 			{
 				m_name = itoa(m_int);
@@ -282,6 +284,8 @@ void CDialog::processInput(int move)
 					asciislider += (m_int == i) ? "O" : "=";
 
 				asciislider += ">";
+
+				setObjectText(m_selected_ID, asciislider);
 			}
 		}
 	}
