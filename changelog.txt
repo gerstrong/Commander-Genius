@@ -1,6 +1,11 @@
 Commander Genius Release (CloneKeenPlus):
 =========================================
 
+v0.3.1.2:
+---------
+- a bit faster and more colourful menu
+
+
 v0.3.1.1:
 ---------
 - Volume sliders
