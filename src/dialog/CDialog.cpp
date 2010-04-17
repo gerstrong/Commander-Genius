@@ -275,6 +275,7 @@ void CDialog::processInput(int move)
 			else if(m_key == 's')
 			{
 				m_dlgobject.at(m_selected_ID)->m_Option->m_value = m_int;
+				m_dlgobject.at(m_selected_ID)->m_Option->m_FontMapID = 1;
 
 				std::string asciislider = "<";
 

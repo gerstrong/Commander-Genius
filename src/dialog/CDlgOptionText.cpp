@@ -24,7 +24,8 @@
  */
 CDlgOptionText::CDlgOptionText(const std::string &text, unsigned int delimit, Uint8 fontmapID)
 {
-	setText(text, delimit, fontmapID);
+	setText(text, delimit);
+	m_FontMapID = 0;
 }
 
 /**
@@ -37,9 +38,8 @@ CDlgOptionText::CDlgOptionText(const std::string &text, unsigned int delimit, Ui
  * \param	fontmapID	This is the ID to the fontmap which can be changed, so for example
  * 						the extra tiles in vorticons engine (for sliders) can be used
  */
-void CDlgOptionText::setText(const std::string &text, unsigned int delimit, Uint8 fontmapID) {
+void CDlgOptionText::setText(const std::string &text, unsigned int delimit) {
 	m_text = text;
-	m_FontMapID = fontmapID;
 	
 	if(m_text.size() > delimit )
 	{
