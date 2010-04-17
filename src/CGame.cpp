@@ -70,6 +70,16 @@ bool CGame::init(int argc, char *argv[])
 	return true;
 }
 
+/**
+ * \brief  			This function will try to load the hardware
+ * 					resources, which are the video driver and the sound.
+ * 					Input stuff is only loaded, when CG needs it, what mostly
+ * 					happens, when it has started.
+ *
+ * \return			If the function could load
+ * 					the drivers, it will return true, else it
+ * 					will be false.
+ */
 // Load the driver needed to start the game
 bool CGame::loadCKPDrivers()
 {
@@ -90,6 +100,12 @@ bool CGame::loadCKPDrivers()
 /////////////////////////////
 // Process Game Engine here! //
 /////////////////////////////
+/**
+ * \brief  			This is the main run cycle of the game,
+ * 					no matter what happens in the game logic or
+ * 					which engine is chosen, it always get to this point
+ * 					Mainly timer and logic processes are performed here.
+ */
 void CGame::run()
 {
 	do
@@ -122,6 +138,11 @@ void CGame::run()
 ///////////////////////////////
 // Cleanup Game Engine here! //
 ///////////////////////////////
+/**
+ * \brief  			This function cleans up all the used engines and the singleton
+ * 					classes that were used during the program. This can happen at the end of the program
+ * 					or when an engine may be changed.
+ */
 void CGame::cleanup()
 {
 	m_Engine.cleanupAll();

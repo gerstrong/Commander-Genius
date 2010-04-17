@@ -29,7 +29,6 @@ bool CEGAGraphics::loadData()
 	Font.optimizeSurface();
 	if( Font.loadHiColourFont("data/res/gfx/menufonts.bmp") )
 		g_pLogFile->textOut(GREEN, "VGA Fontmap for the gamemenu has been loaded successfully!");
-
 	Font.setColour(0x0, true);
 
 	g_pGfxEngine->createEmptyCursorMap(Font.getSDLColouredSurface());
