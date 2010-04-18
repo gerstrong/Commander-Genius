@@ -23,7 +23,7 @@ class CFont {
 public:
 	CFont();
 
-	bool CreateSurface(SDL_Color *Palette, Uint32 Flags, Uint8 bpp=8);
+	bool CreateSurface(SDL_Color *Palette, Uint32 Flags, Uint8 bpp=8, Uint16 width = 128, Uint16 height = 128);
 	bool optimizeSurface();
 	SDL_Surface *getSDLSurface() { return m_FontSurface; }
 	SDL_Surface *getSDLColouredSurface() { return m_ColouredSurface; }
@@ -36,7 +36,7 @@ public:
 
 	void drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff, Uint32 colour = 0x0);
 	void drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, bool highlight = false, Uint32 colour=0x0 );
-
+	void drawMap(SDL_Surface* dst);
 
 	void destroySurface();
 	virtual ~CFont();

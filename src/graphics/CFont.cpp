@@ -22,11 +22,11 @@ m_colour(0x0)
 	m_widthtable.assign(256,8);
 }
 
-bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags, Uint8 bpp)
+bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags, Uint8 bpp, Uint16 width, Uint16 height)
 {
 	if(m_FontSurface) SDL_FreeSurface(m_FontSurface);
 	if(m_ColouredSurface) SDL_FreeSurface(m_ColouredSurface);
-	m_FontSurface = SDL_CreateRGBSurface(Flags, 128, 128, bpp, 0, 0, 0, 0);
+	m_FontSurface = SDL_CreateRGBSurface(Flags, width, height, bpp, 0, 0, 0, 0);
 
 	if(bpp == 8)
 	{
@@ -140,6 +140,11 @@ void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uin
 			}
 		}
 	}
+}
+
+void CFont::drawMap(SDL_Surface* dst)
+{
+	SDL_BlitSurface(m_FontSurface,NULL,dst,NULL);
 }
 
 ///

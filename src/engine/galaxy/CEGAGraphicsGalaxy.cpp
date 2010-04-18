@@ -312,17 +312,58 @@ bool CEGAGraphicsGalaxy::readfonts()
 
 			// Find out the maximum character width
 			int w = 0;
+			int maxwidth;
 			for(Uint16 j = 0; j < 256; j++)
 			{
+				Font.setWidthToCharacter(FontHead->Width[j],j);
 				if(FontHead->Width[j] > w)
 				{
-					w = FontHead->Width[j];
-					Font.setWidthToCharacter(w,j);
+					maxwidth = FontHead->Width[j];
 				}
 			}
 
-//			font = bmp_create(w * 16, FontHead->Height * 16, 4);
-//
+			Font.CreateSurface(Palette, g_pVideoDriver->getScrollSurface()->flags, 8, maxwidth*16);
+
+			SDL_Surface* sfc = Font.getSDLSurface();
+
+			if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
+			SDL_FillRect(sfc, NULL, 0x8);
+
+			SDL_LockSurface(sfc);
+			Uint8* pixel = (Uint8*) sfc->pixels;
+
+			unsigned char *pointer = &(m_egagraph[EpisodeInfo[ep].IndexFonts + i].data[0]);
+
+			if(!m_egagraph.at(EpisodeInfo[ep].IndexFonts + i).data.empty())
+			{
+				// Decode the font data
+				for(int j = 0; j < 256; j++)
+				{
+					// Get the width of the character in bytes
+					bw = (FontHead->Width[j] + 7) / 8;
+
+					Uint8 *pixelpos;
+
+					if(FontHead->Width[j] > 0)
+					{
+						for(y = 0; y < FontHead->Height; y++)
+						{
+							pixelpos = pixel + (j/16+y)*sfc->pitch+j%128;
+							memcpy(pixel, pointer + FontHead->Offset[j] + (y * bw), bw);
+						}
+					}
+
+					// Copy the character into the grid
+					//bmp_blit(bmp, 0, 0, font, (j % 16) * w, (j / 16) * FontHead->Height, w, FontHead->Height);
+
+					// Fill the remainder of the bitmap with Grey
+					//bmp_rect(font, (j % 16) * w + FontHead->Width[j], (j / 16) * FontHead->Height,
+						//	(j % 16) * w + w - 1, (j / 16) * FontHead->Height +  FontHead->Height - 1, 8);
+				}
+			}
+
+			SDL_UnlockSurface(sfc);
+
 //			/* Create a 1bpp bitmap for the character */
 //			bmp = bmp_create(w, FontHead->Height, 1);
 //

@@ -9,6 +9,7 @@
 #define CMENU_GALAXY_H_
 
 #include "../../graphics/CBitmap.h"
+#include "../../graphics/CFont.h"
 #include "GraphicsIDs.h"
 
 namespace galaxy

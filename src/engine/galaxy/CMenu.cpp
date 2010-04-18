@@ -39,7 +39,9 @@ void CMenu::setupMenu()
 ///
 void CMenu::process()
 {
+	CFont &Font = g_pGfxEngine->getFont(0);
 	m_TitleBmp.draw(g_pVideoDriver->BlitSurface, m_title_coord.x, m_title_coord.y);
+	Font.drawMap(g_pVideoDriver->BlitSurface);
 	(this->*processPtr)();
 }
 
