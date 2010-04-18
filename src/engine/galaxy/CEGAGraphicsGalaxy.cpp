@@ -304,7 +304,7 @@ bool CEGAGraphicsGalaxy::readfonts()
 	g_pGfxEngine->createEmptyFontmaps(EpisodeInfo[ep].NumFonts);
 	for(Uint16 i = 0; i < EpisodeInfo[ep].NumFonts; i++)
 	{
-		CFont &Font = g_pGfxEngine->getFont(0);
+		CFont &Font = g_pGfxEngine->getFont(i);
 		if(m_egagraph.at(EpisodeInfo[ep].IndexFonts + i).data.at(0))
 		{
 			FontHeadStruct *FontHead =

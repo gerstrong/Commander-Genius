@@ -19,7 +19,7 @@ public:
 	// 	loadGameCfg(), saveGameCfg(), loadDefaultGameCfg(); setOption(..);
 	// Those depend on that structure.
 	CSettings(stOption *p_option=NULL);
-	short saveDrvCfg();
+	bool saveDrvCfg();
 	bool loadDrvCfg();
 	bool loadGameCfg();
 	void saveGameCfg();

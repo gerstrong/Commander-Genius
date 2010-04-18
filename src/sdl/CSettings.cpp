@@ -16,16 +16,26 @@
 #include "CTimer.h"
 #include "sound/CSound.h"
 
+/**
+ * \brief	The CSettings class handles the saving and loading of all the settings that are saved in
+ * 			the game. Those are, video, audio, options and input.
+ *
+ * \param	p_option	pointer to an array that stores the options settings of the game
+ */
 CSettings::CSettings(stOption *p_option) {
 	notes << "Reading game options from " << GetFullFileName(CONFIGFILENAME) << endl;
 	notes << "Will write game options to " << GetWriteFullFileName(CONFIGFILENAME, true) << endl;
 	mp_option = p_option;
 }
 
-short CSettings::saveDrvCfg()
+/**
+ * \brief	Write the whole configuration of the settings.
+ * 			Note: See also CParser to understand better the concept of saving...
+ *
+ * \return	If the configuration has been saved successfully, it return true, else it's false.
+ */
+bool CSettings::saveDrvCfg()
 {
-	short retval = 0;
-	
 	CParser Parser;
 	Parser.loadParseFile();
 	
@@ -67,11 +77,14 @@ short CSettings::saveDrvCfg()
 	Parser.saveIntValue("musicvol","Audio",(g_pSound->getMusicVolume()));
 	Parser.saveIntValue("soundvol","Audio",(g_pSound->getSoundVolume()));
 	
-	Parser.saveParseFile();
-	
-	return retval;
+	return Parser.saveParseFile();
 }
 
+/**
+ * \brief	It loads the whole configuration from the settings file. NOTE: Also take a look at CParser.
+ *
+ * \return		true if successful, false if not.
+ */
 bool CSettings::loadDrvCfg()
 {
 	CParser Parser;
@@ -119,12 +132,28 @@ bool CSettings::loadDrvCfg()
 	return true;
 }
 
+/**
+ * \brief	checks if the pointer to the options array is set.
+ *
+ * \return			true, if pointer is properly set, false if not.
+ */
 bool CSettings::checkOptionPtr() {
 	if(mp_option) return true;
 	g_pLogFile->textOut("ERROR in Code implementation! There is an error in the source code. Pointer mp_option cannot be used here!\n");
 	return false;
 }
 
+/**
+ * \brief	Sets the option data to the option array.
+ *
+ * \param	opt			option ID
+ * \param	menuname	Name of the option shown in the options menu
+ * 						NOTE: This name may change, depending on what value is set
+ * \param	name		Name of the option itself
+ * 						NOTE: This string should be changed, since it names the topic
+ * 						of the applied option
+ * \param	value		Value that has to be set.
+ */
 void CSettings::setOption( int opt, const std::string &menuname, const std::string &name, char value)
 {
 	if(!checkOptionPtr()) return;
@@ -132,7 +161,9 @@ void CSettings::setOption( int opt, const std::string &menuname, const std::stri
 	mp_option[opt].name = name;
 	mp_option[opt].value = value;
 }
-
+/**
+ * \brief  This is normally processed when the game is started. It sets the default options.
+ */
 void CSettings::loadDefaultGameCfg()
 {
 	if(!checkOptionPtr()) return;
@@ -146,6 +177,11 @@ void CSettings::loadDefaultGameCfg()
 	setOption( OPT_SWITCHSCORES, "Score Fix (EP3)", "switch scores", 0 );
 }
 
+/**
+ * \brief  This loads the options of the settings
+ *
+ * \return			true if options could be loaded, else false
+ */
 bool CSettings::loadGameCfg()
 {
 	int i;
@@ -174,6 +210,9 @@ bool CSettings::loadGameCfg()
 	return true;
 }
 
+/**
+ * \brief  Saves the options in the settings
+ */
 void CSettings::saveGameCfg()
 {
 	CParser Parser;
