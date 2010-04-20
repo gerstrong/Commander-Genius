@@ -37,13 +37,19 @@ CInput::CInput() {
 	startJoyDriver();
 }
 
+/**
+ * \brief This will reset the player controls how they saved before.
+ * 		  The Default controls are going to be restored when this function
+ * 		  is executed
+ * \param	player	Number of player of which the controls will be reset (1-4)
+ */
 void CInput::resetControls(int player) {
 	int i;
 
 	if(player == 0)
 	{
 		player = 1;
-		g_pLogFile->textOut("Error when resetting controls. The function has been used incorrectly");
+		g_pLogFile->textOut("Warning when resetting controls. The function has been used incorrectly, please report that the developer!");
 	}
 	// not a good idea, beause it would write twice in one array, and forget about the last one. (for example 4)
 	// At least this warning will tell the people, that something is not right here!
@@ -114,6 +120,11 @@ void CInput::resetControls(int player) {
 	setTwoButtonFiring(i, false);
 }
 
+/**
+ * \brief	This will start the joystick driver and search for all the controls attached
+ * 			to your computer
+ * \return	false, if the driver couldn't be started, else true
+ */
 bool CInput::startJoyDriver()
 {
 	g_pLogFile->textOut("JoyDrv_Start() : ");
@@ -156,6 +167,9 @@ bool CInput::startJoyDriver()
 	return 0;
 }
 
+/**
+ * \brief	This will load input settings that were saved previously by the user at past session.
+ */
 void CInput::loadControlconfig(void)
 {
 	CParser Parser;
@@ -182,6 +196,10 @@ void CInput::loadControlconfig(void)
 	Parser.saveParseFile();
 }
 
+/**
+ * \brief	This will save input settings according to how the user did map the buttons,
+ * 			axes or keys to the commands.
+ */
 void CInput::saveControlconfig()
 {
 	CParser Parser;
@@ -206,27 +224,35 @@ void CInput::saveControlconfig()
 	Parser.saveParseFile();
 }
 
-std::string CInput::getEventName(int position, unsigned char input)
+/**
+ * \brief	This checks what event has been assigned to the chosen command and builds a string calling it
+ * 			a standardized way.
+ * \param	command		command where you are looking for the event
+ * \param	input		number of input chosen. it's normal the number of the player
+ * \return 	returns the assigned event as a std::string
+ */
+
+std::string CInput::getEventName(int command, unsigned char input)
 {
 	std::string buf;
-	if(InputCommand[input][position].joyeventtype == ETYPE_JOYAXIS)
+	if(InputCommand[input][command].joyeventtype == ETYPE_JOYAXIS)
 	{
-		buf = "Joy" + itoa(InputCommand[input][position].which) + "-A" + itoa(InputCommand[input][position].joyaxis);
-		if(InputCommand[input][position].joyvalue < 0)
+		buf = "Joy" + itoa(InputCommand[input][command].which) + "-A" + itoa(InputCommand[input][command].joyaxis);
+		if(InputCommand[input][command].joyvalue < 0)
 			buf += "-";
 		else
 			buf += "+";
 	}
-	else if(InputCommand[input][position].joyeventtype == ETYPE_JOYBUTTON)
+	else if(InputCommand[input][command].joyeventtype == ETYPE_JOYBUTTON)
 	{
-		buf = "Joy" + itoa(InputCommand[input][position].which) + "-B" + itoa(InputCommand[input][position].joybutton);
+		buf = "Joy" + itoa(InputCommand[input][command].which) + "-B" + itoa(InputCommand[input][command].joybutton);
 	}
 	else // In case only keyboard was triggered
 	{
 		buf = "Keysym ";
-		buf += itoa(InputCommand[input][position].keysym);
+		buf += itoa(InputCommand[input][command].keysym);
 		buf += " (";
-		buf += SDL_GetKeyName(InputCommand[input][position].keysym);
+		buf += SDL_GetKeyName(InputCommand[input][command].keysym);
 		buf += ")";
 	}
 
@@ -288,15 +314,21 @@ void CInput::setupInputCommand( stInputCommand *pInput, int action, const std::s
 	}
 }
 
-bool CInput::readNewEvent(Uint8 device, int position)
+/**
+ * \brief	This checks if some event was triggered to get the new input command
+ * \param	device		input of which we are trying to read the event
+ * \param	command		command for which we want to assign the event
+ * \return 	returns true, if an event was triggered, or false if not.
+ */
+bool CInput::readNewEvent(Uint8 device, int command)
 {
 	while( SDL_PollEvent( &Event ) )
 	{
 		switch ( Event.type )
 		{
 			case SDL_KEYDOWN:
-				InputCommand[device][position].joyeventtype = ETYPE_KEYBOARD;
-				InputCommand[device][position].keysym = Event.key.keysym.sym;
+				InputCommand[device][command].joyeventtype = ETYPE_KEYBOARD;
+				InputCommand[device][command].keysym = Event.key.keysym.sym;
 				return true;
 				break;
 			case SDL_JOYBUTTONDOWN:
@@ -304,17 +336,17 @@ bool CInput::readNewEvent(Uint8 device, int position)
 				WIZ_EmuKeyboard( Event.jbutton.button, 1 );
 				return false;
 #else
-				InputCommand[device][position].joyeventtype = ETYPE_JOYBUTTON;
-				InputCommand[device][position].joybutton = Event.jbutton.button;
-				InputCommand[device][position].which = Event.jbutton.which;
+				InputCommand[device][command].joyeventtype = ETYPE_JOYBUTTON;
+				InputCommand[device][command].joybutton = Event.jbutton.button;
+				InputCommand[device][command].which = Event.jbutton.which;
 				return true;
 #endif
 				break;
 			case SDL_JOYAXISMOTION:
-				InputCommand[device][position].joyeventtype = ETYPE_JOYAXIS;
-				InputCommand[device][position].joyaxis = Event.jaxis.axis;
-				InputCommand[device][position].which = Event.jaxis.which;
-				InputCommand[device][position].joyvalue = (Event.jaxis.value>0) ? 32767 : -32767;
+				InputCommand[device][command].joyeventtype = ETYPE_JOYAXIS;
+				InputCommand[device][command].joyaxis = Event.jaxis.axis;
+				InputCommand[device][command].which = Event.jaxis.which;
+				InputCommand[device][command].joyvalue = (Event.jaxis.value>0) ? 32767 : -32767;
 				return true;
 				break;
 		}
@@ -328,6 +360,9 @@ void CInput::cancelExitEvent(void) { m_exit=false; }
 bool CInput::getTwoButtonFiring(int player) { return TwoButtonFiring[player]; }
 void CInput::setTwoButtonFiring(int player, bool value) { TwoButtonFiring[player]=value; }
 
+/**
+ * \brief	Called every logic cycle. This triggers the events that occur and process them trough various functions
+ */
 void CInput::pollEvents()
 {
 	// copy all the input of the last poll to a space for checking pressing or holding a button
@@ -402,6 +437,9 @@ void CInput::pollEvents()
 #endif
 }
 
+/**
+ * \brief	This will tell if any joystick axes haven been moved and if they triggered a command by doing so...
+ */
 void CInput::processJoystickAxis(void)
 {
 	for(int j=0 ; j<NUM_INPUTS ; j++)
@@ -424,6 +462,10 @@ void CInput::processJoystickAxis(void)
 		}
 	}
 }
+
+/**
+ * \brief	This will tell if any joystick button has been pressed and if they triggered a command by doing so...
+ */
 void CInput::processJoystickButton(int value)
 {
 #if defined(WIZ) || defined(GP2X)
@@ -447,7 +489,12 @@ void CInput::processJoystickButton(int value)
 
 void CInput::sendKey(int key){	immediate_keytable[key] = true;	}
 
-void CInput::processKeys(int value)
+/**
+ * \brief	This will tell if any key was pressed and it fits the to command array, so we can tell, the command
+ * 			was triggered.
+ * \param	keydown	this parameter tells if the keys is down or has already been released.
+ */
+void CInput::processKeys(int keydown)
 {
 	// Input for player commands
 	for(int i=0 ; i<NUMBER_OF_COMMANDS ; i++)
@@ -456,7 +503,7 @@ void CInput::processKeys(int value)
 		{
 			if(InputCommand[j][i].keysym == Event.key.keysym.sym &&
 					InputCommand[j][i].joyeventtype == ETYPE_KEYBOARD)
-				InputCommand[j][i].active = (value) ? true : false;
+				InputCommand[j][i].active = (keydown) ? true : false;
 		}
 	}
 
@@ -464,135 +511,139 @@ void CInput::processKeys(int value)
     switch(Event.key.keysym.sym)
 	{
 			// These are only used for ingame stuff or menu, but not for controlling the player anymore
-		case SDLK_LEFT: 	immediate_keytable[KLEFT]	= value;  break;
-		case SDLK_UP:	immediate_keytable[KUP]		= value;  break;
-		case SDLK_RIGHT:	immediate_keytable[KRIGHT]	= value;  break;
-		case SDLK_DOWN:	immediate_keytable[KDOWN]	= value;  break;
+		case SDLK_LEFT: 	immediate_keytable[KLEFT]	= keydown;  break;
+		case SDLK_UP:	immediate_keytable[KUP]		= keydown;  break;
+		case SDLK_RIGHT:	immediate_keytable[KRIGHT]	= keydown;  break;
+		case SDLK_DOWN:	immediate_keytable[KDOWN]	= keydown;  break;
 
 			// Page Keys
-		case SDLK_PAGEUP:	immediate_keytable[KPGUP]	= value;  break;
-		case SDLK_PAGEDOWN:	immediate_keytable[KPGDN]		= value;  break;
+		case SDLK_PAGEUP:	immediate_keytable[KPGUP]	= keydown;  break;
+		case SDLK_PAGEDOWN:	immediate_keytable[KPGDN]		= keydown;  break;
 
-		case SDLK_RETURN:immediate_keytable[KENTER]	= value;  break;
-		case SDLK_RCTRL:immediate_keytable[KCTRL]	= value;  break;
-		case SDLK_LCTRL:immediate_keytable[KCTRL]	= value;  break;
-		case SDLK_SPACE:immediate_keytable[KSPACE]	= value;  break;
-		case SDLK_RALT:immediate_keytable[KALT]		= value;  break;
-		case SDLK_LALT:immediate_keytable[KALT]		= value;  break;
-		case SDLK_TAB:immediate_keytable[KTAB]		= value;  break;
-		case SDLK_LSHIFT:immediate_keytable[KSHIFT]	= value;  break;
-		case SDLK_RSHIFT:immediate_keytable[KSHIFT]	= value;  break;
-		case SDLK_ESCAPE:immediate_keytable[KQUIT]	= value;  break;
+		case SDLK_RETURN:immediate_keytable[KENTER]	= keydown;  break;
+		case SDLK_RCTRL:immediate_keytable[KCTRL]	= keydown;  break;
+		case SDLK_LCTRL:immediate_keytable[KCTRL]	= keydown;  break;
+		case SDLK_SPACE:immediate_keytable[KSPACE]	= keydown;  break;
+		case SDLK_RALT:immediate_keytable[KALT]		= keydown;  break;
+		case SDLK_LALT:immediate_keytable[KALT]		= keydown;  break;
+		case SDLK_TAB:immediate_keytable[KTAB]		= keydown;  break;
+		case SDLK_LSHIFT:immediate_keytable[KSHIFT]	= keydown;  break;
+		case SDLK_RSHIFT:immediate_keytable[KSHIFT]	= keydown;  break;
+		case SDLK_ESCAPE:immediate_keytable[KQUIT]	= keydown;  break;
 
-		case SDLK_BACKSPACE:immediate_keytable[KBCKSPCE] = value; break;
+		case SDLK_BACKSPACE:immediate_keytable[KBCKSPCE] = keydown; break;
 
-		case SDLK_QUOTE:immediate_keytable[KQUOTE]	= value;  break;
-		case SDLK_COMMA:immediate_keytable[KCOMMA]	= value;  break;
-		case SDLK_PERIOD:immediate_keytable[KPERIOD]	= value;  break;
-		case SDLK_SLASH:immediate_keytable[KSLASH]	= value;  break;
-		case SDLK_SEMICOLON:immediate_keytable[KSEMICOLON]	= value;  break;
-		case SDLK_EQUALS:immediate_keytable[KEQUAL]	= value;  break;
-		case SDLK_LEFTBRACKET:immediate_keytable[KLEFTBRACKET]	= value;  break;
-		case SDLK_BACKSLASH:immediate_keytable[KBACKSLASH]	= value;  break;
-		case SDLK_RIGHTBRACKET:immediate_keytable[KRIGHTBRACKET]	= value;  break;
-		case SDLK_BACKQUOTE:immediate_keytable[KBACKQUOTE]	= value;  break;
+		case SDLK_QUOTE:immediate_keytable[KQUOTE]	= keydown;  break;
+		case SDLK_COMMA:immediate_keytable[KCOMMA]	= keydown;  break;
+		case SDLK_PERIOD:immediate_keytable[KPERIOD]	= keydown;  break;
+		case SDLK_SLASH:immediate_keytable[KSLASH]	= keydown;  break;
+		case SDLK_SEMICOLON:immediate_keytable[KSEMICOLON]	= keydown;  break;
+		case SDLK_EQUALS:immediate_keytable[KEQUAL]	= keydown;  break;
+		case SDLK_LEFTBRACKET:immediate_keytable[KLEFTBRACKET]	= keydown;  break;
+		case SDLK_BACKSLASH:immediate_keytable[KBACKSLASH]	= keydown;  break;
+		case SDLK_RIGHTBRACKET:immediate_keytable[KRIGHTBRACKET]	= keydown;  break;
+		case SDLK_BACKQUOTE:immediate_keytable[KBACKQUOTE]	= keydown;  break;
 
-		case SDLK_a:immediate_keytable[KA]	= value;  break;
-		case SDLK_b:immediate_keytable[KB]	= value;  break;
-		case SDLK_c:immediate_keytable[KC]	= value;  break;
-		case SDLK_d:immediate_keytable[KD]	= value;  break;
-		case SDLK_e:immediate_keytable[KE]	= value;  break;
-		case SDLK_f:immediate_keytable[KF]	= value;  break;
-		case SDLK_g:immediate_keytable[KG]	= value;  break;
-		case SDLK_h:immediate_keytable[KH]	= value;  break;
-		case SDLK_i:immediate_keytable[KI]	= value;  break;
-		case SDLK_j:immediate_keytable[KJ]	= value;  break;
-		case SDLK_k:immediate_keytable[KK]	= value;  break;
-		case SDLK_l:immediate_keytable[KL]	= value;  break;
-		case SDLK_m:immediate_keytable[KM]	= value;  break;
-		case SDLK_n:immediate_keytable[KN]	= value;  break;
-		case SDLK_o:immediate_keytable[KO]	= value;  break;
-		case SDLK_p:immediate_keytable[KP]	= value;  break;
-		case SDLK_q:immediate_keytable[KQ]	= value;  break;
-		case SDLK_r:immediate_keytable[KR]	= value;  break;
-		case SDLK_s:immediate_keytable[KS]	= value;  break;
-		case SDLK_t:immediate_keytable[KT]	= value;  break;
-		case SDLK_u:immediate_keytable[KU]	= value;  break;
-		case SDLK_v:immediate_keytable[KV]	= value;  break;
-		case SDLK_w:immediate_keytable[KW]	= value;  break;
-		case SDLK_x:immediate_keytable[KX]	= value;  break;
-		case SDLK_y:immediate_keytable[KY]	= value;  break;
-		case SDLK_z:immediate_keytable[KZ]	= value;  break;
+		case SDLK_a:immediate_keytable[KA]	= keydown;  break;
+		case SDLK_b:immediate_keytable[KB]	= keydown;  break;
+		case SDLK_c:immediate_keytable[KC]	= keydown;  break;
+		case SDLK_d:immediate_keytable[KD]	= keydown;  break;
+		case SDLK_e:immediate_keytable[KE]	= keydown;  break;
+		case SDLK_f:immediate_keytable[KF]	= keydown;  break;
+		case SDLK_g:immediate_keytable[KG]	= keydown;  break;
+		case SDLK_h:immediate_keytable[KH]	= keydown;  break;
+		case SDLK_i:immediate_keytable[KI]	= keydown;  break;
+		case SDLK_j:immediate_keytable[KJ]	= keydown;  break;
+		case SDLK_k:immediate_keytable[KK]	= keydown;  break;
+		case SDLK_l:immediate_keytable[KL]	= keydown;  break;
+		case SDLK_m:immediate_keytable[KM]	= keydown;  break;
+		case SDLK_n:immediate_keytable[KN]	= keydown;  break;
+		case SDLK_o:immediate_keytable[KO]	= keydown;  break;
+		case SDLK_p:immediate_keytable[KP]	= keydown;  break;
+		case SDLK_q:immediate_keytable[KQ]	= keydown;  break;
+		case SDLK_r:immediate_keytable[KR]	= keydown;  break;
+		case SDLK_s:immediate_keytable[KS]	= keydown;  break;
+		case SDLK_t:immediate_keytable[KT]	= keydown;  break;
+		case SDLK_u:immediate_keytable[KU]	= keydown;  break;
+		case SDLK_v:immediate_keytable[KV]	= keydown;  break;
+		case SDLK_w:immediate_keytable[KW]	= keydown;  break;
+		case SDLK_x:immediate_keytable[KX]	= keydown;  break;
+		case SDLK_y:immediate_keytable[KY]	= keydown;  break;
+		case SDLK_z:immediate_keytable[KZ]	= keydown;  break;
 
-		case SDLK_F1:immediate_keytable[KF1]	= value;  break;
-		case SDLK_F2:immediate_keytable[KF2]	= value;  break;
-		case SDLK_F3:immediate_keytable[KF3]	= value;  break;
-		case SDLK_F4:immediate_keytable[KF4]	= value;  break;
-		case SDLK_F5:immediate_keytable[KF5]	= value;  break;
-		case SDLK_F6:immediate_keytable[KF6]	= value;  break;
-		case SDLK_F7:immediate_keytable[KF7]	= value;  break;
-		case SDLK_F8:immediate_keytable[KF8]	= value;  break;
-		case SDLK_F9:immediate_keytable[KF9]	= value;  break;
-		case SDLK_F10:immediate_keytable[KF10]	= value;  break;
+		case SDLK_F1:immediate_keytable[KF1]	= keydown;  break;
+		case SDLK_F2:immediate_keytable[KF2]	= keydown;  break;
+		case SDLK_F3:immediate_keytable[KF3]	= keydown;  break;
+		case SDLK_F4:immediate_keytable[KF4]	= keydown;  break;
+		case SDLK_F5:immediate_keytable[KF5]	= keydown;  break;
+		case SDLK_F6:immediate_keytable[KF6]	= keydown;  break;
+		case SDLK_F7:immediate_keytable[KF7]	= keydown;  break;
+		case SDLK_F8:immediate_keytable[KF8]	= keydown;  break;
+		case SDLK_F9:immediate_keytable[KF9]	= keydown;  break;
+		case SDLK_F10:immediate_keytable[KF10]	= keydown;  break;
 
-		case SDLK_0:immediate_keytable[KNUM0] = value;  break;
-		case SDLK_1:immediate_keytable[KNUM1] = value;  break;
-		case SDLK_2:immediate_keytable[KNUM2] = value;  break;
-		case SDLK_3:immediate_keytable[KNUM3] = value;  break;
-		case SDLK_4:immediate_keytable[KNUM4] = value;  break;
-		case SDLK_5:immediate_keytable[KNUM5] = value;  break;
-		case SDLK_6:immediate_keytable[KNUM6] = value;  break;
-		case SDLK_7:immediate_keytable[KNUM7] = value;  break;
-		case SDLK_8:immediate_keytable[KNUM8] = value;  break;
-		case SDLK_9:immediate_keytable[KNUM9] = value;  break;
+		case SDLK_0:immediate_keytable[KNUM0] = keydown;  break;
+		case SDLK_1:immediate_keytable[KNUM1] = keydown;  break;
+		case SDLK_2:immediate_keytable[KNUM2] = keydown;  break;
+		case SDLK_3:immediate_keytable[KNUM3] = keydown;  break;
+		case SDLK_4:immediate_keytable[KNUM4] = keydown;  break;
+		case SDLK_5:immediate_keytable[KNUM5] = keydown;  break;
+		case SDLK_6:immediate_keytable[KNUM6] = keydown;  break;
+		case SDLK_7:immediate_keytable[KNUM7] = keydown;  break;
+		case SDLK_8:immediate_keytable[KNUM8] = keydown;  break;
+		case SDLK_9:immediate_keytable[KNUM9] = keydown;  break;
 
-		case SDLK_EXCLAIM:immediate_keytable[KEXCLAIM]	= value;  break;
-		case SDLK_QUOTEDBL:immediate_keytable[KDBLQUOTE]	= value;  break;
-		case SDLK_HASH:immediate_keytable[KHASH]	= value;  break;
-		case SDLK_DOLLAR:immediate_keytable[KDOLLAR]	= value;  break;
-		case SDLK_AMPERSAND:immediate_keytable[KAMPERSAND]	= value;  break;
-		case SDLK_ASTERISK:immediate_keytable[KAST]	= value;  break;
-		case SDLK_LEFTPAREN:immediate_keytable[KLEFTPAREN]	= value;  break;
-		case SDLK_RIGHTPAREN:immediate_keytable[KRIGHTPAREN]	= value;  break;
-		case SDLK_COLON:immediate_keytable[KCOLON]	= value;  break;
-		case SDLK_LESS:immediate_keytable[KLESS]	= value;  break;
-		case SDLK_GREATER:immediate_keytable[KGREATER]	= value;  break;
-		case SDLK_QUESTION:immediate_keytable[KQUESTION]	= value;  break;
-		case SDLK_AT:immediate_keytable[KAT]	= value;  break;
-		case SDLK_CARET:immediate_keytable[KCARET]	= value;  break;
-		case SDLK_UNDERSCORE:immediate_keytable[KUNDERSCORE]	= value;  break;
-		case SDLK_MINUS:immediate_keytable[KMINUS]	= value;  break;
-		case SDLK_PLUS:immediate_keytable[KPLUS]	= value;  break;
+		case SDLK_EXCLAIM:immediate_keytable[KEXCLAIM]	= keydown;  break;
+		case SDLK_QUOTEDBL:immediate_keytable[KDBLQUOTE]	= keydown;  break;
+		case SDLK_HASH:immediate_keytable[KHASH]	= keydown;  break;
+		case SDLK_DOLLAR:immediate_keytable[KDOLLAR]	= keydown;  break;
+		case SDLK_AMPERSAND:immediate_keytable[KAMPERSAND]	= keydown;  break;
+		case SDLK_ASTERISK:immediate_keytable[KAST]	= keydown;  break;
+		case SDLK_LEFTPAREN:immediate_keytable[KLEFTPAREN]	= keydown;  break;
+		case SDLK_RIGHTPAREN:immediate_keytable[KRIGHTPAREN]	= keydown;  break;
+		case SDLK_COLON:immediate_keytable[KCOLON]	= keydown;  break;
+		case SDLK_LESS:immediate_keytable[KLESS]	= keydown;  break;
+		case SDLK_GREATER:immediate_keytable[KGREATER]	= keydown;  break;
+		case SDLK_QUESTION:immediate_keytable[KQUESTION]	= keydown;  break;
+		case SDLK_AT:immediate_keytable[KAT]	= keydown;  break;
+		case SDLK_CARET:immediate_keytable[KCARET]	= keydown;  break;
+		case SDLK_UNDERSCORE:immediate_keytable[KUNDERSCORE]	= keydown;  break;
+		case SDLK_MINUS:immediate_keytable[KMINUS]	= keydown;  break;
+		case SDLK_PLUS:immediate_keytable[KPLUS]	= keydown;  break;
 
 		default: break;
 	}
 
 	if(getHoldedKey(KSHIFT))
 	   {
-		   if(getPressedKey(KBACKQUOTE)) immediate_keytable[KTILDE] = value;
-		    if(getPressedKey(KNUM1)) immediate_keytable[KEXCLAIM] = value;
-		    if(getPressedKey(KNUM2)) immediate_keytable[KAT] = value;
-		    if(getPressedKey(KNUM3)) immediate_keytable[KHASH] = value;
-		    if(getPressedKey(KNUM4)) immediate_keytable[KDOLLAR] = value;
-		   if(getPressedKey(KNUM5)) immediate_keytable[KPERCENT] = value;
-		    if(getPressedKey(KNUM6)) immediate_keytable[KCARET] = value;
-		    if(getPressedKey(KNUM7)) immediate_keytable[KAMPERSAND] = value;
-		    if(getPressedKey(KNUM8)) immediate_keytable[KAST] = value;
-		    if(getPressedKey(KNUM9)) immediate_keytable[KLEFTPAREN] = value;
-		    if(getPressedKey(KNUM0)) immediate_keytable[KRIGHTPAREN] = value;
-		    if(getPressedKey(KMINUS)) immediate_keytable[KUNDERSCORE] = value;
-		    if(getPressedKey(KEQUAL)) immediate_keytable[KPLUS] = value;
-		   if(getPressedKey(KBACKSLASH)) immediate_keytable[KLINE] = value;
-		    if(getPressedKey(KLEFTBRACKET)) immediate_keytable[KLEFTBRACE] = value;
-		    if(getPressedKey(KRIGHTBRACKET)) immediate_keytable[KRIGHTBRACE] = value;
-		    if(getPressedKey(KSEMICOLON)) immediate_keytable[KCOLON] = value;
-		    if(getPressedKey(KQUOTE)) immediate_keytable[KDBLQUOTE] = value;
-		    if(getPressedKey(KCOMMA)) immediate_keytable[KLESS] = value;
-		    if(getPressedKey(KPERIOD)) immediate_keytable[KGREATER] = value;
-		    if(getPressedKey(KSLASH)) immediate_keytable[KQUESTION] = value;
+		   if(getPressedKey(KBACKQUOTE)) immediate_keytable[KTILDE] = keydown;
+		    if(getPressedKey(KNUM1)) immediate_keytable[KEXCLAIM] = keydown;
+		    if(getPressedKey(KNUM2)) immediate_keytable[KAT] = keydown;
+		    if(getPressedKey(KNUM3)) immediate_keytable[KHASH] = keydown;
+		    if(getPressedKey(KNUM4)) immediate_keytable[KDOLLAR] = keydown;
+		   if(getPressedKey(KNUM5)) immediate_keytable[KPERCENT] = keydown;
+		    if(getPressedKey(KNUM6)) immediate_keytable[KCARET] = keydown;
+		    if(getPressedKey(KNUM7)) immediate_keytable[KAMPERSAND] = keydown;
+		    if(getPressedKey(KNUM8)) immediate_keytable[KAST] = keydown;
+		    if(getPressedKey(KNUM9)) immediate_keytable[KLEFTPAREN] = keydown;
+		    if(getPressedKey(KNUM0)) immediate_keytable[KRIGHTPAREN] = keydown;
+		    if(getPressedKey(KMINUS)) immediate_keytable[KUNDERSCORE] = keydown;
+		    if(getPressedKey(KEQUAL)) immediate_keytable[KPLUS] = keydown;
+		   if(getPressedKey(KBACKSLASH)) immediate_keytable[KLINE] = keydown;
+		    if(getPressedKey(KLEFTBRACKET)) immediate_keytable[KLEFTBRACE] = keydown;
+		    if(getPressedKey(KRIGHTBRACKET)) immediate_keytable[KRIGHTBRACE] = keydown;
+		    if(getPressedKey(KSEMICOLON)) immediate_keytable[KCOLON] = keydown;
+		    if(getPressedKey(KQUOTE)) immediate_keytable[KDBLQUOTE] = keydown;
+		    if(getPressedKey(KCOMMA)) immediate_keytable[KLESS] = keydown;
+		    if(getPressedKey(KPERIOD)) immediate_keytable[KGREATER] = keydown;
+		    if(getPressedKey(KSLASH)) immediate_keytable[KQUESTION] = keydown;
 	   }
 }
 
+/**
+ * \brief	returns if certain key is being held
+ * \param	key the key to be held
+ */
 bool CInput::getHoldedKey(int key)
 {
 	if(immediate_keytable[key])
@@ -601,6 +652,10 @@ bool CInput::getHoldedKey(int key)
 	return false;
 }
 
+/**
+ * \brief	returns if certain key is being pressed
+ * \param	key	the key to be pressed
+ */
 bool CInput::getPressedKey(int key)
 {
 	if(immediate_keytable[key] && !last_immediate_keytable[key])
@@ -611,6 +666,12 @@ bool CInput::getPressedKey(int key)
 
 	return false;
 }
+
+/**
+ * \brief	returns if certain key is being held for msecs
+ * \param	key the key to be pressed
+ * \param	msec Milliseconds the key can be held before it is a pulse
+ */
 
 bool CInput::getPulsedKey(int key, int msec)
 {
@@ -631,6 +692,10 @@ bool CInput::getPulsedKey(int key, int msec)
 	return false;
 }
 
+/**
+ * \brief	normally called, when a save game or high score entry is being made. It will return a charakter that was typed.
+ * \return	character as std::string, which was entered
+ */
 std::string CInput::getPressedTypingKey(void)
 {
 	int i;
@@ -676,6 +741,10 @@ std::string CInput::getPressedTypingKey(void)
 	return buf;
 }
 
+/**
+ * \brief	returns if a numerical key was pressed
+ * \return	number as std::string, which was entered
+ */
 std::string CInput::getPressedNumKey(void)
 {
 	int i;
@@ -692,6 +761,10 @@ std::string CInput::getPressedNumKey(void)
 	return buf;
 }
 
+/**
+ * \brief	tells if the pressed key was for typing
+ * \return	true if yes, and false for no.
+ */
 bool CInput::getPressedIsTypingKey(void)
 {
 	int i;
@@ -816,6 +889,9 @@ bool CInput::getPressedAnyCommand(int player)
 	return false;
 }
 
+/**
+ * \brief	This will forget every command that was triggered
+ */
 void CInput::flushCommands(void)
 {
 	for(int i=0 ; i<NUM_INPUTS ; i++)
@@ -823,13 +899,23 @@ void CInput::flushCommands(void)
 			InputCommand[i][j].active = InputCommand[i][j].lastactive = false;
 }
 
+/**
+ * \brief	this will forget every key that was typed before
+ */
 void CInput::flushKeys(void)
 {
 	memset(immediate_keytable,false,KEYTABLE_SIZE);
 	memset(last_immediate_keytable,false,KEYTABLE_SIZE);
 }
+
+/**
+ * \brief	flushes both key and commands queue
+ */
 void CInput::flushAll(void){ flushKeys(); flushCommands(); }
 
+/**
+ * \brief	shuts down the input driver.
+ */
 CInput::~CInput() {
 	// Shutdown Joysticks
 	while(!mp_Joysticks.empty())

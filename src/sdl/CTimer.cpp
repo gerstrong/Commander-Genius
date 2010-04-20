@@ -5,7 +5,7 @@
  *      Author: gerstrong
  */
 
-/* The timer (speed throttler) driver for SDL.
+/** The timer (speed throttler) driver for SDL.
  This timer calculates a common factor between the desired rates for logic and render. By having this
  common rate all of the time during one second can be divided into a measurement scale where both
  other rates can be triggered.
