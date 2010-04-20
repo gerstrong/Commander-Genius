@@ -17,7 +17,8 @@
 CFont::CFont() :
 m_FontSurface(NULL),
 m_ColouredSurface(NULL),
-m_colour(0x0)
+m_colour(0x0),
+m_monochrome(false)
 {
 	m_widthtable.assign(256,8);
 }
@@ -90,9 +91,16 @@ void CFont::setColour(Uint32 colour, bool force)
 {
 	if( m_colour != colour || force )
 	{
-		m_colour = colour;
-		SDL_FillRect(m_ColouredSurface, NULL, colour);
-		SDL_BlitSurface(m_FontSurface, NULL, m_ColouredSurface, NULL);
+		if(!m_monochrome)
+		{
+			m_colour = colour;
+			SDL_FillRect(m_ColouredSurface, NULL, colour);
+			SDL_BlitSurface(m_FontSurface, NULL, m_ColouredSurface, NULL);
+		}
+		else
+		{
+			// TODO: Code for galaxy monochrome fonts...
+		}
 	}
 }
 
@@ -109,8 +117,10 @@ void CFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint1
 {
 	SDL_Rect scrrect, dstrect;
 	
-	scrrect.x = 8*(character%16);	scrrect.y = 8*(character/16);
-	scrrect.w = dstrect.w = 8;	scrrect.h = dstrect.h = 8;
+	scrrect.x = (m_ColouredSurface->w/16)*(character%16);
+	scrrect.y = (m_ColouredSurface->h/16)*(character/16);
+	scrrect.w = dstrect.w = (m_widthtable.at(character));
+	scrrect.h = dstrect.h = (m_ColouredSurface->h/16);
 	dstrect.x = xoff;	dstrect.y = yoff;
 	
 	SDL_BlitSurface(m_ColouredSurface, &scrrect, dst, &dstrect);

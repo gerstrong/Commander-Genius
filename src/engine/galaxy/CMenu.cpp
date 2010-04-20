@@ -39,9 +39,11 @@ void CMenu::setupMenu()
 ///
 void CMenu::process()
 {
-	CFont &Font = g_pGfxEngine->getFont(0);
+	CFont &Font = g_pGfxEngine->getFont(1);
 	m_TitleBmp.draw(g_pVideoDriver->BlitSurface, m_title_coord.x, m_title_coord.y);
 	Font.drawMap(g_pVideoDriver->BlitSurface);
+	//Font.setColour(0x0000FF);
+	//Font.drawFont(g_pVideoDriver->BlitSurface,"Hello World!",100,100);
 	(this->*processPtr)();
 }
 

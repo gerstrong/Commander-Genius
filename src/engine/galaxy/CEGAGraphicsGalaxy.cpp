@@ -291,12 +291,7 @@ Uint8 CEGAGraphicsGalaxy::getBit(unsigned char data, Uint8 leftshift)
 // Read the fonts to Gfx-Engine
 bool CEGAGraphicsGalaxy::readfonts()
 {
-//	BITMAP16 *font, *bmp;
-//	FontHeadStruct *FontHead;
-//	char filename[PATH_MAX];
-	int bw, y;
-//	unsigned char *pointer;
-//	int ep = Switches->Episode - 4;
+	int bw, y, x;
 
 	int ep = m_episode - 4;
 	SDL_Color *Palette = g_pGfxEngine->Palette.m_Palette;
@@ -305,6 +300,7 @@ bool CEGAGraphicsGalaxy::readfonts()
 	for(Uint16 i = 0; i < EpisodeInfo[ep].NumFonts; i++)
 	{
 		CFont &Font = g_pGfxEngine->getFont(i);
+
 		if(m_egagraph.at(EpisodeInfo[ep].IndexFonts + i).data.at(0))
 		{
 			FontHeadStruct *FontHead =
@@ -322,17 +318,16 @@ bool CEGAGraphicsGalaxy::readfonts()
 				}
 			}
 
-			Font.CreateSurface(Palette, g_pVideoDriver->getScrollSurface()->flags, 8, maxwidth*16);
+			Font.CreateSurface(Palette, g_pVideoDriver->getScrollSurface()->flags, 8, maxwidth*16, FontHead->Height * 16);
 
 			SDL_Surface* sfc = Font.getSDLSurface();
 
-			if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
 			SDL_FillRect(sfc, NULL, 0x8);
 
-			SDL_LockSurface(sfc);
+			if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
 			Uint8* pixel = (Uint8*) sfc->pixels;
 
-			unsigned char *pointer = &(m_egagraph[EpisodeInfo[ep].IndexFonts + i].data[0]);
+			unsigned char *pointer = &(m_egagraph[EpisodeInfo[ep].IndexFonts + i].data.at(0));
 
 			if(!m_egagraph.at(EpisodeInfo[ep].IndexFonts + i).data.empty())
 			{
@@ -346,59 +341,25 @@ bool CEGAGraphicsGalaxy::readfonts()
 
 					if(FontHead->Width[j] > 0)
 					{
-						for(y = 0; y < FontHead->Height; y++)
+						SDL_Rect rect;
+
+						rect.x = (j%16)*maxwidth;
+						rect.y = (j/16)*FontHead->Height;
+						rect.w = FontHead->Width[j];
+						rect.h = FontHead->Height;
+
+						for( y = 0 ; y < rect.h ; y++ )
 						{
-							pixelpos = pixel + (j/16+y)*sfc->pitch+j%128;
-							memcpy(pixel, pointer + FontHead->Offset[j] + (y * bw), bw);
+							pixelpos = pixel + (rect.y+y)*sfc->pitch+rect.x;
+							for( x = 0 ; x < rect.w ; x++ )
+								pixelpos[x] = getBit(*(pointer + FontHead->Offset[j] + (y * bw) + x/8 ), 7-x%8)*0xF;
 						}
 					}
-
-					// Copy the character into the grid
-					//bmp_blit(bmp, 0, 0, font, (j % 16) * w, (j / 16) * FontHead->Height, w, FontHead->Height);
-
-					// Fill the remainder of the bitmap with Grey
-					//bmp_rect(font, (j % 16) * w + FontHead->Width[j], (j / 16) * FontHead->Height,
-						//	(j % 16) * w + w - 1, (j / 16) * FontHead->Height +  FontHead->Height - 1, 8);
 				}
 			}
-
 			SDL_UnlockSurface(sfc);
-
-//			/* Create a 1bpp bitmap for the character */
-//			bmp = bmp_create(w, FontHead->Height, 1);
-//
-//			/* Now decode the characters */
-//			pointer = EgaGraph[EpisodeInfo[ep].IndexFonts + i].data;
-//		   	for(j = 0; j < 256; j++)
-//		   	{
-//		   		/* Get the width of the character in bytes */
-//		   		bw = (FontHead->Width[j] + 7) / 8;
-//
-//		   		/* Clear the bitmap */
-//	   			bmp_rect(bmp, 0, 0, bmp->width - 1, bmp->height - 1, 8);
-//
-//				/* Decode the lines of the character data */
-//		   		if(FontHead->Width[j] > 0)
-//					for(y = 0; y < FontHead->Height; y++)
-//						memcpy(bmp->lines[y], pointer + FontHead->Offset[j] + (y * bw), bw);
-//
-//				/* Copy the character into the grid */
-//				bmp_blit(bmp, 0, 0, font, (j % 16) * w, (j / 16) * FontHead->Height, w, FontHead->Height);
-//
-//		   		/* Fill the remainder of the bitmap with Grey */
-//	   			bmp_rect(font, (j % 16) * w + FontHead->Width[j], (j / 16) * FontHead->Height,
-//	   				(j % 16) * w + w - 1, (j / 16) * FontHead->Height +  FontHead->Height - 1, 8);
-//			}
-//
-//			/* Create the bitmap file */
-//			sprintf(filename, "%s/%cFON%04d.bmp", Switches->OutputPath, '0' + Switches->Episode, i);
-//			if(!bmp_save(font, filename, Switches->Backup))
-//				quit("Can't open bitmap file %s!", filename);
-//
-//			/* Free the memory used */
-//			bmp_free(font);
-//			bmp_free(bmp);
 		}
+		//Font.optimizeSurface();
 	}
 	return true;
 }

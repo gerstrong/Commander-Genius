@@ -45,6 +45,7 @@ private:
 	SDL_Surface *m_FontSurface, *m_ColouredSurface;
 	Uint32 m_colour;
 	std::vector<Uint8> m_widthtable;
+	bool m_monochrome;
 };
 
 #endif /* CFONT_H_ */
