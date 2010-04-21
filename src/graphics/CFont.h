@@ -31,7 +31,9 @@ public:
 	bool loadHiColourFont( const std::string& filename );
 
 	void setWidthToCharacter(Uint8 width, Uint16 letter);
+	void setMonochrome(bool value);
 	void setColour(Uint32 colour, bool force=false);
+	void setMonoColour(SDL_PixelFormat* p_pixelformat, Uint32 fgcolour, Uint32 bgcolour, bool force=false);
 	Uint32 getColour();
 
 	void drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff, Uint32 colour = 0x0);
@@ -43,7 +45,7 @@ public:
 
 private:
 	SDL_Surface *m_FontSurface, *m_ColouredSurface;
-	Uint32 m_colour;
+	Uint32 m_fgcolour, m_bgcolour;
 	std::vector<Uint8> m_widthtable;
 	bool m_monochrome;
 };

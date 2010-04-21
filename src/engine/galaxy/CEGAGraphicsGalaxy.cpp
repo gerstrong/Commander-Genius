@@ -300,6 +300,7 @@ bool CEGAGraphicsGalaxy::readfonts()
 	for(Uint16 i = 0; i < EpisodeInfo[ep].NumFonts; i++)
 	{
 		CFont &Font = g_pGfxEngine->getFont(i);
+		Font.setMonochrome(true);
 
 		if(m_egagraph.at(EpisodeInfo[ep].IndexFonts + i).data.at(0))
 		{
@@ -352,7 +353,9 @@ bool CEGAGraphicsGalaxy::readfonts()
 						{
 							pixelpos = pixel + (rect.y+y)*sfc->pitch+rect.x;
 							for( x = 0 ; x < rect.w ; x++ )
+							{
 								pixelpos[x] = getBit(*(pointer + FontHead->Offset[j] + (y * bw) + x/8 ), 7-x%8)*0xF;
+							}
 						}
 					}
 				}

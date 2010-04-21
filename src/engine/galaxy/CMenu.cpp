@@ -30,7 +30,7 @@ m_TitleBmp(g_pGfxEngine->getBitmap(BMP_MAINMENULABEL))
 void CMenu::setupMenu()
 {
 	// Perform coordinate calculations
-	m_title_coord.x = (g_pVideoDriver->getGameResolution().w - m_TitleBmp.getWidth())/2-5;
+	m_title_coord.x = (g_pVideoDriver->getGameResolution().w - m_TitleBmp.getWidth())/2-45;
 	m_title_coord.y = 48;
 }
 
@@ -41,9 +41,18 @@ void CMenu::process()
 {
 	CFont &Font = g_pGfxEngine->getFont(1);
 	m_TitleBmp.draw(g_pVideoDriver->BlitSurface, m_title_coord.x, m_title_coord.y);
-	Font.drawMap(g_pVideoDriver->BlitSurface);
-	//Font.setColour(0x0000FF);
-	//Font.drawFont(g_pVideoDriver->BlitSurface,"Hello World!",100,100);
+	Font.setMonoColour(g_pVideoDriver->BlitSurface->format, 0x54fc54, 0x545454);
+	Font.drawFont(g_pVideoDriver->BlitSurface,"Hello Hardcore Keener!",80,65);
+	Font.drawFont(g_pVideoDriver->BlitSurface,"I'm happy that you're trying",80,73);
+	Font.drawFont(g_pVideoDriver->BlitSurface,"to play our Galaxy Engine.",80,81);
+	Font.drawFont(g_pVideoDriver->BlitSurface,"Sorry, but it's not yet",80,99);
+	Font.drawFont(g_pVideoDriver->BlitSurface,"finished.",80,107);
+	Font.drawFont(g_pVideoDriver->BlitSurface,"As you might have seen",80,115);
+	Font.drawFont(g_pVideoDriver->BlitSurface,"we are doing our best",80,123);
+	Font.drawFont(g_pVideoDriver->BlitSurface,"to get it running.",80,131);
+	Font.drawFont(g_pVideoDriver->BlitSurface,"Regards, The CG Team",80,139);
+
+
 	(this->*processPtr)();
 }
 

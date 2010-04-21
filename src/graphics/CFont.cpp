@@ -10,14 +10,13 @@
 #include "../FindFile.h"
 #include <string.h>
 
-// TODO: That Font class need some improvements...
-// let's make the fontmap smaller but give the ability, to have more than one
-// and switch between them.
+// TODO: We need to add documentation. I'll do that very soon!
 
 CFont::CFont() :
 m_FontSurface(NULL),
 m_ColouredSurface(NULL),
-m_colour(0x0),
+m_fgcolour(0x0),
+m_bgcolour(0x0),
 m_monochrome(false)
 {
 	m_widthtable.assign(256,8);
@@ -42,17 +41,20 @@ bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags, Uint8 bpp, Uint16 wi
 
 bool CFont::optimizeSurface()
 {
-	if(m_FontSurface)
+	if(!m_monochrome)
 	{
-		SDL_Surface *temp_surface;
-		temp_surface = SDL_DisplayFormat(m_FontSurface);
-		SDL_FreeSurface(m_FontSurface);
-		m_FontSurface = temp_surface;
-		SDL_SetColorKey(m_FontSurface, SDL_SRCCOLORKEY, 0x0);
+		if(m_FontSurface)
+		{
+			SDL_Surface *temp_surface;
+			temp_surface = SDL_DisplayFormat(m_FontSurface);
+			SDL_FreeSurface(m_FontSurface);
+			m_FontSurface = temp_surface;
+			SDL_SetColorKey(m_FontSurface, SDL_SRCCOLORKEY, 0x0);
 
-		temp_surface = SDL_DisplayFormat(m_ColouredSurface);
-		SDL_FreeSurface(m_ColouredSurface);
-		m_ColouredSurface = temp_surface;
+			temp_surface = SDL_DisplayFormat(m_ColouredSurface);
+			SDL_FreeSurface(m_ColouredSurface);
+			m_ColouredSurface = temp_surface;
+		}
 	}
 	return true;
 }
@@ -86,28 +88,44 @@ void CFont::setWidthToCharacter(Uint8 width, Uint16 letter)
 	m_widthtable.at(letter) = width;
 }
 
+/**
+ * \brief	This function defines, that we have a monochrome fontmap
+ * 			Vorticon engine uses a 8x8 tilemap for printing the fonts.
+ * 			As it has other characters, it can never be monochrome
+ * 			The Galaxy engine uses monochrome because it derives the other
+ * 			colours by tricking around with palette in our case...
+ * \param	value	set true if the fontmap is monochrome, else false
+ */
+void CFont::setMonochrome(bool value)
+{	m_monochrome = value;	}
+
 // Sets the colour used for printing the text
 void CFont::setColour(Uint32 colour, bool force)
 {
-	if( m_colour != colour || force )
+	if( m_fgcolour != colour || force )
 	{
-		if(!m_monochrome)
-		{
-			m_colour = colour;
-			SDL_FillRect(m_ColouredSurface, NULL, colour);
-			SDL_BlitSurface(m_FontSurface, NULL, m_ColouredSurface, NULL);
-		}
-		else
-		{
-			// TODO: Code for galaxy monochrome fonts...
-		}
+		m_fgcolour = colour;
+		SDL_FillRect(m_ColouredSurface, NULL, colour);
+		SDL_BlitSurface(m_FontSurface, NULL, m_ColouredSurface, NULL);
 	}
 }
+
+void CFont::setMonoColour(SDL_PixelFormat* p_pixelformat, Uint32 fgcolour, Uint32 bgcolour, bool force)
+{
+	SDL_Color *p_Color = m_FontSurface->format->palette->colors;
+
+	if( m_fgcolour != fgcolour || force )	// For the Foreground
+		SDL_GetRGB(fgcolour, p_pixelformat, &p_Color[15].r, &p_Color[15].g, &p_Color[15].b);
+
+	if( m_bgcolour != bgcolour || force ) // For the Background
+		SDL_GetRGB(bgcolour, p_pixelformat, &p_Color[0].r, &p_Color[0].g, &p_Color[0].b);
+}
+
 
 //
 Uint32 CFont::getColour()
 {
-	return m_colour;
+	return m_fgcolour;
 }
 
 ////////////////////////////
@@ -123,7 +141,10 @@ void CFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint1
 	scrrect.h = dstrect.h = (m_ColouredSurface->h/16);
 	dstrect.x = xoff;	dstrect.y = yoff;
 	
-	SDL_BlitSurface(m_ColouredSurface, &scrrect, dst, &dstrect);
+	if(m_monochrome)
+		SDL_BlitSurface(m_FontSurface, &scrrect, dst, &dstrect);
+	else
+		SDL_BlitSurface(m_ColouredSurface, &scrrect, dst, &dstrect);
 }
 
 void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, bool highlight, Uint32 colour)
