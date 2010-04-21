@@ -26,7 +26,7 @@ CBaseMenu(menu_type) {
 		m_speed = g_pCamera->getScrollSpeed();
 		
 		std::string buf;
-		mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 18, 13);
+		mp_Dialog = new CDialog(18, 13);
 		mp_Dialog->setFrameTheme(DLG_THEME_OLDSCHOOL);
 		
 		mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 1, " Adjust Bounds: ");
@@ -70,7 +70,7 @@ CBaseMenu(menu_type) {
 		m_AspectCorrection = g_pVideoDriver->getAspectCorrection();
 		
 		std::string buf;
-		mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 29, 9);
+		mp_Dialog = new CDialog(29, 9);
 		mp_Dialog->setFrameTheme(DLG_THEME_OLDSCHOOL);
 		
 		buf = "Resolution: " + itoa(m_Resolution.width) + "x" + itoa(m_Resolution.height) + "x" + itoa(m_Resolution.depth);
@@ -143,7 +143,6 @@ void CVideoSettings::processSpecific(){
 				m_MenuType = CONFIGURE;
 				m_restartVideo = true;
 				m_mustclose = true;
-				mp_Dialog->setSDLSurface(g_pVideoDriver->FGLayerSurface);	
 			}
 		}
 		else
@@ -316,7 +315,6 @@ void CVideoSettings::processSpecific(){
 					m_MenuType = BOUNDS;
 					m_restartVideo = true;
 					m_mustclose = true;
-					mp_Dialog->setSDLSurface(g_pVideoDriver->FGLayerSurface);	
 				}
 				else
 				{
@@ -330,6 +328,5 @@ void CVideoSettings::processSpecific(){
 }
 
 CVideoSettings::~CVideoSettings() {
-	mp_Dialog->setSDLSurface(g_pVideoDriver->FGLayerSurface);
 	delete mp_Dialog;
 }

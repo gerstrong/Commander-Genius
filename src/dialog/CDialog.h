@@ -14,8 +14,8 @@
 
 class CDialog {
 public:
-	CDialog(SDL_Surface *DialogSurface, Uint16 w, Uint16 h);
-	CDialog(SDL_Surface *DialogSurface, Uint16 x, Uint16 y, Uint16 w, Uint16 h, char key);
+	CDialog(Uint16 w, Uint16 h);
+	CDialog(Uint16 x, Uint16 y, Uint16 w, Uint16 h, char key);
 	virtual ~CDialog();
 
 	void setFrameTheme( Uint8 theme );
@@ -23,7 +23,6 @@ public:
 	void addObject( Uint8 type, Uint16 x, Uint16 y,const std::string text="" );
 	void setObjectText( Uint8 ID, const std::string &text );
 	void setObjectType( Uint8 ID, Uint8 type );
-	void setSDLSurface( SDL_Surface* Surface ) { m_DialogSurface = Surface; }
 
 	int getSelection() { return m_selected_ID; }
 
@@ -60,8 +59,6 @@ private:
 		Uint8  timer;
 		Uint16 posy;
 	} m_twirl;
-
-	SDL_Surface *m_DialogSurface;
 };
 
 #endif /* CDIALOG_H_ */

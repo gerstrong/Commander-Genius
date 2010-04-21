@@ -17,7 +17,7 @@ mp_option(p_option)
 	int i;
 	std::string buf;
 
-	mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 27, NUM_OPTIONS+2);
+	mp_Dialog = new CDialog(27, NUM_OPTIONS+2);
 	mp_Dialog->setFrameTheme(DLG_THEME_OLDSCHOOL);
 
 	for( i = 0 ; i < NUM_OPTIONS ; i++ )

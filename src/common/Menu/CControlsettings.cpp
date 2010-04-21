@@ -23,7 +23,7 @@ void CControlsettings::drawInitialCommands()
 {
 	std::string buf;
 	std::string buf2;
-	mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 36, 14);
+	mp_Dialog = new CDialog(36, 14);
 	mp_Dialog->setFrameTheme(DLG_THEME_OLDSCHOOL);
 
 	buf2 = g_pInput->getEventName(IC_LEFT, m_chosenPlayer-1);

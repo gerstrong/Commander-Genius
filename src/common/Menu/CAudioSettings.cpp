@@ -21,7 +21,7 @@ CAudioSettings::CAudioSettings(char &menu_type,
 {
 	if(m_MenuType == VOLUME)
 	{
-		mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 24, 7);
+		mp_Dialog = new CDialog(24, 7);
 		mp_Dialog->setFrameTheme(DLG_THEME_OLDSCHOOL);
 
 		mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 1, "    Adjust Volume:    ");
@@ -42,7 +42,7 @@ CAudioSettings::CAudioSettings(char &menu_type,
 	}
 	else
 	{
-		mp_Dialog = new CDialog(g_pVideoDriver->FGLayerSurface, 20, 6);
+		mp_Dialog = new CDialog(20, 6);
 		mp_Dialog->setFrameTheme(DLG_THEME_OLDSCHOOL);
 
 		m_Rate = g_pSound->getAudioSpec().freq;

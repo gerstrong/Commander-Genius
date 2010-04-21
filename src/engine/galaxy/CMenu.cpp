@@ -32,6 +32,8 @@ void CMenu::setupMenu()
 	// Perform coordinate calculations
 	m_title_coord.x = (g_pVideoDriver->getGameResolution().w - m_TitleBmp.getWidth())/2-45;
 	m_title_coord.y = 48;
+
+	//mp_Dialog = new CDialog(Uint16 w, Uint16 h);
 }
 
 ///
@@ -51,7 +53,6 @@ void CMenu::process()
 	Font.drawFont(g_pVideoDriver->BlitSurface,"we are doing our best",80,123);
 	Font.drawFont(g_pVideoDriver->BlitSurface,"to get it running.",80,131);
 	Font.drawFont(g_pVideoDriver->BlitSurface,"Regards, The CG Team",80,139);
-
 
 	(this->*processPtr)();
 }

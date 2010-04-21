@@ -10,7 +10,6 @@
 #include <stdlib.h>
 
 #include "CGame.h"
-#include "common/CMenu.h"
 #include "CLogFile.h"
 #include "engine/vorticon/CCamera.h"
 #include "sdl/CVideoDriver.h"

@@ -43,7 +43,7 @@ bool CGameLauncher::init()
     bool gamedetected = false;
 	
     // Initialize the menu
-    mp_LaunchMenu = new CDialog(g_pVideoDriver->FGLayerSurface, 40, 25);
+    mp_LaunchMenu = new CDialog(40, 25);
 	
     // Scan for games...
     m_DirList.clear();

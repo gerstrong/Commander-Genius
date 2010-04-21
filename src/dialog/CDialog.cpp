@@ -14,7 +14,7 @@
 #include "../graphics/CGfxEngine.h"
 #include "CDialog.h"
 
-CDialog::CDialog(SDL_Surface *DialogSurface, Uint16 w, Uint16 h)
+CDialog::CDialog(Uint16 w, Uint16 h)
 {
 	m_x = (300/2)-(w*4)+10;	m_y = (200/2)-(h*4);
 	m_w = w;	m_h = h;
@@ -31,10 +31,9 @@ CDialog::CDialog(SDL_Surface *DialogSurface, Uint16 w, Uint16 h)
 	m_scroll = 0;
 	m_Frame = NULL;
 	m_alpha = 0;
-	m_DialogSurface = DialogSurface;
 }
 
-CDialog::CDialog(SDL_Surface *DialogSurface, Uint16 x, Uint16 y, Uint16 w, Uint16 h, char key)
+CDialog::CDialog(Uint16 x, Uint16 y, Uint16 w, Uint16 h, char key)
 {
 	m_x = (300/2)-(w*4)+10+x;	m_y = (200/2)-(h*4)+y;
 	m_w = w;	m_h = h;
@@ -52,7 +51,6 @@ CDialog::CDialog(SDL_Surface *DialogSurface, Uint16 x, Uint16 y, Uint16 w, Uint1
 	m_scroll = 0;
 	m_Frame = NULL;
 	m_alpha = 0;
-	m_DialogSurface = DialogSurface;
 }
 
 ///
@@ -294,27 +292,29 @@ void CDialog::processInput(int move)
 
 void CDialog::draw()
 {
+	SDL_Surface *dst_sfc = g_pVideoDriver->FGLayerSurface;
+
 	if(m_alpha < 230)
 	{
-		SDL_SetAlpha(m_DialogSurface, SDL_SRCALPHA, m_alpha );
+		SDL_SetAlpha(dst_sfc, SDL_SRCALPHA, m_alpha );
 		m_alpha+=10;
 	}
 	
 	// Render the empty Dialog frame if any
-	if(m_Frame) m_Frame->draw(m_DialogSurface);
+	if(m_Frame) m_Frame->draw(dst_sfc);
 	
 	CFont &Font = g_pGfxEngine->getFont(0);
 	// Draw the to icon up or down accordingly
 	if( m_scroll>0 ) // Up Arrow
 	{
-		Font.drawCharacter(m_DialogSurface, 15,
+		Font.drawCharacter(dst_sfc, 15,
 						   m_Frame->m_x+m_Frame->m_w-16,
 						   m_Frame->m_y+8);
 	}
 	if( ( m_h-2 < (Uint8) m_dlgobject.size() )  &&
 	   ( m_scroll+m_h-2 != m_dlgobject.size() )) // Down Arrow
 	{
-		Font.drawCharacter(m_DialogSurface , 19,
+		Font.drawCharacter(dst_sfc , 19,
 						   m_Frame->m_x+m_Frame->m_w-16,
 						   m_Frame->m_y+m_Frame->m_h-16);
 	}
@@ -329,18 +329,18 @@ void CDialog::draw()
 	for(Uint16 i=m_scroll ;	i<max ; i++)
 	{
 		m_dlgobject[i]->setSelection( i+m_scroll==m_selected_ID ? true : false);
-		m_dlgobject[i]->render(m_DialogSurface, m_scroll, false );
+		m_dlgobject[i]->render(dst_sfc, m_scroll, false );
 	}
 	Font.setColour(0x0); // Set black letter color for the other elements
 	
 	if(m_key == 'c')
 	{
 		if(m_int>m_min)
-		Font.drawCharacter(m_DialogSurface, 21,
+		Font.drawCharacter(dst_sfc, 21,
 						   m_dlgobject[m_selected_ID]->m_x+16,
 						   m_dlgobject[m_selected_ID]->m_y);
 		if(m_int<m_max)
-		Font.drawCharacter(m_DialogSurface, 17,
+		Font.drawCharacter(dst_sfc, 17,
 						   m_dlgobject[m_selected_ID]->m_x+16+m_dlgobject[m_selected_ID]->m_Option->m_text.length()*8,
 						   m_dlgobject[m_selected_ID]->m_y);
 	}
@@ -395,7 +395,7 @@ void CDialog::drawTwirl()
 		
 	}
 	
-	g_pGfxEngine->getCursor()->draw( m_DialogSurface, m_twirl.frame,
+	g_pGfxEngine->getCursor()->draw( g_pVideoDriver->FGLayerSurface, m_twirl.frame,
 									  m_dlgobject[m_selected_ID]->m_x,
 									  m_twirl.posy );
 }
@@ -412,7 +412,7 @@ CDialog::~CDialog(){
 		m_dlgobject.pop_back();
 
 	m_alpha = 225;
-	SDL_SetAlpha(m_DialogSurface, SDL_SRCALPHA, m_alpha );
+	SDL_SetAlpha(g_pVideoDriver->FGLayerSurface, SDL_SRCALPHA, m_alpha );
 
 	if(m_Frame) delete m_Frame;
 }

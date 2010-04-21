@@ -85,8 +85,6 @@ bool CMenu::init( char menu_type )
 	m_goback2 = false;
 	m_selection = -1; // Nothing has been selected yet.
 	mp_MenuSurface = g_pVideoDriver->FGLayerSurface;
-	if(mp_Dialog)
-		mp_Dialog->setSDLSurface(mp_MenuSurface);
 
 	switch(m_menu_type)
 	{
@@ -141,7 +139,7 @@ bool CMenu::init( char menu_type )
 
 void CMenu::initMainMenu()
 {
-	mp_Dialog = new CDialog(mp_MenuSurface, 17, 10);
+	mp_Dialog = new CDialog(17, 10);
 
 	m_menumap.clear();
 	// When in Intro, Title, Demo mode
@@ -179,7 +177,7 @@ void CMenu::initMainMenu()
 
 void CMenu::initNumPlayersMenu()
 {
-	mp_Dialog = new CDialog(mp_MenuSurface, 13, MAX_PLAYERS+2);
+	mp_Dialog = new CDialog(13, MAX_PLAYERS+2);
 	int i;
 	
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "1 Player");
@@ -196,7 +194,7 @@ void CMenu::initNumPlayersMenu()
 
 void CMenu::initDifficultyMenu()
 {
-	mp_Dialog = new CDialog(mp_MenuSurface, 11, 5);
+	mp_Dialog = new CDialog(11, 5);
 	
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Easy");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Normal");
@@ -207,7 +205,7 @@ void CMenu::initDifficultyMenu()
 
 void CMenu::initDebugMenu()
 {
-	mp_Dialog = new CDialog(mp_MenuSurface, 18, 5);
+	mp_Dialog = new CDialog(18, 5);
 	
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "<O==========>");
 	mp_Dialog->m_dlgobject.at(0)->m_Option->m_value = 0;
@@ -221,7 +219,7 @@ void CMenu::initDebugMenu()
 
 void CMenu::initModMenu()
 {
-	mp_Dialog = new CDialog(mp_MenuSurface, 18, 5);
+	mp_Dialog = new CDialog(18, 5);
 	
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "<O==========>");
 	mp_Dialog->m_dlgobject.at(0)->m_Option->m_value = 0;
@@ -235,7 +233,7 @@ void CMenu::initModMenu()
 
 void CMenu::initConfigureMenu()
 {
-	mp_Dialog = new CDialog(mp_MenuSurface, 13, 6);
+	mp_Dialog = new CDialog(13, 6);
 	
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Graphics");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Audio");
@@ -251,7 +249,7 @@ void CMenu::initConfigureMenu()
 
 void CMenu::initNumControlMenu()
 {
-	mp_Dialog = new CDialog(mp_MenuSurface, 13, MAX_PLAYERS+2);
+	mp_Dialog = new CDialog(13, MAX_PLAYERS+2);
 	int i;
 	
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Player 1");
@@ -268,7 +266,7 @@ void CMenu::initNumControlMenu()
 
 void CMenu::initF1Menu()
 {
-	mp_Dialog = new CDialog(mp_MenuSurface, 18, 9);
+	mp_Dialog = new CDialog(18, 9);
 	
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "The Menu");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "The Game");
@@ -283,7 +281,7 @@ void CMenu::initF1Menu()
 
 void CMenu::initConfirmMenu(std::string confirmtext)
 {
-	mp_Dialog = new CDialog(mp_MenuSurface, 0, 0, 22, 5, 'l');
+	mp_Dialog = new CDialog(0, 0, 22, 5, 'l');
 	
 	mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 1, confirmtext);
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Yes");
@@ -293,7 +291,7 @@ void CMenu::initConfirmMenu(std::string confirmtext)
 void CMenu::initSaveMenu()
 {
 	std::string text;
-	mp_Dialog = new CDialog(mp_MenuSurface, 0, 0, 22, 22, 'u');
+	mp_Dialog = new CDialog(0, 0, 22, 22, 'u');
 	
 	// Load the state-file list
 	m_StateFileList = m_SavedGame.getSlotList();
