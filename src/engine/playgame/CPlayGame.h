@@ -15,7 +15,7 @@
 #include "../../dialog/CMessageBox.h"
 #include "../../common/CPlayer.h"
 #include "../../common/CObject.h"
-#include "../../common/CMenu.h"
+#include "../../common/CMenuVorticon.h"
 #include "../../common/CMap.h"
 #include "../../common/options.h"
 #include "../../common/CPhysicsSettings.h"
@@ -132,7 +132,7 @@ private:
 	bool m_dark;
 
 	CMap m_Map;
-	CMenu *mp_Menu;
+	CMenuVorticon *mp_Menu;
 	std::vector<CPlayer> m_Player;
 	CObjectAI *mp_ObjectAI;
 	CFinale *mp_Finale;

@@ -1,5 +1,5 @@
 /*
- * CPassive.h
+ * CMenuVorticon.h
  *
  *  Created on: 24.09.2009
  *      Author: gerstrong and pizza2004
@@ -7,8 +7,8 @@
  *
  * TODO: Comment about this class
  */
-#ifndef CMENU_H_
-#define CMENU_H_
+#ifndef CMENUVORTICON_H_
+#define CMENUVORTICON_H_
 
 #include <string>
 #include <SDL.h>
@@ -34,14 +34,13 @@
 #define TWIRL_SPEED             30
 #define TWIRL_NUM_FRAMES        5
 
-class CMenu {
+class CMenuVorticon {
 
 public:
 
-	CMenu( char menu_mode, std::string &GamePath,
+	CMenuVorticon( char menu_mode, std::string &GamePath,
 			char &Episode, CMap &Map,
 			CSavedGame &SavedGame, stOption *pOption );
-	virtual ~CMenu();
 
 	bool init( char menu_type = MAIN );
 
@@ -59,7 +58,7 @@ public:
 	void processDebugMenu();
 	void processModMenu();
 
-	void (CMenu::*processPtr)();
+	void (CMenuVorticon::*processPtr)();
 	
 	void cleanup();
 
@@ -82,6 +81,8 @@ public:
 	char m_mode;
 	
 	CDialog *mp_Dialog;
+
+	virtual ~CMenuVorticon();
 
 private:
 	void initMainMenu();
@@ -126,4 +127,4 @@ private:
 	bool m_RestartVideo;
 };
 
-#endif /* CMENU_H_ */
+#endif /* CMENUVORTICON_H_ */

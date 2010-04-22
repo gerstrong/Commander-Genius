@@ -8,7 +8,7 @@
 #include "CPassiveVort.h"
 
 #include "../../graphics/CGfxEngine.h"
-#include "../../common/CMenu.h"
+#include "../../common/CMenuVorticon.h"
 #include "../../common/CMapLoader.h"
 #include "../../sdl/CVideoDriver.h"
 #include "../../sdl/CInput.h"
@@ -100,7 +100,7 @@ void CPassiveVort::process()
 			else
 			{
 				SAFE_DELETE(mp_PressAnyBox);
-				mp_Menu = new CMenu( PASSIVE, m_DataDirectory,
+				mp_Menu = new CMenuVorticon( PASSIVE, m_DataDirectory,
 						m_Episode, *mp_Map, m_SavedGame, mp_Option );
 				mp_Menu->init();
 			}

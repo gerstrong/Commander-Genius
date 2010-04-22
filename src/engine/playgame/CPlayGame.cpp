@@ -362,7 +362,7 @@ void CPlayGame::process()
 		// Open the Main Menu if ESC Key pressed and mp_Menu not opened
 		if(!mp_Menu && !mp_Finale && g_pInput->getPressedCommand(IC_QUIT))
 		{	// Open the menu
-			mp_Menu = new CMenu( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame, mp_option );
+			mp_Menu = new CMenuVorticon( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame, mp_option );
 			mp_Menu->init();
 		}
 	}
@@ -468,7 +468,7 @@ void CPlayGame::handleFKeys()
 	{
 		// Show the typical F1 Help
 		// Open the menu
-		mp_Menu = new CMenu( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame, mp_option );
+		mp_Menu = new CMenuVorticon( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame, mp_option );
 		mp_Menu->init(F1);
 	}
 	
@@ -476,14 +476,14 @@ void CPlayGame::handleFKeys()
 	{
 		// Debug Menu
 		// Open the menu
-		mp_Menu = new CMenu( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame, mp_option );
+		mp_Menu = new CMenuVorticon( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame, mp_option );
 		mp_Menu->init(DEBUG);
 	}*/
 
     // F3 - save game
     if (g_pInput->getPressedKey(KF3))
     {
-		mp_Menu = new CMenu( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame, mp_option );
+		mp_Menu = new CMenuVorticon( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame, mp_option );
 		mp_Menu->init(SAVE);
     }
 }

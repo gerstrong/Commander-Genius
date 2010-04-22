@@ -17,7 +17,7 @@
 #include "CIntro.h"
 #include "CTitle.h"
 #include "../dialog/CTextBox.h"
-#include "../common/CMenu.h"
+#include "../common/CMenuVorticon.h"
 #include "../common/CMap.h"
 #include "../common/CObject.h"
 #include <string>
@@ -52,7 +52,7 @@ public:
 	
 	char m_mode;
 	
-	CMenu *mp_Menu;
+	CMenuVorticon *mp_Menu;
 
 protected:
 	char m_Episode;

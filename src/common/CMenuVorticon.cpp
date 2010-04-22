@@ -1,7 +1,7 @@
 // MENUVORTICON.C
 //  The main menu, intro, and other such stuff.
 
-#include "CMenu.h"
+#include "CMenuVorticon.h"
 #include "CObject.h"
 
 #include "../engine/CPassive.h"
@@ -30,7 +30,7 @@
 
 #define SELMOVE_SPD         3
 
-CMenu::CMenu( char menu_mode, std::string &GamePath,
+CMenuVorticon::CMenuVorticon( char menu_mode, std::string &GamePath,
 			 char &Episode, CMap &Map, CSavedGame &SavedGame,
 			 stOption *pOption ) :
 m_Episode(Episode),
@@ -77,7 +77,7 @@ m_RestartVideo(false)
 ////
 // Initialization Routines
 ////
-bool CMenu::init( char menu_type )
+bool CMenuVorticon::init( char menu_type )
 {
 	cleanup();
 	m_menu_type = menu_type;
@@ -89,34 +89,34 @@ bool CMenu::init( char menu_type )
 	switch(m_menu_type)
 	{
 	case MAIN:
-		initMainMenu(); processPtr = &CMenu::processMainMenu; break;
+		initMainMenu(); processPtr = &CMenuVorticon::processMainMenu; break;
 	case QUIT:
-		initConfirmMenu("   Quit the game?   "); processPtr = &CMenu::processQuitMenu; break;
+		initConfirmMenu("   Quit the game?   "); processPtr = &CMenuVorticon::processQuitMenu; break;
 	case ENDGAME:
-		initConfirmMenu("   End your game?   "); processPtr = &CMenu::processEndGameMenu; break;
+		initConfirmMenu("   End your game?   "); processPtr = &CMenuVorticon::processEndGameMenu; break;
 	case OVERWRITE:
-		initConfirmMenu("Overwrite this save?"); processPtr = &CMenu::processOverwriteMenu; break;
+		initConfirmMenu("Overwrite this save?"); processPtr = &CMenuVorticon::processOverwriteMenu; break;
 	case NEW:
-		initNumPlayersMenu(); processPtr = &CMenu::processNumPlayersMenu; break;
+		initNumPlayersMenu(); processPtr = &CMenuVorticon::processNumPlayersMenu; break;
 	case DIFFICULTY:
-		initDifficultyMenu(); processPtr = &CMenu::processDifficultyMenu; break;
+		initDifficultyMenu(); processPtr = &CMenuVorticon::processDifficultyMenu; break;
 	case CONFIGURE:
 		initConfigureMenu(); processPtr = NULL; break;
 	case CONTROLPLAYERS:
-		initNumControlMenu(); processPtr = &CMenu::processNumControlMenu; break;
+		initNumControlMenu(); processPtr = &CMenuVorticon::processNumControlMenu; break;
 	case CONTROLS:
 		mp_Menu = new CControlsettings(m_menu_type, m_NumPlayers);
 		return true;
 	case F1:
-		initF1Menu(); processPtr = &CMenu::processF1Menu; break;
+		initF1Menu(); processPtr = &CMenuVorticon::processF1Menu; break;
 	case MENU_DEBUG:
-		initDebugMenu(); processPtr = &CMenu::processDebugMenu; break;
+		initDebugMenu(); processPtr = &CMenuVorticon::processDebugMenu; break;
 	case MODCONF:
-		initModMenu(); processPtr = &CMenu::processModMenu; break;
+		initModMenu(); processPtr = &CMenuVorticon::processModMenu; break;
 	case SAVE:
-		initSaveMenu(); processPtr = &CMenu::processSaveMenu; break;
+		initSaveMenu(); processPtr = &CMenuVorticon::processSaveMenu; break;
 	case LOAD:
-		initSaveMenu(); processPtr = &CMenu::processLoadMenu; break;
+		initSaveMenu(); processPtr = &CMenuVorticon::processLoadMenu; break;
 	case GRAPHICS:
 	case BOUNDS:
 
@@ -137,7 +137,7 @@ bool CMenu::init( char menu_type )
 	return true;
 }
 
-void CMenu::initMainMenu()
+void CMenuVorticon::initMainMenu()
 {
 	mp_Dialog = new CDialog(17, 10);
 
@@ -175,7 +175,7 @@ void CMenu::initMainMenu()
 		m_menumap[7] = QUIT;
 }
 
-void CMenu::initNumPlayersMenu()
+void CMenuVorticon::initNumPlayersMenu()
 {
 	mp_Dialog = new CDialog(13, MAX_PLAYERS+2);
 	int i;
@@ -192,7 +192,7 @@ void CMenu::initNumPlayersMenu()
 	m_menumap[3] = DIFFICULTY;
 }
 
-void CMenu::initDifficultyMenu()
+void CMenuVorticon::initDifficultyMenu()
 {
 	mp_Dialog = new CDialog(11, 5);
 	
@@ -203,7 +203,7 @@ void CMenu::initDifficultyMenu()
 	mp_Dialog->processInput(1);
 }
 
-void CMenu::initDebugMenu()
+void CMenuVorticon::initDebugMenu()
 {
 	mp_Dialog = new CDialog(18, 5);
 	
@@ -217,7 +217,7 @@ void CMenu::initDebugMenu()
 	mp_Dialog->m_key = 's';
 }
 
-void CMenu::initModMenu()
+void CMenuVorticon::initModMenu()
 {
 	mp_Dialog = new CDialog(18, 5);
 	
@@ -231,7 +231,7 @@ void CMenu::initModMenu()
 	mp_Dialog->m_key = 's';
 }
 
-void CMenu::initConfigureMenu()
+void CMenuVorticon::initConfigureMenu()
 {
 	mp_Dialog = new CDialog(13, 6);
 	
@@ -247,7 +247,7 @@ void CMenu::initConfigureMenu()
 	m_menumap[3] = CONTROLPLAYERS;
 }
 
-void CMenu::initNumControlMenu()
+void CMenuVorticon::initNumControlMenu()
 {
 	mp_Dialog = new CDialog(13, MAX_PLAYERS+2);
 	int i;
@@ -264,7 +264,7 @@ void CMenu::initNumControlMenu()
 	m_menumap[3] = CONTROLS;
 }
 
-void CMenu::initF1Menu()
+void CMenuVorticon::initF1Menu()
 {
 	mp_Dialog = new CDialog(18, 9);
 	
@@ -279,7 +279,7 @@ void CMenu::initF1Menu()
 	// In the Help system let's hide all objects like Bitmaps, players, enemies, etc.
 }
 
-void CMenu::initConfirmMenu(std::string confirmtext)
+void CMenuVorticon::initConfirmMenu(std::string confirmtext)
 {
 	mp_Dialog = new CDialog(0, 0, 22, 5, 'l');
 	
@@ -288,7 +288,7 @@ void CMenu::initConfirmMenu(std::string confirmtext)
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 15, 3, "No");
 }
 
-void CMenu::initSaveMenu()
+void CMenuVorticon::initSaveMenu()
 {
 	std::string text;
 	mp_Dialog = new CDialog(0, 0, 22, 22, 'u');
@@ -314,7 +314,7 @@ void CMenu::initSaveMenu()
 // Process Routines
 ////
 /// Main Process method fo the menu
-void CMenu::process()
+void CMenuVorticon::process()
 {
 	// Information Mode?
 	if(!mp_InfoScene) // show a normal menu
@@ -413,7 +413,7 @@ void CMenu::process()
 	}
 }
 
-void CMenu::processMainMenu()
+void CMenuVorticon::processMainMenu()
 {	
 	if( m_selection != -1)
 	{
@@ -453,7 +453,7 @@ void CMenu::processMainMenu()
 	}
 }
 
-void CMenu::processNumPlayersMenu()
+void CMenuVorticon::processNumPlayersMenu()
 {
 	if( m_selection != -1)
 	{
@@ -466,7 +466,7 @@ void CMenu::processNumPlayersMenu()
 	return;
 }
 
-void CMenu::processDifficultyMenu()
+void CMenuVorticon::processDifficultyMenu()
 {
 	if( m_selection != -1)
 	{
@@ -476,7 +476,7 @@ void CMenu::processDifficultyMenu()
 	return;
 }
 
-void CMenu::processNumControlMenu()
+void CMenuVorticon::processNumControlMenu()
 {
 	if( m_selection != -1)
 	{
@@ -488,17 +488,17 @@ void CMenu::processNumControlMenu()
 	return;
 }
 
-void CMenu::processDebugMenu()
+void CMenuVorticon::processDebugMenu()
 {
 	return;
 }
 
-void CMenu::processModMenu()
+void CMenuVorticon::processModMenu()
 {
 	return;
 }
 
-void CMenu::processF1Menu()
+void CMenuVorticon::processF1Menu()
 {
 	if( m_selection != -1)
 	{
@@ -540,7 +540,7 @@ void CMenu::processF1Menu()
 
 
 // TODO: PLease put more comments in order to understand what is supposed to be done.
-void CMenu::processSaveMenu()
+void CMenuVorticon::processSaveMenu()
 {
 	std::string text;
 	if( m_selection != -1)
@@ -607,7 +607,7 @@ void CMenu::processSaveMenu()
 	return;
 }
 
-void CMenu::processLoadMenu()
+void CMenuVorticon::processLoadMenu()
 {
 	if( m_selection != -1)
 	{
@@ -634,7 +634,7 @@ void CMenu::processLoadMenu()
 
 // TODO: You really should see to get that dialog type (Yes/No) making it more universal and templatized.
 // If you don't you may loose the your own insight into the code.
-void CMenu::processOverwriteMenu()
+void CMenuVorticon::processOverwriteMenu()
 {
 	if( m_selection != -1)
 	{
@@ -653,7 +653,7 @@ void CMenu::processOverwriteMenu()
 	return;
 }
 
-void CMenu::processQuitMenu()
+void CMenuVorticon::processQuitMenu()
 {
 	if( m_selection != -1)
 	{
@@ -670,7 +670,7 @@ void CMenu::processQuitMenu()
 	return;
 }
 
-void CMenu::processEndGameMenu()
+void CMenuVorticon::processEndGameMenu()
 {
 	if( m_selection != -1)
 	{
@@ -690,7 +690,7 @@ void CMenu::processEndGameMenu()
 ////
 // Cleanup Routines
 ////
-void CMenu::cleanup()
+void CMenuVorticon::cleanup()
 {
 	m_Map.m_animation_enabled = true;
 	m_hideobjects = false;
@@ -699,7 +699,7 @@ void CMenu::cleanup()
 	SAFE_DELETE(mp_Dialog);
 }
 
-CMenu::~CMenu()
+CMenuVorticon::~CMenuVorticon()
 {
 	SAFE_DELETE(mp_Menu);
 	SAFE_DELETE(mp_InfoScene);
