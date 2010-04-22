@@ -33,15 +33,10 @@
 CMenuVorticon::CMenuVorticon( char menu_mode, std::string &GamePath,
 			 char &Episode, CMap &Map, CSavedGame &SavedGame,
 			 stOption *pOption ) :
-m_Episode(Episode),
-m_GamePath(GamePath),
-m_Map(Map),
-m_SavedGame(SavedGame),
-mp_option(pOption),
-m_RestartVideo(false)
+CMenu(menu_mode, GamePath, Episode, SavedGame, pOption),
+m_Map(Map)
 {
 	// Create the Main Menu
-	mp_MenuSurface = g_pVideoDriver->FGLayerSurface;
 	m_menu_mode = menu_mode;
 	m_Difficulty = -1; // no difficulty chosen...
 	m_NumPlayers = 0; // no player chosen...
@@ -84,7 +79,6 @@ bool CMenuVorticon::init( char menu_type )
 	m_goback = false;
 	m_goback2 = false;
 	m_selection = -1; // Nothing has been selected yet.
-	mp_MenuSurface = g_pVideoDriver->FGLayerSurface;
 
 	switch(m_menu_type)
 	{

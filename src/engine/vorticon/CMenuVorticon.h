@@ -4,22 +4,21 @@
  *  Created on: 24.09.2009
  *      Author: gerstrong and pizza2004
  *
- *
- * TODO: Comment about this class
- */
+ *	This is the superclass which will be used for getting
+ *	a menu work and is extended with specific engine instructions
+ * */
 #ifndef CMENUVORTICON_H_
 #define CMENUVORTICON_H_
 
-#include <string>
 #include <SDL.h>
 #include "../../dialog/CDialog.h"
 #include "../../dialog/CTextViewer.h"
-#include "../../fileio/CSavedGame.h"
 #include "../../common/Menu/CBaseMenu.h"
 #include "../../common/CMap.h"
-#include "../../common/options.h"
 
 #include "../../engine/infoscenes/CInfoScene.h"
+
+#include "../../common/CMenu.h"
 
 #define TWIRL_SPEED_SLOW        100
 #define TWIRL_SPEED_FAST        20
@@ -34,7 +33,7 @@
 #define TWIRL_SPEED             30
 #define TWIRL_NUM_FRAMES        5
 
-class CMenuVorticon {
+class CMenuVorticon : public CMenu {
 
 public:
 
@@ -101,15 +100,10 @@ private:
 
 	CInfoScene *mp_InfoScene;
 	CBaseMenu *mp_Menu;
-	SDL_Surface *mp_MenuSurface;
-	char &m_Episode;
-	std::string &m_GamePath;
-	CMap &m_Map;
-	CSavedGame &m_SavedGame;
 	std::map<int,int> m_menuback;
+	CMap &m_Map;
 	std::map<int,int> m_menumap;
 	std::vector<std::string> m_StateFileList;
-	stOption *mp_option;
 
 	bool m_choosegame;
 	bool m_overwrite;
@@ -124,7 +118,6 @@ private:
 	char m_NumPlayers;
 	char m_Difficulty;
 	int  m_saveslot;
-	bool m_RestartVideo;
 };
 
 #endif /* CMENUVORTICON_H_ */
