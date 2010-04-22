@@ -57,8 +57,9 @@ void CMenu::setupMenu()
 void CMenu::process()
 {
 	CFont &Font = g_pGfxEngine->getFont(1);
-	/*
-	Font.setMonoColour(g_pVideoDriver->BlitSurface->format, 0x54fc54, 0x545454);
+
+	Font.setFGColour(g_pVideoDriver->BlitSurface->format, 0x54fc54);
+	Font.setBGColour(g_pVideoDriver->BlitSurface->format, 0x545454);
 	Font.drawFont(g_pVideoDriver->BlitSurface,"Hello Hardcore Keener!",80,65);
 	Font.drawFont(g_pVideoDriver->BlitSurface,"I'm happy that you're trying",80,73);
 	Font.drawFont(g_pVideoDriver->BlitSurface,"to play our Galaxy Engine.",80,81);
@@ -67,14 +68,14 @@ void CMenu::process()
 	Font.drawFont(g_pVideoDriver->BlitSurface,"As you might have seen",80,115);
 	Font.drawFont(g_pVideoDriver->BlitSurface,"we are doing our best",80,123);
 	Font.drawFont(g_pVideoDriver->BlitSurface,"to get it running.",80,131);
-	Font.drawFont(g_pVideoDriver->BlitSurface,"Regards, The CG Team",80,139);*/
+	Font.drawFont(g_pVideoDriver->BlitSurface,"Regards, The CG Team",80,139);
 
-	mp_Dialog->processInput();
+	//mp_Dialog->processInput();
 
 	(this->*processPtr)();
 
 	Font.setBGColour(g_pVideoDriver->FGLayerSurface->format, 0x545454);
-	mp_Dialog->draw();
+	//mp_Dialog->draw();
 }
 
 /**

@@ -1,4 +1,4 @@
-//MENU.C
+// MENUVORTICON.C
 //  The main menu, intro, and other such stuff.
 
 #include "CMenu.h"
