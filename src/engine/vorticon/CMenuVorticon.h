@@ -12,14 +12,14 @@
 
 #include <string>
 #include <SDL.h>
-#include "../dialog/CDialog.h"
-#include "../dialog/CTextViewer.h"
-#include "../fileio/CSavedGame.h"
-#include "Menu/CBaseMenu.h"
-#include "CMap.h"
-#include "options.h"
+#include "../../dialog/CDialog.h"
+#include "../../dialog/CTextViewer.h"
+#include "../../fileio/CSavedGame.h"
+#include "../../common/Menu/CBaseMenu.h"
+#include "../../common/CMap.h"
+#include "../../common/options.h"
 
-#include "../engine/infoscenes/CInfoScene.h"
+#include "../../engine/infoscenes/CInfoScene.h"
 
 #define TWIRL_SPEED_SLOW        100
 #define TWIRL_SPEED_FAST        20

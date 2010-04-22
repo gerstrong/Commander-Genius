@@ -16,8 +16,8 @@
 
 #include "CIntro.h"
 #include "CTitle.h"
+#include "vorticon/CMenuVorticon.h"
 #include "../dialog/CTextBox.h"
-#include "../common/CMenuVorticon.h"
 #include "../common/CMap.h"
 #include "../common/CObject.h"
 #include <string>
