@@ -27,7 +27,8 @@ public:
 	CDlgObject();
 	virtual ~CDlgObject();
 
-	void create(Uint8 type, Uint16 ID, Uint16 x, Uint16 y, const std::string &text, unsigned int delimiter);
+	void create(Uint8 type, Uint16 ID, Uint16 x, Uint16 y, const std::string &text,
+							unsigned int delimiter, Uint8 Fontmap_ID=0);
 	void change(unsigned int delimiter, const std::string &text, Uint8 type);
 	void setSelection(bool value);
 

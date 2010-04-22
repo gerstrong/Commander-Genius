@@ -69,12 +69,12 @@ void CDlgOptionText::draw(SDL_Surface *Textsurface, Uint16 x, Uint16 y, bool hig
 {
 	CFont &Font = g_pGfxEngine->getFont(m_FontMapID);
 
-	Font.setColour(Textsurface->format, colour);
+	Font.setFGColour(Textsurface->format, colour);
 
 	Font.drawFont(Textsurface, m_text, x, y, highlight);
 }
 
-CDlgOptionText::~CDlgOptionText() {
-}
+CDlgOptionText::~CDlgOptionText()
+{}
 
 

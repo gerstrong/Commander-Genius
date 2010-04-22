@@ -27,16 +27,20 @@ m_TitleBmp(g_pGfxEngine->getBitmap(BMP_MAINMENULABEL))
 	setupMenu();
 }
 
+/**
+ * \brief sets the menu up when it's opened (initialization)
+ */
 void CMenu::setupMenu()
 {
 	// Perform coordinate calculations
 	m_title_coord.x = (g_pVideoDriver->getGameResolution().w - m_TitleBmp.getWidth())/2-45;
 	m_title_coord.y = 48;
 
-	mp_Dialog = new CDialog(100, 100);
+	mp_Dialog = new CDialog(23, 10);
 
 	// Use the standard Menu-Frame used in the old DOS-Games
-	mp_Dialog->setFrameTheme( DLG_THEME_OLDSCHOOL );
+	mp_Dialog->setFrameTheme( DLG_THEME_NONE );
+	mp_Dialog->setFontID(1);
 	mp_Dialog->setGalaxyStyle(true);
 
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "New Game");
@@ -47,10 +51,13 @@ void CMenu::setupMenu()
 ///
 // Processes
 ///
+/**
+ * \brief This cycle is processed every LPS. It's the menu core process
+ */
 void CMenu::process()
 {
-	/*CFont &Font = g_pGfxEngine->getFont(1);
-	m_TitleBmp.draw(g_pVideoDriver->BlitSurface, m_title_coord.x, m_title_coord.y);
+	CFont &Font = g_pGfxEngine->getFont(1);
+	/*
 	Font.setMonoColour(g_pVideoDriver->BlitSurface->format, 0x54fc54, 0x545454);
 	Font.drawFont(g_pVideoDriver->BlitSurface,"Hello Hardcore Keener!",80,65);
 	Font.drawFont(g_pVideoDriver->BlitSurface,"I'm happy that you're trying",80,73);
@@ -66,11 +73,17 @@ void CMenu::process()
 
 	(this->*processPtr)();
 
+	Font.setBGColour(g_pVideoDriver->FGLayerSurface->format, 0x545454);
 	mp_Dialog->draw();
 }
 
+/**
+ * \brief This is the child process only for the main menu itself
+ */
 void CMenu::processMainMenu()
 {
+	m_TitleBmp.draw(g_pVideoDriver->BlitSurface, m_title_coord.x, m_title_coord.y);
+
 	// TODO: Code for the main menu goes here!
 }
 

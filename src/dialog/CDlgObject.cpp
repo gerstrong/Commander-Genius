@@ -21,7 +21,7 @@ m_colour(0x0)
 // Creation Routine
 ///
 void CDlgObject::create(Uint8 type, Uint16 ID, Uint16 x, Uint16 y,
-		const std::string &text, unsigned int delimiter)
+		const std::string &text, unsigned int delimiter, Uint8 Fontmap_ID)
 {
 	m_type = type;
 	m_ID = ID;
@@ -32,7 +32,7 @@ void CDlgObject::create(Uint8 type, Uint16 ID, Uint16 x, Uint16 y,
 	if( m_type == DLG_OBJ_OPTION_TEXT || m_type == DLG_OBJ_DISABLED || m_type == DLG_OBJ_TEXT )
 	{
 		m_selectable = (m_type == DLG_OBJ_OPTION_TEXT) ? true : false;
-		m_Option = new CDlgOptionText(text, delimiter);
+		m_Option = new CDlgOptionText(text, delimiter, Fontmap_ID);
 	}
 }
 

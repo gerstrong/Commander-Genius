@@ -24,6 +24,7 @@ public:
 	void addObject( Uint8 type, Uint16 x, Uint16 y,const std::string text="" );
 	void setObjectText( Uint8 ID, const std::string &text );
 	void setObjectType( Uint8 ID, Uint8 type );
+	void setFontID(Uint8 value);
 
 	int getSelection() { return m_selected_ID; }
 
@@ -54,6 +55,7 @@ private:
 	
 	CDlgFrame *m_Frame;
 	Uint8 m_alpha;
+	Uint8 m_Font_ID;
 	bool m_galaxy_style;
 
 	struct{

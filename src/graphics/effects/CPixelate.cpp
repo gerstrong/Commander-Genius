@@ -68,15 +68,16 @@ void CPixelate::process()
 
 		for(unsigned short drawamt=0 ; drawamt < m_speed ; drawamt++ )
 		{
-			// get a random pixel between 0 and 320
-			x = rand()%gameres.w;
-
+			do
+			{	// get a random pixel between 0 and 320 which has not yet been occupied
+				x = rand()%gameres.w;
+			} while( m_drawmap[(Uint32)(y*gameres.w + x)] );
 			// If the pixel was already drawn, go to the next one or go back if at end of line
-			while( m_drawmap[(Uint32)(y*gameres.w + x)] )
+			/*while( m_drawmap[(Uint32)(y*gameres.w + x)] )
 			{
-				x++;
+				x = rand()%gameres.w;
 				if(x >= gameres.w) x=0;
-			}
+			}*/
 
 			// The y line gets one pixel painted at random x, between 0 and 320.
 			pixel = pixelstart + x*mp_OldSurface->format->BytesPerPixel;

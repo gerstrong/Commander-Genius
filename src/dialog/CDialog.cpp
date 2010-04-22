@@ -14,7 +14,11 @@
 #include "../graphics/CGfxEngine.h"
 #include "CDialog.h"
 
-CDialog::CDialog(Uint16 w, Uint16 h)
+// TODO: This class must get a super class and we need two new classes for galaxy and vorticon engines.
+// Their menu display are way too different
+
+CDialog::CDialog(Uint16 w, Uint16 h) :
+m_Font_ID(0)
 {
 	m_x = (300/2)-(w*4)+10;	m_y = (200/2)-(h*4);
 	m_w = w;	m_h = h;
@@ -33,7 +37,8 @@ CDialog::CDialog(Uint16 w, Uint16 h)
 	m_alpha = 0;
 }
 
-CDialog::CDialog(Uint16 x, Uint16 y, Uint16 w, Uint16 h, char key)
+CDialog::CDialog(Uint16 x, Uint16 y, Uint16 w, Uint16 h, char key) :
+m_Font_ID(0)
 {
 	m_x = (300/2)-(w*4)+10+x;	m_y = (200/2)-(h*4)+y;
 	m_w = w;	m_h = h;
@@ -76,7 +81,8 @@ void CDialog::addObject(Uint8 type, Uint16 x, Uint16 y,const std::string text)
 	CDlgObject *DlgObject = new CDlgObject();
 	DlgObject->create( type, m_dlgobject.size(),
 						m_x+(x*8), m_y+(y*8),
-						text, m_w-((x-m_x)/8)-5);
+						text, m_w-((x-m_x)/8)-5,
+						m_Font_ID);
 	m_dlgobject.push_back(DlgObject);
 
 	// Check if the ID is not out of bounds.
@@ -102,6 +108,10 @@ void CDialog::setObjectType(Uint8 ID, Uint8 type)
 	std::string text = m_dlgobject[ID]->m_Option->m_text;
 	m_dlgobject[ID]->change( m_w-((m_dlgobject[ID]->m_x-m_x)/8)-4, text, type );
 }
+
+void CDialog::setFontID(Uint8 value)
+{	m_Font_ID = value;	}
+
 
 ///
 // Process routine
@@ -309,8 +319,8 @@ void CDialog::draw()
 	
 	// Render the empty Dialog frame if any
 	if(m_Frame) m_Frame->draw(dst_sfc);
-	
-	CFont &Font = g_pGfxEngine->getFont(0);
+
+	CFont &Font = g_pGfxEngine->getFont(m_Font_ID);
 	// Draw the to icon up or down accordingly
 	if( m_scroll>0 ) // Up Arrow
 	{
@@ -338,7 +348,7 @@ void CDialog::draw()
 		m_dlgobject[i]->setSelection( i+m_scroll==m_selected_ID ? true : false);
 		m_dlgobject[i]->render(dst_sfc, m_scroll, false );
 	}
-	Font.setColour(dst_sfc->format, 0x0); // Set black letter color for the other elements
+	Font.setFGColour(dst_sfc->format, 0x0); // Set black letter color for the other elements
 	
 	if(m_key == 'c')
 	{
