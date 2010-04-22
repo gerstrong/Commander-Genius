@@ -10,6 +10,7 @@
 
 #include "../../graphics/CBitmap.h"
 #include "../../graphics/CFont.h"
+#include "../../dialog/CDialog.h"
 #include "GraphicsIDs.h"
 
 namespace galaxy
@@ -26,6 +27,7 @@ public:
 
 	void (CMenu::*processPtr)();
 	CBitmap m_TitleBmp;
+	CDialog *mp_Dialog;
 
 	struct {
 		int x;

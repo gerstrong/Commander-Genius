@@ -32,8 +32,7 @@ public:
 
 	void setWidthToCharacter(Uint8 width, Uint16 letter);
 	void setMonochrome(bool value);
-	void setColour(Uint32 colour, bool force=false);
-	void setMonoColour(SDL_PixelFormat* p_pixelformat, Uint32 fgcolour, Uint32 bgcolour, bool force=false);
+	void setColour(SDL_PixelFormat* p_pixelformat, Uint32 fgcolour, Uint32 bgcolour=0x0, bool force=false);
 	Uint32 getColour();
 
 	void drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff, Uint32 colour = 0x0);

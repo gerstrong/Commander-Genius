@@ -203,7 +203,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	}
 	else g_pLogFile->textOut(GREEN, "VGA Fontmap for the game has been loaded successfully!");
 
-	Font.setColour(0x0, true);
+	Font.setColour(Font.getSDLSurface()->format, 0x0, true);
 
 	// Setup the twirl
 	g_pGfxEngine->createEmptyCursorMap(Font.getSDLColouredSurface());
@@ -229,7 +229,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	}
 	else g_pLogFile->textOut(GREEN, "Extra tiles for the game has been loaded successfully!");
 
-	Font2.setColour(0x0, true);
+	Font2.setColour(Font2.getSDLSurface()->format, 0x0, true);
 
 	// Load 32x32 Tiles
 	// TODO: Add a read method for 32x32 Tiles

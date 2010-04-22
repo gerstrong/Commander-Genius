@@ -25,7 +25,7 @@
 CDlgOptionText::CDlgOptionText(const std::string &text, unsigned int delimit, Uint8 fontmapID)
 {
 	setText(text, delimit);
-	m_FontMapID = 0;
+	m_FontMapID = fontmapID;
 }
 
 /**
@@ -69,7 +69,7 @@ void CDlgOptionText::draw(SDL_Surface *Textsurface, Uint16 x, Uint16 y, bool hig
 {
 	CFont &Font = g_pGfxEngine->getFont(m_FontMapID);
 
-	if(Font.getColour() != colour)	Font.setColour(colour);
+	Font.setColour(Textsurface->format, colour);
 
 	Font.drawFont(Textsurface, m_text, x, y, highlight);
 }

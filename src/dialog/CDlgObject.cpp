@@ -20,7 +20,8 @@ m_colour(0x0)
 ///
 // Creation Routine
 ///
-void CDlgObject::create(Uint8 type, Uint16 ID, Uint16 x, Uint16 y, const std::string &text, unsigned int delimiter)
+void CDlgObject::create(Uint8 type, Uint16 ID, Uint16 x, Uint16 y,
+		const std::string &text, unsigned int delimiter)
 {
 	m_type = type;
 	m_ID = ID;
@@ -83,7 +84,7 @@ void CDlgObject::render(SDL_Surface *dst, Uint8 scrollamt, bool highlight)
 				m_colour-=fade_speed;
 		}
 
-		m_Option->draw(dst, m_x+16, m_y-8*scrollamt, highlight, m_colour); // +16 because selection icon needs space
+		m_Option->draw(dst, m_x+16, m_y-8*scrollamt, highlight, m_colour);
 	}
 	else if(m_type == DLG_OBJ_DISABLED)
 		m_Option->draw(dst, m_x+16, m_y-8*scrollamt, highlight, 0x7F7F7F); // +16 because selection icon needs space

@@ -33,7 +33,15 @@ void CMenu::setupMenu()
 	m_title_coord.x = (g_pVideoDriver->getGameResolution().w - m_TitleBmp.getWidth())/2-45;
 	m_title_coord.y = 48;
 
-	//mp_Dialog = new CDialog(Uint16 w, Uint16 h);
+	mp_Dialog = new CDialog(100, 100);
+
+	// Use the standard Menu-Frame used in the old DOS-Games
+	mp_Dialog->setFrameTheme( DLG_THEME_OLDSCHOOL );
+	mp_Dialog->setGalaxyStyle(true);
+
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "New Game");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Load Game");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,1,3,"Quit");
 }
 
 ///
@@ -41,7 +49,7 @@ void CMenu::setupMenu()
 ///
 void CMenu::process()
 {
-	CFont &Font = g_pGfxEngine->getFont(1);
+	/*CFont &Font = g_pGfxEngine->getFont(1);
 	m_TitleBmp.draw(g_pVideoDriver->BlitSurface, m_title_coord.x, m_title_coord.y);
 	Font.setMonoColour(g_pVideoDriver->BlitSurface->format, 0x54fc54, 0x545454);
 	Font.drawFont(g_pVideoDriver->BlitSurface,"Hello Hardcore Keener!",80,65);
@@ -52,9 +60,13 @@ void CMenu::process()
 	Font.drawFont(g_pVideoDriver->BlitSurface,"As you might have seen",80,115);
 	Font.drawFont(g_pVideoDriver->BlitSurface,"we are doing our best",80,123);
 	Font.drawFont(g_pVideoDriver->BlitSurface,"to get it running.",80,131);
-	Font.drawFont(g_pVideoDriver->BlitSurface,"Regards, The CG Team",80,139);
+	Font.drawFont(g_pVideoDriver->BlitSurface,"Regards, The CG Team",80,139);*/
+
+	mp_Dialog->processInput();
 
 	(this->*processPtr)();
+
+	mp_Dialog->draw();
 }
 
 void CMenu::processMainMenu()
@@ -64,7 +76,7 @@ void CMenu::processMainMenu()
 
 CMenu::~CMenu()
 {
-	// TODO Auto-generated destructor stub
+	delete mp_Dialog;
 }
 
 }

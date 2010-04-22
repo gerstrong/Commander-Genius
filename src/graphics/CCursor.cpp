@@ -25,7 +25,8 @@ void CCursor::generateTwirls(CFont &Font)
 	// Copy the some inverted twirls and then put the last one at the end.
 	// By that way the font tile will get smoother
 	SDL_Rect twrect, fmrect;
-	SDL_Surface *srcsfc = Font.getSDLColouredSurface();
+	//SDL_Surface *srcsfc = Font.getSDLColouredSurface();
+	SDL_Surface *srcsfc = Font.getSDLSurface();
 
 	// Copy the first 5 tiles
 	twrect.x=9*8;

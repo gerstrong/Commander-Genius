@@ -100,27 +100,28 @@ void CFont::setMonochrome(bool value)
 {	m_monochrome = value;	}
 
 // Sets the colour used for printing the text
-void CFont::setColour(Uint32 colour, bool force)
+void CFont::setColour(SDL_PixelFormat* p_pixelformat, Uint32 fgcolour, Uint32 bgcolour, bool force)
 {
-	if( m_fgcolour != colour || force )
+	if(m_monochrome)
 	{
-		m_fgcolour = colour;
-		SDL_FillRect(m_ColouredSurface, NULL, colour);
-		SDL_BlitSurface(m_FontSurface, NULL, m_ColouredSurface, NULL);
+		SDL_Color *p_Color = m_FontSurface->format->palette->colors;
+
+		if( m_fgcolour != fgcolour || force )	// For the Foreground
+			SDL_GetRGB(fgcolour, p_pixelformat, &p_Color[15].r, &p_Color[15].g, &p_Color[15].b);
+
+		if( m_bgcolour != bgcolour || force ) // For the Background
+			SDL_GetRGB(bgcolour, p_pixelformat, &p_Color[0].r, &p_Color[0].g, &p_Color[0].b);
+	}
+	else
+	{
+		if( m_fgcolour != fgcolour || force )
+		{
+			m_fgcolour = fgcolour;
+			SDL_FillRect(m_ColouredSurface, NULL, m_fgcolour);
+			SDL_BlitSurface(m_FontSurface, NULL, m_ColouredSurface, NULL);
+		}
 	}
 }
-
-void CFont::setMonoColour(SDL_PixelFormat* p_pixelformat, Uint32 fgcolour, Uint32 bgcolour, bool force)
-{
-	SDL_Color *p_Color = m_FontSurface->format->palette->colors;
-
-	if( m_fgcolour != fgcolour || force )	// For the Foreground
-		SDL_GetRGB(fgcolour, p_pixelformat, &p_Color[15].r, &p_Color[15].g, &p_Color[15].b);
-
-	if( m_bgcolour != bgcolour || force ) // For the Background
-		SDL_GetRGB(bgcolour, p_pixelformat, &p_Color[0].r, &p_Color[0].g, &p_Color[0].b);
-}
-
 
 //
 Uint32 CFont::getColour()

@@ -19,6 +19,7 @@ public:
 	virtual ~CDialog();
 
 	void setFrameTheme( Uint8 theme );
+	void setGalaxyStyle(bool value);
 	void setSelection( Uint8 selection);
 	void addObject( Uint8 type, Uint16 x, Uint16 y,const std::string text="" );
 	void setObjectText( Uint8 ID, const std::string &text );
@@ -53,6 +54,7 @@ private:
 	
 	CDlgFrame *m_Frame;
 	Uint8 m_alpha;
+	bool m_galaxy_style;
 
 	struct{
 		Uint8  frame;

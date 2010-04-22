@@ -61,6 +61,11 @@ void CDialog::setFrameTheme(Uint8 theme)
 	m_Frame = new CDlgFrame(m_x, m_y, m_w, m_h, theme);
 }
 
+void CDialog::setGalaxyStyle(bool value)
+{
+	m_galaxy_style = value;
+}
+
 void CDialog::setSelection(Uint8 selection)
 {
 	m_selected_ID = selection;
@@ -69,7 +74,9 @@ void CDialog::setSelection(Uint8 selection)
 void CDialog::addObject(Uint8 type, Uint16 x, Uint16 y,const std::string text)
 {
 	CDlgObject *DlgObject = new CDlgObject();
-	DlgObject->create( type, m_dlgobject.size(), m_x+(x*8), m_y+(y*8), text, m_w-((x-m_x)/8)-5 );
+	DlgObject->create( type, m_dlgobject.size(),
+						m_x+(x*8), m_y+(y*8),
+						text, m_w-((x-m_x)/8)-5);
 	m_dlgobject.push_back(DlgObject);
 
 	// Check if the ID is not out of bounds.
@@ -331,7 +338,7 @@ void CDialog::draw()
 		m_dlgobject[i]->setSelection( i+m_scroll==m_selected_ID ? true : false);
 		m_dlgobject[i]->render(dst_sfc, m_scroll, false );
 	}
-	Font.setColour(0x0); // Set black letter color for the other elements
+	Font.setColour(dst_sfc->format, 0x0); // Set black letter color for the other elements
 	
 	if(m_key == 'c')
 	{
