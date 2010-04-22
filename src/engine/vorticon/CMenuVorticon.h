@@ -114,7 +114,6 @@ private:
 	int m_selection;
 	char m_lastselect;
 	char m_menu_type;
-	char m_menu_mode;
 	char m_NumPlayers;
 	char m_Difficulty;
 	int  m_saveslot;

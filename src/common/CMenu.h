@@ -26,6 +26,7 @@ protected:
 	CSavedGame &m_SavedGame;
 	bool m_RestartVideo;
 	stOption *mp_option;
+	char m_menu_mode;
 };
 
 

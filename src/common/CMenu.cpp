@@ -14,7 +14,8 @@ m_Episode(Episode),
 m_GamePath(GamePath),
 m_SavedGame(SavedGame),
 m_RestartVideo(false),
-mp_option(pOption)
+mp_option(pOption),
+m_menu_mode(menu_mode)
 {
 	// TODO Auto-generated constructor stub
 }

@@ -36,37 +36,7 @@ CMenuVorticon::CMenuVorticon( char menu_mode, std::string &GamePath,
 CMenu(menu_mode, GamePath, Episode, SavedGame, pOption),
 m_Map(Map)
 {
-	// Create the Main Menu
-	m_menu_mode = menu_mode;
-	m_Difficulty = -1; // no difficulty chosen...
-	m_NumPlayers = 0; // no player chosen...
-	
-	m_lastselect = -1;
-	m_demoback = false;
-	m_overwrite = false;
-	m_quit = false;
-	m_choosegame = false;
-	m_goback = false;
-	m_Endgame = false;
-	mp_Dialog = NULL;
-	mp_InfoScene = NULL;
-	m_hideobjects = false;
-	m_menuback[1] = MAIN;
-	m_menuback[2] = SAVE;
-	m_menuback[3] = CONFIGURE;
-	m_menuback[9] = MAIN;
-	m_menuback[10] = MAIN;
-	m_menuback[12] = NEW;
-	m_menuback[13] = MAIN;
-	m_menuback[18] = MAIN;
-	m_menuback[20] = MAIN;
-	m_menuback[21] = MAIN;
-	m_menuback[24] = MAIN;
-	m_menuback[25] = MAIN;
-	m_menumap.clear();
 
-	// Special Pointer used for Menus that are declared in separated classes
-	mp_Menu = NULL;
 }
 
 ////
@@ -113,7 +83,6 @@ bool CMenuVorticon::init( char menu_type )
 		initSaveMenu(); processPtr = &CMenuVorticon::processLoadMenu; break;
 	case GRAPHICS:
 	case BOUNDS:
-
 		mp_Menu = new CVideoSettings(m_menu_type);
 		return true;
 	case OPTIONS:
