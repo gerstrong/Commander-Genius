@@ -15,8 +15,6 @@
 #define CEGAGRAPHICS_H_
 
 #include <string>
-#include "CEGALatch.h"
-#include "CEGASprit.h"
 
 class CEGAGraphics {
 public:

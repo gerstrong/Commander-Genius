@@ -9,6 +9,8 @@
 #define CEGAGRAPHICSVORT_H_
 
 #include "../CEGAGraphics.h"
+#include "CEGALatch.h"
+#include "CEGASprit.h"
 
 namespace vorticon
 {

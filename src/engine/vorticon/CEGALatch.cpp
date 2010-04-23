@@ -6,14 +6,14 @@
  */
 
 #include "CEGALatch.h"
-#include "../graphics/CGfxEngine.h"
-#include "../sdl/CVideoDriver.h"
-#include "../CLogFile.h"
-#include "CPlanes.h"
-#include "../funcdefs.h"
-#include "../keen.h"
-#include "../FindFile.h"
-#include "../lz.h"
+#include "../../graphics/CGfxEngine.h"
+#include "../../sdl/CVideoDriver.h"
+#include "../../CLogFile.h"
+#include "../CPlanes.h"
+#include "../../funcdefs.h"
+#include "../../keen.h"
+#include "../../FindFile.h"
+#include "../../lz.h"
 #include <SDL.h>
 #include <stdio.h>
 #include <string.h>

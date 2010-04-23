@@ -11,7 +11,7 @@
 #include <string>
 #include <SDL.h>
 #include <vector>
-#include "../graphics/CGfxEngine.h"
+#include "../../graphics/CGfxEngine.h"
 
 #define MAX_PLAYERS 4
 

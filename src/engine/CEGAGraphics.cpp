@@ -9,6 +9,7 @@
 #include "../FindFile.h"
 #include "../CLogFile.h"
 #include "../sdl/CVideoDriver.h"
+#include "../graphics/CGfxEngine.h"
 
 CEGAGraphics::CEGAGraphics(short episode, const std::string& path) {
 	m_episode = episode;
