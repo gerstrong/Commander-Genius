@@ -77,7 +77,6 @@ public:
 
 	bool m_demoback;
 	bool m_hideobjects;
-	char m_mode;
 	
 	CDialog *mp_Dialog;
 
