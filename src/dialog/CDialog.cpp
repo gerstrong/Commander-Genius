@@ -292,14 +292,18 @@ void CDialog::processInput(int move)
 				m_dlgobject.at(m_selected_ID)->m_Option->m_value = m_int;
 				m_dlgobject.at(m_selected_ID)->m_Option->m_FontMapID = 1;
 
-				std::string asciislider = "<";
+				std::string asciislider;
+
+				asciislider += 32;
 
 				// Why does it go from 0 to 16. If we have a resolution of 16 steps
 				// It might have to go from 0 to 15
-				for(Uint16 i=0 ; i<=16 ; i++)
-					asciislider += (m_int == i) ? "O" : "=";
-
-				asciislider += ">";
+				for(Uint16 i=0 ; i<m_int ; i++)
+					asciislider += 33;
+				asciislider += 34;
+				for(Uint16 i=m_int+1 ; i<=16 ; i++)
+					asciislider += 35;
+				asciislider += 36;
 
 				setObjectText(m_selected_ID, asciislider);
 			}

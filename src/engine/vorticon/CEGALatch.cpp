@@ -223,7 +223,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 
 	if(!Font2.loadHiColourFont(filename)) // This is loaded again in order to get hi-colour fonts
 	{
-		filename = "data/gfx/extratiles.bmp";
+		filename = "data/res/gfx/extratiles.bmp";
 		if(Font2.loadHiColourFont(filename))
 			g_pLogFile->textOut(GREEN, "Extra tiles for the game has been loaded successfully!");
 	}
