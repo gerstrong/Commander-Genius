@@ -298,16 +298,16 @@ void CDialog::processInput(int move)
 
 				std::string asciislider;
 
-				asciislider += 32;
+				asciislider += 16;
 
 				// Why does it go from 0 to 16. If we have a resolution of 16 steps
 				// It might have to go from 0 to 15
 				for(Uint16 i=0 ; i<m_int ; i++)
-					asciislider += 33;
-				asciislider += 34;
+					asciislider += 17;
+				asciislider += 18;
 				for(Uint16 i=m_int+1 ; i<=16 ; i++)
-					asciislider += 35;
-				asciislider += 36;
+					asciislider += 19;
+				asciislider += 20;
 
 				setObjectText(m_selected_ID, asciislider);
 			}

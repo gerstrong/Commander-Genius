@@ -184,13 +184,14 @@
 		63626770109E5A6000C18BAA /* COrderingInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C637D9103181BF00FEEFEE /* COrderingInfo.cpp */; };
 		63626771109E5A6100C18BAA /* CHighScores.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3EA041013ABCA001643FA /* CHighScores.cpp */; };
 		63626772109E5A6700C18BAA /* Unicode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 235756C1101B766800275638 /* Unicode.cpp */; };
+		6364E244118373FB0073053F /* CMenuVorticon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6364E242118373FA0073053F /* CMenuVorticon.cpp */; };
 		636F9FED10C38FC400CF09A2 /* CAudioSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 636F9FE310C38FC400CF09A2 /* CAudioSettings.cpp */; };
 		636F9FEE10C38FC400CF09A2 /* CBaseMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 636F9FE510C38FC400CF09A2 /* CBaseMenu.cpp */; };
 		636F9FEF10C38FC400CF09A2 /* CControlsettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 636F9FE710C38FC400CF09A2 /* CControlsettings.cpp */; };
 		636F9FF010C38FC400CF09A2 /* COptions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 636F9FE910C38FC400CF09A2 /* COptions.cpp */; };
 		636F9FF110C38FC400CF09A2 /* CVideoSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 636F9FEB10C38FC400CF09A2 /* CVideoSettings.cpp */; };
 		6382949F11562C7100D608A2 /* menufonts.bmp in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 6382949E11562C7100D608A2 /* menufonts.bmp */; };
-		638890BF1162A490009810AC /* extratiles.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 638890BE1162A490009810AC /* extratiles.bmp */; };
+		638890BF1162A490009810AC /* extratiles.bmp in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 638890BE1162A490009810AC /* extratiles.bmp */; };
 		638F025D10AC656A0083A97C /* CFinaleStaticScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 638F025910AC656A0083A97C /* CFinaleStaticScene.cpp */; };
 		638F025E10AC656A0083A97C /* CShipFlySys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 638F025B10AC656A0083A97C /* CShipFlySys.cpp */; };
 		63999E3A10D151BA00EDB6CD /* fonts.bmp in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 63999E3910D151BA00EDB6CD /* fonts.bmp */; };
@@ -335,6 +336,7 @@
 			dstPath = data/res/gfx;
 			dstSubfolderSpec = 7;
 			files = (
+				638890BF1162A490009810AC /* extratiles.bmp in Copy Res Files */,
 				6382949F11562C7100D608A2 /* menufonts.bmp in Copy Res Files */,
 				63F85894110193E200E78524 /* CGLogo.bmp in Copy Res Files */,
 				63D4A702107FEB7C00E43500 /* 100.tga in Copy Res Files */,
@@ -683,6 +685,8 @@
 		6356F47010C0CFA900707F5B /* CPhysicsSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPhysicsSettings.h; sourceTree = "<group>"; };
 		636404FE108836F4001799CE /* crc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = crc.cpp; path = ../../fileio/crc.cpp; sourceTree = "<group>"; };
 		636404FF108836F4001799CE /* crc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = crc.h; path = ../../fileio/crc.h; sourceTree = "<group>"; };
+		6364E242118373FA0073053F /* CMenuVorticon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMenuVorticon.cpp; sourceTree = "<group>"; };
+		6364E243118373FA0073053F /* CMenuVorticon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMenuVorticon.h; sourceTree = "<group>"; };
 		636BC8551087729200996B46 /* CStatusScreen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CStatusScreen.cpp; path = ../../common/CStatusScreen.cpp; sourceTree = "<group>"; };
 		636BC8561087729200996B46 /* CStatusScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CStatusScreen.h; path = ../../common/CStatusScreen.h; sourceTree = "<group>"; };
 		636F9FE310C38FC400CF09A2 /* CAudioSettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAudioSettings.cpp; sourceTree = "<group>"; };
@@ -883,7 +887,6 @@
 				23D3ED7D10175B24001643FA /* Unicode.h */,
 				23D3ED8010175BA7001643FA /* Utils.h */,
 				23D3E9FD1013ABCA001643FA /* vorbis */,
-				23D3E9FF1013ABCA001643FA /* vorticon */,
 			);
 			name = src;
 			path = ../../src;
@@ -1176,35 +1179,6 @@
 			path = ../../src/vorbis;
 			sourceTree = SOURCE_ROOT;
 		};
-		23D3E9FF1013ABCA001643FA /* vorticon */ = {
-			isa = PBXGroup;
-			children = (
-				23D3E9741013ABC9001643FA /* ai */,
-				23D3EC431016973A001643FA /* CEGAGraphics.cpp */,
-				23D3EC441016973A001643FA /* CEGAGraphics.h */,
-				23D3EC451016973A001643FA /* CEGALatch.cpp */,
-				23D3EC461016973A001643FA /* CEGALatch.h */,
-				23D3EC471016973A001643FA /* CEGASprit.cpp */,
-				23D3EC481016973A001643FA /* CEGASprit.h */,
-				23D3EA061013ABCA001643FA /* CIntro.cpp */,
-				23D3EA071013ABCA001643FA /* CIntro.h */,
-				23D3EC491016973A001643FA /* CMessages.cpp */,
-				23D3EC4A1016973A001643FA /* CMessages.h */,
-				63A4D2EC10B2F31800F353C0 /* infoscenes */,
-				63453BDE10798CFE007265F8 /* CPassive.cpp */,
-				63453BDF10798CFE007265F8 /* CPassive.h */,
-				23D3EC4B1016973A001643FA /* CPlanes.cpp */,
-				23D3EC4C1016973A001643FA /* CPlanes.h */,
-				63453BE210798CFE007265F8 /* CTitle.cpp */,
-				63453BE310798CFE007265F8 /* CTitle.h */,
-				634F871A10A38B2B007673F7 /* playgame */,
-				23D3EA0C1013ABCA001643FA /* sounds.h */,
-				6312202610910DB200053A0E /* spritedefines.h */,
-			);
-			name = vorticon;
-			path = engine;
-			sourceTree = "<group>";
-		};
 		5048396909E3304600765E4B /* Configuration Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -1352,6 +1326,23 @@
 		639AA8401143A5A000C990A3 /* engine */ = {
 			isa = PBXGroup;
 			children = (
+				23D3E9741013ABC9001643FA /* ai */,
+				23D3EC431016973A001643FA /* CEGAGraphics.cpp */,
+				23D3EC441016973A001643FA /* CEGAGraphics.h */,
+				23D3EA061013ABCA001643FA /* CIntro.cpp */,
+				23D3EA071013ABCA001643FA /* CIntro.h */,
+				23D3EC491016973A001643FA /* CMessages.cpp */,
+				23D3EC4A1016973A001643FA /* CMessages.h */,
+				63A4D2EC10B2F31800F353C0 /* infoscenes */,
+				63453BDE10798CFE007265F8 /* CPassive.cpp */,
+				63453BDF10798CFE007265F8 /* CPassive.h */,
+				23D3EC4B1016973A001643FA /* CPlanes.cpp */,
+				23D3EC4C1016973A001643FA /* CPlanes.h */,
+				63453BE210798CFE007265F8 /* CTitle.cpp */,
+				63453BE310798CFE007265F8 /* CTitle.h */,
+				634F871A10A38B2B007673F7 /* playgame */,
+				23D3EA0C1013ABCA001643FA /* sounds.h */,
+				6312202610910DB200053A0E /* spritedefines.h */,
 				6366B9A510D5A390009801ED /* galaxy */,
 				63FC18131144291500D7BB0C /* vorticon */,
 			);
@@ -1437,6 +1428,12 @@
 		63FC18131144291500D7BB0C /* vorticon */ = {
 			isa = PBXGroup;
 			children = (
+				6364E242118373FA0073053F /* CMenuVorticon.cpp */,
+				6364E243118373FA0073053F /* CMenuVorticon.h */,
+				23D3EC451016973A001643FA /* CEGALatch.cpp */,
+				23D3EC461016973A001643FA /* CEGALatch.h */,
+				23D3EC471016973A001643FA /* CEGASprit.cpp */,
+				23D3EC481016973A001643FA /* CEGASprit.h */,
 				630BAE9A1148AF0200172B6E /* CCamera.cpp */,
 				630BAE9B1148AF0200172B6E /* CCamera.h */,
 				634A33E310A233DB0051193D /* finale */,
@@ -1552,7 +1549,6 @@
 				235755D2101A5E5900275638 /* InfoPlist.strings in Resources */,
 				235755D3101A5E5900275638 /* main.xib in Resources */,
 				63AB8C2F107C62D0001EE22F /* cglogo.icns in Resources */,
-				638890BF1162A490009810AC /* extratiles.bmp in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1726,6 +1722,7 @@
 				630BAE9C1148AF0200172B6E /* CCamera.cpp in Sources */,
 				63FCEB5A116C505500AB1202 /* CMenu.cpp in Sources */,
 				633DF72111738BF9008C56D4 /* CCursor.cpp in Sources */,
+				6364E244118373FB0073053F /* CMenuVorticon.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
