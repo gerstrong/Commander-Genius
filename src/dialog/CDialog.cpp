@@ -36,7 +36,7 @@ m_Font_ID(0)
 	m_switch = 0;
 	m_scroll = 0;
 	m_Frame = NULL;
-	m_alpha = 0;
+	m_alpha = 128;
 }
 
 CDialog::CDialog(Uint16 x, Uint16 y, Uint16 w, Uint16 h, char key) :
@@ -57,7 +57,7 @@ m_Font_ID(0)
 	m_switch = 0;
 	m_scroll = 0;
 	m_Frame = NULL;
-	m_alpha = 0;
+	m_alpha = 128;
 }
 
 ///

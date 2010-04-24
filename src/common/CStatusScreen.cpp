@@ -155,7 +155,6 @@ void CStatusScreen::drawInventoryEp1()
 	{
 		CSprite &Sprite = g_pGfxEngine->getSprite(m_baseframe);
 		Sprite.drawSprite(  mp_surface, x, (dlgY+4)<<3);
-		// TODO: Playbaseframe is somewhere else. It's needed, so the player is displayed at right colour
 		x += Sprite.getWidth();
 	}
 }

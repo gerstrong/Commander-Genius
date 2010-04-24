@@ -8,6 +8,7 @@
 #include "CPlayGame.h"
 #include "../../StringUtils.h"
 #include "../../graphics/effects/CColorMerge.h"
+#include "../../sdl/CVideoDriver.h"
 
 #define SAFE_DELETE_ARRAY(x) if(x) { delete [] x; x = NULL; }
 
@@ -123,6 +124,9 @@ bool CPlayGame::loadGameState()
 		g_pGfxEngine->pushEffectPtr(pColorMergeFX);
 
 		g_pGfxEngine->Palette.setdark(m_dark);
+
+		//Set surface alpha
+		SDL_SetAlpha( g_pVideoDriver->FGLayerSurface, SDL_SRCALPHA, 225 );
 
 		return true;
 	}

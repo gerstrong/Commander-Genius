@@ -218,7 +218,6 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	return true;
 }
 
-
 // load a 32-bit RGBA TGA file into sprite 's', and add colors to the palette
 // as needed so that it can be shown exactly as found in the file.
 // returns nonzero on failure.
