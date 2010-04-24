@@ -11,6 +11,8 @@
 #include "../sdl/CTimer.h"
 #include "../sdl/CInput.h"
 #include "../sdl/CVideoDriver.h"
+#include "../sdl/sound/CSound.h"
+#include "../engine/sounds.h"
 #include "../graphics/CGfxEngine.h"
 #include "CDialog.h"
 
@@ -275,11 +277,13 @@ void CDialog::processInput(int move)
 			{
 				if(m_int<m_max)
 					m_int++;
+				g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
 			}
 			else if(g_pInput->getPulsedCommand(IC_LEFT, 35))
 			{
 				if(m_int>m_min)
 					m_int--;
+				g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
 			}
 
 			if(m_key == 'c')
