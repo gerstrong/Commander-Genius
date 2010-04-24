@@ -98,6 +98,7 @@ void CTextViewer::loadText(const std::string &text)
 			totlen=buf.size() + getnextwordlength(mp_text.c_str()+i+1);
 		else
 			totlen=buf.size() + getnextwordlength(mp_text.c_str()+i);
+
 		if( totlen > (m_w/m_8x8tilewidth-2) && mp_text[i] != '_' ) // Or does the next fit into the line?
 		{
 			m_textline.push_back(buf);
@@ -108,6 +109,8 @@ void CTextViewer::loadText(const std::string &text)
 	// Afterworks: First, the last line has a delimiter of 26. That really sucks! The rest after that must be trimmed
 	//			   Second, we add two empty lines for a nice style when the text is scrolled.
 	// Append an empty line for a nice style, when scrolling
+	buf.erase(buf.size()-1);
+	m_textline.push_back(buf);
 	m_textline.push_back("");
 	
 	// Change the colours to read and grey background, when '~' is detected at the beginning

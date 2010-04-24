@@ -17,7 +17,8 @@
 #include "../../sdl/CInput.h"
 #include "../../FindFile.h"
 
-CHelp::CHelp(std::string &DataDirectory, char &episode, const std::string &type)
+CHelp::CHelp(std::string &DataDirectory, char &episode, const std::string &type) :
+mp_TextViewer(NULL)
 {
 	std::string Text;
 	
@@ -97,9 +98,13 @@ void CHelp::process() {
 	// NOTE: Animation is performed here too, because the story plane is drawn over the other
 	// map that is open. That is desired!
 
-	mp_TextViewer->process();
-	
-	if(mp_TextViewer->hasClosed())
+	if(mp_TextViewer)
+	{
+		mp_TextViewer->process();
+		if(mp_TextViewer->hasClosed())
+			m_destroy_me=true;
+	}
+	else
 		m_destroy_me=true;
 }
 
