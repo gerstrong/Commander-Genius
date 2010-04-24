@@ -58,6 +58,7 @@ private:
 	void DerivePlayerSprites( std::vector<CSprite> &sprites );
 	void DeriveSpecialSprites( CTilemap *tilemap, std::vector<CSprite> &sprites );
 	void CreateYellowSpriteofTile( CTilemap *tilemap, Uint16 tile, CSprite& sprite );
+	void ApplySpecialFX();
 };
 
 #endif /* CEGASPRIT_H_ */

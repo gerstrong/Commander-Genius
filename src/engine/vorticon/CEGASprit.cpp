@@ -211,6 +211,10 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	// Now create special sprites, like those for effects and the doors!
 	DeriveSpecialSprites( g_pGfxEngine->Tilemap, g_pGfxEngine->getSpriteVec() );
 
+	// Here special Effects are applied, only when the option is enabled for it
+	if(g_pVideoDriver->getSpecialFXConfig())
+		ApplySpecialFX();
+
 	return true;
 }
 
@@ -438,6 +442,39 @@ void CEGASprit::CreateYellowSpriteofTile( CTilemap *tilemap, Uint16 tile, CSprit
 	}
 	
 	if(SDL_MUSTLOCK(src_sfc)) SDL_UnlockSurface(src_sfc);
+}
+
+/**
+ * \brief	This function applies translucy to some sprite objects when Special FX option is enabled
+ */
+void CEGASprit::ApplySpecialFX()
+{
+	g_pGfxEngine->getSprite(OBJ_RAY_DEFSPRITE_EP1).applyTranslucency(200);
+	g_pGfxEngine->getSprite(OBJ_RAY_DEFSPRITE_EP2).applyTranslucency(200);
+	g_pGfxEngine->getSprite(OBJ_RAY_DEFSPRITE_EP3).applyTranslucency(200);
+
+	g_pGfxEngine->getSprite(RAY_FRAME_ZAP_EP1).applyTranslucency(200);
+	g_pGfxEngine->getSprite(RAY_FRAME_ZOT_EP1).applyTranslucency(200);
+	g_pGfxEngine->getSprite(RAY_FRAME_ZAP_EP2).applyTranslucency(200);
+	g_pGfxEngine->getSprite(RAY_FRAME_ZOT_EP2).applyTranslucency(200);
+	g_pGfxEngine->getSprite(RAY_FRAME_ZAP_EP3).applyTranslucency(200);
+	g_pGfxEngine->getSprite(RAY_FRAME_ZOT_EP3).applyTranslucency(200);
+
+	g_pGfxEngine->getSprite(PT100_SPRITE).applyTranslucency(196);
+	g_pGfxEngine->getSprite(PT200_SPRITE).applyTranslucency(196);
+	g_pGfxEngine->getSprite(PT500_SPRITE).applyTranslucency(196);
+	g_pGfxEngine->getSprite(PT1000_SPRITE).applyTranslucency(196);
+	g_pGfxEngine->getSprite(PT5000_SPRITE).applyTranslucency(196);
+
+	g_pGfxEngine->getSprite(PTCARDY_SPRITE).applyTranslucency(196);
+	g_pGfxEngine->getSprite(PTCARDG_SPRITE).applyTranslucency(196);
+	g_pGfxEngine->getSprite(PTCARDR_SPRITE).applyTranslucency(196);
+	g_pGfxEngine->getSprite(PTCARDB_SPRITE).applyTranslucency(196);
+
+	g_pGfxEngine->getSprite(GUNUP_SPRITE).applyTranslucency(196);
+	g_pGfxEngine->getSprite(SHOTUP_SPRITE).applyTranslucency(196);
+	g_pGfxEngine->getSprite(ANKHUP_SPRITE).applyTranslucency(196);
+
 }
 
 CEGASprit::~CEGASprit() {

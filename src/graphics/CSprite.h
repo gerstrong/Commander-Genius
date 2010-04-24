@@ -17,6 +17,7 @@ public:
 	bool createSurface(Uint32 flags, SDL_Color *Palette);
 	bool optimizeSurface();
 	void applyTransparency();
+	void applyTranslucency(Uint8 value);
 	void copy( CSprite &Destination, SDL_Color *Palette );
 	void replaceSpriteColor( Uint16 find, Uint16 replace, Uint16 miny );
 

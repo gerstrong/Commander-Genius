@@ -62,6 +62,7 @@ bool CSettings::saveDrvCfg()
 	Parser.saveIntValue("scale","Video",g_pVideoDriver->getZoomValue());
 	Parser.saveIntValue("OGLfilter","Video",g_pVideoDriver->getOGLFilter());
 	Parser.saveIntValue("filter","Video",g_pVideoDriver->getFiltermode());
+	Parser.saveIntValue("specialfx","Video",g_pVideoDriver->getSpecialFXConfig());
 	Parser.saveIntValue("autoframeskip","Video",g_pTimer->getFrameRate());
 	
 	Parser.saveIntValue("left","Bound",g_pCamera->getScrollLeft());
@@ -115,6 +116,8 @@ bool CSettings::loadDrvCfg()
 		g_pVideoDriver->isFullscreen(((Parser.getIntValue("fullscreen","Video")) == 1));
 		g_pVideoDriver->setOGLFilter(Parser.getIntValue("OGLfilter","Video"));
 		g_pVideoDriver->setZoom(Parser.getIntValue("scale","Video"));
+		g_pVideoDriver->setSpecialFXMode(Parser.getIntValue("specialfx","Video"));
+
 		g_pTimer->setFrameRate(DEFAULT_LPS, Parser.getIntValue("autoframeskip","Video"), DEFAULT_SYNC);
 		
 		g_pCamera->setScrollTriggers(boundl,boundu,boundr,boundd,sspeed);

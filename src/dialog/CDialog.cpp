@@ -353,7 +353,7 @@ void CDialog::draw()
 	// they are processed by ID of course
 	for(Uint16 i=m_scroll ;	i<max ; i++)
 	{
-		m_dlgobject[i]->setSelection( i+m_scroll==m_selected_ID ? true : false);
+		m_dlgobject[i]->setSelection( i==m_selected_ID ? true : false);
 		m_dlgobject[i]->render(dst_sfc, m_scroll, false );
 	}
 	Font.setFGColour(dst_sfc->format, 0x0); // Set black letter color for the other elements

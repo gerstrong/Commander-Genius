@@ -9,6 +9,7 @@
 
 #include "CDlgObject.h"
 #include "../graphics/CFont.h"
+#include "../sdl/CVideoDriver.h"
 
 CDlgObject::CDlgObject() :
 m_Option(NULL),
@@ -68,21 +69,26 @@ void CDlgObject::render(SDL_Surface *dst, Uint8 scrollamt, bool highlight)
 {
 	if(m_type == DLG_OBJ_OPTION_TEXT)
 	{
-		// Nice colour effect
-		if(m_colour < 0x0000FF && m_selected)
+		if(g_pVideoDriver->getSpecialFXConfig())
 		{
-			if( m_colour+fade_speed > 0x0000FF)
-				m_colour = 0x0000FF;
-			else
-				m_colour+=fade_speed;
+			// Nice colour effect
+			if(m_colour < 0x0000FF && m_selected)
+			{
+				if( m_colour+fade_speed > 0x0000FF)
+					m_colour = 0x0000FF;
+				else
+					m_colour+=fade_speed;
+			}
+			else if(m_colour > 0x000000 && !m_selected)
+			{
+				if( (int)(m_colour-fade_speed) < 0x000000)
+					m_colour = 0x000000;
+				else
+					m_colour-=fade_speed;
+			}
 		}
-		else if(m_colour > 0x000000 && !m_selected)
-		{
-			if( (int)(m_colour-fade_speed) < 0x000000)
-				m_colour = 0x000000;
-			else
-				m_colour-=fade_speed;
-		}
+		else
+			m_colour = m_selected ? 0x0000FF : 0x000000;
 
 		m_Option->draw(dst, m_x+16, m_y-8*scrollamt, highlight, m_colour);
 	}

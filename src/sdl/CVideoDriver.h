@@ -82,6 +82,7 @@ public:
 
 	void setMode(st_resolution Resolution);
 	void setMode(int width, int height,int depth);
+	void setSpecialFXMode(bool SpecialFX);
 	void setFilter(short value);
 	void setZoom(short vale);
 	bool initOpenGL();
@@ -100,6 +101,7 @@ public:
 
 	void setAspectCorrection(bool value) { m_aspect_correction = value; }
 	bool getAspectCorrection(void) { return m_aspect_correction; }
+	bool getSpecialFXConfig(void) { return m_special_fx; }
 
 	virtual ~CVideoDriver();
 
@@ -108,7 +110,6 @@ public:
 	SDL_Surface *ScrollSurface;       	// 512x512 scroll buffer
 	SDL_Surface *FXSurface;
 
-	bool m_fading;
 	std::list<st_resolution> m_Resolutionlist;
 
 	bool showfps;
@@ -133,6 +134,7 @@ private:
 	int m_opengl_filter;
 	int m_maxwidth;
 	bool m_aspect_correction;
+	bool m_special_fx;
 	float m_aspect_ratio;
 
 	SDL_Rect screenrect;

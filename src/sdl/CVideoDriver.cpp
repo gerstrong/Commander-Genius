@@ -80,7 +80,7 @@ CVideoDriver::CVideoDriver() {
 	ScrollSurface=NULL;       // 512x512 scroll buffer
 	FGLayerSurface=NULL;       // Scroll buffer for Messages
 	BlitSurface=NULL;
-	m_fading = false;
+	m_special_fx = true;
 
 	mp_sbufferx = mp_sbuffery = NULL;
 	
@@ -199,6 +199,9 @@ void CVideoDriver::setMode(st_resolution Resolution)
 {
 	setMode(Resolution.width, Resolution.height, Resolution.depth);
 }
+
+void CVideoDriver::setSpecialFXMode(bool SpecialFX)
+{	m_special_fx = SpecialFX;	}
 
 void CVideoDriver::setMode(int width, int height,int depth)
 {

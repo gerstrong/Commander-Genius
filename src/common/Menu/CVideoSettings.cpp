@@ -67,10 +67,10 @@ CBaseMenu(menu_type) {
 		m_ScaleXFilter = g_pVideoDriver->getFiltermode();
 		m_OGL_filter = g_pVideoDriver->getOGLFilter();
 		m_Autoframeskip = g_pTimer->getFrameRate();
-		m_AspectCorrection = g_pVideoDriver->getAspectCorrection();
+		m_SpecialFX = g_pVideoDriver->getSpecialFXConfig();
 		
 		std::string buf;
-		mp_Dialog = new CDialog(29, 9);
+		mp_Dialog = new CDialog(29, 10);
 		mp_Dialog->setFrameTheme(DLG_THEME_OLDSCHOOL);
 		
 		buf = "Resolution: " + itoa(m_Resolution.width) + "x" + itoa(m_Resolution.height) + "x" + itoa(m_Resolution.depth);
@@ -103,7 +103,11 @@ CBaseMenu(menu_type) {
 		buf = "Frameskip: " + itoa(m_Autoframeskip) + " fps";
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, buf);
 		
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "Adjust Camera Bounds");
+		buf = "Special FX: ";
+		buf += (m_SpecialFX) ? "on" : "off" ;
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, buf);
+
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Adjust Camera Bounds");
 	}
 }
 
@@ -134,6 +138,7 @@ void CVideoSettings::processSpecific(){
 				g_pVideoDriver->setFilter(m_ScaleXFilter);
 				g_pTimer->setFrameRate(DEFAULT_LPS, m_Autoframeskip, DEFAULT_SYNC);
 				g_pVideoDriver->setMode(m_Resolution);
+				g_pVideoDriver->setSpecialFXMode(m_SpecialFX);
 				g_pVideoDriver->start();
 				
 				CSettings Settings;
@@ -227,7 +232,7 @@ void CVideoSettings::processSpecific(){
 		}
 		else
 		{
-			if(m_selection < 6)
+			if(m_selection < 7)
 				m_changed = true;
 			
 			if(m_selection == 0)
@@ -296,6 +301,13 @@ void CVideoSettings::processSpecific(){
 			}
 			else if(m_selection == 6)
 			{
+				m_SpecialFX = !m_SpecialFX;
+				buf = "Special FX: ";
+				buf += (m_SpecialFX) ? "on" : "off" ;
+				mp_Dialog->setObjectText(6, buf);
+			}
+			else if(m_selection == 7)
+			{
 				if(m_changed)
 				{
 					g_pVideoDriver->stop();
@@ -306,6 +318,7 @@ void CVideoSettings::processSpecific(){
 					g_pVideoDriver->setFilter(m_ScaleXFilter);
 					g_pTimer->setFrameRate(DEFAULT_LPS, m_Autoframeskip, DEFAULT_SYNC);
 					g_pVideoDriver->setMode(m_Resolution);
+					g_pVideoDriver->setSpecialFXMode(m_SpecialFX);
 					g_pVideoDriver->start();
 					
 					CSettings Settings;
@@ -313,7 +326,7 @@ void CVideoSettings::processSpecific(){
 					
 					// And close this menu...
 					m_MenuType = BOUNDS;
-					m_restartVideo = true;
+					//m_restartVideo = true;
 					m_mustclose = true;
 				}
 				else

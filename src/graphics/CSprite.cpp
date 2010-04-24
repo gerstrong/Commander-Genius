@@ -91,6 +91,38 @@ void CSprite::applyTransparency()
 	
 }
 
+void CSprite::applyTranslucency(Uint8 value)
+{
+	Uint8 *pixel;
+	Uint32 colour;
+	Uint8 r,g,b,a;
+
+	if(!m_surface) return;
+
+	if(SDL_MUSTLOCK(m_surface)) SDL_LockSurface(m_surface);
+
+	pixel = (Uint8*)m_surface->pixels;
+
+	for( Uint8 y=0 ; y<m_ysize ; y++ )
+	{
+		for( Uint8 x=0 ; x<m_xsize ; x++ )
+		{
+			memcpy( &colour, pixel, m_surface->format->BytesPerPixel );
+
+			SDL_GetRGBA( colour, m_surface->format, &r, &g, &b, &a );
+
+			if(a!=0) a = value;
+
+			colour = SDL_MapRGBA( m_surface->format, r, g, b, a );
+
+			memcpy( pixel, &colour, m_surface->format->BytesPerPixel );
+
+			pixel += m_surface->format->BytesPerPixel;
+		}
+	}
+	if(SDL_MUSTLOCK(m_surface)) SDL_LockSurface(m_surface);
+}
+
 ///
 // Getters and Setters
 ///

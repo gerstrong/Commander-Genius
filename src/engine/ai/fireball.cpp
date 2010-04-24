@@ -15,6 +15,7 @@
 
 #define FIREBALL_OFFSCREEN_KILL_TIME     25
 
+
 void CObjectAI::fireball_ai(CObject &object, bool hard)
 {
 	int speed;

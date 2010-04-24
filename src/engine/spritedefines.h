@@ -22,6 +22,15 @@
 #define ENEMYRAYEP3        103
 #define RAY_VERT_EP3       104
 
+#define RAY_FRAME_ZAP_EP1     110
+#define RAY_FRAME_ZOT_EP1     111
+
+#define RAY_FRAME_ZAP_EP2     124
+#define RAY_FRAME_ZOT_EP2     125
+
+#define RAY_FRAME_ZAP_EP3     105
+#define RAY_FRAME_ZOT_EP3     106
+
 // horizontally-moving platform (ep2 & 3)
 #define OBJ_PLATFORM_DEFSPRITE_EP2   126
 #define OBJ_PLATFORM_DEFSPRITE_EP3   107
