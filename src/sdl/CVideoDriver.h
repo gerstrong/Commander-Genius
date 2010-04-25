@@ -115,6 +115,7 @@ public:
 	bool showfps;
 
 private:
+
 	bool createSurfaces();
 
 #ifdef USE_OPENGL
@@ -144,5 +145,8 @@ private:
 	Sint16 *mp_sbufferx, *mp_sbuffery;
 
 	SDL_Surface *screen;                // the actual video memory/window
+
+	// Those variables are used for the rendering process, so they don't need to be recalculated
+	unsigned m_dst_slice, m_src_slice, m_bytes_per_pixel;
 };
 #endif /* CVIDEODRIVER_H_ */

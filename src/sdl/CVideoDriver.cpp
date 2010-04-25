@@ -370,9 +370,13 @@ bool CVideoDriver::applyMode()
 	// this value is updated here!
 	m_Resolution.depth = screen->format->BitsPerPixel;
 	
-	// If Fullscreenm hide the mouse cursor.
+	// If Fullscreen hide the mouse cursor.
 	// Anyway, it just can point but does not interact yet
  	SDL_ShowCursor(!Fullscreen);
+
+ 	m_bytes_per_pixel = screen->format->BytesPerPixel;
+ 	m_dst_slice = m_Resolution.width*m_bytes_per_pixel;
+ 	m_src_slice = game_resolution_rect.w*m_bytes_per_pixel;
 	
 	return true;
 }
@@ -624,13 +628,13 @@ void CVideoDriver::updateScreen()
 			
 			if(m_ScaleXFilter == 1)
 			{
-				scale2xnofilter((char*)VRAMPtr, (char*)BlitSurface->pixels, (m_Resolution.depth>>3));
+				scale2xnofilter((char*)VRAMPtr, (char*)BlitSurface->pixels, m_bytes_per_pixel);
 			}
 			else if(m_ScaleXFilter == 2)
 			{
-				scale(2, VRAMPtr, m_Resolution.width<<2, BlitSurface->pixels,
-					  game_resolution_rect.w<<2, 4,
-					  game_resolution_rect.w, game_resolution_rect.h);
+				scale(m_ScaleXFilter, VRAMPtr, m_dst_slice, BlitSurface->pixels,
+						m_src_slice, m_bytes_per_pixel,
+						game_resolution_rect.w, game_resolution_rect.h);
 			}
 			else
 			{
@@ -649,17 +653,13 @@ void CVideoDriver::updateScreen()
 			
 			if(m_ScaleXFilter == 1)
 			{
-				scale3xnofilter((char*)VRAMPtr, (char*)BlitSurface->pixels, 4);
+				scale3xnofilter((char*)VRAMPtr, (char*)BlitSurface->pixels, m_bytes_per_pixel);
 			}
-			else if(m_ScaleXFilter == 2)
+			else if(m_ScaleXFilter == 2 || m_ScaleXFilter == 3)
 			{
-				scale(2, VRAMPtr, m_Resolution.width<<2, BlitSurface->pixels,
-					  game_resolution_rect.w<<2, 4, game_resolution_rect.w, game_resolution_rect.h);
-			}
-			else if(m_ScaleXFilter == 3)
-			{
-				scale(3, VRAMPtr, m_Resolution.width<<2, BlitSurface->pixels,
-					  game_resolution_rect.w<<2, 4, game_resolution_rect.w, game_resolution_rect.h);
+				scale(m_ScaleXFilter, VRAMPtr, m_dst_slice, BlitSurface->pixels,
+						m_src_slice, m_bytes_per_pixel,
+						game_resolution_rect.w, game_resolution_rect.h);
 			}
 			else
 			{
@@ -677,22 +677,13 @@ void CVideoDriver::updateScreen()
 			
 			if(m_ScaleXFilter == 1)
 			{
-				scale4xnofilter((char*)VRAMPtr, (char*)BlitSurface->pixels, (m_Resolution.depth>>3));
+				scale4xnofilter((char*)VRAMPtr, (char*)BlitSurface->pixels, m_bytes_per_pixel);
 			}
-			else if(m_ScaleXFilter == 2)
+			else if(m_ScaleXFilter >= 2 && m_ScaleXFilter <= 4 )
 			{
-				scale(2, VRAMPtr, m_Resolution.width<<2, BlitSurface->pixels,
-					  game_resolution_rect.w<<2, 4, game_resolution_rect.w, game_resolution_rect.h);
-			}
-			else if(m_ScaleXFilter == 3)
-			{
-				scale(3, VRAMPtr, m_Resolution.width<<2, BlitSurface->pixels,
-					  game_resolution_rect.w<<2, 4, game_resolution_rect.w, game_resolution_rect.h);
-			}
-			else if(m_ScaleXFilter == 4)
-			{
-				scale(4, VRAMPtr, m_Resolution.width<<2, BlitSurface->pixels,
-					  game_resolution_rect.w<<2, 4, game_resolution_rect.w, game_resolution_rect.h);
+				scale(m_ScaleXFilter, VRAMPtr, m_dst_slice, BlitSurface->pixels,
+						m_src_slice, m_bytes_per_pixel,
+						game_resolution_rect.w, game_resolution_rect.h);
 			}
 			else
 			{

@@ -174,7 +174,6 @@ void COpenGL::render(void)
 	else
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_GameStdRect.w, m_GameStdRect.h, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_blitsurface->pixels);
 	
-	
 	glBindTexture (GL_TEXTURE_2D, 1);
 	
 	glBegin (GL_QUADS);
