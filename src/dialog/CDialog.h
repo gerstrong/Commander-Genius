@@ -32,6 +32,7 @@ public:
 	void draw();
 	void drawTwirl();
 
+	bool m_noise;
 	int m_int;
 	int m_min;
 	int m_max;

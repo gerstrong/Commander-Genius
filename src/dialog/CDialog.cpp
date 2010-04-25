@@ -265,25 +265,34 @@ void CDialog::processInput(int move)
 		{
 			//slider and counter
 			if(m_key == 'c')
+			{
 				m_int = atoi(m_name);
+				m_noise = false;
+			}
 			if(m_key == 's')
 			{
 				m_int = m_dlgobject.at(m_selected_ID)->m_Option->m_value;
 				m_min = 0;
-				m_max = 16;
+				m_max = 128;
 			}
 
 			if(g_pInput->getPulsedCommand(IC_RIGHT, 35))
 			{
 				if(m_int<m_max)
+				{
 					m_int++;
+				if(m_noise)
 				g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
+				}
 			}
 			else if(g_pInput->getPulsedCommand(IC_LEFT, 35))
 			{
 				if(m_int>m_min)
+				{
 					m_int--;
+				if(m_noise)
 				g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
+				}
 			}
 
 			if(m_key == 'c')
@@ -297,17 +306,43 @@ void CDialog::processInput(int move)
 				m_dlgobject.at(m_selected_ID)->m_Option->m_FontMapID = 1;
 
 				std::string asciislider;
+				Uint8 i1 = 0;
+				Uint8 i2 = (m_int+16)/8;
+				int i3;
 
-				asciislider += 16;
+				if(m_int>1)
+				{
+					i1 = 0;
+					i3 = 0;
+					for(int i=0; i<16; i++)
+					{
+					if(m_int > 9*i)
+						i3 = m_int-((9*i));
+					}
+					asciislider += 19;
+					for(i1 ; i1<(m_int-2)/8; i1++)
+					asciislider += 20;
+					asciislider += 24+i3;
+				}
+				else if(m_int == 1)
+				{
+					i1 = 1;
+					asciislider += 22;
+					asciislider += 25;
+				}
+				else
+				{
+					i1 = 1;
+					asciislider += 21;
+					asciislider += 24;
+				}
 
 				// Why does it go from 0 to 16. If we have a resolution of 16 steps
 				// It might have to go from 0 to 15
-				for(Uint16 i=0 ; i<m_int ; i++)
-					asciislider += 17;
-				asciislider += 18;
-				for(Uint16 i=m_int+1 ; i<=16 ; i++)
-					asciislider += 19;
-				asciislider += 20;
+				//asciislider += 25;
+				for(i2 ; i2<=16 ; i2++)
+					asciislider += 36;
+				asciislider += 37;
 
 				setObjectText(m_selected_ID, asciislider);
 			}
