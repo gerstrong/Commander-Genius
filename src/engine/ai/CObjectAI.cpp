@@ -49,20 +49,9 @@ void CObjectAI::process()
 				{
 					if ( object.hitdetect(*it_player) )
 					{
-						//if (!it_player->godmode)
-						//{
-							object.touchPlayer = true;
-							object.touchedBy = it_player->m_index;
-						//}
-						/*else
-						{
-							if (object.m_type==OBJ_MOTHER || object.m_type==OBJ_BABY ||\
-								object.m_type==OBJ_MEEP || object.m_type==OBJ_YORP)
-							{
-								if (object.canbezapped)
-									object.zapped += 100;
-							}
-						}*/
+						object.touchPlayer = true;
+						object.touchedBy = it_player->m_index;
+
 						break;
 					}
 				}

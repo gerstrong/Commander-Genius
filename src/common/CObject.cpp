@@ -643,19 +643,8 @@ bool CObject::checkSolidU(int x1, int x2, int y1)
 		}
 	}
 
-	if( m_type == OBJ_PLAYER )
-	{
-		if( y1 <= (2<<CSF) )
-			return true;
-	}
-	else
-	{
-		if( y1 == 0 )
-		{
-			exists=false; // Out of map?
-			return true;
-		}
-	}
+	if( y1 <= ( ((m_type == OBJ_PLAYER) ? 2 : 1)<<CSF) )
+		return true;
 
 	return false;
 }
