@@ -280,19 +280,23 @@ void CDialog::processInput(int move)
 			{
 				if(m_int<m_max)
 				{
-					m_int++;
-				if(m_noise)
-				g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
+					m_int+=8;
+					if(m_noise)
+						g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
 				}
+				else
+					m_int = m_max;
 			}
 			else if(g_pInput->getPulsedCommand(IC_LEFT, 35))
 			{
 				if(m_int>m_min)
 				{
-					m_int--;
-				if(m_noise)
-				g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
+					m_int-=8;
+					if(m_noise)
+						g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
 				}
+				else
+					m_int = m_min;
 			}
 
 			if(m_key == 'c')
@@ -305,44 +309,20 @@ void CDialog::processInput(int move)
 				m_dlgobject.at(m_selected_ID)->m_Option->m_value = m_int;
 				m_dlgobject.at(m_selected_ID)->m_Option->m_FontMapID = 1;
 
-				std::string asciislider;
-				Uint8 i1 = 0;
-				Uint8 i2 = (m_int+16)/8;
-				int i3;
+				Uint8 m_middle = m_int/8;
 
-				if(m_int>1)
-				{
-					i1 = 0;
-					i3 = 0;
-					for(int i=0; i<16; i++)
-					{
-					if(m_int > 9*i)
-						i3 = m_int-((9*i));
-					}
-					asciislider += 19;
-					for(i1 ; i1<(m_int-2)/8; i1++)
-					asciislider += 20;
-					asciislider += 24+i3;
-				}
-				else if(m_int == 1)
-				{
-					i1 = 1;
-					asciislider += 22;
-					asciislider += 25;
-				}
-				else
-				{
-					i1 = 1;
-					asciislider += 21;
-					asciislider += 24;
-				}
+				std::string asciislider;
+
+				asciislider += 16;
 
 				// Why does it go from 0 to 16. If we have a resolution of 16 steps
 				// It might have to go from 0 to 15
-				//asciislider += 25;
-				for(i2 ; i2<=16 ; i2++)
-					asciislider += 36;
-				asciislider += 37;
+				for(Uint16 i=0 ; i<m_middle ; i++)
+					asciislider += 17;
+				asciislider += 18;
+				for(Uint16 i=m_middle+1 ; i<=16 ; i++)
+					asciislider += 19;
+				asciislider += 20;
 
 				setObjectText(m_selected_ID, asciislider);
 			}
