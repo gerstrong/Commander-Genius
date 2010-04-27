@@ -123,28 +123,11 @@ void CVideoDriver::initResolutionList()
 		while(!ResolutionFile.eof())
 		{
 			ResolutionFile.getline(buf,256);
-			resolution.depth = 32;
+
 			if(sscanf(buf,"%ix%ix%i", &resolution.width, &resolution.height, &resolution.depth) >= 2)
-				// Now check if it's possible to use this resolution
 
-			resolution.depth = SDL_VideoModeOK(resolution.width, resolution.height,
-											   resolution.depth, SDL_FULLSCREEN);
-
-			if(resolution.depth)
-			{
-				std::list<st_resolution> :: iterator i;
-				for( i = m_Resolutionlist.begin() ; i != m_Resolutionlist.end() ; i++ )
-				{
-					if(i->width == resolution.width &&
-					   i->height == resolution.height &&
-					   i->depth == resolution.depth) break;
-				}
-
-				if(i == m_Resolutionlist.end())
-				{
-					m_Resolutionlist.push_back(resolution);
-				}
-			}
+			// Now check if it's possible to use this resolution
+			checkResolution( resolution, SDL_FULLSCREEN );
 		}
 		ResolutionFile.close();
 
@@ -153,26 +136,15 @@ void CVideoDriver::initResolutionList()
 			int e = 1;
 			resolution.width = 320;
 			resolution.height = 200;
-			resolution.depth = 32;
+			
 			while(resolution.width < m_maxwidth)
 			{
 				resolution.width = 320 * e;
 				resolution.height = 200 * e;
-				resolution.depth = 32;
+
+				// Now check if it's possible to use this resolution
+				checkResolution( resolution, 0 );
 				
-				if(resolution.depth)
-				{
-					std::list<st_resolution> :: iterator i;
-					for( i = m_Resolutionlist.begin() ; i != m_Resolutionlist.end() ; i++ )
-					{
-						if(i->width == resolution.width &&
-						   i->height == resolution.height &&
-						   i->depth == resolution.depth) break;
-					}
-					
-					if(i == m_Resolutionlist.end())
-						m_Resolutionlist.push_back(resolution);
-				}
 				e++;
 			}
 		}
@@ -186,6 +158,38 @@ void CVideoDriver::initResolutionList()
 	}
 
 	m_Resolution_pos = m_Resolutionlist.begin();
+}
+
+void CVideoDriver::checkResolution( st_resolution& resolution, int flags )
+{
+	int depth;
+	
+	for ( depth = 32; depth >= 16; depth -= 16 )
+	{
+		resolution.depth = depth;
+		resolution.depth = SDL_VideoModeOK( resolution.width, resolution.height, resolution.depth, flags ); 
+
+		if(resolution.depth)
+		{
+			std::list<st_resolution> :: iterator i;
+			for( i = m_Resolutionlist.begin() ; i != m_Resolutionlist.end() ; i++ )
+			{
+				if(i->width  == resolution.width  &&
+				   i->height == resolution.height &&
+				   i->depth  == resolution.depth) break;
+			}
+
+			if(i == m_Resolutionlist.end())
+			{
+#ifdef DEBUG
+				printf( "%ix%ix%i %X added\n", resolution.width, resolution.height, resolution.depth, flags );
+#endif
+				m_Resolutionlist.push_back(resolution);
+			}
+		}
+		
+		if (resolution.depth==16) break;
+	}
 }
 
 st_resolution CVideoDriver::getNextResolution()

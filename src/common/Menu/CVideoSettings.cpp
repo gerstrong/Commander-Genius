@@ -250,7 +250,11 @@ void CVideoSettings::processSpecific(){
 			}
 			else if(m_selection == 2)
 			{
+#ifdef USE_OPENGL
 				m_Opengl = !m_Opengl;
+#else
+				m_Opengl = false;
+#endif
 				buf = "Mode: ";
 				buf += (m_Opengl) ? "OpenGL            " : m_usedSoftwareVideoDriver;
 				mp_Dialog->setObjectText(2,buf);

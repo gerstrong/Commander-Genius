@@ -93,6 +93,7 @@ public:
 	void enableOpenGL(bool value) { m_opengl = false; }
 	void setOGLFilter(unsigned char value) { m_opengl_filter = 0; }
 #endif
+	void checkResolution( st_resolution& resolution, int flags );
 	st_resolution getResolution(){ return *m_Resolution_pos; }
 	st_resolution getNextResolution();
 
