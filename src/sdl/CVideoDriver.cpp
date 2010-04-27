@@ -48,7 +48,11 @@ CVideoDriver::CVideoDriver() {
 #if defined(WIZ) || defined(GP2X)
 	m_Resolution.width=320;
 	m_Resolution.height=240;
+#if defined(GP2X)
+	m_Resolution.depth=32;
+#else
 	m_Resolution.depth=16;
+#endif
 	Mode=0;
 	Fullscreen=true;
 	m_ScaleXFilter=1;
@@ -856,8 +860,7 @@ unsigned short CVideoDriver::getDepth(void)
 {	return m_Resolution.depth;	}
 SDL_Surface *CVideoDriver::getScrollSurface(void)
 {	return ScrollSurface; }
-
+ 
 CVideoDriver::~CVideoDriver() {
-	stop();
+ 	stop();
 }
-
