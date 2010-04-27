@@ -50,7 +50,7 @@ m_selection(-1),
 m_lastselect(-1),
 m_menu_type(MAIN),
 m_NumPlayers(0),
-m_Difficulty(0),
+m_Difficulty(-1),
 m_saveslot(0)
 {
 	m_menuback[1] = MAIN;
