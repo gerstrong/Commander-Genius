@@ -43,7 +43,7 @@ int ConsoleExpireTimer = 0;
 
 CVideoDriver::CVideoDriver() {
 	// Default values
-	
+
 	showfps=true;
 #if defined(WIZ) || defined(GP2X)
 	m_Resolution.width=320;
@@ -75,19 +75,19 @@ CVideoDriver::CVideoDriver() {
 #endif
 	m_aspect_correction = true;
 	m_aspect_ratio = 8.0f/5.0f;
-	
+
 	screenrect.x=0;
 	screenrect.y=0;
 	screenrect.h=0;
 	screenrect.w=0;
-	
+
 	ScrollSurface=NULL;       // 512x512 scroll buffer
 	FGLayerSurface=NULL;       // Scroll buffer for Messages
 	BlitSurface=NULL;
 	m_special_fx = true;
 
 	mp_sbufferx = mp_sbuffery = NULL;
-	
+
 	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO) < 0)
 	{
 		g_pLogFile->textOut(RED,"Could not initialize SDL: %s<br>", SDL_GetError());
@@ -97,7 +97,7 @@ CVideoDriver::CVideoDriver() {
 		g_pLogFile->textOut(GREEN,"SDL was successfully initialized!<br>");
 		m_maxwidth = SDL_GetVideoInfo()->current_w;
 	}
-	
+
 	initResolutionList();
 
 	// take the first default resolution. It might be changed if there is a config file already created
@@ -111,7 +111,7 @@ void CVideoDriver::initResolutionList()
 	st_resolution resolution;
 	char buf[256];
 	m_Resolutionlist.clear();
-	
+
 	std::ifstream ResolutionFile; OpenGameFileR(ResolutionFile, "resolutions.cfg");
 	if(!ResolutionFile)
 	{
@@ -136,7 +136,12 @@ void CVideoDriver::initResolutionList()
 			int e = 1;
 			resolution.width = 320;
 			resolution.height = 200;
-			
+#ifdef WIZ
+			resolution.depth = 16;
+#else
+			resolution.depth = 32;
+#endif
+
 			while(resolution.width < m_maxwidth)
 			{
 				resolution.width = 320 * e;
@@ -144,12 +149,12 @@ void CVideoDriver::initResolutionList()
 
 				// Now check if it's possible to use this resolution
 				checkResolution( resolution, 0 );
-				
+
 				e++;
 			}
 		}
 	}
-	
+
 	if(m_Resolutionlist.empty()) {
 		resolution.width = 320;
 		resolution.height = 200;
@@ -163,11 +168,11 @@ void CVideoDriver::initResolutionList()
 void CVideoDriver::checkResolution( st_resolution& resolution, int flags )
 {
 	int depth;
-	
-	for ( depth = 32; depth >= 16; depth -= 16 )
+
+	for ( depth = resolution.depth; depth >= 16; depth -= 16 )
 	{
 		resolution.depth = depth;
-		resolution.depth = SDL_VideoModeOK( resolution.width, resolution.height, resolution.depth, flags ); 
+		resolution.depth = SDL_VideoModeOK( resolution.width, resolution.height, resolution.depth, flags );
 
 		if(resolution.depth)
 		{
@@ -187,7 +192,7 @@ void CVideoDriver::checkResolution( st_resolution& resolution, int flags )
 				m_Resolutionlist.push_back(resolution);
 			}
 		}
-		
+
 		if (resolution.depth==16) break;
 	}
 }
@@ -195,10 +200,10 @@ void CVideoDriver::checkResolution( st_resolution& resolution, int flags )
 st_resolution CVideoDriver::getNextResolution()
 {
 	m_Resolution_pos++;
-	
+
 	if( m_Resolution_pos == m_Resolutionlist.end() )
 		m_Resolution_pos = m_Resolutionlist.begin();
-	
+
 	return *m_Resolution_pos;
 }
 
@@ -216,7 +221,7 @@ void CVideoDriver::setMode(int width, int height,int depth)
 	m_Resolution.width = width;
 	m_Resolution.height = height;
 	m_Resolution.depth = depth;
-	
+
 	// TODO: Cycle through the list until the matching resolution is matched. If it doesn't exist
 	// add it;
 	for(m_Resolution_pos = m_Resolutionlist.begin() ; m_Resolution_pos != m_Resolutionlist.end() ; m_Resolution_pos++)
@@ -224,7 +229,7 @@ void CVideoDriver::setMode(int width, int height,int depth)
 			if( m_Resolution_pos->height == height )
 				if( m_Resolution_pos->depth == depth )
 					break;
-	
+
 	if(m_Resolution_pos == m_Resolutionlist.end())
 	{
 		m_Resolutionlist.push_back(m_Resolution);
@@ -268,21 +273,21 @@ void CVideoDriver::stop(void)
 bool CVideoDriver::start(void)
 {
 	bool retval = false;
-	
+
 	SDL_WM_SetCaption("Commander Genius (CKP)", NULL);
 	// When the program is through executing, call SDL_Quit
 	atexit(SDL_Quit);
-	
+
 	if(!applyMode())
 	{
 		g_pLogFile->textOut(RED,"VideoDriver: Error applying mode! Your Videocard doesn't seem to work on CKP<br>");
 		g_pLogFile->textOut(RED,"Check, if you have the most recent drivers installed!<br>");
 		return false;
 	}
-	
+
 	retval = createSurfaces();
 	initOpenGL();
-	
+
 	return retval;
 }
 
@@ -303,7 +308,7 @@ bool CVideoDriver::initOpenGL()
 			mp_OpenGL->setSurface(BlitSurface);
 	}
 #endif
-	
+
 	return m_opengl;
 }
 
@@ -312,16 +317,16 @@ bool CVideoDriver::applyMode()
 	// Check if some zoom/filter modes are illogical
 	// TODO: Make this call better to understand
 	// It must be able to change the resolution, and if it fails, roll back.
-	
+
 	// bool rollback=false;
 	//if(!checkMode())
 	// rollback = true;
-	
+
 	if( (Zoom == 3 && m_ScaleXFilter == 1) && !m_opengl )
 		Zoom = 2;
-	
+
 	m_Resolution = *m_Resolution_pos;
-	
+
 	// Setup mode depends on some systems.
 #if defined(WIZ)
     Mode = SDL_SWSURFACE;
@@ -331,7 +336,7 @@ bool CVideoDriver::applyMode()
 	// Support for doublebuffering
 	Mode = SDL_DOUBLEBUF | SDL_HWPALETTE | SDL_HWSURFACE;
 #endif
-	
+
 	// Enable OpenGL
 #ifdef USE_OPENGL
 	if(m_opengl)
@@ -341,22 +346,22 @@ bool CVideoDriver::applyMode()
 		Mode |= SDL_OPENGL;
 	}
 #endif
-	
+
 	// This is the default game resolution
     game_resolution_rect.w = 320;
 	game_resolution_rect.h = 200;
-	
+
 	// Here we check, if we can enhance the screen-resolution and do it if yes
 	//game_resolution_rect = adaptGameResolution();
-	
+
 	// Now we decide if it will be fullscreen or windowed mode.
 	if(Fullscreen)
 		Mode |= SDL_FULLSCREEN;
-	
+
 	// Before the resolution is set, check, if the zoom factor is too high!
 	while(((m_Resolution.width/game_resolution_rect.w) < Zoom || (m_Resolution.height/game_resolution_rect.h) < Zoom) && (Zoom > 1))
 		Zoom--;
-	
+
     // Center the screen!
     blitrect.x = 0;
     blitrect.y = 0;
@@ -364,20 +369,20 @@ bool CVideoDriver::applyMode()
 	screenrect.h = blitrect.h = game_resolution_rect.h*Zoom;
 	screenrect.x = (m_Resolution.width-screenrect.w)/2;
 	screenrect.y = (m_Resolution.height-screenrect.h)/2;
-	
+
 	// And leave the rest to SDL!
 	screen = SDL_SetVideoMode(m_Resolution.width,m_Resolution.height,m_Resolution.depth,Mode);
-	
+
 	if(!screen)
 	{
 		g_pLogFile->textOut(RED,"VidDrv_Start(): Couldn't create a SDL surface: %s<br>", SDL_GetError());
 		return false;
 	}
-	
+
 	// Now SDL will tell if the bpp works or changes it, if not supported.
 	// this value is updated here!
 	m_Resolution.depth = screen->format->BitsPerPixel;
-	
+
 	// If Fullscreen hide the mouse cursor.
 	// Anyway, it just can point but does not interact yet
  	SDL_ShowCursor(!Fullscreen);
@@ -385,7 +390,7 @@ bool CVideoDriver::applyMode()
  	m_bytes_per_pixel = screen->format->BytesPerPixel;
  	m_dst_slice = m_Resolution.width*m_bytes_per_pixel;
  	m_src_slice = game_resolution_rect.w*m_bytes_per_pixel;
-	
+
 	return true;
 }
 
@@ -395,11 +400,11 @@ SDL_Rect CVideoDriver::adaptGameResolution()
 {
 	float scalefactor;
 	SDL_Rect Gamerect;
-	
+
 	Gamerect = game_resolution_rect;
 	scalefactor = ((float)m_Resolution.width) / ((float)Gamerect.w);
 	Gamerect.h = (int)( ((float)m_Resolution.height) / scalefactor );
-	
+
 	return Gamerect;
 }
 
@@ -415,7 +420,7 @@ bool CVideoDriver::createSurfaces()
 								  512,
 								  m_Resolution.depth,
 								  Mode, screen->format );
-	
+
     if (m_Resolution.width == game_resolution_rect.w && !m_opengl)
     {
     	g_pLogFile->textOut("Blitsurface = Screen<br>");
@@ -434,37 +439,37 @@ bool CVideoDriver::createSurfaces()
     }
     VRAMPtr = (unsigned char*)screen->pixels +
 	screenrect.y*screen->pitch + (screenrect.x*m_Resolution.depth>>3);
-	
+
     // Some surfaces could get 320x240 and the screenspace is extended.
     // The video class must be changed for any further resolutions
     game_resolution_rect.x = 0; game_resolution_rect.y = 0;
-	
+
     FGLayerSurface = createSurface( "FGLayerSurface", false,
 								   game_resolution_rect.w,
 								   game_resolution_rect.h,
 								   m_Resolution.depth,
 								   Mode, screen->format );
-	
+
 	SDL_SetColorKey( FGLayerSurface, SDL_SRCCOLORKEY,
 					SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE) );
 	//Set surface alpha
 	SDL_SetAlpha( FGLayerSurface, SDL_SRCALPHA, 225 );
-	
+
     FXSurface = createSurface( "FXSurface", false,
 							  game_resolution_rect.w,
 							  game_resolution_rect.h,
 							  m_Resolution.depth,
 							  Mode, screen->format );
-	
+
 	g_pGfxEngine->Palette.setFXSurface( FXSurface );
-	
+
 	return true;
 }
 
 SDL_Surface* CVideoDriver::createSurface( std::string name, bool alpha, int width, int height, int bpp, int mode, SDL_PixelFormat* format )
 {
     SDL_Surface *temporary, *optimized;
-	
+
 	temporary = SDL_CreateRGBSurface( mode, width, height, bpp, format->Rmask, format->Gmask, format->Bmask, format->Amask);
 	if (alpha && bpp==32) {
         optimized = SDL_DisplayFormatAlpha( temporary );
@@ -497,15 +502,15 @@ void CVideoDriver::blitScrollSurface() // This is only for tiles
 	Sint16 sbufferx, sbuffery;
 	char wraphoz, wrapvrt;
 	int save_dstx, save_dstw, save_srcx, save_srcw;
-	
+
 	dstrect.x = 0; dstrect.y = 0;
-	
+
 	srcrect.x = sbufferx = *mp_sbufferx;
 	srcrect.y = sbuffery = *mp_sbuffery;
-	
+
 	dstrect.w = game_resolution_rect.w-sbufferx;
 	dstrect.h = game_resolution_rect.h-sbuffery;
-	
+
 	if (sbufferx > (Uint16)(512-game_resolution_rect.w))
 	{ // need to wrap right side
 		srcrect.w = (512-sbufferx);
@@ -516,7 +521,7 @@ void CVideoDriver::blitScrollSurface() // This is only for tiles
 		srcrect.w = game_resolution_rect.w;
 		wraphoz = 0;
 	}
-	
+
 	if (sbuffery > (Uint16)(512-game_resolution_rect.h))
 	{ // need to wrap on bottom
 		srcrect.h = (512-sbuffery);
@@ -527,9 +532,9 @@ void CVideoDriver::blitScrollSurface() // This is only for tiles
 		srcrect.h = game_resolution_rect.h;
 		wrapvrt = 0;
 	}
-	
+
 	SDL_BlitSurface(ScrollSurface, &srcrect, BlitSurface, &dstrect);
-	
+
 	if (wraphoz && wrapvrt)
 	{
 		// first do same thing we do for wraphoz
@@ -542,7 +547,7 @@ void CVideoDriver::blitScrollSurface() // This is only for tiles
 		srcrect.x = 0;
 		srcrect.w = (game_resolution_rect.w - srcrect.w);
 		SDL_BlitSurface(ScrollSurface, &srcrect, BlitSurface, &dstrect);
-		
+
 		// now repeat for the bottom
 		// (lower-right square)
 		dstrect.y = srcrect.h;
@@ -573,26 +578,26 @@ void CVideoDriver::blitScrollSurface() // This is only for tiles
 		srcrect.h = (game_resolution_rect.h - srcrect.h);
 		SDL_BlitSurface(ScrollSurface, &srcrect, BlitSurface, &dstrect);
 	}
-	
+
 	drawConsoleMessages();
 }
 
 void CVideoDriver::collectSurfaces()
 {
 	SDL_BlitSurface(FGLayerSurface, NULL, BlitSurface, NULL);
-	
+
 	if(FXSurface->format->alpha)
 		SDL_BlitSurface(FXSurface, NULL, BlitSurface, NULL);
 }
 
 void CVideoDriver::updateScreen()
 {
-	
+
 #ifdef USE_OPENGL
 	if(m_opengl)
 	{
 		mp_OpenGL->render();
-		
+
 		// Flush the FG-Layer
 		SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE));
 	}
@@ -605,7 +610,7 @@ void CVideoDriver::updateScreen()
 		{
 			LockSurface(BlitSurface);
 			LockSurface(screen);
-			
+
 			if(m_ScaleXFilter == 1)
 			{
 				SDL_Rect scrrect, dstrect;
@@ -633,7 +638,7 @@ void CVideoDriver::updateScreen()
 		{
 			LockSurface(BlitSurface);
 			LockSurface(screen);
-			
+
 			if(m_ScaleXFilter == 1)
 			{
 				scale2xnofilter((char*)VRAMPtr, (char*)BlitSurface->pixels, m_bytes_per_pixel);
@@ -650,7 +655,7 @@ void CVideoDriver::updateScreen()
 				g_pLogFile->textOut(PURPLE,"Try to use a higher zoom factor. Switching to no-filter<br>");
 				m_ScaleXFilter = 1;
 			}
-			
+
 			UnlockSurface(screen);
 			UnlockSurface(BlitSurface);
 		}
@@ -658,7 +663,7 @@ void CVideoDriver::updateScreen()
 		{
 			LockSurface(BlitSurface);
 			LockSurface(screen);
-			
+
 			if(m_ScaleXFilter == 1)
 			{
 				scale3xnofilter((char*)VRAMPtr, (char*)BlitSurface->pixels, m_bytes_per_pixel);
@@ -682,7 +687,7 @@ void CVideoDriver::updateScreen()
 		{
 			LockSurface(BlitSurface);
 			LockSurface(screen);
-			
+
 			if(m_ScaleXFilter == 1)
 			{
 				scale4xnofilter((char*)VRAMPtr, (char*)BlitSurface->pixels, m_bytes_per_pixel);
@@ -703,17 +708,17 @@ void CVideoDriver::updateScreen()
 			UnlockSurface(BlitSurface);
 		}
 
-#ifdef GP2X
+#if defined(GP2X) || defined(WIZ)
 		// Clear the lower 40 lines to black
 		SDL_Rect lower = { 0, 200, 320, 40 };
 		SDL_FillRect(screen, &lower, SDL_MapRGB(screen->format, 0, 0, 0) );
 #endif
 
 		SDL_Flip(screen);
-		
+
 		// Flush the FG-Layer
 		SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE));
-		
+
 #ifdef USE_OPENGL
 	}
 #endif
@@ -725,7 +730,7 @@ void CVideoDriver::scale2xnofilter(char *dest, char *src, short bbp)
     // to 2x (without filter). This applies to 16 and 32-bit colour depth.
 	// It uses bit shifting method for faster blit!
 	bbp >>= 1;
-	
+
 	int i,j;
 	for(i=0 ; i < game_resolution_rect.h ; i++)
 	{
@@ -744,7 +749,7 @@ void CVideoDriver::scale3xnofilter(char *dest, char *src, short bbp)
     // to 2x (without filter). This applies to 16 and 32-bit colour depth.
 	// Optimization of using bit shifting
 	bbp >>= 1;
-	
+
 	int i,j;
 	for(i=0 ; i < game_resolution_rect.h ; i++)
 	{
@@ -766,11 +771,11 @@ void CVideoDriver::scale4xnofilter(char *dest, char *src, short bbp)
     // to 2x (without filter). This applies to 16 and 32-bit colour depth.
 	// use bit shifting method for faster blit!
 	bbp >>= 1;
-	
+
 	char *srctemp;
 	char *desttemp;
 	int size;
-	
+
 	int i,j;
 	for(i=0 ; i < game_resolution_rect.h ; i++)
 	{
@@ -787,7 +792,7 @@ void CVideoDriver::scale4xnofilter(char *dest, char *src, short bbp)
 		srctemp = dest+(((i<<2)*m_Resolution.width)<<bbp);
 		desttemp = dest+((((i<<2)+1)*m_Resolution.width)<<bbp);
 		size = game_resolution_rect.w*(bbp<<1<<2);
-		
+
 		memcpy(desttemp,srctemp,size);
 		memcpy(desttemp+(m_Resolution.width<<bbp),srctemp,size);
 		memcpy(desttemp+((m_Resolution.width<<bbp)<<1),srctemp,size);
@@ -800,7 +805,7 @@ void CVideoDriver::drawConsoleMessages(void)
 {
 	int i;
 	int y;
-	
+
 	if (!NumConsoleMessages) return;
 	if (!ConsoleExpireTimer)
 	{
@@ -809,7 +814,7 @@ void CVideoDriver::drawConsoleMessages(void)
 		ConsoleExpireTimer = CONSOLE_EXPIRE_RATE;
 	}
 	else ConsoleExpireTimer--;
-	
+
 	y = CONSOLE_MESSAGE_Y;
 	for(i=0;i<NumConsoleMessages;i++)
 	{
@@ -834,7 +839,7 @@ void CVideoDriver::AddConsoleMsg(const char *the_msg)
 		strcpy(cmsg[i+1].msg, cmsg[i].msg);
 	}
 	strcpy(cmsg[0].msg, the_msg);
-	
+
 	if (NumConsoleMessages < MAX_CONSOLE_MESSAGES) NumConsoleMessages++;
 	ConsoleExpireTimer = CONSOLE_EXPIRE_RATE;
 }
@@ -864,7 +869,7 @@ unsigned short CVideoDriver::getDepth(void)
 {	return m_Resolution.depth;	}
 SDL_Surface *CVideoDriver::getScrollSurface(void)
 {	return ScrollSurface; }
- 
+
 CVideoDriver::~CVideoDriver() {
  	stop();
 }
