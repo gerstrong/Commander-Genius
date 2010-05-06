@@ -45,6 +45,7 @@ public:
 	void freeSprites();
 	void freeTilemap();
 	void freeFonts();
+	void freeCursor();
 	
 	void copyTileToSprite( Uint16 t, Uint16 s, Uint16 ntilestocopy );
 	

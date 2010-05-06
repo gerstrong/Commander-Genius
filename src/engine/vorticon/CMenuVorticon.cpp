@@ -693,6 +693,6 @@ void CMenuVorticon::cleanup()
 
 CMenuVorticon::~CMenuVorticon()
 {
-	SAFE_DELETE(mp_Menu);
+	cleanup();
 	SAFE_DELETE(mp_InfoScene);
 }

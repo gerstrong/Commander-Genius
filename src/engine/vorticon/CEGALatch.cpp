@@ -52,7 +52,6 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 
 	data += m_bitmaptablelocation;
 
-	g_pGfxEngine->freeBitmaps();
 	g_pGfxEngine->createEmptyBitmaps(m_bitmaps);
 	for(int i=0 ; i<m_bitmaps ; i++)
 	{

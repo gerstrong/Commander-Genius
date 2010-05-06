@@ -23,29 +23,34 @@ mp_Cursor(NULL)
 ///
 void CGfxEngine::createEmptyTilemap(stTile *pTileProperties, int numtiles)
 {
+	freeTilemap();
 	Tilemap = new CTilemap(pTileProperties, numtiles);
 }
 
 void CGfxEngine::createEmptySprites(Uint16 num_sprites)
 {
+	freeSprites();
 	CSprite sprite;
 	Sprite.assign(num_sprites, sprite);
 }
 
 void CGfxEngine::createEmptyBitmaps(Uint16 num_bmps)
 {
+	freeBitmaps();
 	CBitmap bitmap;
 	Bitmap.assign(num_bmps, bitmap);
 }
 
 void CGfxEngine::createEmptyFontmaps(Uint8 num_fonts)
 {
+	freeFonts();
 	CFont font;
 	Font.assign(num_fonts, font);
 }
 
 void CGfxEngine::createEmptyCursorMap(SDL_Surface *surface)
 {
+	freeCursor();
 	mp_Cursor = new CCursor(surface);
 }
 
@@ -59,6 +64,10 @@ void CGfxEngine::pushEffectPtr(CEffects *pEffect) {
 ///
 // Destructors
 ///
+void CGfxEngine::freeCursor()
+{
+	SAFE_DELETE(mp_Cursor);
+}
 void CGfxEngine::freeTilemap()
 {
 	if(Tilemap) delete Tilemap;
@@ -193,7 +202,7 @@ void CGfxEngine::killEffect()
 
 CGfxEngine::~CGfxEngine() {
 	SAFE_DELETE(mp_Effects);
-	SAFE_DELETE(mp_Cursor);
+	freeCursor();
 	freeBitmaps();
 	freeSprites();
 	freeFonts();

@@ -27,7 +27,6 @@
 CPlayer::CPlayer(char &Episode, short &Level, char &Difficulty,
 				 short &player_index, bool *mp_level_completed, stOption *mp_option,
 				 std::vector<CObject> &m_Object, CMap &map) :
-
 CObject(&map, player_index),
 m_episode(Episode),
 m_level(Level),
@@ -731,10 +730,14 @@ void CPlayer::ProcessInput()
 		{
 			// Now, that the level is complete, sprite can be shown again, and now goto map!
 			int width = w>>(CSF-4);
-			g_pGfxEngine->getSprite(playerbaseframe+0).setWidth(width);
-			g_pGfxEngine->getSprite(playerbaseframe+1).setWidth(width);
-			g_pGfxEngine->getSprite(playerbaseframe+2).setWidth(width);
-			g_pGfxEngine->getSprite(playerbaseframe+3).setWidth(width);
+			int frame = playerbaseframe;
+			if(m_episode == 3) frame++;
+
+			g_pGfxEngine->getSprite(frame+0).setWidth(width);
+			g_pGfxEngine->getSprite(frame+1).setWidth(width);
+			g_pGfxEngine->getSprite(frame+2).setWidth(width);
+			g_pGfxEngine->getSprite(frame+3).setWidth(width);
+
 			level_done_timer = 0;
 			level_done = LEVEL_COMPLETE;
 		}
@@ -866,5 +869,5 @@ bool CPlayer::drawStatusScreen()
 // Cleanup Part
 ///
 CPlayer::~CPlayer() {
-	// TODO Auto-generated destructor stub
+	delete pAnkhshield;
 }

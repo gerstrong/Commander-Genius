@@ -50,7 +50,7 @@ void CPixelate::process()
 
 	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
 
-	if(!mp_NewSurface)
+	if(mp_NewSurface == NULL)
 	{
 		// Get the a snapshot of the second surface which will be the destination.
 		mp_NewSurface = SDL_DisplayFormat(g_pVideoDriver->BlitSurface);
@@ -117,5 +117,8 @@ void CPixelate::process()
 
 CPixelate::~CPixelate()
 {
+	delete [] m_drawmap;
+	delete [] m_pixels_per_line;
 	if(mp_OldSurface) SDL_FreeSurface(mp_OldSurface);
+	if(mp_NewSurface) SDL_FreeSurface(mp_NewSurface);
 }

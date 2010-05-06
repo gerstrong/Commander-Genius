@@ -127,7 +127,6 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 								  plane5 + m_spriteloc);
 	
 	// load the image data
-	g_pGfxEngine->freeSprites();
 	g_pGfxEngine->createEmptySprites(MAX_SPRITES+1);
 	for(int i=0 ; i<m_numsprites ; i++)
 	{

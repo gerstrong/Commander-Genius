@@ -21,10 +21,6 @@ CMusic::CMusic() {
 	usedMusicFile = "";
 }
 
-CMusic::~CMusic() {
-	unload();
-}
-
 int CMusic::load(const SDL_AudioSpec AudioSpec, const std::string &musicfile)
 {
 	if(AudioSpec.format != 0)
@@ -180,3 +176,8 @@ bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &
     }
 	return false;
 }
+
+CMusic::~CMusic() {
+	unload();
+}
+
