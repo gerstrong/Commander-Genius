@@ -13,13 +13,17 @@
 #include "../../dialog/CDialog.h"
 #include "GraphicsIDs.h"
 
+#include "../../common/CMenu.h"
+
 namespace galaxy
 {
 
-class CMenuGalaxy
+class CMenuGalaxy : public CMenu
 {
 public:
-	CMenuGalaxy();
+	CMenuGalaxy( char menu_mode, std::string &GamePath,
+			 char &Episode, CSavedGame &SavedGame,
+			 stOption *pOption );
 	void setupMenu();
 	void process();
 	void processMainMenu();

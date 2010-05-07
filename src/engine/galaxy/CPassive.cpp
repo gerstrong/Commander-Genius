@@ -21,7 +21,8 @@ namespace galaxy
 CPassiveGalaxy::CPassiveGalaxy(char Episode, std::string DataDirectory,
 		CSavedGame &SavedGame, stOption *p_Option) :
 CPassive(Episode, DataDirectory, SavedGame, p_Option),
-processMode(&CPassiveGalaxy::processIntro)
+processMode(&CPassiveGalaxy::processIntro),
+mp_Menu(new CMenuGalaxy(MAIN, DataDirectory, Episode, SavedGame, p_Option))
 { }
 
 bool CPassiveGalaxy::init(char mode)
@@ -74,7 +75,7 @@ void CPassiveGalaxy::processMenu()
 	// draw the background!
 	m_BackgroundBitmap.draw(g_pVideoDriver->BlitSurface, 0, 0);
 
-	m_Menu.process();
+	mp_Menu->process();
 
 	if ( g_pInput->getPressedAnyKey() )
 	{

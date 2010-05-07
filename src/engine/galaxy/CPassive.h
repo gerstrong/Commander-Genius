@@ -32,7 +32,7 @@ public:
 	virtual ~CPassiveGalaxy();
 
 	CBitmap m_BackgroundBitmap;
-	CMenuGalaxy m_Menu;
+	CMenuGalaxy *mp_Menu;
 };
 
 }

@@ -20,7 +20,10 @@ namespace galaxy
 // Initialization
 ///
 
-CMenuGalaxy::CMenuGalaxy() :
+CMenuGalaxy::CMenuGalaxy( char menu_mode, std::string &GamePath,
+		 char &Episode, CSavedGame &SavedGame,
+		 stOption *pOption ) :
+CMenu( menu_mode, GamePath, Episode, SavedGame, pOption ),
 processPtr(&CMenuGalaxy::processMainMenu),
 m_TitleBmp(g_pGfxEngine->getBitmap(BMP_MAINMENULABEL))
 {
