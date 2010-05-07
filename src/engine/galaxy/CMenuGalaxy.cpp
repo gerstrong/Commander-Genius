@@ -5,7 +5,7 @@
  *      Author: gerstrong
  */
 
-#include "CMenu.h"
+#include "CMenuGalaxy.h"
 
 #include "../../graphics/CGfxEngine.h"
 #include "../../sdl/CVideoDriver.h"
@@ -20,8 +20,8 @@ namespace galaxy
 // Initialization
 ///
 
-CMenu::CMenu() :
-processPtr(&CMenu::processMainMenu),
+CMenuGalaxy::CMenuGalaxy() :
+processPtr(&CMenuGalaxy::processMainMenu),
 m_TitleBmp(g_pGfxEngine->getBitmap(BMP_MAINMENULABEL))
 {
 	setupMenu();
@@ -30,7 +30,7 @@ m_TitleBmp(g_pGfxEngine->getBitmap(BMP_MAINMENULABEL))
 /**
  * \brief sets the menu up when it's opened (initialization)
  */
-void CMenu::setupMenu()
+void CMenuGalaxy::setupMenu()
 {
 	// Perform coordinate calculations
 	m_title_coord.x = (g_pVideoDriver->getGameResolution().w - m_TitleBmp.getWidth())/2-45;
@@ -54,7 +54,7 @@ void CMenu::setupMenu()
 /**
  * \brief This cycle is processed every LPS. It's the menu core process
  */
-void CMenu::process()
+void CMenuGalaxy::process()
 {
 	CFont &Font = g_pGfxEngine->getFont(1);
 
@@ -81,14 +81,14 @@ void CMenu::process()
 /**
  * \brief This is the child process only for the main menu itself
  */
-void CMenu::processMainMenu()
+void CMenuGalaxy::processMainMenu()
 {
 	m_TitleBmp.draw(g_pVideoDriver->BlitSurface, m_title_coord.x, m_title_coord.y);
 
 	// TODO: Code for the main menu goes here!
 }
 
-CMenu::~CMenu()
+CMenuGalaxy::~CMenuGalaxy()
 {
 	delete mp_Dialog;
 }

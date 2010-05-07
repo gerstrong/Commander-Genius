@@ -9,7 +9,7 @@
 #define CPASSIVE_GALAXY_H_
 
 #include "../CPassive.h"
-#include "CMenu.h"
+#include "CMenuGalaxy.h"
 
 namespace galaxy
 {
@@ -32,7 +32,7 @@ public:
 	virtual ~CPassiveGalaxy();
 
 	CBitmap m_BackgroundBitmap;
-	CMenu m_Menu;
+	CMenuGalaxy m_Menu;
 };
 
 }

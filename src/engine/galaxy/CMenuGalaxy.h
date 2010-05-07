@@ -16,16 +16,16 @@
 namespace galaxy
 {
 
-class CMenu
+class CMenuGalaxy
 {
 public:
-	CMenu();
+	CMenuGalaxy();
 	void setupMenu();
 	void process();
 	void processMainMenu();
-	virtual ~CMenu();
+	virtual ~CMenuGalaxy();
 
-	void (CMenu::*processPtr)();
+	void (CMenuGalaxy::*processPtr)();
 	CBitmap m_TitleBmp;
 	CDialog *mp_Dialog;
 
