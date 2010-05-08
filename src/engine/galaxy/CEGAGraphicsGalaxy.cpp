@@ -107,11 +107,21 @@ static EpisodeInfoStruct EpisodeInfo[] = {
 /////
 // Class members start here!
 /////
+/**
+ * \brief	This creates the class for reading the graphical
+ * \param	episode		Episode of the chosen game
+ * \param	path		Path to where the game is found on the media
+ * \param	ExeFile		Object to ExeFile in which the
+ */
 CEGAGraphicsGalaxy::CEGAGraphicsGalaxy(short episode, const std::string& path, CExeFile &ExeFile) :
 CEGAGraphics(episode, path),
 m_Exefile(ExeFile)
 {}
 
+/**
+ * \brief	load the data into the structure
+ * \return 	returns true, if loading was successful
+ */
 bool CEGAGraphicsGalaxy::loadData()
 {
 	// Set the palette, so the proper colours are loaded
@@ -135,6 +145,10 @@ bool CEGAGraphicsGalaxy::loadData()
 	return true;
 }
 
+/**
+ * \brief	prepares to load the data. Does a bit of extraction
+ * \return 	returns true, if loading was successful
+ */
 bool CEGAGraphicsGalaxy::begin()
 {
 	// The stuff is Huffman compressed. Use an instance for that
@@ -277,7 +291,12 @@ bool CEGAGraphicsGalaxy::begin()
 	return true;
 }
 
-// This function gets the bit of an unsigned char variable
+/**
+ * \brief	This function gets the bit of an unsigned char variable at certain position
+ * \param	data		variable where the bit is to be sent.
+ * \param	leftshift	sets the position of the bit the function has to retrieve
+ * \return 	returns 1, if the bit at position is one, else 0
+ */
 Uint8 CEGAGraphicsGalaxy::getBit(unsigned char data, Uint8 leftshift)
 {
 	Uint8 value;
@@ -288,7 +307,10 @@ Uint8 CEGAGraphicsGalaxy::getBit(unsigned char data, Uint8 leftshift)
 	return value;
 }
 
-// Read the fonts to Gfx-Engine
+/**
+ * \brief	Read the fonts to the Gfx-Engine
+ * \return 	returns true, if the fonts were read successfully, else false
+ */
 bool CEGAGraphicsGalaxy::readfonts()
 {
 	int bw, y, x;
@@ -367,7 +389,10 @@ bool CEGAGraphicsGalaxy::readfonts()
 	return true;
 }
 
-// This one extracts the bitmaps used in Keen 4-6 (Maybe Dreams in future)
+/**
+ * \brief	This one extracts the bitmaps used in Keen 4-6 (Maybe Dreams in future)
+ * \return 	returns true, if the fonts were read successfully, else false
+ */
 bool CEGAGraphicsGalaxy::readBitmaps()
 {
 	int ep = m_episode - 4;
