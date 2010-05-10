@@ -19,7 +19,9 @@ namespace galaxy
 ///
 // Initialization
 ///
-
+/**
+ * \brief sets the menu up when it's opened (initialization)
+ */
 CMenuGalaxy::CMenuGalaxy( char menu_mode, std::string &GamePath,
 		 char &Episode, CSavedGame &SavedGame,
 		 stOption *pOption ) :

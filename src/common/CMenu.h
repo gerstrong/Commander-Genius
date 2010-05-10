@@ -10,6 +10,7 @@
 
 #include <string>
 #include "options.h"
+#include "Menu/CBaseMenu.h"
 #include "../fileio/CSavedGame.h"
 
 class CMenu
@@ -27,6 +28,19 @@ protected:
 	bool m_RestartVideo;
 	stOption *mp_option;
 	char m_menu_mode;
+
+	bool m_choosegame;
+	bool m_overwrite;
+	bool m_goback;
+	bool m_goback2;
+	bool m_Endgame;
+	bool m_quit;
+	int m_selection;
+	char m_lastselect;
+	char m_menu_type;
+	char m_NumPlayers;
+	char m_Difficulty;
+	int  m_saveslot;
 };
 
 

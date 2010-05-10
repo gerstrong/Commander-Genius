@@ -13,7 +13,6 @@
 #include <SDL.h>
 #include "../../dialog/CDialog.h"
 #include "../../dialog/CTextViewer.h"
-#include "../../common/Menu/CBaseMenu.h"
 #include "../../common/CMap.h"
 
 #include "../../engine/infoscenes/CInfoScene.h"
@@ -103,19 +102,6 @@ private:
 	CMap &m_Map;
 	std::map<int,int> m_menumap;
 	std::vector<std::string> m_StateFileList;
-
-	bool m_choosegame;
-	bool m_overwrite;
-	bool m_goback;
-	bool m_goback2;
-	bool m_Endgame;
-	bool m_quit;
-	int m_selection;
-	char m_lastselect;
-	char m_menu_type;
-	char m_NumPlayers;
-	char m_Difficulty;
-	int  m_saveslot;
 };
 
 #endif /* CMENUVORTICON_H_ */

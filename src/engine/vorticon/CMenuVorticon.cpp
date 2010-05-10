@@ -39,19 +39,7 @@ m_hideobjects(false),
 mp_Dialog(NULL),
 mp_InfoScene(NULL),
 mp_Menu(NULL),
-m_Map(Map),
-m_choosegame(false),
-m_overwrite(false),
-m_goback(false),
-m_goback2(false),
-m_Endgame(false),
-m_quit(false),
-m_selection(-1),
-m_lastselect(-1),
-m_menu_type(MAIN),
-m_NumPlayers(0),
-m_Difficulty(-1),
-m_saveslot(0)
+m_Map(Map)
 {
 	m_menuback[1] = MAIN;
 	m_menuback[2] = SAVE;
