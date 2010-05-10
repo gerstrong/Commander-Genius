@@ -19,6 +19,12 @@ public:
 	CMenu(char menu_mode, std::string &GamePath,
 			 char &Episode, CSavedGame &SavedGame,
 			 stOption *pOption );
+
+	bool m_demoback;
+	bool m_hideobjects;
+
+	CDialog *mp_Dialog;
+
 	virtual ~CMenu();
 
 protected:
@@ -41,6 +47,10 @@ protected:
 	char m_NumPlayers;
 	char m_Difficulty;
 	int  m_saveslot;
+
+	CBaseMenu *mp_Menu;
+	std::map<int,int> m_menuback;
+	std::map<int,int> m_menumap;
 };
 
 

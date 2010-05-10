@@ -74,11 +74,6 @@ public:
 	
 	void videoRestarted() { m_RestartVideo = false; }
 
-	bool m_demoback;
-	bool m_hideobjects;
-	
-	CDialog *mp_Dialog;
-
 	virtual ~CMenuVorticon();
 
 private:
@@ -96,11 +91,8 @@ private:
 	void initDebugMenu();
 	void initModMenu();
 
-	CInfoScene *mp_InfoScene;
-	CBaseMenu *mp_Menu;
-	std::map<int,int> m_menuback;
 	CMap &m_Map;
-	std::map<int,int> m_menumap;
+	CInfoScene *mp_InfoScene;
 	std::vector<std::string> m_StateFileList;
 };
 

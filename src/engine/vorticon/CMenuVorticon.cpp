@@ -34,26 +34,10 @@ CMenuVorticon::CMenuVorticon( char menu_mode, std::string &GamePath,
 			 char &Episode, CMap &Map, CSavedGame &SavedGame,
 			 stOption *pOption ) :
 CMenu(menu_mode, GamePath, Episode, SavedGame, pOption),
-m_demoback(false),
-m_hideobjects(false),
-mp_Dialog(NULL),
-mp_InfoScene(NULL),
-mp_Menu(NULL),
-m_Map(Map)
+m_Map(Map),
+mp_InfoScene(NULL)
 {
-	m_menuback[1] = MAIN;
-	m_menuback[2] = SAVE;
-	m_menuback[3] = CONFIGURE;
-	m_menuback[9] = MAIN;
-	m_menuback[10] = MAIN;
-	m_menuback[12] = NEW;
-	m_menuback[13] = MAIN;
-	m_menuback[18] = MAIN;
-	m_menuback[20] = MAIN;
-	m_menuback[21] = MAIN;
-	m_menuback[24] = MAIN;
-	m_menuback[25] = MAIN;
-	m_menumap.clear();
+
 }
 
 ////
