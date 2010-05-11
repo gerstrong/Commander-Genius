@@ -835,58 +835,58 @@ void CPlayer::ankh()
 
 	if (!ankhtime) return;
 	else if (ankhtime < ANKH_STAGE3_TIME)
-		pAnkhshield->ai.se.state = ANKH_STATE_FLICKERSLOW;
+		m_Ankhshield.ai.se.state = ANKH_STATE_FLICKERSLOW;
 	else if (ankhtime < ANKH_STAGE2_TIME)
-		pAnkhshield->ai.se.state = ANKH_STATE_FLICKERFAST;
+		m_Ankhshield.ai.se.state = ANKH_STATE_FLICKERFAST;
 	else
-		pAnkhshield->ai.se.state = ANKH_STATE_NOFLICKER;
+		m_Ankhshield.ai.se.state = ANKH_STATE_NOFLICKER;
 
 	ankhtime--;
 
-	pAnkhshield->moveToForce(getXPosition()-(8<<STC), getYPosition()-(8<<STC));
+	m_Ankhshield.moveToForce(getXPosition()-(8<<STC), getYPosition()-(8<<STC));
 
-	if (pAnkhshield->needinit)
+	if (m_Ankhshield.needinit)
 	{
-		pAnkhshield->ai.se.frame = 0;
-		pAnkhshield->ai.se.timer = 0;
-		pAnkhshield->inhibitfall = 1;
-		pAnkhshield->canbezapped = 0;
-		pAnkhshield->needinit = 0;
+		m_Ankhshield.ai.se.frame = 0;
+		m_Ankhshield.ai.se.timer = 0;
+		m_Ankhshield.inhibitfall = 1;
+		m_Ankhshield.canbezapped = 0;
+		m_Ankhshield.needinit = 0;
 
-		pAnkhshield->ai.se.state = ANKH_STATE_NOFLICKER;
+		m_Ankhshield.ai.se.state = ANKH_STATE_NOFLICKER;
 	}
 
-	switch(pAnkhshield->ai.se.state)
+	switch(m_Ankhshield.ai.se.state)
 	{
 	case ANKH_STATE_NOFLICKER:
-		pAnkhshield->sprite = ANKH_SHIELD_FRAME + (pAnkhshield->ai.se.frame&1);
+		m_Ankhshield.sprite = ANKH_SHIELD_FRAME + (m_Ankhshield.ai.se.frame&1);
 		break;
 	case ANKH_STATE_FLICKERFAST:
-		if (pAnkhshield->ai.se.frame&1)
-			pAnkhshield->sprite = BLANKSPRITE;
+		if (m_Ankhshield.ai.se.frame&1)
+			m_Ankhshield.sprite = BLANKSPRITE;
 		else
 		{
-			if (pAnkhshield->ai.se.frame&2)
-				pAnkhshield->sprite = ANKH_SHIELD_FRAME+1;
+			if (m_Ankhshield.ai.se.frame&2)
+				m_Ankhshield.sprite = ANKH_SHIELD_FRAME+1;
 			else
-				pAnkhshield->sprite = ANKH_SHIELD_FRAME;
+				m_Ankhshield.sprite = ANKH_SHIELD_FRAME;
 		}
 		break;
 	case ANKH_STATE_FLICKERSLOW:
-		if (pAnkhshield->ai.se.frame>4)
-			pAnkhshield->sprite = BLANKSPRITE;
+		if (m_Ankhshield.ai.se.frame>4)
+			m_Ankhshield.sprite = BLANKSPRITE;
 		else
-			pAnkhshield->sprite = ANKH_SHIELD_FRAME;
+			m_Ankhshield.sprite = ANKH_SHIELD_FRAME;
 		break;
 	}
 
-	if (pAnkhshield->ai.se.timer > ANKH_FLICKER_DELAY)
+	if (m_Ankhshield.ai.se.timer > ANKH_FLICKER_DELAY)
 	{
-		pAnkhshield->ai.se.frame++;
-		if (pAnkhshield->ai.se.frame>8) pAnkhshield->ai.se.frame = 0;
-		pAnkhshield->ai.se.timer = 0;
+		m_Ankhshield.ai.se.frame++;
+		if (m_Ankhshield.ai.se.frame>8) m_Ankhshield.ai.se.frame = 0;
+		m_Ankhshield.ai.se.timer = 0;
 	}
-	else pAnkhshield->ai.se.timer++;
+	else m_Ankhshield.ai.se.timer++;
 
 }
 

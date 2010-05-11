@@ -39,7 +39,7 @@ public:
 	};
 
 	CPlayer(char &Episode, short &Level, char &Difficulty,
-			 short &player_index, bool *mp_level_completed, stOption *mp_option,
+			 short player_index, bool *mp_level_completed, stOption *mp_option,
 			 std::vector<CObject> &m_Object, CMap &map);
 	void setDatatoZero();
 	void setDefaultStartValues();
@@ -167,7 +167,7 @@ public:
 	unsigned char dpadcount, dpadlastcount;
 
 	unsigned int ankhtime;
-	CObject *pAnkhshield;
+	CObject m_Ankhshield;
 
 	stInventory inventory;
 

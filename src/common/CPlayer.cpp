@@ -25,12 +25,13 @@
 // Initialization Part
 ///
 CPlayer::CPlayer(char &Episode, short &Level, char &Difficulty,
-				 short &player_index, bool *mp_level_completed, stOption *mp_option,
+				 short player_index, bool *mp_level_completed, stOption *mp_option,
 				 std::vector<CObject> &m_Object, CMap &map) :
 CObject(&map, player_index),
 m_episode(Episode),
 m_level(Level),
 m_difficulty(Difficulty),
+m_Ankhshield(CObject(&map)),
 mp_levels_completed(mp_level_completed),
 mp_map(NULL),
 mp_option(mp_option),
@@ -40,9 +41,8 @@ mp_StatusScr(NULL)
 
 	// Ankhshield is a special object the player is holded.
 	// It's normally seen in Ep3 and when he gets invincible by the ankh
-	pAnkhshield = new CObject(&map);
-	pAnkhshield->solid = false;
-	pAnkhshield->exists = true;
+	m_Ankhshield.solid = false;
+	m_Ankhshield.exists = true;
 
 	// Set every value in the class to zero.
     memset(&inventory, 0, sizeof(stInventory));
@@ -841,7 +841,7 @@ void CPlayer::draw()
 
 	// Here comes the part of the ankhshield
 	if(ankhtime)
-		pAnkhshield->draw();
+		m_Ankhshield.draw();
 }
 
 // Draws the Status screen and return false, when it's still open.
@@ -869,5 +869,4 @@ bool CPlayer::drawStatusScreen()
 // Cleanup Part
 ///
 CPlayer::~CPlayer() {
-	delete pAnkhshield;
 }

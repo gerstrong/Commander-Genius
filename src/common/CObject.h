@@ -13,6 +13,9 @@
 
 #define MAX_PLAYERS            4
 
+#define SAFE_DELETE_ARRAY(x) if(x) { delete [] x; x = NULL; }
+#define SAFE_DELETE(x) if(x) { delete x; x = NULL; }
+
 // supported by an object and you should look in player[].psupportingobj
 // for it's index.
 #define PSUPPORTEDBYOBJECT         0
@@ -30,7 +33,7 @@
 
 class CObject {
 public:
-	CObject(CMap *pmap, int index=0);
+	CObject(CMap *pmap=NULL, int index=0);
 	
 	unsigned int m_type;        // yorp, vorticon, etc.
 	unsigned int m_index;        // Like an ID for some objects that need this implementation

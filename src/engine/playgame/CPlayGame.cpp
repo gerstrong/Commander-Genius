@@ -55,16 +55,18 @@ mp_HighScores(NULL)
 
 	// Create the Players
 	if(m_NumPlayers == 0) m_NumPlayers = 1;
+
 	
+	m_Player.assign(m_NumPlayers, CPlayer(m_Episode, m_Level, m_Difficulty,
+			(short)0, mp_level_completed, mp_option,
+			m_Object, m_Map));
+
 	for(short i=0 ; i<m_NumPlayers ; i++)
 	{
-		// Create the new Player and also tell him to which object it belongs to...
-		CPlayer Player(m_Episode, m_Level, m_Difficulty,
-						i, mp_level_completed, mp_option,
-						m_Object, m_Map);
-		Player.setDatatoZero();
-
-		m_Player.push_back(Player);
+		// Put some important Player properties
+		CPlayer &thisPlayer = m_Player.at(i);
+		thisPlayer.setIndex(i);
+		thisPlayer.setDatatoZero();
 	}
 
 	// Create completed level list

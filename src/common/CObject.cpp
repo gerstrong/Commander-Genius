@@ -12,9 +12,6 @@
 #include "../keen.h"
 #include <string.h>
 
-#define SAFE_DELETE_ARRAY(x) if(x) { delete [] x; x = NULL; }
-#define SAFE_DELETE(x) if(x) { delete x; x = NULL; }
-
 const int VISIBILITY = 21;
 
 ///
@@ -91,7 +88,7 @@ bool CObject::spawn(int x0, int y0, int otype, int Episode, char dirof)
 }
 
 void CObject::setIndex(int index)
-{ m_index = index; }
+{	m_index = index;	}
 
 void CObject::setupObjectType(int Episode)
 {
