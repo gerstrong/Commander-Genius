@@ -31,6 +31,7 @@ CMenuVorticon::CMenuVorticon( char menu_mode, std::string &GamePath,
 			 char &Episode, CMap &Map, CSavedGame &SavedGame,
 			 stOption *pOption ) :
 CMenu(menu_mode, GamePath, Episode, SavedGame, pOption),
+processPtr(NULL),
 m_Map(Map),
 mp_InfoScene(NULL)
 {
@@ -165,6 +166,8 @@ void CMenuVorticon::process()
 			// I (Gerstrong) would recommend making the others menu also this way.
 			// You'd have more files but small ones and better to control than a big one, where
 			// you have to seek and sneek
+			CMenu::process();
+
 			if(processPtr != NULL)
 				(this->*processPtr)();
 

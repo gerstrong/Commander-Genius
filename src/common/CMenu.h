@@ -37,6 +37,10 @@ public:
 	void initDebugMenu();
 	void initModMenu();
 
+	void (CMenu::*processPtr)();
+
+	void process();
+
 	// Process functions
 	void processNumPlayersMenu();
 	void processDifficultyMenu();

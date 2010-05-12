@@ -10,6 +10,7 @@
 CMenu::CMenu( char menu_mode, std::string &GamePath,
 		 char &Episode, CSavedGame &SavedGame,
 		 stOption *pOption ) :
+processPtr(NULL),
 m_demoback(false),
 m_hideobjects(false),
 mp_Dialog(NULL),
@@ -232,6 +233,12 @@ void CMenu::initSaveMenu()
 ////
 // Process
 ////
+void CMenu::process()
+{
+	if(processPtr != NULL)
+		(this->*processPtr)();
+}
+
 void CMenu::processNumPlayersMenu()
 {
 	if( m_selection != -1)
