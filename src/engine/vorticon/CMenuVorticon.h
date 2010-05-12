@@ -77,23 +77,9 @@ public:
 	virtual ~CMenuVorticon();
 
 private:
-	void initMainMenu();
-	void initConfirmMenu(std::string confirmtext = "  Are you certain?  ");
-	void initNumPlayersMenu();
-	void initDifficultyMenu();
-	void initConfigureMenu();
-	void initSaveMenu();
-	void initNumControlMenu();
-	void initControlMenu();
-	void initF1Menu();
-	void initOptionsMenu();
-	void initAudioMenu();
-	void initDebugMenu();
-	void initModMenu();
 
 	CMap &m_Map;
 	CInfoScene *mp_InfoScene;
-	std::vector<std::string> m_StateFileList;
 };
 
 #endif /* CMENUVORTICON_H_ */

@@ -12,8 +12,7 @@
 #include "options.h"
 #include "Menu/CBaseMenu.h"
 #include "../fileio/CSavedGame.h"
-
-#define SAFE_DELETE(x) if(x) { delete x; x=NULL; }
+#include "CObject.h"
 
 class CMenu
 {
@@ -23,6 +22,19 @@ public:
 			 stOption *pOption );
 
 	void init( char menu_type );
+	void initMainMenu();
+	void initNumPlayersMenu();
+	void initF1Menu();
+	void initConfirmMenu(std::string confirmtext = "  Are you certain?  ");
+	void initNumControlMenu();
+	void initDifficultyMenu();
+	void initConfigureMenu();
+	void initSaveMenu();
+	void initControlMenu();
+	void initOptionsMenu();
+	void initAudioMenu();
+	void initDebugMenu();
+	void initModMenu();
 
 	void cleanup();
 
@@ -57,6 +69,9 @@ protected:
 	CBaseMenu *mp_Menu;
 	std::map<int,int> m_menuback;
 	std::map<int,int> m_menumap;
+
+private:
+	std::vector<std::string> m_StateFileList;
 };
 
 
