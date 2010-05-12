@@ -229,6 +229,199 @@ void CMenu::initSaveMenu()
 	}
 }
 
+////
+// Process
+////
+void CMenu::processNumPlayersMenu()
+{
+	if( m_selection != -1)
+	{
+		cleanup();
+		if( m_selection < MAX_PLAYERS )
+		{
+			m_NumPlayers = m_selection + 1;
+		}
+	}
+	return;
+}
+
+void CMenu::processDifficultyMenu()
+{
+	if( m_selection != -1)
+	{
+		cleanup();
+			m_Difficulty = m_selection;
+	}
+	return;
+}
+
+void CMenu::processNumControlMenu()
+{
+	if( m_selection != -1)
+	{
+		if( m_selection < MAX_PLAYERS )
+		{
+			m_NumPlayers = m_selection + 1;
+		}
+	}
+	return;
+}
+
+void CMenu::processDebugMenu()
+{
+	return;
+}
+
+void CMenu::processModMenu()
+{
+	return;
+}
+
+void CMenu::processSaveMenu()
+{
+	std::string text;
+	if( m_selection != -1)
+	{
+		if(mp_Dialog->m_key == 'u')
+		{
+			if(mp_Dialog->m_name == "     EMPTY       ")
+			{
+				mp_Dialog->m_name = "";
+				mp_Dialog->m_key = 't';
+				m_selection = -1;
+			}
+			else if(m_overwrite == true)
+			{
+				mp_Dialog->processInput(int(m_lastselect));
+				mp_Dialog->m_name = "";
+				mp_Dialog->m_key = 't';
+				m_selection = -1;
+				m_lastselect = -1;
+				m_overwrite = false;
+			}
+			else if(mp_Dialog->m_name != "")
+			{
+				m_lastselect = m_selection;
+				init(OVERWRITE);
+			}
+			else
+			{
+				mp_Dialog->m_key = 't';
+				m_selection = -1;
+			}
+			mp_Dialog->m_length = 15;
+		}
+		else if (mp_Dialog->m_key == 't')
+		{
+			if(mp_Dialog->m_name == "")
+			{
+				mp_Dialog->setObjectText(m_selection, "Untitled");
+				mp_Dialog->m_name = "Untitled";
+				m_saveslot = int(m_selection) + 1;
+				m_SavedGame.prepareSaveGame(m_saveslot, mp_Dialog->m_name);
+			}
+			else
+			{
+				mp_Dialog->setObjectText(m_selection, mp_Dialog->m_name);
+				m_saveslot = int(m_selection) + 1;
+				m_SavedGame.prepareSaveGame(m_saveslot, mp_Dialog->m_name);
+			}
+			mp_Dialog->m_key = 'u';
+			m_goback2 = true;
+		}
+	}
+	else
+	{
+		m_selection = m_lastselect;
+	}
+
+	if(m_goback2)
+	{
+		cleanup();
+		init(MAIN);
+		m_goback = true;
+	}
+	return;
+}
+
+void CMenu::processLoadMenu()
+{
+	if( m_selection != -1)
+	{
+		if(mp_Dialog->m_name == "     EMPTY       ")
+		{
+			//TODO: Message saying can't load, it is empty.  Also, we need to add a check to see if it is corrupt, or something to prevent old saves from crashing due to incompatibility.
+		}
+		else
+		{
+			m_saveslot = int(m_selection) + 1;
+			m_SavedGame.prepareLoadGame(m_saveslot);
+			m_goback2 = true;
+		}
+	}
+
+	if(m_goback2)
+	{
+		cleanup();
+		init(MAIN);
+		m_goback = true;
+	}
+	return;
+}
+
+void CMenu::processOverwriteMenu()
+{
+	if( m_selection != -1)
+	{
+		if ( m_selection == 1 )
+		{
+			m_overwrite = true;
+			m_goback = true;
+		}
+		else if ( m_selection == 2 )
+		{
+			m_overwrite = false;
+			m_goback = true;
+			m_lastselect = -1;
+		}
+	}
+	return;
+}
+
+void CMenu::processQuitMenu()
+{
+	if( m_selection != -1)
+	{
+		if ( m_selection == 1 )
+		{
+			cleanup();
+			m_quit = true;
+		}
+		else if ( m_selection == 2 )
+		{
+			m_goback = true;
+		}
+	}
+	return;
+}
+
+void CMenu::processEndGameMenu()
+{
+	if( m_selection != -1)
+	{
+		if ( m_selection == 1 )
+		{
+			cleanup();
+			m_Endgame = true;
+		}
+		else if ( m_selection == 2 )
+		{
+			m_goback = true;
+		}
+	}
+	return;
+}
+
 
 ////
 // Cleanup Routines

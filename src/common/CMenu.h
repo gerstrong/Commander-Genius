@@ -21,6 +21,7 @@ public:
 			 char &Episode, CSavedGame &SavedGame,
 			 stOption *pOption );
 
+	// initialization functions
 	void init( char menu_type );
 	void initMainMenu();
 	void initNumPlayersMenu();
@@ -35,6 +36,18 @@ public:
 	void initAudioMenu();
 	void initDebugMenu();
 	void initModMenu();
+
+	// Process functions
+	void processNumPlayersMenu();
+	void processDifficultyMenu();
+	void processNumControlMenu();
+	void processDebugMenu();
+	void processModMenu();
+	void processSaveMenu();
+	void processLoadMenu();
+	void processOverwriteMenu();
+	void processQuitMenu();
+	void processEndGameMenu();
 
 	void cleanup();
 

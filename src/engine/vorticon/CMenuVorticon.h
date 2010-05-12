@@ -43,18 +43,8 @@ public:
 	bool init( char menu_type = MAIN );
 
 	void process();
-	void processMainMenu();
-	void processQuitMenu();
-	void processNumPlayersMenu();
-	void processDifficultyMenu();
-	void processNumControlMenu();
 	void processF1Menu();
-	void processEndGameMenu();
-	void processSaveMenu();
-	void processLoadMenu();
-	void processOverwriteMenu();
-	void processDebugMenu();
-	void processModMenu();
+	void processMainMenu();
 
 	void (CMenuVorticon::*processPtr)();
 	
