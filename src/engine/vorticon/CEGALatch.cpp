@@ -60,7 +60,7 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 		CBitmap &Bitmap = g_pGfxEngine->getBitmap(i);
 		memcpy(&width,data+16*i,2);
 		memcpy(&height,data+16*i+2,2);
-		name = (const char*)(data+16*i+8);
+		name = static_cast<const char*>(data+16*i+8);
 		width *= 8; // The width is always divided by eight when read
 
 		name = name.substr(0,8); // Cut the rest of data down, if junk detected in the exe file

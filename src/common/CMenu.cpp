@@ -48,6 +48,26 @@ mp_Menu(NULL)
 	m_menumap.clear();
 }
 
+void CMenu::init( char menu_type )
+{
+	m_menu_type = menu_type;
+	m_goback = false;
+	m_goback2 = false;
+	m_selection = -1; // Nothing has been selected yet.
+}
+
+////
+// Cleanup Routines
+////
+void CMenu::cleanup()
+{
+	m_hideobjects = false;
+	// Close the old menu
+	SAFE_DELETE(mp_Menu);
+	SAFE_DELETE(mp_Dialog);
+}
+
+
 CMenu::~CMenu()
 {
 	// TODO Auto-generated destructor stub

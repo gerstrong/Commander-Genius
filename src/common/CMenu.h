@@ -13,6 +13,8 @@
 #include "Menu/CBaseMenu.h"
 #include "../fileio/CSavedGame.h"
 
+#define SAFE_DELETE(x) if(x) { delete x; x=NULL; }
+
 class CMenu
 {
 public:
@@ -20,12 +22,16 @@ public:
 			 char &Episode, CSavedGame &SavedGame,
 			 stOption *pOption );
 
+	void init( char menu_type );
+
+	void cleanup();
+
+	virtual ~CMenu();
+
 	bool m_demoback;
 	bool m_hideobjects;
 
 	CDialog *mp_Dialog;
-
-	virtual ~CMenu();
 
 protected:
 	char &m_Episode;

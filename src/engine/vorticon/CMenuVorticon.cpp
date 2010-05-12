@@ -26,8 +26,6 @@
 #include "../../sdl/sound/CSound.h"
 #include "../../sdl/CVideoDriver.h"
 
-#define SAFE_DELETE(x) if(x) { delete x; x=NULL; }
-
 #define SELMOVE_SPD         3
 
 CMenuVorticon::CMenuVorticon( char menu_mode, std::string &GamePath,
@@ -46,10 +44,8 @@ mp_InfoScene(NULL)
 bool CMenuVorticon::init( char menu_type )
 {
 	cleanup();
-	m_menu_type = menu_type;
-	m_goback = false;
-	m_goback2 = false;
-	m_selection = -1; // Nothing has been selected yet.
+
+	CMenu::init(menu_type);
 
 	switch(m_menu_type)
 	{
@@ -132,11 +128,11 @@ void CMenuVorticon::initMainMenu()
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Quit");
 		m_menumap[6] = ENDGAME;
 	}
-		m_menumap[0] = NEW;
-		m_menumap[1] = LOAD;
-		m_menumap[2] = SAVE;
-		m_menumap[4] = CONFIGURE;
-		m_menumap[7] = QUIT;
+	m_menumap[0] = NEW;
+	m_menumap[1] = LOAD;
+	m_menumap[2] = SAVE;
+	m_menumap[4] = CONFIGURE;
+	m_menumap[7] = QUIT;
 }
 
 void CMenuVorticon::initNumPlayersMenu()
@@ -288,7 +284,7 @@ void CMenuVorticon::process()
 			cleanup();
 			init(F1);
 		}
-		
+
 		if( g_pInput->getHoldedKey(KM) && g_pInput->getHoldedKey(KO) && g_pInput->getHoldedKey(KD) )
 		{
 			cleanup();
@@ -343,21 +339,21 @@ void CMenuVorticon::process()
 			// You'd have more files but small ones and better to control than a big one, where
 			// you have to seek and sneek
 			if(processPtr != NULL)
-			   (this->*processPtr)();
+				(this->*processPtr)();
 
 			// Draw the menu
 			if(!mp_Menu && mp_Dialog) mp_Dialog->draw();
 			if(m_goback && m_menu_type != MAIN)
 			{
-					init(m_menuback[m_menu_type]);
+				init(m_menuback[m_menu_type]);
 			}
 			for( std::map<int, int>::iterator iter = m_menumap.begin(); iter != m_menumap.end(); ++iter ) {
-					if( m_selection == (*iter).first )
-					{
-						init((*iter).second);
-						break;
-					}
+				if( m_selection == (*iter).first )
+				{
+					init((*iter).second);
+					break;
 				}
+			}
 		}
 	}
 	else // InfoScene is enabled! show it instead of the menu
@@ -656,11 +652,8 @@ void CMenuVorticon::processEndGameMenu()
 ////
 void CMenuVorticon::cleanup()
 {
+	CMenu::cleanup();
 	m_Map.m_animation_enabled = true;
-	m_hideobjects = false;
-	// Close the old menu
-	SAFE_DELETE(mp_Menu);
-	SAFE_DELETE(mp_Dialog);
 }
 
 CMenuVorticon::~CMenuVorticon()
