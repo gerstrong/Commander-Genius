@@ -187,11 +187,15 @@ void CGfxEngine::process(){
 	if(mp_Effects){
 		mp_Effects->process();
 
-		if(mp_Effects->finished())
+		if(runningEffect())
 		{
 			killEffect();
 		}
 	}
+}
+
+bool CGfxEngine::runningEffect(){
+	return ( mp_Effects && mp_Effects->finished());
 }
 
 // Kills the effect when called

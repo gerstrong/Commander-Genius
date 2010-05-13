@@ -62,6 +62,7 @@ public:
 	std::vector<CSprite> &getSpriteVec() { return Sprite; }
 	CFont &getFont(Uint8 index) { return Font.at(index); }
 	CCursor *getCursor() { return mp_Cursor; }
+	bool runningEffect();
 	
 	void process();
 	void killEffect();

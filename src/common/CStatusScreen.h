@@ -21,6 +21,9 @@ public:
 	void drawInventoryEp2();
 	void drawInventoryEp3();
 
+	bool isClosed() {	return m_closed;	}
+	void close() {	m_closing = true;	}
+
 	virtual ~CStatusScreen();
 private:
 	char m_episode;
@@ -29,7 +32,7 @@ private:
 	bool *mp_level_completed;
 	int m_ankhtime;
 
-	SDL_Surface *mp_surface;
+	bool m_closing, m_closed;
 };
 
 #endif /* CSTATUSSCREEN_H_ */

@@ -17,6 +17,7 @@
 #include "../sdl/sound/CSound.h"
 #include "../sdl/CVideoDriver.h"
 #include "../graphics/CGfxEngine.h"
+#include "../graphics/effects/CColorMerge.h"
 #include "../engine/spritedefines.h"
 #include "../engine/vorticon/CCamera.h"
 #include <stdlib.h>
@@ -854,11 +855,16 @@ bool CPlayer::drawStatusScreen()
 		
 		mp_StatusScr->draw();
 		
-		if(g_pInput->getPressedAnyCommand())
+		if( mp_StatusScr->isClosed() )
 		{
 			m_showStatusScreen = false;
 			delete mp_StatusScr;
 			mp_StatusScr = NULL;
+		}
+		else if( g_pInput->getPressedAnyCommand() )
+		{
+			g_pGfxEngine->pushEffectPtr(new CColorMerge(16));
+			mp_StatusScr->close();
 		}
 		return false;
 	}
