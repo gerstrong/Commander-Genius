@@ -524,13 +524,10 @@ void CMenu::processQuitMenu()
 	{
 		cleanup();
 		if ( m_selection == 1 )
-		{
 			m_quit = true;
-		}
 		else if ( m_selection == 2 )
-		{
 			m_goback = true;
-		}
+
 		m_selection = -1;
 	}
 	return;
