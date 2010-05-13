@@ -12,7 +12,7 @@
 *    (c)2003-2010            Caitlin Shaw    *
 *           Released under GNU/GPL           *
 *                                            *
-*            Release v0.3.1.1                *
+*            Release v0.3.1.3                *
 *                                            *
 **********************************************
 
@@ -33,57 +33,48 @@ please send us a message and we will do our
 best to help you understand the code.
 
 The main goal of Commander Genius is to copy
-the original games as much as possible, however
-there are also a number of improvements like:
+the original game play feeling as much as possible, 
+although there are also a number of improvements like:
 - MMX Support
 - OpenGL Acceleration
-- Better Graphic Effects
+- Better graphical Effects
 - Multiplayer Support
-- High Quality Packs
+- High Quality Packs which make the game look better
 - In-Game Menu
 - Named Save Slots
 - Unrestricted Joystick Support
-- Many More!
+- and more!
 
-We renamed CloneKeenPlus, because of some major
-rewrites in the code, we now call it Commander
-Genius!  After the all these major rewrites,
-have retained only a very small portion of the
-original CloneKeen code, but it was the base of
-CloneKeen that allowed this to happen. Because
-of that we still honor Caitlin Shaw and all the
-work she did on that engine.
+Before it was called CloneKeenPlus, but some 
+major rewrites in the code had to be done.
+We now call it Commander Genius!  
+After all this coding, we have retained 
+only a very small portion of the
+original CloneKeen code, but it was its base 
+that allowed it to happen. Due that fact
+we still honor Caitlin Shaw and all that
+effort she put onto that engine in the past.
 
 The Commander Genius source code may be freely
 distributed and modified as per the GPL, just
 please remember to give credit to the original
-authors. We worked hard on it!
-
-///Old Unchanged for a while part of the readme
-///Sorry, but we don't have the time to sort
-///through this mess and fix it up for the
-///new release, but we will make a much better
-///version of the readme for the next release,
-///you can count on that!
+authors. We worked very hard on it!
 
 Setting up the data of the game:
 
- * Copy all of the data files from the original game(s) into the
-   "./games" folder. If you have the registered versions, 
-   you can play all episodes, otherwise download the shareware version 
-   and copy the data from it. You also can use mods.  In Macintosh you 
-   can find this folder by right clicking on the game and clicking 
-   open package then going into resources.  If you have a bundled version, 
-   you already should be able to play episode 1.
-   NOTE: to start CG you need at least Episode 1!
- * If you want to use some patched mods just copy them as a subfolder into "./games". 
- * Go into the Release folder and start the interpreter. If you have downloaded 
+ * Copy the directory of the games to the "games" subdirectory of CG.
+   If you own the registered versions, you can play all episodes, 
+   otherwise download the shareware version and copy them there. 
+   You also can use mods. If you have a bundled version, 
+   you already should be able to play episode 1, as it is in that directory.
+ * If you want to use some patched mods just copy them as separate games. 
+ * Go into the root directory and start the interpreter. If you have downloaded 
    the binary version of Commander Genius (for Windows, Linux32/64), then you 
    will find the executable in the root directory of the extracted game.
    Under Linux it is called "CGenius", under Windows "CGenius.exe".    
  * If you want better sounds and music, please download the high quality pack (HQP).
-   Read that readme of HQP for more information how to use those resources.
-   Also try out our new tileset. They are great!
+   Read that readme of HQP for more information in how to use those resources.
+   Also try out our new tilesets. They are awesome!
    Using HQP you might have to copy some resources to the specific game directory so
    CG would detect it. For example you might want to copy ck1tiles.bmp to ./games/keen1/
  * If your monitor and graphic card support a special resolution, you can add it by
@@ -96,7 +87,7 @@ Howto use Commander Genius (If you didn't compile it):
  * Go to the game directory.
  * Under Windows you start "CGenius.exe", under Linux "./CGenius"
 
-Howto compile it under Ubuntu (testet on Karmic):
+Howto compile it under Ubuntu (testet on Lucid):
  * This is based on the source code that we provide on our website
  * As we know which packages are needed, because we use Ubuntu, here is an extra guide. 
  * Install through Synaptic or "sudo apt-get install" following packages:
@@ -135,7 +126,7 @@ you want to support other resolutions that you don't find in the options list ju
 monitor support it.
 
 CAUTION: This is recommended for advanced users who know what they do. The team won't take 
-responsibilities if you use a wrong configuration. If you want to see other resolutions to 
+any responsibility if you use a wrong configuration. If you want to see other resolutions to 
 in future versions of CG, mail us ;-).
 
 - GAME PLAY -
@@ -183,14 +174,21 @@ A: You can decrease the fps under settings->video what is very
    (OpenGL 2.0 or later). Try to lower the resolution, a lower filter, or decrease some stuff in the sound section.
    Stereo sound requires additional calculations than mono sound. There are many things you can do, to speed up
    the program.
-
+   
+Q: When can I play Keen 4, 5 and 6 on CG?
+A: That is a good question! We currently are working on the support and piece by piece more functionalities of those
+   great games will be there. Just get every update we release and more stuff for those games will be starting
+   to work. ;-) 
+  
+  
 - BUG! -
 So you really found one or more bugs? Please report me those per e-mail (gerstrong@gmail.com) or at
 the SourceForge.Net Trac system we offer and they will be checked by all of us. 
-Depending on the priority, I'm going to fix them as soon as possible. 
-Sending me the "CGLog.html" or "stdout.txt" file might help tracking the error.
-Also remember to test the version from the testing repo we provide. You error might have been fixed there.
-Those versions are really great!
+Depending on the priority, we are going to fix them as soon as possible. 
+Sending us the "CGLog.html" or "stdout.txt" file might help tracking the error.
+Also remember to test the version from the testing repo we sometimes provide. 
+Your error might have been already fixed there. If there is no testing version after the release, 
+just report it. ;-)
 
 http://sourceforge.net/apps/trac/clonekeenplus/
 
@@ -223,8 +221,8 @@ for his changes. They helped out a lot on the quality of the code and performanc
 I'm sure, there were more people who helped us and we forgot to mention, but
 many thanks to them also.
 
-Many thanks to all of you, the project has gone farther, and will be a nice
-port to Commander Keen!
+Also lots of thanks to all of you, the project has become so great, and will be a nice
+port for Commander Keen games!
 
 And yes, it's no rumor, we are working on Keen 4 support! Stay tuned!
                             
