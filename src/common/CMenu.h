@@ -89,8 +89,8 @@ protected:
 	Uint8 m_DlgTheme;
 
 	CBaseMenu *mp_Menu;
-	std::map<int,int> m_menuback;
-	std::map<int,int> m_menumap;
+	std::vector<int> m_menuback;
+	std::vector<int> m_menumap;
 
 private:
 	std::vector<std::string> m_StateFileList;

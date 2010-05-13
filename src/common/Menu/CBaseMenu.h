@@ -26,6 +26,8 @@ enum menutypes{
 	MODCONF
 };
 
+const unsigned int NUM_MENUS = MODCONF+1;
+
 // Active means, when the player is playing, PASSIVE when the Player is not playing
 enum menumodes{
 	ACTIVE, PASSIVE

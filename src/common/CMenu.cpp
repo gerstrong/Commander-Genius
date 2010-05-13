@@ -40,18 +40,10 @@ m_saveslot(0),
 m_DlgTheme(DlgTheme),
 mp_Menu(NULL)
 {
-	m_menuback[1] = MAIN;
-	m_menuback[2] = SAVE;
-	m_menuback[3] = CONFIGURE;
-	m_menuback[9] = MAIN;
-	m_menuback[10] = MAIN;
-	m_menuback[12] = NEW;
-	m_menuback[13] = MAIN;
-	m_menuback[18] = MAIN;
-	m_menuback[20] = MAIN;
-	m_menuback[21] = MAIN;
-	m_menuback[24] = MAIN;
-	m_menuback[25] = MAIN;
+	m_menuback.assign(NUM_MENUS, MAIN);
+	m_menuback[OVERWRITE] = SAVE;
+	m_menuback[CONTROLPLAYERS] = CONFIGURE;
+	m_menuback[START] = NEW;
 	m_menumap.clear();
 }
 
@@ -111,7 +103,8 @@ void CMenu::initMainMenu()
 	mp_Dialog = new CDialog(17, 10, 'u',m_DlgTheme);
 
 	m_menumap.clear();
-	// When in Intro, Title, Demo mode
+	m_menumap.assign(8,MAIN);
+	// Being at Intro, Title or Demo mode
 	if( m_menu_mode == PASSIVE )
 	{
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "New Game");
@@ -124,7 +117,6 @@ void CMenu::initMainMenu()
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Quit");
 	}
 	// When Player is playing
-	// TODO: This still must be adapted to ingame situation
 	if( m_menu_mode == ACTIVE )
 	{
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "New Game");
@@ -137,6 +129,7 @@ void CMenu::initMainMenu()
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Quit");
 		m_menumap[6] = ENDGAME;
 	}
+
 	m_menumap[0] = NEW;
 	m_menumap[1] = LOAD;
 	m_menumap[2] = SAVE;
@@ -155,10 +148,7 @@ void CMenu::initNumPlayersMenu()
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, i, itoa(i)+" Player");
 	}
 	m_menumap.clear();
-	m_menumap[0] = DIFFICULTY;
-	m_menumap[1] = DIFFICULTY;
-	m_menumap[2] = DIFFICULTY;
-	m_menumap[3] = DIFFICULTY;
+	m_menumap.assign(MAX_PLAYERS, DIFFICULTY);
 }
 
 void CMenu::initDebugMenu()
@@ -199,10 +189,10 @@ void CMenu::initConfigureMenu()
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Controls");
 
 	m_menumap.clear();
-	m_menumap[0] = GRAPHICS;
-	m_menumap[1] = AUDIO;
-	m_menumap[2] = OPTIONS;
-	m_menumap[3] = CONTROLPLAYERS;
+	m_menumap.push_back(GRAPHICS);
+	m_menumap.push_back(AUDIO);
+	m_menumap.push_back(OPTIONS);
+	m_menumap.push_back(CONTROLPLAYERS);
 }
 
 void CMenu::initNumControlMenu()
@@ -216,10 +206,7 @@ void CMenu::initNumControlMenu()
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, i, "Player "+itoa(i));
 	}
 	m_menumap.clear();
-	m_menumap[0] = CONTROLS;
-	m_menumap[1] = CONTROLS;
-	m_menumap[2] = CONTROLS;
-	m_menumap[3] = CONTROLS;
+	m_menumap.assign(4, CONTROLS);
 }
 
 void CMenu::initF1Menu()
@@ -307,46 +294,39 @@ void CMenu::process()
 	}
 	else
 	{
-		// Get Input for selection
-		if( g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_STATUS) )
+		if(mp_Dialog)
 		{
-			m_selection = mp_Dialog->getSelection();
-		}
-		if( mp_Dialog->m_key == 'l' )
-		{
-			if( g_pInput->getPressedKey(KY) )
+			// Get Input for selection
+			if( g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_STATUS) )
 			{
-				m_selection = 1;
+				m_selection = mp_Dialog->getSelection();
 			}
-			else if( g_pInput->getPressedKey(KN) )
+
+			if( mp_Dialog->m_key == 'l' )
 			{
-				m_selection = 2;
+				if( g_pInput->getPressedKey(KY) )
+				{
+					m_selection = 1;
+				}
+				else if( g_pInput->getPressedKey(KN) )
+				{
+					m_selection = 2;
+				}
 			}
+
+			if( g_pInput->getPressedCommand(IC_QUIT) )
+			{
+				m_goback = true;
+			}
+			mp_Dialog->processInput();
+
+			// Draw the menu
+			if(!mp_Menu && mp_Dialog) mp_Dialog->draw();
 		}
-		if( g_pInput->getPressedCommand(IC_QUIT) )
-		{
-			m_goback = true;
-		}
-		mp_Dialog->processInput();
 
 		if(processPtr != NULL)
 			(this->*processPtr)();
-
-		// Draw the menu
-		if(!mp_Menu && mp_Dialog) mp_Dialog->draw();
-		if(m_goback && m_menu_type != MAIN)
-		{
-			init(m_menuback[m_menu_type]);
-		}
-		for( std::map<int, int>::iterator iter = m_menumap.begin(); iter != m_menumap.end(); ++iter ) {
-			if( m_selection == (*iter).first )
-			{
-				init((*iter).second);
-				break;
-			}
-		}
 	}
-
 }
 
 void CMenu::processMainMenu()
@@ -540,17 +520,18 @@ void CMenu::processOverwriteMenu()
 
 void CMenu::processQuitMenu()
 {
-	if( m_selection != -1)
+	if( m_selection != -1 )
 	{
+		cleanup();
 		if ( m_selection == 1 )
 		{
-			cleanup();
 			m_quit = true;
 		}
 		else if ( m_selection == 2 )
 		{
 			m_goback = true;
 		}
+		m_selection = -1;
 	}
 	return;
 }

@@ -71,6 +71,24 @@ void CMenuVorticon::process()
 		// Process the Menu Type logic.
 		CMenu::process();
 
+		// Only if a selection has been done, trigger it!
+		if(m_selection != -1)
+		{
+			for( std::size_t iter = 0 ; iter < m_menumap.size() ; iter++ )
+			{
+				if( m_selection == static_cast<int>(iter) )
+				{
+					init( m_menumap.at(iter) );
+					break;
+				}
+			}
+		}
+
+		if(m_goback && m_menu_type != MAIN)
+		{
+			init(m_menuback[m_menu_type]);
+		}
+
 		if(processPtr != NULL)
 			(this->*processPtr)();
 	}
