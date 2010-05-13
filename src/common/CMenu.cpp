@@ -410,7 +410,7 @@ void CMenu::processModMenu()
 void CMenu::processSaveMenu()
 {
 	std::string text;
-	if( m_selection != -1)
+	if( m_selection != -1 || m_overwrite)
 	{
 		if(mp_Dialog->m_key == 'u')
 		{
@@ -513,6 +513,7 @@ void CMenu::processOverwriteMenu()
 			m_overwrite = false;
 			m_goback = true;
 			m_lastselect = -1;
+			m_selection = -1;
 		}
 	}
 	return;
@@ -546,6 +547,7 @@ void CMenu::processEndGameMenu()
 		{
 			m_goback = true;
 		}
+		m_selection = -1;
 	}
 	return;
 }
