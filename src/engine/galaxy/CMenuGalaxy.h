@@ -24,9 +24,11 @@ public:
 	CMenuGalaxy( char menu_mode, std::string &GamePath,
 			 char &Episode, CSavedGame &SavedGame,
 			 stOption *pOption );
-	void setupMenu();
+	bool init( char menu_type = MAIN );
+
 	void process();
 	void processMainMenu();
+
 	virtual ~CMenuGalaxy();
 
 	void (CMenuGalaxy::*processPtr)();

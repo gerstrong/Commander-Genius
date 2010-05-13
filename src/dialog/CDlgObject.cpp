@@ -22,10 +22,11 @@ m_colour(0x0)
 // Creation Routine
 ///
 void CDlgObject::create(Uint8 type, Uint16 ID, Uint16 x, Uint16 y,
-		const std::string &text, unsigned int delimiter, Uint8 Fontmap_ID)
+		const std::string &text, unsigned int delimiter, Uint8 Fontmap_ID, Uint8 theme)
 {
 	m_type = type;
 	m_ID = ID;
+	m_theme = theme;
 	
 	m_x = x;
 	m_y = y;
@@ -69,26 +70,31 @@ void CDlgObject::render(SDL_Surface *dst, Uint8 scrollamt, bool highlight)
 {
 	if(m_type == DLG_OBJ_OPTION_TEXT)
 	{
-		if(g_pVideoDriver->getSpecialFXConfig())
+		if(m_theme == DLG_THEME_VORTICON || m_theme == DLG_THEME_RED)
 		{
-			// Nice colour effect
-			if(m_colour < 0x0000FF && m_selected)
+			if(g_pVideoDriver->getSpecialFXConfig())
 			{
-				if( m_colour+fade_speed > 0x0000FF)
-					m_colour = 0x0000FF;
-				else
-					m_colour+=fade_speed;
+				// Nice colour effect
+				if(m_colour < 0x0000FF && m_selected)
+				{
+					if( m_colour+fade_speed > 0x0000FF)
+						m_colour = 0x0000FF;
+					else
+						m_colour+=fade_speed;
+				}
+				else if(m_colour > 0x000000 && !m_selected)
+				{
+					if( (int)(m_colour-fade_speed) < 0x000000)
+						m_colour = 0x000000;
+					else
+						m_colour-=fade_speed;
+				}
 			}
-			else if(m_colour > 0x000000 && !m_selected)
-			{
-				if( (int)(m_colour-fade_speed) < 0x000000)
-					m_colour = 0x000000;
-				else
-					m_colour-=fade_speed;
-			}
+			else
+				m_colour = m_selected ? 0x0000FF : 0x000000;
 		}
-		else
-			m_colour = m_selected ? 0x0000FF : 0x000000;
+		else if(m_theme == DLG_THEME_GALAXY)
+			m_colour = m_selected ? 0x54fc54 : 0x008c00;
 
 		m_Option->draw(dst, m_x+16, m_y-8*scrollamt, highlight, m_colour);
 	}

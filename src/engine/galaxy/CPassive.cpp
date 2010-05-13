@@ -83,10 +83,10 @@ void CPassiveGalaxy::processMenu()
 			g_pGfxEngine->killEffect();
 		else
 		{
-			g_pGfxEngine->pushEffectPtr(new CColorMerge(8));
+			//g_pGfxEngine->pushEffectPtr(new CColorMerge(8));
 
 			// If we press any key we go to the menu screen
-			m_modeg = true;
+			//m_modeg = true;
 		}
 	}
 }

@@ -37,7 +37,7 @@ public:
 	Uint32 getColour();
 
 	void drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff, Uint32 colour = 0x0);
-	void drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, bool highlight = false, Uint32 colour=0x0 );
+	void drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, bool highlight = false, Uint32 colour = 0x0);
 	void drawMap(SDL_Surface* dst);
 
 	void destroySurface();

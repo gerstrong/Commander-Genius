@@ -150,6 +150,8 @@ void CFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint1
 	scrrect.h = dstrect.h = (m_ColouredSurface->h/16);
 	dstrect.x = xoff;	dstrect.y = yoff;
 	
+	setFGColour(dst->format, colour);
+
 	if(m_monochrome)
 		SDL_BlitSurface(m_FontSurface, &scrrect, dst, &dstrect);
 	else

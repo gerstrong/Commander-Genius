@@ -44,6 +44,8 @@ private:
 	Uint16 m_w;
 	Uint16 m_h;
 
+	Uint8 m_theme;
+
 	Uint8 m_selected_ID;
 	int m_dlg_size;
 	Uint8 m_switch;

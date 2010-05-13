@@ -20,10 +20,11 @@
 // Their menu display are way too different
 
 CDialog::CDialog(Uint16 w, Uint16 h, char key, Uint8 theme) :
-m_Font_ID(0)
+m_Font_ID((theme==DLG_THEME_GALAXY) ? 1 : 0)
 {
 	m_x = (300/2)-(w*4)+10;	m_y = (200/2)-(h*4);
 	m_w = w;	m_h = h;
+	m_theme = theme;
 	
 	m_twirl.posy = m_y;
 	m_twirl.frame = 0;
@@ -54,7 +55,7 @@ void CDialog::addObject(Uint8 type, Uint16 x, Uint16 y,const std::string text)
 	DlgObject->create( type, m_dlgobject.size(),
 						m_x+(x*8), m_y+(y*8),
 						text, m_w-((x-m_x)/8)-5,
-						m_Font_ID);
+						m_Font_ID, m_theme);
 	m_dlgobject.push_back(DlgObject);
 
 	// Check if the ID is not out of bounds.
