@@ -10,15 +10,14 @@
 #include "../../sdl/CVideoDriver.h"
 #include "../../sdl/CSettings.h"
 
-COptions::COptions(char &menu_type, stOption *p_option) :
-CBaseMenu(menu_type),
+COptions::COptions(char &menu_type, Uint8 dlg_theme,stOption *p_option) :
+CBaseMenu(menu_type, dlg_theme),
 mp_option(p_option)
 {
 	int i;
 	std::string buf;
 
-	mp_Dialog = new CDialog(27, NUM_OPTIONS+2);
-	mp_Dialog->setFrameTheme(DLG_THEME_OLDSCHOOL);
+	mp_Dialog = new CDialog(27, NUM_OPTIONS+2, 'u', DLG_THEME_VORTICON);
 
 	for( i = 0 ; i < NUM_OPTIONS ; i++ )
 	{

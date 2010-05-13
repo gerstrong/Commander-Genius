@@ -12,7 +12,7 @@
 
 class CControlsettings : public CBaseMenu {
 public:
-	CControlsettings(char &menu_type, int chosenPlayerNumber);
+	CControlsettings(char &menu_type, Uint8 m_DlgTheme, int chosenPlayerNumber);
 	void drawInitialCommands();
 
 	void processSpecific();

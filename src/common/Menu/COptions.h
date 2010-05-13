@@ -13,7 +13,7 @@
 
 class COptions : public CBaseMenu {
 public:
-	COptions(char &menu_type, stOption *p_option);
+	COptions(char &menu_type, Uint8 dlg_theme, stOption *p_option);
 	void processSpecific();
 	virtual ~COptions();
 

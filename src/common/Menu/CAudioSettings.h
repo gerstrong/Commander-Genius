@@ -14,7 +14,7 @@
 
 class CAudioSettings : public CBaseMenu {
 public:
-	CAudioSettings(char &menu_type, std::string &Gamepath, char &Episode);
+	CAudioSettings(char &menu_type, Uint8 dlg_theme, std::string &Gamepath, char &Episode);
 	void processSpecific();
 	virtual ~CAudioSettings();
 

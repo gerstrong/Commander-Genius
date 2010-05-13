@@ -54,7 +54,6 @@ public:
 	bool init();
     void cleanup();
 
-    bool drawMenu();
 	void process();
 	Uint8 retrievetEpisode(short chosengame);
 

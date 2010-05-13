@@ -16,7 +16,7 @@
 
 class CVideoSettings : public CBaseMenu {
 public:
-	CVideoSettings(char &menu_type);
+	CVideoSettings(char &menu_type, Uint8 dlg_theme);
 	void processSpecific();
 	virtual ~CVideoSettings();
 

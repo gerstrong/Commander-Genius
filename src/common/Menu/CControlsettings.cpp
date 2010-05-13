@@ -11,8 +11,8 @@
 #include "../../sdl/CVideoDriver.h"
 #include "../../StringUtils.h"
 
-CControlsettings::CControlsettings(char &menu_type, int chosenPlayerNumber) :
-CBaseMenu(menu_type),
+CControlsettings::CControlsettings(char &menu_type, Uint8 dlg_theme, int chosenPlayerNumber) :
+CBaseMenu(menu_type, dlg_theme),
 m_chosenPlayer(chosenPlayerNumber),
 m_waiting_for_input(false)
 {
@@ -23,8 +23,7 @@ void CControlsettings::drawInitialCommands()
 {
 	std::string buf;
 	std::string buf2;
-	mp_Dialog = new CDialog(36, 14);
-	mp_Dialog->setFrameTheme(DLG_THEME_OLDSCHOOL);
+	mp_Dialog = new CDialog(36, 14, 'u', DLG_THEME_VORTICON);
 
 	buf2 = g_pInput->getEventName(IC_LEFT, m_chosenPlayer-1);
 	buf = "P"+itoa(m_chosenPlayer)+" Left:   " + buf2;

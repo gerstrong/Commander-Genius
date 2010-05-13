@@ -19,7 +19,7 @@
 // TODO: This class must get a super class and we need two new classes for galaxy and vorticon engines.
 // Their menu display are way too different
 
-CDialog::CDialog(Uint16 w, Uint16 h) :
+CDialog::CDialog(Uint16 w, Uint16 h, char key, Uint8 theme) :
 m_Font_ID(0)
 {
 	m_x = (300/2)-(w*4)+10;	m_y = (200/2)-(h*4);
@@ -29,50 +29,20 @@ m_Font_ID(0)
 	m_twirl.frame = 0;
 	m_twirl.timer = 0;
 	
-	m_key = 'u';
-	m_blink = true;
-	m_blinkctr = 0;
-	m_selected_ID = 0;
-	m_switch = 0;
-	m_scroll = 0;
-	m_Frame = NULL;
-	m_alpha = 128;
-}
-
-CDialog::CDialog(Uint16 x, Uint16 y, Uint16 w, Uint16 h, char key) :
-m_Font_ID(0)
-{
-	m_x = (300/2)-(w*4)+10+x;	m_y = (200/2)-(h*4)+y;
-	m_w = w;	m_h = h;
-	
-	m_twirl.posy = m_y;
-	m_twirl.frame = 0;
-	m_twirl.timer = 0;
-	
-	m_blink = true;
-	m_blinkctr = 0;
 	m_key = key;
+	m_blink = true;
+	m_blinkctr = 0;
 	m_selected_ID = 0;
 	m_length = 15;
 	m_switch = 0;
 	m_scroll = 0;
-	m_Frame = NULL;
+	mp_Frame = new CDlgFrame(m_x, m_y, m_w, m_h, theme);
 	m_alpha = 128;
 }
 
 ///
 // Creation Routines for Objects
 ///
-void CDialog::setFrameTheme(Uint8 theme)
-{
-	m_Frame = new CDlgFrame(m_x, m_y, m_w, m_h, theme);
-}
-
-void CDialog::setGalaxyStyle(bool value)
-{
-	m_galaxy_style = value;
-}
-
 void CDialog::setSelection(Uint8 selection)
 {
 	m_selected_ID = selection;
@@ -341,22 +311,22 @@ void CDialog::draw()
 	}
 	
 	// Render the empty Dialog frame if any
-	if(m_Frame) m_Frame->draw(dst_sfc);
+	if(mp_Frame) mp_Frame->draw(dst_sfc);
 
 	CFont &Font = g_pGfxEngine->getFont(m_Font_ID);
 	// Draw the to icon up or down accordingly
 	if( m_scroll>0 ) // Up Arrow
 	{
 		Font.drawCharacter(dst_sfc, 15,
-						   m_Frame->m_x+m_Frame->m_w-16,
-						   m_Frame->m_y+8);
+						   mp_Frame->m_x+mp_Frame->m_w-16,
+						   mp_Frame->m_y+8);
 	}
 	if( ( m_h-2 < (Uint8) m_dlgobject.size() )  &&
 	   ( m_scroll+m_h-2 != m_dlgobject.size() )) // Down Arrow
 	{
 		Font.drawCharacter(dst_sfc , 19,
-						   m_Frame->m_x+m_Frame->m_w-16,
-						   m_Frame->m_y+m_Frame->m_h-16);
+						   mp_Frame->m_x+mp_Frame->m_w-16,
+						   mp_Frame->m_y+mp_Frame->m_h-16);
 	}
 	
 	Uint8 max;
@@ -454,5 +424,5 @@ CDialog::~CDialog(){
 	m_alpha = 225;
 	SDL_SetAlpha(g_pVideoDriver->FGLayerSurface, SDL_SRCALPHA, m_alpha );
 
-	if(m_Frame) delete m_Frame;
+	if(mp_Frame) delete mp_Frame;
 }

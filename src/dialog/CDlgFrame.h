@@ -12,13 +12,13 @@
 
 enum themes{
 	DLG_THEME_NONE,
-	DLG_THEME_OLDSCHOOL,
+	DLG_THEME_VORTICON,
 	DLG_THEME_RED
 };
 
 class CDlgFrame {
 public:
-	CDlgFrame(int x, int y, int w, int h, Uint8 theme = DLG_THEME_OLDSCHOOL);
+	CDlgFrame(int x, int y, int w, int h, Uint8 theme = DLG_THEME_VORTICON);
 	virtual ~CDlgFrame();
 
 	void draw(SDL_Surface *dst);

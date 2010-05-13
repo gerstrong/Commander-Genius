@@ -10,16 +10,18 @@
 
 #include <string>
 #include "options.h"
-#include "Menu/CBaseMenu.h"
-#include "../fileio/CSavedGame.h"
 #include "CObject.h"
+#include "Menu/CBaseMenu.h"
+
+#include "../sdl/CInput.h"
+#include "../fileio/CSavedGame.h"
 
 class CMenu
 {
 public:
 	CMenu(char menu_mode, std::string &GamePath,
 			 char &Episode, CSavedGame &SavedGame,
-			 stOption *pOption );
+			 stOption *pOption, Uint8 DlgTheme );
 
 	// initialization functions
 	void init( char menu_type );
@@ -42,6 +44,7 @@ public:
 	void process();
 
 	// Process functions
+	void processMainMenu();
 	void processNumPlayersMenu();
 	void processDifficultyMenu();
 	void processNumControlMenu();
@@ -82,6 +85,8 @@ protected:
 	char m_NumPlayers;
 	char m_Difficulty;
 	int  m_saveslot;
+
+	Uint8 m_DlgTheme;
 
 	CBaseMenu *mp_Menu;
 	std::map<int,int> m_menuback;

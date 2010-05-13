@@ -94,7 +94,7 @@ bool CGameControl::init(char mode)
         }
         // Resources for the main menu
 		if(!loadMenuResources())	return false;
-		if(!mp_GameLauncher->drawMenu()) return false;
+		//if(!mp_GameLauncher->drawMenu()) return false;
 
 		return true;
 	}

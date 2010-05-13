@@ -14,12 +14,9 @@
 
 class CDialog {
 public:
-	CDialog(Uint16 w, Uint16 h);
-	CDialog(Uint16 x, Uint16 y, Uint16 w, Uint16 h, char key);
+	CDialog(Uint16 w, Uint16 h, char key, Uint8 theme);
 	virtual ~CDialog();
 
-	void setFrameTheme( Uint8 theme );
-	void setGalaxyStyle(bool value);
 	void setSelection( Uint8 selection);
 	void addObject( Uint8 type, Uint16 x, Uint16 y,const std::string text="" );
 	void setObjectText( Uint8 ID, const std::string &text );
@@ -54,10 +51,9 @@ private:
 	int m_blinkctr;
 	bool m_blink;
 	
-	CDlgFrame *m_Frame;
+	CDlgFrame *mp_Frame;
 	Uint8 m_alpha;
 	Uint8 m_Font_ID;
-	bool m_galaxy_style;
 
 	struct{
 		Uint8  frame;

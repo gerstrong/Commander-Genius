@@ -56,7 +56,7 @@ m_mustclose(false)
 	m_gamerect.w /= 8;
 
 	mp_DlgFrame = new CDlgFrame(m_gamerect.x, m_gamerect.y,
-								m_gamerect.w, m_gamerect.h, DLG_THEME_OLDSCHOOL);
+								m_gamerect.w, m_gamerect.h, DLG_THEME_VORTICON);
 }
 
 // This function is used in your Ship need those parts.

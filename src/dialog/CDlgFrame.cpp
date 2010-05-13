@@ -23,7 +23,7 @@ CDlgFrame::CDlgFrame(int x, int y, int w, int h, Uint8 theme) {
 
 void CDlgFrame::draw(SDL_Surface *dst)
 {
-	if(m_theme == DLG_THEME_OLDSCHOOL)
+	if(m_theme == DLG_THEME_VORTICON)
 	{
 		drawOldSchoolFrame(dst);
 	}

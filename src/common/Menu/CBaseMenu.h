@@ -33,7 +33,7 @@ enum menumodes{
 
 class CBaseMenu {
 public:
-	CBaseMenu(char &MenuType);
+	CBaseMenu(char &MenuType, Uint8 dlg_theme);
 
 	// Processes the stuff that the menus have in common
 	void processCommon();
@@ -55,6 +55,7 @@ protected:
 	int m_selection;
 	CDialog *mp_Dialog;
 	bool m_restartVideo;
+	Uint8 m_dlg_theme;
 };
 
 #endif /* CBASEMENU_H_ */

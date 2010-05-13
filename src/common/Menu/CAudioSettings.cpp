@@ -13,16 +13,15 @@
 #include "../../hqp/CMusic.h"
 #include "../../StringUtils.h"
 
-CAudioSettings::CAudioSettings(char &menu_type,
+CAudioSettings::CAudioSettings(char &menu_type, Uint8 dlg_theme,
 		std::string &Gamepath, char &Episode) :
-		CBaseMenu(menu_type),
+		CBaseMenu(menu_type, dlg_theme),
 		m_Gamepath(Gamepath),
 		m_Episode(Episode)
 {
 	if(m_MenuType == VOLUME)
 	{
-		mp_Dialog = new CDialog(24, 7);
-		mp_Dialog->setFrameTheme(DLG_THEME_OLDSCHOOL);
+		mp_Dialog = new CDialog(24, 7, 'u',DLG_THEME_VORTICON);
 
 		mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 1, "    Adjust Volume:    ");
 		mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 2, "  Music:              ");
@@ -43,8 +42,7 @@ CAudioSettings::CAudioSettings(char &menu_type,
 	}
 	else
 	{
-		mp_Dialog = new CDialog(20, 6);
-		mp_Dialog->setFrameTheme(DLG_THEME_OLDSCHOOL);
+		mp_Dialog = new CDialog(20, 6, 'u',DLG_THEME_VORTICON);
 
 		m_Rate = g_pSound->getAudioSpec().freq;
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Rate: " + itoa(m_Rate) +" kHz");

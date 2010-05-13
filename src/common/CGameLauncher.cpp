@@ -43,7 +43,7 @@ bool CGameLauncher::init()
     bool gamedetected = false;
 	
     // Initialize the menu
-    mp_LaunchMenu = new CDialog(40, 25);
+    mp_LaunchMenu = new CDialog(40, 25, 'u', DLG_THEME_RED);
 	
     // Scan for games...
     m_DirList.clear();
@@ -72,14 +72,6 @@ bool CGameLauncher::init()
    	mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,m_Entries.size()+1, !gamedetected ? "No games found! - Quit" : "Quit");
 	
     g_pLogFile->ftextOut("Game Autodetection Finished<br>" );
-	
-    return true;
-}
-
-bool CGameLauncher::drawMenu()
-{
-    // Use the standard Menu-Frame used in the old DOS-Games
-    mp_LaunchMenu->setFrameTheme( DLG_THEME_RED );
 	
     return true;
 }

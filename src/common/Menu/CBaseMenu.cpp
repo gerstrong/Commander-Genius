@@ -8,12 +8,13 @@
 #include "CBaseMenu.h"
 #include "../../sdl/CInput.h"
 
-CBaseMenu::CBaseMenu(char &MenuType) :
+CBaseMenu::CBaseMenu(char &MenuType, Uint8 dlg_theme) :
 	m_mustclose(false),
 	m_MenuType(MenuType),
 	m_selection(-1),
 	mp_Dialog(NULL),
-	m_restartVideo(false)
+	m_restartVideo(false),
+	m_dlg_theme(dlg_theme)
 {}
 
 void CBaseMenu::processCommon()

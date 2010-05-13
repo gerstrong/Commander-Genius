@@ -25,7 +25,7 @@ namespace galaxy
 CMenuGalaxy::CMenuGalaxy( char menu_mode, std::string &GamePath,
 		 char &Episode, CSavedGame &SavedGame,
 		 stOption *pOption ) :
-CMenu( menu_mode, GamePath, Episode, SavedGame, pOption ),
+CMenu( menu_mode, GamePath, Episode, SavedGame, pOption, DLG_THEME_NONE),
 processPtr(&CMenuGalaxy::processMainMenu),
 m_TitleBmp(g_pGfxEngine->getBitmap(BMP_MAINMENULABEL))
 {
@@ -41,12 +41,10 @@ void CMenuGalaxy::setupMenu()
 	m_title_coord.x = (g_pVideoDriver->getGameResolution().w - m_TitleBmp.getWidth())/2-45;
 	m_title_coord.y = 48;
 
-	mp_Dialog = new CDialog(23, 10);
+	mp_Dialog = new CDialog(23, 10, 'u', DLG_THEME_NONE);
 
 	// Use the standard Menu-Frame used in the old DOS-Games
-	mp_Dialog->setFrameTheme( DLG_THEME_NONE );
 	mp_Dialog->setFontID(1);
-	mp_Dialog->setGalaxyStyle(true);
 
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "New Game");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Load Game");
