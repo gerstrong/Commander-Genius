@@ -26,7 +26,7 @@ CBaseMenu(menu_type, dlg_theme) {
 		m_speed = g_pCamera->getScrollSpeed();
 		
 		std::string buf;
-		mp_Dialog = new CDialog(18, 13, 'u', DLG_THEME_VORTICON);
+		mp_Dialog = new CDialog(18, 13, 'u', m_dlg_theme);
 		
 		mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 1, " Adjust Bounds: ");
 		mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 2, " Left (50-270): ");
@@ -69,7 +69,7 @@ CBaseMenu(menu_type, dlg_theme) {
 		m_SpecialFX = g_pVideoDriver->getSpecialFXConfig();
 		
 		std::string buf;
-		mp_Dialog = new CDialog(29, 10, 'u', DLG_THEME_VORTICON);
+		mp_Dialog = new CDialog(29, 10, 'u', m_dlg_theme);
 		
 		buf = "Resolution: " + itoa(m_Resolution.width) + "x" + itoa(m_Resolution.height) + "x" + itoa(m_Resolution.depth);
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, buf);

@@ -29,7 +29,10 @@ CMenu( menu_mode, GamePath, Episode, SavedGame, pOption, DLG_THEME_GALAXY),
 processPtr(&CMenuGalaxy::processMainMenu),
 m_TitleBmp(g_pGfxEngine->getBitmap(BMP_MAINMENULABEL))
 {
-	init(menu_mode);
+	// Perform coordinate calculations
+	m_title_coord.x = (g_pVideoDriver->getGameResolution().w - m_TitleBmp.getWidth())/2-48;
+	m_title_coord.y = 48;
+	init(MAIN);
 }
 
 bool CMenuGalaxy::init( char menu_type )
@@ -37,9 +40,6 @@ bool CMenuGalaxy::init( char menu_type )
 	cleanup();
 
 	CFont &Font = g_pGfxEngine->getFont(1);
-	//Font.setFGColour(g_pVideoDriver->BlitSurface->format, 0x54fc54);
-	//Font.setBGColour(g_pVideoDriver->BlitSurface->format, 0x545454);
-	//Font.setFGColour(g_pVideoDriver->BlitSurface->format, 0xFF0000);
 	Font.setBGColour(g_pVideoDriver->BlitSurface->format, 0x545454);
 
 	CMenu::init(menu_type);
@@ -55,22 +55,6 @@ bool CMenuGalaxy::init( char menu_type )
 	return true;
 }
 
-/**
- * \brief sets the menu up when it's opened (initialization)
- */
-/*void CMenuGalaxy::setupMenu()
-{
-	// Perform coordinate calculations
-	m_title_coord.x = (g_pVideoDriver->getGameResolution().w - m_TitleBmp.getWidth())/2-45;
-	m_title_coord.y = 48;
-
-	mp_Dialog = new CDialog(23, 10, 'u', DLG_THEME_NONE);
-
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "New Game");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Load Game");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,1,3,"Quit");
-}*/
-
 ///
 // Processes
 ///
@@ -79,19 +63,6 @@ bool CMenuGalaxy::init( char menu_type )
  */
 void CMenuGalaxy::process()
 {
-	/*CFont &Font = g_pGfxEngine->getFont(1);
-	Font.drawFont(g_pVideoDriver->BlitSurface,"Hello Hardcore Keener!",80,65);
-	Font.drawFont(g_pVideoDriver->BlitSurface,"I'm happy that you're trying",80,73);
-	Font.drawFont(g_pVideoDriver->BlitSurface,"to play our Galaxy Engine.",80,81);
-	Font.drawFont(g_pVideoDriver->BlitSurface,"Sorry, but it's not yet",80,99);
-	Font.drawFont(g_pVideoDriver->BlitSurface,"finished.",80,107);
-	Font.drawFont(g_pVideoDriver->BlitSurface,"As you might have seen",80,115);
-	Font.drawFont(g_pVideoDriver->BlitSurface,"we are doing our best",80,123);
-	Font.drawFont(g_pVideoDriver->BlitSurface,"to get it running.",80,131);
-	Font.drawFont(g_pVideoDriver->BlitSurface,"Regards, The CG Team",80,139);
-
-	Font.setBGColour(g_pVideoDriver->FGLayerSurface->format, 0x545454);*/
-
 	// Process the Menu Type logic.
 	CMenu::process();
 
@@ -116,11 +87,31 @@ void CMenuGalaxy::process()
 }
 
 /**
+ * \brief This draws the upper part of the galaxy menu border
+ */
+void CMenuGalaxy::drawMenuBorder()
+{
+	SDL_Rect rect;
+	rect.x = m_title_coord.x-2;	rect.w = 155;
+	rect.y = m_title_coord.y+7;	rect.h = 1;
+
+	// This one draws a line behind the bitmap
+	SDL_FillRect(g_pVideoDriver->BlitSurface, &rect, 0x54fc54);
+
+	// And this the bitmap itself
+	m_TitleBmp.draw(g_pVideoDriver->BlitSurface, m_title_coord.x, m_title_coord.y);
+
+	// This one draws a line at the down part
+	rect.y = m_title_coord.y+85;
+	SDL_FillRect(g_pVideoDriver->BlitSurface, &rect, 0x54fc54);
+}
+
+/**
  * \brief This is the child process only for the main menu itself
  */
 void CMenuGalaxy::processMainMenu()
 {
-	m_TitleBmp.draw(g_pVideoDriver->BlitSurface, m_title_coord.x, m_title_coord.y);
+	drawMenuBorder();
 
 	if( m_selection != -1)
 	{
@@ -152,7 +143,6 @@ void CMenuGalaxy::processMainMenu()
 
 CMenuGalaxy::~CMenuGalaxy()
 {
-	delete mp_Dialog;
 }
 
 }

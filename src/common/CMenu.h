@@ -23,6 +23,12 @@ public:
 			 char &Episode, CSavedGame &SavedGame,
 			 stOption *pOption, Uint8 DlgTheme );
 
+	bool getChooseGame() { return m_choosegame; }
+	bool getExitEvent() { return m_quit; }
+	bool restartVideo() { return m_RestartVideo; }
+
+	void videoRestarted() { m_RestartVideo = false; }
+
 	// initialization functions
 	void init( char menu_type );
 	void initMainMenu();

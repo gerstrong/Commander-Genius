@@ -55,14 +55,9 @@ public:
 	char getDifficulty() { return m_Difficulty; }
 	bool mustEndGame() { return m_Endgame; }
 	bool mustStartGame() { return (m_NumPlayers > 0 and m_Difficulty > -1); }
-	bool getExitEvent() { return (m_quit); }
 	bool getShowStory() { return (m_menu_type==STORY); }
 	bool mustBeClosed() { return m_goback; }
 	bool getBacktoDemo() { return m_demoback; }
-	bool getChooseGame() { return m_choosegame; }
-	bool restartVideo() { return m_RestartVideo; }
-	
-	void videoRestarted() { m_RestartVideo = false; }
 
 	virtual ~CMenuVorticon();
 

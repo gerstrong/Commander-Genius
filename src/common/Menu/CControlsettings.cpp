@@ -23,7 +23,7 @@ void CControlsettings::drawInitialCommands()
 {
 	std::string buf;
 	std::string buf2;
-	mp_Dialog = new CDialog(36, 14, 'u', DLG_THEME_VORTICON);
+	mp_Dialog = new CDialog(36, 14, 'u', m_dlg_theme);
 
 	buf2 = g_pInput->getEventName(IC_LEFT, m_chosenPlayer-1);
 	buf = "P"+itoa(m_chosenPlayer)+" Left:   " + buf2;

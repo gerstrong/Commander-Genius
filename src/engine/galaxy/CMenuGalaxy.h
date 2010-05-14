@@ -26,6 +26,8 @@ public:
 			 stOption *pOption );
 	bool init( char menu_type = MAIN );
 
+	void drawMenuBorder();
+
 	void process();
 	void processMainMenu();
 

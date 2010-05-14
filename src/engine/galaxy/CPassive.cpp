@@ -22,7 +22,7 @@ CPassiveGalaxy::CPassiveGalaxy(char Episode, std::string DataDirectory,
 		CSavedGame &SavedGame, stOption *p_Option) :
 CPassive(Episode, DataDirectory, SavedGame, p_Option),
 processMode(&CPassiveGalaxy::processIntro),
-mp_Menu(new CMenuGalaxy(MAIN, DataDirectory, Episode, SavedGame, p_Option))
+mp_Menu(new CMenuGalaxy(PASSIVE, DataDirectory, Episode, SavedGame, p_Option))
 { }
 
 bool CPassiveGalaxy::init(char mode)
@@ -81,14 +81,26 @@ void CPassiveGalaxy::processMenu()
 	{
 		if(g_pGfxEngine->applyingEffects())
 			g_pGfxEngine->killEffect();
-		else
-		{
-			//g_pGfxEngine->pushEffectPtr(new CColorMerge(8));
-
-			// If we press any key we go to the menu screen
-			//m_modeg = true;
-		}
 	}
+
+	if(mp_Menu->getExitEvent())
+	{
+		SAFE_DELETE(mp_Menu);
+		cleanup();
+		m_mode = SHUTDOWN;
+	}
+	else if(mp_Menu->getChooseGame())
+	{
+		SAFE_DELETE(mp_Menu);
+		m_modeg = true;
+	}
+	else if(mp_Menu->restartVideo()) // When some video settings has been changed
+	{
+		cleanup();
+		init(m_mode);
+		mp_Menu->videoRestarted();
+	}
+
 }
 
 // The cleanup function just make sure the resources are freed, when a mode is switched or the game closed
