@@ -9,6 +9,8 @@
 #include "CPalette.h"
 #include "../FindFile.h"
 #include <string.h>
+#include "../sdl/CVideoDriver.h"
+
 
 // TODO: We need to add documentation. I'll do that very soon!
 
@@ -118,7 +120,11 @@ void CFont::setFGColour(SDL_PixelFormat* p_pixelformat, Uint32 fgcolour, bool fo
 		SDL_Color *p_Color = m_FontSurface->format->palette->colors;
 
 		if( m_fgcolour != fgcolour || force )	// For the Foreground
+		{
 			SDL_GetRGB(fgcolour, p_pixelformat, &p_Color[15].r, &p_Color[15].g, &p_Color[15].b);
+			SDL_SetColors( m_FontSurface, p_Color, 0, 16);
+			m_fgcolour = fgcolour;
+		}
 	}
 	else
 	{
@@ -140,7 +146,7 @@ Uint32 CFont::getColour()
 ////////////////////////////
 ///// Drawing Routines /////
 ////////////////////////////
-void CFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff, Uint32 colour)
+void CFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff)
 {
 	SDL_Rect scrrect, dstrect;
 	
@@ -150,15 +156,14 @@ void CFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint1
 	scrrect.h = dstrect.h = (m_ColouredSurface->h/16);
 	dstrect.x = xoff;	dstrect.y = yoff;
 	
-	setFGColour(dst->format, colour);
-
 	if(m_monochrome)
+		//SDL_BlitSurface(m_FontSurface, &scrrect, dst, &dstrect);
 		SDL_BlitSurface(m_FontSurface, &scrrect, dst, &dstrect);
 	else
 		SDL_BlitSurface(m_ColouredSurface, &scrrect, dst, &dstrect);
 }
 
-void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, bool highlight, Uint32 colour)
+void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, bool highlight)
 {
 	unsigned int i,x=xoff,y=yoff;
 
@@ -171,7 +176,7 @@ void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uin
 			{
 				if(highlight) c |= 128;
 
-				drawCharacter(dst, c, x, y, colour);
+				drawCharacter(dst, c, x, y);
 
 				x+=m_widthtable[c];
 			}

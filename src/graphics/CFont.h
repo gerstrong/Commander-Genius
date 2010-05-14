@@ -36,8 +36,8 @@ public:
 	void setBGColour(SDL_PixelFormat* p_pixelformat, Uint32 bgcolour, bool force=false);
 	Uint32 getColour();
 
-	void drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff, Uint32 colour = 0x0);
-	void drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, bool highlight = false, Uint32 colour = 0x0);
+	void drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff);
+	void drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, bool highlight = false);
 	void drawMap(SDL_Surface* dst);
 
 	void destroySurface();

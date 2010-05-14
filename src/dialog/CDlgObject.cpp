@@ -10,6 +10,7 @@
 #include "CDlgObject.h"
 #include "../graphics/CFont.h"
 #include "../sdl/CVideoDriver.h"
+#include "../sdl/video/colourconvert.h"
 
 CDlgObject::CDlgObject() :
 m_Option(NULL),
@@ -65,36 +66,22 @@ void CDlgObject::setSelection(bool value)
 ///
 // Rendering Routine
 ///
-const Uint32 fade_speed = 0xA;
+const Uint8 fade_speed = 0xA;
 void CDlgObject::render(SDL_Surface *dst, Uint8 scrollamt, bool highlight)
 {
 	if(m_type == DLG_OBJ_OPTION_TEXT)
 	{
-		if(m_theme == DLG_THEME_VORTICON || m_theme == DLG_THEME_RED)
-		{
-			if(g_pVideoDriver->getSpecialFXConfig())
-			{
-				// Nice colour effect
-				if(m_colour < 0x0000FF && m_selected)
-				{
-					if( m_colour+fade_speed > 0x0000FF)
-						m_colour = 0x0000FF;
-					else
-						m_colour+=fade_speed;
-				}
-				else if(m_colour > 0x000000 && !m_selected)
-				{
-					if( (int)(m_colour-fade_speed) < 0x000000)
-						m_colour = 0x000000;
-					else
-						m_colour-=fade_speed;
-				}
-			}
-			else
-				m_colour = m_selected ? 0x0000FF : 0x000000;
-		}
-		else if(m_theme == DLG_THEME_GALAXY)
-			m_colour = m_selected ? 0x54fc54 : 0x008c00;
+		Uint32 colourdir;
+
+		if(m_theme == DLG_THEME_GALAXY)
+			colourdir = m_selected ? 0x54fc54 : 0x208c20;
+		else
+			colourdir = m_selected ? 0x0000FF : 0x000000;
+
+		if(g_pVideoDriver->getSpecialFXConfig())	// Nice colour effect applied here
+			fadetoColour(m_colour,colourdir, fade_speed);
+		else
+			m_colour = colourdir;
 
 		m_Option->draw(dst, m_x+16, m_y-8*scrollamt, highlight, m_colour);
 	}

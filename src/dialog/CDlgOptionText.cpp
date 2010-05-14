@@ -71,7 +71,7 @@ void CDlgOptionText::draw(SDL_Surface *Textsurface, Uint16 x, Uint16 y, bool hig
 
 	Font.setFGColour(Textsurface->format, colour);
 
-	Font.drawFont(Textsurface, m_text, x, y, highlight, colour);
+	Font.drawFont(Textsurface, m_text, x, y, highlight);
 }
 
 CDlgOptionText::~CDlgOptionText()
