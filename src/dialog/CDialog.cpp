@@ -30,11 +30,14 @@ m_Font_ID((theme==DLG_THEME_GALAXY) ? 1 : 0)
 	if(m_theme==DLG_THEME_GALAXY)
 	{
 		m_y -= 5;
-		m_w = w;	m_h = h;
-		if(m_w > 155)
-			m_w = 155;
-		if(m_h > 75)
-			m_h = 75;
+		if(m_x < 58)
+			m_x = 58;
+		if(m_y < 58)
+			m_y = 58;
+		if(m_w > 100)
+			m_w = 100;
+		if(m_h > 50)
+			m_h = 50;
 	}
 	else
 	{
