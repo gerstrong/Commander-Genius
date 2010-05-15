@@ -22,9 +22,27 @@
 CDialog::CDialog(Uint16 w, Uint16 h, char key, Uint8 theme) :
 m_Font_ID((theme==DLG_THEME_GALAXY) ? 1 : 0)
 {
-	m_x = (300/2)-(w*4)+10;	m_y = (200/2)-(h*4);
-	m_w = w;	m_h = h;
 	m_theme = theme;
+
+	m_x = (300/2)-(w*4)+10;
+	m_y = (200/2)-(h*4);
+	m_w = w;	m_h = h;
+	if(m_theme==DLG_THEME_GALAXY)
+	{
+		m_y -= 5;
+		m_w = w;	m_h = h;
+		if(m_w > 155)
+			m_w = 155;
+		if(m_h > 75)
+			m_h = 75;
+	}
+	else
+	{
+		if(m_x + m_w > 320)
+			m_w = 320-m_x;
+		if(m_y + m_h > 200)
+			m_h = 200-m_y;
+	}
 	
 	m_twirl.posy = m_y;
 	m_twirl.frame = 0;
@@ -357,7 +375,8 @@ void CDialog::draw()
 	}
 	
 	// Render the twirl
-	drawTwirl();
+	if(m_theme != DLG_THEME_GALAXY)
+		drawTwirl();
 }
 
 #define TWIRL_TIME	5
