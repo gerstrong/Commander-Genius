@@ -24,6 +24,7 @@
 		630713BF10B77990004837D2 /* CPlayGameGameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 630713BE10B77990004837D2 /* CPlayGameGameState.cpp */; };
 		630BAE9C1148AF0200172B6E /* CCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 630BAE9A1148AF0200172B6E /* CCamera.cpp */; };
 		630F429310CB08D800F96495 /* CMessageBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 630F429110CB08D800F96495 /* CMessageBox.cpp */; };
+		631013F1119EF0C400549BC6 /* CMenuGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 631013EF119EF0C400549BC6 /* CMenuGalaxy.cpp */; };
 		63148DD310E8091E00C9E281 /* CHuffman.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63148DD110E8091E00C9E281 /* CHuffman.cpp */; };
 		631D7796112483BB00D903F6 /* CPassive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 631D7792112483BB00D903F6 /* CPassive.cpp */; };
 		631D7797112483BB00D903F6 /* CPlayGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 631D7794112483BB00D903F6 /* CPlayGame.cpp */; };
@@ -228,7 +229,6 @@
 		63FC183A1144447200D7BB0C /* SAVEGAM0.CK4 in Copy Keen 4 Files */ = {isa = PBXBuildFile; fileRef = 63FC18301144447200D7BB0C /* SAVEGAM0.CK4 */; };
 		63FC183B1144447200D7BB0C /* SAVEGAM1.CK4 in Copy Keen 4 Files */ = {isa = PBXBuildFile; fileRef = 63FC18311144447200D7BB0C /* SAVEGAM1.CK4 */; };
 		63FC183C1144447200D7BB0C /* SAVEGAM2.CK4 in Copy Keen 4 Files */ = {isa = PBXBuildFile; fileRef = 63FC18321144447200D7BB0C /* SAVEGAM2.CK4 */; };
-		63FCEB5A116C505500AB1202 /* CMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63FCEB57116C505500AB1202 /* CMenu.cpp */; };
 		63FEB11C10DED2E500A099E2 /* wizgp2x.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63FEB11B10DED2E500A099E2 /* wizgp2x.cpp */; };
 		63FFE146109FA45A002FF190 /* LEVEL15.CK2 in Copy Keen 2 Fix Files */ = {isa = PBXBuildFile; fileRef = 63FFE144109FA45A002FF190 /* LEVEL15.CK2 */; };
 		63FFE147109FA45A002FF190 /* LEVEL80.CK2 in Copy Keen 2 Fix Files */ = {isa = PBXBuildFile; fileRef = 63FFE145109FA45A002FF190 /* LEVEL80.CK2 */; };
@@ -595,6 +595,8 @@
 		630CB2F610BC334600E7EEAA /* CSavedGameCoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSavedGameCoder.h; sourceTree = "<group>"; };
 		630F429110CB08D800F96495 /* CMessageBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMessageBox.cpp; sourceTree = "<group>"; };
 		630F429210CB08D800F96495 /* CMessageBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMessageBox.h; sourceTree = "<group>"; };
+		631013EF119EF0C400549BC6 /* CMenuGalaxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMenuGalaxy.cpp; sourceTree = "<group>"; };
+		631013F0119EF0C400549BC6 /* CMenuGalaxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMenuGalaxy.h; sourceTree = "<group>"; };
 		6312202610910DB200053A0E /* spritedefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = spritedefines.h; sourceTree = "<group>"; };
 		6312FEC110963B2500DDFFA7 /* CObjectAI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CObjectAI.cpp; sourceTree = "<group>"; };
 		6312FEC210963B2500DDFFA7 /* CObjectAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CObjectAI.h; sourceTree = "<group>"; };
@@ -774,8 +776,6 @@
 		63FC18301144447200D7BB0C /* SAVEGAM0.CK4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = SAVEGAM0.CK4; sourceTree = "<group>"; };
 		63FC18311144447200D7BB0C /* SAVEGAM1.CK4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = SAVEGAM1.CK4; sourceTree = "<group>"; };
 		63FC18321144447200D7BB0C /* SAVEGAM2.CK4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = SAVEGAM2.CK4; sourceTree = "<group>"; };
-		63FCEB57116C505500AB1202 /* CMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMenu.cpp; sourceTree = "<group>"; };
-		63FCEB58116C505500AB1202 /* CMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMenu.h; sourceTree = "<group>"; };
 		63FCEB59116C505500AB1202 /* GraphicsIDs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphicsIDs.h; sourceTree = "<group>"; };
 		63FEB11B10DED2E500A099E2 /* wizgp2x.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wizgp2x.cpp; sourceTree = "<group>"; };
 		63FFE144109FA45A002FF190 /* LEVEL15.CK2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL15.CK2; sourceTree = "<group>"; };
@@ -1252,8 +1252,8 @@
 		6366B9A510D5A390009801ED /* galaxy */ = {
 			isa = PBXGroup;
 			children = (
-				63FCEB57116C505500AB1202 /* CMenu.cpp */,
-				63FCEB58116C505500AB1202 /* CMenu.h */,
+				631013EF119EF0C400549BC6 /* CMenuGalaxy.cpp */,
+				631013F0119EF0C400549BC6 /* CMenuGalaxy.h */,
 				63FCEB59116C505500AB1202 /* GraphicsIDs.h */,
 				631D7792112483BB00D903F6 /* CPassive.cpp */,
 				631D7793112483BB00D903F6 /* CPassive.h */,
@@ -1567,7 +1567,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/sh\n\n# script taken from Pidgin-MacOSX project\n# by Albert Zeyer - www.az2000.de\n\n# builds a DMG for Commander Genius\n\n\n# Creates a disk image (dmg) on Mac OS X from the command line.\n# usage:\n#    mkdmg <volname> <vers> <srcdir>\n#\n# Where <volname> is the name to use for the mounted image, <vers> is the version\n# number of the volume and <srcdir> is where the contents to put on the dmg are.\n#\n# The result will be a file called <volname>-<vers>.dmg\nDEBUG=\"true\"\n\nmkdmg() {\n\n\tif [ $# != 3 ]; then\n\t echo \"usage: mkdmg.sh volname vers srcdir\"\n\t exit 0\n\tfi\n\n\tVOL=\"$1\"\n\tVER=\"$2\"\n\tFILES=\"$3\"\n\n\tDMG=\"tmp-$VOL.dmg\"\n\n\t# create temporary disk image and format, ejecting when done\n\tSIZE=$(du -sk ${FILES} | cut -f 1)\n\tSIZE=$((${SIZE}/1000+5))\n\thdiutil create \"$DMG\" -megabytes ${SIZE} -ov -type UDIF -fs HFS+ -volname \"$VOL\"\n\n\t# mount and copy files onto volume\n\thdid \"$DMG\"\n\techo -n \"copying files ... \"\n\tcp -R \"${FILES}\"/* \"/Volumes/$VOL/\"\n\techo \"ready\"\n\thdiutil eject \"/Volumes/$VOL\"\n\t#osascript -e \"tell application \"Finder\" to eject disk \"$VOL\"\" && \n\n\t# convert to compressed image, delete temp image\n\trm -f \"cgenius-v${VER}-mac.dmg\"\n\thdiutil convert \"$DMG\" -format UDZO -o \"cgenius-v${VER}-mac.dmg\"\n\trm -f \"$DMG\"\n\n}\n\nif [ $DEBUG == \"false\" ]; then\n cd \"$(dirname \"$0\")/../../../../\"\n mkdmg CommanderGenius \"$(egrep -E \".*#define.*CGVERSION.*\" ../../version.h | cut -d \"\\\"\" -f 2)\" build/Release\nfi";
+			shellScript = "#!/bin/sh\n\n# script taken from Pidgin-MacOSX project\n# by Albert Zeyer - www.az2000.de\n\n# builds a DMG for Commander Genius\n\n\n# Creates a disk image (dmg) on Mac OS X from the command line.\n# usage:\n#    mkdmg <volname> <vers> <srcdir>\n#\n# Where <volname> is the name to use for the mounted image, <vers> is the version\n# number of the volume and <srcdir> is where the contents to put on the dmg are.\n#\n# The result will be a file called <volname>-<vers>.dmg\nDEBUG=\"false\"\n\nmkdmg() {\n\n\tif [ $# != 3 ]; then\n\t echo \"usage: mkdmg.sh volname vers srcdir\"\n\t exit 0\n\tfi\n\n\tVOL=\"$1\"\n\tVER=\"$2\"\n\tFILES=\"$3\"\n\n\tDMG=\"tmp-$VOL.dmg\"\n\n\t# create temporary disk image and format, ejecting when done\n\tSIZE=$(du -sk ${FILES} | cut -f 1)\n\tSIZE=$((${SIZE}/1000+5))\n\thdiutil create \"$DMG\" -megabytes ${SIZE} -ov -type UDIF -fs HFS+ -volname \"$VOL\"\n\n\t# mount and copy files onto volume\n\thdid \"$DMG\"\n\techo -n \"copying files ... \"\n\tcp -R \"${FILES}\"/* \"/Volumes/$VOL/\"\n\techo \"ready\"\n\thdiutil eject \"/Volumes/$VOL\"\n\t#osascript -e \"tell application \"Finder\" to eject disk \"$VOL\"\" && \n\n\t# convert to compressed image, delete temp image\n\trm -f \"cgenius-v${VER}-mac.dmg\"\n\thdiutil convert \"$DMG\" -format UDZO -o \"cgenius-v${VER}-mac.dmg\"\n\trm -f \"$DMG\"\n\n}\n\nif [ $DEBUG == \"false\" ]; then\n cd \"$(dirname \"$0\")/../../../../\"\n mkdmg CommanderGenius \"$(egrep -E \".*#define.*CGVERSION.*\" ../../version.h | cut -d \"\\\"\" -f 2)\" build/Release\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1720,9 +1720,9 @@
 				63FC18191144294C00D7BB0C /* CPassiveVort.cpp in Sources */,
 				63CFCB4A11468CE300DBA07E /* CPixelate.cpp in Sources */,
 				630BAE9C1148AF0200172B6E /* CCamera.cpp in Sources */,
-				63FCEB5A116C505500AB1202 /* CMenu.cpp in Sources */,
 				633DF72111738BF9008C56D4 /* CCursor.cpp in Sources */,
 				6364E244118373FB0073053F /* CMenuVorticon.cpp in Sources */,
+				631013F1119EF0C400549BC6 /* CMenuGalaxy.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
