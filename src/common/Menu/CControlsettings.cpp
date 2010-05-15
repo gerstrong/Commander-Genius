@@ -23,7 +23,7 @@ void CControlsettings::drawInitialCommands()
 {
 	std::string buf;
 	std::string buf2;
-	mp_Dialog = new CDialog(36, 14, 'u', m_dlg_theme);
+	mp_Dialog = new CDialog(36, 14, INPUT_MODE_UP_DOWN, m_dlg_theme);
 
 	buf2 = g_pInput->getEventName(IC_LEFT, m_chosenPlayer-1);
 	buf = "P"+itoa(m_chosenPlayer)+" Left:   " + buf2;
@@ -96,7 +96,7 @@ void CControlsettings::processWaitInput()
 	buf = buf.erase(11);
 	buf2 = g_pInput->getEventName(item, m_chosenPlayer-1);
 	mp_Dialog->setObjectText(m_selection, buf + buf2);
-	mp_Dialog->m_key = 'u';
+	mp_Dialog->setInputMode(INPUT_MODE_UP_DOWN);
 	m_selection = -1;
 	m_waiting_for_input = false;
 }
@@ -128,7 +128,7 @@ void CControlsettings::processSelection()
 
 				buf2 = "*Waiting for Input*";
 				mp_Dialog->setObjectText(m_selection, buf + buf2);
-				mp_Dialog->m_key = 'n';
+				mp_Dialog->setInputMode(INPUT_MODE_NOTHING);
 			}
 			else if(m_selection == MAX_COMMANDS)
 			{

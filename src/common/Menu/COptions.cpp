@@ -17,7 +17,7 @@ mp_option(p_option)
 	int i;
 	std::string buf;
 
-	mp_Dialog = new CDialog(27, NUM_OPTIONS+2, 'u', dlg_theme);
+	mp_Dialog = new CDialog(27, NUM_OPTIONS+2, INPUT_MODE_UP_DOWN, dlg_theme);
 
 	for( i = 0 ; i < NUM_OPTIONS ; i++ )
 	{

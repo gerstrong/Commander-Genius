@@ -43,7 +43,7 @@ bool CGameLauncher::init()
     bool gamedetected = false;
 	
     // Initialize the menu
-    mp_LaunchMenu = new CDialog(40, 25, 'u', DLG_THEME_RED);
+    mp_LaunchMenu = new CDialog(40, 25, INPUT_MODE_UP_DOWN, DLG_THEME_RED);
 	
     // Scan for games...
     m_DirList.clear();

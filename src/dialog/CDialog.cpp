@@ -19,7 +19,7 @@
 // TODO: This class must get a super class and we need two new classes for galaxy and vorticon engines.
 // Their menu display are way too different
 
-CDialog::CDialog(Uint16 w, Uint16 h, char key, Uint8 theme) :
+CDialog::CDialog(Uint16 w, Uint16 h, char inputmode, Uint8 theme) :
 m_Font_ID((theme==DLG_THEME_GALAXY) ? 1 : 0)
 {
 	m_theme = theme;
@@ -51,7 +51,7 @@ m_Font_ID((theme==DLG_THEME_GALAXY) ? 1 : 0)
 	m_twirl.frame = 0;
 	m_twirl.timer = 0;
 	
-	m_key = key;
+	setInputMode(inputmode);
 	m_blink = true;
 	m_blinkctr = 0;
 	m_selected_ID = 0;
@@ -65,10 +65,19 @@ m_Font_ID((theme==DLG_THEME_GALAXY) ? 1 : 0)
 ///
 // Creation Routines for Objects
 ///
-void CDialog::setSelection(Uint8 selection)
-{
-	m_selected_ID = selection;
-}
+/**
+ * \brief	setter for the actual selected item in the dialog object
+ * \param	selection	The selection that needs to be set.
+ */
+void CDialog::setSelection( const Uint8 selection)
+{	m_selected_ID = selection;	}
+
+/**
+ * \brief	setter for the input mode the dialog needs to be
+ * \param	selection	The inputmode that needs to be set.
+ */
+void CDialog::setInputMode( const char inputmode )
+{	 m_inputmode = inputmode;	}
 
 void CDialog::addObject(Uint8 type, Uint16 x, Uint16 y,const std::string text)
 {
@@ -106,22 +115,34 @@ void CDialog::setObjectType(Uint8 ID, Uint8 type)
 void CDialog::setFontID(Uint8 value)
 {	m_Font_ID = value;	}
 
+bool CDialog::getInputMode( const char inputmode )
+{ return (m_inputmode==inputmode); }
+
+int CDialog::getSelection()
+{ return m_selected_ID; }
 
 ///
 // Process routine
 ///
+/**
+ * \brief			This one processes the input of the dialogs. Depending on what type of dialog
+ * 					and controls we have, the input mode is set. For example, if the dialog has sliders,
+ * 					you might set input mode to INPUT_MODE_SLIDER
+ * \param	move	This can be used to set the selection of the item when the dialog is loaded
+ */
 void CDialog::processInput(int move)
 {
-	// 't' == text input
-	// 'i' == integer input
-	// 'n' == do nothing
-	// 'u' == up/down movement, enter selection
-	// 'l' == left/right movement, enter selection
-	// 's' == slider, up/down movement
-	// 'c' == counter, up/down movment
-	// 'o' == option, left/right selection, up/down movement
-	// 'w' == switch, on/off selection, up/down movement
-	if( m_key == 't' )
+	// INPUT_MODE_NOTHING 		== do nothing
+	// INPUT_MODE_TEXT 			== text input
+	// INPUT_MODE_INTEGER		== integer input
+	// INPUT_MODE_UP_DOWN		== up/down movement, enter selection
+	// INPUT_MODE_LEFT_RIGHT	== left/right movement, enter selection
+	// INPUT_MODE_SLIDER		== slider, up/down movement
+	// INPUT_MODE_OPTION		== option, left/right selection, up/down movement
+	// INPUT_MODE_COUNTER		== counter, up/down movment
+	// INPUT_MODE_SWITCH		== switch, on/off selection, up/down movement
+
+	if( m_inputmode == INPUT_MODE_NOTHING )
 	{
 		// Get the input
 		if(g_pInput->getPressedIsTypingKey() && (m_name.length() < m_length))
@@ -148,7 +169,7 @@ void CDialog::processInput(int move)
 		else
 			setObjectText(m_selected_ID, m_name);
 	}
-	else if( m_key == 'i' )
+	else if( m_inputmode == INPUT_MODE_INTEGER )
 	{
 		// Get the num input
 		if(g_pInput->getPressedIsNumKey() && (m_name.length() < m_length))
@@ -175,7 +196,7 @@ void CDialog::processInput(int move)
 		else
 			setObjectText(m_selected_ID, m_name);
 	}
-	else if(m_key != 'n')
+	else if(m_inputmode != INPUT_MODE_NOTHING)
 	{
 		if(move != 0)
 			m_selected_ID += move;
@@ -188,7 +209,16 @@ void CDialog::processInput(int move)
 			}
 		}while(!m_dlgobject.at(m_selected_ID)->m_selectable);
 		
-		if(g_pInput->getPulsedCommand((m_key == 'u' or m_key == 'c' or m_key == 's' or m_key == 'o' or m_key == 'w') ? IC_DOWN : IC_RIGHT, 60))
+
+		bool prev_sel = (m_inputmode == INPUT_MODE_UP_DOWN or
+						m_inputmode == INPUT_MODE_COUNTER or
+						m_inputmode == INPUT_MODE_SLIDER);
+
+		bool next_sel = (prev_sel or
+						m_inputmode == INPUT_MODE_OPTION or
+						m_inputmode == INPUT_MODE_SWITCH);
+
+		if(g_pInput->getPulsedCommand(next_sel ? IC_DOWN : IC_RIGHT, 60))
 		{
 			do
 			{
@@ -221,7 +251,7 @@ void CDialog::processInput(int move)
 				
 			}while(!m_dlgobject.at(m_selected_ID)->m_selectable);
 		}
-		else if(g_pInput->getPulsedCommand((m_key == 'u' or m_key == 'c' or m_key == 's') ? IC_UP : IC_LEFT, 60))
+		else if(g_pInput->getPulsedCommand( prev_sel ? IC_UP : IC_LEFT, 60))
 		{
 			do
 			{
@@ -253,15 +283,15 @@ void CDialog::processInput(int move)
 				}
 			}while(!m_dlgobject.at(m_selected_ID)->m_selectable);
 		}
-		if(m_key == 's' or m_key == 'c')
+		if(m_inputmode == INPUT_MODE_SLIDER or m_inputmode == INPUT_MODE_COUNTER)
 		{
 			//slider and counter
-			if(m_key == 'c')
+			if(m_inputmode == INPUT_MODE_COUNTER)
 			{
 				m_int = atoi(m_name);
 				m_noise = false;
 			}
-			if(m_key == 's')
+			if(m_inputmode == INPUT_MODE_SLIDER)
 			{
 				m_int = m_dlgobject.at(m_selected_ID)->m_Option->m_value;
 				m_min = 0;
@@ -291,12 +321,12 @@ void CDialog::processInput(int move)
 					m_int = m_min;
 			}
 
-			if(m_key == 'c')
+			if(m_inputmode == INPUT_MODE_COUNTER)
 			{
 				m_name = itoa(m_int);
 				setObjectText(m_selected_ID, " "+m_name);
 			}
-			else if(m_key == 's')
+			else if(m_inputmode == INPUT_MODE_SLIDER)
 			{
 				m_dlgobject.at(m_selected_ID)->m_Option->m_value = m_int;
 				m_dlgobject.at(m_selected_ID)->m_Option->m_FontMapID = 1;
@@ -365,7 +395,7 @@ void CDialog::draw()
 	}
 	Font.setFGColour(dst_sfc->format, 0x0); // Set black letter color for the other elements
 	
-	if(m_key == 'c')
+	if(m_inputmode == INPUT_MODE_COUNTER)
 	{
 		if(m_int>m_min)
 		Font.drawCharacter(dst_sfc, 21,

@@ -21,7 +21,7 @@ CAudioSettings::CAudioSettings(char &menu_type, Uint8 dlg_theme,
 {
 	if(m_MenuType == VOLUME)
 	{
-		mp_Dialog = new CDialog(24, 7, 'u', m_dlg_theme);
+		mp_Dialog = new CDialog(24, 7, INPUT_MODE_UP_DOWN, m_dlg_theme);
 
 		mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 1, "    Adjust Volume:    ");
 		mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 2, "  Music:              ");
@@ -36,13 +36,13 @@ CAudioSettings::CAudioSettings(char &menu_type, Uint8 dlg_theme,
 		mp_Dialog->setSelection(4);
 
 		mp_Dialog->m_noise = false;
-		mp_Dialog->m_key = 's';
+		mp_Dialog->setInputMode(INPUT_MODE_SLIDER);
 		mp_Dialog->processInput();
 		mp_Dialog->setSelection(2);
 	}
 	else
 	{
-		mp_Dialog = new CDialog(20, 6, 'u',m_dlg_theme);
+		mp_Dialog = new CDialog(20, 6, INPUT_MODE_UP_DOWN,m_dlg_theme);
 
 		m_Rate = g_pSound->getAudioSpec().freq;
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Rate: " + itoa(m_Rate) +" kHz");

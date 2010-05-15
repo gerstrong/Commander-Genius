@@ -26,7 +26,7 @@ CBaseMenu(menu_type, dlg_theme) {
 		m_speed = g_pCamera->getScrollSpeed();
 		
 		std::string buf;
-		mp_Dialog = new CDialog(18, 13, 'u', m_dlg_theme);
+		mp_Dialog = new CDialog(18, 13, INPUT_MODE_UP_DOWN, m_dlg_theme);
 		
 		mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 1, " Adjust Bounds: ");
 		mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 2, " Left (50-270): ");
@@ -41,7 +41,7 @@ CBaseMenu(menu_type, dlg_theme) {
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 11, " "+itoa(m_speed));
 		
 		
-		mp_Dialog->m_key = 'c';
+		mp_Dialog->setInputMode(INPUT_MODE_COUNTER);
 	}
 	else
 	{
@@ -69,7 +69,7 @@ CBaseMenu(menu_type, dlg_theme) {
 		m_SpecialFX = g_pVideoDriver->getSpecialFXConfig();
 		
 		std::string buf;
-		mp_Dialog = new CDialog(29, 10, 'u', m_dlg_theme);
+		mp_Dialog = new CDialog(29, 10, INPUT_MODE_UP_DOWN, m_dlg_theme);
 		
 		buf = "Resolution: " + itoa(m_Resolution.width) + "x" + itoa(m_Resolution.height) + "x" + itoa(m_Resolution.depth);
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, buf);
@@ -203,13 +203,13 @@ void CVideoSettings::processSpecific(){
 	{
 		if(m_MenuType == BOUNDS)
 		{
-			if(mp_Dialog->m_key == 'c')
+			if(mp_Dialog->getInputMode(INPUT_MODE_COUNTER))
 			{
 				mp_Dialog->m_name = "";
-				mp_Dialog->m_key = 'i';
+				mp_Dialog->setInputMode(INPUT_MODE_INTEGER);
 				m_selection = -1;
 			}
-			else if (mp_Dialog->m_key == 'i')
+			else if (mp_Dialog->getInputMode(INPUT_MODE_INTEGER))
 			{
 				if(mp_Dialog->m_name == "")
 				{
@@ -224,7 +224,7 @@ void CVideoSettings::processSpecific(){
 						mp_Dialog->m_name = itoa(mp_Dialog->m_min);
 					mp_Dialog->setObjectText(m_selection, " "+mp_Dialog->m_name);
 				}
-				mp_Dialog->m_key = 'c';
+				mp_Dialog->setInputMode(INPUT_MODE_COUNTER);
 				m_selection = -1;
 			}
 		}

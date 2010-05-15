@@ -100,7 +100,7 @@ void CMenu::init( char menu_type )
 
 void CMenu::initMainMenu()
 {
-	mp_Dialog = new CDialog(17, 10, 'u',m_DlgTheme);
+	mp_Dialog = new CDialog(17, 10, INPUT_MODE_UP_DOWN,m_DlgTheme);
 
 	m_menumap.clear();
 	m_menumap.assign(8,MAIN);
@@ -139,7 +139,7 @@ void CMenu::initMainMenu()
 
 void CMenu::initNumPlayersMenu()
 {
-	mp_Dialog = new CDialog(13, MAX_PLAYERS+2,'u',m_DlgTheme);
+	mp_Dialog = new CDialog(13, MAX_PLAYERS+2,INPUT_MODE_UP_DOWN,m_DlgTheme);
 	int i;
 
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "1 Player");
@@ -153,7 +153,7 @@ void CMenu::initNumPlayersMenu()
 
 void CMenu::initDebugMenu()
 {
-	mp_Dialog = new CDialog(18, 5, 'u',m_DlgTheme);
+	mp_Dialog = new CDialog(18, 5, INPUT_MODE_UP_DOWN,m_DlgTheme);
 
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "<O==========>");
 	mp_Dialog->m_dlgobject.at(0)->m_Option->m_value = 0;
@@ -162,12 +162,12 @@ void CMenu::initDebugMenu()
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "<O==========>");
 	mp_Dialog->m_dlgobject.at(2)->m_Option->m_value = 0;
 
-	mp_Dialog->m_key = 's';
+	mp_Dialog->setInputMode(INPUT_MODE_SLIDER);
 }
 
 void CMenu::initModMenu()
 {
-	mp_Dialog = new CDialog(18, 5, 'u',m_DlgTheme);
+	mp_Dialog = new CDialog(18, 5, INPUT_MODE_UP_DOWN,m_DlgTheme);
 
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "<O==========>");
 	mp_Dialog->m_dlgobject.at(0)->m_Option->m_value = 0;
@@ -176,12 +176,12 @@ void CMenu::initModMenu()
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "<O==========>");
 	mp_Dialog->m_dlgobject.at(2)->m_Option->m_value = 0;
 
-	mp_Dialog->m_key = 's';
+	mp_Dialog->setInputMode(INPUT_MODE_SLIDER);
 }
 
 void CMenu::initConfigureMenu()
 {
-	mp_Dialog = new CDialog(13, 6, 'u',m_DlgTheme);
+	mp_Dialog = new CDialog(13, 6, INPUT_MODE_UP_DOWN,m_DlgTheme);
 
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Graphics");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Audio");
@@ -197,7 +197,7 @@ void CMenu::initConfigureMenu()
 
 void CMenu::initNumControlMenu()
 {
-	mp_Dialog = new CDialog(13, MAX_PLAYERS+2, 'u',m_DlgTheme);
+	mp_Dialog = new CDialog(13, MAX_PLAYERS+2, INPUT_MODE_UP_DOWN,m_DlgTheme);
 	int i;
 
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Player 1");
@@ -211,7 +211,7 @@ void CMenu::initNumControlMenu()
 
 void CMenu::initF1Menu()
 {
-	mp_Dialog = new CDialog(18, 9, 'u',m_DlgTheme);
+	mp_Dialog = new CDialog(18, 9, INPUT_MODE_UP_DOWN,m_DlgTheme);
 
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "The Menu");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "The Game");
@@ -235,7 +235,7 @@ void CMenu::initConfirmMenu(std::string confirmtext)
 
 void CMenu::initDifficultyMenu()
 {
-	mp_Dialog = new CDialog(11, 5, 'u',m_DlgTheme);
+	mp_Dialog = new CDialog(11, 5, INPUT_MODE_UP_DOWN,m_DlgTheme);
 
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Easy");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Normal");
@@ -247,7 +247,7 @@ void CMenu::initDifficultyMenu()
 void CMenu::initSaveMenu()
 {
 	std::string text;
-	mp_Dialog = new CDialog(22, 22, 'u',m_DlgTheme);
+	mp_Dialog = new CDialog(22, 22, INPUT_MODE_UP_DOWN,m_DlgTheme);
 
 	// Load the state-file list
 	m_StateFileList = m_SavedGame.getSlotList();
@@ -302,7 +302,7 @@ void CMenu::process()
 				m_selection = mp_Dialog->getSelection();
 			}
 
-			if( mp_Dialog->m_key == 'l' )
+			if( mp_Dialog->getInputMode(INPUT_MODE_LEFT_RIGHT) )
 			{
 				if( g_pInput->getPressedKey(KY) )
 				{
@@ -412,19 +412,19 @@ void CMenu::processSaveMenu()
 	std::string text;
 	if( m_selection != -1 || m_overwrite)
 	{
-		if(mp_Dialog->m_key == 'u')
+		if( mp_Dialog->getInputMode(INPUT_MODE_UP_DOWN) )
 		{
 			if(mp_Dialog->m_name == "     EMPTY       ")
 			{
 				mp_Dialog->m_name = "";
-				mp_Dialog->m_key = 't';
+				mp_Dialog->setInputMode(INPUT_MODE_TEXT);
 				m_selection = -1;
 			}
 			else if(m_overwrite == true)
 			{
-				mp_Dialog->processInput(int(m_lastselect));
+				mp_Dialog->processInput(static_cast<int>(m_lastselect));
 				mp_Dialog->m_name = "";
-				mp_Dialog->m_key = 't';
+				mp_Dialog->setInputMode(INPUT_MODE_TEXT);
 				m_selection = -1;
 				m_lastselect = -1;
 				m_overwrite = false;
@@ -436,12 +436,12 @@ void CMenu::processSaveMenu()
 			}
 			else
 			{
-				mp_Dialog->m_key = 't';
+				mp_Dialog->setInputMode(INPUT_MODE_TEXT);
 				m_selection = -1;
 			}
 			mp_Dialog->m_length = 15;
 		}
-		else if (mp_Dialog->m_key == 't')
+		else if (mp_Dialog->getInputMode(INPUT_MODE_TEXT))
 		{
 			if(mp_Dialog->m_name == "")
 			{
@@ -456,7 +456,7 @@ void CMenu::processSaveMenu()
 				m_saveslot = int(m_selection) + 1;
 				m_SavedGame.prepareSaveGame(m_saveslot, mp_Dialog->m_name);
 			}
-			mp_Dialog->m_key = 'u';
+			mp_Dialog->setInputMode(INPUT_MODE_UP_DOWN);
 			m_goback2 = true;
 		}
 	}
