@@ -142,7 +142,7 @@ bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &
 {
     std::ifstream Tablefile;
 
-    std::string musicpath = getResourceFilename("music/table.cfg", gamepath, false);
+    std::string musicpath = getResourceFilename("music/table.cfg", gamepath, false, true);
     OpenGameFileR(Tablefile, musicpath);
 	
     if(Tablefile)
@@ -161,7 +161,8 @@ bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &
     			Tablefile.get(c_buf, 256);
     			str_buf = c_buf;
     			TrimSpaces(str_buf);
-    			load(g_pSound->getAudioSpec(), musicpath + str_buf);
+    			load(g_pSound->getAudioSpec(),
+    					getResourceFilename("music/" + str_buf, gamepath, false, true));
         		play();
     			Tablefile.close();
     			return true;

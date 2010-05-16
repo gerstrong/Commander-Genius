@@ -46,7 +46,6 @@ std::string getResourceFilename(const std::string& filename, const std::string& 
 		search_path = GLOBAL_DIR + "/" + filename;
 		text = "Looking for \"" + search_path + "\"... ";
 
-		g_pLogFile->textOut(GREEN, "Looking for \"" + search_path + "\"... ");
 		found_path = GetFullFileName(search_path);
 		if(!IsFileAvailable(found_path))
 			found_path = "";
@@ -56,13 +55,16 @@ std::string getResourceFilename(const std::string& filename, const std::string& 
 	{
 		if(essential)
 		{
-			g_pLogFile->textOut(RED, "missing!\n");
-			g_pLogFile->textOut(RED, "The file \" " + search_path + "\" was not found. Please provide that file!\n");
+			text += "missing!\n";
+			text += "The file \" " + search_path + "\" was not found. Please provide that file!\n";
 		}
 		else
-			g_pLogFile->textOut(BLUE, "missing, but not needed!\n");
+			text += "missing, but not needed!\n";
 	}
-	g_pLogFile->textOut(GREEN, "found!\n");
+	else
+		text += "found!\n";
+
+	g_pLogFile->textOut(GREEN, text);
 
 	return found_path;
 }

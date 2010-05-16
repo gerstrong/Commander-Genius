@@ -112,7 +112,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 		return false;
 	}
 
-	filename = getResourceFilename("/egalatch.ck" + itoa(episode), path);
+	filename = getResourceFilename("egalatch.ck" + itoa(episode), path);
 
 	FILE* latchfile = OpenGameFile(filename,"rb");
 
@@ -259,7 +259,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	if(SDL_MUSTLOCK(sfc))	SDL_UnlockSurface(sfc);
 
 	// Load Hi-Colour, VGA, SVGA Tiles into the tilemap
-	filename = getResourceFilename("ck" + itoa(episode) + "tiles.bmp", path, false);
+	filename = getResourceFilename("gfx/ck" + itoa(episode) + "tiles.bmp", path, false);
 	if(!Tilemap->loadHiresTile(filename))
 		g_pLogFile->textOut(GREEN, "VGA Bitmap for Tileset has been loaded successfully!");
 

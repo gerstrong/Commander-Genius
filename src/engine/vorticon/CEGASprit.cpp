@@ -17,6 +17,7 @@
 #include "../../sdl/CVideoDriver.h"
 #include "../../engine/spritedefines.h"
 #include "../../lz.h"
+#include "../../fileio/ResourceMgmt.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -227,18 +228,11 @@ char CEGASprit::LoadTGASprite( const std::string &filename, CSprite &sprite )
 	int w,h;
 	unsigned char r,g,b,a;
 	int c;
-	std::string fname;
 	Uint8 *pixel, *maskpx;
 	
-	fname = m_gamepath + filename;
-
 	// Look in local location than in global, if tga was not found!
-	if (LoadTGA(fname, &image, &w, &h))
-	{
-		fname = GFXDIR + filename;
-		if (LoadTGA(fname, &image, &w, &h))
-			return 1;
-	}
+	if (LoadTGA(filename, &image, &w, &h))
+		return 1;
 	
 	if (w > MAX_SPRITE_WIDTH || h > MAX_SPRITE_HEIGHT)
 	{
@@ -295,11 +289,11 @@ char CEGASprit::LoadTGASprite( const std::string &filename, CSprite &sprite )
 // Code by Caitlin Shaw
 void CEGASprit::LoadSpecialSprites( std::vector<CSprite> &sprite )
 {
-	LoadTGASprite("100.tga", sprite[PT100_SPRITE] );
-	LoadTGASprite("200.tga", sprite[PT200_SPRITE] );
-	LoadTGASprite("500.tga", sprite[PT500_SPRITE] );
-	LoadTGASprite("1000.tga", sprite[PT1000_SPRITE] );
-	LoadTGASprite("5000.tga", sprite[PT5000_SPRITE] );
+	LoadTGASprite(getResourceFilename("gfx/100.tga", m_gamepath, false, true), sprite[PT100_SPRITE] );
+	LoadTGASprite(getResourceFilename("gfx/200.tga", m_gamepath, false, true), sprite[PT200_SPRITE] );
+	LoadTGASprite(getResourceFilename("gfx/500.tga", m_gamepath, false, true), sprite[PT500_SPRITE] );
+	LoadTGASprite(getResourceFilename("gfx/1000.tga", m_gamepath, false, true), sprite[PT1000_SPRITE] );
+	LoadTGASprite(getResourceFilename("gfx/5000.tga", m_gamepath, false, true), sprite[PT5000_SPRITE] );
 	//LoadTGASprite("demobox.tga", sprite[DEMOBOX_SPRITE] );
 	//LoadTGASprite("arrowlr.tga", sprite[ARROWLR_SPRITE] );
 	//LoadTGASprite("arrowud.tga", sprite[ARROWUD_SPRITE] );
