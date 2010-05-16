@@ -16,6 +16,14 @@
 *                                            *
 **********************************************
 
+NOTE: Updaters since 0.3.1.3!
+The savegames are still there but will be stored
+in special directories so you don't get messed up
+with mods. If you have your game at directory 
+"games/keen1", than the savegames will be loaded
+and saved under "save/games/keen1". If you never
+had saved games, don't worry about that message. 
+
 Thanks for downloading Commander Genius!
 
 Commander Genius is an open-source clone of

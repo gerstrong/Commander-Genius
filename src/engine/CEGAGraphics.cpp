@@ -6,6 +6,7 @@
  */
 
 #include "CEGAGraphics.h"
+#include "../fileio/ResourceMgmt.h"
 #include "../FindFile.h"
 #include "../CLogFile.h"
 #include "../sdl/CVideoDriver.h"
@@ -28,8 +29,10 @@ bool CEGAGraphics::loadData()
 	Font.destroySurface();
 	Font.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE, g_pVideoDriver->getDepth() );
 	Font.optimizeSurface();
-	if( Font.loadHiColourFont("data/res/gfx/menufonts.bmp") )
-		g_pLogFile->textOut(GREEN, "VGA Fontmap for the gamemenu has been loaded successfully!");
+
+	std::string filename = getResourceFilename("gfx/menufonts.bmp");
+
+	Font.loadHiColourFont(filename);
 	Font.setFGColour(g_pVideoDriver->FGLayerSurface->format, 0x0, true);
 
 	g_pGfxEngine->createEmptyCursorMap(Font.getSDLColouredSurface());

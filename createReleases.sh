@@ -1,7 +1,10 @@
 #!/bin/sh
 
 NAME=cgenius
-VERSION=0331a
+VERSION=0312
+
+svn export ./ svnexport
+cd svnexport
 
 # Windows Version
 cd Win32
@@ -9,7 +12,6 @@ cd Win32
 #make
 cp CommanderGenius.exe ../CGenius.exe
 cd ..
-svn export ./ svnexport
 zip -r ${NAME}-v${VERSION}-win32.zip ./data
 zip -r ${NAME}-v${VERSION}-win32.zip ./games
 zip ${NAME}-v${VERSION}-win32.zip ./libogg-0.dll
@@ -37,6 +39,9 @@ zip ${NAME}-v${VERSION}-linux64.zip ./changelog.txt
 zip ${NAME}-v${VERSION}-linux64.zip ./readme.txt
 rm ./CGenius
 
+# here, we create the ubuntu package for 64-bit
+cp CommanderGenius ../distro/Ubuntu/usr/games
+
 # Linux 32-bit Version
 cd Linux32
 #make clean
@@ -50,6 +55,8 @@ zip ${NAME}-v${VERSION}-linux32.zip ./resolutions.cfg
 zip ${NAME}-v${VERSION}-linux32.zip ./changelog.txt
 zip ${NAME}-v${VERSION}-linux32.zip ./readme.txt
 rm ./CGenius
+
+rm -r svnexport
 
 # upload the packages
 #rsync -e ssh ${NAME}-v${VERSION}-win32.zip gerstrong,clonekeenplus@frs.sourceforge.net:/home/frs/project/c/cl/clonekeenplus/

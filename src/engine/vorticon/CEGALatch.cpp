@@ -6,6 +6,7 @@
  */
 
 #include "CEGALatch.h"
+#include "../../fileio/ResourceMgmt.h"
 #include "../../graphics/CGfxEngine.h"
 #include "../../sdl/CVideoDriver.h"
 #include "../../CLogFile.h"
@@ -111,8 +112,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 		return false;
 	}
 
-	if(path == "") filename = "games/egalatch.ck" + itoa(episode);
-	else filename = path + "/egalatch.ck" + itoa(episode);
+	filename = getResourceFilename("/egalatch.ck" + itoa(episode), path);
 
 	FILE* latchfile = OpenGameFile(filename,"rb");
 
@@ -190,17 +190,11 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
 
 	// Load Hi-Colour VGA, SVGA 8x8 Tiles into the fontmap
-	if(path == "") filename = "games/fonts.bmp";
-	else filename = path + "/fonts.bmp";
+	filename = getResourceFilename("gfx/fonts.bmp", path);
 
 	Font.optimizeSurface();
 	if(!Font.loadHiColourFont(filename)) // This is loaded again in order to get hi-colour fonts
-	{
-		filename = "data/gfx/fonts.bmp";
-		if(Font.loadHiColourFont(filename))
-			g_pLogFile->textOut(GREEN, "VGA Fontmap for the game has been loaded successfully!");
-	}
-	else g_pLogFile->textOut(GREEN, "VGA Fontmap for the game has been loaded successfully!");
+		g_pLogFile->textOut(GREEN, "VGA Fontmap for the game has been loaded successfully!");
 
 	Font.setFGColour(Font.getSDLSurface()->format, 0x0, true);
 
@@ -217,16 +211,9 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	Font2.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE );
 	Font2.optimizeSurface();
 
-	if(path == "") filename = "games/extratiles.bmp";
-	else filename = path + "/extratiles.bmp";
+	filename = getResourceFilename("gfx/extratiles.bmp", path);
 
-	if(!Font2.loadHiColourFont(filename)) // This is loaded again in order to get hi-colour fonts
-	{
-		filename = "data/res/gfx/extratiles.bmp";
-		if(Font2.loadHiColourFont(filename))
-			g_pLogFile->textOut(GREEN, "Extra tiles for the game has been loaded successfully!");
-	}
-	else g_pLogFile->textOut(GREEN, "Extra tiles for the game has been loaded successfully!");
+	Font2.loadHiColourFont(filename);
 
 	Font2.setFGColour(Font2.getSDLSurface()->format, 0x0, true);
 
