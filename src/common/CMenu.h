@@ -16,7 +16,7 @@
 #include "../sdl/CInput.h"
 #include "../fileio/CSavedGame.h"
 
-class CMenu
+class CMenu : public CBaseMenu
 {
 public:
 	CMenu(char menu_mode, std::string &GamePath,
@@ -91,8 +91,6 @@ protected:
 	char m_NumPlayers;
 	char m_Difficulty;
 	int  m_saveslot;
-
-	Uint8 m_DlgTheme;
 
 	CBaseMenu *mp_Menu;
 	std::vector<int> m_menuback;
