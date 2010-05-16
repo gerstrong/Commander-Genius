@@ -88,7 +88,7 @@ m_type(type)
 	}
 	else if(type == "CG")
 	{
-		std::string path = GetFullFileName("data/res/gfx/CGLogo.bmp");
+		std::string path = GetFullFileName("data/gfx/CGLogo.bmp");
 		mp_LogoBMP = SDL_LoadBMP(path.c_str());
 		
 		m_lines.push_back("Commander Genius is an interpreter");

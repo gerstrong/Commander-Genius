@@ -68,7 +68,7 @@ short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::stri
 			return 1;
 
 		// Check, if it is a wav file or go back to classic sounds
-		if (SDL_LoadWAV (Utf8ToSystemNative(buf).c_str(), &AudioFileSpec, &(psound->sound_buffer), &(psound->sound_len)) == NULL)
+		if (SDL_LoadWAV (Utf8ToSystemNative(GetFullFileName(buf)).c_str(), &AudioFileSpec, &(psound->sound_buffer), &(psound->sound_len)) == NULL)
 		{
 			g_pLogFile->textOut(GREEN, "Loading the classic sound : " + soundname);
 			return 1;

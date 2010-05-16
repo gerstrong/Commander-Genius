@@ -23,16 +23,14 @@ const std::string GLOBAL_DIR = "data";
 std::string getResourceFilename(const std::string& filename, const std::string& gamepath,
 								bool essential, bool can_be_global)
 {
-	std::string search_path;
 	std::string found_path = "";
 	std::string text;
 
 	if(gamepath != "")
 	{
-		search_path = gamepath + "/" + filename;
-		text = "Looking for \"" + search_path + "\"... ";
+		found_path = gamepath + "/" + filename;
+		text = "Looking for \"" + found_path + "\"... ";
 		// try to look at the local path of the game.
-		found_path = GetFullFileName(search_path);
 		if(!IsFileAvailable(found_path))
 			found_path = "";
 	}
@@ -43,10 +41,9 @@ std::string getResourceFilename(const std::string& filename, const std::string& 
 	if(found_path == "")
 	{
 		// if it didn't find the file try looking at the global resources
-		search_path = GLOBAL_DIR + "/" + filename;
-		text = "Looking for \"" + search_path + "\"... ";
+		found_path = GLOBAL_DIR + "/" + filename;
+		text = "Looking for \"" + found_path + "\"... ";
 
-		found_path = GetFullFileName(search_path);
 		if(!IsFileAvailable(found_path))
 			found_path = "";
 	}
@@ -56,7 +53,7 @@ std::string getResourceFilename(const std::string& filename, const std::string& 
 		if(essential)
 		{
 			text += "missing!\n";
-			text += "The file \" " + search_path + "\" was not found. Please provide that file!\n";
+			text += "The file \" " + found_path + "\" was not found. Please provide that file!\n";
 		}
 		else
 			text += "missing, but not needed!\n";
