@@ -26,6 +26,11 @@ CSavedGame::CSavedGame() {
 	m_offset = 0;
 }
 
+void CSavedGame::setGameDirectory(const std::string& game_directory)
+{
+	m_savedir = "save/" + game_directory;
+}
+
 void CSavedGame::setEpisode(char Episode){
 	m_Episode = Episode;
 }
@@ -70,7 +75,7 @@ std::vector<std::string> CSavedGame::getSlotList()
 
 	//Get the list of ".ck?" files
 	StateFileListFiller sfilelist;
-	FindFiles(sfilelist, "", false, FM_REG);
+	FindFiles(sfilelist, m_savedir, false, FM_REG);
 
 	std::set<std::string>::iterator i;
 	for( i=sfilelist.list.begin() ; i!=sfilelist.list.end() ; i++ )
@@ -311,7 +316,7 @@ std::string CSavedGame::getSlotName(const std::string &filename)
 // PlayGame instance will call save() and get the right data.
 bool CSavedGame::prepareSaveGame( int SaveSlot, const std::string &Name)
 {
-	m_statefilename = "cksave"+itoa(SaveSlot)+".ck"+itoa(m_Episode);
+	m_statefilename =  m_savedir + "/cksave"+itoa(SaveSlot)+".ck"+itoa(m_Episode);
 	m_statename = Name;
 	m_datablock.clear();
 
@@ -327,7 +332,7 @@ bool CSavedGame::prepareSaveGame( int SaveSlot, const std::string &Name)
 // PlayGame instance will call load() and get the right data.
 bool CSavedGame::prepareLoadGame(int SaveSlot)
 {
-	m_statefilename = "cksave"+itoa(SaveSlot)+".ck"+itoa(m_Episode);
+	m_statefilename = m_savedir + "/cksave"+itoa(SaveSlot)+".ck"+itoa(m_Episode);
     m_datablock.clear();
 
 	// This will make the CPlayGame instance call save

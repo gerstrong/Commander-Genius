@@ -29,6 +29,7 @@ public:
 	CSavedGame();
 
 	// Setters
+	void setGameDirectory(const std::string& game_directory);
 	void setEpisode(char Episode);
 
 	// Getters
@@ -69,6 +70,7 @@ public:
 	virtual ~CSavedGame();
 
 private:
+	std::string m_savedir;
 	std::string m_statefilename;
 	std::string m_statename;
 	char m_Episode;

@@ -175,6 +175,7 @@ bool CGameControl::loadResources(unsigned short Episode, const std::string& Data
 
 	m_Episode = Episode;
 	m_DataDirectory = DataDirectory;
+	m_SavedGame.setGameDirectory(m_DataDirectory);
 	m_SavedGame.setEpisode(m_Episode);
 
 	// TODO: not very readable. Check if there is a function for handling that.
@@ -287,6 +288,7 @@ void CGameControl::process()
 				{
 					// Now look if there are any old savegames that need to be converted
 					CSavedGame savedgames;
+					savedgames.setGameDirectory(m_DataDirectory);
 					savedgames.setEpisode(m_Episode);
 					savedgames.convertAllOldFormats();
 
