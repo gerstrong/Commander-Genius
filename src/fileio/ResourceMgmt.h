@@ -10,6 +10,7 @@
 
 #include <string>
 
-std::string getResourceFilename(const std::string& filename, const std::string& gamepath = "", bool essential = true);
+std::string getResourceFilename(const std::string& filename, const std::string& gamepath = "",
+											bool essential = true, bool can_be_global = false);
 
 #endif /* RESOURCEMGMT_H_ */

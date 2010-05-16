@@ -11,6 +11,7 @@
 #include "../CLogFile.h"
 #include "../include/vorbis/oggsupport.h"
 #include "../FindFile.h"
+#include "../fileio/ResourceMgmt.h"
 #include <fstream>
 
 CMusic::CMusic() {
@@ -39,7 +40,7 @@ int CMusic::load(const SDL_AudioSpec AudioSpec, const std::string &musicfile)
 		FILE *fp;
 		if((fp = OpenGameFile(musicfile.c_str(),"rb")) == NULL)
 		{
-			g_pLogFile->textOut(PURPLE,"Music Driver(): \"%s\". File does not exist!<br>", musicfile.c_str());
+			g_pLogFile->textOut(PURPLE,"Music Driver(): \"%s\". File cannot be read!<br>", musicfile.c_str());
 			return -1;
 		}
 		
@@ -140,14 +141,10 @@ Uint8 *CMusic::passBuffer(int length) // length only refers to the part(buffer) 
 bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &levelfilename)
 {
     std::ifstream Tablefile;
-    std::string musicpath = gamepath+"/music/";
-    OpenGameFileR(Tablefile, musicpath+"table.cfg");
-	
-    if(!Tablefile)    { // try global path
-        musicpath = "data/music/";
-        OpenGameFileR(Tablefile, musicpath+"table.cfg");
-    }
 
+    std::string musicpath = getResourceFilename("music/table.cfg", gamepath, false);
+    OpenGameFileR(Tablefile, musicpath);
+	
     if(Tablefile)
     {
     	std::string str_buf;

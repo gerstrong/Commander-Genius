@@ -89,12 +89,11 @@ bool CGameControl::init(char mode)
 		mp_GameLauncher = new CGameLauncher();
         if(!mp_GameLauncher->init())
         {
-            g_pLogFile->textOut(RED,"The game cannot start, because you do not have any game data files.<br>");
-            //return false;
+            g_pLogFile->textOut(RED,"The game cannot start, because you are missing game data files.<br>");
+            return false;
         }
         // Resources for the main menu
 		if(!loadMenuResources())	return false;
-		//if(!mp_GameLauncher->drawMenu()) return false;
 
 		return true;
 	}

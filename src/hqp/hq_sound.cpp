@@ -11,6 +11,7 @@
 #include "../include/vorbis/oggsupport.h"
 #include "../CLogFile.h"
 #include "../FindFile.h"
+#include "../fileio/ResourceMgmt.h"
 
 #include <vector>
 
@@ -23,10 +24,10 @@ short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::stri
 	std::string buf;
 	FILE *fp;
 
-	buf = gamepath+"snd/" + soundname + ".OGG"; // Start with OGG
 
-	fp = OpenGameFile(buf.c_str(),"rb");
+	buf = getResourceFilename("snd/" + soundname + ".OGG", gamepath, false); // Start with OGG
 
+	fp = OpenGameFile(buf.c_str(), "rb");
 	if( fp == NULL) { // try global path
 		buf = "data/snd/" + soundname + ".OGG"; // Start with OGG
 		fp = OpenGameFile(buf.c_str(),"rb");
@@ -61,14 +62,13 @@ short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::stri
 	}
 	else
 	{
-		buf = gamepath+"snd/" + soundname + ".WAV";
+		buf = getResourceFilename("snd/" + soundname + ".WAV", gamepath, false); // Start with OGG
 
-		std::string fullfname = GetFullFileName(buf);
-		if(fullfname.size() == 0)
+		if(buf == "")
 			return 1;
 
 		// Check, if it is a wav file or go back to classic sounds
-		if (SDL_LoadWAV (Utf8ToSystemNative(fullfname).c_str(), &AudioFileSpec, &(psound->sound_buffer), &(psound->sound_len)) == NULL)
+		if (SDL_LoadWAV (Utf8ToSystemNative(buf).c_str(), &AudioFileSpec, &(psound->sound_buffer), &(psound->sound_len)) == NULL)
 		{
 			g_pLogFile->textOut(GREEN, "Loading the classic sound : " + soundname);
 			return 1;

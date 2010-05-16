@@ -190,7 +190,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
 
 	// Load Hi-Colour VGA, SVGA 8x8 Tiles into the fontmap
-	filename = getResourceFilename("gfx/fonts.bmp", path);
+	filename = getResourceFilename("gfx/fonts.bmp", path, false);
 
 	Font.optimizeSurface();
 	if(!Font.loadHiColourFont(filename)) // This is loaded again in order to get hi-colour fonts
@@ -211,7 +211,10 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	Font2.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE );
 	Font2.optimizeSurface();
 
-	filename = getResourceFilename("gfx/extratiles.bmp", path);
+	filename = getResourceFilename("gfx/extratiles.bmp", path, true, true);
+
+	if(filename == "") // That essential file was not found! Try to exit
+		return false;
 
 	Font2.loadHiColourFont(filename);
 
@@ -256,15 +259,8 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	if(SDL_MUSTLOCK(sfc))	SDL_UnlockSurface(sfc);
 
 	// Load Hi-Colour, VGA, SVGA Tiles into the tilemap
-	if(path == "") filename = "ck" + itoa(episode) + "tiles.bmp";
-	else filename = path + "/ck" + itoa(episode) + "tiles.bmp";
+	filename = getResourceFilename("ck" + itoa(episode) + "tiles.bmp", path, false);
 	if(!Tilemap->loadHiresTile(filename))
-	{
-		filename = "data/gfx/ck" + itoa(episode) + "tiles.bmp";
-		if(Tilemap->loadHiresTile(filename))
-			g_pLogFile->textOut(GREEN, "VGA Bitmap for Tileset has been loaded successfully!");
-	}
-	else
 		g_pLogFile->textOut(GREEN, "VGA Bitmap for Tileset has been loaded successfully!");
 
 	// Adapt the tilemap to the display, so they are faster blit

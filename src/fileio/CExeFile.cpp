@@ -13,6 +13,7 @@
 #include "../StringUtils.h"
 #include "../FindFile.h"
 #include "../CLogFile.h"
+#include "../fileio/ResourceMgmt.h"
 
 #define SAFE_DELETE_ARRAY(x) if(x) { delete[] x; x=NULL; }
 
@@ -40,13 +41,10 @@ bool CExeFile::readData()
 	if(!File)
 	{
 		// try another filename (Used in Episode 4-6)
-		std::string filename =  m_datadirectory + "keen" + itoa(m_episode) + "e.exe";
+		std::string filename = getResourceFilename("keen" + itoa(m_episode) + "e.exe", m_datadirectory);
 		OpenGameFileR(File, filename, std::ios::binary);
 		if(!File)
-		{
-			g_pLogFile->textOut(RED,"Error the executable \"" + filename + "\" is missing!");
 			return false;
-		}
 	}
 
 	File.seekg(0,std::ios::end);
