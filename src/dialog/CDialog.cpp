@@ -142,7 +142,7 @@ void CDialog::processInput(int move)
 	// INPUT_MODE_COUNTER		== counter, up/down movment
 	// INPUT_MODE_SWITCH		== switch, on/off selection, up/down movement
 
-	if( m_inputmode == INPUT_MODE_NOTHING )
+	if( m_inputmode == INPUT_MODE_TEXT )
 	{
 		// Get the input
 		if(g_pInput->getPressedIsTypingKey() && (m_name.length() < m_length))

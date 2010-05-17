@@ -86,12 +86,7 @@ void CDlgObject::render(SDL_Surface *dst, Uint8 scrollamt, bool highlight)
 		m_Option->draw(dst, m_x+16, m_y-8*scrollamt, highlight, m_colour);
 	}
 	else if(m_type == DLG_OBJ_DISABLED)
-	{
-		if(!m_theme == DLG_THEME_GALAXY)
-		m_Option->draw(dst, m_x+16, m_y-8*scrollamt, highlight, 0x7F7F7F); // +16 because selection icon needs space
-		else
-		m_Option->draw(dst, m_x+16, m_y-8*scrollamt, highlight, 0x208c20); // +16 because selection icon needs space
-	}
+		m_Option->draw(dst, m_x+16, m_y-8*scrollamt, highlight, (m_theme == DLG_THEME_GALAXY) ? 0x6E906E : 0x7F7F7F ); // +16 because selection icon needs space
 	else if(m_type == DLG_OBJ_TEXT)
 		m_Option->draw(dst, m_x, m_y-8*scrollamt, true);
 }
