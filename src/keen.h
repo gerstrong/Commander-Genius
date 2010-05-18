@@ -12,6 +12,7 @@
 #include "engine/sounds.h"
 #include "funcdefs.h"
 #include "fileio/CTileLoader.h"
+#include <string>
 
 #define CSF    9
 #define TILE_W			16
@@ -196,10 +197,9 @@ VIDEO_MODE_HARDWARE,
 VIDEO_MODE_OPENGL,
 };
 
-// directory "special" sprites and VGASprites are under
-#define GFXDIR					"data/res/gfx/"
-
 #include "include/declarations.h"
 #include "sdl/CSettings.h"
+
+const std::string VFSROOT = "vfsroot";
 
 #endif

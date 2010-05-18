@@ -8,8 +8,9 @@
 #include "ResourceMgmt.h"
 #include "../FindFile.h"
 #include "../CLogFile.h"
+#include "../keen.h"
 
-const std::string GLOBAL_DIR = "data";
+const std::string GLOBAL_DIR = VFSROOT + "/global";
 
 /**
  * \brief	This function will look for certain files used in the game. It looks on the local dir

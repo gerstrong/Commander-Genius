@@ -112,7 +112,7 @@ void CVideoDriver::initResolutionList()
 	char buf[256];
 	m_Resolutionlist.clear();
 
-	std::ifstream ResolutionFile; OpenGameFileR(ResolutionFile, "resolutions.cfg");
+	std::ifstream ResolutionFile; OpenGameFileR(ResolutionFile, VFSROOT+"/resolutions.cfg");
 	if(!ResolutionFile)
 	{
 		g_pLogFile->textOut(PURPLE,"Warning: resolutions.cfg could not be read! Maybe your files weren't extracted correctly!<br>");

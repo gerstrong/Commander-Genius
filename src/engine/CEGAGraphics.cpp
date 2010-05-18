@@ -30,8 +30,7 @@ bool CEGAGraphics::loadData()
 	Font.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE, g_pVideoDriver->getDepth() );
 	Font.optimizeSurface();
 
-	std::string filename = getResourceFilename("gfx/menufonts.bmp", "", true, true
-			);
+	std::string filename = getResourceFilename("gfx/menufonts.bmp", "", true, true);
 
 	Font.loadHiColourFont(filename);
 	Font.setFGColour(g_pVideoDriver->FGLayerSurface->format, 0x0, true);
