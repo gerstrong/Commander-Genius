@@ -14,7 +14,7 @@
 
 #include <vector>
 
-typedef unsigned short WORD;
+typedef unsigned long WORD;
 typedef unsigned char BYTE;
 
 class Cunlzexe
