@@ -17,8 +17,6 @@
 #include "../../sdl/CInput.h"
 #include "../../FindFile.h"
 
-#define SAFE_DELETE(x) if(x) { delete x; x=NULL; }
-
 CStory::CStory(std::string &DataDirectory, char &episode)
 {
 	mp_Scrollsurface = g_pVideoDriver->ScrollSurface;

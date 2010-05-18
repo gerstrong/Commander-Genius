@@ -16,8 +16,6 @@
 namespace vorticon
 {
 
-#define SAFE_DELETE(x) if(x!=NULL){ delete x; x = NULL;}
-
 CPassiveVort::CPassiveVort(char Episode, std::string DataDirectory,
 		 CSavedGame &SavedGame, stOption *p_Option) :
 CPassive(Episode, DataDirectory, SavedGame,p_Option),
