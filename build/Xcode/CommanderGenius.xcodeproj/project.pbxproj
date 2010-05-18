@@ -18,6 +18,7 @@
 		2357564F101A5F8F00275638 /* Vorbis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564D101A5F8F00275638 /* Vorbis.framework */; };
 		23575696101A6BE600275638 /* Ogg.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564C101A5F8F00275638 /* Ogg.framework */; };
 		23575697101A6BE600275638 /* Vorbis.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564D101A5F8F00275638 /* Vorbis.framework */; };
+		23CAE24811A3494000349D60 /* ResourceMgmt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23CAE24611A3494000349D60 /* ResourceMgmt.cpp */; };
 		6306E1D510BC922900E08CB9 /* CAbout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6306E1D110BC922900E08CB9 /* CAbout.cpp */; };
 		6306E1D610BC922900E08CB9 /* CHelp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6306E1D310BC922900E08CB9 /* CHelp.cpp */; };
 		630713BF10B77990004837D2 /* CPlayGameGameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 630713BE10B77990004837D2 /* CPlayGameGameState.cpp */; };
@@ -229,6 +230,8 @@
 		23C637E1103181D700FEEFEE /* icecannon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = icecannon.cpp; sourceTree = "<group>"; };
 		23C637E2103181D700FEEFEE /* icecannon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = icecannon.h; sourceTree = "<group>"; };
 		23C637E3103181D700FEEFEE /* se.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = se.h; sourceTree = "<group>"; };
+		23CAE24611A3494000349D60 /* ResourceMgmt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceMgmt.cpp; sourceTree = "<group>"; };
+		23CAE24711A3494000349D60 /* ResourceMgmt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceMgmt.h; sourceTree = "<group>"; };
 		23D3E9751013ABC9001643FA /* baby.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = baby.cpp; sourceTree = "<group>"; };
 		23D3E9761013ABC9001643FA /* balljack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = balljack.cpp; sourceTree = "<group>"; };
 		23D3E9781013ABC9001643FA /* butler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = butler.cpp; sourceTree = "<group>"; };
@@ -831,6 +834,8 @@
 		23D3E9A11013ABCA001643FA /* fileio */ = {
 			isa = PBXGroup;
 			children = (
+				23CAE24611A3494000349D60 /* ResourceMgmt.cpp */,
+				23CAE24711A3494000349D60 /* ResourceMgmt.h */,
 				63CD210F115EBA9C00A4BEF8 /* Oldsavegamestructs.h */,
 				6350A6B610EB8771004B1F27 /* Cunlzexe.cpp */,
 				6350A6B710EB8771004B1F27 /* Cunlzexe.h */,
@@ -1516,6 +1521,7 @@
 				633DF72111738BF9008C56D4 /* CCursor.cpp in Sources */,
 				6364E244118373FB0073053F /* CMenuVorticon.cpp in Sources */,
 				631013F1119EF0C400549BC6 /* CMenuGalaxy.cpp in Sources */,
+				23CAE24811A3494000349D60 /* ResourceMgmt.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
