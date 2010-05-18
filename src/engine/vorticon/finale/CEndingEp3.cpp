@@ -14,8 +14,6 @@
 #include "../../../common/CMapLoader.h"
 #include "../../../common/Playerdefines.h"
 
-#define SAFE_DELETE(x) if(x) { delete x; x=NULL; }
-
 CEndingEp3::CEndingEp3(CMap &map, std::vector<CPlayer> &Player) :
 CFinale(map),
 m_Player(Player)

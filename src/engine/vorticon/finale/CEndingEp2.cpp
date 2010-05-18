@@ -17,8 +17,6 @@
 const int LIMPSHOME_X = 0;
 const int LIMPSHOME_Y = 300;
 
-#define SAFE_DELETE(x) if(x) { delete x; x=NULL; }
-
 CEndingEp2::CEndingEp2(CMap &map, std::vector<CPlayer> &Player) :
 CFinale(map),
 m_Player(Player)

@@ -10,8 +10,6 @@
 
 #include "CPlayGame.h"
 
-#define SAFE_DELETE(x) if(x) { delete x; x=NULL; }
-
 void CPlayGame::processPauseDialogs()
 {
 	if(m_showPauseDialog)
