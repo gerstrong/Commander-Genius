@@ -1346,7 +1346,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "$/bin/bash\n\nVFSROOT=\"$SRCROOT/../../vfsroot\"\nRES=\"$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH/Resources\"\n\nrsync -av --delete \"$VFSROOT/\"* \"$RES/\"\n";
+			shellScript = "#!/bin/bash\n\nVFSROOT=\"$SRCROOT/../../vfsroot\"\nRES=\"$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH/Resources\"\n\nrsync -av --delete \"$VFSROOT/\"* \"$RES/\"\n";
 		};
 		6350FC7A1044F7DE00A992D5 /* Create DMG */ = {
 			isa = PBXShellScriptBuildPhase;
