@@ -200,6 +200,4 @@ VIDEO_MODE_OPENGL,
 #include "include/declarations.h"
 #include "sdl/CSettings.h"
 
-const std::string VFSROOT = "vfsroot";
-
 #endif

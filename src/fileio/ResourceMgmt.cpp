@@ -10,7 +10,7 @@
 #include "../CLogFile.h"
 #include "../keen.h"
 
-const std::string GLOBAL_DIR = VFSROOT + "/global";
+const std::string GLOBAL_DIR = "global";
 
 /**
  * \brief	This function will look for certain files used in the game. It looks on the local dir

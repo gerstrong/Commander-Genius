@@ -13,8 +13,9 @@
 #include "../../graphics/CGfxEngine.h"
 #include "../../sdl/CVideoDriver.h"
 #include "../../common/CMapLoader.h"
+#include "../../fileio/ResourceMgmt.h"
 
-CAbout::CAbout(std::string &datadirectory, char &episode, const std::string& type) :
+CAbout::CAbout(const std::string &datadirectory, char &episode, const std::string& type) :
 mp_LogoBMP(NULL),
 m_type(type)
 {
@@ -88,8 +89,8 @@ m_type(type)
 	}
 	else if(type == "CG")
 	{
-		std::string path = GetFullFileName("data/gfx/CGLogo.bmp");
-		mp_LogoBMP = SDL_LoadBMP(path.c_str());
+		std::string path = getResourceFilename("gfx/CGLogo.bmp", datadirectory, true, true);
+		mp_LogoBMP = SDL_LoadBMP(GetFullFileName(path).c_str());
 		
 		m_lines.push_back("Commander Genius is an interpreter");
 		m_lines.push_back("made with the goal of recreating");
