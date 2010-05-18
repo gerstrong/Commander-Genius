@@ -1,15 +1,21 @@
 Commander Genius Release (CloneKeenPlus):
 =========================================
 
+v0.3.1.3:
+---------
+- Savegames are now separated per game
+- bit more galaxy code
+- fixed filename search problems
+- even faster and more colourful menu
+
 v0.3.1.2:
 ---------
 - a bit faster and more colourful menu
 
-
 v0.3.1.1:
 ---------
 - Volume sliders
-- Camera Bounds config
+- Camera bounds config
 - Older savegame compatibility... (to version 0.3.0.4)
 
 v0.3.1.0:
