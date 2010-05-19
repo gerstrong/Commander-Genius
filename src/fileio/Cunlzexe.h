@@ -14,7 +14,7 @@
 
 #include <vector>
 
-typedef unsigned short WORD;
+typedef unsigned short WORD_16BIT;
 typedef unsigned char BYTE;
 
 class Cunlzexe
@@ -29,7 +29,7 @@ private:
 
 	struct bitstream{
 			BYTE  *pdata;
-	        WORD  buf;
+			WORD_16BIT  buf;
 	        BYTE  count;
 	};
 
@@ -42,8 +42,8 @@ private:
 	int mkreltbl(BYTE *p_data, std::vector<BYTE> &outdata,int ver);
 	int unpack(BYTE *p_input, std::vector<BYTE> &outdata);
 
-	WORD getWord(BYTE *p_data);
-	void putWord(WORD value, std::vector<BYTE> &outdata);
+	WORD_16BIT get16bitWord(BYTE *p_data);
+	void put16bitWord(WORD_16BIT value, std::vector<BYTE> &outdata);
 
 	unsigned long m_headersize;
 };

@@ -55,14 +55,14 @@ Cunlzexe::Cunlzexe() :
 m_headersize(0)
 {}
 
-WORD Cunlzexe::getWord(BYTE *p_data)
+WORD_16BIT Cunlzexe::get16bitWord(BYTE *p_data)
 {
-    WORD value = (WORD) *(p_data);
-    value+= ((WORD) *(p_data+1))<<8;
+    WORD_16BIT value = (WORD_16BIT) *(p_data);
+    value+= ((WORD_16BIT) *(p_data+1))<<8;
     return value;
 }
 
-void Cunlzexe::putWord(WORD value, std::vector<BYTE> &outdata)
+void Cunlzexe::put16bitWord(WORD_16BIT value, std::vector<BYTE> &outdata)
 {
 	outdata.push_back( value&0xFF );
 	outdata.push_back( value>>8 );
@@ -88,7 +88,7 @@ bool Cunlzexe::decompress(BYTE *compressed_data, std::vector<BYTE> &outdata){
 }
 
 /*-------------------------------------------*/
-static WORD ihead[0x10],ohead[0x10],inf[8];
+static WORD_16BIT ihead[0x10],ohead[0x10],inf[8];
 static long loadsize=0;
 static BYTE sig90 [] = {			/* v0.8 */
     0x06, 0x0E, 0x1F, 0x8B, 0x0E, 0x0C, 0x00, 0x8B,
@@ -217,21 +217,21 @@ int Cunlzexe::mkreltbl(BYTE *p_data, std::vector<BYTE> &outdata,int ver) {
 /* for LZEXE ver 0.90 */
 int Cunlzexe::reloc90(BYTE *p_data, std::vector<BYTE> &outdata, long fpos) {
     unsigned int c;
-    WORD rel_count=0;
-    WORD rel_seg,rel_off;
+    WORD_16BIT rel_count=0;
+    WORD_16BIT rel_seg,rel_off;
 
      p_data += fpos+0x19d;
 
     rel_seg=0;
     do{
-        c=getWord(p_data);
+        c=get16bitWord(p_data);
         p_data += 2;
         for(;c>0;c--) {
-            rel_off=getWord(p_data);
+            rel_off=get16bitWord(p_data);
             p_data += 2;
 
-            putWord(rel_off, outdata);
-            putWord(rel_seg, outdata);
+            put16bitWord(rel_off, outdata);
+            put16bitWord(rel_seg, outdata);
             rel_count++;
         }
         rel_seg += 0x1000;
@@ -241,13 +241,13 @@ int Cunlzexe::reloc90(BYTE *p_data, std::vector<BYTE> &outdata, long fpos) {
 }
 /* for LZEXE ver 0.91*/
 int Cunlzexe::reloc91(BYTE *p_data, std::vector<BYTE> &outdata, long fpos) {
-    WORD span;
-    WORD rel_count=0;
-    WORD rel_seg,rel_off;
+    WORD_16BIT span;
+    WORD_16BIT rel_count=0;
+    WORD_16BIT rel_seg,rel_off;
 
     p_data += fpos+0x158;
     				/* 0x158=compressed relocation table address */
-    WORD temp;
+    WORD_16BIT temp;
     rel_off=0; rel_seg=0;
     for(;;) {
     	temp = *p_data;
@@ -267,8 +267,8 @@ int Cunlzexe::reloc91(BYTE *p_data, std::vector<BYTE> &outdata, long fpos) {
         rel_off += span;
         rel_seg += (rel_off & ~0x0f)>>4;
         rel_off &= 0x0f;
-        putWord(rel_off, outdata);
-        putWord(rel_seg, outdata);
+        put16bitWord(rel_off, outdata);
+        put16bitWord(rel_seg, outdata);
         rel_count++;
     }
     ohead[3]=rel_count;
@@ -359,8 +359,8 @@ void Cunlzexe::wrhead(std::vector<BYTE> &outdata) {
         if(ihead[6]!=0xffff)
             ohead[6]-=(ihead[5]-ohead[5]);
     }
-    ohead[1]=((WORD)loadsize+(ohead[4]<<4)) & 0x1ff;	/* v0.7 */
-    ohead[2]=(WORD)((loadsize+((long)ohead[4]<<4)+0x1ff) >> 9); /* v0.7 */
+    ohead[1]=((WORD_16BIT)loadsize+(ohead[4]<<4)) & 0x1ff;	/* v0.7 */
+    ohead[2]=(WORD_16BIT)((loadsize+((long)ohead[4]<<4)+0x1ff) >> 9); /* v0.7 */
 
     memcpy(&outdata[0], ohead, (sizeof ohead[0])*0x0e );
 }
@@ -371,7 +371,7 @@ void Cunlzexe::wrhead(std::vector<BYTE> &outdata) {
 void Cunlzexe::initbits(bitstream *p, BYTE *p_data, unsigned long &inpos){
 	p->pdata = p_data;
     p->count=0x10;
-    p->buf=getWord(&p_data[inpos]);
+    p->buf=get16bitWord(&p_data[inpos]);
     inpos += 2;
 }
 
@@ -379,7 +379,7 @@ int Cunlzexe::getbit(bitstream *p, unsigned long &inpos) {
     int b;
     b = p->buf & 1;
     if(--p->count == 0){
-    	(p->buf) = getWord(&(p->pdata[inpos]));
+    	(p->buf) = get16bitWord(&(p->pdata[inpos]));
     	inpos += 2;
         p->count= 0x10;
     }else

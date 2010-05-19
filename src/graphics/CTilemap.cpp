@@ -11,8 +11,8 @@
 #include <stdlib.h>
 
 CTilemap::CTilemap(stTile *pTileProperties, int numtiles) :
-m_Tilesurface(NULL),
 mp_tiles(pTileProperties),
+m_Tilesurface(NULL),
 m_numtiles(numtiles),
 m_EmptyBackgroundTile(143)
 { }
