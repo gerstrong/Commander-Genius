@@ -235,7 +235,7 @@ int Cunlzexe::reloc90(BYTE *p_data, std::vector<BYTE> &outdata, long fpos) {
             rel_count++;
         }
         rel_seg += 0x1000;
-    } while(rel_seg!=(0xf000+0x1000));
+    } while(rel_seg != static_cast<WORD_16BIT>(0xf000+0x1000));
     ohead[3]=rel_count;
     return(SUCCESS);
 }
