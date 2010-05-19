@@ -34,7 +34,7 @@ bool CTitle::init(int Episode)
 	if(!g_pVideoDriver->getSpecialFXConfig())
 		g_pGfxEngine->pushEffectPtr(new CColorMerge(8));
 	else
-		g_pGfxEngine->pushEffectPtr(new CPixelate(3));
+		g_pGfxEngine->pushEffectPtr(new CPixelate(4));
 	
 	pBitmap = g_pGfxEngine->getBitmap("TITLE");
 	p_object = new CEGABitmap( &m_map, pSurface, pBitmap );
