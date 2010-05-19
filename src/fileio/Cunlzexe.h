@@ -13,9 +13,10 @@
 #define CUNLZEXE_H_
 
 #include <vector>
+#include <stdint.h>
 
-typedef unsigned short WORD_16BIT;
-typedef unsigned char BYTE;
+typedef uint16_t WORD_16BIT;
+typedef uint8_t BYTE;
 
 class Cunlzexe
 {
