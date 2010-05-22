@@ -15,7 +15,7 @@
 
 class COrderingInfo : public CInfoScene {
 public:
-	COrderingInfo(std::string &datadirectory, char &episode);
+	COrderingInfo(const std::string &datadirectory, const char &episode);
 	virtual ~COrderingInfo();
 	
 	void process();

@@ -17,7 +17,7 @@
 #include "../../sdl/CInput.h"
 #include "../../FindFile.h"
 
-CStory::CStory(std::string &DataDirectory, char &episode)
+CStory::CStory(const std::string &DataDirectory, const char &episode)
 {
 	mp_Scrollsurface = g_pVideoDriver->ScrollSurface;
 	mp_Map = new CMap;

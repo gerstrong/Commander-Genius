@@ -100,7 +100,6 @@ void CPassiveVort::process()
 				SAFE_DELETE(mp_PressAnyBox);
 				mp_Menu = new CMenuVorticon( PASSIVE, m_DataDirectory,
 						m_Episode, *mp_Map, m_SavedGame, mp_Option );
-				mp_Menu->init();
 			}
 		}
 	}
@@ -136,7 +135,7 @@ void CPassiveVort::process()
 	{
 		mp_TitleScreen->process();
 
-		if( mp_Menu == NULL )
+		if( !mp_Menu )
 		{
 			if( mp_TitleScreen->isFinished() )
 			{
@@ -200,8 +199,7 @@ void CPassiveVort::process()
 		}
 		else if(mp_Menu->getChooseGame())
 		{
-			delete mp_Menu;
-			mp_Menu = NULL;
+			SAFE_DELETE(mp_Menu);
 			m_modeg = true;
 		}
 		else if(mp_Menu->restartVideo()) // When some video settings has been changed

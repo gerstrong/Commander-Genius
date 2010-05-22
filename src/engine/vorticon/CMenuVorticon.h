@@ -40,14 +40,10 @@ public:
 			char &Episode, CMap &Map,
 			CSavedGame &SavedGame, stOption *pOption );
 
-	bool init( char menu_type = MAIN );
-
 	void processSpecific();
 	void processF1Menu();
 	void processMainMenu();
 
-	void (CMenuVorticon::*processPtr)();
-	
 	void cleanup();
 
 	// Getters

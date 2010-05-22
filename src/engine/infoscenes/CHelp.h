@@ -15,7 +15,7 @@
 
 class CHelp : public CInfoScene {
 public:
-	CHelp(std::string &m_DataDirectory, char &episode, const std::string &type);
+	CHelp(const std::string &DataDirectory, const char &episode, const std::string &type);
 
 	void process();
 

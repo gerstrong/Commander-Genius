@@ -405,6 +405,7 @@ bool CSavedGame::save()
 
     if (!StateFile.is_open()) {
     	g_pLogFile->textOut("Error saving \"" + fullpath + "\". Please check the status of that path.\n" );
+    	m_Command = NONE;
     	return false;
     }
 

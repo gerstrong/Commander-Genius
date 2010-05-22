@@ -365,7 +365,6 @@ void CPlayGame::process()
 		if(!mp_Menu && !mp_Finale && g_pInput->getPressedCommand(IC_QUIT))
 		{	// Open the menu
 			mp_Menu = new CMenuVorticon( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame, mp_option );
-			mp_Menu->init();
 		}
 	}
 }

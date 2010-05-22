@@ -65,7 +65,7 @@ void CMenu::init( char menu_type )
 
 void CMenu::initMainMenu()
 {
-	mp_Dialog = new CDialog(17, 10, INPUT_MODE_UP_DOWN,m_dlg_theme);
+	mp_Dialog = new CDialog(17, 11, INPUT_MODE_UP_DOWN,m_dlg_theme);
 
 	// Being at Intro, Title or Demo mode
 	if( m_menu_mode == PASSIVE )
@@ -77,7 +77,8 @@ void CMenu::initMainMenu()
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "Configure");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Back to Demo");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "Choose Game");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Quit");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Help");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 9, "Quit");
 	}
 	// When Player is playing
 	if( m_menu_mode == ACTIVE )
@@ -89,23 +90,9 @@ void CMenu::initMainMenu()
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "Configure");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Back to Game");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "End Game");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Quit");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Help");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 9, "Quit");
 	}
-}
-
-void CMenu::initF1Menu()
-{
-	mp_Dialog = new CDialog(18, 9, INPUT_MODE_UP_DOWN,m_dlg_theme);
-
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "The Menu");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "The Game");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "The Story");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Ordering Info");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "About ID");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "About CG");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "Credits");
-
-	// In the Help system let's hide all objects like Bitmaps, players, enemies, etc.
 }
 
 ////
@@ -127,6 +114,7 @@ void CMenu::process()
 
 		if(mp_SubMenu->mustClose())
 		{
+			m_hideobjects = false;
 			//m_RestartVideo=mp_SubMenu->restartVideo();
 			SAFE_DELETE(mp_SubMenu);
 			//init(m_menu_type);
@@ -178,11 +166,10 @@ void CMenu::processMainMenu()
 			{
 			case 0: init(NEW); break;
 			case 1: init(LOAD); break;
-			//case 2: init(SAVE);break; // cannot save when no game is running
 			case 4: init(CONFIGURE);break;
 			case 5: m_demoback = true; break;
 			case 6: m_choosegame = true;break;
-			case 7: init(QUIT);break;
+			case 8: init(QUIT);break;
 			}
 		}
 		else if( m_menu_mode == ACTIVE )
@@ -195,7 +182,7 @@ void CMenu::processMainMenu()
 			case 4: init(CONFIGURE);break;
 			case 5: m_mustclose = true; break;
 			case 6: m_choosegame = true;break;
-			case 7: init(QUIT);break;
+			case 8: init(QUIT);break;
 			}
 		}
 	}

@@ -4,12 +4,7 @@
 #include "CMenuVorticon.h"
 
 #include "../../engine/CPassive.h"
-#include "../../engine/infoscenes/CHighScores.h"
-#include "../../engine/infoscenes/CStory.h"
-#include "../../engine/infoscenes/CCredits.h"
-#include "../../engine/infoscenes/COrderingInfo.h"
-#include "../../engine/infoscenes/CAbout.h"
-#include "../../engine/infoscenes/CHelp.h"
+#include "CHelpMenuVorticon.h"
 
 #include "../../StringUtils.h"
 #include "../../CGameControl.h"
@@ -25,35 +20,11 @@ CMenuVorticon::CMenuVorticon( char menu_mode, std::string &GamePath,
 			 char &Episode, CMap &Map, CSavedGame &SavedGame,
 			 stOption *pOption ) :
 CMenu(menu_mode, GamePath, Episode, SavedGame, pOption, DLG_THEME_VORTICON),
-processPtr(NULL),
 m_Map(Map),
 mp_InfoScene(NULL)
 {
-
+	initMainMenu();
 }
-
-////
-// Initialization Routines
-////
-bool CMenuVorticon::init( char menu_type )
-{
-	cleanup();
-
-	CMenu::init(menu_type);
-
-	switch(m_menu_type)
-	{
-	case MAIN:
-		initMainMenu(); processPtr = &CMenuVorticon::processMainMenu; break;
-	case F1:
-		initF1Menu(); processPtr = &CMenuVorticon::processF1Menu; break;
-	default:
-		processPtr = NULL;
-		break;
-	}
-	return true;
-}
-
 
 ////
 // Process Routines
@@ -63,11 +34,6 @@ void CMenuVorticon::processSpecific()
 	// Information Mode?
 	if(!mp_InfoScene) // show a normal menu
 	{
-		if( g_pInput->getPressedCommand(IC_HELP) )
-		{
-			cleanup();
-			init(F1);
-		}
 		// Process the Menu Type logic.
 		CMenu::process();
 		processMainMenu();
@@ -101,47 +67,15 @@ void CMenuVorticon::processMainMenu()
 			m_selection = NO_SELECTION;
 		}
 	}
-}
 
-
-void CMenuVorticon::processF1Menu()
-{
-	if( m_selection != -1)
+	if( g_pInput->getPressedCommand(IC_HELP) || m_selection == 7 ) // open the help menu
 	{
+		mp_SubMenu = new CHelpMenu(mp_InfoScene, m_dlg_theme, m_Episode, m_GamePath);
 		m_Map.m_animation_enabled = false;
-		// no cleanups here, because later we return back to that menu
-		switch(m_selection)
-		{
-			case 0:
-				mp_InfoScene = new CHelp(m_GamePath, m_Episode, "Menu");
-				break;
-			case 1:
-				mp_InfoScene = new CHelp(m_GamePath, m_Episode, "Game");
-				break;
-			case 2:
-				m_hideobjects = true;
-				mp_InfoScene = new CStory(m_GamePath, m_Episode);
-				break;
-			case 3:
-				m_hideobjects = true;
-				mp_InfoScene = new COrderingInfo(m_GamePath, m_Episode);
-				break;
-			case 4:
-				m_hideobjects = true;
-				mp_InfoScene = new CAbout(m_GamePath, m_Episode, "ID");
-				break;
-			case 5:
-				m_hideobjects = true;
-				mp_InfoScene = new CAbout(m_GamePath, m_Episode, "CG");
-				break;
-			case 6:
-				m_hideobjects = true;
-				mp_InfoScene = new CCredits(m_GamePath, m_Episode);
-				break;
-		}
-		m_selection = -1;
+		m_hideobjects = true;
+		m_suspended = true;
+		m_selection = NO_SELECTION;
 	}
-	return;
 }
 
 ////

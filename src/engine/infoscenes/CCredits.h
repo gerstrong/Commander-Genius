@@ -15,7 +15,7 @@
 
 class CCredits : public CInfoScene {
 public:
-	CCredits(std::string &datadirectory, char &episode);
+	CCredits(const std::string &datadirectory, const char &episode);
 	virtual ~CCredits();
 	
 	void process();

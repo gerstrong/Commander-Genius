@@ -17,7 +17,7 @@
 #include "../../sdl/CInput.h"
 #include "../../FindFile.h"
 
-CHelp::CHelp(std::string &DataDirectory, char &episode, const std::string &type) :
+CHelp::CHelp(const std::string &DataDirectory, const char &episode, const std::string &type) :
 mp_TextViewer(NULL)
 {
 	std::string Text;

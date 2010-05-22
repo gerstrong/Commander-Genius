@@ -16,7 +16,7 @@
 
 class CAbout : public CInfoScene {
 public:
-	CAbout(const std::string &datadirectory, char &episode, const std::string& type);
+	CAbout(const std::string &datadirectory, const char episode, const std::string &type);
 	virtual ~CAbout();
 	
 	void process();

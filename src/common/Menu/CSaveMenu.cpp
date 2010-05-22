@@ -8,6 +8,7 @@
 #include "CSaveMenu.h"
 #include "CBaseMenu.h"
 #include "CConfirmMenu.h"
+#include "../../sdl/CInput.h"
 
 #define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
 
@@ -48,7 +49,7 @@ void CSaveMenu::processSpecific()
 			{
 				if(mp_Dialog->m_name != "     EMPTY       ")
 				{
-					mp_OverwriteMenu = new CConfirmMenu("Overwrite the savegame?", m_overwrite, m_dlg_theme);
+					mp_OverwriteMenu = new CConfirmMenu("Overwrite?", m_overwrite, m_dlg_theme);
 					m_suspended = true;
 				}
 
@@ -56,19 +57,13 @@ void CSaveMenu::processSpecific()
 				mp_Dialog->m_name = "";
 				mp_Dialog->m_length = 15;
 			}
-			else if (mp_Dialog->getInputMode(INPUT_MODE_TEXT))
+			else if ( mp_Dialog->getInputMode(INPUT_MODE_TEXT) && g_pInput->getPressedKey(KENTER) )
 			{
 				if(mp_Dialog->m_name == "")
-				{
-					mp_Dialog->setObjectText(m_selection, "Untitled");
 					mp_Dialog->m_name = "Untitled";
-					m_SavedGame.prepareSaveGame(m_selection+1, mp_Dialog->m_name);
-				}
-				else
-				{
-					mp_Dialog->setObjectText(m_selection, mp_Dialog->m_name);
-					m_SavedGame.prepareSaveGame(m_selection+1, mp_Dialog->m_name);
-				}
+				mp_Dialog->setObjectText(m_selection, mp_Dialog->m_name);
+
+				m_SavedGame.prepareSaveGame(m_selection+1, mp_Dialog->m_name);
 				m_selection = NO_SELECTION;
 				mp_Dialog->setInputMode(INPUT_MODE_UP_DOWN);
 			}

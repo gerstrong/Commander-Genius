@@ -14,7 +14,7 @@
 #include "../../sdl/CVideoDriver.h"
 #include "../../common/CMapLoader.h"
 
-COrderingInfo::COrderingInfo(std::string &datadirectory, char &episode) {
+COrderingInfo::COrderingInfo( const std::string &datadirectory, const char &episode ) {
 	CExeFile *Exefile = new CExeFile(episode, datadirectory);
 	mp_Scrollsurface = g_pVideoDriver->ScrollSurface;
 	m_Map.setScrollSurface(mp_Scrollsurface);

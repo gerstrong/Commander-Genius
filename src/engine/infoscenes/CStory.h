@@ -15,7 +15,7 @@
 
 class CStory : public CInfoScene {
 public:
-	CStory(std::string &m_DataDirectory, char &episode);
+	CStory(const std::string &m_DataDirectory, const char &episode);
 
 	void process();
 

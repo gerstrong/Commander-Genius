@@ -15,7 +15,7 @@
 #include "../../common/CMapLoader.h"
 #include "../../fileio/ResourceMgmt.h"
 
-CAbout::CAbout(const std::string &datadirectory, char &episode, const std::string& type) :
+CAbout::CAbout(const std::string &datadirectory, const char episode, const std::string &type) :
 mp_LogoBMP(NULL),
 m_type(type)
 {
