@@ -470,8 +470,10 @@ void CPlayGame::handleFKeys()
 	{
 		// Show the typical F1 Help
 		// Open the menu
-		mp_Menu = new CMenuVorticon( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame, mp_option );
-		mp_Menu->init(F1);
+		//mp_Menu = new CMenuVorticon( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame, mp_option );
+		//SAFE_DELETE(mp_Menu);
+		//mp_Menu = new CHelpMenuVorticon(DLG_THEME_VORTICON);
+		//mp_Menu->init(F1);
 	}
 	
 	/*if(g_pInput->getPressedKey(KF2))

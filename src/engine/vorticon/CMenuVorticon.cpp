@@ -58,7 +58,7 @@ bool CMenuVorticon::init( char menu_type )
 ////
 // Process Routines
 ////
-void CMenuVorticon::process()
+void CMenuVorticon::processSpecific()
 {
 	// Information Mode?
 	if(!mp_InfoScene) // show a normal menu
@@ -70,25 +70,7 @@ void CMenuVorticon::process()
 		}
 		// Process the Menu Type logic.
 		CMenu::process();
-
-		if(processPtr != NULL)
-			(this->*processPtr)();
-
-		// Only if a selection has been done, trigger it!
-		if(m_selection != -1 && !m_goback)
-		{
-			for( std::size_t iter = 0 ; iter < m_menumap.size() ; iter++ )
-			{
-				if( m_selection == static_cast<int>(iter) )
-				{
-					init( m_menumap.at(iter) );
-					break;
-				}
-			}
-		}
-
-		if(m_goback && m_menu_type != MAIN)
-			init(m_menuback[m_menu_type]);
+		processMainMenu();
 	}
 	else // InfoScene is enabled! show it instead of the menu
 	{
@@ -109,34 +91,15 @@ void CMenuVorticon::process()
 
 void CMenuVorticon::processMainMenu()
 {	
-	if( m_selection != -1)
+	if( m_selection != NO_SELECTION)
 	{
-		if( m_menu_mode == PASSIVE )
+		if( m_selection == 3 ) // Show Highscores
 		{
-			if( m_selection == 5 ) // Back to Demo
-				m_demoback = true;
-
-			else if( m_selection == 6 ) // Choose Game
-				m_choosegame = true;
+			m_hideobjects = true;
+			m_Map.m_animation_enabled = false;
+			mp_InfoScene = new CHighScores(m_Episode, m_GamePath, false);
+			m_selection = NO_SELECTION;
 		}
-		else if( m_menu_mode == ACTIVE )
-		{
-			if( m_selection == 5 ) // Back to Game
-				m_goback = true;
-		}
-	}
-	if( m_menu_mode == PASSIVE )
-	{
-		if(m_goback)
-			init(QUIT);
-	}
-
-	if( m_selection == 3 ) // Show Highscores
-	{
-		m_hideobjects = true;
-		m_Map.m_animation_enabled = false;
-		mp_InfoScene = new CHighScores(m_Episode, m_GamePath, false);
-		m_selection = -1;
 	}
 }
 

@@ -197,6 +197,8 @@ VIDEO_MODE_HARDWARE,
 VIDEO_MODE_OPENGL,
 };
 
+#define MAX_PLAYERS            4
+
 #include "include/declarations.h"
 #include "sdl/CSettings.h"
 

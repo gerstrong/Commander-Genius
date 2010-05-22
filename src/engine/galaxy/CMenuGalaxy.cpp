@@ -68,22 +68,6 @@ void CMenuGalaxy::process()
 
 	if(processPtr != NULL)
 		(this->*processPtr)();
-
-	// Only if a selection has been done, trigger it!
-	if(m_selection != -1 && !m_goback)
-	{
-		for( std::size_t iter = 0 ; iter < m_menumap.size() ; iter++ )
-		{
-			if( m_selection == static_cast<int>(iter) )
-			{
-				init( m_menumap.at(iter) );
-				break;
-			}
-		}
-	}
-
-	if(m_goback && m_menu_type != MAIN)
-		init(m_menuback[m_menu_type]);
 }
 
 /**
@@ -126,13 +110,8 @@ void CMenuGalaxy::processMainMenu()
 		else if( m_menu_mode == ACTIVE )
 		{
 			if( m_selection == 5 ) // Back to Game
-				m_goback = true;
+				m_mustclose = true;
 		}
-	}
-	if( m_menu_mode == PASSIVE )
-	{
-		if(m_goback)
-			init(QUIT);
 	}
 
 	if( m_selection == 3 ) // Show Highscores

@@ -44,7 +44,7 @@ mp_SubMenu(NULL)
 void CMenu::init( char menu_type )
 {
 	m_menu_type = menu_type;
-	m_selection = -1; // Nothing has been selected yet.
+	m_selection = NO_SELECTION; // Nothing has been selected yet.
 
 	switch(m_menu_type)
 	{
@@ -56,9 +56,9 @@ void CMenu::init( char menu_type )
 		mp_SubMenu = new CDifficultyMenu( m_Difficulty, m_NumPlayers, m_dlg_theme); break;
 	case CONFIGURE:
 		mp_SubMenu = new CSettingsMenu(m_dlg_theme, mp_option); break;
-	case SAVE: break;
+	case SAVE:
 		mp_SubMenu = new CSaveMenu(m_dlg_theme, m_SavedGame); break;
-	case LOAD: break;
+	case LOAD:
 		mp_SubMenu = new CLoadMenu(m_dlg_theme, m_SavedGame); break;
 	}
 }
@@ -72,7 +72,7 @@ void CMenu::initMainMenu()
 	{
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "New Game");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Load Game");
-		mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 3, "Save Game");
+		mp_Dialog->addObject(DLG_OBJ_DISABLED, 1, 3, 	"Save Game");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "High Scores");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "Configure");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Back to Demo");
@@ -84,10 +84,10 @@ void CMenu::initMainMenu()
 	{
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "New Game");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Load Game");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 3, "Save Game");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 4, "High Scores");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Save Game");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "High Scores");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "Configure");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT,  1, 6, "Back to Game");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Back to Game");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "End Game");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Quit");
 	}
@@ -178,8 +178,7 @@ void CMenu::processMainMenu()
 			{
 			case 0: init(NEW); break;
 			case 1: init(LOAD); break;
-			//case 2: init(CONFIGURE);break;
-			case 3: init(HIGHSCORES);break;
+			//case 2: init(SAVE);break; // cannot save when no game is running
 			case 4: init(CONFIGURE);break;
 			case 5: m_demoback = true; break;
 			case 6: m_choosegame = true;break;
@@ -193,7 +192,6 @@ void CMenu::processMainMenu()
 			case 0: init(NEW); break;
 			case 1: init(LOAD); break;
 			case 2: init(SAVE);break;
-			case 3: init(HIGHSCORES);break;
 			case 4: init(CONFIGURE);break;
 			case 5: m_mustclose = true; break;
 			case 6: m_choosegame = true;break;

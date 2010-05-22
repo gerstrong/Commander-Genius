@@ -25,7 +25,8 @@ public:
 
 	bool init(void);
 	void stop(void);
-	bool loadSoundData(unsigned short Episode, const std::string& DataDirectory);
+	void setGameData(unsigned short Episode, const std::string& DataDirectory);
+	bool loadSoundData();
 	void stopAllSounds(void);
 
 	bool forcedisPlaying(void);
@@ -65,6 +66,9 @@ private:
 	Uint8 m_SoundVolume;
 
     Uint8 *m_MixedForm;			// Mainly used by the callback function. Declared once and allocated
+
+    unsigned short m_Episode;
+    std::string m_DataDirectory;
 };
 
 #endif /* CSOUND_H_ */

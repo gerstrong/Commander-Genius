@@ -225,7 +225,8 @@ bool CGameControl::loadResources(unsigned short Episode, const std::string& Data
 		if( (flags & LOADSND) == LOADSND )
 		{
 			// Load the sound data
-			g_pSound->loadSoundData(Episode, DataDirectory);
+			g_pSound->setGameData(Episode, DataDirectory);
+			g_pSound->loadSoundData();
 		}
 		return true;
 	}

@@ -325,11 +325,16 @@ playsound: ;
 	m_soundchannel[chnl].setupSound((unsigned short)snd, 0, true, 0, (mode==PLAY_FORCE) ? true : false, AudioSpec.format );
 }
 
-bool CSound::loadSoundData(unsigned short Episode, const std::string& DataDirectory)
+void CSound::setGameData(unsigned short Episode, const std::string& DataDirectory)
+{
+	m_Episode = Episode;
+	m_DataDirectory = DataDirectory;
+}
+
+bool CSound::loadSoundData()
 {
 	if(!m_active) return false;
 
-	std::string path;
 	bool ok = true;
 	std::string soundfile;
 	std::string buf;
@@ -340,23 +345,21 @@ bool CSound::loadSoundData(unsigned short Episode, const std::string& DataDirect
 	for(int i=0 ; i<MAX_SOUNDS ; i++)
 	{
 		m_soundslot[i].setpAudioSpec(&AudioSpec);
-		m_soundslot[i].m_gamepath = DataDirectory;
+		m_soundslot[i].m_gamepath = m_DataDirectory;
 	}
-
-	path = DataDirectory;
 
 	g_pLogFile->ftextOut("sound_load_all(): loading all sounds...<br>");
 
-	soundfile = "sounds.ck" + itoa(Episode);
-	std::string soundpath = formatPathString(path) + soundfile;
+	soundfile = "sounds.ck" + itoa(m_Episode);
+	std::string soundpath = formatPathString(m_DataDirectory) + soundfile;
 
 	FILE *p_file;
 	if( ( p_file = OpenGameFile(soundfile.c_str(),"rb") ) == NULL )
 	{
 
-		buf = "keen" + itoa(Episode) + ".exe";
-		g_pLogFile->ftextOut("sound_load_all(): \"%s\" was not found in the data directory. Looking for \"%s\" in \"%s\" and trying to extract this file<br>", soundfile.c_str(), buf.c_str(), formatPathString(path).c_str());
-		extractOfExeFile(path, Episode);
+		buf = "keen" + itoa(m_Episode) + ".exe";
+		g_pLogFile->ftextOut("sound_load_all(): \"%s\" was not found in the data directory. Looking for \"%s\" in \"%s\" and trying to extract this file<br>", soundfile.c_str(), buf.c_str(), formatPathString(m_DataDirectory).c_str());
+		extractOfExeFile(m_DataDirectory, m_Episode);
 	}
 	else
 		fclose(p_file);
@@ -398,11 +401,11 @@ bool CSound::loadSoundData(unsigned short Episode, const std::string& DataDirect
 	ok &= m_soundslot[SOUND_VORT_DIE].loadSound(soundpath, "vortscream", SOUND_VORT_DIE);
 	ok &= m_soundslot[SOUND_TANK_FIRE].loadSound(soundpath, "TANKFIRE", SOUND_TANK_FIRE);
 
-	if (Episode == 2)
+	if (m_Episode == 2)
 	{
 		ok &= m_soundslot[SOUND_KEEN_BLOK].loadSound(soundpath, "EARTHPOW", SOUND_EARTHPOW);
 	}
-	else if (Episode == 3)
+	else if (m_Episode == 3)
 	{
 		ok &= m_soundslot[SOUND_MEEP].loadSound(soundpath, "MEEP", SOUND_MEEP);
 		ok &= m_soundslot[SOUND_ANKH].loadSound(soundpath, "ANKH", SOUND_ANKH);

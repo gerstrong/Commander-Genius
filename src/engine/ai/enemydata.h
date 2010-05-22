@@ -8,6 +8,8 @@
 #ifndef ENEMYDATA_H_
 #define ENEMYDATA_H_
 
+#include "../../keen.h"
+
 // Structs used for different enemy's variables. These are in a union.
 
 typedef struct stYorpData

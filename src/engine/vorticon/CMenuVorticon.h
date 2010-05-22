@@ -42,7 +42,7 @@ public:
 
 	bool init( char menu_type = MAIN );
 
-	void process();
+	void processSpecific();
 	void processF1Menu();
 	void processMainMenu();
 
@@ -56,7 +56,7 @@ public:
 	bool mustEndGame() { return m_Endgame; }
 	bool mustStartGame() { return (m_NumPlayers > 0 and m_Difficulty > -1); }
 	bool getShowStory() { return (m_menu_type==STORY); }
-	bool mustBeClosed() { return m_goback; }
+	bool mustBeClosed() { return m_mustclose; }
 	bool getBacktoDemo() { return m_demoback; }
 
 	virtual ~CMenuVorticon();

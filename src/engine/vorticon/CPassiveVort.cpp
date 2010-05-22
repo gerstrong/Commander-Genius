@@ -179,7 +179,7 @@ void CPassiveVort::process()
 	// If Menu is open show it!
 	if( mp_Menu != NULL )
 	{
-		mp_Menu->process();
+		mp_Menu->processSpecific();
 
 		// Let the menu control, if objects are to be seen or hidden
 		m_hideobjects = mp_Menu->m_hideobjects;
@@ -194,8 +194,7 @@ void CPassiveVort::process()
 		}
 		else if(mp_Menu->getExitEvent())
 		{
-			delete mp_Menu;
-			mp_Menu = NULL;
+			SAFE_DELETE(mp_Menu);
 			cleanup();
 			m_mode = SHUTDOWN;
 		}
