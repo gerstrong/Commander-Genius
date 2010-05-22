@@ -5,32 +5,44 @@
  *      Author: gerstrong
  */
 
-#include "CBaseMenu.h"
 #include "../../sdl/CInput.h"
+#include "CBaseMenu.h"
 
-CBaseMenu::CBaseMenu(char &MenuType, Uint8 dlg_theme) :
+CBaseMenu::CBaseMenu(Uint8 dlg_theme) :
 	m_mustclose(false),
-	m_MenuType(MenuType),
-	m_selection(-1),
+	m_selection(NO_SELECTION),
 	mp_Dialog(NULL),
 	m_restartVideo(false),
-	m_dlg_theme(dlg_theme)
+	m_dlg_theme(dlg_theme),
+	m_suspended(false)
 {}
 
 void CBaseMenu::processCommon()
 {
-	// Get Input for selection
-	if( g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_STATUS) )
+	if(!m_suspended)
 	{
-		m_selection = mp_Dialog->getSelection();
+		// Get Input for selection
+		if( g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_STATUS) )
+		{
+			m_selection = mp_Dialog->getSelection();
+		}
+
+		// Get Input for selection
+		if( g_pInput->getPressedCommand(IC_QUIT) )
+		{
+			m_mustclose = true;
+		}
+
 	}
 }
 
 void CBaseMenu::postProcess()
 {
-	mp_Dialog->processInput();
-
-	mp_Dialog->draw();
+	if(!m_suspended)
+	{
+		mp_Dialog->processInput();
+		mp_Dialog->draw();
+	}
 }
 
 CBaseMenu::~CBaseMenu() {

@@ -11,8 +11,6 @@
 #ifndef COBJECT_H_
 #define COBJECT_H_
 
-#define MAX_PLAYERS            4
-
 #define SAFE_DELETE_ARRAY(x) if(x) { delete [] x; x = NULL; }
 #define SAFE_DELETE(x) if(x) { delete x; x = NULL; }
 

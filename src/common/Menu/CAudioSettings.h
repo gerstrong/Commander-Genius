@@ -9,12 +9,13 @@
 #define CAUDIOSETTINGS_H_
 
 #include "CBaseMenu.h"
+#include "CVolumeSettings.h"
 #include <SDL.h>
 #include <string>
 
 class CAudioSettings : public CBaseMenu {
 public:
-	CAudioSettings(char &menu_type, Uint8 dlg_theme, std::string &Gamepath, char &Episode);
+	CAudioSettings(Uint8 dlg_theme);
 	void processSpecific();
 	virtual ~CAudioSettings();
 
@@ -23,8 +24,7 @@ private:
 	int m_Rate;
 	Uint16 m_Format;
 	char m_Mode;
-	std::string &m_Gamepath;
-	char &m_Episode;
+	CVolumeSettings *mp_VolumeMenu;
 };
 
 #endif /* CAUDIOSETTINGS_H_ */

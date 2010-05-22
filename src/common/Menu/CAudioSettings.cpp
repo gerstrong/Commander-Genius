@@ -13,35 +13,13 @@
 #include "../../hqp/CMusic.h"
 #include "../../StringUtils.h"
 
-CAudioSettings::CAudioSettings(char &menu_type, Uint8 dlg_theme,
-		std::string &Gamepath, char &Episode) :
-		CBaseMenu(menu_type, dlg_theme),
-		m_Gamepath(Gamepath),
-		m_Episode(Episode)
+#define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
+
+CAudioSettings::CAudioSettings(Uint8 dlg_theme) :
+		CBaseMenu(dlg_theme),
+		mp_VolumeMenu(NULL)
 {
-	if(m_MenuType == VOLUME)
-	{
-		mp_Dialog = new CDialog(24, 7, INPUT_MODE_UP_DOWN, m_dlg_theme);
 
-		mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 1, "    Adjust Volume:    ");
-		mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 2, "  Music:              ");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "");
-		mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 4, "  Sound:              ");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "");
-
-		mp_Dialog->m_dlgobject.at(2)->m_Option->m_value = g_pSound->getMusicVolume();
-		mp_Dialog->m_dlgobject.at(4)->m_Option->m_value = g_pSound->getSoundVolume();
-		mp_Dialog->m_dlgobject.at(2)->m_Option->m_FontMapID = 1;
-		mp_Dialog->m_dlgobject.at(4)->m_Option->m_FontMapID = 1;
-		mp_Dialog->setSelection(4);
-
-		mp_Dialog->m_noise = false;
-		mp_Dialog->setInputMode(INPUT_MODE_SLIDER);
-		mp_Dialog->processInput();
-		mp_Dialog->setSelection(2);
-	}
-	else
-	{
 		mp_Dialog = new CDialog(20, 6, INPUT_MODE_UP_DOWN,m_dlg_theme);
 
 		m_Rate = g_pSound->getAudioSpec().freq;
@@ -60,35 +38,16 @@ CAudioSettings::CAudioSettings(char &menu_type, Uint8 dlg_theme,
 		buf += m_Mode ? "Stereo": "Mono";
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, buf);
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Adjust Volume");
-	}
+
 }
 
 void CAudioSettings::processSpecific()
 {
-	std::string buf;
+	if(!m_suspended)
+	{
+		std::string buf;
 
-	if(m_MenuType == VOLUME)
-	{
-		if(mp_Dialog->getSelection() == 2)
-		{
-			g_pSound->setMusicVolume(mp_Dialog->m_dlgobject.at(2)->m_Option->m_value);
-			mp_Dialog->m_noise = false;
-		}
-		else if(mp_Dialog->getSelection() == 4)
-		{
-			g_pSound->setSoundVolume(mp_Dialog->m_dlgobject.at(4)->m_Option->m_value);
-			mp_Dialog->m_noise = true;
-		}
-	}
-	
-	if( g_pInput->getPressedCommand(IC_QUIT) )
-	{
-		if(m_MenuType == VOLUME)
-		{
-			m_MenuType = AUDIO;
-			m_mustclose = true;
-		}
-		else
+		if( m_mustclose )
 		{
 			CSettings Settings;
 
@@ -103,7 +62,8 @@ void CAudioSettings::processSpecific()
 
 			// Reload the sounds effects, so they work with the new format
 			g_pSound->init();
-			g_pSound->loadSoundData(m_Episode, m_Gamepath);
+
+			g_pSound->loadSoundData();
 
 			// Reload the music if was playing before we changed the settings
 			if(wasPlaying)
@@ -111,19 +71,11 @@ void CAudioSettings::processSpecific()
 				g_pMusicPlayer->reload(g_pSound->getAudioSpec());
 				g_pMusicPlayer->play();
 			}
-
-			m_MenuType = CONFIGURE;
-			m_mustclose = true;
 		}
-	}
 
-	if( m_selection != -1)
-	{
-		if(m_MenuType == VOLUME)
+		if( m_selection != NO_SELECTION )
 		{
-		}
-		else
-		{
+
 			if(m_selection == 0)
 			{
 				switch(m_Rate)
@@ -152,11 +104,23 @@ void CAudioSettings::processSpecific()
 			}
 			else if(m_selection == 3)
 			{
-				m_MenuType = VOLUME;
-				m_mustclose = true;
+				mp_VolumeMenu = new CVolumeSettings(m_dlg_theme);
+				m_suspended = true;
 			}
+			m_selection = -1;
 		}
-		m_selection = -1;
+	}
+	else
+	{
+		mp_VolumeMenu->processCommon();
+		mp_VolumeMenu->processSpecific();
+		mp_VolumeMenu->postProcess();
+
+		if(mp_VolumeMenu->mustClose())
+		{
+			SAFE_DELETE(mp_VolumeMenu);
+			m_suspended = false;
+		}
 	}
 }
 

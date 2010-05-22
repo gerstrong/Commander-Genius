@@ -8,6 +8,8 @@
 #ifndef CBASEMENU_H_
 #define CBASEMENU_H_
 
+const int NO_SELECTION = -1;
+
 #include "../../dialog/CDialog.h"
 
 // Which Menu has to be shown?
@@ -35,7 +37,7 @@ enum menumodes{
 
 class CBaseMenu {
 public:
-	CBaseMenu(char &MenuType, Uint8 dlg_theme);
+	CBaseMenu(Uint8 dlg_theme);
 
 	// Processes the stuff that the menus have in common
 	void processCommon();
@@ -53,11 +55,11 @@ public:
 
 protected:
 	bool m_mustclose;
-	char &m_MenuType;
 	int m_selection;
 	CDialog *mp_Dialog;
 	bool m_restartVideo;
 	Uint8 m_dlg_theme;
+	bool m_suspended;
 };
 
 #endif /* CBASEMENU_H_ */

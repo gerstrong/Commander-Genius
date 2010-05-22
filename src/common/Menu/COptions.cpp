@@ -10,8 +10,8 @@
 #include "../../sdl/CVideoDriver.h"
 #include "../../sdl/CSettings.h"
 
-COptions::COptions(char &menu_type, Uint8 dlg_theme,stOption *p_option) :
-CBaseMenu(menu_type, dlg_theme),
+COptions::COptions(Uint8 dlg_theme, stOption *p_option) :
+CBaseMenu(dlg_theme),
 mp_option(p_option)
 {
 	int i;
@@ -31,24 +31,21 @@ mp_option(p_option)
 void COptions::processSpecific()
 {
 	std::string buf;
-	
-	if( g_pInput->getPressedCommand(IC_QUIT) )
-	{
-			m_MenuType = CONFIGURE;
-			m_mustclose = true;
 
-			CSettings Settings(mp_option); // Pressed Save,
-			Settings.saveGameCfg();
+	if(m_mustclose) // If menu is about to close save the options
+	{
+		CSettings Settings(mp_option);
+		Settings.saveGameCfg();
 	}
 
-	if( m_selection != -1)
+	if( m_selection != NO_SELECTION)
 	{
-			mp_option[m_selection].value = !mp_option[m_selection].value;
-			buf = mp_option[m_selection].menuname + " ";
-			buf += (mp_option[m_selection].value) ? "(On)" : "(Off)";
+		mp_option[m_selection].value = !mp_option[m_selection].value;
+		buf = mp_option[m_selection].menuname + " ";
+		buf += (mp_option[m_selection].value) ? "(On)" : "(Off)";
 
-			mp_Dialog->setObjectText(m_selection, buf);
-			m_selection = -1;
+		mp_Dialog->setObjectText(m_selection, buf);
+		m_selection = NO_SELECTION;
 	}
 }
 

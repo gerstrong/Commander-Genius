@@ -12,12 +12,12 @@
 #include "../../sdl/CSettings.h"
 #include "../../StringUtils.h"
 
-CVideoSettings::CVideoSettings(char &menu_type, Uint8 dlg_theme) :
-CBaseMenu(menu_type, dlg_theme) {
+CVideoSettings::CVideoSettings(Uint8 dlg_theme) :
+CBaseMenu(dlg_theme) {
 	
 	m_changed = false;
 	
-	if(menu_type == BOUNDS)
+	/*if(menu_type == BOUNDS)
 	{
 		m_left = g_pCamera->getScrollLeft();
 		m_up = g_pCamera->getScrollUp();
@@ -44,7 +44,7 @@ CBaseMenu(menu_type, dlg_theme) {
 		mp_Dialog->setInputMode(INPUT_MODE_COUNTER);
 	}
 	else
-	{
+	{*/
 		m_Resolution.width = g_pVideoDriver->getWidth();
 		m_Resolution.height = g_pVideoDriver->getHeight();
 		m_Resolution.depth = g_pVideoDriver->getDepth();
@@ -106,17 +106,17 @@ CBaseMenu(menu_type, dlg_theme) {
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, buf);
 
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Adjust Camera Bounds");
-	}
+	//}
 }
 
 void CVideoSettings::processSpecific(){
 	std::string buf;
 	
-	if( g_pInput->getPressedCommand(IC_QUIT) )
+	if( m_mustclose )
 	{
 		if(m_changed)
 		{
-			if(m_MenuType == BOUNDS)
+			/*if(m_MenuType == BOUNDS)
 			{
 				g_pCamera->setScrollTriggers(m_left, m_up, m_right, m_down, m_speed);
 				
@@ -127,7 +127,7 @@ void CVideoSettings::processSpecific(){
 				m_mustclose = true;
 			}
 			else
-			{
+			{*/
 				g_pVideoDriver->stop();
 				g_pVideoDriver->isFullscreen(m_FSmode);
 				g_pVideoDriver->enableOpenGL(m_Opengl);
@@ -143,22 +143,22 @@ void CVideoSettings::processSpecific(){
 				Settings.saveDrvCfg();
 				
 				// And close this menu...
-				m_MenuType = CONFIGURE;
+				//m_MenuType = CONFIGURE;
 				m_restartVideo = true;
 				m_mustclose = true;
-			}
+			//}
 		}
 		else
 		{
-			m_mustclose = true;
+			/*m_mustclose = true;
 			if(m_MenuType == BOUNDS)
 				m_MenuType = GRAPHICS;
 			else
-				m_MenuType = CONFIGURE;
+				m_MenuType = CONFIGURE;*/
 		}
 	}
 	
-	if(m_MenuType == BOUNDS)
+	/*if(m_MenuType == BOUNDS)
 	{
 		if(mp_Dialog->getSelection() == 2)
 		{
@@ -196,12 +196,12 @@ void CVideoSettings::processSpecific(){
 		m_up = atoi(mp_Dialog->m_dlgobject.at(6)->m_Option->m_text);
 		m_down = atoi(mp_Dialog->m_dlgobject.at(8)->m_Option->m_text);
 		m_speed = atoi(mp_Dialog->m_dlgobject.at(10)->m_Option->m_text);
-	}
+	}*/
 	
 	
-	if( m_selection != -1)
+	if( m_selection != NO_SELECTION)
 	{
-		if(m_MenuType == BOUNDS)
+		/*if(m_MenuType == BOUNDS)
 		{
 			if(mp_Dialog->getInputMode(INPUT_MODE_COUNTER))
 			{
@@ -229,7 +229,7 @@ void CVideoSettings::processSpecific(){
 			}
 		}
 		else
-		{
+		{*/
 			if(m_selection < 7)
 				m_changed = true;
 			
@@ -327,18 +327,18 @@ void CVideoSettings::processSpecific(){
 					Settings.saveDrvCfg();
 					
 					// And close this menu...
-					m_MenuType = BOUNDS;
+					//m_MenuType = BOUNDS;
 					//m_restartVideo = true;
 					m_mustclose = true;
 				}
 				else
 				{
 					m_mustclose = true;
-					m_MenuType = BOUNDS;
+					//m_MenuType = BOUNDS;
 				}
 			}
-			m_selection = -1;
-		}
+			m_selection = NO_SELECTION;
+		//}
 	}
 }
 

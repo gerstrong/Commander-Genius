@@ -32,35 +32,12 @@ public:
 	// initialization functions
 	void init( char menu_type );
 	void initMainMenu();
-	void initNumPlayersMenu();
 	void initF1Menu();
-	void initConfirmMenu(std::string confirmtext = "  Are you certain?  ");
-	void initNumControlMenu();
-	void initDifficultyMenu();
-	void initConfigureMenu();
-	void initSaveMenu();
-	void initControlMenu();
-	void initOptionsMenu();
-	void initAudioMenu();
-	void initDebugMenu();
-	void initModMenu();
-
-	void (CMenu::*processPtr)();
 
 	void process();
 
 	// Process functions
 	void processMainMenu();
-	void processNumPlayersMenu();
-	void processDifficultyMenu();
-	void processNumControlMenu();
-	void processDebugMenu();
-	void processModMenu();
-	void processSaveMenu();
-	void processLoadMenu();
-	void processOverwriteMenu();
-	void processQuitMenu();
-	void processEndGameMenu();
 
 	void cleanup();
 
@@ -81,20 +58,16 @@ protected:
 
 	bool m_choosegame;
 	bool m_overwrite;
-	bool m_goback;
-	bool m_goback2;
 	bool m_Endgame;
 	bool m_quit;
 	int m_selection;
 	char m_lastselect;
 	char m_menu_type;
-	char m_NumPlayers;
-	char m_Difficulty;
+	Uint8 m_NumPlayers;
+	Sint8 m_Difficulty;
 	int  m_saveslot;
 
-	CBaseMenu *mp_Menu;
-	std::vector<int> m_menuback;
-	std::vector<int> m_menumap;
+	CBaseMenu *mp_SubMenu;
 
 private:
 	std::vector<std::string> m_StateFileList;
