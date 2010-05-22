@@ -44,7 +44,9 @@ void CLoadMenu::processSpecific()
 		else
 		{
 			m_SavedGame.prepareLoadGame(m_selection + 1);
+			m_mustclose = true;
 		}
+		m_selection != NO_SELECTION;
 	}
 }
 

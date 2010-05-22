@@ -401,9 +401,9 @@ bool CSavedGame::save()
 {
 	std::ofstream StateFile;
 	std::string fullpath = GetFullFileName(m_statefilename);
-	OpenGameFileW( StateFile, m_statefilename, std::ofstream::binary );
+	bool open = OpenGameFileW( StateFile, m_statefilename, std::ofstream::binary );
 
-    if (!StateFile.is_open()) {
+    if (!open) {
     	g_pLogFile->textOut("Error saving \"" + fullpath + "\". Please check the status of that path.\n" );
     	m_Command = NONE;
     	return false;
