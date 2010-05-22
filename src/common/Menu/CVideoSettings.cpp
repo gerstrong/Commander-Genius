@@ -12,8 +12,10 @@
 #include "../../sdl/CSettings.h"
 #include "../../StringUtils.h"
 
-CVideoSettings::CVideoSettings(Uint8 dlg_theme) :
-CBaseMenu(dlg_theme) {
+CVideoSettings::CVideoSettings(Uint8 dlg_theme, bool &restartVideo) :
+CBaseMenu(dlg_theme),
+m_restartVideo(restartVideo)
+{
 	
 	m_changed = false;
 	
@@ -327,8 +329,7 @@ void CVideoSettings::processSpecific(){
 					Settings.saveDrvCfg();
 					
 					// And close this menu...
-					//m_MenuType = BOUNDS;
-					//m_restartVideo = true;
+					m_restartVideo = true;
 					m_mustclose = true;
 				}
 				else

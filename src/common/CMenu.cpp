@@ -15,7 +15,7 @@
 
 CMenu::CMenu( char menu_mode, std::string &GamePath,
 		 char &Episode, CSavedGame &SavedGame,
-		 stOption *pOption, Uint8 DlgTheme ) :
+		 stOption *pOption, Uint8 DlgTheme, bool &restartVideo ) :
 CBaseMenu(DlgTheme),
 m_demoback(false),
 m_hideobjects(false),
@@ -23,7 +23,6 @@ mp_Dialog(NULL),
 m_Episode(Episode),
 m_GamePath(GamePath),
 m_SavedGame(SavedGame),
-m_RestartVideo(false),
 mp_option(pOption),
 m_menu_mode(menu_mode),
 m_choosegame(false),
@@ -36,6 +35,7 @@ m_menu_type(MAIN),
 m_NumPlayers(0),
 m_Difficulty(NO_SELECTION),
 m_saveslot(0),
+m_restartVideo(restartVideo),
 mp_SubMenu(NULL)
 {
 
@@ -55,7 +55,7 @@ void CMenu::init( char menu_type )
 	case NEW:
 		mp_SubMenu = new CDifficultyMenu( m_Difficulty, m_NumPlayers, m_dlg_theme); break;
 	case CONFIGURE:
-		mp_SubMenu = new CSettingsMenu(m_dlg_theme, mp_option); break;
+		mp_SubMenu = new CSettingsMenu(m_dlg_theme, mp_option, m_restartVideo); break;
 	case SAVE:
 		mp_SubMenu = new CSaveMenu(m_dlg_theme, m_SavedGame); break;
 	case LOAD:
@@ -115,9 +115,7 @@ void CMenu::process()
 		if(mp_SubMenu->mustClose())
 		{
 			m_hideobjects = false;
-			//m_RestartVideo=mp_SubMenu->restartVideo();
 			SAFE_DELETE(mp_SubMenu);
-			//init(m_menu_type);
 		}
 	}
 	else

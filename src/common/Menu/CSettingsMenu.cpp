@@ -14,10 +14,11 @@
 
 #define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
 
-CSettingsMenu::CSettingsMenu( Uint8 dlgtheme, stOption *p_option ) :
+CSettingsMenu::CSettingsMenu( Uint8 dlgtheme, stOption *p_option, bool &restartVideo ) :
 CBaseMenu(dlgtheme),
 mp_SubMenu(NULL),
-mp_option(p_option)
+mp_option(p_option),
+m_restartVideo(restartVideo)
 {
 	mp_Dialog = new CDialog(13, 6, INPUT_MODE_UP_DOWN,m_dlg_theme);
 
@@ -35,8 +36,7 @@ void CSettingsMenu::processSpecific()
 		{
 			switch(m_selection)
 			{
-			case 0: mp_SubMenu = new CVideoSettings(m_dlg_theme); break;
-			case 1: mp_SubMenu = new CAudioSettings(m_dlg_theme); break;
+			case 0: mp_SubMenu = new CVideoSettings(m_dlg_theme, m_restartVideo); break;
 			case 2: mp_SubMenu = new COptions(m_dlg_theme, mp_option); break;
 			case 3: mp_SubMenu = new CControlsettings(m_dlg_theme); break;
 			}

@@ -99,7 +99,7 @@ void CPassiveVort::process()
 			{
 				SAFE_DELETE(mp_PressAnyBox);
 				mp_Menu = new CMenuVorticon( PASSIVE, m_DataDirectory,
-						m_Episode, *mp_Map, m_SavedGame, mp_Option );
+						m_Episode, *mp_Map, m_SavedGame, mp_Option, m_RestartVideo);
 			}
 		}
 	}
@@ -110,11 +110,11 @@ void CPassiveVort::process()
 			SAFE_DELETE(mp_Menu);
 			mp_Map->drawAll();
 		}
-		else if( mp_Menu->restartVideo())
+		else if( m_RestartVideo )
 		{
 			cleanup();
 			init(m_mode);
-			mp_Menu->videoRestarted();
+			m_RestartVideo = false;
 		}
 	}
 
@@ -202,11 +202,11 @@ void CPassiveVort::process()
 			SAFE_DELETE(mp_Menu);
 			m_modeg = true;
 		}
-		else if(mp_Menu->restartVideo()) // When some video settings has been changed
+		else if( m_RestartVideo ) // When some video settings has been changed
 		{
 			cleanup();
 			init(m_mode);
-			mp_Menu->videoRestarted();
+			m_RestartVideo = false;
 		}
 	}
 }

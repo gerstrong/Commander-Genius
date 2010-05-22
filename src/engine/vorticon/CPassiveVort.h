@@ -43,6 +43,7 @@ private:
 	bool m_GoDemo;
 	bool m_hideobjects;
 	char *m_text;
+	bool m_RestartVideo;
 };
 
 }

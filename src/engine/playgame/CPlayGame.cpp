@@ -31,7 +31,8 @@ m_dark(false),
 mp_ObjectAI(NULL),
 m_SavedGame(SavedGame),
 m_TeleporterTable(TeleporterTable),
-mp_HighScores(NULL)
+mp_HighScores(NULL),
+m_restartVideo(false)
 {
 	m_Episode = episode;
 	m_Level = level;
@@ -239,7 +240,7 @@ void CPlayGame::process()
 				mp_Menu->process();
 				m_hideobjects = mp_Menu->m_hideobjects;
 
-				if(mp_Menu->restartVideo()) // Happens when in Game resolution was changed!
+				if(m_restartVideo) // Happens when in Game resolution was changed!
 				{
 					mp_Menu->cleanup();
 					SAFE_DELETE(mp_Menu);
@@ -250,6 +251,7 @@ void CPlayGame::process()
 					for( int i=0 ; i<m_NumPlayers ; i++ )
 						while(m_Player[i].scrollTriggers());
 					m_Map.drawAll();
+					m_restartVideo = false;
 				}
 
 				// Does the player want to load/save a game?
@@ -364,7 +366,7 @@ void CPlayGame::process()
 		// Open the Main Menu if ESC Key pressed and mp_Menu not opened
 		if(!mp_Menu && !mp_Finale && g_pInput->getPressedCommand(IC_QUIT))
 		{	// Open the menu
-			mp_Menu = new CMenuVorticon( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame, mp_option );
+			mp_Menu = new CMenuVorticon( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame, mp_option, m_restartVideo );
 		}
 	}
 }
@@ -486,7 +488,8 @@ void CPlayGame::handleFKeys()
     // F3 - save game
     if (g_pInput->getPressedKey(KF3))
     {
-		mp_Menu = new CMenuVorticon( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame, mp_option );
+		mp_Menu = new CMenuVorticon( ACTIVE, m_Gamepath, m_Episode, m_Map,
+									m_SavedGame, mp_option, m_restartVideo );
 		mp_Menu->init(SAVE);
     }
 }

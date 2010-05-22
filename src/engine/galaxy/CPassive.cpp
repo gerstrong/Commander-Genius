@@ -22,7 +22,7 @@ CPassiveGalaxy::CPassiveGalaxy(char Episode, std::string DataDirectory,
 		CSavedGame &SavedGame, stOption *p_Option) :
 CPassive(Episode, DataDirectory, SavedGame, p_Option),
 processMode(&CPassiveGalaxy::processIntro),
-mp_Menu(new CMenuGalaxy(PASSIVE, DataDirectory, Episode, SavedGame, p_Option))
+mp_Menu(new CMenuGalaxy(PASSIVE, DataDirectory, Episode, SavedGame, p_Option, m_restartVideo))
 { }
 
 bool CPassiveGalaxy::init(char mode)
@@ -94,11 +94,11 @@ void CPassiveGalaxy::processMenu()
 		SAFE_DELETE(mp_Menu);
 		m_modeg = true;
 	}
-	else if(mp_Menu->restartVideo()) // When some video settings has been changed
+	else if(m_restartVideo) // When some video settings has been changed
 	{
 		cleanup();
 		init(m_mode);
-		mp_Menu->videoRestarted();
+		m_restartVideo = false;
 	}
 
 }

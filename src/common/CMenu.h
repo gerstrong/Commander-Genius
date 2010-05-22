@@ -21,13 +21,11 @@ class CMenu : public CBaseMenu
 public:
 	CMenu(char menu_mode, std::string &GamePath,
 			 char &Episode, CSavedGame &SavedGame,
-			 stOption *pOption, Uint8 DlgTheme );
+			 stOption *pOption, Uint8 DlgTheme,
+			 bool &restartVideo );
 
 	bool getChooseGame() { return m_choosegame; }
 	bool getExitEvent() { return m_quit; }
-	bool restartVideo() { return m_RestartVideo; }
-
-	void videoRestarted() { m_RestartVideo = false; }
 
 	// initialization functions
 	void init( char menu_type );
@@ -52,7 +50,6 @@ protected:
 	char &m_Episode;
 	std::string &m_GamePath;
 	CSavedGame &m_SavedGame;
-	bool m_RestartVideo;
 	stOption *mp_option;
 	char m_menu_mode;
 
@@ -66,6 +63,7 @@ protected:
 	Uint8 m_NumPlayers;
 	Sint8 m_Difficulty;
 	int  m_saveslot;
+	bool &m_restartVideo;
 
 	CBaseMenu *mp_SubMenu;
 

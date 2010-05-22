@@ -12,7 +12,6 @@ CBaseMenu::CBaseMenu(Uint8 dlg_theme) :
 	m_mustclose(false),
 	m_selection(NO_SELECTION),
 	mp_Dialog(NULL),
-	m_restartVideo(false),
 	m_dlg_theme(dlg_theme),
 	m_suspended(false)
 {}
@@ -44,6 +43,9 @@ void CBaseMenu::postProcess()
 		mp_Dialog->draw();
 	}
 }
+
+bool CBaseMenu::mustClose()
+{	return m_mustclose;	}
 
 CBaseMenu::~CBaseMenu() {
 	// TODO Auto-generated destructor stub

@@ -41,15 +41,12 @@ public:
 
 	// Processes the stuff that the menus have in common
 	void processCommon();
-
 	// Processes the stuff that are specific for the derived menu
 	virtual void processSpecific() {}
-
 	// Process more common stuff, like drawing or reading input of mp_Dialog
 	void postProcess();
 
-	bool mustClose() { return m_mustclose; }
-	bool restartVideo() { return m_restartVideo; }
+	bool mustClose();
 
 	virtual ~CBaseMenu();
 
@@ -57,7 +54,6 @@ protected:
 	bool m_mustclose;
 	int m_selection;
 	CDialog *mp_Dialog;
-	bool m_restartVideo;
 	Uint8 m_dlg_theme;
 	bool m_suspended;
 };

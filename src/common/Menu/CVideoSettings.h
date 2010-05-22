@@ -16,7 +16,7 @@
 
 class CVideoSettings : public CBaseMenu {
 public:
-	CVideoSettings(Uint8 dlg_theme);
+	CVideoSettings(Uint8 dlg_theme, bool &restartVideo);
 	void processSpecific();
 	virtual ~CVideoSettings();
 
@@ -27,6 +27,7 @@ private:
 	int m_left, m_right, m_up, m_down, m_speed, m_changeint;
 	st_resolution m_Resolution;
 	std::string m_usedSoftwareVideoDriver;
+	bool &m_restartVideo;
 };
 
 #endif /* CVIDEOSETTINGS_H_ */

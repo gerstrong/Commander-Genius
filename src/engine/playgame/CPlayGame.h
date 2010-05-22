@@ -145,5 +145,6 @@ private:
 	bool m_showKeensLeft;
 	std::vector<CObject> m_Object;
 	CHighScores *mp_HighScores;
+	bool m_restartVideo;
 };
 #endif /* CPlayGame_H_ */

@@ -18,8 +18,9 @@
 
 CMenuVorticon::CMenuVorticon( char menu_mode, std::string &GamePath,
 			 char &Episode, CMap &Map, CSavedGame &SavedGame,
-			 stOption *pOption ) :
-CMenu(menu_mode, GamePath, Episode, SavedGame, pOption, DLG_THEME_VORTICON),
+			 stOption *pOption, bool &restartVideo ) :
+CMenu(menu_mode, GamePath, Episode, SavedGame,
+	pOption, DLG_THEME_VORTICON, restartVideo),
 m_Map(Map),
 mp_InfoScene(NULL)
 {

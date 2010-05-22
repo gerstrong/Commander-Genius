@@ -38,7 +38,8 @@ public:
 
 	CMenuVorticon( char menu_mode, std::string &GamePath,
 			char &Episode, CMap &Map,
-			CSavedGame &SavedGame, stOption *pOption );
+			CSavedGame &SavedGame, stOption *pOption,
+			bool &restartVideo  );
 
 	void processSpecific();
 	void processF1Menu();

@@ -33,6 +33,7 @@ public:
 
 	CBitmap m_BackgroundBitmap;
 	CMenuGalaxy *mp_Menu;
+	bool m_restartVideo;
 };
 
 }
