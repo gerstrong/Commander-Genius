@@ -9,6 +9,7 @@
 #define CVIDEOSETTINGS_H_
 
 #include "CBaseMenu.h"
+#include "CCameraSettings.h"
 #include "../../sdl/CVideoDriver.h"
 #include "../../dialog/CDialog.h"
 #include <SDL.h>
@@ -24,10 +25,10 @@ private:
 	Uint16 m_Zoom, m_ScaleXFilter, m_OGL_filter, m_Autoframeskip;
 	bool m_SpecialFX;
 	bool m_FSmode, m_Opengl, m_changed;
-	int m_left, m_right, m_up, m_down, m_speed, m_changeint;
 	st_resolution m_Resolution;
 	std::string m_usedSoftwareVideoDriver;
 	bool &m_restartVideo;
+	CCameraSettings	*mp_CameraSettings;
 };
 
 #endif /* CVIDEOSETTINGS_H_ */

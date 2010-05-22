@@ -18,11 +18,6 @@ CCamera::CCamera()
 	m_scrollspeed = 20;
 }
 
-CCamera::~CCamera()
-{
-	// TODO Auto-generated destructor stub
-}
-
 void CCamera::init()
 {
 	g_pLogFile->ftextOut("Starting the camera system...<br>");
@@ -40,4 +35,9 @@ void CCamera::setScrollTriggers(int left, int up, int right, int down, int speed
 	m_scrolltriggerright = right;
 	m_scrolltriggerdown = down;
 	m_scrollspeed = speed;
+}
+
+CCamera::~CCamera()
+{
+	// TODO Auto-generated destructor stub
 }
