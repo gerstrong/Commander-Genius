@@ -20,8 +20,8 @@ CPassiveVort::CPassiveVort(char Episode, std::string DataDirectory,
 		 CSavedGame &SavedGame, stOption *p_Option) :
 CPassive(Episode, DataDirectory, SavedGame,p_Option),
 mp_Map(NULL),
-mp_Option(p_Option)
-
+mp_Option(p_Option),
+m_RestartVideo(false)
 {
 	mp_IntroScreen = NULL;
 	mp_TitleScreen = NULL;
