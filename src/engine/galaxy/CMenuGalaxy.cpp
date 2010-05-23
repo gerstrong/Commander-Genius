@@ -86,8 +86,10 @@ void CMenuGalaxy::drawMenuBorder()
 	m_TitleBmp.draw(g_pVideoDriver->BlitSurface, m_title_coord.x, m_title_coord.y);
 
 	// This one draws a line at the down part
-	rect.y = m_title_coord.y+85;
+	rect.y = m_title_coord.y+90;
 	SDL_FillRect(g_pVideoDriver->BlitSurface, &rect, 0x54fc54);
+
+	// TODO: Missing the guide text here!
 }
 
 /**

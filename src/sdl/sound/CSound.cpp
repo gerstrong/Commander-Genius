@@ -111,7 +111,6 @@ bool CSound::init(void)
 	}
 	g_pLogFile->ftextOut("Using audio driver: %s<br>", SDL_AudioDriverName(name, 32));
 
-
 	m_mixing_channels = 7;
 
 	if(m_soundchannel) delete[] m_soundchannel;

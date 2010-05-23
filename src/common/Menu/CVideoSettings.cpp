@@ -15,7 +15,8 @@
 
 CVideoSettings::CVideoSettings(Uint8 dlg_theme, bool &restartVideo) :
 CBaseMenu(dlg_theme),
-m_restartVideo(restartVideo)
+m_restartVideo(restartVideo),
+mp_CameraSettings(NULL)
 {
 	m_changed = false;
 
