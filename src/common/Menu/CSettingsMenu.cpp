@@ -37,6 +37,7 @@ void CSettingsMenu::processSpecific()
 			switch(m_selection)
 			{
 			case 0: mp_SubMenu = new CVideoSettings(m_dlg_theme, m_restartVideo); break;
+			case 1: mp_SubMenu = new CAudioSettings(m_dlg_theme); break;
 			case 2: mp_SubMenu = new COptions(m_dlg_theme, mp_option); break;
 			case 3: mp_SubMenu = new CControlsettings(m_dlg_theme); break;
 			}
