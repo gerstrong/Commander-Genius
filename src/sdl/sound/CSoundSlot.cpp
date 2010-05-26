@@ -7,9 +7,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <vector>
+#include <fstream>
 #include "CSoundSlot.h"
 #include "../../CLogFile.h"
 #include "../../fileio.h"
+#include "../../fileio/ResourceMgmt.h"
 #include "../../FindFile.h"
 
 CSoundSlot::CSoundSlot() {
@@ -20,16 +22,9 @@ CSoundSlot::CSoundSlot() {
 	m_soundlength = 0;
 }
 
-CSoundSlot::~CSoundSlot() {
-	HQSndDrv_Unload(&m_hqsound);
-	if(m_sounddata){ delete[] m_sounddata; m_sounddata = NULL; }
-	m_priority = 0;
-	m_hqsound.enabled = false;
-}
-
 // loads sound searchname from file fname, into sounds[] entry loadnum
 // return value is false on failure
-bool CSoundSlot::loadSound(const std::string& fname, const std::string& searchname, unsigned int loadnum)
+bool CSoundSlot::loadSound(const std::string& fname, const std::string& path, const std::string& searchname, unsigned int loadnum)
 {
 	// Unload the sound if any was previously loaded
 	if(m_sounddata){ delete[] m_sounddata; m_sounddata = NULL; }
@@ -42,15 +37,14 @@ bool CSoundSlot::loadSound(const std::string& fname, const std::string& searchna
 	}
 	else
 	{
-		FILE *fp;
 		int curheader = 0x10;
 		int offset, priority, garbage, nr_of_sounds;
 		char name[12];
 		
 		memset(name,0,12);
 		
-		fp = OpenGameFile(fname.c_str(), "rb");
-		if (!fp)
+		FILE *fp;
+		if (! (fp = OpenGameFile(getResourceFilename(fname, path, true, true), "rb")) )
 		{
 			g_pLogFile->ftextOut("loadSound : Sounds file '%s' unopenable attempting load of '%s'<br>", fname.c_str(), searchname.c_str());
 			return false;
@@ -101,6 +95,13 @@ bool CSoundSlot::loadSound(const std::string& fname, const std::string& searchna
 		fclose(fp);
 		return false;
 	}
+}
+
+CSoundSlot::~CSoundSlot() {
+	HQSndDrv_Unload(&m_hqsound);
+	if(m_sounddata){ delete[] m_sounddata; m_sounddata = NULL; }
+	m_priority = 0;
+	m_hqsound.enabled = false;
 }
 
 

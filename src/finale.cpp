@@ -6,9 +6,12 @@
 
 #include "keen.h"
 #include "fileio.h"
+#include "fileio/ResourceMgmt.h"
 #include "graphics/CGfxEngine.h"
 #include "sdl/CVideoDriver.h"
 #include "FindFile.h"
+
+#include <fstream>
 
 int finale_x;
 int finale_y;
@@ -90,18 +93,9 @@ void finale_draw( SDL_Surface *sfc, const std::string& filename, const std::stri
 	int repeatbyte;
 	int i;
 	
-	std::string buffer = formatPathString(path);
-	
-	//map_unregister_all_animtiles();
-	
-	std::string fname = buffer + filename;
-	fp = OpenGameFile(fname.c_str(), "rb");
-	if (!fp)
-	{
-		// crashflag = 1;
-		// why_term_ptr = "finale_draw(): cannot open finake.ck? file.";
+	std::ifstream file;
+	if (!OpenGameFileR(file, getResourceFilename(filename, path, true, true), std::ios::binary))
 		return;
-	}
 	
 	finale_plane_length = fgetl(fp)*2;   //length of a plane when decompressed
 	finale_planecol = 1;

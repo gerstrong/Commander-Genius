@@ -15,8 +15,6 @@
 #include "../sdl/CVideoDriver.h"
 #include "../graphics/CGfxEngine.h"
 
-std::string formatPathString(const std::string& path);
-
 CMap::CMap():
 mp_data(NULL),
 m_width(0), m_height(0),

@@ -3,6 +3,9 @@
  *
  *  Created on: 16.05.2010
  *      Author: gerstrong
+ *
+ *  This small but effective code guarantees that the file the game is looking for are really loaded.
+ *  It looks into global and local as needed.
  */
 
 #include "ResourceMgmt.h"

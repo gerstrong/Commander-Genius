@@ -77,12 +77,3 @@ std::string getstring(const std::string& name)
 	
 	return "UNKNOWN '" + name + "' STRING";
 }
-
-// because windows and linux read files differently, these is to function to get them correctly
-std::string formatPathString(const std::string& path)
-{
-	std::string buffer = path;
-	if( buffer.size() > 0 && buffer[buffer.size()-1] != '/' )
-		buffer += '/';
-	return buffer;
-}

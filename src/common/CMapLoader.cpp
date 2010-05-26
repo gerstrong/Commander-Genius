@@ -14,6 +14,7 @@
 #include "../FindFile.h"
 #include "../CLogFile.h"
 #include "../fileio.h"
+#include "../fileio/ResourceMgmt.h"
 #include "../include/fileio/rle.h"
 #include "../graphics/CGfxEngine.h"
 #include "../sdl/CVideoDriver.h"
@@ -37,14 +38,11 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	unsigned int planesize = 0;
 	unsigned int curmapx=0, curmapy=0;
 	
-	std::string buffer = formatPathString(path);
-	std::string levelname;
-	levelname = "level";
+	std::string levelname = "level";
 	if(level < 10) levelname += "0";
 	levelname += itoa(level) + ".ck" + itoa(episode);
-	std::string fname = buffer + levelname;
 	
-	std::ifstream MapFile; OpenGameFileR(MapFile, fname, std::ios::binary);
+	std::ifstream MapFile; OpenGameFileR(MapFile, getResourceFilename(levelname,path,true,false), std::ios::binary);
 	
 	mp_map->resetScrolls();
 	mp_map->m_gamepath = path;
@@ -61,10 +59,10 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	{
 		// only record this error message on build platforms that log errors
 		// to a file and not to the screen.
-		g_pLogFile->ftextOut("MapLoader: unable to open file %s<br>", fname.c_str());
+		g_pLogFile->ftextOut("MapLoader: unable to open file %s<br>", levelname.c_str());
 		return false;
 	}
-	g_pLogFile->ftextOut("MapLoader: file %s opened. Loading...<br>", fname.c_str());
+	g_pLogFile->ftextOut("MapLoader: file %s opened. Loading...<br>", levelname.c_str());
 	
     // decompress map RLEW data
 	std::vector<Uint16> filebuf;

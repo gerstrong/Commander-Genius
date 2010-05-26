@@ -18,7 +18,7 @@ public:
 
 	CSoundSlot();
 	
-	bool loadSound(const std::string& fname, const std::string& searchname, unsigned int loadnum);
+	bool loadSound(const std::string& fname, const std::string& path, const std::string& searchname, unsigned int loadnum);
 	
 	void setpAudioSpec(SDL_AudioSpec *pAudioSpec){ m_pAudioSpec = pAudioSpec; }
 	
