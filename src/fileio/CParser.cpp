@@ -61,12 +61,12 @@ bool CParser::loadParseFile() // Open, read the list and close the file
 		return true;
 	}
 	
-	g_pLogFile->ftextOut(GREEN,"Parser : The file has not been found. When CKP is trying to save the file it will create a new one.");
+	g_pLogFile->ftextOut(GREEN,"Parser : The config-file has not been found! As soon as you change the options, a file will be created!");
 	return false;
 }
 
 /**
- * \brief	Close the text which was parsed. This will also copy all stuff of the memory to the file.
+ * \brief	Close the text which was parsed. This will also write all stuff from the memory to the file.
  *
  * \return	true if the file was correctly saved, else false.
  */

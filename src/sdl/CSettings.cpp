@@ -192,21 +192,16 @@ bool CSettings::loadGameCfg()
 	
 	if(!checkOptionPtr()) return false;
 
-	if(!Parser.loadParseFile()) {
-		loadDefaultGameCfg();
-		return false;
-	}
-	
 	loadDefaultGameCfg();
-	
+
+	if(!Parser.loadParseFile())
+		return false;
+
 	for (i = 0; i < NUM_OPTIONS; i++)
 	{
-		mp_option[i].value = Parser.getIntValue(mp_option[i].name,"Game");
-		if(mp_option[i].value == -1)
-		{
-			//loadDefaultGameCfg();
-			return 1;
-		}
+		char newvalue = Parser.getIntValue(mp_option[i].name,"Game");
+		if(newvalue == 1 || newvalue == 0) // can only be true or false!!
+			mp_option[i].value = newvalue;
 	}
 	
 	g_pLogFile->ftextOut("<br>Your personal settings were loaded successfully...<br>");
