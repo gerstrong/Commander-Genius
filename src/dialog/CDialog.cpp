@@ -23,7 +23,7 @@ CDialog::CDialog(Uint16 w, Uint16 h, char inputmode, Uint8 theme) :
 m_Font_ID((theme==DLG_THEME_GALAXY) ? 1 : 0)
 {
 	m_theme = theme;
-
+	
 	m_x = (300/2)-(w*4)+10;
 	m_y = (200/2)-(h*4);
 	m_w = w;	m_h = h;
@@ -83,14 +83,14 @@ void CDialog::addObject(Uint8 type, Uint16 x, Uint16 y,const std::string text)
 {
 	CDlgObject *DlgObject = new CDlgObject();
 	DlgObject->create( type, m_dlgobject.size(),
-						m_x+(x*8), m_y+(y*8),
-						text, m_w-((x-m_x)/8)-5,
-						m_Font_ID, m_theme);
+					  m_x+(x*8), m_y+(y*8),
+					  text, m_w-((x-m_x)/8)-5,
+					  m_Font_ID, m_theme);
 	m_dlgobject.push_back(DlgObject);
-
+	
 	// Check if the ID is not out of bounds.
 	if( m_selected_ID < m_dlgobject.size() ) return;
-
+	
 	for(Uint8 i=0 ; i<m_dlgobject.size() ; i++) // go the next selectable item
 	{
 		if(!m_dlgobject.at(m_selected_ID)->m_selectable)
@@ -141,7 +141,7 @@ void CDialog::processInput(int move)
 	// INPUT_MODE_OPTION		== option, left/right selection, up/down movement
 	// INPUT_MODE_COUNTER		== counter, up/down movment
 	// INPUT_MODE_SWITCH		== switch, on/off selection, up/down movement
-
+	
 	if( m_inputmode == INPUT_MODE_TEXT )
 	{
 		// Get the input
@@ -209,15 +209,15 @@ void CDialog::processInput(int move)
 			}
 		}while(!m_dlgobject.at(m_selected_ID)->m_selectable);
 		
-
+		
 		bool prev_sel = (m_inputmode == INPUT_MODE_UP_DOWN or
-						m_inputmode == INPUT_MODE_COUNTER or
-						m_inputmode == INPUT_MODE_SLIDER);
-
-		bool next_sel = (prev_sel or
-						m_inputmode == INPUT_MODE_OPTION or
-						m_inputmode == INPUT_MODE_SWITCH);
-
+						 m_inputmode == INPUT_MODE_COUNTER or
+						 m_inputmode == INPUT_MODE_SLIDER or
+						 m_inputmode == INPUT_MODE_OPTION or
+						 m_inputmode == INPUT_MODE_SWITCH);
+		
+		bool next_sel = prev_sel;
+		
 		if(g_pInput->getPulsedCommand(next_sel ? IC_DOWN : IC_RIGHT, 60))
 		{
 			do
@@ -295,14 +295,14 @@ void CDialog::processInput(int move)
 			{
 				m_int = m_dlgobject.at(m_selected_ID)->m_Option->m_value;
 				m_min = 0;
-				m_max = 128;
+				m_max = 16;
 			}
-
+			
 			if(g_pInput->getPulsedCommand(IC_RIGHT, 35))
 			{
 				if(m_int<m_max)
 				{
-					m_int+=8;
+					m_int++;
 					if(m_noise)
 						g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
 				}
@@ -313,14 +313,14 @@ void CDialog::processInput(int move)
 			{
 				if(m_int>m_min)
 				{
-					m_int-=8;
+					m_int--;
 					if(m_noise)
 						g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
 				}
 				else
 					m_int = m_min;
 			}
-
+			
 			if(m_inputmode == INPUT_MODE_COUNTER)
 			{
 				m_name = itoa(m_int);
@@ -330,23 +330,64 @@ void CDialog::processInput(int move)
 			{
 				m_dlgobject.at(m_selected_ID)->m_Option->m_value = m_int;
 				m_dlgobject.at(m_selected_ID)->m_Option->m_FontMapID = 1;
-
-				Uint8 m_middle = m_int/8;
-
+				
 				std::string asciislider;
-
-				asciislider += 16;
-
+				
+				asciislider += 1;
+				
 				// Why does it go from 0 to 16. If we have a resolution of 16 steps
 				// It might have to go from 0 to 15
-				for(Uint16 i=0 ; i<m_middle ; i++)
-					asciislider += 17;
-				asciislider += 18;
-				for(Uint16 i=m_middle+1 ; i<=16 ; i++)
-					asciislider += 19;
-				asciislider += 20;
-
+				for(Uint16 i=0 ; i<m_int ; i++)
+					asciislider += 4;
+				asciislider += 5;
+				for(Uint16 i=m_int+1 ; i<=16 ; i++)
+					asciislider += 6;
+				asciislider += 7;
+				
 				setObjectText(m_selected_ID, asciislider);
+			}
+		}
+		if(m_inputmode == INPUT_MODE_OPTION or m_inputmode == INPUT_MODE_SWITCH)
+		{
+			//option and switch
+			if(m_inputmode == INPUT_MODE_OPTION)
+			{
+				m_opt = true;
+				m_int = 0;
+			}
+			else if(m_inputmode == INPUT_MODE_SWITCH)
+			{
+				m_opt = false;
+				m_toggle = false;
+			}
+			
+			if(g_pInput->getPressedCommand(IC_RIGHT))
+			{
+				if(m_opt)
+				{
+					m_int++;
+					if (m_int>m_max)
+						m_int = m_min;
+				}
+				else
+				{
+					if (!m_toggle)
+						m_toggle = true;
+				}
+			}
+			else if(g_pInput->getPressedCommand(IC_LEFT))
+			{
+				if(m_opt)
+				{
+					m_int--;
+					if (m_int<m_min)
+						m_int = m_max;
+				}
+				else
+				{
+					if (m_toggle)
+						m_toggle = false;
+				}
 			}
 		}
 	}
@@ -355,7 +396,7 @@ void CDialog::processInput(int move)
 void CDialog::draw()
 {
 	SDL_Surface *dst_sfc = g_pVideoDriver->FGLayerSurface;
-
+	
 	if(m_alpha < 230)
 	{
 		SDL_SetAlpha(dst_sfc, SDL_SRCALPHA, m_alpha );
@@ -364,7 +405,7 @@ void CDialog::draw()
 	
 	// Render the empty Dialog frame if any
 	if(mp_Frame) mp_Frame->draw(dst_sfc);
-
+	
 	CFont &Font = g_pGfxEngine->getFont(m_Font_ID);
 	// Draw the to icon up or down accordingly
 	if( m_scroll>0 ) // Up Arrow
@@ -398,13 +439,13 @@ void CDialog::draw()
 	if(m_inputmode == INPUT_MODE_COUNTER)
 	{
 		if(m_int>m_min)
-		Font.drawCharacter(dst_sfc, 21,
-						   m_dlgobject[m_selected_ID]->m_x+16,
-						   m_dlgobject[m_selected_ID]->m_y);
+			Font.drawCharacter(dst_sfc, 21,
+							   m_dlgobject[m_selected_ID]->m_x+16,
+							   m_dlgobject[m_selected_ID]->m_y);
 		if(m_int<m_max)
-		Font.drawCharacter(dst_sfc, 17,
-						   m_dlgobject[m_selected_ID]->m_x+16+m_dlgobject[m_selected_ID]->m_Option->m_text.length()*8,
-						   m_dlgobject[m_selected_ID]->m_y);
+			Font.drawCharacter(dst_sfc, 17,
+							   m_dlgobject[m_selected_ID]->m_x+16+m_dlgobject[m_selected_ID]->m_Option->m_text.length()*8,
+							   m_dlgobject[m_selected_ID]->m_y);
 	}
 	
 	// Render the twirl
@@ -459,23 +500,23 @@ void CDialog::drawTwirl()
 	}
 	
 	g_pGfxEngine->getCursor()->draw( g_pVideoDriver->FGLayerSurface, m_twirl.frame,
-									  m_dlgobject[m_selected_ID]->m_x,
-									  m_twirl.posy );
+									m_dlgobject[m_selected_ID]->m_x,
+									m_twirl.posy );
 }
 
 ///
 // Destruction Routines
 ///
 CDialog::~CDialog(){
-
+	
 	for(Uint8 i=0 ; i<m_dlgobject.size() ; i++ )
 		delete m_dlgobject[i]; // the first vector element must be cleared
-
+	
 	while(!m_dlgobject.empty())
 		m_dlgobject.pop_back();
-
+	
 	m_alpha = 225;
 	SDL_SetAlpha(g_pVideoDriver->FGLayerSurface, SDL_SRCALPHA, m_alpha );
-
+	
 	if(mp_Frame) delete mp_Frame;
 }

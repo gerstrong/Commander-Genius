@@ -44,8 +44,10 @@ public:
 	void setObjectText( Uint8 ID, const std::string &text );
 	void setObjectType( Uint8 ID, Uint8 type );
 	void setFontID(Uint8 value);
+	void setSwitch(bool value);
 
 	bool getInputMode( const char inputmode );
+	bool getSwitch() { return m_toggle; }
 	int getSelection();
 
 	void processInput(int move = 0);
@@ -53,6 +55,7 @@ public:
 	void drawTwirl();
 
 	bool m_noise;
+	bool m_opt;
 	int m_int;
 	int m_min;
 	int m_max;
@@ -75,6 +78,7 @@ private:
 	Uint8 m_scroll;
 	int m_blinkctr;
 	bool m_blink;
+	bool m_toggle;
 	
 	CDlgFrame *mp_Frame;
 	Uint8 m_alpha;

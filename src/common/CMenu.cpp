@@ -65,7 +65,7 @@ void CMenu::init( char menu_type )
 
 void CMenu::initMainMenu()
 {
-	mp_Dialog = new CDialog(17, 11, INPUT_MODE_UP_DOWN,m_dlg_theme);
+	mp_Dialog = new CDialog(17, 10, INPUT_MODE_UP_DOWN,m_dlg_theme);
 
 	// Being at Intro, Title or Demo mode
 	if( m_menu_mode == PASSIVE )
@@ -77,8 +77,7 @@ void CMenu::initMainMenu()
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "Configure");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Back to Demo");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "Choose Game");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Help");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 9, "Quit");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Quit");
 	}
 	// When Player is playing
 	if( m_menu_mode == ACTIVE )
@@ -90,8 +89,7 @@ void CMenu::initMainMenu()
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "Configure");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "Back to Game");
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "End Game");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Help");
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 9, "Quit");
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Quit");
 	}
 }
 
@@ -167,7 +165,7 @@ void CMenu::processMainMenu()
 			case 4: init(CONFIGURE);break;
 			case 5: m_demoback = true; break;
 			case 6: m_choosegame = true;break;
-			case 8: init(QUIT);break;
+			case 7: init(QUIT);break;
 			}
 		}
 		else if( m_menu_mode == ACTIVE )
@@ -180,7 +178,7 @@ void CMenu::processMainMenu()
 			case 4: init(CONFIGURE);break;
 			case 5: m_mustclose = true; break;
 			case 6: m_choosegame = true;break;
-			case 8: init(QUIT);break;
+			case 7: init(QUIT);break;
 			}
 		}
 	}

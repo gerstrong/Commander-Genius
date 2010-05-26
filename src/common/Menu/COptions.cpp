@@ -17,14 +17,20 @@ mp_option(p_option)
 	int i;
 	std::string buf;
 
-	mp_Dialog = new CDialog(27, NUM_OPTIONS+2, INPUT_MODE_UP_DOWN, dlg_theme);
-
+	mp_Dialog = new CDialog(27, NUM_OPTIONS+2, INPUT_MODE_SWITCH, dlg_theme);
+	
 	for( i = 0 ; i < NUM_OPTIONS ; i++ )
 	{
+		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, i+1, "");
 		buf = mp_option[i].menuname + " ";
-		buf += (mp_option[i].value) ? "(On)" : "(Off)";
-
-		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, i+1, buf);
+		/*buf += (mp_option[i].value) ? 28 : 20;
+		buf += (mp_option[i].value) ? 29 : 21;
+		buf += (mp_option[i].value) ? 30 : 22;
+		buf += (mp_option[i].value) ? 31 : 23;*/
+		buf += (mp_option[i].value) ? 26 : 24;
+		buf += (mp_option[i].value) ? 27 : 25;
+		mp_Dialog->m_dlgobject.at(i)->m_Option->m_FontMapID = 1;
+		mp_Dialog->setObjectText(i, buf);
 	}
 }
 
@@ -42,9 +48,15 @@ void COptions::processSpecific()
 	{
 		mp_option[m_selection].value = !mp_option[m_selection].value;
 		buf = mp_option[m_selection].menuname + " ";
-		buf += (mp_option[m_selection].value) ? "(On)" : "(Off)";
+		/*buf += (mp_option[m_selection].value) ? 28 : 20;
+		buf += (mp_option[m_selection].value) ? 29 : 21;
+		buf += (mp_option[m_selection].value) ? 30 : 22;
+		buf += (mp_option[m_selection].value) ? 31 : 23;*/
+		buf += (mp_option[m_selection].value) ? 26 : 24;
+		buf += (mp_option[m_selection].value) ? 27 : 25;
 
 		mp_Dialog->setObjectText(m_selection, buf);
+		mp_Dialog->setInputMode(INPUT_MODE_SWITCH);
 		m_selection = NO_SELECTION;
 	}
 }

@@ -21,8 +21,8 @@ CBaseMenu(dlg_theme)
 	mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 4, "  Sound:              ");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "");
 
-	mp_Dialog->m_dlgobject.at(2)->m_Option->m_value = g_pSound->getMusicVolume();
-	mp_Dialog->m_dlgobject.at(4)->m_Option->m_value = g_pSound->getSoundVolume();
+	mp_Dialog->m_dlgobject.at(2)->m_Option->m_value = g_pSound->getMusicVolume()/8;
+	mp_Dialog->m_dlgobject.at(4)->m_Option->m_value = g_pSound->getSoundVolume()/8;
 	mp_Dialog->m_dlgobject.at(2)->m_Option->m_FontMapID = 1;
 	mp_Dialog->m_dlgobject.at(4)->m_Option->m_FontMapID = 1;
 	mp_Dialog->setSelection(4);
@@ -37,12 +37,12 @@ void CVolumeSettings::processSpecific()
 {
 	if(mp_Dialog->getSelection() == 2)
 	{
-		g_pSound->setMusicVolume(mp_Dialog->m_dlgobject.at(2)->m_Option->m_value);
+		g_pSound->setMusicVolume(mp_Dialog->m_dlgobject.at(2)->m_Option->m_value*8);
 		mp_Dialog->m_noise = false;
 	}
 	else if(mp_Dialog->getSelection() == 4)
 	{
-		g_pSound->setSoundVolume(mp_Dialog->m_dlgobject.at(4)->m_Option->m_value);
+		g_pSound->setSoundVolume(mp_Dialog->m_dlgobject.at(4)->m_Option->m_value*8);
 		mp_Dialog->m_noise = true;
 	}
 }

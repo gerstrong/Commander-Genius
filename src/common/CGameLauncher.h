@@ -88,7 +88,6 @@ private:
 
     void getLabels();
     std::string scanLabels(const std::string& path);
-    void putLabels();
 };
 
 #endif /* CGAMELAUNCHER_H_ */

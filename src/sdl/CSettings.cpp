@@ -75,8 +75,8 @@ bool CSettings::saveDrvCfg()
 	Parser.saveIntValue("format","Audio",(g_pSound->getAudioSpec()).format);
 	Parser.saveIntValue("rate","Audio",(g_pSound->getAudioSpec()).freq);
 	Parser.saveIntValue("mixerch","Audio",(g_pSound->getMixingchannels()));
-	Parser.saveIntValue("musicvol","Audio",(g_pSound->getMusicVolume()));
-	Parser.saveIntValue("soundvol","Audio",(g_pSound->getSoundVolume()));
+	Parser.saveIntValue("musicvol","Audio",(g_pSound->getMusicVolume()/8));
+	Parser.saveIntValue("soundvol","Audio",(g_pSound->getSoundVolume()/8));
 	
 	return Parser.saveParseFile();
 }
@@ -129,8 +129,8 @@ bool CSettings::loadDrvCfg()
 		g_pSound->setSoundmode(Parser.getIntValue("rate","Audio"),
 							   Parser.getIntValue("channels","Audio") == 2, Parser.getIntValue("format","Audio"));
 
-		g_pSound->setMusicVolume(Parser.getIntValue("musicvol","Audio"));
-		g_pSound->setSoundVolume(Parser.getIntValue("soundvol","Audio"));
+		g_pSound->setMusicVolume(Parser.getIntValue("musicvol","Audio")*8);
+		g_pSound->setSoundVolume(Parser.getIntValue("soundvol","Audio")*8);
 	}
 	return true;
 }
@@ -170,14 +170,14 @@ void CSettings::setOption( int opt, const std::string &menuname, const std::stri
 void CSettings::loadDefaultGameCfg()
 {
 	if(!checkOptionPtr()) return;
-	setOption( OPT_FULLYAUTOMATIC, "Machine Gun", "autogun", 0 );
-	setOption( OPT_SUPERPOGO, "Super Pogo Stick", "superpogo", 0 );
-	setOption( OPT_ALLOWPKING, "Friendly Fire", "pking", 1 );
-	setOption( OPT_CHEATS, "Extra Cheats", "allcheats", 0 );
-	setOption( OPT_ANALOGJOYSTICK, "Analog Joystick", "analog-joystick", 1 );
-	setOption( OPT_LVLREPLAYABILITY, "Replay Levels", "level replayability", 0 );
-	setOption( OPT_RISEBONUS, "Rising Bonus", "rise bonus", 1 );
-	setOption( OPT_SWITCHSCORES, "Score Fix (EP3)", "switch scores", 0 );
+	setOption( OPT_FULLYAUTOMATIC,	"Machine Gun       ", "autogun", 0 );
+	setOption( OPT_SUPERPOGO,		"Super Pogo Stick  ", "superpogo", 0 );
+	setOption( OPT_ALLOWPKING,		"Friendly Fire     ", "pking", 1 );
+	setOption( OPT_CHEATS,			"Extra Cheats      ", "allcheats", 0 );
+	setOption( OPT_ANALOGJOYSTICK,	"Analog Joystick   ", "analog-joystick", 1 );
+	setOption( OPT_LVLREPLAYABILITY,"Replay Levels     ", "level replayability", 0 );
+	setOption( OPT_RISEBONUS,		"Rising Bonus      ", "rise bonus", 1 );
+	setOption( OPT_SWITCHSCORES,	"Score Fix (EP3)   ", "switch scores", 0 );
 }
 
 /**

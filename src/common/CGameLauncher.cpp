@@ -65,9 +65,6 @@ bool CGameLauncher::init()
     if (scanSubDirectories(DIR_GAMES, DEPTH_MAX_GAMES))
         gamedetected = true;
 
-    // Save any custom labels
-    putLabels();
-
     // No games detected then quit
    	mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT,1,m_Entries.size()+1, !gamedetected ? "No games found! - Quit" : "Quit");
 	
@@ -262,26 +259,6 @@ std::string CGameLauncher::scanLabels(const std::string& path)
         }
     }
     return "";
-}
-
-void CGameLauncher::putLabels()
-{
-    Uint16 i;
-    std::string line;
-    std::ofstream gamescfg;
-
-    OpenGameFileW(gamescfg, GAMESCFG);
-    if (gamescfg.is_open())
-    {
-        for ( i=0; i<m_Entries.size(); i++ )
-        {
-            line = GAMESCFG_DIR + m_Entries.at(i).path + '/' + m_ExeList.at(m_Entries.at(i).episode-1);
-            gamescfg << line << std::endl;
-            line = GAMESCFG_NAME + m_Entries.at(i).name;
-            gamescfg << line << std::endl << std::endl;
-        }
-        gamescfg.close();
-    }
 }
 
 ////
