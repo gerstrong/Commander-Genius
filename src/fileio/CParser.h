@@ -45,7 +45,6 @@ private:
 	std::list<std::string> m_filebuffer;
 	
 	std::string parseline(FILE* fp);
-	
 };
 
 #endif /* CPARSER_H_ */
