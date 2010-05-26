@@ -190,7 +190,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
 
 	// Load Hi-Colour VGA, SVGA 8x8 Tiles into the fontmap
-	filename = getResourceFilename("gfx/fonts.bmp", path, false);
+	filename = getResourceFilename("gfx/fonts.bmp", path, false, true);
 
 	Font.optimizeSurface();
 	if(!Font.loadHiColourFont(filename)) // This is loaded again in order to get hi-colour fonts
