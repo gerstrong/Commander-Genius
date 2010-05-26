@@ -15,6 +15,7 @@
 
 #include "engine/vorticon/CEGAGraphicsVort.h"
 #include "engine/vorticon/CPassiveVort.h"
+#include "engine/vorticon/playgame/CPlayGameVorticon.h"
 
 #include "engine/galaxy/CEGAGraphicsGalaxy.h"
 #include "engine/galaxy/CPassive.h"
@@ -123,7 +124,7 @@ bool CGameControl::init(char mode)
 		if(m_startLevel == 0) m_startLevel = WORLD_MAP_LEVEL;
 
 		// TODO: Overload this class for galaxy engine namespace
-		mp_PlayGame = new CPlayGame(m_Episode, m_startLevel,
+		mp_PlayGame = new CPlayGameVorticon(m_Episode, m_startLevel,
 									m_Numplayers, m_Difficulty,
 									m_DataDirectory, mp_option,
 									m_show_finale, m_SavedGame,

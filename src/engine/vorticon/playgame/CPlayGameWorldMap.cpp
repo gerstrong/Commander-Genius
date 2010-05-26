@@ -5,15 +5,15 @@
  *      Author: gerstrong
  */
 
-#include "CPlayGame.h"
-#include "../../sdl/CTimer.h"
-#include "../../sdl/CInput.h"
-#include "../../sdl/sound/CSound.h"
-#include "../../sdl/CVideoDriver.h"
-#include "../../graphics/CGfxEngine.h"
-#include "../../graphics/effects/CColorMerge.h"
+#include "CPlayGameVorticon.h"
+#include "../../../sdl/CTimer.h"
+#include "../../../sdl/CInput.h"
+#include "../../../sdl/sound/CSound.h"
+#include "../../../sdl/CVideoDriver.h"
+#include "../../../graphics/CGfxEngine.h"
+#include "../../../graphics/effects/CColorMerge.h"
 
-void CPlayGame::processOnWorldMap()
+void CPlayGameVorticon::processOnWorldMap()
 {
 	int useobject;
 
@@ -98,7 +98,7 @@ void CPlayGame::processOnWorldMap()
 	}
 }
 
-void CPlayGame::goBacktoMap()
+void CPlayGameVorticon::goBacktoMap()
 {
 	// Create the special merge effect (Fadeout)
 	CColorMerge *pColorMergeFX = new CColorMerge(8);
@@ -129,7 +129,7 @@ void CPlayGame::goBacktoMap()
 	g_pGfxEngine->pushEffectPtr(pColorMergeFX);
 }
 
-void CPlayGame::YourShipNeedsTheseParts()
+void CPlayGameVorticon::YourShipNeedsTheseParts()
 {
 	CMessageBox *MessageBox = new CMessageBox(getstring("EP1_SHIP"));
 
@@ -153,14 +153,14 @@ void CPlayGame::YourShipNeedsTheseParts()
 	m_MessageBoxes.push_back(MessageBox);
 }
 
-void CPlayGame::ShipEp3()
+void CPlayGameVorticon::ShipEp3()
 {
 	// get one of four random strings and display it!!
 	std::string strname = "EP3_SHIP"+ itoa((rand()%4)+1);
 	m_MessageBoxes.push_back(new CMessageBox(getstring(strname)));
 }
 
-void CPlayGame::showKeensLeft()
+void CPlayGameVorticon::showKeensLeft()
 {
 	int x,y,i,p;
 	int boxY, boxH;

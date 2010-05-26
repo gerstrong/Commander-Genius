@@ -5,17 +5,17 @@
  *      Author: gerstrong
  */
 
-#include "CPlayGame.h"
-#include "../../StringUtils.h"
-#include "../../graphics/effects/CColorMerge.h"
-#include "../../sdl/CVideoDriver.h"
+#include "CPlayGameVorticon.h"
+#include "../../../StringUtils.h"
+#include "../../../graphics/effects/CColorMerge.h"
+#include "../../../sdl/CVideoDriver.h"
 
 #define SAFE_DELETE_ARRAY(x) if(x) { delete [] x; x = NULL; }
 
 ///////////////////////////
 // Game State Management //
 ///////////////////////////
-bool CPlayGame::loadGameState()
+bool CPlayGameVorticon::loadGameState()
 {
 	// This fills the datablock from CSavedGame object
 	if(m_SavedGame.load())
@@ -134,7 +134,7 @@ bool CPlayGame::loadGameState()
 	return false;
 }
 
-bool CPlayGame::saveGameState()
+bool CPlayGameVorticon::saveGameState()
 {
 	int i;
 	int size;

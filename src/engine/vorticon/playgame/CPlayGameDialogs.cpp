@@ -8,9 +8,9 @@
  *  showhint Message, Game paused, etc.
  */
 
-#include "CPlayGame.h"
+#include "CPlayGameVorticon.h"
 
-void CPlayGame::processPauseDialogs()
+void CPlayGameVorticon::processPauseDialogs()
 {
 	if(m_showPauseDialog)
 	{
@@ -44,7 +44,7 @@ void CPlayGame::processPauseDialogs()
 	if(all_status_screens_closed) m_paused = false; // unpause the game
 }
 
-void CPlayGame::showPausedGameDlg()
+void CPlayGameVorticon::showPausedGameDlg()
 {
 	// Open the Pause Dialog
 	//drawTextMB("Game Paused");

@@ -5,13 +5,13 @@
  *      Author: gerstrong
  */
 
-#include "CPlayGame.h"
-#include "../ai/se.h"
-#include "../../common/objenums.h"
-#include "../../sdl/sound/CSound.h"
-#include "../vorticon/finale/CTantalusRay.h"
+#include "CPlayGameVorticon.h"
+#include "../../ai/se.h"
+#include "../../../common/objenums.h"
+#include "../../../sdl/sound/CSound.h"
+#include "../finale/CTantalusRay.h"
 
-void CPlayGame::processInLevel()
+void CPlayGameVorticon::processInLevel()
 {
 	if(!m_gameover)
 	{
@@ -79,7 +79,7 @@ void CPlayGame::processInLevel()
 // called when a switch is flipped. mx,my is the pixel coords of the switch,
 // relative to the upper-left corner of the map.
 // TODO: Should be part of an object
-void CPlayGame::processLevelTrigger(int trigger)
+void CPlayGameVorticon::processLevelTrigger(int trigger)
 {
 	if (trigger == LVLTRIG_TANTALUS_RAY)
 	{
