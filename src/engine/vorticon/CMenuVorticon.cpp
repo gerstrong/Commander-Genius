@@ -69,7 +69,7 @@ void CMenuVorticon::processMainMenu()
 		}
 	}
 
-	if( g_pInput->getPressedCommand(IC_HELP) || m_selection == 7 ) // open the help menu
+	if( g_pInput->getPressedCommand(IC_HELP) ) // open the help menu
 	{
 		mp_SubMenu = new CHelpMenu(mp_InfoScene, m_dlg_theme, m_Episode, m_GamePath);
 		m_Map.m_animation_enabled = false;

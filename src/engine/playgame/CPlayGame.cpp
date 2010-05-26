@@ -237,7 +237,7 @@ void CPlayGame::process()
 			}
 			else
 			{
-				mp_Menu->process();
+				mp_Menu->processSpecific();
 				m_hideobjects = mp_Menu->m_hideobjects;
 
 				if(m_restartVideo) // Happens when in Game resolution was changed!

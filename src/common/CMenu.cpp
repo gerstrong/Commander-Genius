@@ -177,7 +177,9 @@ void CMenu::processMainMenu()
 			case 2: init(SAVE);break;
 			case 4: init(CONFIGURE);break;
 			case 5: m_mustclose = true; break;
-			case 6: m_choosegame = true;break;
+			case 6: mp_SubMenu = new CConfirmMenu("Back to Titlescreen?", m_Endgame, m_dlg_theme);
+					m_selection = NO_SELECTION;
+					break;
 			case 7: init(QUIT);break;
 			}
 		}
