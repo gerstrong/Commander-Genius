@@ -18,11 +18,12 @@
 
 CMenuVorticon::CMenuVorticon( char menu_mode, std::string &GamePath,
 			 char &Episode, CMap &Map, CSavedGame &SavedGame,
-			 stOption *pOption, bool &restartVideo ) :
+			 stOption *pOption, bool &restartVideo, bool &hideobjects ) :
 CMenu(menu_mode, GamePath, Episode, SavedGame,
 	pOption, DLG_THEME_VORTICON, restartVideo),
 m_Map(Map),
-mp_InfoScene(NULL)
+mp_InfoScene(NULL),
+m_hideobjects(hideobjects)
 {
 	initMainMenu();
 }
@@ -71,9 +72,8 @@ void CMenuVorticon::processMainMenu()
 
 	if( g_pInput->getPressedCommand(IC_HELP) ) // open the help menu
 	{
-		mp_SubMenu = new CHelpMenu(mp_InfoScene, m_dlg_theme, m_Episode, m_GamePath);
+		mp_SubMenu = new CHelpMenu(mp_InfoScene, m_dlg_theme, m_Episode, m_GamePath, m_hideobjects);
 		m_Map.m_animation_enabled = false;
-		m_hideobjects = true;
 		m_suspended = true;
 		m_selection = NO_SELECTION;
 	}

@@ -233,7 +233,7 @@ Also lots of thanks to all of you, the project has become so great, and will be 
 port for Commander Keen games!
 
 And yes, it's no rumor, we are working on Keen 4 support! Stay tuned!
-                            
+
 ****************************************************************************
 For questions, comments, or updates to the source tree
 please contact: gerstrong@gmail.com or go thru

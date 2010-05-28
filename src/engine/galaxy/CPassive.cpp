@@ -25,11 +25,6 @@ processMode(&CPassiveGalaxy::processIntro),
 mp_Menu(new CMenuGalaxy(PASSIVE, DataDirectory, Episode, SavedGame, p_Option, m_restartVideo))
 { }
 
-bool CPassiveGalaxy::init(char mode)
-{
-	return true;
-}
-
 // This function is always called from the base class.
 // Here it will execute the mode we are currently running
 void CPassiveGalaxy::process()
@@ -97,7 +92,6 @@ void CPassiveGalaxy::processMenu()
 	else if(m_restartVideo) // When some video settings has been changed
 	{
 		cleanup();
-		init(m_mode);
 		m_restartVideo = false;
 	}
 

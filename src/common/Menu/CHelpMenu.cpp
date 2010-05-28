@@ -7,11 +7,14 @@
 
 #include "CHelpMenu.h"
 
-CHelpMenu::CHelpMenu(CInfoScene *&p_InfoScene, Uint8 dlg_theme, const char &Episode, const std::string &GamePath) :
+CHelpMenu::CHelpMenu(CInfoScene *&p_InfoScene, Uint8 dlg_theme,
+		const char &Episode, const std::string &GamePath,
+		bool &hideobjects) :
 CBaseMenu(dlg_theme),
 mp_InfoScene(p_InfoScene),
 m_Episode(Episode),
-m_GamePath(GamePath)
+m_GamePath(GamePath),
+m_hideobjects(hideobjects)
 {
 	mp_Dialog = new CDialog(18, 9, INPUT_MODE_UP_DOWN,m_dlg_theme);
 
@@ -39,26 +42,22 @@ void CHelpMenu::processSpecific()
 			mp_InfoScene = new CHelp(m_GamePath, m_Episode, "Game");
 			break;
 		case 2:
-			//m_hideobjects = true;
 			mp_InfoScene = new CStory(m_GamePath, m_Episode);
 			break;
 		case 3:
-			//m_hideobjects = true;
 			mp_InfoScene = new COrderingInfo(m_GamePath, m_Episode);
 			break;
 		case 4:
-			//m_hideobjects = true;
 			mp_InfoScene = new CAbout(m_GamePath, m_Episode, "ID");
 			break;
 		case 5:
-			//m_hideobjects = true;
 			mp_InfoScene = new CAbout(m_GamePath, m_Episode, "CG");
 			break;
 		case 6:
-			//m_hideobjects = true;
 			mp_InfoScene = new CCredits(m_GamePath, m_Episode);
 			break;
 		}
+		m_hideobjects = true;
 		m_selection = NO_SELECTION;
 		m_mustclose = true;
 	}

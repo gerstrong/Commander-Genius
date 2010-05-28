@@ -99,7 +99,7 @@ void CPassiveVort::process()
 			{
 				SAFE_DELETE(mp_PressAnyBox);
 				mp_Menu = new CMenuVorticon( PASSIVE, m_DataDirectory,
-						m_Episode, *mp_Map, m_SavedGame, mp_Option, m_RestartVideo);
+						m_Episode, *mp_Map, m_SavedGame, mp_Option, m_RestartVideo, m_hideobjects);
 			}
 		}
 	}
@@ -179,9 +179,6 @@ void CPassiveVort::process()
 	if( mp_Menu != NULL )
 	{
 		mp_Menu->processSpecific();
-
-		// Let the menu control, if objects are to be seen or hidden
-		m_hideobjects = mp_Menu->m_hideobjects;
 
 		if(mp_Menu->mustStartGame() || m_SavedGame.getCommand() == CSavedGame::LOAD) // Start a normal game
 		{

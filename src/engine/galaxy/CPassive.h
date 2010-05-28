@@ -20,7 +20,6 @@ public:
 	CPassiveGalaxy(char Episode, std::string DataDirectory,
 			CSavedGame &SavedGame, stOption *p_Option);
 
-	bool init(char mode = INTRO);
 	void process();
 	void processIntro();
 	void processTitle();

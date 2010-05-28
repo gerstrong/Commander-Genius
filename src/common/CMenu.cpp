@@ -18,7 +18,6 @@ CMenu::CMenu( char menu_mode, std::string &GamePath,
 		 stOption *pOption, Uint8 DlgTheme, bool &restartVideo ) :
 CBaseMenu(DlgTheme),
 m_demoback(false),
-m_hideobjects(false),
 mp_Dialog(NULL),
 m_Episode(Episode),
 m_GamePath(GamePath),
@@ -111,10 +110,7 @@ void CMenu::process()
 		mp_SubMenu->postProcess();
 
 		if(mp_SubMenu->mustClose())
-		{
-			m_hideobjects = false;
 			SAFE_DELETE(mp_SubMenu);
-		}
 	}
 	else
 	{
@@ -191,7 +187,6 @@ void CMenu::processMainMenu()
 ////
 void CMenu::cleanup()
 {
-	m_hideobjects = false;
 	// Close the old menu
 	SAFE_DELETE(mp_SubMenu);
 	SAFE_DELETE(mp_Dialog);

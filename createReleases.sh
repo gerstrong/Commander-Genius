@@ -1,19 +1,17 @@
 #!/bin/sh
 
 NAME=cgenius
-VERSION=0312
-
-svn export ./ svnexport
-cd svnexport
+VERSION=0313
 
 # Windows Version
 cd Win32
-#make clean
-#make
+make clean
+make
 cp CommanderGenius.exe ../CGenius.exe
 cd ..
-zip -r ${NAME}-v${VERSION}-win32.zip ./data
-zip -r ${NAME}-v${VERSION}-win32.zip ./games
+cd vfsroot
+zip -r ../${NAME}-v${VERSION}-win32.zip ./
+cd ..
 zip ${NAME}-v${VERSION}-win32.zip ./libogg-0.dll
 zip ${NAME}-v${VERSION}-win32.zip ./libvorbis-0.dll
 zip ${NAME}-v${VERSION}-win32.zip ./libvorbisenc-2.dll
@@ -27,36 +25,47 @@ rm ./CGenius.exe
 
 # Linux 64-bit Version
 cd Linux64
-#make clean
-#make
+make clean
+make
 cp CommanderGenius ../CGenius
+cp CommanderGenius ../distro/Ubuntu/usr/games
 cd ..
-zip -r ${NAME}-v${VERSION}-linux64.zip ./data
-zip -r ${NAME}-v${VERSION}-linux64.zip ./games
+cd vfsroot
+zip -r ../${NAME}-v${VERSION}-linux64.zip ./
+cd ..
 zip ${NAME}-v${VERSION}-linux64.zip ./CGenius
 zip ${NAME}-v${VERSION}-linux64.zip ./resolutions.cfg
 zip ${NAME}-v${VERSION}-linux64.zip ./changelog.txt
 zip ${NAME}-v${VERSION}-linux64.zip ./readme.txt
 rm ./CGenius
 
-# here, we create the ubuntu package for 64-bit
-cp CommanderGenius ../distro/Ubuntu/usr/games
+# now create the 64-bit ubuntu package
+cd distro 
+./genubuntuamd64.sh
+cd ..
+mv distro/CGenius_x64.deb ${NAME}-v${VERSION}-x64.deb
 
 # Linux 32-bit Version
 cd Linux32
-#make clean
-#make
+make clean
+make
 cp CommanderGenius ../CGenius
+cp CommanderGenius ../distro/Ubuntu/usr/games
 cd ..
-zip -r ${NAME}-v${VERSION}-linux32.zip ./data
-zip -r ${NAME}-v${VERSION}-linux32.zip ./games
+cd vfsroot
+zip -r ../${NAME}-v${VERSION}-linux32.zip ./
+cd ..
 zip ${NAME}-v${VERSION}-linux32.zip ./CGenius
 zip ${NAME}-v${VERSION}-linux32.zip ./resolutions.cfg
 zip ${NAME}-v${VERSION}-linux32.zip ./changelog.txt
 zip ${NAME}-v${VERSION}-linux32.zip ./readme.txt
 rm ./CGenius
 
-rm -r svnexport
+# now create the 32-bit ubuntu package
+cd distro 
+./genubuntui386.sh
+cd ..
+mv distro/CGenius_i386.deb ${NAME}-v${VERSION}-i386.deb
 
 # upload the packages
 #rsync -e ssh ${NAME}-v${VERSION}-win32.zip gerstrong,clonekeenplus@frs.sourceforge.net:/home/frs/project/c/cl/clonekeenplus/

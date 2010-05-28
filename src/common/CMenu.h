@@ -42,7 +42,6 @@ public:
 	virtual ~CMenu();
 
 	bool m_demoback;
-	bool m_hideobjects;
 
 	CDialog *mp_Dialog;
 

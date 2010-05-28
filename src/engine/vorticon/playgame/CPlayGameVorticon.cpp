@@ -239,7 +239,6 @@ void CPlayGameVorticon::process()
 			else
 			{
 				mp_Menu->processSpecific();
-				m_hideobjects = mp_Menu->m_hideobjects;
 
 				if(m_restartVideo) // Happens when in Game resolution was changed!
 				{
@@ -367,7 +366,7 @@ void CPlayGameVorticon::process()
 		// Open the Main Menu if ESC Key pressed and mp_Menu not opened
 		if(!mp_Menu && !mp_Finale && g_pInput->getPressedCommand(IC_QUIT))
 		{	// Open the menu
-			mp_Menu = new CMenuVorticon( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame, mp_option, m_restartVideo );
+			mp_Menu = new CMenuVorticon( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame, mp_option, m_restartVideo, m_hideobjects );
 		}
 	}
 }
@@ -490,7 +489,7 @@ void CPlayGameVorticon::handleFKeys()
     if (g_pInput->getPressedKey(KF3))
     {
 		mp_Menu = new CMenuVorticon( ACTIVE, m_Gamepath, m_Episode, m_Map,
-									m_SavedGame, mp_option, m_restartVideo );
+									m_SavedGame, mp_option, m_restartVideo, m_hideobjects );
 		mp_Menu->init(SAVE);
     }
 }

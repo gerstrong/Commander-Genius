@@ -37,9 +37,8 @@ class CMenuVorticon : public CMenu {
 public:
 
 	CMenuVorticon( char menu_mode, std::string &GamePath,
-			char &Episode, CMap &Map,
-			CSavedGame &SavedGame, stOption *pOption,
-			bool &restartVideo  );
+			 char &Episode, CMap &Map, CSavedGame &SavedGame,
+			 stOption *pOption, bool &restartVideo, bool &hideobjects );
 
 	void processSpecific();
 	void processF1Menu();
@@ -62,6 +61,7 @@ private:
 
 	CMap &m_Map;
 	CInfoScene *mp_InfoScene;
+	bool &m_hideobjects;
 };
 
 #endif /* CMENUVORTICON_H_ */

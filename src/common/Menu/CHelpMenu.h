@@ -20,7 +20,9 @@
 class CHelpMenu : public CBaseMenu
 {
 public:
-	CHelpMenu(CInfoScene *&p_InfoScene, Uint8 dlg_theme, const char &m_Episode, const std::string &m_GamePath);
+	CHelpMenu(CInfoScene *&p_InfoScene, Uint8 dlg_theme,
+			const char &Episode, const std::string &GamePath,
+			bool &hideobjects);
 	void processSpecific();
 	virtual ~CHelpMenu();
 
@@ -29,6 +31,7 @@ private:
 
 	const char m_Episode;
 	const std::string m_GamePath;
+	bool &m_hideobjects;
 };
 
 #endif /* CHELPMENU_H_ */
