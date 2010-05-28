@@ -6,6 +6,7 @@
  */
 
 #include "../fileio/CTileLoader.h"
+#include "../FindFile.h"
 #include "CTilemap.h"
 #include "CPalette.h"
 #include <stdlib.h>
@@ -30,7 +31,7 @@ bool CTilemap::loadHiresTile( const std::string& filename )
 {
 	if(m_Tilesurface)
 	{
-		SDL_Surface *temp_surface = SDL_LoadBMP(filename.c_str());
+		SDL_Surface *temp_surface = SDL_LoadBMP(GetFullFileName(filename).c_str());
 		if(temp_surface)
 		{
 			SDL_FreeSurface(m_Tilesurface);

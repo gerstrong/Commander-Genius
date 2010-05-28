@@ -9,6 +9,7 @@
 #include "tga.h"
 #include "../keen.h"
 #include "../fileio.h"
+#include "../FindFile.h"
 #include <stdio.h>
 #include "../CLogFile.h"
 
@@ -21,8 +22,8 @@ char LoadTGA(const std::string &file, unsigned char **image, int *widthout, int 
 	FILE *fp;
 	int bytesperpixel;
 	unsigned long imgdatasize;
-	
-	if (!(fp=fopen(file.c_str(), "rb")))
+
+	if (!(fp=OpenGameFile(file, "rb")))
 	{
 		return 1;
 	}
