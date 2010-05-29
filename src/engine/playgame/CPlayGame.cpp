@@ -7,14 +7,20 @@
 
 #include "CPlayGame.h"
 
-CPlayGame::CPlayGame() {
-	// TODO Auto-generated constructor stub
-
-}
+CPlayGame::CPlayGame(char episode, char level,
+		 char numplayers, char difficulty,
+		 std::string &gamepath) :
+m_NumPlayers(numplayers),
+m_endgame(false),
+m_Episode(episode),
+m_Level(level),
+m_startgame(false),
+m_exitgame(false),
+m_Difficulty(difficulty)
+{}
 
 
 // Getters
-bool CPlayGame::isFinished() { return m_finished; }
 bool CPlayGame::getEndGame() { return m_endgame; }
 bool CPlayGame::getStartGame() { return m_startgame; }
 bool CPlayGame::getExitEvent() { return m_exitgame; }

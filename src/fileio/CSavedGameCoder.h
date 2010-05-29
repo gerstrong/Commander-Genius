@@ -38,13 +38,13 @@ void CSavedGame::decodeData(S &structure)
 	size_t det_size = 0;
 	size_t req_size = sizeof(S);
 
-	memcpy(&det_size, &m_datablock[m_offset], sizeof(size_t));
+	memcpy(&det_size, &m_datablock.at(m_offset), sizeof(size_t));
 	m_offset += sizeof(size_t);
 
 	if( det_size > req_size ) // This implementation is used for avoiding possible errors
-		memcpy(&structure, &m_datablock[m_offset], req_size);
+		memcpy(&structure, &m_datablock.at(m_offset), req_size);
 	else
-		memcpy(&structure, &m_datablock[m_offset], det_size);
+		memcpy(&structure, &m_datablock.at(m_offset), det_size);
 
 	m_offset += det_size;
 }

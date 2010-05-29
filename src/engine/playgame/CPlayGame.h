@@ -1,5 +1,5 @@
 /*
- * CPlayGameNew.h
+ * CPlayGame.h
  *
  *  Created on: 26.05.2010
  *      Author: gerstrong
@@ -11,11 +11,15 @@
 #ifndef CPLAYGAME_H_
 #define CPLAYGAME_H_
 
+#include <string>
+
 const int WORLD_MAP_LEVEL=80;
 
-class CPlayGame {
+class CPlayGame{
 public:
-	CPlayGame();
+	CPlayGame(char episode, char level,
+			 char numplayers, char difficulty,
+			 std::string &gamepath);
 
 	// TODO: These are virtual functions which later will be forced to be used by its child classes
 	virtual bool loadGameState(){return false;}
@@ -33,15 +37,14 @@ public:
 
 	virtual ~CPlayGame();
 
-private:
-	bool m_finished;
+protected:
+	char m_NumPlayers;
 	bool m_endgame;
+	char m_Episode;
+	short m_Level;
 	bool m_startgame;
 	bool m_exitgame;
-	char m_Episode;
-	char m_NumPlayers;
 	char m_Difficulty;
-
 };
 
 #endif /* CPLAYGAME_H_ */

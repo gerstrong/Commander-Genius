@@ -59,7 +59,6 @@ public:
 
 	void setupPlayers();
 	bool init();
-	//void createPlayerObjects();
 
 	// Game states
 	bool loadGameState();
@@ -101,7 +100,6 @@ public:
 private:
 	int  m_NumSprites;
 	char m_level_command;
-	short m_Level;
 	bool m_paused;
 	bool m_gameover;
 	bool m_alldead;

@@ -19,6 +19,8 @@
 
 #include "engine/galaxy/CEGAGraphicsGalaxy.h"
 #include "engine/galaxy/CPassive.h"
+#include "engine/galaxy/CPlayGameGalaxy.h"
+
 #include "arguments.h"
 
 #define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
@@ -129,6 +131,19 @@ bool CGameControl::init(char mode)
 									m_DataDirectory, mp_option,
 									m_show_finale, m_SavedGame,
 									m_TeleporterTable);
+
+
+		if(m_Episode >= 4)
+			mp_PlayGame = new galaxy::CPlayGameGalaxy( m_Episode, m_startLevel,
+													m_Numplayers, m_Difficulty,
+													m_DataDirectory);
+		else
+			mp_PlayGame = new CPlayGameVorticon(m_Episode, m_startLevel,
+												m_Numplayers, m_Difficulty,
+												m_DataDirectory, mp_option,
+												m_show_finale, m_SavedGame,
+												m_TeleporterTable);
+
 
 		m_show_finale = false; // just show it once!!
 

@@ -27,7 +27,7 @@ CPlayGameVorticon::CPlayGameVorticon( char episode, char level,
 					 std::string &gamepath, stOption *p_option,
 					 bool finale, CSavedGame &SavedGame,
 					 std::vector<stTeleporterTable> &TeleporterTable) :
-CPlayGame(),
+CPlayGame(episode, level, numplayers, difficulty, gamepath),
 m_dark(false),
 mp_ObjectAI(NULL),
 m_SavedGame(SavedGame),
@@ -35,10 +35,6 @@ m_TeleporterTable(TeleporterTable),
 mp_HighScores(NULL),
 m_restartVideo(false)
 {
-	m_Episode = episode;
-	m_Level = level;
-	m_NumPlayers = numplayers;
-	m_Difficulty = difficulty;
 	m_level_command = (level==WORLD_MAP_LEVEL) ? GOTO_WORLD_MAP : START_LEVEL;
 	m_NumSprites = g_pGfxEngine->getNumSprites();
 	m_Gamepath = gamepath;

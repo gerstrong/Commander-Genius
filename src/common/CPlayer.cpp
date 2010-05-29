@@ -25,7 +25,7 @@
 ///
 // Initialization Part
 ///
-CPlayer::CPlayer(char &Episode, short &Level, char &Difficulty,
+CPlayer::CPlayer(const char &Episode, short &Level, char &Difficulty,
 				 short player_index, bool *mp_level_completed, stOption *mp_option,
 				 std::vector<CObject> &m_Object, CMap &map) :
 CObject(&map, player_index),

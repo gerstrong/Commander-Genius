@@ -38,7 +38,7 @@ public:
 		NONE, WORLDMAP, LEVELPLAY
 	};
 
-	CPlayer(char &Episode, short &Level, char &Difficulty,
+	CPlayer(const char &Episode, short &Level, char &Difficulty,
 			 short player_index, bool *mp_level_completed, stOption *mp_option,
 			 std::vector<CObject> &m_Object, CMap &map);
 	void setDatatoZero();
