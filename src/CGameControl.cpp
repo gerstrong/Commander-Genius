@@ -125,14 +125,6 @@ bool CGameControl::init(char mode)
 
 		if(m_startLevel == 0) m_startLevel = WORLD_MAP_LEVEL;
 
-		// TODO: Overload this class for galaxy engine namespace
-		mp_PlayGame = new CPlayGameVorticon(m_Episode, m_startLevel,
-									m_Numplayers, m_Difficulty,
-									m_DataDirectory, mp_option,
-									m_show_finale, m_SavedGame,
-									m_TeleporterTable);
-
-
 		if(m_Episode >= 4)
 			mp_PlayGame = new galaxy::CPlayGameGalaxy( m_Episode, m_startLevel,
 													m_Numplayers, m_Difficulty,

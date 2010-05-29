@@ -14,10 +14,21 @@ CPlayGameGalaxy::CPlayGameGalaxy(char episode, char level,
 		 char numplayers, char difficulty,
 		 std::string &gamepath) :
 CPlayGame(episode, level, numplayers, difficulty, gamepath)
+{}
+
+bool CPlayGameGalaxy::loadGameState()
+{return false;}
+
+void CPlayGameGalaxy::process()
 {
-	// TODO Auto-generated constructor stub
 
 }
+
+bool CPlayGameGalaxy::init()
+{return false;}
+
+void CPlayGameGalaxy::cleanup()
+{}
 
 CPlayGameGalaxy::~CPlayGameGalaxy()
 {

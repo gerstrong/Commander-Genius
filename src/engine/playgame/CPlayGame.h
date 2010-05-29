@@ -22,10 +22,10 @@ public:
 			 std::string &gamepath);
 
 	// TODO: These are virtual functions which later will be forced to be used by its child classes
-	virtual bool loadGameState(){return false;}
-	virtual void process(){}
-	virtual bool init(){return false;}
-	virtual void cleanup(){}
+	virtual bool loadGameState() = 0;
+	virtual void process() = 0;
+	virtual bool init() = 0;
+	virtual void cleanup() = 0;
 
 	bool isFinished();
 	bool getEndGame();

@@ -19,6 +19,12 @@ public:
 	CPlayGameGalaxy(char episode, char level,
 			 char numplayers, char difficulty,
 			 std::string &gamepath);
+
+	bool loadGameState();
+	void process();
+	bool init();
+	void cleanup();
+
 	virtual ~CPlayGameGalaxy();
 };
 
