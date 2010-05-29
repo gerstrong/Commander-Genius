@@ -40,7 +40,7 @@ mp_SubMenu(NULL)
 
 }
 
-void CMenu::init( char menu_type )
+void CMenu::init( menutypes menu_type )
 {
 	m_menu_type = menu_type;
 	m_selection = NO_SELECTION; // Nothing has been selected yet.
@@ -59,6 +59,8 @@ void CMenu::init( char menu_type )
 		mp_SubMenu = new CSaveMenu(m_dlg_theme, m_SavedGame); break;
 	case LOAD:
 		mp_SubMenu = new CLoadMenu(m_dlg_theme, m_SavedGame); break;
+	default:
+		break;
 	}
 }
 

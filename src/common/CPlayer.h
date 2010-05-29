@@ -108,7 +108,7 @@ public:
 	unsigned int w;
 	unsigned int h;
 
-	char m_playingmode;
+	e_playingmodes m_playingmode;
 	char m_episode;
 	char m_level;
 	int m_difficulty;
@@ -193,7 +193,7 @@ private:
 	int exitXpos;
 	int level_done_timer;
 
-	int m_Level_Trigger;
+	level_triggers m_Level_Trigger;
 
 	// defined under CPlayerItems.cpp
 	bool getGoodie(int px, int py);

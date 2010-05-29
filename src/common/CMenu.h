@@ -28,7 +28,7 @@ public:
 	bool getExitEvent() { return m_quit; }
 
 	// initialization functions
-	void init( char menu_type );
+	void init( menutypes menu_type );
 	void initMainMenu();
 	void initF1Menu();
 
@@ -58,7 +58,7 @@ protected:
 	bool m_quit;
 	int m_selection;
 	char m_lastselect;
-	char m_menu_type;
+	menutypes m_menu_type;
 	Uint8 m_NumPlayers;
 	Sint8 m_Difficulty;
 	int  m_saveslot;

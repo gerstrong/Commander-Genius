@@ -35,7 +35,7 @@ m_TitleBmp(g_pGfxEngine->getBitmap(BMP_MAINMENULABEL))
 	init(MAIN);
 }
 
-bool CMenuGalaxy::init( char menu_type )
+bool CMenuGalaxy::init( menutypes menu_type )
 {
 	cleanup();
 

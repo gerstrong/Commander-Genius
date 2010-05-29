@@ -24,7 +24,7 @@ public:
 	CMenuGalaxy( char menu_mode, std::string &GamePath,
 			 char &Episode, CSavedGame &SavedGame,
 			 stOption *pOption, bool &restartVideo );
-	bool init( char menu_type = MAIN );
+	bool init( menutypes menu_type = MAIN );
 
 	void drawMenuBorder();
 
