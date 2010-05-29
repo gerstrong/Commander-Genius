@@ -19,13 +19,22 @@ CPlayGame(episode, level, numplayers, difficulty, gamepath)
 bool CPlayGameGalaxy::loadGameState()
 {return false;}
 
-void CPlayGameGalaxy::process()
+// Setup for the ingame
+bool CPlayGameGalaxy::init()
 {
+	// Load the Level map. We have two modes. Inlevel and game map
 
+	// TODO: Lets load the main map for now and create process for this
+
+	return false;
 }
 
-bool CPlayGameGalaxy::init()
-{return false;}
+
+// The main ingame process cycle when keen galaxy is up and running
+void CPlayGameGalaxy::process()
+{
+	// TODO: Process code for the main map
+}
 
 void CPlayGameGalaxy::cleanup()
 {}
