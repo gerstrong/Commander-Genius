@@ -95,30 +95,13 @@ public:
 	void processPauseDialogs();
 	void showPausedGameDlg();
 
-	bool isFinished()
-	{ return m_finished; }
-
-	bool getEndGame() { return m_endgame; }
-	bool getStartGame() { return m_startgame; }
-	bool getExitEvent() { return m_exitgame; }
-	char getEpisode() { return m_Episode; }
-	char getNumPlayers() { return m_NumPlayers; }
-	char getDifficulty() { return m_Difficulty; }
-
 	void cleanup();
 	virtual ~CPlayGameVorticon();
 
 private:
-	bool m_finished;
-	bool m_endgame;
-	bool m_startgame;
-	bool m_exitgame;
 	int  m_NumSprites;
-	char m_Episode;
-	short m_Level;
-	char m_NumPlayers;
-	char m_Difficulty;
 	char m_level_command;
+	short m_Level;
 	bool m_paused;
 	bool m_gameover;
 	bool m_alldead;

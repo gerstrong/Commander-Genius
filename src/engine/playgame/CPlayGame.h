@@ -19,16 +19,29 @@ public:
 
 	// TODO: These are virtual functions which later will be forced to be used by its child classes
 	virtual bool loadGameState(){return false;}
-	virtual bool getStartGame(){return false;}
-	virtual bool getEndGame(){return false;}
-	virtual char getNumPlayers(){return 0;}
-	virtual char getDifficulty(){return -1;}
-	virtual bool getExitEvent(){return false;}
 	virtual void process(){}
 	virtual bool init(){return false;}
 	virtual void cleanup(){}
 
+	bool isFinished();
+	bool getEndGame();
+	bool getStartGame();
+	bool getExitEvent();
+	char getEpisode();
+	char getNumPlayers();
+	char getDifficulty();
+
 	virtual ~CPlayGame();
+
+private:
+	bool m_finished;
+	bool m_endgame;
+	bool m_startgame;
+	bool m_exitgame;
+	char m_Episode;
+	char m_NumPlayers;
+	char m_Difficulty;
+
 };
 
 #endif /* CPLAYGAME_H_ */
