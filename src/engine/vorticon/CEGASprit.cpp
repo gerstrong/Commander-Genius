@@ -141,56 +141,62 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 							   g_pGfxEngine->Palette.m_Palette );
 	}
 	
-	char c;
-	for(int p=0 ; p<4 ; p++)
+	// TODO:
+	//if(/*HQSprites loaded*/)
+	//{ LoadHQSprites(g_pGfxEngine->getSprite); }
+	//else
 	{
+		char c;
+		for(int p=0 ; p<4 ; p++)
+		{
+			for(int s=0 ; s<m_numsprites ; s++)
+			{
+				sfc = g_pGfxEngine->getSprite(s).getSDLSurface();
+				if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
+				pixel = (Uint8*) sfc->pixels;
+
+				for(int y=0 ; y<sfc->h ; y++)
+				{
+					for(int x=0 ; x<sfc->w ; x++)
+					{
+						if (p==0) c = 0;
+						else c = pixel[y*sfc->w + x];
+
+						c |= (Planes->getbit(RawData, p) << p);
+						pixel[y*sfc->w + x] = c;
+					}
+				}
+
+				if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
+			}
+		}
+
+		// now load the 5th plane, which contains the sprite masks.
+		// note that we invert the mask because our graphics functions
+		// use white on black masks whereas keen uses black on white.
 		for(int s=0 ; s<m_numsprites ; s++)
 		{
-			sfc = g_pGfxEngine->getSprite(s).getSDLSurface();
+			CSprite &Sprite = g_pGfxEngine->getSprite(s);
+			pixsfc = Sprite.getSDLSurface();
+			sfc = Sprite.getSDLMaskSurface();
+
+			if(SDL_MUSTLOCK(pixsfc)) SDL_LockSurface(pixsfc);
 			if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
+
 			pixel = (Uint8*) sfc->pixels;
-			
+
 			for(int y=0 ; y<sfc->h ; y++)
 			{
 				for(int x=0 ; x<sfc->w ; x++)
 				{
-					if (p==0) c = 0;
-					else c = pixel[y*sfc->w + x];
-					
-					c |= (Planes->getbit(RawData, p) << p);
-					pixel[y*sfc->w + x] = c;
+					pixel[y*sfc->w + x] = Planes->getbit(RawData, 4) ? ((Uint8*)pixsfc->pixels)[y*pixsfc->w + x] : 15;
 				}
 			}
-			
 			if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
+			if(SDL_MUSTLOCK(pixsfc)) SDL_UnlockSurface(pixsfc);
 		}
 	}
-	
-	// now load the 5th plane, which contains the sprite masks.
-	// note that we invert the mask because our graphics functions
-	// use white on black masks whereas keen uses black on white.
-	for(int s=0 ; s<m_numsprites ; s++)
-	{
-		CSprite &Sprite = g_pGfxEngine->getSprite(s);
-		pixsfc = Sprite.getSDLSurface();
-		sfc = Sprite.getSDLMaskSurface();
-		
-		if(SDL_MUSTLOCK(pixsfc)) SDL_LockSurface(pixsfc);
-		if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
-		
-		pixel = (Uint8*) sfc->pixels;
-		
-		for(int y=0 ; y<sfc->h ; y++)
-		{
-			for(int x=0 ; x<sfc->w ; x++)
-			{
-				pixel[y*sfc->w + x] = Planes->getbit(RawData, 4) ? ((Uint8*)pixsfc->pixels)[y*pixsfc->w + x] : 15;
-			}
-		}
-		if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
-		if(SDL_MUSTLOCK(pixsfc)) SDL_UnlockSurface(pixsfc);
-	}
-	
+
 	delete Planes;
 	
 	if(RawData){ delete[] RawData; RawData = NULL;}
@@ -467,6 +473,11 @@ void CEGASprit::ApplySpecialFX()
 	g_pGfxEngine->getSprite(SHOTUP_SPRITE).applyTranslucency(196);
 	g_pGfxEngine->getSprite(ANKHUP_SPRITE).applyTranslucency(196);
 
+}
+
+void CEGASprit::LoadHQSprites(std::vector<CSprite> &Sprite)
+{
+	// TODO: Load the HQ Sprites here!
 }
 
 CEGASprit::~CEGASprit() {
