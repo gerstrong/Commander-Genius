@@ -50,7 +50,7 @@ void CMenu::init( menutypes menu_type )
 	switch(m_menu_type)
 	{
 	case QUIT:
-			mp_SubMenu = new CConfirmMenu("   Quit the game?   ", m_quit, m_dlg_theme); m_mustclose = false; break;
+			mp_SubMenu = new CConfirmMenu("   Quit the game?   ", m_quit, m_dlg_theme); break;
 	case ENDGAME:
 		mp_SubMenu = new CConfirmMenu("   End your game?   ", m_quit, m_Endgame); break;
 	case NEW:
@@ -140,7 +140,10 @@ void CMenu::process()
 
 			if( g_pInput->getPressedCommand(IC_QUIT) )
 			{
-				m_mustclose = true;
+				if(m_menu_mode == PASSIVE)
+					mp_SubMenu = new CConfirmMenu("   Quit the game?   ", m_quit, m_dlg_theme);
+				else
+					m_mustclose = true;
 			}
 			mp_Dialog->processInput();
 
@@ -184,8 +187,6 @@ void CMenu::processMainMenu()
 			}
 		}
 	}
-	if(m_mustclose == true and m_menu_mode == PASSIVE)
-		init(QUIT);
 }
 
 ////
