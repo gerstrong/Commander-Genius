@@ -17,7 +17,7 @@ namespace galaxy
 class CPassiveGalaxy : public CPassive
 {
 public:
-	CPassiveGalaxy(char Episode, std::string DataDirectory,
+	CPassiveGalaxy(CExeFile &Exefile,
 			CSavedGame &SavedGame, stOption *p_Option);
 
 	void process();

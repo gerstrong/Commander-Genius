@@ -119,11 +119,11 @@ bool CGameLauncher::scanExecutables(const std::string& path)
         {
             // Load the exe into memory
         	// TODO: No good! Here must distinguish the versions
-            executable = new CExeFile(i+1, path);
-            executable->readData();
+        	CExeFile executable;
+            executable.readData(i+1, path);
             // Process the exe for type
-            newentry.crcpass = executable->getEXECrc();
-            newentry.version = executable->getEXEVersion();
+            newentry.crcpass = executable.getEXECrc();
+            newentry.version = executable.getEXEVersion();
             newentry.episode = i+1;
             newentry.path    = path;
             // Check for an existing custom label for the menu
@@ -156,10 +156,6 @@ bool CGameLauncher::scanExecutables(const std::string& path)
                 m_ep1slot = m_Entries.size()-1;
                 g_pLogFile->ftextOut("   Using for in-game menu resources<br>" );
             }
-			
-            // Cleanup
-            delete executable;
-			
             result = true;
         }
     }

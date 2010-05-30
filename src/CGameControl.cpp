@@ -104,9 +104,9 @@ bool CGameControl::init(char mode)
 	{
 		// Create mp_PassiveMode object used for the screens while Player is not playing
 		if(m_Episode >= 4)
-			mp_PassiveMode = new galaxy::CPassiveGalaxy( m_Episode, m_DataDirectory, m_SavedGame, mp_option );
+			mp_PassiveMode = new galaxy::CPassiveGalaxy( m_ExeFile, m_SavedGame, mp_option );
 		else
-			mp_PassiveMode = new vorticon::CPassiveVort( m_Episode, m_DataDirectory, m_SavedGame, mp_option );
+			mp_PassiveMode = new vorticon::CPassiveVort( m_ExeFile, m_SavedGame, mp_option );
 
 		if( m_endgame == true )
 		{
@@ -126,15 +126,13 @@ bool CGameControl::init(char mode)
 		if(m_startLevel == 0) m_startLevel = WORLD_MAP_LEVEL;
 
 		if(m_Episode >= 4)
-			mp_PlayGame = new galaxy::CPlayGameGalaxy( m_Episode, m_startLevel,
-													m_Numplayers, m_Difficulty,
-													m_DataDirectory);
+			mp_PlayGame = new galaxy::CPlayGameGalaxy( m_ExeFile, m_startLevel,
+													m_Numplayers, m_Difficulty);
 		else
-			mp_PlayGame = new CPlayGameVorticon(m_Episode, m_startLevel,
+			mp_PlayGame = new CPlayGameVorticon(m_ExeFile, m_startLevel,
 												m_Numplayers, m_Difficulty,
-												m_DataDirectory, mp_option,
-												m_show_finale, m_SavedGame,
-												m_TeleporterTable);
+												mp_option, m_show_finale,
+												m_SavedGame, m_TeleporterTable);
 
 
 		m_show_finale = false; // just show it once!!
@@ -173,15 +171,12 @@ bool CGameControl::loadMenuResources()
 // This is used for loading all the resources of the game the use has chosen.
 // It loads graphics, sound and text into the memory
 ///
-bool CGameControl::loadResources(unsigned short Episode, const std::string& DataDirectory, Uint8 flags)
+bool CGameControl::loadResources(Uint8 flags)
 {
-	CExeFile ExeFile(Episode, DataDirectory);
 	int version;
 	unsigned char *p_exedata;
 	unsigned char *p_exeheader;
 
-	m_Episode = Episode;
-	m_DataDirectory = DataDirectory;
 	m_SavedGame.setGameDirectory(m_DataDirectory);
 	m_SavedGame.setEpisode(m_Episode);
 
@@ -189,15 +184,12 @@ bool CGameControl::loadResources(unsigned short Episode, const std::string& Data
 	if( m_DataDirectory.size() > 0 && m_DataDirectory[m_DataDirectory.size()-1] != '/' )
 		m_DataDirectory += "/";
 
-    // Get the EXE of the game and decompress it if needed.
-    if(!ExeFile.readData()) return false;
+    version = m_ExeFile.getEXEVersion();
+	p_exedata = m_ExeFile.getRawData();
+	p_exeheader = m_ExeFile.getHeaderData();
 
-    version = ExeFile.getEXEVersion();
-	p_exedata = ExeFile.getRawData();
-	p_exeheader = ExeFile.getHeaderData();
-
-	g_pLogFile->ftextOut("Commander Keen Episode %d (Version %d.%d) was detected.<br>", Episode, version/100, version%100);
-	if( Episode == 1 && version == 134) g_pLogFile->ftextOut("This version of the game is not supported!<br>");
+	g_pLogFile->ftextOut("Commander Keen Episode %d (Version %d.%d) was detected.<br>", m_Episode, version/100, version%100);
+	if( m_Episode == 1 && version == 134) g_pLogFile->ftextOut("This version of the game is not supported!<br>");
 
 	if(p_exeheader == NULL) {
 		g_pLogFile->textOut(RED, "CGameControl::loadResources: Could not load data from the EXE File<br>");
@@ -205,19 +197,19 @@ bool CGameControl::loadResources(unsigned short Episode, const std::string& Data
 	}
 
 	// Patch the EXE-File-Data directly in the memory.
-	CPatcher Patcher(Episode, version, p_exedata, DataDirectory);
+	CPatcher Patcher(m_Episode, version, p_exedata, m_DataDirectory);
 	Patcher.patchMemory();
 
-	if( Episode == 1 || Episode == 2 || Episode == 3 ) // Vorticon resources
+	if( m_Episode == 1 || m_Episode == 2 || m_Episode == 3 ) // Vorticon resources
 	{
-		CTeleporter Teleporter(m_TeleporterTable, Episode);
+		CTeleporter Teleporter(m_TeleporterTable, m_Episode);
 		Teleporter.createTeleporterTable(p_exedata);
 
 		if( (flags & LOADGFX) == LOADGFX )
 		{
 			// Decode the entire graphics for the game (EGALATCH, EGASPRIT, etc.)
 			if(m_EGAGraphics) delete m_EGAGraphics; // except for the first start of a game this always happens
-			m_EGAGraphics = new vorticon::CEGAGraphicsVort(Episode, DataDirectory); // Path is relative to the data dir
+			m_EGAGraphics = new vorticon::CEGAGraphicsVort(m_Episode, m_DataDirectory); // Path is relative to the data dir
 			if(!m_EGAGraphics) return false;
 
 			m_EGAGraphics->loadData( version, p_exedata );
@@ -226,19 +218,19 @@ bool CGameControl::loadResources(unsigned short Episode, const std::string& Data
 		if( (flags & LOADSTR) == LOADSTR )
 		{
 			// load the strings.
-			CMessages Messages(p_exedata, Episode, version);
+			CMessages Messages(p_exedata, m_Episode, version);
 			Messages.extractGlobalStrings();
 		}
 
 		if( (flags & LOADSND) == LOADSND )
 		{
 			// Load the sound data
-			g_pSound->setGameData(Episode, DataDirectory);
-			g_pSound->loadSoundData();
+			g_pSound->setGameData(m_ExeFile);
+			g_pSound->loadSoundData(m_ExeFile);
 		}
 		return true;
 	}
-	else if( Episode == 4 || Episode == 5 || Episode == 6 ) // Galaxy resources
+	else if( m_Episode == 4 || m_Episode == 5 || m_Episode == 6 ) // Galaxy resources
 	{
 		// TODO: Lots of coding
 		if( (flags & LOADGFX) == LOADGFX )
@@ -246,7 +238,7 @@ bool CGameControl::loadResources(unsigned short Episode, const std::string& Data
 			// Decode the entire graphics for the game (Only EGAGRAPH.CK?)
 			SAFE_DELETE(m_EGAGraphics);
 
-			m_EGAGraphics = new galaxy::CEGAGraphicsGalaxy(Episode, DataDirectory, ExeFile); // Path is relative to the data dir
+			m_EGAGraphics = new galaxy::CEGAGraphicsGalaxy(m_ExeFile); // Path is relative to the data dir
 			if(!m_EGAGraphics) return false;
 
 			m_EGAGraphics->loadData();
@@ -286,40 +278,50 @@ void CGameControl::process()
 			// Get the path were to Launch the game
 			m_DataDirectory = mp_GameLauncher->getDirectory( m_ChosenGame );
 
-			// We have to check which Episode is used
+			// We have to check which Episode will be used
 			m_Episode = mp_GameLauncher->getEpisode( m_ChosenGame );
 
 			if( m_Episode > 0 ) // The game has to have a valid episode!
 			{
-				// Load the Resources
-				if( loadResources( m_Episode, m_DataDirectory ) )
-				{
-					// Now look if there are any old savegames that need to be converted
-					CSavedGame savedgames;
-					savedgames.setGameDirectory(m_DataDirectory);
-					savedgames.setEpisode(m_Episode);
-					savedgames.convertAllOldFormats();
+			    // Get the EXE-Data of the game and load it into the memory.
+			    if(!m_ExeFile.readData(m_Episode, m_DataDirectory))
+			    {
+					mp_GameLauncher->letchooseagain();
+					delete mp_PassiveMode;
+					mp_PassiveMode = NULL;
+			    }
+			    else
+			    {
+			    	// Load the Resources
+			    	if( loadResources() )
+			    	{
+			    		// Now look if there are any old savegames that need to be converted
+			    		CSavedGame savedgames;
+			    		savedgames.setGameDirectory(m_DataDirectory);
+			    		savedgames.setEpisode(m_Episode);
+			    		savedgames.convertAllOldFormats();
 
-					if(m_startLevel == 0) // Starts normally
-					{
-						if(init(PASSIVE)) cleanup(GAMELAUNCHER);
-						else
-						{
-							mp_GameLauncher->letchooseagain();
-							delete mp_PassiveMode;
-							mp_PassiveMode = NULL;
-						}
-					}
-					else // This happens, when a level was passed as argument when launching CG
-					{
-						if(init(PLAYGAME)) cleanup(GAMELAUNCHER);
-						else
-						{
-							mp_GameLauncher->letchooseagain();
-							delete mp_PlayGame;	mp_PlayGame = NULL;
-						}
-					}
-				}
+			    		if(m_startLevel == 0) // Starts normally
+			    		{
+			    			if(init(PASSIVE)) cleanup(GAMELAUNCHER);
+			    			else
+			    			{
+			    				mp_GameLauncher->letchooseagain();
+			    				delete mp_PassiveMode;
+			    				mp_PassiveMode = NULL;
+			    			}
+			    		}
+			    		else // This happens, when a level was passed as argument when launching CG
+			    		{
+			    			if(init(PLAYGAME)) cleanup(GAMELAUNCHER);
+			    			else
+			    			{
+			    				mp_GameLauncher->letchooseagain();
+			    				delete mp_PlayGame;	mp_PlayGame = NULL;
+			    			}
+			    		}
+			    	}
+			    }
 			}
 			else
 			{

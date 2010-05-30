@@ -16,7 +16,7 @@ namespace vorticon
 class CPassiveVort : public CPassive
 {
 public:
-	CPassiveVort(char Episode, std::string DataDirectory,
+	CPassiveVort(CExeFile &ExeFile,
 			 CSavedGame &SavedGame, stOption *p_Option);
 
 	bool init(char mode = INTRO);
@@ -32,6 +32,7 @@ private:
 	CTitle *mp_TitleScreen;
 	CTextBox *mp_PressAnyBox;
 	CTilemap *mp_Tilemap;
+	CExeFile &m_ExeFile;
 	CMap *mp_Map;
 	stOption *mp_Option;
 

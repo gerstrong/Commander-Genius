@@ -7,12 +7,12 @@
 
 #include "CPlayGame.h"
 
-CPlayGame::CPlayGame(char episode, char level,
-		 char numplayers, char difficulty,
-		 std::string &gamepath) :
+CPlayGame::CPlayGame(CExeFile &ExeFile, char level,
+		 char numplayers, char difficulty) :
 m_NumPlayers(numplayers),
 m_endgame(false),
-m_Episode(episode),
+m_ExeFile(ExeFile),
+m_Episode(ExeFile.getEpisode()),
 m_Level(level),
 m_startgame(false),
 m_exitgame(false),

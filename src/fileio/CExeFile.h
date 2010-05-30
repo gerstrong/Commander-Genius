@@ -21,16 +21,20 @@
 
 class CExeFile {
 public:
-	CExeFile(int episode, const std::string& datadirectory);
-	virtual ~CExeFile();
+	CExeFile();
 	
-	bool readData();
+	char getEpisode();
+	std::string getDataDirectory();
+
+	bool readData(const char episode, const std::string& datadirectory);
 	int getEXEVersion();
 	int getEXECrc();
 	bool readExeImageSize(unsigned char *p_data_start, unsigned long *imglen, unsigned long *headerlen);
 	
 	unsigned char* getRawData();
 	unsigned char* getHeaderData();
+
+	virtual ~CExeFile();
 
 private:
 

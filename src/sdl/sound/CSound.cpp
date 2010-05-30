@@ -12,7 +12,6 @@
 #include "../../CLogFile.h"
 #include "../../hqp/CMusic.h"
 #include "../../engine/sounds.h"
-#include "../../fileio/CExeFile.h"
 #include "../../StringUtils.h"
 #include "../../FindFile.h"
 
@@ -327,13 +326,13 @@ playsound: ;
 	m_soundchannel[chnl].setupSound((unsigned short)snd, 0, true, 0, (mode==PLAY_FORCE) ? true : false, AudioSpec.format );
 }
 
-void CSound::setGameData(unsigned short Episode, const std::string& DataDirectory)
+void CSound::setGameData(CExeFile &ExeFile)
 {
-	m_Episode = Episode;
-	m_DataDirectory = DataDirectory;
+	m_Episode = ExeFile.getEpisode();
+	m_DataDirectory = ExeFile.getDataDirectory();
 }
 
-bool CSound::loadSoundData()
+bool CSound::loadSoundData(CExeFile &ExeFile)
 {
 	if(!m_active) return false;
 
@@ -356,7 +355,7 @@ bool CSound::loadSoundData()
 	{
 		std::string exename = "keen" + itoa(m_Episode) + ".exe";
 		g_pLogFile->textOut("sound_load_all(): \"" + soundfile + "\" was not found in the data directory. Looking for \""+ exename +"\" in \"" + m_DataDirectory + "\" and trying to extract this file<br>");
-		extractOfExeFile(m_DataDirectory, m_Episode);
+		extractOfExeFile(ExeFile);
 	}
 	else
 		file.close();
@@ -433,12 +432,15 @@ bool CSound::loadSoundData()
  the sound data.
  */
 
-char CSound::extractOfExeFile(const std::string& inputpath, int episode)
+char CSound::extractOfExeFile(CExeFile &ExeFile)
 {
 	std::string outputfname;
 	int bit_count;
 	int pos, sounds_start, sounds_end, ret = 0;
 	std::string buffer;
+	std::string inputpath = ExeFile.getDataDirectory();
+	char episode = ExeFile.getEpisode();
+
 
 	pos = 0;
 	bit_count = 0;
@@ -462,10 +464,10 @@ char CSound::extractOfExeFile(const std::string& inputpath, int episode)
 	    return 1;
 	}
 
-	CExeFile *ExeFile = new CExeFile(episode, inputpath);
-	if(!ExeFile->readData()) ret = 1;
-	else
-	{
+	//CExeFile *ExeFile = new CExeFile(episode, inputpath);
+	//if(!ExeFile->readData()) ret = 1;
+	//else
+	//{
 		FILE *fout;
 
 		buffer = inputpath;
@@ -475,13 +477,13 @@ char CSound::extractOfExeFile(const std::string& inputpath, int episode)
 		if(!(fout = OpenGameFile(buffer.c_str(),"wb"))) ret = 1;
 		else
 		{
-			fwrite( ExeFile->getRawData()+sounds_start, 1, (sounds_end-sounds_start), fout);
+			fwrite( ExeFile.getRawData()+sounds_start, 1, (sounds_end-sounds_start), fout);
 			g_pLogFile->ftextOut(GREEN,"Sounds extraction completed successfully<br>");
 			fclose(fout);
 		}
-	}
+	//}
 
-	delete ExeFile;
+	//delete ExeFile;
 
 	return ret;
 }

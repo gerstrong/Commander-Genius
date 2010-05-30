@@ -113,8 +113,8 @@ static EpisodeInfoStruct EpisodeInfo[] = {
  * \param	path		Path to where the game is found on the media
  * \param	ExeFile		Object to ExeFile in which the
  */
-CEGAGraphicsGalaxy::CEGAGraphicsGalaxy(short episode, const std::string& path, CExeFile &ExeFile) :
-CEGAGraphics(episode, path),
+CEGAGraphicsGalaxy::CEGAGraphicsGalaxy(CExeFile &ExeFile) :
+CEGAGraphics(ExeFile.getEpisode(), ExeFile.getDataDirectory()),
 m_Exefile(ExeFile)
 {}
 

@@ -22,7 +22,7 @@ namespace galaxy
 class CEGAGraphicsGalaxy : public ::CEGAGraphics
 {
 public:
-	CEGAGraphicsGalaxy(short episode, const std::string& path, CExeFile &ExeFile);
+	CEGAGraphicsGalaxy(CExeFile &ExeFile);
 
 	bool loadData();
 	bool begin();

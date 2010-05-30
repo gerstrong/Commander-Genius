@@ -15,7 +15,7 @@
 #include "../../common/CMapLoader.h"
 #include "../../fileio/ResourceMgmt.h"
 
-CAbout::CAbout(const std::string &datadirectory, const char episode, const std::string &type) :
+CAbout::CAbout(CExeFile &ExeFile, const std::string &type) :
 mp_LogoBMP(NULL),
 m_type(type)
 {
@@ -25,35 +25,31 @@ m_type(type)
 	mp_Map->setTileMap(g_pGfxEngine->Tilemap);
 	CMapLoader Maploader(mp_Map);
 	
-	Maploader.load(episode, 90, datadirectory);
+	Maploader.load(ExeFile.getEpisode(), 90, ExeFile.getDataDirectory());
 	mp_Map->gotoPos( 1008, 28 );
 	
 	// Load the SDL_Bitmap
 	if(type == "ID")
 	{
 		mp_bmp = g_pGfxEngine->getBitmap("IDLOGO");
-		CExeFile *Exefile = new CExeFile(episode, datadirectory);
-		
-		// load the exe file
-		Exefile->readData();
 		
 		// Get the offset where in the data the info is...
 		size_t offset = 0;
-		switch(episode)
+		switch(ExeFile.getEpisode())
 		{
 			case 1:
 				m_numberoflines = 13; // numberof lines to print
-				if(Exefile->getEXEVersion() == 131)
+				if(ExeFile.getEXEVersion() == 131)
 					offset = 0x16180-512;
 				break;
 			case 2:
 								m_numberoflines = 13; // number of lines to print
-				if(Exefile->getEXEVersion() == 131)
+				if(ExeFile.getEXEVersion() == 131)
 					offset = 0x1A954-512;
 				break;
 			case 3:
 								m_numberoflines = 13; // number of lines to print
-				if(Exefile->getEXEVersion() == 131)
+				if(ExeFile.getEXEVersion() == 131)
 					offset = 0x1CA70-512;
 				break;
 		}
@@ -63,7 +59,7 @@ m_type(type)
 		if(offset)
 		{
 			char *data;
-			data = (char*)Exefile->getRawData() + offset;
+			data = (char*)ExeFile.getRawData() + offset;
 			std::string buf;
 			for(int i=0 ; i<m_numberoflines ; i++)
 			{
@@ -84,12 +80,10 @@ m_type(type)
 				buf.clear();
 			}
 		}
-		
-		delete Exefile;
 	}
 	else if(type == "CG")
 	{
-		std::string path = getResourceFilename("gfx/CGLogo.bmp", datadirectory, true, true);
+		std::string path = getResourceFilename("gfx/CGLogo.bmp", ExeFile.getDataDirectory(), true, true);
 		mp_LogoBMP = SDL_LoadBMP(GetFullFileName(path).c_str());
 		
 		m_lines.push_back("Commander Genius is an interpreter");
@@ -107,7 +101,7 @@ m_type(type)
 		m_lines.push_back("we hope you will report any bugs.");
 	}
 	
-	switch(episode)
+	switch(ExeFile.getEpisode())
 	{
 		case 1:
 			// Change the ugly lower Tiles which are seen, when using 320x240 base resolution

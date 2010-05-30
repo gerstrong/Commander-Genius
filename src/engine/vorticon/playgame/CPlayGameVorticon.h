@@ -51,9 +51,9 @@ public:
 		GOTO_FINALE
 	};
 
-	CPlayGameVorticon( char episode, char level,
+	CPlayGameVorticon(CExeFile &ExeFile, char level,
 			  char numplayers, char difficulty,
-			  std::string &gamepath, stOption *p_option,
+			  stOption *p_option,
 			  bool finale, CSavedGame &SavedGame,
 			  std::vector<stTeleporterTable> &TeleporterTable);
 

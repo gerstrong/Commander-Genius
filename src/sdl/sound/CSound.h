@@ -15,7 +15,7 @@
 #include <SDL.h>
 #include "CSoundChannel.h"
 #include "CSoundSlot.h"
-
+#include "../../fileio/CExeFile.h"
 
 class CSound : public CSingleton<CSound>
 {
@@ -25,8 +25,8 @@ public:
 
 	bool init(void);
 	void stop(void);
-	void setGameData(unsigned short Episode, const std::string& DataDirectory);
-	bool loadSoundData();
+	void setGameData(CExeFile &ExeFile);
+	bool loadSoundData(CExeFile &ExeFile);
 	void stopAllSounds(void);
 
 	bool forcedisPlaying(void);
@@ -52,7 +52,7 @@ public:
 
 	void setSoundmode(int freq, bool stereo, Uint16 format);
 
-	char extractOfExeFile(const std::string& inputpath, int episode); // This is a special funktion. It doesn't belong here!
+	char extractOfExeFile(CExeFile &ExeFile);
 
 private:
 	CSoundChannel	*m_soundchannel;

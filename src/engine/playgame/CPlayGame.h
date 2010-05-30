@@ -12,14 +12,14 @@
 #define CPLAYGAME_H_
 
 #include <string>
+#include "../../fileio/CExeFile.h"
 
 const int WORLD_MAP_LEVEL=80;
 
 class CPlayGame{
 public:
-	CPlayGame(char episode, char level,
-			 char numplayers, char difficulty,
-			 std::string &gamepath);
+	CPlayGame(CExeFile &ExeFile, char level,
+			 char numplayers, char difficulty);
 
 	// TODO: These are virtual functions which later will be forced to be used by its child classes
 	virtual bool loadGameState() = 0;
@@ -40,6 +40,7 @@ public:
 protected:
 	char m_NumPlayers;
 	bool m_endgame;
+	CExeFile &m_ExeFile;
 	char m_Episode;
 	short m_Level;
 	bool m_startgame;

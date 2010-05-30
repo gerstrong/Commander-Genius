@@ -12,10 +12,11 @@
 #include <string>
 #include "CInfoScene.h"
 #include "../../common/CMap.h"
+#include "../../fileio/CExeFile.h"
 
 class COrderingInfo : public CInfoScene {
 public:
-	COrderingInfo(const std::string &datadirectory, const char &episode);
+	COrderingInfo( CExeFile &ExeFile );
 	virtual ~COrderingInfo();
 	
 	void process();

@@ -11,11 +11,12 @@
 #include "CInfoScene.h"
 #include "../../common/CMap.h"
 #include "../../dialog/CTextViewer.h"
+#include "../../fileio/CExeFile.h"
 #include <string.h>
 
 class CStory : public CInfoScene {
 public:
-	CStory(const std::string &m_DataDirectory, const char &episode);
+	CStory(CExeFile &ExeFile);
 
 	void process();
 

@@ -17,23 +17,28 @@
 
 #define SAFE_DELETE_ARRAY(x) if(x) { delete[] x; x=NULL; }
 
-CExeFile::CExeFile(int episode, const std::string& datadirectory) {
+CExeFile::CExeFile() :
+m_episode(0),
+m_datadirectory(""),
+m_rawdata(NULL),
+m_data(NULL),
+m_headerdata(NULL)
+{}
+
+char CExeFile::getEpisode()
+{ return m_episode;	}
+
+std::string CExeFile::getDataDirectory()
+{ return m_datadirectory;	}
+
+bool CExeFile::readData(const char episode, const std::string& datadirectory)
+{
 	m_episode = episode;
 	m_datadirectory = datadirectory;
 	if( m_datadirectory != "") if(*(m_datadirectory.end()-1) != '/') m_datadirectory += "/";
-	m_rawdata = NULL;
-	m_data = NULL;
-	m_headerdata = NULL;
 
 	crc32_init();
-}
 
-CExeFile::~CExeFile() {
-	SAFE_DELETE_ARRAY(m_data);
-}
-
-bool CExeFile::readData()
-{
 	std::string filename =  m_datadirectory + "keen" + itoa(m_episode) + ".exe";
 
 	std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);
@@ -243,4 +248,8 @@ unsigned char* CExeFile::getRawData()
 
 unsigned char* CExeFile::getHeaderData()
 {	return m_headerdata;	}
+
+CExeFile::~CExeFile() {
+	SAFE_DELETE_ARRAY(m_data);
+}
 

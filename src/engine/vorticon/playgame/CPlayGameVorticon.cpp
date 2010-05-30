@@ -22,12 +22,12 @@
 ////
 // Creation Routine
 ////
-CPlayGameVorticon::CPlayGameVorticon( char episode, char level,
+CPlayGameVorticon::CPlayGameVorticon( CExeFile &ExeFile, char level,
 					 char numplayers, char difficulty,
-					 std::string &gamepath, stOption *p_option,
-					 bool finale, CSavedGame &SavedGame,
+					 stOption *p_option, bool finale,
+					 CSavedGame &SavedGame,
 					 std::vector<stTeleporterTable> &TeleporterTable) :
-CPlayGame(episode, level, numplayers, difficulty, gamepath),
+CPlayGame(ExeFile, level, numplayers, difficulty),
 m_dark(false),
 mp_ObjectAI(NULL),
 m_SavedGame(SavedGame),
@@ -37,7 +37,7 @@ m_restartVideo(false)
 {
 	m_level_command = (level==WORLD_MAP_LEVEL) ? GOTO_WORLD_MAP : START_LEVEL;
 	m_NumSprites = g_pGfxEngine->getNumSprites();
-	m_Gamepath = gamepath;
+	m_Gamepath = ExeFile.getDataDirectory();
 	m_exitgame = false;
 	m_endgame = false;
 	m_startgame = false;
@@ -362,7 +362,7 @@ void CPlayGameVorticon::process()
 		// Open the Main Menu if ESC Key pressed and mp_Menu not opened
 		if(!mp_Menu && !mp_Finale && g_pInput->getPressedCommand(IC_QUIT))
 		{	// Open the menu
-			mp_Menu = new CMenuVorticon( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame, mp_option, m_restartVideo, m_hideobjects );
+			mp_Menu = new CMenuVorticon( ACTIVE, m_ExeFile, m_Map, m_SavedGame, mp_option, m_restartVideo, m_hideobjects );
 		}
 	}
 }
@@ -484,7 +484,7 @@ void CPlayGameVorticon::handleFKeys()
     // F3 - save game
     if (g_pInput->getPressedKey(KF3))
     {
-		mp_Menu = new CMenuVorticon( ACTIVE, m_Gamepath, m_Episode, m_Map,
+		mp_Menu = new CMenuVorticon( ACTIVE, m_ExeFile, m_Map,
 									m_SavedGame, mp_option, m_restartVideo, m_hideobjects );
 		mp_Menu->init(SAVE);
     }

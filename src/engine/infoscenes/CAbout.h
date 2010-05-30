@@ -13,10 +13,11 @@
 #include "CInfoScene.h"
 #include "../../graphics/CBitmap.h"
 #include "../../common/CMap.h"
+#include "../../fileio/CExeFile.h"
 
 class CAbout : public CInfoScene {
 public:
-	CAbout(const std::string &datadirectory, const char episode, const std::string &type);
+	CAbout(CExeFile &ExeFile, const std::string &type);
 	virtual ~CAbout();
 	
 	void process();

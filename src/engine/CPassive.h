@@ -30,9 +30,8 @@ public:
 		INTRO, TITLE, DEMO, STARTGAME, SHUTDOWN
 	};
 	
-	CPassive(char Episode, std::string DataDirectory,
+	CPassive(CExeFile &Exefile,
 			 CSavedGame &SavedGame, stOption *p_Option);
-	virtual ~CPassive();
 	
 	virtual bool init(char mode = INTRO) {return false;};
 	
@@ -50,6 +49,8 @@ public:
 	
 	virtual void cleanup() {};
 	
+	virtual ~CPassive();
+
 	char m_mode;
 	
 	CMenuVorticon *mp_Menu;

@@ -15,12 +15,13 @@
 
 #include "../sdl/CInput.h"
 #include "../fileio/CSavedGame.h"
+#include "../fileio/CExeFile.h"
 
 class CMenu : public CBaseMenu
 {
 public:
-	CMenu(char menu_mode, std::string &GamePath,
-			 char &Episode, CSavedGame &SavedGame,
+	CMenu(char menu_mode, CExeFile &ExeFile,
+			 CSavedGame &SavedGame,
 			 stOption *pOption, Uint8 DlgTheme,
 			 bool &restartVideo );
 
@@ -46,8 +47,9 @@ public:
 	CDialog *mp_Dialog;
 
 protected:
-	char &m_Episode;
-	std::string &m_GamePath;
+	char m_Episode;
+	CExeFile &m_ExeFile;
+	std::string m_GamePath;
 	CSavedGame &m_SavedGame;
 	stOption *mp_option;
 	char m_menu_mode;

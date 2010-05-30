@@ -16,10 +16,9 @@
 
 #define SELMOVE_SPD         3
 
-CMenuVorticon::CMenuVorticon( char menu_mode, std::string &GamePath,
-			 char &Episode, CMap &Map, CSavedGame &SavedGame,
+CMenuVorticon::CMenuVorticon( char menu_mode, CExeFile &ExeFile, CMap &Map, CSavedGame &SavedGame,
 			 stOption *pOption, bool &restartVideo, bool &hideobjects ) :
-CMenu(menu_mode, GamePath, Episode, SavedGame,
+CMenu(menu_mode, ExeFile, SavedGame,
 	pOption, DLG_THEME_VORTICON, restartVideo),
 m_Map(Map),
 mp_InfoScene(NULL),
@@ -72,7 +71,7 @@ void CMenuVorticon::processMainMenu()
 
 	if( g_pInput->getPressedCommand(IC_HELP) ) // open the help menu
 	{
-		mp_SubMenu = new CHelpMenu(mp_InfoScene, m_dlg_theme, m_Episode, m_GamePath, m_hideobjects);
+		mp_SubMenu = new CHelpMenu(mp_InfoScene, m_dlg_theme, m_ExeFile, m_hideobjects);
 		m_Map.m_animation_enabled = false;
 		m_suspended = true;
 		m_selection = NO_SELECTION;

@@ -16,9 +16,10 @@
 namespace vorticon
 {
 
-CPassiveVort::CPassiveVort(char Episode, std::string DataDirectory,
+CPassiveVort::CPassiveVort( CExeFile &ExeFile,
 		 CSavedGame &SavedGame, stOption *p_Option) :
-CPassive(Episode, DataDirectory, SavedGame,p_Option),
+CPassive(ExeFile, SavedGame,p_Option),
+m_ExeFile(ExeFile),
 mp_Map(NULL),
 mp_Option(p_Option),
 m_RestartVideo(false)
@@ -98,8 +99,8 @@ void CPassiveVort::process()
 			else
 			{
 				SAFE_DELETE(mp_PressAnyBox);
-				mp_Menu = new CMenuVorticon( PASSIVE, m_DataDirectory,
-						m_Episode, *mp_Map, m_SavedGame, mp_Option, m_RestartVideo, m_hideobjects);
+				mp_Menu = new CMenuVorticon( PASSIVE, m_ExeFile,
+						*mp_Map, m_SavedGame, mp_Option, m_RestartVideo, m_hideobjects);
 			}
 		}
 	}

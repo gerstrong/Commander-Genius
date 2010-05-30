@@ -9,15 +9,15 @@
 #include "CPassive.h"
 
 
-CPassive::CPassive(char Episode, std::string DataDirectory,
+CPassive::CPassive(CExeFile &Exefile,
 					CSavedGame &SavedGame, stOption *p_Option) :
 	m_SavedGame(SavedGame)
 {
 	mp_Menu = NULL;
 	m_modeg = false;
 	m_mode = INTRO;
-	m_Episode = Episode;
-	m_DataDirectory = DataDirectory;
+	m_Episode = Exefile.getEpisode();
+	m_DataDirectory = Exefile.getDataDirectory();
 	m_NumPlayers = 0; // because no game chosen
 }
 

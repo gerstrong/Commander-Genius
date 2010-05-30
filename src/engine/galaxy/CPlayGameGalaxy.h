@@ -16,9 +16,8 @@ namespace galaxy
 class CPlayGameGalaxy : public CPlayGame
 {
 public:
-	CPlayGameGalaxy(char episode, char level,
-			 char numplayers, char difficulty,
-			 std::string &gamepath);
+	CPlayGameGalaxy(CExeFile &ExeFile, char level,
+			 char numplayers, char difficulty);
 
 	bool loadGameState();
 	void process();

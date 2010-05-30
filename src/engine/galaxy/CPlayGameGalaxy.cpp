@@ -7,13 +7,14 @@
 
 #include "CPlayGameGalaxy.h"
 
+#include "CMapLoaderGalaxy.h"
+
 namespace galaxy
 {
 
-CPlayGameGalaxy::CPlayGameGalaxy(char episode, char level,
-		 char numplayers, char difficulty,
-		 std::string &gamepath) :
-CPlayGame(episode, level, numplayers, difficulty, gamepath)
+CPlayGameGalaxy::CPlayGameGalaxy(CExeFile &ExeFile, char level,
+		 char numplayers, char difficulty) :
+CPlayGame(ExeFile, level, numplayers, difficulty)
 {}
 
 bool CPlayGameGalaxy::loadGameState()
@@ -25,6 +26,10 @@ bool CPlayGameGalaxy::init()
 	// Load the Level map. We have two modes. Inlevel and game map
 
 	// TODO: Lets load the main map for now and create process for this
+
+	// We should create this as base and two more classes. One will be for ingame and the other for
+	// the map processes
+	//CMapLoaderGalaxy MapLoaderGalaxy;
 
 	return false;
 }

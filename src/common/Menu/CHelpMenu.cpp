@@ -8,12 +8,13 @@
 #include "CHelpMenu.h"
 
 CHelpMenu::CHelpMenu(CInfoScene *&p_InfoScene, Uint8 dlg_theme,
-		const char &Episode, const std::string &GamePath,
+		CExeFile &ExeFile,
 		bool &hideobjects) :
 CBaseMenu(dlg_theme),
+m_ExeFile(ExeFile),
 mp_InfoScene(p_InfoScene),
-m_Episode(Episode),
-m_GamePath(GamePath),
+m_Episode(ExeFile.getEpisode()),
+m_GamePath(ExeFile.getDataDirectory()),
 m_hideobjects(hideobjects)
 {
 	mp_Dialog = new CDialog(18, 9, INPUT_MODE_UP_DOWN,m_dlg_theme);
@@ -36,25 +37,26 @@ void CHelpMenu::processSpecific()
 		switch(m_selection)
 		{
 		case 0:
-			mp_InfoScene = new CHelp(m_GamePath, m_Episode, "Menu");
+			mp_InfoScene = new CHelp(m_ExeFile, "Menu");
 			break;
 		case 1:
-			mp_InfoScene = new CHelp(m_GamePath, m_Episode, "Game");
+			mp_InfoScene = new CHelp(m_ExeFile, "Game");
 			break;
 		case 2:
-			mp_InfoScene = new CStory(m_GamePath, m_Episode);
+			mp_InfoScene = new CStory(m_ExeFile);
 			break;
 		case 3:
-			mp_InfoScene = new COrderingInfo(m_GamePath, m_Episode);
+			mp_InfoScene = new COrderingInfo(m_ExeFile);
 			break;
 		case 4:
-			mp_InfoScene = new CAbout(m_GamePath, m_Episode, "ID");
+			mp_InfoScene = new CAbout(m_ExeFile, "ID");
 			break;
 		case 5:
-			mp_InfoScene = new CAbout(m_GamePath, m_Episode, "CG");
+			mp_InfoScene = new CAbout(m_ExeFile, "CG");
 			break;
 		case 6:
-			mp_InfoScene = new CCredits(m_GamePath, m_Episode);
+			mp_InfoScene = new CCredits(m_ExeFile.getDataDirectory(),
+										m_ExeFile.getEpisode());
 			break;
 		}
 		m_hideobjects = true;

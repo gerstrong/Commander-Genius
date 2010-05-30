@@ -13,14 +13,16 @@
 #include "Menu/CSaveMenu.h"
 #include "Menu/CLoadMenu.h"
 
-CMenu::CMenu( char menu_mode, std::string &GamePath,
-		 char &Episode, CSavedGame &SavedGame,
-		 stOption *pOption, Uint8 DlgTheme, bool &restartVideo ) :
+CMenu::CMenu(char menu_mode, CExeFile &ExeFile,
+		 CSavedGame &SavedGame,
+		 stOption *pOption, Uint8 DlgTheme,
+		 bool &restartVideo) :
 CBaseMenu(DlgTheme),
+m_ExeFile(ExeFile),
 m_demoback(false),
 mp_Dialog(NULL),
-m_Episode(Episode),
-m_GamePath(GamePath),
+m_Episode(ExeFile.getEpisode()),
+m_GamePath(ExeFile.getDataDirectory()),
 m_SavedGame(SavedGame),
 mp_option(pOption),
 m_menu_mode(menu_mode),
@@ -54,7 +56,7 @@ void CMenu::init( menutypes menu_type )
 	case NEW:
 		mp_SubMenu = new CDifficultyMenu( m_Difficulty, m_NumPlayers, m_dlg_theme); break;
 	case CONFIGURE:
-		mp_SubMenu = new CSettingsMenu(m_dlg_theme, mp_option, m_restartVideo); break;
+		mp_SubMenu = new CSettingsMenu(m_dlg_theme, m_ExeFile, mp_option, m_restartVideo); break;
 	case SAVE:
 		mp_SubMenu = new CSaveMenu(m_dlg_theme, m_SavedGame); break;
 	case LOAD:

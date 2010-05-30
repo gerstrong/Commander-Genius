@@ -10,12 +10,12 @@
 #include "CAudioSettings.h"
 #include "COptions.h"
 #include "CControlsettings.h"
-#include "CControlsettings.h"
 
 #define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
 
-CSettingsMenu::CSettingsMenu( Uint8 dlgtheme, stOption *p_option, bool &restartVideo ) :
+CSettingsMenu::CSettingsMenu( Uint8 dlgtheme, CExeFile &ExeFile, stOption *p_option, bool &restartVideo ) :
 CBaseMenu(dlgtheme),
+m_ExeFile(ExeFile),
 mp_SubMenu(NULL),
 mp_option(p_option),
 m_restartVideo(restartVideo)
@@ -37,7 +37,7 @@ void CSettingsMenu::processSpecific()
 			switch(m_selection)
 			{
 			case 0: mp_SubMenu = new CVideoSettings(m_dlg_theme, m_restartVideo); break;
-			case 1: mp_SubMenu = new CAudioSettings(m_dlg_theme); break;
+			case 1: mp_SubMenu = new CAudioSettings(m_dlg_theme, m_ExeFile); break;
 			case 2: mp_SubMenu = new COptions(m_dlg_theme, mp_option); break;
 			case 3: mp_SubMenu = new CControlsettings(m_dlg_theme); break;
 			}

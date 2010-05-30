@@ -21,12 +21,13 @@ class CHelpMenu : public CBaseMenu
 {
 public:
 	CHelpMenu(CInfoScene *&p_InfoScene, Uint8 dlg_theme,
-			const char &Episode, const std::string &GamePath,
+			CExeFile &ExeFile,
 			bool &hideobjects);
 	void processSpecific();
 	virtual ~CHelpMenu();
 
 private:
+	CExeFile &m_ExeFile;
 	CInfoScene *&mp_InfoScene;
 
 	const char m_Episode;

@@ -12,7 +12,6 @@
 #include "CMessages.h"
 #include "../StringUtils.h"
 #include "../CLogFile.h"
-#include "../fileio/CExeFile.h"
 
 CMessages::CMessages(unsigned char *p_exebuf, char episode, int version) :
 	mp_exe(p_exebuf)

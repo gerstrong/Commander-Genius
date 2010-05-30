@@ -17,8 +17,10 @@
 #include "../../sdl/CInput.h"
 #include "../../FindFile.h"
 
-CStory::CStory(const std::string &DataDirectory, const char &episode)
+CStory::CStory(CExeFile &ExeFile)
 {
+	char episode = ExeFile.getEpisode();
+	std::string DataDirectory = ExeFile.getDataDirectory();
 	mp_Scrollsurface = g_pVideoDriver->ScrollSurface;
 	mp_Map = new CMap;
 	mp_Map->setScrollSurface(mp_Scrollsurface);
@@ -31,7 +33,7 @@ CStory::CStory(const std::string &DataDirectory, const char &episode)
 	if(episode==1)
 	{
 		// We suppose that we are using version 131. Maybe it must be extended
-		std::string filename = DataDirectory;
+		std::string filename = ExeFile.getDataDirectory();
 		if(DataDirectory != "")
 			filename += "/";
 		
@@ -52,12 +54,7 @@ CStory::CStory(const std::string &DataDirectory, const char &episode)
 		// Here the Text file is within the EXE-File
 		unsigned long startflag=0, endflag=0;
 		unsigned char *text_data = NULL;
-		
-		CExeFile *ExeFile = new CExeFile(episode, DataDirectory);
-		ExeFile->readData();
-		
-		if(!ExeFile->getRawData()) return;
-		
+
 		if(episode == 2)
 		{
 			startflag = 0x16CC0-512;
@@ -69,12 +66,11 @@ CStory::CStory(const std::string &DataDirectory, const char &episode)
 			endflag = 0x199F3-512;
 		}
 		
-		text_data = ExeFile->getRawData();
-		
+		text_data = ExeFile.getRawData();
+		if(!text_data) return;
+
 		for(unsigned long i=startflag ; i<endflag ; i++ )
 			Text.push_back(text_data[i]);
-		
-		delete ExeFile;
 	}
 	
 	Maploader.load(episode, 90, DataDirectory);

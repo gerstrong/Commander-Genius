@@ -18,11 +18,11 @@
 namespace galaxy
 {
 
-CPassiveGalaxy::CPassiveGalaxy(char Episode, std::string DataDirectory,
+CPassiveGalaxy::CPassiveGalaxy(CExeFile &Exefile,
 		CSavedGame &SavedGame, stOption *p_Option) :
-CPassive(Episode, DataDirectory, SavedGame, p_Option),
+CPassive(Exefile, SavedGame, p_Option),
 processMode(&CPassiveGalaxy::processIntro),
-mp_Menu(new CMenuGalaxy(PASSIVE, DataDirectory, Episode, SavedGame, p_Option, m_restartVideo))
+mp_Menu(new CMenuGalaxy(PASSIVE, Exefile, SavedGame, p_Option, m_restartVideo))
 { }
 
 // This function is always called from the base class.

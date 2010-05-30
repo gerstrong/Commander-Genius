@@ -15,8 +15,9 @@
 
 #define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
 
-CAudioSettings::CAudioSettings(Uint8 dlg_theme) :
+CAudioSettings::CAudioSettings(Uint8 dlg_theme, CExeFile &ExeFile) :
 		CBaseMenu(dlg_theme),
+		m_ExeFile(ExeFile),
 		mp_VolumeMenu(NULL)
 {
 
@@ -63,7 +64,7 @@ void CAudioSettings::processSpecific()
 			// Reload the sounds effects, so they work with the new format
 			g_pSound->init();
 
-			g_pSound->loadSoundData();
+			g_pSound->loadSoundData(m_ExeFile);
 
 			// Reload the music if was playing before we changed the settings
 			if(wasPlaying)

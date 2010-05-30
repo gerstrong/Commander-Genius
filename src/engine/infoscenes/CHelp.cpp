@@ -17,10 +17,12 @@
 #include "../../sdl/CInput.h"
 #include "../../FindFile.h"
 
-CHelp::CHelp(const std::string &DataDirectory, const char &episode, const std::string &type) :
+CHelp::CHelp(CExeFile &ExeFile, const std::string &type) :
 mp_TextViewer(NULL)
 {
 	std::string Text;
+	std::string DataDirectory = ExeFile.getDataDirectory();
+	char episode = ExeFile.getEpisode();
 	
 	// Read the Storytext
 	if(type == "Game")
@@ -50,10 +52,8 @@ mp_TextViewer(NULL)
 			unsigned long startflag=0, endflag=0;
 			unsigned char *text_data = NULL;
 			
-			CExeFile *ExeFile = new CExeFile(episode, DataDirectory);
-			ExeFile->readData();
 			
-			if(!ExeFile->getHeaderData()) return;
+			if(!ExeFile.getHeaderData()) return;
 			
 			if(episode == 2)
 			{
@@ -66,12 +66,10 @@ mp_TextViewer(NULL)
 				endflag = 0x1839B;
 			}
 			
-			text_data = ExeFile->getRawData();
+			text_data = ExeFile.getRawData();
 			
 			for(unsigned long i=startflag ; i<endflag ; i++ )
 				Text.push_back(text_data[i]);
-			
-			delete ExeFile;
 		}
 	}
 	else

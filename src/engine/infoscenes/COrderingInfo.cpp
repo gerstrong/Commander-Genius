@@ -14,8 +14,10 @@
 #include "../../sdl/CVideoDriver.h"
 #include "../../common/CMapLoader.h"
 
-COrderingInfo::COrderingInfo( const std::string &datadirectory, const char &episode ) {
-	CExeFile *Exefile = new CExeFile(episode, datadirectory);
+COrderingInfo::COrderingInfo( CExeFile &ExeFile ) {
+	std::string datadirectory = ExeFile.getDataDirectory();
+	char episode = ExeFile.getEpisode();
+
 	mp_Scrollsurface = g_pVideoDriver->ScrollSurface;
 	m_Map.setScrollSurface(mp_Scrollsurface);
 	m_Map.setTileMap(g_pGfxEngine->Tilemap);
@@ -25,9 +27,6 @@ COrderingInfo::COrderingInfo( const std::string &datadirectory, const char &epis
 	Maploader.load(episode, 90, datadirectory);
 	m_Map.gotoPos( 22<<4, 32 );
 	
-	// load the exe file
-	Exefile->readData();
-	
 	// Get the offset where in the data the info is...
 	size_t offset = 0;
 	switch(episode)
@@ -35,7 +34,7 @@ COrderingInfo::COrderingInfo( const std::string &datadirectory, const char &epis
 		case 1:
 			m_starty = 4; // start of y-coordinate in textheights
 			m_numberoflines = 21; // numberof lines to print
-			if(Exefile->getEXEVersion() == 131)
+			if(ExeFile.getEXEVersion() == 131)
 				offset = 0x1652B-512;
 
 			// Change the ugly lower Tiles which are seen, when using 320x240 base resolution
@@ -50,13 +49,13 @@ COrderingInfo::COrderingInfo( const std::string &datadirectory, const char &epis
 			m_starty = 3; // start of y-coordinate in textheights
 			m_numberoflines = 19; // numberof lines to print
 			m_Map.gotoPos( 22<<4, 28 );
-			if(Exefile->getEXEVersion() == 131)
+			if(ExeFile.getEXEVersion() == 131)
 				offset = 0x1ACD9-512;
 			break;
 		case 3:
 			m_starty = 4; // start of y-coordinate in textheights
 			m_numberoflines = 17; // numberof lines to print
-			if(Exefile->getEXEVersion() == 131)
+			if(ExeFile.getEXEVersion() == 131)
 				offset = 0x1CDED-512;
 			break;
 	}
@@ -66,7 +65,7 @@ COrderingInfo::COrderingInfo( const std::string &datadirectory, const char &epis
 	if(offset)
 	{
 		char *data;
-		data = (char*)Exefile->getRawData() + offset;
+		data = (char*)ExeFile.getRawData() + offset;
 		std::string buf;
 		for(int i=0 ; i<m_numberoflines ; i++)
 		{
@@ -87,8 +86,6 @@ COrderingInfo::COrderingInfo( const std::string &datadirectory, const char &epis
 			buf.clear();
 		}
 	}
-	
-	delete Exefile;
 	
 	//This just makes them all line up exactly like in the original games.
 	switch(episode)
