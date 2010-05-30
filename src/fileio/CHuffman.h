@@ -12,7 +12,7 @@
 #ifndef CHUFFMAN_H_
 #define CHUFFMAN_H_
 
-#define BYTE unsigned char
+#include "TypeDefinitions.h"
 
 struct nodestruct{
 	unsigned short bit0;
@@ -28,8 +28,8 @@ class CHuffman
 public:
 	CHuffman();
 
-	void readDictionary( unsigned char *p_exedata, unsigned long offset);
-	void expand(unsigned char *pin, unsigned char *pout, unsigned long inlen, unsigned long outlen);
+	void readDictionary( byte *p_exedata, unsigned long offset);
+	void expand(byte *pin, byte *pout, unsigned long inlen, unsigned long outlen);
 
 	virtual ~CHuffman();
 

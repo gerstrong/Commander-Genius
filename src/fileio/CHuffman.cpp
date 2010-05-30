@@ -14,14 +14,14 @@ CHuffman::CHuffman()
 
 }
 
-void CHuffman::readDictionary( unsigned char *p_exedata, unsigned long offset)
+void CHuffman::readDictionary( byte *p_exedata, unsigned long offset)
 {
 	p_exedata += offset;
 	memcpy(m_nodes, p_exedata,255*sizeof(nodestruct));
 }
 
 /* Expand huffman-compressed input file into output buffer */
-void CHuffman::expand(unsigned char *pin, unsigned char *pout, unsigned long inlen, unsigned long outlen)
+void CHuffman::expand(byte *pin, byte *pout, unsigned long inlen, unsigned long outlen)
 {
 	unsigned short curnode;
 	unsigned long incnt = 0, outcnt = 0;
