@@ -93,22 +93,10 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	mp_map->m_width = filebuf[2];
 	mp_map->m_height = filebuf[3];
 	
-	Uint32 mapsize;
-	mapsize = ((mp_map->m_width+32)*(mp_map->m_height+32));
+	size_t mapsize = ((mp_map->m_width+32)*(mp_map->m_height+32));
 
-	if(mp_map->mp_data)	{
-		delete [] mp_map->mp_data;
-		mp_map->mp_data = NULL;
-	}
-	mp_map->mp_data = new Uint16[mapsize];
-	
-	memset(mp_map->mp_data,0,mapsize*sizeof(Uint16));
-	
-	if ( !mp_map->mp_data ) // Is this necessary ?
-	{
-		g_pLogFile->textOut(RED,"loadmap(): not enough memory to load the map<br>");
-		return false;
-	}
+	// Here goes the memory load model
+	mp_map->createEmptyForeground(mapsize);
 	
 	planesize = filebuf[9];
 	planesize /= 2; // Size of two planes, but we only need one

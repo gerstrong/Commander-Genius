@@ -14,14 +14,16 @@
 #ifndef CPlayGameCoder_H_
 #define CPlayGameCoder_H_
 
+#include "../fileio/TypeDefinitions.h"
+
 // This functions are used for enconding/decoding a variable to the game data format.
 // It makes everything platform independent
 template <class S>
 void CSavedGame::encodeData(S structure)
 {
 	size_t size = sizeof(S);
-	uchar sizebuf[sizeof(size_t)];
-	uchar databuf[size];
+	byte sizebuf[sizeof(size_t)];
+	byte databuf[size];
 
 	memcpy(sizebuf, &size, sizeof(size_t));
 	for( Uint32 i=0 ; i<sizeof(size_t) ; i++ )

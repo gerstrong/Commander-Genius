@@ -7,13 +7,6 @@
 
 #include "CCarmack.h"
 
-typedef uint8_t byte;
-typedef uint16_t word;
-typedef int32_t fixed;
-typedef uint32_t longword;
-typedef int8_t boolean;
-typedef void * memptr;
-
 CCarmack::CCarmack()
 {
 	// TODO Auto-generated constructor stub

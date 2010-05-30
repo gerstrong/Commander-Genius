@@ -12,6 +12,7 @@
 #include <string>
 
 #include "../graphics/CTilemap.h"
+#include "../fileio/TypeDefinitions.h"
 
 // animation rate of animated tiles
 #define ANIM_TILE_TIME        4
@@ -33,6 +34,9 @@ public:
 
 	void setTileMap( CTilemap *pTilemap );
 	void setScrollSurface( SDL_Surface *surface );
+
+	bool createEmptyForeground(size_t blocksize);
+	bool createEmptyBackground(size_t blocksize);
 
 	bool gotoPos( int x, int y );
 	void resetScrolls();
@@ -65,16 +69,18 @@ public:
 	unsigned int getlevelat(unsigned int x, unsigned int y)	{
 		return m_objectlayer[x>>4][y>>4];	}
 
+	word *getBackgroundData();
+	word *getForegroundData();
+
 	virtual ~CMap();
 
 
 	Sint16 m_scrollx_buf;		// Amount to move surface in X.
 	Sint16 m_scrolly_buf; 		// Amount to move surface in Y.
 
-	Uint16 m_scrollx;      	// total amount of X scroll
+	Uint16 m_scrollx;      		// total amount of X scroll
 	Uint16 m_scrolly;    		// amount the scroll buffer is scrolled(y)
 
-	Uint16 *mp_data;       // the map data
 	// in-game, contains monsters and special object tags like for switches
 	// on world map contains level numbers and flags for things like teleporters
 	Uint16 m_objectlayer[256][256];
@@ -101,6 +107,11 @@ private:
 
 	SDL_Surface *mp_scrollsurface;
 	CTilemap *mp_Tilemap;
+
+	word *mp_foreground_data;       		// the map foreground data
+	word *mp_background_data;       		// the map background data
+											// background data is only used
+											// in the Galaxy
 
 	// (map) stripe attribute structures, for animated tiles
 	// slot 0 is not used. data starts at slot 1. see description

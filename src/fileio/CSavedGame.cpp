@@ -219,10 +219,10 @@ bool CSavedGame::convertOldFormat(size_t slot)
 	// Save the map_data as it is left
 	encodeData(old.map.xsize);
 	encodeData(old.map.ysize);
-	addData( (uchar*)(old.map.mapdata), 2*old.map.xsize*old.map.ysize );
+	addData( (byte*)(old.map.mapdata), 2*old.map.xsize*old.map.ysize );
 
 	// store completed levels
-	addData( (uchar*)(old.LevelControl.levels_completed), MAX_LEVELS );
+	addData( (byte*)(old.LevelControl.levels_completed), MAX_LEVELS );
 
 	save();
 
@@ -259,7 +259,7 @@ const char *verify = "CKSAVE";
 
 // this is seperated out of game_load for modularity because menumanager.c
 // also uses it, in it's save-game "preview" menu on the load game screen
-void CSavedGame::readOldHeader(FILE *fp, uchar *episode, uchar *level, uchar *lives, uchar *num_players)
+void CSavedGame::readOldHeader(FILE *fp, byte *episode, byte *level, byte *lives, byte *num_players)
 {
 	fseek(fp, SG_HEADERSIZE, SEEK_SET);		// skip past the CKSAVE%c
 	*episode = fgetc(fp);
@@ -360,9 +360,7 @@ bool CSavedGame::load()
     	StateFile.get();
 
     while(!StateFile.eof()) // read it everything in
-    {
     	m_datablock.push_back(StateFile.get());
-    }
 
 	// TODO: Decompression has still to be done!
 
@@ -430,8 +428,8 @@ bool CSavedGame::save()
 	}
 
 	// Write the collected data block
-	std::vector<uchar>::iterator pos = m_datablock.begin();
-	for( Uint32 i=0; i<m_datablock.size() ; i++ ){
+	std::vector<byte>::iterator pos = m_datablock.begin();
+	for( size_t i=0; i<m_datablock.size() ; i++ ){
 		primitive_buffer[offset++] = *pos;
 		pos++;
 	}
@@ -454,20 +452,20 @@ bool CSavedGame::save()
 }
 
 // Adds data of size to the main data block
-void CSavedGame::addData(uchar *data, Uint32 size) {
+void CSavedGame::addData(byte *data, Uint32 size) {
 	for(Uint32 i=0 ; i<sizeof(Uint32) ; i++ )
 	{
 		Uint32 datasize;
 		datasize = size&( 0xFF<<(i*8) );
 		datasize >>= (i*8);
-		m_datablock.push_back( static_cast<uchar>(datasize) );
+		m_datablock.push_back( static_cast<byte>(datasize) );
 	}
 	for(Uint32 i=0 ; i<size ; i++ )
 		m_datablock.push_back(data[i]);
 }
 
 // Read data of size from the main data block
-void CSavedGame::readDataBlock(uchar *data) {
+void CSavedGame::readDataBlock(byte *data) {
 	Uint32 datasize=0;
 	memcpy(&datasize, &m_datablock[m_offset], sizeof(Uint32));
 	m_offset += sizeof(Uint32);

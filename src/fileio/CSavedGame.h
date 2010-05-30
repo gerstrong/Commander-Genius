@@ -8,8 +8,6 @@
 #ifndef CSAVEDGAME_H_
 #define CSAVEDGAME_H_
 
-#define uchar unsigned char
-
 #include <string>
 #include <vector>
 #include <SDL.h>
@@ -18,6 +16,8 @@
 
 #include "../CLogFile.h"
 #include "../StringUtils.h"
+
+#include "../fileio/TypeDefinitions.h"
 
 class CSavedGame {
 public:
@@ -38,7 +38,7 @@ public:
 	void convertAllOldFormats();
 	bool convertOldFormat(size_t slot);
 	char IsOldButValidSaveGame(std::string fname);
-	void readOldHeader(FILE *fp, uchar *episode, uchar *level, uchar *lives, uchar *num_players);
+	void readOldHeader(FILE *fp, byte *episode, byte *level, byte *lives, byte *num_players);
 	Uint32 getSlotNumber(const std::string &filename);
 	std::string getSlotName(const std::string &filename);
 	Uint32 getDataSize(std::ifstream &StateFile);
@@ -57,8 +57,8 @@ public:
 	template <class S>
 	void decodeData(S &structure);
 
-	void addData(uchar *data, Uint32 size);
-	void readDataBlock(uchar *data);
+	void addData(byte *data, Uint32 size);
+	void readDataBlock(byte *data);
 
 	bool save();
 	bool load();
@@ -77,7 +77,7 @@ private:
 	char m_Command;
 	Uint32 m_offset;
 
-	std::vector<uchar> m_datablock;
+	std::vector<byte> m_datablock;
 };
 
 #include "CSavedGameCoder.h"

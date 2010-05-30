@@ -110,10 +110,10 @@ bool CPlayGameVorticon::loadGameState()
 		// Load the map_data as it was left last
 		m_SavedGame.decodeData(m_Map.m_width);
 		m_SavedGame.decodeData(m_Map.m_height);
-		m_SavedGame.readDataBlock( (uchar*)(m_Map.mp_data));
+		m_SavedGame.readDataBlock( (byte*)(m_Map.getForegroundData()));
 
 		// Load completed levels
-		m_SavedGame.readDataBlock( (uchar*)(mp_level_completed));
+		m_SavedGame.readDataBlock( (byte*)(mp_level_completed));
 
 		m_Player[0].mp_map = &m_Map;
 		while(m_Player[0].scrollTriggers()); // Scroll to the right position on the map
@@ -195,10 +195,10 @@ bool CPlayGameVorticon::saveGameState()
 	// Save the map_data as it is left
 	m_SavedGame.encodeData(m_Map.m_width);
 	m_SavedGame.encodeData(m_Map.m_height);
-	m_SavedGame.addData( (uchar*)(m_Map.mp_data), 2*m_Map.m_width*m_Map.m_height );
+	m_SavedGame.addData( (byte*)(m_Map.getForegroundData()), 2*m_Map.m_width*m_Map.m_height );
 
 	// store completed levels
-	m_SavedGame.addData( (uchar*)(mp_level_completed), MAX_LEVELS );
+	m_SavedGame.addData( (byte*)(mp_level_completed), MAX_LEVELS );
 
 	return m_SavedGame.save();
 }
