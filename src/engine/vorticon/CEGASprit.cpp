@@ -18,6 +18,8 @@
 #include "../../engine/spritedefines.h"
 #include "../../lz.h"
 #include "../../fileio/ResourceMgmt.h"
+#include "../../funcdefs.h"
+#include <SDL.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -41,7 +43,7 @@ CEGASprit::CEGASprit(int planesize,
 					 long spritestartloc,
 					 int numsprites,
 					 long spriteloc,
-					 const std::string &gamepath) :
+					 std::string &gamepath) :
 m_gamepath(gamepath),
 EGASpriteModell(NULL)
 {
@@ -83,6 +85,7 @@ bool CEGASprit::loadHead(char *data)
 
 bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 {
+	std::string file;
 	char *RawData;
     SDL_Surface *sfc;
     SDL_Surface *pixsfc;
@@ -141,10 +144,6 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 							   g_pGfxEngine->Palette.m_Palette );
 	}
 	
-	// TODO:
-	//if(/*HQSprites loaded*/)
-	//{ LoadHQSprites(g_pGfxEngine->getSprite); }
-	//else
 	{
 		char c;
 		for(int p=0 ; p<4 ; p++)
@@ -207,6 +206,8 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	for(Uint16 s=0 ; s<g_pGfxEngine->getSpriteVec().size() ; s++)
 	{
 		CSprite &Sprite = g_pGfxEngine->getSprite(s);
+		file = getResourceFilename("gfx/sprite" + itoa(s) + ".bmp", m_gamepath, false, true);
+		Sprite.loadHQSprite(file);
 		Sprite.optimizeSurface();
 		Sprite.applyTransparency();
 	}
@@ -473,11 +474,6 @@ void CEGASprit::ApplySpecialFX()
 	g_pGfxEngine->getSprite(SHOTUP_SPRITE).applyTranslucency(196);
 	g_pGfxEngine->getSprite(ANKHUP_SPRITE).applyTranslucency(196);
 
-}
-
-void CEGASprit::LoadHQSprites(std::vector<CSprite> &Sprite)
-{
-	// TODO: Load the HQ Sprites here!
 }
 
 CEGASprit::~CEGASprit() {

@@ -25,7 +25,7 @@ public:
 			  long spritestartloc,
 			  int numsprites,
 			  long spriteloc,
-			  const std::string &gamepath);
+			  std::string &gamepath);
 	virtual ~CEGASprit();
 
 	bool loadHead(char *data);
@@ -36,7 +36,7 @@ private:
 	int m_planesize;
 	long m_spritestartloc;
 	long m_spriteloc;
-	std::string m_gamepath;
+	std::string &m_gamepath;
 
 	struct st_sprite{
 		short width;
@@ -59,7 +59,6 @@ private:
 	void DeriveSpecialSprites( CTilemap *tilemap, std::vector<CSprite> &sprites );
 	void CreateYellowSpriteofTile( CTilemap *tilemap, Uint16 tile, CSprite& sprite );
 	void ApplySpecialFX();
-	void LoadHQSprites(std::vector<CSprite> &Sprite);
 };
 
 #endif /* CEGASPRIT_H_ */

@@ -7,6 +7,8 @@
 
 #include "CSprite.h"
 #include "CPalette.h"
+#include "../FindFile.h"
+#include <string.h>
 #include "../sdl/CVideoDriver.h"
 
 #define SAFE_DELETE(x) { if(x) SDL_FreeSurface(x); x = NULL; }
@@ -23,6 +25,7 @@ m_masksurface(NULL)
 /////////////////////////////
 // Initialization Routines //
 /////////////////////////////
+
 bool CSprite::createSurface(Uint32 flags, SDL_Color *Palette)
 {
 	m_surface = SDL_CreateRGBSurface( flags, m_xsize, m_ysize, 8, 0, 0, 0, 0);
@@ -48,6 +51,23 @@ bool CSprite::optimizeSurface()
 	}
 	else
         return false;
+}
+
+bool CSprite::loadHQSprite( const std::string& filename )
+{
+	if(m_surface)
+	{
+		SDL_Surface *temp_surface = SDL_LoadBMP(GetFullFileName(filename).c_str());
+		if(temp_surface)
+		{
+			SDL_Surface *displaysurface = SDL_ConvertSurface(temp_surface, m_surface->format, m_surface->flags);
+			SDL_BlitSurface(displaysurface, NULL, m_surface, NULL);
+			SDL_FreeSurface(displaysurface);
+			SDL_FreeSurface(temp_surface);
+			return true;
+		}
+	}
+	return false;
 }
 
 void CSprite::applyTransparency()
