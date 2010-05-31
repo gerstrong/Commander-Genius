@@ -43,7 +43,7 @@ CEGASprit::CEGASprit(int planesize,
 					 long spritestartloc,
 					 int numsprites,
 					 long spriteloc,
-					 std::string &gamepath) :
+					 const std::string &gamepath) :
 m_gamepath(gamepath),
 EGASpriteModell(NULL)
 {
