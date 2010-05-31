@@ -316,12 +316,18 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 				}
 			}
 			if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
-			bitmap.optimizeSurface();
-			filename = getResourceFilename("gfx/bitmap" + itoa(b) + ".bmp", path, false, true);
-			bitmap.loadHQBitmap(filename);
 		}
 	}
 	delete Planes;
+
+	// optimize the bitmaps and load hq bitmaps if there are some.
+	for(int b=0 ; b<m_bitmaps ; b++)
+	{
+		CBitmap &bitmap = g_pGfxEngine->getBitmap(b);
+		bitmap.optimizeSurface();
+		filename = getResourceFilename("gfx/bitmap" + itoa(b) + ".bmp", path, false);
+		bitmap.loadHQBitmap(filename);
+	}
 
 	if(RawData){ delete[] RawData; RawData = NULL;}
 
