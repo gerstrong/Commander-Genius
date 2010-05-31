@@ -7,6 +7,7 @@
 
 #include "CBitmap.h"
 #include "CPalette.h"
+#include "../FindFile.h"
 
 CBitmap::CBitmap() {
 	m_BitmapSurface = NULL;
@@ -38,6 +39,23 @@ bool CBitmap::optimizeSurface()
 	}
 	else
 		return false;
+}
+
+bool CBitmap::loadHQBitmap( const std::string& filename )
+{
+	if(m_BitmapSurface)
+	{
+		SDL_Surface *temp_surface = SDL_LoadBMP(GetFullFileName(filename).c_str());
+		if(temp_surface)
+		{
+			SDL_Surface *displaysurface = SDL_ConvertSurface(temp_surface, m_BitmapSurface->format, m_BitmapSurface->flags);
+			SDL_BlitSurface(displaysurface, NULL, m_BitmapSurface, NULL);
+			SDL_FreeSurface(displaysurface);
+			SDL_FreeSurface(temp_surface);
+			return true;
+		}
+	}
+	return false;
 }
 
 ///

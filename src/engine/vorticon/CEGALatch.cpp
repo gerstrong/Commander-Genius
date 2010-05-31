@@ -259,7 +259,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	if(SDL_MUSTLOCK(sfc))	SDL_UnlockSurface(sfc);
 
 	// Load Hi-Colour, VGA, SVGA Tiles into the tilemap
-	filename = getResourceFilename("gfx/ck" + itoa(episode) + "tiles.bmp", path, false);
+	filename = getResourceFilename("gfx/tiles.bmp", path, false);
 	if(!Tilemap->loadHiresTile(filename))
 		g_pLogFile->textOut(GREEN, "VGA Bitmap for Tileset has been loaded successfully!");
 
@@ -316,6 +316,9 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 				}
 			}
 			if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
+			bitmap.optimizeSurface();
+			filename = getResourceFilename("gfx/bitmap" + itoa(b) + ".bmp", path, false, true);
+			bitmap.loadHQBitmap(filename);
 		}
 	}
 	delete Planes;

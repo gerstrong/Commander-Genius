@@ -206,9 +206,9 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	for(Uint16 s=0 ; s<g_pGfxEngine->getSpriteVec().size() ; s++)
 	{
 		CSprite &Sprite = g_pGfxEngine->getSprite(s);
+		Sprite.optimizeSurface();
 		file = getResourceFilename("gfx/sprite" + itoa(s) + ".bmp", m_gamepath, false, true);
 		Sprite.loadHQSprite(file);
-		Sprite.optimizeSurface();
 		Sprite.applyTransparency();
 	}
 	

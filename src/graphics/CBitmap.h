@@ -18,6 +18,7 @@ public:
 
 	bool createSurface(Uint32 flags, SDL_Color *Palette);
 	bool optimizeSurface();
+	bool loadHQBitmap( const std::string& filename );
 
 	SDL_Surface *getSDLSurface();
 	void setDimensions(Uint16 w, Uint16 h);
