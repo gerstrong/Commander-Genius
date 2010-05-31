@@ -6,7 +6,7 @@
  */
 
 #include "CExeFile.h"
-#include "Cunlzexe.h"
+#include "compression/Cunlzexe.h"
 #include <cstring>
 #include <iostream>
 #include <fstream>

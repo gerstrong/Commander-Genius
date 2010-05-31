@@ -8,7 +8,7 @@
 #ifndef CRLE_H_
 #define CRLE_H_
 
-#include "TypeDefinitions.h"
+#include "../TypeDefinitions.h"
 #include <vector>
 
 class CRLE

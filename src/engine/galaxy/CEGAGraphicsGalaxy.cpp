@@ -15,7 +15,7 @@
 #include "CEGAGraphicsGalaxy.h"
 #include "../../graphics/CGfxEngine.h"
 #include "../../FindFile.h"
-#include "../../fileio/CHuffman.h"
+#include "../../fileio/compression/CHuffman.h"
 #include "../../CLogFile.h"
 #include "../../StringUtils.h"
 #include "../../graphics/CGfxEngine.h"

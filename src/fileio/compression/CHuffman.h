@@ -12,7 +12,7 @@
 #ifndef CHUFFMAN_H_
 #define CHUFFMAN_H_
 
-#include "TypeDefinitions.h"
+#include "../TypeDefinitions.h"
 
 struct nodestruct{
 	unsigned short bit0;

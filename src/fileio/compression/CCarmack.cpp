@@ -6,8 +6,8 @@
  */
 
 #include "CCarmack.h"
-#include "../CLogFile.h"
-#include "../StringUtils.h"
+#include "../../CLogFile.h"
+#include "../../StringUtils.h"
 
 CCarmack::CCarmack()
 {
