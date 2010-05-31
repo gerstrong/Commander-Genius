@@ -10,13 +10,14 @@
 #ifndef CCARMACK_H_
 #define CCARMACK_H_
 
+#include <vector>
 #include "TypeDefinitions.h"
 
 class CCarmack
 {
 public:
 	CCarmack();
-	void expand(byte *source, word *dest, int length);
+	void expand( std::vector<byte>& dst, std::vector<byte>& src );
 
 	virtual ~CCarmack();
 };
