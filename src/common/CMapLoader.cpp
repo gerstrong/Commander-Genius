@@ -71,25 +71,6 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	MapFile.seekg (0, std::ios::beg);
 	finsize = unRLEW(MapFile, filebuf);
 	
-	if(finsize == 0) // The data is already decompressed. Read it normally
-	{
-		Uint16 value = 0;
-		Uint8 high_byte, low_byte;
-		
-		MapFile.seekg(0);
-		MapFile.clear();
-		
-		while(!MapFile.eof())
-		{
-			low_byte = MapFile.get();
-			high_byte = MapFile.get();
-			value = (high_byte<<8) | low_byte;
-			
-			filebuf.push_back( value );
-			c++;
-		}
-	}
-	
 	mp_map->m_width = filebuf[2];
 	mp_map->m_height = filebuf[3];
 	

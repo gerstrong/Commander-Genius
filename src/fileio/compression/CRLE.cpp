@@ -5,6 +5,23 @@
  *      Author: gerstrong
  *
  *  Class for RLE(W) decompression
+ *
+ 	 The algorithm works as follows:
+	 1.) If implemented, get the first dword in the file, [Final Length]
+	 2.) If [Length of data so far] < [Final Length] then:
+	 3.) Get a word
+	 4.) Is this word $FEFE?
+	 -> If yes;
+	 Get the next two words (Word1 and Word2)
+	 Copy Word1 [Word2] times
+	 Move forward three words and got to 2.)
+	 -> If no;
+	 Copy the word
+	 Move forward a word and go to 2.)
+
+	 This also means that if the file is already decompressed, the algorithm
+	 will just read the bytes and dump a vector<word> which should be 16-bit
+ *
  */
 
 #include "CRLE.h"
