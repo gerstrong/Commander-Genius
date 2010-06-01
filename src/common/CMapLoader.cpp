@@ -15,7 +15,7 @@
 #include "../CLogFile.h"
 #include "../fileio.h"
 #include "../fileio/ResourceMgmt.h"
-#include "../include/fileio/rle.h"
+#include "../fileio/compression/CRLE.h"
 #include "../graphics/CGfxEngine.h"
 #include "../sdl/CVideoDriver.h"
 
@@ -66,25 +66,35 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	
     // decompress map RLEW data
 	std::vector<Uint16> filebuf;
-	unsigned long finsize; 		   // Final size
-	
+
 	MapFile.seekg (0, std::ios::beg);
-	finsize = unRLEW(MapFile, filebuf);
 	
-	mp_map->m_width = filebuf[2];
-	mp_map->m_height = filebuf[3];
+	// load the compressed data into the memory
+	std::vector<Uint8>	compdata;
+	while( !MapFile.eof() )
+	{
+		Uint8 actual_byte = MapFile.get();
+		compdata.push_back(actual_byte);
+	}
+    MapFile.close();
+
+	CRLE RLE;
+	RLE.expand(filebuf,compdata, 0xFEFE);
+	
+	mp_map->m_width = filebuf.at(1);
+	mp_map->m_height = filebuf.at(2);
 	
 	size_t mapsize = ((mp_map->m_width+32)*(mp_map->m_height+32));
 
 	// Here goes the memory allocation function
 	mp_map->createEmptyForeground(mapsize);
 	
-	planesize = filebuf[9];
+	planesize = filebuf.at(8);
 	planesize /= 2; // Size of two planes, but we only need one
 	
-	for( c=18 ; c<planesize+18 ; c++ ) // Check against Tilesize
+	for( c=17 ; c<planesize+17 ; c++ ) // Check against Tilesize
 	{
-		t = filebuf[c];
+		t = filebuf.at(c);
 		
 		addTile(t, curmapx, curmapy);
 		
@@ -111,9 +121,9 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	    	mp_objvect->clear();
 	    mp_objvect->reserve(20000);
 
-		for( c=planesize+18 ; c<2*planesize+18 ; c++ )
+		for( c=planesize+17 ; c<2*planesize+17 ; c++ )
 		{
-			t = filebuf[c];
+			t = filebuf.at(c);
 			
 			if (mp_map->m_worldmap) addWorldMapObject(t, curmapx, curmapy,  episode );
 			else addEnemyObject(t, curmapx, curmapy, episode, level);
@@ -130,7 +140,6 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 		}
 	}
     filebuf.clear();
-    MapFile.close();
 	
     // Do some post calculations
     // Limit the scroll screens so the blocking (blue in EP1) tiles are3 never seen

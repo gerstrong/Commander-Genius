@@ -1,6 +1,11 @@
 Commander Genius Release (CloneKeenPlus):
 =========================================
 
+v0.3.1.4:
+---------
+- Now HQ Sprites are supported!
+- faster loading maps algorithm and less memory used
+
 v0.3.1.3:
 ---------
 - Savegames are now separated per game

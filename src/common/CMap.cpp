@@ -182,7 +182,7 @@ bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t, bool update)
 // used normally, when items are picked up
 bool CMap::changeTile(Uint16 x, Uint16 y, Uint16 t)
 {
-	if(setTile( x, y, t))
+	if( setTile( x, y, t ) )
 	{
 		mp_Tilemap->drawTile(mp_scrollsurface, (x<<4)&511, (y<<4)&511, t);
 		registerAnimation( (x<<4)&511, (y<<4)&511, t );
@@ -335,13 +335,16 @@ void CMap::drawAll()
 // draw a horizontal stripe, for vertical scrolling
 void CMap::drawHstripe(unsigned int y, unsigned int mpy)
 {
+	if(mpy >= m_height) return;
 	int x,c;
 	int num_v_tiles= mp_scrollsurface->w/16;
 	
+	if( num_v_tiles+m_mapx >= m_width )
+		num_v_tiles = m_width-m_mapx;
+
 	for(x=0;x<num_v_tiles;x++)
 	{
 		c = mp_foreground_data[mpy*m_width + x+m_mapx];
-		
 		mp_Tilemap->drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511, y, c);
 		registerAnimation( ((x<<4)+m_mapxstripepos)&511, y, c );
 	}
@@ -350,11 +353,16 @@ void CMap::drawHstripe(unsigned int y, unsigned int mpy)
 // draws a vertical stripe from map position mapx to scrollbuffer position x
 void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 {
-	int y,c;
-	int num_h_tiles= mp_scrollsurface->h/16;
-	for(y=0;y<num_h_tiles;y++)
+	if(mpx >= m_width) return;
+
+	Uint32 num_h_tiles= mp_scrollsurface->h/16;
+
+	if( num_h_tiles+m_mapy >= m_height )
+		num_h_tiles = m_height-m_mapy;
+
+	for(Uint32 y=0;y<num_h_tiles;y++)
 	{
-		c = mp_foreground_data[(y+m_mapy)*m_width + mpx];
+		Uint32 c = mp_foreground_data[(y+m_mapy)*m_width + mpx];
 		mp_Tilemap->drawTile(mp_scrollsurface, x, ((y<<4)+m_mapystripepos)&511, c);
 		registerAnimation( x, ((y<<4)+m_mapystripepos)&511, c );
 	}
