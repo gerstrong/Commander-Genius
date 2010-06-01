@@ -14,7 +14,6 @@
 #include "sdl/CVideoDriver.h"
 #include "sdl/sound/CSound.h"
 #include "fileio.h"
-#include "include/fileio/rle.h"
 #include "CLogFile.h"
 #include "StringUtils.h"
 #include "Debug.h"

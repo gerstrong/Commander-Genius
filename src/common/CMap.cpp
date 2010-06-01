@@ -11,7 +11,6 @@
 #include <fstream>
 #include "../FindFile.h"
 #include "../CLogFile.h"
-#include "../include/fileio/rle.h"
 #include "../sdl/CVideoDriver.h"
 #include "../graphics/CGfxEngine.h"
 
@@ -336,15 +335,14 @@ void CMap::drawAll()
 void CMap::drawHstripe(unsigned int y, unsigned int mpy)
 {
 	if(mpy >= m_height) return;
-	int x,c;
-	int num_v_tiles= mp_scrollsurface->w/16;
+	Uint32 num_v_tiles= mp_scrollsurface->w/16;
 	
 	if( num_v_tiles+m_mapx >= m_width )
 		num_v_tiles = m_width-m_mapx;
 
-	for(x=0;x<num_v_tiles;x++)
+	for(Uint32 x=0;x<num_v_tiles;x++)
 	{
-		c = mp_foreground_data[mpy*m_width + x+m_mapx];
+		Uint32 c = mp_foreground_data[mpy*m_width + x+m_mapx];
 		mp_Tilemap->drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511, y, c);
 		registerAnimation( ((x<<4)+m_mapxstripepos)&511, y, c );
 	}
