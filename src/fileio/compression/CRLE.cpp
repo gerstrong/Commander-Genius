@@ -26,35 +26,38 @@ CRLE::CRLE()
 #define COPY_BYTE1  j
 #define COPY_BYTE2  j+1
 
-void CRLE::expand( std::vector<uint8_t>& dst, std::vector<uint8_t>& src, uint16_t key )
+void CRLE::expand( std::vector<word>& dst, std::vector<byte>& src, word key )
 {
-    uint16_t i, j, word, count, inc;
+	size_t finsize, howmany;
+	byte high_byte, low_byte;
+	word value;
 
-    for( i=WORDSIZE; i<src.size(); i+=inc )
+	low_byte = src.at(0);
+	high_byte = src.at(1);
+	finsize = (high_byte<<8) | low_byte;
+	finsize /= 2;
+
+	for(size_t i=2 ; dst.size() < finsize ;)
     {
-        // Read datum (word)
-        word = (src.at(i)<<8)+src.at(i+1);
-        // If datum is 0xFEFE/0xABCD Then
-        if( word == key )
-        {
-            // Read count (word)
-            count = (src.at(i+2)<<8)+src.at(i+3);
-            // Do count times
-            for( j=0; j<count; j++ )
-            {
-                // Write datum (word)
-                dst.push_back(src.at(i+4));
-                dst.push_back(src.at(i+5));
-            }
-            inc = 3*WORDSIZE;
-        }
-        else
-        {
-            // Write datum (word)
-            dst.push_back(src.at(i));
-            dst.push_back(src.at(i+1));
-            inc = WORDSIZE;
-        }
+		low_byte = src.at(i++);
+		high_byte = src.at(i++);
+		value = (high_byte<<8) | low_byte;
+
+		if (value == key)
+		{
+			low_byte = src.at(i++);
+			high_byte = src.at(i++);
+			howmany = (high_byte<<8) | low_byte;
+
+			low_byte = src.at(i++);
+			high_byte = src.at(i++);
+			value = (high_byte<<8) | low_byte;
+
+			for(Uint32 j=0;j<howmany;j++)
+				dst.push_back(value);
+		}
+		else
+			dst.push_back(value);
     }
 }
 

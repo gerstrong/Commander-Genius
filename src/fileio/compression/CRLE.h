@@ -15,7 +15,7 @@ class CRLE
 {
 public:
 	CRLE();
-	void expand( std::vector<uint8_t>& dst, std::vector<uint8_t>& src, uint16_t key );
+	void expand( std::vector<word>& dst, std::vector<byte>& src, word key );
 	virtual ~CRLE();
 };
 

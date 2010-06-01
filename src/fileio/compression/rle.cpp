@@ -10,6 +10,8 @@
 #include <stdio.h>
 #include <SDL.h>
 
+#include "CRLE.h"
+
 unsigned long unRLEW(std::ifstream& file, std::vector<Uint16>& filebuf)
 {
 	/* The algorithm works as follows:
@@ -25,16 +27,15 @@ unsigned long unRLEW(std::ifstream& file, std::vector<Uint16>& filebuf)
 	 Copy the word
 	 Move forward a word and go to 2.)
 	 */
-	Uint32 howmany, cursize=0;
-	Uint32 finsize;
+	Uint32 cursize=0;
 	Uint16 value;
-	Uint8 high_byte, low_byte;
 
-	/* File can read have more stuff. We read a relative start */
+	/* File can have more stuff. We read a relative start */
 	int startpos = file.tellg();
 
-	while(!file.eof()) // Detect, if the file is really RLEW compressed!
+	while(!file.eof()) // check if the file is really RLEW compressed!
 	{
+		byte high_byte, low_byte;
 		low_byte = file.get();
 		high_byte = file.get();
 		value = (high_byte<<8) | low_byte;
@@ -54,32 +55,16 @@ unsigned long unRLEW(std::ifstream& file, std::vector<Uint16>& filebuf)
 		return 0; // This file is not RLEW compressed!
 	}
 
+	std::vector<Uint8>	compdata;
 
-	low_byte = file.get();
-	high_byte = file.get();
-	finsize = (high_byte<<8) | low_byte;
+	while( !file.eof() )
+	{
+		Uint8 actual_byte = file.get();
+		compdata.push_back(actual_byte);
+	}
 
-    while( filebuf.size() < finsize )
-    {
-		low_byte = file.get();
-		high_byte = file.get();
-		value = (high_byte<<8) | low_byte;
+	CRLE RLE;
+	RLE.expand(filebuf,compdata, 0xFEFE);
 
-		if (value == 0xFEFE)
-		{
-			low_byte = file.get();
-			high_byte = file.get();
-			howmany = (high_byte<<8) | low_byte;
-
-			low_byte = file.get();
-			high_byte = file.get();
-			value = (high_byte<<8) | low_byte;
-
-			for(Uint32 i=0;i<howmany;i++)
-				filebuf.push_back(value);
-		}
-		else
-			filebuf.push_back(value);
-    }
-    return filebuf.size();
+	return filebuf.size();
 }
