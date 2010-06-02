@@ -20,8 +20,6 @@ CPatcher::CPatcher(int episode, int version,unsigned char *data, const std::stri
 	m_datadirectory = datadir;
 }
 
-CPatcher::~CPatcher() {}
-
 void CPatcher::patchMemory()
 {
 	if(!loadPatchfile()) return;
@@ -237,5 +235,11 @@ void CPatcher::PatchLevelhint(int level)
 
 	// Fill the rest with zeros, so the old won't be shown
 	if(end > offset)
+
+
 		memset( p_patch, 0, end-offset);
 }
+
+CPatcher::~CPatcher() {}
+
+

@@ -190,10 +190,10 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
 
 	// Load Hi-Colour VGA, SVGA 8x8 Tiles into the fontmap
-	filename = getResourceFilename("gfx/fonts.bmp", path, false, true);
+	filename = getResourceFilename("gfx/fonts.bmp", path, false);
 
 	Font.optimizeSurface();
-	if(!Font.loadHiColourFont(filename)) // This is loaded again in order to get hi-colour fonts
+	if(Font.loadHiColourFont(filename)) // This is loaded again in order to get hi-colour fonts
 		g_pLogFile->textOut(GREEN, "VGA Fontmap for the game has been loaded successfully!");
 
 	Font.setFGColour(Font.getSDLSurface()->format, 0x0, true);
@@ -260,7 +260,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 
 	// Load Hi-Colour, VGA, SVGA Tiles into the tilemap
 	filename = getResourceFilename("gfx/ck" + itoa(episode) + "tiles.bmp", path, false);
-	if(!Tilemap->loadHiresTile(filename))
+	if(Tilemap->loadHiresTile(filename))
 		g_pLogFile->textOut(GREEN, "VGA Bitmap for Tileset has been loaded successfully!");
 
 	// Adapt the tilemap to the display, so they are faster blit

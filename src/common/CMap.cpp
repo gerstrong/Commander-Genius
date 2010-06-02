@@ -316,15 +316,20 @@ void CMap::redrawAt(int mx, int my)
 // for the correct and fast update of tiles
 void CMap::drawAll()
 {
-	int x, y, c;
-	int num_h_tiles = mp_scrollsurface->h/16;
-	int num_v_tiles = mp_scrollsurface->w/16;
+	Uint32 num_h_tiles = mp_scrollsurface->h/16;
+	Uint32 num_v_tiles = mp_scrollsurface->w/16;
 
-    for(y=0;y<num_h_tiles;y++)
+	if(num_v_tiles+m_mapx >= m_width)
+		num_v_tiles = m_width-m_mapx;
+
+	if(num_h_tiles+m_mapy >= m_height)
+		num_h_tiles = m_height-m_mapy;
+
+    for(Uint32 y=0;y<num_h_tiles;y++)
     {
-    	for(x=0;x<num_v_tiles;x++)
+    	for(Uint32 x=0;x<num_v_tiles;x++)
     	{
-    		c = mp_foreground_data[(m_mapy+y)*m_width + x+m_mapx];
+    		Uint32 c = mp_foreground_data[(m_mapy+y)*m_width + x+m_mapx];
 			mp_Tilemap->drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511, ((y<<4)+m_mapystripepos)&511, c);
 			registerAnimation( ((x<<4)+m_mapxstripepos)&511, ((y<<4)+m_mapystripepos)&511, c );
     	}
@@ -475,6 +480,15 @@ void CMap::registerAnimation(Uint32 x, Uint32 y, int c)
 				m_animtiles[i].x = x;
 				m_animtiles[i].y = y;
 				m_animtiles[i].baseframe = c - mp_tiles[c].animOffset;
+
+				if(m_animtiles[i].baseframe < 0 || m_animtiles[i].baseframe > 700 )
+				{
+					printf("fuck!");
+					printf("fuck!");
+					printf("fuck!");
+					printf("fuck!");
+				}
+
 				m_animtiles[i].offset = mp_tiles[c].animOffset;
 				m_animtiles[i].slotinuse = 1;
 				m_AnimTileInUse[x>>4][y>>4] = i;
