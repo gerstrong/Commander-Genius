@@ -32,12 +32,16 @@ void CPatcher::patchMemory()
 	bool ignorelines=false; // ignore the lines which are read. This happens, when patch files are created
 	// for multiple keen versions (1.1, 1.34)
 	
+	patch_item PatchItem;
+
 	// TODO: Extend this part further with more commands
 	while(!m_TextList.empty())
 	{
+		readNextPatchItem(PatchItem);
 		// Get the next line
 		line = *m_TextList.begin();
 		
+		// Check if version match to patch
 		if( (strCaseStartsWith(line,"\%version 1.1") && m_version == 131) ||
 		   (strCaseStartsWith(line,"\%version 1.31") && m_version == 110) )
 			ignorelines = true; // If %version detected and no match ignore the other lines
@@ -118,6 +122,32 @@ struct PatchListFiller {
 		return true;
 	}
 };
+
+bool CPatcher::readNextPatchItem(patch_item &PatchItem)
+{
+	// first, read the keyword
+	std::string	line;
+
+	// Look for the patch flag %
+	while(line.at(0) != '\%')
+	{
+		if(m_TextList.empty())
+			return false;
+
+		line = *m_TextList.begin();
+		m_TextList.pop_front();
+	}
+
+	// found! get the keyword
+
+
+	// Then read the value of that was given to that keyword.
+
+	std::vector<std::string> textline;
+	// TODO:
+
+	line = *m_TextList.begin();
+}
 
 bool CPatcher::loadPatchfile()
 {

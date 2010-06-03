@@ -23,6 +23,14 @@ public:
 	
 private:
 	
+	struct patch_item
+	{
+		std::string keyword;
+		std::string value;
+	};
+
+	bool readNextPatchItem(patch_item &PatchItem);
+
 	bool loadPatchfile();
 	
 	int m_episode;

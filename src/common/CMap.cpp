@@ -480,15 +480,6 @@ void CMap::registerAnimation(Uint32 x, Uint32 y, int c)
 				m_animtiles[i].x = x;
 				m_animtiles[i].y = y;
 				m_animtiles[i].baseframe = c - mp_tiles[c].animOffset;
-
-				if(m_animtiles[i].baseframe < 0 || m_animtiles[i].baseframe > 700 )
-				{
-					printf("fuck!");
-					printf("fuck!");
-					printf("fuck!");
-					printf("fuck!");
-				}
-
 				m_animtiles[i].offset = mp_tiles[c].animOffset;
 				m_animtiles[i].slotinuse = 1;
 				m_AnimTileInUse[x>>4][y>>4] = i;
