@@ -28,86 +28,62 @@ void CPatcher::patchMemory()
 	// then read out of the list the patch commands and apply them to the
 	// Exe-file data m_data
 	
-	std::string line;
-	bool ignorelines=false; // ignore the lines which are read. This happens, when patch files are created
-	// for multiple keen versions (1.1, 1.34)
+	g_pLogFile->textOut("Trying to load and apply the patch it found...\n");
 	
+	filterPatches();
+
 	patch_item PatchItem;
 
 	// TODO: Extend this part further with more commands
-	while(!m_TextList.empty())
+	while(readNextPatchItem(PatchItem) == true)
 	{
-		readNextPatchItem(PatchItem);
-		// Get the next line
-		line = *m_TextList.begin();
-		
-		// Check if version match to patch
-		if( (strCaseStartsWith(line,"\%version 1.1") && m_version == 131) ||
-		   (strCaseStartsWith(line,"\%version 1.31") && m_version == 110) )
-			ignorelines = true; // If %version detected and no match ignore the other lines
-		
-		if( (strCaseStartsWith(line,"\%version 1.31") && m_version == 131) ||
-		   (strCaseStartsWith(line,"\%version 1.1") && m_version == 110) ||
-		   strCaseStartsWith(line,"\%version ALL")							)
-			ignorelines = false; // If the line matches don't ignore them anymore
-		
-		if( !ignorelines )
+		// Now we really start to process the commands
+		if(PatchItem.keyword == "patchfile")
 		{
-			// Now we really start to process the commands
-			if( strCaseStartsWith(line,"\%patchfile") )
-			{
-				std::string newbuf = line.substr(strlen("\%patchfile"));
-				TrimSpaces(newbuf);
-				size_t p = newbuf.find(' ');
-				if(p != std::string::npos) {
-					
-					long offset = 0;
-					sscanf(newbuf.substr(0,p).c_str(), "%lx", &offset); // Only hexadecimal numbers supported
-					std::string patch_file_name = newbuf.substr(p+1);
-					TrimSpaces(patch_file_name);
-					
-					p = patch_file_name.find(' ');
-					if( p != std::string::npos )
-						patch_file_name.erase(p);
-					
-					patchMemfromFile(m_datadirectory + "/" + patch_file_name,offset);
-				}
-			}
-			else if( strCaseStartsWith(line,"\%patch") )
-			{
-				std::string newbuf = line.substr(strlen("\%patch"));
-				TrimSpaces(newbuf);
-				size_t p = newbuf.find(' ');
+			std::string newbuf = PatchItem.value.front();
 
-				if( strCaseStartsWith(newbuf,"0x") ){
-					long offset = 0;
+			// Seperate the offset and the filename
+			long offset;
+			size_t p = newbuf.find(' ');
+			sscanf(newbuf.substr(0,p).c_str(), "%lx", &offset);
+			std::string patch_file_name = newbuf.substr(p);
+			TrimSpaces(patch_file_name);
 
-					sscanf(newbuf.c_str() ,"%lx", &offset);
-
-					newbuf = newbuf.substr(p);
-
-					TrimSpaces(newbuf);
-
-					if(strCaseStartsWith(newbuf,"\""))
-					{
-						std::string patchtext = newbuf.substr(1);
-						patchtext = patchtext.substr(0, patchtext.find("\""));
-						patchMemFromText(offset, patchtext);
-					}
-				}
-			}
-			else if( strCaseStartsWith(line,"\%level.hint") )
-			{
-				// You have a level hint. Very good, lets read it and patch!
-				std::string newbuf = line.substr(strlen("\%level.hint"));
-				TrimSpaces(newbuf);
-				PatchLevelhint(atoi(newbuf));
-			}
-
+			patchMemfromFile(m_datadirectory + "/" + patch_file_name,offset);
 		}
-		
-		if(!m_TextList.empty())
-			m_TextList.pop_front();
+		else
+			g_pLogFile->textOut("They Keyword " + PatchItem.keyword + " is not supported by CG yet!\n" );
+
+		/*else if( strCaseStartsWith(line,"\%patch") )
+		{
+			std::string newbuf = line.substr(strlen("\%patch"));
+			TrimSpaces(newbuf);
+			size_t p = newbuf.find(' ');
+
+			if( strCaseStartsWith(newbuf,"0x") ){
+				long offset = 0;
+
+				sscanf(newbuf.c_str() ,"%lx", &offset);
+
+				newbuf = newbuf.substr(p);
+
+				TrimSpaces(newbuf);
+
+				if(strCaseStartsWith(newbuf,"\""))
+				{
+					std::string patchtext = newbuf.substr(1);
+					patchtext = patchtext.substr(0, patchtext.find("\""));
+					patchMemFromText(offset, patchtext);
+				}
+			}
+		}
+		else if( strCaseStartsWith(line,"\%level.hint") )
+		{
+			// You have a level hint. Very good, lets read it and patch!
+			std::string newbuf = line.substr(strlen("\%level.hint"));
+			TrimSpaces(newbuf);
+			PatchLevelhint(atoi(newbuf));
+		}*/
 	}
 }
 
@@ -123,32 +99,96 @@ struct PatchListFiller {
 	}
 };
 
+/**
+ * \brief	this function filters out the blocks of text, that you are not supposed to be used.
+ */
+void CPatcher::filterPatches()
+{
+	std::list<std::string> TextList;
+	TextList = m_TextList;
+	m_TextList.clear();
+
+	bool ignorelines=false; // ignore the lines which are read. This happens, when patch files are created
+	// for multiple keen versions (1.1, 1.34)
+
+	while(!TextList.empty())
+	{
+		std::string line = TextList.front();
+
+		// Check if version match to patch
+		if( (strCaseStartsWith(line,"\%version 1.1") && m_version == 131) ||
+				(strCaseStartsWith(line,"\%version 1.31") && m_version == 110) )
+		{
+			ignorelines = true; // If %version detected and no match ignore the other lines
+		}
+		if( (strCaseStartsWith(line,"\%version 1.31") && m_version == 131) ||
+				(strCaseStartsWith(line,"\%version 1.1") && m_version == 110) ||
+				strCaseStartsWith(line,"\%version ALL")							)
+		{
+			ignorelines = false; // If the line matches don't ignore them anymore
+		}
+		else if( !ignorelines )
+		{
+			m_TextList.push_back(line);
+			TextList.pop_front();
+		}
+	}
+}
+
+/**
+ * \brief This one read the next item with it's keyword and value so it can be processed through some logic
+ * \param PatchItem Reference to an internal structure which holds the keyword in lower case and its value
+ * 					which is a vector of strings.
+ * \return	true if something next could be read. Otherwise false.
+ */
 bool CPatcher::readNextPatchItem(patch_item &PatchItem)
 {
 	// first, read the keyword
 	std::string	line;
 
 	// Look for the patch flag %
-	while(line.at(0) != '\%')
+	do
 	{
 		if(m_TextList.empty())
 			return false;
 
 		line = *m_TextList.begin();
 		m_TextList.pop_front();
-	}
+	} while(line.at(0) != '\%');
 
-	// found! get the keyword
-
+	// found! get the keyword itself and make it lower case!
+	line.erase(0,1);
+	stringlwr(line);
+	size_t pos = line.find(' ');
+	PatchItem.keyword = line.substr(0,pos);
+	line.erase(0,pos);
+	TrimSpaces(line);
 
 	// Then read the value of that was given to that keyword.
-
 	std::vector<std::string> textline;
-	// TODO:
 
-	line = *m_TextList.begin();
+	textline.push_back(line);
+
+	while(1)
+	{
+		if(m_TextList.empty())
+			return true;
+
+		line = *m_TextList.begin();
+		m_TextList.pop_front();
+
+		if(line.at(0) == '\%')
+			break;
+
+		textline.push_back(line);
+	}
+	return true;
 }
 
+/**
+ * \brief this reads the patch into the m_TextList
+ * \return	true if something could be read. Otherwise false
+ */
 bool CPatcher::loadPatchfile()
 {
 	std::string path = m_datadirectory;
@@ -157,7 +197,7 @@ bool CPatcher::loadPatchfile()
 	PatchListFiller patchlist;
 	FindFiles(patchlist, path, false, FM_REG);
 	
-	// Nothing to play, just quit
+	// Nothing to patch, just quit
 	if (!patchlist.list.size())
 		return false;
 	

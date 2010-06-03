@@ -26,9 +26,10 @@ private:
 	struct patch_item
 	{
 		std::string keyword;
-		std::string value;
+		std::list<std::string> value;
 	};
 
+	void filterPatches();
 	bool readNextPatchItem(patch_item &PatchItem);
 
 	bool loadPatchfile();
@@ -39,7 +40,6 @@ private:
 	std::string m_datadirectory;
 	
 	std::list<std::string> m_TextList;
-	
 };
 
 #endif /* CPATCHER_H_ */
