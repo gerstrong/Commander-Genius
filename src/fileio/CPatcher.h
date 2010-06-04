@@ -18,7 +18,6 @@ public:
 	
 	void patchMemory();
 	void patchMemfromFile(const std::string& patch_file_name, long offset);
-	void patchMemFromText(unsigned long offset, std::string &patchtext);
 	void PatchLevelhint(int level);
 	
 private:
@@ -31,6 +30,7 @@ private:
 
 	std::string readPatchItemsNextValue(std::list<std::string> &input);
 	bool readIntValue(const std::string &input, long &output);
+	bool readPatchString(const std::string &input, std::string &output);
 	void filterPatches();
 	bool readNextPatchItem(patch_item &PatchItem);
 

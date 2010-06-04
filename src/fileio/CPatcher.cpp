@@ -37,9 +37,28 @@ void CPatcher::patchMemory()
 	while(readNextPatchItem(PatchItem) == true)
 	{
 		// Now we really start to process the commands
-		if(PatchItem.keyword == "patchfile")
+
+		if(PatchItem.keyword == "ext")
+		{
+			// Check's if patch matches with the episode
+			std::string extText = readPatchItemsNextValue(PatchItem.value);
+
+			if(strCaseStartsWith(extText,"ck"))
+			{
+				if(atoi(extText.substr(2)) != m_episode)
+				{
+					g_pLogFile->textOut("Error! The patch-file does not match the opened episode!!!\n");
+					return;
+				}
+			}
+		}
+		else if(PatchItem.keyword == "patchfile")
 		{
 			std::string newbuf = PatchItem.value.front();
+			// TODO: Fix that part of the CODE!!!!
+			// DON'T FORGET THAT!!!!!!!!!1
+			// !!!!!!!!!!!!!!!!!!!
+			// !!!!!!!!!!!!!!!!!!
 
 			// Seperate the offset and the filename
 			long offset;
@@ -62,14 +81,21 @@ void CPatcher::patchMemory()
 				{
 					// after we have it, distinguish between text case and number case
 					long number = 0;
-					std::string textline = readPatchItemsNextValue(PatchItem.value);
+					std::string patchtext = "";
+					textline = readPatchItemsNextValue(PatchItem.value);
 
 					if(readIntValue(textline, number))
 					{
 						// In this case we have number
+						m_data[offset] = number;
+						offset++;
 					}
-					//else if(readPatchString(PatchItem.value, textline)) {}
-
+					else if(readPatchString(textline, patchtext))
+					{
+						size_t textsize = patchtext.size();
+						memcpy( m_data+offset, patchtext.c_str(), textsize);
+						offset += textsize;
+					}
 				}
 			}
 			else
@@ -103,6 +129,9 @@ void CPatcher::patchMemory()
 		}*/
 		else
 			g_pLogFile->textOut("They Keyword " + PatchItem.keyword + " is not supported by CG yet!\n" );
+
+		PatchItem.keyword.clear();
+		PatchItem.value.clear();
 	}
 }
 
@@ -117,7 +146,6 @@ struct PatchListFiller {
 		return true;
 	}
 };
-
 
 /**
  * \brief this reads the patch into the m_TextList
@@ -185,13 +213,6 @@ void CPatcher::patchMemfromFile(const std::string& patch_file_name, long offset)
 	}
 	
 	Patchfile.close();
-}
-
-// This is used for patching. I didn't think we could get it that small.
-void CPatcher::patchMemFromText(unsigned long offset, std::string &patchtext)
-{
-	memcpy( m_data+offset, patchtext.c_str(), patchtext.size());
-	return;
 }
 
 void CPatcher::PatchLevelhint(int level)

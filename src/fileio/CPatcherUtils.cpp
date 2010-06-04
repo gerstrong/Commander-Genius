@@ -35,7 +35,7 @@ std::string CPatcher::readPatchItemsNextValue(std::list<std::string> &input)
 	if(strStartsWith(line,"\""))
 	{
 		// It is a string!!
-		pos = line.substr(1).find("\"")+1;
+		pos = line.substr(1).find("\"")+2;
 	}
 	else
 	{
@@ -64,9 +64,9 @@ std::string CPatcher::readPatchItemsNextValue(std::list<std::string> &input)
  */
 bool CPatcher::readIntValue(const std::string &input, long &output)
 {
-	std::string line = input;
-	if(strStartsWith(line, "$") or strCaseStartsWith(line, "0x"))
+	if(strStartsWith(input, "$") or strCaseStartsWith(input, "0x"))
 	{
+		std::string line = input;
 		// it is a hexadecimal number
 		if(strStartsWith(line, "$"))
 		{
@@ -81,8 +81,23 @@ bool CPatcher::readIntValue(const std::string &input, long &output)
 		// now everything is hexadecimal with the proper format
 		sscanf( line.c_str(), "%lx", &output );
 
-		// cut out elements we were able to read
 		return true;
+	}
+
+	return false;
+}
+
+bool CPatcher::readPatchString(const std::string &input, std::string &output)
+{
+	if(strStartsWith(input, "\""))
+	{
+		// string found. read it!
+		if(input.size() > 1)
+		{
+			output = input.substr(1);
+			output.erase(output.size()-1,1);
+			return true;
+		}
 	}
 
 	return false;
@@ -147,16 +162,14 @@ bool CPatcher::readNextPatchItem(patch_item &PatchItem)
 
 	// found! get the keyword itself and make it lower case!
 	line.erase(0,1);
-	stringlwr(line);
 	size_t pos = line.find(' ');
 	PatchItem.keyword = line.substr(0,pos);
+	stringlwr(PatchItem.keyword);
 	line.erase(0,pos);
 	TrimSpaces(line);
 
 	// Then read the value of that was given to that keyword.
-	std::vector<std::string> textline;
-
-	textline.push_back(line);
+	PatchItem.value.push_back(line);
 
 	while(1)
 	{
@@ -164,12 +177,14 @@ bool CPatcher::readNextPatchItem(patch_item &PatchItem)
 			return true;
 
 		line = *m_TextList.begin();
-		m_TextList.pop_front();
 
-		if(line.at(0) == '\%')
+		if(strStartsWith(line,"\%"))
 			break;
 
-		textline.push_back(line);
+		m_TextList.pop_front();
+
+		PatchItem.value.push_back(line);
 	}
+
 	return true;
 }
