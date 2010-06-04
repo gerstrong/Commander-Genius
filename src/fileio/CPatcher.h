@@ -29,6 +29,8 @@ private:
 		std::list<std::string> value;
 	};
 
+	std::string readPatchItemsNextValue(std::list<std::string> &input);
+	bool readIntValue(const std::string &input, long &output);
 	void filterPatches();
 	bool readNextPatchItem(patch_item &PatchItem);
 
