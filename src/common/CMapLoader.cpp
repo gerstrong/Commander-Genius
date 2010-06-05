@@ -119,9 +119,10 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	{
 	    if(!mp_objvect->empty())
 	    	mp_objvect->clear();
+
 	    mp_objvect->reserve(20000);
 
-		for( c=planesize+17 ; c<2*planesize+17 ; c++ )
+		for( c=planesize+17 ; c<2*planesize+16 ; c++ )
 		{
 			t = filebuf.at(c);
 			
