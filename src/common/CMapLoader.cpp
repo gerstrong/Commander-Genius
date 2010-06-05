@@ -124,6 +124,8 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 
 		for( c=planesize+17 ; c<2*planesize+16 ; c++ )
 		{
+			if(filebuf.size() <= c) break;
+
 			t = filebuf.at(c);
 			
 			if (mp_map->m_worldmap) addWorldMapObject(t, curmapx, curmapy,  episode );
