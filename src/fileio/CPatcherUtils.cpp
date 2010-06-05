@@ -84,6 +84,10 @@ bool CPatcher::readIntValue(const std::string &input, long &output)
 		return true;
 	}
 
+	// Try to read a decimal number
+	if((output = atoi(input)) != 0)
+		return true;
+
 	return false;
 }
 
@@ -131,11 +135,12 @@ void CPatcher::filterPatches()
 		{
 			ignorelines = false; // If the line matches don't ignore them anymore
 		}
-		else if( !ignorelines )
+		else if( !ignorelines && !strStartsWith(line,"#") )
 		{
+			// Ignore lines which are meant for other versions and comments.
 			m_TextList.push_back(line);
-			TextList.pop_front();
 		}
+		TextList.pop_front();
 	}
 }
 

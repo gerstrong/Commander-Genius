@@ -25,6 +25,7 @@ public:
 	
 	char getEpisode();
 	std::string getDataDirectory();
+	size_t getExeDataSize();
 
 	bool readData(const char episode, const std::string& datadirectory);
 	int getEXEVersion();
@@ -56,7 +57,7 @@ private:
 		unsigned short overlay_num;
 	};
 
-	int m_datasize;
+	size_t m_datasize;
 	int m_episode;
 	unsigned int m_crc;
 	unsigned char *m_data;

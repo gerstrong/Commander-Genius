@@ -11,14 +11,16 @@
 #include <list>
 #include <string>
 
+#include "CExeFile.h"
+
 class CPatcher {
 public:
-	CPatcher(int episode, int version,unsigned char *data, const std::string& datadir);
+	CPatcher(CExeFile &ExeFile);
 	virtual ~CPatcher();
 	
 	void patchMemory();
 	void patchMemfromFile(const std::string& patch_file_name, long offset);
-	void PatchLevelhint(int level);
+	void PatchLevelhint(const int level, std::list<std::string> &input);
 	
 private:
 	
@@ -40,6 +42,7 @@ private:
 	int m_version;
 	unsigned char *m_data;
 	std::string m_datadirectory;
+	size_t m_datasize;
 	
 	std::list<std::string> m_TextList;
 };

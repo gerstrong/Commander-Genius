@@ -136,7 +136,7 @@ void CControlsettings::processWaitInput()
 	std::string buf2;
 
 	buf = mp_Dialog->m_dlgobject[m_selection]->m_Option->m_text;
-	buf = buf.erase(11);
+	buf = buf.erase(8);
 	buf2 = g_pInput->getEventName(item, m_chosenPlayer-1);
 	mp_Dialog->setObjectText(m_selection, buf + buf2);
 	mp_Dialog->setInputMode(INPUT_MODE_UP_DOWN);
@@ -164,7 +164,7 @@ void CControlsettings::processSelection()
 				g_pInput->flushAll();
 
 				buf = mp_Dialog->m_dlgobject[m_selection]->m_Option->m_text;
-				buf = buf.erase(11);
+				buf = buf.erase(8);
 
 				buf2 = "*Waiting for Input*";
 				mp_Dialog->setObjectText(m_selection, buf + buf2);

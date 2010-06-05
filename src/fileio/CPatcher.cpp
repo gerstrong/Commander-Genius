@@ -8,36 +8,39 @@
 #include "CPatcher.h"
 #include <string.h>
 #include <fstream>
+#include <iostream>
 #include "../FindFile.h"
 #include "../StringUtils.h"
 #include "../CLogFile.h"
 
-CPatcher::CPatcher(int episode, int version,unsigned char *data, const std::string& datadir) {
-	m_episode = episode;
-	m_version = version;
-	m_data = data;
-	m_datadirectory = datadir;
+CPatcher::CPatcher(CExeFile &ExeFile) {
+	m_episode = ExeFile.getEpisode();
+	m_version = ExeFile.getEXEVersion();
+	m_data = ExeFile.getRawData();
+	m_datadirectory = ExeFile.getDataDirectory();
+	m_datasize = ExeFile.getExeDataSize();
 }
 
 void CPatcher::patchMemory()
 {
 	if(!loadPatchfile()) return;
-	
+
 	// If the file was found and read into the m_TextList,
 	// then read out of the list the patch commands and apply them to the
 	// Exe-file data m_data
 	
-	g_pLogFile->textOut("Trying to load and apply the patch it found...\n");
+	g_pLogFile->textOut("Trying to load and apply the patch it found...<br>");
 	
 	filterPatches();
 
 	patch_item PatchItem;
 
+	std::string dumpfilename = "";
+
 	// TODO: Extend this part further with more commands
 	while(readNextPatchItem(PatchItem) == true)
 	{
 		// Now we really start to process the commands
-
 		if(PatchItem.keyword == "ext")
 		{
 			// Check's if patch matches with the episode
@@ -47,7 +50,7 @@ void CPatcher::patchMemory()
 			{
 				if(atoi(extText.substr(2)) != m_episode)
 				{
-					g_pLogFile->textOut("Error! The patch-file does not match the opened episode!!!\n");
+					g_pLogFile->textOut("Error! The patch-file does not match the opened episode!!!<br>");
 					return;
 				}
 			}
@@ -69,7 +72,6 @@ void CPatcher::patchMemory()
 
 			patchMemfromFile(m_datadirectory + "/" + patch_file_name,offset);
 		}
-
 		else if(PatchItem.keyword == "patch" )
 		{
 			// first we need to get the offset
@@ -99,40 +101,49 @@ void CPatcher::patchMemory()
 				}
 			}
 			else
-				g_pLogFile->textOut("Something is wrong with the \%patch command. A number was expected\n");
-
-
-
-			/*if( strCaseStartsWith(newbuf,"0x") ){
-				long offset = 0;
-
-				sscanf(newbuf.c_str() ,"%lx", &offset);
-
-				newbuf = newbuf.substr(p);
-
-				TrimSpaces(newbuf);
-
-				if(strCaseStartsWith(newbuf,"\""))
-				{
-					std::string patchtext = newbuf.substr(1);
-					patchtext = patchtext.substr(0, patchtext.find("\""));
-					patchMemFromText(offset, patchtext);
-				}
-			}*/
+				g_pLogFile->textOut("Something is wrong with the \%patch command. A number was expected<br>");
 		}
-		/*else if( strCaseStartsWith(line,"\%level.hint") )
+		else if(PatchItem.keyword == "level.hint" )
 		{
-			// You have a level hint. Very good, lets read it and patch!
-			std::string newbuf = line.substr(strlen("\%level.hint"));
-			TrimSpaces(newbuf);
-			PatchLevelhint(atoi(newbuf));
-		}*/
+			// Patch the level hints
+			std::string textline = readPatchItemsNextValue(PatchItem.value);
+			long number = 0;
+
+			if(readIntValue(textline, number))
+			{
+				// You have a level hint. Very good, lets read it and patch!
+				PatchLevelhint(number,PatchItem.value);
+			}
+		}
+		else if(PatchItem.keyword == "dump" )
+		{
+			std::string textline = readPatchItemsNextValue(PatchItem.value);
+			if(readPatchString(textline, dumpfilename))
+				g_pLogFile->textOut("CG will dump out the exe-content to \""+ dumpfilename +"\"<br>" );
+		}
+		else if(PatchItem.keyword == "end" )
+		{
+			g_pLogFile->textOut("End of Patchfile!<br>");
+			break;
+		}
 		else
-			g_pLogFile->textOut("They Keyword " + PatchItem.keyword + " is not supported by CG yet!\n" );
+			g_pLogFile->textOut("The Keyword " + PatchItem.keyword + " is not supported by CG yet!<br>" );
+
+		if(dumpfilename!="")
+		{
+			std::ofstream DumpFile;
+			if(OpenGameFileW(DumpFile,dumpfilename,std::ios::binary))
+			{
+				DumpFile.write(reinterpret_cast<const char*>(m_data),m_datasize);
+				DumpFile.close();
+			}
+		}
 
 		PatchItem.keyword.clear();
 		PatchItem.value.clear();
 	}
+
+	// If we want a dump, make it happen!!
 }
 
 struct PatchListFiller {
@@ -164,7 +175,7 @@ bool CPatcher::loadPatchfile()
 		return false;
 	
 	if (patchlist.list.size() > 1)
-		g_pLogFile->textOut(PURPLE,"Multiple Patch are not yet supported! Please remove a file. Taking one File.<br>");
+		g_pLogFile->textOut(PURPLE,"Multiple Patches are not yet supported! Please remove a file. Taking one File.<br>");
 	
 	while(!patchlist.list.empty())
 	{
@@ -215,7 +226,7 @@ void CPatcher::patchMemfromFile(const std::string& patch_file_name, long offset)
 	Patchfile.close();
 }
 
-void CPatcher::PatchLevelhint(int level)
+void CPatcher::PatchLevelhint(const int level, std::list<std::string> &input)
 {
 	unsigned char *p_patch;
 	unsigned long offset=0;
@@ -249,22 +260,17 @@ void CPatcher::PatchLevelhint(int level)
 	std::string buf;
 	do
 	{
-		m_TextList.pop_front();
-		buf = m_TextList.front();
-
+		buf = input.front();
 		memcpy(p_patch, buf.c_str(), buf.size());
+		input.pop_front();
 		p_patch += buf.size();
 		if( p_patch == m_data+end ) break;
-	} while( !m_TextList.empty() && !strCaseStartsWith(buf,"%") &&
-			 !buf.empty() && !strCaseStartsWith(buf,"\r") );
+	} while( !input.empty() );
 
 	// Fill the rest with zeros, so the old won't be shown
 	if(end > offset)
-
-
 		memset( p_patch, 0, end-offset);
 }
 
 CPatcher::~CPatcher() {}
-
 

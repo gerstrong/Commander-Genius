@@ -31,6 +31,10 @@ char CExeFile::getEpisode()
 std::string CExeFile::getDataDirectory()
 { return m_datadirectory;	}
 
+size_t CExeFile::getExeDataSize()
+{ return m_datasize;	}
+
+
 bool CExeFile::readData(const char episode, const std::string& datadirectory)
 {
 	m_episode = episode;

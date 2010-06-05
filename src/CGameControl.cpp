@@ -197,7 +197,7 @@ bool CGameControl::loadResources(Uint8 flags)
 	}
 
 	// Patch the EXE-File-Data directly in the memory.
-	CPatcher Patcher(m_Episode, version, p_exedata, m_DataDirectory);
+	CPatcher Patcher(m_ExeFile);
 	Patcher.patchMemory();
 
 	if( m_Episode == 1 || m_Episode == 2 || m_Episode == 3 ) // Vorticon resources
