@@ -127,7 +127,8 @@ bool CGameControl::init(char mode)
 
 		if(m_Episode >= 4)
 			mp_PlayGame = new galaxy::CPlayGameGalaxy( m_ExeFile, m_startLevel,
-													m_Numplayers, m_Difficulty);
+													m_Numplayers, m_Difficulty,
+													mp_option);
 		else
 			mp_PlayGame = new CPlayGameVorticon(m_ExeFile, m_startLevel,
 												m_Numplayers, m_Difficulty,

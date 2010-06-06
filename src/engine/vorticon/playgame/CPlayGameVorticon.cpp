@@ -26,18 +26,16 @@ CPlayGameVorticon::CPlayGameVorticon( CExeFile &ExeFile, char level,
 					 stOption *p_option, bool finale,
 					 CSavedGame &SavedGame,
 					 std::vector<stTeleporterTable> &TeleporterTable) :
-CPlayGame(ExeFile, level, numplayers, difficulty),
+CPlayGame(ExeFile, level, numplayers, difficulty, p_option),
 m_dark(false),
 mp_ObjectAI(NULL),
 m_SavedGame(SavedGame),
 m_TeleporterTable(TeleporterTable),
-mp_HighScores(NULL),
-m_restartVideo(false)
+mp_HighScores(NULL)
 {
 	mp_Menu = NULL;
 	mp_Finale = NULL;
 	mp_gameoverbmp = NULL;
-	mp_option = p_option;
 	
 	m_Player.assign(m_NumPlayers, CPlayer(m_Episode, m_Level, m_Difficulty,
 			(short)0, mp_level_completed, mp_option,
@@ -54,7 +52,6 @@ m_restartVideo(false)
 	// Create completed level list
 	memset(mp_level_completed,false,MAX_LEVELS_VORTICON*sizeof(bool));
 
-	m_paused = false;
 	m_showPauseDialog = false;
 
 	if(difficulty==0)

@@ -17,7 +17,8 @@ class CPlayGameGalaxy : public CPlayGame
 {
 public:
 	CPlayGameGalaxy(CExeFile &ExeFile, char level,
-			 char numplayers, char difficulty);
+			 char numplayers, char difficulty,
+			 stOption *p_option);
 
 	bool loadGameState();
 	void process();

@@ -13,8 +13,8 @@ namespace galaxy
 {
 
 CPlayGameGalaxy::CPlayGameGalaxy(CExeFile &ExeFile, char level,
-		 char numplayers, char difficulty) :
-CPlayGame(ExeFile, level, numplayers, difficulty)
+		 char numplayers, char difficulty, stOption *p_option) :
+CPlayGame(ExeFile, level, numplayers, difficulty, p_option)
 {}
 
 bool CPlayGameGalaxy::loadGameState()

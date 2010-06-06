@@ -11,8 +11,9 @@
 #ifndef CPLAYGAME_H_
 #define CPLAYGAME_H_
 
-#include <string>
 #include "../../fileio/CExeFile.h"
+#include "../../common/options.h"
+#include <string>
 #include <SDL.h>
 
 const int WORLD_MAP_LEVEL=80;
@@ -20,7 +21,8 @@ const int WORLD_MAP_LEVEL=80;
 class CPlayGame{
 public:
 	CPlayGame(CExeFile &ExeFile, char level,
-			 char numplayers, char difficulty);
+			 char numplayers, char difficulty,
+			 stOption *p_option);
 
 	// TODO: These are virtual functions which later will be forced to be used by its child classes
 	virtual bool loadGameState() = 0;
@@ -64,6 +66,9 @@ protected:
 	std::string m_Gamepath;
 	int m_checkpoint_x, m_checkpoint_y;
 	bool m_checkpointset;
+	bool m_restartVideo;
+
+	stOption *mp_option;
 };
 
 #endif /* CPLAYGAME_H_ */

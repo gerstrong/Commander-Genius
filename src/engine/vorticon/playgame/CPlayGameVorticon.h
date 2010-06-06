@@ -99,7 +99,6 @@ private:
 	CObjectAI *mp_ObjectAI;
 	CFinale *mp_Finale;
 	CEGABitmap *mp_gameoverbmp;
-	stOption *mp_option;
 	CSavedGame &m_SavedGame;
 	CPhysicsSettings m_PhysicsSettings;
 	std::list<CMessageBox*> m_MessageBoxes;
@@ -107,6 +106,5 @@ private:
 	bool m_showKeensLeft;
 	std::vector<CObject> m_Object;
 	CHighScores *mp_HighScores;
-	bool m_restartVideo;
 };
 #endif /* CPlayGameVorticon_H_ */

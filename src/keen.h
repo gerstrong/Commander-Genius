@@ -20,8 +20,6 @@
 #define TILE_S			4
 #define STC (CSF-TILE_S)
 
-//#define OVSIZE    3000
-
 // when crashflag is activated by setting it to QUIT_NONFATAL,
 // the application will immediately shut down, however the
 // "a Fatal Error Occurred" message box will not pop up and
