@@ -9,7 +9,7 @@
 #include "CMusic.h"
 #include "../hqp/hq_sound.h"
 #include "../CLogFile.h"
-#include "../include/vorbis/oggsupport.h"
+#include "../vorbis/oggsupport.h"
 #include "../FindFile.h"
 #include "../fileio/ResourceMgmt.h"
 #include <fstream>

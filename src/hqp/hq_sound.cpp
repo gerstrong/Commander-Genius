@@ -8,7 +8,7 @@
 #include "../hqp/hq_sound.h"
 #include "../keen.h"
 #include "../sdl/CVideoDriver.h"
-#include "../include/vorbis/oggsupport.h"
+#include "../vorbis/oggsupport.h"
 #include "../CLogFile.h"
 #include "../FindFile.h"
 #include "../fileio/ResourceMgmt.h"
