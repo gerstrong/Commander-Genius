@@ -87,7 +87,6 @@ void finale_plot( SDL_Surface *sfc, int pix )
 // draws a filename file into the SDL_Surface we are using
 void finale_draw( SDL_Surface *sfc, const std::string& filename, const std::string& path)
 {
-	FILE *fp;
 	int cmdbyte;
 	int bytecount;
 	int repeatbyte;
@@ -97,16 +96,16 @@ void finale_draw( SDL_Surface *sfc, const std::string& filename, const std::stri
 	if (!OpenGameFileR(file, getResourceFilename(filename, path, true, true), std::ios::binary))
 		return;
 	
-	finale_plane_length = fgetl(fp)*2;   //length of a plane when decompressed
+	finale_plane_length = fgetl(file)*2;   //length of a plane when decompressed
 	finale_planecol = 1;
 	finale_x = finale_y = 0;
 	finale_count = 0;
 	finale_done = 0;
 	
-	/* decompress/draw the image */
+	// decompress/draw the image
 	do
 	{
-		cmdbyte = fgetc(fp);
+		cmdbyte = file.get();
 		if (cmdbyte<0)
 		{  // EOF
 			return;
@@ -118,14 +117,14 @@ void finale_draw( SDL_Surface *sfc, const std::string& filename, const std::stri
 			bytecount = (cmdbyte & 0x7F) + 1;
 			for(i=0;i<bytecount;i++)
 			{
-				finale_plot( sfc, fgetc(fp) );
+				finale_plot( sfc, file.get() );
 			}
 		}
 		else
 		{
 			//Repeat N + 3 of following byte
 			bytecount = (cmdbyte + 3);
-			repeatbyte = fgetc(fp);
+			repeatbyte = file.get();
 			for(i=0;i<bytecount;i++)
 			{
 				finale_plot( sfc, repeatbyte );
@@ -134,6 +133,6 @@ void finale_draw( SDL_Surface *sfc, const std::string& filename, const std::stri
 		
 	} while(!finale_done);
 	
-	fclose(fp);
+	file.close();
 }
 

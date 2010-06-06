@@ -43,14 +43,6 @@ DOOR_BLUE =  5
 class CPlayGameVorticon : public CPlayGame {
 public:
 
-	enum e_levelcommands
-	{
-		NONE,
-		GOTO_WORLD_MAP,
-		START_LEVEL,
-		GOTO_FINALE
-	};
-
 	CPlayGameVorticon(CExeFile &ExeFile, char level,
 			  char numplayers, char difficulty,
 			  stOption *p_option,
@@ -98,18 +90,8 @@ public:
 	virtual ~CPlayGameVorticon();
 
 private:
-	int  m_NumSprites;
-	char m_level_command;
-	bool m_paused;
-	bool m_gameover;
-	bool m_alldead;
-	bool m_showPauseDialog;
-	bool m_hideobjects;
-	std::string m_Gamepath;
-	bool mp_level_completed[MAX_LEVELS];
-	int m_checkpoint_x, m_checkpoint_y;
-	bool m_checkpointset;
 	bool m_dark;
+	bool mp_level_completed[MAX_LEVELS_VORTICON];
 
 	CMap m_Map;
 	CMenuVorticon *mp_Menu;

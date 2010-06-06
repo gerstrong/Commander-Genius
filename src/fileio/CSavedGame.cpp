@@ -222,7 +222,7 @@ bool CSavedGame::convertOldFormat(size_t slot)
 	addData( (byte*)(old.map.mapdata), 2*old.map.xsize*old.map.ysize );
 
 	// store completed levels
-	addData( (byte*)(old.LevelControl.levels_completed), MAX_LEVELS );
+	addData( (byte*)(old.LevelControl.levels_completed), MAX_LEVELS_VORTICON );
 
 	save();
 

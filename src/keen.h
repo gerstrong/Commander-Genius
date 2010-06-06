@@ -42,7 +42,7 @@
 #define QUIT_PROGRAM            1
 #define QUIT_TO_TITLE           2
 
-#define MAX_LEVELS     20
+#define MAX_LEVELS_VORTICON     20
 #define SCROLLBUF_XSIZE  512
 #define SCROLLBUF_YSIZE  512
 #define SCROLLBUF_MEMSIZE ((SCROLLBUF_XSIZE)*(SCROLLBUF_YSIZE+300))
@@ -199,7 +199,6 @@ VIDEO_MODE_OPENGL,
 
 #define MAX_PLAYERS            4
 
-#include "include/declarations.h"
 #include "sdl/CSettings.h"
 
 #endif

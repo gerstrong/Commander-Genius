@@ -58,6 +58,8 @@ private:
 	CSoundChannel	*m_soundchannel;
 	CSoundSlot		*m_soundslot;
 
+	static const int MAX_SOUNDS = 50;
+
 	SDL_AudioSpec AudioSpec;
 
 	bool m_active;

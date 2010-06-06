@@ -13,6 +13,7 @@
 
 #include <string>
 #include "../../fileio/CExeFile.h"
+#include <SDL.h>
 
 const int WORLD_MAP_LEVEL=80;
 
@@ -46,6 +47,23 @@ protected:
 	bool m_startgame;
 	bool m_exitgame;
 	char m_Difficulty;
+
+	Uint32  m_NumSprites;
+
+	enum
+	{
+		NONE, GOTO_WORLD_MAP,
+		START_LEVEL, GOTO_FINALE
+	} m_level_command;
+
+	bool m_paused;
+	bool m_gameover;
+	bool m_alldead;
+	bool m_showPauseDialog;
+	bool m_hideobjects;
+	std::string m_Gamepath;
+	int m_checkpoint_x, m_checkpoint_y;
+	bool m_checkpointset;
 };
 
 #endif /* CPLAYGAME_H_ */

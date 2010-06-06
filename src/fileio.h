@@ -1,12 +1,13 @@
-#ifndef __CG_FILEIO2_H__
-#define __CG_FILEIO2_H__
+#ifndef __FILEIO_H__
+#define __FILEIO_H__
 
 #include <string>
 #include <cstdio>
+#include <fstream>
 
-char loadstrings();
 unsigned int fgeti(FILE *fp);
 unsigned long fgetl(FILE *fp);
+unsigned long fgetl(std::ifstream &file);
 void fputi(unsigned int word, FILE *fp);
 void fputl(unsigned long word, FILE *fp);
 

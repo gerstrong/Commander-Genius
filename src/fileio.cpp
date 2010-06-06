@@ -46,6 +46,15 @@ unsigned long fgetl(FILE *fp) {
 	return (temp4<<24) | (temp3<<16) | (temp2<<8) | temp1;
 }
 
+unsigned long fgetl(std::ifstream &file) {
+	int temp1, temp2, temp3, temp4;
+	temp1 = file.get();
+	temp2 = file.get();
+	temp3 = file.get();
+	temp4 = file.get();
+	return (temp4<<24) | (temp3<<16) | (temp2<<8) | temp1;
+}
+
 void fputl(unsigned long word, FILE *fp)
 {
 	unsigned long a,b,c,d;

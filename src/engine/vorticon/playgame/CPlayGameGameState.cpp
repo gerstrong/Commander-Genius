@@ -198,7 +198,7 @@ bool CPlayGameVorticon::saveGameState()
 	m_SavedGame.addData( (byte*)(m_Map.getForegroundData()), 2*m_Map.m_width*m_Map.m_height );
 
 	// store completed levels
-	m_SavedGame.addData( (byte*)(mp_level_completed), MAX_LEVELS );
+	m_SavedGame.addData( (byte*)(mp_level_completed), MAX_LEVELS_VORTICON );
 
 	return m_SavedGame.save();
 }

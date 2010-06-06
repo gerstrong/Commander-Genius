@@ -124,6 +124,7 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 
 		for( c=planesize+17 ; c<2*planesize+16 ; c++ )
 		{
+			// in case the planesizes are bigger than the actual file content itself
 			if(filebuf.size() <= c) break;
 
 			t = filebuf.at(c);
@@ -139,7 +140,7 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 				if (curmapy >= mp_map->m_height) break;
 			}
 			
-			if (++resetcnt==resetpt) curmapx=curmapy=0;
+			if (++resetcnt==resetpt) curmapx = curmapy = 0;
 		}
 	}
     filebuf.clear();

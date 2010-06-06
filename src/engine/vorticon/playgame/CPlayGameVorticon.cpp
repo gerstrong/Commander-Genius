@@ -4,7 +4,6 @@
  *  Created on: 03.10.2009
  *      Author: gerstrong
  *
- * See CPlayGameVorticon.h for more information
  */
 
 #include "CPlayGameVorticon.h"
@@ -35,25 +34,10 @@ m_TeleporterTable(TeleporterTable),
 mp_HighScores(NULL),
 m_restartVideo(false)
 {
-	m_level_command = (level==WORLD_MAP_LEVEL) ? GOTO_WORLD_MAP : START_LEVEL;
-	m_NumSprites = g_pGfxEngine->getNumSprites();
-	m_Gamepath = ExeFile.getDataDirectory();
-	m_exitgame = false;
-	m_endgame = false;
-	m_startgame = false;
-	m_gameover = false;
-	m_alldead = false;
-	m_hideobjects = false;
 	mp_Menu = NULL;
 	mp_Finale = NULL;
 	mp_gameoverbmp = NULL;
 	mp_option = p_option;
-	m_checkpoint_x = m_checkpoint_y = 0;
-	m_checkpointset = false;
-
-	// Create the Players
-	if(m_NumPlayers == 0) m_NumPlayers = 1;
-
 	
 	m_Player.assign(m_NumPlayers, CPlayer(m_Episode, m_Level, m_Difficulty,
 			(short)0, mp_level_completed, mp_option,
@@ -68,7 +52,7 @@ m_restartVideo(false)
 	}
 
 	// Create completed level list
-	memset(mp_level_completed,false,MAX_LEVELS*sizeof(bool));
+	memset(mp_level_completed,false,MAX_LEVELS_VORTICON*sizeof(bool));
 
 	m_paused = false;
 	m_showPauseDialog = false;

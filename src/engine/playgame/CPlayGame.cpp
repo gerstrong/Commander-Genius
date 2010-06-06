@@ -6,6 +6,7 @@
  */
 
 #include "CPlayGame.h"
+#include "../../graphics/CGfxEngine.h"
 
 CPlayGame::CPlayGame(CExeFile &ExeFile, char level,
 		 char numplayers, char difficulty) :
@@ -17,7 +18,16 @@ m_Level(level),
 m_startgame(false),
 m_exitgame(false),
 m_Difficulty(difficulty)
-{}
+{
+	m_level_command = (level==WORLD_MAP_LEVEL) ? GOTO_WORLD_MAP : START_LEVEL;
+	m_NumSprites = g_pGfxEngine->getNumSprites();
+	m_Gamepath = ExeFile.getDataDirectory();
+	m_alldead = false;
+	m_hideobjects = false;
+	m_checkpoint_x = m_checkpoint_y = 0;
+	m_checkpointset = false;
+
+}
 
 
 // Getters

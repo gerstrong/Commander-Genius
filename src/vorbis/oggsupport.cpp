@@ -15,10 +15,9 @@
 #include <vector>
 using namespace std;
 
-#define MAX_LEVELS     100 // Stupid! But you need it!
+//#define MAX_LEVELS     100 // Stupid! But you need it!
 #define BUFFER_SIZE   32768     // 32 KB buffers
 
-#include "../include/declarations.h"
 #include "../hqp/hq_sound.h"
 #include "../sdl/CVideoDriver.h"
 #include "../CLogFile.h"
