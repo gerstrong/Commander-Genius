@@ -38,7 +38,7 @@ size_t CExeFile::getExeDataSize()
 bool CExeFile::readData(const char episode, const std::string& datadirectory)
 {
 	m_episode = episode;
-	m_datadirectory = datadirectory;
+	m_datadirectory = datadirectory;z
 	if( m_datadirectory != "") if(*(m_datadirectory.end()-1) != '/') m_datadirectory += "/";
 
 	crc32_init();

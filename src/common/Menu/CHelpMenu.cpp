@@ -7,6 +7,8 @@
 
 #include "CHelpMenu.h"
 
+#define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
+
 CHelpMenu::CHelpMenu(CInfoScene *&p_InfoScene, Uint8 dlg_theme,
 		CExeFile &ExeFile,
 		bool &hideobjects) :
@@ -67,5 +69,5 @@ void CHelpMenu::processSpecific()
 
 CHelpMenu::~CHelpMenu()
 {
-	// TODO Auto-generated destructor stub
+	SAFE_DELETE(mp_Dialog);
 }
