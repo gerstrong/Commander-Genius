@@ -10,6 +10,8 @@
 #include "../../StringUtils.h"
 #include "../../keen.h"
 
+#define SAFE_DELETE(x) if(x) { delete x; x = NULL; }
+
 CPlayersMenu::CPlayersMenu(Uint8 &players, Uint8 dlg_theme) :
 CBaseMenu(dlg_theme),
 m_players(players)
@@ -39,5 +41,5 @@ void CPlayersMenu::processSpecific()
 
 CPlayersMenu::~CPlayersMenu()
 {
-	// TODO Auto-generated destructor stub
+	SAFE_DELETE(mp_Dialog);
 }

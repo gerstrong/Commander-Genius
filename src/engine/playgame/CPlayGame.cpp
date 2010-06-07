@@ -20,6 +20,7 @@ m_startgame(false),
 m_exitgame(false),
 m_Difficulty(difficulty),
 m_paused(false),
+m_gameover(false),
 m_restartVideo(false),
 mp_option(p_option)
 {

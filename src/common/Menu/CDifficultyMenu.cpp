@@ -48,5 +48,5 @@ void CDifficultyMenu::processSpecific()
 
 CDifficultyMenu::~CDifficultyMenu()
 {
-	// TODO Auto-generated destructor stub
+	SAFE_DELETE(mp_Dialog);
 }

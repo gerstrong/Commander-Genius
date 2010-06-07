@@ -597,4 +597,5 @@ CPlayGameVorticon::~CPlayGameVorticon() {
 	mp_Finale = NULL;
 	if(mp_gameoverbmp) delete mp_gameoverbmp;
 	mp_gameoverbmp = NULL;
+	SAFE_DELETE(mp_ObjectAI);
 }
