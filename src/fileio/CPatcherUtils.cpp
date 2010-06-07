@@ -163,7 +163,7 @@ bool CPatcher::readNextPatchItem(patch_item &PatchItem)
 
 		line = *m_TextList.begin();
 		m_TextList.pop_front();
-	} while(line.at(0) != '\%');
+	} while( !line.empty() && line.at(0) != '\%');
 
 	// found! get the keyword itself and make it lower case!
 	line.erase(0,1);
@@ -190,6 +190,5 @@ bool CPatcher::readNextPatchItem(patch_item &PatchItem)
 
 		PatchItem.value.push_back(line);
 	}
-
 	return true;
 }

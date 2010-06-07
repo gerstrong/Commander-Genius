@@ -58,10 +58,6 @@ void CPatcher::patchMemory()
 		else if(PatchItem.keyword == "patchfile")
 		{
 			std::string newbuf = PatchItem.value.front();
-			// TODO: Fix that part of the CODE!!!!
-			// DON'T FORGET THAT!!!!!!!!!1
-			// !!!!!!!!!!!!!!!!!!!
-			// !!!!!!!!!!!!!!!!!!
 
 			// Seperate the offset and the filename
 			long offset;
@@ -142,7 +138,6 @@ void CPatcher::patchMemory()
 		PatchItem.keyword.clear();
 		PatchItem.value.clear();
 	}
-
 	// If we want a dump, make it happen!!
 }
 

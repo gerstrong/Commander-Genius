@@ -45,7 +45,7 @@ bool CPassiveVort::init(char mode)
 		mp_Map->setTileMap(mp_Tilemap);
 		CMapLoader MapLoader( mp_Map );
 		MapLoader.load( m_Episode, 90, m_DataDirectory);
-		mp_Map->gotoPos( 64+5*320, 16); // Coordinates of star sky
+		mp_Map->gotoPos( 64+5*320, 32); // Coordinates of star sky
 		mp_Map->drawAll();
 		mp_IntroScreen->init();
 	}
