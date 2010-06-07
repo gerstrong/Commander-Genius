@@ -35,20 +35,18 @@ m_type(type)
 		
 		// Get the offset where in the data the info is...
 		size_t offset = 0;
+		//m_numberoflines = 11;
 		switch(ExeFile.getEpisode())
 		{
 			case 1:
-				m_numberoflines = 13; // numberof lines to print
 				if(ExeFile.getEXEVersion() == 131)
 					offset = 0x16180-512;
 				break;
 			case 2:
-								m_numberoflines = 13; // number of lines to print
 				if(ExeFile.getEXEVersion() == 131)
 					offset = 0x1A954-512;
 				break;
 			case 3:
-								m_numberoflines = 13; // number of lines to print
 				if(ExeFile.getEXEVersion() == 131)
 					offset = 0x1CA70-512;
 				break;
@@ -58,25 +56,45 @@ m_type(type)
 		// Read the strings and save them the string array of the class
 		if(offset)
 		{
-			char *data;
-			data = (char*)ExeFile.getRawData() + offset;
+			char *startdata;
+			startdata = (char*)ExeFile.getRawData() + offset;
 			std::string buf;
 			for(int i=0 ; i<m_numberoflines ; i++)
 			{
-				if(*data == '\0')
+				char *data = startdata;
+
+				for(short offset = 0 ; offset<0x28 ; offset++)
 				{
-					data++;
-					while(*data == '\0')
-						data++;
+					if(data[offset] == 0x0A && data[offset+1] == 0x00)
+						break;
+
+					buf.push_back(data[offset]);
 				}
-				while(*data != '\n' and *data != '\0') // For the next line
+				startdata += 0x28;
+
+				// now check how many new lines we have in buf
+				size_t num_newlines = 0;
+				bool endoftext = false;
+
+				size_t  pos;
+				if((pos = buf.find(0xFE)) != std::string::npos)
 				{
-					buf.push_back(*data);
-					data++;
+					buf.erase(pos), endoftext = true;
 				}
-				data++;
+
+				while((pos = buf.find(0x0A)) != std::string::npos)
+					buf.erase(pos,1), num_newlines++;
+
+				while((pos = buf.find('\0')) != std::string::npos)
+					buf.erase(pos,1);
+
 				m_lines.push_back(buf);
 				
+				if(endoftext) break;
+
+				while(num_newlines > 0)
+					m_lines.push_back(""), num_newlines--;
+
 				buf.clear();
 			}
 		}
@@ -130,22 +148,18 @@ void CAbout::process()
 {	 
 	mp_Map->animateAllTiles();
 	
-	
 	if(m_type == "ID")
 	{
 		mp_bmp->draw( g_pVideoDriver->FGLayerSurface, 160-mp_bmp->getWidth()/2, 22);
-		
-		for(std::size_t i=0 ; i<m_lines.size() ; i++)
-			g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->FGLayerSurface, m_lines[i], 24, 72+i*8, false);
 	}
 	else if(m_type == "CG")
 	{
 		if(mp_LogoBMP)
 			SDL_BlitSurface(mp_LogoBMP, NULL, g_pVideoDriver->FGLayerSurface, &m_logo_rect);
-		
-		for(std::size_t i=0 ; i<m_lines.size() ; i++)
-			g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->FGLayerSurface, m_lines[i], 24, 72+i*8, false);
 	}
+
+	for(std::size_t i=0 ; i<m_lines.size() ; i++)
+		g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->FGLayerSurface, m_lines.at(i), 24, 72+i*8, true);
 	
 	if(g_pInput->getPressedAnyKey())
 		m_destroy_me=true;

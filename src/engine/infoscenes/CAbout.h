@@ -23,7 +23,7 @@ public:
 	void process();
 	
 private:
-	int m_numberoflines;	// number of lines to print
+	static const int m_numberoflines=11;	// number of lines to print
 	CBitmap* mp_bmp;
 	
 	CMap *mp_Map;
