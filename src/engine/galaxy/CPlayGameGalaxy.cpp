@@ -26,6 +26,9 @@ bool CPlayGameGalaxy::init()
 	// Load the Level map. We have two modes. Inlevel and game map
 
 	// TODO: Lets load the main map for now and create process for this
+	CMapLoaderGalaxy MapLoader(m_ExeFile);
+
+	MapLoader.loadMap();
 
 	// We should create this as base and two more classes. One will be for ingame and the other for
 	// the map processes

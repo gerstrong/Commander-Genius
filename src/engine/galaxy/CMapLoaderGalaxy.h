@@ -10,6 +10,7 @@
 
 #include "../../fileio/CExeFile.h"
 #include "../../fileio/TypeDefinitions.h"
+#include "../../common/CMap.h"
 
 #include <string>
 #include <SDL.h>
@@ -19,7 +20,7 @@ class CMapLoaderGalaxy
 public:
 	CMapLoaderGalaxy(CExeFile &ExeFile);
 	byte *getMapheadPtr();
-	bool loadMap(Uint8 episode, Uint8 level, const std::string& path);
+	bool loadMap(CMap &Map, Uint8 level);
 	virtual ~CMapLoaderGalaxy();
 
 private:

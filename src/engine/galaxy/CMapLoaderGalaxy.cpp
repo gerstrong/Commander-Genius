@@ -6,6 +6,10 @@
  */
 
 #include "CMapLoaderGalaxy.h"
+#include "../../StringUtils.h"
+#include "../../FindFile.h"
+#include "../../fileio/ResourceMgmt.h"
+#include <fstream>
 
 /*
  *
@@ -25,10 +29,7 @@
 
 CMapLoaderGalaxy::CMapLoaderGalaxy(CExeFile &ExeFile):
 m_ExeFile(ExeFile)
-{
-	// TODO Auto-generated constructor stub
-
-}
+{}
 
 // Gets returns the address of the datablock of the exe file, in where the
 byte *CMapLoaderGalaxy::getMapheadPtr()
@@ -38,15 +39,31 @@ byte *CMapLoaderGalaxy::getMapheadPtr()
 	// Seek for that strange number and return the pointer to that datablock
 }
 
-bool CMapLoaderGalaxy::loadMap(Uint8 episode, Uint8 level, const std::string& path)
+bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 {
 	// Get the MAPHEAD Location from within the Exe File
 	byte *Maphead = getMapheadPtr();
+	word magic_word;
+	longword level_offset;
+	std::string path;
+
+	// Get the magic number of the level data from MAPHEAD Located in the EXE-File.
+	// This is used for the decompression.
+	magic_word = READWORD(Maphead);
 
 	// Get location of the level data from MAPHEAD Located in the EXE-File.
+	Maphead += (level-1)*sizeof(longword);
+	level_offset = READLONGWORD(Maphead);
 
-	// Then jump to that location and read the level map data
+	// Open the Gamemaps file
+	path = m_ExeFile.getDataDirectory();
+	std::string gamemapfile = "gamemaps.ck"+itoa(m_ExeFile.getEpisode());
+
+	std::ifstream MapFile;
+	if(OpenGameFileR(MapFile, getResourceFilename("gamemaps.ck",path,true,false), std::ios::binary))
 	{
+		// Then jump to that location and read the level map data
+
 		// Get the Offsets which tell where the compressed planes start at. We have three
 
 		// Get the lengths of those compressed planes
@@ -58,7 +75,10 @@ bool CMapLoaderGalaxy::loadMap(Uint8 episode, Uint8 level, const std::string& pa
 		// Get and check the signature
 
 		// Then decompress the level data using rlew and carmack
+		return true;
 	}
+	else
+		return false;
 }
 
 CMapLoaderGalaxy::~CMapLoaderGalaxy()
