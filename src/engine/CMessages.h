@@ -20,8 +20,6 @@ public:
 	
 	virtual ~CMessages();
 private:
-	void formatString(std::string &Text);
-
 	std::pair<std::string, std::string>
 	extractString( std::string matchingstring, unsigned long start, unsigned long end, long offset=0 );
 

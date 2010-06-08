@@ -113,6 +113,7 @@ inline char* itoa(int val, char* buf, int base) {
 //
 // HINT: use these where possible
 
+bool 			endofText(const std::string& Text);
 void			TrimSpaces(std::string& szLine);
 bool			replace(const std::string& text, const std::string& what, const std::string& with, std::string& result);
 bool			replace(std::string& text, const std::string& what, const std::string& with);

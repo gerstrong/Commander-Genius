@@ -21,6 +21,22 @@
 #include <sstream>
 #include <iomanip>
 
+///////////////////
+// Tells whether the given string is a end of line or not.
+bool endofText(const std::string& Text)
+{
+	if(!Text.empty())
+	{
+		if(Text.size() >= 2)
+		{
+			if( Text.at(0) == 0x0A )
+				return true;
+		}
+		return false;
+	}
+	else
+		return true;
+}
 
 ///////////////////
 // Trim the leading & ending spaces from a string

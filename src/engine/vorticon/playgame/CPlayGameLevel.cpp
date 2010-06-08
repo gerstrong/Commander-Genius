@@ -25,7 +25,7 @@ void CPlayGameVorticon::processInLevel()
 			// Process the other stuff like, items, jump, etc.
 			m_Player[i].processInLevel(mp_ObjectAI->getPlatMoving());
 
-			// If the player touched did in which we have to show a Message, do it so
+			// If the player touched a hint trigger in which we have to show a Message, do it so
 			std::string hinttext;
 			if( (hinttext=m_Player[i].pollHintMessage()) != "")
 				m_MessageBoxes.push_back(new CMessageBox(getstring(hinttext)));

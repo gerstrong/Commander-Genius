@@ -172,7 +172,8 @@ void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uin
 		for(i=0;i<text.size();i++)
 		{
 			unsigned char c = text[i];
-			if (c!=13)
+
+			if ( !endofText( text.substr(i) ) )
 			{
 				if(highlight) c |= 128;
 

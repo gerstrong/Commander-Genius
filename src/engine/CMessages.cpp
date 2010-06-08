@@ -20,18 +20,6 @@ CMessages::CMessages(unsigned char *p_exebuf, char episode, int version) :
 	m_version = version;
 }
 
-// This function is used for the strings conversion to this interpreter
-// This function is very tricky because it bases on guesses in how some
-// menus are drawn
-void CMessages::formatString(std::string &Text)
-{
-	for( size_t i=0 ; i<Text.size() ; i++ )
-	{
-		if(Text[i] == 10) // 10 means next line, pass it to...
-			Text[i] = 13;
-	}
-}
-
 // This function reads the strings specified between the offsets,
 // and creates a pair for for the map
 std::pair<std::string, std::string>
@@ -48,7 +36,6 @@ CMessages::extractString( std::string matchingstring, unsigned long start, unsig
 			else break;
 		}
 	}
-	formatString(Text);
 
 	return make_pair(matchingstring, Text);
 }

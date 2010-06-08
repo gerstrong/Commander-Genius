@@ -9,6 +9,7 @@
 #include "../sdl/CVideoDriver.h"
 #include "../sdl/CInput.h"
 #include "../graphics/CGfxEngine.h"
+#include "../StringUtils.h"
 
 CMessageBox::CMessageBox(const std::string& Text, bool lower) :
 m_mustclose(false)
@@ -19,11 +20,11 @@ m_mustclose(false)
 	std::string buf = "";
 	for( size_t i=0 ; i<Text.size() ; i++ )
 	{
-		if(Text[i]=='\n' || Text[i]=='\0' || Text[i]=='\r')
+		if( endofText(Text.substr(i)) )
 		{
 			if( width<buf.size() ) width=buf.size();
 			m_Lines.push_back(buf);
-			buf = "";
+			buf.clear();
 		}
 		else
 			buf += Text[i];
