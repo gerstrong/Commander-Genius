@@ -11,8 +11,9 @@
 #include "../graphics/CGfxEngine.h"
 #include "../StringUtils.h"
 
-CMessageBox::CMessageBox(const std::string& Text, bool lower) :
-m_mustclose(false)
+CMessageBox::CMessageBox(const std::string& Text, bool lower, bool keymsg) :
+m_mustclose(false),
+m_keymsg(keymsg)
 {
 	// Split up the text in lines, so can calculate the textbox height
 	size_t width=0; // determined by checking if the text is getting wider
@@ -23,6 +24,7 @@ m_mustclose(false)
 		if( endofText(Text.substr(i)) )
 		{
 			if( width<buf.size() ) width=buf.size();
+
 			m_Lines.push_back(buf);
 			buf.clear();
 		}
@@ -30,8 +32,25 @@ m_mustclose(false)
 			buf += Text[i];
 	}
 
+	size_t pos = 0;
+	if(!buf.empty())
+		while( (pos = buf.find('\n')) != std::string::npos )
+			buf.erase(pos,1);
 	m_Lines.push_back(buf);
 	if( width<buf.size() ) width=buf.size();
+
+	if(m_keymsg)
+	{
+		m_Lines.push_back("");
+		buf = "Press any KEY/BUTTON  ";
+		if( width<buf.size() ) width=buf.size();
+		else
+		{
+			size_t trail = width-buf.size();
+			buf.insert(0,trail,' ');
+		}
+		m_Lines.push_back(buf);
+	}
 
 	// try to center that dialog box
 	m_gamerect = g_pVideoDriver->getGameResolution();
@@ -73,6 +92,7 @@ void CMessageBox::addTileAt(Uint16 tile, Uint16 x, Uint16 y)
 	m_Tiles.push_back(tileholder);
 }
 
+#define TWIRL_TIME	5
 void CMessageBox::process()
 {
 	SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
@@ -95,6 +115,24 @@ void CMessageBox::process()
 		g_pGfxEngine->Tilemap->drawTile(sfc, m_gamerect.x+m_Tiles[i].x,
 								m_gamerect.y+m_Tiles[i].y, m_Tiles[i].tile);
 	}
+
+	if(m_keymsg)
+	{
+		// Draw the twirl
+		if( m_twirltimer >= TWIRL_TIME )
+		{
+			m_twirltimer = 0;
+			if(m_twirlframe >= 7)
+				m_twirlframe=0;
+			else
+				m_twirlframe++;
+		}
+		else m_twirltimer++;
+		g_pGfxEngine->getCursor()->draw( sfc, m_twirlframe,
+				mp_DlgFrame->m_x+(mp_DlgFrame->m_w-16),
+				mp_DlgFrame->m_y+(mp_DlgFrame->m_h-16));
+	}
+
 
 }
 

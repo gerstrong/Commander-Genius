@@ -25,7 +25,7 @@ struct TileHolder{
 class CMessageBox {
 public:
 	// Init functions
-	CMessageBox(const std::string& Text, bool lower=false);
+	CMessageBox(const std::string& Text, bool lower = false, bool keymsg = false);
 	void addTileAt(Uint16 tile, Uint16 x, Uint16 y);
 
 	// Processing
@@ -39,11 +39,15 @@ public:
 
 private:
 	bool m_mustclose;
+	bool m_keymsg;
 	std::vector<std::string> m_Lines;
 	CDlgFrame *mp_DlgFrame;
 	SDL_Rect m_gamerect;
 
 	std::vector<TileHolder> m_Tiles;
+
+	Uint8 m_twirltimer;
+	Uint8 m_twirlframe;
 };
 
 #endif /* CMESSAGEBOX_H_ */

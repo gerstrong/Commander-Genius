@@ -258,7 +258,9 @@ void CPatcher::PatchLevelhint(const int level, std::list<std::string> &input)
 		buf = input.front();
 		memcpy(p_patch, buf.c_str(), buf.size());
 		input.pop_front();
-		p_patch += buf.size();
+		p_patch += buf.size()-1;
+		if(*p_patch != '\r')
+			p_patch++;
 		p_patch[0] = 0x0A;
 		p_patch[1] = 0x00;
 		p_patch += 2;
