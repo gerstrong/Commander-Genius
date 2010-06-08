@@ -42,11 +42,13 @@ void CTeleporter::createTeleporterTable(unsigned char *p_exedata)
 		m_TeleportTable[2].objectnumber2 = 0;
 		m_TeleportTable[3].objectnumber2 = 46;
 		m_TeleportTable[4].objectnumber2 = 46;
-		m_TeleportTable[5].objectnumber2 = 46; // Here we still don't about the others...
+		m_TeleportTable[5].objectnumber2 = 46; // Here we still don't know about the others...
 
 		// Now get the coordinates...
-		m_TeleportTable[3].x = m_TeleportTable[0].x = getWord(p_exedata+0x158DF);
-		m_TeleportTable[3].y = m_TeleportTable[0].y = getWord(p_exedata+0x158E3);
+		m_TeleportTable[0].x = getWord(p_exedata+0x158DF);
+		m_TeleportTable[0].y = getWord(p_exedata+0x158E3);
+		m_TeleportTable[3].x = getWord(p_exedata+0x158E9);
+		m_TeleportTable[3].y = getWord(p_exedata+0x158ED);
 		m_TeleportTable[4].x = m_TeleportTable[1].x = getWord(p_exedata+0x158E9);
 		m_TeleportTable[4].y = m_TeleportTable[1].y = getWord(p_exedata+0x158ED);
 		m_TeleportTable[5].x = m_TeleportTable[2].x = getWord(p_exedata+0x158F3);

@@ -3,8 +3,11 @@ Commander Genius Release (CloneKeenPlus):
 
 v0.3.1.4:
 ---------
+- Other segfault fixes!!
+- Improved Mod support (Especially for Keen X and Yorphius II)
 - Now HQ Sprites are supported!
 - faster loading maps algorithm and less memory used
+- Teleporter fixes
 
 v0.3.1.3:
 ---------
