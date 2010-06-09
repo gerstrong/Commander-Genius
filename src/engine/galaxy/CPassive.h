@@ -20,6 +20,7 @@ public:
 	CPassiveGalaxy(CExeFile &Exefile,
 			CSavedGame &SavedGame, stOption *p_Option);
 
+	bool init(char mode);
 	void process();
 	void processIntro();
 	void processTitle();

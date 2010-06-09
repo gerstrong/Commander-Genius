@@ -31,12 +31,46 @@ CMapLoaderGalaxy::CMapLoaderGalaxy(CExeFile &ExeFile):
 m_ExeFile(ExeFile)
 {}
 
+/* \brief	This function searches for a word type value in a given buffer
+ * \param	data	pointer to the data buffer
+ * \param	ident	The value that has to be searched for
+ * \param	repeat	an optional parameter which identicates how many times
+ * 					the iden has to repeat until we get the right offset
+ * \return 	the position of the offset or zero if nothing was found. The offset must
+ * 			always be different than zero!!
+*/
+size_t findWordPos(byte* data, word ident, size_t buffer_size, size_t repeat)
+{
+	size_t offset = 0;
+	byte* startdata = data;
+
+	byte low_byte = ident | 0x00FF;
+	byte high_byte = ident >> 8;
+
+	while( static_cast<size_t>(data - startdata) < buffer_size )
+	{
+		if(*data == low_byte)
+		{
+			if(*(data+1) == high_byte)
+			{
+				offset = data - startdata;
+				repeat--;
+				if(repeat == 0)
+					break;
+			}
+		}
+		data++;
+	}
+
+	return offset;
+}
+
 // Gets returns the address of the datablock of the exe file, in where the
 byte *CMapLoaderGalaxy::getMapheadPtr()
 {
 	// Get the offset of the MAPHEAD. It is told that it always begins with $ABCD as word type
-
-	// Seek for that strange number and return the pointer to that datablock
+	byte* data = m_ExeFile.getRawData();
+	return (data + findWordPos(data, 0xABCD, m_ExeFile.getExeDataSize(), 2));
 }
 
 bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)

@@ -45,15 +45,6 @@ public:
 
 	void cleanup();
 
-	// Getters
-	char getNumPlayers() { return m_NumPlayers; }
-	char getDifficulty() { return m_Difficulty; }
-	bool mustEndGame() { return m_Endgame; }
-	bool mustStartGame() { return (m_NumPlayers > 0 and m_Difficulty > -1); }
-	bool getShowStory() { return (m_menu_type==STORY); }
-	bool mustBeClosed() { return m_mustclose; }
-	bool getBacktoDemo() { return m_demoback; }
-
 	virtual ~CMenuVorticon();
 
 private:

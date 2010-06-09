@@ -25,8 +25,17 @@ public:
 			 stOption *pOption, Uint8 DlgTheme,
 			 bool &restartVideo );
 
+	// Getters
 	bool getChooseGame() { return m_choosegame; }
 	bool getExitEvent() { return m_quit; }
+	char getNumPlayers() { return m_NumPlayers; }
+	char getDifficulty() { return m_Difficulty; }
+	bool mustEndGame() { return m_Endgame; }
+	bool mustStartGame() { return (m_NumPlayers > 0 and m_Difficulty > -1); }
+	bool getShowStory() { return (m_menu_type==STORY); }
+	bool mustBeClosed() { return m_mustclose; }
+	bool getBacktoDemo() { return m_demoback; }
+
 
 	// initialization functions
 	void init( menutypes menu_type );

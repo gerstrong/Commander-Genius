@@ -123,18 +123,18 @@ bool CGameControl::init(char mode)
 	{
 		bool ok = true;
 
-		if(m_startLevel == 0) m_startLevel = WORLD_MAP_LEVEL;
-
 		if(m_Episode >= 4)
 			mp_PlayGame = new galaxy::CPlayGameGalaxy( m_ExeFile, m_startLevel,
 													m_Numplayers, m_Difficulty,
 													mp_option);
 		else
+		{
+			if(m_startLevel == 0) m_startLevel = WORLD_MAP_LEVEL;
 			mp_PlayGame = new CPlayGameVorticon(m_ExeFile, m_startLevel,
 												m_Numplayers, m_Difficulty,
 												mp_option, m_show_finale,
 												m_SavedGame, m_TeleporterTable);
-
+		}
 
 		m_show_finale = false; // just show it once!!
 

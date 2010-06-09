@@ -9,6 +9,7 @@
 #define CPLAYGAMEGALAXY_H_
 
 #include "../playgame/CPlayGame.h"
+#include "../../common/CMap.h"
 
 namespace galaxy
 {
@@ -26,6 +27,9 @@ public:
 	void cleanup();
 
 	virtual ~CPlayGameGalaxy();
+
+private:
+	CMap m_Map;
 };
 
 }

@@ -25,6 +25,12 @@ processMode(&CPassiveGalaxy::processIntro),
 mp_Menu(new CMenuGalaxy(PASSIVE, Exefile, SavedGame, p_Option, m_restartVideo))
 { }
 
+bool CPassiveGalaxy::init(char mode)
+{
+	// TODO: Coding has still to be done!!
+	return true;
+};
+
 // This function is always called from the base class.
 // Here it will execute the mode we are currently running
 void CPassiveGalaxy::process()
@@ -93,6 +99,15 @@ void CPassiveGalaxy::processMenu()
 	{
 		cleanup();
 		m_restartVideo = false;
+	}
+
+	if(mp_Menu->mustStartGame() || m_SavedGame.getCommand() == CSavedGame::LOAD) // Start a normal game
+	{
+		m_NumPlayers = mp_Menu->getNumPlayers();
+		m_Difficulty = mp_Menu->getDifficulty();
+		SAFE_DELETE(mp_Menu);
+		cleanup();
+		m_mode = STARTGAME;
 	}
 
 }
