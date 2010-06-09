@@ -110,7 +110,7 @@ bool CPlayGameVorticon::loadGameState()
 		// Load the map_data as it was left last
 		m_SavedGame.decodeData(m_Map.m_width);
 		m_SavedGame.decodeData(m_Map.m_height);
-		m_SavedGame.readDataBlock( (byte*)(m_Map.getForegroundData()));
+		m_SavedGame.readDataBlock( reinterpret_cast<byte*>(m_Map.getForegroundData()) );
 
 		// Load completed levels
 		m_SavedGame.readDataBlock( (byte*)(mp_level_completed));
@@ -195,7 +195,7 @@ bool CPlayGameVorticon::saveGameState()
 	// Save the map_data as it is left
 	m_SavedGame.encodeData(m_Map.m_width);
 	m_SavedGame.encodeData(m_Map.m_height);
-	m_SavedGame.addData( (byte*)(m_Map.getForegroundData()), 2*m_Map.m_width*m_Map.m_height );
+	m_SavedGame.addData( reinterpret_cast<byte*>(m_Map.getForegroundData()), 2*m_Map.m_width*m_Map.m_height );
 
 	// store completed levels
 	m_SavedGame.addData( (byte*)(mp_level_completed), MAX_LEVELS_VORTICON );

@@ -65,7 +65,7 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	g_pLogFile->ftextOut("MapLoader: file %s opened. Loading...<br>", levelname.c_str());
 	
     // decompress map RLEW data
-	std::vector<Uint16> filebuf;
+	std::vector<Uint16> planeitems;
 
 	MapFile.seekg (0, std::ios::beg);
 	
@@ -79,22 +79,22 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
     MapFile.close();
 
 	CRLE RLE;
-	RLE.expand(filebuf,compdata, 0xFEFE);
+	RLE.expand(planeitems,compdata, 0xFEFE);
 	
-	mp_map->m_width = filebuf.at(1);
-	mp_map->m_height = filebuf.at(2);
+	mp_map->m_width = planeitems.at(1);
+	mp_map->m_height = planeitems.at(2);
 	
 	size_t mapsize = ((mp_map->m_width+32)*(mp_map->m_height+32));
 
 	// Here goes the memory allocation function
 	mp_map->createEmptyForeground(mapsize);
 	
-	planesize = filebuf.at(8);
+	planesize = planeitems.at(8);
 	planesize /= 2; // Size of two planes, but we only need one
 	
 	for( c=17 ; c<planesize+17 ; c++ ) // Check against Tilesize
 	{
-		t = filebuf.at(c);
+		t = planeitems.at(c);
 		
 		addTile(t, curmapx, curmapy);
 		
@@ -125,9 +125,9 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 		for( c=planesize+17 ; c<2*planesize+16 ; c++ )
 		{
 			// in case the planesizes are bigger than the actual file content itself
-			if(filebuf.size() <= c) break;
+			if(planeitems.size() <= c) break;
 
-			t = filebuf.at(c);
+			t = planeitems.at(c);
 			
 			if (mp_map->m_worldmap) addWorldMapObject(t, curmapx, curmapy,  episode );
 			else addEnemyObject(t, curmapx, curmapy, episode, level);
@@ -143,7 +143,7 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 			if (++resetcnt==resetpt) curmapx = curmapy = 0;
 		}
 	}
-    filebuf.clear();
+    planeitems.clear();
 	
     // Do some post calculations
     // Limit the scroll screens so the blocking (blue in EP1) tiles are3 never seen

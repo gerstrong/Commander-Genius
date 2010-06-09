@@ -19,11 +19,15 @@ class CMapLoaderGalaxy
 {
 public:
 	CMapLoaderGalaxy(CExeFile &ExeFile);
-	byte *getMapheadPtr();
+	size_t getMapheadOffset();
+	bool gotoSignature(std::ifstream &MapFile);
 	bool loadMap(CMap &Map, Uint8 level);
 	virtual ~CMapLoaderGalaxy();
 
 private:
+	void unpackPlaneData(std::ifstream &MapFile, CMap &Map, size_t PlaneNumber,
+			longword offset, longword length, word magic_word);
+
 	CExeFile &m_ExeFile;
 };
 

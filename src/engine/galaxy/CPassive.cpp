@@ -28,6 +28,7 @@ mp_Menu(new CMenuGalaxy(PASSIVE, Exefile, SavedGame, p_Option, m_restartVideo))
 bool CPassiveGalaxy::init(char mode)
 {
 	// TODO: Coding has still to be done!!
+
 	return true;
 };
 

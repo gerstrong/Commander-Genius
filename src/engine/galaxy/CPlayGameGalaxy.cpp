@@ -32,7 +32,6 @@ bool CPlayGameGalaxy::init()
 
 	// We should create this as base and two more classes. One will be for ingame and the other for
 	// the map processes
-	//CMapLoaderGalaxy MapLoaderGalaxy;
 
 	return false;
 }
