@@ -26,11 +26,13 @@ public:
 
 	bool loadData();
 	void extractPicture(SDL_Surface *sfc,
-			std::vector<unsigned char> &data, size_t Width, size_t Height);
+			std::vector<unsigned char> &data, size_t Width, size_t Height,
+			bool masked=false);
 	bool begin();
 	Uint8 getBit(unsigned char data, Uint8 leftshift);
 	bool readfonts();
 	bool readBitmaps();
+	bool readMaskedBitmaps();
 
 	virtual ~CEGAGraphicsGalaxy();
 

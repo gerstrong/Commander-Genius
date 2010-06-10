@@ -131,7 +131,7 @@ bool CEGAGraphicsGalaxy::loadData()
 
 	if(!readfonts()) return false;
 	if(!readBitmaps()) return false;
-	//k456_export_masked_bitmaps();
+	if(!readMaskedBitmaps()) return false;
 	//k456_export_tiles();
 	//k456_export_masked_tiles();
 	//k456_export_8_tiles();
@@ -149,9 +149,9 @@ bool CEGAGraphicsGalaxy::loadData()
  * \brief 	This function extracts a picture from the galaxy graphics map, and converts it properly to a
  * 			SDL Surface
  */
-
 void CEGAGraphicsGalaxy::extractPicture(SDL_Surface *sfc,
-		std::vector<unsigned char> &data, size_t Width, size_t Height)
+		std::vector<unsigned char> &data, size_t Width, size_t Height,
+		bool masked)
 {
 	if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
 	SDL_FillRect(sfc, NULL, 0x00);
@@ -165,21 +165,44 @@ void CEGAGraphicsGalaxy::extractPicture(SDL_Surface *sfc,
 			Uint8* pixel = (Uint8*) sfc->pixels;
 
 			// get location of plane p
-			pointer = &(data[0]) + p * Width * Height;
-
-			// now try to extract the bits and pass it to the SDL-Surface
-			for(size_t y = 0; y < Height; y++)
+			if(masked)
 			{
-				for(size_t x = 0; x < Width; x++)
+				pointer = &(data[0]) + (p+1) * Width * Height;
+
+				// now try to extract the bits and pass it to the SDL-Surface
+				for(size_t y = 0; y < Height; y++)
 				{
-					Uint8 bit,b;
-					for(b=0 ; b<8 ; b++)
+					for(size_t x = 0; x < Width; x++)
 					{
-						bit = getBit(*pointer, 7-b);
-						*pixel |= (bit<<p);
-						pixel++;
+						Uint8 bit,b;
+						for(b=0 ; b<8 ; b++)
+						{
+							bit = getBit(*pointer, 7-b);
+							*pixel |= (bit<<p);
+							pixel++;
+						}
+						pointer++;
 					}
-					pointer++;
+				}
+			}
+			else
+			{
+				pointer = &(data[0]) + p * Width * Height;
+
+				// now try to extract the bits and pass it to the SDL-Surface
+				for(size_t y = 0; y < Height; y++)
+				{
+					for(size_t x = 0; x < Width; x++)
+					{
+						Uint8 bit,b;
+						for(b=0 ; b<8 ; b++)
+						{
+							bit = getBit(*pointer, 7-b);
+							*pixel |= (bit<<p);
+							pixel++;
+						}
+						pointer++;
+					}
 				}
 			}
 		}
@@ -451,6 +474,30 @@ bool CEGAGraphicsGalaxy::readBitmaps()
 		extractPicture(Bitmap.getSDLSurface(),
 				m_egagraph.at(EpisodeInfo[ep].IndexBitmaps + i).data,
 				BmpHead[i].Width, BmpHead[i].Height);
+	}
+	return true;
+}
+
+bool CEGAGraphicsGalaxy::readMaskedBitmaps()
+{
+	int ep = m_episode - 4;
+	BitmapHeadStruct *BmpMaskedHead = (BitmapHeadStruct *) &(m_egagraph.at(1).data.at(0));
+	SDL_Color *Palette = g_pGfxEngine->Palette.m_Palette;
+
+	g_pGfxEngine->createEmptyMaskedBitmaps(EpisodeInfo[ep].NumMaskedBitmaps);
+
+	for(size_t i = 0; i < EpisodeInfo[ep].NumMaskedBitmaps; i++)
+	{
+		CBitmap &Bitmap = g_pGfxEngine->getMaskedBitmap(i);
+		Bitmap.setDimensions(2*BmpMaskedHead[i].Width*8, BmpMaskedHead[i].Height);
+		Bitmap.createSurface(g_pVideoDriver->getScrollSurface()->flags, Palette);
+
+		extractPicture(Bitmap.getSDLSurface(),
+				m_egagraph.at(EpisodeInfo[ep].IndexMaskedBitmaps + i).data,
+				BmpMaskedHead[i].Width, BmpMaskedHead[i].Height, true);
+
+		//std::string buf = "maskbmp" + itoa(i) + ".bmp";
+		//SDL_SaveBMP(Bitmap.getSDLSurface(), buf.c_str());
 	}
 	return true;
 }
