@@ -17,8 +17,6 @@
 #define SAFE_DELETE_ARRAY(x)	if(x) { delete [] x; x = NULL; }
 
 CMap::CMap():
-mp_foreground_data(NULL),
-mp_background_data(NULL),
 m_width(0), m_height(0),
 m_worldmap(false),
 m_animation_enabled(true),
@@ -53,11 +51,16 @@ bool CMap::createEmptyForeground(size_t blocksize)
 {
 	if(!blocksize) return false;
 
-	if(mp_foreground_data)
+	for(size_t c=0 ; c<3 ; c++)
+	{
+		m_Plane[c].createDataMap(blocksize, m_width, m_height);
+	}
+
+	/*if(mp_foreground_data)
 		SAFE_DELETE_ARRAY(mp_foreground_data);
 
 	mp_foreground_data = new word[blocksize];
-	return true;
+	return true;*/
 }
 
 /**
@@ -66,12 +69,12 @@ bool CMap::createEmptyForeground(size_t blocksize)
  */
 bool CMap::createEmptyBackground(size_t blocksize)
 {
-	if(!blocksize) return false;
+	/*if(!blocksize) return false;
 
 	if(mp_background_data)
 		SAFE_DELETE_ARRAY(mp_background_data);
 
-	mp_background_data = new word[blocksize];
+	mp_background_data = new word[blocksize];*/
 	return true;
 }
 
@@ -93,7 +96,10 @@ void CMap::resetScrolls()
 Uint16 CMap::at(Uint16 x, Uint16 y)
 {
 	if(x < m_width && y < m_height )
-		return mp_foreground_data[y*m_width + x];
+	{
+		return m_Plane[1].getMapDataAt(x,y);
+		//return mp_foreground_data[y*m_width + x];
+	}
 	else
 		return 0;
 }
@@ -103,11 +109,10 @@ Uint16 CMap::at(Uint16 x, Uint16 y)
 Uint16 CMap::getObjectat(Uint16 x, Uint16 y)
 {	return m_objectlayer[x][y];	}
 
-word *CMap::getBackgroundData()
-{	return mp_background_data;	}
-
 word *CMap::getForegroundData()
-{	return mp_foreground_data;	}
+{	//return mp_foreground_data;
+	return m_Plane[1].getMapDataPtr();
+}
 
 
 // searches the map's object layer for object OBJ.
@@ -145,7 +150,7 @@ bool CMap::findTile(unsigned int tile, int *xout, int *yout)
 	{
 		for(x=2;x<m_width-2;x++)
 		{
-			if (mp_foreground_data[y*m_width + x]==tile)
+			if (m_Plane[1].getMapDataAt(x,y)==tile)
 			{
 				*xout = x;
 				*yout = y;
@@ -160,7 +165,8 @@ bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t)
 {
 	if( x<m_width && y<m_height )
 	{
-		mp_foreground_data[y*m_width + x] = t;
+		//mp_foreground_data[y*m_width + x] = t;
+		m_Plane[1].setMapDataAt(t, x, y);
 		return true;
 	}
 	else
@@ -306,7 +312,8 @@ void CMap::scrollUp(void)
 // in stripes as it scrolls around.
 void CMap::redrawAt(int mx, int my)
 {
-	int c = mp_foreground_data[my*m_width + mx];
+	//int c = mp_foreground_data[my*m_width + mx];
+	int c = m_Plane[1].getMapDataAt(mx, my);
 	mp_Tilemap->drawTile(mp_scrollsurface, (mx<<4)&511, (my<<4)&511, c);
 	registerAnimation( (mx<<4)&511, (my<<4)&511, c );
 }
@@ -329,7 +336,8 @@ void CMap::drawAll()
     {
     	for(Uint32 x=0;x<num_v_tiles;x++)
     	{
-    		Uint32 c = mp_foreground_data[(m_mapy+y)*m_width + x+m_mapx];
+    		//Uint32 c = mp_foreground_data[(m_mapy+y)*m_width + x+m_mapx];
+    		Uint32 c = m_Plane[1].getMapDataAt(x+m_mapx, m_mapy+y);
 			mp_Tilemap->drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511, ((y<<4)+m_mapystripepos)&511, c);
 			registerAnimation( ((x<<4)+m_mapxstripepos)&511, ((y<<4)+m_mapystripepos)&511, c );
     	}
@@ -347,7 +355,8 @@ void CMap::drawHstripe(unsigned int y, unsigned int mpy)
 
 	for(Uint32 x=0;x<num_v_tiles;x++)
 	{
-		Uint32 c = mp_foreground_data[mpy*m_width + x+m_mapx];
+		//Uint32 c = mp_foreground_data[mpy*m_width + x+m_mapx];
+		Uint32 c = m_Plane[1].getMapDataAt(x+m_mapx, mpy);
 		mp_Tilemap->drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511, y, c);
 		registerAnimation( ((x<<4)+m_mapxstripepos)&511, y, c );
 	}
@@ -365,7 +374,8 @@ void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 
 	for(Uint32 y=0;y<num_h_tiles;y++)
 	{
-		Uint32 c = mp_foreground_data[(y+m_mapy)*m_width + mpx];
+		//Uint32 c = mp_foreground_data[(y+m_mapy)*m_width + mpx];
+		Uint32 c = m_Plane[1].getMapDataAt(mpx, y+m_mapy);
 		mp_Tilemap->drawTile(mp_scrollsurface, x, ((y<<4)+m_mapystripepos)&511, c);
 		registerAnimation( x, ((y<<4)+m_mapystripepos)&511, c );
 	}
@@ -490,8 +500,6 @@ void CMap::registerAnimation(Uint32 x, Uint32 y, int c)
 }
 
 CMap::~CMap() {
-	SAFE_DELETE_ARRAY(mp_background_data);
-	SAFE_DELETE_ARRAY(mp_foreground_data);
 	memset( m_AnimTileInUse, 0, sizeof(m_AnimTileInUse));
 	memset( m_animtiles, 0, sizeof(m_animtiles));
 }

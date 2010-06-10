@@ -13,6 +13,8 @@
 
 #include "../graphics/CTilemap.h"
 #include "../fileio/TypeDefinitions.h"
+#include <vector>
+#include "CPlane.h"
 
 // animation rate of animated tiles
 #define ANIM_TILE_TIME        4
@@ -69,7 +71,6 @@ public:
 	unsigned int getlevelat(unsigned int x, unsigned int y)	{
 		return m_objectlayer[x>>4][y>>4];	}
 
-	word *getBackgroundData();
 	word *getForegroundData();
 
 	virtual ~CMap();
@@ -108,8 +109,8 @@ private:
 	SDL_Surface *mp_scrollsurface;
 	CTilemap *mp_Tilemap;
 
-	word *mp_foreground_data;       		// the map foreground data
-	word *mp_background_data;       		// the map background data
+	//word *mp_foreground_data;       		// the map foreground data
+	//word *mp_background_data;       		// the map background data
 											// background data is only used
 											// in the Galaxy
 
@@ -125,6 +126,9 @@ private:
 	} m_animtiles[MAX_ANIMTILES+1];
 
 	unsigned int m_AnimTileInUse[ATILEINUSE_SIZEX][ATILEINUSE_SIZEY];
-	int m_animtiletimer, m_curanimtileframe;};
+	int m_animtiletimer, m_curanimtileframe;
+
+	CPlane m_Plane[3];
+};
 
 #endif /* CMAP_H_ */
