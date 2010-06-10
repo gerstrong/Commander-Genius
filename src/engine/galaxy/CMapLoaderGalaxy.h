@@ -25,8 +25,10 @@ public:
 	virtual ~CMapLoaderGalaxy();
 
 private:
-	void unpackPlaneData(std::ifstream &MapFile, CMap &Map, size_t PlaneNumber,
-			longword offset, longword length, word magic_word);
+	void unpackPlaneData(std::vector<word> &Plane, std::ifstream &MapFile,
+			CMap &Map, size_t PlaneNumber,
+			longword offset, longword length,
+			word magic_word);
 
 	CExeFile &m_ExeFile;
 };

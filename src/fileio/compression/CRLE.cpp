@@ -43,38 +43,76 @@ CRLE::CRLE()
 #define COPY_BYTE1  j
 #define COPY_BYTE2  j+1
 
-void CRLE::expand( std::vector<word>& dst, std::vector<byte>& src, word key )
+void CRLE::expandSwapped( std::vector<word>& dst, std::vector<byte>& src, word key )
 {
 	size_t finsize, howmany;
-	byte high_byte, low_byte;
 	word value;
+	size_t inc;
 
-	low_byte = src.at(0);
-	high_byte = src.at(1);
+	finsize = (src.at(1)<<8) + src.at(0);
+	finsize /= 2;
+
+	for(size_t i=WORDSIZE ; dst.size() < finsize ; i+=inc)
+    {
+		// Read datum (word)
+		value = (src.at(i+1)<<8)+src.at(i);
+		// If datum is 0xFEFE/0xABCD Then
+		if (value == key)
+		{
+			// Read count (word)
+			howmany = (src.at(i+3)<<8)+src.at(i+2);
+			value = (src.at(i+5)<<8)+src.at(i+4);
+
+			// Do count times
+			for(Uint32 j=0;j<howmany;j++)
+				dst.push_back(value);
+
+			inc = 3*WORDSIZE;
+		}
+		else
+		{
+			dst.push_back(value);
+			inc = WORDSIZE;
+		}
+    }
+}
+
+void CRLE::expand( std::vector<word>& dst, std::vector<byte>& src, word key )
+{
+    uint16_t word, count, inc;
+
+	size_t finsize;
+	byte high_byte, low_byte;
+
+	low_byte = src.at(1);
+	high_byte = src.at(0);
 	finsize = (high_byte<<8) | low_byte;
 	finsize /= 2;
 
-	for(size_t i=2 ; dst.size() < finsize ;)
+    //for(size_t i=WORDSIZE; i<src.size(); i+=inc )
+    for(size_t i=WORDSIZE ; dst.size() < finsize ; i+=inc)
     {
-		low_byte = src.at(i++);
-		high_byte = src.at(i++);
-		value = (high_byte<<8) | low_byte;
+        // Read datum (word)
+        word = (src.at(i)<<8)+src.at(i+1);
+        // If datum is 0xFEFE/0xABCD Then
+        if( word == key )
+        {
+            // Read count (word)
+            count = (src.at(i+2)<<8)+src.at(i+3);
+			word = (src.at(i+4)<<8)+src.at(i+5);
 
-		if (value == key)
-		{
-			low_byte = src.at(i++);
-			high_byte = src.at(i++);
-			howmany = (high_byte<<8) | low_byte;
+            // Do count times
+			for(Uint32 j=0;j<count;j++)
+				dst.push_back(word);
 
-			low_byte = src.at(i++);
-			high_byte = src.at(i++);
-			value = (high_byte<<8) | low_byte;
-
-			for(Uint32 j=0;j<howmany;j++)
-				dst.push_back(value);
-		}
-		else
-			dst.push_back(value);
+            inc = 3*WORDSIZE;
+        }
+        else
+        {
+            // Write datum (word)
+			dst.push_back(word);
+			inc = WORDSIZE;
+        }
     }
 }
 

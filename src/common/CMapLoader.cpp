@@ -72,14 +72,12 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	// load the compressed data into the memory
 	std::vector<Uint8>	compdata;
 	while( !MapFile.eof() )
-	{
-		Uint8 actual_byte = MapFile.get();
-		compdata.push_back(actual_byte);
-	}
-    MapFile.close();
+		compdata.push_back(MapFile.get());
+
+	MapFile.close();
 
 	CRLE RLE;
-	RLE.expand(planeitems,compdata, 0xFEFE);
+	RLE.expandSwapped(planeitems,compdata, 0xFEFE);
 	
 	mp_map->m_width = planeitems.at(1);
 	mp_map->m_height = planeitems.at(2);

@@ -1,3 +1,4 @@
+
 /*
  * CMapLoaderGalaxy.cpp
  *
@@ -61,25 +62,44 @@ bool CMapLoaderGalaxy::gotoSignature(std::ifstream &MapFile)
 	return false;
 }
 
-void CMapLoaderGalaxy::unpackPlaneData(std::ifstream &MapFile, CMap &Map, size_t PlaneNumber,
-										longword offset, longword length, word magic_word)
+void CMapLoaderGalaxy::unpackPlaneData(std::vector<word> &Plane, std::ifstream &MapFile,
+										CMap &Map, size_t PlaneNumber,
+										longword offset, longword length,
+										word magic_word)
 {
 	MapFile.seekg(offset);
 	std::vector<byte> Carmack_Plane;
 	std::vector<byte> RLE_Plane;
-	std::vector<word> Plane;
 	for(size_t i=0 ; i<length ; i++)
 		Carmack_Plane.push_back(MapFile.get());
+
+	size_t decarmacksize = (Carmack_Plane.at(1)<<8)+Carmack_Plane.at(0);
 
 	// Now use the Carmack Decompression
 	CCarmack Carmack;
 	Carmack.expand(RLE_Plane, Carmack_Plane);
+	Carmack_Plane.clear();
+    if( decarmacksize == RLE_Plane.size() )
+    {
+    	// Now use the RLE Decompression
+    	CRLE RLE;
+        size_t derlesize = (RLE_Plane[0]<<8)+RLE_Plane[1];           // Bytes already swapped
+    	RLE.expand(Plane, RLE_Plane, magic_word);
+    	RLE_Plane.clear();
 
-	// Now use the RLE Decompression
-	CRLE RLE;
-	RLE.expand(Plane, RLE_Plane, magic_word);
-
-	// TODO: Now read the raw data off the Plane vector...
+        if( derlesize/2 == Plane.size() )
+        {
+        	// TODO: Now read the raw data off the Plane vector...
+        }
+        else
+        {
+            g_pLogFile->textOut( "\nERROR Plane Uncompress RLE Size Failed: Actual "+ itoa(2*Plane.size()) +" bytes Expected " + itoa(derlesize) + " bytes<br>");
+        }
+    }
+    else
+    {
+    	g_pLogFile->textOut( "\nERROR Plane Uncompress Carmack Size Failed: Actual " + itoa(RLE_Plane.size()) + " bytes Expected " + itoa(decarmacksize) + " bytes<br>");
+    }
 }
 
 
@@ -160,8 +180,9 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 				g_pLogFile->textOut("Decompressing the Map...<br>" );
 
 				// Start with the Background
+				std::vector<word> Plane;
 				Map.createEmptyBackground(Width*Height);
-				unpackPlaneData(MapFile, Map, 1, Plane_Offset[0], Plane_Length[0], magic_word);
+				unpackPlaneData(Plane, MapFile, Map, 1, Plane_Offset[0], Plane_Length[0], magic_word);
 			}
 			MapFile.close();
 			return true;
