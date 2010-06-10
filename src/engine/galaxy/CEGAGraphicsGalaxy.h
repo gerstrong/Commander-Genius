@@ -25,6 +25,8 @@ public:
 	CEGAGraphicsGalaxy(CExeFile &ExeFile);
 
 	bool loadData();
+	void extractPicture(SDL_Surface *sfc,
+			std::vector<unsigned char> &data, size_t Width, size_t Height);
 	bool begin();
 	Uint8 getBit(unsigned char data, Uint8 leftshift);
 	bool readfonts();

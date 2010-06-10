@@ -146,6 +146,47 @@ bool CEGAGraphicsGalaxy::loadData()
 }
 
 /**
+ * \brief 	This function extracts a picture from the galaxy graphics map, and converts it properly to a
+ * 			SDL Surface
+ */
+
+void CEGAGraphicsGalaxy::extractPicture(SDL_Surface *sfc,
+		std::vector<unsigned char> &data, size_t Width, size_t Height)
+{
+	if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
+	SDL_FillRect(sfc, NULL, 0x00);
+
+	if(!data.empty())
+	{
+		// Decode the bitmap data
+		for(size_t p = 0; p < 4; p++)
+		{
+			unsigned char *pointer;
+			Uint8* pixel = (Uint8*) sfc->pixels;
+
+			// get location of plane p
+			pointer = &(data[0]) + p * Width * Height;
+
+			// now try to extract the bits and pass it to the SDL-Surface
+			for(size_t y = 0; y < Height; y++)
+			{
+				for(size_t x = 0; x < Width; x++)
+				{
+					Uint8 bit,b;
+					for(b=0 ; b<8 ; b++)
+					{
+						bit = getBit(*pointer, 7-b);
+						*pixel |= (bit<<p);
+						pixel++;
+					}
+					pointer++;
+				}
+			}
+		}
+	}
+}
+
+/**
  * \brief	prepares to load the data. Does a bit of extraction
  * \return 	returns true, if loading was successful
  */
@@ -407,39 +448,9 @@ bool CEGAGraphicsGalaxy::readBitmaps()
 		Bitmap.setDimensions(BmpHead[i].Width*8, BmpHead[i].Height);
 		Bitmap.createSurface(g_pVideoDriver->getScrollSurface()->flags, Palette);
 
-		SDL_Surface* sfc = Bitmap.getSDLSurface();
-
-		if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
-		SDL_FillRect(sfc, NULL, 0x00);
-
-		if(!m_egagraph.at(EpisodeInfo[ep].IndexBitmaps + i).data.empty())
-		{
-			// Decode the bitmap data
-			for(int p = 0; p < 4; p++)
-			{
-				unsigned char *pointer;
-				Uint8* pixel = (Uint8*) sfc->pixels;
-
-				// get location of plane p
-				pointer = &(m_egagraph[EpisodeInfo[ep].IndexBitmaps + i].data[0]) + p * BmpHead[i].Width * BmpHead[i].Height;
-
-				// now try to extract the bits and pass it to the SDL-Surface
-				for(size_t y = 0; y < BmpHead[i].Height; y++)
-				{
-					for(size_t x = 0; x < BmpHead[i].Width; x++)
-					{
-						Uint8 bit,b;
-						for(b=0 ; b<8 ; b++)
-						{
-							bit = getBit(*pointer, 7-b);
-							*pixel |= (bit<<p);
-							pixel++;
-						}
-						pointer++;
-					}
-				}
-			}
-		}
+		extractPicture(Bitmap.getSDLSurface(),
+				m_egagraph.at(EpisodeInfo[ep].IndexBitmaps + i).data,
+				BmpHead[i].Width, BmpHead[i].Height);
 	}
 	return true;
 }
