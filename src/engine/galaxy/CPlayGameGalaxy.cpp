@@ -41,6 +41,7 @@ bool CPlayGameGalaxy::init()
 void CPlayGameGalaxy::process()
 {
 	// TODO: Process code for the main map
+
 }
 
 void CPlayGameGalaxy::cleanup()

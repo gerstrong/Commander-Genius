@@ -10,4 +10,3 @@
 #define COLOUR_GREY	 	7
 #define COLOUR_CYAN	 	11
 #define COLOUR_BLACK 	0
-#define COLOUR_MASK	 	255 // Used, when this part of pixel must be transparent

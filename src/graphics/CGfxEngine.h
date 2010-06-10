@@ -35,13 +35,14 @@ public:
 	
 	void createEmptySprites(Uint16 num_sprites);
 	void createEmptyBitmaps(Uint16 num_bmps);
+	void createEmptyMaskedBitmaps(Uint16 num_bmps);
 	void createEmptyFontmaps(Uint8 num_fonts);
 	void createEmptyTilemap(stTile *pTileProperties, int numtiles);
 	void createEmptyCursorMap(SDL_Surface *surface);
 	
 	void pushEffectPtr(CEffects *pEffect);
 
-	void freeBitmaps();
+	void freeBitmaps(std::vector<CBitmap> &Bitmap);
 	void freeSprites();
 	void freeTilemap();
 	void freeFonts();
@@ -53,6 +54,7 @@ public:
 	int getNumSprites() { return Sprite.size(); }
 
 	CBitmap &getBitmap(Uint16 slot) { return Bitmap.at(slot); }
+	CBitmap &getMaskedBitmap(Uint16 slot) { return maskedBitmap.at(slot); }
 	CBitmap *getBitmap(const std::string &name);
 
 	CEffects *Effect() { return mp_Effects; }

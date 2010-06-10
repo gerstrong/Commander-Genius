@@ -36,10 +36,18 @@ void CGfxEngine::createEmptySprites(Uint16 num_sprites)
 
 void CGfxEngine::createEmptyBitmaps(Uint16 num_bmps)
 {
-	freeBitmaps();
+	freeBitmaps(Bitmap);
 	CBitmap bitmap;
 	Bitmap.assign(num_bmps, bitmap);
 }
+
+void CGfxEngine::createEmptyMaskedBitmaps(Uint16 num_bmps)
+{
+	freeBitmaps(maskedBitmap);
+	CBitmap bitmap;
+	maskedBitmap.assign(num_bmps, bitmap);
+}
+
 
 void CGfxEngine::createEmptyFontmaps(Uint8 num_fonts)
 {
@@ -83,7 +91,7 @@ void CGfxEngine::freeFonts()
 	}
 }
 
-void CGfxEngine::freeBitmaps()
+void CGfxEngine::freeBitmaps(std::vector<CBitmap> &Bitmap)
 {
 	while ( !Bitmap.empty() )
 	{
@@ -207,7 +215,8 @@ void CGfxEngine::killEffect()
 CGfxEngine::~CGfxEngine() {
 	SAFE_DELETE(mp_Effects);
 	freeCursor();
-	freeBitmaps();
+	freeBitmaps(maskedBitmap);
+	freeBitmaps(Bitmap);
 	freeSprites();
 	freeFonts();
 	freeTilemap();

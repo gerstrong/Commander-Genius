@@ -206,6 +206,31 @@ void CEGAGraphicsGalaxy::extractPicture(SDL_Surface *sfc,
 				}
 			}
 		}
+
+		if(masked)
+		{
+			// This stuff is for reading the mask and apply it to the pixel map
+			unsigned char *pointer = &(data[0]);
+			Uint8* pixel = (Uint8*) sfc->pixels;
+
+			// now try to extract the bits and pass it to the SDL-Surface
+			for(size_t y = 0; y < Height; y++)
+			{
+				for(size_t x = 0; x < Width; x++)
+				{
+					Uint8 bit,b;
+					for(b=0 ; b<8 ; b++)
+					{
+						bit = getBit(*pointer, 7-b);
+						if(bit == 1)
+							*pixel = 16;
+
+						pixel++;
+					}
+					pointer++;
+				}
+			}
+		}
 	}
 }
 
@@ -489,78 +514,19 @@ bool CEGAGraphicsGalaxy::readMaskedBitmaps()
 	for(size_t i = 0; i < EpisodeInfo[ep].NumMaskedBitmaps; i++)
 	{
 		CBitmap &Bitmap = g_pGfxEngine->getMaskedBitmap(i);
-		Bitmap.setDimensions(2*BmpMaskedHead[i].Width*8, BmpMaskedHead[i].Height);
+		Bitmap.setDimensions(BmpMaskedHead[i].Width*8, BmpMaskedHead[i].Height);
 		Bitmap.createSurface(g_pVideoDriver->getScrollSurface()->flags, Palette);
 
 		extractPicture(Bitmap.getSDLSurface(),
 				m_egagraph.at(EpisodeInfo[ep].IndexMaskedBitmaps + i).data,
 				BmpMaskedHead[i].Width, BmpMaskedHead[i].Height, true);
 
-		//std::string buf = "maskbmp" + itoa(i) + ".bmp";
-		//SDL_SaveBMP(Bitmap.getSDLSurface(), buf.c_str());
+		std::string buf = "maskbmp" + itoa(i) + ".bmp";
+		SDL_SaveBMP(Bitmap.getSDLSurface(), buf.c_str());
 	}
 	return true;
 }
 
-//void k456_export_masked_bitmaps()
-//{
-//	BITMAP16 *bmp, *mbmp, *planes[5];
-//	char filename[PATH_MAX];
-//	int i, p, y;
-//	unsigned char *pointer;
-//	int ep = Switches->Episode - 4;
-//
-//	if(!ExportInitialised)
-//		quit("Trying to export masked bitmaps before initialisation!");
-//
-//	/* Export all the bitmaps */
-//	printf("Exporting masked bitmaps: ");
-//
-//	for(i = 0; i < EpisodeInfo[ep].NumMaskedBitmaps; i++)
-//	{
-//		/* Show that something is happening */
-//		showprogress((i * 100) / EpisodeInfo[ep].NumMaskedBitmaps);
-//
-//		if(EgaGraph[EpisodeInfo[ep].IndexMaskedBitmaps + i].data)
-//		{
-//			mbmp = bmp_create(BmpMaskedHead[i].Width * 8 * 2, BmpMaskedHead[i].Height, 4);
-//
-//			/* Decode the transparency mask */
-//			planes[4] = bmp_create(BmpMaskedHead[i].Width * 8, BmpMaskedHead[i].Height, 1);
-//			pointer = EgaGraph[EpisodeInfo[ep].IndexMaskedBitmaps + i].data;
-//			for(y = 0; y < BmpMaskedHead[i].Height; y++)
-//				memcpy(planes[4]->lines[y], pointer + y * BmpMaskedHead[i].Width, BmpMaskedHead[i].Width);
-//			bmp_blit(planes[4], 0, 0, mbmp, BmpMaskedHead[i].Width * 8, 0, BmpMaskedHead[i].Width * 8, BmpMaskedHead[i].Height);
-//
-//			/* Decode the bitmap data */
-//			for(p = 0; p < 4; p++)
-//			{
-//				/* Create a 1bpp bitmap for each plane */
-//				planes[p] = bmp_create(BmpMaskedHead[i].Width * 8, BmpMaskedHead[i].Height, 1);
-//
-//				/* Decode the lines of the bitmap data */
-//				pointer = EgaGraph[EpisodeInfo[ep].IndexMaskedBitmaps + i].data + (p + 1) * BmpMaskedHead[i].Width * BmpMaskedHead[i].Height;
-//				for(y = 0; y < BmpMaskedHead[i].Height; y++)
-//					memcpy(planes[p]->lines[y], pointer + y * BmpMaskedHead[i].Width, BmpMaskedHead[i].Width);
-//			}
-//
-//			/* Create the bitmap file */
-//			sprintf(filename, "%s/%cMBM%04d.bmp", Switches->OutputPath, '0' + Switches->Episode, i);
-//			bmp = bmp_merge(planes[2], planes[1], planes[0], planes[3]);
-//			bmp_blit(bmp, 0, 0, mbmp, 0, 0, BmpMaskedHead[i].Width * 8, BmpMaskedHead[i].Height);
-//			if(!bmp_save(mbmp, filename, Switches->Backup))
-//				quit("Can't open bitmap file %s!", filename);
-//
-//			/* Free the memory used */
-//			for(p = 0; p < 5; p++)
-//				bmp_free(planes[p]);
-//			bmp_free(bmp);
-//			bmp_free(mbmp);
-//		}
-//		//printf("\x8\x8\x8\x8");
-//	}
-//	completemsg();
-//}
 //
 //void k456_export_tiles()
 //{
