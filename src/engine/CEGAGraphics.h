@@ -24,7 +24,8 @@ public:
 	virtual bool loadData();
 	virtual bool loadData( int version, unsigned char *p_exedata ) {return false;};
 
-	virtual int getNumSprites() {return 0;};
+	virtual int getNumSprites(){ return 0; }
+	virtual short getNumTiles(){ return 0; }
 
 protected:
 	short m_episode;

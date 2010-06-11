@@ -43,10 +43,6 @@ RawData(NULL)
 	m_bitmaplocation = bitmaplocation;
 }
 
-CEGALatch::~CEGALatch() {
-	if(RawData) delete [] RawData, RawData = NULL;
-}
-
 bool CEGALatch::loadHead( char *data, short m_episode )
 {
 	Uint16 height, width;
@@ -101,16 +97,6 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	char *RawData;
     Uint16 width, height;
     SDL_Surface *sfc;
-
-    // First, retrieve the Tile properties so the tilemap gets properly formatted
-    // Important especially for masks
-	// Load tile attributes.
-	CTileLoader TileLoader( episode, version, data );
-	if(!TileLoader.load())
-	{
-		g_pLogFile->textOut(RED, "CGameControl::loadResources: Could not load data for the tiles<br>");
-		return false;
-	}
 
 	filename = getResourceFilename("egalatch.ck" + itoa(episode), path);
 
@@ -230,7 +216,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 						 plane4 + m_tiles16location,
 						 0);
 	Uint8 *u_offset;
-	g_pGfxEngine->createEmptyTilemap(TileLoader.getTileProperties(), TileLoader.getNumTiles() );
+	g_pGfxEngine->createEmptyTilemap();
 	CTilemap *Tilemap = g_pGfxEngine->Tilemap;
 	Tilemap->CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE );
 	sfc = Tilemap->getSDLSurface();
@@ -353,7 +339,7 @@ void CEGALatch::applyMasks()
 
 	for( Uint16 t=0 ; t<m_num16tiles ; t++ )
 	{
-		if( g_pGfxEngine->Tilemap->mp_tiles[t].behaviour == -2 )  // This is for masked tiles.
+		if( g_pBehaviorEngine->getTileProperties().at(t).behaviour == -2 )  // This is for masked tiles.
 		{
 			for( Uint16 x=0 ; x<16 ; x++ )
 			{
@@ -384,4 +370,8 @@ void CEGALatch::applyMasks()
 	}
 
 	if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
+}
+
+CEGALatch::~CEGALatch() {
+	if(RawData) delete [] RawData, RawData = NULL;
 }

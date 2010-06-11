@@ -21,10 +21,10 @@ mp_Cursor(NULL)
 ///
 // Creation Routines
 ///
-void CGfxEngine::createEmptyTilemap(stTile *pTileProperties, int numtiles)
+void CGfxEngine::createEmptyTilemap()
 {
 	freeTilemap();
-	Tilemap = new CTilemap(pTileProperties, numtiles);
+	Tilemap = new CTilemap();
 }
 
 void CGfxEngine::createEmptySprites(Uint16 num_sprites)

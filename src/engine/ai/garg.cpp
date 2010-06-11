@@ -37,8 +37,6 @@ unsigned int rnd(void);
 void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 {
 	unsigned int i;
-    stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
-
 	if (object.needinit)
 	{  // first time initialization
 		object.ai.garg.state = GARG_LOOK;
@@ -71,6 +69,8 @@ void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 		object.inhibitfall = 1;
 		g_pSound->playStereofromCoord(SOUND_GARG_DIE, PLAY_NOW, object.scrx);
 	}
+
+	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
 
 	switch(object.ai.garg.state)
 	{
@@ -221,7 +221,7 @@ void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 			else
 				object.ai.garg.state = GARG_CHARGE;
 
-			if(TileProperty[mp_Map->at((object.getXMidPos())>>CSF, (object.getYDownPos()+1)>>CSF)].bup) // There is floor
+			if(TileProperties.at(mp_Map->at((object.getXMidPos())>>CSF, (object.getYDownPos()+1)>>CSF)).bup) // There is floor
 				object.ai.garg.state = GARG_CHARGE;
 			else
 			{
@@ -262,7 +262,7 @@ void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 			}
 
 			// if Garg is about to fall while charged make him jump
-			if( !TileProperty[mp_Map->at((object.getXMidPos())>>CSF, (object.getYDownPos()+1)>>CSF)].bup )
+			if( !TileProperties.at(mp_Map->at((object.getXMidPos())>>CSF, (object.getYDownPos()+1)>>CSF)).bup )
 			{
 				object.ai.garg.state = GARG_JUMP;
 				object.ai.garg.jumptime = GARG_JUMP_TIME;

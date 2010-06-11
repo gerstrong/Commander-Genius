@@ -22,7 +22,8 @@ public:
 	CEGAGraphicsVort(short episode, const std::string& path);
 
 	bool loadData( int version, unsigned char *p_exedata );
-	int getNumSprites() { return NumSprites; }
+	short getNumTiles();
+	int getNumSprites();
 
 	virtual ~CEGAGraphicsVort();
 
@@ -55,7 +56,6 @@ private:
 	SDL_Surface *m_BigTileSurface;	// May be 32x32. Never used in the original games
 	SDL_Surface *m_TileSurface;		// 16x16 Tiles
 	SDL_Surface *m_BitmapsSurface;	// Bitmaps of the games, like title screen
-
 };
 
 }

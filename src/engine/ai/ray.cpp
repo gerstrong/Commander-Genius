@@ -4,6 +4,7 @@
 // raygun blast, shot by keen, and by the tank robots in ep1&2.
 #include "ray.h"
 #include "../spritedefines.h"
+#include "../../common/CBehaviorEngine.h"
 
 #define Sprite g_pGfxEngine->Sprite
 
@@ -11,7 +12,6 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 {
 	int hitlethal;
 	int rayspeed;
-	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 	CSprite &raysprite = g_pGfxEngine->getSprite(object.sprite);
 	std::vector<CObject>::iterator it_obj;
 	if (object.needinit)
@@ -36,6 +36,7 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 	
 	int x = object.getXPosition();
 	int y = object.getYPosition();
+	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
 	
 	switch(object.ai.ray.state)
 	{
@@ -102,14 +103,14 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 					}
 				}
 			}
-			
+
 			if (object.ai.ray.direction == RIGHT)
 			{
 				// don't go through bonklethal tiles, even if they're not solid
 				// (for the arms on mortimer's machine)
-				if (TileProperty[mp_Map->at(((x>>(CSF-4))+raysprite.getWidth())>>4, (y>>CSF)+1)].behaviour == 1)
+				if (TileProperties.at(mp_Map->at(((x>>(CSF-4))+raysprite.getWidth())>>4, (y>>CSF)+1)).behaviour == 1)
 					hitlethal = true;
-				else if (TileProperty[mp_Map->at(((x>>(CSF-4))+raysprite.getWidth())>>4, ((y>>(CSF-4))+(raysprite.getHeight()-1))>>(CSF-4))].behaviour == 1)
+				else if (TileProperties.at(mp_Map->at(((x>>(CSF-4))+raysprite.getWidth())>>4, ((y>>(CSF-4))+(raysprite.getHeight()-1))>>(CSF-4))).behaviour == 1)
 					hitlethal = true;
 				else
 					hitlethal = false;
@@ -125,9 +126,9 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 			}
 			else if (object.ai.ray.direction == LEFT)
 			{
-				if (TileProperty[mp_Map->at((x-1)>>CSF, (y+1)>>CSF)].behaviour == 1)
+				if (TileProperties.at(mp_Map->at((x-1)>>CSF, (y+1)>>CSF)).behaviour == 1)
 					hitlethal = true;
-				else if (TileProperty[mp_Map->at((x-1)>>CSF, ((y>>(CSF-4))+(raysprite.getHeight()-1))>>(CSF-4))].behaviour == 1)
+				else if (TileProperties.at(mp_Map->at((x-1)>>CSF, ((y>>(CSF-4))+(raysprite.getHeight()-1))>>(CSF-4))).behaviour == 1)
 					hitlethal = true;
 				else
 					hitlethal = false;

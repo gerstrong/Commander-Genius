@@ -169,7 +169,7 @@ void CObject::setupObjectType(int Episode)
 // per tile, really checks per tile and not pixel based
 void CObject::checkinitialCollisions()
 {
-	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
+	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 	blockedr = blockedl = false;
 	blockedu = blockedd = false;
 	// Check initial collision. This will avoid that ray go through the first blocking element
@@ -566,7 +566,7 @@ void CObject::processFalling()
 const int COLISION_RES = 4;
 bool CObject::checkSolidR( int x2, int y1, int y2)
 {
-	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
+	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 
 	// Check for right from the object
 	if(solid)
@@ -598,7 +598,7 @@ bool CObject::checkSolidR( int x2, int y1, int y2)
 
 bool CObject::checkSolidL( int x1, int y1, int y2)
 {
-	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
+	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 
 	// Check for right from the object
 	if(solid)
@@ -628,7 +628,7 @@ bool CObject::checkSolidL( int x1, int y1, int y2)
 
 bool CObject::checkSolidU(int x1, int x2, int y1)
 {
-	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
+	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 
 	// Check for right from the object
 	if(solid)
@@ -648,7 +648,7 @@ bool CObject::checkSolidU(int x1, int x2, int y1)
 
 bool CObject::checkSolidD( int x1, int x2, int y2)
 {
-	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
+	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 
 	// Check for down from the object
 	if(solid)
@@ -740,9 +740,10 @@ void CObject::drawMask(SDL_Surface *dst, CSprite &Sprite, int mx, int my)
 		for(xa=0;xa<=xsize;xa+=16)
 		{
 			tl = mp_Map->at((mx+xa)>>4,(my+ya)>>4);
-			if(mp_Map->mp_tiles[tl].behaviour == -2) // case when when has a masked graphic
+			CTileProperties &TileProperties = g_pBehaviorEngine->getTileProperties().at(tl);
+			if(TileProperties.behaviour == -2) // case when when has a masked graphic
 				mp_Map->drawAnimatedTile(dst, mx+xa-mp_Map->m_scrollx, my+ya-mp_Map->m_scrolly, tl+1);
-			else if (mp_Map->mp_tiles[tl].behaviour == -1) // case when tile is just foreground
+			else if (TileProperties.behaviour == -1) // case when tile is just foreground
 				mp_Map->drawAnimatedTile(dst, mx+xa-mp_Map->m_scrollx, my+ya-mp_Map->m_scrolly, tl);
 		}
     }

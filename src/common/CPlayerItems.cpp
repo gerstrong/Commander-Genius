@@ -36,7 +36,7 @@ void CPlayer::getgoodies()
 // have keen pick up the goodie at screen pixel position (px, py)
 bool CPlayer::getGoodie(int px, int py)
 {
-	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
+	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 	Uint16 tile = mp_map->at(px, py);
 	char behaviour = TileProperty[tile].behaviour;
 	
@@ -62,7 +62,7 @@ bool CPlayer::getGoodie(int px, int py)
 
 void CPlayer::procGoodie(int tile, int mpx, int mpy)
 {
-	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
+	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 	Uint8 behaviour = TileProperty[tile].behaviour;
 	if ( (behaviour > 5 && behaviour < 11) || (behaviour > 17 && behaviour < 22) )
 	{
@@ -328,7 +328,7 @@ void CPlayer::openDoor(int doortile, int doorsprite, int mpx, int mpy)
 {
 int chgtotile;
 short tilefix=0;
-stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
+std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 	 
 	 g_pSound->playSound(SOUND_DOOR_OPEN, PLAY_NOW);
 	 take_keycard(doortile);

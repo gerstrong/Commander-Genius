@@ -43,7 +43,7 @@ void CObjectAI::se_extend_plat(CObject &object, bool &PlatExtending)
 {
 #define PLAT_EXTEND_RATE        3
 
-	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
+	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
 
 	if (object.needinit)
 	{
@@ -62,7 +62,7 @@ void CObjectAI::se_extend_plat(CObject &object, bool &PlatExtending)
 		}
 
 		// figure out which direction the bridge is supposed to go
-		if (!TileProperty[mp_Map->at(object.ai.se.platx+1, object.ai.se.platy)].bleft)
+		if (!TileProperties[mp_Map->at(object.ai.se.platx+1, object.ai.se.platy)].bleft)
 			object.ai.se.dir = RIGHT;
 		else
 			object.ai.se.dir = LEFT;
@@ -79,7 +79,7 @@ void CObjectAI::se_extend_plat(CObject &object, bool &PlatExtending)
 	if (!object.ai.se.timer)
 	{
 		if (object.ai.se.dir==RIGHT &&
-				!TileProperty[mp_Map->at(object.ai.se.platx, object.ai.se.platy)].bleft)
+				!TileProperties[mp_Map->at(object.ai.se.platx, object.ai.se.platy)].bleft)
 		{
 			mp_Map->changeTile(object.ai.se.platx, object.ai.se.platy, TILE_EXTENDING_PLATFORM);
 			object.ai.se.platx++;
@@ -87,7 +87,7 @@ void CObjectAI::se_extend_plat(CObject &object, bool &PlatExtending)
 			object.ai.se.timer = PLAT_EXTEND_RATE;
 		}
 		else if(object.ai.se.dir==LEFT &&
-				!TileProperty[mp_Map->at(object.ai.se.platx, object.ai.se.platy)].bright)
+				!TileProperties[mp_Map->at(object.ai.se.platx, object.ai.se.platy)].bright)
 		{
 			mp_Map->changeTile(object.ai.se.platx, object.ai.se.platy, TILE_EXTENDING_PLATFORM);
 			object.ai.se.platx--;

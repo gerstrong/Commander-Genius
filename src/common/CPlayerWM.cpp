@@ -203,7 +203,8 @@ void CPlayer::UnmountNessie()
 					if(obj->m_type == OBJ_NESSIE)
 					{
 						// Check if the there are no blocked tiles there!
-						stTile Tile = g_pGfxEngine->Tilemap->mp_tiles[mp_map->at(x+dx, y+dy)];
+						std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+						CTileProperties &Tile = TileProperty[mp_map->at(x+dx, y+dy)];
 						if( !Tile.bdown and !Tile.bup and
 							!Tile.bleft and !Tile.bright )
 						{

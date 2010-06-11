@@ -60,7 +60,7 @@ private:
 	CPassive *mp_PassiveMode;
 	CPlayGame *mp_PlayGame;
 	CSavedGame m_SavedGame;
-	
+
 	bool m_endgame;
 	bool m_show_finale;
 	Uint8 m_Episode;

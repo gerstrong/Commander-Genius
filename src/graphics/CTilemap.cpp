@@ -11,10 +11,8 @@
 #include "CPalette.h"
 #include <stdlib.h>
 
-CTilemap::CTilemap(stTile *pTileProperties, int numtiles) :
-mp_tiles(pTileProperties),
+CTilemap::CTilemap() :
 m_Tilesurface(NULL),
-m_numtiles(numtiles),
 m_EmptyBackgroundTile(143)
 { }
 
@@ -80,6 +78,6 @@ void CTilemap::drawTile(SDL_Surface *dst, Uint16 x, Uint16 y, Uint16 t)
 }
 
 CTilemap::~CTilemap() {
-	if(mp_tiles) delete [] mp_tiles;
+	//if(mp_tiles) delete [] mp_tiles;
 	if(m_Tilesurface) SDL_FreeSurface(m_Tilesurface);
 }

@@ -357,40 +357,40 @@ void CEGASprit::DerivePlayerSprites( std::vector<CSprite> &sprites )
 // collected
 void CEGASprit::DeriveSpecialSprites( CTilemap *tilemap, std::vector<CSprite> &sprites )
 {
-	stTile *TileProperty = tilemap->mp_tiles;
+	std::vector<CTileProperties>& TileProperties = g_pBehaviorEngine->getTileProperties();
 	// Yellow sprites a special effect when items are collected
-	for( Uint16 t=0 ; t<tilemap->m_numtiles ; t++)
+	for( Uint16 t=0 ; t<TileProperties.size() ; t++)
 	{
 		// The Gun!
-		if( TileProperty[t].behaviour==15 )
+		if( TileProperties.at(t).behaviour==15 )
 			CreateYellowSpriteofTile( tilemap, t, sprites.at(GUNUP_SPRITE) );
 		
 		// Keycards
-		if( TileProperty[t].behaviour==18 )	CreateYellowSpriteofTile( tilemap, t, sprites.at(PTCARDY_SPRITE));
-		if( TileProperty[t].behaviour==19 )	CreateYellowSpriteofTile( tilemap, t, sprites.at(PTCARDG_SPRITE));
-		if( TileProperty[t].behaviour==20 )	CreateYellowSpriteofTile( tilemap, t, sprites.at(PTCARDR_SPRITE));
-		if( TileProperty[t].behaviour==21 )	CreateYellowSpriteofTile( tilemap, t, sprites.at(PTCARDB_SPRITE));
+		if( TileProperties.at(t).behaviour==18 )	CreateYellowSpriteofTile( tilemap, t, sprites.at(PTCARDY_SPRITE));
+		if( TileProperties.at(t).behaviour==19 )	CreateYellowSpriteofTile( tilemap, t, sprites.at(PTCARDG_SPRITE));
+		if( TileProperties.at(t).behaviour==20 )	CreateYellowSpriteofTile( tilemap, t, sprites.at(PTCARDR_SPRITE));
+		if( TileProperties.at(t).behaviour==21 )	CreateYellowSpriteofTile( tilemap, t, sprites.at(PTCARDB_SPRITE));
 		
 		// Single Bullet in Ep3
-		if( TileProperty[t].behaviour==28 )
+		if( TileProperties.at(t).behaviour==28 )
 			CreateYellowSpriteofTile( tilemap, t, sprites.at(SHOTUP_SPRITE) );
 		
-		if( TileProperty[t].behaviour==27 )
+		if( TileProperties.at(t).behaviour==27 )
 			CreateYellowSpriteofTile( tilemap, t, sprites.at(ANKHUP_SPRITE) );
 	}
 
-	for(int i=0 ; i < g_pGfxEngine->Tilemap->m_numtiles ; i++ )
+	for(int i=0 ; i < TileProperties.size() ; i++ )
 	{
-		if(TileProperty[i].behaviour == DOOR_YELLOW)
+		if(TileProperties.at(i).behaviour == DOOR_YELLOW)
 			g_pGfxEngine->copyTileToSprite(i-1, DOOR_YELLOW_SPRITE, 2);
 
-		if(TileProperty[i].behaviour == DOOR_RED)
+		if(TileProperties.at(i).behaviour == DOOR_RED)
 			g_pGfxEngine->copyTileToSprite(i-1, DOOR_RED_SPRITE, 2);
 
-		if(TileProperty[i].behaviour == DOOR_GREEN)
+		if(TileProperties.at(i).behaviour == DOOR_GREEN)
 			g_pGfxEngine->copyTileToSprite(i-1, DOOR_GREEN_SPRITE, 2);
 
-		if(TileProperty[i].behaviour == DOOR_BLUE)
+		if(TileProperties.at(i).behaviour == DOOR_BLUE)
 			g_pGfxEngine->copyTileToSprite(i-1, DOOR_BLUE_SPRITE, 2);
 	 }
 

@@ -215,7 +215,7 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 				mp_map->m_objectlayer[x][y] = t;
 
 				// Change the level tile to a done sign
-				int newtile = g_pGfxEngine->Tilemap->mp_tiles[mp_map->at(x,y)].chgtile;
+				int newtile = g_pBehaviorEngine->getTileProperties()[mp_map->at(x,y)].chgtile;
 
 				// Consistency check! Some Mods have issues with that.
 				if(episode == 1 || episode == 2)
@@ -260,7 +260,7 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 
 void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode, int level)
 {
-	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
+	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 	mp_map->m_objectlayer[x][y] = t;
 	
 	if (t)

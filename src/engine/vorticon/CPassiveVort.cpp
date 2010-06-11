@@ -10,6 +10,7 @@
 #include "../../graphics/CGfxEngine.h"
 #include "../vorticon/CMenuVorticon.h"
 #include "../../common/CMapLoader.h"
+#include "../../common/CTileProperties.h"
 #include "../../sdl/CVideoDriver.h"
 #include "../../sdl/CInput.h"
 

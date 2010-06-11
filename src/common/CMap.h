@@ -13,7 +13,6 @@
 
 #include "../graphics/CTilemap.h"
 #include "../fileio/TypeDefinitions.h"
-#include <vector>
 #include "CPlane.h"
 
 // animation rate of animated tiles
@@ -93,8 +92,6 @@ public:
 	std::string m_gamepath;
 
 	bool m_animation_enabled;
-
-	stTile *mp_tiles;
 
 private:
 

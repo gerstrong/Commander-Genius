@@ -9,17 +9,18 @@
 #define CTILELOADER_H_
 
 #include "../graphics/CTilemap.h"
+#include "../common/CBehaviorEngine.h"
 
 class CTileLoader {
 public:
 	CTileLoader(int episode, int version, unsigned char *data);
-	virtual ~CTileLoader();
 	
 	bool load();
 	
-	stTile *getTileProperties() { return mp_TileProperty; }
 	int getNumTiles() { return m_numtiles; }
 	
+	virtual ~CTileLoader();
+
 private:
 	int m_episode;
 	int m_version;
@@ -27,7 +28,7 @@ private:
 	unsigned char *m_data;
 	int m_numtiles;
 	
-	stTile *mp_TileProperty;
+	std::vector<CTileProperties> &m_TileProperties;
 	
 	void assignChangeTileAttribute();
 	bool setProperOffset();

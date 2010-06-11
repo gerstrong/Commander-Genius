@@ -24,6 +24,9 @@ class CEGAGraphicsGalaxy : public ::CEGAGraphics
 public:
 	CEGAGraphicsGalaxy(CExeFile &ExeFile);
 
+	int getNumSprites();
+	short getNumTiles();
+
 	bool loadData();
 	void extractPicture(SDL_Surface *sfc,
 			std::vector<unsigned char> &data, size_t Width, size_t Height,

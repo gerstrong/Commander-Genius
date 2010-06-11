@@ -3,6 +3,7 @@
 #include "../../game.h"
 #include "../../sdl/sound/CSound.h"
 #include "../../graphics/CGfxEngine.h"
+#include "../../common/CBehaviorEngine.h"
 
 // AI for "butler" robot (ep1)
 enum Butleractionn{
@@ -83,10 +84,11 @@ void  CObjectAI::butler_ai(CObject &object, char difficulty)
 		 } else object.ai.butler.timer++;
 		 break;
 	 case BUTLER_WALK:
-		 stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
+
 		 if (object.ai.butler.movedir==LEFT)
 		 {  // move left
-			 not_about_to_fall = TileProperty[mp_Map->at((object.getXLeftPos()-(BUTLER_LOOK_AHEAD_DIST<<STC))>>CSF, (object.getYDownPos()+1)>>CSF)].bup;
+			 size_t tile = mp_Map->at((object.getXLeftPos()-(BUTLER_LOOK_AHEAD_DIST<<STC))>>CSF, (object.getYDownPos()+1)>>CSF);
+			 not_about_to_fall = g_pBehaviorEngine->getTileProperties().at(tile).bup;
 			 object.sprite = BUTLER_WALK_LEFT_FRAME + object.ai.butler.frame;
 			 if (!object.blockedl && not_about_to_fall)
 			 {
@@ -107,7 +109,8 @@ void  CObjectAI::butler_ai(CObject &object, char difficulty)
 		 else
 		 {  // move right
 	 
-			 not_about_to_fall = TileProperty[mp_Map->at((object.getXRightPos()+(BUTLER_LOOK_AHEAD_DIST<<STC))>>CSF, (object.getYDownPos()+1)>>CSF)].bup;
+			 size_t tile = mp_Map->at((object.getXRightPos()+(BUTLER_LOOK_AHEAD_DIST<<STC))>>CSF, (object.getYDownPos()+1)>>CSF);
+			 not_about_to_fall = g_pBehaviorEngine->getTileProperties().at(tile).bup;
 			 object.sprite = BUTLER_WALK_RIGHT_FRAME + object.ai.butler.frame;
 			 if (!object.blockedr && not_about_to_fall)
 			 {

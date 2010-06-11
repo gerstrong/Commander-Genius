@@ -118,7 +118,7 @@ void CObjectAI::scrub_ai(CObject &object)
 		}
 	}
 
-	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
+	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
 
 	switch(object.ai.scrub.state)
 	{
@@ -211,9 +211,9 @@ void CObjectAI::scrub_ai(CObject &object)
 						// in certain situations if player is hanging off the right side
 						// of the scrub a bit)
 						bool floor = false;
-						if (!TileProperty[mp_Map->at((it_player->getXPosition()+128)>>CSF, (it_player->getYDownPos())>>CSF)].bup)
+						if (!TileProperties[mp_Map->at((it_player->getXPosition()+128)>>CSF, (it_player->getYDownPos())>>CSF)].bup)
 						{ // lower-left isn't solid
-							if (TileProperty[mp_Map->at((it_player->getXPosition()+384)>>CSF, (it_player->getYDownPos())>>CSF)].bup)
+							if (TileProperties[mp_Map->at((it_player->getXPosition()+384)>>CSF, (it_player->getYDownPos())>>CSF)].bup)
 								floor = true;
 						}
 						else floor = false;
@@ -302,17 +302,17 @@ void CObjectAI::scrub_ai(CObject &object)
 
 			if(object.ai.scrub.walkdir == LEFT)
 			{
-				walkovertile = TileProperty[mp_Map->at(mx-1, my+1)].bup;
+				walkovertile = TileProperties[mp_Map->at(mx-1, my+1)].bup;
 			}
 			else if(object.ai.scrub.walkdir == RIGHT)
 			{
-				walkovertile = TileProperty[mp_Map->at(mx+1, my-1)].bdown;
+				walkovertile = TileProperties[mp_Map->at(mx+1, my-1)].bdown;
 			}
 
 			if (!walkovertile) // Is there a chance to walk over one tile?
 			{
 				if(object.ai.scrub.walkdir == LEFT &&
-						TileProperty[mp_Map->at(mx+1, my+1)].bleft) // lower-right, if yes, go just go down
+						TileProperties[mp_Map->at(mx+1, my+1)].bleft) // lower-right, if yes, go just go down
 				{	// Move Down!
 					object.sprite = SCRUB_WALK_DOWN + object.ai.scrub.walkframe;
 					object.ai.scrub.walkdir = DOWN;
@@ -332,7 +332,7 @@ void CObjectAI::scrub_ai(CObject &object)
 					Scrub_TurnOnCansupportWhereNotKicked(object);
 				}
 				else if(object.ai.scrub.walkdir == DOWN &&
-						TileProperty[mp_Map->at(mx+1, my-1)].bdown) // upper-right, if yes, go right! (ceiling)
+						TileProperties[mp_Map->at(mx+1, my-1)].bdown) // upper-right, if yes, go right! (ceiling)
 				{	// Move right
 					object.ai.scrub.walkdir = RIGHT;
 					object.sprite = SCRUB_WALK_RIGHT + object.ai.scrub.walkframe;
@@ -341,8 +341,8 @@ void CObjectAI::scrub_ai(CObject &object)
 					SetAllCanSupportPlayer(object, 0);
 				}
 				else if(object.ai.scrub.walkdir == RIGHT &&
-						( TileProperty[mp_Map->at(mx-1, my-1)].bright ||
-						  TileProperty[mp_Map->at(mx, my-1)].bright	)) // upper-left
+						( TileProperties[mp_Map->at(mx-1, my-1)].bright ||
+								TileProperties[mp_Map->at(mx, my-1)].bright	)) // upper-left
 				{	// Move Up!
 					object.ai.scrub.walkdir = UP;
 					object.sprite = SCRUB_WALK_UP + object.ai.scrub.walkframe;
@@ -352,7 +352,7 @@ void CObjectAI::scrub_ai(CObject &object)
 					object.moveLeft(5<<STC);
 				}
 				else if(object.ai.scrub.walkdir == UP &&
-						TileProperty[mp_Map->at(mx-1, my+1)].bdown) // lower-left
+						TileProperties[mp_Map->at(mx-1, my+1)].bdown) // lower-left
 				{	// Move Left!
 					object.ai.scrub.walkdir = LEFT;
 					object.sprite = SCRUB_WALK_LEFT + object.ai.scrub.walkframe;

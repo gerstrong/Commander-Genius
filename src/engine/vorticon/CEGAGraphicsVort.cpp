@@ -51,6 +51,11 @@ CEGAGraphics(episode, path)
 	m_BitmapsSurface = NULL;
 }
 
+int CEGAGraphicsVort::getNumSprites()
+{ return NumSprites; }
+short CEGAGraphicsVort::getNumTiles()
+{ return Num16Tiles; }
+
 bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 {
 	std::string buf;

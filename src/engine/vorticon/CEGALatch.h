@@ -10,6 +10,8 @@
 
 #include <SDL.h>
 #include <string>
+#include "../../common/CTileProperties.h"
+#include <vector>
 
 class CEGALatch {
 public:
@@ -23,12 +25,13 @@ public:
 			  long tiles16location,
 			  short bitmaps,
 			  long bitmaplocation);
-	virtual ~CEGALatch();
 
 	bool loadHead(char *data, short m_episode );
 	bool loadData( std::string &path, short episode, int version, unsigned char *data, bool compresseddata );
 
 	void applyMasks();
+
+	virtual ~CEGALatch();
 
 	char *RawData;
 

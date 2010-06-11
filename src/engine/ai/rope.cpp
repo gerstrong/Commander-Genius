@@ -20,7 +20,6 @@ ROPE_IDLE, ROPE_DROPSTONE
 void CObjectAI::rope_ai(CObject &object)
 {
 	int x;
-	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 	if (object.needinit)
 	{  // first time initialization
 		object.ai.rope.state = ROPE_IDLE;
@@ -65,7 +64,7 @@ void CObjectAI::rope_ai(CObject &object)
 			// check if we've hit the ground yet
 			for(x=2;x<STONE_WIDTH-2;x++)
 			{
-				if (TileProperty[mp_Map->at(object.ai.rope.stoneX+x, object.ai.rope.stoneY+2)].bup)
+				if (g_pBehaviorEngine->getTileProperties().at(mp_Map->at(object.ai.rope.stoneX+x, object.ai.rope.stoneY+2)).bup)
 				{
 					deleteObj(object);
 					return;

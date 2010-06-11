@@ -255,14 +255,16 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 
 bool CObjectAI::tank_CanMoveLeft(CObject &object)
 {
-	stTile &currentTile = g_pGfxEngine->Tilemap->mp_tiles[mp_Map->at((object.getXLeftPos()-1)>>CSF, (object.getYDownPos()+256)>>CSF)];
+	CTileProperties &currentTile = g_pBehaviorEngine->getTileProperties()
+			[mp_Map->at((object.getXLeftPos()-1)>>CSF, (object.getYDownPos()+256)>>CSF)];
 	if (!object.blockedl && currentTile.bup) return true;
 	return false;
 }
 
 bool CObjectAI::tank_CanMoveRight(CObject &object)
 {
-	stTile &currentTile = g_pGfxEngine->Tilemap->mp_tiles[mp_Map->at((object.getXRightPos()+1)>>CSF, (object.getYDownPos()+256)>>CSF)];
+	CTileProperties &currentTile = g_pBehaviorEngine->getTileProperties()
+			[mp_Map->at((object.getXRightPos()+1)>>CSF, (object.getYDownPos()+256)>>CSF)];
 	if (!object.blockedr && currentTile.bup) return true;
 	return false;
 }

@@ -601,7 +601,7 @@ void CPlayer::Playerfalling()
 {
 //unsigned int temp;
 char behaviour;
-stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
+std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 
 	if (pfalling)
 	{
@@ -938,7 +938,7 @@ void CPlayer::checkSolidDoors()
 	int my1 = getYUpPos()>>CSF;
 	int mymid = getYMidPos()>>CSF;
 	int my2 = getYDownPos()>>CSF;
-	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
+	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 
 	if( (TileProperty[mp_map->at(mx1 ,mymid)].behaviour>1 &&
 			TileProperty[mp_map->at(mx1 ,mymid)].behaviour<6 ) ) {

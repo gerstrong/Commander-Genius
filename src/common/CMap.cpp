@@ -9,6 +9,7 @@
 #include "CMap.h"
 #include <iostream>
 #include <fstream>
+#include "CBehaviorEngine.h"
 #include "../FindFile.h"
 #include "../CLogFile.h"
 #include "../sdl/CVideoDriver.h"
@@ -20,7 +21,6 @@ CMap::CMap():
 m_width(0), m_height(0),
 m_worldmap(false),
 m_animation_enabled(true),
-mp_tiles(NULL),
 mp_Tilemap(NULL),
 m_animtiletimer(0),
 m_curanimtileframe(0)
@@ -37,7 +37,6 @@ m_curanimtileframe(0)
 
 void CMap::setTileMap( CTilemap *pTilemap ){
 	mp_Tilemap = pTilemap;
-	mp_tiles = mp_Tilemap->mp_tiles;
 }
 void CMap::setScrollSurface( SDL_Surface *surface )
 {  mp_scrollsurface = surface; }
@@ -409,7 +408,7 @@ void CMap::deAnimate(int x, int y)
 // Draw an animated tile. If it's not animated draw it anyway
 void CMap::drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile)
 {
-	stTile &TileProperty = g_pGfxEngine->Tilemap->mp_tiles[tile];
+	CTileProperties &TileProperty = g_pBehaviorEngine->getTileProperties().at(tile);
 
 	if(TileProperty.animation <= 1)
 	{ // Unanimated tiles
@@ -424,12 +423,14 @@ void CMap::drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile)
 			tileanimcond = (tile == m_animtiles[i].baseframe || tile == m_animtiles[i].baseframe+1
 							|| tile == m_animtiles[i].baseframe+2 || tile == m_animtiles[i].baseframe+3);
 
+			CTileProperties &TileBaseProperty =
+					g_pBehaviorEngine->getTileProperties().at(m_animtiles[i].baseframe);
 			if ( m_animtiles[i].slotinuse && tileanimcond )
 			{
 				mp_Tilemap->drawTile( dst, mx, my,
 						m_animtiles[i].baseframe+
 						((m_animtiles[i].offset+m_curanimtileframe)%
-								mp_tiles[m_animtiles[i].baseframe].animation) );
+								TileBaseProperty.animation) );
 			}
 		}
 	}
@@ -448,10 +449,12 @@ void CMap::animateAllTiles()
 		{
 			if ( m_animtiles[i].slotinuse )
 			{
+				CTileProperties &TileBaseProperty =
+						g_pBehaviorEngine->getTileProperties().at(m_animtiles[i].baseframe);
 				mp_Tilemap->drawTile( mp_scrollsurface, m_animtiles[i].x, m_animtiles[i].y,
 						 m_animtiles[i].baseframe+
 						 ((m_animtiles[i].offset+m_curanimtileframe)%
-						  mp_tiles[m_animtiles[i].baseframe].animation));
+								 TileBaseProperty.animation));
 			}
 		}
 		m_animtiletimer = 0;
@@ -480,8 +483,10 @@ void CMap::registerAnimation(Uint32 x, Uint32 y, int c)
 		m_AnimTileInUse[x>>4][y>>4] = 0;
     }
 
+	CTileProperties &TileProperty =
+			g_pBehaviorEngine->getTileProperties().at(c);
     // we just drew an animated tile which we will now register
-    if ( mp_tiles[c].animation > 1 )
+    if ( TileProperty.animation > 1 )
     {
 		for(int i=1 ; i<MAX_ANIMTILES-1 ; i++)
 		{
@@ -489,8 +494,8 @@ void CMap::registerAnimation(Uint32 x, Uint32 y, int c)
 			{  // we found an unused slot
 				m_animtiles[i].x = x;
 				m_animtiles[i].y = y;
-				m_animtiles[i].baseframe = c - mp_tiles[c].animOffset;
-				m_animtiles[i].offset = mp_tiles[c].animOffset;
+				m_animtiles[i].baseframe = c - TileProperty.animOffset;
+				m_animtiles[i].offset = TileProperty.animOffset;
 				m_animtiles[i].slotinuse = 1;
 				m_AnimTileInUse[x>>4][y>>4] = i;
 				break;

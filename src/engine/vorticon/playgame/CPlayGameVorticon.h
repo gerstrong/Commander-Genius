@@ -14,6 +14,7 @@
 #include "../../../fileio/CSavedGame.h"
 #include "../../../dialog/CMessageBox.h"
 #include "../../../common/CPlayer.h"
+#include "../../../common/CTileProperties.h"
 #include "../../../common/CObject.h"
 #include "../../../common/CMap.h"
 #include "../../../common/options.h"

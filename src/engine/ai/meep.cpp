@@ -25,8 +25,6 @@ enum meep_actions{
 void CObjectAI::meep_ai(CObject& object)
 {
 	int not_about_to_fall;
-	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
-
 	if (object.needinit)
 	{
 		object.ai.meep.state = MEEP_WALK;
@@ -65,6 +63,8 @@ void CObjectAI::meep_ai(CObject& object)
 		g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, object.scrx);
 	}
 
+	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
+
 	switch(object.ai.meep.state)
 	{
 	case MEEP_WALK:
@@ -89,7 +89,7 @@ void CObjectAI::meep_ai(CObject& object)
 		{
 			object.sprite = MEEP_WALK_RIGHT_FRAME + object.ai.meep.animframe;
 
-			not_about_to_fall = TileProperty[mp_Map->at((object.getXLeftPos())>>CSF, (object.getYDownPos()+(1<<STC))>>CSF)].bup;
+			not_about_to_fall = TileProperties.at(mp_Map->at((object.getXLeftPos())>>CSF, (object.getYDownPos()+(1<<STC))>>CSF)).bup;
 
 			if (object.blockedr || !not_about_to_fall)
 				object.ai.meep.dir = LEFT;
@@ -99,7 +99,7 @@ void CObjectAI::meep_ai(CObject& object)
 		else
 		{
 			object.sprite = MEEP_WALK_LEFT_FRAME + object.ai.meep.animframe;
-			not_about_to_fall = TileProperty[mp_Map->at((object.getXRightPos())>>CSF, (object.getYDownPos()+(1<<STC))>>CSF)].bup;
+			not_about_to_fall = TileProperties.at(mp_Map->at((object.getXRightPos())>>CSF, (object.getYDownPos()+(1<<STC))>>CSF)).bup;
 
 			if (object.blockedl || !not_about_to_fall)
 			{

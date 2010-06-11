@@ -13,21 +13,9 @@
 #include <SDL.h>
 #include <string>
 
-typedef struct
-{
-	int chgtile;         // tile to change to when level completed (for wm)
-	// or tile to change to when picked up (in-level)
-	unsigned int animOffset;   // starting offset from the base frame
-
-	// Tile Properties start here!
-	char animation;
-	char behaviour;
-	char bup,bright,bdown,bleft;
-} stTile;
-
 class CTilemap {
 public:
-	CTilemap(stTile *pTileProperties, int numtiles);
+	CTilemap();
 
 	bool CreateSurface(SDL_Color *Palette, Uint32 Flags);
 	bool loadHiresTile( const std::string& filename );
@@ -39,10 +27,6 @@ public:
 	void drawTile(SDL_Surface *dst, Uint16 x, Uint16 y, Uint16 t);
 
 	virtual ~CTilemap();
-
-	stTile *mp_tiles;
-
-	int m_numtiles;
 
 private:
 	SDL_Surface *m_Tilesurface;

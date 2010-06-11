@@ -52,7 +52,6 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 {
 	int bonk;
 	int x, y;
-	stTile *TileProperty = g_pGfxEngine->Tilemap->mp_tiles;
 
 	if (object.needinit)
 	{  // first time initialization
@@ -96,6 +95,8 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 	// deadly to the touch
 	if (object.touchPlayer && object.canbezapped)
 		killplayer(object.touchedBy);
+
+	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
 
 	reprocess: ;
 	switch(object.ai.vortelite.state)
@@ -203,9 +204,9 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 		x = object.getXPosition();
 		y = object.getYPosition();
 		bonk = 0;
-		if (TileProperty[mp_Map->at((x>>CSF), (y>>CSF))].bdown) bonk = true;
-		else if (TileProperty[mp_Map->at((x>>CSF)+1, (y>>CSF))].bdown) bonk = true;
-		else if (TileProperty[mp_Map->at(((x+200)>>CSF), (y>>CSF))].bdown) bonk = true;
+		if (TileProperties[mp_Map->at((x>>CSF), (y>>CSF))].bdown) bonk = true;
+		else if (TileProperties[mp_Map->at((x>>CSF)+1, (y>>CSF))].bdown) bonk = true;
+		else if (TileProperties[mp_Map->at(((x+200)>>CSF), (y>>CSF))].bdown) bonk = true;
 		if (bonk && object.ai.vortelite.inertiay < 0)
 		{
 			object.ai.vortelite.inertiay = 0;

@@ -118,6 +118,11 @@ CEGAGraphics(ExeFile.getEpisode(), ExeFile.getDataDirectory()),
 m_Exefile(ExeFile)
 {}
 
+int CEGAGraphicsGalaxy::getNumSprites()
+{ return 0; }
+short CEGAGraphicsGalaxy::getNumTiles()
+{ return 0; }
+
 /**
  * \brief	load the data into the structure
  * \return 	returns true, if loading was successful

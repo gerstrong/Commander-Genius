@@ -22,10 +22,10 @@
 // Creation Routine
 ////
 CPlayGameVorticon::CPlayGameVorticon( CExeFile &ExeFile, char level,
-					 char numplayers, char difficulty,
-					 stOption *p_option, bool finale,
-					 CSavedGame &SavedGame,
-					 std::vector<stTeleporterTable> &TeleporterTable) :
+		  char numplayers, char difficulty,
+		  stOption *p_option,
+		  bool finale, CSavedGame &SavedGame,
+		  std::vector<stTeleporterTable> &TeleporterTable) :
 CPlayGame(ExeFile, level, numplayers, difficulty, p_option),
 m_dark(false),
 mp_ObjectAI(NULL),
@@ -41,7 +41,7 @@ mp_HighScores(NULL)
 			(short)0, mp_level_completed, mp_option,
 			m_Object, m_Map));
 
-	for(short i=0 ; i<m_NumPlayers ; i++)
+	for(size_t i=0 ; i<m_NumPlayers ; i++)
 	{
 		// Put some important Player properties
 		CPlayer &thisPlayer = m_Player.at(i);
