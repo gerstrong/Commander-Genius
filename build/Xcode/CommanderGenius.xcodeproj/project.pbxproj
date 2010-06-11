@@ -38,7 +38,6 @@
 		6350FA44104490B600A992D5 /* EGASPRIT.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7A71044797300A992D5 /* EGASPRIT.CK1 */; };
 		6350FA45104490B600A992D5 /* ENDTEXT.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7A81044797300A992D5 /* ENDTEXT.CK1 */; };
 		6350FA46104490B600A992D5 /* FINALE.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7A91044797300A992D5 /* FINALE.CK1 */; };
-		6350FA47104490B600A992D5 /* games.cfg in Copy Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7AA1044797300A992D5 /* games.cfg */; };
 		6350FA48104490B600A992D5 /* HELPTEXT.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7AB1044797300A992D5 /* HELPTEXT.CK1 */; };
 		6350FA49104490B600A992D5 /* KEEN1.EXE in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7AC1044797300A992D5 /* KEEN1.EXE */; };
 		6350FA4A104490B600A992D5 /* LEVEL01.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7AD1044797300A992D5 /* LEVEL01.CK1 */; };
@@ -64,7 +63,6 @@
 		6350FA5E104490B600A992D5 /* PREVIEW2.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C11044797300A992D5 /* PREVIEW2.CK1 */; };
 		6350FA5F104490B600A992D5 /* PREVIEW3.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C21044797300A992D5 /* PREVIEW3.CK1 */; };
 		6350FA60104490B600A992D5 /* PREVIEWS.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C31044797300A992D5 /* PREVIEWS.CK1 */; };
-		6350FA61104490B600A992D5 /* renlower.sh in Copy Game Data Files */ = {isa = PBXBuildFile; fileRef = 6350F7C41044797300A992D5 /* renlower.sh */; };
 		6350FA62104490B600A992D5 /* SOUNDS.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C51044797300A992D5 /* SOUNDS.CK1 */; };
 		6350FA63104490B600A992D5 /* STORYTXT.CK1 in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C61044797300A992D5 /* STORYTXT.CK1 */; };
 		6350FA64104490B600A992D5 /* VENDOR.DOC in Copy Keen 1 Files */ = {isa = PBXBuildFile; fileRef = 6350F7C71044797300A992D5 /* VENDOR.DOC */; };
@@ -184,6 +182,7 @@
 		636F9FEF10C38FC400CF09A2 /* CControlsettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 636F9FE710C38FC400CF09A2 /* CControlsettings.cpp */; };
 		636F9FF010C38FC400CF09A2 /* COptions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 636F9FE910C38FC400CF09A2 /* COptions.cpp */; };
 		636F9FF110C38FC400CF09A2 /* CVideoSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 636F9FEB10C38FC400CF09A2 /* CVideoSettings.cpp */; };
+		6381B85011C1C45600A9483D /* CPlane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6381B84E11C1C45600A9483D /* CPlane.cpp */; };
 		6382949F11562C7100D608A2 /* menufonts.bmp in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 6382949E11562C7100D608A2 /* menufonts.bmp */; };
 		638890BF1162A490009810AC /* extratiles.bmp in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 638890BE1162A490009810AC /* extratiles.bmp */; };
 		638F025D10AC656A0083A97C /* CFinaleStaticScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 638F025910AC656A0083A97C /* CFinaleStaticScene.cpp */; };
@@ -272,7 +271,6 @@
 			dstPath = data;
 			dstSubfolderSpec = 7;
 			files = (
-				6350FA47104490B600A992D5 /* games.cfg in Copy Data Files */,
 				6304FE8910E429D000307EAC /* HELPTEXT.CKP in Copy Data Files */,
 				6350FA7A104490B600A992D5 /* resolutions.cfg in Copy Data Files */,
 			);
@@ -340,7 +338,6 @@
 			dstPath = data/games;
 			dstSubfolderSpec = 7;
 			files = (
-				6350FA61104490B600A992D5 /* renlower.sh in Copy Game Data Files */,
 			);
 			name = "Copy Game Data Files";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -664,7 +661,6 @@
 		6350F7A71044797300A992D5 /* EGASPRIT.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = EGASPRIT.CK1; sourceTree = "<group>"; };
 		6350F7A81044797300A992D5 /* ENDTEXT.CK1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ENDTEXT.CK1; sourceTree = "<group>"; };
 		6350F7A91044797300A992D5 /* FINALE.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = FINALE.CK1; sourceTree = "<group>"; };
-		6350F7AA1044797300A992D5 /* games.cfg */ = {isa = PBXFileReference; explicitFileType = text; fileEncoding = 4; path = games.cfg; sourceTree = "<group>"; };
 		6350F7AB1044797300A992D5 /* HELPTEXT.CK1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HELPTEXT.CK1; sourceTree = "<group>"; };
 		6350F7AC1044797300A992D5 /* KEEN1.EXE */ = {isa = PBXFileReference; lastKnownFileType = file; path = KEEN1.EXE; sourceTree = "<group>"; };
 		6350F7AD1044797300A992D5 /* LEVEL01.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL01.CK1; sourceTree = "<group>"; };
@@ -690,7 +686,6 @@
 		6350F7C11044797300A992D5 /* PREVIEW2.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = PREVIEW2.CK1; sourceTree = "<group>"; };
 		6350F7C21044797300A992D5 /* PREVIEW3.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = PREVIEW3.CK1; sourceTree = "<group>"; };
 		6350F7C31044797300A992D5 /* PREVIEWS.CK1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PREVIEWS.CK1; sourceTree = "<group>"; };
-		6350F7C41044797300A992D5 /* renlower.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = renlower.sh; sourceTree = "<group>"; };
 		6350F7C51044797300A992D5 /* SOUNDS.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = SOUNDS.CK1; sourceTree = "<group>"; };
 		6350F7C61044797300A992D5 /* STORYTXT.CK1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = STORYTXT.CK1; sourceTree = "<group>"; };
 		6350F7C71044797300A992D5 /* VENDOR.DOC */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VENDOR.DOC; sourceTree = "<group>"; };
@@ -719,6 +714,8 @@
 		637FC63410559B5600C2EA77 /* CBitmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBitmap.h; sourceTree = "<group>"; };
 		637FC63510559B5600C2EA77 /* CPalette.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPalette.cpp; sourceTree = "<group>"; };
 		637FC63610559B5600C2EA77 /* CPalette.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPalette.h; sourceTree = "<group>"; };
+		6381B84E11C1C45600A9483D /* CPlane.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlane.cpp; sourceTree = "<group>"; };
+		6381B84F11C1C45600A9483D /* CPlane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPlane.h; sourceTree = "<group>"; };
 		6382949E11562C7100D608A2 /* menufonts.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = menufonts.bmp; sourceTree = "<group>"; };
 		638890BE1162A490009810AC /* extratiles.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = extratiles.bmp; sourceTree = "<group>"; };
 		638F025910AC656A0083A97C /* CFinaleStaticScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CFinaleStaticScene.cpp; sourceTree = "<group>"; };
@@ -917,7 +914,6 @@
 				639AA8401143A5A000C990A3 /* engine */,
 				235266DA104E74430054F00B /* graphics */,
 				23D3E9B01013ABCA001643FA /* hqp */,
-				23D3E9B71013ABCA001643FA /* include */,
 				23D3ED7410175A17001643FA /* Iterator.h */,
 				23D3E9CF1013ABCA001643FA /* keen.h */,
 				23D3E9D11013ABCA001643FA /* lz.cpp */,
@@ -980,6 +976,8 @@
 		231FC3401083642B00E7869E /* common */ = {
 			isa = PBXGroup;
 			children = (
+				6381B84E11C1C45600A9483D /* CPlane.cpp */,
+				6381B84F11C1C45600A9483D /* CPlane.h */,
 				63BE59E1108501BF009C7293 /* CTeleporter.cpp */,
 				63BE59E2108501BF009C7293 /* CTeleporter.h */,
 				231FC3411083642B00E7869E /* CGameLauncher.cpp */,
@@ -1138,30 +1136,6 @@
 			path = ../../src/hqp;
 			sourceTree = SOURCE_ROOT;
 		};
-		23D3E9B71013ABCA001643FA /* include */ = {
-			isa = PBXGroup;
-			children = (
-				23D3E9BD1013ABCA001643FA /* fileio */,
-				23D3E9CD1013ABCA001643FA /* vorbis */,
-			);
-			name = include;
-			path = ../../src/include;
-			sourceTree = SOURCE_ROOT;
-		};
-		23D3E9BD1013ABCA001643FA /* fileio */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = fileio;
-			sourceTree = "<group>";
-		};
-		23D3E9CD1013ABCA001643FA /* vorbis */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = vorbis;
-			sourceTree = "<group>";
-		};
 		23D3E9D81013ABCA001643FA /* scale2x */ = {
 			isa = PBXGroup;
 			children = (
@@ -1276,7 +1250,6 @@
 		6350F7A11044797300A992D5 /* vfsroot */ = {
 			isa = PBXGroup;
 			children = (
-				6350F7AA1044797300A992D5 /* games.cfg */,
 				6350F7A41044797300A992D5 /* games */,
 				63D4A6ED107FEB7C00E43500 /* global */,
 				6350F7DD1044797300A992D5 /* resolutions.cfg */,
@@ -1293,7 +1266,6 @@
 				63FFE148109FA461002FF190 /* keen2 */,
 				63FFE151109FA4A4002FF190 /* keen3 */,
 				63FC18281144447200D7BB0C /* keen4 */,
-				6350F7C41044797300A992D5 /* renlower.sh */,
 			);
 			includeInIndex = 1;
 			path = games;
@@ -1835,6 +1807,7 @@
 				639C9DAD11B4476B00D239D1 /* CRLE.cpp in Sources */,
 				639C9DAE11B4476B00D239D1 /* Cunlzexe.cpp in Sources */,
 				63A8974711C081E3004794F6 /* CPatcherUtils.cpp in Sources */,
+				6381B85011C1C45600A9483D /* CPlane.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
