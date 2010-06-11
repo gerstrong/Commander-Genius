@@ -94,7 +94,6 @@ void CPlayGameVorticon::setupPlayers()
 		
 		// Set the pointers to the map and object data
 		it_player->setMapData(&m_Map);
-		it_player->setPhysics(&m_PhysicsSettings);
 		it_player->exists = true;
 		if(it_player->m_playingmode == CPlayer::WORLDMAP) it_player->solid=!(it_player->godmode);
 	}
@@ -138,7 +137,7 @@ bool CPlayGameVorticon::init()
 	// Initialize the AI
 	mp_ObjectAI = new CObjectAI(&m_Map, m_Object, m_Player, mp_option,
 								m_NumPlayers, m_Episode, m_Level,
-								m_Difficulty, m_PhysicsSettings, m_dark);
+								m_Difficulty, m_dark);
 
 	// Check if Player meets the conditions to show a cutscene. This also happens, when finale of episode has reached
 	verifyFinales();

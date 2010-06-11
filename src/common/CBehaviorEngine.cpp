@@ -16,6 +16,9 @@ CBehaviorEngine::CBehaviorEngine()
 std::vector<CTileProperties> &CBehaviorEngine::getTileProperties()
 {	return m_TileProperties;	}
 
+CPhysicsSettings &CBehaviorEngine::getPhysicsSettings()
+{	return m_PhysicsSettings;	}
+
 CBehaviorEngine::~CBehaviorEngine()
 {
 	// TODO Auto-generated destructor stub

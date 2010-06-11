@@ -18,7 +18,6 @@
 #include "../../../common/CObject.h"
 #include "../../../common/CMap.h"
 #include "../../../common/options.h"
-#include "../../../common/CPhysicsSettings.h"
 #include "../../../common/CTeleporter.h"
 #include "../../ai/CObjectAI.h"
 #include "../../ai/CEGABitmap.h"
@@ -101,7 +100,6 @@ private:
 	CFinale *mp_Finale;
 	CEGABitmap *mp_gameoverbmp;
 	CSavedGame &m_SavedGame;
-	CPhysicsSettings m_PhysicsSettings;
 	std::list<CMessageBox*> m_MessageBoxes;
 	std::vector<stTeleporterTable> &m_TeleporterTable;
 	bool m_showKeensLeft;

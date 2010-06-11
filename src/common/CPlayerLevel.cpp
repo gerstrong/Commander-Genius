@@ -376,6 +376,8 @@ void CPlayer::TogglePogo_and_Switches(const bool &platextending)
 
 void CPlayer::JumpAndPogo()
 {
+	CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
+
 	// handle the JUMP key, both for normal jumps and (high) pogo jumps
 	if (!pjumping && !pfalling && !pfiring)
 	{
@@ -403,8 +405,8 @@ void CPlayer::JumpAndPogo()
 			{
 				if (pjumpanimtimer>PPOGO_PREPARE_TIME)
 				{
-					pjumpupspeed = mp_PhysicsSettings->player.maxjumpspeed;
-					pjumpupspeed_decrease = mp_PhysicsSettings->player.defaultjumpupdecreasespeed;
+					pjumpupspeed = PhysicsSettings.player.maxjumpspeed;
+					pjumpupspeed_decrease = PhysicsSettings.player.defaultjumpupdecreasespeed;
 
 					pjumpframe = PJUMP_PREPARE_LAST_FRAME;
 					pjumping = PPOGOING;
@@ -421,17 +423,17 @@ void CPlayer::JumpAndPogo()
 							{
 								if(!pogofirsttime)
 								{
-									int jump = mp_PhysicsSettings->player.maxjumpspeed;
-									int pogo = mp_PhysicsSettings->player.maxpogospeed;
+									int jump = PhysicsSettings.player.maxjumpspeed;
+									int pogo = PhysicsSettings.player.maxpogospeed;
 									pjumpupspeed = (pogo-jump)*playcontrol[PA_JUMP] / 50 + jump;
 									pogofirsttime = false;
 								}
 								else
-									pjumpupspeed = mp_PhysicsSettings->player.maxpogospeed;
+									pjumpupspeed = PhysicsSettings.player.maxpogospeed;
 							}
 							else if(playcontrol[PA_JUMP] && pogofirsttime)
 							{
-								pjumpupspeed = mp_PhysicsSettings->player.impossiblepogospeed;
+								pjumpupspeed = PhysicsSettings.player.impossiblepogospeed;
 							}
 						}
 						else
@@ -452,18 +454,18 @@ void CPlayer::JumpAndPogo()
 				if (pjumpframe == PJUMP_PREPARE_LAST_FRAME || !playcontrol[PA_JUMP])
 				{  	// time to start the jump
 					// select a jump depending on how long keen was preparing
-					pjumpupspeed = mp_PhysicsSettings->player.maxjumpspeed;
-					pjumpupspeed_decrease = mp_PhysicsSettings->player.defaultjumpupdecreasespeed;
+					pjumpupspeed = PhysicsSettings.player.maxjumpspeed;
+					pjumpupspeed_decrease = PhysicsSettings.player.defaultjumpupdecreasespeed;
 
 					if(pjumpframe > PPREPAREJUMPFRAME+4)
 					{
-						pjumpupspeed = mp_PhysicsSettings->player.maxjumpspeed;
-						pjumpupspeed_decrease = mp_PhysicsSettings->player.defaultjumpupdecreasespeed;
+						pjumpupspeed = PhysicsSettings.player.maxjumpspeed;
+						pjumpupspeed_decrease = PhysicsSettings.player.defaultjumpupdecreasespeed;
 					}
 					else
 					{
-						pjumpupspeed = (mp_PhysicsSettings->player.maxjumpspeed*(pjumpframe-PPREPAREJUMPFRAME))/5;
-						pjumpupspeed_decrease = mp_PhysicsSettings->player.defaultjumpupdecreasespeed;
+						pjumpupspeed = (PhysicsSettings.player.maxjumpspeed*(pjumpframe-PPREPAREJUMPFRAME))/5;
+						pjumpupspeed_decrease = PhysicsSettings.player.defaultjumpupdecreasespeed;
 					}
 					
 					pjumpframe = PJUMP_PREPARE_LAST_FRAME;
@@ -484,8 +486,8 @@ void CPlayer::JumpAndPogo()
 						pjumpdir = UP;
 					
 					pwalkincreasetimer = 0;
-					if(playcontrol[PA_X] < 0)	xinertia = -mp_PhysicsSettings->player.jumpdecrease_x;
-					if(playcontrol[PA_X] > 0)	xinertia = mp_PhysicsSettings->player.jumpdecrease_x;
+					if(playcontrol[PA_X] < 0)	xinertia = -PhysicsSettings.player.jumpdecrease_x;
+					if(playcontrol[PA_X] > 0)	xinertia = PhysicsSettings.player.jumpdecrease_x;
 				}
 				else pjumpframe++;
 
@@ -512,7 +514,7 @@ void CPlayer::JumpAndPogo()
 				if (pjumpupspeed <= 0)
 				{
 					pjumpupspeed = 0;
-					pfallspeed = mp_PhysicsSettings->player.max_fallspeed;
+					pfallspeed = PhysicsSettings.player.max_fallspeed;
 					pjumping = PJUMPLAND;
 				}
 				else
@@ -538,11 +540,11 @@ void CPlayer::JumpAndPogo()
 				}
 				else
 				{
-					if(pjumpupspeed < mp_PhysicsSettings->player.max_fallspeed)
+					if(pjumpupspeed < PhysicsSettings.player.max_fallspeed)
 						pjumpupspeed+=pjumpupspeed_decrease*2;
 					else
 					{
-						pjumpupspeed=mp_PhysicsSettings->player.max_fallspeed;
+						pjumpupspeed=PhysicsSettings.player.max_fallspeed;
 						pjumping = PNOJUMP;
 					}
 				}
@@ -569,9 +571,9 @@ void CPlayer::JumpAndPogo()
 		else if(ppogostick)
 		{
 			if (playcontrol[PA_X] < 0)
-				xinertia -= (mp_PhysicsSettings->player.pogoforce_x/10);
+				xinertia -= (PhysicsSettings.player.pogoforce_x/10);
 			if (playcontrol[PA_X] > 0)
-				xinertia += (mp_PhysicsSettings->player.pogoforce_x/10);
+				xinertia += (PhysicsSettings.player.pogoforce_x/10);
 		}
 	}
 	else if(pfalling)
@@ -599,9 +601,9 @@ void CPlayer::JumpAndPogo()
 
 void CPlayer::Playerfalling()
 {
-//unsigned int temp;
 char behaviour;
 std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
 
 	if (pfalling)
 	{
@@ -670,10 +672,10 @@ std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTilePropertie
 		psemisliding = 0;
 
 		// gradually increase the fall speed up to maximum rate
-		if (pfallspeed>mp_PhysicsSettings->player.max_fallspeed)
-			pfallspeed = mp_PhysicsSettings->player.max_fallspeed;
-		else if (pfallspeed<mp_PhysicsSettings->player.max_fallspeed)
-			pfallspeed += mp_PhysicsSettings->player.fallspeed_decrease;
+		if (pfallspeed>PhysicsSettings.player.max_fallspeed)
+			pfallspeed = PhysicsSettings.player.max_fallspeed;
+		else if (pfallspeed<PhysicsSettings.player.max_fallspeed)
+			pfallspeed += PhysicsSettings.player.fallspeed_decrease;
 
 		// add current fall speed to player Y or make him fly in godmode with pogo
 		if( !godmode || !ppogostick || !g_pInput->getHoldedCommand(IC_JUMP) )

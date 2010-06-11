@@ -34,18 +34,19 @@ void CObjectAI::icechunk_ai(CObject &object)
 	{
 		if (!m_Player[object.touchPlayer].pfrozentime)
 		{
+			CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
 			// make him start sliding in the direction of the impact
 			if (object.ai.icechunk.vector_x > 0)
 			{
 				m_Player[object.touchedBy].pdir = m_Player[object.touchedBy].pshowdir = RIGHT;
-				m_Player[object.touchedBy].xinertia = m_PhysicsSettings.player.max_x_speed;
-				m_Player[object.touchedBy].bump(m_PhysicsSettings.player.max_x_speed/2, true);
+				m_Player[object.touchedBy].xinertia = Physics.player.max_x_speed;
+				m_Player[object.touchedBy].bump(Physics.player.max_x_speed/2, true);
 			}
 			else if (object.ai.icechunk.vector_x < 0)
 			{
 				m_Player[object.touchedBy].pdir = m_Player[object.touchedBy].pshowdir = LEFT;
-				m_Player[object.touchedBy].xinertia = -m_PhysicsSettings.player.max_x_speed;
-				m_Player[object.touchedBy].bump(-m_PhysicsSettings.player.max_x_speed/2, true);
+				m_Player[object.touchedBy].xinertia = -Physics.player.max_x_speed;
+				m_Player[object.touchedBy].bump(-Physics.player.max_x_speed/2, true);
 			}
 			else	// perfectly vertical ice cannons
 			{

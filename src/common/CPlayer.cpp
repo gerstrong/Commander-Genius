@@ -308,8 +308,8 @@ void CPlayer::Walking()
     	}
     }
 
-	int pmaxspeed;
-	pmaxspeed = mp_PhysicsSettings->player.max_x_speed;
+	CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
+	int pmaxspeed = PhysicsSettings.player.max_x_speed;
 
 	// when sliding on ice force maximum speed
 	if (psliding)
@@ -351,7 +351,7 @@ void CPlayer::Walking()
 		if ( m_playingmode == WORLDMAP )
 		{
 			if(xinertia < 0)  xinertia = 0;
-			else	xinertia = playcontrol[PA_X]*mp_PhysicsSettings->player.max_x_speed/150;
+			else	xinertia = playcontrol[PA_X]*PhysicsSettings.player.max_x_speed/150;
 		}
 		
 		// increase up to max speed every time frame is changed
@@ -372,7 +372,7 @@ void CPlayer::Walking()
 		if ( m_playingmode == WORLDMAP )
 		{
 			if(xinertia > 0)  xinertia = 0;
-			else	xinertia = playcontrol[PA_X]*mp_PhysicsSettings->player.max_x_speed/150;
+			else	xinertia = playcontrol[PA_X]*PhysicsSettings.player.max_x_speed/150;
 		}
 		
 		// decrease down to max speed every time frame is changed
@@ -382,7 +382,7 @@ void CPlayer::Walking()
 	if (playcontrol[PA_Y] > 0)
 	{
 		// quickly reach PFASTINCMAXSPEED
-		if (pwalkincreasetimer>=PFASTINCRATE && pinertia_y<mp_PhysicsSettings->player.max_x_speed)
+		if (pwalkincreasetimer>=PFASTINCRATE && pinertia_y<PhysicsSettings.player.max_x_speed)
 		{
 			pinertia_y++;
 			pwalkincreasetimer=0;
@@ -406,7 +406,7 @@ void CPlayer::Walking()
 			}
 			else
 			{
-				pinertia_y=playcontrol[PA_Y]*mp_PhysicsSettings->player.max_x_speed/150;
+				pinertia_y=playcontrol[PA_Y]*PhysicsSettings.player.max_x_speed/150;
 			}
 		}
 		
@@ -414,7 +414,7 @@ void CPlayer::Walking()
 	else if (playcontrol[PA_Y] < 0)
 	{
 		// quickly reach PFASTINCMAXSPEED
-		if (pwalkincreasetimer>=PFASTINCRATE && pinertia_y>-mp_PhysicsSettings->player.max_x_speed)
+		if (pwalkincreasetimer>=PFASTINCRATE && pinertia_y>-PhysicsSettings.player.max_x_speed)
 		{
 			pinertia_y--;
 			pwalkincreasetimer=0;
@@ -438,7 +438,7 @@ void CPlayer::Walking()
 			}
 			else
 			{
-				pinertia_y=playcontrol[PA_Y]*mp_PhysicsSettings->player.max_x_speed/150;
+				pinertia_y=playcontrol[PA_Y]*PhysicsSettings.player.max_x_speed/150;
 			}
 		}
 	}
@@ -542,6 +542,7 @@ void CPlayer::InertiaAndFriction_X()
 {
 	int friction_rate;
 	treshold = 0;
+	CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
 
 	// Calculate Threshold of your analog device for walking animation speed!
 	if(!pfrozentime)
@@ -549,7 +550,7 @@ void CPlayer::InertiaAndFriction_X()
 		treshold = playcontrol[PA_X];
 
 		int pmaxspeed;
-		int pmaxmovespeed = mp_PhysicsSettings->player.max_x_speed;
+		int pmaxmovespeed = PhysicsSettings.player.max_x_speed;
 
 
 		if( (!pjumping && !pfalling &&
@@ -620,8 +621,8 @@ void CPlayer::InertiaAndFriction_X()
 		// and apply friction to xinertia
 		// when pogoing apply friction till we get down to PFASTINCMAXSPEED
 		// then stop the friction
-		if (!ppogostick || (xinertia >  mp_PhysicsSettings->player.max_x_speed) ||
-						   (xinertia < -mp_PhysicsSettings->player.max_x_speed) )
+		if (!ppogostick || (xinertia >  PhysicsSettings.player.max_x_speed) ||
+						   (xinertia < -PhysicsSettings.player.max_x_speed) )
 		{
 			if (!pfrozentime || m_episode!=1)
 			{   // disable friction while frozen
@@ -775,8 +776,11 @@ void CPlayer::freeze()
 	if ( godmode ) return;
 	if ( ankhtime) return;
 	// give the player a little "kick"
-	pjumpupspeed = mp_PhysicsSettings->player.maxjumpspeed;
-	pjumpupspeed_decrease = mp_PhysicsSettings->player.defaultjumpupdecreasespeed;
+
+	CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
+
+	pjumpupspeed = PhysicsSettings.player.maxjumpspeed;
+	pjumpupspeed_decrease = PhysicsSettings.player.defaultjumpupdecreasespeed;
 
 	pjumping = PJUMPUP;
 	//pjumpupspeed_decreasetimer = 0;

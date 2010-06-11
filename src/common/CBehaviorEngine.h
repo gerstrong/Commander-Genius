@@ -17,6 +17,7 @@
 
 #include <vector>
 #include "CTileProperties.h"
+#include "CPhysicsSettings.h"
 
 #include "../CSingleton.h"
 #define g_pBehaviorEngine CBehaviorEngine::Get()
@@ -27,11 +28,13 @@ public:
 	CBehaviorEngine();
 
 	std::vector<CTileProperties> &getTileProperties();
+	CPhysicsSettings &getPhysicsSettings();
 
 	virtual ~CBehaviorEngine();
 
 private:
 	std::vector<CTileProperties> m_TileProperties;
+	CPhysicsSettings m_PhysicsSettings;
 };
 
 #endif /* CBEHAVIORENGINE_H_ */
