@@ -70,6 +70,7 @@ void CStatusScreen::drawInventoryEp1()
 	CFont &Font = g_pGfxEngine->getFont(0);
 	
 	SDL_Surface *p_surface = g_pVideoDriver->FGLayerSurface;
+	CTilemap &Tilemap = g_pGfxEngine->getTileMap(0);
 
 	dlgX = 5;
 	dlgY = 5;
@@ -116,46 +117,46 @@ void CStatusScreen::drawInventoryEp1()
 	// 424: yellow/red/green/blue cards
 	// 448: ship parts, gotten
 	// raygun icon
-	g_pGfxEngine->Tilemap->drawTile(p_surface, (dlgX+4)<<3, ((dlgY+8)<<3)+3, 414);
+	Tilemap.drawTile(p_surface, (dlgX+4)<<3, ((dlgY+8)<<3)+3, 414);
 	// pogo
-	if (mp_inventory->HasPogo) g_pGfxEngine->Tilemap->drawTile(p_surface, (dlgX+12)<<3, ((dlgY+9)<<3)+3, 415);
+	if (mp_inventory->HasPogo) Tilemap.drawTile(p_surface, (dlgX+12)<<3, ((dlgY+9)<<3)+3, 415);
 	// cards
 	if (mp_inventory->HasCardYellow)
 	{
-		g_pGfxEngine->Tilemap->drawTile(p_surface, (dlgX+20)<<3, ((dlgY+8)<<3)+3, 424);
+		Tilemap.drawTile(p_surface, (dlgX+20)<<3, ((dlgY+8)<<3)+3, 424);
 		if(mp_inventory->HasCardYellow > 1)
 			Font.drawFont( p_surface, itoa(mp_inventory->HasCardYellow),(dlgX+20)<<3,((dlgY+8)<<3)+3, false);
 	}
 	if (mp_inventory->HasCardRed)
 	{
-		g_pGfxEngine->Tilemap->drawTile(p_surface, (dlgX+24)<<3, ((dlgY+8)<<3)+3, 425);
+		Tilemap.drawTile(p_surface, (dlgX+24)<<3, ((dlgY+8)<<3)+3, 425);
 		
 		if(mp_inventory->HasCardRed > 1)
 			Font.drawFont( p_surface, itoa(mp_inventory->HasCardRed),(dlgX+24)<<3,((dlgY+8)<<3)+3, false);
 	}
 	if (mp_inventory->HasCardGreen)
 	{
-		g_pGfxEngine->Tilemap->drawTile(p_surface, (dlgX+20)<<3, ((dlgY+10)<<3)+4, 426);
+		Tilemap.drawTile(p_surface, (dlgX+20)<<3, ((dlgY+10)<<3)+4, 426);
 		
 		if (mp_inventory->HasCardGreen > 1)
 			Font.drawFont( p_surface, itoa(mp_inventory->HasCardGreen),(dlgX+20)<<3,((dlgY+10)<<3)+3, false);
 	}
 	if (mp_inventory->HasCardBlue)
 	{
-		g_pGfxEngine->Tilemap->drawTile(p_surface, (dlgX+24)<<3, ((dlgY+10)<<3)+4, 427);
+		Tilemap.drawTile(p_surface, (dlgX+24)<<3, ((dlgY+10)<<3)+4, 427);
 		
 		if(mp_inventory->HasCardBlue > 1)
 			Font.drawFont( p_surface, itoa(mp_inventory->HasCardBlue),(dlgX+24)<<3,((dlgY+10)<<3)+3, false);
 	}
 	// ship parts
 	if (mp_inventory->HasJoystick) t=448; else t=321;
-	g_pGfxEngine->Tilemap->drawTile(p_surface, (dlgX+17)<<3, ((dlgY+4)<<3)+3, t);
+	Tilemap.drawTile(p_surface, (dlgX+17)<<3, ((dlgY+4)<<3)+3, t);
 	if (mp_inventory->HasBattery) t=449; else t=322;
-	g_pGfxEngine->Tilemap->drawTile(p_surface, (dlgX+20)<<3, ((dlgY+4)<<3)+3, t);
+	Tilemap.drawTile(p_surface, (dlgX+20)<<3, ((dlgY+4)<<3)+3, t);
 	if (mp_inventory->HasVacuum) t=450; else t=323;
-	g_pGfxEngine->Tilemap->drawTile(p_surface, (dlgX+23)<<3, ((dlgY+4)<<3)+3, t);
+	Tilemap.drawTile(p_surface, (dlgX+23)<<3, ((dlgY+4)<<3)+3, t);
 	if (mp_inventory->HasWiskey) t=451; else t=324;
-	g_pGfxEngine->Tilemap->drawTile(p_surface, (dlgX+26)<<3, ((dlgY+4)<<3)+3, t);
+	Tilemap.drawTile(p_surface, (dlgX+26)<<3, ((dlgY+4)<<3)+3, t);
 	// ray gun charges
 	i = mp_inventory->charges;
 	if (i>999) i=999;
@@ -190,6 +191,7 @@ void CStatusScreen::drawInventoryEp2()
 	CFont &Font = g_pGfxEngine->getFont(0);
 
 	SDL_Surface *p_surface = g_pVideoDriver->FGLayerSurface;
+	CTilemap &Tilemap = g_pGfxEngine->getTileMap(0);
 
 	dlgX = 5;
 	dlgY = 5;
@@ -224,19 +226,19 @@ void CStatusScreen::drawInventoryEp2()
 	SDL_FillRect(p_surface,&rect,0xFFFFFF);
 
 	// raygun icon
-	g_pGfxEngine->Tilemap->drawTile(p_surface, (dlgX+21)<<3, ((dlgY+5)<<3), 414);
+	Tilemap.drawTile(p_surface, (dlgX+21)<<3, ((dlgY+5)<<3), 414);
 
 	// cards
 	if (mp_inventory->HasCardYellow)
 	{
-		g_pGfxEngine->Tilemap->drawTile(p_surface, (dlgX+21)<<3, ((dlgY+8)<<3), 424);
+		Tilemap.drawTile(p_surface, (dlgX+21)<<3, ((dlgY+8)<<3), 424);
 
 		if(mp_inventory->HasCardYellow > 1)
 			  Font.drawFont( p_surface, itoa(mp_inventory->HasCardYellow),(dlgX+21)<<3,(dlgY+8)<<3);
 	}
 	if (mp_inventory->HasCardRed)
 	{
-		g_pGfxEngine->Tilemap->drawTile(p_surface, (dlgX+25)<<3, ((dlgY+8)<<3), 425);
+		Tilemap.drawTile(p_surface, (dlgX+25)<<3, ((dlgY+8)<<3), 425);
 
 		if(mp_inventory->HasCardRed > 1)
 			  Font.drawFont( p_surface, itoa(mp_inventory->HasCardRed),(dlgX+25)<<3,(dlgY+8)<<3);
@@ -244,14 +246,14 @@ void CStatusScreen::drawInventoryEp2()
 	}
 	if (mp_inventory->HasCardGreen)
 	{
-		g_pGfxEngine->Tilemap->drawTile(p_surface, (dlgX+21)<<3, (dlgY+10)<<3, 426);
+		Tilemap.drawTile(p_surface, (dlgX+21)<<3, (dlgY+10)<<3, 426);
 
 		if(mp_inventory->HasCardGreen > 1)
 			  Font.drawFont( p_surface, itoa(mp_inventory->HasCardGreen),(dlgX+21)<<3,(dlgY+10)<<3);
 	}
 	if (mp_inventory->HasCardBlue)
 	{
-		g_pGfxEngine->Tilemap->drawTile(p_surface, (dlgX+25)<<3, (dlgY+10)<<3, 427);
+		Tilemap.drawTile(p_surface, (dlgX+25)<<3, (dlgY+10)<<3, 427);
 
 		if(mp_inventory->HasCardBlue > 1)
 			  Font.drawFont( p_surface, itoa(mp_inventory->HasCardBlue),(dlgX+25)<<3,(dlgY+10)<<3);
@@ -301,6 +303,7 @@ void CStatusScreen::drawInventoryEp3()
 	CFont &Font = g_pGfxEngine->getFont(0);
 
 	SDL_Surface *p_surface = g_pVideoDriver->FGLayerSurface;
+	CTilemap &Tilemap = g_pGfxEngine->getTileMap(0);
 
 	dlgX = 5;
 	dlgY = 5;
@@ -335,12 +338,12 @@ void CStatusScreen::drawInventoryEp3()
 	SDL_FillRect(p_surface,&rect,0xFFFFFF);
 
 	// raygun icon
-	g_pGfxEngine->Tilemap->drawTile(p_surface, (dlgX+21)<<3, ((dlgY+5)<<3)-5, 216);
+	Tilemap.drawTile(p_surface, (dlgX+21)<<3, ((dlgY+5)<<3)-5, 216);
 
 	// calculate % ankh time left
 	int ankhtimepercent = (int)((float)m_ankhtime / (PLAY_ANKH_TIME/100));
 	// ankh time
-	g_pGfxEngine->Tilemap->drawTile(p_surface, (dlgX+3)<<3, ((dlgY+8)<<3)+3, 214);
+	Tilemap.drawTile(p_surface, (dlgX+3)<<3, ((dlgY+8)<<3)+3, 214);
 	 
 	Font.drawFont( p_surface, itoa(ankhtimepercent), (dlgX+7)<<3, ((dlgY+8)<<3)+7);
 	
@@ -348,28 +351,28 @@ void CStatusScreen::drawInventoryEp3()
 	// cards
 	if (mp_inventory->HasCardYellow)
 	{
-		g_pGfxEngine->Tilemap->drawTile(p_surface, ((dlgX+13)<<3)+4, ((dlgY+8)<<3)+4, 217);
+		Tilemap.drawTile(p_surface, ((dlgX+13)<<3)+4, ((dlgY+8)<<3)+4, 217);
 
 		if(mp_inventory->HasCardYellow > 1)
 			Font.drawFont( p_surface, itoa(mp_inventory->HasCardYellow),(dlgX+12)<<3,((dlgY+8)<<3)+3);
 	}
 	if (mp_inventory->HasCardRed)
 	{
-		g_pGfxEngine->Tilemap->drawTile(p_surface, ((dlgX+17)<<3)+4, ((dlgY+8)<<3)+4, 218);
+		Tilemap.drawTile(p_surface, ((dlgX+17)<<3)+4, ((dlgY+8)<<3)+4, 218);
 
 		if(mp_inventory->HasCardRed > 1)
 			Font.drawFont(p_surface, itoa(mp_inventory->HasCardRed),(dlgX+16)<<3,((dlgY+8)<<3)+3);
 	}
 	if (mp_inventory->HasCardGreen)
 	{
-		g_pGfxEngine->Tilemap->drawTile(p_surface, ((dlgX+21)<<3)+4, ((dlgY+8)<<3)+4, 219);
+		Tilemap.drawTile(p_surface, ((dlgX+21)<<3)+4, ((dlgY+8)<<3)+4, 219);
 
 		if(mp_inventory->HasCardGreen > 1)
 			Font.drawFont(p_surface, itoa(mp_inventory->HasCardGreen),(dlgX+20)<<3,((dlgY+8)<<3)+3);
 	}
 	if (mp_inventory->HasCardBlue)
 	{
-		g_pGfxEngine->Tilemap->drawTile(p_surface, ((dlgX+25)<<3)+4, ((dlgY+8)<<3)+4, 220);
+		Tilemap.drawTile(p_surface, ((dlgX+25)<<3)+4, ((dlgY+8)<<3)+4, 220);
 
 		if(mp_inventory->HasCardBlue > 1)
 			Font.drawFont(p_surface, itoa(mp_inventory->HasCardBlue),(dlgX+24)<<3,((dlgY+8)<<3)+3);

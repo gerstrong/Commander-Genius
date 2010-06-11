@@ -36,14 +36,14 @@ m_RestartVideo(false)
 bool CPassiveVort::init(char mode)
 {
 	mp_Scrollsurface = g_pVideoDriver->ScrollSurface;
-	mp_Tilemap = g_pGfxEngine->Tilemap;
+	CTilemap &Tilemap = g_pGfxEngine->getTileMap(0);
 	m_mode = mode;
 	if( m_mode == INTRO )
 	{
 		mp_IntroScreen = new CIntro();
 		mp_Map = new CMap;
 		mp_Map->setScrollSurface(mp_Scrollsurface);
-		mp_Map->setTileMap(mp_Tilemap);
+		mp_Map->setTileMap(Tilemap);
 		CMapLoader MapLoader( mp_Map );
 		MapLoader.load( m_Episode, 90, m_DataDirectory);
 		mp_Map->gotoPos( 64+5*320, 32); // Coordinates of star sky
@@ -54,7 +54,7 @@ bool CPassiveVort::init(char mode)
 	{
 		mp_Map = new CMap;
 		mp_Map->setScrollSurface(mp_Scrollsurface);
-		mp_Map->setTileMap(mp_Tilemap);
+		mp_Map->setTileMap(Tilemap);
 		CMapLoader MapLoader( mp_Map );
 		MapLoader.load( m_Episode, 90, m_DataDirectory);
 		SDL_Rect gamerect = g_pVideoDriver->getGameResolution();

@@ -12,7 +12,6 @@
 #define SAFE_DELETE(x) 	if(x){ delete x; x=NULL;}
 
 CGfxEngine::CGfxEngine() :
-Tilemap(NULL),
 m_fxsurface(NULL),
 mp_Effects(NULL),
 mp_Cursor(NULL)
@@ -21,10 +20,11 @@ mp_Cursor(NULL)
 ///
 // Creation Routines
 ///
-void CGfxEngine::createEmptyTilemap()
+void CGfxEngine::createEmptyTilemap(size_t num)
 {
 	freeTilemap();
-	Tilemap = new CTilemap();
+	CTilemap oneTilemap;
+	Tilemap.assign(num, oneTilemap);
 }
 
 void CGfxEngine::createEmptySprites(Uint16 num_sprites)
@@ -78,8 +78,8 @@ void CGfxEngine::freeCursor()
 }
 void CGfxEngine::freeTilemap()
 {
-	if(Tilemap) delete Tilemap;
-	Tilemap = NULL;
+	if( !Tilemap.empty() )
+		Tilemap.clear();
 }
 void CGfxEngine::freeFonts()
 {
@@ -119,7 +119,7 @@ void CGfxEngine::copyTileToSprite( Uint16 t, Uint16 s, Uint16 ntilestocopy )
 	dst_rect.w = dst_rect.h = 16;
 
 	Sprite[s].setSize( 16, 16*ntilestocopy );
-	Sprite[s].createSurface( Tilemap->getSDLSurface()->flags, Palette.m_Palette );
+	Sprite[s].createSurface( Tilemap.at(0).getSDLSurface()->flags, Palette.m_Palette );
 	
 	for(Uint8 i=0 ; i<ntilestocopy ; i++)
 	{
@@ -129,7 +129,7 @@ void CGfxEngine::copyTileToSprite( Uint16 t, Uint16 s, Uint16 ntilestocopy )
 		dst_rect.x = 0;
 		dst_rect.y = 16*i;
 
-		SDL_BlitSurface( Tilemap->getSDLSurface(), &src_rect, Sprite[s].getSDLSurface(), &dst_rect);
+		SDL_BlitSurface( Tilemap.at(0).getSDLSurface(), &src_rect, Sprite[s].getSDLSurface(), &dst_rect);
 	}
 }
 

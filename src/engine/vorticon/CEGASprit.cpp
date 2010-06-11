@@ -216,7 +216,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	DerivePlayerSprites( g_pGfxEngine->getSpriteVec() );
 
 	// Now create special sprites, like those for effects and the doors!
-	DeriveSpecialSprites( g_pGfxEngine->Tilemap, g_pGfxEngine->getSpriteVec() );
+	DeriveSpecialSprites( g_pGfxEngine->getTileMap(0), g_pGfxEngine->getSpriteVec() );
 
 	// Here special Effects are applied, only when the option is enabled for it
 	if(g_pVideoDriver->getSpecialFXConfig())
@@ -355,7 +355,7 @@ void CEGASprit::DerivePlayerSprites( std::vector<CSprite> &sprites )
 // This function has the task to make some items-tiles
 // be painted into yellow, so they look nice, when they are
 // collected
-void CEGASprit::DeriveSpecialSprites( CTilemap *tilemap, std::vector<CSprite> &sprites )
+void CEGASprit::DeriveSpecialSprites( CTilemap &tilemap, std::vector<CSprite> &sprites )
 {
 	std::vector<CTileProperties>& TileProperties = g_pBehaviorEngine->getTileProperties();
 	// Yellow sprites a special effect when items are collected
@@ -379,7 +379,7 @@ void CEGASprit::DeriveSpecialSprites( CTilemap *tilemap, std::vector<CSprite> &s
 			CreateYellowSpriteofTile( tilemap, t, sprites.at(ANKHUP_SPRITE) );
 	}
 
-	for(int i=0 ; i < TileProperties.size() ; i++ )
+	for(size_t i=0 ; i < TileProperties.size() ; i++ )
 	{
 		if(TileProperties.at(i).behaviour == DOOR_YELLOW)
 			g_pGfxEngine->copyTileToSprite(i-1, DOOR_YELLOW_SPRITE, 2);
@@ -397,7 +397,7 @@ void CEGASprit::DeriveSpecialSprites( CTilemap *tilemap, std::vector<CSprite> &s
     // TODO: Demo-Sprite must be added. This time loaded from one TGA File! The TGA is already there!
 }
 
-void CEGASprit::CreateYellowSpriteofTile( CTilemap *tilemap, Uint16 tile, CSprite& sprite )
+void CEGASprit::CreateYellowSpriteofTile( CTilemap &tilemap, Uint16 tile, CSprite& sprite )
 {
 	SDL_Rect tile_rect;
 	
@@ -412,7 +412,7 @@ void CEGASprit::CreateYellowSpriteofTile( CTilemap *tilemap, Uint16 tile, CSprit
 	
 	SDL_Surface *src_sfc = sprite.getSDLSurface();
 	
-	SDL_BlitSurface(tilemap->getSDLSurface(), &tile_rect, src_sfc, NULL);
+	SDL_BlitSurface(tilemap.getSDLSurface(), &tile_rect, src_sfc, NULL);
 	
 	if(SDL_MUSTLOCK(src_sfc)) SDL_LockSurface(src_sfc);
 	

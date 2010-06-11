@@ -51,8 +51,8 @@ bool CTitle::init(int Episode)
 	{ 					// normally hidden tiles are seen. We replace those tiles
 		for(Uint16 x=0 ; x<22 ; x++)
 		{
-			m_map.setTile(x, 0, g_pGfxEngine->Tilemap->EmptyBackgroundTile(), true);
-			m_map.setTile(x, 1, g_pGfxEngine->Tilemap->EmptyBackgroundTile(), true);
+			m_map.setTile(x, 0, g_pGfxEngine->getTileMap(0).EmptyBackgroundTile(), true);
+			m_map.setTile(x, 1, g_pGfxEngine->getTileMap(0).EmptyBackgroundTile(), true);
 		}
 	}
 

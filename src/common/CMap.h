@@ -33,7 +33,7 @@ class CMap {
 public:
 	CMap();
 
-	void setTileMap( CTilemap *pTilemap );
+	void setTileMap( CTilemap &Tilemap );
 	void setScrollSurface( SDL_Surface *surface );
 
 	bool createEmptyForeground(size_t blocksize);

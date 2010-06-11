@@ -216,10 +216,10 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 						 plane4 + m_tiles16location,
 						 0);
 	Uint8 *u_offset;
-	g_pGfxEngine->createEmptyTilemap();
-	CTilemap *Tilemap = g_pGfxEngine->Tilemap;
-	Tilemap->CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE );
-	sfc = Tilemap->getSDLSurface();
+	g_pGfxEngine->createEmptyTilemap(1);
+	CTilemap &Tilemap = g_pGfxEngine->getTileMap(0);
+	Tilemap.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE );
+	sfc = Tilemap.getSDLSurface();
 	if(SDL_MUSTLOCK(sfc))	SDL_LockSurface(sfc);
 	Uint8 *u_pixel = (Uint8*) sfc->pixels;
 
@@ -246,11 +246,11 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 
 	// Load Hi-Colour, VGA, SVGA Tiles into the tilemap
 	filename = getResourceFilename("gfx/ck" + itoa(episode) + "tiles.bmp", path, false);
-	if(Tilemap->loadHiresTile(filename))
+	if(Tilemap.loadHiresTile(filename))
 		g_pLogFile->textOut(GREEN, "VGA Bitmap for Tileset has been loaded successfully!");
 
 	// Adapt the tilemap to the display, so they are faster blit
-	Tilemap->optimizeSurface();
+	Tilemap.optimizeSurface();
 
 	// make masked tiles according to it's surfaces
 	applyMasks();
@@ -330,7 +330,7 @@ void CEGALatch::applyMasks()
 	Uint8 r,g,b,alpha;
 	Uint8 *u_offset;
 
-	sfc = g_pGfxEngine->Tilemap->getSDLSurface();
+	sfc = g_pGfxEngine->getTileMap(0).getSDLSurface();
 
 	if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
 

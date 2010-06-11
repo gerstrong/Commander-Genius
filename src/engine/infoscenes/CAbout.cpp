@@ -22,7 +22,7 @@ m_type(type)
 	mp_Scrollsurface = g_pVideoDriver->ScrollSurface;
 	mp_Map = new CMap;
 	mp_Map->setScrollSurface(mp_Scrollsurface);
-	mp_Map->setTileMap(g_pGfxEngine->Tilemap);
+	mp_Map->setTileMap(g_pGfxEngine->getTileMap(0));
 	CMapLoader Maploader(mp_Map);
 	
 	Maploader.load(ExeFile.getEpisode(), 90, ExeFile.getDataDirectory());

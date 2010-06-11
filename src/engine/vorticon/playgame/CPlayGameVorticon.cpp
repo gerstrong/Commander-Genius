@@ -41,7 +41,7 @@ mp_HighScores(NULL)
 			(short)0, mp_level_completed, mp_option,
 			m_Object, m_Map));
 
-	for(size_t i=0 ; i<m_NumPlayers ; i++)
+	for(int i=0 ; i<m_NumPlayers ; i++)
 	{
 		// Put some important Player properties
 		CPlayer &thisPlayer = m_Player.at(i);
@@ -109,7 +109,7 @@ bool CPlayGameVorticon::init()
 	}
 
 	// Create an empty map
-	m_Map.setTileMap(g_pGfxEngine->Tilemap);
+	m_Map.setTileMap(g_pGfxEngine->getTileMap(0));
 	m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
 	std::vector<CObject>::iterator it_obj = m_Object.begin();
 

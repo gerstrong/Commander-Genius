@@ -20,7 +20,6 @@
 #include "../../StringUtils.h"
 #include "../../graphics/CGfxEngine.h"
 #include "../../sdl/CVideoDriver.h"
-#include "../../engine/CPlanes.h"
 #include <fstream>
 #include <cstring>
 #include <SDL.h>

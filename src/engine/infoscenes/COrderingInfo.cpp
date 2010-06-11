@@ -20,7 +20,7 @@ COrderingInfo::COrderingInfo( CExeFile &ExeFile ) {
 
 	mp_Scrollsurface = g_pVideoDriver->ScrollSurface;
 	m_Map.setScrollSurface(mp_Scrollsurface);
-	m_Map.setTileMap(g_pGfxEngine->Tilemap);
+	m_Map.setTileMap(g_pGfxEngine->getTileMap(0));
 
 	CMapLoader Maploader(&m_Map);
 	

@@ -35,8 +35,8 @@ m_curanimtileframe(0)
 // Initialization Routine //
 ////////////////////////////
 
-void CMap::setTileMap( CTilemap *pTilemap ){
-	mp_Tilemap = pTilemap;
+void CMap::setTileMap( CTilemap &Tilemap ){
+	mp_Tilemap = &Tilemap;
 }
 void CMap::setScrollSurface( SDL_Surface *surface )
 {  mp_scrollsurface = surface; }

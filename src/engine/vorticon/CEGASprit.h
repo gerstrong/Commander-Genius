@@ -57,8 +57,8 @@ private:
 	char LoadTGASprite( const std::string &filename, CSprite &sprite );
 	void LoadSpecialSprites( std::vector<CSprite> &sprite );
 	void DerivePlayerSprites( std::vector<CSprite> &sprites );
-	void DeriveSpecialSprites( CTilemap *tilemap, std::vector<CSprite> &sprites );
-	void CreateYellowSpriteofTile( CTilemap *tilemap, Uint16 tile, CSprite& sprite );
+	void DeriveSpecialSprites( CTilemap &tilemap, std::vector<CSprite> &sprites );
+	void CreateYellowSpriteofTile( CTilemap &tilemap, Uint16 tile, CSprite& sprite );
 	void ApplySpecialFX();
 };
 

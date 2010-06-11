@@ -37,7 +37,7 @@ public:
 	void createEmptyBitmaps(Uint16 num_bmps);
 	void createEmptyMaskedBitmaps(Uint16 num_bmps);
 	void createEmptyFontmaps(Uint8 num_fonts);
-	void createEmptyTilemap();
+	void createEmptyTilemap(size_t num);
 	void createEmptyCursorMap(SDL_Surface *surface);
 	
 	void pushEffectPtr(CEffects *pEffect);
@@ -53,6 +53,7 @@ public:
 	void drawDialogBox(SDL_Surface *DialogSurface, int x1, int y1, int w, int h, Uint32 colour = 0xFFFFFF);
 	int getNumSprites() { return Sprite.size(); }
 
+	CTilemap &getTileMap(size_t tilemap) { return Tilemap.at(tilemap); }
 	CBitmap &getBitmap(Uint16 slot) { return Bitmap.at(slot); }
 	CBitmap &getMaskedBitmap(Uint16 slot) { return maskedBitmap.at(slot); }
 	CBitmap *getBitmap(const std::string &name);
@@ -69,10 +70,10 @@ public:
 	void process();
 	void killEffect();
 	
-	CTilemap *Tilemap;
 	CPalette Palette;
 	
 private:
+	std::vector<CTilemap> Tilemap;
 	std::vector<CFont> Font;
 	SDL_Surface *m_fxsurface;
 	CEffects *mp_Effects;
