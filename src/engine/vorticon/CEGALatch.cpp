@@ -218,12 +218,11 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	Uint8 *u_offset;
 	g_pGfxEngine->createEmptyTilemap(1);
 	CTilemap &Tilemap = g_pGfxEngine->getTileMap(0);
-	Tilemap.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE );
+	Tilemap.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE, m_num16tiles, 4, 13 );
 	sfc = Tilemap.getSDLSurface();
 	if(SDL_MUSTLOCK(sfc))	SDL_LockSurface(sfc);
 	Uint8 *u_pixel = (Uint8*) sfc->pixels;
 
-	Uint8 tiledata[MAX_TILES+1][16][16];
 	for(int p=0;p<4;p++)
 	{
 		for(int t=0;t<m_num16tiles;t++)
@@ -234,9 +233,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 				{
 					u_offset = u_pixel + 16*13*16*(t/13) + 16*(t%13)  + 16*13*y + x;
 					if (p==0) c = 0;
-					else c = tiledata[t][y][x];
 					c |= (Planes->getbit(RawData, p) << p);
-					tiledata[t][y][x] = c;
 					*u_offset = c;
 				}
 			}
