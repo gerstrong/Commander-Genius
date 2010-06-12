@@ -13,12 +13,20 @@
 
 CTilemap::CTilemap() :
 m_Tilesurface(NULL),
-m_EmptyBackgroundTile(143)
+m_EmptyBackgroundTile(143),
+m_numtiles(0),
+m_pbasesize(0),
+m_column(0)
 { }
 
-bool CTilemap::CreateSurface(SDL_Color *Palette, Uint32 Flags)
+bool CTilemap::CreateSurface(SDL_Color *Palette, Uint32 Flags,
+				Uint16 numtiles, Uint16 pbasesize, Uint16 column)
 {
-	m_Tilesurface = SDL_CreateRGBSurface(Flags, 13*16, 800*16, 8, 0, 0, 0, 0);
+	m_numtiles = numtiles;
+	m_pbasesize = pbasesize;
+	m_column = column;
+	m_Tilesurface = SDL_CreateRGBSurface(Flags, m_column<<m_pbasesize,
+										m_numtiles<<m_pbasesize, 8, 0, 0, 0, 0);
 	SDL_SetColors(m_Tilesurface, Palette, 0, 255);
 	SDL_SetColorKey(m_Tilesurface, SDL_SRCCOLORKEY, COLORKEY);
 	
@@ -70,8 +78,9 @@ SDL_Surface *CTilemap::getSDLSurface()
 void CTilemap::drawTile(SDL_Surface *dst, Uint16 x, Uint16 y, Uint16 t)
 {
 	SDL_Rect src_rect, dst_rect;
-	src_rect.x = 16*(t%13);		src_rect.y = 16*(t/13);
-	src_rect.w = src_rect.h = dst_rect.w = dst_rect.h = 16;
+	src_rect.x = (t%m_column)<<m_pbasesize;
+	src_rect.y = (t/m_column)<<m_pbasesize;
+	src_rect.w = src_rect.h = dst_rect.w = dst_rect.h = 1<<m_pbasesize;
 	dst_rect.x = x;		dst_rect.y = y;
 	
 	SDL_BlitSurface(m_Tilesurface, &src_rect, dst, &dst_rect);
