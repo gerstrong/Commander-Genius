@@ -92,12 +92,11 @@ void CMap::resetScrolls()
 // Getters and Setters //
 /////////////////////////
 // returns the tile which is set at the given coordinates
-Uint16 CMap::at(Uint16 x, Uint16 y)
+Uint16 CMap::at(Uint16 x, Uint16 y, Uint16 t)
 {
 	if(x < m_width && y < m_height )
 	{
-		return m_Plane[1].getMapDataAt(x,y);
-		//return mp_foreground_data[y*m_width + x];
+		return m_Plane[t].getMapDataAt(x,y);
 	}
 	else
 		return 0;
@@ -111,6 +110,11 @@ Uint16 CMap::getObjectat(Uint16 x, Uint16 y)
 word *CMap::getForegroundData()
 {	//return mp_foreground_data;
 	return m_Plane[1].getMapDataPtr();
+}
+
+word *CMap::getBackgroundData()
+{	//return mp_foreground_data;
+	return m_Plane[0].getMapDataPtr();
 }
 
 

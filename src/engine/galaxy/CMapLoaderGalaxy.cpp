@@ -62,11 +62,13 @@ bool CMapLoaderGalaxy::gotoSignature(std::ifstream &MapFile)
 	return false;
 }
 
-void CMapLoaderGalaxy::unpackPlaneData(std::vector<word> &Plane, std::ifstream &MapFile,
+void CMapLoaderGalaxy::unpackPlaneData(std::ifstream &MapFile,
 										CMap &Map, size_t PlaneNumber,
 										longword offset, longword length,
 										word magic_word)
 {
+	std::vector<word> Plane;
+
 	MapFile.seekg(offset);
 	std::vector<byte> Carmack_Plane;
 	std::vector<byte> RLE_Plane;
@@ -87,9 +89,20 @@ void CMapLoaderGalaxy::unpackPlaneData(std::vector<word> &Plane, std::ifstream &
     	RLE.expand(Plane, RLE_Plane, magic_word);
     	RLE_Plane.clear();
 
+    	word *ptr = Map.getBackgroundData();
+    	for(size_t y=0; y<Map.m_height ; y++)
+    	{
+    		for(size_t x=0; x<Map.m_width ; x++)
+    		{
+    			*ptr = Plane.at(y*Map.m_width+x);
+    			ptr++;
+    		}
+    	}
+
+
         if( derlesize/2 == Plane.size() )
         {
-        	// TODO: Now read the raw data off the Plane vector...
+
         }
         else
         {
@@ -180,9 +193,11 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 				g_pLogFile->textOut("Decompressing the Map...<br>" );
 
 				// Start with the Background
-				std::vector<word> Plane;
-				Map.createEmptyBackground(Width*Height);
-				unpackPlaneData(Plane, MapFile, Map, 1, Plane_Offset[0], Plane_Length[0], magic_word);
+				Map.m_width = Width;
+				Map.m_height = Height;
+				Map.createEmptyForeground(Width*Height);
+
+				unpackPlaneData(MapFile, Map, 0, Plane_Offset[0], Plane_Length[0], magic_word);
 			}
 			MapFile.close();
 			return true;

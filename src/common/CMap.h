@@ -51,7 +51,7 @@ public:
 	void drawHstripe( unsigned int y, unsigned int mpy );
 	void drawVstripe( unsigned int x, unsigned int mpx );
 
-	Uint16 at(Uint16 x, Uint16 y);
+	Uint16 at(Uint16 x, Uint16 y, Uint16 t=1);
 	Uint16 getObjectat(Uint16 x, Uint16 y);
 	bool findObject(unsigned int obj, int *xout, int *yout);
 	bool findTile(unsigned int tile, int *xout, int *yout);
@@ -71,6 +71,7 @@ public:
 		return m_objectlayer[x>>4][y>>4];	}
 
 	word *getForegroundData();
+	word *getBackgroundData();
 
 	virtual ~CMap();
 

@@ -478,7 +478,6 @@ bool CEGAGraphicsGalaxy::readfonts()
 			}
 			SDL_UnlockSurface(sfc);
 		}
-		//Font.optimizeSurface();
 	}
 	return true;
 }
@@ -553,10 +552,8 @@ bool CEGAGraphicsGalaxy::readTilemaps()
 				for(size_t y = 0; y < 16; y++)
 				{
 					Uint8 *pixel = (Uint8*)sfc->pixels + 16*(i%18) + 16*16*18*(i/18) + (16*18*y);
-
 					for(size_t x = 0; x < 2; x++)
 					{
-					//	memcpy(planes[p]->lines[y], pointer + y * 2, 2);
 						Uint8 bit,b;
 						for(b=0 ; b<8 ; b++)
 						{
@@ -576,61 +573,6 @@ bool CEGAGraphicsGalaxy::readTilemaps()
 	return true;
 }
 
-//
-//void k456_export_tiles()
-//{
-//	BITMAP16 *tiles, *bmp, *planes[4];
-//	char filename[PATH_MAX];
-//	int i, p, y;
-//	unsigned char *pointer;
-//	int ep = Switches->Episode - 4;
-//
-//	if(!ExportInitialised)
-//		quit("Trying to export tiles before initialisation!");
-//
-//	/* Export all the tiles into one bitmap*/
-//	printf("Exporting tiles: ");
-//
-//	tiles = bmp_create(16 * 18, 16 * ((EpisodeInfo[ep].Num16Tiles + 17) / 18), 4);
-//
-//	/* Create a 1bpp bitmap for each plane */
-//	for(p = 0; p < 4; p++)
-//		planes[p] = bmp_create(16, 16, 1);
-//
-//	for(i = 0; i < EpisodeInfo[ep].Num16Tiles; i++)
-//	{
-//		/* Show that something is happening */
-//		showprogress((i * 100) / EpisodeInfo[ep].Num16Tiles);
-//
-//		if(EgaGraph[EpisodeInfo[ep].Index16Tiles + i].data)
-//		{
-//			/* Decode the image data */
-//			for(p = 0; p < 4; p++)
-//			{
-//				/* Decode the lines of the bitmap data */
-//				pointer = EgaGraph[EpisodeInfo[ep].Index16Tiles + i].data + p * 2 * 16;
-//				for(y = 0; y < 16; y++)
-//					memcpy(planes[p]->lines[y], pointer + y * 2, 2);
-//			}
-//
-//			bmp = bmp_merge(planes[2], planes[1], planes[0], planes[3]);
-//			bmp_blit(bmp, 0, 0, tiles, 16 * (i % 18), 16 * (i / 18), 16, 16);
-//			bmp_free(bmp);
-//		}
-//		//printf("\x8\x8\x8\x8");
-//	}
-//	completemsg();
-//
-//	/* Create the bitmap file */
-//	sprintf(filename, "%s/%cTIL0000.bmp", Switches->OutputPath, '0' + Switches->Episode);
-//	if(!bmp_save(tiles, filename, Switches->Backup))
-//		quit("Can't open bitmap file %s!", filename);
-//
-//	/* Free the memory used */
-//	for(p = 0; p < 4; p++)
-//		bmp_free(planes[p]);
-//	bmp_free(tiles);
-//}
 //
 //void k456_export_masked_tiles()
 //{
