@@ -13,11 +13,13 @@
 class CPlanes {
 public:
 	CPlanes(byte *dataptr);
+
+	unsigned char getbit(unsigned char plane);
 	
 	void setOffsets(unsigned long p1, unsigned long p2, unsigned long p3,
 					 unsigned long p4, unsigned long p5);
 
-	unsigned char getbit(unsigned char plane);
+	void readPlane(size_t p, Uint8 *pixels, Uint16 width, Uint16 height);
 	
 private:
 	unsigned long getbit_bytepos[5];

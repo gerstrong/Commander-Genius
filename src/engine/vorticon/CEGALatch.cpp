@@ -230,6 +230,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 				{
 					u_offset = u_pixel + 16*13*16*(t/13) + 16*(t%13)  + 16*13*y + x;
 					if (p==0) c = 0;
+					else c = *u_offset;
 					c |= (Planes.getbit(p) << p);
 					*u_offset = c;
 				}
@@ -283,7 +284,10 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 			Uint8* pixel = (Uint8*) sfc->pixels;
 			width = bitmap.getWidth(); height = bitmap.getHeight();
 			// Now read the raw data
-			for(int y=0 ; y<height ; y++)
+
+			Planes.readPlane(p, pixel, width, height);
+
+			/*for(int y=0 ; y<height ; y++)
 			{
 				for(int x=0 ; x<width ; x++)
 				{
@@ -292,7 +296,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 					c |= (Planes.getbit(p) << p);
 					pixel[y*width + x] = c;
 				}
-			}
+			}*/
 			if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
 		}
 	}
