@@ -20,6 +20,8 @@ public:
 					 unsigned long p4, unsigned long p5);
 
 	void readPlane(size_t p, Uint8 *pixels, Uint16 width, Uint16 height);
+	void readPlaneofTiles(size_t p, Uint8 *pixels, Uint16 columns,
+								Uint16 tilesize, Uint16 numtiles);
 	
 private:
 	unsigned long getbit_bytepos[5];

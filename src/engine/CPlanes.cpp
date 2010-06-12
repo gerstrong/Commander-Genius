@@ -56,18 +56,42 @@ void CPlanes::setOffsets(unsigned long p1, unsigned long p2, unsigned long p3,
 	for(int i=0;i<5;i++)
 	    getbit_bitmask[i] = 128;
 }
-
+/**
+ * This functions read one plane of graphics to a designated pointer which is derived by
+ * a SDL-Surface normally
+ */
 void CPlanes::readPlane(size_t p, Uint8 *pixels, Uint16 width, Uint16 height)
 {
 	for(Uint16 y=0 ; y<height ; y++)
 	{
 		for(Uint16 x=0 ; x<width ; x++)
 		{
-			Uint16 c;
-			if (p==0) c = 0;
-			else c = pixels[y*width + x];
-			c |= (getbit(p) << p);
-			pixels[y*width + x] = c;
+			pixels[y*width + x] |= (getbit(p) << p);
+		}
+	}
+}
+
+/**
+ * This functions read one plane of graphics to a designated pointer which is derived by
+ * a SDL-Surface normally. This function is used for tilemaps, which need to be read
+ * differently from the gamedata of Keen
+ */
+void CPlanes::readPlaneofTiles(size_t p, Uint8 *pixels, Uint16 columns,
+								Uint16 tilesize, Uint16 numtiles)
+{
+	Uint8 *u_offset;
+	for(size_t t=0;t<numtiles;t++)
+	{
+		for(size_t y=0;y<tilesize;y++)
+		{
+			for(size_t x=0;x<tilesize;x++)
+			{
+				u_offset = pixels +
+						   tilesize*tilesize*columns*(t/columns) +
+						   tilesize*(t%columns) +
+						   tilesize*columns*y + x;
+				*u_offset |= (getbit(p) << p);
+			}
 		}
 	}
 }

@@ -138,64 +138,52 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 		CSprite &Sprite = g_pGfxEngine->getSprite(i);
 		Sprite.setSize( EGASpriteModell[i].width, EGASpriteModell[i].height );
 		Sprite.setBouncingBoxCoordinates( (EGASpriteModell[i].hitbox_l << (CSF-TILE_S)),
-														    (EGASpriteModell[i].hitbox_u << (CSF-TILE_S)),
-														    (EGASpriteModell[i].hitbox_r << (CSF-TILE_S)),
-														    (EGASpriteModell[i].hitbox_b << (CSF-TILE_S)) );
+				(EGASpriteModell[i].hitbox_u << (CSF-TILE_S)),
+				(EGASpriteModell[i].hitbox_r << (CSF-TILE_S)),
+				(EGASpriteModell[i].hitbox_b << (CSF-TILE_S)) );
 		Sprite.createSurface( g_pVideoDriver->BlitSurface->flags,
-							   g_pGfxEngine->Palette.m_Palette );
+				g_pGfxEngine->Palette.m_Palette );
 	}
-	
+
+	for(int p=0 ; p<4 ; p++)
 	{
-		char c;
-		for(int p=0 ; p<4 ; p++)
-		{
-			for(int s=0 ; s<m_numsprites ; s++)
-			{
-				sfc = g_pGfxEngine->getSprite(s).getSDLSurface();
-				if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
-				pixel = (Uint8*) sfc->pixels;
-
-				for(int y=0 ; y<sfc->h ; y++)
-				{
-					for(int x=0 ; x<sfc->w ; x++)
-					{
-						if (p==0) c = 0;
-						else c = pixel[y*sfc->w + x];
-
-						c |= (Planes.getbit(p) << p);
-						pixel[y*sfc->w + x] = c;
-					}
-				}
-
-				if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
-			}
-		}
-
-		// now load the 5th plane, which contains the sprite masks.
-		// note that we invert the mask because our graphics functions
-		// use white on black masks whereas keen uses black on white.
 		for(int s=0 ; s<m_numsprites ; s++)
 		{
-			CSprite &Sprite = g_pGfxEngine->getSprite(s);
-			pixsfc = Sprite.getSDLSurface();
-			sfc = Sprite.getSDLMaskSurface();
-
-			if(SDL_MUSTLOCK(pixsfc)) SDL_LockSurface(pixsfc);
+			sfc = g_pGfxEngine->getSprite(s).getSDLSurface();
 			if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
-
 			pixel = (Uint8*) sfc->pixels;
 
-			for(int y=0 ; y<sfc->h ; y++)
-			{
-				for(int x=0 ; x<sfc->w ; x++)
-				{
-					pixel[y*sfc->w + x] = Planes.getbit(4) ? ((Uint8*)pixsfc->pixels)[y*pixsfc->w + x] : 15;
-				}
-			}
+			Planes.readPlane(p, pixel, sfc->w, sfc->h);
+
 			if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
-			if(SDL_MUSTLOCK(pixsfc)) SDL_UnlockSurface(pixsfc);
 		}
 	}
+
+	// now load the 5th plane, which contains the sprite masks.
+	// note that we invert the mask because our graphics functions
+	// use white on black masks whereas keen uses black on white.
+	for(int s=0 ; s<m_numsprites ; s++)
+	{
+		CSprite &Sprite = g_pGfxEngine->getSprite(s);
+		pixsfc = Sprite.getSDLSurface();
+		sfc = Sprite.getSDLMaskSurface();
+
+		if(SDL_MUSTLOCK(pixsfc)) SDL_LockSurface(pixsfc);
+		if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
+
+		pixel = (Uint8*) sfc->pixels;
+
+		for(int y=0 ; y<sfc->h ; y++)
+		{
+			for(int x=0 ; x<sfc->w ; x++)
+			{
+				pixel[y*sfc->w + x] = Planes.getbit(4) ? ((Uint8*)pixsfc->pixels)[y*pixsfc->w + x] : 15;
+			}
+		}
+		if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
+		if(SDL_MUSTLOCK(pixsfc)) SDL_UnlockSurface(pixsfc);
+	}
+
 	
 	if(RawData){ delete[] RawData; RawData = NULL;}
 	

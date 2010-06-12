@@ -140,38 +140,20 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	// Load these graphics into the CFont Class of CGfxEngine
 	// The original vorticon engine only uses one fontmap, but we use another for
 	// extra icons. For example sliders are in that map
-	char *offset;
 	g_pGfxEngine->createEmptyFontmaps(2);
 	CFont &Font = g_pGfxEngine->getFont(0);
 	Font.destroySurface();
 	Font.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE );
 	sfc = Font.getSDLSurface();
+
 	if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
-	char *pixel = (char*) sfc->pixels;
-	int c=0;
+
+	Uint8 *pixel = (Uint8*) sfc->pixels;
+	SDL_FillRect(sfc, NULL, 0);
+
 	for(int p=0;p<4;p++)
-	{
-		for(int t=0;t<m_fonttiles;t++)
-		{
-			for(int y=0;y<8;y++)
-			{
-				for(int x=0;x<8;x++)
-				{
-					// if we're on the first plane start with black,
-					// else merge with the previously accumulated data
-					offset = pixel + 128*8*(t/16) + 8*(t%16) + 128*y + x;
-					if (p==0) c = 0;
-					else c = *offset;
-					// read a bit out of the current plane, shift it into the
-					// correct position and merge it
-					c |= (Planes.getbit(p) << p);
-					// map black pixels to color 16 because of the way the
-					// vorticon death sequence works in ep1
-					*offset = c;
-				}
-			}
-		}
-	}
+		Planes.readPlaneofTiles(p, pixel, 16, 8, m_fonttiles);
+
 	if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
 
 	// Load Hi-Colour VGA, SVGA 8x8 Tiles into the fontmap
@@ -212,31 +194,18 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 					 plane3 + m_tiles16location,
 					 plane4 + m_tiles16location,
 					 0);
-	Uint8 *u_offset;
+
 	g_pGfxEngine->createEmptyTilemap(1);
 	CTilemap &Tilemap = g_pGfxEngine->getTileMap(0);
 	Tilemap.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE, m_num16tiles, 4, 13 );
 	sfc = Tilemap.getSDLSurface();
+	SDL_FillRect(sfc,NULL, 0);
 	if(SDL_MUSTLOCK(sfc))	SDL_LockSurface(sfc);
 	Uint8 *u_pixel = (Uint8*) sfc->pixels;
 
 	for(int p=0;p<4;p++)
-	{
-		for(int t=0;t<m_num16tiles;t++)
-		{
-			for(int y=0;y<16;y++)
-			{
-				for(int x=0;x<16;x++)
-				{
-					u_offset = u_pixel + 16*13*16*(t/13) + 16*(t%13)  + 16*13*y + x;
-					if (p==0) c = 0;
-					else c = *u_offset;
-					c |= (Planes.getbit(p) << p);
-					*u_offset = c;
-				}
-			}
-		}
-	}
+		Planes.readPlaneofTiles(p, u_pixel, 13, 16, m_num16tiles);
+
 	if(SDL_MUSTLOCK(sfc))	SDL_UnlockSurface(sfc);
 
 	// Load Hi-Colour, VGA, SVGA Tiles into the tilemap
@@ -282,21 +251,13 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 			sfc= bitmap.getSDLSurface();
 			if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
 			Uint8* pixel = (Uint8*) sfc->pixels;
+			if(p==0)
+				SDL_FillRect(sfc, NULL, 0);
 			width = bitmap.getWidth(); height = bitmap.getHeight();
 			// Now read the raw data
 
 			Planes.readPlane(p, pixel, width, height);
 
-			/*for(int y=0 ; y<height ; y++)
-			{
-				for(int x=0 ; x<width ; x++)
-				{
-					if (p==0) c = 0;
-					else c = pixel[y*width + x];
-					c |= (Planes.getbit(p) << p);
-					pixel[y*width + x] = c;
-				}
-			}*/
 			if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
 		}
 	}
