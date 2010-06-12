@@ -15,10 +15,8 @@ public:
 	CPlanes(byte *dataptr);
 
 	unsigned char getbit(unsigned char plane);
-	
 	void setOffsets(unsigned long p1, unsigned long p2, unsigned long p3,
-					 unsigned long p4, unsigned long p5);
-
+					 unsigned long p4, unsigned long p5 = 0);
 	void readPlane(size_t p, Uint8 *pixels, Uint16 width, Uint16 height);
 	void readPlaneofTiles(size_t p, Uint8 *pixels, Uint16 columns,
 								Uint16 tilesize, Uint16 numtiles);

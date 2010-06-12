@@ -20,6 +20,7 @@
 #include "../../StringUtils.h"
 #include "../../graphics/CGfxEngine.h"
 #include "../../sdl/CVideoDriver.h"
+#include "../CPlanes.h"
 #include <fstream>
 #include <cstring>
 #include <SDL.h>
@@ -136,7 +137,7 @@ bool CEGAGraphicsGalaxy::loadData()
 	if(!readfonts()) return false;
 	if(!readBitmaps()) return false;
 	if(!readMaskedBitmaps()) return false;
-	//k456_export_tiles();
+	if(!readTilemaps()) return false;
 	//k456_export_masked_tiles();
 	//k456_export_8_tiles();
 	//k456_export_8_masked_tiles();
@@ -524,10 +525,54 @@ bool CEGAGraphicsGalaxy::readMaskedBitmaps()
 		extractPicture(Bitmap.getSDLSurface(),
 				m_egagraph.at(EpisodeInfo[ep].IndexMaskedBitmaps + i).data,
 				BmpMaskedHead[i].Width, BmpMaskedHead[i].Height, true);
-
-		std::string buf = "maskbmp" + itoa(i) + ".bmp";
-		SDL_SaveBMP(Bitmap.getSDLSurface(), buf.c_str());
 	}
+	return true;
+}
+
+bool CEGAGraphicsGalaxy::readTilemaps()
+{
+	int ep = m_episode - 4;
+
+	g_pGfxEngine->createEmptyTilemap(4);
+	CTilemap &Tilemap = g_pGfxEngine->getTileMap(0);
+	Tilemap.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE,
+							EpisodeInfo[ep].Num16Tiles, 4, 18 );
+	SDL_Surface *sfc = Tilemap.getSDLSurface();
+	SDL_FillRect(sfc,NULL, 0);
+	if(SDL_MUSTLOCK(sfc))	SDL_LockSurface(sfc);
+
+	for(size_t i = 0; i < EpisodeInfo[ep].Num16Tiles; i++)
+	{
+		if(!m_egagraph.at(EpisodeInfo[ep].Index16Tiles + i).data.empty())
+		{
+			/* Decode the image data */
+			for(size_t p = 0; p < 4; p++)
+			{
+				/* Decode the lines of the bitmap data */
+				Uint8 *pointer = &(m_egagraph.at(EpisodeInfo[ep].Index16Tiles + i).data[0]) + p * 2 * 16;
+				for(size_t y = 0; y < 16; y++)
+				{
+					Uint8 *pixel = (Uint8*)sfc->pixels + 16*(i%18) + 16*16*18*(i/18) + (16*18*y);
+
+					for(size_t x = 0; x < 2; x++)
+					{
+					//	memcpy(planes[p]->lines[y], pointer + y * 2, 2);
+						Uint8 bit,b;
+						for(b=0 ; b<8 ; b++)
+						{
+							bit = getBit(*pointer, 7-b);
+							*pixel |= (bit<<p);
+							pixel++;
+						}
+						pointer++;
+					}
+				}
+			}
+		}
+	}
+
+	SDL_UnlockSurface(sfc);
+
 	return true;
 }
 

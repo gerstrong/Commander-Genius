@@ -124,12 +124,8 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	plane4 = (m_planesize * 3);
 	plane5 = (m_planesize * 4);
 	
-	CPlanes Planes(RawData);
-	Planes.setOffsets(plane1 + m_spriteloc,
-						plane2 + m_spriteloc,
-						plane3 + m_spriteloc,
-						plane4 + m_spriteloc,
-						plane5 + m_spriteloc);
+	CPlanes Planes(RawData + m_spriteloc);
+	Planes.setOffsets(plane1, plane2, plane3, plane4, plane5);
 	
 	// load the image data
 	g_pGfxEngine->createEmptySprites(MAX_SPRITES+1);

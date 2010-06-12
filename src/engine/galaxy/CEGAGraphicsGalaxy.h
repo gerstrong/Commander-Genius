@@ -36,6 +36,7 @@ public:
 	bool readfonts();
 	bool readBitmaps();
 	bool readMaskedBitmaps();
+	bool readTilemaps();
 
 	virtual ~CEGAGraphicsGalaxy();
 

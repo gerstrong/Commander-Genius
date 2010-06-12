@@ -26,7 +26,7 @@ bool CTilemap::CreateSurface(SDL_Color *Palette, Uint32 Flags,
 	m_pbasesize = pbasesize;
 	m_column = column;
 	m_Tilesurface = SDL_CreateRGBSurface(Flags, m_column<<m_pbasesize,
-										m_numtiles<<m_pbasesize, 8, 0, 0, 0, 0);
+										(m_numtiles/m_column)<<m_pbasesize, 8, 0, 0, 0, 0);
 	SDL_SetColors(m_Tilesurface, Palette, 0, 255);
 	SDL_SetColorKey(m_Tilesurface, SDL_SRCCOLORKEY, COLORKEY);
 	
