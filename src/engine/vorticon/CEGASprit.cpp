@@ -86,7 +86,7 @@ bool CEGASprit::loadHead(char *data)
 bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 {
 	std::string file;
-	char *RawData;
+	byte *RawData;
     SDL_Surface *sfc;
     SDL_Surface *pixsfc;
     Uint8* pixel;
@@ -96,11 +96,11 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	if(!latchfile)
 		return false;
 	
-	RawData = new char[m_planesize * 5];
+	RawData = new byte[m_planesize * 5];
     // get the data out of the file into the memory, decompressing it if necessary.
     if (compresseddata)
     {
-		if (lz_decompress(latchfile, (unsigned char*) RawData))
+		if (lz_decompress(latchfile, RawData))
 			return 1;
     }
     else
@@ -124,11 +124,12 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	plane4 = (m_planesize * 3);
 	plane5 = (m_planesize * 4);
 	
-	CPlanes *Planes = new CPlanes(plane1 + m_spriteloc,
-								  plane2 + m_spriteloc,
-								  plane3 + m_spriteloc,
-								  plane4 + m_spriteloc,
-								  plane5 + m_spriteloc);
+	CPlanes Planes(RawData);
+	Planes.setOffsets(plane1 + m_spriteloc,
+						plane2 + m_spriteloc,
+						plane3 + m_spriteloc,
+						plane4 + m_spriteloc,
+						plane5 + m_spriteloc);
 	
 	// load the image data
 	g_pGfxEngine->createEmptySprites(MAX_SPRITES+1);
@@ -161,7 +162,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 						if (p==0) c = 0;
 						else c = pixel[y*sfc->w + x];
 
-						c |= (Planes->getbit(RawData, p) << p);
+						c |= (Planes.getbit(p) << p);
 						pixel[y*sfc->w + x] = c;
 					}
 				}
@@ -188,15 +189,13 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 			{
 				for(int x=0 ; x<sfc->w ; x++)
 				{
-					pixel[y*sfc->w + x] = Planes->getbit(RawData, 4) ? ((Uint8*)pixsfc->pixels)[y*pixsfc->w + x] : 15;
+					pixel[y*sfc->w + x] = Planes.getbit(4) ? ((Uint8*)pixsfc->pixels)[y*pixsfc->w + x] : 15;
 				}
 			}
 			if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
 			if(SDL_MUSTLOCK(pixsfc)) SDL_UnlockSurface(pixsfc);
 		}
 	}
-
-	delete Planes;
 	
 	if(RawData){ delete[] RawData; RawData = NULL;}
 	

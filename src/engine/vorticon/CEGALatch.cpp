@@ -9,6 +9,7 @@
 #include "../../fileio/ResourceMgmt.h"
 #include "../../graphics/CGfxEngine.h"
 #include "../../sdl/CVideoDriver.h"
+#include "../../fileio/TypeDefinitions.h"
 #include "../../CLogFile.h"
 #include "../CPlanes.h"
 #include "../../funcdefs.h"
@@ -94,7 +95,7 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 bool CEGALatch::loadData( std::string &path, short episode, int version, unsigned char *data, bool compresseddata )
 {
 	std::string filename;
-	char *RawData;
+	byte *RawData;
     Uint16 width, height;
     SDL_Surface *sfc;
 
@@ -105,7 +106,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	if(!latchfile)
 		return false;
 
-	RawData = new char[m_latchplanesize * 4];
+	RawData = new byte[m_latchplanesize * 4];
     // get the data out of the file into the memory, decompressing it if necessary.
     if (compresseddata)
     {
@@ -133,11 +134,9 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 
 	// ** read the 8x8 tiles **
 	// set up the getbit() function of CPlanes class
-	CPlanes *Planes = new CPlanes(plane1 + m_fontlocation,
-								  plane2 + m_fontlocation,
-								  plane3 + m_fontlocation,
-								  plane4 + m_fontlocation,
-								  0);
+	CPlanes Planes(RawData);
+	Planes.setOffsets(plane1 + m_fontlocation, plane2 + m_fontlocation,
+					  plane3 + m_fontlocation, plane4 + m_fontlocation, 0);
 	// Load these graphics into the CFont Class of CGfxEngine
 	// The original vorticon engine only uses one fontmap, but we use another for
 	// extra icons. For example sliders are in that map
@@ -165,7 +164,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 					else c = *offset;
 					// read a bit out of the current plane, shift it into the
 					// correct position and merge it
-					c |= (Planes->getbit(RawData, p) << p);
+					c |= (Planes.getbit(p) << p);
 					// map black pixels to color 16 because of the way the
 					// vorticon death sequence works in ep1
 					*offset = c;
@@ -189,8 +188,6 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	CCursor *pCursor = g_pGfxEngine->getCursor();
 	pCursor->generateTwirls(Font);
 
-	delete Planes;
-
 	// The second fontmap of the extra tilemap code goes here! (for example Sliders)
 	CFont &Font2 = g_pGfxEngine->getFont(1);
 	Font2.destroySurface();
@@ -210,11 +207,11 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	// TODO: Add a read method for 32x32 Tiles
 
 	// ** read the 16x16 tiles **
-	Planes = new CPlanes(plane1 + m_tiles16location,
-						 plane2 + m_tiles16location,
-						 plane3 + m_tiles16location,
-						 plane4 + m_tiles16location,
-						 0);
+	Planes.setOffsets(plane1 + m_tiles16location,
+					 plane2 + m_tiles16location,
+					 plane3 + m_tiles16location,
+					 plane4 + m_tiles16location,
+					 0);
 	Uint8 *u_offset;
 	g_pGfxEngine->createEmptyTilemap(1);
 	CTilemap &Tilemap = g_pGfxEngine->getTileMap(0);
@@ -233,7 +230,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 				{
 					u_offset = u_pixel + 16*13*16*(t/13) + 16*(t%13)  + 16*13*y + x;
 					if (p==0) c = 0;
-					c |= (Planes->getbit(RawData, p) << p);
+					c |= (Planes.getbit(p) << p);
 					*u_offset = c;
 				}
 			}
@@ -252,17 +249,15 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	// make masked tiles according to it's surfaces
 	applyMasks();
 
-	delete Planes;
-
 	////////////////////
 	/// Load Bitmaps ///
 	////////////////////
 
-	Planes = new CPlanes(plane1 + m_bitmaplocation,
-						 plane2 + m_bitmaplocation,
-						 plane3 + m_bitmaplocation,
-						 plane4 + m_bitmaplocation,
-						 0);
+	Planes.setOffsets(plane1 + m_bitmaplocation,
+					plane2 + m_bitmaplocation,
+					plane3 + m_bitmaplocation,
+					plane4 + m_bitmaplocation,
+					0);
 
 	// decode bitmaps into the BitmapData structure. The bitmaps are
 	// loaded into one continuous stream of image data, with the bitmaps[]
@@ -294,14 +289,13 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 				{
 					if (p==0) c = 0;
 					else c = pixel[y*width + x];
-					c |= (Planes->getbit(RawData, p) << p);
+					c |= (Planes.getbit(p) << p);
 					pixel[y*width + x] = c;
 				}
 			}
 			if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
 		}
 	}
-	delete Planes;
 
 	// optimize the bitmaps and load hq bitmaps if there are some.
 	for(int b=0 ; b<m_bitmaps ; b++)
