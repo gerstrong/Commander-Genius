@@ -678,6 +678,8 @@ void CPlayer::InertiaAndFriction_Y()
 
 void CPlayer::ProcessInput()
 {
+	if(pfrozentime)
+		return;
 	// Entry for every player
 	playcontrol[PA_X] = 0;
 	playcontrol[PA_Y] = 0;
@@ -783,7 +785,6 @@ void CPlayer::freeze()
 	pjumpupspeed_decrease = PhysicsSettings.player.defaultjumpupdecreasespeed;
 
 	pjumping = PJUMPUP;
-	//pjumpupspeed_decreasetimer = 0;
 	pjustjumped = true;
 
 	// and freeze him (stun him on ep2/3)

@@ -60,6 +60,8 @@ void CObjectAI::icechunk_ai(CObject &object)
 			}
 		}
 
+		m_Player[object.touchedBy].pinertia_y = object.ai.icechunk.veloc_y;
+		m_Player[object.touchedBy].xinertia = object.ai.icechunk.veloc_x;
 		m_Player[object.touchedBy].freeze();
 		smash(object);
 		return;
