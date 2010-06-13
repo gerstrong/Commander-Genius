@@ -16,7 +16,7 @@
 #include "../../FindFile.h"
 #include "../../sdl/CVideoDriver.h"
 #include "../../engine/spritedefines.h"
-#include "../../lz.h"
+#include "../../fileio/lz.h"
 #include "../../fileio/ResourceMgmt.h"
 #include "../../funcdefs.h"
 #include <SDL.h>

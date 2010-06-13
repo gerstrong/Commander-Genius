@@ -2,7 +2,8 @@
  This file contains the functions which decompress the graphics
  data from Keen 1.
  */
-#include "CLogFile.h"
+#include "../CLogFile.h"
+#include <cstdio>
 
 #define LZ_STARTBITS        9
 #define LZ_ERRORCODE        256
@@ -100,7 +101,6 @@ char lz_decompress(FILE *lzfile, unsigned char *outbuffer)
 	// allocate memory for the LZ dictionary
 	for(i=0;i<maxdictsize;i++)
 	{
-		//lzdict[i] = (stLZDictionaryEntry*) malloc(sizeof(stLZDictionaryEntry));
 		lzdict[i] = new stLZDictionaryEntry;
 		if (!lzdict[i])
 		{

@@ -7,6 +7,7 @@
 
 #include "CEGALatch.h"
 #include "../../fileio/ResourceMgmt.h"
+#include "../../fileio/lz.h"
 #include "../../graphics/CGfxEngine.h"
 #include "../../sdl/CVideoDriver.h"
 #include "../../fileio/TypeDefinitions.h"
@@ -15,7 +16,6 @@
 #include "../../funcdefs.h"
 #include "../../keen.h"
 #include "../../FindFile.h"
-#include "../../lz.h"
 #include <SDL.h>
 #include <stdio.h>
 #include <string.h>
