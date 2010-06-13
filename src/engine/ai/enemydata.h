@@ -240,7 +240,7 @@ typedef struct stSEData
 typedef struct stBabyData
 {
 	char state;
-	char dir;
+	direction_t dir;
 	signed int inertia_x, inertia_y;
 	int jumpdectimer, xdectimer;
 	int jumpdecrate;
@@ -288,7 +288,7 @@ typedef struct stNinjaData
 typedef struct stMotherData
 {
 	char state;
-	char dir;
+	direction_t dir;
 	char hittimes;
 	
 	int animframe, animtimer;

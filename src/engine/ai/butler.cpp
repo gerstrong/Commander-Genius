@@ -1,6 +1,5 @@
 #include "CObjectAI.h"
 #include "../../keen.h"
-#include "../../game.h"
 #include "../../sdl/sound/CSound.h"
 #include "../../graphics/CGfxEngine.h"
 #include "../../common/CBehaviorEngine.h"

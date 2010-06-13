@@ -1,6 +1,4 @@
 #include "../../sdl/sound/CSound.h"
-//#include "../../keen.h"
-//#include "../../game.h"
 #include "CObjectAI.h"
 
 // The red creatures that follow the wall (ep2)

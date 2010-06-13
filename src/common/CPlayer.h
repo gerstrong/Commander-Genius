@@ -29,10 +29,6 @@ class CPlayer : public CObject {
 public:
 
 	// direction defines used for various things
-	enum e_directions{
-		RIGHT,LEFT,	UP,	DOWN
-	};
-
 	enum e_playingmodes{
 		NONE, WORLDMAP, LEVELPLAY
 	};
@@ -140,7 +136,7 @@ public:
 	unsigned char pjustfell;
 	unsigned char pjumpfloattimer;
 
-	unsigned char pdir,pshowdir,lastpdir;
+	direction_t pdir,pshowdir,lastpdir;
 
 	char pfireframetimer;
 	bool inhibitwalking;

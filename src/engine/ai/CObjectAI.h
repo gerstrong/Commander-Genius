@@ -9,7 +9,6 @@
 #define COBJECTAI_H_
 
 #include "../../keen.h"
-#include "../../game.h"
 #include "../../common/CMap.h"
 #include "../../common/CTileProperties.h"
 #include "../../common/CObject.h"

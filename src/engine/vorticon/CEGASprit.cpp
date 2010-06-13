@@ -12,7 +12,6 @@
 #include "CEGASprit.h"
 #include "../CPlanes.h"
 #include "../../keen.h"
-#include "../../game.h"
 #include "../../FindFile.h"
 #include "../../sdl/CVideoDriver.h"
 #include "../../engine/spritedefines.h"

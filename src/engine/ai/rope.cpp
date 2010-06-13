@@ -4,7 +4,6 @@
 #include "../../sdl/sound/CSound.h"
 #include "../../keen.h"
 #include "vort.h"
-#include "../../game.h"
 
 // The rope holding the stone which kills the final Vorticon (ep1)
 

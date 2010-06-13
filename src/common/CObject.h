@@ -18,11 +18,17 @@
 // for it's index.
 #define PSUPPORTEDBYOBJECT         0
 
+enum direction_t{
+	RIGHT,
+	LEFT,
+	UP,
+	DOWN
+};
+
 // structures for each AI module's data
 #include "../engine/ai/enemydata.h"
 #include "../common/CMap.h"
 #include "../graphics/CGfxEngine.h"
-#include "../game.h"
 #include "options.h"
 #include <vector>
 
@@ -118,7 +124,7 @@ public:
 	void checkinitialCollisions();
 	void setScrPos( int px, int py );
 	bool calcVisibility( int player_x, int player_y );
-	bool spawn(int x0, int y0, int otype, int Episode, char dirof = RIGHT );
+	bool spawn(int x0, int y0, int otype, int Episode, direction_t dirof = RIGHT );
 	void setIndex(int index);
 	
 	// Moving parts

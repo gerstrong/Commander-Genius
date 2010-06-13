@@ -8,7 +8,6 @@
 #include "CMapLoader.h"
 #include "../keen.h"
 #include "../engine/ai/se.h"
-#include "../game.h"
 #include <iostream>
 #include <fstream>
 #include "../FindFile.h"

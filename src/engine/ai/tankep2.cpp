@@ -1,5 +1,4 @@
 #include "../../sdl/sound/CSound.h"
-#include "../../game.h"
 #include "../spritedefines.h"
 
 #include "CObjectAI.h"

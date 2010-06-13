@@ -90,7 +90,10 @@ void CObjectAI::mother_ai( CObject& object, bool hardmode )
 		{
 			if (object.onscreen)
 			{
-				object.ai.mother.dir ^= 1;		// turn around before spitting
+				if(object.ai.mother.dir == RIGHT)
+					object.ai.mother.dir = LEFT;
+				else
+					object.ai.mother.dir = RIGHT;
 
 				object.ai.mother.state = MOTHER_SPIT;
 				object.ai.mother.timer = 0;

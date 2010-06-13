@@ -2,7 +2,6 @@
 #include "../spritedefines.h"
 #include "../../sdl/sound/CSound.h"
 #include "../../keen.h"
-#include "../../game.h"
 
 // Comments by Tulip
 /*
