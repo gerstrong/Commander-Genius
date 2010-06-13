@@ -70,8 +70,6 @@ void CPlayGameVorticon::processInLevel()
 
 			if(!m_gameover) // Check if no player has lifes left and must go in game over mode.
 				goBacktoMap();
-			m_dark = false;
-			g_pGfxEngine->Palette.setdark(m_dark);
 		}
 	}
 }
