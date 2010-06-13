@@ -9,9 +9,6 @@
 #include <windows.h>
 #endif
 
-#include "engine/sounds.h"
-#include <string>
-
 #define CSF    9
 #define TILE_S			4
 #define STC (CSF-TILE_S)

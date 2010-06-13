@@ -12,6 +12,7 @@
 #include "../../../sdl/CVideoDriver.h"
 #include "../../../graphics/CGfxEngine.h"
 #include "../../../graphics/effects/CColorMerge.h"
+#include "../../../sdl/sound/CSound.h"
 
 void CPlayGameVorticon::processOnWorldMap()
 {

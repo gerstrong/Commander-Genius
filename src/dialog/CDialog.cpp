@@ -12,7 +12,6 @@
 #include "../sdl/CInput.h"
 #include "../sdl/CVideoDriver.h"
 #include "../sdl/sound/CSound.h"
-#include "../engine/sounds.h"
 #include "../graphics/CGfxEngine.h"
 #include "CDialog.h"
 

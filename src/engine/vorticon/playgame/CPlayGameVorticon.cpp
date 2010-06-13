@@ -91,6 +91,8 @@ void CPlayGameVorticon::setupPlayers()
 		it_player->w = sprite.getWidth()<<STC;
 		it_player->h = sprite.getHeight()<<STC;
 		it_player->m_level = m_Level;
+		m_dark = false;
+		g_pGfxEngine->Palette.setdark(m_dark);
 		
 		// Set the pointers to the map and object data
 		it_player->setMapData(&m_Map);

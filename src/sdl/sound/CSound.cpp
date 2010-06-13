@@ -11,7 +11,6 @@
 #include "../../fileio/ResourceMgmt.h"
 #include "../../CLogFile.h"
 #include "../../hqp/CMusic.h"
-#include "../../engine/sounds.h"
 #include "../../StringUtils.h"
 #include "../../FindFile.h"
 

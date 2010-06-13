@@ -9,7 +9,6 @@
 #include "../../../sdl/CVideoDriver.h"
 #include "../../../sdl/CTimer.h"
 #include "../../../sdl/sound/CSound.h"
-#include "../../sounds.h"
 #include "../../../graphics/CGfxEngine.h"
 
 CFinaleStaticScene::CFinaleStaticScene(const std::string &game_path, const std::string &scene_file):
