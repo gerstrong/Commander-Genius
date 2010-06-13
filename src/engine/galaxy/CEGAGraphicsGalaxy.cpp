@@ -240,6 +240,42 @@ void CEGAGraphicsGalaxy::extractPicture(SDL_Surface *sfc,
 }
 
 /**
+ * \brief 	This function extracts a tile from the galaxy graphics map, and converts it properly to a
+ * 			SDL Surface
+ */
+void CEGAGraphicsGalaxy::extractTile(SDL_Surface *sfc, std::vector<unsigned char> &data,
+		Uint16 size, Uint16 columns, size_t tile)
+{
+	if(!data.empty())
+	{
+		// Decode the image data
+		for(size_t p = 0; p < 4; p++)
+		{
+			// Decode the lines of the bitmap data
+			Uint8 *pointer = &(data[0]) + p * (size/8) * size;
+			for(size_t y = 0; y < size; y++)
+			{
+				Uint8 *pixel = (Uint8*)sfc->pixels +
+						size*(tile%columns) +
+						size*size*columns*(tile/columns) +
+						(size*columns*y);
+				for(size_t x = 0; x < (size/8); x++)
+				{
+					Uint8 bit,b;
+					for(b=0 ; b<8 ; b++)
+					{
+						bit = getBit(*pointer, 7-b);
+						*pixel |= (bit<<p);
+						pixel++;
+					}
+					pointer++;
+				}
+			}
+		}
+	}
+}
+
+/**
  * \brief	prepares to load the data. Does a bit of extraction
  * \return 	returns true, if loading was successful
  */
@@ -542,30 +578,7 @@ bool CEGAGraphicsGalaxy::readTilemaps()
 
 	for(size_t i = 0; i < EpisodeInfo[ep].Num16Tiles; i++)
 	{
-		if(!m_egagraph.at(EpisodeInfo[ep].Index16Tiles + i).data.empty())
-		{
-			/* Decode the image data */
-			for(size_t p = 0; p < 4; p++)
-			{
-				/* Decode the lines of the bitmap data */
-				Uint8 *pointer = &(m_egagraph.at(EpisodeInfo[ep].Index16Tiles + i).data[0]) + p * 2 * 16;
-				for(size_t y = 0; y < 16; y++)
-				{
-					Uint8 *pixel = (Uint8*)sfc->pixels + 16*(i%18) + 16*16*18*(i/18) + (16*18*y);
-					for(size_t x = 0; x < 2; x++)
-					{
-						Uint8 bit,b;
-						for(b=0 ; b<8 ; b++)
-						{
-							bit = getBit(*pointer, 7-b);
-							*pixel |= (bit<<p);
-							pixel++;
-						}
-						pointer++;
-					}
-				}
-			}
-		}
+		extractTile(sfc, m_egagraph.at(EpisodeInfo[ep].Index16Tiles + i).data, 16, 18, i);
 	}
 
 	SDL_UnlockSurface(sfc);

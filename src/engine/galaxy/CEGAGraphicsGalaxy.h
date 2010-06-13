@@ -31,6 +31,9 @@ public:
 	void extractPicture(SDL_Surface *sfc,
 			std::vector<unsigned char> &data, size_t Width, size_t Height,
 			bool masked=false);
+	void extractTile(SDL_Surface *sfc, std::vector<unsigned char> &data,
+			Uint16 size, Uint16 columns, size_t tile);
+
 	bool begin();
 	Uint8 getBit(unsigned char data, Uint8 leftshift);
 	bool readfonts();
