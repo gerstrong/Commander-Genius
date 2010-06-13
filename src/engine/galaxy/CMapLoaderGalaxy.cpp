@@ -195,7 +195,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 				// Start with the Background
 				Map.m_width = Width;
 				Map.m_height = Height;
-				Map.createEmptyForeground(Width*Height);
+				Map.createEmptyDataPlanes(Width*Height);
 
 				unpackPlaneData(MapFile, Map, 0, Plane_Offset[0], Plane_Length[0], magic_word);
 			}

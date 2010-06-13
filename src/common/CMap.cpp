@@ -43,10 +43,10 @@ void CMap::setScrollSurface( SDL_Surface *surface )
 
 
 /**
- * \brief	Create an empty data plane used for the foreground map data
+ * \brief	Create an empty data plane used for the map data
  * \param	blocksize	size in bytes of the datablock that has to be created
  */
-bool CMap::createEmptyForeground(size_t blocksize)
+bool CMap::createEmptyDataPlanes(size_t blocksize)
 {
 	if(!blocksize) return false;
 
@@ -54,26 +54,6 @@ bool CMap::createEmptyForeground(size_t blocksize)
 	{
 		m_Plane[c].createDataMap(blocksize, m_width, m_height);
 	}
-
-	/*if(mp_foreground_data)
-		SAFE_DELETE_ARRAY(mp_foreground_data);
-
-	mp_foreground_data = new word[blocksize];
-	return true;*/
-}
-
-/**
- * \brief	Create an empty data plane used for the background map data
- * \param	blocksize	size in bytes of the datablock that has to be created
- */
-bool CMap::createEmptyBackground(size_t blocksize)
-{
-	/*if(!blocksize) return false;
-
-	if(mp_background_data)
-		SAFE_DELETE_ARRAY(mp_background_data);
-
-	mp_background_data = new word[blocksize];*/
 	return true;
 }
 

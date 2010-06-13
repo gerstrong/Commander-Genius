@@ -10,7 +10,6 @@
 #endif
 
 #include "engine/sounds.h"
-#include "funcdefs.h"
 #include "fileio/CTileLoader.h"
 #include <string>
 

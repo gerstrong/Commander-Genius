@@ -13,7 +13,6 @@
 #include "../../fileio/TypeDefinitions.h"
 #include "../../CLogFile.h"
 #include "../CPlanes.h"
-#include "../../funcdefs.h"
 #include "../../keen.h"
 #include "../../FindFile.h"
 #include <SDL.h>

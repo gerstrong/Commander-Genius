@@ -18,7 +18,6 @@
 #include "../../engine/spritedefines.h"
 #include "../../fileio/lz.h"
 #include "../../fileio/ResourceMgmt.h"
-#include "../../funcdefs.h"
 #include <SDL.h>
 #include <stdio.h>
 #include <string.h>

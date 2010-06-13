@@ -36,8 +36,7 @@ public:
 	void setTileMap( CTilemap &Tilemap );
 	void setScrollSurface( SDL_Surface *surface );
 
-	bool createEmptyForeground(size_t blocksize);
-	bool createEmptyBackground(size_t blocksize);
+	bool createEmptyDataPlanes(size_t blocksize);
 
 	bool gotoPos( int x, int y );
 	void resetScrolls();

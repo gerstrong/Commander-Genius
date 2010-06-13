@@ -85,7 +85,7 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	size_t mapsize = ((mp_map->m_width+32)*(mp_map->m_height+32));
 
 	// Here goes the memory allocation function
-	mp_map->createEmptyForeground(mapsize);
+	mp_map->createEmptyDataPlanes(mapsize);
 	
 	planesize = planeitems.at(8);
 	planesize /= 2; // Size of two planes, but we only need one
