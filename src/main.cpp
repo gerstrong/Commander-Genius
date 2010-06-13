@@ -30,8 +30,6 @@
 #include "CGame.h"
 #include "FindFile.h"
 
-void banner(void);
-
 /**
  * \brief  This is the function where CG beings
  *
@@ -46,7 +44,9 @@ void banner(void);
  */
 int main(int argc, char *argv[])
 {
-	banner(); // Intro on the text-console.
+	InitSearchPaths();
+
+	g_pLogFile->CreateLogfile("CGLog.html");
 	
 	if(argc >= 1) {
 		binary_dir = argv[0];
@@ -61,10 +61,6 @@ int main(int argc, char *argv[])
 		binary_dir = ".";
 	}
 	binary_dir = GetAbsolutePath(binary_dir);
-	
-	InitSearchPaths();
-	
-	g_pLogFile->CreateLogfile("CGLog.html");
 	
 	CGame Game;
 	////////////////////////////

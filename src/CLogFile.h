@@ -8,10 +8,12 @@
 #ifndef CLOGFILE_H_
 #define CLOGFILE_H_
 
-#define REVISION        "Commander Genius Release v0.3.1.4"
 #include "CSingleton.h"
 #include <string>
+
 #define g_pLogFile	CLogFile::Get()
+
+const std::string REVISION = "Commander Genius Release v0.3.1.4";
 
 #define MAX_BUFFER 1024
 

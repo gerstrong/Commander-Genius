@@ -16,12 +16,6 @@
 
 CLogFile::CLogFile() {}
 
-CLogFile::~CLogFile() {
-	// Logfile End
-	textOut ("<br><br>End of logfile</font></body></html>");
-	fclose (m_Logfile);
-}
-
 void CLogFile::CreateLogfile(const char *LogName)
 {
 	// Open and empty the log file
@@ -49,6 +43,14 @@ void CLogFile::CreateLogfile(const char *LogName)
 #else
 	textOut("PLATFORM: UNKNOWN<br>");
 #endif
+
+	// Ads
+	textOut("<br>");
+    textOut("by The CloneKeenPlus Team 2009<br>");
+    textOut("<br>");
+    textOut("BY FANS, FOR FANS. ALL \"COMMANDER KEEN\" GRAPHICS,<br>");
+    textOut("SOUND, AND LEVEL FILES ARE THE PROPERTY OF ID SOFTWARE.<br>");
+    textOut("<br>");
 	
 	// Show my e-mail adress
 	textOut("<a href='mailto:gerstrong@gmail.com?subject=CG Logfile'>");
@@ -198,4 +200,10 @@ void CLogFile::FunctionResult (const char *Name,bool Result)
 		textOut("'red'>ERROR</FONT></TD><td bgcolor='#FFFFFF' ");
 		textOut("width='35%%'>-/-</TD></tr></table>");
 	}
+}
+
+CLogFile::~CLogFile() {
+	// Logfile End
+	textOut ("<br><br>End of logfile</font></body></html>");
+	fclose (m_Logfile);
 }
