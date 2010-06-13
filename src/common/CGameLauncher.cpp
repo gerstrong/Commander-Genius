@@ -111,7 +111,6 @@ bool CGameLauncher::scanExecutables(const std::string& path)
 {
     bool result = false;
     GameEntry newentry;
-    CExeFile* executable;
 	
     g_pLogFile->ftextOut("Search: %s<br>", path.c_str() );
 	

@@ -59,7 +59,7 @@ public:
 	int m_int;
 	int m_min;
 	int m_max;
-	int m_length;
+	size_t m_length;
 	char m_inputmode;
 	std::string m_name;
 	std::vector<CDlgObject*> m_dlgobject;

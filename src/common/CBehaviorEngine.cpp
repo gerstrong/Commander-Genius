@@ -17,10 +17,12 @@
 #include "CBehaviorEngine.h"
 
 CBehaviorEngine::CBehaviorEngine()
-{
-	// TODO Auto-generated constructor stub
+{}
 
-}
+void CBehaviorEngine::addMessage(const std::string &name,
+								const std::string &message)
+{	stringmap[name] = message;	}
+
 
 std::vector<CTileProperties> &CBehaviorEngine::getTileProperties()
 {	return m_TileProperties;	}
@@ -31,21 +33,17 @@ CPhysicsSettings &CBehaviorEngine::getPhysicsSettings()
 // returns a pointer to the string with name 'name'
 std::string CBehaviorEngine::getString(const std::string& name)
 {
-	for(int i=0;i<numStrings;i++)
-	{
-		if (name == strings[i].name)
-		{
-			// Returning is not enough anymore
-			// Convert the /h and /H into proper colours
-			// This is necessary since the new graphics engine
-			return strings[i].message;
-		}
-	}
+	std::string text;
+	std::map<std::string, std::string>::iterator it = stringmap.find(name);
 
-	return "UNKNOWN '" + name + "' STRING";
+	if( it != stringmap.end() )
+		text = it->second;
+	else
+		text = "UNKNOWN '" + name + "' STRING";
+
+	return text;
 }
 
 CBehaviorEngine::~CBehaviorEngine()
 {
-	// TODO Auto-generated destructor stub
 }
