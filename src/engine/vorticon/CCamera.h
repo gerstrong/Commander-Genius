@@ -17,7 +17,6 @@ public:
 	CCamera();
 	
 	void setScrollTriggers(int left, int up, int right, int down, int speed);
-	void init();
 	
 	int getScrollLeft() { return m_scrolltriggerleft ; }
 	int getScrollUp() { return m_scrolltriggerup ; }
@@ -28,7 +27,6 @@ public:
 	virtual ~CCamera();
 	
 private:
-	
 	// scroll triggers
 	int m_scrolltriggerright;
 	int m_scrolltriggerleft;
