@@ -1,10 +1,6 @@
 
 #include "misc.h"
-#include "CLogFile.h"
 #include <cstdlib>
-#include <stdio.h>
-
-
 
 unsigned int rnd(void)
 {

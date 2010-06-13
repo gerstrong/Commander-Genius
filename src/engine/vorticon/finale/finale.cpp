@@ -4,12 +4,9 @@
  the decompression algorithm.
  */
 
-#include "keen.h"
-#include "fileio.h"
-#include "fileio/ResourceMgmt.h"
-#include "graphics/CGfxEngine.h"
-#include "sdl/CVideoDriver.h"
-#include "FindFile.h"
+#include "../../../fileio.h"
+#include "../../../fileio/ResourceMgmt.h"
+#include "../../../FindFile.h"
 
 #include <fstream>
 
