@@ -7,9 +7,8 @@
  the first time you use sgrle_decompress().
  */
 
-#include "keen.h"
-#include "fileio.h"
-#include "CLogFile.h"
+#include "../../fileio.h"
+#include "../../CLogFile.h"
 
 #define SGRLE_RLEMARKER         0xFE
 #define SGRLE_MAXRUNLEN         0xFFF0
