@@ -12,6 +12,7 @@
 #include "CGame.h"
 #include "CLogFile.h"
 #include "engine/vorticon/CCamera.h"
+#include "sdl/CSettings.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/CInput.h"
 #include "sdl/CTimer.h"

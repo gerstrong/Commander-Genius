@@ -11,6 +11,7 @@
 #include "../../graphics/CGfxEngine.h"
 #include "../../sdl/CVideoDriver.h"
 #include "../../fileio/TypeDefinitions.h"
+#include "../../common/CBehaviorEngine.h"
 #include "../../CLogFile.h"
 #include "../CPlanes.h"
 #include "../../keen.h"

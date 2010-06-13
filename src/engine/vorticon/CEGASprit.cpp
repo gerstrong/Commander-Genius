@@ -17,6 +17,7 @@
 #include "../../engine/spritedefines.h"
 #include "../../fileio/lz.h"
 #include "../../fileio/ResourceMgmt.h"
+#include "../../common/CBehaviorEngine.h"
 #include <SDL.h>
 #include <stdio.h>
 #include <string.h>
@@ -221,13 +222,7 @@ char CEGASprit::LoadTGASprite( const std::string &filename, CSprite &sprite )
 	// Look in local location than in global, if tga was not found!
 	if (LoadTGA(filename, &image, &w, &h))
 		return 1;
-	
-	if (w > MAX_SPRITE_WIDTH || h > MAX_SPRITE_HEIGHT)
-	{
-		free(image);
-		return 1;
-	}
-	
+
 	base = image;
 	sprite.setSize(w, h);
 	sprite.createSurface( g_pVideoDriver->BlitSurface->flags, g_pGfxEngine->Palette.m_Palette );

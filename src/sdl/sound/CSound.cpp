@@ -19,8 +19,6 @@
 
 #define SAFE_DELETE_ARRAY(x) if(x) delete[] x; x=NULL
 
-#define BLITBUF_XSIZE  320 		// Used only for balance in stereo mode
-
 // define a callback function we can work with
 void CCallback(void *unused, Uint8 *stream, int len)
 {
@@ -229,7 +227,7 @@ void CSound::playStereofromCoord(int snd, char mode, unsigned int xcoordinate)
     {
     	int bal;
 
-    	bal = ((short)(xcoordinate) - (BLITBUF_XSIZE>>1));	// Faster calculation of balance transformation
+    	bal = ((short)(xcoordinate) - (320>>1));	// Faster calculation of balance transformation
 
     	if(bal < -127)
     		bal = -127;

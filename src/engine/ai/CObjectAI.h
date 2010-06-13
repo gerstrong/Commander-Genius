@@ -10,11 +10,10 @@
 
 #include "../../keen.h"
 #include "../../common/CMap.h"
-#include "../../common/CTileProperties.h"
 #include "../../common/CObject.h"
 #include "../../common/options.h"
 #include "../../common/CPlayer.h"
-#include "../../common/CPhysicsSettings.h"
+#include "../../common/CBehaviorEngine.h"
 #include "../../graphics/CGfxEngine.h"
 #include <vector>
 

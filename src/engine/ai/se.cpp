@@ -109,7 +109,7 @@ void CObjectAI::se_retract_plat(CObject &object, bool &PlatExtending)
 	if (object.needinit)
 	{
 		// figure out which direction the bridge is supposed to go
-		if(object.ai.se.platx-1 > MAX_OBJECTS)
+		if(object.ai.se.platx-1 > m_Objvect.size())
 			return;
 
 		if (mp_Map->at(object.ai.se.platx-1, object.ai.se.platy) != TILE_EXTENDING_PLATFORM)

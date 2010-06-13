@@ -10,57 +10,15 @@
 #endif
 
 #include "engine/sounds.h"
-#include "fileio/CTileLoader.h"
 #include <string>
 
 #define CSF    9
-#define TILE_W			16
-#define TILE_H			16
 #define TILE_S			4
 #define STC (CSF-TILE_S)
 
 #define WM_MAP_NUM      80
 
-#define MAX_SPRITE_WIDTH	80
-#define MAX_SPRITE_HEIGHT	62
-#define MAX_FONT     256
-#define MAX_BITMAPS  20
-
-
-#define MAX_OBJECTS    100
-
 #define MAX_LEVELS_VORTICON     20
-#define SCROLLBUF_XSIZE  512
-#define SCROLLBUF_YSIZE  512
-#define SCROLLBUF_MEMSIZE ((SCROLLBUF_XSIZE)*(SCROLLBUF_YSIZE+300))
-#define SCROLLBUF_NUMTILESX (SCROLLBUF_XSIZE / 16)
-#define SCROLLBUF_NUMTILESY (SCROLLBUF_YSIZE / 16)
-
-#define BLITBUF_XSIZE  320
-#define BLITBUF_YSIZE  200
-#define BLITBUF_MEMSIZE ((BLITBUF_XSIZE)*(BLITBUF_YSIZE+30))
-// for each entry in the animtileinuse array that is nonzero, that
-// location on the display is an animated tile which is currently registered
-// in animtiles[]. Used in map_draw_hstripe and map_draw_vstripe.
-// When drawing a new stripe over one that previously contained an animated
-// tile, this lets it know it needs to unregister the animated tile that
-// used to be there. the nonzero value corresponds to the associated entry
-// in animtiles[]. the x,y pixel position is the index in here * 16.
-#define ATILEINUSE_SIZEX               33
-#define ATILEINUSE_SIZEY               33
-
-struct stMap
-{
-	unsigned int xsize, ysize;            // size of the map
-	bool isworldmap;             // if 1, this is the world map
-	unsigned int mapdata[256][256];       // the map data
-	// in-game, contains monsters and special object tags like for switches
-	// on world map contains level numbers and flags for things like teleporters
-	unsigned int objectlayer[256][256];
-	bool firsttime;  // used when generating multiplayer positions on world map
-};
-
-struct SDL_Surface;
 
 // default sprites...when an object is spawned it's sprite is set to this
 // sprite. the object AI will immediately reset the sprite frame, so it
@@ -97,18 +55,7 @@ struct SDL_Surface;
 #define EC_DOWNLEFT         12
 #define EC_DOWNRIGHT        13
 
-
-#define TILE_LITTLE_DONE     77
-#define TILE_BIG_DONE1       78
-#define TILE_BIG_DONE2       79
-#define TILE_BIG_DONE3       80
-#define TILE_BIG_DONE4       81
-
-#define TILE_TELEPORTER_GREY_IDLE  99
-#define TILE_TELEPORTER_RED_INUSE  338
-
 // special level codes on worldmap
-#define LVLS_TELEPORTER_BONUS      46            // bonus teleporter in ep1
 #define LVLS_SHIP                  20
 
 #define TILE_SWITCH_UP             480
@@ -121,36 +68,6 @@ struct SDL_Surface;
 #define NESSIE_WEED            	8448
 #define NESSIE_LAND		       	8704
 
-// values for demomode global variable
-#define DEMO_NODEMO             0
-#define DEMO_RECORD             1
-#define DEMO_PLAYBACK           2
-
-#define DEMO_MAX_SIZE           2048
-
-#define DEMO_RESULT_COMPLETED    0
-#define DEMO_RESULT_CANCELED     1
-#define DEMO_RESULT_FILE_BAD     2
-
-// Runtime of CKP
-enum Shutdown_Mode{
-SHUTDOWN_NONE,
-SHUTDOWN_BOOTUP,
-SHUTDOWN_RESTART,
-SHUTDOWN_NEW_GAME,
-SHUTDOWN_EXIT
-};
-
-
-// Video Modes
-enum VideoRendering_Modes{
-VIDEO_MODE_SOFTWARE,
-VIDEO_MODE_HARDWARE,
-VIDEO_MODE_OPENGL,
-};
-
 #define MAX_PLAYERS            4
-
-#include "sdl/CSettings.h"
 
 #endif

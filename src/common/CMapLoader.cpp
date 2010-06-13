@@ -15,6 +15,7 @@
 #include "../fileio.h"
 #include "../fileio/ResourceMgmt.h"
 #include "../fileio/compression/CRLE.h"
+#include "../common/CBehaviorEngine.h"
 #include "../graphics/CGfxEngine.h"
 #include "../sdl/CVideoDriver.h"
 

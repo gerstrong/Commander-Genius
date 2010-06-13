@@ -91,7 +91,16 @@ struct OldSaveGameFormat
 
 	unsigned int max_scroll_x, max_scroll_y;
 
-	stMap map;
+	struct
+	{
+		unsigned int xsize, ysize;            // size of the map
+		bool isworldmap;             // if 1, this is the world map
+		unsigned int mapdata[256][256];       // the map data
+		// in-game, contains monsters and special object tags like for switches
+		// on world map contains level numbers and flags for things like teleporters
+		unsigned int objectlayer[256][256];
+		bool firsttime;  // used when generating multiplayer positions on world map
+	} map;
 
 	struct stPlayer
 	{

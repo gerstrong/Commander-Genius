@@ -6,6 +6,7 @@
  */
 
 #include "CGameControl.h"
+#include "fileio/CTileLoader.h"
 #include "fileio/CExeFile.h"
 #include "fileio/CPatcher.h"
 #include "fileio.h"
