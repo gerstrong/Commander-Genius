@@ -16,6 +16,8 @@ class CCamera : public CSingleton<CCamera>
 public:
 	CCamera();
 	
+	void setDefaults();
+
 	void setScrollTriggers(int left, int up, int right, int down, int speed);
 	
 	int getScrollLeft() { return m_scrolltriggerleft ; }
