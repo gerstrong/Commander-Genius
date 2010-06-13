@@ -19,12 +19,6 @@
 #define TILE_S			4
 #define STC (CSF-TILE_S)
 
-// when crashflag is activated by setting it to QUIT_NONFATAL,
-// the application will immediately shut down, however the
-// "a Fatal Error Occurred" message box will not pop up and
-// the sysbeep will not sound.
-#define QUIT_NONFATAL   555
-
 #define WM_MAP_NUM      80
 
 #define MAX_SPRITE_WIDTH	80
@@ -34,10 +28,6 @@
 
 
 #define MAX_OBJECTS    100
-
-#define NO_QUIT                 0
-#define QUIT_PROGRAM            1
-#define QUIT_TO_TITLE           2
 
 #define MAX_LEVELS_VORTICON     20
 #define SCROLLBUF_XSIZE  512
@@ -58,21 +48,6 @@
 // in animtiles[]. the x,y pixel position is the index in here * 16.
 #define ATILEINUSE_SIZEX               33
 #define ATILEINUSE_SIZEY               33
-
-#define WORLD_MAP              80
-#define FINAL_MAP              16
-
-// values returned by gameloop()
-
-#define LVLC_NOCOMMAND         0
-#define LVLC_CHANGE_LEVEL      1
-#define LVLC_END_SEQUENCE      2
-#define LVLC_GAME_OVER         3
-#define LVLC_TANTALUS_RAY      4       // switch on tantalus ray pressed
-#define LVLC_START_LEVEL       5
-
-#define WON_LEVEL				LVLC_CHANGE_LEVEL
-
 
 struct stMap
 {
@@ -135,12 +110,6 @@ struct SDL_Surface;
 // special level codes on worldmap
 #define LVLS_TELEPORTER_BONUS      46            // bonus teleporter in ep1
 #define LVLS_SHIP                  20
-
-enum teleporation_states{
-TELEPORTING_OUT,
-TELEPORTING_SCROLL,
-TELEPORTING_IN
-};
 
 #define TILE_SWITCH_UP             480
 #define TILE_SWITCH_DOWN           493

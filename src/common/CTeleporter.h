@@ -13,6 +13,13 @@
 #include "../common/CMap.h"
 #include <vector>
 
+enum teleporation_state{
+TELEPORTING_OUT,
+TELEPORTING_SCROLL,
+TELEPORTING_IN
+};
+
+
 typedef struct{
 	Uint8 objectnumber1; // Andy (Adurdin) calls that sprite, not all his number seems to be right
 	Uint8 objectnumber2; // Alternate number

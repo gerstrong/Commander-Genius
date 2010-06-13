@@ -1,5 +1,6 @@
 #include "CObjectAI.h"
 #include "../../sdl/sound/CSound.h"
+#include "../../common/CTeleporter.h"
 
 // Teleporter on world map
 // (animates the teleporter and moves the player)
