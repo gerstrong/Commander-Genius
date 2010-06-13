@@ -10,7 +10,6 @@
 #include "CTimer.h"
 
 #include "../keen.h"
-#include "video/colourtable.h"
 #include "../graphics/CGfxEngine.h"
 #include "../scale2x/scalebit.h"
 #include "../CLogFile.h"

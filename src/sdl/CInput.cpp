@@ -176,7 +176,6 @@ void CInput::loadControlconfig(void)
 	Parser.loadParseFile();
 
 	std::string section;
-	std::string entry;
 	for(size_t i=0 ; i<NUM_INPUTS ; i++)
 	{
 		// setup input from proper string

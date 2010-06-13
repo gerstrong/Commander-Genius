@@ -8,9 +8,6 @@
 #ifndef COLOURCONVERT_H_
 #define COLOURCONVERT_H_
 
-Uint32 convert4to32BPPcolor(Uint8 c, SDL_Surface *BlitSurface);
-Uint16 convert4to16BPPcolor(Uint8 c, SDL_Surface *BlitSurface);
-
 void fadetoColour(Uint32 &m_colour, Uint32 dest_colour, Uint8 speed);
 
 #endif /* COLOURCONVERT_H_ */
