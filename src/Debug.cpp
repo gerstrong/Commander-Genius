@@ -562,7 +562,7 @@ static bool logger_output(Logger& log, const std::string& buf) {
 	}
 	if(Logger_Verbosity >= log.minCallstackVerb) {
 		DumpCallstackPrintf();
-		// TODO: Check wether that call with NULL is correct
+		// TODO: Check whether that call with NULL is correct
 	}
 	return ret;
 }

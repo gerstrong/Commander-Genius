@@ -208,9 +208,7 @@ void CPatcher::patchMemfromFile(const std::string& patch_file_name, long offset)
 	
 	buf_to_patch = m_data + offset;
 	
-	// TODO: Add a routine which checks the sizes of the file.
 	long counter = 0;
-	
 	while(!Patchfile.eof())
 	{
 		byte = (unsigned char) Patchfile.get();

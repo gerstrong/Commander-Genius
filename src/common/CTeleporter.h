@@ -21,14 +21,13 @@ TELEPORTING_IN
 
 
 typedef struct{
-	Uint8 objectnumber1; // Andy (Adurdin) calls that sprite, not all his number seems to be right
+	Uint8 objectnumber1; // Andy (Adurdin) calls that sprite, not all his numbers seems to be right
 	Uint8 objectnumber2; // Alternate number
 	Uint16 x, y;
 }stTeleporterTable;
 
 class CTeleporter {
 public:
-	//CTeleporter(CMap &map, short episode);
 	CTeleporter(std::vector<stTeleporterTable> &TeleportTable, short episode);
 	
 	Uint16 getWord(unsigned char *p_exedata);

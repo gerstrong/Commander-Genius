@@ -33,8 +33,6 @@ void CPlayGameVorticon::processPauseDialogs()
 		return;
 	}
 
-	// TODO: draw the F1 Screen here if opened
-	
 	bool all_status_screens_closed=true;
 	for( short i=0 ; i<m_NumPlayers ; i++ )
 	{
