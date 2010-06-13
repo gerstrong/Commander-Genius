@@ -30,9 +30,6 @@
 #include "CGame.h"
 #include "FindFile.h"
 
-stString strings[MAX_STRINGS+1];
-int numStrings = 0;
-
 void banner(void);
 
 /**

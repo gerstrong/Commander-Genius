@@ -153,12 +153,12 @@ bool CPlayGameVorticon::init()
 	// In the case that we are in Episode 3 last Level, show Mortimer Messages
 	if( m_Episode == 3 && m_Level == 16 )
 	{
-		m_MessageBoxes.push_back(new CMessageBox(getstring("EP3_MORTIMER"),false, true));
-		m_MessageBoxes.push_back(new CMessageBox(getstring("EP3_MORTIMER2"),false, true));
-		m_MessageBoxes.push_back(new CMessageBox(getstring("EP3_MORTIMER3"),false, true));
-		m_MessageBoxes.push_back(new CMessageBox(getstring("EP3_MORTIMER4"),false, true));
-		m_MessageBoxes.push_back(new CMessageBox(getstring("EP3_MORTIMER5"),false, true));
-		m_MessageBoxes.push_back(new CMessageBox(getstring("EP3_MORTIMER6"),false, true));
+		m_MessageBoxes.push_back(new CMessageBox(g_pBehaviorEngine->getString("EP3_MORTIMER"),false, true));
+		m_MessageBoxes.push_back(new CMessageBox(g_pBehaviorEngine->getString("EP3_MORTIMER2"),false, true));
+		m_MessageBoxes.push_back(new CMessageBox(g_pBehaviorEngine->getString("EP3_MORTIMER3"),false, true));
+		m_MessageBoxes.push_back(new CMessageBox(g_pBehaviorEngine->getString("EP3_MORTIMER4"),false, true));
+		m_MessageBoxes.push_back(new CMessageBox(g_pBehaviorEngine->getString("EP3_MORTIMER5"),false, true));
+		m_MessageBoxes.push_back(new CMessageBox(g_pBehaviorEngine->getString("EP3_MORTIMER6"),false, true));
 		g_pSound->playSound(SOUND_MORTIMER, PLAY_FORCE);
 	}
 

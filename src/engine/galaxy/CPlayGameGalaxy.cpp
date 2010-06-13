@@ -58,13 +58,8 @@ void CPlayGameGalaxy::process()
 		{
 			g_pGfxEngine->getTileMap(0).drawTile(g_pVideoDriver->getBlitSurface(),
 				16*x, 16*y, m_Map.at((x+2),(y+2),0) );
-			//printf("%d ", m_Map.at(x,y,0));
-			//g_pGfxEngine->getTileMap(0).drawTile(g_pVideoDriver->getBlitSurface(),
-				//16*x, 16*y, 10 );
 		}
-		printf("\n");
 	}
-	printf("\n");
 }
 
 void CPlayGameGalaxy::cleanup()

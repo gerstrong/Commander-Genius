@@ -15,6 +15,7 @@
 #include "../sdl/CVideoDriver.h"
 #include "../StringUtils.h"
 #include "../common/Playerdefines.h"
+#include "../common/CBehaviorEngine.h"
 #include "../graphics/effects/CColorMerge.h"
 
 #define FADE_SPEED	10
@@ -78,7 +79,7 @@ void CStatusScreen::drawInventoryEp1()
 	dlgH = 15;
 	
 	g_pGfxEngine->drawDialogBox( p_surface, dlgX,dlgY,dlgW,dlgH, SDL_MapRGB(p_surface->format, 172, 172, 172));
-	Font.drawFont( p_surface, getstring("EP1_StatusBox"), (dlgX+1)<<3, (dlgY+1)<<3, true);
+	Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP1_StatusBox"), (dlgX+1)<<3, (dlgY+1)<<3, true);
 	
 	// Now draw some white rects. Those are the holders for items, numbers, etc.
 	SDL_Rect rect;
@@ -198,7 +199,7 @@ void CStatusScreen::drawInventoryEp2()
 	dlgW = 29;
 	dlgH = 14;
 
-	tempbuf = getstring("EP2_StatusBox");
+	tempbuf = g_pBehaviorEngine->getString("EP2_StatusBox");
 	g_pGfxEngine->drawDialogBox( p_surface, dlgX,dlgY,dlgW,dlgH, SDL_MapRGB(p_surface->format, 172, 172, 172));
 	Font.drawFont( p_surface, tempbuf, (dlgX+1)<<3, (dlgY+1)<<3, true);
 
@@ -285,14 +286,14 @@ void CStatusScreen::drawInventoryEp2()
 	}
 
 	// cities saved
-	if (mp_level_completed[4]) Font.drawFont( p_surface, getstring("EP2_LVL4_TargetName"), (dlgX+1)<<3, (dlgY+8)<<3);
-	if (mp_level_completed[6]) Font.drawFont( p_surface, getstring("EP2_LVL6_TargetName"), (dlgX+8)<<3, (dlgY+8)<<3);
-	if (mp_level_completed[7]) Font.drawFont( p_surface, getstring("EP2_LVL7_TargetName"), (dlgX+1)<<3, (dlgY+9)<<3);
-	if (mp_level_completed[13]) Font.drawFont( p_surface, getstring("EP2_LVL13_TargetName"), (dlgX+8)<<3, (dlgY+9)<<3);
-	if (mp_level_completed[11]) Font.drawFont( p_surface, getstring("EP2_LVL11_TargetName"), (dlgX+1)<<3, (dlgY+10)<<3);
-	if (mp_level_completed[9]) Font.drawFont( p_surface, getstring("EP2_LVL9_TargetName"), (dlgX+8)<<3, (dlgY+10)<<3);
-	if (mp_level_completed[15]) Font.drawFont( p_surface, getstring("EP2_LVL15_TargetName"), (dlgX+1)<<3, (dlgY+11)<<3);
-	if (mp_level_completed[16]) Font.drawFont( p_surface, getstring("EP2_LVL16_TargetName"), (dlgX+8)<<3, (dlgY+11)<<3);
+	if (mp_level_completed[4]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL4_TargetName"), (dlgX+1)<<3, (dlgY+8)<<3);
+	if (mp_level_completed[6]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL6_TargetName"), (dlgX+8)<<3, (dlgY+8)<<3);
+	if (mp_level_completed[7]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL7_TargetName"), (dlgX+1)<<3, (dlgY+9)<<3);
+	if (mp_level_completed[13]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL13_TargetName"), (dlgX+8)<<3, (dlgY+9)<<3);
+	if (mp_level_completed[11]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL11_TargetName"), (dlgX+1)<<3, (dlgY+10)<<3);
+	if (mp_level_completed[9]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL9_TargetName"), (dlgX+8)<<3, (dlgY+10)<<3);
+	if (mp_level_completed[15]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL15_TargetName"), (dlgX+1)<<3, (dlgY+11)<<3);
+	if (mp_level_completed[16]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL16_TargetName"), (dlgX+8)<<3, (dlgY+11)<<3);
 }
 
 void CStatusScreen::drawInventoryEp3()
@@ -310,7 +311,7 @@ void CStatusScreen::drawInventoryEp3()
 	dlgW = 29;
 	dlgH = 13;
 
-	tempbuf = getstring("EP3_StatusBox");
+	tempbuf = g_pBehaviorEngine->getString("EP3_StatusBox");
 	g_pGfxEngine->drawDialogBox( p_surface, dlgX,dlgY,dlgW,dlgH, SDL_MapRGB(p_surface->format, 172, 172, 172));
 	Font.drawFont( p_surface, tempbuf, (dlgX+1)<<3, (dlgY+1)<<3, true);
 

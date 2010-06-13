@@ -88,20 +88,6 @@ struct stMap
 
 struct SDL_Surface;
 
-#define MAX_STRINGS             100
-#define MAX_ATTRIBUTES          16
-struct stString
-{
-	std::string name;    // pointer to malloc'd area containing string name
-	std::string stringptr;    // pointer to malloc'd area containing string
-	
-	int numAttributes;
-	unsigned char *attrnames[MAX_ATTRIBUTES+1];
-	unsigned int attrvalues[MAX_ATTRIBUTES+1];
-};
-
-#include "externals.h"
-
 // default sprites...when an object is spawned it's sprite is set to this
 // sprite. the object AI will immediately reset the sprite frame, so it
 // wouldn't really matter what these are...except that it does because

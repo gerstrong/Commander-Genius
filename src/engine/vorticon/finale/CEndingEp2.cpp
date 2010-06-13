@@ -73,7 +73,7 @@ void CEndingEp2::HeadsForEarth()
 		m_Map.findTile(593, &x, &y);
 		m_Player[0].moveTo(x<<CSF, y<<CSF);
 
-		mp_Textbox = new CMessageBox(getstring("EP2_ESEQ_PART1"), true);
+		mp_Textbox = new CMessageBox(g_pBehaviorEngine->getString("EP2_ESEQ_PART1"), true);
 
 		m_mustsetup = false;
 	}
@@ -125,7 +125,7 @@ void CEndingEp2::LimpsHome()
 		m_Map.drawAll();
 		mp_ShipFlySys->m_ShipQueuePtr = 0;
 
-		mp_Textbox = new CMessageBox(getstring("EP2_ESEQ_PART2"), true);
+		mp_Textbox = new CMessageBox(g_pBehaviorEngine->getString("EP2_ESEQ_PART2"), true);
 
 		m_mustsetup = false;
 	}

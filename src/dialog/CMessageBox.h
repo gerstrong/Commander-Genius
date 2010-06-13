@@ -12,6 +12,7 @@
 #define CMESSAGEBOX_H_
 
 #include "../dialog/CDlgFrame.h"
+#include "../common/CBehaviorEngine.h"
 #include <string>
 #include <vector>
 

@@ -12,6 +12,7 @@
 #include "CMessages.h"
 #include "../StringUtils.h"
 #include "../CLogFile.h"
+#include "../common/CBehaviorEngine.h"
 
 CMessages::CMessages(unsigned char *p_exebuf, char episode, int version) :
 	mp_exe(p_exebuf)
@@ -148,18 +149,12 @@ bool CMessages::extractGlobalStrings()
 	// Still a bad idea, because it's global string.
 	if(!StringMap.empty())
 	{
-		std::map<std::string, std::string>::iterator i = StringMap.begin();
-		for(int c=0 ; c<MAX_STRINGS ; c++)
+		std::map<std::string, std::string>::iterator i;
+		for( i = StringMap.begin() ; i != StringMap.end() ; i++ )
 		{
-			strings[c].name = i->first;
-			strings[c].stringptr = i->second;
-
-			i++;
-			if( i == StringMap.end() )
-				break;
+			g_pBehaviorEngine->addMessage(i->first, i->second);
 		}
-		numStrings = StringMap.size();
-		g_pLogFile->ftextOut("Loaded %d strings from the exe-file.<br>", numStrings);
+		g_pLogFile->ftextOut("Loaded %d strings from the exe-file.<br>", StringMap.size());
 		return true;
 	}
 	return false;

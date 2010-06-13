@@ -76,20 +76,3 @@ void fputl(unsigned long word, FILE *fp)
 	fputc(b, fp);
 	fputc(a, fp);
 }
-
-// returns a pointer to the string with name 'name'
-std::string getstring(const std::string& name)
-{
-	for(int i=0;i<numStrings;i++)
-	{
-		if (name == strings[i].name)
-		{
-			// Returning is not enough anymore
-			// Convert the /h and /H into proper colours
-			// This is necessary since the new graphics engine
-			return strings[i].stringptr;
-		}
-	}
-	
-	return "UNKNOWN '" + name + "' STRING";
-}
