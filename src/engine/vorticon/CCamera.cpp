@@ -23,7 +23,6 @@ void CCamera::setDefaults()
 	m_scrollspeed = 20;
 }
 
-
 void CCamera::setScrollTriggers(int left, int up, int right, int down, int speed)
 {
 	bool invalid_value = (left<0) || (up<0) || (right<0) || (down<0) || (speed<0);
