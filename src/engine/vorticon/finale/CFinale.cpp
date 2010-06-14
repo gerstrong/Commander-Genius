@@ -50,8 +50,8 @@ void CFinale::initEpilogue(std::string &text)
         {
         	text.push_back(endfile.get());
         }
-
         endfile.close();
+        text.push_back('\0');
     }
     else
     {

@@ -90,7 +90,7 @@ void finale_draw( SDL_Surface *sfc, const std::string& filename, const std::stri
 	int i;
 	
 	std::ifstream file;
-	if (!OpenGameFileR(file, getResourceFilename(filename, path, true, true), std::ios::binary))
+	if (!OpenGameFileR(file, getResourceFilename(filename, path, true, false), std::ios::binary))
 		return;
 	
 	finale_plane_length = fgetl(file)*2;   //length of a plane when decompressed

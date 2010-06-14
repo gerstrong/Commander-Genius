@@ -7,6 +7,8 @@
 
 #include "../keen.h"
 
+#include <fstream>
+
 #include "../sdl/CInput.h"
 #include "CTextViewer.h"
 #include "../graphics/CGfxEngine.h"
@@ -102,14 +104,15 @@ void CTextViewer::loadText(const std::string &text)
 		if( totlen > (m_w/m_8x8tilewidth-2) && mp_text[i] != '_' ) // Or does the next fit into the line?
 		{
 			m_textline.push_back(buf);
-			buf.clear();
+			buf = "";
 		}
 	}
 	
 	// Afterworks: First, the last line has a delimiter of 26. That really sucks! The rest after that must be trimmed
 	//			   Second, we add two empty lines for a nice style when the text is scrolled.
 	// Append an empty line for a nice style, when scrolling
-	buf.erase(buf.size()-1);
+	if(buf.size()>=1)
+		buf.erase(buf.size()-1);
 	m_textline.push_back(buf);
 	m_textline.push_back("");
 	

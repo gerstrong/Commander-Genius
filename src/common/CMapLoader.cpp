@@ -42,7 +42,8 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	if(level < 10) levelname += "0";
 	levelname += itoa(level) + ".ck" + itoa(episode);
 	
-	std::ifstream MapFile; OpenGameFileR(MapFile, getResourceFilename(levelname,path,true,false), std::ios::binary);
+	std::ifstream MapFile;
+	bool fileopen = OpenGameFileR(MapFile, getResourceFilename(levelname,path,true,false), std::ios::binary);
 	
 	mp_map->resetScrolls();
 	mp_map->m_gamepath = path;
@@ -55,7 +56,7 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 		g_pMusicPlayer->LoadfromMusicTable(path, levelname);
 	}
 
-	if (!MapFile)
+	if (!fileopen)
 	{
 		// only record this error message on build platforms that log errors
 		// to a file and not to the screen.
@@ -72,7 +73,9 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	// load the compressed data into the memory
 	std::vector<Uint8>	compdata;
 	while( !MapFile.eof() )
-		compdata.push_back(MapFile.get());
+	{
+		compdata.push_back(static_cast<Uint8>(MapFile.get()));
+	}
 
 	MapFile.close();
 
