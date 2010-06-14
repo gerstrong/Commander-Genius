@@ -31,37 +31,32 @@ void CObjectAI::icechunk_ai(CObject &object)
 	// freeze the player if it touches him
 	if (object.touchPlayer)
 	{
-		if (!m_Player[object.touchPlayer].pfrozentime)
+		CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
+		// make him start sliding in the direction of the impact
+		if (object.ai.icechunk.vector_x > 0)
 		{
-			CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
-			// make him start sliding in the direction of the impact
-			if (object.ai.icechunk.vector_x > 0)
+			m_Player[object.touchedBy].pdir = m_Player[object.touchedBy].pshowdir = RIGHT;
+			m_Player[object.touchedBy].xinertia = Physics.player.max_x_speed;
+			m_Player[object.touchedBy].bump(Physics.player.max_x_speed/2, true);
+		}
+		else if (object.ai.icechunk.vector_x < 0)
+		{
+			m_Player[object.touchedBy].pdir = m_Player[object.touchedBy].pshowdir = LEFT;
+			m_Player[object.touchedBy].xinertia = -Physics.player.max_x_speed;
+			m_Player[object.touchedBy].bump(-Physics.player.max_x_speed/2, true);
+		}
+		else	// perfectly vertical ice cannons
+		{
+			const int UPDNCANNON_PUSHAMT = 16;
+			if (m_Player[object.touchedBy].xinertia < UPDNCANNON_PUSHAMT)
 			{
-				m_Player[object.touchedBy].pdir = m_Player[object.touchedBy].pshowdir = RIGHT;
-				m_Player[object.touchedBy].xinertia = Physics.player.max_x_speed;
-				m_Player[object.touchedBy].bump(Physics.player.max_x_speed/2, true);
-			}
-			else if (object.ai.icechunk.vector_x < 0)
-			{
-				m_Player[object.touchedBy].pdir = m_Player[object.touchedBy].pshowdir = LEFT;
-				m_Player[object.touchedBy].xinertia = -Physics.player.max_x_speed;
-				m_Player[object.touchedBy].bump(-Physics.player.max_x_speed/2, true);
-			}
-			else	// perfectly vertical ice cannons
-			{
-				const int UPDNCANNON_PUSHAMT = 16;
-				if (m_Player[object.touchedBy].xinertia < UPDNCANNON_PUSHAMT)
-				{
-					if (rnd()&1)
-						m_Player[object.touchedBy].xinertia = UPDNCANNON_PUSHAMT;
-					else
-						m_Player[object.touchedBy].xinertia = -UPDNCANNON_PUSHAMT;
-				}
+				if (rnd()&1)
+					m_Player[object.touchedBy].xinertia = UPDNCANNON_PUSHAMT;
+				else
+					m_Player[object.touchedBy].xinertia = -UPDNCANNON_PUSHAMT;
 			}
 		}
 
-		m_Player[object.touchedBy].pinertia_y = object.ai.icechunk.veloc_y;
-		m_Player[object.touchedBy].xinertia = object.ai.icechunk.veloc_x;
 		m_Player[object.touchedBy].freeze();
 		smash(object);
 		return;

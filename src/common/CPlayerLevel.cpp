@@ -35,7 +35,8 @@ void CPlayer::processInLevel(const bool &platextending)
 		if (level_done==LEVEL_DONE_WALK)
 			walkbehindexitdoor();
 		
-		ProcessInput();
+		if(!pfrozentime)
+			ProcessInput();
 		
 		setDir();
 		
@@ -47,14 +48,15 @@ void CPlayer::processInLevel(const bool &platextending)
 		
 		keencicle();
 		
-		if(!pjumping && !pfrozentime)
-		{
-			Walking();
-			WalkingAnimation();
-		}
-		
 		if(!pfrozentime)
+		{
+			if(!pjumping)
+			{
+				Walking();
+				WalkingAnimation();
+			}
 			playpushed();
+		}
 
 		checkSolidDoors();
 

@@ -447,6 +447,9 @@ void CPlayer::Walking()
 // animation for walking
 void CPlayer::WalkingAnimation()
 {
+	if(pfrozentime)
+		return;
+
     // no walk animation while sliding
     if (inhibitwalking || psliding ) return;
 	
@@ -584,7 +587,6 @@ void CPlayer::InertiaAndFriction_X()
 		else decreaseXInertia(1);
 	}
 
-
 	// apply xinertia and playpushed_x inertia
 	// (unless we're about to make a pogo jump)
 	if ( pjumping != PPREPAREPOGO && pjumping != PPREPAREJUMP)
@@ -678,8 +680,6 @@ void CPlayer::InertiaAndFriction_Y()
 
 void CPlayer::ProcessInput()
 {
-	if(pfrozentime)
-		return;
 	// Entry for every player
 	playcontrol[PA_X] = 0;
 	playcontrol[PA_Y] = 0;
@@ -792,6 +792,7 @@ void CPlayer::freeze()
 	pfrozenframe = 0;
 	pfrozenanimtimer = 0;
 	ppogostick = false;
+	playcontrol[PA_X] = 0;
 }
 
 bool CPlayer::checkObjSolid()
