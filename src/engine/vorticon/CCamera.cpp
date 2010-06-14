@@ -25,7 +25,22 @@ void CCamera::setDefaults()
 
 void CCamera::setScrollTriggers(int left, int up, int right, int down, int speed)
 {
-	bool invalid_value = (left<0) || (up<0) || (right<0) || (down<0) || (speed<0);
+	int i;
+	if(left>right)
+	{
+		i = left-right;
+		i = i/2;
+		left = left-i;
+		right = right+i;
+	}
+	if(up>down)
+	{
+		i = up-down;
+		i = i/2;
+		up = up-i;
+		down = down+i;
+	}
+	bool invalid_value = (left<50) || (up<50) || (right<50) || (down<50) || (speed<1) || (left>270) || (up>150) || (right>270) || (down>150) || (speed>50);
 	if(invalid_value)
 		setDefaults();
 	else
