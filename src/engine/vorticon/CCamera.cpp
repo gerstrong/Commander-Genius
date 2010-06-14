@@ -32,6 +32,8 @@ void CCamera::setScrollTriggers(int left, int up, int right, int down, int speed
 		i = i/2;
 		left = left-i;
 		right = right+i;
+		if(left>right)
+			left = left-1;
 	}
 	if(up>down)
 	{
@@ -39,6 +41,8 @@ void CCamera::setScrollTriggers(int left, int up, int right, int down, int speed
 		i = i/2;
 		up = up-i;
 		down = down+i;
+		if(up>down)
+			up = up-1;
 	}
 	bool invalid_value = (left<50) || (up<50) || (right<50) || (down<50) || (speed<1) || (left>270) || (up>150) || (right>270) || (down>150) || (speed>50);
 	if(invalid_value)
