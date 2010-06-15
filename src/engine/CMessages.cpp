@@ -30,12 +30,18 @@ CMessages::extractString( std::string matchingstring, unsigned long start, unsig
 
 	for(unsigned long pos=start+offset ; pos<end+offset ; pos++)
 	{
-		while(mp_exe[pos] != 0)
+		while(mp_exe[pos] == 0xA)
 		{
 			Text += mp_exe[pos];
-			if(pos<end+offset) pos++;
-			else break;
+			pos++;
+			if(mp_exe[pos] == 0x0)
+				pos++;
 		}
+
+		if(mp_exe[pos] == 0x0)
+			break;
+
+		Text += mp_exe[pos];
 	}
 
 	return make_pair(matchingstring, Text);

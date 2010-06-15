@@ -84,7 +84,7 @@ void CPatcher::patchMemory()
 
 					if(readIntValue(textline, number))
 					{
-						// In this case we have number
+						// In this case we have a number
 						m_data[offset] = number;
 						offset++;
 					}

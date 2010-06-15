@@ -23,14 +23,13 @@
 std::string CPatcher::readPatchItemsNextValue(std::list<std::string> &input)
 {
 	std::string line;
-	std::string output="";
+	std::string output = "";
 
 	line = input.front();
 
 	TrimSpaces(line);
 
-	// now it depends on if we have a text string or just a value
-
+	// now it depends on if we have a text string, an item or just a value
 	size_t pos=0;
 	if(strStartsWith(line,"\""))
 	{
@@ -39,18 +38,27 @@ std::string CPatcher::readPatchItemsNextValue(std::list<std::string> &input)
 	}
 	else
 	{
-		// It is a number!!
+		// Anything else than a string!!
 		pos = line.find(' ');
 	}
 
 	// Get the string with the element itself
-	output = line.substr(0,pos);
+	if(pos != std::string::npos)
+	{
+		output = line.substr(0,pos);
 
-	input.front().erase(0,pos);
-	TrimSpaces(input.front());
+		line = line.substr(pos);
+		TrimSpaces(line);
+		input.front() = line;
 
-	if(input.front().empty())
+		if(input.front().empty())
+			input.pop_front();
+	}
+	else
+	{
+		output = line;
 		input.pop_front();
+	}
 
 	return output;
 }
