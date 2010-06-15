@@ -1,16 +1,18 @@
 #include "CObjectAI.h"
 #include "../../sdl/sound/CSound.h"
 
+#include <vector>
+
 enum garg_states{
 	GARG_LOOK, GARG_MOVE, GARG_CHARGE,
 	GARG_JUMP, GARG_DYING, GARG_DEAD
 };
 
-#define GARG_MINTRAVELDIST          1000
+#define GARG_MINTRAVELDIST          100
 #define GARG_LOOK_PROB              100
-#define GARG_WALK_SPEED             12
+#define GARG_WALK_SPEED             20
 #define GARG_WALK_ANIM_TIME         5
-#define GARG_WALK_SPEED_FAST        20
+#define GARG_WALK_SPEED_FAST        30
 #define GARG_WALK_ANIM_TIME_FAST    3
 #define GARG_CHARGE_SPEED           73
 #define GARG_CHARGE_ANIM_TIME       7
@@ -34,9 +36,8 @@ enum garg_states{
 // Reference to ../misc.cpp
 unsigned int rnd(void);
 
-void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
+void CObjectAI::garg_ai(CObject &object, std::vector<CPlayer> &m_Player, bool hardmode)
 {
-	unsigned int i;
 	if (object.needinit)
 	{  // first time initialization
 		object.ai.garg.state = GARG_LOOK;
@@ -89,7 +90,7 @@ void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 			if (object.ai.garg.looktimes>GARG_NUM_LOOKS)
 			{
 				// try to head towards Keen...
-				if (p_player[object.ai.garg.detectedPlayerIndex].getXPosition() < object.getXPosition())
+				if (m_Player[object.ai.garg.detectedPlayerIndex].getXPosition() < object.getXPosition())
 					object.ai.garg.movedir = LEFT;
 				else
 					object.ai.garg.movedir = RIGHT;
@@ -129,19 +130,23 @@ void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 			} else object.ai.garg.timer--;
 			break;
 		case GARG_MOVE:
+		{
 			// is keen on same level?
 			object.ai.garg.detectedPlayer = 0;
-			for(i=0;i<1;i++) //TODO cycle through players
+
+			std::vector<CPlayer>::iterator it = m_Player.begin();
+			for( size_t i=0; it != m_Player.end() ; it++ )
 			{
-				if (p_player[i].getYPosition() >= object.getYPosition()-(2<<CSF))
+				if ( it->getYPosition() >= object.getYUpPos() )
 				{
-					if ((p_player[i].getYDownPos()) <= (object.getYDownPos()+(2<<CSF)))
+					if ( it->getYDownPos() <= object.getYDownPos() )
 					{
 						object.ai.garg.detectedPlayer = 1;
 						object.ai.garg.detectedPlayerIndex = i;
 						break;
 					}
 				}
+				i++;
 			}
 
 			if (object.ai.garg.detectedPlayer)
@@ -182,11 +187,7 @@ void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 					object.ai.garg.dist_traveled++;
 				}
 				else
-				{
-					object.ai.garg.looktimes = 0;
-					object.ai.garg.timer = 0;
-					object.ai.garg.state = GARG_LOOK;
-				}
+					object.ai.garg.movedir = RIGHT;
 			}
 			else
 			{  // garg is walking right
@@ -200,12 +201,21 @@ void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 					object.ai.garg.dist_traveled++;
 				}
 				else
-				{
-					object.ai.garg.looktimes = 0;
-					object.ai.garg.timer = 0;
-					object.ai.garg.state = GARG_LOOK;
-				}
+					object.ai.garg.movedir = LEFT;
 			}
+
+			/*if(object.blockedr || object.blockedl)
+			{
+				//object.ai.garg.looktimes = GARG_NUM_LOOKS+1;
+				//object.ai.garg.timer = 0;
+				//object.ai.garg.state = GARG_LOOK;
+				// try to head towards Keen...
+				if (m_Player[object.ai.garg.detectedPlayerIndex].getXPosition() < object.getXPosition())
+					object.ai.garg.movedir = LEFT;
+				else
+					object.ai.garg.movedir = RIGHT;
+
+			}*/
 
 			// walk animation
 			if (object.ai.garg.timer > GARG_WALK_ANIM_TIME ||
@@ -214,6 +224,7 @@ void CObjectAI::garg_ai(CObject &object, CPlayer *p_player, bool hardmode)
 				object.ai.garg.walkframe ^= 1;
 				object.ai.garg.timer = 0;
 			} else object.ai.garg.timer++;
+		}
 			break;
 		case GARG_JUMP:
 			if( object.ai.garg.jumptime > 0 )
