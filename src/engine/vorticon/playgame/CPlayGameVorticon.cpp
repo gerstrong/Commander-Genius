@@ -413,31 +413,21 @@ void CPlayGameVorticon::handleFKeys()
     	g_pInput->flushKeys();
     }
 
-    if (mp_option[OPT_CHEATS].value)
+    /*if (g_pInput->getHoldedKey(KTAB)) // noclip/revive
     {
-
-    	if (g_pInput->getHoldedKey(KTAB)) // noclip/revive
+    	for(i=0;i<m_NumPlayers;i++)
     	{
-    		for(i=0;i<m_NumPlayers;i++)
+    		// resurrect any dead players. the rest of the KTAB magic is
+    		// scattered throughout the various functions.
+    		if (m_Player[i].pdie)
     		{
-    			// resurrect any dead players. the rest of the KTAB magic is
-    			// scattered throughout the various functions.
-    			if (m_Player[i].pdie)
-    			{
-    				m_Player[i].pdie = PDIE_NODIE;
-    				m_Player[i].moveUp(8<<CSF);
-    			}
-
-    			m_Player[i].pfrozentime = 0;
+    			m_Player[i].pdie = PDIE_NODIE;
+    			m_Player[i].moveUp(8<<CSF);
     		}
-    	}
 
-    	// F9 - exit level immediately
-    	if(g_pInput->getPressedKey(KF9))
-    	{
-    		m_Player[0].level_done = LEVEL_COMPLETE;
+    		m_Player[i].pfrozentime = 0;
     	}
-    }
+    }*/
 
 	if(g_pInput->getPressedKey(KP) && m_MessageBoxes.empty())
 	{

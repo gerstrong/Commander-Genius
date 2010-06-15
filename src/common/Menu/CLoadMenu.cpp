@@ -12,7 +12,7 @@ CLoadMenu::CLoadMenu(Uint8 dlg_theme, CSavedGame &SavedGame) :
 CBaseMenu(dlg_theme),
 m_SavedGame(SavedGame)
 {
-	std::string text;
+	std::string text = "";
 	mp_Dialog = new CDialog(22, 22, INPUT_MODE_UP_DOWN, m_dlg_theme);
 
 	// Load the state-file list
@@ -20,7 +20,6 @@ m_SavedGame(SavedGame)
 
 	for(Uint32 i=1;i<=20;i++)
 	{
-		text = "";
 		if(i <= StateFileList.size())
 		{
 			text = StateFileList.at(i-1);
@@ -52,5 +51,5 @@ void CLoadMenu::processSpecific()
 
 CLoadMenu::~CLoadMenu()
 {
-	// TODO Auto-generated destructor stub
+	delete mp_Dialog;
 }

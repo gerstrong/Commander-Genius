@@ -12,7 +12,6 @@
 #include "CPlayer.h"
 
 #include "../keen.h"
-#include "../dialog/CMessageBox.h"
 #include "../sdl/sound/CSound.h"
 #include "../graphics/CGfxEngine.h"
 #include "../engine/spritedefines.h"
@@ -206,15 +205,16 @@ void CPlayer::riseBonus(int spr, int x, int y)
 // gives keycard for door doortile to player p
 void CPlayer::give_keycard(int doortile)
 {
+	size_t maxkeycards = (mp_option[OPT_KEYSTACK].value) ? 9 : 1;
 	g_pSound->playSound(SOUND_GET_CARD, PLAY_NOW);
-	
-	if (doortile==DOOR_YELLOW && inventory.HasCardYellow < 9)
+
+	if (doortile==DOOR_YELLOW && inventory.HasCardYellow < maxkeycards)
 		inventory.HasCardYellow++;
-	else if (doortile==DOOR_RED && inventory.HasCardRed < 9)
+	else if (doortile==DOOR_RED && inventory.HasCardRed < maxkeycards)
 		inventory.HasCardRed++;
-	else if (doortile==DOOR_GREEN && inventory.HasCardGreen < 9)
+	else if (doortile==DOOR_GREEN && inventory.HasCardGreen < maxkeycards)
 		inventory.HasCardGreen++;
-	else if (doortile==DOOR_BLUE && inventory.HasCardBlue < 9)
+	else if (doortile==DOOR_BLUE && inventory.HasCardBlue < maxkeycards)
 		inventory.HasCardBlue++;
 }
 

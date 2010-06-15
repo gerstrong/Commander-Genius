@@ -261,7 +261,7 @@ void CPlayer::setDir()
 // handle playpushed_x: for yorps/scrubs/etc pushing keen
 void CPlayer::playpushed()
 {
-    if (mp_option[OPT_CHEATS].value && g_pInput->getHoldedKey(KTAB)) return;
+    if ( g_pInput->getHoldedKey(KTAB) ) return;
 	
     // if we're being pushed...
     if (playpushed_x != 0)
@@ -421,7 +421,7 @@ void CPlayer::JumpAndPogo()
 					{
 						if (!mp_option[OPT_SUPERPOGO].value)
 						{  // normal high pogo jump
-							if(playcontrol[PA_JUMP] > 12)
+							if(playcontrol[PA_JUMP] > 12 || !mp_option[OPT_IMPPOGO].value)
 							{
 								if(!pogofirsttime)
 								{
@@ -663,12 +663,6 @@ CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
 
 	// ** if the player should be falling, well what are we waiting for?
 	//    make him fall! **
-	if (mp_option[OPT_CHEATS].value && g_pInput->getHoldedKey(KPLUS))
-	{
-		pfalling = true;
-		pjustfell = true;
-	}
-
 	if (pfalling)
 	{  // nothing solid under player, let's make him fall
 		psemisliding = 0;

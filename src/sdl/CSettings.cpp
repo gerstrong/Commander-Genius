@@ -157,7 +157,7 @@ bool CSettings::checkOptionPtr() {
  * 						of the applied option
  * \param	value		Value that has to be set.
  */
-void CSettings::setOption( int opt, const std::string &menuname, const std::string &name, char value)
+void CSettings::setOption( e_OptionKeyword opt, const std::string &menuname, const std::string &name, char value)
 {
 	if(!checkOptionPtr()) return;
 	mp_option[opt].menuname = menuname;
@@ -173,11 +173,12 @@ void CSettings::loadDefaultGameCfg()
 	setOption( OPT_FULLYAUTOMATIC,	"Machine Gun      ", "autogun", 0 );
 	setOption( OPT_SUPERPOGO,		"Super Pogo Stick ", "superpogo", 0 );
 	setOption( OPT_ALLOWPKING,		"Friendly Fire    ", "pking", 1 );
-	setOption( OPT_CHEATS,			"Extra Cheats     ", "allcheats", 0 );
+	setOption( OPT_KEYSTACK,		"Keystacking      ", "keystack", 0 );
 	setOption( OPT_ANALOGJOYSTICK,	"Analog Joystick  ", "analog-joystick", 1 );
 	setOption( OPT_LVLREPLAYABILITY,"Replay Levels    ", "level replayability", 0 );
 	setOption( OPT_RISEBONUS,		"Rising Bonus     ", "rise bonus", 1 );
 	setOption( OPT_SWITCHSCORES,	"Score Fix (EP3)  ", "switch scores", 0 );
+	setOption( OPT_IMPPOGO,			"Impossible Pogo  ", "impossible pogo", 0 );
 }
 
 /**

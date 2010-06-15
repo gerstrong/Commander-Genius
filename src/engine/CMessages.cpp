@@ -41,7 +41,7 @@ CMessages::extractString( std::string matchingstring, unsigned long start, unsig
 		if(mp_exe[pos] == 0x0)
 			break;
 
-		Text += mp_exe[pos];
+		Text += static_cast<char>(mp_exe[pos]);
 	}
 
 	return make_pair(matchingstring, Text);

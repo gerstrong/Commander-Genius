@@ -11,9 +11,11 @@
 #include "../graphics/CGfxEngine.h"
 #include "../StringUtils.h"
 
-CMessageBox::CMessageBox(const std::string& Text, bool lower, bool keymsg) :
+CMessageBox::CMessageBox(const std::string& Text, bool lower, bool keymsg, bool leftbound) :
 m_mustclose(false),
-m_keymsg(keymsg)
+m_keymsg(keymsg),
+m_twirltimer(0),
+m_twirlframe(0)
 {
 	// Split up the text in lines, so can calculate the textbox height
 	size_t width=0; // determined by checking if the text is getting wider
@@ -58,18 +60,18 @@ m_keymsg(keymsg)
 	int h = m_gamerect.h;
 	m_gamerect.x = m_gamerect.w/2;
 	m_gamerect.y = m_gamerect.h/2;
+
 	m_gamerect.h = (m_Lines.size()+2)*8;
 	m_gamerect.w = (width+2)*8;
+
 	m_gamerect.x -= m_gamerect.w/2;
 
 	if(!lower)
-	{
 		m_gamerect.y -= m_gamerect.h/2;
-	}
 	else
-	{
 		m_gamerect.y = h-m_gamerect.h;
-	}
+
+	if(leftbound) m_gamerect.x = 0;
 
 
 	m_gamerect.h /= 8;

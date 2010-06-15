@@ -318,12 +318,14 @@ bool CHighScores::saveHighScoreTable()
 	memset(c_extra, 0, 8*4*sizeof(char));
 	memset(c_cities, 0, 8*sizeof(char));
 
-	// Format the name to C++ Strings
+	// Format the C++ strings to C Strings
 	for(size_t i=0 ; i<8 ; i++)
 	{
-		memcpy(&c_name[i], m_Name[i].c_str(), 16);
-		memcpy(&c_score[i], m_Score[i].c_str(), 8);
-		memcpy(&c_extra[i], m_Extra[i], 4);
+		for(size_t c=0 ; c<16 && c<m_Name[i].size() ; c++)
+			c_name[i][c] = m_Name[i][c];
+		for(size_t c=0 ; c<8 && c<m_Score[i].size() ; c++)
+			c_score[i][c] = m_Score[i][c];
+		memcpy(c_extra[i], m_Extra[i], 4);
 		c_cities[i] = m_Cities[i];
 	}
 

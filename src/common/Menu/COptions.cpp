@@ -27,8 +27,6 @@ mp_option(p_option)
 		buf += (mp_option[i].value) ? 29 : 21;
 		buf += (mp_option[i].value) ? 30 : 22;
 		buf += (mp_option[i].value) ? 31 : 23;
-		/*buf += (mp_option[i].value) ? 26 : 24;
-		 buf += (mp_option[i].value) ? 27 : 25;*/
 		mp_Dialog->m_dlgobject.at(i)->m_Option->m_FontMapID = 1;
 		mp_Dialog->setObjectText(i, buf);
 	}

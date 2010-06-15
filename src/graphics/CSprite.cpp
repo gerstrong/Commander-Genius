@@ -208,8 +208,10 @@ void CSprite::drawSprite( SDL_Surface *dst, Uint16 x, Uint16 y )
 
 void CSprite::freeSurfaces()
 {
-	SAFE_DELETE(m_surface);
-	SAFE_DELETE(m_masksurface);
+	if(m_surface) SDL_FreeSurface(m_surface);
+	m_surface = NULL;
+	if(m_masksurface) SDL_FreeSurface(m_masksurface);
+	m_masksurface = NULL;
 }
 
 CSprite::~CSprite() {

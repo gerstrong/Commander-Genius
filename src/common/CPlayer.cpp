@@ -594,7 +594,7 @@ void CPlayer::InertiaAndFriction_X()
 		int dx=xinertia + playpushed_x;
 		// check first if the player is not blocked
 		if( (!blockedr and dx>0) or (!blockedl and dx<0) )
-			moveXDir(dx, (g_pInput->getHoldedKey(KTAB) && mp_option[OPT_CHEATS].value) );
+			moveXDir(dx);
 	}
 	
 	// if we stopped walking (i.e. left or right not held down) apply friction

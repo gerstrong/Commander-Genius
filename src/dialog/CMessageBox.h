@@ -26,7 +26,7 @@ struct TileHolder{
 class CMessageBox {
 public:
 	// Init functions
-	CMessageBox(const std::string& Text, bool lower = false, bool keymsg = false);
+	CMessageBox(const std::string& Text, bool lower = false, bool keymsg = false, bool leftbound = false);
 	void addTileAt(Uint16 tile, Uint16 x, Uint16 y);
 
 	// Processing
