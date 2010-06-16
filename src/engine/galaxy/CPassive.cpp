@@ -22,6 +22,7 @@ CPassiveGalaxy::CPassiveGalaxy(CExeFile &Exefile,
 		CSavedGame &SavedGame, stOption *p_Option) :
 CPassive(Exefile, SavedGame, p_Option),
 processMode(&CPassiveGalaxy::processIntro),
+m_BackgroundBitmap(g_pGfxEngine->getBitmap(BMP_TITLE)),
 mp_Menu(new CMenuGalaxy(PASSIVE, Exefile, SavedGame, p_Option, m_restartVideo))
 { }
 

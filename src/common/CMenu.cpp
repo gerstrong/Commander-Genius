@@ -202,5 +202,5 @@ void CMenu::cleanup()
 
 CMenu::~CMenu()
 {
-	// TODO Auto-generated destructor stub
+	cleanup();
 }

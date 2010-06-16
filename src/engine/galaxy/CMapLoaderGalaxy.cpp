@@ -159,9 +159,11 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 				  Name:           Byte[16]  Null-terminated string specifying the name of the level.  This name is used only by TED5, not by Keen.
 				  Signature:      Byte[4]   Marks the end of the Level Header.  Always "!ID!".
 				 */
-				size_t jumpback = 3*sizeof(longword) + 3*sizeof(word) +
+				int jumpback = 3*sizeof(longword) + 3*sizeof(word) +
 								  2*sizeof(word) + 16*sizeof(byte) + 4*sizeof(byte);
-				MapFile.seekg( -jumpback, std::ios::cur);
+
+				int headbegin = static_cast<int>(MapFile.tellg()) - jumpback;
+				MapFile.seekg( headbegin, std::ios_base::beg);
 
 				// Get the header of level data
 				longword Plane_Offset[3];
