@@ -22,7 +22,7 @@ public:
 	bool saveDrvCfg();
 	bool loadDrvCfg();
 	bool loadGameCfg();
-	void saveGameCfg();
+	bool saveGameCfg();
 	void loadDefaultGameCfg();
 	void setOption( e_OptionKeyword opt, const std::string &menuname, const std::string &name, char value);
 	virtual ~CSettings();

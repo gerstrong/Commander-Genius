@@ -9,7 +9,10 @@ v0.3.1.4:
 - faster loading maps algorithm and less memory used
 - more Galaxy Code!
 - Code cleanups!
+- Improved Patch-Code
+- Improved Garg AI
 - Teleporter fixes
+- New configuration file parser which makes loading and saving even faster!
 
 v0.3.1.3:
 ---------

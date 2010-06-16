@@ -13,7 +13,7 @@
 #include "../CLogFile.h"
 #include "../FindFile.h"
 #include "../StringUtils.h"
-#include "../fileio/CParser.h"
+#include "../fileio/CConfiguration.h"
 
 const std::string CONTROLSDATVERSION = "CG031";
 
@@ -172,27 +172,38 @@ bool CInput::startJoyDriver()
  */
 void CInput::loadControlconfig(void)
 {
-	CParser Parser;
-	Parser.loadParseFile();
+	CConfiguration Configuration(CONFIGFILENAME);
+	Configuration.Parse();
 
 	std::string section;
 	for(size_t i=0 ; i<NUM_INPUTS ; i++)
 	{
 		// setup input from proper string
 		section = "input" + itoa(i);
-		setupInputCommand( InputCommand[i], IC_LEFT, Parser.getValue("Left", section) );
-		setupInputCommand( InputCommand[i], IC_UP, Parser.getValue("Up", section) );
-		setupInputCommand( InputCommand[i], IC_RIGHT, Parser.getValue("Right", section) );
-		setupInputCommand( InputCommand[i], IC_DOWN, Parser.getValue("Down", section) );
-		setupInputCommand( InputCommand[i], IC_JUMP, Parser.getValue("Jump", section) );
-		setupInputCommand( InputCommand[i], IC_POGO, Parser.getValue("Pogo", section) );
-		setupInputCommand( InputCommand[i], IC_FIRE, Parser.getValue("Fire", section) );
-		setupInputCommand( InputCommand[i], IC_STATUS, Parser.getValue("Status", section) );
-		setupInputCommand( InputCommand[i], IC_HELP, Parser.getValue("Help", section) );
-		setupInputCommand( InputCommand[i], IC_QUIT, Parser.getValue("Quit", section) );
-		TwoButtonFiring[i] = Parser.getIntValue("TwoButtonFiring", section);
+
+		std::string value;
+		Configuration.ReadString( section, "Left", value, "Key 276 (left)");
+		setupInputCommand( InputCommand[i], IC_LEFT, value );
+		Configuration.ReadString( section, "Up", value, "Key 273 (up)");
+		setupInputCommand( InputCommand[i], IC_UP, value );
+		Configuration.ReadString( section, "Right", value, "Key 275 (right)");
+		setupInputCommand( InputCommand[i], IC_RIGHT, value );
+		Configuration.ReadString( section, "Down", value, "Key 274 (down)");
+		setupInputCommand( InputCommand[i], IC_DOWN, value );
+		Configuration.ReadString( section, "Jump", value, "Key 306 (left ctrl)");
+		setupInputCommand( InputCommand[i], IC_JUMP, value );
+		Configuration.ReadString( section, "Pogo", value, "Key 308 (left alt)");
+		setupInputCommand( InputCommand[i], IC_POGO, value );
+		Configuration.ReadString( section, "Fire", value, "Key 32 (space)");
+		setupInputCommand( InputCommand[i], IC_FIRE, value );
+		Configuration.ReadString( section, "Status", value, "Key 13 (return)");
+		setupInputCommand( InputCommand[i], IC_STATUS, value );
+		Configuration.ReadString( section, "Help", value, "Key 282 (f1)");
+		setupInputCommand( InputCommand[i], IC_HELP, value );
+		Configuration.ReadString( section, "Quit", value, "Key 27 (escape)");
+		setupInputCommand( InputCommand[i], IC_QUIT, value );
+		Configuration.ReadKeyword( section, "TwoButtonFiring", &TwoButtonFiring[i], true);
 	}
-	Parser.saveParseFile();
 }
 
 /**
@@ -201,26 +212,27 @@ void CInput::loadControlconfig(void)
  */
 void CInput::saveControlconfig()
 {
-	CParser Parser;
-	Parser.loadParseFile();
+	CConfiguration Configuration(CONFIGFILENAME);
+	Configuration.Parse();
 
 	std::string section;
 	for(size_t i=0 ; i<NUM_INPUTS ; i++)
 	{
 		section = "input" + itoa(i);
-		Parser.saveValue("Left", section,getEventName(IC_LEFT, i));
-		Parser.saveValue("Up", section,getEventName(IC_UP, i));
-		Parser.saveValue("Right", section,getEventName(IC_RIGHT, i));
-		Parser.saveValue("Down", section,getEventName(IC_DOWN, i));
-		Parser.saveValue("Jump", section,getEventName(IC_JUMP, i));
-		Parser.saveValue("Pogo", section,getEventName(IC_POGO, i));
-		Parser.saveValue("Fire", section,getEventName(IC_FIRE, i));
-		Parser.saveValue("Status", section,getEventName(IC_STATUS, i));
-		Parser.saveValue("Help", section,getEventName(IC_HELP, i));
-		Parser.saveValue("Quit", section,getEventName(IC_QUIT, i));
-		Parser.saveIntValue("TwoButtonFiring", section, TwoButtonFiring[i]);
+
+		Configuration.WriteString(section, "Left", getEventName(IC_LEFT, i));
+		Configuration.WriteString(section, "Up", getEventName(IC_UP, i));
+		Configuration.WriteString(section, "Right", getEventName(IC_RIGHT, i));
+		Configuration.WriteString(section, "Down", getEventName(IC_DOWN, i));
+		Configuration.WriteString(section, "Jump", getEventName(IC_JUMP, i));
+		Configuration.WriteString(section, "Pogo", getEventName(IC_POGO, i));
+		Configuration.WriteString(section, "Fire", getEventName(IC_FIRE, i));
+		Configuration.WriteString(section, "Status", getEventName(IC_STATUS, i));
+		Configuration.WriteString(section, "Help", getEventName(IC_HELP, i));
+		Configuration.WriteString(section, "Quit", getEventName(IC_QUIT, i));
+		Configuration.SetKeyword(section, "TwoButtonFiring", TwoButtonFiring[i]);
 	}
-	Parser.saveParseFile();
+	Configuration.saveCfgFile();
 }
 
 /**

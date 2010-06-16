@@ -7,7 +7,7 @@
 
 #include "../common/options.h"
 #include "../engine/vorticon/CCamera.h"
-#include "../fileio/CParser.h"
+#include "../fileio/CConfiguration.h"
 #include "../CLogFile.h"
 #include "../FindFile.h"
 #include "../ConfigHandler.h"
@@ -30,107 +30,122 @@ CSettings::CSettings(stOption *p_option) {
 
 /**
  * \brief	Write the whole configuration of the settings.
- * 			Note: See also CParser to understand better the concept of saving...
+ * 			Note: See also CConfiguration to understand better the concept of saving...
  *
  * \return	If the configuration has been saved successfully, it return true, else it's false.
  */
 bool CSettings::saveDrvCfg()
 {
-	CParser Parser;
-	Parser.loadParseFile();
+	CConfiguration Configuration(CONFIGFILENAME);
+	Configuration.Parse();
 	
-	{
-		int i = 1;
-		for(searchpathlist::const_iterator p = tSearchPaths.begin(); p != tSearchPaths.end(); p++, i++)
-			Parser.saveValue("SearchPath" + itoa(i), "FileHandling", *p);
-	}
+	int i = 1;
+	for(searchpathlist::const_iterator p = tSearchPaths.begin(); p != tSearchPaths.end(); p++, i++)
+		Configuration.WriteString("FileHandling", "SearchPath" + itoa(i), *p);
 	
-	Parser.saveIntValue("bpp","Video",g_pVideoDriver->getDepth());
+	Configuration.WriteInt("Video", "bpp",g_pVideoDriver->getDepth());
+	Configuration.SetKeyword("Video", "fullscreen", g_pVideoDriver->getFullscreen());
+	Configuration.SetKeyword("Video", "OpenGL", g_pVideoDriver->isOpenGL());
+
+	Configuration.WriteInt("Video", "width", g_pVideoDriver->getWidth());
+	Configuration.WriteInt("Video", "height", g_pVideoDriver->getHeight());
+	Configuration.WriteInt("Video", "scale", g_pVideoDriver->getZoomValue());
+	Configuration.WriteInt("Video", "OGLfilter", g_pVideoDriver->getOGLFilter());
+	Configuration.WriteInt("Video", "filter", g_pVideoDriver->getFiltermode());
+	Configuration.WriteInt("Video", "specialfx",g_pVideoDriver->getSpecialFXConfig());
+	Configuration.WriteInt("Video", "autoframeskip", g_pTimer->getFrameRate());
 	
-	if(g_pVideoDriver->getFullscreen())
-		Parser.saveIntValue("fullscreen","Video",1);
-	else
-		Parser.saveIntValue("fullscreen","Video",0);
+	Configuration.WriteInt("Bound", "left", g_pCamera->getScrollLeft());
+	Configuration.WriteInt("Bound", "right", g_pCamera->getScrollRight());
+	Configuration.WriteInt("Bound", "up", g_pCamera->getScrollUp());
+	Configuration.WriteInt("Bound", "down", g_pCamera->getScrollDown());
+	Configuration.WriteInt("Bound", "speed", g_pCamera->getScrollSpeed());
 	
-	if(g_pVideoDriver->isOpenGL())
-		Parser.saveIntValue("OpenGL","Video",1);
-	else
-		Parser.saveIntValue("OpenGL","Video",0);
+	Configuration.WriteInt("Audio", "channels", (g_pSound->getAudioSpec()).channels);
+	Configuration.WriteInt("Audio", "format", (g_pSound->getAudioSpec()).format);
+	Configuration.WriteInt("Audio", "rate", (g_pSound->getAudioSpec()).freq);
+	Configuration.WriteInt("Audio", "mixerch", (g_pSound->getMixingchannels()));
+	Configuration.WriteInt("Audio", "musicvol", (g_pSound->getMusicVolume()/8));
+	Configuration.WriteInt("Audio", "soundvol", (g_pSound->getSoundVolume()/8));
 	
-	Parser.saveIntValue("width","Video",g_pVideoDriver->getWidth());
-	Parser.saveIntValue("height","Video",g_pVideoDriver->getHeight());
-	Parser.saveIntValue("scale","Video",g_pVideoDriver->getZoomValue());
-	Parser.saveIntValue("OGLfilter","Video",g_pVideoDriver->getOGLFilter());
-	Parser.saveIntValue("filter","Video",g_pVideoDriver->getFiltermode());
-	Parser.saveIntValue("specialfx","Video",g_pVideoDriver->getSpecialFXConfig());
-	Parser.saveIntValue("autoframeskip","Video",g_pTimer->getFrameRate());
-	
-	Parser.saveIntValue("left","Bound",g_pCamera->getScrollLeft());
-	Parser.saveIntValue("right","Bound",g_pCamera->getScrollRight());
-	Parser.saveIntValue("up","Bound",g_pCamera->getScrollUp());
-	Parser.saveIntValue("down","Bound",g_pCamera->getScrollDown());
-	Parser.saveIntValue("speed","Bound",g_pCamera->getScrollSpeed());
-	
-	Parser.saveIntValue("channels","Audio",(g_pSound->getAudioSpec()).channels);
-	Parser.saveIntValue("format","Audio",(g_pSound->getAudioSpec()).format);
-	Parser.saveIntValue("rate","Audio",(g_pSound->getAudioSpec()).freq);
-	Parser.saveIntValue("mixerch","Audio",(g_pSound->getMixingchannels()));
-	Parser.saveIntValue("musicvol","Audio",(g_pSound->getMusicVolume()/8));
-	Parser.saveIntValue("soundvol","Audio",(g_pSound->getSoundVolume()/8));
-	
-	return Parser.saveParseFile();
+	return Configuration.saveCfgFile();
 }
 
 /**
- * \brief	It loads the whole configuration from the settings file. NOTE: Also take a look at CParser.
+ * \brief	It loads the whole configuration from the settings file.
+ * 			NOTE: Also take a look at CConfiguration.
  *
  * \return		true if successful, false if not.
  */
 bool CSettings::loadDrvCfg()
 {
-	CParser Parser;
+	CConfiguration Configuration(CONFIGFILENAME);
 	
-	if(!Parser.loadParseFile()) return false;
+	if(!Configuration.Parse()) return false;
 	else
 	{
-		int width, height, depth, boundl, boundr, boundu, boundd, sspeed;
+		int width, height, depth;
+		Configuration.ReadInteger("Video", "bpp", &depth, 32);
+		Configuration.ReadInteger("Video", "width", &width, 320);
+		Configuration.ReadInteger("Video", "height", &height, 200);
 		
-		depth  = Parser.getIntValue("bpp","Video");
-		width  = Parser.getIntValue("width","Video");
-		height = Parser.getIntValue("height","Video");
-		
-		boundl  = Parser.getIntValue("left","Bound");
-		boundr  = Parser.getIntValue("right","Bound");
-		boundu	= Parser.getIntValue("up","Bound");
-		boundd  = Parser.getIntValue("down","Bound");
-		sspeed  = Parser.getIntValue("speed","Bound");
-
 		if(depth*width*height <= 0)
 		{
 			g_pLogFile->ftextOut(RED,"Error reading the configuration file!<br>");
 			return false;
 		}
-		
-		g_pVideoDriver->setMode(width,height,depth);
-		g_pVideoDriver->setMode(width,height,depth);
-		g_pVideoDriver->isFullscreen(((Parser.getIntValue("fullscreen","Video")) == 1));
-		g_pVideoDriver->setOGLFilter(Parser.getIntValue("OGLfilter","Video"));
-		g_pVideoDriver->setZoom(Parser.getIntValue("scale","Video"));
-		g_pVideoDriver->setSpecialFXMode(Parser.getIntValue("specialfx","Video"));
+		else
+			g_pVideoDriver->setMode(width,height,depth);
 
-		g_pTimer->setFrameRate(DEFAULT_LPS, Parser.getIntValue("autoframeskip","Video"), DEFAULT_SYNC);
+		bool fullscreen;
+		Configuration.ReadKeyword("Video", "fullscreen", &fullscreen, false);
+		g_pVideoDriver->isFullscreen(fullscreen);
 		
+		bool glfilter;
+		Configuration.ReadKeyword("Video", "OGLfilter", &glfilter, false);
+		g_pVideoDriver->setOGLFilter(glfilter);
+
+		int scale;
+		Configuration.ReadInteger("Video", "scale", &scale, 2);
+		g_pVideoDriver->setZoom(scale);
+
+		bool special_fx;
+		Configuration.ReadKeyword("Video", "specialfx", &special_fx, true);
+		g_pVideoDriver->setSpecialFXMode(special_fx);
+
+		int framerate;
+		Configuration.ReadInteger("Video", "autoframeskip", &framerate, 60);
+		g_pTimer->setFrameRate(DEFAULT_LPS, framerate, DEFAULT_SYNC);
+
+		int boundl, boundr, boundu, boundd, sspeed;
+		Configuration.ReadInteger("Bound", "left", &boundl, 152);
+		Configuration.ReadInteger("Bound", "right", &boundr, 168);
+		Configuration.ReadInteger("Bound", "up", &boundu, 92);
+		Configuration.ReadInteger("Bound", "down", &boundd, 108);
+		Configuration.ReadInteger("Bound", "speed", &sspeed, 20);
+
 		g_pCamera->setScrollTriggers(boundl,boundu,boundr,boundd,sspeed);
 		
-		g_pVideoDriver->setFilter(Parser.getIntValue("filter","Video"));
+		int filter;
+		Configuration.ReadInteger("Video", "filter", &filter, 2);
+		g_pVideoDriver->setFilter(filter);
 		
-		g_pVideoDriver->enableOpenGL(Parser.getIntValue("OpenGL","Video") == 1);
-		
-		g_pSound->setSoundmode(Parser.getIntValue("rate","Audio"),
-							   Parser.getIntValue("channels","Audio") == 2, Parser.getIntValue("format","Audio"));
+		bool opengl;
+		Configuration.ReadKeyword("Video", "OpenGL", &opengl, false);
+		g_pVideoDriver->enableOpenGL(opengl);
 
-		g_pSound->setMusicVolume(Parser.getIntValue("musicvol","Audio")*8);
-		g_pSound->setSoundVolume(Parser.getIntValue("soundvol","Audio")*8);
+		int audio_rate, audio_channels, audio_format;
+		Configuration.ReadInteger("Audio", "rate", &audio_rate, 44000);
+		Configuration.ReadInteger("Audio", "channels", &audio_channels, 2);
+		Configuration.ReadInteger("Audio", "format", &audio_format, AUDIO_U8);
+		g_pSound->setSoundmode(audio_rate, audio_channels, audio_format);
+
+		int sound_vol, music_vol;
+		Configuration.ReadInteger("Audio", "musicvol", &music_vol, SDL_MIX_MAXVOLUME);
+		Configuration.ReadInteger("Audio", "soundvol", &sound_vol, SDL_MIX_MAXVOLUME);
+
+		g_pSound->setMusicVolume(music_vol*8);
+		g_pSound->setSoundVolume(sound_vol*8);
 	}
 	return true;
 }
@@ -189,20 +204,19 @@ void CSettings::loadDefaultGameCfg()
 bool CSettings::loadGameCfg()
 {
 	int i;
-	CParser Parser;
-	
+	CConfiguration Configuration(CONFIGFILENAME);
+
+	if(!Configuration.Parse()) return false;
+
 	if(!checkOptionPtr()) return false;
 
 	loadDefaultGameCfg();
 
-	if(!Parser.loadParseFile())
-		return false;
-
 	for (i = 0; i < NUM_OPTIONS; i++)
 	{
-		char newvalue = Parser.getIntValue(mp_option[i].name,"Game");
-		if(newvalue == 1 || newvalue == 0) // can only be true or false!!
-			mp_option[i].value = newvalue;
+		bool newvalue;
+		Configuration.ReadKeyword("Game", mp_option[i].name, &newvalue, false);
+		mp_option[i].value = (newvalue) ? 1 : 0;
 	}
 	
 	g_pLogFile->ftextOut("<br>Your personal settings were loaded successfully...<br>");
@@ -212,17 +226,19 @@ bool CSettings::loadGameCfg()
 /**
  * \brief  Saves the options in the settings
  */
-void CSettings::saveGameCfg()
+bool CSettings::saveGameCfg()
 {
-	CParser Parser;
-	Parser.loadParseFile();
+	CConfiguration Configuration(CONFIGFILENAME);
+
+	if(!Configuration.Parse()) return false;
 	
-	if(!checkOptionPtr()) return;
+	if(!checkOptionPtr()) return false;
 
 	for (int i = 0; i < NUM_OPTIONS; i++)
-		Parser.saveIntValue(mp_option[i].name,"Game",mp_option[i].value);
+		Configuration.SetKeyword("Game", mp_option[i].name, mp_option[i].value);
 	
-	Parser.saveParseFile();
+	Configuration.saveCfgFile();
+	return true;
 }
 
 CSettings::~CSettings() {}
