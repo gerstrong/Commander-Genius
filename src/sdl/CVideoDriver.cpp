@@ -265,7 +265,7 @@ void CVideoDriver::stop(void)
 #ifdef USE_OPENGL
 	if(mp_OpenGL) { delete mp_OpenGL; mp_OpenGL = NULL; }
 #endif
-	g_pLogFile->textOut(GREEN,"CVideoDriver Close%s<br>", SDL_GetError());
+	g_pLogFile->textOut(GREEN, "VideoDriver Stopped<br>\n");
 }
 
 
