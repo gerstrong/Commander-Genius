@@ -43,6 +43,9 @@ bool CBitmap::optimizeSurface()
 
 bool CBitmap::loadHQBitmap( const std::string& filename )
 {
+	if(!IsFileAvailable(filename))
+		return false;
+
 	if(m_BitmapSurface)
 	{
 		SDL_Surface *temp_surface = SDL_LoadBMP(GetFullFileName(filename).c_str());

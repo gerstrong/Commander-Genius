@@ -54,7 +54,7 @@ std::string getResourceFilename(const std::string& filename, const std::string& 
 		if(essential)
 		{
 			text += "missing!\n";
-			text += "The file " + vfs_path + " was not found. Please provide that file!\n";
+			text += "The file " + filename + " was not found. Please provide that file!\n";
 		}
 		else
 			text += "missing, but not needed!\n";

@@ -35,6 +35,9 @@ bool CTilemap::CreateSurface(SDL_Color *Palette, Uint32 Flags,
 
 bool CTilemap::loadHiresTile( const std::string& filename )
 {
+	if(!IsFileAvailable(filename))
+		return false;
+
 	if(m_Tilesurface)
 	{
 		SDL_Surface *temp_surface = SDL_LoadBMP(GetFullFileName(filename).c_str());

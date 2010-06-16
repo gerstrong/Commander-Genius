@@ -22,8 +22,11 @@ CMusic::CMusic() {
 	usedMusicFile = "";
 }
 
-int CMusic::load(const SDL_AudioSpec AudioSpec, const std::string &musicfile)
+bool CMusic::load(const SDL_AudioSpec AudioSpec, const std::string &musicfile)
 {
+	if(musicfile == "")
+		return false;
+
 	if(AudioSpec.format != 0)
 	{
 		
@@ -38,7 +41,8 @@ int CMusic::load(const SDL_AudioSpec AudioSpec, const std::string &musicfile)
 		pOggAudio.sound_pos=0;
 		
 		FILE *fp;
-		if((fp = OpenGameFile(musicfile.c_str(),"rb")) == NULL)
+		fp = OpenGameFile(musicfile.c_str(),"rb");
+		if(fp == NULL)
 		{
 			g_pLogFile->textOut(PURPLE,"Music Driver(): \"%s\". File cannot be read!<br>", musicfile.c_str());
 			return -1;
@@ -85,14 +89,14 @@ int CMusic::load(const SDL_AudioSpec AudioSpec, const std::string &musicfile)
 		// Structure Audio_cvt must be freed!
 		free(Audio_cvt.buf);
 		
-		return 0;
+		return true;
 		
 #endif
 	}
 	else
 		g_pLogFile->textOut(PURPLE,"Music Driver(): I would like to open the music for you. But your Soundcard is disabled!!<br>");
 	
-	return 0;
+	return false;
 }
 
 void CMusic::reload(const SDL_AudioSpec AudioSpec)
@@ -140,12 +144,15 @@ Uint8 *CMusic::passBuffer(int length) // length only refers to the part(buffer) 
 
 bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &levelfilename)
 {
+	bool fileloaded = false;
     std::ifstream Tablefile;
 
     std::string musicpath = getResourceFilename("music/table.cfg", gamepath, false, true);
-    OpenGameFileR(Tablefile, musicpath);
+
+    if(musicpath != "")
+    	fileloaded = OpenGameFileR(Tablefile, musicpath);
 	
-    if(Tablefile)
+    if(fileloaded)
     {
     	std::string str_buf;
     	char c_buf[256];
@@ -161,9 +168,9 @@ bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &
     			Tablefile.get(c_buf, 256);
     			str_buf = c_buf;
     			TrimSpaces(str_buf);
-    			load(g_pSound->getAudioSpec(),
-    					getResourceFilename("music/" + str_buf, gamepath, false, true));
-        		play();
+    			std::string filename = getResourceFilename("music/" + str_buf, gamepath, false, true);
+    			if( !load(g_pSound->getAudioSpec(), filename) )
+    				play();
     			Tablefile.close();
     			return true;
     		}

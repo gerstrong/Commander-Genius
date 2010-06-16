@@ -3,6 +3,7 @@ Commander Genius Release :
 
 v0.3.1.4:
 ---------
+- Faster Game loads!
 - Other segfault fixes!!
 - Improved Mod support (Especially for Keen X and Yorphius II)
 - Now HQ Sprites are supported!

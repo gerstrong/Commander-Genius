@@ -84,7 +84,6 @@ bool CEGASprit::loadHead(char *data)
 
 bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 {
-	std::string file;
 	byte *RawData;
     SDL_Surface *sfc;
     SDL_Surface *pixsfc;
@@ -189,8 +188,14 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	{
 		CSprite &Sprite = g_pGfxEngine->getSprite(s);
 		Sprite.optimizeSurface();
-		file = getResourceFilename("gfx/sprite" + itoa(s) + ".bmp", m_gamepath, false, true);
-		Sprite.loadHQSprite(file);
+
+		if(s < m_numsprites )
+		{
+			std::string filename;
+			filename = getResourceFilename("gfx/sprite" + itoa(s) + ".bmp", m_gamepath, false, true);
+			if(filename != "")
+				Sprite.loadHQSprite(filename);
+		}
 		Sprite.applyTransparency();
 	}
 	
