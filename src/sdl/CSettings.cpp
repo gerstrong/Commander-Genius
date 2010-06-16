@@ -189,11 +189,11 @@ void CSettings::loadDefaultGameCfg()
 	setOption( OPT_SUPERPOGO,		"Super Pogo Stick ", "superpogo", 0 );
 	setOption( OPT_ALLOWPKING,		"Friendly Fire    ", "pking", 1 );
 	setOption( OPT_KEYSTACK,		"Keystacking      ", "keystack", 0 );
-	setOption( OPT_ANALOGJOYSTICK,	"Analog Joystick  ", "analog-joystick", 1 );
-	setOption( OPT_LVLREPLAYABILITY,"Replay Levels    ", "level replayability", 0 );
-	setOption( OPT_RISEBONUS,		"Rising Bonus     ", "rise bonus", 1 );
-	setOption( OPT_SWITCHSCORES,	"Score Fix (EP3)  ", "switch scores", 0 );
-	setOption( OPT_IMPPOGO,			"Impossible Pogo  ", "impossible pogo", 0 );
+	setOption( OPT_ANALOGJOYSTICK,	"Analog Joystick  ", "analog_joystick", 1 );
+	setOption( OPT_LVLREPLAYABILITY,"Replay Levels    ", "level_replayability", 0 );
+	setOption( OPT_RISEBONUS,		"Rising Bonus     ", "rise_bonus", 1 );
+	setOption( OPT_SWITCHSCORES,	"Score Fix (EP3)  ", "switch_scores", 0 );
+	setOption( OPT_IMPPOGO,			"Impossible Pogo  ", "impossible_pogo", 0 );
 }
 
 /**
