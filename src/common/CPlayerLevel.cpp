@@ -508,7 +508,8 @@ void CPlayer::JumpAndPogo()
         			g_pSound->playStereofromCoord(SOUND_KEEN_BUMPHEAD, PLAY_NOW, scrx);
             		bumped = true;
         		}
-        		pjumpupspeed-=pjumpupspeed_decrease*4;
+        		//pjumpupspeed-=pjumpupspeed_decrease*4;
+        		pjumpupspeed = 0;
         	}
 
 			if (!pjumptime)

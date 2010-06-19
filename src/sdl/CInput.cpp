@@ -141,10 +141,7 @@ bool CInput::startJoyDriver()
 		joynum = SDL_NumJoysticks();
 		if(joynum)
 		{
-			if(joynum == 1)
-				g_pLogFile->ftextOut("1 joystick was found.<br>\n", joynum );
-			else
-				g_pLogFile->ftextOut("%i joysticks were found.<br>\n", joynum );
+			g_pLogFile->ftextOut("Detected %i joystick(s).<br>\n", joynum );
 			g_pLogFile->textOut("The names of the joysticks are:<br>");
 
 			for( i=0; i < SDL_NumJoysticks(); i++ )
@@ -272,23 +269,16 @@ std::string CInput::getEventName(int command, unsigned char input)
 
 void CInput::setupInputCommand( stInputCommand *pInput, int action, const std::string &string )
 {
-	std::string buf;
-	std::string buf2;
-	size_t pos;
-
-	buf = string;
+	std::string buf = string;
 
 	TrimSpaces(buf);
-
 	if(buf == "") return;
 
-	buf2 = buf.substr(0,3);
-
-	if(buf2 == "Joy")
+	if(strCaseStartsWith(string, "Joy"))
 	{
+		std::string buf2;
 		buf = buf.substr(3);
-
-		pos = buf.find('-');
+		size_t pos = buf.find('-');
 		buf2 = buf.substr(0, pos);
 		pInput[action].which = atoi(buf2);
 		buf = buf.substr(pos+1);
@@ -312,15 +302,12 @@ void CInput::setupInputCommand( stInputCommand *pInput, int action, const std::s
 		return;
 	}
 
-	buf2 = buf.substr(0,6);
-	if(buf2 == "Keysym")
+	if(strCaseStartsWith(string, "Key"))
 	{
 		pInput[action].joyeventtype = ETYPE_KEYBOARD;
-		buf = buf.substr(7);
+		buf = buf.substr(3);
 		TrimSpaces(buf);
-		pos = buf.find(' ');
-		buf2 = buf.substr(0,pos);
-		pInput[action].keysym = (SDLKey) atoi(buf2);
+		pInput[action].keysym = (SDLKey) atoi(buf);
 		return;
 	}
 }
