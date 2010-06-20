@@ -26,6 +26,8 @@
 		630F429310CB08D800F96495 /* CMessageBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 630F429110CB08D800F96495 /* CMessageBox.cpp */; };
 		631013F1119EF0C400549BC6 /* CMenuGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 631013EF119EF0C400549BC6 /* CMenuGalaxy.cpp */; };
 		631D7796112483BB00D903F6 /* CPassive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 631D7792112483BB00D903F6 /* CPassive.cpp */; };
+		6320D8BA11C94A26007C129F /* CConfiguration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6320D8B611C94A26007C129F /* CConfiguration.cpp */; };
+		6320D8BB11C94A26007C129F /* IniReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6320D8B811C94A26007C129F /* IniReader.cpp */; };
 		633DF72111738BF9008C56D4 /* CCursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 633DF71F11738BF9008C56D4 /* CCursor.cpp */; };
 		634A33DF10A233D50051193D /* CEndingEp1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 634A33D710A233D50051193D /* CEndingEp1.cpp */; };
 		634A33E010A233D50051193D /* CEndingEp2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 634A33D910A233D50051193D /* CEndingEp2.cpp */; };
@@ -104,7 +106,6 @@
 		636266A3109E580B00C18BAA /* COpenGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9E61013ABCA001643FA /* COpenGL.cpp */; };
 		636266A4109E580B00C18BAA /* CTextViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6350F77A1044784900A992D5 /* CTextViewer.cpp */; };
 		636266A5109E580B00C18BAA /* CPlayerLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 231FC34D1083642B00E7869E /* CPlayerLevel.cpp */; };
-		636266A6109E580B00C18BAA /* CParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9A21013ABCA001643FA /* CParser.cpp */; };
 		636266A7109E580B00C18BAA /* CTileLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3EC3E101696DF001643FA /* CTileLoader.cpp */; };
 		636266A8109E580B00C18BAA /* CTilemap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23526703104E756F0054F00B /* CTilemap.cpp */; };
 		636266A9109E580B00C18BAA /* CVideoDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9EC1013ABCA001643FA /* CVideoDriver.cpp */; };
@@ -502,8 +503,6 @@
 		23D3E99A1013ABCA001643FA /* CLogFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CLogFile.cpp; sourceTree = "<group>"; };
 		23D3E99B1013ABCA001643FA /* CLogFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLogFile.h; sourceTree = "<group>"; };
 		23D3E99C1013ABCA001643FA /* CSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSingleton.h; sourceTree = "<group>"; };
-		23D3E9A21013ABCA001643FA /* CParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CParser.cpp; sourceTree = "<group>"; };
-		23D3E9A31013ABCA001643FA /* CParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CParser.h; sourceTree = "<group>"; };
 		23D3E9A71013ABCA001643FA /* fileio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fileio.cpp; sourceTree = "<group>"; };
 		23D3E9A81013ABCA001643FA /* fileio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fileio.h; sourceTree = "<group>"; };
 		23D3E9B31013ABCA001643FA /* CMusic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMusic.cpp; sourceTree = "<group>"; };
@@ -615,6 +614,10 @@
 		63148DCF10E8091400C9E281 /* EGAStructs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGAStructs.h; sourceTree = "<group>"; };
 		631D7792112483BB00D903F6 /* CPassive.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPassive.cpp; sourceTree = "<group>"; };
 		631D7793112483BB00D903F6 /* CPassive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPassive.h; sourceTree = "<group>"; };
+		6320D8B611C94A26007C129F /* CConfiguration.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CConfiguration.cpp; sourceTree = "<group>"; };
+		6320D8B711C94A26007C129F /* CConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CConfiguration.h; sourceTree = "<group>"; };
+		6320D8B811C94A26007C129F /* IniReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IniReader.cpp; sourceTree = "<group>"; };
+		6320D8B911C94A26007C129F /* IniReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IniReader.h; sourceTree = "<group>"; };
 		633DF71F11738BF9008C56D4 /* CCursor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCursor.cpp; sourceTree = "<group>"; };
 		633DF72011738BF9008C56D4 /* CCursor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCursor.h; sourceTree = "<group>"; };
 		63453BD510798CCC007265F8 /* CGameControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGameControl.cpp; sourceTree = "<group>"; };
@@ -1097,11 +1100,13 @@
 		23D3E9A11013ABCA001643FA /* fileio */ = {
 			isa = PBXGroup;
 			children = (
+				6320D8B611C94A26007C129F /* CConfiguration.cpp */,
+				6320D8B711C94A26007C129F /* CConfiguration.h */,
+				6320D8B811C94A26007C129F /* IniReader.cpp */,
+				6320D8B911C94A26007C129F /* IniReader.h */,
 				23D3EC3A101696DF001643FA /* CExeFile.cpp */,
 				23D3EC3B101696DF001643FA /* CExeFile.h */,
 				639C9D9E11B4476B00D239D1 /* compression */,
-				23D3E9A21013ABCA001643FA /* CParser.cpp */,
-				23D3E9A31013ABCA001643FA /* CParser.h */,
 				23D3EC3C101696DF001643FA /* CPatcher.cpp */,
 				23D3EC3D101696DF001643FA /* CPatcher.h */,
 				63A8974611C081E3004794F6 /* CPatcherUtils.cpp */,
@@ -1676,7 +1681,6 @@
 				636266A3109E580B00C18BAA /* COpenGL.cpp in Sources */,
 				636266A4109E580B00C18BAA /* CTextViewer.cpp in Sources */,
 				636266A5109E580B00C18BAA /* CPlayerLevel.cpp in Sources */,
-				636266A6109E580B00C18BAA /* CParser.cpp in Sources */,
 				636266A7109E580B00C18BAA /* CTileLoader.cpp in Sources */,
 				636266A8109E580B00C18BAA /* CTilemap.cpp in Sources */,
 				636266A9109E580B00C18BAA /* CVideoDriver.cpp in Sources */,
@@ -1808,6 +1812,8 @@
 				6379804D11C5B28E009ADD51 /* finale.cpp in Sources */,
 				6379805B11C5B334009ADD51 /* lz.cpp in Sources */,
 				6379805D11C5B33D009ADD51 /* sgrle.cpp in Sources */,
+				6320D8BA11C94A26007C129F /* CConfiguration.cpp in Sources */,
+				6320D8BB11C94A26007C129F /* IniReader.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
