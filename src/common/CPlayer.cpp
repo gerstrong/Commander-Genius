@@ -492,20 +492,11 @@ void CPlayer::WalkingAnimation()
 					else if ( m_playingmode == WORLDMAP )
 					{
 						// Same on world map!
-						
-						short play=0;
-						
-						if (blockedu && pdir == UP)
-							play=1;
-						
-						if (blockedd && pdir == DOWN)
-							play=1;
-						
-						if (blockedl && pdir == LEFT)
-							play=1;
-						
-						if (blockedr && pdir == RIGHT)
-							play=1;
+						bool play=false;
+						play |= (blockedu && pdir == UP);
+						play |= (blockedd && pdir == DOWN);
+						play |= (blockedl && pdir == LEFT);
+						play |= (blockedr && pdir == RIGHT);
 						
 						if (play)
 							g_pSound->playStereofromCoord(SOUND_KEEN_BUMPHEAD, PLAY_NOW, scrx);
