@@ -32,9 +32,6 @@ void CPlayer::processInLevel(const bool &platextending)
 		
 		// when walking through the exit door don't show keen's sprite past
 		// the door frame (so it looks like he walks "through" the door)
-		if (level_done==LEVEL_DONE_WALK)
-			walkbehindexitdoor();
-		
 		if(!pfrozentime)
 		{
 			if (!level_done)
@@ -76,8 +73,10 @@ void CPlayer::processInLevel(const bool &platextending)
 	}
 }
 
-void CPlayer::touchedExit()
+void CPlayer::touchedExit(int mpx)
 {
+	exitXpos = (mpx+2)<<TILE_S;
+
 	if (!pjumping && !pfalling  &&
 		!ppogostick && level_done==LEVEL_NOT_DONE)
 	{

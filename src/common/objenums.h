@@ -8,8 +8,6 @@
 #ifndef OBJENUMS_H_
 #define OBJENUMS_H_
 
-#define NUM_OBJ_TYPES      41
-
 enum enumerated_Objects{
 	// ** objects from KEEN1
 	OBJ_YORP,

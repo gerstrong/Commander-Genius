@@ -727,6 +727,8 @@ void CPlayer::ProcessExitLevel()
 	inhibitfall = true;
 	if (level_done==LEVEL_DONE_WALK)
 	{
+		walkbehindexitdoor();
+
         // keep him going right
         pdir = pshowdir = RIGHT;
         // make keen walk slowly through the exit door

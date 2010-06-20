@@ -56,7 +56,7 @@ public:
 
 	// In Level specific
 	void processInLevel(const bool &platextending);
-	void touchedExit();
+	void touchedExit(int mpx);
 	void walkbehindexitdoor();
 	void kill(bool force=false);
 	void dieanim();

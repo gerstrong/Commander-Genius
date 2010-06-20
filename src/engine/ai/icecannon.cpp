@@ -159,7 +159,9 @@ void CObjectAI::icecannon_ai(CObject &object)
 	 if (m_gunfiretimer == 0)
 	 {
 		 CObject chunk(mp_Map);
-		 chunk.spawn( object.getXPosition()+512, object.getYPosition(), OBJ_ICECHUNK, m_Episode);
+		 int newpos_x = object.getXPosition()+(object.ai.icechunk.vector_x)*512;
+		 int newpos_y = object.getYPosition()+(object.ai.icechunk.vector_y)*512;
+		 chunk.spawn( newpos_x, newpos_y, OBJ_ICECHUNK, m_Episode);
 		 chunk.ai.icechunk.vector_x = object.ai.icechunk.vector_x;
 		 chunk.ai.icechunk.vector_y = object.ai.icechunk.vector_y;
 		 m_Objvect.push_back(chunk);

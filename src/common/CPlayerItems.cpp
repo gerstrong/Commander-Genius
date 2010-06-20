@@ -178,8 +178,8 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 			break;
 			
 		case 17:
-			exitXpos = (mpx+2)<<TILE_S;
-			touchedExit();
+			if(!pfrozentime)
+				touchedExit(mpx);
 			break;
 			
 		case 23:break;	// these are switches. They cannot not be picked up!
