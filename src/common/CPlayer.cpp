@@ -669,6 +669,9 @@ void CPlayer::InertiaAndFriction_Y()
     }
 }
 
+/**
+ * \brief Everything the player controls is processed here!
+ */
 void CPlayer::ProcessInput()
 {
 	// Entry for every player
@@ -685,63 +688,21 @@ void CPlayer::ProcessInput()
 	if(g_pInput->getHoldedCommand(m_index, IC_DOWN))
 		playcontrol[PA_Y] += 100;
 	
-	if(g_pInput->getHoldedCommand(m_index, IC_JUMP))
-		playcontrol[PA_JUMP]++;
-	else
-		playcontrol[PA_JUMP] = 0;
-	
-	playcontrol[PA_POGO]   = g_pInput->getHoldedCommand(m_index, IC_POGO)   ? 1 : 0;
+	if(!pfiring)
+	{
+		if(g_pInput->getHoldedCommand(m_index, IC_JUMP))
+			playcontrol[PA_JUMP]++;
+		else
+			playcontrol[PA_JUMP] = 0;
+
+		playcontrol[PA_POGO]   = g_pInput->getHoldedCommand(m_index, IC_POGO)   ? 1 : 0;
+	}
+
 	playcontrol[PA_FIRE]   = g_pInput->getHoldedCommand(m_index, IC_FIRE)   ? 1 : 0;
 	playcontrol[PA_STATUS] = g_pInput->getHoldedCommand(m_index, IC_STATUS) ? 1 : 0;
 	
 	// The possibility to charge jumps. This is mainly used for the pogo.
 	if( playcontrol[PA_JUMP] > 50) playcontrol[PA_JUMP] = 50;
-	
-	// are we doing the keen-walking-through-exit door animation?
-	if (level_done)
-	{	// don't let player control keen
-		memset(playcontrol,0,PA_MAX_ACTIONS);
-		
-		inhibitfall = true;
-		if (level_done==LEVEL_DONE_WALK)
-		{
-	        // keep him going right
-	        pdir = pshowdir = RIGHT;
-	        // make keen walk slowly through the exit door
-	        playcontrol[PA_X] = 80;
-	        if (xinertia > PMAXEXITDOORSPEED)
-	        {
-	        	xinertia = PMAXEXITDOORSPEED;
-	        }
-		}
-		else
-		{
-	        // he's all the way through the door; hold him still
-			xinertia = 0;
-	        pwalking = false;
-		}
-		
-		if (level_done_timer > LEVEL_DONE_TOTAL_WAIT_TIME)
-		{
-			// Now, that the level is complete, sprite can be shown again, and now goto map!
-			int width = w>>(CSF-4);
-			int frame = playerbaseframe;
-			if(m_episode == 3) frame++;
-
-			g_pGfxEngine->getSprite(frame+0).setWidth(width);
-			g_pGfxEngine->getSprite(frame+1).setWidth(width);
-			g_pGfxEngine->getSprite(frame+2).setWidth(width);
-			g_pGfxEngine->getSprite(frame+3).setWidth(width);
-
-			level_done_timer = 0;
-			level_done = LEVEL_COMPLETE;
-		}
-		else if (level_done_timer > LEVEL_DONE_STOPWALKING_TIME)
-			level_done = LEVEL_DONE_WAIT;
-		
-		level_done_timer++;
-		return;
-	}
 	
 	if(g_pInput->getTwoButtonFiring(m_index))
 	{
@@ -756,6 +717,51 @@ void CPlayer::ProcessInput()
 			playcontrol[PA_POGO] = 0;
 		}
 	}
+}
+
+/**
+ * \brief This function is processed while Keen is walking through the exit-door.
+ */
+void CPlayer::ProcessExitLevel()
+{
+	inhibitfall = true;
+	if (level_done==LEVEL_DONE_WALK)
+	{
+        // keep him going right
+        pdir = pshowdir = RIGHT;
+        // make keen walk slowly through the exit door
+        playcontrol[PA_X] = 80;
+        if (xinertia > PMAXEXITDOORSPEED)
+        {
+        	xinertia = PMAXEXITDOORSPEED;
+        }
+	}
+	else
+	{
+        // he's all the way through the door; hold him still
+		xinertia = 0;
+        pwalking = false;
+	}
+
+	if (level_done_timer > LEVEL_DONE_TOTAL_WAIT_TIME)
+	{
+		// Now, that the level is complete, sprite can be shown again, and now goto map!
+		int width = w>>(CSF-4);
+		int frame = playerbaseframe;
+		if(m_episode == 3) frame++;
+
+		g_pGfxEngine->getSprite(frame+0).setWidth(width);
+		g_pGfxEngine->getSprite(frame+1).setWidth(width);
+		g_pGfxEngine->getSprite(frame+2).setWidth(width);
+		g_pGfxEngine->getSprite(frame+3).setWidth(width);
+
+		level_done_timer = 0;
+		level_done = LEVEL_COMPLETE;
+	}
+	else if (level_done_timer > LEVEL_DONE_STOPWALKING_TIME)
+		level_done = LEVEL_DONE_WAIT;
+
+	level_done_timer++;
 }
 
 void CPlayer::StatusBox()

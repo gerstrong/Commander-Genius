@@ -36,7 +36,12 @@ void CPlayer::processInLevel(const bool &platextending)
 			walkbehindexitdoor();
 		
 		if(!pfrozentime)
-			ProcessInput();
+		{
+			if (!level_done)
+				ProcessInput();
+			else
+				ProcessExitLevel();
+		}
 		
 		setDir();
 		

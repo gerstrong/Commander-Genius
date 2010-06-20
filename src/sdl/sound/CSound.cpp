@@ -16,7 +16,7 @@
 
 #include <fstream>
 
-#define SAFE_DELETE_ARRAY(x) if(x) delete[] x; x=NULL
+#define SAFE_DELETE_ARRAY(x) if(x) delete[] x; x=NULL;
 
 // define a callback function we can work with
 void CCallback(void *unused, Uint8 *stream, int len)
@@ -42,12 +42,6 @@ CSound::CSound() {
 
 	m_MusicVolume = SDL_MIX_MAXVOLUME;
 	m_SoundVolume = SDL_MIX_MAXVOLUME;
-}
-
-CSound::~CSound() {
-	destroy();
-	if (m_soundslot) { delete[] m_soundslot; m_soundslot = NULL; }
-	if (m_soundchannel) { delete[] m_soundchannel; m_soundchannel = NULL; }
 }
 
 bool CSound::init(void)
@@ -84,6 +78,7 @@ bool CSound::init(void)
 
 	memcpy(&AudioSpec,obtained,sizeof(SDL_AudioSpec));
 	delete obtained;
+
 
 	m_MixedForm = new Uint8[AudioSpec.size];
 
@@ -502,3 +497,10 @@ void CSound::setSoundmode(int freq, bool stereo, Uint16 format)
 			AudioSpec.freq = 44100;
 	}
 }
+
+CSound::~CSound() {
+	destroy();
+	if (m_soundslot) { delete[] m_soundslot; m_soundslot = NULL; }
+	if (m_soundchannel) { delete[] m_soundchannel; m_soundchannel = NULL; }
+}
+

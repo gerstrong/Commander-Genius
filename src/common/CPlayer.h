@@ -80,6 +80,7 @@ public:
 	void WalkingAnimation();
 	void StatusBox();
 	void ProcessInput();
+	void ProcessExitLevel();
 
 	bool checkObjSolid();
 

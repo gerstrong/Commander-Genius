@@ -14,13 +14,12 @@
 #include "../fileio/ResourceMgmt.h"
 #include <fstream>
 
-CMusic::CMusic() {
-	playmode = PLAY_MODE_STOP;
-	music_buffer = NULL;
-	music_pos = 0;
-	music_len = 0;
-	usedMusicFile = "";
-}
+CMusic::CMusic() :
+music_len(0),
+music_pos(0),
+playmode(PLAY_MODE_STOP),
+usedMusicFile("")
+{}
 
 bool CMusic::load(const SDL_AudioSpec AudioSpec, const std::string &musicfile)
 {
@@ -51,7 +50,7 @@ bool CMusic::load(const SDL_AudioSpec AudioSpec, const std::string &musicfile)
 		if(openOGGSound(fp, &AudioFileSpec, AudioSpec.format, &pOggAudio) != 0)
 		{
 			g_pLogFile->textOut(PURPLE,"Music Driver(): OGG file could not be opened: \"%s\". File is damaged or something is wrong with your soundcard!<br>", musicfile.c_str());
-			return 1;
+			return false;
 		}
 		
 		g_pLogFile->ftextOut("Music Driver(): File \"%s\" opened successfully!<br>", musicfile.c_str());
@@ -70,7 +69,7 @@ bool CMusic::load(const SDL_AudioSpec AudioSpec, const std::string &musicfile)
 			free(pOggAudio.sound_buffer);
 			pOggAudio.sound_len = 0;
 			pOggAudio.sound_pos = 0;
-			return 1;
+			return false;
 		}
 		
 		music_len = pOggAudio.sound_len;
@@ -83,8 +82,8 @@ bool CMusic::load(const SDL_AudioSpec AudioSpec, const std::string &musicfile)
 		SDL_ConvertAudio(&Audio_cvt);
 		
 		music_len = Audio_cvt.len_cvt;
-		music_buffer = new Uint8 [music_len];
-		memcpy(music_buffer, Audio_cvt.buf, music_len);
+		music_buffer.assign(music_len, 0);
+		memcpy(&music_buffer.at(0), Audio_cvt.buf, music_len);
 		
 		// Structure Audio_cvt must be freed!
 		free(Audio_cvt.buf);
@@ -105,18 +104,9 @@ void CMusic::reload(const SDL_AudioSpec AudioSpec)
 	load(AudioSpec, usedMusicFile);
 }
 
-void CMusic::unload(void)
-{
-	if(music_buffer){ delete[] music_buffer; music_buffer = NULL; }
-	
-	music_len = 0;
-	music_pos = 0;
-	playmode = PLAY_MODE_STOP;
-}
-
 void CMusic::play(void)
 {
-	if(music_buffer)
+	if(!music_buffer.empty())
 		playmode = PLAY_MODE_PLAY;
 }
 
@@ -127,18 +117,19 @@ void CMusic::stop(void)
 
 Uint8 *CMusic::passBuffer(int length) // length only refers to the part(buffer) that has to be played
 {
-	if(!music_buffer)
+	if(music_buffer.empty())
 		return NULL;
 	
 	if(length < music_len - music_pos)
 	{
+		Uint8* ptr = &music_buffer.at(0) + music_pos;
 		music_pos += length;
-		return music_buffer + music_pos - length;
+		return ptr;
 	}
 	else
 	{
 		music_pos = 0;
-		return music_buffer;
+		return &music_buffer.at(0);
 	}
 }
 
@@ -169,7 +160,7 @@ bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &
     			str_buf = c_buf;
     			TrimSpaces(str_buf);
     			std::string filename = getResourceFilename("music/" + str_buf, gamepath, false, true);
-    			if( !load(g_pSound->getAudioSpec(), filename) )
+    			if( load(g_pSound->getAudioSpec(), filename) )
     				play();
     			Tablefile.close();
     			return true;
@@ -181,6 +172,16 @@ bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &
     }
 	return false;
 }
+
+void CMusic::unload(void)
+{
+	if(!music_buffer.empty())
+		music_buffer.clear();
+	music_len = 0;
+	music_pos = 0;
+	playmode = PLAY_MODE_STOP;
+}
+
 
 CMusic::~CMusic() {
 	unload();

@@ -16,6 +16,7 @@ enum playstatus{
 
 #include <SDL.h>
 #include <string>
+#include <vector>
 
 #include "../CSingleton.h"
 #define g_pMusicPlayer CMusic::Get()
@@ -37,7 +38,7 @@ public:
 	int playing(void){return playmode;}
 
 private:
-	Uint8 *music_buffer;
+	std::vector<Uint8> music_buffer;
 	long music_len;
 	int music_pos;
 	int playmode;
