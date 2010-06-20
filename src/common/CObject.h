@@ -41,7 +41,7 @@ class CObject {
 public:
 	CObject(CMap *pmap=NULL, int index=0);
 	
-	unsigned int m_type;        // yorp, vorticon, etc.
+	object_t m_type;        // yorp, vorticon, etc.
 	unsigned int m_index;        // Like an ID for some objects that need this implementation
 	bool exists;
 	bool onscreen;    			// true=(scrx,scry) position is visible onscreen
@@ -126,7 +126,7 @@ public:
 	void checkinitialCollisions();
 	void setScrPos( int px, int py );
 	bool calcVisibility( int player_x, int player_y );
-	bool spawn(int x0, int y0, int otype, int Episode, direction_t dirof = RIGHT );
+	bool spawn(int x0, int y0, object_t otype, int Episode, direction_t dirof = RIGHT );
 	void setIndex(int index);
 	
 	// Moving parts

@@ -29,7 +29,7 @@ mp_Map(pmap)
 
 	x = 0;
 	y = 0;
-	m_type = 0;
+	m_type = OBJ_NONE;
 	bboxX1 = bboxX2 = 0;
 	bboxY1 = bboxY2 = 0;
 	canbezapped = false;
@@ -42,7 +42,7 @@ mp_Map(pmap)
     yinertia = 0;
 }
 
-bool CObject::spawn(int x0, int y0, int otype, int Episode, direction_t dirof)
+bool CObject::spawn(int x0, int y0, object_t otype, int Episode, direction_t dirof)
 {
 	// find an unused object slot
 	if (!exists)

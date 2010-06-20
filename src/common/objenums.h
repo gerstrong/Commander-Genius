@@ -8,8 +8,9 @@
 #ifndef OBJENUMS_H_
 #define OBJENUMS_H_
 
-enum enumerated_Objects{
+enum object_t{
 	// ** objects from KEEN1
+	OBJ_NONE,
 	OBJ_YORP,
 	OBJ_GARG,
 	OBJ_VORT,
