@@ -673,7 +673,10 @@ bool CObject::checkSolidD( int x1, int x2, int y2)
 void CObject::kill()
 {
 	if ( exists && zapped < 500 && canbezapped )
+	{
 		zapped += 500;
+		dead = true;
+	}
 }
 
 ////
@@ -741,9 +744,12 @@ void CObject::drawMask(SDL_Surface *dst, CSprite &Sprite, int mx, int my)
 		{
 			tl = mp_Map->at((mx+xa)>>4,(my+ya)>>4);
 			CTileProperties &TileProperties = g_pBehaviorEngine->getTileProperties().at(tl);
+			bool completeblock = TileProperties.bleft && TileProperties.bright &&
+						TileProperties.bup && TileProperties.bdown && dead;
+
 			if(TileProperties.behaviour == -2) // case when when has a masked graphic
 				mp_Map->drawAnimatedTile(dst, mx+xa-mp_Map->m_scrollx, my+ya-mp_Map->m_scrolly, tl+1);
-			else if (TileProperties.behaviour == -1) // case when tile is just foreground
+			else if (TileProperties.behaviour == -1 || completeblock) // case when tile is just foreground
 				mp_Map->drawAnimatedTile(dst, mx+xa-mp_Map->m_scrollx, my+ya-mp_Map->m_scrolly, tl);
 		}
     }

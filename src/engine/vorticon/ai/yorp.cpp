@@ -3,7 +3,7 @@
 #include "../../../misc.h"
 
 // Yorp (ep1)
-enum
+enum yorpstate
 {
 	YORP_LOOK,     // yorp is "looking around" (waving his eye)
 	YORP_MOVE,     // yorp is walking either left or right
