@@ -11,13 +11,13 @@
 
 #include "CEGASprit.h"
 #include "../CPlanes.h"
-#include "../../keen.h"
 #include "../../FindFile.h"
 #include "../../sdl/CVideoDriver.h"
 #include "../../engine/spritedefines.h"
 #include "../../fileio/lz.h"
 #include "../../fileio/ResourceMgmt.h"
 #include "../../common/CBehaviorEngine.h"
+#include "../../common/CObject.h"
 #include <SDL.h>
 #include <stdio.h>
 #include <string.h>

@@ -7,7 +7,7 @@
 
 #include "CPlayer.h"
 
-#include "../engine/ai/se.h"
+#include "../engine/vorticon/ai/se.h"
 #include "../engine/spritedefines.h"
 #include "../keen.h"
 #include "../sdl/sound/CSound.h"

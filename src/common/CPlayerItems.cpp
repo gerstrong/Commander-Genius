@@ -15,7 +15,7 @@
 #include "../sdl/sound/CSound.h"
 #include "../graphics/CGfxEngine.h"
 #include "../engine/spritedefines.h"
-#include "../engine/ai/se.h"
+#include "../engine/vorticon/ai/se.h"
 #include "../StringUtils.h"
 
 #define DOOR_YELLOW        2

@@ -10,7 +10,7 @@
 #include "CTitle.h"
 #include "../sdl/CTimer.h"
 #include "../sdl/CVideoDriver.h"
-#include "ai/CEGABitmap.h"
+#include "vorticon/ai/CEGABitmap.h"
 #include "../graphics/effects/CColorMerge.h"
 #include "../graphics/effects/CPixelate.h"
 

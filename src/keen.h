@@ -9,9 +9,9 @@
 #include <windows.h>
 #endif
 
-#define CSF    9
-#define TILE_S			4
-#define STC (CSF-TILE_S)
+//#define CSF    9
+//#define TILE_S			4
+//#define STC (CSF-TILE_S)
 
 #define WM_MAP_NUM      80
 

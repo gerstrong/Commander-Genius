@@ -7,7 +7,7 @@
 
 #include "CMapLoader.h"
 #include "../keen.h"
-#include "../engine/ai/se.h"
+#include "../engine/vorticon/ai/se.h"
 #include <iostream>
 #include <fstream>
 #include "../FindFile.h"

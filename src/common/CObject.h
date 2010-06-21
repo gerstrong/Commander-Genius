@@ -28,7 +28,7 @@ enum direction_t{
 };
 
 // structures for each AI module's data
-#include "../engine/ai/enemydata.h"
+#include "../engine/vorticon/ai/enemydata.h"
 #include "../common/CMap.h"
 #include "../graphics/CGfxEngine.h"
 #include "options.h"
@@ -36,6 +36,11 @@ enum direction_t{
 
 // Enumerations are here
 #include "objenums.h"
+
+#define CSF    9
+#define TILE_S			4
+#define STC (CSF-TILE_S)
+
 
 class CObject {
 public:
