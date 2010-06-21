@@ -140,10 +140,10 @@ void CObjectAI::scrub_ai(CObject &object)
 		switch(object.ai.scrub.walkdir)
 		{
 		case LEFT:
-			walkLeft(object, (object.getXMidPos())>>CSF, (object.getYMidPos())>>CSF);
+			walkLeft(object, (object.getXLeftPos())>>CSF, (object.getYMidPos())>>CSF);
 			break;
 		case RIGHT:
-			walkRight(object, (object.getXMidPos())>>CSF, (object.getYMidPos())>>CSF);
+			walkRight(object, (object.getXRightPos())>>CSF, (object.getYMidPos())>>CSF);
 			break;
 		case DOWN:
 			walkDown(object);
@@ -190,7 +190,8 @@ void CObjectAI::walkLeft(CObject &object, int mx, int my)
 		{
 			// First check, if he can walk over the tile
 			std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
-			if(!TileProperties[mp_Map->at(mx-1, my+1)].bup)
+			if(!TileProperties[mp_Map->at(mx-1, my+1)].bup &&
+				!TileProperties[mp_Map->at(mx-1, my)].bleft)
 			{
 				// There is no gap
 				object.moveDown(2<<STC);
