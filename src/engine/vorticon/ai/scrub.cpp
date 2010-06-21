@@ -295,7 +295,8 @@ void CObjectAI::walkRight(CObject &object, int mx, int my)
 		{
 			// First check, if he can walk over the tile
 			std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
-			if(!TileProperties[mp_Map->at(mx+1, my-1)].bdown)
+			if(!TileProperties[mp_Map->at(mx+1, my-1)].bdown &&
+				!TileProperties[mp_Map->at(mx+1, my)].bright)
 			{
 				// There is no gap the upper-side
 				object.moveRight(1<<STC);
