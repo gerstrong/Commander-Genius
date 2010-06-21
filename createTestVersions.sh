@@ -7,9 +7,7 @@ dt=`date +%b%d%y-%H%M`
 svn export vfsroot vfsrootnonsvn
 
 # Windows Version
-cd Win32
-cp CommanderGenius.exe ../CGenius.exe
-cd ..
+cp build/Win32/CGenius.exe ./CGenius.exe
 
 cd vfsrootnonsvn
 zip -r ../CG-SVN-${dt}-win32.zip ./
@@ -26,10 +24,8 @@ zip CG-SVN-${dt}-win32.zip ./readme.txt
 rm ./CGenius.exe
 
 # Linux 64-bit Version
-cd Linux64
-cp CommanderGenius ../CGenius
-cp CommanderGenius ../distro/Ubuntu/usr/games
-cd ..
+cp build/Linux64/CGenius ./CGenius
+cp build/Linux64/CGenius ./distro/Ubuntu/usr/games
 
 cd vfsrootnonsvn
 zip -r ../CG-SVN-${dt}-linux64.zip ./
@@ -46,11 +42,9 @@ cd ..
 mv distro/CGenius_x64.deb CG-SVN-${dt}-x64.deb
 
 # Linux 32-bit Version
-cd Linux32
-cp CommanderGenius ../CGenius
-cp CommanderGenius ../distro/Ubuntu/usr/games
+cp build/Linux32/CGenius ./CGenius
+cp build/Linux32/CGenius ./distro/Ubuntu/usr/games
 
-cd ..
 cd vfsrootnonsvn
 zip -r ../CG-SVN-${dt}-linux32.zip ./
 cd ..

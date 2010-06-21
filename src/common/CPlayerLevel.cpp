@@ -562,6 +562,8 @@ void CPlayer::JumpAndPogo()
 			pjustjumped = true;
 
 			break;
+        default:
+        	break;
     }
 	
 	// Now check how much the direction of the player is given

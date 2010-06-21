@@ -48,7 +48,7 @@ enum levelstate{
 	LEVEL_TELEPORTER		   // Happens when Bonus Teleporter in Level was used
 };
 
-enum jumpstates{
+enum jumpstate{
 	// the various jump states
 	PNOJUMP,                        // not jumping
 	PPREPAREJUMP,                   // doing the jump animation

@@ -12,7 +12,9 @@ v0.3.1.4:
 - Code cleanups!
 - Improved Patch-Code
 - Improved Garg AI
+- Improved Scrub AI
 - Teleporter fixes
+- Small improvement of the player physics
 - New configuration file parser which makes loading and saving even faster!
 
 v0.3.1.3:

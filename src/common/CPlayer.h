@@ -130,7 +130,8 @@ public:
 	signed int playpushed_x;
 	unsigned char playpushed_decreasetimer;
 
-	unsigned char pjumping, pjumptime, pjumpupspeed_decrease, pjumpdir;
+	jumpstate pjumping;
+	unsigned char pjumptime, pjumpupspeed_decrease, pjumpdir;
 	unsigned char pjumpframe, pjumpanimtimer;
 	int pjumpupspeed;
 	unsigned char pjumpnormaltime, pjumpupdecreaserate, pjustjumped;

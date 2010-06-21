@@ -66,6 +66,7 @@ bool CGameControl::init(int argc, char *argv[])
 			// Now check, if a level was also passed as parameter
 			argument = getArgument( argc, argv, "-level" );
 			m_startLevel = atoi(argument.c_str()+strlen("-level"));
+			m_Numplayers = 1;
 		}
 	}
 

@@ -60,6 +60,12 @@ private:
 	void baby_jump(CObject &object, int big);
 
 	void scrub_ai(CObject &object);
+	void walkLeft(CObject &object, int mx, int my);
+	void walkRight(CObject &object, int mx, int my);
+	void walkUp(CObject &object);
+	void walkDown(CObject &object);
+	void fall(CObject &object);
+	void preparetoFall(CObject &object);
 	void Scrub_TurnOnCansupportWhereNotKicked(CObject &object);
 
 	void tankep2_ai(CObject &object, bool hardmode);

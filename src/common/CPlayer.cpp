@@ -77,7 +77,8 @@ void CPlayer::setDatatoZero()
     solid = true;
     bumped = false;
 	
-    pjumping = pjumptime = 0;
+    pjumptime = 0;
+    pjumping = PNOJUMP;
 	
     mapplayx = mapplayy = 0;
     level_done = LEVEL_NOT_DONE;
