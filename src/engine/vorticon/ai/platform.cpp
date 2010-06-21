@@ -1,4 +1,4 @@
-#include "../spritedefines.h"
+#include "../../spritedefines.h"
 
 #include "CObjectAI.h"
 

@@ -10,8 +10,8 @@
 #ifndef CEGABITMAP_H_
 #define CEGABITMAP_H_
 
-#include "../../graphics/CBitmap.h"
-#include "../../common/CObject.h"
+#include "../../../graphics/CBitmap.h"
+#include "../../../common/CObject.h"
 #include <SDL.h>
 
 class CEGABitmap : public CObject {

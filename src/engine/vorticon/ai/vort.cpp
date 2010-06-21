@@ -1,8 +1,8 @@
 #include "CObjectAI.h"
-#include "../../misc.h"
-#include "../../sdl/sound/CSound.h"
-#include "../../graphics/CGfxEngine.h"
-#include "../../graphics/effects/CFlash.h"
+#include "../../../misc.h"
+#include "../../../sdl/sound/CSound.h"
+#include "../../../graphics/CGfxEngine.h"
+#include "../../../graphics/effects/CFlash.h"
 #include "vort.h"
 
 // Vorticon (all episodes, albeit the behavior changes slightly

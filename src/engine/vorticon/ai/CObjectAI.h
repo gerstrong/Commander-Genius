@@ -8,13 +8,13 @@
 #ifndef COBJECTAI_H_
 #define COBJECTAI_H_
 
-#include "../../keen.h"
-#include "../../common/CMap.h"
-#include "../../common/CObject.h"
-#include "../../common/options.h"
-#include "../../common/CPlayer.h"
-#include "../../common/CBehaviorEngine.h"
-#include "../../graphics/CGfxEngine.h"
+#include "../../../keen.h"
+#include "../../../common/CMap.h"
+#include "../../../common/CObject.h"
+#include "../../../common/options.h"
+#include "../../../common/CPlayer.h"
+#include "../../../common/CBehaviorEngine.h"
+#include "../../../graphics/CGfxEngine.h"
 #include <vector>
 
 class CObjectAI {

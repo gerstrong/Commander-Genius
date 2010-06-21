@@ -1,5 +1,5 @@
 #include "CObjectAI.h"
-#include "../spritedefines.h"
+#include "../../spritedefines.h"
 // vertically-moving platform (ep3)
 
 enum platver_actions{

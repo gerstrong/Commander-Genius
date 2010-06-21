@@ -1,5 +1,5 @@
-#include "../../sdl/sound/CSound.h"
-#include "../../misc.h"
+#include "../../../sdl/sound/CSound.h"
+#include "../../../misc.h"
 
 #include "CObjectAI.h"
 

@@ -1,5 +1,5 @@
-#include "../../sdl/sound/CSound.h"
-#include "../../graphics/CGfxEngine.h"
+#include "../../../sdl/sound/CSound.h"
+#include "../../../graphics/CGfxEngine.h"
 #include "CObjectAI.h"
 
 // AI for the foobs (yellow "scaredy cat" creatures) (ep3)

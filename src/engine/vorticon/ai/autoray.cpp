@@ -6,8 +6,8 @@
  *      Port by: Gerstrong
  */
 
-#include "../spritedefines.h"
-#include "../../sdl/sound/CSound.h"
+#include "../../spritedefines.h"
+#include "../../../sdl/sound/CSound.h"
 #include "CObjectAI.h"
 
 void CObjectAI::autoray_ai(CObject &Object)

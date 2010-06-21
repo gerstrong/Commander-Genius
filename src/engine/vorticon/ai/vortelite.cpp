@@ -1,7 +1,7 @@
-#include "../../misc.h"
-#include "../../sdl/sound/CSound.h"
-#include "../../graphics/CGfxEngine.h"
-#include "../spritedefines.h"
+#include "../../../misc.h"
+#include "../../../sdl/sound/CSound.h"
+#include "../../../graphics/CGfxEngine.h"
+#include "../../spritedefines.h"
 
 #include "CObjectAI.h"
 

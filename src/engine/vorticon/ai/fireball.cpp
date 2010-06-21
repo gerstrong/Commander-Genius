@@ -2,7 +2,7 @@
 
 #include "CObjectAI.h"
 
-#include "../../sdl/sound/CSound.h"
+#include "../../../sdl/sound/CSound.h"
 
 // fireball projectile shot out by Vorticon Mother (Ep3)
 

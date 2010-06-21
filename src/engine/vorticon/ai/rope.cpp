@@ -1,8 +1,8 @@
 #include "CObjectAI.h"
-#include "../../graphics/effects/CVibrate.h"
-#include "../spritedefines.h"
-#include "../../sdl/sound/CSound.h"
-#include "../../keen.h"
+#include "../../../graphics/effects/CVibrate.h"
+#include "../../spritedefines.h"
+#include "../../../sdl/sound/CSound.h"
+#include "../../../keen.h"
 #include "vort.h"
 
 // The rope holding the stone which kills the final Vorticon (ep1)

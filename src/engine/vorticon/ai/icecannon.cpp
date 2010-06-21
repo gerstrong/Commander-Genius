@@ -1,7 +1,7 @@
 #include "CObjectAI.h"
-#include "../spritedefines.h"
-#include "../../keen.h"
-#include "../../sdl/sound/CSound.h"
+#include "../../spritedefines.h"
+#include "../../../keen.h"
+#include "../../../sdl/sound/CSound.h"
 
 // the chunks of ice shot out by an ice cannon (ep1)
 const int ICECHUNK_SPEED = 60;

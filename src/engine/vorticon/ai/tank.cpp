@@ -1,7 +1,7 @@
 #include "CObjectAI.h"
-#include "../spritedefines.h"
-#include "../../sdl/sound/CSound.h"
-#include "../../keen.h"
+#include "../../spritedefines.h"
+#include "../../../sdl/sound/CSound.h"
+#include "../../../keen.h"
 
 // Comments by Tulip
 /*

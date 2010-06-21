@@ -1,5 +1,5 @@
 #include "CObjectAI.h"
-#include "../../sdl/sound/CSound.h"
+#include "../../../sdl/sound/CSound.h"
 
 #include <vector>
 

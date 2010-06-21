@@ -1,10 +1,10 @@
 #include "CObjectAI.h"
-#include "../../sdl/sound/CSound.h"
+#include "../../../sdl/sound/CSound.h"
 
 // raygun blast, shot by keen, and by the tank robots in ep1&2.
 #include "ray.h"
-#include "../spritedefines.h"
-#include "../../common/CBehaviorEngine.h"
+#include "../../spritedefines.h"
+#include "../../../common/CBehaviorEngine.h"
 
 #define Sprite g_pGfxEngine->Sprite
 

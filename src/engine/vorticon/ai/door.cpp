@@ -1,7 +1,7 @@
 #include "CObjectAI.h"
 
-#include "../../keen.h"
-#include "../../graphics/CGfxEngine.h"
+#include "../../../keen.h"
+#include "../../../graphics/CGfxEngine.h"
 
 // "AI" for the door object (to do the animation when a door
 // opens, the door tiles are removed and replaced with a sprite

@@ -3,10 +3,10 @@
 #include "ray.h"
 #include "se.h"
 
-#include "../spritedefines.h"
-#include "../../sdl/sound/CSound.h"
-#include "../../CLogFile.h"
-#include "../../graphics/effects/CVibrate.h"
+#include "../../spritedefines.h"
+#include "../../../sdl/sound/CSound.h"
+#include "../../../CLogFile.h"
+#include "../../../graphics/effects/CVibrate.h"
 
 // "Sector Effector" object (The name comes from D3D)...it's basically
 // an object which can do a number of different things depending on it's

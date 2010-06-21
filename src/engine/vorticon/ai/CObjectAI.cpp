@@ -6,8 +6,8 @@
  */
 
 #include "CObjectAI.h"
-#include "../../sdl/CVideoDriver.h"
-#include "../../CLogFile.h"
+#include "../../../sdl/CVideoDriver.h"
+#include "../../../CLogFile.h"
 
 CObjectAI::CObjectAI(CMap *p_map, std::vector<CObject> &objvect, std::vector<CPlayer> &Player,
 					 stOption *p_options, int NumPlayers, int episode, int level,

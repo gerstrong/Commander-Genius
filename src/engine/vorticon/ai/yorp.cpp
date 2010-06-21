@@ -1,6 +1,6 @@
 #include "CObjectAI.h"
-#include "../../sdl/sound/CSound.h"
-#include "../../misc.h"
+#include "../../../sdl/sound/CSound.h"
+#include "../../../misc.h"
 
 // Yorp (ep1)
 enum

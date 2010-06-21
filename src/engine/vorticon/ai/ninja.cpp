@@ -1,4 +1,4 @@
-#include "../../sdl/sound/CSound.h"
+#include "../../../sdl/sound/CSound.h"
 
 #include "CObjectAI.h"
 
