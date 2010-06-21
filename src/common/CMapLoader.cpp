@@ -305,7 +305,8 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 					// in ep2 level 16 there a vorticon embedded in the floor for
 					// some reason! that's what the if() is for--to fix it.
 					// I believe, that the rest of the vorticons are supposed to fall!
-					enemyobject.spawn(x<<CSF, (y-1)<<CSF, OBJ_VORT, episode);
+					// NOTE: This comment is old and seems not to be valid, please check that!
+					enemyobject.spawn(x<<CSF, y<<CSF, OBJ_VORT, episode);
 				}
 				else if(episode == 3)
 				{

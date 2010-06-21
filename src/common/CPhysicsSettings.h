@@ -33,6 +33,11 @@ public:
 		// pogo settings
 		int pogoforce_x;
 	}player;
+
+	struct{
+		int visibility;
+	}misc;
+
 	virtual ~CPhysicsSettings();
 };
 

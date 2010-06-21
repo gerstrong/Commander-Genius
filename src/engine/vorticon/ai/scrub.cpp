@@ -358,7 +358,7 @@ void CObjectAI::walkUp(CObject &object)
  */
 void CObjectAI::fall(CObject &object)
 {
-	object.sprite = SCRUB_WALK_DOWN;
+	object.sprite = SCRUB_WALK_LEFT;
 	if (object.blockedd)
 	{
 		object.ai.scrub.walkdir = LEFT;

@@ -106,11 +106,6 @@ private:
 	SDL_Surface *mp_scrollsurface;
 	CTilemap *mp_Tilemap;
 
-	//word *mp_foreground_data;       		// the map foreground data
-	//word *mp_background_data;       		// the map background data
-											// background data is only used
-											// in the Galaxy
-
 	// (map) stripe attribute structures, for animated tiles
 	// slot 0 is not used. data starts at slot 1. see description
 	// of AnimTileInUse in map structure to see why.

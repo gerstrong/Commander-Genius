@@ -12,8 +12,6 @@
 #include "../keen.h"
 #include <string.h>
 
-const int VISIBILITY = 21;
-
 ///
 // Initialization Routine
 ///
@@ -196,25 +194,27 @@ void CObject::setScrPos( int px, int py )
 // This used for objects that only can trigger, when it's really worth to do so.
 bool CObject::calcVisibility( int player_x, int player_y )
 {
+	int &visibility = g_pBehaviorEngine->getPhysicsSettings().misc.visibility;
+
 	// Platform are always active
 	if(m_type == OBJ_PLATFORM || m_type == OBJ_PLATVERT) return true;
 
 	// Also  Bullets
 	if(m_type == OBJ_SNDWAVE || m_type == OBJ_RAY || m_type == OBJ_FIREBALL) return true;
 
-	// check in x
-	Uint32 left = ((player_x-(VISIBILITY<<CSF))<0) ? 0 : player_x-(VISIBILITY<<CSF);
-	Uint32 right = player_x+(VISIBILITY<<CSF);
-	Uint32 up = ((player_y-(VISIBILITY<<CSF))<0) ? 0 : player_y-(VISIBILITY<<CSF);
-	Uint32 down = player_y+(VISIBILITY<<CSF);
+	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
+
+	Uint32 left = (((mp_Map->m_scrollx<<STC)-(visibility<<CSF))<0) ? 0 :
+							(mp_Map->m_scrollx<<STC)-(visibility<<CSF);
+	Uint32 right = ((mp_Map->m_scrollx+gameres.w)<<STC)+(visibility<<CSF);
+	Uint32 up = (((mp_Map->m_scrolly<<STC)-(visibility<<CSF))<0) ? 0 :
+							(mp_Map->m_scrolly<<STC)-(visibility<<CSF);
+	Uint32 down = ((mp_Map->m_scrolly+gameres.h)<<STC)+(visibility<<CSF);
 
 	if( right > x && left < x )
-	{
 		if( down > y && up < y )
-		{
 			return true;
-		}
-	}
+
 	return false;
 }
 
