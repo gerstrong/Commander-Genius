@@ -7,6 +7,8 @@ VORT_DEAD,
 VORT2_DYING
 };
 
+// TODO: VOrticon, when charges. His speed is 37. Need to implement it still.
+
 #define VORT_JUMP_PROB_EASY     10
 #define VORT_JUMP_PROB          30
 #define VORT_JUMP_PROB_HARD     60
@@ -16,7 +18,7 @@ VORT2_DYING
 #define VORT_MAX_FALL_SPEED     320
 #define VORT_JUMP_FRICTION      5
 
-#define VORT_WALK_SPEED         30
+#define VORT_WALK_SPEED         28
 #define VORT_WALK_ANIM_TIME     14
 
 

@@ -16,7 +16,18 @@ m_to_be_confirmed(to_be_confirmed)
 {
 	mp_Dialog = new CDialog(22, 5, 'l',m_dlg_theme);
 
-	mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 1, m_question);
+	std::string text;
+
+	for( size_t c=0 ; c<(21-m_question.size())/2 ; c++ )
+		text += " ";
+	text += m_question;
+	for( size_t c=0 ; c<(21-m_question.size())/2 ; c++ )
+		text += " ";
+
+	if(text.size() >= 21)
+		text.erase(text.begin()+20,text.end());
+
+	mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 1, text);
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Yes");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 15, 3, "No");
 }

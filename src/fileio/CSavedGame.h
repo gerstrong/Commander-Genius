@@ -19,6 +19,8 @@
 
 #include "../fileio/TypeDefinitions.h"
 
+const std::string EMPTY_STRING = "     EMPTY       ";
+
 class CSavedGame {
 public:
 	enum SavedGameCommands{

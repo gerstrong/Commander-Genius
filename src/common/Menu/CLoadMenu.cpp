@@ -25,8 +25,9 @@ m_SavedGame(SavedGame)
 			text = StateFileList.at(i-1);
 			mp_Dialog->m_name = text;
 		}
-		if(text == "")
-			text = "     EMPTY       ";
+		else
+			text = EMPTY_STRING;
+
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, i, text);
 	}
 }

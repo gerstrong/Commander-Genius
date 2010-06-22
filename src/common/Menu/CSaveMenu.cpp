@@ -33,7 +33,7 @@ m_overwrite(false)
 			mp_Dialog->m_name = text;
 		}
 		if(text == "")
-			text = "     EMPTY       ";
+			text = EMPTY_STRING;
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, i, text);
 	}
 }
@@ -47,14 +47,15 @@ void CSaveMenu::processSpecific()
 		{
 			if( mp_Dialog->getInputMode(INPUT_MODE_UP_DOWN) )
 			{
-				if(mp_Dialog->m_name != "     EMPTY       ")
+				if(mp_Dialog->m_name != EMPTY_STRING)
 				{
 					mp_OverwriteMenu = new CConfirmMenu("Overwrite?", m_overwrite, m_dlg_theme);
 					m_suspended = true;
 				}
+				else
+					mp_Dialog->m_name = "";
 
 				mp_Dialog->setInputMode(INPUT_MODE_TEXT);
-				mp_Dialog->m_name = "";
 				mp_Dialog->m_length = 15;
 			}
 			else if ( mp_Dialog->getInputMode(INPUT_MODE_TEXT) && g_pInput->getPressedKey(KENTER) )
