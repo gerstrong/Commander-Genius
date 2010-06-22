@@ -431,7 +431,11 @@ void CPlayer::JumpAndPogo()
 								{
 									int jump = PhysicsSettings.player.maxjumpspeed;
 									int pogo = PhysicsSettings.player.maxpogospeed;
-									pjumpupspeed = (pogo-jump)*playcontrol[PA_JUMP] / 50 + jump;
+									pjumpupspeed = 3*(pogo-jump)*playcontrol[PA_JUMP] / 50 + jump;
+
+									if(pjumpupspeed > PhysicsSettings.player.maxpogospeed)
+										pjumpupspeed = PhysicsSettings.player.maxpogospeed;
+
 									pogofirsttime = false;
 								}
 								else
@@ -506,13 +510,11 @@ void CPlayer::JumpAndPogo()
         	// check for hitting a ceiling
         	if (blockedu)   // did we bonk something?
         	{  // immediatly abort the jump
-        		//pjumping = PNOJUMP;
         		if(!bumped)
         		{
         			g_pSound->playStereofromCoord(SOUND_KEEN_BUMPHEAD, PLAY_NOW, scrx);
             		bumped = true;
         		}
-        		//pjumpupspeed-=pjumpupspeed_decrease*4;
         		pjumpupspeed = 0;
         	}
 
