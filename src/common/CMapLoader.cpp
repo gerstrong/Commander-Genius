@@ -274,7 +274,7 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				x = 4;
 			
 			if(y >= mp_map->m_height-2) // Edge bug. Keen would fall in some levels without this.
-				x = 4;
+				y = 4;
 
 			std::vector<CPlayer>::iterator it_player = mp_vec_Player->begin();
 			for(; it_player != mp_vec_Player->end() ; it_player++ )
@@ -339,7 +339,7 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				else if (episode==3)
 					enemyobject.spawn(x<<CSF, y<<CSF, OBJ_MOTHER, episode);
 				break;
-			case 4:    // butler (ep1) OR scrub (ep2) OR meep (ep3)
+			case 4:    // butler (ep1) or scrub (ep2) or meep (ep3)
 				if (episode==1)
 					enemyobject.spawn(x<<CSF, y<<CSF, OBJ_BUTLER, episode);
 				else if (episode==2)
@@ -372,7 +372,7 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				}
 				else if (episode==2)
 				{
-					enemyobject.spawn(x<<CSF, y<<CSF, OBJ_PLATFORM, episode);
+					enemyobject.spawn(x<<CSF, (y<<CSF)-(4<<STC), OBJ_PLATFORM, episode);
 				}
 				else if (episode==3)
 				{
@@ -388,11 +388,11 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				}
 				else if (episode==2)
 				{
-					enemyobject.spawn(x<<CSF, y<<CSF,OBJ_SPARK, episode);
+					enemyobject.spawn(x<<CSF, y<<CSF, OBJ_SPARK, episode);
 				}
 				else if (episode==3)
 				{
-					enemyobject.spawn(x<<CSF,y<<CSF,OBJ_BALL, episode);
+					enemyobject.spawn(x<<CSF,y<<CSF, OBJ_BALL, episode);
 				}
 				break;
 			case 8:    // jack (ep3) and ice cannon down (ep1)
@@ -417,7 +417,7 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				}
 				else if (episode==3)
 				{
-					enemyobject.spawn(x<<CSF, y<<CSF, OBJ_PLATFORM, episode);
+					enemyobject.spawn(x<<CSF, (y<<CSF)-(4<<STC), OBJ_PLATFORM, episode);
 				}
 				break;
 			case 10:   // rope holding the stone above the final vorticon (ep1)

@@ -56,16 +56,19 @@ bool CGameControl::init(int argc, char *argv[])
 
 	if(argument != "")
 	{
-		int chosengame;
-		chosengame = atoi(argument.c_str()+strlen("-game"))-1;
+		int chosengame = 0;
+		std::string buf = argument.substr(strlen("-game"));
+		chosengame = atoi(buf)-1;
 
-		if(chosengame >= 0 && chosengame < mp_GameLauncher->m_numGames)
+		if(chosengame >= 0)
 		{
 			mp_GameLauncher->setChosenGame(chosengame);
 
 			// Now check, if a level was also passed as parameter
 			argument = getArgument( argc, argv, "-level" );
-			m_startLevel = atoi(argument.c_str()+strlen("-level"));
+			buf = argument.substr(strlen("-level"));
+
+			m_startLevel = atoi(buf);
 			m_Numplayers = 1;
 		}
 	}

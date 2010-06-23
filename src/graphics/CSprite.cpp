@@ -44,9 +44,10 @@ bool CSprite::optimizeSurface()
 	{
 		SDL_Surface *temp_surface;
 		temp_surface = SDL_DisplayFormatAlpha(m_surface);
+
 		SDL_FreeSurface(m_surface);
 		m_surface = temp_surface;
-		
+
         return true;
 	}
 	else
@@ -114,8 +115,10 @@ void CSprite::applyTransparency()
 void CSprite::applyTranslucency(Uint8 value)
 {
 	Uint8 *pixel;
-	Uint32 colour;
+	Uint32 colour = 0;
 	Uint8 r,g,b,a;
+
+	r = g = b = a = 0;
 
 	if(!m_surface) return;
 

@@ -9,7 +9,7 @@
 
 #include "arguments.h"
 
-std::string getArgument( int argc, char *argv[], const std::string text )
+std::string getArgument( int argc, char *argv[], const std::string& text )
 {
 	std::string argument;
 	for( int i=1 ; i<argc ; i++ )
@@ -21,7 +21,7 @@ std::string getArgument( int argc, char *argv[], const std::string text )
 	return "";
 }
 
-bool getBooleanArgument( int argc, char *argv[], const std::string text )
+bool getBooleanArgument( int argc, char *argv[], const std::string& text )
 {
 	std::string argument;
 	for( int i=1 ; i<argc ; i++ )

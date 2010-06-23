@@ -126,7 +126,7 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 							SpriteStart,
 							NumSprites,
 							SpriteLocation,
-							m_path);
+							m_path, m_episode);
     m_Sprit->loadHead(data);
 
     if(m_path == "")

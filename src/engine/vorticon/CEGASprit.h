@@ -26,7 +26,8 @@ public:
 			  long spritestartloc,
 			  int numsprites,
 			  long spriteloc,
-			  const std::string &gamepath);
+			  const std::string &gamepath,
+			  size_t episode);
 	virtual ~CEGASprit();
 
 	bool loadHead(char *data);
@@ -38,6 +39,7 @@ private:
 	long m_spritestartloc;
 	long m_spriteloc;
 	const std::string &m_gamepath;
+	size_t m_Episode;
 
 	struct st_sprite{
 		short width;

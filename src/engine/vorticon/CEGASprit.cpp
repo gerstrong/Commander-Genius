@@ -42,8 +42,10 @@ CEGASprit::CEGASprit(int planesize,
 					 long spritestartloc,
 					 int numsprites,
 					 long spriteloc,
-					 const std::string &gamepath) :
+					 const std::string &gamepath,
+					 size_t episode) :
 m_gamepath(gamepath),
+m_Episode(episode),
 EGASpriteModell(NULL)
 {
 	m_planesize = planesize;
@@ -86,7 +88,6 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 {
 	byte *RawData;
     SDL_Surface *sfc;
-    SDL_Surface *pixsfc;
     Uint8* pixel;
 	
 	FILE* latchfile = OpenGameFile(filename.c_str(),"rb");
@@ -131,10 +132,10 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	{
 		CSprite &Sprite = g_pGfxEngine->getSprite(i);
 		Sprite.setSize( EGASpriteModell[i].width, EGASpriteModell[i].height );
-		Sprite.setBouncingBoxCoordinates( (EGASpriteModell[i].hitbox_l << (CSF-TILE_S)),
-				(EGASpriteModell[i].hitbox_u << (CSF-TILE_S)),
-				(EGASpriteModell[i].hitbox_r << (CSF-TILE_S)),
-				(EGASpriteModell[i].hitbox_b << (CSF-TILE_S)) );
+		Sprite.setBouncingBoxCoordinates( (EGASpriteModell[i].hitbox_l << STC),
+				(EGASpriteModell[i].hitbox_u << STC),
+				(EGASpriteModell[i].hitbox_r << STC),
+				(EGASpriteModell[i].hitbox_b << STC) );
 		Sprite.createSurface( g_pVideoDriver->BlitSurface->flags,
 				g_pGfxEngine->Palette.m_Palette );
 	}
@@ -159,22 +160,25 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	for(int s=0 ; s<m_numsprites ; s++)
 	{
 		CSprite &Sprite = g_pGfxEngine->getSprite(s);
-		pixsfc = Sprite.getSDLSurface();
-		sfc = Sprite.getSDLMaskSurface();
+		SDL_Surface *pixsfc = Sprite.getSDLSurface();
+		SDL_Surface *masksfc = Sprite.getSDLMaskSurface();
 
 		if(SDL_MUSTLOCK(pixsfc)) SDL_LockSurface(pixsfc);
-		if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
+		if(SDL_MUSTLOCK(masksfc)) SDL_LockSurface(masksfc);
 
-		pixel = (Uint8*) sfc->pixels;
+		pixel = (Uint8*) masksfc->pixels;
 
-		for(int y=0 ; y<sfc->h ; y++)
+		for(int y=0 ; y<masksfc->h ; y++)
 		{
-			for(int x=0 ; x<sfc->w ; x++)
+			for(int x=0 ; x<masksfc->w ; x++)
 			{
-				pixel[y*sfc->w + x] = Planes.getbit(4) ? ((Uint8*)pixsfc->pixels)[y*pixsfc->w + x] : 15;
+				if(Planes.getbit(4))
+					pixel[y*masksfc->w + x] = ((Uint8*)pixsfc->pixels)[y*pixsfc->w + x];
+				else
+					pixel[y*masksfc->w + x] = 15;
 			}
 		}
-		if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
+		if(SDL_MUSTLOCK(masksfc)) SDL_UnlockSurface(masksfc);
 		if(SDL_MUSTLOCK(pixsfc)) SDL_UnlockSurface(pixsfc);
 	}
 
@@ -184,7 +188,8 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	// Now load the special TGA Sprites if some are available
 	LoadSpecialSprites( g_pGfxEngine->getSpriteVec() );
 
-	for(Uint16 s=0 ; s<g_pGfxEngine->getSpriteVec().size() ; s++)
+	Uint16 s=0;
+	for(s=0 ; s<g_pGfxEngine->getSpriteVec().size() ; s++)
 	{
 		CSprite &Sprite = g_pGfxEngine->getSprite(s);
 		Sprite.optimizeSurface();
@@ -196,7 +201,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 			if(filename != "")
 				Sprite.loadHQSprite(filename);
 		}
-		Sprite.applyTransparency();
+		//Sprite.applyTransparency();
 	}
 	
 	// Apply the sprites for player 2,3 and 4
@@ -429,16 +434,25 @@ void CEGASprit::CreateYellowSpriteofTile( CTilemap &tilemap, Uint16 tile, CSprit
  */
 void CEGASprit::ApplySpecialFX()
 {
-	g_pGfxEngine->getSprite(OBJ_RAY_DEFSPRITE_EP1).applyTranslucency(200);
-	g_pGfxEngine->getSprite(OBJ_RAY_DEFSPRITE_EP2).applyTranslucency(200);
-	g_pGfxEngine->getSprite(OBJ_RAY_DEFSPRITE_EP3).applyTranslucency(200);
-
-	g_pGfxEngine->getSprite(RAY_FRAME_ZAP_EP1).applyTranslucency(200);
-	g_pGfxEngine->getSprite(RAY_FRAME_ZOT_EP1).applyTranslucency(200);
-	g_pGfxEngine->getSprite(RAY_FRAME_ZAP_EP2).applyTranslucency(200);
-	g_pGfxEngine->getSprite(RAY_FRAME_ZOT_EP2).applyTranslucency(200);
-	g_pGfxEngine->getSprite(RAY_FRAME_ZAP_EP3).applyTranslucency(200);
-	g_pGfxEngine->getSprite(RAY_FRAME_ZOT_EP3).applyTranslucency(200);
+	switch(m_Episode)
+	{
+	case 1:
+		g_pGfxEngine->getSprite(OBJ_RAY_DEFSPRITE_EP1).applyTranslucency(200);
+		g_pGfxEngine->getSprite(RAY_FRAME_ZAP_EP1).applyTranslucency(200);
+		g_pGfxEngine->getSprite(RAY_FRAME_ZOT_EP1).applyTranslucency(200);
+		break;
+	case 2:
+		g_pGfxEngine->getSprite(OBJ_RAY_DEFSPRITE_EP2).applyTranslucency(200);
+		g_pGfxEngine->getSprite(RAY_FRAME_ZAP_EP2).applyTranslucency(200);
+		g_pGfxEngine->getSprite(RAY_FRAME_ZOT_EP2).applyTranslucency(200);
+		break;
+	case 3:
+		g_pGfxEngine->getSprite(OBJ_RAY_DEFSPRITE_EP3).applyTranslucency(200);
+		g_pGfxEngine->getSprite(RAY_FRAME_ZAP_EP3).applyTranslucency(200);
+		g_pGfxEngine->getSprite(RAY_FRAME_ZOT_EP3).applyTranslucency(200);
+		break;
+	default: break;
+	}
 
 	g_pGfxEngine->getSprite(PT100_SPRITE).applyTranslucency(196);
 	g_pGfxEngine->getSprite(PT200_SPRITE).applyTranslucency(196);
