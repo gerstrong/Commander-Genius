@@ -148,6 +148,12 @@ private:
 	SDL_Surface *screen;                // the actual video memory/window
 
 	// Those variables are used for the rendering process, so they don't need to be recalculated
-	unsigned m_dst_slice, m_src_slice, m_bytes_per_pixel;
+	unsigned m_dst_slice, m_src_slice;
+	bool m_blitsurface_alloc;
+
+	// pointer to the line in VRAM to start blitting to when stretchblitting.
+	// this may not be the first line on the display as it is adjusted to
+	// center the image on the screen when in fullscreen.
+	unsigned char *VRAMPtr;
 };
 #endif /* CVIDEODRIVER_H_ */

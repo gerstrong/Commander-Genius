@@ -25,12 +25,6 @@
 #define CONSOLE_MESSAGE_SPACING  	9
 #define CONSOLE_EXPIRE_RATE      	250
 
-// pointer to the line in VRAM to start blitting to when stretchblitting.
-// this may not be the first line on the display as it is adjusted to
-// center the image on the screen when in fullscreen.
-unsigned char *VRAMPtr;
-char blitsurface_alloc = 0;
-
 typedef struct stConsoleMessage
 {
 	char msg[80];
@@ -40,7 +34,9 @@ int NumConsoleMessages = 0;
 int ConsoleExpireTimer = 0;
 
 
-CVideoDriver::CVideoDriver() {
+CVideoDriver::CVideoDriver() :
+m_blitsurface_alloc(false)
+{
 	// Default values
 
 	showfps=true;
@@ -238,7 +234,7 @@ void CVideoDriver::setMode(int width, int height,int depth)
 
 void CVideoDriver::stop(void)
 {
-    if(blitsurface_alloc && BlitSurface)
+    if(m_blitsurface_alloc && BlitSurface)
     {
         SDL_FreeSurface(BlitSurface);
         g_pLogFile->textOut("freed BlitSurface<br>");
@@ -386,9 +382,8 @@ bool CVideoDriver::applyMode()
 	// Anyway, it just can point but does not interact yet
  	SDL_ShowCursor(!Fullscreen);
 
- 	m_bytes_per_pixel = screen->format->BytesPerPixel;
- 	m_dst_slice = m_Resolution.width*m_bytes_per_pixel;
- 	m_src_slice = game_resolution_rect.w*m_bytes_per_pixel;
+ 	m_dst_slice = m_Resolution.width*screen->format->BytesPerPixel;
+ 	m_src_slice = game_resolution_rect.w*screen->format->BytesPerPixel;
 
 	return true;
 }
@@ -424,7 +419,7 @@ bool CVideoDriver::createSurfaces()
     {
     	g_pLogFile->textOut("Blitsurface = Screen<br>");
     	BlitSurface = screen;
-    	blitsurface_alloc = 0;
+    	m_blitsurface_alloc = false;
     }
     else
     {
@@ -434,7 +429,7 @@ bool CVideoDriver::createSurfaces()
 									game_resolution_rect.h,
 									m_Resolution.depth,
 									Mode, screen->format );
-		blitsurface_alloc = 1;
+        m_blitsurface_alloc = true;
     }
     VRAMPtr = (unsigned char*)screen->pixels +
 	screenrect.y*screen->pitch + (screenrect.x*m_Resolution.depth>>3);
@@ -640,12 +635,12 @@ void CVideoDriver::updateScreen()
 
 			if(m_ScaleXFilter == 1)
 			{
-				scale2xnofilter((char*)VRAMPtr, (char*)BlitSurface->pixels, m_bytes_per_pixel);
+				scale2xnofilter((char*)VRAMPtr, (char*)BlitSurface->pixels, screen->format->BytesPerPixel);
 			}
 			else if(m_ScaleXFilter == 2)
 			{
 				scale(m_ScaleXFilter, VRAMPtr, m_dst_slice, BlitSurface->pixels,
-						m_src_slice, m_bytes_per_pixel,
+						m_src_slice, screen->format->BytesPerPixel,
 						game_resolution_rect.w, game_resolution_rect.h);
 			}
 			else
@@ -665,12 +660,12 @@ void CVideoDriver::updateScreen()
 
 			if(m_ScaleXFilter == 1)
 			{
-				scale3xnofilter((char*)VRAMPtr, (char*)BlitSurface->pixels, m_bytes_per_pixel);
+				scale3xnofilter((char*)VRAMPtr, (char*)BlitSurface->pixels, screen->format->BytesPerPixel);
 			}
 			else if(m_ScaleXFilter == 2 || m_ScaleXFilter == 3)
 			{
 				scale(m_ScaleXFilter, VRAMPtr, m_dst_slice, BlitSurface->pixels,
-						m_src_slice, m_bytes_per_pixel,
+						m_src_slice, screen->format->BytesPerPixel,
 						game_resolution_rect.w, game_resolution_rect.h);
 			}
 			else
@@ -689,12 +684,12 @@ void CVideoDriver::updateScreen()
 
 			if(m_ScaleXFilter == 1)
 			{
-				scale4xnofilter((char*)VRAMPtr, (char*)BlitSurface->pixels, m_bytes_per_pixel);
+				scale4xnofilter((char*)VRAMPtr, (char*)BlitSurface->pixels, screen->format->BytesPerPixel);
 			}
 			else if(m_ScaleXFilter >= 2 && m_ScaleXFilter <= 4 )
 			{
 				scale(m_ScaleXFilter, VRAMPtr, m_dst_slice, BlitSurface->pixels,
-						m_src_slice, m_bytes_per_pixel,
+						m_src_slice, screen->format->BytesPerPixel,
 						game_resolution_rect.w, game_resolution_rect.h);
 			}
 			else
