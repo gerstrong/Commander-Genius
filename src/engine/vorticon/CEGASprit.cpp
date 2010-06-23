@@ -201,7 +201,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 			if(filename != "")
 				Sprite.loadHQSprite(filename);
 		}
-		//Sprite.applyTransparency();
+		Sprite.applyTransparency();
 	}
 	
 	// Apply the sprites for player 2,3 and 4

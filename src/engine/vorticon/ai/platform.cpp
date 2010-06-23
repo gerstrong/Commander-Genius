@@ -32,13 +32,13 @@ void CObjectAI::platform_ai(CObject &object)
 	// push player horizontally
 	if (object.touchPlayer && !m_Player[object.touchedBy].pdie && m_Player[object.touchedBy].psupportingobject!=object.m_index)
 	{
-		if (m_Player[object.touchedBy].getXPosition() < object.getXPosition())
+		if (m_Player[object.touchedBy].getXLeftPos() < object.getXLeftPos())
 		{
 			m_Player[object.touchedBy].playpushed_x = -PLATFORMPUSHAMOUNT;
 			if (m_Player[object.touchedBy].xinertia > 0) m_Player[object.touchedBy].xinertia = 0;
 			m_Player[object.touchedBy].playpushed_decreasetimer = 0;
 		}
-		else
+		else if (m_Player[object.touchedBy].getXRightPos() > object.getXRightPos())
 		{
 			m_Player[object.touchedBy].playpushed_x = PLATFORMPUSHAMOUNT;
 			if (m_Player[object.touchedBy].xinertia < 0) m_Player[object.touchedBy].xinertia = 0;
