@@ -18,11 +18,13 @@
 #define SAFE_DELETE_ARRAY(x) if(x) { delete[] x; x=NULL; }
 
 CExeFile::CExeFile() :
+m_datasize(0),
 m_episode(0),
-m_datadirectory(""),
-m_rawdata(NULL),
+m_crc(0),
 m_data(NULL),
-m_headerdata(NULL)
+m_headerdata(NULL),
+m_rawdata(NULL),
+m_datadirectory("")
 {}
 
 char CExeFile::getEpisode()

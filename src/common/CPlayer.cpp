@@ -120,7 +120,6 @@ void CPlayer::setupforLevelPlay()
 {
 	plastfalling = true;
 	solid = true;
-	pfalling = false;
 	pshowdir = RIGHT;
 	ppogostick = false;
 	pjumping = PNOJUMP;

@@ -332,7 +332,7 @@ bool CHighScores::saveHighScoreTable()
 	ScoreTableFile.seekp(8*8*sizeof(char),ios_base::cur);
 	ScoreTableFile.write((char*)(c_extra), 8*4*sizeof(unsigned char));
 	ScoreTableFile.seekp(8*4*sizeof(char),ios_base::cur);
-	ScoreTableFile.write((char*) c_cities, 8*sizeof(int));
+	ScoreTableFile.write((char*)(c_cities), 8*sizeof(int));
 	
 	ScoreTableFile.close();
 	

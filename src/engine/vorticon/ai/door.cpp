@@ -34,6 +34,7 @@ void CObjectAI::door_ai( CObject &object, char DoorOpenDir )
 		object.ai.door.timer = 0;
 		if (doorsprite.getHeight() == 0)
 		{
+			object.kill();
 			deleteObj(object);
 			return;
 		}

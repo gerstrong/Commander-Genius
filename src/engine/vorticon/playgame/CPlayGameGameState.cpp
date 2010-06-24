@@ -65,11 +65,11 @@ bool CPlayGameVorticon::loadGameState()
 			player->setupforLevelPlay();
 			m_SavedGame.decodeData(x);
 			m_SavedGame.decodeData(y);
+			player->moveToForce(x,y-(4<<STC));
 			m_SavedGame.decodeData(player->blockedd);
 			m_SavedGame.decodeData(player->blockedu);
 			m_SavedGame.decodeData(player->blockedl);
 			m_SavedGame.decodeData(player->blockedr);
-			player->moveToForce(x,y-1);
 			m_SavedGame.decodeData(player->inventory);
 		}
 
@@ -102,7 +102,8 @@ bool CPlayGameVorticon::loadGameState()
 			m_SavedGame.decodeData(object.honorPriority);
 			m_SavedGame.decodeData(object.sprite);
 			m_SavedGame.decodeData(object.ai);
-			m_Object.push_back(object);
+			if(object.m_type != OBJ_DOOR) // small workaround for doors which might be opening
+				m_Object.push_back(object);
 		}
 
 		// TODO: An algorithm for comparing the number of players saved and we actually have need to be in sync

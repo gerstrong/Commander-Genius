@@ -120,7 +120,8 @@ public:
 	unsigned long mapplayx;
 	signed int mapplayy;
 
-	unsigned char pfalling,plastfalling,pfallspeed;
+	bool pfalling;
+	unsigned char plastfalling,pfallspeed;
 
 	unsigned char pwalking,playspeed;
 	unsigned char pslowingdown;
