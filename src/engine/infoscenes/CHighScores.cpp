@@ -170,15 +170,6 @@ void CHighScores::processWriting()
 		m_Name[m_Place].append(g_pInput->getPressedTypingKey());
 	}
 	
-	/*// Add or character depending on what the user writes
-	for(int i=KA ; i<=KZ ; i++)
-	{
-		if (g_pInput->getHoldedKey(KSHIFT) && g_pInput->getPressedKey(i) && m_Name[m_Place].size() < 13)
-			m_Name[m_Place].push_back('A' + i - KA);
-		else if(g_pInput->getPressedKey(i) && m_Name[m_Place].size() < 13)
-			m_Name[m_Place].push_back('a' + i - KA);
-	}*/
-	
 	if(g_pInput->getPressedKey(KBCKSPCE) && (m_Name[m_Place].length() > 0))
 	{
 		m_Name[m_Place].erase(m_Name[m_Place].length()-1);
