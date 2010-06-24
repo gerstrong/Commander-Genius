@@ -131,10 +131,10 @@ AUX_SOURCE_DIRECTORY(src/sdl/sys SDLSYS_S)
 AUX_SOURCE_DIRECTORY(src/sdl/video SDLVIDEO_S)
 AUX_SOURCE_DIRECTORY(src/vorbis VORBIS_S)
 
-SET(ALL_SRCS ${ROOT_S} ${COMMON_S} ${MENU_S} ${DIALOG_S} ${ENGINE_S} 
+SET(ALL_SRCS ${COMMON_S} ${MENU_S} ${DIALOG_S} ${ENGINE_S} 
 	${AI_S} ${GALAXY_S} ${INFOSCENES_S} ${PLAYGAME_S} ${VORTICON_S} ${FINALE_S} ${VPLAYGAME_S} ${FILEIO_S} 
 	${COMPRESSION_S} ${GRAPHICS_S} ${EFFECTS_S} ${HQP_S} ${SCALE2X_S} ${SDL_S} ${SDLSOUND_S} ${SDLSYS_S}
-	${SDLVIDEO_S} )
+	${SDLVIDEO_S} ${ROOT_S})
 
 IF(UNIX)
 # Compilation under Linux
@@ -189,7 +189,7 @@ IF (SDL)
 ENDIF (SDL)
 
 IF (OPENGL)
-	ADD_DEFINITIONS(-DUSE_OPENGL)
+	ADD_DEFINITIONS(-DGL)
 ENDIF (OPENGL)
 
 IF(DEBUG)
@@ -198,11 +198,6 @@ ENDIF(DEBUG)
 
 # Executable definition
 ADD_EXECUTABLE(commandergenius ${ALL_SRCS})
-
-# The Windows Version has an icon in the executable
-IF(BUILD_TYPE STREQUAL WIN32)
-	SET_TARGET_PROPERTIES(commandergenius PROPERTIES LINK_FLAGS ./src/CGLogo.o)
-ENDIF(BUILD_TYPE STREQUAL WIN32)
 
 # Linking part under Linux
 IF(SDL)	
@@ -249,6 +244,12 @@ IF(OGG)
 		TARGET_LINK_LIBRARIES(commandergenius ogg)
 	ENDIF(BUILD_TYPE STREQUAL WIN32)
 ENDIF(OGG)
+
+# The Windows Version has an icon in the executable
+IF(BUILD_TYPE STREQUAL WIN32)
+	SET_TARGET_PROPERTIES(commandergenius PROPERTIES LINK_FLAGS ${CMAKE_CURRENT_SOURCE_DIR}/src/CGLogo.o)
+	MESSAGE( "Will build with the CG-Icon for Windows" )
+ENDIF(BUILD_TYPE STREQUAL WIN32)
 
 # Set binary(executable) file name. In Windows this filename needs the exe extension
 IF(BUILD_TYPE STREQUAL WIN32)
