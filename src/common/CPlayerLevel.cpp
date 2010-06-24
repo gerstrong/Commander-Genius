@@ -42,13 +42,16 @@ void CPlayer::processInLevel(const bool &platextending)
 		
 		setDir();
 		
-		getgoodies();
+		if(!level_done)
+		{
+			getgoodies();
 		
-		ankh(); // Normally can happen in Episode 3
+			ankh(); // Normally can happen in Episode 3
 		
-		raygun();
+			raygun();
 		
-		keencicle();
+			keencicle();
+		}
 		
 		if(!pfrozentime)
 		{
