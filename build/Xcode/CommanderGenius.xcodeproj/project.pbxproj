@@ -59,6 +59,80 @@
 		638890BF1162A490009810AC /* extratiles.bmp in Copy Res Files */ = {isa = PBXBuildFile; fileRef = 638890BE1162A490009810AC /* extratiles.bmp */; };
 		63999E3A10D151BA00EDB6CD /* fonts.bmp in Copy Keen 1 GFX Files */ = {isa = PBXBuildFile; fileRef = 63999E3910D151BA00EDB6CD /* fonts.bmp */; };
 		63AB8C2F107C62D0001EE22F /* cglogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63AB8C2E107C62D0001EE22F /* cglogo.icns */; };
+		63CB728D11D339D50069EAC6 /* CK1PATCH.EXE in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB71F511D339BC0069EAC6 /* CK1PATCH.EXE */; };
+		63CB728E11D339D50069EAC6 /* EGAHEAD.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB71F611D339BC0069EAC6 /* EGAHEAD.CK1 */; };
+		63CB728F11D339D50069EAC6 /* EGALATCH.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB71F711D339BC0069EAC6 /* EGALATCH.CK1 */; };
+		63CB729011D339D50069EAC6 /* EGASPRIT.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB71F811D339BC0069EAC6 /* EGASPRIT.CK1 */; };
+		63CB729111D339D50069EAC6 /* ENDTEXT.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB71F911D339BC0069EAC6 /* ENDTEXT.CK1 */; };
+		63CB729211D339D50069EAC6 /* FINALE.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB71FA11D339BC0069EAC6 /* FINALE.CK1 */; };
+		63CB729311D339D50069EAC6 /* HELPTEXT.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB71FB11D339BC0069EAC6 /* HELPTEXT.CK1 */; };
+		63CB729411D339D50069EAC6 /* KEEN1.DOC in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB71FC11D339BC0069EAC6 /* KEEN1.DOC */; };
+		63CB729511D339D50069EAC6 /* KEEN1.EXE in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB71FD11D339BC0069EAC6 /* KEEN1.EXE */; };
+		63CB729611D339D50069EAC6 /* LEVEL01.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB71FE11D339BC0069EAC6 /* LEVEL01.CK1 */; };
+		63CB729711D339D50069EAC6 /* LEVEL02.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB71FF11D339BC0069EAC6 /* LEVEL02.CK1 */; };
+		63CB729811D339D50069EAC6 /* LEVEL03.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB720011D339BC0069EAC6 /* LEVEL03.CK1 */; };
+		63CB729911D339D50069EAC6 /* LEVEL04.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB720111D339BC0069EAC6 /* LEVEL04.CK1 */; };
+		63CB729A11D339D50069EAC6 /* LEVEL05.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB720211D339BC0069EAC6 /* LEVEL05.CK1 */; };
+		63CB729B11D339D50069EAC6 /* LEVEL06.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB720311D339BC0069EAC6 /* LEVEL06.CK1 */; };
+		63CB729C11D339D50069EAC6 /* LEVEL07.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB720411D339BC0069EAC6 /* LEVEL07.CK1 */; };
+		63CB729D11D339D50069EAC6 /* LEVEL08.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB720511D339BC0069EAC6 /* LEVEL08.CK1 */; };
+		63CB729E11D339D50069EAC6 /* LEVEL09.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB720611D339BC0069EAC6 /* LEVEL09.CK1 */; };
+		63CB729F11D339D50069EAC6 /* LEVEL10.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB720711D339BC0069EAC6 /* LEVEL10.CK1 */; };
+		63CB72A011D339D50069EAC6 /* LEVEL11.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB720811D339BC0069EAC6 /* LEVEL11.CK1 */; };
+		63CB72A111D339D50069EAC6 /* LEVEL12.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB720911D339BC0069EAC6 /* LEVEL12.CK1 */; };
+		63CB72A211D339D50069EAC6 /* LEVEL13.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB720A11D339BC0069EAC6 /* LEVEL13.CK1 */; };
+		63CB72A311D339D50069EAC6 /* LEVEL14.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB720B11D339BC0069EAC6 /* LEVEL14.CK1 */; };
+		63CB72A411D339D50069EAC6 /* LEVEL15.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB720C11D339BC0069EAC6 /* LEVEL15.CK1 */; };
+		63CB72A511D339D50069EAC6 /* LEVEL16.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB720D11D339BC0069EAC6 /* LEVEL16.CK1 */; };
+		63CB72A611D339D50069EAC6 /* LEVEL22.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB720E11D339BC0069EAC6 /* LEVEL22.CK1 */; };
+		63CB72A711D339D50069EAC6 /* LEVEL29.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB720F11D339BC0069EAC6 /* LEVEL29.CK1 */; };
+		63CB72A811D339D50069EAC6 /* LEVEL80.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB721011D339BC0069EAC6 /* LEVEL80.CK1 */; };
+		63CB72A911D339D50069EAC6 /* LEVEL81.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB721111D339BC0069EAC6 /* LEVEL81.CK1 */; };
+		63CB72AA11D339D50069EAC6 /* LEVEL90.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB721211D339BC0069EAC6 /* LEVEL90.CK1 */; };
+		63CB72AB11D339D50069EAC6 /* PREVIEW2.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB721311D339BC0069EAC6 /* PREVIEW2.CK1 */; };
+		63CB72AC11D339D50069EAC6 /* PREVIEW3.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB721411D339BC0069EAC6 /* PREVIEW3.CK1 */; };
+		63CB72AD11D339D50069EAC6 /* PREVIEWS.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB721511D339BC0069EAC6 /* PREVIEWS.CK1 */; };
+		63CB72AE11D339D50069EAC6 /* ReadMe.txt in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB721611D339BC0069EAC6 /* ReadMe.txt */; };
+		63CB72AF11D339D50069EAC6 /* SOUNDS.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB721711D339BC0069EAC6 /* SOUNDS.CK1 */; };
+		63CB72B011D339D50069EAC6 /* STORYTXT.CK1 in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB721811D339BC0069EAC6 /* STORYTXT.CK1 */; };
+		63CB72B111D339D50069EAC6 /* XkyKeen.pat in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB721911D339BC0069EAC6 /* XkyKeen.pat */; };
+		63CB72B211D339D50069EAC6 /* XkyKeen1.bat in Copy Keen X Files */ = {isa = PBXBuildFile; fileRef = 63CB721A11D339BC0069EAC6 /* XkyKeen1.bat */; };
+		63CB72B311D339DF0069EAC6 /* CK1PATCH.EXE in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB721C11D339BC0069EAC6 /* CK1PATCH.EXE */; };
+		63CB72B411D339DF0069EAC6 /* DUMP.BEH in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB721D11D339BC0069EAC6 /* DUMP.BEH */; };
+		63CB72B511D339DF0069EAC6 /* EGAHEAD.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB721E11D339BC0069EAC6 /* EGAHEAD.CK1 */; };
+		63CB72B611D339DF0069EAC6 /* EGALATCH.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB721F11D339BC0069EAC6 /* EGALATCH.CK1 */; };
+		63CB72B711D339DF0069EAC6 /* EGASPRIT.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB722011D339BC0069EAC6 /* EGASPRIT.CK1 */; };
+		63CB72B811D339DF0069EAC6 /* ENDTEXT.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB722111D339BC0069EAC6 /* ENDTEXT.CK1 */; };
+		63CB72B911D339DF0069EAC6 /* FINALE.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB722211D339BC0069EAC6 /* FINALE.CK1 */; };
+		63CB72BA11D339DF0069EAC6 /* HELPTEXT.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB722311D339BC0069EAC6 /* HELPTEXT.CK1 */; };
+		63CB72BB11D339DF0069EAC6 /* KEEN1.EXE in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB722411D339BD0069EAC6 /* KEEN1.EXE */; };
+		63CB72BC11D339DF0069EAC6 /* LEVEL01.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB722511D339BD0069EAC6 /* LEVEL01.CK1 */; };
+		63CB72BD11D339DF0069EAC6 /* LEVEL02.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB722611D339BD0069EAC6 /* LEVEL02.CK1 */; };
+		63CB72BE11D339DF0069EAC6 /* LEVEL03.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB722711D339BD0069EAC6 /* LEVEL03.CK1 */; };
+		63CB72BF11D339DF0069EAC6 /* LEVEL04.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB722811D339BD0069EAC6 /* LEVEL04.CK1 */; };
+		63CB72C011D339DF0069EAC6 /* LEVEL05.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB722911D339BD0069EAC6 /* LEVEL05.CK1 */; };
+		63CB72C111D339DF0069EAC6 /* LEVEL06.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB722A11D339BD0069EAC6 /* LEVEL06.CK1 */; };
+		63CB72C211D339DF0069EAC6 /* LEVEL07.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB722B11D339BD0069EAC6 /* LEVEL07.CK1 */; };
+		63CB72C311D339DF0069EAC6 /* LEVEL08.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB722C11D339BD0069EAC6 /* LEVEL08.CK1 */; };
+		63CB72C411D339DF0069EAC6 /* LEVEL09.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB722D11D339BD0069EAC6 /* LEVEL09.CK1 */; };
+		63CB72C511D339DF0069EAC6 /* LEVEL10.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB722E11D339BD0069EAC6 /* LEVEL10.CK1 */; };
+		63CB72C611D339DF0069EAC6 /* LEVEL11.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB722F11D339BD0069EAC6 /* LEVEL11.CK1 */; };
+		63CB72C711D339DF0069EAC6 /* LEVEL12.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB723011D339BD0069EAC6 /* LEVEL12.CK1 */; };
+		63CB72C811D339DF0069EAC6 /* LEVEL13.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB723111D339BD0069EAC6 /* LEVEL13.CK1 */; };
+		63CB72C911D339DF0069EAC6 /* LEVEL14.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB723211D339BD0069EAC6 /* LEVEL14.CK1 */; };
+		63CB72CA11D339DF0069EAC6 /* LEVEL15.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB723311D339BD0069EAC6 /* LEVEL15.CK1 */; };
+		63CB72CB11D339DF0069EAC6 /* LEVEL16.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB723411D339BD0069EAC6 /* LEVEL16.CK1 */; };
+		63CB72CC11D339DF0069EAC6 /* LEVEL80.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB723511D339BD0069EAC6 /* LEVEL80.CK1 */; };
+		63CB72CD11D339DF0069EAC6 /* LEVEL90.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB723611D339BD0069EAC6 /* LEVEL90.CK1 */; };
+		63CB72CE11D339DF0069EAC6 /* PREVIEW2.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB723711D339BD0069EAC6 /* PREVIEW2.CK1 */; };
+		63CB72CF11D339DF0069EAC6 /* PREVIEW3.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB723811D339BD0069EAC6 /* PREVIEW3.CK1 */; };
+		63CB72D011D339DF0069EAC6 /* PREVIEWS.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB723911D339BD0069EAC6 /* PREVIEWS.CK1 */; };
+		63CB72D111D339DF0069EAC6 /* readme.txt in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB723A11D339BD0069EAC6 /* readme.txt */; };
+		63CB72D211D339DF0069EAC6 /* SOUNDS.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB723B11D339BD0069EAC6 /* SOUNDS.CK1 */; };
+		63CB72D311D339DF0069EAC6 /* STATUS.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB723C11D339BD0069EAC6 /* STATUS.CK1 */; };
+		63CB72D411D339DF0069EAC6 /* STORYTXT.CK1 in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB723D11D339BD0069EAC6 /* STORYTXT.CK1 */; };
+		63CB72D511D339DF0069EAC6 /* yorp.pat in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB723E11D339BD0069EAC6 /* yorp.pat */; };
+		63CB72D611D339DF0069EAC6 /* Yorphius.BAT in Copy Yorphius Files */ = {isa = PBXBuildFile; fileRef = 63CB723F11D339BD0069EAC6 /* Yorphius.BAT */; };
 		63CD120311CFF5FC00F60BC8 /* arguments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10A511CFF5FB00F60BC8 /* arguments.cpp */; };
 		63CD120411CFF5FC00F60BC8 /* CGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10A711CFF5FB00F60BC8 /* CGame.cpp */; };
 		63CD120511CFF5FC00F60BC8 /* CGameControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10A911CFF5FB00F60BC8 /* CGameControl.cpp */; };
@@ -335,14 +409,52 @@
 			name = "Copy Text Files";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		637F48BC105C96AF00DE486C /* Copy Game Data Files */ = {
+		637F48BC105C96AF00DE486C /* Copy Keen X Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = data/games;
+			dstPath = data/games/keenx;
 			dstSubfolderSpec = 7;
 			files = (
+				63CB728D11D339D50069EAC6 /* CK1PATCH.EXE in Copy Keen X Files */,
+				63CB728E11D339D50069EAC6 /* EGAHEAD.CK1 in Copy Keen X Files */,
+				63CB728F11D339D50069EAC6 /* EGALATCH.CK1 in Copy Keen X Files */,
+				63CB729011D339D50069EAC6 /* EGASPRIT.CK1 in Copy Keen X Files */,
+				63CB729111D339D50069EAC6 /* ENDTEXT.CK1 in Copy Keen X Files */,
+				63CB729211D339D50069EAC6 /* FINALE.CK1 in Copy Keen X Files */,
+				63CB729311D339D50069EAC6 /* HELPTEXT.CK1 in Copy Keen X Files */,
+				63CB729411D339D50069EAC6 /* KEEN1.DOC in Copy Keen X Files */,
+				63CB729511D339D50069EAC6 /* KEEN1.EXE in Copy Keen X Files */,
+				63CB729611D339D50069EAC6 /* LEVEL01.CK1 in Copy Keen X Files */,
+				63CB729711D339D50069EAC6 /* LEVEL02.CK1 in Copy Keen X Files */,
+				63CB729811D339D50069EAC6 /* LEVEL03.CK1 in Copy Keen X Files */,
+				63CB729911D339D50069EAC6 /* LEVEL04.CK1 in Copy Keen X Files */,
+				63CB729A11D339D50069EAC6 /* LEVEL05.CK1 in Copy Keen X Files */,
+				63CB729B11D339D50069EAC6 /* LEVEL06.CK1 in Copy Keen X Files */,
+				63CB729C11D339D50069EAC6 /* LEVEL07.CK1 in Copy Keen X Files */,
+				63CB729D11D339D50069EAC6 /* LEVEL08.CK1 in Copy Keen X Files */,
+				63CB729E11D339D50069EAC6 /* LEVEL09.CK1 in Copy Keen X Files */,
+				63CB729F11D339D50069EAC6 /* LEVEL10.CK1 in Copy Keen X Files */,
+				63CB72A011D339D50069EAC6 /* LEVEL11.CK1 in Copy Keen X Files */,
+				63CB72A111D339D50069EAC6 /* LEVEL12.CK1 in Copy Keen X Files */,
+				63CB72A211D339D50069EAC6 /* LEVEL13.CK1 in Copy Keen X Files */,
+				63CB72A311D339D50069EAC6 /* LEVEL14.CK1 in Copy Keen X Files */,
+				63CB72A411D339D50069EAC6 /* LEVEL15.CK1 in Copy Keen X Files */,
+				63CB72A511D339D50069EAC6 /* LEVEL16.CK1 in Copy Keen X Files */,
+				63CB72A611D339D50069EAC6 /* LEVEL22.CK1 in Copy Keen X Files */,
+				63CB72A711D339D50069EAC6 /* LEVEL29.CK1 in Copy Keen X Files */,
+				63CB72A811D339D50069EAC6 /* LEVEL80.CK1 in Copy Keen X Files */,
+				63CB72A911D339D50069EAC6 /* LEVEL81.CK1 in Copy Keen X Files */,
+				63CB72AA11D339D50069EAC6 /* LEVEL90.CK1 in Copy Keen X Files */,
+				63CB72AB11D339D50069EAC6 /* PREVIEW2.CK1 in Copy Keen X Files */,
+				63CB72AC11D339D50069EAC6 /* PREVIEW3.CK1 in Copy Keen X Files */,
+				63CB72AD11D339D50069EAC6 /* PREVIEWS.CK1 in Copy Keen X Files */,
+				63CB72AE11D339D50069EAC6 /* ReadMe.txt in Copy Keen X Files */,
+				63CB72AF11D339D50069EAC6 /* SOUNDS.CK1 in Copy Keen X Files */,
+				63CB72B011D339D50069EAC6 /* STORYTXT.CK1 in Copy Keen X Files */,
+				63CB72B111D339D50069EAC6 /* XkyKeen.pat in Copy Keen X Files */,
+				63CB72B211D339D50069EAC6 /* XkyKeen1.bat in Copy Keen X Files */,
 			);
-			name = "Copy Game Data Files";
+			name = "Copy Keen X Files";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		639C98D511B2BC1400D239D1 /* Copy Keen 1 GFX Files */ = {
@@ -354,6 +466,52 @@
 				63999E3A10D151BA00EDB6CD /* fonts.bmp in Copy Keen 1 GFX Files */,
 			);
 			name = "Copy Keen 1 GFX Files";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		63CB728A11D339BD0069EAC6 /* Copy Yorphius Files */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = data/games/yorphius;
+			dstSubfolderSpec = 7;
+			files = (
+				63CB72B311D339DF0069EAC6 /* CK1PATCH.EXE in Copy Yorphius Files */,
+				63CB72B411D339DF0069EAC6 /* DUMP.BEH in Copy Yorphius Files */,
+				63CB72B511D339DF0069EAC6 /* EGAHEAD.CK1 in Copy Yorphius Files */,
+				63CB72B611D339DF0069EAC6 /* EGALATCH.CK1 in Copy Yorphius Files */,
+				63CB72B711D339DF0069EAC6 /* EGASPRIT.CK1 in Copy Yorphius Files */,
+				63CB72B811D339DF0069EAC6 /* ENDTEXT.CK1 in Copy Yorphius Files */,
+				63CB72B911D339DF0069EAC6 /* FINALE.CK1 in Copy Yorphius Files */,
+				63CB72BA11D339DF0069EAC6 /* HELPTEXT.CK1 in Copy Yorphius Files */,
+				63CB72BB11D339DF0069EAC6 /* KEEN1.EXE in Copy Yorphius Files */,
+				63CB72BC11D339DF0069EAC6 /* LEVEL01.CK1 in Copy Yorphius Files */,
+				63CB72BD11D339DF0069EAC6 /* LEVEL02.CK1 in Copy Yorphius Files */,
+				63CB72BE11D339DF0069EAC6 /* LEVEL03.CK1 in Copy Yorphius Files */,
+				63CB72BF11D339DF0069EAC6 /* LEVEL04.CK1 in Copy Yorphius Files */,
+				63CB72C011D339DF0069EAC6 /* LEVEL05.CK1 in Copy Yorphius Files */,
+				63CB72C111D339DF0069EAC6 /* LEVEL06.CK1 in Copy Yorphius Files */,
+				63CB72C211D339DF0069EAC6 /* LEVEL07.CK1 in Copy Yorphius Files */,
+				63CB72C311D339DF0069EAC6 /* LEVEL08.CK1 in Copy Yorphius Files */,
+				63CB72C411D339DF0069EAC6 /* LEVEL09.CK1 in Copy Yorphius Files */,
+				63CB72C511D339DF0069EAC6 /* LEVEL10.CK1 in Copy Yorphius Files */,
+				63CB72C611D339DF0069EAC6 /* LEVEL11.CK1 in Copy Yorphius Files */,
+				63CB72C711D339DF0069EAC6 /* LEVEL12.CK1 in Copy Yorphius Files */,
+				63CB72C811D339DF0069EAC6 /* LEVEL13.CK1 in Copy Yorphius Files */,
+				63CB72C911D339DF0069EAC6 /* LEVEL14.CK1 in Copy Yorphius Files */,
+				63CB72CA11D339DF0069EAC6 /* LEVEL15.CK1 in Copy Yorphius Files */,
+				63CB72CB11D339DF0069EAC6 /* LEVEL16.CK1 in Copy Yorphius Files */,
+				63CB72CC11D339DF0069EAC6 /* LEVEL80.CK1 in Copy Yorphius Files */,
+				63CB72CD11D339DF0069EAC6 /* LEVEL90.CK1 in Copy Yorphius Files */,
+				63CB72CE11D339DF0069EAC6 /* PREVIEW2.CK1 in Copy Yorphius Files */,
+				63CB72CF11D339DF0069EAC6 /* PREVIEW3.CK1 in Copy Yorphius Files */,
+				63CB72D011D339DF0069EAC6 /* PREVIEWS.CK1 in Copy Yorphius Files */,
+				63CB72D111D339DF0069EAC6 /* readme.txt in Copy Yorphius Files */,
+				63CB72D211D339DF0069EAC6 /* SOUNDS.CK1 in Copy Yorphius Files */,
+				63CB72D311D339DF0069EAC6 /* STATUS.CK1 in Copy Yorphius Files */,
+				63CB72D411D339DF0069EAC6 /* STORYTXT.CK1 in Copy Yorphius Files */,
+				63CB72D511D339DF0069EAC6 /* yorp.pat in Copy Yorphius Files */,
+				63CB72D611D339DF0069EAC6 /* Yorphius.BAT in Copy Yorphius Files */,
+			);
+			name = "Copy Yorphius Files";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		63D4A718107FEC1100E43500 /* Copy Res Files */ = {
@@ -480,6 +638,80 @@
 		638890BE1162A490009810AC /* extratiles.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = extratiles.bmp; sourceTree = "<group>"; };
 		63999E3910D151BA00EDB6CD /* fonts.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = fonts.bmp; sourceTree = "<group>"; };
 		63AB8C2E107C62D0001EE22F /* cglogo.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = cglogo.icns; sourceTree = "<group>"; };
+		63CB71F511D339BC0069EAC6 /* CK1PATCH.EXE */ = {isa = PBXFileReference; lastKnownFileType = file; path = CK1PATCH.EXE; sourceTree = "<group>"; };
+		63CB71F611D339BC0069EAC6 /* EGAHEAD.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = EGAHEAD.CK1; sourceTree = "<group>"; };
+		63CB71F711D339BC0069EAC6 /* EGALATCH.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = EGALATCH.CK1; sourceTree = "<group>"; };
+		63CB71F811D339BC0069EAC6 /* EGASPRIT.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = EGASPRIT.CK1; sourceTree = "<group>"; };
+		63CB71F911D339BC0069EAC6 /* ENDTEXT.CK1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ENDTEXT.CK1; sourceTree = "<group>"; };
+		63CB71FA11D339BC0069EAC6 /* FINALE.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = FINALE.CK1; sourceTree = "<group>"; };
+		63CB71FB11D339BC0069EAC6 /* HELPTEXT.CK1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HELPTEXT.CK1; sourceTree = "<group>"; };
+		63CB71FC11D339BC0069EAC6 /* KEEN1.DOC */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = KEEN1.DOC; sourceTree = "<group>"; };
+		63CB71FD11D339BC0069EAC6 /* KEEN1.EXE */ = {isa = PBXFileReference; lastKnownFileType = file; path = KEEN1.EXE; sourceTree = "<group>"; };
+		63CB71FE11D339BC0069EAC6 /* LEVEL01.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL01.CK1; sourceTree = "<group>"; };
+		63CB71FF11D339BC0069EAC6 /* LEVEL02.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL02.CK1; sourceTree = "<group>"; };
+		63CB720011D339BC0069EAC6 /* LEVEL03.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL03.CK1; sourceTree = "<group>"; };
+		63CB720111D339BC0069EAC6 /* LEVEL04.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL04.CK1; sourceTree = "<group>"; };
+		63CB720211D339BC0069EAC6 /* LEVEL05.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL05.CK1; sourceTree = "<group>"; };
+		63CB720311D339BC0069EAC6 /* LEVEL06.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL06.CK1; sourceTree = "<group>"; };
+		63CB720411D339BC0069EAC6 /* LEVEL07.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL07.CK1; sourceTree = "<group>"; };
+		63CB720511D339BC0069EAC6 /* LEVEL08.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL08.CK1; sourceTree = "<group>"; };
+		63CB720611D339BC0069EAC6 /* LEVEL09.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL09.CK1; sourceTree = "<group>"; };
+		63CB720711D339BC0069EAC6 /* LEVEL10.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL10.CK1; sourceTree = "<group>"; };
+		63CB720811D339BC0069EAC6 /* LEVEL11.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL11.CK1; sourceTree = "<group>"; };
+		63CB720911D339BC0069EAC6 /* LEVEL12.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL12.CK1; sourceTree = "<group>"; };
+		63CB720A11D339BC0069EAC6 /* LEVEL13.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL13.CK1; sourceTree = "<group>"; };
+		63CB720B11D339BC0069EAC6 /* LEVEL14.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL14.CK1; sourceTree = "<group>"; };
+		63CB720C11D339BC0069EAC6 /* LEVEL15.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL15.CK1; sourceTree = "<group>"; };
+		63CB720D11D339BC0069EAC6 /* LEVEL16.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL16.CK1; sourceTree = "<group>"; };
+		63CB720E11D339BC0069EAC6 /* LEVEL22.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL22.CK1; sourceTree = "<group>"; };
+		63CB720F11D339BC0069EAC6 /* LEVEL29.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL29.CK1; sourceTree = "<group>"; };
+		63CB721011D339BC0069EAC6 /* LEVEL80.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL80.CK1; sourceTree = "<group>"; };
+		63CB721111D339BC0069EAC6 /* LEVEL81.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL81.CK1; sourceTree = "<group>"; };
+		63CB721211D339BC0069EAC6 /* LEVEL90.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL90.CK1; sourceTree = "<group>"; };
+		63CB721311D339BC0069EAC6 /* PREVIEW2.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = PREVIEW2.CK1; sourceTree = "<group>"; };
+		63CB721411D339BC0069EAC6 /* PREVIEW3.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = PREVIEW3.CK1; sourceTree = "<group>"; };
+		63CB721511D339BC0069EAC6 /* PREVIEWS.CK1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PREVIEWS.CK1; sourceTree = "<group>"; };
+		63CB721611D339BC0069EAC6 /* ReadMe.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ReadMe.txt; sourceTree = "<group>"; };
+		63CB721711D339BC0069EAC6 /* SOUNDS.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = SOUNDS.CK1; sourceTree = "<group>"; };
+		63CB721811D339BC0069EAC6 /* STORYTXT.CK1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = STORYTXT.CK1; sourceTree = "<group>"; };
+		63CB721911D339BC0069EAC6 /* XkyKeen.pat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = XkyKeen.pat; sourceTree = "<group>"; };
+		63CB721A11D339BC0069EAC6 /* XkyKeen1.bat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = XkyKeen1.bat; sourceTree = "<group>"; };
+		63CB721C11D339BC0069EAC6 /* CK1PATCH.EXE */ = {isa = PBXFileReference; lastKnownFileType = file; path = CK1PATCH.EXE; sourceTree = "<group>"; };
+		63CB721D11D339BC0069EAC6 /* DUMP.BEH */ = {isa = PBXFileReference; lastKnownFileType = file; path = DUMP.BEH; sourceTree = "<group>"; };
+		63CB721E11D339BC0069EAC6 /* EGAHEAD.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = EGAHEAD.CK1; sourceTree = "<group>"; };
+		63CB721F11D339BC0069EAC6 /* EGALATCH.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = EGALATCH.CK1; sourceTree = "<group>"; };
+		63CB722011D339BC0069EAC6 /* EGASPRIT.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = EGASPRIT.CK1; sourceTree = "<group>"; };
+		63CB722111D339BC0069EAC6 /* ENDTEXT.CK1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ENDTEXT.CK1; sourceTree = "<group>"; };
+		63CB722211D339BC0069EAC6 /* FINALE.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = FINALE.CK1; sourceTree = "<group>"; };
+		63CB722311D339BC0069EAC6 /* HELPTEXT.CK1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HELPTEXT.CK1; sourceTree = "<group>"; };
+		63CB722411D339BD0069EAC6 /* KEEN1.EXE */ = {isa = PBXFileReference; lastKnownFileType = file; path = KEEN1.EXE; sourceTree = "<group>"; };
+		63CB722511D339BD0069EAC6 /* LEVEL01.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL01.CK1; sourceTree = "<group>"; };
+		63CB722611D339BD0069EAC6 /* LEVEL02.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL02.CK1; sourceTree = "<group>"; };
+		63CB722711D339BD0069EAC6 /* LEVEL03.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL03.CK1; sourceTree = "<group>"; };
+		63CB722811D339BD0069EAC6 /* LEVEL04.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL04.CK1; sourceTree = "<group>"; };
+		63CB722911D339BD0069EAC6 /* LEVEL05.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL05.CK1; sourceTree = "<group>"; };
+		63CB722A11D339BD0069EAC6 /* LEVEL06.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL06.CK1; sourceTree = "<group>"; };
+		63CB722B11D339BD0069EAC6 /* LEVEL07.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL07.CK1; sourceTree = "<group>"; };
+		63CB722C11D339BD0069EAC6 /* LEVEL08.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL08.CK1; sourceTree = "<group>"; };
+		63CB722D11D339BD0069EAC6 /* LEVEL09.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL09.CK1; sourceTree = "<group>"; };
+		63CB722E11D339BD0069EAC6 /* LEVEL10.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL10.CK1; sourceTree = "<group>"; };
+		63CB722F11D339BD0069EAC6 /* LEVEL11.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL11.CK1; sourceTree = "<group>"; };
+		63CB723011D339BD0069EAC6 /* LEVEL12.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL12.CK1; sourceTree = "<group>"; };
+		63CB723111D339BD0069EAC6 /* LEVEL13.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL13.CK1; sourceTree = "<group>"; };
+		63CB723211D339BD0069EAC6 /* LEVEL14.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL14.CK1; sourceTree = "<group>"; };
+		63CB723311D339BD0069EAC6 /* LEVEL15.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL15.CK1; sourceTree = "<group>"; };
+		63CB723411D339BD0069EAC6 /* LEVEL16.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL16.CK1; sourceTree = "<group>"; };
+		63CB723511D339BD0069EAC6 /* LEVEL80.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL80.CK1; sourceTree = "<group>"; };
+		63CB723611D339BD0069EAC6 /* LEVEL90.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = LEVEL90.CK1; sourceTree = "<group>"; };
+		63CB723711D339BD0069EAC6 /* PREVIEW2.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = PREVIEW2.CK1; sourceTree = "<group>"; };
+		63CB723811D339BD0069EAC6 /* PREVIEW3.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = PREVIEW3.CK1; sourceTree = "<group>"; };
+		63CB723911D339BD0069EAC6 /* PREVIEWS.CK1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PREVIEWS.CK1; sourceTree = "<group>"; };
+		63CB723A11D339BD0069EAC6 /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.txt; sourceTree = "<group>"; };
+		63CB723B11D339BD0069EAC6 /* SOUNDS.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = SOUNDS.CK1; sourceTree = "<group>"; };
+		63CB723C11D339BD0069EAC6 /* STATUS.CK1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = STATUS.CK1; sourceTree = "<group>"; };
+		63CB723D11D339BD0069EAC6 /* STORYTXT.CK1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = STORYTXT.CK1; sourceTree = "<group>"; };
+		63CB723E11D339BD0069EAC6 /* yorp.pat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = yorp.pat; sourceTree = "<group>"; };
+		63CB723F11D339BD0069EAC6 /* Yorphius.BAT */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Yorphius.BAT; sourceTree = "<group>"; };
 		63CD10A511CFF5FB00F60BC8 /* arguments.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = arguments.cpp; sourceTree = "<group>"; };
 		63CD10A611CFF5FB00F60BC8 /* arguments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = arguments.h; sourceTree = "<group>"; };
 		63CD10A711CFF5FB00F60BC8 /* CGame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGame.cpp; sourceTree = "<group>"; };
@@ -935,6 +1167,8 @@
 				63FFE148109FA461002FF190 /* keen2 */,
 				63FFE151109FA4A4002FF190 /* keen3 */,
 				63FC18281144447200D7BB0C /* keen4 */,
+				63CB71F411D339BC0069EAC6 /* keenx */,
+				63CB721B11D339BC0069EAC6 /* yorphius */,
 			);
 			includeInIndex = 1;
 			path = games;
@@ -978,6 +1212,94 @@
 				6350F7C71044797300A992D5 /* VENDOR.DOC */,
 			);
 			path = keen1;
+			sourceTree = "<group>";
+		};
+		63CB71F411D339BC0069EAC6 /* keenx */ = {
+			isa = PBXGroup;
+			children = (
+				63CB71F511D339BC0069EAC6 /* CK1PATCH.EXE */,
+				63CB71F611D339BC0069EAC6 /* EGAHEAD.CK1 */,
+				63CB71F711D339BC0069EAC6 /* EGALATCH.CK1 */,
+				63CB71F811D339BC0069EAC6 /* EGASPRIT.CK1 */,
+				63CB71F911D339BC0069EAC6 /* ENDTEXT.CK1 */,
+				63CB71FA11D339BC0069EAC6 /* FINALE.CK1 */,
+				63CB71FB11D339BC0069EAC6 /* HELPTEXT.CK1 */,
+				63CB71FC11D339BC0069EAC6 /* KEEN1.DOC */,
+				63CB71FD11D339BC0069EAC6 /* KEEN1.EXE */,
+				63CB71FE11D339BC0069EAC6 /* LEVEL01.CK1 */,
+				63CB71FF11D339BC0069EAC6 /* LEVEL02.CK1 */,
+				63CB720011D339BC0069EAC6 /* LEVEL03.CK1 */,
+				63CB720111D339BC0069EAC6 /* LEVEL04.CK1 */,
+				63CB720211D339BC0069EAC6 /* LEVEL05.CK1 */,
+				63CB720311D339BC0069EAC6 /* LEVEL06.CK1 */,
+				63CB720411D339BC0069EAC6 /* LEVEL07.CK1 */,
+				63CB720511D339BC0069EAC6 /* LEVEL08.CK1 */,
+				63CB720611D339BC0069EAC6 /* LEVEL09.CK1 */,
+				63CB720711D339BC0069EAC6 /* LEVEL10.CK1 */,
+				63CB720811D339BC0069EAC6 /* LEVEL11.CK1 */,
+				63CB720911D339BC0069EAC6 /* LEVEL12.CK1 */,
+				63CB720A11D339BC0069EAC6 /* LEVEL13.CK1 */,
+				63CB720B11D339BC0069EAC6 /* LEVEL14.CK1 */,
+				63CB720C11D339BC0069EAC6 /* LEVEL15.CK1 */,
+				63CB720D11D339BC0069EAC6 /* LEVEL16.CK1 */,
+				63CB720E11D339BC0069EAC6 /* LEVEL22.CK1 */,
+				63CB720F11D339BC0069EAC6 /* LEVEL29.CK1 */,
+				63CB721011D339BC0069EAC6 /* LEVEL80.CK1 */,
+				63CB721111D339BC0069EAC6 /* LEVEL81.CK1 */,
+				63CB721211D339BC0069EAC6 /* LEVEL90.CK1 */,
+				63CB721311D339BC0069EAC6 /* PREVIEW2.CK1 */,
+				63CB721411D339BC0069EAC6 /* PREVIEW3.CK1 */,
+				63CB721511D339BC0069EAC6 /* PREVIEWS.CK1 */,
+				63CB721611D339BC0069EAC6 /* ReadMe.txt */,
+				63CB721711D339BC0069EAC6 /* SOUNDS.CK1 */,
+				63CB721811D339BC0069EAC6 /* STORYTXT.CK1 */,
+				63CB721911D339BC0069EAC6 /* XkyKeen.pat */,
+				63CB721A11D339BC0069EAC6 /* XkyKeen1.bat */,
+			);
+			path = keenx;
+			sourceTree = "<group>";
+		};
+		63CB721B11D339BC0069EAC6 /* yorphius */ = {
+			isa = PBXGroup;
+			children = (
+				63CB721C11D339BC0069EAC6 /* CK1PATCH.EXE */,
+				63CB721D11D339BC0069EAC6 /* DUMP.BEH */,
+				63CB721E11D339BC0069EAC6 /* EGAHEAD.CK1 */,
+				63CB721F11D339BC0069EAC6 /* EGALATCH.CK1 */,
+				63CB722011D339BC0069EAC6 /* EGASPRIT.CK1 */,
+				63CB722111D339BC0069EAC6 /* ENDTEXT.CK1 */,
+				63CB722211D339BC0069EAC6 /* FINALE.CK1 */,
+				63CB722311D339BC0069EAC6 /* HELPTEXT.CK1 */,
+				63CB722411D339BD0069EAC6 /* KEEN1.EXE */,
+				63CB722511D339BD0069EAC6 /* LEVEL01.CK1 */,
+				63CB722611D339BD0069EAC6 /* LEVEL02.CK1 */,
+				63CB722711D339BD0069EAC6 /* LEVEL03.CK1 */,
+				63CB722811D339BD0069EAC6 /* LEVEL04.CK1 */,
+				63CB722911D339BD0069EAC6 /* LEVEL05.CK1 */,
+				63CB722A11D339BD0069EAC6 /* LEVEL06.CK1 */,
+				63CB722B11D339BD0069EAC6 /* LEVEL07.CK1 */,
+				63CB722C11D339BD0069EAC6 /* LEVEL08.CK1 */,
+				63CB722D11D339BD0069EAC6 /* LEVEL09.CK1 */,
+				63CB722E11D339BD0069EAC6 /* LEVEL10.CK1 */,
+				63CB722F11D339BD0069EAC6 /* LEVEL11.CK1 */,
+				63CB723011D339BD0069EAC6 /* LEVEL12.CK1 */,
+				63CB723111D339BD0069EAC6 /* LEVEL13.CK1 */,
+				63CB723211D339BD0069EAC6 /* LEVEL14.CK1 */,
+				63CB723311D339BD0069EAC6 /* LEVEL15.CK1 */,
+				63CB723411D339BD0069EAC6 /* LEVEL16.CK1 */,
+				63CB723511D339BD0069EAC6 /* LEVEL80.CK1 */,
+				63CB723611D339BD0069EAC6 /* LEVEL90.CK1 */,
+				63CB723711D339BD0069EAC6 /* PREVIEW2.CK1 */,
+				63CB723811D339BD0069EAC6 /* PREVIEW3.CK1 */,
+				63CB723911D339BD0069EAC6 /* PREVIEWS.CK1 */,
+				63CB723A11D339BD0069EAC6 /* readme.txt */,
+				63CB723B11D339BD0069EAC6 /* SOUNDS.CK1 */,
+				63CB723C11D339BD0069EAC6 /* STATUS.CK1 */,
+				63CB723D11D339BD0069EAC6 /* STORYTXT.CK1 */,
+				63CB723E11D339BD0069EAC6 /* yorp.pat */,
+				63CB723F11D339BD0069EAC6 /* Yorphius.BAT */,
+			);
+			path = yorphius;
 			sourceTree = "<group>";
 		};
 		63CD10A211CFF5FB00F60BC8 /* src */ = {
@@ -1582,12 +1904,13 @@
 				235755D1101A5E5900275638 /* Resources */,
 				6350FA7D104490F300A992D5 /* Copy Data Files */,
 				23575637101A5E5900275638 /* Copy Frameworks */,
-				637F48BC105C96AF00DE486C /* Copy Game Data Files */,
 				6350FA7E104490F300A992D5 /* Copy Keen 1 Files */,
 				639C98D511B2BC1400D239D1 /* Copy Keen 1 GFX Files */,
 				63FFE15D109FA521002FF190 /* Copy Keen 2 Fix Files */,
 				63FFE15E109FA521002FF190 /* Copy Keen 3 Fix Files */,
 				63FC1860114444B900D7BB0C /* Copy Keen 4 Files */,
+				637F48BC105C96AF00DE486C /* Copy Keen X Files */,
+				63CB728A11D339BD0069EAC6 /* Copy Yorphius Files */,
 				63D4A718107FEC1100E43500 /* Copy Res Files */,
 				6350FB5010449E3C00A992D5 /* Copy Text Files */,
 				6350FC7A1044F7DE00A992D5 /* Create DMG */,
