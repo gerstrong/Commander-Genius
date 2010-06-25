@@ -79,6 +79,7 @@ m_blitsurface_alloc(false)
 	ScrollSurface=NULL;       // 512x512 scroll buffer
 	FGLayerSurface=NULL;       // Scroll buffer for Messages
 	BlitSurface=NULL;
+
 	m_special_fx = true;
 
 	mp_sbufferx = mp_sbuffery = NULL;
@@ -94,18 +95,11 @@ m_blitsurface_alloc(false)
 	}
 
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
-	m_Resolution.width = 320; //  320;
-	m_Resolution.height = 200; //  480;
-	m_Resolution.depth = 32;
-	m_Resolutionlist.push_back(m_Resolution);
-	m_Resolution_pos = m_Resolutionlist.begin();
-	
 	Zoom = 1;
 	Filtermode = 0;
 	FrameSkip=1;
 	m_targetfps = 30;
 	m_aspect_correction = false;
-	
 #else
 	initResolutionList();
 
@@ -174,6 +168,16 @@ void CVideoDriver::initResolutionList()
 	}
 
 	m_Resolution_pos = m_Resolutionlist.begin();
+
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+	m_Resolution.width = 320; //  320;
+	m_Resolution.height = 200; //  480;
+	m_Resolution.depth = 32;
+	m_Resolutionlist.push_back(m_Resolution);
+	m_Resolution_pos = m_Resolutionlist.begin();
+	
+	return;
+#endif	
 }
 
 void CVideoDriver::checkResolution( st_resolution& resolution, int flags )
