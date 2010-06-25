@@ -456,7 +456,12 @@ bool GetExactFileName(const std::string& abs_searchname, std::string& filename) 
 searchpathlist	basesearchpaths;
 void InitBaseSearchPaths() {
 	basesearchpaths.clear();
-#if defined(__APPLE__)
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+	AddToFileList(&basesearchpaths, "${HOME}/Library/Application Support/Commander Genius");
+	AddToFileList(&basesearchpaths, ".");
+	AddToFileList(&basesearchpaths, "${BIN}/data");
+	AddToFileList(&basesearchpaths, SYSTEM_DATA_DIR"/commandergenius");	
+#elif defined(__APPLE__)
 	AddToFileList(&basesearchpaths, "${HOME}/Library/Application Support/Commander Genius");
 	AddToFileList(&basesearchpaths, ".");
 	AddToFileList(&basesearchpaths, "${BIN}/../Resources");
