@@ -178,13 +178,7 @@ static void renderTexture(GLuint texture, bool withAlpha = false) {
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 	glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-<<<<<<< HEAD
-
 	glDisable(GL_BLEND);
-=======
-	
-	glDisable(GL_BLEND);	
->>>>>>> 9e226ed6956358ab5ec6d052cc8f9582d88c67ee
 }
 
 void COpenGL::render(void)
