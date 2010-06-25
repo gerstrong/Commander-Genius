@@ -143,7 +143,7 @@ const int MAX_COMMANDS = 10;
 
 typedef struct stInputCommand
 {
-	bool active;
+	Uint8 active;
 	bool lastactive;
 
 	SDLKey 	keysym;
@@ -220,6 +220,13 @@ private:
 	void processKeys(int value);
 	void processJoystickAxis(void);
 	void processJoystickButton(int value);
+
+	void processMouse();
+	void processMouse(int x, int y, bool down);
+#ifdef WIZ
+	void WIZ_EmuKeyboard( int button, int value );
+	void WIZ_AdjustVolume( int direction );
+#endif
 };
 
 #endif /* CINPUT_H_ */
