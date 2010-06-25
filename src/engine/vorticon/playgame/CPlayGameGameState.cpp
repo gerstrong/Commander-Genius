@@ -51,11 +51,8 @@ bool CPlayGameVorticon::loadGameState()
 		// Prepare for loading the new level map and the players.
 		cleanup();
 
-		for( short i=0 ; i<m_NumPlayers ; i++ ) {
-			CPlayer Player(m_Episode, m_Level, m_Difficulty,
-					 i, mp_level_completed, mp_option, m_Object, m_Map);
-			m_Player.push_back(Player);
-		}
+		m_Player.assign(m_NumPlayers, CPlayer(m_Episode, m_Level, m_Difficulty,
+				 mp_level_completed, mp_option, m_Object, m_Map));
 
 		init();
 
@@ -80,7 +77,7 @@ bool CPlayGameVorticon::loadGameState()
 		m_SavedGame.decodeData(size);
 		for( Uint32 i=0 ; i<size ; i++) {
 			// save all the objects states
-			CObject object(&m_Map, i);
+			CObject object(&m_Map);
 
 			m_SavedGame.decodeData(object.m_type);
 			m_SavedGame.decodeData(x);

@@ -750,7 +750,7 @@ void CPlayer::raygun()
 			if (inventory.charges)
 			{  // we have enough charges
 				int xdir, ydir;
-				CObject rayobject(mp_map, mp_object->size());
+				CObject rayobject(mp_map);
 				inventory.charges--;
 				pshowdir = pdir;
 				

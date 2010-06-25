@@ -26,7 +26,7 @@ m_player(Player) // in this case the player will be the ship flying home
 
 	// Now, that everything is initialized, create a mark that will be used
 	// as ! or ? Sprite
-	CObject mark(mp_Map, 1);
+	CObject mark(mp_Map);
 	mark.m_type = OBJ_YORP;                // doesn't matter
 	mark.exists = 0;
 	mark.sprite = SPR_QUESTION;

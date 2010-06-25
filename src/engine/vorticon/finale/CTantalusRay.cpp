@@ -66,7 +66,7 @@ void CTantalusRay::shootray()
 
 		m_Map.drawAll();
 
-		CObject ShootObject(&m_Map, m_vect_obj.size());
+		CObject ShootObject(&m_Map);
 		ShootObject.spawn(4<<CSF, 4<<CSF, OBJ_RAY,2);
 		ShootObject.solid = false;
 		ShootObject.exists = ShootObject.onscreen = true;

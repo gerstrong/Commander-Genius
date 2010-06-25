@@ -38,7 +38,7 @@ mp_HighScores(NULL)
 	mp_gameoverbmp = NULL;
 	
 	m_Player.assign(m_NumPlayers, CPlayer(m_Episode, m_Level, m_Difficulty,
-			(short)0, mp_level_completed, mp_option,
+			mp_level_completed, mp_option,
 			m_Object, m_Map));
 
 	for(int i=0 ; i<m_NumPlayers ; i++)

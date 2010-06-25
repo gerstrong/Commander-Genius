@@ -3,10 +3,6 @@
 
 #include "CObjectAI.h"
 
-// Tank Robot (Ep2)
-enum tank2_actions{
-TANK_LOOK, TANK_WALK };
-
 #define TANK2_SAME_LEVEL_TIME   150
 #define TANK_REPEAT_FIRE_TIME  800
 
@@ -45,7 +41,7 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 {
 	if (object.needinit)
 	{  // first time initilization
-		object.ai.tank.state = TANK_WALK;
+		object.ai.tank.state = stTankData::TANK_WALK;
 		object.ai.tank.movedir = RIGHT;
 		object.ai.tank.fireafterlook = 0;
 		object.ai.tank.animtimer = 0;
@@ -68,7 +64,7 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 
 	switch(object.ai.tank.state)
 	{
-	case TANK_LOOK:
+	case stTankData::TANK_LOOK:
 		// animation
 		if (object.ai.tank.animtimer > TANK_LOOK_ANIM_TIME)
 		{
@@ -97,7 +93,7 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 			object.ai.tank.timetillcanfire = (rnd()%(TANK2_MAX_TIME_TILL_CAN_FIRE-TANK2_MIN_TIME_TILL_CAN_FIRE))+TANK2_MIN_TIME_TILL_CAN_FIRE;
 			object.ai.tank.timetillcanfirecauseonsamelevel = TANK2_TIME_BEFORE_FIRE_WHEN_SEE;
 			object.ai.tank.firetimes = 0;
-			object.ai.tank.state = TANK_WALK;
+			object.ai.tank.state = stTankData::TANK_WALK;
 			object.ai.tank.frame = 0;
 			object.ai.tank.animtimer = 0;
 			object.ai.tank.timer = 0;
@@ -108,7 +104,7 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 
 		break;
 
-	case TANK_WALK:
+	case stTankData::TANK_WALK:
 		// hover animation
 		if (object.ai.tank.animtimer > TANK_WALK_ANIM_TIME)
 		{
@@ -140,7 +136,7 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 			// is it time to fire the next shot in the volley?
 			if (!object.ai.tank.timetillnextshot)
 			{
-				CObject newobject(mp_Map, m_Objvect.size());
+				CObject newobject(mp_Map);
 				if (object.onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, object.scrx);
 				if (object.ai.tank.movedir==RIGHT)
 				{
@@ -220,7 +216,7 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 						object.ai.tank.frame = 0;
 						object.ai.tank.timer = 0;
 						object.ai.tank.animtimer = 0;
-						object.ai.tank.state = TANK_LOOK;
+						object.ai.tank.state = stTankData::TANK_LOOK;
 						object.ai.tank.turnaroundtimer = 100;
 					}
 					else object.ai.tank.turnaroundtimer--;
@@ -246,7 +242,7 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 				object.ai.tank.frame = 0;
 				object.ai.tank.timer = 0;
 				object.ai.tank.animtimer = 0;
-				object.ai.tank.state = TANK_LOOK;
+				object.ai.tank.state = stTankData::TANK_LOOK;
 			}
 		}
 		else
@@ -262,7 +258,7 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 				object.ai.tank.frame = 0;
 				object.ai.tank.timer = 0;
 				object.ai.tank.animtimer = 0;
-				object.ai.tank.state = TANK_LOOK;
+				object.ai.tank.state = stTankData::TANK_LOOK;
 			}
 		}
 		break;

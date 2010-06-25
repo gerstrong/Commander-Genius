@@ -2,28 +2,7 @@
 #include "../../spritedefines.h"
 #include "../../../sdl/sound/CSound.h"
 #include "../../../keen.h"
-
-// Comments by Tulip
-/*
-
-  Walk in a direction (TANK_WALK)
--> after a random time has passed stop for maybe half a second (TANK_WAIT)
--> a shoot in that same direction it has been walking (TANK_FIRE)
--> Show frontal animation for half a second (while doing that the AI should seek Keen) (TANK_LOOK)
-
-    -> if Keen is anywhere on the screen left of the Tank -> walk left
-    -> if Keen is anywhere right of the Tankbot on screen -> walk right
-
-        (the Y position of Keen is completely irrelevant, the Tank should only check for the X position)
-
--> go to the top of this loop again.
-
- */
-
-// Tank Robot (ep1)
-enum{
-	TANK_WALK,TANK_TURN,TANK_WAIT,TANK_WAIT_LOOK,TANK_FIRE,TANK_LOOK
-};
+#include "tank.h"
 
 #define TANK_SAME_LEVEL_TIME   25
 #define TANK_REPEAT_FIRE_TIME  50
@@ -58,7 +37,7 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 {
 	if (object.needinit)
 	{  // first time initialization
-		object.ai.tank.state = TANK_WALK;
+		object.ai.tank.state = stTankData::TANK_WALK;
 		object.ai.tank.movedir = RIGHT;
 		object.ai.tank.animtimer = 0;
 		object.ai.tank.frame = 0;
@@ -96,7 +75,7 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 	{
 
 	// Walk in a direction
-	case TANK_WALK:
+	case stTankData::TANK_WALK:
 	{
 		// is keen on same level?
 		if (object.ai.tank.movedir==LEFT)
@@ -109,7 +88,7 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 				object.ai.tank.frame = 0;
 				object.ai.tank.timer = 0;
 				object.ai.tank.animtimer = 0;
-				object.ai.tank.state = TANK_TURN;
+				object.ai.tank.state = stTankData::TANK_TURN;
 			}
 
 			object.ai.tank.dist_to_travel--;
@@ -124,7 +103,7 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 				object.ai.tank.frame = 0;
 				object.ai.tank.timer = 0;
 				object.ai.tank.animtimer = 0;
-				object.ai.tank.state = TANK_TURN;
+				object.ai.tank.state = stTankData::TANK_TURN;
 			}
 
 			object.ai.tank.dist_to_travel--;
@@ -143,25 +122,25 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 			object.ai.tank.frame = 0;
 			object.ai.tank.timer = 0;
 			object.ai.tank.animtimer = 0;
-			object.ai.tank.state = TANK_WAIT;
+			object.ai.tank.state = stTankData::TANK_WAIT;
 		}
 
 	}
 	break;
 
-	case TANK_WAIT:
+	case stTankData::TANK_WAIT:
 		if ( (object.ai.tank.timer > TANK_PREPAREFIRE_TIME) ||
 				(object.ai.tank.timer > TANK_PREPAREFIRE_TIME_FAST && hardmode) )
 		{
 			object.ai.tank.timer = 0;
-			object.ai.tank.state = TANK_FIRE;
+			object.ai.tank.state = stTankData::TANK_FIRE;
 		}
 		else
 			object.ai.tank.timer++;
 
 		break;
 
-	case TANK_TURN:
+	case stTankData::TANK_TURN:
 		// If it gets stuck somewhere turn around
 		object.sprite = TANK_LOOK_FRAME + object.ai.tank.frame;
 		// animation
@@ -175,14 +154,14 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 		if (object.ai.tank.timer > TANK_LOOK_TOTALTIME)
 		{
 			// decide what direction to go
-			object.ai.tank.state = TANK_WALK;
+			object.ai.tank.state = stTankData::TANK_WALK;
 			object.ai.tank.animtimer = 0;
 			object.ai.tank.timer = 0;
 		} else object.ai.tank.timer++;
 		break;
-	case TANK_FIRE:
+	case stTankData::TANK_FIRE:
 	{
-		CObject newobject(mp_Map, m_Objvect.size());
+		CObject newobject(mp_Map);
 		if (object.onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, object.scrx);
 		if (object.ai.tank.movedir==RIGHT)
 		{
@@ -200,7 +179,7 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 		newobject.canbezapped = true;
 		m_Objvect.push_back(newobject);
 
-		object.ai.tank.state = TANK_WAIT_LOOK;
+		object.ai.tank.state = stTankData::TANK_WAIT_LOOK;
 		object.ai.tank.frame = 0;
 		object.ai.tank.timer = 0;
 		object.ai.tank.animtimer = 0;
@@ -208,19 +187,19 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 	}
 	break;
 
-	case TANK_WAIT_LOOK:
+	case stTankData::TANK_WAIT_LOOK:
 		// Happens after Robot has fired
 		if ( object.ai.tank.timer > TANK_WAITAFTER_FIRE )
 		{
 			object.ai.tank.timer = 0;
-			object.ai.tank.state = TANK_LOOK;
+			object.ai.tank.state = stTankData::TANK_LOOK;
 		}
 		else
 			object.ai.tank.timer++;
 
 		break;
 
-	case TANK_LOOK:
+	case stTankData::TANK_LOOK:
 		object.sprite = TANK_LOOK_FRAME + object.ai.tank.frame;
 		// animation
 		if (object.ai.tank.animtimer > TANK_LOOK_ANIM_TIME)
@@ -244,7 +223,7 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 				object.ai.tank.movedir = RIGHT;
 				object.sprite = TANK_WALK_RIGHT_FRAME;
 			}
-			object.ai.tank.state = TANK_WALK;
+			object.ai.tank.state = stTankData::TANK_WALK;
 			object.ai.tank.animtimer = 0;
 			object.ai.tank.timer = 0;
 		} else object.ai.tank.timer++;

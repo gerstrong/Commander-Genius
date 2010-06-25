@@ -12,14 +12,17 @@
 #include "../keen.h"
 #include <string.h>
 
+unsigned int CObject::m_number_of_objects = 0; // The current number of total objects we have within the game!
+
 ///
 // Initialization Routine
 ///
-CObject::CObject(CMap *pmap, int index) :
-m_index(index),
+CObject::CObject(CMap *pmap) :
+m_index(m_number_of_objects),
 mp_object(NULL),
 mp_Map(pmap)
 {
+	m_number_of_objects++;
 	honorPriority = false;
 	exists = false;
 	sprite=BLANKSPRITE;
@@ -760,5 +763,9 @@ void CObject::drawMask(SDL_Surface *dst, CSprite &Sprite, int mx, int my)
 // Cleanup Routine
 ///
 CObject::~CObject() {
+	m_number_of_objects--;
+
+	if(m_number_of_objects < 0)
+		g_pLogFile->textOut("Something went wrong here! More objects were deleted than created!<br>\n");
 }
 

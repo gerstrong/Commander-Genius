@@ -9,6 +9,7 @@
 #define ENEMYDATA_H_
 
 #include "../../../keen.h"
+#include "tank.h"
 
 // Structs used for different enemy's variables. These are in a union.
 
@@ -94,36 +95,6 @@ typedef struct stButlerData
 	
 	unsigned char movedir;
 } stButlerData;
-
-
-// this same struct is used for both ep1 and ep2 "tanks", although
-// they have seperate ai modules
-typedef struct stTankData
-{
-	char state;
-	
-	unsigned int timer,animtimer;
-	unsigned char frame;
-	unsigned int dist_to_travel;
-	
-	unsigned char movedir;
-	
-	unsigned int ponsameleveltime;
-	unsigned char alreadyfiredcauseonsamelevel;
-	unsigned char fireafterlook;
-
-	bool detectedPlayer;         		  // true if player on same level
-	unsigned char detectedPlayerIndex;    // index of player that was detected
-
-	// for tank2
-	unsigned int timetillnextshot;
-	unsigned int firetimes;
-	unsigned int timetillcanfire;
-	unsigned int timetillcanfirecauseonsamelevel;
-	unsigned int turnaroundtimer;
-	int pausetime;
-} stTankData;
-
 
 // a shot from keen's raygun or an enemy that shoots rayguns
 // also used for various other types of projectiles
