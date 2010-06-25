@@ -204,21 +204,21 @@ void COpenGL::render(void)
 				m_src_slice, m_blitsurface->format->BytesPerPixel,
 				m_GameStdRect.w, m_GameStdRect.h);
 
-		glTexImage2D(m_texparam, 0, GL_RGBA, m_GameStdRect.w<<1, m_GameStdRect.h<<1, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
+		glTexImage2D(m_texparam, 0, GL_RGBA, m_GameStdRect.w*2, m_GameStdRect.h*2, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
 	}
 	else if(m_ScaleX == 3) //Scale 3x
 	{
-		scale(m_ScaleX, m_opengl_buffer, (m_GameStdRect.w*3)<<2, m_blitsurface->pixels,
-			  m_GameStdRect.w<<2, 4, m_GameStdRect.w, m_GameStdRect.h);
+		scale(m_ScaleX, m_opengl_buffer, (m_GameStdRect.w*3)*4, m_blitsurface->pixels,
+			  m_GameStdRect.w*4, 4, m_GameStdRect.w, m_GameStdRect.h);
 
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_GameStdRect.w*3, m_GameStdRect.h*3, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
 	}
 	else if(m_ScaleX == 4) //Scale 4x
 	{
-		scale(m_ScaleX, m_opengl_buffer, (m_GameStdRect.w<<2)<<2, m_blitsurface->pixels,
-			  m_GameStdRect.w<<2, 4, m_GameStdRect.w, m_GameStdRect.h);
+		scale(m_ScaleX, m_opengl_buffer, (m_GameStdRect.w*4)*4, m_blitsurface->pixels,
+			  m_GameStdRect.w*4, 4, m_GameStdRect.w, m_GameStdRect.h);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_GameStdRect.w<<2, m_GameStdRect.h<<2, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_GameStdRect.w*4, m_GameStdRect.h*4, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
 	}
 	else
 	{
