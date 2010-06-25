@@ -2397,7 +2397,11 @@
 				);
 				PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES;
 				PRODUCT_NAME = "Commander Genius";
+<<<<<<< HEAD
 				SDKROOT = macosx10.5;
+=======
+				SDKROOT = macosx10.4;
+>>>>>>> 5de58fc5574c0f2740ecb08dc858cf34fba0a25f
 			};
 			name = Release;
 		};
