@@ -51,10 +51,13 @@ short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::stri
 		std::string fullfname = GetFullFileName(buf);
 		if(fullfname.size() == 0)
 			return 1;
-
+		
 		// Check, if it is a wav file or go back to classic sounds
-		if (SDL_LoadWAV (Utf8ToSystemNative(fullfname).c_str(), &AudioFileSpec, &(psound->sound_buffer), &(psound->sound_len)) == NULL)
-			return 1;
+		  if (SDL_LoadWAV (Utf8ToSystemNative(fullfname).c_str(), &AudioFileSpec, &(psound->sound_buffer), &(psound->sound_len)) == NULL)
+		  {
+			  g_pLogFile->ftextOut(PURPLE,"Wave file %s could not be opened: \"%s\". Trying to load the classical sound<br>", buf.c_str(), SDL_GetError());
+		      return 1;
+		  }
 #endif
 	}
 	else
