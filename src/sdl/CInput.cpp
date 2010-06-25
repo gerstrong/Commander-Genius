@@ -21,6 +21,10 @@ const std::string CONTROLSDATVERSION = "CG031";
 #include "sys/wizgp2x.h"
 #endif
 
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)	
+#define MOUSEWRAPPER 1
+#endif
+
 CInput::CInput() {
 #if defined(WIZ) || defined(GP2X)
     volume_direction = VOLUME_NOCHG;
@@ -402,16 +406,21 @@ void CInput::pollEvents()
 			case SDL_JOYBUTTONUP:
 				processJoystickButton(0);
 				break;
+#ifdef MOUSEWRAPPER
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_MOUSEBUTTONUP:
 		case SDL_MOUSEMOTION:
 			processMouse(Event);
 			break;
-		}
+#endif
+	   }
+
 	}
+#ifdef MOUSEWRAPPER
 	// Handle mouse emulation layer
 	processMouse();
-
+#endif
+	
 	// Check, if LALT+ENTER was pressed
 	if((getHoldedKey(KALT)) && getPressedKey(KENTER))
 	{
