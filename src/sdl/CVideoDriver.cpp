@@ -101,6 +101,8 @@ m_blitsurface_alloc(false)
 	
 	Zoom = 1;
 	Filtermode = 0;
+	FrameSkip=1;
+	m_targetfps = 40;
 	
 #else
 	  m_Resolution_pos = m_Resolutionlist.begin();
