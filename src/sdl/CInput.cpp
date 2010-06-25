@@ -336,6 +336,13 @@ bool CInput::readNewEvent(Uint8 device, int command)
 	{
 		switch ( Event.type )
 		{
+			case SDL_QUIT:
+				g_pLogFile->textOut("SDL: Got quit event in readNewEvent!");
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+				// on iPhone, we just want to quit in this case
+				exit(0);
+#endif
+				break;
 			case SDL_KEYDOWN:
 				InputCommand[device][command].joyeventtype = ETYPE_KEYBOARD;
 				InputCommand[device][command].keysym = Event.key.keysym.sym;
@@ -387,40 +394,39 @@ void CInput::pollEvents()
 	{
 		switch( Event.type )
 		{
-			case SDL_QUIT:
-				g_pLogFile->textOut("SDL: Got quit event!");
-				m_exit = true;
-				break;
-			case SDL_KEYDOWN:
-				processKeys(1);
-				break;
-			case SDL_KEYUP:
-				processKeys(0);
-				break;
-			case SDL_JOYAXISMOTION:
-				processJoystickAxis();
-				break;
-			case SDL_JOYBUTTONDOWN:
-				processJoystickButton(1);
-				break;
-			case SDL_JOYBUTTONUP:
-				processJoystickButton(0);
-				break;
-#ifdef MOUSEWRAPPER
+		case SDL_QUIT:
+			g_pLogFile->textOut("SDL: Got quit event!");
+			m_exit = true;
+			break;
+		case SDL_KEYDOWN:
+			processKeys(1);
+			break;
+		case SDL_KEYUP:
+			processKeys(0);
+			break;
+		case SDL_JOYAXISMOTION:
+			processJoystickAxis();
+			break;
+		case SDL_JOYBUTTONDOWN:
+			processJoystickButton(1);
+			break;
+		case SDL_JOYBUTTONUP:
+			processJoystickButton(0);
+			break;
+#ifdef MOUSEWRAPPER			  
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_MOUSEBUTTONUP:
 		case SDL_MOUSEMOTION:
 			processMouse(Event);
 			break;
 #endif
-	   }
-
+		}
 	}
 #ifdef MOUSEWRAPPER
 	// Handle mouse emulation layer
 	processMouse();
 #endif
-	
+
 	// Check, if LALT+ENTER was pressed
 	if((getHoldedKey(KALT)) && getPressedKey(KENTER))
 	{
@@ -944,6 +950,8 @@ struct TouchButton {
 
 static const int w = 320, h = 200;
 
+#define KSHOWHIDECTRLS	(-10)
+
 static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][NUMBER_OF_COMMANDS]) {
 	static const int middlex = w / 2;
 	static const int middley = h / 2;
@@ -958,16 +966,19 @@ static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][NUMB
 		{ &InputCommand[0][IC_POGO],	-1,		middlex + w / 6, middley, w / 6, h / 2},
 		{ &InputCommand[0][IC_FIRE],	KSPACE,	middlex + w / 3, middley, w / 6, h / 2},
 		
-		{ &InputCommand[0][IC_STATUS],	KENTER,	0, 0, w, h}
+		{ &InputCommand[0][IC_STATUS],	KENTER,	0, 0, w/2, h/4},
+		{ NULL,							KQUIT,	5*w/6, 0, w/6, h/6},
+		{ NULL,							KSHOWHIDECTRLS,	4*w/6, 0, w/6, h/6},
+		{ NULL,							KF3 /* save dialog, see gamedo_HandleFKeys */, 3*w/6, 0, w/6, h/6},
 	};	
 	
 	return phoneButtons;
 }
 
-static const int phoneButtonN = 8;
+static const int phoneButtonN = 11;
 
-static Uint32 phoneButtonLasttime[phoneButtonN] = {0,0,0,0,0,0,0,0};
-static int phoneButton_MouseIndex[phoneButtonN] = {-1,-1,-1,-1,-1,-1,-1,-1};
+static Uint32 phoneButtonLasttime[phoneButtonN] = {0,0,0,0,0,0,0,0,0,0,0};
+static int phoneButton_MouseIndex[phoneButtonN] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
 
 
 
@@ -982,13 +993,13 @@ static TouchButton* getPhoneButton(int x, int y, TouchButton phoneButtons[]) {
 void CInput::processMouse() {
 	TouchButton* phoneButtons = getPhoneButtons(InputCommand);
 	
-	Uint32 curTime = SDL_GetTicks();
 	for(int i = 0; i < phoneButtonN; ++i) {
 		bool down = phoneButton_MouseIndex[i] >= 0;
 		
 		TouchButton& b = phoneButtons[i];
-
-		b.cmd->active = down;
+		
+		if(b.cmd)
+			b.cmd->active = down;
 			
 		// handle immediate keys
 		if(b.immediateIndex >= 0)
@@ -1023,7 +1034,7 @@ void CInput::processMouse(int x, int y, bool down, int index) {
 			phoneButton_MouseIndex[i] = down ? index : -1;
 
 			if(!down) {
-				if(b.cmd->active) {
+				if(b.cmd && b.cmd->active) {
 					//if(phoneButton_MouseIndex[i] != index)
 					//	break;
 				}
@@ -1033,6 +1044,67 @@ void CInput::processMouse(int x, int y, bool down, int index) {
 		}
 	}
 
+}
+
+#ifdef USE_OPENGL
+static void drawButton(TouchButton& button, bool down) {
+	// similar mysterious constant as in renderTexture
+	glViewport(0,255,w,h);
+
+	int crop = 2;
+	float x1 = float(button.x + crop) / w;
+	float x2 = float(button.x+button.w - crop) / w;
+	float y1 = float(button.y + crop) / h;
+	float y2 = float(button.y+button.h - crop) / h;
+
+	GLfloat vertices[] =
+	{
+		x1, y1,
+		x2, y1,
+		x2, y2,
+		x1, y2,
+	};
+	
+	
+	//Render the vertices by pointing to the arrays.
+    glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(2, GL_FLOAT, 0, vertices);
+	
+	if(down)
+		glColor4f(0,0,0, 0.5);
+	else
+		glColor4f(0,0,0, 0.2);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+	
+	//Finally draw the arrays.
+	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+	glDisableClientState(GL_VERTEX_ARRAY);	
+}
+#endif
+
+void CInput::renderOverlay() {
+#ifdef USE_OPENGL // only ogl supported yet (and probably worth)
+#if defined(MOUSEWRAPPER)
+	static bool showControls = true;
+	static bool buttonShowHideCtrlWasDown = false;
+	
+	TouchButton* phoneButtons = getPhoneButtons(InputCommand);
+	
+	for(int i = phoneButtonN - 1; i >= 0; --i) {
+		TouchButton& b = phoneButtons[i];
+		bool down = phoneButton_MouseIndex[i] >= 0;
+		if(showControls) drawButton(b, down);
+		
+		if(b.immediateIndex == KSHOWHIDECTRLS) {
+			if(buttonShowHideCtrlWasDown && !down)
+				showControls = !showControls;
+			buttonShowHideCtrlWasDown = down;
+		}
+	}
+#endif
+#endif
 }
 
 

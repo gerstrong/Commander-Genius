@@ -9,6 +9,7 @@
 #include "COpenGL.h"
 #include "CVideoDriver.h"
 #include "../CLogFile.h"
+#include "CInput.h" // for CInput::renderOverlay
 
 // gamerect is the base resolution for the game which is scaled with the filter
 // depending on what resolution has been chosen, it is mostly 320x200 or 320x240
@@ -46,7 +47,6 @@ static void createTexture(GLuint& tex, int oglfilter, bool withAlpha = false) {
 
 bool COpenGL::initGL(GLint oglfilter, float aspect)
 {
-<<<<<<< HEAD
 	// Set the proper resolution for OpenGL. Very important, when user changes the resolution
 	if(aspect == 8.0f/5.0f)
 	{
@@ -58,46 +58,21 @@ bool COpenGL::initGL(GLint oglfilter, float aspect)
 		glViewport(0,0,m_Width, m_Height);
 	}
 	
-=======
-	m_Depth = Depth;
-	m_ScaleX = scalex;
-	//m_texparam = GL_TEXTURE_RECTANGLE_ARB;
-	m_texparam = GL_TEXTURE_2D;
-
-	// TODO: do that in the render section
-	// Set the proper resolution for OpenGL. Very important, when user changes the resolution
-	/*if(aspect)
-		glViewport(0,(Height-(Height*200)/240)/2,Width, (Height*200)/240);
-	else*/
-		//glViewport(0,0,Width,Height);
-
->>>>>>> 39b6d16727a38bf619e87ccc72cdb094f719e9c5
 	// Set clear colour
 	glClearColor(0,0,0,0);
 	
 	// Set projection
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
-<<<<<<< HEAD
 
-	glOrtho( 0.0f , 1.0f, 1.0f, 0.0f , -1.0f , 1.0f );
-=======
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)	// TODO: dont check for iphone but for opengles
+	#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)	// TODO: dont check for iphone but for opengles
 #define glOrtho glOrthof
 #endif
 	glOrtho( 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f );
->>>>>>> 39b6d16727a38bf619e87ccc72cdb094f719e9c5
 
 	// Now Initialize modelview matrix
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
-<<<<<<< HEAD
-	
-	
-=======
-
-
->>>>>>> 39b6d16727a38bf619e87ccc72cdb094f719e9c5
     /*Using the standard OpenGL API for specifying a 2D texture
     image: glTexImage2D, glSubTexImage2D, glCopyTexImage2D,
     and glCopySubTexImage2D.  The target for these commands is
@@ -153,7 +128,6 @@ void COpenGL::setSurface(SDL_Surface *blitsurface)
 {	m_blitsurface = blitsurface; }
 
 static void renderTexture(GLuint texture, bool withAlpha = false) {
-<<<<<<< HEAD
 
 	glBegin (GL_QUADS);
 	glTexCoord2f (0.0, 0.0);
@@ -166,18 +140,14 @@ static void renderTexture(GLuint texture, bool withAlpha = false) {
 	glVertex3f (0.0, 1.0, 0.0);
 	glEnd();
 
+	// strange constants here; 225 seems good for pc. 200 is better for iphone
+	// the size is the same as the texture buffers
 	//glViewport(0,200,512, 256);
 	//glLoadIdentity();
 	//glOrthof(0, 1, 0, 1, 0, 1);
 	//glOrthof(0, 1, 0, 1, 0, 1);
 
 
-=======
-	// strange constants here; 225 seems good for pc. 200 is better for iphone
-	// the size is the same as the texture buffers
-	glViewport(0,200,512, 256);
-	
->>>>>>> 39b6d16727a38bf619e87ccc72cdb094f719e9c5
 	// Set up an array of values to use as the sprite vertices.
 	/*GLfloat vertices[] =
 	{
@@ -205,12 +175,17 @@ static void renderTexture(GLuint texture, bool withAlpha = false) {
 
 	glEnable(GL_BLEND);
 	if(withAlpha)
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 	else
 		glBlendFunc(GL_ONE, GL_ZERO /*GL_SRC_COLOR*//*);
 
 	glBindTexture (GL_TEXTURE_2D, texture);
+<<<<<<< HEAD
 
+=======
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	
+>>>>>>> 3d8ea00f311ea30b9eaf3aebb3b5118ba45f38f4
 	// Set the texture parameters to use a linear filter when minifying.
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
@@ -232,7 +207,6 @@ void COpenGL::render(void)
 
 	glBindTexture (GL_TEXTURE_2D, m_texture);
 	
-<<<<<<< HEAD
 	if(m_ScaleX == 2) //Scale 2x
 	{
 
@@ -264,33 +238,7 @@ void COpenGL::render(void)
 	{
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_GameStdRect.w, m_GameStdRect.h, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_blitsurface->pixels);
 	}
-=======
-/*	   if(m_ScaleX == 2) //Scale 2x
-	   {
-		   scale(2, m_opengl_buffer, (GAME_STD_WIDTH<<1)*(m_Depth>>3), m_blitsurface->pixels,
-			     GAME_STD_WIDTH*(m_Depth>>3), (m_Depth>>3), GAME_STD_WIDTH, GAME_STD_HEIGHT);
 
-		   glTexImage2D(m_texparam, 0, GL_RGBA, GAME_STD_WIDTH<<1, GAME_STD_HEIGHT<<1, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
-		   //glTexImage2D(GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA, GAME_STD_WIDTH<<1, GAME_STD_HEIGHT<<1, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
-		   //glTexImage2D(GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA8, GAME_STD_WIDTH<<1, GAME_STD_HEIGHT<<1, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
-	   }
-	   else if(m_ScaleX == 3) //Scale 3x
-	   {
-		   scale(3, m_opengl_buffer, (GAME_STD_WIDTH*3)*(m_Depth>>3), m_blitsurface->pixels,
-				   GAME_STD_WIDTH*(m_Depth>>3), (m_Depth>>3), GAME_STD_WIDTH, GAME_STD_HEIGHT);
-
-		   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, GAME_STD_WIDTH*3, GAME_STD_HEIGHT*3, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
-	   }
-	   else if(m_ScaleX == 4) //Scale 4x
-	   {
-		   scale(4, m_opengl_buffer, (GAME_STD_WIDTH<<2)*(m_Depth>>3), m_blitsurface->pixels,
-				   GAME_STD_WIDTH*(m_Depth>>3), (m_Depth>>3), GAME_STD_WIDTH, GAME_STD_HEIGHT);
-
-		   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, GAME_STD_WIDTH<<2, GAME_STD_HEIGHT<<2, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
-	   }
-	   else */
-		   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 512, 256, 0, GL_RGB, GL_UNSIGNED_BYTE, m_blitsurface->pixels);
->>>>>>> 39b6d16727a38bf619e87ccc72cdb094f719e9c5
 
 	UnlockSurface(m_blitsurface);
 
@@ -298,6 +246,8 @@ void COpenGL::render(void)
 
 	//if(withFG)
 		//renderTexture(m_texFG, true);
+	
+	g_pInput->renderOverlay();
 	
 	SDL_GL_SwapBuffers();
 

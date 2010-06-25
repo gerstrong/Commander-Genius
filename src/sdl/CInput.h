@@ -201,6 +201,8 @@ public:
 	void flushCommands(void);
 	void flushAll(void);
 
+	void renderOverlay(); // for mouse wrapper gfx or other stuff
+
 	virtual ~CInput();
 
 private:
