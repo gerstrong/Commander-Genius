@@ -555,23 +555,32 @@ uint getSizeNextPOT(uint size) {
 #import "video/uikit/SDL_uikitappdelegate.h"
 #import "video/uikit/SDL_uikitwindow.h"
 
-void iPhoneRotateScreen() {
-	CGRect myFrame = CGRectMake(0, 0, 480, 320);
-
+void iPhoneRotateScreen() {	
+	
 	[UIApplication sharedApplication].statusBarHidden = YES;
-
+	
 	UIWindow* window = [SDLUIKitDelegate sharedAppDelegate].window;
 	UIView* view = window;
-//	SDL_uikitopenglview* view = data->view;
-	
-	CGAffineTransform transform = [view transform];
-    transform = CGAffineTransformTranslate(transform, 0, -35);
-    transform = CGAffineTransformRotate(transform, -0.5 * 3.14159265358979323846);
-	transform = CGAffineTransformScale(transform, 1.5, 1.6);
-    [view setFrame: myFrame];
-    [view setTransform: transform];
+
+	//CGRect myFrame = CGRectMake(0, 0, 480, 320);
+	CGRect myFrame = CGRectMake(0, 0, 320, 480);
+	[view setFrame: myFrame];    
 
 	CGPoint center = CGPointMake(myFrame.size.width/2.0, myFrame.size.height/2.0);
 	[view setCenter: center];	
+
+	CGAffineTransform transform = [view transform];
+	
+	// Some strange constants...
+    transform = CGAffineTransformTranslate(transform, 185, 0);
+
+	// We will have 200x320 here (rotated) and we want 320x480
+	transform = CGAffineTransformScale(transform, 320.0 / 200.0, 480.0 / 320.0);
+
+	// Rotate clockwise
+	transform = CGAffineTransformRotate(transform, -0.5 * 3.14159265358979323846);
+	
+    [view setTransform: transform];
+
 }
 
