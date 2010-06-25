@@ -427,6 +427,7 @@ void CInput::pollEvents()
 	processMouse();
 #endif
 
+#ifndef MOUSEWRAPPER
 	// Check, if LALT+ENTER was pressed
 	if((getHoldedKey(KALT)) && getPressedKey(KENTER))
 	{
@@ -458,7 +459,7 @@ void CInput::pollEvents()
 		g_pLogFile->textOut("User exit request!");
 		m_exit = true;
 	}
-
+#endif
 
 #if defined(WIZ) || defined(GP2X)
 	WIZ_AdjustVolume( volume_direction );
@@ -669,11 +670,19 @@ void CInput::processKeys(int keydown)
 }
 
 /**
+ * \return false on error
+ */
+static bool checkMousewrapperKey(int& key);
+
+/**
  * \brief	returns if certain key is being held
  * \param	key the key to be held
  */
 bool CInput::getHoldedKey(int key)
 {
+#ifdef MOUSEWRAPPER
+	if(!checkMousewrapperKey(key)) return true;
+#endif	
 	if(immediate_keytable[key])
 		return true;
 
@@ -686,6 +695,9 @@ bool CInput::getHoldedKey(int key)
  */
 bool CInput::getPressedKey(int key)
 {
+#ifdef MOUSEWRAPPER
+	if(!checkMousewrapperKey(key)) return true;
+#endif	
 	if(immediate_keytable[key] && !last_immediate_keytable[key])
 	{
 		immediate_keytable[key] = false;
@@ -829,12 +841,13 @@ bool CInput::getPressedIsNumKey(void)
 
 bool CInput::getPressedAnyKey(void)
 {
-	int i;
-
-	for(i=0 ; i<KEYTABLE_SIZE ; i++)
+	for(int key=0 ; key<KEYTABLE_SIZE ; key++)
 	{
-		if(getPressedKey(i))
+		if(immediate_keytable[key] && !last_immediate_keytable[key])
+		{
+			immediate_keytable[key] = false;
 			return true;
+		}
 	}
 	return false;
 }
@@ -908,9 +921,7 @@ bool CInput::getPressedAnyCommand()
 
 bool CInput::getPressedAnyCommand(int player)
 {
-	int i;
-
-	for(i=0 ; i<10 ; i++)
+	for(int i=0 ; i<10 ; i++)
 		if(getPressedCommand(player,i))
 			return true;
 
@@ -990,6 +1001,23 @@ static TouchButton* getPhoneButton(int x, int y, TouchButton phoneButtons[]) {
 	return NULL;
 }
 
+
+static bool checkMousewrapperKey(int& key) {
+	switch(key) {
+		case KLEFT: case KRIGHT: case KUP: case KDOWN:
+		case KENTER: case KSPACE: case KQUIT: case KF3:
+			return true;
+	}
+	
+	if(key == KY) { key = KENTER; return true; }
+	if(key == KN) { key = KQUIT; return true; }
+
+	//errors << "checkMousewrapperKey: key " << key << " not useable for iPhone" << endl;
+	//return false;
+	// just too many keys ...
+	return true;
+}
+
 void CInput::processMouse() {
 	TouchButton* phoneButtons = getPhoneButtons(InputCommand);
 	
@@ -1032,13 +1060,6 @@ void CInput::processMouse(int x, int y, bool down, int index) {
 		if(b.isInside(x, y)) {
 			phoneButtonLasttime[i] = down ? SDL_GetTicks() : 0;
 			phoneButton_MouseIndex[i] = down ? index : -1;
-
-			if(!down) {
-				if(b.cmd && b.cmd->active) {
-					//if(phoneButton_MouseIndex[i] != index)
-					//	break;
-				}
-			}
 
 			break;
 		}
