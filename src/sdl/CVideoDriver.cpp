@@ -103,7 +103,7 @@ m_blitsurface_alloc(false)
 	Zoom = 1;
 	Filtermode = 0;
 	FrameSkip=1;
-	m_targetfps = 40;
+	m_targetfps = 30;
 	m_aspect_correction = false;
 	
 #else
