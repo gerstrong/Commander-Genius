@@ -131,12 +131,7 @@ static void renderTexture(GLuint texture, bool withAlpha = false) {
 
 	// strange constants here; 225 seems good for pc. 200 is better for iphone
 	// the size is the same as the texture buffers
-	glViewport(0,200,512, 256);
 	
-	//glLoadIdentity();
-	//glOrthof(0, 1, 0, 1, 0, 1);
-	//glOrthof(0, 1, 0, 1, 0, 1);
-
 	// Set up an array of values to use as the sprite vertices.
 	GLfloat vertices[] =
 	{
