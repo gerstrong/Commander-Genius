@@ -79,8 +79,14 @@ public:
 	unsigned char getOGLFilter(void) { return 0; }
 #endif
 	SDL_Surface *getScrollSurface(void);
+<<<<<<< HEAD
 
 	void setMode(st_resolution Resolution);
+=======
+	SDL_Surface *getBGLayerSurface(void);
+	void updateBG();
+	
+>>>>>>> b637f832d3c3074cf3ecb20c7851d8f7eb53a59f
 	void setMode(int width, int height,int depth);
 	void setSpecialFXMode(bool SpecialFX);
 	void setFilter(short value);
@@ -151,9 +157,13 @@ private:
 	unsigned m_dst_slice, m_src_slice;
 	bool m_blitsurface_alloc;
 
+<<<<<<< HEAD
 	// pointer to the line in VRAM to start blitting to when stretchblitting.
 	// this may not be the first line on the display as it is adjusted to
 	// center the image on the screen when in fullscreen.
 	unsigned char *VRAMPtr;
+=======
+	bool m_updateFG;
+>>>>>>> b637f832d3c3074cf3ecb20c7851d8f7eb53a59f
 };
 #endif /* CVIDEODRIVER_H_ */
