@@ -919,8 +919,6 @@ void CInput::flushKeys(void)
 	memset(last_immediate_keytable,false,KEYTABLE_SIZE);
 }
 
-void CInput::flushAll(void){ flushKeys(); flushCommands(); }
-
 void CInput::processMouse() {
 	switch(Event.type) {
 		case SDL_MOUSEBUTTONDOWN:
