@@ -9,7 +9,7 @@
 	<key>CFBundleIconFile</key>
 	<string>cglogo-iphone.png</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.CommanderGenius.${PRODUCT_NAME:identifier}</string>
+	<string>org.CommanderGenius.commandergenius</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
@@ -17,7 +17,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>0.1</string>
 	<key>NSMainNibFile</key>
 	<string>MainWindow</string>
 </dict>
