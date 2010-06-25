@@ -405,10 +405,12 @@ void CInput::pollEvents()
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_MOUSEBUTTONUP:
 		case SDL_MOUSEMOTION:
-			processMouse();
+			processMouse(Event);
 			break;
 		}
 	}
+	// Handle mouse emulation layer
+	processMouse();
 
 	// Check, if LALT+ENTER was pressed
 	if((getHoldedKey(KALT)) && getPressedKey(KENTER))
@@ -919,42 +921,25 @@ void CInput::flushKeys(void)
 	memset(last_immediate_keytable,false,KEYTABLE_SIZE);
 }
 
-void CInput::processMouse() {
-	switch(Event.type) {
-		case SDL_MOUSEBUTTONDOWN:
-			processMouse(Event.button.x, Event.button.y, true);
-			break;
-			
-		case SDL_MOUSEBUTTONUP:
-			processMouse(Event.button.x, Event.button.y, false);
-			break;
-			
-		case SDL_MOUSEMOTION:
-			processMouse(Event.motion.x - Event.motion.xrel, Event.motion.y - Event.motion.yrel, false);			
-			processMouse(Event.motion.x, Event.motion.y, true);
-			break;
-	}	
-}
-
-void CInput::processMouse(int x, int y, bool down) {
-
-	const int w = 320, h = 200;
-	const int middlex = w / 2;
-	const int middley = h / 2;
+struct TouchButton {
+	stInputCommand* cmd;
+	int immediateIndex;
+	int x, y, w, h;
 	
-	struct TouchButton {
-		stInputCommand* cmd;
-		int immediateIndex;
-		int x, y, w, h;
-		
-		bool isInside(int _x, int _y) const {
-			return
-			x <= _x && _x < x + w &&
-			y <= _y && _y < y + h;
-		}
-	};
-		
-	TouchButton buttons[] = {
+	bool isInside(int _x, int _y) const {
+		return
+		x <= _x && _x < x + w &&
+		y <= _y && _y < y + h;
+	}
+};
+
+static const int w = 320, h = 200;
+
+static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][NUMBER_OF_COMMANDS]) {
+	static const int middlex = w / 2;
+	static const int middley = h / 2;
+	
+	static TouchButton phoneButtons[] = {
 		{ &InputCommand[0][IC_LEFT],	KLEFT,	0, middley, w / 6, h / 2},
 		{ &InputCommand[0][IC_UP],		KUP,	w / 6, middley, w / 6, h / 4},
 		{ &InputCommand[0][IC_RIGHT],	KRIGHT,	w / 3, middley, w / 6, h / 2},
@@ -963,23 +948,78 @@ void CInput::processMouse(int x, int y, bool down) {
 		{ &InputCommand[0][IC_JUMP],	-1,		middlex, middley, w / 6, h / 2},
 		{ &InputCommand[0][IC_POGO],	-1,		middlex + w / 6, middley, w / 6, h / 2},
 		{ &InputCommand[0][IC_FIRE],	KSPACE,	middlex + w / 3, middley, w / 6, h / 2},
-
+		
 		{ &InputCommand[0][IC_STATUS],	KENTER,	0, 0, w, h}
-	};
-	const int buttonN = sizeof(buttons) / sizeof(TouchButton);
+	};	
 	
-	for(int i = 0; i < buttonN; ++i) {
-		TouchButton& b = buttons[i];
-		if(b.isInside(x, y)) {
+	return phoneButtons;
+}
 
-			// handle active
-			b.cmd->active = down;
+static const int phoneButtonN = 8;
+
+static Uint32 phoneButtonLasttime[phoneButtonN] = {0,0,0,0,0,0,0,0};
+static int phoneButton_MouseIndex[phoneButtonN] = {-1,-1,-1,-1,-1,-1,-1,-1};
+
+
+
+static TouchButton* getPhoneButton(int x, int y, TouchButton phoneButtons[]) {
+	for(int i = 0; i < phoneButtonN; ++i) {
+		TouchButton& b = phoneButtons[i];
+		if(b.isInside(x, y)) return &b;
+	}
+	return NULL;
+}
+
+void CInput::processMouse() {
+	TouchButton* phoneButtons = getPhoneButtons(InputCommand);
+	
+	Uint32 curTime = SDL_GetTicks();
+	for(int i = 0; i < phoneButtonN; ++i) {
+		bool down = phoneButton_MouseIndex[i] >= 0;
+		
+		TouchButton& b = phoneButtons[i];
+
+		b.cmd->active = down;
 			
-			// handle immediate keys
-			if(b.immediateIndex >= 0) {
-				immediate_keytable[b.immediateIndex] = down;
+		// handle immediate keys
+		if(b.immediateIndex >= 0)
+			immediate_keytable[b.immediateIndex] = down;
+	}
+}
+
+void CInput::processMouse(SDL_Event& ev) {
+	switch(ev.type) {
+		case SDL_MOUSEBUTTONDOWN:
+			processMouse(ev.button.x, ev.button.y, true, ev.button.which);
+			break;
+			
+		case SDL_MOUSEBUTTONUP:
+			processMouse(ev.button.x, ev.button.y, false, ev.button.which);
+			break;
+			
+		case SDL_MOUSEMOTION:
+			processMouse(ev.motion.x - ev.motion.xrel, ev.motion.y - ev.motion.yrel, false, ev.motion.which);			
+			processMouse(ev.motion.x, ev.motion.y, true, ev.motion.which);
+			break;
+	}	
+}
+
+void CInput::processMouse(int x, int y, bool down, int index) {
+	TouchButton* phoneButtons = getPhoneButtons(InputCommand);
+
+	for(int i = 0; i < phoneButtonN; ++i) {
+		TouchButton& b = phoneButtons[i];
+		if(b.isInside(x, y)) {
+			phoneButtonLasttime[i] = down ? SDL_GetTicks() : 0;
+			phoneButton_MouseIndex[i] = down ? index : -1;
+
+			if(!down) {
+				if(b.cmd->active) {
+					//if(phoneButton_MouseIndex[i] != index)
+					//	break;
+				}
 			}
-			
+
 			break;
 		}
 	}
