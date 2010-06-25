@@ -1,0 +1,4 @@
+*.mode2v3
+*.pbxuser
+build/Xcode/build
+*.log
