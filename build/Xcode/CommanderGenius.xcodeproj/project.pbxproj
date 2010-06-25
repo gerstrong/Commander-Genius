@@ -332,6 +332,7 @@
 		235756C2101B766800275638 /* Unicode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 235756C1101B766800275638 /* Unicode.cpp */; };
 		235756C9101BE31A00275638 /* vortelite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 235756C7101BE31A00275638 /* vortelite.cpp */; };
 		2373646610B0FCE400CD49D4 /* libSDLiPhoneOSDevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2373646510B0FCE400CD49D4 /* libSDLiPhoneOSDevice.a */; };
+		2373647610B1410D00CD49D4 /* COpenGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9E61013ABCA001643FA /* COpenGL.cpp */; };
 		23B8F38A10AEBD83004B4555 /* baby.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9751013ABC9001643FA /* baby.cpp */; };
 		23B8F38B10AEBD83004B4555 /* balljack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9761013ABC9001643FA /* balljack.cpp */; };
 		23B8F38C10AEBD83004B4555 /* butler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23D3E9781013ABC9001643FA /* butler.cpp */; };
@@ -2562,6 +2563,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2373647610B1410D00CD49D4 /* COpenGL.cpp in Sources */,
 				23B8F4D910B05EED004B4555 /* iphone_video.m in Sources */,
 				23B8F4E010B05F29004B4555 /* iphone_keyboard.m in Sources */,
 				23B8F38A10AEBD83004B4555 /* baby.cpp in Sources */,
@@ -2753,11 +2755,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "Albert Zeyer iPhone";
+				CODE_SIGN_IDENTITY = "Don't Code Sign";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = BUILD_SDL;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					USE_OPENGL,
+					BUILD_SDL,
+				);
 				HEADER_SEARCH_PATHS = (
 					"${SDLTRUNK}/Xcode-iPhoneOS/SDL/build/Release-iphoneos/usr/local/include/",
 					"${SDLTRUNK}/include",
@@ -2780,8 +2785,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = "Commander Genius iPhone";
-				PROVISIONING_PROFILE = "";
-				SDKROOT = iphoneos2.2.1;
+				SDKROOT = iphonesimulator2.2.1;
 				SDLTRUNK = "/Users/az/Programmierung/SDL-1.3-trunk";
 			};
 			name = Debug;
@@ -2793,7 +2797,10 @@
 				CODE_SIGN_IDENTITY = "Albert Zeyer iPhone";
 				COPY_PHASE_STRIP = YES;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_PREPROCESSOR_DEFINITIONS = BUILD_SDL;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					USE_OPENGL,
+					BUILD_SDL,
+				);
 				HEADER_SEARCH_PATHS = (
 					"${SDLTRUNK}/Xcode-iPhoneOS/SDL/build/Release-iphoneos/usr/local/include/",
 					"${SDLTRUNK}/include",
