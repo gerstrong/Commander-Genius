@@ -41,12 +41,22 @@ mkdmg() {
 	#osascript -e "tell application "Finder" to eject disk "$VOL"" && 
 
 	# convert to compressed image, delete temp image
+<<<<<<< HEAD
 	rm -f "cgenius-v${VER}-mac.dmg"
 	hdiutil convert "$DMG" -format UDZO -o "cgenius-v${VER}-mac.dmg"
+=======
+	rm -f "${VOL}-${VER}.dmg"
+	hdiutil convert "$DMG" -format UDZO -o "${VOL}-${VER}.dmg"
+>>>>>>> b9a21afe07cc5075e242a882054d9a396830f844
 	rm -f "$DMG"
 
 }
 
 
 cd "$(dirname "$0")"
+<<<<<<< HEAD
 mkdmg CommanderGenius "$(egrep -E ".*#define.*CGVERSION.*" ../../version.h | cut -d "\"" -f 2)" build/Release
+=======
+rsync -a --delete build/Debug/Commander\ Genius.app dmg/
+mkdmg CommanderGenius "$(egrep -E ".*#define.*CGVERSION.*" ../../version.h | cut -d "\"" -f 2)" dmg
+>>>>>>> b9a21afe07cc5075e242a882054d9a396830f844
