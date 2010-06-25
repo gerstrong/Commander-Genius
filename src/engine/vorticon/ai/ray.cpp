@@ -13,7 +13,6 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 	int hitlethal;
 	int rayspeed;
 	CSprite &raysprite = g_pGfxEngine->getSprite(object.sprite);
-	std::vector<CObject>::iterator it_obj;
 	if (object.needinit)
 	{
 		object.ai.ray.state = RAY_STATE_FLY;
@@ -38,9 +37,11 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 	int y = object.getYPosition();
 	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
 	
+	std::vector<CObject>::iterator it_obj;
 	switch(object.ai.ray.state)
 	{
 		case RAY_STATE_FLY:
+
 			// test if it hit a baddie. I hate that code! TODO: think about a way to reduce this
 			for( it_obj = m_Objvect.begin() ; it_obj!=m_Objvect.end() ; it_obj++)
 			{

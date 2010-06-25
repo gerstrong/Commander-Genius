@@ -291,9 +291,10 @@ bool CVideoDriver::initOpenGL()
 #ifdef USE_OPENGL
 	if(m_opengl) // If OpenGL could be set, initialize the matrices
 	{
-		mp_OpenGL = new COpenGL(game_resolution_rect);
-		if(!(mp_OpenGL->initGL(m_Resolution.width, m_Resolution.height, m_Resolution.depth,
-							   m_opengl_filter, m_ScaleXFilter, m_aspect_ratio)))
+		mp_OpenGL = new COpenGL(m_Resolution.width, m_Resolution.height, m_Resolution.depth,
+									m_ScaleXFilter, game_resolution_rect);
+
+		if(!(mp_OpenGL->initGL(m_opengl_filter,  m_aspect_ratio)))
 		{
 			delete mp_OpenGL;
 			mp_OpenGL = NULL;
