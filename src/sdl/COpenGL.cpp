@@ -129,27 +129,17 @@ void COpenGL::setSurface(SDL_Surface *blitsurface)
 
 static void renderTexture(GLuint texture, bool withAlpha = false) {
 
-	glBegin (GL_QUADS);
-	glTexCoord2f (0.0, 0.0);
-	glVertex3f (0.0, 0.0, 0.0);
-	glTexCoord2f (1.0, 0.0);
-	glVertex3f (1.0, 0.0, 0.0);
-	glTexCoord2f (1.0, 1.0);
-	glVertex3f (1.0, 1.0, 0.0);
-	glTexCoord2f (0.0, 1.0);
-	glVertex3f (0.0, 1.0, 0.0);
-	glEnd();
-
 	// strange constants here; 225 seems good for pc. 200 is better for iphone
 	// the size is the same as the texture buffers
-	//glViewport(0,200,512, 256);
+	glViewport(0,200,512, 256);
+	
 	//glLoadIdentity();
 	//glOrthof(0, 1, 0, 1, 0, 1);
 	//glOrthof(0, 1, 0, 1, 0, 1);
 
 
 	// Set up an array of values to use as the sprite vertices.
-	/*GLfloat vertices[] =
+	GLfloat vertices[] =
 	{
 		0, 0,
 		1, 0,
@@ -177,24 +167,20 @@ static void renderTexture(GLuint texture, bool withAlpha = false) {
 	if(withAlpha)
 		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 	else
-		glBlendFunc(GL_ONE, GL_ZERO /*GL_SRC_COLOR*//*);
+		glBlendFunc(GL_ONE, GL_ZERO /*GL_SRC_COLOR*/);
 
 	glBindTexture (GL_TEXTURE_2D, texture);
-<<<<<<< HEAD
-
-=======
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	
->>>>>>> 3d8ea00f311ea30b9eaf3aebb3b5118ba45f38f4
 	// Set the texture parameters to use a linear filter when minifying.
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
+	
 	//Finally draw the arrays.
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 	glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-
-	glDisable(GL_BLEND);*/
+	
+	glDisable(GL_BLEND);	
 }
 
 void COpenGL::render(void)
