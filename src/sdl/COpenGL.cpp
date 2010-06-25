@@ -128,9 +128,14 @@ void COpenGL::setSurface(SDL_Surface *blitsurface)
 {	m_blitsurface = blitsurface; }
 
 static void renderTexture(GLuint texture, bool withAlpha = false) {
+
 	// strange constants here; 225 seems good for pc. 200 is better for iphone
 	// the size is the same as the texture buffers
 	glViewport(0,200,512, 256);
+	
+	//glLoadIdentity();
+	//glOrthof(0, 1, 0, 1, 0, 1);
+	//glOrthof(0, 1, 0, 1, 0, 1);
 
 	// Set up an array of values to use as the sprite vertices.
 	GLfloat vertices[] =
@@ -168,13 +173,18 @@ static void renderTexture(GLuint texture, bool withAlpha = false) {
 	
 	// Set the texture parameters to use a linear filter when minifying.
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
+	
 	//Finally draw the arrays.
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 	glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+<<<<<<< HEAD
 
 	glDisable(GL_BLEND);
+=======
+	
+	glDisable(GL_BLEND);	
+>>>>>>> 9e226ed6956358ab5ec6d052cc8f9582d88c67ee
 }
 
 void COpenGL::render(void)
@@ -198,21 +208,21 @@ void COpenGL::render(void)
 				m_src_slice, m_blitsurface->format->BytesPerPixel,
 				m_GameStdRect.w, m_GameStdRect.h);
 
-		glTexImage2D(m_texparam, 0, GL_RGBA, m_GameStdRect.w<<1, m_GameStdRect.h<<1, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
+		glTexImage2D(m_texparam, 0, GL_RGBA, m_GameStdRect.w*2, m_GameStdRect.h*2, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
 	}
 	else if(m_ScaleX == 3) //Scale 3x
 	{
-		scale(m_ScaleX, m_opengl_buffer, (m_GameStdRect.w*3)<<2, m_blitsurface->pixels,
-			  m_GameStdRect.w<<2, 4, m_GameStdRect.w, m_GameStdRect.h);
+		scale(m_ScaleX, m_opengl_buffer, (m_GameStdRect.w*3)*4, m_blitsurface->pixels,
+			  m_GameStdRect.w*4, 4, m_GameStdRect.w, m_GameStdRect.h);
 
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_GameStdRect.w*3, m_GameStdRect.h*3, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
 	}
 	else if(m_ScaleX == 4) //Scale 4x
 	{
-		scale(m_ScaleX, m_opengl_buffer, (m_GameStdRect.w<<2)<<2, m_blitsurface->pixels,
-			  m_GameStdRect.w<<2, 4, m_GameStdRect.w, m_GameStdRect.h);
+		scale(m_ScaleX, m_opengl_buffer, (m_GameStdRect.w*4)*4, m_blitsurface->pixels,
+			  m_GameStdRect.w*4, 4, m_GameStdRect.w, m_GameStdRect.h);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_GameStdRect.w<<2, m_GameStdRect.h<<2, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_GameStdRect.w*4, m_GameStdRect.h*4, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
 	}
 	else
 	{
