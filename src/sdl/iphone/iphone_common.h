@@ -58,7 +58,7 @@ extern "C" {
 #endif
 
 // On the C++ side
-void iphone_main(int argc, char *argv[]);
+int iphone_main(int argc, char *argv[]);
 
 // On the ObjC side
 void iPhone_updateScreen();

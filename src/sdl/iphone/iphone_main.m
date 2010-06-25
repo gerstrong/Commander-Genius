@@ -28,7 +28,7 @@
 
 #include "iphone_video.h"
 
-void iphone_main(int argc, char *argv[]);
+int iphone_main(int argc, char *argv[]);
 
 @interface iPhoneMain : UIApplication {
 	UIWindow* _window;
@@ -44,7 +44,7 @@ void iphone_main(int argc, char *argv[]);
 static int gArgc;
 static char** gArgv;
 
-int main(int argc, char** argv) {
+int iphone_main(int argc, char* argv[]) {
 	gArgc = argc;
 	gArgv = argv;
 
