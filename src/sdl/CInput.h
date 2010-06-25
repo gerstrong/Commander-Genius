@@ -143,7 +143,7 @@ const int MAX_COMMANDS = 10;
 
 typedef struct stInputCommand
 {
-	Uint8 active;
+	bool active;
 	bool lastactive;
 
 	SDLKey 	keysym;

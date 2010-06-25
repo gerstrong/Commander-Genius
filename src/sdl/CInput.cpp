@@ -940,6 +940,10 @@ void CInput::processMouse() {
 
 void CInput::processMouse(int x, int y, bool down) {
 
+	const int w = 320, h = 200;
+	const int middlex = w / 2;
+	const int middley = h / 2;
+	
 	struct TouchButton {
 		stInputCommand* cmd;
 		int immediateIndex;
@@ -951,12 +955,7 @@ void CInput::processMouse(int x, int y, bool down) {
 			y <= _y && _y < y + h;
 		}
 	};
-	
-	// no idea actually...
-	const int w = 600, h = 800;
-	const int middlex = w / 2;
-	const int middley = h / 2;
-	
+		
 	TouchButton buttons[] = {
 		{ &InputCommand[0][IC_LEFT],	KLEFT,	0, middley, w / 6, h / 2},
 		{ &InputCommand[0][IC_UP],		KUP,	w / 6, middley, w / 6, h / 4},
@@ -965,9 +964,9 @@ void CInput::processMouse(int x, int y, bool down) {
 		
 		{ &InputCommand[0][IC_JUMP],	-1,		middlex, middley, w / 6, h / 2},
 		{ &InputCommand[0][IC_POGO],	-1,		middlex + w / 6, middley, w / 6, h / 2},
-		{ &InputCommand[0][IC_FIRE],	KENTER,	middlex + w / 3, middley, w / 6, h / 2},
+		{ &InputCommand[0][IC_FIRE],	KSPACE,	middlex + w / 3, middley, w / 6, h / 2},
 
-		{ &InputCommand[0][IC_STATUS],	KSPACE,	0, 0, w, h}
+		{ &InputCommand[0][IC_STATUS],	KENTER,	0, 0, w, h}
 	};
 	const int buttonN = sizeof(buttons) / sizeof(TouchButton);
 	
@@ -976,17 +975,14 @@ void CInput::processMouse(int x, int y, bool down) {
 		if(b.isInside(x, y)) {
 
 			// handle active
-			if(down)
-				b.cmd->active++;
-			else {
-				if(b.cmd->active > 0)
-					b.cmd->active--;
-			}
+			b.cmd->active = down;
 			
 			// handle immediate keys
 			if(b.immediateIndex >= 0) {
 				immediate_keytable[b.immediateIndex] = down;
-			}			
+			}
+			
+			break;
 		}
 	}
 
