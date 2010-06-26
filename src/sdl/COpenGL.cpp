@@ -62,8 +62,21 @@ bool COpenGL::initGL(GLint oglfilter, float aspect)
 {
 	// strange constants here; 225 seems good for pc. 200 is better for iphone
 	// the size is the same as the texture buffers
-	int ypos = m_GamePOTVideoDim.h-g_pVideoDriver->getWidth();
-	glViewport(0, ypos/2, m_GamePOTVideoDim.w, m_GamePOTVideoDim.h);
+
+	// Calculate the proper viewport for any resolution
+	float base_width = g_pVideoDriver->getGameResolution().w;
+	float base_height = g_pVideoDriver->getGameResolution().h;
+
+	float scale_width = (float)(g_pVideoDriver->getWidth())/base_width;
+	float scale_height = (float)(g_pVideoDriver->getHeight())/base_height;
+
+	float width = ((float)m_GamePOTBaseDim.w)*scale_width;
+	float height = ((float)m_GamePOTBaseDim.h)*scale_height;
+	float ypos = (base_height-m_GamePOTBaseDim.h)*scale_height;
+	//float ypos = 0.0f;
+	float xpos = 0.0f; // Not needed because the x-axis of ogl and sdl_surfaces are the same.
+	glViewport(xpos, ypos, width, height);
+	//glViewport(xpos, ypos, g_pVideoDriver->getWidth(), g_pVideoDriver->getHeight());
 	// Set the proper resolution for OpenGL. Very important, when user changes the resolution
 	/*if(aspect == 8.0f/5.0f)
 	{
