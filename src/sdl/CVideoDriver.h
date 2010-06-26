@@ -141,7 +141,6 @@ private:
 	int m_maxwidth;
 	bool m_aspect_correction;
 	bool m_special_fx;
-	float m_aspect_ratio;
 
 	SDL_Rect screenrect;
 	SDL_Rect blitrect;

@@ -321,7 +321,7 @@ bool CVideoDriver::initOpenGL()
 		mp_OpenGL = new COpenGL(m_Resolution.width, m_Resolution.height, m_Resolution.depth,
 									m_ScaleXFilter, game_resolution_rect);
 
-		if(!(mp_OpenGL->initGL(m_opengl_filter,  m_aspect_ratio)))
+		if(!(mp_OpenGL->initGL(m_opengl_filter)))
 		{
 			delete mp_OpenGL;
 			mp_OpenGL = NULL;

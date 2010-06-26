@@ -38,7 +38,7 @@ public:
 			unsigned char scalex,SDL_Rect &gamestdrect);
 
 	void render();
-	bool initGL(GLint oglfilter, float aspect);
+	bool initGL(GLint oglfilter);
 
 	void setSurface(SDL_Surface *blitsurface);
 	void reloadBG(SDL_Surface* surf);

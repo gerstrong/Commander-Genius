@@ -58,35 +58,25 @@ static void createTexture(GLuint& tex, int oglfilter, bool withAlpha = false) {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 512, 256, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 }
 
-bool COpenGL::initGL(GLint oglfilter, float aspect)
+bool COpenGL::initGL(GLint oglfilter)
 {
-	// strange constants here; 225 seems good for pc. 200 is better for iphone
-	// the size is the same as the texture buffers
 
 	// Calculate the proper viewport for any resolution
 	float base_width = g_pVideoDriver->getGameResolution().w;
 	float base_height = g_pVideoDriver->getGameResolution().h;
 
 	float scale_width = (float)(g_pVideoDriver->getWidth())/base_width;
-	float scale_height = (float)(g_pVideoDriver->getHeight())/base_height;
+	float scale_height = scale_width*aspect;
+	//float scale_height = (float)(g_pVideoDriver->getHeight())/base_height;
 
 	float width = ((float)m_GamePOTBaseDim.w)*scale_width;
 	float height = ((float)m_GamePOTBaseDim.h)*scale_height;
 	float ypos = (base_height-m_GamePOTBaseDim.h)*scale_height;
-	//float ypos = 0.0f;
 	float xpos = 0.0f; // Not needed because the x-axis of ogl and sdl_surfaces are the same.
+
+	// strange constants here; 225 seems good for pc. 200 is better for iphone
+	// the size is the same as the texture buffers
 	glViewport(xpos, ypos, width, height);
-	//glViewport(xpos, ypos, g_pVideoDriver->getWidth(), g_pVideoDriver->getHeight());
-	// Set the proper resolution for OpenGL. Very important, when user changes the resolution
-	/*if(aspect == 8.0f/5.0f)
-	{
-	if(m_aspectratio < 8.0f/5.0f)
-		glViewport(0,(m_POT_Height-((m_POT_Width/320)*200))/2,m_POT_Width, (m_POT_Width/320)*200);
-	else if(m_aspectratio > 8.0f/5.0f)
-		glViewport((m_POT_Width-((m_POT_Height/200)*320))/2,0, (m_POT_Height/200)*320, m_POT_Height);
-	else
-		glViewport(0,0,m_POT_Width, m_POT_Height);
-	}*/
 
 	// Set clear colour
 	glClearColor(0,0,0,0);
