@@ -33,7 +33,7 @@ bool CPlayGameGalaxy::init()
 	m_Map.setTileMap(g_pGfxEngine->getTileMap(0));
 	m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
 
-	MapLoader.loadMap(m_Map, 1); // Map Level?
+	MapLoader.loadMap(m_Map, 2); // Map Level?
 
 	m_Map.gotoPos(0, 0); // Coordinates of star sky
 	//m_Map.drawAll();

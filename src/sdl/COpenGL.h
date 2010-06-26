@@ -23,9 +23,18 @@
 
 #include "../scale2x/scalebit.h"
 
+// Structure used for dimensions
+struct stDims{
+	Uint16 w,h;
+	stDims(Uint16 width, Uint16 height) :
+		w(width),h(height){};
+};
+
+Uint16 getPowerOfTwo(Uint16 value);
+
 class COpenGL {
 public:
-	COpenGL(float Width, float Height, unsigned char Depth,
+	COpenGL(Uint16 Width, Uint16 Height, unsigned char Depth,
 			unsigned char scalex,SDL_Rect &gamestdrect);
 
 	void render();
@@ -40,14 +49,16 @@ public:
 private:
 	SDL_Surface	*m_blitsurface;
 	char*		m_opengl_buffer;	// Used for internal ScaleX filtering
-	unsigned short	m_Width;
-	unsigned short	m_Height;
+
 	unsigned char	m_Depth;
 	unsigned char	m_ScaleX;
 	unsigned int	m_texparam;
 
 	float	m_aspectratio;
-	SDL_Rect m_GameStdRect;
+
+	stDims m_GamePOTBaseDim;
+	stDims m_GamePOTVideoDim;
+
 	GLuint	m_texture;
 };
 

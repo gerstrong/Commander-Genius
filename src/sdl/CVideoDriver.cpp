@@ -472,12 +472,27 @@ bool CVideoDriver::createSurfaces()
     }
     else
     {
+
     	g_pLogFile->textOut("Blitsurface = creatergbsurfacefrom<br>");
-        BlitSurface = createSurface( "BlitSurface", true,
+
+#ifdef USE_OPENGL
+    	if(m_opengl)
+    	{
+            BlitSurface = createSurface( "BlitSurface", true,
+            				getPowerOfTwo(game_resolution_rect.w),
+            				getPowerOfTwo(game_resolution_rect.h),
+    									m_Resolution.depth,
+    									Mode, screen->format );
+    	}
+    	else
+#endif
+    	{
+    		BlitSurface = createSurface( "BlitSurface", true,
 									game_resolution_rect.w,
 									game_resolution_rect.h,
 									m_Resolution.depth,
 									Mode, screen->format );
+    	}
         m_blitsurface_alloc = true;
     }
     VRAMPtr = (unsigned char*)screen->pixels +

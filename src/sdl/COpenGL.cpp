@@ -11,20 +11,33 @@
 #include "../CLogFile.h"
 #include "CInput.h" // for CInput::renderOverlay
 
+/**
+ * This function calculates an equivalent value near by the power of two. That is needed so we support POT Textures
+ */
+Uint16 getPowerOfTwo(Uint16 value)
+{
+	Uint16 output = 1;
+	while (output<value)
+		output <<= 1;
+	return output;
+}
+
 // gamerect is the base resolution for the game which is scaled with the filter
 // depending on what resolution has been chosen, it is mostly 320x200 or 320x240
-COpenGL::COpenGL(float Width, float Height, unsigned char Depth,
+COpenGL::COpenGL(Uint16 Width, Uint16 Height, unsigned char Depth,
 				unsigned char scalex,SDL_Rect &gamestdrect) :
 m_blitsurface(NULL),
 m_opengl_buffer(NULL),
-m_Width(Width),
-m_Height(Height),
 m_Depth(Depth),
 m_ScaleX(scalex),
 m_texparam(GL_TEXTURE_2D),
 m_aspectratio(Width/Height),
-m_GameStdRect(gamestdrect)
-{}
+m_GamePOTBaseDim(getPowerOfTwo(gamestdrect.w),
+				getPowerOfTwo(gamestdrect.h)),
+m_GamePOTVideoDim(getPowerOfTwo(Width),
+				getPowerOfTwo(Height))
+{
+}
 
 static void createTexture(GLuint& tex, int oglfilter, bool withAlpha = false) {
 	glGenTextures(1, &tex);
@@ -47,16 +60,21 @@ static void createTexture(GLuint& tex, int oglfilter, bool withAlpha = false) {
 
 bool COpenGL::initGL(GLint oglfilter, float aspect)
 {
+	// strange constants here; 225 seems good for pc. 200 is better for iphone
+	// the size is the same as the texture buffers
+	int ypos = m_GamePOTVideoDim.h-g_pVideoDriver->getWidth();
+	glViewport(0, ypos/2, m_GamePOTVideoDim.w, m_GamePOTVideoDim.h);
+
 	// Set the proper resolution for OpenGL. Very important, when user changes the resolution
-	if(aspect == 8.0f/5.0f)
+	/*if(aspect == 8.0f/5.0f)
 	{
 	if(m_aspectratio < 8.0f/5.0f)
-		glViewport(0,(m_Height-((m_Width/320)*200))/2,m_Width, (m_Width/320)*200);
+		glViewport(0,(m_POT_Height-((m_POT_Width/320)*200))/2,m_POT_Width, (m_POT_Width/320)*200);
 	else if(m_aspectratio > 8.0f/5.0f)
-		glViewport((m_Width-((m_Height/200)*320))/2,0, (m_Height/200)*320, m_Height);
+		glViewport((m_POT_Width-((m_POT_Height/200)*320))/2,0, (m_POT_Height/200)*320, m_POT_Height);
 	else
-		glViewport(0,0,m_Width, m_Height);
-	}
+		glViewport(0,0,m_POT_Width, m_POT_Height);
+	}*/
 	
 	// Set clear colour
 	glClearColor(0,0,0,0);
@@ -104,7 +122,7 @@ bool COpenGL::initGL(GLint oglfilter, float aspect)
 	
 
 	if(m_ScaleX > 1)
-		m_opengl_buffer = new char[m_GameStdRect.h*m_GameStdRect.w*m_ScaleX*m_Depth];
+		m_opengl_buffer = new char[m_GamePOTVideoDim.w*m_GamePOTVideoDim.h*m_ScaleX*m_Depth];
 	else
 		m_opengl_buffer = NULL;
 	
@@ -128,9 +146,6 @@ void COpenGL::setSurface(SDL_Surface *blitsurface)
 {	m_blitsurface = blitsurface; }
 
 static void renderTexture(GLuint texture, bool withAlpha = false) {
-
-	// strange constants here; 225 seems good for pc. 200 is better for iphone
-	// the size is the same as the texture buffers
 	
 	// Set up an array of values to use as the sprite vertices.
 	GLfloat vertices[] =
@@ -189,34 +204,34 @@ void COpenGL::render(void)
 	if(m_ScaleX == 2) //Scale 2x
 	{
 
-		//unsigned m_dst_slice = m_Width*m_blitsurface->format->BytesPerPixel;
-		unsigned m_dst_slice = m_GameStdRect.w*2*m_blitsurface->format->BytesPerPixel;
-		unsigned m_src_slice = m_GameStdRect.w*m_blitsurface->format->BytesPerPixel;
+		//unsigned m_dst_slice = m_POT_Width*m_blitsurface->format->BytesPerPixel;
+		unsigned m_dst_slice = m_GamePOTVideoDim.w*2*m_blitsurface->format->BytesPerPixel;
+		unsigned m_src_slice = m_GamePOTVideoDim.w*m_blitsurface->format->BytesPerPixel;
 
 		scale(m_ScaleX, m_opengl_buffer, m_dst_slice, m_blitsurface->pixels,
 				m_src_slice, m_blitsurface->format->BytesPerPixel,
-				m_GameStdRect.w, m_GameStdRect.h);
+				m_GamePOTVideoDim.w, m_GamePOTVideoDim.h);
 
-		glTexImage2D(m_texparam, 0, GL_RGBA, m_GameStdRect.w*2, m_GameStdRect.h*2, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
+		glTexImage2D(m_texparam, 0, GL_RGBA, m_GamePOTVideoDim.w*2, m_GamePOTVideoDim.h*2, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
 	}
 	else if(m_ScaleX == 3) //Scale 3x
 	{
-		scale(m_ScaleX, m_opengl_buffer, (m_GameStdRect.w*3)*4, m_blitsurface->pixels,
-			  m_GameStdRect.w*4, 4, m_GameStdRect.w, m_GameStdRect.h);
+		scale(m_ScaleX, m_opengl_buffer, (m_GamePOTVideoDim.w*3)*4, m_blitsurface->pixels,
+				m_GamePOTVideoDim.w*4, 4, m_GamePOTVideoDim.w, m_GamePOTVideoDim.h);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_GameStdRect.w*3, m_GameStdRect.h*3, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_GamePOTVideoDim.w*3, m_GamePOTVideoDim.h*3, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
 	}
 	else if(m_ScaleX == 4) //Scale 4x
 	{
-		scale(m_ScaleX, m_opengl_buffer, (m_GameStdRect.w*4)*4, m_blitsurface->pixels,
-			  m_GameStdRect.w*4, 4, m_GameStdRect.w, m_GameStdRect.h);
+		scale(m_ScaleX, m_opengl_buffer, (m_GamePOTVideoDim.w*4)*4, m_blitsurface->pixels,
+				m_GamePOTVideoDim.w*4, 4, m_GamePOTVideoDim.w, m_GamePOTVideoDim.h);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_GameStdRect.w*4, m_GameStdRect.h*4, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_GamePOTVideoDim.w*4, m_GamePOTVideoDim.h*4, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
 	}
 	else
 	{
 		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_GameStdRect.w, m_GameStdRect.h, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_blitsurface->pixels);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 512, 256, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_blitsurface->pixels);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_GamePOTBaseDim.w, m_GamePOTBaseDim.h, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_blitsurface->pixels);
 	}
 
 
