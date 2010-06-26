@@ -64,7 +64,6 @@ bool COpenGL::initGL(GLint oglfilter, float aspect)
 	// the size is the same as the texture buffers
 	int ypos = m_GamePOTVideoDim.h-g_pVideoDriver->getWidth();
 	glViewport(0, ypos/2, m_GamePOTVideoDim.w, m_GamePOTVideoDim.h);
-
 	// Set the proper resolution for OpenGL. Very important, when user changes the resolution
 	/*if(aspect == 8.0f/5.0f)
 	{
@@ -75,7 +74,7 @@ bool COpenGL::initGL(GLint oglfilter, float aspect)
 	else
 		glViewport(0,0,m_POT_Width, m_POT_Height);
 	}*/
-	
+
 	// Set clear colour
 	glClearColor(0,0,0,0);
 	
@@ -120,7 +119,6 @@ bool COpenGL::initGL(GLint oglfilter, float aspect)
 	glEnable(GL_TEXTURE_2D);
 	createTexture(m_texture, oglfilter);
 	
-
 	if(m_ScaleX > 1)
 		m_opengl_buffer = new char[m_GamePOTVideoDim.w*m_GamePOTVideoDim.h*m_ScaleX*m_Depth];
 	else
@@ -201,39 +199,23 @@ void COpenGL::render(void)
 
 	glBindTexture (GL_TEXTURE_2D, m_texture);
 	
-	if(m_ScaleX == 2) //Scale 2x
+	if(m_ScaleX > 1) //Scale 2x
 	{
+		unsigned m_src_slice = m_GamePOTBaseDim.w*m_blitsurface->format->BytesPerPixel;
+		unsigned m_dst_slice = m_ScaleX*m_src_slice;
 
-		//unsigned m_dst_slice = m_POT_Width*m_blitsurface->format->BytesPerPixel;
-		unsigned m_dst_slice = m_GamePOTVideoDim.w*2*m_blitsurface->format->BytesPerPixel;
-		unsigned m_src_slice = m_GamePOTVideoDim.w*m_blitsurface->format->BytesPerPixel;
 
 		scale(m_ScaleX, m_opengl_buffer, m_dst_slice, m_blitsurface->pixels,
 				m_src_slice, m_blitsurface->format->BytesPerPixel,
-				m_GamePOTVideoDim.w, m_GamePOTVideoDim.h);
+				m_GamePOTBaseDim.w, m_GamePOTBaseDim.h);
 
-		glTexImage2D(m_texparam, 0, GL_RGBA, m_GamePOTVideoDim.w*2, m_GamePOTVideoDim.h*2, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
-	}
-	else if(m_ScaleX == 3) //Scale 3x
-	{
-		scale(m_ScaleX, m_opengl_buffer, (m_GamePOTVideoDim.w*3)*4, m_blitsurface->pixels,
-				m_GamePOTVideoDim.w*4, 4, m_GamePOTVideoDim.w, m_GamePOTVideoDim.h);
-
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_GamePOTVideoDim.w*3, m_GamePOTVideoDim.h*3, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
-	}
-	else if(m_ScaleX == 4) //Scale 4x
-	{
-		scale(m_ScaleX, m_opengl_buffer, (m_GamePOTVideoDim.w*4)*4, m_blitsurface->pixels,
-				m_GamePOTVideoDim.w*4, 4, m_GamePOTVideoDim.w, m_GamePOTVideoDim.h);
-
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_GamePOTVideoDim.w*4, m_GamePOTVideoDim.h*4, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
+		glTexImage2D(m_texparam, 0, GL_RGBA, m_GamePOTBaseDim.w*m_ScaleX, m_GamePOTBaseDim.h*m_ScaleX,
+														0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
 	}
 	else
 	{
-		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_GameStdRect.w, m_GameStdRect.h, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_blitsurface->pixels);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_GamePOTBaseDim.w, m_GamePOTBaseDim.h, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_blitsurface->pixels);
 	}
-
 
 	UnlockSurface(m_blitsurface);
 
