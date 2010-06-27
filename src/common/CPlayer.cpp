@@ -576,7 +576,7 @@ void CPlayer::InertiaAndFriction_X()
 	// If player is blocked against a wall, decrease the inertia
 	if( ( (blockedl && xinertia<0 ) || (blockedr && xinertia>0) ) ) {
 		if(playcontrol[PA_X] == 0) xinertia = 0;
-		else decreaseXInertia(1);
+		else decreaseXInertia(30);
 	}
 
 	// apply xinertia and playpushed_x inertia
