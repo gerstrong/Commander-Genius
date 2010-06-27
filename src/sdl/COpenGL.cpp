@@ -26,7 +26,7 @@ Uint16 getPowerOfTwo(Uint16 value)
 // depending on what resolution has been chosen, it is mostly 320x200 or 320x240
 COpenGL::COpenGL(Uint16 Width, Uint16 Height, unsigned char Depth,
 				unsigned char scalex,SDL_Rect &gamestdrect) :
-m_blitsurface(NULL),
+mp_blitsurface(NULL),
 m_opengl_buffer(NULL),
 m_Depth(Depth),
 m_ScaleX(scalex),
@@ -144,10 +144,13 @@ bool COpenGL::initGL(GLint oglfilter)
 	return true;
 }
 
-void COpenGL::setSurface(SDL_Surface *blitsurface)
-{	m_blitsurface = blitsurface; }
+void COpenGL::setBlitSurface(SDL_Surface *blitsurface)
+{	mp_blitsurface = blitsurface; }
 
-static void loadSurface(GLuint texture, SDL_Surface* surface) {
+void COpenGL::setFGSurface(SDL_Surface *fgsurface)
+{	mp_fgsurface = fgsurface; }
+
+/*static void loadSurface(GLuint texture, SDL_Surface* surface) {
 	glBindTexture(GL_TEXTURE_2D, texture);
 	LockSurface(surface);
 	if(surface->format->BitsPerPixel == 24)
@@ -157,7 +160,7 @@ static void loadSurface(GLuint texture, SDL_Surface* surface) {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 512, 256, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->pixels);
 	}
 	UnlockSurface(surface);
-}
+}*/
 
 void COpenGL::reloadBG(SDL_Surface* surf) {
 	loadSurface(m_texBG, surf);
@@ -213,24 +216,18 @@ static void renderTexture(GLuint texture, bool withAlpha = false) {
 	glDisable(GL_BLEND);
 }
 
-void COpenGL::render(bool withFG)
+void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
 {
-	//glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-
-	renderTexture(m_texBG);
-	
-	LockSurface(m_blitsurface);
-
-	glBindTexture (GL_TEXTURE_2D, m_texture);
-	
-	if(m_ScaleX > 1) //Scale 2x
+	glBindTexture (GL_TEXTURE_2D, texture);
+	LockSurface(surface);
+	if(m_ScaleX > 1) //ScaleX
 	{
-		unsigned m_src_slice = m_GamePOTBaseDim.w*m_blitsurface->format->BytesPerPixel;
+		unsigned m_src_slice = m_GamePOTBaseDim.w*surface->format->BytesPerPixel;
 		unsigned m_dst_slice = m_ScaleX*m_src_slice;
 
 
-		scale(m_ScaleX, m_opengl_buffer, m_dst_slice, m_blitsurface->pixels,
-				m_src_slice, m_blitsurface->format->BytesPerPixel,
+		scale(m_ScaleX, m_opengl_buffer, m_dst_slice, surface->pixels,
+				m_src_slice, surface->format->BytesPerPixel,
 				m_GamePOTBaseDim.w, m_GamePOTBaseDim.h);
 
 		glTexImage2D(m_texparam, 0, GL_RGBA, m_GamePOTBaseDim.w*m_ScaleX, m_GamePOTBaseDim.h*m_ScaleX,
@@ -238,15 +235,22 @@ void COpenGL::render(bool withFG)
 	}
 	else
 	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_GamePOTBaseDim.w, m_GamePOTBaseDim.h, 0, GL_BGRA, GL_UNSIGNED_BYTE, m_blitsurface->pixels);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_GamePOTBaseDim.w, m_GamePOTBaseDim.h, 0, GL_BGRA, GL_UNSIGNED_BYTE, surface->pixels);
 	}
 
-	UnlockSurface(m_blitsurface);
+	UnlockSurface(surface);
+}
 
+void COpenGL::render(bool withFG)
+{
+	//glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
+	loadSurface(m_texture, mp_blitsurface);
 	renderTexture(m_texture);
 
-	if(withFG)
-		renderTexture(m_texFG, true);
+	//reloadFG(mp_fgsurface);
+	//loadSurface(m_texFG, mp_fgsurface);
+	//renderTexture(m_texFG, true);
 	
 	g_pInput->renderOverlay();
 	

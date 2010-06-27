@@ -37,10 +37,13 @@ public:
 	COpenGL(Uint16 Width, Uint16 Height, unsigned char Depth,
 			unsigned char scalex,SDL_Rect &gamestdrect);
 
+	void loadSurface(GLuint texture, SDL_Surface* surface);
+
 	void render(bool withFG);
 	bool initGL(GLint oglfilter);
 
-	void setSurface(SDL_Surface *blitsurface);
+	void setBlitSurface(SDL_Surface *blitsurface);
+	void setFGSurface(SDL_Surface *fgsurface);
 
 	void reloadBG(SDL_Surface* surf);
 	void reloadFG(SDL_Surface* surf);
@@ -48,7 +51,8 @@ public:
 	virtual ~COpenGL();
 
 private:
-	SDL_Surface	*m_blitsurface;
+	SDL_Surface	*mp_blitsurface;
+	SDL_Surface	*mp_fgsurface;
 	char*		m_opengl_buffer;	// Used for internal ScaleX filtering
 
 	unsigned char	m_Depth;

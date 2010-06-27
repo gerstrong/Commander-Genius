@@ -327,7 +327,10 @@ bool CVideoDriver::initOpenGL()
 			m_opengl = false;
 		}
 		else
-			mp_OpenGL->setSurface(BlitSurface);
+		{
+			mp_OpenGL->setBlitSurface(BlitSurface);
+			mp_OpenGL->setFGSurface(FGLayerSurface);
+		}
 	}
 #endif
 
@@ -657,10 +660,22 @@ void CVideoDriver::blitScrollSurface() // This is only for tiles
 
 void CVideoDriver::collectSurfaces()
 {
-	SDL_BlitSurface(FGLayerSurface, NULL, BlitSurface, NULL);
+/*#ifdef USE_OPENGL
+	if(m_opengl)
+	{
+		// TODO: Create a solid concept for rendering more textures instead of just one that is binded
+		// to BlitSurface. It's not that easy, because doing that and using scaleX will mean, that you
+		// to scaleX multiple times. So COpenGL must have separate cases. With or without ScaleX.
+		// It's might only be faster if scaleX is never used in that TODO-case
+	}
+	else
+#endif*/
+	{
+		SDL_BlitSurface(FGLayerSurface, NULL, BlitSurface, NULL);
 
-	if(FXSurface->format->alpha)
-		SDL_BlitSurface(FXSurface, NULL, BlitSurface, NULL);
+		if(FXSurface->format->alpha)
+			SDL_BlitSurface(FXSurface, NULL, BlitSurface, NULL);
+	}
 }
 
 void CVideoDriver::updateScreen()
@@ -672,7 +687,7 @@ void CVideoDriver::updateScreen()
 		mp_OpenGL->render(false);
 
 		// Flush the FG-Layer
-		//SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE));
+		SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE));
 	}
 	else // No OpenGL but Software Rendering
 	{
