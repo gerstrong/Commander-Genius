@@ -234,7 +234,7 @@ void CPatcher::PatchLevelhint(const int level, std::list<std::string> &input)
 		case 6:  offset = 0x1511A; end = 0x151B3; break;
 		case 9:  offset = 0x151B4, end = 0x1524D; break;
 		case 10: offset = 0x1524E; end = 0x152E7; break;
-		case 11: offset = 0x152E8; end = 0x1523F; break;
+		case 11: offset = 0x152E8; end = 0x1533F; break;
 		case 12: offset = 0x15340; end = 0x153DA; break;
 		case 15: offset = 0x153DB; end = 0x1545E; break;
 		}
@@ -250,6 +250,10 @@ void CPatcher::PatchLevelhint(const int level, std::list<std::string> &input)
 
 	p_patch = m_data + offset;
 
+	// Fill everything with zeros, so the old text won't be shown
+	if(end > offset)
+		memset( p_patch, 0, end-offset);
+
 	std::string buf;
 	do
 	{
@@ -264,10 +268,6 @@ void CPatcher::PatchLevelhint(const int level, std::list<std::string> &input)
 		p_patch += 2;
 		if( p_patch == m_data+end ) break;
 	} while( !input.empty() );
-
-	// Fill the rest with zeros, so the old won't be shown
-	if(end > offset)
-		memset( p_patch, 0, end-offset);
 }
 
 CPatcher::~CPatcher() {}
