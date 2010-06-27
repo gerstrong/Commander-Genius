@@ -59,8 +59,8 @@ cd ..
 mv distro/CGenius_i386.deb ${NAME}-v${VERSION}-i386.deb
 
 # upload the packages
-rsync -e ssh ${NAME}-v${VERSION}-win32.zip gerstrong,clonekeenplus@frs.sourceforge.net:/home/frs/project/c/cl/clonekeenplus/
-rsync -e ssh C${NAME}-v${VERSION}-linux32.zip gerstrong,clonekeenplus@frs.sourceforge.net:/home/frs/project/c/cl/clonekeenplus/
-rsync -e ssh ${NAME}-v${VERSION}-linux64.zip gerstrong,clonekeenplus@frs.sourceforge.net:/home/frs/project/c/cl/clonekeenplus/
-rsync -e ssh ${NAME}-v${VERSION}-i386.deb gerstrong,clonekeenplus@frs.sourceforge.net:/home/frs/project/c/cl/clonekeenplus/
-rsync -e ssh ${NAME}-v${VERSION}-x64.deb gerstrong,clonekeenplus@frs.sourceforge.net:/home/frs/project/c/cl/clonekeenplus/
+#rsync -e ssh ${NAME}-v${VERSION}-win32.zip gerstrong,clonekeenplus@frs.sourceforge.net:/home/frs/#project/c/cl/clonekeenplus/
+#rsync -e ssh C${NAME}-v${VERSION}-linux32.zip gerstrong,clonekeenplus@frs.sourceforge.net:/home/#frs/project/c/cl/clonekeenplus/
+#rsync -e ssh ${NAME}-v${VERSION}-linux64.zip gerstrong,clonekeenplus@frs.sourceforge.net:/home/#frs/project/c/cl/clonekeenplus/
+#rsync -e ssh ${NAME}-v${VERSION}-i386.deb gerstrong,clonekeenplus@frs.sourceforge.net:/home/frs/#project/c/cl/clonekeenplus/
+#rsync -e ssh ${NAME}-v${VERSION}-x64.deb gerstrong,clonekeenplus@frs.sourceforge.net:/home/frs/#project/c/cl/clonekeenplus/
