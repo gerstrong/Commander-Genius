@@ -22,14 +22,22 @@ public:
 			 stOption *p_option);
 
 	bool loadGameState();
-	void process();
 	bool init();
+
+	void process();
+
+	void processInput();
+	void processRendering();
+
 	void cleanup();
 
 	virtual ~CPlayGameGalaxy();
 
 private:
 	CMap m_Map;
+
+	Uint32 m_posx;
+	Uint32 m_posy;
 };
 
 }
