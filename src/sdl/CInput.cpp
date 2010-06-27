@@ -32,7 +32,7 @@ CInput::CInput() {
 	WIZ_AdjustVolume(VOLUME_UP);
 #endif
 	g_pLogFile->ftextOut("Starting the input driver...<br>");
-	memset(InputCommand, 0, NUM_INPUTS*NUMBER_OF_COMMANDS*sizeof(stInputCommand));
+	memset(InputCommand, 0, NUM_INPUTS*MAX_COMMANDS*sizeof(stInputCommand));
 
 	for(size_t c=1 ; c<= NUM_INPUTS ; c++)
 		resetControls(c);
@@ -65,10 +65,8 @@ void CInput::resetControls(int player) {
 	memset(immediate_keytable,false,KEYTABLE_SIZE);
 	memset(last_immediate_keytable,false,KEYTABLE_SIZE);
 
-	for(i=0 ; i<NUMBER_OF_COMMANDS ; i++)
-	{
+	for(i=0 ; i<MAX_COMMANDS ; i++)
 		InputCommand[player][i].active = false;
-	}
 
 	// These are the default keyboard commands
 	i=player-1;
@@ -385,7 +383,7 @@ void CInput::pollEvents()
 	// copy all the input of the last poll to a space for checking pressing or holding a button
 	memcpy(last_immediate_keytable, immediate_keytable, KEYTABLE_SIZE*sizeof(char));
 
-	for(int i=0 ; i<NUMBER_OF_COMMANDS ; i++)
+	for(int i=0 ; i<MAX_COMMANDS ; i++)
 		for(int j=0 ; j<NUM_INPUTS ; j++)
 			InputCommand[j][i].lastactive = InputCommand[j][i].active;
 
@@ -473,7 +471,7 @@ void CInput::processJoystickAxis(void)
 {
 	for(int j=0 ; j<NUM_INPUTS ; j++)
 	{
-		for(int i=0 ; i<NUMBER_OF_COMMANDS ; i++)
+		for(int i=0 ; i<MAX_COMMANDS ; i++)
 		{
 			if(InputCommand[j][i].joyeventtype == ETYPE_JOYAXIS)
 			{
@@ -502,7 +500,7 @@ void CInput::processJoystickButton(int value)
 #else
 	for(int j=0 ; j<NUM_INPUTS ; j++)
 	{
-		for(int i=0 ; i<NUMBER_OF_COMMANDS ; i++)
+		for(int i=0 ; i<MAX_COMMANDS ; i++)
 		{
 			// TODO: Check all NUM_INPUTS, if they can be reduced to another variable
 			if(InputCommand[j][i].joyeventtype == ETYPE_JOYBUTTON)
@@ -526,7 +524,7 @@ void CInput::sendKey(int key){	immediate_keytable[key] = true;	}
 void CInput::processKeys(int keydown)
 {
 	// Input for player commands
-	for(int i=0 ; i<NUMBER_OF_COMMANDS ; i++)
+	for(int i=0 ; i<MAX_COMMANDS ; i++)
 	{
 		for(int j=0 ; j<NUM_INPUTS ; j++)
 		{
@@ -934,7 +932,7 @@ bool CInput::getPressedAnyCommand(int player)
 void CInput::flushCommands(void)
 {
 	for(int i=0 ; i<NUM_INPUTS ; i++)
-		for(int j=0 ; j<NUMBER_OF_COMMANDS ; j++)
+		for(int j=0 ; j<MAX_COMMANDS ; j++)
 			InputCommand[i][j].active = InputCommand[i][j].lastactive = false;
 }
 
@@ -963,7 +961,7 @@ static const int w = 320, h = 200;
 
 #define KSHOWHIDECTRLS	(-10)
 
-static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][NUMBER_OF_COMMANDS]) {
+static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_COMMANDS]) {
 	static const int middlex = w / 2;
 	static const int middley = h / 2;
 	

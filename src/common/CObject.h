@@ -178,7 +178,7 @@ public:
 
 private:
 	CMap *mp_Map;
-	static unsigned int m_number_of_objects;
+	static int m_number_of_objects;
 };
 
 #endif /* COBJECT_H_ */

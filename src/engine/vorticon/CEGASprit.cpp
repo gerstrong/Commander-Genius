@@ -365,7 +365,7 @@ void CEGASprit::DeriveSpecialSprites( CTilemap &tilemap, std::vector<CSprite> &s
 			CreateYellowSpriteofTile( tilemap, t, sprites.at(ANKHUP_SPRITE) );
 	}
 
-	for(size_t i=0 ; i < TileProperties.size() ; i++ )
+	for(size_t i=1 ; i < TileProperties.size() ; i++ )
 	{
 		if(TileProperties.at(i).behaviour == DOOR_YELLOW)
 			g_pGfxEngine->copyTileToSprite(i-1, DOOR_YELLOW_SPRITE, 2);

@@ -36,17 +36,12 @@ bool CPlayGameVorticon::loadGameState()
 		// Load number of Players
 		m_SavedGame.decodeData(m_NumPlayers);
 
-		// Now load the inventory of every player
+		// Now load the inventory for every player
 		m_Player.clear();
 		m_Object.clear();
 
-		// Recreate the Players and tie them to the objects
-		//createPlayerObjects();
-
 		m_level_command = START_LEVEL;
 		g_pMusicPlayer->stop();
-		//g_pSound->playStereofromCoord(SOUND_ENTER_LEVEL, PLAY_NOW, m_Object[mp_Player[i].useObject].scrx);
-		// Now that the new level/map will be loaded, the players aren't dead anymore!
 
 		// Prepare for loading the new level map and the players.
 		cleanup();
@@ -55,7 +50,6 @@ bool CPlayGameVorticon::loadGameState()
 				 mp_level_completed, mp_option, m_Object, m_Map));
 
 		init();
-
 		std::vector<CPlayer> :: iterator player;
 		for( player=m_Player.begin() ; player != m_Player.end() ; player++ ) {
 			int x, y;

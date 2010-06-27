@@ -32,6 +32,7 @@ CObject(&map),
 m_episode(Episode),
 m_level(Level),
 m_difficulty(Difficulty),
+pjumpupspeed_decrease(g_pBehaviorEngine->getPhysicsSettings().player.defaultjumpupdecreasespeed),
 m_Ankhshield(CObject(&map)),
 mp_levels_completed(mp_level_completed),
 mp_map(NULL),
@@ -781,7 +782,6 @@ void CPlayer::freeze()
 	CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
 
 	pjumpupspeed = PhysicsSettings.player.maxjumpspeed;
-	pjumpupspeed_decrease = PhysicsSettings.player.defaultjumpupdecreasespeed;
 
 	pjumping = PJUMPUP;
 	pjustjumped = true;

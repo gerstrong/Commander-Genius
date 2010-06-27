@@ -130,11 +130,9 @@ enum InputCommands{
 	IC_STATUS,
 	IC_HELP,
 	IC_QUIT,
+	MAX_COMMANDS
 };
 
-const int MAX_COMMANDS = 10;
-
-#define NUMBER_OF_COMMANDS	10
 #define NUM_INPUTS			4
 
 #define ETYPE_KEYBOARD	 	0
@@ -209,7 +207,7 @@ private:
 	SDL_Event Event;
 	std::list<SDL_Joystick*> mp_Joysticks;
 
-	stInputCommand InputCommand[NUM_INPUTS][NUMBER_OF_COMMANDS];
+	stInputCommand InputCommand[NUM_INPUTS][MAX_COMMANDS];
 	bool TwoButtonFiring[NUM_INPUTS];
 
 	bool m_exit;

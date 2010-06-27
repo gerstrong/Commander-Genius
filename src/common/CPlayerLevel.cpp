@@ -45,11 +45,8 @@ void CPlayer::processInLevel(const bool &platextending)
 		if(!level_done)
 		{
 			getgoodies();
-		
 			ankh(); // Normally can happen in Episode 3
-		
 			raygun();
-		
 			keencicle();
 		}
 		
@@ -415,7 +412,6 @@ void CPlayer::JumpAndPogo()
 				if (pjumpanimtimer>PPOGO_PREPARE_TIME)
 				{
 					pjumpupspeed = PhysicsSettings.player.maxjumpspeed;
-					pjumpupspeed_decrease = PhysicsSettings.player.defaultjumpupdecreasespeed;
 
 					pjumpframe = PJUMP_PREPARE_LAST_FRAME;
 					pjumping = PPOGOING;
@@ -468,18 +464,11 @@ void CPlayer::JumpAndPogo()
 				{  	// time to start the jump
 					// select a jump depending on how long keen was preparing
 					pjumpupspeed = PhysicsSettings.player.maxjumpspeed;
-					pjumpupspeed_decrease = PhysicsSettings.player.defaultjumpupdecreasespeed;
 
 					if(pjumpframe > PPREPAREJUMPFRAME+4)
-					{
 						pjumpupspeed = PhysicsSettings.player.maxjumpspeed;
-						pjumpupspeed_decrease = PhysicsSettings.player.defaultjumpupdecreasespeed;
-					}
 					else
-					{
 						pjumpupspeed = (PhysicsSettings.player.maxjumpspeed*(pjumpframe-PPREPAREJUMPFRAME))/5;
-						pjumpupspeed_decrease = PhysicsSettings.player.defaultjumpupdecreasespeed;
-					}
 					
 					pjumpframe = PJUMP_PREPARE_LAST_FRAME;
 					g_pSound->playStereofromCoord(SOUND_KEEN_JUMP, PLAY_NOW, scrx);
