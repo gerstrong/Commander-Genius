@@ -39,7 +39,7 @@ std::string CBehaviorEngine::getString(const std::string& name)
 	if( it != stringmap.end() )
 		text = it->second;
 	else
-		text = "UNKNOWN '" + name + "' STRING";
+		text = "";
 
 	return text;
 }
