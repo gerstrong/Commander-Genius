@@ -215,7 +215,7 @@ SPARK_ANIMATE, SPARK_BLOWUP1, SPARK_BLOWUP2, SPARK_BLOWUP3
 		object.sprite = BLANKSPRITE;
 	}
 
-	if (object.touchPlayer)
+	if (object.touchPlayer && object.ai.se.state == SPARK_ANIMATE)
 	{
 		killplayer(object.touchedBy);
 	}
@@ -320,7 +320,6 @@ SPARK_ANIMATE, SPARK_BLOWUP1, SPARK_BLOWUP2, SPARK_BLOWUP3
 				m_Objvect.push_back(newobject);
 				
 			}
-
 
 			object.ai.se.blowx++;
 		}
