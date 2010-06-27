@@ -1,17 +1,14 @@
 #!/bin/sh
-
 NAME=cgenius
-VERSION=0313
-
-# extract the data getting rid of .svn
-svn export vfsroot vfsrootnonsvn
+VERSION=032
 
 # Windows Version
 cp build/Win32/CGenius.exe ./CGenius.exe
 
-cd vfsrootnonsvn
-zip -r ../${NAME}-v${VERSION}-win32.zip ./
+cd vfsroot
+git archive -o ../${NAME}-v${VERSION}-win32.zip HEAD
 cd ..
+
 zip ${NAME}-v${VERSION}-win32.zip ./libogg-0.dll
 zip ${NAME}-v${VERSION}-win32.zip ./libogg-0.dll
 zip ${NAME}-v${VERSION}-win32.zip ./libvorbis-0.dll
@@ -27,9 +24,10 @@ rm ./CGenius.exe
 cp build/Linux64/CGenius ./CGenius
 cp build/Linux64/CGenius ./distro/Ubuntu/usr/games
 
-cd vfsrootnonsvn
-zip -r ../${NAME}-v${VERSION}-linux64.zip ./
+cd vfsroot
+git archive -o ../${NAME}-v${VERSION}-linux64.zip HEAD
 cd ..
+
 zip ${NAME}-v${VERSION}-linux64.zip ./CGenius
 zip ${NAME}-v${VERSION}-linux64.zip ./changelog.txt
 zip ${NAME}-v${VERSION}-linux64.zip ./readme.txt
@@ -45,10 +43,10 @@ mv distro/CGenius_x64.deb ${NAME}-v${VERSION}-x64.deb
 cp build/Linux32/CGenius ./CGenius
 cp build/Linux32/CGenius ./distro/Ubuntu/usr/games
 
+cd vfsroot
+git archive -o ../${NAME}-v${VERSION}-linux32.zip HEAD
 cd ..
-cd vfsrootnonsvn
-zip -r ../${NAME}-v${VERSION}-linux32.zip ./
-cd ..
+
 zip ${NAME}-v${VERSION}-linux32.zip ./CGenius
 zip ${NAME}-v${VERSION}-linux32.zip ./changelog.txt
 zip ${NAME}-v${VERSION}-linux32.zip ./readme.txt
@@ -60,9 +58,9 @@ cd distro
 cd ..
 mv distro/CGenius_i386.deb ${NAME}-v${VERSION}-i386.deb
 
-rm -r vfsrootnonsvn
-
 # upload the packages
-#rsync -e ssh ${NAME}-v${VERSION}-win32.zip gerstrong,clonekeenplus@frs.sourceforge.net:/home/frs/project/c/cl/clonekeenplus/
-#rsync -e ssh C${NAME}-v${VERSION}-linux32.zip gerstrong,clonekeenplus@frs.sourceforge.net:/home/frs/project/c/cl/clonekeenplus/
-#rsync -e ssh ${NAME}-v${VERSION}-linux64.zip gerstrong,clonekeenplus@frs.sourceforge.net:/home/frs/project/c/cl/clonekeenplus/
+rsync -e ssh ${NAME}-v${VERSION}-win32.zip gerstrong,clonekeenplus@frs.sourceforge.net:/home/frs/project/c/cl/clonekeenplus/
+rsync -e ssh C${NAME}-v${VERSION}-linux32.zip gerstrong,clonekeenplus@frs.sourceforge.net:/home/frs/project/c/cl/clonekeenplus/
+rsync -e ssh ${NAME}-v${VERSION}-linux64.zip gerstrong,clonekeenplus@frs.sourceforge.net:/home/frs/project/c/cl/clonekeenplus/
+rsync -e ssh ${NAME}-v${VERSION}-i386.deb gerstrong,clonekeenplus@frs.sourceforge.net:/home/frs/project/c/cl/clonekeenplus/
+rsync -e ssh ${NAME}-v${VERSION}-x64.deb gerstrong,clonekeenplus@frs.sourceforge.net:/home/frs/project/c/cl/clonekeenplus/
