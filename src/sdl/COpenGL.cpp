@@ -60,6 +60,13 @@ static void createTexture(GLuint& tex, int oglfilter, GLsizei potwidth, GLsizei 
 
 bool COpenGL::initGL(GLint oglfilter)
 {
+	if(m_Depth != 32)
+	{
+		// TODO: I know, this is an issue, but I need to investigate, how pixels in SDL are stored when using
+		// 16 bit depth copy it correctly to the OGL Texture
+		g_pLogFile->textOut("Sorry, but OpenGL with 16 bpp is not supported! Please switch to 32 bpp mode!");
+		return false;
+	}
 
 	// Calculate the proper viewport for any resolution
 	float base_width = g_pVideoDriver->getGameResolution().w;
@@ -118,10 +125,10 @@ bool COpenGL::initGL(GLint oglfilter)
 
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);*/
 
-	glEnable(GL_TEXTURE_2D);
+	glEnable(m_texparam);
 	createTexture(m_texture, oglfilter, m_GamePOTVideoDim.w, m_GamePOTVideoDim.h);
-	createTexture(m_texBG, oglfilter, m_GamePOTVideoDim.w, m_GamePOTVideoDim.h);
-	createTexture(m_texFG, oglfilter, m_GamePOTVideoDim.w, m_GamePOTVideoDim.h, true);
+	//createTexture(m_texBG, oglfilter, m_GamePOTVideoDim.w, m_GamePOTVideoDim.h);
+	//createTexture(m_texFG, oglfilter, m_GamePOTVideoDim.w, m_GamePOTVideoDim.h, true);
 	
 	if(m_ScaleX > 1)
 		m_opengl_buffer = new char[m_GamePOTVideoDim.w*m_GamePOTVideoDim.h*m_ScaleX*m_Depth];
@@ -218,7 +225,7 @@ static void renderTexture(GLuint texture, bool withAlpha = false) {
 
 void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
 {
-	glBindTexture (GL_TEXTURE_2D, texture);
+	glBindTexture (m_texparam, texture);
 	LockSurface(surface);
 	if(m_ScaleX > 1) //ScaleX
 	{
@@ -235,7 +242,8 @@ void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
 	}
 	else
 	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_GamePOTBaseDim.w, m_GamePOTBaseDim.h, 0, GL_BGRA, GL_UNSIGNED_BYTE, surface->pixels);
+		glTexImage2D(m_texparam, 0, GL_RGBA, m_GamePOTBaseDim.w, m_GamePOTBaseDim.h,
+														0, GL_BGRA, GL_UNSIGNED_BYTE, surface->pixels);
 	}
 
 	UnlockSurface(surface);

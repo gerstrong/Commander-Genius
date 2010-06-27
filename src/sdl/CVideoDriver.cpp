@@ -325,6 +325,7 @@ bool CVideoDriver::initOpenGL()
 			delete mp_OpenGL;
 			mp_OpenGL = NULL;
 			m_opengl = false;
+			applyMode();
 		}
 		else
 		{
