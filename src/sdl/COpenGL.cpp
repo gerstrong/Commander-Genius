@@ -39,7 +39,7 @@ m_GamePOTVideoDim(getPowerOfTwo(Width),
 {
 }
 
-static void createTexture(GLuint& tex, int oglfilter, bool withAlpha = false) {
+static void createTexture(GLuint& tex, int oglfilter, GLsizei potwidth, GLsizei potheight, bool withAlpha = false) {
 	glGenTextures(1, &tex);
 	glBindTexture(GL_TEXTURE_2D, tex);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -53,9 +53,9 @@ static void createTexture(GLuint& tex, int oglfilter, bool withAlpha = false) {
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	if(withAlpha)
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 512, 256, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, potwidth, potheight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 	else
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 512, 256, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, potwidth, potheight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 }
 
 bool COpenGL::initGL(GLint oglfilter)
@@ -66,8 +66,7 @@ bool COpenGL::initGL(GLint oglfilter)
 	float base_height = g_pVideoDriver->getGameResolution().h;
 
 	float scale_width = (float)(g_pVideoDriver->getWidth())/base_width;
-	float scale_height = scale_width*aspect;
-	//float scale_height = (float)(g_pVideoDriver->getHeight())/base_height;
+	float scale_height = (float)(g_pVideoDriver->getHeight())/base_height;
 
 	float width = ((float)m_GamePOTBaseDim.w)*scale_width;
 	float height = ((float)m_GamePOTBaseDim.h)*scale_height;
@@ -120,7 +119,9 @@ bool COpenGL::initGL(GLint oglfilter)
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);*/
 
 	glEnable(GL_TEXTURE_2D);
-	createTexture(m_texture, oglfilter);
+	createTexture(m_texture, oglfilter, m_GamePOTVideoDim.w, m_GamePOTVideoDim.h);
+	createTexture(m_texBG, oglfilter, m_GamePOTVideoDim.w, m_GamePOTVideoDim.h);
+	createTexture(m_texFG, oglfilter, m_GamePOTVideoDim.w, m_GamePOTVideoDim.h, true);
 	
 	if(m_ScaleX > 1)
 		m_opengl_buffer = new char[m_GamePOTVideoDim.w*m_GamePOTVideoDim.h*m_ScaleX*m_Depth];
@@ -145,6 +146,26 @@ bool COpenGL::initGL(GLint oglfilter)
 
 void COpenGL::setSurface(SDL_Surface *blitsurface)
 {	m_blitsurface = blitsurface; }
+
+static void loadSurface(GLuint texture, SDL_Surface* surface) {
+	glBindTexture(GL_TEXTURE_2D, texture);
+	LockSurface(surface);
+	if(surface->format->BitsPerPixel == 24)
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 512, 256, 0, GL_RGB, GL_UNSIGNED_BYTE, surface->pixels);
+	else {
+		// we assume RGBA
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 512, 256, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->pixels);
+	}
+	UnlockSurface(surface);
+}
+
+void COpenGL::reloadBG(SDL_Surface* surf) {
+	loadSurface(m_texBG, surf);
+}
+
+void COpenGL::reloadFG(SDL_Surface* surf) {
+	loadSurface(m_texFG, surf);
+}
 
 static void renderTexture(GLuint texture, bool withAlpha = false) {
 	
@@ -192,11 +213,11 @@ static void renderTexture(GLuint texture, bool withAlpha = false) {
 	glDisable(GL_BLEND);
 }
 
-void COpenGL::render(void)
+void COpenGL::render(bool withFG)
 {
 	//glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-	//renderTexture(m_texBG);
+	renderTexture(m_texBG);
 	
 	LockSurface(m_blitsurface);
 
@@ -224,34 +245,14 @@ void COpenGL::render(void)
 
 	renderTexture(m_texture);
 
-	//if(withFG)
-		//renderTexture(m_texFG, true);
+	if(withFG)
+		renderTexture(m_texFG, true);
 	
 	g_pInput->renderOverlay();
 	
 	SDL_GL_SwapBuffers();
 
 }
-
-/*static void loadSurface(GLuint texture, SDL_Surface* surface) {
-	glBindTexture(GL_TEXTURE_2D, texture);
-	LockSurface(surface);
-	if(surface->format->BitsPerPixel == 24)
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 512, 256, 0, GL_RGB, GL_UNSIGNED_BYTE, surface->pixels);
-	else {
-		// we assume RGBA
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 512, 256, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->pixels);		
-	}
-	UnlockSurface(surface);
-}*/
-
-/*void COpenGL::reloadBG(SDL_Surface* surf) {
-	loadSurface(m_texBG, surf);
-}
-
-void COpenGL::reloadFG(SDL_Surface* surf) {
-	loadSurface(m_texFG, surf);
-}*/
 
 COpenGL::~COpenGL() {
 	if(m_opengl_buffer) delete[] m_opengl_buffer; m_opengl_buffer = NULL; }

@@ -37,10 +37,11 @@ public:
 	COpenGL(Uint16 Width, Uint16 Height, unsigned char Depth,
 			unsigned char scalex,SDL_Rect &gamestdrect);
 
-	void render();
+	void render(bool withFG);
 	bool initGL(GLint oglfilter);
 
 	void setSurface(SDL_Surface *blitsurface);
+
 	void reloadBG(SDL_Surface* surf);
 	void reloadFG(SDL_Surface* surf);
 
@@ -60,6 +61,8 @@ private:
 	stDims m_GamePOTVideoDim;
 
 	GLuint	m_texture;
+
+	GLuint	m_texBG, m_texFG;
 };
 
 #endif

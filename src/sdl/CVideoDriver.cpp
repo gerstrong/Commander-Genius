@@ -69,7 +69,6 @@ m_blitsurface_alloc(false)
 	m_opengl = false; // Must stay optional for better compatibility
 #endif
 	m_aspect_correction = true;
-	m_aspect_ratio = 8.0f/5.0f;
 
 	screenrect.x=0;
 	screenrect.y=0;
@@ -670,10 +669,10 @@ void CVideoDriver::updateScreen()
 #ifdef USE_OPENGL
 	if(m_opengl)
 	{
-		mp_OpenGL->render();
+		mp_OpenGL->render(false);
 
 		// Flush the FG-Layer
-		SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE));
+		//SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE));
 	}
 	else // No OpenGL but Software Rendering
 	{
