@@ -89,7 +89,6 @@ void CRLE::expand( std::vector<word>& dst, std::vector<byte>& src, word key )
 	finsize = (high_byte<<8) | low_byte;
 	finsize /= 2;
 
-    //for(size_t i=WORDSIZE; i<src.size(); i+=inc )
     for(size_t i=WORDSIZE ; dst.size() < finsize ; i+=inc)
     {
         // Read datum (word)

@@ -69,6 +69,7 @@ public:
 	unsigned int getlevelat(unsigned int x, unsigned int y)	{
 		return m_objectlayer[x>>4][y>>4];	}
 
+	word *getData(Uint8 PlaneNum);
 	word *getForegroundData();
 	word *getBackgroundData();
 

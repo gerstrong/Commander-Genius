@@ -67,6 +67,8 @@ void CMapLoaderGalaxy::unpackPlaneData(std::ifstream &MapFile,
 										longword offset, longword length,
 										word magic_word)
 {
+	size_t initial_pos = MapFile.tellg();
+
 	std::vector<word> Plane;
 
 	MapFile.seekg(offset);
@@ -86,10 +88,11 @@ void CMapLoaderGalaxy::unpackPlaneData(std::ifstream &MapFile,
     	// Now use the RLE Decompression
     	CRLE RLE;
         size_t derlesize = (RLE_Plane[0]<<8)+RLE_Plane[1];           // Bytes already swapped
-    	RLE.expand(Plane, RLE_Plane, magic_word);
+    	//RLE.expand(Plane, RLE_Plane, magic_word);
+        RLE.expandSwapped(Plane, RLE_Plane, magic_word);
     	RLE_Plane.clear();
 
-    	word *ptr = Map.getBackgroundData();
+    	word *ptr = Map.getData(PlaneNumber);
     	for(size_t y=0; y<Map.m_height ; y++)
     	{
     		for(size_t x=0; x<Map.m_width ; x++)
@@ -113,6 +116,8 @@ void CMapLoaderGalaxy::unpackPlaneData(std::ifstream &MapFile,
     {
     	g_pLogFile->textOut( "\nERROR Plane Uncompress Carmack Size Failed: Actual " + itoa(RLE_Plane.size()) + " bytes Expected " + itoa(decarmacksize) + " bytes<br>");
     }
+
+    MapFile.seekg(initial_pos);
 }
 
 
@@ -130,7 +135,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 	magic_word = READWORD(Maphead);
 
 	// Get location of the level data from MAPHEAD Located in the EXE-File.
-	Maphead += (level-1)*sizeof(longword);
+	Maphead += level*sizeof(longword);
 	level_offset = READLONGWORD(Maphead);
 
 	// Open the Gamemaps file
@@ -200,6 +205,20 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 				Map.createEmptyDataPlanes(Width*Height);
 
 				unpackPlaneData(MapFile, Map, 0, Plane_Offset[0], Plane_Length[0], magic_word);
+				unpackPlaneData(MapFile, Map, 1, Plane_Offset[1], Plane_Length[1], magic_word);
+				unpackPlaneData(MapFile, Map, 2, Plane_Offset[2], Plane_Length[2], magic_word);
+
+				FILE *fp = fopen("bumpplane1.bin","wb");
+				fwrite(Map.getData(0), 2, 8052/2, fp);
+				fclose(fp);
+
+				fp = fopen("bumpplane2.bin","wb");
+				fwrite(Map.getData(1), 2, 8052/2, fp);
+				fclose(fp);
+
+				fp = fopen("bumpplane3.bin","wb");
+				fwrite(Map.getData(2), 2, 8052/2, fp);
+				fclose(fp);
 			}
 			MapFile.close();
 			return true;

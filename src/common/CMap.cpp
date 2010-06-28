@@ -87,13 +87,22 @@ Uint16 CMap::at(Uint16 x, Uint16 y, Uint16 t)
 Uint16 CMap::getObjectat(Uint16 x, Uint16 y)
 {	return m_objectlayer[x][y];	}
 
+/**
+ * \brief	Gets the pointer to the plane data of the map
+ * \param	PlaneNum number of the requested Plane
+ */
+word *CMap::getData(Uint8 PlaneNum)
+{
+	return m_Plane[PlaneNum].getMapDataPtr();
+}
+
 word *CMap::getForegroundData()
-{	//return mp_foreground_data;
-	return m_Plane[1].getMapDataPtr();
+{
+	return m_Plane[0].getMapDataPtr();
 }
 
 word *CMap::getBackgroundData()
-{	//return mp_foreground_data;
+{
 	return m_Plane[0].getMapDataPtr();
 }
 
