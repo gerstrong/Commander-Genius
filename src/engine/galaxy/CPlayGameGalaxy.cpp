@@ -29,6 +29,13 @@ bool CPlayGameGalaxy::loadGameState()
 // Setup for the ingame
 bool CPlayGameGalaxy::init()
 {
+	loadLevel();
+
+	return false;
+}
+
+void CPlayGameGalaxy::loadLevel()
+{
 	// Load the Level map. We have two modes. Inlevel and game map
 
 	// TODO: Lets load the main map for now and create process for this
@@ -37,14 +44,11 @@ bool CPlayGameGalaxy::init()
 	m_Map.setTileMap(g_pGfxEngine->getTileMap(0));
 	m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
 
-	MapLoader.loadMap(m_Map, 0); // Map Level?
+	MapLoader.loadMap(m_Map, m_Level); // Map Level?
 
 	//m_Map.drawAll();
 	m_Map.gotoPos(0, 0); // Coordinates of star sky
-
-	return false;
 }
-
 
 // The main ingame process cycle when keen galaxy is up and running
 void CPlayGameGalaxy::process()
@@ -68,26 +72,36 @@ void CPlayGameGalaxy::processInput()
 		m_endgame = true;
 	}
 
-	if(g_pInput->getPressedCommand(IC_LEFT))
+	if(g_pInput->getHoldedCommand(IC_LEFT))
 	{
 		if(m_posx>0)
 			m_posx--;
 	}
-	else if(g_pInput->getPressedCommand(IC_RIGHT))
+	else if(g_pInput->getHoldedCommand(IC_RIGHT))
 	{
 		if(m_posx<m_Map.m_width)
 			m_posx++;
 	}
 
-	if(g_pInput->getPressedCommand(IC_UP))
+	if(g_pInput->getHoldedCommand(IC_UP))
 	{
 		if(m_posy>0)
 			m_posy--;
 	}
-	else if(g_pInput->getPressedCommand(IC_DOWN))
+	else if(g_pInput->getHoldedCommand(IC_DOWN))
 	{
 		if(m_posy<m_Map.m_height)
 			m_posy++;
+	}
+
+
+	if(g_pInput->getPressedCommand(IC_STATUS))
+	{
+		if(m_Level < 20)
+			m_Level++;
+		else
+			m_Level = 0;
+		loadLevel();
 	}
 }
 
@@ -106,6 +120,7 @@ void CPlayGameGalaxy::processRendering()
 	}
 
 	g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->BlitSurface, "Press the arrows to scroll, ESC to quit", 10, 10);
+	g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->BlitSurface, "Enter to switch Level", 10, 20);
 }
 
 

@@ -22,6 +22,7 @@ public:
 			 stOption *p_option);
 
 	bool loadGameState();
+	void loadLevel();
 	bool init();
 
 	void process();
