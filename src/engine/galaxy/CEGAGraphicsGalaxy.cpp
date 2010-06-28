@@ -337,32 +337,35 @@ bool CEGAGraphicsGalaxy::begin()
 		return false;
 	}
 
-	int egagraphlen;
+	int egagraphlen = 0;
 	File.seekg(1,std::ios::end);
 	egagraphlen = File.tellg();
+	if(egagraphlen == 0)
+	{
+		g_pLogFile->textOut(RED,"Error the file \"" + filename + "\" is empty!");
+		return false;
+	}
 	egagraphlen--;
 	File.seekg(0,std::ios::beg);
 
-	unsigned char *CompEgaGraphData = new unsigned char[egagraphlen];
-
-	File.read((char*)CompEgaGraphData, egagraphlen);
+	std::vector<unsigned char> CompEgaGraphData(egagraphlen);
+	File.read((char*)&CompEgaGraphData[0], egagraphlen);
 
 	// Make a clean memory pattern
 	ChunkStruct ChunkTemplate;
 	ChunkTemplate.len=0;
 	m_egagraph.assign(EpisodeInfo[ep].NumChunks, ChunkTemplate);
 
-	unsigned long inlen, outlen;
-	inlen = outlen = 0;
+	unsigned long inlen = 0, outlen = 0;
 
 	// Now lets decompress the graphics
 	for(size_t i = 0; i < EpisodeInfo[ep].NumChunks; i++)
 	{
 		// Show that something is happening
 		offset = m_egahead[i];
-
+		
 		// Make sure the chunk is valid
-		if(offset != offset_limit)
+		if(offset < offset_limit && offset + 4 <= CompEgaGraphData.size())
 		{
 			// Get the expanded length of the chunk
 			if(i >= EpisodeInfo[ep].Index8Tiles && i < EpisodeInfo[ep].Index16MaskedTiles + EpisodeInfo[ep].Num16MaskedTiles)
@@ -379,7 +382,7 @@ bool CEGAGraphicsGalaxy::begin()
 			}
 			else
 			{
-				memcpy(&outlen, CompEgaGraphData + offset, 4);
+				memcpy(&outlen, &CompEgaGraphData[offset], 4);
 				offset += 4;
 			}
 
@@ -400,7 +403,7 @@ bool CEGAGraphicsGalaxy::begin()
 			}
 			if(j == EpisodeInfo[ep].NumChunks)
 				inlen = egagraphlen - offset;
-			Huffman.expand(CompEgaGraphData + offset, &m_egagraph[i].data[0], inlen, outlen);
+			Huffman.expand(&CompEgaGraphData[offset], &m_egagraph[i].data[0], inlen, outlen);
 		}
 		else
 		{
@@ -414,8 +417,6 @@ bool CEGAGraphicsGalaxy::begin()
 		//BmpMaskedHead = (BitmapHeadStruct *)m_EgaGraph[1].data;
 		//SprHead = (SpriteHeadStruct *)m_EgaGraph[2].data;
 	//}
-
-	delete [] CompEgaGraphData;
 
 	File.close();
 	return true;
