@@ -35,7 +35,7 @@ bool CSprite::createSurface(Uint32 flags, SDL_Color *Palette)
 	if(m_masksurface) SDL_FreeSurface(m_masksurface);
 	m_masksurface = SDL_CreateRGBSurface( flags, m_xsize, m_ysize, 8, 0, 0, 0, 0);
 	SDL_SetColors( m_masksurface, Palette, 0, 255);
-	SDL_SetColorKey( m_masksurface, SDL_SRCCOLORKEY, COLORKEY ); // One black is the color key. There is another black, as normal color
+	SDL_SetColorKey( m_masksurface, SDL_SRCCOLORKEY, COLORKEY ); // color key.
 	
 	return ( !m_surface && !m_masksurface );
 }
@@ -46,10 +46,8 @@ bool CSprite::optimizeSurface()
 	{
 		SDL_Surface *temp_surface;
 		temp_surface = SDL_DisplayFormatAlpha(m_surface);
-
 		SDL_FreeSurface(m_surface);
 		m_surface = temp_surface;
-
         return true;
 	}
 	else
@@ -195,21 +193,78 @@ void CSprite::replaceSpriteColor( Uint16 find, Uint16 replace, Uint16 miny )
 	if(SDL_MUSTLOCK(m_surface)) SDL_UnlockSurface(m_surface);
 }
 
+void blitMaskedSprite(SDL_Surface *dst, SDL_Surface *src, Uint32 color)
+{
+	Uint16 x,y;
+	Uint32 *srcpixel, *dstpixel;
+
+	if(SDL_MUSTLOCK(dst)) SDL_LockSurface(dst);
+	if(SDL_MUSTLOCK(src)) SDL_LockSurface(src);
+	dstpixel = (Uint32*) dst->pixels;
+	srcpixel = (Uint32*) src->pixels;
+	for(y=0;y<dst->h;y++)
+	{
+		for(x=0;x<dst->w;x++)
+		{
+			Uint8 r,g,b,a;
+
+			SDL_GetRGBA(*srcpixel,src->format, &r, &g, &b, &a);
+			SDL_GetRGB(color, src->format, &r, &g, &b);
+			*dstpixel = SDL_MapRGBA(dst->format, r, g, b, a);
+
+			dstpixel++;
+			srcpixel++;
+		}
+	}
+	if(SDL_MUSTLOCK(src)) SDL_UnlockSurface(src);
+	if(SDL_MUSTLOCK(dst)) SDL_UnlockSurface(dst);
+}
+
+
 ///
 // Drawing Routines
 ///
+/**
+ * \brief The function that blits the sprite to dst
+ * \param SDL_Surface 	Surface where the sprite will be drawn
+ * \param x				X-Coordinate, indicating the position on dst
+ * \param y				Y-Coordinate, indicating the position on dst
+ */
 void CSprite::drawSprite( SDL_Surface *dst, Uint16 x, Uint16 y )
 {
 	SDL_Rect dst_rect, src_rect;
 	dst_rect.x = x;			dst_rect.y = y;
 	dst_rect.w = m_xsize;	dst_rect.h = m_ysize;
-	
+
 	src_rect.x = 0;	src_rect.y = 0;
 	src_rect.w = dst_rect.w;
 	src_rect.h = dst_rect.h;
 	
 	SDL_BlitSurface( m_surface, &src_rect, dst, &dst_rect );
 }
+
+/**
+ * \brief The function that blits the sprite to dst
+ * \param SDL_Surface 	Surface where the sprite will be drawn
+ * \param x				X-Coordinate, indicating the position on dst
+ * \param y				Y-Coordinate, indicating the position on dst
+ */
+void CSprite::drawBlinkingSprite( SDL_Surface *dst, Uint16 x, Uint16 y )
+{
+	SDL_Rect dst_rect, src_rect;
+	dst_rect.x = x;			dst_rect.y = y;
+	dst_rect.w = m_xsize;	dst_rect.h = m_ysize;
+
+	src_rect.x = 0;	src_rect.y = 0;
+	src_rect.w = dst_rect.w;
+	src_rect.h = dst_rect.h;
+
+	SDL_Surface *blanksfc =	SDL_DisplayFormatAlpha(m_surface);
+	blitMaskedSprite(blanksfc, m_surface, 0xFFFFFF);
+	SDL_BlitSurface( blanksfc, &src_rect, dst, &dst_rect );
+	SDL_FreeSurface(blanksfc);
+}
+
 
 void CSprite::freeSurfaces()
 {

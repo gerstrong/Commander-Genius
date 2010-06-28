@@ -150,6 +150,7 @@ public:
 	
 	bool hitdetect(CObject &hitobject);
 	void kill();
+	void blink(Uint16 frametime);
 
 	// Collision parts
 	bool checkSolidR( int x2, int y1, int y2);
@@ -178,6 +179,9 @@ public:
 
 private:
 	CMap *mp_Map;
+
+	Uint16 m_blinktime;
+
 	static int m_number_of_objects;
 };
 

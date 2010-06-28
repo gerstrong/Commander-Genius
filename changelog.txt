@@ -14,6 +14,7 @@ v0.3.2:
 - Improved Garg AI
 - Improved Scrub AI
 - Teleporter fixes
+- Now enemies blink, when they get a hit
 - Small improvement of the player physics
 - New configuration file parser which makes loading and saving even faster!
 

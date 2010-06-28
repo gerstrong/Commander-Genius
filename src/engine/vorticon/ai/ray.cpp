@@ -5,6 +5,7 @@
 #include "ray.h"
 #include "../../spritedefines.h"
 #include "../../../common/CBehaviorEngine.h"
+#include "../../../sdl/CVideoDriver.h"
 
 #define Sprite g_pGfxEngine->Sprite
 
@@ -57,6 +58,8 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 								object.ai.ray.state = RAY_STATE_SETZAPZOT;
 								object.canbezapped = false;
 								it_obj->zapped++;
+								if(g_pVideoDriver->getSpecialFXConfig())
+									it_obj->blink(10);
 								if(it_obj->m_type == OBJ_RAY)
 									it_obj->ai.ray.state = RAY_STATE_SETZAPZOT;
 								it_obj->zapx = it_obj->getXPosition();

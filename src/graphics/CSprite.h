@@ -31,6 +31,7 @@ public:
 	SDL_Surface *getSDLMaskSurface() { return m_masksurface; }
 
 	void drawSprite( SDL_Surface *dst, Uint16 x, Uint16 y );
+	void drawBlinkingSprite( SDL_Surface *dst, Uint16 x, Uint16 y );
 
 	Uint8 getWidth() { return m_xsize; };
 	Uint8 getHeight() { return m_ysize; };

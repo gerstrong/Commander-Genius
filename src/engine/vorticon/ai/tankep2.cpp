@@ -262,6 +262,7 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 			}
 		}
 		break;
+	default : break;
 	}
 }
 

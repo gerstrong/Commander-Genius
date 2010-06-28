@@ -20,7 +20,8 @@ int CObject::m_number_of_objects = 0; // The current number of total objects we 
 CObject::CObject(CMap *pmap) :
 m_index(m_number_of_objects),
 mp_object(NULL),
-mp_Map(pmap)
+mp_Map(pmap),
+m_blinktime(0)
 {
 	m_number_of_objects++;
 	honorPriority = false;
@@ -673,6 +674,7 @@ bool CObject::checkSolidD( int x1, int x2, int y2)
 	return false;
 }
 
+// Just kills the object
 void CObject::kill()
 {
 	if ( exists && zapped < 500 && canbezapped )
@@ -681,6 +683,16 @@ void CObject::kill()
 		dead = true;
 	}
 }
+
+/**
+ * \brief This function triggers the blinking behavior of an object.
+ * 		  Normally this happens, when an enemy gets shot and can get
+ * 		  multiple hits.
+ * \param frametime	amount of drawn blinking frames during the blitting.
+ * 					Every draw cycle performs one
+ */
+void CObject::blink(Uint16 frametime)
+{	m_blinktime = frametime; }
 
 ////
 // For drawing
@@ -699,7 +711,13 @@ void CObject::draw()
 
 	if(scry < gameres.w && scry < gameres.h && exists)
 	{
-		Sprite.drawSprite( sfc, scrx, scry );
+		if(m_blinktime > 0)
+		{
+			Sprite.drawBlinkingSprite( sfc, scrx, scry );
+			m_blinktime--;
+		}
+		else
+			Sprite.drawSprite( sfc, scrx, scry );
 		hasbeenonscreen = true;
 
 	    if (honorPriority)
