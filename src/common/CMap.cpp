@@ -98,7 +98,7 @@ word *CMap::getData(Uint8 PlaneNum)
 
 word *CMap::getForegroundData()
 {
-	return m_Plane[0].getMapDataPtr();
+	return m_Plane[1].getMapDataPtr();
 }
 
 word *CMap::getBackgroundData()

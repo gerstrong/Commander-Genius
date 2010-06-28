@@ -49,8 +49,9 @@ void CRLE::expandSwapped( std::vector<word>& dst, std::vector<byte>& src, word k
 	word value;
 	size_t inc;
 
-	finsize = (src.at(1)<<8) + src.at(0);
+	finsize = (src.at(1)<<8) | src.at(0);
 	finsize /= 2;
+
 
 	for(size_t i=WORDSIZE ; dst.size() < finsize ; i+=inc)
     {

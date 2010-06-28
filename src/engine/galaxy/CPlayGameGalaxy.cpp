@@ -11,6 +11,7 @@
 #include "../../sdl/CVideoDriver.h"
 #include "../../sdl/CInput.h"
 #include "../../graphics/CGfxEngine.h"
+#include "../../StringUtils.h"
 
 namespace galaxy
 {
@@ -38,11 +39,8 @@ bool CPlayGameGalaxy::init()
 
 	MapLoader.loadMap(m_Map, 0); // Map Level?
 
-	m_Map.gotoPos(0, 0); // Coordinates of star sky
 	//m_Map.drawAll();
-
-	// We should create this as base and two more classes. One will be for ingame and the other for
-	// the map processes
+	m_Map.gotoPos(0, 0); // Coordinates of star sky
 
 	return false;
 }
@@ -91,7 +89,6 @@ void CPlayGameGalaxy::processInput()
 		if(m_posy<m_Map.m_height)
 			m_posy++;
 	}
-
 }
 
 void CPlayGameGalaxy::processRendering()
@@ -102,12 +99,13 @@ void CPlayGameGalaxy::processRendering()
 		{
 			g_pGfxEngine->getTileMap(0).drawTile(g_pVideoDriver->getBlitSurface(),
 				16*x, 16*y, m_Map.at(m_posx+x,m_posy+y,0) );
-			g_pGfxEngine->getTileMap(1).drawTile(g_pVideoDriver->getBlitSurface(),
-				16*x, 16*y, m_Map.at(m_posx+x,m_posy+y,0) );
+			if(m_Map.at(m_posx+x,m_posy+y,1) != 0)
+				g_pGfxEngine->getTileMap(1).drawTile(g_pVideoDriver->getBlitSurface(),
+						16*x, 16*y, m_Map.at(m_posx+x,m_posy+y,1) );
 		}
 	}
 
-	g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->getBlitSurface(),"Press Esc to end", 10, 10);
+	g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->BlitSurface, "Press the arrows to scroll, ESC to quit", 10, 10);
 }
 
 
