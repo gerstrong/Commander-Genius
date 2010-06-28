@@ -2,3 +2,4 @@
 *.pbxuser
 build/Xcode/build
 *.log
+Makefile
