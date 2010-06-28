@@ -62,8 +62,6 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 									it_obj->blink(10);
 								if(it_obj->m_type == OBJ_RAY)
 									it_obj->ai.ray.state = RAY_STATE_SETZAPZOT;
-								it_obj->zapx = it_obj->getXPosition();
-								it_obj->zapy = it_obj->getYPosition();
 								it_obj->zapd = it_obj->ai.ray.direction;
 								if (object.sprite==ENEMYRAY || object.sprite==ENEMYRAYEP2 || object.sprite==ENEMYRAYEP3)
 									it_obj->zappedbyenemy = true;

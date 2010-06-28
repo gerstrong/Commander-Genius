@@ -69,7 +69,7 @@ public:
 	
 	bool canbezapped;         // if 0 ray will not stop on hitdetect
 	int zapped;              // number of times got hit by keen's raygun
-	int zapx, zapy, zapd;	   // x,y, and direction of last shot at time of impact
+	int zapd;	   // x,y, and direction of last shot at time of impact
 	char zappedbyenemy;	   // if 1, it was an ENEMYRAY and not keen that shot it
 	
 	bool inhibitfall;         // if true common_enemy_ai will not do falling
