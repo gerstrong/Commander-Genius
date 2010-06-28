@@ -33,6 +33,8 @@ public:
 			bool masked=false);
 	void extractTile(SDL_Surface *sfc, std::vector<unsigned char> &data,
 			Uint16 size, Uint16 columns, size_t tile);
+	void extractMaskedTile(SDL_Surface *sfc, std::vector<unsigned char> &data,
+			Uint16 size, Uint16 columns, size_t tile);
 
 	bool begin();
 	Uint8 getBit(unsigned char data, Uint8 leftshift);
@@ -40,6 +42,7 @@ public:
 	bool readBitmaps();
 	bool readMaskedBitmaps();
 	bool readTilemaps();
+	bool readMaskedTilemaps();
 
 	virtual ~CEGAGraphicsGalaxy();
 

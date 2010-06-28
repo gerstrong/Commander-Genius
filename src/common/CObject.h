@@ -46,22 +46,18 @@ class CObject {
 public:
 	CObject(CMap *pmap=NULL);
 	
-	object_t m_type;        // yorp, vorticon, etc.
-	unsigned int m_index;        // Like an ID for some objects that need this implementation
+	object_t m_type;        		// yorp, vorticon, etc.
+	unsigned int m_index;        	// Like an ID for some objects that need this implementation
 	bool exists;
-	bool onscreen;    			// true=(scrx,scry) position is visible onscreen
+	bool onscreen;    				// true=(scrx,scry) position is visible onscreen
 	bool hasbeenonscreen;
 	unsigned int sprite;      			// which sprite should this object be drawn with
-	int scrx, scry;           // x,y pixel position on screen
+	int scrx, scry;           		// x,y pixel position on screen
 	
 	// Bouncing Boxes
 	Uint32 bboxX1, bboxX2;
 	Uint32 bboxY1, bboxY2;
 
-	// if type is OBJ_PLAYER, this contains the player number that this object
-	// is associated with
-	int AssociatedWithPlayer;
-	
 	// if zero, priority tiles will not be honored and object will always
 	// appear in front of the background
 	bool honorPriority;
@@ -86,11 +82,6 @@ public:
 	
 	unsigned char touchPlayer;      // 1=hit detection with player
 	unsigned char touchedBy;        // which player was hit
-	// Y position on this object the hit was detected
-	// this is used for the yorps' bonk-on-the-head thing.
-	// objects arm_typee scanned bottom to top, and first pixel
-	// touching player is what goes in here.
-	unsigned char hity;
 	
 	bool needinit;    // 1=new object--requires initilization
 	bool dead;
@@ -168,8 +159,6 @@ public:
 	unsigned int getYDownPos();
 	unsigned int getYMidPos();
 	
-	unsigned int x, y;        			// x,y location in map coords, CSFed
-
 	void processFalling();
 
 	void draw();
@@ -181,6 +170,7 @@ private:
 	CMap *mp_Map;
 
 	Uint16 m_blinktime;
+	unsigned int x, y;        			// x,y location in map coords, CSFed
 
 	static int m_number_of_objects;
 };

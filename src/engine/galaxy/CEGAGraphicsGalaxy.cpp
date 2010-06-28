@@ -137,8 +137,10 @@ bool CEGAGraphicsGalaxy::loadData()
 	if(!readfonts()) return false;
 	if(!readBitmaps()) return false;
 	if(!readMaskedBitmaps()) return false;
+
+	g_pGfxEngine->createEmptyTilemap(4);
 	if(!readTilemaps()) return false;
-	//k456_export_masked_tiles();
+	if(!readMaskedTilemaps()) return false;
 	//k456_export_8_tiles();
 	//k456_export_8_masked_tiles();
 	//k456_export_sprites();
@@ -270,6 +272,64 @@ void CEGAGraphicsGalaxy::extractTile(SDL_Surface *sfc, std::vector<unsigned char
 					}
 					pointer++;
 				}
+			}
+		}
+	}
+}
+
+/**
+ * \brief 	This function extracts a tile from the galaxy graphics map, and converts it properly to a
+ * 			SDL Surface
+ */
+void CEGAGraphicsGalaxy::extractMaskedTile(SDL_Surface *sfc, std::vector<unsigned char> &data,
+		Uint16 size, Uint16 columns, size_t tile)
+{
+	if(!data.empty())
+	{
+		// Decode the image data
+		for(size_t p = 0; p < 4; p++)
+		{
+			// Decode the lines of the bitmap data
+			Uint8 *pointer = &(data[0]) + (p+1) * (size/8) * size;
+			for(size_t y = 0; y < size; y++)
+			{
+				Uint8 *pixel = (Uint8*)sfc->pixels +
+						size*(tile%columns) +
+						size*size*columns*(tile/columns) +
+						(size*columns*y);
+				for(size_t x = 0; x < (size/8); x++)
+				{
+					Uint8 bit,b;
+					for(b=0 ; b<8 ; b++)
+					{
+						bit = getBit(*pointer, 7-b);
+						*pixel |= (bit<<p);
+						pixel++;
+					}
+					pointer++;
+				}
+			}
+		}
+
+		// now apply the mask!
+		Uint8 *pointer = &(data[0]);
+		for(size_t y = 0; y < size; y++)
+		{
+			Uint8 *pixel = (Uint8*)sfc->pixels +
+					size*(tile%columns) +
+					size*size*columns*(tile/columns) +
+					(size*columns*y);
+			for(size_t x = 0; x < (size/8); x++)
+			{
+				Uint8 bit,b;
+				for(b=0 ; b<8 ; b++)
+				{
+					bit = getBit(*pointer, 7-b);
+					if(bit == 1)
+						*pixel = 16;
+					pixel++;
+				}
+				pointer++;
 			}
 		}
 	}
@@ -569,7 +629,6 @@ bool CEGAGraphicsGalaxy::readTilemaps()
 {
 	int ep = m_episode - 4;
 
-	g_pGfxEngine->createEmptyTilemap(4);
 	CTilemap &Tilemap = g_pGfxEngine->getTileMap(0);
 	Tilemap.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE,
 							EpisodeInfo[ep].Num16Tiles, 4, 18 );
@@ -580,6 +639,27 @@ bool CEGAGraphicsGalaxy::readTilemaps()
 	for(size_t i = 0; i < EpisodeInfo[ep].Num16Tiles; i++)
 	{
 		extractTile(sfc, m_egagraph.at(EpisodeInfo[ep].Index16Tiles + i).data, 16, 18, i);
+	}
+
+	SDL_UnlockSurface(sfc);
+
+	return true;
+}
+
+bool CEGAGraphicsGalaxy::readMaskedTilemaps()
+{
+	int ep = m_episode - 4;
+
+	CTilemap &Tilemap = g_pGfxEngine->getTileMap(1);
+	Tilemap.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE,
+							EpisodeInfo[ep].Num16MaskedTiles, 4, 18 );
+	SDL_Surface *sfc = Tilemap.getSDLSurface();
+	SDL_FillRect(sfc,NULL, 0);
+	if(SDL_MUSTLOCK(sfc))	SDL_LockSurface(sfc);
+
+	for(size_t i = 0; i < EpisodeInfo[ep].Num16MaskedTiles; i++)
+	{
+		extractMaskedTile(sfc, m_egagraph.at(EpisodeInfo[ep].Index16MaskedTiles + i).data, 16, 18, i);
 	}
 
 	SDL_UnlockSurface(sfc);

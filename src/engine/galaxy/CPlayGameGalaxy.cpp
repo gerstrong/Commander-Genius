@@ -102,7 +102,7 @@ void CPlayGameGalaxy::processRendering()
 		{
 			g_pGfxEngine->getTileMap(0).drawTile(g_pVideoDriver->getBlitSurface(),
 				16*x, 16*y, m_Map.at(m_posx+x,m_posy+y,0) );
-			//g_pGfxEngine->getTileMap(0).drawTile(g_pVideoDriver->getBlitSurface(),
+			//g_pGfxEngine->getTileMap(1).drawTile(g_pVideoDriver->getBlitSurface(),
 				//16*x, 16*y, m_Map.at(m_posx+x,m_posy+y,0) );
 		}
 	}
