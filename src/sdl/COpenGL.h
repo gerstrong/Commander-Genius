@@ -39,13 +39,14 @@ public:
 
 	void loadSurface(GLuint texture, SDL_Surface* surface);
 
-	void render(bool withFG);
+	void render();
 	bool initGL(GLint oglfilter);
 
 	void setBlitSurface(SDL_Surface *blitsurface);
 	void setFGSurface(SDL_Surface *fgsurface);
+	void setFXSurface(SDL_Surface *fxsurface);
 
-	void reloadBG(SDL_Surface* surf);
+	void reloadFX(SDL_Surface* surf);
 	void reloadFG(SDL_Surface* surf);
 
 	virtual ~COpenGL();
@@ -53,6 +54,7 @@ public:
 private:
 	SDL_Surface	*mp_blitsurface;
 	SDL_Surface	*mp_fgsurface;
+	SDL_Surface	*mp_fxsurface;
 	char*		m_opengl_buffer;	// Used for internal ScaleX filtering
 
 	unsigned char	m_Depth;
@@ -66,7 +68,7 @@ private:
 
 	GLuint	m_texture;
 
-	GLuint	m_texBG, m_texFG;
+	GLuint	m_texFX, m_texFG;
 };
 
 #endif

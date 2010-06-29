@@ -27,6 +27,8 @@ Uint16 getPowerOfTwo(Uint16 value)
 COpenGL::COpenGL(Uint16 Width, Uint16 Height, unsigned char Depth,
 				unsigned char scalex,SDL_Rect &gamestdrect) :
 mp_blitsurface(NULL),
+mp_fgsurface(NULL),
+mp_fxsurface(NULL),
 m_opengl_buffer(NULL),
 m_Depth(Depth),
 m_ScaleX(scalex),
@@ -126,14 +128,19 @@ bool COpenGL::initGL(GLint oglfilter)
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);*/
 
 	glEnable(m_texparam);
+
 	createTexture(m_texture, oglfilter, m_GamePOTVideoDim.w, m_GamePOTVideoDim.h);
-	//createTexture(m_texBG, oglfilter, m_GamePOTVideoDim.w, m_GamePOTVideoDim.h);
-	//createTexture(m_texFG, oglfilter, m_GamePOTVideoDim.w, m_GamePOTVideoDim.h, true);
 	
 	if(m_ScaleX > 1)
+	{
 		m_opengl_buffer = new char[m_GamePOTVideoDim.w*m_GamePOTVideoDim.h*m_ScaleX*m_Depth];
+	}
 	else
+	{	// In that case we can do a texture based rendering
+		createTexture(m_texFX, oglfilter, m_GamePOTVideoDim.w, m_GamePOTVideoDim.h, true);
+		createTexture(m_texFG, oglfilter, m_GamePOTVideoDim.w, m_GamePOTVideoDim.h, true);
 		m_opengl_buffer = NULL;
+	}
 	
 	// If there were any errors
 	int error;
@@ -156,6 +163,9 @@ void COpenGL::setBlitSurface(SDL_Surface *blitsurface)
 
 void COpenGL::setFGSurface(SDL_Surface *fgsurface)
 {	mp_fgsurface = fgsurface; }
+void COpenGL::setFXSurface(SDL_Surface *fxsurface)
+{	mp_fxsurface = fxsurface; }
+
 
 /*static void loadSurface(GLuint texture, SDL_Surface* surface) {
 	glBindTexture(GL_TEXTURE_2D, texture);
@@ -169,8 +179,8 @@ void COpenGL::setFGSurface(SDL_Surface *fgsurface)
 	UnlockSurface(surface);
 }*/
 
-void COpenGL::reloadBG(SDL_Surface* surf) {
-	loadSurface(m_texBG, surf);
+void COpenGL::reloadFX(SDL_Surface* surf) {
+	loadSurface(m_texFX, surf);
 }
 
 void COpenGL::reloadFG(SDL_Surface* surf) {
@@ -227,6 +237,18 @@ void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
 {
 	glBindTexture (m_texparam, texture);
 	LockSurface(surface);
+	GLint internalFormat, externalFormat;
+	if(surface->format->BitsPerPixel == 24)
+	{
+		internalFormat = GL_RGB;
+		externalFormat = GL_BGR;
+	}
+	else
+	{	// we assume RGBA
+		internalFormat = GL_RGBA;
+		externalFormat = GL_BGRA;
+	}
+
 	if(m_ScaleX > 1) //ScaleX
 	{
 		unsigned m_src_slice = m_GamePOTBaseDim.w*surface->format->BytesPerPixel;
@@ -237,29 +259,37 @@ void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
 				m_src_slice, surface->format->BytesPerPixel,
 				m_GamePOTBaseDim.w, m_GamePOTBaseDim.h);
 
-		glTexImage2D(m_texparam, 0, GL_RGBA, m_GamePOTBaseDim.w*m_ScaleX, m_GamePOTBaseDim.h*m_ScaleX,
-														0, GL_BGRA, GL_UNSIGNED_BYTE, m_opengl_buffer);
+			glTexImage2D(m_texparam, 0, internalFormat, m_GamePOTBaseDim.w*m_ScaleX, m_GamePOTBaseDim.h*m_ScaleX,
+														0, externalFormat, GL_UNSIGNED_BYTE, m_opengl_buffer);
 	}
 	else
 	{
-		glTexImage2D(m_texparam, 0, GL_RGBA, m_GamePOTBaseDim.w, m_GamePOTBaseDim.h,
-														0, GL_BGRA, GL_UNSIGNED_BYTE, surface->pixels);
+			glTexImage2D(m_texparam, 0, internalFormat, m_GamePOTBaseDim.w, m_GamePOTBaseDim.h,
+												0, externalFormat, GL_UNSIGNED_BYTE, surface->pixels);
 	}
 
 	UnlockSurface(surface);
 }
 
-void COpenGL::render(bool withFG)
+void COpenGL::render()
 {
 	//glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 	loadSurface(m_texture, mp_blitsurface);
 	renderTexture(m_texture);
 
-	//reloadFG(mp_fgsurface);
-	//loadSurface(m_texFG, mp_fgsurface);
-	//renderTexture(m_texFG, true);
-	
+	if(mp_fgsurface)
+	{
+		reloadFG(mp_fgsurface);
+		renderTexture(m_texFG, true);
+	}
+
+	if(mp_fxsurface)
+	{
+		reloadFX(mp_fgsurface);
+		renderTexture(m_texFG, true);
+	}
+
 	g_pInput->renderOverlay();
 	
 	SDL_GL_SwapBuffers();

@@ -330,7 +330,6 @@ bool CVideoDriver::initOpenGL()
 		else
 		{
 			mp_OpenGL->setBlitSurface(BlitSurface);
-			mp_OpenGL->setFGSurface(FGLayerSurface);
 		}
 	}
 #endif
@@ -433,19 +432,6 @@ SDL_Rect CVideoDriver::adaptGameResolution()
 {
 	float scalefactor;
 	SDL_Rect Gamerect;
-	/*static const Uint32 RGBA[] = {
-#if SDL_BYTEORDER == SDL_LIL_ENDIAN // OpenGL RGBA masks 
-	0x000000FF, 
-	0x0000FF00, 
-	0x00FF0000, 
-	0xFF000000
-#else
-	0xFF000000,
-	0x00FF0000, 
-	0x0000FF00, 
-	0x000000FF
-#endif
-	};*/
 
 	Gamerect = game_resolution_rect;
 	scalefactor = ((float)m_Resolution.width) / ((float)Gamerect.w);
@@ -505,22 +491,44 @@ bool CVideoDriver::createSurfaces()
     // The video class must be changed for any further resolutions
     game_resolution_rect.x = 0; game_resolution_rect.y = 0;
 
-    FGLayerSurface = createSurface( "FGLayerSurface", false,
+	if(m_opengl && m_ScaleXFilter == 1)
+	{
+		FGLayerSurface = createSurface( "FGLayerSurface", false,
+						getPowerOfTwo(game_resolution_rect.w),
+						getPowerOfTwo(game_resolution_rect.h),
+								   m_Resolution.depth,
+								   Mode, screen->format );
+	}
+	else
+	{
+		FGLayerSurface = createSurface( "FGLayerSurface", false,
 								   game_resolution_rect.w,
 								   game_resolution_rect.h,
 								   m_Resolution.depth,
 								   Mode, screen->format );
+	}
 
 	SDL_SetColorKey( FGLayerSurface, SDL_SRCCOLORKEY,
 					SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE) );
 	//Set surface alpha
 	SDL_SetAlpha( FGLayerSurface, SDL_SRCALPHA, 225 );
 
+	if(m_opengl && m_ScaleXFilter == 1)
+	{
     FXSurface = createSurface( "FXSurface", false,
 							  game_resolution_rect.w,
 							  game_resolution_rect.h,
 							  m_Resolution.depth,
 							  Mode, screen->format );
+	}
+	else
+	{
+	    FXSurface = createSurface( "FXSurface", false,
+	    				getPowerOfTwo(game_resolution_rect.w),
+	    				getPowerOfTwo(game_resolution_rect.h),
+								  m_Resolution.depth,
+								  Mode, screen->format );
+	}
 
 	g_pGfxEngine->Palette.setFXSurface( FXSurface );
 
@@ -529,22 +537,50 @@ bool CVideoDriver::createSurfaces()
 
 SDL_Surface* CVideoDriver::createSurface( std::string name, bool alpha, int width, int height, int bpp, int mode, SDL_PixelFormat* format )
 {
-    SDL_Surface *temporary, *optimized;
-
-	temporary = SDL_CreateRGBSurface( mode, width, height, bpp, format->Rmask, format->Gmask, format->Bmask, format->Amask);
-	if (alpha && bpp==32) {
-        optimized = SDL_DisplayFormatAlpha( temporary );
-	} else {
-        optimized = SDL_DisplayFormat( temporary );
-	}
-	SDL_FreeSurface(temporary);
-	if (!optimized)
+	/*if(m_opengl && m_ScaleXFilter == 1)
 	{
-		g_pLogFile->textOut(RED,"VideoDriver: Couldn't create surface:" + name +"<br>");
-		return false;
+		static const Uint32 RGBA[] = {
+	#if SDL_BYTEORDER == SDL_LIL_ENDIAN // OpenGL RGBA masks
+		0x000000FF,
+		0x0000FF00,
+		0x00FF0000,
+		0xFF000000
+	#else
+		0xFF000000,
+		0x00FF0000,
+		0x0000FF00,
+		0x000000FF
+	#endif
+		};
+		SDL_Surface *newsurface;
+		newsurface = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, bpp, RGBA[0], RGBA[1], RGBA[2], RGBA[3]);
+		if (!newsurface)
+		{
+			g_pLogFile->textOut(RED,"VideoDriver: Couldn't create surface:" + name +"<br>");
+			return NULL;
+		}
+
+		return newsurface;
 	}
-	bpp = optimized->format->BitsPerPixel;
-	return optimized;
+	else*/
+	{
+		SDL_Surface *temporary, *optimized;
+
+		temporary = SDL_CreateRGBSurface( mode, width, height, bpp, format->Rmask, format->Gmask, format->Bmask, format->Amask);
+		if (alpha && bpp==32) {
+			optimized = SDL_DisplayFormatAlpha( temporary );
+		} else {
+			optimized = SDL_DisplayFormat( temporary );
+		}
+		SDL_FreeSurface(temporary);
+		if (!optimized)
+		{
+			g_pLogFile->textOut(RED,"VideoDriver: Couldn't create surface:" + name +"<br>");
+			return NULL;
+		}
+		bpp = optimized->format->BitsPerPixel;
+		return optimized;
+	}
 }
 
 // defines the scroll-buffer that is used for blitScrollSurface(). It's normally passed by a CMap Object
@@ -661,16 +697,23 @@ void CVideoDriver::blitScrollSurface() // This is only for tiles
 
 void CVideoDriver::collectSurfaces()
 {
-/*#ifdef USE_OPENGL
-	if(m_opengl)
+#ifdef USE_OPENGL
+	if(m_opengl && m_ScaleXFilter == 1)
 	{
 		// TODO: Create a solid concept for rendering more textures instead of just one that is binded
 		// to BlitSurface. It's not that easy, because doing that and using scaleX will mean, that you
 		// to scaleX multiple times. So COpenGL must have separate cases. With or without ScaleX.
 		// It's might only be faster if scaleX is never used in that TODO-case
+
+		mp_OpenGL->setFGSurface(FGLayerSurface);
+
+		if(FXSurface->format->alpha)
+			mp_OpenGL->setFXSurface(FXSurface);
+		else
+			mp_OpenGL->setFXSurface(NULL);
 	}
 	else
-#endif*/
+#endif
 	{
 		SDL_BlitSurface(FGLayerSurface, NULL, BlitSurface, NULL);
 
@@ -685,7 +728,7 @@ void CVideoDriver::updateScreen()
 #ifdef USE_OPENGL
 	if(m_opengl)
 	{
-		mp_OpenGL->render(false);
+		mp_OpenGL->render();
 
 		// Flush the FG-Layer
 		SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE));
