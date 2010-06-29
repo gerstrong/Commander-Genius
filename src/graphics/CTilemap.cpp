@@ -6,6 +6,7 @@
  */
 
 #include "../fileio/CTileLoader.h"
+#include "../sdl/CVideoDriver.h"
 #include "../FindFile.h"
 #include "CTilemap.h"
 #include "CPalette.h"
@@ -54,6 +55,10 @@ bool CTilemap::loadHiresTile( const std::string& filename )
 
 bool CTilemap::optimizeSurface()
 {
+	if(g_pVideoDriver->getFiltermode() == 1 && g_pVideoDriver->isOpenGL()
+			)
+		return true;
+
 	if(m_Tilesurface)
 	{
 		SDL_Surface *temp_surface;

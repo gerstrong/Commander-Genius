@@ -517,7 +517,7 @@ bool CVideoDriver::createSurfaces()
 
 	if(m_opengl && m_ScaleXFilter == 1)
 	{
-		FXSurface = createSurface( "FXSurface", false,
+		FXSurface = createSurface( "FXSurface", true,
 							  game_resolution_rect.w,
 							  game_resolution_rect.h,
 							  m_Resolution.depth,
@@ -733,8 +733,10 @@ void CVideoDriver::updateScreen()
 		mp_OpenGL->render();
 
 		// Flush the FG-Layer
-		//SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE));
-		SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGBA(FGLayerSurface->format, 0, 0, 0, 0));
+		if(m_ScaleXFilter == 1)
+			SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGBA(FGLayerSurface->format, 0, 0, 0, 0));
+		else
+			SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE));
 	}
 	else // No OpenGL but Software Rendering
 	{

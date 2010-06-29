@@ -402,6 +402,8 @@ void CEGASprit::CreateYellowSpriteofTile( CTilemap &tilemap, Uint16 tile, CSprit
 	
 	if(SDL_MUSTLOCK(src_sfc)) SDL_LockSurface(src_sfc);
 	
+	if(src_sfc->format->BitsPerPixel == 8) return;
+
 	// The first pixel is usually the transparent one on items. Use it!
 	Uint8* pixel = (Uint8*)src_sfc->pixels;
 	Uint32 transparent_colour;

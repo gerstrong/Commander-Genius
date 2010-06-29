@@ -79,6 +79,12 @@ void CSprite::applyTransparency()
 	Uint8 r,g,b,a;
 	
 	if(!m_surface) return;
+
+	if(m_surface->format->BitsPerPixel == 8) // In case we did not Displayformat
+	{
+		SDL_BlitSurface(m_masksurface, NULL, m_surface, NULL);
+		return;
+	}
 	
 	if(SDL_MUSTLOCK(m_surface)) SDL_LockSurface(m_surface);
 	if(SDL_MUSTLOCK(m_masksurface)) SDL_LockSurface(m_masksurface);
@@ -94,13 +100,13 @@ void CSprite::applyTransparency()
 			memcpy( &mask, pixel, m_surface->format->BytesPerPixel );
 			
 			SDL_GetRGBA( colour, m_surface->format, &r, &g, &b, &a );
-			
+
 			if(*maskpx<16)
 				a = (255*(*maskpx))/15;
 			else a = 255;
-			
+
 			colour = SDL_MapRGBA( m_surface->format, r, g, b, a );
-			
+
 			memcpy( pixel, &colour, m_surface->format->BytesPerPixel );
 			
 			pixel += m_surface->format->BytesPerPixel;
