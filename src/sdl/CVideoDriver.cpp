@@ -491,6 +491,7 @@ bool CVideoDriver::createSurfaces()
     // The video class must be changed for any further resolutions
     game_resolution_rect.x = 0; game_resolution_rect.y = 0;
 
+#ifdef USE_OPENGL
 	if(m_opengl && m_ScaleXFilter == 1)
 	{
 		FGLayerSurface = createSurface( "FGLayerSurface", true,
@@ -500,6 +501,7 @@ bool CVideoDriver::createSurfaces()
 								   Mode, screen->format );
 	}
 	else
+#endif
 	{
 		FGLayerSurface = createSurface( "FGLayerSurface", false,
 								   game_resolution_rect.w,
@@ -515,19 +517,21 @@ bool CVideoDriver::createSurfaces()
 	//Set surface alpha
 	SDL_SetAlpha( FGLayerSurface, SDL_SRCALPHA, 225 );
 
+#ifdef USE_OPENGL
 	if(m_opengl && m_ScaleXFilter == 1)
 	{
 		FXSurface = createSurface( "FXSurface", true,
-							  game_resolution_rect.w,
-							  game_resolution_rect.h,
+				getPowerOfTwo(game_resolution_rect.w),
+				getPowerOfTwo(game_resolution_rect.h),
 							  m_Resolution.depth,
 							  Mode, screen->format );
 	}
 	else
+#endif
 	{
 	    FXSurface = createSurface( "FXSurface", false,
-	    				getPowerOfTwo(game_resolution_rect.w),
-	    				getPowerOfTwo(game_resolution_rect.h),
+	    						game_resolution_rect.w,
+	    						game_resolution_rect.h,
 								  m_Resolution.depth,
 								  Mode, screen->format );
 	}
