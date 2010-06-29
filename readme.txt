@@ -12,7 +12,7 @@
 *    (c)2003-2010            Caitlin Shaw    *
 *           Released under GNU/GPL           *
 *                                            *
-*            Release v0.3.1.3                *
+*            Release v0.3.2                  *
 *                                            *
 **********************************************
 
@@ -104,13 +104,11 @@ Howto compile it under Ubuntu (testet on Lucid):
  	- libsdl1.2-dev
  	- libgl1-mesa-dev
  * extract my source code into "CGenius".
- * cd into the "CGenius/Linux32" or "CGenius/Linux64" subdirectory depending on your system.
+ * cd into the source directory "CGenius"
+ * Run "cmake -DBUILD_TYPE=LINUX32" or "cmake -DBUILD_TYPE=LINUX64"
  * Run "make".
- * Then, you can run "CommanderGenius". Copy the files, wherever you want them together 
+ * Then, you can run "CGenius". Copy the files, wherever you want them together 
    with the data directory. "make install" does not work though.
- * We also provide CMake for wiz. If you want to compile it for embedded systems.
-   We had support for Linux and Win32, but since there is a bug when build, for
-   different Linux build (32-bit or 64-bit) we only use it for embedded systems.
 
 Compiling CG on any Linux/UNIX (other than Ubuntu):
  * If you want to compile the game, you need to have all the standard
@@ -119,11 +117,17 @@ Compiling CG on any Linux/UNIX (other than Ubuntu):
  * You need to install the "vorbis", "SDL" and "Mesa/OpenGL" development libraries to get 
    it successfully compiled.
  * extract my source code to "cgenius". 
- * cd into the "cgenius/Release" subdirectory.
+ * cd into the "cgenius" subdirectory.
+ * Run "cmake -DBUILD_TYPE=LINUX32" or "cmake -DBUILD_TYPE=LINUX64"
  * Run "make".
- * Then, you can run "CommanderGenius". Copy the files, 
+ * Then, you can run "CGenius". Copy the files, 
    wherever you want them together with the data directory. 
    "make install" does not work though.
+
+We also provide CMake for wiz. If you want to compile it for embedded systems.
+We had support for Linux and Win32, but since there is a bug when build, for
+different Linux build (32-bit or 64-bit) we only use it for embedded systems.
+Also check out the CMakeLists.txt for more information.
    
 - VIDEO SYSTEM -
 Being cross-platform, there are many methods to detect different resolutions on a system.
@@ -149,10 +153,6 @@ always work.
 KEY        	ACTION             DESCRIPTION
 G+O+D	   	godmode			   In god mode you are invincible!
 C+T+SPACE  	All Items          Gives all items, similar to the original.
-LSHIFT+TAB 	Skip Level         Holding down this key you can skip levels and walk through tiles
-							   on the map.
-TAB			No clipping		   If you hold down this key you will disable clipping.
-							   However, you cannot fall though floors. 
 
 - SAVE/LOAD GAME -
 The game can be saved by pressing F3 at any point during the game or using the menu.
@@ -163,23 +163,10 @@ allowed save at the map).
 This feature is disabled for now, but we hope to reenable it soon!
 
 - FAQ -
-Q: When I change to opengl-mode, the screen gets white and I can't do anything! I have to kill the program.
-   What can I do to restore the normal mode?
-
-A: You can delete "cgenius.cfg" or change it the way you need it! Just put "opengl = 0" and it should normal
-   with your previous settings. We are working on a solution for that! The white screen means, that your 
-   graphic card doesn't support NPOT Textures, which is required. 
-   A video card with OpenGL 2.0 or later support should not have that problem.
-   
-Q: Why not to use POT-Textures?
-A: Because it requires more memory to write, and the game would get slower than with software rendering.
-   We are working on a new method to get it working with POT Textures and faster, but for now we cannot
-   support it. 
-
 Q: Commander Genius is slow? Please help!
 A: You can decrease the fps under settings->video what is very
-   recommended for any system. OpenGL may also help, but you must have a gfx-card that support NPOT-Textures.
-   (OpenGL 2.0 or later). Try to lower the resolution, a lower filter, or decrease some stuff in the sound section.
+   recommended for any system. OpenGL may also help on some systems with ScaleX disabled. 
+   Try to lower the resolution, a lower filter, or decrease some stuff in the sound section.
    Stereo sound requires additional calculations than mono sound. There are many things you can do, to speed up
    the program.
    

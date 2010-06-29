@@ -3,6 +3,7 @@ Commander Genius Release :
 
 v0.3.2:
 ---------
+- OpenGL improvements especially for iPhone!!
 - Faster Game loads!
 - Other segfault fixes!!
 - Improved Mod support (Especially for Keen X and Yorphius II)
