@@ -59,7 +59,18 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 								object.canbezapped = false;
 								it_obj->zapped++;
 								if(g_pVideoDriver->getSpecialFXConfig())
-									it_obj->blink(10);
+								{
+									bool allow_blink = false;
+
+									// only enemies which can support multiple hits
+									// will blink.
+									allow_blink = (it_obj->m_type == OBJ_MOTHER) ||
+												(it_obj->m_type == OBJ_NINJA) ||
+												(it_obj->m_type == OBJ_VORT) ||
+												(it_obj->m_type == OBJ_VORTELITE);
+									if(allow_blink)
+										it_obj->blink(10);
+								}
 								if(it_obj->m_type == OBJ_RAY)
 									it_obj->ai.ray.state = RAY_STATE_SETZAPZOT;
 								it_obj->zapd = it_obj->ai.ray.direction;
