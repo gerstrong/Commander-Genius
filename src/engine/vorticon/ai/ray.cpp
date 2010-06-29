@@ -46,7 +46,7 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 			// test if it hit a baddie. I hate that code! TODO: think about a way to reduce this
 			for( it_obj = m_Objvect.begin() ; it_obj!=m_Objvect.end() ; it_obj++)
 			{
-				if( it_obj->exists && it_obj->m_index != object.m_index )
+				if( it_obj->exists && (it_obj->m_index != object.m_index || it_obj->m_type == OBJ_ROPE) )
 				{
 					if ( it_obj->onscreen)
 					{
