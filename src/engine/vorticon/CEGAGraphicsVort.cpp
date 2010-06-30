@@ -110,7 +110,8 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 	// First, retrieve the Tile properties so the tilemap gets properly formatted
 	// Important especially for masks, and later in the game for the behaviours
     // of those objects
-	CTileLoader TileLoader( m_episode, version, p_exedata );
+
+	CTileLoader TileLoader( m_episode, version, Num16Tiles, p_exedata );
 	if(!TileLoader.load())
 		return false;
 

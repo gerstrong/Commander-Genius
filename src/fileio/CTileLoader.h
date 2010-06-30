@@ -10,10 +10,13 @@
 
 #include "../graphics/CTilemap.h"
 #include "../common/CBehaviorEngine.h"
+#include "CExeFile.h"
+#include <map>
 
 class CTileLoader {
 public:
 	CTileLoader(int episode, int version, size_t NumTiles, unsigned char *data);
+	CTileLoader(CExeFile &Exefile, size_t NumTiles);
 	
 	bool load();
 	
@@ -28,10 +31,14 @@ private:
 	unsigned char *m_data;
 	size_t m_numtiles;
 	
+	//std::map<std::map<int,int>, long> m_offsetMap;
+	typedef std::map<int,long> VersionMap;
+	std::map<int, VersionMap> m_offsetMap;
+
 	std::vector<CTileProperties> &m_TileProperties;
 	
 	void assignChangeTileAttribute();
-	bool setProperOffset();
+	void setupOffsetMap();
 	bool canbePickedup(int tile);
 	bool isaDoor(int tile);
 };

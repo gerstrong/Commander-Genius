@@ -20,6 +20,7 @@
 #include "../../StringUtils.h"
 #include "../../graphics/CGfxEngine.h"
 #include "../../sdl/CVideoDriver.h"
+#include "../../fileio/CTileLoader.h"
 #include "../CPlanes.h"
 #include <fstream>
 #include <cstring>
@@ -133,6 +134,13 @@ bool CEGAGraphicsGalaxy::loadData()
 	g_pGfxEngine->Palette.setupColorPalettes();
 
 	if(!begin()) return false;
+
+	// First, retrieve the Tile properties so the tilemap gets properly formatted
+	// Important especially for masks, and later in the game for the behaviours
+    // of those objects
+	CTileLoader TileLoader( m_Exefile, EpisodeInfo[m_episode-4].Num16MaskedTiles );
+	if(!TileLoader.load())
+		return false;
 
 	if(!readfonts()) return false;
 	if(!readBitmaps()) return false;

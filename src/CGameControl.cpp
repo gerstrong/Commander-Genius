@@ -6,7 +6,6 @@
  */
 
 #include "CGameControl.h"
-#include "fileio/CTileLoader.h"
 #include "fileio/CExeFile.h"
 #include "fileio/CPatcher.h"
 #include "fileio.h"
@@ -245,7 +244,7 @@ bool CGameControl::loadResources(Uint8 flags)
 			// Decode the entire graphics for the game (Only EGAGRAPH.CK?)
 			SAFE_DELETE(m_EGAGraphics);
 
-			m_EGAGraphics = new galaxy::CEGAGraphicsGalaxy(m_ExeFile); // Path is relative to the data dir
+			m_EGAGraphics = new galaxy::CEGAGraphicsGalaxy(m_ExeFile); // Path is relative to the data directory
 			if(!m_EGAGraphics) return false;
 
 			m_EGAGraphics->loadData();
