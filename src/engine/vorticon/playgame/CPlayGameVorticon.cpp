@@ -375,11 +375,8 @@ void CPlayGameVorticon::handleFKeys()
 				m_Player[i].inventory.HasPogo = 1;
 				m_Player[i].inventory.lives = 10;
 
-				std::string Text;
-				Text = 	"You are now cheating!\n";
-				Text +=	"You got more lives\n";
-				Text +=	"all the key cards, and\n";
-				Text +=	"lots of ray gun charges!\n";
+
+				std::string Text = g_pBehaviorEngine->getString("CTSPACECHEAT");
 				 
 				m_MessageBoxes.push_back(new CMessageBox(Text));
 				m_paused = true;
@@ -409,7 +406,7 @@ void CPlayGameVorticon::handleFKeys()
     	g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
 
     	// Show a message like in the original game
-		m_MessageBoxes.push_back(new CMessageBox(m_Player[0].godmode ? "God mode enabled" : "God mode disabled"));
+		m_MessageBoxes.push_back(new CMessageBox(m_Player[0].godmode ? g_pBehaviorEngine->getString("GODMODEON") : g_pBehaviorEngine->getString("GODMODEOFF")));
     	m_paused = true;
     	g_pInput->flushKeys();
     }
