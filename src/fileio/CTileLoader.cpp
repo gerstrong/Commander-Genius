@@ -12,14 +12,14 @@
 #include <cstdlib>
 #include <string>
 
-CTileLoader::CTileLoader(int episode, int version, unsigned char *data) :
+CTileLoader::CTileLoader(int episode, int version, size_t NumTiles, unsigned char *data) :
 m_TileProperties(g_pBehaviorEngine->getTileProperties())
 {
 	m_episode = episode;
 	m_version = version;
 	m_data = data;
 	m_offset = 0;
-	m_numtiles = 0;
+	m_numtiles = NumTiles;
 }
 
 bool CTileLoader::setProperOffset()
@@ -29,7 +29,6 @@ bool CTileLoader::setProperOffset()
 	{
 		case 1:
 		{
-			m_numtiles = 611;
 			switch(m_version)
 			{
 				case 110: m_offset = 0x131F8; break;
@@ -42,7 +41,6 @@ bool CTileLoader::setProperOffset()
 		}
 		case 2:
 		{
-			m_numtiles = 689;
 			switch(m_version)
 			{
 				case 100: m_offset = 0x17938; break;
@@ -52,7 +50,6 @@ bool CTileLoader::setProperOffset()
 		}
 		case 3:
 		{
-			m_numtiles = 715;
 			switch(m_version)
 			{
 				case 100: m_offset = 0x199F8; break;

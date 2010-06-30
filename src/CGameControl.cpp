@@ -213,18 +213,9 @@ bool CGameControl::loadResources(Uint8 flags)
 
 		if( (flags & LOADGFX) == LOADGFX )
 		{
-			// First, retrieve the Tile properties so the tilemap gets properly formatted
-			// Important especially for masks
-			// Load tile attributes.
-			CTileLoader TileLoader( m_Episode, version, p_exedata );
-			if( !TileLoader.load() )
-			{
-				g_pLogFile->textOut(RED, "CGameControl::loadResources: Could not load data for the tiles<br>");
-				return false;
-			}
-
 			// Decode the entire graphics for the game (EGALATCH, EGASPRIT, etc.)
-			if(m_EGAGraphics) delete m_EGAGraphics; // except for the first start of a game this always happens
+			// This will also read the Tile-Properties
+			SAFE_DELETE(m_EGAGraphics); // except for the first start of a game this always happens
 			m_EGAGraphics = new vorticon::CEGAGraphicsVort(m_Episode, m_DataDirectory);
 			if(!m_EGAGraphics) return false;
 

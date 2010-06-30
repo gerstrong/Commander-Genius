@@ -13,7 +13,7 @@
 
 class CTileLoader {
 public:
-	CTileLoader(int episode, int version, unsigned char *data);
+	CTileLoader(int episode, int version, size_t NumTiles, unsigned char *data);
 	
 	bool load();
 	
@@ -26,7 +26,7 @@ private:
 	int m_version;
 	long m_offset;
 	unsigned char *m_data;
-	int m_numtiles;
+	size_t m_numtiles;
 	
 	std::vector<CTileProperties> &m_TileProperties;
 	

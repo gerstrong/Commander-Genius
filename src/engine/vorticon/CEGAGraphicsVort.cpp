@@ -8,6 +8,7 @@
 #include "CEGAGraphicsVort.h"
 
 #include "../../sdl/CVideoDriver.h"
+#include "../../fileio/CTileLoader.h"
 
 #ifdef TARGET_WIN32
 #include <dir.h>
@@ -105,6 +106,13 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
     memcpy(&NumSprites,data+40,4);
     memcpy(&SpriteLocation,data+42,4);
     memcpy(&compressed,data+46,4);
+
+	// First, retrieve the Tile properties so the tilemap gets properly formatted
+	// Important especially for masks, and later in the game for the behaviours
+    // of those objects
+	CTileLoader TileLoader( m_episode, version, p_exedata );
+	if(!TileLoader.load())
+		return false;
 
     m_Latch = new CEGALatch(LatchPlaneSize,
 							BitmapTableStart,

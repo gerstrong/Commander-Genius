@@ -46,7 +46,7 @@ void CPlayGameGalaxy::loadLevel()
 
 	MapLoader.loadMap(m_Map, m_Level); // Map Level?
 
-	//m_Map.drawAll();
+	m_Map.drawAll();
 	m_Map.gotoPos(0, 0); // Coordinates of star sky
 }
 
@@ -107,7 +107,7 @@ void CPlayGameGalaxy::processInput()
 
 void CPlayGameGalaxy::processRendering()
 {
-	for(size_t x=0 ; x<20 ; x++)
+	/*for(size_t x=0 ; x<20 ; x++)
 	{
 		for(size_t y=0 ; y<20 ; y++)
 		{
@@ -117,7 +117,13 @@ void CPlayGameGalaxy::processRendering()
 				g_pGfxEngine->getTileMap(1).drawTile(g_pVideoDriver->getBlitSurface(),
 						16*x, 16*y, m_Map.at(m_posx+x,m_posy+y,1) );
 		}
-	}
+	}*/
+
+	// Animate the tiles of the map
+	m_Map.animateAllTiles();
+
+	// Blit the background
+	g_pVideoDriver->blitScrollSurface();
 
 	g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->BlitSurface, "Press the arrows to scroll, ESC to quit", 10, 10);
 	g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->BlitSurface, "Enter to switch Level", 10, 20);
