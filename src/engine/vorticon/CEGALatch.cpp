@@ -62,6 +62,7 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 		width *= 8; // The width is always divided by eight when read
 
 		name = name.substr(0,8); // Cut the rest of data down, if junk detected in the exe file
+		TrimSpaces(name);
 		if( name != "" ) Bitmap.setName( name );
 		else
 		{
@@ -86,7 +87,6 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 				Bitmap.setName( default_names[i] );
 			}
 		}
-
 		Bitmap.setDimensions(width,height);
 	}
 	return true;
