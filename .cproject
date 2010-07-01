@@ -2478,7 +2478,7 @@
 									<listOptionValue builtIn="false" value="vorbisfile"/>
 									<listOptionValue builtIn="false" value="ogg"/>
 								</option>
-								<option id="gnu.cpp.link.option.flags.2112871847" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="" valueType="string"/>
+								<option id="gnu.cpp.link.option.flags.2112871847" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="-mwindows" valueType="string"/>
 								<option id="gnu.cpp.link.option.paths.631160994" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="/usr/i586-mingw32msvc/lib"/>
 								</option>

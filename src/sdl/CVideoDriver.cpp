@@ -291,7 +291,8 @@ bool CVideoDriver::start(void)
 {	
 	bool retval = false;
 
-	SDL_WM_SetCaption("Commander Genius (CKP)", NULL);
+	std::string caption = "Commander Genius (CKP)";
+	SDL_WM_SetCaption(caption.c_str(), caption.c_str());
 	// When the program is through executing, call SDL_Quit
 	atexit(SDL_Quit);
 
