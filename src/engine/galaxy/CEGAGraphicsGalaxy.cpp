@@ -637,7 +637,7 @@ bool CEGAGraphicsGalaxy::readTilemaps()
 {
 	int ep = m_episode - 4;
 
-	CTilemap &Tilemap = g_pGfxEngine->getTileMap(0);
+	CTilemap &Tilemap = g_pGfxEngine->getTileMap(1);
 	Tilemap.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE,
 							EpisodeInfo[ep].Num16Tiles, 4, 18 );
 	SDL_Surface *sfc = Tilemap.getSDLSurface();

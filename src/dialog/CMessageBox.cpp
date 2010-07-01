@@ -114,7 +114,7 @@ void CMessageBox::process()
 
 	// Draw additional tiles on the surface if any where defined
 	for(size_t i=0 ; i<m_Tiles.size() ; i++) {
-		g_pGfxEngine->getTileMap(0).drawTile(sfc, m_gamerect.x+m_Tiles[i].x,
+		g_pGfxEngine->getTileMap(1).drawTile(sfc, m_gamerect.x+m_Tiles[i].x,
 								m_gamerect.y+m_Tiles[i].y, m_Tiles[i].tile);
 	}
 

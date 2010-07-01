@@ -49,7 +49,7 @@ bool CTileLoader::load()
 {
 	std::string fname;
 	
-	long offest = m_offsetMap[m_episode][m_version];
+	long offset = m_offsetMap[m_episode][m_version];
 
 	m_data += offset;
 

@@ -111,7 +111,6 @@ bool CPlayGameVorticon::init()
 	}
 
 	// Create an empty map
-	m_Map.setTileMap(g_pGfxEngine->getTileMap(0));
 	m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
 	std::vector<CObject>::iterator it_obj = m_Object.begin();
 

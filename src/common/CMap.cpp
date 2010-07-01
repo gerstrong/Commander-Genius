@@ -21,7 +21,7 @@ CMap::CMap():
 m_width(0), m_height(0),
 m_worldmap(false),
 m_animation_enabled(true),
-mp_Tilemap(NULL),
+m_Tilemaps(g_pGfxEngine->getTileMaps()),
 m_animtiletimer(0),
 m_curanimtileframe(0)
 {
@@ -35,9 +35,10 @@ m_curanimtileframe(0)
 // Initialization Routine //
 ////////////////////////////
 
-void CMap::setTileMap( CTilemap &Tilemap ){
-	mp_Tilemap = &Tilemap;
-}
+
+//void CMap::setTileMaps( std::vector<CTilemap> &Tilemap ){
+//	mp_Tilemap = &Tilemap;
+//}
 void CMap::setScrollSurface( SDL_Surface *surface )
 {  mp_scrollsurface = surface; }
 
@@ -46,14 +47,12 @@ void CMap::setScrollSurface( SDL_Surface *surface )
  * \brief	Create an empty data plane used for the map data
  * \param	blocksize	size in bytes of the datablock that has to be created
  */
-bool CMap::createEmptyDataPlanes(size_t blocksize)
+bool CMap::createEmptyDataPlane(size_t plane, size_t blocksize)
 {
 	if(!blocksize) return false;
 
-	for(size_t c=0 ; c<3 ; c++)
-	{
-		m_Plane[c].createDataMap(blocksize, m_width, m_height);
-	}
+	m_Plane[plane].createDataMap(blocksize, m_width, m_height);
+
 	return true;
 }
 
@@ -177,11 +176,11 @@ bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t, bool update)
 
 // Called in level. This function does the same as setTile, but also draws directly to the scrollsurface
 // used normally, when items are picked up
-bool CMap::changeTile(Uint16 x, Uint16 y, Uint16 t)
+bool CMap::changeTile(Uint16 x, Uint16 y, Uint16 t, Uint8 tilemap)
 {
 	if( setTile( x, y, t ) )
 	{
-		mp_Tilemap->drawTile(mp_scrollsurface, (x<<4)&511, (y<<4)&511, t);
+		m_Tilemaps.at(tilemap).drawTile(mp_scrollsurface, (x<<4)&511, (y<<4)&511, t);
 		registerAnimation( (x<<4)&511, (y<<4)&511, t );
 		return true;
 	}
@@ -304,10 +303,14 @@ void CMap::scrollUp(void)
 // in stripes as it scrolls around.
 void CMap::redrawAt(int mx, int my)
 {
-	//int c = mp_foreground_data[my*m_width + mx];
-	int c = m_Plane[1].getMapDataAt(mx, my);
-	mp_Tilemap->drawTile(mp_scrollsurface, (mx<<4)&511, (my<<4)&511, c);
-	registerAnimation( (mx<<4)&511, (my<<4)&511, c );
+	for(size_t tilemap=0 ; tilemap<2 ; tilemap++)
+	{
+		if(m_Plane[tilemap].getMapDataPtr() == NULL)
+			continue;
+		int c = m_Plane[tilemap].getMapDataAt(mx, my);
+		m_Tilemaps.at(tilemap).drawTile(mp_scrollsurface, (mx<<4)&511, (my<<4)&511, c);
+		registerAnimation( (mx<<4)&511, (my<<4)&511, c );
+	}
 }
 
 // draws all the map area. This is used for the title screen, when game starts and other passive scenes.
@@ -324,16 +327,22 @@ void CMap::drawAll()
 	if(num_h_tiles+m_mapy >= m_height)
 		num_h_tiles = m_height-m_mapy;
 
-    for(Uint32 y=0;y<num_h_tiles;y++)
-    {
-    	for(Uint32 x=0;x<num_v_tiles;x++)
-    	{
-    		//Uint32 c = mp_foreground_data[(m_mapy+y)*m_width + x+m_mapx];
-    		Uint32 c = m_Plane[1].getMapDataAt(x+m_mapx, m_mapy+y);
-			mp_Tilemap->drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511, ((y<<4)+m_mapystripepos)&511, c);
-			registerAnimation( ((x<<4)+m_mapxstripepos)&511, ((y<<4)+m_mapystripepos)&511, c );
-    	}
-    }
+	std::vector<CTilemap>::iterator Tilemap = m_Tilemaps.begin();
+	for(size_t plane=0 ; plane<2 ; plane++, Tilemap++)
+	{
+		if(m_Plane[plane].getMapDataPtr() == NULL)
+			continue;
+
+		for(Uint32 y=0;y<num_h_tiles;y++)
+		{
+			for(Uint32 x=0;x<num_v_tiles;x++)
+			{
+				Uint32 c = m_Plane[plane].getMapDataAt(x+m_mapx, m_mapy+y);
+				Tilemap->drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511, ((y<<4)+m_mapystripepos)&511, c);
+				registerAnimation( ((x<<4)+m_mapxstripepos)&511, ((y<<4)+m_mapystripepos)&511, c );
+			}
+		}
+	}
 }
 
 // draw a horizontal stripe, for vertical scrolling
@@ -345,12 +354,18 @@ void CMap::drawHstripe(unsigned int y, unsigned int mpy)
 	if( num_v_tiles+m_mapx >= m_width )
 		num_v_tiles = m_width-m_mapx;
 
-	for(Uint32 x=0;x<num_v_tiles;x++)
+	std::vector<CTilemap>::iterator Tilemap = m_Tilemaps.begin();
+	for(size_t plane=0 ; plane<2 ; plane++, Tilemap++)
 	{
-		//Uint32 c = mp_foreground_data[mpy*m_width + x+m_mapx];
-		Uint32 c = m_Plane[1].getMapDataAt(x+m_mapx, mpy);
-		mp_Tilemap->drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511, y, c);
-		registerAnimation( ((x<<4)+m_mapxstripepos)&511, y, c );
+		if(m_Plane[plane].getMapDataPtr() == NULL)
+			continue;
+
+		for(Uint32 x=0;x<num_v_tiles;x++)
+		{
+			Uint32 c = m_Plane[1].getMapDataAt(x+m_mapx, mpy);
+			Tilemap->drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511, y, c);
+			registerAnimation( ((x<<4)+m_mapxstripepos)&511, y, c );
+		}
 	}
 }
 
@@ -364,12 +379,18 @@ void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 	if( num_h_tiles+m_mapy >= m_height )
 		num_h_tiles = m_height-m_mapy;
 
-	for(Uint32 y=0;y<num_h_tiles;y++)
+	std::vector<CTilemap>::iterator Tilemap = m_Tilemaps.begin();
+	for(size_t plane=0 ; plane<2 ; plane++, Tilemap++)
 	{
-		//Uint32 c = mp_foreground_data[(y+m_mapy)*m_width + mpx];
-		Uint32 c = m_Plane[1].getMapDataAt(mpx, y+m_mapy);
-		mp_Tilemap->drawTile(mp_scrollsurface, x, ((y<<4)+m_mapystripepos)&511, c);
-		registerAnimation( x, ((y<<4)+m_mapystripepos)&511, c );
+		if(m_Plane[plane].getMapDataPtr() == NULL)
+			continue;
+
+		for(Uint32 y=0;y<num_h_tiles;y++)
+		{
+			Uint32 c = m_Plane[plane].getMapDataAt(mpx, y+m_mapy);
+			Tilemap->drawTile(mp_scrollsurface, x, ((y<<4)+m_mapystripepos)&511, c);
+			registerAnimation( x, ((y<<4)+m_mapystripepos)&511, c );
+		}
 	}
 }
 
@@ -403,9 +424,11 @@ void CMap::drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile)
 {
 	CTileProperties &TileProperty = g_pBehaviorEngine->getTileProperties().at(tile);
 
+	std::vector<CTilemap>::iterator Tilemap = m_Tilemaps.begin()+1;
+
 	if(TileProperty.animation <= 1)
 	{ // Unanimated tiles
-		mp_Tilemap->drawTile( dst, mx, my, tile );
+		Tilemap->drawTile( dst, mx, my, tile );
 	}
 	else
 	{ // animate animated tiles
@@ -420,7 +443,7 @@ void CMap::drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile)
 					g_pBehaviorEngine->getTileProperties().at(m_animtiles[i].baseframe);
 			if ( m_animtiles[i].slotinuse && tileanimcond )
 			{
-				mp_Tilemap->drawTile( dst, mx, my,
+				Tilemap->drawTile( dst, mx, my,
 						m_animtiles[i].baseframe+
 						((m_animtiles[i].offset+m_curanimtileframe)%
 								TileBaseProperty.animation) );
@@ -431,6 +454,8 @@ void CMap::drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile)
 
 void CMap::animateAllTiles()
 {
+	std::vector<CTilemap>::iterator Tilemap = m_Tilemaps.begin()+1;
+
 	/* animate animated tiles */
 	if (m_animtiletimer>ANIM_TILE_TIME && m_animation_enabled)
 	{
@@ -444,7 +469,7 @@ void CMap::animateAllTiles()
 			{
 				CTileProperties &TileBaseProperty =
 						g_pBehaviorEngine->getTileProperties().at(m_animtiles[i].baseframe);
-				mp_Tilemap->drawTile( mp_scrollsurface, m_animtiles[i].x, m_animtiles[i].y,
+				Tilemap->drawTile( mp_scrollsurface, m_animtiles[i].x, m_animtiles[i].y,
 						 m_animtiles[i].baseframe+
 						 ((m_animtiles[i].offset+m_curanimtileframe)%
 								 TileBaseProperty.animation));

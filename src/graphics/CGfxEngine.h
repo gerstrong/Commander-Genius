@@ -54,6 +54,7 @@ public:
 	int getNumSprites() { return Sprite.size(); }
 
 	CTilemap &getTileMap(size_t tilemap) { return Tilemap.at(tilemap); }
+	std::vector<CTilemap> &getTileMaps() { return Tilemap; }
 	CBitmap &getBitmap(Uint16 slot) { return Bitmap.at(slot); }
 	CBitmap &getMaskedBitmap(Uint16 slot) { return maskedBitmap.at(slot); }
 	CBitmap *getBitmap(const std::string &name);

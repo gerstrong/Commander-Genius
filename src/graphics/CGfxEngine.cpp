@@ -119,7 +119,7 @@ void CGfxEngine::copyTileToSprite( Uint16 t, Uint16 s, Uint16 ntilestocopy )
 	dst_rect.w = dst_rect.h = 16;
 
 	Sprite[s].setSize( 16, 16*ntilestocopy );
-	Sprite[s].createSurface( Tilemap.at(0).getSDLSurface()->flags, Palette.m_Palette );
+	Sprite[s].createSurface( Tilemap.at(1).getSDLSurface()->flags, Palette.m_Palette );
 	
 	for(Uint8 i=0 ; i<ntilestocopy ; i++)
 	{
@@ -129,7 +129,7 @@ void CGfxEngine::copyTileToSprite( Uint16 t, Uint16 s, Uint16 ntilestocopy )
 		dst_rect.x = 0;
 		dst_rect.y = 16*i;
 
-		SDL_BlitSurface( Tilemap.at(0).getSDLSurface(), &src_rect, Sprite[s].getSDLSurface(), &dst_rect);
+		SDL_BlitSurface( Tilemap.at(1).getSDLSurface(), &src_rect, Sprite[s].getSDLSurface(), &dst_rect);
 	}
 }
 

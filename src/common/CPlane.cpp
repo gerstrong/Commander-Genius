@@ -40,6 +40,9 @@ void CPlane::setMapDataAt(Uint16 t, Uint16 x, Uint16 y)
 	mp_data[y*m_width+x] = t;
 }
 
+bool CPlane::empty()
+{	return (mp_data == NULL);	}
+
 CPlane::~CPlane()
 {
 	if(mp_data)	delete [] mp_data;

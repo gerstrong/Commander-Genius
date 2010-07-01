@@ -70,7 +70,7 @@ void CStatusScreen::drawInventoryEp1()
 	CFont &Font = g_pGfxEngine->getFont(0);
 	
 	SDL_Surface *p_surface = g_pVideoDriver->FGLayerSurface;
-	CTilemap &Tilemap = g_pGfxEngine->getTileMap(0);
+	CTilemap &Tilemap = g_pGfxEngine->getTileMap(1);
 
 	dlgX = 5;
 	dlgY = 5;
@@ -191,7 +191,7 @@ void CStatusScreen::drawInventoryEp2()
 	CFont &Font = g_pGfxEngine->getFont(0);
 
 	SDL_Surface *p_surface = g_pVideoDriver->FGLayerSurface;
-	CTilemap &Tilemap = g_pGfxEngine->getTileMap(0);
+	CTilemap &Tilemap = g_pGfxEngine->getTileMap(1);
 
 	dlgX = 5;
 	dlgY = 5;
@@ -303,7 +303,7 @@ void CStatusScreen::drawInventoryEp3()
 	CFont &Font = g_pGfxEngine->getFont(0);
 
 	SDL_Surface *p_surface = g_pVideoDriver->FGLayerSurface;
-	CTilemap &Tilemap = g_pGfxEngine->getTileMap(0);
+	CTilemap &Tilemap = g_pGfxEngine->getTileMap(1);
 
 	dlgX = 5;
 	dlgY = 5;

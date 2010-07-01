@@ -41,7 +41,6 @@ void CPlayGameGalaxy::loadLevel()
 	// TODO: Lets load the main map for now and create process for this
 	CMapLoaderGalaxy MapLoader(m_ExeFile);
 
-	m_Map.setTileMap(g_pGfxEngine->getTileMap(0));
 	m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
 
 	MapLoader.loadMap(m_Map, m_Level); // Map Level?
@@ -107,18 +106,6 @@ void CPlayGameGalaxy::processInput()
 
 void CPlayGameGalaxy::processRendering()
 {
-	/*for(size_t x=0 ; x<20 ; x++)
-	{
-		for(size_t y=0 ; y<20 ; y++)
-		{
-			g_pGfxEngine->getTileMap(0).drawTile(g_pVideoDriver->getBlitSurface(),
-				16*x, 16*y, m_Map.at(m_posx+x,m_posy+y,0) );
-			if(m_Map.at(m_posx+x,m_posy+y,1) != 0)
-				g_pGfxEngine->getTileMap(1).drawTile(g_pVideoDriver->getBlitSurface(),
-						16*x, 16*y, m_Map.at(m_posx+x,m_posy+y,1) );
-		}
-	}*/
-
 	// Animate the tiles of the map
 	m_Map.animateAllTiles();
 
