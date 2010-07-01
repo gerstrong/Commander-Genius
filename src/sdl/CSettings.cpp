@@ -194,6 +194,7 @@ void CSettings::loadDefaultGameCfg()
 	setOption( OPT_RISEBONUS,		"Rising Bonus     ", "rise_bonus", 1 );
 	setOption( OPT_SWITCHSCORES,	"Score Fix (EP3)  ", "switch_scores", 0 );
 	setOption( OPT_IMPPOGO,			"Impossible Pogo  ", "impossible_pogo", 0 );
+	setOption( OPT_HUD,				"HUD Display      ", "hud", 1 );
 }
 
 /**

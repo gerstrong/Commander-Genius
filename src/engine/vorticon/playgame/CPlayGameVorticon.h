@@ -19,6 +19,7 @@
 #include "../../../common/CMap.h"
 #include "../../../common/options.h"
 #include "../../../common/CTeleporter.h"
+#include "../../../common/CHUD.h"
 #include "../ai/CObjectAI.h"
 #include "../ai/CEGABitmap.h"
 #include "../CMenuVorticon.h"
@@ -105,5 +106,6 @@ private:
 	bool m_showKeensLeft;
 	std::vector<CObject> m_Object;
 	CHighScores *mp_HighScores;
+	CHUD *mp_HUD;
 };
 #endif /* CPlayGameVorticon_H_ */

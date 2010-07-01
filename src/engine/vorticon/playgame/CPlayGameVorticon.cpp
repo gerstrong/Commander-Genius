@@ -49,6 +49,10 @@ mp_HighScores(NULL)
 		thisPlayer.setDatatoZero();
 	}
 
+	stInventory &inventory = m_Player.at(0).inventory;
+
+	mp_HUD = new CHUD(inventory.score, inventory.lives, inventory.charges);
+
 	// Create completed level list
 	memset(mp_level_completed,false,MAX_LEVELS_VORTICON*sizeof(bool));
 
@@ -295,6 +299,11 @@ void CPlayGameVorticon::process()
 
 		// Draw objects to the screen
 		drawObjects();
+
+		if(mp_option[OPT_HUD].value)
+		{	// Draw the HUD
+			mp_HUD->render();
+		}
 
 		// Check if we are in gameover mode. If yes, than show the bitmaps and block the FKeys().
 		// Only confirmation button is allowes
@@ -586,4 +595,5 @@ CPlayGameVorticon::~CPlayGameVorticon() {
 	if(mp_gameoverbmp) delete mp_gameoverbmp;
 	mp_gameoverbmp = NULL;
 	SAFE_DELETE(mp_ObjectAI);
+	SAFE_DELETE(mp_HUD);
 }
