@@ -219,79 +219,91 @@ bool CMap::gotoPos(int x, int y)
 // scrolls the map one pixel right
 void CMap::scrollRight(void)
 {
-	m_scrollx++;
-	if(m_scrollx_buf>=511) m_scrollx_buf=0; else m_scrollx_buf++;
-	
-	m_scrollpix++;
-	if (m_scrollpix>=16)
-	{  // need to draw a new stripe
-		drawVstripe(m_mapxstripepos, m_mapx + 32);
-		m_mapx++;
-		m_mapxstripepos += 16;
-		if (m_mapxstripepos >= 512) m_mapxstripepos = 0;
-		m_scrollpix = 0;
+	if(m_scrollx < (m_width<<4) - g_pVideoDriver->getGameResolution().w)
+	{
+		m_scrollx++;
+		if(m_scrollx_buf>=511) m_scrollx_buf=0; else m_scrollx_buf++;
+
+		m_scrollpix++;
+		if (m_scrollpix>=16)
+		{  // need to draw a new stripe
+			drawVstripe(m_mapxstripepos, m_mapx + 32);
+			m_mapx++;
+			m_mapxstripepos += 16;
+			if (m_mapxstripepos >= 512) m_mapxstripepos = 0;
+			m_scrollpix = 0;
+		}
 	}
 }
 
 // scrolls the map one pixel left
 void CMap::scrollLeft(void)
 {
-	m_scrollx--;
-	if(m_scrollx_buf==0) m_scrollx_buf=511; else m_scrollx_buf--;
-	
-	if (m_scrollpix==0)
-	{  // need to draw a new stripe
-		if(m_mapx>0) m_mapx--;
-		if (m_mapxstripepos == 0)
-		{
-			m_mapxstripepos = (512 - 16);
-		}
-		else
-		{
-			m_mapxstripepos -= 16;
-		}
-		drawVstripe(m_mapxstripepos, m_mapx);
-		
-		m_scrollpix = 15;
-	} else m_scrollpix--;
+	if(m_scrollx>0)
+	{
+		m_scrollx--;
+		if(m_scrollx_buf==0) m_scrollx_buf=511; else m_scrollx_buf--;
+
+		if (m_scrollpix==0)
+		{  // need to draw a new stripe
+			if(m_mapx>0) m_mapx--;
+			if (m_mapxstripepos == 0)
+			{
+				m_mapxstripepos = (512 - 16);
+			}
+			else
+			{
+				m_mapxstripepos -= 16;
+			}
+			drawVstripe(m_mapxstripepos, m_mapx);
+
+			m_scrollpix = 15;
+		} else m_scrollpix--;
+	}
 }
 
 void CMap::scrollDown(void)
 {
-	m_scrolly++;
-	if(m_scrolly_buf>=511) m_scrolly_buf=0; else m_scrolly_buf++;
-	
-	m_scrollpixy++;
-	if (m_scrollpixy>=16)
-	{  // need to draw a new stripe
-		drawHstripe(m_mapystripepos, m_mapy + 32);
-		m_mapy++;
-		m_mapystripepos += 16;
-		if (m_mapystripepos >= 512) m_mapystripepos = 0;
-		m_scrollpixy = 0;
+	if(m_scrolly < (m_height<<4) - g_pVideoDriver->getGameResolution().h )
+	{
+		m_scrolly++;
+		if(m_scrolly_buf>=511) m_scrolly_buf=0; else m_scrolly_buf++;
+
+		m_scrollpixy++;
+		if (m_scrollpixy>=16)
+		{  // need to draw a new stripe
+			drawHstripe(m_mapystripepos, m_mapy + 32);
+			m_mapy++;
+			m_mapystripepos += 16;
+			if (m_mapystripepos >= 512) m_mapystripepos = 0;
+			m_scrollpixy = 0;
+		}
 	}
 }
 
 void CMap::scrollUp(void)
 {
-	m_scrolly--;
-	if(m_scrolly_buf==0) m_scrolly_buf=511; else m_scrolly_buf--;
-	
-	if (m_scrollpixy==0)
-	{  // need to draw a new stripe
-		if(m_mapy>0) m_mapy--;
-		if (m_mapystripepos == 0)
-		{
-			m_mapystripepos = (512 - 16);
-		}
-		else
-		{
-			m_mapystripepos -= 16;
-		}
-		drawHstripe(m_mapystripepos, m_mapy);
-		
-		m_scrollpixy = 15;
-	} else m_scrollpixy--;
+	if(m_scrolly>0)
+	{
+		m_scrolly--;
+		if(m_scrolly_buf==0) m_scrolly_buf=511; else m_scrolly_buf--;
+
+		if (m_scrollpixy==0)
+		{  // need to draw a new stripe
+			if(m_mapy>0) m_mapy--;
+			if (m_mapystripepos == 0)
+			{
+				m_mapystripepos = (512 - 16);
+			}
+			else
+			{
+				m_mapystripepos -= 16;
+			}
+			drawHstripe(m_mapystripepos, m_mapy);
+
+			m_scrollpixy = 15;
+		} else m_scrollpixy--;
+	}
 }
 
 //////////////////////
@@ -327,21 +339,27 @@ void CMap::drawAll()
 	if(num_h_tiles+m_mapy >= m_height)
 		num_h_tiles = m_height-m_mapy;
 
+	bool has_background = true;
 	std::vector<CTilemap>::iterator Tilemap = m_Tilemaps.begin();
 	for(size_t plane=0 ; plane<2 ; plane++, Tilemap++)
 	{
-		if(m_Plane[plane].getMapDataPtr() == NULL)
-			continue;
-
-		for(Uint32 y=0;y<num_h_tiles;y++)
+		if(m_Plane[plane].getMapDataPtr() != NULL)
 		{
-			for(Uint32 x=0;x<num_v_tiles;x++)
+			for(Uint32 y=0;y<num_h_tiles;y++)
 			{
-				Uint32 c = m_Plane[plane].getMapDataAt(x+m_mapx, m_mapy+y);
-				Tilemap->drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511, ((y<<4)+m_mapystripepos)&511, c);
-				registerAnimation( ((x<<4)+m_mapxstripepos)&511, ((y<<4)+m_mapystripepos)&511, c );
+				for(Uint32 x=0;x<num_v_tiles;x++)
+				{
+					Uint32 c = m_Plane[plane].getMapDataAt(x+m_mapx, y+m_mapy);
+					if(has_background && c==0)
+						continue;
+
+					Tilemap->drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511, ((y<<4)+m_mapystripepos)&511, c);
+					registerAnimation( ((x<<4)+m_mapxstripepos)&511, ((y<<4)+m_mapystripepos)&511, c );
+				}
 			}
 		}
+		else
+			has_background = false;
 	}
 }
 
@@ -354,18 +372,24 @@ void CMap::drawHstripe(unsigned int y, unsigned int mpy)
 	if( num_v_tiles+m_mapx >= m_width )
 		num_v_tiles = m_width-m_mapx;
 
+	bool has_background = true;
 	std::vector<CTilemap>::iterator Tilemap = m_Tilemaps.begin();
 	for(size_t plane=0 ; plane<2 ; plane++, Tilemap++)
 	{
-		if(m_Plane[plane].getMapDataPtr() == NULL)
-			continue;
-
-		for(Uint32 x=0;x<num_v_tiles;x++)
+		if(m_Plane[plane].getMapDataPtr() != NULL)
 		{
-			Uint32 c = m_Plane[1].getMapDataAt(x+m_mapx, mpy);
-			Tilemap->drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511, y, c);
-			registerAnimation( ((x<<4)+m_mapxstripepos)&511, y, c );
+			for(Uint32 x=0;x<num_v_tiles;x++)
+			{
+				Uint32 c = m_Plane[plane].getMapDataAt(x+m_mapx, mpy);
+				if(has_background && c==0)
+					continue;
+
+				Tilemap->drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511, y, c);
+				registerAnimation( ((x<<4)+m_mapxstripepos)&511, y, c );
+			}
 		}
+		else
+			has_background = false;
 	}
 }
 
@@ -379,18 +403,24 @@ void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 	if( num_h_tiles+m_mapy >= m_height )
 		num_h_tiles = m_height-m_mapy;
 
+	bool has_background = true;
 	std::vector<CTilemap>::iterator Tilemap = m_Tilemaps.begin();
 	for(size_t plane=0 ; plane<2 ; plane++, Tilemap++)
 	{
-		if(m_Plane[plane].getMapDataPtr() == NULL)
-			continue;
-
-		for(Uint32 y=0;y<num_h_tiles;y++)
+		if(m_Plane[plane].getMapDataPtr() != NULL)
 		{
-			Uint32 c = m_Plane[plane].getMapDataAt(mpx, y+m_mapy);
-			Tilemap->drawTile(mp_scrollsurface, x, ((y<<4)+m_mapystripepos)&511, c);
-			registerAnimation( x, ((y<<4)+m_mapystripepos)&511, c );
+			for(Uint32 y=0;y<num_h_tiles;y++)
+			{
+				Uint32 c = m_Plane[plane].getMapDataAt(mpx, y+m_mapy);
+				if(has_background && c==0)
+					continue;
+
+				Tilemap->drawTile(mp_scrollsurface, x, ((y<<4)+m_mapystripepos)&511, c);
+				registerAnimation( x, ((y<<4)+m_mapystripepos)&511, c );
+			}
 		}
+		else
+			has_background = false;
 	}
 }
 
@@ -423,7 +453,6 @@ void CMap::deAnimate(int x, int y)
 void CMap::drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile)
 {
 	CTileProperties &TileProperty = g_pBehaviorEngine->getTileProperties().at(tile);
-
 	std::vector<CTilemap>::iterator Tilemap = m_Tilemaps.begin()+1;
 
 	if(TileProperty.animation <= 1)

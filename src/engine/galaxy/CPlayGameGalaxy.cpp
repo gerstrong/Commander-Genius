@@ -58,41 +58,22 @@ void CPlayGameGalaxy::process()
 	processInput();
 
 	processRendering();
-
-	//g_pVideoDriver->blitScrollSurface();
-
-
 }
 
 void CPlayGameGalaxy::processInput()
 {
 	if(g_pInput->getPressedCommand(IC_QUIT))
-	{
 		m_endgame = true;
-	}
 
 	if(g_pInput->getHoldedCommand(IC_LEFT))
-	{
-		if(m_posx>0)
-			m_posx--;
-	}
+		m_Map.scrollLeft();
 	else if(g_pInput->getHoldedCommand(IC_RIGHT))
-	{
-		if(m_posx<m_Map.m_width)
-			m_posx++;
-	}
+		m_Map.scrollRight();
 
 	if(g_pInput->getHoldedCommand(IC_UP))
-	{
-		if(m_posy>0)
-			m_posy--;
-	}
+		m_Map.scrollUp();
 	else if(g_pInput->getHoldedCommand(IC_DOWN))
-	{
-		if(m_posy<m_Map.m_height)
-			m_posy++;
-	}
-
+		m_Map.scrollDown();
 
 	if(g_pInput->getPressedCommand(IC_STATUS))
 	{
@@ -107,7 +88,7 @@ void CPlayGameGalaxy::processInput()
 void CPlayGameGalaxy::processRendering()
 {
 	// Animate the tiles of the map
-	m_Map.animateAllTiles();
+	//m_Map.animateAllTiles();
 
 	// Blit the background
 	g_pVideoDriver->blitScrollSurface();
