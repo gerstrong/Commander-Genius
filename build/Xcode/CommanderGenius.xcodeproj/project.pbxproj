@@ -1566,7 +1566,7 @@
 			);
 			name = "copy files (vfsroot)";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/myfile",
+				"$(TARGET_BUILD_DIR)/$(CONTENTS_FOLDER_PATH)/Resources",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
