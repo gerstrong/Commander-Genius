@@ -10,16 +10,15 @@
 
 #include <SDL.h>
 #include <string>
-#include <vector>
-#include <list>
 
 #include "../graphics/CTilemap.h"
 #include "../fileio/TypeDefinitions.h"
+#include <vector>
 #include "CPlane.h"
 
 // animation rate of animated tiles
-//#define ANIM_TILE_TIME        4
-//#define MAX_ANIMTILES  		400
+#define ANIM_TILE_TIME      256
+#define MAX_ANIMTILES  		400
 
 // for each entry in the animtileinuse array that is nonzero, that
 // location on the display is an animated tile which is currently registered
@@ -28,8 +27,8 @@
 // tile, this lets it know it needs to unregister the animated tile that
 // used to be there. the nonzero value corresponds to the associated entry
 // in animtiles[]. the x,y pixel position is the index in here * 16.
-//#define ATILEINUSE_SIZEX               33
-//#define ATILEINUSE_SIZEY               33
+#define ATILEINUSE_SIZEX               33
+#define ATILEINUSE_SIZEY               33
 
 class CMap {
 public:
@@ -62,7 +61,6 @@ public:
 	bool changeTile(Uint16 x, Uint16 y, Uint16 t, Uint8 tilemap = 1);
 
 	// Animation methods
-	Uint32 getAnimatedTile(size_t plane, size_t x, size_t y);
 	void deAnimate(int x, int y);
 	void drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile);
 	void animateAllTiles();
@@ -113,24 +111,16 @@ private:
 	// (map) stripe attribute structures, for animated tiles
 	// slot 0 is not used. data starts at slot 1. see description
 	// of AnimTileInUse in map structure to see why.
-	/*struct {
-		bool slotinuse;        // if false, this entry should not be drawn
+	struct {
+		bool slotinuse;        // if 0, this entry should not be drawn
 		int x;                // x pixel position in scrollbuf[] where tile is
 		int y;                // y pixel position in scrollbuf[]
-		int baseframe;        // base frame, i.e. the first frame of animation
-		int offset;           // offset from base frame
+		int tile;        	  // tile which has to be drawn
 	} m_animtiles[MAX_ANIMTILES+1];
 
 	unsigned int m_AnimTileInUse[ATILEINUSE_SIZEX][ATILEINUSE_SIZEY];
-	int m_animtiletimer, m_curanimtileframe;*/
 
-	/*struct st_bl_animation_slot
-	{
-		int x,y;  // coordination that have to be blacklisted for animation
-	};
-
-	std::list<st_bl_animation_slot> m_AnimationBlacklist;*/
-
+	Uint8 m_animtiletimer;
 
 	CPlane m_Plane[3];
 };

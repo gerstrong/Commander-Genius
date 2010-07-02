@@ -21,10 +21,11 @@ CMap::CMap():
 m_width(0), m_height(0),
 m_worldmap(false),
 m_animation_enabled(true),
-m_Tilemaps(g_pGfxEngine->getTileMaps())//,
-//m_animtiletimer(0),
-//m_curanimtileframe(0)
+m_Tilemaps(g_pGfxEngine->getTileMaps()),
+m_animtiletimer(0)
 {
+	memset( m_AnimTileInUse, 0, sizeof(m_AnimTileInUse));
+	memset( m_animtiles, 0, sizeof(m_animtiles));
 	resetScrolls();
 	memset(m_objectlayer, 0, sizeof(m_objectlayer));
 }
@@ -347,7 +348,7 @@ void CMap::drawAll()
 			{
 				for(Uint32 x=0;x<num_v_tiles;x++)
 				{
-					Uint32 c = getAnimatedTile(plane, x+m_mapx, y+m_mapy);
+					Uint32 c = m_Plane[plane].getMapDataAt(x+m_mapx, y+m_mapy);
 					if(has_background && c==0)
 						continue;
 
@@ -378,7 +379,7 @@ void CMap::drawHstripe(unsigned int y, unsigned int mpy)
 		{
 			for(Uint32 x=0;x<num_v_tiles;x++)
 			{
-				Uint32 c = getAnimatedTile(plane, x+m_mapx, mpy);
+				Uint32 c = m_Plane[plane].getMapDataAt(x+m_mapx, mpy);
 				if(has_background && c==0)
 					continue;
 
@@ -409,8 +410,7 @@ void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 		{
 			for(Uint32 y=0;y<num_h_tiles;y++)
 			{
-				Uint32 c = getAnimatedTile(plane, mpx, y+m_mapy);
-
+				Uint32 c = m_Plane[plane].getMapDataAt(mpx, y+m_mapy);
 				if(has_background && c==0)
 					continue;
 
@@ -426,22 +426,11 @@ void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 /////////////////////////
 // Animation functions //
 /////////////////////////
-/**
- * \brief This functions get the proper that really has to be displayed. If the tile
- * has Animation properties, at will be changed life on the map.
- */
-Uint32 CMap::getAnimatedTile(size_t plane, size_t x, size_t y)
-{
-	Uint32 c = m_Plane[plane].getMapDataAt(x, y);
-
-	return c;
-}
-
 // searches for animated tiles at the map position (X,Y) and
 // unregisters them from animtiles
 void CMap::deAnimate(int x, int y)
 {
-	/*int px,py;
+	int px,py;
 	// figure out pixel position of map tile (x,y)
     px = ((m_mapxstripepos+((x-m_mapx)<<4))&511);
     py = ((m_mapystripepos+((y-m_mapy)<<4))&511);
@@ -452,17 +441,17 @@ void CMap::deAnimate(int x, int y)
 		if (m_animtiles[i].x == px && m_animtiles[i].y == py)
 		{
 			m_animtiles[i].slotinuse = 0;
-			m_animtiles[i].offset = 0;
+			m_animtiles[i].tile = 0;
 			m_AnimTileInUse[px>>4][py>>4] = 0;
 			return;
 		}
-    }*/
+    }
 }
 
 // Draw an animated tile. If it's not animated draw it anyway
 void CMap::drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile)
 {
-	/*CTileProperties &TileProperty = g_pBehaviorEngine->getTileProperties().at(tile);
+	CTileProperties &TileProperty = g_pBehaviorEngine->getTileProperties().at(tile);
 	std::vector<CTilemap>::iterator Tilemap = m_Tilemaps.begin()+1;
 
 	if(TileProperty.animation <= 1)
@@ -475,48 +464,50 @@ void CMap::drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile)
 		{
 			bool tileanimcond;
 
-			tileanimcond = (tile == m_animtiles[i].baseframe || tile == m_animtiles[i].baseframe+1
-							|| tile == m_animtiles[i].baseframe+2 || tile == m_animtiles[i].baseframe+3);
+			//tileanimcond = (tile == m_animtiles[i].baseframe || tile == m_animtiles[i].baseframe+1
+				//			|| tile == m_animtiles[i].baseframe+2 || tile == m_animtiles[i].baseframe+3);
 
-			CTileProperties &TileBaseProperty =
-					g_pBehaviorEngine->getTileProperties().at(m_animtiles[i].baseframe);
-			if ( m_animtiles[i].slotinuse && tileanimcond )
+			//CTileProperties &TileBaseProperty =
+				//	g_pBehaviorEngine->getTileProperties().at(m_animtiles[i].baseframe);
+			if ( m_animtiles[i].slotinuse /*&& tileanimcond*/ )
 			{
 				Tilemap->drawTile( dst, mx, my,
-						m_animtiles[i].baseframe+
-						((m_animtiles[i].offset+m_curanimtileframe)%
-								TileBaseProperty.animation) );
+						m_animtiles[i].tile );
 			}
 		}
-	}*/
+	}
 }
 
 void CMap::animateAllTiles()
 {
-	/*std::vector<CTilemap>::iterator Tilemap = m_Tilemaps.begin()+1;
+	std::vector<CTilemap>::iterator Tilemap = m_Tilemaps.begin()+1;
 
-	// animate animated tiles
-	if (m_animtiletimer>ANIM_TILE_TIME && m_animation_enabled)
+	/* animate animated tiles */
+	if (m_animation_enabled)
 	{
-		// advance to next frame
-		m_curanimtileframe = (m_curanimtileframe+1)&7;
+		if(m_animtiletimer<ANIM_TILE_TIME)
+			m_animtiletimer++;
+		else
+			m_animtiletimer = 0;
+	}
 
-		// re-draw all animated tiles
-		for(int i=1;i<MAX_ANIMTILES-1;i++)
+	/* re-draw all animated tiles */
+	for(int i=1;i<MAX_ANIMTILES-1;i++)
+	{
+		if ( m_animtiles[i].slotinuse )
 		{
-			if ( m_animtiles[i].slotinuse )
+			CTileProperties &TileProperties =
+					g_pBehaviorEngine->getTileProperties().at(m_animtiles[i].tile);
+
+			if( (m_animtiletimer % TileProperties.animation) == 0)
 			{
-				CTileProperties &TileBaseProperty =
-						g_pBehaviorEngine->getTileProperties().at(m_animtiles[i].baseframe);
 				Tilemap->drawTile( mp_scrollsurface, m_animtiles[i].x, m_animtiles[i].y,
-						 m_animtiles[i].baseframe+
-						 ((m_animtiles[i].offset+m_curanimtileframe)%
-								 TileBaseProperty.animation));
+						m_animtiles[i].tile);
+				// get the next tile which will be drawn in the next animation cycle
+				m_animtiles[i].tile += TileProperties.nextTile;
 			}
 		}
-		m_animtiletimer = 0;
 	}
-	else m_animtiletimer++;*/
 }
 
 // unregisters all animated tiles with baseframe tile
@@ -534,7 +525,7 @@ void CMap::unregisterAnimtiles(int tile)
 void CMap::registerAnimation(Uint32 x, Uint32 y, int c)
 {
 	// we just drew over an animated tile which we must unregister
-    /*if (m_AnimTileInUse[x>>4][y>>4])
+    if (m_AnimTileInUse[x>>4][y>>4])
     {
 		m_animtiles[m_AnimTileInUse[x>>4][y>>4]].slotinuse = 0;
 		m_AnimTileInUse[x>>4][y>>4] = 0;
@@ -551,19 +542,18 @@ void CMap::registerAnimation(Uint32 x, Uint32 y, int c)
 			{  // we found an unused slot
 				m_animtiles[i].x = x;
 				m_animtiles[i].y = y;
-				m_animtiles[i].baseframe = c - TileProperty.animOffset;
-				m_animtiles[i].offset = TileProperty.animOffset;
+				m_animtiles[i].tile = c;
 				m_animtiles[i].slotinuse = 1;
 				m_AnimTileInUse[x>>4][y>>4] = i;
 				break;
 			}
 		}
-    }*/
+    }
 }
 
 CMap::~CMap() {
-	/*memset( m_AnimTileInUse, 0, sizeof(m_AnimTileInUse));
-	memset( m_animtiles, 0, sizeof(m_animtiles));*/
+	memset( m_AnimTileInUse, 0, sizeof(m_AnimTileInUse));
+	memset( m_animtiles, 0, sizeof(m_animtiles));
 }
 
 

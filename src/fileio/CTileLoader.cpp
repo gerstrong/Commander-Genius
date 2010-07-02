@@ -90,6 +90,10 @@ void CTileLoader::readVorticonTileinfo(size_t NumTiles)
 	for(size_t j=0 ; j < NumTiles ; j++)
 	{
 		TileProperties[j].animation 	= GETWORD( m_data+(2*j) );
+
+		if(TileProperties[j].animation>1)
+			TileProperties[j].animation = 4;
+
 		TileProperties[j].behaviour 	= GETWORD( m_data+2*(NumTiles)+2*j);
 		TileProperties[j].bup 			= GETWORD( m_data+4*(NumTiles)+2*j );
 		TileProperties[j].bright 		= GETWORD( m_data+6*(NumTiles)+2*j);
@@ -107,8 +111,10 @@ void CTileLoader::readVorticonTileinfo(size_t NumTiles)
 	for(size_t j=0 ; j < NumTiles ;  )
 	{
 		size_t value = TileProperties[j].animation;
-		if(value == 0) {
-			j++; continue;
+		if(value == 0 && value == 1) {
+			TileProperties[j].animation = 0;
+			j++;
+			continue;
 		}
 
 		// stuff for animated tiles
