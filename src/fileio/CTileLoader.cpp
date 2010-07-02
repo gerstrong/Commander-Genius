@@ -9,6 +9,7 @@
 #include "../CLogFile.h"
 #include "../StringUtils.h"
 #include "../FindFile.h"
+#include "TypeDefinitions.h"
 #include <cstdlib>
 #include <string>
 
@@ -43,6 +44,7 @@ void CTileLoader::setupOffsetMap()
 	m_offsetMap[2][131] = 0x17828;
 	m_offsetMap[3][100] = 0x199F8;
 	m_offsetMap[3][131] = 0x198C8;
+	m_offsetMap[4][140] = 0x249C2;
 }
 
 bool CTileLoader::load()
@@ -116,17 +118,13 @@ void CTileLoader::readGalaxyTileinfo()
 {
 	for(size_t j=0 ; j < m_numtiles ; j++)
 	{
-		m_TileProperties[j].animation = m_data[2*j];
-		m_TileProperties[j].behaviour = m_data[2*(m_numtiles)+2*j];
-		m_TileProperties[j].behaviour += m_data[2*(m_numtiles)+2*j+1] << 8;
-		m_TileProperties[j].bup = m_data[4*(m_numtiles)+2*j];
-		m_TileProperties[j].bup += m_data[4*(m_numtiles)+2*j+1] << 8;
-		m_TileProperties[j].bright = m_data[6*(m_numtiles)+2*j];
-		m_TileProperties[j].bright += m_data[6*(m_numtiles)+2*j+1] << 8;
-		m_TileProperties[j].bdown = m_data[8*(m_numtiles)+2*j];
-		m_TileProperties[j].bdown += m_data[8*(m_numtiles)+2*j+1] << 8;
-		m_TileProperties[j].bleft = m_data[10*(m_numtiles)+2*j];
-		m_TileProperties[j].bleft += m_data[10*(m_numtiles)+2*j+1] << 8;
+		m_TileProperties[j].animation = GETWORD( m_data+(2*j) );
+		m_TileProperties[j].behaviour = GETWORD( m_data+2*(m_numtiles)+2*j);
+
+		m_TileProperties[j].bup 	= GETWORD( m_data+4*(m_numtiles)+2*j );
+		m_TileProperties[j].bright 	= GETWORD( m_data+6*(m_numtiles)+2*j);
+		m_TileProperties[j].bdown 	= GETWORD( m_data+8*(m_numtiles)+2*j);
+		m_TileProperties[j].bleft 	= GETWORD( m_data+10*(m_numtiles)+2*j);
 
 		if( m_TileProperties[j].bleft && m_TileProperties[j].bright &&
 				m_TileProperties[j].bup && m_TileProperties[j].bdown	)

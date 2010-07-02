@@ -10,6 +10,7 @@
 
 #include "CTeleporter.h"
 #include "../sdl/sound/CSound.h"
+#include "../fileio/TypeDefinitions.h"
 #include "../keen.h"
 
 CTeleporter::CTeleporter(std::vector<stTeleporterTable> &TeleportTable, short episode):
@@ -17,9 +18,6 @@ m_episode(episode),
 m_TeleportTable(TeleportTable)
 {}
 
-Uint16 CTeleporter::getWord(unsigned char *p_exedata){
-	return ((*p_exedata) + (*(p_exedata+1)<<8));
-}
 // This is called in the beginning and will decrypt the teleporter behavior.
 // The Teleporter Table itself will be globally avialable somewhere else. Maybe PlayGame.
 // It has to be read from the beginning...
@@ -45,14 +43,14 @@ void CTeleporter::createTeleporterTable(unsigned char *p_exedata)
 		m_TeleportTable[5].objectnumber2 = 46; // Here we still don't know about the others...
 
 		// Now get the coordinates...
-		m_TeleportTable[0].x = getWord(p_exedata+0x158DF);
-		m_TeleportTable[0].y = getWord(p_exedata+0x158E3);
-		m_TeleportTable[3].x = getWord(p_exedata+0x158E9);
-		m_TeleportTable[3].y = getWord(p_exedata+0x158ED);
-		m_TeleportTable[4].x = m_TeleportTable[1].x = getWord(p_exedata+0x158E9);
-		m_TeleportTable[4].y = m_TeleportTable[1].y = getWord(p_exedata+0x158ED);
-		m_TeleportTable[5].x = m_TeleportTable[2].x = getWord(p_exedata+0x158F3);
-		m_TeleportTable[5].y = m_TeleportTable[2].y = getWord(p_exedata+0x158F7);
+		m_TeleportTable[0].x = GETWORD(p_exedata+0x158DF);
+		m_TeleportTable[0].y = GETWORD(p_exedata+0x158E3);
+		m_TeleportTable[3].x = GETWORD(p_exedata+0x158E9);
+		m_TeleportTable[3].y = GETWORD(p_exedata+0x158ED);
+		m_TeleportTable[4].x = m_TeleportTable[1].x = GETWORD(p_exedata+0x158E9);
+		m_TeleportTable[4].y = m_TeleportTable[1].y = GETWORD(p_exedata+0x158ED);
+		m_TeleportTable[5].x = m_TeleportTable[2].x = GETWORD(p_exedata+0x158F3);
+		m_TeleportTable[5].y = m_TeleportTable[2].y = GETWORD(p_exedata+0x158F7);
 	}
 }
 
