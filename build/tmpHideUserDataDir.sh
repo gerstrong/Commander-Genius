@@ -1,6 +1,10 @@
 #!/bin/zsh
 
-cgdir=~"/Library/Application Support/Commander Genius"
+if [ "$(uname)" = "Darwin" ]; then
+	cgdir=~"/Library/Application Support/Commander Genius"
+else
+	cgdir=~".CommanderGenius"
+fi
 otherdirs=(${cgdir}.*) 2>/dev/null
 
 if [ ${#otherdirs} = 0 ]; then
