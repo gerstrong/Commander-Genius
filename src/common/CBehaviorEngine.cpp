@@ -24,8 +24,8 @@ void CBehaviorEngine::addMessage(const std::string &name,
 {	stringmap[name] = message;	}
 
 
-std::vector<CTileProperties> &CBehaviorEngine::getTileProperties()
-{	return m_TileProperties;	}
+std::vector<CTileProperties> &CBehaviorEngine::getTileProperties(size_t tmnum)
+{	return m_TileProperties[tmnum];	}
 
 CPhysicsSettings &CBehaviorEngine::getPhysicsSettings()
 {	return m_PhysicsSettings;	}

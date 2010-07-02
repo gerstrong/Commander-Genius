@@ -15,14 +15,12 @@
 
 class CTileLoader {
 public:
-	CTileLoader(int episode, int version, size_t NumTiles, unsigned char *data);
-	CTileLoader(CExeFile &Exefile, size_t NumTiles);
+	CTileLoader(int episode, int version, unsigned char *data);
+	CTileLoader(CExeFile &Exefile);
 	
-	bool load();
-	void readVorticonTileinfo();
-	void readGalaxyTileinfo();
-	
-	int getNumTiles() { return m_numtiles; }
+	bool load(size_t NumUnMaskedTiles, size_t NumMaskedTiles);
+	void readVorticonTileinfo(size_t NumTiles);
+	void readGalaxyTileinfo(size_t NumUnMaskedTiles, size_t NumMaskedTiles);
 	
 	virtual ~CTileLoader();
 
@@ -31,15 +29,12 @@ private:
 	int m_version;
 	long m_offset;
 	unsigned char *m_data;
-	size_t m_numtiles;
 	
 	//std::map<std::map<int,int>, long> m_offsetMap;
 	typedef std::map<int,long> VersionMap;
 	std::map<int, VersionMap> m_offsetMap;
-
-	std::vector<CTileProperties> &m_TileProperties;
 	
-	void assignChangeTileAttribute();
+	void assignChangeTileAttribute(size_t NumTiles);
 	void setupOffsetMap();
 	bool canbePickedup(int tile);
 	bool isaDoor(int tile);

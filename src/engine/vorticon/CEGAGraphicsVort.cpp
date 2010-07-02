@@ -111,8 +111,8 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 	// Important especially for masks, and later in the game for the behaviours
     // of those objects
 
-	CTileLoader TileLoader( m_episode, version, Num16Tiles, p_exedata );
-	if(!TileLoader.load())
+	CTileLoader TileLoader( m_episode, version, p_exedata );
+	if(!TileLoader.load(0, Num16Tiles))
 		return false;
 
     m_Latch = new CEGALatch(LatchPlaneSize,

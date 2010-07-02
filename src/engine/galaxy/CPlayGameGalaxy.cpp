@@ -88,7 +88,7 @@ void CPlayGameGalaxy::processInput()
 void CPlayGameGalaxy::processRendering()
 {
 	// Animate the tiles of the map
-	//m_Map.animateAllTiles();
+	m_Map.animateAllTiles();
 
 	// Blit the background
 	g_pVideoDriver->blitScrollSurface();

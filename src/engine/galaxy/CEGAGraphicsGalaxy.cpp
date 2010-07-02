@@ -138,8 +138,9 @@ bool CEGAGraphicsGalaxy::loadData()
 	// First, retrieve the Tile properties so the tilemap gets properly formatted
 	// Important especially for masks, and later in the game for the behaviours
     // of those objects
-	CTileLoader TileLoader( m_Exefile, EpisodeInfo[m_episode-4].Num16MaskedTiles );
-	if(!TileLoader.load())
+	CTileLoader TileLoader( m_Exefile );
+	if(!TileLoader.load(EpisodeInfo[m_episode-4].Num16Tiles,
+						EpisodeInfo[m_episode-4].Num16MaskedTiles))
 		return false;
 
 	if(!readfonts()) return false;

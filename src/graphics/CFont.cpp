@@ -21,7 +21,8 @@ m_fgcolour(0x0),
 m_bgcolour(0x0),
 m_monochrome(false)
 {
-	m_widthtable.assign(256,8);
+	//m_widthtable.assign(256,8);
+	memset(&m_widthtable, 8, 256);
 }
 
 bool CFont::CreateSurface(SDL_Color *Palette, Uint32 Flags, Uint8 bpp, Uint16 width, Uint16 height)
@@ -90,7 +91,7 @@ bool CFont::loadHiColourFont( const std::string& filename )
 // in the galaxy engine.
 void CFont::setWidthToCharacter(Uint8 width, Uint16 letter)
 {
-	m_widthtable.at(letter) = width;
+	m_widthtable[letter] = width;
 }
 
 /**
@@ -155,7 +156,7 @@ void CFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint1
 	
 	scrrect.x = (m_ColouredSurface->w/16)*(character%16);
 	scrrect.y = (m_ColouredSurface->h/16)*(character/16);
-	scrrect.w = dstrect.w = (m_widthtable.at(character));
+	scrrect.w = dstrect.w = (m_widthtable[character]);
 	scrrect.h = dstrect.h = (m_ColouredSurface->h/16);
 	dstrect.x = xoff;	dstrect.y = yoff;
 	

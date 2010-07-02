@@ -46,7 +46,8 @@ public:
 private:
 	SDL_Surface *m_FontSurface, *m_ColouredSurface;
 	Uint32 m_fgcolour, m_bgcolour;
-	std::vector<Uint8> m_widthtable;
+	//std::vector<Uint8> m_widthtable;
+	Uint8 m_widthtable[256];
 	bool m_monochrome;
 };
 

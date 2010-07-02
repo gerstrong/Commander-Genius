@@ -31,14 +31,14 @@ public:
 
 	void addMessage(const std::string &name,
 					const std::string &message);
-	std::vector<CTileProperties> &getTileProperties();
+	std::vector<CTileProperties> &getTileProperties(size_t tmnum = 1);
 	CPhysicsSettings &getPhysicsSettings();
 	std::string getString(const std::string& name);
 
 	virtual ~CBehaviorEngine();
 
 private:
-	std::vector<CTileProperties> m_TileProperties;
+	std::vector<CTileProperties> m_TileProperties[2];
 	CPhysicsSettings m_PhysicsSettings;
 
 	std::map<std::string,std::string> stringmap;
