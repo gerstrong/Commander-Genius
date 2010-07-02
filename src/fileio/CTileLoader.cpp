@@ -58,57 +58,99 @@ bool CTileLoader::load()
 	
 	if(m_offsetMap[m_episode][m_version])
 	{
-		for(size_t j=0 ; j < m_numtiles ; j++)
-		{
-			m_TileProperties[j].animation = m_data[2*j];
-			m_TileProperties[j].behaviour = m_data[2*(m_numtiles)+2*j];
-			m_TileProperties[j].behaviour += m_data[2*(m_numtiles)+2*j+1] << 8;
-			m_TileProperties[j].bup = m_data[4*(m_numtiles)+2*j];
-			m_TileProperties[j].bup += m_data[4*(m_numtiles)+2*j+1] << 8;
-			m_TileProperties[j].bright = m_data[6*(m_numtiles)+2*j];
-			m_TileProperties[j].bright += m_data[6*(m_numtiles)+2*j+1] << 8;
-			m_TileProperties[j].bdown = m_data[8*(m_numtiles)+2*j];
-			m_TileProperties[j].bdown += m_data[8*(m_numtiles)+2*j+1] << 8;
-			m_TileProperties[j].bleft = m_data[10*(m_numtiles)+2*j];
-			m_TileProperties[j].bleft += m_data[10*(m_numtiles)+2*j+1] << 8;
-
-			if( m_TileProperties[j].bleft && m_TileProperties[j].bright &&
-					m_TileProperties[j].bup && m_TileProperties[j].bdown	)
-			{ // This should solve some tile bugs in Episode 2
-				if(m_TileProperties[j].behaviour == -2 or  m_TileProperties[j].behaviour == -1)
-					m_TileProperties[j].behaviour = 0;
-			}
-		}
-
-		int value;
-		for(size_t j=0 ; j < m_numtiles ; )
-		{
-			value = m_TileProperties[j].animation;
-
-			// stuff for animated tiles
-			if(value == 1)
-			{
-				m_TileProperties[j++].animOffset = 0;   // starting offset from the base frame
-			}
-			else if( value == 2 )
-			{
-				m_TileProperties[j++].animOffset = 0;   // starting offset from the base frame
-				m_TileProperties[j++].animOffset = 1;   // starting offset from the base frame
-			}
-			else
-			{
-				m_TileProperties[j++].animOffset = 0;   // starting offset from the base frame
-				m_TileProperties[j++].animOffset = 1;   // starting offset from the base frame
-				m_TileProperties[j++].animOffset = 2;   // starting offset from the base frame
-				m_TileProperties[j++].animOffset = 3;   // starting offset from the base frame
-			}
-		}
-
-		// This function assigns the correct tiles that have to be changed
-		assignChangeTileAttribute();
+		if(m_episode == 1 || m_episode == 2 || m_episode == 3 )
+			readVorticonTileinfo();
+		if(m_episode == 4 || m_episode == 5 || m_episode == 6 )
+			readGalaxyTileinfo();
 	}
-	
+
 	return true;
+}
+
+/**
+ * \brief This function assings the tileinfo data block previously read to the internal TileProperties
+ * 		  structure in CG.
+ */
+void CTileLoader::readVorticonTileinfo()
+{
+	for(size_t j=0 ; j < m_numtiles ; j++)
+	{
+		m_TileProperties[j].animation = m_data[2*j];
+		m_TileProperties[j].behaviour = m_data[2*(m_numtiles)+2*j];
+		m_TileProperties[j].behaviour += m_data[2*(m_numtiles)+2*j+1] << 8;
+		m_TileProperties[j].bup = m_data[4*(m_numtiles)+2*j];
+		m_TileProperties[j].bup += m_data[4*(m_numtiles)+2*j+1] << 8;
+		m_TileProperties[j].bright = m_data[6*(m_numtiles)+2*j];
+		m_TileProperties[j].bright += m_data[6*(m_numtiles)+2*j+1] << 8;
+		m_TileProperties[j].bdown = m_data[8*(m_numtiles)+2*j];
+		m_TileProperties[j].bdown += m_data[8*(m_numtiles)+2*j+1] << 8;
+		m_TileProperties[j].bleft = m_data[10*(m_numtiles)+2*j];
+		m_TileProperties[j].bleft += m_data[10*(m_numtiles)+2*j+1] << 8;
+
+		if( m_TileProperties[j].bleft && m_TileProperties[j].bright &&
+				m_TileProperties[j].bup && m_TileProperties[j].bdown	)
+		{ // This should solve some tile bugs in Episode 2
+			if(m_TileProperties[j].behaviour == -2 or  m_TileProperties[j].behaviour == -1)
+				m_TileProperties[j].behaviour = 0;
+		}
+	}
+
+	for(size_t j=0 ; j < m_numtiles ;  )
+	{
+		size_t value = m_TileProperties[j].animation;
+		if(value == 0) {
+			j++; continue;
+		}
+
+		// stuff for animated tiles
+		for( size_t i=0 ; i<value ; i++ )
+			m_TileProperties[j+i].animOffset = i;
+		j += value;
+	}
+
+	// This function assigns the correct tiles that have to be changed
+	assignChangeTileAttribute();
+}
+
+void CTileLoader::readGalaxyTileinfo()
+{
+	for(size_t j=0 ; j < m_numtiles ; j++)
+	{
+		m_TileProperties[j].animation = m_data[2*j];
+		m_TileProperties[j].behaviour = m_data[2*(m_numtiles)+2*j];
+		m_TileProperties[j].behaviour += m_data[2*(m_numtiles)+2*j+1] << 8;
+		m_TileProperties[j].bup = m_data[4*(m_numtiles)+2*j];
+		m_TileProperties[j].bup += m_data[4*(m_numtiles)+2*j+1] << 8;
+		m_TileProperties[j].bright = m_data[6*(m_numtiles)+2*j];
+		m_TileProperties[j].bright += m_data[6*(m_numtiles)+2*j+1] << 8;
+		m_TileProperties[j].bdown = m_data[8*(m_numtiles)+2*j];
+		m_TileProperties[j].bdown += m_data[8*(m_numtiles)+2*j+1] << 8;
+		m_TileProperties[j].bleft = m_data[10*(m_numtiles)+2*j];
+		m_TileProperties[j].bleft += m_data[10*(m_numtiles)+2*j+1] << 8;
+
+		if( m_TileProperties[j].bleft && m_TileProperties[j].bright &&
+				m_TileProperties[j].bup && m_TileProperties[j].bdown	)
+		{ // This should solve some tile bugs in Episode 2
+			if(m_TileProperties[j].behaviour == -2 or  m_TileProperties[j].behaviour == -1)
+				m_TileProperties[j].behaviour = 0;
+		}
+	}
+
+	for(size_t j=0 ; j < m_numtiles ;  )
+	{
+		size_t value = m_TileProperties[j].animation;
+		if(value == 0) {
+			j++; continue;
+		}
+
+		// stuff for animated tiles
+		for( size_t i=0 ; i<value ; i++ )
+			m_TileProperties[j+i].animOffset = i;
+		j += value;
+	}
+
+	// This function assigns the correct tiles that have to be changed
+	assignChangeTileAttribute();
 }
 
 void CTileLoader::assignChangeTileAttribute()

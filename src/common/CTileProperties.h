@@ -24,7 +24,7 @@ public:
 	unsigned int animOffset;   // starting offset from the base frame
 
 	// Tile Properties start here!
-	char animation;
+	unsigned char animation;
 	char behaviour;
 	char bup,bright,bdown,bleft;
 private:

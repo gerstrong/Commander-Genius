@@ -19,6 +19,8 @@ public:
 	CTileLoader(CExeFile &Exefile, size_t NumTiles);
 	
 	bool load();
+	void readVorticonTileinfo();
+	void readGalaxyTileinfo();
 	
 	int getNumTiles() { return m_numtiles; }
 	
