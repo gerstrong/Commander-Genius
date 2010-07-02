@@ -113,7 +113,12 @@ void CTileLoader::readVorticonTileinfo(size_t NumTiles)
 
 		// stuff for animated tiles
 		for( size_t i=0 ; i<value ; i++ )
-			TileProperties[j+i].animOffset = i;
+		{
+			if(i == value-1)
+				TileProperties[j+i].nextTile = -(value-1);
+			else
+				TileProperties[j+i].nextTile = 1;
+		}
 		j += value;
 	}
 
@@ -128,7 +133,7 @@ void CTileLoader::readGalaxyTileinfo(size_t NumUnMaskedTiles, size_t NumMaskedTi
 	for(size_t j=0 ; j < NumUnMaskedTiles ; j++)
 	{
 		TileUnmaskedProperties[j].animation = m_data[j];
-		TileUnmaskedProperties[j].animOffset = m_data[NumUnMaskedTiles+j];
+		//TileUnmaskedProperties[j].animOffset = m_data[NumUnMaskedTiles+j];
 
 		/*TileProperties[j].bup 	= GETWORD( m_data+2*(NumTiles)+j );
 		TileProperties[j].bright 	= GETWORD( m_data+3*(NumTiles)+j);

@@ -291,6 +291,7 @@ void CPlayGameVorticon::process()
 			// Finally draw Dialogs like status screen, game paused, etc.
 			processPauseDialogs();
 		}
+
 		// Animate the tiles of the map
 		m_Map.animateAllTiles();
 
