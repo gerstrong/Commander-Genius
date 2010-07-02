@@ -60,6 +60,9 @@ bool CMessages::extractGlobalStrings()
 			{
 				case 131:
 				{
+					StringMap.insert( extractString( "CTSPACECHEAT", 0x14DEE, 0x14E51, 0 ) );
+					StringMap.insert( extractString( "GODMODEON", 0x14EF6, 0x14F06, 0 ) );
+					StringMap.insert( extractString( "GODMODEOFF", 0x14F07, 0x14F18, 0 ) );
 					StringMap.insert( extractString( "EP1_StatusBox" , 0x15052, 0x150F5, -512 ) );
 					StringMap.insert( extractString( "EP1_SHIP" , 0x1679B, 0x167D3, -512 ) );
 					StringMap.insert( extractString( "LIVES_LEFT" , 0x160D8, 0x160E5, -512 ) );
@@ -91,6 +94,9 @@ bool CMessages::extractGlobalStrings()
 			{
 				case 131:
 				{
+					StringMap.insert( extractString( "CTSPACECHEAT", 0x19AC6, 0x19B1B, -512 ) );
+					StringMap.insert( extractString( "GODMODEON", 0x19BE4, 0x19BF4, -512 ) );
+					StringMap.insert( extractString( "GODMODEOFF", 0x19BF5, 0x19C06, -512 ) );
 					StringMap.insert( extractString( "EP2_StatusBox" , 0x19C40, 0x19CCE, -804 ) );
 					StringMap.insert( extractString( "LIVES_LEFT" , 0x1A9B2, 0x1A9BF, -776 ) );
 					StringMap.insert( extractString( "EP2_VE_NOJUMPINDARK" , 0x1A2D2, 0x1A391, -774 ) );
@@ -120,6 +126,9 @@ bool CMessages::extractGlobalStrings()
 			{
 				case 131:
 				{
+					StringMap.insert( extractString( "CTSPACECHEAT", 0x1BC9E, 0x1BCF3, -512 ) );
+					StringMap.insert( extractString( "GODMODEON", 0x1BD80, 0x1BD90, -512 ) );
+					StringMap.insert( extractString( "GODMODEOFF", 0x1BD91, 0x1BDA2, -512 ) );
 					StringMap.insert( extractString( "EP3_StatusBox" , 0x1BE38, 0x1BEC3, -837 ) );
 					StringMap.insert( extractString( "LIVES_LEFT" , 0x1CAEE, 0x1CAFB, -806 ) );
 					// Ship Messages

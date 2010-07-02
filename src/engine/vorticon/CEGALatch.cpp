@@ -62,6 +62,7 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 		width *= 8; // The width is always divided by eight when read
 
 		name = name.substr(0,8); // Cut the rest of data down, if junk detected in the exe file
+		TrimSpaces(name);
 		if( name != "" ) Bitmap.setName( name );
 		else
 		{
@@ -86,7 +87,6 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 				Bitmap.setName( default_names[i] );
 			}
 		}
-
 		Bitmap.setDimensions(width,height);
 	}
 	return true;
@@ -195,8 +195,8 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 					 plane4 + m_tiles16location,
 					 0);
 
-	g_pGfxEngine->createEmptyTilemap(1);
-	CTilemap &Tilemap = g_pGfxEngine->getTileMap(0);
+	g_pGfxEngine->createEmptyTilemap(2);
+	CTilemap &Tilemap = g_pGfxEngine->getTileMap(1);
 	Tilemap.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE, m_num16tiles, 4, 13 );
 	sfc = Tilemap.getSDLSurface();
 	SDL_FillRect(sfc,NULL, 0);
@@ -286,7 +286,7 @@ void CEGALatch::applyMasks()
 	Uint8 r,g,b,alpha;
 	Uint8 *u_offset;
 
-	sfc = g_pGfxEngine->getTileMap(0).getSDLSurface();
+	sfc = g_pGfxEngine->getTileMap(1).getSDLSurface();
 
 	if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
 

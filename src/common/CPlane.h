@@ -20,6 +20,7 @@ public:
 	word *getMapDataPtr();
 	word getMapDataAt(Uint16 x, Uint16 y);
 	void setMapDataAt(Uint16 t, Uint16 x, Uint16 y);
+	bool empty();
 
 	virtual ~CPlane();
 

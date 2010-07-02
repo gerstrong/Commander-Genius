@@ -13,6 +13,7 @@
 #include "../../fileio/compression/CCarmack.h"
 #include "../../fileio/compression/CRLE.h"
 #include "../../fileio.h"
+#include "../../sdl/CVideoDriver.h"
 #include "../../CLogFile.h"
 #include "../../CLogFile.h"
 #include <fstream>
@@ -201,14 +202,14 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 				// Start with the Background
 				Map.m_width = Width;
 				Map.m_height = Height;
-				Map.createEmptyDataPlanes(Width*Height);
+				Map.createEmptyDataPlane(0, Width*Height);
+				Map.createEmptyDataPlane(1, Width*Height);
 
 				unpackPlaneData(MapFile, Map, 0, Plane_Offset[0], Plane_Length[0], magic_word);
 				unpackPlaneData(MapFile, Map, 1, Plane_Offset[1], Plane_Length[1], magic_word);
-				unpackPlaneData(MapFile, Map, 2, Plane_Offset[2], Plane_Length[2], magic_word);
+				//unpackPlaneData(MapFile, Map, 2, Plane_Offset[2], Plane_Length[2], magic_word);
 			}
 			MapFile.close();
-			return true;
 		}
 		else
 		{
@@ -220,7 +221,18 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 	else
 		return false;
 
+	// TODO: Now load the player and enemies
 
+    // Do some post calculations
+    // Limit the scroll screens so the blocking (blue in EP1) tiles are3 never seen
+    SDL_Rect gamerect = g_pVideoDriver->getGameResolution();
+    Map.m_maxscrollx = (Map.m_width<<4) - gamerect.w - 32;
+    Map.m_maxscrolly = (Map.m_height<<4) - gamerect.h - 32;
+
+    // Set Scrollbuffer
+    g_pVideoDriver->setScrollBuffer(&Map.m_scrollx_buf, &Map.m_scrolly_buf);
+
+    return true;
 }
 
 CMapLoaderGalaxy::~CMapLoaderGalaxy()

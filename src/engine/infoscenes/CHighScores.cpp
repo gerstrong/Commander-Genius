@@ -28,7 +28,6 @@ CHighScores::CHighScores(int Episode, const std::string &DataDirectory, bool sav
 m_Place(0), m_blink(true), m_blinkctr(0)
 {
 	m_Map.setScrollSurface(g_pVideoDriver->ScrollSurface);
-	m_Map.setTileMap(g_pGfxEngine->getTileMap(0));
 	
 	// Set default Scores
 	m_Name[0] = "Gerstrong";

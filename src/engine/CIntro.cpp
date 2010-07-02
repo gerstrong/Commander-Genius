@@ -10,7 +10,9 @@
 #include "../sdl/CVideoDriver.h"
 #include "../sdl/CTimer.h"
 
-CIntro::CIntro() {
+CIntro::CIntro() :
+m_mid({0,0,0,0,0,0})
+{
 	m_timer = 0;
 	m_introtime = 10;  // Total time (in seconds) to elapse until Main menu opens
 	m_scrolly = 200;
@@ -31,6 +33,8 @@ void CIntro::init()
 	
 	for(int j=0 ; j<6 ; j++)
 	{
+		if(mp_bm[j] == NULL)
+			continue;
 		if (j==0)
 			m_mid[j] = (320/2)-((mp_bm[j]->getWidth()+4)/2);
 		else
@@ -49,15 +53,18 @@ void CIntro::process()
 		if( m_scrolly>42 )	m_scrolly--;
 	}
 	
-	mp_bm[1]->draw( mp_bmp_surface, m_mid[1], m_scrolly+11);
-	
-	if(m_scrolly<=42) // Show this, when scrolling is finished
+	if(mp_bm[0] != NULL)
 	{
-		mp_bm[0]->draw( mp_bmp_surface, m_mid[0], m_scrolly);
-		mp_bm[2]->draw( mp_bmp_surface, m_mid[2], m_scrolly+40);
-		mp_bm[3]->draw( mp_bmp_surface, m_mid[3], m_scrolly+52);
-		mp_bm[4]->draw( mp_bmp_surface, m_mid[4], m_scrolly+66);
-		mp_bm[5]->draw( mp_bmp_surface, m_mid[5], m_scrolly+108);
+		mp_bm[1]->draw( mp_bmp_surface, m_mid[1], m_scrolly+11);
+
+		if(m_scrolly<=42) // Show this, when scrolling is finished
+		{
+			mp_bm[0]->draw( mp_bmp_surface, m_mid[0], m_scrolly);
+			mp_bm[2]->draw( mp_bmp_surface, m_mid[2], m_scrolly+40);
+			mp_bm[3]->draw( mp_bmp_surface, m_mid[3], m_scrolly+52);
+			mp_bm[4]->draw( mp_bmp_surface, m_mid[4], m_scrolly+66);
+			mp_bm[5]->draw( mp_bmp_surface, m_mid[5], m_scrolly+108);
+		}
 	}
 	
 	// Check if time for Intro is out

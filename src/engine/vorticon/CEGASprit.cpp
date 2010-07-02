@@ -208,7 +208,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	DerivePlayerSprites( g_pGfxEngine->getSpriteVec() );
 
 	// Now create special sprites, like those for effects and the doors!
-	DeriveSpecialSprites( g_pGfxEngine->getTileMap(0), g_pGfxEngine->getSpriteVec() );
+	DeriveSpecialSprites( g_pGfxEngine->getTileMap(1), g_pGfxEngine->getSpriteVec() );
 
 	// Here special Effects are applied, only when the option is enabled for it
 	if(g_pVideoDriver->getSpecialFXConfig())

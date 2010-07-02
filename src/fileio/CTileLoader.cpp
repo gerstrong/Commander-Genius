@@ -12,123 +12,101 @@
 #include <cstdlib>
 #include <string>
 
-CTileLoader::CTileLoader(int episode, int version, unsigned char *data) :
+CTileLoader::CTileLoader(int episode, int version, size_t NumTiles, unsigned char *data) :
 m_TileProperties(g_pBehaviorEngine->getTileProperties())
 {
 	m_episode = episode;
 	m_version = version;
 	m_data = data;
 	m_offset = 0;
-	m_numtiles = 0;
+	m_numtiles = NumTiles;
+	setupOffsetMap();
 }
 
-bool CTileLoader::setProperOffset()
+CTileLoader::CTileLoader(CExeFile &Exefile, size_t NumTiles) :
+m_TileProperties(g_pBehaviorEngine->getTileProperties())
 {
-	// Identify the offset
-	switch (m_episode)
-	{
-		case 1:
-		{
-			m_numtiles = 611;
-			switch(m_version)
-			{
-				case 110: m_offset = 0x131F8; break;
-				case 131: m_offset = 0x130F8; break;
-				case 134: m_offset = 0x130F8; // This is incorrect! Sure?
-					g_pLogFile->textOut(PURPLE,"If you want to use Episode 1 Version 1.34, assure that is was unpacked before (with unpklite for example).<br>");
-					break;
-			}
-			break;
-		}
-		case 2:
-		{
-			m_numtiles = 689;
-			switch(m_version)
-			{
-				case 100: m_offset = 0x17938; break;
-				case 131: m_offset = 0x17828; break;
-			}
-			break;
-		}
-		case 3:
-		{
-			m_numtiles = 715;
-			switch(m_version)
-			{
-				case 100: m_offset = 0x199F8; break;
-				case 131: m_offset = 0x198C8; break;
-			}
-			break;
-		}
-		default:
-		{
-			g_pLogFile->textOut(PURPLE,"CAUTION: The version was not detected correctly. The game muy be unplayable!<br>");
-			return false;
-		}
-	}
-	m_data += m_offset;
-	
-	return true;
+	m_episode = Exefile.getEpisode();
+	m_version = Exefile.getEXEVersion();
+	m_data = Exefile.getRawData();
+	m_offset = 0;
+	m_numtiles = NumTiles;
+	setupOffsetMap();
+}
+
+void CTileLoader::setupOffsetMap()
+{
+	m_offsetMap[1][110] = 0x131F8;
+	m_offsetMap[1][131] = 0x130F8;
+	m_offsetMap[1][134] = 0x130F8;
+	m_offsetMap[2][100] = 0x17938;
+	m_offsetMap[2][131] = 0x17828;
+	m_offsetMap[3][100] = 0x199F8;
+	m_offsetMap[3][131] = 0x198C8;
 }
 
 bool CTileLoader::load()
 {
 	std::string fname;
-	int j; // standard counters
 	
-	if(!setProperOffset()) return false;
-	
+	long offset = m_offsetMap[m_episode][m_version];
+
+	m_data += offset;
+
 	CTileProperties TileProperties;
 	m_TileProperties.assign(m_numtiles, TileProperties);
 	
-	for(j=0 ; j < m_numtiles ; j++)
+	if(m_offsetMap[m_episode][m_version])
 	{
-		m_TileProperties[j].animation = m_data[2*j];
-		m_TileProperties[j].behaviour = m_data[2*(m_numtiles)+2*j];
-		m_TileProperties[j].behaviour += m_data[2*(m_numtiles)+2*j+1] << 8;
-		m_TileProperties[j].bup = m_data[4*(m_numtiles)+2*j];
-		m_TileProperties[j].bup += m_data[4*(m_numtiles)+2*j+1] << 8;
-		m_TileProperties[j].bright = m_data[6*(m_numtiles)+2*j];
-		m_TileProperties[j].bright += m_data[6*(m_numtiles)+2*j+1] << 8;
-		m_TileProperties[j].bdown = m_data[8*(m_numtiles)+2*j];
-		m_TileProperties[j].bdown += m_data[8*(m_numtiles)+2*j+1] << 8;
-		m_TileProperties[j].bleft = m_data[10*(m_numtiles)+2*j];
-		m_TileProperties[j].bleft += m_data[10*(m_numtiles)+2*j+1] << 8;
+		for(size_t j=0 ; j < m_numtiles ; j++)
+		{
+			m_TileProperties[j].animation = m_data[2*j];
+			m_TileProperties[j].behaviour = m_data[2*(m_numtiles)+2*j];
+			m_TileProperties[j].behaviour += m_data[2*(m_numtiles)+2*j+1] << 8;
+			m_TileProperties[j].bup = m_data[4*(m_numtiles)+2*j];
+			m_TileProperties[j].bup += m_data[4*(m_numtiles)+2*j+1] << 8;
+			m_TileProperties[j].bright = m_data[6*(m_numtiles)+2*j];
+			m_TileProperties[j].bright += m_data[6*(m_numtiles)+2*j+1] << 8;
+			m_TileProperties[j].bdown = m_data[8*(m_numtiles)+2*j];
+			m_TileProperties[j].bdown += m_data[8*(m_numtiles)+2*j+1] << 8;
+			m_TileProperties[j].bleft = m_data[10*(m_numtiles)+2*j];
+			m_TileProperties[j].bleft += m_data[10*(m_numtiles)+2*j+1] << 8;
 
-		if( m_TileProperties[j].bleft && m_TileProperties[j].bright &&
-			m_TileProperties[j].bup && m_TileProperties[j].bdown	)
-		{ // This should solve some tile bugs in Episode 2
-			if(m_TileProperties[j].behaviour == -2 or  m_TileProperties[j].behaviour == -1)
-				m_TileProperties[j].behaviour = 0;
+			if( m_TileProperties[j].bleft && m_TileProperties[j].bright &&
+					m_TileProperties[j].bup && m_TileProperties[j].bdown	)
+			{ // This should solve some tile bugs in Episode 2
+				if(m_TileProperties[j].behaviour == -2 or  m_TileProperties[j].behaviour == -1)
+					m_TileProperties[j].behaviour = 0;
+			}
 		}
+
+		int value;
+		for(size_t j=0 ; j < m_numtiles ; )
+		{
+			value = m_TileProperties[j].animation;
+
+			// stuff for animated tiles
+			if(value == 1)
+			{
+				m_TileProperties[j++].animOffset = 0;   // starting offset from the base frame
+			}
+			else if( value == 2 )
+			{
+				m_TileProperties[j++].animOffset = 0;   // starting offset from the base frame
+				m_TileProperties[j++].animOffset = 1;   // starting offset from the base frame
+			}
+			else
+			{
+				m_TileProperties[j++].animOffset = 0;   // starting offset from the base frame
+				m_TileProperties[j++].animOffset = 1;   // starting offset from the base frame
+				m_TileProperties[j++].animOffset = 2;   // starting offset from the base frame
+				m_TileProperties[j++].animOffset = 3;   // starting offset from the base frame
+			}
+		}
+
+		// This function assigns the correct tiles that have to be changed
+		assignChangeTileAttribute();
 	}
-	
-	int value;
-	for( j=0 ; j < m_numtiles ; )
-	{
-		value = m_TileProperties[j].animation;
-		
-		// stuff for animated tiles
-		if(value == 1)
-		{
-			m_TileProperties[j++].animOffset = 0;   // starting offset from the base frame
-		}
-		else if( value == 2 )
-		{
-			m_TileProperties[j++].animOffset = 0;   // starting offset from the base frame
-			m_TileProperties[j++].animOffset = 1;   // starting offset from the base frame
-		}
-		else
-		{
-			m_TileProperties[j++].animOffset = 0;   // starting offset from the base frame
-			m_TileProperties[j++].animOffset = 1;   // starting offset from the base frame
-			m_TileProperties[j++].animOffset = 2;   // starting offset from the base frame
-			m_TileProperties[j++].animOffset = 3;   // starting offset from the base frame
-		}
-	}
-	
-	// This function assigns the correct tiles that have to be changed
-	assignChangeTileAttribute();
 	
 	return true;
 }
@@ -140,12 +118,12 @@ void CTileLoader::assignChangeTileAttribute()
 	// Everything to zero in order to avoid bugs in mods
 	// It also assigns the special background tile which is sometimes used in the game for changes
 	// to real backgrounds
-	for(int i=0 ; i<m_numtiles ; i++)
+	for(size_t i=0 ; i<m_numtiles ; i++)
 		m_TileProperties[i].chgtile = 0;
 	
 	// At any other case, except some special ones, the tile is always 143 for pickuppable items
 	// 17 is tile for an exit. Until row 19, this seems to be valid
-	for(int i=0 ; i<m_numtiles ; i++)
+	for(size_t i=0 ; i<m_numtiles ; i++)
 		if(canbePickedup(i) || isaDoor(i) )
 			m_TileProperties[i].chgtile = 143;
 	
@@ -171,7 +149,7 @@ void CTileLoader::assignChangeTileAttribute()
 		case 3:
 		{
 			// Episode 3 is a special case, because the items are repeated 6 times
-			for(int i=0 ; i<m_numtiles ; i++)
+			for(size_t i=0 ; i<m_numtiles ; i++)
 			{
 				// Only items!!
 				if(canbePickedup(i))

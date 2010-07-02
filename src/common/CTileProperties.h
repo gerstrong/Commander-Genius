@@ -27,7 +27,6 @@ public:
 	char animation;
 	char behaviour;
 	char bup,bright,bdown,bleft;
-
 private:
 };
 

@@ -36,27 +36,32 @@ bool CTitle::init(int Episode)
 	else
 		g_pGfxEngine->pushEffectPtr(new CPixelate(8));
 	
-	pBitmap = g_pGfxEngine->getBitmap("TITLE");
-	p_object = new CEGABitmap( &m_map, pSurface, pBitmap );
-	p_object->setScrPos( 160-(pBitmap->getWidth()/2), 0 );
-	m_objects.push_back(p_object);
-
-	pBitmap = g_pGfxEngine->getBitmap("F1HELP");
-	p_object = new CEGABitmap( &m_map, pSurface, pBitmap );
+	if( (pBitmap = g_pGfxEngine->getBitmap("TITLE")) != NULL )
+	{
+		p_object = new CEGABitmap( &m_map, pSurface, pBitmap );
+		p_object->setScrPos( 160-(pBitmap->getWidth()/2), 0 );
+		m_objects.push_back(p_object);
+	}
 
 	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
-	p_object->setScrPos( (Episode == 3) ? 128 : 96, gameres.h-18 );
+
+	if( (pBitmap = g_pGfxEngine->getBitmap("F1HELP")) != NULL )
+	{
+		pBitmap = g_pGfxEngine->getBitmap("F1HELP");
+		p_object = new CEGABitmap( &m_map, pSurface, pBitmap );
+
+		p_object->setScrPos( (Episode == 3) ? 128 : 96, gameres.h-18 );
+		m_objects.push_back(p_object);
+	}
 
 	if(gameres.h > 200) // This happens, when the have higher game res height, and ugly unseen
 	{ 					// normally hidden tiles are seen. We replace those tiles
 		for(Uint16 x=0 ; x<22 ; x++)
 		{
-			m_map.setTile(x, 0, g_pGfxEngine->getTileMap(0).EmptyBackgroundTile(), true);
-			m_map.setTile(x, 1, g_pGfxEngine->getTileMap(0).EmptyBackgroundTile(), true);
+			m_map.setTile(x, 0, g_pGfxEngine->getTileMap(1).EmptyBackgroundTile(), true);
+			m_map.setTile(x, 1, g_pGfxEngine->getTileMap(1).EmptyBackgroundTile(), true);
 		}
 	}
-
-	m_objects.push_back(p_object);
 	
 	m_finished = false;
 

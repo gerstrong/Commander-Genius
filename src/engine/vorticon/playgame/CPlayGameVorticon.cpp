@@ -49,6 +49,10 @@ mp_HighScores(NULL)
 		thisPlayer.setDatatoZero();
 	}
 
+	stInventory &inventory = m_Player.at(0).inventory;
+
+	mp_HUD = new CHUD(inventory.score, inventory.lives, inventory.charges);
+
 	// Create completed level list
 	memset(mp_level_completed,false,MAX_LEVELS_VORTICON*sizeof(bool));
 
@@ -111,7 +115,6 @@ bool CPlayGameVorticon::init()
 	}
 
 	// Create an empty map
-	m_Map.setTileMap(g_pGfxEngine->getTileMap(0));
 	m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
 	std::vector<CObject>::iterator it_obj = m_Object.begin();
 
@@ -297,6 +300,11 @@ void CPlayGameVorticon::process()
 		// Draw objects to the screen
 		drawObjects();
 
+		if(mp_option[OPT_HUD].value)
+		{	// Draw the HUD
+			mp_HUD->render();
+		}
+
 		// Check if we are in gameover mode. If yes, than show the bitmaps and block the FKeys().
 		// Only confirmation button is allowes
 		if(m_gameover && !mp_Finale) // game over mode
@@ -375,11 +383,8 @@ void CPlayGameVorticon::handleFKeys()
 				m_Player[i].inventory.HasPogo = 1;
 				m_Player[i].inventory.lives = 10;
 
-				std::string Text;
-				Text = 	"You are now cheating!\n";
-				Text +=	"You got more lives\n";
-				Text +=	"all the key cards, and\n";
-				Text +=	"lots of ray gun charges!\n";
+
+				std::string Text = g_pBehaviorEngine->getString("CTSPACECHEAT");
 				 
 				m_MessageBoxes.push_back(new CMessageBox(Text));
 				m_paused = true;
@@ -409,7 +414,7 @@ void CPlayGameVorticon::handleFKeys()
     	g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
 
     	// Show a message like in the original game
-		m_MessageBoxes.push_back(new CMessageBox(m_Player[0].godmode ? "God mode enabled" : "God mode disabled"));
+		m_MessageBoxes.push_back(new CMessageBox(m_Player[0].godmode ? g_pBehaviorEngine->getString("GODMODEON") : g_pBehaviorEngine->getString("GODMODEOFF")));
     	m_paused = true;
     	g_pInput->flushKeys();
     }
@@ -590,4 +595,5 @@ CPlayGameVorticon::~CPlayGameVorticon() {
 	if(mp_gameoverbmp) delete mp_gameoverbmp;
 	mp_gameoverbmp = NULL;
 	SAFE_DELETE(mp_ObjectAI);
+	SAFE_DELETE(mp_HUD);
 }

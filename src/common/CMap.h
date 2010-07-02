@@ -13,6 +13,7 @@
 
 #include "../graphics/CTilemap.h"
 #include "../fileio/TypeDefinitions.h"
+#include <vector>
 #include "CPlane.h"
 
 // animation rate of animated tiles
@@ -36,7 +37,7 @@ public:
 	void setTileMap( CTilemap &Tilemap );
 	void setScrollSurface( SDL_Surface *surface );
 
-	bool createEmptyDataPlanes(size_t blocksize);
+	bool createEmptyDataPlane(size_t plane, size_t blocksize);
 
 	bool gotoPos( int x, int y );
 	void resetScrolls();
@@ -57,7 +58,7 @@ public:
 
 	bool setTile(Uint16 x, Uint16 y, Uint16 t);
 	bool setTile(Uint16 x, Uint16 y, Uint16 t, bool update);
-	bool changeTile(Uint16 x, Uint16 y, Uint16 t);
+	bool changeTile(Uint16 x, Uint16 y, Uint16 t, Uint8 tilemap = 1);
 
 	// Animation methods
 	void deAnimate(int x, int y);
@@ -105,7 +106,7 @@ private:
 	Uint16 m_mapystripepos;  	// Y pixel position of next stripe column
 
 	SDL_Surface *mp_scrollsurface;
-	CTilemap *mp_Tilemap;
+	std::vector<CTilemap> &m_Tilemaps;
 
 	// (map) stripe attribute structures, for animated tiles
 	// slot 0 is not used. data starts at slot 1. see description
