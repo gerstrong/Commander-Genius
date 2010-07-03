@@ -48,13 +48,12 @@ public:
 
 	bool setTile(Uint16 x, Uint16 y, Uint16 t);
 	bool setTile(Uint16 x, Uint16 y, Uint16 t, bool update);
-	bool changeTile(Uint16 x, Uint16 y, Uint16 t, Uint8 tilemap = 1);
+	bool changeTile(Uint16 x, Uint16 y, Uint16 t);
 
 	// Animation methods
 	void deAnimate(int x, int y);
 	void drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile);
 	void animateAllTiles();
-	void unregisterAnimtiles(int tile);
 	void registerAnimation(Uint32 x, Uint32 y, size_t bg, size_t fg);
 
 	unsigned int getlevelat(unsigned int x, unsigned int y)	{

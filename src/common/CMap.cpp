@@ -172,15 +172,15 @@ bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t, bool update)
 
 // Called in level. This function does the same as setTile, but also draws directly to the scrollsurface
 // used normally, when items are picked up
-bool CMap::changeTile(Uint16 x, Uint16 y, Uint16 t, Uint8 tilemap)
+bool CMap::changeTile(Uint16 x, Uint16 y, Uint16 t)
 {
-	/*if( setTile( x, y, t ) )
+	if( setTile( x, y, t ) )
 	{
-		m_Tilemaps.at(tilemap).drawTile(mp_scrollsurface, (x<<4)&511, (y<<4)&511, t);
-		registerAnimation( (x<<4)&511, (y<<4)&511, t );
+		m_Tilemaps.at(1).drawTile(mp_scrollsurface, (x<<4)&511, (y<<4)&511, t);
+		registerAnimation( (x<<4)&511, (y<<4)&511, 0, t );
 		return true;
 	}
-	return false;*/
+	return false;
 }
 
 ////
@@ -445,6 +445,19 @@ void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 /////////////////////////
 // searches for animated tiles at the map position (X,Y) and
 // unregisters them from animtiles
+/**
+ * auxiliary list predictor which finds elements at some coordinates
+ */
+class CMap::usedCoord
+{
+public:
+	usedCoord(size_t x, size_t y): m_x(x), m_y(y) {};
+
+  bool operator() (const stAnimationSlot& value)
+  {  return (m_x == value.x && m_y == value.y ); }
+private : size_t m_x,m_y;
+};
+
 void CMap::deAnimate(int x, int y)
 {
     const int px = ((m_mapxstripepos+((x-m_mapx)<<4))&511);
@@ -463,11 +476,10 @@ void CMap::drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile)
 		std::list<stAnimationSlot>::iterator slot = m_AnimationSlots.begin();
 		for( ; slot != m_AnimationSlots.end() ; slot++ )
 		{
-			if( (slot->x == mx+m_scrollx_buf) &&
-				(slot->y == my+m_scrolly_buf) )
+			if( (slot->x == static_cast<size_t>(mx+m_scrollx_buf)) &&
+				(slot->y == static_cast<size_t>(my+m_scrolly_buf)) )
 			{
-				m_Tilemaps.at(0).drawTile( dst, mx, my,
-						slot->fgtile );
+				m_Tilemaps.at(0).drawTile( dst, mx, my, slot->fgtile );
 			}
 		}
 	}
@@ -526,31 +538,6 @@ void CMap::animateAllTiles()
 		}
 	}
 }
-
-// unregisters all animated tiles with baseframe tile
-void CMap::unregisterAnimtiles(int tile)
-{
-	// TODO: Check this code. it might be obsolete.
-	/*int i;
-	for(i=0;i<MAX_ANIMTILES-1;i++)
-	{
-        if (m_animtiles[1][i].baseframe == tile)
-			m_animtiles[1][i].slotinuse = 0;
-	}*/
-}
-
-/**
- * auxiliary list predictor which finds elements at some coordinates
- */
-class CMap::usedCoord
-{
-public:
-	usedCoord(size_t x, size_t y): m_x(x), m_y(y) {};
-
-  bool operator() (const stAnimationSlot& value)
-  {  return (m_x == value.x && m_y == value.y ); }
-private : size_t m_x,m_y;
-};
 
 // register the tiles which has to be animated
 void CMap::registerAnimation(Uint32 x, Uint32 y, size_t bg, size_t fg)

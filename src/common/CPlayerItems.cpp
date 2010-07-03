@@ -270,7 +270,6 @@ bool CPlayer::showGameHint(int mpx, int mpy)
 			return false;
 		}
 		mp_map->setTile(mpx, mpy+1, 432,true);
-		mp_map->unregisterAnimtiles(429);
 		mp_map->deAnimate(mpx<<STC, (mpy+1)<<STC);
 	}
 	hintused = true;
