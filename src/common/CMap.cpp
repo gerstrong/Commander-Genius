@@ -454,7 +454,7 @@ void CMap::drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile)
 	CTileProperties &TileProperty = g_pBehaviorEngine->getTileProperties().at(tile);
 	std::vector<CTilemap>::iterator Tilemap = m_Tilemaps.begin()+1;
 
-	if(TileProperty.animation <= 1)
+	if(!TileProperty.animationtime)
 	{ // Unanimated tiles
 		Tilemap->drawTile( dst, mx, my, tile );
 	}
@@ -499,7 +499,7 @@ void CMap::animateAllTiles()
 			CTileProperties &TileProperties =
 					g_pBehaviorEngine->getTileProperties().at(m_animtiles[i].tile);
 
-			if( (m_animtiletimer % TileProperties.animation) == 0)
+			if( (m_animtiletimer % TileProperties.animationtime) == 0)
 			{
 				Tilemap->drawTile( mp_scrollsurface, m_animtiles[i].x, m_animtiles[i].y,
 						m_animtiles[i].tile);
@@ -534,7 +534,7 @@ void CMap::registerAnimation(Uint32 x, Uint32 y, int c)
 	CTileProperties &TileProperty =
 			g_pBehaviorEngine->getTileProperties().at(c);
     // we just drew an animated tile which we will now register
-    if ( TileProperty.animation > 1 )
+	if( TileProperty.animationtime )
     {
 		for(int i=1 ; i<MAX_ANIMTILES-1 ; i++)
 		{

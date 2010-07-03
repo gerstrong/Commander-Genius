@@ -89,11 +89,6 @@ void CTileLoader::readVorticonTileinfo(size_t NumTiles)
 	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties(1);
 	for(size_t j=0 ; j < NumTiles ; j++)
 	{
-		TileProperties[j].animation 	= GETWORD( m_data+(2*j) );
-
-		if(TileProperties[j].animation>1)
-			TileProperties[j].animation = 4;
-
 		TileProperties[j].behaviour 	= GETWORD( m_data+2*(NumTiles)+2*j);
 		TileProperties[j].bup 			= GETWORD( m_data+4*(NumTiles)+2*j );
 		TileProperties[j].bright 		= GETWORD( m_data+6*(NumTiles)+2*j);
@@ -110,9 +105,9 @@ void CTileLoader::readVorticonTileinfo(size_t NumTiles)
 
 	for(size_t j=0 ; j < NumTiles ;  )
 	{
-		size_t value = TileProperties[j].animation;
-		if(value == 0 && value == 1) {
-			TileProperties[j].animation = 0;
+		size_t value = GETWORD( m_data+(2*j) );
+		if(value == 0 || value == 1) {
+			//TileProperties[j].animation = 0;
 			j++;
 			continue;
 		}
@@ -124,6 +119,7 @@ void CTileLoader::readVorticonTileinfo(size_t NumTiles)
 				TileProperties[j+i].nextTile = -(value-1);
 			else
 				TileProperties[j+i].nextTile = 1;
+			TileProperties[j+i].animationtime = 6;
 		}
 		j += value;
 	}
@@ -138,7 +134,7 @@ void CTileLoader::readGalaxyTileinfo(size_t NumUnMaskedTiles, size_t NumMaskedTi
 	std::vector<CTileProperties> &TileMaskedProperties = g_pBehaviorEngine->getTileProperties(1);
 	for(size_t j=0 ; j < NumUnMaskedTiles ; j++)
 	{
-		TileUnmaskedProperties[j].animation = m_data[j];
+		TileUnmaskedProperties[j].animationtime = m_data[j];
 		//TileUnmaskedProperties[j].animOffset = m_data[NumUnMaskedTiles+j];
 
 		/*TileProperties[j].bup 	= GETWORD( m_data+2*(NumTiles)+j );

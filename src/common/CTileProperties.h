@@ -25,7 +25,8 @@ public:
 	int nextTile;
 
 	// Tile Properties start here!
-	unsigned char animation;
+	//unsigned char animation;
+	unsigned char animationtime;
 	char behaviour;
 	char bup,bright,bdown,bleft;
 private:

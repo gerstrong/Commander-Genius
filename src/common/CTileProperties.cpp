@@ -10,7 +10,7 @@
 CTileProperties::CTileProperties() :
 chgtile(0),
 nextTile(0),
-animation(0),
+animationtime(0),
 behaviour(0),
 bup(0),
 bright(0),

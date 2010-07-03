@@ -46,7 +46,7 @@ bool CPlayer::getGoodie(int px, int py)
 			(TileProperty[tile].behaviour == 27 || TileProperty[tile].behaviour == 28)   ) // All pickupable items
 		{  // pick up the goodie, i.e. erase it from the map
 			mp_map->changeTile(px, py, TileProperty[tile].chgtile);
-			if (TileProperty[tile].animation != 1) mp_map->deAnimate(px, py);
+			if (TileProperty[tile].animationtime) mp_map->deAnimate(px, py);
 		}
 		else if (TileProperty[tile].behaviour == 1) // Lethal (Deadly) Behavoir
 		{  // whoah, this "goodie" isn't so good...
