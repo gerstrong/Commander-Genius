@@ -15,6 +15,7 @@
 		23575634101A5E5900275638 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D3EA911013AF1D001643FA /* Cocoa.framework */; };
 		2357564E101A5F8F00275638 /* Ogg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564C101A5F8F00275638 /* Ogg.framework */; };
 		2357564F101A5F8F00275638 /* Vorbis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564D101A5F8F00275638 /* Vorbis.framework */; };
+		23A11A9111DE888400747BFA /* CHUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11A8F11DE888400747BFA /* CHUD.cpp */; };
 		63AB8C2F107C62D0001EE22F /* cglogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63AB8C2E107C62D0001EE22F /* cglogo.icns */; };
 		63CD120311CFF5FC00F60BC8 /* arguments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10A511CFF5FB00F60BC8 /* arguments.cpp */; };
 		63CD120411CFF5FC00F60BC8 /* CGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10A711CFF5FB00F60BC8 /* CGame.cpp */; };
@@ -192,6 +193,8 @@
 		2357564C101A5F8F00275638 /* Ogg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Ogg.framework; sourceTree = "<group>"; };
 		2357564D101A5F8F00275638 /* Vorbis.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Vorbis.framework; sourceTree = "<group>"; };
 		23575688101A6AE600275638 /* Commander Genius.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Commander Genius.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		23A11A8F11DE888400747BFA /* CHUD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CHUD.cpp; sourceTree = "<group>"; };
+		23A11A9011DE888400747BFA /* CHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHUD.h; sourceTree = "<group>"; };
 		23D3EA691013AC7B001643FA /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = Library/Frameworks/SDL.framework; sourceTree = SDKROOT; };
 		23D3EA831013AEB5001643FA /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		23D3EA911013AF1D001643FA /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -966,6 +969,8 @@
 		63CD10B011CFF5FB00F60BC8 /* common */ = {
 			isa = PBXGroup;
 			children = (
+				23A11A8F11DE888400747BFA /* CHUD.cpp */,
+				23A11A9011DE888400747BFA /* CHUD.h */,
 				63CD10B111CFF5FB00F60BC8 /* CBehaviorEngine.cpp */,
 				63CD10B211CFF5FB00F60BC8 /* CBehaviorEngine.h */,
 				63CD10B311CFF5FB00F60BC8 /* CGameLauncher.cpp */,
@@ -1561,7 +1566,7 @@
 			);
 			name = "copy files (vfsroot)";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/myfile",
+				"$(TARGET_BUILD_DIR)/$(CONTENTS_FOLDER_PATH)/Resources",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1755,6 +1760,7 @@
 				63CD12A911CFF5FD00F60BC8 /* Unicode.cpp in Sources */,
 				63CD12AA11CFF5FD00F60BC8 /* oggsupport.cpp in Sources */,
 				63CD12AC11CFF64A00F60BC8 /* MacMain.m in Sources */,
+				23A11A9111DE888400747BFA /* CHUD.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
