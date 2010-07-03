@@ -138,40 +138,27 @@ void CTileLoader::readVorticonTileinfo(size_t NumTiles)
 void CTileLoader::readGalaxyTileinfo(size_t NumUnMaskedTiles, size_t NumMaskedTiles)
 {
 	std::vector<CTileProperties> &TileUnmaskedProperties = g_pBehaviorEngine->getTileProperties(0);
-	std::vector<CTileProperties> &TileMaskedProperties = g_pBehaviorEngine->getTileProperties(1);
 	for(size_t j=0 ; j < NumUnMaskedTiles ; j++)
 	{
 		TileUnmaskedProperties[j].animationtime = m_data[j];
 		TileUnmaskedProperties[j].nextTile = static_cast<char>(m_data[NumUnMaskedTiles+j]);
-
-		/*TileProperties[j].bup 	= GETWORD( m_data+2*(NumTiles)+j );
-		TileProperties[j].bright 	= GETWORD( m_data+3*(NumTiles)+j);
-		TileProperties[j].bdown 	= GETWORD( m_data+4*(NumTiles)+j);
-		TileProperties[j].bleft 	= GETWORD( m_data+5*(NumTiles)+j);
-
-		if( TileProperties[j].bleft && TileProperties[j].bright &&
-				TileProperties[j].bup && TileProperties[j].bdown	)
-		{ // This should solve some tile bugs in Episode 2
-			if(TileProperties[j].behaviour == -2 or  TileProperties[j].behaviour == -1)
-				TileProperties[j].behaviour = 0;
-		}*/
 	}
 
-	/*for(size_t j=0 ; j < NumTiles ;  )
+	std::vector<CTileProperties> &TileMaskedProperties = g_pBehaviorEngine->getTileProperties(1);
+	for(size_t j=0 ; j < NumMaskedTiles ; j++)
 	{
-		size_t value = TileProperties[j].animation;
-		if(value == 0) {
-			j++; continue;
-		}
+		TileMaskedProperties[j].bup 			= m_data[j+2*NumUnMaskedTiles];
+		TileMaskedProperties[j].bright 			= m_data[j+2*NumUnMaskedTiles+NumMaskedTiles];
+		TileMaskedProperties[j].bdown 			= m_data[j+2*NumUnMaskedTiles+2*NumMaskedTiles];
+		TileMaskedProperties[j].bleft 			= m_data[j+2*NumUnMaskedTiles+3*NumMaskedTiles];
 
-		// stuff for animated tiles
-		for( size_t i=0 ; i<value ; i++ )
-			TileProperties[j+i].animOffset = i;
-		j += value;
+		//TileMaskedProperties[j].animationtime 	= m_data[j+2*NumUnMaskedTiles+4*NumMaskedTiles];
+		TileMaskedProperties[j].behaviour 		= m_data[j+2*NumUnMaskedTiles+5*NumMaskedTiles];
+		//TileMaskedProperties[j].nextTile 		= static_cast<char>(m_data[j+2*NumUnMaskedTiles+6*NumMaskedTiles]);
+
+		TileMaskedProperties[j].animationtime 	= m_data[j+2*NumUnMaskedTiles+6*NumMaskedTiles];
+		TileMaskedProperties[j].nextTile 		= static_cast<char>(m_data[j+2*NumUnMaskedTiles+4*NumMaskedTiles]);
 	}
-
-	// This function assigns the correct tiles that have to be changed
-	assignChangeTileAttribute();*/
 }
 
 void CTileLoader::assignChangeTileAttribute(size_t NumTiles)
