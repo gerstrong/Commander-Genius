@@ -41,12 +41,11 @@ void CPlayGameGalaxy::loadLevel()
 	// TODO: Lets load the main map for now and create process for this
 	CMapLoaderGalaxy MapLoader(m_ExeFile);
 
+	m_Map.cleanup();
 	m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
-
 	MapLoader.loadMap(m_Map, m_Level); // Map Level?
 
 	m_Map.drawAll();
-	m_Map.gotoPos(0, 0); // Coordinates of star sky
 }
 
 // The main ingame process cycle when keen galaxy is up and running
@@ -66,14 +65,25 @@ void CPlayGameGalaxy::processInput()
 		m_endgame = true;
 
 	if(g_pInput->getHoldedCommand(IC_LEFT))
+	{
 		m_Map.scrollLeft();
+		m_Map.scrollLeft();
+	}
 	else if(g_pInput->getHoldedCommand(IC_RIGHT))
+	{
 		m_Map.scrollRight();
-
+		m_Map.scrollRight();
+	}
 	if(g_pInput->getHoldedCommand(IC_UP))
+	{
 		m_Map.scrollUp();
+		m_Map.scrollUp();
+	}
 	else if(g_pInput->getHoldedCommand(IC_DOWN))
+	{
 		m_Map.scrollDown();
+		m_Map.scrollDown();
+	}
 
 	if(g_pInput->getPressedCommand(IC_STATUS))
 	{

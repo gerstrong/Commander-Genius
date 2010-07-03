@@ -124,6 +124,9 @@ void CMapLoaderGalaxy::unpackPlaneData(std::ifstream &MapFile,
 bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 {
 	// Get the MAPHEAD Location from within the Exe File
+
+    Map.gotoPos(0,0);
+
 	size_t offset = getMapheadOffset();
 	byte *Maphead = m_ExeFile.getRawData() + offset;
 	word magic_word;

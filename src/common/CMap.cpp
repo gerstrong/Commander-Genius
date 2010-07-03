@@ -32,8 +32,6 @@ m_Background(false)
 ////////////////////////////
 // Initialization Routine //
 ////////////////////////////
-
-
 void CMap::setScrollSurface( SDL_Surface *surface )
 {  mp_scrollsurface = surface; }
 
@@ -573,6 +571,12 @@ void CMap::registerAnimation(Uint32 x, Uint32 y, size_t bg, size_t fg)
 		NewAnimationSlot.fgtile = fg;
 		m_AnimationSlots.push_back(NewAnimationSlot);
 	}
+}
+
+void CMap::cleanup()
+{
+	if(!m_AnimationSlots.empty())
+		m_AnimationSlots.clear();
 }
 
 CMap::~CMap() {
