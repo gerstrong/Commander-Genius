@@ -464,12 +464,7 @@ void CMap::drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile)
 		{
 			bool tileanimcond;
 
-			//tileanimcond = (tile == m_animtiles[i].baseframe || tile == m_animtiles[i].baseframe+1
-				//			|| tile == m_animtiles[i].baseframe+2 || tile == m_animtiles[i].baseframe+3);
-
-			//CTileProperties &TileBaseProperty =
-				//	g_pBehaviorEngine->getTileProperties().at(m_animtiles[i].baseframe);
-			if ( m_animtiles[i].slotinuse /*&& tileanimcond*/ )
+			if ( m_animtiles[i].slotinuse )
 			{
 				Tilemap->drawTile( dst, mx, my,
 						m_animtiles[i].tile );

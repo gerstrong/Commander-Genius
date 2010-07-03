@@ -86,14 +86,20 @@ bool CTileLoader::load(size_t NumUnMaskedTiles, size_t NumMaskedTiles)
  */
 void CTileLoader::readVorticonTileinfo(size_t NumTiles)
 {
+	size_t planesize = 2*NumTiles;
+
+	// Special workaround. I don't know why this happens, but Episode 3 doesn not seems to read
+	// the plane size. TODO: Check where that value is hidden in the EXE file.
+	if(m_episode == 3) planesize = 715;
+
 	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties(1);
 	for(size_t j=0 ; j < NumTiles ; j++)
 	{
-		TileProperties[j].behaviour 	= GETWORD( m_data+2*(NumTiles)+2*j);
-		TileProperties[j].bup 			= GETWORD( m_data+4*(NumTiles)+2*j );
-		TileProperties[j].bright 		= GETWORD( m_data+6*(NumTiles)+2*j);
-		TileProperties[j].bdown 		= GETWORD( m_data+8*(NumTiles)+2*j);
-		TileProperties[j].bleft 		= GETWORD( m_data+10*(NumTiles)+2*j);
+		TileProperties[j].behaviour 	= GETWORD( m_data+planesize+2*j);
+		TileProperties[j].bup 			= GETWORD( m_data+2*(planesize)+2*j );
+		TileProperties[j].bright 		= GETWORD( m_data+3*(planesize)+2*j);
+		TileProperties[j].bdown 		= GETWORD( m_data+4*(planesize)+2*j);
+		TileProperties[j].bleft 		= GETWORD( m_data+5*(planesize)+2*j);
 
 		if( TileProperties[j].bleft && TileProperties[j].bright &&
 				TileProperties[j].bup && TileProperties[j].bdown	)
