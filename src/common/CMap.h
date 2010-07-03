@@ -10,10 +10,11 @@
 
 #include <SDL.h>
 #include <string>
+#include <vector>
+#include <list>
 
 #include "../graphics/CTilemap.h"
 #include "../fileio/TypeDefinitions.h"
-#include <vector>
 #include "CPlane.h"
 
 // animation rate of animated tiles
@@ -65,7 +66,7 @@ public:
 	void drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile);
 	void animateAllTiles();
 	void unregisterAnimtiles(int tile);
-	void registerAnimation(Uint32 x, Uint32 y, size_t plane, int c);
+	void registerAnimation(Uint32 x, Uint32 y, size_t bg, size_t fg);
 
 	unsigned int getlevelat(unsigned int x, unsigned int y)	{
 		return m_objectlayer[x>>4][y>>4];	}
@@ -112,18 +113,26 @@ private:
 	// (map) stripe attribute structures, for animated tiles
 	// slot 0 is not used. data starts at slot 1. see description
 	// of AnimTileInUse in map structure to see why.
-	struct {
+	/*struct {
 		bool slotinuse;        // if false, this entry should not be drawn
 		int x;                // x pixel position in scrollbuf[] where tile is
 		int y;                // y pixel position in scrollbuf[]
 		int tile;        	  // tile which has to be drawn
 	} m_animtiles[2][MAX_ANIMTILES+1];
 
-	unsigned int m_AnimTileInUse[2][ATILEINUSE_SIZEX][ATILEINUSE_SIZEY];
+	unsigned int m_AnimTileInUse[2][ATILEINUSE_SIZEX][ATILEINUSE_SIZEY];*/
+
+	class usedCoord;
+	struct stAnimationSlot{
+		size_t x, y;
+		size_t bgtile, fgtile;
+	};
+
+	std::list<stAnimationSlot> m_AnimationSlots;
 
 	Uint8 m_animtiletimer;
 
-	CPlane m_Plane[3];
+	CPlane m_Plane[2];
 };
 
 #endif /* CMAP_H_ */
