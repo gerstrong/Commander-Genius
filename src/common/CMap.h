@@ -19,17 +19,6 @@
 
 // animation rate of animated tiles
 #define ANIM_TILE_TIME      256
-#define MAX_ANIMTILES  		400
-
-// for each entry in the animtileinuse array that is nonzero, that
-// location on the display is an animated tile which is currently registered
-// in animtiles[]. Used in map_draw_hstripe and map_draw_vstripe.
-// When drawing a new stripe over one that previously contained an animated
-// tile, this lets it know it needs to unregister the animated tile that
-// used to be there. the nonzero value corresponds to the associated entry
-// in animtiles[]. the x,y pixel position is the index in here * 16.
-#define ATILEINUSE_SIZEX               33
-#define ATILEINUSE_SIZEY               33
 
 class CMap {
 public:
@@ -75,7 +64,6 @@ public:
 	word *getForegroundData();
 	word *getBackgroundData();
 
-	void cleanupAll();
 	virtual ~CMap();
 
 
@@ -110,18 +98,6 @@ private:
 	SDL_Surface *mp_scrollsurface;
 	std::vector<CTilemap> &m_Tilemaps;
 
-	// (map) stripe attribute structures, for animated tiles
-	// slot 0 is not used. data starts at slot 1. see description
-	// of AnimTileInUse in map structure to see why.
-	/*struct {
-		bool slotinuse;        // if false, this entry should not be drawn
-		int x;                // x pixel position in scrollbuf[] where tile is
-		int y;                // y pixel position in scrollbuf[]
-		int tile;        	  // tile which has to be drawn
-	} m_animtiles[2][MAX_ANIMTILES+1];
-
-	unsigned int m_AnimTileInUse[2][ATILEINUSE_SIZEX][ATILEINUSE_SIZEY];*/
-
 	class usedCoord;
 	struct stAnimationSlot{
 		size_t x, y;
@@ -133,6 +109,7 @@ private:
 	Uint8 m_animtiletimer;
 
 	CPlane m_Plane[2];
+	bool m_Background; // This variable holds, whether we have a background to draw or not.
 };
 
 #endif /* CMAP_H_ */

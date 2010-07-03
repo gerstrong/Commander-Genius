@@ -81,7 +81,6 @@ void CPlayGameGalaxy::processInput()
 			m_Level++;
 		else
 			m_Level = 0;
-		m_Map.cleanupAll();
 		loadLevel();
 	}
 }
