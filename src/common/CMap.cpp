@@ -349,7 +349,8 @@ void CMap::drawAll()
 					if(has_background && c==0)
 						continue;
 
-					Tilemap->drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511, ((y<<4)+m_mapystripepos)&511, c);
+					Tilemap->drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511,
+														((y<<4)+m_mapystripepos)&511, c);
 					registerAnimation( ((x<<4)+m_mapxstripepos)&511,
 									((y<<4)+m_mapystripepos)&511,
 									plane, c );
@@ -505,11 +506,24 @@ void CMap::animateAllTiles()
 			{
 				if ( m_animtiles[plane][i].slotinuse )
 				{
+
 					CTileProperties &TileProperties =
 					g_pBehaviorEngine->getTileProperties(plane).at(m_animtiles[plane][i].tile);
 
 					if( (m_animtiletimer % TileProperties.animationtime) == 0)
 					{
+						if(plane == 1 && has_background) // For masked tiles needed
+						{
+							size_t x = m_animtiles[plane][i].x+m_scrollx-m_scrollx_buf;
+							size_t y = m_animtiles[plane][i].y+m_scrolly-m_scrolly_buf;
+
+							size_t tile = m_Plane[0].getMapDataAt((x>>4), (y>>4));
+							(Tilemap-1)->drawTile( mp_scrollsurface,
+									m_animtiles[plane][i].x,
+									m_animtiles[plane][i].y,
+									tile);
+						}
+
 						Tilemap->drawTile( mp_scrollsurface,
 								m_animtiles[plane][i].x,
 								m_animtiles[plane][i].y,
@@ -520,6 +534,7 @@ void CMap::animateAllTiles()
 				}
 			}
 		}
+
 		else
 			has_background = false;
 	}
