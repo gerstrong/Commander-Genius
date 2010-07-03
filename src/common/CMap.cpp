@@ -35,9 +35,6 @@ m_animtiletimer(0)
 ////////////////////////////
 
 
-//void CMap::setTileMaps( std::vector<CTilemap> &Tilemap ){
-//	mp_Tilemap = &Tilemap;
-//}
 void CMap::setScrollSurface( SDL_Surface *surface )
 {  mp_scrollsurface = surface; }
 
@@ -180,7 +177,7 @@ bool CMap::changeTile(Uint16 x, Uint16 y, Uint16 t, Uint8 tilemap)
 	if( setTile( x, y, t ) )
 	{
 		m_Tilemaps.at(tilemap).drawTile(mp_scrollsurface, (x<<4)&511, (y<<4)&511, t);
-		registerAnimation( (x<<4)&511, (y<<4)&511, t );
+		registerAnimation( (x<<4)&511, (y<<4)&511, tilemap, t );
 		return true;
 	}
 	return false;
@@ -320,7 +317,7 @@ void CMap::redrawAt(int mx, int my)
 			continue;
 		int c = m_Plane[tilemap].getMapDataAt(mx, my);
 		m_Tilemaps.at(tilemap).drawTile(mp_scrollsurface, (mx<<4)&511, (my<<4)&511, c);
-		registerAnimation( (mx<<4)&511, (my<<4)&511, c );
+		registerAnimation( (mx<<4)&511, (my<<4)&511, tilemap, c );
 	}
 }
 
@@ -353,7 +350,9 @@ void CMap::drawAll()
 						continue;
 
 					Tilemap->drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511, ((y<<4)+m_mapystripepos)&511, c);
-					registerAnimation( ((x<<4)+m_mapxstripepos)&511, ((y<<4)+m_mapystripepos)&511, c );
+					registerAnimation( ((x<<4)+m_mapxstripepos)&511,
+									((y<<4)+m_mapystripepos)&511,
+									plane, c );
 				}
 			}
 		}
@@ -384,7 +383,7 @@ void CMap::drawHstripe(unsigned int y, unsigned int mpy)
 					continue;
 
 				Tilemap->drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511, y, c);
-				registerAnimation( ((x<<4)+m_mapxstripepos)&511, y, c );
+				registerAnimation( ((x<<4)+m_mapxstripepos)&511, y, plane, c );
 			}
 		}
 		else
@@ -415,7 +414,7 @@ void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 					continue;
 
 				Tilemap->drawTile(mp_scrollsurface, x, ((y<<4)+m_mapystripepos)&511, c);
-				registerAnimation( x, ((y<<4)+m_mapystripepos)&511, c );
+				registerAnimation( x, ((y<<4)+m_mapystripepos)&511, plane, c );
 			}
 		}
 		else
@@ -435,17 +434,26 @@ void CMap::deAnimate(int x, int y)
     px = ((m_mapxstripepos+((x-m_mapx)<<4))&511);
     py = ((m_mapystripepos+((y-m_mapy)<<4))&511);
 	
-    // find it!
-    for(int i=1;i<MAX_ANIMTILES-1;i++)
-    {
-		if (m_animtiles[i].x == px && m_animtiles[i].y == py)
-		{
-			m_animtiles[i].slotinuse = 0;
-			m_animtiles[i].tile = 0;
-			m_AnimTileInUse[px>>4][py>>4] = 0;
-			return;
+
+    bool has_background = true;
+	for( size_t plane=0 ; plane<2 ; plane++ )
+	{
+		if(m_Plane[plane].getMapDataPtr() != NULL)
+		{   // find it!
+		    for(int i=1;i<MAX_ANIMTILES-1;i++)
+		    {
+				if (m_animtiles[plane][i].x == px && m_animtiles[plane][i].y == py)
+				{
+					m_animtiles[plane][i].slotinuse = 0;
+					m_animtiles[plane][i].tile = 0;
+					m_AnimTileInUse[plane][px>>4][py>>4] = 0;
+					return;
+				}
+		    }
 		}
-    }
+		else
+			has_background = false;
+	}
 }
 
 // Draw an animated tile. If it's not animated draw it anyway
@@ -462,13 +470,13 @@ void CMap::drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile)
 	{ // animate animated tiles
 		for(int i=1;i<MAX_ANIMTILES-1;i++)
 		{
-			if ( m_animtiles[i].slotinuse )
+			if ( m_animtiles[1][i].slotinuse )
 			{
-				if(m_animtiles[i].x == mx+m_scrollx_buf &&
-						m_animtiles[i].y == my+m_scrolly_buf)
+				if(m_animtiles[1][i].x == mx+m_scrollx_buf &&
+						m_animtiles[1][i].y == my+m_scrolly_buf)
 				{
 					Tilemap->drawTile( dst, mx, my,
-							m_animtiles[i].tile );
+							m_animtiles[1][i].tile );
 				}
 			}
 		}
@@ -477,8 +485,6 @@ void CMap::drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile)
 
 void CMap::animateAllTiles()
 {
-	std::vector<CTilemap>::iterator Tilemap = m_Tilemaps.begin()+1;
-
 	/* animate animated tiles */
 	if (m_animation_enabled)
 	{
@@ -488,44 +494,59 @@ void CMap::animateAllTiles()
 			m_animtiletimer = 0;
 	}
 
-	/* re-draw all animated tiles */
-	for(int i=1;i<MAX_ANIMTILES-1;i++)
+	bool has_background = true;
+	std::vector<CTilemap>::iterator Tilemap = m_Tilemaps.begin();
+	for( size_t plane=0 ; plane<2 ; plane++, Tilemap++ )
 	{
-		if ( m_animtiles[i].slotinuse )
-		{
-			CTileProperties &TileProperties =
-					g_pBehaviorEngine->getTileProperties().at(m_animtiles[i].tile);
-
-			if( (m_animtiletimer % TileProperties.animationtime) == 0)
+		if(m_Plane[plane].getMapDataPtr() != NULL)
+		{   // re-draw all animated tiles
+			for(int i=1;i<MAX_ANIMTILES-1;i++)
 			{
-				Tilemap->drawTile( mp_scrollsurface, m_animtiles[i].x, m_animtiles[i].y,
-						m_animtiles[i].tile);
-				// get the next tile which will be drawn in the next animation cycle
-				m_animtiles[i].tile += TileProperties.nextTile;
+				if ( m_animtiles[plane][i].slotinuse )
+				{
+					CTileProperties &TileProperties =
+							g_pBehaviorEngine->getTileProperties().at(m_animtiles[plane][i].tile);
+
+					if( (m_animtiletimer % TileProperties.animationtime) == 0)
+					{
+						Tilemap->drawTile( mp_scrollsurface,
+								m_animtiles[plane][i].x,
+								m_animtiles[plane][i].y,
+								m_animtiles[plane][i].tile);
+						// get the next tile which will be drawn in the next animation cycle
+						m_animtiles[plane][i].tile += TileProperties.nextTile;
+					}
+				}
 			}
 		}
+		else
+			has_background = false;
 	}
+
+
+
 }
 
 // unregisters all animated tiles with baseframe tile
 void CMap::unregisterAnimtiles(int tile)
 {
+	// TODO: Check this code. it might be obsolete.
 	/*int i;
 	for(i=0;i<MAX_ANIMTILES-1;i++)
 	{
-        if (m_animtiles[i].baseframe == tile)
-			m_animtiles[i].slotinuse = 0;
+        if (m_animtiles[1][i].baseframe == tile)
+			m_animtiles[1][i].slotinuse = 0;
 	}*/
 }
 
 // register the tiles which has to be animated
-void CMap::registerAnimation(Uint32 x, Uint32 y, int c)
+void CMap::registerAnimation(Uint32 x, Uint32 y, size_t plane, int c)
 {
 	// we just drew over an animated tile which we must unregister
-    if (m_AnimTileInUse[x>>4][y>>4])
+    if (m_AnimTileInUse[plane][x>>4][y>>4])
     {
-		m_animtiles[m_AnimTileInUse[x>>4][y>>4]].slotinuse = 0;
-		m_AnimTileInUse[x>>4][y>>4] = 0;
+		m_animtiles[plane][m_AnimTileInUse[plane][x>>4][y>>4]].slotinuse = 0;
+		m_AnimTileInUse[plane][x>>4][y>>4] = 0;
     }
 
 	CTileProperties &TileProperty =
@@ -535,13 +556,13 @@ void CMap::registerAnimation(Uint32 x, Uint32 y, int c)
     {
 		for(int i=1 ; i<MAX_ANIMTILES-1 ; i++)
 		{
-			if (!m_animtiles[i].slotinuse)
+			if (!m_animtiles[plane][i].slotinuse)
 			{  // we found an unused slot
-				m_animtiles[i].x = x;
-				m_animtiles[i].y = y;
-				m_animtiles[i].tile = c;
-				m_animtiles[i].slotinuse = 1;
-				m_AnimTileInUse[x>>4][y>>4] = i;
+				m_animtiles[plane][i].x = x;
+				m_animtiles[plane][i].y = y;
+				m_animtiles[plane][i].tile = c;
+				m_animtiles[plane][i].slotinuse = 1;
+				m_AnimTileInUse[plane][x>>4][y>>4] = i;
 				break;
 			}
 		}

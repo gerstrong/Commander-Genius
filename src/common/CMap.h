@@ -65,7 +65,7 @@ public:
 	void drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile);
 	void animateAllTiles();
 	void unregisterAnimtiles(int tile);
-	void registerAnimation(Uint32 x, Uint32 y, int c);
+	void registerAnimation(Uint32 x, Uint32 y, size_t plane, int c);
 
 	unsigned int getlevelat(unsigned int x, unsigned int y)	{
 		return m_objectlayer[x>>4][y>>4];	}
@@ -112,13 +112,13 @@ private:
 	// slot 0 is not used. data starts at slot 1. see description
 	// of AnimTileInUse in map structure to see why.
 	struct {
-		bool slotinuse;        // if 0, this entry should not be drawn
+		bool slotinuse;        // if false, this entry should not be drawn
 		int x;                // x pixel position in scrollbuf[] where tile is
 		int y;                // y pixel position in scrollbuf[]
 		int tile;        	  // tile which has to be drawn
-	} m_animtiles[MAX_ANIMTILES+1];
+	} m_animtiles[2][MAX_ANIMTILES+1];
 
-	unsigned int m_AnimTileInUse[ATILEINUSE_SIZEX][ATILEINUSE_SIZEY];
+	unsigned int m_AnimTileInUse[2][ATILEINUSE_SIZEX][ATILEINUSE_SIZEY];
 
 	Uint8 m_animtiletimer;
 
