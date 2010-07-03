@@ -142,7 +142,7 @@ void CTileLoader::readGalaxyTileinfo(size_t NumUnMaskedTiles, size_t NumMaskedTi
 	for(size_t j=0 ; j < NumUnMaskedTiles ; j++)
 	{
 		TileUnmaskedProperties[j].animationtime = m_data[j];
-		TileUnmaskedProperties[j].nextTile = m_data[NumUnMaskedTiles+j];
+		TileUnmaskedProperties[j].nextTile = static_cast<char>(m_data[NumUnMaskedTiles+j]);
 
 		/*TileProperties[j].bup 	= GETWORD( m_data+2*(NumTiles)+j );
 		TileProperties[j].bright 	= GETWORD( m_data+3*(NumTiles)+j);

@@ -21,9 +21,9 @@
  Enjoy the Code
  - The Commander Genius Team
  
- CloneKeen 		2003-2005 	Caitlin Shaw
- CloneKeenPlus 		2008-2009 	Gerstrong
- Commander Genius 	2009-2010	Tulip, Pickle, DaVince, Albert and Pizza2004
+ CloneKeen          2003-2005   Caitlin Shaw
+ CloneKeenPlus      2008-2009   Gerstrong
+ Commander Genius   2009-2010   Tulip, Pickle, DaVince, Albert and Pizza2004
  */
 
 #include "CLogFile.h"

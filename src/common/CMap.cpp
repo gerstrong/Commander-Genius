@@ -442,7 +442,8 @@ void CMap::deAnimate(int x, int y)
 		{   // find it!
 		    for(int i=1;i<MAX_ANIMTILES-1;i++)
 		    {
-				if (m_animtiles[plane][i].x == px && m_animtiles[plane][i].y == py)
+				if (m_animtiles[plane][i].x == px &&
+					m_animtiles[plane][i].y == py)
 				{
 					m_animtiles[plane][i].slotinuse = 0;
 					m_animtiles[plane][i].tile = 0;
@@ -505,7 +506,7 @@ void CMap::animateAllTiles()
 				if ( m_animtiles[plane][i].slotinuse )
 				{
 					CTileProperties &TileProperties =
-							g_pBehaviorEngine->getTileProperties().at(m_animtiles[plane][i].tile);
+					g_pBehaviorEngine->getTileProperties(plane).at(m_animtiles[plane][i].tile);
 
 					if( (m_animtiletimer % TileProperties.animationtime) == 0)
 					{
@@ -522,9 +523,6 @@ void CMap::animateAllTiles()
 		else
 			has_background = false;
 	}
-
-
-
 }
 
 // unregisters all animated tiles with baseframe tile
@@ -550,7 +548,7 @@ void CMap::registerAnimation(Uint32 x, Uint32 y, size_t plane, int c)
     }
 
 	CTileProperties &TileProperty =
-			g_pBehaviorEngine->getTileProperties().at(c);
+			g_pBehaviorEngine->getTileProperties(plane).at(c);
     // we just drew an animated tile which we will now register
 	if( TileProperty.animationtime )
     {
@@ -561,7 +559,7 @@ void CMap::registerAnimation(Uint32 x, Uint32 y, size_t plane, int c)
 				m_animtiles[plane][i].x = x;
 				m_animtiles[plane][i].y = y;
 				m_animtiles[plane][i].tile = c;
-				m_animtiles[plane][i].slotinuse = 1;
+				m_animtiles[plane][i].slotinuse = true;
 				m_AnimTileInUse[plane][x>>4][y>>4] = i;
 				break;
 			}
