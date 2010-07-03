@@ -479,7 +479,7 @@ void CMap::drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile)
 			if( (slot->x == static_cast<size_t>(mx+m_scrollx_buf)) &&
 				(slot->y == static_cast<size_t>(my+m_scrolly_buf)) )
 			{
-				m_Tilemaps.at(0).drawTile( dst, mx, my, slot->fgtile );
+				m_Tilemaps.at(1).drawTile( dst, mx, my, slot->fgtile );
 			}
 		}
 	}
