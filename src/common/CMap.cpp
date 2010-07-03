@@ -582,9 +582,13 @@ void CMap::registerAnimation(Uint32 x, Uint32 y, size_t plane, int c)
     }
 }
 
-CMap::~CMap() {
+void CMap::cleanupAll()
+{
 	memset( m_AnimTileInUse, 0, sizeof(m_AnimTileInUse));
 	memset( m_animtiles, 0, sizeof(m_animtiles));
+}
+
+CMap::~CMap() {
 }
 
 

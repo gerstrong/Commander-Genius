@@ -74,6 +74,7 @@ public:
 	word *getForegroundData();
 	word *getBackgroundData();
 
+	void cleanupAll();
 	virtual ~CMap();
 
 
