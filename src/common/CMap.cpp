@@ -462,12 +462,14 @@ void CMap::drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile)
 	{ // animate animated tiles
 		for(int i=1;i<MAX_ANIMTILES-1;i++)
 		{
-			bool tileanimcond;
-
 			if ( m_animtiles[i].slotinuse )
 			{
-				Tilemap->drawTile( dst, mx, my,
-						m_animtiles[i].tile );
+				if(m_animtiles[i].x == mx+m_scrollx_buf &&
+						m_animtiles[i].y == my+m_scrolly_buf)
+				{
+					Tilemap->drawTile( dst, mx, my,
+							m_animtiles[i].tile );
+				}
 			}
 		}
 	}

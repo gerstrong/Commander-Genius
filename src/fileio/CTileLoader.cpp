@@ -90,7 +90,7 @@ void CTileLoader::readVorticonTileinfo(size_t NumTiles)
 
 	// Special workaround. I don't know why this happens, but Episode 3 doesn not seems to read
 	// the plane size. TODO: Check where that value is hidden in the EXE file.
-	if(m_episode == 3) planesize = 715;
+	if(m_episode == 3) planesize = 2*715;
 
 	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties(1);
 	for(size_t j=0 ; j < NumTiles ; j++)
