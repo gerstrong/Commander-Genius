@@ -92,7 +92,6 @@ public:
 	union ai
 	{
 		// ep1
-		stVortData vort;
 		stButlerData butler;
 		stTankData tank;
 		stRayData ray;

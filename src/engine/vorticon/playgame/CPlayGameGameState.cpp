@@ -31,7 +31,7 @@ bool CPlayGameVorticon::loadGameState()
 		m_SavedGame.decodeData(m_checkpointset);
 		m_SavedGame.decodeData(m_checkpoint_x);
 		m_SavedGame.decodeData(m_checkpoint_y);
-		m_SavedGame.decodeData(m_dark);
+		m_SavedGame.decodeData(m_Map.m_Dark);
 
 		// Load number of Players
 		m_SavedGame.decodeData(m_NumPlayers);
@@ -115,7 +115,7 @@ bool CPlayGameVorticon::loadGameState()
 		// Create the special merge effect (Fadeout)
 		g_pGfxEngine->pushEffectPtr(pColorMergeFX);
 
-		g_pGfxEngine->Palette.setdark(m_dark);
+		g_pGfxEngine->Palette.setdark(m_Map.m_Dark);
 
 		//Set surface alpha
 		SDL_SetAlpha( g_pVideoDriver->FGLayerSurface, SDL_SRCALPHA, 225 );
@@ -142,7 +142,7 @@ bool CPlayGameVorticon::saveGameState()
 	m_SavedGame.encodeData(m_checkpointset);
 	m_SavedGame.encodeData(m_checkpoint_x);
 	m_SavedGame.encodeData(m_checkpoint_y);
-	m_SavedGame.encodeData(m_dark);
+	m_SavedGame.encodeData(m_Map.m_Dark);
 
 	// Save number of Players
 	m_SavedGame.encodeData(m_NumPlayers);

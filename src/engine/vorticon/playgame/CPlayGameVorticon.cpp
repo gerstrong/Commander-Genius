@@ -27,7 +27,6 @@ CPlayGameVorticon::CPlayGameVorticon( CExeFile &ExeFile, char level,
 		  bool finale, CSavedGame &SavedGame,
 		  std::vector<stTeleporterTable> &TeleporterTable) :
 CPlayGame(ExeFile, level, numplayers, difficulty, p_option),
-m_dark(false),
 mp_ObjectAI(NULL),
 m_SavedGame(SavedGame),
 m_TeleporterTable(TeleporterTable),
@@ -94,8 +93,8 @@ void CPlayGameVorticon::setupPlayers()
 		it_player->w = sprite.getWidth()<<STC;
 		it_player->h = sprite.getHeight()<<STC;
 		it_player->m_level = m_Level;
-		m_dark = false;
-		g_pGfxEngine->Palette.setdark(m_dark);
+		m_Map.m_Dark = false;
+		g_pGfxEngine->Palette.setdark(m_Map.m_Dark);
 		
 		// Set the pointers to the map and object data
 		it_player->setMapData(&m_Map);
@@ -141,7 +140,7 @@ bool CPlayGameVorticon::init()
 	// Initialize the AI
 	mp_ObjectAI = new CObjectAI(&m_Map, m_Object, m_Player, mp_option,
 								m_NumPlayers, m_Episode, m_Level,
-								m_Difficulty, m_dark);
+								m_Difficulty, m_Map.m_Dark);
 
 	// Check if Player meets the conditions to show a cutscene. This also happens, when finale of episode has reached
 	verifyFinales();

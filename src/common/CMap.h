@@ -84,6 +84,8 @@ public:
 	std::string m_gamepath;
 
 	bool m_animation_enabled;
+	bool m_Dark;
+	char m_Difficulty;
 
 private:
 

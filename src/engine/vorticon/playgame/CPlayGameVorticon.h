@@ -91,7 +91,6 @@ public:
 	virtual ~CPlayGameVorticon();
 
 private:
-	bool m_dark;
 	bool mp_level_completed[MAX_LEVELS_VORTICON];
 
 	CMap m_Map;

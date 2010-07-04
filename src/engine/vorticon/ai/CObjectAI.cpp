@@ -71,8 +71,6 @@ bool CObjectAI::checkforAIObject( CObject &object )
 {
 	unsigned int type = object.m_type;
 
-	if ( object.exists && type==OBJ_NONE ) return true;
-
 	if ( !object.exists || type==OBJ_PLAYER ) return false;
 
 	if( type==OBJ_EXPLOSION || type==OBJ_EARTHCHUNK ) return true;
@@ -114,7 +112,6 @@ void CObjectAI::performSpecialAIType( CObject &object )
 	switch(object.m_type)
 	{
 		//KEEN1
-		case OBJ_VORT: vort_ai(object, m_Level, m_Episode, m_difficulty, m_dark ); break;
 		case OBJ_BUTLER: butler_ai(object, m_difficulty); break;
 		case OBJ_TANK: tank_ai(object, m_difficulty>1); break;
 		case OBJ_ICECANNON: icecannon_ai(object); break;

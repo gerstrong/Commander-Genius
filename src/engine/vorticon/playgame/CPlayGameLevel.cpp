@@ -81,9 +81,9 @@ void CPlayGameVorticon::processLevelTrigger(int trigger)
 {
 	if (trigger == LVLTRIG_TANTALUS_RAY)
 	{
-		m_dark = false;
+		m_Map.m_Dark = false;
 		g_pMusicPlayer->stop();
-		g_pGfxEngine->Palette.setdark(m_dark);
+		g_pGfxEngine->Palette.setdark(m_Map.m_Dark);
 		mp_Finale = new CTantalusRay(m_Map, m_Object, *mp_ObjectAI);
 		m_gameover = true;
 	}
@@ -98,8 +98,8 @@ void CPlayGameVorticon::processLevelTrigger(int trigger)
 	}
 	else if (trigger == LVLTRIG_LIGHT)
 	{
-		m_dark = !m_dark;
-		g_pGfxEngine->Palette.setdark(m_dark);
+		m_Map.m_Dark = !m_Map.m_Dark;
+		g_pGfxEngine->Palette.setdark(m_Map.m_Dark);
 	}
 }
 

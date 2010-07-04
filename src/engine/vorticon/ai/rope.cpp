@@ -3,7 +3,7 @@
 #include "../../spritedefines.h"
 #include "../../../sdl/sound/CSound.h"
 #include "../../../keen.h"
-#include "vort.h"
+#include "CVorticon.h"
 
 // The rope holding the stone which kills the final Vorticon (ep1)
 

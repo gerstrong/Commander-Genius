@@ -1,11 +1,7 @@
-enum Vorticon_actions{
-VORT_WALK,
-VORT_JUMP,
-VORT_LOOK,
-VORT_DYING,
-VORT_DEAD,
-VORT2_DYING
-};
+
+#include "../../../common/CObject.h"
+#include "../../../common/CPlayer.h"
+#include <vector>
 
 // TODO: VOrticon, when charges. His speed is 37. Need to implement it still.
 
@@ -57,3 +53,48 @@ VORT2_DYING
 #define VORT_PALETTE_FLASH_TIME  5
 
 #define VORT_TRAPPED_DIST        160
+
+class CVorticon : public CObject
+{
+public:
+	CVorticon(CMap *p_map, std::vector<CPlayer> &PlayerVect,
+			int level, int episode, char difficulty, bool dark);
+	void process();
+	void initiateJump();
+
+private:
+	int m_Level;
+	int m_Episode;
+	char m_Difficulty;
+	bool m_Dark;
+
+	enum {
+	VORT_WALK,
+	VORT_JUMP,
+	VORT_LOOK,
+	VORT_DYING,
+	VORT_DEAD,
+	VORT2_DYING
+	}state;
+
+	unsigned char timer,timer2;
+	unsigned int animtimer;
+	unsigned char frame;
+	unsigned int dist_traveled;
+	signed int inertiay;
+
+	char hp;                // episode 1 style four-shots-to-kill
+
+	unsigned char movedir;
+	// these hold the animation frames indexes since they're
+	// different for each episode
+	int WalkLeftFrame;
+	int WalkRightFrame;
+	int LookFrame;
+	int JumpRightFrame;
+	int JumpLeftFrame;
+	int DyingFrame;
+	int DeadFrame;
+
+	std::vector<CPlayer> &m_Player;
+};

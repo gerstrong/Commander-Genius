@@ -23,6 +23,7 @@
 #include "../engine/vorticon/ai/CYorp.h"
 #include "../engine/vorticon/ai/CGarg.h"
 #include "../engine/vorticon/ai/CAutoRay.h"
+#include "../engine/vorticon/ai/CVorticon.h"
 
 
 CMapLoader::CMapLoader(CMap* p_map, std::vector<CPlayer> *p_PlayerVect) :
@@ -201,23 +202,22 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 			}
 
 			break;
-		/*case NESSIE_PATH:          // spawn nessie at first occurance of her path
+		case NESSIE_PATH:          // spawn nessie at first occurance of her path
 			if (episode==3)
 			{
 				if (!m_NessieAlreadySpawned)
 				{
-					CObject nessie(mp_map);
+					CObject *nessie = new CObject(mp_map);
 
-					nessie.setIndex(mp_objvect->size());
-					nessie.spawn(x<<CSF, y<<CSF, OBJ_NESSIE, 3);
-					nessie.onscreen = true;
-					nessie.solid = false;
+					nessie->spawn(x<<CSF, y<<CSF, OBJ_NESSIE, 3);
+					nessie->onscreen = true;
+					nessie->solid = false;
 					m_NessieAlreadySpawned = true;
 					mp_objvect->push_back(nessie);
 				}
 				mp_map->m_objectlayer[x][y] = NESSIE_PATH;
 			}
-			break;*/
+			break;
 		default:             // level marker
 			if ((t&0x7fff) <= 16 && mp_vec_Player->front().mp_levels_completed[t&0x00ff] )
 			{
@@ -301,23 +301,21 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 			case 1:  // yorp (ep1) vort (ep2&3)
 				if (episode==1)
 				{
-					enemyobject = new CYorp(&(mp_vec_Player->at(0)), 0, mp_map);
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_YORP, episode);
+					enemyobject = new CYorp(&(mp_vec_Player->at(0)), mp_map->m_Difficulty, mp_map);
+					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_NONE, episode);
 					break;
 				}
 				else if(episode == 2)
 				{
-					enemyobject = new CObject(mp_map);
-					// in ep2 level 16 there a vorticon embedded in the floor for
-					// some reason! that's what the if() is for--to fix it.
-					// I believe, that the rest of the vorticons are supposed to fall!
-					// NOTE: This comment is old and seems not to be valid, please check that!
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_VORT, episode);
+					enemyobject = new CVorticon(mp_map, *mp_vec_Player,
+										level, episode, mp_map->m_Difficulty, mp_map->m_Dark );
+					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_NONE, episode);
 				}
 				else if(episode == 3)
 				{
-					enemyobject = new CObject(mp_map);
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_VORT, episode);
+					enemyobject = new CVorticon(mp_map, *mp_vec_Player,
+										level, episode, mp_map->m_Difficulty, mp_map->m_Dark );
+					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_NONE, episode);
 				}
 				break;
 			case 2:    // garg (ep1) baby vorticon (ep2&3)
@@ -325,7 +323,7 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				if (episode==1)
 				{
 					enemyobject = new CGarg(*mp_vec_Player, 0, mp_map);
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_GARG, episode);
+					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_NONE, episode);
 				}
 				else
 				{
@@ -335,16 +333,25 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 
 				break;
 			case 3:    // vorticon (ep1) Vorticon Commander (ep2)
-				enemyobject = new CObject(mp_map);
 				if (episode==1)
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_VORT, episode);
+				{
+					enemyobject = new CVorticon(mp_map, *mp_vec_Player,
+										level, episode, mp_map->m_Difficulty, mp_map->m_Dark );
+					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_NONE, episode);
+				}
 				else if (episode==2)
+				{
+					enemyobject = new CObject(mp_map);
 					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_VORTELITE, episode);
+				}
 				else if (episode==3)
+				{
+					enemyobject = new CObject(mp_map);
 					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_MOTHER, episode);
+				}
 				break;
-				enemyobject = new CObject(mp_map);
 			case 4:    // butler (ep1) or scrub (ep2) or meep (ep3)
+				enemyobject = new CObject(mp_map);
 				if (episode==1)
 					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_BUTLER, episode);
 				else if (episode==2)
@@ -444,7 +451,9 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 			case 11:   // jumping vorticon (ep3)
 				if (episode==3)
 				{
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_VORT, episode);
+					enemyobject = new CVorticon(mp_map, *mp_vec_Player,
+										level, episode, mp_map->m_Difficulty, mp_map->m_Dark );
+					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_NONE, episode);
 				}
 				break;
 			case 12:   // sparks in mortimer's machine
