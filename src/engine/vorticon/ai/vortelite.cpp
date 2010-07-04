@@ -233,22 +233,22 @@ void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 			object.ai.vortelite.timer = 0;
 			object.ai.vortelite.state = VORTELITE_FIRED;
 
-			CObject newobject(mp_Map);
+			CObject *newobject = new CObject(mp_Map);
 			if (object.ai.vortelite.movedir==RIGHT)
 			{
-				newobject.spawn(object.getXRightPos()+1, object.getYPosition()+(9<<STC), OBJ_RAY, m_Episode);
-				newobject.ai.ray.direction = RIGHT;
+				newobject->spawn(object.getXRightPos()+1, object.getYPosition()+(9<<STC), OBJ_RAY, m_Episode);
+				newobject->ai.ray.direction = RIGHT;
 			}
 			else
 			{
-				newobject.spawn(object.getXLeftPos()-1, object.getYPosition()+(9<<STC), OBJ_RAY, m_Episode, LEFT);
-				newobject.ai.ray.direction = LEFT;
+				newobject->spawn(object.getXLeftPos()-1, object.getYPosition()+(9<<STC), OBJ_RAY, m_Episode, LEFT);
+				newobject->ai.ray.direction = LEFT;
 			}
-			newobject.ai.ray.owner = object.m_index;
-			newobject.sprite = ENEMYRAYEP2;
+			newobject->ai.ray.owner = object.m_index;
+			newobject->sprite = ENEMYRAYEP2;
 			// don't shoot other vorticon elite
-			newobject.ai.ray.dontHitEnable = 1;
-			newobject.ai.ray.dontHit = OBJ_VORTELITE;
+			newobject->ai.ray.dontHitEnable = 1;
+			newobject->ai.ray.dontHit = OBJ_VORTELITE;
 			m_Objvect.push_back(newobject);
 
 			if (object.onscreen) g_pSound->playStereofromCoord(SOUND_KEEN_FIRE, PLAY_NOW, object.scrx);

@@ -18,7 +18,12 @@
 #include "../common/CBehaviorEngine.h"
 #include "../graphics/CGfxEngine.h"
 #include "../sdl/CVideoDriver.h"
+
+
 #include "../engine/vorticon/ai/CYorp.h"
+#include "../engine/vorticon/ai/CGarg.h"
+#include "../engine/vorticon/ai/CAutoRay.h"
+
 
 CMapLoader::CMapLoader(CMap* p_map, std::vector<CPlayer> *p_PlayerVect) :
 mp_vec_Player(p_PlayerVect)
@@ -287,7 +292,7 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 		}
 		else
 		{
-			CObject *enemyobject;
+			CObject *enemyobject = NULL;
 
 			switch(t)
 			{
@@ -297,7 +302,6 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				if (episode==1)
 				{
 					enemyobject = new CYorp(&(mp_vec_Player->at(0)), 0, mp_map);
-					if ( TileProperty[mp_map->at(x ,y+1)].bleft ) x--;
 					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_YORP, episode);
 					break;
 				}
@@ -317,22 +321,17 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				}
 				break;
 			case 2:    // garg (ep1) baby vorticon (ep2&3)
-				enemyobject = new CObject(mp_map);
+
 				if (episode==1)
-				{	 // those bastards. sometimes embedding garg's in the floor in
-					// the original maps.
-					if(TileProperty[mp_map->at(x+1, y+1)].bleft)
-					{
-						if (level==7)
-							enemyobject->spawn(x<<CSF, (y-1)<<CSF, OBJ_GARG, episode);
-						else
-							enemyobject->spawn((x-1)<<CSF, y<<CSF, OBJ_GARG, episode);
-					}
-					else
-						enemyobject->spawn(x<<CSF, y<<CSF, OBJ_GARG, episode);
+				{
+					enemyobject = new CGarg(*mp_vec_Player, 0, mp_map);
+					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_GARG, episode);
 				}
 				else
+				{
+					enemyobject = new CObject(mp_map);
 					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_BABY, episode);
+				}
 
 				break;
 			case 3:    // vorticon (ep1) Vorticon Commander (ep2)
@@ -461,18 +460,12 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				enemyobject->solid = false;
 				break;
 			case 14:   // right-pointing raygun (ep3)
-				enemyobject = new CObject(mp_map);
-				if (episode==3)
-				{
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_AUTORAY, episode);
-				}
+				enemyobject = new CAutoRay(mp_map, *mp_objvect, episode, CAutoRay::HORIZONTAL);
+				enemyobject->spawn(x<<CSF, y<<CSF, OBJ_NONE, episode);
 				break;
 			case 15:   // vertical raygun (ep3)
-				enemyobject = new CObject(mp_map);
-				if (episode==3)
-				{
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_AUTORAY_V, episode);
-				}
+				enemyobject = new CAutoRay(mp_map, *mp_objvect, episode, CAutoRay::VERTICAL);
+				enemyobject->spawn(x<<CSF, y<<CSF, OBJ_NONE, episode);
 				break;
 			case 16:  // mortimer's arms
 				enemyobject = new CObject(mp_map);

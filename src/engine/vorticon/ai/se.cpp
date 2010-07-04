@@ -262,15 +262,15 @@ SPARK_ANIMATE, SPARK_BLOWUP1, SPARK_BLOWUP2, SPARK_BLOWUP3
 			my = object.ai.se.my+3+object.ai.se.blowy;
 			mp_Map->setTile(mx, my, 505, true);
 			// spawn a ZAP! or a ZOT!
-			CObject newobject(mp_Map);
-			newobject.spawn(mx<<CSF, my<<CSF, OBJ_RAY, m_Episode);
-			newobject.ai.ray.state = RAY_STATE_SETZAPZOT;
-			newobject.ai.ray.owner = object.m_index;
-			newobject.inhibitfall = 1;
-			newobject.needinit = 0;
-			newobject.ai.ray.dontHitEnable = 0;
+			CObject *newobject = new CObject(mp_Map);
+			newobject->spawn(mx<<CSF, my<<CSF, OBJ_RAY, m_Episode);
+			newobject->ai.ray.state = RAY_STATE_SETZAPZOT;
+			newobject->ai.ray.owner = object.m_index;
+			newobject->inhibitfall = 1;
+			newobject->needinit = 0;
+			newobject->ai.ray.dontHitEnable = 0;
 			m_Objvect.push_back(newobject);
-			g_pSound->playStereofromCoord(SOUND_SHOT_HIT,PLAY_NOW, newobject.getXPosition());
+			g_pSound->playStereofromCoord(SOUND_SHOT_HIT,PLAY_NOW, newobject->getXPosition());
 
 			object.ai.se.blowy++;
 			if (object.ai.se.blowy >= 3)
@@ -310,13 +310,13 @@ SPARK_ANIMATE, SPARK_BLOWUP1, SPARK_BLOWUP2, SPARK_BLOWUP3
 				my = object.ai.se.my+3+y;
 				mp_Map->setTile(mx, my, 549, true);
 				// spawn a ZAP! or a ZOT!
-				CObject newobject(mp_Map);
-				newobject.spawn(mx<<CSF, my<<CSF, OBJ_RAY, m_Episode);
-				newobject.ai.ray.owner = object.m_index;
-				newobject.ai.ray.state = RAY_STATE_SETZAPZOT;
-				newobject.inhibitfall = true;
-				newobject.needinit = false;
-				g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, newobject.getXPosition());
+				CObject *newobject = new CObject(mp_Map);
+				newobject->spawn(mx<<CSF, my<<CSF, OBJ_RAY, m_Episode);
+				newobject->ai.ray.owner = object.m_index;
+				newobject->ai.ray.state = RAY_STATE_SETZAPZOT;
+				newobject->inhibitfall = true;
+				newobject->needinit = false;
+				g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, newobject->getXPosition());
 				m_Objvect.push_back(newobject);
 				
 			}
@@ -487,14 +487,14 @@ void CObjectAI::se_mortimer_spark(CObject &object)
 
 			// if there are any sparks left, destroy the spark,
 			// else destroy mortimer's arms
-			for(std::vector<CObject>::iterator obj = m_Objvect.begin()
+			for(std::vector<CObject*>::iterator obj = m_Objvect.begin()
 					; obj != m_Objvect.end() ; obj++)
 			{
-				if (obj->m_type==OBJ_SECTOREFFECTOR &&\
-						obj->ai.se.type==SE_MORTIMER_SPARK &&\
-						obj->exists)
+				if ((*obj)->m_type==OBJ_SECTOREFFECTOR &&\
+						(*obj)->ai.se.type==SE_MORTIMER_SPARK &&\
+						(*obj)->exists)
 				{
-					if (obj->m_index!=object.m_index)
+					if ((*obj)->m_index!=object.m_index)
 					{	// other sparks still exist
 						object.ai.se.type = SE_MORTIMER_RANDOMZAPS;
 						object.needinit = true;
@@ -508,13 +508,13 @@ void CObjectAI::se_mortimer_spark(CObject &object)
 			object.sprite = BLANKSPRITE;
 
 			// destroy the sector effectors controlling his arms
-			for(std::vector<CObject>::iterator obj = m_Objvect.begin()
+			for(std::vector<CObject*>::iterator obj = m_Objvect.begin()
 					; obj != m_Objvect.end() ; obj++)
 			{
-				if (obj->m_type==OBJ_SECTOREFFECTOR && \
-						obj->ai.se.type==SE_MORTIMER_ARM)
+				if ((*obj)->m_type==OBJ_SECTOREFFECTOR && \
+						(*obj)->ai.se.type==SE_MORTIMER_ARM)
 				{
-					deleteObj(*obj);
+					deleteObj(**obj);
 				}
 			}
 			// go into a state where we'll destroy mortimer's arms
@@ -534,12 +534,12 @@ void CObjectAI::se_mortimer_spark(CObject &object)
 				{
 					mp_Map->setTile(mx, object.ai.se.my, 169, true);
 					// spawn a ZAP! or a ZOT!
-					CObject newobject(mp_Map);
-					newobject.spawn(((mx<<4)+4)<<STC, object.ai.se.my<<4<<STC, OBJ_RAY, m_Episode);
-					newobject.ai.ray.state = RAY_STATE_SETZAPZOT;
-					newobject.ai.ray.direction = DOWN;
-					newobject.inhibitfall = true;
-					newobject.needinit = false;
+					CObject *newobject = new CObject(mp_Map);
+					newobject->spawn(((mx<<4)+4)<<STC, object.ai.se.my<<4<<STC, OBJ_RAY, m_Episode);
+					newobject->ai.ray.state = RAY_STATE_SETZAPZOT;
+					newobject->ai.ray.direction = DOWN;
+					newobject->inhibitfall = true;
+					newobject->needinit = false;
 					m_Objvect.push_back(newobject);
 				}
 
@@ -548,12 +548,12 @@ void CObjectAI::se_mortimer_spark(CObject &object)
 				{
 					mp_Map->setTile(mx, object.ai.se.my, 169, true);
 					// spawn a ZAP! or a ZOT!
-					CObject newobject(mp_Map);
-					newobject.spawn(((mx<<4)+4)<<STC, object.ai.se.my<<4<<STC, OBJ_RAY, m_Episode);
-					newobject.ai.ray.state = RAY_STATE_SETZAPZOT;
-					newobject.ai.ray.direction = DOWN;
-					newobject.inhibitfall = true;
-					newobject.needinit = false;
+					CObject *newobject = new CObject(mp_Map);
+					newobject->spawn(((mx<<4)+4)<<STC, object.ai.se.my<<4<<STC, OBJ_RAY, m_Episode);
+					newobject->ai.ray.state = RAY_STATE_SETZAPZOT;
+					newobject->ai.ray.direction = DOWN;
+					newobject->inhibitfall = true;
+					newobject->needinit = false;
 					m_Objvect.push_back(newobject);
 				}
 
@@ -627,14 +627,14 @@ void CObjectAI::se_mortimer_heart(CObject &object)
 			g_pGfxEngine->pushEffectPtr(new CVibrate(10000));
 
 			// kill all enemies
-			std::vector<CObject>::iterator it_obj = m_Objvect.begin();
+			std::vector<CObject*>::iterator it_obj = m_Objvect.begin();
 			for( ; it_obj!=m_Objvect.end() ; it_obj++ )
 			{
-				if(it_obj->m_type == OBJ_SECTOREFFECTOR &&
-						it_obj->ai.se.type == SE_MORTIMER_HEART ) continue;
+				if((*it_obj)->m_type == OBJ_SECTOREFFECTOR &&
+						(*it_obj)->ai.se.type == SE_MORTIMER_HEART ) continue;
 				else
 				{
-					deleteObj(*it_obj);
+					deleteObj(**it_obj);
 				}
 			}
 
@@ -652,19 +652,19 @@ void CObjectAI::se_mortimer_heart(CObject &object)
 			int x = object.getXPosition();
 			int y = object.getYPosition();
 
-			CObject newobject(mp_Map);
-			newobject.spawn( x, y, OBJ_SECTOREFFECTOR, m_Episode);
-			newobject.ai.se.type = SE_MORTIMER_ZAPSUP;
-			newobject.ai.se.my = MORTIMER_MACHINE_YEND;
-			newobject.ai.se.timer = 0;
-			newobject.ai.se.destroytiles = 0;
-			newobject.ai.se.state = ZAPSUP_NORMAL;
-			newobject.hasbeenonscreen = false;
+			CObject *newobject = new CObject(mp_Map);
+			newobject->spawn( x, y, OBJ_SECTOREFFECTOR, m_Episode);
+			newobject->ai.se.type = SE_MORTIMER_ZAPSUP;
+			newobject->ai.se.my = MORTIMER_MACHINE_YEND;
+			newobject->ai.se.timer = 0;
+			newobject->ai.se.destroytiles = 0;
+			newobject->ai.se.state = ZAPSUP_NORMAL;
+			newobject->hasbeenonscreen = false;
 
 			object.ai.se.timer = MORTIMER_ZAPWAVESPACING;
 			if (object.ai.se.counter > MORTIMER_NUMZAPWAVES)
 			{
-				newobject.ai.se.destroytiles = true;
+				newobject->ai.se.destroytiles = true;
 				deleteObj(object);
 			}
 			else object.ai.se.counter++;
@@ -681,12 +681,12 @@ void CObjectAI::se_mortimer_heart(CObject &object)
 				// delete the tile
 				mp_Map->setTile(x,object.ai.se.my,169);
 				// spawn a ZAP! or a ZOT!
-				CObject newobject(mp_Map);
-				newobject.spawn(((x<<4)+4)<<STC, object.ai.se.my<<4<<STC, OBJ_RAY, m_Episode);
-				newobject.ai.ray.state = RAY_STATE_SETZAPZOT;
-				newobject.ai.ray.direction = DOWN;
-				newobject.inhibitfall = true;
-				newobject.needinit = false;
+				CObject *newobject = new CObject(mp_Map);
+				newobject->spawn(((x<<4)+4)<<STC, object.ai.se.my<<4<<STC, OBJ_RAY, m_Episode);
+				newobject->ai.ray.state = RAY_STATE_SETZAPZOT;
+				newobject->ai.ray.direction = DOWN;
+				newobject->inhibitfall = true;
+				newobject->needinit = false;
 				m_Objvect.push_back(newobject);
 			}
 
@@ -720,12 +720,12 @@ void CObjectAI::se_mortimer_zapsup(CObject &object)
 		for(x=MORTIMER_MACHINE_XSTART;x<MORTIMER_MACHINE_XEND;x++)
 		{
 			// spawn a ZAP! or a ZOT!
-			CObject newobject(mp_Map);
-			newobject.spawn(((x<<4)+4)<<STC, object.ai.se.my<<4<<STC, OBJ_RAY, m_Episode);
-			newobject.ai.ray.state = RAY_STATE_SETZAPZOT;
-			newobject.ai.ray.direction = DOWN;
-			newobject.inhibitfall = true;
-			newobject.needinit = false;
+			CObject *newobject = new CObject(mp_Map);
+			newobject->spawn(((x<<4)+4)<<STC, object.ai.se.my<<4<<STC, OBJ_RAY, m_Episode);
+			newobject->ai.ray.state = RAY_STATE_SETZAPZOT;
+			newobject->ai.ray.direction = DOWN;
+			newobject->inhibitfall = true;
+			newobject->needinit = false;
 			m_Objvect.push_back(newobject);
 
 			if (object.ai.se.destroytiles)
@@ -994,11 +994,11 @@ void CObjectAI::se_mortimer_randomzaps(CObject &object)
 		y = rand()%((MORTIMER_MACHINE_YENDNOLEGS*16)-(MORTIMER_MACHINE_YSTART*16))+(MORTIMER_MACHINE_YSTART*16);
 
 		// spawn a ZAP! or a ZOT!
-		CObject newobject(mp_Map);
-		newobject.spawn(x<<CSF, y<<CSF, OBJ_RAY, m_Episode);
-		newobject.ai.ray.state = RAY_STATE_SETZAPZOT;
-		newobject.inhibitfall = true;
-		newobject.needinit = false;
+		CObject *newobject = new CObject(mp_Map);
+		newobject->spawn(x<<CSF, y<<CSF, OBJ_RAY, m_Episode);
+		newobject->ai.ray.state = RAY_STATE_SETZAPZOT;
+		newobject->inhibitfall = true;
+		newobject->needinit = false;
 		m_Objvect.push_back(newobject);
 
 		object.ai.se.timer = TIME_BETWEEN_ZAPS;

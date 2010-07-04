@@ -55,7 +55,6 @@ bool CObject::spawn(int x0, int y0, object_t otype, int Episode, direction_t dir
 		scrx = scry = 0;
 		m_type = otype;
 		exists = true;
-		needinit = true;
 		dead = false;
 		onscreen = false;
 		hasbeenonscreen = false;

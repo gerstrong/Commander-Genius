@@ -42,23 +42,23 @@ void CObjectAI::fireball_ai(CObject &object, bool hard)
 	}
 
 	// test if it hit a baddie
-	std::vector<CObject>::iterator it_obj = m_Objvect.begin()++;
+	std::vector<CObject*>::iterator it_obj = m_Objvect.begin()++;
 	for( ; it_obj!=m_Objvect.end() ; it_obj++)
 	{
-		if (!it_obj->exists || it_obj->m_index==object.m_index) continue;
-		if (/*it_obj->m_type==OBJ_RAY ||*/ it_obj->m_type==OBJ_FIREBALL) continue;
+		if (!(*it_obj)->exists || (*it_obj)->m_index==object.m_index) continue;
+		if (/*(*it_obj)->m_type==OBJ_RAY ||*/ (*it_obj)->m_type==OBJ_FIREBALL) continue;
 
-		if (it_obj->canbezapped || it_obj->m_type==OBJ_RAY)
+		if ((*it_obj)->canbezapped || (*it_obj)->m_type==OBJ_RAY)
 		{
-			if (it_obj->hitdetect(object) && object.ai.ray.owner != it_obj->m_index)
+			if ((*it_obj)->hitdetect(object) && object.ai.ray.owner != (*it_obj)->m_index)
 			{
 				object.m_type = OBJ_RAY;
 				object.ai.ray.state = RAY_STATE_SETZAPZOT;
 				object.inhibitfall = 1;
 				object.needinit = 0;
-				it_obj->zapped++;
-				it_obj->moveTo(object.getXPosition(), object.getYPosition());
-				it_obj->zappedbyenemy = 1;
+				(*it_obj)->zapped++;
+				(*it_obj)->moveTo(object.getXPosition(), object.getYPosition());
+				(*it_obj)->zappedbyenemy = 1;
 				return;
 			}
 		}

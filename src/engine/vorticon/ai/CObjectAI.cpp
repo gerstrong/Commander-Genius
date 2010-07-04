@@ -55,7 +55,6 @@ void CObjectAI::process()
 				}
 
 		    }
-			performSpecialAIType( object );
 
 			object.process();
 		}
@@ -112,11 +111,9 @@ bool CObjectAI::checkforAIObject( CObject &object )
 
 void CObjectAI::performSpecialAIType( CObject &object )
 {
-	/*switch(object.m_type)
+	switch(object.m_type)
 	{
 		//KEEN1
-		case OBJ_YORP: yorp_ai(object, &m_Player[0], m_difficulty>1); break;
-		case OBJ_GARG: garg_ai(object, m_Player, m_difficulty>1); break;
 		case OBJ_VORT: vort_ai(object, m_Level, m_Episode, m_difficulty, m_dark ); break;
 		case OBJ_BUTLER: butler_ai(object, m_difficulty); break;
 		case OBJ_TANK: tank_ai(object, m_difficulty>1); break;
@@ -152,13 +149,14 @@ void CObjectAI::performSpecialAIType( CObject &object )
 		//Common Objects
 		case OBJ_RAY: ray_ai( object, mp_Options[OPT_FULLYAUTOMATIC].value ); break;
 		case OBJ_DOOR: door_ai( object, DOWN); break;
-		case OBJ_AUTORAY: case OBJ_AUTORAY_V: autoray_ai(object); break;
 		case OBJ_GOTPOINTS: gotpoints_ai(object); break;
+
+			//case OBJ_DEMOMSG: break;
 
 		default:
 			g_pLogFile->ftextOut("gamedo_enemy_ai: Object is of invalid type %d\n", object.m_type);
 			break;
-    }*/
+    }
 }
 
 void CObjectAI::SetAllCanSupportPlayer(CObject &object, bool state)

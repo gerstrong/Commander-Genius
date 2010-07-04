@@ -39,8 +39,6 @@ private:
 	void deleteAllObjects();
 
 	// ep1
-	void yorp_ai(CObject &object, CPlayer *p_player, bool hardmode);
-	void garg_ai(CObject &object, std::vector<CPlayer> &m_Player, bool hardmode);
 	void vort_ai(CObject &object, int level, int episode, char difficulty, bool dark);
 	void vort_initiatejump(CObject &object);
 	void butler_ai(CObject &object, char difficulty);

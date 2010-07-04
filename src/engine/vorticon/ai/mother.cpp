@@ -140,10 +140,10 @@ void CObjectAI::mother_ai( CObject& object, bool hardmode )
 
 		if (object.ai.mother.timer > MOTHER_SPIT_SHOW_TIME)
 		{
-			CObject newobject(mp_Map);
-			newobject.spawn(object.getXMidPos()-(3<<STC), object.getYPosition()+(11<<STC), OBJ_FIREBALL, 3, object.ai.mother.dir);
-			newobject.ai.ray.direction = object.ai.mother.dir;
-			newobject.ai.ray.owner = object.m_index;
+			CObject *newobject = new CObject(mp_Map);
+			newobject->spawn(object.getXMidPos()-(3<<STC), object.getYPosition()+(11<<STC), OBJ_FIREBALL, 3, object.ai.mother.dir);
+			newobject->ai.ray.direction = object.ai.mother.dir;
+			newobject->ai.ray.owner = object.m_index;
 			m_Objvect.push_back(newobject);
 
 			if (object.onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, object.scrx);

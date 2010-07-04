@@ -161,22 +161,22 @@ void CObjectAI::tank_ai(CObject &object, bool hardmode)
 		break;
 	case stTankData::TANK_FIRE:
 	{
-		CObject newobject(mp_Map);
+		CObject *newobject = new CObject(mp_Map);
 		if (object.onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, object.scrx);
 		if (object.ai.tank.movedir==RIGHT)
 		{
-			newobject.spawn(object.getXMidPos(), object.getYUpPos()+(4<<STC), OBJ_RAY, m_Episode, RIGHT);
-			newobject.ai.ray.direction = RIGHT;
+			newobject->spawn(object.getXMidPos(), object.getYUpPos()+(4<<STC), OBJ_RAY, m_Episode, RIGHT);
+			newobject->ai.ray.direction = RIGHT;
 		}
 		else
 		{
-			newobject.spawn(object.getXMidPos(), object.getYUpPos()+(4<<STC), OBJ_RAY, m_Episode, LEFT);
-			newobject.ai.ray.direction = LEFT;
+			newobject->spawn(object.getXMidPos(), object.getYUpPos()+(4<<STC), OBJ_RAY, m_Episode, LEFT);
+			newobject->ai.ray.direction = LEFT;
 		}
-		newobject.ai.ray.owner = object.m_index;
-		newobject.sprite = ENEMYRAY;
-		newobject.ai.ray.dontHitEnable = 0;
-		newobject.canbezapped = true;
+		newobject->ai.ray.owner = object.m_index;
+		newobject->sprite = ENEMYRAY;
+		newobject->ai.ray.dontHitEnable = 0;
+		newobject->canbezapped = true;
 		m_Objvect.push_back(newobject);
 
 		object.ai.tank.state = stTankData::TANK_WAIT_LOOK;

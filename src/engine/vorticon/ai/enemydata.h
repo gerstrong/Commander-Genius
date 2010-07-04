@@ -13,23 +13,6 @@
 
 // Structs used for different enemy's variables. These are in a union.
 
-typedef struct stGargData
-{
-	unsigned char state;
-	int jumptime;
-	
-	unsigned char looktimes,lookframe;
-	unsigned char timer, keenonsameleveltimer;
-	unsigned char about_to_charge;
-	unsigned char walkframe;
-	unsigned int dist_traveled;
-	signed int gargdie_inertia_y;
-	
-	unsigned char movedir;
-	unsigned char detectedPlayer, detectedPlayerIndex;
-} stGargData;
-
-
 typedef struct stVortData
 {
 	unsigned char state;

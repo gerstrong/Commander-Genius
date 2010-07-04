@@ -64,7 +64,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/engine/vorticon/ai/yorp.cpp|src/engine/vorticon/ai/vortelite.cpp|src/engine/vorticon/ai/vort.h|src/engine/vorticon/ai/vort.cpp|src/engine/vorticon/ai/teleport.cpp|src/engine/vorticon/ai/tankep2.cpp|src/engine/vorticon/ai/tank.h|src/engine/vorticon/ai/tank.cpp|src/engine/vorticon/ai/sndwave.cpp|src/engine/vorticon/ai/se.h|src/engine/vorticon/ai/se.cpp|src/engine/vorticon/ai/scrub.cpp|src/engine/vorticon/ai/rope.cpp|src/engine/vorticon/ai/ray.h|src/engine/vorticon/ai/ray.cpp|src/engine/vorticon/ai/platvert.cpp|src/engine/vorticon/ai/platform.cpp|src/engine/vorticon/ai/ninja.cpp|src/engine/vorticon/ai/nessie.cpp|src/engine/vorticon/ai/mother.cpp|src/engine/vorticon/ai/meep.cpp|src/engine/vorticon/ai/icecannon.h|src/engine/vorticon/ai/icecannon.cpp|src/engine/vorticon/ai/gotpoints.cpp|src/engine/vorticon/ai/garg.cpp|src/engine/vorticon/ai/foob.cpp|src/engine/vorticon/ai/fireball.cpp|src/engine/vorticon/ai/enemydata.h|src/engine/vorticon/ai/earth.cpp|src/engine/vorticon/ai/door.cpp|src/engine/vorticon/ai/CEGABitmap.h|src/engine/vorticon/ai/CEGABitmap.cpp|src/engine/vorticon/ai/butler.cpp|src/engine/vorticon/ai/balljack.cpp|src/engine/vorticon/ai/baby.cpp|src/engine/vorticon/ai/autoray.cpp|src/sdl/iphone" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="src/engine/vorticon/ai/yorp.cpp|src/engine/vorticon/ai/autoray.cpp|src/sdl/iphone" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

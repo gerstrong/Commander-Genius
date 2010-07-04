@@ -132,18 +132,18 @@ void CObjectAI::meep_ai(CObject& object)
 
 		if (object.ai.meep.timer > MEEP_SING_SHOW_TIME)
 		{
-			CObject newobject(mp_Map);
+			CObject *newobject = new CObject(mp_Map);
 			if (object.ai.meep.dir==RIGHT)
 			{
-				newobject.spawn(object.getXRightPos(), object.getYPosition()+(5<<STC), OBJ_SNDWAVE, 3);
-				newobject.ai.ray.direction = RIGHT;
+				newobject->spawn(object.getXRightPos(), object.getYPosition()+(5<<STC), OBJ_SNDWAVE, 3);
+				newobject->ai.ray.direction = RIGHT;
 			}
 			else
 			{
-				newobject.spawn(object.getXLeftPos(), object.getYPosition()+(5<<STC), OBJ_SNDWAVE, 3, LEFT);
-				newobject.ai.ray.direction = LEFT;
+				newobject->spawn(object.getXLeftPos(), object.getYPosition()+(5<<STC), OBJ_SNDWAVE, 3, LEFT);
+				newobject->ai.ray.direction = LEFT;
 			}
-			newobject.solid = false;
+			newobject->solid = false;
 			m_Objvect.push_back(newobject);
 			g_pSound->playStereofromCoord(SOUND_MEEP, PLAY_NOW, object.scrx);
 			object.ai.meep.state = MEEP_WALK;

@@ -38,7 +38,7 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 	int y = object.getYPosition();
 	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
 	
-	std::vector<CObject>::iterator it_obj;
+	std::vector<CObject*>::iterator it_obj;
 	switch(object.ai.ray.state)
 	{
 		case RAY_STATE_FLY:
@@ -46,38 +46,38 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 			// test if it hit a baddie. I hate that code! TODO: think about a way to reduce this
 			for( it_obj = m_Objvect.begin() ; it_obj!=m_Objvect.end() ; it_obj++)
 			{
-				if( it_obj->exists && (it_obj->m_index != object.m_index || it_obj->m_type == OBJ_ROPE) )
+				if( (*it_obj)->exists && ((*it_obj)->m_index != object.m_index || (*it_obj)->m_type == OBJ_ROPE) )
 				{
-					if ( it_obj->onscreen)
+					if ( (*it_obj)->onscreen)
 					{
-						if(it_obj->canbezapped || it_obj->m_type == OBJ_RAY )
+						if((*it_obj)->canbezapped || (*it_obj)->m_type == OBJ_RAY )
 						{
-							if (it_obj->hitdetect(object) &&
+							if ((*it_obj)->hitdetect(object) &&
 								 object.ai.ray.shotbyplayer  )
 							{
 								object.ai.ray.state = RAY_STATE_SETZAPZOT;
 								object.canbezapped = false;
-								it_obj->zapped++;
+								(*it_obj)->zapped++;
 								if(g_pVideoDriver->getSpecialFXConfig())
 								{
 									bool allow_blink = false;
 
 									// only enemies which can support multiple hits
 									// will blink.
-									allow_blink = (it_obj->m_type == OBJ_MOTHER) ||
-												(it_obj->m_type == OBJ_NINJA) ||
-												(it_obj->m_type == OBJ_VORT) ||
-												(it_obj->m_type == OBJ_VORTELITE);
+									allow_blink = ((*it_obj)->m_type == OBJ_MOTHER) ||
+												((*it_obj)->m_type == OBJ_NINJA) ||
+												((*it_obj)->m_type == OBJ_VORT) ||
+												((*it_obj)->m_type == OBJ_VORTELITE);
 									if(allow_blink)
-										it_obj->blink(10);
+										(*it_obj)->blink(10);
 								}
-								if(it_obj->m_type == OBJ_RAY)
-									it_obj->ai.ray.state = RAY_STATE_SETZAPZOT;
-								it_obj->zapd = it_obj->ai.ray.direction;
+								if((*it_obj)->m_type == OBJ_RAY)
+									(*it_obj)->ai.ray.state = RAY_STATE_SETZAPZOT;
+								(*it_obj)->zapd = (*it_obj)->ai.ray.direction;
 								if (object.sprite==ENEMYRAY || object.sprite==ENEMYRAYEP2 || object.sprite==ENEMYRAYEP3)
-									it_obj->zappedbyenemy = true;
+									(*it_obj)->zappedbyenemy = true;
 								else
-									it_obj->zappedbyenemy = false;
+									(*it_obj)->zappedbyenemy = false;
 
 							}
 						}

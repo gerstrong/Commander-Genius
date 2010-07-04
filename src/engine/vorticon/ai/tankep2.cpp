@@ -136,21 +136,21 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 			// is it time to fire the next shot in the volley?
 			if (!object.ai.tank.timetillnextshot)
 			{
-				CObject newobject(mp_Map);
+				CObject *newobject = new CObject(mp_Map);
 				if (object.onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, object.scrx);
 				if (object.ai.tank.movedir==RIGHT)
 				{
-					newobject.spawn(object.getXRightPos()+(8<<STC), object.getYUpPos()+(5<<STC), OBJ_RAY, m_Episode);
-					newobject.ai.ray.direction = RIGHT;
+					newobject->spawn(object.getXRightPos()+(8<<STC), object.getYUpPos()+(5<<STC), OBJ_RAY, m_Episode);
+					newobject->ai.ray.direction = RIGHT;
 				}
 				else
 				{
-					newobject.spawn(object.getXPosition(), object.getYUpPos()+(5<<STC), OBJ_RAY, m_Episode, LEFT);
-					newobject.ai.ray.direction = LEFT;
+					newobject->spawn(object.getXPosition(), object.getYUpPos()+(5<<STC), OBJ_RAY, m_Episode, LEFT);
+					newobject->ai.ray.direction = LEFT;
 				}
-				newobject.ai.ray.owner = object.m_index;
-				newobject.sprite = ENEMYRAYEP2;
-				newobject.ai.ray.dontHitEnable = 0;
+				newobject->ai.ray.owner = object.m_index;
+				newobject->sprite = ENEMYRAYEP2;
+				newobject->ai.ray.dontHitEnable = 0;
 
 				m_Objvect.push_back(newobject);
 

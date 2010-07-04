@@ -89,32 +89,32 @@ void CObjectAI::icechunk_ai(CObject &object)
 
 void CObjectAI::smash(CObject &object)
 {
-	CObject chunk(mp_Map);
+	CObject *chunk = new CObject(mp_Map);
 
 	if (object.onscreen)
 	{
 		g_pSound->playStereofromCoord(SOUND_CHUNKSMASH, PLAY_NOW, object.getXPosition());
-		chunk.spawn(object.getXPosition(), object.getYPosition(), OBJ_ICEBIT, m_Episode);
-		chunk.solid = false;
+		chunk->spawn(object.getXPosition(), object.getYPosition(), OBJ_ICEBIT, m_Episode);
+		chunk->solid = false;
 
 		// upleft
-		chunk.ai.icechunk.vector_x = -1;
-		chunk.ai.icechunk.vector_y = -1;
+		chunk->ai.icechunk.vector_x = -1;
+		chunk->ai.icechunk.vector_y = -1;
 		m_Objvect.push_back(chunk);
 
 		// upright
-		chunk.ai.icechunk.vector_x = 1;
-		chunk.ai.icechunk.vector_y = -1;
+		chunk->ai.icechunk.vector_x = 1;
+		chunk->ai.icechunk.vector_y = -1;
 		m_Objvect.push_back(chunk);
 
 		// downleft
-		chunk.ai.icechunk.vector_x = -1;
-		chunk.ai.icechunk.vector_y = 1;
+		chunk->ai.icechunk.vector_x = -1;
+		chunk->ai.icechunk.vector_y = 1;
 		m_Objvect.push_back(chunk);
 
 		// downright
-		chunk.ai.icechunk.vector_x = 1;
-		chunk.ai.icechunk.vector_y = 1;
+		chunk->ai.icechunk.vector_x = 1;
+		chunk->ai.icechunk.vector_y = 1;
 		m_Objvect.push_back(chunk);
 	}
 	deleteObj(object);
@@ -158,12 +158,12 @@ void CObjectAI::icecannon_ai(CObject &object)
 	 
 	 if (m_gunfiretimer == 0)
 	 {
-		 CObject chunk(mp_Map);
+		 CObject *chunk = new CObject(mp_Map);
 		 int newpos_x = object.getXPosition()+(object.ai.icechunk.vector_x)*512;
 		 int newpos_y = object.getYPosition()+(object.ai.icechunk.vector_y)*512;
-		 chunk.spawn( newpos_x, newpos_y, OBJ_ICECHUNK, m_Episode);
-		 chunk.ai.icechunk.vector_x = object.ai.icechunk.vector_x;
-		 chunk.ai.icechunk.vector_y = object.ai.icechunk.vector_y;
+		 chunk->spawn( newpos_x, newpos_y, OBJ_ICECHUNK, m_Episode);
+		 chunk->ai.icechunk.vector_x = object.ai.icechunk.vector_x;
+		 chunk->ai.icechunk.vector_y = object.ai.icechunk.vector_y;
 		 m_Objvect.push_back(chunk);
 	 }
 }

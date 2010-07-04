@@ -83,16 +83,15 @@ public:
 	unsigned char touchPlayer;      // 1=hit detection with player
 	unsigned char touchedBy;        // which player was hit
 	
-	bool needinit;    // 1=new object--requires initilization
 	bool dead;
 	
+	bool needinit;
+
 	// data for ai and such, used differently depending on
 	// what kind of object it is
 	union ai
 	{
 		// ep1
-		//stYorpData yorp;
-		stGargData garg;
 		stVortData vort;
 		stButlerData butler;
 		stTankData tank;
@@ -165,7 +164,7 @@ public:
 
 	virtual ~CObject();
 
-private:
+protected:
 	CMap *mp_Map;
 
 	Uint16 m_blinktime;

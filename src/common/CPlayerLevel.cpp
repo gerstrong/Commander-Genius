@@ -829,10 +829,10 @@ void CPlayer::SelectFrame()
 
 void CPlayer::ankh()
 {
-	const unsigned int ANKH_FLICKER_DELAY = 3;
-	const unsigned int ANKH_SHIELD_FRAME = 61;
+	//const unsigned int ANKH_FLICKER_DELAY = 3;
+	//const unsigned int ANKH_SHIELD_FRAME = 61;
 
-	if (!ankhtime) return;
+	/*if (!ankhtime) return;
 	else if (ankhtime < ANKH_STAGE3_TIME)
 		m_Ankhshield.ai.se.state = ANKH_STATE_FLICKERSLOW;
 	else if (ankhtime < ANKH_STAGE2_TIME)
@@ -885,7 +885,7 @@ void CPlayer::ankh()
 		if (m_Ankhshield.ai.se.frame>8) m_Ankhshield.ai.se.frame = 0;
 		m_Ankhshield.ai.se.timer = 0;
 	}
-	else m_Ankhshield.ai.se.timer++;
+	else m_Ankhshield.ai.se.timer++;*/
 
 }
 

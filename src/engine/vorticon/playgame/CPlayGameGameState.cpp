@@ -167,7 +167,7 @@ bool CPlayGameVorticon::saveGameState()
 		m_SavedGame.encodeData(m_Object[i]->getXPosition());
 		m_SavedGame.encodeData(m_Object[i]->getYPosition());
 		m_SavedGame.encodeData(m_Object[i]->dead);
-		m_SavedGame.encodeData(m_Object[i]->needinit);
+		//m_SavedGame.encodeData(m_Object[i]->needinit);
 		m_SavedGame.encodeData(m_Object[i]->onscreen);
 		m_SavedGame.encodeData(m_Object[i]->hasbeenonscreen);
 		m_SavedGame.encodeData(m_Object[i]->exists);
