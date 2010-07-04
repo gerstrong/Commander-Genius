@@ -2,29 +2,36 @@
 #include "../../../sdl/sound/CSound.h"
 
 // raygun blast, shot by keen, and by the tank robots in ep1&2.
-#include "ray.h"
+#include "CRay.h"
 #include "../../spritedefines.h"
 #include "../../../common/CBehaviorEngine.h"
 #include "../../../sdl/CVideoDriver.h"
 
 #define Sprite g_pGfxEngine->Sprite
 
-void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed )
+CRay::CRay(std::vector<CPlayer> &PlayerVect, CMap *p_map,
+		bool automatic_raygun, char pShotSpeed, direction_t dir) :
+CObject(p_map),
+m_PlayerVect(PlayerVect),
+mp_map(p_map),
+m_automatic_raygun(automatic_raygun),
+m_pShotSpeed(pShotSpeed),
+m_Direction(dir)
+{
+	state = RAY_STATE_FLY;
+	inhibitfall = true;
+	needinit = false;
+	checkinitialCollisions();
+}
+
+void CRay::process()
 {
 	int hitlethal;
 	int rayspeed;
 	CSprite &raysprite = g_pGfxEngine->getSprite(object.sprite);
-	if (object.needinit)
-	{
-		object.ai.ray.state = RAY_STATE_FLY;
-		object.inhibitfall = true;
-		object.needinit = false;
-		
-		object.checkinitialCollisions();
-	}
 	
 	// shots from "fully automatic" raygun go faster
-	if (object.sprite!=OBJ_RAY_DEFSPRITE_EP1 || !automatic_raygun)
+	if (sprite!=OBJ_RAY_DEFSPRITE_EP1 || !automatic_raygun)
 	{
 		if (!pShotSpeed)
 			rayspeed = RAY_SPEED;
@@ -39,7 +46,7 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
 	
 	std::vector<CObject*>::iterator it_obj;
-	switch(object.ai.ray.state)
+	switch(state)
 	{
 		case RAY_STATE_FLY:
 
@@ -53,9 +60,9 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 						if((*it_obj)->canbezapped || (*it_obj)->m_type == OBJ_RAY )
 						{
 							if ((*it_obj)->hitdetect(object) &&
-								 object.ai.ray.shotbyplayer  )
+								 shotbyplayer  )
 							{
-								object.ai.ray.state = RAY_STATE_SETZAPZOT;
+								state = RAY_STATE_SETZAPZOT;
 								object.canbezapped = false;
 								(*it_obj)->zapped++;
 								if(g_pVideoDriver->getSpecialFXConfig())
@@ -85,31 +92,31 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 				}
 			}
 			// check if ray hit keen. if canpk=0, only enemy rays can hurt keen
-			if (object.touchPlayer)
+			if (touchPlayer)
 			{
 				if (m_Player[object.touchedBy].pfrozentime > PFROZEN_THAW && m_Episode==1)
 				{
 					// shot a frozen player--melt the ice
 					m_Player[object.touchedBy].pfrozentime = PFROZEN_THAW;
-					object.ai.ray.state = RAY_STATE_SETZAPZOT;
+					state = RAY_STATE_SETZAPZOT;
 					object.canbezapped = false;
 				}
 				else
 				{
-					if(object.ai.ray.shotbyplayer != true)
+					if(shotbyplayer != true)
 					{
 						m_Player[object.touchedBy].kill();
-						object.ai.ray.state = RAY_STATE_SETZAPZOT;
+						state = RAY_STATE_SETZAPZOT;
 						object.canbezapped = false;
 					}
 					else
 					{ // still could be by another player
-						if(m_Player[object.touchedBy].m_index != object.ai.ray.owner)
+						if(m_Player[object.touchedBy].m_index != owner)
 						{
-							if (object.ai.ray.dontHitEnable==0 || object.ai.ray.dontHit!=OBJ_PLAYER)
+							if (dontHitEnable==0 || dontHit!=OBJ_PLAYER)
 							{
 								m_Player[object.touchedBy].kill();
-								object.ai.ray.state = RAY_STATE_SETZAPZOT;
+								state = RAY_STATE_SETZAPZOT;
 								object.canbezapped = false;
 							}
 						}
@@ -117,7 +124,7 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 				}
 			}
 
-			if (object.ai.ray.direction == RIGHT)
+			if (direction == RIGHT)
 			{
 				// don't go through bonklethal tiles, even if they're not solid
 				// (for the arms on mortimer's machine)
@@ -130,14 +137,14 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 				
 				if (object.blockedr)
 				{
-					object.ai.ray.state = RAY_STATE_SETZAPZOT;
+					state = RAY_STATE_SETZAPZOT;
 					object.canbezapped = false;
 					if (object.onscreen)
 						g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, object.scrx);
 				}
 				object.moveRight(rayspeed);
 			}
-			else if (object.ai.ray.direction == LEFT)
+			else if (direction == LEFT)
 			{
 				if (TileProperties.at(mp_Map->at((x-1)>>CSF, (y+1)>>CSF)).behaviour == 1)
 					hitlethal = true;
@@ -148,17 +155,17 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 				
 				if (object.blockedl)
 				{
-					object.ai.ray.state = RAY_STATE_SETZAPZOT;
+					state = RAY_STATE_SETZAPZOT;
 					object.canbezapped = false;
 					if (object.onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, object.scrx);
 				}
 				object.moveLeft(rayspeed);
 			}
-			else if (object.ai.ray.direction == DOWN)
+			else if (direction == DOWN)
 			{
 				if (object.blockedd || object.blockedu)
 				{
-					object.ai.ray.state = RAY_STATE_SETZAPZOT;
+					state = RAY_STATE_SETZAPZOT;
 					object.canbezapped = false;
 					if (object.onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, object.scrx);
 				}
@@ -167,8 +174,8 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 			}
 			break;
 		case RAY_STATE_SETZAPZOT:
-			object.ai.ray.state = RAY_STATE_ZAPZOT;
-			object.ai.ray.zapzottimer = RAY_ZAPZOT_TIME;
+			state = RAY_STATE_ZAPZOT;
+			zapzottimer = RAY_ZAPZOT_TIME;
 			
 			if (m_Episode==1)
 			{
@@ -192,16 +199,16 @@ void CObjectAI::ray_ai( CObject &object, bool automatic_raygun, char pShotSpeed 
 				{ object.sprite = RAY_FRAME_ZOT_EP3; }
 			}
 			
-			if (object.ai.ray.direction==LEFT || object.ai.ray.direction==RIGHT)
+			if (direction==LEFT || direction==RIGHT)
 				object.moveUp(2);
 			else
 				object.moveLeft(4);
 
 			// ... and fall through
 		case RAY_STATE_ZAPZOT:
-			if (object.ai.ray.zapzottimer == 0) deleteObj(object);
-			else object.ai.ray.zapzottimer--;
+			if (zapzottimer == 0) deleteObj(object);
+			else zapzottimer--;
 			break;
 	}
-}
 
+}

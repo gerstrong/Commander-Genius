@@ -65,28 +65,6 @@ typedef struct stButlerData
 	unsigned char movedir;
 } stButlerData;
 
-// a shot from keen's raygun or an enemy that shoots rayguns
-// also used for various other types of projectiles
-typedef struct stRayData
-{
-	char state;
-	char direction;
-	char zapzottimer;
-	
-	unsigned char dontHitEnable;
-	unsigned int dontHit;         // index of an object type ray will not harm
-	unsigned int owner;			  // Object number, from which the ray has been shot.
-	bool shotbyplayer;
-	
-	// for soundwave
-	int animframe, animtimer;
-	int offscreentime;
-	
-	// for earth chunks
-	int baseframe;
-} stRayData;
-
-
 typedef struct stDoorData
 {
 	char timer;

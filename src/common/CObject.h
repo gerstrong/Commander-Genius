@@ -94,7 +94,6 @@ public:
 		// ep1
 		stButlerData butler;
 		stTankData tank;
-		stRayData ray;
 		stDoorData door;
 		stIceChunk icechunk;
 		stTeleportData teleport;
