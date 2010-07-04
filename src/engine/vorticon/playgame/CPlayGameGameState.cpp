@@ -94,7 +94,7 @@ bool CPlayGameVorticon::loadGameState()
 			m_SavedGame.decodeData(object.sprite);
 			m_SavedGame.decodeData(object.ai);
 			if(object.m_type != OBJ_DOOR) // small workaround for doors which might be opening
-				m_Object.push_back(object);
+				m_Object.push_back(&object);
 		}
 
 		// TODO: An algorithm for comparing the number of players saved and we actually have need to be in sync
@@ -163,25 +163,25 @@ bool CPlayGameVorticon::saveGameState()
 	m_SavedGame.encodeData(size);
 	for( i=0 ; i<size ; i++) {
 		// save all the objects states
-		m_SavedGame.encodeData(m_Object[i].m_type);
-		m_SavedGame.encodeData(m_Object[i].getXPosition());
-		m_SavedGame.encodeData(m_Object[i].getYPosition());
-		m_SavedGame.encodeData(m_Object[i].dead);
-		m_SavedGame.encodeData(m_Object[i].needinit);
-		m_SavedGame.encodeData(m_Object[i].onscreen);
-		m_SavedGame.encodeData(m_Object[i].hasbeenonscreen);
-		m_SavedGame.encodeData(m_Object[i].exists);
-		m_SavedGame.encodeData(m_Object[i].blockedd);
-		m_SavedGame.encodeData(m_Object[i].blockedu);
-		m_SavedGame.encodeData(m_Object[i].blockedl);
-		m_SavedGame.encodeData(m_Object[i].blockedr);
-		m_SavedGame.encodeData(m_Object[i].zapped);
-		m_SavedGame.encodeData(m_Object[i].canbezapped);
-		m_SavedGame.encodeData(m_Object[i].cansupportplayer);
-		m_SavedGame.encodeData(m_Object[i].inhibitfall);
-		m_SavedGame.encodeData(m_Object[i].honorPriority);
-		m_SavedGame.encodeData(m_Object[i].sprite);
-		m_SavedGame.encodeData(m_Object[i].ai);
+		m_SavedGame.encodeData(m_Object[i]->m_type);
+		m_SavedGame.encodeData(m_Object[i]->getXPosition());
+		m_SavedGame.encodeData(m_Object[i]->getYPosition());
+		m_SavedGame.encodeData(m_Object[i]->dead);
+		m_SavedGame.encodeData(m_Object[i]->needinit);
+		m_SavedGame.encodeData(m_Object[i]->onscreen);
+		m_SavedGame.encodeData(m_Object[i]->hasbeenonscreen);
+		m_SavedGame.encodeData(m_Object[i]->exists);
+		m_SavedGame.encodeData(m_Object[i]->blockedd);
+		m_SavedGame.encodeData(m_Object[i]->blockedu);
+		m_SavedGame.encodeData(m_Object[i]->blockedl);
+		m_SavedGame.encodeData(m_Object[i]->blockedr);
+		m_SavedGame.encodeData(m_Object[i]->zapped);
+		m_SavedGame.encodeData(m_Object[i]->canbezapped);
+		m_SavedGame.encodeData(m_Object[i]->cansupportplayer);
+		m_SavedGame.encodeData(m_Object[i]->inhibitfall);
+		m_SavedGame.encodeData(m_Object[i]->honorPriority);
+		m_SavedGame.encodeData(m_Object[i]->sprite);
+		m_SavedGame.encodeData(m_Object[i]->ai);
 	}
 
 	// Save the map_data as it is left

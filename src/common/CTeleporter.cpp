@@ -100,12 +100,12 @@ void CTeleporter::readTeleportDestCoordinatesEP3(int objectID, CMap &map,int &de
 	}
 }
 
-void CTeleporter::teleportPlayer(int objectID, CMap &map, std::vector<CObject> &p_vect_object, CPlayer &player)
+void CTeleporter::teleportPlayer(int objectID, CMap &map, std::vector<CObject*> &p_vect_object, CPlayer &player)
 {
-	int destx, desty;
+	/*int destx, desty;
 
 	int origx, origy;
-	CObject teleporter(&map);
+	CObject *teleporter = CObject(&map);
 	map.findObject(objectID, &origx, &origy);
 	teleporter.spawn( origx<<CSF, origy<<CSF, OBJ_TELEPORTER, m_episode );
 	teleporter.solid = false;
@@ -117,12 +117,12 @@ void CTeleporter::teleportPlayer(int objectID, CMap &map, std::vector<CObject> &
 	teleporter.ai.teleport.destx = destx>>TILE_S;
 	teleporter.ai.teleport.desty = desty>>TILE_S;
 	teleporter.ai.teleport.whichplayer = player.m_index;
-	p_vect_object.push_back(teleporter);
+	p_vect_object.push_back(teleporter);*/
 }
 
-void CTeleporter::teleportPlayerFromLevel(CMap &map, std::vector<CObject> &p_vect_object, CPlayer &player, int origx, int origy)
+void CTeleporter::teleportPlayerFromLevel(CMap &map, std::vector<CObject*> &p_vect_object, CPlayer &player, int origx, int origy)
 {
-	int destx, desty;
+	/*int destx, desty;
 
 	CObject teleporter(&map);
 	player.beingteleported = true;
@@ -135,5 +135,5 @@ void CTeleporter::teleportPlayerFromLevel(CMap &map, std::vector<CObject> &p_vec
 	teleporter.ai.teleport.destx = destx>>TILE_S;
 	teleporter.ai.teleport.desty = desty>>TILE_S;
 	teleporter.ai.teleport.whichplayer = player.m_index;
-	p_vect_object.push_back(teleporter);
+	p_vect_object.push_back(teleporter);*/
 }

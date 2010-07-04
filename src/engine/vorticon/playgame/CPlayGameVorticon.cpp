@@ -45,7 +45,6 @@ mp_HighScores(NULL)
 	{
 		// Put some important Player properties
 		CPlayer &thisPlayer = m_Player.at(i);
-		thisPlayer.setIndex(i);
 		thisPlayer.setDatatoZero();
 	}
 
@@ -116,7 +115,7 @@ bool CPlayGameVorticon::init()
 
 	// Create an empty map
 	m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
-	std::vector<CObject>::iterator it_obj = m_Object.begin();
+	std::vector<CObject*>::iterator it_obj = m_Object.begin();
 
 	CMapLoader MapLoader( &m_Map, &m_Player );
 	MapLoader.m_checkpointset = m_checkpointset;
@@ -325,8 +324,8 @@ void CPlayGameVorticon::process()
 			{
 				CBitmap *pBitmap = g_pGfxEngine->getBitmap("GAMEOVER");
 				g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
-				mp_gameoverbmp = new CEGABitmap(&m_Map , g_pVideoDriver->getBlitSurface(), pBitmap);
-				mp_gameoverbmp->setScrPos( 160-(pBitmap->getWidth()/2), 100-(pBitmap->getHeight()/2) );
+				//mp_gameoverbmp = new CEGABitmap(&m_Map , g_pVideoDriver->getBlitSurface(), pBitmap);
+				//mp_gameoverbmp->setScrPos( 160-(pBitmap->getWidth()/2), 100-(pBitmap->getHeight()/2) );
 			}
 		}
 		else // No game over
@@ -576,9 +575,9 @@ void CPlayGameVorticon::drawObjects()
 			it_player->draw();
 	}
 
-	std::vector<CObject>::iterator it_obj = m_Object.begin();
+	std::vector<CObject*>::iterator it_obj = m_Object.begin();
 	for(; it_obj!=m_Object.end() ; it_obj++)
-		it_obj->draw();
+		(*it_obj)->draw();
 }
 
 ////

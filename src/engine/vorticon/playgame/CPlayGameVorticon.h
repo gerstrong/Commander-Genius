@@ -104,7 +104,7 @@ private:
 	std::list<CMessageBox*> m_MessageBoxes;
 	std::vector<stTeleporterTable> &m_TeleporterTable;
 	bool m_showKeensLeft;
-	std::vector<CObject> m_Object;
+	std::vector<CObject*> m_Object;
 	CHighScores *mp_HighScores;
 	CHUD *mp_HUD;
 };

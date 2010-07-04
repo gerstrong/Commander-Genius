@@ -38,20 +38,20 @@ bool CTitle::init(int Episode)
 	
 	if( (pBitmap = g_pGfxEngine->getBitmap("TITLE")) != NULL )
 	{
-		p_object = new CEGABitmap( &m_map, pSurface, pBitmap );
-		p_object->setScrPos( 160-(pBitmap->getWidth()/2), 0 );
-		m_objects.push_back(p_object);
+		//p_object = new CEGABitmap( &m_map, pSurface, pBitmap );
+		//p_object->setScrPos( 160-(pBitmap->getWidth()/2), 0 );
+		//m_objects.push_back(p_object);
 	}
 
 	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
 
 	if( (pBitmap = g_pGfxEngine->getBitmap("F1HELP")) != NULL )
 	{
-		pBitmap = g_pGfxEngine->getBitmap("F1HELP");
-		p_object = new CEGABitmap( &m_map, pSurface, pBitmap );
+		//pBitmap = g_pGfxEngine->getBitmap("F1HELP");
+		//p_object = new CEGABitmap( &m_map, pSurface, pBitmap );
 
-		p_object->setScrPos( (Episode == 3) ? 128 : 96, gameres.h-18 );
-		m_objects.push_back(p_object);
+		//p_object->setScrPos( (Episode == 3) ? 128 : 96, gameres.h-18 );
+		//m_objects.push_back(p_object);
 	}
 
 	if(gameres.h > 200) // This happens, when the have higher game res height, and ugly unseen

@@ -27,7 +27,7 @@
 ///
 CPlayer::CPlayer(const char &Episode, short &Level, char &Difficulty,
 				 bool *mp_level_completed, stOption *mp_option,
-				 std::vector<CObject> &m_Object, CMap &map) :
+				 std::vector<CObject*> &m_Object, CMap &map) :
 CObject(&map),
 m_episode(Episode),
 m_level(Level),
@@ -804,31 +804,31 @@ bool CPlayer::checkObjSolid()
 	else
 		blockedd = false;
 
-	std::vector<CObject>::iterator it_obj = mp_object->begin();
+	std::vector<CObject*>::iterator it_obj = mp_object->begin();
 	for( ; it_obj != mp_object->end() ; it_obj++ )
 	{
-		if(it_obj->cansupportplayer)
+		if((*it_obj)->cansupportplayer)
 		{	// can support player
-			if(getXRightPos() >= it_obj->getXLeftPos()  &&
-					getXLeftPos() <= it_obj->getXRightPos() )
+			if(getXRightPos() >= (*it_obj)->getXLeftPos()  &&
+					getXLeftPos() <= (*it_obj)->getXRightPos() )
 			{
-				if(getYUpPos() >= it_obj->getYUpPos()-(1<<STC)  &&
-					getYUpPos() <= it_obj->getYMidPos() )
+				if(getYUpPos() >= (*it_obj)->getYUpPos()-(1<<STC)  &&
+					getYUpPos() <= (*it_obj)->getYMidPos() )
 				{	// In this case the object pushs the player down!
 					pjumping = PNOJUMP;
-					int dy = it_obj->getYDownPos() - getYUpPos();
+					int dy = (*it_obj)->getYDownPos() - getYUpPos();
 					moveDown(dy);
 				}
-				else if(getYDownPos() >= it_obj->getYUpPos()-(1<<STC)  &&
-						getYDownPos() <= it_obj->getYMidPos() )
+				else if(getYDownPos() >= (*it_obj)->getYUpPos()-(1<<STC)  &&
+						getYDownPos() <= (*it_obj)->getYMidPos() )
 				{	// In this case stand on the object
 					pfalling = false;
 					blockedd = true;
 					if(pjumping == PJUMPLAND)
 						pjumping = PNOJUMP;
 					supportedbyobject = true;
-					psupportingobject = it_obj->m_index;
-					int dy = it_obj->getYUpPos() - getYDownPos()+1;
+					psupportingobject = (*it_obj)->m_index;
+					int dy = (*it_obj)->getYUpPos() - getYDownPos()+1;
 					moveYDir(dy);
 					break;
 				}

@@ -18,6 +18,7 @@ int CObject::m_number_of_objects = 0; // The current number of total objects we 
 // Initialization Routine
 ///
 CObject::CObject(CMap *pmap) :
+m_type(OBJ_NONE),
 m_index(m_number_of_objects),
 mp_object(NULL),
 mp_Map(pmap),
@@ -88,9 +89,6 @@ bool CObject::spawn(int x0, int y0, object_t otype, int Episode, direction_t dir
 	g_pLogFile->ftextOut("Object of type %d could not be created at %d,%d (out of object slots)<br>",otype,x,y);
 	return false;
 }
-
-void CObject::setIndex(int index)
-{	m_index = index;	}
 
 void CObject::setupObjectType(int Episode)
 {

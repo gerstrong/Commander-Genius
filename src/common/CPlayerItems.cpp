@@ -195,10 +195,10 @@ void CPlayer::riseBonus(int spr, int x, int y)
 {
 	 if (mp_option[OPT_RISEBONUS].value)
 	 {
-		 CObject GotPointsObj(mp_map);
+		 /*CObject GotPointsObj(mp_map);
 		 GotPointsObj.spawn(x<<CSF, y<<CSF, OBJ_GOTPOINTS, m_episode);
 		 GotPointsObj.sprite = spr;
-		 mp_object->push_back(GotPointsObj);
+		 mp_object->push_back(GotPointsObj);*/
 	 }
 }
 
@@ -354,12 +354,12 @@ std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTilePropertie
 	 }
 	 
 	 // replace the door tiles with a door object, which will do the animation
-	 CObject doorobj(mp_map);
+	 /*CObject doorobj(mp_map);
 
 	 doorobj.spawn(mpx<<CSF,(mpy-tilefix)<<CSF, OBJ_DOOR, m_episode);
 	 doorobj.sprite = doorsprite;
 
-	 mp_object->push_back(doorobj);
+	 mp_object->push_back(doorobj);*/
 }
 
 void CPlayer::giveAnkh()

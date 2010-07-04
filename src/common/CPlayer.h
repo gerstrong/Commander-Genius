@@ -35,7 +35,7 @@ public:
 
 	CPlayer(const char &Episode, short &Level, char &Difficulty,
 			 bool *mp_level_completed, stOption *mp_option,
-			 std::vector<CObject> &m_Object, CMap &map);
+			 std::vector<CObject*> &m_Object, CMap &map);
 	void setDatatoZero();
 	void setDefaultStartValues();
 	void setMapData(CMap *p_map){ mp_map=p_map; }

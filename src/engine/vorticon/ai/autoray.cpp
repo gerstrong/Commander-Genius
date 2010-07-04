@@ -12,7 +12,7 @@
 
 void CObjectAI::autoray_ai(CObject &Object)
 {
-	if (Object.needinit)
+/*	if (Object.needinit)
 	{
 		Object.ai.se.timer = 0;
 		Object.sprite = BLANKSPRITE;
@@ -23,7 +23,7 @@ void CObjectAI::autoray_ai(CObject &Object)
 	if (m_gunfiretimer == 0)
 	{
 		unsigned int x,y;
-		CObject NewRay(mp_Map);
+		CObject NewRay = new CObject(mp_Map);
 		NewRay.ai.ray.owner = 0;
 		x = Object.getXPosition();
 		y = Object.getYPosition();
@@ -44,7 +44,7 @@ void CObjectAI::autoray_ai(CObject &Object)
 		m_Objvect.push_back(NewRay);
 
 		if (Object.onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, Object.scrx);
-	}
+	}*/
 }
 
 

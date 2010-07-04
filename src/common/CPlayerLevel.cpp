@@ -348,11 +348,11 @@ void CPlayer::TogglePogo_and_Switches(const bool &platextending)
 						int platy = my + pyoff;
 
 						// spawn a "sector effector" to extend/retract the platform
-						CObject platobject(mp_map);
-						platobject.spawn(mx<<CSF,my<<CSF,OBJ_SECTOREFFECTOR, m_episode);
-						platobject.ai.se.type = SE_EXTEND_PLATFORM;
-						platobject.ai.se.platx = platx;
-						platobject.ai.se.platy = platy;
+						CObject *platobject = new CObject(mp_map);
+						platobject->spawn(mx<<CSF,my<<CSF,OBJ_SECTOREFFECTOR, m_episode);
+						platobject->ai.se.type = SE_EXTEND_PLATFORM;
+						platobject->ai.se.platx = platx;
+						platobject->ai.se.platy = platy;
 						mp_object->push_back(platobject);
 					}
 				}
@@ -739,7 +739,7 @@ void CPlayer::raygun()
 			if (inventory.charges)
 			{  // we have enough charges
 				int xdir, ydir;
-				CObject rayobject(mp_map);
+				CObject *rayobject = new CObject(mp_map);
 				inventory.charges--;
 				pshowdir = pdir;
 				
@@ -749,14 +749,14 @@ void CPlayer::raygun()
 				if (pdir==RIGHT) xdir = getXRightPos()+xinertia;
 				else xdir = getXLeftPos()+xinertia;
 				
-				rayobject.spawn(xdir, ydir, OBJ_RAY, m_episode, pdir);
-				rayobject.ai.ray.owner = m_index;
-				rayobject.ai.ray.shotbyplayer = true;
-				rayobject.ai.ray.direction = pdir;
+				rayobject->spawn(xdir, ydir, OBJ_RAY, m_episode, pdir);
+				rayobject->ai.ray.owner = m_index;
+				rayobject->ai.ray.shotbyplayer = true;
+				rayobject->ai.ray.direction = pdir;
 				
-				rayobject.ai.ray.dontHitEnable = true;
+				rayobject->ai.ray.dontHitEnable = true;
 				if (!mp_option[OPT_ALLOWPKING].value)
-					rayobject.ai.ray.dontHit = OBJ_PLAYER;
+					rayobject->ai.ray.dontHit = OBJ_PLAYER;
 				mp_object->push_back(rayobject);
 			}
 			else

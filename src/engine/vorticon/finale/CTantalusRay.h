@@ -19,7 +19,7 @@
 class CTantalusRay : public CFinale
 {
 public:
-	CTantalusRay(CMap &Map, std::vector<CObject> &vect_obj, CObjectAI &objectai);
+	CTantalusRay(CMap &Map, std::vector<CObject*> &vect_obj, CObjectAI &objectai);
 
 	void process();
 
@@ -33,7 +33,7 @@ private:
 	int m_alternate_sprite;
 	CMessageBox *mp_MessageBox;
 	CObject *mp_ShootObject;
-	std::vector<CObject> &m_vect_obj;
+	std::vector<CObject*> &m_vect_obj;
 	CObjectAI &m_objectai;
 	Uint32 m_timer;
 	CBitmap *mp_Bitmap;

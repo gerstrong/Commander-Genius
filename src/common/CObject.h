@@ -72,7 +72,7 @@ public:
  	bool bumped;
 
 	bool cansupportplayer;
-	std::vector<CObject> *mp_object;
+	std::vector<CObject*> *mp_object;
 	
 	bool blockedl, blockedr, blockedu, blockedd;
 	signed int xinertia, yinertia;
@@ -91,7 +91,7 @@ public:
 	union ai
 	{
 		// ep1
-		stYorpData yorp;
+		//stYorpData yorp;
 		stGargData garg;
 		stVortData vort;
 		stButlerData butler;
@@ -123,7 +123,6 @@ public:
 	void setScrPos( int px, int py );
 	bool calcVisibility( int player_x, int player_y );
 	bool spawn(int x0, int y0, object_t otype, int Episode, direction_t dirof = RIGHT );
-	void setIndex(int index);
 	
 	// Moving parts
 	void moveToForce(int new_x, int new_y);
@@ -149,7 +148,7 @@ public:
 	bool checkSolidU( int x1, int x2, int y1);
 	bool checkSolidD( int x1, int x2, int y2);
 
-	// getters
+	// getters for positions
 	unsigned int getXPosition();
 	unsigned int getYPosition();
 	unsigned int getXLeftPos();

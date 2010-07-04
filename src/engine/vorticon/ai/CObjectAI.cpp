@@ -9,7 +9,7 @@
 #include "../../../sdl/CVideoDriver.h"
 #include "../../../CLogFile.h"
 
-CObjectAI::CObjectAI(CMap *p_map, std::vector<CObject> &objvect, std::vector<CPlayer> &Player,
+CObjectAI::CObjectAI(CMap *p_map, std::vector<CObject*> &objvect, std::vector<CPlayer> &Player,
 					 stOption *p_options, int NumPlayers, int episode, int level,
 					 char difficulty, bool &dark) :
 m_Objvect(objvect),
@@ -33,7 +33,7 @@ void CObjectAI::process()
 {
 	for( size_t i=0 ; i < m_Objvect.size() ; i++ )
 	{
-		CObject &object = m_Objvect.at(i);
+		CObject &object = *m_Objvect.at(i);
 		if( checkforAIObject(object) )
 		{
 			object.processFalling();
@@ -56,8 +56,9 @@ void CObjectAI::process()
 
 		    }
 			performSpecialAIType( object );
+
+			object.process();
 		}
-		object.process();
 	}
 
 	if(m_gunfiretimer < ((m_Episode==3) ? 180 : 50 )) m_gunfiretimer++;
@@ -70,6 +71,8 @@ void CObjectAI::process()
 bool CObjectAI::checkforAIObject( CObject &object )
 {
 	unsigned int type = object.m_type;
+
+	if ( object.exists && type==OBJ_NONE ) return true;
 
 	if ( !object.exists || type==OBJ_PLAYER ) return false;
 
@@ -109,7 +112,7 @@ bool CObjectAI::checkforAIObject( CObject &object )
 
 void CObjectAI::performSpecialAIType( CObject &object )
 {
-	switch(object.m_type)
+	/*switch(object.m_type)
 	{
 		//KEEN1
 		case OBJ_YORP: yorp_ai(object, &m_Player[0], m_difficulty>1); break;
@@ -152,12 +155,10 @@ void CObjectAI::performSpecialAIType( CObject &object )
 		case OBJ_AUTORAY: case OBJ_AUTORAY_V: autoray_ai(object); break;
 		case OBJ_GOTPOINTS: gotpoints_ai(object); break;
 
-			//case OBJ_DEMOMSG: break;
-
 		default:
 			g_pLogFile->ftextOut("gamedo_enemy_ai: Object is of invalid type %d\n", object.m_type);
 			break;
-    }
+    }*/
 }
 
 void CObjectAI::SetAllCanSupportPlayer(CObject &object, bool state)
@@ -188,15 +189,15 @@ void CObjectAI::kill_all_intersecting_tile(int mpx, int mpy)
 	 xpix = mpx<<CSF;
 	 ypix = mpy<<CSF;
 
-	 std::vector<CObject>::iterator object;
+	 std::vector<CObject*>::iterator object;
 	 for( object=m_Objvect.begin() ; object!=m_Objvect.end() ; object++ )
 	 {
-		 x = object->getXMidPos();
-		 y = object->getYUpPos();
-		 if (object->exists)
+		 x = (*object)->getXMidPos();
+		 y = (*object)->getYUpPos();
+		 if ((*object)->exists)
 			 if (xpix-(1<<CSF) <= x && xpix+(1<<CSF) >= x)
 				 if (ypix <= y && ypix+(1<<CSF) >= y)
-					 object->kill();
+					 (*object)->kill();
 	 }
 }
 

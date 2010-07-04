@@ -27,7 +27,7 @@ public:
 	
 	bool m_checkpointset;
 	bool m_NessieAlreadySpawned;
-	std::vector<CObject> *mp_objvect;
+	std::vector<CObject*> *mp_objvect;
 
 	virtual ~CMapLoader();
 

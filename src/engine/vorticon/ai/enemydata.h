@@ -13,20 +13,6 @@
 
 // Structs used for different enemy's variables. These are in a union.
 
-typedef struct stYorpData
-{
-	unsigned char state;
-	
-	unsigned char looktimes,lookposition;
-	unsigned char timer, dietimer;
-	unsigned char walkframe;
-	unsigned int dist_traveled;
-	signed int yorpdie_inertia_y;
-	
-	unsigned char movedir;
-} stYorpData;
-
-
 typedef struct stGargData
 {
 	unsigned char state;

@@ -152,7 +152,7 @@ void CPlayer::selectFrameOnWorldMap()
 void CPlayer::MountNessieIfAvailable()
 {
 	// Look for the Nessie object
-	std::vector<CObject>::iterator obj = mp_object->begin();
+	/*std::vector<CObject>::iterator obj = mp_object->begin();
 	for(; obj != mp_object->end() ; obj++)
 	{
 		if(obj->m_type == OBJ_NESSIE)
@@ -180,13 +180,13 @@ void CPlayer::MountNessieIfAvailable()
 			break;
 		}
 	}
-
+*/
 }
 
 void CPlayer::UnmountNessie()
 {
 	// Check if a NESSIE_LAND_OBJ is nearby the player. Only then he can unmount
-	int dx, dy;
+	/*int dx, dy;
 	int x = getXPosition()>>CSF;
 	int y = getYPosition()>>CSF;
 	for(dy=-1 ; dy <= 1 ; dy++)
@@ -221,6 +221,6 @@ void CPlayer::UnmountNessie()
 				}
 			}
 		}
-	}
+	}*/
 }
 
