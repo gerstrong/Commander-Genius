@@ -1,7 +1,6 @@
 #include "CObjectAI.h"
 
 // Nessie (in ep3) (on the world map)
-
 enum nessie_actions{
 	NESSIE_SWIMNORMAL, NESSIE_PAUSE
 };
@@ -18,6 +17,10 @@ enum nessie_actions{
 #define NESSIE_SPEED            32
 
 void nessie_find_next_checkpoint(int o);
+
+CMessie::CMessie(CMap *p_map) :
+CObject(p_map)
+{}
 
 void CObjectAI::nessie_ai(CObject& object)
 {

@@ -2,6 +2,10 @@
 #include "../../../misc.h"
 #include "CObjectAI.h"
 
+CMeep::CMeep(CMap *p_map) :
+CObject(p_map)
+{}
+
 enum meep_actions{
 	MEEP_WALK, MEEP_SING,
 	MEEP_DYING, MEEP_DEAD

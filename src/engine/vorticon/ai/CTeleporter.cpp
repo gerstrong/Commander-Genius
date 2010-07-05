@@ -25,6 +25,10 @@ const int TELEPORTATION_SPEED = 128;
 const int TELEPORTER_NUMFRAMES_EP3 = 16;
 const int TELEPORTER_NUMFRAMES_EP1 = 20;
 
+CTeleporter::CTeleporter(CMap *p_map) :
+CObject(p_map)
+{}
+
 void CObjectAI::teleporter_ai(CObject &object)
 {
 	int mx, my;

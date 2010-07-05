@@ -13,6 +13,10 @@
 #define GOTPOINTS_LIFETIME      25
 #define YORPSHIELD_LIFETIME     20
 
+CRisingPoints::CRisingPoints(CMap *p_map) :
+CObject(p_map)
+{}
+
 void CObjectAI::gotpoints_ai(CObject &Object)
 {
 	if (Object.needinit)

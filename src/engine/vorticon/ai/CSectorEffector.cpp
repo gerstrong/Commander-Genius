@@ -18,6 +18,10 @@
 
 int mortimer_surprisedcount = 0;
 
+CSectorEffector::CSectorEffector(CMap *p_map) :
+CObject(p_map)
+{}
+
 void CObjectAI::se_ai(CObject &object)
 {
 	switch(object.ai.se.type)

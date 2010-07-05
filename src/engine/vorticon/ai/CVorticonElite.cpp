@@ -47,6 +47,10 @@ enum vortelite_actions{
 
 #define VORTELITE_TRAPPED_DIST        150
 
+CVorticonElite::CVorticonElite(CMap *p_map) :
+CObject(p_map)
+{}
+
 void CObjectAI::vortelite_ai(CObject &object, bool darkness)
 {
 	int bonk;

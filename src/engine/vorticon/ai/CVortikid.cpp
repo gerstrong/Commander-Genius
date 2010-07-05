@@ -29,6 +29,10 @@ enum baby_jump_style{
 BABY_JUMP_BIG, BABY_JUMP_SMALL
 };
 
+CVortikid::CVortikid(CMap *p_map) :
+CObject(p_map)
+{}
+
 void CObjectAI::baby_ai(CObject &object, int episode, bool hard)
 {
 	bool ep3;

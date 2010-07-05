@@ -30,6 +30,10 @@ enum scrub_actions{
 #define SCRUB_FRY_FRAME       110
 #define SCRUB_DEAD_FRAME      111
 
+CScrub::CScrub(CMap *p_map) :
+CObject(p_map)
+{}
+
 void CObjectAI::scrub_ai(CObject &object)
 {
 	if (object.needinit)

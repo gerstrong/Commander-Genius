@@ -23,6 +23,10 @@ enum ninja_actions{
 
 unsigned int rnd(void);
 
+CVortiNinja::CVortiNinja(CMap *p_map) :
+CObject(p_map)
+{}
+
 void CObjectAI::ninja_ai(CObject &object, bool hardmode)
 {
 	int onsamelevel;

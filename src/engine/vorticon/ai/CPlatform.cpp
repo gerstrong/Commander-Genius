@@ -12,6 +12,9 @@
 
 #define PLATFORMPUSHAMOUNT      40
 
+CPlatform::CPlatform(CMap *p_map) :
+CObject(p_map)
+{}
 
 void CObjectAI::platform_ai(CObject &object)
 {

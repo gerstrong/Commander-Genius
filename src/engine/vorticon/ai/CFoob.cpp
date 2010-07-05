@@ -2,8 +2,8 @@
 #include "../../../sdl/sound/CSound.h"
 #include "../../../graphics/CGfxEngine.h"
 
-CFoob::CFoob():
-CObject()
+CFoob::CFoob(CMap *p_map):
+CObject(p_map)
 {
 
 }

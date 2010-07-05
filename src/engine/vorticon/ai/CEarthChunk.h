@@ -31,7 +31,7 @@ EC_DOWNRIGHT,
 class CEarthChunk : public CObject
 {
 public:
-	CEarthChunk();
+	CEarthChunk(CMap *p_map);
 	void process();
 
 	st_ec_direction m_Direction;

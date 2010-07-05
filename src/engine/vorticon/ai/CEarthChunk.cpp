@@ -9,8 +9,8 @@
 #define HALFCHUNKSPD    (CHUNKSPD/2)
 #define BIGCHUNKSPD     16
 
-CEarthChunk::CEarthChunk():
-CObject()
+CEarthChunk::CEarthChunk(CMap *p_map):
+CObject(p_map)
 {
 	inhibitfall = true;
 	needinit = false;

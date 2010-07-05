@@ -4,8 +4,8 @@
 #include "CTank.h"
 
 
-CGuardRobot::CGuardRobot():
-CObject()
+CGuardRobot::CGuardRobot(CMap *p_map) :
+CObject(p_map)
 {
 	// first time initilization
 	state = TANK_WALK;

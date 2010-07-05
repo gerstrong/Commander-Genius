@@ -12,8 +12,8 @@
 
 #define FIREBALL_OFFSCREEN_KILL_TIME     25
 
-void CFireBall::CFireBall():
-CObject()
+void CFireBall::CFireBall(CMap *p_map):
+CObject(p_map)
 {
 	animframe = 0;
 	animtimer = 0;
@@ -25,7 +25,7 @@ CObject()
 
 void CFireBall::process()
 {
-	int speed;
+	/*int speed;
 
 	// check if it hit keen
 	if (touchPlayer)
@@ -44,7 +44,7 @@ void CFireBall::process()
 	for( ; it_obj!=m_Objvect.end() ; it_obj++)
 	{
 		if (!(*it_obj)->exists || (*it_obj)->m_index==m_index) continue;
-		if (/*(*it_obj)->m_type==OBJ_RAY ||*/ (*it_obj)->m_type==OBJ_FIREBALL) continue;
+		if ( (*it_obj)->m_type==OBJ_FIREBALL) continue;
 
 		if ((*it_obj)->canbezapped || (*it_obj)->m_type==OBJ_RAY)
 		{
@@ -123,7 +123,7 @@ void CFireBall::process()
 		animframe ^= 1;
 		animtimer = 0;
 	}
-	else animtimer++;
+	else animtimer++;*/
 
 }
 

@@ -30,6 +30,10 @@ MOTHER_HURT, MOTHER_DEAD
 #define MOTHER_HURT_FRAME        91
 #define MOTHER_DEAD_FRAME	 92
 
+CVortiMom::CVortiMom(CMap *p_map) :
+CObject(p_map)
+{}
+
 void CObjectAI::mother_ai( CObject& object, bool hardmode )
 {
 	int prob;

@@ -13,6 +13,10 @@ PLATVERT_MOVE, PLATVERT_WAIT
 
 #define PLATVERTPUSHAMOUNT      10
 
+CPlatformVert::CPlatformVert(CMap *p_map) :
+CObject(p_map)
+{}
+
 void CObjectAI::platvert_ai(CObject& object)
 {
 	if (object.needinit)
