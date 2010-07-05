@@ -227,8 +227,8 @@ void CPlayGameVorticon::process()
 					SDL_Rect gamerect = g_pVideoDriver->getGameResolution();
 					m_Map.m_maxscrollx = (m_Map.m_width<<4) - gamerect.w - 36;
 					m_Map.m_maxscrolly = (m_Map.m_height<<4) - gamerect.h - 36;
-					for( int i=0 ; i<m_NumPlayers ; i++ )
-						while(m_Player[i].scrollTriggers());
+					//for( int i=0 ; i<m_NumPlayers ; i++ )
+						/*while(*/m_Player[0].scrollTriggers()/*)*/;
 					m_Map.drawAll();
 					m_restartVideo = false;
 				}
@@ -265,7 +265,7 @@ void CPlayGameVorticon::process()
 						m_paused = true; // this is processed in processPauseDialogs!
 
 					// Handle the Scrolling here!
-					m_Player[i].scrollTriggers();
+					m_Player[0].scrollTriggers();
 				}
 			}
 			else // In this case the Game has been finished, goto to the cutscenes
