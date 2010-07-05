@@ -18,10 +18,9 @@ CEarthChunk::CEarthChunk()
 
 void CEarthChunk::process()
 {
+	if (!onscreen) exists = false;
 
-	if (!object.onscreen) deleteObj(object);
-
-	switch(direction)
+	switch(m_Direction)
 	{
 	case EC_UPLEFTLEFT:
 		moveLeft(CHUNKSPD);
@@ -78,5 +77,6 @@ void CEarthChunk::process()
 		moveRight(BIGCHUNKSPD);
 		moveDown(BIGCHUNKSPD);
 		break;
+	default:	break;
 	}
 }

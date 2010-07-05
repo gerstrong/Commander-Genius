@@ -112,8 +112,10 @@ void CTantalusRay::explodeEarth()
 			m_vect_obj.push_back(newobject);
 		}
 
-		CObject *newobject = new CObject(&m_Map);
-		switch(m_step)
+		CObject *newobject;
+
+
+		/*switch(m_step)
 		{
 		case 0: newobject->spawn(shot_x-(8<<STC), shot_y-(8<<STC), OBJ_EXPLOSION, 2); break;
 		case 1: newobject->spawn(shot_x+(24<<STC), shot_y+(4<<STC), OBJ_EXPLOSION, 2); break;
@@ -194,7 +196,7 @@ void CTantalusRay::explodeEarth()
 		{
 			newobject->solid = false;
 			m_vect_obj.push_back(newobject);
-		}
+		}*/
 
 		m_step++;
 		m_timer = 15;

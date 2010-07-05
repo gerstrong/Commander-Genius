@@ -21,6 +21,7 @@
 #define PSUPPORTEDBYOBJECT         0
 
 enum direction_t{
+	NONE,
 	RIGHT,
 	LEFT,
 	UP,
@@ -65,7 +66,7 @@ public:
 	
 	bool canbezapped;         // if 0 ray will not stop on hitdetect
 	int zapped;              // number of times got hit by keen's raygun
-	int zapd;	   // x,y, and direction of last shot at time of impact
+	direction_t zapd;	   			// x,y, and direction of last shot at time of impact
 	char zappedbyenemy;	   // if 1, it was an ENEMYRAY and not keen that shot it
 	
 	bool inhibitfall;         // if true common_enemy_ai will not do falling

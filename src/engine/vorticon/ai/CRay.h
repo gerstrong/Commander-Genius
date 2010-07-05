@@ -3,8 +3,9 @@
 #define RAY_AUTO_SPEED		120
 #define RAY_ZAPZOT_TIME    	10
 
-#include "../../../CObject.h"
-#include "../../../CPlayer.h"
+#include "../../../common/CObject.h"
+#include "../../../common/CPlayer.h"
+#include "../../../common/objenums.h"
 #include <vector>
 
 // reference to ../misc.cpp
@@ -13,14 +14,14 @@ unsigned int rnd(void);
 class CRay : public CObject
 {
 public:
-	CRay(std::vector<CPlayer> &PlayerVect, CMap *p_map,
-			bool automatic_raygun, char pShotSpeed, direction_t dir);
+	CRay(CMap *p_map);
 
-	void process();
+	virtual void process();
 
-private:
-	std::vector<CPlayer> &m_PlayerVect;
-	CMap *mp_map;
+	direction_t m_Direction;
+
+protected:
+	//std::vector<CPlayer> &m_PlayerVect;
 	bool m_automatic_raygun;
 	char m_pShotSpeed;
 
@@ -33,8 +34,11 @@ private:
 
 	unsigned char dontHitEnable;
 	unsigned int dontHit;         // index of an object type ray will not harm
-	unsigned int owner;			  // Object number, from which the ray has been shot.
-	bool shotbyplayer;
+
+	struct{
+		object_t obj_type;
+		unsigned int ID;
+	}owner;
 
 	// for soundwave
 	int animframe, animtimer;
@@ -43,6 +47,5 @@ private:
 	// for earth chunks
 	int baseframe;
 
-	direction_t m_Direction;
 };
 

@@ -7,9 +7,10 @@
 
 #include "CEarthExplosion.h"
 
-CEarthExplosion::CEarthExplosion() {
-	// TODO Auto-generated constructor stub
-
+CEarthExplosion::CEarthExplosion(CMap *p_map) :
+CRay(p_map)
+{
+	onscreen = true;
 }
 
 #define EXPLODESPRITE           60
@@ -17,38 +18,28 @@ CEarthExplosion::CEarthExplosion() {
 
 #define SPACETILE               155
 
-void CObjectAI::explosion_ai(CObject &object)
+void CEarthExplosion::process()
 {
-	if (object.needinit)
+	sprite = EXPLODESPRITE + animframe;
+	if (animtimer > EXPLODE_ANIM_RATE)
 	{
-		object.ai.ray.animframe = 0;
-		object.ai.ray.animtimer = 0;
-		object.ai.ray.direction = 1;    // frame forward
-		object.inhibitfall = true;
-		object.needinit = false;
-		object.onscreen = true;
-	}
-
-	object.sprite = EXPLODESPRITE + object.ai.ray.animframe;
-	if (object.ai.ray.animtimer > EXPLODE_ANIM_RATE)
-	{
-		if (object.ai.ray.direction==-1 && object.ai.ray.animframe==0)
+		if (m_Direction==NONE && animframe==0)
 		{
-			deleteObj(object);
+			exists = false;
 		}
 		else
 		{
-			object.ai.ray.animframe += object.ai.ray.direction;
-			if (object.ai.ray.direction==1 && object.ai.ray.animframe==3)
+			//animframe += (animframe%2);
+			//if (direction==1 && animframe==3)
 			{
 				int x, y;
-				x = object.getXPosition()>>CSF;
-				y = object.getYPosition()>>CSF;
-				object.ai.ray.direction = -1;
+				x = getXPosition()>>CSF;
+				y = getYPosition()>>CSF;
+				m_Direction = NONE;
 				mp_Map->setTile((x+8)>>4,(y+8)>>4, SPACETILE, true);
 			}
 		}
-		object.ai.ray.animtimer = 0;
+		animtimer = 0;
 	}
-	else object.ai.ray.animtimer++;
+	else animtimer++;
 }

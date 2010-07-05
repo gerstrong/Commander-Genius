@@ -1,7 +1,4 @@
-#include "ray.h"
-
-#include "CObjectAI.h"
-
+#include "CFireBall.h"
 #include "../../../sdl/sound/CSound.h"
 
 // fireball projectile shot out by Vorticon Mother (Ep3)
@@ -15,19 +12,19 @@
 
 #define FIREBALL_OFFSCREEN_KILL_TIME     25
 
+void CFireBall::CFireBall()
+{
+	animframe = 0;
+	animtimer = 0;
+	object.inhibitfall = 1;
+	object.blockedl = object.blockedr = 0;
+	object.canbezapped = 1;
+	object.needinit = 0;
+}
 
-void CObjectAI::fireball_ai(CObject &object, bool hard)
+void CFireBall::process()
 {
 	int speed;
-	if (object.needinit)
-	{
-		object.ai.ray.animframe = 0;
-		object.ai.ray.animtimer = 0;
-		object.inhibitfall = 1;
-		object.blockedl = object.blockedr = 0;
-		object.canbezapped = 1;
-		object.needinit = 0;
-	}
 
 	// check if it hit keen
 	if (object.touchPlayer)
@@ -35,7 +32,7 @@ void CObjectAI::fireball_ai(CObject &object, bool hard)
 		killplayer(object.touchedBy);
 		// make a ZAP-ZOT animation
 		object.m_type = OBJ_RAY;
-		object.ai.ray.state = RAY_STATE_SETZAPZOT;
+		state = RAY_STATE_SETZAPZOT;
 		object.inhibitfall = 1;
 		object.needinit = 0;
 		return;
@@ -50,10 +47,10 @@ void CObjectAI::fireball_ai(CObject &object, bool hard)
 
 		if ((*it_obj)->canbezapped || (*it_obj)->m_type==OBJ_RAY)
 		{
-			if ((*it_obj)->hitdetect(object) && object.ai.ray.owner != (*it_obj)->m_index)
+			if ((*it_obj)->hitdetect(object) && owner != (*it_obj)->m_index)
 			{
 				object.m_type = OBJ_RAY;
-				object.ai.ray.state = RAY_STATE_SETZAPZOT;
+				state = RAY_STATE_SETZAPZOT;
 				object.inhibitfall = 1;
 				object.needinit = 0;
 				(*it_obj)->zapped++;
@@ -69,7 +66,7 @@ void CObjectAI::fireball_ai(CObject &object, bool hard)
 	{
 		if (object.onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, object.scrx);
 		object.m_type = OBJ_RAY;
-		object.ai.ray.state = RAY_STATE_SETZAPZOT;
+		state = RAY_STATE_SETZAPZOT;
 		object.inhibitfall = 1;
 		object.needinit = 0;
 		return;
@@ -81,24 +78,24 @@ void CObjectAI::fireball_ai(CObject &object, bool hard)
 	// (which can crash the game due to running out of object slots).
 	if (!object.onscreen)
 	{
-		if (object.ai.ray.offscreentime > FIREBALL_OFFSCREEN_KILL_TIME)
+		if (offscreentime > FIREBALL_OFFSCREEN_KILL_TIME)
 		{
 			deleteObj(object);
 			return;
 		}
-		else object.ai.ray.offscreentime++;
+		else offscreentime++;
 	}
-	else object.ai.ray.offscreentime = 0;
+	else offscreentime = 0;
 
 	// fly through the air
 	speed = hard ? FIREBALL_HARD_SPEED : FIREBALL_SPEED;
-	if (object.ai.ray.direction == RIGHT)
+	if (direction == RIGHT)
 	{
-		object.sprite = FIREBALL_RIGHT_FRAME + object.ai.ray.animframe;
+		object.sprite = FIREBALL_RIGHT_FRAME + animframe;
 		if (object.blockedr || object.blockedl)
 		{
 			object.m_type = OBJ_RAY;
-			object.ai.ray.state = RAY_STATE_SETZAPZOT;
+			state = RAY_STATE_SETZAPZOT;
 			object.inhibitfall = 1;
 			object.needinit = 0;
 			return;
@@ -107,11 +104,11 @@ void CObjectAI::fireball_ai(CObject &object, bool hard)
 	}
 	else
 	{
-		object.sprite = FIREBALL_LEFT_FRAME + object.ai.ray.animframe;
+		object.sprite = FIREBALL_LEFT_FRAME + animframe;
 		if (object.blockedr || object.blockedl)
 		{
 			object.m_type = OBJ_RAY;
-			object.ai.ray.state = RAY_STATE_SETZAPZOT;
+			state = RAY_STATE_SETZAPZOT;
 			object.inhibitfall = 1;
 			object.needinit = 0;
 			return;
@@ -120,13 +117,13 @@ void CObjectAI::fireball_ai(CObject &object, bool hard)
 	}
 
 	// animation
-	if (object.ai.ray.animtimer > FIREBALL_ANIM_RATE)
+	if (animtimer > FIREBALL_ANIM_RATE)
 	{
-		object.ai.ray.animframe ^= 1;
-		object.ai.ray.animtimer = 0;
+		animframe ^= 1;
+		animtimer = 0;
 	}
-	else object.ai.ray.animtimer++;
-}
+	else animtimer++;
 
+}
 
 

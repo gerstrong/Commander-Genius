@@ -9,18 +9,18 @@
 
 #define Sprite g_pGfxEngine->Sprite
 
-CRay::CRay(std::vector<CPlayer> &PlayerVect, CMap *p_map,
-		bool automatic_raygun, char pShotSpeed, direction_t dir) :
-CObject(p_map),
-m_PlayerVect(PlayerVect),
-mp_map(p_map),
-m_automatic_raygun(automatic_raygun),
-m_pShotSpeed(pShotSpeed),
-m_Direction(dir)
+CRay::CRay(CMap *p_map) :
+CObject(p_map)//,
+//m_PlayerVect(PlayerVect),
+//m_automatic_raygun(automatic_raygun),
+//m_pShotSpeed(pShotSpeed),
+//m_Direction(dir)
 {
+	owner.obj_type = OBJ_NONE;
+	owner.ID = 0;
+
 	state = RAY_STATE_FLY;
 	inhibitfall = true;
-	needinit = false;
 	checkinitialCollisions();
 }
 
@@ -28,21 +28,21 @@ void CRay::process()
 {
 	int hitlethal;
 	int rayspeed;
-	CSprite &raysprite = g_pGfxEngine->getSprite(object.sprite);
+	CSprite &raysprite = g_pGfxEngine->getSprite(sprite);
 	
 	// shots from "fully automatic" raygun go faster
-	if (sprite!=OBJ_RAY_DEFSPRITE_EP1 || !automatic_raygun)
+	if (sprite!=OBJ_RAY_DEFSPRITE_EP1 || !m_automatic_raygun)
 	{
-		if (!pShotSpeed)
+		if (!m_pShotSpeed)
 			rayspeed = RAY_SPEED;
 		else
-			rayspeed = pShotSpeed;
+			rayspeed = m_pShotSpeed;
 	}
 	else
 		rayspeed = RAY_AUTO_SPEED;
 	
-	int x = object.getXPosition();
-	int y = object.getYPosition();
+	int x = getXPosition();
+	int y = getYPosition();
 	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
 	
 	std::vector<CObject*>::iterator it_obj;
@@ -51,7 +51,7 @@ void CRay::process()
 		case RAY_STATE_FLY:
 
 			// test if it hit a baddie. I hate that code! TODO: think about a way to reduce this
-			for( it_obj = m_Objvect.begin() ; it_obj!=m_Objvect.end() ; it_obj++)
+			/*for( it_obj = m_Objvect.begin() ; it_obj!=m_Objvect.end() ; it_obj++)
 			{
 				if( (*it_obj)->exists && ((*it_obj)->m_index != object.m_index || (*it_obj)->m_type == OBJ_ROPE) )
 				{
@@ -79,9 +79,9 @@ void CRay::process()
 										(*it_obj)->blink(10);
 								}
 								if((*it_obj)->m_type == OBJ_RAY)
-									(*it_obj)->ai.ray.state = RAY_STATE_SETZAPZOT;
-								(*it_obj)->zapd = (*it_obj)->ai.ray.direction;
-								if (object.sprite==ENEMYRAY || object.sprite==ENEMYRAYEP2 || object.sprite==ENEMYRAYEP3)
+									(*it_obj)->state = RAY_STATE_SETZAPZOT;
+								//(*it_obj)->zapd = (*it_obj)->direction;
+								if (sprite==ENEMYRAY || sprite==ENEMYRAYEP2 || sprite==ENEMYRAYEP3)
 									(*it_obj)->zappedbyenemy = true;
 								else
 									(*it_obj)->zappedbyenemy = false;
@@ -90,9 +90,9 @@ void CRay::process()
 						}
 					}
 				}
-			}
+			}*/
 			// check if ray hit keen. if canpk=0, only enemy rays can hurt keen
-			if (touchPlayer)
+			/*if (touchPlayer)
 			{
 				if (m_Player[object.touchedBy].pfrozentime > PFROZEN_THAW && m_Episode==1)
 				{
@@ -122,9 +122,9 @@ void CRay::process()
 						}
 					}
 				}
-			}
+			}*/
 
-			if (direction == RIGHT)
+			if (m_Direction == RIGHT)
 			{
 				// don't go through bonklethal tiles, even if they're not solid
 				// (for the arms on mortimer's machine)
@@ -135,16 +135,16 @@ void CRay::process()
 				else
 					hitlethal = false;
 				
-				if (object.blockedr)
+				if (blockedr)
 				{
 					state = RAY_STATE_SETZAPZOT;
-					object.canbezapped = false;
-					if (object.onscreen)
-						g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, object.scrx);
+					canbezapped = false;
+					if (onscreen)
+						g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, scrx);
 				}
-				object.moveRight(rayspeed);
+				moveRight(rayspeed);
 			}
-			else if (direction == LEFT)
+			else if (m_Direction == LEFT)
 			{
 				if (TileProperties.at(mp_Map->at((x-1)>>CSF, (y+1)>>CSF)).behaviour == 1)
 					hitlethal = true;
@@ -153,31 +153,30 @@ void CRay::process()
 				else
 					hitlethal = false;
 				
-				if (object.blockedl)
+				if (blockedl)
 				{
 					state = RAY_STATE_SETZAPZOT;
-					object.canbezapped = false;
-					if (object.onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, object.scrx);
+					canbezapped = false;
+					if (onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, scrx);
 				}
-				object.moveLeft(rayspeed);
+				moveLeft(rayspeed);
 			}
-			else if (direction == DOWN)
+			else if (m_Direction == DOWN)
 			{
-				if (object.blockedd || object.blockedu)
+				if (blockedd || blockedu)
 				{
 					state = RAY_STATE_SETZAPZOT;
-					object.canbezapped = false;
-					if (object.onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, object.scrx);
+					canbezapped = false;
+					if (onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, scrx);
 				}
-				
-				object.moveDown(rayspeed);
+				moveDown(rayspeed);
 			}
 			break;
 		case RAY_STATE_SETZAPZOT:
 			state = RAY_STATE_ZAPZOT;
 			zapzottimer = RAY_ZAPZOT_TIME;
 			
-			if (m_Episode==1)
+			/*if (m_Episode==1)
 			{
 				if (rnd()&1)
 				{ object.sprite = RAY_FRAME_ZAP_EP1; }
@@ -197,16 +196,16 @@ void CRay::process()
 				{ object.sprite = RAY_FRAME_ZAP_EP3; }
 				else
 				{ object.sprite = RAY_FRAME_ZOT_EP3; }
-			}
+			}*/
 			
-			if (direction==LEFT || direction==RIGHT)
-				object.moveUp(2);
+			if (m_Direction==LEFT || m_Direction==RIGHT)
+				moveUp(2);
 			else
-				object.moveLeft(4);
+				moveLeft(4);
 
 			// ... and fall through
 		case RAY_STATE_ZAPZOT:
-			if (zapzottimer == 0) deleteObj(object);
+			if (zapzottimer == 0) exists=false;
 			else zapzottimer--;
 			break;
 	}

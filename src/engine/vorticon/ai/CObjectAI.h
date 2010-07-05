@@ -35,7 +35,6 @@ private:
 	// main AI functions
 	bool checkforAIObject( CObject &object );
 	void performSpecialAIType( CObject &object );
-	void deleteObj(CObject &object) { object.exists = false; }
 	void deleteAllObjects();
 
 	// ep1

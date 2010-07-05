@@ -8,6 +8,7 @@
 
 #include "../../spritedefines.h"
 #include "../../../sdl/sound/CSound.h"
+#include "CRay.h"
 #include "CAutoRay.h"
 
 CAutoRay::CAutoRay(CMap *p_map, std::vector<CObject*> &Objvect, char episode, stRayAlignment type) :
@@ -30,8 +31,7 @@ void CAutoRay::process()
 		m_gunfiretimer = 0;
 
 		unsigned int x,y;
-		CObject *NewRay = new CObject(mp_Map);
-		NewRay->ai.ray.owner = 0;
+		CRay *NewRay = new CRay(mp_Map);
 		x = getXPosition();
 		y = getYPosition();
 
@@ -39,13 +39,13 @@ void CAutoRay::process()
 		{
 			NewRay->spawn(x+(4<<STC), y+(1<<CSF), OBJ_RAY, m_Episode);
 			NewRay->sprite = RAY_VERT_EP3;
-			NewRay->ai.ray.direction = DOWN;
+			NewRay->m_Direction = DOWN;
 		}
 		else
 		{
 			NewRay->spawn(x+(1<<CSF), y+(4<<STC), OBJ_RAY, m_Episode);
 			NewRay->sprite = ENEMYRAYEP3;
-			NewRay->ai.ray.direction = RIGHT;
+			NewRay->m_Direction = RIGHT;
 		}
 		m_Objvect.push_back(NewRay);
 

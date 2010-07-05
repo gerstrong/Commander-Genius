@@ -8,9 +8,12 @@
 #ifndef CEARTHEXPLOSION_H_
 #define CEARTHEXPLOSION_H_
 
-class CEarthExplosion {
+#include "CRay.h"
+
+class CEarthExplosion : public CRay {
 public:
-	CEarthExplosion();
+	CEarthExplosion(CMap *p_map);
+	void process();
 };
 
 #endif /* CEARTHEXPLOSION_H_ */
