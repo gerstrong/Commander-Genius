@@ -11,7 +11,6 @@
 class CEarthExplosion {
 public:
 	CEarthExplosion();
-	virtual ~CEarthExplosion();
 };
 
 #endif /* CEARTHEXPLOSION_H_ */

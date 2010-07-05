@@ -8,5 +8,15 @@
 #ifndef CEARTHCHUNK_H_
 #define CEARTHCHUNK_H_
 
+class CEarthChunk
+{
+public:
+	CEarthChunk();
+	void process();
+
+private:
+
+};
+
 
 #endif /* CEARTHCHUNK_H_ */
