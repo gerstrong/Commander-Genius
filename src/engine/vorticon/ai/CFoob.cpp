@@ -1,68 +1,45 @@
+#include "CFoob.h"
 #include "../../../sdl/sound/CSound.h"
 #include "../../../graphics/CGfxEngine.h"
-#include "CObjectAI.h"
 
-// AI for the foobs (yellow "scaredy cat" creatures) (ep3)
-enum FOOB_ACTIONS{
-	FOOB_WALK,
-	FOOB_SPOOK,
-	FOOB_FLEE,
-	FOOB_EXPLODE,
-	FOOB_DEAD
-};
+CFoob::CFoob()
+{
 
-#define FOOB_WALK_SPEED      32
-#define FOOB_WALK_ANIM_RATE  4
+}
 
-#define FOOB_FLEE_SPEED      77
-#define FOOB_FLEE_ANIM_RATE  1
-
-#define FOOB_SPOOK_SHOW_TIME    12
-
-#define FOOB_HARDMODE_BLOCK_TIME	35
-
-#define FOOB_EXPLODE_ANIM_RATE  8
-
-#define FOOB_SPOOK_TIME         80
-#define FOOB_RELAX_TIME         400
-
-#define FOOB_WALK_LEFT_FRAME    93
-#define FOOB_WALK_RIGHT_FRAME   95
-#define FOOB_SPOOK_FRAME        97
-#define FOOB_EXPLODE_FRAME      97
-#define FOOB_DEAD_FRAME         101
+void CFoob::process()
+{
+	state = FOOB_WALK;
+	dir = RIGHT;
+	animframe = 0;
+	animtimer = 0;
+	OnSameLevelTime = 0;
+	blockedr = 0;
+	canbezapped = 1;
+	dead = 0;
+	needinit = 0;
+}
 
 void CObjectAI::foob_ai(CObject &object, bool hardmode)
 {
 	bool onsamelevel;
-	if (object.needinit)
-	{
-		object.ai.foob.state = FOOB_WALK;
-		object.ai.foob.dir = RIGHT;
-		object.ai.foob.animframe = 0;
-		object.ai.foob.animtimer = 0;
-		object.ai.foob.OnSameLevelTime = 0;
-		object.blockedr = 0;
-		object.canbezapped = 1;
-		object.dead = 0;
-		object.needinit = 0;
-	}
-	if (object.ai.foob.state==FOOB_DEAD) return;
-	if (!object.hasbeenonscreen) return;
 
+	if (state==FOOB_DEAD) return;
 
-	if (object.zapped || object.touchPlayer)
+	if (!hasbeenonscreen) return;
+
+	if (zapped || touchPlayer)
 	{
-		if (object.ai.foob.state != FOOB_EXPLODE)
+		if (state != FOOB_EXPLODE)
 		{
-			object.ai.foob.animframe = 0;
-			object.ai.foob.animtimer = 0;
-			object.ai.foob.state = FOOB_EXPLODE;
-			object.canbezapped = 0;
-			if (object.onscreen) g_pSound->playStereofromCoord(SOUND_YORP_DIE, PLAY_NOW, object.scrx);
-			if (hardmode && object.touchPlayer)
+			animframe = 0;
+			animtimer = 0;
+			state = FOOB_EXPLODE;
+			canbezapped = 0;
+			if (onscreen) g_pSound->playStereofromCoord(SOUND_YORP_DIE, PLAY_NOW, scrx);
+			if (hardmode && touchPlayer)
 			{
-				killplayer(object.touchedBy);
+				killplayer(touchedBy);
 			}
 		}
 	}
@@ -73,86 +50,86 @@ void CObjectAI::foob_ai(CObject &object, bool hardmode)
 	std::vector<CPlayer>::iterator it_player = m_Player.begin();
 	for( ; it_player != m_Player.end() ; it_player++ )
 	{
-		if ( (it_player->getYUpPos() >= object.getYUpPos()-(2<<CSF)) &&
-			(it_player->getYDownPos() <= object.getYDownPos()+(1<<CSF)) )
+		if ( (it_player->getYUpPos() >= getYUpPos()-(2<<CSF)) &&
+			(it_player->getYDownPos() <= getYDownPos()+(1<<CSF)) )
 		{
 			onsamelevel = true;
-			object.ai.foob.SpookedByWho = it_player->m_index;
+			SpookedByWho = it_player->m_index;
 			break;
 		}
 	}
 
-	switch(object.ai.foob.state)
+	switch(state)
 	{
 	case FOOB_WALK:
 		// if player is on the same level for FOOB_SPOOK_TIME, run away
 		if (onsamelevel)
 		{
-			if (object.ai.foob.OnSameLevelTime > FOOB_SPOOK_TIME)
+			if (OnSameLevelTime > FOOB_SPOOK_TIME)
 			{
-				object.ai.foob.state = FOOB_SPOOK;
-				object.ai.foob.spooktimer = 0;
-				if (object.onscreen) g_pSound->playStereofromCoord(SOUND_YORP_DIE, PLAY_NOW, object.scrx);
+				state = FOOB_SPOOK;
+				spooktimer = 0;
+				if (onscreen) g_pSound->playStereofromCoord(SOUND_YORP_DIE, PLAY_NOW, scrx);
 			}
-			else object.ai.foob.OnSameLevelTime++;
+			else OnSameLevelTime++;
 		}
-		else object.ai.foob.OnSameLevelTime = 0;
+		else OnSameLevelTime = 0;
 
-		if (object.ai.foob.dir == RIGHT)
+		if (dir == RIGHT)
 		{  // walking right
-			object.sprite = FOOB_WALK_RIGHT_FRAME + object.ai.foob.animframe;
-			if (object.blockedr)
+			sprite = FOOB_WALK_RIGHT_FRAME + animframe;
+			if (blockedr)
 			{
-				object.ai.foob.dir = LEFT;
+				dir = LEFT;
 			}
 			else
 			{
-				object.moveRight(FOOB_WALK_SPEED);
+				moveRight(FOOB_WALK_SPEED);
 			}
 		}
 		else
 		{  // walking left
-			object.sprite = FOOB_WALK_LEFT_FRAME + object.ai.foob.animframe;
-			if (object.blockedl)
+			sprite = FOOB_WALK_LEFT_FRAME + animframe;
+			if (blockedl)
 			{
-				object.ai.foob.dir = RIGHT;
+				dir = RIGHT;
 			}
 			else
 			{
-				object.moveLeft(FOOB_WALK_SPEED);
+				moveLeft(FOOB_WALK_SPEED);
 			}
 		}
 
 		// walk animation
-		if (object.ai.foob.animtimer > FOOB_WALK_ANIM_RATE)
+		if (animtimer > FOOB_WALK_ANIM_RATE)
 		{
-			object.ai.foob.animframe ^= 1;
-			object.ai.foob.animtimer = 0;
+			animframe ^= 1;
+			animtimer = 0;
 		}
-		else object.ai.foob.animtimer++;
+		else animtimer++;
 		break;
 
 	case FOOB_SPOOK:
-		object.sprite = FOOB_SPOOK_FRAME;
+		sprite = FOOB_SPOOK_FRAME;
 
-		if (object.ai.foob.spooktimer > FOOB_SPOOK_SHOW_TIME)
+		if (spooktimer > FOOB_SPOOK_SHOW_TIME)
 		{
-			object.ai.foob.state = FOOB_FLEE;
-			object.ai.foob.OffOfSameLevelTime = 0;
+			state = FOOB_FLEE;
+			OffOfSameLevelTime = 0;
 			// run away from the offending player
-			if (m_Player[object.ai.foob.SpookedByWho].getXPosition() < object.getXPosition())
+			if (m_Player[SpookedByWho].getXPosition() < getXPosition())
 			{
-				object.ai.foob.dir = RIGHT;
+				dir = RIGHT;
 			}
 			else
 			{
-				object.ai.foob.dir = LEFT;
+				dir = LEFT;
 			}
 			// in hard mode run TOWARDS the player (he's deadly in hard mode)
-			if (hardmode) object.ai.foob.dir ^= 1;
+			if (hardmode) dir ^= 1;
 
 		}
-		else object.ai.foob.spooktimer++;
+		else spooktimer++;
 		break;
 
 	case FOOB_FLEE:
@@ -160,77 +137,77 @@ void CObjectAI::foob_ai(CObject &object, bool hardmode)
 		// we can stop fleeing
 		if (!onsamelevel)
 		{
-			if (object.ai.foob.OffOfSameLevelTime > FOOB_RELAX_TIME)
+			if (OffOfSameLevelTime > FOOB_RELAX_TIME)
 			{
 				relax: ;
-				object.ai.foob.state = FOOB_WALK;
-				object.ai.foob.OnSameLevelTime = 0;
+				state = FOOB_WALK;
+				OnSameLevelTime = 0;
 				break;
 			}
-			else object.ai.foob.OffOfSameLevelTime++;
+			else OffOfSameLevelTime++;
 		}
-		else object.ai.foob.OffOfSameLevelTime = 0;
+		else OffOfSameLevelTime = 0;
 
-		if (object.ai.foob.dir == RIGHT)
+		if (dir == RIGHT)
 		{  // walking right
-			object.sprite = FOOB_WALK_RIGHT_FRAME + object.ai.foob.animframe;
-			if (!object.blockedr)
+			sprite = FOOB_WALK_RIGHT_FRAME + animframe;
+			if (!blockedr)
 			{
-				object.moveRight(FOOB_FLEE_SPEED);
-				object.ai.foob.blockedtime = 0;
+				moveRight(FOOB_FLEE_SPEED);
+				blockedtime = 0;
 			}
 			else if (hardmode)
 			{
-				if (++object.ai.foob.blockedtime >= FOOB_HARDMODE_BLOCK_TIME)
+				if (++blockedtime >= FOOB_HARDMODE_BLOCK_TIME)
 				{
-					object.ai.foob.blockedtime = 0;
+					blockedtime = 0;
 					goto relax;
 				}
 			}
 		}
 		else
 		{  // walking left
-			object.sprite = FOOB_WALK_LEFT_FRAME + object.ai.foob.animframe;
-			if (!object.blockedl)
+			sprite = FOOB_WALK_LEFT_FRAME + animframe;
+			if (!blockedl)
 			{
-				object.moveLeft(FOOB_FLEE_SPEED);
-				object.ai.foob.blockedtime = 0;
+				moveLeft(FOOB_FLEE_SPEED);
+				blockedtime = 0;
 			}
 			else if (hardmode)
 			{
-				if (++object.ai.foob.blockedtime >= FOOB_HARDMODE_BLOCK_TIME)
+				if (++blockedtime >= FOOB_HARDMODE_BLOCK_TIME)
 				{
-					object.ai.foob.blockedtime = 0;
+					blockedtime = 0;
 					goto relax;
 				}
 			}
 		}
 
 		// walk animation
-		if (object.ai.foob.animtimer > FOOB_FLEE_ANIM_RATE)
+		if (animtimer > FOOB_FLEE_ANIM_RATE)
 		{
-			object.ai.foob.animframe ^= 1;
-			object.ai.foob.animtimer = 0;
+			animframe ^= 1;
+			animtimer = 0;
 		}
-		else object.ai.foob.animtimer++;
+		else animtimer++;
 		break;
 
 	case FOOB_EXPLODE:
 		// ahhhhh; I'm sorry.....you poor little thing......
-		object.sprite = FOOB_EXPLODE_FRAME + object.ai.foob.animframe;
-		if (object.sprite==FOOB_DEAD_FRAME)
+		sprite = FOOB_EXPLODE_FRAME + animframe;
+		if (sprite==FOOB_DEAD_FRAME)
 		{
-			object.ai.foob.state = FOOB_DEAD;
-			object.dead = 1;
+			state = FOOB_DEAD;
+			dead = 1;
 		}
 		else
 		{
-			if (object.ai.foob.animtimer > FOOB_EXPLODE_ANIM_RATE)
+			if (animtimer > FOOB_EXPLODE_ANIM_RATE)
 			{
-				object.ai.foob.animframe++;
-				object.ai.foob.animtimer = 0;
+				animframe++;
+				animtimer = 0;
 			}
-			else object.ai.foob.animtimer++;
+			else animtimer++;
 		}
 		break;
 	}

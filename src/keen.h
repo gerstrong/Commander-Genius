@@ -25,16 +25,6 @@
 // from the top or left. if the default sprite is wrong the object may
 // suddenly appear on the screen instead of smoothly scrolling on.
 
-// some directions (mostly for OBJ_ICECHUNK and OBJ_ICEBIT)
-#define DUPRIGHT         0
-#define DUPLEFT          1
-#define DUP              2
-#define DDOWN            3
-#define DDOWNRIGHT       4
-#define DDOWNLEFT        5
-#define DLEFT            6
-#define DRIGHT           7
-
 // special level codes on worldmap
 #define LVLS_SHIP                  20
 

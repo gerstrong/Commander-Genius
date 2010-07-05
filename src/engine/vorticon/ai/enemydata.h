@@ -9,7 +9,6 @@
 #define ENEMYDATA_H_
 
 #include "../../../keen.h"
-#include "tank.h"
 
 // Structs used for different enemy's variables. These are in a union.
 
@@ -52,24 +51,6 @@ typedef struct stVortEliteData
 	
 	int dist_traveled;
 } stVortEliteData;
-
-
-// Butler = the little pushing robots in ep1
-typedef struct stButlerData
-{
-	unsigned char state;
-	unsigned char timer,animtimer;
-	unsigned char frame;
-	unsigned int dist_traveled;
-	
-	unsigned char movedir;
-} stButlerData;
-
-typedef struct stDoorData
-{
-	char timer;
-} stDoorData;
-
 
 typedef struct stIceChunk
 {
@@ -169,21 +150,6 @@ typedef struct stBabyData
 } stBabyData;
 
 
-
-typedef struct stFoobData
-{
-	char state;
-	char dir;
-	
-	int animframe, animtimer;
-	int OnSameLevelTime;
-	int OffOfSameLevelTime;
-	int spooktimer;
-	int SpookedByWho;
-	int blockedtime;
-} stFoobData;
-
-
 // Ninja = the kung-fu bears in ep3
 typedef struct stNinjaData
 {
@@ -223,16 +189,6 @@ typedef struct stMeepData
 	int animframe, animtimer;
 	int timer;
 } stMeepData;
-
-
-
-typedef struct stBallJackData
-{
-	char dir;
-	int animframe, animtimer;
-	int speed;
-} stBallJackData;
-
 
 
 #define NESSIETRAILLEN   5

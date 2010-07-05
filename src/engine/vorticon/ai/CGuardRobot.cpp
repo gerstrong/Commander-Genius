@@ -1,168 +1,138 @@
 #include "../../../sdl/sound/CSound.h"
 #include "../../spritedefines.h"
 
-#include "CObjectAI.h"
+#include "CTank.h"
 
-#define TANK2_SAME_LEVEL_TIME   150
-#define TANK_REPEAT_FIRE_TIME  800
 
-// when this probability is satisfied, there is 50% probability
-// of a look, 50% probability of a fire.
-#define TANK_LOOKFIRE_PROB    500
-#define TANK_MINTRAVELDIST    200
-
-#define TANK_WALK_SPEED         24
-#define TANK_WALK_ANIM_TIME     6
-#define TANK_LOOK_ANIM_TIME     4
-#define TANK_LOOK_TOTALTIME     100
-#define TANK2_PREPAREFIRE_TIME  6
-
-// frames
-#define TANK2_WALK_LEFT_FRAME       116
-#define TANK2_WALK_RIGHT_FRAME      112
-#define TANK2_LOOK_FRAME            120
-
-#define TANKPUSHAMOUNT        16
-
-#define TANK_FIRE_PAUSE_TIME		25
-
-#define TANK2_SHOTS_PER_VOLLEY    4
-#define TANK2_MIN_TIME_TILL_CAN_FIRE  31
-#define TANK2_MAX_TIME_TILL_CAN_FIRE  50
-#define TANK2_TIME_BETWEEN_SHOTS  12
-#define TANK2_TIME_BEFORE_FIRE_WHEN_SEE      6
-#define TANK2_TIME_BETWEEN_FIRE_CAUSE_LEVEL  25
-
-#define Sprite g_pGfxEngine->Sprite
-
-unsigned int rnd(void);
-
-void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
+CGuardRobot::CGuardRobot()
 {
-	if (object.needinit)
-	{  // first time initilization
-		object.ai.tank.state = stTankData::TANK_WALK;
-		object.ai.tank.movedir = RIGHT;
-		object.ai.tank.fireafterlook = 0;
-		object.ai.tank.animtimer = 0;
-		object.ai.tank.timer = 0;
-		object.ai.tank.dist_to_travel = TANK_MINTRAVELDIST;
-		object.ai.tank.pausetime = 0;
-		object.ai.tank.timetillcanfire = TANK2_MAX_TIME_TILL_CAN_FIRE;
-		object.ai.tank.firetimes = 0;
-		object.ai.tank.detectedPlayer = 0;
-		object.ai.tank.detectedPlayerIndex = m_Player[0].m_index;
-		object.ai.tank.turnaroundtimer = 0;
+	// first time initilization
+	state = TANK_WALK;
+	movedir = RIGHT;
+	fireafterlook = 0;
+	animtimer = 0;
+	timer = 0;
+	dist_to_travel = TANK_MINTRAVELDIST;
+	pausetime = 0;
+	timetillcanfire = TANK2_MAX_TIME_TILL_CAN_FIRE;
+	firetimes = 0;
+	detectedPlayer = 0;
+	detectedPlayerIndex = m_Player[0].m_index;
+	turnaroundtimer = 0;
 
-		object.canbezapped = 1;   // will stop bullets but is not harmed
-		object.inhibitfall = 1;
-		object.needinit = 0;
-	}
+	canbezapped = 1;   // will stop bullets but is not harmed
+	inhibitfall = 1;
+	needinit = 0;
+}
+
+void CGuardRobot::process()
+{
 	// touched player?
-	if (object.touchPlayer && !m_Player[object.touchedBy].pdie)
-		killplayer(object.touchedBy);
+	if (touchPlayer && !m_Player[touchedBy].pdie)
+		killplayer(touchedBy);
 
-	switch(object.ai.tank.state)
+	switch(state)
 	{
-	case stTankData::TANK_LOOK:
+	case TANK_LOOK:
 		// animation
-		if (object.ai.tank.animtimer > TANK_LOOK_ANIM_TIME)
+		if (animtimer > TANK_LOOK_ANIM_TIME)
 		{
-			object.ai.tank.frame ^= 1;
-			object.ai.tank.animtimer = 0;
+			frame ^= 1;
+			animtimer = 0;
 		}
 		else
-			object.ai.tank.animtimer++;
+			animtimer++;
 
-		object.sprite = TANK2_LOOK_FRAME + object.ai.tank.frame;
+		sprite = TANK2_LOOK_FRAME + frame;
 
 		// when time is up go back to moving
-		if (object.ai.tank.timer > TANK_LOOK_TOTALTIME)
+		if (timer > TANK_LOOK_TOTALTIME)
 		{
 			// decide what direction to go
-			if (object.blockedr)
-			{ object.ai.tank.movedir = LEFT; }
-			else if (object.blockedl)
-			{ object.ai.tank.movedir = RIGHT; }
-			else if (object.getXPosition() > m_Player[0].getXPosition())
-			{ object.ai.tank.movedir = LEFT; }
+			if (blockedr)
+			{ movedir = LEFT; }
+			else if (blockedl)
+			{ movedir = RIGHT; }
+			else if (getXPosition() > m_Player[0].getXPosition())
+			{ movedir = LEFT; }
 			else
-			{ object.ai.tank.movedir = RIGHT; }
+			{ movedir = RIGHT; }
 
-			object.ai.tank.alreadyfiredcauseonsamelevel = 0;
-			object.ai.tank.timetillcanfire = (rnd()%(TANK2_MAX_TIME_TILL_CAN_FIRE-TANK2_MIN_TIME_TILL_CAN_FIRE))+TANK2_MIN_TIME_TILL_CAN_FIRE;
-			object.ai.tank.timetillcanfirecauseonsamelevel = TANK2_TIME_BEFORE_FIRE_WHEN_SEE;
-			object.ai.tank.firetimes = 0;
-			object.ai.tank.state = stTankData::TANK_WALK;
-			object.ai.tank.frame = 0;
-			object.ai.tank.animtimer = 0;
-			object.ai.tank.timer = 0;
-			object.ai.tank.dist_to_travel = TANK_MINTRAVELDIST;
+			alreadyfiredcauseonsamelevel = 0;
+			timetillcanfire = (rnd()%(TANK2_MAX_TIME_TILL_CAN_FIRE-TANK2_MIN_TIME_TILL_CAN_FIRE))+TANK2_MIN_TIME_TILL_CAN_FIRE;
+			timetillcanfirecauseonsamelevel = TANK2_TIME_BEFORE_FIRE_WHEN_SEE;
+			firetimes = 0;
+			state = stTankData::TANK_WALK;
+			frame = 0;
+			animtimer = 0;
+			timer = 0;
+			dist_to_travel = TANK_MINTRAVELDIST;
 		}
 		else
-			object.ai.tank.timer++;
+			timer++;
 
 		break;
 
 	case stTankData::TANK_WALK:
 		// hover animation
-		if (object.ai.tank.animtimer > TANK_WALK_ANIM_TIME)
+		if (animtimer > TANK_WALK_ANIM_TIME)
 		{
-			if (object.ai.tank.frame>=3) object.ai.tank.frame=0;
-			else object.ai.tank.frame++;
-			object.ai.tank.animtimer = 0;
-		} else object.ai.tank.animtimer++;
+			if (frame>=3) frame=0;
+			else frame++;
+			animtimer = 0;
+		} else animtimer++;
 
-		if (object.ai.tank.movedir==LEFT)
-			object.sprite = TANK2_WALK_LEFT_FRAME + object.ai.tank.frame;
+		if (movedir==LEFT)
+			sprite = TANK2_WALK_LEFT_FRAME + frame;
 		else
-			object.sprite = TANK2_WALK_RIGHT_FRAME + object.ai.tank.frame;
+			sprite = TANK2_WALK_RIGHT_FRAME + frame;
 
 		// if we're about to, or just did, fire a volley, don't move
 		if (!hardmode)
 		{
-			if (object.ai.tank.pausetime)
+			if (pausetime)
 			{
-				object.ai.tank.pausetime--;
+				pausetime--;
 				return;
 			}
 		}
 		else
-			object.ai.tank.pausetime = 0;
+			pausetime = 0;
 
 		// are we firing a volley?
-		if (object.ai.tank.firetimes)
+		if (firetimes)
 		{
 			// is it time to fire the next shot in the volley?
-			if (!object.ai.tank.timetillnextshot)
+			if (!timetillnextshot)
 			{
-				CObject *newobject = new CObject(mp_Map);
-				if (object.onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, object.scrx);
-				if (object.ai.tank.movedir==RIGHT)
+				CRay *newobject = new CRay(mp_Map);
+				if (onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, scrx);
+				if (movedir==RIGHT)
 				{
-					newobject->spawn(object.getXRightPos()+(8<<STC), object.getYUpPos()+(5<<STC), OBJ_RAY, m_Episode);
-					newobject->ai.ray.direction = RIGHT;
+					newobject->spawn(getXRightPos()+(8<<STC), getYUpPos()+(5<<STC), OBJ_RAY, m_Episode);
+					newobject->m_Direction = RIGHT;
 				}
 				else
 				{
-					newobject->spawn(object.getXPosition(), object.getYUpPos()+(5<<STC), OBJ_RAY, m_Episode, LEFT);
-					newobject->ai.ray.direction = LEFT;
+					newobject->spawn(getXPosition(), getYUpPos()+(5<<STC), OBJ_RAY, m_Episode, LEFT);
+					newobject->m_Direction = LEFT;
 				}
-				newobject->ai.ray.owner = object.m_index;
+				newobject->owner.ID = m_index;
+				newobject->owner.obj_type = OBJ_TANKEP2;
 				newobject->sprite = ENEMYRAYEP2;
-				newobject->ai.ray.dontHitEnable = 0;
+				newobject->dontHitEnable = 0;
 
 				m_Objvect.push_back(newobject);
 
-				object.ai.tank.timetillnextshot = TANK2_TIME_BETWEEN_SHOTS;
-				if (!--object.ai.tank.firetimes)
+				timetillnextshot = TANK2_TIME_BETWEEN_SHOTS;
+				if (!--firetimes)
 				{
-					object.ai.tank.pausetime = TANK_FIRE_PAUSE_TIME;
+					pausetime = TANK_FIRE_PAUSE_TIME;
 				}
 			}
 			else
 			{
-				object.ai.tank.timetillnextshot--;
+				timetillnextshot--;
 			}
 
 			// don't move when firing except on hard mode
@@ -172,13 +142,13 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 		}
 		else
 		{  // not firing a volley
-			if (!object.ai.tank.timetillcanfire)
+			if (!timetillcanfire)
 			{
 				tank2_fire(object);
 			}
 			else
 			{
-				object.ai.tank.timetillcanfire--;
+				timetillcanfire--;
 			}
 
 		}
@@ -186,24 +156,24 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 		// is keen on same level?
 		tank_searchplayers(object);
 
-		if (object.ai.tank.detectedPlayer)
+		if (detectedPlayer)
 		{
-			unsigned int x = object.getXPosition();
+			unsigned int x = getXPosition();
 			// facing keen?
-			object.ai.tank.alreadyfiredcauseonsamelevel = 1;
+			alreadyfiredcauseonsamelevel = 1;
 			// are we facing him?
-			if (((m_Player[object.ai.tank.detectedPlayerIndex].getXPosition() < x) && object.ai.tank.movedir==LEFT) || \
-					((m_Player[object.ai.tank.detectedPlayerIndex].getXPosition() > x) && object.ai.tank.movedir==RIGHT))
+			if (((m_Player[detectedPlayerIndex].getXPosition() < x) && movedir==LEFT) || \
+					((m_Player[detectedPlayerIndex].getXPosition() > x) && movedir==RIGHT))
 			{
 				// yes, we're facing him! FIRE!!!
-				if (!object.ai.tank.firetimes)
+				if (!firetimes)
 				{
-					if (!object.ai.tank.timetillcanfirecauseonsamelevel)
+					if (!timetillcanfirecauseonsamelevel)
 					{
 						tank2_fire(object);
-						object.ai.tank.timetillcanfirecauseonsamelevel = TANK2_TIME_BETWEEN_FIRE_CAUSE_LEVEL;
+						timetillcanfirecauseonsamelevel = TANK2_TIME_BETWEEN_FIRE_CAUSE_LEVEL;
 					}
-					else object.ai.tank.timetillcanfirecauseonsamelevel--;
+					else timetillcanfirecauseonsamelevel--;
 				}
 			}
 			else
@@ -211,54 +181,54 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 				// no, we're not facing him, on hard difficulty turn around
 				if (hardmode)
 				{
-					if (!object.ai.tank.turnaroundtimer)
+					if (!turnaroundtimer)
 					{
-						object.ai.tank.frame = 0;
-						object.ai.tank.timer = 0;
-						object.ai.tank.animtimer = 0;
-						object.ai.tank.state = stTankData::TANK_LOOK;
-						object.ai.tank.turnaroundtimer = 100;
+						frame = 0;
+						timer = 0;
+						animtimer = 0;
+						state = stTankData::TANK_LOOK;
+						turnaroundtimer = 100;
 					}
-					else object.ai.tank.turnaroundtimer--;
+					else turnaroundtimer--;
 				}
 			}
 		}
 		else
 		{  // no, not on same level
-			object.ai.tank.alreadyfiredcauseonsamelevel = 0;
-			object.ai.tank.turnaroundtimer = 0;
+			alreadyfiredcauseonsamelevel = 0;
+			turnaroundtimer = 0;
 		}
 
 
-		if (object.ai.tank.movedir==LEFT)
+		if (movedir==LEFT)
 		{  // move left
-			if (!object.blockedl)
+			if (!blockedl)
 			{
-				object.moveLeft(TANK_WALK_SPEED);
-				object.ai.tank.dist_to_travel--;
+				moveLeft(TANK_WALK_SPEED);
+				dist_to_travel--;
 			}
 			else
 			{
-				object.ai.tank.frame = 0;
-				object.ai.tank.timer = 0;
-				object.ai.tank.animtimer = 0;
-				object.ai.tank.state = stTankData::TANK_LOOK;
+				frame = 0;
+				timer = 0;
+				animtimer = 0;
+				state = stTankData::TANK_LOOK;
 			}
 		}
 		else
 		{  // move right
-			object.sprite = TANK2_WALK_RIGHT_FRAME + object.ai.tank.frame;
-			if (!object.blockedr)
+			sprite = TANK2_WALK_RIGHT_FRAME + frame;
+			if (!blockedr)
 			{
-				object.moveRight(TANK_WALK_SPEED);
-				object.ai.tank.dist_to_travel--;
+				moveRight(TANK_WALK_SPEED);
+				dist_to_travel--;
 			}
 			else
 			{
-				object.ai.tank.frame = 0;
-				object.ai.tank.timer = 0;
-				object.ai.tank.animtimer = 0;
-				object.ai.tank.state = stTankData::TANK_LOOK;
+				frame = 0;
+				timer = 0;
+				animtimer = 0;
+				state = stTankData::TANK_LOOK;
 			}
 		}
 		break;
@@ -267,27 +237,27 @@ void CObjectAI::tankep2_ai(CObject &object, bool hardmode)
 }
 
 // makes the tank start firing
-void CObjectAI::tank2_fire(CObject &object)
+void CGuardRobot::tank2_fire(CObject &object)
 {
-	object.ai.tank.firetimes = TANK2_SHOTS_PER_VOLLEY;
-	object.ai.tank.timetillnextshot = 0;
-	object.ai.tank.timetillcanfire = (rnd()%(TANK2_MAX_TIME_TILL_CAN_FIRE-TANK2_MIN_TIME_TILL_CAN_FIRE))+TANK2_MIN_TIME_TILL_CAN_FIRE;
-	object.ai.tank.pausetime = TANK_FIRE_PAUSE_TIME;
+	firetimes = TANK2_SHOTS_PER_VOLLEY;
+	timetillnextshot = 0;
+	timetillcanfire = (rnd()%(TANK2_MAX_TIME_TILL_CAN_FIRE-TANK2_MIN_TIME_TILL_CAN_FIRE))+TANK2_MIN_TIME_TILL_CAN_FIRE;
+	pausetime = TANK_FIRE_PAUSE_TIME;
 }
 
 
 // searches for any players on the same level as the tank
-void CObjectAI::tank_searchplayers(CObject &object)
+void CGuardRobot::tank_searchplayers(CObject &object)
 {
-	object.ai.tank.detectedPlayer = 0;
+	detectedPlayer = 0;
 	for( size_t i=0 ; i<m_Player.size() ; i++ )
 	{
-		if (m_Player[i].getYPosition() >= object.getXLeftPos())
+		if (m_Player[i].getYPosition() >= getXLeftPos())
 		{
-			if ( (m_Player[i].getYDownPos()) <= (object.getYDownPos()) )
+			if ( (m_Player[i].getYDownPos()) <= (getYDownPos()) )
 			{
-				object.ai.tank.detectedPlayer = 1;
-				object.ai.tank.detectedPlayerIndex = i;
+				detectedPlayer = 1;
+				detectedPlayerIndex = i;
 				break;
 			}
 		}

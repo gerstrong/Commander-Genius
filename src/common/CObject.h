@@ -93,9 +93,6 @@ public:
 	union ai
 	{
 		// ep1
-		stButlerData butler;
-		stTankData tank;
-		stDoorData door;
 		stIceChunk icechunk;
 		stTeleportData teleport;
 		stRopeData rope;
@@ -108,11 +105,9 @@ public:
 		stBabyData baby;
 		
 		// ep3
-		stFoobData foob;
 		stNinjaData ninja;
 		stMeepData meep;
 		stMotherData mother;
-		stBallJackData bj;
 		stNessieData nessie;
 	} ai;
 	
