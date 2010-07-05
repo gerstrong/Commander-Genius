@@ -14,6 +14,7 @@
 
 #include <SDL.h>
 #include "Playerdefines.h"
+#include "spritedefines.h"
 
 class CHUD {
 public:

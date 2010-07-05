@@ -16,8 +16,8 @@ m_lives(lives),
 m_charges(charges),
 mp_Background(NULL)
 {
-	m_Rect.x = 7;
-	m_Rect.y = 4;
+	m_Rect.x = 4;
+	m_Rect.y = 2;
 	m_Rect.w = 80;
 	m_Rect.h = 29;
 	CreateBackground();
@@ -159,37 +159,6 @@ void CHUD::CreateBackground()
 	text.w = 20;
 	text.h = 4;
 	SDL_FillRect(mp_Background, &text, SDL_MapRGBA(mp_Background->format, 255,255,255,255)); // White
-	
-	outline.x = 0;
-	outline.y = 13;
-	outline.w = 16;
-	outline.h = 16;
-	SDL_FillRect(mp_Background, &outline, SDL_MapRGBA(mp_Background->format, 0,0,0,255)); // Black
-	outline.x = 41;
-	outline.y = 13;
-	outline.w = 16;
-	outline.h = 16;
-	SDL_FillRect(mp_Background, &outline, SDL_MapRGBA(mp_Background->format, 0,0,0,255)); // Black
-
-	// Draw the keen head icon
-	SDL_Rect headsrcrect, headdstrect;
-	headsrcrect.x = 0;
-	headsrcrect.y = 0;
-	headdstrect.w = headsrcrect.w = 16;
-	headdstrect.h = headsrcrect.h = 10;
-	headdstrect.x = 0;
-	headdstrect.y = 14;
-	CSprite &KeenHeadSprite = g_pGfxEngine->getSprite(PFIREFRAME);
-	SDL_BlitSurface( KeenHeadSprite.getSDLSurface(), &headsrcrect, mp_Background, &headdstrect);
-
-	// Draw the pistol
-	headsrcrect.x = 7;
-	headsrcrect.y = 12;
-	headdstrect.w = headsrcrect.w = 9;
-	headdstrect.h = headsrcrect.h = 5;
-	headdstrect.x = 44;
-	headdstrect.y = 18;
-	SDL_BlitSurface( KeenHeadSprite.getSDLSurface(), &headsrcrect, mp_Background, &headdstrect);
 }
 
 /**
@@ -207,6 +176,27 @@ void CHUD::render()
 
 	// Draw the background
 	SDL_BlitSurface( mp_Background, NULL, blitsurface, &m_Rect);
+	
+		// Draw the keen head icon
+	SDL_Rect headsrcrect, headdstrect;
+	headsrcrect.x = 0;
+	headsrcrect.y = 0;
+	headdstrect.w = headsrcrect.w = 16;
+	headdstrect.h = headsrcrect.h = 16;
+	headdstrect.x = 4;
+	headdstrect.y = 15;
+	CSprite &KeenHeadSprite = g_pGfxEngine->getSprite(LIVES_SPRITE);
+	SDL_BlitSurface( KeenHeadSprite.getSDLSurface(), &headsrcrect, blitsurface, &headdstrect);
+
+	// Draw the pistol
+	headsrcrect.x = 0;
+	headsrcrect.y = 0;
+	headdstrect.w = headsrcrect.w = 16;
+	headdstrect.h = headsrcrect.h = 16;
+	headdstrect.x = 45;
+	headdstrect.y = 15;
+	CSprite &KeenGunSprite = g_pGfxEngine->getSprite(SHOTS_SPRITE);
+	SDL_BlitSurface( KeenGunSprite.getSDLSurface(), &headsrcrect, blitsurface, &headdstrect);
 
 	CFont &Font = g_pGfxEngine->getFont(0);
 	Font.setFGColour(blitsurface->format, 0x000000);

@@ -287,8 +287,8 @@ void CEGASprit::LoadSpecialSprites( std::vector<CSprite> &sprite )
 	LoadTGASprite(getResourceFilename("gfx/500.tga", m_gamepath, false, true), sprite[PT500_SPRITE] );
 	LoadTGASprite(getResourceFilename("gfx/1000.tga", m_gamepath, false, true), sprite[PT1000_SPRITE] );
 	LoadTGASprite(getResourceFilename("gfx/5000.tga", m_gamepath, false, true), sprite[PT5000_SPRITE] );
-	//LoadTGASprite("demobox.tga", sprite[DEMOBOX_SPRITE] );
-	//LoadTGASprite("arrowlr.tga", sprite[ARROWLR_SPRITE] );
+	LoadTGASprite(getResourceFilename("gfx/lives.tga", m_gamepath, false, true), sprite[LIVES_SPRITE] );
+	LoadTGASprite(getResourceFilename("gfx/shots.tga", m_gamepath, false, true), sprite[SHOTS_SPRITE] );
 	//LoadTGASprite("arrowud.tga", sprite[ARROWUD_SPRITE] );
 	//LoadTGASprite("arrowul.tga", sprite[ARROWUL_SPRITE] );
 	//LoadTGASprite("arrowur.tga", sprite[ARROWUR_SPRITE] );
