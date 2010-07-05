@@ -9,11 +9,13 @@
 #define CBALLJACK_H_
 
 #include "../../../common/CObject.h"
+#include "../../../common/CPlayer.h"
+#include <vector>
 
 class CBallJack : public CObject
 {
 public:
-	CBallJack();
+	CBallJack(std::vector<CPlayer> &PlayerVect, CMap *p_map);
 	void process();
 
 private:
@@ -30,6 +32,8 @@ private:
 
 	int animframe, animtimer;
 	int speed;
+
+	std::vector<CPlayer> &m_Player;
 };
 
 

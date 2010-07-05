@@ -12,10 +12,12 @@ char BJ_BlockedD(int o);
 
 unsigned int rnd(void);
 
-CBallJack::CBallJack()
+CBallJack::CBallJack(std::vector<CPlayer> &PlayerVect, CMap *p_map):
+CObject(p_map),
+m_Player(PlayerVect)
 {
-	unsigned int px = m_Player[0].getXMidPos();
-	unsigned int py = m_Player[0].getYMidPos();
+	unsigned int px = m_Player.at(0).getXMidPos();
+	unsigned int py = m_Player.at(0).getYMidPos();
 
 	char tempxdir, tempydir;
 	if(px<getXMidPos()) tempxdir=LEFT;
@@ -24,10 +26,10 @@ CBallJack::CBallJack()
 	if(py<getYMidPos()) tempydir=UP;
 	else tempydir = DOWN;
 
-	if (tempxdir == LEFT && tempydir == UP) dir = DUPLEFT;
-	else if (tempxdir == RIGHT && tempydir == UP) dir = DUPRIGHT;
-	else if (tempxdir == LEFT && tempydir == DOWN) dir = DDOWNLEFT;
-	else if (tempxdir == RIGHT && tempydir == DOWN) dir = DDOWNRIGHT;
+	if (tempxdir == LEFT && tempydir == UP) m_Direction = DUPLEFT;
+	else if (tempxdir == RIGHT && tempydir == UP) m_Direction = DUPRIGHT;
+	else if (tempxdir == LEFT && tempydir == DOWN) m_Direction = DDOWNLEFT;
+	else if (tempxdir == RIGHT && tempydir == DOWN) m_Direction = DDOWNRIGHT;
 
 	animframe = 0;
 	animtimer = 0;
@@ -62,15 +64,16 @@ void CBallJack::process()
 				m_Player[touchedBy].bump(BALLPUSHAMOUNT, true);
 			}
 
-			switch(dir)
+			switch(m_Direction)
 			{
-			case DUPRIGHT: dir = DUPLEFT; break;
-			case DUPLEFT: dir = DUPRIGHT; break;
-			case DDOWNRIGHT: dir = DDOWNLEFT; break;
-			case DDOWNLEFT: dir = DDOWNRIGHT; break;
+			case DUPRIGHT: m_Direction = DUPLEFT; break;
+			case DUPLEFT: m_Direction = DUPRIGHT; break;
+			case DDOWNRIGHT: m_Direction = DDOWNLEFT; break;
+			case DDOWNLEFT: m_Direction = DDOWNRIGHT; break;
+			default: break;
 			}
 		}
-		else killplayer(touchedBy);
+		else m_Player[touchedBy].kill();
 	}
 
 	if (zapped)
@@ -78,51 +81,51 @@ void CBallJack::process()
 		// have ball change direction when zapped
 		if (zapd==LEFT)
 		{
-			switch(dir)
+			switch(m_Direction)
 			{
-			case DUPRIGHT: dir = DUPLEFT; break;
-			case DDOWNRIGHT: dir = DDOWNLEFT; break;
+			case DUPRIGHT: m_Direction = DUPLEFT; break;
+			case DDOWNRIGHT: m_Direction = DDOWNLEFT; break;
 			}
 		}
 		else
 		{
-			switch(dir)
+			switch(m_Direction)
 			{
-			case DUPLEFT: dir = DUPRIGHT; break;
-			case DDOWNLEFT: dir = DDOWNRIGHT; break;
+			case DUPLEFT: m_Direction = DUPRIGHT; break;
+			case DDOWNLEFT: m_Direction = DDOWNRIGHT; break;
 			}
 		}
 		zapped = 0;
 	}
 
-	switch(dir)
+	switch(m_Direction)
 	{
 	case DUPLEFT:
-		if (blockedu) { dir = DDOWNLEFT; }
+		if (blockedu) { m_Direction = DDOWNLEFT; }
 		else moveUp(speed);
 
-		if (blockedl) { dir = DUPRIGHT; }
+		if (blockedl) { m_Direction = DUPRIGHT; }
 		else moveLeft(speed);
 		break;
 	case DUPRIGHT:
-		if (blockedu) { dir = DDOWNRIGHT; }
+		if (blockedu) { m_Direction = DDOWNRIGHT; }
 		else moveUp(speed);
 
-		if (blockedr) { dir = DUPLEFT; }
+		if (blockedr) { m_Direction = DUPLEFT; }
 		else moveRight(speed);
 		break;
 	case DDOWNLEFT:
-		if (blockedd) { dir = DUPLEFT; }
+		if (blockedd) { m_Direction = DUPLEFT; }
 		else moveDown(speed);
 
-		if (blockedl) { dir = DDOWNRIGHT; }
+		if (blockedl) { m_Direction = DDOWNRIGHT; }
 		else moveLeft(speed);
 		break;
 	case DDOWNRIGHT:
-		if (blockedd) { dir = DUPRIGHT; }
+		if (blockedd) { m_Direction = DUPRIGHT; }
 		else moveDown(speed);
 
-		if (blockedr) { dir = DDOWNLEFT; }
+		if (blockedr) { m_Direction = DDOWNLEFT; }
 		else moveRight(speed);
 		break;
 	}

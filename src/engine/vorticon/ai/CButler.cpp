@@ -4,7 +4,9 @@
 #include "../../../graphics/CGfxEngine.h"
 #include "../../../common/CBehaviorEngine.h"
 
-CButler::CButler()
+CButler::CButler(std::vector<CPlayer> &PlayerVect, CMap *p_map) :
+CObject(p_map),
+m_Player(PlayerVect)
 {
 	 state = BUTLER_WALK;
 	 movedir = RIGHT;
@@ -32,14 +34,12 @@ void CButler::process()
    		 if (touched_player.getXPosition() < getXPosition())
    		 {
    			 touched_player.playpushed_x = -butlerpushamount;
-   			 if (difficulty>1) touched_player.playpushed_x -= BUTLERPUSHAMOUNTFAST;
    			 touched_player.playpushed_decreasetimer = 0;
    			 touched_player.pdir = touched_player.pshowdir = LEFT;
    		 }
    		 else
    		 {
    			 touched_player.playpushed_x = butlerpushamount;
-   			 if (difficulty>1) touched_player.playpushed_x += BUTLERPUSHAMOUNTFAST;
    			 touched_player.playpushed_decreasetimer = 0;
    			 touched_player.pdir = touched_player.pshowdir = RIGHT;
    		 }
@@ -51,7 +51,7 @@ void CButler::process()
 	 case BUTLER_TURN:
 		 if (timer > BUTLER_TURN_TIME)
 		 {
-			 movedir ^= 1;
+			 movedir = LEFT ? RIGHT : LEFT;
 			 animtimer = 0;
 			 state = BUTLER_WALK;
 		 } else timer++;
@@ -65,10 +65,7 @@ void CButler::process()
 			 sprite = BUTLER_WALK_LEFT_FRAME + frame;
 			 if (!blockedl && not_about_to_fall)
 			 {
-				 if (difficulty>1)
-					 moveLeft(BUTLER_WALK_SPEED_FAST);
-				 else
-					 moveLeft(BUTLER_WALK_SPEED);
+				 moveLeft(BUTLER_WALK_SPEED);
 			 }
 			 else
 			 {
@@ -87,9 +84,6 @@ void CButler::process()
 			 sprite = BUTLER_WALK_RIGHT_FRAME + frame;
 			 if (!blockedr && not_about_to_fall)
 			 {
-				 if (difficulty>1)
-					 moveRight(BUTLER_WALK_SPEED_FAST);
-				 else
 					 moveRight(BUTLER_WALK_SPEED);
 			 }
 			 else
@@ -102,8 +96,7 @@ void CButler::process()
 			 }
 		 }
 		 // walk animation
-		 if (animtimer > BUTLER_WALK_ANIM_TIME ||
-				 (animtimer > BUTLER_WALK_ANIM_TIME_FAST && difficulty>1))
+		 if (animtimer > BUTLER_WALK_ANIM_TIME)
 		 {
 			 if (frame>=3) frame=0;
 			 else frame++;

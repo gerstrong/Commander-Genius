@@ -10,7 +10,8 @@ const int ICECHUNK_WAIT_TIME = 19;
 
 unsigned int rnd(void);
 
-CIceCannon::CIceCannon()
+CIceCannon::CIceCannon():
+		CObject()
 {
 	int speed;
 

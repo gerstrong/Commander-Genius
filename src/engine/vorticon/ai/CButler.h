@@ -9,6 +9,8 @@
 #define CBUTLER_H_
 
 #include "../../../common/CObject.h"
+#include "../../../common/CPlayer.h"
+#include <vector>
 
 #define BUTLER_WALK_SPEED        32
 #define BUTLER_WALK_SPEED_FAST   38
@@ -30,10 +32,10 @@
 #define BUTLER_TURNRIGHT_FRAME   97
 
 
-class CButler
+class CButler : CObject
 {
 public:
-	CButler();
+	CButler(std::vector<CPlayer> &PlayerVect, CMap *p_map);
 	void process();
 
 private:
@@ -46,6 +48,8 @@ private:
 	unsigned int dist_traveled;
 
 	direction_t movedir;
+
+	std::vector<CPlayer> &m_Player;
 };
 
 #endif /* CBUTLER_H_ */

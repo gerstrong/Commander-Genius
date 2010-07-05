@@ -8,6 +8,8 @@
 #ifndef CDOOR_H_
 #define CDOOR_H_
 
+#include "../../../common/CObject.h"
+
 // "AI" for the door object (to do the animation when a door
 // opens, the door tiles are removed and replaced with a sprite
 // that looks exactly the old tiles, which then moves down into
@@ -16,10 +18,10 @@
 #define DOOR_OPEN_SPEED    1
 
 
-class CDoor : CObject
+class CDoor : public CObject
 {
 public:
-	CDoor();
+	CDoor(CMap *p_map);
 	void process();
 
 private:

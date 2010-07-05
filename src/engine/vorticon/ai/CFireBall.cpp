@@ -12,14 +12,15 @@
 
 #define FIREBALL_OFFSCREEN_KILL_TIME     25
 
-void CFireBall::CFireBall()
+void CFireBall::CFireBall():
+CObject()
 {
 	animframe = 0;
 	animtimer = 0;
-	object.inhibitfall = 1;
-	object.blockedl = object.blockedr = 0;
-	object.canbezapped = 1;
-	object.needinit = 0;
+	inhibitfall = true;
+	blockedl = blockedr = 0;
+	canbezapped = 1;
+	needinit = 0;
 }
 
 void CFireBall::process()
@@ -27,14 +28,14 @@ void CFireBall::process()
 	int speed;
 
 	// check if it hit keen
-	if (object.touchPlayer)
+	if (touchPlayer)
 	{
-		killplayer(object.touchedBy);
+		killplayer(touchedBy);
 		// make a ZAP-ZOT animation
-		object.m_type = OBJ_RAY;
+		m_type = OBJ_RAY;
 		state = RAY_STATE_SETZAPZOT;
-		object.inhibitfall = 1;
-		object.needinit = 0;
+		inhibitfall = 1;
+		needinit = 0;
 		return;
 	}
 
@@ -42,19 +43,19 @@ void CFireBall::process()
 	std::vector<CObject*>::iterator it_obj = m_Objvect.begin()++;
 	for( ; it_obj!=m_Objvect.end() ; it_obj++)
 	{
-		if (!(*it_obj)->exists || (*it_obj)->m_index==object.m_index) continue;
+		if (!(*it_obj)->exists || (*it_obj)->m_index==m_index) continue;
 		if (/*(*it_obj)->m_type==OBJ_RAY ||*/ (*it_obj)->m_type==OBJ_FIREBALL) continue;
 
 		if ((*it_obj)->canbezapped || (*it_obj)->m_type==OBJ_RAY)
 		{
 			if ((*it_obj)->hitdetect(object) && owner != (*it_obj)->m_index)
 			{
-				object.m_type = OBJ_RAY;
+				m_type = OBJ_RAY;
 				state = RAY_STATE_SETZAPZOT;
-				object.inhibitfall = 1;
-				object.needinit = 0;
+				inhibitfall = 1;
+				needinit = 0;
 				(*it_obj)->zapped++;
-				(*it_obj)->moveTo(object.getXPosition(), object.getYPosition());
+				(*it_obj)->moveTo(getXPosition(), getYPosition());
 				(*it_obj)->zappedbyenemy = 1;
 				return;
 			}
@@ -62,13 +63,13 @@ void CFireBall::process()
 	}
 
 	// check if it was shot
-	if (object.zapped)
+	if (zapped)
 	{
-		if (object.onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, object.scrx);
-		object.m_type = OBJ_RAY;
+		if (onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, scrx);
+		m_type = OBJ_RAY;
 		state = RAY_STATE_SETZAPZOT;
-		object.inhibitfall = 1;
-		object.needinit = 0;
+		inhibitfall = 1;
+		needinit = 0;
 		return;
 	}
 
@@ -76,7 +77,7 @@ void CFireBall::process()
 	// of time. this is to prevent a massive buildup of soundwaves
 	// slowly traveling through walls all the way across the level
 	// (which can crash the game due to running out of object slots).
-	if (!object.onscreen)
+	if (!onscreen)
 	{
 		if (offscreentime > FIREBALL_OFFSCREEN_KILL_TIME)
 		{
@@ -91,29 +92,29 @@ void CFireBall::process()
 	speed = hard ? FIREBALL_HARD_SPEED : FIREBALL_SPEED;
 	if (direction == RIGHT)
 	{
-		object.sprite = FIREBALL_RIGHT_FRAME + animframe;
-		if (object.blockedr || object.blockedl)
+		sprite = FIREBALL_RIGHT_FRAME + animframe;
+		if (blockedr || blockedl)
 		{
-			object.m_type = OBJ_RAY;
+			m_type = OBJ_RAY;
 			state = RAY_STATE_SETZAPZOT;
-			object.inhibitfall = 1;
-			object.needinit = 0;
+			inhibitfall = 1;
+			needinit = 0;
 			return;
 		}
-		else object.moveRight(speed);
+		else moveRight(speed);
 	}
 	else
 	{
-		object.sprite = FIREBALL_LEFT_FRAME + animframe;
-		if (object.blockedr || object.blockedl)
+		sprite = FIREBALL_LEFT_FRAME + animframe;
+		if (blockedr || blockedl)
 		{
-			object.m_type = OBJ_RAY;
+			m_type = OBJ_RAY;
 			state = RAY_STATE_SETZAPZOT;
-			object.inhibitfall = 1;
-			object.needinit = 0;
+			inhibitfall = 1;
+			needinit = 0;
 			return;
 		}
-		else object.moveLeft(speed);
+		else moveLeft(speed);
 	}
 
 	// animation

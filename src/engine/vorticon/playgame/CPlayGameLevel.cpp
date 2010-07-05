@@ -6,7 +6,7 @@
  */
 
 #include "CPlayGameVorticon.h"
-#include "../ai/se.h"
+#include "../ai/CSectorEffector.h"
 #include "../../../common/objenums.h"
 #include "../../../sdl/sound/CSound.h"
 #include "../finale/CTantalusRay.h"

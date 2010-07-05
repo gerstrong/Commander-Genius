@@ -4,7 +4,8 @@
 #include "CTank.h"
 
 
-CGuardRobot::CGuardRobot()
+CGuardRobot::CGuardRobot():
+CObject()
 {
 	// first time initilization
 	state = TANK_WALK;

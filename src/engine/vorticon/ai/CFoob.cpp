@@ -2,7 +2,8 @@
 #include "../../../sdl/sound/CSound.h"
 #include "../../../graphics/CGfxEngine.h"
 
-CFoob::CFoob()
+CFoob::CFoob():
+CObject()
 {
 
 }
