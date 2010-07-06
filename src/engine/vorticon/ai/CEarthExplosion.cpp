@@ -7,7 +7,7 @@
 
 #include "CEarthExplosion.h"
 
-CEarthExplosion::CEarthExplosion(CMap *p_map) :
+/*CEarthExplosion::CEarthExplosion(CMap *p_map) :
 CRay(p_map)
 {
 	onscreen = true;
@@ -42,4 +42,4 @@ void CEarthExplosion::process()
 		animtimer = 0;
 	}
 	else animtimer++;
-}
+}*/

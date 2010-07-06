@@ -749,14 +749,8 @@ void CPlayer::raygun()
 				if (pdir==RIGHT) xdir = getXRightPos()+xinertia;
 				else xdir = getXLeftPos()+xinertia;
 
-				CRay *rayobject = new CRay(mp_map);
-				rayobject->spawn(xdir, ydir, OBJ_RAY, m_episode, pdir);
-				rayobject->setOwner(OBJ_PLAYER, m_index);
-				rayobject->m_Direction = pdir;
+				CRay *rayobject = new CRay(mp_map, xdir, ydir, pdir, OBJ_PLAYER, m_index);
 				
-				//rayobject->dontHitEnable = true;
-				//if (!mp_option[OPT_ALLOWPKING].value)
-					//rayobject->dontHit = OBJ_PLAYER;
 				mp_object->push_back(rayobject);
 			}
 			else

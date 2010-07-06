@@ -10,10 +10,10 @@
 
 #include "CRay.h"
 
-class CEarthExplosion : public CRay {
+/*class CEarthExplosion : public CRay {
 public:
 	CEarthExplosion(CMap *p_map);
 	void process();
-};
+};*/
 
 #endif /* CEARTHEXPLOSION_H_ */

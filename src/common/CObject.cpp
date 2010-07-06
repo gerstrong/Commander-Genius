@@ -26,7 +26,7 @@ m_blinktime(0)
 {
 	m_number_of_objects++;
 	honorPriority = false;
-	exists = false;
+	exists = true;
 	sprite=BLANKSPRITE;
 	solid = true;
 
@@ -60,7 +60,6 @@ bool CObject::spawn(int x0, int y0, object_t otype, int Episode, direction_t dir
 		hasbeenonscreen = false;
 		zapped = false;
 		canbezapped = 0;
-		inhibitfall = false;
 		honorPriority = true;
 		touchPlayer = touchedBy = 0;
 		cansupportplayer = false;
@@ -119,14 +118,6 @@ void CObject::setupObjectType(int Episode)
 	case OBJ_NESSIE: sprite = OBJ_NESSIE_DEFSPRITE; break;
 	case OBJ_AUTORAY_V: sprite = RAY_VERT_EP3; break;
 	case OBJ_SNDWAVE: sprite = OBJ_SNDWAVE_DEFSPRITE; break;
-
-	// Common Elements and some are Episode dependent
-	case OBJ_RAY:
-		{
-			if(Episode == 1) sprite = OBJ_RAY_DEFSPRITE_EP1;
-			else if(Episode == 2) sprite = OBJ_RAY_DEFSPRITE_EP2;
-			else if(Episode == 3) sprite = OBJ_RAY_DEFSPRITE_EP3;
-		}break;
 
 	case OBJ_VORT:
 		{

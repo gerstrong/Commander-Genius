@@ -12,8 +12,9 @@
 
 #define FIREBALL_OFFSCREEN_KILL_TIME     25
 
-CFireBall::CFireBall(CMap *p_map) :
-CRay(p_map)
+CFireBall::CFireBall(CMap *p_map, Uint32 x, Uint32 y,
+		direction_t dir, object_t byType, size_t byID) :
+CRay(p_map, x, y, dir, byType, byID)
 {
 	animframe = 0;
 	animtimer = 0;

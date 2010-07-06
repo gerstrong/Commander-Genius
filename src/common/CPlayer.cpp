@@ -65,7 +65,7 @@ void CPlayer::setDatatoZero()
     exists = true;
 	onscreen = true;
 	pfallspeed = 0,
-	pdir = pshowdir = DOWN;
+	pdir = pshowdir = (m_level==80) ? DOWN : RIGHT;
 	inhibitfall = hideplayer = false;
   	pwalkframe = pwalkframea = 0;
     dpadcount = 0;

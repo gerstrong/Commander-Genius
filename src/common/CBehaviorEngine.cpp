@@ -32,9 +32,9 @@ void CBehaviorEngine::addMessage(const std::string &name,
  * 						Episode 3 uses another algorithm for the teleporters.
  * \param	p_exedata	pointer to the data where the exe is located at.
  */
-bool CBehaviorEngine::readTeleporterTable(short episode, byte *p_exedata)
+bool CBehaviorEngine::readTeleporterTable(byte *p_exedata)
 {
-	if(episode == 1)
+	if(m_Episode == 1)
 	{
 		// clear the teleporter table
 		if(!m_TeleporterTable.empty())
@@ -90,6 +90,12 @@ std::string CBehaviorEngine::getString(const std::string& name)
 
 	return text;
 }
+
+size_t CBehaviorEngine::getEpisode()
+{	return m_Episode;}
+
+void CBehaviorEngine::setEpisode(size_t Episode)
+{	m_Episode = Episode;}
 
 CBehaviorEngine::~CBehaviorEngine()
 {

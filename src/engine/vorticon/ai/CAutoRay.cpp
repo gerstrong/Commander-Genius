@@ -31,19 +31,19 @@ void CAutoRay::process()
 		m_gunfiretimer = 0;
 
 		unsigned int x,y;
-		CRay *NewRay = new CRay(mp_Map);
+		CRay *NewRay;
 		x = getXPosition();
 		y = getYPosition();
 
 		if (m_type==VERTICAL)
 		{
-			NewRay->spawn(x+(4<<STC), y+(1<<CSF), OBJ_RAY, m_Episode);
+			NewRay = new CRay(mp_Map, x+(4<<STC), y+(1<<CSF), DOWN, OBJ_AUTORAY_V, m_index);
 			NewRay->sprite = RAY_VERT_EP3;
 			NewRay->m_Direction = DOWN;
 		}
 		else
 		{
-			NewRay->spawn(x+(1<<CSF), y+(4<<STC), OBJ_RAY, m_Episode);
+			NewRay = new CRay(mp_Map, x+(1<<CSF), y+(4<<STC), DOWN, OBJ_AUTORAY_V, m_index);
 			NewRay->sprite = ENEMYRAYEP3;
 			NewRay->m_Direction = RIGHT;
 		}

@@ -31,6 +31,7 @@ m_dark(dark)
 //////////////////
 void CObjectAI::process()
 {
+
 	for( size_t i=0 ; i < m_Objvect.size() ; i++ )
 	{
 		CObject &object = *m_Objvect.at(i);

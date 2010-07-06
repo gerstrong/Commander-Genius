@@ -572,11 +572,12 @@ void CPlayGameVorticon::drawObjects()
 			it_player->draw();
 	}
 
+
+
 	std::vector<CObject*>::iterator it_obj = m_Object.begin();
 	for(; it_obj!=m_Object.end() ; it_obj++)
 		(*it_obj)->draw();
 }
-
 ////
 // Cleanup Routine
 ////

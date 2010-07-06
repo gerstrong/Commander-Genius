@@ -66,7 +66,6 @@ public:
 	void cleanup();
 	virtual ~CMap();
 
-
 	Sint16 m_scrollx_buf;		// Amount to move surface in X.
 	Sint16 m_scrolly_buf; 		// Amount to move surface in Y.
 

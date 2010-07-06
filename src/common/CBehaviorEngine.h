@@ -39,11 +39,14 @@ public:
 	void addMessage(const std::string &name,
 					const std::string &message);
 
-	bool readTeleporterTable(short episode, byte *p_exedata);
+	bool readTeleporterTable(byte *p_exedata);
 
 	std::vector<CTileProperties> &getTileProperties(size_t tmnum = 1);
 	CPhysicsSettings &getPhysicsSettings();
 	std::string getString(const std::string& name);
+	size_t getEpisode();
+
+	void setEpisode(size_t Episode);
 
 	virtual ~CBehaviorEngine();
 
@@ -56,6 +59,7 @@ private:
 													  // used by Episode 1 especially
 
 	int numStrings;
+	size_t m_Episode;
 };
 
 #endif /* CBEHAVIORENGINE_H_ */

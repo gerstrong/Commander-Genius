@@ -205,9 +205,11 @@ bool CGameControl::loadResources(Uint8 flags)
 	CPatcher Patcher(m_ExeFile);
 	Patcher.patchMemory();
 
+	g_pBehaviorEngine->setEpisode(m_Episode);
+
 	if( m_Episode == 1 || m_Episode == 2 || m_Episode == 3 ) // Vorticon resources
 	{
-		g_pBehaviorEngine->readTeleporterTable(m_Episode, p_exedata);
+		g_pBehaviorEngine->readTeleporterTable(p_exedata);
 
 		if( (flags & LOADGFX) == LOADGFX )
 		{
