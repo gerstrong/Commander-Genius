@@ -137,7 +137,7 @@ public:
 	int pjumpupspeed;
 	unsigned char pjumpnormaltime, pjumpupdecreaserate;
 	bool pjustjumped;
-	unsigned char pjustfell;
+	bool pjustfell;
 	unsigned char pjumpfloattimer;
 
 	direction_t pdir,pshowdir,lastpdir;

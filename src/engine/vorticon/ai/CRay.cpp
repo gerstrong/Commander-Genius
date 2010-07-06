@@ -216,3 +216,18 @@ void CRay::process()
 	}
 
 }
+
+void CRay::getTouchedBy(CObject &theObject)
+{
+	if(hitdetect(theObject))
+	{
+		if(theObject.canbezapped && state ==  RAY_STATE_FLY )
+		{
+			state = RAY_STATE_SETZAPZOT;
+			theObject.getShotByRay();
+		}
+	}
+}
+
+bool CRay::isFlying()
+{ return (state==RAY_STATE_FLY); }

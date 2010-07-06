@@ -554,6 +554,12 @@ void CObject::processFalling()
 	}
 }
 
+void CObject::getShotByRay()
+{
+	if(HealthPoints>0)
+		HealthPoints--;
+}
+
 const int COLISION_RES = 4;
 bool CObject::checkSolidR( int x2, int y1, int y2)
 {

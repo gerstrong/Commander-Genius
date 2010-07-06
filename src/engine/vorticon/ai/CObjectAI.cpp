@@ -58,6 +58,10 @@ void CObjectAI::process()
 		    }
 
 			object.process();
+
+			std::vector<CObject*>::iterator theOther = m_Objvect.begin();
+			for( ; theOther != m_Objvect.end() ; theOther++ )
+				object.getTouchedBy(**theOther);
 		}
 	}
 

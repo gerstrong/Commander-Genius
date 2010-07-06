@@ -746,7 +746,7 @@ void CPlayer::raygun()
 				
 				ydir = getYPosition()+(9<<STC);
 				if (pdir==RIGHT) xdir = getXRightPos()+xinertia;
-				else xdir = getXLeftPos()+xinertia;
+				else xdir = getXLeftPos()+xinertia-(16<<STC);
 
 				CRay *rayobject = new CRay(mp_Map, xdir, ydir, pdir, OBJ_PLAYER, m_index);
 				

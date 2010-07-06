@@ -149,6 +149,8 @@ public:
 	unsigned int getYMidPos();
 	
 	void processFalling();
+	virtual void getTouchedBy(CObject &theObject) {};
+	virtual void getShotByRay();
 
 	void draw();
 	void drawMask(SDL_Surface *dst, CSprite &Sprite, int mx, int my);

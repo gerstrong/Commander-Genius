@@ -19,19 +19,20 @@ public:
 
 	virtual void process();
 	void setOwner(object_t type, unsigned int index);
+	void getTouchedBy(CObject &theObject);
+	bool isFlying();
 
 	direction_t m_Direction;
 
 protected:
-	//std::vector<CPlayer> &m_PlayerVect;
 	bool m_automatic_raygun;
 	char m_pShotSpeed;
 
-	enum{
+	enum {
 		RAY_STATE_FLY,
 		RAY_STATE_SETZAPZOT,
 		RAY_STATE_ZAPZOT
-	}state;
+	} state;
 	char zapzottimer;
 
 	unsigned char dontHitEnable;
@@ -48,6 +49,5 @@ protected:
 
 	// for earth chunks
 	int baseframe;
-
 };
 

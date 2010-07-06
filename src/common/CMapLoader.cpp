@@ -334,8 +334,8 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 			case 3:    // vorticon (ep1) Vorticon Commander (ep2)
 				if (episode==1)
 				{
-					//enemyobject = new CVorticon( mp_map, *mp_vec_Player,
-						//		x<<CSF, y<<CSF, (level==16) ? 105 : 4 );
+					enemyobject = new CVorticon( mp_map, *mp_vec_Player,
+								x<<CSF, y<<CSF, (level==16) ? 105 : 4 );
 				}
 				else if (episode==2)
 				{
@@ -443,8 +443,7 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 			case 11:   // jumping vorticon (ep3)
 				if (episode==3)
 				{
-					//enemyobject = new CVorticon( mp_map, *mp_vec_Player, x<<CSF, y<<CSF );
-					//enemyobject->spawn(x<<CSF, y<<CSF, OBJ_NONE, episode);
+					enemyobject = new CVorticon( mp_map, *mp_vec_Player, x<<CSF, y<<CSF );
 				}
 				break;
 			case 12:   // sparks in mortimer's machine

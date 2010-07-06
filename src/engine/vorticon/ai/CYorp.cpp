@@ -8,6 +8,7 @@
  */
 
 #include "CYorp.h"
+#include "CRay.h"
 #include "../../../sdl/sound/CSound.h"
 #include "../../../misc.h"
 
@@ -109,7 +110,7 @@ void CYorp::process()
  	}
 
 	// did the poor guy get shot?
-	if( HealthPoints <= 0 )
+	if( HealthPoints <= 0 && state != YORP_DYING )
 	{
 		// what'd you kill an innocent yorp for, you bastard!
 		if(!m_hardmode)
