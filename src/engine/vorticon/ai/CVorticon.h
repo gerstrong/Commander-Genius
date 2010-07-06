@@ -1,4 +1,7 @@
 
+#ifndef __CVORTICON__
+#define __CVORTICON__
+
 #include "../../../common/CObject.h"
 #include "../../../common/CPlayer.h"
 #include <vector>
@@ -96,3 +99,5 @@ private:
 
 	std::vector<CPlayer> &m_Player;
 };
+
+#endif //__CVORTICON__

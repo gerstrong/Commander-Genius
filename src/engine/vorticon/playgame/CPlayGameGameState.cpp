@@ -110,7 +110,7 @@ bool CPlayGameVorticon::loadGameState()
 		// Load completed levels
 		m_SavedGame.readDataBlock( (byte*)(mp_level_completed));
 
-		m_Player[0].mp_map = &m_Map;
+		m_Player[0].setMapData(&m_Map);
 		while(m_Player[0].scrollTriggers()); // Scroll to the right position on the map
 
 		m_Map.drawAll();

@@ -13,7 +13,7 @@
 class CVortiMom : CObject
 {
 public:
-	CVortiMom(CMap *p_map);
+	CVortiMom(CMap *p_map, Uint32 x, Uint32 y);
 };
 
 #endif /* CVORTIMOM_H_ */

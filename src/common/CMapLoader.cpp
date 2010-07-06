@@ -221,13 +221,9 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 			{
 				if (!m_NessieAlreadySpawned)
 				{
-					CObject *nessie = new CObject(mp_map);
-
-					nessie->spawn(x<<CSF, y<<CSF, OBJ_NESSIE, 3);
-					nessie->onscreen = true;
-					nessie->solid = false;
+					CMessie *messie = new CMessie(mp_map, x<<CSF, y<<CSF);
 					m_NessieAlreadySpawned = true;
-					mp_objvect->push_back(nessie);
+					mp_objvect->push_back(messie);
 				}
 				mp_map->m_objectlayer[x][y] = NESSIE_PATH;
 			}

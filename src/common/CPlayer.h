@@ -38,7 +38,7 @@ public:
 			 std::vector<CObject*> &m_Object, CMap &map);
 	void setDatatoZero();
 	void setDefaultStartValues();
-	void setMapData(CMap *p_map){ mp_map=p_map; }
+	void setMapData(CMap *p_map){ mp_Map=p_map; }
 	void setupforLevelPlay();
 	bool getLevelTrigger();
 
@@ -178,7 +178,6 @@ public:
 	std::string hintstring;
 	bool hintused;
 
-	CMap *mp_map;
 	stOption *mp_option;
 
 private:

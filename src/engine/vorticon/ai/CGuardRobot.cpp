@@ -4,8 +4,8 @@
 #include "CTank.h"
 #include "CRay.h"
 
-CGuardRobot::CGuardRobot(CMap *p_map) :
-CTank(p_map)
+CGuardRobot::CGuardRobot(CMap *p_map, Uint32 x, Uint32 y) :
+CTank(p_map, x, y)
 {
 	// first time initilization
 //	state = TANK_WALK;

@@ -31,7 +31,7 @@ BABY_JUMP_BIG, BABY_JUMP_SMALL
 
 CVortikid::CVortikid( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
 		Uint32 x, Uint32 y ) :
-CObject(p_map)
+CObject(p_map, x, y)
 {}
 
 //void CObjectAI::baby_ai(CObject &object, int episode, bool hard)

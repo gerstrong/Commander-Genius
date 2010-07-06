@@ -13,7 +13,7 @@
 class CSoundWave : public CObject
 {
 public:
-	CSoundWave(CMap *p_map);
+	CSoundWave(CMap *p_map, Uint32 x, Uint32 y);
 };
 
 #endif /* CSOUNDWAVE_H_ */

@@ -11,7 +11,7 @@
 
 CRay::CRay(CMap *p_map, Uint32 x, Uint32 y,
 		direction_t dir, object_t byType, size_t byID) :
-CObject(p_map),
+CObject(p_map, x, y),
 m_Direction(dir)
 {
 	m_type = OBJ_RAY;

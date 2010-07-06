@@ -28,14 +28,13 @@
 CPlayer::CPlayer(const char &Episode, short &Level, char &Difficulty,
 				 bool *mp_level_completed, stOption *mp_option,
 				 std::vector<CObject*> &m_Object, CMap &map) :
-CObject(&map),
+CObject(&map, 0, 0),
 m_episode(Episode),
 m_level(Level),
 m_difficulty(Difficulty),
 pjumpupspeed_decrease(g_pBehaviorEngine->getPhysicsSettings().player.defaultjumpupdecreasespeed),
-m_Ankhshield(CObject(&map)),
+m_Ankhshield(CObject(&map,0,0)),
 mp_levels_completed(mp_level_completed),
-mp_map(NULL),
 mp_option(mp_option),
 mp_StatusScr(NULL)
 {
@@ -152,8 +151,8 @@ bool CPlayer::scrollTriggers()
 	int px, py, left, up, right, down, speed;
 	bool scrollchanged=false;
 
-	Uint16& scroll_x = mp_map->m_scrollx;
-	Uint16& scroll_y = mp_map->m_scrolly;
+	Uint16& scroll_x = mp_Map->m_scrollx;
+	Uint16& scroll_y = mp_Map->m_scrolly;
 	
 	if (pdie) return scrollchanged;
 
@@ -167,50 +166,50 @@ bool CPlayer::scrollTriggers()
 	speed = g_pCamera->getScrollSpeed();
 
 	// left-right scrolling
-	if(px > right && scroll_x < mp_map->m_maxscrollx)
+	if(px > right && scroll_x < mp_Map->m_maxscrollx)
 	{
 		do{
 			px = (getXPosition()>>STC)-scroll_x;
-			mp_map->scrollRight();
-		}while(px > right+speed && scroll_x < mp_map->m_maxscrollx);
+			mp_Map->scrollRight();
+		}while(px > right+speed && scroll_x < mp_Map->m_maxscrollx);
 		scrollchanged = true;
 	}
 	else if(px < left && scroll_x > 32)
 	{
 		do{
 			px = (getXPosition()>>STC)-scroll_x;
-			mp_map->scrollLeft();
+			mp_Map->scrollLeft();
 		}while(px < left-speed && scroll_x > 32);
 		scrollchanged = true;
 	}
 
 	// up-down scrolling
-	if (py > down && scroll_y < mp_map->m_maxscrolly)
+	if (py > down && scroll_y < mp_Map->m_maxscrolly)
 	{
 		do{
 			py = (getYPosition()>>STC)-scroll_y;
-			mp_map->scrollDown();
-		}while(py > down+speed && scroll_y < mp_map->m_maxscrolly);
+			mp_Map->scrollDown();
+		}while(py > down+speed && scroll_y < mp_Map->m_maxscrolly);
 		scrollchanged = true;
 	}
 	else if ( py < up && scroll_y > 32  )
 	{
 		do{
 			py = (getYPosition()>>STC)-scroll_y;
-			mp_map->scrollUp();
+			mp_Map->scrollUp();
 		}while(py < up-speed && scroll_y > 32);
 		scrollchanged = true;
 	}
 
 	// This will always snap correctly to the edge
 	while(scroll_x < 32)
-		mp_map->scrollRight();
-	while(scroll_x > mp_map->m_maxscrollx)
-		mp_map->scrollLeft();
+		mp_Map->scrollRight();
+	while(scroll_x > mp_Map->m_maxscrollx)
+		mp_Map->scrollLeft();
 	while(scroll_y < 32)
-		mp_map->scrollDown();
-	while(scroll_y > mp_map->m_maxscrolly)
-		mp_map->scrollUp();
+		mp_Map->scrollDown();
+	while(scroll_y > mp_Map->m_maxscrolly)
+		mp_Map->scrollUp();
 
 	return scrollchanged;
 }

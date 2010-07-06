@@ -19,8 +19,11 @@ enum nessie_actions{
 void nessie_find_next_checkpoint(int o);
 
 CMessie::CMessie(CMap *p_map, Uint32 x, Uint32 y) :
-CObject(p_map,x,y)
-{}
+CObject(p_map, x, y)
+{
+	onscreen = true;
+	solid = false;
+}
 
 void CMessie::process()
 {

@@ -13,7 +13,7 @@
 class CRope : public CObject
 {
 public:
-	CRope(CMap *p_map);
+	CRope(CMap *p_map, Uint32 x, Uint32 y);
 };
 
 #endif /* CROPE_H_ */

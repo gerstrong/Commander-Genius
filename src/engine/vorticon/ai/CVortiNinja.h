@@ -13,7 +13,7 @@
 class CVortiNinja : CObject
 {
 public:
-	CVortiNinja(CMap *p_map);
+	CVortiNinja(CMap *p_map, Uint32 x, Uint32 y);
 };
 
 #endif /* CVORTININJA_H_ */

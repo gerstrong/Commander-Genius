@@ -26,7 +26,7 @@ enum sector_effector_type{
 class CSectorEffector : public CObject
 {
 public:
-	CSectorEffector(CMap *p_map);
+	CSectorEffector(CMap *p_map, Uint32 x, Uint32 y);
 };
 
 #endif /* SE_H_ */

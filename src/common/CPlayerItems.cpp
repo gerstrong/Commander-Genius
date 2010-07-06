@@ -36,7 +36,7 @@ void CPlayer::getgoodies()
 bool CPlayer::getGoodie(int px, int py)
 {
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
-	Uint16 tile = mp_map->at(px, py);
+	Uint16 tile = mp_Map->at(px, py);
 	char behaviour = TileProperty[tile].behaviour;
 	
 	if (behaviour>0 && behaviour<31)
@@ -45,8 +45,8 @@ bool CPlayer::getGoodie(int px, int py)
 			(TileProperty[tile].behaviour > 17 && TileProperty[tile].behaviour < 22) ||
 			(TileProperty[tile].behaviour == 27 || TileProperty[tile].behaviour == 28)   ) // All pickupable items
 		{  // pick up the goodie, i.e. erase it from the map
-			mp_map->changeTile(px, py, TileProperty[tile].chgtile);
-			if (TileProperty[tile].animationtime) mp_map->deAnimate(px, py);
+			mp_Map->changeTile(px, py, TileProperty[tile].chgtile);
+			if (TileProperty[tile].animationtime) mp_Map->deAnimate(px, py);
 		}
 		else if (TileProperty[tile].behaviour == 1) // Lethal (Deadly) Behavoir
 		{  // whoah, this "goodie" isn't so good...
@@ -195,7 +195,7 @@ void CPlayer::riseBonus(int spr, int x, int y)
 {
 	 if (mp_option[OPT_RISEBONUS].value)
 	 {
-		 /*CObject GotPointsObj(mp_map);
+		 /*CObject GotPointsObj(mp_Map);
 		 GotPointsObj.spawn(x<<CSF, y<<CSF, OBJ_GOTPOINTS, m_episode);
 		 GotPointsObj.sprite = spr;
 		 mp_object->push_back(GotPointsObj);*/
@@ -237,14 +237,14 @@ bool CPlayer::showGameHint(int mpx, int mpy)
 
 	if(m_episode == 1)
 	{
-		if(mp_map->at(mpx, mpy) >= 435 && mp_map->at(mpx, mpy) <= 438)
+		if(mp_Map->at(mpx, mpy) >= 435 && mp_Map->at(mpx, mpy) <= 438)
 		{
 			// it's a garg statue
-			mp_map->setTile(mpx, mpy, 434, true);
+			mp_Map->setTile(mpx, mpy, 434, true);
 		}
 		else // It's a yorp statue.. or something else
 		{
-			mp_map->setTile(mpx, mpy, 315, true);
+			mp_Map->setTile(mpx, mpy, 315, true);
 		}
 
 		hintstring =  "EP1_YSIYM_LVL" + itoa(m_level);
@@ -254,7 +254,7 @@ bool CPlayer::showGameHint(int mpx, int mpy)
 		// Keen 2 seems to have a bug with those tiles.
 		// On other parts on the map they can be triggered
 		// This small condition should fix that bug
-		int t = mp_map->at(mpx, mpy+1);
+		int t = mp_Map->at(mpx, mpy+1);
 		if(t != 429) return false;
 
 		// make the switch stop glowing
@@ -269,8 +269,8 @@ bool CPlayer::showGameHint(int mpx, int mpy)
 		default:
 			return false;
 		}
-		mp_map->setTile(mpx, mpy+1, 432,true);
-		mp_map->deAnimate(mpx<<STC, (mpy+1)<<STC);
+		mp_Map->setTile(mpx, mpy+1, 432,true);
+		mp_Map->deAnimate(mpx<<STC, (mpy+1)<<STC);
 	}
 	hintused = true;
 	return true;
@@ -333,28 +333,28 @@ std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTilePropertie
 	 take_keycard(doortile);
 	 
 	 // erase door from map
-	 if (m_episode==3)	chgtotile = mp_map->at(mpx-1, mpy);
-	 else	chgtotile = TileProperty[mp_map->at(mpx ,mpy)].chgtile;
+	 if (m_episode==3)	chgtotile = mp_Map->at(mpx-1, mpy);
+	 else	chgtotile = TileProperty[mp_Map->at(mpx ,mpy)].chgtile;
 	 
-	 if(TileProperty[mp_map->at(mpx ,mpy-1)].behaviour>1 &&
-	 TileProperty[mp_map->at(mpx ,mpy-1)].behaviour<6 ) // This happens because, sometimes the player opens the door
+	 if(TileProperty[mp_Map->at(mpx ,mpy-1)].behaviour>1 &&
+	 TileProperty[mp_Map->at(mpx ,mpy-1)].behaviour<6 ) // This happens because, sometimes the player opens the door
 	 {	// from a lower part.
-		 mp_map->setTile(mpx, mpy-1, chgtotile);
+		 mp_Map->setTile(mpx, mpy-1, chgtotile);
 		 tilefix=1;
 	 }
-	 if(TileProperty[mp_map->at(mpx ,mpy)].behaviour>1 &&
-	 TileProperty[mp_map->at(mpx ,mpy)].behaviour<6) // This happens because, sometimes the player opens the door
+	 if(TileProperty[mp_Map->at(mpx ,mpy)].behaviour>1 &&
+	 TileProperty[mp_Map->at(mpx ,mpy)].behaviour<6) // This happens because, sometimes the player opens the door
 	 { // from a lower part.
-		 mp_map->setTile(mpx, mpy, chgtotile); // upper?
+		 mp_Map->setTile(mpx, mpy, chgtotile); // upper?
 	 }
-	 if(TileProperty[mp_map->at(mpx, mpy+1)].behaviour>1 &&
-	 TileProperty[mp_map->at(mpx, mpy+1)].behaviour<6) // This happens because, sometimes the player opens the door
+	 if(TileProperty[mp_Map->at(mpx, mpy+1)].behaviour>1 &&
+	 TileProperty[mp_Map->at(mpx, mpy+1)].behaviour<6) // This happens because, sometimes the player opens the door
 	 { // from a lower part.
-		 mp_map->setTile(mpx, mpy+1, chgtotile); // When he stands in front of the door!
+		 mp_Map->setTile(mpx, mpy+1, chgtotile); // When he stands in front of the door!
 	 }
 	 
 	 // replace the door tiles with a door object, which will do the animation
-	 /*CObject doorobj(mp_map);
+	 /*CObject doorobj(mp_Map);
 
 	 doorobj.spawn(mpx<<CSF,(mpy-tilefix)<<CSF, OBJ_DOOR, m_episode);
 	 doorobj.sprite = doorsprite;

@@ -69,7 +69,7 @@ unsigned int rnd(void);
 class CTank : public CObject
 {
 public:
-	CTank(CMap *p_map);
+	CTank(CMap *p_map, Uint32 x, Uint32 y);
 	virtual void process();
 
 	bool CanMoveLeft();
@@ -105,7 +105,7 @@ protected:
 class CGuardRobot : public CTank
 {
 public:
-	CGuardRobot(CMap *p_map);
+	CGuardRobot(CMap *p_map, Uint32 x, Uint32 y);
 	void process();
 private:
 };

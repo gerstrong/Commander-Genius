@@ -10,7 +10,7 @@
 
 #include "../../../common/CObject.h"
 
-class CMessie : CObject
+class CMessie : public CObject
 {
 public:
 	CMessie(CMap *p_map, Uint32 x, Uint32 y);
