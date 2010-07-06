@@ -1,4 +1,4 @@
-#include "CObjectAI.h"
+#include "CMessie.h"
 
 // Nessie (in ep3) (on the world map)
 enum nessie_actions{
@@ -22,6 +22,12 @@ CMessie::CMessie(CMap *p_map) :
 CObject(p_map)
 {}
 
+void CMessie::process()
+{
+
+}
+
+/*
 void CObjectAI::nessie_ai(CObject& object)
 {
 	if (object.needinit)
@@ -231,4 +237,4 @@ void CObjectAI::nessie_find_next_checkpoint(CObject& object)
 		object.ai.nessie.pausetimer = NESSIE_PAUSE_TIME;
 	}
 }
-
+*/

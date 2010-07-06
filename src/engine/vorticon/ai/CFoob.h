@@ -10,6 +10,8 @@
 #ifndef CFOOB_H_
 #define CFOOB_H_
 
+#include "../../../common/CObject.h"
+
 #define FOOB_WALK_SPEED      32
 #define FOOB_WALK_ANIM_RATE  4
 
@@ -31,10 +33,10 @@
 #define FOOB_EXPLODE_FRAME      97
 #define FOOB_DEAD_FRAME         101
 
-class CFoob
+class CFoob : public CObject
 {
 public:
-	CFoob();
+	CFoob(CMap *p_map);
 	void process();
 
 private:

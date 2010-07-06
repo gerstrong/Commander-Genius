@@ -1,4 +1,4 @@
-#include "CObjectAI.h"
+#include "CPlatform.h"
 #include "../../spritedefines.h"
 // vertically-moving platform (ep3)
 
@@ -14,9 +14,15 @@ PLATVERT_MOVE, PLATVERT_WAIT
 #define PLATVERTPUSHAMOUNT      10
 
 CPlatformVert::CPlatformVert(CMap *p_map) :
-CObject(p_map)
+CPlatform(p_map)
 {}
 
+void CPlatformVert::process()
+{
+
+}
+
+/*
 void CObjectAI::platvert_ai(CObject& object)
 {
 	if (object.needinit)
@@ -159,3 +165,4 @@ void CObjectAI::platvert_ai(CObject& object)
 		break;
 	}
 }
+*/

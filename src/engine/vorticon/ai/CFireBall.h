@@ -12,7 +12,7 @@
 
 class CFireBall : public CRay
 {
-	CFireBall();
+	CFireBall(CMap *p_map);
 	void process();
 };
 

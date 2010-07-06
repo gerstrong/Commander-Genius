@@ -20,9 +20,16 @@
 #include <map>
 #include "CTileProperties.h"
 #include "CPhysicsSettings.h"
+#include "../fileio/TypeDefinitions.h"
 
 #include "../CSingleton.h"
 #define g_pBehaviorEngine CBehaviorEngine::Get()
+
+typedef struct{
+	Uint8 objectnumber1; // Andy (Adurdin) calls that sprite, not all his numbers seem to be right
+	Uint8 objectnumber2; // Alternate number
+	Uint16 x, y;
+}stTeleporterTable;
 
 class CBehaviorEngine : public CSingleton<CBehaviorEngine>
 {
@@ -31,6 +38,9 @@ public:
 
 	void addMessage(const std::string &name,
 					const std::string &message);
+
+	bool readTeleporterTable(short episode, byte *p_exedata);
+
 	std::vector<CTileProperties> &getTileProperties(size_t tmnum = 1);
 	CPhysicsSettings &getPhysicsSettings();
 	std::string getString(const std::string& name);
@@ -42,6 +52,8 @@ private:
 	CPhysicsSettings m_PhysicsSettings;
 
 	std::map<std::string,std::string> stringmap;
+	std::vector<stTeleporterTable> m_TeleporterTable; // Teleporter table used for the destinations
+													  // used by Episode 1 especially
 
 	int numStrings;
 };

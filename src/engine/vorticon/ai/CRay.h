@@ -17,6 +17,7 @@ public:
 	CRay(CMap *p_map);
 
 	virtual void process();
+	void setOwner(object_t type, unsigned int index);
 
 	direction_t m_Direction;
 

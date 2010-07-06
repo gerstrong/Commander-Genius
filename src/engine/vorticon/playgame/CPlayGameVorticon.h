@@ -47,8 +47,7 @@ public:
 	CPlayGameVorticon(CExeFile &ExeFile, char level,
 			  char numplayers, char difficulty,
 			  stOption *p_option,
-			  bool finale, CSavedGame &SavedGame,
-			  std::vector<stTeleporterTable> &TeleporterTable);
+			  bool finale, CSavedGame &SavedGame);
 
 	void setupPlayers();
 	bool init();
@@ -101,7 +100,6 @@ private:
 	CEGABitmap *mp_gameoverbmp;
 	CSavedGame &m_SavedGame;
 	std::list<CMessageBox*> m_MessageBoxes;
-	std::vector<stTeleporterTable> &m_TeleporterTable;
 	bool m_showKeensLeft;
 	std::vector<CObject*> m_Object;
 	CHighScores *mp_HighScores;

@@ -24,6 +24,12 @@ CObject(p_map)//,
 	checkinitialCollisions();
 }
 
+void CRay::setOwner(object_t type, unsigned int index)
+{
+	owner.obj_type = type;
+	owner.ID = index;
+}
+
 void CRay::process()
 {
 	int hitlethal;

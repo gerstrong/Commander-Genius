@@ -1,6 +1,6 @@
 #include "../../spritedefines.h"
 
-#include "CObjectAI.h"
+#include "CPlatform.h"
 
 #define PLATFORM_MOVE   0
 #define PLATFORM_WAIT   1
@@ -16,6 +16,12 @@ CPlatform::CPlatform(CMap *p_map) :
 CObject(p_map)
 {}
 
+void CPlatform::process()
+{
+
+}
+
+ /*
 void CObjectAI::platform_ai(CObject &object)
 {
 	if (object.needinit)
@@ -132,4 +138,4 @@ void CObjectAI::platform_ai(CObject &object)
 		else object.ai.platform.waittimer++;
 		break;
 	}
-}
+}*/

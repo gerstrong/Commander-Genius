@@ -20,7 +20,7 @@ void CFoob::process()
 	dead = 0;
 	needinit = 0;
 }
-
+/*
 void CObjectAI::foob_ai(CObject &object, bool hardmode)
 {
 	bool onsamelevel;
@@ -214,3 +214,4 @@ void CObjectAI::foob_ai(CObject &object, bool hardmode)
 	}
 }
 
+*/

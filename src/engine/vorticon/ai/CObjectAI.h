@@ -34,7 +34,6 @@ private:
 
 	// main AI functions
 	bool checkforAIObject( CObject &object );
-	void performSpecialAIType( CObject &object );
 	void deleteAllObjects();
 
 	// ep1

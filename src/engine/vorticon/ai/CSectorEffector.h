@@ -8,6 +8,8 @@
 #ifndef SE_H_
 #define SE_H_
 
+#include "../../../common/CObject.h"
+
 // "Sector Effector" types
 enum sector_effector_type{
 	SE_EXTEND_PLATFORM,
@@ -19,6 +21,12 @@ enum sector_effector_type{
 	SE_MORTIMER_HEART,
 	SE_MORTIMER_ZAPSUP,
 	SE_MORTIMER_RANDOMZAPS
+};
+
+class CSectorEffector : public CObject
+{
+public:
+	CSectorEffector(CMap *p_map);
 };
 
 #endif /* SE_H_ */

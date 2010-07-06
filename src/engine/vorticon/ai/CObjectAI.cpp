@@ -107,55 +107,6 @@ bool CObjectAI::checkforAIObject( CObject &object )
    	return false;
 }
 
-void CObjectAI::performSpecialAIType( CObject &object )
-{
-	switch(object.m_type)
-	{
-		//KEEN1
-		case OBJ_BUTLER: butler_ai(object, m_difficulty); break;
-		case OBJ_TANK: tank_ai(object, m_difficulty>1); break;
-		case OBJ_ICECANNON: icecannon_ai(object); break;
-		case OBJ_ICECHUNK: icechunk_ai(object); break;
-		case OBJ_ICEBIT: icebit_ai(object); break;
-		case OBJ_TELEPORTER: teleporter_ai(object); break;
-		case OBJ_ROPE: rope_ai(object); break;
-
-		//KEEN2
-		case OBJ_SCRUB: scrub_ai(object); break;
-		case OBJ_TANKEP2: tankep2_ai(object, m_difficulty>1); break;
-		case OBJ_PLATFORM: platform_ai(object); break;
-		case OBJ_VORTELITE: vortelite_ai(object, m_dark); break;
-		case OBJ_SECTOREFFECTOR: se_ai(object); break;
-		case OBJ_BABY: baby_ai(object, m_Episode, m_difficulty>1); break;
-		case OBJ_EXPLOSION: explosion_ai(object); break;
-		case OBJ_EARTHCHUNK: earthchunk_ai(object); break;
-		case OBJ_SPARK: spark_ai(object, sparks_left ); break;
-
-		//KEEN3
-		case OBJ_FOOB: foob_ai(object, m_difficulty>1); break;
-		case OBJ_NINJA: ninja_ai(object, m_difficulty>1); break;
-		case OBJ_MEEP: meep_ai(object); break;
-		case OBJ_SNDWAVE: sndwave_ai(object, m_difficulty>1); break;
-		case OBJ_MOTHER: mother_ai(object, m_difficulty>1 ); break;
-		case OBJ_FIREBALL: fireball_ai(object, m_difficulty>1 ); break;
-		case OBJ_BALL: ballandjack_ai(object); break;
-		case OBJ_JACK: ballandjack_ai(object); break;
-		case OBJ_PLATVERT: platvert_ai(object); break;
-		case OBJ_NESSIE: nessie_ai(object); break;
-
-		//Common Objects
-		case OBJ_RAY: ray_ai( object, mp_Options[OPT_FULLYAUTOMATIC].value ); break;
-		case OBJ_DOOR: door_ai( object, DOWN); break;
-		case OBJ_GOTPOINTS: gotpoints_ai(object); break;
-
-			//case OBJ_DEMOMSG: break;
-
-		default:
-			g_pLogFile->ftextOut("gamedo_enemy_ai: Object is of invalid type %d\n", object.m_type);
-			break;
-    }
-}
-
 void CObjectAI::SetAllCanSupportPlayer(CObject &object, bool state)
 {
 	std::vector<CPlayer>::iterator it_player = m_Player.begin();

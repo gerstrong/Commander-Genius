@@ -1,10 +1,6 @@
 #include "../../../sdl/sound/CSound.h"
 #include "../../../misc.h"
-#include "CObjectAI.h"
-
-CMeep::CMeep(CMap *p_map) :
-CObject(p_map)
-{}
+#include "CMeep.h"
 
 enum meep_actions{
 	MEEP_WALK, MEEP_SING,
@@ -26,6 +22,16 @@ enum meep_actions{
 #define MEEP_DYING_FRAME        124
 #define MEEP_DEAD_FRAME         125
 
+CMeep::CMeep(CMap *p_map) :
+CObject(p_map)
+{}
+
+void CMeep::process()
+{
+
+}
+
+/*
 void CObjectAI::meep_ai(CObject& object)
 {
 	int not_about_to_fall;
@@ -166,3 +172,4 @@ void CObjectAI::meep_ai(CObject& object)
 		break;
 	}
 }
+*/

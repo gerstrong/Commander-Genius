@@ -8,5 +8,13 @@
 #ifndef CVORTICONELITE_H_
 #define CVORTICONELITE_H_
 
+#include "../../../common/CObject.h"
+
+class CVorticonElite : public CObject
+{
+public:
+	CVorticonElite(CMap *p_map);
+private:
+};
 
 #endif /* CVORTICONELITE_H_ */

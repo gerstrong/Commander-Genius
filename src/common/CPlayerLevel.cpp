@@ -7,7 +7,8 @@
 
 #include "CPlayer.h"
 
-#include "../engine/vorticon/ai/se.h"
+#include "../engine/vorticon/ai/CSectorEffector.h"
+#include "../engine/vorticon/ai/CRay.h"
 #include "../engine/spritedefines.h"
 #include "../keen.h"
 #include "../sdl/sound/CSound.h"
@@ -739,7 +740,6 @@ void CPlayer::raygun()
 			if (inventory.charges)
 			{  // we have enough charges
 				int xdir, ydir;
-				CObject *rayobject = new CObject(mp_map);
 				inventory.charges--;
 				pshowdir = pdir;
 				
@@ -748,15 +748,15 @@ void CPlayer::raygun()
 				ydir = getYPosition()+(9<<STC);
 				if (pdir==RIGHT) xdir = getXRightPos()+xinertia;
 				else xdir = getXLeftPos()+xinertia;
-				
+
+				CRay *rayobject = new CRay(mp_map);
 				rayobject->spawn(xdir, ydir, OBJ_RAY, m_episode, pdir);
-				rayobject->ai.ray.owner = m_index;
-				rayobject->ai.ray.shotbyplayer = true;
-				rayobject->ai.ray.direction = pdir;
+				rayobject->setOwner(OBJ_PLAYER, m_index);
+				rayobject->m_Direction = pdir;
 				
-				rayobject->ai.ray.dontHitEnable = true;
-				if (!mp_option[OPT_ALLOWPKING].value)
-					rayobject->ai.ray.dontHit = OBJ_PLAYER;
+				//rayobject->dontHitEnable = true;
+				//if (!mp_option[OPT_ALLOWPKING].value)
+					//rayobject->dontHit = OBJ_PLAYER;
 				mp_object->push_back(rayobject);
 			}
 			else

@@ -72,8 +72,6 @@ private:
 	Uint8 m_startLevel;
 	CExeFile m_ExeFile;
 	
-	std::vector<stTeleporterTable> m_TeleporterTable; // Teleporter table used for the destinations
-
 	CEGAGraphics *m_EGAGraphics;
 };
 

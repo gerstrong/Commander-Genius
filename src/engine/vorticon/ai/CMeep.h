@@ -8,5 +8,13 @@
 #ifndef CMEEP_H_
 #define CMEEP_H_
 
+#include "../../../common/CObject.h"
+
+class CMeep : CObject
+{
+public:
+	CMeep(CMap *p_map);
+	void process();
+};
 
 #endif /* CMEEP_H_ */

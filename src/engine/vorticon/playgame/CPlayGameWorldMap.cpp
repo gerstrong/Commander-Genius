@@ -30,7 +30,7 @@ void CPlayGameVorticon::processOnWorldMap()
 			if( useobject != 0 )
 			{
 				// A new object was chosen by the player
-				CTeleporter Teleporter(m_TeleporterTable, m_Episode);
+				/*CTeleporter Teleporter(m_TeleporterTable, m_Episode);
 
 				// If it is teleporter, make the Player teleport
 				int TeleportID;
@@ -38,7 +38,7 @@ void CPlayGameVorticon::processOnWorldMap()
 				{
 					Teleporter.teleportPlayer(TeleportID, m_Map,m_Object, m_Player[0]);
 				}
-				else
+				else*/
 				{
 					// If it is level, change the playgame mode and load the new map. Nessie is
 					// a special case in Episode 3

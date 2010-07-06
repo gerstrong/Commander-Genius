@@ -4,7 +4,7 @@
  *  Created on: 23.08.2009
  *      Author: gerstrong
  */
-#include "CObjectAI.h"
+#include "CRisingPoints.h"
 
 // GotPoints object (rising numbers when you get a bonus item)
 // (this wasn't in original Keen)
@@ -17,6 +17,12 @@ CRisingPoints::CRisingPoints(CMap *p_map) :
 CObject(p_map)
 {}
 
+void CRisingPoints::process()
+{
+
+}
+
+/*
 void CObjectAI::gotpoints_ai(CObject &Object)
 {
 	if (Object.needinit)
@@ -38,4 +44,4 @@ void CObjectAI::gotpoints_ai(CObject &Object)
 	}
 	else Object.ai.ray.offscreentime--;
 }
-
+*/

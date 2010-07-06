@@ -8,5 +8,12 @@
 #ifndef CSOUNDWAVE_H_
 #define CSOUNDWAVE_H_
 
+#include "../../../common/CObject.h"
+
+class CSoundWave : public CObject
+{
+public:
+	CSoundWave(CMap *p_map);
+};
 
 #endif /* CSOUNDWAVE_H_ */

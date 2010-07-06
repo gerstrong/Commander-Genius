@@ -123,7 +123,6 @@ void CObject::setupObjectType(int Episode)
 	// Common Elements and some are Episode dependent
 	case OBJ_RAY:
 		{
-			ai.ray.shotbyplayer = false;
 			if(Episode == 1) sprite = OBJ_RAY_DEFSPRITE_EP1;
 			else if(Episode == 2) sprite = OBJ_RAY_DEFSPRITE_EP2;
 			else if(Episode == 3) sprite = OBJ_RAY_DEFSPRITE_EP3;

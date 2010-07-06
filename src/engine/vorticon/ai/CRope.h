@@ -8,5 +8,12 @@
 #ifndef CROPE_H_
 #define CROPE_H_
 
+#include "../../../common/CObject.h"
+
+class CRope : public CObject
+{
+public:
+	CRope(CMap *p_map);
+};
 
 #endif /* CROPE_H_ */

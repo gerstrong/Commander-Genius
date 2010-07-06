@@ -8,5 +8,14 @@
 #ifndef CMESSIE_H_
 #define CMESSIE_H_
 
+#include "../../../common/CObject.h"
+
+class CMessie : CObject
+{
+public:
+	CMessie(CMap *p_map);
+	void process();
+private:
+};
 
 #endif /* CMESSIE_H_ */

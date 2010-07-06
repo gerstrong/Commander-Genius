@@ -8,21 +8,18 @@
 #ifndef TANKEP2_H_
 #define TANKEP2_H_
 
+#include "../../../common/CObject.h"
+
 #define TANK_SAME_LEVEL_TIME   25
-#define TANK_REPEAT_FIRE_TIME  50
 
 #define TANK_SAME_LEVEL_TIME_FAST    50
 #define TANK_REPEAT_FIRE_TIME_FAST   300
 
 // when this probability is satisfied, there is 50% probability
 // of a look, 50% probability of a fire.
-#define TANK_MINTRAVELDIST    100
 #define TANK_MAXTRAVELDIST    200
 
-#define TANK_WALK_SPEED         32
-#define TANK_WALK_ANIM_TIME     2
 #define TANK_LOOK_ANIM_TIME     4
-#define TANK_LOOK_TOTALTIME     44
 #define TANK_PREPAREFIRE_TIME   30
 #define TANK_PREPAREFIRE_TIME_FAST   22
 #define TANK_WAITAFTER_FIRE		14
@@ -32,13 +29,8 @@
 #define TANK_WALK_RIGHT_FRAME       98
 #define TANK_LOOK_FRAME             106
 
-#define TANKPUSHAMOUNT        64
-
 //reference to ../misc.cpp
 unsigned int rnd(void);
-
-#define OBJ_TANKEP2_DEFSPRITE    112
-#define OBJ_TANK_DEFSPRITE       98
 
 #define TANK2_SAME_LEVEL_TIME   150
 #define TANK_REPEAT_FIRE_TIME  800
@@ -77,7 +69,7 @@ unsigned int rnd(void);
 class CTank : public CObject
 {
 public:
-	CTank();
+	CTank(CMap *p_map);
 	virtual void process();
 
 	bool CanMoveLeft();
@@ -113,7 +105,7 @@ protected:
 class CGuardRobot : public CTank
 {
 public:
-	CGuardRobot();
+	CGuardRobot(CMap *p_map);
 	void process();
 private:
 };

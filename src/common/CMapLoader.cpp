@@ -7,7 +7,6 @@
 
 #include "CMapLoader.h"
 #include "../keen.h"
-#include "../engine/vorticon/ai/se.h"
 #include <iostream>
 #include <fstream>
 #include "../FindFile.h"
@@ -24,6 +23,7 @@
 #include "../engine/vorticon/ai/CGarg.h"
 #include "../engine/vorticon/ai/CAutoRay.h"
 #include "../engine/vorticon/ai/CVorticon.h"
+#include "../engine/vorticon/ai/CSectorEffector.h"
 
 
 CMapLoader::CMapLoader(CMap* p_map, std::vector<CPlayer> *p_PlayerVect) :

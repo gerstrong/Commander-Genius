@@ -24,12 +24,10 @@
 CPlayGameVorticon::CPlayGameVorticon( CExeFile &ExeFile, char level,
 		  char numplayers, char difficulty,
 		  stOption *p_option,
-		  bool finale, CSavedGame &SavedGame,
-		  std::vector<stTeleporterTable> &TeleporterTable) :
+		  bool finale, CSavedGame &SavedGame) :
 CPlayGame(ExeFile, level, numplayers, difficulty, p_option),
 mp_ObjectAI(NULL),
 m_SavedGame(SavedGame),
-m_TeleporterTable(TeleporterTable),
 mp_HighScores(NULL)
 {
 	mp_Menu = NULL;
