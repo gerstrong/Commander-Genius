@@ -13,7 +13,8 @@
 class CVortikid : public CObject
 {
 public:
-	CVortikid(CMap *p_map);
+	CVortikid( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
+			Uint32 x, Uint32 y );
 };
 
 #endif /* CVORTIKID_H_ */

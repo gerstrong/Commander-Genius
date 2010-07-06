@@ -29,7 +29,8 @@ enum baby_jump_style{
 BABY_JUMP_BIG, BABY_JUMP_SMALL
 };
 
-CVortikid::CVortikid(CMap *p_map) :
+CVortikid::CVortikid( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
+		Uint32 x, Uint32 y ) :
 CObject(p_map)
 {}
 

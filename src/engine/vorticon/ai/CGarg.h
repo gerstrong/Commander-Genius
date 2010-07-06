@@ -43,7 +43,8 @@ unsigned int rnd(void);
 class CGarg : public CObject
 {
 public:
-	CGarg(std::vector<CPlayer> &PlayerVect, char difficulty,  CMap *p_map);
+	CGarg(CMap *p_map, std::vector<CPlayer> &m_vec_Player,
+			Uint32 x, Uint32 y);
 	void process();
 	virtual ~CGarg();
 

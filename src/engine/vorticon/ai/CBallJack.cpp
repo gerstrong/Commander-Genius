@@ -76,7 +76,7 @@ void CBallJack::process()
 		else m_Player[touchedBy].kill();
 	}
 
-	if (zapped)
+	/*if (zapped)
 	{
 		// have ball change direction when zapped
 		if (zapd==LEFT)
@@ -96,7 +96,7 @@ void CBallJack::process()
 			}
 		}
 		zapped = 0;
-	}
+	}*/
 
 	switch(m_Direction)
 	{
@@ -128,6 +128,7 @@ void CBallJack::process()
 		if (blockedr) { m_Direction = DDOWNLEFT; }
 		else moveRight(speed);
 		break;
+	default: break;
 	}
 
 	if (m_type==OBJ_BALL)

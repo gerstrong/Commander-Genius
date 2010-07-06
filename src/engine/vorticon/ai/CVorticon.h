@@ -57,8 +57,8 @@
 class CVorticon : public CObject
 {
 public:
-	CVorticon(CMap *p_map, std::vector<CPlayer> &PlayerVect,
-			int level, int episode, char difficulty, bool dark);
+	CVorticon( CMap *p_map, std::vector<CPlayer> &m_vec_Player,
+			Uint32 x, Uint32 y, char hp=1);
 	void process();
 	void initiateJump();
 
@@ -82,8 +82,6 @@ private:
 	unsigned char frame;
 	unsigned int dist_traveled;
 	signed int inertiay;
-
-	char hp;                // episode 1 style four-shots-to-kill
 
 	unsigned char movedir;
 	// these hold the animation frames indexes since they're

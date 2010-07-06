@@ -13,7 +13,8 @@
 class CVorticonElite : public CObject
 {
 public:
-	CVorticonElite(CMap *p_map);
+	CVorticonElite( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
+			Uint32 x, Uint32 y );
 private:
 };
 

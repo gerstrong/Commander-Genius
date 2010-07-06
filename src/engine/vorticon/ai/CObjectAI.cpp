@@ -95,7 +95,7 @@ bool CObjectAI::checkforAIObject( CObject &object )
 
    	object.onscreen = true;
 
-   	if (object.hasbeenonscreen || object.zapped ||
+   	if (object.hasbeenonscreen ||
 		type==OBJ_RAY ||
 		type==OBJ_ICECHUNK || type==OBJ_PLATFORM ||
 		type==OBJ_PLATVERT || type==OBJ_YORP ||

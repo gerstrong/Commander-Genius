@@ -12,6 +12,8 @@
 #include "../../../common/CObject.h"
 #include "../../../common/CMap.h"
 
+#define OBJ_YORP_DEFSPRITE       50
+
 #define YORP_LOOK_TIME  16   // time each frame of YORP_LOOK is shown
 #define YORP_STUN_ANIM_TIME  10
 #define YORP_WALK_ANIM_TIME  5
@@ -55,7 +57,8 @@
 
 class CYorp : public CObject {
 public:
-	CYorp(CPlayer *p_player, char difficulty, CMap *p_map);
+	CYorp( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
+			Uint32 x, Uint32 y );
 	void process();
 	virtual ~CYorp();
 
@@ -65,8 +68,8 @@ private:
 	void processStunned();
 	void processDying();
 
-	CPlayer *mp_player;
 	bool m_hardmode;
+	std::vector<CPlayer> &m_vec_Player;
 
 	enum
 	{

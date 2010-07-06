@@ -7,14 +7,13 @@
 
 // Vorticon (all m_Episodes, albeit the behavior changes slightly
 // depending on levelcontrol.m_Episode).
-CVorticon::CVorticon(CMap *p_map, std::vector<CPlayer> &PlayerVect,
-		int level, int episode, char difficulty, bool dark) :
+CVorticon::CVorticon( CMap *p_map, std::vector<CPlayer> &m_vec_Player,
+		Uint32 x, Uint32 y, char hp) :
 CObject(p_map),
-m_Level(level),
-m_Episode(episode),
-m_Difficulty(difficulty),
-m_Dark(dark),
-m_Player(PlayerVect)
+m_Episode(g_pBehaviorEngine->getEpisode()),
+m_Difficulty(mp_Map->difficulty),
+m_Dark(mp_Map->m_Dark),
+m_Player(m_vec_Player)
 {
 	 frame = 0;
 	 animtimer = 0;
@@ -23,21 +22,11 @@ m_Player(PlayerVect)
 	 dist_traveled = VORT_TRAPPED_DIST+1;
 	 canbezapped = 1;
 	 needinit = 0;
+	 HealthPoints = hp;
 
-	 // give him some health points, depening on m_Episode and level
-	 if(m_Episode == 1)
-	 {
-		 if(level == 16) // He is the vorticon commander and has much more HP
-			 hp = 105;
-		 else
-			 hp = 4;
-	 }
-	 else
-		 hp = (difficulty > 1) ? 4 : 1;
-	 // In EP2 and 3 the Vorticons are much weaker, when no hardmode selected
-
+	 short Episode = g_pBehaviorEngine->getEpisode();
 	 // copy in animation frame indexes for the current ep
-	 if (m_Episode==1)
+	 if (Episode==1)
 	 {
 		 WalkLeftFrame = VORT1_WALK_LEFT_FRAME;
 		 WalkRightFrame = VORT1_WALK_RIGHT_FRAME;
@@ -46,7 +35,7 @@ m_Player(PlayerVect)
 		 JumpLeftFrame = VORT1_JUMP_LEFT_FRAME;
 		 DyingFrame = VORT1_DYING_FRAME;
 	 }
-	 else if (m_Episode==2)
+	 else if (Episode==2)
 	 {
 		 WalkLeftFrame = VORT2_WALK_LEFT_FRAME;
 		 WalkRightFrame = VORT2_WALK_RIGHT_FRAME;
@@ -56,7 +45,7 @@ m_Player(PlayerVect)
 		 DyingFrame = VORT2_DYING_FRAME;
 		 DeadFrame = VORT2_DEAD_FRAME;
 	 }
-	 else if (m_Episode==3)
+	 else if (Episode==3)
 	 {
 		 WalkLeftFrame = VORT3_WALK_LEFT_FRAME;
 		 WalkRightFrame = VORT3_WALK_RIGHT_FRAME;
@@ -78,7 +67,8 @@ void CVorticon::process()
 	{
 		kill = false;
 		// if we touch a glowcell, we die!
-		if ( zapped >= hp ) kill = true;
+
+		if ( HealthPoints <= 0 ) kill = true;
 		else if (m_Episode==2 && mp_Map->at((getXLeftPos())>>CSF, (getYUpPos())>>CSF)==TILE_GLOWCELL)
 			kill = true;
 

@@ -49,6 +49,7 @@ public:
 	
 	object_t m_type;        		// yorp, vorticon, etc.
 	unsigned int m_index;        	// Like an ID for some objects that need this implementation
+	char HealthPoints;                		// episode 1 style four-shots-to-kill
 	bool exists;
 	bool onscreen;    				// true=(scrx,scry) position is visible onscreen
 	bool hasbeenonscreen;
@@ -65,12 +66,8 @@ public:
 	bool solid;
 	
 	bool canbezapped;         // if 0 ray will not stop on hitdetect
-	int zapped;              // number of times got hit by keen's raygun
-	direction_t zapd;	   			// x,y, and direction of last shot at time of impact
-	char zappedbyenemy;	   // if 1, it was an ENEMYRAY and not keen that shot it
-	
+
 	bool inhibitfall;         // if true common_enemy_ai will not do falling
- 	bool bumped;
 
 	bool cansupportplayer;
 	std::vector<CObject*> *mp_object;

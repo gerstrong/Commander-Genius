@@ -301,33 +301,23 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 			case 1:  // yorp (ep1) vort (ep2&3)
 				if (episode==1)
 				{
-					enemyobject = new CYorp(&(mp_vec_Player->at(0)), mp_map->m_Difficulty, mp_map);
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_NONE, episode);
+					enemyobject = new CYorp( mp_map, *mp_vec_Player, x<<CSF, y<<CSF );
 					break;
 				}
-				else if(episode == 2)
+				else if(episode == 2 || episode == 3)
 				{
-					enemyobject = new CVorticon(mp_map, *mp_vec_Player,
-										level, episode, mp_map->m_Difficulty, mp_map->m_Dark );
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_NONE, episode);
-				}
-				else if(episode == 3)
-				{
-					enemyobject = new CVorticon(mp_map, *mp_vec_Player,
-										level, episode, mp_map->m_Difficulty, mp_map->m_Dark );
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_NONE, episode);
+					enemyobject = new CVorticon( mp_map, *mp_vec_Player, x<<CSF, y<<CSF );
 				}
 				break;
 			case 2:    // garg (ep1) baby vorticon (ep2&3)
 
 				if (episode==1)
 				{
-					enemyobject = new CGarg(*mp_vec_Player, 0, mp_map);
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_NONE, episode);
+					enemyobject = new CGarg( mp_map, *mp_vec_Player, x<<CSF, y<<CSF );
 				}
 				else
 				{
-					enemyobject = new CObject(mp_map);
+					enemyobject = new CVortikid( mp_map, *mp_vec_Player, x<<CSF, y<<CSF );
 					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_BABY, episode);
 				}
 
@@ -335,162 +325,155 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 			case 3:    // vorticon (ep1) Vorticon Commander (ep2)
 				if (episode==1)
 				{
-					enemyobject = new CVorticon(mp_map, *mp_vec_Player,
-										level, episode, mp_map->m_Difficulty, mp_map->m_Dark );
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_NONE, episode);
+					enemyobject = new CVorticon( mp_map, *mp_vec_Player,
+								x<<CSF, y<<CSF, (level==16) ? 105 : 4 );
 				}
 				else if (episode==2)
 				{
-					enemyobject = new CObject(mp_map);
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_VORTELITE, episode);
+					enemyobject = new CVorticonElite( mp_map, *mp_vec_Player,
+								x<<CSF, y<<CSF);
 				}
 				else if (episode==3)
 				{
-					enemyobject = new CObject(mp_map);
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_MOTHER, episode);
+					enemyobject = new CVorticonMom( mp_map, *mp_vec_Player,
+								x<<CSF, y<<CSF);
 				}
 				break;
 			case 4:    // butler (ep1) or scrub (ep2) or meep (ep3)
 				enemyobject = new CObject(mp_map);
 				if (episode==1)
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_BUTLER, episode);
+					enemyobject = new CButler( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
 				else if (episode==2)
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_SCRUB, episode);
+					enemyobject = new CScrub( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
 				else if (episode==3)
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_MEEP, episode);
+					enemyobject = new CMeep( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
 				break;
 			case 5:    // tank robot (ep1&2) vorticon ninja (ep3)
-				enemyobject = new CObject(mp_map);
 				if (episode==1)
-				{
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_TANK, episode);
-				}
+					enemyobject = new CTank( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
 				else if (episode==2)
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_TANKEP2, episode);
+					enemyobject = new CGuardRobot( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
 				else if (episode==3)
-				{
-					if(TileProperty[mp_map->at(x,y+1)].bleft)
-						enemyobject->spawn(x<<CSF, (y-1)<<CSF, OBJ_NINJA, episode);
-					else
-						enemyobject->spawn(x<<CSF, y<<CSF, OBJ_NINJA, episode);
-				}
+					enemyobject = new CVortiNinja( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
 				break;
 			case 6:    // up-right-flying ice chunk (ep1) horiz platform (ep2)
 				// foob (ep3)
-				enemyobject = new CObject(mp_map);
 				if (episode==1)
 				{
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_ICECANNON, episode);
-					enemyobject->ai.icechunk.vector_x = 1;
-					enemyobject->ai.icechunk.vector_y = -1;
+					enemyobject = new CIceCannon( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
+					//enemyobject->ai.icechunk.vector_x = 1;
+					//enemyobject->ai.icechunk.vector_y = -1;
 				}
 				else if (episode==2)
 				{
-					enemyobject->spawn(x<<CSF, (y<<CSF)-(4<<STC), OBJ_PLATFORM, episode);
+					enemyobject = new CPlatform( mp_map, *mp_vec_Player, x<<CSF, (y<<CSF)-(4<<STC));
 				}
 				else if (episode==3)
 				{
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_FOOB, episode);
+					enemyobject = new CFoob( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
 				}
 				break;
 			case 7:   // spark (ep2) ball (ep3) ice cannon upwards (ep1)
-				enemyobject = new CObject(mp_map);
 				if (episode==1)
 				{
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_ICECANNON, episode);
-					enemyobject->ai.icechunk.vector_x = 0;
-					enemyobject->ai.icechunk.vector_y = -1;
+					enemyobject = new CIceCannon( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
+					//enemyobject->ai.icechunk.vector_x = 0;
+					//enemyobject->ai.icechunk.vector_y = -1;
 				}
 				else if (episode==2)
 				{
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_SPARK, episode);
+					enemyobject = new CSpark( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
+					//enemyobject->spawn(x<<CSF, y<<CSF, OBJ_SPARK, episode);
 				}
 				else if (episode==3)
 				{
-					enemyobject->spawn(x<<CSF,y<<CSF, OBJ_BALL, episode);
+					enemyobject = new CBall( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
+					//enemyobject->spawn(x<<CSF,y<<CSF, OBJ_BALL, episode);
 				}
 				break;
 			case 8:    // jack (ep3) and ice cannon down (ep1)
-				enemyobject = new CObject(mp_map);
 				if (episode==1)
 				{
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_ICECANNON, episode);
-					enemyobject->ai.icechunk.vector_x = 0;
-					enemyobject->ai.icechunk.vector_y = 1;
+					enemyobject = new CIceCannon( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
+					//enemyobject->spawn(x<<CSF, y<<CSF, OBJ_ICECANNON, episode);
+					//enemyobject->ai.icechunk.vector_x = 0;
+					//enemyobject->ai.icechunk.vector_y = 1;
 				}
 				else if (episode==3)
 				{
-					enemyobject->spawn(x<<CSF, y<<CSF,OBJ_JACK, episode);
+					enemyobject = new CJack( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
+					//enemyobject->spawn(x<<CSF, y<<CSF,OBJ_JACK, episode);
 				}
 				break;
 			case 9:    // up-left-flying ice chunk (ep1) horiz platform (ep3)
-				enemyobject = new CObject(mp_map);
 				if (episode==1)
 				{
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_ICECANNON, episode);
-					enemyobject->ai.icechunk.vector_x = -1;
-					enemyobject->ai.icechunk.vector_y = -1;
+					enemyobject = new CIceCannon( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
+					//enemyobject->spawn(x<<CSF, y<<CSF, OBJ_ICECANNON, episode);
+					//enemyobject->ai.icechunk.vector_x = -1;
+					//enemyobject->ai.icechunk.vector_y = -1;
 				}
 				else if (episode==3)
 				{
-					enemyobject->spawn(x<<CSF, (y<<CSF)-(4<<STC), OBJ_PLATFORM, episode);
+					enemyobject = new CPlatform( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
+					//enemyobject->spawn(x<<CSF, (y<<CSF)-(4<<STC), OBJ_PLATFORM, episode);
 				}
 				break;
 			case 10:   // rope holding the stone above the final vorticon (ep1)
 				// vert platform (ep3)
-				enemyobject = new CObject(mp_map);
 				if (episode==1)
 				{
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_ROPE, episode);
+					enemyobject = new CRope( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
+					//enemyobject->spawn(x<<CSF, y<<CSF, OBJ_ROPE, episode);
 				}
 				else if (episode==3)
 				{
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_PLATVERT, episode);
+					enemyobject = new CPlatformVert( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
+					//enemyobject->spawn(x<<CSF, y<<CSF, OBJ_PLATVERT, episode);
 				}
 				break;
 			case 11:   // jumping vorticon (ep3)
 				if (episode==3)
 				{
-					enemyobject = new CVorticon(mp_map, *mp_vec_Player,
-										level, episode, mp_map->m_Difficulty, mp_map->m_Dark );
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_NONE, episode);
+					enemyobject = new CVorticon( mp_map, *mp_vec_Player, x<<CSF, y<<CSF );
+					//enemyobject->spawn(x<<CSF, y<<CSF, OBJ_NONE, episode);
 				}
 				break;
 			case 12:   // sparks in mortimer's machine
-				enemyobject = new CObject(mp_map);
-				enemyobject->spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR, episode);
+				enemyobject = new CSectorEffector( mp_map, *mp_vec_Player, x<<CSF, y<<CSF );
+				//enemyobject->spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR, episode);
 				enemyobject->ai.se.type = SE_MORTIMER_SPARK;
 				enemyobject->solid = false;
 				break;
 			case 13:   // mortimer's heart
-				enemyobject = new CObject(mp_map);
-				enemyobject->spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR, episode);
+				enemyobject = new CSectorEffector( mp_map, *mp_vec_Player, x<<CSF, y<<CSF );
+				//enemyobject->spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR, episode);
 				enemyobject->ai.se.type = SE_MORTIMER_HEART;
 				enemyobject->solid = false;
 				break;
 			case 14:   // right-pointing raygun (ep3)
 				enemyobject = new CAutoRay(mp_map, *mp_objvect, episode, CAutoRay::HORIZONTAL);
-				enemyobject->spawn(x<<CSF, y<<CSF, OBJ_NONE, episode);
+				//enemyobject->spawn(x<<CSF, y<<CSF, OBJ_NONE, episode);
 				break;
 			case 15:   // vertical raygun (ep3)
 				enemyobject = new CAutoRay(mp_map, *mp_objvect, episode, CAutoRay::VERTICAL);
-				enemyobject->spawn(x<<CSF, y<<CSF, OBJ_NONE, episode);
+				//enemyobject->spawn(x<<CSF, y<<CSF, OBJ_NONE, episode);
 				break;
 			case 16:  // mortimer's arms
-				enemyobject = new CObject(mp_map);
-				enemyobject->spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR, episode);
+				enemyobject = new CSectorEffector( mp_map, *mp_vec_Player, x<<CSF, y<<CSF );
+				//enemyobject->spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR, episode);
 				enemyobject->ai.se.type = SE_MORTIMER_ARM;
 				enemyobject->solid = false;
 				break;
 			case 17:  // mortimer's left leg
-				enemyobject = new CObject(mp_map);
-				enemyobject->spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR, episode);
+				enemyobject = new CSectorEffector( mp_map, *mp_vec_Player, x<<CSF, y<<CSF );
+				//enemyobject->spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR, episode);
 				enemyobject->ai.se.type = SE_MORTIMER_LEG_LEFT;
 				enemyobject->solid = false;
 				break;
 			case 18:  // mortimer's right leg
-				enemyobject = new CObject(mp_map);
-				enemyobject->spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR, episode);
+				enemyobject = new CSectorEffector( mp_map, *mp_vec_Player, x<<CSF, y<<CSF );
+				//enemyobject->spawn(x<<CSF, y<<CSF, OBJ_SECTOREFFECTOR, episode);
 				enemyobject->ai.se.type = SE_MORTIMER_LEG_RIGHT;
 				enemyobject->solid = false;
 				break;

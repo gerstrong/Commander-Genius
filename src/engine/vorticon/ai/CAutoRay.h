@@ -17,7 +17,7 @@ class CAutoRay : public CObject
 {
 public:
 	enum stRayAlignment{ VERTICAL, HORIZONTAL };
-	CAutoRay(CMap *p_map, std::vector<CObject*> &Objvect, char episode, stRayAlignment type);
+	CAutoRay(CMap *p_map, std::vector<CObject*> &Objvect, stRayAlignment type);
 	void process();
 
 
@@ -26,7 +26,6 @@ private:
 	int m_gunfiretimer;
 	std::vector<CObject*> &m_Objvect;
 	stRayAlignment m_type;
-	char m_Episode;
 };
 
 #endif /* CAUTORAY_H_ */

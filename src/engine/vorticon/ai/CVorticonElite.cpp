@@ -47,7 +47,8 @@ enum vortelite_actions{
 
 #define VORTELITE_TRAPPED_DIST        150
 
-CVorticonElite::CVorticonElite(CMap *p_map) :
+CVorticonElite::CVorticonElite( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
+		Uint32 x, Uint32 y ) :
 CObject(p_map)
 {}
 

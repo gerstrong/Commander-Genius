@@ -34,6 +34,8 @@ private:
 	int speed;
 
 	std::vector<CPlayer> &m_Player;
+
+	direction_t zapd;	   			// x,y, and direction of last shot at time of impact
 };
 
 

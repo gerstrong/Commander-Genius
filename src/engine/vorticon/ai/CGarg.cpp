@@ -3,7 +3,8 @@
 
 #include <vector>
 
-CGarg::CGarg(std::vector<CPlayer> &PlayerVect, char difficulty,  CMap *p_map) :
+CGarg::CGarg(CMap *p_map, std::vector<CPlayer> &m_vec_Player,
+		Uint32 x, Uint32 y) :
 CObject(p_map),
 state(GARG_LOOK),
 looktimes(GARG_NUM_LOOKS+1),
@@ -17,8 +18,8 @@ gargdie_inertia_y(0),
 movedir(0),
 detectedPlayer(0),
 detectedPlayerIndex(0),
-m_Player(PlayerVect),
-m_hardmode(difficulty>1)
+m_Player(m_vec_Player),
+m_hardmode(p_map->m_Difficulty>1)
 {
 	canbezapped = true;
 }
@@ -32,13 +33,12 @@ void CGarg::process()
 		m_Player[touchedBy].kill();
 
 	// did the garg get shot?
-	if (zapped)
+	if (HealthPoints <= 0)
 	{
 		// die, you stupid garg, die!
 		state = GARG_DYING;
 		canbezapped = false;
 		sprite = GARG_DYING_FRAME;
-		zapped=0;
 		gargdie_inertia_y = GARGDIE_START_INERTIA;
 		moveUp(10);
 		inhibitfall = 1;

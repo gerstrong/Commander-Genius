@@ -11,13 +11,12 @@
 #include "CRay.h"
 #include "CAutoRay.h"
 
-CAutoRay::CAutoRay(CMap *p_map, std::vector<CObject*> &Objvect, char episode, stRayAlignment type) :
+CAutoRay::CAutoRay(CMap *p_map, std::vector<CObject*> &Objvect, stRayAlignment type) :
 CObject(p_map),
 timer(0),
 m_gunfiretimer(0),
 m_Objvect(Objvect),
-m_type(HORIZONTAL),
-m_Episode(episode)
+m_type(HORIZONTAL)
 {
 	sprite = BLANKSPRITE;
 	inhibitfall = true;

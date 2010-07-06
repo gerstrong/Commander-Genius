@@ -86,7 +86,7 @@ bool CPlayGameVorticon::loadGameState()
 			m_SavedGame.decodeData(object.blockedu);
 			m_SavedGame.decodeData(object.blockedl);
 			m_SavedGame.decodeData(object.blockedr);
-			m_SavedGame.decodeData(object.zapped);
+			m_SavedGame.decodeData(object.HealthPoints);
 			m_SavedGame.decodeData(object.canbezapped);
 			m_SavedGame.decodeData(object.cansupportplayer);
 			m_SavedGame.decodeData(object.inhibitfall);
@@ -175,7 +175,7 @@ bool CPlayGameVorticon::saveGameState()
 		m_SavedGame.encodeData(m_Object[i]->blockedu);
 		m_SavedGame.encodeData(m_Object[i]->blockedl);
 		m_SavedGame.encodeData(m_Object[i]->blockedr);
-		m_SavedGame.encodeData(m_Object[i]->zapped);
+		m_SavedGame.encodeData(m_Object[i]->HealthPoints);
 		m_SavedGame.encodeData(m_Object[i]->canbezapped);
 		m_SavedGame.encodeData(m_Object[i]->cansupportplayer);
 		m_SavedGame.encodeData(m_Object[i]->inhibitfall);

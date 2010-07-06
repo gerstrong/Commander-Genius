@@ -184,6 +184,7 @@ private:
 	CStatusScreen *mp_StatusScr;
 
 	bool lastpogo;
+ 	bool bumped;
 
 	// Level control specific functions, especially for exit
 	int exitXpos;

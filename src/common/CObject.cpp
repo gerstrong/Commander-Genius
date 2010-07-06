@@ -20,6 +20,7 @@ int CObject::m_number_of_objects = 0; // The current number of total objects we 
 CObject::CObject(CMap *pmap) :
 m_type(OBJ_NONE),
 m_index(m_number_of_objects),
+HealthPoints(1),
 mp_object(NULL),
 mp_Map(pmap),
 m_blinktime(0)
@@ -93,7 +94,6 @@ void CObject::setupObjectType(int Episode)
 	switch(m_type)
 	{
 	// Mainly Episode 1
-	case OBJ_YORP: sprite = OBJ_YORP_DEFSPRITE; break;
 	case OBJ_GARG: sprite = OBJ_GARG_DEFSPRITE; break;
 	case OBJ_BUTLER: sprite = OBJ_BUTLER_DEFSPRITE; break;
 	case OBJ_TANK: sprite = OBJ_BUTLER_DEFSPRITE; break;

@@ -11,10 +11,11 @@
 #include "../../../sdl/sound/CSound.h"
 #include "../../../misc.h"
 
-CYorp::CYorp(CPlayer *p_player, char difficulty, CMap *p_map) :
+CYorp::CYorp( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
+		Uint32 x, Uint32 y ) :
 CObject(p_map),
-mp_player(p_player),
-m_hardmode(difficulty>1),
+m_hardmode(mp_Map->m_Difficulty>1),
+m_vec_Player(mp_vec_Player),
 state(YORP_LOOK),
 looktimes(YORP_NUM_LOOKS+1),
 lookposition(0),
@@ -25,6 +26,10 @@ dist_traveled(0),
 yorpdie_inertia_y(0),
 movedir(0)
 {
+	this->x = x;
+	this->y = y;
+	m_type = OBJ_YORP;
+	sprite = OBJ_YORP_DEFSPRITE;
 	canbezapped = true;
 }
 
@@ -41,7 +46,7 @@ void CYorp::process()
 
 	if (!hasbeenonscreen) return;
 
-	CPlayer &tb_player = mp_player[touchedBy];
+	/*CPlayer &tb_player = mp_player[touchedBy];
 	// code for the yorps to push keen, and code for them to get stunned
 	if (touchPlayer && state != YORP_STUNNED
 		&& state != YORP_DYING  && !tb_player.pdie)
@@ -103,7 +108,7 @@ void CYorp::process()
  				tb_player.bump( pushamt, false );
  			}
 		}
- 	}
+ 	}*/
 
 	// did the poor guy get shot?
 	if(zapped)
@@ -152,7 +157,7 @@ void CYorp::processLooking()
 
 	if (looktimes>numlooks && timer==YORP_LOOK_TIME-(YORP_LOOK_TIME/4))
 	{
-		if (mp_player[0].getXPosition() < getXPosition())
+		if (m_vec_Player[0].getXPosition() < getXPosition())
 		{ movedir = LEFT; }
 		else
 		{ movedir = RIGHT; }
