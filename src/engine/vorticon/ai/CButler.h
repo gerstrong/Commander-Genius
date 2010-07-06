@@ -35,7 +35,8 @@
 class CButler : CObject
 {
 public:
-	CButler(std::vector<CPlayer> &PlayerVect, CMap *p_map);
+	CButler(CMap *pmap, Uint32 x, Uint32 y,
+			std::vector<CPlayer> &PlayerVect);
 	void process();
 
 private:

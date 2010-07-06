@@ -12,8 +12,9 @@ char BJ_BlockedD(int o);
 
 unsigned int rnd(void);
 
-CBallJack::CBallJack(std::vector<CPlayer> &PlayerVect, CMap *p_map):
-CObject(p_map),
+CBallJack::CBallJack(CMap *pmap, Uint32 x, Uint32 y,
+		std::vector<CPlayer> &PlayerVect):
+CObject(pmap, x, y),
 m_Player(PlayerVect)
 {
 	unsigned int px = m_Player.at(0).getXMidPos();

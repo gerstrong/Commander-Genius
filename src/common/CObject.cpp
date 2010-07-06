@@ -17,7 +17,7 @@ int CObject::m_number_of_objects = 0; // The current number of total objects we 
 ///
 // Initialization Routine
 ///
-CObject::CObject(CMap *pmap) :
+CObject::CObject(CMap *pmap, Uint32 x, Uint32 y) :
 m_type(OBJ_NONE),
 m_index(m_number_of_objects),
 HealthPoints(1),
@@ -30,9 +30,10 @@ m_blinktime(0)
 	exists = true;
 	sprite=BLANKSPRITE;
 	solid = true;
+	inhibitfall = false;
 
-	x = 0;
-	y = 0;
+	this->x = x;
+	this->y = y;
 	m_type = OBJ_NONE;
 	bboxX1 = bboxX2 = 0;
 	bboxY1 = bboxY2 = 0;
@@ -59,7 +60,6 @@ bool CObject::spawn(int x0, int y0, object_t otype, int Episode, direction_t dir
 		dead = false;
 		onscreen = false;
 		hasbeenonscreen = false;
-		zapped = false;
 		canbezapped = 0;
 		honorPriority = true;
 		touchPlayer = touchedBy = 0;
@@ -664,9 +664,9 @@ bool CObject::checkSolidD( int x1, int x2, int y2)
 // Just kills the object
 void CObject::kill()
 {
-	if ( exists && zapped < 500 && canbezapped )
+	if ( exists && canbezapped )
 	{
-		zapped += 500;
+		HealthPoints = 0;
 		dead = true;
 	}
 }

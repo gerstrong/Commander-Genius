@@ -13,7 +13,7 @@
 class CPlatform : public CObject
 {
 public:
-	CPlatform(CMap *p_map);
+	CPlatform(CMap *p_map, Uint32 x, Uint32 y);
 	virtual void process();
 private:
 };
@@ -21,7 +21,7 @@ private:
 class CPlatformVert : public CPlatform
 {
 public:
-	CPlatformVert(CMap *p_map);
+	CPlatformVert(CMap *p_map, Uint32 x, Uint32 y);
 	void process();
 private:
 };

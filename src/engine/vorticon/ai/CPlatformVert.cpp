@@ -13,8 +13,8 @@ PLATVERT_MOVE, PLATVERT_WAIT
 
 #define PLATVERTPUSHAMOUNT      10
 
-CPlatformVert::CPlatformVert(CMap *p_map) :
-CPlatform(p_map)
+CPlatformVert::CPlatformVert(CMap *p_map, Uint32 x, Uint32 y) :
+CPlatform(p_map, x, y)
 {}
 
 void CPlatformVert::process()

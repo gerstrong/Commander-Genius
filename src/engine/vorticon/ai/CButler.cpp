@@ -4,8 +4,9 @@
 #include "../../../graphics/CGfxEngine.h"
 #include "../../../common/CBehaviorEngine.h"
 
-CButler::CButler(std::vector<CPlayer> &PlayerVect, CMap *p_map) :
-CObject(p_map),
+CButler::CButler(CMap *pmap, Uint32 x, Uint32 y,
+		std::vector<CPlayer> &PlayerVect) :
+CObject(pmap, x, y),
 m_Player(PlayerVect)
 {
 	 state = BUTLER_WALK;

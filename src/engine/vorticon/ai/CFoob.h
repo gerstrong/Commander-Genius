@@ -36,7 +36,7 @@
 class CFoob : public CObject
 {
 public:
-	CFoob(CMap *p_map);
+	CFoob(CMap *p_map, Uint32 x, Uint32 y);
 	void process();
 
 private:

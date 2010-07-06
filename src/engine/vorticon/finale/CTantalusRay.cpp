@@ -12,6 +12,9 @@
 #include "../../../sdl/CInput.h"
 #include "../../../common/CMapLoader.h"
 
+#include "../ai/CRay.h"
+#include "../ai/CEarthExplosion.h"
+
 unsigned int rnd(void);
 
 const int TANTALUS_SPRITE = 58;
@@ -66,8 +69,7 @@ void CTantalusRay::shootray()
 
 		m_Map.drawAll();
 
-		CObject* ShootObject = new CObject(&m_Map);
-		ShootObject->spawn(4<<CSF, 4<<CSF, OBJ_RAY,2);
+		CObject* ShootObject = new CRay(&m_Map, 4<<CSF, 4<<CSF, RIGHT, OBJ_NONE, 0);
 		ShootObject->solid = false;
 		ShootObject->exists = ShootObject->onscreen = true;
 		m_vect_obj.push_back(ShootObject);
@@ -106,8 +108,7 @@ void CTantalusRay::explodeEarth()
 	{
 		if (m_step<16)
 		{
-			CObject *newobject = new CObject(&m_Map);
-			newobject->spawn(shot_x+((rnd()%32)<<STC), shot_y+((rnd()%32)<<STC)-(8<<STC), OBJ_EXPLOSION, 2);
+			CObject *newobject = new CEarthExplosion(&m_Map,shot_x+((rnd()%32)<<STC), shot_y+((rnd()%32)<<STC)-(8<<STC));
 			newobject->solid = false;
 			m_vect_obj.push_back(newobject);
 		}

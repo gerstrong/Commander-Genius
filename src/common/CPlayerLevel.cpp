@@ -65,7 +65,7 @@ void CPlayer::processInLevel(const bool &platextending)
 
 		InertiaAndFriction_X();
 		
-		//TogglePogo_and_Switches(platextending);
+		TogglePogo_and_Switches(platextending);
 		JumpAndPogo();
 
 		// Check collision with other objects

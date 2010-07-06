@@ -71,12 +71,15 @@ bool CPlayGameVorticon::loadGameState()
 		m_SavedGame.decodeData(size);
 		for( Uint32 i=0 ; i<size ; i++) {
 			// save all the objects states
-			CObject object(&m_Map);
 
-			m_SavedGame.decodeData(object.m_type);
+			// TODO: This code won't work the way it is.
+			CObject *object=NULL;
+
+			/*m_SavedGame.decodeData(object.m_type);
 			m_SavedGame.decodeData(x);
 			m_SavedGame.decodeData(y);
-			object.moveToForce(x,y-1);
+			//object.moveToForce(x,y-1);
+			//object = new CObject(&m_Map);
 			m_SavedGame.decodeData(object.dead);
 			m_SavedGame.decodeData(object.needinit);
 			m_SavedGame.decodeData(object.onscreen);
@@ -92,9 +95,9 @@ bool CPlayGameVorticon::loadGameState()
 			m_SavedGame.decodeData(object.inhibitfall);
 			m_SavedGame.decodeData(object.honorPriority);
 			m_SavedGame.decodeData(object.sprite);
-			m_SavedGame.decodeData(object.ai);
-			if(object.m_type != OBJ_DOOR) // small workaround for doors which might be opening
-				m_Object.push_back(&object);
+			m_SavedGame.decodeData(object.ai);*/
+			//if(object.m_type != OBJ_DOOR) // small workaround for doors which might be opening
+				//m_Object.push_back(&object);
 		}
 
 		// TODO: An algorithm for comparing the number of players saved and we actually have need to be in sync

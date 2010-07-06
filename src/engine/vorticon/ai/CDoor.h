@@ -21,7 +21,7 @@
 class CDoor : public CObject
 {
 public:
-	CDoor(CMap *p_map);
+	CDoor(CMap *pmap, Uint32 x, Uint32 y);
 	void process();
 
 private:

@@ -135,7 +135,8 @@ public:
 	unsigned char pjumptime, pjumpupspeed_decrease, pjumpdir;
 	unsigned char pjumpframe, pjumpanimtimer;
 	int pjumpupspeed;
-	unsigned char pjumpnormaltime, pjumpupdecreaserate, pjustjumped;
+	unsigned char pjumpnormaltime, pjumpupdecreaserate;
+	bool pjustjumped;
 	unsigned char pjustfell;
 	unsigned char pjumpfloattimer;
 

@@ -9,6 +9,8 @@
 #define CVORTIKID_H_
 
 #include "../../../common/CObject.h"
+#include "../../../common/CPlayer.h"
+#include <vector>
 
 class CVortikid : public CObject
 {

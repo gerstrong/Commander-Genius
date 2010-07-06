@@ -18,8 +18,8 @@
 
 int mortimer_surprisedcount = 0;
 
-CSectorEffector::CSectorEffector(CMap *p_map) :
-CObject(p_map)
+CSectorEffector::CSectorEffector(CMap *p_map, Uint32 x, Uint32 y) :
+CObject(p_map, x, y)
 {}
 
 //

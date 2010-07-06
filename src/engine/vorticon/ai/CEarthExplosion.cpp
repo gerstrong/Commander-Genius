@@ -7,8 +7,8 @@
 
 #include "CEarthExplosion.h"
 
-/*CEarthExplosion::CEarthExplosion(CMap *p_map) :
-CRay(p_map)
+CEarthExplosion::CEarthExplosion(CMap *p_map, Uint32 x, Uint32 y) :
+CObject(p_map, x, y)
 {
 	onscreen = true;
 }
@@ -20,7 +20,7 @@ CRay(p_map)
 
 void CEarthExplosion::process()
 {
-	sprite = EXPLODESPRITE + animframe;
+	/*sprite = EXPLODESPRITE + animframe;
 	if (animtimer > EXPLODE_ANIM_RATE)
 	{
 		if (m_Direction==NONE && animframe==0)
@@ -41,5 +41,5 @@ void CEarthExplosion::process()
 		}
 		animtimer = 0;
 	}
-	else animtimer++;
-}*/
+	else animtimer++;*/
+}

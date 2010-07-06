@@ -12,8 +12,8 @@
 
 #define SNDWAVE_OFFSCREEN_KILL_TIME     100
 
-CSoundWave::CSoundWave(CMap *p_map) :
-CObject(p_map)
+CSoundWave::CSoundWave(CMap *p_map, Uint32 x, Uint32 y) :
+CObject(p_map, x, y)
 {}
 
 //void CObjectAI::sndwave_ai(CObject& object, bool hardmode)

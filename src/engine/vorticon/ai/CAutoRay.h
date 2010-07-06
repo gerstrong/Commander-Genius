@@ -17,7 +17,8 @@ class CAutoRay : public CObject
 {
 public:
 	enum stRayAlignment{ VERTICAL, HORIZONTAL };
-	CAutoRay(CMap *p_map, std::vector<CObject*> &Objvect, stRayAlignment type);
+	CAutoRay(CMap *pmap, Uint32 x, Uint32 y,
+			std::vector<CObject*> &Objvect, stRayAlignment type);
 	void process();
 
 

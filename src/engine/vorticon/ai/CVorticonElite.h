@@ -8,9 +8,11 @@
 #ifndef CVORTICONELITE_H_
 #define CVORTICONELITE_H_
 
-#include "../../../common/CObject.h"
+#include "CVorticon.h"
+#include "../../../common/CPlayer.h"
+#include <vector>
 
-class CVorticonElite : public CObject
+class CVorticonElite : public CVorticon
 {
 public:
 	CVorticonElite( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,

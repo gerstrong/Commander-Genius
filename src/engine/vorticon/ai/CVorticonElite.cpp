@@ -49,7 +49,7 @@ enum vortelite_actions{
 
 CVorticonElite::CVorticonElite( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
 		Uint32 x, Uint32 y ) :
-CObject(p_map)
+CVorticon(p_map,mp_vec_Player, x, y, 4)
 {}
 
 //void CObjectAI::vortelite_ai(CObject &object, bool darkness)

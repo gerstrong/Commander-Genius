@@ -12,8 +12,8 @@
 
 #define PLATFORMPUSHAMOUNT      40
 
-CPlatform::CPlatform(CMap *p_map) :
-CObject(p_map)
+CPlatform::CPlatform(CMap *p_map, Uint32 x, Uint32 y) :
+CObject(p_map, x, y)
 {}
 
 void CPlatform::process()

@@ -13,7 +13,7 @@
 
 CYorp::CYorp( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
 		Uint32 x, Uint32 y ) :
-CObject(p_map),
+CObject(p_map,x,y),
 m_hardmode(mp_Map->m_Difficulty>1),
 m_vec_Player(mp_vec_Player),
 state(YORP_LOOK),
@@ -26,8 +26,6 @@ dist_traveled(0),
 yorpdie_inertia_y(0),
 movedir(0)
 {
-	this->x = x;
-	this->y = y;
 	m_type = OBJ_YORP;
 	sprite = OBJ_YORP_DEFSPRITE;
 	canbezapped = true;
@@ -46,7 +44,7 @@ void CYorp::process()
 
 	if (!hasbeenonscreen) return;
 
-	/*CPlayer &tb_player = mp_player[touchedBy];
+	CPlayer &tb_player = m_vec_Player[touchedBy];
 	// code for the yorps to push keen, and code for them to get stunned
 	if (touchPlayer && state != YORP_STUNNED
 		&& state != YORP_DYING  && !tb_player.pdie)
@@ -69,11 +67,11 @@ void CYorp::process()
             	// make the yorp look a little less "soft" by
                 // offering a bit of resistance
                 // (actually, having keen do a small jump)
-                mp_player[touchedBy].pjumptime = 0;
-                mp_player[touchedBy].pjumpupdecreaserate = 0;
-                mp_player[touchedBy].pjumpupspeed = 7;
-                mp_player[touchedBy].pjumping = PJUMPUP;
-                mp_player[touchedBy].pjustjumped = 1;
+                tb_player.pjumptime = 0;
+                tb_player.pjumpupdecreaserate = 0;
+                tb_player.pjumpupspeed = 7;
+                tb_player.pjumping = PJUMPUP;
+                tb_player.pjustjumped = true;
 			}
 		}
 		else
@@ -108,10 +106,10 @@ void CYorp::process()
  				tb_player.bump( pushamt, false );
  			}
 		}
- 	}*/
+ 	}
 
 	// did the poor guy get shot?
-	if(zapped)
+	if( HealthPoints <= 0 )
 	{
 		// what'd you kill an innocent yorp for, you bastard!
 		if(!m_hardmode)
@@ -120,7 +118,6 @@ void CYorp::process()
 		dietimer = 0;
 		canbezapped = false;
 		sprite = YORP_DYING_FRAME;
-		zapped = 0;
 		yorpdie_inertia_y = YORPDIE_START_INERTIA;
 		moveUp(10);
 		inhibitfall = 1;

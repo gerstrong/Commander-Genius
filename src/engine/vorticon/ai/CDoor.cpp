@@ -3,19 +3,13 @@
 #include "../../../keen.h"
 #include "../../../graphics/CGfxEngine.h"
 
-CDoor::CDoor(CMap *p_map):
-CObject(p_map)
+CDoor::CDoor(CMap *pmap, Uint32 x, Uint32 y):
+CObject(pmap, x, y)
 {
-	int x, y;
 	CSprite &doorsprite = g_pGfxEngine->getSprite(sprite);
 	timer = 0;
 	doorsprite.setHeight(32);
 	inhibitfall = true;
-	needinit = false;
-	x = getXPosition()>>CSF;
-	y = getYPosition()>>CSF;
-	mp_Map->redrawAt(x, y);
-	mp_Map->redrawAt(x, y+1);
 }
 
 void CDoor::process()

@@ -10,8 +10,6 @@
 
 #include "../../../common/CObject.h"
 
-void delete_object(int o);
-
 unsigned int rnd(void);
 
 //static void smash(int o);
@@ -19,7 +17,7 @@ unsigned int rnd(void);
 class CIceCannon : public CObject
 {
 public:
-	CIceCannon(CMap *p_map);
+	CIceCannon(CMap *p_map, Uint32 x, Uint32 y);
 	void process();
 private:
 

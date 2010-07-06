@@ -4,8 +4,8 @@
 #include "../../../keen.h"
 #include "CTank.h"
 
-CTank::CTank(CMap *p_map) :
-CObject(p_map)
+CTank::CTank(CMap *p_map, Uint32 x, Uint32 y) :
+CObject(p_map, x, y)
 {
 	state = TANK_WALK;
 	movedir = RIGHT;

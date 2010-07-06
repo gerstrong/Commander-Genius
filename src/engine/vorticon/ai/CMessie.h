@@ -13,7 +13,7 @@
 class CMessie : CObject
 {
 public:
-	CMessie(CMap *p_map);
+	CMessie(CMap *p_map, Uint32 x, Uint32 y);
 	void process();
 private:
 };

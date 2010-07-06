@@ -13,7 +13,7 @@
 class CMeep : CObject
 {
 public:
-	CMeep(CMap *p_map);
+	CMeep(CMap *p_map, Uint32 x, Uint32 y);
 	void process();
 };
 

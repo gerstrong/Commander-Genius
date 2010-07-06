@@ -15,7 +15,8 @@
 class CBallJack : public CObject
 {
 public:
-	CBallJack(std::vector<CPlayer> &PlayerVect, CMap *p_map);
+	CBallJack(CMap *pmap, Uint32 x, Uint32 y,
+			std::vector<CPlayer> &PlayerVect);
 	void process();
 
 private:

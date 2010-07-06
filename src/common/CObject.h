@@ -45,7 +45,7 @@ enum direction_t{
 
 class CObject {
 public:
-	CObject(CMap *pmap=NULL);
+	CObject(CMap *pmap, Uint32 x, Uint32 y);
 	
 	object_t m_type;        		// yorp, vorticon, etc.
 	unsigned int m_index;        	// Like an ID for some objects that need this implementation
