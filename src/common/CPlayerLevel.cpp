@@ -65,7 +65,7 @@ void CPlayer::processInLevel(const bool &platextending)
 
 		InertiaAndFriction_X();
 		
-		TogglePogo_and_Switches(platextending);
+		//TogglePogo_and_Switches(platextending);
 		JumpAndPogo();
 
 		// Check collision with other objects
@@ -806,7 +806,7 @@ void CPlayer::SelectFrame()
 	
     // if he's going left switch the frame selected above to the
     // appropriate one for the left direction
-    if (pshowdir && !pdie && !pfrozentime)
+    if (pshowdir==LEFT && !pdie && !pfrozentime)
     {
 		if (pfiring)
 		{
