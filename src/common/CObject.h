@@ -96,7 +96,6 @@ public:
 		// ep2
 		stPlatformData platform;
 		stVortEliteData vortelite;
-		stSEData se;
 		stBabyData baby;
 		
 		// ep3

@@ -24,7 +24,7 @@ void CFoob::process()
 
 	if (!hasbeenonscreen) return;
 
-	if (zapped || touchPlayer)
+	if ( (HealthPoints <=0 && state != FOOB_EXPLODE) || touchPlayer)
 	{
 		if (state != FOOB_EXPLODE)
 		{
@@ -33,7 +33,7 @@ void CFoob::process()
 			state = FOOB_EXPLODE;
 			canbezapped = 0;
 			if (onscreen) g_pSound->playStereofromCoord(SOUND_YORP_DIE, PLAY_NOW, scrx);
-			if (hardmode && touchPlayer)
+			if ( (mp_Map->m_Difficulty>1) && touchPlayer)
 			{
 				killplayer(touchedBy);
 			}
@@ -122,7 +122,7 @@ void CFoob::process()
 				dir = LEFT;
 			}
 			// in hard mode run TOWARDS the player (he's deadly in hard mode)
-			if (hardmode) dir ^= 1;
+			if ((mp_Map->m_Difficulty>1)) dir ^= 1;
 
 		}
 		else spooktimer++;
@@ -152,7 +152,7 @@ void CFoob::process()
 				moveRight(FOOB_FLEE_SPEED);
 				blockedtime = 0;
 			}
-			else if (hardmode)
+			else if ((mp_Map->m_Difficulty>1))
 			{
 				if (++blockedtime >= FOOB_HARDMODE_BLOCK_TIME)
 				{
@@ -169,7 +169,7 @@ void CFoob::process()
 				moveLeft(FOOB_FLEE_SPEED);
 				blockedtime = 0;
 			}
-			else if (hardmode)
+			else if ((mp_Map->m_Difficulty>1))
 			{
 				if (++blockedtime >= FOOB_HARDMODE_BLOCK_TIME)
 				{
