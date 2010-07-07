@@ -13,11 +13,6 @@
 //#include "../common/CMap.h"
 //#include <vector>
 //
-//enum teleporation_state{
-//TELEPORTING_OUT,
-//TELEPORTING_SCROLL,
-//TELEPORTING_IN
-//};
 //
 //class CTeleporter {
 //public:

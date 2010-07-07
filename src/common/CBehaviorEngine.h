@@ -45,6 +45,10 @@ public:
 	CPhysicsSettings &getPhysicsSettings();
 	std::string getString(const std::string& name);
 	size_t getEpisode();
+	stTeleporterTable getTeleporterTableAt(size_t num)
+	{ return m_TeleporterTable[num]; }
+	std::vector<stTeleporterTable> getTeleporterTable()
+	{ return m_TeleporterTable; }
 
 	void setEpisode(size_t Episode);
 

@@ -60,25 +60,6 @@ typedef struct stIceChunk
 } stIceChunk;
 
 
-typedef struct stTeleportData
-{
-	char animtimer;
-	char animframe;
-	char numframechanges;
-	
-	char direction;
-	int whichplayer;
-	unsigned int destx;
-	signed int desty;
-	
-	int baseframe;
-	int idleframe;
-	
-	char fadeamt;
-	char fadetimer;
-} stTeleportData;
-
-
 // the rope that you cut to kill the vorticon at the end of ep1
 typedef struct stRopeData
 {

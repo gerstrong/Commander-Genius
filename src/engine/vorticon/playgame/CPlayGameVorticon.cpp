@@ -15,6 +15,7 @@
 #include "../../../common/CMapLoader.h"
 #include "../../../graphics/CGfxEngine.h"
 #include "../../../StringUtils.h"
+#include "../ai/CTeleporter.h"
 
 #define SAFE_DELETE(x) if(x) { delete x; x = NULL; }
 
@@ -525,6 +526,23 @@ void CPlayGameVorticon::createFinale()
 	}
 }
 
+void CPlayGameVorticon::teleportPlayerFromLevel(CPlayer &player, int origx, int origy)
+{
+	int destx, desty;
+
+	CTeleporter *teleporter = new CTeleporter(&m_Map, m_Player, origx, origy);
+	player.beingteleported = true;
+	player.solid = false;
+	destx = g_pBehaviorEngine->getTeleporterTableAt(5).x;
+	desty = g_pBehaviorEngine->getTeleporterTableAt(5).y;
+	teleporter->solid = false;
+	teleporter->direction = TELEPORTING_SCROLL;
+	teleporter->destx = destx>>TILE_S;
+	teleporter->desty = desty>>TILE_S;
+	teleporter->whichplayer = player.m_index;
+	m_Object.push_back(teleporter);
+}
+
 void CPlayGameVorticon::collectHighScoreInfo()
 {
 	if(m_Episode == 1)
@@ -571,8 +589,6 @@ void CPlayGameVorticon::drawObjects()
 		if(!it_player->beingteleported)
 			it_player->draw();
 	}
-
-
 
 	std::vector<CObject*>::iterator it_obj = m_Object.begin();
 	for(; it_obj!=m_Object.end() ; it_obj++)

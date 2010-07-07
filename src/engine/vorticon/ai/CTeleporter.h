@@ -5,8 +5,43 @@
  *      Author: gerstrong
  */
 
-#ifndef CTELEPORTER_H_
-#define CTELEPORTER_H_
+#ifndef _CTELEPORTER_H_
+#define _CTELEPORTER_H_
 
+#include "../../../common/CObject.h"
+#include "../../../common/CPlayer.h"
 
-#endif /* CTELEPORTER_H_ */
+enum teleportation_state{
+TELEPORTING_OUT,
+TELEPORTING_SCROLL,
+TELEPORTING_IN
+};
+
+class CTeleporter : public CObject
+{
+public:
+	CTeleporter(CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
+			Uint32 x, Uint32 y );
+
+	void process();
+
+	char animtimer;
+	char animframe;
+	char numframechanges;
+
+	teleportation_state direction;
+	int whichplayer;
+	unsigned int destx;
+	signed int desty;
+
+	int baseframe;
+	int idleframe;
+
+	char fadeamt;
+	char fadetimer;
+
+private:
+	std::vector<CPlayer> &m_Player;
+};
+
+#endif /* _CTELEPORTER_H_ */

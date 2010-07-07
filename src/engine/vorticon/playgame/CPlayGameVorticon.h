@@ -55,7 +55,6 @@ public:
 	// Game states
 	bool loadGameState();
 	bool saveGameState();
-
 	void process();
 	void processOnWorldMap();
 	void processInLevel();
@@ -85,6 +84,13 @@ public:
 	// Dialog processes stored in CPlayGameVorticonDialogs.cpp
 	void processPauseDialogs();
 	void showPausedGameDlg();
+
+	// Teleportation Stuff
+	int getTeleporterInfo(int objectID);
+	void teleportPlayer(int objectID, CPlayer &player);
+	void teleportPlayerFromLevel( CPlayer &player, int origx, int origy);
+	void readTeleportDestCoordinatesEP1(int objectID, int &destx, int &desty);
+	void readTeleportDestCoordinatesEP3(int objectID, int &destx, int &desty);
 
 	void cleanup();
 	virtual ~CPlayGameVorticon();

@@ -13,6 +13,7 @@
 #include "../../../graphics/CGfxEngine.h"
 #include "../../../graphics/effects/CColorMerge.h"
 #include "../../../sdl/sound/CSound.h"
+#include "../ai/CTeleporter.h"
 
 void CPlayGameVorticon::processOnWorldMap()
 {
@@ -29,16 +30,13 @@ void CPlayGameVorticon::processOnWorldMap()
 			useobject = m_Player[0].getNewObject();
 			if( useobject != 0 )
 			{
-				// A new object was chosen by the player
-				/*CTeleporter Teleporter(m_TeleporterTable, m_Episode);
-
 				// If it is teleporter, make the Player teleport
 				int TeleportID;
-				if( (TeleportID = Teleporter.getTeleporterInfo(useobject)) != 0 )
+				if( (TeleportID = getTeleporterInfo(useobject)) != 0 )
 				{
-					Teleporter.teleportPlayer(TeleportID, m_Map,m_Object, m_Player[0]);
+					teleportPlayer(TeleportID, m_Player[0]);
 				}
-				else*/
+				else
 				{
 					// If it is level, change the playgame mode and load the new map. Nessie is
 					// a special case in Episode 3
@@ -197,4 +195,75 @@ const unsigned int KEENSLEFT_H = 4;
 		y += 16;
 	}
 }
+
+int CPlayGameVorticon::getTeleporterInfo(int objectID)
+{
+	if(m_Episode == 1) {
+		if( objectID > 33 && objectID < 47 ) return objectID;
+	}
+	else if(m_Episode == 3) {
+		if( (objectID & 0xF00) == 0xF00) return objectID;
+	}
+	return 0;
+}
+
+
+/**
+ * Teleporter part
+ */
+void CPlayGameVorticon::teleportPlayer(int objectID, CPlayer &player)
+{
+	int destx, desty;
+	int origx, origy;
+	m_Map.findObject(objectID, &origx, &origy);
+	CTeleporter *teleporter = new CTeleporter(&m_Map, m_Player,origx<<CSF, origy<<CSF);
+	teleporter->solid = false;
+	teleporter->direction = TELEPORTING_IN;
+	if(m_Episode == 1)
+		readTeleportDestCoordinatesEP1(objectID, destx, desty);
+	else if(m_Episode == 3)
+		readTeleportDestCoordinatesEP3(objectID, destx, desty);
+	teleporter->destx = destx>>TILE_S;
+	teleporter->desty = desty>>TILE_S;
+	teleporter->whichplayer = player.m_index;
+	m_Object.push_back(teleporter);
+}
+
+void CPlayGameVorticon::readTeleportDestCoordinatesEP1(int objectID, int &destx, int &desty)
+{
+	destx = desty = 0;
+
+	std::vector<stTeleporterTable>::iterator TTable = g_pBehaviorEngine->getTeleporterTable().begin();
+	for( ; TTable != g_pBehaviorEngine->getTeleporterTable().end() ; TTable++ )
+	{
+		if(TTable->objectnumber2 == objectID || TTable->objectnumber1 == objectID)
+		{
+			destx = TTable->x;
+			desty = TTable->y;
+			return;
+		}
+	}
+}
+
+void CPlayGameVorticon::readTeleportDestCoordinatesEP3(int objectID, int &destx, int &desty)
+{
+	destx = desty = 0;
+
+	int newObject = objectID & 0x00F;
+	newObject <<= 4;
+	newObject += 0xF00; // Now its a teleporter, we only need to find the right one on the map
+
+	for(int i=newObject; i<newObject+0x10 ; i++)
+	{
+		if(m_Map.findObject(i, &destx, &desty))
+		{
+			destx <<= TILE_S;
+			desty <<= TILE_S;
+			return;
+		}
+	}
+}
+
+
+
 

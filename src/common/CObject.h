@@ -91,7 +91,6 @@ public:
 	{
 		// ep1
 		stIceChunk icechunk;
-		stTeleportData teleport;
 		stRopeData rope;
 		
 		// ep2
