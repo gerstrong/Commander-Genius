@@ -90,11 +90,9 @@ public:
 	union ai
 	{
 		// ep1
-		stIceChunk icechunk;
 		stRopeData rope;
 		
 		// ep2
-		stPlatformData platform;
 		stVortEliteData vortelite;
 		stBabyData baby;
 		

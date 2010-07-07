@@ -23,7 +23,6 @@ m_dark(dark)
 	m_Episode = episode;
 	m_gunfiretimer = 0;
 	sparks_left = 0;
-	PlatExtending = false;
 }
 
 //////////////////
@@ -162,7 +161,12 @@ void CObjectAI::deleteAllObjects()
 	// The real delete happens, when all the AI is done
 	// If the last object was deleted, throw it out of the list
 	if(!m_Objvect.empty())
+	{
+		std::vector<CObject*>::iterator obj=m_Objvect.begin();
+		for( ; obj != m_Objvect.end() ; obj++ )
+			delete *obj;
 		m_Objvect.clear();
+	}
 }
 
 CObjectAI::~CObjectAI() {

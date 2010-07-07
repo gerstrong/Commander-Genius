@@ -367,7 +367,13 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				// foob (ep3)
 				if (episode==1)
 				{
-					enemyobject = new CIceCannon( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
+					enemyobject = new CIceCannon( mp_map, x<<CSF, y<<CSF,
+							*mp_vec_Player,	*mp_objvect, );
+
+					CIceCannon(CMap *p_map, Uint32 x, Uint32 y,
+							std::vector<CPlayer>& Player, std::vector<CObject*>& Object,
+							int vector_x, int vector_y );
+
 					enemyobject->ai.icechunk.vector_x = 1;
 					enemyobject->ai.icechunk.vector_y = -1;
 				}

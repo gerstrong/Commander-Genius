@@ -29,7 +29,8 @@ CPlayGameVorticon::CPlayGameVorticon( CExeFile &ExeFile, char level,
 CPlayGame(ExeFile, level, numplayers, difficulty, p_option),
 mp_ObjectAI(NULL),
 m_SavedGame(SavedGame),
-mp_HighScores(NULL)
+mp_HighScores(NULL),
+PlatExtending(false)
 {
 	mp_Menu = NULL;
 	mp_Finale = NULL;

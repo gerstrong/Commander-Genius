@@ -8,12 +8,14 @@
 #ifndef CSOUNDWAVE_H_
 #define CSOUNDWAVE_H_
 
-#include "../../../common/CObject.h"
+#include "CRay.h"
 
-class CSoundWave : public CObject
+class CSoundWave : public CRay
 {
 public:
-	CSoundWave(CMap *p_map, Uint32 x, Uint32 y);
+	CSoundWave(CMap *p_map, Uint32 x, Uint32 y,
+			direction_t dir, object_t byType=OBJ_NONE, size_t byID=0);
+	void process();
 };
 
 #endif /* CSOUNDWAVE_H_ */

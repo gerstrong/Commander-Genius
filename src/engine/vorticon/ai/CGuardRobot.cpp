@@ -4,8 +4,9 @@
 #include "CTank.h"
 #include "CRay.h"
 
-CGuardRobot::CGuardRobot(CMap *p_map, Uint32 x, Uint32 y) :
-CTank(p_map, x, y)
+CGuardRobot::CGuardRobot(CMap *p_map, Uint32 x, Uint32 y,
+		std::vector<CPlayer>& Player, std::vector<CObject*>& Object) :
+CTank(p_map, x, y, Player, Object)
 {
 	//first time initilization
 	state = TANK_WALK;
@@ -30,7 +31,7 @@ void CGuardRobot::process()
 {
 	// touched player?
 	if (touchPlayer && !m_Player[touchedBy].pdie)
-		killplayer(touchedBy);
+		m_Player[touchedBy].kill();
 
 	switch(state)
 	{
@@ -74,7 +75,7 @@ void CGuardRobot::process()
 
 		break;
 
-	case stTankData::TANK_WALK:
+	case TANK_WALK:
 		// hover animation
 		if (animtimer > TANK_WALK_ANIM_TIME)
 		{
@@ -106,24 +107,16 @@ void CGuardRobot::process()
 			// is it time to fire the next shot in the volley?
 			if (!timetillnextshot)
 			{
-				CRay *newobject = new CRay(mp_Map);
+				CRay *newobject;
 				if (onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, scrx);
 				if (movedir==RIGHT)
-				{
-					newobject->spawn(getXRightPos()+(8<<STC), getYUpPos()+(5<<STC), OBJ_RAY, m_Episode);
-					newobject->m_Direction = RIGHT;
-				}
+					newobject = new CRay(mp_Map,getXRightPos()+(8<<STC), getYUpPos()+(5<<STC), RIGHT);
 				else
-				{
-					newobject->spawn(getXPosition(), getYUpPos()+(5<<STC), OBJ_RAY, m_Episode, LEFT);
-					newobject->m_Direction = LEFT;
-				}
-				newobject->owner.ID = m_index;
-				newobject->owner.obj_type = OBJ_TANKEP2;
+					newobject = new CRay(mp_Map,getXPosition(), getYUpPos()+(5<<STC), LEFT);
+				newobject->setOwner(OBJ_TANKEP2, m_index);
 				newobject->sprite = ENEMYRAYEP2;
-				newobject->dontHitEnable = 0;
 
-				m_Objvect.push_back(newobject);
+				m_Object.push_back(newobject);
 
 				timetillnextshot = TANK2_TIME_BETWEEN_SHOTS;
 				if (!--firetimes)
@@ -145,7 +138,7 @@ void CGuardRobot::process()
 		{  // not firing a volley
 			if (!timetillcanfire)
 			{
-				tank2_fire(object);
+				tank2_fire();
 			}
 			else
 			{
@@ -155,7 +148,7 @@ void CGuardRobot::process()
 		}
 
 		// is keen on same level?
-		tank_searchplayers(object);
+		tank_searchplayers();
 
 		if (detectedPlayer)
 		{
@@ -171,7 +164,7 @@ void CGuardRobot::process()
 				{
 					if (!timetillcanfirecauseonsamelevel)
 					{
-						tank2_fire(object);
+						tank2_fire();
 						timetillcanfirecauseonsamelevel = TANK2_TIME_BETWEEN_FIRE_CAUSE_LEVEL;
 					}
 					else timetillcanfirecauseonsamelevel--;
@@ -187,7 +180,7 @@ void CGuardRobot::process()
 						frame = 0;
 						timer = 0;
 						animtimer = 0;
-						state = stTankData::TANK_LOOK;
+						state = TANK_LOOK;
 						turnaroundtimer = 100;
 					}
 					else turnaroundtimer--;
@@ -213,7 +206,7 @@ void CGuardRobot::process()
 				frame = 0;
 				timer = 0;
 				animtimer = 0;
-				state = stTankData::TANK_LOOK;
+				state = TANK_LOOK;
 			}
 		}
 		else
@@ -229,7 +222,7 @@ void CGuardRobot::process()
 				frame = 0;
 				timer = 0;
 				animtimer = 0;
-				state = stTankData::TANK_LOOK;
+				state = TANK_LOOK;
 			}
 		}
 		break;
@@ -238,7 +231,7 @@ void CGuardRobot::process()
 }
 
 // makes the tank start firing
-void CGuardRobot::tank2_fire(CObject &object)
+void CGuardRobot::tank2_fire()
 {
 	firetimes = TANK2_SHOTS_PER_VOLLEY;
 	timetillnextshot = 0;
@@ -248,7 +241,7 @@ void CGuardRobot::tank2_fire(CObject &object)
 
 
 // searches for any players on the same level as the tank
-void CGuardRobot::tank_searchplayers(CObject &object)
+void CGuardRobot::tank_searchplayers()
 {
 	detectedPlayer = 0;
 	for( size_t i=0 ; i<m_Player.size() ; i++ )

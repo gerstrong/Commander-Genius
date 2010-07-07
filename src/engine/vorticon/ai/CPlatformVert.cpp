@@ -13,143 +13,135 @@ PLATVERT_MOVE, PLATVERT_WAIT
 
 #define PLATVERTPUSHAMOUNT      10
 
-CPlatformVert::CPlatformVert(CMap *p_map, Uint32 x, Uint32 y) :
-CPlatform(p_map, x, y)
-{}
+CPlatformVert::CPlatformVert(CMap *p_map, Uint32 x, Uint32 y,
+		std::vector<CPlayer>& Player) :
+CPlatform(p_map, x, y, Player)
+{
+	animframe = 0;
+	animtimer = 0;
+	movedir = UP;
+	state = PLATVERT_MOVE;
+
+	blockedu = false;
+	blockedd = true;
+	inhibitfall = 1;
+	needinit = 0;
+	canbezapped = 1;
+	SetAllCanSupportPlayer(1);
+
+	std::vector<CPlayer>::iterator it_player = m_Player.begin();
+	for( ; it_player != m_Player.end() ; it_player++ )
+	{
+		kickedplayer[it_player->m_index] = 0;
+	}
+}
 
 void CPlatformVert::process()
 {
-
-}
-
-/*
-void CObjectAI::platvert_ai(CObject& object)
-{
-	if (object.needinit)
-	{  // first time initilization
-		object.ai.platform.animframe = 0;
-		object.ai.platform.animtimer = 0;
-		object.ai.platform.movedir = UP;
-		object.ai.platform.state = PLATVERT_MOVE;
-
-		object.blockedu = false;
-		object.blockedd = true;
-		object.inhibitfall = 1;
-		object.needinit = 0;
-		object.canbezapped = 1;
-		SetAllCanSupportPlayer(object, 1);
-
-		std::vector<CPlayer>::iterator it_player = m_Player.begin();
-		for( ; it_player != m_Player.end() ; it_player++ )
-		{
-			object.ai.platform.kickedplayer[it_player->m_index] = 0;
-		}
-	}
-
 	// after kicking a player, wait until he falls beneath the platform
 	// before turning cansupportplayer back on...just in case we also
 	// check for if he stopped falling
 	std::vector<CPlayer>::iterator it_player = m_Player.begin();
 	for( ; it_player != m_Player.end() ; it_player++ )
 	{
-		if (object.ai.platform.kickedplayer[it_player->m_index])
+		if (kickedplayer[it_player->m_index])
 		{
-			if (it_player->getYPosition() > object.getYPosition() ||
+			if (it_player->getYPosition() > getYPosition() ||
 					(!it_player->pfalling && !it_player->pjumping))
 			{
-				object.cansupportplayer = 1;
-				object.ai.platform.kickedplayer[it_player->m_index] = 0;
+				cansupportplayer = 1;
+				kickedplayer[it_player->m_index] = 0;
 			}
 		}
 	}
 
 	// push player horizontally
-	CPlayer &tPlayer = m_Player[object.touchedBy];
-	if ( object.touchPlayer && !tPlayer.pdie && tPlayer.psupportingobject != object.m_index)
+	CPlayer &tPlayer = m_Player[touchedBy];
+	if ( touchPlayer && !tPlayer.pdie && tPlayer.psupportingobject != m_index)
 	{
-		if (object.cansupportplayer && !tPlayer.supportedbyobject)
+		if (cansupportplayer && !tPlayer.supportedbyobject)
 		{
 			// if player is standing around minding his own business and we
 			// come down on his head, change direction. if player is trying
 			// to walk/jump into us horizontally, push him away.
-			if( m_Player[object.touchedBy].getYDownPos() > object.getYDownPos() )
+			if( m_Player[touchedBy].getYDownPos() > getYDownPos() )
 			{
-				if (m_Player[object.touchedBy].getXPosition() < object.getXPosition())
+				if (m_Player[touchedBy].getXPosition() < getXPosition())
 				{
-					m_Player[object.touchedBy].playpushed_x = -PLATVERTPUSHAMOUNT;
-					if (m_Player[object.touchedBy].xinertia > 0) m_Player[object.touchedBy].xinertia = 0;
-					m_Player[object.touchedBy].playpushed_decreasetimer = 0;
+					m_Player[touchedBy].playpushed_x = -PLATVERTPUSHAMOUNT;
+					if (m_Player[touchedBy].xinertia > 0) m_Player[touchedBy].xinertia = 0;
+					m_Player[touchedBy].playpushed_decreasetimer = 0;
 				}
 				else
 				{
-					m_Player[object.touchedBy].playpushed_x = PLATVERTPUSHAMOUNT;
-					if (m_Player[object.touchedBy].xinertia < 0) m_Player[object.touchedBy].xinertia = 0;
-					m_Player[object.touchedBy].playpushed_decreasetimer = 0;
+					m_Player[touchedBy].playpushed_x = PLATVERTPUSHAMOUNT;
+					if (m_Player[touchedBy].xinertia < 0) m_Player[touchedBy].xinertia = 0;
+					m_Player[touchedBy].playpushed_decreasetimer = 0;
 				}
 			}
 		}
 	}
 
-	object.sprite = OBJ_PLATFORM_DEFSPRITE_EP3 + object.ai.platform.animframe;
+	sprite = OBJ_PLATFORM_DEFSPRITE_EP3 + animframe;
 
-	if (object.ai.platform.animtimer > PLATVERT_ANIM_RATE)
+	if (animtimer > PLATVERT_ANIM_RATE)
 	{
-		object.ai.platform.animframe ^= 1;
-		object.ai.platform.animtimer = 0;
+		animframe ^= 1;
+		animtimer = 0;
 	}
-	else object.ai.platform.animtimer++;
+	else animtimer++;
 
-	switch(object.ai.platform.state)
+	switch(state)
 	{
 	case PLATVERT_MOVE:
 
-		if (object.ai.platform.movedir==UP)
+		if (movedir==UP)
 		{
-			if (object.blockedu)
+			if (blockedu)
 			{
-				object.ai.platform.movedir = DOWN;
-				object.ai.platform.waittimer = 0;
-				object.ai.platform.state = PLATVERT_WAIT;
+				movedir = DOWN;
+				waittimer = 0;
+				state = PLATVERT_WAIT;
 			}
 			else
 			{
-				object.moveUp(PLATVERT_MOVE_SPD);
+				moveUp(PLATVERT_MOVE_SPD);
 
 				std::vector<CPlayer>::iterator it_player = m_Player.begin();
 				for( ; it_player != m_Player.end() ; it_player++ )
 				{
-					if( it_player->supportedbyobject && it_player->psupportingobject==object.m_index &&
+					if( it_player->supportedbyobject && it_player->psupportingobject==m_index &&
 							(it_player->pjumping==PNOJUMP||it_player->pjumping==PPREPAREJUMP||it_player->pjumping==PPREPAREPOGO))
 					{
-						if (!object.ai.platform.kickedplayer[it_player->m_index])
+						if (!kickedplayer[it_player->m_index])
 						{
 							it_player->moveUp(PLATVERT_MOVE_SPD);
 						}
 						// kick player off if we're running him into the ceiling
 						if (it_player->blockedu)
 						{
-							object.cansupportplayer = 0;
-							object.ai.platform.kickedplayer[it_player->m_index] = 1;
+							cansupportplayer = 0;
+							kickedplayer[it_player->m_index] = 1;
 						}
 					}
 				}
 			}
 		}
-		else if (object.ai.platform.movedir==DOWN)
+		else if (movedir==DOWN)
 		{
-			if (object.blockedd)
-				object.ai.platform.movedir = UP;
+			if (blockedd)
+				movedir = UP;
 			else
 			{
-				object.moveDown(PLATVERT_MOVE_SPD);
+				moveDown(PLATVERT_MOVE_SPD);
 
 				std::vector<CPlayer>::iterator it_player = m_Player.begin();
 				for( ; it_player != m_Player.end() ; it_player++ )
 				{
-					if( it_player->supportedbyobject && it_player->psupportingobject==object.m_index &&
+					if( it_player->supportedbyobject && it_player->psupportingobject==m_index &&
 							(it_player->pjumping==PNOJUMP||it_player->pjumping==PPREPAREJUMP||it_player->pjumping==PPREPAREPOGO))
 					{
-						if (!object.ai.platform.kickedplayer[it_player->m_index])
+						if (!kickedplayer[it_player->m_index])
 							it_player->moveDown(PLATVERT_MOVE_SPD);
 					}
 				}
@@ -157,12 +149,11 @@ void CObjectAI::platvert_ai(CObject& object)
 		}
 		break;
 	case PLATVERT_WAIT:
-		if (object.ai.platform.waittimer > PLATVERT_WAITTIME)
-			object.ai.platform.state = PLATVERT_MOVE;
+		if (waittimer > PLATVERT_WAITTIME)
+			state = PLATVERT_MOVE;
 
 		else
-			object.ai.platform.waittimer++;
+			waittimer++;
 		break;
 	}
 }
-*/

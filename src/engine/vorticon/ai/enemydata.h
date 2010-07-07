@@ -52,13 +52,6 @@ typedef struct stVortEliteData
 	int dist_traveled;
 } stVortEliteData;
 
-typedef struct stIceChunk
-{
-	int vector_x, vector_y;
-	int veloc_x, veloc_y;
-	int timer;
-} stIceChunk;
-
 
 // the rope that you cut to kill the vorticon at the end of ep1
 typedef struct stRopeData
@@ -68,19 +61,6 @@ typedef struct stRopeData
 	int stoneX, stoneY;
 	int bgtile;
 } stRopeData;
-
-
-// a moving platform
-typedef struct stPlatformData
-{
-	unsigned char state;
-	unsigned char animframe;
-	unsigned int animtimer;
-	unsigned int waittimer;
-	
-	unsigned char movedir;
-	unsigned char kickedplayer[MAX_PLAYERS];
-} stPlatformData;
 
 typedef struct stBabyData
 {

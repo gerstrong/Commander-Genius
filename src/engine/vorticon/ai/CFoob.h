@@ -11,6 +11,8 @@
 #define CFOOB_H_
 
 #include "../../../common/CObject.h"
+#include "../../../common/CPlayer.h"
+#include <vector>
 
 #define FOOB_WALK_SPEED      32
 #define FOOB_WALK_ANIM_RATE  4
@@ -36,8 +38,9 @@
 class CFoob : public CObject
 {
 public:
-	CFoob(CMap *p_map, Uint32 x, Uint32 y);
+	CFoob(CMap *p_map, Uint32 x, Uint32 y, std::vector<CPlayer>& Player);
 	void process();
+	void getTouchedBy(CObject &theObject);
 
 private:
 	enum FOOB_ACTIONS
@@ -56,6 +59,8 @@ private:
 	int spooktimer;
 	int SpookedByWho;
 	int blockedtime;
+
+	std::vector<CPlayer>& m_Player;
 };
 
 #endif /* CFOOB_H_ */

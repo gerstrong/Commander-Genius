@@ -91,6 +91,10 @@ public:
 	void readTeleportDestCoordinatesEP1(int objectID, int &destx, int &desty);
 	void readTeleportDestCoordinatesEP3(int objectID, int &destx, int &desty);
 
+	// Platform stuff
+	bool getPlatMoving() { return PlatExtending; }
+	void triggerPlat(bool value) { PlatExtending = value; }
+
 	void cleanup();
 	virtual ~CPlayGameVorticon();
 
@@ -109,5 +113,8 @@ private:
 	std::vector<CObject*> m_Object;
 	CHighScores *mp_HighScores;
 	CHUD *mp_HUD;
+
+	// if true, a moving platform is currently extending/retracting (ep2)
+	bool PlatExtending;
 };
 #endif /* CPlayGameVorticon_H_ */

@@ -29,8 +29,20 @@ enum sector_effector_type{
 class CSectorEffector : public CObject
 {
 public:
-	CSectorEffector(CMap *p_map, Uint32 x, Uint32 y);
+	CSectorEffector(CMap *p_map, Uint32 x, Uint32 y,
+			std::vector<CPlayer>& Player, std::vector<CObject*>& Object, bool &PlatExtending);
 	void process();
+	void se_extend_plat();
+	void se_retract_plat();
+	void spark_ai(int &sparks_left);
+	void se_mortimer_arm();
+	void se_mortimer_spark();
+	void se_mortimer_heart();
+	void se_mortimer_zapsup();
+	void se_mortimer_leg_left();
+	void se_mortimer_leg_right();
+	void se_mortimer_randomzaps();
+	void set_mortimer_surprised(bool yes);
 
 private:
 	unsigned int setype;
@@ -44,6 +56,10 @@ private:
 	unsigned int frame;
 	int mx,my;
 	int blowx,blowy;
+
+	std::vector<CPlayer>& m_Player;
+	std::vector<CObject*>& m_Object;
+	bool &m_PlatExtending;
 };
 
 #endif /* SE_H_ */

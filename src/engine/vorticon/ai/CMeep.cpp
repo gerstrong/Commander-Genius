@@ -1,6 +1,7 @@
 #include "../../../sdl/sound/CSound.h"
 #include "../../../misc.h"
 #include "CMeep.h"
+#include "CSoundWave.h"
 
 enum meep_actions{
 	MEEP_WALK, MEEP_SING,
@@ -22,8 +23,12 @@ enum meep_actions{
 #define MEEP_DYING_FRAME        124
 #define MEEP_DEAD_FRAME         125
 
-CMeep::CMeep(CMap *p_map, Uint32 x, Uint32 y) :
-CObject(p_map,x,y)
+CMeep::CMeep(CMap *p_map, Uint32 x, Uint32 y,
+		std::vector<CPlayer>& Player,
+		std::vector<CObject*>& Object) :
+CObject(p_map,x,y),
+m_Player(Player),
+m_Object(Object)
 {}
 
 void CMeep::process()
@@ -58,9 +63,8 @@ void CMeep::process()
 		}
 	}
 
-	if (zapped)
+	if (HealthPoints <= 0 && state != MEEP_DYING )
 	{
-		zapped = 0;
 		canbezapped = 0;
 		timer = 0;
 		state = MEEP_DYING;
@@ -136,19 +140,13 @@ void CMeep::process()
 
 		if (timer > MEEP_SING_SHOW_TIME)
 		{
-			CObject *newobject = new CObject(mp_Map);
+			CSoundWave *newobject;
 			if (dir==RIGHT)
-			{
-				newobject->spawn(getXRightPos(), getYPosition()+(5<<STC), OBJ_SNDWAVE, 3);
-				newobject->ai.ray.direction = RIGHT;
-			}
+				newobject = new CSoundWave(mp_Map, getXRightPos(), getYPosition()+(5<<STC), RIGHT);
 			else
-			{
-				newobject->spawn(getXLeftPos(), getYPosition()+(5<<STC), OBJ_SNDWAVE, 3, LEFT);
-				newobject->ai.ray.direction = LEFT;
-			}
+				newobject = new CSoundWave(mp_Map, getXLeftPos(), getYPosition()+(5<<STC), LEFT);
 			newobject->solid = false;
-			m_Objvect.push_back(newobject);
+			m_Object.push_back(newobject);
 			g_pSound->playStereofromCoord(SOUND_MEEP, PLAY_NOW, scrx);
 			state = MEEP_WALK;
 		}

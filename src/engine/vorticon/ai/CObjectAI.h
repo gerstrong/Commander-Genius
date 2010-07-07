@@ -26,23 +26,12 @@ public:
 	// main functions
 	void process();
 
-	bool getPlatMoving() { return PlatExtending; }
-	void triggerPlat(bool value) { PlatExtending = value; }
-
 	virtual ~CObjectAI();
 private:
 
 	// main AI functions
 	bool checkforAIObject( CObject &object );
 	void deleteAllObjects();
-
-	// ep1
-	void vort_ai(CObject &object, int level, int episode, char difficulty, bool dark);
-	void vort_initiatejump(CObject &object);
-	void butler_ai(CObject &object, char difficulty);
-	void tank_ai(CObject &object, bool hardmode);
-	bool tank_CanMoveLeft(CObject &object);
-	bool tank_CanMoveRight(CObject &object);
 
 	void icechunk_ai(CObject &object);
 	void smash(CObject &object);
@@ -134,8 +123,6 @@ private:
 	// you must destroy the tantalus ray generator before exiting
 	int sparks_left;
 
-	// if true, a moving platform is currently extending/retracting (ep2)
-	bool PlatExtending;
 };
 
 #endif /* COBJECTAI_H_ */

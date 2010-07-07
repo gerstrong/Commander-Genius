@@ -9,6 +9,7 @@
 #define TANKEP2_H_
 
 #include "../../../common/CObject.h"
+#include "../../../common/CPlayer.h"
 
 #define TANK_SAME_LEVEL_TIME   25
 
@@ -69,7 +70,8 @@ unsigned int rnd(void);
 class CTank : public CObject
 {
 public:
-	CTank(CMap *p_map, Uint32 x, Uint32 y);
+	CTank(CMap *p_map, Uint32 x, Uint32 y,
+			std::vector<CPlayer>& Player, std::vector<CObject*>& Object);
 	virtual void process();
 
 	bool CanMoveLeft();
@@ -100,13 +102,19 @@ protected:
 	unsigned int timetillcanfirecauseonsamelevel;
 	unsigned int turnaroundtimer;
 	int pausetime;
+	std::vector<CPlayer>& m_Player;
+	std::vector<CObject*>& m_Object;
+	bool hardmode;
 };
 
 class CGuardRobot : public CTank
 {
 public:
-	CGuardRobot(CMap *p_map, Uint32 x, Uint32 y);
+	CGuardRobot(CMap *p_map, Uint32 x, Uint32 y,
+			std::vector<CPlayer>& Player, std::vector<CObject*>& Object);
 	void process();
+	void tank2_fire();
+	void tank_searchplayers();
 private:
 };
 

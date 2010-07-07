@@ -2,8 +2,9 @@
 #include "../../../sdl/sound/CSound.h"
 #include "../../../graphics/CGfxEngine.h"
 
-CFoob::CFoob(CMap *p_map, Uint32 x, Uint32 y):
-CObject(p_map,x,y)
+CFoob::CFoob(CMap *p_map, Uint32 x, Uint32 y, std::vector<CPlayer>& Player):
+CObject(p_map,x,y),
+m_Player(Player)
 {
 	state = FOOB_WALK;
 	dir = RIGHT;
@@ -33,10 +34,6 @@ void CFoob::process()
 			state = FOOB_EXPLODE;
 			canbezapped = 0;
 			if (onscreen) g_pSound->playStereofromCoord(SOUND_YORP_DIE, PLAY_NOW, scrx);
-			if ( (mp_Map->m_Difficulty>1) && touchPlayer)
-			{
-				killplayer(touchedBy);
-			}
 		}
 	}
 
@@ -114,15 +111,12 @@ void CFoob::process()
 			OffOfSameLevelTime = 0;
 			// run away from the offending player
 			if (m_Player[SpookedByWho].getXPosition() < getXPosition())
-			{
 				dir = RIGHT;
-			}
 			else
-			{
 				dir = LEFT;
-			}
 			// in hard mode run TOWARDS the player (he's deadly in hard mode)
-			if ((mp_Map->m_Difficulty>1)) dir ^= 1;
+			if (mp_Map->m_Difficulty>1)
+				dir = LEFT ? RIGHT : LEFT;
 
 		}
 		else spooktimer++;
@@ -206,5 +200,18 @@ void CFoob::process()
 			else animtimer++;
 		}
 		break;
+	}
+}
+
+void CFoob::getTouchedBy(CObject &theObject)
+{
+	if(hitdetect(theObject))
+	{
+		if(theObject.m_type == OBJ_PLAYER)
+		{
+			CPlayer &Player = dynamic_cast<CPlayer&>(theObject);
+			if(mp_Map->m_Difficulty>1)
+				Player.kill();
+		}
 	}
 }

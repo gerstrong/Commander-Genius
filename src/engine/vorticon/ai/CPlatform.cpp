@@ -12,80 +12,79 @@
 
 #define PLATFORMPUSHAMOUNT      40
 
-CPlatform::CPlatform(CMap *p_map, Uint32 x, Uint32 y) :
-CObject(p_map, x, y)
-{}
+CPlatform::CPlatform(CMap *p_map, Uint32 x, Uint32 y,
+		std::vector<CPlayer>& Player) :
+CObject(p_map, x, y),
+m_Player(Player)
+{
+	animframe = 0;
+	animtimer = 0;
+	movedir = RIGHT;
+	state = PLATFORM_MOVE;
+
+	blockedl = blockedr = false;
+	inhibitfall = 1;
+	needinit = 0;
+	canbezapped = 1;
+	SetAllCanSupportPlayer(1);
+}
 
 void CPlatform::process()
 {
-	if (object.needinit)
-	{  // first time initilization
-		object.ai.platform.animframe = 0;
-		object.ai.platform.animtimer = 0;
-		object.ai.platform.movedir = RIGHT;
-		object.ai.platform.state = PLATFORM_MOVE;
-
-		object.blockedl = object.blockedr = false;
-		object.inhibitfall = 1;
-		object.needinit = 0;
-		object.canbezapped = 1;
-		SetAllCanSupportPlayer(object, 1);
-	}
-
 	// push player horizontally
-	if (object.touchPlayer && !m_Player[object.touchedBy].pdie && m_Player[object.touchedBy].psupportingobject!=object.m_index)
+	if (touchPlayer && !m_Player[touchedBy].pdie && m_Player[touchedBy].psupportingobject!=m_index)
 	{
-		if (m_Player[object.touchedBy].getXLeftPos() < object.getXLeftPos())
+		if (m_Player[touchedBy].getXLeftPos() < getXLeftPos())
 		{
-			m_Player[object.touchedBy].playpushed_x = -PLATFORMPUSHAMOUNT;
-			if (m_Player[object.touchedBy].xinertia > 0) m_Player[object.touchedBy].xinertia = 0;
-			m_Player[object.touchedBy].playpushed_decreasetimer = 0;
+			m_Player[touchedBy].playpushed_x = -PLATFORMPUSHAMOUNT;
+			if (m_Player[touchedBy].xinertia > 0) m_Player[touchedBy].xinertia = 0;
+			m_Player[touchedBy].playpushed_decreasetimer = 0;
 		}
-		else if (m_Player[object.touchedBy].getXRightPos() > object.getXRightPos())
+		else if (m_Player[touchedBy].getXRightPos() > getXRightPos())
 		{
-			m_Player[object.touchedBy].playpushed_x = PLATFORMPUSHAMOUNT;
-			if (m_Player[object.touchedBy].xinertia < 0) m_Player[object.touchedBy].xinertia = 0;
-			m_Player[object.touchedBy].playpushed_decreasetimer = 0;
+			m_Player[touchedBy].playpushed_x = PLATFORMPUSHAMOUNT;
+			if (m_Player[touchedBy].xinertia < 0) m_Player[touchedBy].xinertia = 0;
+			m_Player[touchedBy].playpushed_decreasetimer = 0;
 		}
 	}
 
-	if (m_Episode==2)
+	if (g_pBehaviorEngine->getEpisode()==2)
 	{
-		object.sprite = OBJ_PLATFORM_DEFSPRITE_EP2 + object.ai.platform.animframe;
+		sprite = OBJ_PLATFORM_DEFSPRITE_EP2 + animframe;
 	}
 	else
 	{
-		object.sprite = OBJ_PLATFORM_DEFSPRITE_EP3 + object.ai.platform.animframe;
+		sprite = OBJ_PLATFORM_DEFSPRITE_EP3 + animframe;
 	}
 
-	if (object.ai.platform.animtimer > PLATFORM_ANIM_RATE)
+	if (animtimer > PLATFORM_ANIM_RATE)
 	{
-		object.ai.platform.animframe ^= 1;
-		object.ai.platform.animtimer = 0;
+		animframe ^= 1;
+		animtimer = 0;
 	}
-	else object.ai.platform.animtimer++;
+	else animtimer++;
 
-	switch(object.ai.platform.state)
+	switch(state)
 	{
 	case PLATFORM_MOVE:
 
-		if (object.ai.platform.movedir==RIGHT)
+		if (movedir==RIGHT)
 		{
-			if (object.blockedr)
+			if (blockedr)
 			{
-				object.ai.platform.movedir = LEFT;
-				object.ai.platform.waittimer = 0;
-				object.ai.platform.state = PLATFORM_WAIT;
+				movedir = LEFT;
+				waittimer = 0;
+				state = PLATFORM_WAIT;
 			}
 			else
 			{
-				object.moveRight(PLATFORM_MOVE_SPD);
+				moveRight(PLATFORM_MOVE_SPD);
 
 				std::vector<CPlayer>::iterator it_player = m_Player.begin();
 				for( ; it_player != m_Player.end() ; it_player++ )
 				{
 					if( it_player->supportedbyobject &&
-							it_player->psupportingobject==object.m_index &&
+							it_player->psupportingobject==m_index &&
 							(it_player->pjumping==PNOJUMP||
 							it_player->pjumping==PPREPAREJUMP||
 							it_player->pjumping==PPREPAREPOGO) )
@@ -96,23 +95,23 @@ void CPlatform::process()
 				}
 			}
 		}
-		else if (object.ai.platform.movedir==LEFT)
+		else if (movedir==LEFT)
 		{
-			if (object.blockedl)
+			if (blockedl)
 			{
-				object.ai.platform.movedir = RIGHT;
-				object.ai.platform.waittimer = 0;
-				object.ai.platform.state = PLATFORM_WAIT;
+				movedir = RIGHT;
+				waittimer = 0;
+				state = PLATFORM_WAIT;
 			}
 			else
 			{
-				object.moveLeft(PLATFORM_MOVE_SPD);
+				moveLeft(PLATFORM_MOVE_SPD);
 
 				std::vector<CPlayer>::iterator it_player = m_Player.begin();
 				for( ; it_player != m_Player.end() ; it_player++ )
 				{
 					if( it_player->supportedbyobject &&
-							it_player->psupportingobject==object.m_index &&
+							it_player->psupportingobject==m_index &&
 							(it_player->pjumping==PNOJUMP||
 							 it_player->pjumping==PPREPAREJUMP||
 							 it_player->pjumping==PPREPAREPOGO))
@@ -125,11 +124,27 @@ void CPlatform::process()
 		}
 		break;
 	case PLATFORM_WAIT:
-		if (object.ai.platform.waittimer > PLATFORM_WAITTIME)
+		if (waittimer > PLATFORM_WAITTIME)
 		{
-			object.ai.platform.state = PLATFORM_MOVE;
+			state = PLATFORM_MOVE;
 		}
-		else object.ai.platform.waittimer++;
+		else waittimer++;
 		break;
 	}
 }
+
+void CPlatform::SetAllCanSupportPlayer(bool state)
+{
+	std::vector<CPlayer>::iterator it_player = m_Player.begin();
+	for( ; it_player != m_Player.end() ; it_player++ )
+	{
+		cansupportplayer = state;
+		if(!state && it_player->supportedbyobject)
+		{
+			it_player->pfalling=true;
+			it_player->moveDown(1);
+			it_player->blockedd=false;
+		}
+	}
+}
+

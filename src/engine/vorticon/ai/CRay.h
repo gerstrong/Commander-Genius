@@ -15,7 +15,7 @@ class CRay : public CObject
 {
 public:
 	CRay(CMap *p_map, Uint32 x, Uint32 y,
-		direction_t dir, object_t byType, size_t byID);
+		direction_t dir, object_t byType=OBJ_NONE, size_t byID=0);
 
 	virtual void process();
 	void setOwner(object_t type, unsigned int index);

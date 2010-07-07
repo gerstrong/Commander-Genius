@@ -9,12 +9,16 @@
 #define CSCRUB_H_
 
 #include "../../../common/CObject.h"
+#include "../../../common/CPlayer.h"
 
 class CScrub : public CObject
 {
 public:
-	CScrub(CMap *p_map, Uint32 x, Uint32 y);
+	CScrub(CMap *p_map, Uint32 x, Uint32 y,
+			std::vector<CPlayer>& Player);
 	void process();
+	void SetAllCanSupportPlayer(bool state);
+
 private:
 
 	void walkLeft(int mx, int my);
@@ -34,6 +38,7 @@ private:
 
 	unsigned char walkdir;
 	unsigned char kickedplayer[MAX_PLAYERS];
+	std::vector<CPlayer>& m_Player;
 };
 
 #endif /* CSCRUB_H_ */

@@ -9,11 +9,14 @@
 #define CMEEP_H_
 
 #include "../../../common/CObject.h"
+#include "../../../common/CPlayer.h"
 
 class CMeep : CObject
 {
 public:
-	CMeep(CMap *p_map, Uint32 x, Uint32 y);
+	CMeep(CMap *p_map, Uint32 x, Uint32 y,
+			std::vector<CPlayer>& Player,
+			std::vector<CObject*>& Object);
 	void process();
 private:
 	char state;
@@ -21,6 +24,9 @@ private:
 
 	int animframe, animtimer;
 	int timer;
+
+	std::vector<CPlayer>& m_Player;
+	std::vector<CObject*>& m_Object;
 };
 
 #endif /* CMEEP_H_ */
