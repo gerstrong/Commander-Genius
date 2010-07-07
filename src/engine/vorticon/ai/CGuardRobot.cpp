@@ -9,6 +9,7 @@ CGuardRobot::CGuardRobot(CMap *p_map, Uint32 x, Uint32 y,
 CTank(p_map, x, y, Player, Object)
 {
 	//first time initilization
+	m_type = OBJ_TANKEP2;
 	state = TANK_WALK;
 	movedir = RIGHT;
 	fireafterlook = 0;

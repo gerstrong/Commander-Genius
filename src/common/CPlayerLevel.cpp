@@ -348,8 +348,6 @@ void CPlayer::TogglePogo_and_Switches(const bool &platextending)
 						int platx = mx + pxoff;
 						int platy = my + pyoff;
 
-
-
 						// spawn a "sector effector" to extend/retract the platform
 						//CSectorEffector *platobject = new CSectorEffector(mp_Map, mx<<CSF,my<<CSF);
 						//platobject->setype = SE_EXTEND_PLATFORM;

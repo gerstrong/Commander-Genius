@@ -11,6 +11,7 @@ CObject(p_map, x, y),
 m_Player(Player),
 m_Object(Object)
 {
+	m_type = OBJ_TANK;
 	hardmode = (mp_Map->m_Difficulty>1);
 	state = TANK_WALK;
 	movedir = RIGHT;
