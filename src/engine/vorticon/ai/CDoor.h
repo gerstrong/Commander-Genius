@@ -17,11 +17,10 @@
 
 #define DOOR_OPEN_SPEED    1
 
-
 class CDoor : public CObject
 {
 public:
-	CDoor(CMap *pmap, Uint32 x, Uint32 y);
+	CDoor(CMap *pmap, Uint32 x, Uint32 y, Uint32 doorspriteID);
 	void process();
 
 private:

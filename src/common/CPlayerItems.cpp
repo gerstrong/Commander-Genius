@@ -16,6 +16,7 @@
 #include "../graphics/CGfxEngine.h"
 #include "../engine/spritedefines.h"
 #include "../engine/vorticon/ai/CSectorEffector.h"
+#include "../engine/vorticon/ai/CDoor.h"
 #include "../StringUtils.h"
 
 #define DOOR_YELLOW        2
@@ -354,12 +355,9 @@ std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTilePropertie
 	 }
 	 
 	 // replace the door tiles with a door object, which will do the animation
-	 /*CObject doorobj(mp_Map);
+	 CDoor *doorobj = new CDoor(mp_Map, mpx<<CSF,(mpy-tilefix)<<CSF, doorsprite);
 
-	 doorobj.spawn(mpx<<CSF,(mpy-tilefix)<<CSF, OBJ_DOOR, m_episode);
-	 doorobj.sprite = doorsprite;
-
-	 mp_object->push_back(doorobj);*/
+	 mp_object->push_back(doorobj);
 }
 
 void CPlayer::giveAnkh()
