@@ -94,7 +94,6 @@ public:
 		stRopeData rope;
 		
 		// ep2
-		stScrubData scrub;
 		stPlatformData platform;
 		stVortEliteData vortelite;
 		stSEData se;
@@ -102,7 +101,6 @@ public:
 		
 		// ep3
 		stNinjaData ninja;
-		stMeepData meep;
 		stMotherData mother;
 		stNessieData nessie;
 	} ai;

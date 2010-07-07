@@ -28,148 +28,141 @@ CObject(p_map,x,y)
 
 void CMeep::process()
 {
-
-}
-
-/*
-void CObjectAI::meep_ai(CObject& object)
-{
 	int not_about_to_fall;
-	if (object.needinit)
+	if (needinit)
 	{
-		object.ai.meep.state = MEEP_WALK;
-		object.ai.meep.animframe = 0;
-		object.ai.meep.animtimer = 0;
+		state = MEEP_WALK;
+		animframe = 0;
+		animtimer = 0;
 
-		if (m_Player[0].getXPosition() > object.getXPosition())
-			object.ai.meep.dir = RIGHT;
+		if (m_Player[0].getXPosition() > getXPosition())
+			dir = RIGHT;
 		else
-			object.ai.meep.dir = LEFT;
+			dir = LEFT;
 
-		object.blockedr = object.blockedl = false;
-		object.canbezapped = 1;
-		object.needinit = 0;
+		blockedr = blockedl = false;
+		canbezapped = 1;
+		needinit = 0;
 	}
-	if (object.ai.meep.state==MEEP_DEAD) return;
+	if (state==MEEP_DEAD) return;
 
-	if (object.touchPlayer && !m_Player[object.touchedBy].pdie)
+	if (touchPlayer && !m_Player[touchedBy].pdie)
 	{
 		// don't push the player as he's walking through the exit door
-		if (!m_Player[object.touchedBy].level_done)
+		if (!m_Player[touchedBy].level_done)
 		{
-			if (m_Player[object.touchedBy].getXPosition() < object.getXPosition())
-				m_Player[object.touchedBy].bump(-MEEP_WALK_SPD, true);
+			if (m_Player[touchedBy].getXPosition() < getXPosition())
+				m_Player[touchedBy].bump(-MEEP_WALK_SPD, true);
 			else
-				m_Player[object.touchedBy].bump(MEEP_WALK_SPD, true);
+				m_Player[touchedBy].bump(MEEP_WALK_SPD, true);
 		}
 	}
 
-	if (object.zapped)
+	if (zapped)
 	{
-		object.zapped = 0;
-		object.canbezapped = 0;
-		object.ai.meep.timer = 0;
-		object.ai.meep.state = MEEP_DYING;
-		g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, object.scrx);
+		zapped = 0;
+		canbezapped = 0;
+		timer = 0;
+		state = MEEP_DYING;
+		g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, scrx);
 	}
 
 	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
 
-	switch(object.ai.meep.state)
+	switch(state)
 	{
 	case MEEP_WALK:
 		if (getProbability(MEEP_SING_PROB))
 		{
-			if (object.onscreen)
+			if (onscreen)
 			{
-				object.ai.meep.state = MEEP_SING;
-				object.ai.meep.timer = 0;
+				state = MEEP_SING;
+				timer = 0;
 			}
 			else
 			{
 				// try to get onscreen by heading towards the player
-				if (m_Player[0].getXPosition() > object.getXPosition())
-					object.ai.meep.dir = RIGHT;
+				if (m_Player[0].getXPosition() > getXPosition())
+					dir = RIGHT;
 				else
-					object.ai.meep.dir = LEFT;
+					dir = LEFT;
 			}
 		}
 
-		if (object.ai.meep.dir==RIGHT)
+		if (dir==RIGHT)
 		{
-			object.sprite = MEEP_WALK_RIGHT_FRAME + object.ai.meep.animframe;
+			sprite = MEEP_WALK_RIGHT_FRAME + animframe;
 
-			not_about_to_fall = TileProperties.at(mp_Map->at((object.getXLeftPos())>>CSF, (object.getYDownPos()+(1<<STC))>>CSF)).bup;
+			not_about_to_fall = TileProperties.at(mp_Map->at((getXLeftPos())>>CSF, (getYDownPos()+(1<<STC))>>CSF)).bup;
 
-			if (object.blockedr || !not_about_to_fall)
-				object.ai.meep.dir = LEFT;
+			if (blockedr || !not_about_to_fall)
+				dir = LEFT;
 			else
-				object.moveRight(MEEP_WALK_SPD);
+				moveRight(MEEP_WALK_SPD);
 		}
 		else
 		{
-			object.sprite = MEEP_WALK_LEFT_FRAME + object.ai.meep.animframe;
-			not_about_to_fall = TileProperties.at(mp_Map->at((object.getXRightPos())>>CSF, (object.getYDownPos()+(1<<STC))>>CSF)).bup;
+			sprite = MEEP_WALK_LEFT_FRAME + animframe;
+			not_about_to_fall = TileProperties.at(mp_Map->at((getXRightPos())>>CSF, (getYDownPos()+(1<<STC))>>CSF)).bup;
 
-			if (object.blockedl || !not_about_to_fall)
+			if (blockedl || !not_about_to_fall)
 			{
-				object.ai.meep.dir = RIGHT;
+				dir = RIGHT;
 			}
 			else
 			{
-				object.moveLeft(MEEP_WALK_SPD);
+				moveLeft(MEEP_WALK_SPD);
 			}
 		}
 
 		// walk animation
-		if (object.ai.meep.animtimer > MEEP_WALK_ANIM_RATE)
+		if (animtimer > MEEP_WALK_ANIM_RATE)
 		{
-			object.ai.meep.animframe ^= 1;
-			object.ai.meep.animtimer = 0;
+			animframe ^= 1;
+			animtimer = 0;
 		}
-		else object.ai.meep.animtimer++;
+		else animtimer++;
 
 		break;
 	case MEEP_SING:
-		if (object.ai.meep.dir==RIGHT)
+		if (dir==RIGHT)
 		{
-			object.sprite = MEEP_SING_RIGHT_FRAME;
+			sprite = MEEP_SING_RIGHT_FRAME;
 		}
 		else
 		{
-			object.sprite = MEEP_SING_LEFT_FRAME;
+			sprite = MEEP_SING_LEFT_FRAME;
 		}
 
-		if (object.ai.meep.timer > MEEP_SING_SHOW_TIME)
+		if (timer > MEEP_SING_SHOW_TIME)
 		{
 			CObject *newobject = new CObject(mp_Map);
-			if (object.ai.meep.dir==RIGHT)
+			if (dir==RIGHT)
 			{
-				newobject->spawn(object.getXRightPos(), object.getYPosition()+(5<<STC), OBJ_SNDWAVE, 3);
+				newobject->spawn(getXRightPos(), getYPosition()+(5<<STC), OBJ_SNDWAVE, 3);
 				newobject->ai.ray.direction = RIGHT;
 			}
 			else
 			{
-				newobject->spawn(object.getXLeftPos(), object.getYPosition()+(5<<STC), OBJ_SNDWAVE, 3, LEFT);
+				newobject->spawn(getXLeftPos(), getYPosition()+(5<<STC), OBJ_SNDWAVE, 3, LEFT);
 				newobject->ai.ray.direction = LEFT;
 			}
 			newobject->solid = false;
 			m_Objvect.push_back(newobject);
-			g_pSound->playStereofromCoord(SOUND_MEEP, PLAY_NOW, object.scrx);
-			object.ai.meep.state = MEEP_WALK;
+			g_pSound->playStereofromCoord(SOUND_MEEP, PLAY_NOW, scrx);
+			state = MEEP_WALK;
 		}
-		else object.ai.meep.timer++;
+		else timer++;
 		break;
 	case MEEP_DYING:
-		object.sprite = MEEP_DYING_FRAME;
-		if (object.ai.meep.timer > MEEP_DYING_SHOW_TIME)
+		sprite = MEEP_DYING_FRAME;
+		if (timer > MEEP_DYING_SHOW_TIME)
 		{
-			object.sprite = MEEP_DEAD_FRAME;
-			object.ai.meep.state = MEEP_DEAD;
-			object.ai.meep.timer = 0;
+			sprite = MEEP_DEAD_FRAME;
+			state = MEEP_DEAD;
+			timer = 0;
 		}
-		else object.ai.meep.timer++;
+		else timer++;
 		break;
 	}
 }
-*/

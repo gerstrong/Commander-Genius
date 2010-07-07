@@ -14,6 +14,7 @@ class CVortiNinja : CObject
 {
 public:
 	CVortiNinja(CMap *p_map, Uint32 x, Uint32 y);
+	void process();
 };
 
 #endif /* CVORTININJA_H_ */

@@ -233,14 +233,16 @@ void CPlayGameVorticon::readTeleportDestCoordinatesEP1(int objectID, int &destx,
 {
 	destx = desty = 0;
 
-	std::vector<stTeleporterTable>::iterator TTable = g_pBehaviorEngine->getTeleporterTable().begin();
-	for( ; TTable != g_pBehaviorEngine->getTeleporterTable().end() ; TTable++ )
+	std::vector<stTeleporterTable>::iterator TTable =
+			g_pBehaviorEngine->getTeleporterTable().begin();
+	size_t i = 0;
+	for( ; TTable != g_pBehaviorEngine->getTeleporterTable().end() ; TTable++, i++ )
 	{
 		if(TTable->objectnumber2 == objectID || TTable->objectnumber1 == objectID)
 		{
 			destx = TTable->x;
 			desty = TTable->y;
-			return;
+			break;
 		}
 	}
 }

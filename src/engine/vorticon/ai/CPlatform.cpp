@@ -18,12 +18,6 @@ CObject(p_map, x, y)
 
 void CPlatform::process()
 {
-
-}
-
- /*
-void CObjectAI::platform_ai(CObject &object)
-{
 	if (object.needinit)
 	{  // first time initilization
 		object.ai.platform.animframe = 0;
@@ -138,4 +132,4 @@ void CObjectAI::platform_ai(CObject &object)
 		else object.ai.platform.waittimer++;
 		break;
 	}
-}*/
+}

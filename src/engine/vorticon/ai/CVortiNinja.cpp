@@ -27,211 +27,211 @@ CVortiNinja::CVortiNinja(CMap *p_map, Uint32 x, Uint32 y) :
 CObject(p_map, x, y)
 {}
 
-//void CObjectAI::ninja_ai(CObject &object, bool hardmode)
-//{
-//	int onsamelevel;
-//
-//	if (object.needinit)
-//	{
-//		object.ai.ninja.state = NINJA_STAND;
-//		object.ai.ninja.timetillkick = (rnd()%(NINJA_MAX_TIME_TILL_KICK-NINJA_MIN_TIME_TILL_KICK))+NINJA_MIN_TIME_TILL_KICK;
-//		if (hardmode) object.ai.ninja.timetillkick /= 3;
-//
-//		if (m_Player[0].getXPosition() < object.getXPosition())
-//			object.ai.ninja.dir = LEFT;
-//		else
-//			object.ai.ninja.dir = RIGHT;
-//
-//		object.ai.ninja.animtimer = 0;
-//		object.ai.ninja.animframe = 0;
-//		object.ai.ninja.isdying = 0;
-//		object.canbezapped = 1;
-//		object.inhibitfall = 0;
-//		object.needinit = 0;
-//	}
-//	if (object.ai.ninja.state==NINJA_DEAD) return;
-//
-//	if (object.touchPlayer && !m_Player[object.touchedBy].pdie && \
-//			object.ai.ninja.state != NINJA_DYING)
-//		killplayer(object.touchedBy);
-//
-//	if (object.zapped >= 4)
-//	{
-//		object.ai.ninja.isdying = 1;
-//		object.ai.ninja.dietimer = 0;
-//		object.ai.ninja.YFrictionRate = 1;
-//		if (object.ai.ninja.YInertia < 0) object.ai.ninja.YInertia = 0;
-//		object.zapped = 0;
-//		object.canbezapped = 0;
-//		g_pSound->playStereofromCoord(SOUND_VORT_DIE, PLAY_NOW, object.scrx);
-//	}
-//
-//
-//	if (object.ai.ninja.isdying)
-//	{
-//		if (object.ai.ninja.state == NINJA_STAND)
-//			object.ai.ninja.state = NINJA_DYING;
-//
-//		object.ai.ninja.dietimer++;
-//		if (object.ai.ninja.dietimer > NINJA_DYING_SHOW_TIME)
-//			object.sprite = NINJA_DEAD_FRAME;
-//	}
-//
-//	switch(object.ai.ninja.state)
-//	{
-//	case NINJA_STAND:
-//		if (m_Player[0].getXPosition() < object.getXPosition()+(8<<STC))
-//			object.ai.ninja.dir = LEFT;
-//		else
-//			object.ai.ninja.dir = RIGHT;
-//
-//		if (!object.ai.ninja.timetillkick)
-//		{
-//			object.ai.ninja.state = NINJA_KICK;
-//			object.inhibitfall = 1;
-//
-//			if (rnd()&1)
-//			{
-//				// high, short jump
-//				object.ai.ninja.XInertia = (hardmode) ? 95 : 75;
-//				object.ai.ninja.YInertia = -120;
-//				object.ai.ninja.XFrictionTimer = 0;
-//				object.ai.ninja.YFrictionTimer = 0;
-//				object.ai.ninja.XFrictionRate = 5;
-//				object.ai.ninja.YFrictionRate = 1;
-//			}
-//			else
-//			{
-//				// low, long jump
-//				object.ai.ninja.XInertia = (hardmode) ? 150 : 120;
-//				object.ai.ninja.YInertia = -30;
-//				object.ai.ninja.XFrictionTimer = 0;
-//				object.ai.ninja.YFrictionTimer = 0;
-//				object.ai.ninja.XFrictionRate = 5;
-//				object.ai.ninja.YFrictionRate = 1;
-//			}
-//
-//			if (object.ai.ninja.dir==LEFT)
-//				object.ai.ninja.XInertia = -object.ai.ninja.XInertia;
-//		}
-//		else
-//		{
-//			// find out if a player is on the same level
-//			onsamelevel = 0;
-//
-//			std::vector<CPlayer>::iterator it_player = m_Player.begin();
-//			for( ; it_player != m_Player.end() ; it_player++ )
-//			{
-//				if ((it_player->getYPosition() >= object.getYPosition()-(96<<STC)) &&
-//					(it_player->getYDownPos() <= (object.getYDownPos()+(96<<STC))))
-//				{
-//					onsamelevel = 1;
-//					break;
-//				}
-//			}
-//
-//			if (onsamelevel)
-//				object.ai.ninja.timetillkick--;
-//		}
-//
-//		if (object.ai.ninja.dir==LEFT)
-//			object.sprite = NINJA_STAND_LEFT_FRAME + object.ai.ninja.animframe;
-//		else
-//			object.sprite = NINJA_STAND_RIGHT_FRAME + object.ai.ninja.animframe;
-//
-//		if (object.ai.ninja.animtimer > NINJA_STAND_ANIM_RATE)
-//		{
-//			object.ai.ninja.animframe ^= 1;
-//			object.ai.ninja.animtimer = 0;
-//		}
-//		else
-//			object.ai.ninja.animtimer++;
-//		break;
-//	case NINJA_KICK:
-//		if (object.blockedu && object.ai.ninja.YInertia < 0)
-//			object.ai.ninja.YInertia *= 0.5;
-//
-//		if (!object.ai.ninja.isdying)
-//		{
-//			if (object.ai.ninja.dir==LEFT)
-//				object.sprite = NINJA_KICK_LEFT_FRAME;
-//			else
-//				object.sprite = NINJA_KICK_RIGHT_FRAME;
-//		}
-//		else
-//			object.sprite = NINJA_DYING_FRAME;
-//		if (object.ai.ninja.YInertia > 0 && object.blockedd)
-//		{
-//			if (!object.ai.ninja.isdying)
-//				object.needinit = true;
-//			else
-//				object.ai.ninja.state = NINJA_DYING;
-//
-//			break;
-//		}
-//		else
-//		{
-//			if ((object.ai.ninja.XInertia > 0 && !object.blockedr) || \
-//					(object.ai.ninja.XInertia < 0 && !object.blockedl))
-//			{
-//				if (!object.ai.ninja.isdying)
-//					object.moveXDir(object.ai.ninja.XInertia);
-//			}
-//
-//			if (object.ai.ninja.YInertia > 0 || !object.blockedu)
-//				object.moveYDir(object.ai.ninja.YInertia);
-//		}
-//
-//
-//		if (object.ai.ninja.KickMoveTimer < NINJA_KICK_MOVE_RATE)
-//		{
-//			object.ai.ninja.KickMoveTimer++;
-//			break;
-//		}
-//		object.ai.ninja.KickMoveTimer = 0;
-//
-//		if (object.ai.ninja.XFrictionTimer > object.ai.ninja.XFrictionRate)
-//		{
-//			if (object.ai.ninja.XInertia>0)
-//			{
-//				if(object.ai.ninja.XInertia-16 < 0)
-//					object.ai.ninja.XInertia = 0;
-//				else object.ai.ninja.XInertia-= 16;
-//			}
-//			else
-//			{
-//				if(object.ai.ninja.XInertia+16 > 0)
-//					object.ai.ninja.XInertia = 0;
-//				else object.ai.ninja.XInertia+= 16;
-//			}
-//
-//			object.ai.ninja.XFrictionTimer = 0;
-//		}
-//		else
-//			object.ai.ninja.XFrictionTimer++;
-//
-//		if (object.ai.ninja.YFrictionTimer > object.ai.ninja.YFrictionRate)
-//		{
-//			if(!object.blockedd) object.ai.ninja.YInertia+=16;
-//			else{
-//				object.ai.ninja.YInertia=0;
-//				object.ai.ninja.state = NINJA_STAND;
-//				object.needinit = true;
-//			}
-//			object.ai.ninja.YFrictionTimer = 0;
-//		}
-//		else
-//			object.ai.ninja.YFrictionTimer++;
-//
-//		break;
-//	case NINJA_DYING:
-//		object.sprite = NINJA_DYING_FRAME;
-//
-//		if (object.ai.ninja.dietimer > NINJA_DYING_SHOW_TIME)
-//		{
-//			object.sprite = NINJA_DEAD_FRAME;
-//			object.ai.ninja.state = NINJA_DEAD;
-//		}
-//		break;
-//	}
-//}
+void CVortiNinja::process()
+{
+	int onsamelevel;
+
+	if (needinit)
+	{
+		state = NINJA_STAND;
+		timetillkick = (rnd()%(NINJA_MAX_TIME_TILL_KICK-NINJA_MIN_TIME_TILL_KICK))+NINJA_MIN_TIME_TILL_KICK;
+		if (hardmode) timetillkick /= 3;
+
+		if (m_Player[0].getXPosition() < getXPosition())
+			dir = LEFT;
+		else
+			dir = RIGHT;
+
+		animtimer = 0;
+		animframe = 0;
+		isdying = 0;
+		canbezapped = 1;
+		inhibitfall = 0;
+		needinit = 0;
+	}
+	if (state==NINJA_DEAD) return;
+
+	if (touchPlayer && !m_Player[touchedBy].pdie && \
+			state != NINJA_DYING)
+		killplayer(touchedBy);
+
+	if (zapped >= 4)
+	{
+		isdying = 1;
+		dietimer = 0;
+		YFrictionRate = 1;
+		if (YInertia < 0) YInertia = 0;
+		zapped = 0;
+		canbezapped = 0;
+		g_pSound->playStereofromCoord(SOUND_VORT_DIE, PLAY_NOW, scrx);
+	}
+
+
+	if (isdying)
+	{
+		if (state == NINJA_STAND)
+			state = NINJA_DYING;
+
+		dietimer++;
+		if (dietimer > NINJA_DYING_SHOW_TIME)
+			sprite = NINJA_DEAD_FRAME;
+	}
+
+	switch(state)
+	{
+	case NINJA_STAND:
+		if (m_Player[0].getXPosition() < getXPosition()+(8<<STC))
+			dir = LEFT;
+		else
+			dir = RIGHT;
+
+		if (!timetillkick)
+		{
+			state = NINJA_KICK;
+			inhibitfall = 1;
+
+			if (rnd()&1)
+			{
+				// high, short jump
+				XInertia = (hardmode) ? 95 : 75;
+				YInertia = -120;
+				XFrictionTimer = 0;
+				YFrictionTimer = 0;
+				XFrictionRate = 5;
+				YFrictionRate = 1;
+			}
+			else
+			{
+				// low, long jump
+				XInertia = (hardmode) ? 150 : 120;
+				YInertia = -30;
+				XFrictionTimer = 0;
+				YFrictionTimer = 0;
+				XFrictionRate = 5;
+				YFrictionRate = 1;
+			}
+
+			if (dir==LEFT)
+				XInertia = -XInertia;
+		}
+		else
+		{
+			// find out if a player is on the same level
+			onsamelevel = 0;
+
+			std::vector<CPlayer>::iterator it_player = m_Player.begin();
+			for( ; it_player != m_Player.end() ; it_player++ )
+			{
+				if ((it_player->getYPosition() >= getYPosition()-(96<<STC)) &&
+					(it_player->getYDownPos() <= (getYDownPos()+(96<<STC))))
+				{
+					onsamelevel = 1;
+					break;
+				}
+			}
+
+			if (onsamelevel)
+				timetillkick--;
+		}
+
+		if (dir==LEFT)
+			sprite = NINJA_STAND_LEFT_FRAME + animframe;
+		else
+			sprite = NINJA_STAND_RIGHT_FRAME + animframe;
+
+		if (animtimer > NINJA_STAND_ANIM_RATE)
+		{
+			animframe ^= 1;
+			animtimer = 0;
+		}
+		else
+			animtimer++;
+		break;
+	case NINJA_KICK:
+		if (blockedu && YInertia < 0)
+			YInertia *= 0.5;
+
+		if (!isdying)
+		{
+			if (dir==LEFT)
+				sprite = NINJA_KICK_LEFT_FRAME;
+			else
+				sprite = NINJA_KICK_RIGHT_FRAME;
+		}
+		else
+			sprite = NINJA_DYING_FRAME;
+		if (YInertia > 0 && blockedd)
+		{
+			if (!isdying)
+				needinit = true;
+			else
+				state = NINJA_DYING;
+
+			break;
+		}
+		else
+		{
+			if ((XInertia > 0 && !blockedr) || \
+					(XInertia < 0 && !blockedl))
+			{
+				if (!isdying)
+					moveXDir(XInertia);
+			}
+
+			if (YInertia > 0 || !blockedu)
+				moveYDir(YInertia);
+		}
+
+
+		if (KickMoveTimer < NINJA_KICK_MOVE_RATE)
+		{
+			KickMoveTimer++;
+			break;
+		}
+		KickMoveTimer = 0;
+
+		if (XFrictionTimer > XFrictionRate)
+		{
+			if (XInertia>0)
+			{
+				if(XInertia-16 < 0)
+					XInertia = 0;
+				else XInertia-= 16;
+			}
+			else
+			{
+				if(XInertia+16 > 0)
+					XInertia = 0;
+				else XInertia+= 16;
+			}
+
+			XFrictionTimer = 0;
+		}
+		else
+			XFrictionTimer++;
+
+		if (YFrictionTimer > YFrictionRate)
+		{
+			if(!blockedd) YInertia+=16;
+			else{
+				YInertia=0;
+				state = NINJA_STAND;
+				needinit = true;
+			}
+			YFrictionTimer = 0;
+		}
+		else
+			YFrictionTimer++;
+
+		break;
+	case NINJA_DYING:
+		sprite = NINJA_DYING_FRAME;
+
+		if (dietimer > NINJA_DYING_SHOW_TIME)
+		{
+			sprite = NINJA_DEAD_FRAME;
+			state = NINJA_DEAD;
+		}
+		break;
+	}
+}

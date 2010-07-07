@@ -11,7 +11,6 @@
 #define CGAMECONTROL_H_
 
 #include "common/CGameLauncher.h"
-#include "common/CTeleporter.h"
 #include "common/options.h"
 #include "fileio/CSavedGame.h"
 #include "engine/CEGAGraphics.h"

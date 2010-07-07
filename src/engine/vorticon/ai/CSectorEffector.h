@@ -3,6 +3,9 @@
  *
  *  Created on: 18.12.2009
  *      Author: gerstrong
+ *  many different assorted things, many sector-effectors affect tiles
+ *  in the level instead of being a sprite. named for the similiarity
+ *  to the object in duke3d
  */
 
 #ifndef SE_H_
@@ -27,6 +30,20 @@ class CSectorEffector : public CObject
 {
 public:
 	CSectorEffector(CMap *p_map, Uint32 x, Uint32 y);
+	void process();
+
+private:
+	unsigned int setype;
+
+	unsigned char state;
+	unsigned int timer;
+	unsigned int platx, platy;
+	unsigned int dir;
+
+	int counter,destroytiles;
+	unsigned int frame;
+	int mx,my;
+	int blowx,blowy;
 };
 
 #endif /* SE_H_ */

@@ -70,20 +70,6 @@ typedef struct stRopeData
 } stRopeData;
 
 
-typedef struct stScrubData
-{
-	unsigned char state;
-	
-	unsigned char animtimer, dietimer;
-	unsigned char walkframe;
-	signed int scrubdie_inertia_y;
-	int fallinctimer,fallspeed;
-	
-	unsigned char walkdir;
-	unsigned char kickedplayer[MAX_PLAYERS];
-} stScrubData;
-
-
 // a moving platform
 typedef struct stPlatformData
 {
@@ -95,27 +81,6 @@ typedef struct stPlatformData
 	unsigned char movedir;
 	unsigned char kickedplayer[MAX_PLAYERS];
 } stPlatformData;
-
-
-// many different assorted things, many sector-effectors affect tiles
-// in the level instead of being a sprite. named for the similiarity
-// to the object in duke3d
-typedef struct stSEData
-{
-	unsigned int type;
-	
-	unsigned char state;
-	unsigned int timer;
-	unsigned int platx, platy;
-	unsigned int dir;
-	
-	int counter,destroytiles;
-	unsigned int frame;
-	int mx,my;
-	int blowx,blowy;
-} stSEData;
-
-
 
 typedef struct stBabyData
 {
@@ -159,17 +124,6 @@ typedef struct stMotherData
 	int animframe, animtimer;
 	int timer;
 } stMotherData;
-
-
-
-typedef struct stMeepData
-{
-	char state;
-	char dir;
-	
-	int animframe, animtimer;
-	int timer;
-} stMeepData;
 
 
 #define NESSIETRAILLEN   5

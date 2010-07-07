@@ -18,7 +18,6 @@
 #include "../../../common/CObject.h"
 #include "../../../common/CMap.h"
 #include "../../../common/options.h"
-#include "../../../common/CTeleporter.h"
 #include "../../../common/CHUD.h"
 #include "../ai/CObjectAI.h"
 #include "../ai/CEGABitmap.h"

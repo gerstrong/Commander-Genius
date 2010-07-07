@@ -60,10 +60,12 @@ bool CBehaviorEngine::readTeleporterTable(byte *p_exedata)
 		// Now get the coordinates...
 		m_TeleporterTable[0].x = GETWORD(p_exedata+0x158DF);
 		m_TeleporterTable[0].y = GETWORD(p_exedata+0x158E3);
+		m_TeleporterTable[1].x = GETWORD(p_exedata+0x158E9);
+		m_TeleporterTable[1].y = GETWORD(p_exedata+0x158ED);
 		m_TeleporterTable[3].x = GETWORD(p_exedata+0x158E9);
 		m_TeleporterTable[3].y = GETWORD(p_exedata+0x158ED);
-		m_TeleporterTable[4].x = m_TeleporterTable[1].x = GETWORD(p_exedata+0x158E9);
-		m_TeleporterTable[4].y = m_TeleporterTable[1].y = GETWORD(p_exedata+0x158ED);
+		m_TeleporterTable[4].x = GETWORD(p_exedata+0x158E9);
+		m_TeleporterTable[4].y = GETWORD(p_exedata+0x158ED);
 		m_TeleporterTable[5].x = m_TeleporterTable[2].x = GETWORD(p_exedata+0x158F3);
 		m_TeleporterTable[5].y = m_TeleporterTable[2].y = GETWORD(p_exedata+0x158F7);
 		return true;

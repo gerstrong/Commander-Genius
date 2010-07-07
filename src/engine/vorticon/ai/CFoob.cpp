@@ -5,11 +5,6 @@
 CFoob::CFoob(CMap *p_map, Uint32 x, Uint32 y):
 CObject(p_map,x,y)
 {
-
-}
-
-void CFoob::process()
-{
 	state = FOOB_WALK;
 	dir = RIGHT;
 	animframe = 0;
@@ -20,8 +15,8 @@ void CFoob::process()
 	dead = 0;
 	needinit = 0;
 }
-/*
-void CObjectAI::foob_ai(CObject &object, bool hardmode)
+
+void CFoob::process()
 {
 	bool onsamelevel;
 
@@ -213,5 +208,3 @@ void CObjectAI::foob_ai(CObject &object, bool hardmode)
 		break;
 	}
 }
-
-*/

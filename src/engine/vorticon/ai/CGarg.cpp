@@ -33,7 +33,7 @@ void CGarg::process()
 		m_Player[touchedBy].kill();
 
 	// did the garg get shot?
-	if (HealthPoints <= 0)
+	if (HealthPoints <= 0 && state != GARG_DYING )
 	{
 		// die, you stupid garg, die!
 		state = GARG_DYING;
@@ -251,6 +251,7 @@ void CGarg::process()
 			timer = 0;
 		} else timer++;
 		break;
+	default: break;
 	}
 }
 
