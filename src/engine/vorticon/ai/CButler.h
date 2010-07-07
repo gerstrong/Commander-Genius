@@ -32,7 +32,7 @@
 #define BUTLER_TURNRIGHT_FRAME   97
 
 
-class CButler : CObject
+class CButler : public CObject
 {
 public:
 	CButler(CMap *pmap, Uint32 x, Uint32 y,

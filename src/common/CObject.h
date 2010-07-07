@@ -94,10 +94,8 @@ public:
 		
 		// ep2
 		stVortEliteData vortelite;
-		stBabyData baby;
 		
 		// ep3
-		stNinjaData ninja;
 		stMotherData mother;
 		stNessieData nessie;
 	} ai;

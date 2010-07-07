@@ -62,38 +62,6 @@ typedef struct stRopeData
 	int bgtile;
 } stRopeData;
 
-typedef struct stBabyData
-{
-	char state;
-	direction_t dir;
-	signed int inertia_x, inertia_y;
-	int jumpdectimer, xdectimer;
-	int jumpdecrate;
-	int dietimer;
-	
-	char walkframe;
-	int walktimer;
-} stBabyData;
-
-
-// Ninja = the kung-fu bears in ep3
-typedef struct stNinjaData
-{
-	char state;
-	char dir;
-	
-	int animframe, animtimer;
-	unsigned int timetillkick;
-	
-	signed int XInertia, YInertia;
-	unsigned int XFrictionTimer, YFrictionTimer;
-	unsigned int XFrictionRate, YFrictionRate;
-	int KickMoveTimer;
-	int isdying;
-	int dietimer;
-} stNinjaData;
-
-
 // vorticon mother
 typedef struct stMotherData
 {

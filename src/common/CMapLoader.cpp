@@ -39,6 +39,7 @@
 #include "../engine/vorticon/ai/CPlatform.h"
 #include "../engine/vorticon/ai/CRope.h"
 #include "../engine/vorticon/ai/CScrub.h"
+#include "../engine/vorticon/ai/CIceCannon.h"
 
 CMapLoader::CMapLoader(CMap* p_map, std::vector<CPlayer> *p_PlayerVect) :
 mp_vec_Player(p_PlayerVect)
@@ -343,101 +344,85 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				}
 				else if (episode==3)
 				{
-					enemyobject = new CVorticonMom( mp_map, *mp_vec_Player,
-								x<<CSF, y<<CSF);
+					//enemyobject = new CVortiMom( mp_map, *mp_vec_Player,
+						//		x<<CSF, y<<CSF);
 				}
 				break;
 			case 4:    // butler (ep1) or scrub (ep2) or meep (ep3)
 				if (episode==1)
-					enemyobject = new CButler( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
+					enemyobject = new CButler( mp_map, x<<CSF, y<<CSF, *mp_vec_Player);
 				else if (episode==2)
-					enemyobject = new CScrub( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
+					enemyobject = new CScrub( mp_map, x<<CSF, y<<CSF, *mp_vec_Player);
 				else if (episode==3)
-					enemyobject = new CMeep( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
+					enemyobject = new CMeep( mp_map, x<<CSF, y<<CSF, *mp_vec_Player, *mp_objvect);
 				break;
 			case 5:    // tank robot (ep1&2) vorticon ninja (ep3)
 				if (episode==1)
-					enemyobject = new CTank( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
+					enemyobject = new CTank( mp_map, x<<CSF, y<<CSF, *mp_vec_Player, *mp_objvect);
 				else if (episode==2)
-					enemyobject = new CGuardRobot( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
+					enemyobject = new CGuardRobot( mp_map, x<<CSF, y<<CSF, *mp_vec_Player, *mp_objvect);
 				else if (episode==3)
-					enemyobject = new CVortiNinja( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
+					enemyobject = new CVortiNinja( mp_map, x<<CSF, y<<CSF, *mp_vec_Player);
 				break;
 			case 6:    // up-right-flying ice chunk (ep1) horiz platform (ep2)
 				// foob (ep3)
 				if (episode==1)
 				{
 					enemyobject = new CIceCannon( mp_map, x<<CSF, y<<CSF,
-							*mp_vec_Player,	*mp_objvect, );
-
-					CIceCannon(CMap *p_map, Uint32 x, Uint32 y,
-							std::vector<CPlayer>& Player, std::vector<CObject*>& Object,
-							int vector_x, int vector_y );
-
-					enemyobject->ai.icechunk.vector_x = 1;
-					enemyobject->ai.icechunk.vector_y = -1;
+							*mp_vec_Player,	*mp_objvect, 1, -1 );
 				}
 				else if (episode==2)
 				{
-					enemyobject = new CPlatform( mp_map, *mp_vec_Player, x<<CSF, (y<<CSF)-(4<<STC));
+					enemyobject = new CPlatform( mp_map,x<<CSF, (y<<CSF)-(4<<STC), *mp_vec_Player);
 				}
 				else if (episode==3)
 				{
-					enemyobject = new CFoob( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
+					enemyobject = new CFoob( mp_map, x<<CSF, y<<CSF, *mp_vec_Player);
 				}
 				break;
 			case 7:   // spark (ep2) ball (ep3) ice cannon upwards (ep1)
 				if (episode==1)
 				{
-					enemyobject = new CIceCannon( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
-					enemyobject->ai.icechunk.vector_x = 0;
-					enemyobject->ai.icechunk.vector_y = -1;
+					enemyobject = new CIceCannon( mp_map,x<<CSF, y<<CSF,*mp_vec_Player,*mp_objvect,0,-1);
 				}
 				else if (episode==2)
 				{
-					enemyobject = new CSectorEffector( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
-					enemyobject->spawn(x<<CSF, y<<CSF, OBJ_SPARK, episode);
+					//enemyobject = new CSectorEffector( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
 				}
 				else if (episode==3)
 				{
-					enemyobject = new CBallJack( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
-					enemyobject->spawn(x<<CSF,y<<CSF, OBJ_BALL, episode);
+					enemyobject = new CBallJack( mp_map, x<<CSF, y<<CSF, *mp_vec_Player);
 				}
 				break;
 			case 8:    // jack (ep3) and ice cannon down (ep1)
 				if (episode==1)
 				{
-					enemyobject = new CIceCannon( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
-					enemyobject->ai.icechunk.vector_x = 0;
-					enemyobject->ai.icechunk.vector_y = 1;
+					enemyobject = new CIceCannon( mp_map, x<<CSF, y<<CSF,*mp_vec_Player,*mp_objvect,0,1);
 				}
 				else if (episode==3)
 				{
-					enemyobject = new CBallJack( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
-					enemyobject->spawn(x<<CSF, y<<CSF,OBJ_JACK, episode);
+					enemyobject = new CBallJack( mp_map, x<<CSF, y<<CSF, *mp_vec_Player);
 				}
 				break;
 			case 9:    // up-left-flying ice chunk (ep1) horiz platform (ep3)
 				if (episode==1)
 				{
-					enemyobject = new CIceCannon( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
-					enemyobject->ai.icechunk.vector_x = -1;
-					enemyobject->ai.icechunk.vector_y = -1;
+					enemyobject = new CIceCannon( mp_map, x<<CSF, y<<CSF, *mp_vec_Player,*mp_objvect,-1,-1);
 				}
 				else if (episode==3)
 				{
-					enemyobject = new CPlatform( mp_map, *mp_vec_Player, x<<CSF, (y<<CSF)-(4<<STC));
+					enemyobject = new CPlatform( mp_map, x<<CSF, (y<<CSF)-(4<<STC), *mp_vec_Player);
 				}
 				break;
 			case 10:   // rope holding the stone above the final vorticon (ep1)
 				// vert platform (ep3)
 				if (episode==1)
 				{
-					enemyobject = new CRope( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
+					enemyobject = new CRope( mp_map, x<<CSF, y<<CSF);
 				}
 				else if (episode==3)
 				{
-					enemyobject = new CPlatformVert( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
+					enemyobject = new CPlatformVert( mp_map, x<<CSF, y<<CSF, *mp_vec_Player);
 				}
 				break;
 			case 11:   // jumping vorticon (ep3)
@@ -447,13 +432,13 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				}
 				break;
 			case 12:   // sparks in mortimer's machine
-				enemyobject = new CSectorEffector( mp_map, *mp_vec_Player, x<<CSF, y<<CSF );
-				enemyobject->ai.se.type = SE_MORTIMER_SPARK;
+//				enemyobject = new CSectorEffector( mp_map, *mp_vec_Player, x<<CSF, y<<CSF );
+//				enemyobject->setype = SE_MORTIMER_SPARK;
 				enemyobject->solid = false;
 				break;
 			case 13:   // mortimer's heart
-				enemyobject = new CSectorEffector( mp_map, *mp_vec_Player, x<<CSF, y<<CSF );
-				enemyobject->ai.se.type = SE_MORTIMER_HEART;
+//				enemyobject = new CSectorEffector( mp_map, *mp_vec_Player, x<<CSF, y<<CSF,  );
+//				enemyobject->setype = SE_MORTIMER_HEART;
 				enemyobject->solid = false;
 				break;
 			case 14:   // right-pointing raygun (ep3)
@@ -463,18 +448,18 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				enemyobject = new CAutoRay(mp_map, x<<CSF, y<<CSF, *mp_objvect, CAutoRay::VERTICAL);
 				break;
 			case 16:  // mortimer's arms
-				enemyobject = new CSectorEffector( mp_map, *mp_vec_Player, x<<CSF, y<<CSF );
-				enemyobject->ai.se.type = SE_MORTIMER_ARM;
+//				enemyobject = new CSectorEffector( mp_map, *mp_vec_Player, x<<CSF, y<<CSF );
+//				enemyobject->setype = SE_MORTIMER_ARM;
 				enemyobject->solid = false;
 				break;
 			case 17:  // mortimer's left leg
-				enemyobject = new CSectorEffector( mp_map, *mp_vec_Player, x<<CSF, y<<CSF );
-				enemyobject->ai.se.type = SE_MORTIMER_LEG_LEFT;
+//				enemyobject = new CSectorEffector( mp_map, *mp_vec_Player, x<<CSF, y<<CSF );
+//				enemyobject->setype = SE_MORTIMER_LEG_LEFT;
 				enemyobject->solid = false;
 				break;
 			case 18:  // mortimer's right leg
-				enemyobject = new CSectorEffector( mp_map, *mp_vec_Player, x<<CSF, y<<CSF );
-				enemyobject->ai.se.type = SE_MORTIMER_LEG_RIGHT;
+//				enemyobject = new CSectorEffector( mp_map, *mp_vec_Player, x<<CSF, y<<CSF );
+//				enemyobject->setype = SE_MORTIMER_LEG_RIGHT;
 				enemyobject->solid = false;
 				break;
 			default:

@@ -44,7 +44,7 @@ public:
 	void se_mortimer_randomzaps();
 	void set_mortimer_surprised(bool yes);
 
-private:
+//private:
 	unsigned int setype;
 
 	unsigned char state;

@@ -6,10 +6,6 @@
 // Baby Vorticon (the superfast little blue creatures that knock you down)
 // (ep 2 & 3)
 
-enum vort_baby_actions{
-	BABY_RUN, BABY_DYING, BABY_DEAD
-};
-
 #define BABY_WALK_SPEED         90
 
 #define BABY_WALK_ANIM_RATE     6
@@ -31,8 +27,10 @@ BABY_JUMP_BIG, BABY_JUMP_SMALL
 
 CVortikid::CVortikid( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
 		Uint32 x, Uint32 y ) :
-CObject(p_map, x, y)
+CObject(p_map, x, y),
+m_Player(mp_vec_Player)
 {
+	bool ep3;
 	state = BABY_RUN;
 	dir = rand()&1?LEFT:RIGHT;
 	walkframe = 0;
@@ -45,7 +43,7 @@ CObject(p_map, x, y)
 	blockedl = blockedr = blockedu = blockedd = 1;
 
 	// babies are in ep2 & ep3, but frameset starts one index prior in ep3
-	if (episode==3) ep3 = true; else ep3 = false;
+	if (g_pBehaviorEngine->getEpisode()==3) ep3 = true; else ep3 = false;
 	sprite = BABY_WALK_RIGHT_FRAME - ep3;
 }
 
@@ -60,7 +58,7 @@ void CVortikid::process()
 	}
 
 	// babies are in ep2 & ep3, but frameset starts one index prior in ep3
-	if (episode==3) ep3 = true; else ep3 = false;
+	if (g_pBehaviorEngine->getEpisode()==3) ep3 = true; else ep3 = false;
 
 	// jumping
 	if (inertia_y < 0 || !blockedd)
@@ -80,34 +78,26 @@ void CVortikid::process()
 		if (state == BABY_RUN)
 		{
 			if(getProbability(BABY_JUMP_PROB))
-				baby_jump(object, BABY_JUMP_SMALL);
+				baby_jump(BABY_JUMP_SMALL);
 		}
 	}
 
 
 	// got hit?
-	if (zapped)
+	if (HealthPoints <= 0 && state != BABY_DYING)
 	{
-		if (zapped > 1 || !hard)
-		{  // we're fried!!
-			if (state != BABY_DYING)
-			{
-				dietimer = 0;
-				state = BABY_DYING;
-				jumpdecrate = 4;
-				sprite = BABY_FRY_FRAME - ep3;
-				zapped = 0;
-				canbezapped = 0;
-				if (onscreen && !g_pSound->isPlaying(SOUND_VORT_DIE))
-					g_pSound->playStereofromCoord(SOUND_VORT_DIE, PLAY_NOW, scrx);
+		dietimer = 0;
+		state = BABY_DYING;
+		jumpdecrate = 4;
+		sprite = BABY_FRY_FRAME - ep3;
+		canbezapped = 0;
+		if (onscreen && !g_pSound->isPlaying(SOUND_VORT_DIE))
+			g_pSound->playStereofromCoord(SOUND_VORT_DIE, PLAY_NOW, scrx);
 
-				if (dir == RIGHT)
-					inertia_x = BABY_DIE_INERTIA;
-				else
-					inertia_x = -BABY_DIE_INERTIA;
-
-			}
-		}
+		if (dir == RIGHT)
+			inertia_x = BABY_DIE_INERTIA;
+		else
+			inertia_x = -BABY_DIE_INERTIA;
 	}
 
 	// touched player
@@ -162,7 +152,7 @@ void CVortikid::process()
 			if (blockedr)
 			{
 				dir = LEFT;
-				if(getProbability(BABY_BOUNCE_PROB)) baby_jump(object, BABY_JUMP_BIG);
+				if(getProbability(BABY_BOUNCE_PROB)) baby_jump(BABY_JUMP_BIG);
 			}
 			else
 			{
@@ -175,7 +165,7 @@ void CVortikid::process()
 			if (blockedl)
 			{
 				dir = RIGHT;
-				if (getProbability(BABY_BOUNCE_PROB)) baby_jump(object, BABY_JUMP_BIG);
+				if (getProbability(BABY_BOUNCE_PROB)) baby_jump(BABY_JUMP_BIG);
 			}
 			else
 			{
@@ -192,6 +182,7 @@ void CVortikid::process()
 			walktimer = 0;
 		} else walktimer++;
 		break;
+	default: break;
 	}
 }
 
@@ -203,7 +194,7 @@ void CVortikid::process()
 #define BABY_MAX_SMALLJUMP             150
 #define BABY_SMALLJUMP_MAX_DEC_RATE    2
 
-void CObjectAI::baby_jump(CObject &object, int big)
+void CVortikid::baby_jump(int big)
 {
 	if ((rand()&2)==0) big = 1-big;
 	if (big==BABY_JUMP_BIG)

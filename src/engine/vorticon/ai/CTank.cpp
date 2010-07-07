@@ -59,7 +59,7 @@ void CTank::process()
 		{  // move left
 			sprite = TANK_WALK_LEFT_FRAME + frame;
 			moveLeft(TANK_WALK_SPEED);
-			if( !tank_CanMoveLeft() )
+			if( !CanMoveLeft() )
 			{
 				movedir = RIGHT;
 				frame = 0;
@@ -74,7 +74,7 @@ void CTank::process()
 		{  // move right
 			sprite = TANK_WALK_RIGHT_FRAME + frame;
 			moveRight(TANK_WALK_SPEED);
-			if ( !tank_CanMoveRight() )
+			if ( !CanMoveRight() )
 			{
 				movedir = LEFT;
 				frame = 0;
@@ -146,7 +146,6 @@ void CTank::process()
 			newobject = new CRay(mp_Map, getXMidPos(), getYUpPos()+(4<<STC), LEFT);
 		newobject->setOwner(OBJ_TANK, m_index);
 		newobject->sprite = ENEMYRAY;
-		newobject->ai.ray.dontHitEnable = 0;
 		newobject->canbezapped = true;
 		m_Object.push_back(newobject);
 

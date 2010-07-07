@@ -11,7 +11,7 @@
 #include "../../../common/CObject.h"
 #include "../../../common/CPlayer.h"
 
-class CMeep : CObject
+class CMeep : public CObject
 {
 public:
 	CMeep(CMap *p_map, Uint32 x, Uint32 y,

@@ -2,11 +2,6 @@
 
 #include "CVortiNinja.h"
 
-// Ninja AI (the black, bear-like karate-kicking creature in ep3)
-enum ninja_actions{
-	NINJA_STAND, NINJA_KICK, NINJA_DYING, NINJA_DEAD
-};
-
 #define NINJA_STAND_ANIM_RATE          8
 #define NINJA_DYING_SHOW_TIME          6
 #define NINJA_MIN_TIME_TILL_KICK       80
@@ -23,45 +18,43 @@ enum ninja_actions{
 
 unsigned int rnd(void);
 
-CVortiNinja::CVortiNinja(CMap *p_map, Uint32 x, Uint32 y) :
-CObject(p_map, x, y)
-{}
+CVortiNinja::CVortiNinja(CMap *p_map, Uint32 x, Uint32 y, std::vector<CPlayer> &Player) :
+CObject(p_map, x, y),
+m_Player(Player)
+{
+	state = NINJA_STAND;
+	timetillkick = (rnd()%(NINJA_MAX_TIME_TILL_KICK-NINJA_MIN_TIME_TILL_KICK))+NINJA_MIN_TIME_TILL_KICK;
+	if (mp_Map->m_Difficulty>1) timetillkick /= 3;
+
+	if (m_Player[0].getXPosition() < getXPosition())
+		dir = LEFT;
+	else
+		dir = RIGHT;
+
+	animtimer = 0;
+	animframe = 0;
+	isdying = 0;
+	canbezapped = 1;
+	inhibitfall = 0;
+	needinit = 0;
+}
 
 void CVortiNinja::process()
 {
 	int onsamelevel;
 
-	if (needinit)
-	{
-		state = NINJA_STAND;
-		timetillkick = (rnd()%(NINJA_MAX_TIME_TILL_KICK-NINJA_MIN_TIME_TILL_KICK))+NINJA_MIN_TIME_TILL_KICK;
-		if (hardmode) timetillkick /= 3;
-
-		if (m_Player[0].getXPosition() < getXPosition())
-			dir = LEFT;
-		else
-			dir = RIGHT;
-
-		animtimer = 0;
-		animframe = 0;
-		isdying = 0;
-		canbezapped = 1;
-		inhibitfall = 0;
-		needinit = 0;
-	}
 	if (state==NINJA_DEAD) return;
 
 	if (touchPlayer && !m_Player[touchedBy].pdie && \
 			state != NINJA_DYING)
-		killplayer(touchedBy);
+		m_Player[touchedBy].kill();
 
-	if (zapped >= 4)
+	if (HealthPoints <= 0)
 	{
 		isdying = 1;
 		dietimer = 0;
 		YFrictionRate = 1;
 		if (YInertia < 0) YInertia = 0;
-		zapped = 0;
 		canbezapped = 0;
 		g_pSound->playStereofromCoord(SOUND_VORT_DIE, PLAY_NOW, scrx);
 	}
@@ -93,7 +86,7 @@ void CVortiNinja::process()
 			if (rnd()&1)
 			{
 				// high, short jump
-				XInertia = (hardmode) ? 95 : 75;
+				XInertia = (mp_Map->m_Difficulty>1) ? 95 : 75;
 				YInertia = -120;
 				XFrictionTimer = 0;
 				YFrictionTimer = 0;
@@ -103,7 +96,7 @@ void CVortiNinja::process()
 			else
 			{
 				// low, long jump
-				XInertia = (hardmode) ? 150 : 120;
+				XInertia = (mp_Map->m_Difficulty>1) ? 150 : 120;
 				YInertia = -30;
 				XFrictionTimer = 0;
 				YFrictionTimer = 0;
@@ -233,5 +226,6 @@ void CVortiNinja::process()
 			state = NINJA_DEAD;
 		}
 		break;
+	default: break;
 	}
 }
