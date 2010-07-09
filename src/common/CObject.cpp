@@ -163,7 +163,7 @@ void CObject::setScrPos( int px, int py )
 // This functions checks, if the enemy is near to the player. In case, that it is
 // it will return true. Other case it will return false.
 // This used for objects that only can trigger, when it's really worth to do so.
-bool CObject::calcVisibility( int player_x, int player_y )
+bool CObject::calcVisibility()
 {
 	int &visibility = g_pBehaviorEngine->getPhysicsSettings().misc.visibility;
 
@@ -187,6 +187,34 @@ bool CObject::calcVisibility( int player_x, int player_y )
 			return true;
 
 	return false;
+}
+
+/**
+ * This function will check if the enemy is in the limited scenario,
+ * so it will triggered. Happens normally when the Object is seen on the screen.
+ */
+bool CObject::checkforScenario()
+{
+	if ( !exists || m_type==OBJ_PLAYER ) return false;
+
+	if( m_type==OBJ_EXPLOSION || m_type==OBJ_EARTHCHUNK ) return true;
+
+	// Check if enemy is near enough. If he isn't, don't make him perform. Exception is on the map
+	if(!mp_Map->m_worldmap)
+		if(!calcVisibility()) return false;
+
+   	onscreen = true;
+
+   	if (hasbeenonscreen ||
+		m_type==OBJ_RAY ||
+		m_type==OBJ_ICECHUNK || m_type==OBJ_PLATFORM ||
+		m_type==OBJ_PLATVERT || m_type==OBJ_YORP ||
+		m_type==OBJ_FOOB || m_type==OBJ_SCRUB)
+	{
+		return true;
+    }
+
+   	return false;
 }
 
 // Used in some setup mode, like putting the player to

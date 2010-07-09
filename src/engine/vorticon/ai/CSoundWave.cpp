@@ -24,12 +24,6 @@ CRay(p_map, x, y, dir, byType, byID)
 
 void CSoundWave::process()
 {
-//	// check if it hit keen
-//	if (touchPlayer)
-//	{
-//		killplayer(touchedBy);
-//	}
-//
 //	// destroy the sound wave if it's been offscreen for a good amount
 //	// of time. this is to prevent a massive buildup of soundwaves
 //	// slowly traveling through walls all the way across the level

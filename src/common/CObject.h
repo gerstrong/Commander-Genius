@@ -89,8 +89,8 @@ public:
 	void setupObjectType(int Episode);
 	void checkinitialCollisions();
 	void setScrPos( int px, int py );
-	bool calcVisibility( int player_x, int player_y );
-	//bool spawn(int x0, int y0, object_t otype, int Episode, direction_t dirof = RIGHT );
+	bool calcVisibility();
+	bool checkforScenario();
 	
 	// Moving parts
 	void moveToForce(int new_x, int new_y);

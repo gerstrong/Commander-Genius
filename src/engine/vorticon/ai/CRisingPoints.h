@@ -16,6 +16,7 @@ public:
 	CRisingPoints(CMap *p_map, Uint32 x, Uint32 y);
 	void process();
 private:
+	size_t offscreentime;
 };
 
 #endif /* CRISINGPOINTS_H_ */

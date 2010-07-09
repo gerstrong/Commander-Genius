@@ -39,6 +39,7 @@ mp_option(mp_option),
 mp_StatusScr(NULL)
 {
 	mp_object = &m_Object;
+	canbezapped = true;
 
 	// Ankhshield is a special object the player is holded.
 	// It's normally seen in Ep3 and when he gets invincible by the ankh

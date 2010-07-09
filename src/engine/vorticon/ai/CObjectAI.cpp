@@ -34,7 +34,7 @@ void CObjectAI::process()
 	for( size_t i=0 ; i < m_Objvect.size() ; i++ )
 	{
 		CObject &object = *m_Objvect.at(i);
-		if( checkforAIObject(object) )
+		if( object.checkforScenario() )
 		{
 			object.processFalling();
 
@@ -66,51 +66,22 @@ void CObjectAI::process()
 		}
 	}
 
-	if(m_gunfiretimer < ((m_Episode==3) ? 180 : 50 )) m_gunfiretimer++;
-	else m_gunfiretimer=0;
-}
-
-///
-// do object and enemy AI
-///
-bool CObjectAI::checkforAIObject( CObject &object )
-{
-	unsigned int type = object.m_type;
-
-	if ( !object.exists || type==OBJ_PLAYER ) return false;
-
-	if( type==OBJ_EXPLOSION || type==OBJ_EARTHCHUNK ) return true;
-
-	// Check if enemy is near enough. If he isn't, don't make him perform. Exception is on the map
-	if(m_Level != 80)
+	// Try always to remove the last objects if they aren't used anymore!
+	CObject* p_object;
+	while(m_Objvect.size()>0)
 	{
-		bool is_near_enough=false;
-		int x, y;
-
-		std::vector<CPlayer>::iterator it_player = m_Player.begin();
-		for( ; it_player != m_Player.end() ; it_player++ )
+		p_object = m_Objvect.at( m_Objvect.size()-1 );
+		if(!p_object->exists)
 		{
-			x = it_player->getXPosition();
-			y = it_player->getYPosition();
-			is_near_enough |= object.calcVisibility(x, y);
+			delete p_object;
+			m_Objvect.pop_back();
 		}
-
-		if(!is_near_enough) return false;
+		else
+			break;
 	}
 
-   	object.onscreen = true;
-
-   	if (object.hasbeenonscreen ||
-		type==OBJ_RAY ||
-		type==OBJ_ICECHUNK || type==OBJ_PLATFORM ||
-		type==OBJ_PLATVERT || type==OBJ_YORP ||
-		type==OBJ_FOOB || type==OBJ_SCRUB)
-
-	{
-		return true;
-    }
-
-   	return false;
+	if(m_gunfiretimer < ((m_Episode==3) ? 180 : 50 )) m_gunfiretimer++;
+	else m_gunfiretimer=0;
 }
 
 void CObjectAI::SetAllCanSupportPlayer(CObject &object, bool state)
@@ -126,11 +97,6 @@ void CObjectAI::SetAllCanSupportPlayer(CObject &object, bool state)
 			it_player->blockedd=false;
 		}
 	}
-}
-
-void CObjectAI::killplayer(int theplayer)
-{
-	m_Player[theplayer].kill();
 }
 
 ///

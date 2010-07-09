@@ -85,7 +85,7 @@ void CButler::process()
 			 sprite = BUTLER_WALK_RIGHT_FRAME + frame;
 			 if (!blockedr && not_about_to_fall)
 			 {
-					 moveRight(BUTLER_WALK_SPEED);
+				 moveRight(BUTLER_WALK_SPEED);
 			 }
 			 else
 			 {

@@ -73,6 +73,7 @@ public:
 	void checkSolidDoors();
 	void SelectFrame();
 	int pollLevelTrigger();
+	void getShotByRay();
 
 	// Used for both situations
 	void InertiaAndFriction_X();

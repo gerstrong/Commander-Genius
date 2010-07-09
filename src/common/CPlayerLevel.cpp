@@ -24,6 +24,8 @@
 void CPlayer::processInLevel(const bool &platextending)
 {
     StatusBox();
+
+    if(HealthPoints <= 0) kill();
 	
     if (pdie) dieanim();
 	else
@@ -349,8 +351,8 @@ void CPlayer::TogglePogo_and_Switches(const bool &platextending)
 						int platy = my + pyoff;
 
 						// spawn a "sector effector" to extend/retract the platform
-						//CSectorEffector *platobject = new CSectorEffector(mp_Map, mx<<CSF,my<<CSF);
-						//platobject->setype = SE_EXTEND_PLATFORM;
+						//CSectorEffector *platobject = new CSectorEffector(mp_Map, mx<<CSF,my<<CSF,
+							//							,*mp_object, SE_EXTEND_PLATFORM);
 						//platobject->platx = platx;
 						//platobject->platy = platy;
 						//mp_object->push_back(platobject);
@@ -955,3 +957,10 @@ int CPlayer::pollLevelTrigger()
 	m_Level_Trigger = LVLTRIG_NONE;
 	return trigger;
 }
+
+void CPlayer::getShotByRay()
+{
+	if(!godmode)
+		CObject::getShotByRay();
+}
+

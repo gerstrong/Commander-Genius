@@ -15,33 +15,23 @@
 
 CRisingPoints::CRisingPoints(CMap *p_map, Uint32 x, Uint32 y) :
 CObject(p_map, x, y, OBJ_GOTPOINTS)
-{}
+{
+	offscreentime = GOTPOINTS_LIFETIME;
+	inhibitfall = true;
+	solid = false;
+	honorPriority = false;
+	needinit = 0;
+}
 
 void CRisingPoints::process()
 {
-
-}
-
-/*
-void CObjectAI::gotpoints_ai(CObject &Object)
-{
-	if (Object.needinit)
-	{
-		Object.ai.ray.offscreentime = GOTPOINTS_LIFETIME;
-		Object.inhibitfall = true;
-		Object.solid = false;
-		Object.honorPriority = false;
-		Object.needinit = 0;
-	}
-
-	Object.moveUp(GOTPOINTS_SPEED);
+	moveUp(GOTPOINTS_SPEED);
 
 	// delete it after it's existed for a certain amount of time
-	if (!Object.ai.ray.offscreentime)
+	if (!offscreentime)
 	{
-		deleteObj(Object);
+		exists=false;
 		return;
 	}
-	else Object.ai.ray.offscreentime--;
+	else offscreentime--;
 }
-*/
