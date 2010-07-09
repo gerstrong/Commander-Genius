@@ -14,7 +14,7 @@
 
 CYorp::CYorp( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
 		Uint32 x, Uint32 y ) :
-CObject(p_map,x,y),
+CObject(p_map,x,y, OBJ_YORP),
 m_hardmode(mp_Map->m_Difficulty>1),
 m_vec_Player(mp_vec_Player),
 state(YORP_LOOK),

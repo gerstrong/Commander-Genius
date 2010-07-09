@@ -13,7 +13,7 @@
 
 CAutoRay::CAutoRay(CMap *pmap, Uint32 x, Uint32 y,
 		std::vector<CObject*> &Objvect, stRayAlignment type) :
-CObject(pmap, x, y),
+CObject(pmap, x, y, (type==HORIZONTAL) ? OBJ_AUTORAY : OBJ_AUTORAY_V),
 timer(0),
 m_gunfiretimer(0),
 m_Objvect(Objvect),

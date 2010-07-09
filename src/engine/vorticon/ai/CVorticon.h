@@ -61,13 +61,12 @@ class CVorticon : public CObject
 {
 public:
 	CVorticon( CMap *p_map, std::vector<CPlayer> &m_vec_Player,
-			Uint32 x, Uint32 y, char hp=1);
+			Uint32 x, Uint32 y, char hp=1, object_t objtype=OBJ_VORT);
 	void process();
 	void initiateJump();
 
-private:
+protected:
 	int m_Level;
-	int m_Episode;
 	char m_Difficulty;
 	bool m_Dark;
 

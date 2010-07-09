@@ -14,7 +14,7 @@
 #define YORPSHIELD_LIFETIME     20
 
 CRisingPoints::CRisingPoints(CMap *p_map, Uint32 x, Uint32 y) :
-CObject(p_map, x, y)
+CObject(p_map, x, y, OBJ_GOTPOINTS)
 {}
 
 void CRisingPoints::process()

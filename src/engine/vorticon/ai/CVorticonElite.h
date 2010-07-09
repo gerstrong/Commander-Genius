@@ -23,7 +23,10 @@ class CVorticonElite : public CVorticon
 {
 public:
 	CVorticonElite( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
+			std::vector<CObject*> &mp_vec_Obj,
 			Uint32 x, Uint32 y );
+	void process();
+	void initiatejump();
 private:
 	vortelite_actions state;
 
@@ -35,6 +38,7 @@ private:
 	unsigned int timesincefire;
 
 	int dist_traveled;
+	std::vector<CObject*>& m_Object;
 };
 
 #endif /* CVORTICONELITE_H_ */

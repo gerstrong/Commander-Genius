@@ -32,7 +32,7 @@ enum scrub_actions{
 
 CScrub::CScrub(CMap *p_map, Uint32 x, Uint32 y,
 		std::vector<CPlayer>& Player) :
-CObject(p_map, x, y),
+CObject(p_map, x, y, OBJ_SCRUB),
 m_Player(Player)
 {
 	walkdir = LEFT;

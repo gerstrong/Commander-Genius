@@ -17,6 +17,7 @@
 #include "../engine/spritedefines.h"
 #include "../engine/vorticon/ai/CSectorEffector.h"
 #include "../engine/vorticon/ai/CDoor.h"
+#include "../engine/vorticon/ai/CRisingPoints.h"
 #include "../StringUtils.h"
 
 #define DOOR_YELLOW        2
@@ -196,10 +197,9 @@ void CPlayer::riseBonus(int spr, int x, int y)
 {
 	 if (mp_option[OPT_RISEBONUS].value)
 	 {
-		 /*CObject GotPointsObj(mp_Map);
-		 GotPointsObj.spawn(x<<CSF, y<<CSF, OBJ_GOTPOINTS, m_episode);
-		 GotPointsObj.sprite = spr;
-		 mp_object->push_back(GotPointsObj);*/
+		 CRisingPoints *GotPointsObj = new CRisingPoints(mp_Map, x<<CSF, y<<CSF);
+		 GotPointsObj->sprite = spr;
+		 mp_object->push_back(GotPointsObj);
 	 }
 }
 

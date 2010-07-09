@@ -6,7 +6,7 @@
 
 CGuardRobot::CGuardRobot(CMap *p_map, Uint32 x, Uint32 y,
 		std::vector<CPlayer>& Player, std::vector<CObject*>& Object) :
-CTank(p_map, x, y, Player, Object)
+CTank(p_map, x, y, Player, Object, OBJ_TANKEP2)
 {
 	//first time initilization
 	m_type = OBJ_TANKEP2;

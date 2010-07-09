@@ -26,7 +26,7 @@ enum meep_actions{
 CMeep::CMeep(CMap *p_map, Uint32 x, Uint32 y,
 		std::vector<CPlayer>& Player,
 		std::vector<CObject*>& Object) :
-CObject(p_map,x,y),
+CObject(p_map,x,y, OBJ_MEEP),
 m_Player(Player),
 m_Object(Object)
 {}

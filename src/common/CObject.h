@@ -46,7 +46,7 @@ enum direction_t{
 
 class CObject {
 public:
-	CObject(CMap *pmap, Uint32 x, Uint32 y);
+	CObject(CMap *pmap, Uint32 x, Uint32 y, object_t type);
 	
 	object_t m_type;        		// yorp, vorticon, etc.
 	unsigned int m_index;        	// Like an ID for some objects that need this implementation
@@ -90,7 +90,7 @@ public:
 	void checkinitialCollisions();
 	void setScrPos( int px, int py );
 	bool calcVisibility( int player_x, int player_y );
-	bool spawn(int x0, int y0, object_t otype, int Episode, direction_t dirof = RIGHT );
+	//bool spawn(int x0, int y0, object_t otype, int Episode, direction_t dirof = RIGHT );
 	
 	// Moving parts
 	void moveToForce(int new_x, int new_y);

@@ -14,7 +14,7 @@ unsigned int rnd(void);
 
 CBallJack::CBallJack(CMap *pmap, Uint32 x, Uint32 y,
 		std::vector<CPlayer> &PlayerVect):
-CObject(pmap, x, y),
+CObject(pmap, x, y, OBJ_BALL),
 m_Player(PlayerVect)
 {
 	unsigned int px = m_Player.at(0).getXMidPos();

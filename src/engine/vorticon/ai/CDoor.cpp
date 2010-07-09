@@ -4,7 +4,7 @@
 #include "../../../graphics/CGfxEngine.h"
 
 CDoor::CDoor(CMap *pmap, Uint32 x, Uint32 y, Uint32 doorspriteID):
-CObject(pmap, x, y)
+CObject(pmap, x, y, OBJ_DOOR)
 {
 	sprite=doorspriteID;
 	CSprite &Doorsprite = g_pGfxEngine->getSprite(sprite);

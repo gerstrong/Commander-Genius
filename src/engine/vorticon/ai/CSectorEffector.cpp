@@ -20,7 +20,7 @@ int mortimer_surprisedcount = 0;
 
 CSectorEffector::CSectorEffector(CMap *p_map, Uint32 x, Uint32 y,
 		std::vector<CPlayer>& Player, std::vector<CObject*>& Object, unsigned int se_type) :
-CObject(p_map, x, y),
+CObject(p_map, x, y, OBJ_SECTOREFFECTOR),
 setype(se_type),
 m_Player(Player),
 m_Object(Object),

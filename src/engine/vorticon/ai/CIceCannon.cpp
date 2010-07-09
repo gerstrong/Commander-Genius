@@ -13,7 +13,7 @@ unsigned int rnd(void);
 CIceCannon::CIceCannon(CMap *p_map, Uint32 x, Uint32 y,
 	std::vector<CPlayer>& Player, std::vector<CObject*>& Object,
 	int vector_x, int vector_y ) :
-CObject(p_map,x,y),
+CObject(p_map,x,y, OBJ_ICECANNON),
 m_Player(Player),
 m_Object(Object)
 {
@@ -55,7 +55,7 @@ void CIceCannon::process()
 
 CIceChunk::CIceChunk(CMap *p_map, Uint32 x, Uint32 y,
 		std::vector<CPlayer>& Player, std::vector<CObject*>& Object) :
-CObject(p_map, x, y),
+CObject(p_map, x, y, OBJ_ICECHUNK),
 m_Player(Player),
 m_Object(Object)
 {}
@@ -158,7 +158,7 @@ void CIceChunk::smash()
 #define ICEBIT_SPEED        80
 
 CIceBit::CIceBit(CMap *p_map, Uint32 x, Uint32 y) :
-CObject(p_map, x, y)
+CObject(p_map, x, y, OBJ_ICEBIT)
 { m_gunfiretimer=0; timer=0; }
 
 void CIceBit::process()

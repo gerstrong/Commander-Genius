@@ -3,7 +3,7 @@
 #include "../../../graphics/CGfxEngine.h"
 
 CFoob::CFoob(CMap *p_map, Uint32 x, Uint32 y, std::vector<CPlayer>& Player):
-CObject(p_map,x,y),
+CObject(p_map,x,y, OBJ_FOOB),
 m_Player(Player)
 {
 	state = FOOB_WALK;

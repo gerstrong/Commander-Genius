@@ -19,7 +19,7 @@
 unsigned int rnd(void);
 
 CVortiNinja::CVortiNinja(CMap *p_map, Uint32 x, Uint32 y, std::vector<CPlayer> &Player) :
-CObject(p_map, x, y),
+CObject(p_map, x, y, OBJ_NINJA),
 m_Player(Player)
 {
 	state = NINJA_STAND;

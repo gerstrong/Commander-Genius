@@ -6,8 +6,9 @@
 #include "CRay.h"
 
 CTank::CTank(CMap *p_map, Uint32 x, Uint32 y,
-		std::vector<CPlayer>& Player, std::vector<CObject*>& Object) :
-CObject(p_map, x, y),
+		std::vector<CPlayer>& Player, std::vector<CObject*>& Object,
+		object_t objtype) :
+CObject(p_map, x, y, objtype),
 m_Player(Player),
 m_Object(Object)
 {

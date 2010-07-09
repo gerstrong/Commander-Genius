@@ -17,8 +17,8 @@ int CObject::m_number_of_objects = 0; // The current number of total objects we 
 ///
 // Initialization Routine
 ///
-CObject::CObject(CMap *pmap, Uint32 x, Uint32 y) :
-m_type(OBJ_NONE),
+CObject::CObject(CMap *pmap, Uint32 x, Uint32 y, object_t type) :
+m_type(type),
 m_index(m_number_of_objects),
 HealthPoints(1),
 mp_object(NULL),
@@ -26,7 +26,7 @@ mp_Map(pmap),
 m_blinktime(0)
 {
 	m_number_of_objects++;
-	honorPriority = false;
+	honorPriority = true;
 	exists = true;
 	sprite=BLANKSPRITE;
 	solid = true;
@@ -35,57 +35,39 @@ m_blinktime(0)
 	this->x = x;
 	this->y = y;
 	m_type = OBJ_NONE;
-	bboxX1 = bboxX2 = 0;
-	bboxY1 = bboxY2 = 0;
 	canbezapped = false;
 	onscreen = false;
 
 	cansupportplayer = false;
 	
     yinertia = 0;
+
+	scrx = scry = 0;
+	exists = true;
+	dead = false;
+	onscreen = false;
+	hasbeenonscreen = false;
+	canbezapped = 0;
+	honorPriority = true;
+	touchPlayer = touchedBy = 0;
+	cansupportplayer = false;
+
+	setupObjectType(g_pBehaviorEngine->getEpisode());
+
+	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+	bboxX1 = rSprite.m_bboxX1;		bboxX2 = rSprite.m_bboxX2;
+	bboxY1 = rSprite.m_bboxY1;		bboxY2 = rSprite.m_bboxY2;
+
+	checkinitialCollisions();
 }
 
-bool CObject::spawn(int x0, int y0, object_t otype, int Episode, direction_t dirof)
+/*bool CObject::spawn(int x0, int y0, object_t otype, int Episode, direction_t dirof)
 {
-	// find an unused object slot
-	if (!exists)
-	{
-		x = x0;
-		y = y0;
-		scrx = scry = 0;
-		m_type = otype;
-		exists = true;
-		dead = false;
-		onscreen = false;
-		hasbeenonscreen = false;
-		canbezapped = 0;
-		honorPriority = true;
-		touchPlayer = touchedBy = 0;
-		cansupportplayer = false;
-		
-		setupObjectType(Episode);
-
-		CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
-		bboxX1 = rSprite.m_bboxX1;		bboxX2 = rSprite.m_bboxX2;
-		bboxY1 = rSprite.m_bboxY1;		bboxY2 = rSprite.m_bboxY2;
-		
-		// check if the objects has to spawn left-off
-		if(dirof == LEFT)
-		{
-			int dx = bboxX2-bboxX1;
-			x-=dx;
-		}
-
-		checkinitialCollisions();
-
-		return true;
-	}
-
 	// Check for collision points when object is spawn. Later only collision basing on movements will be checked
 	// object could not be created
 	g_pLogFile->ftextOut("Object of type %d could not be created at %d,%d (out of object slots)<br>",otype,x,y);
 	return false;
-}
+}*/
 
 void CObject::setupObjectType(int Episode)
 {
@@ -113,7 +95,7 @@ void CObject::setupObjectType(int Episode)
 	case OBJ_MEEP: sprite = OBJ_MEEP_DEFSPRITE; break;
 	case OBJ_BALL: sprite = OBJ_BALL_DEFSPRITE; break;
 	case OBJ_JACK: sprite = OBJ_JACK_DEFSPRITE; break;
-	case OBJ_NESSIE: sprite = OBJ_NESSIE_DEFSPRITE; break;
+	case OBJ_MESSIE: sprite = OBJ_NESSIE_DEFSPRITE; break;
 	case OBJ_AUTORAY_V: sprite = RAY_VERT_EP3; break;
 	case OBJ_SNDWAVE: sprite = OBJ_SNDWAVE_DEFSPRITE; break;
 
@@ -527,7 +509,7 @@ bool CObject::hitdetect(CObject &hitobject)
 
 void CObject::processFalling()
 {
-	if(m_type == OBJ_NESSIE) return;
+	if(m_type == OBJ_MESSIE) return;
 	// make object fall if it must
 	const int OBJFALLSPEED = 160;
 

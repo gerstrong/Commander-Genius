@@ -71,7 +71,8 @@ class CTank : public CObject
 {
 public:
 	CTank(CMap *p_map, Uint32 x, Uint32 y,
-			std::vector<CPlayer>& Player, std::vector<CObject*>& Object);
+			std::vector<CPlayer>& Player, std::vector<CObject*>& Object,
+			object_t objtype=OBJ_TANK);
 	virtual void process();
 
 	bool CanMoveLeft();

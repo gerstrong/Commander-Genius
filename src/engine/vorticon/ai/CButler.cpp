@@ -6,7 +6,7 @@
 
 CButler::CButler(CMap *pmap, Uint32 x, Uint32 y,
 		std::vector<CPlayer> &PlayerVect) :
-CObject(pmap, x, y),
+CObject(pmap, x, y, OBJ_BUTLER),
 m_Player(PlayerVect)
 {
 	 state = BUTLER_WALK;

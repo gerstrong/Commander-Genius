@@ -5,12 +5,11 @@
 #include "../../../graphics/effects/CFlash.h"
 #include "CVorticon.h"
 
-// Vorticon (all m_Episodes, albeit the behavior changes slightly
-// depending on levelcontrol.m_Episode).
+// Vorticon (all Episodes, albeit the behavior changes slightly
+// depending on levelcontrol.Episode).
 CVorticon::CVorticon( CMap *p_map, std::vector<CPlayer> &m_vec_Player,
-		Uint32 x, Uint32 y, char hp) :
-CObject(p_map, x, y),
-m_Episode(g_pBehaviorEngine->getEpisode()),
+		Uint32 x, Uint32 y, char hp, object_t objtype) :
+CObject(p_map, x, y, objtype),
 m_Difficulty(mp_Map->m_Difficulty),
 m_Dark(mp_Map->m_Dark),
 m_Player(m_vec_Player)
@@ -60,6 +59,7 @@ m_Player(m_vec_Player)
 void CVorticon::process()
 {
 	bool kill;
+	short Episode = g_pBehaviorEngine->getEpisode();
 
 	if (state==VORT_DEAD)   return;
 
@@ -69,7 +69,7 @@ void CVorticon::process()
 		// if we touch a glowcell, we die!
 
 		if ( HealthPoints <= 0 ) kill = true;
-		else if (m_Episode==2 && mp_Map->at((getXLeftPos())>>CSF, (getYUpPos())>>CSF)==TILE_GLOWCELL)
+		else if (Episode==2 && mp_Map->at((getXLeftPos())>>CSF, (getYUpPos())>>CSF)==TILE_GLOWCELL)
 			kill = true;
 
 		if (kill)
@@ -78,7 +78,7 @@ void CVorticon::process()
 			canbezapped = false;
 			animtimer = 0;
 			frame = 0;
-			if (m_Episode == 1)
+			if (Episode == 1)
 			{
 				// White Fade and back
 				g_pGfxEngine->pushEffectPtr(new CFlash(3000, 8, 0xFFFFFF, 200 ));

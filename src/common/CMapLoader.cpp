@@ -204,7 +204,7 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 				for(; it_player != mp_vec_Player->end() ; it_player++ )
 				{
 					it_player->exists = false;
-					it_player->spawn(x<<CSF, y<<CSF, OBJ_PLAYER, episode);
+					it_player->moveToForce(x<<CSF, y<<CSF);
 				}
 			}
 			mp_map->m_objectlayer[x][y] = 0;
@@ -280,7 +280,6 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 
 void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode, int level)
 {
-	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 	mp_map->m_objectlayer[x][y] = t;
 	
 	if (t)
@@ -297,7 +296,7 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 			for(; it_player != mp_vec_Player->end() ; it_player++ )
 			{
 				it_player->exists = false;
-				it_player->spawn(x<<CSF, y<<CSF, OBJ_PLAYER, episode);
+				it_player->moveToForce(x<<CSF, y<<CSF);
 				it_player->setupforLevelPlay();
 			}
 		}
@@ -340,7 +339,7 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				else if (episode==2)
 				{
 					enemyobject = new CVorticonElite( mp_map, *mp_vec_Player,
-								x<<CSF, y<<CSF);
+							*mp_objvect, x<<CSF, y<<CSF);
 				}
 				else if (episode==3)
 				{

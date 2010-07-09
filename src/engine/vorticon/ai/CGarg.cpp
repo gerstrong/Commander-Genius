@@ -5,7 +5,7 @@
 
 CGarg::CGarg(CMap *p_map, std::vector<CPlayer> &m_vec_Player,
 		Uint32 x, Uint32 y) :
-CObject(p_map, x,y),
+CObject(p_map, x,y,OBJ_GARG),
 state(GARG_LOOK),
 looktimes(GARG_NUM_LOOKS+1),
 lookframe(0),

@@ -14,7 +14,7 @@
 
 CPlatform::CPlatform(CMap *p_map, Uint32 x, Uint32 y,
 		std::vector<CPlayer>& Player) :
-CObject(p_map, x, y),
+CObject(p_map, x, y, OBJ_PLATFORM),
 m_Player(Player)
 {
 	animframe = 0;
