@@ -45,7 +45,7 @@ enum object_t{
 	OBJ_BALL,
 	OBJ_JACK,
 	OBJ_PLATVERT,
-	OBJ_NESSIE,
+	OBJ_MESSIE,
 	
 	OBJ_DEMOMSG,
 	

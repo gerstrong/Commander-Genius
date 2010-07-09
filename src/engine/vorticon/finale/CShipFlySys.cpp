@@ -26,7 +26,7 @@ m_player(Player) // in this case the player will be the ship flying home
 
 	// Now, that everything is initialized, create a mark that will be used
 	// as ! or ? Sprite
-	CObject mark(mp_Map);
+	/*CObject mark = new (mp_Map);
 	mark.m_type = OBJ_YORP;                // doesn't matter
 	mark.exists = 0;
 	mark.sprite = SPR_QUESTION;
@@ -36,7 +36,7 @@ m_player(Player) // in this case the player will be the ship flying home
 
 	m_player.mp_object->push_back(mark);
 
-	mp_mark = &(*(m_player.mp_object->end()-1)); // We still need to manipulate it!
+	mp_mark = &(*(m_player.mp_object->end()-1)); // We still need to manipulate it!*/
 }
 
 void CShipFlySys::addShipQueue(int cmd, int time, int flag1)

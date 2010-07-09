@@ -35,10 +35,10 @@ public:
 
 	CPlayer(const char &Episode, short &Level, char &Difficulty,
 			 bool *mp_level_completed, stOption *mp_option,
-			 std::vector<CObject> &m_Object, CMap &map);
+			 std::vector<CObject*> &m_Object, CMap &map);
 	void setDatatoZero();
 	void setDefaultStartValues();
-	void setMapData(CMap *p_map){ mp_map=p_map; }
+	void setMapData(CMap *p_map){ mp_Map=p_map; }
 	void setupforLevelPlay();
 	bool getLevelTrigger();
 
@@ -135,8 +135,9 @@ public:
 	unsigned char pjumptime, pjumpupspeed_decrease, pjumpdir;
 	unsigned char pjumpframe, pjumpanimtimer;
 	int pjumpupspeed;
-	unsigned char pjumpnormaltime, pjumpupdecreaserate, pjustjumped;
-	unsigned char pjustfell;
+	unsigned char pjumpnormaltime, pjumpupdecreaserate;
+	bool pjustjumped;
+	bool pjustfell;
 	unsigned char pjumpfloattimer;
 
 	direction_t pdir,pshowdir,lastpdir;
@@ -177,13 +178,13 @@ public:
 	std::string hintstring;
 	bool hintused;
 
-	CMap *mp_map;
 	stOption *mp_option;
 
 private:
 	CStatusScreen *mp_StatusScr;
 
 	bool lastpogo;
+ 	bool bumped;
 
 	// Level control specific functions, especially for exit
 	int exitXpos;

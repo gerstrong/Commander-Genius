@@ -7,7 +7,8 @@
 
 #include "CPlayer.h"
 
-#include "../engine/vorticon/ai/se.h"
+#include "../engine/vorticon/ai/CSectorEffector.h"
+#include "../engine/vorticon/ai/CRay.h"
 #include "../engine/spritedefines.h"
 #include "../keen.h"
 #include "../sdl/sound/CSound.h"
@@ -174,7 +175,7 @@ void CPlayer::dieanim() // Bad word for that. It's the entire die code
 	// is it time to start flying off the screen?
 	if (!pdietillfly)
 	{  // time to fly off the screen
-		if (((getYPosition()>>(CSF-4))+96 > mp_map->m_scrolly) && (getYPosition()>(16<<(CSF-4))))
+		if (((getYPosition()>>(CSF-4))+96 > mp_Map->m_scrolly) && (getYPosition()>(16<<(CSF-4))))
 		{  // player has not reached top of screen
 			// make player fly up
 			moveUp(-PDIE_RISE_SPEED);
@@ -315,23 +316,23 @@ void CPlayer::TogglePogo_and_Switches(const bool &platextending)
 		{
 			my = (getYPosition()+i)>>CSF;
 			
-			t = mp_map->at(mx, my);
+			t = mp_Map->at(mx, my);
 			
 			// check for extending-platform switch
 			if (t==TILE_SWITCH_UP || t==TILE_SWITCH_DOWN )
 			{
 				// Flip the switch!
 				g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, getXPosition()>>STC);
-				if ( mp_map->at(mx, my) == TILE_SWITCH_DOWN )
-					mp_map->changeTile(mx, my, TILE_SWITCH_UP);
+				if ( mp_Map->at(mx, my) == TILE_SWITCH_DOWN )
+					mp_Map->changeTile(mx, my, TILE_SWITCH_UP);
 				else
-					mp_map->changeTile(mx, my, TILE_SWITCH_DOWN);
+					mp_Map->changeTile(mx, my, TILE_SWITCH_DOWN);
 
 				// figure out where the platform is supposed to extend at
 				// (this is coded in the object layer...
 				// high byte is the Y offset and the low byte is the X offset,
 				// and it's relative to the position of the switch.)
-				Uint16 bridge = mp_map->getObjectat(mx, my);
+				Uint16 bridge = mp_Map->getObjectat(mx, my);
 
 				if (bridge==0) // Uh Oh! This means you have enabled a tantalus ray of the ship
 				{
@@ -348,12 +349,11 @@ void CPlayer::TogglePogo_and_Switches(const bool &platextending)
 						int platy = my + pyoff;
 
 						// spawn a "sector effector" to extend/retract the platform
-						CObject platobject(mp_map);
-						platobject.spawn(mx<<CSF,my<<CSF,OBJ_SECTOREFFECTOR, m_episode);
-						platobject.ai.se.type = SE_EXTEND_PLATFORM;
-						platobject.ai.se.platx = platx;
-						platobject.ai.se.platy = platy;
-						mp_object->push_back(platobject);
+						//CSectorEffector *platobject = new CSectorEffector(mp_Map, mx<<CSF,my<<CSF);
+						//platobject->setype = SE_EXTEND_PLATFORM;
+						//platobject->platx = platx;
+						//platobject->platy = platy;
+						//mp_object->push_back(platobject);
 					}
 				}
 
@@ -634,7 +634,7 @@ CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
 	int xleft  = getXLeftPos();
 	int ydown  = getYDownPos();
 
-	behaviour = TileProperty[mp_map->at(xleft>>CSF, ydown>>CSF)].behaviour;
+	behaviour = TileProperty[mp_Map->at(xleft>>CSF, ydown>>CSF)].behaviour;
 	if( behaviour>=2 && behaviour<=5 )
 		blockedu = true; // This workaround prevents the player from falling through doors.
 
@@ -652,8 +652,8 @@ CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
 		// Check if player is on ice
 		if(!pjumping && !ppogostick)
 		{
-			int ice = TileProperty[mp_map->at(getXLeftPos()>>CSF, (ydown+1)>>CSF)].bup;
-			ice |= TileProperty[mp_map->at(getXRightPos()>>CSF, (ydown+1)>>CSF)].bup;
+			int ice = TileProperty[mp_Map->at(getXLeftPos()>>CSF, (ydown+1)>>CSF)].bup;
+			ice |= TileProperty[mp_Map->at(getXRightPos()>>CSF, (ydown+1)>>CSF)].bup;
 			if(!blockedl && !blockedr)
 			{
 				if(ice == 2) psemisliding = true;
@@ -699,7 +699,7 @@ CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
 	if (pfalling || pjumping) psliding=0;
 
 	// If he falls to the ground even being god, kill him
-	if( (Uint16)getYDownPos() > ((mp_map->m_height)<<CSF) )
+	if( (Uint16)getYDownPos() > ((mp_Map->m_height)<<CSF) )
 		kill(true);
 }
 
@@ -739,7 +739,6 @@ void CPlayer::raygun()
 			if (inventory.charges)
 			{  // we have enough charges
 				int xdir, ydir;
-				CObject rayobject(mp_map);
 				inventory.charges--;
 				pshowdir = pdir;
 				
@@ -747,16 +746,10 @@ void CPlayer::raygun()
 				
 				ydir = getYPosition()+(9<<STC);
 				if (pdir==RIGHT) xdir = getXRightPos()+xinertia;
-				else xdir = getXLeftPos()+xinertia;
+				else xdir = getXLeftPos()+xinertia-(16<<STC);
+
+				CRay *rayobject = new CRay(mp_Map, xdir, ydir, pdir, OBJ_PLAYER, m_index);
 				
-				rayobject.spawn(xdir, ydir, OBJ_RAY, m_episode, pdir);
-				rayobject.ai.ray.owner = m_index;
-				rayobject.ai.ray.shotbyplayer = true;
-				rayobject.ai.ray.direction = pdir;
-				
-				rayobject.ai.ray.dontHitEnable = true;
-				if (!mp_option[OPT_ALLOWPKING].value)
-					rayobject.ai.ray.dontHit = OBJ_PLAYER;
 				mp_object->push_back(rayobject);
 			}
 			else
@@ -806,7 +799,7 @@ void CPlayer::SelectFrame()
 	
     // if he's going left switch the frame selected above to the
     // appropriate one for the left direction
-    if (pshowdir && !pdie && !pfrozentime)
+    if (pshowdir==LEFT && !pdie && !pfrozentime)
     {
 		if (pfiring)
 		{
@@ -829,10 +822,10 @@ void CPlayer::SelectFrame()
 
 void CPlayer::ankh()
 {
-	const unsigned int ANKH_FLICKER_DELAY = 3;
-	const unsigned int ANKH_SHIELD_FRAME = 61;
+	//const unsigned int ANKH_FLICKER_DELAY = 3;
+	//const unsigned int ANKH_SHIELD_FRAME = 61;
 
-	if (!ankhtime) return;
+	/*if (!ankhtime) return;
 	else if (ankhtime < ANKH_STAGE3_TIME)
 		m_Ankhshield.ai.se.state = ANKH_STATE_FLICKERSLOW;
 	else if (ankhtime < ANKH_STAGE2_TIME)
@@ -885,7 +878,7 @@ void CPlayer::ankh()
 		if (m_Ankhshield.ai.se.frame>8) m_Ankhshield.ai.se.frame = 0;
 		m_Ankhshield.ai.se.timer = 0;
 	}
-	else m_Ankhshield.ai.se.timer++;
+	else m_Ankhshield.ai.se.timer++;*/
 
 }
 
@@ -939,20 +932,20 @@ void CPlayer::checkSolidDoors()
 	int my2 = getYDownPos()>>CSF;
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 
-	if( (TileProperty[mp_map->at(mx1 ,mymid)].behaviour>1 &&
-			TileProperty[mp_map->at(mx1 ,mymid)].behaviour<6 ) ) {
+	if( (TileProperty[mp_Map->at(mx1 ,mymid)].behaviour>1 &&
+			TileProperty[mp_Map->at(mx1 ,mymid)].behaviour<6 ) ) {
 		blockedl = true;	}
 
-	if( (TileProperty[mp_map->at(mx2 ,mymid)].behaviour>1 &&
-			TileProperty[mp_map->at(mx2 ,mymid)].behaviour<6 ) ) {
+	if( (TileProperty[mp_Map->at(mx2 ,mymid)].behaviour>1 &&
+			TileProperty[mp_Map->at(mx2 ,mymid)].behaviour<6 ) ) {
 		blockedr = true;	}
 
-	if( (TileProperty[mp_map->at(mxmid ,my1)].behaviour>1 &&
-			TileProperty[mp_map->at(mxmid ,my1)].behaviour<6 ) ) {
+	if( (TileProperty[mp_Map->at(mxmid ,my1)].behaviour>1 &&
+			TileProperty[mp_Map->at(mxmid ,my1)].behaviour<6 ) ) {
 		blockedd = true;	}
 
-	if( (TileProperty[mp_map->at(mxmid ,my2)].behaviour>1 &&
-			TileProperty[mp_map->at(mxmid ,my2)].behaviour<6 ) ) {
+	if( (TileProperty[mp_Map->at(mxmid ,my2)].behaviour>1 &&
+			TileProperty[mp_Map->at(mxmid ,my2)].behaviour<6 ) ) {
 		blockedu = true;	}
 }
 

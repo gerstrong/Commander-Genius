@@ -17,87 +17,63 @@ int CObject::m_number_of_objects = 0; // The current number of total objects we 
 ///
 // Initialization Routine
 ///
-CObject::CObject(CMap *pmap) :
+CObject::CObject(CMap *pmap, Uint32 x, Uint32 y, object_t type) :
+m_type(type),
 m_index(m_number_of_objects),
+HealthPoints(1),
 mp_object(NULL),
 mp_Map(pmap),
 m_blinktime(0)
 {
 	m_number_of_objects++;
-	honorPriority = false;
-	exists = false;
+	honorPriority = true;
+	exists = true;
 	sprite=BLANKSPRITE;
 	solid = true;
+	inhibitfall = false;
 
-	x = 0;
-	y = 0;
+	this->x = x;
+	this->y = y;
 	m_type = OBJ_NONE;
-	bboxX1 = bboxX2 = 0;
-	bboxY1 = bboxY2 = 0;
 	canbezapped = false;
 	onscreen = false;
-
-	memset(&ai, 0, sizeof(ai));
 
 	cansupportplayer = false;
 	
     yinertia = 0;
+
+	scrx = scry = 0;
+	exists = true;
+	dead = false;
+	onscreen = false;
+	hasbeenonscreen = false;
+	canbezapped = 0;
+	honorPriority = true;
+	touchPlayer = touchedBy = 0;
+	cansupportplayer = false;
+
+	setupObjectType(g_pBehaviorEngine->getEpisode());
+
+	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+	bboxX1 = rSprite.m_bboxX1;		bboxX2 = rSprite.m_bboxX2;
+	bboxY1 = rSprite.m_bboxY1;		bboxY2 = rSprite.m_bboxY2;
+
+	checkinitialCollisions();
 }
 
-bool CObject::spawn(int x0, int y0, object_t otype, int Episode, direction_t dirof)
+/*bool CObject::spawn(int x0, int y0, object_t otype, int Episode, direction_t dirof)
 {
-	// find an unused object slot
-	if (!exists)
-	{
-		x = x0;
-		y = y0;
-		scrx = scry = 0;
-		m_type = otype;
-		exists = true;
-		needinit = true;
-		dead = false;
-		onscreen = false;
-		hasbeenonscreen = false;
-		zapped = false;
-		canbezapped = 0;
-		inhibitfall = false;
-		honorPriority = true;
-		touchPlayer = touchedBy = 0;
-		cansupportplayer = false;
-		
-		setupObjectType(Episode);
-
-		CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
-		bboxX1 = rSprite.m_bboxX1;		bboxX2 = rSprite.m_bboxX2;
-		bboxY1 = rSprite.m_bboxY1;		bboxY2 = rSprite.m_bboxY2;
-		
-		// check if the objects has to spawn left-off
-		if(dirof == LEFT)
-		{
-			int dx = bboxX2-bboxX1;
-			x-=dx;
-		}
-
-		checkinitialCollisions();
-
-		return true;
-	}
-
 	// Check for collision points when object is spawn. Later only collision basing on movements will be checked
 	// object could not be created
 	g_pLogFile->ftextOut("Object of type %d could not be created at %d,%d (out of object slots)<br>",otype,x,y);
 	return false;
-}
-
-void CObject::setIndex(int index)
-{	m_index = index;	}
+}*/
 
 void CObject::setupObjectType(int Episode)
 {
 	switch(m_type)
 	{
 	// Mainly Episode 1
-	case OBJ_YORP: sprite = OBJ_YORP_DEFSPRITE; break;
 	case OBJ_GARG: sprite = OBJ_GARG_DEFSPRITE; break;
 	case OBJ_BUTLER: sprite = OBJ_BUTLER_DEFSPRITE; break;
 	case OBJ_TANK: sprite = OBJ_BUTLER_DEFSPRITE; break;
@@ -119,18 +95,9 @@ void CObject::setupObjectType(int Episode)
 	case OBJ_MEEP: sprite = OBJ_MEEP_DEFSPRITE; break;
 	case OBJ_BALL: sprite = OBJ_BALL_DEFSPRITE; break;
 	case OBJ_JACK: sprite = OBJ_JACK_DEFSPRITE; break;
-	case OBJ_NESSIE: sprite = OBJ_NESSIE_DEFSPRITE; break;
+	case OBJ_MESSIE: sprite = OBJ_NESSIE_DEFSPRITE; break;
 	case OBJ_AUTORAY_V: sprite = RAY_VERT_EP3; break;
 	case OBJ_SNDWAVE: sprite = OBJ_SNDWAVE_DEFSPRITE; break;
-
-	// Common Elements and some are Episode dependent
-	case OBJ_RAY:
-		{
-			ai.ray.shotbyplayer = false;
-			if(Episode == 1) sprite = OBJ_RAY_DEFSPRITE_EP1;
-			else if(Episode == 2) sprite = OBJ_RAY_DEFSPRITE_EP2;
-			else if(Episode == 3) sprite = OBJ_RAY_DEFSPRITE_EP3;
-		}break;
 
 	case OBJ_VORT:
 		{
@@ -514,6 +481,8 @@ unsigned int CObject::getYMidPos()
 // returns nonzero if object1 overlaps object2
 bool CObject::hitdetect(CObject &hitobject)
 {
+	if(m_index == hitobject.m_index) return false;
+
 	unsigned int rect1x1, rect1y1, rect1x2, rect1y2;
 	unsigned int rect2x1, rect2y1, rect2x2, rect2y2;
 	
@@ -540,7 +509,7 @@ bool CObject::hitdetect(CObject &hitobject)
 
 void CObject::processFalling()
 {
-	if(m_type == OBJ_NESSIE) return;
+	if(m_type == OBJ_MESSIE) return;
 	// make object fall if it must
 	const int OBJFALLSPEED = 160;
 
@@ -565,6 +534,32 @@ void CObject::processFalling()
 		// gradually increase the fall speed up to maximum rate
 		moveDown(yinertia);
 	}
+}
+
+void CObject::getShotByRay()
+{
+	if(HealthPoints>0)
+	{
+		if(HealthPoints>1 && g_pVideoDriver->getSpecialFXConfig())
+			blink(10);
+		HealthPoints--;
+	}
+}
+
+// anything (players/enemies) occupying the map tile at [mpx,mpy] is killed
+void CObject::kill_intersecting_tile(int mpx, int mpy, CObject &theObject)
+{
+	 unsigned int xpix,ypix;
+	 unsigned int x, y;
+	 xpix = mpx<<CSF;
+	 ypix = mpy<<CSF;
+
+	 x = theObject.getXMidPos();
+	 y = theObject.getYUpPos();
+	 if (theObject.exists)
+		 if (xpix-(1<<CSF) <= x && xpix+(1<<CSF) >= x)
+			 if (ypix <= y && ypix+(1<<CSF) >= y)
+				 theObject.kill();
 }
 
 const int COLISION_RES = 4;
@@ -677,9 +672,9 @@ bool CObject::checkSolidD( int x1, int x2, int y2)
 // Just kills the object
 void CObject::kill()
 {
-	if ( exists && zapped < 500 && canbezapped )
+	if ( exists && canbezapped )
 	{
-		zapped += 500;
+		HealthPoints = 0;
 		dead = true;
 	}
 }

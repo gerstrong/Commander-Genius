@@ -35,6 +35,17 @@ const int SPR_SHIP_LEFT_EP2 = 133;
 #define SHIPFLY_X       32
 #define SHIPFLY_Y       0
 
+enum {
+DUPRIGHT,
+DUPLEFT,
+DUP,
+DDOWN,
+DDOWNRIGHT,
+DDOWNLEFT,
+DLEFT,
+DRIGHT
+};
+
 typedef struct stShipQueue
 {
 	int cmd;

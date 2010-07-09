@@ -18,7 +18,6 @@
 #include "../../../common/CObject.h"
 #include "../../../common/CMap.h"
 #include "../../../common/options.h"
-#include "../../../common/CTeleporter.h"
 #include "../../../common/CHUD.h"
 #include "../ai/CObjectAI.h"
 #include "../ai/CEGABitmap.h"
@@ -47,8 +46,7 @@ public:
 	CPlayGameVorticon(CExeFile &ExeFile, char level,
 			  char numplayers, char difficulty,
 			  stOption *p_option,
-			  bool finale, CSavedGame &SavedGame,
-			  std::vector<stTeleporterTable> &TeleporterTable);
+			  bool finale, CSavedGame &SavedGame);
 
 	void setupPlayers();
 	bool init();
@@ -56,7 +54,6 @@ public:
 	// Game states
 	bool loadGameState();
 	bool saveGameState();
-
 	void process();
 	void processOnWorldMap();
 	void processInLevel();
@@ -87,11 +84,21 @@ public:
 	void processPauseDialogs();
 	void showPausedGameDlg();
 
+	// Teleportation Stuff
+	int getTeleporterInfo(int objectID);
+	void teleportPlayer(int objectID, CPlayer &player);
+	void teleportPlayerFromLevel( CPlayer &player, int origx, int origy);
+	void readTeleportDestCoordinatesEP1(int objectID, int &destx, int &desty);
+	void readTeleportDestCoordinatesEP3(int objectID, int &destx, int &desty);
+
+	// Platform stuff
+	bool getPlatMoving() { return PlatExtending; }
+	void triggerPlat(bool value) { PlatExtending = value; }
+
 	void cleanup();
 	virtual ~CPlayGameVorticon();
 
 private:
-	bool m_dark;
 	bool mp_level_completed[MAX_LEVELS_VORTICON];
 
 	CMap m_Map;
@@ -102,10 +109,12 @@ private:
 	CEGABitmap *mp_gameoverbmp;
 	CSavedGame &m_SavedGame;
 	std::list<CMessageBox*> m_MessageBoxes;
-	std::vector<stTeleporterTable> &m_TeleporterTable;
 	bool m_showKeensLeft;
-	std::vector<CObject> m_Object;
+	std::vector<CObject*> m_Object;
 	CHighScores *mp_HighScores;
 	CHUD *mp_HUD;
+
+	// if true, a moving platform is currently extending/retracting (ep2)
+	bool PlatExtending;
 };
 #endif /* CPlayGameVorticon_H_ */

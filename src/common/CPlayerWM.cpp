@@ -72,11 +72,11 @@ int CPlayer::getNewObject()
         // get level/object marker beneath player
         xb = getXMidPos()>>STC;
         yb = getYMidPos()>>STC;
-        lvl = mp_map->getObjectat(xb>>4, yb>>4);
+        lvl = mp_Map->getObjectat(xb>>4, yb>>4);
         if (!lvl)
         {
 			yb = (getYPosition()>>CSF)+8;
-			lvl = mp_map->getObjectat(xb>>4, yb>>4);
+			lvl = mp_Map->getObjectat(xb>>4, yb>>4);
         }
         return lvl;
     }
@@ -92,7 +92,7 @@ bool CPlayer::isWMSolid(int xb, int yb)
 	int level_coordinates;
 
 	// Now check if the levels must block the player
-	level_coordinates = mp_map->getObjectat(xb>>CSF, yb>>CSF);
+	level_coordinates = mp_Map->getObjectat(xb>>CSF, yb>>CSF);
 
 	if (level_coordinates & 0x8000)
 	{
@@ -152,7 +152,7 @@ void CPlayer::selectFrameOnWorldMap()
 void CPlayer::MountNessieIfAvailable()
 {
 	// Look for the Nessie object
-	std::vector<CObject>::iterator obj = mp_object->begin();
+	/*std::vector<CObject>::iterator obj = mp_object->begin();
 	for(; obj != mp_object->end() ; obj++)
 	{
 		if(obj->m_type == OBJ_NESSIE)
@@ -180,13 +180,13 @@ void CPlayer::MountNessieIfAvailable()
 			break;
 		}
 	}
-
+*/
 }
 
 void CPlayer::UnmountNessie()
 {
 	// Check if a NESSIE_LAND_OBJ is nearby the player. Only then he can unmount
-	int dx, dy;
+	/*int dx, dy;
 	int x = getXPosition()>>CSF;
 	int y = getYPosition()>>CSF;
 	for(dy=-1 ; dy <= 1 ; dy++)
@@ -194,7 +194,7 @@ void CPlayer::UnmountNessie()
 		for(dx=-1 ; dx <= 1 ; dx++)
 		{
 			// If NESSIE_LAND_OBJ was found, than put the player there!
-			if(mp_map->getObjectat(x+dx, y+dy) == NESSIE_LAND)
+			if(mp_Map->getObjectat(x+dx, y+dy) == NESSIE_LAND)
 			{
 				// Look for the Nessie object
 				std::vector<CObject>::iterator obj = mp_object->begin();
@@ -204,7 +204,7 @@ void CPlayer::UnmountNessie()
 					{
 						// Check if the there are no blocked tiles there!
 						std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
-						CTileProperties &Tile = TileProperty[mp_map->at(x+dx, y+dy)];
+						CTileProperties &Tile = TileProperty[mp_Map->at(x+dx, y+dy)];
 						if( !Tile.bdown and !Tile.bup and
 							!Tile.bleft and !Tile.bright )
 						{
@@ -221,6 +221,6 @@ void CPlayer::UnmountNessie()
 				}
 			}
 		}
-	}
+	}*/
 }
 

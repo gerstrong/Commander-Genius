@@ -11,7 +11,6 @@
 #define CGAMECONTROL_H_
 
 #include "common/CGameLauncher.h"
-#include "common/CTeleporter.h"
 #include "common/options.h"
 #include "fileio/CSavedGame.h"
 #include "engine/CEGAGraphics.h"
@@ -72,8 +71,6 @@ private:
 	Uint8 m_startLevel;
 	CExeFile m_ExeFile;
 	
-	std::vector<stTeleporterTable> m_TeleporterTable; // Teleporter table used for the destinations
-
 	CEGAGraphics *m_EGAGraphics;
 };
 

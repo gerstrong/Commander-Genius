@@ -27,15 +27,14 @@
 ///
 CPlayer::CPlayer(const char &Episode, short &Level, char &Difficulty,
 				 bool *mp_level_completed, stOption *mp_option,
-				 std::vector<CObject> &m_Object, CMap &map) :
-CObject(&map),
+				 std::vector<CObject*> &m_Object, CMap &map) :
+CObject(&map, 0, 0, OBJ_PLAYER),
 m_episode(Episode),
 m_level(Level),
 m_difficulty(Difficulty),
 pjumpupspeed_decrease(g_pBehaviorEngine->getPhysicsSettings().player.defaultjumpupdecreasespeed),
-m_Ankhshield(CObject(&map)),
+m_Ankhshield(CObject(&map,0,0,OBJ_NONE)),
 mp_levels_completed(mp_level_completed),
-mp_map(NULL),
 mp_option(mp_option),
 mp_StatusScr(NULL)
 {
@@ -65,7 +64,7 @@ void CPlayer::setDatatoZero()
     exists = true;
 	onscreen = true;
 	pfallspeed = 0,
-	pdir = pshowdir = DOWN;
+	pdir = pshowdir = (m_level==80) ? DOWN : RIGHT;
 	inhibitfall = hideplayer = false;
   	pwalkframe = pwalkframea = 0;
     dpadcount = 0;
@@ -152,8 +151,8 @@ bool CPlayer::scrollTriggers()
 	int px, py, left, up, right, down, speed;
 	bool scrollchanged=false;
 
-	Uint16& scroll_x = mp_map->m_scrollx;
-	Uint16& scroll_y = mp_map->m_scrolly;
+	Uint16& scroll_x = mp_Map->m_scrollx;
+	Uint16& scroll_y = mp_Map->m_scrolly;
 	
 	if (pdie) return scrollchanged;
 
@@ -167,50 +166,50 @@ bool CPlayer::scrollTriggers()
 	speed = g_pCamera->getScrollSpeed();
 
 	// left-right scrolling
-	if(px > right && scroll_x < mp_map->m_maxscrollx)
+	if(px > right && scroll_x < mp_Map->m_maxscrollx)
 	{
 		do{
 			px = (getXPosition()>>STC)-scroll_x;
-			mp_map->scrollRight();
-		}while(px > right+speed && scroll_x < mp_map->m_maxscrollx);
+			mp_Map->scrollRight();
+		}while(px > right+speed && scroll_x < mp_Map->m_maxscrollx);
 		scrollchanged = true;
 	}
 	else if(px < left && scroll_x > 32)
 	{
 		do{
 			px = (getXPosition()>>STC)-scroll_x;
-			mp_map->scrollLeft();
+			mp_Map->scrollLeft();
 		}while(px < left-speed && scroll_x > 32);
 		scrollchanged = true;
 	}
 
 	// up-down scrolling
-	if (py > down && scroll_y < mp_map->m_maxscrolly)
+	if (py > down && scroll_y < mp_Map->m_maxscrolly)
 	{
 		do{
 			py = (getYPosition()>>STC)-scroll_y;
-			mp_map->scrollDown();
-		}while(py > down+speed && scroll_y < mp_map->m_maxscrolly);
+			mp_Map->scrollDown();
+		}while(py > down+speed && scroll_y < mp_Map->m_maxscrolly);
 		scrollchanged = true;
 	}
 	else if ( py < up && scroll_y > 32  )
 	{
 		do{
 			py = (getYPosition()>>STC)-scroll_y;
-			mp_map->scrollUp();
+			mp_Map->scrollUp();
 		}while(py < up-speed && scroll_y > 32);
 		scrollchanged = true;
 	}
 
 	// This will always snap correctly to the edge
 	while(scroll_x < 32)
-		mp_map->scrollRight();
-	while(scroll_x > mp_map->m_maxscrollx)
-		mp_map->scrollLeft();
+		mp_Map->scrollRight();
+	while(scroll_x > mp_Map->m_maxscrollx)
+		mp_Map->scrollLeft();
 	while(scroll_y < 32)
-		mp_map->scrollDown();
-	while(scroll_y > mp_map->m_maxscrolly)
-		mp_map->scrollUp();
+		mp_Map->scrollDown();
+	while(scroll_y > mp_Map->m_maxscrolly)
+		mp_Map->scrollUp();
 
 	return scrollchanged;
 }
@@ -804,31 +803,31 @@ bool CPlayer::checkObjSolid()
 	else
 		blockedd = false;
 
-	std::vector<CObject>::iterator it_obj = mp_object->begin();
+	std::vector<CObject*>::iterator it_obj = mp_object->begin();
 	for( ; it_obj != mp_object->end() ; it_obj++ )
 	{
-		if(it_obj->cansupportplayer)
+		if((*it_obj)->cansupportplayer)
 		{	// can support player
-			if(getXRightPos() >= it_obj->getXLeftPos()  &&
-					getXLeftPos() <= it_obj->getXRightPos() )
+			if(getXRightPos() >= (*it_obj)->getXLeftPos()  &&
+					getXLeftPos() <= (*it_obj)->getXRightPos() )
 			{
-				if(getYUpPos() >= it_obj->getYUpPos()-(1<<STC)  &&
-					getYUpPos() <= it_obj->getYMidPos() )
+				if(getYUpPos() >= (*it_obj)->getYUpPos()-(1<<STC)  &&
+					getYUpPos() <= (*it_obj)->getYMidPos() )
 				{	// In this case the object pushs the player down!
 					pjumping = PNOJUMP;
-					int dy = it_obj->getYDownPos() - getYUpPos();
+					int dy = (*it_obj)->getYDownPos() - getYUpPos();
 					moveDown(dy);
 				}
-				else if(getYDownPos() >= it_obj->getYUpPos()-(1<<STC)  &&
-						getYDownPos() <= it_obj->getYMidPos() )
+				else if(getYDownPos() >= (*it_obj)->getYUpPos()-(1<<STC)  &&
+						getYDownPos() <= (*it_obj)->getYMidPos() )
 				{	// In this case stand on the object
 					pfalling = false;
 					blockedd = true;
 					if(pjumping == PJUMPLAND)
 						pjumping = PNOJUMP;
 					supportedbyobject = true;
-					psupportingobject = it_obj->m_index;
-					int dy = it_obj->getYUpPos() - getYDownPos()+1;
+					psupportingobject = (*it_obj)->m_index;
+					int dy = (*it_obj)->getYUpPos() - getYDownPos()+1;
 					moveYDir(dy);
 					break;
 				}

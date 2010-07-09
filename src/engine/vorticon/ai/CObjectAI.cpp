@@ -9,7 +9,7 @@
 #include "../../../sdl/CVideoDriver.h"
 #include "../../../CLogFile.h"
 
-CObjectAI::CObjectAI(CMap *p_map, std::vector<CObject> &objvect, std::vector<CPlayer> &Player,
+CObjectAI::CObjectAI(CMap *p_map, std::vector<CObject*> &objvect, std::vector<CPlayer> &Player,
 					 stOption *p_options, int NumPlayers, int episode, int level,
 					 char difficulty, bool &dark) :
 m_Objvect(objvect),
@@ -23,7 +23,6 @@ m_dark(dark)
 	m_Episode = episode;
 	m_gunfiretimer = 0;
 	sparks_left = 0;
-	PlatExtending = false;
 }
 
 //////////////////
@@ -31,9 +30,10 @@ m_dark(dark)
 //////////////////
 void CObjectAI::process()
 {
+
 	for( size_t i=0 ; i < m_Objvect.size() ; i++ )
 	{
-		CObject &object = m_Objvect.at(i);
+		CObject &object = *m_Objvect.at(i);
 		if( checkforAIObject(object) )
 		{
 			object.processFalling();
@@ -47,6 +47,8 @@ void CObjectAI::process()
 				{
 					if ( object.hitdetect(*it_player) )
 					{
+						object.getTouchedBy(*it_player);
+
 						object.touchPlayer = true;
 						object.touchedBy = it_player->m_index;
 
@@ -55,9 +57,13 @@ void CObjectAI::process()
 				}
 
 		    }
-			performSpecialAIType( object );
+
+			object.process();
+
+			std::vector<CObject*>::iterator theOther = m_Objvect.begin();
+			for( ; theOther != m_Objvect.end() ; theOther++ )
+				object.getTouchedBy(**theOther);
 		}
-		object.process();
 	}
 
 	if(m_gunfiretimer < ((m_Episode==3) ? 180 : 50 )) m_gunfiretimer++;
@@ -94,7 +100,7 @@ bool CObjectAI::checkforAIObject( CObject &object )
 
    	object.onscreen = true;
 
-   	if (object.hasbeenonscreen || object.zapped ||
+   	if (object.hasbeenonscreen ||
 		type==OBJ_RAY ||
 		type==OBJ_ICECHUNK || type==OBJ_PLATFORM ||
 		type==OBJ_PLATVERT || type==OBJ_YORP ||
@@ -105,59 +111,6 @@ bool CObjectAI::checkforAIObject( CObject &object )
     }
 
    	return false;
-}
-
-void CObjectAI::performSpecialAIType( CObject &object )
-{
-	switch(object.m_type)
-	{
-		//KEEN1
-		case OBJ_YORP: yorp_ai(object, &m_Player[0], m_difficulty>1); break;
-		case OBJ_GARG: garg_ai(object, m_Player, m_difficulty>1); break;
-		case OBJ_VORT: vort_ai(object, m_Level, m_Episode, m_difficulty, m_dark ); break;
-		case OBJ_BUTLER: butler_ai(object, m_difficulty); break;
-		case OBJ_TANK: tank_ai(object, m_difficulty>1); break;
-		case OBJ_ICECANNON: icecannon_ai(object); break;
-		case OBJ_ICECHUNK: icechunk_ai(object); break;
-		case OBJ_ICEBIT: icebit_ai(object); break;
-		case OBJ_TELEPORTER: teleporter_ai(object); break;
-		case OBJ_ROPE: rope_ai(object); break;
-
-		//KEEN2
-		case OBJ_SCRUB: scrub_ai(object); break;
-		case OBJ_TANKEP2: tankep2_ai(object, m_difficulty>1); break;
-		case OBJ_PLATFORM: platform_ai(object); break;
-		case OBJ_VORTELITE: vortelite_ai(object, m_dark); break;
-		case OBJ_SECTOREFFECTOR: se_ai(object); break;
-		case OBJ_BABY: baby_ai(object, m_Episode, m_difficulty>1); break;
-		case OBJ_EXPLOSION: explosion_ai(object); break;
-		case OBJ_EARTHCHUNK: earthchunk_ai(object); break;
-		case OBJ_SPARK: spark_ai(object, sparks_left ); break;
-
-		//KEEN3
-		case OBJ_FOOB: foob_ai(object, m_difficulty>1); break;
-		case OBJ_NINJA: ninja_ai(object, m_difficulty>1); break;
-		case OBJ_MEEP: meep_ai(object); break;
-		case OBJ_SNDWAVE: sndwave_ai(object, m_difficulty>1); break;
-		case OBJ_MOTHER: mother_ai(object, m_difficulty>1 ); break;
-		case OBJ_FIREBALL: fireball_ai(object, m_difficulty>1 ); break;
-		case OBJ_BALL: ballandjack_ai(object); break;
-		case OBJ_JACK: ballandjack_ai(object); break;
-		case OBJ_PLATVERT: platvert_ai(object); break;
-		case OBJ_NESSIE: nessie_ai(object); break;
-
-		//Common Objects
-		case OBJ_RAY: ray_ai( object, mp_Options[OPT_FULLYAUTOMATIC].value ); break;
-		case OBJ_DOOR: door_ai( object, DOWN); break;
-		case OBJ_AUTORAY: case OBJ_AUTORAY_V: autoray_ai(object); break;
-		case OBJ_GOTPOINTS: gotpoints_ai(object); break;
-
-			//case OBJ_DEMOMSG: break;
-
-		default:
-			g_pLogFile->ftextOut("gamedo_enemy_ai: Object is of invalid type %d\n", object.m_type);
-			break;
-    }
 }
 
 void CObjectAI::SetAllCanSupportPlayer(CObject &object, bool state)
@@ -180,26 +133,6 @@ void CObjectAI::killplayer(int theplayer)
 	m_Player[theplayer].kill();
 }
 
-// anything (players/enemies) occupying the map tile at [mpx,mpy] is killed
-void CObjectAI::kill_all_intersecting_tile(int mpx, int mpy)
-{
-	 unsigned int xpix,ypix;
-	 unsigned int x, y;
-	 xpix = mpx<<CSF;
-	 ypix = mpy<<CSF;
-
-	 std::vector<CObject>::iterator object;
-	 for( object=m_Objvect.begin() ; object!=m_Objvect.end() ; object++ )
-	 {
-		 x = object->getXMidPos();
-		 y = object->getYUpPos();
-		 if (object->exists)
-			 if (xpix-(1<<CSF) <= x && xpix+(1<<CSF) >= x)
-				 if (ypix <= y && ypix+(1<<CSF) >= y)
-					 object->kill();
-	 }
-}
-
 ///
 // Cleanup Routine
 ///
@@ -208,7 +141,12 @@ void CObjectAI::deleteAllObjects()
 	// The real delete happens, when all the AI is done
 	// If the last object was deleted, throw it out of the list
 	if(!m_Objvect.empty())
+	{
+		std::vector<CObject*>::iterator obj=m_Objvect.begin();
+		for( ; obj != m_Objvect.end() ; obj++ )
+			delete *obj;
 		m_Objvect.clear();
+	}
 }
 
 CObjectAI::~CObjectAI() {

@@ -19,34 +19,19 @@
 
 class CObjectAI {
 public:
-	CObjectAI(CMap *p_map, std::vector<CObject> &objvect, std::vector<CPlayer> &Player,
+	CObjectAI(CMap *p_map, std::vector<CObject*> &objvect, std::vector<CPlayer> &Player,
 			 stOption *p_options, int NumPlayers, int episode, int level,
 			 char difficulty, bool &dark);
 
 	// main functions
 	void process();
 
-	bool getPlatMoving() { return PlatExtending; }
-	void triggerPlat(bool value) { PlatExtending = value; }
-
 	virtual ~CObjectAI();
 private:
 
 	// main AI functions
 	bool checkforAIObject( CObject &object );
-	void performSpecialAIType( CObject &object );
-	void deleteObj(CObject &object) { object.exists = false; }
 	void deleteAllObjects();
-
-	// ep1
-	void yorp_ai(CObject &object, CPlayer *p_player, bool hardmode);
-	void garg_ai(CObject &object, std::vector<CPlayer> &m_Player, bool hardmode);
-	void vort_ai(CObject &object, int level, int episode, char difficulty, bool dark);
-	void vort_initiatejump(CObject &object);
-	void butler_ai(CObject &object, char difficulty);
-	void tank_ai(CObject &object, bool hardmode);
-	bool tank_CanMoveLeft(CObject &object);
-	bool tank_CanMoveRight(CObject &object);
 
 	void icechunk_ai(CObject &object);
 	void smash(CObject &object);
@@ -120,11 +105,11 @@ private:
 
 	void killplayer(int theplayer);
 	void SetAllCanSupportPlayer(CObject &object, bool state);
-	void kill_all_intersecting_tile(int mpx, int mpy);
+	void kill_all_intersecting_tile(int mpx, int mpy, CObject &theObject);
 
 	// Variables
 	CMap *mp_Map;
-	std::vector<CObject> &m_Objvect;
+	std::vector<CObject*> &m_Objvect;
 	std::vector<CPlayer> &m_Player;
 	stOption *mp_Options;
 	int m_Level;
@@ -138,8 +123,6 @@ private:
 	// you must destroy the tantalus ray generator before exiting
 	int sparks_left;
 
-	// if true, a moving platform is currently extending/retracting (ep2)
-	bool PlatExtending;
 };
 
 #endif /* COBJECTAI_H_ */

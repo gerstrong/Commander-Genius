@@ -11,7 +11,8 @@
 #ifndef COBJECT_H_
 #define COBJECT_H_
 
-#include "../common/CBehaviorEngine.h"
+#include "CBehaviorEngine.h"
+#include "objenums.h"
 
 #define SAFE_DELETE_ARRAY(x) if(x) { delete [] x; x = NULL; }
 #define SAFE_DELETE(x) if(x) { delete x; x = NULL; }
@@ -21,6 +22,7 @@
 #define PSUPPORTEDBYOBJECT         0
 
 enum direction_t{
+	NONE,
 	RIGHT,
 	LEFT,
 	UP,
@@ -44,10 +46,11 @@ enum direction_t{
 
 class CObject {
 public:
-	CObject(CMap *pmap=NULL);
+	CObject(CMap *pmap, Uint32 x, Uint32 y, object_t type);
 	
 	object_t m_type;        		// yorp, vorticon, etc.
 	unsigned int m_index;        	// Like an ID for some objects that need this implementation
+	char HealthPoints;                		// episode 1 style four-shots-to-kill
 	bool exists;
 	bool onscreen;    				// true=(scrx,scry) position is visible onscreen
 	bool hasbeenonscreen;
@@ -64,15 +67,11 @@ public:
 	bool solid;
 	
 	bool canbezapped;         // if 0 ray will not stop on hitdetect
-	int zapped;              // number of times got hit by keen's raygun
-	int zapd;	   // x,y, and direction of last shot at time of impact
-	char zappedbyenemy;	   // if 1, it was an ENEMYRAY and not keen that shot it
-	
+
 	bool inhibitfall;         // if true common_enemy_ai will not do falling
- 	bool bumped;
 
 	bool cansupportplayer;
-	std::vector<CObject> *mp_object;
+	std::vector<CObject*> *mp_object;
 	
 	bool blockedl, blockedr, blockedu, blockedd;
 	signed int xinertia, yinertia;
@@ -83,47 +82,15 @@ public:
 	unsigned char touchPlayer;      // 1=hit detection with player
 	unsigned char touchedBy;        // which player was hit
 	
-	bool needinit;    // 1=new object--requires initilization
 	bool dead;
 	
-	// data for ai and such, used differently depending on
-	// what kind of object it is
-	union ai
-	{
-		// ep1
-		stYorpData yorp;
-		stGargData garg;
-		stVortData vort;
-		stButlerData butler;
-		stTankData tank;
-		stRayData ray;
-		stDoorData door;
-		stIceChunk icechunk;
-		stTeleportData teleport;
-		stRopeData rope;
-		
-		// ep2
-		stScrubData scrub;
-		stPlatformData platform;
-		stVortEliteData vortelite;
-		stSEData se;
-		stBabyData baby;
-		
-		// ep3
-		stFoobData foob;
-		stNinjaData ninja;
-		stMeepData meep;
-		stMotherData mother;
-		stBallJackData bj;
-		stNessieData nessie;
-	} ai;
-	
+	bool needinit;
+
 	void setupObjectType(int Episode);
 	void checkinitialCollisions();
 	void setScrPos( int px, int py );
 	bool calcVisibility( int player_x, int player_y );
-	bool spawn(int x0, int y0, object_t otype, int Episode, direction_t dirof = RIGHT );
-	void setIndex(int index);
+	//bool spawn(int x0, int y0, object_t otype, int Episode, direction_t dirof = RIGHT );
 	
 	// Moving parts
 	void moveToForce(int new_x, int new_y);
@@ -149,7 +116,7 @@ public:
 	bool checkSolidU( int x1, int x2, int y1);
 	bool checkSolidD( int x1, int x2, int y2);
 
-	// getters
+	// getters for positions
 	unsigned int getXPosition();
 	unsigned int getYPosition();
 	unsigned int getXLeftPos();
@@ -160,13 +127,16 @@ public:
 	unsigned int getYMidPos();
 	
 	void processFalling();
+	virtual void getTouchedBy(CObject &theObject) {};
+	virtual void getShotByRay();
+	void kill_intersecting_tile(int mpx, int mpy, CObject &theObject);
 
 	void draw();
 	void drawMask(SDL_Surface *dst, CSprite &Sprite, int mx, int my);
 
 	virtual ~CObject();
 
-private:
+protected:
 	CMap *mp_Map;
 
 	Uint16 m_blinktime;

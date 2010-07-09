@@ -6,7 +6,7 @@
  */
 
 #include "CPlayGameVorticon.h"
-#include "../ai/se.h"
+#include "../ai/CSectorEffector.h"
 #include "../../../common/objenums.h"
 #include "../../../sdl/sound/CSound.h"
 #include "../finale/CTantalusRay.h"
@@ -23,7 +23,7 @@ void CPlayGameVorticon::processInLevel()
 				continue;
 
 			// Process the other stuff like, items, jump, etc.
-			m_Player[i].processInLevel(mp_ObjectAI->getPlatMoving());
+			m_Player[i].processInLevel(getPlatMoving());
 
 			// If the player touched a hint trigger in which we have to show a Message, do it so
 			std::string hinttext;
@@ -53,9 +53,8 @@ void CPlayGameVorticon::processInLevel()
 			}
 			else if(m_Player[i].level_done == LEVEL_TELEPORTER)
 			{	// This happens, when keen used the inlevel teleporter...
-				CTeleporter Teleporter( m_TeleporterTable, m_Episode);
 				goBacktoMap();
-				Teleporter.teleportPlayerFromLevel(m_Map, m_Object, m_Player[i], m_checkpoint_x, m_checkpoint_y);
+				teleportPlayerFromLevel(m_Player[i], m_checkpoint_x, m_checkpoint_y);
 				break;
 			}
 		}
@@ -81,25 +80,25 @@ void CPlayGameVorticon::processLevelTrigger(int trigger)
 {
 	if (trigger == LVLTRIG_TANTALUS_RAY)
 	{
-		m_dark = false;
+		m_Map.m_Dark = false;
 		g_pMusicPlayer->stop();
-		g_pGfxEngine->Palette.setdark(m_dark);
+		g_pGfxEngine->Palette.setdark(m_Map.m_Dark);
 		mp_Finale = new CTantalusRay(m_Map, m_Object, *mp_ObjectAI);
 		m_gameover = true;
 	}
 	else if (trigger == LVLTRIG_BRIDGE)
 	{	// it's a moving platform switch--don't allow player to hit it again while
 		// the plat is still moving as this will glitch
-		if (!mp_ObjectAI->getPlatMoving())
+		if (!getPlatMoving())
 		{
-			mp_ObjectAI->triggerPlat(true);
+			triggerPlat(true);
 		}
 		// The spawning of the plat extension is defined in the CPlayer class
 	}
 	else if (trigger == LVLTRIG_LIGHT)
 	{
-		m_dark = !m_dark;
-		g_pGfxEngine->Palette.setdark(m_dark);
+		m_Map.m_Dark = !m_Map.m_Dark;
+		g_pGfxEngine->Palette.setdark(m_Map.m_Dark);
 	}
 }
 

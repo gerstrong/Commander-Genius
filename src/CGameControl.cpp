@@ -137,7 +137,7 @@ bool CGameControl::init(char mode)
 			mp_PlayGame = new CPlayGameVorticon(m_ExeFile, m_startLevel,
 												m_Numplayers, m_Difficulty,
 												mp_option, m_show_finale,
-												m_SavedGame, m_TeleporterTable);
+												m_SavedGame);
 		}
 
 		m_show_finale = false; // just show it once!!
@@ -205,10 +205,11 @@ bool CGameControl::loadResources(Uint8 flags)
 	CPatcher Patcher(m_ExeFile);
 	Patcher.patchMemory();
 
+	g_pBehaviorEngine->setEpisode(m_Episode);
+
 	if( m_Episode == 1 || m_Episode == 2 || m_Episode == 3 ) // Vorticon resources
 	{
-		CTeleporter Teleporter(m_TeleporterTable, m_Episode);
-		Teleporter.createTeleporterTable(p_exedata);
+		g_pBehaviorEngine->readTeleporterTable(p_exedata);
 
 		if( (flags & LOADGFX) == LOADGFX )
 		{

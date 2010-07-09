@@ -15,6 +15,7 @@
 #include "../../../common/CMapLoader.h"
 #include "../../../graphics/CGfxEngine.h"
 #include "../../../StringUtils.h"
+#include "../ai/CTeleporter.h"
 
 #define SAFE_DELETE(x) if(x) { delete x; x = NULL; }
 
@@ -24,14 +25,12 @@
 CPlayGameVorticon::CPlayGameVorticon( CExeFile &ExeFile, char level,
 		  char numplayers, char difficulty,
 		  stOption *p_option,
-		  bool finale, CSavedGame &SavedGame,
-		  std::vector<stTeleporterTable> &TeleporterTable) :
+		  bool finale, CSavedGame &SavedGame) :
 CPlayGame(ExeFile, level, numplayers, difficulty, p_option),
-m_dark(false),
 mp_ObjectAI(NULL),
 m_SavedGame(SavedGame),
-m_TeleporterTable(TeleporterTable),
-mp_HighScores(NULL)
+mp_HighScores(NULL),
+PlatExtending(false)
 {
 	mp_Menu = NULL;
 	mp_Finale = NULL;
@@ -45,7 +44,6 @@ mp_HighScores(NULL)
 	{
 		// Put some important Player properties
 		CPlayer &thisPlayer = m_Player.at(i);
-		thisPlayer.setIndex(i);
 		thisPlayer.setDatatoZero();
 	}
 
@@ -95,8 +93,8 @@ void CPlayGameVorticon::setupPlayers()
 		it_player->w = sprite.getWidth()<<STC;
 		it_player->h = sprite.getHeight()<<STC;
 		it_player->m_level = m_Level;
-		m_dark = false;
-		g_pGfxEngine->Palette.setdark(m_dark);
+		m_Map.m_Dark = false;
+		g_pGfxEngine->Palette.setdark(m_Map.m_Dark);
 		
 		// Set the pointers to the map and object data
 		it_player->setMapData(&m_Map);
@@ -116,7 +114,7 @@ bool CPlayGameVorticon::init()
 
 	// Create an empty map
 	m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
-	std::vector<CObject>::iterator it_obj = m_Object.begin();
+	std::vector<CObject*>::iterator it_obj = m_Object.begin();
 
 	CMapLoader MapLoader( &m_Map, &m_Player );
 	MapLoader.m_checkpointset = m_checkpointset;
@@ -142,7 +140,7 @@ bool CPlayGameVorticon::init()
 	// Initialize the AI
 	mp_ObjectAI = new CObjectAI(&m_Map, m_Object, m_Player, mp_option,
 								m_NumPlayers, m_Episode, m_Level,
-								m_Difficulty, m_dark);
+								m_Difficulty, m_Map.m_Dark);
 
 	// Check if Player meets the conditions to show a cutscene. This also happens, when finale of episode has reached
 	verifyFinales();
@@ -325,8 +323,8 @@ void CPlayGameVorticon::process()
 			{
 				CBitmap *pBitmap = g_pGfxEngine->getBitmap("GAMEOVER");
 				g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
-				mp_gameoverbmp = new CEGABitmap(&m_Map , g_pVideoDriver->getBlitSurface(), pBitmap);
-				mp_gameoverbmp->setScrPos( 160-(pBitmap->getWidth()/2), 100-(pBitmap->getHeight()/2) );
+				//mp_gameoverbmp = new CEGABitmap(&m_Map , g_pVideoDriver->getBlitSurface(), pBitmap);
+				//mp_gameoverbmp->setScrPos( 160-(pBitmap->getWidth()/2), 100-(pBitmap->getHeight()/2) );
 			}
 		}
 		else // No game over
@@ -529,6 +527,23 @@ void CPlayGameVorticon::createFinale()
 	}
 }
 
+void CPlayGameVorticon::teleportPlayerFromLevel(CPlayer &player, int origx, int origy)
+{
+	int destx, desty;
+
+	CTeleporter *teleporter = new CTeleporter(&m_Map, m_Player, origx, origy);
+	player.beingteleported = true;
+	player.solid = false;
+	destx = g_pBehaviorEngine->getTeleporterTableAt(5).x;
+	desty = g_pBehaviorEngine->getTeleporterTableAt(5).y;
+	teleporter->solid = false;
+	teleporter->direction = TELEPORTING_SCROLL;
+	teleporter->destx = destx>>TILE_S;
+	teleporter->desty = desty>>TILE_S;
+	teleporter->whichplayer = player.m_index;
+	m_Object.push_back(teleporter);
+}
+
 void CPlayGameVorticon::collectHighScoreInfo()
 {
 	if(m_Episode == 1)
@@ -576,11 +591,10 @@ void CPlayGameVorticon::drawObjects()
 			it_player->draw();
 	}
 
-	std::vector<CObject>::iterator it_obj = m_Object.begin();
+	std::vector<CObject*>::iterator it_obj = m_Object.begin();
 	for(; it_obj!=m_Object.end() ; it_obj++)
-		it_obj->draw();
+		(*it_obj)->draw();
 }
-
 ////
 // Cleanup Routine
 ////
