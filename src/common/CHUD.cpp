@@ -159,6 +159,29 @@ void CHUD::CreateBackground()
 	text.w = 20;
 	text.h = 4;
 	SDL_FillRect(mp_Background, &text, SDL_MapRGBA(mp_Background->format, 255,255,255,255)); // White
+	
+	// Draw the keen head icon
+	SDL_Rect headsrcrect, headdstrect;
+	headsrcrect.x = 0;
+	headsrcrect.y = 0;
+	headdstrect.w = headsrcrect.w = 16;
+	headdstrect.h = headsrcrect.h = 10;
+	headdstrect.x = 1;
+	headdstrect.y = 16;
+	CSprite &KeenHeadSprite = g_pGfxEngine->getSprite(PFIREFRAME);
+	SDL_FillRect(mp_Background, &headdstrect, SDL_MapRGBA(mp_Background->format, 0,0,0,255)); // Black
+	SDL_BlitSurface( KeenHeadSprite.getSDLSurface(), &headsrcrect, mp_Background, &headdstrect);
+
+	// Draw the pistol
+	headsrcrect.x = 2;
+	headsrcrect.y = 9;
+	headdstrect.w = headsrcrect.w = 16;
+	headdstrect.h = headsrcrect.h = 10;
+	headdstrect.x = 41;
+	headdstrect.y = 16;
+	SDL_FillRect(mp_Background, &headdstrect, SDL_MapRGBA(mp_Background->format, 0,0,0,255)); // Black
+	SDL_BlitSurface( KeenHeadSprite.getSDLSurface(), &headsrcrect, mp_Background, &headdstrect);
+
 }
 
 /**
@@ -176,27 +199,6 @@ void CHUD::render()
 
 	// Draw the background
 	SDL_BlitSurface( mp_Background, NULL, blitsurface, &m_Rect);
-	
-		// Draw the keen head icon
-	SDL_Rect headsrcrect, headdstrect;
-	headsrcrect.x = 0;
-	headsrcrect.y = 0;
-	headdstrect.w = headsrcrect.w = 16;
-	headdstrect.h = headsrcrect.h = 16;
-	headdstrect.x = 4;
-	headdstrect.y = 15;
-	CSprite &KeenHeadSprite = g_pGfxEngine->getSprite(LIVES_SPRITE);
-	SDL_BlitSurface( KeenHeadSprite.getSDLSurface(), &headsrcrect, blitsurface, &headdstrect);
-
-	// Draw the pistol
-	headsrcrect.x = 0;
-	headsrcrect.y = 0;
-	headdstrect.w = headsrcrect.w = 16;
-	headdstrect.h = headsrcrect.h = 16;
-	headdstrect.x = 45;
-	headdstrect.y = 15;
-	CSprite &KeenGunSprite = g_pGfxEngine->getSprite(SHOTS_SPRITE);
-	SDL_BlitSurface( KeenGunSprite.getSDLSurface(), &headsrcrect, blitsurface, &headdstrect);
 
 	CFont &Font = g_pGfxEngine->getFont(0);
 	Font.setFGColour(blitsurface->format, 0x000000);

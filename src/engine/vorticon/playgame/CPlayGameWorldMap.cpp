@@ -110,16 +110,18 @@ void CPlayGameVorticon::goBacktoMap()
 	m_Level = WM_MAP_NUM;
 	g_pMusicPlayer->stop();
 	// Now that the new level/map will be loaded, the players aren't dead anymore!
-	for( int i=0 ; i<m_NumPlayers ; i++ )
+	std::vector<CPlayer>::iterator player= m_Player.begin();
+	for( ; player != m_Player.end() ; player++ )
 	{
-		m_Player[i].level_done = LEVEL_NOT_DONE;
+		player->level_done = LEVEL_NOT_DONE;
+		player->HealthPoints = 1;
 
 		// Restore checkpoint
-		m_Player[i].moveToForce(m_checkpoint_x,m_checkpoint_y);
-		m_Player[i].inventory.HasCardYellow = 0;
-		m_Player[i].inventory.HasCardBlue = 0;
-		m_Player[i].inventory.HasCardGreen = 0;
-		m_Player[i].inventory.HasCardRed = 0;
+		player->moveToForce(m_checkpoint_x,m_checkpoint_y);
+		player->inventory.HasCardYellow = 0;
+		player->inventory.HasCardBlue = 0;
+		player->inventory.HasCardGreen = 0;
+		player->inventory.HasCardRed = 0;
 	}
 	cleanup();
 	init();
