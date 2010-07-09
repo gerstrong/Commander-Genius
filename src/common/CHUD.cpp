@@ -197,7 +197,6 @@ void CHUD::render()
 	headdstrect.y = 19;
 	CSprite &KeenGunSprite = g_pGfxEngine->getSprite(108);
 	SDL_BlitSurface( KeenGunSprite.getSDLSurface(), &headsrcrect, blitsurface, &headdstrect);
-	SDL_BlitSurface( KeenGunSprite.getSDLSurface(), &headsrcrect, blitsurface, &headdstrect);
 
 	CFont &Font = g_pGfxEngine->getFont(0);
 	Font.setFGColour(blitsurface->format, 0x000000);

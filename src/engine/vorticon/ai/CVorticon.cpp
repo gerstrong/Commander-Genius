@@ -20,6 +20,7 @@ m_Player(m_vec_Player)
 	 timer = 0;
 	 dist_traveled = VORT_TRAPPED_DIST+1;
 	 HealthPoints = hp;
+	 canbezapped = true;
 
 	 short Episode = g_pBehaviorEngine->getEpisode();
 	 // copy in animation frame indexes for the current ep
@@ -290,4 +291,15 @@ void CVorticon::initiateJump()
 
 	inhibitfall = true;
 	state = VORT_JUMP;
+}
+
+void CVorticon::getTouchedBy(CObject &theObject)
+{
+	if(theObject.m_type == OBJ_PLAYER)
+	{
+		if(	state != VORT_DYING and
+			state != VORT_DEAD and
+			state != VORT2_DYING )
+		theObject.kill();
+	}
 }

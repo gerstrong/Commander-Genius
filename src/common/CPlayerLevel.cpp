@@ -127,6 +127,11 @@ void CPlayer::walkbehindexitdoor()
     }
 }
 
+void CPlayer::kill()
+{
+	kill(false);
+}
+
 void CPlayer::kill(bool force)
 {
 	if(!force) // force can happens for example, when player leaves the map to the most lower-side
@@ -963,4 +968,3 @@ void CPlayer::getShotByRay()
 	if(!godmode)
 		CObject::getShotByRay();
 }
-

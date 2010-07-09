@@ -19,14 +19,42 @@ CObject(p_map, x, y, OBJ_ROPE)
 	inhibitfall = 1;
 	sprite = OBJ_ROPE_DEFSPRITE;
 	needinit = false;
+	droptimer = 0;
 }
 
 void CRope::process()
 {
 	switch(state)
 	{
-	case ROPE_IDLE:
-		if (HealthPoints >= 0)
+	case ROPE_DROPSTONE:
+		if (!droptimer)
+		{
+			droptimer = STONE_DROP_RATE;
+			rope_movestone();
+			g_pGfxEngine->pushEffectPtr(new CVibrate(400));
+
+			//theObject.blockedd = false;
+
+			// check if we've hit the ground yet
+			for(int x=2;x<STONE_WIDTH-2;x++)
+			{
+				if (g_pBehaviorEngine->getTileProperties().at(mp_Map->at(stoneX+x, stoneY+2)).bup)
+				{
+					exists=false;
+					return;
+				}
+			}
+		}
+		else droptimer--;
+	default: break;
+	}
+}
+
+void CRope::getShotByRay()
+{
+	if(state == ROPE_IDLE)
+	{
+		if ( exists && canbezapped )
 		{
 			int x, y;
 			// rope got broke! time to drop the stone
@@ -42,33 +70,31 @@ void CRope::process()
 			// get color of background
 			bgtile = mp_Map->at(x, y);
 		}
-		break;
-	default: break;
 	}
 }
 
-void CRope::rope_movestone(CObject &theObject)
+
+void CRope::rope_movestone()
 {
 	int xa,ya;
-	int x,y;
 
 	xa = stoneX;
 	ya = stoneY;
 
 	// move the stone down one space and kill anything in it's path!
-	for(y=STONE_HEIGHT;y>0;y--)
+	for(int y=STONE_HEIGHT;y>0;y--)
 	{
-		for(x=0;x<STONE_WIDTH;x++)
+		for(int x=0;x<STONE_WIDTH;x++)
 		{
 			mp_Map->setTile(x+xa,y+ya, mp_Map->at(x+xa, y+ya-1), true);
 
 			// if the stone hits any enemies, kill them
-			kill_intersecting_tile(x+xa, y+ya, theObject);
+			//kill_intersecting_tile(x+xa, y+ya, theObject);
 		}
 	}
 
 	// clear the space at the top
-	for(x=0;x<STONE_WIDTH;x++)
+	for(int x=0;x<STONE_WIDTH;x++)
 		mp_Map->setTile(x+xa,ya,bgtile, true);
 
 	stoneY++;
@@ -76,26 +102,21 @@ void CRope::rope_movestone(CObject &theObject)
 
 void CRope::getTouchedBy(CObject &theObject)
 {
-	if(state == ROPE_DROPSTONE)
+	if(state == ROPE_DROPSTONE && m_type==OBJ_ROPE)
 	{
-	if (!droptimer)
-	{
-		droptimer = STONE_DROP_RATE;
-		rope_movestone(theObject);
-		g_pGfxEngine->pushEffectPtr(new CVibrate(400));
+		int xa,ya;
 
-		theObject.blockedd = false;
+		xa = stoneX;
+		ya = stoneY;
 
-		// check if we've hit the ground yet
-		for(x=2;x<STONE_WIDTH-2;x++)
+		// move the stone down one space and kill anything in it's path!
+		for(int y=STONE_HEIGHT;y>0;y--)
 		{
-			if (g_pBehaviorEngine->getTileProperties().at(mp_Map->at(stoneX+x, stoneY+2)).bup)
+			for(int x=0;x<STONE_WIDTH;x++)
 			{
-				exists=false;
-				return;
+				// if the stone hits any enemies, kill them
+				kill_intersecting_tile(x+xa, y+ya, theObject);
 			}
 		}
-	}
-	else droptimer--;
 	}
 }

@@ -876,6 +876,7 @@ bool CPlayer::drawStatusScreen()
 	else return true;
 }
 
+
 ///
 // Cleanup Part
 ///

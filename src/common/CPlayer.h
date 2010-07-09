@@ -58,7 +58,8 @@ public:
 	void processInLevel(const bool &platextending);
 	void touchedExit(int mpx);
 	void walkbehindexitdoor();
-	void kill(bool force=false);
+	void kill(bool force);
+	void kill();
 	void dieanim();
 	void setDir();
 	void getgoodies();

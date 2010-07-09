@@ -107,7 +107,7 @@ public:
 	virtual void process() { }
 	
 	bool hitdetect(CObject &hitobject);
-	void kill();
+	virtual void kill();
 	void blink(Uint16 frametime);
 
 	// Collision parts

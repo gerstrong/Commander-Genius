@@ -34,6 +34,7 @@ void CObjectAI::process()
 	for( size_t i=0 ; i < m_Objvect.size() ; i++ )
 	{
 		CObject &object = *m_Objvect.at(i);
+
 		if( object.checkforScenario() )
 		{
 			object.processFalling();
@@ -51,7 +52,6 @@ void CObjectAI::process()
 
 						object.touchPlayer = true;
 						object.touchedBy = it_player->m_index;
-
 						break;
 					}
 				}
