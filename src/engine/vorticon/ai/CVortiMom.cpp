@@ -23,8 +23,6 @@ m_Object(Object)
 		dir = LEFT;
 
 	blockedr = blockedl = 0;
-	canbezapped = 1;
-	needinit = 0;
 }
 
 void CVortiMom::process()

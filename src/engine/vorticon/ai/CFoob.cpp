@@ -14,7 +14,6 @@ m_Player(Player)
 	blockedr = 0;
 	canbezapped = 1;
 	dead = 0;
-	needinit = 0;
 }
 
 void CFoob::process()

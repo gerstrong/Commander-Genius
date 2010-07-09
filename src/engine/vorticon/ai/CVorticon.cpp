@@ -19,8 +19,6 @@ m_Player(m_vec_Player)
 	 state = VORT_LOOK;
 	 timer = 0;
 	 dist_traveled = VORT_TRAPPED_DIST+1;
-	 canbezapped = 1;
-	 needinit = 0;
 	 HealthPoints = hp;
 
 	 short Episode = g_pBehaviorEngine->getEpisode();

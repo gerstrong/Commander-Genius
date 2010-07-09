@@ -25,7 +25,6 @@ CTank(p_map, x, y, Player, Object, OBJ_TANKEP2)
 
 	canbezapped = 1;   // will stop bullets but is not harmed
 	inhibitfall = 1;
-	needinit = 0;
 }
 
 void CGuardRobot::process()

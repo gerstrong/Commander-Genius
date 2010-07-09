@@ -28,7 +28,6 @@ public:
 
 private:
 	int vector_x, vector_y;
-	int veloc_x, veloc_y;
 	int timer;
 	int m_gunfiretimer;
 
@@ -39,11 +38,11 @@ private:
 class CIceChunk : public CObject
 {
 public:
-	CIceChunk(CMap *p_map, Uint32 x, Uint32 y,
+	CIceChunk(CMap *p_map, Uint32 x, Uint32 y, Uint32 vx, Uint32 vy,
 			std::vector<CPlayer>& Player, std::vector<CObject*>& Object);
 	void process();
 	void smash();
-
+private:
 	int vector_x, vector_y;
 	int veloc_x, veloc_y;
 	std::vector<CPlayer>& m_Player;
@@ -53,7 +52,7 @@ public:
 class CIceBit : public CObject
 {
 public:
-	CIceBit(CMap *p_map, Uint32 x, Uint32 y);
+	CIceBit(CMap *p_map, Uint32 x, Uint32 y, Uint32 vec_x, Uint32 vec_y);
 	void process();
 
 	int vector_x, vector_y;

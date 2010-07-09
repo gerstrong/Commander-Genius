@@ -34,7 +34,6 @@ m_Player(mp_vec_Player)
 	my = y >> CSF;
 
 	// first time initialization
-	needinit = false;
 	canbezapped = false;
 	inhibitfall = true;
 
@@ -158,7 +157,6 @@ void CTeleporter::process()
 					int player = whichplayer;
 					mp_Map->setTile(mx, my, idleframe);
 					mp_Map->redrawAt(mx, my);
-					needinit = true;
 
 					exists=false;
 					m_Player[player].beingteleported = false;

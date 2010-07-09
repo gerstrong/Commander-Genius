@@ -47,7 +47,6 @@ m_Player(PlayerVect)
 		canbezapped = 0;
 	}
 	checkinitialCollisions();
-	needinit = 0;
 }
 
 void CBallJack::process()

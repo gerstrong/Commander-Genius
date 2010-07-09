@@ -21,7 +21,6 @@ CRay(p_map, x, y, dir, byType, byID)
 	inhibitfall = true;
 	blockedl = blockedr = 0;
 	canbezapped = 1;
-	needinit = 0;
 }
 
 void CFireBall::process()
@@ -35,7 +34,6 @@ void CFireBall::process()
 		m_type = OBJ_RAY;
 		state = RAY_STATE_SETZAPZOT;
 		inhibitfall = 1;
-		needinit = 0;
 		return;
 	}
 
@@ -64,7 +62,6 @@ void CFireBall::process()
 			m_type = OBJ_RAY;
 			state = RAY_STATE_SETZAPZOT;
 			inhibitfall = 1;
-			needinit = 0;
 			return;
 		}
 		else moveRight(speed);
@@ -77,7 +74,6 @@ void CFireBall::process()
 			m_type = OBJ_RAY;
 			state = RAY_STATE_SETZAPZOT;
 			inhibitfall = 1;
-			needinit = 0;
 			return;
 		}
 		else moveLeft(speed);

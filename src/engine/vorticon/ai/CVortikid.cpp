@@ -39,7 +39,6 @@ m_Player(mp_vec_Player)
 	inertia_y = 0;
 	jumpdecrate = 1;
 	canbezapped = 1;
-	needinit = 0;
 	blockedl = blockedr = blockedu = blockedd = 1;
 
 	// babies are in ep2 & ep3, but frameset starts one index prior in ep3

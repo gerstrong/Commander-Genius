@@ -22,6 +22,11 @@ CVortiNinja::CVortiNinja(CMap *p_map, Uint32 x, Uint32 y, std::vector<CPlayer> &
 CObject(p_map, x, y, OBJ_NINJA),
 m_Player(Player)
 {
+	init();
+}
+
+void CVortiNinja::init()
+{
 	state = NINJA_STAND;
 	timetillkick = (rnd()%(NINJA_MAX_TIME_TILL_KICK-NINJA_MIN_TIME_TILL_KICK))+NINJA_MIN_TIME_TILL_KICK;
 	if (mp_Map->m_Difficulty>1) timetillkick /= 3;
@@ -34,9 +39,6 @@ m_Player(Player)
 	animtimer = 0;
 	animframe = 0;
 	isdying = 0;
-	canbezapped = 1;
-	inhibitfall = 0;
-	needinit = 0;
 }
 
 void CVortiNinja::process()
@@ -156,7 +158,7 @@ void CVortiNinja::process()
 		if (YInertia > 0 && blockedd)
 		{
 			if (!isdying)
-				needinit = true;
+				init();
 			else
 				state = NINJA_DYING;
 
@@ -209,7 +211,7 @@ void CVortiNinja::process()
 			else{
 				YInertia=0;
 				state = NINJA_STAND;
-				needinit = true;
+				init();
 			}
 			YFrictionTimer = 0;
 		}

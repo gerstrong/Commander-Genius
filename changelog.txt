@@ -5,6 +5,7 @@ v0.3.2.1:
 ---------
 - Added HUD Display
 - Small issues fixed
+- Improved memory management for foes.
 
 v0.3.2:
 ---------

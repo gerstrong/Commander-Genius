@@ -23,7 +23,6 @@ m_Object(Object)
 	alreadyfiredcauseonsamelevel = 0;
 	dist_to_travel = TANK_MAXTRAVELDIST;
 	canbezapped = true;  // will stop bullets but are not harmed
-	needinit = false;
 }
 
 void CTank::process()

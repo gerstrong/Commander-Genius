@@ -34,7 +34,6 @@ m_blinktime(0)
 
 	this->x = x;
 	this->y = y;
-	m_type = OBJ_NONE;
 	canbezapped = false;
 	onscreen = false;
 
@@ -43,7 +42,6 @@ m_blinktime(0)
     yinertia = 0;
 
 	scrx = scry = 0;
-	exists = true;
 	dead = false;
 	onscreen = false;
 	hasbeenonscreen = false;

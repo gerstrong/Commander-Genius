@@ -20,6 +20,7 @@ class CVortiNinja : public CObject
 {
 public:
 	CVortiNinja(CMap *p_map, Uint32 x, Uint32 y, std::vector<CPlayer> &Player);
+	void init();
 	void process();
 private:
 	ninja_actions state;

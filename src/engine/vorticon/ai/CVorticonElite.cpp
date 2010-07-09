@@ -56,7 +56,6 @@ m_Object(mp_vec_Obj)
 	timesincefire = 0;
 	dist_traveled = VORTELITE_TRAPPED_DIST+1;
 	canbezapped = 1;
-	needinit = 0;
 }
 
 void CVorticonElite::process()
@@ -64,9 +63,6 @@ void CVorticonElite::process()
 	int bonk;
 	int x, y;
 
-	if (needinit)
-	{  // first time initialization
-	}
 	if (state==VORTELITE_DEAD)
 	{
 		hasbeenonscreen = 0;
