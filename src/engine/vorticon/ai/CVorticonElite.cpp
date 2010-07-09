@@ -5,13 +5,6 @@
 
 #include "CVorticonElite.h"
 
-// the "Vorticon Elite" enemies in ep2
-enum vortelite_actions{
-	VORTELITE_WALK, VORTELITE_JUMP,
-	VORTELITE_ABOUTTOFIRE, VORTELITE_FIRED,
-	VORTELITE_DYING, VORTELITE_DEAD,
-};
-
 #define VORTELITE_JUMP_PROB          15
 #define VORTELITE_FIRE_PROB          8
 

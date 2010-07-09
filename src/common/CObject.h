@@ -86,21 +86,6 @@ public:
 	
 	bool needinit;
 
-	// data for ai and such, used differently depending on
-	// what kind of object it is
-	union ai
-	{
-		// ep1
-		stRopeData rope;
-		
-		// ep2
-		stVortEliteData vortelite;
-		
-		// ep3
-		stMotherData mother;
-		stNessieData nessie;
-	} ai;
-	
 	void setupObjectType(int Episode);
 	void checkinitialCollisions();
 	void setScrPos( int px, int py );
@@ -144,6 +129,7 @@ public:
 	void processFalling();
 	virtual void getTouchedBy(CObject &theObject) {};
 	virtual void getShotByRay();
+	void kill_intersecting_tile(int mpx, int mpy, CObject &theObject);
 
 	void draw();
 	void drawMask(SDL_Surface *dst, CSprite &Sprite, int mx, int my);

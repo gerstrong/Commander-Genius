@@ -133,26 +133,6 @@ void CObjectAI::killplayer(int theplayer)
 	m_Player[theplayer].kill();
 }
 
-// anything (players/enemies) occupying the map tile at [mpx,mpy] is killed
-void CObjectAI::kill_all_intersecting_tile(int mpx, int mpy)
-{
-	 unsigned int xpix,ypix;
-	 unsigned int x, y;
-	 xpix = mpx<<CSF;
-	 ypix = mpy<<CSF;
-
-	 std::vector<CObject*>::iterator object;
-	 for( object=m_Objvect.begin() ; object!=m_Objvect.end() ; object++ )
-	 {
-		 x = (*object)->getXMidPos();
-		 y = (*object)->getYUpPos();
-		 if ((*object)->exists)
-			 if (xpix-(1<<CSF) <= x && xpix+(1<<CSF) >= x)
-				 if (ypix <= y && ypix+(1<<CSF) >= y)
-					 (*object)->kill();
-	 }
-}
-
 ///
 // Cleanup Routine
 ///

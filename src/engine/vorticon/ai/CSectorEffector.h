@@ -30,7 +30,7 @@ class CSectorEffector : public CObject
 {
 public:
 	CSectorEffector(CMap *p_map, Uint32 x, Uint32 y,
-			std::vector<CPlayer>& Player, std::vector<CObject*>& Object, bool &PlatExtending);
+			std::vector<CPlayer>& Player, std::vector<CObject*>& Object, unsigned int se_type);
 	void process();
 	void se_extend_plat();
 	void se_retract_plat();
@@ -43,6 +43,8 @@ public:
 	void se_mortimer_leg_right();
 	void se_mortimer_randomzaps();
 	void set_mortimer_surprised(bool yes);
+
+	void getTouchedBy(CObject &theObject);
 
 //private:
 	unsigned int setype;
@@ -60,6 +62,7 @@ public:
 	std::vector<CPlayer>& m_Player;
 	std::vector<CObject*>& m_Object;
 	bool &m_PlatExtending;
+	unsigned int m_bgtile;
 };
 
 #endif /* SE_H_ */

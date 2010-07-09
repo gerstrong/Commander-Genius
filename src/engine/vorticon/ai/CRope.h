@@ -8,12 +8,25 @@
 #ifndef CROPE_H_
 #define CROPE_H_
 
+enum ropestates{
+ROPE_IDLE, ROPE_DROPSTONE
+};
+
 #include "../../../common/CObject.h"
 
 class CRope : public CObject
 {
 public:
 	CRope(CMap *p_map, Uint32 x, Uint32 y);
+	void process();
+	void rope_movestone(CObject &theObject);
+	void getTouchedBy(CObject &theObject);
+
+private:
+	ropestates state;
+	int droptimer;
+	int stoneX, stoneY;
+	int bgtile;
 };
 
 #endif /* CROPE_H_ */

@@ -2,180 +2,151 @@
 #include "../../../misc.h"
 
 #include "CVortiMom.h"
+#include "CFireBall.h"
 
-// Vorticon Mother AI (ep3)
+CVortiMom::CVortiMom(CMap *p_map, Uint32 x, Uint32 y,
+		std::vector<CPlayer>& Player,
+		std::vector<CObject*>& Object) :
+CObject(p_map, x, y),
+m_Player(Player),
+m_Object(Object)
+{
+	HealthPoints = MOTHER_HP;
+	state = MOTHER_WALK;
+	hittimes = 0;
+	animframe = 0;
+	animtimer = 0;
 
-enum vortimom_actions{
-MOTHER_WALK, MOTHER_SPIT,
-MOTHER_HURT, MOTHER_DEAD
-};
+	if (m_Player[0].getXPosition() > getXPosition())
+		dir = RIGHT;
+	else
+		dir = LEFT;
 
-#define MOTHER_WALK_ANIM_RATE     3
-#define MOTHER_WALK_SPD           12
+	blockedr = blockedl = 0;
+	canbezapped = 1;
+	needinit = 0;
+}
 
-#define MOTHER_SPIT_PROB          9
-#define MOTHER_SPIT_PROB_HARD     40
-#define MOTHER_SPIT_SHOW_TIME     25
+void CVortiMom::process()
+{
+	int prob;
 
-#define MOTHER_HP      5
+	if (state==MOTHER_DEAD)
+	{
+		sprite = MOTHER_DEAD_FRAME;
+		return;
+	}
 
-#define MOTHER_HURT_SHOW_TIME    25
+	if (touchPlayer && !m_Player[touchedBy].pdie)
+	{
+		// don't push the player as he's walking through the exit door
+		if (!m_Player[touchedBy].level_done)
+		{
+			if (m_Player[touchedBy].getXPosition() < getXPosition())
+				m_Player[touchedBy].bump(-MOTHER_WALK_SPD, true);
+			else
+				m_Player[touchedBy].bump(MOTHER_WALK_SPD, true);
+		}
+	}
 
-#define SNDWAVE_LEFT_FRAME    128
 
-#define MOTHER_WALK_LEFT_FRAME	 85
-#define MOTHER_WALK_RIGHT_FRAME	 87
-#define MOTHER_SPIT_LEFT_FRAME	 89
-#define MOTHER_SPIT_RIGHT_FRAME	 90
-#define MOTHER_HURT_FRAME        91
-#define MOTHER_DEAD_FRAME	 92
+	if (HealthPoints <= 0 && state == MOTHER_HURT)
+	{
+		timer = 0;
+		state = MOTHER_HURT;
+	}
 
-CVortiMom::CVortiMom(CMap *p_map, Uint32 x, Uint32 y) :
-CObject(p_map, x, y)
-{}
+	switch(state)
+	{
+	case MOTHER_WALK:
 
-//void CObjectAI::mother_ai( CObject& object, bool hardmode )
-//{
-//	int prob;
-//
-//	if (object.needinit)
-//	{
-//		object.ai.mother.state = MOTHER_WALK;
-//		object.ai.mother.hittimes = 0;
-//		object.ai.mother.animframe = 0;
-//		object.ai.mother.animtimer = 0;
-//
-//		if (m_Player[0].getXPosition() > object.getXPosition())
-//			object.ai.mother.dir = RIGHT;
-//		else
-//			object.ai.mother.dir = LEFT;
-//
-//		object.blockedr = object.blockedl = 0;
-//		object.canbezapped = 1;
-//		object.needinit = 0;
-//	}
-//	if (object.ai.mother.state==MOTHER_DEAD)
-//	{
-//		object.sprite = MOTHER_DEAD_FRAME;
-//		return;
-//	}
-//
-//	if (object.touchPlayer && !m_Player[object.touchedBy].pdie)
-//	{
-//		// don't push the player as he's walking through the exit door
-//		if (!m_Player[object.touchedBy].level_done)
-//		{
-//			if (m_Player[object.touchedBy].getXPosition() < object.getXPosition())
-//				m_Player[object.touchedBy].bump(-MOTHER_WALK_SPD, true);
-//			else
-//				m_Player[object.touchedBy].bump(MOTHER_WALK_SPD, true);
-//		}
-//	}
-//
-//
-//	if (object.zapped)
-//	{
-//		object.zapped = 0;
-//		object.ai.mother.hittimes++;
-//		if (object.ai.mother.state != MOTHER_HURT ||
-//				object.ai.mother.hittimes < MOTHER_HP)
-//		{
-//			object.ai.mother.timer = 0;
-//			object.ai.mother.state = MOTHER_HURT;
-//		}
-//	}
-//
-//	switch(object.ai.mother.state)
-//	{
-//	case MOTHER_WALK:
-//
-//		prob = hardmode ? MOTHER_SPIT_PROB_HARD : MOTHER_SPIT_PROB;
-//		if (getProbability(prob))
-//		{
-//			if (object.onscreen)
-//			{
-//				if(object.ai.mother.dir == RIGHT)
-//					object.ai.mother.dir = LEFT;
-//				else
-//					object.ai.mother.dir = RIGHT;
-//
-//				object.ai.mother.state = MOTHER_SPIT;
-//				object.ai.mother.timer = 0;
-//			}
-//		}
-//
-//		if (object.ai.mother.dir==RIGHT)
-//		{
-//			object.sprite = MOTHER_WALK_RIGHT_FRAME + object.ai.mother.animframe;
-//
-//			if (object.blockedr)
-//			{
-//				object.ai.mother.dir = LEFT;
-//			}
-//			else
-//			{
-//				object.moveRight(MOTHER_WALK_SPD);
-//			}
-//		}
-//		else
-//		{
-//			object.sprite = MOTHER_WALK_LEFT_FRAME + object.ai.mother.animframe;
-//
-//			if (object.blockedl)
-//				object.ai.mother.dir = RIGHT;
-//			else
-//				object.moveLeft(MOTHER_WALK_SPD);
-//		}
-//
-//		// walk animation
-//		if (object.ai.mother.animtimer > MOTHER_WALK_ANIM_RATE)
-//		{
-//			object.ai.mother.animframe ^= 1;
-//			object.ai.mother.animtimer = 0;
-//		}
-//		else object.ai.mother.animtimer++;
-//
-//		break;
-//
-//	case MOTHER_SPIT:
-//		object.sprite = (object.ai.mother.dir==RIGHT) ?
-//				MOTHER_SPIT_RIGHT_FRAME:MOTHER_SPIT_LEFT_FRAME;
-//
-//
-//		if (object.ai.mother.timer > MOTHER_SPIT_SHOW_TIME)
-//		{
-//			CObject *newobject = new CObject(mp_Map);
-//			newobject->spawn(object.getXMidPos()-(3<<STC), object.getYPosition()+(11<<STC), OBJ_FIREBALL, 3, object.ai.mother.dir);
-//			newobject->ai.ray.direction = object.ai.mother.dir;
-//			newobject->ai.ray.owner = object.m_index;
-//			m_Objvect.push_back(newobject);
-//
-//			if (object.onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, object.scrx);
-//			object.ai.mother.state = MOTHER_WALK;
-//		}
-//		else object.ai.mother.timer++;
-//		break;
-//	case MOTHER_HURT:
-//		if (object.ai.mother.timer > MOTHER_HURT_SHOW_TIME)
-//		{
-//			if (object.ai.mother.hittimes >= MOTHER_HP)
-//			{
-//				object.sprite = MOTHER_HURT_FRAME;
-//				object.ai.mother.state = MOTHER_DEAD;
-//				object.canbezapped = 0;
-//				object.ai.mother.timer = 0;
-//				if (object.onscreen) g_pSound->playStereofromCoord(SOUND_VORT_DIE, PLAY_NOW, object.scrx);
-//			}
-//			else
-//			{
-//				object.ai.mother.state = MOTHER_WALK;
-//				if (m_Player[0].getXPosition() > object.getXPosition())
-//					object.ai.mother.dir = RIGHT;
-//				else
-//					object.ai.mother.dir = LEFT;
-//			}
-//		}
-//		else object.ai.mother.timer++;
-//		break;
-//	}
-//}
+		prob = (mp_Map->m_Difficulty>1) ? MOTHER_SPIT_PROB_HARD : MOTHER_SPIT_PROB;
+		if (getProbability(prob))
+		{
+			if (onscreen)
+			{
+				if(dir == RIGHT)
+					dir = LEFT;
+				else
+					dir = RIGHT;
+
+				state = MOTHER_SPIT;
+				timer = 0;
+			}
+		}
+
+		if (dir==RIGHT)
+		{
+			sprite = MOTHER_WALK_RIGHT_FRAME + animframe;
+
+			if (blockedr)
+			{
+				dir = LEFT;
+			}
+			else
+			{
+				moveRight(MOTHER_WALK_SPD);
+			}
+		}
+		else
+		{
+			sprite = MOTHER_WALK_LEFT_FRAME + animframe;
+
+			if (blockedl)
+				dir = RIGHT;
+			else
+				moveLeft(MOTHER_WALK_SPD);
+		}
+
+		// walk animation
+		if (animtimer > MOTHER_WALK_ANIM_RATE)
+		{
+			animframe ^= 1;
+			animtimer = 0;
+		}
+		else animtimer++;
+
+		break;
+
+	case MOTHER_SPIT:
+		sprite = (dir==RIGHT) ?
+				MOTHER_SPIT_RIGHT_FRAME:MOTHER_SPIT_LEFT_FRAME;
+
+
+		if (timer > MOTHER_SPIT_SHOW_TIME)
+		{
+			CFireBall *newobject = new CFireBall(mp_Map, getXMidPos()-(3<<STC),
+												getYPosition()+(11<<STC), dir,
+												OBJ_MOTHER, m_index);
+			m_Object.push_back(newobject);
+
+			if (onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, scrx);
+			state = MOTHER_WALK;
+		}
+		else timer++;
+		break;
+	case MOTHER_HURT:
+		if (timer > MOTHER_HURT_SHOW_TIME)
+		{
+			if (hittimes >= MOTHER_HP)
+			{
+				sprite = MOTHER_HURT_FRAME;
+				state = MOTHER_DEAD;
+				canbezapped = 0;
+				timer = 0;
+				if (onscreen) g_pSound->playStereofromCoord(SOUND_VORT_DIE, PLAY_NOW, scrx);
+			}
+			else
+			{
+				state = MOTHER_WALK;
+				if (m_Player[0].getXPosition() > getXPosition())
+					dir = RIGHT;
+				else
+					dir = LEFT;
+			}
+		}
+		else timer++;
+		break;
+	default: break;
+	}
+}

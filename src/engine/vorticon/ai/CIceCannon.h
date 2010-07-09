@@ -12,7 +12,7 @@
 #include "../../../common/CPlayer.h"
 #include <vector>
 
-#define GUNFIRE_TIMER 50
+#define GUNFIRE_TIMER_EP1 50
 
 unsigned int rnd(void);
 

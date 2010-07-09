@@ -54,6 +54,8 @@ public:
 
 	virtual ~CBehaviorEngine();
 
+	bool m_PlatExtending;
+
 private:
 	std::vector<CTileProperties> m_TileProperties[2];
 	CPhysicsSettings m_PhysicsSettings;

@@ -9,6 +9,7 @@
 #include "../../../StringUtils.h"
 #include "../../../graphics/effects/CColorMerge.h"
 #include "../../../sdl/CVideoDriver.h"
+#include "../../../common/CMapLoader.h"
 
 #define SAFE_DELETE_ARRAY(x) if(x) { delete [] x; x = NULL; }
 
@@ -26,7 +27,13 @@ bool CPlayGameVorticon::loadGameState()
 		// get the episode, level and difficulty
 		m_SavedGame.decodeData(m_Episode);
 		m_SavedGame.decodeData(m_Level);
-		m_SavedGame.decodeData(m_Difficulty);
+
+		CMapLoader Maploader(&m_Map, &m_Player);
+		Maploader.mp_objvect = &m_Object;
+		if(!Maploader.load(m_Episode, m_Level, m_Gamepath, true))
+			return false;
+
+		/*m_SavedGame.decodeData(m_Difficulty);
 
 		m_SavedGame.decodeData(m_checkpointset);
 		m_SavedGame.decodeData(m_checkpoint_x);
@@ -75,7 +82,7 @@ bool CPlayGameVorticon::loadGameState()
 			// TODO: This code won't work the way it is.
 			CObject *object=NULL;
 
-			/*m_SavedGame.decodeData(object.m_type);
+			m_SavedGame.decodeData(object.m_type);
 			m_SavedGame.decodeData(x);
 			m_SavedGame.decodeData(y);
 			//object.moveToForce(x,y-1);
@@ -95,7 +102,7 @@ bool CPlayGameVorticon::loadGameState()
 			m_SavedGame.decodeData(object.inhibitfall);
 			m_SavedGame.decodeData(object.honorPriority);
 			m_SavedGame.decodeData(object.sprite);
-			m_SavedGame.decodeData(object.ai);*/
+			//m_SavedGame.decodeData(object.ai);
 			//if(object.m_type != OBJ_DOOR) // small workaround for doors which might be opening
 				//m_Object.push_back(&object);
 		}
@@ -108,7 +115,7 @@ bool CPlayGameVorticon::loadGameState()
 		m_SavedGame.readDataBlock( reinterpret_cast<byte*>(m_Map.getForegroundData()) );
 
 		// Load completed levels
-		m_SavedGame.readDataBlock( (byte*)(mp_level_completed));
+		m_SavedGame.readDataBlock( (byte*)(mp_level_completed));*/
 
 		m_Player[0].setMapData(&m_Map);
 		while(m_Player[0].scrollTriggers()); // Scroll to the right position on the map
@@ -170,7 +177,6 @@ bool CPlayGameVorticon::saveGameState()
 		m_SavedGame.encodeData(m_Object[i]->getXPosition());
 		m_SavedGame.encodeData(m_Object[i]->getYPosition());
 		m_SavedGame.encodeData(m_Object[i]->dead);
-		//m_SavedGame.encodeData(m_Object[i]->needinit);
 		m_SavedGame.encodeData(m_Object[i]->onscreen);
 		m_SavedGame.encodeData(m_Object[i]->hasbeenonscreen);
 		m_SavedGame.encodeData(m_Object[i]->exists);
@@ -184,7 +190,6 @@ bool CPlayGameVorticon::saveGameState()
 		m_SavedGame.encodeData(m_Object[i]->inhibitfall);
 		m_SavedGame.encodeData(m_Object[i]->honorPriority);
 		m_SavedGame.encodeData(m_Object[i]->sprite);
-		m_SavedGame.encodeData(m_Object[i]->ai);
 	}
 
 	// Save the map_data as it is left

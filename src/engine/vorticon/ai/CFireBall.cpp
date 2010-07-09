@@ -26,45 +26,10 @@ CRay(p_map, x, y, dir, byType, byID)
 
 void CFireBall::process()
 {
-	/*int speed;
-
-	// check if it hit keen
-	if (touchPlayer)
-	{
-		killplayer(touchedBy);
-		// make a ZAP-ZOT animation
-		m_type = OBJ_RAY;
-		state = RAY_STATE_SETZAPZOT;
-		inhibitfall = 1;
-		needinit = 0;
-		return;
-	}
-
-	// test if it hit a baddie
-	std::vector<CObject*>::iterator it_obj = m_Objvect.begin()++;
-	for( ; it_obj!=m_Objvect.end() ; it_obj++)
-	{
-		if (!(*it_obj)->exists || (*it_obj)->m_index==m_index) continue;
-		if ( (*it_obj)->m_type==OBJ_FIREBALL) continue;
-
-		if ((*it_obj)->canbezapped || (*it_obj)->m_type==OBJ_RAY)
-		{
-			if ((*it_obj)->hitdetect(object) && owner != (*it_obj)->m_index)
-			{
-				m_type = OBJ_RAY;
-				state = RAY_STATE_SETZAPZOT;
-				inhibitfall = 1;
-				needinit = 0;
-				(*it_obj)->zapped++;
-				(*it_obj)->moveTo(getXPosition(), getYPosition());
-				(*it_obj)->zappedbyenemy = 1;
-				return;
-			}
-		}
-	}
+	int speed;
 
 	// check if it was shot
-	if (zapped)
+	if (HealthPoints <= 0)
 	{
 		if (onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, scrx);
 		m_type = OBJ_RAY;
@@ -82,7 +47,7 @@ void CFireBall::process()
 	{
 		if (offscreentime > FIREBALL_OFFSCREEN_KILL_TIME)
 		{
-			deleteObj(object);
+			exists = false;
 			return;
 		}
 		else offscreentime++;
@@ -90,8 +55,8 @@ void CFireBall::process()
 	else offscreentime = 0;
 
 	// fly through the air
-	speed = hard ? FIREBALL_HARD_SPEED : FIREBALL_SPEED;
-	if (direction == RIGHT)
+	speed = (mp_Map->m_Difficulty>1) ? FIREBALL_HARD_SPEED : FIREBALL_SPEED;
+	if (m_Direction == RIGHT)
 	{
 		sprite = FIREBALL_RIGHT_FRAME + animframe;
 		if (blockedr || blockedl)
@@ -124,8 +89,5 @@ void CFireBall::process()
 		animframe ^= 1;
 		animtimer = 0;
 	}
-	else animtimer++;*/
-
+	else animtimer++;
 }
-
-

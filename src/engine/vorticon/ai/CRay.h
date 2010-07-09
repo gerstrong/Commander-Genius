@@ -1,4 +1,7 @@
 
+#ifndef	_CRAY_H_
+#define _CRAY_H_
+
 #define RAY_SPEED   		100
 #define RAY_AUTO_SPEED		120
 #define RAY_ZAPZOT_TIME    	10
@@ -24,15 +27,16 @@ public:
 
 	direction_t m_Direction;
 
-protected:
-	bool m_automatic_raygun;
-	char m_pShotSpeed;
-
 	enum {
 		RAY_STATE_FLY,
 		RAY_STATE_SETZAPZOT,
 		RAY_STATE_ZAPZOT
 	} state;
+
+protected:
+	bool m_automatic_raygun;
+	char m_pShotSpeed;
+
 	char zapzottimer;
 
 	unsigned char dontHitEnable;
@@ -51,3 +55,4 @@ protected:
 	int baseframe;
 };
 
+#endif //_CRAY_H_

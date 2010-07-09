@@ -41,7 +41,7 @@ void CIceCannon::process()
 	 sprite = BLANKSPRITE;
 	 inhibitfall = 1;
 
-	if(m_gunfiretimer<GUNFIRE_TIMER) m_gunfiretimer++;
+	if(m_gunfiretimer<GUNFIRE_TIMER_EP1) m_gunfiretimer++;
 	else
 	{
 		int newpos_x = getXPosition()+(vector_x)*512;

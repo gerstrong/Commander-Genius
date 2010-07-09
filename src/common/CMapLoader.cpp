@@ -222,7 +222,7 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 			{
 				if (!m_NessieAlreadySpawned)
 				{
-					CMessie *messie = new CMessie(mp_map, x<<CSF, y<<CSF);
+					CMessie *messie = new CMessie(mp_map, x<<CSF, y<<CSF, *mp_vec_Player);
 					m_NessieAlreadySpawned = true;
 					mp_objvect->push_back(messie);
 				}
@@ -344,8 +344,8 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				}
 				else if (episode==3)
 				{
-					//enemyobject = new CVortiMom( mp_map, *mp_vec_Player,
-						//		x<<CSF, y<<CSF);
+					enemyobject = new CVortiMom( mp_map, x<<CSF, y<<CSF,
+											*mp_vec_Player, *mp_objvect);
 				}
 				break;
 			case 4:    // butler (ep1) or scrub (ep2) or meep (ep3)
@@ -383,11 +383,12 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 			case 7:   // spark (ep2) ball (ep3) ice cannon upwards (ep1)
 				if (episode==1)
 				{
-					enemyobject = new CIceCannon( mp_map,x<<CSF, y<<CSF,*mp_vec_Player,*mp_objvect,0,-1);
+					enemyobject = new CIceCannon( mp_map,x<<CSF, y<<CSF, *mp_vec_Player,*mp_objvect,0,-1);
 				}
 				else if (episode==2)
 				{
-					//enemyobject = new CSectorEffector( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
+					enemyobject = new CSectorEffector( mp_map, x<<CSF, y<<CSF,
+							*mp_vec_Player,*mp_objvect, OBJ_SPARK);
 				}
 				else if (episode==3)
 				{
@@ -432,13 +433,13 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				}
 				break;
 			case 12:   // sparks in mortimer's machine
-//				enemyobject = new CSectorEffector( mp_map, *mp_vec_Player, x<<CSF, y<<CSF );
-//				enemyobject->setype = SE_MORTIMER_SPARK;
+				enemyobject = new CSectorEffector( mp_map, x<<CSF, y<<CSF,
+						*mp_vec_Player,*mp_objvect, SE_MORTIMER_SPARK);
 				enemyobject->solid = false;
 				break;
 			case 13:   // mortimer's heart
-//				enemyobject = new CSectorEffector( mp_map, *mp_vec_Player, x<<CSF, y<<CSF,  );
-//				enemyobject->setype = SE_MORTIMER_HEART;
+				enemyobject = new CSectorEffector( mp_map, x<<CSF, y<<CSF,
+						*mp_vec_Player,*mp_objvect, SE_MORTIMER_HEART);
 				enemyobject->solid = false;
 				break;
 			case 14:   // right-pointing raygun (ep3)
@@ -448,18 +449,18 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				enemyobject = new CAutoRay(mp_map, x<<CSF, y<<CSF, *mp_objvect, CAutoRay::VERTICAL);
 				break;
 			case 16:  // mortimer's arms
-//				enemyobject = new CSectorEffector( mp_map, *mp_vec_Player, x<<CSF, y<<CSF );
-//				enemyobject->setype = SE_MORTIMER_ARM;
+				enemyobject = new CSectorEffector( mp_map, x<<CSF, y<<CSF,
+						*mp_vec_Player,*mp_objvect, SE_MORTIMER_ARM );
 				enemyobject->solid = false;
 				break;
 			case 17:  // mortimer's left leg
-//				enemyobject = new CSectorEffector( mp_map, *mp_vec_Player, x<<CSF, y<<CSF );
-//				enemyobject->setype = SE_MORTIMER_LEG_LEFT;
+				enemyobject = new CSectorEffector( mp_map, x<<CSF, y<<CSF,
+						*mp_vec_Player,*mp_objvect, SE_MORTIMER_LEG_LEFT );
 				enemyobject->solid = false;
 				break;
 			case 18:  // mortimer's right leg
-//				enemyobject = new CSectorEffector( mp_map, *mp_vec_Player, x<<CSF, y<<CSF );
-//				enemyobject->setype = SE_MORTIMER_LEG_RIGHT;
+				enemyobject = new CSectorEffector( mp_map, x<<CSF, y<<CSF,
+						*mp_vec_Player,*mp_objvect, SE_MORTIMER_LEG_RIGHT );
 				enemyobject->solid = false;
 				break;
 			default:

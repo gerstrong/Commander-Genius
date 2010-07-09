@@ -6,11 +6,6 @@
 #include "CRope.h"
 
 // The rope holding the stone which kills the final Vorticon (ep1)
-
-enum ropestates{
-ROPE_IDLE, ROPE_DROPSTONE
-};
-
 #define STONE_WIDTH          9
 #define STONE_HEIGHT         2
 
@@ -18,92 +13,89 @@ ROPE_IDLE, ROPE_DROPSTONE
 
 CRope::CRope(CMap *p_map, Uint32 x, Uint32 y) :
 CObject(p_map, x, y)
-{}
+{
+	state = ROPE_IDLE;
+	canbezapped = 1;
+	inhibitfall = 1;
+	sprite = OBJ_ROPE_DEFSPRITE;
+	needinit = false;
+}
 
-//void CObjectAI::rope_ai(CObject &object)
-//{
-//	int x;
-//	if (object.needinit)
-//	{  // first time initialization
-//		object.ai.rope.state = ROPE_IDLE;
-//		object.canbezapped = 1;
-//		object.inhibitfall = 1;
-//		object.sprite = OBJ_ROPE_DEFSPRITE;
-//		object.needinit = false;
-//	}
-//
-//	switch(object.ai.rope.state)
-//	{
-//	case ROPE_IDLE:
-//		if (object.zapped)
-//		{
-//			int x, y;
-//			// rope got broke! time to drop the stone
-//			object.ai.rope.state = ROPE_DROPSTONE;
-//			object.ai.rope.droptimer = 0;
-//			// hide the rope
-//			object.sprite = BLANKSPRITE;
-//			// get upper left corner of the stone
-//			x = object.getXPosition()>>CSF;
-//			y = object.getYPosition()>>CSF;
-//			object.ai.rope.stoneX = x - 4;
-//			object.ai.rope.stoneY = y + 1;
-//			// get color of background
-//			object.ai.rope.bgtile = mp_Map->at(x, y);
-//		}
-//		break;
-//
-//	case ROPE_DROPSTONE:
-//		if (!object.ai.rope.droptimer)
-//		{
-//			object.ai.rope.droptimer = STONE_DROP_RATE;
-//			rope_movestone(object);
-//			g_pGfxEngine->pushEffectPtr(new CVibrate(400));
-//
-//			std::vector<CPlayer>::iterator it_player = m_Player.begin();
-//			for(; it_player!=m_Player.end() ; it_player++)
-//				it_player->blockedd=false;
-//
-//			// check if we've hit the ground yet
-//			for(x=2;x<STONE_WIDTH-2;x++)
-//			{
-//				if (g_pBehaviorEngine->getTileProperties().at(mp_Map->at(object.ai.rope.stoneX+x, object.ai.rope.stoneY+2)).bup)
-//				{
-//					deleteObj(object);
-//					return;
-//				}
-//			}
-//
-//		}
-//		else object.ai.rope.droptimer--;
-//		break;
-//	}
-//}
-//
-//void CObjectAI::rope_movestone(CObject &object)
-//{
-//	int xa,ya;
-//	int x,y;
-//
-//	xa = object.ai.rope.stoneX;
-//	ya = object.ai.rope.stoneY;
-//
-//	// move the stone down one space and kill anything in it's path!
-//	for(y=STONE_HEIGHT;y>0;y--)
-//	{
-//		for(x=0;x<STONE_WIDTH;x++)
-//		{
-//			mp_Map->setTile(x+xa,y+ya, mp_Map->at(x+xa, y+ya-1), true);
-//
-//			// if the stone hits any enemies, kill them
-//			kill_all_intersecting_tile(x+xa, y+ya);
-//		}
-//	}
-//
-//	// clear the space at the top
-//	for(x=0;x<STONE_WIDTH;x++)
-//		mp_Map->setTile(x+xa,ya,object.ai.rope.bgtile, true);
-//
-//	object.ai.rope.stoneY++;
-//}
+void CRope::process()
+{
+	switch(state)
+	{
+	case ROPE_IDLE:
+		if (HealthPoints >= 0)
+		{
+			int x, y;
+			// rope got broke! time to drop the stone
+			state = ROPE_DROPSTONE;
+			droptimer = 0;
+			// hide the rope
+			sprite = BLANKSPRITE;
+			// get upper left corner of the stone
+			x = getXPosition()>>CSF;
+			y = getYPosition()>>CSF;
+			stoneX = x - 4;
+			stoneY = y + 1;
+			// get color of background
+			bgtile = mp_Map->at(x, y);
+		}
+		break;
+	default: break;
+	}
+}
 
+void CRope::rope_movestone(CObject &theObject)
+{
+	int xa,ya;
+	int x,y;
+
+	xa = stoneX;
+	ya = stoneY;
+
+	// move the stone down one space and kill anything in it's path!
+	for(y=STONE_HEIGHT;y>0;y--)
+	{
+		for(x=0;x<STONE_WIDTH;x++)
+		{
+			mp_Map->setTile(x+xa,y+ya, mp_Map->at(x+xa, y+ya-1), true);
+
+			// if the stone hits any enemies, kill them
+			kill_intersecting_tile(x+xa, y+ya, theObject);
+		}
+	}
+
+	// clear the space at the top
+	for(x=0;x<STONE_WIDTH;x++)
+		mp_Map->setTile(x+xa,ya,bgtile, true);
+
+	stoneY++;
+}
+
+void CRope::getTouchedBy(CObject &theObject)
+{
+	if(state == ROPE_DROPSTONE)
+	{
+	if (!droptimer)
+	{
+		droptimer = STONE_DROP_RATE;
+		rope_movestone(theObject);
+		g_pGfxEngine->pushEffectPtr(new CVibrate(400));
+
+		theObject.blockedd = false;
+
+		// check if we've hit the ground yet
+		for(x=2;x<STONE_WIDTH-2;x++)
+		{
+			if (g_pBehaviorEngine->getTileProperties().at(mp_Map->at(stoneX+x, stoneY+2)).bup)
+			{
+				exists=false;
+				return;
+			}
+		}
+	}
+	else droptimer--;
+	}
+}

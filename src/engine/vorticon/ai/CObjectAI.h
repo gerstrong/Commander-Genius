@@ -105,7 +105,7 @@ private:
 
 	void killplayer(int theplayer);
 	void SetAllCanSupportPlayer(CObject &object, bool state);
-	void kill_all_intersecting_tile(int mpx, int mpy);
+	void kill_all_intersecting_tile(int mpx, int mpy, CObject &theObject);
 
 	// Variables
 	CMap *mp_Map;

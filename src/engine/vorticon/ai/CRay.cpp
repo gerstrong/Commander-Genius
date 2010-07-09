@@ -166,7 +166,7 @@ void CRay::process()
 				}
 				moveLeft(rayspeed);
 			}
-			/*else if (m_Direction == DOWN)
+			else if (m_Direction == DOWN)
 			{
 				if (blockedd || blockedu)
 				{
@@ -175,7 +175,7 @@ void CRay::process()
 					if (onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, scrx);
 				}
 				moveDown(rayspeed);
-			}*/
+			}
 			break;
 		case RAY_STATE_SETZAPZOT:
 			state = RAY_STATE_ZAPZOT;

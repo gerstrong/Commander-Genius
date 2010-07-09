@@ -566,6 +566,26 @@ void CObject::getShotByRay()
 	}
 }
 
+// anything (players/enemies) occupying the map tile at [mpx,mpy] is killed
+void CObject::kill_intersecting_tile(int mpx, int mpy, CObject &theObject)
+{
+	 unsigned int xpix,ypix;
+	 unsigned int x, y;
+	 xpix = mpx<<CSF;
+	 ypix = mpy<<CSF;
+
+	 std::vector<CObject*>::iterator object;
+	 for( object=m_Objvect.begin() ; object!=m_Objvect.end() ; object++ )
+	 {
+		 x = theObject.getXMidPos();
+		 y = theObject.getYUpPos();
+		 if (theObject.exists)
+			 if (xpix-(1<<CSF) <= x && xpix+(1<<CSF) >= x)
+				 if (ypix <= y && ypix+(1<<CSF) >= y)
+					 theObject.kill();
+	 }
+}
+
 const int COLISION_RES = 4;
 bool CObject::checkSolidR( int x2, int y1, int y2)
 {
