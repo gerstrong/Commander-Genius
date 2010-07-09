@@ -57,7 +57,6 @@ public:
 	int counter,destroytiles;
 	unsigned int frame;
 	int mx,my;
-	int blowx,blowy;
 
 	std::vector<CPlayer>& m_Player;
 	std::vector<CObject*>& m_Object;

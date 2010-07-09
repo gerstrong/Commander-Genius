@@ -212,151 +212,6 @@ void CSectorEffector::se_retract_plat()
 	else timer--;
 }
 
-#define SPARK_BASEFRAME         OBJ_SPARK_DEFSPRITE_EP2
-#define SPARK_ANIMRATE          5
-
-
-// AI for the Spark object in the Tantalus Ray Machine's of ep2
-// TODO: Spark must get at special class
-/*void CSectorEffector::spark_ai(int &sparks_left)
-{
-	int mx,my,x,y;
-
-enum spark_actions{
-SPARK_ANIMATE, SPARK_BLOWUP1, SPARK_BLOWUP2, SPARK_BLOWUP3
-};
-
-#define SPARK_BLOW_DELAY        25
-
-#define BG_GREY					143
-
-	if (needinit)
-	{
-		state = SPARK_ANIMATE;
-		timer = 0;
-		canbezapped = 1;
-		inhibitfall = 1;
-		needinit = 0;
-
-		mx = getXPosition() >> CSF;
-		my = getYPosition() >> CSF;
-	}
-
-	if (state==SPARK_ANIMATE)
-	{
-		sprite = SPARK_BASEFRAME + frame;
-	}
-	else
-	{
-		sprite = BLANKSPRITE;
-	}
-
-	switch(state)
-	{
-	case SPARK_ANIMATE:
-		if (timer > SPARK_ANIMRATE)
-		{
-			frame++;
-			if (frame > 3) frame = 0;
-			timer = 0;
-		} else timer++;
-
-		if (zapped)
-		{
-			g_pSound->playStereofromCoord(SOUND_SHOT_HIT,PLAY_NOW, getXPosition());
-
-			// break the glass and blow out the electric arcs
-			mp_Map->setTile(mx - 2, my, 492, true);
-			mp_Map->setTile(mx - 1, my, 546, true);
-			mp_Map->setTile(mx, my, 547, true);
-			mp_Map->setTile(mx + 1, my, 548, true);
-			mp_Map->setTile(mx + 2, my, 492, true);
-			// remove the unneeded dome tiles
-			mp_Map->setTile(mx - 1, my-1, BG_GREY, true);
-			mp_Map->setTile(mx, my-1, BG_GREY, true);
-			mp_Map->setTile(mx + 1, my-1, BG_GREY, true);
-			// break the switch
-			mp_Map->setTile(mx - 3, my + 4, 506, true);
-
-			// meltdown!
-			state = SPARK_BLOWUP1;
-			timer = 0;
-			blowy = 0;
-		}
-		break;
-	case SPARK_BLOWUP1:
-		// one by one blow out the purple thingies below the device
-		if (timer > SPARK_BLOW_DELAY)
-		{
-			timer = 0;
-			mx = mx;
-			my = my+3+blowy;
-			mp_Map->setTile(mx, my, 505, true);
-			// spawn a ZAP! or a ZOT!
-			CRay *newobject = new CRay(mp_Map, mx<<CSF, my<<CSF);
-			newobject->state = RAY_STATE_SETZAPZOT;
-			newobject->setOwner(type, m_index);
-			newobject->inhibitfall = 1;
-			newobject->needinit = 0;
-			newobject->dontHitEnable = 0;
-			m_Objvect.push_back(newobject);
-			g_pSound->playStereofromCoord(SOUND_SHOT_HIT,PLAY_NOW, newobject->getXPosition());
-
-			blowy++;
-			if (blowy >= 3)
-			{
-				state = SPARK_BLOWUP2;
-				blowx = 0;
-			}
-		}
-		else timer++;
-		break;
-	case SPARK_BLOWUP2:
-		// blow out the glowing cells
-		if (timer > SPARK_BLOW_DELAY)
-		{
-			if (blowx >= 4)
-			{
-				// done blowing up the glowcells
-				// static the targeting display
-				mx = mx - 7;
-				my = my + 2;
-				for(y=0;y<3;y++)
-				{
-					for(x=0;x<3;x++)
-					{
-						mp_Map->setTile(mx+x,my+y,533, true);
-					}
-				}
-				deleteObj(object);
-				sparks_left--;
-				return;
-			}
-
-			timer = 0;
-			mx = mx + blowx + 3;
-			for(y=0;y<3;y++)
-			{
-				my = my+3+y;
-				mp_Map->setTile(mx, my, 549, true);
-				// spawn a ZAP! or a ZOT!
-				CRay *newobject = new CRay(mp_Map, mx<<CSF, my<<CSF);
-				newobject->setOwner(m_type ,m_index);
-				newobject->state = RAY_STATE_SETZAPZOT;
-				newobject->inhibitfall = true;
-				newobject->needinit = false;
-				g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, newobject->getXPosition());
-				m_Objvect.push_back(newobject);
-
-			}
-
-			blowx++;
-		}
-		else timer++;
-		break;
-	}  // end of state switch for SE_SPARK
-}*/
-
 #define ARM_GO          0
 #define ARM_WAIT        1
 
@@ -476,6 +331,9 @@ void CSectorEffector::se_mortimer_arm()
 
 #define MSPARK_IDLE              0
 #define MSPARK_DESTROYARMS       1
+
+#define SPARK_ANIMRATE          5
+
 void CSectorEffector::se_mortimer_spark()
 {
 	int x,mx;
@@ -510,18 +368,22 @@ void CSectorEffector::se_mortimer_spark()
 
 			// if there are any sparks left, destroy the spark,
 			// else destroy mortimer's arms
-			for(std::vector<CSectorEffector*>::iterator obj = m_Object.begin()
-					; obj != m_Objvect.end() ; obj++)
+			for(std::vector<CObject*>::iterator obj = m_Object.begin()
+					; obj != m_Object.end() ; obj++)
 			{
-				if ((*obj)->m_type==OBJ_SECTOREFFECTOR &&
-						(*obj)->setype==SE_MORTIMER_SPARK &&
-						(*obj)->exists)
+				if((*obj)->m_type==OBJ_SECTOREFFECTOR)
 				{
-					if ((*obj)->m_index!=m_index)
-					{	// other sparks still exist
-						setype = SE_MORTIMER_RANDOMZAPS;
-						needinit = true;
-						return;
+					CSectorEffector& SE = dynamic_cast<CSectorEffector&>(**obj);
+
+					if (SE.setype==SE_MORTIMER_SPARK &&
+							SE.exists)
+					{
+						if (SE.m_index!=m_index)
+						{	// other sparks still exist
+							setype = SE_MORTIMER_RANDOMZAPS;
+							needinit = true;
+							return;
+						}
 					}
 				}
 			}
@@ -531,13 +393,14 @@ void CSectorEffector::se_mortimer_spark()
 			sprite = BLANKSPRITE;
 
 			// destroy the sector effectors controlling his arms
-			for(std::vector<CSectorEffector*>::iterator obj = m_Object.begin()
-					; obj != m_Objvect.end() ; obj++)
+			for(std::vector<CObject*>::iterator obj = m_Object.begin()
+					; obj != m_Object.end() ; obj++)
 			{
-				if ((*obj)->m_type==OBJ_SECTOREFFECTOR &&
-						(*obj)->setype==SE_MORTIMER_ARM)
+				if((*obj)->m_type==OBJ_SECTOREFFECTOR)
 				{
-					(*obj)->exists = false;
+					CSectorEffector& SE=dynamic_cast<CSectorEffector&>(**obj);
+					if (SE.setype==SE_MORTIMER_ARM)
+						SE.exists = false;
 				}
 			}
 			// go into a state where we'll destroy mortimer's arms
@@ -646,14 +509,14 @@ void CSectorEffector::se_mortimer_heart()
 			g_pGfxEngine->pushEffectPtr(new CVibrate(10000));
 
 			// kill all enemies
-			std::vector<CObject*>::iterator it_obj = m_Object.begin();
-			for( ; it_obj!=m_Objvect.end() ; it_obj++ )
+			for(std::vector<CObject*>::iterator obj = m_Object.begin()
+					; obj != m_Object.end() ; obj++)
 			{
-				if((*it_obj)->m_type == OBJ_SECTOREFFECTOR &&
-						(*it_obj)->setype == SE_MORTIMER_HEART ) continue;
-				else
+				if((*obj)->m_type==OBJ_SECTOREFFECTOR)
 				{
-					(*it_obj)->exists = false;
+					CSectorEffector& SE=dynamic_cast<CSectorEffector&>(**obj);
+					if(SE.setype == SE_MORTIMER_HEART ) continue;
+					else SE.exists = false;
 				}
 			}
 
