@@ -11,6 +11,7 @@
  */
 
 #include "CShipFlySys.h"
+#include "../ai/CYorp.h"
 
 CShipFlySys::CShipFlySys(CPlayer &Player, CMap *p_Map, int ship_rightsprite, int ship_leftsprite) :
 m_player(Player) // in this case the player will be the ship flying home
@@ -26,17 +27,18 @@ m_player(Player) // in this case the player will be the ship flying home
 
 	// Now, that everything is initialized, create a mark that will be used
 	// as ! or ? Sprite
-	/*CObject mark = new (mp_Map);
-	mark.m_type = OBJ_YORP;                // doesn't matter
-	mark.exists = 0;
-	mark.sprite = SPR_QUESTION;
+	// before it was yorp
+	CObject *mark = new CObject(mp_Map, 0,0, OBJ_YORP);
+	mark->m_type = OBJ_YORP;                // doesn't matter
+	mark->exists = false;
+	mark->sprite = SPR_QUESTION;
 
 	// keep the question or exclamation mark sprite next to the player
-	mark.onscreen = true;
+	mark->onscreen = true;
 
 	m_player.mp_object->push_back(mark);
 
-	mp_mark = &(*(m_player.mp_object->end()-1)); // We still need to manipulate it!*/
+	mp_mark = mark; // We still need to manipulate it!*/
 }
 
 void CShipFlySys::addShipQueue(int cmd, int time, int flag1)
@@ -122,5 +124,6 @@ void CShipFlySys::process()
 
 
 CShipFlySys::~CShipFlySys() {
+	delete mp_mark;
 	m_player.mp_object->pop_back();
 }

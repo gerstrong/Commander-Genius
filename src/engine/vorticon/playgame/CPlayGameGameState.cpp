@@ -33,7 +33,7 @@ bool CPlayGameVorticon::loadGameState()
 		if(!Maploader.load(m_Episode, m_Level, m_Gamepath, true))
 			return false;
 
-		/*m_SavedGame.decodeData(m_Difficulty);
+		m_SavedGame.decodeData(m_Difficulty);
 
 		m_SavedGame.decodeData(m_checkpointset);
 		m_SavedGame.decodeData(m_checkpoint_x);
@@ -45,7 +45,6 @@ bool CPlayGameVorticon::loadGameState()
 
 		// Now load the inventory for every player
 		m_Player.clear();
-		m_Object.clear();
 
 		m_level_command = START_LEVEL;
 		g_pMusicPlayer->stop();
@@ -54,7 +53,7 @@ bool CPlayGameVorticon::loadGameState()
 		cleanup();
 
 		m_Player.assign(m_NumPlayers, CPlayer(m_Episode, m_Level, m_Difficulty,
-				 mp_level_completed, mp_option, m_Object, m_Map));
+				 mp_level_completed, mp_option, m_Object, m_Map) );
 
 		init();
 		std::vector<CPlayer> :: iterator player;
@@ -74,37 +73,37 @@ bool CPlayGameVorticon::loadGameState()
 		// load the number of objects on screen
 		Uint32 size;
 		int x, y;
-		m_Object.clear();
 		m_SavedGame.decodeData(size);
-		for( Uint32 i=0 ; i<size ; i++) {
+		for( Uint32 i=0 ; i<size  ; i++) {
 			// save all the objects states
 
-			// TODO: This code won't work the way it is.
-			CObject *object=NULL;
+			if(i >= m_Object.size())
+				m_Object.push_back(new CObject( &m_Map, 0, 0, OBJ_NONE));
 
-			m_SavedGame.decodeData(object.m_type);
+			CObject *object=m_Object.at(i);
+
+			m_SavedGame.decodeData(object->m_type);
 			m_SavedGame.decodeData(x);
 			m_SavedGame.decodeData(y);
-			//object.moveToForce(x,y-1);
-			//object = new CObject(&m_Map);
-			m_SavedGame.decodeData(object.dead);
-			m_SavedGame.decodeData(object.needinit);
-			m_SavedGame.decodeData(object.onscreen);
-			m_SavedGame.decodeData(object.hasbeenonscreen);
-			m_SavedGame.decodeData(object.exists);
-			m_SavedGame.decodeData(object.blockedd);
-			m_SavedGame.decodeData(object.blockedu);
-			m_SavedGame.decodeData(object.blockedl);
-			m_SavedGame.decodeData(object.blockedr);
-			m_SavedGame.decodeData(object.HealthPoints);
-			m_SavedGame.decodeData(object.canbezapped);
-			m_SavedGame.decodeData(object.cansupportplayer);
-			m_SavedGame.decodeData(object.inhibitfall);
-			m_SavedGame.decodeData(object.honorPriority);
-			m_SavedGame.decodeData(object.sprite);
-			//m_SavedGame.decodeData(object.ai);
-			//if(object.m_type != OBJ_DOOR) // small workaround for doors which might be opening
-				//m_Object.push_back(&object);
+			object->moveToForce(x,y-1);
+			m_SavedGame.decodeData(object->dead);
+			m_SavedGame.decodeData(object->needinit);
+			m_SavedGame.decodeData(object->onscreen);
+			m_SavedGame.decodeData(object->hasbeenonscreen);
+			m_SavedGame.decodeData(object->exists);
+			m_SavedGame.decodeData(object->blockedd);
+			m_SavedGame.decodeData(object->blockedu);
+			m_SavedGame.decodeData(object->blockedl);
+			m_SavedGame.decodeData(object->blockedr);
+			m_SavedGame.decodeData(object->HealthPoints);
+			m_SavedGame.decodeData(object->canbezapped);
+			m_SavedGame.decodeData(object->cansupportplayer);
+			m_SavedGame.decodeData(object->inhibitfall);
+			m_SavedGame.decodeData(object->honorPriority);
+			m_SavedGame.decodeData(object->sprite);
+
+			if(object->m_type == OBJ_DOOR) // small workaround for doors which might be opening
+				object->exists = false;
 		}
 
 		// TODO: An algorithm for comparing the number of players saved and we actually have need to be in sync
@@ -115,7 +114,7 @@ bool CPlayGameVorticon::loadGameState()
 		m_SavedGame.readDataBlock( reinterpret_cast<byte*>(m_Map.getForegroundData()) );
 
 		// Load completed levels
-		m_SavedGame.readDataBlock( (byte*)(mp_level_completed));*/
+		m_SavedGame.readDataBlock( (byte*)(mp_level_completed));
 
 		m_Player[0].setMapData(&m_Map);
 		while(m_Player[0].scrollTriggers()); // Scroll to the right position on the map

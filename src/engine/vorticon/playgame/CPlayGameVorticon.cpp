@@ -36,6 +36,9 @@ PlatExtending(false)
 	mp_Finale = NULL;
 	mp_gameoverbmp = NULL;
 	
+	if(!m_Player.empty())
+		m_Player.clear();
+
 	m_Player.assign(m_NumPlayers, CPlayer(m_Episode, m_Level, m_Difficulty,
 			mp_level_completed, mp_option,
 			m_Object, m_Map));
