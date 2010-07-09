@@ -52,7 +52,7 @@ void CButler::process()
 	 case BUTLER_TURN:
 		 if (timer > BUTLER_TURN_TIME)
 		 {
-			 movedir = LEFT ? RIGHT : LEFT;
+			 movedir = (movedir == LEFT) ? RIGHT : LEFT;
 			 animtimer = 0;
 			 state = BUTLER_WALK;
 		 } else timer++;
