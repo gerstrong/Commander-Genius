@@ -23,7 +23,7 @@ void CPlayGameVorticon::processInLevel()
 				continue;
 
 			// Process the other stuff like, items, jump, etc.
-			m_Player[i].processInLevel(getPlatMoving());
+			m_Player[i].processInLevel();
 
 			// If the player touched a hint trigger in which we have to show a Message, do it so
 			std::string hinttext;
@@ -89,9 +89,9 @@ void CPlayGameVorticon::processLevelTrigger(int trigger)
 	else if (trigger == LVLTRIG_BRIDGE)
 	{	// it's a moving platform switch--don't allow player to hit it again while
 		// the plat is still moving as this will glitch
-		if (!getPlatMoving())
+		if (!m_Map.m_PlatExtending)
 		{
-			triggerPlat(true);
+			m_Map.m_PlatExtending = true;
 		}
 		// The spawning of the plat extension is defined in the CPlayer class
 	}

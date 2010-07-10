@@ -85,6 +85,7 @@ public:
 	bool m_animation_enabled;
 	bool m_Dark;
 	char m_Difficulty;
+	bool m_PlatExtending;
 
 private:
 

@@ -22,6 +22,8 @@
 #include "../engine/vorticon/CCamera.h"
 #include <stdlib.h>
 
+size_t CPlayer::m_playerID = 0;
+
 ///
 // Initialization Part
 ///
@@ -38,8 +40,10 @@ mp_levels_completed(mp_level_completed),
 mp_option(mp_option),
 mp_StatusScr(NULL)
 {
+	m_playerID++;
 	mp_object = &m_Object;
 	canbezapped = true;
+	m_index = 0;
 
 	// Ankhshield is a special object the player is holded.
 	// It's normally seen in Ep3 and when he gets invincible by the ankh
@@ -892,4 +896,5 @@ bool CPlayer::drawStatusScreen()
 // Cleanup Part
 ///
 CPlayer::~CPlayer() {
+	m_playerID--;
 }

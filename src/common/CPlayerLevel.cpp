@@ -9,6 +9,7 @@
 
 #include "../engine/vorticon/ai/CSectorEffector.h"
 #include "../engine/vorticon/ai/CRay.h"
+#include "../engine/vorticon/ai/CBridges.h"
 #include "../engine/spritedefines.h"
 #include "../keen.h"
 #include "../sdl/sound/CSound.h"
@@ -21,7 +22,7 @@
 
 ////
 // Process the stuff of the player when playing in a normal level
-void CPlayer::processInLevel(const bool &platextending)
+void CPlayer::processInLevel()
 {
     StatusBox();
 
@@ -67,7 +68,7 @@ void CPlayer::processInLevel(const bool &platextending)
 
 		InertiaAndFriction_X();
 		
-		TogglePogo_and_Switches(platextending);
+		TogglePogo_and_Switches();
 		JumpAndPogo();
 
 		// Check collision with other objects
@@ -307,7 +308,7 @@ void CPlayer::playpushed()
 }
 
 // allow Keen to toggle the pogo stick and hit switches
-void CPlayer::TogglePogo_and_Switches(const bool &platextending)
+void CPlayer::TogglePogo_and_Switches()
 {
 	int i;
 	int mx, my;
@@ -347,7 +348,7 @@ void CPlayer::TogglePogo_and_Switches(const bool &platextending)
 				}
 				else
 				{
-					if(!platextending)
+					if(!mp_Map->m_PlatExtending)
 					{
 						m_Level_Trigger = LVLTRIG_BRIDGE;
 						char pxoff = (bridge & 0x00ff);
@@ -356,11 +357,9 @@ void CPlayer::TogglePogo_and_Switches(const bool &platextending)
 						int platy = my + pyoff;
 
 						// spawn a "sector effector" to extend/retract the platform
-						//CSectorEffector *platobject = new CSectorEffector(mp_Map, mx<<CSF,my<<CSF,
-							//							,*mp_object, SE_EXTEND_PLATFORM);
-						//platobject->platx = platx;
-						//platobject->platy = platy;
-						//mp_object->push_back(platobject);
+						CBridges *platobject = new CBridges(mp_Map, mx<<CSF,my<<CSF,
+								platx, platy);
+						mp_object->push_back(platobject);
 					}
 				}
 

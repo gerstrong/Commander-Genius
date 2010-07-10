@@ -23,8 +23,7 @@ CSectorEffector::CSectorEffector(CMap *p_map, Uint32 x, Uint32 y,
 CObject(p_map, x, y, OBJ_SECTOREFFECTOR),
 setype(se_type),
 m_Player(Player),
-m_Object(Object),
-m_PlatExtending(g_pBehaviorEngine->m_PlatExtending)
+m_Object(Object)
 {}
 
 
@@ -32,8 +31,6 @@ void CSectorEffector::process()
 {
 	switch(setype)
 	{
-	case SE_EXTEND_PLATFORM: se_extend_plat(); break;
-	case SE_RETRACT_PLATFORM: se_retract_plat( ); break;
 	case SE_MORTIMER_ARM: se_mortimer_arm(); break;
 	case SE_MORTIMER_LEG_LEFT: se_mortimer_leg_left(); break;
 	case SE_MORTIMER_LEG_RIGHT: se_mortimer_leg_right(); break;
@@ -49,79 +46,8 @@ void CSectorEffector::process()
 
 }
 
-void CSectorEffector::se_extend_plat()
-{
-#define PLAT_EXTEND_RATE        3
-
-	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
-
-	if (needinit)
-	{
-		timer = 0;
-		inhibitfall = true;
-		canbezapped = false;
-		sprite = BLANKSPRITE;
-
-		// if the platform is already extended, turn ourselves
-		// into an se_retract_plat()
-		if ( mp_Map->at(platx, platy) == TILE_EXTENDING_PLATFORM )
-		{
-			setype = SE_RETRACT_PLATFORM;
-			se_retract_plat();
-			return;
-		}
-
-		// figure out which direction the bridge is supposed to go
-		if (!TileProperties[mp_Map->at(platx+1, platy)].bleft)
-			dir = RIGHT;
-		else
-			dir = LEFT;
-
-		// get the background tile from the tile above the starting point
-		if(dir == RIGHT)
-			m_bgtile = mp_Map->at(platx+1, platy);
-		else
-			m_bgtile = mp_Map->at(platx-1, platy);
-
-		needinit = false;
-	}
-
-	if (!timer)
-	{
-		if (dir==RIGHT &&
-				!TileProperties[mp_Map->at(platx, platy)].bleft)
-		{
-			mp_Map->changeTile(platx, platy, TILE_EXTENDING_PLATFORM);
-			platx++;
-			timer = PLAT_EXTEND_RATE;
-		}
-		else if(dir==LEFT &&
-				!TileProperties[mp_Map->at(platx, platy)].bright)
-		{
-			mp_Map->changeTile(platx, platy, TILE_EXTENDING_PLATFORM);
-			platx--;
-			timer = PLAT_EXTEND_RATE;
-		}
-		else
-		{
-			exists = false;
-			m_PlatExtending = false;
-			return;
-		}
-	}
-	else timer--;
-}
-
 void CSectorEffector::getTouchedBy(CObject &theObject)
 {
-	if(setype == SE_EXTEND_PLATFORM)
-	{
-		if (!timer)
-		{
-			kill_intersecting_tile(platx, platy, theObject);
-		}
-	}
-
 	bool it_is_mortimer_machine = false;
 
 	it_is_mortimer_machine = (setype == SE_MORTIMER_LEG_LEFT)
@@ -136,80 +62,6 @@ void CSectorEffector::getTouchedBy(CObject &theObject)
 			theObject.kill();
 		}
 	}
-}
-
-
-void CSectorEffector::se_retract_plat()
-{
-	if (needinit)
-	{
-		// figure out which direction the bridge is supposed to go
-		//if(platx-1 > m_Objvect.size())
-			//return;
-
-		if (mp_Map->at(platx-1, platy) != TILE_EXTENDING_PLATFORM)
-			dir = LEFT;
-		else if(mp_Map->at(platx+1, platy) != TILE_EXTENDING_PLATFORM)
-			dir = RIGHT;
-		else
-			dir = LEFT;
-
-		// scan across until we find the end of the platform--that will
-		// be where we will start (remove platform in oppisote direction
-		// it was extended)
-		do
-		{
-			if (mp_Map->at(platx, platy) != TILE_EXTENDING_PLATFORM)
-			{ // we've found the end of the platform
-				break;
-			}
-			if (dir==LEFT)
-			{
-				if (platx==mp_Map->m_width)
-				{
-					g_pLogFile->ftextOut("SE_RETRACT_PLATFORM: Failed to find end of platform when scanning right.");
-					return;
-				}
-				platx++;
-			}
-			else
-			{ // platform will be removed in a right-going direction
-				if (platx==0)
-				{
-					g_pLogFile->ftextOut("SE_RETRACT_PLATFORM: Failed to find end of platform when scanning left.");
-					return;
-				}
-				platx--;
-			}
-		} while(1);
-
-		// when we were scanning we went one tile too far, go back one
-		if (dir==LEFT) platx--;
-		else platx++;
-
-		needinit = false;
-	}
-
-	if (!timer)
-	{
-		if (mp_Map->at(platx, platy) == TILE_EXTENDING_PLATFORM)
-		{
-			mp_Map->setTile(platx, platy, m_bgtile, true);
-
-			if (dir==RIGHT)
-				platx++;
-			else
-				platx--;
-
-			timer = PLAT_EXTEND_RATE;
-		}
-		else
-		{
-			exists = false;
-			m_PlatExtending = false;
-		}
-	}
-	else timer--;
 }
 
 #define ARM_GO          0

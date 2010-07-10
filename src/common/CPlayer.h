@@ -55,7 +55,7 @@ public:
 	int getNewObject();
 
 	// In Level specific
-	void processInLevel(const bool &platextending);
+	void processInLevel();
 	void touchedExit(int mpx);
 	void walkbehindexitdoor();
 	void kill(bool force);
@@ -65,7 +65,7 @@ public:
 	void getgoodies();
 	void playpushed();
 	void keencicle();
-	void TogglePogo_and_Switches(const bool &platextending);
+	void TogglePogo_and_Switches();
 	void JumpAndPogo();
 	void Playerfalling();
 	void raygun();
@@ -183,6 +183,15 @@ public:
 	stOption *mp_option;
 
 private:
+	// defined under CPlayerItems.cpp
+	bool getGoodie(int px, int py);
+	void procGoodie(int tile, int mpx, int mpy);
+	void riseBonus(int spr, int x, int y);
+	void getBonuspoints(int numpts, int mpx, int mpy);
+	void incScore(int numpts);
+	void openDoor(int doortile, int doorsprite, int mpx, int mpy);
+	void giveAnkh();
+
 	CStatusScreen *mp_StatusScr;
 
 	bool lastpogo;
@@ -194,14 +203,8 @@ private:
 
 	level_triggers m_Level_Trigger;
 
-	// defined under CPlayerItems.cpp
-	bool getGoodie(int px, int py);
-	void procGoodie(int tile, int mpx, int mpy);
-	void riseBonus(int spr, int x, int y);
-	void getBonuspoints(int numpts, int mpx, int mpy);
-	void incScore(int numpts);
-	void openDoor(int doortile, int doorsprite, int mpx, int mpy);
-	void giveAnkh();
+	static size_t m_playerID;
+
 };
 
 #endif /* CPLAYER_H_ */

@@ -15,8 +15,6 @@
 
 // "Sector Effector" types
 enum sector_effector_type{
-	SE_EXTEND_PLATFORM,
-	SE_RETRACT_PLATFORM,
 	SE_MORTIMER_ARM,
 	SE_MORTIMER_LEG_LEFT,
 	SE_MORTIMER_LEG_RIGHT,
@@ -60,8 +58,6 @@ public:
 
 	std::vector<CPlayer>& m_Player;
 	std::vector<CObject*>& m_Object;
-	bool &m_PlatExtending;
-	unsigned int m_bgtile;
 };
 
 #endif /* SE_H_ */

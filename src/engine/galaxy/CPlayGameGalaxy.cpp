@@ -56,6 +56,10 @@ void CPlayGameGalaxy::process()
 
 	processInput();
 
+	// process WM. If a level is open process it also in this class
+
+	// process Finale
+
 	processRendering();
 }
 
