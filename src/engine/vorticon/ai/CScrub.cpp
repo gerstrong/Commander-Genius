@@ -45,6 +45,8 @@ m_Player(Player)
 
 	checkinitialCollisions();
 	dead = 0;
+	fallinctimer = 0;
+	fallspeed = 0;
 
 	SetAllCanSupportPlayer(1);
 	for( size_t i=0 ; i<m_Player.size() ; i++ )

@@ -14,6 +14,8 @@ CIceCannon::CIceCannon(CMap *p_map, Uint32 x, Uint32 y,
 	std::vector<CPlayer>& Player, std::vector<CObject*>& Object,
 	int vector_x, int vector_y ) :
 CObject(p_map,x,y, OBJ_ICECANNON),
+timer(0),
+m_gunfiretimer(0),
 m_Player(Player),
 m_Object(Object)
 {

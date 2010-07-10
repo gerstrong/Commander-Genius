@@ -67,13 +67,13 @@ bool CMessages::extractGlobalStrings()
 					StringMap.insert( extractString( "EP1_SHIP" , 0x1679B, 0x167D3, -512 ) );
 					StringMap.insert( extractString( "LIVES_LEFT" , 0x160D8, 0x160E5, -512 ) );
 					// Message hint Dialogs
-					StringMap.insert( extractString( "EP1_YSIYM_LVL2" , 0x15280, 0x15313, -512 ) );
-					StringMap.insert( extractString( "EP1_YSIYM_LVL6" , 0x1531A, 0x153B3, -512 ) );
-					StringMap.insert( extractString( "EP1_YSIYM_LVL9" , 0x153B4, 0x1544D, -512 ) );
-					StringMap.insert( extractString( "EP1_YSIYM_LVL10" , 0x1544E, 0x154E7, -512 ) );
-					StringMap.insert( extractString( "EP1_YSIYM_LVL11" , 0x154E8, 0x1553F, -512 ) );
-					StringMap.insert( extractString( "EP1_YSIYM_LVL12" , 0x15540, 0x155DA, -512 ) );
-					StringMap.insert( extractString( "EP1_YSIYM_LVL15" , 0x155DB, 0x1565E, -512 ) );
+					StringMap.insert( extractString( "EP1_YSIYM_LVL2" , 0x15280, 0x15312, -512 ) );
+					StringMap.insert( extractString( "EP1_YSIYM_LVL6" , 0x1531A, 0x153B2, -512 ) );
+					StringMap.insert( extractString( "EP1_YSIYM_LVL9" , 0x153B4, 0x1544C, -512 ) );
+					StringMap.insert( extractString( "EP1_YSIYM_LVL10" , 0x1544E, 0x154E6, -512 ) );
+					StringMap.insert( extractString( "EP1_YSIYM_LVL11" , 0x154E8, 0x1553E, -512 ) );
+					StringMap.insert( extractString( "EP1_YSIYM_LVL12" , 0x15540, 0x155D9, -512 ) );
+					StringMap.insert( extractString( "EP1_YSIYM_LVL15" , 0x155DB, 0x1565D, -512 ) );
 					// Finale Text
 					StringMap.insert( extractString( "EP1_ESEQ_PART1" , 0x15E24, 0x15EB0, -512 ) );
 					StringMap.insert( extractString( "EP1_ESEQ_PART2_PAGE1" , 0x15EBD, 0x15EFA, -512 ) );

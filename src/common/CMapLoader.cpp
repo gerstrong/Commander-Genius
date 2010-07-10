@@ -140,8 +140,12 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	
 	if(mp_objvect)
 	{
-	    if(!mp_objvect->empty())
-	    	mp_objvect->clear();
+		std::vector<CObject*>::iterator obj = mp_objvect->begin();
+		for( ; obj != mp_objvect->end() ; obj++ )
+		{
+			delete *obj;
+			mp_objvect->pop_back();
+		}
 
 	    mp_objvect->reserve(20000);
 
