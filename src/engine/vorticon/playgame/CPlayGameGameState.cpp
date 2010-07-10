@@ -27,33 +27,44 @@ bool CPlayGameVorticon::loadGameState()
 		// get the episode, level and difficulty
 		m_SavedGame.decodeData(m_Episode);
 		m_SavedGame.decodeData(m_Level);
+		m_SavedGame.decodeData(m_Difficulty);
+
+		bool dark, checkpointset;
+		int checkx, checky;
+		m_SavedGame.decodeData(checkpointset);
+		m_SavedGame.decodeData(checkx);
+		m_SavedGame.decodeData(checky);
+		m_SavedGame.decodeData(dark);
+
+		// Load number of Players
+		m_SavedGame.decodeData(m_NumPlayers);
+
+		if(!m_Player.empty())
+			m_Player.clear();
+
+		m_Player.assign(m_NumPlayers, CPlayer(m_Episode, m_Level, m_Difficulty,
+				 mp_level_completed, mp_option, m_Object, m_Map) );
+		for( size_t i=0 ; i < m_Player.size() ; i++ )
+		{
+			m_Player.at(i).m_index = i;
+			m_Player.at(i).setDatatoZero();
+		}
 
 		CMapLoader Maploader(&m_Map, &m_Player);
 		Maploader.mp_objvect = &m_Object;
 		if(!Maploader.load(m_Episode, m_Level, m_Gamepath, true))
 			return false;
 
-		m_SavedGame.decodeData(m_Difficulty);
-
-		m_SavedGame.decodeData(m_checkpointset);
-		m_SavedGame.decodeData(m_checkpoint_x);
-		m_SavedGame.decodeData(m_checkpoint_y);
-		m_SavedGame.decodeData(m_Map.m_Dark);
-
-		// Load number of Players
-		m_SavedGame.decodeData(m_NumPlayers);
-
-		// Now load the inventory for every player
-		m_Player.clear();
+		m_checkpointset = checkpointset;
+		m_Map.m_Dark = dark;
+		m_checkpoint_x = checkx;
+		m_checkpoint_y = checky;
 
 		m_level_command = START_LEVEL;
 		g_pMusicPlayer->stop();
 
 		// Prepare for loading the new level map and the players.
 		cleanup();
-
-		m_Player.assign(m_NumPlayers, CPlayer(m_Episode, m_Level, m_Difficulty,
-				 mp_level_completed, mp_option, m_Object, m_Map) );
 
 		init();
 		std::vector<CPlayer> :: iterator player;
@@ -72,22 +83,24 @@ bool CPlayGameVorticon::loadGameState()
 
 		// load the number of objects on screen
 		Uint32 size;
-		int x, y;
 		m_SavedGame.decodeData(size);
-		for( Uint32 i=0 ; i<size  ; i++) {
+		for( Uint32 i=0 ; i<size  ; i++ ) {
+			unsigned int x,y;
 			// save all the objects states
-
 			if(i >= m_Object.size())
-				m_Object.push_back(new CObject( &m_Map, 0, 0, OBJ_NONE));
+			{
+				CObject *obj = new CObject( &m_Map, 0, 0, OBJ_NONE);
+				obj->exists = false;
+				m_Object.push_back(obj);
+			}
 
 			CObject *object=m_Object.at(i);
 
 			m_SavedGame.decodeData(object->m_type);
 			m_SavedGame.decodeData(x);
 			m_SavedGame.decodeData(y);
-			object->moveToForce(x,y-1);
+			object->moveToForce(x,y-(4<<STC));
 			m_SavedGame.decodeData(object->dead);
-			m_SavedGame.decodeData(object->needinit);
 			m_SavedGame.decodeData(object->onscreen);
 			m_SavedGame.decodeData(object->hasbeenonscreen);
 			m_SavedGame.decodeData(object->exists);
@@ -102,7 +115,10 @@ bool CPlayGameVorticon::loadGameState()
 			m_SavedGame.decodeData(object->honorPriority);
 			m_SavedGame.decodeData(object->sprite);
 
-			if(object->m_type == OBJ_DOOR) // small workaround for doors which might be opening
+			if(object->m_type == OBJ_DOOR or
+				object->m_type == OBJ_RAY or
+				object->m_type == OBJ_SNDWAVE or
+				object->m_type == OBJ_FIREBALL) // small workaround for doors which might be opening
 				object->exists = false;
 		}
 
@@ -137,8 +153,8 @@ bool CPlayGameVorticon::loadGameState()
 
 bool CPlayGameVorticon::saveGameState()
 {
-	int i;
-	int size;
+	size_t i;
+	size_t size;
 
 	/// Save the Game in the CSavedGame object
 	// store the episode, level and difficulty
@@ -157,7 +173,8 @@ bool CPlayGameVorticon::saveGameState()
 	m_SavedGame.encodeData(m_NumPlayers);
 
 	// Now save the inventory of every player
-	for( i=0 ; i<m_NumPlayers ; i++ ) {
+	for( i=0 ; i<m_NumPlayers ; i++ )
+	{
 		m_SavedGame.encodeData(m_Player[i].getXPosition());
 		m_SavedGame.encodeData(m_Player[i].getYPosition());
 		m_SavedGame.encodeData(m_Player[i].blockedd);

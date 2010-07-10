@@ -21,6 +21,7 @@ CObject::CObject(CMap *pmap, Uint32 x, Uint32 y, object_t type) :
 m_type(type),
 m_index(m_number_of_objects),
 HealthPoints(1),
+sprite(BLANKSPRITE),
 mp_object(NULL),
 mp_Map(pmap),
 m_blinktime(0)
@@ -28,7 +29,6 @@ m_blinktime(0)
 	m_number_of_objects++;
 	honorPriority = true;
 	exists = true;
-	sprite=BLANKSPRITE;
 	solid = true;
 	inhibitfall = false;
 

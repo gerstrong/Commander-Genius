@@ -33,7 +33,7 @@ mp_PlayGame(NULL)
 	m_mode = GAMELAUNCHER;
 	m_Episode = 0;
 	m_ChosenGame = 0;
-	m_Numplayers = 0;
+	m_Numplayers = 1;
 	m_endgame = false;
 
 	m_EGAGraphics = NULL;

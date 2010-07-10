@@ -30,6 +30,7 @@ CPlayGame(ExeFile, level, numplayers, difficulty, p_option),
 mp_ObjectAI(NULL),
 m_SavedGame(SavedGame),
 mp_HighScores(NULL),
+mp_HUD(NULL),
 PlatExtending(false)
 {
 	mp_Menu = NULL;
@@ -38,6 +39,9 @@ PlatExtending(false)
 	
 	if(!m_Player.empty())
 		m_Player.clear();
+
+
+	// TODO: Here it should read the savegame stuff
 
 	m_Player.assign(m_NumPlayers, CPlayer(m_Episode, m_Level, m_Difficulty,
 			mp_level_completed, mp_option,
@@ -49,10 +53,6 @@ PlatExtending(false)
 		CPlayer &thisPlayer = m_Player.at(i);
 		thisPlayer.setDatatoZero();
 	}
-
-	stInventory &inventory = m_Player.at(0).inventory;
-
-	mp_HUD = new CHUD(inventory.score, inventory.lives, inventory.charges);
 
 	// Create completed level list
 	memset(mp_level_completed,false,MAX_LEVELS_VORTICON*sizeof(bool));
@@ -104,6 +104,11 @@ void CPlayGameVorticon::setupPlayers()
 		it_player->exists = true;
 		if(it_player->m_playingmode == CPlayer::WORLDMAP) it_player->solid=!(it_player->godmode);
 	}
+
+	stInventory &inventory = m_Player.at(0).inventory;
+
+	if(mp_HUD) delete mp_HUD;
+		mp_HUD = new CHUD(inventory.score, inventory.lives, inventory.charges);
 }
 
 bool CPlayGameVorticon::init()

@@ -46,6 +46,15 @@ mp_StatusScr(NULL)
 	m_Ankhshield.solid = false;
 	m_Ankhshield.exists = true;
 
+	pjumping = PNOJUMP;
+	pfalling = false;
+	psemisliding = false;
+	psliding = false;
+	ppogostick = false;
+	pslowingdown = false;
+    m_playingmode=WORLDMAP;
+
+
 	// Set every value in the class to zero.
     memset(&inventory, 0, sizeof(stInventory));
     setDefaultStartValues();
@@ -136,7 +145,9 @@ void CPlayer::setupforLevelPlay()
     lastpogo = false;
   	hintused = false;
   	exitXpos = 0;
-    pjustfell = plastfalling = pfalling = false;
+    pjustfell = false;
+    plastfalling = false;
+    pfalling = false;
     pwalking = playspeed = 0;
     xinertia = pinertia_y = 0;
     playpushed_x = 0;
