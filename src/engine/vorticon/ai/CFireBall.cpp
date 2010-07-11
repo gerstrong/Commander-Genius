@@ -21,14 +21,13 @@ CRay(p_map, x, y, dir, byType, byID)
 	inhibitfall = true;
 	blockedl = blockedr = 0;
 	canbezapped = 1;
+	m_speed = (mp_Map->m_Difficulty>1) ? FIREBALL_HARD_SPEED : FIREBALL_SPEED;
 }
 
 void CFireBall::process()
 {
-	int speed;
-
 	// check if it was shot
-	if (HealthPoints <= 0)
+	if (HealthPoints <= 0 && state == RAY_STATE_FLY)
 	{
 		if (onscreen) g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, scrx);
 		m_type = OBJ_RAY;
@@ -37,53 +36,25 @@ void CFireBall::process()
 		return;
 	}
 
-	// destroy the sound wave if it's been offscreen for a good amount
-	// of time. this is to prevent a massive buildup of soundwaves
-	// slowly traveling through walls all the way across the level
-	// (which can crash the game due to running out of object slots).
-	if (!onscreen)
+	if(state == RAY_STATE_FLY)
 	{
-		if (offscreentime > FIREBALL_OFFSCREEN_KILL_TIME)
-		{
-			exists = false;
-			return;
-		}
-		else offscreentime++;
-	}
-	else offscreentime = 0;
+		if (m_Direction == RIGHT)
+			sprite = FIREBALL_RIGHT_FRAME + animframe;
+		else
+			sprite = FIREBALL_LEFT_FRAME + animframe;
 
-	// fly through the air
-	speed = (mp_Map->m_Difficulty>1) ? FIREBALL_HARD_SPEED : FIREBALL_SPEED;
-	if (m_Direction == RIGHT)
-	{
-		sprite = FIREBALL_RIGHT_FRAME + animframe;
-		if (blockedr || blockedl)
+		moveinAir();
+
+		// animation
+		if (animtimer > FIREBALL_ANIM_RATE)
 		{
-			m_type = OBJ_RAY;
-			state = RAY_STATE_SETZAPZOT;
-			inhibitfall = 1;
-			return;
+			animframe ^= 1;
+			animtimer = 0;
 		}
-		else moveRight(speed);
+		else animtimer++;
 	}
+	else if(state == RAY_STATE_SETZAPZOT)
+		setZapped();
 	else
-	{
-		sprite = FIREBALL_LEFT_FRAME + animframe;
-		if (blockedr || blockedl)
-		{
-			m_type = OBJ_RAY;
-			state = RAY_STATE_SETZAPZOT;
-			inhibitfall = 1;
-			return;
-		}
-		else moveLeft(speed);
-	}
-
-	// animation
-	if (animtimer > FIREBALL_ANIM_RATE)
-	{
-		animframe ^= 1;
-		animtimer = 0;
-	}
-	else animtimer++;
+		gotZapped();
 }

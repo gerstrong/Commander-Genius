@@ -26,7 +26,6 @@ CPhysicsSettings::CPhysicsSettings() {
 	// Pogo values
 	player.pogoforce_x = 30;
 
-	//misc.visibility = 21;
 	misc.visibility = 3;
 }
 

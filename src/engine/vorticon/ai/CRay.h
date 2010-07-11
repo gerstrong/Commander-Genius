@@ -18,14 +18,18 @@ class CRay : public CObject
 {
 public:
 	CRay(CMap *p_map, Uint32 x, Uint32 y,
-		direction_t dir, object_t byType=OBJ_NONE, size_t byID=0);
+		direction_t dir, object_t byType=OBJ_RAY, size_t byID=0);
 
 	virtual void process();
+	void moveinAir();
 	void setOwner(object_t type, unsigned int index);
 	void getTouchedBy(CObject &theObject);
 	bool isFlying();
+	void setZapped();
+	void gotZapped();
 
 	direction_t m_Direction;
+	int m_speed;
 
 	enum {
 		RAY_STATE_FLY,

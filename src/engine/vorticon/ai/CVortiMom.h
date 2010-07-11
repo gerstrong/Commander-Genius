@@ -46,10 +46,11 @@ public:
 			std::vector<CPlayer>& Player,
 			std::vector<CObject*>& Object);
 	void process();
+	void getShotByRay();
+
 private:
 	vortimom_actions state;
 	direction_t dir;
-	char hittimes;
 
 	int animframe, animtimer;
 	int timer;

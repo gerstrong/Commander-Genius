@@ -1,4 +1,5 @@
 #include "../../../sdl/sound/CSound.h"
+#include "../../../sdl/CVideoDriver.h"
 #include "../../../misc.h"
 
 #include "CVortiMom.h"
@@ -13,9 +14,9 @@ m_Object(Object)
 {
 	HealthPoints = MOTHER_HP;
 	state = MOTHER_WALK;
-	hittimes = 0;
 	animframe = 0;
 	animtimer = 0;
+	canbezapped = true;
 
 	if (m_Player[0].getXPosition() > getXPosition())
 		dir = RIGHT;
@@ -47,12 +48,6 @@ void CVortiMom::process()
 		}
 	}
 
-
-	if (HealthPoints <= 0 && state == MOTHER_HURT)
-	{
-		timer = 0;
-		state = MOTHER_HURT;
-	}
 
 	switch(state)
 	{
@@ -124,11 +119,13 @@ void CVortiMom::process()
 		else timer++;
 		break;
 	case MOTHER_HURT:
+
+		sprite = MOTHER_HURT_FRAME;
 		if (timer > MOTHER_HURT_SHOW_TIME)
 		{
-			if (hittimes >= MOTHER_HP)
+			if (HealthPoints <= 0)
 			{
-				sprite = MOTHER_HURT_FRAME;
+				//sprite = MOTHER_HURT_FRAME;
 				state = MOTHER_DEAD;
 				canbezapped = 0;
 				timer = 0;
@@ -148,3 +145,18 @@ void CVortiMom::process()
 	default: break;
 	}
 }
+
+void CVortiMom::getShotByRay()
+{
+	if( state != MOTHER_HURT && HealthPoints>0 )
+	{
+		if(HealthPoints>1 && g_pVideoDriver->getSpecialFXConfig())
+			blink(10);
+		sprite = MOTHER_HURT_FRAME;
+		HealthPoints--;
+		state = MOTHER_HURT;
+
+	}
+}
+
+
