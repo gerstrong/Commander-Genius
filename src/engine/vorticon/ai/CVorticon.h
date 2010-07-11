@@ -18,7 +18,7 @@
 #define VORT_JUMP_FRICTION      5
 
 #define VORT_WALK_SPEED         28
-#define VORT_WALK_ANIM_TIME     14
+#define VORT_WALK_ANIM_TIME     4
 
 
 // number of shots to kill
@@ -69,7 +69,7 @@ public:
 protected:
 	int m_Level;
 	char m_Difficulty;
-	bool m_Dark;
+	bool &m_Dark;
 
 	enum {
 	VORT_WALK,

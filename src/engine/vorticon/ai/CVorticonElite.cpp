@@ -19,7 +19,7 @@
 #define VORTELITE_JUMP_FRICTION      2
 
 #define VORTELITE_WALK_SPEED         45
-#define VORTELITE_WALK_ANIM_TIME     12
+#define VORTELITE_WALK_ANIM_TIME     6
 
 // number of shots to kill
 #define VORTELITE_HP                 4
