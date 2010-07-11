@@ -59,14 +59,6 @@ m_blinktime(0)
 	checkinitialCollisions();
 }
 
-/*bool CObject::spawn(int x0, int y0, object_t otype, int Episode, direction_t dirof)
-{
-	// Check for collision points when object is spawn. Later only collision basing on movements will be checked
-	// object could not be created
-	g_pLogFile->ftextOut("Object of type %d could not be created at %d,%d (out of object slots)<br>",otype,x,y);
-	return false;
-}*/
-
 void CObject::setupObjectType(int Episode)
 {
 	switch(m_type)

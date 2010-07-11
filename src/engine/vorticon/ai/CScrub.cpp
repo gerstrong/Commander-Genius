@@ -106,7 +106,7 @@ void CScrub::process()
 			canbezapped = 0;
 		}
 		// die if shot
-		if (HealthPoints <= 0 && state==SCRUB_DYING )
+		if (HealthPoints <= 0 && state!=SCRUB_DYING )
 		{
 			solid=true;
 			state = SCRUB_DYING;

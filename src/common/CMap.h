@@ -51,10 +51,8 @@ public:
 	bool changeTile(Uint16 x, Uint16 y, Uint16 t);
 
 	// Animation methods
-	void deAnimate(int x, int y);
 	void drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile);
 	void animateAllTiles();
-	void registerAnimation(Uint32 x, Uint32 y, size_t bg, size_t fg);
 
 	unsigned int getlevelat(unsigned int x, unsigned int y)	{
 		return m_objectlayer[x>>4][y>>4];	}
@@ -63,7 +61,6 @@ public:
 	word *getForegroundData();
 	word *getBackgroundData();
 
-	void cleanup();
 	virtual ~CMap();
 
 	Sint16 m_scrollx_buf;		// Amount to move surface in X.
@@ -100,13 +97,13 @@ private:
 	SDL_Surface *mp_scrollsurface;
 	std::vector<CTilemap> &m_Tilemaps;
 
-	class usedCoord;
+	/*class usedCoord;
 	struct stAnimationSlot{
 		size_t x, y;
 		size_t bgtile, fgtile;
-	};
+	};*/
 
-	std::list<stAnimationSlot> m_AnimationSlots;
+	//std::list<stAnimationSlot> m_AnimationSlots;
 
 	Uint8 m_animtiletimer;
 

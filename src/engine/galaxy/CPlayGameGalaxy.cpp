@@ -41,7 +41,6 @@ void CPlayGameGalaxy::loadLevel()
 	// TODO: Lets load the main map for now and create process for this
 	CMapLoaderGalaxy MapLoader(m_ExeFile);
 
-	m_Map.cleanup();
 	m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
 	MapLoader.loadMap(m_Map, m_Level); // Map Level?
 
