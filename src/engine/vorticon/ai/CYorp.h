@@ -36,7 +36,7 @@
 #define YORP_STUNFRAME  56
 
 #define YORP_JUMP_PROB      8
-#define YORP_JUMP_HEIGHT    -30
+#define YORP_JUMP_HEIGHT    -40
 
 #define YORP_DYING_FRAME   58
 #define YORP_DEAD_FRAME    59
