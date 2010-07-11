@@ -18,7 +18,6 @@
 
 // when this probability is satisfied, there is 50% probability
 // of a look, 50% probability of a fire.
-#define TANK_MAXTRAVELDIST    200
 
 #define TANK_LOOK_ANIM_TIME     4
 #define TANK_PREPAREFIRE_TIME   30
@@ -39,12 +38,14 @@ unsigned int rnd(void);
 // when this probability is satisfied, there is 50% probability
 // of a look, 50% probability of a fire.
 #define TANK_LOOKFIRE_PROB    500
-#define TANK_MINTRAVELDIST    200
+
+#define TANK_MAXTRAVELDIST    200
+#define TANK_MINTRAVELDIST    100
 
 #define TANK_WALK_SPEED         24
 #define TANK_WALK_ANIM_TIME     6
 #define TANK_LOOK_ANIM_TIME     4
-#define TANK_LOOK_TOTALTIME     100
+#define TANK_LOOK_TOTALTIME     50
 #define TANK2_PREPAREFIRE_TIME  6
 
 // frames
