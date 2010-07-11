@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2332C60F11EA3B42000D8F71 /* CBridges.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2332C60D11EA3B42000D8F71 /* CBridges.cpp */; };
 		235755D2101A5E5900275638 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0867D6AAFE840B52C02AAC07 /* InfoPlist.strings */; };
 		235755D3101A5E5900275638 /* main.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD57E20DA1CFC700B32029 /* main.xib */; };
 		23575631101A5E5900275638 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20286C33FDCF999611CA2CEA /* Carbon.framework */; };
@@ -191,6 +192,8 @@
 		0867D6ABFE840B52C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1DDD57E30DA1CFC700B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/main.xib; sourceTree = "<group>"; };
 		20286C33FDCF999611CA2CEA /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
+		2332C60D11EA3B42000D8F71 /* CBridges.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBridges.cpp; sourceTree = "<group>"; };
+		2332C60E11EA3B42000D8F71 /* CBridges.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBridges.h; sourceTree = "<group>"; };
 		2357564C101A5F8F00275638 /* Ogg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Ogg.framework; sourceTree = "<group>"; };
 		2357564D101A5F8F00275638 /* Vorbis.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Vorbis.framework; sourceTree = "<group>"; };
 		23575688101A6AE600275638 /* Commander Genius.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Commander Genius.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1196,6 +1199,8 @@
 		63CD113511CFF5FB00F60BC8 /* ai */ = {
 			isa = PBXGroup;
 			children = (
+				2332C60D11EA3B42000D8F71 /* CBridges.cpp */,
+				2332C60E11EA3B42000D8F71 /* CBridges.h */,
 				23A11B7411E7C3F900747BFA /* CAutoRay.cpp */,
 				23A11B7511E7C3F900747BFA /* CAutoRay.h */,
 				23A11B7611E7C3F900747BFA /* CBallJack.cpp */,
@@ -1811,6 +1816,7 @@
 				23A11BC911E7C3F900747BFA /* CVortiMom.cpp in Sources */,
 				23A11BCA11E7C3F900747BFA /* CVortiNinja.cpp in Sources */,
 				23A11BCB11E7C3F900747BFA /* CYorp.cpp in Sources */,
+				2332C60F11EA3B42000D8F71 /* CBridges.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
