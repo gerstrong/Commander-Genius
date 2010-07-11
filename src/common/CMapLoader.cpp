@@ -40,6 +40,7 @@
 #include "../engine/vorticon/ai/CRope.h"
 #include "../engine/vorticon/ai/CScrub.h"
 #include "../engine/vorticon/ai/CIceCannon.h"
+#include "../engine/vorticon/ai/CSpark.h"
 
 CMapLoader::CMapLoader(CMap* p_map, std::vector<CPlayer> *p_PlayerVect) :
 mp_vec_Player(p_PlayerVect)
@@ -390,8 +391,7 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				}
 				else if (episode==2)
 				{
-					enemyobject = new CSectorEffector( mp_map, x<<CSF, y<<CSF,
-							*mp_vec_Player,*mp_objvect, OBJ_SPARK);
+					enemyobject = new CSpark( mp_map, x<<CSF, y<<CSF, *mp_objvect);
 				}
 				else if (episode==3)
 				{

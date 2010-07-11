@@ -16,28 +16,27 @@
 CSpark::CSpark(CMap *pmap, Uint32 x, Uint32 y,
 		std::vector<CObject*>& Object) :
 CObject(pmap, x, y, OBJ_SPARK),
+timer(0), frame(0),
+blowx(0), blowy(0),
 m_Object(Object)
 {
 	state = SPARK_ANIMATE;
-	timer = 0;
 	canbezapped = 1;
 	inhibitfall = 1;
-	needinit = false;
+
 }
 
+#define SPARK_BLOW_DELAY        25
+
+#define BG_GREY					143
+
 // AI for the Spark object in the Tantalus Ray Machine's of ep2
-// TODO: Spark must get at special class
 void CSpark::process()
 {
 	int mx,my,x,y;
 
 	mx = getXPosition() >> CSF;
 	my = getYPosition() >> CSF;
-
-
-#define SPARK_BLOW_DELAY        25
-
-#define BG_GREY					143
 
 	if (state==SPARK_ANIMATE)
 	{
@@ -58,7 +57,7 @@ void CSpark::process()
 			timer = 0;
 		} else timer++;
 
-		if ( HealthPoints <= 0 )
+		if ( HealthPoints <= 0 && state == SPARK_ANIMATE )
 		{
 			g_pSound->playStereofromCoord(SOUND_SHOT_HIT,PLAY_NOW, getXPosition());
 
@@ -129,12 +128,13 @@ void CSpark::process()
 
 			timer = 0;
 			mx = mx + blowx + 3;
-			for(y=0;y<3;y++)
+			for(y=3;y<6;y++)
 			{
-				my = my+3+y;
-				mp_Map->setTile(mx, my, 549, true);
+				//my = my+3+y;
+				//my = my+y;
+				mp_Map->setTile(mx, my+y, 549, true);
 				// spawn a ZAP! or a ZOT!
-				CRay *newobject = new CRay(mp_Map, mx<<CSF, my<<CSF, DOWN);
+				CRay *newobject = new CRay(mp_Map, mx<<CSF, (my+y)<<CSF, DOWN);
 				newobject->setOwner(m_type ,m_index);
 				newobject->state = CRay::RAY_STATE_SETZAPZOT;
 				newobject->inhibitfall = true;

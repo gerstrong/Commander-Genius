@@ -26,6 +26,10 @@ m_Direction(dir)
 	this->x=x;
 	this->y=y;
 
+	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+	bboxX1 = rSprite.m_bboxX1;		bboxX2 = rSprite.m_bboxX2;
+	bboxY1 = rSprite.m_bboxY1;		bboxY2 = rSprite.m_bboxY2;
+
 	state = RAY_STATE_FLY;
 	inhibitfall = true;
 	checkinitialCollisions();
