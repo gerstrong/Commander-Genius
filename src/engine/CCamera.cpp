@@ -35,7 +35,7 @@ void CCamera::attachToObject(CObject &attacher)
  * If this happens, the camera can be scrolled manually.
  */
 bool CCamera::detach()
-{}
+{return false;}
 
 /**
  * This is main cycle which will be called every Logic loop
