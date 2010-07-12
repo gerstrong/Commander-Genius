@@ -52,14 +52,15 @@ bool CSettings::saveDrvCfg()
 	Configuration.WriteInt("Video", "scale", g_pVideoDriver->getZoomValue());
 	Configuration.WriteInt("Video", "OGLfilter", g_pVideoDriver->getOGLFilter());
 	Configuration.WriteInt("Video", "filter", g_pVideoDriver->getFiltermode());
-	Configuration.WriteInt("Video", "specialfx",g_pVideoDriver->getSpecialFXConfig());
+	Configuration.WriteInt("Video", "specialfx", g_pVideoDriver->getSpecialFXConfig());
 	Configuration.WriteInt("Video", "autoframeskip", g_pTimer->getFrameRate());
 	
-	Configuration.WriteInt("Bound", "left", g_pCamera->getScrollLeft());
-	Configuration.WriteInt("Bound", "right", g_pCamera->getScrollRight());
-	Configuration.WriteInt("Bound", "up", g_pCamera->getScrollUp());
-	Configuration.WriteInt("Bound", "down", g_pCamera->getScrollDown());
-	Configuration.WriteInt("Bound", "speed", g_pCamera->getScrollSpeed());
+	st_camera_bounds &CameraBounds = g_pVideoDriver->getCameraBounds();
+	Configuration.WriteInt("Bound", "left", CameraBounds.left);
+	Configuration.WriteInt("Bound", "right", CameraBounds.right);
+	Configuration.WriteInt("Bound", "up", CameraBounds.up);
+	Configuration.WriteInt("Bound", "down", CameraBounds.down);
+	Configuration.WriteInt("Bound", "speed", CameraBounds.speed);
 	
 	Configuration.WriteInt("Audio", "channels", (g_pSound->getAudioSpec()).channels);
 	Configuration.WriteInt("Audio", "format", (g_pSound->getAudioSpec()).format);
@@ -117,14 +118,14 @@ bool CSettings::loadDrvCfg()
 		Configuration.ReadInteger("Video", "autoframeskip", &framerate, 60);
 		g_pTimer->setFrameRate(DEFAULT_LPS, framerate, DEFAULT_SYNC);
 
-		int boundl, boundr, boundu, boundd, sspeed;
-		Configuration.ReadInteger("Bound", "left", &boundl, 152);
-		Configuration.ReadInteger("Bound", "right", &boundr, 168);
-		Configuration.ReadInteger("Bound", "up", &boundu, 92);
-		Configuration.ReadInteger("Bound", "down", &boundd, 108);
-		Configuration.ReadInteger("Bound", "speed", &sspeed, 20);
+		st_camera_bounds CameraBounds;
+		Configuration.ReadInteger("Bound", "left", &CameraBounds.left, 152);
+		Configuration.ReadInteger("Bound", "right", &CameraBounds.right, 168);
+		Configuration.ReadInteger("Bound", "up", &CameraBounds.up, 92);
+		Configuration.ReadInteger("Bound", "down", &CameraBounds.down, 108);
+		Configuration.ReadInteger("Bound", "speed", &CameraBounds.speed, 20);
 
-		g_pCamera->setScrollTriggers(boundl,boundu,boundr,boundd,sspeed);
+		g_pVideoDriver->saveCameraBounds(CameraBounds);
 		
 		int filter;
 		Configuration.ReadInteger("Video", "filter", &filter, 2);

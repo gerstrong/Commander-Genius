@@ -175,11 +175,12 @@ bool CPlayer::scrollTriggers()
 	px = (getXPosition()>>STC)-scroll_x;
 	py = (getYPosition()>>STC)-scroll_y;
 	
-	left = g_pCamera->getScrollLeft();
-	up = g_pCamera->getScrollUp();
-	right = g_pCamera->getScrollRight();
-	down = g_pCamera->getScrollDown();
-	speed = g_pCamera->getScrollSpeed();
+	st_camera_bounds CameraBounds = g_pVideoDriver->getCameraBounds();
+	left = CameraBounds.left;
+	up = CameraBounds.up;
+	right = CameraBounds.right;
+	down = CameraBounds.down;
+	speed = CameraBounds.speed;
 
 	// left-right scrolling
 	if(px > right && scroll_x < mp_Map->m_maxscrollx)

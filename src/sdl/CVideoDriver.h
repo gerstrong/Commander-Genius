@@ -14,6 +14,9 @@
 struct st_resolution
 { int width,height,depth; };
 
+struct st_camera_bounds
+{ int left, right, down, up, speed; };
+
 #ifdef USE_OPENGL
 #include "COpenGL.h"
 #endif
@@ -41,8 +44,6 @@ public:
 	bool applyMode();
 	SDL_Rect adaptGameResolution();
 	SDL_Surface* createSurface( std::string name, bool alpha, int width, int height, int bpp, int mode, SDL_PixelFormat* format );
-	//void resetSettings();
-	//bool createSurfaces(void);
 
 	void stop(void);
 	bool start(void);
@@ -63,6 +64,8 @@ public:
 
 	void DeleteConsoleMsgs(void);
 	void AddConsoleMsg(const char *the_msg);
+
+	void saveCameraBounds(const st_camera_bounds &CameraBounds);
 
 	short getZoomValue(void);
 	bool getShowFPS(void);
@@ -108,6 +111,8 @@ public:
 	bool getAspectCorrection(void) { return m_aspect_correction; }
 	bool getSpecialFXConfig(void) { return m_special_fx; }
 
+	st_camera_bounds &getCameraBounds();
+
 	virtual ~CVideoDriver();
 
 	SDL_Surface *BlitSurface;
@@ -145,6 +150,8 @@ private:
 	SDL_Rect screenrect;
 	SDL_Rect blitrect;
 	SDL_Rect game_resolution_rect;	// Also called Screenspace. Yet very limited.
+
+	st_camera_bounds m_CameraBounds;
 
 	Sint16 *mp_sbufferx, *mp_sbuffery;
 

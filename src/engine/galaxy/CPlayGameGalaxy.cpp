@@ -55,15 +55,26 @@ void CPlayGameGalaxy::process()
 
 	processInput();
 
-	// process WM. If a level is open process it also in this class
+	// process World Map if active. At the start it's enabled
+	//if(m_WorldMap.isActive())
+		//m_WorldMap.process();
 
-	// process Finale
+	// process World Map if active. At the start it's enabled
+	//if(m_LevelPlay.isActive())
+		//m_LevelPlay.process();
+
+	// process Page if one is open. Could be one of the finale
+	//if(m_Page.isActive())
+		//m_Page.process();
 
 	processRendering();
 }
 
 void CPlayGameGalaxy::processInput()
 {
+	// TODO: wrap this into the camera class they way it can be used in the vorticons engine
+	// Also make it more efficient.
+
 	if(g_pInput->getPressedCommand(IC_QUIT))
 		m_endgame = true;
 

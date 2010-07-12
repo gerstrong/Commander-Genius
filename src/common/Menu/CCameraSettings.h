@@ -9,6 +9,7 @@
 #define CCAMERASETTINGS_H_
 
 #include "CBaseMenu.h"
+#include "../../sdl/CVideoDriver.h"
 
 class CCameraSettings : public CBaseMenu
 {
@@ -18,7 +19,8 @@ public:
 	virtual ~CCameraSettings();
 
 private:
-	int m_left, m_right, m_up, m_down, m_speed, m_changeint;
+	st_camera_bounds m_CameraBounds;
+	int m_changeint;
 };
 
 #endif /* CCAMERASETTINGS_H_ */

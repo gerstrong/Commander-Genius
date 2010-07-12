@@ -75,6 +75,13 @@ m_blitsurface_alloc(false)
 	screenrect.h=0;
 	screenrect.w=0;
 
+	// Default camera settings
+	m_CameraBounds.left = 152;
+	m_CameraBounds.up = 92;
+	m_CameraBounds.right = 168;
+	m_CameraBounds.down = 108;
+	m_CameraBounds.speed = 20;
+
 	ScrollSurface=NULL;       // 512x512 scroll buffer
 	FGLayerSurface=NULL;       // Scroll buffer for Messages
 	BlitSurface=NULL;
@@ -598,22 +605,6 @@ void CVideoDriver::setScrollBuffer(Sint16 *pbufx, Sint16 *pbufy)
 	mp_sbuffery = pbufy;
 }
 
-/*static void sb_lowblit(SDL_Surface* src, SDL_Rect* srcrect, SDL_Surface* dst, SDL_Rect* dstrect) {
-#if !defined(USE_OPENGL) && (defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR))
-	// SDL_BlitSurface doesn't work for some reason
-	int _xend = srcrect->x + dstrect->w;
-	int _yend = srcrect->y + dstrect->h;
-	int _dst_xdiff = dstrect->x - srcrect->x;
-	int _dst_ydiff = dstrect->y - srcrect->y;
-	for(int x = srcrect->x; x < _xend; ++x)
-		for(int y = srcrect->y; y < _yend; ++y)
-			SDL_DrawPoint(dst, x + _dst_xdiff, y + _dst_ydiff, convert4to32BPPcolor( ((Uint8*)src->pixels)[y * 512 + x], dst ));
-#else
-	SDL_BlitSurface(src, srcrect, dst, dstrect);
-#endif
-}
-*/
-
 void CVideoDriver::blitScrollSurface() // This is only for tiles
 									   // The name should be changed
 {
@@ -986,6 +977,51 @@ void CVideoDriver::AddConsoleMsg(const char *the_msg)
 	ConsoleExpireTimer = CONSOLE_EXPIRE_RATE;
 }
 
+void CVideoDriver::saveCameraBounds(const st_camera_bounds &CameraBounds)
+{
+	int i;
+	int left = CameraBounds.left;
+	int up = CameraBounds.up;
+	int right = CameraBounds.right;
+	int down = CameraBounds.down;
+	int speed = CameraBounds.speed;
+	if(left>right)
+	{
+		i = left-right;
+		i = i/2;
+		left = left-i;
+		right = right+i;
+		if(left>right)
+			left = left-1;
+	}
+	if(up>down)
+	{
+		i = up-down;
+		i = i/2;
+		up = up-i;
+		down = down+i;
+		if(up>down)
+			up = up-1;
+	}
+	bool invalid_value = (left<50) || (up<50) || (right<50) || (down<50) || (speed<1) || (left>270) || (up>150) || (right>270) || (down>150) || (speed>50);
+	if(invalid_value)
+	{
+		m_CameraBounds.left = 152;
+		m_CameraBounds.up = 92;
+		m_CameraBounds.right = 168;
+		m_CameraBounds.down = 108;
+		m_CameraBounds.speed = 20;
+	}
+	else
+	{
+		m_CameraBounds.left = left;
+		m_CameraBounds.up = up;
+		m_CameraBounds.right = right;
+		m_CameraBounds.down = down;
+		m_CameraBounds.speed = speed;
+	}
+}
+
 short CVideoDriver::getZoomValue(void){ return Zoom; }
 
 void CVideoDriver::showFPS(bool value){ showfps = value; }
@@ -1011,6 +1047,9 @@ unsigned short CVideoDriver::getDepth(void)
 {	return m_Resolution.depth;	}
 SDL_Surface *CVideoDriver::getScrollSurface(void)
 {	return ScrollSurface; }
+
+st_camera_bounds &CVideoDriver::getCameraBounds()
+{ return m_CameraBounds; }
 
 CVideoDriver::~CVideoDriver() {
  	stop();
