@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2332C60F11EA3B42000D8F71 /* CBridges.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2332C60D11EA3B42000D8F71 /* CBridges.cpp */; };
+		2332C63411EAFAD7000D8F71 /* CCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2332C63211EAFAD7000D8F71 /* CCamera.cpp */; };
 		235755D2101A5E5900275638 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0867D6AAFE840B52C02AAC07 /* InfoPlist.strings */; };
 		235755D3101A5E5900275638 /* main.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD57E20DA1CFC700B32029 /* main.xib */; };
 		23575631101A5E5900275638 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20286C33FDCF999611CA2CEA /* Carbon.framework */; };
@@ -112,7 +113,6 @@
 		63CD124311CFF5FC00F60BC8 /* CPlayGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD113111CFF5FB00F60BC8 /* CPlayGame.cpp */; };
 		63CD124811CFF5FC00F60BC8 /* CEGABitmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD113A11CFF5FB00F60BC8 /* CEGABitmap.cpp */; };
 		63CD124911CFF5FC00F60BC8 /* CObjectAI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD113C11CFF5FB00F60BC8 /* CObjectAI.cpp */; };
-		63CD126211CFF5FC00F60BC8 /* CCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD115B11CFF5FB00F60BC8 /* CCamera.cpp */; };
 		63CD126311CFF5FC00F60BC8 /* CEGAGraphicsVort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD115D11CFF5FB00F60BC8 /* CEGAGraphicsVort.cpp */; };
 		63CD126411CFF5FC00F60BC8 /* CEGALatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD115F11CFF5FB00F60BC8 /* CEGALatch.cpp */; };
 		63CD126511CFF5FC00F60BC8 /* CEGASprit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD116111CFF5FB00F60BC8 /* CEGASprit.cpp */; };
@@ -194,6 +194,8 @@
 		20286C33FDCF999611CA2CEA /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 		2332C60D11EA3B42000D8F71 /* CBridges.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBridges.cpp; sourceTree = "<group>"; };
 		2332C60E11EA3B42000D8F71 /* CBridges.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBridges.h; sourceTree = "<group>"; };
+		2332C63211EAFAD7000D8F71 /* CCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCamera.cpp; sourceTree = "<group>"; };
+		2332C63311EAFAD7000D8F71 /* CCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCamera.h; sourceTree = "<group>"; };
 		2357564C101A5F8F00275638 /* Ogg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Ogg.framework; sourceTree = "<group>"; };
 		2357564D101A5F8F00275638 /* Vorbis.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Vorbis.framework; sourceTree = "<group>"; };
 		23575688101A6AE600275638 /* Commander Genius.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Commander Genius.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -514,8 +516,6 @@
 		63CD113C11CFF5FB00F60BC8 /* CObjectAI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CObjectAI.cpp; sourceTree = "<group>"; };
 		63CD113D11CFF5FB00F60BC8 /* CObjectAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CObjectAI.h; sourceTree = "<group>"; };
 		63CD114011CFF5FB00F60BC8 /* enemydata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = enemydata.h; sourceTree = "<group>"; };
-		63CD115B11CFF5FB00F60BC8 /* CCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCamera.cpp; sourceTree = "<group>"; };
-		63CD115C11CFF5FB00F60BC8 /* CCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCamera.h; sourceTree = "<group>"; };
 		63CD115D11CFF5FB00F60BC8 /* CEGAGraphicsVort.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CEGAGraphicsVort.cpp; sourceTree = "<group>"; };
 		63CD115E11CFF5FB00F60BC8 /* CEGAGraphicsVort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEGAGraphicsVort.h; sourceTree = "<group>"; };
 		63CD115F11CFF5FB00F60BC8 /* CEGALatch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CEGALatch.cpp; sourceTree = "<group>"; };
@@ -1094,6 +1094,8 @@
 		63CD110611CFF5FB00F60BC8 /* engine */ = {
 			isa = PBXGroup;
 			children = (
+				2332C63211EAFAD7000D8F71 /* CCamera.cpp */,
+				2332C63311EAFAD7000D8F71 /* CCamera.h */,
 				63CD110711CFF5FB00F60BC8 /* CEGAGraphics.cpp */,
 				63CD110811CFF5FB00F60BC8 /* CEGAGraphics.h */,
 				63CD110911CFF5FB00F60BC8 /* CIntro.cpp */,
@@ -1176,8 +1178,6 @@
 			isa = PBXGroup;
 			children = (
 				63CD113511CFF5FB00F60BC8 /* ai */,
-				63CD115B11CFF5FB00F60BC8 /* CCamera.cpp */,
-				63CD115C11CFF5FB00F60BC8 /* CCamera.h */,
 				63CD115D11CFF5FB00F60BC8 /* CEGAGraphicsVort.cpp */,
 				63CD115E11CFF5FB00F60BC8 /* CEGAGraphicsVort.h */,
 				63CD115F11CFF5FB00F60BC8 /* CEGALatch.cpp */,
@@ -1711,7 +1711,6 @@
 				63CD124311CFF5FC00F60BC8 /* CPlayGame.cpp in Sources */,
 				63CD124811CFF5FC00F60BC8 /* CEGABitmap.cpp in Sources */,
 				63CD124911CFF5FC00F60BC8 /* CObjectAI.cpp in Sources */,
-				63CD126211CFF5FC00F60BC8 /* CCamera.cpp in Sources */,
 				63CD126311CFF5FC00F60BC8 /* CEGAGraphicsVort.cpp in Sources */,
 				63CD126411CFF5FC00F60BC8 /* CEGALatch.cpp in Sources */,
 				63CD126511CFF5FC00F60BC8 /* CEGASprit.cpp in Sources */,
@@ -1817,6 +1816,7 @@
 				23A11BCA11E7C3F900747BFA /* CVortiNinja.cpp in Sources */,
 				23A11BCB11E7C3F900747BFA /* CYorp.cpp in Sources */,
 				2332C60F11EA3B42000D8F71 /* CBridges.cpp in Sources */,
+				2332C63411EAFAD7000D8F71 /* CCamera.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
