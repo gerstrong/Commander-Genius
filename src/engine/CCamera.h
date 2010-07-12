@@ -17,15 +17,25 @@
 #ifndef CCAMERA_H_
 #define CCAMERA_H_
 
-class CCamera
+class CCamera : public CObject
 {
 public:
-	CCamera();
+	CCamera(CMap *pmap, Uint32 x, Uint32 y);
 	
+	void attachToObject(CObject &attacher);
+	bool detach();
+
+	void process();
+
+	void moveLeft();
+	void moveRight();
+	void moveUp();
+	void moveDown();
+
 	virtual ~CCamera();
 	
 private:
-
+	CObject *mp_AttachedObject;
 };
 
 #endif /* CCAMERA_H_ */
