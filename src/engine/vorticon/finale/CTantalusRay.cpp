@@ -113,8 +113,6 @@ void CTantalusRay::explodeEarth()
 			m_vect_obj.push_back(newobject);
 		}
 
-		CObject *newobject;
-
 
 		/*switch(m_step)
 		{
