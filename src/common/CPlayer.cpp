@@ -19,7 +19,6 @@
 #include "../graphics/CGfxEngine.h"
 #include "../graphics/effects/CColorMerge.h"
 #include "../engine/spritedefines.h"
-#include "../engine/vorticon/CCamera.h"
 #include <stdlib.h>
 
 size_t CPlayer::m_playerID = 0;

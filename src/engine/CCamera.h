@@ -12,7 +12,7 @@
  *  the active Level viewer feature.
  */
 
-#include ""
+#include "../common/CObject.h"
 
 #ifndef CCAMERA_H_
 #define CCAMERA_H_

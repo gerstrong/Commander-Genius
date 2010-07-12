@@ -6,7 +6,6 @@
  */
 
 #include "../common/options.h"
-#include "../engine/vorticon/CCamera.h"
 #include "../fileio/CConfiguration.h"
 #include "../CLogFile.h"
 #include "../FindFile.h"

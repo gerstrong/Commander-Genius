@@ -14,7 +14,7 @@
 
 
 #include "CCamera.h"
-#include "../../CLogFile.h"
+#include "../CLogFile.h"
 
 CCamera::CCamera()
 {
