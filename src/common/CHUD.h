@@ -27,6 +27,7 @@ public:
 private:
 
 	void CreateBackground();
+	void DrawCircle(int x, int y, int width);
 
 	SDL_Rect m_Rect;
 

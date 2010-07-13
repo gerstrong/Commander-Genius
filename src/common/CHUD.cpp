@@ -52,111 +52,47 @@ void CHUD::CreateBackground()
 	mp_Background = SDL_CreateRGBSurface(flags, m_Rect.w, m_Rect.h, depth, rmask, gmask, bmask, amask);
 
 	// Draw the background
+	DrawCircle(0, 0, 80);
+	DrawCircle(17, 15, 22);
+	DrawCircle(58, 15, 22);
+}
+
+void CHUD::DrawCircle(int x, int y, int width)
+{
 	SDL_Rect text, outline;
-	//SDL_FillRect(mp_Background, NULL, SDL_MapRGBA(mp_Background->format, 0,255,0,255)); // Black
-	outline.x = 4;
-	outline.y = 0;
-	outline.w = 72;
+	outline.x = x+4;
+	outline.y = y;
+	outline.w = width-8;
 	outline.h = 12;
 	SDL_FillRect(mp_Background, &outline, SDL_MapRGBA(mp_Background->format, 0,0,0,255)); // Black
-	outline.x = 2;
-	outline.y = 1;
-	outline.w = 76;
+	outline.x = x+2;
+	outline.y = y+1;
+	outline.w = width-4;
 	outline.h = 10;
 	SDL_FillRect(mp_Background, &outline, SDL_MapRGBA(mp_Background->format, 0,0,0,255)); // Black
-	outline.x = 1;
-	outline.y = 2;
-	outline.w = 78;
+	outline.x = x+1;
+	outline.y = y+2;
+	outline.w = width-2;
 	outline.h = 8;
 	SDL_FillRect(mp_Background, &outline, SDL_MapRGBA(mp_Background->format, 0,0,0,255)); // Black
-	outline.x = 0;
-	outline.y = 4;
-	outline.w = 80;
+	outline.x = x;
+	outline.y = y+4;
+	outline.w = width;
 	outline.h = 4;
 	SDL_FillRect(mp_Background, &outline, SDL_MapRGBA(mp_Background->format, 0,0,0,255)); // Black
-	outline.x = 21;
-	outline.y = 15;
-	outline.w = 14;
-	outline.h = 12;
-	SDL_FillRect(mp_Background, &outline, SDL_MapRGBA(mp_Background->format, 0,0,0,255)); // Black
-	outline.x = 19;
-	outline.y = 16;
-	outline.w = 18;
-	outline.h = 10;
-	SDL_FillRect(mp_Background, &outline, SDL_MapRGBA(mp_Background->format, 0,0,0,255)); // Black
-	outline.x = 18;
-	outline.y = 17;
-	outline.w = 20;
-	outline.h = 8;
-	SDL_FillRect(mp_Background, &outline, SDL_MapRGBA(mp_Background->format, 0,0,0,255)); // Black
-	outline.x = 17;
-	outline.y = 19;
-	outline.w = 22;
-	outline.h = 4;
-	SDL_FillRect(mp_Background, &outline, SDL_MapRGBA(mp_Background->format, 0,0,0,255)); // Black
-	outline.x = 62;
-	outline.y = 15;
-	outline.w = 14;
-	outline.h = 12;
-	SDL_FillRect(mp_Background, &outline, SDL_MapRGBA(mp_Background->format, 0,0,0,255)); // Black
-	outline.x = 60;
-	outline.y = 16;
-	outline.w = 18;
-	outline.h = 10;
-	SDL_FillRect(mp_Background, &outline, SDL_MapRGBA(mp_Background->format, 0,0,0,255)); // Black
-	outline.x = 59;
-	outline.y = 17;
-	outline.w = 20;
-	outline.h = 8;
-	SDL_FillRect(mp_Background, &outline, SDL_MapRGBA(mp_Background->format, 0,0,0,255)); // Black
-	outline.x = 58;
-	outline.y = 19;
-	outline.w = 22;
-	outline.h = 4;
-	SDL_FillRect(mp_Background, &outline, SDL_MapRGBA(mp_Background->format, 0,0,0,255)); // Black
-	text.x = 4;
-	text.y = 1;
-	text.w = 72;
+	text.x = x+4;
+	text.y = y+1;
+	text.w = width-8;
 	text.h = 10;
 	SDL_FillRect(mp_Background, &text, SDL_MapRGBA(mp_Background->format, 255,255,255,255)); // White
-	text.x = 2;
-	text.y = 2;
-	text.w = 76;
+	text.x = x+2;
+	text.y = y+2;
+	text.w = width-4;
 	text.h = 8;
 	SDL_FillRect(mp_Background, &text, SDL_MapRGBA(mp_Background->format, 255,255,255,255)); // White
-	text.x = 1;
-	text.y = 4;
-	text.w = 78;
-	text.h = 4;
-	SDL_FillRect(mp_Background, &text, SDL_MapRGBA(mp_Background->format, 255,255,255,255)); // White
-	text.x = 21;
-	text.y = 16;
-	text.w = 14;
-	text.h = 10;
-	SDL_FillRect(mp_Background, &text, SDL_MapRGBA(mp_Background->format, 255,255,255,255)); // White
-	text.x = 19;
-	text.y = 17;
-	text.w = 18;
-	text.h = 8;
-	SDL_FillRect(mp_Background, &text, SDL_MapRGBA(mp_Background->format, 255,255,255,255)); // White
-	text.x = 18;
-	text.y = 19;
-	text.w = 20;
-	text.h = 4;
-	SDL_FillRect(mp_Background, &text, SDL_MapRGBA(mp_Background->format, 255,255,255,255)); // White
-	text.x = 62;
-	text.y = 16;
-	text.w = 14;
-	text.h = 10;
-	SDL_FillRect(mp_Background, &text, SDL_MapRGBA(mp_Background->format, 255,255,255,255)); // White
-	text.x = 60;
-	text.y = 17;
-	text.w = 18;
-	text.h = 8;
-	SDL_FillRect(mp_Background, &text, SDL_MapRGBA(mp_Background->format, 255,255,255,255)); // White
-	text.x = 59;
-	text.y = 19;
-	text.w = 20;
+	text.x = x+1;
+	text.y = y+4;
+	text.w = width-2;
 	text.h = 4;
 	SDL_FillRect(mp_Background, &text, SDL_MapRGBA(mp_Background->format, 255,255,255,255)); // White
 }
@@ -183,8 +119,8 @@ void CHUD::render()
 	headsrcrect.y = 0;
 	headdstrect.w = headsrcrect.w = 16;
 	headdstrect.h = headsrcrect.h = 16;
-	headdstrect.x = 4;
-	headdstrect.y = 15;
+	headdstrect.x = m_Rect.x;
+	headdstrect.y = m_Rect.y+13;
 	CSprite &KeenHeadSprite = g_pGfxEngine->getSprite(PMAPDOWNFRAME);
 	SDL_BlitSurface( KeenHeadSprite.getSDLSurface(), &headsrcrect, blitsurface, &headdstrect);
 
@@ -193,21 +129,22 @@ void CHUD::render()
 	headsrcrect.y = 0;
 	headdstrect.w = headsrcrect.w = 16;
 	headdstrect.h = headsrcrect.h = 8;
-	headdstrect.x = 45;
-	headdstrect.y = 19;
+	headdstrect.x = m_Rect.x+41;
+	headdstrect.y = m_Rect.y+17;
 	CSprite &KeenGunSprite = g_pGfxEngine->getSprite(108);
 	SDL_BlitSurface( KeenGunSprite.getSDLSurface(), &headsrcrect, blitsurface, &headdstrect);
+	SDL_BlitSurface( KeenGunSprite.getSDLSurface(), &headsrcrect, blitsurface, &headdstrect); //Display it twice otherwise it is translucent which can be hard to see.
 
 	CFont &Font = g_pGfxEngine->getFont(0);
 	Font.setFGColour(blitsurface->format, 0x000000);
 	// Draw the score
-	Font.drawFont(blitsurface, getRightAligned(itoa(score),9), 4+m_Rect.x, 2+m_Rect.y);
+	Font.drawFont(blitsurface, getRightAligned(itoa(score),9), 5+m_Rect.x, 2+m_Rect.y);
 
 	// Draw the lives
-	Font.drawFont(blitsurface, getRightAligned(itoa(lives),2), 20+m_Rect.x, 17+m_Rect.y);
+	Font.drawFont(blitsurface, getRightAligned(itoa(lives),2), 21+m_Rect.x, 17+m_Rect.y);
 
 	// Draw the charges
-	Font.drawFont(blitsurface, getRightAligned(itoa(charges),2), 61+m_Rect.x, 17+m_Rect.y);
+	Font.drawFont(blitsurface, getRightAligned(itoa(charges),2), 62+m_Rect.x, 17+m_Rect.y);
 
 	Font.setFGColour(blitsurface->format, 0x0);
 }
