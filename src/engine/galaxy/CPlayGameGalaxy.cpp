@@ -8,9 +8,8 @@
 #include "CPlayGameGalaxy.h"
 #include "CMapLoaderGalaxy.h"
 
-#include "../../sdl/CVideoDriver.h"
-#include "../../sdl/CInput.h"
 #include "../../graphics/CGfxEngine.h"
+#include "../../sdl/CVideoDriver.h"
 #include "../../StringUtils.h"
 
 namespace galaxy
@@ -19,9 +18,10 @@ namespace galaxy
 CPlayGameGalaxy::CPlayGameGalaxy(CExeFile &ExeFile, char level,
 		 char numplayers, char difficulty, stOption *p_option) :
 CPlayGame(ExeFile, level, numplayers, difficulty, p_option),
-m_posx(0),
-m_posy(0)
-{}
+m_WorldMap(ExeFile)
+{
+	m_WorldMap.init();
+}
 
 bool CPlayGameGalaxy::loadGameState()
 {	return false;	}
@@ -29,6 +29,7 @@ bool CPlayGameGalaxy::loadGameState()
 // Setup for the ingame
 bool CPlayGameGalaxy::init()
 {
+
 	loadLevel();
 
 	return false;
@@ -39,12 +40,12 @@ void CPlayGameGalaxy::loadLevel()
 	// Load the Level map. We have two modes. Inlevel and game map
 
 	// TODO: Lets load the main map for now and create a process for this
-	CMapLoaderGalaxy MapLoader(m_ExeFile);
+	//CMapLoaderGalaxy MapLoader(m_ExeFile);
 
-	m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
-	MapLoader.loadMap(m_Map, m_Level); // Map Level?
+	//m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
+	//MapLoader.loadMap(m_Map,0); // Map Level?
 
-	m_Map.drawAll();
+	//m_Map.drawAll();
 }
 
 // The main ingame process cycle when keen galaxy is up and running
@@ -56,8 +57,8 @@ void CPlayGameGalaxy::process()
 	processInput();
 
 	// process World Map if active. At the start it's enabled
-	//if(m_WorldMap.isActive())
-		//m_WorldMap.process();
+	if(m_WorldMap.isActive())
+		m_WorldMap.process();
 
 	// process World Map if active. At the start it's enabled
 	//if(m_LevelPlay.isActive())
@@ -75,7 +76,7 @@ void CPlayGameGalaxy::processInput()
 	// TODO: wrap this into the camera class they way it can be used in the vorticons engine
 	// Also make it more efficient.
 
-	if(g_pInput->getPressedCommand(IC_QUIT))
+	/*if(g_pInput->getPressedCommand(IC_QUIT))
 		m_endgame = true;
 
 	if(g_pInput->getHoldedCommand(IC_LEFT))
@@ -97,23 +98,11 @@ void CPlayGameGalaxy::processInput()
 	{
 		m_Map.scrollDown();
 		m_Map.scrollDown();
-	}
-
-	if(g_pInput->getPressedCommand(IC_STATUS))
-	{
-		if(m_Level < 20)
-			m_Level++;
-		else
-			m_Level = 0;
-		loadLevel();
-	}
+	}*/
 }
 
 void CPlayGameGalaxy::processRendering()
 {
-	// Animate the tiles of the map
-	m_Map.animateAllTiles();
-
 	// Blit the background
 	g_pVideoDriver->blitScrollSurface();
 

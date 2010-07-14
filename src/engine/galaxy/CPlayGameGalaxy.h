@@ -10,6 +10,8 @@
 
 #include "../playgame/CPlayGame.h"
 #include "../../common/CMap.h"
+#include "CWorldMap.h"
+#include <vector>
 
 namespace galaxy
 {
@@ -35,10 +37,8 @@ public:
 	virtual ~CPlayGameGalaxy();
 
 private:
-	CMap m_Map;
+	CWorldMap m_WorldMap;
 
-	Uint32 m_posx;
-	Uint32 m_posy;
 };
 
 }
