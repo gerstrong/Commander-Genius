@@ -107,7 +107,7 @@ private:
 
 	Uint8 m_animtiletimer;
 
-	CPlane m_Plane[2];
+	CPlane m_Plane[3];
 	bool m_Background; // This variable holds, whether we have a background to draw or not.
 };
 

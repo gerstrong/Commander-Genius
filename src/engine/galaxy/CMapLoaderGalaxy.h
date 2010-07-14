@@ -22,6 +22,8 @@ public:
 	size_t getMapheadOffset();
 	bool gotoSignature(std::ifstream &MapFile);
 	bool loadMap(CMap &Map, Uint8 level);
+	void spawnFoes(CMap &Map);
+	void addFoe(word foe, size_t x, size_t y);
 	virtual ~CMapLoaderGalaxy();
 
 private:

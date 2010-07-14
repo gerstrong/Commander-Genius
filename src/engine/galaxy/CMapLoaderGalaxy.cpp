@@ -102,12 +102,7 @@ void CMapLoaderGalaxy::unpackPlaneData(std::ifstream &MapFile,
     		}
     	}
 
-
-        if( derlesize/2 == Plane.size() )
-        {
-
-        }
-        else
+        if( derlesize/2 != Plane.size() )
         {
             g_pLogFile->textOut( "\nERROR Plane Uncompress RLE Size Failed: Actual "+ itoa(2*Plane.size()) +" bytes Expected " + itoa(derlesize) + " bytes<br>");
         }
@@ -207,12 +202,18 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 				Map.m_height = Height;
 				Map.createEmptyDataPlane(0, Width*Height);
 				Map.createEmptyDataPlane(1, Width*Height);
+				Map.createEmptyDataPlane(2, Width*Height);
 
 				unpackPlaneData(MapFile, Map, 0, Plane_Offset[0], Plane_Length[0], magic_word);
 				unpackPlaneData(MapFile, Map, 1, Plane_Offset[1], Plane_Length[1], magic_word);
-				//unpackPlaneData(MapFile, Map, 2, Plane_Offset[2], Plane_Length[2], magic_word);
+				unpackPlaneData(MapFile, Map, 2, Plane_Offset[2], Plane_Length[2], magic_word);
 			}
 			MapFile.close();
+
+			// Now that we have all the 3 planes (Background, Foreground, Foes) unpacked...
+			// We only will show the first two of them in the screen, because the Foes one
+			// is the one which will be used for spawning the foes (Keen, platforms, enemies, etc.)
+			spawnFoes(Map);
 		}
 		else
 		{
@@ -236,6 +237,63 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
     g_pVideoDriver->setScrollBuffer(&Map.m_scrollx_buf, &Map.m_scrolly_buf);
 
     return true;
+}
+
+/**
+ * @brief	This will setup the enemies on the map. They are pushed in a objects vector,
+ * 			so they can interact all the time
+ */
+void CMapLoaderGalaxy::spawnFoes(CMap &Map)
+{
+	word *start_data = Map.getData(2);
+	word *data_ptr;
+	word width = Map.m_width;
+	word height = Map.m_height;
+
+	/*std::ofstream file("foe.txt");
+	data_ptr = start_data;
+	for(size_t y=0 ; y<height ; y++)
+	{
+		for(size_t x=0 ; x<width ; x++)
+		{
+			file << (*data_ptr);
+			file << " ";
+			data_ptr++;
+		}
+		file << std::endl;
+	}
+	file.close();*/
+
+	// he we go to the adding objects
+	data_ptr = start_data;
+	for(size_t y=0 ; y<height ; y++)
+	{
+		for(size_t x=0 ; x<width ; x++)
+		{
+			addFoe(*data_ptr, x, y);
+			data_ptr++;
+		}
+	}
+}
+
+/**
+ * @brief	Loads a foe given by the coordiantes
+ */
+void CMapLoaderGalaxy::addFoe(word foe, size_t x, size_t y)
+{
+	//x <<= CSF;
+	//y <<= CSF;
+
+	switch(foe)
+	{
+	case 3:
+		// This is the player on map
+		// Spawn this player.
+		break;
+	default:
+		break;
+	}
+
 }
 
 CMapLoaderGalaxy::~CMapLoaderGalaxy()

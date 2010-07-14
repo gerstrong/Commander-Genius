@@ -489,7 +489,6 @@ void CMap::animateAllTiles()
 				}
 				p_front_tile++;
 
-
 				if( draw && x >= m_mapx && y >= m_mapy &&
 						x < m_mapx + num_v_tiles && y < m_mapy + num_h_tiles  	)
 				{

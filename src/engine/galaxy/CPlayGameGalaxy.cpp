@@ -24,7 +24,7 @@ m_posy(0)
 {}
 
 bool CPlayGameGalaxy::loadGameState()
-{return false;}
+{	return false;	}
 
 // Setup for the ingame
 bool CPlayGameGalaxy::init()
@@ -38,7 +38,7 @@ void CPlayGameGalaxy::loadLevel()
 {
 	// Load the Level map. We have two modes. Inlevel and game map
 
-	// TODO: Lets load the main map for now and create process for this
+	// TODO: Lets load the main map for now and create a process for this
 	CMapLoaderGalaxy MapLoader(m_ExeFile);
 
 	m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
