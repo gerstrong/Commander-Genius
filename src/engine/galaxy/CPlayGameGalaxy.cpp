@@ -81,8 +81,7 @@ void CPlayGameGalaxy::processRendering()
 	// Blit the background
 	g_pVideoDriver->blitScrollSurface();
 
-	g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->BlitSurface, "Press the arrows to scroll, ESC to quit", 10, 10);
-	g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->BlitSurface, "Enter to switch Level", 10, 20);
+	g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->BlitSurface, "Press the arrows to scroll", 10, 10);
 }
 
 
