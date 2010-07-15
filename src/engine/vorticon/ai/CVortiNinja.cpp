@@ -22,6 +22,8 @@ CVortiNinja::CVortiNinja(CMap *p_map, Uint32 x, Uint32 y, std::vector<CPlayer> &
 CObject(p_map, x, y, OBJ_NINJA),
 m_Player(Player)
 {
+	canbezapped = true;
+	HealthPoints = 4;
 	init();
 }
 
@@ -51,7 +53,7 @@ void CVortiNinja::process()
 			state != NINJA_DYING)
 		m_Player[touchedBy].kill();
 
-	if (HealthPoints <= 0)
+	if (HealthPoints <= 0 && state != NINJA_DYING)
 	{
 		isdying = 1;
 		dietimer = 0;

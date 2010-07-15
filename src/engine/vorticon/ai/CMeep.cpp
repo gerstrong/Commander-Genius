@@ -29,7 +29,9 @@ CMeep::CMeep(CMap *p_map, Uint32 x, Uint32 y,
 CObject(p_map,x,y, OBJ_MEEP),
 m_Player(Player),
 m_Object(Object)
-{}
+{
+	canbezapped = true;
+}
 
 void CMeep::process()
 {
