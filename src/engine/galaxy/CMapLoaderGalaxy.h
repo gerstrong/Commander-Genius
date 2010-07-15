@@ -18,7 +18,7 @@
 class CMapLoaderGalaxy
 {
 public:
-	CMapLoaderGalaxy(CExeFile &ExeFile);
+	CMapLoaderGalaxy(CExeFile &ExeFile, std::vector<CObject*>& ObjectPtr);
 	size_t getMapheadOffset();
 	bool gotoSignature(std::ifstream &MapFile);
 	bool loadMap(CMap &Map, Uint8 level);
@@ -33,6 +33,7 @@ private:
 			word magic_word);
 
 	CExeFile &m_ExeFile;
+	std::vector<CObject*>& m_ObjectPtr;
 };
 
 #endif /* CMAPLOADERGALAXY_H_ */

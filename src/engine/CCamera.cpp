@@ -28,7 +28,7 @@ mp_AttachedObject(NULL)
  * automatically with it
  */
 void CCamera::attachToObject(CObject &attacher)
-{}
+{	mp_AttachedObject = &attached;	}
 
 /**
  * This function will dettach the camera from a object.
@@ -44,7 +44,10 @@ bool CCamera::detach()
  */
 void CCamera::process()
 {
+	if(mp_AttachedObject == NULL)
+	{	// This means, that there is no attached object. Let the camera scroll freely!
 
+	}
 }
 
 /**

@@ -3,6 +3,8 @@
  *
  *  Created on: 14.07.2010
  *      Author: gerstrong
+ *
+ *  This is in charge of the ai and physics on the worldmap
  */
 
 #ifndef CWORLDMAP_H_

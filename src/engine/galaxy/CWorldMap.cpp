@@ -25,7 +25,7 @@ void CWorldMap::setActive(bool value)
 void CWorldMap::init()
 {
 	// Load the World map level.
-	CMapLoaderGalaxy MapLoader(m_ExeFile);
+	CMapLoaderGalaxy MapLoader(m_ExeFile, m_ObjectPtr);
 
 	m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
 	MapLoader.loadMap(m_Map,0); // Map Level?
@@ -39,6 +39,12 @@ void CWorldMap::process()
 
 	// Animate the tiles of the map
 	m_Map.animateAllTiles();
+
+	std::vector<CObject*>::iterator obj=m_ObjectPtr.begin();
+	for( ; obj!=m_ObjectPtr.end() ; obj++ )
+	{
+		(*obj)->process();
+	}
 }
 
 void CWorldMap::processInput()
@@ -72,7 +78,11 @@ void CWorldMap::processInput()
 }
 
 CWorldMap::~CWorldMap() {
-	// TODO Auto-generated destructor stub
+	while(!m_ObjectPtr.empty())
+	{
+		delete m_ObjectPtr.back();
+		m_ObjectPtr.pop_back();
+	}
 }
 
 }

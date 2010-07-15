@@ -18,8 +18,9 @@
 #include "../../CLogFile.h"
 #include <fstream>
 
-CMapLoaderGalaxy::CMapLoaderGalaxy(CExeFile &ExeFile):
-m_ExeFile(ExeFile)
+CMapLoaderGalaxy::CMapLoaderGalaxy(CExeFile &ExeFile, std::vector<CObject*>& ObjectPtr):
+m_ExeFile(ExeFile),
+m_ObjectPtr(ObjectPtr)
 {}
 
 // Gets returns the address of the datablock of the exe file, in where the
@@ -263,6 +264,10 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 		file << std::endl;
 	}
 	file.close();*/
+
+	// Add the Camera into the game scene
+	CCamera *camera = new CCamera(&Map,0,0);
+	m_ObjectPtr.push_back(camera);
 
 	// he we go to the adding objects
 	data_ptr = start_data;
