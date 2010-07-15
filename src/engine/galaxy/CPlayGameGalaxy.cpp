@@ -73,32 +73,7 @@ void CPlayGameGalaxy::process()
 
 void CPlayGameGalaxy::processInput()
 {
-	// TODO: wrap this into the camera class they way it can be used in the vorticons engine
-	// Also make it more efficient.
 
-	/*if(g_pInput->getPressedCommand(IC_QUIT))
-		m_endgame = true;
-
-	if(g_pInput->getHoldedCommand(IC_LEFT))
-	{
-		m_Map.scrollLeft();
-		m_Map.scrollLeft();
-	}
-	else if(g_pInput->getHoldedCommand(IC_RIGHT))
-	{
-		m_Map.scrollRight();
-		m_Map.scrollRight();
-	}
-	if(g_pInput->getHoldedCommand(IC_UP))
-	{
-		m_Map.scrollUp();
-		m_Map.scrollUp();
-	}
-	else if(g_pInput->getHoldedCommand(IC_DOWN))
-	{
-		m_Map.scrollDown();
-		m_Map.scrollDown();
-	}*/
 }
 
 void CPlayGameGalaxy::processRendering()

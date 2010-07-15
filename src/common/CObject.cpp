@@ -50,13 +50,17 @@ m_blinktime(0)
 	touchPlayer = touchedBy = 0;
 	cansupportplayer = false;
 
-	setupObjectType(g_pBehaviorEngine->getEpisode());
+	if(m_type != OBJ_NONE)
+	{
+		setupObjectType(g_pBehaviorEngine->getEpisode());
 
-	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
-	bboxX1 = rSprite.m_bboxX1;		bboxX2 = rSprite.m_bboxX2;
-	bboxY1 = rSprite.m_bboxY1;		bboxY2 = rSprite.m_bboxY2;
+		CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+		bboxX1 = rSprite.m_bboxX1;		bboxX2 = rSprite.m_bboxX2;
+		bboxY1 = rSprite.m_bboxY1;		bboxY2 = rSprite.m_bboxY2;
 
-	checkinitialCollisions();
+		checkinitialCollisions();
+	}
+
 }
 
 void CObject::setupObjectType(int Episode)

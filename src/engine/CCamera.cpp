@@ -15,6 +15,8 @@
 
 #include "CCamera.h"
 #include "../CLogFile.h"
+#include "../sdl/CVideoDriver.h"
+#include "../sdl/CInput.h"
 
 CCamera::CCamera(CMap *pmap, Uint32 x, Uint32 y):
 CObject(pmap, x, y, OBJ_NONE),
@@ -28,14 +30,22 @@ mp_AttachedObject(NULL)
  * automatically with it
  */
 void CCamera::attachToObject(CObject &attacher)
-{	mp_AttachedObject = &attached;	}
+{	mp_AttachedObject = &attacher;	}
 
 /**
  * This function will dettach the camera from a object.
  * If this happens, the camera can be scrolled manually.
  */
 bool CCamera::detach()
-{return false;}
+{
+	if(!mp_AttachedObject)
+		return false;
+	else
+	{
+		mp_AttachedObject = NULL;
+		return true;
+	}
+}
 
 /**
  * This is main cycle which will be called every Logic loop
@@ -46,7 +56,14 @@ void CCamera::process()
 {
 	if(mp_AttachedObject == NULL)
 	{	// This means, that there is no attached object. Let the camera scroll freely!
-
+		if(g_pInput->getHoldedCommand(IC_LEFT))
+			moveLeft();
+		else if(g_pInput->getHoldedCommand(IC_RIGHT))
+			moveRight();
+		if(g_pInput->getHoldedCommand(IC_UP))
+			moveUp();
+		else if(g_pInput->getHoldedCommand(IC_DOWN))
+			moveDown();
 	}
 }
 
@@ -54,25 +71,33 @@ void CCamera::process()
  * Move the camera left also checking the bounds
  */
 void CCamera::moveLeft()
-{}
+{
+	mp_Map->scrollLeft();
+}
 
 /**
  * Move the camera right also checking the bounds
  */
 void CCamera::moveRight()
-{}
+{
+	mp_Map->scrollRight();
+}
 
 /**
  * Move the camera up also checking the bounds
  */
 void CCamera::moveUp()
-{}
+{
+	mp_Map->scrollUp();
+}
 
 /**
  * Move the camera down also checking the bounds
  */
 void CCamera::moveDown()
-{}
+{
+	mp_Map->scrollDown();
+}
 
 CCamera::~CCamera()
 {

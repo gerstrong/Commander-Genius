@@ -15,7 +15,7 @@
 #include "../../fileio.h"
 #include "../../sdl/CVideoDriver.h"
 #include "../../CLogFile.h"
-#include "../../CLogFile.h"
+#include "../CCamera.h"
 #include <fstream>
 
 CMapLoaderGalaxy::CMapLoaderGalaxy(CExeFile &ExeFile, std::vector<CObject*>& ObjectPtr):

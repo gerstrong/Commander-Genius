@@ -11,6 +11,8 @@
 #include "../../fileio/CExeFile.h"
 #include "../../fileio/TypeDefinitions.h"
 #include "../../common/CMap.h"
+#include "../../common/CObject.h"
+#include <vector>
 
 #include <string>
 #include <SDL.h>
