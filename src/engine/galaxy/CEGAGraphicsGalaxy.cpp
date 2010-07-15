@@ -21,6 +21,7 @@
 #include "../../graphics/CGfxEngine.h"
 #include "../../sdl/CVideoDriver.h"
 #include "../../fileio/CTileLoader.h"
+#include "../../common/CObject.h"
 #include "../CPlanes.h"
 #include <fstream>
 #include <cstring>
@@ -161,7 +162,8 @@ bool CEGAGraphicsGalaxy::loadData()
 	if(!readMaskedTilemaps(EpisodeInfo[m_episode-4].Num8MaskedTiles, 3, 1,
 			EpisodeInfo[m_episode-4].Index8MaskedTiles,
 			g_pGfxEngine->getTileMap(3), true)) return false;
-
+	if(!readSprites( EpisodeInfo[m_episode-4].NumSprites,
+			EpisodeInfo[m_episode-4].IndexSprites )) return false;
 	//k456_export_sprites();
 	//k456_export_texts();
 	//k456_export_misc();
@@ -703,83 +705,82 @@ bool CEGAGraphicsGalaxy::readMaskedTilemaps( size_t NumTiles, size_t pbasetilesi
 	return true;
 }
 
-//void k456_export_sprites()
-//{
-//	BITMAP16 *bmp, *spr, *planes[5];
-//	FILE *f;
-//	char filename[PATH_MAX];
-//	int i, p, y;
-//	unsigned char *pointer;
-//	int ep = Switches->Episode - 4;
-//
-//	if(!ExportInitialised)
-//		quit("Trying to export sprites before initialisation!");
-//
-//	/* Export all the sprites */
-//	printf("Exporting sprites: ");
-//
-//	/* Open a text file for the clipping and origin info */
-//	sprintf(filename, "%s/%cSPRITES.txt", Switches->OutputPath, '0' + Switches->Episode);
-//	f = openfile(filename, "w", Switches->Backup);
-//
-//	for(i = 0; i < EpisodeInfo[ep].NumSprites; i++)
-//	{
-//		/* Show that something is happening */
-//		showprogress((i * 100) / EpisodeInfo[ep].NumSprites);
-//
-//		if(EgaGraph[EpisodeInfo[ep].IndexSprites + i].data)
-//		{
-//			spr = bmp_create(SprHead[i].Width * 8 * 3, SprHead[i].Height, 4);
-//
-//			/* Decode the transparency mask */
-//			planes[4] = bmp_create(SprHead[i].Width * 8, SprHead[i].Height, 1);
-//			pointer = EgaGraph[EpisodeInfo[ep].IndexSprites + i].data;
-//			for(y = 0; y < SprHead[i].Height; y++)
-//				memcpy(planes[4]->lines[y], pointer + y * SprHead[i].Width, SprHead[i].Width);
-//			bmp_blit(planes[4], 0, 0, spr, SprHead[i].Width * 8, 0, SprHead[i].Width * 8, SprHead[i].Height);
-//
-//			/* Decode the sprite image data */
-//			for(p = 0; p < 4; p++)
-//			{
-//				/* Create a 1bpp bitmap for each plane */
-//				planes[p] = bmp_create(SprHead[i].Width * 8, SprHead[i].Height, 1);
-//
-//				/* Decode the lines of the bitmap data */
-//				pointer = EgaGraph[EpisodeInfo[ep].IndexSprites + i].data + (p + 1) * SprHead[i].Width * SprHead[i].Height;
-//				for(y = 0; y < SprHead[i].Height; y++)
-//					memcpy(planes[p]->lines[y], pointer + y * SprHead[i].Width, SprHead[i].Width);
-//			}
-//
-//			/* Draw the collision rectangle */
-//			bmp_rect(spr, 2 * SprHead[i].Width * 8, 0, spr->width - 1, spr->height - 1, 8);
-//			bmp_rect(spr, 2 * SprHead[i].Width * 8 + ((SprHead[i].Rx1 - SprHead[i].OrgX) >> 4), ((SprHead[i].Ry1 - SprHead[i].OrgY) >> 4),
-//					2 * SprHead[i].Width * 8 + ((SprHead[i].Rx2 - SprHead[i].OrgX) >> 4), ((SprHead[i].Ry2 - SprHead[i].OrgY) >> 4), 12);
-//
-//			/* Output the collision rectangle and origin information */
-//			fprintf(f, "%d: [%d, %d, %d, %d], [%d, %d], %d\n", i, (SprHead[i].Rx1 - SprHead[i].OrgX) >> 4,
-//				(SprHead[i].Ry1 - SprHead[i].OrgY) >> 4, (SprHead[i].Rx2 - SprHead[i].OrgX) >> 4,
-//				(SprHead[i].Ry2 - SprHead[i].OrgY) >> 4, SprHead[i].OrgX >> 4, SprHead[i].OrgY >> 4,
-//				SprHead[i].Shifts);
-//
-//			/* Create the bitmap file */
-//			sprintf(filename, "%s/%cSPR%04d.bmp", Switches->OutputPath, '0' + Switches->Episode, i);
-//			bmp = bmp_merge(planes[2], planes[1], planes[0], planes[3]);
-//			bmp_blit(bmp, 0, 0, spr, 0, 0, SprHead[i].Width * 8, SprHead[i].Height);
-//			if(!bmp_save(spr, filename, Switches->Backup))
-//				quit("Can't open bitmap file %s!", filename);
-//
-//			/* Free the memory used */
-//			for(p = 0; p < 5; p++)
-//				bmp_free(planes[p]);
-//			bmp_free(bmp);
-//			bmp_free(spr);
-//
-//		}
-//		//printf("\x8\x8\x8\x8");
-//	}
-//	completemsg();
-//	fclose(f);
-//}
+bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
+{
+	// Create all the sprites
+	g_pGfxEngine->createEmptySprites(NumSprites);
+
+	SpriteHeadStruct *SprHead = (SpriteHeadStruct *)&(m_egagraph.at(2).data.at(0));
+
+	for(size_t i = 0; i < NumSprites; i++)
+	{
+		SpriteHeadStruct Head = SprHead[i];
+		std::vector<unsigned char> &data = m_egagraph.at(IndexSprite + i).data;
+
+		CSprite &Sprite = g_pGfxEngine->getSprite(i);
+		Sprite.setSize( Head.Width*8, Head.Height );
+
+		// Setup the collision information
+		Sprite.setBouncingBoxCoordinates( ((Head.Rx1 - Head.OrgX) << STC),
+				((Head.Ry1 - Head.OrgY) << STC),
+				((Head.Rx2 - Head.OrgX) << STC),
+				((Head.Ry2 - Head.OrgY) << STC));
+		Sprite.createSurface( g_pVideoDriver->BlitSurface->flags,
+				g_pGfxEngine->Palette.m_Palette );
+
+		SDL_Surface *sfc = Sprite.getSDLSurface();
+		SDL_FillRect(sfc,NULL, 0);
+		if(SDL_MUSTLOCK(sfc))	SDL_LockSurface(sfc);
+
+		if(!data.empty())
+		{
+			// Decode the image data
+			for(size_t p = 0; p < 4; p++)
+			{
+				// Decode the lines of the bitmap data
+				Uint8 *pointer = &(data[0]) + (p+1) * Head.Width * Head.Height;
+				for(size_t y = 0; y < Head.Height; y++)
+				{
+					Uint8 *pixel = (Uint8*)sfc->pixels +
+							(Head.Width * 8 *y);
+					for(size_t x = 0; x < Head.Width; x++)
+					{
+						Uint8 bit,b;
+						for(b=0 ; b<8 ; b++)
+						{
+							bit = getBit(*pointer, 7-b);
+							*pixel |= (bit<<p);
+							pixel++;
+						}
+						pointer++;
+					}
+				}
+			}
+
+			// now apply the mask!
+			Uint8 *pointer = &(data[0]);
+			for(size_t y = 0; y < Head.Height; y++)
+			{
+				Uint8 *pixel = (Uint8*)sfc->pixels +
+						(Head.Width * 8*y);
+				for(size_t x = 0; x < Head.Width; x++)
+				{
+					Uint8 bit,b;
+					for(b=0 ; b<8 ; b++)
+					{
+						bit = getBit(*pointer, 7-b);
+						if(bit == 1)
+							*pixel = 16;
+						pixel++;
+					}
+					pointer++;
+				}
+			}
+		}
+		SDL_UnlockSurface(sfc);
+	}
+	return true;
+}
 
 CEGAGraphicsGalaxy::~CEGAGraphicsGalaxy()
 {
