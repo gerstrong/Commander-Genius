@@ -148,10 +148,20 @@ bool CEGAGraphicsGalaxy::loadData()
 	if(!readMaskedBitmaps()) return false;
 
 	g_pGfxEngine->createEmptyTilemap(4);
-	if(!readTilemaps()) return false;
-	if(!readMaskedTilemaps()) return false;
-	//k456_export_8_tiles();
-	//k456_export_8_masked_tiles();
+
+	if(!readTilemaps(EpisodeInfo[m_episode-4].Num16Tiles, 4, 18,
+			EpisodeInfo[m_episode-4].Index16Tiles,
+			g_pGfxEngine->getTileMap(0), false)) return false;
+	if(!readMaskedTilemaps(EpisodeInfo[m_episode-4].Num16MaskedTiles, 4, 18,
+			EpisodeInfo[m_episode-4].Index16MaskedTiles,
+			g_pGfxEngine->getTileMap(1), false)) return false;
+	if(!readTilemaps(EpisodeInfo[m_episode-4].Num8Tiles, 3, 1,
+			EpisodeInfo[m_episode-4].Index8Tiles,
+			g_pGfxEngine->getTileMap(2), true)) return false;
+	if(!readMaskedTilemaps(EpisodeInfo[m_episode-4].Num8MaskedTiles, 3, 1,
+			EpisodeInfo[m_episode-4].Index8MaskedTiles,
+			g_pGfxEngine->getTileMap(3), true)) return false;
+
 	//k456_export_sprites();
 	//k456_export_texts();
 	//k456_export_misc();
@@ -255,15 +265,32 @@ void CEGAGraphicsGalaxy::extractPicture(SDL_Surface *sfc,
  * 			SDL Surface
  */
 void CEGAGraphicsGalaxy::extractTile(SDL_Surface *sfc, std::vector<unsigned char> &data,
-		Uint16 size, Uint16 columns, size_t tile)
+		Uint16 size, Uint16 columns, size_t tile, bool usetileoffset)
 {
 	if(!data.empty())
 	{
 		// Decode the image data
 		for(size_t p = 0; p < 4; p++)
 		{
+
+			//			/* Decode the image data */
+			//			for(p = 0; p < 4; p++)
+			//			{
+			//				/* Decode the lines of the bitmap data */
+			//				pointer = EgaGraph[EpisodeInfo[ep].Index8Tiles].data + (i * 4 * 8) + p * 8;
+			//				for(y = 0; y < 8; y++)
+			//					memcpy(planes[p]->lines[y], pointer + y, 1);
+			//			}
+			//
+			//			bmp = bmp_merge(planes[2], planes[1], planes[0], planes[3]);
+			//			bmp_blit(bmp, 0, 0, tiles, 0, 8 * i, 8, 8);
+			//			bmp_free(bmp);
+			//			//printf("\x8\x8\x8\x8");
+
+
 			// Decode the lines of the bitmap data
-			Uint8 *pointer = &(data[0]) + p * (size/8) * size;
+			size_t tileoff = usetileoffset ? (tile*4*columns*(size/8)*size) : 0;
+			Uint8 *pointer = &(data[0]) + tileoff + p * (size/8) * size;
 			for(size_t y = 0; y < size; y++)
 			{
 				Uint8 *pixel = (Uint8*)sfc->pixels +
@@ -282,6 +309,7 @@ void CEGAGraphicsGalaxy::extractTile(SDL_Surface *sfc, std::vector<unsigned char
 					pointer++;
 				}
 			}
+
 		}
 	}
 }
@@ -291,15 +319,16 @@ void CEGAGraphicsGalaxy::extractTile(SDL_Surface *sfc, std::vector<unsigned char
  * 			SDL Surface
  */
 void CEGAGraphicsGalaxy::extractMaskedTile(SDL_Surface *sfc, std::vector<unsigned char> &data,
-		Uint16 size, Uint16 columns, size_t tile)
+		Uint16 size, Uint16 columns, size_t tile, bool usetileoffset)
 {
 	if(!data.empty())
 	{
 		// Decode the image data
+		size_t tileoff = usetileoffset ? (tile*5*columns*(size/8)*size) : 0;
 		for(size_t p = 0; p < 4; p++)
 		{
 			// Decode the lines of the bitmap data
-			Uint8 *pointer = &(data[0]) + (p+1) * (size/8) * size;
+			Uint8 *pointer = &(data[0]) + tileoff + (p+1) * (size/8) * size;
 			for(size_t y = 0; y < size; y++)
 			{
 				Uint8 *pixel = (Uint8*)sfc->pixels +
@@ -321,7 +350,7 @@ void CEGAGraphicsGalaxy::extractMaskedTile(SDL_Surface *sfc, std::vector<unsigne
 		}
 
 		// now apply the mask!
-		Uint8 *pointer = &(data[0]);
+		Uint8 *pointer = &(data[0]) + tileoff;
 		for(size_t y = 0; y < size; y++)
 		{
 			Uint8 *pixel = (Uint8*)sfc->pixels +
@@ -634,20 +663,19 @@ bool CEGAGraphicsGalaxy::readMaskedBitmaps()
 	return true;
 }
 
-bool CEGAGraphicsGalaxy::readTilemaps()
+bool CEGAGraphicsGalaxy::readTilemaps(	size_t NumTiles, size_t pbasetilesize,
+										size_t rowlength, size_t IndexOfTiles,
+										CTilemap &Tilemap, bool tileoff)
 {
-	int ep = m_episode - 4;
-
-	CTilemap &Tilemap = g_pGfxEngine->getTileMap(0);
 	Tilemap.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE,
-							EpisodeInfo[ep].Num16Tiles, 4, 18 );
+							NumTiles, pbasetilesize, rowlength );
 	SDL_Surface *sfc = Tilemap.getSDLSurface();
 	SDL_FillRect(sfc,NULL, 0);
 	if(SDL_MUSTLOCK(sfc))	SDL_LockSurface(sfc);
 
-	for(size_t i = 0; i < EpisodeInfo[ep].Num16Tiles; i++)
+	for(size_t i = 0; i < NumTiles; i++)
 	{
-		extractTile(sfc, m_egagraph.at(EpisodeInfo[ep].Index16Tiles + i).data, 16, 18, i);
+		extractTile(sfc, m_egagraph.at(IndexOfTiles + (tileoff ? 0 : i)).data, (1<<pbasetilesize), rowlength, i, tileoff);
 	}
 
 	SDL_UnlockSurface(sfc);
@@ -655,20 +683,19 @@ bool CEGAGraphicsGalaxy::readTilemaps()
 	return true;
 }
 
-bool CEGAGraphicsGalaxy::readMaskedTilemaps()
+bool CEGAGraphicsGalaxy::readMaskedTilemaps( size_t NumTiles, size_t pbasetilesize,
+											size_t rowlength, size_t IndexOfTiles,
+											CTilemap &Tilemap, bool tileoff)
 {
-	int ep = m_episode - 4;
-
-	CTilemap &Tilemap = g_pGfxEngine->getTileMap(1);
 	Tilemap.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE,
-							EpisodeInfo[ep].Num16MaskedTiles, 4, 18 );
+							NumTiles, pbasetilesize, rowlength );
 	SDL_Surface *sfc = Tilemap.getSDLSurface();
 	SDL_FillRect(sfc,NULL, 0);
 	if(SDL_MUSTLOCK(sfc))	SDL_LockSurface(sfc);
 
-	for(size_t i = 0; i < EpisodeInfo[ep].Num16MaskedTiles; i++)
+	for(size_t i = 0; i < NumTiles; i++)
 	{
-		extractMaskedTile(sfc, m_egagraph.at(EpisodeInfo[ep].Index16MaskedTiles + i).data, 16, 18, i);
+		extractMaskedTile(sfc, m_egagraph.at(IndexOfTiles + (tileoff ? 0 : i)).data, (1<<pbasetilesize), rowlength, i, tileoff);
 	}
 
 	SDL_UnlockSurface(sfc);
@@ -676,187 +703,6 @@ bool CEGAGraphicsGalaxy::readMaskedTilemaps()
 	return true;
 }
 
-//
-//void k456_export_masked_tiles()
-//{
-//	BITMAP16 *tiles, *bmp, *planes[5];
-//	char filename[PATH_MAX];
-//	int i, p, y;
-//	unsigned char *pointer;
-//	int ep = Switches->Episode - 4;
-//
-//	if(!ExportInitialised)
-//		quit("Trying to export masked tiles before initialisation!");
-//
-//	/* Export all the masked tiles into one bitmap*/
-//	printf("Exporting masked tiles: ");
-//
-//	tiles = bmp_create(16 * 18 * 2, 16 * ((EpisodeInfo[ep].Num16MaskedTiles + 17) / 18), 4);
-//
-//	/* Create a 1bpp bitmap for each plane */
-//	for(p = 0; p < 5; p++)
-//		planes[p] = bmp_create(16, 16, 1);
-//
-//	for(i = 0; i < EpisodeInfo[ep].Num16MaskedTiles; i++)
-//	{
-//		/* Show that something is happening */
-//		showprogress((i * 100) / EpisodeInfo[ep].Num16MaskedTiles);
-//
-//		if(EgaGraph[EpisodeInfo[ep].Index16MaskedTiles + i].data)
-//		{
-//			/* Decode the mask data */
-//			pointer = EgaGraph[EpisodeInfo[ep].Index16MaskedTiles + i].data;
-//			for(y = 0; y < 16; y++)
-//			{
-//				memcpy(planes[4]->lines[y], pointer + y * 2, 2);
-//			}
-//			bmp_blit(planes[4], 0, 0, tiles, 16 * 18 + 16 * (i % 18), 16 * (i / 18), 16, 16);
-//
-//			/* Decode the image data */
-//			for(p = 0; p < 4; p++)
-//			{
-//				/* Decode the lines of the bitmap data */
-//				pointer = EgaGraph[EpisodeInfo[ep].Index16MaskedTiles + i].data + (p + 1) * 2 * 16;
-//				for(y = 0; y < 16; y++)
-//					memcpy(planes[p]->lines[y], pointer + y * 2, 2);
-//			}
-//
-//			bmp = bmp_merge(planes[2], planes[1], planes[0], planes[3]);
-//			bmp_blit(bmp, 0, 0, tiles, 16 * (i % 18), 16 * (i / 18), 16, 16);
-//			bmp_free(bmp);
-//		}
-//		//printf("\x8\x8\x8\x8");
-//	}
-//	completemsg();
-//
-//	/* Create the bitmap file */
-//	sprintf(filename, "%s/%cTIL0001.bmp", Switches->OutputPath, '0' + Switches->Episode);
-//	if(!bmp_save(tiles, filename, Switches->Backup))
-//		quit("Can't open bitmap file %s!", filename);
-//
-//	/* Free the memory used */
-//	for(p = 0; p < 5; p++)
-//		bmp_free(planes[p]);
-//	bmp_free(tiles);
-//}
-//
-//void k456_export_8_tiles()
-//{
-//	BITMAP16 *tiles, *bmp, *planes[4];
-//	char filename[PATH_MAX];
-//	int i, p, y;
-//	unsigned char *pointer;
-//	int ep = Switches->Episode - 4;
-//
-//	if(!ExportInitialised)
-//		quit("Trying to export 8x8 tiles before initialisation!");
-//
-//	/* Export all the 8x8 tiles into one bitmap*/
-//	printf("Exporting 8x8 tiles: ");
-//
-//	tiles = bmp_create(8, 8 * EpisodeInfo[ep].Num8Tiles, 4);
-//
-//	/* Create a 1bpp bitmap for each plane */
-//	for(p = 0; p < 4; p++)
-//		planes[p] = bmp_create(8, 8, 1);
-//
-//	if(EgaGraph[EpisodeInfo[ep].Index8Tiles].data)
-//	{
-//		for(i = 0; i < EpisodeInfo[ep].Num8Tiles; i++)
-//		{
-//			/* Show that something is happening */
-//			showprogress((i * 100) / EpisodeInfo[ep].Num8Tiles);
-//
-//			/* Decode the image data */
-//			for(p = 0; p < 4; p++)
-//			{
-//				/* Decode the lines of the bitmap data */
-//				pointer = EgaGraph[EpisodeInfo[ep].Index8Tiles].data + (i * 4 * 8) + p * 8;
-//				for(y = 0; y < 8; y++)
-//					memcpy(planes[p]->lines[y], pointer + y, 1);
-//			}
-//
-//			bmp = bmp_merge(planes[2], planes[1], planes[0], planes[3]);
-//			bmp_blit(bmp, 0, 0, tiles, 0, 8 * i, 8, 8);
-//			bmp_free(bmp);
-//			//printf("\x8\x8\x8\x8");
-//		}
-//		completemsg();
-//	}
-//
-//	/* Create the bitmap file */
-//	sprintf(filename, "%s/%cTIL0002.bmp", Switches->OutputPath, '0' + Switches->Episode);
-//	if(!bmp_save(tiles, filename, Switches->Backup))
-//		quit("Can't open bitmap file %s!", filename);
-//
-//	/* Free the memory used */
-//	for(p = 0; p < 4; p++)
-//		bmp_free(planes[p]);
-//	bmp_free(tiles);
-//}
-//
-//void k456_export_8_masked_tiles()
-//{
-//	BITMAP16 *tiles, *bmp, *planes[5];
-//	char filename[PATH_MAX];
-//	int i, p, y;
-//	unsigned char *pointer;
-//	int ep = Switches->Episode - 4;
-//
-//	if(!ExportInitialised)
-//		quit("Trying to export 8x8 masked tiles before initialisation!");
-//
-//	/* Export all the 8x8 masked tiles into one bitmap*/
-//	printf("Exporting 8x8 masked tiles: ");
-//
-//	tiles = bmp_create(8 * 2, 8 * EpisodeInfo[ep].Num8MaskedTiles, 4);
-//
-//	/* Create a 1bpp bitmap for each plane */
-//	for(p = 0; p < 5; p++)
-//		planes[p] = bmp_create(8, 8, 1);
-//
-//	if(EgaGraph[EpisodeInfo[ep].Index8MaskedTiles].data)
-//	{
-//		for(i = 0; i < EpisodeInfo[ep].Num8MaskedTiles; i++)
-//		{
-//			/* Show that something is happening */
-//			showprogress((i * 100) / EpisodeInfo[ep].Num8MaskedTiles);
-//
-//			/* Decode the mask data */
-//			pointer = EgaGraph[EpisodeInfo[ep].Index8MaskedTiles].data + (i * 5 * 8);
-//			for(y = 0; y < 8; y++)
-//				memcpy(planes[4]->lines[y], pointer + y, 1);
-//			bmp_blit(planes[4], 0, 0, tiles, 8, 8 * i, 8, 8);
-//
-//			/* Decode the image data */
-//			for(p = 0; p < 4; p++)
-//			{
-//				/* Decode the lines of the bitmap data */
-//				pointer = EgaGraph[EpisodeInfo[ep].Index8MaskedTiles].data + (i * 5 * 8) + (p + 1) * 8;
-//				for(y = 0; y < 8; y++)
-//					memcpy(planes[p]->lines[y], pointer + y, 1);
-//			}
-//
-//			bmp = bmp_merge(planes[2], planes[1], planes[0], planes[3]);
-//			bmp_blit(bmp, 0, 0, tiles, 0, 8 * i, 8, 8);
-//			bmp_free(bmp);
-//
-//			//printf("\x8\x8\x8\x8");
-//		}
-//		completemsg();
-//	}
-//
-//	/* Create the bitmap file */
-//	sprintf(filename, "%s/%cTIL0003.bmp", Switches->OutputPath, '0' + Switches->Episode);
-//	if(!bmp_save(tiles, filename, Switches->Backup))
-//		quit("Can't open bitmap file %s!", filename);
-//
-//	/* Free the memory used */
-//	for(p = 0; p < 5; p++)
-//		bmp_free(planes[p]);
-//	bmp_free(tiles);
-//}
-//
 //void k456_export_sprites()
 //{
 //	BITMAP16 *bmp, *spr, *planes[5];
