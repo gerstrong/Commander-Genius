@@ -18,6 +18,7 @@
 #include "../engine/vorticon/ai/CSectorEffector.h"
 #include "../engine/vorticon/ai/CDoor.h"
 #include "../engine/vorticon/ai/CRisingPoints.h"
+#include "../engine/vorticon/ai/CAnkhShield.h"
 #include "../StringUtils.h"
 
 #define DOOR_YELLOW        2
@@ -361,6 +362,8 @@ std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTilePropertie
 void CPlayer::giveAnkh()
 {
 	g_pSound->playSound(SOUND_ANKH, PLAY_NOW);
+	if(ankhtime == 0)
+		mp_object->push_back(new CAnkhShield(*this));
 	ankhtime = PLAY_ANKH_TIME;
 }
 

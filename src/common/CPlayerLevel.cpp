@@ -49,7 +49,6 @@ void CPlayer::processInLevel()
 		if(!level_done)
 		{
 			getgoodies();
-			ankh(); // Normally can happen in Episode 3
 			raygun();
 			keencicle();
 		}
@@ -824,68 +823,6 @@ void CPlayer::SelectFrame()
 			sprite+=4;
 		}
     }
-}
-
-void CPlayer::ankh()
-{
-	//const unsigned int ANKH_FLICKER_DELAY = 3;
-	//const unsigned int ANKH_SHIELD_FRAME = 61;
-
-	/*if (!ankhtime) return;
-	else if (ankhtime < ANKH_STAGE3_TIME)
-		m_Ankhshield.ai.se.state = ANKH_STATE_FLICKERSLOW;
-	else if (ankhtime < ANKH_STAGE2_TIME)
-		m_Ankhshield.ai.se.state = ANKH_STATE_FLICKERFAST;
-	else
-		m_Ankhshield.ai.se.state = ANKH_STATE_NOFLICKER;
-
-	ankhtime--;
-
-	m_Ankhshield.moveToForce(getXPosition()-(8<<STC), getYPosition()-(8<<STC));
-
-	if (m_Ankhshield.needinit)
-	{
-		m_Ankhshield.ai.se.frame = 0;
-		m_Ankhshield.ai.se.timer = 0;
-		m_Ankhshield.inhibitfall = 1;
-		m_Ankhshield.canbezapped = 0;
-		m_Ankhshield.needinit = 0;
-
-		m_Ankhshield.ai.se.state = ANKH_STATE_NOFLICKER;
-	}
-
-	switch(m_Ankhshield.ai.se.state)
-	{
-	case ANKH_STATE_NOFLICKER:
-		m_Ankhshield.sprite = ANKH_SHIELD_FRAME + (m_Ankhshield.ai.se.frame&1);
-		break;
-	case ANKH_STATE_FLICKERFAST:
-		if (m_Ankhshield.ai.se.frame&1)
-			m_Ankhshield.sprite = BLANKSPRITE;
-		else
-		{
-			if (m_Ankhshield.ai.se.frame&2)
-				m_Ankhshield.sprite = ANKH_SHIELD_FRAME+1;
-			else
-				m_Ankhshield.sprite = ANKH_SHIELD_FRAME;
-		}
-		break;
-	case ANKH_STATE_FLICKERSLOW:
-		if (m_Ankhshield.ai.se.frame>4)
-			m_Ankhshield.sprite = BLANKSPRITE;
-		else
-			m_Ankhshield.sprite = ANKH_SHIELD_FRAME;
-		break;
-	}
-
-	if (m_Ankhshield.ai.se.timer > ANKH_FLICKER_DELAY)
-	{
-		m_Ankhshield.ai.se.frame++;
-		if (m_Ankhshield.ai.se.frame>8) m_Ankhshield.ai.se.frame = 0;
-		m_Ankhshield.ai.se.timer = 0;
-	}
-	else m_Ankhshield.ai.se.timer++;*/
-
 }
 
 // yorp/scrub etc "bump".

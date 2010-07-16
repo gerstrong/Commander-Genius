@@ -69,7 +69,6 @@ public:
 	void JumpAndPogo();
 	void Playerfalling();
 	void raygun();
-	void ankh();
 	void bump( int pushamt, bool solid );
 	void checkSolidDoors();
 	void SelectFrame();
@@ -110,7 +109,7 @@ public:
 	char m_level;
 	int m_difficulty;
 
-	char godmode;
+	bool godmode;
 
 	// used on world map only
 	bool hideplayer;
@@ -141,6 +140,7 @@ public:
 	bool pjustjumped;
 	bool pjustfell;
 	unsigned char pjumpfloattimer;
+	size_t ankhtime;
 
 	direction_t pdir,pshowdir,lastpdir;
 
@@ -165,9 +165,6 @@ public:
 
 	bool object_chosen;
 	unsigned char dpadcount, dpadlastcount;
-
-	unsigned int ankhtime;
-	CObject m_Ankhshield;
 
 	stInventory inventory;
 

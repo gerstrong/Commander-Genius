@@ -13,8 +13,8 @@ char BJ_BlockedD(int o);
 unsigned int rnd(void);
 
 CBallJack::CBallJack(CMap *pmap, Uint32 x, Uint32 y,
-		std::vector<CPlayer> &PlayerVect):
-CObject(pmap, x, y, OBJ_BALL),
+		std::vector<CPlayer> &PlayerVect, object_t type):
+CObject(pmap, x, y, type),
 m_Player(PlayerVect)
 {
 	unsigned int px = m_Player.at(0).getXMidPos();
@@ -76,28 +76,6 @@ void CBallJack::process()
 		else m_Player[touchedBy].kill();
 	}
 
-	/*if (zapped)
-	{
-		// have ball change direction when zapped
-		if (zapd==LEFT)
-		{
-			switch(m_Direction)
-			{
-			case DUPRIGHT: m_Direction = DUPLEFT; break;
-			case DDOWNRIGHT: m_Direction = DDOWNLEFT; break;
-			}
-		}
-		else
-		{
-			switch(m_Direction)
-			{
-			case DUPLEFT: m_Direction = DUPRIGHT; break;
-			case DDOWNLEFT: m_Direction = DDOWNRIGHT; break;
-			}
-		}
-		zapped = 0;
-	}*/
-
 	switch(m_Direction)
 	{
 	case DUPLEFT:
@@ -146,5 +124,26 @@ void CBallJack::process()
 		}
 		else animtimer++;
 	}
-
 }
+
+void CBallJack::getShotByRay()
+{
+	// have ball change direction when zapped
+	if (zapd==LEFT)
+	{
+		switch(m_Direction)
+		{
+		case DUPRIGHT: m_Direction = DUPLEFT; break;
+		case DDOWNRIGHT: m_Direction = DDOWNLEFT; break;
+		}
+	}
+	else
+	{
+		switch(m_Direction)
+		{
+		case DUPLEFT: m_Direction = DUPRIGHT; break;
+		case DDOWNLEFT: m_Direction = DDOWNRIGHT; break;
+		}
+	}
+}
+

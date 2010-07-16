@@ -34,7 +34,6 @@ m_episode(Episode),
 m_level(Level),
 m_difficulty(Difficulty),
 pjumpupspeed_decrease(g_pBehaviorEngine->getPhysicsSettings().player.defaultjumpupdecreasespeed),
-m_Ankhshield(CObject(&map,0,0,OBJ_NONE)),
 mp_levels_completed(mp_level_completed),
 mp_option(mp_option),
 mp_StatusScr(NULL)
@@ -43,11 +42,6 @@ mp_StatusScr(NULL)
 	mp_object = &m_Object;
 	canbezapped = true;
 	m_index = 0;
-
-	// Ankhshield is a special object the player is holded.
-	// It's normally seen in Ep3 and when he gets invincible by the ankh
-	m_Ankhshield.solid = false;
-	m_Ankhshield.exists = true;
 
 	pjumping = PNOJUMP;
 	pfalling = false;
@@ -74,6 +68,7 @@ void CPlayer::setDatatoZero()
 
 	m_type = OBJ_PLAYER;
 	moveTo(0,0);
+	ankhtime = 0;
     exists = true;
 	onscreen = true;
 	pfallspeed = 0,
@@ -138,7 +133,6 @@ void CPlayer::setupforLevelPlay()
 	pjumping = PNOJUMP;
     psliding = psemisliding = false;
     pfrozentime = 0;
-    ankhtime = 0;
     keyprocstate = 0;         // KPROC_IDLE
     pjustjumped = pjustfell = true;
     pfireframetimer = 0;
@@ -791,7 +785,7 @@ void CPlayer::StatusBox()
 void CPlayer::freeze()
 {
 	if ( godmode ) return;
-	if ( ankhtime) return;
+	if ( ankhtime ) return;
 	// give the player a little "kick"
 
 	CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
@@ -859,10 +853,6 @@ bool CPlayer::checkObjSolid()
 void CPlayer::draw()
 {
 	CObject::draw();
-
-	// Here comes the part of the ankhshield
-	if(ankhtime)
-		m_Ankhshield.draw();
 }
 
 // Draws the Status screen and return false, when it's still open.

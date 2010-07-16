@@ -16,6 +16,7 @@
 #include "../common/Playerdefines.h"
 #include "../common/CBehaviorEngine.h"
 #include "../graphics/effects/CColorMerge.h"
+#include "../engine/vorticon/ai/CAnkhShield.h"
 
 #define FADE_SPEED	10
 

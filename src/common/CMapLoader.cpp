@@ -395,7 +395,7 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				}
 				else if (episode==3)
 				{
-					enemyobject = new CBallJack( mp_map, x<<CSF, y<<CSF, *mp_vec_Player);
+					enemyobject = new CBallJack( mp_map, x<<CSF, y<<CSF, *mp_vec_Player, OBJ_BALL);
 				}
 				break;
 			case 8:    // jack (ep3) and ice cannon down (ep1)
@@ -405,7 +405,7 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				}
 				else if (episode==3)
 				{
-					enemyobject = new CBallJack( mp_map, x<<CSF, y<<CSF, *mp_vec_Player);
+					enemyobject = new CBallJack( mp_map, x<<CSF, y<<CSF, *mp_vec_Player, OBJ_JACK);
 				}
 				break;
 			case 9:    // up-left-flying ice chunk (ep1) horiz platform (ep3)

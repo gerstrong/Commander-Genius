@@ -145,19 +145,6 @@ enum jumpstate{
 #define PDIE_RISE_SPEED    -160
 #define DIE_MAX_XVECT       320
 
-// for ankh shield...
-// stage1 is no flicker of the shield, changes colors
-// in stage2 the shield flickers fast, changes colors
-// in stage3 the shield flashes slow, no color change
-#define ANKH_STAGE1_TIME    750
-#define ANKH_STAGE2_TIME    380
-#define ANKH_STAGE3_TIME    125
-#define PLAY_ANKH_TIME      (ANKH_STAGE1_TIME+ANKH_STAGE2_TIME+ANKH_STAGE3_TIME)
-// these correspond stage 1,2 and 3 respectively
-#define ANKH_STATE_NOFLICKER    0
-#define ANKH_STATE_FLICKERFAST  1
-#define ANKH_STATE_FLICKERSLOW  2
-
 // friction when player is pushed by yorp's, ball's, etc.
 #define PLAYPUSH_DECREASERATE   1
 

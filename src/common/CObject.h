@@ -130,6 +130,7 @@ public:
 	virtual void getTouchedBy(CObject &theObject) {};
 	virtual void getShotByRay();
 	void kill_intersecting_tile(int mpx, int mpy, CObject &theObject);
+	CMap *getMapPtr() { return mp_Map; }
 
 	void draw();
 	void drawMask(SDL_Surface *dst, CSprite &Sprite, int mx, int my);

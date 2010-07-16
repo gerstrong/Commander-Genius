@@ -16,8 +16,10 @@ class CBallJack : public CObject
 {
 public:
 	CBallJack(CMap *pmap, Uint32 x, Uint32 y,
-			std::vector<CPlayer> &PlayerVect);
+			std::vector<CPlayer> &PlayerVect, object_t type);
 	void process();
+
+	void getShotByRay();
 
 private:
 	enum {
