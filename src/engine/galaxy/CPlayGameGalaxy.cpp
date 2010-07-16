@@ -76,11 +76,12 @@ void CPlayGameGalaxy::processInput()
 
 }
 
+/*
+ * This processes the rendering over all the other stuff. THis is used for extra messages normally
+ * blit scrollsurface happens with m_WorldMap or m_LevelPlay
+ */
 void CPlayGameGalaxy::processRendering()
 {
-	// Blit the background
-	g_pVideoDriver->blitScrollSurface();
-
 	g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->BlitSurface, "Press the arrows to scroll", 10, 10);
 }
 

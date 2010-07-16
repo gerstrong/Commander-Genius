@@ -27,10 +27,10 @@ public:
 
 	void process();
 
-	void moveLeft();
+	/*void moveLeft();
 	void moveRight();
 	void moveUp();
-	void moveDown();
+	void moveDown();*/
 
 	virtual ~CCamera();
 	

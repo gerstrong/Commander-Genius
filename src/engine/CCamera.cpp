@@ -23,6 +23,8 @@ CObject(pmap, x, y, OBJ_NONE),
 mp_AttachedObject(NULL)
 {
 	g_pLogFile->ftextOut("Starting the camera system...<br>");
+	sprite = 138;
+	solid = false;
 }
 
 /**
@@ -56,48 +58,58 @@ void CCamera::process()
 {
 	if(mp_AttachedObject == NULL)
 	{	// This means, that there is no attached object. Let the camera scroll freely!
-		if(g_pInput->getHoldedCommand(IC_LEFT))
-			moveLeft();
+
+		if(g_pInput->getHoldedKey(KA))
+			moveLeft(10);
+		else if(g_pInput->getHoldedKey(KD))
+			moveRight(10);
+		if(g_pInput->getHoldedKey(KW))
+			moveUp(10);
+		else if(g_pInput->getHoldedKey(KS))
+			moveDown(10);
+
+		/*if(g_pInput->getHoldedCommand(IC_LEFT))
+			moveLeft(10);
 		else if(g_pInput->getHoldedCommand(IC_RIGHT))
-			moveRight();
+			moveRight(10);
 		if(g_pInput->getHoldedCommand(IC_UP))
-			moveUp();
+			moveUp(10);
 		else if(g_pInput->getHoldedCommand(IC_DOWN))
-			moveDown();
+			moveDown(10);*/
 	}
 }
 
 /**
  * Move the camera left also checking the bounds
  */
-void CCamera::moveLeft()
+/*void CCamera::moveLeft()
 {
 	mp_Map->scrollLeft();
-}
+}*/
 
 /**
  * Move the camera right also checking the bounds
  */
-void CCamera::moveRight()
+/*void CCamera::moveRight()
 {
 	mp_Map->scrollRight();
-}
+}*/
 
 /**
  * Move the camera up also checking the bounds
  */
-void CCamera::moveUp()
+/*void CCamera::moveUp()
 {
 	mp_Map->scrollUp();
-}
+}*/
 
 /**
  * Move the camera down also checking the bounds
  */
-void CCamera::moveDown()
+/*void CCamera::moveDown()
 {
 	mp_Map->scrollDown();
-}
+}*/
 
 CCamera::~CCamera()
 {

@@ -40,11 +40,21 @@ void CWorldMap::process()
 	// Animate the tiles of the map
 	m_Map.animateAllTiles();
 
-	std::vector<CObject*>::iterator obj=m_ObjectPtr.begin();
-	for( ; obj!=m_ObjectPtr.end() ; obj++ )
+
+	for( std::vector<CObject*>::iterator obj=m_ObjectPtr.begin() ;
+			obj!=m_ObjectPtr.end() ; obj++ )
 	{
 		(*obj)->process();
 	}
+
+	g_pVideoDriver->blitScrollSurface();
+
+	for( std::vector<CObject*>::iterator obj=m_ObjectPtr.begin() ;
+			obj!=m_ObjectPtr.end() ; obj++ )
+	{
+		(*obj)->draw();
+	}
+
 }
 
 void CWorldMap::processInput()
@@ -58,21 +68,17 @@ void CWorldMap::processInput()
 	if(g_pInput->getHoldedCommand(IC_LEFT))
 	{
 		m_Map.scrollLeft();
-		m_Map.scrollLeft();
 	}
 	else if(g_pInput->getHoldedCommand(IC_RIGHT))
 	{
-		m_Map.scrollRight();
 		m_Map.scrollRight();
 	}
 	if(g_pInput->getHoldedCommand(IC_UP))
 	{
 		m_Map.scrollUp();
-		m_Map.scrollUp();
 	}
 	else if(g_pInput->getHoldedCommand(IC_DOWN))
 	{
-		m_Map.scrollDown();
 		m_Map.scrollDown();
 	}
 }
