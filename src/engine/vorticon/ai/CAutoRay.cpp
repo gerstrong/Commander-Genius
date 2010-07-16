@@ -21,6 +21,7 @@ m_type(type)
 {
 	sprite = BLANKSPRITE;
 	inhibitfall = true;
+	hasbeenonscreen = true;
 }
 
 void CAutoRay::process()
@@ -43,7 +44,7 @@ void CAutoRay::process()
 		}
 		else
 		{
-			NewRay = new CRay(mp_Map, x+(1<<CSF), y+(4<<STC), DOWN, OBJ_AUTORAY_V, m_index);
+			NewRay = new CRay(mp_Map, x+(1<<CSF), y+(4<<STC), DOWN, OBJ_AUTORAY, m_index);
 			NewRay->sprite = ENEMYRAYEP3;
 			NewRay->m_Direction = RIGHT;
 		}
