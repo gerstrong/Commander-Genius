@@ -8,7 +8,9 @@
 #include "CEarthExplosion.h"
 
 CEarthExplosion::CEarthExplosion(CMap *p_map, Uint32 x, Uint32 y) :
-CRay(p_map, x, y, RIGHT)
+CRay(p_map, x, y, RIGHT),
+animframe(0),
+animtimer(0)
 {
 	onscreen = true;
 }

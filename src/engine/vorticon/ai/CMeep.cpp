@@ -8,7 +8,7 @@ enum meep_actions{
 	MEEP_DYING, MEEP_DEAD
 };
 
-#define MEEP_WALK_ANIM_RATE     8
+#define MEEP_WALK_ANIM_RATE     3
 #define MEEP_WALK_SPD           26
 
 #define MEEP_SING_PROB          5
@@ -31,26 +31,23 @@ m_Player(Player),
 m_Object(Object)
 {
 	canbezapped = true;
+
+	state = MEEP_WALK;
+
+	if (m_Player[0].getXPosition() > getXPosition())
+		dir = RIGHT;
+	else
+		dir = LEFT;
+
+	blockedr = blockedl = false;
+	animframe = 0;
+	animtimer = 0;
 }
 
 void CMeep::process()
 {
 	int not_about_to_fall;
-	if (needinit)
-	{
-		state = MEEP_WALK;
-		animframe = 0;
-		animtimer = 0;
 
-		if (m_Player[0].getXPosition() > getXPosition())
-			dir = RIGHT;
-		else
-			dir = LEFT;
-
-		blockedr = blockedl = false;
-		canbezapped = 1;
-		needinit = 0;
-	}
 	if (state==MEEP_DEAD) return;
 
 	if (touchPlayer && !m_Player[touchedBy].pdie)
@@ -147,6 +144,7 @@ void CMeep::process()
 				newobject = new CSoundWave(mp_Map, getXRightPos(), getYPosition()+(5<<STC), RIGHT);
 			else
 				newobject = new CSoundWave(mp_Map, getXLeftPos(), getYPosition()+(5<<STC), LEFT);
+			newobject->setOwner(OBJ_MEEP, m_index);
 			newobject->solid = false;
 			m_Object.push_back(newobject);
 			g_pSound->playStereofromCoord(SOUND_MEEP, PLAY_NOW, scrx);

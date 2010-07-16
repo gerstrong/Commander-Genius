@@ -14,6 +14,8 @@ class CEarthExplosion : public CRay {
 public:
 	CEarthExplosion(CMap *p_map, Uint32 x, Uint32 y);
 	void process();
+private:
+	int animframe, animtimer;
 };
 
 #endif /* CEARTHEXPLOSION_H_ */

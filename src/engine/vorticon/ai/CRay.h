@@ -51,10 +51,6 @@ protected:
 		unsigned int ID;
 	}owner;
 
-	// for soundwave
-	int animframe, animtimer;
-	int offscreentime;
-
 	// for earth chunks
 	int baseframe;
 };

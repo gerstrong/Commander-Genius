@@ -608,6 +608,10 @@ void CPlayGameVorticon::drawObjects()
 void CPlayGameVorticon::cleanup()
 {
 	SAFE_DELETE(mp_ObjectAI);
+	std::vector<CObject*>::iterator obj = m_Object.begin();
+	for( ; obj != m_Object.end() ; obj++ )
+		delete (*obj);
+	m_Object.clear();
 }
 
 CPlayGameVorticon::~CPlayGameVorticon() {

@@ -718,6 +718,9 @@ void CObject::blink(Uint16 frametime)
 // or priority tile!
 void CObject::draw()
 {
+	if(sprite >= BLANKSPRITE)
+		return;
+
 	CSprite &Sprite = g_pGfxEngine->getSprite(sprite);
     SDL_Surface *sfc = g_pVideoDriver->getBlitSurface();
 
