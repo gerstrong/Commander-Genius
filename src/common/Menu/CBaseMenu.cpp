@@ -13,7 +13,8 @@ CBaseMenu::CBaseMenu(Uint8 dlg_theme) :
 	m_selection(NO_SELECTION),
 	mp_Dialog(NULL),
 	m_dlg_theme(dlg_theme),
-	m_suspended(false)
+	m_suspended(false),
+	m_noenter(false)
 {}
 
 void CBaseMenu::processCommon()
@@ -21,9 +22,12 @@ void CBaseMenu::processCommon()
 	if(!m_suspended)
 	{
 		// Get Input for selection
+		if(!m_noenter)
+		{
 		if( g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_STATUS) )
 		{
 			m_selection = mp_Dialog->getSelection();
+		}
 		}
 
 		// Get Input for selection

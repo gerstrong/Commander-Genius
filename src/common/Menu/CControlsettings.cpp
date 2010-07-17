@@ -37,7 +37,7 @@ m_waiting_for_input(false)
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Status: ");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 9, "Help:   ");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 10, "Quit:   ");
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 11, "Two Button Firing : ");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 11, "");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 2, 12, "Reset Controls");
 }
 
@@ -88,8 +88,13 @@ void CControlsettings::setControlsText()
 	buf = "Quit:   " + buf2;
 	mp_Dialog->setObjectText(9, buf);
 
-	buf = "Two Button Firing : ";
-	buf += g_pInput->getTwoButtonFiring(m_chosenPlayer-1) ? "(on)" : "(off)";
+	
+	buf = "Two Button Firing ";
+	buf += g_pInput->getTwoButtonFiring(m_chosenPlayer-1) ? 28 : 20;
+	buf += g_pInput->getTwoButtonFiring(m_chosenPlayer-1) ? 29 : 21;
+	buf += g_pInput->getTwoButtonFiring(m_chosenPlayer-1) ? 30 : 22;
+	buf += g_pInput->getTwoButtonFiring(m_chosenPlayer-1) ? 31 : 23;
+	mp_Dialog->m_dlgobject.at(10)->m_Option->m_FontMapID = 1;
 	mp_Dialog->setObjectText(10, buf);
 }
 
@@ -176,8 +181,11 @@ void CControlsettings::processSelection()
 				bool twb = g_pInput->getTwoButtonFiring(m_chosenPlayer-1);
 				twb = !twb;
 				g_pInput->setTwoButtonFiring(m_chosenPlayer-1, twb);
-				buf = "Two Button Firing : ";
-				buf += g_pInput->getTwoButtonFiring(m_chosenPlayer-1) ? "(On)" : "(Off)";
+				buf = "Two Button Firing ";
+				buf += g_pInput->getTwoButtonFiring(m_chosenPlayer-1) ? 28 : 20;
+				buf += g_pInput->getTwoButtonFiring(m_chosenPlayer-1) ? 29 : 21;
+				buf += g_pInput->getTwoButtonFiring(m_chosenPlayer-1) ? 30 : 22;
+				buf += g_pInput->getTwoButtonFiring(m_chosenPlayer-1) ? 31 : 23;
 				mp_Dialog->setObjectText(m_selection, buf);
 				m_selection = -1;
 			}

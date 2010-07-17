@@ -352,21 +352,19 @@ void CDialog::processInput(int move)
 			if(m_inputmode == INPUT_MODE_OPTION)
 			{
 				m_opt = true;
-				m_int = 0;
+				m_int = m_dlgobject.at(m_selected_ID)->m_Option->m_value;
 			}
 			else if(m_inputmode == INPUT_MODE_SWITCH)
 			{
 				m_opt = false;
-				m_toggle = false;
 			}
 			
 			if(g_pInput->getPressedCommand(IC_RIGHT))
 			{
 				if(m_opt)
 				{
+					if (m_int<m_max)
 					m_int++;
-					if (m_int>m_max)
-						m_int = m_min;
 				}
 				else
 				{
@@ -378,15 +376,19 @@ void CDialog::processInput(int move)
 			{
 				if(m_opt)
 				{
+					if (m_int>m_min)
 					m_int--;
-					if (m_int<m_min)
-						m_int = m_max;
 				}
 				else
 				{
 					if (m_toggle)
 						m_toggle = false;
 				}
+			}
+			
+			if(m_inputmode == INPUT_MODE_OPTION)
+			{
+				m_dlgobject.at(m_selected_ID)->m_Option->m_value = m_int;
 			}
 		}
 	}

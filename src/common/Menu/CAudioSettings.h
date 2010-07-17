@@ -18,14 +18,16 @@ class CAudioSettings : public CBaseMenu {
 public:
 	CAudioSettings(Uint8 dlg_theme, CExeFile &ExeFile);
 	void processSpecific();
+	void setValues(int item, int value);
 	virtual ~CAudioSettings();
 
 private:
 
 	CExeFile &m_ExeFile;
 	int m_Rate;
+	int m_select;
 	Uint16 m_Format;
-	char m_Mode;
+	int m_Mode;
 	CVolumeSettings *mp_VolumeMenu;
 };
 

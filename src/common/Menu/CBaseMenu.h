@@ -56,6 +56,7 @@ protected:
 	CDialog *mp_Dialog;
 	Uint8 m_dlg_theme;
 	bool m_suspended;
+	bool m_noenter;
 };
 
 #endif /* CBASEMENU_H_ */

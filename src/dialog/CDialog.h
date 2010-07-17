@@ -44,7 +44,7 @@ public:
 	void setObjectText( Uint8 ID, const std::string &text );
 	void setObjectType( Uint8 ID, Uint8 type );
 	void setFontID(Uint8 value);
-	void setSwitch(bool value);
+	void setSwitch(bool value) { m_toggle = value; }
 
 	bool getInputMode( const char inputmode );
 	bool getSwitch() { return m_toggle; }

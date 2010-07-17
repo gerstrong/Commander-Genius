@@ -60,7 +60,7 @@ m_blitsurface_alloc(false)
 	Mode=0;
 	Fullscreen=false;
 	m_ScaleXFilter=1;
-	Zoom=2;
+	Zoom=1;
 	m_targetfps = 60;
 #endif
 #ifdef USE_OPENGL
@@ -122,6 +122,7 @@ void CVideoDriver::initResolutionList()
 	st_resolution resolution;
 	char buf[256];
 	m_Resolutionlist.clear();
+	m_value = 1;
 
 	std::ifstream ResolutionFile; OpenGameFileR(ResolutionFile, "resolutions.cfg");
 	if(!ResolutionFile)
@@ -169,7 +170,7 @@ void CVideoDriver::initResolutionList()
 	if(m_Resolutionlist.empty()) {
 		resolution.width = 320;
 		resolution.height = 200;
-		resolution.depth = 16;
+		resolution.depth = 32;
 		m_Resolutionlist.push_back(resolution);
 	}
 
@@ -188,11 +189,6 @@ void CVideoDriver::initResolutionList()
 
 void CVideoDriver::checkResolution( st_resolution& resolution, int flags )
 {
-	int depth;
-
-	for ( depth = resolution.depth; depth >= 16; depth -= 16 )
-	{
-		resolution.depth = depth;
 		resolution.depth = SDL_VideoModeOK( resolution.width, resolution.height, resolution.depth, flags );
 
 		if(resolution.depth)
@@ -210,20 +206,24 @@ void CVideoDriver::checkResolution( st_resolution& resolution, int flags )
 #ifdef DEBUG
 				printf( "%ix%ix%i %X added\n", resolution.width, resolution.height, resolution.depth, flags );
 #endif
+				resolution.value = m_value;
 				m_Resolutionlist.push_back(resolution);
+				m_value++; 
 			}
 		}
-
-		if (resolution.depth==16) break;
-	}
 }
 
-st_resolution CVideoDriver::getNextResolution()
-{
-	m_Resolution_pos++;
-
-	if( m_Resolution_pos == m_Resolutionlist.end() )
-		m_Resolution_pos = m_Resolutionlist.begin();
+st_resolution CVideoDriver::setResolution(int value)
+{	
+	std::list<st_resolution> :: iterator i;
+			for( i = g_pVideoDriver->m_Resolutionlist.begin() ; i != g_pVideoDriver->m_Resolutionlist.end() ; i++ )
+			{
+				if(i->value  == value)
+				{
+					m_Resolution_pos = i;
+					break;
+				}
+			}
 
 	return *m_Resolution_pos;
 }

@@ -14,6 +14,7 @@ CVolumeSettings::CVolumeSettings(Uint8 dlg_theme) :
 CBaseMenu(dlg_theme)
 {
 	mp_Dialog = new CDialog(24, 7, INPUT_MODE_UP_DOWN, m_dlg_theme);
+	m_noenter = true;
 
 	mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 1, "    Adjust Volume:    ");
 	mp_Dialog->addObject(DLG_OBJ_TEXT, 1, 2, "  Music:              ");
