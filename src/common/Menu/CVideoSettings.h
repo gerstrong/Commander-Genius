@@ -24,7 +24,7 @@ public:
 
 private:
 	int m_Zoom, m_ScaleXFilter, m_OGL_filter, m_Autoframeskip;
-	int m_select;
+	int m_current; //used to show what is currently selected without actually changing the value
 	bool m_SpecialFX;
 	bool m_FSmode, m_Opengl, m_changed;
 	st_resolution m_Resolution;

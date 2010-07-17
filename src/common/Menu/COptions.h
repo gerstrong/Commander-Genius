@@ -19,7 +19,6 @@ public:
 
 private:
 	stOption *mp_option;
-	int m_select;
 };
 
 #endif /* COPTIONS_H_ */

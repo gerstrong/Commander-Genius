@@ -20,7 +20,7 @@ CBaseMenu(dlg_theme),
 m_ExeFile(ExeFile),
 mp_VolumeMenu(NULL)
 {
-	m_select = -1;
+	m_current = -1;
 	
 	mp_Dialog = new CDialog(20, 6, INPUT_MODE_OPTION,m_dlg_theme);
 	
@@ -81,36 +81,18 @@ void CAudioSettings::processSpecific()
 			}
 		}
 		
-		if( m_select != mp_Dialog->getSelection())
+		if( m_current != mp_Dialog->getSelection())
 		{
-			m_select = mp_Dialog->getSelection();
+			m_current = mp_Dialog->getSelection();
 		}
-		else if( m_select != NO_SELECTION)
+		else if( m_current != NO_SELECTION)
 		{
-			if(m_select == 0)
+			if(m_current == 0)
 			{
 				mp_Dialog->m_min = 1;
 				mp_Dialog->m_max = 3;
 				setValues(0, mp_Dialog->m_dlgobject.at(0)->m_Option->m_value);
 				mp_Dialog->setObjectText(0, "Rate: " + itoa(m_Rate) + " kHz");
-			}
-			else if(m_select == 1)
-			{
-				mp_Dialog->m_min = 1;
-				mp_Dialog->m_max = 2;
-				setValues(1, mp_Dialog->m_dlgobject.at(1)->m_Option->m_value);
-				buf = "Format: ";
-				buf += (m_Format == AUDIO_S16) ? "16 bits" : "8 bits";
-				mp_Dialog->setObjectText(1, buf);
-			}
-			else if(m_select == 2)
-			{
-				mp_Dialog->m_min = 1;
-				mp_Dialog->m_max = 2;
-				setValues(2, mp_Dialog->m_dlgobject.at(2)->m_Option->m_value);
-				buf = "Mode: ";
-				buf += m_Mode ? "Stereo" : "Mono";
-				mp_Dialog->setObjectText(2, buf);
 			}
 		}
 		
@@ -125,15 +107,18 @@ void CAudioSettings::processSpecific()
 			}
 			else if(m_selection == 1)
 			{
-				mp_Dialog->m_dlgobject.at(1)->m_Option->m_value += 1;
-				if(mp_Dialog->m_dlgobject.at(1)->m_Option->m_value > mp_Dialog->m_max)
-				mp_Dialog->m_dlgobject.at(1)->m_Option->m_value = 1;
+				if( m_Format == AUDIO_S16 ) m_Format = AUDIO_U8;
+				else if( m_Format == AUDIO_U8 ) m_Format = AUDIO_S16;
+				buf = "Format: ";
+				buf += (m_Format == AUDIO_S16) ? "16 bits" : "8 bits";
+				mp_Dialog->setObjectText(1, buf);
 			}
 			else if(m_selection == 2)
 			{
-				mp_Dialog->m_dlgobject.at(2)->m_Option->m_value += 1;
-				if(mp_Dialog->m_dlgobject.at(2)->m_Option->m_value > mp_Dialog->m_max)
-				mp_Dialog->m_dlgobject.at(2)->m_Option->m_value = 1;
+				m_Mode = !m_Mode;
+				buf = "Mode: ";
+				buf += m_Mode ? "Stereo" : "Mono";
+				mp_Dialog->setObjectText(2, buf);
 			}
 			else if(m_selection == 3)
 			{
@@ -166,22 +151,6 @@ void CAudioSettings::setValues(int item, int value)
 			case 1: m_Rate = 11025; break;
 			case 2: m_Rate = 22050; break;
 			case 3: m_Rate = 44100; break;
-		}
-	}
-	else if(item == 1)
-	{
-		switch(value)
-		{
-			case 1: m_Format = AUDIO_U8; break;
-			case 2: m_Format = AUDIO_S16; break;
-		}
-	}
-	else if(item == 2)
-	{
-		switch(value)
-		{
-			case 1: m_Mode = 0; break;
-			case 2: m_Mode = 1; break;
 		}
 	}
 }

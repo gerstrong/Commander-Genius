@@ -25,7 +25,7 @@ private:
 
 	CExeFile &m_ExeFile;
 	int m_Rate;
-	int m_select;
+	int m_current; //used to show what is currently selected without actually changing the value
 	Uint16 m_Format;
 	int m_Mode;
 	CVolumeSettings *mp_VolumeMenu;

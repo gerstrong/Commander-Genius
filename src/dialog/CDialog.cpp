@@ -139,7 +139,6 @@ void CDialog::processInput(int move)
 	// INPUT_MODE_SLIDER		== slider, up/down movement
 	// INPUT_MODE_OPTION		== option, left/right selection, up/down movement
 	// INPUT_MODE_COUNTER		== counter, up/down movment
-	// INPUT_MODE_SWITCH		== switch, on/off selection, up/down movement
 	
 	if( m_inputmode == INPUT_MODE_TEXT )
 	{
@@ -212,8 +211,7 @@ void CDialog::processInput(int move)
 		bool prev_sel = (m_inputmode == INPUT_MODE_UP_DOWN or
 						 m_inputmode == INPUT_MODE_COUNTER or
 						 m_inputmode == INPUT_MODE_SLIDER or
-						 m_inputmode == INPUT_MODE_OPTION or
-						 m_inputmode == INPUT_MODE_SWITCH);
+						 m_inputmode == INPUT_MODE_OPTION);
 		
 		bool next_sel = prev_sel;
 		
@@ -346,50 +344,23 @@ void CDialog::processInput(int move)
 				setObjectText(m_selected_ID, asciislider);
 			}
 		}
-		if(m_inputmode == INPUT_MODE_OPTION or m_inputmode == INPUT_MODE_SWITCH)
+		if(m_inputmode == INPUT_MODE_OPTION)
 		{
-			//option and switch
-			if(m_inputmode == INPUT_MODE_OPTION)
-			{
-				m_opt = true;
+			//This one is basically the counter for non number entries.  It allows for easier scrolling through lists back and forth ie resolutions.
 				m_int = m_dlgobject.at(m_selected_ID)->m_Option->m_value;
-			}
-			else if(m_inputmode == INPUT_MODE_SWITCH)
-			{
-				m_opt = false;
-			}
 			
 			if(g_pInput->getPressedCommand(IC_RIGHT))
 			{
-				if(m_opt)
-				{
 					if (m_int<m_max)
 					m_int++;
-				}
-				else
-				{
-					if (!m_toggle)
-						m_toggle = true;
-				}
 			}
 			else if(g_pInput->getPressedCommand(IC_LEFT))
 			{
-				if(m_opt)
-				{
 					if (m_int>m_min)
 					m_int--;
-				}
-				else
-				{
-					if (m_toggle)
-						m_toggle = false;
-				}
 			}
 			
-			if(m_inputmode == INPUT_MODE_OPTION)
-			{
 				m_dlgobject.at(m_selected_ID)->m_Option->m_value = m_int;
-			}
 		}
 	}
 }

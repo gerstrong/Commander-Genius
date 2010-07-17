@@ -18,7 +18,7 @@ CBaseMenu(dlg_theme),
 m_restartVideo(restartVideo),
 mp_CameraSettings(NULL)
 {
-	m_select = -1;
+	m_current = -1;
 	m_changed = false;
 	
 	m_Resolution.width = g_pVideoDriver->getWidth();
@@ -93,7 +93,7 @@ mp_CameraSettings(NULL)
 	
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "");
 	buf = "Special FX ";
-	buf += (m_SpecialFX) ? 28 : 20;
+	buf += (m_SpecialFX) ? 28 : 20; //This adds in the switch seen in the options menu, which I think is fitting for any on/off option
 	buf += (m_SpecialFX) ? 29 : 21;
 	buf += (m_SpecialFX) ? 30 : 22;
 	buf += (m_SpecialFX) ? 31 : 23;
@@ -134,13 +134,13 @@ void CVideoSettings::processSpecific(){
 			}
 		}
 		
-		if( m_select != mp_Dialog->getSelection())
+		if( m_current != mp_Dialog->getSelection())
 		{
-			m_select = mp_Dialog->getSelection();
+			m_current = mp_Dialog->getSelection();
 		}
-		else if( m_select != NO_SELECTION)
+		else if( m_current != NO_SELECTION)
 		{
-			if(m_select == 0)
+			if(m_current == 0) //This is the main reason I implemented this to begin with, as I find it much easier to find the resolution I want if I can navigate both directions.
 			{
 				mp_Dialog->m_min = 1;
 				mp_Dialog->m_max = g_pVideoDriver->m_Resolutionlist.size();
@@ -148,7 +148,7 @@ void CVideoSettings::processSpecific(){
 				buf = "Resolution: " + itoa(m_Resolution.width) + "x" + itoa(m_Resolution.height) + "x" + itoa(m_Resolution.depth);
 				mp_Dialog->setObjectText(0,buf);
 			}
-			else if(m_select == 3)
+			else if(m_current == 3)
 			{
 				if(!m_Opengl) {
 				mp_Dialog->m_min = 1;
@@ -166,7 +166,7 @@ void CVideoSettings::processSpecific(){
 				setValues(3, mp_Dialog->m_dlgobject.at(3)->m_Option->m_value);
 				mp_Dialog->setObjectText(3,buf);
 			}
-			else if(m_select == 4)
+			else if(m_current == 4)
 			{
 				mp_Dialog->m_min = 1;
 				mp_Dialog->m_max = 4;
@@ -181,7 +181,7 @@ void CVideoSettings::processSpecific(){
 				}
 				mp_Dialog->setObjectText(4, buf);
 			}
-			else if(m_select == 5)
+			else if(m_current == 5)
 			{
 				mp_Dialog->m_min = 1;
 				mp_Dialog->m_max = 12;
@@ -191,7 +191,7 @@ void CVideoSettings::processSpecific(){
 			}
 		}
 		
-		if( m_selection != NO_SELECTION)
+		if( m_selection != NO_SELECTION)  //I left this in so that people won't be confused and believe something is wrong
 		{
 			if(m_selection == 0)
 			{

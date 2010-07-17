@@ -20,7 +20,6 @@
 // INPUT_MODE_SLIDER		== slider, up/down movement
 // INPUT_MODE_OPTION		== option, left/right selection, up/down movement
 // INPUT_MODE_COUNTER		== counter, up/down movment
-// INPUT_MODE_SWITCH		== switch, on/off selection, up/down movement
 enum inputmodes{
 	INPUT_MODE_NOTHING,
 	INPUT_MODE_TEXT,
@@ -29,8 +28,7 @@ enum inputmodes{
 	INPUT_MODE_LEFT_RIGHT,
 	INPUT_MODE_SLIDER,
 	INPUT_MODE_OPTION,
-	INPUT_MODE_COUNTER,
-	INPUT_MODE_SWITCH,
+	INPUT_MODE_COUNTER
 };
 
 class CDialog {
@@ -44,10 +42,8 @@ public:
 	void setObjectText( Uint8 ID, const std::string &text );
 	void setObjectType( Uint8 ID, Uint8 type );
 	void setFontID(Uint8 value);
-	void setSwitch(bool value) { m_toggle = value; }
 
 	bool getInputMode( const char inputmode );
-	bool getSwitch() { return m_toggle; }
 	int getSelection();
 
 	void processInput(int move = 0);
@@ -55,7 +51,6 @@ public:
 	void drawTwirl();
 
 	bool m_noise;
-	bool m_opt;
 	int m_int;
 	int m_min;
 	int m_max;
@@ -78,7 +73,6 @@ private:
 	Uint8 m_scroll;
 	int m_blinkctr;
 	bool m_blink;
-	bool m_toggle;
 	
 	CDlgFrame *mp_Frame;
 	Uint8 m_alpha;
