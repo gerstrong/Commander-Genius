@@ -60,13 +60,13 @@ void CCamera::process()
 	{	// This means, that there is no attached object. Let the camera scroll freely!
 
 		if(g_pInput->getHoldedKey(KA))
-			moveLeft(10);
+			moveLeft(100);
 		else if(g_pInput->getHoldedKey(KD))
-			moveRight(10);
+			moveRight(100);
 		if(g_pInput->getHoldedKey(KW))
-			moveUp(10);
+			moveUp(100);
 		else if(g_pInput->getHoldedKey(KS))
-			moveDown(10);
+			moveDown(100);
 
 		/*if(g_pInput->getHoldedCommand(IC_LEFT))
 			moveLeft(10);
@@ -77,6 +77,64 @@ void CCamera::process()
 		else if(g_pInput->getHoldedCommand(IC_DOWN))
 			moveDown(10);*/
 	}
+
+	int px, py, left, up, right, down, speed;
+
+	Uint16& scroll_x = mp_Map->m_scrollx;
+	Uint16& scroll_y = mp_Map->m_scrolly;
+
+	px = (getXPosition()>>STC)-scroll_x;
+	py = (getYPosition()>>STC)-scroll_y;
+
+	st_camera_bounds CameraBounds = g_pVideoDriver->getCameraBounds();
+	left = CameraBounds.left;
+	up = CameraBounds.up;
+	right = CameraBounds.right;
+	down = CameraBounds.down;
+	speed = CameraBounds.speed;
+
+	// left-right scrolling
+	if(px > right && scroll_x < mp_Map->m_maxscrollx)
+	{
+		do{
+			px = (getXPosition()>>STC)-scroll_x;
+			mp_Map->scrollRight();
+		}while(px > right+speed && scroll_x < mp_Map->m_maxscrollx);
+	}
+	else if(px < left && scroll_x > 32)
+	{
+		do{
+			px = (getXPosition()>>STC)-scroll_x;
+			mp_Map->scrollLeft();
+		}while(px < left-speed && scroll_x > 32);
+	}
+
+	// up-down scrolling
+	if (py > down && scroll_y < mp_Map->m_maxscrolly)
+	{
+		do{
+			py = (getYPosition()>>STC)-scroll_y;
+			mp_Map->scrollDown();
+		}while(py > down+speed && scroll_y < mp_Map->m_maxscrolly);
+	}
+	else if ( py < up && scroll_y > 32  )
+	{
+		do{
+			py = (getYPosition()>>STC)-scroll_y;
+			mp_Map->scrollUp();
+		}while(py < up-speed && scroll_y > 32);
+	}
+
+	// This will always snap correctly to the edge
+	while(scroll_x < 32)
+		mp_Map->scrollRight();
+	while(scroll_x > mp_Map->m_maxscrollx)
+		mp_Map->scrollLeft();
+	while(scroll_y < 32)
+		mp_Map->scrollDown();
+	while(scroll_y > mp_Map->m_maxscrolly)
+		mp_Map->scrollUp();
+
 }
 
 /**
