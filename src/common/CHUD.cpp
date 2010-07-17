@@ -6,6 +6,7 @@
  */
 
 #include "CHUD.h"
+#include "CBehaviorEngine.h"
 #include "../sdl/CVideoDriver.h"
 #include "../graphics/CGfxEngine.h"
 #include "../StringUtils.h"
@@ -124,6 +125,12 @@ void CHUD::render()
 	CSprite &KeenHeadSprite = g_pGfxEngine->getSprite(PMAPDOWNFRAME);
 	SDL_BlitSurface( KeenHeadSprite.getSDLSurface(), &headsrcrect, blitsurface, &headdstrect);
 
+	int sprite;
+	size_t Episode = g_pBehaviorEngine->getEpisode();
+	if(Episode == 1) sprite = OBJ_RAY_DEFSPRITE_EP1;
+	else if(Episode == 2) sprite = OBJ_RAY_DEFSPRITE_EP2;
+	else if(Episode == 3) sprite = OBJ_RAY_DEFSPRITE_EP3;
+	
 	// Draw the pistol
 	headsrcrect.x = 0;
 	headsrcrect.y = 0;
@@ -131,7 +138,7 @@ void CHUD::render()
 	headdstrect.h = headsrcrect.h = 8;
 	headdstrect.x = m_Rect.x+41;
 	headdstrect.y = m_Rect.y+17;
-	CSprite &KeenGunSprite = g_pGfxEngine->getSprite(108);
+	CSprite &KeenGunSprite = g_pGfxEngine->getSprite(sprite);
 	SDL_BlitSurface( KeenGunSprite.getSDLSurface(), &headsrcrect, blitsurface, &headdstrect);
 	SDL_BlitSurface( KeenGunSprite.getSDLSurface(), &headsrcrect, blitsurface, &headdstrect); //Display it twice otherwise it is translucent which can be hard to see.
 
