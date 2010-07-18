@@ -668,7 +668,10 @@ bool CObject::checkSolidU(int x1, int x2, int y1)
 			char blocked = TileProperty[mp_Map->at(c>>CSF, y1>>CSF)].bdown;
 
 			if(blocked)
-				return true;
+			{
+				if(g_pBehaviorEngine->getEpisode() <= 3 or checkslopedU(c, y1, blocked))
+					return true;
+			}
 		}
 	}
 
@@ -690,12 +693,18 @@ bool CObject::checkSolidD( int x1, int x2, int y2 )
 		{
 			blocked = TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bup;
 			if(blocked)
-				return true;
+			{
+				if(g_pBehaviorEngine->getEpisode() <= 3 or checkslopedD(c, y2, blocked))
+					return true;
+			}
 		}
 
 		blocked = TileProperty[mp_Map->at((x2-(1<<STC))>>CSF, y2>>CSF)].bup;
 		if(blocked)
-			return true;
+		{
+			if(g_pBehaviorEngine->getEpisode() <= 3 or checkslopedD(x2-(1<<STC), y2, blocked))
+				return true;
+		}
 	}
 
 	if( (Uint16)y2 > ((mp_Map->m_height)<<CSF) )
@@ -762,6 +771,64 @@ void CObject::performSlopedTileUp( int x, int y, int xspeed )
 		moveYDir(xspeed);
 }
 
+/* Spezial slope function for galaxy maps
+	0	Jump through		1	Flat bottom
+	2	Bottom-> Middle		3	Middle -> top
+	4	Bottom -> top		5	Middle -> bottom
+	6	Top -> middle		7	Top -> bottom
+ */
+bool CObject::checkslopedU( int c, int y1, char blocked)
+{
+	int yb1, yb2;
+
+	if( blocked == 2 )
+		yb1 = 512,	yb2 = 256;
+	else if( blocked == 3 )
+		yb1 = 256,	yb2 = 0;
+	else if( blocked == 4 )
+		yb1 = 512,	yb2 = 0;
+	else if( blocked == 5 )
+		yb1 = 256,	yb2 = 512;
+	else if( blocked == 6 )
+		yb1 = 0,	yb2 = 256;
+	else if( blocked == 7 )
+		yb1 = 0,	yb2 = 512;
+	else
+		yb1 = 512,	yb2 = 512;
+
+	int yh = (yb1+yb2)*(c%512)/512;
+	return ( y1%512 < yh );
+}
+
+/* Spezial slope function for galaxy maps
+0	Fall through		1	Flat
+2	Top -> Middle		3	Middle -> bottom
+4	Top -> bottom		5	Middle -> top
+6	Bottom -> middle	7	Bottom -> top
+8	Unused				9	Deadly, can't land on in God mode
+ */
+bool CObject::checkslopedD( int c, int y2, char blocked)
+{
+	int yb1, yb2;
+
+	if( blocked == 2 )
+		yb1 = 0,	yb2 = 256;
+	else if( blocked == 3 )
+		yb1 = 256,	yb2 = 512;
+	else if( blocked == 4 )
+		yb1 = 0,	yb2 = 512;
+	else if( blocked == 5 )
+		yb1 = 256,	yb2 = 0;
+	else if( blocked == 6 )
+		yb1 = 0,	yb2 = 256;
+	else if( blocked == 7 )
+		yb1 = 0,	yb2 = 512;
+	else
+		yb1 = 0,	yb2 = 0;
+
+	int yh = (yb1+yb2)*(c%512)/512;
+	return ( y2%512 > yh );
+}
 
 
 // Just kills the object

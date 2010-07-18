@@ -116,7 +116,10 @@ public:
 	bool checkSolidU( int x1, int x2, int y1);
 	bool checkSolidD( int x1, int x2, int y2);
 
+
 	// special functions for sloped tiles
+	bool checkslopedU( int c, int y1, char blocked);
+	bool checkslopedD( int c, int y2, char blocked);
 	bool performSlopedTileDown( int x, int y, int xspeed );
 	void performSlopedTileUp( int x, int y, int xspeed );
 
