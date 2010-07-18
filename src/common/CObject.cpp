@@ -50,15 +50,18 @@ m_blinktime(0)
 	touchPlayer = touchedBy = 0;
 	cansupportplayer = false;
 
-	if(m_type != OBJ_NONE)
+	if(m_type != OBJ_NONE )
 	{
 		setupObjectType(g_pBehaviorEngine->getEpisode());
 
-		CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
-		bboxX1 = rSprite.m_bboxX1;		bboxX2 = rSprite.m_bboxX2;
-		bboxY1 = rSprite.m_bboxY1;		bboxY2 = rSprite.m_bboxY2;
+		if ( sprite == BLANKSPRITE )
+		{
+			CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+			bboxX1 = rSprite.m_bboxX1;		bboxX2 = rSprite.m_bboxX2;
+			bboxY1 = rSprite.m_bboxY1;		bboxY2 = rSprite.m_bboxY2;
 
-		checkinitialCollisions();
+			checkinitialCollisions();
+		}
 	}
 
 }
@@ -309,6 +312,9 @@ void CObject::moveLeft(int amount, bool force)
 		blockedu = checkSolidU(x1, x2, y1-1);
 	else
 		blockedu = false;
+
+	if(!performSlopedTileDown(x, y2, -amount))
+		performSlopedTileUp(x, y1+(2<<STC), -amount);
 }
 
 void CObject::moveRight(int amount, bool force)
@@ -363,6 +369,9 @@ void CObject::moveRight(int amount, bool force)
 		blockedu = checkSolidU(x1, x2, y1-1);
 	else
 		blockedu = false;
+
+	if(!performSlopedTileDown(x, y2+(1<<STC), amount));
+		performSlopedTileUp(x, y1-(1<<STC), -amount);
 }
 
 void CObject::moveUp(int amount)
@@ -656,7 +665,9 @@ bool CObject::checkSolidU(int x1, int x2, int y1)
 	{
 		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
 		{
-			if(TileProperty[mp_Map->at(c>>CSF, y1>>CSF)].bdown)
+			char blocked = TileProperty[mp_Map->at(c>>CSF, y1>>CSF)].bdown;
+
+			if(blocked)
 				return true;
 		}
 	}
@@ -667,22 +678,24 @@ bool CObject::checkSolidU(int x1, int x2, int y1)
 	return false;
 }
 
-bool CObject::checkSolidD( int x1, int x2, int y2)
+bool CObject::checkSolidD( int x1, int x2, int y2 )
 {
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 
 	// Check for down from the object
 	if(solid)
 	{
+		char blocked;
 		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
 		{
-			if(TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bup)
+			blocked = TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bup;
+			if(blocked)
 				return true;
 		}
 
-		if(x2>(1<<STC))
-			if(TileProperty[mp_Map->at((x2-(1<<STC))>>CSF, y2>>CSF)].bup)
-				return true;
+		blocked = TileProperty[mp_Map->at((x2-(1<<STC))>>CSF, y2>>CSF)].bup;
+		if(blocked)
+			return true;
 	}
 
 	if( (Uint16)y2 > ((mp_Map->m_height)<<CSF) )
@@ -690,6 +703,66 @@ bool CObject::checkSolidD( int x1, int x2, int y2)
 
 	return false;
 }
+
+/**
+ * So far only used in Galaxy. This is the code for sloped tiles downside
+ *
+ * 0	Fall through		1	Flat
+ * 2	Top -> Middle		3	Middle -> bottom
+ * 4	Top -> bottom		5	Middle -> top
+ * 6	Bottom -> middle	7	Bottom -> top
+ * 8	Unused			9	Deadly, can't land on in God mode
+ */
+bool CObject::performSlopedTileDown( int x, int y, int xspeed )
+{
+	if(g_pBehaviorEngine->getEpisode() <= 3)
+		return true;
+
+	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+	char slope = TileProperty[mp_Map->at(x>>CSF, y>>CSF)].bup;
+
+	if(slope == 2 or slope == 3)
+		moveYDir(xspeed/2);
+	else if(slope == 4 or slope == 5)
+		moveYDir(xspeed);
+	else if(slope == 6)
+		moveYDir(-xspeed/2);
+	else if(slope == 7)
+		moveYDir(-xspeed);
+	else
+		return false;
+
+	return true;
+}
+
+/**
+ * So far only used in Galaxy. This is the code for sloped tiles upside
+ *
+ * 0	Jump through		1	Flat bottom
+ * 2	Bottom-> Middle		3	Middle -> top
+ * 4	Bottom -> top		5	Middle -> bottom
+ * 6	Top -> middle		7	Top -> bottom
+ *
+ */
+void CObject::performSlopedTileUp( int x, int y, int xspeed )
+{
+	if(g_pBehaviorEngine->getEpisode() <= 3)
+		return;
+
+	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+	char slope = TileProperty[mp_Map->at(x>>CSF, y>>CSF)].bdown;
+
+	if(slope == 2 or slope == 3)
+		moveYDir(-xspeed/2);
+	else if(slope == 4)
+		moveYDir(-xspeed);
+	else if(slope == 5 or slope == 6)
+		moveYDir(xspeed/2);
+	else if(slope == 7)
+		moveYDir(xspeed);
+}
+
+
 
 // Just kills the object
 void CObject::kill()
