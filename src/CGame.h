@@ -10,6 +10,7 @@
 
 #include "CGameControl.h"
 #include "common/options.h"
+#include "sdl/CSettings.h"
 
 // references to cinematics/CommonEnding
 //int endsequence(stCloneKeenPlus *pCKP);
@@ -32,6 +33,7 @@ public:
 	
 private:
 	CGameControl m_Engine;
+	CSettings Settings();
 };
 
 #endif /* CGAME_H_ */
