@@ -16,6 +16,10 @@
 #include "../../sdl/CVideoDriver.h"
 #include "../../CLogFile.h"
 #include "../CCamera.h"
+
+// AI Headers
+#include "ai/CPlayerWM.h"
+
 #include <fstream>
 
 CMapLoaderGalaxy::CMapLoaderGalaxy(CExeFile &ExeFile, std::vector<CObject*>& ObjectPtr):
@@ -265,17 +269,13 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 	}
 	file.close();*/
 
-	// Add the Camera into the game scene
-	CCamera *camera = new CCamera(&Map,0,0);
-	m_ObjectPtr.push_back(camera);
-
 	// he we go to the adding objects
 	data_ptr = start_data;
 	for(size_t y=0 ; y<height ; y++)
 	{
 		for(size_t x=0 ; x<width ; x++)
 		{
-			addFoe(*data_ptr, x, y);
+			addFoe(Map, *data_ptr, x, y);
 			data_ptr++;
 		}
 	}
@@ -284,21 +284,33 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 /**
  * @brief	Loads a foe given by the coordiantes
  */
-void CMapLoaderGalaxy::addFoe(word foe, size_t x, size_t y)
+void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 {
-	//x <<= CSF;
-	//y <<= CSF;
+	x <<= CSF;
+	y <<= CSF;
+
+	CObject *p_newfoe = NULL;
+	CCamera *camera = NULL;
 
 	switch(foe)
 	{
 	case 3:
 		// This is the player on map
-		// Spawn this player.
+		p_newfoe = new galaxy::CPlayerWM(&Map, x, y);
+
+		// Add the Camera into the game scene and attach it to this player
+		camera = new CCamera(&Map,x,y);
+		camera->attachToObject(*p_newfoe);
+		m_ObjectPtr.push_back(camera);
+
+
 		break;
 	default:
 		break;
 	}
 
+	if(p_newfoe)
+		m_ObjectPtr.push_back(p_newfoe);
 }
 
 CMapLoaderGalaxy::~CMapLoaderGalaxy()

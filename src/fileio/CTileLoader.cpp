@@ -152,12 +152,9 @@ void CTileLoader::readGalaxyTileinfo(size_t NumUnMaskedTiles, size_t NumMaskedTi
 		TileMaskedProperties[j].bdown 			= m_data[j+2*NumUnMaskedTiles+2*NumMaskedTiles];
 		TileMaskedProperties[j].bleft 			= m_data[j+2*NumUnMaskedTiles+3*NumMaskedTiles];
 
-		//TileMaskedProperties[j].animationtime 	= m_data[j+2*NumUnMaskedTiles+4*NumMaskedTiles];
-		TileMaskedProperties[j].behaviour 		= m_data[j+2*NumUnMaskedTiles+5*NumMaskedTiles];
-		//TileMaskedProperties[j].nextTile 		= static_cast<char>(m_data[j+2*NumUnMaskedTiles+6*NumMaskedTiles]);
-
-		TileMaskedProperties[j].animationtime 	= m_data[j+2*NumUnMaskedTiles+6*NumMaskedTiles];
 		TileMaskedProperties[j].nextTile 		= static_cast<char>(m_data[j+2*NumUnMaskedTiles+4*NumMaskedTiles]);
+		TileMaskedProperties[j].behaviour 		= m_data[j+2*NumUnMaskedTiles+5*NumMaskedTiles];
+		TileMaskedProperties[j].animationtime 	= m_data[j+2*NumUnMaskedTiles+6*NumMaskedTiles];
 	}
 }
 

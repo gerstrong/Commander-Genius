@@ -82,7 +82,7 @@ void CPlayGameGalaxy::processInput()
  */
 void CPlayGameGalaxy::processRendering()
 {
-	g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->BlitSurface, "Press the arrows to scroll", 10, 10);
+
 }
 
 

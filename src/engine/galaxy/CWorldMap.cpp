@@ -9,6 +9,7 @@
 #include "CMapLoaderGalaxy.h"
 #include "../../sdl/CInput.h"
 #include "../../sdl/CVideoDriver.h"
+#include "../../StringUtils.h"
 
 namespace galaxy {
 
@@ -55,6 +56,17 @@ void CWorldMap::process()
 		(*obj)->draw();
 	}
 
+	std::string text1, text2, text3;
+
+	text1 = "Obj1- X:" + itoa((*m_ObjectPtr.begin())->getXPosition());
+	text1 += " Y:" + itoa((*m_ObjectPtr.begin())->getYPosition());
+	text2 = "Obj2- X:" + itoa((*m_ObjectPtr.begin())->getXPosition()+1);
+	text2 += " Y:" + itoa((*m_ObjectPtr.begin())->getYPosition()+1);
+	text3 = "Edge (" + itoa(m_Map.m_width<<CSF)+","+itoa(m_Map.m_height<<CSF) + ")";
+
+	g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->BlitSurface, text1, 10, 10);
+	g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->BlitSurface, text2, 10, 18);
+	g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->BlitSurface, text3, 10, 26);
 }
 
 void CWorldMap::processInput()
@@ -65,22 +77,6 @@ void CWorldMap::processInput()
 	//if(g_pInput->getPressedCommand(IC_QUIT))
 		//m_endgame = true;
 
-	if(g_pInput->getHoldedCommand(IC_LEFT))
-	{
-		m_Map.scrollLeft();
-	}
-	else if(g_pInput->getHoldedCommand(IC_RIGHT))
-	{
-		m_Map.scrollRight();
-	}
-	if(g_pInput->getHoldedCommand(IC_UP))
-	{
-		m_Map.scrollUp();
-	}
-	else if(g_pInput->getHoldedCommand(IC_DOWN))
-	{
-		m_Map.scrollDown();
-	}
 }
 
 CWorldMap::~CWorldMap() {

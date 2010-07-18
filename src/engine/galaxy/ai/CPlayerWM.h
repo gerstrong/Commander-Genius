@@ -15,6 +15,8 @@ namespace galaxy {
 class CPlayerWM : public CObject {
 public:
 	CPlayerWM(CMap *pmap, Uint32 x, Uint32 y);
+	void process();
+	void processWalking();
 	virtual ~CPlayerWM();
 };
 

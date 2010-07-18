@@ -274,22 +274,6 @@ void CEGAGraphicsGalaxy::extractTile(SDL_Surface *sfc, std::vector<unsigned char
 		// Decode the image data
 		for(size_t p = 0; p < 4; p++)
 		{
-
-			//			/* Decode the image data */
-			//			for(p = 0; p < 4; p++)
-			//			{
-			//				/* Decode the lines of the bitmap data */
-			//				pointer = EgaGraph[EpisodeInfo[ep].Index8Tiles].data + (i * 4 * 8) + p * 8;
-			//				for(y = 0; y < 8; y++)
-			//					memcpy(planes[p]->lines[y], pointer + y, 1);
-			//			}
-			//
-			//			bmp = bmp_merge(planes[2], planes[1], planes[0], planes[3]);
-			//			bmp_blit(bmp, 0, 0, tiles, 0, 8 * i, 8, 8);
-			//			bmp_free(bmp);
-			//			//printf("\x8\x8\x8\x8");
-
-
 			// Decode the lines of the bitmap data
 			size_t tileoff = usetileoffset ? (tile*4*columns*(size/8)*size) : 0;
 			Uint8 *pointer = &(data[0]) + tileoff + p * (size/8) * size;
@@ -721,10 +705,14 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 		Sprite.setSize( Head.Width*8, Head.Height );
 
 		// Setup the collision information
-		Sprite.setBouncingBoxCoordinates( ((Head.Rx1 - Head.OrgX) << STC),
-				((Head.Ry1 - Head.OrgY) << STC),
-				((Head.Rx2 - Head.OrgX) << STC),
-				((Head.Ry2 - Head.OrgY) << STC));
+		Uint16 boxX1 = ((Head.Rx1 - Head.OrgX) << (STC-Head.Shifts));
+		Uint16 boxY1 = ((Head.Ry1 - Head.OrgY) << (STC-Head.Shifts));
+		Uint16 boxX2 = ((Head.Rx2 - Head.OrgX) << (STC-Head.Shifts));
+		Uint16 boxY2 = ((Head.Ry2 - Head.OrgY) << (STC-Head.Shifts));
+
+		Sprite.setBouncingBoxCoordinates( boxX1, boxY1, boxX2, boxY2 );
+
+
 		Sprite.createSurface( g_pVideoDriver->BlitSurface->flags,
 				g_pGfxEngine->Palette.m_Palette );
 

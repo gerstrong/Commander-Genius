@@ -23,7 +23,7 @@ CObject(pmap, x, y, OBJ_NONE),
 mp_AttachedObject(NULL)
 {
 	g_pLogFile->ftextOut("Starting the camera system...<br>");
-	sprite = 138;
+	sprite = 0;
 	solid = false;
 }
 
@@ -58,24 +58,29 @@ void CCamera::process()
 {
 	if(mp_AttachedObject == NULL)
 	{	// This means, that there is no attached object. Let the camera scroll freely!
+		size_t movespeed = 100;
 
-		if(g_pInput->getHoldedKey(KA))
-			moveLeft(100);
-		else if(g_pInput->getHoldedKey(KD))
-			moveRight(100);
-		if(g_pInput->getHoldedKey(KW))
-			moveUp(100);
-		else if(g_pInput->getHoldedKey(KS))
-			moveDown(100);
-
-		/*if(g_pInput->getHoldedCommand(IC_LEFT))
-			moveLeft(10);
+		if(g_pInput->getHoldedCommand(IC_LEFT))
+			moveLeft(movespeed);
 		else if(g_pInput->getHoldedCommand(IC_RIGHT))
-			moveRight(10);
+			moveRight(movespeed);
 		if(g_pInput->getHoldedCommand(IC_UP))
-			moveUp(10);
+			moveUp(movespeed);
 		else if(g_pInput->getHoldedCommand(IC_DOWN))
-			moveDown(10);*/
+			moveDown(movespeed);
+	}
+	else
+	{
+		if(!mp_AttachedObject->getXPosition() < x)
+			moveLeft(x - mp_AttachedObject->getXPosition());
+		else if(!mp_AttachedObject->getXPosition() > x)
+			moveRight(mp_AttachedObject->getXPosition() - x);
+
+		if(!mp_AttachedObject->getYPosition() < y)
+			moveUp(y - mp_AttachedObject->getYPosition());
+		else if(!mp_AttachedObject->getYPosition() > y)
+			moveDown(mp_AttachedObject->getYPosition() - y);
+
 	}
 
 	int px, py, left, up, right, down, speed;
