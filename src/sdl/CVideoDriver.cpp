@@ -76,11 +76,11 @@ m_blitsurface_alloc(false)
 	screenrect.w=0;
 
 	// Default camera settings
-	m_CameraBounds.left = 152;
-	m_CameraBounds.up = 92;
-	m_CameraBounds.right = 168;
-	m_CameraBounds.down = 108;
-	m_CameraBounds.speed = 20;
+	m_CameraBounds.left = 140;
+	m_CameraBounds.up = 50;
+	m_CameraBounds.right = 180;
+	m_CameraBounds.down = 130;
+	m_CameraBounds.speed = 5;
 
 	ScrollSurface=NULL;       // 512x512 scroll buffer
 	FGLayerSurface=NULL;       // Scroll buffer for Messages
