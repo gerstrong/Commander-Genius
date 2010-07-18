@@ -259,8 +259,8 @@ void CHighScores::writeHighScoreCommon(int score)
 bool CHighScores::loadHighScoreTable()
 {
 	ifstream ScoreTableFile;
-	std::string buf = "highscoreep"+itoa(m_Episode)+".dat";
-	OpenGameFileR(ScoreTableFile, buf, ios::binary);
+	std::string buf = "/highscoreep"+itoa(m_Episode)+".dat";
+	OpenGameFileR(ScoreTableFile, m_DataDirectory + buf, ios::binary);
 	
 	if(!ScoreTableFile) return false;
 	
@@ -299,8 +299,8 @@ bool CHighScores::loadHighScoreTable()
 bool CHighScores::saveHighScoreTable()
 {
 	ofstream ScoreTableFile;
-	std::string buf = "highscoreep"+itoa(m_Episode)+".dat";
-	OpenGameFileW(ScoreTableFile, buf, ios::binary);
+	std::string buf = "/highscoreep"+itoa(m_Episode)+".dat";
+	OpenGameFileW(ScoreTableFile, m_DataDirectory + buf, ios::binary);
 	
 	if(!ScoreTableFile) return false;
 	

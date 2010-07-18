@@ -328,10 +328,10 @@ void CPlayGameVorticon::process()
 			}
 			else // Bitmap must first be created
 			{
-				//CBitmap *pBitmap = g_pGfxEngine->getBitmap("GAMEOVER");
+				CBitmap *pBitmap = g_pGfxEngine->getBitmap("GAMEOVER");
 				g_pSound->playSound(SOUND_GAME_OVER, PLAY_NOW);
-				//mp_gameoverbmp = new CEGABitmap(&m_Map , g_pVideoDriver->getBlitSurface(), pBitmap);
-				//mp_gameoverbmp->setScrPos( 160-(pBitmap->getWidth()/2), 100-(pBitmap->getHeight()/2) );
+				mp_gameoverbmp = new CEGABitmap(&m_Map , g_pVideoDriver->getBlitSurface(), pBitmap);
+				mp_gameoverbmp->setScrPos( 160-(pBitmap->getWidth()/2), 100-(pBitmap->getHeight()/2) );
 			}
 		}
 		else // No game over
