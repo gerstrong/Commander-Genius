@@ -48,6 +48,10 @@
 		23A11BC911E7C3F900747BFA /* CVortiMom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11BA811E7C3F900747BFA /* CVortiMom.cpp */; };
 		23A11BCA11E7C3F900747BFA /* CVortiNinja.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11BAA11E7C3F900747BFA /* CVortiNinja.cpp */; };
 		23A11BCB11E7C3F900747BFA /* CYorp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11BAC11E7C3F900747BFA /* CYorp.cpp */; };
+		23C64A7D11F31D6F0053CA36 /* CWorldMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C64A7B11F31D6F0053CA36 /* CWorldMap.cpp */; };
+		23C64A8111F31D8A0053CA36 /* CPlayerWM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C64A7F11F31D8A0053CA36 /* CPlayerWM.cpp */; };
+		23C64A8411F31D9C0053CA36 /* CAnkhShield.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C64A8211F31D9C0053CA36 /* CAnkhShield.cpp */; };
+		23C64A8711F31DAA0053CA36 /* CPlayGameVorticonWM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C64A8511F31DAA0053CA36 /* CPlayGameVorticonWM.cpp */; };
 		63AB8C2F107C62D0001EE22F /* cglogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63AB8C2E107C62D0001EE22F /* cglogo.icns */; };
 		63CD120311CFF5FC00F60BC8 /* arguments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10A511CFF5FB00F60BC8 /* arguments.cpp */; };
 		63CD120411CFF5FC00F60BC8 /* CGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10A711CFF5FB00F60BC8 /* CGame.cpp */; };
@@ -259,6 +263,14 @@
 		23A11BAB11E7C3F900747BFA /* CVortiNinja.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVortiNinja.h; sourceTree = "<group>"; };
 		23A11BAC11E7C3F900747BFA /* CYorp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CYorp.cpp; sourceTree = "<group>"; };
 		23A11BAD11E7C3F900747BFA /* CYorp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CYorp.h; sourceTree = "<group>"; };
+		23C64A7B11F31D6F0053CA36 /* CWorldMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CWorldMap.cpp; sourceTree = "<group>"; };
+		23C64A7C11F31D6F0053CA36 /* CWorldMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CWorldMap.h; sourceTree = "<group>"; };
+		23C64A7F11F31D8A0053CA36 /* CPlayerWM.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlayerWM.cpp; sourceTree = "<group>"; };
+		23C64A8011F31D8A0053CA36 /* CPlayerWM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPlayerWM.h; sourceTree = "<group>"; };
+		23C64A8211F31D9C0053CA36 /* CAnkhShield.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAnkhShield.cpp; sourceTree = "<group>"; };
+		23C64A8311F31D9C0053CA36 /* CAnkhShield.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAnkhShield.h; sourceTree = "<group>"; };
+		23C64A8511F31DAA0053CA36 /* CPlayGameVorticonWM.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlayGameVorticonWM.cpp; sourceTree = "<group>"; };
+		23C64A8611F31DAA0053CA36 /* CPlayGameVorticonWM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPlayGameVorticonWM.h; sourceTree = "<group>"; };
 		23D3EA691013AC7B001643FA /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = Library/Frameworks/SDL.framework; sourceTree = SDKROOT; };
 		23D3EA831013AEB5001643FA /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		23D3EA911013AF1D001643FA /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -771,6 +783,15 @@
 			name = "External Frameworks and Libraries";
 			sourceTree = "<group>";
 		};
+		23C64A7E11F31D8A0053CA36 /* ai */ = {
+			isa = PBXGroup;
+			children = (
+				23C64A7F11F31D8A0053CA36 /* CPlayerWM.cpp */,
+				23C64A8011F31D8A0053CA36 /* CPlayerWM.h */,
+			);
+			path = ai;
+			sourceTree = "<group>";
+		};
 		5048396909E3304600765E4B /* Configuration Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -1120,6 +1141,9 @@
 		63CD111311CFF5FB00F60BC8 /* galaxy */ = {
 			isa = PBXGroup;
 			children = (
+				23C64A7E11F31D8A0053CA36 /* ai */,
+				23C64A7B11F31D6F0053CA36 /* CWorldMap.cpp */,
+				23C64A7C11F31D6F0053CA36 /* CWorldMap.h */,
 				63CD111411CFF5FB00F60BC8 /* CEGAGraphicsGalaxy.cpp */,
 				63CD111511CFF5FB00F60BC8 /* CEGAGraphicsGalaxy.h */,
 				63CD111611CFF5FB00F60BC8 /* CMapLoaderGalaxy.cpp */,
@@ -1199,6 +1223,8 @@
 		63CD113511CFF5FB00F60BC8 /* ai */ = {
 			isa = PBXGroup;
 			children = (
+				23C64A8211F31D9C0053CA36 /* CAnkhShield.cpp */,
+				23C64A8311F31D9C0053CA36 /* CAnkhShield.h */,
 				2332C60D11EA3B42000D8F71 /* CBridges.cpp */,
 				2332C60E11EA3B42000D8F71 /* CBridges.h */,
 				23A11B7411E7C3F900747BFA /* CAutoRay.cpp */,
@@ -1293,6 +1319,8 @@
 		63CD117911CFF5FB00F60BC8 /* playgame */ = {
 			isa = PBXGroup;
 			children = (
+				23C64A8511F31DAA0053CA36 /* CPlayGameVorticonWM.cpp */,
+				23C64A8611F31DAA0053CA36 /* CPlayGameVorticonWM.h */,
 				63CD117A11CFF5FB00F60BC8 /* CPlayGameDialogs.cpp */,
 				63CD117B11CFF5FB00F60BC8 /* CPlayGameGameState.cpp */,
 				63CD117C11CFF5FB00F60BC8 /* CPlayGameLevel.cpp */,
@@ -1817,6 +1845,10 @@
 				23A11BCB11E7C3F900747BFA /* CYorp.cpp in Sources */,
 				2332C60F11EA3B42000D8F71 /* CBridges.cpp in Sources */,
 				2332C63411EAFAD7000D8F71 /* CCamera.cpp in Sources */,
+				23C64A7D11F31D6F0053CA36 /* CWorldMap.cpp in Sources */,
+				23C64A8111F31D8A0053CA36 /* CPlayerWM.cpp in Sources */,
+				23C64A8411F31D9C0053CA36 /* CAnkhShield.cpp in Sources */,
+				23C64A8711F31DAA0053CA36 /* CPlayGameVorticonWM.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -21,6 +21,7 @@ public:
 	CSettings(stOption *p_option=NULL);
 	bool saveDrvCfg();
 	bool loadDrvCfg();
+	void loadDefaultGraphicsCfg();
 	bool loadGameCfg();
 	bool saveGameCfg();
 	void loadDefaultGameCfg();

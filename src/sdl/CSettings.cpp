@@ -106,7 +106,7 @@ bool CSettings::loadDrvCfg()
 		g_pVideoDriver->setOGLFilter(glfilter);
 
 		int scale;
-		Configuration.ReadInteger("Video", "scale", &scale, 2);
+		Configuration.ReadInteger("Video", "scale", &scale, 1);
 		g_pVideoDriver->setZoom(scale);
 
 		bool special_fx;
@@ -127,7 +127,7 @@ bool CSettings::loadDrvCfg()
 		g_pVideoDriver->saveCameraBounds(CameraBounds);
 		
 		int filter;
-		Configuration.ReadInteger("Video", "filter", &filter, 2);
+		Configuration.ReadInteger("Video", "filter", &filter, 1);
 		g_pVideoDriver->setFilter(filter);
 		
 		bool opengl;
@@ -148,6 +148,17 @@ bool CSettings::loadDrvCfg()
 		g_pSound->setSoundVolume(sound_vol*8);
 	}
 	return true;
+}
+
+void CSettings::loadDefaultGraphicsCfg() //Loads default graphics
+{
+	g_pVideoDriver->setMode(320,200,32);
+	g_pVideoDriver->isFullscreen(false);
+	g_pVideoDriver->setOGLFilter(false);
+	g_pVideoDriver->setZoom(1);
+	g_pTimer->setFrameRate(DEFAULT_LPS, 60, DEFAULT_SYNC);
+	g_pVideoDriver->setFilter(1);
+	g_pVideoDriver->enableOpenGL(false);
 }
 
 /**

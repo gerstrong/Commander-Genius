@@ -11,7 +11,6 @@
 
 #include "CGame.h"
 #include "CLogFile.h"
-#include "sdl/CSettings.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/CInput.h"
 #include "sdl/CTimer.h"
@@ -102,12 +101,22 @@ bool CGame::loadCKPDrivers()
  */
 void CGame::run()
 {
+	CSettings Settings(m_option);
 	do
 	{
         // Perform game logic
         if (g_pTimer->TimeToLogic()) {
             // Poll Inputs
             g_pInput->pollEvents();
+			if (g_pInput->getHoldedKey(KF) &&
+				g_pInput->getHoldedKey(KI) &&
+				g_pInput->getHoldedKey(KX))
+			{
+				Settings.loadDefaultGraphicsCfg();
+				Settings.saveDrvCfg();
+				g_pVideoDriver->stop();
+				g_pVideoDriver->start();
+			}
             // Process Game Control
             m_Engine.process();
         }
