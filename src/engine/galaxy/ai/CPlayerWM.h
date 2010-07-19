@@ -19,8 +19,10 @@ public:
 	void processWalking();
 
 	void finishlevel(Uint16 object);
+	void checkforSwimming();
 
 	void performWalkingAnimation(bool walking);
+	void performSwimmingAnimation();
 
 	virtual ~CPlayerWM();
 private:
