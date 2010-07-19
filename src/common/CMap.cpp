@@ -129,7 +129,7 @@ bool CMap::findObject(unsigned int obj, int *xout, int *yout)
 // if it is found returns nonzero and places the
 // coordinates of the first occurance of the tile
 // in (xout,yout)
-bool CMap::findTile(unsigned int tile, int *xout, int *yout)
+bool CMap::findTile(unsigned int tile, int *xout, int *yout, int plane)
 {
 	unsigned int x,y;
 
@@ -137,7 +137,7 @@ bool CMap::findTile(unsigned int tile, int *xout, int *yout)
 	{
 		for(x=2;x<m_width-2;x++)
 		{
-			if (m_Plane[1].getMapDataAt(x,y)==tile)
+			if (m_Plane[plane].getMapDataAt(x,y)==tile)
 			{
 				*xout = x;
 				*yout = y;
@@ -148,21 +148,21 @@ bool CMap::findTile(unsigned int tile, int *xout, int *yout)
 	return false;
 }
 
-bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t)
+bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t, Uint16 plane)
 {
 	if( x<m_width && y<m_height )
 	{
 		//mp_foreground_data[y*m_width + x] = t;
-		m_Plane[1].setMapDataAt(t, x, y);
+		m_Plane[plane].setMapDataAt(t, x, y);
 		return true;
 	}
 	else
 		return false;
 }
 
-bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t, bool update)
+bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t, bool update, Uint16 plane)
 {
-	if(setTile( x, y, t))
+	if(setTile( x, y, t, plane))
 	{
 		if(update) redrawAt(x,y);
 		return true;
@@ -315,7 +315,8 @@ void CMap::redrawAt(int mx, int my)
 		size_t bg = m_Plane[0].getMapDataAt(mx, my);
 		size_t fg = m_Plane[1].getMapDataAt(mx, my);
 		m_Tilemaps.at(0).drawTile(mp_scrollsurface, (mx<<4)&511, (my<<4)&511, bg);
-		m_Tilemaps.at(1).drawTile(mp_scrollsurface, (mx<<4)&511, (my<<4)&511, fg);
+		if(fg)
+			m_Tilemaps.at(1).drawTile(mp_scrollsurface, (mx<<4)&511, (my<<4)&511, fg);
 	}
 	else
 	{

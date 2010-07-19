@@ -54,14 +54,7 @@ m_blinktime(0)
 	{
 		setupObjectType(g_pBehaviorEngine->getEpisode());
 
-		if ( sprite == BLANKSPRITE )
-		{
-			CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
-			bboxX1 = rSprite.m_bboxX1;		bboxX2 = rSprite.m_bboxX2;
-			bboxY1 = rSprite.m_bboxY1;		bboxY2 = rSprite.m_bboxY2;
-
-			checkinitialCollisions();
-		}
+		setupinitialCollisions();
 	}
 
 }
@@ -129,24 +122,33 @@ void CObject::setupObjectType(int Episode)
 	case OBJ_GOTPOINTS: sprite = PT500_SPRITE; break;
 	default: sprite = BLANKSPRITE;
 	}
+
 }
 
 // This is needed when a new object is created, because the collision
 // per tile, really checks per tile and not pixel based
-void CObject::checkinitialCollisions()
+void CObject::setupinitialCollisions()
 {
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 	blockedr = blockedl = false;
 	blockedu = blockedd = false;
-	// Check initial collision. This will avoid that ray go through the first blocking element
-	for(size_t j=bboxY1; j<=bboxY2 ; j+=(1<<STC))
+
+	if ( sprite != BLANKSPRITE )
 	{
-		for(size_t i=bboxX1; i<=bboxX2 ; i+=(1<<STC))
+		CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+		bboxX1 = rSprite.m_bboxX1;		bboxX2 = rSprite.m_bboxX2;
+		bboxY1 = rSprite.m_bboxY1;		bboxY2 = rSprite.m_bboxY2;
+
+		// Check initial collision. This will avoid that ray go through the first blocking element
+		for(size_t j=bboxY1; j<=bboxY2 ; j+=(1<<STC))
 		{
-			blockedr |= TileProperty[mp_Map->at((x+i)>>CSF,(y+j)>>CSF)].bleft;
-			blockedl |= TileProperty[mp_Map->at((x+i)>>CSF,(y+j)>>CSF)].bright;
-			blockedu |= TileProperty[mp_Map->at((x+i)>>CSF,(y+j)>>CSF)].bdown;
-			blockedd |= TileProperty[mp_Map->at((x+i)>>CSF,(y+j)>>CSF)].bup;
+			for(size_t i=bboxX1; i<=bboxX2 ; i+=(1<<STC))
+			{
+				blockedr |= TileProperty[mp_Map->at((x+i)>>CSF,(y+j)>>CSF)].bleft;
+				blockedl |= TileProperty[mp_Map->at((x+i)>>CSF,(y+j)>>CSF)].bright;
+				blockedu |= TileProperty[mp_Map->at((x+i)>>CSF,(y+j)>>CSF)].bdown;
+				blockedd |= TileProperty[mp_Map->at((x+i)>>CSF,(y+j)>>CSF)].bup;
+			}
 		}
 	}
 }
@@ -371,7 +373,7 @@ void CObject::moveRight(int amount, bool force)
 		blockedu = false;
 
 	if(!performSlopedTileDown(x, y2+(1<<STC), amount));
-		performSlopedTileUp(x, y1-(1<<STC), -amount);
+		performSlopedTileUp(x, y1-(1<<STC), amount);
 }
 
 void CObject::moveUp(int amount)
@@ -732,8 +734,10 @@ bool CObject::performSlopedTileDown( int x, int y, int xspeed )
 
 	if(slope == 2 or slope == 3)
 		moveYDir(xspeed/2);
-	else if(slope == 4 or slope == 5)
+	else if(slope == 4)
 		moveYDir(xspeed);
+	else if(slope == 5)
+		moveYDir(-xspeed);
 	else if(slope == 6)
 		moveYDir(-xspeed/2);
 	else if(slope == 7)
@@ -858,7 +862,7 @@ void CObject::blink(Uint16 frametime)
 // or priority tile!
 void CObject::draw()
 {
-	if(sprite >= BLANKSPRITE)
+	if( sprite == BLANKSPRITE )
 		return;
 
 	CSprite &Sprite = g_pGfxEngine->getSprite(sprite);

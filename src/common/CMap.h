@@ -20,6 +20,11 @@
 // animation rate of animated tiles
 #define ANIM_TILE_TIME      256
 
+#define CSF    9
+#define TILE_S			4
+#define STC (CSF-TILE_S)
+
+
 class CMap {
 public:
 	CMap();
@@ -44,10 +49,10 @@ public:
 	Uint16 at(Uint16 x, Uint16 y, Uint16 t=1);
 	Uint16 getObjectat(Uint16 x, Uint16 y);
 	bool findObject(unsigned int obj, int *xout, int *yout);
-	bool findTile(unsigned int tile, int *xout, int *yout);
+	bool findTile(unsigned int tile, int *xout, int *yout, int plane=1);
 
-	bool setTile(Uint16 x, Uint16 y, Uint16 t);
-	bool setTile(Uint16 x, Uint16 y, Uint16 t, bool update);
+	bool setTile(Uint16 x, Uint16 y, Uint16 t, Uint16 plane=1);
+	bool setTile(Uint16 x, Uint16 y, Uint16 t, bool update, Uint16 plane=1);
 	bool changeTile(Uint16 x, Uint16 y, Uint16 t);
 
 	// Animation methods
@@ -56,6 +61,10 @@ public:
 
 	unsigned int getlevelat(unsigned int x, unsigned int y)	{
 		return m_objectlayer[x>>4][y>>4];	}
+
+	Uint16 getPlaneDataAt(char plane, unsigned int x, unsigned int y){
+		return m_Plane[plane].getMapDataAt(x>>CSF, y>>CSF);
+	}
 
 	word *getData(Uint8 PlaneNum);
 	word *getForegroundData();

@@ -29,7 +29,6 @@ bool CPlayGameGalaxy::loadGameState()
 // Setup for the ingame
 bool CPlayGameGalaxy::init()
 {
-
 	loadLevel();
 
 	return false;

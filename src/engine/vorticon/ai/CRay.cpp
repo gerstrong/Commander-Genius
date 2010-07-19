@@ -33,7 +33,7 @@ m_speed(RAY_SPEED)
 
 	state = RAY_STATE_FLY;
 	inhibitfall = true;
-	checkinitialCollisions();
+	setupinitialCollisions();
 }
 
 void CRay::setOwner(object_t type, unsigned int index)

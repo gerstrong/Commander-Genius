@@ -66,6 +66,8 @@ void CPlayer::setDatatoZero()
 	// When worldmap is set up, use that frame
 	sprite = PMAPDOWNFRAME;
 
+	setupinitialCollisions();
+
 	m_type = OBJ_PLAYER;
 	moveTo(0,0);
 	ankhtime = 0;
@@ -84,6 +86,7 @@ void CPlayer::setDatatoZero()
     honorPriority = true;
     solid = true;
     bumped = false;
+
 	
     pjumptime = 0;
     pjumping = PNOJUMP;

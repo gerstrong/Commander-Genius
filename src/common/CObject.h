@@ -24,7 +24,11 @@
 enum direction_t{
 	NONE,
 	RIGHT,
+	RIGHTUP,
+	RIGHTDOWN,
 	LEFT,
+	LEFTUP,
+	LEFTDOWN,
 	UP,
 	DOWN
 };
@@ -38,11 +42,6 @@ enum direction_t{
 
 // Enumerations are here
 #include "objenums.h"
-
-#define CSF    9
-#define TILE_S			4
-#define STC (CSF-TILE_S)
-
 
 class CObject {
 public:
@@ -87,7 +86,7 @@ public:
 	bool needinit;
 
 	void setupObjectType(int Episode);
-	void checkinitialCollisions();
+	void setupinitialCollisions();
 	void setScrPos( int px, int py );
 	bool calcVisibility();
 	bool checkforScenario();

@@ -17,7 +17,19 @@ public:
 	CPlayerWM(CMap *pmap, Uint32 x, Uint32 y);
 	void process();
 	void processWalking();
+
+	void finishlevel(Uint16 object);
+
+	void performWalkingAnimation(bool walking);
+
 	virtual ~CPlayerWM();
+private:
+	Uint16 m_basesprite;
+	direction_t m_looking_dir;
+
+	Uint8 m_animation;
+	Uint8 m_animation_time;
+	Uint8 m_animation_ticker;
 };
 
 }

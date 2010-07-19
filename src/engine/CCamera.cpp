@@ -17,13 +17,14 @@
 #include "../CLogFile.h"
 #include "../sdl/CVideoDriver.h"
 #include "../sdl/CInput.h"
+#include "spritedefines.h"
 
 CCamera::CCamera(CMap *pmap, Uint32 x, Uint32 y):
 CObject(pmap, x, y, OBJ_NONE),
 mp_AttachedObject(NULL)
 {
 	g_pLogFile->ftextOut("Starting the camera system...<br>");
-	sprite = 0;
+	sprite = BLANKSPRITE;
 	solid = false;
 }
 
@@ -71,14 +72,14 @@ void CCamera::process()
 	}
 	else
 	{
-		if(!mp_AttachedObject->getXPosition() < x)
+		if(mp_AttachedObject->getXPosition() > x)
 			moveLeft(x - mp_AttachedObject->getXPosition());
-		else if(!mp_AttachedObject->getXPosition() > x)
+		else if(mp_AttachedObject->getXPosition() < x)
 			moveRight(mp_AttachedObject->getXPosition() - x);
 
-		if(!mp_AttachedObject->getYPosition() < y)
+		if(mp_AttachedObject->getYPosition() > y)
 			moveUp(y - mp_AttachedObject->getYPosition());
-		else if(!mp_AttachedObject->getYPosition() > y)
+		else if(mp_AttachedObject->getYPosition() < y)
 			moveDown(mp_AttachedObject->getYPosition() - y);
 
 	}
