@@ -45,6 +45,7 @@ public:
 	void drawAll();
 	void drawHstripe( unsigned int y, unsigned int mpy );
 	void drawVstripe( unsigned int x, unsigned int mpx );
+	void drawMaskonSprite( SDL_Surface *dst, int mx, int my, Uint8 spritewidth, Uint8 spriteheight, bool objdead );
 
 	Uint16 at(Uint16 x, Uint16 y, Uint16 t=1);
 	Uint16 getObjectat(Uint16 x, Uint16 y);
@@ -62,7 +63,7 @@ public:
 	unsigned int getlevelat(unsigned int x, unsigned int y)	{
 		return m_objectlayer[x>>4][y>>4];	}
 
-	Uint16 getPlaneDataAt(char plane, unsigned int x, unsigned int y){
+	Uint16 getPlaneDataAt(int plane, unsigned int x, unsigned int y){
 		return m_Plane[plane].getMapDataAt(x>>CSF, y>>CSF);
 	}
 

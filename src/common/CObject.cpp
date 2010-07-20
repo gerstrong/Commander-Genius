@@ -196,7 +196,7 @@ bool CObject::checkforScenario()
 {
 	if ( !exists || m_type==OBJ_PLAYER ) return false;
 
-	if( m_type==OBJ_EXPLOSION || m_type==OBJ_EARTHCHUNK ) return true;
+	if( m_type==OBJ_EXPLOSION || m_type==OBJ_EARTHCHUNK || m_type == OBJ_NONE ) return true;
 
 	// Check if enemy is near enough. If he isn't, don't make him perform. Exception is on the map
 	if(!mp_Map->m_worldmap)
@@ -205,7 +205,7 @@ bool CObject::checkforScenario()
    	onscreen = true;
 
    	if (hasbeenonscreen ||
-		m_type==OBJ_RAY || m_type==OBJ_ROPE ||
+		m_type==OBJ_RAY || m_type==OBJ_ROPE || m_type==OBJ_ICECANNON ||
 		m_type==OBJ_ICECHUNK || m_type==OBJ_PLATFORM ||
 		m_type==OBJ_PLATVERT || m_type==OBJ_YORP ||
 		m_type==OBJ_FOOB || m_type==OBJ_SCRUB)
@@ -904,40 +904,7 @@ void CObject::draw()
 // or priority tile!
 void CObject::drawMask(SDL_Surface *dst, CSprite &Sprite, int mx, int my)
 {
-	int tl,xsize,ysize;
-	int xa,ya;
-
-    // get the xsize/ysize of this sprite--round up to the nearest 16
-    xsize = ((Sprite.getWidth()>>4)<<4);
-    if (xsize != Sprite.getWidth()) xsize+=16;
-
-    ysize = ((Sprite.getHeight()>>4)<<4);
-    if (ysize != Sprite.getHeight()) ysize+=16;
-
-    tl = mp_Map->at(mx,my);
-    mx<<=4;
-    my<<=4;
-
-    // now redraw any priority/masked tiles that we covered up
-    // with the sprite
-    //SDL_Rect sfc_rect;
-    //sfc_rect.w = sfc_rect.h = 16;
-
-    for(ya=0;ya<=ysize;ya+=16)
-    {
-		for(xa=0;xa<=xsize;xa+=16)
-		{
-			tl = mp_Map->at((mx+xa)>>4,(my+ya)>>4);
-			CTileProperties &TileProperties = g_pBehaviorEngine->getTileProperties().at(tl);
-			bool completeblock = TileProperties.bleft && TileProperties.bright &&
-						TileProperties.bup && TileProperties.bdown && dead;
-
-			if(TileProperties.behaviour == -2) // case when when has a masked graphic
-				mp_Map->drawAnimatedTile(dst, mx+xa-mp_Map->m_scrollx, my+ya-mp_Map->m_scrolly, tl+1);
-			else if (TileProperties.behaviour == -1 || completeblock) // case when tile is just foreground
-				mp_Map->drawAnimatedTile(dst, mx+xa-mp_Map->m_scrollx, my+ya-mp_Map->m_scrolly, tl);
-		}
-    }
+	mp_Map->drawMaskonSprite( dst, mx, my, Sprite.getWidth(), Sprite.getHeight(), dead );
 }
 
 

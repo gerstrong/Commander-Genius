@@ -522,7 +522,7 @@ void CPlayGameVorticon::createFinale()
 {
 	if(m_Episode == 1)
 	{
-		mp_Finale = new CEndingEp1(m_Map, m_Player);
+		mp_Finale = new CEndingEp1(m_Map, m_Player, m_hideobjects);
 	}
 	else if(m_Episode == 2)
 	{

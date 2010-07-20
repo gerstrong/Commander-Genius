@@ -138,6 +138,7 @@ void CPlayer::kill(bool force)
 	{
 		if (godmode) return;
 		if (ankhtime) return;
+		if (pfrozentime) return;
 	}
 	if (!pdie)
 	{

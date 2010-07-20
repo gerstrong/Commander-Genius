@@ -14,9 +14,10 @@
 #include "../../../common/CMapLoader.h"
 #include "../../../common/Playerdefines.h"
 
-CEndingEp1::CEndingEp1(CMap &map, std::vector<CPlayer> &Player) :
+CEndingEp1::CEndingEp1(CMap &map, std::vector<CPlayer> &Player, bool &hideobjects) :
 	CFinale(map),
-	m_Player(Player)
+	m_Player(Player),
+	m_hideobjects(hideobjects)
 {
 	m_Episode = 1;
 	m_step = 0;
@@ -144,6 +145,7 @@ void CEndingEp1::BackAtHome()
 	if(m_mustsetup)
 	{
 		//Initialization
+		m_hideobjects = true;
 		m_Map.gotoPos(0,0);
 		m_Map.resetScrolls(); // The Scrollsurface must be (0,0) so the bitmap is correctly drawn
 		m_Map.m_animation_enabled = false; // Needed, because the other map is still loaded
@@ -186,6 +188,7 @@ void CEndingEp1::ShipFlyEarthToMShip()
 	if(m_mustsetup)
 	{	//Initialization
 		int x, y;
+		m_hideobjects = false;
 		std::string path = m_Map.m_gamepath;
 		CMapLoader MapLoader(&m_Map, &m_Player);
 		MapLoader.load(1, 81, path);

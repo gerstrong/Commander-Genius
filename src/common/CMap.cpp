@@ -432,6 +432,63 @@ void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 	}
 }
 
+/**
+ * This function is used for drawing in case a sprite
+ */
+void CMap::drawMaskonSprite( SDL_Surface *dst, int mx, int my, Uint8 spritewidth, Uint8 spriteheight, bool objdead )
+{
+	Uint16 tl,xsize,ysize;
+
+    // get the xsize/ysize of this sprite--round up to the nearest 16
+    xsize = ((spritewidth>>4)<<4);
+    if (xsize != spritewidth) xsize+=16;
+
+    ysize = ((spriteheight>>4)<<4);
+    if (ysize != spriteheight) ysize+=16;
+
+
+    tl = at(mx,my);
+    mx<<=4;
+    my<<=4;
+
+    // now redraw any priority/masked tiles that we covered up
+    // with the sprite
+
+    if(m_Background)
+    {
+    	for(Uint16 ya=0;ya<=ysize;ya+=16)
+    	{
+    		for(Uint16 xa=0;xa<=xsize;xa+=16)
+    		{
+    			tl = at((mx+xa)>>4,(my+ya)>>4);
+    			CTileProperties &TileProperties = g_pBehaviorEngine->getTileProperties(1).at(tl);
+
+    			if(TileProperties.behaviour == -128)
+    				drawAnimatedTile(dst, mx+xa-m_scrollx, my+ya-m_scrolly, tl);
+    		}
+    	}
+    }
+    else
+    {
+    	for(Uint16 ya=0;ya<=ysize;ya+=16)
+    	{
+    		for(Uint16 xa=0;xa<=xsize;xa+=16)
+    		{
+    			tl = at((mx+xa)>>4,(my+ya)>>4);
+    			CTileProperties &TileProperties = g_pBehaviorEngine->getTileProperties(1).at(tl);
+
+    			bool completeblock = TileProperties.bleft && TileProperties.bright &&
+    					TileProperties.bup && TileProperties.bdown && objdead;
+
+    			if(TileProperties.behaviour == -2) // case when when has a masked graphic
+    				drawAnimatedTile(dst, mx+xa-m_scrollx, my+ya-m_scrolly, tl+1);
+    			else if (TileProperties.behaviour == -1 || completeblock) // case when tile is just foreground
+    				drawAnimatedTile(dst, mx+xa-m_scrollx, my+ya-m_scrolly, tl);
+    		}
+    	}
+    }
+}
+
 /////////////////////////
 // Animation functions //
 /////////////////////////

@@ -17,7 +17,7 @@
 
 class CEndingEp1 : public CFinale {
 public:
-	CEndingEp1(CMap &map, std::vector<CPlayer> &Player);
+	CEndingEp1(CMap &map, std::vector<CPlayer> &Player, bool &hideobjects);
 	void process();
 
 	void ReturnsToShip();
@@ -36,6 +36,8 @@ private:
 	CShipFlySys *mp_ShipFlySys;
 	CFinaleStaticScene *mp_FinaleStaticScene;
 	CMessageBox *mp_Textbox;
+
+	bool &m_hideobjects;
 };
 
 #endif /* CENDINGEP1_H_ */
