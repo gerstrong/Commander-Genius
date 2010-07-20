@@ -678,7 +678,7 @@ CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
 		if (pfallspeed>PhysicsSettings.player.max_fallspeed)
 			pfallspeed = PhysicsSettings.player.max_fallspeed;
 		else if (pfallspeed<PhysicsSettings.player.max_fallspeed)
-			pfallspeed += PhysicsSettings.player.fallspeed_decrease;
+			pfallspeed += PhysicsSettings.player.fallspeed_increase;
 
 		// add current fall speed to player Y or make him fly in godmode with pogo
 		if( !godmode || !ppogostick || !g_pInput->getHoldedCommand(IC_JUMP) )

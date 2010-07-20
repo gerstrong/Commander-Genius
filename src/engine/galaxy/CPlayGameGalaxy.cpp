@@ -30,6 +30,7 @@ bool CPlayGameGalaxy::loadGameState()
 bool CPlayGameGalaxy::init()
 {
 	loadLevel();
+	m_WorldMap.setActive(true);
 
 	return false;
 }

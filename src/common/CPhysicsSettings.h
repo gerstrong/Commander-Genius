@@ -28,7 +28,7 @@ public:
 		int impossiblepogospeed;
 
 		int max_fallspeed;
-		int fallspeed_decrease;
+		int fallspeed_increase;
 
 		// pogo settings
 		int pogoforce_x;

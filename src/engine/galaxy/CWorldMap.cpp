@@ -14,6 +14,7 @@
 namespace galaxy {
 
 CWorldMap::CWorldMap(CExeFile &ExeFile):
+m_active(false),
 m_ExeFile(ExeFile)
 {}
 
