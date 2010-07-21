@@ -369,7 +369,7 @@ bool CEGAGraphicsGalaxy::begin()
 	CHuffman Huffman;
 	unsigned long exeheaderlen = 0;
 	unsigned long exeimglen = 0;
-	int ep = m_episode - 4;
+	int ep = m_episode - 4; // index for EpisodeInfo; 0 - keen4, 1 - keen5, etc
 
 	unsigned char *p_data = m_Exefile.getHeaderData();
 
@@ -410,7 +410,7 @@ bool CEGAGraphicsGalaxy::begin()
 
 	// Now read the EGAGRAPH
 	std::string filename;
-	if (ep < 3) filename =  m_path + "EGAGRAPH.CK" + itoa(m_episode);
+	if (m_episode <= 6) filename =  m_path + "EGAGRAPH.CK" + itoa(m_episode);
 	else filename =  m_path + "KDREAMS.EGA";
 
 	std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);
