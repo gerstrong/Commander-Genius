@@ -30,9 +30,6 @@ public:
 	CSectorEffector(CMap *p_map, Uint32 x, Uint32 y,
 			std::vector<CPlayer>& Player, std::vector<CObject*>& Object, unsigned int se_type);
 	void process();
-	void se_extend_plat();
-	void se_retract_plat();
-	void spark_ai(int &sparks_left);
 	void se_mortimer_arm();
 	void se_mortimer_spark();
 	void se_mortimer_heart();
@@ -43,6 +40,7 @@ public:
 	void set_mortimer_surprised(bool yes);
 
 	void getTouchedBy(CObject &theObject);
+	void getShotByRay(){};
 
 //private:
 	unsigned int setype;

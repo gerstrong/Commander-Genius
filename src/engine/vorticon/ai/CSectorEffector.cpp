@@ -8,13 +8,62 @@
 #include "../../../CLogFile.h"
 #include "../../../graphics/effects/CVibrate.h"
 
-// "Sector Effector" object (The name comes from D3D)...it's basically
-// an object which can do a number of different things depending on it's
-// .type attribute, usually it affects the map or the enviorment
-// around it. Used where it wasn't worth it to create a whole new object
-// (or where I was too lazy to do it).
+// TODO: It should be renamed to Mangling Machine
 
-// this also contains the AI for the Spark object
+// Arm parts
+#define ARM_GO          0
+#define ARM_WAIT        1
+
+#define ARM_MOVE_SPEED   10
+#define ARM_WAIT_TIME    8
+
+// Spark parts
+#define MORTIMER_SPARK_BASEFRAME        114
+
+#define MORTIMER_LEFT_ARM_X             5
+#define MORTIMER_RIGHT_ARM_X            17
+#define MORTIMER_ARMS_YSTART            7
+#define MORTIMER_ARMS_YEND              18
+
+#define ARMS_DESTROY_RATE        3
+
+#define MSPARK_IDLE              0
+#define MSPARK_DESTROYARMS       1
+
+#define SPARK_ANIMRATE          5
+
+// heart
+#define MORTIMER_HEART_BASEFRAME        146
+#define HEART_ANIMRATE                  4
+
+#define HEART_IDLE              0
+#define HEART_ZAPSRUNUP         1
+#define HEART_ZAPSRUNDOWN       2
+
+#define MORTIMER_MACHINE_YSTART         3
+#define MORTIMER_MACHINE_YEND           18
+#define MORTIMER_MACHINE_YENDNOLEGS     14
+
+#define MORTIMER_MACHINE_XSTART         8
+#define MORTIMER_MACHINE_XEND           17
+
+#define MACHINE_DESTROY_RATE            3
+#define MORTIMER_ZAPWAVESPACING        50
+#define MORTIMER_NUMZAPWAVES             5
+
+#define ZAPSUP_NORMAL           0
+#define ZAPSUP_ABOUTTOFADEOUT   1
+
+// Legs
+#define LEG_GO          0
+#define LEG_WAIT        1
+
+#define LEFTLEG_MOVE_SPEED   15
+#define LEFTLEG_WAIT_TIME    36
+
+#define RIGHTLEG_MOVE_SPEED   20
+#define RIGHTLEG_WAIT_TIME    40
+
 
 int mortimer_surprisedcount = 0;
 
@@ -22,9 +71,52 @@ CSectorEffector::CSectorEffector(CMap *p_map, Uint32 x, Uint32 y,
 		std::vector<CPlayer>& Player, std::vector<CObject*>& Object, unsigned int se_type) :
 CObject(p_map, x, y, OBJ_SECTOREFFECTOR),
 setype(se_type),
+timer(0),
 m_Player(Player),
 m_Object(Object)
-{}
+{
+	inhibitfall = true;
+
+	switch(setype)
+	{
+	case SE_MORTIMER_ARM:
+		dir = DOWN;
+		state = ARM_GO;
+		break;
+	case SE_MORTIMER_LEG_LEFT:
+		dir = UP;
+		state = LEG_GO;
+		break;
+	case SE_MORTIMER_LEG_RIGHT:
+		dir = UP;
+		state = LEG_GO;
+		inhibitfall = 1;
+		needinit = false;
+		break;
+	case SE_MORTIMER_SPARK:
+		state = MSPARK_IDLE;
+		frame = 0;
+		canbezapped = true;
+		break;
+	case SE_MORTIMER_HEART:
+		frame = 0;
+		state = HEART_IDLE;
+		inhibitfall = 1;
+		canbezapped = 1;
+		mortimer_surprisedcount = 0;
+		break;
+	case SE_MORTIMER_ZAPSUP:  break;
+	case SE_MORTIMER_RANDOMZAPS:
+		sprite = BLANKSPRITE;
+		counter = 0;
+		break;
+
+	default:
+		g_pLogFile->ftextOut("Invalid sector effector type %d", setype);
+		break;
+	}
+
+}
 
 
 void CSectorEffector::process()
@@ -48,38 +140,34 @@ void CSectorEffector::process()
 
 void CSectorEffector::getTouchedBy(CObject &theObject)
 {
-	bool it_is_mortimer_machine = false;
-
-	it_is_mortimer_machine = (setype == SE_MORTIMER_LEG_LEFT)
-						&& (setype == SE_MORTIMER_LEG_RIGHT)
-						&& (setype == SE_MORTIMER_ARM)
-						&& (setype == SE_MORTIMER_SPARK);
-
-	if(it_is_mortimer_machine)
+	if(hitdetect(theObject))
 	{
-		if (theObject.m_type == OBJ_PLAYER)
+		bool it_is_mortimer_machine = false;
+
+		it_is_mortimer_machine = (setype == SE_MORTIMER_LEG_LEFT)
+								|| (setype == SE_MORTIMER_LEG_RIGHT)
+								|| (setype == SE_MORTIMER_ARM)
+								|| (setype == SE_MORTIMER_SPARK);
+
+		if(it_is_mortimer_machine)
 		{
-			theObject.kill();
+			if (theObject.m_type == OBJ_PLAYER)
+			{
+				theObject.kill();
+			}
+		}
+
+		if( ( setype == SE_MORTIMER_SPARK || setype == SE_MORTIMER_HEART ) &&
+				HealthPoints>0 && theObject.m_type == OBJ_RAY )
+		{
+			HealthPoints--;
 		}
 	}
 }
 
-#define ARM_GO          0
-#define ARM_WAIT        1
-
-#define ARM_MOVE_SPEED   10
-#define ARM_WAIT_TIME    8
 void CSectorEffector::se_mortimer_arm()
 {
 	int mx,my;
-	if (needinit)
-	{
-		dir = DOWN;
-		state = ARM_GO;
-		timer = 0;
-		inhibitfall = 1;
-		needinit = 0;
-	}
 
 	switch(state)
 	{
@@ -172,38 +260,15 @@ void CSectorEffector::se_mortimer_arm()
 	}
 }
 
-#define MORTIMER_SPARK_BASEFRAME        114
-
-#define MORTIMER_LEFT_ARM_X             5
-#define MORTIMER_RIGHT_ARM_X            17
-#define MORTIMER_ARMS_YSTART            7
-#define MORTIMER_ARMS_YEND              18
-
-#define ARMS_DESTROY_RATE        3
-
-#define MSPARK_IDLE              0
-#define MSPARK_DESTROYARMS       1
-
-#define SPARK_ANIMRATE          5
 
 void CSectorEffector::se_mortimer_spark()
 {
 	int x,mx;
-	if (needinit)
-	{
-		state = MSPARK_IDLE;
-		timer = 0;
-		frame = 0;
-		inhibitfall = 1;
-		canbezapped = 1;
-		needinit = 0;
-	}
 
 	switch(state)
 	{
 	case MSPARK_IDLE:
 		sprite = MORTIMER_SPARK_BASEFRAME + frame;
-
 
 		if (timer > SPARK_ANIMRATE)
 		{
@@ -217,6 +282,7 @@ void CSectorEffector::se_mortimer_spark()
 		{
 			set_mortimer_surprised(true);
 			g_pGfxEngine->pushEffectPtr(new CVibrate(200));
+			mp_Map->redrawAt(this->x>>CSF, this->y>>CSF);
 
 			// if there are any sparks left, destroy the spark,
 			// else destroy mortimer's arms
@@ -305,40 +371,10 @@ void CSectorEffector::se_mortimer_spark()
 	}
 }
 
-#define MORTIMER_HEART_BASEFRAME        146
-#define HEART_ANIMRATE                  4
 
-#define HEART_IDLE              0
-#define HEART_ZAPSRUNUP         1
-#define HEART_ZAPSRUNDOWN       2
-
-#define MORTIMER_MACHINE_YSTART         3
-#define MORTIMER_MACHINE_YEND           18
-#define MORTIMER_MACHINE_YENDNOLEGS     14
-
-#define MORTIMER_MACHINE_XSTART         8
-#define MORTIMER_MACHINE_XEND           17
-
-#define MACHINE_DESTROY_RATE            3
-#define MORTIMER_ZAPWAVESPACING        50
-#define MORTIMER_NUMZAPWAVES             5
-
-#define ZAPSUP_NORMAL           0
-#define ZAPSUP_ABOUTTOFADEOUT   1
 void CSectorEffector::se_mortimer_heart()
 {
 	int x;
-
-	if (needinit)
-	{
-		timer = 0;
-		frame = 0;
-		state = HEART_IDLE;
-		inhibitfall = 1;
-		canbezapped = 1;
-		needinit = 0;
-		mortimer_surprisedcount = 0;
-	}
 
 	switch(state)
 	{
@@ -369,6 +405,11 @@ void CSectorEffector::se_mortimer_heart()
 					CSectorEffector& SE=dynamic_cast<CSectorEffector&>(**obj);
 					if(SE.setype == SE_MORTIMER_HEART ) continue;
 					else SE.exists = false;
+				}
+				else
+				{
+					(*obj)->kill();
+					(*obj)->exists = false;
 				}
 			}
 
@@ -493,25 +534,9 @@ void CSectorEffector::se_mortimer_zapsup()
 	else timer--;
 }
 
-#define LEG_GO          0
-#define LEG_WAIT        1
-
-#define LEFTLEG_MOVE_SPEED   15
-#define LEFTLEG_WAIT_TIME    36
-
-#define RIGHTLEG_MOVE_SPEED   20
-#define RIGHTLEG_WAIT_TIME    40
 void CSectorEffector::se_mortimer_leg_left()
 {
 	int mx,my;
-	if (needinit)
-	{
-		dir = UP;
-		state = LEG_GO;
-		timer = 0;
-		inhibitfall = true;
-		needinit = false;
-	}
 
 	switch(state)
 	{
@@ -603,14 +628,6 @@ void CSectorEffector::se_mortimer_leg_left()
 void CSectorEffector::se_mortimer_leg_right()
 {
 	int mx,my;
-	if (needinit)
-	{
-		dir = UP;
-		state = LEG_GO;
-		timer = 0;
-		inhibitfall = 1;
-		needinit = false;
-	}
 
 	switch(state)
 	{
@@ -704,13 +721,6 @@ void CSectorEffector::se_mortimer_leg_right()
 void CSectorEffector::se_mortimer_randomzaps()
 {
 	int x,y;
-	if (needinit)
-	{
-		sprite = BLANKSPRITE;
-		counter = 0;
-		timer = 0;
-		needinit = 0;
-	}
 
 	if (!timer)
 	{

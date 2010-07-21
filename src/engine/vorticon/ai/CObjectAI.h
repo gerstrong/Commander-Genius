@@ -66,7 +66,6 @@ private:
 	void se_ai(CObject &object);
 	void se_extend_plat(CObject &object, bool &PlatExtending);
 	void se_retract_plat(CObject &object, bool &PlatExtending);
-	void spark_ai(CObject &object, int &sparks_left);
 	void se_mortimer_arm(CObject &object);
 	void se_mortimer_spark(CObject &object);
 	void se_mortimer_heart(CObject &object);
@@ -118,10 +117,6 @@ private:
 	int m_gunfiretimer;
 	bool &m_dark;
 	unsigned int m_bgtile; // Used as holder for bridges
-
-	// for ep2: how many sparks (tantalus ray machines) are left
-	// you must destroy the tantalus ray generator before exiting
-	int sparks_left;
 
 };
 

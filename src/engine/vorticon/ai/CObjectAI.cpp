@@ -22,7 +22,6 @@ m_dark(dark)
 	m_Level = level;
 	m_Episode = episode;
 	m_gunfiretimer = 0;
-	sparks_left = 0;
 }
 
 //////////////////

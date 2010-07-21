@@ -210,10 +210,12 @@ bool CObject::checkforScenario()
    	onscreen = true;
 
    	if (hasbeenonscreen ||
-		m_type==OBJ_RAY || m_type==OBJ_ROPE || m_type==OBJ_ICECANNON ||
+		m_type==OBJ_RAY || m_type==OBJ_ROPE ||
+		m_type==OBJ_ICECANNON ||
 		m_type==OBJ_ICECHUNK || m_type==OBJ_PLATFORM ||
 		m_type==OBJ_PLATVERT || m_type==OBJ_YORP ||
-		m_type==OBJ_FOOB || m_type==OBJ_SCRUB)
+		m_type==OBJ_FOOB || m_type==OBJ_SCRUB ||
+		m_type == OBJ_SECTOREFFECTOR)
 	{
 		return true;
     }
