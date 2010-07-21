@@ -6,6 +6,7 @@
  */
 
 #include "CPlayer.h"
+#include "../engine/vorticon/ai/CMessie.h"
 #include "../graphics/CGfxEngine.h"
 #include "../sdl/CInput.h"
 #include "../keen.h"
@@ -152,26 +153,27 @@ void CPlayer::selectFrameOnWorldMap()
 void CPlayer::MountNessieIfAvailable()
 {
 	// Look for the Nessie object
-	/*std::vector<CObject>::iterator obj = mp_object->begin();
+	std::vector<CObject*>::iterator obj = mp_object->begin();
 	for(; obj != mp_object->end() ; obj++)
 	{
-		if(obj->m_type == OBJ_NESSIE)
+		if((*obj)->m_type == OBJ_MESSIE)
 		{
+			CMessie &Messie = dynamic_cast<CMessie&>(**obj);
 			Uint16 dist = 1<<CSF;
 			Uint16 nessie_x, nessie_y;
 
-			nessie_x = obj->getXPosition();
-			nessie_y = obj->getYPosition();
+			nessie_x = (*obj)->getXPosition();
+			nessie_y = (*obj)->getYPosition();
 
 			// Look if Nessie is nearby
 			Uint32 x = getXPosition();
 			Uint32 y = getYPosition();
-			if( x >= nessie_x-dist+obj->bboxX1 and x <= nessie_x+dist+obj->bboxX2 )
+			if( x >= nessie_x-dist+(*obj)->bboxX1 and x <= nessie_x+dist+(*obj)->bboxX2 )
 			{
-				if( y >= nessie_y-dist+obj->bboxY1 and y <= nessie_y+dist+obj->bboxY2 )
+				if( y >= nessie_y-dist+(*obj)->bboxY1 and y <= nessie_y+dist+(*obj)->bboxY2 )
 				{
 					// Mount the Player
-					obj->ai.nessie.mounted[m_index] = true;
+					Messie.mounted[m_index] = true;
 		            mounted = true;
 		            solid = false;
 		            beingteleported = true;
@@ -180,13 +182,13 @@ void CPlayer::MountNessieIfAvailable()
 			break;
 		}
 	}
-*/
+
 }
 
 void CPlayer::UnmountNessie()
 {
 	// Check if a NESSIE_LAND_OBJ is nearby the player. Only then he can unmount
-	/*int dx, dy;
+	int dx, dy;
 	int x = getXPosition()>>CSF;
 	int y = getYPosition()>>CSF;
 	for(dy=-1 ; dy <= 1 ; dy++)
@@ -197,11 +199,12 @@ void CPlayer::UnmountNessie()
 			if(mp_Map->getObjectat(x+dx, y+dy) == NESSIE_LAND)
 			{
 				// Look for the Nessie object
-				std::vector<CObject>::iterator obj = mp_object->begin();
+				std::vector<CObject*>::iterator obj = mp_object->begin();
 				for(; obj != mp_object->end() ; obj++)
 				{
-					if(obj->m_type == OBJ_NESSIE)
+					if((*obj)->m_type == OBJ_MESSIE)
 					{
+						CMessie &Messie = dynamic_cast<CMessie&>(**obj);
 						// Check if the there are no blocked tiles there!
 						std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 						CTileProperties &Tile = TileProperty[mp_Map->at(x+dx, y+dy)];
@@ -209,7 +212,7 @@ void CPlayer::UnmountNessie()
 							!Tile.bleft and !Tile.bright )
 						{
 							// unmount Messie
-							obj->ai.nessie.mounted[m_index] = false;
+							Messie.mounted[m_index] = false;
 							mounted = false;
 							solid = godmode ? false : true;
 							beingteleported = false;
@@ -221,6 +224,6 @@ void CPlayer::UnmountNessie()
 				}
 			}
 		}
-	}*/
+	}
 }
 
