@@ -25,18 +25,10 @@
 #define GAMESCFG_NAME   "/Name="
 // Filenames
 #define GAMESCFG        "games.cfg"
-#define KEENEXE1        "keen1.exe"
-#define KEENEXE2        "keen2.exe"
-#define KEENEXE3        "keen3.exe"
-#define KEENEXE4        "keen4.exe"
-#define KEENEXE4E       "keen4e.exe"
-#define KEENEXE5        "keen5.exe"
-#define KEENEXE5E       "keen5e.exe"
-#define KEENEXE6        "keen6.exe"
-#define KEENEXE6E       "keen6e.exe"
 
 struct GameEntry {
     std::string path;
+	std::string exefilename;
     std::string name;
     short version;
     Uint16 episode;
@@ -49,7 +41,6 @@ public:
 	virtual ~CGameLauncher();
 
 	typedef std::vector<std::string> DirList;
-	typedef std::vector<std::string> ExeList;
 
 	bool init();
     void cleanup();
@@ -74,7 +65,6 @@ private:
 	bool m_hasbeenchosen;
 	Uint8 m_episode;
 	DirList m_DirList;
-	ExeList m_ExeList;
 	Sint8 m_ep1slot;
     std::vector<GameEntry> m_Entries;
 	std::vector<std::string> m_Paths;

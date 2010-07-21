@@ -25,6 +25,7 @@ public:
 	
 	char getEpisode();
 	std::string getDataDirectory();
+	std::string getFileName() { return m_filename; }
 	size_t getExeDataSize();
 
 	bool readData(const char episode, const std::string& datadirectory);
@@ -64,6 +65,7 @@ private:
 	unsigned char *m_headerdata;
 	unsigned char *m_rawdata;
 	std::string m_datadirectory;
+	std::string m_filename;
 };
 
 #endif /* CEXEFILE_H_ */

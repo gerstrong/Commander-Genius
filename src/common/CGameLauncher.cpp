@@ -20,15 +20,7 @@ CGameLauncher::CGameLauncher() {
     m_hasbeenchosen = false;
     m_chosenGame    = 0;
     mp_LaunchMenu   = NULL;
-    m_ep1slot       = -1;
-	
-    m_ExeList.clear();
-    m_ExeList.push_back( KEENEXE1 );
-    m_ExeList.push_back( KEENEXE2 );
-    m_ExeList.push_back( KEENEXE3 );
-    m_ExeList.push_back( KEENEXE4E );
-    m_ExeList.push_back( KEENEXE5E );
-    m_ExeList.push_back( KEENEXE6E );
+    m_ep1slot       = -1;	
 }
 
 CGameLauncher::~CGameLauncher() {
@@ -110,57 +102,54 @@ bool CGameLauncher::scanSubDirectories(const std::string& path, size_t maxdepth)
 bool CGameLauncher::scanExecutables(const std::string& path)
 {
     bool result = false;
-    GameEntry newentry;
 	
     g_pLogFile->ftextOut("Search: %s<br>", path.c_str() );
 	
-    for (size_t i=0; i < m_ExeList.size(); i++)
-    {
-		std::string file = path + '/' + m_ExeList.at(i);
-        if (IsFileAvailable(file))
-        {
-            // Load the exe into memory
-        	// TODO: No good! Here must distinguish the versions
-        	CExeFile executable;
-            executable.readData(i+1, path);
-            // Process the exe for type
-            newentry.crcpass = executable.getEXECrc();
-            newentry.version = executable.getEXEVersion();
-            newentry.episode = i+1;
-            newentry.path    = path;
-            // Check for an existing custom label for the menu
-            newentry.name    = scanLabels(file);
-			
-            std::string verstr;
-            if(newentry.version<0) // Version couldn't be read!
-            	verstr = "unknown";
-            else
-            	verstr = "v" + itoa(newentry.version/100) + "." + itoa(newentry.version%100);
-
-
-            if( newentry.name.length() <= 0 )
-            {
-                newentry.name = "Episode: " + itoa(newentry.episode);
-                newentry.name += " " + verstr + " " + newentry.path;
-            }
-            newentry.name += " ";
-
-            // Save the type information about the exe
-            m_Entries.push_back(newentry);
-            // Add a new menu item
-            mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, m_Entries.size(), newentry.name);
-			
-            g_pLogFile->ftextOut("Detected game Name: %s Version: %d<br>", file.c_str()
-								 ,newentry.version );
-            // The original episode 1 exe is needed to load gfx's for game launcher menu
-            if ( m_ep1slot <= -1 && newentry.crcpass == true )
-            {
-                m_ep1slot = m_Entries.size()-1;
-                g_pLogFile->ftextOut("   Using for in-game menu resources<br>" );
-            }
-            result = true;
-        }
-    }
+	for(int i = 1; i <= 6; ++i) {
+		CExeFile executable;
+		// Load the exe into memory
+		if(!executable.readData(i, path))
+			continue;
+	   
+		// Process the exe for type
+		GameEntry newentry;
+		newentry.crcpass = executable.getEXECrc();
+		newentry.version = executable.getEXEVersion();
+		newentry.episode = i;
+		newentry.path    = path;
+		newentry.exefilename = executable.getFileName();
+		// Check for an existing custom label for the menu
+		newentry.name    = scanLabels(executable.getFileName());
+		
+		std::string verstr;
+		if(newentry.version<0) // Version couldn't be read!
+			verstr = "unknown";
+		else
+			verstr = "v" + itoa(newentry.version/100) + "." + itoa(newentry.version%100);
+		
+		
+		if( newentry.name.length() <= 0 )
+		{
+			newentry.name = "Episode: " + itoa(newentry.episode);
+			newentry.name += " " + verstr + " " + newentry.path;
+		}
+		newentry.name += " ";
+		
+		// Save the type information about the exe
+		m_Entries.push_back(newentry);
+		// Add a new menu item
+		mp_LaunchMenu->addObject(DLG_OBJ_OPTION_TEXT, 1, m_Entries.size(), newentry.name);
+		
+		g_pLogFile->ftextOut("Detected game Name: %s Version: %d<br>", executable.getFileName().c_str()
+							 ,newentry.version );
+		// The original episode 1 exe is needed to load gfx's for game launcher menu
+		if ( m_ep1slot <= -1 && newentry.crcpass == true )
+		{
+			m_ep1slot = m_Entries.size()-1;
+			g_pLogFile->ftextOut("   Using for in-game menu resources<br>" );
+		}
+		result = true;
+	}
 	
     return result;
 }
@@ -270,7 +259,7 @@ void CGameLauncher::putLabels()
     {
         for ( i=0; i<m_Entries.size(); i++ )
         {
-            line = GAMESCFG_DIR + m_Entries.at(i).path + '/' + m_ExeList.at(m_Entries.at(i).episode-1);
+            line = GAMESCFG_DIR + m_Entries.at(i).exefilename;
             gamescfg << line << std::endl;
             line = GAMESCFG_NAME + m_Entries.at(i).name;
             gamescfg << line << std::endl << std::endl;
