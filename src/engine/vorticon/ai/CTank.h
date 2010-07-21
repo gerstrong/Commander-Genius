@@ -42,7 +42,7 @@ unsigned int rnd(void);
 #define TANK_MAXTRAVELDIST    200
 #define TANK_MINTRAVELDIST    100
 
-#define TANK_WALK_SPEED         24
+#define TANK_WALK_SPEED         28
 #define TANK_WALK_ANIM_TIME     6
 #define TANK_LOOK_ANIM_TIME     4
 #define TANK_LOOK_TOTALTIME     50
