@@ -24,7 +24,8 @@ public:
 //private:
 
 	char state;
-	char leftrightdir, updowndir;
+	direction_t m_direction;
+
 	unsigned int baseframe;
 
 	unsigned int tiletrailX[NESSIETRAILLEN+1];

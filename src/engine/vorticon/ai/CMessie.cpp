@@ -21,14 +21,14 @@ void nessie_find_next_checkpoint(int o);
 CMessie::CMessie(CMap *p_map, Uint32 x, Uint32 y,
 		std::vector<CPlayer>& Player) :
 CObject(p_map, x, y, OBJ_MESSIE),
+m_direction(LEFTDOWN),
 m_Player(Player)
 {
 	onscreen = true;
 	solid = false;
 
 	baseframe = NESSIE_DOWNLEFT_FRAME;
-	leftrightdir = LEFT;
-	updowndir = DOWN;
+
 	animframe = 0;
 	animtimer = 0;
 	state = NESSIE_SWIMNORMAL;
@@ -60,8 +60,6 @@ m_Player(Player)
 	{
 		mounted[i] = false;
 	}
-
-	nessie_find_next_checkpoint();
 }
 
 void CMessie::process()
@@ -70,13 +68,14 @@ void CMessie::process()
 	// mounted keep them stuck to nessie
 	bool isMounted = false;
 
+	if(destx == 0 && desty == 0)
+		nessie_find_next_checkpoint();
+
 	std::vector<CPlayer>::iterator it_player = m_Player.begin();
 	for( ; it_player != m_Player.end() ; it_player++ )
 	{
 		if (mounted[it_player->m_index])
 		{
-			int x = getXPosition();
-			int y = getYPosition();
 			it_player->moveTo(x, y);
 			isMounted = true;
 		}
@@ -97,9 +96,6 @@ void CMessie::process()
 	{
 	case NESSIE_SWIMNORMAL:
 		// arrived at destination?
-		unsigned int x,y;
-		x = getXPosition();
-		y = getYPosition();
 		if ( x > (destx-NESSIE_SPEED/2)  &&
 				x < (destx+NESSIE_SPEED/2) )
 		{
@@ -109,17 +105,17 @@ void CMessie::process()
 				nessie_find_next_checkpoint();
 
 				// set up/down and left/right direction flags for frame selection
-				x = getXPosition();
-				y = getYPosition();
-				if (destx > x)
-					leftrightdir = RIGHT;
-				else if (destx < x)
-					leftrightdir = LEFT;
+				bool goleft = (destx < x);
+				bool godown = (desty > y);
 
-				if (desty < y)
-					updowndir = UP;
-				else if (destx > y)
-					updowndir = DOWN;
+				if(goleft && !godown)
+					m_direction = LEFTUP;
+				else if(goleft && godown)
+					m_direction = LEFTDOWN;
+				else if(!goleft && !godown)
+					m_direction = RIGHTUP;
+				else if(!goleft && godown)
+					m_direction = RIGHTDOWN;
 			}
 		}
 		move_nessie();
@@ -140,17 +136,14 @@ void CMessie::process()
 
 void CMessie::move_nessie()
 {
-	unsigned int x = getXPosition();
-	unsigned int y = getYPosition();
-
 	// select proper frame based on up/down and left/right direction flags
-	if (updowndir==DOWN && leftrightdir==LEFT)
+	if (m_direction == LEFTDOWN)
 		baseframe = NESSIE_DOWNLEFT_FRAME;
-	else if (updowndir==DOWN && leftrightdir==RIGHT)
+	else if (m_direction == RIGHTDOWN)
 		baseframe = NESSIE_DOWNRIGHT_FRAME;
-	else if (updowndir==UP && leftrightdir==LEFT)
+	else if (m_direction == LEFTUP)
 		baseframe = NESSIE_UPLEFT_FRAME;
-	else if (updowndir==UP && leftrightdir==RIGHT)
+	else if (m_direction == RIGHTUP)
 		baseframe = NESSIE_UPRIGHT_FRAME;
 
 	// head to destination
@@ -223,8 +216,8 @@ void CMessie::nessie_find_next_checkpoint()
 
 	foundtile: ;
 
-	destx = (destx<<CSF);
-	desty = (desty<<CSF)-(8<<STC);
+	this->destx = (destx<<CSF);
+	this->desty = (desty<<CSF)-(8<<STC);
 
 	int obj = mp_Map->getObjectat(destx, desty);
 	if(obj == NESSIE_WEED || obj == NESSIE_LAND)
