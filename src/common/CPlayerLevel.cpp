@@ -329,12 +329,15 @@ void CPlayer::TogglePogo_and_Switches()
 			// check for extending-platform switch
 			if (t==TILE_SWITCH_UP || t==TILE_SWITCH_DOWN )
 			{
-				// Flip the switch!
-				g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, getXPosition()>>STC);
-				if ( mp_Map->at(mx, my) == TILE_SWITCH_DOWN )
-					mp_Map->changeTile(mx, my, TILE_SWITCH_UP);
-				else
-					mp_Map->changeTile(mx, my, TILE_SWITCH_DOWN);
+				if(!mp_Map->m_PlatExtending)
+				{
+					// Flip the switch!
+					g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, getXPosition()>>STC);
+					if ( mp_Map->at(mx, my) == TILE_SWITCH_DOWN )
+						mp_Map->changeTile(mx, my, TILE_SWITCH_UP);
+					else
+						mp_Map->changeTile(mx, my, TILE_SWITCH_DOWN);
+				}
 
 				// figure out where the platform is supposed to extend at
 				// (this is coded in the object layer...
@@ -348,9 +351,10 @@ void CPlayer::TogglePogo_and_Switches()
 				}
 				else
 				{
+					m_Level_Trigger = LVLTRIG_BRIDGE;
+
 					if(!mp_Map->m_PlatExtending)
 					{
-						m_Level_Trigger = LVLTRIG_BRIDGE;
 						char pxoff = (bridge & 0x00ff);
 						char pyoff = (bridge & 0xff00) >> 8;
 						int platx = mx + pxoff;
@@ -360,6 +364,7 @@ void CPlayer::TogglePogo_and_Switches()
 						CBridges *platobject = new CBridges(mp_Map, mx<<CSF,my<<CSF,
 								platx, platy);
 						mp_object->push_back(platobject);
+						mp_Map->m_PlatExtending = true;
 					}
 				}
 

@@ -107,14 +107,6 @@ private:
 	SDL_Surface *mp_scrollsurface;
 	std::vector<CTilemap> &m_Tilemaps;
 
-	/*class usedCoord;
-	struct stAnimationSlot{
-		size_t x, y;
-		size_t bgtile, fgtile;
-	};*/
-
-	//std::list<stAnimationSlot> m_AnimationSlots;
-
 	Uint8 m_animtiletimer;
 
 	CPlane m_Plane[3];

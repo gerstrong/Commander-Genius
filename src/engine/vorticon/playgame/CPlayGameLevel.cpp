@@ -89,10 +89,7 @@ void CPlayGameVorticon::processLevelTrigger(int trigger)
 	else if (trigger == LVLTRIG_BRIDGE)
 	{	// it's a moving platform switch--don't allow player to hit it again while
 		// the plat is still moving as this will glitch
-		if (!m_Map.m_PlatExtending)
-		{
-			m_Map.m_PlatExtending = true;
-		}
+
 		// The spawning of the plat extension is defined in the CPlayer class
 	}
 	else if (trigger == LVLTRIG_LIGHT)

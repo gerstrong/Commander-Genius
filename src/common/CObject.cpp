@@ -26,6 +26,10 @@ mp_object(NULL),
 mp_Map(pmap),
 m_blinktime(0)
 {
+	bboxX1 = 0;
+	bboxX2 = 0;
+	bboxY1 = 0;
+	bboxY2 = 0;
 	m_number_of_objects++;
 	honorPriority = true;
 	exists = true;
@@ -196,7 +200,8 @@ bool CObject::checkforScenario()
 {
 	if ( !exists || m_type==OBJ_PLAYER ) return false;
 
-	if( m_type==OBJ_EXPLOSION || m_type==OBJ_EARTHCHUNK || m_type == OBJ_NONE ) return true;
+	if( m_type==OBJ_EXPLOSION || m_type==OBJ_EARTHCHUNK
+			|| m_type == OBJ_BRIDGE || m_type == OBJ_NONE ) return true;
 
 	// Check if enemy is near enough. If he isn't, don't make him perform. Exception is on the map
 	if(!mp_Map->m_worldmap)

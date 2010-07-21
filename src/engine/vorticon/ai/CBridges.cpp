@@ -12,7 +12,7 @@
 unsigned int CBridges::m_bgtile = 0;
 
 CBridges::CBridges(CMap *pmap, Uint32 x, Uint32 y, Uint32 platx, Uint32 platy):
-CObject(pmap, x, y, OBJ_NONE),
+CObject(pmap, x, y, OBJ_BRIDGE),
 m_state(EXTEND),
 m_platx(platx),
 m_platy(platy),

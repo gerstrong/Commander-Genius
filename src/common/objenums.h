@@ -58,6 +58,7 @@ enum object_t{
 	OBJ_GOTPOINTS,		// this thing is the rising point numbers
 	OBJ_GHOST,			// ghosted object from map editor
 	EGA_BITMAP,		// Used for bitmaps which are loaded into the system. Keen Bitmaps
+	OBJ_BRIDGE,
 	LAST_OBJ_TYPE
 };
 
