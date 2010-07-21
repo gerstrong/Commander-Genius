@@ -39,25 +39,35 @@ size_t CExeFile::getExeDataSize()
 
 bool CExeFile::readData(const char episode, const std::string& datadirectory)
 {
-	m_episode = episode;
-	m_datadirectory = datadirectory;
-	if( m_datadirectory != "") if(*(m_datadirectory.end()-1) != '/') m_datadirectory += "/";
-
 	crc32_init();
 
-	std::string filename =  m_datadirectory + "keen" + itoa(m_episode) + ".exe";
+	std::string filename = datadirectory + "/keen" + itoa(episode) + ".exe";
 
-	std::ifstream File; OpenGameFileR(File, filename, std::ios::binary);
+	std::ifstream File;
+	OpenGameFileR(File, filename, std::ios::binary);
 
 	if(!File)
 	{
 		// try another filename (Used in Episode 4-6)
-		std::string filename = getResourceFilename("keen" + itoa(m_episode) + "e.exe", m_datadirectory);
+		filename = datadirectory + "/keen" + itoa(episode) + "e.exe";
 		OpenGameFileR(File, filename, std::ios::binary);
-		if(!File)
-			return false;
 	}
 
+	if(!File)
+	{
+		// try another filename (Used in Episode 4-6) for demo versions
+		filename = datadirectory + "/k" + itoa(episode) + "demo.exe";
+		OpenGameFileR(File, filename, std::ios::binary);
+	}
+	
+	if(!File)
+		return false;	
+
+	m_filename = filename;
+	m_episode = episode;
+	m_datadirectory = datadirectory;
+	if( m_datadirectory != "") if(*(m_datadirectory.end()-1) != '/') m_datadirectory += "/";
+		
 	File.seekg(0,std::ios::end);
 	m_datasize = File.tellg();
 	File.seekg(0,std::ios::beg);
@@ -212,6 +222,8 @@ int CExeFile::getEXECrc()
 					return 1;
 		}
         case 4:
+		case 5:
+		case 6:
         {
         	// TODO: CRC-Flags for Episode 4 must be implemented here!
         	return 1;
