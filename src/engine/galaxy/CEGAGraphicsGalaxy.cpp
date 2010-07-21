@@ -369,6 +369,7 @@ bool CEGAGraphicsGalaxy::begin()
 	CHuffman Huffman;
 	unsigned long exeheaderlen = 0;
 	unsigned long exeimglen = 0;
+	assert(m_episode >= 4);
 	int ep = m_episode - 4; // index for EpisodeInfo; 0 - keen4, 1 - keen5, etc
 
 	unsigned char *p_data = m_Exefile.getHeaderData();
