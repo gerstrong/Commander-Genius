@@ -421,7 +421,7 @@ bool CEGAGraphicsGalaxy::begin()
 		return false;
 	}
 
-	int egagraphlen = 0;
+	size_t egagraphlen = 0;
 	File.seekg(1,std::ios::end);
 	egagraphlen = File.tellg();
 	if(egagraphlen == 0)
