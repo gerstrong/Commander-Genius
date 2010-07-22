@@ -24,7 +24,8 @@ HealthPoints(1),
 sprite(BLANKSPRITE),
 mp_object(NULL),
 mp_Map(pmap),
-m_blinktime(0)
+m_blinktime(0),
+m_invincible(false)
 {
 	bboxX1 = 0;
 	bboxX2 = 0;
@@ -47,9 +48,7 @@ m_blinktime(0)
 
 	scrx = scry = 0;
 	dead = false;
-	onscreen = false;
 	hasbeenonscreen = false;
-	canbezapped = 0;
 	honorPriority = true;
 	touchPlayer = touchedBy = 0;
 	cansupportplayer = false;
@@ -550,6 +549,7 @@ bool CObject::hitdetect(CObject &hitobject)
 void CObject::processFalling()
 {
 	if(m_type == OBJ_MESSIE) return;
+
 	// make object fall if it must
 	const int OBJFALLSPEED = 160;
 
@@ -578,7 +578,7 @@ void CObject::processFalling()
 
 void CObject::getShotByRay()
 {
-	if(HealthPoints>0)
+	if( !m_invincible && HealthPoints>0)
 	{
 		if(HealthPoints>1 && g_pVideoDriver->getSpecialFXConfig())
 			blink(10);

@@ -147,6 +147,7 @@ protected:
 	CMap *mp_Map;
 
 	Uint16 m_blinktime;
+	bool m_invincible;
 	unsigned int x, y;        			// x,y location in map coords, CSFed
 
 	static int m_number_of_objects;

@@ -12,7 +12,8 @@ m_Player(PlayerVect)
 	 state = BUTLER_WALK;
 	 movedir = RIGHT;
 	 animtimer = 0;
-	 canbezapped = false;  // will stop bullets but are not harmed
+	 m_invincible = false;  // will stop bullets but are not harmed
+	 canbezapped = true;
 }
 
 void CButler::process()
