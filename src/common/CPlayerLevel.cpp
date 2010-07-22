@@ -63,6 +63,17 @@ void CPlayer::processInLevel()
 			playpushed();
 		}
 
+		// Check left and right blocks again, because sometimes a door or mangling machine arm move away
+		if(!godmode)
+		{
+			int mlx = (getXLeftPos()-1)>>CSF;
+			int mrx = (getXRightPos()+1)>>CSF;
+			int my = getYUpPos()>>CSF;
+			std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
+			blockedr = Tile[mp_Map->at(mrx,my,1)].bleft;
+			blockedl = Tile[mp_Map->at(mlx,my,1)].bright;
+		}
+
 		checkSolidDoors();
 
 		InertiaAndFriction_X();
