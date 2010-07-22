@@ -23,8 +23,15 @@ CPalette::~CPalette() {
 	// TODO Auto-generated destructor stub
 }
 
-void CPalette::setupColorPalettes()
+void CPalette::setupColorPalettes(byte *p_exedata, int m_episode)
 {
+	// TODO: Try to add patching code for palette patches of mods here!
+
+	// TODO: Here it will check, if the exe was patched with that code.
+
+	// If it has that patch code read the colours and apply it.
+	// Remember one thing, the patch code totally depends on the episode, so this will be hard...
+
 	setPaletteColour( 0, 0x00, 0x00, 0x00);
 	setPaletteColour( 1, 0x00, 0x00, 0xa8);
 	setPaletteColour( 2, 0x00, 0xa8, 0x00);

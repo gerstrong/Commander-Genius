@@ -132,7 +132,7 @@ short CEGAGraphicsGalaxy::getNumTiles()
 bool CEGAGraphicsGalaxy::loadData()
 {
 	// Set the palette, so the proper colours are loaded
-	g_pGfxEngine->Palette.setupColorPalettes();
+	g_pGfxEngine->Palette.setupColorPalettes(m_Exefile.getRawData(), m_episode);
 
 	if(!begin()) return false;
 

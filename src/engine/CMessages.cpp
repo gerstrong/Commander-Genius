@@ -60,7 +60,7 @@ bool CMessages::extractGlobalStrings()
 			{
 				case 131:
 				{
-					StringMap.insert( extractString( "CTSPACECHEAT", 0x14DEE, 0x14E51, 0 ) );
+					StringMap.insert( extractString( "CTSPACECHEAT", 0x14DED, 0x14E51, 0 ) );
 					StringMap.insert( extractString( "GODMODEON", 0x14EF6, 0x14F06, 0 ) );
 					StringMap.insert( extractString( "GODMODEOFF", 0x14F07, 0x14F18, 0 ) );
 					StringMap.insert( extractString( "EP1_StatusBox" , 0x15052, 0x150F5, -512 ) );
