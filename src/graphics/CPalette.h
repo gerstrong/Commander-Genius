@@ -32,6 +32,8 @@ public:
 	void fadeto(Uint8 alpha, Uint8 fadespeed);
 	void applyFade();
 
+	bool patchedPalette(byte *p_exedata, int m_episode);
+	void setupPatchedPalette(byte *p_exedata, int m_episode);
 	void setupColorPalettes(byte *p_exedata, int m_episode);
 	void setPaletteColour( Uint8 c, Uint8 r, Uint8 g, Uint8 b);
 	void setFXSurface(SDL_Surface *fxsurface);

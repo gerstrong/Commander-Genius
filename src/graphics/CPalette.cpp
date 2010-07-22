@@ -23,32 +23,85 @@ CPalette::~CPalette() {
 	// TODO Auto-generated destructor stub
 }
 
+/**
+ * This function checks whether the palette is patched or not.
+ * It has to look for a certain binary code, to know that...
+ */
+bool CPalette::patchedPalette(byte *p_exedata, int m_episode)
+{
+	// go to the offset where we check the patched code
+	if(m_episode == 1)
+		p_exedata += 0x441C;
+	else if(m_episode == 2)
+		p_exedata += 0x157D;
+	else if(m_episode == 3)
+		p_exedata += 0x153B;
+
+	const byte palette_patch_array[] =
+	{ 0xB8, 0x0D, 0x00, 0xCD,
+      0x10, 0xB8, 0x12, 0x10, 0xB9, 0x08, 0x00, 0xBB,
+      0x00, 0x00, 0x8C, 0xDA, 0x8E, 0xC2, 0xBA, 0x04,
+      0x00, 0xCD, 0x10, 0xBB, 0x18, 0x00, 0xBA, 0x1C,
+      0x00, 0xCD, 0x10, 0xC3 };
+
+	return (memcmp( palette_patch_array, p_exedata, 32 ) == 0);
+}
+
+/**
+ * Reads the patched code and sets it up...
+ */
+void CPalette::setupPatchedPalette(byte *p_exedata, int m_episode)
+{
+	if(m_episode == 1)
+		p_exedata += 0x13054;
+	else if(m_episode == 2)
+		p_exedata += 0x17784;
+	else if(m_episode == 3)
+		p_exedata += 0x19824;
+
+	for( size_t i=0 ; i<16 ; i++ )
+	{
+		Uint8 r, g, b;
+		r = 4*(*p_exedata);
+		p_exedata++;
+		g = 4*(*p_exedata);
+		p_exedata++;
+		b = 4*(*p_exedata);
+		p_exedata++;
+		setPaletteColour( i, r, g, b);
+	}
+	setPaletteColour(16, 0x00, 0xff, 0xff);
+}
+
 void CPalette::setupColorPalettes(byte *p_exedata, int m_episode)
 {
 	// TODO: Try to add patching code for palette patches of mods here!
 
 	// TODO: Here it will check, if the exe was patched with that code.
-
-	// If it has that patch code read the colours and apply it.
-	// Remember one thing, the patch code totally depends on the episode, so this will be hard...
-
-	setPaletteColour( 0, 0x00, 0x00, 0x00);
-	setPaletteColour( 1, 0x00, 0x00, 0xa8);
-	setPaletteColour( 2, 0x00, 0xa8, 0x00);
-	setPaletteColour( 3, 0x00, 0xa8, 0xa8);
-	setPaletteColour( 4, 0xa8, 0x00, 0x00);
-	setPaletteColour( 5, 0xa8, 0x00, 0xa8);
-	setPaletteColour( 6, 0xa8, 0x54, 0x00);
-	setPaletteColour( 7, 0xa8, 0xa8, 0xa8);
-	setPaletteColour( 8, 0x54, 0x54, 0x54);
-	setPaletteColour( 9, 0x54, 0x54, 0xfc);
-	setPaletteColour(10, 0x54, 0xfc, 0x54);
-	setPaletteColour(11, 0x54, 0xfc, 0xfc);
-	setPaletteColour(12, 0xfc, 0x54, 0x54);
-	setPaletteColour(13, 0xfc, 0x54, 0xfc);
-	setPaletteColour(14, 0xfc, 0xfc, 0x54);
-	setPaletteColour(15, 0xfc, 0xfc, 0xfc);
-	setPaletteColour(16, 0x00, 0xff, 0xff);
+	if(patchedPalette(p_exedata, m_episode))
+	{
+		setupPatchedPalette(p_exedata, m_episode);
+	}
+	else
+	{	// Default Palette
+		setPaletteColour( 0, 0x00, 0x00, 0x00);
+		setPaletteColour( 1, 0x00, 0x00, 0xa8);
+		setPaletteColour( 2, 0x00, 0xa8, 0x00);
+		setPaletteColour( 3, 0x00, 0xa8, 0xa8);
+		setPaletteColour( 4, 0xa8, 0x00, 0x00);
+		setPaletteColour( 5, 0xa8, 0x00, 0xa8);
+		setPaletteColour( 6, 0xa8, 0x54, 0x00);
+		setPaletteColour( 7, 0xa8, 0xa8, 0xa8);
+		setPaletteColour( 8, 0x54, 0x54, 0x54);
+		setPaletteColour( 9, 0x54, 0x54, 0xfc);
+		setPaletteColour(10, 0x54, 0xfc, 0x54);
+		setPaletteColour(11, 0x54, 0xfc, 0xfc);
+		setPaletteColour(12, 0xfc, 0x54, 0x54);
+		setPaletteColour(13, 0xfc, 0x54, 0xfc);
+		setPaletteColour(14, 0xfc, 0xfc, 0x54);
+		setPaletteColour(15, 0xfc, 0xfc, 0xfc);
+		setPaletteColour(16, 0x00, 0xff, 0xff);
+	}
 }
 
 // adds a color onto the end of the palette and returns it's index.

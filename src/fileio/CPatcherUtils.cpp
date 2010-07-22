@@ -93,7 +93,10 @@ bool CPatcher::readIntValue(const std::string &input, long &output)
 	}
 
 	// Try to read a decimal number
-	if((output = atoi(input)) != 0)
+	if( (output = atoi(input)) != 0)
+		return true;
+
+	if(input == "00" || input == "0")
 		return true;
 
 	return false;
