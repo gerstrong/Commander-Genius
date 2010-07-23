@@ -18,7 +18,6 @@ public:
 	
 	bool extractGlobalStrings();
 	
-	virtual ~CMessages();
 private:
 	std::pair<std::string, std::string>
 	extractString( std::string matchingstring, unsigned long start, unsigned long end, long offset=0 );

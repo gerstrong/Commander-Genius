@@ -520,8 +520,6 @@ unsigned int CObject::getYMidPos()
 // returns nonzero if object1 overlaps object2
 bool CObject::hitdetect(CObject &hitobject)
 {
-	if(m_index == hitobject.m_index) return false;
-
 	unsigned int rect1x1, rect1y1, rect1x2, rect1y2;
 	unsigned int rect2x1, rect2y1, rect2x2, rect2y2;
 	
