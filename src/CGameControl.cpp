@@ -130,7 +130,7 @@ bool CGameControl::init(char mode)
 		if(m_Episode >= 4)
 			mp_PlayGame = new galaxy::CPlayGameGalaxy( m_ExeFile, m_startLevel,
 													m_Numplayers, m_Difficulty,
-													mp_option);
+													mp_option, m_SavedGame);
 		else
 		{
 			if(m_startLevel == 0) m_startLevel = WORLD_MAP_LEVEL;

@@ -322,7 +322,7 @@ void CObject::moveLeft(int amount, bool force)
 		blockedu = false;
 
 	if(!performSlopedTileDown(x, y2, -amount))
-		performSlopedTileUp(x, y1+(2<<STC), -amount);
+		performSlopedTileUp(x, y1, -amount);
 }
 
 void CObject::moveRight(int amount, bool force)
@@ -378,8 +378,8 @@ void CObject::moveRight(int amount, bool force)
 	else
 		blockedu = false;
 
-	if(!performSlopedTileDown(x, y2+(1<<STC), amount));
-		performSlopedTileUp(x, y1-(1<<STC), amount);
+	if(!performSlopedTileDown(x, y2, amount));
+		performSlopedTileUp(x, y1, amount);
 }
 
 void CObject::moveUp(int amount)

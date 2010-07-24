@@ -118,7 +118,9 @@ static EpisodeInfoStruct EpisodeInfo[] = {
 CEGAGraphicsGalaxy::CEGAGraphicsGalaxy(CExeFile &ExeFile) :
 CEGAGraphics(ExeFile.getEpisode(), ExeFile.getDataDirectory()),
 m_Exefile(ExeFile)
-{}
+{
+	createBitmapsIDs();
+}
 
 int CEGAGraphicsGalaxy::getNumSprites()
 { return 0; }
@@ -164,7 +166,6 @@ bool CEGAGraphicsGalaxy::loadData()
 			g_pGfxEngine->getTileMap(3), true)) return false;
 	if(!readSprites( EpisodeInfo[m_episode-4].NumSprites,
 			EpisodeInfo[m_episode-4].IndexSprites )) return false;
-	//k456_export_sprites();
 	//k456_export_texts();
 	//k456_export_misc();
 	//k456_export_demos();
@@ -625,7 +626,11 @@ bool CEGAGraphicsGalaxy::readBitmaps()
 		extractPicture(Bitmap.getSDLSurface(),
 				m_egagraph.at(EpisodeInfo[ep].IndexBitmaps + i).data,
 				BmpHead[i].Width, BmpHead[i].Height);
+
+
+		Bitmap.setName(m_BitmapNameMap[ep][i]);
 	}
+
 	return true;
 }
 

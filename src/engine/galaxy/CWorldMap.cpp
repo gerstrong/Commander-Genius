@@ -42,7 +42,6 @@ void CWorldMap::process()
 	// Animate the tiles of the map
 	m_Map.animateAllTiles();
 
-
 	for( std::vector<CObject*>::iterator obj=m_ObjectPtr.begin() ;
 			obj!=m_ObjectPtr.end() ; obj++ )
 	{
@@ -60,11 +59,6 @@ void CWorldMap::process()
 
 void CWorldMap::processInput()
 {
-	// TODO: wrap this into the camera class they way it can be used in the vorticons engine
-	// Also make it more efficient.
-
-	//if(g_pInput->getPressedCommand(IC_QUIT))
-		//m_endgame = true;
 
 }
 

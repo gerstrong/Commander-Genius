@@ -100,18 +100,7 @@ void CButler::getTouchedBy(CObject &theObject)
 
 			 if(Player.pwalking) butlerpushamount = 3*BUTLERPUSHAMOUNT/2;
 
-			 if (Player.getXPosition() < getXPosition())
-			 {
-				 Player.playpushed_x = -butlerpushamount;
-				 Player.playpushed_decreasetimer = 0;
-				 Player.pdir = Player.pshowdir = LEFT;
-			 }
-			 else
-			 {
-				 Player.playpushed_x = butlerpushamount;
-				 Player.playpushed_decreasetimer = 0;
-				 Player.pdir = Player.pshowdir = RIGHT;
-			 }
+			 Player.bump(butlerpushamount, false);
 		 }
 	}
 }

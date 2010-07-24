@@ -11,8 +11,6 @@
 #include "../../sdl/CVideoDriver.h"
 #include "../../sdl/CInput.h"
 
-#include "GraphicsIDs.h"
-
 namespace galaxy
 {
 
@@ -26,7 +24,7 @@ CMenuGalaxy::CMenuGalaxy( char menu_mode, CExeFile &ExeFile, CSavedGame &SavedGa
 		 stOption *pOption, bool &restartVideo ) :
 CMenu( menu_mode, ExeFile, SavedGame, pOption, DLG_THEME_GALAXY, restartVideo),
 processPtr(&CMenuGalaxy::processMainMenu),
-m_TitleBmp(g_pGfxEngine->getBitmap(BMP_MAINMENULABEL))
+m_TitleBmp(*g_pGfxEngine->getBitmap("MAINMENULABEL"))
 {
 	// Perform coordinate calculations
 	m_title_coord.x = (g_pVideoDriver->getGameResolution().w - m_TitleBmp.getWidth())/2-48;

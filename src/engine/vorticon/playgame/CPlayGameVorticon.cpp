@@ -202,7 +202,7 @@ void CPlayGameVorticon::process()
 		// If the menu is open process it!
 		if(mp_Menu)
 		{
-			if( mp_Menu->mustBeClosed() || mp_Menu->getExitEvent() ||
+			if( mp_Menu->mustClose() || mp_Menu->getExitEvent() ||
 					mp_Menu->mustEndGame() || mp_Menu->mustStartGame()	)
 			{
 				if( mp_Menu->getExitEvent() )
