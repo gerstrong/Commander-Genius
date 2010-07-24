@@ -24,7 +24,8 @@ HealthPoints(1),
 sprite(BLANKSPRITE),
 mp_object(NULL),
 mp_Map(pmap),
-m_blinktime(0)
+m_blinktime(0),
+m_invincible(false)
 {
 	bboxX1 = 0;
 	bboxX2 = 0;
@@ -47,9 +48,7 @@ m_blinktime(0)
 
 	scrx = scry = 0;
 	dead = false;
-	onscreen = false;
 	hasbeenonscreen = false;
-	canbezapped = 0;
 	honorPriority = true;
 	touchPlayer = touchedBy = 0;
 	cansupportplayer = false;
@@ -323,7 +322,7 @@ void CObject::moveLeft(int amount, bool force)
 		blockedu = false;
 
 	if(!performSlopedTileDown(x, y2, -amount))
-		performSlopedTileUp(x, y1+(2<<STC), -amount);
+		performSlopedTileUp(x, y1, -amount);
 }
 
 void CObject::moveRight(int amount, bool force)
@@ -379,8 +378,8 @@ void CObject::moveRight(int amount, bool force)
 	else
 		blockedu = false;
 
-	if(!performSlopedTileDown(x, y2+(1<<STC), amount));
-		performSlopedTileUp(x, y1-(1<<STC), amount);
+	if(!performSlopedTileDown(x, y2, amount));
+		performSlopedTileUp(x, y1, amount);
 }
 
 void CObject::moveUp(int amount)
@@ -521,8 +520,6 @@ unsigned int CObject::getYMidPos()
 // returns nonzero if object1 overlaps object2
 bool CObject::hitdetect(CObject &hitobject)
 {
-	if(m_index == hitobject.m_index) return false;
-
 	unsigned int rect1x1, rect1y1, rect1x2, rect1y2;
 	unsigned int rect2x1, rect2y1, rect2x2, rect2y2;
 	
@@ -550,6 +547,7 @@ bool CObject::hitdetect(CObject &hitobject)
 void CObject::processFalling()
 {
 	if(m_type == OBJ_MESSIE) return;
+
 	// make object fall if it must
 	const int OBJFALLSPEED = 160;
 
@@ -578,7 +576,7 @@ void CObject::processFalling()
 
 void CObject::getShotByRay()
 {
-	if(HealthPoints>0)
+	if( !m_invincible && HealthPoints>0)
 	{
 		if(HealthPoints>1 && g_pVideoDriver->getSpecialFXConfig())
 			blink(10);

@@ -22,6 +22,7 @@
 #define FADE_DARKNESS_EASY 166
 
 #include <SDL.h>
+#include "../fileio/TypeDefinitions.h"
 
 class CPalette {
 public:
@@ -31,7 +32,9 @@ public:
 	void fadeto(Uint8 alpha, Uint8 fadespeed);
 	void applyFade();
 
-	void setupColorPalettes();
+	bool patchedPalette(byte *p_exedata, int m_episode);
+	void setupPatchedPalette(byte *p_exedata, int m_episode);
+	void setupColorPalettes(byte *p_exedata, int m_episode);
 	void setPaletteColour( Uint8 c, Uint8 r, Uint8 g, Uint8 b);
 	void setFXSurface(SDL_Surface *fxsurface);
 	void setFadeColour(Uint32 colour);

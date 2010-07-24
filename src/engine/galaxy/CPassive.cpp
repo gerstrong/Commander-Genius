@@ -13,7 +13,6 @@
 #include "../../sdl/CVideoDriver.h"
 #include "../../sdl/CInput.h"
 
-#include "GraphicsIDs.h"
 
 namespace galaxy
 {
@@ -22,7 +21,7 @@ CPassiveGalaxy::CPassiveGalaxy(CExeFile &Exefile,
 		CSavedGame &SavedGame, stOption *p_Option) :
 CPassive(Exefile, SavedGame, p_Option),
 processMode(&CPassiveGalaxy::processIntro),
-m_BackgroundBitmap(g_pGfxEngine->getBitmap(BMP_TITLE)),
+m_BackgroundBitmap(*g_pGfxEngine->getBitmap("TITLE")),
 mp_Menu(new CMenuGalaxy(PASSIVE, Exefile, SavedGame, p_Option, m_restartVideo))
 { }
 
@@ -46,7 +45,7 @@ void CPassiveGalaxy::processIntro()
 {
 	processMode = &CPassiveGalaxy::processTitle;
 
-	m_BackgroundBitmap = g_pGfxEngine->getBitmap(BMP_TITLE);
+	m_BackgroundBitmap = *g_pGfxEngine->getBitmap("TITLE");
 
 	g_pGfxEngine->pushEffectPtr(new CPixelate(2));
 }
@@ -65,7 +64,7 @@ void CPassiveGalaxy::processTitle()
 		{
 			// Now we process the Galaxy Menu
 			processMode = &CPassiveGalaxy::processMenu;
-			m_BackgroundBitmap = g_pGfxEngine->getBitmap(BMP_KEENSWATCH);
+			m_BackgroundBitmap = *g_pGfxEngine->getBitmap("KEENSWATCH");
 			g_pGfxEngine->pushEffectPtr(new CColorMerge(8));
 		}
 	}

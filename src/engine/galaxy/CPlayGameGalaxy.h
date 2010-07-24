@@ -11,6 +11,7 @@
 #include "../playgame/CPlayGame.h"
 #include "../../common/CMap.h"
 #include "CWorldMap.h"
+#include "CMenuGalaxy.h"
 #include <vector>
 
 namespace galaxy
@@ -21,7 +22,7 @@ class CPlayGameGalaxy : public CPlayGame
 public:
 	CPlayGameGalaxy(CExeFile &ExeFile, char level,
 			 char numplayers, char difficulty,
-			 stOption *p_option);
+			 stOption *p_option, CSavedGame &SavedGame);
 
 	bool loadGameState();
 	void loadLevel();
@@ -38,7 +39,9 @@ public:
 
 private:
 	CWorldMap m_WorldMap;
-
+	CMenuGalaxy *mp_Menu;
+	CSavedGame &m_SavedGame;
+	CBitmap m_BackgroundBitmap;
 };
 
 }

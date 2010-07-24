@@ -10,6 +10,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include <SDL.h>
 #include "../../fileio/CExeFile.h"
 #include "../CEGAGraphics.h"
@@ -50,11 +51,15 @@ public:
 			CTilemap &Tilemap, bool tileoff );
 	bool readSprites( size_t NumSprites, size_t IndexSprite );
 
+	void createBitmapsIDs();
+
 	virtual ~CEGAGraphicsGalaxy();
 
 private:
 	std::vector<unsigned long> m_egahead;
 	std::vector<ChunkStruct> m_egagraph;
+
+	std::string m_BitmapNameMap[4][1000];
 
 	CExeFile &m_Exefile;
 };

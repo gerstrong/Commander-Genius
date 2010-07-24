@@ -49,7 +49,7 @@ void CPlayerWM::process()
  */
 void CPlayerWM::processWalking()
 {
-	size_t movespeed = 100;
+	size_t movespeed = 50;
 	bool walking=false;
 
 	// Normal walking

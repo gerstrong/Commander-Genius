@@ -11,7 +11,6 @@
 #include "../../graphics/CBitmap.h"
 #include "../../graphics/CFont.h"
 #include "../../dialog/CDialog.h"
-#include "GraphicsIDs.h"
 
 #include "../../common/CMenu.h"
 

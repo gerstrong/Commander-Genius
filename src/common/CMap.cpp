@@ -503,6 +503,9 @@ void CMap::drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile)
 
 void CMap::animateAllTiles()
 {
+	if(!m_animation_enabled)
+		return;
+
 	// Let the animation timer tick!!
 	m_animtiletimer++;
 

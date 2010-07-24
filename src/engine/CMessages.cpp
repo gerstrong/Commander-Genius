@@ -60,9 +60,9 @@ bool CMessages::extractGlobalStrings()
 			{
 				case 131:
 				{
-					StringMap.insert( extractString( "CTSPACECHEAT", 0x14DEE, 0x14E51, 0 ) );
-					StringMap.insert( extractString( "GODMODEON", 0x14EF6, 0x14F06, 0 ) );
-					StringMap.insert( extractString( "GODMODEOFF", 0x14F07, 0x14F18, 0 ) );
+					StringMap.insert( extractString( "CTSPACECHEAT", 0x14DEE, 0x14E51 ) );
+					StringMap.insert( extractString( "GODMODEON", 0x14EF6, 0x14F06 ) );
+					StringMap.insert( extractString( "GODMODEOFF", 0x14F07, 0x14F18 ) );
 					StringMap.insert( extractString( "EP1_StatusBox" , 0x15052, 0x150F5, -512 ) );
 					StringMap.insert( extractString( "EP1_SHIP" , 0x1679B, 0x167D3, -512 ) );
 					StringMap.insert( extractString( "LIVES_LEFT" , 0x160D8, 0x160E5, -512 ) );
@@ -110,13 +110,13 @@ bool CMessages::extractGlobalStrings()
 					StringMap.insert( extractString( "EP2_LVL15_TargetName" , 0x19CF7, 0x19CFD, -804) );
 					StringMap.insert( extractString( "EP2_LVL16_TargetName" , 0x19CFE, 0x19D07, -804) );
 					// Message Boxes
-					StringMap.insert( extractString( "EP2_ESEQ_PART1" , 0x1A4A7, 0x1A558, -775) );
-					StringMap.insert( extractString( "EP2_ESEQ_PART2" , 0x1A559, 0x1A5F1, -775) );
-					StringMap.insert( extractString( "EP2_ESEQ_PART3_PAGE1" , 0x1A5FD, 0x1A638, -775) );
-					StringMap.insert( extractString( "EP2_ESEQ_PART3_PAGE2" , 0x1A639, 0x1A6CE, -775) );
-					StringMap.insert( extractString( "EP2_ESEQ_PART3_PAGE3" , 0x1A6CF, 0x1A72E, -775) );
-					StringMap.insert( extractString( "EP2_ESEQ_PART3_PAGE4" , 0x1A72F, 0x1A739, -775) );
-					StringMap.insert( extractString( "TO_BE_CONTINUED" , 0x1A73A, 0x1A74D, -775 ) );
+					StringMap.insert( extractString( "EP2_ESEQ_PART1" , 0x1A4A7, 0x1A558, -774) );
+					StringMap.insert( extractString( "EP2_ESEQ_PART2" , 0x1A559, 0x1A5F0, -774) );
+					StringMap.insert( extractString( "EP2_ESEQ_PART3_PAGE1" , 0x1A5FD, 0x1A638, -774) );
+					StringMap.insert( extractString( "EP2_ESEQ_PART3_PAGE2" , 0x1A639, 0x1A6CD, -774) );
+					StringMap.insert( extractString( "EP2_ESEQ_PART3_PAGE3" , 0x1A6CF, 0x1A72D, -774) );
+					StringMap.insert( extractString( "EP2_ESEQ_PART3_PAGE4" , 0x1A72F, 0x1A739, -774) );
+					StringMap.insert( extractString( "TO_BE_CONTINUED" , 0x1A73A, 0x1A74D, -774 ) );
 				} break;
 			}
 		} break;
@@ -137,18 +137,18 @@ bool CMessages::extractGlobalStrings()
 					StringMap.insert( extractString( "EP3_SHIP3" , 0x1D1D2, 0x1D24C, -765) );
 					StringMap.insert( extractString( "EP3_SHIP4" , 0x1D24D, 0x1D2C4, -765) );
 					//Mortimer
-					StringMap.insert( extractString( "EP3_MORTIMER" , 0x1C3B3, 0x1C3D8, -806) );
-					StringMap.insert( extractString( "EP3_MORTIMER2" , 0x1C3D9, 0x1C49B, -806) );
-					StringMap.insert( extractString( "EP3_MORTIMER3" , 0x1C49C, 0x1C53F, -806) );
-					StringMap.insert( extractString( "EP3_MORTIMER4" , 0x1C540, 0x1C607, -806) );
-					StringMap.insert( extractString( "EP3_MORTIMER5" , 0x1C608, 0x1C62A, -806) );
-					StringMap.insert( extractString( "EP3_MORTIMER6" , 0x1C62B, 0x1C692, -806) );
+					StringMap.insert( extractString( "EP3_MORTIMER" , 0x1C3B3, 0x1C3D8, -805) );
+					StringMap.insert( extractString( "EP3_MORTIMER2" , 0x1C3D9, 0x1C49B, -805) );
+					StringMap.insert( extractString( "EP3_MORTIMER3" , 0x1C49C, 0x1C53F, -805) );
+					StringMap.insert( extractString( "EP3_MORTIMER4" , 0x1C540, 0x1C607, -805) );
+					StringMap.insert( extractString( "EP3_MORTIMER5" , 0x1C608, 0x1C62A, -805) );
+					StringMap.insert( extractString( "EP3_MORTIMER6" , 0x1C62B, 0x1C692, -805) );
 					// Ending Pages
-					StringMap.insert( extractString( "EP3_ESEQ_PAGE1" , 0x1C693, 0x1C730, -807) );
-					StringMap.insert( extractString( "EP3_ESEQ_PAGE2" , 0x1C731, 0x1C7A7, -807) );
-					StringMap.insert( extractString( "EP3_ESEQ_PAGE3" , 0x1C7A8, 0x1C813, -807) );
-					StringMap.insert( extractString( "EP3_ESEQ_PAGE4" , 0x1C813, 0x1C821, -807) );
-					StringMap.insert( extractString( "THE_END" , 0x1C82D, 0x1C847, -807) );
+					StringMap.insert( extractString( "EP3_ESEQ_PAGE1" , 0x1C692, 0x1C72E, -805) );
+					StringMap.insert( extractString( "EP3_ESEQ_PAGE2" , 0x1C730, 0x1C7A5, -805) );
+					StringMap.insert( extractString( "EP3_ESEQ_PAGE3" , 0x1C7A7, 0x1C811, -805) );
+					StringMap.insert( extractString( "EP3_ESEQ_PAGE4" , 0x1C813, 0x1C81F, -805) );
+					StringMap.insert( extractString( "THE_END" , 0x1C82D, 0x1C845, -806) );
 				} break;
 			}
 		} break;
@@ -173,8 +173,4 @@ bool CMessages::extractGlobalStrings()
 		return true;
 	}
 	return false;
-}
-
-CMessages::~CMessages() {
-	// TODO Auto-generated destructor stub
 }
