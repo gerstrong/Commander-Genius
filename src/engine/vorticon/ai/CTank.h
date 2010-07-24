@@ -40,12 +40,12 @@ unsigned int rnd(void);
 #define TANK_LOOKFIRE_PROB    500
 
 #define TANK_MAXTRAVELDIST    200
-#define TANK_MINTRAVELDIST    20
+#define TANK_MINTRAVELDIST    100
 
 #define TANK_WALK_SPEED         28
 #define TANK_WALK_ANIM_TIME     6
 #define TANK_LOOK_ANIM_TIME     4
-#define TANK_LOOK_TOTALTIME     25
+#define TANK_LOOK_TOTALTIME     50
 #define TANK2_PREPAREFIRE_TIME  6
 
 // frames
