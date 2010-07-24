@@ -158,7 +158,7 @@ void CRay::getTouchedBy(CObject &theObject)
 {
 	if(hitdetect(theObject))
 	{
-		if( theObject.canbezapped && state ==  RAY_STATE_FLY )
+		if(theObject.canbezapped && state ==  RAY_STATE_FLY )
 		{
 			// Check, if it's not form the same object
 			if(theObject.m_type != owner.obj_type)

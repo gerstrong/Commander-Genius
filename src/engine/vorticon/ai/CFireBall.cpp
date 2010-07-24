@@ -3,7 +3,7 @@
 
 // fireball projectile shot out by Vorticon Mother (Ep3)
 
-#define FIREBALL_SPEED   		46
+#define FIREBALL_SPEED   		32
 #define FIREBALL_HARD_SPEED		80
 #define FIREBALL_ANIM_RATE     20
 

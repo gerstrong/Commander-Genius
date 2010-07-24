@@ -14,7 +14,7 @@
 #include "../../../common/CPlayer.h"
 #include <vector>
 
-#define FOOB_WALK_SPEED      15
+#define FOOB_WALK_SPEED      32
 #define FOOB_WALK_ANIM_RATE  4
 
 #define FOOB_FLEE_SPEED      77

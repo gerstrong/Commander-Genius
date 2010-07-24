@@ -9,7 +9,7 @@ enum meep_actions{
 };
 
 #define MEEP_WALK_ANIM_RATE     3
-#define MEEP_WALK_SPD           20
+#define MEEP_WALK_SPD           26
 
 #define MEEP_SING_PROB          5
 #define MEEP_SING_SHOW_TIME     10

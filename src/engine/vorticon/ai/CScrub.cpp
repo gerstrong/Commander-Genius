@@ -11,7 +11,7 @@ enum scrub_actions{
 };
 
 #define SCRUB_WALK_ANIM_TIME  11
-#define SCRUB_WALK_SPEED      25
+#define SCRUB_WALK_SPEED      16
 
 #define SCRUB_FALLSPDINCRATE   2
 #define SCRUB_MIN_FALL_SPEED  40

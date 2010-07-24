@@ -12,7 +12,7 @@
 #include "../../../common/CPlayer.h"
 #include <vector>
 
-#define BUTLER_WALK_SPEED        28
+#define BUTLER_WALK_SPEED        32
 #define BUTLER_WALK_SPEED_FAST   38
 #define BUTLER_WALK_ANIM_TIME    6
 #define BUTLER_WALK_ANIM_TIME_FAST    1
@@ -38,7 +38,6 @@ public:
 	CButler(CMap *pmap, Uint32 x, Uint32 y,
 			std::vector<CPlayer> &PlayerVect);
 	void process();
-	void getTouchedBy(CObject &theObject);
 
 private:
 	// AI for "butler" robot (ep1)

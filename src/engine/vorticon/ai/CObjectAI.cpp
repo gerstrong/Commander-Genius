@@ -61,10 +61,7 @@ void CObjectAI::process()
 
 			std::vector<CObject*>::iterator theOther = m_Objvect.begin();
 			for( ; theOther != m_Objvect.end() ; theOther++ )
-			{
-				if( (&object) != *theOther )
-					object.getTouchedBy(**theOther);
-			}
+				object.getTouchedBy(**theOther);
 		}
 	}
 

@@ -20,7 +20,7 @@ MOTHER_HURT, MOTHER_DEAD
 // Vorticon Mother AI (ep3)
 
 #define MOTHER_WALK_ANIM_RATE     3
-#define MOTHER_WALK_SPD           15
+#define MOTHER_WALK_SPD           12
 
 #define MOTHER_SPIT_PROB          9
 #define MOTHER_SPIT_PROB_HARD     40
