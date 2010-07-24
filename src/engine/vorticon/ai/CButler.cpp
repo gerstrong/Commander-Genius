@@ -12,40 +12,13 @@ m_Player(PlayerVect)
 	 state = BUTLER_WALK;
 	 movedir = RIGHT;
 	 animtimer = 0;
-	 canbezapped = false;  // will stop bullets but are not harmed
+	 m_invincible = false;  // will stop bullets but are not harmed
+	 canbezapped = true;
 }
 
 void CButler::process()
 {
 	 bool not_about_to_fall;
-	 
-	 // push keen
-	 CPlayer &touched_player = m_Player[touchedBy];
-    if (touchPlayer && !touched_player.pdie)
-    {
-   	 if(!((touched_player.pdir == movedir) && (touched_player.pwalking)))
-   	 {
-   		 g_pSound->playStereofromCoord(SOUND_YORP_BUMP, PLAY_NORESTART, scrx);
-	 
-   		 short butlerpushamount;
-   		 butlerpushamount = BUTLERPUSHAMOUNT;
-	 
-   		 if(touched_player.pwalking) butlerpushamount = 3*BUTLERPUSHAMOUNT/2;
-	 
-   		 if (touched_player.getXPosition() < getXPosition())
-   		 {
-   			 touched_player.playpushed_x = -butlerpushamount;
-   			 touched_player.playpushed_decreasetimer = 0;
-   			 touched_player.pdir = touched_player.pshowdir = LEFT;
-   		 }
-   		 else
-   		 {
-   			 touched_player.playpushed_x = butlerpushamount;
-   			 touched_player.playpushed_decreasetimer = 0;
-   			 touched_player.pdir = touched_player.pshowdir = RIGHT;
-   		 }
-   	 }
-    }
 	 
 	 switch(state)
 	 {
@@ -108,3 +81,27 @@ void CButler::process()
 	 default: break;
 	 }
 }
+
+void CButler::getTouchedBy(CObject &theObject)
+{
+	// push keen
+	if( theObject.m_type == OBJ_PLAYER )
+	{
+		CPlayer &Player = dynamic_cast<CPlayer&>(theObject);
+		if(Player.dead)
+			return;
+
+		 if(!((Player.pdir == movedir) && (Player.pwalking)))
+		 {
+			 g_pSound->playStereofromCoord(SOUND_YORP_BUMP, PLAY_NORESTART, scrx);
+
+			 short butlerpushamount;
+			 butlerpushamount = BUTLERPUSHAMOUNT;
+
+			 if(Player.pwalking) butlerpushamount = 3*BUTLERPUSHAMOUNT/2;
+
+			 Player.bump(butlerpushamount, false);
+		 }
+	}
+}
+

@@ -38,6 +38,7 @@ public:
 	CButler(CMap *pmap, Uint32 x, Uint32 y,
 			std::vector<CPlayer> &PlayerVect);
 	void process();
+	void getTouchedBy(CObject &theObject);
 
 private:
 	// AI for "butler" robot (ep1)

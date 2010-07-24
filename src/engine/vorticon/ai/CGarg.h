@@ -35,7 +35,7 @@
 #define GARG_DYING_FRAME   68
 #define GARG_DEAD_FRAME    69
 
-#define GARGDIE_START_INERTIA      -80
+#define GARGDIE_START_INERTIA      -20
 
 // Reference to ../misc.cpp
 unsigned int rnd(void);
@@ -61,8 +61,6 @@ private:
 	unsigned char about_to_charge;
 	unsigned char walkframe;
 	unsigned int dist_traveled;
-	signed int gargdie_inertia_y;
-
 	unsigned char movedir;
 	unsigned char detectedPlayer, detectedPlayerIndex;
 

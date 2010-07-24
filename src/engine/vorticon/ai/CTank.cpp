@@ -27,27 +27,6 @@ m_Object(Object)
 
 void CTank::process()
 {
-	// stop keen from walking through our sprite
-	if (touchPlayer && !m_Player[touchedBy].pdie)
-	{
-		g_pSound->playStereofromCoord(SOUND_YORP_BUMP, PLAY_NORESTART, scrx);
-
-		if (!((m_Player[touchedBy].getYPosition()) < (getYUpPos() - 300))) // give the m_Player a little jump-over room
-		{
-			if (m_Player[touchedBy].getXPosition() < getXLeftPos())
-			{
-				m_Player[touchedBy].playpushed_x = -TANKPUSHAMOUNT;
-				m_Player[touchedBy].playpushed_decreasetimer = 0;
-				m_Player[touchedBy].pdir = m_Player[touchedBy].pshowdir = LEFT;
-			}
-			else
-			{
-				m_Player[touchedBy].playpushed_x = TANKPUSHAMOUNT;
-				m_Player[touchedBy].playpushed_decreasetimer = 0;
-				m_Player[touchedBy].pdir = m_Player[touchedBy].pshowdir = RIGHT;
-			}
-		}
-	}
 
 	switch(state)
 	{
@@ -216,4 +195,27 @@ bool CTank::CanMoveRight()
 			[mp_Map->at((getXRightPos()+1)>>CSF, (getYDownPos()+256)>>CSF)];
 	if (!blockedr && currentTile.bup) return true;
 	return false;
+}
+
+void CTank::getTouchedBy(CObject &theObject)
+{
+	// push keen
+	if( theObject.m_type == OBJ_PLAYER )
+	{
+		CPlayer &Player = dynamic_cast<CPlayer&>(theObject);
+		if(Player.dead)
+			return;
+
+		 if(!((Player.pdir == movedir) && (Player.pwalking)))
+		 {
+			 g_pSound->playStereofromCoord(SOUND_YORP_BUMP, PLAY_NORESTART, scrx);
+
+			 short butlerpushamount;
+			 butlerpushamount = TANKPUSHAMOUNT;
+
+			 if(Player.pwalking) butlerpushamount = 3*butlerpushamount/2;
+
+			 Player.bump( (Player.getXPosition() < getXPosition()) ? -butlerpushamount : butlerpushamount, false);
+		 }
+	}
 }
