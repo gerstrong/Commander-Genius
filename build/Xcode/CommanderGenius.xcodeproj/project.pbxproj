@@ -17,6 +17,7 @@
 		23575634101A5E5900275638 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D3EA911013AF1D001643FA /* Cocoa.framework */; };
 		2357564E101A5F8F00275638 /* Ogg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564C101A5F8F00275638 /* Ogg.framework */; };
 		2357564F101A5F8F00275638 /* Vorbis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564D101A5F8F00275638 /* Vorbis.framework */; };
+		237421EA11FB8554000EEA5B /* GraphicsIDs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 237421E911FB8554000EEA5B /* GraphicsIDs.cpp */; };
 		23A11A9111DE888400747BFA /* CHUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11A8F11DE888400747BFA /* CHUD.cpp */; };
 		23A11BAE11E7C3F900747BFA /* CAutoRay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B7411E7C3F900747BFA /* CAutoRay.cpp */; };
 		23A11BAF11E7C3F900747BFA /* CBallJack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B7611E7C3F900747BFA /* CBallJack.cpp */; };
@@ -203,6 +204,7 @@
 		2357564C101A5F8F00275638 /* Ogg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Ogg.framework; sourceTree = "<group>"; };
 		2357564D101A5F8F00275638 /* Vorbis.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Vorbis.framework; sourceTree = "<group>"; };
 		23575688101A6AE600275638 /* Commander Genius.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Commander Genius.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		237421E911FB8554000EEA5B /* GraphicsIDs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphicsIDs.cpp; sourceTree = "<group>"; };
 		23A11A8F11DE888400747BFA /* CHUD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CHUD.cpp; sourceTree = "<group>"; };
 		23A11A9011DE888400747BFA /* CHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHUD.h; sourceTree = "<group>"; };
 		23A11B7411E7C3F900747BFA /* CAutoRay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAutoRay.cpp; sourceTree = "<group>"; };
@@ -505,7 +507,6 @@
 		63CD111C11CFF5FB00F60BC8 /* CPlayGameGalaxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlayGameGalaxy.cpp; sourceTree = "<group>"; };
 		63CD111D11CFF5FB00F60BC8 /* CPlayGameGalaxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPlayGameGalaxy.h; sourceTree = "<group>"; };
 		63CD111E11CFF5FB00F60BC8 /* EGAStructs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGAStructs.h; sourceTree = "<group>"; };
-		63CD111F11CFF5FB00F60BC8 /* GraphicsIDs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphicsIDs.h; sourceTree = "<group>"; };
 		63CD112211CFF5FB00F60BC8 /* CAbout.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAbout.cpp; sourceTree = "<group>"; };
 		63CD112311CFF5FB00F60BC8 /* CAbout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAbout.h; sourceTree = "<group>"; };
 		63CD112411CFF5FB00F60BC8 /* CCredits.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCredits.cpp; sourceTree = "<group>"; };
@@ -1141,6 +1142,7 @@
 		63CD111311CFF5FB00F60BC8 /* galaxy */ = {
 			isa = PBXGroup;
 			children = (
+				237421E911FB8554000EEA5B /* GraphicsIDs.cpp */,
 				23C64A7E11F31D8A0053CA36 /* ai */,
 				23C64A7B11F31D6F0053CA36 /* CWorldMap.cpp */,
 				23C64A7C11F31D6F0053CA36 /* CWorldMap.h */,
@@ -1155,7 +1157,6 @@
 				63CD111C11CFF5FB00F60BC8 /* CPlayGameGalaxy.cpp */,
 				63CD111D11CFF5FB00F60BC8 /* CPlayGameGalaxy.h */,
 				63CD111E11CFF5FB00F60BC8 /* EGAStructs.h */,
-				63CD111F11CFF5FB00F60BC8 /* GraphicsIDs.h */,
 				63CD112011CFF5FB00F60BC8 /* playgame */,
 			);
 			path = galaxy;
@@ -1849,6 +1850,7 @@
 				23C64A8111F31D8A0053CA36 /* CPlayerWM.cpp in Sources */,
 				23C64A8411F31D9C0053CA36 /* CAnkhShield.cpp in Sources */,
 				23C64A8711F31DAA0053CA36 /* CPlayGameVorticonWM.cpp in Sources */,
+				237421EA11FB8554000EEA5B /* GraphicsIDs.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
