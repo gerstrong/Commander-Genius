@@ -6,7 +6,7 @@
 #define PLATFORM_WAIT   1
 
 #define PLATFORM_WAITTIME       50
-#define PLATFORM_MOVE_SPD       12
+#define PLATFORM_MOVE_SPD       23
 
 #define PLATFORM_ANIM_RATE      15
 

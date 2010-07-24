@@ -79,6 +79,8 @@ public:
 	bool CanMoveLeft();
 	bool CanMoveRight();
 
+	void getTouchedBy(CObject &theObject);
+
 protected:
 	// Tank Robot (Ep2 and (ep1))
 	enum{ TANK_WALK,TANK_TURN,TANK_WAIT,TANK_WAIT_LOOK,TANK_FIRE,TANK_LOOK

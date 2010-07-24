@@ -17,7 +17,7 @@
 #define YORP_LOOK_TIME  16   // time each frame of YORP_LOOK is shown
 #define YORP_STUN_ANIM_TIME  10
 #define YORP_WALK_ANIM_TIME  5
-#define YORP_WALK_SPEED      17
+#define YORP_WALK_SPEED      19
 #define YORP_WALK_ANIM_TIME_FAST  5
 #define YORP_WALK_SPEED_FAST      19
 

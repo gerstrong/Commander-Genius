@@ -6,7 +6,7 @@
 // Baby Vorticon (the superfast little blue creatures that knock you down)
 // (ep 2 & 3)
 
-#define BABY_WALK_SPEED         90
+#define BABY_WALK_SPEED         77
 
 #define BABY_WALK_ANIM_RATE     6
 
