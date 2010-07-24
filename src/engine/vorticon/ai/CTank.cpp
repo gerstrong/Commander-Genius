@@ -23,37 +23,14 @@ m_Object(Object)
 	alreadyfiredcauseonsamelevel = 0;
 	dist_to_travel = TANK_MAXTRAVELDIST;
 	canbezapped = true;  // will stop bullets but are not harmed
+	m_invincible = true;
 }
 
 void CTank::process()
 {
-	// stop keen from walking through our sprite
-	if (touchPlayer && !m_Player[touchedBy].pdie)
-	{
-		g_pSound->playStereofromCoord(SOUND_YORP_BUMP, PLAY_NORESTART, scrx);
-
-		if (!((m_Player[touchedBy].getYPosition()) < (getYUpPos() - 300))) // give the m_Player a little jump-over room
-		{
-			if (m_Player[touchedBy].getXPosition() < getXLeftPos())
-			{
-				m_Player[touchedBy].playpushed_x = -TANKPUSHAMOUNT;
-				m_Player[touchedBy].playpushed_decreasetimer = 0;
-				m_Player[touchedBy].pdir = m_Player[touchedBy].pshowdir = LEFT;
-			}
-			else
-			{
-				m_Player[touchedBy].playpushed_x = TANKPUSHAMOUNT;
-				m_Player[touchedBy].playpushed_decreasetimer = 0;
-				m_Player[touchedBy].pdir = m_Player[touchedBy].pshowdir = RIGHT;
-			}
-		}
-	}
-
 	switch(state)
 	{
-
-	// Walk in a direction
-	case TANK_WALK:
+	case TANK_WALK: // Walk in a direction
 	{
 		// is keen on same level?
 		if (movedir==LEFT)
@@ -216,4 +193,25 @@ bool CTank::CanMoveRight()
 			[mp_Map->at((getXRightPos()+1)>>CSF, (getYDownPos()+256)>>CSF)];
 	if (!blockedr && currentTile.bup) return true;
 	return false;
+}
+
+void CTank::getTouchedBy(CObject &theObject)
+{   // push keen
+	if(hitdetect(theObject))
+	{
+		if( theObject.m_type == OBJ_PLAYER )
+		{
+			CPlayer &Player = dynamic_cast<CPlayer&>(theObject);
+
+			if(Player.dead)
+				return;
+
+			if(!((Player.pdir == movedir) && (Player.pwalking)))
+			{
+				g_pSound->playStereofromCoord(SOUND_YORP_BUMP, PLAY_NORESTART, scrx);
+				Player.bump( Player.getXPosition() < getXPosition() ?
+						TANKPUSHAMOUNT : -TANKPUSHAMOUNT, false);
+			}
+		}
+	}
 }

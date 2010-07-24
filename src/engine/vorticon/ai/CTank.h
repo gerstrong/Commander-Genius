@@ -78,6 +78,7 @@ public:
 
 	bool CanMoveLeft();
 	bool CanMoveRight();
+	void getTouchedBy(CObject &theObject);
 
 protected:
 	// Tank Robot (Ep2 and (ep1))
