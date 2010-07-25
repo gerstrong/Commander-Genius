@@ -28,8 +28,8 @@
 #define WAVE_IN_S16		(WAVE_SILENCE_S16-WAVEFORM_VOLUME_16)
 #define WAVE_OUT_S16		(WAVE_SILENCE_S16+WAVEFORM_VOLUME_16)
 
-//#define SLOW_RATE      90		// Wait time for resampling PC Speaker Sound.
-#define SLOW_RATE      45		// Wait time for resampling PC Speaker Sound.
+#define SLOW_RATE      90		// Wait time for resampling PC Speaker Sound.
+//#define SLOW_RATE      45		// Wait time for resampling PC Speaker Sound.
 // The higher it is, the faster sound is played!
 
 

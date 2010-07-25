@@ -39,6 +39,7 @@ void CSoundChannel::setFrequencyCorrection(int freq)
 {
 	switch (freq)
 	{
+		case 48000: m_freq_corr = 16; break;
 		case 44100: m_freq_corr = 15; break;
 		case 22050: m_freq_corr = 14; break;
 		case 11025: m_freq_corr = 12; break;

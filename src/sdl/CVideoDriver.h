@@ -98,7 +98,7 @@ public:
 	void setOGLFilter(unsigned char value) { m_opengl_filter = (value==1) ? GL_LINEAR : GL_NEAREST ; }
 #else
 	void enableOpenGL(bool value) { m_opengl = false; }
-	void setOGLFilter(unsigned char value) { m_opengl_filter = 0; }
+	void setOGLFilter(unsigned char value) { }
 #endif
 	void checkResolution( st_resolution& resolution, int flags );
 	st_resolution getResolution(){ return *m_Resolution_pos; }
@@ -130,6 +130,7 @@ private:
 
 #ifdef USE_OPENGL
 	COpenGL	*mp_OpenGL;
+	int m_opengl_filter;
 #endif
 	st_resolution m_Resolution;
 
@@ -142,7 +143,6 @@ private:
 	unsigned short Zoom;
 	unsigned int m_targetfps;	// Used for automatic frame skipping
 	bool m_opengl;
-	int m_opengl_filter;
 	int m_maxwidth;
 	int m_value;
 	bool m_aspect_correction;

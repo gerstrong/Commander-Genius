@@ -21,6 +21,10 @@
 CDialog::CDialog(Uint16 w, Uint16 h, char inputmode, Uint8 theme) :
 m_Font_ID((theme==DLG_THEME_GALAXY) ? 1 : 0)
 {
+	m_int=0;
+	m_min=0;
+	m_max=0;
+
 	m_theme = theme;
 	
 	m_x = (300/2)-(w*4)+10;

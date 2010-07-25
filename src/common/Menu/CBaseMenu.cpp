@@ -52,5 +52,6 @@ bool CBaseMenu::mustClose()
 {	return m_mustclose;	}
 
 CBaseMenu::~CBaseMenu() {
-	// TODO Auto-generated destructor stub
+	if(mp_Dialog) delete mp_Dialog;
+	mp_Dialog = NULL;
 }

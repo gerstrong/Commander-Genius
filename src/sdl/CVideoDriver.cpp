@@ -38,7 +38,7 @@ CVideoDriver::CVideoDriver() :
 m_blitsurface_alloc(false)
 {
 	// Default values
-
+	m_maxwidth = 0;
 	showfps=true;
 #if defined(WIZ) || defined(GP2X)
 	m_Resolution.width=320;
@@ -66,8 +66,10 @@ m_blitsurface_alloc(false)
 #ifdef USE_OPENGL
 	m_opengl_filter = GL_NEAREST;
 	mp_OpenGL = NULL;
-	m_opengl = false; // Must stay optional for better compatibility
 #endif
+
+	m_opengl = false; // Must stay optional for better compatibility
+
 	m_aspect_correction = true;
 
 	screenrect.x=0;

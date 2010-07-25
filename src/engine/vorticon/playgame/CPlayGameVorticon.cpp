@@ -121,7 +121,6 @@ bool CPlayGameVorticon::init()
 
 	// Create an empty map
 	m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
-	std::vector<CObject*>::iterator it_obj = m_Object.begin();
 
 	CMapLoader MapLoader( &m_Map, &m_Player );
 	MapLoader.m_checkpointset = m_checkpointset;

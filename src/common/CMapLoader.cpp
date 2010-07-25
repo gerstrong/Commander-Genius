@@ -53,7 +53,7 @@ mp_vec_Player(p_PlayerVect)
 }
 
 // Loads the map into the memory
-bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool loadNewMusic )
+bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool loadNewMusic, bool stategame )
 {
 	int t;
 	Uint32 c=0;
@@ -140,7 +140,7 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	curmapx = curmapy = numruns = 0;
     resetcnt = resetpt = 0;
 	
-	if(mp_objvect)
+	if(mp_objvect && stategame == false)
 	{
 		std::vector<CObject*>::iterator obj = mp_objvect->begin();
 		for( ; obj != mp_objvect->end() ; obj++ )

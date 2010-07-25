@@ -24,6 +24,9 @@ bool CPlayGameVorticon::loadGameState()
 		// Create the special merge effect (Fadeout)
 		CColorMerge *pColorMergeFX = new CColorMerge(8);
 
+		// Prepare for loading the new level map and the players.
+		cleanup();
+
 		// get the episode, level and difficulty
 		m_SavedGame.decodeData(m_Episode);
 		m_SavedGame.decodeData(m_Level);
@@ -52,10 +55,13 @@ bool CPlayGameVorticon::loadGameState()
 
 		CMapLoader Maploader(&m_Map, &m_Player);
 		Maploader.mp_objvect = &m_Object;
-		if(!Maploader.load(m_Episode, m_Level, m_Gamepath, true))
+		m_checkpointset = checkpointset;
+		Maploader.m_checkpointset = m_checkpointset;
+		if(!Maploader.load(m_Episode, m_Level, m_Gamepath, true, false))
 			return false;
 
-		m_checkpointset = checkpointset;
+		m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
+
 		m_Map.m_Dark = dark;
 		m_checkpoint_x = checkx;
 		m_checkpoint_y = checky;
@@ -63,10 +69,6 @@ bool CPlayGameVorticon::loadGameState()
 		m_level_command = START_LEVEL;
 		g_pMusicPlayer->stop();
 
-		// Prepare for loading the new level map and the players.
-		cleanup();
-
-		init();
 		std::vector<CPlayer> :: iterator player;
 		for( player=m_Player.begin() ; player != m_Player.end() ; player++ ) {
 			int x, y;
@@ -79,6 +81,7 @@ bool CPlayGameVorticon::loadGameState()
 			m_SavedGame.decodeData(player->blockedl);
 			m_SavedGame.decodeData(player->blockedr);
 			m_SavedGame.decodeData(player->inventory);
+			player->pdie = 0;
 		}
 
 		// load the number of objects on screen
@@ -86,15 +89,15 @@ bool CPlayGameVorticon::loadGameState()
 		m_SavedGame.decodeData(size);
 		for( Uint32 i=0 ; i<size  ; i++ ) {
 			unsigned int x,y;
-			// save all the objects states
+
 			if(i >= m_Object.size())
 			{
-				CObject *obj = new CObject( &m_Map, 0, 0, OBJ_NONE);
-				obj->exists = false;
-				m_Object.push_back(obj);
+				CObject *object = new CObject( &m_Map, 0, 0, OBJ_NONE);
+				object->exists = false;
+				m_Object.push_back(object);
 			}
 
-			CObject *object=m_Object.at(i);
+			CObject* object = m_Object.at(i);
 
 			m_SavedGame.decodeData(object->m_type);
 			m_SavedGame.decodeData(x);
@@ -120,7 +123,8 @@ bool CPlayGameVorticon::loadGameState()
 				object->m_type == OBJ_RAY or
 				object->m_type == OBJ_SNDWAVE or
 				object->m_type == OBJ_FIREBALL or
-				object->m_type == OBJ_ICEBIT) // Some objects are really not needed. So don't load them
+				object->m_type == OBJ_ICEBIT or
+				object->m_type == OBJ_GOTPOINTS ) // Some objects are really not needed. So don't load them
 				object->exists = false;
 		}
 
@@ -143,6 +147,11 @@ bool CPlayGameVorticon::loadGameState()
 		g_pGfxEngine->pushEffectPtr(pColorMergeFX);
 
 		g_pGfxEngine->Palette.setdark(m_Map.m_Dark);
+
+		mp_ObjectAI = new CObjectAI(&m_Map, m_Object, m_Player, mp_option,
+									m_NumPlayers, m_Episode, m_Level,
+									m_Difficulty, m_Map.m_Dark);
+		setupPlayers();
 
 		//Set surface alpha
 		SDL_SetAlpha( g_pVideoDriver->FGLayerSurface, SDL_SRCALPHA, 225 );

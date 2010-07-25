@@ -24,6 +24,7 @@ m_animation_enabled(true),
 m_Dark(false),
 m_Difficulty(1),
 m_PlatExtending(false),
+mp_scrollsurface(NULL),
 m_Tilemaps(g_pGfxEngine->getTileMaps()),
 m_animtiletimer(0),
 m_Background(false)

@@ -548,7 +548,7 @@ bool CEGAGraphicsGalaxy::readfonts()
 
 			// Find out the maximum character width
 			int w = 0;
-			int maxwidth;
+			int maxwidth=0;
 			for(Uint16 j = 0; j < 256; j++)
 			{
 				Font.setWidthToCharacter(FontHead->Width[j],j);

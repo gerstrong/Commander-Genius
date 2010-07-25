@@ -47,7 +47,6 @@ short openOGGSound(FILE *fp, SDL_AudioSpec *pspec, Uint16 format, stHQSound *pso
         vorbisComment = ov_comment(&oggStream, -1);
 
         pspec->format = AUDIO_S16LSB; // Ogg Audio seems to always use this format
-        //pspec->format = (AUDIO_S16LSB*147)/160; // Ogg Audio seems to always use this format
 
         pspec->channels = vorbisInfo->channels;
         pspec->freq = vorbisInfo->rate;
