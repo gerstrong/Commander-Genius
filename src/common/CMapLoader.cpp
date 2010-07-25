@@ -33,6 +33,7 @@
 #include "../engine/vorticon/ai/CDoor.h"
 #include "../engine/vorticon/ai/CFoob.h"
 #include "../engine/vorticon/ai/CTank.h"
+#include "../engine/vorticon/ai/CGuardRobot.h"
 #include "../engine/vorticon/ai/CTeleporter.h"
 #include "../engine/vorticon/ai/CMessie.h"
 #include "../engine/vorticon/ai/CMeep.h"
@@ -364,7 +365,7 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				if (episode==1)
 					enemyobject = new CTank( mp_map, x<<CSF, y<<CSF, *mp_vec_Player, *mp_objvect);
 				else if (episode==2)
-					enemyobject = new CGuardRobot( mp_map, x<<CSF, y<<CSF, *mp_vec_Player, *mp_objvect);
+					enemyobject = new CGuardRobot( mp_map, x<<CSF, y<<CSF, *mp_objvect);
 				else if (episode==3)
 					enemyobject = new CVortiNinja( mp_map, x<<CSF, y<<CSF, *mp_vec_Player);
 				break;

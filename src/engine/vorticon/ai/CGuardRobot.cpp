@@ -1,43 +1,64 @@
 #include "../../../sdl/sound/CSound.h"
 #include "../../spritedefines.h"
 
-#include "CTank.h"
+#include "CGuardRobot.h"
 #include "CRay.h"
 
+const int PREPAREFIRE_TIME = 6;
+// frames
+const int WALK_LEFT_FRAME = 116;
+const int WALK_RIGHT_FRAME = 112;
+const int LOOK_FRAME = 120;
+
+const int PREPAREFIRE_TIME_FAST = 22;
+const int WAITAFTER_FIRE = 14;
+
+const int TRAVELDIST = 100;
+
+const int SAME_LEVEL_TIME = 150;
+const int SHOTS_PER_VOLLEY = 4;
+const int MIN_TIME_TILL_CAN_FIRE = 31;
+const int MAX_TIME_TILL_CAN_FIRE = 200;
+const int TIME_BETWEEN_SHOTS = 12;
+const int TIME_BEFORE_FIRE_WHEN_SEE = 6;
+const int TIME_BETWEEN_FIRE_CAUSE_LEVEL = 25;
+
+const int WALK_SPEED = 28;
+const unsigned int WALK_ANIM_TIME = 6;
+const unsigned int LOOK_ANIM_TIME = 4;
+const unsigned int LOOK_TOTALTIME = 25;
+
+const int FIRE_PAUSE_TIME = 25;
+
 CGuardRobot::CGuardRobot(CMap *p_map, Uint32 x, Uint32 y,
-		std::vector<CPlayer>& Player, std::vector<CObject*>& Object) :
-CTank(p_map, x, y, Player, Object, OBJ_TANKEP2)
+		std::vector<CObject*>& Object) :
+CObject(p_map, x, y, OBJ_GUARDROBOT),
+m_ObjectVect(Object)
 {
 	//first time initilization
-	m_type = OBJ_TANKEP2;
 	state = TANK_WALK;
 	movedir = RIGHT;
 	fireafterlook = 0;
 	animtimer = 0;
 	timer = 0;
-	dist_to_travel = TANK_MINTRAVELDIST;
+	dist_to_travel = TRAVELDIST;
 	pausetime = 0;
-	timetillcanfire = TANK2_MAX_TIME_TILL_CAN_FIRE;
+	timetillcanfire = MAX_TIME_TILL_CAN_FIRE;
 	firetimes = 0;
-	detectedPlayer = 0;
-	detectedPlayerIndex = m_Player[0].m_index;
 	turnaroundtimer = 0;
 
-	canbezapped = 1;   // will stop bullets but is not harmed
-	inhibitfall = 1;
+	canbezapped = true;   // will stop bullets but is not harmed
+	m_invincible = true;
+	inhibitfall = true;
 }
 
 void CGuardRobot::process()
 {
-	// touched player?
-	if (touchPlayer && !m_Player[touchedBy].pdie)
-		m_Player[touchedBy].kill();
-
 	switch(state)
 	{
 	case TANK_LOOK:
 		// animation
-		if (animtimer > TANK_LOOK_ANIM_TIME)
+		if (animtimer > LOOK_ANIM_TIME)
 		{
 			frame ^= 1;
 			animtimer = 0;
@@ -45,30 +66,20 @@ void CGuardRobot::process()
 		else
 			animtimer++;
 
-		sprite = TANK2_LOOK_FRAME + frame;
+		sprite = LOOK_FRAME + frame;
 
 		// when time is up go back to moving
-		if (timer > TANK_LOOK_TOTALTIME)
+		if (timer > LOOK_TOTALTIME)
 		{
-			// decide what direction to go
-			if (blockedr)
-			{ movedir = LEFT; }
-			else if (blockedl)
-			{ movedir = RIGHT; }
-			else if (getXPosition() > m_Player[0].getXPosition())
-			{ movedir = LEFT; }
-			else
-			{ movedir = RIGHT; }
-
 			alreadyfiredcauseonsamelevel = 0;
-			timetillcanfire = (rnd()%(TANK2_MAX_TIME_TILL_CAN_FIRE-TANK2_MIN_TIME_TILL_CAN_FIRE))+TANK2_MIN_TIME_TILL_CAN_FIRE;
-			timetillcanfirecauseonsamelevel = TANK2_TIME_BEFORE_FIRE_WHEN_SEE;
+			timetillcanfire = (rnd()%(MAX_TIME_TILL_CAN_FIRE-MIN_TIME_TILL_CAN_FIRE))+MIN_TIME_TILL_CAN_FIRE;
+			timetillcanfirecauseonsamelevel = TIME_BEFORE_FIRE_WHEN_SEE;
 			firetimes = 0;
 			state = TANK_WALK;
 			frame = 0;
 			animtimer = 0;
 			timer = 0;
-			dist_to_travel = TANK_MINTRAVELDIST;
+			dist_to_travel = TRAVELDIST;
 		}
 		else
 			timer++;
@@ -77,7 +88,7 @@ void CGuardRobot::process()
 
 	case TANK_WALK:
 		// hover animation
-		if (animtimer > TANK_WALK_ANIM_TIME)
+		if (animtimer > WALK_ANIM_TIME)
 		{
 			if (frame>=3) frame=0;
 			else frame++;
@@ -85,9 +96,9 @@ void CGuardRobot::process()
 		} else animtimer++;
 
 		if (movedir==LEFT)
-			sprite = TANK2_WALK_LEFT_FRAME + frame;
+			sprite = WALK_LEFT_FRAME + frame;
 		else
-			sprite = TANK2_WALK_RIGHT_FRAME + frame;
+			sprite = WALK_RIGHT_FRAME + frame;
 
 		// if we're about to, or just did, fire a volley, don't move
 		if (!hardmode)
@@ -113,15 +124,15 @@ void CGuardRobot::process()
 					newobject = new CRay(mp_Map,getXRightPos()+(8<<STC), getYUpPos()+(5<<STC), RIGHT);
 				else
 					newobject = new CRay(mp_Map,getXPosition(), getYUpPos()+(5<<STC), LEFT);
-				newobject->setOwner(OBJ_TANKEP2, m_index);
+				newobject->setOwner(OBJ_GUARDROBOT, m_index);
 				newobject->sprite = ENEMYRAYEP2;
 
-				m_Object.push_back(newobject);
+				m_ObjectVect.push_back(newobject);
 
-				timetillnextshot = TANK2_TIME_BETWEEN_SHOTS;
+				timetillnextshot = TIME_BETWEEN_SHOTS;
 				if (!--firetimes)
 				{
-					pausetime = TANK_FIRE_PAUSE_TIME;
+					pausetime = FIRE_PAUSE_TIME;
 				}
 			}
 			else
@@ -148,57 +159,14 @@ void CGuardRobot::process()
 		}
 
 		// is keen on same level?
-		tank_searchplayers();
-
-		if (detectedPlayer)
-		{
-			unsigned int x = getXPosition();
-			// facing keen?
-			alreadyfiredcauseonsamelevel = 1;
-			// are we facing him?
-			if (((m_Player[detectedPlayerIndex].getXPosition() < x) && movedir==LEFT) || \
-					((m_Player[detectedPlayerIndex].getXPosition() > x) && movedir==RIGHT))
-			{
-				// yes, we're facing him! FIRE!!!
-				if (!firetimes)
-				{
-					if (!timetillcanfirecauseonsamelevel)
-					{
-						tank2_fire();
-						timetillcanfirecauseonsamelevel = TANK2_TIME_BETWEEN_FIRE_CAUSE_LEVEL;
-					}
-					else timetillcanfirecauseonsamelevel--;
-				}
-			}
-			else
-			{
-				// no, we're not facing him, on hard difficulty turn around
-				if (hardmode)
-				{
-					if (!turnaroundtimer)
-					{
-						frame = 0;
-						timer = 0;
-						animtimer = 0;
-						state = TANK_LOOK;
-						turnaroundtimer = 100;
-					}
-					else turnaroundtimer--;
-				}
-			}
-		}
-		else
-		{  // no, not on same level
-			alreadyfiredcauseonsamelevel = 0;
-			turnaroundtimer = 0;
-		}
-
+		alreadyfiredcauseonsamelevel = 0;
+		turnaroundtimer = 0;
 
 		if (movedir==LEFT)
 		{  // move left
 			if (!blockedl)
 			{
-				moveLeft(TANK_WALK_SPEED);
+				moveLeft(WALK_SPEED);
 				dist_to_travel--;
 			}
 			else
@@ -207,14 +175,15 @@ void CGuardRobot::process()
 				timer = 0;
 				animtimer = 0;
 				state = TANK_LOOK;
+				movedir = RIGHT;
 			}
 		}
 		else
 		{  // move right
-			sprite = TANK2_WALK_RIGHT_FRAME + frame;
+			sprite = WALK_RIGHT_FRAME + frame;
 			if (!blockedr)
 			{
-				moveRight(TANK_WALK_SPEED);
+				moveRight(WALK_SPEED);
 				dist_to_travel--;
 			}
 			else
@@ -223,6 +192,7 @@ void CGuardRobot::process()
 				timer = 0;
 				animtimer = 0;
 				state = TANK_LOOK;
+				movedir = LEFT;
 			}
 		}
 		break;
@@ -233,27 +203,8 @@ void CGuardRobot::process()
 // makes the tank start firing
 void CGuardRobot::tank2_fire()
 {
-	firetimes = TANK2_SHOTS_PER_VOLLEY;
+	firetimes = SHOTS_PER_VOLLEY;
 	timetillnextshot = 0;
-	timetillcanfire = (rnd()%(TANK2_MAX_TIME_TILL_CAN_FIRE-TANK2_MIN_TIME_TILL_CAN_FIRE))+TANK2_MIN_TIME_TILL_CAN_FIRE;
-	pausetime = TANK_FIRE_PAUSE_TIME;
-}
-
-
-// searches for any players on the same level as the tank
-void CGuardRobot::tank_searchplayers()
-{
-	detectedPlayer = 0;
-	for( size_t i=0 ; i<m_Player.size() ; i++ )
-	{
-		if (m_Player[i].getYPosition() >= getXLeftPos())
-		{
-			if ( (m_Player[i].getYDownPos()) <= (getYDownPos()) )
-			{
-				detectedPlayer = 1;
-				detectedPlayerIndex = i;
-				break;
-			}
-		}
-	}
+	timetillcanfire = (rnd()%(MAX_TIME_TILL_CAN_FIRE-MIN_TIME_TILL_CAN_FIRE))+MIN_TIME_TILL_CAN_FIRE;
+	pausetime = FIRE_PAUSE_TIME;
 }

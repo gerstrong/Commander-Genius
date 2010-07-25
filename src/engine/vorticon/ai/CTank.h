@@ -32,7 +32,6 @@
 //reference to ../misc.cpp
 unsigned int rnd(void);
 
-#define TANK2_SAME_LEVEL_TIME   150
 #define TANK_REPEAT_FIRE_TIME  800
 
 // when this probability is satisfied, there is 50% probability
@@ -46,23 +45,10 @@ unsigned int rnd(void);
 #define TANK_WALK_ANIM_TIME     6
 #define TANK_LOOK_ANIM_TIME     4
 #define TANK_LOOK_TOTALTIME     25
-#define TANK2_PREPAREFIRE_TIME  6
-
-// frames
-#define TANK2_WALK_LEFT_FRAME       116
-#define TANK2_WALK_RIGHT_FRAME      112
-#define TANK2_LOOK_FRAME            120
 
 #define TANKPUSHAMOUNT        16
 
 #define TANK_FIRE_PAUSE_TIME		25
-
-#define TANK2_SHOTS_PER_VOLLEY    4
-#define TANK2_MIN_TIME_TILL_CAN_FIRE  31
-#define TANK2_MAX_TIME_TILL_CAN_FIRE  50
-#define TANK2_TIME_BETWEEN_SHOTS  12
-#define TANK2_TIME_BEFORE_FIRE_WHEN_SEE      6
-#define TANK2_TIME_BETWEEN_FIRE_CAUSE_LEVEL  25
 
 #define Sprite g_pGfxEngine->Sprite
 
@@ -81,7 +67,7 @@ public:
 	void getTouchedBy(CObject &theObject);
 
 protected:
-	// Tank Robot (Ep2 and (ep1))
+	// Tank Robot
 	enum{ TANK_WALK,TANK_TURN,TANK_WAIT,TANK_WAIT_LOOK,TANK_FIRE,TANK_LOOK
 	} state;
 
@@ -108,17 +94,6 @@ protected:
 	std::vector<CPlayer>& m_Player;
 	std::vector<CObject*>& m_Object;
 	bool hardmode;
-};
-
-class CGuardRobot : public CTank
-{
-public:
-	CGuardRobot(CMap *p_map, Uint32 x, Uint32 y,
-			std::vector<CPlayer>& Player, std::vector<CObject*>& Object);
-	void process();
-	void tank2_fire();
-	void tank_searchplayers();
-private:
 };
 
 #endif /* TANKEP2_H_ */

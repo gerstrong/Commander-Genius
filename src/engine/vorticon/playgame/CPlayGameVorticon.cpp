@@ -207,11 +207,9 @@ void CPlayGameVorticon::process()
 			{
 				if( mp_Menu->getExitEvent() )
 					m_exitgame = true;
-
-				if( mp_Menu->mustEndGame() )
+				else if( mp_Menu->mustEndGame() )
 					m_endgame = true;
-
-				if( mp_Menu->mustStartGame() )
+				else if( mp_Menu->mustStartGame() )
 				{
 					m_NumPlayers = mp_Menu->getNumPlayers();
 					m_Difficulty = mp_Menu->getDifficulty();

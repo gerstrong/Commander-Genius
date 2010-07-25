@@ -77,7 +77,7 @@ void CObject::setupObjectType(int Episode)
 
 	// Mainly Episode 2
 	case OBJ_SCRUB: sprite = OBJ_SCRUB_DEFSPRITE; break;
-	case OBJ_TANKEP2: sprite = OBJ_TANKEP2_DEFSPRITE; break;
+	case OBJ_GUARDROBOT: sprite = OBJ_TANKEP2_DEFSPRITE; break;
 	case OBJ_VORTELITE: sprite = OBJ_VORTELITE_DEFSPRITE; break;
 	case OBJ_SPARK: sprite = OBJ_SPARK_DEFSPRITE_EP2; break;
 

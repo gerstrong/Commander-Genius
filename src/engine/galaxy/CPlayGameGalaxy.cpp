@@ -66,13 +66,11 @@ void CPlayGameGalaxy::process()
 			mp_Menu = NULL;
 		}
 		else if(mp_Menu->getExitEvent())
-		{
 			m_exitgame = true;
-		}
+		else if(mp_Menu->mustEndGame())
+			m_endgame = true;
 		else
-		{
 			mp_Menu->process();
-		}
 	}
 	else
 	{
@@ -99,7 +97,7 @@ void CPlayGameGalaxy::processInput()
 	// open the menu
 	if(g_pInput->getPressedCommand(IC_QUIT))
 	{
-		mp_Menu = new CMenuGalaxy(PASSIVE, m_ExeFile, m_SavedGame, mp_option, m_restartVideo);
+		mp_Menu = new CMenuGalaxy(ACTIVE, m_ExeFile, m_SavedGame, mp_option, m_restartVideo);
 		m_BackgroundBitmap = *g_pGfxEngine->getBitmap("KEENSWATCH");
 	}
 

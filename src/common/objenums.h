@@ -27,7 +27,7 @@ enum object_t{
 	
 	// ** objects from KEEN2 (some of these are in ep3 as well)
 	OBJ_SCRUB,
-	OBJ_TANKEP2,
+	OBJ_GUARDROBOT,
 	OBJ_PLATFORM,
 	OBJ_VORTELITE,
 	OBJ_SECTOREFFECTOR,
