@@ -299,5 +299,9 @@ void COpenGL::render()
 }
 
 COpenGL::~COpenGL() {
-	if(m_opengl_buffer) delete[] m_opengl_buffer; m_opengl_buffer = NULL; }
-#endif
+	if(m_opengl_buffer)
+		delete[] m_opengl_buffer;
+	m_opengl_buffer = NULL;
+}
+
+#endif // USE_OPENGL
