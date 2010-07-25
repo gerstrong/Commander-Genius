@@ -12,8 +12,6 @@
 #include "../../../common/CPlayer.h"
 #include <vector>
 
-#define GUNFIRE_TIMER_EP1 50
-
 unsigned int rnd(void);
 
 //static void smash(int o);
@@ -57,7 +55,7 @@ public:
 
 	int vector_x, vector_y;
 	int veloc_x, veloc_y;
-	int m_gunfiretimer;
+	static int m_gunfiretimer;
 	int timer;
 };
 

@@ -8,14 +8,16 @@ const int ICECHUNK_SPEED = 60;
 const int ICECHUNK_STRAIGHT_SPEED = 80;
 const int ICECHUNK_WAIT_TIME = 19;
 
+
 unsigned int rnd(void);
+
+const int GUNFIRE_TIMER_EP1 = 50;
 
 CIceCannon::CIceCannon(CMap *p_map, Uint32 x, Uint32 y,
 	std::vector<CPlayer>& Player, std::vector<CObject*>& Object,
 	int vector_x, int vector_y ) :
 CObject(p_map,x,y, OBJ_ICECANNON),
 timer(0),
-m_gunfiretimer(0),
 m_Player(Player),
 m_Object(Object)
 {
@@ -156,7 +158,10 @@ void CIceChunk::smash()
 
 // the little pieces that break off of an OBJ_ICECHUNK when it hits
 // a wall or a player. (Ep1)
-#define ICEBIT_SPEED        80
+const int ICEBIT_SPEED = 80;
+const int ICESHARD_TIME = 25;
+
+int CIceBit::m_gunfiretimer = 0;
 
 CIceBit::CIceBit(CMap *p_map, Uint32 x, Uint32 y, Uint32 vec_x, Uint32 vec_y ) :
 CObject(p_map, x, y, OBJ_ICEBIT),
@@ -166,7 +171,7 @@ vector_y(vec_y)
 	m_gunfiretimer=0; timer=0;
 	veloc_x = ICEBIT_SPEED * vector_x;
 	veloc_y = ICEBIT_SPEED * vector_y;
-	timer = GUNFIRE_TIMER_EP1;
+	timer = ICESHARD_TIME;
 	inhibitfall = true;
 	canbezapped = false;
 	solid = false;
