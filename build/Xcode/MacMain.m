@@ -5,7 +5,7 @@
  Feel free to customize this file to suit your needs
  */
 
-#ifdef TARGET_OS_MAC
+#if defined(__APPLE__)
 
 #import <Cocoa/Cocoa.h>
 #import <SDL.h>
