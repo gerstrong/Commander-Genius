@@ -23,7 +23,7 @@
  *
  */
 
-#ifdef IPHONE
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 
 #include "common/scummsys.h"
 #include "blit_arm.h"

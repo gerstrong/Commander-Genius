@@ -984,7 +984,7 @@ static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_
 	return phoneButtons;
 }
 
-#ifdef IPHONE
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 
 static const int phoneButtonN = 11;
 

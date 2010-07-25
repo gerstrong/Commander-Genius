@@ -23,7 +23,7 @@
  *
  */
 
-#ifdef IPHONE
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 
 #include <unistd.h>
 #include <pthread.h>
@@ -88,7 +88,7 @@ int OSystem_IPHONE::timerHandler(int t) {
 }
 
 void OSystem_IPHONE::initBackend() {
-#ifdef IPHONE_OFFICIAL
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)_OFFICIAL
 	_savefile = new DefaultSaveFileManager(iPhone_getDocumentsDir());
 #else
 	_savefile = new DefaultSaveFileManager(SCUMMVM_SAVE_PATH);
@@ -231,7 +231,7 @@ OSystem *OSystem_IPHONE_create() {
 }
 
 Common::SeekableReadStream *OSystem_IPHONE::createConfigReadStream() {
-#ifdef IPHONE_OFFICIAL
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)_OFFICIAL
 	char buf[256];
 	strncpy(buf, iPhone_getDocumentsDir(), 256);
 	strncat(buf, "/Preferences", 256 - strlen(buf) );
@@ -243,7 +243,7 @@ Common::SeekableReadStream *OSystem_IPHONE::createConfigReadStream() {
 }
 
 Common::WriteStream *OSystem_IPHONE::createConfigWriteStream() {
-#ifdef IPHONE_OFFICIAL
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)_OFFICIAL
 	char buf[256];
 	strncpy(buf, iPhone_getDocumentsDir(), 256);
 	strncat(buf, "/Preferences", 256 - strlen(buf) );
@@ -286,7 +286,7 @@ void iphone_main(int argc, char *argv[]) {
 		//gDebugLevel = 10;
 	}
 
-#ifdef IPHONE_OFFICIAL
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)_OFFICIAL
 	chdir( iPhone_getDocumentsDir() );
 #else
 	system("mkdir " SCUMMVM_ROOT_PATH);

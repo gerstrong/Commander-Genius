@@ -205,6 +205,7 @@
 		2357564D101A5F8F00275638 /* Vorbis.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Vorbis.framework; sourceTree = "<group>"; };
 		23575688101A6AE600275638 /* Commander Genius.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Commander Genius.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		237421E911FB8554000EEA5B /* GraphicsIDs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphicsIDs.cpp; sourceTree = "<group>"; };
+		237422C011FC7F67000EEA5B /* CGuardRobot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGuardRobot.h; sourceTree = "<group>"; };
 		23A11A8F11DE888400747BFA /* CHUD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CHUD.cpp; sourceTree = "<group>"; };
 		23A11A9011DE888400747BFA /* CHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHUD.h; sourceTree = "<group>"; };
 		23A11B7411E7C3F900747BFA /* CAutoRay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAutoRay.cpp; sourceTree = "<group>"; };
@@ -1224,6 +1225,7 @@
 		63CD113511CFF5FB00F60BC8 /* ai */ = {
 			isa = PBXGroup;
 			children = (
+				237422C011FC7F67000EEA5B /* CGuardRobot.h */,
 				23C64A8211F31D9C0053CA36 /* CAnkhShield.cpp */,
 				23C64A8311F31D9C0053CA36 /* CAnkhShield.h */,
 				2332C60D11EA3B42000D8F71 /* CBridges.cpp */,
