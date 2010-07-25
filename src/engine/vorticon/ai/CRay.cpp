@@ -10,10 +10,11 @@
 #define Sprite g_pGfxEngine->Sprite
 
 CRay::CRay(CMap *p_map, Uint32 x, Uint32 y,
-		direction_t dir, object_t byType, size_t byID) :
+		direction_t dir, object_t byType, size_t byID,
+		size_t speed) :
 CObject(p_map, x, y, OBJ_RAY),
 m_Direction(dir),
-m_speed(RAY_SPEED)
+m_speed(speed)
 {
 	m_type = OBJ_RAY;
 	owner.obj_type = byType;
@@ -41,6 +42,9 @@ void CRay::setOwner(object_t type, unsigned int index)
 	owner.obj_type = type;
 	owner.ID = index;
 }
+
+void CRay::setSpeed(size_t speed)
+{	m_speed = speed; }
 
 void CRay::process()
 {

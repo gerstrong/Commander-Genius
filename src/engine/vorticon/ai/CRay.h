@@ -2,7 +2,7 @@
 #ifndef	_CRAY_H_
 #define _CRAY_H_
 
-#define RAY_SPEED   		108 // problem here: shot speeds for K3 guns/K1 tank should be 124 while 108 is right for K2 enemies
+#define RAY_DEFAULTSPEED   		108
 #define RAY_AUTO_SPEED		120
 #define RAY_ZAPZOT_TIME    	10
 
@@ -18,11 +18,12 @@ class CRay : public CObject
 {
 public:
 	CRay(CMap *p_map, Uint32 x, Uint32 y,
-		direction_t dir, object_t byType=OBJ_RAY, size_t byID=0);
+		direction_t dir, object_t byType=OBJ_RAY, size_t byID=0, size_t speed=RAY_DEFAULTSPEED);
 
 	virtual void process();
 	void moveinAir();
 	void setOwner(object_t type, unsigned int index);
+	void setSpeed(size_t speed);
 	void getTouchedBy(CObject &theObject);
 	bool isFlying();
 	void setZapped();

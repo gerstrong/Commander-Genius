@@ -23,7 +23,7 @@ m_Object(Object)
 	this->vector_y = vector_y;
 
 	inhibitfall = true;
-	canbezapped = 0;
+	canbezapped = false;
     sprite = BLANKSPRITE;
 }
 
@@ -35,8 +35,8 @@ void CIceCannon::process()
 	if(m_gunfiretimer<GUNFIRE_TIMER_EP1) m_gunfiretimer++;
 	else
 	{
-		int newpos_x = getXPosition()+(vector_x)*512+(1<<(CSF-1));
-		int newpos_y = getYPosition()+(vector_y)*512+(1<<(CSF-1));
+		int newpos_x = getXPosition()+(vector_x)*512;
+		int newpos_y = getYPosition()+(vector_y+1)*512;
 		CIceChunk *chunk = new CIceChunk(mp_Map, newpos_x, newpos_y,
 								vector_x, vector_y, m_Player, m_Object);
 		m_Object.push_back(chunk);
@@ -54,6 +54,7 @@ m_Object(Object)
 {
 	int speed;
 
+	canbezapped = false;
 	inhibitfall = true;
 
 	if (vector_x && vector_y)

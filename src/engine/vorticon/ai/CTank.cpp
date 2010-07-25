@@ -123,6 +123,7 @@ void CTank::process()
 		else
 			newobject = new CRay(mp_Map, getXMidPos(), getYUpPos()+(4<<STC), LEFT);
 		newobject->setOwner(OBJ_TANK, m_index);
+		newobject->setSpeed(124);
 		newobject->sprite = ENEMYRAY;
 		newobject->canbezapped = true;
 		m_Object.push_back(newobject);
