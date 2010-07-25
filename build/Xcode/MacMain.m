@@ -5,6 +5,8 @@
  Feel free to customize this file to suit your needs
  */
 
+#ifdef TARGET_OS_MAC
+
 #import <Cocoa/Cocoa.h>
 #import <SDL.h>
 #import <sys/param.h> /* for MAXPATHLEN */
@@ -236,3 +238,5 @@ int main (int argc, char **argv)
 	
     return 0;
 }
+
+#endif
