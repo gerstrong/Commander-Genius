@@ -238,12 +238,14 @@ void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
 	glBindTexture (m_texparam, texture);
 	LockSurface(surface);
 	GLint internalFormat, externalFormat;
+#if !defined(TARGET_OS_IPHONE) && !defined(TARGET_IPHONE_SIMULATOR) // iPhone always used 32 bits; also GL_BGR is not defined
 	if(surface->format->BitsPerPixel == 24)
 	{
 		internalFormat = GL_RGB;
 		externalFormat = GL_BGR;
 	}
 	else
+#endif
 	{	// we assume RGBA
 		internalFormat = GL_RGBA;
 		externalFormat = GL_BGRA;
