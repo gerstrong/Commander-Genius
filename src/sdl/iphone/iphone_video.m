@@ -326,10 +326,10 @@ uint getSizeNextPOT(uint size) {
 		_widthOffset = 0.0f;
 
 		CGRect keyFrame = CGRectMake(0.0f, 0.0f, 0.0f, 0.0f);
-		if (_keyboardView == nil) {
+/*		if (_keyboardView == nil) {
 			_keyboardView = [[SoftKeyboard alloc] initWithFrame:keyFrame];
 			[_keyboardView setInputDelegate:self];
-		}
+		}*/
 
 		[self addSubview:[_keyboardView inputView]];
 		[self addSubview: _keyboardView];
@@ -556,9 +556,9 @@ uint getSizeNextPOT(uint size) {
 #import "video/uikit/SDL_uikitwindow.h"
 
 void iPhoneRotateScreen() {	
-	
+	/*
 	[UIApplication sharedApplication].statusBarHidden = YES;
-	
+
 	UIWindow* window = [SDLUIKitDelegate sharedAppDelegate].window;
 	UIView* view = window;
 
@@ -581,6 +581,6 @@ void iPhoneRotateScreen() {
 	transform = CGAffineTransformRotate(transform, -0.5 * 3.14159265358979323846);
 	
     [view setTransform: transform];
-
+*/
 }
 
