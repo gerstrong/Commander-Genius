@@ -779,6 +779,7 @@ void CPlayer::raygun()
 				else xdir = getXLeftPos()+xinertia-(16<<STC);
 
 				CRay *rayobject = new CRay(mp_Map, xdir, ydir, pdir, OBJ_PLAYER, m_index);
+				rayobject->setSpeed(124);
 				
 				mp_object->push_back(rayobject);
 			}
