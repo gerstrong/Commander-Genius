@@ -44,10 +44,6 @@
  */
 int main(int argc, char *argv[])
 {
-	InitSearchPaths();
-
-	g_pLogFile->CreateLogfile("CGLog.html");
-	
 	if(argc >= 1) {
 		binary_dir = argv[0];
 		size_t slashpos = findLastPathSep(binary_dir);
@@ -61,7 +57,11 @@ int main(int argc, char *argv[])
 		binary_dir = ".";
 	}
 	binary_dir = GetAbsolutePath(binary_dir);
-	
+
+	InitSearchPaths();
+
+	g_pLogFile->CreateLogfile("CGLog.html");
+		
 	CGame Game;
 	////////////////////////////
 	// Initialize Game Engine //
