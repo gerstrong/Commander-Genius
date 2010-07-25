@@ -1104,6 +1104,8 @@ static void drawButton(TouchButton& button, bool down) {
 }
 #endif
 
+#endif // iPhone
+
 void CInput::renderOverlay() {
 #ifdef USE_OPENGL // only ogl supported yet (and probably worth)
 #if defined(MOUSEWRAPPER)
@@ -1126,8 +1128,6 @@ void CInput::renderOverlay() {
 #endif
 #endif
 }
-
-#endif
 
 
 /*#ifdef WIZ
