@@ -182,8 +182,6 @@ void CVideoDriver::initResolutionList()
 	m_Resolution.depth = 32;
 	m_Resolutionlist.push_back(m_Resolution);
 	m_Resolution_pos = m_Resolutionlist.begin();
-	
-	return;
 #endif	
 }
 
