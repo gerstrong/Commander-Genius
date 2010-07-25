@@ -23,7 +23,7 @@ const int TIME_BETWEEN_SHOTS = 12;
 const int TIME_BEFORE_FIRE_WHEN_SEE = 6;
 const int TIME_BETWEEN_FIRE_CAUSE_LEVEL = 25;
 
-const int WALK_SPEED = 28;
+const int WALK_SPEED = 31;
 const unsigned int WALK_ANIM_TIME = 6;
 const unsigned int LOOK_ANIM_TIME = 4;
 const unsigned int LOOK_TOTALTIME = 25;

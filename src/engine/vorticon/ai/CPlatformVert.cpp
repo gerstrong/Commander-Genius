@@ -7,7 +7,7 @@ PLATVERT_MOVE, PLATVERT_WAIT
 };
 
 #define PLATVERT_WAITTIME       35
-#define PLATVERT_MOVE_SPD       16
+#define PLATVERT_MOVE_SPD       23
 
 #define PLATVERT_ANIM_RATE      15
 
