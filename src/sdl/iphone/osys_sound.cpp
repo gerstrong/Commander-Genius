@@ -23,7 +23,7 @@
  *
  */
 
-#ifdef IPHONE
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 
 #include "osys_main.h"
 
