@@ -109,13 +109,12 @@ void CVideoDriver::resetSettings() {
 	m_ScaleXFilter = 0;
 	m_targetfps = 30;
 	m_aspect_correction = false;
-#else
+#endif
+
 	initResolutionList();
 
 	// take the first default resolution. It might be changed if there is a config file already created
 	setMode(m_Resolutionlist.front().width, m_Resolutionlist.front().height, m_Resolutionlist.front().depth);
-#endif
-
 }
 
 // initResolutionList() reads the local list of available resolution.
@@ -123,9 +122,17 @@ void CVideoDriver::resetSettings() {
 void CVideoDriver::initResolutionList()
 {
 	st_resolution resolution;
-	char buf[256];
 	m_Resolutionlist.clear();
 	m_value = 1;
+
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+	m_Resolution.width = 320; //  320;
+	m_Resolution.height = 200; //  480;
+	m_Resolution.depth = 32;
+	m_Resolutionlist.clear();
+	m_Resolutionlist.push_back(m_Resolution);
+#else
+	char buf[256];
 
 	std::ifstream ResolutionFile; OpenGameFileR(ResolutionFile, "resolutions.cfg");
 	if(!ResolutionFile)
@@ -169,6 +176,7 @@ void CVideoDriver::initResolutionList()
 			}
 		}
 	}
+#endif	
 
 	if(m_Resolutionlist.empty()) {
 		resolution.width = 320;
@@ -178,14 +186,6 @@ void CVideoDriver::initResolutionList()
 	}
 
 	m_Resolution_pos = m_Resolutionlist.begin();
-
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
-	m_Resolution.width = 320; //  320;
-	m_Resolution.height = 200; //  480;
-	m_Resolution.depth = 32;
-	m_Resolutionlist.push_back(m_Resolution);
-	m_Resolution_pos = m_Resolutionlist.begin();
-#endif	
 }
 
 void CVideoDriver::checkResolution( st_resolution& resolution, int flags )
