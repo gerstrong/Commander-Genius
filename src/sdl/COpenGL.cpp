@@ -290,9 +290,7 @@ void COpenGL::render()
 		renderTexture(m_texFG, true);
 	}
 
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	g_pInput->renderOverlay();
-#endif
 	
 	SDL_GL_SwapBuffers();
 
