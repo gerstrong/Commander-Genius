@@ -1035,7 +1035,7 @@ void CInput::processMouse() {
 }
 
 void CInput::processMouse(SDL_Event& ev) {
-	switch(ev.type) {
+/*	switch(ev.type) {
 		case SDL_MOUSEBUTTONDOWN:
 			processMouse(ev.button.x, ev.button.y, true, ev.button.which);
 			break;
@@ -1048,7 +1048,17 @@ void CInput::processMouse(SDL_Event& ev) {
 			processMouse(ev.motion.x - ev.motion.xrel, ev.motion.y - ev.motion.yrel, false, ev.motion.which);			
 			processMouse(ev.motion.x, ev.motion.y, true, ev.motion.which);
 			break;
-	}	
+	}*/
+
+	switch(ev.type) {
+		case SDL_MOUSEBUTTONDOWN:
+			processMouse(ev.button.x, ev.button.y, true, ev.button.button);
+			break;
+			
+		case SDL_MOUSEBUTTONUP:
+			processMouse(ev.button.x, ev.button.y, false, ev.button.button);
+			break;
+	}			
 }
 
 void CInput::processMouse(int x, int y, bool down, int index) {
