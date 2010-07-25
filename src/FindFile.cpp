@@ -459,7 +459,7 @@ void InitBaseSearchPaths() {
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	AddToFileList(&basesearchpaths, "${HOME}/Library/Application Support/Commander Genius");
 	AddToFileList(&basesearchpaths, ".");
-	AddToFileList(&basesearchpaths, "${BIN}/data");
+	AddToFileList(&basesearchpaths, "${BIN}");
 	AddToFileList(&basesearchpaths, SYSTEM_DATA_DIR"/commandergenius");	
 #elif defined(__APPLE__)
 	AddToFileList(&basesearchpaths, "${HOME}/Library/Application Support/Commander Genius");
