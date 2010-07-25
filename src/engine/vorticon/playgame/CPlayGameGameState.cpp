@@ -119,7 +119,8 @@ bool CPlayGameVorticon::loadGameState()
 			if(object->m_type == OBJ_DOOR or
 				object->m_type == OBJ_RAY or
 				object->m_type == OBJ_SNDWAVE or
-				object->m_type == OBJ_FIREBALL) // small workaround for doors which might be opening
+				object->m_type == OBJ_FIREBALL or
+				object->m_type == OBJ_ICEBIT) // Some objects are really not needed. So don't load them
 				object->exists = false;
 		}
 
