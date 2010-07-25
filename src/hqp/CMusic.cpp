@@ -85,15 +85,15 @@ bool CMusic::load(const SDL_AudioSpec AudioSpec, const std::string &musicfile)
 		// Special conversion for 48 kHz
 		if(AudioSpec.freq == 48000)
 		{
-			size_t strechedsize = (music_len*48000)/44100;
-			Uint8 *strechedbuf = (Uint8*) malloc(strechedsize * (Audio_cvt.len_mult) * sizeof(Uint8));
-			short bits;
+			Uint64 strechedsize = (music_len*(Audio_cvt.len_mult)*48)/44;
+			Uint8 *strechedbuf = (Uint8*) malloc(strechedsize  * sizeof(Uint8));
+			unsigned short bits;
 
 			if( AudioSpec.format == AUDIO_S16 ) bits = 2;
 			else bits=1;
-			for( size_t i=0, j=0 ; i<music_len ; i+=bits )
+			for( size_t i=0, j=0 ; i<music_len && j<strechedsize ; i+=bits )
 			{
-				while(i+bits > (j*44100)/48000 && i+bits < music_len && j < strechedsize)
+				while(i+bits > (j*44)/48 && i+bits < music_len && j < strechedsize)
 				{
 					Sint16 valuelow;
 					Sint16 valuehigh;
@@ -110,6 +110,7 @@ bool CMusic::load(const SDL_AudioSpec AudioSpec, const std::string &musicfile)
 			music_len = strechedsize;
 			music_buffer.assign(music_len, 0);
 			memcpy(&music_buffer.at(0), strechedbuf, music_len);
+			free(strechedbuf);
 		}
 		else
 		{

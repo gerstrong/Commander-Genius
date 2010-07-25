@@ -39,7 +39,7 @@ public:
 
 private:
 	std::vector<Uint8> music_buffer;
-	long music_len;
+	unsigned long music_len;
 	int music_pos;
 	int playmode;
 	std::string usedMusicFile;

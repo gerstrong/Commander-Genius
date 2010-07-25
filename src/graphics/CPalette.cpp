@@ -6,7 +6,7 @@
  */
 
 #include "CPalette.h"
-#include "graphics/PerSurfaceAlpha.h"
+#include "../graphics/PerSurfaceAlpha.h"
 
 ///
 // Initialization
