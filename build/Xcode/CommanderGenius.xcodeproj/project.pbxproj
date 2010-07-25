@@ -18,6 +18,187 @@
 		2357564E101A5F8F00275638 /* Ogg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564C101A5F8F00275638 /* Ogg.framework */; };
 		2357564F101A5F8F00275638 /* Vorbis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564D101A5F8F00275638 /* Vorbis.framework */; };
 		237421EA11FB8554000EEA5B /* GraphicsIDs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 237421E911FB8554000EEA5B /* GraphicsIDs.cpp */; };
+		237422D911FC849A000EEA5B /* arguments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10A511CFF5FB00F60BC8 /* arguments.cpp */; };
+		237422DA11FC849A000EEA5B /* CGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10A711CFF5FB00F60BC8 /* CGame.cpp */; };
+		237422DB11FC849A000EEA5B /* CGameControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10A911CFF5FB00F60BC8 /* CGameControl.cpp */; };
+		237422DC11FC849A000EEA5B /* CLogFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10AD11CFF5FB00F60BC8 /* CLogFile.cpp */; };
+		237422DD11FC849A000EEA5B /* CBehaviorEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10B111CFF5FB00F60BC8 /* CBehaviorEngine.cpp */; };
+		237422DE11FC849A000EEA5B /* CGameLauncher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10B311CFF5FB00F60BC8 /* CGameLauncher.cpp */; };
+		237422DF11FC849A000EEA5B /* CMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10B511CFF5FB00F60BC8 /* CMap.cpp */; };
+		237422E011FC849A000EEA5B /* CMapLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10B711CFF5FB00F60BC8 /* CMapLoader.cpp */; };
+		237422E111FC849A000EEA5B /* CMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10B911CFF5FB00F60BC8 /* CMenu.cpp */; };
+		237422E211FC849A000EEA5B /* CObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10BB11CFF5FB00F60BC8 /* CObject.cpp */; };
+		237422E311FC849A000EEA5B /* CPhysicsSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10BD11CFF5FB00F60BC8 /* CPhysicsSettings.cpp */; };
+		237422E411FC849A000EEA5B /* CPlane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10BF11CFF5FB00F60BC8 /* CPlane.cpp */; };
+		237422E511FC849A000EEA5B /* CPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10C111CFF5FB00F60BC8 /* CPlayer.cpp */; };
+		237422E611FC849A000EEA5B /* CPlayerItems.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10C311CFF5FB00F60BC8 /* CPlayerItems.cpp */; };
+		237422E711FC849A000EEA5B /* CPlayerLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10C411CFF5FB00F60BC8 /* CPlayerLevel.cpp */; };
+		237422E811FC849A000EEA5B /* CPlayerWM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10C511CFF5FB00F60BC8 /* CPlayerWM.cpp */; };
+		237422E911FC849A000EEA5B /* CStatusScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10C611CFF5FB00F60BC8 /* CStatusScreen.cpp */; };
+		237422EA11FC849A000EEA5B /* CTileProperties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10CA11CFF5FB00F60BC8 /* CTileProperties.cpp */; };
+		237422EB11FC849A000EEA5B /* CAudioSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10CE11CFF5FB00F60BC8 /* CAudioSettings.cpp */; };
+		237422EC11FC849A000EEA5B /* CBaseMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10D011CFF5FB00F60BC8 /* CBaseMenu.cpp */; };
+		237422ED11FC849A000EEA5B /* CCameraSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10D211CFF5FB00F60BC8 /* CCameraSettings.cpp */; };
+		237422EE11FC849A000EEA5B /* CConfirmMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10D411CFF5FB00F60BC8 /* CConfirmMenu.cpp */; };
+		237422EF11FC849A000EEA5B /* CControlsettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10D611CFF5FB00F60BC8 /* CControlsettings.cpp */; };
+		237422F011FC849A000EEA5B /* CDifficultyMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10D811CFF5FB00F60BC8 /* CDifficultyMenu.cpp */; };
+		237422F111FC849A000EEA5B /* CHelpMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10DA11CFF5FB00F60BC8 /* CHelpMenu.cpp */; };
+		237422F211FC849A000EEA5B /* CLoadMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10DC11CFF5FB00F60BC8 /* CLoadMenu.cpp */; };
+		237422F311FC849A000EEA5B /* COptions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10DE11CFF5FB00F60BC8 /* COptions.cpp */; };
+		237422F411FC849A000EEA5B /* CPlayersMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10E011CFF5FB00F60BC8 /* CPlayersMenu.cpp */; };
+		237422F511FC849A000EEA5B /* CSaveMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10E211CFF5FB00F60BC8 /* CSaveMenu.cpp */; };
+		237422F611FC849A000EEA5B /* CSettingsMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10E411CFF5FB00F60BC8 /* CSettingsMenu.cpp */; };
+		237422F711FC849A000EEA5B /* CVideoSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10E611CFF5FB00F60BC8 /* CVideoSettings.cpp */; };
+		237422F811FC849A000EEA5B /* CVolumeSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10E811CFF5FB00F60BC8 /* CVolumeSettings.cpp */; };
+		237422F911FC849A000EEA5B /* tga.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10ED11CFF5FB00F60BC8 /* tga.cpp */; };
+		237422FA11FC849A000EEA5B /* ConfigHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10EF11CFF5FB00F60BC8 /* ConfigHandler.cpp */; };
+		237422FB11FC849A000EEA5B /* CrashHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10F111CFF5FB00F60BC8 /* CrashHandler.cpp */; };
+		237422FC11FC849A000EEA5B /* Debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10F511CFF5FB00F60BC8 /* Debug.cpp */; };
+		237422FD11FC849A000EEA5B /* CDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10F811CFF5FB00F60BC8 /* CDialog.cpp */; };
+		237422FE11FC849A000EEA5B /* CDlgFrame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10FA11CFF5FB00F60BC8 /* CDlgFrame.cpp */; };
+		237422FF11FC849A000EEA5B /* CDlgObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10FC11CFF5FB00F60BC8 /* CDlgObject.cpp */; };
+		2374230011FC849A000EEA5B /* CDlgOptionText.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10FE11CFF5FB00F60BC8 /* CDlgOptionText.cpp */; };
+		2374230111FC849A000EEA5B /* CMessageBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD110011CFF5FB00F60BC8 /* CMessageBox.cpp */; };
+		2374230211FC849A000EEA5B /* CTextBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD110211CFF5FB00F60BC8 /* CTextBox.cpp */; };
+		2374230311FC849A000EEA5B /* CTextViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD110411CFF5FB00F60BC8 /* CTextViewer.cpp */; };
+		2374230411FC849A000EEA5B /* CEGAGraphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD110711CFF5FB00F60BC8 /* CEGAGraphics.cpp */; };
+		2374230511FC849A000EEA5B /* CIntro.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD110911CFF5FB00F60BC8 /* CIntro.cpp */; };
+		2374230611FC849A000EEA5B /* CMessages.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD110B11CFF5FB00F60BC8 /* CMessages.cpp */; };
+		2374230711FC849A000EEA5B /* CPassive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD110D11CFF5FB00F60BC8 /* CPassive.cpp */; };
+		2374230811FC849A000EEA5B /* CPlanes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD110F11CFF5FB00F60BC8 /* CPlanes.cpp */; };
+		2374230911FC849A000EEA5B /* CTitle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD111111CFF5FB00F60BC8 /* CTitle.cpp */; };
+		2374230A11FC849A000EEA5B /* CEGAGraphicsGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD111411CFF5FB00F60BC8 /* CEGAGraphicsGalaxy.cpp */; };
+		2374230B11FC849A000EEA5B /* CMapLoaderGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD111611CFF5FB00F60BC8 /* CMapLoaderGalaxy.cpp */; };
+		2374230C11FC849A000EEA5B /* CMenuGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD111811CFF5FB00F60BC8 /* CMenuGalaxy.cpp */; };
+		2374230D11FC849A000EEA5B /* CPassive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD111A11CFF5FB00F60BC8 /* CPassive.cpp */; };
+		2374230E11FC849A000EEA5B /* CPlayGameGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD111C11CFF5FB00F60BC8 /* CPlayGameGalaxy.cpp */; };
+		2374230F11FC849A000EEA5B /* CAbout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD112211CFF5FB00F60BC8 /* CAbout.cpp */; };
+		2374231011FC849A000EEA5B /* CCredits.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD112411CFF5FB00F60BC8 /* CCredits.cpp */; };
+		2374231111FC849A000EEA5B /* CHelp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD112611CFF5FB00F60BC8 /* CHelp.cpp */; };
+		2374231211FC849A000EEA5B /* CHighScores.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD112811CFF5FB00F60BC8 /* CHighScores.cpp */; };
+		2374231311FC849A000EEA5B /* CInfoScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD112A11CFF5FB00F60BC8 /* CInfoScene.cpp */; };
+		2374231411FC849A000EEA5B /* COrderingInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD112C11CFF5FB00F60BC8 /* COrderingInfo.cpp */; };
+		2374231511FC849A000EEA5B /* CStory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD112E11CFF5FB00F60BC8 /* CStory.cpp */; };
+		2374231611FC849A000EEA5B /* CPlayGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD113111CFF5FB00F60BC8 /* CPlayGame.cpp */; };
+		2374231711FC849A000EEA5B /* CEGABitmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD113A11CFF5FB00F60BC8 /* CEGABitmap.cpp */; };
+		2374231811FC849A000EEA5B /* CObjectAI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD113C11CFF5FB00F60BC8 /* CObjectAI.cpp */; };
+		2374231911FC849A000EEA5B /* CEGAGraphicsVort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD115D11CFF5FB00F60BC8 /* CEGAGraphicsVort.cpp */; };
+		2374231A11FC849A000EEA5B /* CEGALatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD115F11CFF5FB00F60BC8 /* CEGALatch.cpp */; };
+		2374231B11FC849A000EEA5B /* CEGASprit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD116111CFF5FB00F60BC8 /* CEGASprit.cpp */; };
+		2374231C11FC849A000EEA5B /* CHelpMenuVorticon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD116311CFF5FB00F60BC8 /* CHelpMenuVorticon.cpp */; };
+		2374231D11FC849A000EEA5B /* CMenuVorticon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD116511CFF5FB00F60BC8 /* CMenuVorticon.cpp */; };
+		2374231E11FC849A000EEA5B /* CPassiveVort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD116711CFF5FB00F60BC8 /* CPassiveVort.cpp */; };
+		2374231F11FC849A000EEA5B /* CEndingEp1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD116A11CFF5FB00F60BC8 /* CEndingEp1.cpp */; };
+		2374232011FC849A000EEA5B /* CEndingEp2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD116C11CFF5FB00F60BC8 /* CEndingEp2.cpp */; };
+		2374232111FC849A000EEA5B /* CEndingEp3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD116E11CFF5FB00F60BC8 /* CEndingEp3.cpp */; };
+		2374232211FC849A000EEA5B /* CFinale.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD117011CFF5FB00F60BC8 /* CFinale.cpp */; };
+		2374232311FC849A000EEA5B /* CFinaleStaticScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD117211CFF5FB00F60BC8 /* CFinaleStaticScene.cpp */; };
+		2374232411FC849A000EEA5B /* CShipFlySys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD117411CFF5FB00F60BC8 /* CShipFlySys.cpp */; };
+		2374232511FC849A000EEA5B /* CTantalusRay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD117611CFF5FB00F60BC8 /* CTantalusRay.cpp */; };
+		2374232611FC849A000EEA5B /* finale.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD117811CFF5FB00F60BC8 /* finale.cpp */; };
+		2374232711FC849A000EEA5B /* CPlayGameDialogs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD117A11CFF5FB00F60BC8 /* CPlayGameDialogs.cpp */; };
+		2374232811FC849A000EEA5B /* CPlayGameGameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD117B11CFF5FB00F60BC8 /* CPlayGameGameState.cpp */; };
+		2374232911FC849A000EEA5B /* CPlayGameLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD117C11CFF5FB00F60BC8 /* CPlayGameLevel.cpp */; };
+		2374232A11FC849A000EEA5B /* CPlayGameVorticon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD117D11CFF5FB00F60BC8 /* CPlayGameVorticon.cpp */; };
+		2374232B11FC849A000EEA5B /* CPlayGameWorldMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD117F11CFF5FB00F60BC8 /* CPlayGameWorldMap.cpp */; };
+		2374232C11FC849A000EEA5B /* CConfiguration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD118311CFF5FB00F60BC8 /* CConfiguration.cpp */; };
+		2374232D11FC849A000EEA5B /* CExeFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD118511CFF5FB00F60BC8 /* CExeFile.cpp */; };
+		2374232E11FC849A000EEA5B /* CCarmack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD118811CFF5FB00F60BC8 /* CCarmack.cpp */; };
+		2374232F11FC849A000EEA5B /* CCompression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD118A11CFF5FB00F60BC8 /* CCompression.cpp */; };
+		2374233011FC849A000EEA5B /* CHuffman.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD118C11CFF5FB00F60BC8 /* CHuffman.cpp */; };
+		2374233111FC849A000EEA5B /* CRLE.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD118E11CFF5FB00F60BC8 /* CRLE.cpp */; };
+		2374233211FC849A000EEA5B /* Cunlzexe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD119011CFF5FB00F60BC8 /* Cunlzexe.cpp */; };
+		2374233311FC849A000EEA5B /* sgrle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD119211CFF5FB00F60BC8 /* sgrle.cpp */; };
+		2374233411FC849A000EEA5B /* CPatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD119311CFF5FB00F60BC8 /* CPatcher.cpp */; };
+		2374233511FC849A000EEA5B /* CPatcherUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD119511CFF5FB00F60BC8 /* CPatcherUtils.cpp */; };
+		2374233611FC849A000EEA5B /* crc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD119611CFF5FB00F60BC8 /* crc.cpp */; };
+		2374233711FC849A000EEA5B /* CSavedGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD119811CFF5FB00F60BC8 /* CSavedGame.cpp */; };
+		2374233811FC849A000EEA5B /* CTileLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD119B11CFF5FB00F60BC8 /* CTileLoader.cpp */; };
+		2374233911FC849A000EEA5B /* IniReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD119D11CFF5FB00F60BC8 /* IniReader.cpp */; };
+		2374233A11FC849A000EEA5B /* lz.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD119F11CFF5FB00F60BC8 /* lz.cpp */; };
+		2374233B11FC849A000EEA5B /* ResourceMgmt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11A211CFF5FB00F60BC8 /* ResourceMgmt.cpp */; };
+		2374233C11FC849A000EEA5B /* fileio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11A511CFF5FB00F60BC8 /* fileio.cpp */; };
+		2374233D11FC849A000EEA5B /* FindFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11A711CFF5FB00F60BC8 /* FindFile.cpp */; };
+		2374233E11FC849A000EEA5B /* CBitmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11AB11CFF5FB00F60BC8 /* CBitmap.cpp */; };
+		2374233F11FC849A000EEA5B /* CCursor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11AD11CFF5FB00F60BC8 /* CCursor.cpp */; };
+		2374234011FC849A000EEA5B /* CFont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11AF11CFF5FB00F60BC8 /* CFont.cpp */; };
+		2374234111FC849A000EEA5B /* CGfxEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11B111CFF5FB00F60BC8 /* CGfxEngine.cpp */; };
+		2374234211FC849A000EEA5B /* CPalette.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11B311CFF5FB00F60BC8 /* CPalette.cpp */; };
+		2374234311FC849A000EEA5B /* CSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11B511CFF5FB00F60BC8 /* CSprite.cpp */; };
+		2374234411FC849A000EEA5B /* CTilemap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11B711CFF5FB00F60BC8 /* CTilemap.cpp */; };
+		2374234511FC849A000EEA5B /* CColorMerge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11BA11CFF5FB00F60BC8 /* CColorMerge.cpp */; };
+		2374234611FC849A000EEA5B /* CEffects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11BC11CFF5FB00F60BC8 /* CEffects.cpp */; };
+		2374234711FC849A000EEA5B /* CFlash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11BE11CFF5FB00F60BC8 /* CFlash.cpp */; };
+		2374234811FC849A000EEA5B /* CPixelate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11C011CFF5FB00F60BC8 /* CPixelate.cpp */; };
+		2374234911FC849A000EEA5B /* CVibrate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11C211CFF5FB00F60BC8 /* CVibrate.cpp */; };
+		2374234A11FC849A000EEA5B /* CMusic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11C511CFF5FB00F60BC8 /* CMusic.cpp */; };
+		2374234B11FC849A000EEA5B /* hq_sound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11C711CFF5FB00F60BC8 /* hq_sound.cpp */; };
+		2374234C11FC849A000EEA5B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11CB11CFF5FB00F60BC8 /* main.cpp */; };
+		2374234D11FC849A000EEA5B /* misc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11CD11CFF5FB00F60BC8 /* misc.cpp */; };
+		2374234E11FC849A000EEA5B /* getopt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11D311CFF5FB00F60BC8 /* getopt.cpp */; };
+		2374234F11FC849A000EEA5B /* pixel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11D411CFF5FB00F60BC8 /* pixel.cpp */; };
+		2374235011FC849A000EEA5B /* scale2x.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11D711CFF5FB00F60BC8 /* scale2x.cpp */; };
+		2374235111FC849A000EEA5B /* scale3x.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11D911CFF5FB00F60BC8 /* scale3x.cpp */; };
+		2374235211FC849A000EEA5B /* scalebit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11DB11CFF5FB00F60BC8 /* scalebit.cpp */; };
+		2374235311FC849A000EEA5B /* CInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11DE11CFF5FB00F60BC8 /* CInput.cpp */; };
+		2374235411FC849A000EEA5B /* COpenGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11E011CFF5FB00F60BC8 /* COpenGL.cpp */; };
+		2374235511FC849A000EEA5B /* CSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11E211CFF5FB00F60BC8 /* CSettings.cpp */; };
+		2374235611FC849A000EEA5B /* CTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11E411CFF5FB00F60BC8 /* CTimer.cpp */; };
+		2374235711FC849A000EEA5B /* CVideoDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11E611CFF5FB00F60BC8 /* CVideoDriver.cpp */; };
+		2374235811FC849A000EEA5B /* CSound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11E911CFF5FB00F60BC8 /* CSound.cpp */; };
+		2374235911FC849A000EEA5B /* CSoundChannel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11EB11CFF5FB00F60BC8 /* CSoundChannel.cpp */; };
+		2374235A11FC849A000EEA5B /* CSoundSlot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11ED11CFF5FB00F60BC8 /* CSoundSlot.cpp */; };
+		2374235B11FC849A000EEA5B /* wizgp2x.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11F111CFF5FB00F60BC8 /* wizgp2x.cpp */; };
+		2374235C11FC849A000EEA5B /* colourconvert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11F411CFF5FB00F60BC8 /* colourconvert.cpp */; };
+		2374235D11FC849A000EEA5B /* StringBuf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11F711CFF5FB00F60BC8 /* StringBuf.cpp */; };
+		2374235E11FC849A000EEA5B /* StringUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11F911CFF5FB00F60BC8 /* StringUtils.cpp */; };
+		2374235F11FC849A000EEA5B /* Unicode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11FC11CFF5FC00F60BC8 /* Unicode.cpp */; };
+		2374236011FC849A000EEA5B /* oggsupport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD120011CFF5FC00F60BC8 /* oggsupport.cpp */; };
+		2374236211FC849A000EEA5B /* CHUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11A8F11DE888400747BFA /* CHUD.cpp */; };
+		2374236311FC849A000EEA5B /* CAutoRay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B7411E7C3F900747BFA /* CAutoRay.cpp */; };
+		2374236411FC849A000EEA5B /* CBallJack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B7611E7C3F900747BFA /* CBallJack.cpp */; };
+		2374236511FC849A000EEA5B /* CButler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B7811E7C3F900747BFA /* CButler.cpp */; };
+		2374236611FC849A000EEA5B /* CDoor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B7A11E7C3F900747BFA /* CDoor.cpp */; };
+		2374236711FC849A000EEA5B /* CEarthChunk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B7C11E7C3F900747BFA /* CEarthChunk.cpp */; };
+		2374236811FC849A000EEA5B /* CEarthExplosion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B7E11E7C3F900747BFA /* CEarthExplosion.cpp */; };
+		2374236911FC849A000EEA5B /* CFireBall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B8011E7C3F900747BFA /* CFireBall.cpp */; };
+		2374236A11FC849A000EEA5B /* CFoob.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B8211E7C3F900747BFA /* CFoob.cpp */; };
+		2374236B11FC849A000EEA5B /* CGarg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B8411E7C3F900747BFA /* CGarg.cpp */; };
+		2374236C11FC849A000EEA5B /* CGuardRobot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B8611E7C3F900747BFA /* CGuardRobot.cpp */; };
+		2374236D11FC849A000EEA5B /* CIceCannon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B8711E7C3F900747BFA /* CIceCannon.cpp */; };
+		2374236E11FC849A000EEA5B /* CMeep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B8911E7C3F900747BFA /* CMeep.cpp */; };
+		2374236F11FC849A000EEA5B /* CMessie.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B8B11E7C3F900747BFA /* CMessie.cpp */; };
+		2374237011FC849A000EEA5B /* CPlatform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B8D11E7C3F900747BFA /* CPlatform.cpp */; };
+		2374237111FC849A000EEA5B /* CPlatformVert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B8F11E7C3F900747BFA /* CPlatformVert.cpp */; };
+		2374237211FC849A000EEA5B /* CRay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B9011E7C3F900747BFA /* CRay.cpp */; };
+		2374237311FC849A000EEA5B /* CRisingPoints.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B9211E7C3F900747BFA /* CRisingPoints.cpp */; };
+		2374237411FC849A000EEA5B /* CRope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B9411E7C3F900747BFA /* CRope.cpp */; };
+		2374237511FC849A000EEA5B /* CScrub.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B9611E7C3F900747BFA /* CScrub.cpp */; };
+		2374237611FC849A000EEA5B /* CSectorEffector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B9811E7C3F900747BFA /* CSectorEffector.cpp */; };
+		2374237711FC849A000EEA5B /* CSoundWave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B9A11E7C3F900747BFA /* CSoundWave.cpp */; };
+		2374237811FC849A000EEA5B /* CSpark.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B9C11E7C3F900747BFA /* CSpark.cpp */; };
+		2374237911FC849A000EEA5B /* CTank.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B9E11E7C3F900747BFA /* CTank.cpp */; };
+		2374237A11FC849A000EEA5B /* CTeleporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11BA011E7C3F900747BFA /* CTeleporter.cpp */; };
+		2374237B11FC849A000EEA5B /* CVorticon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11BA211E7C3F900747BFA /* CVorticon.cpp */; };
+		2374237C11FC849A000EEA5B /* CVorticonElite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11BA411E7C3F900747BFA /* CVorticonElite.cpp */; };
+		2374237D11FC849A000EEA5B /* CVortikid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11BA611E7C3F900747BFA /* CVortikid.cpp */; };
+		2374237E11FC849A000EEA5B /* CVortiMom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11BA811E7C3F900747BFA /* CVortiMom.cpp */; };
+		2374237F11FC849A000EEA5B /* CVortiNinja.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11BAA11E7C3F900747BFA /* CVortiNinja.cpp */; };
+		2374238011FC849A000EEA5B /* CYorp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11BAC11E7C3F900747BFA /* CYorp.cpp */; };
+		2374238111FC849A000EEA5B /* CBridges.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2332C60D11EA3B42000D8F71 /* CBridges.cpp */; };
+		2374238211FC849A000EEA5B /* CCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2332C63211EAFAD7000D8F71 /* CCamera.cpp */; };
+		2374238311FC849A000EEA5B /* CWorldMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C64A7B11F31D6F0053CA36 /* CWorldMap.cpp */; };
+		2374238411FC849A000EEA5B /* CPlayerWM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C64A7F11F31D8A0053CA36 /* CPlayerWM.cpp */; };
+		2374238511FC849A000EEA5B /* CAnkhShield.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C64A8211F31D9C0053CA36 /* CAnkhShield.cpp */; };
+		2374238611FC849A000EEA5B /* CPlayGameVorticonWM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C64A8511F31DAA0053CA36 /* CPlayGameVorticonWM.cpp */; };
+		2374238711FC849A000EEA5B /* GraphicsIDs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 237421E911FB8554000EEA5B /* GraphicsIDs.cpp */; };
+		2374238911FC849A000EEA5B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0867D6AAFE840B52C02AAC07 /* InfoPlist.strings */; };
+		2374238A11FC849A000EEA5B /* main.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD57E20DA1CFC700B32029 /* main.xib */; };
+		2374238B11FC849A000EEA5B /* cglogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63AB8C2E107C62D0001EE22F /* cglogo.icns */; };
+		2374238E11FC849A000EEA5B /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20286C33FDCF999611CA2CEA /* Carbon.framework */; };
+		2374239011FC849A000EEA5B /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D3EA831013AEB5001643FA /* OpenGL.framework */; };
+		2374239111FC849A000EEA5B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D3EA911013AF1D001643FA /* Cocoa.framework */; };
+		237423C511FC8CF9000EEA5B /* libSDLiPhoneOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 237423C411FC8CF9000EEA5B /* libSDLiPhoneOS.a */; };
 		23A11A9111DE888400747BFA /* CHUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11A8F11DE888400747BFA /* CHUD.cpp */; };
 		23A11BAE11E7C3F900747BFA /* CAutoRay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B7411E7C3F900747BFA /* CAutoRay.cpp */; };
 		23A11BAF11E7C3F900747BFA /* CBallJack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B7611E7C3F900747BFA /* CBallJack.cpp */; };
@@ -206,6 +387,10 @@
 		23575688101A6AE600275638 /* Commander Genius.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Commander Genius.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		237421E911FB8554000EEA5B /* GraphicsIDs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphicsIDs.cpp; sourceTree = "<group>"; };
 		237422C011FC7F67000EEA5B /* CGuardRobot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGuardRobot.h; sourceTree = "<group>"; };
+		2374239711FC849A000EEA5B /* Commander Genius.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Commander Genius.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2374239911FC849B000EEA5B /* Info iPhone.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info iPhone.plist"; sourceTree = "<group>"; };
+		237423C411FC8CF9000EEA5B /* libSDLiPhoneOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDLiPhoneOS.a; path = "/Users/az/Programmierung/SDL-1.3-trunk/Xcode-iPhoneOS/SDL/build/Release-iphonesimulator/libSDLiPhoneOS.a"; sourceTree = "<absolute>"; };
+		2374241F11FC9E58000EEA5B /* PerSurfaceAlpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerSurfaceAlpha.h; sourceTree = "<group>"; };
 		23A11A8F11DE888400747BFA /* CHUD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CHUD.cpp; sourceTree = "<group>"; };
 		23A11A9011DE888400747BFA /* CHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHUD.h; sourceTree = "<group>"; };
 		23A11B7411E7C3F900747BFA /* CAutoRay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAutoRay.cpp; sourceTree = "<group>"; };
@@ -734,6 +919,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2374238D11FC849A000EEA5B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2374238E11FC849A000EEA5B /* Carbon.framework in Frameworks */,
+				2374239011FC849A000EEA5B /* OpenGL.framework in Frameworks */,
+				2374239111FC849A000EEA5B /* Cocoa.framework in Frameworks */,
+				237423C511FC8CF9000EEA5B /* libSDLiPhoneOS.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -741,6 +937,7 @@
 			isa = PBXGroup;
 			children = (
 				23575688101A6AE600275638 /* Commander Genius.app */,
+				2374239711FC849A000EEA5B /* Commander Genius.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -753,6 +950,7 @@
 				195DF8CFFE9D517E11CA2CBB /* Products */,
 				20286C2CFDCF999611CA2CEA /* Resources */,
 				63CD10A211CFF5FB00F60BC8 /* src */,
+				237423C411FC8CF9000EEA5B /* libSDLiPhoneOS.a */,
 			);
 			name = CommanderGenius;
 			sourceTree = "<group>";
@@ -768,6 +966,7 @@
 				6350FB0B10449DAA00A992D5 /* readme.txt */,
 				63DCCCBB104CBC3000B3BC10 /* version.h */,
 				6350F7A11044797300A992D5 /* vfsroot */,
+				2374239911FC849B000EEA5B /* Info iPhone.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1400,6 +1599,7 @@
 				63CD11B711CFF5FB00F60BC8 /* CTilemap.cpp */,
 				63CD11B811CFF5FB00F60BC8 /* CTilemap.h */,
 				63CD11B911CFF5FB00F60BC8 /* effects */,
+				2374241F11FC9E58000EEA5B /* PerSurfaceAlpha.h */,
 			);
 			path = graphics;
 			sourceTree = "<group>";
@@ -1607,6 +1807,25 @@
 			productReference = 23575688101A6AE600275638 /* Commander Genius.app */;
 			productType = "com.apple.product-type.application";
 		};
+		237422D611FC849A000EEA5B /* Commander Genius iPhone */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2374239411FC849A000EEA5B /* Build configuration list for PBXNativeTarget "Commander Genius iPhone" */;
+			buildPhases = (
+				237422D711FC849A000EEA5B /* copy files (vfsroot) */,
+				237422D811FC849A000EEA5B /* Sources */,
+				2374238811FC849A000EEA5B /* Resources */,
+				2374238D11FC849A000EEA5B /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Commander Genius iPhone";
+			productInstallPath = "$(HOME)/Applications";
+			productName = CommanderGenius;
+			productReference = 2374239711FC849A000EEA5B /* Commander Genius.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1623,6 +1842,7 @@
 			projectRoot = ../../..;
 			targets = (
 				235755D0101A5E5900275638 /* Commander Genius */,
+				237422D611FC849A000EEA5B /* Commander Genius iPhone */,
 			);
 		};
 /* End PBXProject section */
@@ -1638,9 +1858,35 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2374238811FC849A000EEA5B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2374238911FC849A000EEA5B /* InfoPlist.strings in Resources */,
+				2374238A11FC849A000EEA5B /* main.xib in Resources */,
+				2374238B11FC849A000EEA5B /* cglogo.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		237422D711FC849A000EEA5B /* copy files (vfsroot) */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/../../vfsroot",
+			);
+			name = "copy files (vfsroot)";
+			outputPaths = (
+				"$(TARGET_BUILD_DIR)/$(CONTENTS_FOLDER_PATH)/Resources",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\n\nVFSROOT=\"$SRCROOT/../../vfsroot\"\nRES=\"$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH/Resources\"\n\nrsync -av --delete \"$VFSROOT/\"* \"$RES/\"\n";
+		};
 		23A5133B11D4ED880043F6C8 /* copy files (vfsroot) */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1856,6 +2102,187 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		237422D811FC849A000EEA5B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				237422D911FC849A000EEA5B /* arguments.cpp in Sources */,
+				237422DA11FC849A000EEA5B /* CGame.cpp in Sources */,
+				237422DB11FC849A000EEA5B /* CGameControl.cpp in Sources */,
+				237422DC11FC849A000EEA5B /* CLogFile.cpp in Sources */,
+				237422DD11FC849A000EEA5B /* CBehaviorEngine.cpp in Sources */,
+				237422DE11FC849A000EEA5B /* CGameLauncher.cpp in Sources */,
+				237422DF11FC849A000EEA5B /* CMap.cpp in Sources */,
+				237422E011FC849A000EEA5B /* CMapLoader.cpp in Sources */,
+				237422E111FC849A000EEA5B /* CMenu.cpp in Sources */,
+				237422E211FC849A000EEA5B /* CObject.cpp in Sources */,
+				237422E311FC849A000EEA5B /* CPhysicsSettings.cpp in Sources */,
+				237422E411FC849A000EEA5B /* CPlane.cpp in Sources */,
+				237422E511FC849A000EEA5B /* CPlayer.cpp in Sources */,
+				237422E611FC849A000EEA5B /* CPlayerItems.cpp in Sources */,
+				237422E711FC849A000EEA5B /* CPlayerLevel.cpp in Sources */,
+				237422E811FC849A000EEA5B /* CPlayerWM.cpp in Sources */,
+				237422E911FC849A000EEA5B /* CStatusScreen.cpp in Sources */,
+				237422EA11FC849A000EEA5B /* CTileProperties.cpp in Sources */,
+				237422EB11FC849A000EEA5B /* CAudioSettings.cpp in Sources */,
+				237422EC11FC849A000EEA5B /* CBaseMenu.cpp in Sources */,
+				237422ED11FC849A000EEA5B /* CCameraSettings.cpp in Sources */,
+				237422EE11FC849A000EEA5B /* CConfirmMenu.cpp in Sources */,
+				237422EF11FC849A000EEA5B /* CControlsettings.cpp in Sources */,
+				237422F011FC849A000EEA5B /* CDifficultyMenu.cpp in Sources */,
+				237422F111FC849A000EEA5B /* CHelpMenu.cpp in Sources */,
+				237422F211FC849A000EEA5B /* CLoadMenu.cpp in Sources */,
+				237422F311FC849A000EEA5B /* COptions.cpp in Sources */,
+				237422F411FC849A000EEA5B /* CPlayersMenu.cpp in Sources */,
+				237422F511FC849A000EEA5B /* CSaveMenu.cpp in Sources */,
+				237422F611FC849A000EEA5B /* CSettingsMenu.cpp in Sources */,
+				237422F711FC849A000EEA5B /* CVideoSettings.cpp in Sources */,
+				237422F811FC849A000EEA5B /* CVolumeSettings.cpp in Sources */,
+				237422F911FC849A000EEA5B /* tga.cpp in Sources */,
+				237422FA11FC849A000EEA5B /* ConfigHandler.cpp in Sources */,
+				237422FB11FC849A000EEA5B /* CrashHandler.cpp in Sources */,
+				237422FC11FC849A000EEA5B /* Debug.cpp in Sources */,
+				237422FD11FC849A000EEA5B /* CDialog.cpp in Sources */,
+				237422FE11FC849A000EEA5B /* CDlgFrame.cpp in Sources */,
+				237422FF11FC849A000EEA5B /* CDlgObject.cpp in Sources */,
+				2374230011FC849A000EEA5B /* CDlgOptionText.cpp in Sources */,
+				2374230111FC849A000EEA5B /* CMessageBox.cpp in Sources */,
+				2374230211FC849A000EEA5B /* CTextBox.cpp in Sources */,
+				2374230311FC849A000EEA5B /* CTextViewer.cpp in Sources */,
+				2374230411FC849A000EEA5B /* CEGAGraphics.cpp in Sources */,
+				2374230511FC849A000EEA5B /* CIntro.cpp in Sources */,
+				2374230611FC849A000EEA5B /* CMessages.cpp in Sources */,
+				2374230711FC849A000EEA5B /* CPassive.cpp in Sources */,
+				2374230811FC849A000EEA5B /* CPlanes.cpp in Sources */,
+				2374230911FC849A000EEA5B /* CTitle.cpp in Sources */,
+				2374230A11FC849A000EEA5B /* CEGAGraphicsGalaxy.cpp in Sources */,
+				2374230B11FC849A000EEA5B /* CMapLoaderGalaxy.cpp in Sources */,
+				2374230C11FC849A000EEA5B /* CMenuGalaxy.cpp in Sources */,
+				2374230D11FC849A000EEA5B /* CPassive.cpp in Sources */,
+				2374230E11FC849A000EEA5B /* CPlayGameGalaxy.cpp in Sources */,
+				2374230F11FC849A000EEA5B /* CAbout.cpp in Sources */,
+				2374231011FC849A000EEA5B /* CCredits.cpp in Sources */,
+				2374231111FC849A000EEA5B /* CHelp.cpp in Sources */,
+				2374231211FC849A000EEA5B /* CHighScores.cpp in Sources */,
+				2374231311FC849A000EEA5B /* CInfoScene.cpp in Sources */,
+				2374231411FC849A000EEA5B /* COrderingInfo.cpp in Sources */,
+				2374231511FC849A000EEA5B /* CStory.cpp in Sources */,
+				2374231611FC849A000EEA5B /* CPlayGame.cpp in Sources */,
+				2374231711FC849A000EEA5B /* CEGABitmap.cpp in Sources */,
+				2374231811FC849A000EEA5B /* CObjectAI.cpp in Sources */,
+				2374231911FC849A000EEA5B /* CEGAGraphicsVort.cpp in Sources */,
+				2374231A11FC849A000EEA5B /* CEGALatch.cpp in Sources */,
+				2374231B11FC849A000EEA5B /* CEGASprit.cpp in Sources */,
+				2374231C11FC849A000EEA5B /* CHelpMenuVorticon.cpp in Sources */,
+				2374231D11FC849A000EEA5B /* CMenuVorticon.cpp in Sources */,
+				2374231E11FC849A000EEA5B /* CPassiveVort.cpp in Sources */,
+				2374231F11FC849A000EEA5B /* CEndingEp1.cpp in Sources */,
+				2374232011FC849A000EEA5B /* CEndingEp2.cpp in Sources */,
+				2374232111FC849A000EEA5B /* CEndingEp3.cpp in Sources */,
+				2374232211FC849A000EEA5B /* CFinale.cpp in Sources */,
+				2374232311FC849A000EEA5B /* CFinaleStaticScene.cpp in Sources */,
+				2374232411FC849A000EEA5B /* CShipFlySys.cpp in Sources */,
+				2374232511FC849A000EEA5B /* CTantalusRay.cpp in Sources */,
+				2374232611FC849A000EEA5B /* finale.cpp in Sources */,
+				2374232711FC849A000EEA5B /* CPlayGameDialogs.cpp in Sources */,
+				2374232811FC849A000EEA5B /* CPlayGameGameState.cpp in Sources */,
+				2374232911FC849A000EEA5B /* CPlayGameLevel.cpp in Sources */,
+				2374232A11FC849A000EEA5B /* CPlayGameVorticon.cpp in Sources */,
+				2374232B11FC849A000EEA5B /* CPlayGameWorldMap.cpp in Sources */,
+				2374232C11FC849A000EEA5B /* CConfiguration.cpp in Sources */,
+				2374232D11FC849A000EEA5B /* CExeFile.cpp in Sources */,
+				2374232E11FC849A000EEA5B /* CCarmack.cpp in Sources */,
+				2374232F11FC849A000EEA5B /* CCompression.cpp in Sources */,
+				2374233011FC849A000EEA5B /* CHuffman.cpp in Sources */,
+				2374233111FC849A000EEA5B /* CRLE.cpp in Sources */,
+				2374233211FC849A000EEA5B /* Cunlzexe.cpp in Sources */,
+				2374233311FC849A000EEA5B /* sgrle.cpp in Sources */,
+				2374233411FC849A000EEA5B /* CPatcher.cpp in Sources */,
+				2374233511FC849A000EEA5B /* CPatcherUtils.cpp in Sources */,
+				2374233611FC849A000EEA5B /* crc.cpp in Sources */,
+				2374233711FC849A000EEA5B /* CSavedGame.cpp in Sources */,
+				2374233811FC849A000EEA5B /* CTileLoader.cpp in Sources */,
+				2374233911FC849A000EEA5B /* IniReader.cpp in Sources */,
+				2374233A11FC849A000EEA5B /* lz.cpp in Sources */,
+				2374233B11FC849A000EEA5B /* ResourceMgmt.cpp in Sources */,
+				2374233C11FC849A000EEA5B /* fileio.cpp in Sources */,
+				2374233D11FC849A000EEA5B /* FindFile.cpp in Sources */,
+				2374233E11FC849A000EEA5B /* CBitmap.cpp in Sources */,
+				2374233F11FC849A000EEA5B /* CCursor.cpp in Sources */,
+				2374234011FC849A000EEA5B /* CFont.cpp in Sources */,
+				2374234111FC849A000EEA5B /* CGfxEngine.cpp in Sources */,
+				2374234211FC849A000EEA5B /* CPalette.cpp in Sources */,
+				2374234311FC849A000EEA5B /* CSprite.cpp in Sources */,
+				2374234411FC849A000EEA5B /* CTilemap.cpp in Sources */,
+				2374234511FC849A000EEA5B /* CColorMerge.cpp in Sources */,
+				2374234611FC849A000EEA5B /* CEffects.cpp in Sources */,
+				2374234711FC849A000EEA5B /* CFlash.cpp in Sources */,
+				2374234811FC849A000EEA5B /* CPixelate.cpp in Sources */,
+				2374234911FC849A000EEA5B /* CVibrate.cpp in Sources */,
+				2374234A11FC849A000EEA5B /* CMusic.cpp in Sources */,
+				2374234B11FC849A000EEA5B /* hq_sound.cpp in Sources */,
+				2374234C11FC849A000EEA5B /* main.cpp in Sources */,
+				2374234D11FC849A000EEA5B /* misc.cpp in Sources */,
+				2374234E11FC849A000EEA5B /* getopt.cpp in Sources */,
+				2374234F11FC849A000EEA5B /* pixel.cpp in Sources */,
+				2374235011FC849A000EEA5B /* scale2x.cpp in Sources */,
+				2374235111FC849A000EEA5B /* scale3x.cpp in Sources */,
+				2374235211FC849A000EEA5B /* scalebit.cpp in Sources */,
+				2374235311FC849A000EEA5B /* CInput.cpp in Sources */,
+				2374235411FC849A000EEA5B /* COpenGL.cpp in Sources */,
+				2374235511FC849A000EEA5B /* CSettings.cpp in Sources */,
+				2374235611FC849A000EEA5B /* CTimer.cpp in Sources */,
+				2374235711FC849A000EEA5B /* CVideoDriver.cpp in Sources */,
+				2374235811FC849A000EEA5B /* CSound.cpp in Sources */,
+				2374235911FC849A000EEA5B /* CSoundChannel.cpp in Sources */,
+				2374235A11FC849A000EEA5B /* CSoundSlot.cpp in Sources */,
+				2374235B11FC849A000EEA5B /* wizgp2x.cpp in Sources */,
+				2374235C11FC849A000EEA5B /* colourconvert.cpp in Sources */,
+				2374235D11FC849A000EEA5B /* StringBuf.cpp in Sources */,
+				2374235E11FC849A000EEA5B /* StringUtils.cpp in Sources */,
+				2374235F11FC849A000EEA5B /* Unicode.cpp in Sources */,
+				2374236011FC849A000EEA5B /* oggsupport.cpp in Sources */,
+				2374236211FC849A000EEA5B /* CHUD.cpp in Sources */,
+				2374236311FC849A000EEA5B /* CAutoRay.cpp in Sources */,
+				2374236411FC849A000EEA5B /* CBallJack.cpp in Sources */,
+				2374236511FC849A000EEA5B /* CButler.cpp in Sources */,
+				2374236611FC849A000EEA5B /* CDoor.cpp in Sources */,
+				2374236711FC849A000EEA5B /* CEarthChunk.cpp in Sources */,
+				2374236811FC849A000EEA5B /* CEarthExplosion.cpp in Sources */,
+				2374236911FC849A000EEA5B /* CFireBall.cpp in Sources */,
+				2374236A11FC849A000EEA5B /* CFoob.cpp in Sources */,
+				2374236B11FC849A000EEA5B /* CGarg.cpp in Sources */,
+				2374236C11FC849A000EEA5B /* CGuardRobot.cpp in Sources */,
+				2374236D11FC849A000EEA5B /* CIceCannon.cpp in Sources */,
+				2374236E11FC849A000EEA5B /* CMeep.cpp in Sources */,
+				2374236F11FC849A000EEA5B /* CMessie.cpp in Sources */,
+				2374237011FC849A000EEA5B /* CPlatform.cpp in Sources */,
+				2374237111FC849A000EEA5B /* CPlatformVert.cpp in Sources */,
+				2374237211FC849A000EEA5B /* CRay.cpp in Sources */,
+				2374237311FC849A000EEA5B /* CRisingPoints.cpp in Sources */,
+				2374237411FC849A000EEA5B /* CRope.cpp in Sources */,
+				2374237511FC849A000EEA5B /* CScrub.cpp in Sources */,
+				2374237611FC849A000EEA5B /* CSectorEffector.cpp in Sources */,
+				2374237711FC849A000EEA5B /* CSoundWave.cpp in Sources */,
+				2374237811FC849A000EEA5B /* CSpark.cpp in Sources */,
+				2374237911FC849A000EEA5B /* CTank.cpp in Sources */,
+				2374237A11FC849A000EEA5B /* CTeleporter.cpp in Sources */,
+				2374237B11FC849A000EEA5B /* CVorticon.cpp in Sources */,
+				2374237C11FC849A000EEA5B /* CVorticonElite.cpp in Sources */,
+				2374237D11FC849A000EEA5B /* CVortikid.cpp in Sources */,
+				2374237E11FC849A000EEA5B /* CVortiMom.cpp in Sources */,
+				2374237F11FC849A000EEA5B /* CVortiNinja.cpp in Sources */,
+				2374238011FC849A000EEA5B /* CYorp.cpp in Sources */,
+				2374238111FC849A000EEA5B /* CBridges.cpp in Sources */,
+				2374238211FC849A000EEA5B /* CCamera.cpp in Sources */,
+				2374238311FC849A000EEA5B /* CWorldMap.cpp in Sources */,
+				2374238411FC849A000EEA5B /* CPlayerWM.cpp in Sources */,
+				2374238511FC849A000EEA5B /* CAnkhShield.cpp in Sources */,
+				2374238611FC849A000EEA5B /* CPlayGameVorticonWM.cpp in Sources */,
+				2374238711FC849A000EEA5B /* GraphicsIDs.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
@@ -1896,6 +2323,7 @@
 					/Library/Frameworks/SDL.framework/Headers,
 					"\"$(SRCROOT)\"/Vorbis.framework/Headers",
 					"\"$(SRCROOT)\"/Ogg.framework/Headers",
+					"\"$(SRCROOT)\"/../../src",
 				);
 				INFOPLIST_FILE = Info.plist;
 				OTHER_CFLAGS = (
@@ -1925,6 +2353,7 @@
 					/Library/Frameworks/SDL.framework/Headers,
 					"\"$(SRCROOT)\"/Vorbis.framework/Headers",
 					"\"$(SRCROOT)\"/Ogg.framework/Headers",
+					"\"$(SRCROOT)\"/../../src",
 				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
@@ -1937,6 +2366,69 @@
 				PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES;
 				PRODUCT_NAME = "Commander Genius";
 				SDKROOT = macosx10.5;
+			};
+			name = Release;
+		};
+		2374239511FC849A000EEA5B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5048396E09E3307300765E4B /* CommanderGeniusTarget.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				HEADER_SEARCH_PATHS = (
+					"\"$(SRCROOT)\"/../../src",
+					"$(SDLDIR)/include",
+				);
+				INFOPLIST_FILE = "Info iPhone.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SDLDIR)/Xcode-iPhoneOS/SDL/build/Release-iphonesimulator\"",
+				);
+				OTHER_CFLAGS = (
+					"-DBUILD_SDL",
+					"-DUSE_OPENGL",
+				);
+				PRODUCT_NAME = "Commander Genius";
+				SDKROOT = iphonesimulator3.2;
+				SDLDIR = "/Users/az/Programmierung/SDL-1.3-trunk";
+			};
+			name = Debug;
+		};
+		2374239611FC849A000EEA5B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5048396E09E3307300765E4B /* CommanderGeniusTarget.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				HEADER_SEARCH_PATHS = (
+					"\"$(SRCROOT)\"/../../src",
+					"$(SDLDIR)/include",
+				);
+				INFOPLIST_FILE = "Info iPhone.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SDLDIR)/Xcode-iPhoneOS/SDL/build/Release-iphonesimulator\"",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.3;
+				OTHER_CFLAGS = (
+					"-DBUILD_SDL",
+					"-DUSE_OPENGL",
+				);
+				PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES;
+				PRODUCT_NAME = "Commander Genius";
+				SDKROOT = iphonesimulator3.2;
+				SDLDIR = "/Users/az/Programmierung/SDL-1.3-trunk";
 			};
 			name = Release;
 		};
@@ -1974,6 +2466,15 @@
 			buildConfigurations = (
 				2357563C101A5E5900275638 /* Debug */,
 				2357563D101A5E5900275638 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2374239411FC849A000EEA5B /* Build configuration list for PBXNativeTarget "Commander Genius iPhone" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2374239511FC849A000EEA5B /* Debug */,
+				2374239611FC849A000EEA5B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

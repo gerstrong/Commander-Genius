@@ -14,6 +14,7 @@
 #include "../scale2x/scalebit.h"
 #include "../CLogFile.h"
 #include "../FindFile.h"
+#include "graphics/PerSurfaceAlpha.h"
 #include <iostream>
 #include <fstream>
 
@@ -37,9 +38,14 @@ int ConsoleExpireTimer = 0;
 CVideoDriver::CVideoDriver() :
 m_blitsurface_alloc(false)
 {
+	resetSettings();
+}
+
+void CVideoDriver::resetSettings() {
 	// Default values
 	m_maxwidth = 0;
 	showfps=true;
+	Mode=0;
 #if defined(WIZ) || defined(GP2X)
 	m_Resolution.width=320;
 	m_Resolution.height=240;
@@ -48,21 +54,17 @@ m_blitsurface_alloc(false)
 #else
 	m_Resolution.depth=16;
 #endif
-	Mode=0;
 	Fullscreen=true;
-	m_ScaleXFilter=1;
-	Zoom=1;
-	m_targetfps = 60;	// Enable automatic frameskipping by default at 30
 #else
 	m_Resolution.width=320;
 	m_Resolution.height=200;
 	m_Resolution.depth=32;
-	Mode=0;
 	Fullscreen=false;
+#endif
 	m_ScaleXFilter=1;
 	Zoom=1;
-	m_targetfps = 60;
-#endif
+	m_targetfps = 60;	// Enable automatic frameskipping by default at 30
+	
 #ifdef USE_OPENGL
 	m_opengl_filter = GL_NEAREST;
 	mp_OpenGL = NULL;
@@ -104,8 +106,7 @@ m_blitsurface_alloc(false)
 
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	Zoom = 1;
-	Filtermode = 0;
-	FrameSkip = 15;
+	m_ScaleXFilter = 0;
 	m_targetfps = 30;
 	m_aspect_correction = false;
 #else
@@ -184,8 +185,6 @@ void CVideoDriver::initResolutionList()
 	m_Resolution.depth = 32;
 	m_Resolutionlist.push_back(m_Resolution);
 	m_Resolution_pos = m_Resolutionlist.begin();
-	
-	return;
 #endif	
 }
 
@@ -707,7 +706,7 @@ void CVideoDriver::collectSurfaces()
 
 		mp_OpenGL->setFGSurface(FGLayerSurface);
 
-		if(FXSurface->format->alpha)
+		if(getPerSurfaceAlpha(FXSurface))
 			mp_OpenGL->setFXSurface(FXSurface);
 		else
 			mp_OpenGL->setFXSurface(NULL);
@@ -717,7 +716,7 @@ void CVideoDriver::collectSurfaces()
 	{
 		SDL_BlitSurface(FGLayerSurface, NULL, BlitSurface, NULL);
 
-		if(FXSurface->format->alpha)
+		if(getPerSurfaceAlpha(FXSurface))
 			SDL_BlitSurface(FXSurface, NULL, BlitSurface, NULL);
 	}
 }

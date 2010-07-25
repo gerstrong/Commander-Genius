@@ -40,7 +40,8 @@ class CVideoDriver : public CSingleton<CVideoDriver>
 {
 public:
 	CVideoDriver();
-
+	void resetSettings();
+	
 	bool applyMode();
 	SDL_Rect adaptGameResolution();
 	SDL_Surface* createSurface( std::string name, bool alpha, int width, int height, int bpp, int mode, SDL_PixelFormat* format );
