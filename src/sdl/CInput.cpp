@@ -984,11 +984,12 @@ static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_
 	return phoneButtons;
 }
 
+#ifdef IPHONE
+
 static const int phoneButtonN = 11;
 
 static Uint32 phoneButtonLasttime[phoneButtonN] = {0,0,0,0,0,0,0,0,0,0,0};
 static int phoneButton_MouseIndex[phoneButtonN] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
-
 
 
 static TouchButton* getPhoneButton(int x, int y, TouchButton phoneButtons[]) {
@@ -1125,6 +1126,8 @@ void CInput::renderOverlay() {
 #endif
 #endif
 }
+
+#endif
 
 
 /*#ifdef WIZ

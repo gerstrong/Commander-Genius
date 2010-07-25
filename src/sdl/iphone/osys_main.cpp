@@ -23,6 +23,8 @@
  *
  */
 
+#ifdef IPHONE
+
 #include <unistd.h>
 #include <pthread.h>
 
@@ -300,3 +302,5 @@ void iphone_main(int argc, char *argv[]) {
 	scummvm_main(argc, argv);
 	g_system->quit();       // TODO: Consider removing / replacing this!
 }
+
+#endif

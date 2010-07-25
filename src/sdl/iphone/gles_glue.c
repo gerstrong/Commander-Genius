@@ -18,6 +18,7 @@
  
  */
 
+#ifdef IPHONE
 
 #include "wolfiphone.h"
 
@@ -132,3 +133,4 @@ void pfglEnd() {
 	curr_prim = 0;
 }
 
+#endif

@@ -23,6 +23,8 @@
  *
  */
 
+#ifdef IPHONE
+
 #include "gui/message.h"
 
 #include "osys_main.h"
@@ -512,3 +514,5 @@ bool OSystem_IPHONE::handleEvent_swipe(Common::Event &event, int direction) {
 
 	return true;
 }
+
+#endif

@@ -23,6 +23,8 @@
  *
  */
 
+#ifdef IPHONE
+
 #include "common/scummsys.h"
 #include "blit_arm.h"
 
@@ -49,3 +51,5 @@ void blitLandscapeScreenRect8bpp(uint16 *dst, byte *src, int width, int height, 
 		src += 1 - height * screenWidth;
 	}
 }
+
+#endif //IPHONE

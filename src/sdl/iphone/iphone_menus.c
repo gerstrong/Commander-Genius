@@ -18,6 +18,8 @@
  
  */
 
+#ifdef IPHONE
+
 #include "../wolfiphone.h"
 
 int		intermissionStartFrameNum;
@@ -1058,4 +1060,4 @@ void iphoneDrawMenus() {
 	}
 }
 
-
+#endif

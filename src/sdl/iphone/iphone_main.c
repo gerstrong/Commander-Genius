@@ -30,6 +30,7 @@
  *	written by Id Software, Inc.
  *
  */
+#ifdef IPHONE
 
 #include "../wolfiphone.h"
 
@@ -242,3 +243,4 @@ void iphoneShutdown() {
 	exit( 0 );
 }
 
+#endif

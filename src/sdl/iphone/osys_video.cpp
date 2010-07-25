@@ -23,6 +23,8 @@
  *
  */
 
+#ifdef IPHONE
+
 #include "osys_main.h"
 
 const OSystem::GraphicsMode* OSystem_IPHONE::getSupportedGraphicsModes() const {
@@ -461,3 +463,5 @@ void OSystem_IPHONE::setMouseCursor(const byte *buf, uint w, uint h, int hotspot
 
 	_mouseDirty = true;
 }
+
+#endif

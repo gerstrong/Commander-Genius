@@ -3,6 +3,7 @@ Commander Genius Release :
 
 v0.3.2.1:
 ---------
+- more AI fixes
 - Added Cannon fire sound
 - Added HUD Display
 - Small issues fixed

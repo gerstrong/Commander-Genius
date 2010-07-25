@@ -32,6 +32,8 @@
 
  */
 
+#ifdef IPHONE
+
 #include "../wolfiphone.h"
 
 currentMap_t currentMap;
@@ -1023,3 +1025,5 @@ void iphoneFrame() {
 	// do the swapbuffers
 	GLimp_EndFrame();
 }
+
+#endif

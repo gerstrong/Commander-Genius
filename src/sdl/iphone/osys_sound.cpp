@@ -23,6 +23,8 @@
  *
  */
 
+#ifdef IPHONE
+
 #include "osys_main.h"
 
 void OSystem_IPHONE::AQBufferCallback(void *in, AudioQueueRef inQ, AudioQueueBufferRef outQB) {
@@ -109,3 +111,5 @@ void OSystem_IPHONE::stopSoundsystem() {
 int OSystem_IPHONE::getOutputSampleRate() const {
 	return AUDIO_SAMPLE_RATE;
 }
+
+#endif

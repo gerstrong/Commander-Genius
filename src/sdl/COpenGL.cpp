@@ -290,7 +290,9 @@ void COpenGL::render()
 		renderTexture(m_texFG, true);
 	}
 
+#ifdef IPHONE
 	g_pInput->renderOverlay();
+#endif
 	
 	SDL_GL_SwapBuffers();
 
