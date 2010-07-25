@@ -6,6 +6,7 @@
  */
 
 #include "CPalette.h"
+#include "graphics/PerSurfaceAlpha.h"
 
 ///
 // Initialization
@@ -182,7 +183,7 @@ void CPalette::fadeto(Uint8 alpha, Uint8 fadespeed)
 
 void CPalette::applyFade()
 {
-	Uint8 current_alpha = m_fxsurface->format->alpha;
+	Uint8 current_alpha = getPerSurfaceAlpha(m_fxsurface);
 	
 	if( m_alpha!=current_alpha )
 	{

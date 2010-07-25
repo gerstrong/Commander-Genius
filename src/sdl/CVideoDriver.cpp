@@ -14,6 +14,7 @@
 #include "../scale2x/scalebit.h"
 #include "../CLogFile.h"
 #include "../FindFile.h"
+#include "graphics/PerSurfaceAlpha.h"
 #include <iostream>
 #include <fstream>
 
@@ -703,7 +704,7 @@ void CVideoDriver::collectSurfaces()
 
 		mp_OpenGL->setFGSurface(FGLayerSurface);
 
-		if(FXSurface->format->alpha)
+		if(getPerSurfaceAlpha(FXSurface))
 			mp_OpenGL->setFXSurface(FXSurface);
 		else
 			mp_OpenGL->setFXSurface(NULL);
@@ -713,7 +714,7 @@ void CVideoDriver::collectSurfaces()
 	{
 		SDL_BlitSurface(FGLayerSurface, NULL, BlitSurface, NULL);
 
-		if(FXSurface->format->alpha)
+		if(getPerSurfaceAlpha(FXSurface))
 			SDL_BlitSurface(FXSurface, NULL, BlitSurface, NULL);
 	}
 }
