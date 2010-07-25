@@ -9,7 +9,7 @@
 	<key>CFBundleIconFile</key>
 	<string>cglogo.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.sourceforge.clonekeenplus</string>
+	<string>com.clonekeenplus.clonekeenplus</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
