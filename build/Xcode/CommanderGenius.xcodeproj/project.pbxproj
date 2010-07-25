@@ -195,10 +195,14 @@
 		2374238911FC849A000EEA5B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0867D6AAFE840B52C02AAC07 /* InfoPlist.strings */; };
 		2374238A11FC849A000EEA5B /* main.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD57E20DA1CFC700B32029 /* main.xib */; };
 		2374238B11FC849A000EEA5B /* cglogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63AB8C2E107C62D0001EE22F /* cglogo.icns */; };
-		2374238E11FC849A000EEA5B /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20286C33FDCF999611CA2CEA /* Carbon.framework */; };
-		2374239011FC849A000EEA5B /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D3EA831013AEB5001643FA /* OpenGL.framework */; };
-		2374239111FC849A000EEA5B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D3EA911013AF1D001643FA /* Cocoa.framework */; };
-		237423C511FC8CF9000EEA5B /* libSDLiPhoneOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 237423C411FC8CF9000EEA5B /* libSDLiPhoneOS.a */; };
+		2374243B11FCA52A000EEA5B /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2374243A11FCA52A000EEA5B /* OpenGLES.framework */; };
+		2374245711FCA649000EEA5B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2374245611FCA649000EEA5B /* AudioToolbox.framework */; };
+		2374245911FCA649000EEA5B /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2374245811FCA649000EEA5B /* CoreAudio.framework */; };
+		2374245B11FCA649000EEA5B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2374245A11FCA649000EEA5B /* CoreGraphics.framework */; };
+		2374245D11FCA649000EEA5B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2374245C11FCA649000EEA5B /* UIKit.framework */; };
+		2374246611FCA679000EEA5B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2374246511FCA679000EEA5B /* QuartzCore.framework */; };
+		2374249211FCA6CB000EEA5B /* iphone_video.m in Sources */ = {isa = PBXBuildFile; fileRef = 2374247C11FCA6CB000EEA5B /* iphone_video.m */; };
+		237424A511FCA6CB000EEA5B /* iphone_video.m in Sources */ = {isa = PBXBuildFile; fileRef = 2374247C11FCA6CB000EEA5B /* iphone_video.m */; };
 		23A11A9111DE888400747BFA /* CHUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11A8F11DE888400747BFA /* CHUD.cpp */; };
 		23A11BAE11E7C3F900747BFA /* CAutoRay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B7411E7C3F900747BFA /* CAutoRay.cpp */; };
 		23A11BAF11E7C3F900747BFA /* CBallJack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B7611E7C3F900747BFA /* CBallJack.cpp */; };
@@ -234,6 +238,9 @@
 		23C64A8111F31D8A0053CA36 /* CPlayerWM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C64A7F11F31D8A0053CA36 /* CPlayerWM.cpp */; };
 		23C64A8411F31D9C0053CA36 /* CAnkhShield.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C64A8211F31D9C0053CA36 /* CAnkhShield.cpp */; };
 		23C64A8711F31DAA0053CA36 /* CPlayGameVorticonWM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C64A8511F31DAA0053CA36 /* CPlayGameVorticonWM.cpp */; };
+		23CE96BB11FCCC510033FDFF /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23CE96BA11FCCC510033FDFF /* CoreFoundation.framework */; };
+		23CE96EC11FCCE980033FDFF /* libSDLiPhoneOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 237423C411FC8CF9000EEA5B /* libSDLiPhoneOS.a */; };
+		23CE972011FCD8860033FDFF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23CE971F11FCD8860033FDFF /* Foundation.framework */; };
 		63AB8C2F107C62D0001EE22F /* cglogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63AB8C2E107C62D0001EE22F /* cglogo.icns */; };
 		63CD120311CFF5FC00F60BC8 /* arguments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10A511CFF5FB00F60BC8 /* arguments.cpp */; };
 		63CD120411CFF5FC00F60BC8 /* CGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10A711CFF5FB00F60BC8 /* CGame.cpp */; };
@@ -391,6 +398,17 @@
 		2374239911FC849B000EEA5B /* Info iPhone.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info iPhone.plist"; sourceTree = "<group>"; };
 		237423C411FC8CF9000EEA5B /* libSDLiPhoneOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDLiPhoneOS.a; path = "/Users/az/Programmierung/SDL-1.3-trunk/Xcode-iPhoneOS/SDL/build/Release-iphonesimulator/libSDLiPhoneOS.a"; sourceTree = "<absolute>"; };
 		2374241F11FC9E58000EEA5B /* PerSurfaceAlpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerSurfaceAlpha.h; sourceTree = "<group>"; };
+		2374243A11FCA52A000EEA5B /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		2374244011FCA545000EEA5B /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
+		2374245611FCA649000EEA5B /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		2374245811FCA649000EEA5B /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		2374245A11FCA649000EEA5B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		2374245C11FCA649000EEA5B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		2374246311FCA679000EEA5B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		2374246511FCA679000EEA5B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		2374247B11FCA6CB000EEA5B /* iphone_video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iphone_video.h; sourceTree = "<group>"; };
+		2374247C11FCA6CB000EEA5B /* iphone_video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iphone_video.m; sourceTree = "<group>"; };
+		237424B311FCA77A000EEA5B /* libSDLiPhoneOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDLiPhoneOS.a; path = "../../../SDL-1.3-trunk/Xcode-iPhoneOS/SDL/build/Release-iphoneos/libSDLiPhoneOS.a"; sourceTree = SOURCE_ROOT; };
 		23A11A8F11DE888400747BFA /* CHUD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CHUD.cpp; sourceTree = "<group>"; };
 		23A11A9011DE888400747BFA /* CHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHUD.h; sourceTree = "<group>"; };
 		23A11B7411E7C3F900747BFA /* CAutoRay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAutoRay.cpp; sourceTree = "<group>"; };
@@ -459,6 +477,9 @@
 		23C64A8311F31D9C0053CA36 /* CAnkhShield.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAnkhShield.h; sourceTree = "<group>"; };
 		23C64A8511F31DAA0053CA36 /* CPlayGameVorticonWM.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlayGameVorticonWM.cpp; sourceTree = "<group>"; };
 		23C64A8611F31DAA0053CA36 /* CPlayGameVorticonWM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPlayGameVorticonWM.h; sourceTree = "<group>"; };
+		23CE96BA11FCCC510033FDFF /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		23CE96C211FCCC6D0033FDFF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		23CE971F11FCD8860033FDFF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		23D3EA691013AC7B001643FA /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = Library/Frameworks/SDL.framework; sourceTree = SDKROOT; };
 		23D3EA831013AEB5001643FA /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		23D3EA911013AF1D001643FA /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -923,10 +944,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2374238E11FC849A000EEA5B /* Carbon.framework in Frameworks */,
-				2374239011FC849A000EEA5B /* OpenGL.framework in Frameworks */,
-				2374239111FC849A000EEA5B /* Cocoa.framework in Frameworks */,
-				237423C511FC8CF9000EEA5B /* libSDLiPhoneOS.a in Frameworks */,
+				2374243B11FCA52A000EEA5B /* OpenGLES.framework in Frameworks */,
+				2374245711FCA649000EEA5B /* AudioToolbox.framework in Frameworks */,
+				2374245911FCA649000EEA5B /* CoreAudio.framework in Frameworks */,
+				2374245B11FCA649000EEA5B /* CoreGraphics.framework in Frameworks */,
+				2374245D11FCA649000EEA5B /* UIKit.framework in Frameworks */,
+				2374246611FCA679000EEA5B /* QuartzCore.framework in Frameworks */,
+				23CE96BB11FCCC510033FDFF /* CoreFoundation.framework in Frameworks */,
+				23CE96EC11FCCE980033FDFF /* libSDLiPhoneOS.a in Frameworks */,
+				23CE972011FCD8860033FDFF /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -945,12 +971,12 @@
 		20286C29FDCF999611CA2CEA /* CommanderGenius */ = {
 			isa = PBXGroup;
 			children = (
+				23CE973C11FCDC030033FDFF /* iPhone libs */,
 				5048396909E3304600765E4B /* Configuration Files */,
 				20286C32FDCF999611CA2CEA /* External Frameworks and Libraries */,
 				195DF8CFFE9D517E11CA2CBB /* Products */,
 				20286C2CFDCF999611CA2CEA /* Resources */,
 				63CD10A211CFF5FB00F60BC8 /* src */,
-				237423C411FC8CF9000EEA5B /* libSDLiPhoneOS.a */,
 			);
 			name = CommanderGenius;
 			sourceTree = "<group>";
@@ -984,6 +1010,15 @@
 			name = "External Frameworks and Libraries";
 			sourceTree = "<group>";
 		};
+		2374246911FCA6CB000EEA5B /* iphone */ = {
+			isa = PBXGroup;
+			children = (
+				2374247B11FCA6CB000EEA5B /* iphone_video.h */,
+				2374247C11FCA6CB000EEA5B /* iphone_video.m */,
+			);
+			path = iphone;
+			sourceTree = "<group>";
+		};
 		23C64A7E11F31D8A0053CA36 /* ai */ = {
 			isa = PBXGroup;
 			children = (
@@ -991,6 +1026,26 @@
 				23C64A8011F31D8A0053CA36 /* CPlayerWM.h */,
 			);
 			path = ai;
+			sourceTree = "<group>";
+		};
+		23CE973C11FCDC030033FDFF /* iPhone libs */ = {
+			isa = PBXGroup;
+			children = (
+				237423C411FC8CF9000EEA5B /* libSDLiPhoneOS.a */,
+				2374243A11FCA52A000EEA5B /* OpenGLES.framework */,
+				2374244011FCA545000EEA5B /* Carbon.framework */,
+				2374245611FCA649000EEA5B /* AudioToolbox.framework */,
+				2374245811FCA649000EEA5B /* CoreAudio.framework */,
+				2374245A11FCA649000EEA5B /* CoreGraphics.framework */,
+				2374245C11FCA649000EEA5B /* UIKit.framework */,
+				2374246311FCA679000EEA5B /* Foundation.framework */,
+				2374246511FCA679000EEA5B /* QuartzCore.framework */,
+				23CE96BA11FCCC510033FDFF /* CoreFoundation.framework */,
+				23CE96C211FCCC6D0033FDFF /* Foundation.framework */,
+				23CE971F11FCD8860033FDFF /* Foundation.framework */,
+				237424B311FCA77A000EEA5B /* libSDLiPhoneOS.a */,
+			);
+			name = "iPhone libs";
 			sourceTree = "<group>";
 		};
 		5048396909E3304600765E4B /* Configuration Files */ = {
@@ -1652,6 +1707,7 @@
 		63CD11DD11CFF5FB00F60BC8 /* sdl */ = {
 			isa = PBXGroup;
 			children = (
+				2374246911FCA6CB000EEA5B /* iphone */,
 				63CD11DE11CFF5FB00F60BC8 /* CInput.cpp */,
 				63CD11DF11CFF5FB00F60BC8 /* CInput.h */,
 				63CD11E011CFF5FB00F60BC8 /* COpenGL.cpp */,
@@ -1811,7 +1867,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2374239411FC849A000EEA5B /* Build configuration list for PBXNativeTarget "Commander Genius iPhone" */;
 			buildPhases = (
-				237422D711FC849A000EEA5B /* copy files (vfsroot) */,
+				239DB45011FCF0C6001BC303 /* copy files (vfsroot) */,
 				237422D811FC849A000EEA5B /* Sources */,
 				2374238811FC849A000EEA5B /* Resources */,
 				2374238D11FC849A000EEA5B /* Frameworks */,
@@ -1871,7 +1927,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		237422D711FC849A000EEA5B /* copy files (vfsroot) */ = {
+		239DB45011FCF0C6001BC303 /* copy files (vfsroot) */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1881,11 +1937,11 @@
 			);
 			name = "copy files (vfsroot)";
 			outputPaths = (
-				"$(TARGET_BUILD_DIR)/$(CONTENTS_FOLDER_PATH)/Resources",
+				"$(TARGET_BUILD_DIR)/$(CONTENTS_FOLDER_PATH)",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\n\nVFSROOT=\"$SRCROOT/../../vfsroot\"\nRES=\"$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH/Resources\"\n\nrsync -av --delete \"$VFSROOT/\"* \"$RES/\"\n";
+			shellScript = "#!/bin/bash\n\nVFSROOT=\"$SRCROOT/../../vfsroot\"\nRES=\"$TARGET_BUILD_DIR/$CONTENTS_FOLDER_PATH\"\n\nrsync -av --delete --exclude=\"global/music\" --exclude=\"global/snd\" \"$VFSROOT/\"* \"$RES/\"\n";
 		};
 		23A5133B11D4ED880043F6C8 /* copy files (vfsroot) */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2099,6 +2155,7 @@
 				23C64A8411F31D9C0053CA36 /* CAnkhShield.cpp in Sources */,
 				23C64A8711F31DAA0053CA36 /* CPlayGameVorticonWM.cpp in Sources */,
 				237421EA11FB8554000EEA5B /* GraphicsIDs.cpp in Sources */,
+				237424A511FCA6CB000EEA5B /* iphone_video.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2280,6 +2337,7 @@
 				2374238511FC849A000EEA5B /* CAnkhShield.cpp in Sources */,
 				2374238611FC849A000EEA5B /* CPlayGameVorticonWM.cpp in Sources */,
 				2374238711FC849A000EEA5B /* GraphicsIDs.cpp in Sources */,
+				2374249211FCA6CB000EEA5B /* iphone_video.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2383,12 +2441,14 @@
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)\"/../../src",
 					"$(SDLDIR)/include",
+					"$(SDLDIR)/src",
 				);
 				INFOPLIST_FILE = "Info iPhone.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SDLDIR)/Xcode-iPhoneOS/SDL/build/Release-iphonesimulator\"",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				OTHER_CFLAGS = (
 					"-DBUILD_SDL",
 					"-DUSE_OPENGL",
@@ -2396,6 +2456,7 @@
 				PRODUCT_NAME = "Commander Genius";
 				SDKROOT = iphonesimulator3.2;
 				SDLDIR = "/Users/az/Programmierung/SDL-1.3-trunk";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -2404,6 +2465,7 @@
 			baseConfigurationReference = 5048396E09E3307300765E4B /* CommanderGeniusTarget.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -2413,14 +2475,14 @@
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)\"/../../src",
 					"$(SDLDIR)/include",
+					"$(SDLDIR)/src",
 				);
 				INFOPLIST_FILE = "Info iPhone.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SDLDIR)/Xcode-iPhoneOS/SDL/build/Release-iphonesimulator\"",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.3;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				OTHER_CFLAGS = (
 					"-DBUILD_SDL",
 					"-DUSE_OPENGL",
@@ -2429,6 +2491,7 @@
 				PRODUCT_NAME = "Commander Genius";
 				SDKROOT = iphonesimulator3.2;
 				SDLDIR = "/Users/az/Programmierung/SDL-1.3-trunk";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
