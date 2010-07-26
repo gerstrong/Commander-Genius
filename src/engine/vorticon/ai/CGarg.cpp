@@ -39,13 +39,12 @@ void CGarg::process()
 		canbezapped = false;
 		sprite = GARG_DYING_FRAME;
 		yinertia = GARGDIE_START_INERTIA;
-		moveUp(100);
-		inhibitfall = 1;
+		moveUp(10);
 		g_pSound->playStereofromCoord(SOUND_GARG_DIE, PLAY_NOW, scrx);
 	}
 
 	// Check, if Garg is moving and collides
-	if(state != GARG_LOOK && state != GARG_CHARGE)
+	if(state != GARG_LOOK && state != GARG_CHARGE && state != GARG_DYING)
 	{
 		if (movedir==LEFT)
 		{  // garg is heading left
@@ -86,7 +85,6 @@ void CGarg::process()
 		if ( blockedd )
 		{
 			sprite = GARG_DEAD_FRAME;
-			inhibitfall = 0;
 			state = GARG_DEAD;
 		}
 		break;
