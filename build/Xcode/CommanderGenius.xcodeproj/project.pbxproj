@@ -2380,7 +2380,7 @@
 			baseConfigurationReference = 5048396E09E3307300765E4B /* CommanderGeniusTarget.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = i386;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2402,6 +2402,7 @@
 					"-DOGG",
 				);
 				PRODUCT_NAME = "Commander Genius";
+				SDKROOT = macosx10.5;
 			};
 			name = Debug;
 		};
