@@ -497,6 +497,10 @@ void CMap::drawMaskonSprite( SDL_Surface *dst, int mx, int my, Uint8 spritewidth
 // searches for animated tiles at the map position (X,Y) and
 // unregisters them from animtiles
 // Draw an animated tile. If it's not animated draw it anyway
+
+Uint8 CMap::getAnimtiletimer()
+{	return m_animtiletimer;	}
+
 void CMap::drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile)
 {
 	m_Tilemaps.at(1).drawTile( dst, mx, my, tile );

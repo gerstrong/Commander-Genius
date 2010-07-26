@@ -8,16 +8,14 @@ const int ICECHUNK_SPEED = 60;
 const int ICECHUNK_STRAIGHT_SPEED = 80;
 const int ICECHUNK_WAIT_TIME = 19;
 
-
 unsigned int rnd(void);
 
-const int GUNFIRE_TIMER_EP1 = 50;
+const int GUNFIRE_TIMER_EP1 = 64;
 
 CIceCannon::CIceCannon(CMap *p_map, Uint32 x, Uint32 y,
 	std::vector<CPlayer>& Player, std::vector<CObject*>& Object,
 	int vector_x, int vector_y ) :
 CObject(p_map,x,y, OBJ_ICECANNON),
-timer(0),
 m_Player(Player),
 m_Object(Object)
 {
@@ -32,17 +30,14 @@ m_Object(Object)
 // the ice cannon itself
 void CIceCannon::process()
 {
-	 // keep spawner object invisible and properly positioned
-
-	if(m_gunfiretimer<GUNFIRE_TIMER_EP1) m_gunfiretimer++;
-	else
+	// keep spawner object invisible and properly positioned
+	if(	(mp_Map->getAnimtiletimer()%GUNFIRE_TIMER_EP1) == 0 )
 	{
 		int newpos_x = getXPosition()+(vector_x)*512;
-		int newpos_y = getYPosition()+(vector_y+1)*512;
+		int newpos_y = getYPosition()/*+(vector_y)*512*/;
 		CIceChunk *chunk = new CIceChunk(mp_Map, newpos_x, newpos_y,
 								vector_x, vector_y, m_Player, m_Object);
 		m_Object.push_back(chunk);
-		m_gunfiretimer = 0;
 	}
 }
 
@@ -161,14 +156,11 @@ void CIceChunk::smash()
 const int ICEBIT_SPEED = 80;
 const int ICESHARD_TIME = 25;
 
-int CIceBit::m_gunfiretimer = 0;
-
 CIceBit::CIceBit(CMap *p_map, Uint32 x, Uint32 y, Uint32 vec_x, Uint32 vec_y ) :
 CObject(p_map, x, y, OBJ_ICEBIT),
 vector_x(vec_x),
 vector_y(vec_y)
 {
-	m_gunfiretimer=0; timer=0;
 	veloc_x = ICEBIT_SPEED * vector_x;
 	veloc_y = ICEBIT_SPEED * vector_y;
 	timer = ICESHARD_TIME;
