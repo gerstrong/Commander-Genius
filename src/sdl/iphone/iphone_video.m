@@ -572,7 +572,8 @@ void iPhoneRotateScreen() {
 	CGAffineTransform transform = [view transform];
 	
 	// Some strange constants...
-    transform = CGAffineTransformTranslate(transform, 185, 0);
+    //transform = CGAffineTransformTranslate(transform, 185, 0);
+    transform = CGAffineTransformTranslate(transform, 225, 0);
 
 	// We will have 200x320 here (rotated) and we want 320x480
 	transform = CGAffineTransformScale(transform, 320.0 / 200.0, 480.0 / 320.0);
