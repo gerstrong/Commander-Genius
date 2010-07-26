@@ -1080,9 +1080,10 @@ void CInput::processMouse(int x, int y, bool down, int index) {
 
 #ifdef USE_OPENGL
 static void drawButton(TouchButton& button, bool down) {
-	// similar mysterious constant as in renderTexture
-	glViewport(0,255,w,h);
-
+	// similar mysterious constant as in renderTexture/initGL
+	//glViewport(0,255,w,h);
+	float w = 512.0f, h = 256.0f;
+	
 	int crop = 2;
 	float x1 = float(button.x + crop) / w;
 	float x2 = float(button.x+button.w - crop) / w;
