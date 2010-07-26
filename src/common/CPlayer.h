@@ -69,7 +69,8 @@ public:
 	void JumpAndPogo();
 	void Playerfalling();
 	void raygun();
-	void bump( int pushamt, bool solid );
+	void bump( CObject &theObject );
+	void push( int pushamt );
 	void checkSolidDoors();
 	void SelectFrame();
 	int pollLevelTrigger();

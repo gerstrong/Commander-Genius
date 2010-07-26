@@ -168,11 +168,19 @@ void CRay::getTouchedBy(CObject &theObject)
 			if(theObject.m_type != owner.obj_type)
 			{
 				state = RAY_STATE_SETZAPZOT;
+				canbezapped = false;
 				theObject.getShotByRay();
 			}
 		}
 	}
 }
+
+void CRay::getShotByRay()
+{
+	state = RAY_STATE_SETZAPZOT;
+	canbezapped = false;
+}
+
 
 bool CRay::isFlying()
 { return (state==RAY_STATE_FLY); }

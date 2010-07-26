@@ -851,10 +851,55 @@ void CPlayer::SelectFrame()
     }
 }
 
+
+const int bumpamount = 55;
+
 // yorp/scrub etc "bump".
 // if solid = false, player can possibly force his way through.
 // if solid = true, object acts like a solid "wall".
-void CPlayer::bump( int pushamt, bool solid )
+void CPlayer::bump( CObject &theObject )
+{
+	int pushamt = 0;
+
+	int obj_lx = theObject.getXLeftPos();
+	int obj_rx = theObject.getXRightPos();
+	int lx = getXLeftPos();
+	int rx = getXRightPos();
+
+	if( lx < obj_lx )
+	{
+		if(rx >= obj_lx)
+		{
+			moveLeft(rx - obj_lx);
+			pushamt = -bumpamount;
+		}
+	}
+
+	if( rx > obj_rx )
+	{
+		if(lx <= obj_rx)
+		{
+			moveRight(obj_rx - lx);
+			pushamt = +bumpamount;
+		}
+	}
+
+	//if (pushamt > 0 && xinertia < pushamt)
+		//pshowdir = pdir = RIGHT;
+	//else if (pushamt < 0 && xinertia > pushamt)
+		//pshowdir = pdir = LEFT;
+
+	playpushed_x = pushamt;
+	xinertia = 0;
+
+	pwalking = true;
+
+	if (!pjumping)
+		pdir = pshowdir = (pushamt<0) ? LEFT : RIGHT;
+}
+
+// Scrub, etc "push".
+void CPlayer::push( int pushamt )
 {
 	if (pushamt > 0 && xinertia < pushamt)
 	{
@@ -869,24 +914,21 @@ void CPlayer::bump( int pushamt, bool solid )
 
 	pwalking = true;
 
-	if (solid)
+	playpushed_x = pushamt;
+	if (pushamt > 0)
 	{
-		playpushed_x = pushamt;
-		if (pushamt > 0)
-		{
-			pshowdir = pdir = RIGHT;
-			if (xinertia < 0)
-				xinertia = 0;
-		}
-		else
-		{
-			pshowdir = pdir = LEFT;
-			if (xinertia > 0)
-				xinertia = 0;
-		}
-		playpushed_decreasetimer = 0;
+		pshowdir = pdir = RIGHT;
+		if (xinertia < 0)
+			xinertia = 0;
 	}
-	
+	else
+	{
+		pshowdir = pdir = LEFT;
+		if (xinertia > 0)
+			xinertia = 0;
+	}
+	playpushed_decreasetimer = 0;
+
 	if (!pjumping)
 		pdir = pshowdir = (pushamt<0) ? LEFT : RIGHT;
 }

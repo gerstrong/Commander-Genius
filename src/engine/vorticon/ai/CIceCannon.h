@@ -26,8 +26,6 @@ public:
 
 private:
 	int vector_x, vector_y;
-	int timer;
-	int m_gunfiretimer;
 
 	std::vector<CPlayer>& m_Player;
 	std::vector<CObject*>& m_Object;
@@ -55,7 +53,6 @@ public:
 
 	int vector_x, vector_y;
 	int veloc_x, veloc_y;
-	static int m_gunfiretimer;
 	int timer;
 };
 

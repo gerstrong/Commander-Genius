@@ -104,7 +104,7 @@ void CYorp::process()
 
  			if (pushamt)
  			{
- 				tb_player.bump( pushamt, false );
+ 				tb_player.bump( *this );
  			}
 		}
  	}

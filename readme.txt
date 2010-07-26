@@ -9,10 +9,9 @@
 *    (c)2009-2010            Pickle          *
 *    (c)2009-2010            Tulip           *
 *    (c)2009-2010            DaVince         *
-*    (c)2003-2010            Caitlin Shaw    *
 *           Released under GNU/GPL           *
 *                                            *
-*            Release v0.3.2                  *
+*            Release v0.3.2.1                *
 *                                            *
 **********************************************
 

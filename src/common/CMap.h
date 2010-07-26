@@ -57,6 +57,7 @@ public:
 	bool changeTile(Uint16 x, Uint16 y, Uint16 t);
 
 	// Animation methods
+	Uint8 getAnimtiletimer();
 	void drawAnimatedTile(SDL_Surface *dst, Uint16 mx, Uint16 my, Uint16 tile);
 	void animateAllTiles();
 

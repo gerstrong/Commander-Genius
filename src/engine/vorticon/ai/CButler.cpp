@@ -102,8 +102,7 @@ void CButler::getTouchedBy(CObject &theObject)
 
 				if(Player.pwalking) butlerpushamount = 3*BUTLERPUSHAMOUNT/2;
 
-				Player.bump( Player.getXPosition() < getXPosition() ?
-						butlerpushamount : -butlerpushamount, false);
+				Player.bump( *this );
 			}
 		}
 	}

@@ -50,10 +50,10 @@
 #define YORP_PUSH_AMT_NO_WALK		60
 
 #define YORP_PUSH_AMT_P_WALK_HARD	100
-#define YORP_PUSH_AMT_P_WALK		75
+#define YORP_PUSH_AMT_P_WALK		60
 
 #define YORP_PUSH_AMT_P_STAND_HARD	100
-#define YORP_PUSH_AMT_P_STAND		75
+#define YORP_PUSH_AMT_P_STAND		60
 
 class CYorp : public CObject {
 public:

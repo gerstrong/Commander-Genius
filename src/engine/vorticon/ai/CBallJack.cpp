@@ -57,11 +57,11 @@ void CBallJack::process()
 		{
 			if (m_Player[touchedBy].getXPosition() < getXLeftPos())
 			{
-				m_Player[touchedBy].bump(-BALLPUSHAMOUNT, true);
+				m_Player[touchedBy].push(-BALLPUSHAMOUNT);
 			}
 			else
 			{
-				m_Player[touchedBy].bump(BALLPUSHAMOUNT, true);
+				m_Player[touchedBy].push(BALLPUSHAMOUNT);
 			}
 
 			switch(m_Direction)

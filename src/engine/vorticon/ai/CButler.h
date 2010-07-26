@@ -18,7 +18,7 @@
 #define BUTLER_WALK_ANIM_TIME_FAST    1
 #define BUTLER_TURN_TIME         10
 
-#define BUTLERPUSHAMOUNT         44
+#define BUTLERPUSHAMOUNT         60
 #define BUTLERPUSHAMOUNTFAST     30
 
 // distance in pixels butler should look ahead to avoid falling
