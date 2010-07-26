@@ -61,7 +61,6 @@ private:
 	unsigned char about_to_charge;
 	unsigned char walkframe;
 	unsigned int dist_traveled;
-	signed int gargdie_inertia_y;
 
 	unsigned char movedir;
 	unsigned char detectedPlayer, detectedPlayerIndex;

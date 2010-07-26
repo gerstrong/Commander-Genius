@@ -14,7 +14,6 @@ keenonsameleveltimer(0),
 about_to_charge(0),
 walkframe(0),
 dist_traveled(0),
-gargdie_inertia_y(0),
 movedir(0),
 detectedPlayer(0),
 detectedPlayerIndex(0),
@@ -39,8 +38,8 @@ void CGarg::process()
 		state = GARG_DYING;
 		canbezapped = false;
 		sprite = GARG_DYING_FRAME;
-		gargdie_inertia_y = GARGDIE_START_INERTIA;
-		moveUp(10);
+		yinertia = GARGDIE_START_INERTIA;
+		moveUp(100);
 		inhibitfall = 1;
 		g_pSound->playStereofromCoord(SOUND_GARG_DIE, PLAY_NOW, scrx);
 	}
@@ -84,10 +83,7 @@ void CGarg::process()
 	switch(state)
 	{
 	case GARG_DYING:
-		moveDown(gargdie_inertia_y);
-		gargdie_inertia_y+=16;
-
-		if (gargdie_inertia_y >= 0 && blockedd)
+		if ( blockedd )
 		{
 			sprite = GARG_DEAD_FRAME;
 			inhibitfall = 0;

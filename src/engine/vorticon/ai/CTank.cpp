@@ -210,8 +210,7 @@ void CTank::getTouchedBy(CObject &theObject)
 			if(!((Player.pdir == movedir) && (Player.pwalking)))
 			{
 				g_pSound->playStereofromCoord(SOUND_YORP_BUMP, PLAY_NORESTART, scrx);
-				Player.bump( Player.getXPosition() < getXPosition() ?
-						TANKPUSHAMOUNT : -TANKPUSHAMOUNT, false);
+				Player.bump( *this );
 			}
 		}
 	}

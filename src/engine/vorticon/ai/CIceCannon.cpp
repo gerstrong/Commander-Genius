@@ -80,13 +80,13 @@ void CIceChunk::process()
 		{
 			m_Player[touchedBy].pdir = m_Player[touchedBy].pshowdir = RIGHT;
 			m_Player[touchedBy].xinertia = Physics.player.max_x_speed;
-			m_Player[touchedBy].bump(Physics.player.max_x_speed/2, true);
+			m_Player[touchedBy].bump( *this );
 		}
 		else if (vector_x < 0)
 		{
 			m_Player[touchedBy].pdir = m_Player[touchedBy].pshowdir = LEFT;
 			m_Player[touchedBy].xinertia = -Physics.player.max_x_speed;
-			m_Player[touchedBy].bump(-Physics.player.max_x_speed/2, true);
+			m_Player[touchedBy].bump( *this );
 		}
 		else	// perfectly vertical ice cannons
 		{

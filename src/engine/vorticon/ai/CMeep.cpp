@@ -56,9 +56,9 @@ void CMeep::process()
 		if (!m_Player[touchedBy].level_done)
 		{
 			if (m_Player[touchedBy].getXPosition() < getXPosition())
-				m_Player[touchedBy].bump(-MEEP_WALK_SPD, true);
+				m_Player[touchedBy].push(-MEEP_WALK_SPD);
 			else
-				m_Player[touchedBy].bump(MEEP_WALK_SPD, true);
+				m_Player[touchedBy].push(MEEP_WALK_SPD);
 		}
 	}
 
