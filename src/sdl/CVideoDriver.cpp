@@ -107,7 +107,7 @@ void CVideoDriver::resetSettings() {
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	m_opengl = true;
 	Zoom = 1;
-	m_ScaleXFilter = 0;
+	m_ScaleXFilter = 1;
 	m_targetfps = 30;
 	m_aspect_correction = false;
 #endif
@@ -312,13 +312,13 @@ bool CVideoDriver::start(void)
 		return false;
 	}
 
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
-	iPhoneRotateScreen();
-#endif
-
 	retval = createSurfaces();
 	initOpenGL();
 
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+	iPhoneRotateScreen();
+#endif
+	
 	return retval;
 }
 
