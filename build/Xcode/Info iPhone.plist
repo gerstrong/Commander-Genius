@@ -7,9 +7,9 @@
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIconFile</key>
-	<string>cglogo.icns</string>
+	<string>cglogo-iphone.png</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.clonekeenplus.clonekeenplus</string>
+	<string>net.sourceforge.clonekeenplus</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -19,7 +19,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>0.3.0.5</string>
+	<string>0.3.2</string>
 	<key>CSResourcesFileMapped</key>
 	<true/>
 </dict>

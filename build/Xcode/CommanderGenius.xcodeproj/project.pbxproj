@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2331E88611FD4AF400E73953 /* cglogo-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 2331E88511FD4AF400E73953 /* cglogo-iphone.png */; };
 		2332C60F11EA3B42000D8F71 /* CBridges.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2332C60D11EA3B42000D8F71 /* CBridges.cpp */; };
 		2332C63411EAFAD7000D8F71 /* CCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2332C63211EAFAD7000D8F71 /* CCamera.cpp */; };
 		235755D2101A5E5900275638 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0867D6AAFE840B52C02AAC07 /* InfoPlist.strings */; };
@@ -385,6 +386,7 @@
 		0867D6ABFE840B52C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1DDD57E30DA1CFC700B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/main.xib; sourceTree = "<group>"; };
 		20286C33FDCF999611CA2CEA /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
+		2331E88511FD4AF400E73953 /* cglogo-iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cglogo-iphone.png"; sourceTree = "<group>"; };
 		2332C60D11EA3B42000D8F71 /* CBridges.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBridges.cpp; sourceTree = "<group>"; };
 		2332C60E11EA3B42000D8F71 /* CBridges.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBridges.h; sourceTree = "<group>"; };
 		2332C63211EAFAD7000D8F71 /* CCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCamera.cpp; sourceTree = "<group>"; };
@@ -984,6 +986,7 @@
 		20286C2CFDCF999611CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2331E88511FD4AF400E73953 /* cglogo-iphone.png */,
 				63AB8C2E107C62D0001EE22F /* cglogo.icns */,
 				6350FB0910449DAA00A992D5 /* changelog.txt */,
 				8D0C4E960486CD37000505A6 /* Info.plist */,
@@ -1921,6 +1924,7 @@
 				2374238911FC849A000EEA5B /* InfoPlist.strings in Resources */,
 				2374238A11FC849A000EEA5B /* main.xib in Resources */,
 				2374238B11FC849A000EEA5B /* cglogo.icns in Resources */,
+				2331E88611FD4AF400E73953 /* cglogo-iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2432,7 +2436,7 @@
 			baseConfigurationReference = 5048396E09E3307300765E4B /* CommanderGeniusTarget.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				CODE_SIGN_IDENTITY = "Albert Zeyer";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -2467,7 +2471,7 @@
 			baseConfigurationReference = 5048396E09E3307300765E4B /* CommanderGeniusTarget.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				CODE_SIGN_IDENTITY = "Albert Zeyer";
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
