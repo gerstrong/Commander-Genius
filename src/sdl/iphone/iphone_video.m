@@ -556,10 +556,10 @@ uint getSizeNextPOT(uint size) {
 #import "video/uikit/SDL_uikitwindow.h"
 
 void iPhoneRotateScreen() {	
-	/*
 	[UIApplication sharedApplication].statusBarHidden = YES;
 
-	UIWindow* window = [SDLUIKitDelegate sharedAppDelegate].window;
+	UIWindow* window = [UIApplication sharedApplication].keyWindow;
+//	UIWindow* window = [SDLUIKitDelegate sharedAppDelegate].keyWindow;
 	UIView* view = window;
 
 	//CGRect myFrame = CGRectMake(0, 0, 480, 320);
@@ -581,6 +581,5 @@ void iPhoneRotateScreen() {
 	transform = CGAffineTransformRotate(transform, -0.5 * 3.14159265358979323846);
 	
     [view setTransform: transform];
-*/
 }
 
