@@ -1037,6 +1037,13 @@ void CInput::processMouse() {
 }
 
 void CInput::processMouse(SDL_Event& ev) {
+	SDL_Rect screenRect;
+	if(SDL_GetDisplayBounds(0, &screenRect) == 0) {
+		// transform mouse coordinates
+		// WARNING: I don't really understand that. It's probably somehow iPhoneRotateScreen + SDL stuff.
+		ev.button.y -= screenRect.h - 200;
+	}
+	
 /*	switch(ev.type) {
 		case SDL_MOUSEBUTTONDOWN:
 			processMouse(ev.button.x, ev.button.y, true, ev.button.which);
