@@ -19,6 +19,8 @@ struct stHQSound
 	bool enabled;
 };
 
+void adaptTo48Khz(Uint8* output_buffer, Uint8 *input_buffer, unsigned long len, Uint16 format);
+
 short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::string& gamepath, const std::string& soundname);
 void HQSndDrv_Unload(stHQSound *psound);
 

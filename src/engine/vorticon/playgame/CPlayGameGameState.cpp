@@ -67,7 +67,6 @@ bool CPlayGameVorticon::loadGameState()
 		m_checkpoint_y = checky;
 
 		m_level_command = START_LEVEL;
-		g_pMusicPlayer->stop();
 
 		std::vector<CPlayer> :: iterator player;
 		for( player=m_Player.begin() ; player != m_Player.end() ; player++ ) {
