@@ -10,6 +10,7 @@
 		2331E88611FD4AF400E73953 /* cglogo-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 2331E88511FD4AF400E73953 /* cglogo-iphone.png */; };
 		2332C60F11EA3B42000D8F71 /* CBridges.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2332C60D11EA3B42000D8F71 /* CBridges.cpp */; };
 		2332C63411EAFAD7000D8F71 /* CCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2332C63211EAFAD7000D8F71 /* CCamera.cpp */; };
+		2335371611FD5CC400E8C8B6 /* iphone_keyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 2335371511FD5CC400E8C8B6 /* iphone_keyboard.m */; };
 		235755D2101A5E5900275638 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0867D6AAFE840B52C02AAC07 /* InfoPlist.strings */; };
 		235755D3101A5E5900275638 /* main.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD57E20DA1CFC700B32029 /* main.xib */; };
 		23575631101A5E5900275638 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20286C33FDCF999611CA2CEA /* Carbon.framework */; };
@@ -391,6 +392,9 @@
 		2332C60E11EA3B42000D8F71 /* CBridges.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBridges.h; sourceTree = "<group>"; };
 		2332C63211EAFAD7000D8F71 /* CCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCamera.cpp; sourceTree = "<group>"; };
 		2332C63311EAFAD7000D8F71 /* CCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCamera.h; sourceTree = "<group>"; };
+		2335371311FD5CC400E8C8B6 /* iphone_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iphone_common.h; sourceTree = "<group>"; };
+		2335371411FD5CC400E8C8B6 /* iphone_keyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iphone_keyboard.h; sourceTree = "<group>"; };
+		2335371511FD5CC400E8C8B6 /* iphone_keyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iphone_keyboard.m; sourceTree = "<group>"; };
 		2357564C101A5F8F00275638 /* Ogg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Ogg.framework; sourceTree = "<group>"; };
 		2357564D101A5F8F00275638 /* Vorbis.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Vorbis.framework; sourceTree = "<group>"; };
 		23575688101A6AE600275638 /* Commander Genius.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Commander Genius.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1016,6 +1020,9 @@
 		2374246911FCA6CB000EEA5B /* iphone */ = {
 			isa = PBXGroup;
 			children = (
+				2335371311FD5CC400E8C8B6 /* iphone_common.h */,
+				2335371411FD5CC400E8C8B6 /* iphone_keyboard.h */,
+				2335371511FD5CC400E8C8B6 /* iphone_keyboard.m */,
 				2374247B11FCA6CB000EEA5B /* iphone_video.h */,
 				2374247C11FCA6CB000EEA5B /* iphone_video.m */,
 			);
@@ -2342,6 +2349,7 @@
 				2374238611FC849A000EEA5B /* CPlayGameVorticonWM.cpp in Sources */,
 				2374238711FC849A000EEA5B /* GraphicsIDs.cpp in Sources */,
 				2374249211FCA6CB000EEA5B /* iphone_video.m in Sources */,
+				2335371611FD5CC400E8C8B6 /* iphone_keyboard.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
