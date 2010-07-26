@@ -38,7 +38,9 @@ CInput::CInput() {
 		resetControls(c);
 	memset(&Event,0,sizeof(Event));
 	loadControlconfig();
+#if !defined(TARGET_OS_IPHONE) && !defined(TARGET_IPHONE_SIMULATOR)	// not for iPhone for now, could cause trouble (unwanted input events)
 	startJoyDriver();
+#endif
 }
 
 /**
