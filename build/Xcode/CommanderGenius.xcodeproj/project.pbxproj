@@ -2452,8 +2452,9 @@
 				GCC_PREFIX_HEADER = "";
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)\"/../../src",
-					"$(SDLDIR)/include",
+					"$(SDLDIR)/src/events",
 					"$(SDLDIR)/src",
+					"$(SDLDIR)/include",
 				);
 				INFOPLIST_FILE = "Info iPhone.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 2.0;
@@ -2488,8 +2489,9 @@
 				GCC_PREFIX_HEADER = "";
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)\"/../../src",
-					"$(SDLDIR)/include",
+					"$(SDLDIR)/src/events",
 					"$(SDLDIR)/src",
+					"$(SDLDIR)/include",
 				);
 				INFOPLIST_FILE = "Info iPhone.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 2.0;
