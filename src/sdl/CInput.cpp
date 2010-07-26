@@ -37,9 +37,9 @@ CInput::CInput() {
 	for(size_t c=1 ; c<= NUM_INPUTS ; c++)
 		resetControls(c);
 	memset(&Event,0,sizeof(Event));
-	loadControlconfig();
-#if !defined(TARGET_OS_IPHONE) && !defined(TARGET_IPHONE_SIMULATOR)	// not for iPhone for now, could cause trouble (unwanted input events)
-	startJoyDriver();
+#if !defined(TARGET_OS_IPHONE) && !defined(TARGET_IPHONE_SIMULATOR)
+	loadControlconfig(); // we want to have the default settings in all cases
+	startJoyDriver(); // not for iPhone for now, could cause trouble (unwanted input events)
 #endif
 }
 
@@ -978,7 +978,7 @@ static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_
 		{ &InputCommand[0][IC_FIRE],	KSPACE,	middlex + w / 3, middley, w / 6, h / 2},
 		
 		{ &InputCommand[0][IC_STATUS],	KENTER,	0, 0, w/2, h/4},
-		{ NULL,							KQUIT,	5*w/6, 0, w/6, h/6},
+		{ &InputCommand[0][IC_QUIT],	KQUIT,	5*w/6, 0, w/6, h/6},
 		{ NULL,							KSHOWHIDECTRLS,	4*w/6, 0, w/6, h/6},
 		{ NULL,							KF3 /* save dialog, see gamedo_HandleFKeys */, 3*w/6, 0, w/6, h/6},
 	};	
@@ -1044,7 +1044,12 @@ void CInput::processMouse(SDL_Event& ev) {
 		ev.button.y -= screenRect.h - 200;
 	}
 	
-/*	switch(ev.type) {
+	// NOTE: The ev.button.which / the multitouch support was removed in SDL 1.3 trunk
+	// with changeset 4465:3e69e077cb95 on May09. It is planned to add a real multitouch API
+	// at some later time (maybe Aug2010).
+	// As long as we don't have that, we must use the old SDL 1.3 revision 4464.
+	
+	switch(ev.type) {
 		case SDL_MOUSEBUTTONDOWN:
 			processMouse(ev.button.x, ev.button.y, true, ev.button.which);
 			break;
@@ -1057,17 +1062,7 @@ void CInput::processMouse(SDL_Event& ev) {
 			processMouse(ev.motion.x - ev.motion.xrel, ev.motion.y - ev.motion.yrel, false, ev.motion.which);			
 			processMouse(ev.motion.x, ev.motion.y, true, ev.motion.which);
 			break;
-	}*/
-
-	switch(ev.type) {
-		case SDL_MOUSEBUTTONDOWN:
-			processMouse(ev.button.x, ev.button.y, true, ev.button.button);
-			break;
-			
-		case SDL_MOUSEBUTTONUP:
-			processMouse(ev.button.x, ev.button.y, false, ev.button.button);
-			break;
-	}			
+	}
 }
 
 void CInput::processMouse(int x, int y, bool down, int index) {
