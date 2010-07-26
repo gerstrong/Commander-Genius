@@ -978,7 +978,7 @@ static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_
 		{ &InputCommand[0][IC_FIRE],	KSPACE,	middlex + w / 3, middley, w / 6, h / 2},
 		
 		{ &InputCommand[0][IC_STATUS],	KENTER,	0, 0, w/2, h/4},
-		{ NULL,							KQUIT,	5*w/6, 0, w/6, h/6},
+		{ &InputCommand[0][IC_QUIT],	KQUIT,	5*w/6, 0, w/6, h/6},
 		{ NULL,							KSHOWHIDECTRLS,	4*w/6, 0, w/6, h/6},
 		{ NULL,							KF3 /* save dialog, see gamedo_HandleFKeys */, 3*w/6, 0, w/6, h/6},
 	};	
