@@ -98,7 +98,6 @@ void CPlayer::touchedExit(int mpx)
 		// keen hasn't flipped the switch he shouldn't be able to
 		// leave the level, this is a bug from the original game
 		// that needs fixing, hopefully we will fix all of those
-		
 		// if player has ankh shut it off
 		ankhtime = 0;
 		

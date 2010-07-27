@@ -39,6 +39,7 @@ public:
 	CPlatformVert(CMap *p_map, Uint32 x, Uint32 y,
 			std::vector<CPlayer>& Player);
 	void process();
+	void getTouchedBy(CObject &theObject);
 };
 
 #endif /* CPLATFORM_H_ */

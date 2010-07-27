@@ -840,7 +840,8 @@ bool CPlayer::checkObjSolid()
 					supportedbyobject = true;
 					psupportingobject = (*it_obj)->m_index;
 					int dy = (*it_obj)->getYUpPos() - getYDownPos()+1;
-					moveYDir(dy);
+					if(pjumping == PNOJUMP)
+						moveYDir(dy);
 					break;
 				}
 			}

@@ -167,8 +167,6 @@ void CScrub::process()
 		fall();
 		break;
 	}
-
-	//setupDirection(object);
 }
 
 /*

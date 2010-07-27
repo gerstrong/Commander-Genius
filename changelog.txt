@@ -4,11 +4,13 @@ Commander Genius Release :
 v0.3.2.1:
 ---------
 - more AI fixes
+- better push and bump physics
 - more of the Galaxy Engine. Keen now can walk on map.
 - Added Cannon fire sound
-- Added HUD Display
-- Small issues fixed
+- Added HUD Display, the one Chad had suggested
+- Small memory issues fixed
 - Improved memory management for foes.
+- even faster and more Badass!
 
 v0.3.2:
 ---------
