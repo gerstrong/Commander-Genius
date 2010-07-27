@@ -427,6 +427,15 @@ void CInput::pollEvents()
 	processMouse();
 #endif
 
+	for(size_t i = 0; i < KEYTABLE_SIZE; ++i)
+		firsttime_immediate_keytable[i]
+		= !last_immediate_keytable[i] && immediate_keytable[i];
+	
+	for(int i=0 ; i<MAX_COMMANDS ; i++)
+		for(int j=0 ; j<NUM_INPUTS ; j++)
+			InputCommand[j][i].firsttimeactive
+			= !InputCommand[j][i].lastactive && InputCommand[j][i].active;
+	
 #ifndef MOUSEWRAPPER
 	// Check, if LALT+ENTER was pressed
 	if((getHoldedKey(KALT)) && getPressedKey(KENTER))
@@ -695,9 +704,9 @@ bool CInput::getPressedKey(int key)
 #ifdef MOUSEWRAPPER
 	if(!checkMousewrapperKey(key)) return true;
 #endif	
-	if(immediate_keytable[key] && !last_immediate_keytable[key])
+	if(firsttime_immediate_keytable[key])
 	{
-		immediate_keytable[key] = false;
+		firsttime_immediate_keytable[key] = false;
 		return true;
 	}
 
@@ -840,9 +849,9 @@ bool CInput::getPressedAnyKey(void)
 {
 	for(int key=0 ; key<KEYTABLE_SIZE ; key++)
 	{
-		if(immediate_keytable[key] && !last_immediate_keytable[key])
+		if(firsttime_immediate_keytable[key])
 		{
-			immediate_keytable[key] = false;
+			firsttime_immediate_keytable[key] = false;
 			return true;
 		}
 	}
@@ -872,9 +881,9 @@ bool CInput::getPressedCommand(int command)
 
 bool CInput::getPressedCommand(int player, int command)
 {
-	if(InputCommand[player][command].active && !InputCommand[player][command].lastactive)
+	if(InputCommand[player][command].firsttimeactive)
 	{
-		InputCommand[player][command].active = false;
+		InputCommand[player][command].firsttimeactive = false;
 		return true;
 	}
 
@@ -932,7 +941,7 @@ void CInput::flushCommands(void)
 {
 	for(int i=0 ; i<NUM_INPUTS ; i++)
 		for(int j=0 ; j<MAX_COMMANDS ; j++)
-			InputCommand[i][j].active = InputCommand[i][j].lastactive = false;
+			InputCommand[i][j].active = InputCommand[i][j].lastactive = InputCommand[i][j].firsttimeactive = false;
 }
 
 /**
@@ -942,6 +951,7 @@ void CInput::flushKeys(void)
 {
 	memset(immediate_keytable,false,KEYTABLE_SIZE);
 	memset(last_immediate_keytable,false,KEYTABLE_SIZE);
+	memset(firsttime_immediate_keytable,false,KEYTABLE_SIZE);
 }
 
 struct TouchButton {

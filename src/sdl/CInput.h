@@ -143,6 +143,7 @@ typedef struct stInputCommand
 {
 	bool active;
 	bool lastactive;
+	bool firsttimeactive;
 
 	SDLKey 	keysym;
 
@@ -216,6 +217,7 @@ private:
 
 	bool immediate_keytable[KEYTABLE_SIZE];
 	bool last_immediate_keytable[KEYTABLE_SIZE];
+	bool firsttime_immediate_keytable[KEYTABLE_SIZE];
 
 	void processKeys(int value);
 	void processJoystickAxis(void);
