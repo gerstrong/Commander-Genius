@@ -37,14 +37,14 @@ CCredits::CCredits(const std::string &datadirectory, const char &episode) {
 	m_scrolltext[12] = "Gerhard Stein (Gerstrong)";
 	m_scrolltext[13] = "Albert Zeyer";
 	m_scrolltext[14] = "Chad Ian Anderson (Pizza2004)";
-	m_scrolltext[15] = "Scott Smith (Pickle)";
-	m_scrolltext[16] = "";
-	m_scrolltext[17] = "Handheld Devices:";
-	m_scrolltext[18] = "Scott Smith (Pickle)";
-	m_scrolltext[19] = "Albert Zeyer";
-	m_scrolltext[20] = "";
-	m_scrolltext[21] = "Resources:";
-	m_scrolltext[22] = "Martin Hauber (Tulip)";
+	m_scrolltext[15] = "Martin Hauber (Tulip)";
+	m_scrolltext[16] = "Scott Smith (Pickle)";
+	m_scrolltext[17] = "";
+	m_scrolltext[18] = "Handheld Devices:";
+	m_scrolltext[19] = "Scott Smith (Pickle)";
+	m_scrolltext[20] = "Albert Zeyer";
+	m_scrolltext[21] = "";
+	m_scrolltext[22] = "Resources:";
 	m_scrolltext[23] = "DaVince";
 	m_scrolltext[24] = "";
 	m_scrolltext[25] = "";
@@ -100,7 +100,7 @@ void CCredits::process()
 	for(int j=0 ; j<54 ; j++)
 	{
 		if(m_scrolly+(j<<3) > -8 && m_scrolly+(j<<3) < g_pVideoDriver->getGameResolution().h)
-			g_pGfxEngine->getFont(0).drawFont( g_pVideoDriver->FGLayerSurface, m_scrolltext[j], m_mid[j], m_scrolly+(j<<3));
+			g_pGfxEngine->getFont(0).drawFont( g_pVideoDriver->FGLayerSurface, m_scrolltext[j], m_mid[j], m_scrolly+(j<<3), true);
 	}
 	
 	if( g_pInput->getPressedAnyKey() )
@@ -108,6 +108,5 @@ void CCredits::process()
 }
 
 CCredits::~CCredits() {
-
 }
 
