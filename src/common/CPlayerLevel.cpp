@@ -871,38 +871,28 @@ void CPlayer::bump( CObject &theObject, direction_t direction )
 }
 
 // Scrub, etc "push".
-void CPlayer::push( int pushamt )
+void CPlayer::push( CObject &theObject )
 {
-	if (pushamt > 0 && xinertia < pushamt)
+	int obj_lx = theObject.getXLeftPos();
+	int obj_midx = theObject.getXMidPos();
+	int obj_rx = theObject.getXRightPos();
+	int lx = getXLeftPos();
+	int midx = getXMidPos();
+	int rx = getXRightPos();
+
+	if( midx < obj_midx )
 	{
-		pshowdir = pdir = RIGHT;
-		xinertia = pushamt;
-	}
-	else if (xinertia > pushamt)
-	{
-		pshowdir = pdir = LEFT;
-		xinertia = pushamt;
+		moveLeft(rx - obj_lx);
+		pdir = pshowdir = LEFT;
 	}
 
+	if( midx > obj_midx )
+	{
+		moveRight(obj_rx - lx);
+		pdir = pshowdir = RIGHT;
+	}
+	xinertia = 0;
 	pwalking = true;
-
-	playpushed_x = pushamt;
-	if (pushamt > 0)
-	{
-		pshowdir = pdir = RIGHT;
-		if (xinertia < 0)
-			xinertia = 0;
-	}
-	else
-	{
-		pshowdir = pdir = LEFT;
-		if (xinertia > 0)
-			xinertia = 0;
-	}
-	playpushed_decreasetimer = 0;
-
-	if (!pjumping)
-		pdir = pshowdir = (pushamt<0) ? LEFT : RIGHT;
 }
 
 void CPlayer::checkSolidDoors()

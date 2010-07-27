@@ -831,7 +831,7 @@ bool CPlayer::checkObjSolid()
 					int dy = (*it_obj)->getYDownPos() - getYUpPos();
 					moveDown(dy);
 				}
-				else if(getYDownPos() >= (*it_obj)->getYUpPos()-(1<<STC)  &&
+				else if(getYDownPos() >= (*it_obj)->getYUpPos()-(3<<STC)  &&
 						getYDownPos() <= (*it_obj)->getYMidPos() )
 				{	// In this case stand on the object
 					pfalling = false;

@@ -85,9 +85,9 @@ void CScrub::process()
 			if(it_player->getYDownPos() > getYMidPos())
 			{
 				if(it_player->getXMidPos() < getXMidPos() && walkdir != UP)
-					it_player->push(-SCRUB_WALK_SPEED);
+					it_player->push(*this);
 				else if (walkdir != DOWN)
-					it_player->push(SCRUB_WALK_SPEED);
+					it_player->push(*this);
 
 			}
 		}

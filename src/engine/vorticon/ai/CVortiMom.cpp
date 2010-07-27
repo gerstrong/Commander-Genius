@@ -42,9 +42,9 @@ void CVortiMom::process()
 		if (!m_Player[touchedBy].level_done)
 		{
 			if (m_Player[touchedBy].getXPosition() < getXPosition())
-				m_Player[touchedBy].push(-MOTHER_WALK_SPD);
+				m_Player[touchedBy].push(*this);
 			else
-				m_Player[touchedBy].push(MOTHER_WALK_SPD);
+				m_Player[touchedBy].push(*this);
 		}
 	}
 

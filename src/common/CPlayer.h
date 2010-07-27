@@ -70,7 +70,7 @@ public:
 	void Playerfalling();
 	void raygun();
 	void bump( CObject &theObject, direction_t direction );
-	void push( int pushamt );
+	void push( CObject &theObject );
 	void checkSolidDoors();
 	void SelectFrame();
 	int pollLevelTrigger();

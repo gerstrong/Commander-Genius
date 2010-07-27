@@ -20,6 +20,7 @@ public:
 	virtual void process();
 
 	void SetAllCanSupportPlayer(bool state);
+	void getTouchedBy(CObject &theObject);
 
 protected:
 	unsigned char state;

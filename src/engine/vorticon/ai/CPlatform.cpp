@@ -31,23 +31,6 @@ m_Player(Player)
 
 void CPlatform::process()
 {
-	// push player horizontally
-	if (touchPlayer && !m_Player[touchedBy].pdie && m_Player[touchedBy].psupportingobject!=m_index)
-	{
-		if (m_Player[touchedBy].getXLeftPos() < getXLeftPos())
-		{
-			m_Player[touchedBy].playpushed_x = -PLATFORMPUSHAMOUNT;
-			if (m_Player[touchedBy].xinertia > 0) m_Player[touchedBy].xinertia = 0;
-			m_Player[touchedBy].playpushed_decreasetimer = 0;
-		}
-		else if (m_Player[touchedBy].getXRightPos() > getXRightPos())
-		{
-			m_Player[touchedBy].playpushed_x = PLATFORMPUSHAMOUNT;
-			if (m_Player[touchedBy].xinertia < 0) m_Player[touchedBy].xinertia = 0;
-			m_Player[touchedBy].playpushed_decreasetimer = 0;
-		}
-	}
-
 	if (g_pBehaviorEngine->getEpisode()==2)
 	{
 		sprite = OBJ_PLATFORM_DEFSPRITE_EP2 + animframe;
@@ -79,20 +62,6 @@ void CPlatform::process()
 			else
 			{
 				moveRight(PLATFORM_MOVE_SPD);
-
-				std::vector<CPlayer>::iterator it_player = m_Player.begin();
-				for( ; it_player != m_Player.end() ; it_player++ )
-				{
-					if( it_player->supportedbyobject &&
-							it_player->psupportingobject==m_index &&
-							(it_player->pjumping==PNOJUMP||
-							it_player->pjumping==PPREPAREJUMP||
-							it_player->pjumping==PPREPAREPOGO) )
-					{
-						if (!it_player->blockedr)
-							it_player->moveRight(PLATFORM_MOVE_SPD);
-					}
-				}
 			}
 		}
 		else if (movedir==LEFT)
@@ -106,20 +75,6 @@ void CPlatform::process()
 			else
 			{
 				moveLeft(PLATFORM_MOVE_SPD);
-
-				std::vector<CPlayer>::iterator it_player = m_Player.begin();
-				for( ; it_player != m_Player.end() ; it_player++ )
-				{
-					if( it_player->supportedbyobject &&
-							it_player->psupportingobject==m_index &&
-							(it_player->pjumping==PNOJUMP||
-							 it_player->pjumping==PPREPAREJUMP||
-							 it_player->pjumping==PPREPAREPOGO))
-					{
-						if (!it_player->blockedl)
-							it_player->moveLeft(PLATFORM_MOVE_SPD);
-					}
-				}
 			}
 		}
 		break;
@@ -144,6 +99,22 @@ void CPlatform::SetAllCanSupportPlayer(bool state)
 			it_player->pfalling=true;
 			it_player->moveDown(1);
 			it_player->blockedd=false;
+		}
+	}
+}
+
+void CPlatform::getTouchedBy(CObject &theObject)
+{
+	if(hitdetect(theObject))
+	{
+		// push player horizontally
+		if( theObject.m_type == OBJ_PLAYER )
+		{
+			CPlayer &Player = dynamic_cast<CPlayer&>(theObject);
+			if(Player.pfalling or !Player.blockedd or !Player.supportedbyobject)
+				Player.push(*this);
+			else if( state == PLATFORM_MOVE )
+				Player.moveXDir( (movedir==LEFT) ? -PLATFORM_MOVE_SPD : PLATFORM_MOVE_SPD);
 		}
 	}
 }
