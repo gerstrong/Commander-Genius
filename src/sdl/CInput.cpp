@@ -986,9 +986,10 @@ static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 
 static const int phoneButtonN = 11;
+typedef std::set<int> MouseIndexSet;
 
 static Uint32 phoneButtonLasttime[phoneButtonN] = {0,0,0,0,0,0,0,0,0,0,0};
-static int phoneButton_MouseIndex[phoneButtonN] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+static MouseIndexSet phoneButton_MouseIndex[phoneButtonN];
 
 
 static TouchButton* getPhoneButton(int x, int y, TouchButton phoneButtons[]) {
@@ -1020,7 +1021,7 @@ void CInput::processMouse() {
 	TouchButton* phoneButtons = getPhoneButtons(InputCommand);
 	
 	for(int i = 0; i < phoneButtonN; ++i) {
-		bool down = phoneButton_MouseIndex[i] >= 0;
+		bool down = phoneButton_MouseIndex[i].size() > 0;
 		
 		TouchButton& b = phoneButtons[i];
 		
@@ -1062,14 +1063,15 @@ void CInput::processMouse(SDL_Event& ev) {
 	}
 }
 
-void CInput::processMouse(int x, int y, bool down, int index) {
+void CInput::processMouse(int x, int y, bool down, int mouseindex) {
 	TouchButton* phoneButtons = getPhoneButtons(InputCommand);
 
 	for(int i = 0; i < phoneButtonN; ++i) {
 		TouchButton& b = phoneButtons[i];
 		if(b.isInside(x, y)) {
 			phoneButtonLasttime[i] = down ? SDL_GetTicks() : 0;
-			phoneButton_MouseIndex[i] = down ? index : -1;
+			if(down)	phoneButton_MouseIndex[i].insert(mouseindex);
+			else		phoneButton_MouseIndex[i].erase(mouseindex);
 
 			break;
 		}
@@ -1128,7 +1130,7 @@ void CInput::renderOverlay() {
 	
 	for(int i = phoneButtonN - 1; i >= 0; --i) {
 		TouchButton& b = phoneButtons[i];
-		bool down = phoneButton_MouseIndex[i] >= 0;
+		bool down = phoneButton_MouseIndex[i].size() > 0;
 		if(showControls) drawButton(b, down);
 		
 		if(b.immediateIndex == KSHOWHIDECTRLS) {
