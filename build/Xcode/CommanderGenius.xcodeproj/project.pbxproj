@@ -204,7 +204,6 @@
 		2374245D11FCA649000EEA5B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2374245C11FCA649000EEA5B /* UIKit.framework */; };
 		2374246611FCA679000EEA5B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2374246511FCA679000EEA5B /* QuartzCore.framework */; };
 		2374249211FCA6CB000EEA5B /* iphone_video.m in Sources */ = {isa = PBXBuildFile; fileRef = 2374247C11FCA6CB000EEA5B /* iphone_video.m */; };
-		237424A511FCA6CB000EEA5B /* iphone_video.m in Sources */ = {isa = PBXBuildFile; fileRef = 2374247C11FCA6CB000EEA5B /* iphone_video.m */; };
 		23A11A9111DE888400747BFA /* CHUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11A8F11DE888400747BFA /* CHUD.cpp */; };
 		23A11BAE11E7C3F900747BFA /* CAutoRay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B7411E7C3F900747BFA /* CAutoRay.cpp */; };
 		23A11BAF11E7C3F900747BFA /* CBallJack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B7611E7C3F900747BFA /* CBallJack.cpp */; };
@@ -2166,7 +2165,6 @@
 				23C64A8411F31D9C0053CA36 /* CAnkhShield.cpp in Sources */,
 				23C64A8711F31DAA0053CA36 /* CPlayGameVorticonWM.cpp in Sources */,
 				237421EA11FB8554000EEA5B /* GraphicsIDs.cpp in Sources */,
-				237424A511FCA6CB000EEA5B /* iphone_video.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
