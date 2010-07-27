@@ -285,7 +285,7 @@ void CPlayer::setDir()
 void CPlayer::TogglePogo_and_Switches()
 {
 	int i;
-	int mx, my;
+	unsigned int mx, my;
 	Uint16 t;
 	
 	// detect if KPOGO key only pressed

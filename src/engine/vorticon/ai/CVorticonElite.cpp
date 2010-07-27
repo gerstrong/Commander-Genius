@@ -18,8 +18,8 @@
 #define VORTELITE_MAX_FALL_SPEED     240
 #define VORTELITE_JUMP_FRICTION      2
 
-const int WALK_SPEED = 15;
-const int CHARGE_SPEED = 31;
+const int WALK_SPEED = 20;
+const int CHARGE_SPEED = 60;
 const int VORTELITE_WALK_ANIM_TIME = 6;
 
 // number of shots to kill
@@ -41,6 +41,8 @@ const int VORTELITE_WALK_ANIM_TIME = 6;
 #define VORTELITE_PALETTE_FLASH_TIME  5
 
 #define VORTELITE_TRAPPED_DIST        150
+
+const int PLAYER_DISTANCE = (6<<CSF); // distance the player should stay away, so Vortelite won't run.
 
 CVorticonElite::CVorticonElite( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
 		std::vector<CObject*> &mp_vec_Obj,
@@ -108,6 +110,23 @@ void CVorticonElite::process()
 	case VORTELITE_WALK:
 		dist_traveled++;
 
+		state = VORTELITE_WALK;
+
+		// If Player is nearby, make vorticon go faster
+		if(getYDownPos() > m_Player[0].getYDownPos()-(1<<CSF) and
+		   getYDownPos() < m_Player[0].getYDownPos()+(1<<CSF) )
+		{
+			int dist;
+			if(getXMidPos() > m_Player[0].getXMidPos())
+				dist = getXMidPos()-m_Player[0].getXMidPos();
+			else
+				dist = m_Player[0].getXMidPos()-getXMidPos();
+
+			if(dist < PLAYER_DISTANCE)
+				state = VORTELITE_CHARGE;
+		}
+
+
 		if (getProbability(VORTELITE_JUMP_PROB) && !mp_Map->m_Dark && !blockedu)
 		{  // let's jump.
 			initiatejump();
@@ -118,7 +137,7 @@ void CVorticonElite::process()
 			if (timesincefire > VORTELITE_MIN_TIME_BETWEEN_FIRE)
 			{
 				if (getProbability(VORTELITE_FIRE_PROB))
-				{  // let's fire
+				{  	// let's fire
 					// usually shoot toward keen
 					if (rand()%5 != 0)
 					{
