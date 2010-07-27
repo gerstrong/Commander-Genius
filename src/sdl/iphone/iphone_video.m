@@ -23,8 +23,6 @@
  *
  */
 
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)	
-
 #include "iphone_video.h"
 #include "iphone_common.h"
 
@@ -591,6 +589,4 @@ void iPhoneRotateScreen() {
 	
     [view setTransform: transform];
 }
-
-#endif
 
