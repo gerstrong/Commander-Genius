@@ -18,8 +18,8 @@
 #define VORTELITE_MAX_FALL_SPEED     240
 #define VORTELITE_JUMP_FRICTION      2
 
-const int WALK_SPEED = 20;
-const int CHARGE_SPEED = 60;
+const int WALK_SPEED = 31;
+const int CHARGE_SPEED = 62;
 const int VORTELITE_WALK_ANIM_TIME = 6;
 
 // number of shots to kill

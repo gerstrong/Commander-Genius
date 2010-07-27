@@ -853,7 +853,6 @@ void CPlayer::push( CObject &theObject )
 		moveRight(obj_rx - lx);
 		pdir = pshowdir = RIGHT;
 	}
-	xinertia = 0;
 	pwalking = true;
 }
 
