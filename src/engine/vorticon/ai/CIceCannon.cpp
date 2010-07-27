@@ -33,8 +33,9 @@ void CIceCannon::process()
 	// keep spawner object invisible and properly positioned
 	if(	(mp_Map->getAnimtiletimer()%GUNFIRE_TIMER_EP1) == 0 )
 	{
-		int newpos_x = getXPosition()+(vector_x)*512;
-		int newpos_y = getYPosition()/*+(vector_y)*512*/;
+		int newpos_x = getXPosition();
+		int newpos_y = getYPosition();
+		if(vector_x > 0) newpos_x += 512;
 		CIceChunk *chunk = new CIceChunk(mp_Map, newpos_x, newpos_y,
 								vector_x, vector_y, m_Player, m_Object);
 		m_Object.push_back(chunk);
@@ -75,13 +76,13 @@ void CIceChunk::process()
 		{
 			m_Player[touchedBy].pdir = m_Player[touchedBy].pshowdir = RIGHT;
 			m_Player[touchedBy].xinertia = Physics.player.max_x_speed;
-			m_Player[touchedBy].bump( *this );
+			m_Player[touchedBy].bump( *this, RIGHT );
 		}
 		else if (vector_x < 0)
 		{
 			m_Player[touchedBy].pdir = m_Player[touchedBy].pshowdir = LEFT;
 			m_Player[touchedBy].xinertia = -Physics.player.max_x_speed;
-			m_Player[touchedBy].bump( *this );
+			m_Player[touchedBy].bump( *this, LEFT );
 		}
 		else	// perfectly vertical ice cannons
 		{

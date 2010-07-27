@@ -18,8 +18,9 @@
 #define VORTELITE_MAX_FALL_SPEED     240
 #define VORTELITE_JUMP_FRICTION      2
 
-#define VORTELITE_WALK_SPEED         31
-#define VORTELITE_WALK_ANIM_TIME     6
+const int WALK_SPEED = 15;
+const int CHARGE_SPEED = 31;
+const int VORTELITE_WALK_ANIM_TIME = 6;
 
 // number of shots to kill
 #define VORTELITE_HP                 3
@@ -56,6 +57,7 @@ m_Object(mp_vec_Obj)
 	timesincefire = 0;
 	dist_traveled = VORTELITE_TRAPPED_DIST+1;
 	canbezapped = 1;
+	m_speed = 0;
 }
 
 void CVorticonElite::process()
@@ -90,9 +92,19 @@ void CVorticonElite::process()
 
 	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
 
+	if(state == VORTELITE_CHARGE)
+	{
+		m_speed = CHARGE_SPEED;
+	}
+	else if(state == VORTELITE_WALK)
+	{
+		m_speed = WALK_SPEED;
+	}
+
 	reprocess: ;
 	switch(state)
 	{
+	case VORTELITE_CHARGE:
 	case VORTELITE_WALK:
 		dist_traveled++;
 
@@ -131,7 +143,7 @@ void CVorticonElite::process()
 			sprite = VORTELITE_WALK_LEFT_FRAME + frame;
 			if (!blockedl)
 			{
-				moveLeft(VORTELITE_WALK_SPEED);
+				moveLeft(m_speed);
 			}
 			else
 			{
@@ -153,7 +165,7 @@ void CVorticonElite::process()
 			sprite = VORTELITE_WALK_RIGHT_FRAME + frame;
 			if (!blockedr)
 			{
-				moveRight(VORTELITE_WALK_SPEED);
+				moveRight(m_speed);
 			}
 			else
 			{
@@ -179,11 +191,12 @@ void CVorticonElite::process()
 			animtimer = 0;
 		} else animtimer++;
 		break;
+
 	case VORTELITE_JUMP:
 		if (movedir == RIGHT)
-		{ if (!blockedr) moveRight(VORTELITE_WALK_SPEED); }
+		{ if (!blockedr) moveRight(m_speed); }
 		else
-		{ if (!blockedl) moveLeft(VORTELITE_WALK_SPEED); }
+		{ if (!blockedl) moveLeft(m_speed); }
 
 		if (inertiay>0 && blockedd)
 		{  // the bear has landed

@@ -418,7 +418,7 @@ void CPlayer::JumpAndPogo()
 	if (!pjumping && !pfalling && !pfiring)
 	{
 		// give em the chance to jump
-		if (playcontrol[PA_JUMP] && !ppogostick && !pfrozentime && !playpushed_x)
+		if (playcontrol[PA_JUMP] && !ppogostick && !pfrozentime )
 		{
 			if(!psliding) xinertia = 0;
 			pjumping = PPREPAREJUMP;
@@ -852,50 +852,22 @@ void CPlayer::SelectFrame()
 }
 
 
-const int bumpamount = 55;
+const int bumpamount = 35;
 
 // yorp/scrub etc "bump".
 // if solid = false, player can possibly force his way through.
 // if solid = true, object acts like a solid "wall".
-void CPlayer::bump( CObject &theObject )
+void CPlayer::bump( CObject &theObject, direction_t direction )
 {
-	int pushamt = 0;
+	if(	pjumping == PPREPAREJUMP || pjumping == PPREPAREPOGO || dead )
+		return;
 
-	int obj_lx = theObject.getXLeftPos();
-	int obj_rx = theObject.getXRightPos();
-	int lx = getXLeftPos();
-	int rx = getXRightPos();
+	g_pSound->playStereofromCoord(SOUND_YORP_BUMP, PLAY_NORESTART, scrx);
 
-	if( lx < obj_lx )
-	{
-		if(rx >= obj_lx)
-		{
-			moveLeft(rx - obj_lx);
-			pushamt = -bumpamount;
-		}
-	}
-
-	if( rx > obj_rx )
-	{
-		if(lx <= obj_rx)
-		{
-			moveRight(obj_rx - lx);
-			pushamt = +bumpamount;
-		}
-	}
-
-	//if (pushamt > 0 && xinertia < pushamt)
-		//pshowdir = pdir = RIGHT;
-	//else if (pushamt < 0 && xinertia > pushamt)
-		//pshowdir = pdir = LEFT;
-
-	playpushed_x = pushamt;
+	pshowdir = pdir = direction;
+	playpushed_x = (direction==RIGHT) ? bumpamount : -bumpamount;
 	xinertia = 0;
-
 	pwalking = true;
-
-	if (!pjumping)
-		pdir = pshowdir = (pushamt<0) ? LEFT : RIGHT;
 }
 
 // Scrub, etc "push".

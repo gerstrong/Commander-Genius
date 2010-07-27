@@ -89,21 +89,7 @@ void CButler::getTouchedBy(CObject &theObject)
 		if( theObject.m_type == OBJ_PLAYER )
 		{
 			CPlayer &Player = dynamic_cast<CPlayer&>(theObject);
-
-			if(Player.dead)
-				return;
-
-			if(!((Player.pdir == movedir) && (Player.pwalking)))
-			{
-				g_pSound->playStereofromCoord(SOUND_YORP_BUMP, PLAY_NORESTART, scrx);
-
-				short butlerpushamount;
-				butlerpushamount = BUTLERPUSHAMOUNT;
-
-				if(Player.pwalking) butlerpushamount = 3*BUTLERPUSHAMOUNT/2;
-
-				Player.bump( *this );
-			}
+			Player.bump( *this, movedir );
 		}
 	}
 }

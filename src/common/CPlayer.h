@@ -69,7 +69,7 @@ public:
 	void JumpAndPogo();
 	void Playerfalling();
 	void raygun();
-	void bump( CObject &theObject );
+	void bump( CObject &theObject, direction_t direction );
 	void push( int pushamt );
 	void checkSolidDoors();
 	void SelectFrame();

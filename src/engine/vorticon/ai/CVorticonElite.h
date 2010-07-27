@@ -14,7 +14,7 @@
 
 // the "Vorticon Elite" enemies in ep2
 enum vortelite_actions{
-	VORTELITE_WALK, VORTELITE_JUMP,
+	VORTELITE_WALK, VORTELITE_CHARGE, VORTELITE_JUMP,
 	VORTELITE_ABOUTTOFIRE, VORTELITE_FIRED,
 	VORTELITE_DYING, VORTELITE_DEAD,
 };
@@ -36,6 +36,7 @@ private:
 	signed int inertiay;
 	unsigned char movedir;
 	unsigned int timesincefire;
+	int m_speed;
 
 	int dist_traveled;
 	std::vector<CObject*>& m_Object;

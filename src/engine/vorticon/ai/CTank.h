@@ -75,7 +75,7 @@ protected:
 	unsigned char frame;
 	unsigned int dist_to_travel;
 
-	unsigned char movedir;
+	direction_t movedir;
 
 	unsigned int ponsameleveltime;
 	unsigned char alreadyfiredcauseonsamelevel;

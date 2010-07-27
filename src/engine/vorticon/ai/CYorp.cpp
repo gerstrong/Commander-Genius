@@ -25,7 +25,7 @@ dietimer(0),
 walkframe(0),
 dist_traveled(0),
 yorpdie_inertia_y(0),
-movedir(0)
+movedir(LEFT)
 {
 	m_type = OBJ_YORP;
 	sprite = OBJ_YORP_DEFSPRITE;
@@ -77,8 +77,6 @@ void CYorp::process()
 		}
 		else
 		{
-			g_pSound->playStereofromCoord(SOUND_YORP_BUMP, PLAY_NOW, scrx);
-
 			// if yorp is moving, also push in direction he's moving
 			// in. this allows walking through a yorp if he is walking
 			// away from Keen
@@ -104,7 +102,7 @@ void CYorp::process()
 
  			if (pushamt)
  			{
- 				tb_player.bump( *this );
+ 				tb_player.bump( *this, movedir );
  			}
 		}
  	}

@@ -203,15 +203,7 @@ void CTank::getTouchedBy(CObject &theObject)
 		if( theObject.m_type == OBJ_PLAYER )
 		{
 			CPlayer &Player = dynamic_cast<CPlayer&>(theObject);
-
-			if(Player.dead)
-				return;
-
-			if(!((Player.pdir == movedir) && (Player.pwalking)))
-			{
-				g_pSound->playStereofromCoord(SOUND_YORP_BUMP, PLAY_NORESTART, scrx);
-				Player.bump( *this );
-			}
+			Player.bump( *this, movedir );
 		}
 	}
 }

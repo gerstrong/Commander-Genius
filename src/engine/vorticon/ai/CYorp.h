@@ -15,7 +15,7 @@
 #define OBJ_YORP_DEFSPRITE       50
 
 #define YORP_LOOK_TIME  16   // time each frame of YORP_LOOK is shown
-#define YORP_STUN_ANIM_TIME  10
+#define YORP_STUN_ANIM_TIME  5
 #define YORP_WALK_ANIM_TIME  5
 #define YORP_WALK_SPEED      19
 #define YORP_WALK_ANIM_TIME_FAST  5
@@ -86,7 +86,7 @@ private:
 	unsigned int dist_traveled;
 	signed int yorpdie_inertia_y;
 
-	unsigned char movedir;
+	direction_t movedir;
 };
 
 #endif /* CYORP_H_ */
