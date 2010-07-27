@@ -406,6 +406,7 @@ void CPlayGameVorticon::handleFKeys()
     		// If player on map, make disable the solid property of the players
     		if(m_Level == 80)
     			it_player->solid = !it_player->godmode;
+    		it_player->setupinitialCollisions();
     	}
 
     	g_pVideoDriver->DeleteConsoleMsgs();
