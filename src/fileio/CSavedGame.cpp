@@ -173,7 +173,7 @@ bool CSavedGame::convertOldFormat(size_t slot)
 
 	tempbuf = new unsigned char[22624];
 
-	/*highest_objslot = */fgetc(fp); fgetc(fp); // No used anymore since objects are held in an vector.
+	/*highest_objslot = */fgetc(fp); fgetc(fp); // Not used anymore since objects are held in an vector.
 	if (sgrle_decompress(fp, (unsigned char *)tempbuf, 22624)) return false;
 	if (sgrle_decompress(fp, (unsigned char *)tempbuf, 9612)) return false;
 
@@ -204,13 +204,12 @@ bool CSavedGame::convertOldFormat(size_t slot)
 
 	// Now save the inventory of every player
 
-	encodeData(old.Player.x>>4);
-	encodeData(old.Player.y>>4);
+	encodeData(old.Player.x);
+	encodeData(old.Player.y);
 	encodeData(old.Player.blockedd);
 	encodeData(old.Player.blockedu);
 	encodeData(old.Player.blockedl);
 	encodeData(old.Player.blockedr);
-	old.Player.inventory.lives++; // in case the player loses due a savegame glitch.
 	encodeData(old.Player.inventory);
 
 	// save the number of objects on screen.
@@ -219,7 +218,19 @@ bool CSavedGame::convertOldFormat(size_t slot)
 	// Save the map_data as it is left
 	encodeData(old.map.xsize);
 	encodeData(old.map.ysize);
-	addData( (byte*)(old.map.mapdata), 2*old.map.xsize*old.map.ysize );
+	// TODO: Something is not right here!
+
+	word *mapdata = new word[old.map.xsize*old.map.ysize];
+	for( size_t x=0 ; x<old.map.xsize ; x++ )
+	{
+		for( size_t y=0 ; y<old.map.ysize ; y++ )
+		{
+			mapdata[y*old.map.xsize+x] = old.map.mapdata[x][y];
+		}
+	}
+	addData( (byte*)(mapdata), 2*old.map.xsize*old.map.ysize );
+
+	delete [] mapdata;
 
 	// store completed levels
 	addData( (byte*)(old.LevelControl.levels_completed), MAX_LEVELS_VORTICON );
@@ -232,7 +243,7 @@ bool CSavedGame::convertOldFormat(size_t slot)
 	return true;
 }
 
-char CSavedGame::IsOldButValidSaveGame(std::string fname)
+bool CSavedGame::IsOldButValidSaveGame(std::string fname)
 {
 FILE *fp;
 unsigned int i;
@@ -242,19 +253,21 @@ const char *verify = "CKSAVE";
 
 	for(i=0;i<strlen(verify);i++)
 	{
-		if (fgetc(fp) != verify[i])
+		char c = fgetc(fp);
+		if (c != verify[i])
 		{
 			fclose(fp);
-			return 0;
+			return false;
 		}
+		printf("%c", c);
 	}
 	if (fgetc(fp) != OLDSAVEGAMEVERSION)
 	{
 		fclose(fp);
-		return 0;
+		return false;
 	}
 	fclose(fp);
-	return 1;
+	return true;
 }
 
 // this is seperated out of game_load for modularity because menumanager.c

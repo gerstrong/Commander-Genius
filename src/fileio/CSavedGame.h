@@ -39,7 +39,7 @@ public:
 
 	void convertAllOldFormats();
 	bool convertOldFormat(size_t slot);
-	char IsOldButValidSaveGame(std::string fname);
+	bool IsOldButValidSaveGame(std::string fname);
 	void readOldHeader(FILE *fp, byte *episode, byte *level, byte *lives, byte *num_players);
 	Uint32 getSlotNumber(const std::string &filename);
 	std::string getSlotName(const std::string &filename);
