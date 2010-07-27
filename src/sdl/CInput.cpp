@@ -669,9 +669,6 @@ void CInput::processKeys(int keydown)
 	   }
 }
 
-/**
- * \return false on error
- */
 static bool checkMousewrapperKey(int& key);
 
 /**
