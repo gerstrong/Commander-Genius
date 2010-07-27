@@ -55,33 +55,6 @@ void CPlatformVert::process()
 		}
 	}
 
-	// push player horizontally
-	CPlayer &tPlayer = m_Player[touchedBy];
-	if ( touchPlayer && !tPlayer.pdie && tPlayer.psupportingobject != m_index)
-	{
-		if (cansupportplayer && !tPlayer.supportedbyobject)
-		{
-			// if player is standing around minding his own business and we
-			// come down on his head, change direction. if player is trying
-			// to walk/jump into us horizontally, push him away.
-			if( m_Player[touchedBy].getYDownPos() > getYDownPos() )
-			{
-				if (m_Player[touchedBy].getXPosition() < getXPosition())
-				{
-					m_Player[touchedBy].playpushed_x = -PLATVERTPUSHAMOUNT;
-					if (m_Player[touchedBy].xinertia > 0) m_Player[touchedBy].xinertia = 0;
-					m_Player[touchedBy].playpushed_decreasetimer = 0;
-				}
-				else
-				{
-					m_Player[touchedBy].playpushed_x = PLATVERTPUSHAMOUNT;
-					if (m_Player[touchedBy].xinertia < 0) m_Player[touchedBy].xinertia = 0;
-					m_Player[touchedBy].playpushed_decreasetimer = 0;
-				}
-			}
-		}
-	}
-
 	sprite = OBJ_PLATFORM_DEFSPRITE_EP3 + animframe;
 
 	if (animtimer > PLATVERT_ANIM_RATE)

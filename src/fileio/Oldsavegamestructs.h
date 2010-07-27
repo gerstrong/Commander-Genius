@@ -134,7 +134,7 @@ struct OldSaveGameFormat
 	   unsigned char pslowingdown;
 	   unsigned char pwalkframe,pwalkframea,pwalkanimtimer;
 	   unsigned char pwalkincreasetimer, pfriction_timer_x, pfriction_timer_y;
-	   signed int pinertia_x,pboost_x,playpushed_x;
+	   signed int pinertia_x,pboost_x;
 	   int chargedjump;
 	   unsigned char playpushed_decreasetimer;
 	   bool widejump;

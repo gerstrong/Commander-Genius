@@ -60,7 +60,6 @@ void CPlayer::processInLevel()
 				Walking();
 				WalkingAnimation();
 			}
-			playpushed();
 		}
 
 		// Check left and right blocks again, because sometimes a door or mangling machine arm move away
@@ -272,50 +271,14 @@ void CPlayer::setDir()
 	
 	if (!pjumping && !pfiring)
 	{
-		if (playcontrol[PA_X] < 0) { pdir = pshowdir = LEFT; }
-		if (playcontrol[PA_X] > 0) { pdir = pshowdir = RIGHT; }
+		if (playcontrol[PA_X] < 0 && xinertia < 0) { pdir = pshowdir = LEFT; }
+		if (playcontrol[PA_X] > 0 && xinertia > 0) { pdir = pshowdir = RIGHT; }
 	}
 	else
 	{
 		if (playcontrol[PA_X] < 0) { pdir = pshowdir = LEFT;  }
 		if (playcontrol[PA_X] > 0) { pdir = pshowdir = RIGHT;  }
 	}
-}
-
-// handle playpushed_x: for yorps/scrubs/etc pushing keen
-void CPlayer::playpushed()
-{
-    if ( g_pInput->getHoldedKey(KTAB) ) return;
-	
-    // if we're being pushed...
-    if (playpushed_x != 0)
-    {
-		// do friction on push force...
-		if (playpushed_decreasetimer>PLAYPUSH_DECREASERATE)
-		{
-			// push playpushed_x towards zero
-			if (playpushed_x < 0)
-			{
-				playpushed_x+= 4;
-				if(playpushed_x > 0) playpushed_x=0;
-			}
-			else
-			{
-				playpushed_x-= 4;
-				if(playpushed_x < 0) playpushed_x=0;
-			}
-			playpushed_decreasetimer = 0;
-		}
-		else playpushed_decreasetimer++;
-		
-		// if we run up against a wall all push inertia stops
-		if (playpushed_x > 0 && blockedr) playpushed_x = 0;
-		if (playpushed_x < 0 && blockedl) playpushed_x = 0;
-
-		if( (!(playcontrol[PA_X]>0) && playpushed_x > 0) or
-			(!(playcontrol[PA_X]<0) && playpushed_x < 0) )
-			xinertia = 0;
-    }
 }
 
 // allow Keen to toggle the pogo stick and hit switches
@@ -825,7 +788,7 @@ void CPlayer::SelectFrame()
         else if (ppogostick) sprite += PFRAME_POGO + (pjumping==PPREPAREPOGO);
         else if (pjumping) sprite += pjumpframe;
         else if (pfalling) sprite += 13;
-        else if (pwalking || playpushed_x || psemisliding) sprite += pwalkframe;
+        else if (pwalking || psemisliding) sprite += pwalkframe;
     }
 	
     // if he's going left switch the frame selected above to the
@@ -852,7 +815,7 @@ void CPlayer::SelectFrame()
 }
 
 
-const int bumpamount = 35;
+const int bumpamount = 40;
 
 // yorp/scrub etc "bump".
 // if solid = false, player can possibly force his way through.
@@ -865,8 +828,7 @@ void CPlayer::bump( CObject &theObject, direction_t direction )
 	g_pSound->playStereofromCoord(SOUND_YORP_BUMP, PLAY_NORESTART, scrx);
 
 	pshowdir = pdir = direction;
-	playpushed_x = (direction==RIGHT) ? bumpamount : -bumpamount;
-	xinertia = 0;
+	xinertia += (direction==RIGHT) ? bumpamount : -bumpamount;
 	pwalking = true;
 }
 

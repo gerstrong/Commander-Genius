@@ -63,7 +63,6 @@ public:
 	void dieanim();
 	void setDir();
 	void getgoodies();
-	void playpushed();
 	void keencicle();
 	void TogglePogo_and_Switches();
 	void JumpAndPogo();
@@ -130,7 +129,6 @@ public:
 	unsigned char pwalkframe,pwalkframea;
 	int pwalkanimtimer;
 	unsigned char pwalkincreasetimer, pfriction_timer_y;
-	signed int playpushed_x;
 	unsigned char playpushed_decreasetimer;
 
 	jumpstate pjumping;

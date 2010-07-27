@@ -150,7 +150,6 @@ void CPlayer::setupforLevelPlay()
     pfalling = false;
     pwalking = playspeed = 0;
     xinertia = pinertia_y = 0;
-    playpushed_x = 0;
     plastfire = pfiring = false;
     pwalkanimtimer = 0;
     inhibitfall = false;
@@ -349,7 +348,7 @@ void CPlayer::Walking()
 	else
         cur_pfastincrate = PFASTINCRATE;
 
-	if (playcontrol[PA_X] > 0 && !ppogostick && !playpushed_x)
+	if (playcontrol[PA_X] > 0 && !ppogostick)
 	{ // RIGHT key down
 		// quickly reach PLAYER_FASTINCMAXSPEED
 		if (pwalkincreasetimer>=cur_pfastincrate)
@@ -370,7 +369,7 @@ void CPlayer::Walking()
 		// increase up to max speed every time frame is changed
 		if (!pwalkanimtimer && xinertia < pmaxspeed)	xinertia+=(1<<4);
 	}
-	else if (playcontrol[PA_X] < 0 && !ppogostick && !playpushed_x)
+	else if (playcontrol[PA_X] < 0 && !ppogostick )
 	{ // LEFT key down
 		// quickly reach PFASTINCMAXSPEED
 		if (pwalkincreasetimer>=cur_pfastincrate)
@@ -467,7 +466,7 @@ void CPlayer::WalkingAnimation()
     if (inhibitwalking || psliding ) return;
 	
     // should we do walk animation?
-    if (pwalking  || playpushed_x || psemisliding)
+    if (pwalking  || psemisliding)
     {
     	int walkanimrate; // walk animation speed according to player speed
 		
@@ -544,7 +543,7 @@ void CPlayer::WalkingAnimation()
 }
 
 // handles inertia and friction for the X direction
-// (this is where the inertia/playpushed_x is actually applied to playx)
+// (this is where the xinertia is actually applied to playx)
 void CPlayer::InertiaAndFriction_X()
 {
 	int friction_rate;
@@ -591,11 +590,11 @@ void CPlayer::InertiaAndFriction_X()
 		else decreaseXInertia(30);
 	}
 
-	// apply xinertia and playpushed_x inertia
+	// apply xinertia
 	// (unless we're about to make a pogo jump)
 	if ( pjumping != PPREPAREPOGO && pjumping != PPREPAREJUMP)
 	{
-		int dx=xinertia + playpushed_x;
+		int dx=xinertia;
 		// check first if the player is not blocked
 		if( (!blockedr and dx>0) or (!blockedl and dx<0) )
 			moveXDir(dx);
