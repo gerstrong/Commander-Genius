@@ -115,7 +115,7 @@ void CSoundChannel::generateWaveform16(Uint8 *waveform, unsigned int len, int fr
 	int waittime; // How much do we divide wait time for change?
 	unsigned int halffreq;
 	unsigned int index;
-	char firsttime;
+	bool firsttime;
 	Uint16 *WaveBuffer;
 	
 	WaveBuffer = new Uint16[len];
@@ -128,7 +128,7 @@ void CSoundChannel::generateWaveform16(Uint8 *waveform, unsigned int len, int fr
 		waittime = (((m_freq_corr*frequency)>>4) / SLOW_RATE);
 	
 	// setup so we process a new byte of the sound first time through
-	firsttime = 1;
+	firsttime = true;
 	
 	for(index=0 ; index<len ; index++)
 	{

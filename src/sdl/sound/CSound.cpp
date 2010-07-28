@@ -79,7 +79,6 @@ bool CSound::init(void)
 	memcpy(&AudioSpec,obtained,sizeof(SDL_AudioSpec));
 	delete obtained;
 
-
 	m_MixedForm = new Uint8[AudioSpec.size];
 
 	g_pLogFile->ftextOut("SDL_AudioSpec:<br>");
@@ -191,6 +190,8 @@ bool CSound::forcedisPlaying(void)
 	return false;
 }
 
+int maxval = 0;
+
 void CSound::callback(void *unused, Uint8 *stream, int len)
 {
     unsigned short i;
@@ -203,7 +204,6 @@ void CSound::callback(void *unused, Uint8 *stream, int len)
     for( i=0 ; i < m_mixing_channels ; i++ )
    	{
    		m_soundchannel[i].readWaveform(m_MixedForm, len, AudioSpec.channels, AudioSpec.freq);
-
    		SDL_MixAudio(stream, m_MixedForm, len, m_SoundVolume);
     }
 }
@@ -457,26 +457,19 @@ char CSound::extractOfExeFile(CExeFile &ExeFile)
 	    return 1;
 	}
 
-	//CExeFile *ExeFile = new CExeFile(episode, inputpath);
-	//if(!ExeFile->readData()) ret = 1;
-	//else
-	//{
-		FILE *fout;
+	FILE *fout;
 
-		buffer = inputpath;
-		if( *(buffer.end()) != '/') buffer  += "/";
-		buffer += outputfname;
+	buffer = inputpath;
+	if( *(buffer.end()) != '/') buffer  += "/";
+	buffer += outputfname;
 
-		if(!(fout = OpenGameFile(buffer.c_str(),"wb"))) ret = 1;
-		else
-		{
-			fwrite( ExeFile.getRawData()+sounds_start, 1, (sounds_end-sounds_start), fout);
-			g_pLogFile->ftextOut(GREEN,"Sounds extraction completed successfully<br>");
-			fclose(fout);
-		}
-	//}
-
-	//delete ExeFile;
+	if(!(fout = OpenGameFile(buffer.c_str(),"wb"))) ret = 1;
+	else
+	{
+		fwrite( ExeFile.getRawData()+sounds_start, 1, (sounds_end-sounds_start), fout);
+		g_pLogFile->ftextOut(GREEN,"Sounds extraction completed successfully<br>");
+		fclose(fout);
+	}
 
 	return ret;
 }

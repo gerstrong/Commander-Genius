@@ -34,11 +34,6 @@ movedir(LEFT)
 
 void CYorp::process()
 {
-	int pushamt;
-
-	Uint32 x = getXPosition();
-	Uint32 y = getYPosition();
-
 	// hey after all, dead yorps don't talk. Or do anything
 	// but return to the calling procedure.
 	if (state==YORP_DEAD) return;
