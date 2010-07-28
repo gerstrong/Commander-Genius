@@ -45,68 +45,6 @@ void CYorp::process()
 
 	if (!hasbeenonscreen) return;
 
-	CPlayer &tb_player = m_vec_Player[touchedBy];
-	// code for the yorps to push keen, and code for them to get stunned
-	if (touchPlayer && state != YORP_STUNNED
-		&& state != YORP_DYING  && !tb_player.pdie)
-	{
-		if (tb_player.pfalling || (tb_player.pjumping && (tb_player.pjumping != PPREPAREJUMP && tb_player.pjumping != PPREPAREPOGO) ))
-		{   // falling, see if he bonked the yorp on the head
-			// this happens if keen's feet are higher than the top
-			// half of the yorp
-			if ((tb_player.getYPosition()>>STC)+16 < (y>>STC)+12)
-			{
-				if (!m_hardmode)
-				{
-					g_pSound->playStereofromCoord(SOUND_YORP_STUN, PLAY_NOW, scrx);
-					state = YORP_STUNNED;
-					looktimes = 0;
-					timer = 0;
-					lookposition = 0;
-				}
-
-            	// make the yorp look a little less "soft" by
-                // offering a bit of resistance
-                // (actually, having keen do a small jump)
-                tb_player.pjumptime = 0;
-                tb_player.pjumpupdecreaserate = 0;
-                tb_player.pjumpupspeed = 7;
-                tb_player.pjumping = PJUMPUP;
-                tb_player.pjustjumped = true;
-			}
-		}
-		else
-		{
-			// if yorp is moving, also push in direction he's moving
-			// in. this allows walking through a yorp if he is walking
-			// away from Keen
-			pushamt = 0;
-			if (state == YORP_MOVE)
-			{
-				if (tb_player.pshowdir != movedir)
-				{	// p_player pushing against yorp
-					if (tb_player.pwalking)
-						pushamt = m_hardmode ? YORP_PUSH_AMT_P_WALK_HARD : YORP_PUSH_AMT_P_WALK;
-					else
-						pushamt = m_hardmode ? YORP_PUSH_AMT_P_STAND_HARD : YORP_PUSH_AMT_P_STAND;
-
-					if (movedir==LEFT) pushamt = -pushamt;
-				}
-				else
-					pushamt = (tb_player.getXPosition() < x) ? -YORP_PUSH_AMT_NO_WALK:YORP_PUSH_AMT_NO_WALK;
-			}
-			else
-			{   // player "walking through" yorp--provide resistance
-					pushamt = (tb_player.pshowdir==LEFT) ? 0:-YORP_PUSH_AMT_NO_WALK/2;
-			}
-
- 			if (pushamt)
- 			{
- 				tb_player.bump( *this, movedir );
- 			}
-		}
- 	}
-
 	// did the poor guy get shot?
 	if( HealthPoints <= 0 && state != YORP_DYING )
 	{
@@ -295,6 +233,48 @@ void CYorp::processDying()
 		inhibitfall = 0;
 		state = YORP_DEAD;
 		dead = 1;
+	}
+}
+
+void CYorp::getTouchedBy(CObject &theObject)
+{
+	if(hitdetect(theObject))
+	{
+		if(theObject.m_type == OBJ_PLAYER)
+		{
+			CPlayer &tb_player = dynamic_cast<CPlayer&>(theObject);
+			// code for the yorps to push keen, and code for them to get stunned
+			if (state != YORP_STUNNED && state != YORP_DYING  && !tb_player.pdie)
+			{
+				if ( tb_player.getYDownPos() < getYDownPos()-(1<<CSF) )
+				{
+					if (!m_hardmode)
+					{
+						g_pSound->playStereofromCoord(SOUND_YORP_STUN, PLAY_NOW, scrx);
+						state = YORP_STUNNED;
+						looktimes = 0;
+						timer = 0;
+						lookposition = 0;
+					}
+
+					// make the yorp look a little less "soft" by
+					// offering a bit of resistance
+					// (actually, having keen do a small jump)
+					tb_player.pjumptime = 0;
+					tb_player.pjumpupdecreaserate = 0;
+					tb_player.pjumpupspeed = 7;
+					tb_player.pjumping = PJUMPUP;
+					tb_player.pjustjumped = true;
+				}
+				else
+				{
+					// if yorp is moving, also push in direction he's moving
+					// in. this allows walking through a yorp if he is walking
+					// away from Keen
+					tb_player.bump( *this, movedir );
+				}
+			}
+		}
 	}
 }
 
