@@ -10,7 +10,7 @@
 
 #include "../../../common/CObject.h"
 
-#define GUNFIRE_TIMER 180
+#define GUNFIRE_TIMER 128
 
 
 class CAutoRay : public CObject
@@ -23,8 +23,6 @@ public:
 
 
 private:
-	unsigned int timer;
-	int m_gunfiretimer;
 	std::vector<CObject*> &m_Objvect;
 	stRayAlignment m_type;
 };
