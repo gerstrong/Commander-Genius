@@ -370,7 +370,7 @@ void CPlayer::Walking()
 		if (!pwalkanimtimer && xinertia < pmaxspeed)	xinertia+=(1<<4);
 	}
 	else if (playcontrol[PA_X] < 0 && !ppogostick )
-	{ // LEFT key down
+	{ 	// LEFT key down
 		// quickly reach PFASTINCMAXSPEED
 		if (pwalkincreasetimer>=cur_pfastincrate)
 		{
@@ -584,12 +584,6 @@ void CPlayer::InertiaAndFriction_X()
 	if(m_level == 80) // We are on World map
 		verifySolidLevels();
 	
-	// If player is blocked against a wall, decrease the inertia
-	if( ( (blockedl && xinertia<0 ) || (blockedr && xinertia>0) ) ) {
-		if(playcontrol[PA_X] == 0) xinertia = 0;
-		else decreaseXInertia(30);
-	}
-
 	// apply xinertia
 	// (unless we're about to make a pogo jump)
 	if ( pjumping != PPREPAREPOGO && pjumping != PPREPAREJUMP)
@@ -598,6 +592,8 @@ void CPlayer::InertiaAndFriction_X()
 		// check first if the player is not blocked
 		if( (!blockedr and dx>0) or (!blockedl and dx<0) )
 			moveXDir(dx);
+		else
+			xinertia = 0;
 	}
 	
 	// if we stopped walking (i.e. left or right not held down) apply friction

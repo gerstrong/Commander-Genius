@@ -347,7 +347,7 @@ void CPlayGameVorticon::process()
 #else
 			//CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
 			//tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec());
-			//tempbuf = "fallspeed_x: " + itoa(PhysicsSettings.player.fallspeed_decrease);
+			//tempbuf = "inertia_x: " + itoa(m_Player[0].xinertia);
 
 #endif
 			g_pGfxEngine->getFont(0).drawFont(sfc,tempbuf,320-(tempbuf.size()<<3)-1, true);

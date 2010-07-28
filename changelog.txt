@@ -4,6 +4,8 @@ Commander Genius Release :
 v0.3.2.1:
 ---------
 - more AI fixes
+- Added support for mods which use the palette patch code
+- 48 Khz is back again, after many months, but this time working correctly!
 - better push and bump physics
 - more of the Galaxy Engine. Keen now can walk on map.
 - Added Cannon fire sound
