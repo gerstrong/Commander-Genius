@@ -861,29 +861,47 @@ void CPlayer::push( CObject &theObject )
 
 void CPlayer::checkSolidDoors()
 {
-	int mx1 = getXLeftPos()>>CSF;
-	int mxmid = getXMidPos()>>CSF;
-	int mx2 = getXRightPos()>>CSF;
-	int my1 = getYUpPos()>>CSF;
-	int mymid = getYMidPos()>>CSF;
-	int my2 = getYDownPos()>>CSF;
+	int mx1 = getXLeftPos();
+	int mx2 = getXRightPos();
+	int my1 = getYUpPos();
+	int my2 = getYDownPos();
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 
-	if( (TileProperty[mp_Map->at(mx1 ,mymid)].behaviour>1 &&
-			TileProperty[mp_Map->at(mx1 ,mymid)].behaviour<6 ) ) {
-		blockedl = true;	}
+	for( size_t my=my1 ; my<my2 ; my+=(1<<STC) )
+	{
+		if( (TileProperty[mp_Map->at(mx1>>CSF, my>>CSF)].behaviour>1 &&
+				TileProperty[mp_Map->at(mx1>>CSF, my>>CSF)].behaviour<6 ) )
+		{
+			blockedl = true; break;
+		}
+	}
 
-	if( (TileProperty[mp_Map->at(mx2 ,mymid)].behaviour>1 &&
-			TileProperty[mp_Map->at(mx2 ,mymid)].behaviour<6 ) ) {
-		blockedr = true;	}
+	for( size_t my=my1 ; my<my2 ; my+=(1<<STC) )
+	{
+		if( (TileProperty[mp_Map->at(mx2>>CSF, my>>CSF)].behaviour>1 &&
+				TileProperty[mp_Map->at(mx2>>CSF, my>>CSF)].behaviour<6 ) )
+		{
+			blockedr = true; break;
+		}
+	}
 
-	if( (TileProperty[mp_Map->at(mxmid ,my1)].behaviour>1 &&
-			TileProperty[mp_Map->at(mxmid ,my1)].behaviour<6 ) ) {
-		blockedd = true;	}
+	for( size_t mx=mx1 ; mx<mx2 ; mx+=(1<<STC) )
+	{
+		if( (TileProperty[mp_Map->at(mx>>CSF, my1>>CSF)].behaviour>1 &&
+				TileProperty[mp_Map->at(mx>>CSF, my1>>CSF)].behaviour<6 ) )
+		{
+			blockedd = true; break;
+		}
+	}
 
-	if( (TileProperty[mp_Map->at(mxmid ,my2)].behaviour>1 &&
-			TileProperty[mp_Map->at(mxmid ,my2)].behaviour<6 ) ) {
-		blockedu = true;	}
+	for( size_t mx=mx1 ; mx<mx2 ; mx+=(1<<STC) )
+	{
+		if( (TileProperty[mp_Map->at(mx>>CSF, my2>>CSF)].behaviour>1 &&
+				TileProperty[mp_Map->at(mx>>CSF, my2>>CSF)].behaviour<6 ) )
+		{
+			blockedu = true; break;
+		}
+	}
 }
 
 int CPlayer::pollLevelTrigger()
