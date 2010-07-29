@@ -40,7 +40,7 @@ void CVortiNinja::init()
 
 	animtimer = 0;
 	animframe = 0;
-	isdying = 0;
+	dying = false;
 }
 
 void CVortiNinja::process()
@@ -55,7 +55,7 @@ void CVortiNinja::process()
 
 	if (HealthPoints <= 0 && state != NINJA_DYING)
 	{
-		isdying = 1;
+		dying = true;
 		dietimer = 0;
 		YFrictionRate = 1;
 		if (YInertia < 0) YInertia = 0;
@@ -64,7 +64,7 @@ void CVortiNinja::process()
 	}
 
 
-	if (isdying)
+	if (dying)
 	{
 		if (state == NINJA_STAND)
 			state = NINJA_DYING;
@@ -148,7 +148,7 @@ void CVortiNinja::process()
 		if (blockedu && YInertia < 0)
 			YInertia *= 0.5;
 
-		if (!isdying)
+		if (!dying)
 		{
 			if (dir==LEFT)
 				sprite = NINJA_KICK_LEFT_FRAME;
@@ -159,7 +159,7 @@ void CVortiNinja::process()
 			sprite = NINJA_DYING_FRAME;
 		if (YInertia > 0 && blockedd)
 		{
-			if (!isdying)
+			if (!dying)
 				init();
 			else
 				state = NINJA_DYING;
@@ -171,7 +171,7 @@ void CVortiNinja::process()
 			if ((XInertia > 0 && !blockedr) || \
 					(XInertia < 0 && !blockedl))
 			{
-				if (!isdying)
+				if (!dying)
 					moveXDir(XInertia);
 			}
 

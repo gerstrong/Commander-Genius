@@ -87,6 +87,7 @@ void CVortikid::process()
 	{
 		dietimer = 0;
 		state = BABY_DYING;
+		dying = true;
 		jumpdecrate = 4;
 		sprite = BABY_FRY_FRAME - ep3;
 		canbezapped = 0;

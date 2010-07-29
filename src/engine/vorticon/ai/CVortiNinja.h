@@ -33,7 +33,6 @@ private:
 	unsigned int XFrictionTimer, YFrictionTimer;
 	unsigned int XFrictionRate, YFrictionRate;
 	int KickMoveTimer;
-	int isdying;
 	int dietimer;
 	std::vector<CPlayer> &m_Player;
 };

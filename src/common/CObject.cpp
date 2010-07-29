@@ -52,6 +52,7 @@ m_invincible(false)
 	honorPriority = true;
 	touchPlayer = touchedBy = 0;
 	cansupportplayer = false;
+	dying = false;
 
 	if(m_type != OBJ_NONE )
 	{

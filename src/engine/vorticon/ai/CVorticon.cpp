@@ -74,9 +74,13 @@ void CVorticon::process()
 			// White Fade and back
 			g_pGfxEngine->pushEffectPtr(new CFlash(3000, 8, 0xFFFFFF, 200 ));
 			state = VORT_DYING;
+			dying = true;
 		}
 		else
+		{
 			state = VORT2_DYING;
+			dying = true;
+		}
 
 		g_pSound->playStereofromCoord(SOUND_VORT_DIE, PLAY_NOW, scrx);
 	}

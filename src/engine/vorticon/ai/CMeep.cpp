@@ -67,6 +67,7 @@ void CMeep::process()
 		canbezapped = 0;
 		timer = 0;
 		state = MEEP_DYING;
+		dying = true;
 		g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, scrx);
 	}
 

@@ -81,7 +81,7 @@ public:
 	unsigned char touchPlayer;      // 1=hit detection with player
 	unsigned char touchedBy;        // which player was hit
 	
-	bool dead;
+	bool dead, dying;
 	
 	bool needinit;
 

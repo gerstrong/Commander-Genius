@@ -102,6 +102,7 @@ void CScrub::process()
 		{
 			solid=true;
 			state = SCRUB_DYING;
+			dying = true;
 			dietimer = 0;
 			canbezapped = 0;
 		}

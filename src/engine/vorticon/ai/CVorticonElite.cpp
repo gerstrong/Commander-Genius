@@ -82,6 +82,8 @@ void CVorticonElite::process()
 			animtimer = 0;
 			frame = 0;
 			state = VORTELITE_DYING;
+			dying = true;
+
 			if (onscreen) g_pSound->playStereofromCoord(SOUND_VORT_DIE, PLAY_NOW, scrx);
 		}
 	}

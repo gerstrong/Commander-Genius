@@ -47,6 +47,7 @@ void CYorp::process()
 		if(!m_hardmode)
 		{
 		state = YORP_DYING;
+		dying = true;
 		dietimer = 0;
 		canbezapped = false;
 		sprite = YORP_DYING_FRAME;
