@@ -21,6 +21,8 @@ CRay(p_map, x, y, dir, byType, byID)
 	inhibitfall = true;
 	blockedl = blockedr = 0;
 	canbezapped = 1;
+	if(dir == LEFT)
+		this->x-=(1<<CSF);
 	m_speed = (mp_Map->m_Difficulty>1) ? FIREBALL_HARD_SPEED : FIREBALL_SPEED;
 }
 
