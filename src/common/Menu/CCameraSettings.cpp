@@ -102,4 +102,5 @@ void CCameraSettings::processSpecific()
 CCameraSettings::~CCameraSettings()
 {
 	g_pVideoDriver->saveCameraBounds(m_CameraBounds);
+	//CBaseMenu::~CBaseMenu();
 }

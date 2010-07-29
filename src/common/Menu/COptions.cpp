@@ -57,5 +57,6 @@ void COptions::processSpecific()
 }
 
 COptions::~COptions() {
-	delete mp_Dialog;
+	if(mp_Dialog) delete mp_Dialog;
+	mp_Dialog = NULL;
 }

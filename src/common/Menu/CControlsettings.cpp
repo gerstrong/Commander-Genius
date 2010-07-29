@@ -201,5 +201,5 @@ void CControlsettings::processSelection()
 }
 
 CControlsettings::~CControlsettings() {
-	delete mp_Dialog;
+	//CBaseMenu::~CBaseMenu();
 }

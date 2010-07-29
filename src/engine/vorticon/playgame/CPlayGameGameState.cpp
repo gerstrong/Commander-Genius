@@ -101,7 +101,7 @@ bool CPlayGameVorticon::loadGameState()
 			m_SavedGame.decodeData(object->m_type);
 			m_SavedGame.decodeData(x);
 			m_SavedGame.decodeData(y);
-			object->moveToForce(x,y-(4<<STC));
+			object->moveToForce(x,y);
 			m_SavedGame.decodeData(object->dead);
 			m_SavedGame.decodeData(object->onscreen);
 			m_SavedGame.decodeData(object->hasbeenonscreen);

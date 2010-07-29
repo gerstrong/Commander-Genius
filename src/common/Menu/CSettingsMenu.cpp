@@ -62,5 +62,5 @@ void CSettingsMenu::processSpecific()
 
 CSettingsMenu::~CSettingsMenu()
 {
-	// TODO Auto-generated destructor stub
+	//CBaseMenu::~CBaseMenu();
 }

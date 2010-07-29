@@ -57,41 +57,29 @@ m_Player(m_vec_Player)
 
 void CVorticon::process()
 {
-	bool kill;
+	bool kill=false;
 	short Episode = g_pBehaviorEngine->getEpisode();
 
-	if (state==VORT_DEAD)   return;
+	if ( HealthPoints <= 0 ) kill = true;
+	else if (Episode==2 && mp_Map->at((getXLeftPos())>>CSF, (getYUpPos())>>CSF)==TILE_GLOWCELL)
+		kill = true;
 
-	if (canbezapped)
+	if (kill)
 	{
-		kill = false;
-		// if we touch a glowcell, we die!
-
-		if ( HealthPoints <= 0 ) kill = true;
-		else if (Episode==2 && mp_Map->at((getXLeftPos())>>CSF, (getYUpPos())>>CSF)==TILE_GLOWCELL)
-			kill = true;
-
-		if (kill)
+		inhibitfall = false;
+		animtimer = 0;
+		frame = 0;
+		if (Episode == 1)
 		{
-			inhibitfall = false;
-			canbezapped = false;
-			animtimer = 0;
-			frame = 0;
-			if (Episode == 1)
-			{
-				// White Fade and back
-				g_pGfxEngine->pushEffectPtr(new CFlash(3000, 8, 0xFFFFFF, 200 ));
-				state = VORT_DYING;
-			}
-			else
-				state = VORT2_DYING;
-
-			g_pSound->playStereofromCoord(SOUND_VORT_DIE, PLAY_NOW, scrx);
+			// White Fade and back
+			g_pGfxEngine->pushEffectPtr(new CFlash(3000, 8, 0xFFFFFF, 200 ));
+			state = VORT_DYING;
 		}
+		else
+			state = VORT2_DYING;
+
+		g_pSound->playStereofromCoord(SOUND_VORT_DIE, PLAY_NOW, scrx);
 	}
-	// deadly to the touch
-	if (touchPlayer && canbezapped)
-		m_Player[touchedBy].kill();
 
 	vort_reprocess: ;
 	switch(state)
@@ -252,7 +240,7 @@ void CVorticon::process()
 					frame = 5;
 					g_pGfxEngine->Palette.fadeto(0, FADE_SPEED_VERY_SLOW);
 					if(!g_pGfxEngine->Palette.in_progress())
-						state = VORT_DEAD;
+						dead = true;
 				}
 
 				animtimer = 0;
@@ -263,7 +251,7 @@ void CVorticon::process()
 			if (animtimer > VORT2_DIE_ANIM_TIME)
 			{
 				sprite = DeadFrame;
-				state = VORT_DEAD;
+				dead = true;
 			}
 			else
 			{
@@ -298,7 +286,7 @@ void CVorticon::getTouchedBy(CObject &theObject)
 	if(theObject.m_type == OBJ_PLAYER)
 	{
 		if(	state != VORT_DYING and
-			state != VORT_DEAD and
+			!dead and
 			state != VORT2_DYING )
 		theObject.kill();
 	}

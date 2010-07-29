@@ -20,7 +20,7 @@
 
 const int WALK_SPEED = 31;
 const int CHARGE_SPEED = 62;
-const int VORTELITE_WALK_ANIM_TIME = 6;
+const unsigned int VORTELITE_WALK_ANIM_TIME = 6;
 
 // number of shots to kill
 #define VORTELITE_HP                 3
@@ -66,12 +66,6 @@ void CVorticonElite::process()
 {
 	int bonk;
 	int x, y;
-
-	if (state==VORTELITE_DEAD)
-	{
-		hasbeenonscreen = 0;
-		return;
-	}
 
 	if (canbezapped)
 	{
@@ -301,7 +295,7 @@ void CVorticonElite::process()
 		if (animtimer > VORTELITE_DIE_ANIM_TIME)
 		{
 			sprite = VORTELITE_DEAD_FRAME;
-			state = VORTELITE_DEAD;
+			dead = true;
 		}
 		else
 		{

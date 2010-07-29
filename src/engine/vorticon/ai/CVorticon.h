@@ -76,7 +76,6 @@ protected:
 	VORT_JUMP,
 	VORT_LOOK,
 	VORT_DYING,
-	VORT_DEAD,
 	VORT2_DYING
 	}state;
 

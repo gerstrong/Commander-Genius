@@ -34,7 +34,6 @@ public:
 
 	void (CMenuGalaxy::*processPtr)();
 	CBitmap m_TitleBmp;
-	CDialog *mp_Dialog;
 
 	struct {
 		int x;

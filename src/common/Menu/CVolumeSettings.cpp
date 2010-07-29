@@ -49,4 +49,6 @@ void CVolumeSettings::processSpecific()
 }
 
 CVolumeSettings::~CVolumeSettings()
-{}
+{
+	//CBaseMenu::~CBaseMenu();
+}
