@@ -125,7 +125,7 @@ void CHUD::render()
 	CSprite &KeenHeadSprite = g_pGfxEngine->getSprite(PMAPDOWNFRAME);
 	SDL_BlitSurface( KeenHeadSprite.getSDLSurface(), &headsrcrect, blitsurface, &headdstrect);
 
-	int sprite;
+	int sprite=0;
 	size_t Episode = g_pBehaviorEngine->getEpisode();
 	if(Episode == 1) sprite = OBJ_RAY_DEFSPRITE_EP1;
 	else if(Episode == 2) sprite = OBJ_RAY_DEFSPRITE_EP2;

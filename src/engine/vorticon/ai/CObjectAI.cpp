@@ -38,32 +38,35 @@ void CObjectAI::process()
 		{
 			object.processFalling();
 
-		    // hit detection with players
-			object.touchPlayer = false;
-			std::vector<CPlayer>::iterator it_player = m_Player.begin();
-			for( ; it_player != m_Player.end() ; it_player++ )
-		    {
-				if (!it_player->pdie)
+			if(!object.dead) // Only do that if not dead
+			{
+				// hit detection with players
+				object.touchPlayer = false;
+				std::vector<CPlayer>::iterator it_player = m_Player.begin();
+				for( ; it_player != m_Player.end() ; it_player++ )
 				{
-					if ( object.hitdetect(*it_player) )
+					if (!it_player->pdie)
 					{
-						object.getTouchedBy(*it_player);
+						if ( object.hitdetect(*it_player) )
+						{
+							object.getTouchedBy(*it_player);
 
-						object.touchPlayer = true;
-						object.touchedBy = it_player->m_index;
-						break;
+							object.touchPlayer = true;
+							object.touchedBy = it_player->m_index;
+							break;
+						}
 					}
+
 				}
 
-		    }
+				object.process();
 
-			object.process();
-
-			std::vector<CObject*>::iterator theOther = m_Objvect.begin();
-			for( ; theOther != m_Objvect.end() ; theOther++ )
-			{
-				if( *theOther != &object )
-					object.getTouchedBy(**theOther);
+				std::vector<CObject*>::iterator theOther = m_Objvect.begin();
+				for( ; theOther != m_Objvect.end() ; theOther++ )
+				{
+					if( *theOther != &object )
+						object.getTouchedBy(**theOther);
+				}
 			}
 		}
 	}
