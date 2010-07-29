@@ -60,7 +60,7 @@ void CVorticon::process()
 	bool kill=false;
 	short Episode = g_pBehaviorEngine->getEpisode();
 
-	if ( HealthPoints <= 0 ) kill = true;
+	if ( HealthPoints <= 0 && state != VORT_DYING && state != VORT2_DYING ) kill = true;
 	else if (Episode==2 && mp_Map->at((getXLeftPos())>>CSF, (getYUpPos())>>CSF)==TILE_GLOWCELL)
 		kill = true;
 
