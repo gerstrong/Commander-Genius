@@ -819,11 +819,13 @@ bool CPlayer::checkObjSolid()
 			if(getXRightPos() >= (*it_obj)->getXLeftPos()  &&
 					getXLeftPos() <= (*it_obj)->getXRightPos() )
 			{
-				if(getYUpPos() >= (*it_obj)->getYUpPos()-(1<<STC)  &&
-					getYUpPos() <= (*it_obj)->getYMidPos() )
+				if(getYUpPos() <= (*it_obj)->getYDownPos()+(1<<STC)  &&
+					getYUpPos() >= (*it_obj)->getYMidPos() )
 				{	// In this case the object pushs the player down!
 					pjumping = PNOJUMP;
 					int dy = (*it_obj)->getYDownPos() - getYUpPos();
+					//supportedbyobject = true;
+					blockedu = true;
 					moveDown(dy);
 				}
 				else if(getYDownPos() >= (*it_obj)->getYUpPos()-(3<<STC)  &&
