@@ -822,7 +822,7 @@ const int bumpamount = 40;
 // if solid = true, object acts like a solid "wall".
 void CPlayer::bump( CObject &theObject, direction_t direction )
 {
-	if(	pjumping == PPREPAREJUMP || pjumping == PPREPAREPOGO || dead || level_done )
+	if(	pjumping == PPREPAREJUMP || pjumping == PPREPAREPOGO || dead || level_done!=LEVEL_NOT_DONE )
 		return;
 
 	g_pSound->playStereofromCoord(SOUND_YORP_BUMP, PLAY_NORESTART, scrx);
@@ -835,7 +835,7 @@ void CPlayer::bump( CObject &theObject, direction_t direction )
 // Scrub, etc "push".
 void CPlayer::push( CObject &theObject )
 {
-	if(	dead || level_done )
+	if(	dead || level_done!=LEVEL_NOT_DONE )
 		return;
 
 	int obj_lx = theObject.getXLeftPos();
