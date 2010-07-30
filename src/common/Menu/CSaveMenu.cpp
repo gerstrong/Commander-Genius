@@ -43,19 +43,24 @@ void CSaveMenu::processSpecific()
 {
 	if(!mp_OverwriteMenu)
 	{
-		std::string text;
 		if( m_selection != NO_SELECTION )
 		{
 			if( mp_Dialog->getInputMode(INPUT_MODE_UP_DOWN) )
 			{
-				mp_Dialog->m_name = m_SavedGame.getSlotList().at(m_selection);
-				if(mp_Dialog->m_name != EMPTY_STRING)
+				if( m_SavedGame.getSlotList().size() > m_selection )
+					mp_Dialog->m_name = m_SavedGame.getSlotList().at(m_selection);
+
+				if( m_SavedGame.getSlotList().size() > m_selection && mp_Dialog->m_name != EMPTY_STRING )
 				{
 					mp_OverwriteMenu = new CConfirmMenu("Overwrite?", m_overwrite, m_dlg_theme);
 					m_suspended = true;
 				}
 				else
+				{
 					mp_Dialog->m_name = "";
+					mp_Dialog->m_length = 15;
+					mp_Dialog->setInputMode(INPUT_MODE_TEXT);
+				}
 
 			}
 			else if ( mp_Dialog->getInputMode(INPUT_MODE_TEXT) && g_pInput->getPressedKey(KENTER) )
