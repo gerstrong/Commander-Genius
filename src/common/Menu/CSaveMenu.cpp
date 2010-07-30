@@ -20,6 +20,7 @@ m_overwrite(false)
 {
 	std::string text;
 	mp_Dialog = new CDialog(22, 22, INPUT_MODE_UP_DOWN, m_dlg_theme);
+	m_selection = NO_SELECTION;
 
 	// Load the state-file list
 	std::vector<std::string> StateFileList = m_SavedGame.getSlotList();
