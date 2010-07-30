@@ -52,7 +52,9 @@ void CPlayGameGalaxy::loadLevel()
 	//m_Map.drawAll();
 }
 
-// The main ingame process cycle when keen galaxy is up and running
+/**
+ *  The main ingame process cycle when keen galaxy is up and running
+ */
 void CPlayGameGalaxy::process()
 {
 	if(mp_Menu) // In case the menu is open

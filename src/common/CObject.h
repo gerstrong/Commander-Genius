@@ -13,6 +13,7 @@
 
 #include "CBehaviorEngine.h"
 #include "objenums.h"
+#include "CVec.h"
 
 #define SAFE_DELETE_ARRAY(x) if(x) { delete [] x; x = NULL; }
 #define SAFE_DELETE(x) if(x) { delete x; x = NULL; }
@@ -93,6 +94,8 @@ public:
 	
 	// Moving parts
 	void moveToForce(int new_x, int new_y);
+	void moveDir(const VectorD2<int> &dir);
+	void moveTo(const VectorD2<Uint32> &new_loc);
 	void moveTo(int x, int y);
 	void moveXDir(int amount, bool force = false);
 	void moveYDir(int amount);

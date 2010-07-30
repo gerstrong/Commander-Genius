@@ -234,6 +234,18 @@ void CObject::moveToForce(int new_x, int new_y)
 	solid = laststate;
 }
 
+// For the vector functions
+void CObject::moveDir(const VectorD2<int> &dir)
+{
+	moveXDir(dir.x);
+	moveYDir(dir.y);
+}
+
+void CObject::moveTo(const VectorD2<Uint32> &new_loc)
+{
+	moveTo(new_loc.x, new_loc.y);
+}
+
 void CObject::moveTo(int new_x, int new_y)
 {
 	int amount_x = new_x-x;

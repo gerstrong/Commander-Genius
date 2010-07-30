@@ -14,7 +14,8 @@ namespace galaxy {
 
 class CPlayerWM : public CObject {
 public:
-	CPlayerWM(CMap *pmap, Uint32 x, Uint32 y);
+	CPlayerWM(CMap *pmap, Uint32 x, Uint32 y,
+			std::vector<CObject*>& ObjectPtrs);
 	void process();
 	void processWalking();
 
@@ -32,6 +33,7 @@ private:
 	Uint8 m_animation;
 	Uint8 m_animation_time;
 	Uint8 m_animation_ticker;
+	std::vector<CObject*>& m_ObjectPtrs;
 };
 
 }

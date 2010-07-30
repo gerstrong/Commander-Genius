@@ -6,21 +6,25 @@
  */
 
 #include "CPlayerWM.h"
-#include "../../../common/CBehaviorEngine.h"
-#include "../../../sdl/CInput.h"
+#include "engine/galaxy/ai/CFlag.h"
+#include "common/CBehaviorEngine.h"
+#include "sdl/CInput.h"
+#include "CVec.h"
 
 const Uint16 WALKBASEFRAME = 130;
 const Uint16 SWIMBASEFRAME = 156;
 
 namespace galaxy {
 
-CPlayerWM::CPlayerWM(CMap *pmap, Uint32 x, Uint32 y):
+CPlayerWM::CPlayerWM(CMap *pmap, Uint32 x, Uint32 y,
+					std::vector<CObject*>& ObjectPtrs):
 CObject(pmap, x, y, OBJ_PLAYER),
 m_basesprite(130),
 m_looking_dir(LEFT),
 m_animation(0),
 m_animation_time(1),
-m_animation_ticker(0)
+m_animation_ticker(0),
+m_ObjectPtrs(ObjectPtrs)
 {
 	// TODO Auto-generated constructor stub
 	sprite = m_basesprite;
@@ -95,7 +99,7 @@ void CPlayerWM::processWalking()
 		solid = !solid;
 
 	// perform actions depending if the action button was pressed
-	if(g_pInput->getHoldedCommand(IC_JUMP))
+	if(g_pInput->getPressedCommand(IC_JUMP))
 	{
 		Uint16 object = mp_Map->getPlaneDataAt(2, getXMidPos(), getYMidPos());
 		if(object)
@@ -125,10 +129,26 @@ void CPlayerWM::finishlevel(Uint16 object)
 	Uint16 door = (object - 0xC000) + 0xD000;
 	while(mp_Map->findTile(door, &x, &y, 2))
 	{
+		// Open blocks in case there are
 		mp_Map->setTile( x, y, 0, true, 1);
 		mp_Map->setTile( x, y, 0, true, 2);
 		mp_Map->redrawAt( x, y);
 	}
+
+	Uint16 flag_dest = (object - 0xC000) + 0xF000;
+	if(mp_Map->findTile(flag_dest, &x, &y, 2))
+	{
+		// generate the flag
+		VectorD2<Uint32> src(this->x, this->y);
+		VectorD2<Uint32> dst((x<<CSF), (y<<CSF));
+
+		CFlag *pFlag = new CFlag(mp_Map, src, dst);
+		m_ObjectPtrs.push_back(pFlag);
+
+		// Mark the tileinfo on the map as marked!!
+		mp_Map->setTile( x, y, 0, true, 2);
+	}
+
 
 	// TODO: spawn the flag that will be spawn
 }

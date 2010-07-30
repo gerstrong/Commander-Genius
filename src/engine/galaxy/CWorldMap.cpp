@@ -42,10 +42,10 @@ void CWorldMap::process()
 	// Animate the tiles of the map
 	m_Map.animateAllTiles();
 
-	for( std::vector<CObject*>::iterator obj=m_ObjectPtr.begin() ;
-			obj!=m_ObjectPtr.end() ; obj++ )
+	for(size_t i=0 ; i<m_ObjectPtr.size() ; i++)
 	{
-		(*obj)->process();
+		CObject* p_Object = m_ObjectPtr[i];
+		p_Object->process();
 	}
 
 	g_pVideoDriver->blitScrollSurface();
