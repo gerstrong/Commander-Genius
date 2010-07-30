@@ -13,7 +13,7 @@
 
 // Ninja AI (the black, bear-like karate-kicking creature in ep3)
 enum ninja_actions{
-	NINJA_STAND, NINJA_KICK, NINJA_DYING, NINJA_DEAD
+	NINJA_STAND, NINJA_KICK, NINJA_DYING
 };
 
 class CVortiNinja : public CObject

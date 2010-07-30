@@ -51,7 +51,7 @@ public:
 private:
 	enum garg_states{
 		GARG_LOOK, GARG_MOVE, GARG_CHARGE,
-		GARG_JUMP, GARG_DYING, GARG_DEAD
+		GARG_JUMP, GARG_DYING
 	}state;
 
 	int jumptime;

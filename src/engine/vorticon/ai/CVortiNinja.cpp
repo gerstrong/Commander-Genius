@@ -47,8 +47,6 @@ void CVortiNinja::process()
 {
 	int onsamelevel;
 
-	if (state==NINJA_DEAD) return;
-
 	if (touchPlayer && !m_Player[touchedBy].pdie && \
 			state != NINJA_DYING)
 		m_Player[touchedBy].kill();
@@ -226,7 +224,7 @@ void CVortiNinja::process()
 		if (dietimer > NINJA_DYING_SHOW_TIME)
 		{
 			sprite = NINJA_DEAD_FRAME;
-			state = NINJA_DEAD;
+			dead = true;
 		}
 		break;
 	default: break;

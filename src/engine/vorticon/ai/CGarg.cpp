@@ -25,8 +25,6 @@ m_hardmode(p_map->m_Difficulty>1)
 
 void CGarg::process()
 {
-	if (state==GARG_DEAD) return;
-
 	// kill player on touch
 	if (state!=GARG_DYING && touchPlayer)
 		m_Player[touchedBy].kill();
@@ -85,7 +83,7 @@ void CGarg::process()
 		if ( blockedd )
 		{
 			sprite = GARG_DEAD_FRAME;
-			state = GARG_DEAD;
+			dead = true;
 		}
 		break;
 	case GARG_LOOK:

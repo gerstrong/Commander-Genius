@@ -94,25 +94,24 @@ void CVorticon::process()
 		else if (!blockedl)
 			moveLeft(VORT_WALK_SPEED);
 
-		if (inertiay>0 && blockedd)
+		if (blockedd)
 		{  // The Vorticon Has Landed!
-			inhibitfall = 0;
 			state = VORT_LOOK;
 			goto vort_reprocess;
 		}
 
 		// check if the vorticon has bonked into a ceiling, if so,
 		// immediately terminate the jump
-		if (blockedu && inertiay < 0)
-			inertiay = 0;
+		if (blockedu && yinertia < 0)
+			yinertia = 0;
 
 		// apply Y inertia
-		moveYDir(inertiay);
+		moveYDir(yinertia);
 
 		if (timer > VORT_JUMP_FRICTION)
 		{ // slowly decrease upgoing rate
-			if (inertiay<VORT_MAX_FALL_SPEED)
-				inertiay+=1<<5;
+			if (yinertia<VORT_MAX_FALL_SPEED)
+				yinertia+=1<<5;
 
 			timer = 0;
 		}
@@ -184,11 +183,11 @@ void CVorticon::process()
 					initiateJump();
 					if (rnd()&1)
 					{
-						inertiay = -VORT_MAX_JUMP_HEIGHT;
+						yinertia = -VORT_MAX_JUMP_HEIGHT;
 					}
 					else
 					{
-						inertiay = -VORT_MIN_JUMP_HEIGHT;
+						yinertia = -VORT_MIN_JUMP_HEIGHT;
 					}
 					goto vort_reprocess;
 				}
@@ -214,11 +213,11 @@ void CVorticon::process()
 					initiateJump();
 					if (rnd()&1)
 					{
-						inertiay = -VORT_MAX_JUMP_HEIGHT;
+						yinertia = -VORT_MAX_JUMP_HEIGHT;
 					}
 					else
 					{
-						inertiay = -VORT_MIN_JUMP_HEIGHT;
+						yinertia = -VORT_MIN_JUMP_HEIGHT;
 					}
 					goto vort_reprocess;
 				}
@@ -273,15 +272,13 @@ void CVorticon::initiateJump()
 
 	frame = 0;
 	animtimer = 0;
-	inertiay =
-			-((rnd()%(VORT_MAX_JUMP_HEIGHT-VORT_MIN_JUMP_HEIGHT))+VORT_MIN_JUMP_HEIGHT);
+	yinertia = -((rnd()%(VORT_MAX_JUMP_HEIGHT-VORT_MIN_JUMP_HEIGHT))+VORT_MIN_JUMP_HEIGHT);
 
 	if (movedir==RIGHT)
 		sprite = JumpRightFrame;
 	else
 		sprite = JumpLeftFrame;
 
-	inhibitfall = true;
 	state = VORT_JUMP;
 }
 

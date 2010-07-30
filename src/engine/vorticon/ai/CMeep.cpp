@@ -5,7 +5,7 @@
 
 enum meep_actions{
 	MEEP_WALK, MEEP_SING,
-	MEEP_DYING, MEEP_DEAD
+	MEEP_DYING
 };
 
 #define MEEP_WALK_ANIM_RATE     3
@@ -47,8 +47,6 @@ m_Object(Object)
 void CMeep::process()
 {
 	int not_about_to_fall;
-
-	if (state==MEEP_DEAD) return;
 
 	if (touchPlayer && !m_Player[touchedBy].pdie)
 	{
@@ -157,7 +155,7 @@ void CMeep::process()
 		if (timer > MEEP_DYING_SHOW_TIME)
 		{
 			sprite = MEEP_DEAD_FRAME;
-			state = MEEP_DEAD;
+			dead = true;
 			timer = 0;
 		}
 		else timer++;

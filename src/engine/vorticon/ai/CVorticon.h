@@ -12,8 +12,8 @@
 #define VORT_JUMP_PROB          30
 #define VORT_JUMP_PROB_HARD     60
 
-#define VORT_MIN_JUMP_HEIGHT    90
-#define VORT_MAX_JUMP_HEIGHT    150
+#define VORT_MIN_JUMP_HEIGHT    60
+#define VORT_MAX_JUMP_HEIGHT    100
 #define VORT_MAX_FALL_SPEED     320
 #define VORT_JUMP_FRICTION      5
 
@@ -83,7 +83,6 @@ protected:
 	unsigned int animtimer;
 	unsigned char frame;
 	unsigned int dist_traveled;
-	signed int inertiay;
 
 	unsigned char movedir;
 	// these hold the animation frames indexes since they're
