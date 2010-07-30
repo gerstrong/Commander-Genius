@@ -26,8 +26,6 @@ void CPlayer::processInLevel()
 {
     StatusBox();
 
-    if(HealthPoints <= 0) kill();
-	
     if (pdie) dieanim();
 	else
 	{
@@ -142,9 +140,13 @@ void CPlayer::kill(bool force)
 {
 	if(!force) // force can happens for example, when player leaves the map to the most lower-side
 	{
-		if (godmode) return;
-		if (ankhtime) return;
-		if (pfrozentime) return;
+		if (godmode || ankhtime) return;
+		if (pfrozentime)
+		{
+			if( pfrozentime > PFROZEN_THAW )
+				pfrozentime = PFROZEN_THAW;
+			return;
+		}
 	}
 	if (!pdie)
 	{
@@ -914,5 +916,7 @@ int CPlayer::pollLevelTrigger()
 void CPlayer::getShotByRay()
 {
 	if(!godmode)
-		CObject::getShotByRay();
+	{
+		kill();
+	}
 }

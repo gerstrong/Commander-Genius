@@ -116,13 +116,18 @@ void CTeleporter::process()
 			else if(x > m_Player[player].getXPosition())
 				m_Player[player].moveRight(TELEPORTATION_SPEED);
 
+			int diff_x = x - m_Player[player].getXPosition();
+			if(abs(diff_x) < TELEPORTATION_SPEED)
+				m_Player[player].moveXDir(diff_x);
+
 			if(y < m_Player[player].getYPosition())
 				m_Player[player].moveUp(TELEPORTATION_SPEED);
 			else if(y > m_Player[player].getYPosition())
 				m_Player[player].moveDown(TELEPORTATION_SPEED);
 
-			int diff_x = x - m_Player[player].getXPosition();
 			int diff_y = y - m_Player[player].getYPosition();
+			if(abs(diff_y) < TELEPORTATION_SPEED)
+				m_Player[player].moveYDir(diff_y);
 
 			diff_x = (diff_x<0) ? -diff_x : diff_x;
 			diff_y = (diff_y<0) ? -diff_y : diff_y;
