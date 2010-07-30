@@ -47,6 +47,7 @@ void CSaveMenu::processSpecific()
 		{
 			if( mp_Dialog->getInputMode(INPUT_MODE_UP_DOWN) )
 			{
+				mp_Dialog->m_name = m_SavedGame.getSlotList().at(m_selection);
 				if(mp_Dialog->m_name != EMPTY_STRING)
 				{
 					mp_OverwriteMenu = new CConfirmMenu("Overwrite?", m_overwrite, m_dlg_theme);
@@ -55,8 +56,6 @@ void CSaveMenu::processSpecific()
 				else
 					mp_Dialog->m_name = "";
 
-				mp_Dialog->setInputMode(INPUT_MODE_TEXT);
-				mp_Dialog->m_length = 15;
 			}
 			else if ( mp_Dialog->getInputMode(INPUT_MODE_TEXT) && g_pInput->getPressedKey(KENTER) )
 			{
@@ -80,6 +79,18 @@ void CSaveMenu::processSpecific()
 		{
 			SAFE_DELETE(mp_OverwriteMenu);
 			m_suspended = false;
+			mp_Dialog->m_length = 15;
+
+			if(m_overwrite)
+			{
+				mp_Dialog->setInputMode(INPUT_MODE_TEXT);
+			}
+			else
+			{
+				mp_Dialog->setInputMode(INPUT_MODE_UP_DOWN);
+				m_selection = NO_SELECTION;
+			}
+
 		}
 	}
 }

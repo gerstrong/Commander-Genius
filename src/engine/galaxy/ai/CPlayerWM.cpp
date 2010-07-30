@@ -138,7 +138,7 @@ void CPlayerWM::finishlevel(Uint16 object)
 	Uint16 flag_dest = (object - 0xC000) + 0xF000;
 	if(mp_Map->findTile(flag_dest, &x, &y, 2))
 	{
-		// generate the flag
+		// spawn the flag
 		VectorD2<Uint32> src(this->x, this->y);
 		VectorD2<Uint32> dst((x<<CSF), (y<<CSF));
 
@@ -148,9 +148,6 @@ void CPlayerWM::finishlevel(Uint16 object)
 		// Mark the tileinfo on the map as marked!!
 		mp_Map->setTile( x, y, 0, true, 2);
 	}
-
-
-	// TODO: spawn the flag that will be spawn
 }
 
 /**
