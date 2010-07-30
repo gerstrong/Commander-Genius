@@ -34,7 +34,6 @@ m_Player(mp_vec_Player)
 	my = y >> CSF;
 
 	// first time initialization
-	canbezapped = false;
 	inhibitfall = true;
 
 	//sprite = BlankSprite;

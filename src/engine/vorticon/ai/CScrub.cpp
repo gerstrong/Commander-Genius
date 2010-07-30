@@ -104,7 +104,6 @@ void CScrub::process()
 			state = SCRUB_DYING;
 			dying = true;
 			dietimer = 0;
-			canbezapped = 0;
 		}
 		// die if shot
 		if (HealthPoints <= 0 && state!=SCRUB_DYING )
@@ -112,7 +111,6 @@ void CScrub::process()
 			solid=true;
 			state = SCRUB_DYING;
 			dietimer = 0;
-			canbezapped = 0;
 			moveUp(10);
 			scrubdie_inertia_y = SCRUBDIE_START_INERTIA;
 			g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, scrx);

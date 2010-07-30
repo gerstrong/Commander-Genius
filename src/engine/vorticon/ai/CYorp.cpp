@@ -49,7 +49,6 @@ void CYorp::process()
 		state = YORP_DYING;
 		dying = true;
 		dietimer = 0;
-		canbezapped = false;
 		sprite = YORP_DYING_FRAME;
 		yorpdie_inertia_y = YORPDIE_START_INERTIA;
 		moveUp(10);

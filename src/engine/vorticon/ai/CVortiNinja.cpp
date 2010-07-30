@@ -59,7 +59,6 @@ void CVortiNinja::process()
 		dietimer = 0;
 		YFrictionRate = 1;
 		if (YInertia < 0) YInertia = 0;
-		canbezapped = 0;
 		g_pSound->playStereofromCoord(SOUND_VORT_DIE, PLAY_NOW, scrx);
 	}
 

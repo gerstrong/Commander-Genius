@@ -37,7 +37,6 @@ void CGarg::process()
 		// die, you stupid garg, die!
 		state = GARG_DYING;
 		dying = true;
-		canbezapped = false;
 		sprite = GARG_DYING_FRAME;
 		yinertia = GARGDIE_START_INERTIA;
 		moveUp(10);

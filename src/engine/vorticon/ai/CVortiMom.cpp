@@ -127,7 +127,6 @@ void CVortiMom::process()
 			{
 				//sprite = MOTHER_HURT_FRAME;
 				state = MOTHER_DEAD;
-				canbezapped = 0;
 				timer = 0;
 				if (onscreen) g_pSound->playStereofromCoord(SOUND_VORT_DIE, PLAY_NOW, scrx);
 			}

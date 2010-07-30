@@ -58,7 +58,7 @@ m_Object(mp_vec_Obj)
 	timer = 0;
 	timesincefire = 0;
 	dist_traveled = VORTELITE_TRAPPED_DIST+1;
-	canbezapped = 1;
+	canbezapped = true;
 	m_speed = 0;
 }
 
@@ -67,25 +67,21 @@ void CVorticonElite::process()
 	int bonk;
 	int x, y;
 
-	if (canbezapped)
+	x = getXPosition();
+	y = getYPosition();
+	// if we touch a glowcell, we die!
+	if ( mp_Map->at( x>>CSF, y>>CSF) == TILE_GLOWCELL )
+		HealthPoints--;
+
+	if (HealthPoints <= 0)
 	{
-		x = getXPosition();
-		y = getYPosition();
-		// if we touch a glowcell, we die!
-		if ( mp_Map->at( x>>CSF, y>>CSF) == TILE_GLOWCELL )
-			HealthPoints--;
+		inhibitfall = 0;
+		animtimer = 0;
+		frame = 0;
+		state = VORTELITE_DYING;
+		dying = true;
 
-		if (HealthPoints <= 0)
-		{
-			inhibitfall = 0;
-			canbezapped = 0;
-			animtimer = 0;
-			frame = 0;
-			state = VORTELITE_DYING;
-			dying = true;
-
-			if (onscreen) g_pSound->playStereofromCoord(SOUND_VORT_DIE, PLAY_NOW, scrx);
-		}
+		if (onscreen) g_pSound->playStereofromCoord(SOUND_VORT_DIE, PLAY_NOW, scrx);
 	}
 
 	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();

@@ -90,7 +90,6 @@ void CVortikid::process()
 		dying = true;
 		jumpdecrate = 4;
 		sprite = BABY_FRY_FRAME - ep3;
-		canbezapped = 0;
 		if (onscreen && !g_pSound->isPlaying(SOUND_VORT_DIE))
 			g_pSound->playStereofromCoord(SOUND_VORT_DIE, PLAY_NOW, scrx);
 

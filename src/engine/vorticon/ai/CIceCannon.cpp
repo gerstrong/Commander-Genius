@@ -23,7 +23,6 @@ m_Object(Object)
 	this->vector_y = vector_y;
 
 	inhibitfall = true;
-	canbezapped = false;
     sprite = BLANKSPRITE;
 }
 
@@ -52,7 +51,6 @@ m_Object(Object)
 {
 	int speed;
 
-	canbezapped = false;
 	inhibitfall = true;
 
 	if (vector_x && vector_y)
@@ -166,7 +164,6 @@ vector_y(vec_y)
 	veloc_y = ICEBIT_SPEED * vector_y;
 	timer = ICESHARD_TIME;
 	inhibitfall = true;
-	canbezapped = false;
 	solid = false;
 }
 

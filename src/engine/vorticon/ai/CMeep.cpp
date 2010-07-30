@@ -64,7 +64,6 @@ void CMeep::process()
 
 	if (HealthPoints <= 0 && state != MEEP_DYING )
 	{
-		canbezapped = 0;
 		timer = 0;
 		state = MEEP_DYING;
 		dying = true;
