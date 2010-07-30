@@ -385,7 +385,7 @@ bool CVideoDriver::applyMode()
 	{
 		SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 		// TODO: unknown in SDL 1.3. important?
-//		SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 1);
+		SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 1);
 		Mode |= SDL_OPENGL;
 	}
 #endif
