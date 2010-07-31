@@ -104,6 +104,7 @@ void CVortikid::process()
 				sprite==(unsigned int)(BABY_DEAD_FRAME-ep3))
 			{
 				dead = true;
+				xinertia = 0;
 			}
 			xdectimer = 0;
 		}

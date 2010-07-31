@@ -145,9 +145,12 @@ void CPlayer::kill(bool force)
 		{
 			if( pfrozentime > PFROZEN_THAW )
 				pfrozentime = PFROZEN_THAW;
-			return;
+
+			if(g_pBehaviorEngine->getEpisode() == 1)
+				return;
 		}
 	}
+
 	if (!pdie)
 	{
 		godmode = false;
@@ -915,8 +918,5 @@ int CPlayer::pollLevelTrigger()
 
 void CPlayer::getShotByRay()
 {
-	if(!godmode)
-	{
-		kill();
-	}
+	kill();
 }

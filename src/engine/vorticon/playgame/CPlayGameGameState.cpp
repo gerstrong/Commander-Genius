@@ -28,8 +28,13 @@ bool CPlayGameVorticon::loadGameState()
 		cleanup();
 
 		// get the episode, level and difficulty
+		char newLevel;
 		m_SavedGame.decodeData(m_Episode);
-		m_SavedGame.decodeData(m_Level);
+		m_SavedGame.decodeData(newLevel);
+
+		bool loadmusic = (m_Level != newLevel);
+		m_Level = newLevel;
+
 		m_SavedGame.decodeData(m_Difficulty);
 
 		bool dark, checkpointset;
@@ -57,7 +62,7 @@ bool CPlayGameVorticon::loadGameState()
 		Maploader.mp_objvect = &m_Object;
 		m_checkpointset = checkpointset;
 		Maploader.m_checkpointset = m_checkpointset;
-		if(!Maploader.load(m_Episode, m_Level, m_Gamepath, true, false))
+		if(!Maploader.load(m_Episode, m_Level, m_Gamepath, loadmusic, false))
 			return false;
 
 		m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
