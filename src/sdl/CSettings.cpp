@@ -51,7 +51,7 @@ bool CSettings::saveDrvCfg()
 	Configuration.WriteInt("Video", "scale", g_pVideoDriver->getZoomValue());
 	Configuration.WriteInt("Video", "OGLfilter", g_pVideoDriver->getOGLFilter());
 	Configuration.WriteInt("Video", "filter", g_pVideoDriver->getFiltermode());
-	Configuration.WriteInt("Video", "specialfx", g_pVideoDriver->getSpecialFXConfig());
+	Configuration.SetKeyword("Video", "specialfx", g_pVideoDriver->getSpecialFXConfig());
 	Configuration.WriteInt("Video", "autoframeskip", g_pTimer->getFrameRate());
 	
 	st_camera_bounds &CameraBounds = g_pVideoDriver->getCameraBounds();
