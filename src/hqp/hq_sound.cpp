@@ -75,7 +75,6 @@ short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::stri
 		}
 	}
 
-	psound->sound_pos = 0;
 	g_pLogFile->textOut(PURPLE,"File \"%s\" opened successfully!<br>", buf.c_str());
 
 	int ret;

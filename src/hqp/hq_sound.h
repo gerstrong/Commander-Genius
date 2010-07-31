@@ -15,8 +15,10 @@ struct stHQSound
 {
 	Uint8 *sound_buffer;
 	Uint32 sound_len;
-	int sound_pos;
 	bool enabled;
+
+	stHQSound() : sound_buffer(NULL), sound_len(0),
+				  enabled(false) {}
 };
 
 void adaptTo48Khz(Uint8* output_buffer, Uint8 *input_buffer, unsigned long len, Uint16 format);

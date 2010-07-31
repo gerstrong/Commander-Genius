@@ -61,6 +61,9 @@ short openOGGSound(FILE *fp, SDL_AudioSpec *pspec, Uint16 format, stHQSound *pso
 
         ov_clear(&oggStream);
 
+    	Uint8 *sound_buffer;
+    	Uint32 sound_len;
+
         psound->sound_len = buffer.size();
 
         psound->sound_buffer = (Uint8*) malloc( psound->sound_len );

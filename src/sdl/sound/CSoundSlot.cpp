@@ -17,8 +17,6 @@
 CSoundSlot::CSoundSlot() {
 	m_priority = 0;
 	m_sounddata = NULL;
-	m_hqsound.enabled = false;
-	m_hqsound.sound_buffer = NULL;
 	m_soundlength = 0;
 }
 

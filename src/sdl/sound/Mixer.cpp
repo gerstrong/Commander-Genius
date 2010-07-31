@@ -19,9 +19,9 @@ void mixAudioSinged16(Uint8 *dst, const Uint8 *src, Uint32 len, Uint8 volume)
 	len /= 2;
 	Sint16 *s_dst = (Sint16*)dst;
 	Sint16 *s_src = (Sint16*)src;
-	Sint32 chnl_src;
-	Sint32 chnl_dst;
-	Sint32 outputValue;
+	Sint32 chnl_src=0;
+	Sint32 chnl_dst=0;
+	Sint32 outputValue=0;
 
     for ( Uint32 i=0 ; i<len ; i++ ) {
     	chnl_src = *s_src;
@@ -48,9 +48,9 @@ void mixAudioSinged16(Uint8 *dst, const Uint8 *src, Uint32 len, Uint8 volume)
  */
 void mixAudioUnsinged8(Uint8 *dst, const Uint8 *src, Uint32 len, Uint8 volume)
 {
-    Sint32 chnl_src;
-    Sint32 chnl_dst;
-    Sint32 outputValue;           // just add the channels
+    Sint32 chnl_src=0;
+    Sint32 chnl_dst=0;
+    Sint32 outputValue=0;           // just add the channels
     for (Uint32 i=0;i<len;i++) {
         chnl_src = *src;
         chnl_dst = *dst;

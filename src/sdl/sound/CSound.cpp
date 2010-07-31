@@ -203,7 +203,7 @@ void CSound::callback(void *unused, Uint8 *stream, int len)
     }
     for( i=0 ; i < m_mixing_channels ; i++ )
    	{
-   		m_soundchannel[i].readWaveform(m_MixedForm, len, AudioSpec.channels, AudioSpec.freq);
+    	m_soundchannel[i].readWaveform(m_MixedForm, len, AudioSpec.channels, AudioSpec.freq);
    		mixAudio(stream, m_MixedForm, len, m_SoundVolume, AudioSpec.format);
     }
 }

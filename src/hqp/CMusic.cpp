@@ -37,7 +37,6 @@ bool CMusic::load(const SDL_AudioSpec AudioSpec, const std::string &musicfile)
 		
 		pOggAudio.sound_buffer=NULL;
 		pOggAudio.sound_len=0;
-		pOggAudio.sound_pos=0;
 		
 		FILE *fp;
 		fp = OpenGameFile(musicfile.c_str(),"rb");
@@ -68,7 +67,6 @@ bool CMusic::load(const SDL_AudioSpec AudioSpec, const std::string &musicfile)
 			g_pLogFile->textOut(PURPLE,"Music Driver(): Couldn't convert the audio for an appropriate format!<br>");
 			free(pOggAudio.sound_buffer);
 			pOggAudio.sound_len = 0;
-			pOggAudio.sound_pos = 0;
 			return false;
 		}
 		
