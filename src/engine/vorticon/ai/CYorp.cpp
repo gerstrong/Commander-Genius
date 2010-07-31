@@ -245,6 +245,7 @@ void CYorp::getTouchedBy(CObject &theObject)
 						looktimes = 0;
 						timer = 0;
 						lookposition = 0;
+						tb_player.ppogostick = false;
 					}
 
 					// make the yorp look a little less "soft" by
