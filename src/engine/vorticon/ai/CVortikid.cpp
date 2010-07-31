@@ -35,9 +35,8 @@ m_Player(mp_vec_Player)
 	dir = rand()&1?LEFT:RIGHT;
 	walkframe = 0;
 	walktimer = 0;
-	inertia_x = 0;
+	xinertia = 0;
 	inertia_y = 0;
-	jumpdecrate = 1;
 	canbezapped = 1;
 	blockedl = blockedr = blockedu = blockedd = 1;
 
@@ -50,37 +49,15 @@ void CVortikid::process()
 {
 	bool ep3;
 
-	if (state==BABY_DEAD)
-	{
-		inhibitfall = 0;
-		return;
-	}
-
 	// babies are in ep2 & ep3, but frameset starts one index prior in ep3
 	if (g_pBehaviorEngine->getEpisode()==3) ep3 = true; else ep3 = false;
 
 	// jumping
-	if (inertia_y < 0 || !blockedd)
+	if(blockedd && state == BABY_RUN)
 	{
-		if (blockedu && inertia_y < 0)
-		{
-			inertia_y = 0;
-		}
-
-		moveYDir(inertia_y);
-		inertia_y+=jumpdecrate;
-
+		if(getProbability(BABY_JUMP_PROB))
+			baby_jump(BABY_JUMP_SMALL);
 	}
-	else
-	{
-		inertia_y = 0;
-		if (state == BABY_RUN)
-		{
-			if(getProbability(BABY_JUMP_PROB))
-				baby_jump(BABY_JUMP_SMALL);
-		}
-	}
-
 
 	// got hit?
 	if (HealthPoints <= 0 && state != BABY_DYING)
@@ -88,15 +65,14 @@ void CVortikid::process()
 		dietimer = 0;
 		state = BABY_DYING;
 		dying = true;
-		jumpdecrate = 4;
 		sprite = BABY_FRY_FRAME - ep3;
 		if (onscreen && !g_pSound->isPlaying(SOUND_VORT_DIE))
 			g_pSound->playStereofromCoord(SOUND_VORT_DIE, PLAY_NOW, scrx);
 
 		if (dir == RIGHT)
-			inertia_x = BABY_DIE_INERTIA;
+			xinertia = BABY_DIE_INERTIA;
 		else
-			inertia_x = -BABY_DIE_INERTIA;
+			xinertia = -BABY_DIE_INERTIA;
 	}
 
 	// touched player
@@ -109,29 +85,28 @@ void CVortikid::process()
 	switch(state)
 	{
 	case BABY_DYING:
-		if ((inertia_x < 0 && blockedl) ||\
-				(inertia_x > 0 && blockedr))
+		if ((xinertia < 0 && blockedl) ||\
+				(xinertia > 0 && blockedr))
 		{
-			inertia_x = 0;
+			xinertia = 0;
 		}
 
-		moveXDir(inertia_x);
+		moveXDir(xinertia);
 		if (xdectimer >= 10)
 		{
-			if (inertia_x < 0)
+			if (xinertia < 0)
 			{
-				inertia_x++;
+				xinertia++;
 			}
-			else if (inertia_x > 0)
+			else if (xinertia > 0)
 			{
-				inertia_x--;
+				xinertia--;
 			}
 
-			if (inertia_x == 0 &&
-					inertia_y == 0 &&
-					sprite==(unsigned int)(BABY_DEAD_FRAME-ep3))
+			if (xinertia == 0 && yinertia == 0 &&
+				sprite==(unsigned int)(BABY_DEAD_FRAME-ep3))
 			{
-				state = BABY_DEAD;
+				dead = true;
 			}
 			xdectimer = 0;
 		}
@@ -169,7 +144,6 @@ void CVortikid::process()
 			else
 			{
 				moveLeft(BABY_WALK_SPEED);
-				inhibitfall = 1;
 			}
 		}
 
@@ -185,27 +159,13 @@ void CVortikid::process()
 	}
 }
 
-#define BABY_BIGJUMP                 200
-#define BABY_BIGJUMP_DEC_RATE        4
-
-#define BABY_MIN_SMALLJUMP             140
-#define BABY_SMALLJUMP_MIN_DEC_RATE    1
-#define BABY_MAX_SMALLJUMP             150
-#define BABY_SMALLJUMP_MAX_DEC_RATE    2
+const int BABY_BIGJUMP = 200;
+const int BABY_SMALLJUMP = 80;
 
 void CVortikid::baby_jump(int big)
 {
 	if ((rand()&2)==0) big = 1-big;
-	if (big==BABY_JUMP_BIG)
-	{
-		inertia_y = -BABY_BIGJUMP;
-		jumpdecrate = BABY_BIGJUMP_DEC_RATE;
-	}
-	else
-	{
-		inertia_y = -80;//(rnd()%(BABY_MAX_SMALLJUMP-BABY_MIN_SMALLJUMP))+BABY_MIN_SMALLJUMP;
-		jumpdecrate = 4;//(rnd()%(BABY_SMALLJUMP_MAX_DEC_RATE-BABY_SMALLJUMP_MIN_DEC_RATE))+BABY_SMALLJUMP_MIN_DEC_RATE;
-	}
+	inertia_y =  (big==BABY_JUMP_BIG) ? -BABY_BIGJUMP : -BABY_SMALLJUMP ;
 
 	jumpdectimer = 0;
 }

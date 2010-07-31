@@ -13,7 +13,7 @@
 #include <vector>
 
 enum vort_baby_actions{
-	BABY_RUN, BABY_DYING, BABY_DEAD
+	BABY_RUN, BABY_DYING
 };
 
 class CVortikid : public CObject
@@ -28,7 +28,6 @@ private:
 	direction_t dir;
 	signed int inertia_x, inertia_y;
 	int jumpdectimer, xdectimer;
-	int jumpdecrate;
 	int dietimer;
 
 	char walkframe;
