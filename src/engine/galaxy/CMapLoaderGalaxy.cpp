@@ -16,6 +16,7 @@
 #include "../../sdl/CVideoDriver.h"
 #include "../../CLogFile.h"
 #include "../CCamera.h"
+#include "engine/galaxy/ai/CMiragia.h"
 
 // AI Headers
 #include "ai/CPlayerWM.h"
@@ -291,6 +292,7 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 
 	CObject *p_newfoe = NULL;
 	CCamera *camera = NULL;
+	VectorD2<Uint32> Location(x,y);
 
 	switch(foe)
 	{
@@ -302,9 +304,13 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 		camera = new CCamera(&Map,x,y);
 		camera->attachToObject(*p_newfoe);
 		m_ObjectPtr.push_back(camera);
-
-
 		break;
+
+	case 33:
+
+		p_newfoe = new galaxy::CMiragia(&Map, Location);
+		break;
+
 	default:
 		break;
 	}

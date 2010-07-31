@@ -45,6 +45,7 @@ void CWorldMap::process()
 	for(size_t i=0 ; i<m_ObjectPtr.size() ; i++)
 	{
 		CObject* p_Object = m_ObjectPtr[i];
+
 		p_Object->process();
 	}
 

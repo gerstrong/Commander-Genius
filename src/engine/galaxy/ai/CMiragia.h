@@ -15,11 +15,19 @@
 #include "common/CObject.h"
 #include "CVec.h"
 
+namespace galaxy {
+
 class CMiragia : public CObject {
 public:
 	CMiragia(CMap *pmap, const VectorD2<Uint32> &Location);
 	void process();
-	virtual ~CMiragia();
+
+private:
+	Uint8 m_step;
+	enum {FADE_IN, FADE_OUT} m_fade;
+	Uint8 m_waittime;
 };
+
+}
 
 #endif /* CMIRAGIA_H_ */

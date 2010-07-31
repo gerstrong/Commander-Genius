@@ -103,9 +103,10 @@ void CPlayerWM::processWalking()
 	{
 		Uint16 object = mp_Map->getPlaneDataAt(2, getXMidPos(), getYMidPos());
 		if(object)
+		{
 			finishlevel(object);
-
-		g_pInput->flushCommands();
+			g_pInput->flushCommands();
+		}
 	}
 
 	// this means if keen is just walking on the map or swimming in the sea
