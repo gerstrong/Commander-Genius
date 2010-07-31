@@ -561,29 +561,31 @@ void CObject::processFalling()
 {
 	if(m_type == OBJ_MESSIE) return;
 
-	// make object fall if it must
-	const int OBJFALLSPEED = 160;
+	CPhysicsSettings Physics = g_pBehaviorEngine->getPhysicsSettings();
 
-	// For jumping or flying objects. Yorps sometimes uses that for small jumps
-	if(yinertia < 0)
-		moveUp(-yinertia);
-
-	if (!inhibitfall)
+	// So it reaches the maximum of fallspeed
+	if(!inhibitfall)
 	{
-		// So it reaches the maximum of fallspeed
-		if(!blockedd)
+		// In this case foe is jumping
+		if(yinertia<0 && !blockedu)
 		{
-			if (yinertia < OBJFALLSPEED) yinertia+=4;
-			else if(yinertia > OBJFALLSPEED) yinertia = OBJFALLSPEED;
+			moveUp(-yinertia);
+			yinertia += Physics.fallspeed_increase;
+			if(yinertia > 0) yinertia = 0;
 		}
-		else
+		else if(yinertia>=0 && !blockedd)
 		{
-			if (yinertia > 0) yinertia-=4;
-			else if(yinertia < 0) yinertia = 0;
+			moveDown(yinertia);
+			yinertia += Physics.fallspeed_increase;
 		}
 
-		// gradually increase the fall speed up to maximum rate
-		moveDown(yinertia);
+		// hit floor or floor? set inertia to zero
+		if( (blockedd && yinertia>0) || (blockedu && yinertia<0) )
+			yinertia = 0;
+	}
+	else
+	{
+		moveYDir(yinertia);
 	}
 }
 

@@ -506,7 +506,7 @@ void CPlayer::JumpAndPogo()
 				if (pjumpupspeed <= 0)
 				{
 					pjumpupspeed = 0;
-					pfallspeed = PhysicsSettings.player.max_fallspeed;
+					pfallspeed = PhysicsSettings.max_fallspeed;
 					pjumping = PJUMPLAND;
 				}
 				else
@@ -532,11 +532,11 @@ void CPlayer::JumpAndPogo()
 				}
 				else
 				{
-					if(pjumpupspeed < PhysicsSettings.player.max_fallspeed)
+					if(pjumpupspeed < PhysicsSettings.max_fallspeed)
 						pjumpupspeed+=pjumpupspeed_decrease*2;
 					else
 					{
-						pjumpupspeed=PhysicsSettings.player.max_fallspeed;
+						pjumpupspeed=PhysicsSettings.max_fallspeed;
 						pjumping = PNOJUMP;
 					}
 				}
@@ -644,7 +644,7 @@ CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
 		psliding = false;
 		psemisliding = false;
 
-		// Check if player is on ice
+		// Check if player is on iceplayer.
 		if(!pjumping && !ppogostick)
 		{
 			int ice = TileProperty[mp_Map->at(getXLeftPos()>>CSF, (ydown+1)>>CSF)].bup;
@@ -664,10 +664,10 @@ CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
 		psemisliding = 0;
 
 		// gradually increase the fall speed up to maximum rate
-		if (pfallspeed>PhysicsSettings.player.max_fallspeed)
-			pfallspeed = PhysicsSettings.player.max_fallspeed;
-		else if (pfallspeed<PhysicsSettings.player.max_fallspeed)
-			pfallspeed += PhysicsSettings.player.fallspeed_increase;
+		if (pfallspeed>PhysicsSettings.max_fallspeed)
+			pfallspeed = PhysicsSettings.max_fallspeed;
+		else if (pfallspeed<PhysicsSettings.max_fallspeed)
+			pfallspeed += PhysicsSettings.fallspeed_increase;
 
 		// add current fall speed to player Y or make him fly in godmode with pogo
 		if( !godmode || !ppogostick || !g_pInput->getHoldedCommand(IC_JUMP) )

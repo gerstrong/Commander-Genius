@@ -27,9 +27,6 @@ public:
 		int maxpogospeed;
 		int impossiblepogospeed;
 
-		int max_fallspeed;
-		int fallspeed_increase;
-
 		// pogo settings
 		int pogoforce_x;
 	}player;
@@ -37,6 +34,9 @@ public:
 	struct{
 		int visibility;
 	}misc;
+
+	int max_fallspeed;
+	int fallspeed_increase;
 
 	virtual ~CPhysicsSettings();
 };

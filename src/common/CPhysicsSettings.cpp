@@ -20,8 +20,8 @@ CPhysicsSettings::CPhysicsSettings() {
 	player.max_x_speed = 68;
 
 	// when falling keen's Y inertia increases up to maximum
-	player.max_fallspeed = 105;
-	player.fallspeed_increase = 4;
+	max_fallspeed = 105;
+	fallspeed_increase = 4;
 
 	// Pogo values
 	player.pogoforce_x = 30;

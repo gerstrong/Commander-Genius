@@ -94,28 +94,12 @@ void CVorticon::process()
 		else if (!blockedl)
 			moveLeft(VORT_WALK_SPEED);
 
-		if (blockedd)
-		{  // The Vorticon Has Landed!
+		if (yinertia == 0 && blockedd)
+		{  // The Vorticon Has landed after the jump!
 			state = VORT_LOOK;
 			goto vort_reprocess;
 		}
 
-		// check if the vorticon has bonked into a ceiling, if so,
-		// immediately terminate the jump
-		if (blockedu && yinertia < 0)
-			yinertia = 0;
-
-		// apply Y inertia
-		moveYDir(yinertia);
-
-		if (timer > VORT_JUMP_FRICTION)
-		{ // slowly decrease upgoing rate
-			if (yinertia<VORT_MAX_FALL_SPEED)
-				yinertia+=1<<5;
-
-			timer = 0;
-		}
-		else timer++;
 		break;
 	case VORT_LOOK:
 		sprite = LookFrame + frame;
