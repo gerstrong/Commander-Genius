@@ -12,6 +12,7 @@ v0.3.2.1:
 - Added HUD Display, the one Chad had suggested
 - Small memory issues fixed
 - Improved memory management for foes.
+- Keen 4 now works and can be played on map
 - even faster and more Badass!
 
 v0.3.2:
