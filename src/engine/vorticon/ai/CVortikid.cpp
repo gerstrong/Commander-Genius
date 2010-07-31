@@ -35,10 +35,7 @@ m_Player(mp_vec_Player)
 	dir = rand()&1?LEFT:RIGHT;
 	walkframe = 0;
 	walktimer = 0;
-	xinertia = 0;
-	inertia_y = 0;
-	canbezapped = 1;
-	blockedl = blockedr = blockedu = blockedd = 1;
+	canbezapped = true;
 
 	// babies are in ep2 & ep3, but frameset starts one index prior in ep3
 	if (g_pBehaviorEngine->getEpisode()==3) ep3 = true; else ep3 = false;
@@ -165,7 +162,7 @@ const int BABY_SMALLJUMP = 80;
 void CVortikid::baby_jump(int big)
 {
 	if ((rand()&2)==0) big = 1-big;
-	inertia_y =  (big==BABY_JUMP_BIG) ? -BABY_BIGJUMP : -BABY_SMALLJUMP ;
+	yinertia =  (big==BABY_JUMP_BIG) ? -BABY_BIGJUMP : -BABY_SMALLJUMP ;
 
 	jumpdectimer = 0;
 }

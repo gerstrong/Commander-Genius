@@ -26,7 +26,6 @@ public:
 private:
 	vort_baby_actions state;
 	direction_t dir;
-	signed int inertia_x, inertia_y;
 	int jumpdectimer, xdectimer;
 	int dietimer;
 

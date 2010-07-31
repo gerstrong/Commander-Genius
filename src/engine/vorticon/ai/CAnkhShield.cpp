@@ -15,7 +15,7 @@ CAnkhShield::CAnkhShield(CPlayer &attachedPlayer) :
 CObject(attachedPlayer.getMapPtr(),
 		attachedPlayer.getXPosition(),
 		attachedPlayer.getYPosition(),
-		OBJ_NONE),
+		OBJ_ANKHSHIELD),
 m_attachedPlayer(attachedPlayer),
 ankhtime(attachedPlayer.ankhtime)
 {

@@ -47,6 +47,7 @@ enum object_t{
 	OBJ_JACK,
 	OBJ_PLATVERT,
 	OBJ_MESSIE,
+	OBJ_ANKHSHIELD,
 	
 	OBJ_DEMOMSG,
 	

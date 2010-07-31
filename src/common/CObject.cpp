@@ -45,6 +45,7 @@ m_invincible(false)
 	cansupportplayer = false;
 	
     yinertia = 0;
+	xinertia = 0;
 
 	scrx = scry = 0;
 	dead = false;
@@ -144,15 +145,18 @@ void CObject::setupinitialCollisions()
 		bboxY1 = rSprite.m_bboxY1;		bboxY2 = rSprite.m_bboxY2;
 
 		// Check initial collision. This will avoid that ray go through the first blocking element
+		// Upper/Lower borders
+		for(size_t i=bboxX1; i<=bboxX2 ; i+=(1<<STC))
+		{
+			blockedu |= TileProperty[mp_Map->at((x+i)>>CSF,(y+bboxY1)>>CSF)].bdown;
+			blockedd |= TileProperty[mp_Map->at((x+i)>>CSF,(y+bboxY2)>>CSF)].bup;
+		}
+
+		// Left/Right borders
 		for(size_t j=bboxY1; j<=bboxY2 ; j+=(1<<STC))
 		{
-			for(size_t i=bboxX1; i<=bboxX2 ; i+=(1<<STC))
-			{
-				blockedr |= TileProperty[mp_Map->at((x+i)>>CSF,(y+j)>>CSF)].bleft;
-				blockedl |= TileProperty[mp_Map->at((x+i)>>CSF,(y+j)>>CSF)].bright;
-				blockedu |= TileProperty[mp_Map->at((x+i)>>CSF,(y+j)>>CSF)].bdown;
-				blockedd |= TileProperty[mp_Map->at((x+i)>>CSF,(y+j)>>CSF)].bup;
-			}
+			blockedr |= TileProperty[mp_Map->at((x+bboxX2)>>CSF,(y+j)>>CSF)].bleft;
+			blockedl |= TileProperty[mp_Map->at((x+bboxX1)>>CSF,(y+j)>>CSF)].bright;
 		}
 	}
 }
@@ -587,6 +591,9 @@ void CObject::processFalling()
 	{
 		moveYDir(yinertia);
 	}
+
+	// sometimes, due to mistakes on the map, some foe are embedded into blocks!
+	// In order to avoid, that they can't get out, pull them out of there!
 }
 
 void CObject::getShotByRay()

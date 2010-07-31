@@ -735,6 +735,7 @@ void CPlayer::ProcessExitLevel()
 	inhibitfall = true;
 	if (level_done==LEVEL_DONE_WALK)
 	{
+		ankhtime = 0;
 		walkbehindexitdoor();
 
         // keep him going right
