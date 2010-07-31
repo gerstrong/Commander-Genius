@@ -51,12 +51,11 @@ void CVortiNinja::process()
 			state != NINJA_DYING)
 		m_Player[touchedBy].kill();
 
-	if (HealthPoints <= 0 && state != NINJA_DYING)
+	if (HealthPoints <= 0 && !dying)
 	{
 		dying = true;
 		dietimer = 0;
 		YFrictionRate = 1;
-		if (YInertia < 0) YInertia = 0;
 		g_pSound->playStereofromCoord(SOUND_VORT_DIE, PLAY_NOW, scrx);
 	}
 
@@ -85,13 +84,12 @@ void CVortiNinja::process()
 		if (!timetillkick)
 		{
 			state = NINJA_KICK;
-			inhibitfall = 1;
 
 			if (rnd()&1)
 			{
 				// high, short jump
 				XInertia = (mp_Map->m_Difficulty>1) ? 95 : 75;
-				YInertia = -120;
+				yinertia = -120;
 				XFrictionTimer = 0;
 				YFrictionTimer = 0;
 				XFrictionRate = 5;
@@ -101,7 +99,7 @@ void CVortiNinja::process()
 			{
 				// low, long jump
 				XInertia = (mp_Map->m_Difficulty>1) ? 150 : 120;
-				YInertia = -30;
+				yinertia = -30;
 				XFrictionTimer = 0;
 				YFrictionTimer = 0;
 				XFrictionRate = 5;
@@ -145,8 +143,6 @@ void CVortiNinja::process()
 			animtimer++;
 		break;
 	case NINJA_KICK:
-		if (blockedu && YInertia < 0)
-			YInertia *= 0.5;
 
 		if (!dying)
 		{
@@ -157,7 +153,7 @@ void CVortiNinja::process()
 		}
 		else
 			sprite = NINJA_DYING_FRAME;
-		if (YInertia > 0 && blockedd)
+		if (blockedd)
 		{
 			if (!dying)
 				init();
@@ -174,9 +170,6 @@ void CVortiNinja::process()
 				if (!dying)
 					moveXDir(XInertia);
 			}
-
-			if (YInertia > 0 || !blockedu)
-				moveYDir(YInertia);
 		}
 
 
@@ -209,12 +202,7 @@ void CVortiNinja::process()
 
 		if (YFrictionTimer > YFrictionRate)
 		{
-			if(!blockedd) YInertia+=16;
-			else{
-				YInertia=0;
-				state = NINJA_STAND;
-				init();
-			}
+			if(blockedd) init();
 			YFrictionTimer = 0;
 		}
 		else

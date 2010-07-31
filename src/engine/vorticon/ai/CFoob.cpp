@@ -31,7 +31,7 @@ void CFoob::process()
 			animframe = 0;
 			animtimer = 0;
 			state = FOOB_EXPLODE;
-			if (onscreen) g_pSound->playStereofromCoord(SOUND_YORP_DIE, PLAY_NOW, scrx);
+			g_pSound->playStereofromCoord(SOUND_YORP_DIE, PLAY_NOW, scrx);
 		}
 	}
 

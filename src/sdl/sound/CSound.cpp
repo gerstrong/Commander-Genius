@@ -13,6 +13,7 @@
 #include "../../hqp/CMusic.h"
 #include "../../StringUtils.h"
 #include "../../FindFile.h"
+#include "sdl/sound/Mixer.h"
 
 #include <fstream>
 
@@ -196,15 +197,18 @@ void CSound::callback(void *unused, Uint8 *stream, int len)
 {
     unsigned short i;
 
+    //Uint8 *MixedForm;			// Mainly used by the callback function. Declared once and allocated
+
+    //MixedForm = new Uint8[AudioSpec.size];
+
     if (g_pMusicPlayer->playing() == PLAY_MODE_PLAY)
     {
-		SDL_MixAudio(stream, g_pMusicPlayer->passBuffer(len), len, m_MusicVolume);
+    	mixAudio(stream, g_pMusicPlayer->passBuffer(len), len, m_MusicVolume, AudioSpec.format);
     }
-
     for( i=0 ; i < m_mixing_channels ; i++ )
    	{
    		m_soundchannel[i].readWaveform(m_MixedForm, len, AudioSpec.channels, AudioSpec.freq);
-   		SDL_MixAudio(stream, m_MixedForm, len, m_SoundVolume);
+   		mixAudio(stream, m_MixedForm, len, m_SoundVolume, AudioSpec.format);
     }
 }
 
