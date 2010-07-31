@@ -176,9 +176,12 @@ bool CPalette::in_progress(void)		// return whether or not a fade is in progress
 
 void CPalette::fadeto(Uint8 alpha, Uint8 fadespeed)
 {
-	m_alpha = alpha;
-	m_fade_in_progess = true;
-	m_fadespeed = fadespeed;
+	if(m_alpha != alpha)
+	{
+		m_alpha = alpha;
+		m_fade_in_progess = true;
+		m_fadespeed = fadespeed;
+	}
 }
 
 void CPalette::applyFade()
