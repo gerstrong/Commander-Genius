@@ -209,36 +209,12 @@ void CVorticonElite::process()
 		else
 		{ if (!blockedl) moveLeft(m_speed); }
 
-		if (inertiay>0 && blockedd)
-		{  // the bear has landed
-			inhibitfall = 0;
+		if (yinertia == 0 && blockedd)
+		{  // The Vorticon Has landed after the jump!
 			state = VORTELITE_WALK;
 			goto reprocess;
 		}
-		// check if the bear has bonked into a ceiling, if so,
-		// immediately terminate the jump
-		x = getXPosition();
-		y = getYPosition();
-		bonk = 0;
-		if (TileProperties[mp_Map->at((x>>CSF), (y>>CSF))].bdown) bonk = true;
-		else if (TileProperties[mp_Map->at((x>>CSF)+1, (y>>CSF))].bdown) bonk = true;
-		else if (TileProperties[mp_Map->at(((x+200)>>CSF), (y>>CSF))].bdown) bonk = true;
-		if (bonk && inertiay < 0)
-		{
-			inertiay = 0;
-		}
 
-		// apply Y inertia
-		moveYDir(inertiay);
-
-		if (timer > VORTELITE_JUMP_FRICTION)
-		{ // slowly decrease upgoing rate
-			if (inertiay<VORTELITE_MAX_FALL_SPEED)
-			{
-				inertiay+=16;
-			}
-			timer = 0;
-		} else timer++;
 		break;
 	case VORTELITE_ABOUTTOFIRE:
 		if (movedir==RIGHT)

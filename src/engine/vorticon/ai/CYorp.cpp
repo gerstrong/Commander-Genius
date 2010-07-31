@@ -34,10 +34,6 @@ movedir(LEFT)
 
 void CYorp::process()
 {
-	// hey after all, dead yorps don't talk. Or do anything
-	// but return to the calling procedure.
-	if (state==YORP_DEAD) return;
-
 	if (!hasbeenonscreen) return;
 
 	// did the poor guy get shot?
@@ -226,8 +222,7 @@ void CYorp::processDying()
 	{
 		sprite = YORP_DEAD_FRAME;
 		inhibitfall = 0;
-		state = YORP_DEAD;
-		dead = 1;
+		dead = false;
 	}
 }
 

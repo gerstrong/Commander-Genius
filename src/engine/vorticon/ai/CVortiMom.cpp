@@ -30,12 +30,6 @@ void CVortiMom::process()
 {
 	int prob;
 
-	if (state==MOTHER_DEAD)
-	{
-		sprite = MOTHER_DEAD_FRAME;
-		return;
-	}
-
 	if (touchPlayer && !m_Player[touchedBy].pdie)
 	{
 		// don't push the player as he's walking through the exit door
@@ -125,8 +119,8 @@ void CVortiMom::process()
 		{
 			if (HealthPoints <= 0)
 			{
-				//sprite = MOTHER_HURT_FRAME;
-				state = MOTHER_DEAD;
+				sprite = MOTHER_DEAD_FRAME;
+				dead = true;
 				timer = 0;
 				if (onscreen) g_pSound->playStereofromCoord(SOUND_VORT_DIE, PLAY_NOW, scrx);
 			}

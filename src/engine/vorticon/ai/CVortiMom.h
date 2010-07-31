@@ -14,7 +14,7 @@
 
 enum vortimom_actions{
 MOTHER_WALK, MOTHER_SPIT,
-MOTHER_HURT, MOTHER_DEAD
+MOTHER_HURT
 };
 
 // Vorticon Mother AI (ep3)

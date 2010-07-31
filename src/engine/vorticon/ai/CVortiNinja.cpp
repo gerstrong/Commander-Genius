@@ -68,7 +68,10 @@ void CVortiNinja::process()
 
 		dietimer++;
 		if (dietimer > NINJA_DYING_SHOW_TIME)
+		{
 			sprite = NINJA_DEAD_FRAME;
+			dead = true;
+		}
 	}
 
 	switch(state)

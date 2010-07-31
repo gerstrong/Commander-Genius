@@ -77,8 +77,7 @@ private:
 		YORP_LOOK,     // yorp is "looking around" (waving his eye)
 		YORP_MOVE,     // yorp is walking either left or right
 		YORP_STUNNED,  // the yorp is stunned
-		YORP_DYING,    // the yorp is getting fried!
-		YORP_DEAD      // they look so sad when they're dead
+		YORP_DYING    // the yorp is getting fried!
 	} state;
 
 	unsigned char looktimes,lookposition;
