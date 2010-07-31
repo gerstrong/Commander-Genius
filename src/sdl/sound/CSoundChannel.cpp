@@ -391,16 +391,11 @@ void CSoundChannel::readWaveform(Uint8* waveform, int len, Uint8 channels, int f
      	}
      	else
      	{
-     		//m_sound_ptr = 0;
-     		//m_sound_playing = false;
      		stHQSound& hqsound = *m_pSoundSlot[m_current_sound].getHQSoundPtr();
-     		// TODO: Something is still leaking here. The workaround prevents that, but it is not the ultimate solution
 
          	if ((m_sound_ptr + (Uint32)len) >= hqsound.sound_len)
          	{
          		// Fill the rest with silence
-         		//memset(waveform, m_silence, len );
-
        			memcpy(waveform, hqsound.sound_buffer + m_sound_ptr, hqsound.sound_len-m_sound_ptr);
 
          		// Fill the rest with silence
