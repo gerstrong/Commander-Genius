@@ -30,9 +30,11 @@ void mixAudioSinged16(Uint8 *dst, const Uint8 *src, Uint32 len, Uint8 volume)
         chnl_src *= volume;
         chnl_src /= SDL_MIX_MAXVOLUME;
 
-        outputValue = chnl_src + chnl_dst;           // just add the channels
-        if (outputValue > 32766) outputValue = 32766;        // and clip the result
-        if (outputValue < -32767) outputValue = -32767;
+        outputValue = chnl_src + chnl_dst;  // just add the channels
+        if (outputValue > 32766)
+        	outputValue = 32766;        	// and clip the result
+        if (outputValue < -32767)
+        	outputValue = -32767;			// and clip the result
 
         *s_dst = outputValue;
 

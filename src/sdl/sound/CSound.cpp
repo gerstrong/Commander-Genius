@@ -197,10 +197,6 @@ void CSound::callback(void *unused, Uint8 *stream, int len)
 {
     unsigned short i;
 
-    //Uint8 *MixedForm;			// Mainly used by the callback function. Declared once and allocated
-
-    //MixedForm = new Uint8[AudioSpec.size];
-
     if (g_pMusicPlayer->playing() == PLAY_MODE_PLAY)
     {
     	mixAudio(stream, g_pMusicPlayer->passBuffer(len), len, m_MusicVolume, AudioSpec.format);
