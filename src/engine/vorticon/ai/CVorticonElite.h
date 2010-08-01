@@ -33,7 +33,6 @@ private:
 	unsigned char timer,timer2;
 	unsigned int animtimer;
 	unsigned char frame;
-	signed int inertiay;
 	unsigned char movedir;
 	unsigned int timesincefire;
 	int m_speed;

@@ -67,7 +67,6 @@ bool CPlayGameVorticon::loadGameState()
 
 		m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
 
-		m_Map.m_Dark = dark;
 		m_checkpoint_x = checkx;
 		m_checkpoint_y = checky;
 
@@ -151,12 +150,14 @@ bool CPlayGameVorticon::loadGameState()
 		// Create the special merge effect (Fadeout)
 		g_pGfxEngine->pushEffectPtr(pColorMergeFX);
 
-		g_pGfxEngine->Palette.setdark(m_Map.m_Dark);
 
 		mp_ObjectAI = new CObjectAI(&m_Map, m_Object, m_Player, mp_option,
 									m_NumPlayers, m_Episode, m_Level,
 									m_Difficulty, m_Map.m_Dark);
 		setupPlayers();
+
+		m_Map.m_Dark = dark;
+		g_pGfxEngine->Palette.setdark(m_Map.m_Dark);
 
 		//Set surface alpha
 		SDL_SetAlpha( g_pVideoDriver->FGLayerSurface, SDL_SRCALPHA, 225 );

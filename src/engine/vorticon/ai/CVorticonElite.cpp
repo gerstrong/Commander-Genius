@@ -73,9 +73,8 @@ void CVorticonElite::process()
 	if ( mp_Map->at( x>>CSF, y>>CSF) == TILE_GLOWCELL )
 		HealthPoints--;
 
-	if (HealthPoints <= 0)
+	if (HealthPoints <= 0 && state != VORTELITE_DYING)
 	{
-		inhibitfall = 0;
 		animtimer = 0;
 		frame = 0;
 		state = VORTELITE_DYING;
@@ -209,7 +208,7 @@ void CVorticonElite::process()
 		else
 		{ if (!blockedl) moveLeft(m_speed); }
 
-		if (yinertia == 0 && blockedd)
+		if (blockedd && yinertia >= 0)
 		{  // The Vorticon Has landed after the jump!
 			state = VORTELITE_WALK;
 			goto reprocess;
@@ -286,14 +285,13 @@ void CVorticonElite::initiatejump()
 
 	frame = 0;
 	animtimer = 0;
-	inertiay = -((rand()%(VORTELITE_MAX_JUMP_HEIGHT-VORTELITE_MIN_JUMP_HEIGHT))+VORTELITE_MIN_JUMP_HEIGHT);
+	yinertia = -((rand()%(VORTELITE_MAX_JUMP_HEIGHT-VORTELITE_MIN_JUMP_HEIGHT))+VORTELITE_MIN_JUMP_HEIGHT);
 
 	if (movedir==RIGHT)
 		sprite = VORTELITE_JUMP_RIGHT_FRAME;
 	else
 		sprite = VORTELITE_JUMP_LEFT_FRAME;
 
-	inhibitfall = 1;
 	state = VORTELITE_JUMP;
 }
 
