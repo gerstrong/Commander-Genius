@@ -29,6 +29,7 @@ private:
 	Uint16 m_Format;
 	int m_Mode;
 	CVolumeSettings *mp_VolumeMenu;
+	bool m_must_restart_sounddriver;
 };
 
 #endif /* CAUDIOSETTINGS_H_ */

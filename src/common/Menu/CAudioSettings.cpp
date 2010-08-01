@@ -18,7 +18,8 @@
 CAudioSettings::CAudioSettings(Uint8 dlg_theme, CExeFile &ExeFile) :
 CBaseMenu(dlg_theme),
 m_ExeFile(ExeFile),
-mp_VolumeMenu(NULL)
+mp_VolumeMenu(NULL),
+m_must_restart_sounddriver(false)
 {
 	m_current = -1;
 	
@@ -59,26 +60,33 @@ void CAudioSettings::processSpecific()
 		if( m_mustclose )
 		{
 			CSettings Settings;
-			
-			// Check if the music is playing, stop it and restart it, if necessary
 			bool wasPlaying = g_pMusicPlayer->playing();
-			g_pMusicPlayer->stop();
-			
-			// Close the sound driver
-			g_pSound->destroy();
-			g_pSound->setSoundmode(m_Rate, m_Mode ? true : false, m_Format);
-			Settings.saveDrvCfg();
-			
-			// Reload the sounds effects, so they work with the new format
-			g_pSound->init();
-			
-			g_pSound->loadSoundData(m_ExeFile);
-			
-			// Reload the music if was playing before we changed the settings
-			if(wasPlaying)
+
+			// Check if the music is playing, stop it and restart it, if necessary
+			if(m_must_restart_sounddriver)
 			{
-				g_pMusicPlayer->reload(g_pSound->getAudioSpec());
-				g_pMusicPlayer->play();
+				g_pMusicPlayer->stop();
+
+				// Close the sound driver
+				g_pSound->destroy();
+				g_pSound->setSoundmode(m_Rate, m_Mode ? true : false, m_Format);
+			}
+
+			Settings.saveDrvCfg();
+
+			if(m_must_restart_sounddriver)
+			{
+				// Reload the sounds effects, so they work with the new format
+				g_pSound->init();
+
+				g_pSound->loadSoundData(m_ExeFile);
+
+				// Reload the music if was playing before we changed the settings
+				if(wasPlaying)
+				{
+					g_pMusicPlayer->reload(g_pSound->getAudioSpec());
+					g_pMusicPlayer->play();
+				}
 			}
 		}
 		
@@ -99,12 +107,12 @@ void CAudioSettings::processSpecific()
 		
 		if( m_selection != NO_SELECTION )
 		{
-			
 			if(m_selection == 0)
 			{
 				mp_Dialog->m_dlgobject.at(0)->m_Option->m_value += 1;
 				if(mp_Dialog->m_dlgobject.at(0)->m_Option->m_value > mp_Dialog->m_max)
 				mp_Dialog->m_dlgobject.at(0)->m_Option->m_value = 1;
+				m_must_restart_sounddriver |= true;
 			}
 			else if(m_selection == 1)
 			{
@@ -113,6 +121,7 @@ void CAudioSettings::processSpecific()
 				buf = "Format: ";
 				buf += (m_Format == AUDIO_S16) ? "16 bits" : "8 bits";
 				mp_Dialog->setObjectText(1, buf);
+				m_must_restart_sounddriver |= true;
 			}
 			else if(m_selection == 2)
 			{
@@ -120,6 +129,7 @@ void CAudioSettings::processSpecific()
 				buf = "Mode: ";
 				buf += m_Mode ? "Stereo" : "Mono";
 				mp_Dialog->setObjectText(2, buf);
+				m_must_restart_sounddriver |= true;
 			}
 			else if(m_selection == 3)
 			{
