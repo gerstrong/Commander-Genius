@@ -32,7 +32,7 @@ bool CPlayGameVorticon::loadGameState()
 		m_SavedGame.decodeData(m_Episode);
 		m_SavedGame.decodeData(newLevel);
 
-		bool loadmusic = (m_Level != newLevel);
+		bool loadmusic = ( m_Level != newLevel || m_Level == 80 );
 		m_Level = newLevel;
 
 		m_SavedGame.decodeData(m_Difficulty);
