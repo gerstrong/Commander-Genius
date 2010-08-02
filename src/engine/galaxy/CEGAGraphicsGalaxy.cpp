@@ -547,15 +547,12 @@ bool CEGAGraphicsGalaxy::readfonts()
 					(FontHeadStruct*) &(m_egagraph.at(EpisodeInfo[ep].IndexFonts + i).data.at(0));
 
 			// Find out the maximum character width
-			int w = 0;
 			int maxwidth=0;
 			for(Uint16 j = 0; j < 256; j++)
 			{
 				Font.setWidthToCharacter(FontHead->Width[j],j);
-				if(FontHead->Width[j] > w)
-				{
+				if(FontHead->Width[j] > maxwidth)
 					maxwidth = FontHead->Width[j];
-				}
 			}
 
 			Font.CreateSurface(Palette, g_pVideoDriver->getScrollSurface()->flags, 8, maxwidth*16, FontHead->Height * 16);
@@ -593,7 +590,7 @@ bool CEGAGraphicsGalaxy::readfonts()
 							pixelpos = pixel + (rect.y+y)*sfc->pitch+rect.x;
 							for( x = 0 ; x < rect.w ; x++ )
 							{
-								pixelpos[x] = getBit(*(pointer + FontHead->Offset[j] + (y * bw) + x/8 ), 7-x%8)*0xF;
+								pixelpos[x] = getBit(*(pointer + FontHead->Offset[j] + (y*bw) + x/8 ), 7-(x%8) )*0xF;
 							}
 						}
 					}

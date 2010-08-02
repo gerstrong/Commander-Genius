@@ -80,7 +80,11 @@ void CPlayGameGalaxy::process()
 
 		// process World Map if active. At the start it's enabled
 		if(m_WorldMap.isActive())
+		{
 			m_WorldMap.process();
+
+			// TODO: Let's see, if Keen has selected a new level
+		}
 
 		// process World Map if active. At the start it's enabled
 		//if(m_LevelPlay.isActive())
