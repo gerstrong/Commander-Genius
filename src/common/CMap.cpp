@@ -164,14 +164,15 @@ bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t, Uint16 plane)
 
 bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t, bool update, Uint16 plane)
 {
+	int scrollx_buf = m_scrollx&511;
+	int scrolly_buf = m_scrolly&511;
+
 	if(setTile( x, y, t, plane))
 	{
-		if( update &&
-				m_scrollx-m_scrollx_buf < (x<<TILE_S) &&
-				m_scrollx-m_scrollx_buf+512 > (x<<TILE_S) &&
-				m_scrolly-m_scrolly_buf < (y<<TILE_S) &&
-				m_scrolly-m_scrolly_buf+512 > (y<<TILE_S) )
+		if( update )
+		{
 			redrawAt(x,y);
+		}
 		return true;
 	}
 	else return false;
@@ -224,7 +225,6 @@ void CMap::scrollRight(void)
 	if(m_scrollx < (m_width<<4) - g_pVideoDriver->getGameResolution().w)
 	{
 		m_scrollx++;
-		//if(m_scrollx_buf>=511) m_scrollx_buf=0; else m_scrollx_buf++;
 		m_scrollx_buf = m_scrollx&511;
 
 		m_scrollpix++;
@@ -245,7 +245,6 @@ void CMap::scrollLeft(void)
 	if(m_scrollx>0)
 	{
 		m_scrollx--;
-		//if(m_scrollx_buf==0) m_scrollx_buf=511; else m_scrollx_buf--;
 		m_scrollx_buf = m_scrollx&511;
 
 		if (m_scrollpix==0)
@@ -271,7 +270,6 @@ void CMap::scrollDown(void)
 	if(m_scrolly < (m_height<<4) - g_pVideoDriver->getGameResolution().h )
 	{
 		m_scrolly++;
-		//if(m_scrolly_buf>=511) m_scrolly_buf=0; else m_scrolly_buf++;
 		m_scrolly_buf = m_scrolly&511;
 
 		m_scrollpixy++;
@@ -291,7 +289,6 @@ void CMap::scrollUp(void)
 	if(m_scrolly>0)
 	{
 		m_scrolly--;
-		//if(m_scrolly_buf==0) m_scrolly_buf=511; else m_scrolly_buf--;
 		m_scrolly_buf = m_scrolly&511;
 
 		if (m_scrollpixy==0)
@@ -319,20 +316,35 @@ void CMap::scrollUp(void)
 // called at start of level to draw the upper-left corner of the map
 // onto the scrollbuffer...from then on the map will only be drawn
 // in stripes as it scrolls around.
+// TODO: This function has a mayor problem! It only works, when tile same on the screen
+// are changed. In Vorticons this might be the case. In Galaxy it's different!
 void CMap::redrawAt(int mx, int my)
 {
-	if( m_Background )
+	// Go throught the list and just draw all the tiles that need to be animated
+	const Uint32 num_h_tiles = mp_scrollsurface->h/16;
+	const Uint32 num_v_tiles = mp_scrollsurface->w/16;
+
+	if(  mx >= m_mapx && my >= m_mapy &&
+			mx < m_mapx + num_v_tiles && my < m_mapy + num_h_tiles  	)
 	{
-		size_t bg = m_Plane[0].getMapDataAt(mx, my);
-		size_t fg = m_Plane[1].getMapDataAt(mx, my);
-		m_Tilemaps.at(0).drawTile(mp_scrollsurface, (mx<<4)&511, (my<<4)&511, bg);
-		if(fg)
-			m_Tilemaps.at(1).drawTile(mp_scrollsurface, (mx<<4)&511, (my<<4)&511, fg);
-	}
-	else
-	{
-		size_t fg = m_Plane[1].getMapDataAt(mx, my);
-		m_Tilemaps.at(1).drawTile(mp_scrollsurface, (mx<<4)&511, (my<<4)&511, fg);
+		const Uint16 loc_x = (((mx-m_mapx)<<4)+m_mapxstripepos)&511;
+		const Uint16 loc_y = (((my-m_mapy)<<4)+m_mapystripepos)&511;
+
+		if( m_Background )
+		{
+			size_t bg = m_Plane[0].getMapDataAt(mx, my);
+			size_t fg = m_Plane[1].getMapDataAt(mx, my);
+
+
+			m_Tilemaps.at(0).drawTile(mp_scrollsurface, loc_x, loc_y, bg);
+			if(fg)
+				m_Tilemaps.at(1).drawTile(mp_scrollsurface, loc_x, loc_y, fg);
+		}
+		else
+		{
+			size_t fg = m_Plane[1].getMapDataAt(mx, my);
+			m_Tilemaps.at(1).drawTile(mp_scrollsurface, loc_x, loc_y, fg);
+		}
 	}
 }
 
