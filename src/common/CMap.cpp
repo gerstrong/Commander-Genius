@@ -166,7 +166,12 @@ bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t, bool update, Uint16 plane)
 {
 	if(setTile( x, y, t, plane))
 	{
-		if(update) redrawAt(x,y);
+		if( update &&
+				m_scrollx-m_scrollx_buf < (x<<TILE_S) &&
+				m_scrollx-m_scrollx_buf+512 > (x<<TILE_S) &&
+				m_scrolly-m_scrolly_buf < (y<<TILE_S) &&
+				m_scrolly-m_scrolly_buf+512 > (y<<TILE_S) )
+			redrawAt(x,y);
 		return true;
 	}
 	else return false;
@@ -219,7 +224,8 @@ void CMap::scrollRight(void)
 	if(m_scrollx < (m_width<<4) - g_pVideoDriver->getGameResolution().w)
 	{
 		m_scrollx++;
-		if(m_scrollx_buf>=511) m_scrollx_buf=0; else m_scrollx_buf++;
+		//if(m_scrollx_buf>=511) m_scrollx_buf=0; else m_scrollx_buf++;
+		m_scrollx_buf = m_scrollx&511;
 
 		m_scrollpix++;
 		if (m_scrollpix>=16)
@@ -239,7 +245,8 @@ void CMap::scrollLeft(void)
 	if(m_scrollx>0)
 	{
 		m_scrollx--;
-		if(m_scrollx_buf==0) m_scrollx_buf=511; else m_scrollx_buf--;
+		//if(m_scrollx_buf==0) m_scrollx_buf=511; else m_scrollx_buf--;
+		m_scrollx_buf = m_scrollx&511;
 
 		if (m_scrollpix==0)
 		{  // need to draw a new stripe
@@ -264,7 +271,8 @@ void CMap::scrollDown(void)
 	if(m_scrolly < (m_height<<4) - g_pVideoDriver->getGameResolution().h )
 	{
 		m_scrolly++;
-		if(m_scrolly_buf>=511) m_scrolly_buf=0; else m_scrolly_buf++;
+		//if(m_scrolly_buf>=511) m_scrolly_buf=0; else m_scrolly_buf++;
+		m_scrolly_buf = m_scrolly&511;
 
 		m_scrollpixy++;
 		if (m_scrollpixy>=16)
@@ -283,7 +291,8 @@ void CMap::scrollUp(void)
 	if(m_scrolly>0)
 	{
 		m_scrolly--;
-		if(m_scrolly_buf==0) m_scrolly_buf=511; else m_scrolly_buf--;
+		//if(m_scrolly_buf==0) m_scrolly_buf=511; else m_scrolly_buf--;
+		m_scrolly_buf = m_scrolly&511;
 
 		if (m_scrollpixy==0)
 		{  // need to draw a new stripe
@@ -329,7 +338,7 @@ void CMap::redrawAt(int mx, int my)
 
 // draws all the map area. This is used for the title screen, when game starts and other passive scenes.
 // Don't use it, when the game is scrolling. Use redrawAt instead,
-// for the correct and fast update of tiles
+// for the correct and fast update of tiles or
 void CMap::drawAll()
 {
 	Uint32 num_h_tiles = mp_scrollsurface->h/16;
