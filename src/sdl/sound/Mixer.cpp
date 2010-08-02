@@ -11,6 +11,12 @@
 
 #include <SDL.h>
 
+#define WAVE_SILENCE_U8         128
+#define WAVE_SILENCE_S8         0
+
+#define WAVE_SILENCE_U16        32768
+#define WAVE_SILENCE_S16        0
+
 /**
  * This will mix 16-bit signed streams together.
  */
@@ -31,10 +37,10 @@ void mixAudioSinged16(Uint8 *dst, const Uint8 *src, Uint32 len, Uint8 volume)
         chnl_src /= SDL_MIX_MAXVOLUME;
 
         outputValue = chnl_src + chnl_dst;  // just add the channels
-        if (outputValue > 32766)
-        	outputValue = 32766;        	// and clip the result
-        if (outputValue < -32767)
-        	outputValue = -32767;			// and clip the result
+        if (outputValue > 32767)
+        	outputValue = 32767;        	// and clip the result
+        if (outputValue < -32768)
+        	outputValue = -32768;			// and clip the result
 
         *s_dst = outputValue;
 
@@ -55,11 +61,15 @@ void mixAudioUnsinged8(Uint8 *dst, const Uint8 *src, Uint32 len, Uint8 volume)
         chnl_src = *src;
         chnl_dst = *dst;
 
+        chnl_src -= WAVE_SILENCE_U8;
+        chnl_dst -= WAVE_SILENCE_U8;
+
         chnl_src *= volume;
         chnl_src /= SDL_MIX_MAXVOLUME;
 
-        outputValue = chnl_src + chnl_dst;           // just add the channels
+        outputValue = chnl_src + chnl_dst + WAVE_SILENCE_U8;           // just add the channels
         if (outputValue > 255) outputValue = 255;        // and clip the result
+        if (outputValue < 0) outputValue = 0;
 
         *dst = outputValue;
 

@@ -1,6 +1,6 @@
 #!/bin/sh
 NAME=cgenius
-VERSION=032
+VERSION=0321
 
 # Windows Version
 cp build/Win32/CGenius.exe ./CGenius.exe
