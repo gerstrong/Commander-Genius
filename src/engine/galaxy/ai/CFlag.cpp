@@ -13,7 +13,7 @@ const Uint16 FLYING_BASEFRAME = 174;
 const Uint16 WAVING_BASEFRAME = 181;
 
 const Uint16 ANIMATION_TIME = 8;
-const Uint16 SPEED = 128;
+const Uint16 SPEED = 64;
 
 CFlag::CFlag(CMap *pmap, const VectorD2<Uint32> &Location,
 			const VectorD2<Uint32> &Destination) :

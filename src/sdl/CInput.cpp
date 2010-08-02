@@ -174,36 +174,42 @@ bool CInput::startJoyDriver()
 void CInput::loadControlconfig(void)
 {
 	CConfiguration Configuration(CONFIGFILENAME);
-	Configuration.Parse();
-
-	std::string section;
-	for(size_t i=0 ; i<NUM_INPUTS ; i++)
+	if(Configuration.Parse())
 	{
-		// setup input from proper string
-		section = "input" + itoa(i);
+		std::string section;
+		for(size_t i=0 ; i<NUM_INPUTS ; i++)
+		{
+			// setup input from proper string
+			section = "input" + itoa(i);
 
-		std::string value;
-		Configuration.ReadString( section, "Left", value, "Key 276 (left)");
-		setupInputCommand( InputCommand[i], IC_LEFT, value );
-		Configuration.ReadString( section, "Up", value, "Key 273 (up)");
-		setupInputCommand( InputCommand[i], IC_UP, value );
-		Configuration.ReadString( section, "Right", value, "Key 275 (right)");
-		setupInputCommand( InputCommand[i], IC_RIGHT, value );
-		Configuration.ReadString( section, "Down", value, "Key 274 (down)");
-		setupInputCommand( InputCommand[i], IC_DOWN, value );
-		Configuration.ReadString( section, "Jump", value, "Key 306 (left ctrl)");
-		setupInputCommand( InputCommand[i], IC_JUMP, value );
-		Configuration.ReadString( section, "Pogo", value, "Key 308 (left alt)");
-		setupInputCommand( InputCommand[i], IC_POGO, value );
-		Configuration.ReadString( section, "Fire", value, "Key 32 (space)");
-		setupInputCommand( InputCommand[i], IC_FIRE, value );
-		Configuration.ReadString( section, "Status", value, "Key 13 (return)");
-		setupInputCommand( InputCommand[i], IC_STATUS, value );
-		Configuration.ReadString( section, "Help", value, "Key 282 (f1)");
-		setupInputCommand( InputCommand[i], IC_HELP, value );
-		Configuration.ReadString( section, "Quit", value, "Key 27 (escape)");
-		setupInputCommand( InputCommand[i], IC_QUIT, value );
-		Configuration.ReadKeyword( section, "TwoButtonFiring", &TwoButtonFiring[i], true);
+			std::string value;
+			Configuration.ReadString( section, "Left", value, "Key 276 (left)");
+			setupInputCommand( InputCommand[i], IC_LEFT, value );
+			Configuration.ReadString( section, "Up", value, "Key 273 (up)");
+			setupInputCommand( InputCommand[i], IC_UP, value );
+			Configuration.ReadString( section, "Right", value, "Key 275 (right)");
+			setupInputCommand( InputCommand[i], IC_RIGHT, value );
+			Configuration.ReadString( section, "Down", value, "Key 274 (down)");
+			setupInputCommand( InputCommand[i], IC_DOWN, value );
+			Configuration.ReadString( section, "Jump", value, "Key 306 (left ctrl)");
+			setupInputCommand( InputCommand[i], IC_JUMP, value );
+			Configuration.ReadString( section, "Pogo", value, "Key 308 (left alt)");
+			setupInputCommand( InputCommand[i], IC_POGO, value );
+			Configuration.ReadString( section, "Fire", value, "Key 32 (space)");
+			setupInputCommand( InputCommand[i], IC_FIRE, value );
+			Configuration.ReadString( section, "Status", value, "Key 13 (return)");
+			setupInputCommand( InputCommand[i], IC_STATUS, value );
+			Configuration.ReadString( section, "Help", value, "Key 282 (f1)");
+			setupInputCommand( InputCommand[i], IC_HELP, value );
+			Configuration.ReadString( section, "Quit", value, "Key 27 (escape)");
+			setupInputCommand( InputCommand[i], IC_QUIT, value );
+			Configuration.ReadKeyword( section, "TwoButtonFiring", &TwoButtonFiring[i], true);
+		}
+	}
+	else
+	{
+		for(size_t c=1 ; c<= NUM_INPUTS ; c++)
+			resetControls(c);
 	}
 }
 

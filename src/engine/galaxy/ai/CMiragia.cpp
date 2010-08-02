@@ -39,28 +39,11 @@ void CMiragia::process()
 					const Uint16 where_x = (getXPosition()>>CSF)+x;
 					const Uint16 where_y = (getYPosition()>>CSF)+y;
 					const Uint16 tile = mp_Map->getPlaneDataAt( 1, l_x, l_y );
-					mp_Map->setTile(where_x, where_y, tile, false, 1);
+					mp_Map->setTile(where_x, where_y, tile, true, 1);
 					const Uint16 object = mp_Map->getPlaneDataAt( 2, l_x, l_y );
 					mp_Map->setTile(where_x, where_y, object, false, 2);
 				}
 			}
-
-			// Redraw them if they are on sight!
-			Uint16 where_x = (getXPosition()>>CSF);
-			Uint16 where_y = (getYPosition()>>CSF);
-			Uint16 min_x = mp_Map->m_scrollx;
-			Uint16 min_y = mp_Map->m_scrolly;
-			Uint16 max_x = min_x+(mp_Map->m_width<<TILE_S);
-			Uint16 max_y = min_y+(mp_Map->m_height<<TILE_S);
-
-			if( min_x < where_x<<TILE_S && max_x > where_x<<TILE_S &&
-					min_y < where_y<<TILE_S && max_y > where_y<<TILE_S)
-			{
-				for(size_t x=0 ; x<6 ; x++)
-					for(size_t y=0 ; y<4 ; y++)
-						mp_Map->redrawAt(where_x+x, where_y+y);
-			}
-
 
 			if(m_step >= 4)
 			{
