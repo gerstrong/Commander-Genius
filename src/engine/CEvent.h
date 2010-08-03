@@ -8,15 +8,38 @@
  *  The events which are desired
  *  to be used in some section of the
  *  code must be declared through a enum
+ *  NOTE: I know there is that other class by Albert
+ *  I would like to use, but it seems incomplete and
+ *  too overloaded for what we need. We might join it later!!
  */
 
 #ifndef CEVENT_H_
 #define CEVENT_H_
 
+#include <list>
+
+enum wm_event{
+	ENTER_LEVEL
+};
+
+
 class CEvent {
 public:
-	CEvent();
+	CEvent(wm_event event_type, void *data = NULL, size_t size = 0);
+
+	bool occurred(wm_event event_type);
+
+	wm_event getEvent();
+	void *getData();
+	size_t Size();
+
 	virtual ~CEvent();
+
+private:
+	wm_event event_type;
+	void *data;
+	size_t size;
 };
+
 
 #endif /* CEVENT_H_ */
