@@ -173,8 +173,10 @@ void CTileLoader::assignChangeTileAttribute(size_t NumTiles)
 	// 17 is tile for an exit. Until row 19, this seems to be valid
 	for(size_t i=0 ; i<NumTiles ; i++)
 	{
-		if(canbePickedup(i) or isaDoor(i) )
+		if( canbePickedup(i) )
 			TileProperties[i].chgtile = (i>=0x131) ? 0x114 : 0x8F;
+		if( isaDoor(i) )
+			TileProperties[i].chgtile = 0x8F;
 	}
 	
 	switch(m_episode)
