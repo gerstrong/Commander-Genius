@@ -38,6 +38,8 @@ private:
 	Uint32 m_posy;
 
 	CExeFile &m_ExeFile;
+
+	bool m_newLevel;
 };
 
 }

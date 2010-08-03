@@ -104,7 +104,7 @@ void CPlayerWM::processWalking()
 		Uint16 object = mp_Map->getPlaneDataAt(2, getXMidPos(), getYMidPos());
 		if(object)
 		{
-			finishlevel(object);
+			startLevel(object);
 			g_pInput->flushCommands();
 		}
 	}
@@ -120,35 +120,12 @@ void CPlayerWM::processWalking()
 
 }
 
-/*
- *	makes the player finish the level
+/**
+ * This function will help starting the level for Commander Keen
  */
-void CPlayerWM::finishlevel(Uint16 object)
+void CPlayerWM::startLevel(Uint16 object)
 {
-	// if a door or other blocker was found remove it
-	int x, y;
-	Uint16 door = (object - 0xC000) + 0xD000;
-	while(mp_Map->findTile(door, &x, &y, 2))
-	{
-		// Open blocks in case there are
-		mp_Map->setTile( x, y, 0, true, 1);
-		mp_Map->setTile( x, y, 0, true, 2);
-		mp_Map->redrawAt( x, y);
-	}
 
-	Uint16 flag_dest = (object - 0xC000) + 0xF000;
-	if(mp_Map->findTile(flag_dest, &x, &y, 2))
-	{
-		// spawn the flag
-		VectorD2<Uint32> src(this->x, this->y);
-		VectorD2<Uint32> dst((x<<CSF), (y<<CSF));
-
-		CFlag *pFlag = new CFlag(mp_Map, src, dst);
-		m_ObjectPtrs.push_back(pFlag);
-
-		// Mark the tileinfo on the map as marked!!
-		mp_Map->setTile( x, y, 0, true, 2);
-	}
 }
 
 /**

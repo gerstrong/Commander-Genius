@@ -19,7 +19,7 @@ public:
 	void process();
 	void processWalking();
 
-	void finishlevel(Uint16 object);
+	void startLevel(Uint16 object);
 	void checkforSwimming();
 
 	void performWalkingAnimation(bool walking);
