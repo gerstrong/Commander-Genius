@@ -15,7 +15,7 @@
  * \param eventtype the type of the event that is to be designated
  * \param data		if the event should also carry additional data, here they will be stored
  */
-CEvent::CEvent(wm_event event_type, void *data, size_t size) :
+CEvent::CEvent(const wm_event event_type, const void *data, const size_t size) :
 event_type(event_type),
 data(NULL),
 size(0)

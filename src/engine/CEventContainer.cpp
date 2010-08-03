@@ -20,16 +20,18 @@ bool CEventContainer::empty()
 /**
  * Add a new event. This function formats it to the CEvent class
  */
-void CEventContainer::add(wm_event event_type, void *data, size_t size)
+void CEventContainer::add(const wm_event event_type)
+{	add(event_type, NULL, 0);	}
+void CEventContainer::add(const wm_event event_type, const void *data, const size_t size)
 {
-	CEvent Event(event_type, data);
+	CEvent Event(event_type, data, size);
 	m_EventList.push_front(Event);
 }
 
 /**
  * Checks for the next occurred event
  */
-bool CEventContainer::occurredEvent( wm_event event_type )
+bool CEventContainer::occurredEvent( const wm_event event_type )
 {
 	if(m_EventList.empty()) return false;
 	CEvent &Event = m_EventList.front();
@@ -39,7 +41,7 @@ bool CEventContainer::occurredEvent( wm_event event_type )
 /**
  * Reads the data in case the event had some of it attached
  */
-bool CEventContainer::ReadData(void *data, size_t size)
+bool CEventContainer::ReadData(void *data, const size_t size)
 {
 	CEvent &Event = m_EventList.front();
 	if(size != Event.Size() || Event.getData() == NULL)

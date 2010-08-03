@@ -19,13 +19,14 @@
 #include <list>
 
 enum wm_event{
-	ENTER_LEVEL
+	ENTER_LEVEL,
+	EXIT_LEVEL
 };
 
 
 class CEvent {
 public:
-	CEvent(wm_event event_type, void *data = NULL, size_t size = 0);
+	CEvent(const wm_event event_type, const void *data, const size_t size);
 
 	bool occurred(wm_event event_type);
 
