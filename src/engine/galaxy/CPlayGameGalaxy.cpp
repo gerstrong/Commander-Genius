@@ -105,7 +105,6 @@ void CPlayGameGalaxy::process()
 		Uint16 Data;
 		EventContainer.ReadData(Data);
 		//m_WorldMap.setActive(false);
-		printf("Start a new level!\n");
 		//m_WorldMap.finishLevel(object);
 		// Start a new level!
 		EventContainer.pop_Event();

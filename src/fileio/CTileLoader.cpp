@@ -172,28 +172,13 @@ void CTileLoader::assignChangeTileAttribute(size_t NumTiles)
 	// At any other case, except some special ones, the tile is always 143 for pickuppable items
 	// 17 is tile for an exit. Until row 19, this seems to be valid
 	for(size_t i=0 ; i<NumTiles ; i++)
-		if(canbePickedup(i) || isaDoor(i) )
-			TileProperties[i].chgtile = 143;
+	{
+		if(canbePickedup(i) or isaDoor(i) )
+			TileProperties[i].chgtile = (i>=0x131) ? 0x114 : 0x8F;
+	}
 	
 	switch(m_episode)
 	{
-		case 1:
-		case 2:
-		{
-			// TODO: Check out how to perform that chgtile algorithm
-			for(int i=38*13 ; i<39*13 ; i++) // Workaround for silcar 1. Row 38
-				if( canbePickedup(i) )
-					TileProperties[i].chgtile = 439;
-			
-			for(int i=35*13 ; i<36*13 ; i++) // Workaround for silcar 4. Row 35
-				if( canbePickedup(i) )
-					TileProperties[i].chgtile = 335;
-			
-			for(int i=23*13 ; i<24*13 ; i++) // Workaround in Level 12 of Episode 2, where the tiles are solid after a taken item.
-				TileProperties[i].chgtile = 276;   // Row 23
-			
-			break;
-		}
 		case 3:
 		{
 			// Episode 3 is a special case, because the items are repeated 6 times
