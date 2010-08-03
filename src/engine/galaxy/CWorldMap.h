@@ -24,7 +24,6 @@ public:
 
 	void init();
 	void process();
-	void processInput();
 
 	virtual ~CWorldMap();
 

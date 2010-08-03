@@ -8,7 +8,8 @@
 #ifndef CPLAYERWM_H_
 #define CPLAYERWM_H_
 
-#include "../../../common/CObject.h"
+#include "common/CObject.h"
+#include "engine/CEvent.h"
 
 namespace galaxy {
 
@@ -20,6 +21,7 @@ public:
 	void processWalking();
 
 	void startLevel(Uint16 object);
+	void finishLevel(Uint16 object);
 	void checkforSwimming();
 
 	void performWalkingAnimation(bool walking);
@@ -34,6 +36,8 @@ private:
 	Uint8 m_animation_time;
 	Uint8 m_animation_ticker;
 	std::vector<CObject*>& m_ObjectPtrs;
+
+
 };
 
 }

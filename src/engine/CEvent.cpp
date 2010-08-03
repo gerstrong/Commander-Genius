@@ -28,6 +28,14 @@ size(0)
 	}
 }
 
+CEvent::CEvent(const CEvent& Event)
+{
+	this->size = Event.size;
+	this->data = malloc(size);
+	this->event_type = Event.event_type;
+	memcpy(this->data, Event.data, size);
+}
+
 /**
  * This function just looks if it is the same event we are looking for and removes it, because
  * in case it was detected

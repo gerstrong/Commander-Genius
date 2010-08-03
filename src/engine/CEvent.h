@@ -27,6 +27,7 @@ enum wm_event{
 class CEvent {
 public:
 	CEvent(const wm_event event_type, const void *data, const size_t size);
+	CEvent(const CEvent& Event);
 
 	bool occurred(wm_event event_type);
 

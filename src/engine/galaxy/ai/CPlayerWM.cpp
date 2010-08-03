@@ -46,6 +46,16 @@ void CPlayerWM::process()
 	else m_animation_ticker++;
 
 	processWalking();
+
+	// Events for the Player are processed here.
+	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+	if( EventContainer.occurredEvent( EXIT_LEVEL ) )
+	{
+		Uint16 Data;
+		EventContainer.ReadData(Data);
+		finishLevel(Data);
+		EventContainer.pop_Event();
+	}
 }
 
 /*
@@ -117,7 +127,6 @@ void CPlayerWM::processWalking()
 
 	// This will trigger between swim and walkmode
 	checkforSwimming();
-
 }
 
 /**
@@ -125,9 +134,39 @@ void CPlayerWM::processWalking()
  */
 void CPlayerWM::startLevel(Uint16 object)
 {
-
+	g_pBehaviorEngine->m_EventList.add(ENTER_LEVEL, object);
 }
 
+/*
+ *	makes the player finish the level
+ */
+void CPlayerWM::finishLevel(Uint16 object)
+{
+	// if a door or other blocker was found remove it
+	int x, y;
+	Uint16 door = (object - 0xC000) + 0xD000;
+	while(mp_Map->findTile(door, &x, &y, 2))
+	{
+		// Open blocks in case there are
+		mp_Map->setTile( x, y, 0, true, 1);
+		mp_Map->setTile( x, y, 0, true, 2);
+		mp_Map->redrawAt( x, y);
+	}
+
+	Uint16 flag_dest = (object - 0xC000) + 0xF000;
+	if(mp_Map->findTile(flag_dest, &x, &y, 2))
+	{
+		// spawn the flag
+		VectorD2<Uint32> src(this->x, this->y);
+		VectorD2<Uint32> dst((x<<CSF), (y<<CSF));
+
+		CFlag *pFlag = new CFlag(mp_Map, src, dst);
+		m_ObjectPtrs.push_back(pFlag);
+
+		// Mark the tileinfo on the map as marked!!
+		mp_Map->setTile( x, y, 0, true, 2);
+	}
+}
 /**
  * This is the function will switch between swim and walk mode
  * Those are the tileproperties to check for

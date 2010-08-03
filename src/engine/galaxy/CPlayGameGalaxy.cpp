@@ -8,10 +8,10 @@
 #include "CPlayGameGalaxy.h"
 #include "CMapLoaderGalaxy.h"
 
-#include "../../graphics/CGfxEngine.h"
-#include "../../sdl/CVideoDriver.h"
-#include "../../sdl/CInput.h"
-#include "../../StringUtils.h"
+#include "graphics/CGfxEngine.h"
+#include "sdl/CVideoDriver.h"
+#include "sdl/CInput.h"
+#include "StringUtils.h"
 
 namespace galaxy
 {
@@ -83,12 +83,6 @@ void CPlayGameGalaxy::process()
 		{
 			Uint8 new_level;
 			m_WorldMap.process();
-
-			// TODO: Let's see, if Keen has selected a new level
-			if(m_WorldMap.PollNewLevel(new_level))
-			{
-
-			}
 		}
 
 		// process World Map if active. At the start it's enabled
@@ -101,6 +95,24 @@ void CPlayGameGalaxy::process()
 
 		processRendering();
 	}
+
+	// In this part we will poll all the relevant Events that are important for the
+	// Galaxy Main Engine itself. For example, load map, setup world map, show Highscore
+	// are some of those events.
+	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+	if( EventContainer.occurredEvent( ENTER_LEVEL ) )
+	{
+		Uint16 Data;
+		EventContainer.ReadData(Data);
+		//m_WorldMap.setActive(false);
+		printf("Start a new level!\n");
+		//m_WorldMap.finishLevel(object);
+		// Start a new level!
+		EventContainer.pop_Event();
+
+		EventContainer.add(EXIT_LEVEL, Data);
+	}
+
 }
 
 void CPlayGameGalaxy::processInput()

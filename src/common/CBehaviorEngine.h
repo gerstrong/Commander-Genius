@@ -20,9 +20,10 @@
 #include <map>
 #include "CTileProperties.h"
 #include "CPhysicsSettings.h"
-#include "../fileio/TypeDefinitions.h"
+#include "fileio/TypeDefinitions.h"
+#include "engine/CEventContainer.h"
 
-#include "../CSingleton.h"
+#include "CSingleton.h"
 #define g_pBehaviorEngine CBehaviorEngine::Get()
 
 typedef struct{
@@ -53,6 +54,8 @@ public:
 	void setEpisode(size_t Episode);
 
 	virtual ~CBehaviorEngine();
+
+	CEventContainer m_EventList;
 
 private:
 	std::vector<CTileProperties> m_TileProperties[2];

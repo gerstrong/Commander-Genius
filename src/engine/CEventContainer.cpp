@@ -7,6 +7,7 @@
 
 #include "CEventContainer.h"
 #include <string.h>
+#include "CLogFile.h"
 
 CEventContainer::CEventContainer() {
 	// TODO Auto-generated constructor stub
@@ -25,7 +26,7 @@ void CEventContainer::add(const wm_event event_type)
 void CEventContainer::add(const wm_event event_type, const void *data, const size_t size)
 {
 	CEvent Event(event_type, data, size);
-	m_EventList.push_front(Event);
+	m_EventList.push_back(Event);
 }
 
 /**
@@ -44,8 +45,14 @@ bool CEventContainer::occurredEvent( const wm_event event_type )
 bool CEventContainer::ReadData(void *data, const size_t size)
 {
 	CEvent &Event = m_EventList.front();
+
 	if(size != Event.Size() || Event.getData() == NULL)
+	{
+		std::string text = "Warning! The read type differs form the requested type! Report that issue to the CG-Team!!!";
+		g_pLogFile->textOut(text);
+		throw;
 		return false;
+	}
 
 	memcpy(data, Event.getData(), size);
 	return true;
@@ -60,3 +67,4 @@ void CEventContainer::pop_Event()
 CEventContainer::~CEventContainer() {
 	// TODO Auto-generated destructor stub
 }
+
