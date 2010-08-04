@@ -344,13 +344,9 @@ void CPlayGameVorticon::process()
 #ifdef DEBUG
 			tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec()) +
 					"; x = " + itoa(m_Player[0].getXPosition()) + " ; y = " + itoa(m_Player[0].getYPosition());
-#else
-			//CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
-			//tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec());
-			//tempbuf = "inertia_x: " + itoa(m_Player[0].xinertia);
-
-#endif
 			g_pGfxEngine->getFont(0).drawFont(sfc,tempbuf,320-(tempbuf.size()<<3)-1, true);
+#endif
+
 		}
 
 		// Open the Main Menu if ESC Key pressed and mp_Menu not opened
