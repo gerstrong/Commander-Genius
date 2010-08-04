@@ -343,7 +343,7 @@ void CPlayGameVorticon::process()
 			SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
 #ifdef DEBUG
 			tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec()) +
-					"; x = " + itoa(m_Player[0].x) + " ; y = " + itoa(m_Player[0].y);
+					"; x = " + itoa(m_Player[0].getXPosition()) + " ; y = " + itoa(m_Player[0].getYPosition());
 #else
 			//CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
 			//tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec());
