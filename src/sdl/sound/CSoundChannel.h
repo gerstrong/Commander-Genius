@@ -80,10 +80,9 @@ private:
     short m_balance;					// This variable is used for stereo sound, and to calculate where the sound must be played!
     unsigned int m_freq_corr;			// used for correcting PC-Speaker sampling for different frequencies
 
-    Uint16 m_format;
+    SDL_AudioSpec m_AudioSpec;
     Sint32 m_waveout;
     Sint32 m_wavein;
-    Sint32 m_silence;
     Sint32 m_volume;
 
     std::map<int, CSoundSlot>	*m_pSoundSlot;			// Pointer to the Soundslots of CSound
