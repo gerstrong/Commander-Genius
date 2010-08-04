@@ -283,23 +283,17 @@ void CSound::playStereosound(GameSound snd, char mode, short balance)
 	for( snd_chnl = m_soundchannel.begin() ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
 	{
 		if (!snd_chnl->isPlaying())
-		{
-			goto startsound;
-		}
+			goto playsound;
 	}
 	// if all channels are full see if we have higher
 	// priority than one of the sounds already playing.
 	for( snd_chnl = m_soundchannel.begin() ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
 	{
 		if (m_soundslot[snd_chnl->getCurrentsound()].getPriority() <= m_soundslot[chnl].getPriority())
-		{
-			goto startsound;
-		}
+			goto playsound;
 	}
 	// can't play sound right now.
 	return;
-
-startsound: ;
 
 playsound: ;
 	// stop SOUND_KEEN_FALL if playing
