@@ -32,7 +32,7 @@ public:
 	void unload(void);
 	void play(void);
 	void stop(void);
-	Uint8 *passBuffer(int length); // returns the buffer that has to be played in every callback
+	Uint8 *passBuffer(size_t length); // returns the buffer that has to be played in every callback
 	bool LoadfromMusicTable(const std::string &gamepath, const std::string &levelfilename);
 
 	int playing(void){return playmode;}

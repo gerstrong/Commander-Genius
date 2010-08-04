@@ -398,7 +398,6 @@ bool CSound::loadSoundData(CExeFile &ExeFile)
 	return ok;
 }
 
-
 /*  char extractOfExeFile(const std::string& inputpath, int episode)
 
  Utility to extract the embedded sounds from Commander Keen

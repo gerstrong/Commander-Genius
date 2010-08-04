@@ -86,6 +86,7 @@ bool CMusic::load(const SDL_AudioSpec AudioSpec, const std::string &musicfile)
 			music_buffer.assign((music_len*(Audio_cvt.len_mult)*48)/44, 0);
 			adaptTo48Khz(&music_buffer.at(0), Audio_cvt.buf,
 					music_len*(Audio_cvt.len_mult), AudioSpec.format);
+			music_len = (Audio_cvt.len_cvt*48)/44;
 		}
 		else
 		{
@@ -124,7 +125,7 @@ void CMusic::stop(void)
 	playmode = PLAY_MODE_STOP;
 }
 
-Uint8 *CMusic::passBuffer(int length) // length only refers to the part(buffer) that has to be played
+Uint8 *CMusic::passBuffer(size_t length) // length only refers to the part(buffer) that has to be played
 {
 	if(music_buffer.empty())
 		return NULL;
@@ -135,6 +136,12 @@ Uint8 *CMusic::passBuffer(int length) // length only refers to the part(buffer) 
 		music_pos += length;
 		return ptr;
 	}
+	/*else
+	{
+		//Uint8* ptr = &music_buffer.at(0) + (music_len-music_pos);
+		music_pos = 0;
+		return ptr;
+	}*/
 	else
 	{
 		music_pos = 0;
