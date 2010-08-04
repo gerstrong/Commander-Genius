@@ -30,7 +30,6 @@ void CCallback(void *unused, Uint8 *stream, int len)
 CSound::CSound() {
 	m_active = false;
 	m_mixing_channels = 0;
-	m_soundchannel = NULL;
 	m_MixedForm = NULL;
 	AudioSpec.channels = 2; // Stereo Sound
 #if defined(WIZ) || defined(GP2X)
@@ -106,13 +105,9 @@ bool CSound::init(void)
 
 	m_mixing_channels = 7;
 
-	if(m_soundchannel) delete[] m_soundchannel;
-	m_soundchannel = new CSoundChannel[m_mixing_channels];
-
-	for(unsigned short i=0 ; i < m_mixing_channels ; i++) {
-		m_soundchannel[i].setFormat(AudioSpec.format);
-		m_soundchannel[i].setFrequencyCorrection(AudioSpec.freq);
-	}
+	if(!m_soundchannel.empty())
+		m_soundchannel.clear();
+	m_soundchannel.assign(m_mixing_channels, CSoundChannel(AudioSpec));
 
 	SDL_PauseAudio(0);
 
@@ -134,7 +129,9 @@ void CSound::destroy(void)
 		m_mixing_channels = 0;
 	}
 	SAFE_DELETE_ARRAY(m_MixedForm);
-	SAFE_DELETE_ARRAY(m_soundchannel);
+
+	if(!m_soundchannel.empty())
+		m_soundchannel.clear();
 
 	if(!m_soundslot.empty())
 		m_soundslot.clear();
@@ -145,8 +142,9 @@ void CSound::destroy(void)
 // stops all currently playing sounds
 void CSound::stopAllSounds(void)
 {
-	for(unsigned int chnl=0;chnl<m_mixing_channels;chnl++)
-		m_soundchannel[chnl].stopSound();
+	std::vector<CSoundChannel>::iterator snd_chnl = m_soundchannel.begin();
+	for( ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
+		snd_chnl->stopSound();
 }
 
 // pauses any currently playing sounds
@@ -164,10 +162,11 @@ void CSound::resumeSounds(void)
 // returns true if sound snd is currently playing
 bool CSound::isPlaying(GameSound snd)
 {
-	for(int i=0;i<m_mixing_channels;i++)
+	std::vector<CSoundChannel>::iterator snd_chnl = m_soundchannel.begin();
+	for( ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
 	{
-		if (m_soundchannel[i].isPlaying())
-			if (m_soundchannel[i].getCurrentsound() == snd)
+		if (snd_chnl->isPlaying())
+			if (snd_chnl->getCurrentsound() == snd)
 				return true;
 	}
 	return false;
@@ -176,17 +175,21 @@ bool CSound::isPlaying(GameSound snd)
 // if sound snd is currently playing, stops it immediately
 void CSound::stopSound(GameSound snd)
 {
-	for(unsigned int chnl=0;chnl<m_mixing_channels;chnl++)
-		if (m_soundchannel[chnl].isPlaying())
-			if (m_soundchannel[chnl].getCurrentsound() == snd)
-				m_soundchannel[chnl].stopSound();
+	std::vector<CSoundChannel>::iterator snd_chnl = m_soundchannel.begin();
+	for( ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
+	{
+		if (snd_chnl->isPlaying())
+			if (snd_chnl->getCurrentsound() == snd)
+				snd_chnl->stopSound();
+	}
 }
 
 // returns true if a sound is currently playing in PLAY_FORCE mode
 bool CSound::forcedisPlaying(void)
 {
-	for(unsigned int i=0;i<m_mixing_channels;i++)
-		if(m_soundchannel[i].isForcedPlaying())
+	std::vector<CSoundChannel>::iterator snd_chnl = m_soundchannel.begin();
+	for( ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
+		if(snd_chnl->isForcedPlaying())
 			return true;
 
 	return false;
@@ -202,9 +205,11 @@ void CSound::callback(void *unused, Uint8 *stream, int len)
     {
     	mixAudio(stream, g_pMusicPlayer->passBuffer(len), len, m_MusicVolume, AudioSpec.format);
     }
-    for( i=0 ; i < m_mixing_channels ; i++ )
+
+	std::vector<CSoundChannel>::iterator snd_chnl = m_soundchannel.begin();
+	for( ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
    	{
-    	m_soundchannel[i].readWaveform(m_MixedForm, len, AudioSpec.channels, AudioSpec.freq);
+		snd_chnl->readWaveform(m_MixedForm, len, AudioSpec.channels, AudioSpec.freq);
    		mixAudio(stream, m_MixedForm, len, m_SoundVolume, AudioSpec.format);
     }
 }
@@ -239,6 +244,8 @@ void CSound::playStereosound(GameSound snd, char mode, short balance)
 {
 	if(!(m_mixing_channels && m_active)) return;
 
+	std::vector<CSoundChannel>::iterator snd_chnl;
+
 	short chnl = 0;
 
 	if (mode==PLAY_NORESTART)
@@ -258,11 +265,11 @@ void CSound::playStereosound(GameSound snd, char mode, short balance)
 
 	if (snd==SOUND_KEEN_FALL)
 	{  // only play KEEN_FALL if no other sounds are playing
-		for(chnl=0;chnl<m_mixing_channels;chnl++)
+		for( snd_chnl = m_soundchannel.begin() ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
 		{
-			if (m_soundchannel[chnl].isPlaying())
+			if (snd_chnl->isPlaying())
 			{
-				if (m_soundslot[m_soundchannel[chnl].getCurrentsound()].getPriority() > m_soundslot[snd].getPriority())
+				if (m_soundslot[snd_chnl->getCurrentsound()].getPriority() > m_soundslot[snd].getPriority())
 				{
 					return;
 				}
@@ -273,18 +280,18 @@ void CSound::playStereosound(GameSound snd, char mode, short balance)
 	}
 
 	// first try to find an empty channel
-	for(chnl=0;chnl<m_mixing_channels;chnl++)
+	for( snd_chnl = m_soundchannel.begin() ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
 	{
-		if (!m_soundchannel[chnl].isPlaying())
+		if (!snd_chnl->isPlaying())
 		{
 			goto startsound;
 		}
 	}
 	// if all channels are full see if we have higher
 	// priority than one of the sounds already playing.
-	for(chnl=0;chnl<m_mixing_channels;chnl++)
+	for( snd_chnl = m_soundchannel.begin() ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
 	{
-		if (m_soundslot[m_soundchannel[chnl].getCurrentsound()].getPriority() <= m_soundslot[snd].getPriority())
+		if (m_soundslot[snd_chnl->getCurrentsound()].getPriority() <= m_soundslot[chnl].getPriority())
 		{
 			goto startsound;
 		}
@@ -293,19 +300,6 @@ void CSound::playStereosound(GameSound snd, char mode, short balance)
 	return;
 
 startsound: ;
-	// don't play more than once instance
-	// of the same sound in a seperate channel--
-	// instead restart the currently playing sound
-	/*for(i=0;i<m_mixing_channels;i++)
-	{
-		if (m_soundchannel[i].getCurrentsound() == snd)
-		{
-			chnl = i;
-			break;
-		}
-	}*/
-	// NOTE: Now that we have more channels, we can allow that.
-    // This code might be removed in future
 
 playsound: ;
 	// stop SOUND_KEEN_FALL if playing
@@ -403,8 +397,9 @@ bool CSound::loadSoundData(CExeFile &ExeFile)
 		ok &= m_soundslot[SOUND_FOOTSLAM].loadSound(soundfile, m_DataDirectory, "FOOTSLAM", SOUND_FOOTSLAM);
 	}
 
-	for( unsigned short i=0 ; i<m_mixing_channels ; i++ )
-		m_soundchannel[i].setSoundSlotPtr(m_soundslot);
+	std::vector<CSoundChannel>::iterator snd_chnl = m_soundchannel.begin();
+	for( ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
+		snd_chnl->setSoundSlotPtr(m_soundslot);
 
 	return ok;
 }
@@ -498,6 +493,7 @@ CSound::~CSound() {
 	destroy();
 	if (!m_soundslot.empty())
 		m_soundslot.clear();
-	if (m_soundchannel) { delete[] m_soundchannel; m_soundchannel = NULL; }
+	if (!m_soundchannel.empty())
+		m_soundchannel.clear();
 }
 

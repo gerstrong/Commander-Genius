@@ -14,6 +14,7 @@
 #include <string>
 #include <SDL.h>
 #include <map>
+#include <vector>
 #include "CSoundChannel.h"
 #include "CSoundSlot.h"
 #include "sounds.h"
@@ -57,7 +58,7 @@ public:
 	char extractOfExeFile(CExeFile &ExeFile);
 
 private:
-	CSoundChannel	*m_soundchannel;
+	std::vector<CSoundChannel>	m_soundchannel;
 	std::map<int, CSoundSlot>	m_soundslot;
 
 	static const int MAX_SOUNDS = 50;

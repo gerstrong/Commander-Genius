@@ -7,7 +7,7 @@
 
 #include "CSoundChannel.h"
 
-CSoundChannel::CSoundChannel() {
+CSoundChannel::CSoundChannel(SDL_AudioSpec AudioSpec) {
 	m_freq_corr = 0;	// used for correcting PC-Speaker sampling for different frequencies
 	m_sound_ptr = 0;
 	m_sound_timer = 0;
@@ -29,6 +29,9 @@ CSoundChannel::CSoundChannel() {
 	m_silence	= 0;
 	m_waveout	= 0;
 	m_wavein	= 0;
+
+	setFormat(AudioSpec.format);
+	setFrequencyCorrection(AudioSpec.freq);
 }
 
 CSoundChannel::~CSoundChannel() {

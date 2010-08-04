@@ -37,7 +37,7 @@
 
 class CSoundChannel {
 public:
-	CSoundChannel();
+	CSoundChannel(SDL_AudioSpec AudioSpec);
 	virtual ~CSoundChannel();
 
 	void stopSound(void);
