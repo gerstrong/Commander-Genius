@@ -9,7 +9,9 @@
 #define CSOUNDCHANNEL_H_
 
 #include <SDL.h>
+#include <map>
 #include "CSoundSlot.h"
+#include "sounds.h"
 
 // 8 bit sound
 #define WAVEFORM_VOLUME_8	5
@@ -41,7 +43,7 @@ public:
 	void stopSound(void);
 	bool isPlaying() { return m_sound_playing; }
 	bool isForcedPlaying() { return (m_sound_playing && m_sound_forced); }
-	unsigned short getCurrentsound() { return m_current_sound; }
+	GameSound getCurrentsound() { return m_current_sound; }
 	void readWaveform(Uint8* waveform, int len, Uint8 channels, int frequency);
 	void generateWaveform8(Uint8 *waveform, unsigned int len, int frequency, bool stereo);
 	void generateWaveform16(Uint8 *waveform, unsigned int len, int frequency, bool stereo);
@@ -53,19 +55,19 @@ public:
 	void enableHighQuality(bool value) { m_hq = value; }
 
 	void setFormat( Uint16 format );
-	void setupSound(unsigned short current_sound,
+	void setupSound(GameSound current_sound,
 					unsigned int sound_timer,
 					bool playing,
 					unsigned int freqtimer,
 					bool sound_forced,
 					Uint16 format);
 
-	void setSoundSlotPtr(CSoundSlot	*pSoundSlot) { m_pSoundSlot = pSoundSlot;}
+	void setSoundSlotPtr(std::map<int, CSoundSlot> &pSoundSlot) { m_pSoundSlot = &pSoundSlot;}
 
 private:
     bool m_sound_playing;           	// true = a sound is currently playing
     bool m_hq;					   		// true = the sound is high quality
-    unsigned short m_current_sound;   	// # of the sound that is currently playing
+    GameSound m_current_sound;   	    // # of the sound that is currently playing
     Uint32 m_sound_ptr;               	// position within sound that we're at
     unsigned int m_sound_timer;     	// used to slow down the rate of playback
 	bool m_sound_paused;             	// true = pause playback
@@ -84,7 +86,7 @@ private:
     Sint32 m_silence;
     Sint32 m_volume;
 
-    CSoundSlot	*m_pSoundSlot;			// Pointer to the Soundslots of CSound
+    std::map<int, CSoundSlot>	*m_pSoundSlot;			// Pointer to the Soundslots of CSound
 };
 
 #endif /* CSOUNDCHANNEL_H_ */

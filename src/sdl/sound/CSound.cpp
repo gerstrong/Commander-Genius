@@ -31,7 +31,6 @@ CSound::CSound() {
 	m_active = false;
 	m_mixing_channels = 0;
 	m_soundchannel = NULL;
-	m_soundslot = NULL;
 	m_MixedForm = NULL;
 	AudioSpec.channels = 2; // Stereo Sound
 #if defined(WIZ) || defined(GP2X)
@@ -136,7 +135,9 @@ void CSound::destroy(void)
 	}
 	SAFE_DELETE_ARRAY(m_MixedForm);
 	SAFE_DELETE_ARRAY(m_soundchannel);
-	SAFE_DELETE_ARRAY(m_soundslot);
+
+	if(!m_soundslot.empty())
+		m_soundslot.clear();
 
 	g_pLogFile->ftextOut("SoundDrv_Stop(): shut down.<br>");
 }
@@ -161,7 +162,7 @@ void CSound::resumeSounds(void)
 }
 
 // returns true if sound snd is currently playing
-bool CSound::isPlaying(int snd)
+bool CSound::isPlaying(GameSound snd)
 {
 	for(int i=0;i<m_mixing_channels;i++)
 	{
@@ -173,11 +174,11 @@ bool CSound::isPlaying(int snd)
 }
 
 // if sound snd is currently playing, stops it immediately
-void CSound::stopSound(int snd)
+void CSound::stopSound(GameSound snd)
 {
 	for(unsigned int chnl=0;chnl<m_mixing_channels;chnl++)
 		if (m_soundchannel[chnl].isPlaying())
-			if (m_soundchannel[chnl].getCurrentsound()==snd)
+			if (m_soundchannel[chnl].getCurrentsound() == snd)
 				m_soundchannel[chnl].stopSound();
 }
 
@@ -210,12 +211,12 @@ void CSound::callback(void *unused, Uint8 *stream, int len)
 
 // if priorities allow, plays the sound "snd".
 // nonzero return value indicates a higher priority sound is playing.
-void CSound::playSound(int snd, char mode)
+void CSound::playSound(GameSound snd, char mode)
 {
 	playStereosound(snd, mode, 0);
 }
 
-void CSound::playStereofromCoord(int snd, char mode, unsigned int xcoordinate)
+void CSound::playStereofromCoord(GameSound snd, char mode, unsigned int xcoordinate)
 {
     if(AudioSpec.channels == 2)
     {
@@ -234,7 +235,7 @@ void CSound::playStereofromCoord(int snd, char mode, unsigned int xcoordinate)
     	playSound(snd, mode);
 }
 
-void CSound::playStereosound(int snd, char mode, short balance)
+void CSound::playStereosound(GameSound snd, char mode, short balance)
 {
 	if(!(m_mixing_channels && m_active)) return;
 
@@ -315,7 +316,7 @@ playsound: ;
 		m_soundchannel[chnl].setBalance(balance);
 
 	m_soundchannel[chnl].enableHighQuality(m_soundslot[snd].isHighQuality());
-	m_soundchannel[chnl].setupSound((unsigned short)snd, 0, true, 0, (mode==PLAY_FORCE) ? true : false, AudioSpec.format );
+	m_soundchannel[chnl].setupSound( snd, 0, true, 0, (mode==PLAY_FORCE) ? true : false, AudioSpec.format );
 }
 
 void CSound::setGameData(CExeFile &ExeFile)
@@ -331,8 +332,8 @@ bool CSound::loadSoundData(CExeFile &ExeFile)
 	bool ok = true;
 	const std::string soundfile = "sounds.ck" + itoa(m_Episode);
 
-	if(m_soundslot) delete[] m_soundslot;
-	m_soundslot = new CSoundSlot[MAX_SOUNDS];
+	if(!m_soundslot.empty())
+		m_soundslot.clear();
 
 	for(int i=0 ; i<MAX_SOUNDS ; i++)
 	{
@@ -495,7 +496,8 @@ void CSound::setSoundmode(int freq, bool stereo, Uint16 format)
 
 CSound::~CSound() {
 	destroy();
-	if (m_soundslot) { delete[] m_soundslot; m_soundslot = NULL; }
+	if (!m_soundslot.empty())
+		m_soundslot.clear();
 	if (m_soundchannel) { delete[] m_soundchannel; m_soundchannel = NULL; }
 }
 

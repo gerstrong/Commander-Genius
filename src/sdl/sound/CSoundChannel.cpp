@@ -8,7 +8,6 @@
 #include "CSoundChannel.h"
 
 CSoundChannel::CSoundChannel() {
-	m_current_sound = 0;
 	m_freq_corr = 0;	// used for correcting PC-Speaker sampling for different frequencies
 	m_sound_ptr = 0;
 	m_sound_timer = 0;
@@ -49,7 +48,6 @@ void CSoundChannel::setFrequencyCorrection(int freq)
 
 void CSoundChannel::stopSound(void)
 {
-	m_current_sound = 0;
     m_sound_ptr = 0;
     m_sound_timer = 0;
     m_sound_playing = false;
@@ -92,7 +90,7 @@ void CSoundChannel::setFormat( Uint16 format )
 }
 
 
-void CSoundChannel::setupSound(unsigned short current_sound,
+void CSoundChannel::setupSound(GameSound current_sound,
 							   unsigned int sound_timer,
 							   bool playing,
 							   unsigned int freqtimer,
@@ -137,8 +135,8 @@ void CSoundChannel::generateWaveform16(Uint8 *waveform, unsigned int len, int fr
 		{
 			// get new frequency and compute how fast we have to
 			// change the wave data
-			if(m_sound_ptr < m_pSoundSlot[m_current_sound].getSoundlength())
-				m_desiredfreq = m_pSoundSlot[m_current_sound].getSoundData()[m_sound_ptr];
+			if(m_sound_ptr < m_pSoundSlot->at(m_current_sound).getSoundlength())
+				m_desiredfreq = m_pSoundSlot->at(m_current_sound).getSoundData()[m_sound_ptr];
 			else
 				m_desiredfreq = 0xffff;
 			
@@ -243,8 +241,8 @@ void CSoundChannel::generateWaveform8(Uint8 *waveform, unsigned int len, int fre
 		{
 			// get new frequency and compute how fast we have to
 			// change the wave data
-			if(m_sound_ptr < m_pSoundSlot[m_current_sound].getSoundlength())
-				m_desiredfreq = m_pSoundSlot[m_current_sound].getSoundData()[m_sound_ptr];
+			if(m_sound_ptr < m_pSoundSlot->at(m_current_sound).getSoundlength())
+				m_desiredfreq = m_pSoundSlot->at(m_current_sound).getSoundData()[m_sound_ptr];
 			else
 				m_desiredfreq = 0xffff;
 			
@@ -391,7 +389,7 @@ void CSoundChannel::readWaveform(Uint8* waveform, int len, Uint8 channels, int f
      	}
      	else
      	{
-     		stHQSound& hqsound = *m_pSoundSlot[m_current_sound].getHQSoundPtr();
+     		stHQSound& hqsound = *m_pSoundSlot->at(m_current_sound).getHQSoundPtr();
 
          	if ((m_sound_ptr + (Uint32)len) >= hqsound.sound_len)
          	{

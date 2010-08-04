@@ -13,6 +13,7 @@
 
 #include <string>
 #include <SDL.h>
+#include <map>
 #include "CSoundChannel.h"
 #include "CSoundSlot.h"
 #include "sounds.h"
@@ -36,11 +37,11 @@ public:
 	void callback(void *unused, Uint8 *stream, int len);
 	void pauseSound(void);
 	void resumeSounds(void);
-	void playSound(int snd, char mode);
-	void playStereofromCoord(int snd, char mode, unsigned int xcoordinate);
-	void playStereosound(int snd, char mode, short balance);
-	bool isPlaying(int snd);
-	void stopSound(int snd);
+	void playSound(GameSound snd, char mode);
+	void playStereofromCoord(GameSound snd, char mode, unsigned int xcoordinate);
+	void playStereosound(GameSound snd, char mode, short balance);
+	bool isPlaying(GameSound snd);
+	void stopSound(GameSound snd);
 	void destroy(void);
 
 	void setSoundVolume(Uint8 volume) { m_SoundVolume = volume; }
@@ -57,7 +58,7 @@ public:
 
 private:
 	CSoundChannel	*m_soundchannel;
-	CSoundSlot		*m_soundslot;
+	std::map<int, CSoundSlot>	m_soundslot;
 
 	static const int MAX_SOUNDS = 50;
 
