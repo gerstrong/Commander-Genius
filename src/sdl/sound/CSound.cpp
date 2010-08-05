@@ -246,8 +246,6 @@ void CSound::playStereosound(GameSound snd, char mode, short balance)
 
 	std::vector<CSoundChannel>::iterator snd_chnl;
 
-	short chnl = 0;
-
 	if (mode==PLAY_NORESTART)
 	{
 		if (isPlaying(snd))
@@ -258,53 +256,22 @@ void CSound::playStereosound(GameSound snd, char mode, short balance)
 	if (forcedisPlaying()) return;
 
 	// stop all other sounds if this sound has maximum priority
-	if (m_soundslot[snd].getPriority()==255 || mode==PLAY_FORCE)
-	{
+	if ( mode==PLAY_FORCE )
 		stopAllSounds();
-	}
-
-	if (snd==SOUND_KEEN_FALL)
-	{  // only play KEEN_FALL if no other sounds are playing
-		for( snd_chnl = m_soundchannel.begin() ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
-		{
-			if (snd_chnl->isPlaying())
-			{
-				if (m_soundslot[snd_chnl->getCurrentsound()].getPriority() > m_soundslot[snd].getPriority())
-				{
-					return;
-				}
-			}
-		}
-		chnl = 0;
-		goto playsound;
-	}
 
 	// first try to find an empty channel
 	for( snd_chnl = m_soundchannel.begin() ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
 	{
 		if (!snd_chnl->isPlaying())
-			goto playsound;
+		{
+			if(AudioSpec.channels == 2)
+				snd_chnl->setBalance(balance);
+
+			snd_chnl->enableHighQuality(m_soundslot[snd].isHighQuality());
+			snd_chnl->setupSound( snd, 0, true, 0, (mode==PLAY_FORCE) ? true : false, AudioSpec.format );
+			break;
+		}
 	}
-	// if all channels are full see if we have higher
-	// priority than one of the sounds already playing.
-	for( snd_chnl = m_soundchannel.begin() ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
-	{
-		if (m_soundslot[snd_chnl->getCurrentsound()].getPriority() <= m_soundslot[chnl].getPriority())
-			goto playsound;
-	}
-	// can't play sound right now.
-	return;
-
-playsound: ;
-	// stop SOUND_KEEN_FALL if playing
-	if (isPlaying(SOUND_KEEN_FALL))
-		stopSound(SOUND_KEEN_FALL);
-
-	if(AudioSpec.channels == 2)
-		m_soundchannel[chnl].setBalance(balance);
-
-	m_soundchannel[chnl].enableHighQuality(m_soundslot[snd].isHighQuality());
-	m_soundchannel[chnl].setupSound( snd, 0, true, 0, (mode==PLAY_FORCE) ? true : false, AudioSpec.format );
 }
 
 void CSound::setGameData(CExeFile &ExeFile)

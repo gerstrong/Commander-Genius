@@ -15,7 +15,6 @@
 #include "../../FindFile.h"
 
 CSoundSlot::CSoundSlot() {
-	m_priority = 0;
 	m_sounddata = NULL;
 	m_soundlength = 0;
 }
@@ -98,7 +97,6 @@ bool CSoundSlot::loadSound(const std::string& fname, const std::string& path, co
 CSoundSlot::~CSoundSlot() {
 	HQSndDrv_Unload(&m_hqsound);
 	if(m_sounddata){ delete[] m_sounddata; m_sounddata = NULL; }
-	m_priority = 0;
 	m_hqsound.enabled = false;
 }
 
