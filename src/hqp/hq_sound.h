@@ -10,6 +10,7 @@
 
 #include <SDL.h>
 #include <string>
+#include "sdl/sound/Mixer.h"
 
 struct stHQSound
 {
@@ -20,8 +21,6 @@ struct stHQSound
 	stHQSound() : sound_buffer(NULL), sound_len(0),
 				  enabled(false) {}
 };
-
-void adaptTo48Khz(Uint8* output_buffer, Uint8 *input_buffer, unsigned long len, Uint16 format);
 
 short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::string& gamepath, const std::string& soundname);
 void HQSndDrv_Unload(stHQSound *psound);

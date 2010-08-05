@@ -5,13 +5,14 @@
  *      Author: gerstrong
  */
 
-#include "../sdl/sound/CSound.h"
+#include "sdl/sound/CSound.h"
 #include "CMusic.h"
-#include "../hqp/hq_sound.h"
-#include "../CLogFile.h"
-#include "../vorbis/oggsupport.h"
-#include "../FindFile.h"
-#include "../fileio/ResourceMgmt.h"
+#include "hqp/hq_sound.h"
+#include "CLogFile.h"
+#include "vorbis/oggsupport.h"
+#include "FindFile.h"
+#include "fileio/ResourceMgmt.h"
+#include "sdl/sound/Sampling.h"
 #include <fstream>
 
 CMusic::CMusic() :
@@ -83,10 +84,15 @@ bool CMusic::load(const SDL_AudioSpec AudioSpec, const std::string &musicfile)
 		// Special conversion for 48 kHz
 		if(AudioSpec.freq == 48000)
 		{
-			music_buffer.assign((music_len*(Audio_cvt.len_mult)*48)/44, 0);
-			adaptTo48Khz(&music_buffer.at(0), Audio_cvt.buf,
-					music_len*(Audio_cvt.len_mult), AudioSpec.format);
-			music_len = (Audio_cvt.len_cvt*48)/44;
+			const float factor = ((float)AudioSpec.freq)/(44100.0f);
+			const unsigned long in_len = music_len*Audio_cvt.len_mult;
+			const unsigned long out_len = (float)in_len*factor;
+
+			music_buffer.assign((float)(music_len*Audio_cvt.len_mult)*factor, 0);
+
+			resample(&music_buffer.at(0), Audio_cvt.buf,
+					out_len, in_len, AudioSpec.format, AudioSpec.channels);
+			music_len = out_len;
 		}
 		else
 		{

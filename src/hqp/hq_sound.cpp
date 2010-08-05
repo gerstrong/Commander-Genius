@@ -5,13 +5,14 @@
  *      Author: gerstrong
  */
 #include <SDL.h>
-#include "../hqp/hq_sound.h"
-#include "../keen.h"
-#include "../sdl/CVideoDriver.h"
-#include "../vorbis/oggsupport.h"
-#include "../CLogFile.h"
-#include "../FindFile.h"
-#include "../fileio/ResourceMgmt.h"
+#include "hqp/hq_sound.h"
+#include "keen.h"
+#include "sdl/CVideoDriver.h"
+#include "vorbis/oggsupport.h"
+#include "CLogFile.h"
+#include "FindFile.h"
+#include "fileio/ResourceMgmt.h"
+#include "sdl/sound/Sampling.h"
 
 #include <vector>
 
@@ -104,10 +105,14 @@ short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::stri
 	// copy the converted stuff to the original soundbuffer
 	if(AudioSpec->freq == 48000)
 	{
-		psound->sound_len = (Audio_cvt.len_cvt*48)/44;
-		psound->sound_buffer = (Uint8*) malloc(psound->sound_len);
-		adaptTo48Khz(psound->sound_buffer, Audio_cvt.buf,
-				Audio_cvt.len_cvt, AudioSpec->format);
+		const float factor = ((float)AudioSpec->freq)/(44100.0f);
+		psound->sound_len = Audio_cvt.len_cvt;
+		const unsigned long out_len = (float)psound->sound_len*factor;
+		psound->sound_buffer = (Uint8*) malloc(out_len);
+
+		resample(psound->sound_buffer, Audio_cvt.buf,
+				out_len, psound->sound_len, AudioSpec->format, AudioSpec->channels);
+		psound->sound_len = out_len;
 	}
 	else
 	{
@@ -122,33 +127,7 @@ short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::stri
 	return 0;
 }
 
-// this fixes the speed of the played songs, when using 48 KHz Mode
-void adaptTo48Khz(Uint8* output_buffer, Uint8 *input_buffer, unsigned long len, Uint16 format)
-{
-	Uint64 strechedsize = (len*48)/44;
-	Uint8 *strechedbuf = (Uint8*) malloc(strechedsize  * sizeof(Uint8));
-	unsigned short bits;
 
-	if( format == AUDIO_S16 ) bits = 2;
-	else bits=1;
-	for( size_t i=0, j=0 ; i<len && j<strechedsize ; i+=bits )
-	{
-		while(i+bits > (j*44)/48 && i+bits < len && j < strechedsize)
-		{
-			Sint16 valuelow;
-			Sint16 valuehigh;
-			valuelow = *(input_buffer+i);
-			valuehigh = *(input_buffer+i+bits);
-			memcpy(&valuelow, input_buffer+i, bits);
-			memcpy(&valuehigh, input_buffer+i+bits, bits);
-			Sint16 newvalue = (valuelow + valuehigh)/2;
-			memcpy(strechedbuf+j, &newvalue, bits);
-			j+=bits;
-		}
-	}
-	memcpy(output_buffer, strechedbuf, strechedsize);
-	free(strechedbuf);
-}
 
 void HQSndDrv_Unload(stHQSound *psound)
 {
