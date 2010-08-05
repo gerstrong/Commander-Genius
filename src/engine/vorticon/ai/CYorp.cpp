@@ -48,7 +48,6 @@ void CYorp::process()
 		sprite = YORP_DYING_FRAME;
 		yorpdie_inertia_y = YORPDIE_START_INERTIA;
 		moveUp(10);
-		inhibitfall = 1;
 		g_pSound->playStereofromCoord(SOUND_YORP_DIE, PLAY_NOW, scrx);
 		}
 		else
@@ -221,7 +220,6 @@ void CYorp::processDying()
 	if (yorpdie_inertia_y >= 0 && blockedd)
 	{
 		sprite = YORP_DEAD_FRAME;
-		inhibitfall = 0;
 		dead = false;
 	}
 }

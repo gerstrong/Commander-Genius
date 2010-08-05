@@ -1,6 +1,10 @@
 Commander Genius Release :
 ==========================
 
+v0.3.2.2:
+---------
+- Even better Sound support
+
 v0.3.2.1:
 ---------
 - more AI fixes

@@ -130,7 +130,7 @@ void CObject::setupObjectType(int Episode)
 
 }
 
-// This is needed when a new object is created, because the collision
+// This also checks the collision. Very simple pixel based algoritm
 // per tile, really checks per tile and not pixel based
 void CObject::setupinitialCollisions()
 {
@@ -149,14 +149,22 @@ void CObject::setupinitialCollisions()
 		for(size_t i=bboxX1; i<=bboxX2 ; i+=(1<<STC))
 		{
 			blockedu |= TileProperty[mp_Map->at((x+i)>>CSF,(y+bboxY1)>>CSF)].bdown;
+			if(TileProperty[mp_Map->at((x+i)>>CSF,(y+bboxY1+(1<<STC))>>CSF)].bdown)
+				moveDown(1<<STC);
 			blockedd |= TileProperty[mp_Map->at((x+i)>>CSF,(y+bboxY2)>>CSF)].bup;
+			if(TileProperty[mp_Map->at((x+i)>>CSF,(y+bboxY2-(1<<STC))>>CSF)].bup)
+				moveUp(1<<STC);
 		}
 
 		// Left/Right borders
 		for(size_t j=bboxY1; j<=bboxY2 ; j+=(1<<STC))
 		{
 			blockedr |= TileProperty[mp_Map->at((x+bboxX2)>>CSF,(y+j)>>CSF)].bleft;
+			if(TileProperty[mp_Map->at((x+bboxX2-(1<<STC))>>CSF,(y+j)>>CSF)].bleft)
+				moveLeft(1<<STC);
 			blockedl |= TileProperty[mp_Map->at((x+bboxX1)>>CSF,(y+j)>>CSF)].bright;
+			if(TileProperty[mp_Map->at((x+bboxX1+(1<<STC))>>CSF,(y+j)>>CSF)].bright)
+				moveRight(1<<STC);
 		}
 	}
 }

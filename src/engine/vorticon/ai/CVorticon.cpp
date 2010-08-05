@@ -58,7 +58,6 @@ void CVorticon::process() {
 		kill = true;
 
 	if (kill) {
-		inhibitfall = false;
 		animtimer = 0;
 		frame = 0;
 		if (Episode == 1) {

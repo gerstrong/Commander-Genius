@@ -16,7 +16,7 @@ CObject(p_map, x, y, OBJ_ROPE)
 {
 	state = ROPE_IDLE;
 	canbezapped = 1;
-	inhibitfall = 1;
+	inhibitfall = true;
 	sprite = OBJ_ROPE_DEFSPRITE;
 	needinit = false;
 	droptimer = 0;

@@ -36,6 +36,7 @@ void CObjectAI::process()
 
 		if( object.checkforScenario() )
 		{
+			object.setupinitialCollisions();
 			object.processFalling();
 
 			if(!object.dead) // Only do that if not dead

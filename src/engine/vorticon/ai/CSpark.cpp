@@ -92,7 +92,6 @@ void CSpark::process()
 			CRay *newobject = new CRay(mp_Map, mx<<CSF, my<<CSF, DOWN);
 			newobject->state = CRay::RAY_STATE_SETZAPZOT;
 			newobject->setOwner(m_type, m_index);
-			newobject->inhibitfall = true;
 			m_Object.push_back(newobject);
 			g_pSound->playStereofromCoord(SOUND_SHOT_HIT,PLAY_NOW, newobject->getXPosition());
 
@@ -137,7 +136,6 @@ void CSpark::process()
 				CRay *newobject = new CRay(mp_Map, mx<<CSF, (my+y)<<CSF, DOWN);
 				newobject->setOwner(m_type ,m_index);
 				newobject->state = CRay::RAY_STATE_SETZAPZOT;
-				newobject->inhibitfall = true;
 				g_pSound->playStereofromCoord(SOUND_SHOT_HIT, PLAY_NOW, newobject->getXPosition());
 				m_Object.push_back(newobject);
 			}
