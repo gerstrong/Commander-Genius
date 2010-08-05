@@ -67,7 +67,7 @@ bool CMessages::extractGlobalStrings()
 					StringMap.insert( extractString( "EP1_SHIP" , 0x1679B, 0x167D3, -512 ) );
 					StringMap.insert( extractString( "LIVES_LEFT" , 0x160D8, 0x160E5, -512 ) );
 					// Message hint Dialogs
-					StringMap.insert( extractString( "EP1_YSIYM_LVL2" , 0x15280, 0x15312, -512 ) );
+					StringMap.insert( extractString( "EP1_YSIYM_LVL2" , 0x15280, 0x15314, -512 ) );
 					StringMap.insert( extractString( "EP1_YSIYM_LVL6" , 0x1531A, 0x153B2, -512 ) );
 					StringMap.insert( extractString( "EP1_YSIYM_LVL9" , 0x153B4, 0x1544C, -512 ) );
 					StringMap.insert( extractString( "EP1_YSIYM_LVL10" , 0x1544E, 0x154E6, -512 ) );
