@@ -1,14 +1,14 @@
 /*
- * CWorldMap.h
+ * CLevelPlay.h
  *
- *  Created on: 14.07.2010
+ *  Created on: 06.08.2010
  *      Author: gerstrong
  *
- *  This is in charge of the ai and physics on the worldmap
+ *  This class will manage the entire gameplay in one level
  */
 
-#ifndef CWORLDMAP_H_
-#define CWORLDMAP_H_
+#ifndef CLEVELPLAY_H_
+#define CLEVELPLAY_H_
 
 #include "common/CObject.h"
 #include "fileio/CExeFile.h"
@@ -16,16 +16,17 @@
 
 namespace galaxy {
 
-class CWorldMap {
+class CLevelPlay {
 public:
-	CWorldMap(CExeFile &ExeFile);
+	CLevelPlay(CExeFile &ExeFile);
 	bool isActive();
 	void setActive(bool value);
 
-	void init();
+	bool loadLevel(Uint16 level);
+
 	void process();
 
-	virtual ~CWorldMap();
+	virtual ~CLevelPlay();
 
 private:
 	std::vector<CObject*> m_ObjectPtr;
@@ -37,4 +38,4 @@ private:
 
 }
 
-#endif /* CWORLDMAP_H_ */
+#endif /* CLEVELPLAY_H_ */

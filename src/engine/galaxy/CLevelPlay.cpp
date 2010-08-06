@@ -1,41 +1,41 @@
 /*
- * CWorldMap.cpp
+ * CLevelPlay.cpp
  *
- *  Created on: 14.07.2010
+ *  Created on: 06.08.2010
  *      Author: gerstrong
  */
 
-#include "CWorldMap.h"
+#include "CLevelPlay.h"
 #include "CMapLoaderGalaxy.h"
-#include "../../sdl/CInput.h"
-#include "../../sdl/CVideoDriver.h"
-#include "../../StringUtils.h"
+#include "sdl/CInput.h"
+#include "sdl/CVideoDriver.h"
 
 namespace galaxy {
 
-CWorldMap::CWorldMap(CExeFile &ExeFile):
+CLevelPlay::CLevelPlay(CExeFile &ExeFile) :
 m_active(false),
 m_ExeFile(ExeFile)
-{}
+{ }
 
-bool CWorldMap::isActive()
+bool CLevelPlay::isActive()
 {	return m_active;	}
 
-void CWorldMap::setActive(bool value)
+void CLevelPlay::setActive(bool value)
 {	m_active = value;	}
 
-void CWorldMap::init()
+bool CLevelPlay::loadLevel(Uint16 level)
 {
 	// Load the World map level.
 	CMapLoaderGalaxy MapLoader(m_ExeFile, m_ObjectPtr);
 
 	m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
-	MapLoader.loadMap(m_Map, 0); // Map Level?
+	MapLoader.loadMap(m_Map, level);
 
 	m_Map.drawAll();
+	return true;
 }
 
-void CWorldMap::process()
+void CLevelPlay::process()
 {
 	// Animate the tiles of the map
 	m_Map.animateAllTiles();
@@ -57,13 +57,8 @@ void CWorldMap::process()
 
 }
 
-
-CWorldMap::~CWorldMap() {
-	while(!m_ObjectPtr.empty())
-	{
-		delete m_ObjectPtr.back();
-		m_ObjectPtr.pop_back();
-	}
+CLevelPlay::~CLevelPlay() {
+	// TODO Auto-generated destructor stub
 }
 
 }

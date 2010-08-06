@@ -21,6 +21,7 @@ CPlayGameGalaxy::CPlayGameGalaxy(CExeFile &ExeFile, char level,
 		 stOption *p_option, CSavedGame &SavedGame) :
 CPlayGame(ExeFile, level, numplayers, difficulty, p_option),
 m_WorldMap(ExeFile),
+m_LevelPlay(ExeFile),
 mp_Menu(NULL),
 m_SavedGame(SavedGame)
 {
@@ -33,23 +34,9 @@ bool CPlayGameGalaxy::loadGameState()
 // Setup for the ingame
 bool CPlayGameGalaxy::init()
 {
-	loadLevel();
 	m_WorldMap.setActive(true);
 
 	return false;
-}
-
-void CPlayGameGalaxy::loadLevel()
-{
-	// Load the Level map. We have two modes. Inlevel and game map
-
-	// TODO: Lets load the main map for now and create a process for this
-	//CMapLoaderGalaxy MapLoader(m_ExeFile);
-
-	//m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
-	//MapLoader.loadMap(m_Map,0); // Map Level?
-
-	//m_Map.drawAll();
 }
 
 /**
@@ -81,13 +68,14 @@ void CPlayGameGalaxy::process()
 		// process World Map if active. At the start it's enabled
 		if(m_WorldMap.isActive())
 		{
-			Uint8 new_level;
 			m_WorldMap.process();
 		}
 
 		// process World Map if active. At the start it's enabled
-		//if(m_LevelPlay.isActive())
-		//m_LevelPlay.process();
+		if(m_LevelPlay.isActive())
+		{
+			m_LevelPlay.process();
+		}
 
 		// process Page if one is open. Could be one of the finale scenes
 		//if(m_Page.isActive())
@@ -104,12 +92,14 @@ void CPlayGameGalaxy::process()
 	{
 		Uint16 Data;
 		EventContainer.ReadData(Data);
-		//m_WorldMap.setActive(false);
-		//m_WorldMap.finishLevel(object);
-		// Start a new level!
 		EventContainer.pop_Event();
+		m_WorldMap.setActive(false);
 
-		EventContainer.add(EXIT_LEVEL, Data);
+		// Start a new level!
+		m_LevelPlay.loadLevel(Data-0xC000);
+		m_LevelPlay.setActive(true);
+
+		//EventContainer.add(EXIT_LEVEL, Data);
 	}
 
 }

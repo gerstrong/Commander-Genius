@@ -8,9 +8,10 @@
 #ifndef CPLAYGAMEGALAXY_H_
 #define CPLAYGAMEGALAXY_H_
 
-#include "../playgame/CPlayGame.h"
-#include "../../common/CMap.h"
+#include "engine/playgame/CPlayGame.h"
+#include "common/CMap.h"
 #include "CWorldMap.h"
+#include "CLevelPlay.h"
 #include "CMenuGalaxy.h"
 #include <vector>
 
@@ -25,7 +26,6 @@ public:
 			 stOption *p_option, CSavedGame &SavedGame);
 
 	bool loadGameState();
-	void loadLevel();
 	bool init();
 
 	void process();
@@ -39,6 +39,7 @@ public:
 
 private:
 	CWorldMap m_WorldMap;
+	CLevelPlay m_LevelPlay;
 	CMenuGalaxy *mp_Menu;
 	CSavedGame &m_SavedGame;
 	CBitmap m_BackgroundBitmap;
