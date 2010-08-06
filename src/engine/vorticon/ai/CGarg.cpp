@@ -37,7 +37,6 @@ void CGarg::process()
 		dying = true;
 		sprite = GARG_DYING_FRAME;
 		yinertia = GARGDIE_START_INERTIA;
-		moveUp(10);
 		g_pSound->playStereofromCoord(SOUND_GARG_DIE, PLAY_NOW, scrx);
 	}
 
@@ -80,7 +79,7 @@ void CGarg::process()
 	switch(state)
 	{
 	case GARG_DYING:
-		if ( blockedd )
+		if ( blockedd && yinertia >= 0 )
 		{
 			sprite = GARG_DEAD_FRAME;
 			dead = true;

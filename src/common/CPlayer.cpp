@@ -806,7 +806,7 @@ bool CPlayer::checkObjSolid()
 {
 	supportedbyobject = false;
 
-	// This code prevents Keen making stick in the air when a supported object leaves him
+	// This code prevents Keen getting stuck in the air when a supported object leaves him
 	if(getYDownPos()+1 == (((getYDownPos()+1)>>CSF)<<CSF))
 		blockedd = checkSolidD(getXLeftPos(), getXRightPos(), getYDownPos()+1);
 	else

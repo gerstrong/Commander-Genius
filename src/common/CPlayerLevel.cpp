@@ -77,6 +77,7 @@ void CPlayer::processInLevel()
 
 		// Check collision with other objects
 		checkObjSolid();
+		performCollisions();
 		if(!inhibitfall) Playerfalling();
 	}
 }
@@ -650,8 +651,8 @@ CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
 		// Check if player is on iceplayer.
 		if(!pjumping && !ppogostick)
 		{
-			int ice = TileProperty[mp_Map->at(getXLeftPos()>>CSF, (ydown+1)>>CSF)].bup;
-			ice |= TileProperty[mp_Map->at(getXRightPos()>>CSF, (ydown+1)>>CSF)].bup;
+			int ice = TileProperty[mp_Map->at(getXLeftPos()>>CSF, (ydown+(1<<STC))>>CSF)].bup;
+			ice |= TileProperty[mp_Map->at(getXRightPos()>>CSF, (ydown+(1<<STC))>>CSF)].bup;
 			if(!blockedl && !blockedr)
 			{
 				if(ice == 2) psemisliding = true;

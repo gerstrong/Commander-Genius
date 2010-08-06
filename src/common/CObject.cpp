@@ -136,7 +136,6 @@ void CObject::setupObjectType(int Episode)
  */
 void CObject::performCollisions()
 {
-	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 	blockedr = blockedl = false;
 	blockedu = blockedd = false;
 
@@ -148,26 +147,12 @@ void CObject::performCollisions()
 
 		// Check initial collision. This will avoid that ray go through the first blocking element
 		// Upper/Lower borders
-		for(size_t i=bboxX1; i<=bboxX2 ; i+=(1<<STC))
-		{
-			blockedu |= TileProperty[mp_Map->at((x+i)>>CSF,(y+bboxY1)>>CSF)].bdown;
-			if(TileProperty[mp_Map->at((x+i)>>CSF,(y+bboxY1+(1<<STC))>>CSF)].bdown)
-				moveDown(1<<STC);
-			blockedd |= TileProperty[mp_Map->at((x+i)>>CSF,(y+bboxY2)>>CSF)].bup;
-			if(TileProperty[mp_Map->at((x+i)>>CSF,(y+bboxY2-(1<<STC))>>CSF)].bup)
-				moveUp(1<<STC);
-		}
+		blockedu = checkSolidU(x+bboxX1, x+bboxX2, y+bboxY1);
+		blockedd = checkSolidD(x+bboxX1, x+bboxX2, y+bboxY2);
 
 		// Left/Right borders
-		for(size_t j=bboxY1; j<=bboxY2 ; j+=(1<<STC))
-		{
-			blockedr |= TileProperty[mp_Map->at((x+bboxX2)>>CSF,(y+j)>>CSF)].bleft;
-			if(TileProperty[mp_Map->at((x+bboxX2-(1<<STC))>>CSF,(y+j)>>CSF)].bleft)
-				moveLeft(1<<STC);
-			blockedl |= TileProperty[mp_Map->at((x+bboxX1)>>CSF,(y+j)>>CSF)].bright;
-			if(TileProperty[mp_Map->at((x+bboxX1+(1<<STC))>>CSF,(y+j)>>CSF)].bright)
-				moveRight(1<<STC);
-		}
+		blockedl = checkSolidL(x+bboxX1, y+bboxY1, y+bboxY2);
+		blockedr = checkSolidR(x+bboxX2, y+bboxY1, y+bboxY2);
 	}
 }
 
@@ -315,42 +300,28 @@ void CObject::moveLeft(int amount, bool force)
 		return;
 	}
 
+	if(!performSlopedTileDown(x1, y2, -amount))
+		performSlopedTileUp(x1, y1, -amount);
 
-	// check if we walked into other tiles
-	int tile_x_old = (x1>>CSF)<<CSF;
-	int tile_x_new = ((x1-amount)>>CSF)<<CSF;
-
-	if( tile_x_old != tile_x_new ) // Did he pass the tile border?
-	{ // Yes, we have to check the collision
-		if(checkSolidL(x1-amount, y1, y2))
+	do
+	{
+		performCollisions();
+		if(!blockedl)
 		{
-			x = tile_x_old - bboxX1;
-			blockedl = true;
+			if(amount > (1<<STC))
+			{
+				x -= (1<<STC);
+				amount -= (1<<STC);
+			}
+			else
+			{
+				x -= amount;
+				amount = 0;
+			}
 		}
-		else
-		{
-			x -= amount;
-			blockedl = false;
-		}
-	}
-	else
-		x -= amount;
+		else break;
+	} while( amount > 0 );
 
-	x1 = x + bboxX1;
-	int x2 = x + bboxX2;
-
-	if(y2+1 == (((y2+1)>>CSF)<<CSF))
-		blockedd = checkSolidD(x1, x2, y2+1);
-	else
-		blockedd = false;
-
-	if(y1 == ((y1>>CSF)<<CSF))
-		blockedu = checkSolidU(x1, x2, y1-1);
-	else
-		blockedu = false;
-
-	if(!performSlopedTileDown(x, y2, -amount))
-		performSlopedTileUp(x, y1, -amount);
 }
 
 void CObject::moveRight(int amount, bool force)
@@ -374,40 +345,27 @@ void CObject::moveRight(int amount, bool force)
 		return;
 	}
 
-	// check if we walked into other tiles
-	int tile_x_old = (x2>>CSF)<<CSF;
-	int tile_x_new = ((x2+amount)>>CSF)<<CSF;
+	if(!performSlopedTileDown(x2, y2, amount))
+		performSlopedTileUp(x2, y1, amount);
 
-	if( tile_x_old != tile_x_new ) // Did he pass the tile border?
-	{ // Yes, we have to check the collision
-		if(checkSolidR(x2+amount, y1, y2))
+	do
+	{
+		performCollisions();
+		if(!blockedr)
 		{
-			blockedr = true;
-			x = tile_x_new - 1 - bboxX2;
+			if(amount > (1<<STC))
+			{
+				x += (1<<STC);
+				amount -= (1<<STC);
+			}
+			else
+			{
+				x += amount;
+				amount = 0;
+			}
 		}
-		else
-		{
-			blockedr = false;
-			x += amount;
-		}
-	}
-	else
-		x += amount;
-
-	int x1 = x + bboxX1 + 1;
-	x2 = x + bboxX2 - 1;
-	if(y2+1 == (((y2+1)>>CSF)<<CSF))
-		blockedd = checkSolidD(x1, x2, y2+1);
-	else
-		blockedd = false;
-
-	if(y1 == ((y1>>CSF)<<CSF))
-		blockedu = checkSolidU(x1, x2, y1-1);
-	else
-		blockedu = false;
-
-	if(!performSlopedTileDown(x, y2, amount));
-		performSlopedTileUp(x, y1, amount);
+		else break;
+	} while( amount > 0 );
 }
 
 void CObject::moveUp(int amount)
@@ -427,40 +385,24 @@ void CObject::moveUp(int amount)
 		return;
 	}
 
-	blockedd = false;
-
-	// check if we walked into other tiles
-	int tile_y_old = (y1>>CSF)<<CSF;
-	int tile_y_new = (((y1-amount)>>CSF))<<CSF;
-
-	if( tile_y_old != tile_y_new ) // Did he pass the tile border?
-	{ // Yes, we have to check the collision
-		if(checkSolidU(x1, x2, y1-amount))
+	do
+	{
+		performCollisions();
+		if(!blockedu)
 		{
-			y = tile_y_old - bboxY1;
-			blockedu = true;
+			if(amount > (1<<STC))
+			{
+				y -= (1<<STC);
+				amount -= (1<<STC);
+			}
+			else
+			{
+				y -= amount;
+				amount = 0;
+			}
 		}
-		else
-		{
-			y -= amount;
-			blockedu = false;
-		}
-	}
-	else
-		y -= amount;
-
-	y1 = y + bboxY1;
-	int y2 = y + bboxY2;
-
-	if(x2+1 == (((x2+1)>>CSF)<<CSF))
-		blockedr = checkSolidR(x2+1,y1,y2);
-	else
-		blockedr = false;
-
-	if(x1 == ((x1>>CSF)<<CSF))
-		blockedl = checkSolidL(x1-1,y1,y2);
-	else
-		blockedl = false;
+		else break;
+	} while( amount > 0 );
 }
 
 void CObject::moveDown(int amount)
@@ -479,38 +421,24 @@ void CObject::moveDown(int amount)
 		return;
 	}
 
-	// check if we walked into other tiles
-	int tile_y_old = (y2>>CSF)<<CSF;
-	int tile_y_new = (((y2+amount)>>CSF))<<CSF;
-
-	if( tile_y_old != tile_y_new ) // Did he pass the tile border?
-	{ // Yes, we have to check the collision
-		if(checkSolidD(x1, x2, y2+amount))
+	do
+	{
+		performCollisions();
+		if(!blockedd)
 		{
-			y = tile_y_new - 1 - bboxY2;
-			blockedd = true;
+			if(amount > (1<<STC))
+			{
+				y += (1<<STC);
+				amount -= (1<<STC);
+			}
+			else
+			{
+				y += amount;
+				amount = 0;
+			}
 		}
-		else
-		{
-			y += amount;
-			blockedd = false;
-		}
-	}
-	else
-		y += amount;
-
-	int y1 = y + bboxY1;
-	y2 = y + bboxY2;
-
-	if(x2+1 == (((x2+1)>>CSF)<<CSF))
-		blockedr = checkSolidR(x2+1,y1,y2);
-	else
-		blockedr = false;
-
-	if(x1 == ((x1>>CSF)<<CSF))
-		blockedl = checkSolidL(x1-1,y1,y2);
-	else
-		blockedl = false;
+		else break;
+	} while(amount > 0);
 }
 
 // This decreases the inertia we have of the object in X-direction.
@@ -633,10 +561,15 @@ void CObject::kill_intersecting_tile(int mpx, int mpy, CObject &theObject)
 				 theObject.kill();
 }
 
-const int COLISION_RES = 4;
+const int COLISION_RES = (1<<STC);
 bool CObject::checkSolidR( int x2, int y1, int y2)
 {
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+
+	x2 += COLISION_RES;
+
+	if( (x2>>STC) != ((x2>>CSF)<<TILE_S) )
+		return false;
 
 	// Check for right from the object
 	if(solid)
@@ -670,6 +603,11 @@ bool CObject::checkSolidL( int x1, int y1, int y2)
 {
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 
+	if( (x1>>STC) != ((x1>>CSF)<<TILE_S) )
+		return false;
+
+	x1 -= COLISION_RES;
+
 	// Check for right from the object
 	if(solid)
 	{
@@ -698,7 +636,13 @@ bool CObject::checkSolidL( int x1, int y1, int y2)
 
 bool CObject::checkSolidU(int x1, int x2, int y1)
 {
+	bool vorticon = (g_pBehaviorEngine->getEpisode() <= 3);
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+
+	if( vorticon && ((y1)>>STC) != ((y1>>CSF)<<TILE_S)  )
+		return false;
+
+	y1 -= COLISION_RES;
 
 	// Check for right from the object
 	if(solid)
@@ -709,7 +653,7 @@ bool CObject::checkSolidU(int x1, int x2, int y1)
 
 			if(blocked)
 			{
-				if(g_pBehaviorEngine->getEpisode() <= 3 or checkslopedU(c, y1, blocked))
+				if(vorticon or checkslopedU(c, y1, blocked))
 					return true;
 			}
 		}
@@ -723,7 +667,13 @@ bool CObject::checkSolidU(int x1, int x2, int y1)
 
 bool CObject::checkSolidD( int x1, int x2, int y2 )
 {
+	bool vorticon = (g_pBehaviorEngine->getEpisode() <= 3);
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+
+	y2 += COLISION_RES;
+
+	if( vorticon && (y2>>STC) != ((y2>>CSF)<<TILE_S) )
+		return false;
 
 	// Check for down from the object
 	if(solid)
@@ -732,9 +682,10 @@ bool CObject::checkSolidD( int x1, int x2, int y2 )
 		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
 		{
 			blocked = TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bup;
+
 			if(blocked)
 			{
-				if(g_pBehaviorEngine->getEpisode() <= 3 or checkslopedD(c, y2, blocked))
+				if( vorticon or checkslopedD(c, y2, blocked) )
 					return true;
 			}
 		}
@@ -838,8 +789,9 @@ bool CObject::checkslopedU( int c, int y1, char blocked)
 	else
 		yb1 = 512,	yb2 = 512;
 
-	int yh = (yb1+yb2)*(c%512)/512;
-	return ( y1%512 < yh );
+	int dy = ((yb2-yb1-32)*(c%512))/512;
+	int yh = yb1 + dy;
+	return ( (y1%512) < yh );
 }
 
 /* Spezial slope function for galaxy maps
@@ -862,13 +814,15 @@ bool CObject::checkslopedD( int c, int y2, char blocked)
 	else if( blocked == 5 )
 		yb1 = 256,	yb2 = 0;
 	else if( blocked == 6 )
-		yb1 = 0,	yb2 = 256;
+		yb1 = 512,	yb2 = 256;
 	else if( blocked == 7 )
-		yb1 = 0,	yb2 = 512;
+		yb1 = 512,	yb2 = 0;
 	else
 		yb1 = 0,	yb2 = 0;
 
-	int yh = (yb1+yb2)*(c%512)/512;
+
+	int dy = ((yb2-yb1)*(c%512))/512;
+	int yh = yb1 + dy;
 	return ( y2%512 > yh );
 }
 

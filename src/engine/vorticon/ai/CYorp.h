@@ -42,7 +42,7 @@
 #define YORP_DEAD_FRAME    59
 #define YORP_DIE_TIME      22
 
-#define YORPDIE_START_INERTIA      -10
+#define YORPDIE_START_INERTIA      -40
 #define YORPDIE_MAX_INERTIA         480
 #define YORPDIE_INERTIA_DECREASE    8
 
@@ -84,7 +84,6 @@ private:
 	unsigned char timer, dietimer;
 	unsigned char walkframe;
 	unsigned int dist_traveled;
-	signed int yorpdie_inertia_y;
 
 	direction_t movedir;
 };

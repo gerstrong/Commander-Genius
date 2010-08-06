@@ -24,7 +24,6 @@ timer(0),
 dietimer(0),
 walkframe(0),
 dist_traveled(0),
-yorpdie_inertia_y(0),
 movedir(LEFT)
 {
 	m_type = OBJ_YORP;
@@ -42,13 +41,12 @@ void CYorp::process()
 		// what'd you kill an innocent yorp for, you bastard!
 		if(!m_hardmode)
 		{
-		state = YORP_DYING;
-		dying = true;
-		dietimer = 0;
-		sprite = YORP_DYING_FRAME;
-		yorpdie_inertia_y = YORPDIE_START_INERTIA;
-		moveUp(10);
-		g_pSound->playStereofromCoord(SOUND_YORP_DIE, PLAY_NOW, scrx);
+			state = YORP_DYING;
+			dying = true;
+			dietimer = 0;
+			sprite = YORP_DYING_FRAME;
+			yinertia = YORPDIE_START_INERTIA;
+			g_pSound->playStereofromCoord(SOUND_YORP_DIE, PLAY_NOW, scrx);
 		}
 		else
 		{
@@ -209,15 +207,7 @@ void CYorp::processStunned()
 
 void CYorp::processDying()
 {
-	moveYDir(yorpdie_inertia_y);
-	if (dietimer>YORPDIE_INERTIA_DECREASE)
-	{
-		if (yorpdie_inertia_y < YORPDIE_MAX_INERTIA)
-			yorpdie_inertia_y += (1<<TILE_S);
-		dietimer = 0;
-	}
-	else dietimer++;
-	if (yorpdie_inertia_y >= 0 && blockedd)
+	if (yinertia >= 0 && blockedd)
 	{
 		sprite = YORP_DEAD_FRAME;
 		dead = false;
