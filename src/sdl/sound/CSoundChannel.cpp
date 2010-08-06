@@ -26,7 +26,7 @@ m_AudioSpec(AudioSpec)
 	m_waveState = 0;       	// current position of the output waveform
 	m_balance = 0;
 	
-	setFormat(AudioSpec.formt at);
+	setFormat(AudioSpec.format);
 	setFrequencyCorrection(AudioSpec.freq);
 }
 

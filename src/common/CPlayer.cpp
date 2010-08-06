@@ -66,7 +66,7 @@ void CPlayer::setDatatoZero()
 	// When worldmap is set up, use that frame
 	sprite = PMAPDOWNFRAME;
 
-	setupinitialCollisions();
+	performCollisions();
 
 	m_type = OBJ_PLAYER;
 	moveTo(0,0);

@@ -29,7 +29,7 @@ m_ObjectPtrs(ObjectPtrs)
 	// TODO Auto-generated constructor stub
 	sprite = m_basesprite;
 
-	setupinitialCollisions();
+	performCollisions();
 }
 
 /**

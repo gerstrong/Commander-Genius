@@ -43,7 +43,7 @@ m_Player(Player)
 	needinit = false;
 	canbezapped = 1;
 
-	setupinitialCollisions();
+	performCollisions();
 	dead = 0;
 	fallinctimer = 0;
 	fallspeed = 0;

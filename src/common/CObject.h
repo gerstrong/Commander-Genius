@@ -87,7 +87,7 @@ public:
 	bool needinit;
 
 	void setupObjectType(int Episode);
-	void setupinitialCollisions();
+	void performCollisions();
 	void setScrPos( int px, int py );
 	bool calcVisibility();
 	bool checkforScenario();

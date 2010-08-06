@@ -46,7 +46,7 @@ m_Player(PlayerVect)
 		speed = JACK_SPEED;
 		canbezapped = 0;
 	}
-	setupinitialCollisions();
+	performCollisions();
 }
 
 void CBallJack::process()

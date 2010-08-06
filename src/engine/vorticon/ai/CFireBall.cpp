@@ -25,7 +25,7 @@ CRay(p_map, x, y, dir, byType, byID)
 		this->x-=(14<<STC);
 	m_speed = (mp_Map->m_Difficulty>1) ? FIREBALL_HARD_SPEED : FIREBALL_SPEED;
 	sprite = (m_Direction == RIGHT) ? FIREBALL_RIGHT_FRAME : FIREBALL_LEFT_FRAME;
-	setupinitialCollisions();
+	performCollisions();
 }
 
 void CFireBall::process()

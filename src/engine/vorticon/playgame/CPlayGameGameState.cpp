@@ -120,7 +120,7 @@ bool CPlayGameVorticon::loadGameState()
 			m_SavedGame.decodeData(object->inhibitfall);
 			m_SavedGame.decodeData(object->honorPriority);
 			m_SavedGame.decodeData(object->sprite);
-			object->setupinitialCollisions();
+			object->performCollisions();
 
 			if(object->m_type == OBJ_DOOR or
 				object->m_type == OBJ_RAY or

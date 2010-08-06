@@ -59,7 +59,7 @@ m_invincible(false)
 	{
 		setupObjectType(g_pBehaviorEngine->getEpisode());
 
-		setupinitialCollisions();
+		performCollisions();
 	}
 
 }
@@ -130,9 +130,11 @@ void CObject::setupObjectType(int Episode)
 
 }
 
-// This also checks the collision. Very simple pixel based algoritm
-// per tile, really checks per tile and not pixel based
-void CObject::setupinitialCollisions()
+/*
+ * \brief This checks the collision. Very simple pixel based algorithm
+ * 		  The collision is per pixel-based
+ */
+void CObject::performCollisions()
 {
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 	blockedr = blockedl = false;
@@ -312,6 +314,7 @@ void CObject::moveLeft(int amount, bool force)
 		x -= amount;
 		return;
 	}
+
 
 	// check if we walked into other tiles
 	int tile_x_old = (x1>>CSF)<<CSF;
