@@ -19,7 +19,7 @@ namespace galaxy {
 CPlayerWM::CPlayerWM(CMap *pmap, Uint32 x, Uint32 y,
 					std::vector<CObject*>& ObjectPtrs):
 CObject(pmap, x, y, OBJ_PLAYER),
-m_basesprite(130),
+m_basesprite(WALKBASEFRAME),
 m_looking_dir(LEFT),
 m_animation(0),
 m_animation_time(1),

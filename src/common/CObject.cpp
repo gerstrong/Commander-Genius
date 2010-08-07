@@ -31,6 +31,7 @@ m_invincible(false)
 	bboxX2 = 0;
 	bboxY1 = 0;
 	bboxY2 = 0;
+	falling = false;
 	m_number_of_objects++;
 	honorPriority = true;
 	exists = true;
@@ -131,6 +132,32 @@ void CObject::setupObjectType(int Episode)
 }
 
 /*
+ * \brief performs collision without bouncing box recalculation
+ */
+void CObject::performCollisionsSameBox()
+{
+	// Left/Right borders
+	blockedl = checkSolidL(x+bboxX1, y+bboxY1, y+bboxY2);
+	blockedr = checkSolidR(x+bboxX2, y+bboxY1, y+bboxY2);
+
+	// Upper/Lower borders
+	blockedu = checkSolidU(x+bboxX1, x+bboxX2, y+bboxY1);
+	blockedd = checkSolidD(x+bboxX1, x+bboxX2, y+bboxY2);
+}
+
+/*
+ * \brief Calculate Bouncing Boxes
+ */
+void CObject::calcBouncingBoxes()
+{
+	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+	bboxX1 = rSprite.m_bboxX1;
+	bboxX2 = rSprite.m_bboxX2;
+	bboxY1 = rSprite.m_bboxY1;
+	bboxY2 = rSprite.m_bboxY2;
+}
+
+/*
  * \brief This checks the collision. Very simple pixel based algorithm
  * 		  The collision is per pixel-based
  */
@@ -141,18 +168,8 @@ void CObject::performCollisions()
 
 	if ( sprite != BLANKSPRITE )
 	{
-		CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
-		bboxX1 = rSprite.m_bboxX1;		bboxX2 = rSprite.m_bboxX2;
-		bboxY1 = rSprite.m_bboxY1;		bboxY2 = rSprite.m_bboxY2;
-
-		// Check initial collision. This will avoid that ray go through the first blocking element
-		// Upper/Lower borders
-		blockedu = checkSolidU(x+bboxX1, x+bboxX2, y+bboxY1);
-		blockedd = checkSolidD(x+bboxX1, x+bboxX2, y+bboxY2);
-
-		// Left/Right borders
-		blockedl = checkSolidL(x+bboxX1, y+bboxY1, y+bboxY2);
-		blockedr = checkSolidR(x+bboxX2, y+bboxY1, y+bboxY2);
+		calcBouncingBoxes();
+		performCollisionsSameBox();
 	}
 }
 
@@ -305,7 +322,7 @@ void CObject::moveLeft(int amount, bool force)
 
 	do
 	{
-		performCollisions();
+		performCollisionsSameBox();
 		if(!blockedl)
 		{
 			if(amount > (1<<STC))
@@ -345,12 +362,13 @@ void CObject::moveRight(int amount, bool force)
 		return;
 	}
 
+
 	if(!performSlopedTileDown(x2, y2, amount))
 		performSlopedTileUp(x2, y1, amount);
 
 	do
 	{
-		performCollisions();
+		performCollisionsSameBox();
 		if(!blockedr)
 		{
 			if(amount > (1<<STC))
@@ -387,7 +405,7 @@ void CObject::moveUp(int amount)
 
 	do
 	{
-		performCollisions();
+		performCollisionsSameBox();
 		if(!blockedu)
 		{
 			if(amount > (1<<STC))
@@ -423,7 +441,7 @@ void CObject::moveDown(int amount)
 
 	do
 	{
-		performCollisions();
+		performCollisionsSameBox();
 		if(!blockedd)
 		{
 			if(amount > (1<<STC))
@@ -506,6 +524,11 @@ void CObject::processFalling()
 
 	CPhysicsSettings Physics = g_pBehaviorEngine->getPhysicsSettings();
 
+	if( yinertia>64 )
+		falling = true;
+	else
+		falling = false;
+
 	// So it reaches the maximum of fallspeed
 	if(!inhibitfall)
 	{
@@ -522,7 +545,7 @@ void CObject::processFalling()
 			yinertia += Physics.fallspeed_increase;
 		}
 
-		// hit floor or floor? set inertia to zero
+		// hit floor or ceiling? set inertia to zero
 		if( (blockedd && yinertia>0) || (blockedu && yinertia<0) )
 			yinertia = 0;
 	}
@@ -601,9 +624,10 @@ bool CObject::checkSolidR( int x2, int y1, int y2)
 
 bool CObject::checkSolidL( int x1, int y1, int y2)
 {
+	bool vorticon = (g_pBehaviorEngine->getEpisode() <= 3);
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 
-	if( (x1>>STC) != ((x1>>CSF)<<TILE_S) )
+	if( vorticon && ( (x1>>STC) != ((x1>>CSF)<<TILE_S) ) )
 		return false;
 
 	x1 -= COLISION_RES;
@@ -616,6 +640,9 @@ bool CObject::checkSolidL( int x1, int y1, int y2)
 			if(TileProperty[mp_Map->at(x1>>CSF, c>>CSF)].bright)
 				return true;
 		}
+
+		if(TileProperty[mp_Map->at(x1>>CSF, y2>>CSF)].bright)
+			return true;
 	}
 
 	if( m_type == OBJ_PLAYER )
@@ -685,16 +712,25 @@ bool CObject::checkSolidD( int x1, int x2, int y2 )
 
 			if(blocked)
 			{
-				if( vorticon or checkslopedD(c, y2, blocked) )
+				if(vorticon)
 					return true;
+
+				// Galaxy part
+				else if(checkslopedD(c, y2, blocked))
+					return true;
+
 			}
 		}
 
 		blocked = TileProperty[mp_Map->at((x2-(1<<STC))>>CSF, y2>>CSF)].bup;
 		if(blocked)
 		{
-			if(g_pBehaviorEngine->getEpisode() <= 3 or checkslopedD(x2-(1<<STC), y2, blocked))
+			if(vorticon)
 				return true;
+
+			else if(checkslopedD(x2-(1<<STC), y2, blocked))
+				return true;
+
 		}
 	}
 
@@ -791,6 +827,7 @@ bool CObject::checkslopedU( int c, int y1, char blocked)
 
 	int dy = ((yb2-yb1-32)*(c%512))/512;
 	int yh = yb1 + dy;
+
 	return ( (y1%512) < yh );
 }
 
@@ -823,6 +860,14 @@ bool CObject::checkslopedD( int c, int y2, char blocked)
 
 	int dy = ((yb2-yb1)*(c%512))/512;
 	int yh = yb1 + dy;
+
+	if( y2%512 > yh )
+	{
+		int y1;
+		y1 = ((y2)>>CSF)<<CSF;
+		y = y1 - bboxY2 - COLISION_RES + yh + 4;
+	}
+
 	return ( y2%512 > yh );
 }
 
@@ -885,10 +930,7 @@ void CObject::draw()
 	}
 
 	// Define the bouncing boxes again, because sprite could have changed meanwhile
-	bboxX1 = Sprite.m_bboxX1;
-	bboxX2 = Sprite.m_bboxX2;
-	bboxY1 = Sprite.m_bboxY1;
-	bboxY2 = Sprite.m_bboxY2;
+	//calcBouncingBoxes();
 }
 
 ////

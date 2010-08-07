@@ -37,7 +37,6 @@ private:
 	Uint8 m_animation_ticker;
 	std::vector<CObject*>& m_ObjectPtrs;
 
-
 };
 
 }

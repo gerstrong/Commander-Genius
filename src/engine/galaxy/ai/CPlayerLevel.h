@@ -8,12 +8,36 @@
 #ifndef CPLAYERLEVEL_H_
 #define CPLAYERLEVEL_H_
 
+#include "common/CObject.h"
+#include "engine/CEvent.h"
+
 namespace galaxy {
 
-class CPlayerLevel {
+class CPlayerLevel : public CObject {
 public:
-	CPlayerLevel();
+	CPlayerLevel(CMap *pmap, Uint32 x, Uint32 y,
+			std::vector<CObject*>& ObjectPtrs);
+
+	void process();
+	void processFalling();
+	void processWalking();
+	void processJumping();
+
+	void performWalkingAnimation(bool walking);
+
 	virtual ~CPlayerLevel();
+
+private:
+	Uint16 m_basesprite;
+	direction_t m_looking_dir;
+
+	Uint8 m_animation;
+	Uint8 m_animation_time;
+	Uint8 m_animation_ticker;
+	std::vector<CObject*>& m_ObjectPtrs;
+
+	bool jumping;
+
 };
 
 }

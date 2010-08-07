@@ -74,6 +74,7 @@ public:
 	std::vector<CObject*> *mp_object;
 	
 	bool blockedl, blockedr, blockedu, blockedd;
+	bool falling;
 	signed int xinertia, yinertia;
 	unsigned char xinertiatimer;
 	unsigned int psupportingobject, lastsupportingobject;
@@ -87,6 +88,8 @@ public:
 	bool needinit;
 
 	void setupObjectType(int Episode);
+	void calcBouncingBoxes();
+	void performCollisionsSameBox();
 	void performCollisions();
 	void setScrPos( int px, int py );
 	bool calcVisibility();

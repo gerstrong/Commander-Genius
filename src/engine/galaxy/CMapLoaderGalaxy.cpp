@@ -7,19 +7,20 @@
  */
 
 #include "CMapLoaderGalaxy.h"
-#include "../../StringUtils.h"
-#include "../../FindFile.h"
-#include "../../fileio/ResourceMgmt.h"
-#include "../../fileio/compression/CCarmack.h"
-#include "../../fileio/compression/CRLE.h"
-#include "../../fileio.h"
-#include "../../sdl/CVideoDriver.h"
-#include "../../CLogFile.h"
-#include "../CCamera.h"
-#include "engine/galaxy/ai/CMiragia.h"
+#include "StringUtils.h"
+#include "FindFile.h"
+#include "fileio/ResourceMgmt.h"
+#include "fileio/compression/CCarmack.h"
+#include "fileio/compression/CRLE.h"
+#include "fileio.h"
+#include "sdl/CVideoDriver.h"
+#include "CLogFile.h"
+#include "engine/CCamera.h"
 
 // AI Headers
-#include "ai/CPlayerWM.h"
+#include "engine/galaxy/ai/CMiragia.h"
+#include "engine/galaxy/ai/CPlayerWM.h"
+#include "engine/galaxy/ai/CPlayerLevel.h"
 
 #include <fstream>
 
@@ -256,9 +257,9 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 	word width = Map.m_width;
 	word height = Map.m_height;
 
-	/*std::ofstream file("foe.txt");
+	std::ofstream file("foe.txt");
 	data_ptr = start_data;
-	for(size_t y=0 ; y<height ; y++)
+	/*for(size_t y=0 ; y<height ; y++)
 	{
 		for(size_t x=0 ; x<width ; x++)
 		{
@@ -296,6 +297,16 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 
 	switch(foe)
 	{
+	case 2:
+		// This is the player on map
+		p_newfoe = new galaxy::CPlayerLevel(&Map, x, y, m_ObjectPtr);
+
+		// Add the Camera into the game scene and attach it to this player
+		camera = new CCamera(&Map,x,y);
+		camera->attachToObject(*p_newfoe);
+		m_ObjectPtr.push_back(camera);
+		break;
+
 	case 3:
 		// This is the player on map
 		p_newfoe = new galaxy::CPlayerWM(&Map, x, y, m_ObjectPtr);
