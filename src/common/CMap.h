@@ -32,6 +32,9 @@ public:
 	void setTileMap( CTilemap &Tilemap );
 	void setScrollSurface( SDL_Surface *surface );
 
+	void setLevel(Uint16 Level);
+	Uint16 getLevel();
+
 	bool createEmptyDataPlane(size_t plane, size_t blocksize);
 
 	bool gotoPos( int x, int y );
@@ -112,6 +115,7 @@ private:
 
 	CPlane m_Plane[3];
 	bool m_Background; // This variable holds, whether we have a background to draw or not.
+	Uint16 m_Level;
 };
 
 #endif /* CMAP_H_ */

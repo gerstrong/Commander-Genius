@@ -16,14 +16,15 @@ namespace galaxy {
 class CPlayerLevel : public CObject {
 public:
 	CPlayerLevel(CMap *pmap, Uint32 x, Uint32 y,
-			std::vector<CObject*>& ObjectPtrs);
+			std::vector<CObject*>& ObjectPtrs, direction_t facedir);
 
 	void process();
 	void processFalling();
-	void processWalking();
+	void processMoving();
 	void processJumping();
 
 	void performWalkingAnimation(bool walking);
+	void processExiting();
 
 	virtual ~CPlayerLevel();
 
@@ -36,7 +37,9 @@ private:
 	Uint8 m_animation_ticker;
 	std::vector<CObject*>& m_ObjectPtrs;
 
-	bool jumping;
+	enum {
+		STANDING, WALKING, JUMPING, FALLING
+	} state;
 
 };
 

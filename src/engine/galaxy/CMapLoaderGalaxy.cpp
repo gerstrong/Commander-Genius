@@ -128,6 +128,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 	// Get the MAPHEAD Location from within the Exe File
 
     Map.gotoPos(0,0);
+    Map.setLevel(level);
 
 	size_t offset = getMapheadOffset();
 	byte *Maphead = m_ExeFile.getRawData() + offset;
@@ -257,9 +258,9 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 	word width = Map.m_width;
 	word height = Map.m_height;
 
-	std::ofstream file("foe.txt");
+	/*std::ofstream file("foe.txt");
 	data_ptr = start_data;
-	/*for(size_t y=0 ; y<height ; y++)
+	for(size_t y=0 ; y<height ; y++)
 	{
 		for(size_t x=0 ; x<width ; x++)
 		{
@@ -270,6 +271,13 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 		file << std::endl;
 	}
 	file.close();*/
+
+	// If objects are in the buffer clean them up
+	while(!m_ObjectPtr.empty())
+	{
+		delete m_ObjectPtr.back();
+		m_ObjectPtr.pop_back();
+	}
 
 	// he we go to the adding objects
 	data_ptr = start_data;
@@ -297,9 +305,10 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 
 	switch(foe)
 	{
+	case 1:
 	case 2:
 		// This is the player on map
-		p_newfoe = new galaxy::CPlayerLevel(&Map, x, y, m_ObjectPtr);
+		p_newfoe = new galaxy::CPlayerLevel(&Map, x, y, m_ObjectPtr, (foe==1) ? RIGHT : LEFT );
 
 		// Add the Camera into the game scene and attach it to this player
 		camera = new CCamera(&Map,x,y);

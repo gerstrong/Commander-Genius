@@ -144,7 +144,7 @@ void CPlayerWM::finishLevel(Uint16 object)
 {
 	// if a door or other blocker was found remove it
 	int x, y;
-	Uint16 door = (object - 0xC000) + 0xD000;
+	Uint16 door = object + 0xD000;
 	while(mp_Map->findTile(door, &x, &y, 2))
 	{
 		// Open blocks in case there are
@@ -153,7 +153,7 @@ void CPlayerWM::finishLevel(Uint16 object)
 		mp_Map->redrawAt( x, y);
 	}
 
-	Uint16 flag_dest = (object - 0xC000) + 0xF000;
+	Uint16 flag_dest = object + 0xF000;
 	if(mp_Map->findTile(flag_dest, &x, &y, 2))
 	{
 		// spawn the flag

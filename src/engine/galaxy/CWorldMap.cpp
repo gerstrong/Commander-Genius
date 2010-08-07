@@ -22,7 +22,16 @@ bool CWorldMap::isActive()
 {	return m_active;	}
 
 void CWorldMap::setActive(bool value)
-{	m_active = value;	}
+{
+	m_active = value;
+	if(m_active)
+	{
+		m_Map.drawAll();
+		m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
+	    // Set Scrollbuffer
+	    g_pVideoDriver->setScrollBuffer(&m_Map.m_scrollx_buf, &m_Map.m_scrolly_buf);
+	}
+}
 
 void CWorldMap::init()
 {

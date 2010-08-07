@@ -29,6 +29,7 @@ m_Tilemaps(g_pGfxEngine->getTileMaps()),
 m_animtiletimer(0),
 m_Background(false)
 {
+	m_Level = 0;
 	resetScrolls();
 	memset(m_objectlayer, 0, sizeof(m_objectlayer));
 }
@@ -39,6 +40,12 @@ m_Background(false)
 void CMap::setScrollSurface( SDL_Surface *surface )
 {  mp_scrollsurface = surface; }
 
+
+void CMap::setLevel(Uint16 Level)
+{	m_Level = Level;	}
+
+Uint16 CMap::getLevel()
+{	return m_Level;	}
 
 /**
  * \brief	Create an empty data plane used for the map data

@@ -54,7 +54,6 @@ void CLevelPlay::process()
 	{
 		(*obj)->draw();
 	}
-
 }
 
 CLevelPlay::~CLevelPlay() {

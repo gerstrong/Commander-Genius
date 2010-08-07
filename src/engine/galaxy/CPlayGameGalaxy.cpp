@@ -93,14 +93,22 @@ void CPlayGameGalaxy::process()
 		Uint16 Data;
 		EventContainer.ReadData(Data);
 		EventContainer.pop_Event();
-		m_WorldMap.setActive(false);
 
 		// Start a new level!
-		m_LevelPlay.loadLevel(Data-0xC000);
-		m_LevelPlay.setActive(true);
-
-		//EventContainer.add(EXIT_LEVEL, Data);
+		if(Data > 0xC000)
+		{
+			m_WorldMap.setActive(false);
+			m_LevelPlay.loadLevel(Data-0xC000);
+			m_LevelPlay.setActive(true);
+		}
 	}
+	else if( EventContainer.occurredEvent( EXIT_LEVEL ) )
+	{
+		Uint16 Data;
+		m_LevelPlay.setActive(false);
+		m_WorldMap.setActive(true);
+	}
+
 
 }
 
