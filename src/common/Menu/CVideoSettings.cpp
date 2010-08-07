@@ -112,7 +112,7 @@ void CVideoSettings::processSpecific(){
 		
 		if( m_mustclose )
 		{
-			if(m_changed)
+			if(m_Resolution.width != g_pVideoDriver->getWidth() or m_Resolution.height != g_pVideoDriver->getHeight() or m_Resolution.depth != g_pVideoDriver->getDepth() or m_FSmode !=  g_pVideoDriver->getFullscreen() or m_Opengl != g_pVideoDriver->isOpenGL() or m_Zoom != g_pVideoDriver->getZoomValue() or m_ScaleXFilter != g_pVideoDriver->getFiltermode() or m_OGL_filter != g_pVideoDriver->getOGLFilter() or m_Autoframeskip != g_pTimer->getFrameRate() or m_SpecialFX != g_pVideoDriver->getSpecialFXConfig())
 			{
 				g_pVideoDriver->stop();
 				g_pVideoDriver->isFullscreen(m_FSmode);

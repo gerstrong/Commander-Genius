@@ -63,13 +63,14 @@ void CAudioSettings::processSpecific()
 			bool wasPlaying = g_pMusicPlayer->playing();
 
 			// Check if the music is playing, stop it and restart it, if necessary
-			if(m_must_restart_sounddriver)
+			if(m_Rate != g_pSound->getAudioSpec().freq or m_Format != g_pSound->getAudioSpec().format or m_Mode != g_pSound->getAudioSpec().channels - 1 )
 			{
 				g_pMusicPlayer->stop();
 
 				// Close the sound driver
 				g_pSound->destroy();
 				g_pSound->setSoundmode(m_Rate, m_Mode ? true : false, m_Format);
+				m_must_restart_sounddriver |= true;
 			}
 
 			Settings.saveDrvCfg();
