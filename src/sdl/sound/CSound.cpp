@@ -199,8 +199,6 @@ int maxval = 0;
 
 void CSound::callback(void *unused, Uint8 *stream, int len)
 {
-    unsigned short i;
-
     if (g_pMusicPlayer->playing() == PLAY_MODE_PLAY)
     {
     	mixAudio(stream, g_pMusicPlayer->passBuffer(len), len, m_MusicVolume, AudioSpec.format);

@@ -519,8 +519,6 @@ void CObject::moveRight(int amount, bool force)
 
 void CObject::moveUp(int amount)
 {
-	int x1 = x + bboxX1;
-	int x2 = x + bboxX2;
 	int y1 = y + bboxY1;
 
 	if( y1-amount < 0 )
@@ -556,10 +554,6 @@ void CObject::moveUp(int amount)
 
 void CObject::moveDown(int amount)
 {
-	int x1 = x + bboxX1;
-	int x2 = x + bboxX2;
-	int y2 = y + bboxY2;
-
 	blockedu = false;
 
 	if(!solid)

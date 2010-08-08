@@ -7,7 +7,6 @@
 
 #include "CEvent.h"
 #include "fileio/TypeDefinitions.h"
-#include <string.h>
 
 /**
  * \brief This constructor sets up the Event
@@ -16,24 +15,10 @@
  * \param data		if the event should also carry additional data, here they will be stored
  */
 CEvent::CEvent(const wm_event event_type, const void *data, const size_t size) :
-event_type(event_type),
-data(NULL),
-size(0)
+event_type(event_type)
 {
 	if(size != 0)
-	{
-		this->size = size;
-		this->data = malloc(size);
-		memcpy(this->data, data, size);
-	}
-}
-
-CEvent::CEvent(const CEvent& Event)
-{
-	this->size = Event.size;
-	this->data = malloc(size);
-	this->event_type = Event.event_type;
-	memcpy(this->data, Event.data, size);
+		this->data = std::vector<char>((char*)data, (char*)data + size);
 }
 
 /**
@@ -42,23 +27,3 @@ CEvent::CEvent(const CEvent& Event)
  */
 bool CEvent::occurred( wm_event event_type)
 {	return (this->event_type == event_type); }
-
-/**
- * Simple getters
- */
-wm_event CEvent::getEvent()
-{	return event_type;	}
-
-void *CEvent::getData()
-{	return data;	}
-
-size_t CEvent::Size()
-{	return size;	}
-
-CEvent::~CEvent()
-{
-	if(data != NULL)
-		free(data);
-}
-
-

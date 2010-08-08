@@ -124,14 +124,16 @@ void CSoundChannel::generateWaveform16(Uint8 *waveform, unsigned int len, int fr
 	// setup so we process a new byte of the sound first time through
 	firsttime = true;
 	
+	CSoundSlot& currentSound = (*m_pSoundSlot)[m_current_sound];
+	
 	for(index=0 ; index<len ; index++)
 	{
 		if (!m_sound_timer || firsttime)
 		{
 			// get new frequency and compute how fast we have to
 			// change the wave data
-			if(m_sound_ptr < m_pSoundSlot->at(m_current_sound).getSoundlength())
-				m_desiredfreq = m_pSoundSlot->at(m_current_sound).getSoundData()[m_sound_ptr];
+			if(m_sound_ptr < currentSound.getSoundlength())
+				m_desiredfreq = currentSound.getSoundData()[m_sound_ptr];
 			else
 				m_desiredfreq = 0xffff;
 			
@@ -230,14 +232,16 @@ void CSoundChannel::generateWaveform8(Uint8 *waveform, unsigned int len, int fre
 	// setup so we process a new byte of the sound first time through
 	firsttime = 1;
 	
+	CSoundSlot& currentSound = (*m_pSoundSlot)[m_current_sound];
+	
 	for(index=0 ; index<len ; index++)
 	{
 		if (!m_sound_timer || firsttime)
 		{
 			// get new frequency and compute how fast we have to
 			// change the wave data
-			if(m_sound_ptr < m_pSoundSlot->at(m_current_sound).getSoundlength())
-				m_desiredfreq = m_pSoundSlot->at(m_current_sound).getSoundData()[m_sound_ptr];
+			if(m_sound_ptr < currentSound.getSoundlength())
+				m_desiredfreq = currentSound.getSoundData()[m_sound_ptr];
 			else
 				m_desiredfreq = 0xffff;
 			
@@ -384,7 +388,7 @@ void CSoundChannel::readWaveform(Uint8* waveform, int len, Uint8 channels, int f
      	}
      	else
      	{
-     		stHQSound& hqsound = *m_pSoundSlot->at(m_current_sound).getHQSoundPtr();
+     		stHQSound& hqsound = *(*m_pSoundSlot)[m_current_sound].getHQSoundPtr();
 
          	if ((m_sound_ptr + (Uint32)len) >= hqsound.sound_len)
          	{

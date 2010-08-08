@@ -104,7 +104,6 @@ void CPlayGameGalaxy::process()
 	}
 	else if( EventContainer.occurredEvent( EXIT_LEVEL ) )
 	{
-		Uint16 Data;
 		m_LevelPlay.setActive(false);
 		m_WorldMap.setActive(true);
 	}

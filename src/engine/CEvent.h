@@ -17,6 +17,7 @@
 #define CEVENT_H_
 
 #include <list>
+#include <vector>
 
 enum wm_event{
 	ENTER_LEVEL,
@@ -27,20 +28,18 @@ enum wm_event{
 class CEvent {
 public:
 	CEvent(const wm_event event_type, const void *data, const size_t size);
-	CEvent(const CEvent& Event);
 
 	bool occurred(wm_event event_type);
 
-	wm_event getEvent();
-	void *getData();
-	size_t Size();
+	wm_event getEvent() { return event_type; }
+	void *getData() { return &data[0]; }
+	size_t Size() { return data.size(); }
 
-	virtual ~CEvent();
+	virtual ~CEvent() {}
 
 private:
 	wm_event event_type;
-	void *data;
-	size_t size;
+	std::vector<char> data;
 };
 
 
