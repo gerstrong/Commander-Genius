@@ -8,6 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		2331E88611FD4AF400E73953 /* cglogo-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 2331E88511FD4AF400E73953 /* cglogo-iphone.png */; };
+		23323782120EBBCF00915252 /* Mixer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2332377E120EBBCF00915252 /* Mixer.cpp */; };
+		23323783120EBBCF00915252 /* Sampling.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323780120EBBCF00915252 /* Sampling.cpp */; };
+		23323784120EBBCF00915252 /* Mixer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2332377E120EBBCF00915252 /* Mixer.cpp */; };
+		23323785120EBBCF00915252 /* Sampling.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323780120EBBCF00915252 /* Sampling.cpp */; };
+		2332378A120EBBE500915252 /* CEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323786120EBBE500915252 /* CEvent.cpp */; };
+		2332378B120EBBE500915252 /* CEventContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323788120EBBE500915252 /* CEventContainer.cpp */; };
+		2332378C120EBBE500915252 /* CEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323786120EBBE500915252 /* CEvent.cpp */; };
+		2332378D120EBBE500915252 /* CEventContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323788120EBBE500915252 /* CEventContainer.cpp */; };
+		23323790120EBBF600915252 /* CLevelPlay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2332378E120EBBF600915252 /* CLevelPlay.cpp */; };
+		23323791120EBBF600915252 /* CLevelPlay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2332378E120EBBF600915252 /* CLevelPlay.cpp */; };
+		23323798120EBC0700915252 /* CFlag.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323792120EBC0700915252 /* CFlag.cpp */; };
+		23323799120EBC0700915252 /* CMiragia.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323794120EBC0700915252 /* CMiragia.cpp */; };
+		2332379A120EBC0700915252 /* CPlayerLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323796120EBC0700915252 /* CPlayerLevel.cpp */; };
+		2332379B120EBC0700915252 /* CFlag.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323792120EBC0700915252 /* CFlag.cpp */; };
+		2332379C120EBC0700915252 /* CMiragia.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323794120EBC0700915252 /* CMiragia.cpp */; };
+		2332379D120EBC0700915252 /* CPlayerLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323796120EBC0700915252 /* CPlayerLevel.cpp */; };
 		2332C60F11EA3B42000D8F71 /* CBridges.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2332C60D11EA3B42000D8F71 /* CBridges.cpp */; };
 		2332C63411EAFAD7000D8F71 /* CCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2332C63211EAFAD7000D8F71 /* CCamera.cpp */; };
 		2335371611FD5CC400E8C8B6 /* iphone_keyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 2335371511FD5CC400E8C8B6 /* iphone_keyboard.m */; };
@@ -387,6 +403,22 @@
 		1DDD57E30DA1CFC700B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/main.xib; sourceTree = "<group>"; };
 		20286C33FDCF999611CA2CEA /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 		2331E88511FD4AF400E73953 /* cglogo-iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cglogo-iphone.png"; sourceTree = "<group>"; };
+		2332377E120EBBCF00915252 /* Mixer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Mixer.cpp; sourceTree = "<group>"; };
+		2332377F120EBBCF00915252 /* Mixer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mixer.h; sourceTree = "<group>"; };
+		23323780120EBBCF00915252 /* Sampling.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sampling.cpp; sourceTree = "<group>"; };
+		23323781120EBBCF00915252 /* Sampling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sampling.h; sourceTree = "<group>"; };
+		23323786120EBBE500915252 /* CEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CEvent.cpp; sourceTree = "<group>"; };
+		23323787120EBBE500915252 /* CEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEvent.h; sourceTree = "<group>"; };
+		23323788120EBBE500915252 /* CEventContainer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CEventContainer.cpp; sourceTree = "<group>"; };
+		23323789120EBBE500915252 /* CEventContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CEventContainer.h; sourceTree = "<group>"; };
+		2332378E120EBBF600915252 /* CLevelPlay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CLevelPlay.cpp; sourceTree = "<group>"; };
+		2332378F120EBBF600915252 /* CLevelPlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLevelPlay.h; sourceTree = "<group>"; };
+		23323792120EBC0700915252 /* CFlag.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CFlag.cpp; sourceTree = "<group>"; };
+		23323793120EBC0700915252 /* CFlag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFlag.h; sourceTree = "<group>"; };
+		23323794120EBC0700915252 /* CMiragia.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMiragia.cpp; sourceTree = "<group>"; };
+		23323795120EBC0700915252 /* CMiragia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMiragia.h; sourceTree = "<group>"; };
+		23323796120EBC0700915252 /* CPlayerLevel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlayerLevel.cpp; sourceTree = "<group>"; };
+		23323797120EBC0700915252 /* CPlayerLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPlayerLevel.h; sourceTree = "<group>"; };
 		2332C60D11EA3B42000D8F71 /* CBridges.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBridges.cpp; sourceTree = "<group>"; };
 		2332C60E11EA3B42000D8F71 /* CBridges.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBridges.h; sourceTree = "<group>"; };
 		2332C63211EAFAD7000D8F71 /* CCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCamera.cpp; sourceTree = "<group>"; };
@@ -1031,6 +1063,12 @@
 		23C64A7E11F31D8A0053CA36 /* ai */ = {
 			isa = PBXGroup;
 			children = (
+				23323792120EBC0700915252 /* CFlag.cpp */,
+				23323793120EBC0700915252 /* CFlag.h */,
+				23323794120EBC0700915252 /* CMiragia.cpp */,
+				23323795120EBC0700915252 /* CMiragia.h */,
+				23323796120EBC0700915252 /* CPlayerLevel.cpp */,
+				23323797120EBC0700915252 /* CPlayerLevel.h */,
 				23C64A7F11F31D8A0053CA36 /* CPlayerWM.cpp */,
 				23C64A8011F31D8A0053CA36 /* CPlayerWM.h */,
 			);
@@ -1380,6 +1418,10 @@
 		63CD110611CFF5FB00F60BC8 /* engine */ = {
 			isa = PBXGroup;
 			children = (
+				23323786120EBBE500915252 /* CEvent.cpp */,
+				23323787120EBBE500915252 /* CEvent.h */,
+				23323788120EBBE500915252 /* CEventContainer.cpp */,
+				23323789120EBBE500915252 /* CEventContainer.h */,
 				2332C63211EAFAD7000D8F71 /* CCamera.cpp */,
 				2332C63311EAFAD7000D8F71 /* CCamera.h */,
 				63CD110711CFF5FB00F60BC8 /* CEGAGraphics.cpp */,
@@ -1406,6 +1448,8 @@
 		63CD111311CFF5FB00F60BC8 /* galaxy */ = {
 			isa = PBXGroup;
 			children = (
+				2332378E120EBBF600915252 /* CLevelPlay.cpp */,
+				2332378F120EBBF600915252 /* CLevelPlay.h */,
 				237421E911FB8554000EEA5B /* GraphicsIDs.cpp */,
 				23C64A7E11F31D8A0053CA36 /* ai */,
 				23C64A7B11F31D6F0053CA36 /* CWorldMap.cpp */,
@@ -1737,6 +1781,10 @@
 		63CD11E811CFF5FB00F60BC8 /* sound */ = {
 			isa = PBXGroup;
 			children = (
+				2332377E120EBBCF00915252 /* Mixer.cpp */,
+				2332377F120EBBCF00915252 /* Mixer.h */,
+				23323780120EBBCF00915252 /* Sampling.cpp */,
+				23323781120EBBCF00915252 /* Sampling.h */,
 				63CD11E911CFF5FB00F60BC8 /* CSound.cpp */,
 				63CD11EA11CFF5FB00F60BC8 /* CSound.h */,
 				63CD11EB11CFF5FB00F60BC8 /* CSoundChannel.cpp */,
@@ -2165,6 +2213,14 @@
 				23C64A8411F31D9C0053CA36 /* CAnkhShield.cpp in Sources */,
 				23C64A8711F31DAA0053CA36 /* CPlayGameVorticonWM.cpp in Sources */,
 				237421EA11FB8554000EEA5B /* GraphicsIDs.cpp in Sources */,
+				23323782120EBBCF00915252 /* Mixer.cpp in Sources */,
+				23323783120EBBCF00915252 /* Sampling.cpp in Sources */,
+				2332378A120EBBE500915252 /* CEvent.cpp in Sources */,
+				2332378B120EBBE500915252 /* CEventContainer.cpp in Sources */,
+				23323790120EBBF600915252 /* CLevelPlay.cpp in Sources */,
+				23323798120EBC0700915252 /* CFlag.cpp in Sources */,
+				23323799120EBC0700915252 /* CMiragia.cpp in Sources */,
+				2332379A120EBC0700915252 /* CPlayerLevel.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2348,6 +2404,14 @@
 				2374238711FC849A000EEA5B /* GraphicsIDs.cpp in Sources */,
 				2374249211FCA6CB000EEA5B /* iphone_video.m in Sources */,
 				2335371611FD5CC400E8C8B6 /* iphone_keyboard.m in Sources */,
+				23323784120EBBCF00915252 /* Mixer.cpp in Sources */,
+				23323785120EBBCF00915252 /* Sampling.cpp in Sources */,
+				2332378C120EBBE500915252 /* CEvent.cpp in Sources */,
+				2332378D120EBBE500915252 /* CEventContainer.cpp in Sources */,
+				23323791120EBBF600915252 /* CLevelPlay.cpp in Sources */,
+				2332379B120EBC0700915252 /* CFlag.cpp in Sources */,
+				2332379C120EBC0700915252 /* CMiragia.cpp in Sources */,
+				2332379D120EBC0700915252 /* CPlayerLevel.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
