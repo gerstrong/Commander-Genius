@@ -35,8 +35,6 @@ public:
 	void *getData() { return &data[0]; }
 	size_t Size() { return data.size(); }
 
-	virtual ~CEvent() {}
-
 private:
 	wm_event event_type;
 	std::vector<char> data;
