@@ -171,9 +171,6 @@ bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t, Uint16 plane)
 
 bool CMap::setTile(Uint16 x, Uint16 y, Uint16 t, bool update, Uint16 plane)
 {
-	int scrollx_buf = m_scrollx&511;
-	int scrolly_buf = m_scrolly&511;
-
 	if(setTile( x, y, t, plane))
 	{
 		if( update )
