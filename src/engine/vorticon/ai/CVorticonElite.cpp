@@ -64,11 +64,9 @@ m_Object(mp_vec_Obj)
 
 void CVorticonElite::process()
 {
-	int bonk;
-	int x, y;
+	int x = getXPosition();
+	int y = getYPosition();
 
-	x = getXPosition();
-	y = getYPosition();
 	// if we touch a glowcell, we die!
 	if ( mp_Map->at( x>>CSF, y>>CSF) == TILE_GLOWCELL )
 		HealthPoints--;
@@ -82,8 +80,6 @@ void CVorticonElite::process()
 
 		if (onscreen) g_pSound->playStereofromCoord(SOUND_VORT_DIE, PLAY_NOW, scrx);
 	}
-
-	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
 
 	if(state == VORTELITE_CHARGE)
 	{
