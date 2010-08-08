@@ -239,6 +239,127 @@ bool CObject::checkforScenario()
    	return false;
 }
 
+/**
+ * So far only used in Galaxy. This is the code for sloped tiles downside
+ * This is performed when Keen walks into a sloped tile
+ *
+ * 0	Fall through		1	Flat
+ * 2	Top -> Middle		3	Middle -> bottom
+ * 4	Top -> bottom		5	Middle -> top
+ * 6	Bottom -> middle	7	Bottom -> top
+ * 8	Unused			9	Deadly, can't land on in God mode
+ */
+bool CObject::performSlopedTileDown( int x, int y, int xspeed )
+{
+	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+	char slope = TileProperty[mp_Map->at(x>>CSF, y>>CSF)].bup;
+	int yb1, yb2;
+
+	// Let's calculate the exact Y-Coordinate and put the object there...
+
+	// Calculate the corner y coordinates
+	if( slope == 2 )
+		yb1 = 0,	yb2 = 256;
+	else if( slope == 3 )
+		yb1 = 256,	yb2 = 512;
+	else if( slope == 4 )
+		yb1 = 0,	yb2 = 512;
+	else if( slope == 5 )
+		yb1 = 256,	yb2 = 0;
+	else if( slope == 6 )
+		yb1 = 512,	yb2 = 256;
+	else if( slope == 7 )
+		yb1 = 512,	yb2 = 0;
+	else
+		return false;
+
+	// Get the upper border pos if the tile
+	const int y_csf = (y>>CSF)<<CSF;
+
+	// Get relative position of the X corner
+	const int L = 512;
+	const int x_r = (x%L);
+
+	// get the dy position so the new pos can be computed
+	const int dy = ((yb2-yb1)*x_r)/L;
+
+	// get the new position of the lower corner
+	const int y_rel = yb1 + dy;
+
+	// Get the new lower corner pos
+	const int y_pos = y_csf + y_rel;
+
+	// get new position
+	const Uint32 new_y = y_pos - bboxY2 - (4<<STC);
+
+	// And apply it only if object tries to go through that tile
+	if( this->y > new_y )
+		this->y = new_y;
+
+	return true;
+}
+
+/**
+ * So far only used in Galaxy. This is the code for sloped tiles upside
+ *
+ * 0	Jump through		1	Flat bottom
+ * 2	Bottom-> Middle		3	Middle -> top
+ * 4	Bottom -> top		5	Middle -> bottom
+ * 6	Top -> middle		7	Top -> bottom
+ *
+ */
+void CObject::performSlopedTileUp( int x, int y, int xspeed )
+{
+	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+	char slope = TileProperty[mp_Map->at(x>>CSF, y>>CSF)].bdown;
+
+	// Let's calculate the exact Y-Coordinate and put the object there...
+
+	// Calculate the corner y coordinates
+	int yb1, yb2;
+
+	if( slope == 2 )
+		yb1 = 512,	yb2 = 256;
+	else if( slope == 3 )
+		yb1 = 256,	yb2 = 0;
+	else if( slope == 4 )
+		yb1 = 512,	yb2 = 0;
+	else if( slope == 5 )
+		yb1 = 256,	yb2 = 512;
+	else if( slope == 6 )
+		yb1 = 0,	yb2 = 256;
+	else if( slope == 7 )
+		yb1 = 0,	yb2 = 512;
+	else
+		return;
+
+	// Get the upper border pos if the tile
+	const int y_csf = (y>>CSF)<<CSF;
+
+	// Get relative position of the X corner
+	const int L = 512;
+	const int x_r = (x%L);
+
+	// get the dy position so the new pos can be computed
+	const int dy = ((yb2-yb1)*x_r)/L;
+
+	// get the new position of the lower corner
+	const int y_rel = yb1 + dy;
+
+	// Get the new lower corner pos
+	const int y_pos = y_csf + y_rel;
+
+	// get new position
+	const Uint32 new_y = y_pos - bboxY1 + (1<<STC);
+
+	// And apply it only if object tries to go through that tile
+	if( this->y < new_y )
+		this->y = new_y;
+
+	return;
+
+}
+
 // Used in some setup mode, like putting the player to
 // the current map position
 void CObject::moveToForce(int new_x, int new_y)
@@ -301,6 +422,7 @@ void CObject::moveLeft(int amount, bool force)
 
 	blockedr = false;
 
+	// If it is forced don't check for collision
 	if(force) {
 		x -= amount;
 		return;
@@ -309,6 +431,7 @@ void CObject::moveLeft(int amount, bool force)
 	if( y-amount < 0 )
 		return;
 
+	// If object isn't solid it won't be stopped anyway
 	if(!solid)
 	{
 		blockedr = blockedl = false;
@@ -316,9 +439,6 @@ void CObject::moveLeft(int amount, bool force)
 		x -= amount;
 		return;
 	}
-
-	if(!performSlopedTileDown(x1, y2, -amount))
-		performSlopedTileUp(x1, y1, -amount);
 
 	do
 	{
@@ -339,6 +459,12 @@ void CObject::moveLeft(int amount, bool force)
 		else break;
 	} while( amount > 0 );
 
+	// process the sloped tiles here. Galaxy only!!
+	if(g_pBehaviorEngine->getEpisode() > 3)
+	{
+		if(!performSlopedTileDown(x1, y2, -amount))
+			performSlopedTileUp(x1, y1, -amount);
+	}
 }
 
 void CObject::moveRight(int amount, bool force)
@@ -363,9 +489,10 @@ void CObject::moveRight(int amount, bool force)
 	}
 
 
-	if(!performSlopedTileDown(x2, y2, amount))
-		performSlopedTileUp(x2, y1, amount);
+	//if(!performSlopedTileDown(x2, y2, amount))
+		//performSlopedTileUp(x2, y1, amount);
 
+	// process the normal tiles (non sloped)
 	do
 	{
 		performCollisionsSameBox();
@@ -384,6 +511,10 @@ void CObject::moveRight(int amount, bool force)
 		}
 		else break;
 	} while( amount > 0 );
+
+	// process the sloped tiles here
+	if(!performSlopedTileDown(x2, y2, amount))
+		performSlopedTileUp(x2, y1, amount);
 }
 
 void CObject::moveUp(int amount)
@@ -666,10 +797,25 @@ bool CObject::checkSolidU(int x1, int x2, int y1)
 	bool vorticon = (g_pBehaviorEngine->getEpisode() <= 3);
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 
-	if( vorticon && ((y1)>>STC) != ((y1>>CSF)<<TILE_S)  )
-		return false;
-
 	y1 -= COLISION_RES;
+
+	// Check for sloped tiles here. They must be handled differently
+	if(!vorticon && solid)
+	{
+		char blocked;
+		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
+		{
+			blocked = TileProperty[mp_Map->at(c>>CSF, y1>>CSF)].bdown;
+			if( blocked >= 2 && blocked <= 7 && checkslopedU(c, y1, blocked))
+				return true;
+		}
+		blocked = TileProperty[mp_Map->at((x2-(1<<STC))>>CSF, y1>>CSF)].bdown;
+		if( blocked >= 2 && blocked <= 7 && checkslopedU(x2-(1<<STC), y1, blocked ))
+			return true;
+	}
+
+	if( ((y1+COLISION_RES)>>STC) != (((y1+COLISION_RES)>>CSF)<<TILE_S)  )
+		return false;
 
 	// Check for right from the object
 	if(solid)
@@ -680,7 +826,9 @@ bool CObject::checkSolidU(int x1, int x2, int y1)
 
 			if(blocked)
 			{
-				if(vorticon or checkslopedU(c, y1, blocked))
+				if(vorticon)
+					return true;
+				else if(blocked == 1)
 					return true;
 			}
 		}
@@ -699,7 +847,23 @@ bool CObject::checkSolidD( int x1, int x2, int y2 )
 
 	y2 += COLISION_RES;
 
-	if( vorticon && (y2>>STC) != ((y2>>CSF)<<TILE_S) )
+	// Check for sloped tiles here. They must be handled differently
+	if(!vorticon && solid)
+	{
+		char blocked;
+		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
+		{
+			blocked = TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bup;
+			if( blocked >= 2 && blocked <= 7 && checkslopedD(c, y2, blocked))
+				return true;
+		}
+		blocked = TileProperty[mp_Map->at((x2-(1<<STC))>>CSF, y2>>CSF)].bup;
+		if( blocked >= 2 && blocked <= 7 && checkslopedD(x2-(1<<STC), y2, blocked ))
+			return true;
+	}
+
+
+	if( (y2>>STC) != ((y2>>CSF)<<TILE_S) )
 		return false;
 
 	// Check for down from the object
@@ -714,11 +878,8 @@ bool CObject::checkSolidD( int x1, int x2, int y2 )
 			{
 				if(vorticon)
 					return true;
-
-				// Galaxy part
-				else if(checkslopedD(c, y2, blocked))
+				else if(blocked == 1)
 					return true;
-
 			}
 		}
 
@@ -727,11 +888,10 @@ bool CObject::checkSolidD( int x1, int x2, int y2 )
 		{
 			if(vorticon)
 				return true;
-
-			else if(checkslopedD(x2-(1<<STC), y2, blocked))
+			else if(blocked == 1)
 				return true;
-
 		}
+
 	}
 
 	if( (Uint16)y2 > ((mp_Map->m_height)<<CSF) )
@@ -740,67 +900,7 @@ bool CObject::checkSolidD( int x1, int x2, int y2 )
 	return false;
 }
 
-/**
- * So far only used in Galaxy. This is the code for sloped tiles downside
- *
- * 0	Fall through		1	Flat
- * 2	Top -> Middle		3	Middle -> bottom
- * 4	Top -> bottom		5	Middle -> top
- * 6	Bottom -> middle	7	Bottom -> top
- * 8	Unused			9	Deadly, can't land on in God mode
- */
-bool CObject::performSlopedTileDown( int x, int y, int xspeed )
-{
-	if(g_pBehaviorEngine->getEpisode() <= 3)
-		return true;
-
-	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
-	char slope = TileProperty[mp_Map->at(x>>CSF, y>>CSF)].bup;
-
-	if(slope == 2 or slope == 3)
-		moveYDir(xspeed/2);
-	else if(slope == 4)
-		moveYDir(xspeed);
-	else if(slope == 5)
-		moveYDir(-xspeed);
-	else if(slope == 6)
-		moveYDir(-xspeed/2);
-	else if(slope == 7)
-		moveYDir(-xspeed);
-	else
-		return false;
-
-	return true;
-}
-
-/**
- * So far only used in Galaxy. This is the code for sloped tiles upside
- *
- * 0	Jump through		1	Flat bottom
- * 2	Bottom-> Middle		3	Middle -> top
- * 4	Bottom -> top		5	Middle -> bottom
- * 6	Top -> middle		7	Top -> bottom
- *
- */
-void CObject::performSlopedTileUp( int x, int y, int xspeed )
-{
-	if(g_pBehaviorEngine->getEpisode() <= 3)
-		return;
-
-	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
-	char slope = TileProperty[mp_Map->at(x>>CSF, y>>CSF)].bdown;
-
-	if(slope == 2 or slope == 3)
-		moveYDir(-xspeed/2);
-	else if(slope == 4)
-		moveYDir(-xspeed);
-	else if(slope == 5 or slope == 6)
-		moveYDir(xspeed/2);
-	else if(slope == 7)
-		moveYDir(xspeed);
-}
-
-/* Spezial slope function for galaxy maps
+/* Special slope function for galaxy maps
 	0	Jump through		1	Flat bottom
 	2	Bottom-> Middle		3	Middle -> top
 	4	Bottom -> top		5	Middle -> bottom
