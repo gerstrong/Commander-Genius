@@ -106,29 +106,23 @@ void CSoundChannel::setupSound(GameSound current_sound,
 template <typename T>
 void CSoundChannel::generateWaveform(T *waveform, unsigned int len, int frequency, bool stereo )
 { 
-	int i;
-	int waittime; // How much do we divide wait time for change?
-	unsigned int halffreq;
-	unsigned int index;
-	bool firsttime;
-	T *WaveBuffer;
+	len /= sizeof(T);	
+	T* WaveBuffer = new T[len];
 	
-	len = len/sizeof(T);
-	WaveBuffer = new T[len];
+	unsigned int halffreq = (frequency>>1);
 	
-	halffreq = (frequency>>1);
-	
-	if(m_freq_corr == 16)
-		waittime = (frequency / SLOW_RATE);
-	else
-		waittime = (((m_freq_corr*frequency)>>4) / SLOW_RATE);
+	int waittime = // How much do we divide wait time for change?
+	(m_freq_corr == 16) ?
+		(frequency / SLOW_RATE)
+	:
+		(((m_freq_corr*frequency)>>4) / SLOW_RATE);
 	
 	// setup so we process a new byte of the sound first time through
-	firsttime = true;
+	bool firsttime = true;
 	
 	CSoundSlot& currentSound = (*m_pSoundSlot)[m_current_sound];
 	
-	for(index=0 ; index<len ; index++)
+	for(unsigned int index=0 ; index<len ; index++)
 	{
 		if (!m_sound_timer || firsttime)
 		{
@@ -181,7 +175,7 @@ void CSoundChannel::generateWaveform(T *waveform, unsigned int len, int frequenc
 			// time to change waveform state?
 			if (m_freqtimer > m_changerate)
 			{  // toggle waveform, generating a square wave
-				i=0;
+				int i=0;
 				
 				if(m_sound_ptr > 0)
 					i=m_volume;
