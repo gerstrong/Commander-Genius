@@ -45,8 +45,8 @@ public:
 	bool isForcedPlaying() { return (m_sound_playing && m_sound_forced); }
 	GameSound getCurrentsound() { return m_current_sound; }
 	void readWaveform(Uint8* waveform, int len, Uint8 channels, int frequency);
-	void generateWaveform8(Uint8 *waveform, unsigned int len, int frequency, bool stereo);
-	void generateWaveform16(Uint8 *waveform, unsigned int len, int frequency, bool stereo);
+	template <typename T>
+	void generateWaveform(T *waveform, unsigned int len, int frequency, bool stereo );
 	void transintoStereoChannels(Uint8* waveform, unsigned int len);
 
 	short getBalance() { return m_balance; }

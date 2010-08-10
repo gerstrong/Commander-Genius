@@ -103,16 +103,18 @@ void CSoundChannel::setupSound(GameSound current_sound,
 }
 
 // generates len bytes of waveform for the channel.
-void CSoundChannel::generateWaveform16(Uint8 *waveform, unsigned int len, int frequency, bool stereo )
+template <typename T>
+void CSoundChannel::generateWaveform(T *waveform, unsigned int len, int frequency, bool stereo )
 { 
 	int i;
 	int waittime; // How much do we divide wait time for change?
 	unsigned int halffreq;
 	unsigned int index;
 	bool firsttime;
-	Uint16 *WaveBuffer;
+	T *WaveBuffer;
 	
-	WaveBuffer = new Uint16[len];
+	len = len/sizeof(T);
+	WaveBuffer = new T[len];
 	
 	halffreq = (frequency>>1);
 	
@@ -145,7 +147,7 @@ void CSoundChannel::generateWaveform16(Uint8 *waveform, unsigned int len, int fr
 				}
 				m_sound_playing = false;
 				
-				memcpy(waveform, WaveBuffer,len*sizeof(Uint16));
+				memcpy(waveform, WaveBuffer,len*sizeof(T));
 				
 				m_sound_ptr = 0;
 				
@@ -206,115 +208,7 @@ void CSoundChannel::generateWaveform16(Uint8 *waveform, unsigned int len, int fr
 			}
 		}
 	}
-	memcpy(waveform, WaveBuffer,len*sizeof(Uint16));
-	delete[] WaveBuffer;
-}
-
-// generates len bytes of waveform for the channel.
-void CSoundChannel::generateWaveform8(Uint8 *waveform, unsigned int len, int frequency, bool stereo )
-{ 
-	int i;
-	int waittime; // How much do we divide wait time for change?
-	unsigned int halffreq;
-	unsigned int index;
-	char firsttime;
-	Uint8 *WaveBuffer;
-	
-	WaveBuffer = new Uint8[len];
-	
-	halffreq = (frequency>>1);
-	
-	if(m_freq_corr == 16)
-		waittime = (frequency / SLOW_RATE);
-	else
-		waittime = (((m_freq_corr*frequency)>>4) / SLOW_RATE);
-	
-	// setup so we process a new byte of the sound first time through
-	firsttime = 1;
-	
-	CSoundSlot& currentSound = (*m_pSoundSlot)[m_current_sound];
-	
-	for(index=0 ; index<len ; index++)
-	{
-		if (!m_sound_timer || firsttime)
-		{
-			// get new frequency and compute how fast we have to
-			// change the wave data
-			if(m_sound_ptr < currentSound.getSoundlength())
-				m_desiredfreq = currentSound.getSoundData()[m_sound_ptr];
-			else
-				m_desiredfreq = 0xffff;
-			
-			if (m_desiredfreq==0xffff)
-			{  // end of sound...fill rest of buffer with silence
-				for(;index<len;index++)
-				{
-					WaveBuffer[index] = m_AudioSpec.silence;
-				}
-				m_sound_playing = false;
-				
-				memcpy(waveform, WaveBuffer,len*sizeof(Uint8));
-				
-				m_sound_ptr = 0;
-				
-				// Only copy the rest of the remaing buffer space and return.
-				delete[] WaveBuffer;
-				
-				return;
-			}
-			else if (m_desiredfreq == 0x0000)
-			{
-				m_waveState = m_waveout;
-			}
-			else
-			{  // compute change rate
-				m_changerate = (halffreq / m_desiredfreq);
-			}
-			
-			m_sound_ptr++;
-			if (!firsttime) m_sound_timer = waittime;
-			firsttime = 0;
-		}
-		
-		if (m_sound_timer) m_sound_timer--;
-		
-		if (m_desiredfreq==0x0000)
-		{   // silence
-			WaveBuffer[index] = m_AudioSpec.silence;
-		}
-		else
-		{
-			// time to change waveform state?
-			if (m_freqtimer > m_changerate)
-			{  // toggle waveform, generating a square wave
-				i=0;
-				
-				if(m_sound_ptr > 0)
-					i=m_volume;
-				
-				if (m_waveState == m_AudioSpec.silence-i)
-					m_waveState = m_AudioSpec.silence+i;
-				else
-					m_waveState = m_AudioSpec.silence-i;
-				
-				m_freqtimer = 0;
-			}
-			else m_freqtimer++;
-			
-			// put wave data into buffer
-			WaveBuffer[index] = m_waveState;
-		}
-		
-		if(stereo) // Primitive stereo transformation
-		{
-			if(index < len)
-			{
-				index++;
-				WaveBuffer[index] = m_waveState;
-			}
-		}
-	}
-	memcpy(waveform, WaveBuffer,len*sizeof(Uint8));
+	memcpy(waveform, WaveBuffer,len*sizeof(T));
 	delete[] WaveBuffer;
 }
 
@@ -379,11 +273,11 @@ void CSoundChannel::readWaveform(Uint8* waveform, int len, Uint8 channels, int f
      	{
 			if ( m_AudioSpec.format == AUDIO_U16 || m_AudioSpec.format == AUDIO_S16 )
 			{
-				generateWaveform16( waveform, len/2, frequency, (channels==2) ? true : false );
+				generateWaveform( (Sint16*) waveform, len, frequency, (channels==2) ? true : false );
 			}
 			else
 			{
-				generateWaveform8( waveform, len, frequency, (channels==2) ? true : false );
+				generateWaveform( (Uint8*) waveform, len, frequency, (channels==2) ? true : false );
 			}
      	}
      	else
