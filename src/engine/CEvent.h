@@ -4,7 +4,7 @@
  *  Created on: 03.08.2010
  *      Author: gerstrong
  *
- *  Intended to represent an event.
+ *  Intendet to represent an event.
  *  Doesn't do any handling.
  */
 
