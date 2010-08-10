@@ -24,6 +24,8 @@
 		2332379B120EBC0700915252 /* CFlag.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323792120EBC0700915252 /* CFlag.cpp */; };
 		2332379C120EBC0700915252 /* CMiragia.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323794120EBC0700915252 /* CMiragia.cpp */; };
 		2332379D120EBC0700915252 /* CPlayerLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23323796120EBC0700915252 /* CPlayerLevel.cpp */; };
+		23325AA212117FCB00915252 /* SmartPointer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23325AA112117FCB00915252 /* SmartPointer.cpp */; };
+		23325AA312117FCB00915252 /* SmartPointer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23325AA112117FCB00915252 /* SmartPointer.cpp */; };
 		2332C60F11EA3B42000D8F71 /* CBridges.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2332C60D11EA3B42000D8F71 /* CBridges.cpp */; };
 		2332C63411EAFAD7000D8F71 /* CCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2332C63211EAFAD7000D8F71 /* CCamera.cpp */; };
 		2335371611FD5CC400E8C8B6 /* iphone_keyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 2335371511FD5CC400E8C8B6 /* iphone_keyboard.m */; };
@@ -419,6 +421,7 @@
 		23323795120EBC0700915252 /* CMiragia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMiragia.h; sourceTree = "<group>"; };
 		23323796120EBC0700915252 /* CPlayerLevel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlayerLevel.cpp; sourceTree = "<group>"; };
 		23323797120EBC0700915252 /* CPlayerLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPlayerLevel.h; sourceTree = "<group>"; };
+		23325AA112117FCB00915252 /* SmartPointer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SmartPointer.cpp; sourceTree = "<group>"; };
 		2332C60D11EA3B42000D8F71 /* CBridges.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBridges.cpp; sourceTree = "<group>"; };
 		2332C60E11EA3B42000D8F71 /* CBridges.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBridges.h; sourceTree = "<group>"; };
 		2332C63211EAFAD7000D8F71 /* CCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCamera.cpp; sourceTree = "<group>"; };
@@ -1261,6 +1264,7 @@
 		63CD10A211CFF5FB00F60BC8 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				23325AA112117FCB00915252 /* SmartPointer.cpp */,
 				63CD10A511CFF5FB00F60BC8 /* arguments.cpp */,
 				63CD10A611CFF5FB00F60BC8 /* arguments.h */,
 				63CD10A711CFF5FB00F60BC8 /* CGame.cpp */,
@@ -2221,6 +2225,7 @@
 				23323798120EBC0700915252 /* CFlag.cpp in Sources */,
 				23323799120EBC0700915252 /* CMiragia.cpp in Sources */,
 				2332379A120EBC0700915252 /* CPlayerLevel.cpp in Sources */,
+				23325AA212117FCB00915252 /* SmartPointer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2412,6 +2417,7 @@
 				2332379B120EBC0700915252 /* CFlag.cpp in Sources */,
 				2332379C120EBC0700915252 /* CMiragia.cpp in Sources */,
 				2332379D120EBC0700915252 /* CPlayerLevel.cpp in Sources */,
+				23325AA312117FCB00915252 /* SmartPointer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
