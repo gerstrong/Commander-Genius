@@ -402,9 +402,10 @@ bool CObject::moveSlopedTileDown( int x, int y, int xspeed )
 				moveYDir( new_y - this->y );
 			}
 		}
+		return true;
 	}
-
-	return true;
+	else
+		return false;
 }
 
 /**
@@ -449,7 +450,7 @@ void CObject::moveSlopedTileUp( int x, int y, int xspeed )
 	const int x_r = (x%L);
 
 	// get the dy position so the new pos can be computed
-	const int dy = ((yb2-yb1)*x_r)/L;
+	int dy = ((yb2-yb1)*x_r)/L;
 
 	// get the new position of the lower corner
 	const int y_rel = yb1 + dy;
@@ -459,13 +460,7 @@ void CObject::moveSlopedTileUp( int x, int y, int xspeed )
 
 	// get new position
 	const Uint32 new_y = y_pos - bboxY1 + (1<<STC);
-
-	// And apply it only if object tries to go through that tile
-	if( this->y < new_y )
-		this->y = new_y;
-
-	return;
-
+	moveYDir( new_y - this->y );
 }
 
 // Used in some setup mode, like putting the player to
