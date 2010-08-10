@@ -211,8 +211,8 @@ void CObject::performCollisionOnSlopedTiles()
 	{
 		blockedr = blockedl = false;
 
-		blockedr = checkSolidR(x+bboxX2, y+bboxY1, y+bboxY2-(2*halftile));
-		blockedl = checkSolidL(x+bboxX1, y+bboxY1, y+bboxY2-(2*halftile));
+		blockedr = checkSolidR(x+bboxX2, y+bboxY1, getYMidPos());
+		blockedl = checkSolidL(x+bboxX1, y+bboxY1, getYMidPos());
 	}
 }
 
