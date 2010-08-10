@@ -6,6 +6,7 @@
  */
 
 #include "CSoundChannel.h"
+#include <vector>
 
 CSoundChannel::CSoundChannel(SDL_AudioSpec AudioSpec) :
 m_AudioSpec(AudioSpec)
@@ -107,7 +108,7 @@ template <typename T>
 void CSoundChannel::generateWaveform(T *waveform, unsigned int len, int frequency, bool stereo )
 { 
 	len /= sizeof(T);	
-	T* WaveBuffer = new T[len];
+	std::vector<T> WaveBuffer(len);
 	
 	unsigned int halffreq = (frequency>>1);
 	
@@ -141,12 +142,9 @@ void CSoundChannel::generateWaveform(T *waveform, unsigned int len, int frequenc
 				}
 				m_sound_playing = false;
 				
-				memcpy(waveform, WaveBuffer,len*sizeof(T));
+				memcpy(waveform, &WaveBuffer[0],len*sizeof(T));
 				
 				m_sound_ptr = 0;
-				
-				// Only copy the rest of the remaing buffer space and return.
-				delete[] WaveBuffer;
 				
 				return;
 			}
@@ -202,8 +200,7 @@ void CSoundChannel::generateWaveform(T *waveform, unsigned int len, int frequenc
 			}
 		}
 	}
-	memcpy(waveform, WaveBuffer,len*sizeof(T));
-	delete[] WaveBuffer;
+	memcpy(waveform, &WaveBuffer[0],len*sizeof(T));
 }
 
 // This program reads the balance information and balances the stereo sound
