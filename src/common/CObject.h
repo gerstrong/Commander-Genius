@@ -74,6 +74,7 @@ public:
 	std::vector<CObject*> *mp_object;
 	
 	bool blockedl, blockedr, blockedu, blockedd;
+	bool onslope;
 	bool falling;
 	signed int xinertia, yinertia;
 	unsigned char xinertiatimer;
@@ -90,6 +91,7 @@ public:
 	void setupObjectType(int Episode);
 	void calcBouncingBoxes();
 	void performCollisionsSameBox();
+	void performCollisionOnSlopedTiles();
 	void performCollisions();
 	void setScrPos( int px, int py );
 	bool calcVisibility();
@@ -125,8 +127,9 @@ public:
 	// special functions for sloped tiles
 	bool checkslopedU( int c, int y1, char blocked);
 	bool checkslopedD( int c, int y2, char blocked);
-	bool performSlopedTileDown( int x, int y, int xspeed );
-	void performSlopedTileUp( int x, int y, int xspeed );
+	void moveSlopedTiles( int x, int y1, int y2, int xspeed );
+	bool moveSlopedTileDown( int x, int y, int xspeed );
+	void moveSlopedTileUp( int x, int y, int xspeed );
 
 	// getters for positions
 	unsigned int getXPosition();

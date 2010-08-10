@@ -66,7 +66,7 @@ void CPlayerLevel::processFalling()
 	CObject::processFalling();
 
 	// If yinertia is high, set falling to true
-	if( yinertia > 64 )
+	if( yinertia > 0 && !onslope )
 	{
 		state = FALLING;
 		falling = true;
