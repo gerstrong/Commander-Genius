@@ -107,6 +107,13 @@ void CTileLoader::readVorticonTileinfo(size_t NumTiles)
 			if(TileProperties[j].behaviour == -2 or  TileProperties[j].behaviour == -1)
 				TileProperties[j].behaviour = 0;
 		}
+
+		// Now set the ice and slippery tiles in case we have them
+		if( TileProperties[j].bup > 1)
+		{
+			TileProperties[j].slippery = TileProperties[j].bup;
+			TileProperties[j].bup = 1;
+		}
 	}
 
 	// This is a special case, because vorticon engine handles animation different

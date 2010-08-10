@@ -15,10 +15,6 @@ behaviour(0),
 bup(0),
 bright(0),
 bdown(0),
-bleft(0)
+bleft(0),
+slippery(0)
 { }
-
-CTileProperties::~CTileProperties()
-{
-	// TODO Auto-generated destructor stub
-}
