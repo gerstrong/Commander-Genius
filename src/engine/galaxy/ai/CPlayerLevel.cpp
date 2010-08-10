@@ -19,7 +19,8 @@ const Uint16 STANDBASEFRAMERIGHT = 6;
 const Uint16 FALLINGFRAMELEFT = 19;
 const Uint16 FALLINGFRAMERIGHT = 11;
 
-const Uint16 MAX_JUMPHEIGHT = (10<<CSF);
+const Uint16 MAX_JUMPHEIGHT = 30;
+const Uint16 MIN_JUMPHEIGHT = 10;
 
 CPlayerLevel::CPlayerLevel(CMap *pmap, Uint32 x, Uint32 y,
 						std::vector<CObject*>& ObjectPtrs, direction_t facedir) :
@@ -31,8 +32,14 @@ m_animation_time(1),
 m_animation_ticker(0),
 m_ObjectPtrs(ObjectPtrs)
 {
+	m_index = 0;
 	state = STANDING;
 	sprite = m_basesprite;
+
+	memset(m_playcontrol, 0,PA_MAX_ACTIONS);
+
+	m_pfiring = false;
+	m_jumpheight = 0;
 
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 	moveUp(rSprite.m_bboxY2-rSprite.m_bboxY1+(1<<CSF));
@@ -50,6 +57,8 @@ void CPlayerLevel::process()
 	}
 	else m_animation_ticker++;
 
+	processInput();
+
 	performCollisionsSameBox();
 
 	processMoving();
@@ -59,6 +68,59 @@ void CPlayerLevel::process()
 	processFalling();
 
 	processExiting();
+}
+
+void CPlayerLevel::processInput()
+{
+	m_playcontrol[PA_X] = 0;
+	m_playcontrol[PA_Y] = 0;
+
+	if(g_pInput->getHoldedCommand(m_index, IC_LEFT))
+		m_playcontrol[PA_X] -= 100;
+	if(g_pInput->getHoldedCommand(m_index, IC_RIGHT))
+		m_playcontrol[PA_X] += 100;
+
+	if(g_pInput->getHoldedCommand(m_index, IC_UP))
+		m_playcontrol[PA_Y] -= 100;
+	if(g_pInput->getHoldedCommand(m_index, IC_DOWN))
+		m_playcontrol[PA_Y] += 100;
+
+	if(!m_pfiring)
+	{
+		if(g_pInput->getHoldedCommand(m_index, IC_JUMP))
+		{
+			m_playcontrol[PA_JUMP]++;
+			if(m_jumpheight >= (MAX_JUMPHEIGHT-2))
+			{
+				m_playcontrol[PA_JUMP] = 0;
+				g_pInput->flushCommand(m_index, IC_JUMP);
+			}
+		}
+		else
+			m_playcontrol[PA_JUMP] = 0;
+
+		m_playcontrol[PA_POGO]   = g_pInput->getHoldedCommand(m_index, IC_POGO)   ? 1 : 0;
+	}
+
+	m_playcontrol[PA_FIRE]   = g_pInput->getHoldedCommand(m_index, IC_FIRE)   ? 1 : 0;
+	m_playcontrol[PA_STATUS] = g_pInput->getHoldedCommand(m_index, IC_STATUS) ? 1 : 0;
+
+	// The possibility to charge jumps. This is mainly used for the pogo.
+	if( m_playcontrol[PA_JUMP] > 50) m_playcontrol[PA_JUMP] = 50;
+
+	if(g_pInput->getTwoButtonFiring(m_index))
+	{
+		if(m_playcontrol[PA_FIRE])
+		{
+			m_playcontrol[PA_FIRE] = 0;
+		}
+		else if(m_playcontrol[PA_JUMP] && m_playcontrol[PA_POGO])
+		{
+			m_playcontrol[PA_FIRE] = 1;
+			m_playcontrol[PA_JUMP] = 0;
+			m_playcontrol[PA_POGO] = 0;
+		}
+	}
 }
 
 void CPlayerLevel::processFalling()
@@ -119,10 +181,34 @@ void CPlayerLevel::processMoving()
 
 void CPlayerLevel::processJumping()
 {
-	if(g_pInput->getPressedCommand(IC_JUMP) /*&& (state==STANDING or state==WALKING)*/ )
+	if(state != JUMPING)
 	{
-		yinertia = -128;
-		state = JUMPING;
+		if(blockedd)
+			m_jumpheight = 0;
+
+		// Not jumping? Let's if we can prepare the player to do so
+		if(m_playcontrol[PA_JUMP] && (state==STANDING or state==WALKING) )
+		{
+			yinertia = -136;
+			state = JUMPING;
+		}
+	}
+	else
+	{
+		// while button is pressed, make the player jump higher
+		if(m_playcontrol[PA_JUMP] || m_jumpheight <= MIN_JUMPHEIGHT)
+			m_jumpheight++;
+		else
+			m_jumpheight = 0;
+
+		// If the max. height is reached or the player cancels the jump by release the button
+		// make keen fall
+		if( m_jumpheight == 0 || m_jumpheight >= MAX_JUMPHEIGHT )
+		{
+			yinertia = 0;
+			m_jumpheight = 0;
+		}
+
 	}
 }
 

@@ -947,7 +947,20 @@ void CInput::flushCommands(void)
 {
 	for(int i=0 ; i<NUM_INPUTS ; i++)
 		for(int j=0 ; j<MAX_COMMANDS ; j++)
-			InputCommand[i][j].active = InputCommand[i][j].lastactive = InputCommand[i][j].firsttimeactive = false;
+			flushCommand( i, j );
+}
+
+void CInput::flushCommand(int command)
+{
+	for( int player=0; player<NUM_INPUTS ; player++ )
+		flushCommand(player, command);
+}
+
+void CInput::flushCommand(int player, int command)
+{
+	InputCommand[player][command].active =
+	InputCommand[player][command].lastactive =
+	InputCommand[player][command].firsttimeactive = false;
 }
 
 /**

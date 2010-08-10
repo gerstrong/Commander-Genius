@@ -340,6 +340,9 @@ void getSlopePointsLowerTile(char slope, int &yb1, int &yb2)
 
 bool CObject::moveSlopedTileDown( int x, int y, int xspeed )
 {
+	if(yinertia<0)
+		return false;
+
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 
 	const char slope = TileProperty[mp_Map->at(x>>CSF, y>>CSF)].bup;
@@ -970,9 +973,7 @@ bool CObject::checkSolidD( int x1, int x2, int y2 )
 
 			if(blocked)
 			{
-				/*if(vorticon)
-					return true;
-				else*/if(blocked == 1)
+				if( blocked < 2 || blocked > 7 )
 					return true;
 			}
 		}
@@ -980,12 +981,9 @@ bool CObject::checkSolidD( int x1, int x2, int y2 )
 		blocked = TileProperty[mp_Map->at((x2-(1<<STC))>>CSF, y2>>CSF)].bup;
 		if(blocked)
 		{
-			/*if(vorticon)
-				return true;
-			else*/ if(blocked == 1)
+			if( blocked < 2 || blocked > 7 )
 				return true;
 		}
-
 	}
 
 	if( (Uint32)y2 > ((mp_Map->m_height)<<CSF) )

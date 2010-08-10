@@ -198,6 +198,8 @@ public:
 
 	void flushKeys(void);
 	void flushCommands(void);
+	void flushCommand(int command);
+	void flushCommand(int player, int command);
 	void flushAll(void);
 
 	void renderOverlay(); // for mouse wrapper gfx or other stuff
