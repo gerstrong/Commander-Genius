@@ -49,11 +49,9 @@ void CPlayerWM::process()
 
 	// Events for the Player are processed here.
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-	if( EventContainer.occurredEvent( EXIT_LEVEL ) )
+	if( EventExitLevel* ev = EventContainer.occurredEvent<EventExitLevel>() )
 	{
-		Uint16 Data;
-		EventContainer.ReadData(Data);
-		finishLevel(Data);
+		finishLevel(ev->levelObject);
 		EventContainer.pop_Event();
 	}
 }
@@ -134,7 +132,7 @@ void CPlayerWM::processWalking()
  */
 void CPlayerWM::startLevel(Uint16 object)
 {
-	g_pBehaviorEngine->m_EventList.add(ENTER_LEVEL, object);
+	g_pBehaviorEngine->m_EventList.add(new EventEnterLevel(object));
 }
 
 /*

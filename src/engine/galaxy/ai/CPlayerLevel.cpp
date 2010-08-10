@@ -150,7 +150,7 @@ void CPlayerLevel::processExiting()
 	Uint32 x = getXMidPos();
 	if( ((mp_Map->m_width-2)<<CSF) < x || (2<<CSF) > x )
 	{
-		EventContainer.add( EXIT_LEVEL, mp_Map->getLevel() );
+		EventContainer.add( new EventExitLevel(mp_Map->getLevel()) );
 	}
 }
 

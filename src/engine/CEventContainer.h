@@ -11,37 +11,25 @@
 #define CEVENTCONTAINER_H_
 
 #include "CEvent.h"
+#include "SmartPointer.h"
 #include <list>
 
 class CEventContainer {
 public:
-	CEventContainer();
-
-	bool empty();
-	void add(const wm_event event_type);
-	template< typename _DataType > void add(wm_event event_type, const _DataType data);
-	bool occurredEvent( const wm_event event_type );
-	template< typename _DataType > bool ReadData(_DataType &data);
-	void pop_Event();
-
-	virtual ~CEventContainer();
+	bool empty() { return m_EventList.empty(); }
+	void add(const SmartPointer<CEvent>& ev) { m_EventList.push_back(ev); }
+	template<typename T> T* occurredEvent();
+	void pop_Event() { m_EventList.pop_front(); }
 
 private:
-	void add(const wm_event event_type, const void* data, size_t size);
-	bool ReadData(void *data, const size_t size);
-
-	std::list<CEvent> m_EventList;
+	std::list< SmartPointer<CEvent> > m_EventList;
 };
 
-/*
- * These are functions that use templates, they must be defined in the header
- */
-template< typename _DataType >
-void CEventContainer::add(const wm_event event_type, const _DataType data)
-{	add(event_type, &data, sizeof(data));	}
+template<typename T>
+T* CEventContainer::occurredEvent() {
+	if(m_EventList.empty()) return NULL;
+	return dynamic_cast<T*> (m_EventList.front().get());
+}
 
-template< typename _DataType >
-bool CEventContainer::ReadData(_DataType &data)
-{	return ReadData(&data, sizeof(data));	}
 
 #endif /* CEVENTCONTAINER_H_ */

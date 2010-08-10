@@ -88,21 +88,19 @@ void CPlayGameGalaxy::process()
 	// Galaxy Main Engine itself. For example, load map, setup world map, show Highscore
 	// are some of those events.
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-	if( EventContainer.occurredEvent( ENTER_LEVEL ) )
+	if( EventEnterLevel* ev = EventContainer.occurredEvent<EventEnterLevel>() )
 	{
-		Uint16 Data;
-		EventContainer.ReadData(Data);
 		EventContainer.pop_Event();
 
 		// Start a new level!
-		if(Data > 0xC000)
+		if(ev->data > 0xC000)
 		{
 			m_WorldMap.setActive(false);
-			m_LevelPlay.loadLevel(Data-0xC000);
+			m_LevelPlay.loadLevel(ev->data - 0xC000);
 			m_LevelPlay.setActive(true);
 		}
 	}
-	else if( EventContainer.occurredEvent( EXIT_LEVEL ) )
+	else if( EventContainer.occurredEvent<EventExitLevel>() )
 	{
 		m_LevelPlay.setActive(false);
 		m_WorldMap.setActive(true);
