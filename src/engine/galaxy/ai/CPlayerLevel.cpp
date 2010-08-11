@@ -99,14 +99,11 @@ void CPlayerLevel::processInput()
 		else
 			m_playcontrol[PA_JUMP] = 0;
 
-		m_playcontrol[PA_POGO]   = g_pInput->getHoldedCommand(m_index, IC_POGO)   ? 1 : 0;
+		m_playcontrol[PA_POGO]   = g_pInput->getHoldedCommand(m_index, IC_POGO) ? 1 : 0;
 	}
 
 	m_playcontrol[PA_FIRE]   = g_pInput->getHoldedCommand(m_index, IC_FIRE)   ? 1 : 0;
 	m_playcontrol[PA_STATUS] = g_pInput->getHoldedCommand(m_index, IC_STATUS) ? 1 : 0;
-
-	// The possibility to charge jumps. This is mainly used for the pogo.
-	if( m_playcontrol[PA_JUMP] > 50) m_playcontrol[PA_JUMP] = 50;
 
 	if(g_pInput->getTwoButtonFiring(m_index))
 	{
