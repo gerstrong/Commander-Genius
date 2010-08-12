@@ -516,6 +516,43 @@ void CMap::drawMaskonSprite( SDL_Surface *dst, int mx, int my, Uint8 spritewidth
     }
 }
 
+void CMap::drawMaskedTiles()
+{
+	// Go throught the list and just draw all the tiles that need to be animated
+	SDL_Surface* surface = g_pVideoDriver->getBlitSurface();
+	Uint32 num_h_tiles = surface->h;
+	Uint32 num_v_tiles = surface->w;
+
+	const Uint16 x1 = m_scrollx>>TILE_S;
+	const Uint16 y1 = m_scrolly>>TILE_S;
+	const Uint16 x2 = (m_scrollx+num_v_tiles)>>TILE_S;
+	const Uint16 y2 = (m_scrolly+num_h_tiles)>>TILE_S;
+
+	std::vector<CTileProperties> &TileProperties =
+			g_pBehaviorEngine->getTileProperties(1);
+	for( size_t y=y1 ; y<y2 ; y++)
+	{
+		for( size_t x=x1 ; x<x2 ; x++)
+		{
+			Uint16 fg = m_Plane[1].getMapDataAt(x,y);
+			if(TileProperties[fg].behaviour == -1 || TileProperties[fg].behaviour == -2 )
+			{
+				const Uint16 loc_x = (x<<TILE_S)-m_scrollx;
+				const Uint16 loc_y = (y<<TILE_S)-m_scrolly;
+
+    			bool completeblock = TileProperties[fg].bleft && TileProperties[fg].bright &&
+    					TileProperties[fg].bup && TileProperties[fg].bdown;
+    			if(TileProperties[fg].behaviour == -2) // case when when has a masked graphic
+    				drawAnimatedTile(surface, loc_x, loc_y, fg+1);
+    			else if (TileProperties[fg].behaviour == -1 || completeblock) // case when tile is just foreground
+    				drawAnimatedTile(surface, loc_x, loc_y, fg);
+			}
+		}
+	}
+}
+
+
+
 /////////////////////////
 // Animation functions //
 /////////////////////////

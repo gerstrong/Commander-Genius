@@ -1106,7 +1106,7 @@ void CObject::draw()
 // or priority tile!
 void CObject::drawMask(SDL_Surface *dst, CSprite &Sprite, int mx, int my)
 {
-	mp_Map->drawMaskonSprite( dst, mx, my, Sprite.getWidth(), Sprite.getHeight(), dead );
+	//mp_Map->drawMaskonSprite( dst, mx, my, Sprite.getWidth(), Sprite.getHeight(), dead );
 }
 
 

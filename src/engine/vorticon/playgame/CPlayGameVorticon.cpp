@@ -303,6 +303,9 @@ void CPlayGameVorticon::process()
 		// Draw objects to the screen
 		drawObjects();
 
+		// Draw masked tiles here!
+		m_Map.drawMaskedTiles();
+
 		if(mp_option[OPT_HUD].value)
 		{	// Draw the HUD
 			mp_HUD->render();
