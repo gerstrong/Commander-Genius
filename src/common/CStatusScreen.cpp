@@ -78,7 +78,7 @@ void CStatusScreen::drawInventoryEp1()
 	dlgW = 29;
 	dlgH = 15;
 	
-	g_pGfxEngine->drawDialogBox( p_surface, dlgX,dlgY,dlgW,dlgH, SDL_MapRGB(p_surface->format, 172, 172, 172));
+	g_pGfxEngine->drawDialogBox( p_surface, dlgX,dlgY,dlgW,dlgH, Font.getBGColour(true));
 	Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP1_StatusBox"), (dlgX+1)<<3, (dlgY+1)<<3, true);
 	
 	// Now draw some white rects. Those are the holders for items, numbers, etc.
@@ -200,7 +200,7 @@ void CStatusScreen::drawInventoryEp2()
 	dlgH = 14;
 
 	tempbuf = g_pBehaviorEngine->getString("EP2_StatusBox");
-	g_pGfxEngine->drawDialogBox( p_surface, dlgX,dlgY,dlgW,dlgH, SDL_MapRGB(p_surface->format, 172, 172, 172));
+	g_pGfxEngine->drawDialogBox( p_surface, dlgX,dlgY,dlgW,dlgH, Font.getBGColour(true));
 	Font.drawFont( p_surface, tempbuf, (dlgX+1)<<3, (dlgY+1)<<3, true);
 
 	// Now draw some white rects. Those are the holders for items, numbers, etc.
@@ -312,7 +312,7 @@ void CStatusScreen::drawInventoryEp3()
 	dlgH = 13;
 
 	tempbuf = g_pBehaviorEngine->getString("EP3_StatusBox");
-	g_pGfxEngine->drawDialogBox( p_surface, dlgX,dlgY,dlgW,dlgH, SDL_MapRGB(p_surface->format, 172, 172, 172));
+	g_pGfxEngine->drawDialogBox( p_surface, dlgX,dlgY,dlgW,dlgH, Font.getBGColour(true));
 	Font.drawFont( p_surface, tempbuf, (dlgX+1)<<3, (dlgY+1)<<3, true);
 
 	// Now draw some white rects. Those are the holders for items, numbers, etc.

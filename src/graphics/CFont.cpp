@@ -157,11 +157,10 @@ Uint32 CFont::getColour()
 
 Uint32 CFont::getBGColour(bool highlighted)
 {
-	Uint32 colour;
 	const int height = highlighted ? 2 : 10;
 	SDL_LockSurface(m_ColouredSurface);
 
-	Uint8* pixel = m_ColouredSurface->pixels; + height*8*m_ColouredSurface->pitch;
+	Uint8* pixel = (Uint8*) m_ColouredSurface->pixels + height*8*m_ColouredSurface->pitch;
 	Uint32* pixel32= (Uint32*)pixel;
 
 	Uint8 r,g,b;
