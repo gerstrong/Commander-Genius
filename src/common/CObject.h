@@ -148,7 +148,6 @@ public:
 	CMap *getMapPtr() { return mp_Map; }
 
 	void draw();
-	void drawMask(SDL_Surface *dst, CSprite &Sprite, int mx, int my);
 
 	virtual ~CObject();
 

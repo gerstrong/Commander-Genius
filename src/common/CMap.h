@@ -48,7 +48,6 @@ public:
 	void drawAll();
 	void drawHstripe( unsigned int y, unsigned int mpy );
 	void drawVstripe( unsigned int x, unsigned int mpx );
-	void drawMaskonSprite( SDL_Surface *dst, int mx, int my, Uint8 spritewidth, Uint8 spriteheight, bool objdead );
 	void drawMaskedTiles();
 
 	Uint16 at(Uint16 x, Uint16 y, Uint16 t=1);

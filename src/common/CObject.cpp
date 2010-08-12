@@ -1091,24 +1091,8 @@ void CObject::draw()
 		else
 			Sprite.drawSprite( sfc, scrx, scry );
 		hasbeenonscreen = true;
-
-	    if (honorPriority)
-	    {
-	        // handle priority tiles and tiles with masks
-	        // get the upper-left coordinates to start checking for tiles
-    		drawMask(sfc, Sprite, (x>>CSF), (y>>CSF));
-	    }
 	}
 }
-
-////
-// Functions finally draws the object also considering that there could be a masked
-// or priority tile!
-void CObject::drawMask(SDL_Surface *dst, CSprite &Sprite, int mx, int my)
-{
-	//mp_Map->drawMaskonSprite( dst, mx, my, Sprite.getWidth(), Sprite.getHeight(), dead );
-}
-
 
 ///
 // Cleanup Routine
