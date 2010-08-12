@@ -73,10 +73,8 @@ void CStatusScreen::drawInventoryEp1()
 	SDL_Surface *p_surface = g_pVideoDriver->FGLayerSurface;
 	CTilemap &Tilemap = g_pGfxEngine->getTileMap(1);
 
-	dlgX = 5;
-	dlgY = 5;
-	dlgW = 29;
-	dlgH = 15;
+	dlgX = 5; dlgW = 29;
+	dlgY = 5; dlgH = 15;
 	
 	g_pGfxEngine->drawDialogBox( p_surface, dlgX,dlgY,dlgW,dlgH, Font.getBGColour(true));
 	Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP1_StatusBox"), (dlgX+1)<<3, (dlgY+1)<<3, true);
@@ -85,32 +83,32 @@ void CStatusScreen::drawInventoryEp1()
 	SDL_Rect rect;
 	rect.x = (dlgX+1)*8;	rect.w = 12*8; // Score
 	rect.y = (dlgY+2)*8;	rect.h = 1*8;
-	SDL_FillRect(p_surface,&rect,0xFFFFFF);
+	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
 	rect.x = dlgX*8+14*8;	rect.w = 15*8; // Extra keen at
-	SDL_FillRect(p_surface,&rect,0xFFFFFF);
+	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
 	rect.x = (dlgX+1)*8;	rect.w = 14*8; // Keens
 	rect.y = (dlgY+4)*8;	rect.h = 3*8;
-	SDL_FillRect(p_surface,&rect,0xFFFFFF);
+	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
 	rect.x = (dlgX+16)*8;	rect.w = 13*8; // Ship Parts
-	SDL_FillRect(p_surface,&rect,0xFFFFFF);
+	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
 	rect.x = (dlgX+1)*8;	rect.w = 8*8; // Raygun
 	rect.y = (dlgY+8)*8;	rect.h = 3*8;
-	SDL_FillRect(p_surface,&rect,0xFFFFFF);
+	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
 	rect.x = (dlgX+10)*8;	rect.w = 6*8; // Pogo
 	rect.h = 5*8;
-	SDL_FillRect(p_surface,&rect,0xFFFFFF);
+	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
 	rect.x = (dlgX+17)*8;	rect.w = 12*8; // Keycards
-	SDL_FillRect(p_surface,&rect,0xFFFFFF);
+	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
 	rect.x = (dlgX+1)*8;	rect.w = 8*8; // Charge
 	rect.y = (dlgY+12)*8;	rect.h = 1*8;
-	SDL_FillRect(p_surface,&rect,0xFFFFFF);
+	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
 	// fill in what we have
 	// 321: joystick/battery/vacuum/fuel not gotten
@@ -207,24 +205,24 @@ void CStatusScreen::drawInventoryEp2()
 	SDL_Rect rect;
 	rect.x = (dlgX+1)*8;	rect.w = 12*8; // Score
 	rect.y = (dlgY+2)*8;	rect.h = 1*8;
-	SDL_FillRect(p_surface,&rect,0xFFFFFF);
+	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
 	rect.x = dlgX*8+14*8;	rect.w = 15*8; // Extra keen at
-	SDL_FillRect(p_surface,&rect,0xFFFFFF);
+	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
 	rect.x = (dlgX+1)*8;	rect.w = 18*8; // Keens
 	rect.y = (dlgY+4)*8;	rect.h = 3*8;
-	SDL_FillRect(p_surface,&rect,0xFFFFFF);
+	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
 	rect.x = (dlgX+20)*8;	rect.w = 9*8; // Pistol
-	SDL_FillRect(p_surface,&rect,0xFFFFFF);
+	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
 	rect.x = (dlgX+1)*8;	rect.w = 18*8; // Targets Saved
 	rect.y = (dlgY+8)*8;	rect.h = 4*8;
-	SDL_FillRect(p_surface,&rect,0xFFFFFF);
+	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
 	rect.x = (dlgX+20)*8;	rect.w = 9*8; // Keys
-	SDL_FillRect(p_surface,&rect,0xFFFFFF);
+	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
 	// raygun icon
 	Tilemap.drawTile(p_surface, (dlgX+21)<<3, ((dlgY+5)<<3), 414);
@@ -319,24 +317,24 @@ void CStatusScreen::drawInventoryEp3()
 	SDL_Rect rect;
 	rect.x = (dlgX+1)*8;	rect.w = 12*8; // Score
 	rect.y = (dlgY+2)*8;	rect.h = 1*8;
-	SDL_FillRect(p_surface,&rect,0xFFFFFF);
+	SDL_FillRect(p_surface, &rect, Font.getBGColour(false));
 
 	rect.x = dlgX*8+14*8;	rect.w = 15*8; // Extra keen at
-	SDL_FillRect(p_surface,&rect,0xFFFFFF);
+	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
 	rect.x = (dlgX+1)*8;	rect.w = 18*8; // Keens
 	rect.y = (dlgY+4)*8;	rect.h = 3*8;
-	SDL_FillRect(p_surface,&rect,0xFFFFFF);
+	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
 	rect.x = (dlgX+20)*8;	rect.w = 9*8; // Pistol
-	SDL_FillRect(p_surface,&rect,0xFFFFFF);
+	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
 	rect.x = (dlgX+1)*8;	rect.w = 10*8; // Ankh
 	rect.y = (dlgY+8)*8;	rect.h = 3*8;
-	SDL_FillRect(p_surface,&rect,0xFFFFFF);
+	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
 	rect.x = (dlgX+12)*8;	rect.w = 17*8; // Keys
-	SDL_FillRect(p_surface,&rect,0xFFFFFF);
+	SDL_FillRect(p_surface,&rect, Font.getBGColour(false));
 
 	// raygun icon
 	Tilemap.drawTile(p_surface, (dlgX+21)<<3, ((dlgY+5)<<3)-5, 216);

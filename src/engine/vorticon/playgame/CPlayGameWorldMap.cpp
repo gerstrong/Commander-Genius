@@ -184,7 +184,7 @@ const unsigned int KEENSLEFT_H = 4;
 	rect.w = (KEENSLEFT_W-1)*8;	rect.h = (boxH-3)*8;
 	g_pGfxEngine->drawDialogBox( boxsurface, KEENSLEFT_X, boxY,KEENSLEFT_W,boxH, Font.getBGColour(true));
 	Font.drawFont( boxsurface, g_pBehaviorEngine->getString("LIVES_LEFT"),((KEENSLEFT_X+4)*8)+4,(boxY+1)*8, true);
-	SDL_FillRect(boxsurface, &rect, 0xFFFFFF);
+	SDL_FillRect(boxsurface, &rect, Font.getBGColour(false));
 
 	y = ((boxY+2)*8)+4;
 	for(p=0; p<m_NumPlayers ; p++)
