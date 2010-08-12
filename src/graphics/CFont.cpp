@@ -147,6 +147,31 @@ Uint32 CFont::getColour()
 	return m_fgcolour;
 }
 
+/**
+ * \brief Retrieves the background colour of the font map
+ * \param highlighted The fontmap has two background colours.
+ * 		  			  One is highlighted (default gray)
+ * 					  The other is not (default white)
+ * 					  Those colours normally differ in mods.
+ */
+
+Uint32 CFont::getBGColour(bool highlighted)
+{
+	Uint32 colour;
+	const int height = highlighted ? 2 : 10;
+	SDL_LockSurface(m_ColouredSurface);
+
+	Uint8* pixel = m_ColouredSurface->pixels; + height*8*m_ColouredSurface->pitch;
+	Uint32* pixel32= (Uint32*)pixel;
+
+	Uint8 r,g,b;
+	SDL_GetRGB(*pixel32, m_ColouredSurface->format, &r, &g, &b);
+
+	SDL_UnlockSurface(m_ColouredSurface);
+
+	return SDL_MapRGB(m_ColouredSurface->format, r, g, b);
+}
+
 ////////////////////////////
 ///// Drawing Routines /////
 ////////////////////////////
