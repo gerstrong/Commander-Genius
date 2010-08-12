@@ -849,14 +849,6 @@ bool CPlayer::checkObjSolid()
 	return true;
 }
 
-// Draws the Player actual frame
-// Master class CObject is called, but also his puppy
-// object ankhframe if he is in this status.
-void CPlayer::draw()
-{
-	CObject::draw();
-}
-
 // Draws the Status screen and return false, when it's still open.
 bool CPlayer::drawStatusScreen()
 {

@@ -85,7 +85,6 @@ public:
 
 	bool checkObjSolid();
 
-	void draw();
 	bool drawStatusScreen();
 	bool scrollTriggers();
 	void give_keycard(int doortile);
