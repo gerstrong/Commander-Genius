@@ -61,6 +61,12 @@ void CHUD::CreateBackground()
 void CHUD::DrawCircle(int x, int y, int width)
 {
 	SDL_Rect text, outline;
+
+	Uint8 r,g,b;
+	CFont &Font = g_pGfxEngine->getFont(0);
+	Uint32 bgcolor = Font.getBGColour(false);
+	SDL_GetRGB(bgcolor, mp_Background->format, &r, &g, &b);
+
 	outline.x = x+4;
 	outline.y = y;
 	outline.w = width-8;
@@ -85,17 +91,17 @@ void CHUD::DrawCircle(int x, int y, int width)
 	text.y = y+1;
 	text.w = width-8;
 	text.h = 10;
-	SDL_FillRect(mp_Background, &text, SDL_MapRGBA(mp_Background->format, 255,255,255,255)); // White
+	SDL_FillRect(mp_Background, &text, SDL_MapRGBA(mp_Background->format, r,g,b,255)); // White
 	text.x = x+2;
 	text.y = y+2;
 	text.w = width-4;
 	text.h = 8;
-	SDL_FillRect(mp_Background, &text, SDL_MapRGBA(mp_Background->format, 255,255,255,255)); // White
+	SDL_FillRect(mp_Background, &text, SDL_MapRGBA(mp_Background->format, r,g,b,255)); // White
 	text.x = x+1;
 	text.y = y+4;
 	text.w = width-2;
 	text.h = 4;
-	SDL_FillRect(mp_Background, &text, SDL_MapRGBA(mp_Background->format, 255,255,255,255)); // White
+	SDL_FillRect(mp_Background, &text, SDL_MapRGBA(mp_Background->format, r,g,b,255)); // White
 }
 
 /**
