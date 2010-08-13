@@ -72,7 +72,7 @@ void CVortiMom::process()
 			}
 			else
 			{
-				moveRight(MOTHER_WALK_SPD);
+				xinertia = MOTHER_WALK_SPD;
 			}
 		}
 		else
@@ -82,7 +82,7 @@ void CVortiMom::process()
 			if (blockedl)
 				dir = RIGHT;
 			else
-				moveLeft(MOTHER_WALK_SPD);
+				xinertia = -MOTHER_WALK_SPD;
 		}
 
 		// walk animation
