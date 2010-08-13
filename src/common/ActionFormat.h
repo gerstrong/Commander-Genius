@@ -15,22 +15,29 @@
 #ifndef ACTIONFORMAT_H_
 #define ACTIONFORMAT_H_
 
-struct ActionFormat {
-	Sint16 Left_sprite;         // 124-400
-	Sint16 Right_sprite;        // 124-400
-	Sint16 Movement_parameter;  // 0-3
-	Sint16 Change_h;            // 0/1
-	Sint16 Change_v;            // 0/1
-	Sint16 Delay;				// (Anim speed)  0-8000
-	Sint16 H_anim_move_amount;  // +- any value
-	Sint16 V_anim_move_amount;  // +- any value
-	Sint16 Behavior;            // [Start of behavior codes only]
-	Sint16 Behavior_segment;    // [Segment values only]
-	Sint16 Check_sprites;       // [Start of check sprite codes only]
-	Sint16 Check_segment;       // [Segment values only]
-	Sint16 Check_tiles;         // [Start of check tile code only]
-	Sint16 Check_segment;       // [Segment values only]
-	Sint16 Next_action;         // [Valid actions only]
+#include <stdint.h>
+
+class CActionFormat {
+public:
+	CActionFormat();
+	virtual ~CActionFormat();
+
+private:
+	int16_t Left_sprite;         // 124-400
+	int16_t Right_sprite;        // 124-400
+	int16_t Movement_parameter;  // 0-3
+	int16_t Change_h;            // 0/1
+	int16_t Change_v;            // 0/1
+	int16_t Delay;				// (Anim speed)  0-8000
+	int16_t H_anim_move_amount;  // +- any value
+	int16_t V_anim_move_amount;  // +- any value
+	int16_t Behavior;            // [Start of behavior codes only]
+	int16_t Behavior_segment;    // [Segment values only]
+	int16_t Check_sprites;       // [Start of check sprite codes only]
+	int16_t Check_segment;       // [Segment values only]
+	int16_t Check_tiles;         // [Start of check tile code only]
+	int16_t Check_segment2;       // [Segment values only]
+	int16_t Next_action;         // [Valid actions only]
 };
 
 #endif /* ACTIONFORMAT_H_ */

@@ -298,9 +298,9 @@ void CScrub::walkRight(int mx, int my)
 				!TileProperties[mp_Map->at(mx+1, my)].bright)
 			{
 				// There is no gap the upper-side
-				moveRight(1<<STC);
+				moveRight(4<<STC);
 				moveUp(2<<STC);
-				moveLeft(2<<STC);
+				moveLeft(6<<STC);
 				Scrub_TurnOnCansupportWhereNotKicked();
 				if(blockedl)
 					walkdir = UP;
