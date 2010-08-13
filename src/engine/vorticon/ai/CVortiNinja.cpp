@@ -1,4 +1,4 @@
-#include "../../../sdl/sound/CSound.h"
+#include "sdl/sound/CSound.h"
 
 #include "CVortiNinja.h"
 
@@ -20,6 +20,7 @@ unsigned int rnd(void);
 
 CVortiNinja::CVortiNinja(CMap *p_map, Uint32 x, Uint32 y, std::vector<CPlayer> &Player) :
 CObject(p_map, x, y, OBJ_NINJA),
+longjump(false),
 m_Player(Player)
 {
 	canbezapped = true;
@@ -45,7 +46,7 @@ void CVortiNinja::init()
 
 void CVortiNinja::process()
 {
-	int onsamelevel;
+	bool onsamelevel;
 
 	if (touchPlayer && !m_Player[touchedBy].pdie && \
 			state != NINJA_DYING)
@@ -74,6 +75,7 @@ void CVortiNinja::process()
 
 	switch(state)
 	{
+
 	case NINJA_STAND:
 		if (m_Player[0].getXPosition() < getXPosition()+(8<<STC))
 			dir = LEFT;
@@ -87,23 +89,21 @@ void CVortiNinja::process()
 			if (rnd()&1)
 			{
 				// high, short jump
-				xinertia = (mp_Map->m_Difficulty>1) ? 95 : 75;
+				longjump = false;
 				yinertia = -120;
 			}
 			else
 			{
 				// low, long jump
-				xinertia = (mp_Map->m_Difficulty>1) ? 150 : 120;
+				longjump = true;
 				yinertia = -30;
 			}
 
-			if (dir==LEFT)
-				xinertia = -xinertia;
 		}
 		else
 		{
 			// find out if a player is on the same level
-			onsamelevel = 0;
+			onsamelevel = false;
 
 			std::vector<CPlayer>::iterator it_player = m_Player.begin();
 			for( ; it_player != m_Player.end() ; it_player++ )
@@ -111,7 +111,7 @@ void CVortiNinja::process()
 				if ((it_player->getYPosition() >= getYPosition()-(96<<STC)) &&
 					(it_player->getYDownPos() <= (getYDownPos()+(96<<STC))))
 				{
-					onsamelevel = 1;
+					onsamelevel = true;
 					break;
 				}
 			}
@@ -120,10 +120,8 @@ void CVortiNinja::process()
 				timetillkick--;
 		}
 
-		if (dir==LEFT)
-			sprite = NINJA_STAND_LEFT_FRAME + animframe;
-		else
-			sprite = NINJA_STAND_RIGHT_FRAME + animframe;
+		sprite = (dir==LEFT) ? NINJA_STAND_LEFT_FRAME : NINJA_STAND_RIGHT_FRAME;
+		sprite += animframe;
 
 		if (animtimer > NINJA_STAND_ANIM_RATE)
 		{
@@ -133,18 +131,14 @@ void CVortiNinja::process()
 		else
 			animtimer++;
 		break;
-	case NINJA_KICK:
 
+	case NINJA_KICK:
 		if (!dying)
-		{
-			if (dir==LEFT)
-				sprite = NINJA_KICK_LEFT_FRAME;
-			else
-				sprite = NINJA_KICK_RIGHT_FRAME;
-		}
+			sprite = (dir==LEFT) ? NINJA_KICK_LEFT_FRAME : NINJA_KICK_RIGHT_FRAME;
 		else
-			sprite = NINJA_DYING_FRAME;
-		if (blockedd)
+			state = NINJA_DYING;
+
+		if (blockedd && yinertia == 0)
 		{
 			if (!dying)
 				init();
@@ -154,17 +148,16 @@ void CVortiNinja::process()
 			break;
 		}
 
+		if(longjump)
+			xinertia = (mp_Map->m_Difficulty>1) ? 150 : 120;
+		else
+			xinertia = (mp_Map->m_Difficulty>1) ? 95 : 75;
 
-		if (KickMoveTimer < NINJA_KICK_MOVE_RATE)
-		{
-			KickMoveTimer++;
-			break;
-		}
-		KickMoveTimer = 0;
-
-		if(blockedd) init();
+		if (dir==LEFT)
+			xinertia = -xinertia;
 
 		break;
+
 	case NINJA_DYING:
 		sprite = NINJA_DYING_FRAME;
 

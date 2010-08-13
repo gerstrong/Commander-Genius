@@ -29,8 +29,8 @@ private:
 	int animframe, animtimer;
 	unsigned int timetillkick;
 
-	int KickMoveTimer;
 	int dietimer;
+	bool longjump;
 	std::vector<CPlayer> &m_Player;
 };
 
