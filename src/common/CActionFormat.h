@@ -36,7 +36,7 @@ private:
 	int16_t Check_sprites;       // [Start of check sprite codes only]
 	int16_t Check_segment;       // [Segment values only]
 	int16_t Check_tiles;         // [Start of check tile code only]
-	int16_t Check_segment;       // [Segment values only]
+	int16_t Check_segment2;       // [Segment values only]
 	int16_t Next_action;         // [Valid actions only]
 };
 
