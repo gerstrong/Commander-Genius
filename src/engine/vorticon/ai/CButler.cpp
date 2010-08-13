@@ -39,7 +39,7 @@ void CButler::process()
 			 sprite = BUTLER_WALK_LEFT_FRAME + frame;
 			 if (!blockedl && not_about_to_fall)
 			 {
-				 moveLeft(BUTLER_WALK_SPEED);
+				 xinertia = -BUTLER_WALK_SPEED;
 			 }
 			 else
 			 {
@@ -58,7 +58,7 @@ void CButler::process()
 			 sprite = BUTLER_WALK_RIGHT_FRAME + frame;
 			 if (!blockedr && not_about_to_fall)
 			 {
-				 moveRight(BUTLER_WALK_SPEED);
+				 xinertia = BUTLER_WALK_SPEED;
 			 }
 			 else
 			 {

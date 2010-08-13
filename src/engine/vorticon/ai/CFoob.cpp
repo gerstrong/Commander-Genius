@@ -75,7 +75,7 @@ void CFoob::process()
 			}
 			else
 			{
-				moveRight(FOOB_WALK_SPEED);
+				xinertia = FOOB_WALK_SPEED;
 			}
 		}
 		else
@@ -87,7 +87,7 @@ void CFoob::process()
 			}
 			else
 			{
-				moveLeft(FOOB_WALK_SPEED);
+				xinertia = -FOOB_WALK_SPEED;
 			}
 		}
 
@@ -141,7 +141,7 @@ void CFoob::process()
 			sprite = FOOB_WALK_RIGHT_FRAME + animframe;
 			if (!blockedr)
 			{
-				moveRight(FOOB_FLEE_SPEED);
+				xinertia = FOOB_FLEE_SPEED;
 				blockedtime = 0;
 			}
 			else if ((mp_Map->m_Difficulty>1))
@@ -158,7 +158,7 @@ void CFoob::process()
 			sprite = FOOB_WALK_LEFT_FRAME + animframe;
 			if (!blockedl)
 			{
-				moveLeft(FOOB_FLEE_SPEED);
+				xinertia = -FOOB_FLEE_SPEED;
 				blockedtime = 0;
 			}
 			else if ((mp_Map->m_Difficulty>1))
