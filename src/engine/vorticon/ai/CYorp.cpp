@@ -79,10 +79,7 @@ void CYorp::processLooking()
 
 	if (looktimes>numlooks && timer==YORP_LOOK_TIME-(YORP_LOOK_TIME/4))
 	{
-		if (m_vec_Player[0].getXPosition() < getXPosition())
-		{ movedir = LEFT; }
-		else
-		{ movedir = RIGHT; }
+		movedir = (m_vec_Player[0].getXPosition() < getXPosition()) ? LEFT : RIGHT;
 
 		// unless we're can't go that way
 		if (blockedl) movedir = RIGHT;
@@ -147,7 +144,7 @@ void CYorp::processMoving()
 		sprite = YORP_WALK_LEFT + walkframe;
 		if (!blockedl)
 		{
-			moveLeft(m_hardmode ? YORP_WALK_SPEED_FAST : YORP_WALK_SPEED);
+			xinertia = m_hardmode ? -YORP_WALK_SPEED_FAST : -YORP_WALK_SPEED;
 			dist_traveled++;
 		}
 		else
@@ -163,7 +160,7 @@ void CYorp::processMoving()
 		sprite = YORP_WALK_RIGHT + walkframe;
 		if (!blockedr)
 		{
-			moveRight(m_hardmode ? YORP_WALK_SPEED_FAST:YORP_WALK_SPEED);
+			xinertia = m_hardmode ? YORP_WALK_SPEED_FAST : YORP_WALK_SPEED;
 			dist_traveled++;
 		}
 		else

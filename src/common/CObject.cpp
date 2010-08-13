@@ -702,6 +702,25 @@ void CObject::decreaseXInertia(int value)
 	}
 }
 
+// handles inertia and friction for the X direction
+// (this is where the xinertia is actually applied to playx)
+void CObject::InertiaAndFriction_X()
+{
+	const int friction_rate = 10;
+
+	int dx=xinertia;
+	// check first if the player is not blocked
+	if( (!blockedr and dx>0) or (!blockedl and dx<0) )
+		moveXDir(dx);
+	else
+		xinertia = 0;
+
+	// and apply friction to xinertia
+	// when pogoing apply friction till we get down to PFASTINCMAXSPEED
+	// then stop the friction
+	decreaseXInertia(friction_rate);
+}
+
 unsigned int CObject::getXPosition()
 { return x; }
 unsigned int CObject::getYPosition()

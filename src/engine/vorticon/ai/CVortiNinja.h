@@ -29,9 +29,6 @@ private:
 	int animframe, animtimer;
 	unsigned int timetillkick;
 
-	signed int XInertia;
-	unsigned int XFrictionTimer, YFrictionTimer;
-	unsigned int XFrictionRate, YFrictionRate;
 	int KickMoveTimer;
 	int dietimer;
 	std::vector<CPlayer> &m_Player;

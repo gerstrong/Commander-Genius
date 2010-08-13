@@ -32,7 +32,7 @@ m_Player(mp_vec_Player)
 {
 	bool ep3;
 	state = BABY_RUN;
-	dir = rand()&1?LEFT:RIGHT;
+	dir = rand() & 1 ? LEFT : RIGHT;
 	walkframe = 0;
 	walktimer = 0;
 	canbezapped = true;

@@ -110,6 +110,7 @@ public:
 	void moveDown(int amount);
 
 	void decreaseXInertia(int value);
+	void InertiaAndFriction_X();
 
 	virtual void process() { }
 	

@@ -55,7 +55,6 @@ void CVortiNinja::process()
 	{
 		dying = true;
 		dietimer = 0;
-		YFrictionRate = 1;
 		g_pSound->playStereofromCoord(SOUND_VORT_DIE, PLAY_NOW, scrx);
 	}
 
@@ -88,26 +87,18 @@ void CVortiNinja::process()
 			if (rnd()&1)
 			{
 				// high, short jump
-				XInertia = (mp_Map->m_Difficulty>1) ? 95 : 75;
+				xinertia = (mp_Map->m_Difficulty>1) ? 95 : 75;
 				yinertia = -120;
-				XFrictionTimer = 0;
-				YFrictionTimer = 0;
-				XFrictionRate = 5;
-				YFrictionRate = 1;
 			}
 			else
 			{
 				// low, long jump
-				XInertia = (mp_Map->m_Difficulty>1) ? 150 : 120;
+				xinertia = (mp_Map->m_Difficulty>1) ? 150 : 120;
 				yinertia = -30;
-				XFrictionTimer = 0;
-				YFrictionTimer = 0;
-				XFrictionRate = 5;
-				YFrictionRate = 1;
 			}
 
 			if (dir==LEFT)
-				XInertia = -XInertia;
+				xinertia = -xinertia;
 		}
 		else
 		{
@@ -162,15 +153,6 @@ void CVortiNinja::process()
 
 			break;
 		}
-		else
-		{
-			if ((XInertia > 0 && !blockedr) || \
-					(XInertia < 0 && !blockedl))
-			{
-				if (!dying)
-					moveXDir(XInertia);
-			}
-		}
 
 
 		if (KickMoveTimer < NINJA_KICK_MOVE_RATE)
@@ -180,33 +162,7 @@ void CVortiNinja::process()
 		}
 		KickMoveTimer = 0;
 
-		if (XFrictionTimer > XFrictionRate)
-		{
-			if (XInertia>0)
-			{
-				if(XInertia-16 < 0)
-					XInertia = 0;
-				else XInertia-= 16;
-			}
-			else
-			{
-				if(XInertia+16 > 0)
-					XInertia = 0;
-				else XInertia+= 16;
-			}
-
-			XFrictionTimer = 0;
-		}
-		else
-			XFrictionTimer++;
-
-		if (YFrictionTimer > YFrictionRate)
-		{
-			if(blockedd) init();
-			YFrictionTimer = 0;
-		}
-		else
-			YFrictionTimer++;
+		if(blockedd) init();
 
 		break;
 	case NINJA_DYING:

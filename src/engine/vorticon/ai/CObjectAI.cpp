@@ -69,6 +69,8 @@ void CObjectAI::process()
 						object.getTouchedBy(**theOther);
 				}
 			}
+
+			object.InertiaAndFriction_X();
 		}
 	}
 
