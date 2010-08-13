@@ -99,7 +99,7 @@ void CMeep::process()
 			if (blockedr || !not_about_to_fall)
 				dir = LEFT;
 			else
-				moveRight(MEEP_WALK_SPD);
+				xinertia = MEEP_WALK_SPD;
 		}
 		else
 		{
@@ -107,13 +107,9 @@ void CMeep::process()
 			not_about_to_fall = TileProperties.at(mp_Map->at((getXRightPos())>>CSF, (getYDownPos()+(1<<STC))>>CSF)).bup;
 
 			if (blockedl || !not_about_to_fall)
-			{
 				dir = RIGHT;
-			}
 			else
-			{
-				moveLeft(MEEP_WALK_SPD);
-			}
+				xinertia = -MEEP_WALK_SPD;
 		}
 
 		// walk animation
