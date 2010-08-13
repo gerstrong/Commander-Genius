@@ -24,7 +24,7 @@ void CBehaviorEngine::addMessage(const std::string &name,
 {	stringmap[name] = message;	}
 
 /**
- * \brief This function read the teleporter table in case there is any.
+ * \brief This function reads the teleporter table in case there is any.
  * 		  As far I'm concerned, only episode 1 has one and it is patched
  * 		  by many mods
  * \param	episode		Episode of the Game. Only Episode 1 should be used if it has really
@@ -71,6 +71,16 @@ bool CBehaviorEngine::readTeleporterTable(byte *p_exedata)
 		return true;
 	}
 	return false;
+}
+
+/**
+ * \brief This function reads in the actions format of Keen Galaxy.
+ * 		  For what it is used, please check ActionFormat.h
+ * \param	p_exedata	pointer to the data where the exe is located at.
+ */
+bool CBehaviorEngine::readActionFormat(byte *p_exedata)
+{
+
 }
 
 std::vector<CTileProperties> &CBehaviorEngine::getTileProperties(size_t tmnum)

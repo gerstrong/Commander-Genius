@@ -41,6 +41,7 @@ public:
 					const std::string &message);
 
 	bool readTeleporterTable(byte *p_exedata);
+	bool readActionFormat(byte *p_exedata);
 
 	std::vector<CTileProperties> &getTileProperties(size_t tmnum = 1);
 	CPhysicsSettings &getPhysicsSettings();

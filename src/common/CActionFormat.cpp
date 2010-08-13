@@ -7,11 +7,3 @@
 
 #include "CActionFormat.h"
 
-CActionFormat::CActionFormat() {
-	// TODO Auto-generated constructor stub
-
-}
-
-CActionFormat::~CActionFormat() {
-	// TODO Auto-generated destructor stub
-}

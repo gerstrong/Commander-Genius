@@ -17,8 +17,6 @@
 
 class CActionFormat {
 public:
-	CActionFormat();
-	virtual ~CActionFormat();
 
 private:
 	Sint16 Left_sprite;         // 124-400
