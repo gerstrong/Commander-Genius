@@ -149,7 +149,7 @@ void CVorticonElite::process()
 			sprite = VORTELITE_WALK_LEFT_FRAME + frame;
 			if (!blockedl)
 			{
-				moveLeft(m_speed);
+				xinertia = -m_speed;
 			}
 			else
 			{
@@ -171,7 +171,7 @@ void CVorticonElite::process()
 			sprite = VORTELITE_WALK_RIGHT_FRAME + frame;
 			if (!blockedr)
 			{
-				moveRight(m_speed);
+				xinertia = m_speed;
 			}
 			else
 			{

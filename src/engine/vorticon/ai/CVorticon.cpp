@@ -77,9 +77,9 @@ void CVorticon::process() {
 	switch (state) {
 	case VORT_JUMP:
 		if (movedir == RIGHT && !blockedr)
-			moveRight(VORT_WALK_SPEED);
+			xinertia = VORT_WALK_SPEED;
 		else if (!blockedl)
-			moveLeft(VORT_WALK_SPEED);
+			xinertia = -VORT_WALK_SPEED;
 
 		if (yinertia == 0 && blockedd) { // The Vorticon Has landed after the jump!
 			state = VORT_LOOK;
@@ -137,9 +137,10 @@ void CVorticon::process() {
 		if (movedir == LEFT) { // move left
 			sprite = WalkLeftFrame + frame;
 
-			if (!blockedl) {
-				moveLeft(VORT_WALK_SPEED);
-			} else {
+			if (!blockedl)
+				xinertia = -VORT_WALK_SPEED;
+			else
+			{
 				frame = 0;
 				animtimer = 0;
 				state = VORT_LOOK;
@@ -162,9 +163,10 @@ void CVorticon::process() {
 		} else { // move right
 			sprite = WalkRightFrame + frame;
 
-			if (!blockedr) {
-				moveRight(VORT_WALK_SPEED);
-			} else {
+			if (!blockedr)
+				xinertia = VORT_WALK_SPEED;
+			else
+			{
 				frame = 0;
 				animtimer = 0;
 				state = VORT_LOOK;

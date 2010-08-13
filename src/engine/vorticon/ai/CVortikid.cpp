@@ -88,7 +88,6 @@ void CVortikid::process()
 			xinertia = 0;
 		}
 
-		moveXDir(xinertia);
 		if (xdectimer >= 10)
 		{
 			if (xinertia < 0)
@@ -128,7 +127,7 @@ void CVortikid::process()
 			}
 			else
 			{
-				moveRight(BABY_WALK_SPEED);
+				xinertia = BABY_WALK_SPEED;
 			}
 		}
 		else
@@ -141,7 +140,7 @@ void CVortikid::process()
 			}
 			else
 			{
-				moveLeft(BABY_WALK_SPEED);
+				xinertia = -BABY_WALK_SPEED;
 			}
 		}
 

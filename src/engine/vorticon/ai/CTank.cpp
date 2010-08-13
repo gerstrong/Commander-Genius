@@ -36,7 +36,7 @@ void CTank::process()
 		if (movedir==LEFT)
 		{  // move left
 			sprite = TANK_WALK_LEFT_FRAME + frame;
-			moveLeft(TANK_WALK_SPEED);
+			xinertia = -TANK_WALK_SPEED;
 			if( !CanMoveLeft() )
 			{
 				movedir = RIGHT;
@@ -51,7 +51,7 @@ void CTank::process()
 		else
 		{  // move right
 			sprite = TANK_WALK_RIGHT_FRAME + frame;
-			moveRight(TANK_WALK_SPEED);
+			xinertia = TANK_WALK_SPEED;
 			if ( !CanMoveRight() )
 			{
 				movedir = LEFT;
