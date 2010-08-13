@@ -166,7 +166,7 @@ void CGuardRobot::process()
 		{  // move left
 			if (!blockedl)
 			{
-				moveLeft(WALK_SPEED);
+				xinertia = -WALK_SPEED;
 				dist_to_travel--;
 			}
 			else
@@ -183,7 +183,7 @@ void CGuardRobot::process()
 			sprite = WALK_RIGHT_FRAME + frame;
 			if (!blockedr)
 			{
-				moveRight(WALK_SPEED);
+				xinertia = WALK_SPEED;
 				dist_to_travel--;
 			}
 			else

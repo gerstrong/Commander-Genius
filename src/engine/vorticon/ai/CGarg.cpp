@@ -50,9 +50,9 @@ void CGarg::process()
 			if (!blockedl)
 			{
 				if (m_hardmode)
-					moveLeft(GARG_WALK_SPEED_FAST);
+					xinertia = -GARG_WALK_SPEED_FAST;
 				else
-					moveLeft(GARG_WALK_SPEED);
+					xinertia = -GARG_WALK_SPEED;
 				dist_traveled++;
 			}
 			else if(blockedd)
@@ -64,9 +64,9 @@ void CGarg::process()
 			if (!blockedr)
 			{
 				if (m_hardmode)
-					moveRight(GARG_WALK_SPEED_FAST);
+					xinertia = GARG_WALK_SPEED_FAST;
 				else
-					moveRight(GARG_WALK_SPEED);
+					xinertia = GARG_WALK_SPEED_FAST;
 				dist_traveled++;
 			}
 			else if(blockedd)
@@ -202,7 +202,7 @@ void CGarg::process()
 			sprite = GARG_WALK_LEFT + walkframe;
 			if (!blockedl)
 			{
-				moveLeft(GARG_CHARGE_SPEED);
+				xinertia = -GARG_CHARGE_SPEED;
 				dist_traveled++;
 			}
 			else
@@ -217,7 +217,7 @@ void CGarg::process()
 			sprite = GARG_WALK_RIGHT + walkframe;
 			if (!blockedr)
 			{
-				moveRight(GARG_CHARGE_SPEED);
+				xinertia = GARG_CHARGE_SPEED;
 				dist_traveled++;
 			}
 			else
