@@ -61,11 +61,9 @@
 		237422ED11FC849A000EEA5B /* CCameraSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10D211CFF5FB00F60BC8 /* CCameraSettings.cpp */; };
 		237422EE11FC849A000EEA5B /* CConfirmMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10D411CFF5FB00F60BC8 /* CConfirmMenu.cpp */; };
 		237422EF11FC849A000EEA5B /* CControlsettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10D611CFF5FB00F60BC8 /* CControlsettings.cpp */; };
-		237422F011FC849A000EEA5B /* CDifficultyMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10D811CFF5FB00F60BC8 /* CDifficultyMenu.cpp */; };
 		237422F111FC849A000EEA5B /* CHelpMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10DA11CFF5FB00F60BC8 /* CHelpMenu.cpp */; };
 		237422F211FC849A000EEA5B /* CLoadMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10DC11CFF5FB00F60BC8 /* CLoadMenu.cpp */; };
 		237422F311FC849A000EEA5B /* COptions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10DE11CFF5FB00F60BC8 /* COptions.cpp */; };
-		237422F411FC849A000EEA5B /* CPlayersMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10E011CFF5FB00F60BC8 /* CPlayersMenu.cpp */; };
 		237422F511FC849A000EEA5B /* CSaveMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10E211CFF5FB00F60BC8 /* CSaveMenu.cpp */; };
 		237422F611FC849A000EEA5B /* CSettingsMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10E411CFF5FB00F60BC8 /* CSettingsMenu.cpp */; };
 		237422F711FC849A000EEA5B /* CVideoSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10E611CFF5FB00F60BC8 /* CVideoSettings.cpp */; };
@@ -222,8 +220,6 @@
 		2374245D11FCA649000EEA5B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2374245C11FCA649000EEA5B /* UIKit.framework */; };
 		2374246611FCA679000EEA5B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2374246511FCA679000EEA5B /* QuartzCore.framework */; };
 		2374249211FCA6CB000EEA5B /* iphone_video.m in Sources */ = {isa = PBXBuildFile; fileRef = 2374247C11FCA6CB000EEA5B /* iphone_video.m */; };
-		23987F1D1215AEEF00E2E9CB /* CActionFormat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23987F1B1215AEEF00E2E9CB /* CActionFormat.cpp */; };
-		23987F1E1215AEEF00E2E9CB /* CActionFormat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23987F1B1215AEEF00E2E9CB /* CActionFormat.cpp */; };
 		23A11A9111DE888400747BFA /* CHUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11A8F11DE888400747BFA /* CHUD.cpp */; };
 		23A11BAE11E7C3F900747BFA /* CAutoRay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B7411E7C3F900747BFA /* CAutoRay.cpp */; };
 		23A11BAF11E7C3F900747BFA /* CBallJack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A11B7611E7C3F900747BFA /* CBallJack.cpp */; };
@@ -262,6 +258,8 @@
 		23CE96BB11FCCC510033FDFF /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23CE96BA11FCCC510033FDFF /* CoreFoundation.framework */; };
 		23CE96EC11FCCE980033FDFF /* libSDLiPhoneOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 237423C411FC8CF9000EEA5B /* libSDLiPhoneOS.a */; };
 		23CE972011FCD8860033FDFF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23CE971F11FCD8860033FDFF /* Foundation.framework */; };
+		23E2A7101217525E00F0CD34 /* CProfilesMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E2A70D1217525E00F0CD34 /* CProfilesMenu.cpp */; };
+		23E2A7111217525E00F0CD34 /* CProfilesMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E2A70D1217525E00F0CD34 /* CProfilesMenu.cpp */; };
 		63AB8C2F107C62D0001EE22F /* cglogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63AB8C2E107C62D0001EE22F /* cglogo.icns */; };
 		63CD120311CFF5FC00F60BC8 /* arguments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10A511CFF5FB00F60BC8 /* arguments.cpp */; };
 		63CD120411CFF5FC00F60BC8 /* CGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10A711CFF5FB00F60BC8 /* CGame.cpp */; };
@@ -286,11 +284,9 @@
 		63CD121A11CFF5FC00F60BC8 /* CCameraSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10D211CFF5FB00F60BC8 /* CCameraSettings.cpp */; };
 		63CD121B11CFF5FC00F60BC8 /* CConfirmMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10D411CFF5FB00F60BC8 /* CConfirmMenu.cpp */; };
 		63CD121C11CFF5FC00F60BC8 /* CControlsettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10D611CFF5FB00F60BC8 /* CControlsettings.cpp */; };
-		63CD121D11CFF5FC00F60BC8 /* CDifficultyMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10D811CFF5FB00F60BC8 /* CDifficultyMenu.cpp */; };
 		63CD121E11CFF5FC00F60BC8 /* CHelpMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10DA11CFF5FB00F60BC8 /* CHelpMenu.cpp */; };
 		63CD121F11CFF5FC00F60BC8 /* CLoadMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10DC11CFF5FB00F60BC8 /* CLoadMenu.cpp */; };
 		63CD122011CFF5FC00F60BC8 /* COptions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10DE11CFF5FB00F60BC8 /* COptions.cpp */; };
-		63CD122111CFF5FC00F60BC8 /* CPlayersMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10E011CFF5FB00F60BC8 /* CPlayersMenu.cpp */; };
 		63CD122211CFF5FC00F60BC8 /* CSaveMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10E211CFF5FB00F60BC8 /* CSaveMenu.cpp */; };
 		63CD122311CFF5FC00F60BC8 /* CSettingsMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10E411CFF5FB00F60BC8 /* CSettingsMenu.cpp */; };
 		63CD122411CFF5FC00F60BC8 /* CVideoSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10E611CFF5FB00F60BC8 /* CVideoSettings.cpp */; };
@@ -451,8 +447,6 @@
 		2374247B11FCA6CB000EEA5B /* iphone_video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iphone_video.h; sourceTree = "<group>"; };
 		2374247C11FCA6CB000EEA5B /* iphone_video.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iphone_video.m; sourceTree = "<group>"; };
 		237424B311FCA77A000EEA5B /* libSDLiPhoneOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDLiPhoneOS.a; path = "../../../SDL-1.3-trunk/Xcode-iPhoneOS/SDL/build/Release-iphoneos/libSDLiPhoneOS.a"; sourceTree = SOURCE_ROOT; };
-		23987F1B1215AEEF00E2E9CB /* CActionFormat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CActionFormat.cpp; sourceTree = "<group>"; };
-		23987F1C1215AEEF00E2E9CB /* CActionFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CActionFormat.h; sourceTree = "<group>"; };
 		23A11A8F11DE888400747BFA /* CHUD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CHUD.cpp; sourceTree = "<group>"; };
 		23A11A9011DE888400747BFA /* CHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHUD.h; sourceTree = "<group>"; };
 		23A11B7411E7C3F900747BFA /* CAutoRay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAutoRay.cpp; sourceTree = "<group>"; };
@@ -527,6 +521,10 @@
 		23D3EA691013AC7B001643FA /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL.framework; path = Library/Frameworks/SDL.framework; sourceTree = SDKROOT; };
 		23D3EA831013AEB5001643FA /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		23D3EA911013AF1D001643FA /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		23E2A70C1217524300F0CD34 /* ActionFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionFormat.h; sourceTree = "<group>"; };
+		23E2A70D1217525E00F0CD34 /* CProfilesMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CProfilesMenu.cpp; sourceTree = "<group>"; };
+		23E2A70E1217525E00F0CD34 /* CProfilesMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CProfilesMenu.h; sourceTree = "<group>"; };
+		23E2A70F1217525E00F0CD34 /* CSelectionMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSelectionMenu.h; sourceTree = "<group>"; };
 		5048396D09E3307300765E4B /* CommanderGeniusProj.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = CommanderGeniusProj.xcconfig; sourceTree = "<group>"; };
 		5048396E09E3307300765E4B /* CommanderGeniusTarget.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = CommanderGeniusTarget.xcconfig; sourceTree = "<group>"; };
 		6304FC3F10E3EAD800307EAC /* CGLogo.bmp */ = {isa = PBXFileReference; explicitFileType = image.bmp; path = CGLogo.bmp; sourceTree = "<group>"; };
@@ -690,16 +688,12 @@
 		63CD10D511CFF5FB00F60BC8 /* CConfirmMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CConfirmMenu.h; sourceTree = "<group>"; };
 		63CD10D611CFF5FB00F60BC8 /* CControlsettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CControlsettings.cpp; sourceTree = "<group>"; };
 		63CD10D711CFF5FB00F60BC8 /* CControlsettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CControlsettings.h; sourceTree = "<group>"; };
-		63CD10D811CFF5FB00F60BC8 /* CDifficultyMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CDifficultyMenu.cpp; sourceTree = "<group>"; };
-		63CD10D911CFF5FB00F60BC8 /* CDifficultyMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDifficultyMenu.h; sourceTree = "<group>"; };
 		63CD10DA11CFF5FB00F60BC8 /* CHelpMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CHelpMenu.cpp; sourceTree = "<group>"; };
 		63CD10DB11CFF5FB00F60BC8 /* CHelpMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHelpMenu.h; sourceTree = "<group>"; };
 		63CD10DC11CFF5FB00F60BC8 /* CLoadMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CLoadMenu.cpp; sourceTree = "<group>"; };
 		63CD10DD11CFF5FB00F60BC8 /* CLoadMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLoadMenu.h; sourceTree = "<group>"; };
 		63CD10DE11CFF5FB00F60BC8 /* COptions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = COptions.cpp; sourceTree = "<group>"; };
 		63CD10DF11CFF5FB00F60BC8 /* COptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COptions.h; sourceTree = "<group>"; };
-		63CD10E011CFF5FB00F60BC8 /* CPlayersMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlayersMenu.cpp; sourceTree = "<group>"; };
-		63CD10E111CFF5FB00F60BC8 /* CPlayersMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPlayersMenu.h; sourceTree = "<group>"; };
 		63CD10E211CFF5FB00F60BC8 /* CSaveMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSaveMenu.cpp; sourceTree = "<group>"; };
 		63CD10E311CFF5FB00F60BC8 /* CSaveMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSaveMenu.h; sourceTree = "<group>"; };
 		63CD10E411CFF5FB00F60BC8 /* CSettingsMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSettingsMenu.cpp; sourceTree = "<group>"; };
@@ -1329,8 +1323,7 @@
 		63CD10B011CFF5FB00F60BC8 /* common */ = {
 			isa = PBXGroup;
 			children = (
-				23987F1B1215AEEF00E2E9CB /* CActionFormat.cpp */,
-				23987F1C1215AEEF00E2E9CB /* CActionFormat.h */,
+				23E2A70C1217524300F0CD34 /* ActionFormat.h */,
 				23A11A8F11DE888400747BFA /* CHUD.cpp */,
 				23A11A9011DE888400747BFA /* CHUD.h */,
 				63CD10B111CFF5FB00F60BC8 /* CBehaviorEngine.cpp */,
@@ -1372,6 +1365,9 @@
 		63CD10CD11CFF5FB00F60BC8 /* Menu */ = {
 			isa = PBXGroup;
 			children = (
+				23E2A70D1217525E00F0CD34 /* CProfilesMenu.cpp */,
+				23E2A70E1217525E00F0CD34 /* CProfilesMenu.h */,
+				23E2A70F1217525E00F0CD34 /* CSelectionMenu.h */,
 				63CD10CE11CFF5FB00F60BC8 /* CAudioSettings.cpp */,
 				63CD10CF11CFF5FB00F60BC8 /* CAudioSettings.h */,
 				63CD10D011CFF5FB00F60BC8 /* CBaseMenu.cpp */,
@@ -1382,16 +1378,12 @@
 				63CD10D511CFF5FB00F60BC8 /* CConfirmMenu.h */,
 				63CD10D611CFF5FB00F60BC8 /* CControlsettings.cpp */,
 				63CD10D711CFF5FB00F60BC8 /* CControlsettings.h */,
-				63CD10D811CFF5FB00F60BC8 /* CDifficultyMenu.cpp */,
-				63CD10D911CFF5FB00F60BC8 /* CDifficultyMenu.h */,
 				63CD10DA11CFF5FB00F60BC8 /* CHelpMenu.cpp */,
 				63CD10DB11CFF5FB00F60BC8 /* CHelpMenu.h */,
 				63CD10DC11CFF5FB00F60BC8 /* CLoadMenu.cpp */,
 				63CD10DD11CFF5FB00F60BC8 /* CLoadMenu.h */,
 				63CD10DE11CFF5FB00F60BC8 /* COptions.cpp */,
 				63CD10DF11CFF5FB00F60BC8 /* COptions.h */,
-				63CD10E011CFF5FB00F60BC8 /* CPlayersMenu.cpp */,
-				63CD10E111CFF5FB00F60BC8 /* CPlayersMenu.h */,
 				63CD10E211CFF5FB00F60BC8 /* CSaveMenu.cpp */,
 				63CD10E311CFF5FB00F60BC8 /* CSaveMenu.h */,
 				63CD10E411CFF5FB00F60BC8 /* CSettingsMenu.cpp */,
@@ -2071,11 +2063,9 @@
 				63CD121A11CFF5FC00F60BC8 /* CCameraSettings.cpp in Sources */,
 				63CD121B11CFF5FC00F60BC8 /* CConfirmMenu.cpp in Sources */,
 				63CD121C11CFF5FC00F60BC8 /* CControlsettings.cpp in Sources */,
-				63CD121D11CFF5FC00F60BC8 /* CDifficultyMenu.cpp in Sources */,
 				63CD121E11CFF5FC00F60BC8 /* CHelpMenu.cpp in Sources */,
 				63CD121F11CFF5FC00F60BC8 /* CLoadMenu.cpp in Sources */,
 				63CD122011CFF5FC00F60BC8 /* COptions.cpp in Sources */,
-				63CD122111CFF5FC00F60BC8 /* CPlayersMenu.cpp in Sources */,
 				63CD122211CFF5FC00F60BC8 /* CSaveMenu.cpp in Sources */,
 				63CD122311CFF5FC00F60BC8 /* CSettingsMenu.cpp in Sources */,
 				63CD122411CFF5FC00F60BC8 /* CVideoSettings.cpp in Sources */,
@@ -2232,7 +2222,7 @@
 				23323799120EBC0700915252 /* CMiragia.cpp in Sources */,
 				2332379A120EBC0700915252 /* CPlayerLevel.cpp in Sources */,
 				23325AA212117FCB00915252 /* SmartPointer.cpp in Sources */,
-				23987F1D1215AEEF00E2E9CB /* CActionFormat.cpp in Sources */,
+				23E2A7101217525E00F0CD34 /* CProfilesMenu.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2263,11 +2253,9 @@
 				237422ED11FC849A000EEA5B /* CCameraSettings.cpp in Sources */,
 				237422EE11FC849A000EEA5B /* CConfirmMenu.cpp in Sources */,
 				237422EF11FC849A000EEA5B /* CControlsettings.cpp in Sources */,
-				237422F011FC849A000EEA5B /* CDifficultyMenu.cpp in Sources */,
 				237422F111FC849A000EEA5B /* CHelpMenu.cpp in Sources */,
 				237422F211FC849A000EEA5B /* CLoadMenu.cpp in Sources */,
 				237422F311FC849A000EEA5B /* COptions.cpp in Sources */,
-				237422F411FC849A000EEA5B /* CPlayersMenu.cpp in Sources */,
 				237422F511FC849A000EEA5B /* CSaveMenu.cpp in Sources */,
 				237422F611FC849A000EEA5B /* CSettingsMenu.cpp in Sources */,
 				237422F711FC849A000EEA5B /* CVideoSettings.cpp in Sources */,
@@ -2425,7 +2413,7 @@
 				2332379C120EBC0700915252 /* CMiragia.cpp in Sources */,
 				2332379D120EBC0700915252 /* CPlayerLevel.cpp in Sources */,
 				23325AA312117FCB00915252 /* SmartPointer.cpp in Sources */,
-				23987F1E1215AEEF00E2E9CB /* CActionFormat.cpp in Sources */,
+				23E2A7111217525E00F0CD34 /* CProfilesMenu.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
