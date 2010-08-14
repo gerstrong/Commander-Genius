@@ -25,10 +25,12 @@ CBaseMenu(dlg_theme)
 
 void CProfilesMenu::processSpecific()
 {
-	mp_SubMenu->processCommon();
-	mp_SubMenu->processSpecific();
-	mp_SubMenu->postProcess();
-
+	if(mp_SubMenu.get()) {
+		mp_SubMenu->processCommon();
+		mp_SubMenu->processSpecific();
+		mp_SubMenu->postProcess();		
+	}
+	
 	if( m_selection != NO_SELECTION)
 	{
 		if(m_selection == 1)
@@ -39,7 +41,7 @@ void CProfilesMenu::processSpecific()
 	}
 
 
-	if(mp_SubMenu->mustClose())
+	if(mp_SubMenu.get() && mp_SubMenu->mustClose())
 	{
 		mp_SubMenu = NULL;
 		m_mustclose = true;
