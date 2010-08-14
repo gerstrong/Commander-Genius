@@ -138,11 +138,11 @@ bool CMessages::extractGlobalStrings()
 					StringMap.insert( extractString( "EP3_SHIP4" , 0x1D24D, 0x1D2C4, -765) );
 					//Mortimer
 					StringMap.insert( extractString( "EP3_MORTIMER" , 0x1C3B2, 0x1C3D7, -805) );
-					StringMap.insert( extractString( "EP3_MORTIMER2" , 0x1C3D8, 0x1C49A, -805) );
-					StringMap.insert( extractString( "EP3_MORTIMER3" , 0x1C49B, 0x1C53F, -805) );
-					StringMap.insert( extractString( "EP3_MORTIMER4" , 0x1C540, 0x1C607, -805) );
-					StringMap.insert( extractString( "EP3_MORTIMER5" , 0x1C608, 0x1C62A, -805) );
-					StringMap.insert( extractString( "EP3_MORTIMER6" , 0x1C62B, 0x1C692, -805) );
+					StringMap.insert( extractString( "EP3_MORTIMER2" , 0x1C3D8, 0x1C499, -805) );
+					StringMap.insert( extractString( "EP3_MORTIMER3" , 0x1C49B, 0x1C53E, -805) );
+					StringMap.insert( extractString( "EP3_MORTIMER4" , 0x1C53F, 0x1C606, -805) );
+					StringMap.insert( extractString( "EP3_MORTIMER5" , 0x1C607, 0x1C629, -805) );
+					StringMap.insert( extractString( "EP3_MORTIMER6" , 0x1C62A, 0x1C692, -805) );
 					// Ending Pages
 					StringMap.insert( extractString( "EP3_ESEQ_PAGE1" , 0x1C692, 0x1C72E, -805) );
 					StringMap.insert( extractString( "EP3_ESEQ_PAGE2" , 0x1C730, 0x1C7A5, -805) );
