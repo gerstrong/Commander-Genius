@@ -10,7 +10,7 @@
 #include "CAudioSettings.h"
 #include "COptions.h"
 #include "CControlsettings.h"
-#include "CSelectionMenu.h"
+#include "CProfilesMenu.h"
 #include "sdl/CTimer.h"
 #include "sdl/CVideoDriver.h"
 
@@ -45,15 +45,7 @@ void CSettingsMenu::processSpecific()
 			case 1: mp_SubMenu = new CAudioSettings(m_dlg_theme, m_ExeFile); break;
 			case 2: mp_SubMenu = new COptions(m_dlg_theme, mp_option); break;
 			case 3: mp_SubMenu = new CControlsettings(m_dlg_theme); break;
-			case 4:
-			{
-				std::list<std::string> profile_list;
-				profile_list.push_back("Classic mode (like DOS)");
-				profile_list.push_back("Enhanced mode (more stuff)");
-
-				mp_SubMenu = new CSelectionMenu<Uint8>( m_profileselection, profile_list, m_dlg_theme );
-			}
-			break;
+			case 4: mp_SubMenu = new CProfilesMenu(m_dlg_theme); break;
 			}
 
 			m_selection = NO_SELECTION;
@@ -70,72 +62,7 @@ void CSettingsMenu::processSpecific()
 		{
 			SAFE_DELETE(mp_SubMenu);
 			m_suspended = false;
-
-			if(m_profileselection == 1)
-				setDefaultClassic();
-			else if(m_profileselection == 2)
-				setDefaultEnhanced();
 		}
 	}
-}
-/**
- * \brief This sets the default settings for a classic gameplay
- */
-void CSettingsMenu::setDefaultClassic()
-{
-	m_profileselection = 0;
-
-	g_pVideoDriver->setSpecialFXMode(false);
-	st_camera_bounds &CameraBounds = g_pVideoDriver->getCameraBounds();
-	CameraBounds.left = 160;
-	CameraBounds.up = 100;
-	CameraBounds.right = 161;
-	CameraBounds.down = 101;
-	CameraBounds.speed = 10;
-	g_pTimer->setFrameRate(DEFAULT_LPS, 30, DEFAULT_SYNC);
-
-	mp_option[OPT_SUPERPOGO].value = 0;
-	mp_option[OPT_ALLOWPKING].value = 0;
-	mp_option[OPT_KEYSTACK].value = 0;
-	mp_option[OPT_ANALOGJOYSTICK].value = 0;
-	mp_option[OPT_LVLREPLAYABILITY].value = 0;
-	mp_option[OPT_RISEBONUS].value = 0;
-	mp_option[OPT_IMPPOGO].value = 0;
-	mp_option[OPT_HUD].value = 0;
-
-	CSettings Settings;
-	Settings.saveDrvCfg();
-
-	// And close this menu...
-	m_restartVideo = true;
-}
-
-/**
- * \brief This sets the default settings for an enhanced gameplay
- */
-void CSettingsMenu::setDefaultEnhanced()
-{
-	m_profileselection = 0;
-
-	g_pVideoDriver->setSpecialFXMode(true);
-	st_camera_bounds &CameraBounds = g_pVideoDriver->getCameraBounds();
-	CameraBounds.left = 152;
-	CameraBounds.up = 92;
-	CameraBounds.right = 168;
-	CameraBounds.down = 108;
-	CameraBounds.speed = 20;
-	g_pTimer->setFrameRate(DEFAULT_LPS, 60, DEFAULT_SYNC);
-
-	mp_option[OPT_KEYSTACK].value = 1;
-	mp_option[OPT_ANALOGJOYSTICK].value = 1;
-	mp_option[OPT_RISEBONUS].value = 1;
-	mp_option[OPT_IMPPOGO].value = 1;
-	mp_option[OPT_HUD].value = 1;
-
-	CSettings Settings;
-	Settings.saveDrvCfg();
-
-	// And close this menu...
-	m_restartVideo = true;
 }
 

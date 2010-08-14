@@ -17,6 +17,7 @@
 #include "engine/CMessages.h"
 #include "engine/CPassive.h"
 #include "engine/playgame/CPlayGame.h"
+#include "common/Menu/CProfilesMenu.h"
 
 #include <string>
 
@@ -34,7 +35,7 @@ public:
 		GAMELAUNCHER, PASSIVE, PLAYGAME, SHUTDOWN
 	};
 	
-	CGameControl();
+	CGameControl(bool &firsttime);
 	
 	bool init(int argc, char *argv[]);
 	bool init(char mode=GAMELAUNCHER);
@@ -72,6 +73,8 @@ private:
 	CExeFile m_ExeFile;
 	
 	CEGAGraphics *m_EGAGraphics;
+	bool &m_firsttime;
+	CProfilesMenu *mp_FirstTimeMenu;
 };
 
 #endif /* CGAMECONTROL_H_ */

@@ -12,16 +12,9 @@
 #include "common/options.h"
 #include "sdl/CSettings.h"
 
-// references to cinematics/CommonEnding
-//int endsequence(stCloneKeenPlus *pCKP);
-
-// Reference from game.cpp
-//void initgame(stLevelControl *p_levelcontrol);
-
 class CGame {
 public:
 	CGame();
-	virtual ~CGame();
 	
 	bool init(int argc, char *argv[]);
 	bool loadCKPDrivers();
@@ -32,6 +25,7 @@ public:
 	stOption m_option[NUM_OPTIONS];
 	
 private:
+	bool m_firsttime;
 	CGameControl m_Engine;
 	CSettings Settings();
 };

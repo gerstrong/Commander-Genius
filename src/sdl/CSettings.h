@@ -9,9 +9,9 @@
 #define CSETTINGS_H_
 
 #include <string>
-#include "../common/options.h"
+#include "common/options.h"
+#include "fileio/CConfiguration.h"
 
-#define CONFIGFILENAME "cgenius.cfg"
 
 class CSettings {
 public:

@@ -25,10 +25,12 @@
 
 #define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
 
-CGameControl::CGameControl() :
+CGameControl::CGameControl(bool &firsttime) :
 mp_GameLauncher(NULL),
 mp_PassiveMode(NULL),
-mp_PlayGame(NULL)
+mp_PlayGame(NULL),
+m_firsttime(firsttime),
+mp_FirstTimeMenu(NULL)
 {
 	m_mode = GAMELAUNCHER;
 	m_Episode = 0;
@@ -99,6 +101,15 @@ bool CGameControl::init(char mode)
             g_pLogFile->textOut(RED,"The game cannot start, because you are missing game data files.<br>");
             return false;
         }
+
+    	// If game was started for the first time, also open the firsttime dialog with configs.
+    	if(m_firsttime)
+    	{
+    		m_firsttime = false;
+
+    		mp_FirstTimeMenu = new CProfilesMenu(DLG_THEME_RED);
+    	}
+
         // Resources for the main menu
 		if(!loadMenuResources())	return false;
 
@@ -275,71 +286,84 @@ void CGameControl::process()
 	// The first menu of the game
 	if(m_mode == GAMELAUNCHER)
 	{
-		// Launch the code of the Startmenu here! The one for choosing the games
-		mp_GameLauncher->process();
-		m_ChosenGame = mp_GameLauncher->getChosengame();
-
-		if( mp_GameLauncher->waschosen() )
+		// If the firsttime menu is open, process it
+		if(mp_FirstTimeMenu)
 		{
-			//// Game has been chosen. Launch it!
-			// Get the path were to Launch the game
-			m_DataDirectory = mp_GameLauncher->getDirectory( m_ChosenGame );
+			mp_FirstTimeMenu->processCommon();
+			mp_FirstTimeMenu->processSpecific();
+			mp_FirstTimeMenu->postProcess();
 
-			// We have to check which Episode will be used
-			m_Episode = mp_GameLauncher->getEpisode( m_ChosenGame );
-
-			if( m_Episode > 0 ) // The game has to have a valid episode!
-			{
-			    // Get the EXE-Data of the game and load it into the memory.
-			    if(!m_ExeFile.readData(m_Episode, m_DataDirectory))
-			    {
-					mp_GameLauncher->letchooseagain();
-					delete mp_PassiveMode;
-					mp_PassiveMode = NULL;
-			    }
-			    else
-			    {
-			    	// Load the Resources
-			    	if( loadResources() )
-			    	{
-			    		// Now look if there are any old savegames that need to be converted
-			    		CSavedGame savedgames;
-			    		savedgames.setGameDirectory(m_DataDirectory);
-			    		savedgames.setEpisode(m_Episode);
-			    		savedgames.convertAllOldFormats();
-
-			    		if(m_startLevel == 0) // Starts normally
-			    		{
-			    			if(init(PASSIVE)) cleanup(GAMELAUNCHER);
-			    			else
-			    			{
-			    				mp_GameLauncher->letchooseagain();
-			    				delete mp_PassiveMode;
-			    				mp_PassiveMode = NULL;
-			    			}
-			    		}
-			    		else // This happens, when a level was passed as argument when launching CG
-			    		{
-			    			if(init(PLAYGAME)) cleanup(GAMELAUNCHER);
-			    			else
-			    			{
-			    				mp_GameLauncher->letchooseagain();
-			    				delete mp_PlayGame;	mp_PlayGame = NULL;
-			    			}
-			    		}
-			    	}
-			    }
-			}
-			else
-			{
-				mp_GameLauncher->letchooseagain();
-				g_pLogFile->textOut(RED,"No Suitable game was detected in this path! Please check its contents!\n");
-			}
+			if(mp_FirstTimeMenu->mustClose())
+				SAFE_DELETE(mp_FirstTimeMenu);
 		}
-		else if(mp_GameLauncher->getQuit())
+		else
 		{
-			// User chose exit. So quit...
-			m_mode = SHUTDOWN;
+			// Launch the code of the Startmenu here! The one for choosing the games
+			mp_GameLauncher->process();
+			m_ChosenGame = mp_GameLauncher->getChosengame();
+
+			if( mp_GameLauncher->waschosen() )
+			{
+				//// Game has been chosen. Launch it!
+				// Get the path were to Launch the game
+				m_DataDirectory = mp_GameLauncher->getDirectory( m_ChosenGame );
+
+				// We have to check which Episode will be used
+				m_Episode = mp_GameLauncher->getEpisode( m_ChosenGame );
+
+				if( m_Episode > 0 ) // The game has to have a valid episode!
+				{
+					// Get the EXE-Data of the game and load it into the memory.
+					if(!m_ExeFile.readData(m_Episode, m_DataDirectory))
+					{
+						mp_GameLauncher->letchooseagain();
+						delete mp_PassiveMode;
+						mp_PassiveMode = NULL;
+					}
+					else
+					{
+						// Load the Resources
+						if( loadResources() )
+						{
+							// Now look if there are any old savegames that need to be converted
+							CSavedGame savedgames;
+							savedgames.setGameDirectory(m_DataDirectory);
+							savedgames.setEpisode(m_Episode);
+							savedgames.convertAllOldFormats();
+
+							if(m_startLevel == 0) // Starts normally
+							{
+								if(init(PASSIVE)) cleanup(GAMELAUNCHER);
+								else
+								{
+									mp_GameLauncher->letchooseagain();
+									delete mp_PassiveMode;
+									mp_PassiveMode = NULL;
+								}
+							}
+							else // This happens, when a level was passed as argument when launching CG
+							{
+								if(init(PLAYGAME)) cleanup(GAMELAUNCHER);
+								else
+								{
+									mp_GameLauncher->letchooseagain();
+									delete mp_PlayGame;	mp_PlayGame = NULL;
+								}
+							}
+						}
+					}
+				}
+				else
+				{
+					mp_GameLauncher->letchooseagain();
+					g_pLogFile->textOut(RED,"No Suitable game was detected in this path! Please check its contents!\n");
+				}
+			}
+			else if(mp_GameLauncher->getQuit())
+			{
+				// User chose exit. So quit...
+				m_mode = SHUTDOWN;
+			}
 		}
 	}
 	// Intro, Title screen, and demo mode are performed by the passive class CPassive

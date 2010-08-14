@@ -24,10 +24,10 @@ void CBaseMenu::processCommon()
 		// Get Input for selection
 		if(!m_noenter)
 		{
-		if( g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_STATUS) )
-		{
-			m_selection = mp_Dialog->getSelection();
-		}
+			if( g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_STATUS) )
+			{
+				m_selection = mp_Dialog->getSelection();
+			}
 		}
 
 		// Get Input for selection

@@ -16,8 +16,9 @@
 #include "sdl/CTimer.h"
 #include "sdl/sound/CSound.h"
 
-CGame::CGame() {
-}
+CGame::CGame() : m_firsttime(false),
+m_Engine(m_firsttime)
+{}
 
 //////////////////////////////////
 // Initialize Game Engine here! //
@@ -43,6 +44,7 @@ bool CGame::init(int argc, char *argv[])
 	// Check if there are settings on the PC, otherwise use defaults.
 	if(!Settings.loadDrvCfg())
 	{
+		m_firsttime = true;
 		g_pLogFile->textOut(PURPLE,"First time message: CKP didn't find the driver config file. However, it generated some default values and will save them now.<br>");
 		Settings.saveDrvCfg();
 	}
@@ -154,8 +156,5 @@ void CGame::cleanup()
     g_pSound->Del();
     g_pVideoDriver->Del();
     g_pTimer->Del();
-}
-
-CGame::~CGame() {
 }
 

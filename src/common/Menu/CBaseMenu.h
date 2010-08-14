@@ -10,7 +10,7 @@
 
 const int NO_SELECTION = -1;
 
-#include "../../dialog/CDialog.h"
+#include "dialog/CDialog.h"
 
 // Which Menu has to be shown?
 
@@ -40,11 +40,11 @@ public:
 	CBaseMenu(Uint8 dlg_theme);
 
 	// Processes the stuff that the menus have in common
-	void processCommon();
+	virtual void processCommon();
 	// Processes the stuff that are specific for the derived menu
 	virtual void processSpecific() {}
 	// Process more common stuff, like drawing or reading input of mp_Dialog
-	void postProcess();
+	virtual void postProcess();
 
 	bool mustClose();
 
