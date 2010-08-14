@@ -71,7 +71,7 @@ void CMenuVorticon::processMainMenu()
 
 	if( g_pInput->getPressedCommand(IC_HELP) ) // open the help menu
 	{
-		mp_SubMenu = new CHelpMenu(mp_InfoScene, m_dlg_theme, m_ExeFile, m_hideobjects);
+		m_SubMenus.push_back(new CHelpMenu(mp_InfoScene, m_dlg_theme, m_ExeFile, m_hideobjects));
 		m_Map.m_animation_enabled = false;
 		m_suspended = true;
 		m_selection = NO_SELECTION;

@@ -9,6 +9,7 @@
 #define CMENU_H_
 
 #include <string>
+#include <list>
 #include "options.h"
 #include "CObject.h"
 #include "Menu/CBaseMenu.h"
@@ -74,7 +75,7 @@ protected:
 	int  m_saveslot;
 	bool &m_restartVideo;
 
-	CBaseMenu *mp_SubMenu;
+	std::list<CBaseMenu*> m_SubMenus;
 
 private:
 	std::vector<std::string> m_StateFileList;

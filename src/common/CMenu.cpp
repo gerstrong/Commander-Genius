@@ -12,6 +12,7 @@
 #include "Menu/CDifficultyMenu.h"
 #include "Menu/CSaveMenu.h"
 #include "Menu/CLoadMenu.h"
+#include "Menu/CSelectionMenu.h"
 
 CMenu::CMenu(char menu_mode, CExeFile &ExeFile,
 		 CSavedGame &SavedGame,
@@ -36,11 +37,8 @@ m_menu_type(MAIN),
 m_NumPlayers(0),
 m_Difficulty(NO_SELECTION),
 m_saveslot(0),
-m_restartVideo(restartVideo),
-mp_SubMenu(NULL)
-{
-
-}
+m_restartVideo(restartVideo)
+{}
 
 void CMenu::init( menutypes menu_type )
 {
@@ -50,17 +48,33 @@ void CMenu::init( menutypes menu_type )
 	switch(m_menu_type)
 	{
 	case QUIT:
-			mp_SubMenu = new CConfirmMenu("   Quit the game?   ", m_quit, m_dlg_theme); break;
+		m_SubMenus.push_back(new CConfirmMenu("   Quit the game?   ", m_quit, m_dlg_theme)); break;
 	case ENDGAME:
-		mp_SubMenu = new CConfirmMenu("   End your game?   ", m_quit, m_Endgame); break;
+		m_SubMenus.push_back(new CConfirmMenu("   End your game?   ", m_quit, m_Endgame)); break;
 	case NEW:
-		mp_SubMenu = new CDifficultyMenu( m_Difficulty, m_NumPlayers, m_dlg_theme); break;
+	{
+		// you want to start a new game. Well, I need to know the amount of players and difficulty
+		std::list<std::string> players_list;
+		for(size_t i=1 ; i<=MAX_PLAYERS ; i++)
+			players_list.push_back(itoa(i) + " Player");
+
+		std::list<std::string> diff_list;
+		diff_list.push_back("Easy");
+		diff_list.push_back("Normal");
+		diff_list.push_back("Hard");
+
+		m_SubMenus.push_back(new CSelectionMenu<Uint8>(m_NumPlayers, players_list, m_dlg_theme) );
+		m_SubMenus.push_back(new CSelectionMenu<Sint8>( m_Difficulty, diff_list, m_dlg_theme ) );
+
+		//m_SubMenus.push_back(new CDifficultyMenu( m_Difficulty, m_NumPlayers, m_dlg_theme));
+	}
+	break;
 	case CONFIGURE:
-		mp_SubMenu = new CSettingsMenu(m_dlg_theme, m_ExeFile, mp_option, m_restartVideo); break;
+		m_SubMenus.push_back(new CSettingsMenu(m_dlg_theme, m_ExeFile, mp_option, m_restartVideo)); break;
 	case SAVE:
-		mp_SubMenu = new CSaveMenu(m_dlg_theme, m_SavedGame); break;
+		m_SubMenus.push_back(new CSaveMenu(m_dlg_theme, m_SavedGame)); break;
 	case LOAD:
-		mp_SubMenu = new CLoadMenu(m_dlg_theme, m_SavedGame); break;
+		m_SubMenus.push_back(new CLoadMenu(m_dlg_theme, m_SavedGame)); break;
 	default:
 		break;
 	}
@@ -107,14 +121,18 @@ void CMenu::process()
 		init(MODCONF);
 	}
 
-	if( mp_SubMenu )
+	if( !m_SubMenus.empty() )
 	{
-		mp_SubMenu->processCommon();
-		mp_SubMenu->processSpecific();
-		mp_SubMenu->postProcess();
+		CBaseMenu *SubMenu = m_SubMenus.front();
+		SubMenu->processCommon();
+		SubMenu->processSpecific();
+		SubMenu->postProcess();
 
-		if(mp_SubMenu->mustClose())
-			SAFE_DELETE(mp_SubMenu);
+		if(SubMenu->mustClose())
+		{
+			SAFE_DELETE(SubMenu);
+			m_SubMenus.pop_front();
+		}
 	}
 	else
 	{
@@ -141,7 +159,7 @@ void CMenu::process()
 			if( g_pInput->getPressedCommand(IC_QUIT) )
 			{
 				if(m_menu_mode == PASSIVE)
-					mp_SubMenu = new CConfirmMenu("   Quit the game?   ", m_quit, m_dlg_theme);
+					m_SubMenus.push_back(new CConfirmMenu("   Quit the game?   ", m_quit, m_dlg_theme));
 				else
 					m_mustclose = true;
 			}
@@ -180,7 +198,7 @@ void CMenu::processMainMenu()
 			case 2: init(SAVE);break;
 			case 4: init(CONFIGURE);break;
 			case 5: m_mustclose = true; break;
-			case 6: mp_SubMenu = new CConfirmMenu("Back to Titlescreen?", m_Endgame, m_dlg_theme);
+			case 6: m_SubMenus.push_back(new CConfirmMenu("Back to Titlescreen?", m_Endgame, m_dlg_theme));
 					m_selection = NO_SELECTION;
 					break;
 			case 7: init(QUIT);break;
@@ -195,7 +213,11 @@ void CMenu::processMainMenu()
 void CMenu::cleanup()
 {
 	// Close the old menu
-	SAFE_DELETE(mp_SubMenu);
+	while(!m_SubMenus.empty())
+	{
+		delete m_SubMenus.front();
+		m_SubMenus.pop_back();
+	}
 	SAFE_DELETE(mp_Dialog);
 }
 
