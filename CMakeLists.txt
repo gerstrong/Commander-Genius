@@ -56,6 +56,7 @@ IF (BUILD_TYPE STREQUAL GP2X OR
 		SET(PREFIX /opt/dingoo-uclibc-toolchain-06-17/usr)
 		SET(CMAKE_C_COMPILER ${PREFIX}/bin/mipsel-linux-uclibc-gcc)
 		SET(CMAKE_CXX_COMPILER ${PREFIX}/bin/mipsel-linux-uclibc-g++)
+		ADD_DEFINITIONS(-DDINGOO)
 		SET(OGG No)
 	ELSEIF(BUILD_TYPE STREQUAL PANDORA)
 		SET(PREFIX /mythtv/media/devel/toolchains/pandora/arm-2007q3)
