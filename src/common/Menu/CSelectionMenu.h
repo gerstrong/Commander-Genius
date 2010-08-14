@@ -22,12 +22,18 @@ public:
 		m_selecteditem(output_selection)
 	{
 		Uint16 width, height;
-		width = 13;
+
+		width = 0;
+		std::list<std::string>::const_iterator item = item_list.begin();
+		for(; item != item_list.end() ; item++)
+			if( width < item->size()+4 )
+				width = item->size()+4;
+
 		height = item_list.size()+2;
 
 		mp_Dialog = new CDialog(width, height, INPUT_MODE_UP_DOWN, dlg_theme);
 
-		std::list<std::string>::const_iterator item = item_list.begin();
+		item = item_list.begin();
 		for(size_t pos=1; item != item_list.end() ; item++, pos++)
 			mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, pos, *item);
 	}
