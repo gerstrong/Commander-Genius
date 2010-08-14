@@ -49,7 +49,14 @@ void CHUD::CreateBackground()
 	const Uint32 rmask = pBlitsurface->format->Rmask;
 	const Uint32 gmask = pBlitsurface->format->Gmask;
 	const Uint32 bmask = pBlitsurface->format->Bmask;
-	const Uint32 amask = pBlitsurface->format->Amask;
+	// For some reason the Alpha mask doesn't work, if blitsurface == screensurface. Not sure if every system is affected of that.
+	// Maybe I write a function for the proper masks...
+	#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+    	const Uint32 amask = 0x000000FF;
+    #else
+    	const Uint32 amask = 0xFF000000;
+    #endif
+
 	mp_Background = SDL_CreateRGBSurface(flags, m_Rect.w, m_Rect.h, depth, rmask, gmask, bmask, amask);
 
 	// Draw the background
