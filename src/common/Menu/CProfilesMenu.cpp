@@ -43,7 +43,7 @@ void CProfilesMenu::processSpecific()
 	{
 		delete mp_SubMenu;
 		mp_SubMenu = NULL;
-		m_suspended = false;
+		m_mustclose = true;
 	}
 }
 
