@@ -400,7 +400,7 @@ bool CVideoDriver::applyMode()
 	game_resolution_rect.h = 200;
 
 	// Here we check, if we can enhance the screen-resolution and do it if yes
-	//game_resolution_rect = adaptGameResolution();
+	game_resolution_rect = adaptGameResolution();
 
 	// Now we decide if it will be fullscreen or windowed mode.
 	if(Fullscreen)
@@ -558,50 +558,22 @@ bool CVideoDriver::createSurfaces()
 
 SDL_Surface* CVideoDriver::createSurface( std::string name, bool alpha, int width, int height, int bpp, int mode, SDL_PixelFormat* format )
 {
-	/*if(m_opengl && m_ScaleXFilter == 1)
-	{
-		static const Uint32 RGBA[] = {
-	#if SDL_BYTEORDER == SDL_LIL_ENDIAN // OpenGL RGBA masks
-		0x000000FF,
-		0x0000FF00,
-		0x00FF0000,
-		0xFF000000
-	#else
-		0xFF000000,
-		0x00FF0000,
-		0x0000FF00,
-		0x000000FF
-	#endif
-		};
-		SDL_Surface *newsurface;
-		newsurface = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, bpp, RGBA[0], RGBA[1], RGBA[2], RGBA[3]);
-		if (!newsurface)
-		{
-			g_pLogFile->textOut(RED,"VideoDriver: Couldn't create surface:" + name +"<br>");
-			return NULL;
-		}
+	SDL_Surface *temporary, *optimized;
 
-		return newsurface;
+	temporary = SDL_CreateRGBSurface( mode, width, height, bpp, format->Rmask, format->Gmask, format->Bmask, format->Amask);
+	if (alpha && bpp==32) {
+		optimized = SDL_DisplayFormatAlpha( temporary );
+	} else {
+		optimized = SDL_DisplayFormat( temporary );
 	}
-	else*/
+	SDL_FreeSurface(temporary);
+	if (!optimized)
 	{
-		SDL_Surface *temporary, *optimized;
-
-		temporary = SDL_CreateRGBSurface( mode, width, height, bpp, format->Rmask, format->Gmask, format->Bmask, format->Amask);
-		if (alpha && bpp==32) {
-			optimized = SDL_DisplayFormatAlpha( temporary );
-		} else {
-			optimized = SDL_DisplayFormat( temporary );
-		}
-		SDL_FreeSurface(temporary);
-		if (!optimized)
-		{
-			g_pLogFile->textOut(RED,"VideoDriver: Couldn't create surface:" + name +"<br>");
-			return NULL;
-		}
-		bpp = optimized->format->BitsPerPixel;
-		return optimized;
+		g_pLogFile->textOut(RED,"VideoDriver: Couldn't create surface:" + name +"<br>");
+		return NULL;
 	}
+	bpp = optimized->format->BitsPerPixel;
+	return optimized;
 }
 
 // defines the scroll-buffer that is used for blitScrollSurface(). It's normally passed by a CMap Object
