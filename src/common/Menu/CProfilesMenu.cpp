@@ -41,7 +41,6 @@ void CProfilesMenu::processSpecific()
 
 	if(mp_SubMenu->mustClose())
 	{
-		delete mp_SubMenu;
 		mp_SubMenu = NULL;
 		m_mustclose = true;
 	}
@@ -96,9 +95,4 @@ void CProfilesMenu::setDefaultEnhanced()
 	p_option[OPT_IMPPOGO].value = 1;
 	p_option[OPT_HUD].value = 1;
 	Settings.saveDrvCfg();
-}
-
-CProfilesMenu::~CProfilesMenu()
-{
-	delete mp_SubMenu;
 }
