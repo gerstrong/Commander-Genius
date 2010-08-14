@@ -9,7 +9,6 @@
 
 #include "Menu/CSettingsMenu.h"
 #include "Menu/CConfirmMenu.h"
-#include "Menu/CDifficultyMenu.h"
 #include "Menu/CSaveMenu.h"
 #include "Menu/CLoadMenu.h"
 #include "Menu/CSelectionMenu.h"
@@ -63,10 +62,8 @@ void CMenu::init( menutypes menu_type )
 		diff_list.push_back("Normal");
 		diff_list.push_back("Hard");
 
-		m_SubMenus.push_back(new CSelectionMenu<Uint8>(m_NumPlayers, players_list, m_dlg_theme) );
+		m_SubMenus.push_back(new CSelectionMenu<Uint8>( m_NumPlayers, players_list, m_dlg_theme) );
 		m_SubMenus.push_back(new CSelectionMenu<Sint8>( m_Difficulty, diff_list, m_dlg_theme ) );
-
-		//m_SubMenus.push_back(new CDifficultyMenu( m_Difficulty, m_NumPlayers, m_dlg_theme));
 	}
 	break;
 	case CONFIGURE:

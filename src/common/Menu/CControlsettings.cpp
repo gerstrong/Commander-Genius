@@ -6,11 +6,12 @@
  */
 
 #include "CControlsettings.h"
-#include "CPlayersMenu.h"
-#include "../../sdl/CInput.h"
-#include "../../sdl/CSettings.h"
-#include "../../sdl/CVideoDriver.h"
-#include "../../StringUtils.h"
+#include "CSelectionMenu.h"
+#include "keen.h"
+#include "sdl/CInput.h"
+#include "sdl/CSettings.h"
+#include "sdl/CVideoDriver.h"
+#include "StringUtils.h"
 
 #define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
 
@@ -21,8 +22,12 @@ m_waiting_for_input(false)
 {
 	m_suspended = true;
 
+	std::list<std::string> players_list;
+	for(size_t i=1 ; i<=MAX_PLAYERS ; i++)
+		players_list.push_back(itoa(i) + " Player");
+
 	// first create the players selection screen
-	mp_SubMenu = new CPlayersMenu( m_chosenPlayer, dlg_theme );
+	mp_SubMenu = new CSelectionMenu<Uint8>( m_chosenPlayer, players_list, dlg_theme );
 
 	// Then create the controls selection screen
 	mp_Dialog = new CDialog(36, 14, INPUT_MODE_UP_DOWN, m_dlg_theme);
