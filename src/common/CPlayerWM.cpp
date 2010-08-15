@@ -32,6 +32,8 @@ void CPlayer::processWorldMap()
 
    	InertiaAndFriction_X();
    	InertiaAndFriction_Y();
+
+   	performCollisions();
 	
    	selectFrameOnWorldMap();
 }

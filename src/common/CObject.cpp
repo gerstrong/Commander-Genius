@@ -156,9 +156,9 @@ void CObject::performCollisionsSameBox()
 void CObject::calcBouncingBoxes()
 {
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
-	bboxX1 = rSprite.m_bboxX1+(1<<STC);
+	bboxX1 = rSprite.m_bboxX1;
 	bboxX2 = rSprite.m_bboxX2;
-	bboxY1 = rSprite.m_bboxY1+(1<<STC);
+	bboxY1 = rSprite.m_bboxY1;
 	bboxY2 = rSprite.m_bboxY2;
 }
 

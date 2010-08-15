@@ -51,6 +51,7 @@ mp_HUD(NULL)
 		// Put some important Player properties
 		CPlayer &thisPlayer = m_Player.at(i);
 		thisPlayer.setDatatoZero();
+		thisPlayer.m_index = i;
 	}
 
 	// Create completed level list
