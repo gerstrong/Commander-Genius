@@ -113,17 +113,16 @@ void CPlayer::setDatatoZero()
 // NOTE: This must only be called once, per new game.
 void CPlayer::setDefaultStartValues()
 {
+	CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
     pdie = PDIE_DEAD; // At first time he is revived when map is started
 	godmode  = false;
     inventory.extralifeat = 20000;
     inventory.lives = 4;
 
-    if (m_episode==1) inventory.charges = 0;
-	else if (m_episode==2) inventory.charges = 3;
-	else if (m_episode==3) inventory.charges = 5;
+    inventory.charges = PhysicsSettings.player.start_with_shots;
 
 	// start with pogo stick in all episodes but 1
-	inventory.HasPogo = (m_episode==1) ? false : true;
+	inventory.HasPogo = PhysicsSettings.player.pogostickonstart;
 }
 
 // This function should be called, when the worldmap starts or any level is started

@@ -246,6 +246,9 @@ bool CGameControl::loadResources(Uint8 flags)
 			g_pSound->setGameData(m_ExeFile);
 			g_pSound->loadSoundData(m_ExeFile);
 		}
+
+		g_pBehaviorEngine->getPhysicsSettings().loadGameConstants(m_Episode, p_exedata);
+
 		return true;
 	}
 	else if( m_Episode == 4 || m_Episode == 5 || m_Episode == 6 ) // Galaxy resources

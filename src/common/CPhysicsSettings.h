@@ -14,10 +14,12 @@
 #define CPHYSICSSETTINGS_H_
 
 #include <SDL.h>
+#include "fileio/TypeDefinitions.h"
 
 class CPhysicsSettings {
 public:
 	CPhysicsSettings();
+	void loadGameConstants(int episode, byte* data);
 
 	struct playersettings{
 		int maxjumpspeed;
@@ -26,6 +28,8 @@ public:
 		int max_x_speed;
 		int maxpogospeed;
 		int impossiblepogospeed;
+		bool pogostickonstart;
+		Uint16 start_with_shots;
 
 		// pogo settings
 		int pogoforce_x;
@@ -37,8 +41,6 @@ public:
 
 	int max_fallspeed;
 	int fallspeed_increase;
-
-	virtual ~CPhysicsSettings();
 };
 
 #endif /* CPHYSICSSETTINGS_H_ */

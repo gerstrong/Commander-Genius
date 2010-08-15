@@ -1,8 +1,8 @@
 #include "CObjectAI.h"
-#include "../../../misc.h"
-#include "../../../sdl/sound/CSound.h"
-#include "../../../graphics/CGfxEngine.h"
-#include "../../../graphics/effects/CFlash.h"
+#include "misc.h"
+#include "sdl/sound/CSound.h"
+#include "graphics/CGfxEngine.h"
+#include "graphics/effects/CFlash.h"
 #include "CVorticon.h"
 
 // Vorticon (all Episodes, albeit the behavior changes slightly
@@ -10,7 +10,8 @@
 CVorticon::CVorticon(CMap *p_map, std::vector<CPlayer> &m_vec_Player, Uint32 x,
 		Uint32 y, char hp, object_t objtype) :
 	CObject(p_map, x, y, objtype), m_Difficulty(mp_Map->m_Difficulty), m_Dark(
-			mp_Map->m_Dark), m_Player(m_vec_Player) {
+			mp_Map->m_Dark), m_Player(m_vec_Player)
+{
 	frame = 0;
 	animtimer = 0;
 	state = VORT_LOOK;
@@ -62,7 +63,8 @@ void CVorticon::process() {
 		frame = 0;
 		if (Episode == 1) {
 			// White Fade and back
-			g_pGfxEngine->pushEffectPtr(new CFlash(3000, 8, 0xFFFFFF, 200));
+			if(m_Player[0].mp_option[OPT_FLASHEFFECT].value)
+				g_pGfxEngine->pushEffectPtr(new CFlash(3000, 8, 0xFFFFFF, 200));
 			state = VORT_DYING;
 			dying = true;
 		} else {

@@ -322,7 +322,7 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				}
 				else if(episode == 2 || episode == 3)
 				{
-					enemyobject = new CVorticon( mp_map, *mp_vec_Player, x<<CSF, y<<CSF );
+					enemyobject = new CVorticon( mp_map, *mp_vec_Player, x<<CSF, y<<CSF);
 				}
 				break;
 			case 2:    // garg (ep1) baby vorticon (ep2&3)
