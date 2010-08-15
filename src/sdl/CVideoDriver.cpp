@@ -431,16 +431,9 @@ bool CVideoDriver::applyMode()
 	// this value is updated here!
 	m_Resolution.depth = screen->format->BitsPerPixel;
 
-#if defined(DINGOO)
-	// Hide the mouse cursor for Dingoo port.
-
-        SDL_ShowCursor(SDL_DISABLE);	
-#else
 	// If Fullscreen hide the mouse cursor.
 	// Anyway, it just can point but does not interact yet
-
  	SDL_ShowCursor(!Fullscreen);
-#endif
 
  	m_dst_slice = m_Resolution.width*screen->format->BytesPerPixel;
  	m_src_slice = game_resolution_rect.w*screen->format->BytesPerPixel;
