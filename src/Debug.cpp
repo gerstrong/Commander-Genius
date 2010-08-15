@@ -395,14 +395,15 @@ void OlxWriteCoreDump(const char* file_postfix) {
 
 #ifndef HAVE_EXECINFO
 #	if defined(__linux__)
-#		define HAVE_EXECINFO 1
+#		if defined(DINGOO) // Dingoo's toolchain does not support execinfo
+#			define HAVE_EXECINFO 0
+#		else
+#			define HAVE_EXECINFO 1
+#		endif
 #	elif defined(__DARWIN_VERS_1050)
 #		define HAVE_EXECINFO 1
 #	else
 #		define HAVE_EXECINFO 0
-#	endif
-#       if defined(DINGOO) // Dingoo's toolchain does not support execinfo
-#               define HAVE_EXECINFO 0
 #	endif
 #endif
 
