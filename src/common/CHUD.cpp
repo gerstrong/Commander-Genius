@@ -145,13 +145,13 @@ void CHUD::render()
 	else if(Episode == 3) sprite = OBJ_RAY_DEFSPRITE_EP3;
 	
 	// Draw the pistol
-	headsrcrect.x = 0;
-	headsrcrect.y = 0;
-	headdstrect.w = headsrcrect.w = 16;
-	headdstrect.h = headsrcrect.h = 8;
-	headdstrect.x = m_Rect.x+41;
-	headdstrect.y = m_Rect.y+17;
 	CSprite &KeenGunSprite = g_pGfxEngine->getSprite(sprite);
+	//headsrcrect.x = 0;
+	//headsrcrect.y = 0;
+	headdstrect.w = headsrcrect.w = KeenGunSprite.getWidth();
+	headdstrect.h = headsrcrect.h = KeenGunSprite.getHeight();
+	headdstrect.x = m_Rect.x+49-(headsrcrect.w/2);
+	headdstrect.y = m_Rect.y+21-(headsrcrect.h/2);
 	SDL_BlitSurface( KeenGunSprite.getSDLSurface(), &headsrcrect, blitsurface, &headdstrect);
 	SDL_BlitSurface( KeenGunSprite.getSDLSurface(), &headsrcrect, blitsurface, &headdstrect); //Display it twice otherwise it is translucent which can be hard to see.
 
