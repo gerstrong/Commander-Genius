@@ -80,7 +80,7 @@ bool CBehaviorEngine::readTeleporterTable(byte *p_exedata)
  */
 bool CBehaviorEngine::readActionFormat(byte *p_exedata)
 {
-
+	return false; // TODO...
 }
 
 std::vector<CTileProperties> &CBehaviorEngine::getTileProperties(size_t tmnum)

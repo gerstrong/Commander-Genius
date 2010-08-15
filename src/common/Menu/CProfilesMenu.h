@@ -8,6 +8,7 @@
 #ifndef CPROFILESMENU_H_
 #define CPROFILESMENU_H_
 
+#include "SmartPointer.h"
 #include "CBaseMenu.h"
 
 //class CProfilesMenu : public CBaseMenu {
@@ -20,10 +21,8 @@ public:
 	void setDefaultClassic();
 	void setDefaultEnhanced();
 
-	virtual ~CProfilesMenu();
-
 private:
-	CBaseMenu *mp_SubMenu;
+	SmartPointer<CBaseMenu> mp_SubMenu;
 };
 
 #endif /* CPROFILESMENU_H_ */
