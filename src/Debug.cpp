@@ -401,6 +401,9 @@ void OlxWriteCoreDump(const char* file_postfix) {
 #	else
 #		define HAVE_EXECINFO 0
 #	endif
+#       if defined(DINGOO) // Dingoo's toolchain does not support execinfo
+#               define HAVE_EXECINFO 0
+#	endif
 #endif
 
 #if HAVE_EXECINFO

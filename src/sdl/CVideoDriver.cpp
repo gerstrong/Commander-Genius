@@ -46,7 +46,7 @@ void CVideoDriver::resetSettings() {
 	m_maxwidth = 0;
 	showfps=true;
 	Mode=0;
-#if defined(WIZ) || defined(GP2X)
+#if defined(WIZ) || defined(GP2X) || defined(DINGOO)
 	m_Resolution.width=320;
 	m_Resolution.height=240;
 #if defined(GP2X)
@@ -370,7 +370,7 @@ bool CVideoDriver::applyMode()
 	m_Resolution = *m_Resolution_pos;
 
 	// Setup mode depends on some systems.
-#if defined(WIZ)
+#if defined(WIZ) || defined(DINGOO)
     Mode = SDL_SWSURFACE;
 #elif defined(GP2X)
     Mode = SDL_DOUBLEBUF | SDL_HWSURFACE;
