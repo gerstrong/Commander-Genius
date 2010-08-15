@@ -292,6 +292,8 @@ void CPlayer::TogglePogo_and_Switches()
 	unsigned int mx, my;
 	Uint16 t;
 	
+	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties(1);
+
 	// detect if KPOGO key only pressed
 	if ( playcontrol[PA_POGO] && !pfrozentime && !lastpogo )
 	{
@@ -303,15 +305,15 @@ void CPlayer::TogglePogo_and_Switches()
 			my = (getYPosition()+i)>>CSF;
 			
 			t = mp_Map->at(mx, my);
-			
+
 			// check for extending-platform switch
-			if (t==TILE_SWITCH_UP || t==TILE_SWITCH_DOWN )
+			if ( TileProperty[t].behaviour == 25  ||  TileProperty[t].behaviour == 26  )
 			{
 				// Flip the switch!
 				g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, getXPosition()>>STC);
-				if ( mp_Map->at(mx, my) == TILE_SWITCH_DOWN )
+				if ( TileProperty[t].behaviour == 26 )
 					mp_Map->changeTile(mx, my, TILE_SWITCH_UP);
-				else
+				else if ( TileProperty[t].behaviour == 25 )
 					mp_Map->changeTile(mx, my, TILE_SWITCH_DOWN);
 
 				// figure out where the platform is supposed to extend at
@@ -357,7 +359,7 @@ void CPlayer::TogglePogo_and_Switches()
 				if (ppogostick) ppogostick = false;
 				break;
 			}
-			else if (t==TILE_LIGHTSWITCH)
+			else if ( TileProperty[t].behaviour == 23 )
 			{ // lightswitch
 				m_Level_Trigger = LVLTRIG_LIGHT;
 				g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, getXPosition()>>CSF);
