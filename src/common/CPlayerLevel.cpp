@@ -105,6 +105,8 @@ void CPlayer::touchedExit(int mpx)
 		g_pMusicPlayer->stop();
 		g_pSound->playSound(SOUND_LEVEL_DONE, PLAY_NOW);
 		level_done = LEVEL_DONE_WALK;
+		solid = false;
+		inhibitfall = true;
 	}
 }
 

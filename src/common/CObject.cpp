@@ -156,9 +156,9 @@ void CObject::performCollisionsSameBox()
 void CObject::calcBouncingBoxes()
 {
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
-	bboxX1 = rSprite.m_bboxX1;
+	bboxX1 = rSprite.m_bboxX1+(1<<STC);
 	bboxX2 = rSprite.m_bboxX2;
-	bboxY1 = rSprite.m_bboxY1;
+	bboxY1 = rSprite.m_bboxY1+(1<<STC);
 	bboxY2 = rSprite.m_bboxY2;
 }
 
@@ -853,7 +853,7 @@ bool CObject::checkSolidR( int x2, int y1, int y2)
 			return true;
 	}
 
-	if( m_type == OBJ_PLAYER )
+	if( m_type == OBJ_PLAYER && solid )
 	{
 		if( x2 >= (int)((mp_Map->m_width-2)<<CSF) ) return true;
 	}
@@ -891,7 +891,7 @@ bool CObject::checkSolidL( int x1, int y1, int y2)
 			return true;
 	}
 
-	if( m_type == OBJ_PLAYER )
+	if( m_type == OBJ_PLAYER && solid )
 	{
 		if( x1 <= (2<<CSF) ) return true;
 	}
