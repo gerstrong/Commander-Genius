@@ -8,8 +8,8 @@
 #ifndef CTILELOADER_H_
 #define CTILELOADER_H_
 
-#include "../graphics/CTilemap.h"
-#include "../common/CBehaviorEngine.h"
+#include "graphics/CTilemap.h"
+#include "common/CBehaviorEngine.h"
 #include "CExeFile.h"
 #include <map>
 
@@ -21,14 +21,12 @@ public:
 	bool load(size_t NumUnMaskedTiles, size_t NumMaskedTiles);
 	void readVorticonTileinfo(size_t NumTiles);
 	void readGalaxyTileinfo(size_t NumUnMaskedTiles, size_t NumMaskedTiles);
-	
-	virtual ~CTileLoader();
 
 private:
 	int m_episode;
 	int m_version;
 	long m_offset;
-	unsigned char *m_data;
+	byte *m_data;
 	
 	//std::map<std::map<int,int>, long> m_offsetMap;
 	typedef std::map<int,long> VersionMap;
@@ -38,6 +36,7 @@ private:
 	void setupOffsetMap();
 	bool canbePickedup(int tile);
 	bool isaDoor(int tile);
+	bool smartTileChangerEnabled();
 };
 
 #endif /* CTILELOADER_H_ */

@@ -57,11 +57,11 @@ void CProfilesMenu::setDefaultClassic()
 	Settings.loadDrvCfg();
 	g_pVideoDriver->setSpecialFXMode(false);
 	st_camera_bounds &CameraBounds = g_pVideoDriver->getCameraBounds();
-	CameraBounds.left = 160;
-	CameraBounds.up = 100;
-	CameraBounds.right = 161;
-	CameraBounds.down = 101;
-	CameraBounds.speed = 10;
+	CameraBounds.left = 140;
+	CameraBounds.up = 500;
+	CameraBounds.right = 180;
+	CameraBounds.down = 130;
+	CameraBounds.speed = 5;
 	g_pTimer->setFrameRate(DEFAULT_LPS, 30, DEFAULT_SYNC);
 	p_option[OPT_SUPERPOGO].value = 0;
 	p_option[OPT_ALLOWPKING].value = 0;
