@@ -20,21 +20,21 @@ void CPlayGameVorticon::processOnWorldMap()
 	int useobject;
 
 	// Perform player Objects...
-	for( int i=0 ; i<m_NumPlayers ; i++ )
+	//for( int i=0 ; i<m_NumPlayers ; i++ )
 	{
-		m_Player[i].processWorldMap();
+		m_Player[0].processWorldMap();
 
 		// entered a level, used ship, teleporter, etc.
-		if( !m_Player[i].hideplayer && !m_Player[i].beingteleported )
+		if( !m_Player[0].hideplayer && !m_Player[0].beingteleported )
 		{
-			useobject = m_Player[i].getNewObject();
+			useobject = m_Player[0].getNewObject();
 			if( useobject != 0 )
 			{
 				// If it is teleporter, make the Player teleport
 				int TeleportID;
 				if( (TeleportID = getTeleporterInfo(useobject)) != 0 )
 				{
-					teleportPlayer(TeleportID, m_Player[i]);
+					teleportPlayer(TeleportID, m_Player[0]);
 				}
 				else
 				{
@@ -45,7 +45,7 @@ void CPlayGameVorticon::processOnWorldMap()
 					case NESSIE_WEED:
 					case NESSIE_PATH: break;
 					case NESSIE_LAND:
-						m_Player[i].MountNessieIfAvailable();
+						m_Player[0].MountNessieIfAvailable();
 						g_pInput->flushAll();
 						break;
 
@@ -67,10 +67,10 @@ void CPlayGameVorticon::processOnWorldMap()
 							m_level_command = START_LEVEL;
 							m_Level = useobject & 0x7fff;
 							g_pMusicPlayer->stop();
-							g_pSound->playStereofromCoord(SOUND_ENTER_LEVEL, PLAY_NOW, m_Player[i].scrx);
+							g_pSound->playStereofromCoord(SOUND_ENTER_LEVEL, PLAY_NOW, m_Player[0].scrx);
 							// save where on the map, the player entered. This is a checkpoint!
-							m_checkpoint_x = m_Player[i].getXPosition();
-							m_checkpoint_y = m_Player[i].getYPosition();
+							m_checkpoint_x = m_Player[0].getXPosition();
+							m_checkpoint_y = m_Player[0].getYPosition();
 							m_checkpointset = true;
 							cleanup();
 							init();
@@ -83,11 +83,11 @@ void CPlayGameVorticon::processOnWorldMap()
 			}
 		}
 
-		if(m_Player[i].mounted)
+		if(m_Player[0].mounted)
 		{
 			if(g_pInput->getPressedAnyCommand(0))
 			{
-				m_Player[i].UnmountNessie();
+				m_Player[0].UnmountNessie();
 				g_pInput->flushAll();
 			}
 		}
@@ -137,12 +137,12 @@ void CPlayGameVorticon::YourShipNeedsTheseParts()
 	joy = bat = vac = wis = false;
 
 	// The Multiplayer support for this dialog. You collect those parts together if more than one player.
-	for(int i=0 ; i<m_NumPlayers ; i++)
+	//for(int i=0 ; i<m_NumPlayers ; i++)
 	{
-		joy |= m_Player[i].inventory.HasJoystick;
-		bat |= m_Player[i].inventory.HasBattery;
-		vac |= m_Player[i].inventory.HasVacuum;
-		wis |= m_Player[i].inventory.HasWiskey;
+		joy |= m_Player[0].inventory.HasJoystick;
+		bat |= m_Player[0].inventory.HasBattery;
+		vac |= m_Player[0].inventory.HasVacuum;
+		wis |= m_Player[0].inventory.HasWiskey;
 	}
 
 	// draw needed parts

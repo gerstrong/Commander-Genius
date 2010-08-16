@@ -589,7 +589,8 @@ void CPlayGameVorticon::drawObjects()
 	
 	// We draw the Player as last, because we want to see him in front of the other objects
 	std::vector<CPlayer>::iterator it_player = m_Player.begin();
-	for (; it_player != m_Player.end() ; it_player++)
+	std::vector<CPlayer>::iterator it_end = ( m_Level!=WORLD_MAP_LEVEL) ? m_Player.end() : m_Player.begin()+1;
+	for (; it_player != it_end ; it_player++)
 	{
 		if(!it_player->beingteleported)
 			it_player->draw();
