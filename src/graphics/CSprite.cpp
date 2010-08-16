@@ -62,6 +62,8 @@ bool CSprite::loadHQSprite( const std::string& filename )
 		if(temp_surface)
 		{
 			SDL_Surface *displaysurface = SDL_ConvertSurface(temp_surface, m_surface->format, m_surface->flags);
+			readMask(displaysurface);
+			readBBox(displaysurface);
 			SDL_BlitSurface(displaysurface, NULL, m_surface, NULL);
 			SDL_FreeSurface(displaysurface);
 			SDL_FreeSurface(temp_surface);
@@ -69,6 +71,58 @@ bool CSprite::loadHQSprite( const std::string& filename )
 		}
 	}
 	return false;
+}
+
+/**
+ * \brief Reads the mask of a created modkeen style bitmap und converts that mask to 8-bit
+ * 		  so it can be applied to the others. This is for HQ Sprites, the other have in internal algorithm
+ */
+void CSprite::readMask(SDL_Surface *displaysurface)
+{
+	Uint8 *maskpx, *pixel;
+	Uint32 color = 0;
+	Uint8 mask = 0;
+	Uint8 r,g,b,a;
+	Uint16 h,w;
+
+	h = displaysurface->h;
+	w = (displaysurface->w)/3;
+
+	if(SDL_MUSTLOCK(displaysurface)) SDL_LockSurface(displaysurface);
+	if(SDL_MUSTLOCK(m_masksurface)) SDL_LockSurface(m_masksurface);
+
+	maskpx = (Uint8*)m_masksurface->pixels;
+	pixel = (Uint8*)displaysurface->pixels + (displaysurface->w/3)*displaysurface->format->BytesPerPixel;
+
+	for( Uint8 y=0 ; y<h ; y++ )
+	{
+		for( Uint8 x=0 ; x<w ; x++ )
+		{
+			memcpy( &color, pixel, displaysurface->format->BytesPerPixel );
+
+			SDL_GetRGBA( color, displaysurface->format, &r, &g, &b, &a );
+
+			Uint32 mask32 = (r+g+b)/(3*16);
+			mask = 15-mask32;
+			//mask = 15;
+
+			memcpy( maskpx, &mask, 1 );
+
+			pixel += m_surface->format->BytesPerPixel;
+			maskpx += m_masksurface->format->BytesPerPixel;
+		}
+		pixel += 2*w*m_surface->format->BytesPerPixel;
+	}
+	if(SDL_MUSTLOCK(m_masksurface)) SDL_LockSurface(m_masksurface);
+	if(SDL_MUSTLOCK(displaysurface)) SDL_LockSurface(displaysurface);
+}
+
+/**
+ * \brief Reads the bounding box of a created modkeen style bitmap and assigns new coordinates
+ */
+void CSprite::readBBox(SDL_Surface *displaysurface)
+{
+	// TODO: That code need to be implemented
 }
 
 void CSprite::applyTransparency()
@@ -80,7 +134,7 @@ void CSprite::applyTransparency()
 	
 	if(!m_surface) return;
 
-	if(m_surface->format->BitsPerPixel == 8) // In case we did not Displayformat
+	if(m_surface->format->BitsPerPixel == 8) // In case we did not call SDL_Displayformat
 	{
 		SDL_BlitSurface(m_masksurface, NULL, m_surface, NULL);
 		return;
@@ -115,7 +169,6 @@ void CSprite::applyTransparency()
 	}
 	if(SDL_MUSTLOCK(m_masksurface)) SDL_LockSurface(m_masksurface);
 	if(SDL_MUSTLOCK(m_surface)) SDL_LockSurface(m_surface);
-	
 }
 
 void CSprite::applyTranslucency(Uint8 value)

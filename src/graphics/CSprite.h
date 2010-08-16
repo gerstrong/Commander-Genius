@@ -18,6 +18,8 @@ public:
 
 	bool createSurface(Uint32 flags, SDL_Color *Palette);
 	bool optimizeSurface();
+	void readMask(SDL_Surface *displaysurface);
+	void readBBox(SDL_Surface *displaysurface);
 	void applyTransparency();
 	void applyTranslucency(Uint8 value);
 	void copy( CSprite &Destination, SDL_Color *Palette );

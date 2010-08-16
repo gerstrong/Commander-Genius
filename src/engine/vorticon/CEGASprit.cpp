@@ -188,8 +188,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	// Now load the special TGA Sprites if some are available
 	LoadSpecialSprites( g_pGfxEngine->getSpriteVec() );
 
-	Uint16 s=0;
-	for(s=0 ; s<g_pGfxEngine->getSpriteVec().size() ; s++)
+	for(Uint16 s=0 ; s<g_pGfxEngine->getSpriteVec().size() ; s++)
 	{
 		CSprite &Sprite = g_pGfxEngine->getSprite(s);
 		Sprite.optimizeSurface();
@@ -298,43 +297,50 @@ void CEGASprit::LoadSpecialSprites( std::vector<CSprite> &sprite )
 
 void CEGASprit::DerivePlayerSprites( std::vector<CSprite> &sprites )
 {
-    // create the sprites for player 2, 3 and 4
-	size_t s;
+	// create the sprites for player 2, 3 and 4
 	for(size_t i=0;i<48;i++)
 	{
-		s = SECOND_PLAYER_BASEFRAME+i;
+		size_t s = SECOND_PLAYER_BASEFRAME+i;
 		sprites.at(i).copy( sprites.at(s), g_pGfxEngine->Palette.m_Palette );
 		sprites.at(s).replaceSpriteColor( 13, 11 ,0 );
 		sprites.at(s).replaceSpriteColor( 5, 3 ,0 );
-		//sprites.at(s).replaceSpriteColor( 9, 14 ,8 );
-		//sprites.at(s).replaceSpriteColor( 1, 6 ,8 );
 		sprites.at(s).replaceSpriteColor( 12, 9 ,0 );
 		sprites.at(s).replaceSpriteColor( 4, 1 ,0 );
 		sprites.at(s).optimizeSurface();
 	}
 	for(size_t i=0;i<48;i++)
 	{
-		s = THIRD_PLAYER_BASEFRAME+i;
+		size_t s = THIRD_PLAYER_BASEFRAME+i;
+
 		sprites.at(i).copy( sprites.at(s), g_pGfxEngine->Palette.m_Palette );
 		sprites.at(s).replaceSpriteColor( 13, 10, 0 ); // Shirt light
 		sprites.at(s).replaceSpriteColor( 5, 2, 0 ); // Shirt dark
-		//sprites.at(s).replaceSpriteColor( 9, 10, 8 ); // Trousers light
-		//sprites.at(s).replaceSpriteColor( 1, 2, 8 ); // Trousers dark
 		sprites.at(s).replaceSpriteColor( 12, 2, 16 ); // Shoes light
 		sprites.at(s).replaceSpriteColor( 4, 0, 16 ); // Shoes dark
 		sprites.at(s).optimizeSurface();
+
 	}
 	for(size_t i=0;i<48;i++)
 	{
-		s = FOURTH_PLAYER_BASEFRAME+i;
+		size_t s = FOURTH_PLAYER_BASEFRAME+i;
 		sprites.at(i).copy( sprites.at(s), g_pGfxEngine->Palette.m_Palette );
 		sprites.at(s).replaceSpriteColor( 13, 14, 0 ); // Shirt light
 		sprites.at(s).replaceSpriteColor( 5, 6, 0 ); // Shirt dark
-		//sprites.at(s).replaceSpriteColor( 9, 11, 8 ); // Trousers light
-		//sprites.at(s).replaceSpriteColor( 1, 9, 8 ); // Trousers dark
 		sprites.at(s).replaceSpriteColor( 12, 6, 16 ); // Shoes light
 		sprites.at(s).replaceSpriteColor( 4, 0, 16 ); // Shoes dark
 		sprites.at(s).optimizeSurface();
+	}
+
+	// Load special if there are any
+	for(size_t s=SECOND_PLAYER_BASEFRAME ; s<FOURTH_PLAYER_BASEFRAME+48 ; s++)
+	{
+		std::string filename = getResourceFilename("gfx/sprite" + itoa(s) + ".bmp", m_gamepath, false, true);
+		if(filename != "")
+		{
+			CSprite &Sprite = sprites.at(s);
+			Sprite.loadHQSprite(filename);
+			Sprite.applyTransparency();
+		}
 	}
 }
 
