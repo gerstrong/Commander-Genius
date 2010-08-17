@@ -275,6 +275,7 @@ unsigned char *CExeFile::getDSegOffset()
 	//		 offsets.
 
 	const size_t offset_map[] = {
+			/*Dummy:*/ 0x0,
 			/*Keen 1:*/ 0x13050,
 			/*Keen 2:*/ 0x17780,
 			/*Keen 3:*/ 0x19820,
