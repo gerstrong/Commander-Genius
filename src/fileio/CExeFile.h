@@ -35,7 +35,7 @@ public:
 	
 	unsigned char* getRawData();
 	unsigned char* getHeaderData();
-	unsigned char *getDSegOffset();
+	unsigned char *getDSegPtr(size_t &endoffset);
 
 	virtual ~CExeFile();
 
@@ -60,6 +60,7 @@ private:
 	};
 
 	size_t m_datasize;
+	size_t m_headersize;
 	int m_episode;
 	unsigned int m_crc;
 	unsigned char *m_data;

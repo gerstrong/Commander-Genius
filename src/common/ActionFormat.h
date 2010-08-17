@@ -17,12 +17,7 @@
 
 #include <stdint.h>
 
-class CActionFormat {
-public:
-	CActionFormat();
-	virtual ~CActionFormat();
-
-private:
+struct ActionFormatType {
 	int16_t Left_sprite;         // 124-400
 	int16_t Right_sprite;        // 124-400
 	int16_t Movement_parameter;  // 0-3

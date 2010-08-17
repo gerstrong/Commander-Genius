@@ -76,13 +76,51 @@ bool CBehaviorEngine::readTeleporterTable(byte *p_exedata)
 /**
  * \brief This function reads in the actions format of Keen Galaxy.
  * 		  For what it is used, please check ActionFormat.h
- * \param	p_exedata	pointer to the data where the exe is located at.
+ * \param	p_exedata	pointer to the data where the exe is located at (DSeg).
+ * \param	endoffset	relative offset in bytes of the end of that data segment and the file.
  */
-bool CBehaviorEngine::readActionFormat(byte *p_exedata)
+bool CBehaviorEngine::readActionFormat(byte *p_exedata, size_t endoffset)
 {
-	// getDSegOffset()
+	/*
+	 * This algorithm was provided by Levellass. Many thanks to her effort.
+	 */
+	// Scan executable byte-by-byte from Dseg start to end of file(ish)
+	for(byte *data=p_exedata ; data < data+endoffset ; data++)
+	{
+		// IF we find a string of 6 bytes where:
+		if(data[6] == '\0')
+		{
+			// First word < 4
+			word *checkword = (word*)data;
+			if(*checkword < 4)
+			{
+				// * Second and third words are < 2
+				if( *(checkword+1) < 2 and *(checkword+2) < 2 )
+				{
+					// THEN We may have an action
+					// Get two words behind this string
+					// Between 100-600
+					//  0
+					// -1 ($FFFF)
+					word *word1 = (word*)(data+6);
+					word *word2 = (word*)(data+8);
+					if( *word1 >= 100 && *word1 <= 600 && *word1 == 0 && *word1 == 0xFFFF  )
+					{
+						if( *word2 >= 100 && *word2 <= 600 && *word2 == 0 && *word2 == 0xFFFF )
+						{
+							// THEN This looks like a 'proper' action and we put it in OUTPUT
+							ActionFormatType ActionFormat;
+							memcpy( &ActionFormat, data, 30 );
+							m_ActionFormats.push_back(ActionFormat);
+							data += 30;
+						}
+					}
+				}
+			}
+		}
 
-	return false; // TODO...
+	}
+	return !m_ActionFormats.empty();
 }
 
 std::vector<CTileProperties> &CBehaviorEngine::getTileProperties(size_t tmnum)

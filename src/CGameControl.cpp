@@ -268,11 +268,18 @@ bool CGameControl::loadResources(Uint8 flags)
 		if( (flags & LOADSTR) == LOADSTR )
 		{
 			// load the strings.
+			// TODO:
+
+			// load action Format
+			size_t dsegsize;
+			byte *p_dseg = m_ExeFile.getDSegPtr( dsegsize );
+			g_pBehaviorEngine->readActionFormat( p_dseg, dsegsize );
 		}
 
 		if( (flags & LOADSND) == LOADSND )
 		{
 			// Load the sound data
+			// TODO:
 		}
 	}
 	return true;

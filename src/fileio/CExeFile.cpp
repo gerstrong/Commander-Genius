@@ -19,6 +19,7 @@
 
 CExeFile::CExeFile() :
 m_datasize(0),
+m_headersize(0),
 m_episode(0),
 m_crc(0),
 m_data(NULL),
@@ -80,12 +81,11 @@ bool CExeFile::readData(const char episode, const std::string& datadirectory)
 	Cunlzexe UnLZEXE;
 
 	std::vector<unsigned char> decdata;
-	unsigned long Headersize = 0;
 	if(UnLZEXE.decompress(m_data_temp, decdata))
 	{
 		m_datasize = decdata.size();
 		m_data = new unsigned char[m_datasize];
-		Headersize = UnLZEXE.HeaderSize();
+		m_headersize = UnLZEXE.HeaderSize();
 		memcpy(m_data, &decdata[0], m_datasize);
 	}
 	else
@@ -95,9 +95,9 @@ bool CExeFile::readData(const char episode, const std::string& datadirectory)
 	}
 
 	m_headerdata = m_data;
-	Headersize = UnLZEXE.HeaderSize();
-	if(!Headersize) Headersize = 512;
-	m_rawdata = m_data + Headersize;
+	m_headersize = UnLZEXE.HeaderSize();
+	if(!m_headersize) m_headersize = 512;
+	m_rawdata = m_data + m_headersize;
 
 	delete[] m_data_temp;
 
@@ -268,8 +268,9 @@ unsigned char* CExeFile::getHeaderData()
 
 /**
  * \brief This function returns the pointer to the data-segment of our opened exe-file
+ * \param endoffset	This will return the size of the whole data-segment
  */
-unsigned char *CExeFile::getDSegOffset()
+unsigned char *CExeFile::getDSegPtr(size_t &endoffset)
 {
 	// TODO: I think those are the offsets of some versions. We should figure out how to scan those
 	//		 offsets.
@@ -284,6 +285,8 @@ unsigned char *CExeFile::getDSegOffset()
 			/*Keen 6:*/ 0x30D30,
 			/*Keen D:*/ 0x23A70
 	};
+
+	endoffset = m_datasize-offset_map[m_episode]-m_headersize;
 
 	return m_data+offset_map[m_episode];
 }
