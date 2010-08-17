@@ -80,6 +80,8 @@ bool CBehaviorEngine::readTeleporterTable(byte *p_exedata)
  */
 bool CBehaviorEngine::readActionFormat(byte *p_exedata)
 {
+	// getDSegOffset()
+
 	return false; // TODO...
 }
 

@@ -36,7 +36,6 @@ std::string CExeFile::getDataDirectory()
 size_t CExeFile::getExeDataSize()
 { return m_datasize;	}
 
-
 bool CExeFile::readData(const char episode, const std::string& datadirectory)
 {
 	crc32_init();
@@ -266,6 +265,27 @@ unsigned char* CExeFile::getRawData()
 
 unsigned char* CExeFile::getHeaderData()
 {	return m_headerdata;	}
+
+/**
+ * \brief This function returns the pointer to the data-segment of our opened exe-file
+ */
+unsigned char *CExeFile::getDSegOffset()
+{
+	// TODO: I think those are the offsets of some versions. We should figure out how to scan those
+	//		 offsets.
+
+	const size_t offset_map[] = {
+			/*Keen 1:*/ 0x13050,
+			/*Keen 2:*/ 0x17780,
+			/*Keen 3:*/ 0x19820,
+			/*Keen 4:*/ 0x2EE70,
+			/*Keen 5:*/ 0x30340,
+			/*Keen 6:*/ 0x30D30,
+			/*Keen D:*/ 0x23A70
+	};
+
+	return m_data+offset_map[m_episode];
+}
 
 CExeFile::~CExeFile() {
 	SAFE_DELETE_ARRAY(m_data);

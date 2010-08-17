@@ -35,6 +35,7 @@ public:
 	
 	unsigned char* getRawData();
 	unsigned char* getHeaderData();
+	unsigned char *getDSegOffset();
 
 	virtual ~CExeFile();
 
