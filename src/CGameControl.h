@@ -70,7 +70,6 @@ private:
 	std::string m_DataDirectory;
 	int current_demo;
 	Uint8 m_startLevel;
-	CExeFile m_ExeFile;
 	
 	CEGAGraphics *m_EGAGraphics;
 	bool &m_firsttime;

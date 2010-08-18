@@ -99,6 +99,18 @@ bool CExeFile::readData(const char episode, const std::string& datadirectory)
 	if(!m_headersize) m_headersize = 512;
 	m_rawdata = m_data + m_headersize;
 
+	const size_t offset_map[] = {
+			/*Dummy:*/ 0x0,
+			/*Keen 1:*/ 0x13050,
+			/*Keen 2:*/ 0x17780,
+			/*Keen 3:*/ 0x19820,
+			/*Keen 4:*/ 0x2EE70,
+			/*Keen 5:*/ 0x30340,
+			/*Keen 6:*/ 0x30D30,
+			/*Keen D:*/ 0x23A70
+	};
+	m_data_segment = m_rawdata+offset_map[m_episode];
+
 	delete[] m_data_temp;
 
 	m_crc = getcrc32( m_data, m_datasize );
@@ -266,30 +278,8 @@ unsigned char* CExeFile::getRawData()
 unsigned char* CExeFile::getHeaderData()
 {	return m_headerdata;	}
 
-/**
- * \brief This function returns the pointer to the data-segment of our opened exe-file
- * \param endoffset	This will return the size of the whole data-segment
- */
-unsigned char *CExeFile::getDSegPtr(size_t &endoffset)
-{
-	// TODO: I think those are the offsets of some versions. We should figure out how to scan those
-	//		 offsets.
-
-	const size_t offset_map[] = {
-			/*Dummy:*/ 0x0,
-			/*Keen 1:*/ 0x13050,
-			/*Keen 2:*/ 0x17780,
-			/*Keen 3:*/ 0x19820,
-			/*Keen 4:*/ 0x2EE70,
-			/*Keen 5:*/ 0x30340,
-			/*Keen 6:*/ 0x30D30,
-			/*Keen D:*/ 0x23A70
-	};
-
-	endoffset = m_datasize-offset_map[m_episode]-m_headersize;
-
-	return m_data+offset_map[m_episode];
-}
+unsigned char* CExeFile::getDSegPtr()
+{	return m_data_segment; }
 
 CExeFile::~CExeFile() {
 	SAFE_DELETE_ARRAY(m_data);

@@ -92,6 +92,7 @@ bool CGameControl::init(int argc, char *argv[])
 bool CGameControl::init(char mode)
 {
 	m_mode = mode;
+	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 	if(m_mode == GAMELAUNCHER)
 	{
 		// Load the graphics for menu and background.
@@ -119,9 +120,9 @@ bool CGameControl::init(char mode)
 	{
 		// Create mp_PassiveMode object used for the screens while Player is not playing
 		if(m_Episode >= 4)
-			mp_PassiveMode = new galaxy::CPassiveGalaxy( m_ExeFile, m_SavedGame, mp_option );
+			mp_PassiveMode = new galaxy::CPassiveGalaxy( ExeFile, m_SavedGame, mp_option );
 		else
-			mp_PassiveMode = new vorticon::CPassiveVort( m_ExeFile, m_SavedGame, mp_option );
+			mp_PassiveMode = new vorticon::CPassiveVort( ExeFile, m_SavedGame, mp_option );
 
 		if( m_endgame == true )
 		{
@@ -139,13 +140,13 @@ bool CGameControl::init(char mode)
 		bool ok = true;
 
 		if(m_Episode >= 4)
-			mp_PlayGame = new galaxy::CPlayGameGalaxy( m_ExeFile, m_startLevel,
+			mp_PlayGame = new galaxy::CPlayGameGalaxy( ExeFile, m_startLevel,
 													m_Numplayers, m_Difficulty,
 													mp_option, m_SavedGame);
 		else
 		{
 			if(m_startLevel == 0) m_startLevel = WORLD_MAP_LEVEL;
-			mp_PlayGame = new CPlayGameVorticon(m_ExeFile, m_startLevel,
+			mp_PlayGame = new CPlayGameVorticon( ExeFile, m_startLevel,
 												m_Numplayers, m_Difficulty,
 												mp_option, m_show_finale,
 												m_SavedGame);
@@ -193,6 +194,8 @@ bool CGameControl::loadResources(Uint8 flags)
 	unsigned char *p_exedata;
 	unsigned char *p_exeheader;
 
+	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
+
 	m_SavedGame.setGameDirectory(m_DataDirectory);
 	m_SavedGame.setEpisode(m_Episode);
 
@@ -200,9 +203,9 @@ bool CGameControl::loadResources(Uint8 flags)
 	if( m_DataDirectory.size() > 0 && m_DataDirectory[m_DataDirectory.size()-1] != '/' )
 		m_DataDirectory += "/";
 
-    version = m_ExeFile.getEXEVersion();
-	p_exedata = m_ExeFile.getRawData();
-	p_exeheader = m_ExeFile.getHeaderData();
+    version = ExeFile.getEXEVersion();
+	p_exedata = ExeFile.getRawData();
+	p_exeheader = ExeFile.getHeaderData();
 
 	g_pLogFile->ftextOut("Commander Keen Episode %d (Version %d.%d) was detected.<br>", m_Episode, version/100, version%100);
 	if( m_Episode == 1 && version == 134) g_pLogFile->ftextOut("This version of the game is not supported!<br>");
@@ -213,7 +216,7 @@ bool CGameControl::loadResources(Uint8 flags)
 	}
 
 	// Patch the EXE-File-Data directly in the memory.
-	CPatcher Patcher(m_ExeFile);
+	CPatcher Patcher(ExeFile);
 	Patcher.patchMemory();
 
 	g_pBehaviorEngine->setEpisode(m_Episode);
@@ -243,8 +246,8 @@ bool CGameControl::loadResources(Uint8 flags)
 		if( (flags & LOADSND) == LOADSND )
 		{
 			// Load the sound data
-			g_pSound->setGameData(m_ExeFile);
-			g_pSound->loadSoundData(m_ExeFile);
+			g_pSound->setGameData(ExeFile);
+			g_pSound->loadSoundData(ExeFile);
 		}
 
 		g_pBehaviorEngine->getPhysicsSettings().loadGameConstants(m_Episode, p_exedata);
@@ -259,7 +262,7 @@ bool CGameControl::loadResources(Uint8 flags)
 			// Decode the entire graphics for the game (Only EGAGRAPH.CK?)
 			SAFE_DELETE(m_EGAGraphics);
 
-			m_EGAGraphics = new galaxy::CEGAGraphicsGalaxy(m_ExeFile); // Path is relative to the data directory
+			m_EGAGraphics = new galaxy::CEGAGraphicsGalaxy(ExeFile); // Path is relative to the data directory
 			if(!m_EGAGraphics) return false;
 
 			m_EGAGraphics->loadData();
@@ -269,11 +272,6 @@ bool CGameControl::loadResources(Uint8 flags)
 		{
 			// load the strings.
 			// TODO:
-
-			// load action Format
-			size_t dsegsize;
-			byte *p_dseg = m_ExeFile.getDSegPtr( dsegsize );
-			g_pBehaviorEngine->readActionFormat( p_dseg, dsegsize );
 		}
 
 		if( (flags & LOADSND) == LOADSND )
@@ -324,7 +322,7 @@ void CGameControl::process()
 				if( m_Episode > 0 ) // The game has to have a valid episode!
 				{
 					// Get the EXE-Data of the game and load it into the memory.
-					if(!m_ExeFile.readData(m_Episode, m_DataDirectory))
+					if(!g_pBehaviorEngine->m_ExeFile.readData(m_Episode, m_DataDirectory))
 					{
 						mp_GameLauncher->letchooseagain();
 						delete mp_PassiveMode;

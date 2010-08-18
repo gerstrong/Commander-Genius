@@ -18,7 +18,7 @@
 #include <vector>
 #include <string>
 #include <map>
-#include "ActionFormat.h"
+#include "fileio/CExeFile.h"
 #include "CTileProperties.h"
 #include "CPhysicsSettings.h"
 #include "fileio/TypeDefinitions.h"
@@ -42,7 +42,6 @@ public:
 					const std::string &message);
 
 	bool readTeleporterTable(byte *p_exedata);
-	bool readActionFormat(byte *p_exedata, size_t endoffset);
 
 	std::vector<CTileProperties> &getTileProperties(size_t tmnum = 1);
 	CPhysicsSettings &getPhysicsSettings();
@@ -55,9 +54,8 @@ public:
 
 	void setEpisode(size_t Episode);
 
-	virtual ~CBehaviorEngine();
-
 	CEventContainer m_EventList;
+	CExeFile m_ExeFile;
 
 private:
 	std::vector<CTileProperties> m_TileProperties[2];
@@ -66,8 +64,6 @@ private:
 	std::map<std::string,std::string> stringmap;
 	std::vector<stTeleporterTable> m_TeleporterTable; // Teleporter table used for the destinations
 													  // used by Episode 1 especially
-	std::vector<ActionFormatType> m_ActionFormats;
-
 	int numStrings;
 	size_t m_Episode;
 };

@@ -35,9 +35,9 @@ public:
 	
 	unsigned char* getRawData();
 	unsigned char* getHeaderData();
-	unsigned char *getDSegPtr(size_t &endoffset);
+	unsigned char* getDSegPtr();
 
-	virtual ~CExeFile();
+	~CExeFile();
 
 private:
 
@@ -66,6 +66,7 @@ private:
 	unsigned char *m_data;
 	unsigned char *m_headerdata;
 	unsigned char *m_rawdata;
+	unsigned char *m_data_segment;
 	std::string m_datadirectory;
 	std::string m_filename;
 };
