@@ -62,6 +62,9 @@ void CPlayerLevel::process()
 
 	processExiting();
 
+	moveXDir(xinertia);
+	xinertia = 0;
+
 	setSpritefromAction();
 }
 
@@ -126,42 +129,31 @@ void CPlayerLevel::processFalling()
 		falling = true;
 	}
 
-	/*if( !blockedd && (falling || getActionNumber(A_KEEN_JUMP) ) )
-	{
-		if( yinertia > -32 ) sprite++;
-		if( yinertia > 32 )
-			sprite++;
-	}*/
-
 	if( blockedd )
 	{
-		setAction(A_KEEN_STAND);
+		if(xinertia == 0)
+			setAction(A_KEEN_STAND);
+		else
+			setAction(A_KEEN_RUN);
 	}
 }
 
 void CPlayerLevel::processMoving()
 {
 	size_t movespeed = 50;
-	bool walking=false;
 
 	// Normal walking
 	if(g_pInput->getHoldedCommand(IC_LEFT) && !blockedl)
 	{
-		moveLeft(movespeed);
-		if(getActionNumber(A_KEEN_STAND))
-			setAction(A_KEEN_RUN);
+		xinertia = -movespeed;
 		m_direction = LEFT;
 	}
 	else if(g_pInput->getHoldedCommand(IC_RIGHT) && !blockedr)
 	{
-		moveRight(movespeed);
-		if(getActionNumber(A_KEEN_STAND))
-			setAction(A_KEEN_RUN);
+		xinertia = movespeed;
 		m_direction = RIGHT;
 	}
 
-	if( getActionNumber(A_KEEN_RUN) or getActionNumber(A_KEEN_STAND) )
-		performWalkingAnimation(walking);
 }
 
 void CPlayerLevel::processJumping()
@@ -199,11 +191,7 @@ void CPlayerLevel::processJumping()
 
 void CPlayerLevel::performWalkingAnimation(bool walking)
 {
-	if( getActionNumber(A_KEEN_RUN) )
-	{
-		m_animation_time = 5;
-		//sprite +=  (m_animation%4)+1;
-	}
+	// TODO: Not sure if we need that
 }
 
 // Processes the exiting of the player. Here all cases are held

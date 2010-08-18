@@ -1097,6 +1097,7 @@ int16_t CObject::getActionNumber(int16_t ActionNumber)
 
 void CObject::setAction(size_t ActionNumber)
 {
+	if( m_ActionNumber == ActionNumber ) return;
 	m_Action.setActionFormat(m_ActionOffset, ActionNumber);
 	m_ActionNumber = ActionNumber;
 }
