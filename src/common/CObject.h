@@ -12,6 +12,7 @@
 #define COBJECT_H_
 
 #include "CBehaviorEngine.h"
+#include "ActionFormat.h"
 #include "objenums.h"
 #include "CVec.h"
 
@@ -55,6 +56,7 @@ public:
 	bool onscreen;    				// true=(scrx,scry) position is visible onscreen
 	bool hasbeenonscreen;
 	unsigned int sprite;      			// which sprite should this object be drawn with
+	direction_t m_direction;			// the direction to where the object is looking/heading to
 	int scrx, scry;           		// x,y pixel position on screen
 	
 	// Bouncing Boxes
@@ -87,6 +89,10 @@ public:
 	bool dead, dying;
 	
 	bool needinit;
+
+	ActionFormatType m_Action;
+	int16_t m_ActionNumber;
+	size_t m_ActionOffset;
 
 	void setupObjectType(int Episode);
 	void calcBouncingBoxes();
@@ -147,6 +153,10 @@ public:
 	virtual void getShotByRay();
 	void kill_intersecting_tile(int mpx, int mpy, CObject &theObject);
 	CMap *getMapPtr() { return mp_Map; }
+
+	int16_t getActionNumber(int16_t ActionNumber);
+	void setAction(size_t ActionNumber);
+	void setSpritefromAction();
 
 	void draw();
 

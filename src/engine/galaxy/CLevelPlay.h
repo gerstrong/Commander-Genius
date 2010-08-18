@@ -26,8 +26,6 @@ public:
 
 	void process();
 
-	virtual ~CLevelPlay();
-
 private:
 	std::vector<CObject*> m_ObjectPtr;
 	bool m_active;

@@ -55,6 +55,8 @@ m_invincible(false)
 	touchPlayer = touchedBy = 0;
 	cansupportplayer = false;
 	dying = false;
+	m_ActionOffset = 0x0;
+	m_direction = NONE;
 
 	if(m_type != OBJ_NONE )
 	{
@@ -1083,8 +1085,35 @@ void CObject::blink(Uint16 frametime)
 {	m_blinktime = frametime; }
 
 ////
+// Action format (Galaxy only now...)
+////
+/**
+ * So far only used in Galaxy. Here we performs some stuff for the Action format
+ */
+
+int16_t CObject::getActionNumber(int16_t ActionNumber)
+{	return (m_ActionNumber==ActionNumber);	}
+
+
+void CObject::setAction(size_t ActionNumber)
+{
+	m_Action.setActionFormat(m_ActionOffset, ActionNumber);
+	m_ActionNumber = ActionNumber;
+}
+
+// This new function will setup the sprite based on the Action format
+void CObject::setSpritefromAction()
+{
+	if(m_direction == LEFT)
+		sprite = m_Action.Left_sprite-124;
+	else if(m_direction == RIGHT)
+		sprite = m_Action.Right_sprite-124;
+}
+
+////
 // For drawing
 ////
+
 // Functions finally draws the object also considering that there could be a masked
 // or priority tile!
 void CObject::draw()

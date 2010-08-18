@@ -13,37 +13,30 @@
 
 namespace galaxy {
 
-const Uint16 STANDBASEFRAMELEFT = 14;
-const Uint16 STANDBASEFRAMERIGHT = 6;
-
-const Uint16 FALLINGFRAMELEFT = 19;
-const Uint16 FALLINGFRAMERIGHT = 11;
-
 const Uint16 MAX_JUMPHEIGHT = 30;
 const Uint16 MIN_JUMPHEIGHT = 10;
 
 CPlayerLevel::CPlayerLevel(CMap *pmap, Uint32 x, Uint32 y,
 						std::vector<CObject*>& ObjectPtrs, direction_t facedir) :
 CObject(pmap, x, y, OBJ_NONE),
-m_basesprite( (facedir==LEFT) ? STANDBASEFRAMELEFT : STANDBASEFRAMERIGHT ),
-m_looking_dir(facedir),
 m_animation(0),
 m_animation_time(1),
 m_animation_ticker(0),
 m_ObjectPtrs(ObjectPtrs)
 {
 	m_index = 0;
-	state = STANDING;
-	sprite = m_basesprite;
+	m_direction = facedir;
+	m_ActionOffset = 0x98C;
+	setAction(A_KEEN_STAND);
 
 	memset(m_playcontrol, 0,PA_MAX_ACTIONS);
 
 	m_pfiring = false;
 	m_jumpheight = 0;
 
+	setSpritefromAction();
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 	moveUp(rSprite.m_bboxY2-rSprite.m_bboxY1+(1<<CSF));
-
 	performCollisions();
 }
 
@@ -68,6 +61,8 @@ void CPlayerLevel::process()
 	processFalling();
 
 	processExiting();
+
+	setSpritefromAction();
 }
 
 void CPlayerLevel::processInput()
@@ -127,27 +122,20 @@ void CPlayerLevel::processFalling()
 	// If yinertia is high, set falling to true
 	if( yinertia > 0 && !onslope )
 	{
-		state = FALLING;
+		setAction(A_KEEN_FALL);
 		falling = true;
 	}
 
-	if( !blockedd && (falling || state == JUMPING) )
+	/*if( !blockedd && (falling || getActionNumber(A_KEEN_JUMP) ) )
 	{
-		if(m_looking_dir == LEFT)
-			m_basesprite = FALLINGFRAMELEFT;
-		else if(m_looking_dir == RIGHT)
-			m_basesprite = FALLINGFRAMERIGHT;
-
-		sprite = m_basesprite;
-
 		if( yinertia > -32 ) sprite++;
 		if( yinertia > 32 )
 			sprite++;
-	}
+	}*/
 
 	if( blockedd )
 	{
-		state = STANDING;
+		setAction(A_KEEN_STAND);
 	}
 }
 
@@ -160,34 +148,34 @@ void CPlayerLevel::processMoving()
 	if(g_pInput->getHoldedCommand(IC_LEFT) && !blockedl)
 	{
 		moveLeft(movespeed);
-		if(state == STANDING)
-			state=WALKING;
-		m_looking_dir = LEFT;
+		if(getActionNumber(A_KEEN_STAND))
+			setAction(A_KEEN_RUN);
+		m_direction = LEFT;
 	}
 	else if(g_pInput->getHoldedCommand(IC_RIGHT) && !blockedr)
 	{
 		moveRight(movespeed);
-		if(state == STANDING)
-			state=WALKING;
-		m_looking_dir = RIGHT;
+		if(getActionNumber(A_KEEN_STAND))
+			setAction(A_KEEN_RUN);
+		m_direction = RIGHT;
 	}
 
-	if( state==WALKING or state==STANDING )
+	if( getActionNumber(A_KEEN_RUN) or getActionNumber(A_KEEN_STAND) )
 		performWalkingAnimation(walking);
 }
 
 void CPlayerLevel::processJumping()
 {
-	if(state != JUMPING)
+	if(!getActionNumber(A_KEEN_JUMP))
 	{
 		if(blockedd)
 			m_jumpheight = 0;
 
 		// Not jumping? Let's if we can prepare the player to do so
-		if(m_playcontrol[PA_JUMP] && (state==STANDING or state==WALKING) )
+		if(m_playcontrol[PA_JUMP] && (getActionNumber(A_KEEN_STAND) or getActionNumber(A_KEEN_RUN)) )
 		{
 			yinertia = -136;
-			state = JUMPING;
+			setAction(A_KEEN_JUMP);
 		}
 	}
 	else
@@ -211,17 +199,10 @@ void CPlayerLevel::processJumping()
 
 void CPlayerLevel::performWalkingAnimation(bool walking)
 {
-	if(m_looking_dir == LEFT)
-		m_basesprite = STANDBASEFRAMELEFT;
-	else if(m_looking_dir == RIGHT)
-		m_basesprite = STANDBASEFRAMERIGHT;
-
-	sprite = m_basesprite;
-
-	if( state == WALKING )
+	if( getActionNumber(A_KEEN_RUN) )
 	{
 		m_animation_time = 5;
-		sprite +=  (m_animation%4)+1;
+		//sprite +=  (m_animation%4)+1;
 	}
 }
 

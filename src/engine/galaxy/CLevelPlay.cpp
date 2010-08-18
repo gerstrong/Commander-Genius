@@ -56,8 +56,4 @@ void CLevelPlay::process()
 	}
 }
 
-CLevelPlay::~CLevelPlay() {
-	// TODO Auto-generated destructor stub
-}
-
 }

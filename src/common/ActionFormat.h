@@ -54,7 +54,7 @@ struct ActionFormatType {
 	 * 							direction
 	 * \param	action_number	This is the number of action of the sprite.
 	 */
-	void getActionFormat( size_t sprite_offset, size_t action_number )
+	void setActionFormat( size_t sprite_offset, size_t action_number )
 	{
 		byte *ptr = g_pBehaviorEngine->m_ExeFile.getDSegPtr();
 		ptr += sprite_offset;
