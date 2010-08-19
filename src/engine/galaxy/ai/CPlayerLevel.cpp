@@ -26,15 +26,15 @@ m_ObjectPtrs(ObjectPtrs)
 {
 	m_index = 0;
 	m_direction = facedir;
-	m_ActionOffset = 0x98C;
-	setAction(A_KEEN_STAND);
+	m_ActionBaseOffset = 0x98C;
+	setActionForce(A_KEEN_STAND);
 
 	memset(m_playcontrol, 0,PA_MAX_ACTIONS);
 
 	m_pfiring = false;
 	m_jumpheight = 0;
 
-	setSpritefromAction();
+	processActionRoutine();
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 	moveUp(rSprite.m_bboxY2-rSprite.m_bboxY1+(1<<CSF));
 	performCollisions();
@@ -53,10 +53,22 @@ void CPlayerLevel::process()
 	processInput();
 
 	performCollisionsSameBox();
+	//performCollisions();
 
 	processMoving();
 
 	processJumping();
+
+	// Looking Up and Down Routine
+	if(blockedd && xinertia == 0)
+	{
+		if( m_playcontrol[PA_Y]<0 )
+			setAction(A_KEEN_LOOKUP);
+		else if( m_playcontrol[PA_Y]>0 )
+			setAction(A_KEEN_LOOKDOWN);
+		else
+			setAction(A_KEEN_STAND);
+	}
 
 	processFalling();
 
@@ -65,7 +77,7 @@ void CPlayerLevel::process()
 	moveXDir(xinertia);
 	xinertia = 0;
 
-	setSpritefromAction();
+	processActionRoutine();
 }
 
 void CPlayerLevel::processInput()
@@ -122,38 +134,34 @@ void CPlayerLevel::processFalling()
 {
 	CObject::processFalling();
 
-	// If yinertia is high, set falling to true
-	if( yinertia > 0 && !onslope )
-	{
+	if( falling )
 		setAction(A_KEEN_FALL);
-		falling = true;
-	}
-
-	if( blockedd )
-	{
-		if(xinertia == 0)
-			setAction(A_KEEN_STAND);
-		else
-			setAction(A_KEEN_RUN);
-	}
 }
 
 void CPlayerLevel::processMoving()
 {
 	size_t movespeed = 50;
 
-	// Normal walking
-	if(g_pInput->getHoldedCommand(IC_LEFT) && !blockedl)
+	// Normal moving
+	if( m_playcontrol[PA_X]<0 && !blockedl)
 	{
 		xinertia = -movespeed;
 		m_direction = LEFT;
 	}
-	else if(g_pInput->getHoldedCommand(IC_RIGHT) && !blockedr)
+	else if( m_playcontrol[PA_X]>0 && !blockedr)
 	{
 		xinertia = movespeed;
 		m_direction = RIGHT;
 	}
 
+
+	if( blockedd )
+	{
+		if(xinertia != 0)
+			setAction(A_KEEN_RUN);
+		else if(m_playcontrol[PA_Y] == 0)
+			setAction(A_KEEN_STAND);
+	}
 }
 
 void CPlayerLevel::processJumping()
@@ -163,7 +171,7 @@ void CPlayerLevel::processJumping()
 		if(blockedd)
 			m_jumpheight = 0;
 
-		// Not jumping? Let's if we can prepare the player to do so
+		// Not jumping? Let's see if we can prepare the player to do so
 		if(m_playcontrol[PA_JUMP] && (getActionNumber(A_KEEN_STAND) or getActionNumber(A_KEEN_RUN)) )
 		{
 			yinertia = -136;
@@ -178,6 +186,10 @@ void CPlayerLevel::processJumping()
 		else
 			m_jumpheight = 0;
 
+		// Set another jump animation if Keen is near yinertia == 0
+		if( yinertia > -10 )
+			setAction(A_KEEN_JUMP+1);
+
 		// If the max. height is reached or the player cancels the jump by release the button
 		// make keen fall
 		if( m_jumpheight == 0 || m_jumpheight >= MAX_JUMPHEIGHT )
@@ -187,11 +199,6 @@ void CPlayerLevel::processJumping()
 		}
 
 	}
-}
-
-void CPlayerLevel::performWalkingAnimation(bool walking)
-{
-	// TODO: Not sure if we need that
 }
 
 // Processes the exiting of the player. Here all cases are held

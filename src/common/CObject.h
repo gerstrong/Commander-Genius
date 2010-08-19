@@ -90,9 +90,12 @@ public:
 	
 	bool needinit;
 
-	ActionFormatType m_Action;
+	// This is used for action format only
+	// Hopefully in Vorticons we also can use that structure
+	int16_t m_ActionTicker;
 	int16_t m_ActionNumber;
-	size_t m_ActionOffset;
+	size_t m_ActionBaseOffset;
+
 
 	void setupObjectType(int Episode);
 	void calcBouncingBoxes();
@@ -155,8 +158,9 @@ public:
 	CMap *getMapPtr() { return mp_Map; }
 
 	int16_t getActionNumber(int16_t ActionNumber);
+	void setActionForce(size_t ActionNumber);
 	void setAction(size_t ActionNumber);
-	void setSpritefromAction();
+	void processActionRoutine();
 
 	void draw();
 
@@ -170,6 +174,8 @@ protected:
 	unsigned int x, y;        			// x,y location in map coords, CSFed
 
 	static int m_number_of_objects;
+
+	ActionFormatType m_Action;
 };
 
 #endif /* COBJECT_H_ */

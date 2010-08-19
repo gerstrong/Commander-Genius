@@ -64,8 +64,6 @@ public:
 	void processFalling();
 	void processMoving();
 	void processJumping();
-
-	void performWalkingAnimation(bool walking);
 	void processExiting();
 
 	virtual ~CPlayerLevel();

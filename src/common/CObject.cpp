@@ -55,8 +55,9 @@ m_invincible(false)
 	touchPlayer = touchedBy = 0;
 	cansupportplayer = false;
 	dying = false;
-	m_ActionOffset = 0x0;
+	m_ActionBaseOffset = 0x0;
 	m_direction = NONE;
+	m_ActionTicker = 0;
 
 	if(m_type != OBJ_NONE )
 	{
@@ -1095,20 +1096,34 @@ int16_t CObject::getActionNumber(int16_t ActionNumber)
 {	return (m_ActionNumber==ActionNumber);	}
 
 
+void CObject::setActionForce(size_t ActionNumber)
+{
+	m_ActionNumber = ActionNumber;
+	m_Action.setActionFormat(m_ActionBaseOffset + 30*m_ActionNumber);
+}
+
 void CObject::setAction(size_t ActionNumber)
 {
-	if( m_ActionNumber == ActionNumber ) return;
-	m_Action.setActionFormat(m_ActionOffset, ActionNumber);
-	m_ActionNumber = ActionNumber;
+	if(m_ActionNumber == ActionNumber) return;
+	setActionForce(ActionNumber);
 }
 
 // This new function will setup the sprite based on the Action format
-void CObject::setSpritefromAction()
+void CObject::processActionRoutine()
 {
 	if(m_direction == LEFT)
 		sprite = m_Action.Left_sprite-124;
 	else if(m_direction == RIGHT)
 		sprite = m_Action.Right_sprite-124;
+
+	if( m_ActionTicker > m_Action.Delay )
+	{
+		if( m_Action.Delay != 0 && m_Action.Next_action != 0 )
+			m_Action.setNextActionFormat();
+		m_ActionTicker = 0;
+	}
+	else
+		m_ActionTicker++;
 }
 
 ////
