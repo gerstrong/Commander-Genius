@@ -438,15 +438,15 @@ void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 
 	if( m_Background )
 	{
-	for(Uint32 y=0;y<num_h_tiles;y++)
-	{
-		Uint32 bg = m_Plane[0].getMapDataAt(mpx, y+m_mapy);
-		Uint32 fg = m_Plane[1].getMapDataAt(mpx, y+m_mapy);
+		for(Uint32 y=0;y<num_h_tiles;y++)
+		{
+			Uint32 bg = m_Plane[0].getMapDataAt(mpx, y+m_mapy);
+			Uint32 fg = m_Plane[1].getMapDataAt(mpx, y+m_mapy);
 
-		m_Tilemaps.at(0).drawTile(mp_scrollsurface, x, ((y<<4)+m_mapystripepos)&511, bg);
-		if(fg)
-			m_Tilemaps.at(1).drawTile(mp_scrollsurface, x, ((y<<4)+m_mapystripepos)&511, fg);
-	}
+			m_Tilemaps.at(0).drawTile(mp_scrollsurface, x, ((y<<4)+m_mapystripepos)&511, bg);
+			if(fg)
+				m_Tilemaps.at(1).drawTile(mp_scrollsurface, x, ((y<<4)+m_mapystripepos)&511, fg);
+		}
 	}
 	else
 	{
@@ -480,7 +480,7 @@ void CMap::drawMaskedTiles()
 		for( size_t x=x1 ; x<=x2 ; x++)
 		{
 			Uint16 fg = m_Plane[1].getMapDataAt(x,y);
-			if(TileProperties[fg].behaviour == -1 || TileProperties[fg].behaviour == -2 )
+			if(TileProperties[fg].behaviour == -1 || TileProperties[fg].behaviour == -2  )
 			{
 				const Uint16 loc_x = (x<<TILE_S)-m_scrollx;
 				const Uint16 loc_y = (y<<TILE_S)-m_scrolly;
@@ -491,6 +491,13 @@ void CMap::drawMaskedTiles()
     				drawAnimatedTile(surface, loc_x, loc_y, fg+1);
     			else if (TileProperties[fg].behaviour == -1 || completeblock) // case when tile is just foreground
     				drawAnimatedTile(surface, loc_x, loc_y, fg);
+			}
+			else if(m_Background && fg != 0)
+			{
+				const Uint16 loc_x = (x<<TILE_S)-m_scrollx;
+				const Uint16 loc_y = (y<<TILE_S)-m_scrolly;
+				if(TileProperties[fg].behaviour < 0)
+					drawAnimatedTile(surface, loc_x, loc_y, fg);
 			}
 		}
 	}
@@ -530,7 +537,6 @@ void CMap::animateAllTiles()
 
 	if(num_h_tiles+m_mapy >= m_height)
 		num_h_tiles = m_height-m_mapy;
-
 
 	if(m_Background)
 	{
@@ -577,7 +583,7 @@ void CMap::animateAllTiles()
 			}
 		}
 	}
-	else
+	/*else
 	{
 		std::vector<CTileProperties> &frontTileProperties =
 				g_pBehaviorEngine->getTileProperties(1);
@@ -606,7 +612,7 @@ void CMap::animateAllTiles()
 				}
 			}
 		}
-	}
+	}*/
 }
 
 CMap::~CMap() {

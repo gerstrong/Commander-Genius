@@ -64,6 +64,8 @@ void CWorldMap::process()
 		(*obj)->draw();
 	}
 
+	// Draw masked tiles here!
+	m_Map.drawMaskedTiles();
 }
 
 

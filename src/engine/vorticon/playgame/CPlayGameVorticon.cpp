@@ -587,6 +587,10 @@ void CPlayGameVorticon::drawObjects()
 
 	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
 	
+	std::vector<CObject*>::iterator it_obj = m_Object.begin();
+	for(; it_obj!=m_Object.end() ; it_obj++)
+		(*it_obj)->draw();
+
 	// We draw the Player as last, because we want to see him in front of the other objects
 	std::vector<CPlayer>::iterator it_player = m_Player.begin();
 	std::vector<CPlayer>::iterator it_end = ( m_Level!=WORLD_MAP_LEVEL) ? m_Player.end() : m_Player.begin()+1;
@@ -596,9 +600,6 @@ void CPlayGameVorticon::drawObjects()
 			it_player->draw();
 	}
 
-	std::vector<CObject*>::iterator it_obj = m_Object.begin();
-	for(; it_obj!=m_Object.end() ; it_obj++)
-		(*it_obj)->draw();
 }
 ////
 // Cleanup Routine
