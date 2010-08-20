@@ -159,10 +159,15 @@ void CObject::performCollisionsSameBox()
 void CObject::calcBouncingBoxes()
 {
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+
+	const int diff_y = (int)bboxY2-(int)rSprite.m_bboxY2;
+
 	bboxX1 = rSprite.m_bboxX1;
 	bboxX2 = rSprite.m_bboxX2;
 	bboxY1 = rSprite.m_bboxY1;
 	bboxY2 = rSprite.m_bboxY2;
+
+	moveYDir(diff_y);
 }
 
 /*
@@ -1111,10 +1116,13 @@ void CObject::setAction(size_t ActionNumber)
 // This new function will setup the sprite based on the Action format
 void CObject::processActionRoutine()
 {
+
 	if(m_direction == LEFT)
 		sprite = m_Action.Left_sprite-124;
 	else if(m_direction == RIGHT)
 		sprite = m_Action.Right_sprite-124;
+
+	calcBouncingBoxes();
 
 	if( m_ActionTicker > m_Action.Delay )
 	{

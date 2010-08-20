@@ -55,12 +55,6 @@ m_Player(Player)
 
 void CScrub::process()
 {
-	if (state==SCRUB_DEAD)
-	{
-		hasbeenonscreen = 0;
-		return;
-	}
-
 	// after kicking a player, wait until he falls beneath the scrub
 	// before turning cansupportplayer back on...just in case we check
 	// for some other things to (when he stops falling, or if he jumps)

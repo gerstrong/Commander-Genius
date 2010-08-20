@@ -175,6 +175,7 @@ protected:
 
 	static int m_number_of_objects;
 
+	// Action Format related stuff
 	ActionFormatType m_Action;
 };
 
