@@ -487,9 +487,11 @@ void CMap::drawMaskedTiles()
 
     			bool completeblock = TileProperties[fg].bleft && TileProperties[fg].bright &&
     					TileProperties[fg].bup && TileProperties[fg].bdown;
-    			if(TileProperties[fg].behaviour == -2) // case when when has a masked graphic
+    			/*if(TileProperties[fg].behaviour == -2) // case when when has a masked graphic
     				drawAnimatedTile(surface, loc_x, loc_y, fg+1);
     			else if (TileProperties[fg].behaviour == -1 || completeblock) // case when tile is just foreground
+    				drawAnimatedTile(surface, loc_x, loc_y, fg);*/
+    			if (TileProperties[fg].behaviour < 0 || completeblock) // case when tile is just foreground
     				drawAnimatedTile(surface, loc_x, loc_y, fg);
 			}
 			else if(m_Background && fg != 0)
@@ -538,14 +540,15 @@ void CMap::animateAllTiles()
 	if(num_h_tiles+m_mapy >= m_height)
 		num_h_tiles = m_height-m_mapy;
 
+	std::vector<CTileProperties> &frontTileProperties =
+			g_pBehaviorEngine->getTileProperties(1);
+	word *p_front_tile = m_Plane[1].getMapDataPtr();
+
 	if(m_Background)
 	{
 		std::vector<CTileProperties> &backTileProperties =
 				g_pBehaviorEngine->getTileProperties(0);
-		std::vector<CTileProperties> &frontTileProperties =
-				g_pBehaviorEngine->getTileProperties(1);
 		word *p_back_tile = m_Plane[0].getMapDataPtr();
-		word *p_front_tile = m_Plane[1].getMapDataPtr();
 		for( size_t y=0 ; y<m_height ; y++)
 		{
 			for( size_t x=0 ; x<m_width ; x++)
@@ -583,11 +586,8 @@ void CMap::animateAllTiles()
 			}
 		}
 	}
-	/*else
+	else
 	{
-		std::vector<CTileProperties> &frontTileProperties =
-				g_pBehaviorEngine->getTileProperties(1);
-		word *p_front_tile = m_Plane[1].getMapDataPtr();
 		for( size_t y=0 ; y<m_height ; y++)
 		{
 			for( size_t x=0 ; x<m_width ; x++)
@@ -612,11 +612,7 @@ void CMap::animateAllTiles()
 				}
 			}
 		}
-	}*/
+	}
 }
-
-CMap::~CMap() {
-}
-
 
 
