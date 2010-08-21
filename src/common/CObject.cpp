@@ -309,7 +309,7 @@ bool CObject::calcVisibility()
 	if(m_type == OBJ_PLATFORM || m_type == OBJ_PLATVERT) return true;
 
 	// Also  Bullets
-	if(m_type == OBJ_SNDWAVE || m_type == OBJ_RAY || m_type == OBJ_FIREBALL) return true;
+	//if(m_type == OBJ_SNDWAVE || m_type == OBJ_RAY || m_type == OBJ_FIREBALL) return true;
 
 	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
 
@@ -320,7 +320,13 @@ bool CObject::calcVisibility()
 							(mp_Map->m_scrolly<<STC)-(visibility<<CSF);
 	Uint32 down = ((mp_Map->m_scrolly+gameres.h)<<STC)+(visibility<<CSF);
 
-	return ( right > x && left < x && down > y && up < y );
+	bool inscreen = ( right > x && left < x && down > y && up < y );
+
+	if(m_type == OBJ_SNDWAVE || m_type == OBJ_RAY || m_type == OBJ_FIREBALL)
+		if(!inscreen)
+			exists=false;
+
+	return inscreen;
 }
 
 /**
