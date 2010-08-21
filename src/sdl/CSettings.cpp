@@ -53,6 +53,7 @@ bool CSettings::saveDrvCfg()
 	Configuration.WriteInt("Video", "filter", g_pVideoDriver->getFiltermode());
 	Configuration.SetKeyword("Video", "specialfx", g_pVideoDriver->getSpecialFXConfig());
 	Configuration.WriteInt("Video", "autoframeskip", g_pTimer->getFrameRate());
+	Configuration.WriteInt("Video", "showfps", g_pVideoDriver->showfps);
 	
 	st_camera_bounds &CameraBounds = g_pVideoDriver->getCameraBounds();
 	Configuration.WriteInt("Bound", "left", CameraBounds.left);
@@ -112,6 +113,8 @@ bool CSettings::loadDrvCfg()
 		bool special_fx;
 		Configuration.ReadKeyword("Video", "specialfx", &special_fx, true);
 		g_pVideoDriver->setSpecialFXMode(special_fx);
+
+		Configuration.ReadKeyword("Video", "showfps", &g_pVideoDriver->showfps, false);
 
 		int framerate;
 		Configuration.ReadInteger("Video", "autoframeskip", &framerate, 60);

@@ -105,7 +105,6 @@ public:
 	st_resolution getResolution(){ return *m_Resolution_pos; }
 	st_resolution setResolution(int value);
 
-	void showFPS(bool value);
 	void initResolutionList();
 
 	void setAspectCorrection(bool value) { m_aspect_correction = value; }

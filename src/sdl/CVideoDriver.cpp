@@ -1003,8 +1003,6 @@ void CVideoDriver::saveCameraBounds(const st_camera_bounds &CameraBounds)
 
 short CVideoDriver::getZoomValue(void){ return Zoom; }
 
-void CVideoDriver::showFPS(bool value){ showfps = value; }
-
 void CVideoDriver::isFullscreen(bool value) {
 	Fullscreen = value;
 }

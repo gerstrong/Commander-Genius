@@ -15,6 +15,7 @@
 
 CVideoSettings::CVideoSettings(Uint8 dlg_theme, bool &restartVideo) :
 CBaseMenu(dlg_theme),
+m_showFPS(g_pVideoDriver->showfps),
 m_restartVideo(restartVideo),
 mp_CameraSettings(NULL)
 {
@@ -45,7 +46,7 @@ mp_CameraSettings(NULL)
 	m_SpecialFX = g_pVideoDriver->getSpecialFXConfig();
 	
 	std::string buf;
-	mp_Dialog = new CDialog(29, 10, INPUT_MODE_OPTION, m_dlg_theme);
+	mp_Dialog = new CDialog(29, 11, INPUT_MODE_OPTION, m_dlg_theme);
 	
 	buf = "Resolution: " + itoa(m_Resolution.width) + "x" + itoa(m_Resolution.height) + "x" + itoa(m_Resolution.depth);
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, buf);
@@ -100,7 +101,18 @@ mp_CameraSettings(NULL)
 	mp_Dialog->m_dlgobject.at(6)->m_Option->m_FontMapID = 1;
 	mp_Dialog->setObjectText(6, buf);
 	
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Adjust Camera Bounds");
+	m_showFPS = g_pVideoDriver->showfps;
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "");
+	buf = "Show FPS ";
+	buf += (m_showFPS) ? 28 : 20; //This adds in the switch seen in the options menu, which I think is fitting for any on/off option
+	buf += (m_showFPS) ? 29 : 21;
+	buf += (m_showFPS) ? 30 : 22;
+	buf += (m_showFPS) ? 31 : 23;
+	mp_Dialog->m_dlgobject.at(7)->m_Option->m_FontMapID = 1;
+	mp_Dialog->setObjectText(7, buf);
+
+
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 9, "Adjust Camera Bounds");
 }
 
 void CVideoSettings::processSpecific(){
@@ -264,6 +276,17 @@ void CVideoSettings::processSpecific(){
 			}
 			else if(m_selection == 7)
 			{
+				m_showFPS = !m_showFPS;
+				buf = "Show FPS ";
+				buf += (m_showFPS) ? 28 : 20;
+				buf += (m_showFPS) ? 29 : 21;
+				buf += (m_showFPS) ? 30 : 22;
+				buf += (m_showFPS) ? 31 : 23;
+				mp_Dialog->m_dlgobject.at(7)->m_Option->m_FontMapID = 1;
+				mp_Dialog->setObjectText(7, buf);
+			}
+			else if(m_selection == 8)
+			{
 				mp_CameraSettings = new CCameraSettings(m_dlg_theme);
 				m_suspended = true;
 			}
@@ -328,8 +351,4 @@ void CVideoSettings::setValues(int item, int value)
 			case 12: m_Autoframeskip = 120; break;
 		}
 	}
-}
-
-CVideoSettings::~CVideoSettings() {
-	//CBaseMenu::~CBaseMenu()
 }

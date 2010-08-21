@@ -20,12 +20,12 @@ public:
 	CVideoSettings(Uint8 dlg_theme, bool &restartVideo);
 	void processSpecific();
 	void setValues(int item, int value);
-	virtual ~CVideoSettings();
 
 private:
 	int m_Zoom, m_ScaleXFilter, m_OGL_filter, m_Autoframeskip;
 	int m_current; //used to show what is currently selected without actually changing the value
 	bool m_SpecialFX;
+	bool &m_showFPS;
 	bool m_FSmode, m_Opengl, m_changed;
 	st_resolution m_Resolution;
 	std::string m_usedSoftwareVideoDriver;
