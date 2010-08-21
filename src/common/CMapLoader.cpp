@@ -287,7 +287,7 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode, int level)
 {
 	mp_map->m_objectlayer[x][y] = t;
-	
+
 	if (t)
 	{
 		if (t==255) // The player in the level!

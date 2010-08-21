@@ -307,7 +307,7 @@ void CPlayGameVorticon::process()
 		// Draw masked tiles here!
 		m_Map.drawMaskedTiles();
 
-		if(mp_option[OPT_HUD].value)
+		if(mp_option[OPT_HUD].value && !mp_Finale)
 		{	// Draw the HUD
 			mp_HUD->render();
 		}
@@ -343,12 +343,15 @@ void CPlayGameVorticon::process()
 
 		if (g_pVideoDriver->showfps)
 		{
-#ifdef DEBUG
 			SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
-			std::string tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec()) +
-					"; x = " + itoa(m_Player[0].getXPosition()) + " ; y = " + itoa(m_Player[0].getYPosition());
-			g_pGfxEngine->getFont(0).drawFont(sfc,tempbuf,320-(tempbuf.size()<<3)-1, true);
+			std::string tempbuf;
+#ifdef DEBUG
+			tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec()) +
+								"; x = " + itoa(m_Player[0].getXPosition()) + " ; y = " + itoa(m_Player[0].getYPosition());
+#else
+			tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec());
 #endif
+			g_pGfxEngine->getFont(0).drawFont(sfc,tempbuf,320-(tempbuf.size()<<3)-1, true);
 
 		}
 

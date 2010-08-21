@@ -143,15 +143,7 @@ void CPlayer::kill(bool force)
 {
 	if(!force) // force can happens for example, when player leaves the map to the most lower-side
 	{
-		if (godmode || ankhtime) return;
-		if (pfrozentime)
-		{
-			if( pfrozentime > PFROZEN_THAW )
-				pfrozentime = PFROZEN_THAW;
-
-			if(g_pBehaviorEngine->getEpisode() == 1)
-				return;
-		}
+		if (godmode || ankhtime || level_done) return;
 	}
 
 	if (!pdie)
@@ -596,7 +588,7 @@ void CPlayer::JumpAndPogo()
     {
     	if(playcontrol[PA_X] < 0) xinertia-=4;
     	if(playcontrol[PA_X] > 0) xinertia+=4;
-    	if(g_pInput->getHoldedCommand(0, IC_JUMP) && !blockedu)
+    	if(playcontrol[PA_JUMP] && !blockedu)
     		moveUp(PPOGOUP_SPEED);
     }
 
@@ -923,5 +915,16 @@ int CPlayer::pollLevelTrigger()
 
 void CPlayer::getShotByRay()
 {
-	kill();
+	if (pfrozentime)
+	{
+		if( pfrozentime > PFROZEN_THAW )
+			pfrozentime = PFROZEN_THAW;
+
+		if(g_pBehaviorEngine->getEpisode() == 1)
+			return;
+	}
+	else
+	{
+		kill();
+	}
 }

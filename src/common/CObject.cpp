@@ -65,7 +65,6 @@ m_invincible(false)
 
 		performCollisions();
 	}
-
 }
 
 void CObject::setupObjectType(int Episode)
@@ -160,7 +159,7 @@ void CObject::calcBouncingBoxes()
 {
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 
-	const int diff_y = (int)bboxY2-(int)rSprite.m_bboxY2;
+	const int diff_y =  bboxY2==0 ? 0 :(int)bboxY2-(int)rSprite.m_bboxY2;
 
 	bboxX1 = rSprite.m_bboxX1;
 	bboxX2 = rSprite.m_bboxX2;
