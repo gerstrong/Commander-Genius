@@ -222,9 +222,4 @@ void CPassiveVort::cleanup()
 	SAFE_DELETE(mp_Map);
 }
 
-CPassiveVort::~CPassiveVort()
-{
-	// TODO Auto-generated destructor stub
-}
-
 }

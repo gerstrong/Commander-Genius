@@ -25,8 +25,6 @@ public:
 
 	void cleanup();
 
-	virtual ~CPassiveVort();
-
 private:
 	CIntro *mp_IntroScreen;
 	CTitle *mp_TitleScreen;
