@@ -254,7 +254,6 @@ void getSlopePointsLowerTile(char slope, int &yb1, int &yb2)
 		yb1 = 0, yb2 = 0;
 }
 
-
 void CObject::pushOutofSolidTiles()
 {
 	if(onslope)
@@ -322,11 +321,7 @@ bool CObject::calcVisibility()
 							(mp_Map->m_scrolly<<STC)-(visibility<<CSF);
 	Uint32 down = ((mp_Map->m_scrolly+gameres.h)<<STC)+(visibility<<CSF);
 
-	if( right > x && left < x )
-		if( down > y && up < y )
-			return true;
-
-	return false;
+	return ( right > x && left < x && down > y && up < y );
 }
 
 /**

@@ -69,11 +69,6 @@ void CPlayerLevel::process()
 			setAction(A_KEEN_STAND);
 	}
 
-	//printf("Action = %d\n", getActionNumber() );
-	//printf("xinertia = %d\n", xinertia );
-	printf("blocked (u,d,l,r) = (%d,%d,%d,%d)\n", blockedu, blockedd, blockedl, blockedr );
-	printf("slope = %d\n", onslope );
-
 	processFalling();
 
 	processExiting();
