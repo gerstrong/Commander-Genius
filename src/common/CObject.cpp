@@ -219,8 +219,9 @@ void CObject::performCollisionOnSlopedTiles()
 	{
 		blockedr = blockedl = false;
 
-		blockedr = checkSolidR(x+bboxX2, y+bboxY1, getYMidPos());
-		blockedl = checkSolidL(x+bboxX1, y+bboxY1, getYMidPos());
+		//blockedr = checkSolidR(x+bboxX2, y+bboxY1, getYMidPos());
+		//blockedl = checkSolidL(x+bboxX1, y+bboxY1, getYMidPos());
+		pushOutofSolidTiles();
 	}
 }
 
@@ -266,22 +267,14 @@ void CObject::pushOutofSolidTiles()
 		// Now, if Keen is standing in a sloped tile, try to push him out
 		if(slope)
 		{
-			//if(checkslopedD(px, py, slope))
-			{
-				int yb1, yb2;
+			int yb1, yb2;
+			getSlopePointsLowerTile(slope, yb1, yb2);
+			const int dy = ((yb2-yb1)*(px%512))/512;
+			const int yh = yb1 + dy;
 
-				getSlopePointsLowerTile(slope, yb1, yb2);
-
-				int dy = ((yb2-yb1)*(px%512))/512;
-				int yh = yb1 + dy;
-
-				if( py%512 > yh )
-				{
-					moveUp((py%512) - yh);
-				}
-			}
+			if( py%512 > yh )
+				y -= ((py%512) - yh);
 		}
-		printf("y = %d\n", y);
 	}
 }
 
@@ -371,11 +364,11 @@ bool CObject::checkforScenario()
 void CObject::moveSlopedTiles( int x, int y1, int y2, int xspeed )
 {
 	// process the sloped tiles here. Galaxy only or special patch!!
-	/*if(g_pBehaviorEngine->getEpisode() > 3)
+	if(g_pBehaviorEngine->getEpisode() > 3)
 	{
 		if(!moveSlopedTileDown(x, y2, xspeed))
 			moveSlopedTileUp(x, y1, xspeed);
-	}*/
+	}
 }
 
 
@@ -423,8 +416,8 @@ bool CObject::moveSlopedTileDown( int x, int y, int xspeed )
 			{
 				new_y = (new_y>>CSF)<<CSF;
 				dy = this->y - (new_y+yb2);
-				moveYDir( dy );
-				moveXDir( dy );
+				moveUp( dy );
+				moveRight( dy );
 
 			}
 			else // In the Tile itself or walking into...
@@ -440,7 +433,7 @@ bool CObject::moveSlopedTileDown( int x, int y, int xspeed )
 				new_y = (new_y>>CSF)<<CSF;
 				dy = (new_y+yb1) - this->y;
 				moveYDir( dy );
-				moveXDir( dy );
+				moveLeft( dy );
 			}
 			else // In the Tile itself or walking into...
 			{
@@ -1132,8 +1125,11 @@ void CObject::blink(Uint16 frametime)
  * So far only used in Galaxy. Here we performs some stuff for the Action format
  */
 
-int16_t CObject::getActionNumber(int16_t ActionNumber)
+bool CObject::getActionNumber(int16_t ActionNumber)
 {	return (m_ActionNumber==ActionNumber);	}
+
+int16_t CObject::getActionNumber()
+{	return m_ActionNumber;	}
 
 
 void CObject::setActionForce(size_t ActionNumber)
@@ -1157,7 +1153,7 @@ void CObject::processActionRoutine()
 	else if(m_direction == RIGHT)
 		sprite = m_Action.Right_sprite-124;
 
-	//calcBouncingBoxes();
+	calcBouncingBoxes();
 
 	if( m_ActionTicker > m_Action.Delay )
 	{
@@ -1166,7 +1162,7 @@ void CObject::processActionRoutine()
 		m_ActionTicker = 0;
 	}
 	else
-		m_ActionTicker++;
+		m_ActionTicker+=2;
 }
 
 ////

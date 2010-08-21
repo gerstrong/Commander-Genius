@@ -92,10 +92,9 @@ public:
 
 	// This is used for action format only
 	// Hopefully in Vorticons we also can use that structure
-	int16_t m_ActionTicker;
-	int16_t m_ActionNumber;
+	uint16_t m_ActionTicker;
+	uint16_t m_ActionNumber;
 	size_t m_ActionBaseOffset;
-
 
 	void setupObjectType(int Episode);
 	void calcBouncingBoxes();
@@ -158,7 +157,8 @@ public:
 	void kill_intersecting_tile(int mpx, int mpy, CObject &theObject);
 	CMap *getMapPtr() { return mp_Map; }
 
-	int16_t getActionNumber(int16_t ActionNumber);
+	bool getActionNumber(int16_t ActionNumber);
+	int16_t getActionNumber();
 	void setActionForce(size_t ActionNumber);
 	void setAction(size_t ActionNumber);
 	void processActionRoutine();
