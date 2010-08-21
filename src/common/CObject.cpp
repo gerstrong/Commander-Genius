@@ -308,9 +308,6 @@ bool CObject::calcVisibility()
 	// Platform are always active
 	if(m_type == OBJ_PLATFORM || m_type == OBJ_PLATVERT) return true;
 
-	// Also  Bullets
-	//if(m_type == OBJ_SNDWAVE || m_type == OBJ_RAY || m_type == OBJ_FIREBALL) return true;
-
 	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
 
 	Uint32 left = (((mp_Map->m_scrollx<<STC)-(visibility<<CSF))<0) ? 0 :
@@ -322,6 +319,7 @@ bool CObject::calcVisibility()
 
 	bool inscreen = ( right > x && left < x && down > y && up < y );
 
+	// Bullets should disappear when offscreen
 	if(m_type == OBJ_SNDWAVE || m_type == OBJ_RAY || m_type == OBJ_FIREBALL)
 		if(!inscreen)
 			exists=false;

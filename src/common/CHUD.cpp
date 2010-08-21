@@ -7,9 +7,10 @@
 
 #include "CHUD.h"
 #include "CBehaviorEngine.h"
-#include "../sdl/CVideoDriver.h"
-#include "../graphics/CGfxEngine.h"
-#include "../StringUtils.h"
+#include "sdl/CVideoDriver.h"
+#include "sdl/video/colourconvert.h"
+#include "graphics/CGfxEngine.h"
+#include "StringUtils.h"
 
 CHUD::CHUD(unsigned long &score, signed char &lives, unsigned int &charges) :
 m_score(score),
@@ -57,12 +58,37 @@ void CHUD::CreateBackground()
     	const Uint32 amask = 0xFF000000;
     #endif
 
-	mp_Background = SDL_CreateRGBSurface(flags, m_Rect.w, m_Rect.h, depth, rmask, gmask, bmask, amask);
+
+	mp_Background = SDL_CreateRGBSurface( SDL_SWSURFACE | SDL_SRCALPHA, m_Rect.w, m_Rect.h, depth, rmask, gmask, bmask, amask);
 
 	// Draw the background
 	DrawCircle(0, 0, 80);
 	DrawCircle(17, 15, 22);
 	DrawCircle(58, 15, 22);
+
+	SDL_Rect headsrcrect, headdstrect;
+	headsrcrect.x = 0;
+	headsrcrect.y = 0;
+	headdstrect.w = headsrcrect.w = 16;
+	headdstrect.h = headsrcrect.h = 16;
+	headdstrect.x = m_Rect.x;
+	headdstrect.y = m_Rect.y+11;
+	CSprite &KeenHeadSprite = g_pGfxEngine->getSprite(PMAPDOWNFRAME);
+	BlitSurfaceMerge( KeenHeadSprite.getSDLSurface(), &headsrcrect, mp_Background, &headdstrect );
+
+	int sprite=0;
+	size_t Episode = g_pBehaviorEngine->getEpisode();
+	if(Episode == 1) sprite = OBJ_RAY_DEFSPRITE_EP1;
+	else if(Episode == 2) sprite = OBJ_RAY_DEFSPRITE_EP2;
+	else if(Episode == 3) sprite = OBJ_RAY_DEFSPRITE_EP3;
+
+	// Draw the shot
+	CSprite &KeenGunSprite = g_pGfxEngine->getSprite(sprite);
+	headdstrect.w = headsrcrect.w = KeenGunSprite.getWidth();
+	headdstrect.h = headsrcrect.h = KeenGunSprite.getHeight();
+	headdstrect.x = m_Rect.x+45-(headsrcrect.w/2);
+	headdstrect.y = m_Rect.y+19-(headsrcrect.h/2);
+	BlitSurfaceMerge( KeenGunSprite.getSDLSurface(), &headsrcrect, mp_Background, &headdstrect);
 }
 
 void CHUD::DrawCircle(int x, int y, int width)
@@ -127,31 +153,6 @@ void CHUD::render()
 	// Draw the background
 	SDL_BlitSurface( mp_Background, NULL, blitsurface, &m_Rect);
 	
-		// Draw the keen head icon
-	SDL_Rect headsrcrect, headdstrect;
-	headsrcrect.x = 0;
-	headsrcrect.y = 0;
-	headdstrect.w = headsrcrect.w = 16;
-	headdstrect.h = headsrcrect.h = 16;
-	headdstrect.x = m_Rect.x;
-	headdstrect.y = m_Rect.y+13;
-	CSprite &KeenHeadSprite = g_pGfxEngine->getSprite(PMAPDOWNFRAME);
-	SDL_BlitSurface( KeenHeadSprite.getSDLSurface(), &headsrcrect, blitsurface, &headdstrect);
-
-	int sprite=0;
-	size_t Episode = g_pBehaviorEngine->getEpisode();
-	if(Episode == 1) sprite = OBJ_RAY_DEFSPRITE_EP1;
-	else if(Episode == 2) sprite = OBJ_RAY_DEFSPRITE_EP2;
-	else if(Episode == 3) sprite = OBJ_RAY_DEFSPRITE_EP3;
-	
-	// Draw the pistol
-	CSprite &KeenGunSprite = g_pGfxEngine->getSprite(sprite);
-	headdstrect.w = headsrcrect.w = KeenGunSprite.getWidth();
-	headdstrect.h = headsrcrect.h = KeenGunSprite.getHeight();
-	headdstrect.x = m_Rect.x+49-(headsrcrect.w/2);
-	headdstrect.y = m_Rect.y+21-(headsrcrect.h/2);
-	SDL_BlitSurface( KeenGunSprite.getSDLSurface(), &headsrcrect, blitsurface, &headdstrect);
-
 	CFont &Font = g_pGfxEngine->getFont(0);
 	Font.setFGColour(blitsurface->format, 0x000000);
 	// Draw the score

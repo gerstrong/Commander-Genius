@@ -31,14 +31,8 @@ m_Player(Player)
 
 void CPlatform::process()
 {
-	if (g_pBehaviorEngine->getEpisode()==2)
-	{
-		sprite = OBJ_PLATFORM_DEFSPRITE_EP2 + animframe;
-	}
-	else
-	{
-		sprite = OBJ_PLATFORM_DEFSPRITE_EP3 + animframe;
-	}
+	sprite = (g_pBehaviorEngine->getEpisode()==2) ? OBJ_PLATFORM_DEFSPRITE_EP2 : OBJ_PLATFORM_DEFSPRITE_EP3;
+	sprite += animframe;
 
 	if (animtimer > PLATFORM_ANIM_RATE)
 	{

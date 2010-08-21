@@ -39,9 +39,6 @@ mp_HUD(NULL)
 	if(!m_Player.empty())
 		m_Player.clear();
 
-
-	// TODO: Here it should read the savegame stuff
-
 	m_Player.assign(m_NumPlayers, CPlayer(m_Episode, m_Level, m_Difficulty,
 			mp_level_completed, mp_option,
 			m_Object, m_Map));

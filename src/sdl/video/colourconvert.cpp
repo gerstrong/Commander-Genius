@@ -68,3 +68,64 @@ void fadetoColour(Uint32 &m_colour, Uint32 dest_colour, Uint8 speed)
 	m_colour += static_cast<Uint32>(g)<<8;
 	m_colour += static_cast<Uint32>(b);
 }
+
+/**
+ * \brief This function merges every pixel of src to the dst.
+ * 		  I think it is the same as BlitSurface by SDL, but in some
+ * 		  cases that version cannot Apply the Alpha channel.
+ * 		  If someone get's an idea how to get it working, he is welcome
+ * 		  I searched high and low in the SDL documentation and got Lost...
+ * 		  This only does an OR operation on the surface, so be careful!
+ */
+void BlitSurfaceMerge( SDL_Surface *src, SDL_Rect *p_src_rect, SDL_Surface *dst, SDL_Rect *p_dst_rect )
+{
+	SDL_LockSurface(src);
+	SDL_LockSurface(dst);
+
+	SDL_Rect src_rect, dst_rect;
+
+	if(p_src_rect == NULL)
+	{
+		src_rect.x = src_rect.y = 0;
+		src_rect.h = src->h;
+		src_rect.w = src->w;
+	}
+	else
+		src_rect = *p_src_rect;
+
+	if(p_dst_rect == NULL)
+	{
+		dst_rect.x = dst_rect.y = 0;
+		dst_rect.h = dst->h;
+		dst_rect.w = dst->w;
+	}
+	else
+		dst_rect = *p_dst_rect;
+
+
+	// trim clipping rects
+	if( dst->h < dst_rect.y+dst_rect.h  )
+		src_rect.h = dst->h-dst_rect.y;
+
+	if( dst->w < dst_rect.x+dst_rect.w  )
+		src_rect.w = dst->w-dst_rect.x;
+
+	Uint8 *pixel_src;
+	Uint8 *pixel_dst;
+
+	for( size_t y=0 ; y<src_rect.h ; y++ )
+	{
+		pixel_src = (Uint8*)src->pixels + (src_rect.x)*src->format->BytesPerPixel + (src_rect.y+y)*src->pitch;
+		pixel_dst = (Uint8*)dst->pixels + (dst_rect.x)*dst->format->BytesPerPixel + (dst_rect.y+y)*dst->pitch;
+
+		for( size_t x=0 ; x<src_rect.w*dst->format->BytesPerPixel ; x++ )
+		{
+			*pixel_dst |= *pixel_src;
+			pixel_src++;
+			pixel_dst++;
+		}
+	}
+
+	SDL_UnlockSurface(dst);
+	SDL_UnlockSurface(src);
+}
