@@ -10,7 +10,7 @@
 
 // directions for OBJ_EARTHCHUNK
 enum st_ec_direction{
-EC_UPLEFTLEFT,                    // 22 degrees CC of UP/LEFT
+EC_UPLEFTLEFT = 0,                    // 22 degrees CC of UP/LEFT
 EC_UPUPLEFT,                      // 22 degrees C of UP/LEFT
 EC_UP,                            // straight UP
 EC_UPUPRIGHT,                     // 22 degrees CC of UP/RIGHT
@@ -23,10 +23,10 @@ EC_DOWNRIGHTRIGHT,                // 22 degrees C of DOWN/RIGHT
 EC_UPLEFT,
 EC_UPRIGHT,
 EC_DOWNLEFT,
-EC_DOWNRIGHT,
+EC_DOWNRIGHT
 };
 
-#include "../../../common/CObject.h"
+#include "common/CObject.h"
 
 class CEarthChunk : public CObject
 {

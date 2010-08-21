@@ -6,14 +6,15 @@
  */
 
 #include "CTantalusRay.h"
-#include "../../../graphics/effects/CVibrate.h"
-#include "../../../graphics/CGfxEngine.h"
-#include "../../../sdl/sound/CSound.h"
-#include "../../../sdl/CInput.h"
-#include "../../../common/CMapLoader.h"
+#include "graphics/effects/CVibrate.h"
+#include "graphics/CGfxEngine.h"
+#include "sdl/sound/CSound.h"
+#include "sdl/CInput.h"
+#include "common/CMapLoader.h"
 
-#include "../ai/CRay.h"
-#include "../ai/CEarthExplosion.h"
+#include "engine/vorticon/ai/CRay.h"
+#include "engine/vorticon/ai/CEarthExplosion.h"
+#include "engine/vorticon/ai/CEarthChunk.h"
 
 unsigned int rnd(void);
 
@@ -65,7 +66,11 @@ void CTantalusRay::shootray()
 		CMapLoader Maploader(&m_Map);
 		Maploader.load(2,81, m_Map.m_gamepath, false);
 
-		m_vect_obj.clear();
+		while(!m_vect_obj.empty())
+		{
+			delete m_vect_obj.back();
+			m_vect_obj.pop_back();
+		}
 
 		m_Map.drawAll();
 
@@ -108,75 +113,63 @@ void CTantalusRay::explodeEarth()
 	{
 		if (m_step<16)
 		{
-			CObject *newobject = new CEarthExplosion(&m_Map,shot_x+((rnd()%32)<<STC), shot_y+((rnd()%32)<<STC)-(8<<STC));
-			newobject->solid = false;
-			m_vect_obj.push_back(newobject);
+			CEarthExplosion *EarthExplosion;
+			EarthExplosion = new CEarthExplosion(&m_Map,shot_x+((rnd()%32)<<STC), shot_y+((rnd()%32)<<STC)-(8<<STC));
+			EarthExplosion->solid = false;
+			m_vect_obj.push_back(EarthExplosion);
 		}
 
+		CEarthChunk *chunk;
 
-		/*switch(m_step)
+		switch(m_step)
 		{
-		case 0: newobject->spawn(shot_x-(8<<STC), shot_y-(8<<STC), OBJ_EXPLOSION, 2); break;
-		case 1: newobject->spawn(shot_x+(24<<STC), shot_y+(4<<STC), OBJ_EXPLOSION, 2); break;
-		case 2: newobject->spawn(shot_x+(16<<STC), shot_y-(8<<STC), OBJ_EXPLOSION, 2); break;
-		case 3: newobject->spawn(shot_x+(24<<STC), shot_y+(16<<STC), OBJ_EXPLOSION, 2); break;
-		case 4: newobject->spawn(shot_x-(8<<STC), shot_y+(4<<STC), OBJ_EXPLOSION, 2); break;
 		case 5:
-			newobject->spawn(shot_x-(8<<STC), shot_y+(16<<STC), OBJ_EXPLOSION, 2);
-			newobject->solid = false;
-			m_vect_obj.push_back(newobject);
-			// spawn a bunch of small fragments of the earth to go flying off
-
-			// spawn small earth chunks in all possible directions
-			// (upleft/upright/dnleft/dnright)
-			// up/left/down/right
 			for(int i=0;i<=9;i++)
 			{
-				newobject->exists = false;
-				newobject->spawn(shot_x+(14<<STC), shot_y, OBJ_EARTHCHUNK, 2);
-				newobject->ai.ray.direction = i;
+				chunk = new CEarthChunk(&m_Map,shot_x+(14<<STC), shot_y);
+				chunk->m_Direction = EC_UPLEFTLEFT;
+
 				if (i > 4)
-				{
-					newobject->sprite = EARTHCHUNK_SMALL_DN;
-				}
-				else
-				{
-					newobject->sprite = EARTHCHUNK_SMALL_UP;
-				}
-				m_vect_obj.push_back(newobject);
+					chunk->sprite = (i > 4) ? EARTHCHUNK_SMALL_DN : EARTHCHUNK_SMALL_UP;
+				m_vect_obj.push_back(chunk);
 			}
 
 			break;
 		case 6:
-			newobject->spawn(shot_x+(16<<STC), shot_y+(16<<STC), OBJ_EXPLOSION, 2);
+			chunk = new CEarthChunk(&m_Map,shot_x+(16<<STC), shot_y+(16<<STC));
+			m_vect_obj.push_back(chunk);
 			break;
-		case 7: newobject->spawn(shot_x+(24<<STC), shot_y-(8<<STC), OBJ_EXPLOSION, 2); break;
-		case 8: newobject->spawn(shot_x+(16<<STC), shot_y+(4<<STC), OBJ_EXPLOSION, 2); break;
+		case 7:
+			chunk = new CEarthChunk(&m_Map,shot_x+(24<<STC), shot_y-(8<<STC));
+			m_vect_obj.push_back(chunk);
+		case 8:
+			chunk = new CEarthChunk(&m_Map,shot_x+(16<<STC), shot_y+(4<<STC));
+			m_vect_obj.push_back(chunk);
 		case 10:
 			// spawn four big fragments of the earth to go flying off
-			newobject->spawn(shot_x+(8<<STC), shot_y, OBJ_EARTHCHUNK, 2);
-			newobject->sprite = EARTHCHUNK_BIG_UP;
-			newobject->ai.ray.direction = EC_UPLEFT;
-			newobject->solid = false;
-			m_vect_obj.push_back(newobject);
-			newobject->exists = false;
-			newobject->spawn(shot_x+(8<<STC), shot_y, OBJ_EARTHCHUNK, 2);
-			newobject->sprite = EARTHCHUNK_BIG_UP;
-			newobject->ai.ray.direction = EC_UPRIGHT;
-			newobject->solid = false;
-			m_vect_obj.push_back(newobject);
-			newobject->exists = false;
-			newobject->spawn(shot_x+(8<<STC), shot_y, OBJ_EARTHCHUNK, 2);
-			newobject->sprite = EARTHCHUNK_BIG_DN;
-			newobject->ai.ray.direction = EC_DOWNRIGHT;
-			newobject->solid = false;
-			m_vect_obj.push_back(newobject);
-			newobject->exists = false;
-			newobject->spawn(shot_x+(8<<STC), shot_y, OBJ_EARTHCHUNK, 2);
-			newobject->sprite = EARTHCHUNK_BIG_DN;
-			newobject->ai.ray.direction = EC_DOWNLEFT;
-			newobject->solid = false;
-			m_vect_obj.push_back(newobject);
+			chunk = new CEarthChunk(&m_Map,shot_x+(8<<STC), shot_y);
+			chunk->m_Direction = EC_UPLEFT;
+			chunk->sprite = EARTHCHUNK_BIG_UP;
+			chunk->solid = false;
+			m_vect_obj.push_back(chunk);
+
+			chunk = new CEarthChunk(&m_Map,shot_x+(8<<STC), shot_y);
+			chunk->m_Direction = EC_UPRIGHT;
+			chunk->sprite = EARTHCHUNK_BIG_UP;
+			chunk->solid = false;
+			m_vect_obj.push_back(chunk);
+
+			chunk = new CEarthChunk(&m_Map,shot_x+(8<<STC), shot_y);
+			chunk->m_Direction = EC_DOWNRIGHT;
+			chunk->sprite = EARTHCHUNK_BIG_DN;
+			chunk->solid = false;
+			m_vect_obj.push_back(chunk);
+
+			chunk = new CEarthChunk(&m_Map,shot_x+(8<<STC), shot_y);
+			chunk->m_Direction = EC_DOWNLEFT;
+			chunk->sprite = EARTHCHUNK_BIG_DN;
+			chunk->solid = false;
+			m_vect_obj.push_back(chunk);
 
 			// Hide the Earth!!!
 			for(int ex = 0; ex<3 ; ex++)
@@ -184,29 +177,20 @@ void CTantalusRay::explodeEarth()
 					m_Map.changeTile((shot_x>>CSF)+ex, (shot_y>>CSF)+ey, 561);
 			break;
 		case 32:
-			while(m_vect_obj.size() > 4)
+			while(!m_vect_obj.empty())
+			{
+				delete m_vect_obj.back();
 				m_vect_obj.pop_back();
-			// TODO: Put Game-Over Bitmap here!
+			}
 			m_mustfinishgame = true;
 			break;
 		}
 
-		if( (m_step >= 1 && m_step <=8)  )
-		{
-			newobject->solid = false;
-			m_vect_obj.push_back(newobject);
-		}*/
-
 		m_step++;
-		m_timer = 15;
+		m_timer = 5;
 	}
 	else m_timer--;
 
 	m_objectai.process();
-}
-
-CTantalusRay::~CTantalusRay()
-{
-	// TODO Auto-generated destructor stub
 }
 

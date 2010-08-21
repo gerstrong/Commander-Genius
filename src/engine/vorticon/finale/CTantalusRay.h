@@ -26,8 +26,6 @@ public:
 	void shootray();
 	void explodeEarth();
 
-	virtual ~CTantalusRay();
-
 private:
 	bool m_mustsetup;
 	int m_alternate_sprite;
