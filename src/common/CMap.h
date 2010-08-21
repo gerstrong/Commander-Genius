@@ -59,6 +59,7 @@ public:
 	bool setTile(Uint16 x, Uint16 y, Uint16 t, Uint16 plane=1);
 	bool setTile(Uint16 x, Uint16 y, Uint16 t, bool update, Uint16 plane=1);
 	bool changeTile(Uint16 x, Uint16 y, Uint16 t);
+	void changeTileArrayY(Uint16 x, Uint16 y, Uint16 h, Uint16 tile);
 
 	// Animation methods
 	Uint8 getAnimtiletimer();

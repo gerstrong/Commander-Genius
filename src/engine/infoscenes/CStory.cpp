@@ -93,9 +93,6 @@ void CStory::process() {
 	// Animate the tiles
 	mp_Map->animateAllTiles();
 	
-	// Blit the background
-	//g_pVideoDriver->blitScrollSurface();
-	
 	mp_TextViewer->process();
 	
 	if(mp_TextViewer->hasClosed())

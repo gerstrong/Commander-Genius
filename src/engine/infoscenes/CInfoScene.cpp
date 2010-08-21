@@ -10,6 +10,3 @@
 CInfoScene::CInfoScene() :
 m_destroy_me(false)
 { }
-
-CInfoScene::~CInfoScene()
-{}

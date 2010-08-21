@@ -13,7 +13,6 @@
 class CIntro {
 public:
 	CIntro();
-	virtual ~CIntro();
 	
 	void init();
 	

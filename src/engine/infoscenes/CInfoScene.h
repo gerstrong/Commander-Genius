@@ -14,11 +14,9 @@ class CInfoScene {
 public:
 	CInfoScene();
 
-	virtual void process() {};
+	virtual void process() = 0;
 
 	bool destroyed() { return m_destroy_me; }
-
-	virtual ~CInfoScene();
 
 protected:
 	bool m_destroy_me;

@@ -194,6 +194,22 @@ bool CMap::changeTile(Uint16 x, Uint16 y, Uint16 t)
 	return false;
 }
 
+
+/**
+ * \brief here we removed some unwanted borders in Y-direction in case of getting them when using a
+ * 		  higher screenspace in Y-direction, than the original used to..
+ */
+void CMap::changeTileArrayY(Uint16 x, Uint16 y, Uint16 h, Uint16 tile)
+{
+	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
+	const Uint16 x2 = x+gameres.w/16;
+	const Uint16 y2 = y+h;
+
+	for(Uint16 c_y=y ; c_y<y2 ; c_y++)
+		for(Uint16 c_x=x ; c_x<x2 ; c_x++)
+			changeTile(c_x, c_y, tile);
+}
+
 ////
 // Scrolling Routines
 ////
@@ -388,14 +404,7 @@ void CMap::drawAll()
 			for(Uint32 x=0;x<num_v_tiles;x++)
 			{
 				Uint32 fg = m_Plane[1].getMapDataAt(x+m_mapx, y+m_mapy);
-				std::vector<CTileProperties> &TileProperties =
-						g_pBehaviorEngine->getTileProperties(1);
-
-				bool completeblock = TileProperties[fg].bleft && TileProperties[fg].bright &&
-									 TileProperties[fg].bup && TileProperties[fg].bdown;
-
-				if(!completeblock)
-					m_Tilemaps.at(1).drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511,((y<<4)+m_mapystripepos)&511, fg);
+				m_Tilemaps.at(1).drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511,((y<<4)+m_mapystripepos)&511, fg);
 			}
 		}
 	}

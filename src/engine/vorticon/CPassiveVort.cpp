@@ -47,6 +47,7 @@ bool CPassiveVort::init(char mode)
 		mp_Map->gotoPos( 64+5*320, 32); // Coordinates of star sky
 		mp_Map->drawAll();
 		mp_IntroScreen->init();
+		mp_Map->changeTileArrayY(8, 15, 2, 560);
 	}
 	else if( m_mode == TITLE )
 	{
@@ -54,15 +55,14 @@ bool CPassiveVort::init(char mode)
 		mp_Map->setScrollSurface(mp_Scrollsurface);
 		CMapLoader MapLoader( mp_Map );
 		MapLoader.load( m_Episode, 90, m_DataDirectory);
-		SDL_Rect gamerect = g_pVideoDriver->getGameResolution();
-		mp_Map->gotoPos( 32, /*(gamerect.h<240) ? */32/* : 0*/); // Coordinates of title screen
+		mp_Map->gotoPos( 32, 32 ); // Coordinates of title screen
 		mp_Map->drawAll();
 		mp_TitleScreen = new CTitle(m_object, *mp_Map);
 		mp_TitleScreen->init(m_Episode);
 	}
 	else if( m_mode == DEMO )
 	{
-		// Setup the demo environment
+		// TODO: Setup the demo environment
 	}
 	else
 		return false;
@@ -159,10 +159,10 @@ void CPassiveVort::process()
 
 	// Blit the background
 	g_pVideoDriver->blitScrollSurface();
-	mp_Map->drawSolidTiles();
 
 	if(!m_hideobjects)
 	{
+		mp_Map->drawSolidTiles();
 		// Make the Objects do its jobs
 		std::vector<CObject*>::iterator i;
 		for( i=m_object.begin() ; i!=m_object.end() ; i++ )

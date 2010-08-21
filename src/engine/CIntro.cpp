@@ -75,6 +75,3 @@ void CIntro::process()
 	}
 }
 
-CIntro::~CIntro() {
-}
-
