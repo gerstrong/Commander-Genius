@@ -76,8 +76,8 @@ void CPlayer::processInLevel()
 		JumpAndPogo();
 
 		// Check collision with other objects
-		checkObjSolid();
 		performCollisions();
+		checkObjSolid();
 		if(!inhibitfall) Playerfalling();
 	}
 }

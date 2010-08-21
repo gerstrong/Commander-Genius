@@ -805,12 +805,6 @@ bool CPlayer::checkObjSolid()
 {
 	supportedbyobject = false;
 
-	// This code prevents Keen getting stuck in the air when a supported object leaves him
-	if(getYDownPos()+1 == (((getYDownPos()+1)>>CSF)<<CSF))
-		blockedd = checkSolidD(getXLeftPos(), getXRightPos(), getYDownPos()+1);
-	else
-		blockedd = false;
-
 	std::vector<CObject*>::iterator it_obj = mp_object->begin();
 	for( ; it_obj != mp_object->end() ; it_obj++ )
 	{
@@ -832,7 +826,6 @@ bool CPlayer::checkObjSolid()
 						getYDownPos() <= (*it_obj)->getYMidPos() )
 				{	// In this case stand on the object
 					pfalling = false;
-					blockedd = true;
 					if(pjumping == PJUMPLAND)
 						pjumping = PNOJUMP;
 					supportedbyobject = true;
@@ -840,6 +833,7 @@ bool CPlayer::checkObjSolid()
 					int dy = (*it_obj)->getYUpPos() - getYDownPos()+1;
 					if(pjumping == PNOJUMP)
 						moveYDir(dy);
+					blockedd = true;
 					break;
 				}
 			}
