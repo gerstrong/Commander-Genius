@@ -33,8 +33,6 @@ void CRope::process()
 			rope_movestone();
 			g_pGfxEngine->pushEffectPtr(new CVibrate(400));
 
-			//theObject.blockedd = false;
-
 			// check if we've hit the ground yet
 			for(int x=2;x<STONE_WIDTH-2;x++)
 			{
@@ -87,9 +85,6 @@ void CRope::rope_movestone()
 		for(int x=0;x<STONE_WIDTH;x++)
 		{
 			mp_Map->setTile(x+xa,y+ya, mp_Map->at(x+xa, y+ya-1), true);
-
-			// if the stone hits any enemies, kill them
-			//kill_intersecting_tile(x+xa, y+ya, theObject);
 		}
 	}
 
@@ -104,10 +99,8 @@ void CRope::getTouchedBy(CObject &theObject)
 {
 	if(state == ROPE_DROPSTONE && m_type==OBJ_ROPE)
 	{
-		int xa,ya;
-
-		xa = stoneX;
-		ya = stoneY;
+		const int xa = stoneX;
+		const int ya = stoneY;
 
 		// move the stone down one space and kill anything in it's path!
 		for(int y=STONE_HEIGHT;y>0;y--)

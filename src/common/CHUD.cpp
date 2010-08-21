@@ -146,14 +146,11 @@ void CHUD::render()
 	
 	// Draw the pistol
 	CSprite &KeenGunSprite = g_pGfxEngine->getSprite(sprite);
-	//headsrcrect.x = 0;
-	//headsrcrect.y = 0;
 	headdstrect.w = headsrcrect.w = KeenGunSprite.getWidth();
 	headdstrect.h = headsrcrect.h = KeenGunSprite.getHeight();
 	headdstrect.x = m_Rect.x+49-(headsrcrect.w/2);
 	headdstrect.y = m_Rect.y+21-(headsrcrect.h/2);
 	SDL_BlitSurface( KeenGunSprite.getSDLSurface(), &headsrcrect, blitsurface, &headdstrect);
-	SDL_BlitSurface( KeenGunSprite.getSDLSurface(), &headsrcrect, blitsurface, &headdstrect); //Display it twice otherwise it is translucent which can be hard to see.
 
 	CFont &Font = g_pGfxEngine->getFont(0);
 	Font.setFGColour(blitsurface->format, 0x000000);

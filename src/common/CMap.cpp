@@ -480,24 +480,19 @@ void CMap::drawMaskedTiles()
 		for( size_t x=x1 ; x<=x2 ; x++)
 		{
 			Uint16 fg = m_Plane[1].getMapDataAt(x,y);
-			if(TileProperties[fg].behaviour == -1 || TileProperties[fg].behaviour == -2  )
-			{
-				const Uint16 loc_x = (x<<TILE_S)-m_scrollx;
-				const Uint16 loc_y = (y<<TILE_S)-m_scrolly;
 
-    			bool completeblock = TileProperties[fg].bleft && TileProperties[fg].bright &&
-    					TileProperties[fg].bup && TileProperties[fg].bdown;
-    			/*if(TileProperties[fg].behaviour == -2) // case when when has a masked graphic
+			const Uint16 loc_x = (x<<TILE_S)-m_scrollx;
+			const Uint16 loc_y = (y<<TILE_S)-m_scrolly;
+
+			if(!m_Background)
+			{
+    			if(TileProperties[fg].behaviour == -2) // case when when has a masked graphic
     				drawAnimatedTile(surface, loc_x, loc_y, fg+1);
-    			else if (TileProperties[fg].behaviour == -1 || completeblock) // case when tile is just foreground
-    				drawAnimatedTile(surface, loc_x, loc_y, fg);*/
-    			if (TileProperties[fg].behaviour < 0 || completeblock) // case when tile is just foreground
+    			else if (TileProperties[fg].behaviour == -1) // case when tile is just foreground
     				drawAnimatedTile(surface, loc_x, loc_y, fg);
 			}
-			else if(m_Background && fg != 0)
+			else if(fg != 0)
 			{
-				const Uint16 loc_x = (x<<TILE_S)-m_scrollx;
-				const Uint16 loc_y = (y<<TILE_S)-m_scrolly;
 				if(TileProperties[fg].behaviour < 0)
 					drawAnimatedTile(surface, loc_x, loc_y, fg);
 			}
