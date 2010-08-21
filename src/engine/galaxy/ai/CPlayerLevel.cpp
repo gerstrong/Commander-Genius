@@ -52,6 +52,7 @@ void CPlayerLevel::process()
 
 	processInput();
 
+	pushOutofSolidTiles();
 	performCollisionsSameBox();
 
 	processMoving();

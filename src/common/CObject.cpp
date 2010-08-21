@@ -224,6 +224,67 @@ void CObject::performCollisionOnSlopedTiles()
 	}
 }
 
+/**
+ * So far only used in Galaxy. This is the code for sloped tiles downside
+ * This is performed when Keen walks into a sloped tile
+ *
+ * 0	Fall through		1	Flat
+ * 2	Top -> Middle		3	Middle -> bottom
+ * 4	Top -> bottom		5	Middle -> top
+ * 6	Bottom -> middle	7	Bottom -> top
+ * 8	Unused			9	Deadly, can't land on in God mode
+ */
+void getSlopePointsLowerTile(char slope, int &yb1, int &yb2)
+{
+	// Calculate the corner y coordinates
+	if( slope == 2 )
+		yb1 = 0,	yb2 = 256;
+	else if( slope == 3 )
+		yb1 = 256,	yb2 = 512;
+	else if( slope == 4 )
+		yb1 = 0,	yb2 = 512;
+	else if( slope == 5 )
+		yb1 = 256,	yb2 = 0;
+	else if( slope == 6 )
+		yb1 = 512,	yb2 = 256;
+	else if( slope == 7 )
+		yb1 = 512,	yb2 = 0;
+	else
+		yb1 = 0, yb2 = 0;
+}
+
+
+void CObject::pushOutofSolidTiles()
+{
+	if(onslope)
+	{
+		const int px= (x+(bboxX1+bboxX2)/2);
+		const int py= (y+bboxY2+1);
+		std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+		const char slope = TileProperty[mp_Map->at(px>>CSF, py>>CSF)].bup;
+
+		// Now, if Keen is standing in a sloped tile, try to push him out
+		if(slope)
+		{
+			//if(checkslopedD(px, py, slope))
+			{
+				int yb1, yb2;
+
+				getSlopePointsLowerTile(slope, yb1, yb2);
+
+				int dy = ((yb2-yb1)*(px%512))/512;
+				int yh = yb1 + dy;
+
+				if( py%512 > yh )
+				{
+					moveUp((py%512) - yh);
+				}
+			}
+		}
+		printf("y = %d\n", y);
+	}
+}
+
 /*
  * \brief This checks the collision. Very simple pixel based algorithm
  * 		  The collision is per pixel-based
@@ -310,41 +371,13 @@ bool CObject::checkforScenario()
 void CObject::moveSlopedTiles( int x, int y1, int y2, int xspeed )
 {
 	// process the sloped tiles here. Galaxy only or special patch!!
-	if(g_pBehaviorEngine->getEpisode() > 3)
+	/*if(g_pBehaviorEngine->getEpisode() > 3)
 	{
 		if(!moveSlopedTileDown(x, y2, xspeed))
 			moveSlopedTileUp(x, y1, xspeed);
-	}
+	}*/
 }
 
-/**
- * So far only used in Galaxy. This is the code for sloped tiles downside
- * This is performed when Keen walks into a sloped tile
- *
- * 0	Fall through		1	Flat
- * 2	Top -> Middle		3	Middle -> bottom
- * 4	Top -> bottom		5	Middle -> top
- * 6	Bottom -> middle	7	Bottom -> top
- * 8	Unused			9	Deadly, can't land on in God mode
- */
-void getSlopePointsLowerTile(char slope, int &yb1, int &yb2)
-{
-	// Calculate the corner y coordinates
-	if( slope == 2 )
-		yb1 = 0,	yb2 = 256;
-	else if( slope == 3 )
-		yb1 = 256,	yb2 = 512;
-	else if( slope == 4 )
-		yb1 = 0,	yb2 = 512;
-	else if( slope == 5 )
-		yb1 = 256,	yb2 = 0;
-	else if( slope == 6 )
-		yb1 = 512,	yb2 = 256;
-	else if( slope == 7 )
-		yb1 = 512,	yb2 = 0;
-	else
-		yb1 = 0, yb2 = 0;
-}
 
 bool CObject::moveSlopedTileDown( int x, int y, int xspeed )
 {
@@ -390,8 +423,9 @@ bool CObject::moveSlopedTileDown( int x, int y, int xspeed )
 			{
 				new_y = (new_y>>CSF)<<CSF;
 				dy = this->y - (new_y+yb2);
-				moveUp( dy );
-				moveRight( dy );
+				moveYDir( dy );
+				moveXDir( dy );
+
 			}
 			else // In the Tile itself or walking into...
 			{
@@ -974,6 +1008,7 @@ bool CObject::checkSolidD( int x1, int x2, int y2 )
 	if(!vorticon && solid)
 	{
 		char blocked;
+
 		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
 		{
 			blocked = TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bup;
@@ -1122,7 +1157,7 @@ void CObject::processActionRoutine()
 	else if(m_direction == RIGHT)
 		sprite = m_Action.Right_sprite-124;
 
-	calcBouncingBoxes();
+	//calcBouncingBoxes();
 
 	if( m_ActionTicker > m_Action.Delay )
 	{
