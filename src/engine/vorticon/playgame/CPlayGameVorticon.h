@@ -62,7 +62,8 @@ public:
 	void YourShipNeedsTheseParts();
 	void ShipEp3();
 	void processObjectsAI();
-	void drawObjects();
+	void drawObjects(bool dead);
+	void drawAllElements();
 	void handleFKeys();
 	void verifyFinales();
 	void collectHighScoreInfo();

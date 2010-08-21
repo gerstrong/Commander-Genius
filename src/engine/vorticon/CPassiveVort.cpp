@@ -159,6 +159,7 @@ void CPassiveVort::process()
 
 	// Blit the background
 	g_pVideoDriver->blitScrollSurface();
+	mp_Map->drawSolidTiles();
 
 	if(!m_hideobjects)
 	{

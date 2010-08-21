@@ -295,22 +295,9 @@ void CPlayGameVorticon::process()
 			processPauseDialogs();
 		}
 
-		// Animate the tiles of the map
-		m_Map.animateAllTiles();
 
-		// Blit the background
-		g_pVideoDriver->blitScrollSurface();
-
-		// Draw objects to the screen
-		drawObjects();
-
-		// Draw masked tiles here!
-		m_Map.drawMaskedTiles();
-
-		if(mp_option[OPT_HUD].value && !mp_Finale)
-		{	// Draw the HUD
-			mp_HUD->render();
-		}
+		// Do the Render Routine here!
+		drawAllElements();
 
 		// Check if we are in gameover mode. If yes, than show the bitmaps and block the FKeys().
 		// Only confirmation button is allowes
@@ -584,7 +571,7 @@ void CPlayGameVorticon::collectHighScoreInfo()
 }
 
 // This function draws the objects that need to be seen on the screen
-void CPlayGameVorticon::drawObjects()
+void CPlayGameVorticon::drawObjects(bool dead)
 {
 	if(m_hideobjects) return;
 
@@ -592,7 +579,12 @@ void CPlayGameVorticon::drawObjects()
 	
 	std::vector<CObject*>::iterator it_obj = m_Object.begin();
 	for(; it_obj!=m_Object.end() ; it_obj++)
-		(*it_obj)->draw();
+	{
+		if((*it_obj)->dead == dead)
+			(*it_obj)->draw();
+	}
+
+	if(dead) return;
 
 	// We draw the Player as last, because we want to see him in front of the other objects
 	std::vector<CPlayer>::iterator it_player = m_Player.begin();
@@ -601,6 +593,33 @@ void CPlayGameVorticon::drawObjects()
 	{
 		if(!it_player->beingteleported)
 			it_player->draw();
+	}
+
+}
+
+void CPlayGameVorticon::drawAllElements()
+{
+	// Animate the tiles of the map
+	m_Map.animateAllTiles();
+
+	// Blit the background
+	g_pVideoDriver->blitScrollSurface();
+
+	// Draw dead objects to the screen
+	drawObjects(true);
+
+	// Draw solid blocks which will cover dead objects
+	m_Map.drawSolidTiles();
+
+	// Draw living objects to the screen and the player of course
+	drawObjects(false);
+
+	// Draw masked tiles here!
+	m_Map.drawForegroundTiles();
+
+	if(mp_option[OPT_HUD].value && !mp_Finale)
+	{	// Draw the HUD
+		mp_HUD->render();
 	}
 
 }

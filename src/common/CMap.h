@@ -48,7 +48,8 @@ public:
 	void drawAll();
 	void drawHstripe( unsigned int y, unsigned int mpy );
 	void drawVstripe( unsigned int x, unsigned int mpx );
-	void drawMaskedTiles();
+	void drawForegroundTiles();
+	void drawSolidTiles();
 
 	Uint16 at(Uint16 x, Uint16 y, Uint16 t=1);
 	Uint16 getObjectat(Uint16 x, Uint16 y);

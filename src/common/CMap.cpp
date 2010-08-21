@@ -388,8 +388,14 @@ void CMap::drawAll()
 			for(Uint32 x=0;x<num_v_tiles;x++)
 			{
 				Uint32 fg = m_Plane[1].getMapDataAt(x+m_mapx, y+m_mapy);
+				std::vector<CTileProperties> &TileProperties =
+						g_pBehaviorEngine->getTileProperties(1);
 
-				m_Tilemaps.at(1).drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511,((y<<4)+m_mapystripepos)&511, fg);
+				bool completeblock = TileProperties[fg].bleft && TileProperties[fg].bright &&
+									 TileProperties[fg].bup && TileProperties[fg].bdown;
+
+				if(!completeblock)
+					m_Tilemaps.at(1).drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511,((y<<4)+m_mapystripepos)&511, fg);
 			}
 		}
 	}
@@ -421,7 +427,14 @@ void CMap::drawHstripe(unsigned int y, unsigned int mpy)
 		for(Uint32 x=0;x<num_v_tiles;x++)
 		{
 			Uint32 fg = m_Plane[1].getMapDataAt(x+m_mapx, mpy);
-			m_Tilemaps.at(1).drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511, y, fg);
+			std::vector<CTileProperties> &TileProperties =
+					g_pBehaviorEngine->getTileProperties(1);
+
+			bool completeblock = TileProperties[fg].bleft && TileProperties[fg].bright &&
+								 TileProperties[fg].bup && TileProperties[fg].bdown;
+
+			if(!completeblock)
+				m_Tilemaps.at(1).drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511, y, fg);
 		}
 	}
 }
@@ -453,8 +466,14 @@ void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 		for(Uint32 y=0;y<num_h_tiles;y++)
 		{
 			Uint32 fg = m_Plane[1].getMapDataAt(mpx, y+m_mapy);
+			std::vector<CTileProperties> &TileProperties =
+					g_pBehaviorEngine->getTileProperties(1);
 
-			m_Tilemaps.at(1).drawTile(mp_scrollsurface, x, ((y<<4)+m_mapystripepos)&511, fg);
+			bool completeblock = TileProperties[fg].bleft && TileProperties[fg].bright &&
+								 TileProperties[fg].bup && TileProperties[fg].bdown;
+
+			if(!completeblock)
+				m_Tilemaps.at(1).drawTile(mp_scrollsurface, x, ((y<<4)+m_mapystripepos)&511, fg);
 		}
 	}
 }
@@ -462,9 +481,8 @@ void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 /**
  * \brief This function draws all the masked and foreground tiles
  */
-void CMap::drawMaskedTiles()
+void CMap::drawForegroundTiles()
 {
-	// Go throught the list and just draw all the tiles that need to be animated
 	SDL_Surface* surface = g_pVideoDriver->getBlitSurface();
 	const Uint16 num_h_tiles = surface->h;
 	const Uint16 num_v_tiles = surface->w;
@@ -500,7 +518,35 @@ void CMap::drawMaskedTiles()
 	}
 }
 
+// draws only the solid blocks. They should be foreground for dead tiles. (Vorticon only!)
+void CMap::drawSolidTiles()
+{
+	SDL_Surface* surface = g_pVideoDriver->getBlitSurface();
+	const Uint16 num_h_tiles = surface->h;
+	const Uint16 num_v_tiles = surface->w;
+	const Uint16 x1 = m_scrollx>>TILE_S;
+	const Uint16 y1 = m_scrolly>>TILE_S;
+	const Uint16 x2 = (m_scrollx+num_v_tiles)>>TILE_S;
+	const Uint16 y2 = (m_scrolly+num_h_tiles)>>TILE_S;
 
+	std::vector<CTileProperties> &TileProperties =
+			g_pBehaviorEngine->getTileProperties(1);
+	for( size_t y=y1 ; y<=y2 ; y++)
+	{
+		for( size_t x=x1 ; x<=x2 ; x++)
+		{
+			const Uint16 fg = m_Plane[1].getMapDataAt(x,y);
+			const Uint16 loc_x = (x<<TILE_S)-m_scrollx;
+			const Uint16 loc_y = (y<<TILE_S)-m_scrolly;
+
+			bool completeblock = TileProperties[fg].bleft && TileProperties[fg].bright &&
+									 TileProperties[fg].bup && TileProperties[fg].bdown;
+
+   			if (completeblock) // case when tile is just foreground
+   				drawAnimatedTile(surface, loc_x, loc_y, fg);
+		}
+	}
+}
 
 /////////////////////////
 // Animation functions //

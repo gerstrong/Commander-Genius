@@ -56,7 +56,7 @@ void CLevelPlay::process()
 	}
 
 	// Draw masked tiles here!
-	m_Map.drawMaskedTiles();
+	m_Map.drawForegroundTiles();
 }
 
 }
