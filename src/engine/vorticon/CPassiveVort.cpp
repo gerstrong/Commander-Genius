@@ -162,7 +162,6 @@ void CPassiveVort::process()
 
 	if(!m_hideobjects)
 	{
-		mp_Map->drawSolidTiles();
 		// Make the Objects do its jobs
 		std::vector<CObject*>::iterator i;
 		for( i=m_object.begin() ; i!=m_object.end() ; i++ )

@@ -57,7 +57,6 @@ void CWorldMap::process()
 	}
 
 	g_pVideoDriver->blitScrollSurface();
-	m_Map.drawSolidTiles();
 
 	for( std::vector<CObject*>::iterator obj=m_ObjectPtr.begin() ;
 			obj!=m_ObjectPtr.end() ; obj++ )

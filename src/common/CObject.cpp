@@ -33,7 +33,6 @@ m_invincible(false)
 	bboxY2 = 0;
 	falling = false;
 	m_number_of_objects++;
-	honorPriority = true;
 	exists = true;
 	solid = true;
 	inhibitfall = false;
@@ -52,6 +51,7 @@ m_invincible(false)
 	dead = false;
 	hasbeenonscreen = false;
 	honorPriority = true;
+	dontdraw = false;
 	touchPlayer = touchedBy = 0;
 	cansupportplayer = false;
 	dying = false;
@@ -63,7 +63,7 @@ m_invincible(false)
 	{
 		setupObjectType(g_pBehaviorEngine->getEpisode());
 
-		performCollisions();
+		performCollisions(true);
 	}
 }
 
@@ -155,7 +155,7 @@ void CObject::performCollisionsSameBox()
 /*
  * \brief Calculate Bouncing Boxes
  */
-void CObject::calcBouncingBoxes()
+void CObject::calcBouncingBoxes(bool firsttime)
 {
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 
@@ -166,7 +166,8 @@ void CObject::calcBouncingBoxes()
 	bboxY1 = rSprite.m_bboxY1;
 	bboxY2 = rSprite.m_bboxY2;
 
-	moveYDir(diff_y);
+	if(!firsttime && g_pBehaviorEngine->getEpisode() > 3)
+		moveYDir(diff_y);
 }
 
 /*
@@ -280,14 +281,14 @@ void CObject::pushOutofSolidTiles()
  * \brief This checks the collision. Very simple pixel based algorithm
  * 		  The collision is per pixel-based
  */
-void CObject::performCollisions()
+void CObject::performCollisions(bool firsttime)
 {
 	blockedr = blockedl = false;
 	blockedu = blockedd = false;
 
 	if ( sprite != BLANKSPRITE )
 	{
-		calcBouncingBoxes();
+		calcBouncingBoxes(firsttime);
 		performCollisionsSameBox();
 	}
 }
@@ -861,7 +862,10 @@ void CObject::kill_intersecting_tile(int mpx, int mpy, CObject &theObject)
 	 if (theObject.exists)
 		 if (xpix-(1<<CSF) <= x && xpix+(1<<CSF) >= x)
 			 if (ypix <= y && ypix+(1<<CSF) >= y)
+			 {
 				 theObject.kill();
+				 theObject.dontdraw = true;
+			 }
 }
 
 bool CObject::checkSolidR( int x2, int y1, int y2)

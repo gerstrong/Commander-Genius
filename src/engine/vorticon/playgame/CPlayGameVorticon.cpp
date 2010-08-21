@@ -568,7 +568,7 @@ void CPlayGameVorticon::collectHighScoreInfo()
 }
 
 // This function draws the objects that need to be seen on the screen
-void CPlayGameVorticon::drawObjects(bool dead)
+void CPlayGameVorticon::drawObjects()
 {
 	if(m_hideobjects) return;
 
@@ -577,11 +577,9 @@ void CPlayGameVorticon::drawObjects(bool dead)
 	std::vector<CObject*>::iterator it_obj = m_Object.begin();
 	for(; it_obj!=m_Object.end() ; it_obj++)
 	{
-		if((*it_obj)->dead == dead)
+		if(!(*it_obj)->dontdraw)
 			(*it_obj)->draw();
 	}
-
-	if(dead) return;
 
 	// We draw the Player as last, because we want to see him in front of the other objects
 	std::vector<CPlayer>::iterator it_player = m_Player.begin();
@@ -602,14 +600,8 @@ void CPlayGameVorticon::drawAllElements()
 	// Blit the background
 	g_pVideoDriver->blitScrollSurface();
 
-	// Draw dead objects to the screen
-	drawObjects(true);
-
-	// Draw solid blocks which will cover dead objects
-	m_Map.drawSolidTiles();
-
-	// Draw living objects to the screen and the player of course
-	drawObjects(false);
+	// Draw all objects to the screen
+	drawObjects();
 
 	// Draw masked tiles here!
 	m_Map.drawForegroundTiles();

@@ -62,7 +62,7 @@ public:
 	void YourShipNeedsTheseParts();
 	void ShipEp3();
 	void processObjectsAI();
-	void drawObjects(bool dead);
+	void drawObjects();
 	void drawAllElements();
 	void handleFKeys();
 	void verifyFinales();

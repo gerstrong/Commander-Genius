@@ -66,6 +66,7 @@ public:
 	// if zero, priority tiles will not be honored and object will always
 	// appear in front of the background
 	bool honorPriority;
+	bool dontdraw;
 	bool solid;
 	
 	bool canbezapped;         // if 0 ray will not stop on hitdetect
@@ -97,11 +98,11 @@ public:
 	size_t m_ActionBaseOffset;
 
 	void setupObjectType(int Episode);
-	void calcBouncingBoxes();
+	void calcBouncingBoxes(bool firsttime=false);
 	void performCollisionsSameBox();
 	void performCollisionOnSlopedTiles();
 	void pushOutofSolidTiles();
-	void performCollisions();
+	void performCollisions(bool firsttime=false);
 	void setScrPos( int px, int py );
 	bool calcVisibility();
 	bool checkforScenario();
