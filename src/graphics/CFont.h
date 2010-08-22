@@ -36,6 +36,7 @@ public:
 	void setBGColour(SDL_PixelFormat* p_pixelformat, Uint32 bgcolour, bool force=false);
 	Uint32 getColour();
 	Uint32 getBGColour(bool highlighted);
+	void getBGColour(bool highlighted, Uint8 *r, Uint8 *g, Uint8 *b);
 
 	void drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff);
 	void drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uint16 yoff, bool highlight = false);

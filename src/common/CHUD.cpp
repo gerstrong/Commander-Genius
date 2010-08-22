@@ -45,13 +45,7 @@ void CHUD::CreateBackground()
 {
 	// Create a surface for that
 	SDL_Surface *temp;
-	SDL_Surface *pBlitsurface = g_pVideoDriver->getBlitSurface();
-	//const Uint32 flags = pBlitsurface->flags;
 	const Uint32 flags = 0;
-	//const Uint32 depth = pBlitsurface->format->BitsPerPixel;
-	//const Uint32 rmask = pBlitsurface->format->Rmask;
-	//const Uint32 gmask = pBlitsurface->format->Gmask;
-	//const Uint32 bmask = pBlitsurface->format->Bmask;
 	// For some reason the Alpha mask doesn't work, if blitsurface == screensurface. Not sure if every system is affected of that.
 	// Maybe I write a function for the proper masks...
 	#if SDL_BYTEORDER == SDL_BIG_ENDIAN
@@ -99,7 +93,7 @@ void CHUD::CreateBackground()
 	SDL_FreeSurface(temp);
 
 
-	temp = SDL_ConvertSurface(mp_Background, pBlitsurface->format, flags);
+	temp = SDL_DisplayFormatAlpha(mp_Background);
 	SDL_FreeSurface(mp_Background);
 	mp_Background = temp;
 
@@ -115,8 +109,9 @@ void CHUD::DrawCircle(int x, int y, int width)
 
 	Uint8 r,g,b;
 	CFont &Font = g_pGfxEngine->getFont(0);
-	Uint32 bgcolor = Font.getBGColour(false);
-	SDL_GetRGB(bgcolor, mp_Background->format, &r, &g, &b);
+	//Uint32 bgcolor = Font.getBGColour(false);
+	Font.getBGColour(false, &r, &g, &b);
+	//SDL_GetRGB(bgcolor, mp_Background->format, &r, &g, &b);
 
 	outline.x = x+4;
 	outline.y = y;
@@ -142,17 +137,17 @@ void CHUD::DrawCircle(int x, int y, int width)
 	text.y = y+1;
 	text.w = width-8;
 	text.h = 10;
-	SDL_FillRect(mp_Background, &text, SDL_MapRGBA(mp_Background->format, r,g,b,255)); // White
+	SDL_FillRect(mp_Background, &text, SDL_MapRGBA(mp_Background->format, r,g,b,255)); // Background colour
 	text.x = x+2;
 	text.y = y+2;
 	text.w = width-4;
 	text.h = 8;
-	SDL_FillRect(mp_Background, &text, SDL_MapRGBA(mp_Background->format, r,g,b,255)); // White
+	SDL_FillRect(mp_Background, &text, SDL_MapRGBA(mp_Background->format, r,g,b,255)); // Background colour
 	text.x = x+1;
 	text.y = y+4;
 	text.w = width-2;
 	text.h = 4;
-	SDL_FillRect(mp_Background, &text, SDL_MapRGBA(mp_Background->format, r,g,b,255)); // White
+	SDL_FillRect(mp_Background, &text, SDL_MapRGBA(mp_Background->format, r,g,b,255)); // Background colour
 }
 
 /**

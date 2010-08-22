@@ -162,14 +162,22 @@ Uint32 CFont::getBGColour(bool highlighted)
 	SDL_LockSurface(m_ColouredSurface);
 
 	Uint8* pixel = (Uint8*) m_ColouredSurface->pixels + height*8*m_ColouredSurface->pitch;
-	Uint32* pixel32= (Uint32*)pixel;
+	Uint32 pixel32;
+
+	memcpy(&pixel32, pixel, m_ColouredSurface->format->BytesPerPixel);
 
 	Uint8 r,g,b;
-	SDL_GetRGB(*pixel32, m_ColouredSurface->format, &r, &g, &b);
+	SDL_GetRGB(pixel32, m_ColouredSurface->format, &r, &g, &b);
 
 	SDL_UnlockSurface(m_ColouredSurface);
 
 	return SDL_MapRGB(m_ColouredSurface->format, r, g, b);
+}
+
+void CFont::getBGColour(bool highlighted, Uint8 *r, Uint8 *g, Uint8 *b)
+{
+	Uint32 colour = getBGColour(false);
+	SDL_GetRGB(colour, m_ColouredSurface->format, r, g, b);
 }
 
 ////////////////////////////
@@ -186,7 +194,6 @@ void CFont::drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint1
 	dstrect.x = xoff;	dstrect.y = yoff;
 	
 	if(m_monochrome)
-		//SDL_BlitSurface(m_FontSurface, &scrrect, dst, &dstrect);
 		SDL_BlitSurface(m_FontSurface, &scrrect, dst, &dstrect);
 	else
 		SDL_BlitSurface(m_ColouredSurface, &scrrect, dst, &dstrect);
