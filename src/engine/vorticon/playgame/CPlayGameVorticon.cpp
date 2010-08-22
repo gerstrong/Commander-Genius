@@ -369,10 +369,9 @@ void CPlayGameVorticon::handleFKeys()
 				m_Player[i].give_keycard(DOOR_GREEN);
 				m_Player[i].give_keycard(DOOR_BLUE);
 				
-				m_Player[i].inventory.charges = 999;
-				m_Player[i].inventory.HasPogo = 1;
-				m_Player[i].inventory.lives = 10;
-
+				m_Player[i].inventory.charges += 99;
+				m_Player[i].inventory.HasPogo = true;
+				m_Player[i].inventory.lives += 5;
 
 				std::string Text = g_pBehaviorEngine->getString("CTSPACECHEAT");
 				 
