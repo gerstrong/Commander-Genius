@@ -162,40 +162,72 @@ void CPlayGameVorticon::ShipEp3()
 
 void CPlayGameVorticon::showKeensLeft()
 {
-	int x,y,i,p;
-	int boxY, boxH;
-	SDL_Surface *boxsurface = g_pVideoDriver->FGLayerSurface;
-	CFont &Font = g_pGfxEngine->getFont(0);
+	const unsigned int KEENSLEFT_X = 7;
+	const unsigned int KEENSLEFT_Y = 10;
 
-const unsigned int KEENSLEFT_X = 7;
-const unsigned int KEENSLEFT_Y = 10;
-const unsigned int KEENSLEFT_W = 24;
-const unsigned int KEENSLEFT_H = 4;
-
-	boxY = KEENSLEFT_Y - m_NumPlayers;
-	boxH = KEENSLEFT_H + m_NumPlayers*2;
-
-	if( g_pTimer->HasTimeElapsed(3000) || g_pInput->getPressedAnyCommand() )
-		m_showKeensLeft = false;
-
-	SDL_Rect rect;
-	rect.x = (KEENSLEFT_X+1)*8;	rect.y = (boxY+2)*8;
-	rect.w = (KEENSLEFT_W-1)*8;	rect.h = (boxH-3)*8;
-	g_pGfxEngine->drawDialogBox( boxsurface, KEENSLEFT_X, boxY,KEENSLEFT_W,boxH, Font.getBGColour(true));
-	Font.drawFont( boxsurface, g_pBehaviorEngine->getString("LIVES_LEFT"),((KEENSLEFT_X+4)*8)+4,(boxY+1)*8, true);
-	SDL_FillRect(boxsurface, &rect, Font.getBGColour(false));
-
-	y = ((boxY+2)*8)+4;
-	for(p=0; p<m_NumPlayers ; p++)
+	if(!mp_KeenLeftSfc)
 	{
-		x = ((KEENSLEFT_X+1)*8)+4;
-		for(i=0;i<m_Player[p].inventory.lives&&i<=10;i++)
+		SDL_Surface *p_blitSurface = g_pVideoDriver->FGLayerSurface;
+		const Uint32 rmask = p_blitSurface->format->Rmask;
+		const Uint32 gmask = p_blitSurface->format->Gmask;
+		const Uint32 bmask = p_blitSurface->format->Bmask;
+		const Uint32 amask = p_blitSurface->format->Amask;
+		const Uint8 bpp = p_blitSurface->format->BitsPerPixel;
+
+		int x,y,i,p;
+		int boxY, boxH;
+		CFont &Font = g_pGfxEngine->getFont(0);
+
+		const unsigned int KEENSLEFT_W = 24;
+		const unsigned int KEENSLEFT_H = 4;
+
+		boxY = KEENSLEFT_Y - m_NumPlayers;
+		boxH = KEENSLEFT_H + m_NumPlayers*2;
+
+		SDL_Rect rect;
+		rect.x = (KEENSLEFT_X+1)*8;	rect.y = (boxY+2)*8;
+		rect.w = (KEENSLEFT_W+1)*8;	rect.h = (boxH)*8;
+		SDL_Surface *boxsurface = SDL_CreateRGBSurface(p_blitSurface->flags, rect.w, rect.h, bpp, rmask, gmask, bmask, amask);
+
+		rect.x = 8;	rect.y = 16;
+		rect.w = (KEENSLEFT_W-1)*8;	rect.h = (boxH-3)*8;
+		g_pGfxEngine->drawDialogBox( boxsurface, 0, 0, KEENSLEFT_W, boxH, Font.getBGColour(true));
+		SDL_FillRect(boxsurface, &rect, Font.getBGColour(false));
+		Font.drawFont( boxsurface, g_pBehaviorEngine->getString("LIVES_LEFT"), 36, 8, true);
+
+		y = 20;
+		for(p=0; p<m_NumPlayers ; p++)
 		{
-			g_pGfxEngine->getSprite(m_Player[p].playerbaseframe+PMAPDOWNFRAME).drawSprite(g_pVideoDriver->FGLayerSurface, x, y );
-			x+=16;
+			x = 12;
+			for(i=0;i<m_Player[p].inventory.lives&&i<=10;i++)
+			{
+				g_pGfxEngine->getSprite(m_Player[p].playerbaseframe+PMAPDOWNFRAME).drawSprite(boxsurface, x, y );
+				x+=16;
+			}
+			y += 16;
 		}
-		y += 16;
+
+		mp_KeenLeftSfc = SDL_DisplayFormat(boxsurface);
+		SDL_FreeSurface(boxsurface);
 	}
+	else
+	{
+		SDL_Rect local_rect;
+		local_rect.x = (KEENSLEFT_X+1)*8;
+		local_rect.y = (KEENSLEFT_Y - m_NumPlayers + 2)*8;
+		local_rect.w = mp_KeenLeftSfc->w;
+		local_rect.h = mp_KeenLeftSfc->h;
+
+		SDL_BlitSurface(mp_KeenLeftSfc, NULL, g_pVideoDriver->FGLayerSurface, &local_rect);
+
+		if( g_pTimer->HasTimeElapsed(3000) || g_pInput->getPressedAnyCommand() )
+		{
+			m_showKeensLeft = false;
+			SDL_FreeSurface(mp_KeenLeftSfc);
+		}
+	}
+
+
 }
 
 int CPlayGameVorticon::getTeleporterInfo(int objectID)

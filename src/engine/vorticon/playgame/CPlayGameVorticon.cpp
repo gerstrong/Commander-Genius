@@ -70,6 +70,7 @@ mp_HUD(NULL)
 void CPlayGameVorticon::setupPlayers()
 {
 	m_showKeensLeft=false;
+	mp_KeenLeftSfc = NULL;
 	std::vector<CPlayer>::iterator it_player = m_Player.begin();
 	for( ; it_player!=m_Player.end() ; it_player++ )
 	for (int i=0 ; i<m_NumPlayers ; i++)

@@ -776,7 +776,7 @@ void CPlayer::ProcessExitLevel()
 
 void CPlayer::StatusBox()
 {
-	if( g_pInput->getPressedCommand(m_index, IC_STATUS) )
+	if( g_pInput->getPressedCommand(m_index, IC_STATUS) && !level_done )
 		m_showStatusScreen=true; // PlayGame class detects that variable and launches drawStatusScreen()
 }
 

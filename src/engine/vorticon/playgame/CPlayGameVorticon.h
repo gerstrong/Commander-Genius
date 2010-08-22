@@ -110,5 +110,6 @@ private:
 	std::vector<CObject*> m_Object;
 	CHighScores *mp_HighScores;
 	CHUD *mp_HUD;
+	SDL_Surface *mp_KeenLeftSfc;
 };
 #endif /* CPlayGameVorticon_H_ */
