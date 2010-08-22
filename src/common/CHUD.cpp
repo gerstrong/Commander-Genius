@@ -44,27 +44,29 @@ std::string getRightAligned(std::string text, size_t size)
 void CHUD::CreateBackground()
 {
 	// Create a surface for that
+	SDL_Surface *temp;
 	SDL_Surface *pBlitsurface = g_pVideoDriver->getBlitSurface();
-	const Uint32 flags = pBlitsurface->flags;
-	const Uint32 depth = pBlitsurface->format->BitsPerPixel;
-	const Uint32 rmask = pBlitsurface->format->Rmask;
-	const Uint32 gmask = pBlitsurface->format->Gmask;
-	const Uint32 bmask = pBlitsurface->format->Bmask;
+	//const Uint32 flags = pBlitsurface->flags;
+	const Uint32 flags = 0;
+	//const Uint32 depth = pBlitsurface->format->BitsPerPixel;
+	//const Uint32 rmask = pBlitsurface->format->Rmask;
+	//const Uint32 gmask = pBlitsurface->format->Gmask;
+	//const Uint32 bmask = pBlitsurface->format->Bmask;
 	// For some reason the Alpha mask doesn't work, if blitsurface == screensurface. Not sure if every system is affected of that.
 	// Maybe I write a function for the proper masks...
 	#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+		const Uint32 rmask = 0xFF000000;
+		const Uint32 gmask = 0x00FF0000;
+		const Uint32 bmask = 0x0000FF00;
     	const Uint32 amask = 0x000000FF;
     #else
+    	const Uint32 rmask = 0x000000FF;
+    	const Uint32 gmask = 0x0000FF00;
+    	const Uint32 bmask = 0x00FF0000;
     	const Uint32 amask = 0xFF000000;
     #endif
 
-
-	mp_Background = SDL_CreateRGBSurface( SDL_SWSURFACE | SDL_SRCALPHA, m_Rect.w, m_Rect.h, depth, rmask, gmask, bmask, amask);
-
-	// Draw the background
-	DrawCircle(0, 0, 80);
-	DrawCircle(17, 15, 22);
-	DrawCircle(58, 15, 22);
+	mp_Background = SDL_CreateRGBSurface( flags, m_Rect.w, m_Rect.h, 32, rmask, gmask, bmask, amask);
 
 	SDL_Rect headsrcrect, headdstrect;
 	headsrcrect.x = 0;
@@ -73,8 +75,11 @@ void CHUD::CreateBackground()
 	headdstrect.h = headsrcrect.h = 16;
 	headdstrect.x = m_Rect.x;
 	headdstrect.y = m_Rect.y+11;
+
 	CSprite &KeenHeadSprite = g_pGfxEngine->getSprite(PMAPDOWNFRAME);
-	BlitSurfaceMerge( KeenHeadSprite.getSDLSurface(), &headsrcrect, mp_Background, &headdstrect );
+	temp = SDL_ConvertSurface( KeenHeadSprite.getSDLSurface(), mp_Background->format, flags );
+	BlitSurfaceMerge( temp, &headsrcrect, mp_Background, &headdstrect );
+	SDL_FreeSurface(temp);
 
 	int sprite=0;
 	size_t Episode = g_pBehaviorEngine->getEpisode();
@@ -88,7 +93,20 @@ void CHUD::CreateBackground()
 	headdstrect.h = headsrcrect.h = KeenGunSprite.getHeight();
 	headdstrect.x = m_Rect.x+45-(headsrcrect.w/2);
 	headdstrect.y = m_Rect.y+19-(headsrcrect.h/2);
-	BlitSurfaceMerge( KeenGunSprite.getSDLSurface(), &headsrcrect, mp_Background, &headdstrect);
+
+	temp = SDL_ConvertSurface( KeenGunSprite.getSDLSurface(), mp_Background->format, flags );
+	BlitSurfaceMerge( temp, &headsrcrect, mp_Background, &headdstrect );
+	SDL_FreeSurface(temp);
+
+
+	temp = SDL_ConvertSurface(mp_Background, pBlitsurface->format, flags);
+	SDL_FreeSurface(mp_Background);
+	mp_Background = temp;
+
+	// Draw the rounded borders
+	DrawCircle(0, 0, 80);
+	DrawCircle(17, 15, 22);
+	DrawCircle(58, 15, 22);
 }
 
 void CHUD::DrawCircle(int x, int y, int width)

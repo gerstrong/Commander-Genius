@@ -112,17 +112,30 @@ void BlitSurfaceMerge( SDL_Surface *src, SDL_Rect *p_src_rect, SDL_Surface *dst,
 
 	Uint8 *pixel_src;
 	Uint8 *pixel_dst;
+	Uint8 sr,sg,sb,sa;
+	Uint8 dr,dg,db,da;
+	Uint32 *pixel_src32;
+	Uint32 *pixel_dst32;
 
 	for( size_t y=0 ; y<src_rect.h ; y++ )
 	{
 		pixel_src = (Uint8*)src->pixels + (src_rect.x)*src->format->BytesPerPixel + (src_rect.y+y)*src->pitch;
 		pixel_dst = (Uint8*)dst->pixels + (dst_rect.x)*dst->format->BytesPerPixel + (dst_rect.y+y)*dst->pitch;
 
-		for( size_t x=0 ; x<src_rect.w*dst->format->BytesPerPixel ; x++ )
+		for( size_t x=0 ; x<src_rect.w ; x++ )
 		{
-			*pixel_dst |= *pixel_src;
-			pixel_src++;
-			pixel_dst++;
+			pixel_src32 = (Uint32*)pixel_src;
+			pixel_dst32 = (Uint32*)pixel_dst;
+			SDL_GetRGBA(*pixel_src32, src->format, &sr, &sg, &sb, &sa);
+			SDL_GetRGBA(*pixel_dst32, dst->format, &dr, &dg, &db, &da);
+
+			dr |= sr;
+			dg |= sg;
+			db |= sb;
+			da |= sa;
+			*pixel_dst32 = SDL_MapRGBA(dst->format, dr, dg, db, da);
+			pixel_src+=src->format->BytesPerPixel;
+			pixel_dst+=dst->format->BytesPerPixel;
 		}
 	}
 
