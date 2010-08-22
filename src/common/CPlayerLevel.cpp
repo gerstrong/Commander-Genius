@@ -159,6 +159,7 @@ void CPlayer::kill(bool force)
 		inventory.lives--;
 		SelectFrame();
 		g_pSound->playSound(SOUND_KEEN_DIE, PLAY_NOW);
+		g_pMusicPlayer->stop();
 
 		if(inventory.canlooseitem[0])	inventory.HasJoystick = false;
 		if(inventory.canlooseitem[1])	inventory.HasBattery = false;
