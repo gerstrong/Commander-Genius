@@ -767,6 +767,8 @@ void CPlayer::ProcessExitLevel()
 
 		level_done_timer = 0;
 		level_done = LEVEL_COMPLETE;
+		for(size_t i = 0 ; i<4 ; i++)
+			inventory.canlooseitem[i] = false;
 	}
 	else if (level_done_timer > LEVEL_DONE_STOPWALKING_TIME)
 		level_done = LEVEL_DONE_WAIT;

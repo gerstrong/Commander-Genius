@@ -23,6 +23,8 @@ struct stInventory {
 	bool HasWiskey;
 	bool HasBattery;
 	bool HasVacuum;
+
+	bool canlooseitem[4];
 };
 
 #endif

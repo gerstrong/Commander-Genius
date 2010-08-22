@@ -140,20 +140,23 @@ void CPlayer::procGoodie(int tile, int mpx, int mpy)
 			break;
 			
 		case 11:
+			inventory.canlooseitem[0] = !(inventory.HasJoystick);
 			inventory.HasJoystick = true;
 			g_pSound->playSound(SOUND_GET_PART, PLAY_NOW);
 			break;
 			
 		case 12:
+			inventory.canlooseitem[1] = !(inventory.HasBattery);
 			inventory.HasBattery = true;
 			g_pSound->playSound(SOUND_GET_PART, PLAY_NOW);
 			break;
 		case 13:
-			
+			inventory.canlooseitem[2] = !(inventory.HasVacuum);
 			inventory.HasVacuum = true;
 			g_pSound->playSound(SOUND_GET_PART, PLAY_NOW);
 			break;
 		case 14:
+			inventory.canlooseitem[3] = !(inventory.HasWiskey);
 			inventory.HasWiskey = true;
 			g_pSound->playSound(SOUND_GET_PART, PLAY_NOW);
 			break;

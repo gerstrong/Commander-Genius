@@ -159,6 +159,14 @@ void CPlayer::kill(bool force)
 		inventory.lives--;
 		SelectFrame();
 		g_pSound->playSound(SOUND_KEEN_DIE, PLAY_NOW);
+
+		if(inventory.canlooseitem[0])	inventory.HasJoystick = false;
+		if(inventory.canlooseitem[1])	inventory.HasBattery = false;
+		if(inventory.canlooseitem[2])	inventory.HasVacuum = false;
+		if(inventory.canlooseitem[3])	inventory.HasWiskey = false;
+
+		for(size_t i = 0 ; i<4 ; i++)
+			inventory.canlooseitem[i] = false;
 	}
 }
 
