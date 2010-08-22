@@ -7,6 +7,6 @@
 
 #ifdef OGG
 
-short openOGGSound(FILE *fp, SDL_AudioSpec *pspec, Uint16 format, stHQSound *psound);
+short openOGGSound(FILE *fp, SDL_AudioSpec *pspec, stHQSound *psound);
 
 #endif

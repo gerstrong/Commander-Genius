@@ -47,7 +47,7 @@ bool CMusic::load(const SDL_AudioSpec AudioSpec, const std::string &musicfile)
 			return -1;
 		}
 		
-		if(openOGGSound(fp, &AudioFileSpec, AudioSpec.format, &pOggAudio) != 0)
+		if(openOGGSound(fp, &AudioFileSpec, &pOggAudio) != 0)
 		{
 			g_pLogFile->textOut(PURPLE,"Music Driver(): OGG file could not be opened: \"%s\". File is damaged or something is wrong with your soundcard!<br>", musicfile.c_str());
 			return false;
@@ -142,12 +142,6 @@ Uint8 *CMusic::passBuffer(size_t length) // length only refers to the part(buffe
 		music_pos += length;
 		return ptr;
 	}
-	/*else
-	{
-		//Uint8* ptr = &music_buffer.at(0) + (music_len-music_pos);
-		music_pos = 0;
-		return ptr;
-	}*/
 	else
 	{
 		music_pos = 0;

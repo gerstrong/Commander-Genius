@@ -21,7 +21,7 @@ using namespace std;
 #include "../sdl/CVideoDriver.h"
 #include "../CLogFile.h"
 
-short openOGGSound(FILE *fp, SDL_AudioSpec *pspec, Uint16 format, stHQSound *psound)
+short openOGGSound(FILE *fp, SDL_AudioSpec *pspec, stHQSound *psound)
 {
 	// If Ogg detected, decode it into the stream psound->sound_buffer.
 	// It must fit into the Audio_cvt structure, so that it can be converted

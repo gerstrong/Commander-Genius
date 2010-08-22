@@ -34,7 +34,7 @@ short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::stri
 	if(fp != NULL)
 	{
 #ifdef OGG
-		if(openOGGSound(fp, &AudioFileSpec, AudioSpec->format, psound) != 0)
+		if(openOGGSound(fp, &AudioFileSpec,  psound) != 0)
 		{
 			std::string buf2;
 			buf2 = "OGG file \"" + buf +"\"could not be opened. The file was detected, but appears to be damaged. Trying to load the classical sound<br>";
