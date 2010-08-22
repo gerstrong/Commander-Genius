@@ -78,7 +78,7 @@ void CDlgObject::render(SDL_Surface *dst, Uint8 scrollamt, bool highlight)
 		else
 			colourdir = m_selected ? 0x0000FF : 0x000000;
 
-		if(g_pVideoDriver->getSpecialFXConfig())	// Nice colour effect applied here
+		if(g_pVideoDriver->getSpecialFXConfig() && g_pVideoDriver->getDepth() >= 24)	// Nice colour effect applied here
 			fadetoColour(m_colour, colourdir, fade_speed);
 		else
 			m_colour = colourdir;
