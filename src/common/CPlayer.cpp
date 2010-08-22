@@ -860,7 +860,6 @@ bool CPlayer::drawStatusScreen()
 		}
 		else if( g_pInput->getPressedAnyCommand() )
 		{
-			g_pGfxEngine->pushEffectPtr(new CColorMerge(16));
 			mp_StatusScr->close();
 		}
 		return false;

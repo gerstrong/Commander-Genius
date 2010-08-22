@@ -10,6 +10,7 @@
 
 #include <SDL.h>
 #include "inventory.h"
+#include "SmartPointer.h"
 
 class CStatusScreen {
 public:
@@ -17,15 +18,19 @@ public:
 	(char episode, stInventory *p_inventory, bool *p_level_completed, int ankhtime, int baseframe);
 
 	void draw();
-	void drawInventoryEp1();
-	void drawInventoryEp2();
-	void drawInventoryEp3();
+	void createInventorySfcEp1();
+	void createInventorySfcEp2();
+	void createInventorySfcEp3();
 
 	bool isClosed() {	return m_closed;	}
 	void close() {	m_closing = true;	}
 
-	virtual ~CStatusScreen();
+	~CStatusScreen();
+
 private:
+
+	SDL_Surface* CreateStatusSfc();
+
 	char m_episode;
 	int m_baseframe;
 	stInventory *mp_inventory;
@@ -33,6 +38,9 @@ private:
 	int m_ankhtime;
 
 	bool m_closing, m_closed;
+
+	SDL_Surface* mp_StatusSfc;
+	SDL_Rect m_StatusRect;
 };
 
 #endif /* CSTATUSSCREEN_H_ */

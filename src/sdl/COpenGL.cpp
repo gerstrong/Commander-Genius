@@ -216,6 +216,7 @@ static void renderTexture(GLuint texture, bool withAlpha = false) {
 
 	glEnable(GL_BLEND);
 	if(withAlpha)
+		//glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA /*GL_SRC_COLOR*/);
 		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 	else
 		glBlendFunc(GL_ONE, GL_ZERO /*GL_SRC_COLOR*/);
@@ -267,7 +268,7 @@ void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
 	else
 	{
 			glTexImage2D(m_texparam, 0, internalFormat, m_GamePOTBaseDim.w, m_GamePOTBaseDim.h,
-												0, externalFormat, GL_UNSIGNED_BYTE, surface->pixels);
+														0, externalFormat, GL_UNSIGNED_BYTE, surface->pixels);
 	}
 
 	UnlockSurface(surface);
