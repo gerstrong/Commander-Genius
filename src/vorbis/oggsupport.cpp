@@ -4,22 +4,11 @@
  *  Created on: 06.01.2009
  *      Author: gerstrong
  */
-#ifdef OGG
-#include <SDL.h>
-// vorbis headers
-#include <codec.h>
-#include <vorbisfile.h>
 
-#include <cstdio>
-#include <iostream>
+#include "oggsupport.h"
 #include <vector>
-using namespace std;
 
-#define BUFFER_SIZE   32768     // 32 KB buffers
-
-#include "../hqp/hq_sound.h"
-#include "../sdl/CVideoDriver.h"
-#include "../CLogFile.h"
+#ifdef OGG
 
 short openOGGSound(FILE *fp, SDL_AudioSpec *pspec, stHQSound *psound)
 {
@@ -38,7 +27,7 @@ short openOGGSound(FILE *fp, SDL_AudioSpec *pspec, stHQSound *psound)
     {
     	long bytes;
     	char array[BUFFER_SIZE];
-    	vector<char> buffer;
+    	std::vector<char> buffer;
         vorbis_info*    vorbisInfo;    // some formatting data
         vorbis_comment* vorbisComment; // user comments
 
@@ -72,4 +61,46 @@ short openOGGSound(FILE *fp, SDL_AudioSpec *pspec, stHQSound *psound)
 		return 0;
     }
 }
+
+
+bool openOGGStream(FILE *fp, SDL_AudioSpec *pspec, OggVorbis_File  &oggStream)
+{
+	// If Ogg detected, decode it into the stream psound->sound_buffer.
+	// It must fit into the Audio_cvt structure, so that it can be converted
+
+	int result;
+    if((result = ov_open_callbacks(fp, &oggStream, NULL, 0, OV_CALLBACKS_DEFAULT)) < 0)
+    {
+        fclose(fp);
+        return false;
+    }
+    else
+    {
+        vorbis_info*    vorbisInfo;    // some formatting data
+        vorbis_comment* vorbisComment; // user comments
+
+        vorbisInfo = ov_info(&oggStream, -1);
+        vorbisComment = ov_comment(&oggStream, -1);
+
+        pspec->format = AUDIO_S16LSB; // Ogg Audio seems to always use this format
+
+        pspec->channels = vorbisInfo->channels;
+        pspec->freq = vorbisInfo->rate;
+
+		return true;
+    }
+}
+
+void readOGGStream( OggVorbis_File  &oggStream, char *buffer, size_t size )
+{
+	int bitStream;
+	// Read up to a buffer's worth of decoded sound data
+	ov_read(&oggStream, buffer, size, 0, 2, 1, &bitStream);
+}
+
+void cleanupOGG(OggVorbis_File  &oggStream)
+{
+	ov_clear(&oggStream);
+}
+
 #endif

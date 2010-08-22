@@ -8,6 +8,9 @@
 #ifndef CMUSIC_H_
 #define CMUSIC_H_
 
+#include "vorbis/oggsupport.h"
+
+
 enum playstatus{
 	PLAY_MODE_STOP,
 	PLAY_MODE_PAUSE,
@@ -18,7 +21,7 @@ enum playstatus{
 #include <string>
 #include <vector>
 
-#include "../CSingleton.h"
+#include "CSingleton.h"
 #define g_pMusicPlayer CMusic::Get()
 
 class CMusic : public CSingleton<CMusic>
@@ -32,17 +35,18 @@ public:
 	void unload(void);
 	void play(void);
 	void stop(void);
-	Uint8 *passBuffer(size_t length); // returns the buffer that has to be played in every callback
+	void readBuffer(Uint8* buffer, size_t length); // Reads the next chunk of the ogg stream
 	bool LoadfromMusicTable(const std::string &gamepath, const std::string &levelfilename);
 
 	int playing(void){return playmode;}
 
 private:
-	std::vector<Uint8> music_buffer;
-	unsigned long music_len;
-	int music_pos;
 	int playmode;
 	std::string usedMusicFile;
+	OggVorbis_File  m_oggStream;
+
+	SDL_AudioSpec m_AudioSpec;
+	SDL_AudioSpec m_AudioFileSpec;
 };
 
 #endif /* CMUSIC_H_ */
