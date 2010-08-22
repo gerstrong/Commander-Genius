@@ -129,7 +129,7 @@ bool CMessages::extractGlobalStrings()
 					StringMap.insert( extractString( "CTSPACECHEAT", 0x1BC9E, 0x1BCF3, -512 ) );
 					StringMap.insert( extractString( "GODMODEON", 0x1BD80, 0x1BD90, -512 ) );
 					StringMap.insert( extractString( "GODMODEOFF", 0x1BD91, 0x1BDA2, -512 ) );
-					StringMap.insert( extractString( "EP3_StatusBox" , 0x1BE38, 0x1BEC3, -837 ) );
+					StringMap.insert( extractString( "EP3_StatusBox" , 0x1BCF4, 0x1BD7F, -512 ) );
 					StringMap.insert( extractString( "LIVES_LEFT" , 0x1CAEE, 0x1CAFB, -806 ) );
 					// Ship Messages
 					StringMap.insert( extractString( "EP3_SHIP1" , 0x1D100, 0x1D173, -765) );
