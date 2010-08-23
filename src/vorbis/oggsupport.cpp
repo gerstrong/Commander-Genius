@@ -94,8 +94,17 @@ bool openOGGStream(FILE *fp, SDL_AudioSpec *pspec, OggVorbis_File  &oggStream)
 void readOGGStream( OggVorbis_File  &oggStream, char *buffer, size_t size )
 {
 	int bitStream;
-	// Read up to a buffer's worth of decoded sound data
-	ov_read(&oggStream, buffer, size, 0, 2, 1, &bitStream);
+	unsigned long bytes = 0;
+	unsigned long pos = 0;
+	unsigned int buf_size=size;
+
+	while( pos<size )
+	{
+		// Read up to a buffer's worth of decoded sound data
+		bytes = ov_read(&oggStream, buffer+pos, buf_size-pos, 0, 2, 1, &bitStream);
+		pos += bytes;
+	}
+
 }
 
 void cleanupOGG(OggVorbis_File  &oggStream)
