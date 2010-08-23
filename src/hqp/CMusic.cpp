@@ -19,12 +19,12 @@ playmode(PLAY_MODE_STOP),
 usedMusicFile("")
 {}
 
-bool CMusic::load(const SDL_AudioSpec AudioSpec, const std::string &musicfile)
+bool CMusic::load(const std::string &musicfile)
 {
 	if(musicfile == "")
 		return false;
 
-	m_AudioSpec = AudioSpec;
+	m_AudioSpec = g_pSound->getAudioSpec();
 
 	if(m_AudioSpec.format != 0)
 	{
@@ -61,7 +61,7 @@ bool CMusic::load(const SDL_AudioSpec AudioSpec, const std::string &musicfile)
 void CMusic::reload()
 {
 	stop();
-	load(m_AudioSpec, usedMusicFile);
+	load(usedMusicFile);
 }
 
 void CMusic::play(void)
@@ -111,15 +111,13 @@ void CMusic::readBuffer(Uint8* buffer, size_t length) // length only refers to t
 		rewind = !readOGGStream(m_oggStream, (char*)Audio_cvt.buf, Audio_cvt.len, Audio_cvt.len, m_AudioFileSpec);
 	}
 
-
-
 	// then convert it into SDL Audio buffer
 	// Conversion to SDL Format
 	SDL_ConvertAudio(&Audio_cvt);
 
 	memcpy(buffer, Audio_cvt.buf, length);
 
-	delete Audio_cvt.buf;
+	delete [] Audio_cvt.buf;
 
 	if(rewind)
 	{
@@ -155,7 +153,7 @@ bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &
     			str_buf = c_buf;
     			TrimSpaces(str_buf);
     			std::string filename = getResourceFilename("music/" + str_buf, gamepath, false, true);
-    			if( load(g_pSound->getAudioSpec(), filename) )
+    			if( load(filename) )
     				play();
     			Tablefile.close();
     			return true;

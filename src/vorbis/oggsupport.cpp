@@ -116,7 +116,7 @@ bool readOGGStream( OggVorbis_File  &oggStream, char *buffer, size_t output_size
 	if(input_size != output_size)
 	{
 		resample((Uint8*)buffer, (Uint8*)buf, output_size, input_size, OGGAudioSpec.format, OGGAudioSpec.channels);
-		delete buf;
+		delete [] buf;
 	}
 
 	return (bytes != 0);

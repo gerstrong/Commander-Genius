@@ -29,8 +29,6 @@ public:
 	bool m_NessieAlreadySpawned;
 	std::vector<CObject*> *mp_objvect;
 
-	virtual ~CMapLoader();
-
 private:
 	CMap *mp_map;
 	std::vector<CPlayer> *mp_vec_Player;

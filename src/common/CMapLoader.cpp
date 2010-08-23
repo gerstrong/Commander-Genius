@@ -318,7 +318,6 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				if (episode == 1)
 				{
 					enemyobject = new CYorp( mp_map, *mp_vec_Player, x<<CSF, y<<CSF );
-					break;
 				}
 				else if(episode == 2 || episode == 3)
 				{
@@ -474,9 +473,5 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				mp_objvect->push_back(enemyobject);
 		}
 	}
-}
-
-CMapLoader::~CMapLoader() {
-	// TODO Auto-generated destructor stub
 }
 

@@ -201,10 +201,9 @@ void CSound::callback(void *unused, Uint8 *stream, int len)
 {
     if (g_pMusicPlayer->playing() == PLAY_MODE_PLAY)
     {
-    	Uint8 *buffer = new Uint8[len];
+    	Uint8 buffer[len];
     	g_pMusicPlayer->readBuffer(buffer, len);
     	mixAudio(stream, buffer, len, m_MusicVolume, AudioSpec.format);
-    	delete buffer;
     }
 
 	std::vector<CSoundChannel>::iterator snd_chnl = m_soundchannel.begin();
