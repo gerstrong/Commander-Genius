@@ -126,7 +126,6 @@ void CMusic::readBuffer(Uint8* buffer, size_t length) // length only refers to t
 		reload();
 		play();
 	}
-
 }
 
 bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &levelfilename)
