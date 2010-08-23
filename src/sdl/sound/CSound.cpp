@@ -199,12 +199,14 @@ int maxval = 0;
 
 void CSound::callback(void *unused, Uint8 *stream, int len)
 {
+#ifdef OGG
     if (g_pMusicPlayer->playing() == PLAY_MODE_PLAY)
     {
     	Uint8 buffer[len];
     	g_pMusicPlayer->readBuffer(buffer, len);
     	mixAudio(stream, buffer, len, m_MusicVolume, AudioSpec.format);
     }
+#endif
 
 	std::vector<CSoundChannel>::iterator snd_chnl = m_soundchannel.begin();
 	for( ; snd_chnl != m_soundchannel.end() ; snd_chnl++)

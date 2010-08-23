@@ -79,6 +79,7 @@ void CMusic::stop(void)
 
 void CMusic::readBuffer(Uint8* buffer, size_t length) // length only refers to the part(buffer) that has to be played
 {
+#ifdef OGG
 	bool rewind = false;
 	// Prepare for conversion
 	SDL_AudioCVT  Audio_cvt;
@@ -124,6 +125,9 @@ void CMusic::readBuffer(Uint8* buffer, size_t length) // length only refers to t
 		reload();
 		play();
 	}
+#else
+	return;
+#endif
 }
 
 bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &levelfilename)
