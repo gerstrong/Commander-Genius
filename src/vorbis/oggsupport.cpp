@@ -92,7 +92,7 @@ bool openOGGStream(FILE *fp, SDL_AudioSpec *pspec, OggVorbis_File  &oggStream)
     }
 }
 
-void readOGGStream( OggVorbis_File  &oggStream, char *buffer, size_t output_size, size_t input_size, const SDL_AudioSpec &OGGAudioSpec )
+bool readOGGStream( OggVorbis_File  &oggStream, char *buffer, size_t output_size, size_t input_size, const SDL_AudioSpec &OGGAudioSpec )
 {
 	int bitStream;
 	unsigned long bytes = 0;
@@ -109,6 +109,8 @@ void readOGGStream( OggVorbis_File  &oggStream, char *buffer, size_t output_size
 		// Read up to a buffer's worth of decoded sound data
 		bytes = ov_read(&oggStream, buf+pos, input_size-pos, 0, 2, 1, &bitStream);
 		pos += bytes;
+		if(bytes == 0)
+			break;
 	}
 
 	if(input_size != output_size)
@@ -116,6 +118,8 @@ void readOGGStream( OggVorbis_File  &oggStream, char *buffer, size_t output_size
 		resample((Uint8*)buffer, (Uint8*)buf, output_size, input_size, OGGAudioSpec.format, OGGAudioSpec.channels);
 		delete buf;
 	}
+
+	return (bytes != 0);
 }
 
 void cleanupOGG(OggVorbis_File  &oggStream)

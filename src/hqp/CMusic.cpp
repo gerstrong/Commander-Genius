@@ -58,10 +58,10 @@ bool CMusic::load(const SDL_AudioSpec AudioSpec, const std::string &musicfile)
 	return false;
 }
 
-void CMusic::reload(const SDL_AudioSpec AudioSpec)
+void CMusic::reload()
 {
 	stop();
-	load(AudioSpec, usedMusicFile);
+	load(m_AudioSpec, usedMusicFile);
 }
 
 void CMusic::play(void)
@@ -79,6 +79,7 @@ void CMusic::stop(void)
 
 void CMusic::readBuffer(Uint8* buffer, size_t length) // length only refers to the part(buffer) that has to be played
 {
+	bool rewind = false;
 	// Prepare for conversion
 	SDL_AudioCVT  Audio_cvt;
 	int ret = SDL_BuildAudioCVT(&Audio_cvt,
@@ -103,12 +104,14 @@ void CMusic::readBuffer(Uint8* buffer, size_t length) // length only refers to t
 		insize++;
 		insize *= mult;
 
-		readOGGStream(m_oggStream, (char*)Audio_cvt.buf, Audio_cvt.len, insize, m_AudioFileSpec);
+		rewind = !readOGGStream(m_oggStream, (char*)Audio_cvt.buf, Audio_cvt.len, insize, m_AudioFileSpec);
 	}
 	else
 	{
-		readOGGStream(m_oggStream, (char*)Audio_cvt.buf, Audio_cvt.len, Audio_cvt.len, m_AudioFileSpec);
+		rewind = !readOGGStream(m_oggStream, (char*)Audio_cvt.buf, Audio_cvt.len, Audio_cvt.len, m_AudioFileSpec);
 	}
+
+
 
 	// then convert it into SDL Audio buffer
 	// Conversion to SDL Format
@@ -117,6 +120,13 @@ void CMusic::readBuffer(Uint8* buffer, size_t length) // length only refers to t
 	memcpy(buffer, Audio_cvt.buf, length);
 
 	delete Audio_cvt.buf;
+
+	if(rewind)
+	{
+		reload();
+		play();
+	}
+
 }
 
 bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &levelfilename)

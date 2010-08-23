@@ -31,7 +31,7 @@ public:
 	virtual ~CMusic();
 
 	bool load(const SDL_AudioSpec AudioSpec, const std::string &musicfile);
-	void reload(const SDL_AudioSpec AudioSpec);
+	void reload();
 	void unload(void);
 	void play(void);
 	void stop(void);

@@ -85,7 +85,7 @@ void CAudioSettings::processSpecific()
 				// Reload the music if was playing before we changed the settings
 				if(wasPlaying)
 				{
-					g_pMusicPlayer->reload(g_pSound->getAudioSpec());
+					g_pMusicPlayer->reload();
 					g_pMusicPlayer->play();
 				}
 			}
