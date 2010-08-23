@@ -43,7 +43,9 @@ public:
 private:
 	int playmode;
 	std::string usedMusicFile;
+#ifdef OGG
 	OggVorbis_File  m_oggStream;
+#endif
 
 	SDL_AudioSpec m_AudioSpec;
 	SDL_AudioSpec m_AudioFileSpec;
