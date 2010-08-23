@@ -87,18 +87,36 @@ void CMusic::readBuffer(Uint8* buffer, size_t length) // length only refers to t
 	if(ret == -1)
 		return;
 
-	Audio_cvt.len = length/*/Audio_cvt.len_ratio*/;
+	Audio_cvt.len = (length*Audio_cvt.len_mult)/Audio_cvt.len_ratio;
 	Audio_cvt.buf = new Uint8[Audio_cvt.len];
 
 	// read the ogg stream
-	readOGGStream(m_oggStream, (char*)Audio_cvt.buf, Audio_cvt.len);
+	if( m_AudioSpec.freq == 48000 )
+	{
+		size_t insize = (Audio_cvt.len*441)/480;
+		size_t mult = m_AudioFileSpec.channels;
 
+		if(m_AudioFileSpec.format == AUDIO_S16)
+				mult <<= 1;
+
+		insize /= mult;
+		insize++;
+		insize *= mult;
+
+		readOGGStream(m_oggStream, (char*)Audio_cvt.buf, Audio_cvt.len, insize, m_AudioFileSpec);
+	}
+	else
+	{
+		readOGGStream(m_oggStream, (char*)Audio_cvt.buf, Audio_cvt.len, Audio_cvt.len, m_AudioFileSpec);
+	}
 
 	// then convert it into SDL Audio buffer
 	// Conversion to SDL Format
 	SDL_ConvertAudio(&Audio_cvt);
 
 	memcpy(buffer, Audio_cvt.buf, length);
+
+	delete Audio_cvt.buf;
 }
 
 bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &levelfilename)
