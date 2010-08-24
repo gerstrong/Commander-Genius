@@ -72,8 +72,10 @@ void CMusic::play(void)
 
 void CMusic::stop(void)
 {
+#ifdef OGG
 	if( usedMusicFile != "" )
 		cleanupOGG(m_oggStream);
+#endif
 	playmode = PLAY_MODE_STOP;
 }
 
