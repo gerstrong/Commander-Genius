@@ -3,7 +3,12 @@ Commander Genius Release :
 
 v0.3.2.2:
 ---------
+- Music is now streamed
+- Added tremor support
 - Even better Sound support
+- Several physic changes
+- Keen now can walk in levels in Galaxy
+- More mods are supported
 
 v0.3.2.1:
 ---------
