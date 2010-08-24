@@ -43,6 +43,8 @@ void CPhysicsSettings::loadGameConstants(int episode, byte* data)
 		byte pogo = *(data+0x900E);
 		player.pogostickonstart = pogo;
 		player.start_with_shots = *(data+0x9008);
+		vorticon.default_hp = *(data+0x180D)+1;
+		vorticon.commander_hp = *(data+0x1819)+1;
 		// TODO: ... More stuff will come here
 	}
 	else if(episode == 2)

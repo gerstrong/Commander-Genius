@@ -7,11 +7,14 @@
  *  This class has been created to fill with information
  *  about some physical values. Those values were defines before.
  *  Now they are constants. We might provide modding for those values
+ *  This Vorticon only!!!
  *  in future.
  */
 
 #ifndef CPHYSICSSETTINGS_H_
 #define CPHYSICSSETTINGS_H_
+
+// TODO: This should be moved to another namespace or indicate more, it's vorticon only
 
 #include <SDL.h>
 #include "fileio/TypeDefinitions.h"
@@ -34,6 +37,12 @@ public:
 		// pogo settings
 		int pogoforce_x;
 	}player;
+
+	struct vorticonsettings{
+		char commander_hp;
+		char default_hp;
+	}vorticon;
+
 
 	struct{
 		int visibility;

@@ -338,8 +338,10 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 			case 3:    // vorticon (ep1) Vorticon Commander (ep2)
 				if (episode==1)
 				{
-					enemyobject = new CVorticon( mp_map, *mp_vec_Player,
-								x<<CSF, y<<CSF, (level==16) ? 105 : 4 );
+					CPhysicsSettings &Phy = g_pBehaviorEngine->getPhysicsSettings();
+
+					size_t health = (level==16) ? Phy.vorticon.commander_hp : Phy.vorticon.default_hp;
+					enemyobject = new CVorticon( mp_map, *mp_vec_Player, x<<CSF, y<<CSF, health );
 				}
 				else if (episode==2)
 				{
