@@ -29,7 +29,7 @@ bool CMusic::load(const std::string &musicfile)
 	if(m_AudioSpec.format != 0)
 	{
 		
-#ifdef OGG
+#if defined(OGG) || defined(TREMOR)
 		
 		FILE *fp;
 		fp = OpenGameFile(musicfile.c_str(),"rb");
@@ -72,7 +72,7 @@ void CMusic::play(void)
 
 void CMusic::stop(void)
 {
-#ifdef OGG
+#if defined(OGG) || defined(TREMOR)
 	if( usedMusicFile != "" )
 		cleanupOGG(m_oggStream);
 #endif
@@ -81,7 +81,7 @@ void CMusic::stop(void)
 
 void CMusic::readBuffer(Uint8* buffer, size_t length) // length only refers to the part(buffer) that has to be played
 {
-#ifdef OGG
+#if defined(OGG) || defined(TREMOR)
 	bool rewind = false;
 	// Prepare for conversion
 	SDL_AudioCVT  Audio_cvt;

@@ -9,7 +9,7 @@
 #include "sdl/sound/Sampling.h"
 #include <vector>
 
-#ifdef OGG
+#if defined(OGG) || defined(TREMOR)
 
 short openOGGSound(FILE *fp, SDL_AudioSpec *pspec, stHQSound *psound)
 {
@@ -19,7 +19,11 @@ short openOGGSound(FILE *fp, SDL_AudioSpec *pspec, stHQSound *psound)
 	int result;
     OggVorbis_File  oggStream;     // stream handle
 
-    if((result = ov_open_callbacks(fp, &oggStream, NULL, 0, OV_CALLBACKS_DEFAULT)) < 0)
+#if defined(OGG)
+	if((result = ov_open_callbacks(fp, &oggStream, NULL, 0, OV_CALLBACKS_DEFAULT)) < 0)
+#elif defined(TREMOR)
+	if((result = ov_open(fp, &oggStream, NULL, 0)) < 0)
+#endif
     {
         fclose(fp);
         return 1;
@@ -44,7 +48,11 @@ short openOGGSound(FILE *fp, SDL_AudioSpec *pspec, stHQSound *psound)
         psound->sound_len = 0;
         do {
 			// Read up to a buffer's worth of decoded sound data
-			bytes = ov_read(&oggStream, array, BUFFER_SIZE, 0, 2, 1, &bitStream);
+#if defined(OGG)
+        	bytes = ov_read(&oggStream, array, BUFFER_SIZE, 0, 2, 1, &bitStream);
+#elif defined(TREMOR)
+        	bytes = ov_read(&oggStream, array, BUFFER_SIZE, &bitStream);
+#endif
 			// Append to end of buffer
 			buffer.insert(buffer.end(), array, array + bytes);
         } while (bytes > 0);
@@ -70,7 +78,11 @@ bool openOGGStream(FILE *fp, SDL_AudioSpec *pspec, OggVorbis_File  &oggStream)
 	// It must fit into the Audio_cvt structure, so that it can be converted
 
 	int result;
-    if((result = ov_open_callbacks(fp, &oggStream, NULL, 0, OV_CALLBACKS_DEFAULT)) < 0)
+#if defined(OGG)
+	if((result = ov_open_callbacks(fp, &oggStream, NULL, 0, OV_CALLBACKS_DEFAULT)) < 0)
+#elif defined(TREMOR)
+	if((result = ov_open(fp, &oggStream, NULL, 0)) < 0)
+#endif
     {
         fclose(fp);
         return false;
@@ -107,7 +119,11 @@ bool readOGGStream( OggVorbis_File  &oggStream, char *buffer, size_t output_size
 	while( pos<input_size )
 	{
 		// Read up to a buffer's worth of decoded sound data
+	#if defined(OGG)
 		bytes = ov_read(&oggStream, buf+pos, input_size-pos, 0, 2, 1, &bitStream);
+	#elif defined(TREMOR)
+		bytes = ov_read(&oggStream, buf+pos, input_size-pos, &bitStream);
+	#endif
 		pos += bytes;
 		if(bytes == 0)
 			break;

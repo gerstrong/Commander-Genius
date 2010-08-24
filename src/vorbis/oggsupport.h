@@ -5,17 +5,22 @@
  *      Author: gerstrong
  */
 
-#ifdef OGG
 
 #include <SDL.h>
 // vorbis headers
-#include <codec.h>
-#include <vorbisfile.h>
 
 #include <cstdio>
 #include <iostream>
 
 #define BUFFER_SIZE   32768     // 32 KB buffers
+
+#ifdef OGG
+#include <vorbisfile.h>
+#elif defined  TREMOR
+#include <ivorbisfile.h>
+#endif
+
+#if defined(OGG) || defined(TREMOR)
 
 #include "hqp/hq_sound.h"
 #include "sdl/CVideoDriver.h"

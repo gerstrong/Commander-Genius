@@ -26,6 +26,7 @@ OPTION(DEBUG "enable debug build" Yes)
 OPTION(SDL "SDL support (will not work without)" Yes)
 OPTION(OPENGL "OpenGL support" Yes)
 OPTION(OGG "Ogg/Vorbis support" Yes)
+OPTION(TREMOR "Tremor support" No)
 
 IF (DEBUG)
 	SET(CMAKE_BUILD_TYPE Debug)
@@ -60,6 +61,7 @@ IF (BUILD_TYPE STREQUAL GP2X OR
 		SET(CMAKE_CXX_COMPILER ${PREFIX}/bin/mipsel-linux-uclibc-g++)
 		ADD_DEFINITIONS(-DDINGOO)
 		SET(OGG No)
+		SET(TREMOR Yes)
 	ELSEIF(BUILD_TYPE STREQUAL PANDORA)
 		SET(PREFIX /mythtv/media/devel/toolchains/pandora/arm-2007q3)
 		SET(CMAKE_C_COMPILER ${PREFIX}/bin/arm-none-linux-gnueabi-gcc)
@@ -186,6 +188,13 @@ IF (OGG)
 	SET(ALL_SRCS ${ALL_SRCS} ${VORBIS_S})
 ENDIF (OGG)
 
+IF (TREMOR)
+	INCLUDE_DIRECTORIES(/usr/include/tremor)
+	ADD_DEFINITIONS(-DTREMOR)
+	SET(ALL_SRCS ${ALL_SRCS} ${VORBIS_S})
+ENDIF (TREMOR)
+
+
 IF (SDL)
 	ADD_DEFINITIONS(-DSDL)
 
@@ -255,6 +264,10 @@ IF(OGG)
 	ENDIF(BUILD_TYPE STREQUAL WIN32)
 ENDIF(OGG)
 
+IF(TREMOR)
+	TARGET_LINK_LIBRARIES(commandergenius vorbisidec)
+ENDIF(TREMOR)
+
 # Set binary(executable) file name. In Windows this filename needs the exe extension
 # The Windows Version has an icon in the executable
 IF(BUILD_TYPE STREQUAL WIN32)
@@ -282,5 +295,6 @@ MESSAGE( "CMAKE_CXX_COMPILER = ${CMAKE_CXX_COMPILER}" )
 MESSAGE( "CMAKE_CXX_FLAGS = ${CMAKE_CXX_FLAGS}" )
 MESSAGE( "OPENGL = ${OPENGL}" )
 MESSAGE( "OGG = ${OGG}" )
+MESSAGE( "TREMOR = ${TREMOR}" )
 MESSAGE( "64BIT = ${HAVE_64_BIT}" )
 

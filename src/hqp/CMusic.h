@@ -43,7 +43,7 @@ public:
 private:
 	int playmode;
 	std::string usedMusicFile;
-#ifdef OGG
+#if defined(OGG) || defined(TREMOR)
 	OggVorbis_File  m_oggStream;
 #endif
 

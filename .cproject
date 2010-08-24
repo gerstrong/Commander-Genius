@@ -26,14 +26,14 @@
 								<option id="gnu.cpp.compiler.option.include.paths.1230616762" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}/src&quot;"/>
 									<listOptionValue builtIn="false" value="/usr/include/SDL"/>
-									<listOptionValue builtIn="false" value="/usr/include/vorbis"/>
+									<listOptionValue builtIn="false" value="/usr/include/tremor"/>
 									<listOptionValue builtIn="false" value="/usr/include/ogg"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.1129603258" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="SDL"/>
 									<listOptionValue builtIn="false" value="DEBUG"/>
 									<listOptionValue builtIn="false" value="USE_OPENGL"/>
-									<listOptionValue builtIn="false" value="OGG"/>
+									<listOptionValue builtIn="false" value="TREMOR"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.optimization.level.1932699948" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.debugging.level.651852619" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
@@ -47,11 +47,9 @@
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.base.466515189" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.base"/>
 							<tool command="g++" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG}${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}" errorParsers="org.eclipse.cdt.core.GLDErrorParser" id="cdt.managedbuild.tool.gnu.cpp.linker.base.1883965219" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.base">
 								<option id="gnu.cpp.link.option.libs.650499560" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
+									<listOptionValue builtIn="false" value="vorbisidec"/>
 									<listOptionValue builtIn="false" value="SDL"/>
 									<listOptionValue builtIn="false" value="GL"/>
-									<listOptionValue builtIn="false" value="vorbis"/>
-									<listOptionValue builtIn="false" value="vorbisfile"/>
-									<listOptionValue builtIn="false" value="ogg"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.982917586" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths"/>
 								<option id="gnu.cpp.link.option.flags.1653726517" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="" valueType="string"/>

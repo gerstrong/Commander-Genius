@@ -199,7 +199,7 @@ int maxval = 0;
 
 void CSound::callback(void *unused, Uint8 *stream, int len)
 {
-#ifdef OGG
+#if defined(OGG) || defined(TREMOR)
     if (g_pMusicPlayer->playing() == PLAY_MODE_PLAY)
     {
     	Uint8 buffer[len];
