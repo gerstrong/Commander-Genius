@@ -90,8 +90,6 @@ void CPlayGameGalaxy::process()
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 	if( EventEnterLevel* ev = EventContainer.occurredEvent<EventEnterLevel>() )
 	{
-		EventContainer.pop_Event();
-
 		// Start a new level!
 		if(ev->data > 0xC000)
 		{
@@ -99,6 +97,7 @@ void CPlayGameGalaxy::process()
 			m_LevelPlay.loadLevel(ev->data - 0xC000);
 			m_LevelPlay.setActive(true);
 		}
+		EventContainer.pop_Event();
 	}
 	else if( EventContainer.occurredEvent<EventExitLevel>() )
 	{

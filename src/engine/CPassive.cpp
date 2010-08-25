@@ -21,6 +21,3 @@ CPassive::CPassive(CExeFile &Exefile,
 	m_NumPlayers = 0; // because no game chosen
 }
 
-CPassive::~CPassive() {
-}
-

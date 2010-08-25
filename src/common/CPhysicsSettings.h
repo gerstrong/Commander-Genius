@@ -7,8 +7,7 @@
  *  This class has been created to fill with information
  *  about some physical values. Those values were defines before.
  *  Now they are constants. We might provide modding for those values
- *  This Vorticon only!!!
- *  in future.
+ *  This is Vorticon only!!!
  */
 
 #ifndef CPHYSICSSETTINGS_H_

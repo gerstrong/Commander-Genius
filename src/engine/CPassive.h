@@ -49,8 +49,6 @@ public:
 	
 	virtual void cleanup() {};
 	
-	virtual ~CPassive();
-
 	char m_mode;
 	
 	CMenuVorticon *mp_Menu;

@@ -12,6 +12,8 @@ make
 cmake . -DBUILD_TYPE=LINUX32 -DDEBUG=OFF -DOGG=yes -DTREMOR=NO
 make
 
+rm CMakeBuilds -R
+
 # upload the packages
 #rsync -e ssh CG-SVN-${dt}-win32.zip gerstrong,clonekeenplus@frs.sourceforge.net:/home/frs/project/c/cl/clonekeenplus/
 #rsync -e ssh CCG-SVN-${dt}-linux32.zip gerstrong,clonekeenplus@frs.sourceforge.net:/home/frs/project/c/cl/clonekeenplus/

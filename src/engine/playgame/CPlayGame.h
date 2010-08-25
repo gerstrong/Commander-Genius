@@ -41,7 +41,7 @@ public:
 	virtual ~CPlayGame();
 
 protected:
-	char m_NumPlayers;
+	unsigned char m_NumPlayers;
 	bool m_endgame;
 	CExeFile &m_ExeFile;
 	char m_Episode;
