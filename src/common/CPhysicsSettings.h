@@ -47,6 +47,7 @@ public:
 
 	struct{
 		int visibility;
+		int ctspace_ammo;
 	}misc;
 
 	int max_fallspeed;
