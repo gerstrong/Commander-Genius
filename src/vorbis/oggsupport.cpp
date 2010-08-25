@@ -71,6 +71,8 @@ short openOGGSound(FILE *fp, SDL_AudioSpec *pspec, stHQSound *psound)
     }
 }
 
+long pcm_size;
+long music_pos;
 
 bool openOGGStream(FILE *fp, SDL_AudioSpec *pspec, OggVorbis_File  &oggStream)
 {
@@ -100,15 +102,18 @@ bool openOGGStream(FILE *fp, SDL_AudioSpec *pspec, OggVorbis_File  &oggStream)
         pspec->channels = vorbisInfo->channels;
         pspec->freq = vorbisInfo->rate;
 
+        pcm_size = ov_pcm_total(&oggStream,-1);
+        pcm_size *= (vorbisInfo->channels*2);
+        music_pos = 0;
+
 		return true;
     }
 }
 
 bool readOGGStream( OggVorbis_File  &oggStream, char *buffer, size_t output_size, size_t input_size, const SDL_AudioSpec &OGGAudioSpec )
 {
-	int bitStream;
-	unsigned long bytes = 0;
-	unsigned long pos = 0;
+	long bytes = 0;
+	bool eof = false;
 
 	char *buf;
 	if(input_size != output_size)
@@ -116,6 +121,8 @@ bool readOGGStream( OggVorbis_File  &oggStream, char *buffer, size_t output_size
 	else
 		buf = buffer;
 
+	unsigned long pos = 0;
+	int bitStream;
 	while( pos<input_size )
 	{
 		// Read up to a buffer's worth of decoded sound data
@@ -125,8 +132,16 @@ bool readOGGStream( OggVorbis_File  &oggStream, char *buffer, size_t output_size
 		bytes = ov_read(&oggStream, buf+pos, input_size-pos, &bitStream);
 	#endif
 		pos += bytes;
-		if(bytes == 0)
+		music_pos += bytes;
+		if( bytes <= 0 || music_pos >= pcm_size )
+		{
+			memset( buf+pos, OGGAudioSpec.silence, input_size-pos );
+			pos = input_size;
+			bitStream = 0;
+			music_pos = 0;
+			eof = true;
 			break;
+		}
 	}
 
 	if(input_size != output_size)
@@ -135,7 +150,7 @@ bool readOGGStream( OggVorbis_File  &oggStream, char *buffer, size_t output_size
 		delete [] buf;
 	}
 
-	return (bytes != 0);
+	return !eof;
 }
 
 void cleanupOGG(OggVorbis_File  &oggStream)

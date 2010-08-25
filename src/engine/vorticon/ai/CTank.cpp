@@ -116,17 +116,21 @@ void CTank::process()
 		break;
 	case TANK_FIRE:
 	{
-		CRay *newobject;
-		if (onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, scrx);
-		if (movedir==RIGHT)
-			newobject = new CRay(mp_Map, getXMidPos(), getYUpPos()+(4<<STC), RIGHT);
-		else
-			newobject = new CRay(mp_Map, getXMidPos(), getYUpPos()+(4<<STC), LEFT);
-		newobject->setOwner(OBJ_TANK, m_index);
-		newobject->setSpeed(108);
-		newobject->sprite = ENEMYRAY;
-		newobject->canbezapped = true;
-		m_Object.push_back(newobject);
+		int height_top = g_pBehaviorEngine->getPhysicsSettings().tankbot.shot_height_from_top<<STC;
+		if(height_top!=0)
+		{
+			CRay *newobject;
+			if (onscreen) g_pSound->playStereofromCoord(SOUND_TANK_FIRE, PLAY_NOW, scrx);
+			if (movedir==RIGHT)
+				newobject = new CRay(mp_Map, getXMidPos(), getYUpPos()+height_top, RIGHT);
+			else
+				newobject = new CRay(mp_Map, getXMidPos(), getYUpPos()+height_top, LEFT);
+			newobject->setOwner(OBJ_TANK, m_index);
+			newobject->setSpeed(108);
+			newobject->sprite = ENEMYRAY;
+			newobject->canbezapped = true;
+			m_Object.push_back(newobject);
+		}
 
 		state = TANK_WAIT_LOOK;
 		frame = 0;

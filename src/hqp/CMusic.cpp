@@ -16,7 +16,8 @@
 
 CMusic::CMusic() :
 playmode(PLAY_MODE_STOP),
-usedMusicFile("")
+usedMusicFile(""),
+m_open(false)
 {}
 
 bool CMusic::load(const std::string &musicfile)
@@ -25,6 +26,7 @@ bool CMusic::load(const std::string &musicfile)
 		return false;
 
 	m_AudioSpec = g_pSound->getAudioSpec();
+	m_open = false;
 
 	if(m_AudioSpec.format != 0)
 	{
@@ -47,6 +49,7 @@ bool CMusic::load(const std::string &musicfile)
 		
 		g_pLogFile->ftextOut("Music Driver(): File \"%s\" opened successfully!<br>", musicfile.c_str());
 		usedMusicFile = musicfile;
+		m_open = true;
 
 		return true;
 		
@@ -73,10 +76,11 @@ void CMusic::play(void)
 void CMusic::stop(void)
 {
 #if defined(OGG) || defined(TREMOR)
-	if( usedMusicFile != "" )
+	if( m_open )
 		cleanupOGG(m_oggStream);
 #endif
 	playmode = PLAY_MODE_STOP;
+	m_open = false;
 }
 
 void CMusic::readBuffer(Uint8* buffer, size_t length) // length only refers to the part(buffer) that has to be played

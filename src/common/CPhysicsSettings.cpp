@@ -40,11 +40,17 @@ void CPhysicsSettings::loadGameConstants(int episode, byte* data)
 	if(episode == 1)
 	{	// Code for Episode 1.
 
+		// player
 		byte pogo = *(data+0x900E);
 		player.pogostickonstart = pogo;
 		player.start_with_shots = *(data+0x9008);
+
+		// vorticon
 		vorticon.default_hp = *(data+0x180D)+1;
 		vorticon.commander_hp = *(data+0x1819)+1;
+
+		// tank bot
+		tankbot.shot_height_from_top = *(data+0x4900);
 		// TODO: ... More stuff will come here
 	}
 	else if(episode == 2)
