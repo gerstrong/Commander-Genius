@@ -93,15 +93,21 @@ m_Place(0), m_blink(true), m_blinkctr(0)
 		bmp.rect.h = bmp.p_Bitmap->getHeight();
 		m_Bitmaps.push_back(bmp);
 		
+		CPhysicsSettings &Phy = g_pBehaviorEngine->getPhysicsSettings();
+		int joy_tile = Phy.misc.joy_tile;
+		int bat_tile = Phy.misc.bat_tile;
+		int vac_tile = Phy.misc.vac_tile;
+		int wsk_tile = Phy.misc.wsk_tile;
+
 		// Put the Tiles, of the parts that were collected
 		if(!saving_mode)
 		{
 			for( int i=0 ; i<8 ; i++ )
 			{
-				if(m_Extra[i][0]) m_Map.setTile(98,5+i,221+(i%4), true);
-				if(m_Extra[i][1]) m_Map.setTile(99,5+i,237+((i+1)%4), true);
-				if(m_Extra[i][2]) m_Map.setTile(100,5+i,241+((i+2)%4), true);
-				if(m_Extra[i][3]) m_Map.setTile(101,5+i,245+((i+3)%4), true);
+				if(m_Extra[i][0]) m_Map.setTile(98, 5+i, joy_tile+(i%4), true);
+				if(m_Extra[i][1]) m_Map.setTile(99, 5+i, bat_tile+((i+1)%4), true);
+				if(m_Extra[i][2]) m_Map.setTile(100, 5+i, vac_tile+((i+2)%4), true);
+				if(m_Extra[i][3]) m_Map.setTile(101, 5+i, wsk_tile+((i+3)%4), true);
 			}
 		}
 	}
@@ -337,7 +343,3 @@ bool CHighScores::saveHighScoreTable()
 	
 	return true;
 }
-
-CHighScores::~CHighScores() {
-}
-

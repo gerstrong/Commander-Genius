@@ -369,7 +369,7 @@ void CPlayGameVorticon::handleFKeys()
 				m_Player[i].give_keycard(DOOR_GREEN);
 				m_Player[i].give_keycard(DOOR_BLUE);
 				
-				m_Player[i].inventory.charges += 99;
+				m_Player[i].inventory.charges = g_pBehaviorEngine->getPhysicsSettings().misc.ctspace_ammo;
 				m_Player[i].inventory.HasPogo = true;
 				m_Player[i].inventory.lives += 5;
 

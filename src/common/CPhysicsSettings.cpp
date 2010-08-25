@@ -29,7 +29,8 @@ CPhysicsSettings::CPhysicsSettings() {
 	player.pogoforce_x = 30;
 
 	misc.visibility = 3;
-	misc.ctspace_ammo = 99;
+	misc.ctspace_ammo = 100;
+
 }
 
 /**
@@ -53,6 +54,11 @@ void CPhysicsSettings::loadGameConstants(int episode, byte* data)
 		// tank bot
 		tankbot.shot_height_from_top = *(data+0x4900);
 		misc.ctspace_ammo = GETWORD(data+0xE03);
+
+		misc.joy_tile = GETWORD(data+0x992A);
+		misc.bat_tile = GETWORD(data+0x995D);
+		misc.vac_tile = GETWORD(data+0x9990);
+		misc.wsk_tile = GETWORD(data+0x99C3);
 		// TODO: ... More stuff will come here
 	}
 	else if(episode == 2)

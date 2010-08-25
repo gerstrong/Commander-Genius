@@ -29,8 +29,6 @@ public:
 	
 	void process();
 
-	virtual ~CHighScores();
-
 private:
 	CMap m_Map;
 

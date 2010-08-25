@@ -44,10 +44,15 @@ public:
 		char shot_height_from_top;
 	}tankbot;
 
-
 	struct{
 		int visibility;
 		int ctspace_ammo;
+
+		// Episode 1 only
+		int joy_tile;
+		int bat_tile;
+		int vac_tile;
+		int wsk_tile;
 	}misc;
 
 	int max_fallspeed;
