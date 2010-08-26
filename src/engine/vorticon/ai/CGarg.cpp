@@ -134,11 +134,11 @@ void CGarg::process()
 		detectedPlayer = 0;
 
 		std::vector<CPlayer>::iterator it = m_Player.begin();
-		for( size_t i=0; it != m_Player.end() ; it++ )
+		for( size_t i=0 ; it != m_Player.end() ; it++ )
 		{
-			if ( it->getYPosition() >= getYUpPos() )
+			if ( it->getYDownPos() >= getYDownPos()-(16<<STC) )
 			{
-				if ( it->getYDownPos() <= getYDownPos() )
+				if ( it->getYDownPos() <= getYDownPos()+(16<<STC) )
 				{
 					detectedPlayer = 1;
 					detectedPlayerIndex = i;
@@ -188,63 +188,64 @@ void CGarg::process()
 		else
 			state = GARG_CHARGE;
 
-		if(TileProperties.at(mp_Map->at((getXMidPos())>>CSF, (getYDownPos()+1)>>CSF)).bup) // There is floor
+		if( blockedd ) // There is floor
 			state = GARG_CHARGE;
-		else
-		{
-			moveUp(GARG_JUMP_SPEED);
-		}
 
-		// In this case continue with charge
+		charge();
+		break;
 	case GARG_CHARGE:
-		if (movedir==LEFT)
-		{  // garg is charging left
-			sprite = GARG_WALK_LEFT + walkframe;
-			if (!blockedl)
-			{
-				xinertia = -GARG_CHARGE_SPEED;
-				dist_traveled++;
-			}
-			else
-			{
-				looktimes = 0;
-				timer = 0;
-				state = GARG_MOVE;
-			}
-		}
-		else
-		{  // garg is charging right
-			sprite = GARG_WALK_RIGHT + walkframe;
-			if (!blockedr)
-			{
-				xinertia = GARG_CHARGE_SPEED;
-				dist_traveled++;
-			}
-			else
-			{
-				looktimes = 0;
-				timer = 0;
-				state = GARG_MOVE;
-			}
-		}
+		charge();
 
 		// if Garg is about to fall while charged make him jump
-		if( !TileProperties.at(mp_Map->at((getXMidPos())>>CSF, (getYDownPos()+1)>>CSF)).bup )
+		if( !blockedd )
 		{
 			state = GARG_JUMP;
+			yinertia = -(GARG_JUMP_SPEED);
 			jumptime = GARG_JUMP_TIME;
 		}
 
-		// walk animation
-		if (timer > GARG_CHARGE_ANIM_TIME)
-		{
-			walkframe ^= 1;
-			timer = 0;
-		} else timer++;
 		break;
 	default: break;
 	}
 }
 
-CGarg::~CGarg()
-{}
+void CGarg::charge()
+{
+	if (movedir==LEFT)
+	{  // garg is charging left
+		sprite = GARG_WALK_LEFT + walkframe;
+		if (!blockedl)
+		{
+			xinertia = -GARG_CHARGE_SPEED;
+			dist_traveled++;
+		}
+		else
+		{
+			looktimes = 0;
+			timer = 0;
+			state = GARG_MOVE;
+		}
+	}
+	else
+	{  // garg is charging right
+		sprite = GARG_WALK_RIGHT + walkframe;
+		if (!blockedr)
+		{
+			xinertia = GARG_CHARGE_SPEED;
+			dist_traveled++;
+		}
+		else
+		{
+			looktimes = 0;
+			timer = 0;
+			state = GARG_MOVE;
+		}
+	}
+
+	// walk animation
+	if (timer > GARG_CHARGE_ANIM_TIME)
+	{
+		walkframe ^= 1;
+		timer = 0;
+	} else timer++;
+}

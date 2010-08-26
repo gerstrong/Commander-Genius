@@ -46,7 +46,7 @@ public:
 	CGarg(CMap *p_map, std::vector<CPlayer> &m_vec_Player,
 			Uint32 x, Uint32 y);
 	void process();
-	virtual ~CGarg();
+	void charge();
 
 private:
 	enum garg_states{

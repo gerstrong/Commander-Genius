@@ -353,7 +353,8 @@ void CPlayer::Walking()
 		if (pwalkincreasetimer>=cur_pfastincrate)
 		{
 			if(pfalling) xinertia+=(1<<2);
-			else xinertia+=(1<<4);
+			//else xinertia+=(1<<4);
+			else xinertia+=(1<<3);
 			pwalkincreasetimer=0;
 		}
 		else	pwalkincreasetimer++;
@@ -374,7 +375,8 @@ void CPlayer::Walking()
 		if (pwalkincreasetimer>=cur_pfastincrate)
 		{
 			if(pfalling) xinertia-=(1<<2);
-			else xinertia-=(1<<4);
+			//else xinertia-=(1<<4);
+			else xinertia-=(1<<3);
 			pwalkincreasetimer=0;
 		}
 		else	pwalkincreasetimer++;

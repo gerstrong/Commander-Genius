@@ -595,8 +595,10 @@ void CPlayer::JumpAndPogo()
     // If we are in Godmode, use the Pogo, and pressing the jump button, make the player fly
     if( godmode && ppogostick )
     {
-    	if(playcontrol[PA_X] < 0) xinertia-=4;
-    	if(playcontrol[PA_X] > 0) xinertia+=4;
+    	//if(playcontrol[PA_X] < 0) xinertia-=4;
+    	//if(playcontrol[PA_X] > 0) xinertia+=4;
+    	if(playcontrol[PA_X] < 0) xinertia-=3;
+    	if(playcontrol[PA_X] > 0) xinertia+=3;
     	if(playcontrol[PA_JUMP] && !blockedu)
     		moveUp(PPOGOUP_SPEED);
     }
