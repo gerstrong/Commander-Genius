@@ -124,13 +124,13 @@ void CStatusScreen::createInventorySfcEp1()
 
 	// fill in what we have
 	// 321: joystick/battery/vacuum/fuel not gotten
-	// 414: raygun, 415, pogo
 	// 424: yellow/red/green/blue cards
 	// 448: ship parts, gotten
+	CPhysicsSettings &Phy = g_pBehaviorEngine->getPhysicsSettings();
 	// raygun icon
-	Tilemap.drawTile(p_surface, 4<<3, (8<<3)+3, 414);
+	Tilemap.drawTile(p_surface, 4<<3, (8<<3)+3, Phy.misc.raygun_tile);
 	// pogo
-	if (mp_inventory->HasPogo) Tilemap.drawTile(p_surface, 12<<3, (9<<3)+3, 415);
+	if (mp_inventory->HasPogo) Tilemap.drawTile(p_surface, 12<<3, (9<<3)+3, Phy.misc.pogo_tile);
 	// cards
 	if (mp_inventory->HasCardYellow)
 	{

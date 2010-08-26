@@ -244,7 +244,8 @@ bool CPlayer::showGameHint(int mpx, int mpy)
 		if(mp_Map->at(mpx, mpy) >= 435 && mp_Map->at(mpx, mpy) <= 438)
 		{
 			// it's a garg statue
-			mp_Map->setTile(mpx, mpy, 434, true);
+			int tile = g_pBehaviorEngine->getPhysicsSettings().misc.one_eyed_tile;
+			mp_Map->setTile(mpx, mpy, tile, true);
 		}
 		else // It's a yorp statue.. or something else
 		{

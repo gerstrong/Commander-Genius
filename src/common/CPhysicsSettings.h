@@ -47,12 +47,17 @@ public:
 	struct{
 		int visibility;
 		int ctspace_ammo;
+		int ctspace_keys;
+		int one_eyed_tile;
 
 		// Episode 1 only
 		int joy_tile;
 		int bat_tile;
 		int vac_tile;
 		int wsk_tile;
+
+		int pogo_tile;
+		int raygun_tile;
 	}misc;
 
 	int max_fallspeed;

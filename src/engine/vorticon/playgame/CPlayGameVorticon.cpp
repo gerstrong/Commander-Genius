@@ -364,12 +364,24 @@ void CPlayGameVorticon::handleFKeys()
 			m_Player[i].pfiring = false;
 			if (m_Player[i].m_playingmode)
 			{
-				m_Player[i].give_keycard(DOOR_YELLOW);
-				m_Player[i].give_keycard(DOOR_RED);
-				m_Player[i].give_keycard(DOOR_GREEN);
-				m_Player[i].give_keycard(DOOR_BLUE);
+				CPhysicsSettings &Phy = g_pBehaviorEngine->getPhysicsSettings();
+
+				if(Phy.misc.ctspace_keys)
+				{
+					m_Player[i].give_keycard(DOOR_YELLOW);
+					m_Player[i].give_keycard(DOOR_RED);
+					m_Player[i].give_keycard(DOOR_GREEN);
+					m_Player[i].give_keycard(DOOR_BLUE);
+				}
+				else
+				{
+					m_Player[i].take_keycard(DOOR_YELLOW);
+					m_Player[i].take_keycard(DOOR_RED);
+					m_Player[i].take_keycard(DOOR_GREEN);
+					m_Player[i].take_keycard(DOOR_BLUE);
+				}
 				
-				m_Player[i].inventory.charges = g_pBehaviorEngine->getPhysicsSettings().misc.ctspace_ammo;
+				m_Player[i].inventory.charges = Phy.misc.ctspace_ammo;
 				m_Player[i].inventory.HasPogo = true;
 				m_Player[i].inventory.lives += 5;
 
