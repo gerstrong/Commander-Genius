@@ -169,7 +169,7 @@ void CTileLoader::assignChangeTileAttribute(size_t NumTiles)
 	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties(1);
 
 	// smart tile change is the change style that uses Keen 3. This is vorticon only stuff!
-	bool smart_tilechanger=false;
+	bool smart_tilechanger = false;
 
 	if(m_episode == 3 || smartTileChangerEnabled())
 		smart_tilechanger = true;
@@ -186,7 +186,7 @@ void CTileLoader::assignChangeTileAttribute(size_t NumTiles)
 				TileProperties[i].chgtile = (i>=0x131) ? 0x114 : 0x8F;
 		}
 		if( isaDoor(i) )
-			TileProperties[i].chgtile = (m_episode == 3) ? 0xB6 : 0x8F;
+			TileProperties[i].chgtile = smart_tilechanger ? 0xB6 : 0x8F;
 	}
 }
 
