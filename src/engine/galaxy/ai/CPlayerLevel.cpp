@@ -58,16 +58,9 @@ void CPlayerLevel::process()
 
 	processJumping();
 
-	// Looking Up and Down Routine
-	if(blockedd && xinertia == 0)
-	{
-		if( m_playcontrol[PA_Y]<0 )
-			setAction(A_KEEN_LOOKUP);
-		else if( m_playcontrol[PA_Y]>0 )
-			setAction(A_KEEN_LOOKDOWN);
-		else
-			setAction(A_KEEN_STAND);
-	}
+	processLooking();
+
+	processStanding();
 
 	processFalling();
 
@@ -129,6 +122,14 @@ void CPlayerLevel::processInput()
 	}
 }
 
+void CPlayerLevel::processStanding()
+{
+	if(m_playcontrol[PA_FIRE])
+	{
+		setAction(A_KEEN_SHOOT);
+	}
+}
+
 void CPlayerLevel::processFalling()
 {
 	CObject::processFalling();
@@ -142,17 +143,19 @@ void CPlayerLevel::processMoving()
 	size_t movespeed = 50;
 
 	// Normal moving
-	if( m_playcontrol[PA_X]<0 && !blockedl)
+	if(!m_playcontrol[PA_FIRE])
 	{
-		xinertia = -movespeed;
-		m_direction = LEFT;
+		if( m_playcontrol[PA_X]<0 && !blockedl)
+		{
+			xinertia = -movespeed;
+			m_direction = LEFT;
+		}
+		else if( m_playcontrol[PA_X]>0 && !blockedr)
+		{
+			xinertia = movespeed;
+			m_direction = RIGHT;
+		}
 	}
-	else if( m_playcontrol[PA_X]>0 && !blockedr)
-	{
-		xinertia = movespeed;
-		m_direction = RIGHT;
-	}
-
 
 	if( blockedd )
 	{
@@ -163,6 +166,7 @@ void CPlayerLevel::processMoving()
 	}
 }
 
+// Processes the jumping of the player
 void CPlayerLevel::processJumping()
 {
 	if(!getActionNumber(A_KEEN_JUMP))
@@ -197,6 +201,21 @@ void CPlayerLevel::processJumping()
 			m_jumpheight = 0;
 		}
 
+	}
+}
+
+// This is for processing the looking routine.
+void CPlayerLevel::processLooking()
+{
+	// Looking Up and Down Routine
+	if(blockedd && xinertia == 0)
+	{
+		if( m_playcontrol[PA_Y]<0 )
+			setAction(A_KEEN_LOOKUP);
+		else if( m_playcontrol[PA_Y]>0 )
+			setAction(A_KEEN_LOOKDOWN);
+		else
+			setAction(A_KEEN_STAND);
 	}
 }
 
