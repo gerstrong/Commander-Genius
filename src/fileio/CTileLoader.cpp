@@ -186,7 +186,14 @@ void CTileLoader::assignChangeTileAttribute(size_t NumTiles)
 				TileProperties[i].chgtile = (i>=0x131) ? 0x114 : 0x8F;
 		}
 		if( isaDoor(i) )
-			TileProperties[i].chgtile = smart_tilechanger ? 0xB6 : 0x8F;
+		{
+			if(m_episode == 3)
+				TileProperties[i].chgtile = 0xB6;
+			else if(smart_tilechanger)
+				TileProperties[i].chgtile = (i/13)*13;
+			else
+				TileProperties[i].chgtile = 0x8F;
+		}
 	}
 }
 
