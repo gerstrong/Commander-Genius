@@ -60,7 +60,7 @@ void CPlayerLevel::process()
 
 	processLooking();
 
-	processStanding();
+	processFiring();
 
 	processFalling();
 
@@ -122,19 +122,44 @@ void CPlayerLevel::processInput()
 	}
 }
 
-void CPlayerLevel::processStanding()
+void CPlayerLevel::processFiring()
 {
-	if(m_playcontrol[PA_FIRE])
+	bool inair = getActionNumber(A_KEEN_JUMP) || getActionNumber(A_KEEN_JUMP+1) ||
+			getActionNumber(A_KEEN_FALL) || falling;
+
+	bool shooting =  getActionNumber(A_KEEN_JUMP_SHOOT) || getActionNumber(A_KEEN_JUMP_SHOOTDOWN) ||
+			getActionNumber(A_KEEN_JUMP_SHOOTUP) || getActionNumber(A_KEEN_SHOOT+2);
+
+	if( m_playcontrol[PA_FIRE] && !shooting )
 	{
-		setAction(A_KEEN_SHOOT);
+		if( inair )
+		{
+			if(m_playcontrol[PA_Y] < 0)
+				setAction(A_KEEN_JUMP_SHOOTUP);
+			else if(m_playcontrol[PA_Y] > 0)
+				setAction(A_KEEN_JUMP_SHOOTDOWN);
+			else
+				setAction(A_KEEN_JUMP_SHOOT);
+		}
+		else
+		{
+			if(m_playcontrol[PA_Y] < 0)
+				setAction(A_KEEN_SHOOT+2);
+			else
+				setAction(A_KEEN_SHOOT);
+		}
 	}
+
+
+
 }
 
 void CPlayerLevel::processFalling()
 {
 	CObject::processFalling();
 
-	if( falling )
+	if( falling && !getActionNumber(A_KEEN_JUMP_SHOOT)
+			&& !getActionNumber(A_KEEN_JUMP_SHOOTUP) && !getActionNumber(A_KEEN_JUMP_SHOOTDOWN) )
 		setAction(A_KEEN_FALL);
 }
 
@@ -208,14 +233,15 @@ void CPlayerLevel::processJumping()
 void CPlayerLevel::processLooking()
 {
 	// Looking Up and Down Routine
-	if(blockedd && xinertia == 0)
+	//bool notshooting = ;
+	if(blockedd && xinertia == 0 /*&& notshooting*/)
 	{
 		if( m_playcontrol[PA_Y]<0 )
 			setAction(A_KEEN_LOOKUP);
 		else if( m_playcontrol[PA_Y]>0 )
 			setAction(A_KEEN_LOOKDOWN);
-		else
-			setAction(A_KEEN_STAND);
+		//else
+			//setAction(A_KEEN_STAND);
 	}
 }
 
@@ -229,10 +255,6 @@ void CPlayerLevel::processExiting()
 	{
 		EventContainer.add( new EventExitLevel(mp_Map->getLevel()) );
 	}
-}
-
-CPlayerLevel::~CPlayerLevel() {
-	// TODO Auto-generated destructor stub
 }
 
 }

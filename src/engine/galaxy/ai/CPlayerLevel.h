@@ -61,14 +61,12 @@ public:
 
 	void process();
 	void processInput();
-	void processStanding();
+	void processFiring();
 	void processFalling();
 	void processMoving();
 	void processJumping();
 	void processLooking();
 	void processExiting();
-
-	virtual ~CPlayerLevel();
 
 private:
 	Uint8 m_animation;
