@@ -71,9 +71,12 @@ void CPlayer::processInLevel()
 		checkSolidDoors();
 
 		InertiaAndFriction_X();
-		
-		TogglePogo_and_Switches();
-		JumpAndPogo();
+
+		if(!level_done)
+		{
+			TogglePogo_and_Switches();
+			JumpAndPogo();
+		}
 
 		// Check collision with other objects
 		performCollisions();
@@ -118,7 +121,7 @@ void CPlayer::walkbehindexitdoor()
     // X pixel position of right side of player
     xb = (getXRightPos())>>(STC);
     diff = (xb - exitXpos) + 6;        // dist between keen and door
-    if (diff >= 0)                             // past exitXpos?
+    if (diff > 0)                             // past exitXpos?
     {
         width = (w>>(STC)) - diff;    // get new width of sprite
         if (width < 0) width = 0;               // don't set to negative
