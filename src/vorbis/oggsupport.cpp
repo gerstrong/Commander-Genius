@@ -122,7 +122,7 @@ bool readOGGStream( OggVorbis_File  &oggStream, char *buffer, size_t output_size
 		buf = buffer;
 
 	unsigned long pos = 0;
-	int bitStream;
+	int bitStream = 0;
 	while( pos<input_size )
 	{
 		// Read up to a buffer's worth of decoded sound data
@@ -155,6 +155,8 @@ bool readOGGStream( OggVorbis_File  &oggStream, char *buffer, size_t output_size
 
 void cleanupOGG(OggVorbis_File  &oggStream)
 {
+	music_pos = 0;
+	pcm_size = 0;
 	ov_clear(&oggStream);
 }
 
