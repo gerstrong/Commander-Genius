@@ -202,9 +202,8 @@ void CSound::callback(void *unused, Uint8 *stream, int len)
 #if defined(OGG) || defined(TREMOR)
     if (g_pMusicPlayer->playing() == PLAY_MODE_PLAY)
     {
-    	Uint8 buffer[len];
-    	g_pMusicPlayer->readBuffer(buffer, len);
-    	mixAudio(stream, buffer, len, m_MusicVolume, AudioSpec.format);
+    	g_pMusicPlayer->readBuffer(m_MixedForm, len);
+    	mixAudio(stream, m_MixedForm, len, m_MusicVolume, AudioSpec.format);
     }
 #endif
 
