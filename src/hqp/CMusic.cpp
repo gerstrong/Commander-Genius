@@ -18,7 +18,9 @@ CMusic::CMusic() :
 playmode(PLAY_MODE_STOP),
 usedMusicFile(""),
 m_open(false)
-{}
+{
+	m_Audio_cvt.buf = NULL;
+}
 
 bool CMusic::load(const std::string &musicfile)
 {
@@ -53,9 +55,16 @@ bool CMusic::load(const std::string &musicfile)
 		int ret = SDL_BuildAudioCVT(&m_Audio_cvt,
 								m_AudioFileSpec.format, m_AudioFileSpec.channels, m_AudioFileSpec.freq,
 								m_AudioSpec.format, m_AudioSpec.channels, m_AudioSpec.freq);
+		if(ret == -1)
+			return false;
 
-		return (ret != -1);
+		if(	m_Audio_cvt.buf )
+			delete [] m_Audio_cvt.buf;
+		const size_t &length = g_pSound->getAudioSpec().size;
+		m_Audio_cvt.len = (length*m_Audio_cvt.len_mult)/m_Audio_cvt.len_ratio;
+		m_Audio_cvt.buf = new Uint8[m_Audio_cvt.len];
 
+		return true;
 #endif
 	}
 	else
@@ -91,9 +100,6 @@ void CMusic::readBuffer(Uint8* buffer, size_t length) // length only refers to t
 #if defined(OGG) || defined(TREMOR)
 	bool rewind = false;
 
-	m_Audio_cvt.len = (length*m_Audio_cvt.len_mult)/m_Audio_cvt.len_ratio;
-	m_Audio_cvt.buf = new Uint8[m_Audio_cvt.len];
-
 	// read the ogg stream
 	if( m_AudioSpec.freq == 48000 )
 	{
@@ -119,8 +125,6 @@ void CMusic::readBuffer(Uint8* buffer, size_t length) // length only refers to t
 	SDL_ConvertAudio(&m_Audio_cvt);
 
 	memcpy(buffer, m_Audio_cvt.buf, length);
-
-	delete [] m_Audio_cvt.buf;
 
 	if(rewind)
 	{
@@ -180,6 +184,10 @@ void CMusic::unload(void)
 
 
 CMusic::~CMusic() {
+
+	if(	m_Audio_cvt.buf )
+		delete [] m_Audio_cvt.buf;
+
 	unload();
 }
 
