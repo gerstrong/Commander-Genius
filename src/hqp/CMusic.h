@@ -50,6 +50,7 @@ private:
 	SDL_AudioSpec m_AudioSpec;
 	SDL_AudioSpec m_AudioFileSpec;
 	bool m_open;
+	SDL_AudioCVT  m_Audio_cvt;
 };
 
 #endif /* CMUSIC_H_ */

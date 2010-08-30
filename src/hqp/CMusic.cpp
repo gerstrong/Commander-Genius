@@ -50,9 +50,12 @@ bool CMusic::load(const std::string &musicfile)
 		g_pLogFile->ftextOut("Music Driver(): File \"%s\" opened successfully!<br>", musicfile.c_str());
 		usedMusicFile = musicfile;
 		m_open = true;
+		int ret = SDL_BuildAudioCVT(&m_Audio_cvt,
+								m_AudioFileSpec.format, m_AudioFileSpec.channels, m_AudioFileSpec.freq,
+								m_AudioSpec.format, m_AudioSpec.channels, m_AudioSpec.freq);
 
-		return true;
-		
+		return (ret != -1);
+
 #endif
 	}
 	else
@@ -87,21 +90,14 @@ void CMusic::readBuffer(Uint8* buffer, size_t length) // length only refers to t
 {
 #if defined(OGG) || defined(TREMOR)
 	bool rewind = false;
-	// Prepare for conversion
-	SDL_AudioCVT  Audio_cvt;
-	int ret = SDL_BuildAudioCVT(&Audio_cvt,
-							m_AudioFileSpec.format, m_AudioFileSpec.channels, m_AudioFileSpec.freq,
-							m_AudioSpec.format, m_AudioSpec.channels, m_AudioSpec.freq);
-	if(ret == -1)
-		return;
 
-	Audio_cvt.len = (length*Audio_cvt.len_mult)/Audio_cvt.len_ratio;
-	Audio_cvt.buf = new Uint8[Audio_cvt.len];
+	m_Audio_cvt.len = (length*m_Audio_cvt.len_mult)/m_Audio_cvt.len_ratio;
+	m_Audio_cvt.buf = new Uint8[m_Audio_cvt.len];
 
 	// read the ogg stream
 	if( m_AudioSpec.freq == 48000 )
 	{
-		size_t insize = (Audio_cvt.len*441)/480;
+		size_t insize = (m_Audio_cvt.len*441)/480;
 		size_t mult = m_AudioFileSpec.channels;
 
 		if(m_AudioFileSpec.format == AUDIO_S16)
@@ -111,20 +107,20 @@ void CMusic::readBuffer(Uint8* buffer, size_t length) // length only refers to t
 		insize++;
 		insize *= mult;
 
-		rewind = !readOGGStream(m_oggStream, (char*)Audio_cvt.buf, Audio_cvt.len, insize, m_AudioFileSpec);
+		//rewind = readOGGStream(m_oggStream, (char*)Audio_cvt.buf, Audio_cvt.len, insize, m_AudioFileSpec);
 	}
 	else
 	{
-		rewind = !readOGGStream(m_oggStream, (char*)Audio_cvt.buf, Audio_cvt.len, Audio_cvt.len, m_AudioFileSpec);
+		rewind = readOGGStream(m_oggStream, (char*)m_Audio_cvt.buf, m_Audio_cvt.len, m_AudioFileSpec);
 	}
 
 	// then convert it into SDL Audio buffer
 	// Conversion to SDL Format
-	SDL_ConvertAudio(&Audio_cvt);
+	SDL_ConvertAudio(&m_Audio_cvt);
 
-	memcpy(buffer, Audio_cvt.buf, length);
+	memcpy(buffer, m_Audio_cvt.buf, length);
 
-	delete [] Audio_cvt.buf;
+	delete [] m_Audio_cvt.buf;
 
 	if(rewind)
 	{

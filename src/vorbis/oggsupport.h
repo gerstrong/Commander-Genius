@@ -30,7 +30,7 @@ short openOGGSound(FILE *fp, SDL_AudioSpec *pspec, stHQSound *psound);
 
 bool openOGGStream(FILE *fp, SDL_AudioSpec *pspec, OggVorbis_File  &oggStream);
 
-bool readOGGStream( OggVorbis_File  &oggStream, char *buffer, size_t output_size, size_t input_size, const SDL_AudioSpec &OGGAudioSpec );
+bool readOGGStream( OggVorbis_File  &oggStream, char *buffer, const size_t &size, const SDL_AudioSpec &OGGAudioSpec );
 
 void cleanupOGG(OggVorbis_File  &oggStream);
 
