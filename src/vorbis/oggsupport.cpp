@@ -138,46 +138,17 @@ bool readOGGStream( OggVorbis_File  &oggStream, char *buffer, const size_t &size
 	return false;
 }
 
-/*bool readOGGStreamAndResample( OggVorbis_File  &oggStream, char *buffer, size_t output_size, size_t input_size, const SDL_AudioSpec &OGGAudioSpec )
+bool readOGGStreamAndResample( OggVorbis_File  &oggStream, char *buffer, const size_t output_size, const size_t input_size, const SDL_AudioSpec &OGGAudioSpec )
 {
 	long bytes = 0;
-	bool eof = false;
+	char buf[input_size];
 
-	char *buf = new char[input_size];
+	bool eof = readOGGStream( oggStream, buf, input_size, OGGAudioSpec );
 
-	readOGGStream( OggVorbis_File  &oggStream, char *buf, size_t output_size, size_t input_size, const SDL_AudioSpec &OGGAudioSpec )
+	resample((Uint8*)buffer, (Uint8*)buf, output_size, input_size, OGGAudioSpec.format, OGGAudioSpec.channels);
 
-	unsigned long pos = 0;
-	int bitStream = 0;
-	while( pos<input_size )
-	{
-		// Read up to a buffer's worth of decoded sound data
-	#if defined(OGG)
-		bytes = ov_read(&oggStream, buf+pos, input_size-pos, 0, 2, 1, &bitStream);
-	#elif defined(TREMOR)
-		bytes = ov_read(&oggStream, buf+pos, input_size-pos, &bitStream);
-	#endif
-		pos += bytes;
-		music_pos += bytes;
-		if( bytes <= 0 || music_pos >= pcm_size )
-		{
-			memset( buf+pos, OGGAudioSpec.silence, input_size-pos );
-			pos = input_size;
-			bitStream = 0;
-			music_pos = 0;
-			eof = true;
-			break;
-		}
-	}
-
-	if(input_size != output_size)
-	{
-		resample((Uint8*)buffer, (Uint8*)buf, output_size, input_size, OGGAudioSpec.format, OGGAudioSpec.channels);
-		delete [] buf;
-	}
-
-	return !eof;
-}*/
+	return eof;
+}
 
 
 void cleanupOGG(OggVorbis_File  &oggStream)

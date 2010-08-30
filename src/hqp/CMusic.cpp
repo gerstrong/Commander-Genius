@@ -113,7 +113,7 @@ void CMusic::readBuffer(Uint8* buffer, size_t length) // length only refers to t
 		insize++;
 		insize *= mult;
 
-		//rewind = readOGGStream(m_oggStream, (char*)Audio_cvt.buf, Audio_cvt.len, insize, m_AudioFileSpec);
+		rewind = readOGGStreamAndResample(m_oggStream, (char*)m_Audio_cvt.buf, m_Audio_cvt.len, insize, m_AudioFileSpec);
 	}
 	else
 	{
