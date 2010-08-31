@@ -36,9 +36,9 @@ void CRope::process()
 			// check if we've hit the ground yet
 			for(int x=2;x<STONE_WIDTH-2;x++)
 			{
-				if (g_pBehaviorEngine->getTileProperties().at(mp_Map->at(stoneX+x, stoneY+2)).bup)
+				if (falldist >= 4)
 				{
-					exists=false;
+					exists = false;
 					return;
 				}
 			}
@@ -66,7 +66,8 @@ void CRope::getShotByRay()
 			stoneX = x - 4;
 			stoneY = y + 1;
 			// get color of background
-			bgtile = mp_Map->at(x, y);
+			bgtile = g_pBehaviorEngine->getPhysicsSettings().misc.changestoneblock;
+			falldist = 0;
 		}
 	}
 }
@@ -93,6 +94,7 @@ void CRope::rope_movestone()
 		mp_Map->setTile(x+xa,ya,bgtile, true);
 
 	stoneY++;
+	falldist++;
 }
 
 void CRope::getTouchedBy(CObject &theObject)

@@ -58,6 +58,9 @@ public:
 
 		int pogo_tile;
 		int raygun_tile;
+
+		// For the stoneblock normally in level 16
+		int changestoneblock;
 	}misc;
 
 	int max_fallspeed;

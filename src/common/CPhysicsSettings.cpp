@@ -64,6 +64,7 @@ void CPhysicsSettings::loadGameConstants(int episode, byte* data)
 
 		misc.raygun_tile = GETWORD(data+0x1166);
 		misc.pogo_tile = GETWORD(data+0x11A7);
+		misc.changestoneblock = GETWORD(data+0x2414);
 		// TODO: ... More stuff will come here
 	}
 	else if(episode == 2)

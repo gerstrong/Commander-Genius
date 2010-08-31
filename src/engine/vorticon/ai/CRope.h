@@ -28,6 +28,7 @@ private:
 	int droptimer;
 	int stoneX, stoneY;
 	int bgtile;
+	int falldist;
 };
 
 #endif /* CROPE_H_ */

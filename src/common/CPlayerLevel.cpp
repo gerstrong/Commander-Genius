@@ -326,7 +326,7 @@ void CPlayer::TogglePogo_and_Switches()
 				// and it's relative to the position of the switch.)
 				Uint16 bridge = mp_Map->getObjectat(mx, my);
 
-				if (bridge==0) // Uh Oh! This means you have enabled a tantalus ray of the ship
+				if (bridge == 0) // Uh Oh! This means you have enabled a tantalus ray of the ship
 				{ // lightswitch
 					if(TileProperty[t].behaviour == 23)
 						m_Level_Trigger = LVLTRIG_LIGHT;
