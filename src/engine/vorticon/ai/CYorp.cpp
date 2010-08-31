@@ -207,7 +207,7 @@ void CYorp::processDying()
 	if (yinertia >= 0 && blockedd)
 	{
 		sprite = YORP_DEAD_FRAME;
-		dead = false;
+		dead = true;
 	}
 }
 
