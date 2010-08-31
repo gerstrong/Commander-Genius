@@ -30,7 +30,7 @@ CPhysicsSettings::CPhysicsSettings() {
 
 	misc.visibility = 3;
 	misc.ctspace_ammo = 100;
-
+	misc.ctspace_keys = 1;
 }
 
 /**

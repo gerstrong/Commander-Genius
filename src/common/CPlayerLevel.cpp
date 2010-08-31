@@ -311,7 +311,7 @@ void CPlayer::TogglePogo_and_Switches()
 			t = mp_Map->at(mx, my);
 
 			// check for extending-platform switch
-			if ( TileProperty[t].behaviour == 25  ||  TileProperty[t].behaviour == 26  )
+			if ( TileProperty[t].behaviour == 25  ||  TileProperty[t].behaviour == 26 || TileProperty[t].behaviour == 23 )
 			{
 				// Flip the switch!
 				g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, getXPosition()>>STC);
@@ -327,8 +327,11 @@ void CPlayer::TogglePogo_and_Switches()
 				Uint16 bridge = mp_Map->getObjectat(mx, my);
 
 				if (bridge==0) // Uh Oh! This means you have enabled a tantalus ray of the ship
-				{
-					m_Level_Trigger = LVLTRIG_TANTALUS_RAY;
+				{ // lightswitch
+					if(TileProperty[t].behaviour == 23)
+						m_Level_Trigger = LVLTRIG_LIGHT;
+					else
+						m_Level_Trigger = LVLTRIG_TANTALUS_RAY;
 				}
 				else
 				{
@@ -360,13 +363,7 @@ void CPlayer::TogglePogo_and_Switches()
 					mp_Map->m_PlatExtending = true;
 				}
 
-				if (ppogostick) ppogostick = false;
-				break;
-			}
-			else if ( TileProperty[t].behaviour == 23 )
-			{ // lightswitch
-				m_Level_Trigger = LVLTRIG_LIGHT;
-				g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, getXPosition()>>CSF);
+				ppogostick = false;
 				break;
 			}
 		}
