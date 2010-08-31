@@ -315,9 +315,9 @@ void CPlayer::TogglePogo_and_Switches()
 			{
 				// Flip the switch!
 				g_pSound->playStereofromCoord(SOUND_SWITCH_TOGGLE, PLAY_NOW, getXPosition()>>STC);
-				if ( TileProperty[t].behaviour == 26 )
+				if ( TileProperty[t].behaviour == 26 && t == TILE_SWITCH_DOWN )
 					mp_Map->changeTile(mx, my, TILE_SWITCH_UP);
-				else if ( TileProperty[t].behaviour == 25 )
+				else if ( TileProperty[t].behaviour == 25 && t == TILE_SWITCH_UP )
 					mp_Map->changeTile(mx, my, TILE_SWITCH_DOWN);
 
 				// figure out where the platform is supposed to extend at
