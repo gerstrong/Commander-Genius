@@ -17,9 +17,6 @@
 #include "CBehaviorEngine.h"
 #include "CLogFile.h"
 
-CBehaviorEngine::CBehaviorEngine()
-{}
-
 void CBehaviorEngine::addMessage(const std::string &name,
 								const std::string &message)
 {	stringmap[name] = message;	}

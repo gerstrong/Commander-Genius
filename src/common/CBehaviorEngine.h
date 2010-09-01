@@ -36,8 +36,6 @@ typedef struct{
 class CBehaviorEngine : public CSingleton<CBehaviorEngine>
 {
 public:
-	CBehaviorEngine();
-
 	void addMessage(const std::string &name,
 					const std::string &message);
 

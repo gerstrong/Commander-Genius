@@ -115,7 +115,7 @@ bool CPlayGameVorticon::init()
 	if(m_Episode == 1 && m_Difficulty > 1)
 	{
 		if(m_Level == 5) m_Level = 9;
-		if(m_Level == 9) m_Level = 5;
+		else if(m_Level == 9) m_Level = 5;
 	}
 
 	// Create an empty map
@@ -296,6 +296,15 @@ void CPlayGameVorticon::process()
 
 		// Do the Render Routine here!
 		drawAllElements();
+
+		/// For debuging the max fall speed !!!!!!!!!!!!! Must be removed soon
+		/*int &maxfallspeed = g_pBehaviorEngine->getPhysicsSettings().max_fallspeed;
+		if(g_pInput->getPressedKey(KA))
+			maxfallspeed++;
+		if(g_pInput->getPressedKey(KB))
+			maxfallspeed--;
+		printf("maxfallspeed = %d\n",maxfallspeed);*/
+
 
 		// Check if we are in gameover mode. If yes, than show the bitmaps and block the FKeys().
 		// Only confirmation button is allowes

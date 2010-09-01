@@ -11,8 +11,8 @@
 #ifndef CPLAYGAME_H_
 #define CPLAYGAME_H_
 
-#include "../../fileio/CExeFile.h"
-#include "../../common/options.h"
+#include "fileio/CExeFile.h"
+#include "common/options.h"
 #include <string>
 #include <SDL.h>
 
