@@ -186,7 +186,8 @@ void CPlayerLevel::processMoving()
 		// Now check if Player has the chance to climb a pole or something similar
 		if(hitdetectWithTileProperty(1)) // 1 -> stands for pole Property
 		{
-			printf("Hit pole!\n");
+			//printf("Hit pole!\n");
+			// TODO: The Code for going into climp mode goes here!
 		}
 
 	}
