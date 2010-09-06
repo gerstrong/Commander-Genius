@@ -6,10 +6,10 @@
  */
 
 #include "CObject.h"
-#include "../CLogFile.h"
-#include "../engine/spritedefines.h"
-#include "../sdl/CVideoDriver.h"
-#include "../keen.h"
+#include "CLogFile.h"
+#include "engine/spritedefines.h"
+#include "sdl/CVideoDriver.h"
+#include "keen.h"
 #include <string.h>
 
 int CObject::m_number_of_objects = 0; // The current number of total objects we have within the game!
@@ -797,6 +797,39 @@ bool CObject::hitdetect(CObject &hitobject)
 	if ((rect1y1 >= rect2y2) && (rect1y2 >= rect2y2)) return false;
 	
 	return true;
+}
+
+/**
+ * \brief this new type of hit detection only checks if the foe touches something that has that property
+ * \param Property The Tile Property we are looking
+ * \return true if detection worked with that tile having the property, else false
+ */
+bool CObject::hitdetectWithTileProperty(Uint16 Property)
+{
+	unsigned int rect1x1, rect1y1, rect1x2, rect1y2;
+	Uint16 behavior;
+
+	// get the bounding rectangle of the first object
+	rect1x1 = x + bboxX1;
+	rect1y1 = y + bboxY1;
+	rect1x2 = x + bboxX2;
+	rect1y2 = y + bboxY2;
+
+	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
+
+	behavior = Tile[mp_Map->getPlaneDataAt(1, rect1x1, rect1y1)].behaviour;
+	if(behavior == Property)	return true;
+
+	behavior = Tile[mp_Map->getPlaneDataAt(1, rect1x2, rect1y1)].behaviour;
+	if(behavior == Property)	return true;
+
+	behavior = Tile[mp_Map->getPlaneDataAt(1, rect1x1, rect1y2)].behaviour;
+	if(behavior == Property)	return true;
+
+	behavior = Tile[mp_Map->getPlaneDataAt(1, rect1x2, rect1y2)].behaviour;
+	if(behavior == Property)	return true;
+
+	return false;
 }
 
 void CObject::processFalling()

@@ -125,6 +125,7 @@ public:
 	virtual void process() { }
 	
 	bool hitdetect(CObject &hitobject);
+	bool hitdetectWithTileProperty(Uint16 Property);
 	virtual void kill();
 	void blink(Uint16 frametime);
 
