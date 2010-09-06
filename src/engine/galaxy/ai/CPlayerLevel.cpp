@@ -22,7 +22,8 @@ CObject(pmap, x, y, OBJ_NONE),
 m_animation(0),
 m_animation_time(1),
 m_animation_ticker(0),
-m_ObjectPtrs(ObjectPtrs)
+m_ObjectPtrs(ObjectPtrs),
+m_climbing(false)
 {
 	m_index = 0;
 	m_direction = facedir;
@@ -58,7 +59,8 @@ void CPlayerLevel::process()
 
 	processJumping();
 
-	processLooking();
+	if(!m_climbing)
+		processLooking();
 
 	processFiring();
 
@@ -180,6 +182,9 @@ void CPlayerLevel::processMoving()
 			xinertia = movespeed;
 			m_direction = RIGHT;
 		}
+
+		// Now check if Player has the chance to climb a pole or something similar
+
 	}
 
 	if( blockedd )

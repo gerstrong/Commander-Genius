@@ -78,6 +78,7 @@ private:
 
 	bool m_pfiring;
 	int m_jumpheight;
+	bool m_climbing;
 
 };
 
