@@ -38,8 +38,6 @@ public:
 	char getNumPlayers();
 	char getDifficulty();
 
-	virtual ~CPlayGame();
-
 protected:
 	unsigned char m_NumPlayers;
 	bool m_endgame;

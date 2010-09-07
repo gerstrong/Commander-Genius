@@ -34,9 +34,18 @@ bool CPlayGameGalaxy::loadGameState()
 // Setup for the ingame
 bool CPlayGameGalaxy::init()
 {
-	m_WorldMap.setActive(true);
-
-	return false;
+	if(m_Level == 0)
+	{
+		m_WorldMap.setActive(true);
+		return false;
+	}
+	else
+	{
+		// manually a level has been loaded
+		m_LevelPlay.loadLevel(m_Level);
+		m_LevelPlay.setActive(true);
+		return true;
+	}
 }
 
 /**

@@ -158,6 +158,8 @@ void CPlayerLevel::processFiring()
 
 void CPlayerLevel::processFalling()
 {
+	if(m_climbing) return;
+
 	CObject::processFalling();
 
 	if( falling && !getActionNumber(A_KEEN_JUMP_SHOOT)
@@ -186,9 +188,29 @@ void CPlayerLevel::processMoving()
 		// Now check if Player has the chance to climb a pole or something similar
 		if(hitdetectWithTileProperty(1)) // 1 -> stands for pole Property
 		{
-			//printf("Hit pole!\n");
-			// TODO: The Code for going into climp mode goes here!
+			// Hit pole!
+			// TODO: This code does not work yet correctly for some reason
+			if( !m_climbing && m_playcontrol[PA_Y] != 0 )
+			{
+				m_climbing = true;
+			}
+			else if(m_climbing)
+			{
+				if(m_playcontrol[PA_Y] < 0)
+				{
+					if(!getActionNumber(A_KEEN_POLE_CLIMB))
+						setAction(A_KEEN_POLE_CLIMB);
+					//yinertia = -1;
+				}
+				else if(m_playcontrol[PA_Y] > 0)
+				{
+					//setAction(A_KEEN_POLE_SLIDE);
+					//yinertia = 1;
+				}
+			}
 		}
+		else
+			m_climbing = false;
 
 	}
 
@@ -214,6 +236,7 @@ void CPlayerLevel::processJumping()
 		{
 			yinertia = -136;
 			setAction(A_KEEN_JUMP);
+			m_climbing = false;
 		}
 	}
 	else
