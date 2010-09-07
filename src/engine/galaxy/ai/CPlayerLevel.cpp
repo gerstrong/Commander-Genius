@@ -210,7 +210,9 @@ void CPlayerLevel::processMoving()
 			}
 		}
 		else
+		{
 			m_climbing = false;
+		}
 
 	}
 

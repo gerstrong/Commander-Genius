@@ -836,16 +836,16 @@ void CObject::processFalling()
 {
 	if(m_type == OBJ_MESSIE) return;
 
-	CPhysicsSettings Physics = g_pBehaviorEngine->getPhysicsSettings();
-
-	if( yinertia>0 && !onslope )
-		falling = true;
-	else
-		falling = false;
-
 	// So it reaches the maximum of fallspeed
 	if(!inhibitfall)
 	{
+		CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
+
+		if( yinertia>0 && !onslope )
+			falling = true;
+		else
+			falling = false;
+
 		// In this case foe is jumping
 		if(yinertia<0 && !blockedu)
 		{
