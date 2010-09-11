@@ -10,6 +10,9 @@
 #include "sdl/CInput.h"
 #include "CVec.h"
 
+// TODO: Needs recoding. This was just for testing, but now we need something much more
+// serious. I want to create a diagram to represent all actions that keen can do and code them
+// here according to that diagram. Something like UML or Petri. This Code got a bit out of control
 
 namespace galaxy {
 
