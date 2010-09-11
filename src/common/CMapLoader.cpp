@@ -236,10 +236,20 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 			}
 			break;
 		default:             // level marker
-			if ((t&0x7fff) <= 16 && mp_vec_Player->front().mp_levels_completed[t&0x00ff] )
-			{
-				mp_map->m_objectlayer[x][y] = t;
 
+			// Taken from the original CloneKeen. If hard-mode chosen, swap levels 5 and 9 Episode 1
+			if(episode == 1 && mp_map->m_Difficulty > 2)
+			{
+				if(t == 5)
+					t = 9;
+				else if(t == 9)
+					t = 5;
+			}
+
+			mp_map->m_objectlayer[x][y] = t;
+
+			if ((t&0x7fff) <= 16 && mp_vec_Player->front().mp_levels_completed[t&0x00ff])
+			{
 				// Change the level tile to a done sign
 				int newtile = g_pBehaviorEngine->getTileProperties()[mp_map->at(x,y)].chgtile;
 
@@ -275,10 +285,6 @@ void CMapLoader::addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episo
 					}
 				}
 				mp_map->setTile(x, y, newtile);
-			}
-			else
-			{
-				mp_map->m_objectlayer[x][y] = t;
 			}
 			break;
 	}

@@ -56,9 +56,9 @@ mp_HUD(NULL)
 
 	m_showPauseDialog = false;
 
-	if(difficulty==0)
+	if(m_Difficulty==0)
 		g_pGfxEngine->Palette.setdarkness(FADE_DARKNESS_EASY);
-	else if(difficulty==1)
+	else if(m_Difficulty==1)
 		g_pGfxEngine->Palette.setdarkness(FADE_DARKNESS);
 	else
 		g_pGfxEngine->Palette.setdarkness(FADE_DARKNESS_HARD);
@@ -111,19 +111,14 @@ void CPlayGameVorticon::setupPlayers()
 
 bool CPlayGameVorticon::init()
 {
-	// Taken from the original CloneKeen. If hard-mode chosen, swap levels 5 and 9 Episode 1
-	if(m_Episode == 1 && m_Difficulty > 1)
-	{
-		if(m_Level == 5) m_Level = 9;
-		else if(m_Level == 9) m_Level = 5;
-	}
-
 	// Create an empty map
 	m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
 
 	CMapLoader MapLoader( &m_Map, &m_Player );
 	MapLoader.m_checkpointset = m_checkpointset;
 	MapLoader.mp_objvect = &m_Object;
+
+	m_Map.m_Difficulty = m_Difficulty;
 
 	// load level map
 	if( !MapLoader.load( m_Episode, m_Level, m_Gamepath ) ) return false;
