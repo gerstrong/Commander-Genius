@@ -242,7 +242,3 @@ void CYorp::getTouchedBy(CObject &theObject)
 		}
 	}
 }
-
-CYorp::~CYorp() {
-	// TODO Auto-generated destructor stub
-}

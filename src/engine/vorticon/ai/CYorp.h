@@ -61,7 +61,6 @@ public:
 			Uint32 x, Uint32 y );
 	void process();
 	void getTouchedBy(CObject &theObject);
-	virtual ~CYorp();
 
 private:
 	void processLooking();

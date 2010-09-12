@@ -187,24 +187,17 @@ void CTank::process()
 bool CTank::CanMoveLeft()
 {
 	CTileProperties &currentTile = g_pBehaviorEngine->getTileProperties()
-			[mp_Map->at((getXLeftPos()-1)>>CSF, (getYDownPos()+256)>>CSF)];
+			[mp_Map->at((getXMidPos())>>CSF, (getYDownPos()+256)>>CSF)];
 	if (!blockedl && currentTile.bup) return true;
 	return false;
-
-	/*if(blockedl || !blockedd ) return false;
-	return true;*/
-
 }
 
 bool CTank::CanMoveRight()
 {
 	CTileProperties &currentTile = g_pBehaviorEngine->getTileProperties()
-			[mp_Map->at((getXRightPos()+1)>>CSF, (getYDownPos()+256)>>CSF)];
+			[mp_Map->at((getXMidPos())>>CSF, (getYDownPos()+256)>>CSF)];
 	if (!blockedr && currentTile.bup) return true;
 	return false;
-
-	/*if(blockedr || !blockedd ) return false;
-	return true;*/
 }
 
 void CTank::getTouchedBy(CObject &theObject)
