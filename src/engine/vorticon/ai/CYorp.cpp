@@ -9,13 +9,13 @@
 
 #include "CYorp.h"
 #include "CRay.h"
-#include "../../../sdl/sound/CSound.h"
-#include "../../../misc.h"
+#include "sdl/sound/CSound.h"
+#include "misc.h"
 
 CYorp::CYorp( CMap *p_map, std::vector<CPlayer> &mp_vec_Player,
 		Uint32 x, Uint32 y ) :
 CObject(p_map,x,y, OBJ_YORP),
-m_hardmode(mp_Map->m_Difficulty>1),
+m_hardmode(mp_Map->m_Difficulty>2),
 m_vec_Player(mp_vec_Player),
 state(YORP_LOOK),
 looktimes(YORP_NUM_LOOKS+1),
@@ -39,23 +39,12 @@ void CYorp::process()
 	if( HealthPoints <= 0 && state != YORP_DYING )
 	{
 		// what'd you kill an innocent yorp for, you bastard!
-		if(!m_hardmode)
-		{
-			state = YORP_DYING;
-			dying = true;
-			dietimer = 0;
-			sprite = YORP_DYING_FRAME;
-			yinertia = YORPDIE_START_INERTIA;
-			g_pSound->playStereofromCoord(SOUND_YORP_DIE, PLAY_NOW, scrx);
-		}
-		else
-		{
-			g_pSound->playStereofromCoord(SOUND_YORP_STUN, PLAY_NOW, scrx);
-			state = YORP_STUNNED;
-			looktimes = 0;
-			timer = 0;
-			lookposition = 0;
-		}
+		state = YORP_DYING;
+		dying = true;
+		dietimer = 0;
+		sprite = YORP_DYING_FRAME;
+		yinertia = YORPDIE_START_INERTIA;
+		g_pSound->playStereofromCoord(SOUND_YORP_DIE, PLAY_NOW, scrx);
 	}
 
 	switch(state)
