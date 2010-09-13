@@ -26,14 +26,25 @@
 #include "sdl/CVideoDriver.h"
 #include "CLogFile.h"
 
-short openOGGSound(FILE *fp, SDL_AudioSpec *pspec, stHQSound *psound);
+short openOGGSound(const std::string& filename, SDL_AudioSpec *pspec, stHQSound *psound);
 
-bool openOGGStream(FILE *fp, SDL_AudioSpec *pspec, OggVorbis_File  &oggStream);
+bool openOGGStream(const std::string& filename, SDL_AudioSpec *pspec, OggVorbis_File  &oggStream);
 
 bool readOGGStream( OggVorbis_File  &oggStream, char *buffer, const size_t &size, const SDL_AudioSpec &OGGAudioSpec );
 
 bool readOGGStreamAndResample( OggVorbis_File  &oggStream, char *buffer, const size_t output_size, const size_t input_size, const SDL_AudioSpec &OGGAudioSpec );
 
 void cleanupOGG(OggVorbis_File  &oggStream);
+
+#if defined(TREMOR)
+int ov_fopen(char *path,OggVorbis_File *vf)
+{
+	int result;
+    FILE *fp = fopen(path, "rb");
+	if((result = ov_open(fp, &oggStream, NULL, 0)) < 0)
+		fclose(fp);
+	return result;
+}
+#endif
 
 #endif

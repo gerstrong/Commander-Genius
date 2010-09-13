@@ -26,7 +26,6 @@ void CCallback(void *unused, Uint8 *stream, int len)
     g_pSound->callback(unused, stream, len);
 }
 
-
 CSound::CSound() {
 	m_active = false;
 	m_mixing_channels = 0;

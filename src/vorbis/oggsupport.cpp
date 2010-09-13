@@ -7,25 +7,20 @@
 
 #include "oggsupport.h"
 #include "sdl/sound/Sampling.h"
+#include "FindFile.h"
 #include <vector>
 
 #if defined(OGG) || defined(TREMOR)
 
-short openOGGSound(FILE *fp, SDL_AudioSpec *pspec, stHQSound *psound)
+short openOGGSound(const std::string& filename, SDL_AudioSpec *pspec, stHQSound *psound)
 {
 	// If Ogg detected, decode it into the stream psound->sound_buffer.
 	// It must fit into the Audio_cvt structure, so that it can be converted
 
-	int result;
     OggVorbis_File  oggStream;     // stream handle
 
-#if defined(OGG)
-	if((result = ov_open_callbacks(fp, &oggStream, NULL, 0, OV_CALLBACKS_DEFAULT)) < 0)
-#elif defined(TREMOR)
-	if((result = ov_open(fp, &oggStream, NULL, 0)) < 0)
-#endif
+    if(ov_fopen((char*)GetFullFileName(filename).c_str(), &oggStream) != 0)
     {
-        fclose(fp);
         return 1;
     }
     else
@@ -74,19 +69,13 @@ short openOGGSound(FILE *fp, SDL_AudioSpec *pspec, stHQSound *psound)
 long pcm_size;
 long music_pos;
 
-bool openOGGStream(FILE *fp, SDL_AudioSpec *pspec, OggVorbis_File  &oggStream)
+bool openOGGStream(const std::string& filename, SDL_AudioSpec *pspec, OggVorbis_File  &oggStream)
 {
 	// If Ogg detected, decode it into the stream psound->sound_buffer.
 	// It must fit into the Audio_cvt structure, so that it can be converted
 
-	int result;
-#if defined(OGG)
-	if((result = ov_open_callbacks(fp, &oggStream, NULL, 0, OV_CALLBACKS_DEFAULT)) < 0)
-#elif defined(TREMOR)
-	if((result = ov_open(fp, &oggStream, NULL, 0)) < 0)
-#endif
+    if(ov_fopen((char*)GetFullFileName(filename).c_str(), &oggStream) != 0)
     {
-        fclose(fp);
         return false;
     }
     else
@@ -110,14 +99,18 @@ bool openOGGStream(FILE *fp, SDL_AudioSpec *pspec, OggVorbis_File  &oggStream)
     }
 }
 
+bool reading_stream = false;
 bool readOGGStream( OggVorbis_File  &oggStream, char *buffer, const size_t &size, const SDL_AudioSpec &OGGAudioSpec )
 {
 	long bytes = 0;
 	unsigned long pos = 0;
 	int bitStream = 0;
+	reading_stream = true;
 
 	while( pos<size )
 	{
+		if(pcm_size<=0)
+			break;
 		// Read up to a buffer's worth of decoded sound data
 	#if defined(OGG)
 		bytes = ov_read(&oggStream, buffer+pos, size-pos, 0, 2, 1, &bitStream);
@@ -132,15 +125,16 @@ bool readOGGStream( OggVorbis_File  &oggStream, char *buffer, const size_t &size
 			pos = size;
 			bitStream = 0;
 			music_pos = 0;
+			reading_stream = false;
 			return true;
 		}
 	}
+	reading_stream = false;
 	return false;
 }
 
 bool readOGGStreamAndResample( OggVorbis_File  &oggStream, char *buffer, const size_t output_size, const size_t input_size, const SDL_AudioSpec &OGGAudioSpec )
 {
-	long bytes = 0;
 	char buf[input_size];
 
 	bool eof = readOGGStream( oggStream, buf, input_size, OGGAudioSpec );
@@ -153,6 +147,7 @@ bool readOGGStreamAndResample( OggVorbis_File  &oggStream, char *buffer, const s
 
 void cleanupOGG(OggVorbis_File  &oggStream)
 {
+	while(reading_stream);
 	music_pos = 0;
 	pcm_size = 0;
 	ov_clear(&oggStream);

@@ -34,16 +34,8 @@ bool CMusic::load(const std::string &musicfile)
 	{
 		
 #if defined(OGG) || defined(TREMOR)
-		
-		FILE *fp;
-		fp = OpenGameFile(musicfile.c_str(),"rb");
-		if(fp == NULL)
-		{
-			g_pLogFile->textOut(PURPLE,"Music Driver(): \"%s\". File cannot be read!<br>", musicfile.c_str());
-			return -1;
-		}
-		
-		if(!openOGGStream(fp, &m_AudioFileSpec, m_oggStream))
+
+		if(!openOGGStream(musicfile.c_str(), &m_AudioFileSpec, m_oggStream))
 		{
 			g_pLogFile->textOut(PURPLE,"Music Driver(): OGG file could not be opened: \"%s\". File is damaged or something is wrong with your soundcard!<br>", musicfile.c_str());
 			return false;

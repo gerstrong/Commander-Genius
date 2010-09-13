@@ -23,24 +23,15 @@ short HQSndDrv_Load(SDL_AudioSpec *AudioSpec, stHQSound *psound, const std::stri
 
 	psound->sound_buffer = NULL;
 	std::string buf;
-	FILE *fp = NULL;
-
 
 	buf = getResourceFilename("snd/" + soundname + ".OGG", gamepath, false, true); // Start with OGG
 
 	if(buf != "")
-		fp = OpenGameFile(buf.c_str(), "rb");
-
-	if(fp != NULL)
 	{
 #if defined(OGG) || defined(TREMOR)
-		if(openOGGSound(fp, &AudioFileSpec,  psound) != 0)
-		{
-			std::string buf2;
-			buf2 = "OGG file \"" + buf +"\"could not be opened. The file was detected, but appears to be damaged. Trying to load the classical sound<br>";
-			g_pLogFile->ftextOut(PURPLE,buf2.c_str());
+		if(openOGGSound(buf, &AudioFileSpec,  psound) != 0)
 			return 1;
-		}
+
 		psound->enabled = true;
 
 #else
