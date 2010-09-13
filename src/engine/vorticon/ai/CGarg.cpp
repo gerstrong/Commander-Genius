@@ -18,7 +18,7 @@ movedir(0),
 detectedPlayer(0),
 detectedPlayerIndex(0),
 m_Player(m_vec_Player),
-m_hardmode(p_map->m_Difficulty>1)
+m_hardmode(p_map->m_Difficulty>2)
 {
 	canbezapped = true;
 }
@@ -66,7 +66,7 @@ void CGarg::process()
 				if (m_hardmode)
 					xinertia = GARG_WALK_SPEED_FAST;
 				else
-					xinertia = GARG_WALK_SPEED_FAST;
+					xinertia = GARG_WALK_SPEED;
 				dist_traveled++;
 			}
 			else if(blockedd)
