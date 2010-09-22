@@ -119,7 +119,7 @@ bool CSavedGame::convertOldFormat(size_t slot)
 	fname = "ep";
 	fname += itoa(m_Episode);
 	fname += "save";
-	fname += slot+'0';
+	fname += itoa(slot);
 	fname += ".dat";
 
 	if ( !IsOldButValidSaveGame(fname) )
@@ -314,12 +314,10 @@ std::string CSavedGame::getSlotName(const std::string &filename)
 	{
 		// read the slot name
 		Uint32 size = StateFile.get();
-		char *buf;
-		buf = new char[size+1];
-		readData( buf, size, StateFile);
+		std::vector<char> buf(size + 1);
+		readData( &buf[0], size, StateFile);
 		buf[size] = '\0';
-		SlotName = buf;
-		delete [] buf;
+		SlotName = &buf[0];
 	}
 
 	StateFile.close();
