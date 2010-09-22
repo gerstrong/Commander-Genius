@@ -247,7 +247,7 @@ bool CSavedGame::convertOldFormat(size_t slot)
 	return true;
 }
 
-bool CSavedGame::IsOldButValidSaveGame(std::string fname)
+bool CSavedGame::IsOldButValidSaveGame(const std::string& fname)
 {
 FILE *fp;
 unsigned int i;
