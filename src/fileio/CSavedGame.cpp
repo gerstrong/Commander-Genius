@@ -249,13 +249,11 @@ bool CSavedGame::convertOldFormat(size_t slot)
 
 bool CSavedGame::IsOldButValidSaveGame(const std::string& fname)
 {
-FILE *fp;
-unsigned int i;
-const char *verify = "CKSAVE";
-	fp = OpenGameFile(fname, "rb");
-	if (!fp) return 0;
+	const char *verify = "CKSAVE";
+	FILE* fp = OpenGameFile(fname, "rb");
+	if (!fp) return false;
 
-	for(i=0;i<strlen(verify);i++)
+	for(size_t i=0; i < strlen(verify); i++)
 	{
 		char c = fgetc(fp);
 		if (c != verify[i])
