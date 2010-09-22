@@ -46,6 +46,7 @@ public:
 	Uint32 getDataSize(std::ifstream &StateFile);
 	void readData(char *buffer, Uint32 size, std::ifstream &StateFile);
 
+	bool Fileexists( int SaveSlot );
 	bool prepareSaveGame( int SaveSlot, const std::string &Name);
 	bool prepareLoadGame( int SaveSlot);
 

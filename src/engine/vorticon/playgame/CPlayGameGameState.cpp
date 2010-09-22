@@ -6,10 +6,10 @@
  */
 
 #include "CPlayGameVorticon.h"
-#include "../../../StringUtils.h"
-#include "../../../graphics/effects/CColorMerge.h"
-#include "../../../sdl/CVideoDriver.h"
-#include "../../../common/CMapLoader.h"
+#include "StringUtils.h"
+#include "graphics/effects/CColorMerge.h"
+#include "sdl/CVideoDriver.h"
+#include "common/CMapLoader.h"
 
 #define SAFE_DELETE_ARRAY(x) if(x) { delete [] x; x = NULL; }
 

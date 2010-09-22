@@ -125,6 +125,8 @@ bool CSavedGame::convertOldFormat(size_t slot)
 	if ( !IsOldButValidSaveGame(fname) )
 		return false;
 
+	while(Fileexists(slot))
+		slot++;
 	prepareSaveGame(slot, "oldsave"+itoa(slot));
 
 	if(alreadyExits())
@@ -323,6 +325,17 @@ std::string CSavedGame::getSlotName(const std::string &filename)
 	StateFile.close();
 
 	return SlotName;
+}
+
+/**
+ * \brief checks if the file of the chosen slot exits
+ * \param SaveSlot 	Slot where to check for the file
+ * \return true if it exists, else false
+ */
+bool CSavedGame::Fileexists( int SaveSlot )
+{
+	std::string filename = m_savedir + "/cksave"+itoa(SaveSlot)+".ck"+itoa(m_Episode);
+	IsFileAvailable(filename);
 }
 
 // This method is called by the menu. It assures that the
