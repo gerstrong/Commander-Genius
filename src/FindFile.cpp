@@ -1075,7 +1075,8 @@ bool Rename(const std::string& oldpath, const std::string& newpath) {
 	std::string fulloldpath = GetFullFileName(oldpath, &searchpath);
 	if(searchpath == "") return false; // not found
 	if(fulloldpath == "") return false; // not found (double check, just to be sure)
-	std::string newfullpath = searchpath + newpath;
-	return rename(fulloldpath.c_str(), newfullpath.c_str()) == 0;
+	ReplaceFileVariables(searchpath);
+	std::string fullnewpath = searchpath + "/" + newpath;
+	return rename(fulloldpath.c_str(), fullnewpath.c_str()) == 0;
 }
 
