@@ -125,9 +125,11 @@ bool CSavedGame::convertOldFormat(size_t slot)
 	if ( !IsOldButValidSaveGame(fname) )
 		return false;
 
-	while(Fileexists(slot))
-		slot++;
-	prepareSaveGame(slot, "oldsave"+itoa(slot));
+	size_t newslot = slot;
+	while(Fileexists(newslot))
+		newslot++;
+
+	prepareSaveGame(newslot, "oldsave"+itoa(slot));
 
 	if(alreadyExits())
 	{
@@ -168,9 +170,6 @@ bool CSavedGame::convertOldFormat(size_t slot)
 
 	if (sgrle_decompress(fp, (unsigned char *)&old.map, sizeof(old.map))) return false;
 
-	// Sizeof old objects: 22624
-	// Sizeof old tiles: 9612
-
 	unsigned char *tempbuf;
 
 	tempbuf = new unsigned char[22624];
@@ -185,9 +184,9 @@ bool CSavedGame::convertOldFormat(size_t slot)
 
 	fclose(fp);
 
-	// Rename the old save game to the extension xxxbak, so it won't be converted again
-	// TODO: !
-	std::string newfname = fname + "bak";
+	// Rename the old save game to the extension bak, so it won't be converted again
+	std::string newfname = fname.substr(0,fname.size()-3) + "bak";
+	Rename(fname, newfname);
 
 	//
 	// Now let's save it into a new format
@@ -224,7 +223,6 @@ bool CSavedGame::convertOldFormat(size_t slot)
 	// Save the map_data as it is left
 	encodeData(old.map.xsize);
 	encodeData(old.map.ysize);
-	// TODO: Something is not right here!
 
 	word *mapdata = new word[old.map.xsize*old.map.ysize];
 	for( size_t x=0 ; x<old.map.xsize ; x++ )
@@ -339,7 +337,7 @@ std::string CSavedGame::getSlotName(const std::string &filename)
 bool CSavedGame::Fileexists( int SaveSlot )
 {
 	std::string filename = m_savedir + "/cksave"+itoa(SaveSlot)+".ck"+itoa(m_Episode);
-	IsFileAvailable(filename);
+	return IsFileAvailable(filename);
 }
 
 // This method is called by the menu. It assures that the
