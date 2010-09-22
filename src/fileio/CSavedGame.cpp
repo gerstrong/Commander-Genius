@@ -441,7 +441,7 @@ bool CSavedGame::save()
 
 	size += m_datablock.size();
 	// Headersize + Datablock size
-	char *primitive_buffer = new char[size];
+	std::vector<char> primitive_buffer(size);
 
 	// Write the header
 	primitive_buffer[offset++] = SAVEGAMEVERSION;
@@ -461,7 +461,7 @@ bool CSavedGame::save()
 	// TODO: Compression has still to be done!
 
 	// Now write all the data to the file
-    StateFile.write( primitive_buffer, size );
+    StateFile.write( &primitive_buffer[0], size );
 	StateFile.close();
 
 	m_datablock.clear();
