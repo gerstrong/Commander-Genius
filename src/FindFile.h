@@ -201,6 +201,11 @@ bool IsFileAvailable(const std::string& f, bool absolute = false);
 // IMPORTANT: filename is absolute; no game-path!
 void	CreateRecDir(const std::string& abs_filename, bool last_is_dir = true);
 
+// oldpath must be a full VFS path. newpath must also be a full VFS path
+// renames the actual file in that searchpath where it is found
+// returns true iff successfull
+bool	Rename(const std::string& oldpath, const std::string& newpath);
+
 bool	EqualPaths(const std::string& path1, const std::string& path2);
 
 // Returns true if the path is absolute
