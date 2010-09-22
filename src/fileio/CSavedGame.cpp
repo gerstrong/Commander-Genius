@@ -185,6 +185,10 @@ bool CSavedGame::convertOldFormat(size_t slot)
 
 	fclose(fp);
 
+	// Rename the old save game to the extension xxxbak, so it won't be converted again
+	// TODO: !
+	std::string newfname = fname + "bak";
+
 	//
 	// Now let's save it into a new format
 	//
