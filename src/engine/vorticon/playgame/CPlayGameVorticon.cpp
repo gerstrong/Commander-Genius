@@ -106,7 +106,7 @@ void CPlayGameVorticon::setupPlayers()
 	stInventory &inventory = m_Player.at(0).inventory;
 
 	if(mp_HUD) delete mp_HUD;
-		mp_HUD = new CHUD(inventory.score, inventory.lives, inventory.charges);
+	mp_HUD = new CHUD(inventory.score, inventory.lives, inventory.charges);
 }
 
 bool CPlayGameVorticon::init()

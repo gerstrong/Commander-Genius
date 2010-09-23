@@ -475,8 +475,10 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 				enemyobject->solid = false;
 				break;
 			default:
-				g_pLogFile->ftextOut(PURPLE,"unknown enemy type %d at (%d,%d)<br>", t, x, y); break;
+				g_pLogFile->ftextOut(PURPLE,"unknown enemy type %d at (%d,%d)<br>", t, x, y);
+				break;
 			}
+
 			if(enemyobject)
 				mp_objvect->push_back(enemyobject);
 		}

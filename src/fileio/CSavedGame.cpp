@@ -467,6 +467,7 @@ bool CSavedGame::save()
 	// Now write all the data to the file
     StateFile.write( primitive_buffer, size );
 	StateFile.close();
+	delete [] primitive_buffer;
 
 	m_datablock.clear();
 

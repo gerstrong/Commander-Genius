@@ -100,11 +100,12 @@ bool openOGGStream(const std::string& filename, SDL_AudioSpec *pspec, OggVorbis_
 }
 
 bool reading_stream = false;
+int bitStream = 0;
 bool readOGGStream( OggVorbis_File  &oggStream, char *buffer, const size_t &size, const SDL_AudioSpec &OGGAudioSpec )
 {
 	long bytes = 0;
 	unsigned long pos = 0;
-	int bitStream = 0;
+	//int bitStream = 0;
 	reading_stream = true;
 
 	while( pos<size )
