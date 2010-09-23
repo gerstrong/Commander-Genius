@@ -119,7 +119,7 @@ bool CSavedGame::convertOldFormat(size_t slot)
 	fname = "ep";
 	fname += itoa(m_Episode);
 	fname += "save";
-	fname += slot+'0';
+	fname += itoa(slot);
 	fname += ".dat";
 
 	if ( !IsOldButValidSaveGame(fname) )
@@ -247,15 +247,13 @@ bool CSavedGame::convertOldFormat(size_t slot)
 	return true;
 }
 
-bool CSavedGame::IsOldButValidSaveGame(std::string fname)
+bool CSavedGame::IsOldButValidSaveGame(const std::string& fname)
 {
-FILE *fp;
-unsigned int i;
-const char *verify = "CKSAVE";
-	fp = OpenGameFile(fname, "rb");
-	if (!fp) return 0;
+	const char *verify = "CKSAVE";
+	FILE* fp = OpenGameFile(fname, "rb");
+	if (!fp) return false;
 
-	for(i=0;i<strlen(verify);i++)
+	for(size_t i=0; i < strlen(verify); i++)
 	{
 		char c = fgetc(fp);
 		if (c != verify[i])
@@ -316,12 +314,10 @@ std::string CSavedGame::getSlotName(const std::string &filename)
 	{
 		// read the slot name
 		Uint32 size = StateFile.get();
-		char *buf;
-		buf = new char[size+1];
-		readData( buf, size, StateFile);
+		std::vector<char> buf(size + 1);
+		readData( &buf[0], size, StateFile);
 		buf[size] = '\0';
-		SlotName = buf;
-		delete [] buf;
+		SlotName = &buf[0];
 	}
 
 	StateFile.close();
@@ -445,7 +441,7 @@ bool CSavedGame::save()
 
 	size += m_datablock.size();
 	// Headersize + Datablock size
-	char *primitive_buffer = new char[size];
+	std::vector<char> primitive_buffer(size);
 
 	// Write the header
 	primitive_buffer[offset++] = SAVEGAMEVERSION;
@@ -465,7 +461,7 @@ bool CSavedGame::save()
 	// TODO: Compression has still to be done!
 
 	// Now write all the data to the file
-    StateFile.write( primitive_buffer, size );
+    StateFile.write( &primitive_buffer[0], size );
 	StateFile.close();
 	delete [] primitive_buffer;
 
