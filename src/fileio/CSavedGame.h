@@ -23,7 +23,8 @@
 
 #define SG_HEADERSIZE			7
 #define SAVEGAMEVERSION 		'6'
-#define OLDSAVEGAMEVERSION 		'5'
+#define OLDSAVEGAMEVERSION5		'5'
+#define OLDSAVEGAMEVERSION4		'4'
 
 const std::string EMPTY_STRING = "     EMPTY       ";
 
@@ -80,6 +81,7 @@ public:
 private:
 
 	bool loadSaveGameVersion5(const std::string &fname, OldSaveGameFormat& old);
+	bool loadSaveGameVersion4(const std::string &fname, OldSaveGameFormat& old);
 
 	bool IsOldSGVersion5(const std::string& fname);
 	bool IsOldSGVersion4(const std::string& fname);
