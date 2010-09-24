@@ -14,10 +14,16 @@
 #include <iostream>
 #include <fstream>
 
-#include "../CLogFile.h"
-#include "../StringUtils.h"
+#include "CLogFile.h"
+#include "StringUtils.h"
 
-#include "../fileio/TypeDefinitions.h"
+#include "fileio/TypeDefinitions.h"
+
+#include "Oldsavegamestructs.h"
+
+#define SG_HEADERSIZE			7
+#define SAVEGAMEVERSION 		'6'
+#define OLDSAVEGAMEVERSION 		'5'
 
 const std::string EMPTY_STRING = "     EMPTY       ";
 
@@ -37,9 +43,8 @@ public:
 	// Getters
 	std::vector<std::string> getSlotList();
 
-	void convertAllOldFormats();
 	bool convertOldFormat(size_t slot);
-	bool IsOldButValidSaveGame(const std::string& fname);
+	void convertAllOldFormats();
 	void readOldHeader(FILE *fp, byte *episode, byte *level, byte *lives, byte *num_players);
 	Uint32 getSlotNumber(const std::string &filename);
 	std::string getSlotName(const std::string &filename);
@@ -73,6 +78,13 @@ public:
 	virtual ~CSavedGame();
 
 private:
+
+	bool loadSaveGameVersion5(const std::string &fname, OldSaveGameFormat& old);
+
+	bool IsOldSGVersion5(const std::string& fname);
+	bool IsOldSGVersion4(const std::string& fname);
+	int getOldSGVersion(const std::string& fname);
+
 	std::string m_savedir;
 	std::string m_statefilename;
 	std::string m_statename;

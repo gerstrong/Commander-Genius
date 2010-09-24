@@ -10,11 +10,6 @@
 #include "../FindFile.h"
 
 #include "CSavedGame.h"
-#include "Oldsavegamestructs.h"
-
-#define SG_HEADERSIZE			7
-#define SAVEGAMEVERSION 		'6'
-#define OLDSAVEGAMEVERSION 		'5'
 
 void sgrle_initdecompression(void);
 void sgrle_compress(FILE *fp, unsigned char *ptr, unsigned long nbytes);
@@ -100,6 +95,69 @@ std::vector<std::string> CSavedGame::getSlotList()
 
 /* --- Functions for older savegames START --- */
 
+bool CSavedGame::IsOldSGVersion5(const std::string& fname)
+{
+	const char *verify = "CKSAVE";
+	FILE* fp = OpenGameFile(fname, "rb");
+	if (!fp) return false;
+
+	for(size_t i=0; i < strlen(verify); i++)
+	{
+		char c = fgetc(fp);
+		if (c != verify[i])
+		{
+			fclose(fp);
+			return false;
+		}
+		printf("%c", c);
+	}
+	if (fgetc(fp) != OLDSAVEGAMEVERSION)
+	{
+		fclose(fp);
+		return false;
+	}
+	fclose(fp);
+	return true;
+}
+
+bool CSavedGame::IsOldSGVersion4(const std::string& fname)
+{
+	const char *verify = "CKSAVE";
+	FILE* fp = OpenGameFile(fname, "rb");
+	if (!fp) return false;
+
+	for(size_t i=0; i < strlen(verify); i++)
+	{
+		char c = fgetc(fp);
+		if (c != verify[i])
+		{
+			fclose(fp);
+			return false;
+		}
+		printf("%c", c);
+	}
+	if (fgetc(fp) != OLDSAVEGAMEVERSION)
+	{
+		fclose(fp);
+		return false;
+	}
+	fclose(fp);
+	return true;
+}
+
+/**
+ * This to find the proper old save game version
+ */
+int CSavedGame::getOldSGVersion(const std::string& fname)
+{
+	if(IsOldSGVersion5(fname))
+		return 5;
+	if(IsOldSGVersion4(fname))
+		return 4;
+	else
+		return 0;
+}
+
 // This function converts savegame all files from old versions of CG to the new format
 void CSavedGame::convertAllOldFormats()
 {
@@ -107,35 +165,13 @@ void CSavedGame::convertAllOldFormats()
 		convertOldFormat(slot);
 }
 
-// Converts one old savegame file to the new format...
-bool CSavedGame::convertOldFormat(size_t slot)
+/**
+ * This function loads the savegame of the 5th version
+ */
+bool CSavedGame::loadSaveGameVersion5(const std::string &fname, OldSaveGameFormat& old)
 {
-	// TODO: Old CG 0.3.0.4 Code Handle with care
 	FILE *fp;
-	std::string fname;
 	unsigned char episode, level, lives, numplayers;
-	OldSaveGameFormat old;
-
-	fname = "ep";
-	fname += itoa(m_Episode);
-	fname += "save";
-	fname += itoa(slot);
-	fname += ".dat";
-
-	if ( !IsOldButValidSaveGame(fname) )
-		return false;
-
-	size_t newslot = slot;
-	while(Fileexists(newslot))
-		newslot++;
-
-	prepareSaveGame(newslot, "oldsave"+itoa(slot));
-
-	if(alreadyExits())
-	{
-		g_pLogFile->textOut("You already have \""+m_statefilename+"\". If you want to export an old savegame erase it, or erase the old savegame if it's already exported!" );
-		return false;
-	}
 
 	g_pLogFile->ftextOut("Loading game from file %s\n", fname.c_str());
 	fp = OpenGameFile(fname, "rb");
@@ -183,6 +219,40 @@ bool CSavedGame::convertOldFormat(size_t slot)
 	if (sgrle_decompress(fp, (unsigned char *)&old.Player, sizeof(old.Player))) return false;
 
 	fclose(fp);
+
+	return true;
+}
+
+// Converts one old savegame file to the new format...
+bool CSavedGame::convertOldFormat(size_t slot)
+{
+	// TODO: Old CG 0.3.0.4 Code Handle with care
+	std::string fname;
+	OldSaveGameFormat old;
+	int version;
+
+	fname = "ep";
+	fname += itoa(m_Episode);
+	fname += "save";
+	fname += itoa(slot);
+	fname += ".dat";
+
+	if ( (version = getOldSGVersion(fname) == 0) )
+		return false;
+
+	size_t newslot = slot;
+	while(Fileexists(newslot))
+		newslot++;
+
+	prepareSaveGame(newslot, "oldsave"+itoa(slot));
+
+	if(alreadyExits())
+	{
+		g_pLogFile->textOut("You already have \""+m_statefilename+"\". If you want to export an old savegame erase it, or erase the old savegame if it's already exported!" );
+		return false;
+	}
+
+	if(!loadSaveGameVersion5(fname, old)) return false;
 
 	// Rename the old save game to the extension bak, so it won't be converted again
 	std::string newfname = fname.substr(0,fname.size()-3) + "bak";
@@ -247,30 +317,6 @@ bool CSavedGame::convertOldFormat(size_t slot)
 	return true;
 }
 
-bool CSavedGame::IsOldButValidSaveGame(const std::string& fname)
-{
-	const char *verify = "CKSAVE";
-	FILE* fp = OpenGameFile(fname, "rb");
-	if (!fp) return false;
-
-	for(size_t i=0; i < strlen(verify); i++)
-	{
-		char c = fgetc(fp);
-		if (c != verify[i])
-		{
-			fclose(fp);
-			return false;
-		}
-		printf("%c", c);
-	}
-	if (fgetc(fp) != OLDSAVEGAMEVERSION)
-	{
-		fclose(fp);
-		return false;
-	}
-	fclose(fp);
-	return true;
-}
 
 // this is seperated out of game_load for modularity because menumanager.c
 // also uses it, in it's save-game "preview" menu on the load game screen
