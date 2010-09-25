@@ -126,6 +126,7 @@ bool CPlayGameVorticon::loadGameState()
 				object->m_type == OBJ_RAY or
 				object->m_type == OBJ_SNDWAVE or
 				object->m_type == OBJ_FIREBALL or
+				object->m_type == OBJ_ICECHUNK or
 				object->m_type == OBJ_ICEBIT or
 				object->m_type == OBJ_GOTPOINTS or
 				object->m_type == OBJ_ANKHSHIELD) // Some objects are really not needed. So don't load them
