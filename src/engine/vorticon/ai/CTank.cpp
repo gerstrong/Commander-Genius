@@ -187,7 +187,7 @@ void CTank::process()
 bool CTank::CanMoveLeft()
 {
 	CTileProperties &currentTile = g_pBehaviorEngine->getTileProperties()
-			[mp_Map->at((getXMidPos())>>CSF, (getYDownPos()+256)>>CSF)];
+			[mp_Map->at((getXMidPos()-128)>>CSF, (getYDownPos()+256)>>CSF)];
 	if (!blockedl && currentTile.bup) return true;
 	return false;
 }
@@ -195,7 +195,7 @@ bool CTank::CanMoveLeft()
 bool CTank::CanMoveRight()
 {
 	CTileProperties &currentTile = g_pBehaviorEngine->getTileProperties()
-			[mp_Map->at((getXMidPos())>>CSF, (getYDownPos()+256)>>CSF)];
+			[mp_Map->at((getXMidPos()+128)>>CSF, (getYDownPos()+256)>>CSF)];
 	if (!blockedr && currentTile.bup) return true;
 	return false;
 }

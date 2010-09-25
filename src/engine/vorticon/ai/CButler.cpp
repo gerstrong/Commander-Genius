@@ -34,7 +34,7 @@ void CButler::process()
 
 		 if (movedir==LEFT)
 		 {  // move left
-			 size_t tile = mp_Map->at((getXLeftPos()-(BUTLER_LOOK_AHEAD_DIST<<STC))>>CSF, (getYDownPos()+(1<<STC))>>CSF);
+			 size_t tile = mp_Map->at((getXMidPos()-(BUTLER_LOOK_AHEAD_DIST<<STC))>>CSF, (getYDownPos()+(1<<STC))>>CSF);
 			 not_about_to_fall = g_pBehaviorEngine->getTileProperties().at(tile).bup;
 			 sprite = BUTLER_WALK_LEFT_FRAME + frame;
 			 if (!blockedl && not_about_to_fall)
@@ -53,7 +53,7 @@ void CButler::process()
 		 else
 		 {  // move right
 	 
-			 size_t tile = mp_Map->at((getXRightPos()+(BUTLER_LOOK_AHEAD_DIST<<STC))>>CSF, (getYDownPos()+(1<<STC))>>CSF);
+			 size_t tile = mp_Map->at((getXMidPos()+(BUTLER_LOOK_AHEAD_DIST<<STC))>>CSF, (getYDownPos()+(1<<STC))>>CSF);
 			 not_about_to_fall = g_pBehaviorEngine->getTileProperties().at(tile).bup;
 			 sprite = BUTLER_WALK_RIGHT_FRAME + frame;
 			 if (!blockedr && not_about_to_fall)
