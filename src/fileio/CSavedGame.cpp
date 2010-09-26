@@ -212,57 +212,41 @@ bool CSavedGame::loadSaveGameVersion5(const std::string &fname, OldSaveGameForma
 
 bool CSavedGame::loadSaveGameVersion4(const std::string &fname, OldSaveGameFormat& old)
 {
-//	FILE *fp;
-//	unsigned char episode, level, lives, numplayers;
-//
-//	g_pLogFile->ftextOut("Loading game from file %s\n", fname.c_str());
-//	fp = OpenGameFile(fname, "rb");
-//	if (!fp) { g_pLogFile->ftextOut("unable to open %s\n",fname.c_str()); return false; }
-//
-//	g_pLogFile->ftextOut("game_load: restoring structures...\n");
-//	/*primaryplayer =*/ fgetc(fp); // primary player doesn't exist anymore! Jump that!
-//
-//	sgrle_compress(fp, (unsigned char *) &old.LevelControl, sizeof(old.LevelControl));
-//
-//	// note that we don't have to load the LEVEL, because the state
-//	// of the map is already saved inside the save-game.
-//	sgrle_initdecompression();
-//	if (sgrle_decompress(fp, (unsigned char *) &old.LevelControl, sizeof(old.LevelControl))) return false;
-//
-//	if (sgrle_decompress(fp, (unsigned char *)&old.scroll_x, sizeof(old.scroll_x))) return false;
-//	if (sgrle_decompress(fp, (unsigned char *)&old.scrollx_buf, sizeof(old.scrollx_buf))) return false;
-//	if (sgrle_decompress(fp, (unsigned char *)&old.scrollpix, sizeof(old.scrollpix))) return false;
-//	if (sgrle_decompress(fp, (unsigned char *)&old.mapx, sizeof(old.mapx))) return false;
-//	if (sgrle_decompress(fp, (unsigned char *)&old.mapxstripepos, sizeof(old.mapxstripepos))) return false;
-//
-//	if (sgrle_decompress(fp, (unsigned char *)&old.scroll_y, sizeof(old.scroll_y))) return false;
-//	if (sgrle_decompress(fp, (unsigned char *)&old.scrolly_buf, sizeof(old.scrolly_buf))) return false;
-//	if (sgrle_decompress(fp, (unsigned char *)&old.scrollpixy, sizeof(old.scrollpixy))) return false;
-//	if (sgrle_decompress(fp, (unsigned char *)&old.mapy, sizeof(old.mapy))) return false;
-//	if (sgrle_decompress(fp, (unsigned char *)&old.mapystripepos, sizeof(old.mapystripepos))) return false;
-//
-//	if (sgrle_decompress(fp, (unsigned char *)&old.max_scroll_x, sizeof(old.max_scroll_x))) return false;
-//	if (sgrle_decompress(fp, (unsigned char *)&old.max_scroll_y, sizeof(old.max_scroll_y))) return false;
-//
-//	if (sgrle_decompress(fp, (unsigned char *)&old.map, sizeof(old.map))) return false;
-//
-//	unsigned char *tempbuf;
-//
-//	tempbuf = new unsigned char[22624];
-//
-//	/*highest_objslot = */fgetc(fp); fgetc(fp); // Not used anymore since objects are held in an vector.
-//	if (sgrle_decompress(fp, (unsigned char *)tempbuf, 22624)) return false;
-//	if (sgrle_decompress(fp, (unsigned char *)tempbuf, 9612)) return false;
-//
-//	delete [] tempbuf;
-//
-//	if (sgrle_decompress(fp, (unsigned char *)&old.Player, sizeof(old.Player))) return false;
-//
-//	fclose(fp);
-//
-//	return true;
-	g_pLogFile->ftextOut("Support for savegame version 4 still disabled!!\n");
-	return false;
+	FILE *fp;
+	unsigned char episode, level, lives, numplayers;
+
+	g_pLogFile->ftextOut("Loading game from file %s\n", fname.c_str());
+	fp = OpenGameFile(fname, "rb");
+	if (!fp) { g_pLogFile->ftextOut("unable to open %s\n",fname.c_str()); return false; }
+
+	g_pLogFile->ftextOut("game_load: restoring structures...\n");
+	if (fgetc(fp) != 'S') { fclose(fp); return false; }
+	if (fgetc(fp) != OLDSAVEGAMEVERSION4) { fclose(fp); return false; }
+	fgetc(fp);
+
+	// load all structures from the file
+	sgrle_initdecompression();
+	sgrle_decompress(fp, (unsigned char *) &numplayers, sizeof(numplayers));
+	sgrle_decompress(fp, (unsigned char *) &old.LevelControl, sizeof(old.LevelControl));
+	sgrle_decompress(fp, (unsigned char *)&old.scrollpix, sizeof(old.scrollpix));
+	sgrle_decompress(fp, (unsigned char *)&old.scrollpixy, sizeof(old.scrollpixy));
+	sgrle_decompress(fp, (unsigned char *)&old.max_scroll_x, sizeof(old.max_scroll_x));
+	sgrle_decompress(fp, (unsigned char *)&old.max_scroll_y, sizeof(old.max_scroll_y));
+	sgrle_decompress(fp, (unsigned char *)&old.map, sizeof(old.map));
+
+	//initgame( &(pCKP->Control.levelcontrol) ); // reset scroll
+	//drawmap();
+	//for(i=0;i<scrx;i++) map_scroll_right();
+	//for(i=0;i<scry;i++) map_scroll_down();
+
+	sgrle_decompress(fp, (unsigned char *)&old.Player, sizeof(old.Player));
+
+	//sgrle_decompress(fp, (unsigned char *)&objects[0], sizeof(objects));
+	//sgrle_decompress(fp, (unsigned char *)&tiles[0], sizeof(tiles));
+
+	fclose(fp);
+
+	return true;
 }
 
 // Converts one old savegame file to the new format...
@@ -279,7 +263,7 @@ bool CSavedGame::convertOldFormat(size_t slot)
 	fname += itoa(slot);
 	fname += ".dat";
 
-	if ( (version = getOldSGVersion(fname) == 0) )
+	if ( ((version = getOldSGVersion(fname)) == 0) )
 		return false;
 
 	size_t newslot = slot;

@@ -40,6 +40,8 @@ unsigned char sgrle_get_next_byte(FILE *fp)
 	}
 }
 
+/* resets the decompression engine. (must call this before the first
+ time you use sgrle_decompress(), each time you open a new file) */
 void sgrle_initdecompression(void)
 {
 	sgrle_runlen = 0;
@@ -144,11 +146,4 @@ void sgrle_compress(FILE *fp, unsigned char *ptr, unsigned long nbytes)
 		}
 	}
 	
-}
-
-/* resets the decompression engine. (must call this before the first
- time you use sgrle_decompress(), each time you open a new file) */
-void sgrle_reset(void)
-{
-	sgrle_runlen = 0;
 }
