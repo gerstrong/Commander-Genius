@@ -91,7 +91,7 @@ struct OldSaveGameFormat
 
 	unsigned int max_scroll_x, max_scroll_y;
 
-	struct
+	struct stOldMap
 	{
 		unsigned int xsize, ysize;            // size of the map
 		bool isworldmap;             // if 1, this is the world map
@@ -100,6 +100,8 @@ struct OldSaveGameFormat
 		// on world map contains level numbers and flags for things like teleporters
 		unsigned int objectlayer[256][256];
 		bool firsttime;  // used when generating multiplayer positions on world map
+
+		stOldMap() { memset(this, 0, sizeof(stPlayer)); }
 	} map;
 
 	struct stPlayer
@@ -185,8 +187,10 @@ struct OldSaveGameFormat
 
 	   stInventory inventory;
 
-		stPlayer() { memset(this, 0, sizeof(stPlayer)); }
+	   stPlayer() { memset(this, 0, sizeof(stPlayer)); }
 	}Player;
+
+	OldSaveGameFormat() { memset(this, 0, sizeof(OldSaveGameFormat)); }
 };
 
 #endif /* OLDSAVEGAMESTRUCTS_H_ */

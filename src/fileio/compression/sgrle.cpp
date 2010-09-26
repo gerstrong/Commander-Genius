@@ -47,9 +47,10 @@ void sgrle_initdecompression(void)
 	sgrle_runlen = 0;
 }
 
-/* decompresses nbytes bytes of SGRLE-compressed data from */
-/* file pointer *fp to the memory area pointed to by *ptr. */
-char sgrle_decompress(FILE *fp, unsigned char *ptr, unsigned long nbytes)
+/* decompresses nbytes bytes of SGRLE-compressed data from
+   file pointer *fp to the memory area pointed to by *ptr.
+   Newer Version */
+char sgrle_decompressV2(FILE *fp, unsigned char *ptr, unsigned long nbytes)
 {
 	unsigned long i;
 	unsigned long bytes;
@@ -70,6 +71,19 @@ char sgrle_decompress(FILE *fp, unsigned char *ptr, unsigned long nbytes)
 		ptr[i] = sgrle_get_next_byte(fp);
 	return 0;
 }
+
+/* decompresses nbytes bytes of SGRLE-compressed data from
+ * file pointer *fp to the memory area pointed to by *ptr.
+ * Older Version */
+void sgrle_decompressV1(FILE *fp, unsigned char *ptr, unsigned long nbytes)
+{
+	unsigned long i;
+	for(i=0;i<nbytes;i++)
+	{
+		ptr[i] = sgrle_get_next_byte(fp);
+	}
+}
+
 
 /* given a memory area *ptr of length nbytes, compresses the data */
 /* using the SGRLE algorithm and saves it to file *fp */
