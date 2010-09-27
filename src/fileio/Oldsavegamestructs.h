@@ -205,15 +205,15 @@ struct OldSaveGameFormatV4
 		 int tobonuslevel;            // if 1 player will warp to bonus level on return to WM (for ep1)
 		 // data about current level
 		 int curlevel;                // number of current level
-		 char success;                // 1 if level was finished, 0 if he died
-		 char isfinallevel;           // 1 if this is the final level
-		 char canexit;                // 1 if player is allowed to use the exit door
-		 char gameovermode;           // 1 if "Game Over" is displayed
-		 char dokeensleft;            // 1 if we need to do the "Keens Left"
-		 char dark;                   // 1 if level is currently dark (lights are out)
+		 bool success;                // true if level was finished, 0 if he died
+		 bool gameovermode;           // true if "Game Over" is displayed
+		 bool dokeensleft;            // true if we need to do the "Keens Left"
+		 bool dark;                   // true if level is currently dark (lights are out)
 
 		 int episode;                 // which episode we're playing (1-3)
 		 bool hardmode;
+		 bool usedhintmb;			  // Has the message box been used?
+		 int demomode;
 
 		 // array of which levels have been completed (have "Done" tiles over them
 		 // on the world map)
@@ -226,16 +226,40 @@ struct OldSaveGameFormatV4
 		 unsigned int level_finished_by;      // index of player that finished level
 		 unsigned int exitXpos;
 
-		// as long as we only have POD
-		stLevelControl() { memset(this, 0, sizeof(stLevelControl)); }
+		 // for ep2: how many sparks (tantalus ray machines) are left
+		 // you must destroy the tantalus ray generator before exiting
+		 int sparks_left;
+
+
+		 // if true, a moving platform is currently extending/retracting (ep2)
+		 bool PlatExtending;
+
+		 // if > 0, the screen will shake and it will decrement each frame.
+		 // used when you push a switch on a tantalus ray (ep2), and Mortimer's machine
+		 int vibratetime;
+		 // if 1, then while vibrating the game will be paused
+		 char vibratepause;
+
+			// as long as we only have POD
+			stLevelControl() { memset(this, 0, sizeof(stLevelControl)); }
+
+			 // stuff for custom episode's options
+			 struct
+			 {
+			 	char DoorOpenDir;
+				char pShotSpeed;
+				char VortDieDoFade;
+				char vgatiles;
+				char vgasprites;
+			 } cepvars;
 	}LevelControl;
 
 	unsigned long scroll_x;
+	unsigned int scroll_y;
 	unsigned int scrollx_buf;
 	unsigned char scrollpix;
 	unsigned int mapx;
 	unsigned int mapxstripepos;
-	unsigned int scroll_y;
 	unsigned int scrolly_buf;
 	unsigned char scrollpixy;
 	unsigned int mapy;
@@ -246,12 +270,12 @@ struct OldSaveGameFormatV4
 	struct stOldMap
 	{
 		 unsigned int xsize, ysize;            // size of the map
-		 unsigned char isworldmap;             // if 1, this is the world map
+		 bool isworldmap;             // if 1, this is the world map
 		 unsigned int mapdata[256][256];       // the map data
 		 // in-game, contains monsters and special object tags like for switches
 		 // on world map contains level numbers and flags for things like teleporters
 		 unsigned int objectlayer[256][256];
-		 char firsttime;  // used when generating multiplayer positions on world map
+		 bool firsttime;  // used when generating multiplayer positions on world map
 		stOldMap() { memset(this, 0, sizeof(stPlayer)); }
 	} map;
 
@@ -338,7 +362,7 @@ struct OldSaveGameFormatV4
 
 		   stInventory inventory;
 
-	   stPlayer() { memset(this, 0, sizeof(stPlayer)); }
+		   stPlayer() { memset(this, 0, sizeof(stPlayer)); }
 	}Player;
 
 	OldSaveGameFormatV4() { memset(this, 0, sizeof(OldSaveGameFormatV4)); }
