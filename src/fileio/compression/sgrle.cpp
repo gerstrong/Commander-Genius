@@ -10,14 +10,16 @@
 #include "../../fileio.h"
 #include "../../CLogFile.h"
 
-#define SGRLE_RLEMARKER         0xFE
+#define SGRLE_RLEMARKERNEW         0xFE
+#define SGRLE_RLEMARKEROLD         255
+//#define SGRLE_RLEMARKEROLD         0xFE
 #define SGRLE_MAXRUNLEN         0xFFF0
 int sgrle_runlen;
 unsigned char sgrle_runchar;
 
 /* decompresses the next byte from file FP. */
 /* used internally by sgrle_decompress(). */
-unsigned char sgrle_get_next_byte(FILE *fp)
+unsigned char sgrle_get_next_byte(FILE *fp, unsigned char marker)
 {
 	// are we currently in a RLE run?
 	if (sgrle_runlen)
@@ -30,11 +32,11 @@ unsigned char sgrle_get_next_byte(FILE *fp)
 	else
 	{	// not currently in a RLE run
 		sgrle_runchar = fgetc(fp);
-		if (sgrle_runchar==SGRLE_RLEMARKER)
+		if (sgrle_runchar==marker)
 		{  // start of a RLE run
 			sgrle_runlen = fgeti(fp);
 			sgrle_runchar = fgetc(fp);
-			return sgrle_get_next_byte(fp);
+			return sgrle_get_next_byte(fp, marker);
 		}
 		else return sgrle_runchar;
 	}
@@ -68,7 +70,7 @@ char sgrle_decompressV2(FILE *fp, unsigned char *ptr, unsigned long nbytes)
 	sgrle_runlen = 0;
 	
 	for(i=0;i<nbytes;i++)
-		ptr[i] = sgrle_get_next_byte(fp);
+		ptr[i] = sgrle_get_next_byte(fp, SGRLE_RLEMARKERNEW);
 	return 0;
 }
 
@@ -80,7 +82,7 @@ void sgrle_decompressV1(FILE *fp, unsigned char *ptr, unsigned long nbytes)
 	unsigned long i;
 	for(i=0;i<nbytes;i++)
 	{
-		ptr[i] = sgrle_get_next_byte(fp);
+		ptr[i] = sgrle_get_next_byte(fp, SGRLE_RLEMARKEROLD);
 	}
 }
 
@@ -126,7 +128,7 @@ void sgrle_compress(FILE *fp, unsigned char *ptr, unsigned long nbytes)
 			
 			// it takes 4 bytes to code a RLE run, so if the run is less than
 			// 4 bytes, it would actually be smaller if we didn't compress it
-			if (runlength < 4 && readbyt != SGRLE_RLEMARKER)
+			if (runlength < 4 && readbyt != SGRLE_RLEMARKERNEW)
 			{
 				// RLE run, but too small to bother with
 				for(i=0;i<runlength;i++) fputc(readbyt, fp);
@@ -134,7 +136,7 @@ void sgrle_compress(FILE *fp, unsigned char *ptr, unsigned long nbytes)
 			else
 			{
 				// save a RLE run
-				fputc(SGRLE_RLEMARKER, fp);
+				fputc(SGRLE_RLEMARKERNEW, fp);
 				fputi(runlength, fp);
 				fputc(readbyt, fp);
 			}
@@ -144,7 +146,7 @@ void sgrle_compress(FILE *fp, unsigned char *ptr, unsigned long nbytes)
 		else
 		{
 			// next byte is different, this is not a run, it's just a single char
-			if (readbyt != SGRLE_RLEMARKER)
+			if (readbyt != SGRLE_RLEMARKERNEW)
 			{
 				fputc(readbyt, fp);
 			}
@@ -152,7 +154,7 @@ void sgrle_compress(FILE *fp, unsigned char *ptr, unsigned long nbytes)
 			{
 				// it's a single uncompressed byte which is equal to the RLE marker.
 				// delimit it by placing it in a RLE run of length 1.
-				fputc(SGRLE_RLEMARKER, fp);
+				fputc(SGRLE_RLEMARKERNEW, fp);
 				fputi(1, fp);
 				fputc(readbyt, fp);
 			}

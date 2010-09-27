@@ -156,7 +156,7 @@ void CSavedGame::convertAllOldFormats()
 /**
  * This function loads the savegame of the 5th version
  */
-bool CSavedGame::loadSaveGameVersion5(const std::string &fname, OldSaveGameFormat& old)
+bool CSavedGame::loadSaveGameVersion5(const std::string &fname, OldSaveGameFormatV5& old)
 {
 	FILE *fp;
 	unsigned char episode, level, lives, numplayers;
@@ -211,11 +211,11 @@ bool CSavedGame::loadSaveGameVersion5(const std::string &fname, OldSaveGameForma
 	return true;
 }
 
-bool CSavedGame::loadSaveGameVersion4(const std::string &fname, OldSaveGameFormat& old)
+bool CSavedGame::loadSaveGameVersion4(const std::string &fname, OldSaveGameFormatV4& old)
 {
 	FILE *fp;
 	//unsigned char episode, level, lives;
-	unsigned char numplayers;
+	unsigned int numplayers;
 
 	g_pLogFile->ftextOut("Loading game from file %s\n", fname.c_str());
 	fp = OpenGameFile(fname, "rb");
@@ -241,7 +241,7 @@ bool CSavedGame::loadSaveGameVersion4(const std::string &fname, OldSaveGameForma
 	//for(i=0;i<scrx;i++) map_scroll_right();
 	//for(i=0;i<scry;i++) map_scroll_down();
 
-	//sgrle_decompressV1(fp, (unsigned char *)&old.Player, sizeof(old.Player));
+	sgrle_decompressV1(fp, (unsigned char *)&old.Player, sizeof(old.Player));
 
 	//sgrle_decompress(fp, (unsigned char *)&objects[0], sizeof(objects));
 	//sgrle_decompress(fp, (unsigned char *)&tiles[0], sizeof(tiles));
@@ -256,7 +256,6 @@ bool CSavedGame::convertOldFormat(size_t slot)
 {
 	// TODO: Old CG 0.3.0.4 Code Handle with care
 	std::string fname;
-	OldSaveGameFormat old;
 	int version;
 
 	fname = "ep";
@@ -282,11 +281,127 @@ bool CSavedGame::convertOldFormat(size_t slot)
 
 	if(version == 5)
 	{
+		OldSaveGameFormatV5 old;
+
 		if(!loadSaveGameVersion5(fname, old)) return false;
+
+		// Rename the old save game to the extension bak, so it won't be converted again
+		std::string newfname = fname.substr(0,fname.size()-3) + "bak";
+		Rename(fname, newfname);
+
+		//
+		// Now let's save it into a new format
+		//
+		/// Save the Game in the CSavedGame object
+		// store the episode, level and difficulty
+		encodeData(old.LevelControl.episode);
+		encodeData(old.LevelControl.curlevel);
+		encodeData(old.LevelControl.hardmode ? 2 : 1);
+
+		// Also the last checkpoint is stored. This is the level entered from map
+		// in Commander Keen games
+		encodeData(false); // No checkpoint set
+		encodeData(0); // Checkpoint X set to zero
+		encodeData(0); // Checkpoint Y set to zero
+		encodeData(old.LevelControl.dark);
+
+		// Save number of Players
+		encodeData(1);
+
+		// Now save the inventory of every player
+		encodeData(old.Player.x);
+		encodeData(old.Player.y);
+		encodeData(old.Player.blockedd);
+		encodeData(old.Player.blockedu);
+		encodeData(old.Player.blockedl);
+		encodeData(old.Player.blockedr);
+		encodeData(old.Player.inventory);
+
+		// save the number of objects on screen.
+		encodeData(0);
+
+		// Save the map_data as it is left
+		encodeData(old.map.xsize);
+		encodeData(old.map.ysize);
+
+		word *mapdata = new word[old.map.xsize*old.map.ysize];
+		for( size_t x=0 ; x<old.map.xsize ; x++ )
+		{
+			for( size_t y=0 ; y<old.map.ysize ; y++ )
+			{
+				mapdata[y*old.map.xsize+x] = old.map.mapdata[x][y];
+			}
+		}
+		addData( (byte*)(mapdata), 2*old.map.xsize*old.map.ysize );
+
+		delete [] mapdata;
+
+		// store completed levels
+		addData( (byte*)(old.LevelControl.levels_completed), MAX_LEVELS_VORTICON );
+
+		g_pLogFile->ftextOut("Structures restored: map size: %d,%d and saved\n", old.map.xsize, old.map.ysize);
 	}
 	else if(version == 4)
 	{
+		OldSaveGameFormatV4 old;
+
 		if(!loadSaveGameVersion4(fname, old)) return false;
+
+		// Rename the old save game to the extension bak, so it won't be converted again
+		std::string newfname = fname.substr(0,fname.size()-3) + "bak";
+		Rename(fname, newfname);
+
+		//
+		// Now let's save it into a new format
+		//
+		/// Save the Game in the CSavedGame object
+		// store the episode, level and difficulty
+		encodeData(old.LevelControl.episode);
+		encodeData(old.LevelControl.curlevel);
+		encodeData(old.LevelControl.hardmode ? 2 : 1);
+
+		// Also the last checkpoint is stored. This is the level entered from map
+		// in Commander Keen games
+		encodeData(false); // No checkpoint set
+		encodeData(0); // Checkpoint X set to zero
+		encodeData(0); // Checkpoint Y set to zero
+		encodeData(old.LevelControl.dark);
+
+		// Save number of Players
+		encodeData(1);
+
+		// Now save the inventory of every player
+		encodeData(old.Player.x);
+		encodeData(old.Player.y);
+		encodeData(old.Player.blockedd);
+		encodeData(old.Player.blockedu);
+		encodeData(old.Player.blockedl);
+		encodeData(old.Player.blockedr);
+		encodeData(old.Player.inventory);
+
+		// save the number of objects on screen.
+		encodeData(0);
+
+		// Save the map_data as it is left
+		encodeData(old.map.xsize);
+		encodeData(old.map.ysize);
+
+		word *mapdata = new word[old.map.xsize*old.map.ysize];
+		for( size_t x=0 ; x<old.map.xsize ; x++ )
+		{
+			for( size_t y=0 ; y<old.map.ysize ; y++ )
+			{
+				mapdata[y*old.map.xsize+x] = old.map.mapdata[x][y];
+			}
+		}
+		addData( (byte*)(mapdata), 2*old.map.xsize*old.map.ysize );
+
+		delete [] mapdata;
+
+		// store completed levels
+		addData( (byte*)(old.LevelControl.levels_completed), MAX_LEVELS_VORTICON );
+
+		g_pLogFile->ftextOut("Structures restored: map size: %d,%d and saved\n", old.map.xsize, old.map.ysize);
 	}
 	else
 	{
@@ -294,63 +409,8 @@ bool CSavedGame::convertOldFormat(size_t slot)
 		return false;
 	}
 
-	// Rename the old save game to the extension bak, so it won't be converted again
-	std::string newfname = fname.substr(0,fname.size()-3) + "bak";
-	Rename(fname, newfname);
-
-	//
-	// Now let's save it into a new format
-	//
-	/// Save the Game in the CSavedGame object
-	// store the episode, level and difficulty
-	encodeData(old.LevelControl.episode);
-	encodeData(old.LevelControl.curlevel);
-	encodeData(old.LevelControl.hardmode ? 2 : 1);
-
-	// Also the last checkpoint is stored. This is the level entered from map
-	// in Commander Keen games
-	encodeData(false); // No checkpoint set
-	encodeData(0); // Checkpoint X set to zero
-	encodeData(0); // Checkpoint Y set to zero
-	encodeData(old.LevelControl.dark);
-
-	// Save number of Players
-	encodeData(1);
-
-	// Now save the inventory of every player
-	encodeData(old.Player.x);
-	encodeData(old.Player.y);
-	encodeData(old.Player.blockedd);
-	encodeData(old.Player.blockedu);
-	encodeData(old.Player.blockedl);
-	encodeData(old.Player.blockedr);
-	encodeData(old.Player.inventory);
-
-	// save the number of objects on screen.
-	encodeData(0);
-
-	// Save the map_data as it is left
-	encodeData(old.map.xsize);
-	encodeData(old.map.ysize);
-
-	word *mapdata = new word[old.map.xsize*old.map.ysize];
-	for( size_t x=0 ; x<old.map.xsize ; x++ )
-	{
-		for( size_t y=0 ; y<old.map.ysize ; y++ )
-		{
-			mapdata[y*old.map.xsize+x] = old.map.mapdata[x][y];
-		}
-	}
-	addData( (byte*)(mapdata), 2*old.map.xsize*old.map.ysize );
-
-	delete [] mapdata;
-
-	// store completed levels
-	addData( (byte*)(old.LevelControl.levels_completed), MAX_LEVELS_VORTICON );
-
 	save();
 
-	g_pLogFile->ftextOut("Structures restored: map size: %d,%d and saved\n", old.map.xsize, old.map.ysize);
 	g_pLogFile->ftextOut("The old savegame has been converted successfully OK\n");
 
 	return true;
