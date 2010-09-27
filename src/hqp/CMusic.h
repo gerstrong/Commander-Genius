@@ -10,7 +10,6 @@
 
 #include "vorbis/oggsupport.h"
 
-
 enum playstatus{
 	PLAY_MODE_STOP,
 	PLAY_MODE_PAUSE,

@@ -5,6 +5,8 @@
  *      Author: gerstrong
  */
 
+#ifndef __OGGSUPPORT__
+#define __OGGSUPPORT__
 
 #include <SDL.h>
 // vorbis headers
@@ -37,14 +39,9 @@ bool readOGGStreamAndResample( OggVorbis_File  &oggStream, char *buffer, const s
 void cleanupOGG(OggVorbis_File  &oggStream);
 
 #if defined(TREMOR)
-int ov_fopen(char *path,OggVorbis_File *vf)
-{
-	int result;
-    FILE *fp = fopen(path, "rb");
-	if((result = ov_open(fp, vf, NULL, 0)) < 0)
-		fclose(fp);
-	return result;
-}
+int ov_fopen(char *path,OggVorbis_File *vf);
 #endif
 
 #endif
+
+#endif //__OGGSUPPORT__

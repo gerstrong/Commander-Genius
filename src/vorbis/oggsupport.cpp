@@ -154,4 +154,15 @@ void cleanupOGG(OggVorbis_File  &oggStream)
 	ov_clear(&oggStream);
 }
 
+#if defined(TREMOR)
+int ov_fopen(char *path,OggVorbis_File *vf)
+{
+	int result;
+    FILE *fp = fopen(path, "rb");
+	if((result = ov_open(fp, vf, NULL, 0)) < 0)
+		fclose(fp);
+	return result;
+}
+#endif
+
 #endif

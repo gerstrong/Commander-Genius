@@ -6,13 +6,13 @@
  */
 
 #include "CSound.h"
-#include "../../keen.h"
-#include "../../fileio.h"
-#include "../../fileio/ResourceMgmt.h"
-#include "../../CLogFile.h"
-#include "../../hqp/CMusic.h"
-#include "../../StringUtils.h"
-#include "../../FindFile.h"
+#include "keen.h"
+#include "fileio.h"
+#include "fileio/ResourceMgmt.h"
+#include "CLogFile.h"
+#include "hqp/CMusic.h"
+#include "StringUtils.h"
+#include "FindFile.h"
 #include "sdl/sound/Mixer.h"
 
 #include <fstream>

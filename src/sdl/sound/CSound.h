@@ -18,7 +18,7 @@
 #include "CSoundChannel.h"
 #include "CSoundSlot.h"
 #include "sounds.h"
-#include "../../fileio/CExeFile.h"
+#include "fileio/CExeFile.h"
 
 class CSound : public CSingleton<CSound>
 {
