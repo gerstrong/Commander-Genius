@@ -230,8 +230,8 @@ bool CSavedGame::loadSaveGameVersion4(const std::string &fname, OldSaveGameForma
 	sgrle_initdecompression();
 	sgrle_decompressV1(fp, (unsigned char *)&numplayers, sizeof(numplayers));
 	sgrle_decompressV1(fp, (unsigned char *)&old.LevelControl, sizeof(old.LevelControl));
-	sgrle_decompressV1(fp, (unsigned char *)&old.scrollpix, sizeof(old.scrollpix));
-	sgrle_decompressV1(fp, (unsigned char *)&old.scrollpixy, sizeof(old.scrollpixy));
+	sgrle_decompressV1(fp, (unsigned char *)&old.scroll_x, sizeof(old.scroll_x));
+	sgrle_decompressV1(fp, (unsigned char *)&old.scroll_y, sizeof(old.scroll_y));
 	sgrle_decompressV1(fp, (unsigned char *)&old.max_scroll_x, sizeof(old.max_scroll_x));
 	sgrle_decompressV1(fp, (unsigned char *)&old.max_scroll_y, sizeof(old.max_scroll_y));
 	sgrle_decompressV1(fp, (unsigned char *)&old.map, sizeof(old.map));
