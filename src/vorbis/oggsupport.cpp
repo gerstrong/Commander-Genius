@@ -19,8 +19,7 @@ short openOGGSound(const std::string& filename, SDL_AudioSpec *pspec, stHQSound 
 
     OggVorbis_File  oggStream;     // stream handle
 
-    char *c_filename = (char *)GetFullFileName(filename).c_str();
-    if(ov_fopen( c_filename, &oggStream ) != 0)
+    if(ov_fopen( (char *)GetFullFileName(filename).c_str(), &oggStream ) != 0)
     {
         return 1;
     }
