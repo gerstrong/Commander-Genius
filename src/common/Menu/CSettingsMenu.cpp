@@ -16,6 +16,18 @@
 
 #define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
 
+CSettingsMenu::CSettingsMenu( Uint8 dlgtheme, CExeFile &ExeFile, stOption *p_option, bool &restartVideo, int selection )
+: CBaseMenu(dlgtheme),
+m_ExeFile(ExeFile),
+mp_SubMenu(NULL),
+mp_option(p_option),
+m_restartVideo(restartVideo),
+m_profileselection(0)
+{
+	CSettingsMenu::CSettingsMenu( dlgtheme, ExeFile, p_option, restartVideo );
+	m_selection = selection;
+}
+
 CSettingsMenu::CSettingsMenu( Uint8 dlgtheme, CExeFile &ExeFile, stOption *p_option, bool &restartVideo ) :
 CBaseMenu(dlgtheme),
 m_ExeFile(ExeFile),

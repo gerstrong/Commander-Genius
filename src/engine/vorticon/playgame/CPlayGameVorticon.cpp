@@ -7,15 +7,15 @@
  */
 
 #include "CPlayGameVorticon.h"
-#include "../../../keen.h"
-#include "../../../sdl/CTimer.h"
-#include "../../../sdl/CVideoDriver.h"
-#include "../../../sdl/sound/CSound.h"
-#include "../../../sdl/CInput.h"
-#include "../../../common/CMapLoader.h"
-#include "../../../graphics/CGfxEngine.h"
-#include "../../../StringUtils.h"
-#include "../ai/CTeleporter.h"
+#include "keen.h"
+#include "sdl/CTimer.h"
+#include "sdl/CVideoDriver.h"
+#include "sdl/sound/CSound.h"
+#include "sdl/CInput.h"
+#include "common/CMapLoader.h"
+#include "graphics/CGfxEngine.h"
+#include "StringUtils.h"
+#include "engine/vorticon/ai/CTeleporter.h"
 
 #define SAFE_DELETE(x) if(x) { delete x; x = NULL; }
 
@@ -465,13 +465,28 @@ void CPlayGameVorticon::handleFKeys()
 		mp_Menu->init(DEBUG);
 	}*/
 
-    // F3 - save game
-    if (g_pInput->getPressedKey(KF3))
+    // F2 - Sound Menu
+    if (g_pInput->getPressedKey(KF2))
+    {
+		mp_Menu = new CMenuVorticon( ACTIVE, m_ExeFile, m_Map,
+									m_SavedGame, mp_option, m_restartVideo, m_hideobjects );
+		mp_Menu->init(AUDIO);
+    }
+    // F3 - Controls Menu
+    else if (g_pInput->getPressedKey(KF3))
+    {
+		mp_Menu = new CMenuVorticon( ACTIVE, m_ExeFile, m_Map,
+									m_SavedGame, mp_option, m_restartVideo, m_hideobjects );
+		mp_Menu->init(CONTROLS);
+    }
+    // F5 - save game
+    else if (g_pInput->getPressedKey(KF5))
     {
 		mp_Menu = new CMenuVorticon( ACTIVE, m_ExeFile, m_Map,
 									m_SavedGame, mp_option, m_restartVideo, m_hideobjects );
 		mp_Menu->init(SAVE);
     }
+
 }
 
 // The Ending and mortimer cutscenes for example

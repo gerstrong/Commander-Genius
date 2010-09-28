@@ -144,6 +144,11 @@ in future versions of CG, mail us ;-).
 Before you play the game, you should take a look at the controls. Normally LAlt, Ctrl, Space and Enter
 are the action keys. You can also assign joystick buttons and axes to those actions.
 
+- HOT KEYS -
+F2 for soundmenu
+F3 for controls menu
+F5 for save menu
+
 - CHEAT CODES -
 There are a full assortment of cheat codes available. Some cheats must first
 be enabled with -cheat or through the options->game menu. C+T+SPACE and G+O+D will
@@ -154,7 +159,7 @@ G+O+D	   	godmode			   In god mode you are invincible!
 C+T+SPACE  	All Items          Gives all items, similar to the original.
 
 - SAVE/LOAD GAME -
-The game can be saved by pressing F3 at any point during the game or using the menu.
+The game can be saved by pressing F5 at any point during the game or using the menu.
 The game will be saved in the exact position it was left (unlike the original which only
 allowed save at the map).
 

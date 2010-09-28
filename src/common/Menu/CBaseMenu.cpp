@@ -43,9 +43,16 @@ void CBaseMenu::postProcess()
 {
 	if(!m_suspended)
 	{
+		if(!mp_Dialog)
+		{
+			m_mustclose = true;
+			return;
+		}
+
 		mp_Dialog->processInput();
 		mp_Dialog->draw();
 	}
+
 }
 
 bool CBaseMenu::mustClose()
@@ -55,3 +62,4 @@ CBaseMenu::~CBaseMenu() {
 	if(mp_Dialog) delete mp_Dialog;
 	mp_Dialog = NULL;
 }
+

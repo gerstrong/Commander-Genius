@@ -68,6 +68,10 @@ void CMenu::init( menutypes menu_type )
 	break;
 	case CONFIGURE:
 		m_SubMenus.push_back(new CSettingsMenu(m_dlg_theme, m_ExeFile, mp_option, m_restartVideo)); break;
+	case AUDIO:
+		m_SubMenus.push_back(new CSettingsMenu(m_dlg_theme, m_ExeFile, mp_option, m_restartVideo, 1)); break;
+	case CONTROLS:
+		m_SubMenus.push_back(new CSettingsMenu(m_dlg_theme, m_ExeFile, mp_option, m_restartVideo, 3)); break;
 	case SAVE:
 		m_SubMenus.push_back(new CSaveMenu(m_dlg_theme, m_SavedGame)); break;
 	case LOAD:
