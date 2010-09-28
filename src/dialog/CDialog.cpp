@@ -376,7 +376,7 @@ void CDialog::draw()
 	if(m_alpha < 230)
 	{
 		SDL_SetAlpha(dst_sfc, SDL_SRCALPHA, m_alpha );
-		m_alpha+=10;
+		m_alpha+=20;
 	}
 	
 	// Render the empty Dialog frame if any
