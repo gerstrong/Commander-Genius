@@ -40,7 +40,6 @@ enum direction_t{
 #include "../common/CMap.h"
 #include "../graphics/CGfxEngine.h"
 #include "options.h"
-#include <vector>
 
 // Enumerations are here
 #include "objenums.h"
@@ -90,6 +89,8 @@ public:
 	bool dead, dying;
 	
 	bool needinit;
+
+	bool m_canturnaround;
 
 	// This is used for action format only
 	// Hopefully in Vorticons we also can use that structure

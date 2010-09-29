@@ -58,6 +58,7 @@ m_invincible(false)
 	m_ActionBaseOffset = 0x0;
 	m_direction = NONE;
 	m_ActionTicker = 0;
+	m_canturnaround = false;
 
 	if(m_type != OBJ_NONE )
 	{
@@ -832,6 +833,9 @@ bool CObject::hitdetectWithTileProperty(Uint16 Property)
 	return false;
 }
 
+/**
+ * processes falling of an object. Can be player or any other foe
+ */
 void CObject::processFalling()
 {
 	if(m_type == OBJ_MESSIE) return;
@@ -853,7 +857,22 @@ void CObject::processFalling()
 			yinertia += Physics.fallspeed_increase;
 			if(yinertia > 0) yinertia = 0;
 		}
-		else if(yinertia>=0 && !blockedd )
+		else if(yinertia==0 && !blockedd )
+		{
+			// TODO: We still need more code here!
+			bool onleftedge = false;
+			bool onrightedge = false;
+			// check if object is able to still turn around
+			if( m_canturnaround && (onleftedge || onrightedge) )
+			{
+
+			}
+			else
+			{
+				yinertia += Physics.fallspeed_increase;
+			}
+		}
+		else if(yinertia>0 && !blockedd )
 		{
 			moveDown(yinertia);
 			yinertia += Physics.fallspeed_increase;

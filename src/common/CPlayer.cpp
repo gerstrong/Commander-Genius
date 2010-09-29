@@ -610,7 +610,7 @@ void CPlayer::InertiaAndFriction_X()
 		}
 		else
 		{
-	        if (!pfalling & !pjumping)
+	        if (!pfalling && !pjumping)
 	        {
 				friction_rate = PFRICTION_RATE_ONGROUND;
 	        }
