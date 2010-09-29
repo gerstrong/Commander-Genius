@@ -62,8 +62,6 @@ public:
 			object_t objtype=OBJ_TANK);
 	virtual void process();
 
-	bool CanMoveLeft();
-	bool CanMoveRight();
 	void getTouchedBy(CObject &theObject);
 
 protected:

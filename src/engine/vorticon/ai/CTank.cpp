@@ -38,7 +38,7 @@ void CTank::process()
 		{  // move left
 			sprite = TANK_WALK_LEFT_FRAME + frame;
 			xinertia = -TANK_WALK_SPEED;
-			if( !CanMoveLeft() )
+			if( blockedl )
 			{
 				movedir = RIGHT;
 				frame = 0;
@@ -53,7 +53,7 @@ void CTank::process()
 		{  // move right
 			sprite = TANK_WALK_RIGHT_FRAME + frame;
 			xinertia = TANK_WALK_SPEED;
-			if ( !CanMoveRight() )
+			if ( blockedr )
 			{
 				movedir = LEFT;
 				frame = 0;
@@ -183,24 +183,6 @@ void CTank::process()
 		} else timer++;
 		break;
 	}
-}
-
-bool CTank::CanMoveLeft()
-{
-	/*CTileProperties &currentTile = g_pBehaviorEngine->getTileProperties()
-			[mp_Map->at((getXMidPos()-128)>>CSF, (getYDownPos()+256)>>CSF)];
-	if (!blockedl && currentTile.bup) return true;
-	return false;*/
-	return !blockedl;
-}
-
-bool CTank::CanMoveRight()
-{
-	/*CTileProperties &currentTile = g_pBehaviorEngine->getTileProperties()
-			[mp_Map->at((getXMidPos()+128)>>CSF, (getYDownPos()+256)>>CSF)];
-	if (!blockedr && currentTile.bup) return true;
-	return false;*/
-	return !blockedr;
 }
 
 void CTank::getTouchedBy(CObject &theObject)
