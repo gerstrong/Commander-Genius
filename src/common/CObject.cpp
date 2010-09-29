@@ -140,8 +140,8 @@ void CObject::setupObjectType(int Episode)
 void CObject::performCollisionsSameBox()
 {
 	// Left/Right borders
-	blockedl = checkSolidL(x+bboxX1, y+bboxY1, y+bboxY2);
-	blockedr = checkSolidR(x+bboxX2, y+bboxY1, y+bboxY2);
+	blockedl = checkSolidL(x+bboxX1, x+bboxX2, y+bboxY1, y+bboxY2);
+	blockedr = checkSolidR(x+bboxX1, x+bboxX2, y+bboxY1, y+bboxY2);
 
 	// Upper/Lower borders
 	blockedu = checkSolidU(x+bboxX1, x+bboxX2, y+bboxY1);
@@ -220,8 +220,6 @@ void CObject::performCollisionOnSlopedTiles()
 	{
 		blockedr = blockedl = false;
 
-		//blockedr = checkSolidR(x+bboxX2, y+bboxY1, getYMidPos());
-		//blockedl = checkSolidL(x+bboxX1, y+bboxY1, getYMidPos());
 		pushOutofSolidTiles();
 	}
 }
@@ -857,22 +855,7 @@ void CObject::processFalling()
 			yinertia += Physics.fallspeed_increase;
 			if(yinertia > 0) yinertia = 0;
 		}
-		else if(yinertia==0 && !blockedd )
-		{
-			// TODO: We still need more code here!
-			bool onleftedge = false;
-			bool onrightedge = false;
-			// check if object is able to still turn around
-			if( m_canturnaround && (onleftedge || onrightedge) )
-			{
-
-			}
-			else
-			{
-				yinertia += Physics.fallspeed_increase;
-			}
-		}
-		else if(yinertia>0 && !blockedd )
+		else if(yinertia>=0 && !blockedd )
 		{
 			moveDown(yinertia);
 			yinertia += Physics.fallspeed_increase;
@@ -920,7 +903,7 @@ void CObject::kill_intersecting_tile(int mpx, int mpy, CObject &theObject)
 			 }
 }
 
-bool CObject::checkSolidR( int x2, int y1, int y2)
+bool CObject::checkSolidR( int x1, int x2, int y1, int y2)
 {
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 
@@ -954,10 +937,17 @@ bool CObject::checkSolidR( int x2, int y1, int y2)
 			return true;
 		}
 	}
+
+	// This is a special case for foes which can turn around when they walk over an edge before they fall
+	/*if(m_canturnaround && TileProperty[mp_Map->at((x1-(1<<STC))>>CSF, (y2+(1<<STC))>>CSF)].bup)
+	{
+		return true;
+	}*/
+
 	return false;
 }
 
-bool CObject::checkSolidL( int x1, int y1, int y2)
+bool CObject::checkSolidL( int x1, int x2, int y1, int y2)
 {
 	bool vorticon = (g_pBehaviorEngine->getEpisode() <= 3);
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
@@ -992,6 +982,12 @@ bool CObject::checkSolidL( int x1, int y1, int y2)
 			return true;
 		}
 	}
+
+	// This is a special case for foes which can turn around when they walk over an edge before they fall
+	/*if(m_canturnaround && TileProperty[mp_Map->at((x2+(1<<STC))>>CSF, (y2+(1<<STC))>>CSF)].bup)
+	{
+		return true;
+	}*/
 
 	return false;
 }
@@ -1097,6 +1093,17 @@ bool CObject::checkSolidD( int x1, int x2, int y2 )
 
 	if( (Uint32)y2 > ((mp_Map->m_height)<<CSF) )
 		exists=false; // Out of map?
+
+	// This is a special case for foes which can turn around when they walk over an edge before they fall
+	if(m_canturnaround &&
+		( !TileProperty[mp_Map->at((x1-(1<<STC))>>CSF, (y2+(1<<STC))>>CSF)].bup ||
+		  !TileProperty[mp_Map->at((x2+(1<<STC))>>CSF, (y2+(1<<STC))>>CSF)].bup ) )
+	{
+		blockedl = TileProperty[mp_Map->at((x2+(1<<STC))>>CSF, (y2+(1<<STC))>>CSF)].bup;
+		blockedr = TileProperty[mp_Map->at((x1-(1<<STC))>>CSF, (y2+(1<<STC))>>CSF)].bup;
+
+		return true;
+	}
 
 	return false;
 }

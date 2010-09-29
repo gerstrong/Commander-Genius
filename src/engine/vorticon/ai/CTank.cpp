@@ -24,6 +24,7 @@ m_Object(Object)
 	dist_to_travel = TANK_MAXTRAVELDIST;
 	canbezapped = true;  // will stop bullets but are not harmed
 	m_invincible = true;
+	m_canturnaround = true;
 }
 
 void CTank::process()
@@ -186,18 +187,20 @@ void CTank::process()
 
 bool CTank::CanMoveLeft()
 {
-	CTileProperties &currentTile = g_pBehaviorEngine->getTileProperties()
+	/*CTileProperties &currentTile = g_pBehaviorEngine->getTileProperties()
 			[mp_Map->at((getXMidPos()-128)>>CSF, (getYDownPos()+256)>>CSF)];
 	if (!blockedl && currentTile.bup) return true;
-	return false;
+	return false;*/
+	return !blockedl;
 }
 
 bool CTank::CanMoveRight()
 {
-	CTileProperties &currentTile = g_pBehaviorEngine->getTileProperties()
+	/*CTileProperties &currentTile = g_pBehaviorEngine->getTileProperties()
 			[mp_Map->at((getXMidPos()+128)>>CSF, (getYDownPos()+256)>>CSF)];
 	if (!blockedr && currentTile.bup) return true;
-	return false;
+	return false;*/
+	return !blockedr;
 }
 
 void CTank::getTouchedBy(CObject &theObject)

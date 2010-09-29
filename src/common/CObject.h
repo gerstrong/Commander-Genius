@@ -131,8 +131,8 @@ public:
 	void blink(Uint16 frametime);
 
 	// Collision parts
-	bool checkSolidR( int x2, int y1, int y2);
-	bool checkSolidL( int x1, int y1, int y2);
+	bool checkSolidR( int x1, int x2, int y1, int y2);
+	bool checkSolidL( int x1, int x2, int y1, int y2);
 	bool checkSolidU( int x1, int x2, int y1);
 	bool checkSolidD( int x1, int x2, int y2);
 
