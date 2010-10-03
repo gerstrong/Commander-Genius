@@ -696,6 +696,28 @@ void CPlayer::ProcessInput()
 		playcontrol[PA_Y] += 100;
 	else if(g_pInput->getHoldedCommand(m_index, IC_UP))
 		playcontrol[PA_Y] -= 100;
+
+	if(g_pInput->getHoldedCommand(m_index, IC_UPPERLEFT))
+	{
+		playcontrol[PA_X] -= 100;
+		playcontrol[PA_Y] -= 100;
+	}
+	else if(g_pInput->getHoldedCommand(m_index, IC_UPPERRIGHT))
+	{
+		playcontrol[PA_X] += 100;
+		playcontrol[PA_Y] -= 100;
+	}
+	else if(g_pInput->getHoldedCommand(m_index, IC_LOWERLEFT))
+	{
+		playcontrol[PA_X] -= 100;
+		playcontrol[PA_Y] += 100;
+	}
+	else if(g_pInput->getHoldedCommand(m_index, IC_LOWERRIGHT))
+	{
+		playcontrol[PA_X] += 100;
+		playcontrol[PA_Y] += 100;
+	}
+
 	
 	if(!pfiring)
 	{

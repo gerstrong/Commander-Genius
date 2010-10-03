@@ -84,13 +84,9 @@ void CControlsettings::processSpecific()
 	if(!m_suspended)
 	{
 		if(m_waiting_for_input) // This part only happens, when waiting for an input
-		{
 			processWaitInput();
-		}
 		else
-		{
 			processSelection();
-		}
 	}
 	else
 	{
