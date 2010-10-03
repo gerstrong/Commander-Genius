@@ -17,7 +17,6 @@ public:
 
 	void createControlItems();
 	void processSpecific();
-	virtual ~CControlsettings();
 
 private:
 

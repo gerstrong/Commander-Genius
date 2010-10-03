@@ -8,8 +8,8 @@
 #include <stdarg.h>
 #include <iostream>
 #include <string.h>
-#include "CLogFile.h"
 #include <fstream>
+#include "CLogFile.h"
 #include "FindFile.h"
 #include "Debug.h"
 

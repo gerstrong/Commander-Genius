@@ -15,7 +15,7 @@
 #include "../StringUtils.h"
 #include "../fileio/CConfiguration.h"
 
-const std::string CONTROLSDATVERSION = "CG031";
+//const std::string CONTROLSDATVERSION = "CG031";
 
 #if defined(WIZ) || defined(GP2X)
 #include "sys/wizgp2x.h"
@@ -76,6 +76,11 @@ void CInput::resetControls(int player) {
 	InputCommand[i][IC_UP].keysym = SDLK_UP;
 	InputCommand[i][IC_RIGHT].keysym = SDLK_RIGHT;
 	InputCommand[i][IC_DOWN].keysym = SDLK_DOWN;
+
+	InputCommand[i][IC_UPPERLEFT].keysym = SDLK_HOME;
+	InputCommand[i][IC_UPPERRIGHT].keysym = SDLK_PAGEUP;
+	InputCommand[i][IC_LOWERLEFT].keysym = SDLK_END;
+	InputCommand[i][IC_LOWERRIGHT].keysym = SDLK_PAGEDOWN;
 
 	InputCommand[i][IC_JUMP].keysym = SDLK_LCTRL;
 	InputCommand[i][IC_POGO].keysym = SDLK_LALT;
@@ -231,6 +236,10 @@ void CInput::saveControlconfig()
 		Configuration.WriteString(section, "Up", getEventName(IC_UP, i));
 		Configuration.WriteString(section, "Right", getEventName(IC_RIGHT, i));
 		Configuration.WriteString(section, "Down", getEventName(IC_DOWN, i));
+		Configuration.WriteString(section, "Upper-Left", getEventName(IC_UPPERLEFT, i));
+		Configuration.WriteString(section, "Upper-Right", getEventName(IC_UPPERRIGHT, i));
+		Configuration.WriteString(section, "Lower-Left", getEventName(IC_LOWERLEFT, i));
+		Configuration.WriteString(section, "Lower-Right", getEventName(IC_LOWERRIGHT, i));
 		Configuration.WriteString(section, "Jump", getEventName(IC_JUMP, i));
 		Configuration.WriteString(section, "Pogo", getEventName(IC_POGO, i));
 		Configuration.WriteString(section, "Fire", getEventName(IC_FIRE, i));
@@ -433,7 +442,7 @@ void CInput::pollEvents()
 	processMouse();
 #endif
 
-	for(size_t i = 0; i < KEYTABLE_SIZE; ++i)
+	for(unsigned int i = 0; i < KEYTABLE_SIZE; ++i)
 		firsttime_immediate_keytable[i]
 		= !last_immediate_keytable[i] && immediate_keytable[i];
 	
@@ -659,29 +668,29 @@ void CInput::processKeys(int keydown)
 	}
 
 	if(getHoldedKey(KSHIFT))
-	   {
-		   if(getPressedKey(KBACKQUOTE)) immediate_keytable[KTILDE] = keydown;
-		    if(getPressedKey(KNUM1)) immediate_keytable[KEXCLAIM] = keydown;
-		    if(getPressedKey(KNUM2)) immediate_keytable[KAT] = keydown;
-		    if(getPressedKey(KNUM3)) immediate_keytable[KHASH] = keydown;
-		    if(getPressedKey(KNUM4)) immediate_keytable[KDOLLAR] = keydown;
-		   if(getPressedKey(KNUM5)) immediate_keytable[KPERCENT] = keydown;
-		    if(getPressedKey(KNUM6)) immediate_keytable[KCARET] = keydown;
-		    if(getPressedKey(KNUM7)) immediate_keytable[KAMPERSAND] = keydown;
-		    if(getPressedKey(KNUM8)) immediate_keytable[KAST] = keydown;
-		    if(getPressedKey(KNUM9)) immediate_keytable[KLEFTPAREN] = keydown;
-		    if(getPressedKey(KNUM0)) immediate_keytable[KRIGHTPAREN] = keydown;
-		    if(getPressedKey(KMINUS)) immediate_keytable[KUNDERSCORE] = keydown;
-		    if(getPressedKey(KEQUAL)) immediate_keytable[KPLUS] = keydown;
-		   if(getPressedKey(KBACKSLASH)) immediate_keytable[KLINE] = keydown;
-		    if(getPressedKey(KLEFTBRACKET)) immediate_keytable[KLEFTBRACE] = keydown;
-		    if(getPressedKey(KRIGHTBRACKET)) immediate_keytable[KRIGHTBRACE] = keydown;
-		    if(getPressedKey(KSEMICOLON)) immediate_keytable[KCOLON] = keydown;
-		    if(getPressedKey(KQUOTE)) immediate_keytable[KDBLQUOTE] = keydown;
-		    if(getPressedKey(KCOMMA)) immediate_keytable[KLESS] = keydown;
-		    if(getPressedKey(KPERIOD)) immediate_keytable[KGREATER] = keydown;
-		    if(getPressedKey(KSLASH)) immediate_keytable[KQUESTION] = keydown;
-	   }
+	{
+		if(getPressedKey(KBACKQUOTE)) immediate_keytable[KTILDE] = keydown;
+		if(getPressedKey(KNUM1)) immediate_keytable[KEXCLAIM] = keydown;
+		if(getPressedKey(KNUM2)) immediate_keytable[KAT] = keydown;
+		if(getPressedKey(KNUM3)) immediate_keytable[KHASH] = keydown;
+		if(getPressedKey(KNUM4)) immediate_keytable[KDOLLAR] = keydown;
+		if(getPressedKey(KNUM5)) immediate_keytable[KPERCENT] = keydown;
+		if(getPressedKey(KNUM6)) immediate_keytable[KCARET] = keydown;
+		if(getPressedKey(KNUM7)) immediate_keytable[KAMPERSAND] = keydown;
+		if(getPressedKey(KNUM8)) immediate_keytable[KAST] = keydown;
+		if(getPressedKey(KNUM9)) immediate_keytable[KLEFTPAREN] = keydown;
+		if(getPressedKey(KNUM0)) immediate_keytable[KRIGHTPAREN] = keydown;
+		if(getPressedKey(KMINUS)) immediate_keytable[KUNDERSCORE] = keydown;
+		if(getPressedKey(KEQUAL)) immediate_keytable[KPLUS] = keydown;
+		if(getPressedKey(KBACKSLASH)) immediate_keytable[KLINE] = keydown;
+		if(getPressedKey(KLEFTBRACKET)) immediate_keytable[KLEFTBRACE] = keydown;
+		if(getPressedKey(KRIGHTBRACKET)) immediate_keytable[KRIGHTBRACE] = keydown;
+		if(getPressedKey(KSEMICOLON)) immediate_keytable[KCOLON] = keydown;
+		if(getPressedKey(KQUOTE)) immediate_keytable[KDBLQUOTE] = keydown;
+		if(getPressedKey(KCOMMA)) immediate_keytable[KLESS] = keydown;
+		if(getPressedKey(KPERIOD)) immediate_keytable[KGREATER] = keydown;
+		if(getPressedKey(KSLASH)) immediate_keytable[KQUESTION] = keydown;
+	}
 }
 
 static bool checkMousewrapperKey(int& key);

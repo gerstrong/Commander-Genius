@@ -13,7 +13,7 @@
 
 #define g_pLogFile	CLogFile::Get()
 
-const std::string REVISION = "Commander Genius Release v0.3.2.3";
+const std::string REVISION = "Commander Genius Release v0.3.2.4";
 
 #define MAX_BUFFER 1024
 

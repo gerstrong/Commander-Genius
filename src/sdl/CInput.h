@@ -117,13 +117,17 @@ enum keys{
 	KBCKSPCE,
 };
 
-const int KEYTABLE_SIZE = 160;
+const unsigned int KEYTABLE_SIZE = 160;
 
 enum InputCommands{
 	IC_LEFT,
-	IC_UP,
 	IC_RIGHT,
+	IC_UP,
 	IC_DOWN,
+	IC_UPPERLEFT,
+	IC_UPPERRIGHT,
+	IC_LOWERLEFT,
+	IC_LOWERRIGHT,
 	IC_JUMP,
 	IC_POGO,
 	IC_FIRE,

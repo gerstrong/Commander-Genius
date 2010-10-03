@@ -1,6 +1,11 @@
 Commander Genius Release :
 ==========================
 
+v0.3.2.3:
+---------
+- Now Game shouldn't crash when playing music
+- improved Vorticon physics
+
 v0.3.2.2:
 ---------
 - Music is now streamed
