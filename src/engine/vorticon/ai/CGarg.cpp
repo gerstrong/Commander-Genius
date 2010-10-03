@@ -40,41 +40,27 @@ void CGarg::process()
 		g_pSound->playStereofromCoord(SOUND_GARG_DIE, PLAY_NOW, scrx);
 	}
 
-	// Check, if Garg is moving and collides
-	if(state != GARG_LOOK && state != GARG_CHARGE && state != GARG_DYING)
+	// Check, if Garg is moving and collides and change directions whenever needed
+	if(state != GARG_LOOK &&  state != GARG_CHARGE && state != GARG_DYING)
 	{
-		if (movedir==LEFT)
-		{  // garg is heading left
-			sprite = GARG_WALK_LEFT + walkframe;
+		// Set the proper frame
+		sprite = (movedir==LEFT) ? GARG_WALK_LEFT : GARG_WALK_RIGHT;
+		sprite += walkframe;
 
-			if (!blockedl)
-			{
-				if (m_hardmode)
-					xinertia = -GARG_WALK_SPEED_FAST;
-				else
-					xinertia = -GARG_WALK_SPEED;
-				dist_traveled++;
-			}
-			else if(blockedd)
-				movedir = RIGHT;
-		}
-		else
-		{  // garg is heading right
-			sprite = GARG_WALK_RIGHT + walkframe;
-			if (!blockedr)
-			{
-				if (m_hardmode)
-					xinertia = GARG_WALK_SPEED_FAST;
-				else
-					xinertia = GARG_WALK_SPEED;
-				dist_traveled++;
-			}
-			else if(blockedd)
-				movedir = LEFT;
-		}
+		// collides? Change direction
+		if( movedir==LEFT && blockedl )
+			movedir = RIGHT;
+		else if( movedir==RIGHT && blockedr )
+			movedir = LEFT;
+
+		// Compute the speed
+		xinertia = (m_hardmode) ? GARG_WALK_SPEED : GARG_WALK_SPEED_FAST;
+
+		// Set the correct speed according to direction
+		if(movedir == LEFT)
+			xinertia = -xinertia;
+		dist_traveled++;
 	}
-
-	std::vector<CTileProperties> &TileProperties = g_pBehaviorEngine->getTileProperties();
 
 	switch(state)
 	{

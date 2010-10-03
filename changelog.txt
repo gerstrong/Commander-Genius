@@ -1,6 +1,12 @@
 Commander Genius Release :
 ==========================
 
+v0.3.2.4:
+---------
+- Diagonal Keys are now supported
+- Improved the hq sound quality
+
+
 v0.3.2.3:
 ---------
 - Now Game shouldn't crash when playing music
@@ -524,6 +530,7 @@ readability of the interpreters process
 26-03-2009: Feel the power of C++!
 - Reenabled and improved joystick support
 - Fix some remaining bugs 
+
 - Improved Dialogs, especially the Main and Options menu 
 
 21-03-2009: For more Fans
