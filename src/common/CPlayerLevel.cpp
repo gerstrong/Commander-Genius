@@ -89,18 +89,13 @@ void CPlayer::touchedExit(int mpx)
 {
 	exitXpos = (mpx+2)<<TILE_S;
 
-	if (!pjumping && !pfalling  &&
+	if (!pjumping && !pfalling  && !pfiring &&
 		!ppogostick && level_done==LEVEL_NOT_DONE)
 	{
 		// don't allow player to walk through a door if he's standing
 		// on an object such as a platform or an enemy
 		if (supportedbyobject)	return;
 		
-		// TODO: in episode 2 on level 13 aka Rome Tantalus Ray, if
-		// keen hasn't flipped the switch he shouldn't be able to
-		// leave the level, this is a bug from the original game
-		// that needs fixing, hopefully we will fix all of those
-		// if player has ankh shut it off
 		ankhtime = 0;
 		
 		ppogostick = false;

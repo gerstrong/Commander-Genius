@@ -18,7 +18,6 @@
 #include "../graphics/CGfxEngine.h"
 #include "../sdl/CVideoDriver.h"
 
-
 #include "../engine/vorticon/ai/CYorp.h"
 #include "../engine/vorticon/ai/CGarg.h"
 #include "../engine/vorticon/ai/CAutoRay.h"

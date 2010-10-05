@@ -452,6 +452,8 @@ void CInput::pollEvents()
 			= !InputCommand[j][i].lastactive && InputCommand[j][i].active;
 	
 #ifndef MOUSEWRAPPER
+
+	// TODO: I'm not sure, if that should go here...
 	// Check, if LALT+ENTER was pressed
 	if((getHoldedKey(KALT)) && getPressedKey(KENTER))
 	{
@@ -540,6 +542,9 @@ void CInput::processJoystickButton(int value)
 #endif
 }
 
+/**
+ * Sends a key to the Commander Genius engine
+ */
 void CInput::sendKey(int key){	immediate_keytable[key] = true;	}
 
 /**

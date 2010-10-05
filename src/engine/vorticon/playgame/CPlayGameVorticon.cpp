@@ -292,15 +292,6 @@ void CPlayGameVorticon::process()
 		// Do the Render Routine here!
 		drawAllElements();
 
-		/// For debuging the max fall speed !!!!!!!!!!!!! Must be removed soon
-		/*int &maxfallspeed = g_pBehaviorEngine->getPhysicsSettings().max_fallspeed;
-		if(g_pInput->getPressedKey(KA))
-			maxfallspeed++;
-		if(g_pInput->getPressedKey(KB))
-			maxfallspeed--;
-		printf("maxfallspeed = %d\n",maxfallspeed);*/
-
-
 		// Check if we are in gameover mode. If yes, than show the bitmaps and block the FKeys().
 		// Only confirmation button is allowes
 		if(m_gameover && !mp_Finale) // game over mode
@@ -309,7 +300,7 @@ void CPlayGameVorticon::process()
 			{
 				mp_gameoverbmp->process();
 
-				if( g_pInput->getPressedKey(KENTER) || g_pInput->getPressedAnyCommand() )
+				if( g_pInput->getPressedAnyCommand() )
 				{
 					mp_HighScores = new CHighScores(m_Episode, m_Gamepath, true);
 

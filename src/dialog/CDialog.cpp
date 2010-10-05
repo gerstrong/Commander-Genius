@@ -146,6 +146,7 @@ void CDialog::processInput(int move)
 	
 	if( m_inputmode == INPUT_MODE_TEXT )
 	{
+#ifndef NOKEYBOARD
 		// Get the input
 		if(g_pInput->getPressedIsTypingKey() && (m_name.length() < m_length))
 		{
@@ -170,6 +171,7 @@ void CDialog::processInput(int move)
 			setObjectText(m_selected_ID, "|");
 		else
 			setObjectText(m_selected_ID, m_name);
+#endif
 	}
 	else if( m_inputmode == INPUT_MODE_INTEGER )
 	{
