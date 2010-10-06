@@ -63,7 +63,7 @@ void CMenuGalaxy::process()
 	// Process the Menu Type logic.
 	CMenu::process();
 
-	if(processPtr != NULL)
+	if(processPtr)
 		(this->*processPtr)();
 }
 

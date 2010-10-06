@@ -159,7 +159,7 @@ public:
 	int pfrozentime,pfrozenframe,pfrozenanimtimer;
 	bool pfiring, plastfire;
 
-	char playcontrol[PA_MAX_ACTIONS];
+	Sint16 playcontrol[PA_MAX_ACTIONS]; // "char" overflows here, because different compilers treat it as signed/unsigned at random
 
 	bool object_chosen;
 	unsigned char dpadcount, dpadlastcount;

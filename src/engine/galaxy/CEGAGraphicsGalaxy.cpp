@@ -543,8 +543,9 @@ bool CEGAGraphicsGalaxy::readfonts()
 
 		if(m_egagraph.at(EpisodeInfo[ep].IndexFonts + i).data.at(0))
 		{
-			FontHeadStruct *FontHead =
-					(FontHeadStruct*) &(m_egagraph.at(EpisodeInfo[ep].IndexFonts + i).data.at(0));
+			// ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
+			FontHeadStruct FontHeadData, *FontHead = &FontHeadData;
+			memcpy( FontHead, &(m_egagraph.at(EpisodeInfo[ep].IndexFonts + i).data.at(0)), sizeof(FontHeadStruct) );
 
 			// Find out the maximum character width
 			int maxwidth=0;
@@ -609,7 +610,9 @@ bool CEGAGraphicsGalaxy::readfonts()
 bool CEGAGraphicsGalaxy::readBitmaps()
 {
 	int ep = m_episode - 4;
-	BitmapHeadStruct *BmpHead = (BitmapHeadStruct *) &(m_egagraph.at(0).data.at(0));
+	// ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
+	BitmapHeadStruct BmpHeadData, *BmpHead = &BmpHeadData;
+	memcpy( BmpHead, &(m_egagraph.at(0).data.at(0)), sizeof(BitmapHeadStruct));
 	SDL_Color *Palette = g_pGfxEngine->Palette.m_Palette;
 
 	g_pGfxEngine->createEmptyBitmaps(EpisodeInfo[ep].NumBitmaps);
@@ -634,7 +637,9 @@ bool CEGAGraphicsGalaxy::readBitmaps()
 bool CEGAGraphicsGalaxy::readMaskedBitmaps()
 {
 	int ep = m_episode - 4;
-	BitmapHeadStruct *BmpMaskedHead = (BitmapHeadStruct *) &(m_egagraph.at(1).data.at(0));
+	// ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
+	BitmapHeadStruct BmpMaskedHeadData, *BmpMaskedHead = &BmpMaskedHeadData;
+	memcpy( BmpMaskedHead, &(m_egagraph.at(1).data.at(0)), sizeof(BitmapHeadStruct) );
 	SDL_Color *Palette = g_pGfxEngine->Palette.m_Palette;
 
 	g_pGfxEngine->createEmptyMaskedBitmaps(EpisodeInfo[ep].NumMaskedBitmaps);
@@ -697,7 +702,9 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 	// Create all the sprites
 	g_pGfxEngine->createEmptySprites(NumSprites);
 
-	SpriteHeadStruct *SprHead = (SpriteHeadStruct *)&(m_egagraph.at(2).data.at(0));
+	// ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
+	SpriteHeadStruct SprHeadData, *SprHead = &SprHeadData;
+	memcpy( SprHead, &(m_egagraph.at(2).data.at(0)), sizeof(SpriteHeadStruct) );
 
 	for(size_t i = 0; i < NumSprites; i++)
 	{

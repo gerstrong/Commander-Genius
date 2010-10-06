@@ -19,7 +19,11 @@
 #ifdef OGG
 #include <vorbisfile.h>
 #elif defined  TREMOR
+#ifdef ANDROID
+#include <tremor/ivorbisfile.h>
+#else
 #include <ivorbisfile.h>
+#endif
 #endif
 
 #if defined(OGG) || defined(TREMOR)

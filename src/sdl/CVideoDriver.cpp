@@ -59,6 +59,9 @@ void CVideoDriver::resetSettings() {
 	m_Resolution.width=320;
 	m_Resolution.height=200;
 	m_Resolution.depth=32;
+#if defined(ANDROID)
+	m_Resolution.depth=16;
+#endif
 	Fullscreen=false;
 #endif
 	m_ScaleXFilter=1;
@@ -130,6 +133,12 @@ void CVideoDriver::initResolutionList()
 	m_Resolution.width = 320; //  320;
 	m_Resolution.height = 200; //  480;
 	m_Resolution.depth = 32;
+	m_Resolutionlist.clear();
+	m_Resolutionlist.push_back(m_Resolution);
+#elif defined(ANDROID)
+	m_Resolution.width = 320;
+	m_Resolution.height = 200;
+	m_Resolution.depth = 16;
 	m_Resolutionlist.clear();
 	m_Resolutionlist.push_back(m_Resolution);
 #else
@@ -349,7 +358,7 @@ bool CVideoDriver::initOpenGL()
 
 bool CVideoDriver::applyMode()
 {
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR) || defined(ANDROID)
 	// Force the default settings on iPhone.
 	// There is no reason yet to play with it, most likely other settings will
 	// either not work, will crash or will just be totally screwed up.
@@ -370,7 +379,7 @@ bool CVideoDriver::applyMode()
 	m_Resolution = *m_Resolution_pos;
 
 	// Setup mode depends on some systems.
-#if defined(WIZ) || defined(DINGOO)
+#if defined(WIZ) || defined(DINGOO) || defined(ANDROID)
     Mode = SDL_SWSURFACE;
 #elif defined(GP2X)
     Mode = SDL_DOUBLEBUF | SDL_HWSURFACE;

@@ -114,8 +114,14 @@ void BlitSurfaceMerge( SDL_Surface *src, SDL_Rect *p_src_rect, SDL_Surface *dst,
 	Uint8 *pixel_dst;
 	Uint8 sr,sg,sb,sa;
 	Uint8 dr,dg,db,da;
-	Uint32 *pixel_src32;
-	Uint32 *pixel_dst32;
+
+#ifdef ANDROID
+	typedef Uint16 PixelFormatType; // We always have 16-bit pixel, and if we'll try to dereference non-4-byte-aligned pointer to Uint32 on ARM CPU we'll get garbage
+#else
+	typedef Uint32 PixelFormatType;
+#endif
+	PixelFormatType *pixel_src32;
+	PixelFormatType *pixel_dst32;
 
 	for( size_t y=0 ; y<src_rect.h ; y++ )
 	{
@@ -124,8 +130,8 @@ void BlitSurfaceMerge( SDL_Surface *src, SDL_Rect *p_src_rect, SDL_Surface *dst,
 
 		for( size_t x=0 ; x<src_rect.w ; x++ )
 		{
-			pixel_src32 = (Uint32*)pixel_src;
-			pixel_dst32 = (Uint32*)pixel_dst;
+			pixel_src32 = (PixelFormatType*) (void *)pixel_src;
+			pixel_dst32 = (PixelFormatType*) (void *)pixel_dst;
 			SDL_GetRGBA(*pixel_src32, src->format, &sr, &sg, &sb, &sa);
 			SDL_GetRGBA(*pixel_dst32, dst->format, &dr, &dg, &db, &da);
 

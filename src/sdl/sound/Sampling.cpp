@@ -115,7 +115,7 @@ void resampleAnyBits(const T* out, const T *in,
 	for(size_t ch=0 ; ch<channels ; ch++)
 	{
 		splitChannel( onechannelbuffer, input_buffer, input_len, channels, ch, sizeof(T) );
-		stretchSound( stretchedbuf, (T*) onechannelbuffer, output_len/channels, input_len/channels );
+		stretchSound( stretchedbuf, (T*) (void *)onechannelbuffer, output_len/channels, input_len/channels );
 		mergeChannel( output_buffer, (Uint8*) stretchedbuf, output_len, channels, ch, sizeof(T) );
 	}
 	free(onechannelbuffer);
@@ -132,7 +132,7 @@ void resample(const Uint8* output_buffer, const Uint8 *input_buffer,
 	if(format == AUDIO_S16)
 	{
 		memset((Uint8*)output_buffer, WAVE_SILENCE_S16, output_len);
-		resampleAnyBits( (Sint16*) output_buffer, (Sint16*) input_buffer,
+		resampleAnyBits( (Sint16*) (void *)output_buffer, (Sint16*) (void *)input_buffer,
 				output_len, input_len, channels);
 	}
 	else if(format == AUDIO_U8)
