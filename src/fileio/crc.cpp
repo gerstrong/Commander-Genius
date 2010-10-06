@@ -3,8 +3,11 @@
 
 #include "crc.h"
 #include <stdlib.h>
+#include <string.h>
 
+#ifndef LITTLE_ENDIAN
 #define LITTLE_ENDIAN 1
+#endif
 #define QUOTIENT 0x04C11DB7
 
 unsigned int crctab[256];

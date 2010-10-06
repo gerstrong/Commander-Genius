@@ -180,7 +180,7 @@ void CHighScores::processWriting()
 		m_Name[m_Place].erase(m_Name[m_Place].length()-1);
 	}
 	
-	if( g_pInput->getPressedCommand(KSTATUS) || g_pInput->getPressedKey(KENTER) )
+	if( g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedKey(KENTER) )
 	{
 		// Save the Table and change to show mode, which can be closed by any other key
 		saveHighScoreTable();
