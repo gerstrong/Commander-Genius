@@ -26,6 +26,9 @@
  Commander Genius   2009-2010   Tulip, Pickle, DaVince, Albert and Pizza2004
  */
 
+#ifdef ANDROID
+#include <SDL_main.h>
+#endif
 #include "CLogFile.h"
 #include "CGame.h"
 #include "FindFile.h"

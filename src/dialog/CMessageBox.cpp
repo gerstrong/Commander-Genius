@@ -49,7 +49,7 @@ m_twirlframe(0)
 		else
 		{
 			size_t trail = width-buf.size();
-			buf.insert(0,trail,' ');
+			buf.insert((size_t)0,trail,' ');
 		}
 		m_Lines.push_back(buf);
 	}

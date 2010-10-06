@@ -31,7 +31,7 @@ CSound::CSound() {
 	m_mixing_channels = 0;
 	m_MixedForm = NULL;
 	AudioSpec.channels = 2; // Stereo Sound
-#if defined(WIZ) || defined(GP2X) || defined(DINGOO)
+#if defined(WIZ) || defined(GP2X) || defined(DINGOO) || defined(ANDROID)
 	AudioSpec.format = AUDIO_S16; // 16-bit sound
 #else
 	AudioSpec.format = AUDIO_U8; // 8-bit sound
@@ -77,7 +77,7 @@ bool CSound::init(void)
 	memcpy(&AudioSpec,obtained,sizeof(SDL_AudioSpec));
 	delete obtained;
 
-	m_MixedForm = new Uint8[AudioSpec.size];
+	m_MixedForm = (Uint8 *) malloc(AudioSpec.size); // To make sure it's 4-byte aligned use malloc() instead of new()
 
 	g_pLogFile->ftextOut("SDL_AudioSpec:<br>");
 	g_pLogFile->ftextOut("  freq: %d<br>", AudioSpec.freq);
@@ -127,7 +127,9 @@ void CSound::destroy(void)
 		m_active = false;
 		m_mixing_channels = 0;
 	}
-	SAFE_DELETE_ARRAY(m_MixedForm);
+	if(m_MixedForm)
+		free(m_MixedForm);
+	m_MixedForm = NULL;
 
 	if(!m_soundchannel.empty())
 		m_soundchannel.clear();

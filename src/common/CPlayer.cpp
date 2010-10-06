@@ -106,7 +106,7 @@ void CPlayer::setDatatoZero()
 	if(m_episode == 3) playerbaseframe--;
 
     // Set all the inventory to zero.
-    memset(playcontrol, 0, PA_MAX_ACTIONS*sizeof(char));
+    memset(playcontrol, 0, sizeof(playcontrol));
 }
 
 // sets the lifes and some shots, and other stuff, depending what game it is.
@@ -718,7 +718,6 @@ void CPlayer::ProcessInput()
 		playcontrol[PA_Y] += 100;
 	}
 
-	
 	if(!pfiring)
 	{
 		if(g_pInput->getHoldedCommand(m_index, IC_JUMP))

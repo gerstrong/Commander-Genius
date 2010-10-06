@@ -23,8 +23,8 @@
 void mixAudioSinged16(Uint8 *dst, const Uint8 *src, Uint32 len, Uint8 volume)
 {
 	len /= 2;
-	Sint16 *s_dst = (Sint16*)dst;
-	Sint16 *s_src = (Sint16*)src;
+	Sint16 *s_dst = (Sint16*) (void *)dst;
+	Sint16 *s_src = (Sint16*) (void *)src;
 	Sint32 chnl_src=0;
 	Sint32 chnl_dst=0;
 	Sint32 outputValue=0;

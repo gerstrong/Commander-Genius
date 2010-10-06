@@ -2,6 +2,7 @@
 // http://www.cl.cam.ac.uk/research/srg/bluebook/21/crc/node6.html
 
 #include "crc.h"
+#include <stdlib.h>
 
 #define LITTLE_ENDIAN 1
 #define QUOTIENT 0x04C11DB7
@@ -31,28 +32,29 @@ void crc32_init(void)
 unsigned int getcrc32(unsigned char *data, int len)
 {
     unsigned int        result;
-    unsigned int        *p = (unsigned int *)data;
-    unsigned int        *e = (unsigned int *)(data + len);
-	
-	//    if (len < 4) abort();
-	
-    result = ~*p++;
-    while( p<e )
+    unsigned int        p;
+    unsigned char       *e = (data + len);
+
+    memcpy( &p, data, sizeof(p) );
+    result = ~p;
+    data += sizeof(p);
+    while( data<e )
     {
 #if defined(LITTLE_ENDIAN)
         result = crctab[result & 0xff] ^ result >> 8;
         result = crctab[result & 0xff] ^ result >> 8;
         result = crctab[result & 0xff] ^ result >> 8;
         result = crctab[result & 0xff] ^ result >> 8;
-        result ^= *p++;
 #else
         result = crctab[result >> 24] ^ result << 8;
         result = crctab[result >> 24] ^ result << 8;
         result = crctab[result >> 24] ^ result << 8;
         result = crctab[result >> 24] ^ result << 8;
-        result ^= *p++;
 #endif
+        memcpy( &p, data, sizeof(p) );
+        result ^= p;
+        data += sizeof(p);
     }
-	
+
     return ~result;
 }

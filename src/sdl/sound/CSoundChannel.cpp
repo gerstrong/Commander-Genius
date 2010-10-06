@@ -264,7 +264,7 @@ void CSoundChannel::readWaveform(Uint8* waveform, int len, Uint8 channels, int f
      	{
 			if ( m_AudioSpec.format == AUDIO_U16 || m_AudioSpec.format == AUDIO_S16 )
 			{
-				generateWaveform( (Sint16*) waveform, len, frequency, (channels==2) ? true : false );
+				generateWaveform( (Sint16*) (void *) waveform, len, frequency, (channels==2) ? true : false );
 			}
 			else
 			{
