@@ -10,12 +10,10 @@
 
 #include "CInput.h"
 #include "CVideoDriver.h"
-#include "../CLogFile.h"
-#include "../FindFile.h"
-#include "../StringUtils.h"
-#include "../fileio/CConfiguration.h"
-
-//const std::string CONTROLSDATVERSION = "CG031";
+#include "CLogFile.h"
+#include "FindFile.h"
+#include "StringUtils.h"
+#include "fileio/CConfiguration.h"
 
 #if defined(WIZ) || defined(GP2X)
 #include "sys/wizgp2x.h"

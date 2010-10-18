@@ -8,7 +8,7 @@
 #ifndef CVIDEODRIVER_H_
 #define CVIDEODRIVER_H_
 
-#include "../CSingleton.h"
+#include "CSingleton.h"
 #define g_pVideoDriver CVideoDriver::Get()
 
 struct st_resolution

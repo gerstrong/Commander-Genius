@@ -12,7 +12,7 @@
 #include <string>
 #include <list>
 
-#include "../CSingleton.h"
+#include "CSingleton.h"
 #define g_pInput	CInput::Get()
 
 // key defines, locations in keytable[]
