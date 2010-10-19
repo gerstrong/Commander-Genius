@@ -26,7 +26,7 @@
 
 #define FOOB_EXPLODE_ANIM_RATE  8
 
-#define FOOB_SPOOK_TIME         80
+#define FOOB_SPOOK_TIME         40
 #define FOOB_RELAX_TIME         400
 
 #define FOOB_WALK_LEFT_FRAME    93

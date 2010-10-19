@@ -22,8 +22,8 @@ MOTHER_HURT
 #define MOTHER_WALK_ANIM_RATE     3
 #define MOTHER_WALK_SPD           15
 
-#define MOTHER_SPIT_PROB          9
-#define MOTHER_SPIT_PROB_HARD     40
+#define MOTHER_SPIT_PROB          4
+#define MOTHER_SPIT_PROB_HARD     6
 #define MOTHER_SPIT_SHOW_TIME     25
 
 #define MOTHER_HP      5

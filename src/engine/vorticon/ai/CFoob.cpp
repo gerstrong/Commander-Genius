@@ -1,6 +1,6 @@
 #include "CFoob.h"
-#include "../../../sdl/sound/CSound.h"
-#include "../../../graphics/CGfxEngine.h"
+#include "sdl/sound/CSound.h"
+#include "graphics/CGfxEngine.h"
 
 CFoob::CFoob(CMap *p_map, Uint32 x, Uint32 y, std::vector<CPlayer>& Player):
 CObject(p_map,x,y, OBJ_FOOB),
@@ -41,7 +41,7 @@ void CFoob::process()
 	std::vector<CPlayer>::iterator it_player = m_Player.begin();
 	for( ; it_player != m_Player.end() ; it_player++ )
 	{
-		if ( (it_player->getYUpPos() >= getYUpPos()-(2<<CSF)) &&
+		if ( (it_player->getYDownPos() >= getYUpPos()-(2<<CSF)) &&
 			(it_player->getYDownPos() <= getYDownPos()+(1<<CSF)) )
 		{
 			onsamelevel = true;
@@ -113,7 +113,7 @@ void CFoob::process()
 			else
 				dir = LEFT;
 			// in hard mode run TOWARDS the player (he's deadly in hard mode)
-			if (mp_Map->m_Difficulty>1)
+			if (mp_Map->m_Difficulty>2)
 				dir = LEFT ? RIGHT : LEFT;
 
 		}
@@ -144,7 +144,7 @@ void CFoob::process()
 				xinertia = FOOB_FLEE_SPEED;
 				blockedtime = 0;
 			}
-			else if ((mp_Map->m_Difficulty>1))
+			else if ((mp_Map->m_Difficulty>2))
 			{
 				if (++blockedtime >= FOOB_HARDMODE_BLOCK_TIME)
 				{
@@ -161,7 +161,7 @@ void CFoob::process()
 				xinertia = -FOOB_FLEE_SPEED;
 				blockedtime = 0;
 			}
-			else if ((mp_Map->m_Difficulty>1))
+			else if ((mp_Map->m_Difficulty>2))
 			{
 				if (++blockedtime >= FOOB_HARDMODE_BLOCK_TIME)
 				{
@@ -208,7 +208,7 @@ void CFoob::getTouchedBy(CObject &theObject)
 		if(theObject.m_type == OBJ_PLAYER)
 		{
 			CPlayer &Player = dynamic_cast<CPlayer&>(theObject);
-			if(mp_Map->m_Difficulty>1)
+			if(mp_Map->m_Difficulty>2)
 				Player.kill();
 		}
 	}
