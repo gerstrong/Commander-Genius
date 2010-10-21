@@ -98,20 +98,6 @@ void CCamera::process()
 	right = CameraBounds.right;
 	down = CameraBounds.down;
 	speed = CameraBounds.speed;
-#ifdef ANDROID
-/*
-	left = 140;
-	up = 50;
-	right = 180;
-	down = 130;
-	speed = 5;
-*/
-	left = 20;
-	up = 20;
-	right = 20;
-	down = 20;
-	speed = 20;
-#endif
 
 	// left-right scrolling
 	if(px > right && scroll_x < mp_Map->m_maxscrollx)

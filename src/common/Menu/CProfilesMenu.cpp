@@ -59,7 +59,7 @@ void CProfilesMenu::setDefaultClassic()
 	g_pVideoDriver->setSpecialFXMode(false);
 	st_camera_bounds &CameraBounds = g_pVideoDriver->getCameraBounds();
 	CameraBounds.left = 140;
-	CameraBounds.up = 500;
+	CameraBounds.up = 50; // Was 500, that's why camera was jumpy!
 	CameraBounds.right = 180;
 	CameraBounds.down = 130;
 	CameraBounds.speed = 5;
