@@ -471,7 +471,11 @@ void InitBaseSearchPaths() {
 	AddToFileList(&basesearchpaths, ".");
 	AddToFileList(&basesearchpaths, "${BIN}");
 #else // all other systems (Linux, *BSD, OS/2, ...)
+#ifdef ANDROID
+	AddToFileList(&basesearchpaths, "${HOME}/SaveData");
+#else
 	AddToFileList(&basesearchpaths, "${HOME}/.CommanderGenius");
+#endif
 	AddToFileList(&basesearchpaths, ".");
 	AddToFileList(&basesearchpaths, SYSTEM_DATA_DIR"/commandergenius"); // no use of ${SYSTEM_DATA}, because it is uncommon and could cause confusion to the user
 #endif
