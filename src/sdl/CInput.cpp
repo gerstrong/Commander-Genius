@@ -105,16 +105,6 @@ void CInput::resetControls(int player) {
 	InputCommand[i][IC_DOWN].joyaxis = 1;
 	InputCommand[i][IC_DOWN].joyvalue = 32767;
 	InputCommand[i][IC_DOWN].which = 0;
-#ifdef ANDROID
-	InputCommand[i][IC_LEFT].joyeventtype = ETYPE_JOYAXIS;
-	InputCommand[i][IC_LEFT].joyvalue = -16383;
-	InputCommand[i][IC_UP].joyeventtype = ETYPE_JOYAXIS;
-	InputCommand[i][IC_UP].joyvalue = -16383;
-	InputCommand[i][IC_RIGHT].joyeventtype = ETYPE_JOYAXIS;
-	InputCommand[i][IC_RIGHT].joyvalue = 16383;
-	InputCommand[i][IC_DOWN].joyeventtype = ETYPE_JOYAXIS;
-	InputCommand[i][IC_DOWN].joyvalue = 16383;
-#endif
 
 	InputCommand[i][IC_JUMP].joyeventtype = ETYPE_KEYBOARD;
 	InputCommand[i][IC_JUMP].joybutton = 0;
