@@ -121,20 +121,11 @@ bool CSettings::loadDrvCfg()
 		g_pTimer->setFrameRate(DEFAULT_LPS, framerate, DEFAULT_SYNC);
 
 		st_camera_bounds CameraBounds;
-		#ifdef ANDROID
-		// For some reason it's buggy
-		Configuration.ReadInteger("Bound", "left", &CameraBounds.left, 0);
-		Configuration.ReadInteger("Bound", "right", &CameraBounds.right, 0);
-		Configuration.ReadInteger("Bound", "up", &CameraBounds.up, 0);
-		Configuration.ReadInteger("Bound", "down", &CameraBounds.down, 0);
-		Configuration.ReadInteger("Bound", "speed", &CameraBounds.speed, 20);
-		#else
 		Configuration.ReadInteger("Bound", "left", &CameraBounds.left, 152);
 		Configuration.ReadInteger("Bound", "right", &CameraBounds.right, 168);
 		Configuration.ReadInteger("Bound", "up", &CameraBounds.up, 92);
 		Configuration.ReadInteger("Bound", "down", &CameraBounds.down, 108);
 		Configuration.ReadInteger("Bound", "speed", &CameraBounds.speed, 20);
-		#endif
 
 		g_pVideoDriver->saveCameraBounds(CameraBounds);
 		
