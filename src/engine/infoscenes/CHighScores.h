@@ -37,9 +37,12 @@ private:
 	bool			m_Extra[8][4];
 	int				m_Cities[8];
 	int				m_Place;
+	int				m_CursorPosition;
 	
 	char					m_Episode;
+	char					m_CurrentLetter;
 	std::string				m_DataDirectory;
+	std::string				m_Name2;
 	std::vector<stBitmap>	m_Bitmaps;
 
 	// This cycle will wait for the input of name and hit of enter

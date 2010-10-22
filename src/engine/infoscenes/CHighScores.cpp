@@ -98,7 +98,7 @@ m_Place(0), m_blink(true), m_blinkctr(0)
 		int bat_tile = Phy.misc.bat_tile;
 		int vac_tile = Phy.misc.vac_tile;
 		int wsk_tile = Phy.misc.wsk_tile;
-
+		
 		// Put the Tiles, of the parts that were collected
 		if(!saving_mode)
 		{
@@ -169,6 +169,7 @@ void CHighScores::processWriting()
 {
 	SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
 	
+#ifdef NOKEYBOARD
 	// Get the input
 	if(g_pInput->getPressedIsTypingKey() && (m_Name[m_Place].length() < 13))
 	{
@@ -190,7 +191,7 @@ void CHighScores::processWriting()
 	
 	int x = (m_Episode == 3) ? 69 : 40;
 	int y = (m_Episode == 2) ? 56 : 52;
-	if(m_blink)	g_pGfxEngine->getFont(0).drawFont(sfc, m_Name[m_Place]+"_",x, y+(m_Place<<4), true);
+	if(m_blink)	g_pGfxEngine->getFont(0).drawFont(sfc, m_Name[m_Place]+"|",x, y+(m_Place<<4), true);
 	else g_pGfxEngine->getFont(0).drawFont(sfc, m_Name[m_Place]+" ",x, y+(m_Place<<4), true);
 	
 	if(m_blinkctr > BLINK_TIME){
@@ -198,6 +199,79 @@ void CHighScores::processWriting()
 		m_blink = !m_blink;
 	}
 	else m_blinkctr++;
+#else
+	m_CurrentLetter = m_Name[m_Place].at(m_CursorPosition);
+	// Get the input
+	if(g_pInput->getPressedKey(KUP))
+	{
+		m_CurrentLetter += 1;
+		if(m_CurrentLetter > 126)
+			m_CurrentLetter = 32;
+		m_name.erase( m_CursorPosition, 1);
+		m_name.insert( m_CursorPosition, 1, m_CurrentLetter);
+	}
+	else if(g_pInput->getPressedKey(KDOWN))
+	{
+		m_CurrentLetter -= 1;
+		if(m_CurrentLetter < 32)
+			m_CurrentLetter = 126;
+		m_name.erase( m_CursorPosition, 1);
+		m_name.insert( m_CursorPosition, 1, m_CurrentLetter);
+	}
+	
+	if(g_pInput->getPressedKey(KRIGHT))
+	{
+		m_CursorPosition += 1;
+		if(m_CursorPosition > 13)
+			m_CursorPosition = 0;
+		m_CurrentLetter = m_name.at(m_CursorPosition);
+	}
+	else if(g_pInput->getPressedKey(KLEFT))
+	{
+		m_CursorPosition -= 1;
+		if(m_CursorPosition < 0)
+			m_CursorPosition = 13;
+		m_CurrentLetter = m_name.at(m_CursorPosition);
+	}
+	
+	if( g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedKey(KENTER) )
+	{
+		// Save the Table and change to show mode, which can be closed by any other key
+		saveHighScoreTable();
+		mp_process = &CHighScores::processShow;
+	}
+	
+	
+	int x = (m_Episode == 3) ? 69 : 40;
+	int y = (m_Episode == 2) ? 56 : 52;
+	
+	if( !m_blink && m_blinkctr >= BLINK_TIME )
+	{
+		m_blink = !m_blink;
+		m_blinkctr = 0;
+	}
+	else if( m_blink && m_blinkctr >= BLINK_TIME/2 )
+	{
+		m_blink = !m_blink;
+		m_blinkctr = 0;
+	}
+	else m_blinkctr++;
+	
+	if(m_blink)
+	{
+		m_Name2 = m_Name[m_Place];
+		m_Name2.erase( m_CursorPosition, 1);
+		m_Name2.insert( m_CursorPosition, " ");
+		g_pGfxEngine->getFont(0).drawFont(sfc, m_Name2,x, y+(m_Place<<4), true);
+	}
+	else
+	{
+		m_Name2 = m_Name[m_Place];
+		m_Name2.erase( m_CursorPosition, 1);
+		m_Name2.insert( m_CursorPosition, 1, m_CurrentLetter);
+		g_pGfxEngine->getFont(0).drawFont(sfc, m_Name2,x, y+(m_Place<<4), true);
+	}
+#endif
 }
 
 void CHighScores::writeEP1HighScore(int score, bool extra[4])
