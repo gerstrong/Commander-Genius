@@ -28,6 +28,8 @@ CHighScores::CHighScores(int Episode, const std::string &DataDirectory, bool sav
 m_Place(0), m_blink(true), m_blinkctr(0)
 {
 	m_Map.setScrollSurface(g_pVideoDriver->ScrollSurface);
+	m_CursorPosition = 0;
+	m_CurrentLetter = 32;
 	
 	// Set default Scores
 	m_Name[0] = "Gerstrong";
@@ -169,7 +171,7 @@ void CHighScores::processWriting()
 {
 	SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
 	
-#ifdef NOKEYBOARD
+#ifndef NOKEYBOARD
 	// Get the input
 	if(g_pInput->getPressedIsTypingKey() && (m_Name[m_Place].length() < 13))
 	{
@@ -207,16 +209,16 @@ void CHighScores::processWriting()
 		m_CurrentLetter += 1;
 		if(m_CurrentLetter > 126)
 			m_CurrentLetter = 32;
-		m_name.erase( m_CursorPosition, 1);
-		m_name.insert( m_CursorPosition, 1, m_CurrentLetter);
+		m_Name[m_Place].erase( m_CursorPosition, 1);
+		m_Name[m_Place].insert( m_CursorPosition, 1, m_CurrentLetter);
 	}
 	else if(g_pInput->getPressedKey(KDOWN))
 	{
 		m_CurrentLetter -= 1;
 		if(m_CurrentLetter < 32)
 			m_CurrentLetter = 126;
-		m_name.erase( m_CursorPosition, 1);
-		m_name.insert( m_CursorPosition, 1, m_CurrentLetter);
+		m_Name[m_Place].erase( m_CursorPosition, 1);
+		m_Name[m_Place].insert( m_CursorPosition, 1, m_CurrentLetter);
 	}
 	
 	if(g_pInput->getPressedKey(KRIGHT))
@@ -224,14 +226,14 @@ void CHighScores::processWriting()
 		m_CursorPosition += 1;
 		if(m_CursorPosition > 13)
 			m_CursorPosition = 0;
-		m_CurrentLetter = m_name.at(m_CursorPosition);
+		m_CurrentLetter = m_Name[m_Place].at(m_CursorPosition);
 	}
 	else if(g_pInput->getPressedKey(KLEFT))
 	{
 		m_CursorPosition -= 1;
 		if(m_CursorPosition < 0)
 			m_CursorPosition = 13;
-		m_CurrentLetter = m_name.at(m_CursorPosition);
+		m_CurrentLetter = m_Name[m_Place].at(m_CursorPosition);
 	}
 	
 	if( g_pInput->getPressedCommand(IC_STATUS) || g_pInput->getPressedKey(KENTER) )
@@ -333,7 +335,7 @@ void CHighScores::writeHighScoreCommon(int score)
 	else
 		m_Score[m_Place] = "*MAX*";
 	
-	m_Name[m_Place] = "";
+	m_Name[m_Place] = "             ";
 }
 
 bool CHighScores::loadHighScoreTable()
