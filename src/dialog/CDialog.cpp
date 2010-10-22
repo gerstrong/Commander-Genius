@@ -24,6 +24,8 @@ m_Font_ID((theme==DLG_THEME_GALAXY) ? 1 : 0)
 	m_int=0;
 	m_min=0;
 	m_max=0;
+	m_cursorpos = 0;
+	m_curletter = 32;
 
 	m_theme = theme;
 	
@@ -146,7 +148,7 @@ void CDialog::processInput(int move)
 	
 	if( m_inputmode == INPUT_MODE_TEXT )
 	{
-#ifndef NOKEYBOARD
+#ifdef NOKEYBOARD
 		// Get the input
 		if(g_pInput->getPressedIsTypingKey() && (m_name.length() < m_length))
 		{
@@ -171,6 +173,67 @@ void CDialog::processInput(int move)
 			setObjectText(m_selected_ID, "|");
 		else
 			setObjectText(m_selected_ID, m_name);
+#else
+		m_curletter = m_name.at(m_cursorpos);
+		// Get the input
+		if(g_pInput->getPressedKey(KUP))
+		{
+			m_curletter += 1;
+			if(m_curletter > 126)
+				m_curletter = 32;
+			m_name.erase( m_cursorpos, 1);
+			m_name.insert( m_cursorpos, 1, m_curletter);
+		}
+		else if(g_pInput->getPressedKey(KDOWN))
+		{
+			m_curletter -= 1;
+			if(m_curletter < 32)
+				m_curletter = 126;
+			m_name.erase( m_cursorpos, 1);
+			m_name.insert( m_cursorpos, 1, m_curletter);
+		}
+		
+		if(g_pInput->getPressedKey(KRIGHT))
+		{
+			m_cursorpos += 1;
+			if(m_cursorpos > m_length)
+				m_cursorpos = 0;
+			m_curletter = m_name.at(m_cursorpos);
+		}
+		else if(g_pInput->getPressedKey(KLEFT))
+		{
+			m_cursorpos -= 1;
+			if(m_cursorpos < 0)
+				m_cursorpos = m_length;
+			m_curletter = m_name.at(m_cursorpos);
+		}
+		
+		if( !m_blink && m_blinkctr >= 60 )
+		{
+			m_blink = !m_blink;
+			m_blinkctr = 0;
+		}
+		else if( m_blink && m_blinkctr >= 30)
+		{
+			m_blink = !m_blink;
+			m_blinkctr = 0;
+		}
+		else m_blinkctr++;
+		
+		if(m_blink)
+		{
+			m_name2 = m_name;
+			m_name2.erase( m_cursorpos, 1);
+			m_name2.insert( m_cursorpos, " ");
+			setObjectText(m_selected_ID, m_name2);
+		}
+		else
+		{
+			m_name2 = m_name;
+			m_name2.erase( m_cursorpos, 1);
+			m_name2.insert( m_cursorpos, 1, m_curletter);
+			setObjectText(m_selected_ID, m_name2);
+		}
 #endif
 	}
 	else if( m_inputmode == INPUT_MODE_INTEGER )

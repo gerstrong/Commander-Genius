@@ -69,6 +69,7 @@ void CCameraSettings::processSpecific()
 	m_CameraBounds.down = atoi(mp_Dialog->m_dlgobject.at(8)->m_Option->m_text);
 	m_CameraBounds.speed = atoi(mp_Dialog->m_dlgobject.at(10)->m_Option->m_text);
 
+#ifndef NOKEYBOARD
 	if( m_selection != NO_SELECTION)
 	{
 		if(mp_Dialog->getInputMode(INPUT_MODE_COUNTER))
@@ -97,6 +98,7 @@ void CCameraSettings::processSpecific()
 			m_selection = NO_SELECTION;
 		}
 	}
+#endif
 }
 
 CCameraSettings::~CCameraSettings()

@@ -50,13 +50,17 @@ public:
 	void draw();
 	void drawTwirl();
 
+	bool m_nokeyletter;
 	bool m_noise;
 	int m_int;
 	int m_min;
 	int m_max;
+	int m_cursorpos;
 	size_t m_length;
 	char m_inputmode;
+	char m_curletter;
 	std::string m_name;
+	std::string m_name2;
 	std::vector<CDlgObject*> m_dlgobject;
 	
 private:

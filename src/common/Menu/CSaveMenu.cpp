@@ -57,7 +57,7 @@ void CSaveMenu::processSpecific()
 				}
 				else
 				{
-					mp_Dialog->m_name = "";
+					mp_Dialog->m_name = "              ";
 					mp_Dialog->m_length = 15;
 					mp_Dialog->setInputMode(INPUT_MODE_TEXT);
 				}
@@ -65,7 +65,7 @@ void CSaveMenu::processSpecific()
 			}
 			else if ( mp_Dialog->getInputMode(INPUT_MODE_TEXT) && g_pInput->getPressedKey(KENTER) )
 			{
-				if(mp_Dialog->m_name == "")
+				if(mp_Dialog->m_name == "               ")
 					mp_Dialog->m_name = "Slot" + itoa(m_selection);
 				mp_Dialog->setObjectText(m_selection, mp_Dialog->m_name);
 
