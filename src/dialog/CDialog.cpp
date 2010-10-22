@@ -176,7 +176,7 @@ void CDialog::processInput(int move)
 #else
 		m_curletter = m_name.at(m_cursorpos);
 		// Get the input
-		if(g_pInput->getPressedKey(KUP))
+		if(g_pInput->getPulsedKey(KUP, 15))
 		{
 			m_curletter += 1;
 			if(m_curletter > 126)
@@ -184,7 +184,7 @@ void CDialog::processInput(int move)
 			m_name.erase( m_cursorpos, 1);
 			m_name.insert( m_cursorpos, 1, m_curletter);
 		}
-		else if(g_pInput->getPressedKey(KDOWN))
+		else if(g_pInput->getPulsedKey(KDOWN, 15))
 		{
 			m_curletter -= 1;
 			if(m_curletter < 32)

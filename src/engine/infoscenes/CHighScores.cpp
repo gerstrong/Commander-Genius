@@ -178,7 +178,7 @@ void CHighScores::processWriting()
 		m_Name[m_Place].append(g_pInput->getPressedTypingKey());
 	}
 	
-	if(g_pInput->getPressedKey(KBCKSPCE) && (m_Name[m_Place].length() > 0))
+	if(g_pInput->getPulsedKey(KBCKSPCE, 5) && (m_Name[m_Place].length() > 0))
 	{
 		m_Name[m_Place].erase(m_Name[m_Place].length()-1);
 	}
@@ -204,7 +204,7 @@ void CHighScores::processWriting()
 #else
 	m_CurrentLetter = m_Name[m_Place].at(m_CursorPosition);
 	// Get the input
-	if(g_pInput->getPressedKey(KUP))
+	if(g_pInput->getPulsedKey(KUP, 15))
 	{
 		m_CurrentLetter += 1;
 		if(m_CurrentLetter > 126)
@@ -212,7 +212,7 @@ void CHighScores::processWriting()
 		m_Name[m_Place].erase( m_CursorPosition, 1);
 		m_Name[m_Place].insert( m_CursorPosition, 1, m_CurrentLetter);
 	}
-	else if(g_pInput->getPressedKey(KDOWN))
+	else if(g_pInput->getPulsedKey(KDOWN, 15))
 	{
 		m_CurrentLetter -= 1;
 		if(m_CurrentLetter < 32)
