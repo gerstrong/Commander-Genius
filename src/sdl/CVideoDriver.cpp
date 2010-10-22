@@ -49,7 +49,7 @@ void CVideoDriver::resetSettings() {
 #if defined(WIZ) || defined(GP2X) || defined(DINGOO) || defined(NANONOTE)
 	m_Resolution.width=320;
 	m_Resolution.height=240;
-#if defined(GP2X)
+#if defined(GP2X) || defined(NANONOTE)
 	m_Resolution.depth=32;
 #else
 	m_Resolution.depth=16;
