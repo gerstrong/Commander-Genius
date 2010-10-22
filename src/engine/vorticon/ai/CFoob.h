@@ -10,8 +10,8 @@
 #ifndef CFOOB_H_
 #define CFOOB_H_
 
-#include "../../../common/CObject.h"
-#include "../../../common/CPlayer.h"
+#include "common/CObject.h"
+#include "common/CPlayer.h"
 #include <vector>
 
 #define FOOB_WALK_SPEED      15
