@@ -94,7 +94,9 @@ void CResourceLoader::renderLoadingGraphic()
 		CFont &Font = g_pGfxEngine->getFont(0);
 		int percent = m_permil/10;
 		int rest = m_permil%10;
-		std::string text = "Loading ... " + itoa(percent)+"."+ itoa(rest)+" \%";
+		std::string text = "Loading ...         ";
+		Font.drawFont(g_pVideoDriver->getBlitSurface(), text , 80, 100);
+		text = "Loading ... " + itoa(percent)+"."+ itoa(rest)+" \%";
 		Font.drawFont(g_pVideoDriver->getBlitSurface(), text , 80, 100);
 	}
 	else if(m_style == PROGRESS_STYLE_BITMAP)
