@@ -27,14 +27,12 @@ m_overwrite(false)
 
 	for(Uint32 i=1;i<=20;i++)
 	{
-		text = "";
+		text = EMPTY_STRING;
 		if(i <= StateFileList.size())
 		{
 			text = StateFileList.at(i-1);
 			mp_Dialog->m_name = text;
 		}
-		if(text == "")
-			text = EMPTY_STRING;
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, i, text);
 	}
 }

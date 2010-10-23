@@ -85,7 +85,7 @@ std::vector<std::string> CSavedGame::getSlotList()
 			buf = getSlotName(*i);
 
 			if(pos+1 > filelist.size())
-				filelist.resize(pos+1, "");
+				filelist.resize(pos+1, EMPTY_STRING);
 
 			filelist.at(pos) = buf;
 		}
