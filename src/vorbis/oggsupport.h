@@ -19,7 +19,7 @@
 #ifdef OGG
 #include <vorbisfile.h>
 #elif defined  TREMOR
-#ifdef ANDROID
+#if defined(DINGOO) || defined(ANDROID) // A temporary workaround. This should be changed.
 #include <tremor/ivorbisfile.h>
 #else
 #include <ivorbisfile.h>

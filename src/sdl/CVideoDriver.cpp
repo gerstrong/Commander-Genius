@@ -46,10 +46,10 @@ void CVideoDriver::resetSettings() {
 	m_maxwidth = 0;
 	showfps=true;
 	Mode=0;
-#if defined(WIZ) || defined(GP2X) || defined(DINGOO)
+#if defined(WIZ) || defined(GP2X) || defined(DINGOO) || defined(NANONOTE)
 	m_Resolution.width=320;
 	m_Resolution.height=240;
-#if defined(GP2X)
+#if defined(GP2X) || defined(NANONOTE)
 	m_Resolution.depth=32;
 #else
 	m_Resolution.depth=16;
@@ -379,7 +379,7 @@ bool CVideoDriver::applyMode()
 	m_Resolution = *m_Resolution_pos;
 
 	// Setup mode depends on some systems.
-#if defined(WIZ) || defined(DINGOO) || defined(ANDROID)
+#if defined(WIZ) || defined(DINGOO) || defined(NANONOTE) || defined(ANDROID)
     Mode = SDL_SWSURFACE;
 #elif defined(GP2X)
     Mode = SDL_DOUBLEBUF | SDL_HWSURFACE;
