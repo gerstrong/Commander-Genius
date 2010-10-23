@@ -396,6 +396,8 @@
 		63CD12A911CFF5FD00F60BC8 /* Unicode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11FC11CFF5FC00F60BC8 /* Unicode.cpp */; };
 		63CD12AA11CFF5FD00F60BC8 /* oggsupport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD120011CFF5FC00F60BC8 /* oggsupport.cpp */; };
 		63CD12AC11CFF64A00F60BC8 /* MacMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CD12AB11CFF64A00F60BC8 /* MacMain.m */; };
+		63F4C9881273600000CA4C79 /* CResourceLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63F4C9861273600000CA4C79 /* CResourceLoader.cpp */; };
+		63F4C9891273600000CA4C79 /* CResourceLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63F4C9861273600000CA4C79 /* CResourceLoader.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -947,6 +949,8 @@
 		63D4A700107FEB7C00E43500 /* tile190.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = tile190.tga; sourceTree = "<group>"; };
 		63D4A701107FEB7C00E43500 /* yorpshield.tga */ = {isa = PBXFileReference; lastKnownFileType = file; path = yorpshield.tga; sourceTree = "<group>"; };
 		63DCCCBB104CBC3000B3BC10 /* version.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; name = version.h; path = ../../version.h; sourceTree = SOURCE_ROOT; };
+		63F4C9861273600000CA4C79 /* CResourceLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CResourceLoader.cpp; sourceTree = "<group>"; };
+		63F4C9871273600000CA4C79 /* CResourceLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CResourceLoader.h; sourceTree = "<group>"; };
 		63FC18291144447200D7BB0C /* AUDIO.CK4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = AUDIO.CK4; sourceTree = "<group>"; };
 		63FC182A1144447200D7BB0C /* CHKLIST.MS */ = {isa = PBXFileReference; lastKnownFileType = file; path = CHKLIST.MS; sourceTree = "<group>"; };
 		63FC182B1144447200D7BB0C /* CONFIG.CK4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = CONFIG.CK4; sourceTree = "<group>"; };
@@ -1262,7 +1266,6 @@
 		63CD10A211CFF5FB00F60BC8 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				23325AA112117FCB00915252 /* SmartPointer.cpp */,
 				63CD10A511CFF5FB00F60BC8 /* arguments.cpp */,
 				63CD10A611CFF5FB00F60BC8 /* arguments.h */,
 				63CD10A711CFF5FB00F60BC8 /* CGame.cpp */,
@@ -1277,6 +1280,8 @@
 				63CD10F011CFF5FB00F60BC8 /* ConfigHandler.h */,
 				63CD10F111CFF5FB00F60BC8 /* CrashHandler.cpp */,
 				63CD10F211CFF5FB00F60BC8 /* CrashHandler.h */,
+				63F4C9861273600000CA4C79 /* CResourceLoader.cpp */,
+				63F4C9871273600000CA4C79 /* CResourceLoader.h */,
 				63CD10F311CFF5FB00F60BC8 /* CSingleton.h */,
 				63CD10F411CFF5FB00F60BC8 /* CVec.h */,
 				63CD10F511CFF5FB00F60BC8 /* Debug.cpp */,
@@ -1305,6 +1310,7 @@
 				63CD11D111CFF5FB00F60BC8 /* RefCounter.h */,
 				63CD11D211CFF5FB00F60BC8 /* scale2x */,
 				63CD11DD11CFF5FB00F60BC8 /* sdl */,
+				23325AA112117FCB00915252 /* SmartPointer.cpp */,
 				63CD11F611CFF5FB00F60BC8 /* SmartPointer.h */,
 				63CD11F711CFF5FB00F60BC8 /* StringBuf.cpp */,
 				63CD11F811CFF5FB00F60BC8 /* StringBuf.h */,
@@ -1324,12 +1330,12 @@
 			isa = PBXGroup;
 			children = (
 				23E2A70C1217524300F0CD34 /* ActionFormat.h */,
-				23A11A8F11DE888400747BFA /* CHUD.cpp */,
-				23A11A9011DE888400747BFA /* CHUD.h */,
 				63CD10B111CFF5FB00F60BC8 /* CBehaviorEngine.cpp */,
 				63CD10B211CFF5FB00F60BC8 /* CBehaviorEngine.h */,
 				63CD10B311CFF5FB00F60BC8 /* CGameLauncher.cpp */,
 				63CD10B411CFF5FB00F60BC8 /* CGameLauncher.h */,
+				23A11A8F11DE888400747BFA /* CHUD.cpp */,
+				23A11A9011DE888400747BFA /* CHUD.h */,
 				63CD10B511CFF5FB00F60BC8 /* CMap.cpp */,
 				63CD10B611CFF5FB00F60BC8 /* CMap.h */,
 				63CD10B711CFF5FB00F60BC8 /* CMapLoader.cpp */,
@@ -1365,9 +1371,6 @@
 		63CD10CD11CFF5FB00F60BC8 /* Menu */ = {
 			isa = PBXGroup;
 			children = (
-				23E2A70D1217525E00F0CD34 /* CProfilesMenu.cpp */,
-				23E2A70E1217525E00F0CD34 /* CProfilesMenu.h */,
-				23E2A70F1217525E00F0CD34 /* CSelectionMenu.h */,
 				63CD10CE11CFF5FB00F60BC8 /* CAudioSettings.cpp */,
 				63CD10CF11CFF5FB00F60BC8 /* CAudioSettings.h */,
 				63CD10D011CFF5FB00F60BC8 /* CBaseMenu.cpp */,
@@ -1384,8 +1387,11 @@
 				63CD10DD11CFF5FB00F60BC8 /* CLoadMenu.h */,
 				63CD10DE11CFF5FB00F60BC8 /* COptions.cpp */,
 				63CD10DF11CFF5FB00F60BC8 /* COptions.h */,
+				23E2A70D1217525E00F0CD34 /* CProfilesMenu.cpp */,
+				23E2A70E1217525E00F0CD34 /* CProfilesMenu.h */,
 				63CD10E211CFF5FB00F60BC8 /* CSaveMenu.cpp */,
 				63CD10E311CFF5FB00F60BC8 /* CSaveMenu.h */,
+				23E2A70F1217525E00F0CD34 /* CSelectionMenu.h */,
 				63CD10E411CFF5FB00F60BC8 /* CSettingsMenu.cpp */,
 				63CD10E511CFF5FB00F60BC8 /* CSettingsMenu.h */,
 				63CD10E611CFF5FB00F60BC8 /* CVideoSettings.cpp */,
@@ -1420,14 +1426,14 @@
 		63CD110611CFF5FB00F60BC8 /* engine */ = {
 			isa = PBXGroup;
 			children = (
-				23323786120EBBE500915252 /* CEvent.cpp */,
-				23323787120EBBE500915252 /* CEvent.h */,
-				23323788120EBBE500915252 /* CEventContainer.cpp */,
-				23323789120EBBE500915252 /* CEventContainer.h */,
 				2332C63211EAFAD7000D8F71 /* CCamera.cpp */,
 				2332C63311EAFAD7000D8F71 /* CCamera.h */,
 				63CD110711CFF5FB00F60BC8 /* CEGAGraphics.cpp */,
 				63CD110811CFF5FB00F60BC8 /* CEGAGraphics.h */,
+				23323786120EBBE500915252 /* CEvent.cpp */,
+				23323787120EBBE500915252 /* CEvent.h */,
+				23323788120EBBE500915252 /* CEventContainer.cpp */,
+				23323789120EBBE500915252 /* CEventContainer.h */,
 				63CD110911CFF5FB00F60BC8 /* CIntro.cpp */,
 				63CD110A11CFF5FB00F60BC8 /* CIntro.h */,
 				63CD110B11CFF5FB00F60BC8 /* CMessages.cpp */,
@@ -1450,14 +1456,11 @@
 		63CD111311CFF5FB00F60BC8 /* galaxy */ = {
 			isa = PBXGroup;
 			children = (
-				2332378E120EBBF600915252 /* CLevelPlay.cpp */,
-				2332378F120EBBF600915252 /* CLevelPlay.h */,
-				237421E911FB8554000EEA5B /* GraphicsIDs.cpp */,
 				23C64A7E11F31D8A0053CA36 /* ai */,
-				23C64A7B11F31D6F0053CA36 /* CWorldMap.cpp */,
-				23C64A7C11F31D6F0053CA36 /* CWorldMap.h */,
 				63CD111411CFF5FB00F60BC8 /* CEGAGraphicsGalaxy.cpp */,
 				63CD111511CFF5FB00F60BC8 /* CEGAGraphicsGalaxy.h */,
+				2332378E120EBBF600915252 /* CLevelPlay.cpp */,
+				2332378F120EBBF600915252 /* CLevelPlay.h */,
 				63CD111611CFF5FB00F60BC8 /* CMapLoaderGalaxy.cpp */,
 				63CD111711CFF5FB00F60BC8 /* CMapLoaderGalaxy.h */,
 				63CD111811CFF5FB00F60BC8 /* CMenuGalaxy.cpp */,
@@ -1466,7 +1469,10 @@
 				63CD111B11CFF5FB00F60BC8 /* CPassive.h */,
 				63CD111C11CFF5FB00F60BC8 /* CPlayGameGalaxy.cpp */,
 				63CD111D11CFF5FB00F60BC8 /* CPlayGameGalaxy.h */,
+				23C64A7B11F31D6F0053CA36 /* CWorldMap.cpp */,
+				23C64A7C11F31D6F0053CA36 /* CWorldMap.h */,
 				63CD111E11CFF5FB00F60BC8 /* EGAStructs.h */,
+				237421E911FB8554000EEA5B /* GraphicsIDs.cpp */,
 				63CD112011CFF5FB00F60BC8 /* playgame */,
 			);
 			path = galaxy;
@@ -1534,15 +1540,14 @@
 		63CD113511CFF5FB00F60BC8 /* ai */ = {
 			isa = PBXGroup;
 			children = (
-				237422C011FC7F67000EEA5B /* CGuardRobot.h */,
 				23C64A8211F31D9C0053CA36 /* CAnkhShield.cpp */,
 				23C64A8311F31D9C0053CA36 /* CAnkhShield.h */,
-				2332C60D11EA3B42000D8F71 /* CBridges.cpp */,
-				2332C60E11EA3B42000D8F71 /* CBridges.h */,
 				23A11B7411E7C3F900747BFA /* CAutoRay.cpp */,
 				23A11B7511E7C3F900747BFA /* CAutoRay.h */,
 				23A11B7611E7C3F900747BFA /* CBallJack.cpp */,
 				23A11B7711E7C3F900747BFA /* CBallJack.h */,
+				2332C60D11EA3B42000D8F71 /* CBridges.cpp */,
+				2332C60E11EA3B42000D8F71 /* CBridges.h */,
 				23A11B7811E7C3F900747BFA /* CButler.cpp */,
 				23A11B7911E7C3F900747BFA /* CButler.h */,
 				23A11B7A11E7C3F900747BFA /* CDoor.cpp */,
@@ -1551,6 +1556,8 @@
 				23A11B7D11E7C3F900747BFA /* CEarthChunk.h */,
 				23A11B7E11E7C3F900747BFA /* CEarthExplosion.cpp */,
 				23A11B7F11E7C3F900747BFA /* CEarthExplosion.h */,
+				63CD113A11CFF5FB00F60BC8 /* CEGABitmap.cpp */,
+				63CD113B11CFF5FB00F60BC8 /* CEGABitmap.h */,
 				23A11B8011E7C3F900747BFA /* CFireBall.cpp */,
 				23A11B8111E7C3F900747BFA /* CFireBall.h */,
 				23A11B8211E7C3F900747BFA /* CFoob.cpp */,
@@ -1558,12 +1565,15 @@
 				23A11B8411E7C3F900747BFA /* CGarg.cpp */,
 				23A11B8511E7C3F900747BFA /* CGarg.h */,
 				23A11B8611E7C3F900747BFA /* CGuardRobot.cpp */,
+				237422C011FC7F67000EEA5B /* CGuardRobot.h */,
 				23A11B8711E7C3F900747BFA /* CIceCannon.cpp */,
 				23A11B8811E7C3F900747BFA /* CIceCannon.h */,
 				23A11B8911E7C3F900747BFA /* CMeep.cpp */,
 				23A11B8A11E7C3F900747BFA /* CMeep.h */,
 				23A11B8B11E7C3F900747BFA /* CMessie.cpp */,
 				23A11B8C11E7C3F900747BFA /* CMessie.h */,
+				63CD113C11CFF5FB00F60BC8 /* CObjectAI.cpp */,
+				63CD113D11CFF5FB00F60BC8 /* CObjectAI.h */,
 				23A11B8D11E7C3F900747BFA /* CPlatform.cpp */,
 				23A11B8E11E7C3F900747BFA /* CPlatform.h */,
 				23A11B8F11E7C3F900747BFA /* CPlatformVert.cpp */,
@@ -1597,10 +1607,6 @@
 				23A11BAB11E7C3F900747BFA /* CVortiNinja.h */,
 				23A11BAC11E7C3F900747BFA /* CYorp.cpp */,
 				23A11BAD11E7C3F900747BFA /* CYorp.h */,
-				63CD113A11CFF5FB00F60BC8 /* CEGABitmap.cpp */,
-				63CD113B11CFF5FB00F60BC8 /* CEGABitmap.h */,
-				63CD113C11CFF5FB00F60BC8 /* CObjectAI.cpp */,
-				63CD113D11CFF5FB00F60BC8 /* CObjectAI.h */,
 				63CD114011CFF5FB00F60BC8 /* enemydata.h */,
 			);
 			path = ai;
@@ -1631,13 +1637,13 @@
 		63CD117911CFF5FB00F60BC8 /* playgame */ = {
 			isa = PBXGroup;
 			children = (
-				23C64A8511F31DAA0053CA36 /* CPlayGameVorticonWM.cpp */,
-				23C64A8611F31DAA0053CA36 /* CPlayGameVorticonWM.h */,
 				63CD117A11CFF5FB00F60BC8 /* CPlayGameDialogs.cpp */,
 				63CD117B11CFF5FB00F60BC8 /* CPlayGameGameState.cpp */,
 				63CD117C11CFF5FB00F60BC8 /* CPlayGameLevel.cpp */,
 				63CD117D11CFF5FB00F60BC8 /* CPlayGameVorticon.cpp */,
 				63CD117E11CFF5FB00F60BC8 /* CPlayGameVorticon.h */,
+				23C64A8511F31DAA0053CA36 /* CPlayGameVorticonWM.cpp */,
+				23C64A8611F31DAA0053CA36 /* CPlayGameVorticonWM.h */,
 				63CD117F11CFF5FB00F60BC8 /* CPlayGameWorldMap.cpp */,
 			);
 			path = playgame;
@@ -1762,7 +1768,6 @@
 		63CD11DD11CFF5FB00F60BC8 /* sdl */ = {
 			isa = PBXGroup;
 			children = (
-				2374246911FCA6CB000EEA5B /* iphone */,
 				63CD11DE11CFF5FB00F60BC8 /* CInput.cpp */,
 				63CD11DF11CFF5FB00F60BC8 /* CInput.h */,
 				63CD11E011CFF5FB00F60BC8 /* COpenGL.cpp */,
@@ -1773,6 +1778,7 @@
 				63CD11E511CFF5FB00F60BC8 /* CTimer.h */,
 				63CD11E611CFF5FB00F60BC8 /* CVideoDriver.cpp */,
 				63CD11E711CFF5FB00F60BC8 /* CVideoDriver.h */,
+				2374246911FCA6CB000EEA5B /* iphone */,
 				63CD11E811CFF5FB00F60BC8 /* sound */,
 				63CD11F011CFF5FB00F60BC8 /* sys */,
 				63CD11F311CFF5FB00F60BC8 /* video */,
@@ -1783,16 +1789,16 @@
 		63CD11E811CFF5FB00F60BC8 /* sound */ = {
 			isa = PBXGroup;
 			children = (
-				2332377E120EBBCF00915252 /* Mixer.cpp */,
-				2332377F120EBBCF00915252 /* Mixer.h */,
-				23323780120EBBCF00915252 /* Sampling.cpp */,
-				23323781120EBBCF00915252 /* Sampling.h */,
 				63CD11E911CFF5FB00F60BC8 /* CSound.cpp */,
 				63CD11EA11CFF5FB00F60BC8 /* CSound.h */,
 				63CD11EB11CFF5FB00F60BC8 /* CSoundChannel.cpp */,
 				63CD11EC11CFF5FB00F60BC8 /* CSoundChannel.h */,
 				63CD11ED11CFF5FB00F60BC8 /* CSoundSlot.cpp */,
 				63CD11EE11CFF5FB00F60BC8 /* CSoundSlot.h */,
+				2332377E120EBBCF00915252 /* Mixer.cpp */,
+				2332377F120EBBCF00915252 /* Mixer.h */,
+				23323780120EBBCF00915252 /* Sampling.cpp */,
+				23323781120EBBCF00915252 /* Sampling.h */,
 				63CD11EF11CFF5FB00F60BC8 /* sounds.h */,
 			);
 			path = sound;
@@ -2223,6 +2229,7 @@
 				2332379A120EBC0700915252 /* CPlayerLevel.cpp in Sources */,
 				23325AA212117FCB00915252 /* SmartPointer.cpp in Sources */,
 				23E2A7101217525E00F0CD34 /* CProfilesMenu.cpp in Sources */,
+				63F4C9881273600000CA4C79 /* CResourceLoader.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2414,6 +2421,7 @@
 				2332379D120EBC0700915252 /* CPlayerLevel.cpp in Sources */,
 				23325AA312117FCB00915252 /* SmartPointer.cpp in Sources */,
 				23E2A7111217525E00F0CD34 /* CProfilesMenu.cpp in Sources */,
+				63F4C9891273600000CA4C79 /* CResourceLoader.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
