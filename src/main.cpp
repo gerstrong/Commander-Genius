@@ -22,8 +22,9 @@
  - The Commander Genius Team
  
  CloneKeen          2003-2005   Caitlin Shaw
- CloneKeenPlus      2008-2009   Gerstrong
- Commander Genius   2009-2010   Tulip, Pickle, DaVince, Albert and Pizza2004
+ CloneKeenPlus      2008-2011   Gerstrong
+ Commander Genius   2009-2011   Tulip, Pickle, DaVince, Albert and Pizza2004
+ Commander Genius   2010-2011   Lemm, Commander Spleen, Zear and Pelya
  */
 
 #ifdef ANDROID

@@ -18,8 +18,8 @@
 
 enum ProgressStyle
 {
-	TEXT,
-	BITMAP
+	PROGRESS_STYLE_TEXT,
+	PROGRESS_STYLE_BITMAP
 };
 
 class CResourceLoader : public CSingleton<CResourceLoader> {

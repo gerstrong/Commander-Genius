@@ -15,7 +15,7 @@ CResourceLoader::CResourceLoader() :
 m_threadrunning(false),
 m_permil(0),
 mp_thread(NULL),
-m_style(TEXT)
+m_style(PROGRESS_STYLE_TEXT)
 {}
 
 /**
@@ -85,7 +85,7 @@ void CResourceLoader::setPermilage(int permil)
  */
 void CResourceLoader::renderLoadingGraphic()
 {
-	if(m_style == TEXT)
+	if(m_style == PROGRESS_STYLE_TEXT)
 	{
 		// Draw Loading Font... here!
 		CFont &Font = g_pGfxEngine->getFont(0);
@@ -94,7 +94,7 @@ void CResourceLoader::renderLoadingGraphic()
 		std::string text = "Loading ... " + itoa(percent)+"."+ itoa(rest)+" \%";
 		Font.drawFont(g_pVideoDriver->getBlitSurface(), text , 80, 100);
 	}
-	else if(m_style == BITMAP)
+	else if(m_style == PROGRESS_STYLE_BITMAP)
 	{
 		CBitmap &Bitmap = *g_pGfxEngine->getBitmap("ONEMOMEN");
 		SDL_Surface *sfc = g_pVideoDriver->getBlitSurface();

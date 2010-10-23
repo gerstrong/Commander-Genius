@@ -110,8 +110,6 @@ void CPlayerLevel::processInput()
 	}
 
 
-	m_playcontrol[PA_STATUS] = g_pInput->getHoldedCommand(m_index, IC_STATUS) ? 1 : 0;
-
 	if(g_pInput->getTwoButtonFiring(m_index))
 	{
 		if(m_playcontrol[PA_JUMP] && m_playcontrol[PA_POGO])

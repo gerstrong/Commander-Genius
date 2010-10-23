@@ -198,6 +198,7 @@ void CFoob::process()
 			else animtimer++;
 		}
 		break;
+	case FOOB_DEAD: break;
 	}
 }
 

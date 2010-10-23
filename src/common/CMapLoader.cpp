@@ -63,7 +63,7 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	unsigned int curmapx=0, curmapy=0;
 	
 	g_pResourceLoader->startLoadingSequence();
-	g_pResourceLoader->setStyle(BITMAP);
+	g_pResourceLoader->setStyle(PROGRESS_STYLE_BITMAP);
 
 	std::string levelname = "level";
 	if(level < 10) levelname += "0";

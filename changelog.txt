@@ -3,6 +3,8 @@ Commander Genius Release :
 
 v0.3.2.4:
 ---------
+- Less loading time
+- Added nice Loading Screen
 - Diagonal Keys are now supported
 - Improved the hq sound quality
 

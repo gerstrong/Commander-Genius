@@ -125,7 +125,7 @@ bool CGameControl::init(char mode)
 	else if(m_mode == PASSIVE)
 	{
 		g_pResourceLoader->startLoadingSequence();
-		g_pResourceLoader->setStyle(BITMAP);
+		g_pResourceLoader->setStyle(PROGRESS_STYLE_BITMAP);
 		// Create mp_PassiveMode object used for the screens while Player is not playing
 		if(m_Episode >= 4)
 			mp_PassiveMode = new galaxy::CPassiveGalaxy( ExeFile, m_SavedGame, mp_option );
@@ -254,7 +254,7 @@ bool CGameControl::loadResources(Uint8 flags)
 		}
 
 		g_pResourceLoader->startLoadingSequence();
-		g_pResourceLoader->setStyle(BITMAP);
+		g_pResourceLoader->setStyle(PROGRESS_STYLE_BITMAP);
 		g_pResourceLoader->setPermilage(300);
 
 		if( (flags & LOADSTR) == LOADSTR )
