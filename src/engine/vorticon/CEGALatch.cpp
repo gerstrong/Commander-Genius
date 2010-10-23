@@ -290,7 +290,6 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	{
 		std::string filename=*it;
 		int num = getRessourceID(filename, "bitmap");
-
 		CBitmap &bitmap = g_pGfxEngine->getBitmap(num);
 		filename = getResourceFilename("gfx/" + filename, path, false);
 		bitmap.loadHQBitmap(filename);
