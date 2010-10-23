@@ -12,7 +12,6 @@ CLoadMenu::CLoadMenu(Uint8 dlg_theme, CSavedGame &SavedGame) :
 CBaseMenu(dlg_theme),
 m_SavedGame(SavedGame)
 {
-	std::string text = "";
 	mp_Dialog = new CDialog(22, 22, INPUT_MODE_UP_DOWN, m_dlg_theme);
 
 	// Load the state-file list
@@ -20,12 +19,15 @@ m_SavedGame(SavedGame)
 
 	for(Uint32 i=1;i<=20;i++)
 	{
+		std::string text = "";
+
 		if(i <= StateFileList.size())
 		{
 			text = StateFileList.at(i-1);
 			mp_Dialog->m_name = text;
 		}
-		else
+
+		if(text == "")
 			text = EMPTY_STRING;
 
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, i, text);
@@ -36,7 +38,7 @@ void CLoadMenu::processSpecific()
 {
 	if( m_selection != NO_SELECTION)
 	{
-		if(mp_Dialog->m_name == "     EMPTY       ")
+		if(mp_Dialog->m_name == EMPTY_STRING)
 		{
 			//TODO: Message saying can't load, it is empty.  Also, we need to add a check to
 			// see if it is corrupt, or something to prevent old saves from crashing due to incompatibility.

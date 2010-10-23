@@ -5,14 +5,14 @@
  *      Author: gerstrong
  */
 
-#include "../keen.h"
-#include "../StringUtils.h"
-#include "../CLogFile.h"
-#include "../sdl/CTimer.h"
-#include "../sdl/CInput.h"
-#include "../sdl/CVideoDriver.h"
-#include "../sdl/sound/CSound.h"
-#include "../graphics/CGfxEngine.h"
+#include "keen.h"
+#include "StringUtils.h"
+#include "CLogFile.h"
+#include "sdl/CTimer.h"
+#include "sdl/CInput.h"
+#include "sdl/CVideoDriver.h"
+#include "sdl/sound/CSound.h"
+#include "graphics/CGfxEngine.h"
 #include "CDialog.h"
 
 // TODO: This class must get a super class and we need two new classes for galaxy and vorticon engines.
