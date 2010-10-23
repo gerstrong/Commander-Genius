@@ -10,7 +10,7 @@
 #define CTIMER_H_
 
 #include <SDL.h>
-#include "../CSingleton.h"
+#include "CSingleton.h"
 #define g_pTimer	CTimer::Get()
 
 #ifdef WIZ

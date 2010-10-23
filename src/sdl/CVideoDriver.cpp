@@ -9,12 +9,12 @@
 #include "CInput.h"
 #include "CTimer.h"
 
-#include "../keen.h"
-#include "../graphics/CGfxEngine.h"
-#include "../scale2x/scalebit.h"
-#include "../CLogFile.h"
-#include "../FindFile.h"
-#include "../graphics/PerSurfaceAlpha.h"
+#include "keen.h"
+#include "graphics/CGfxEngine.h"
+#include "scale2x/scalebit.h"
+#include "CLogFile.h"
+#include "FindFile.h"
+#include "graphics/PerSurfaceAlpha.h"
 #include <iostream>
 #include <fstream>
 

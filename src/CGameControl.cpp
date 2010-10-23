@@ -6,13 +6,13 @@
  */
 
 #include "CGameControl.h"
+#include "CResourceLoader.h"
 #include "fileio/CExeFile.h"
 #include "fileio/CPatcher.h"
 #include "fileio.h"
 #include "CLogFile.h"
 #include "sdl/sound/CSound.h"
 #include "graphics/effects/CColorMerge.h"
-
 #include "engine/vorticon/CEGAGraphicsVort.h"
 #include "engine/vorticon/CPassiveVort.h"
 #include "engine/vorticon/playgame/CPlayGameVorticon.h"
@@ -96,12 +96,7 @@ bool CGameControl::init(char mode)
 	if(m_mode == GAMELAUNCHER)
 	{
 		// Load the graphics for menu and background.
-		mp_GameLauncher = new CGameLauncher();
-        if(!mp_GameLauncher->init())
-        {
-            g_pLogFile->textOut(RED,"The game cannot start, because you are missing game data files.<br>");
-            return false;
-        }
+        // Resources for the main menu
 
     	// If game was started for the first time, also open the firsttime dialog with configs.
     	if(m_firsttime)
@@ -111,13 +106,26 @@ bool CGameControl::init(char mode)
     		mp_FirstTimeMenu = new CProfilesMenu(DLG_THEME_RED);
     	}
 
-        // Resources for the main menu
 		if(!loadMenuResources())	return false;
+
+		// He we start the thread for cycling the loading screen
+		g_pResourceLoader->startLoadingSequence();
+
+		mp_GameLauncher = new CGameLauncher();
+        if(!mp_GameLauncher->init())
+        {
+            g_pLogFile->textOut(RED,"The game cannot start, because you are missing game data files.<br>");
+            return false;
+        }
+
+        g_pResourceLoader->finishLoadingSequence();
 
 		return true;
 	}
 	else if(m_mode == PASSIVE)
 	{
+		g_pResourceLoader->startLoadingSequence();
+		g_pResourceLoader->setStyle(BITMAP);
 		// Create mp_PassiveMode object used for the screens while Player is not playing
 		if(m_Episode >= 4)
 			mp_PassiveMode = new galaxy::CPassiveGalaxy( ExeFile, m_SavedGame, mp_option );
@@ -134,6 +142,7 @@ bool CGameControl::init(char mode)
 		{
 			if( mp_PassiveMode->init() ) return true;
 		}
+		g_pResourceLoader->finishLoadingSequence();
 	}
 	else if(m_mode == PLAYGAME)
 	{
@@ -196,6 +205,7 @@ bool CGameControl::loadResources(Uint8 flags)
 	unsigned char *p_exedata;
 	unsigned char *p_exeheader;
 
+
 	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 
 	m_SavedGame.setGameDirectory(m_DataDirectory);
@@ -214,6 +224,7 @@ bool CGameControl::loadResources(Uint8 flags)
 
 	if(p_exeheader == NULL) {
 		g_pLogFile->textOut(RED, "CGameControl::loadResources: Could not load data from the EXE File<br>");
+		g_pResourceLoader->finishLoadingSequence();
 		return false;
 	}
 
@@ -227,16 +238,24 @@ bool CGameControl::loadResources(Uint8 flags)
 	{
 		g_pBehaviorEngine->readTeleporterTable(p_exedata);
 
+
 		if( (flags & LOADGFX) == LOADGFX )
 		{
 			// Decode the entire graphics for the game (EGALATCH, EGASPRIT, etc.)
 			// This will also read the Tile-Properties
 			SAFE_DELETE(m_EGAGraphics); // except for the first start of a game this always happens
 			m_EGAGraphics = new vorticon::CEGAGraphicsVort(m_Episode, m_DataDirectory);
-			if(!m_EGAGraphics) return false;
+			if(!m_EGAGraphics)
+			{
+				return false;
+			}
 
 			m_EGAGraphics->loadData( version, p_exedata );
 		}
+
+		g_pResourceLoader->startLoadingSequence();
+		g_pResourceLoader->setStyle(BITMAP);
+		g_pResourceLoader->setPermilage(300);
 
 		if( (flags & LOADSTR) == LOADSTR )
 		{
@@ -245,6 +264,8 @@ bool CGameControl::loadResources(Uint8 flags)
 			Messages.extractGlobalStrings();
 		}
 
+		g_pResourceLoader->setPermilage(400);
+
 		if( (flags & LOADSND) == LOADSND )
 		{
 			// Load the sound data
@@ -252,8 +273,11 @@ bool CGameControl::loadResources(Uint8 flags)
 			g_pSound->loadSoundData(ExeFile);
 		}
 
+		g_pResourceLoader->setPermilage(800);
+
 		g_pBehaviorEngine->getPhysicsSettings().loadGameConstants(m_Episode, p_exedata);
 
+		g_pResourceLoader->finishLoadingSequence();
 		return true;
 	}
 	else if( m_Episode == 4 || m_Episode == 5 || m_Episode == 6 ) // Galaxy resources
@@ -265,7 +289,10 @@ bool CGameControl::loadResources(Uint8 flags)
 			SAFE_DELETE(m_EGAGraphics);
 
 			m_EGAGraphics = new galaxy::CEGAGraphicsGalaxy(ExeFile); // Path is relative to the data directory
-			if(!m_EGAGraphics) return false;
+			if(!m_EGAGraphics)
+			{
+				return false;
+			}
 
 			m_EGAGraphics->loadData();
 		}
@@ -340,6 +367,7 @@ void CGameControl::process()
 							savedgames.setGameDirectory(m_DataDirectory);
 							savedgames.setEpisode(m_Episode);
 							savedgames.convertAllOldFormats();
+							g_pResourceLoader->finishLoadingSequence();
 
 							if(m_startLevel == 0) // Starts normally
 							{

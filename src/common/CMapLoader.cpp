@@ -6,41 +6,42 @@
  */
 
 #include "CMapLoader.h"
-#include "../keen.h"
+#include "keen.h"
 #include <iostream>
 #include <fstream>
-#include "../FindFile.h"
-#include "../CLogFile.h"
-#include "../fileio.h"
-#include "../fileio/ResourceMgmt.h"
-#include "../fileio/compression/CRLE.h"
-#include "../common/CBehaviorEngine.h"
-#include "../graphics/CGfxEngine.h"
-#include "../sdl/CVideoDriver.h"
+#include "FindFile.h"
+#include "CLogFile.h"
+#include "fileio.h"
+#include "fileio/ResourceMgmt.h"
+#include "fileio/compression/CRLE.h"
+#include "common/CBehaviorEngine.h"
+#include "graphics/CGfxEngine.h"
+#include "sdl/CVideoDriver.h"
+#include "CResourceLoader.h"
 
-#include "../engine/vorticon/ai/CYorp.h"
-#include "../engine/vorticon/ai/CGarg.h"
-#include "../engine/vorticon/ai/CAutoRay.h"
-#include "../engine/vorticon/ai/CVorticon.h"
-#include "../engine/vorticon/ai/CSectorEffector.h"
-#include "../engine/vorticon/ai/CVortiKid.h"
-#include "../engine/vorticon/ai/CVorticonElite.h"
-#include "../engine/vorticon/ai/CVortiMom.h"
-#include "../engine/vorticon/ai/CVortiNinja.h"
-#include "../engine/vorticon/ai/CBallJack.h"
-#include "../engine/vorticon/ai/CButler.h"
-#include "../engine/vorticon/ai/CDoor.h"
-#include "../engine/vorticon/ai/CFoob.h"
-#include "../engine/vorticon/ai/CTank.h"
-#include "../engine/vorticon/ai/CGuardRobot.h"
-#include "../engine/vorticon/ai/CTeleporter.h"
-#include "../engine/vorticon/ai/CMessie.h"
-#include "../engine/vorticon/ai/CMeep.h"
-#include "../engine/vorticon/ai/CPlatform.h"
-#include "../engine/vorticon/ai/CRope.h"
-#include "../engine/vorticon/ai/CScrub.h"
-#include "../engine/vorticon/ai/CIceCannon.h"
-#include "../engine/vorticon/ai/CSpark.h"
+#include "engine/vorticon/ai/CYorp.h"
+#include "engine/vorticon/ai/CGarg.h"
+#include "engine/vorticon/ai/CAutoRay.h"
+#include "engine/vorticon/ai/CVorticon.h"
+#include "engine/vorticon/ai/CSectorEffector.h"
+#include "engine/vorticon/ai/CVortiKid.h"
+#include "engine/vorticon/ai/CVorticonElite.h"
+#include "engine/vorticon/ai/CVortiMom.h"
+#include "engine/vorticon/ai/CVortiNinja.h"
+#include "engine/vorticon/ai/CBallJack.h"
+#include "engine/vorticon/ai/CButler.h"
+#include "engine/vorticon/ai/CDoor.h"
+#include "engine/vorticon/ai/CFoob.h"
+#include "engine/vorticon/ai/CTank.h"
+#include "engine/vorticon/ai/CGuardRobot.h"
+#include "engine/vorticon/ai/CTeleporter.h"
+#include "engine/vorticon/ai/CMessie.h"
+#include "engine/vorticon/ai/CMeep.h"
+#include "engine/vorticon/ai/CPlatform.h"
+#include "engine/vorticon/ai/CRope.h"
+#include "engine/vorticon/ai/CScrub.h"
+#include "engine/vorticon/ai/CIceCannon.h"
+#include "engine/vorticon/ai/CSpark.h"
 
 CMapLoader::CMapLoader(CMap* p_map, std::vector<CPlayer> *p_PlayerVect) :
 mp_vec_Player(p_PlayerVect)
@@ -61,6 +62,9 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	unsigned int planesize = 0;
 	unsigned int curmapx=0, curmapy=0;
 	
+	g_pResourceLoader->startLoadingSequence();
+	g_pResourceLoader->setStyle(BITMAP);
+
 	std::string levelname = "level";
 	if(level < 10) levelname += "0";
 	levelname += itoa(level) + ".ck" + itoa(episode);
@@ -79,11 +83,14 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 		g_pMusicPlayer->LoadfromMusicTable(path, levelname);
 	}
 
+	g_pResourceLoader->setPermilage(200);
+
 	if (!fileopen)
 	{
 		// only record this error message on build platforms that log errors
 		// to a file and not to the screen.
 		g_pLogFile->ftextOut("MapLoader: unable to open file %s<br>", levelname.c_str());
+		g_pResourceLoader->finishLoadingSequence();
 		return false;
 	}
 	g_pLogFile->ftextOut("MapLoader: file %s opened. Loading...<br>", levelname.c_str());
@@ -100,6 +107,8 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 		compdata.push_back(static_cast<Uint8>(MapFile.get()));
 	}
 
+	g_pResourceLoader->setPermilage(400);
+
 	MapFile.close();
 
 	CRLE RLE;
@@ -109,6 +118,8 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	mp_map->m_height = planeitems.at(2);
 	
 	size_t mapsize = ((mp_map->m_width+32)*(mp_map->m_height+32));
+
+	g_pResourceLoader->setPermilage(800);
 
 	// Here goes the memory allocation function
 	mp_map->createEmptyDataPlane(1, mapsize);
@@ -182,6 +193,8 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
     // Set Scrollbuffer
     g_pVideoDriver->setScrollBuffer(&mp_map->m_scrollx_buf, &mp_map->m_scrolly_buf);
 	
+    g_pResourceLoader->finishLoadingSequence();
+
     return true;
 }
 
