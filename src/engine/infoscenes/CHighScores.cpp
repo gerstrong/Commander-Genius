@@ -19,7 +19,7 @@
 
 const int HIGHSCORETABLE_X = 1344;
 const int HIGHSCORETABLE_Y = 32;
-const int BLINK_TIME = 10;
+const int BLINK_TIME = 60;
 
 using namespace std;
 
@@ -259,20 +259,13 @@ void CHighScores::processWriting()
 	}
 	else m_blinkctr++;
 	
-	if(m_blink)
-	{
-		m_Name2 = m_Name[m_Place];
-		m_Name2.erase( m_CursorPosition, 1);
-		m_Name2.insert( m_CursorPosition, " ");
-		g_pGfxEngine->getFont(0).drawFont(sfc, m_Name2,x, y+(m_Place<<4), true);
-	}
-	else
-	{
-		m_Name2 = m_Name[m_Place];
-		m_Name2.erase( m_CursorPosition, 1);
-		m_Name2.insert( m_CursorPosition, 1, m_CurrentLetter);
-		g_pGfxEngine->getFont(0).drawFont(sfc, m_Name2,x, y+(m_Place<<4), true);
-	}
+	std::string placeholder = m_Name[m_Place];
+		placeholder.erase( m_CursorPosition, 1);
+		if(m_blink)
+			placeholder.insert( m_CursorPosition, " ");
+		else
+			placeholder.insert( m_CursorPosition, 1, m_CurrentLetter);
+		setObjectText(m_selected_ID, placeholder);
 #endif
 }
 
