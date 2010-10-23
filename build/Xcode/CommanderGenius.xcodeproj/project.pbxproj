@@ -398,7 +398,26 @@
 		63CD12AC11CFF64A00F60BC8 /* MacMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CD12AB11CFF64A00F60BC8 /* MacMain.m */; };
 		63F4C9881273600000CA4C79 /* CResourceLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63F4C9861273600000CA4C79 /* CResourceLoader.cpp */; };
 		63F4C9891273600000CA4C79 /* CResourceLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63F4C9861273600000CA4C79 /* CResourceLoader.cpp */; };
+		63F4C9E41273668500CA4C79 /* Ogg.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564C101A5F8F00275638 /* Ogg.framework */; };
+		63F4C9E51273668500CA4C79 /* SDL.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 23D3EA691013AC7B001643FA /* SDL.framework */; };
+		63F4C9E61273668500CA4C79 /* Vorbis.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 2357564D101A5F8F00275638 /* Vorbis.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		63F4CA1A1273668D00CA4C79 /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				63F4C9E41273668500CA4C79 /* Ogg.framework in Copy Frameworks */,
+				63F4C9E51273668500CA4C79 /* SDL.framework in Copy Frameworks */,
+				63F4C9E61273668500CA4C79 /* Vorbis.framework in Copy Frameworks */,
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0867D6ABFE840B52C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1912,6 +1931,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2357563B101A5E5900275638 /* Build configuration list for PBXNativeTarget "Commander Genius" */;
 			buildPhases = (
+				63F4CA1A1273668D00CA4C79 /* Copy Frameworks */,
 				23A5133B11D4ED880043F6C8 /* copy files (vfsroot) */,
 				235755D4101A5E5900275638 /* Sources */,
 				235755D1101A5E5900275638 /* Resources */,
