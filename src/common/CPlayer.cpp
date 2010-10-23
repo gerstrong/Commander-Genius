@@ -748,7 +748,9 @@ void CPlayer::ProcessInput()
 			playcontrol[PA_FIRE] = 0;
 			playcontrol[PA_JUMP] = 0;
 			playcontrol[PA_POGO] = 0;
-			g_pInput->flushCommands();
+			g_pInput->flushCommand(IC_JUMP);
+			g_pInput->flushCommand(IC_FIRE);
+			g_pInput->flushCommand(IC_POGO);
 		}
 
 	}
