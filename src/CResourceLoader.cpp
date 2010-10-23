@@ -38,6 +38,9 @@ int _processThread(void *data)
 void CResourceLoader::startLoadingSequence()
 {
     //Create and run the thread
+	if(mp_thread)
+		finishLoadingSequence();
+
 	mp_thread = SDL_CreateThread( _processThread, NULL );
 	m_threadrunning = true;
 }

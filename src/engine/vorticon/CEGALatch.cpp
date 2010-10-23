@@ -107,6 +107,8 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 
 	FILE* latchfile = OpenGameFile(filename,"rb");
 
+	g_pResourceLoader->setPermilage(200);
+
 	if(!latchfile)
 		return false;
 
@@ -115,7 +117,10 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
     if (compresseddata)
     {
 		if (lz_decompress(latchfile, (unsigned char*) RawData))
+		{
+			g_pResourceLoader->finishLoadingSequence();
 			return 1;
+		}
     }
     else
     {
@@ -124,6 +129,8 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
     }
 
     fclose(latchfile);
+
+	g_pResourceLoader->setPermilage(400);
 
 	// these are the offsets of the different video planes as
 	// relative to each other--that is if a pixel in plane1
@@ -188,6 +195,8 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	Font2.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE );
 	Font2.optimizeSurface();
 
+	g_pResourceLoader->setPermilage(600);
+
 	filename = getResourceFilename("gfx/extratiles.bmp", path, true, true);
 
 	if(filename == "") // That essential file was not found! Try to exit
@@ -207,6 +216,8 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 					 plane4 + m_tiles16location,
 					 0);
 
+	g_pResourceLoader->setPermilage(700);
+
 	g_pGfxEngine->freeTilemap();
 	g_pGfxEngine->createEmptyTilemap(2);
 	CTilemap &Tilemap = g_pGfxEngine->getTileMap(1);
@@ -221,6 +232,8 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 
 	if(SDL_MUSTLOCK(sfc))	SDL_UnlockSurface(sfc);
 
+	g_pResourceLoader->setPermilage(800);
+
 	// Load Hi-Colour, VGA, SVGA Tiles into the tilemap
 	filename = getResourceFilename("gfx/ck" + itoa(episode) + "tiles.bmp", path, false);
 	if(Tilemap.loadHiresTile(filename))
@@ -231,6 +244,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 
 	// make masked tiles according to it's surfaces
 	applyMasks();
+	g_pResourceLoader->setPermilage(900);
 
 	////////////////////
 	/// Load Bitmaps ///
@@ -281,6 +295,8 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 		CBitmap &bitmap = g_pGfxEngine->getBitmap(b);
 		bitmap.optimizeSurface();
 	}
+
+	g_pResourceLoader->setPermilage(950);
 
 	std::set<std::string> filelist;
 	FileListAdder fileListAdder;
