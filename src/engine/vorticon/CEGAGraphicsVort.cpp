@@ -63,8 +63,6 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 	std::vector<char> databuf;
 
 	// assure that the last used resources are freed
-	g_pGfxEngine->freeFonts();
-	g_pGfxEngine->freeTilemap();
 
 	// Set the palette, so the proper colours are loaded
 	g_pGfxEngine->Palette.setupColorPalettes(p_exedata, m_episode);

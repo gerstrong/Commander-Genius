@@ -12,6 +12,7 @@
 #include "sdl/CVideoDriver.h"
 #include "fileio/TypeDefinitions.h"
 #include "common/CBehaviorEngine.h"
+#include "CResourceLoader.h"
 #include "CLogFile.h"
 #include "engine/CPlanes.h"
 #include "keen.h"
@@ -92,21 +93,15 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 	return true;
 }
 
-/*struct FileListAdder {
-    void operator()(std::set<std::string>& dirs, const std::string& path) {
-        std::string basepath = GetBaseFilename(path);
-        if(basepath != "" && basepath[0] != '.') {
-            dirs.insert(basepath);
-        }
-    }
-};*/
-
 bool CEGALatch::loadData( std::string &path, short episode, int version, unsigned char *data, bool compresseddata )
 {
 	std::string filename;
 	byte *RawData;
     Uint16 width, height;
     SDL_Surface *sfc;
+
+	g_pResourceLoader->startLoadingSequence();
+	g_pResourceLoader->setStyle(PROGRESS_STYLE_TEXT);
 
 	filename = getResourceFilename("egalatch.ck" + itoa(episode), path);
 
@@ -149,6 +144,10 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	// Load these graphics into the CFont Class of CGfxEngine
 	// The original vorticon engine only uses one fontmap, but we use another for
 	// extra icons. For example sliders are in that map
+
+	g_pResourceLoader->finishLoadingSequence();
+
+	g_pGfxEngine->freeFonts();
 	g_pGfxEngine->createEmptyFontmaps(2);
 	CFont &Font = g_pGfxEngine->getFont(0);
 	Font.destroySurface();
@@ -179,6 +178,10 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	CCursor *pCursor = g_pGfxEngine->getCursor();
 	pCursor->generateTwirls(Font);
 
+	g_pResourceLoader->startLoadingSequence();
+	g_pResourceLoader->setStyle(PROGRESS_STYLE_TEXT);
+	g_pResourceLoader->setPermilage(500);
+
 	// The second fontmap of the extra tilemap code goes here! (for example Sliders)
 	CFont &Font2 = g_pGfxEngine->getFont(1);
 	Font2.destroySurface();
@@ -204,6 +207,7 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 					 plane4 + m_tiles16location,
 					 0);
 
+	g_pGfxEngine->freeTilemap();
 	g_pGfxEngine->createEmptyTilemap(2);
 	CTilemap &Tilemap = g_pGfxEngine->getTileMap(1);
 	Tilemap.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE, m_num16tiles, 4, 13 );
@@ -296,6 +300,8 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	}
 
 	if(RawData){ delete[] RawData; RawData = NULL;}
+
+	g_pResourceLoader->finishLoadingSequence();
 
 	return true;
 }
