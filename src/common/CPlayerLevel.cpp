@@ -768,11 +768,11 @@ void CPlayer::raygun()
 		// put away ray gun after it's shown for the minimum period of time
 		if (!pfireframetimer)
 		{  // ray gun shown for minimum time
-			pfiring = 0;
+			pfiring = false;
 		}
 		else
 		{  // minimum time not expired
-			pfiring = 1;
+			pfiring = true;
 			inhibitwalking = 1;
 		}
 		plastfire = false;

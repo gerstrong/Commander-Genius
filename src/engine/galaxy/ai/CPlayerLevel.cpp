@@ -109,21 +109,25 @@ void CPlayerLevel::processInput()
 		m_playcontrol[PA_POGO]   = g_pInput->getHoldedCommand(m_index, IC_POGO) ? 1 : 0;
 	}
 
-	m_playcontrol[PA_FIRE]   = g_pInput->getHoldedCommand(m_index, IC_FIRE)   ? 1 : 0;
+
 	m_playcontrol[PA_STATUS] = g_pInput->getHoldedCommand(m_index, IC_STATUS) ? 1 : 0;
 
 	if(g_pInput->getTwoButtonFiring(m_index))
 	{
-		if(m_playcontrol[PA_FIRE])
-		{
-			m_playcontrol[PA_FIRE] = 0;
-		}
-		else if(m_playcontrol[PA_JUMP] && m_playcontrol[PA_POGO])
+		if(m_playcontrol[PA_JUMP] && m_playcontrol[PA_POGO])
 		{
 			m_playcontrol[PA_FIRE] = 1;
 			m_playcontrol[PA_JUMP] = 0;
 			m_playcontrol[PA_POGO] = 0;
 		}
+		/*else if(!m_playcontrol[PA_JUMP] || !m_playcontrol[PA_POGO])
+		{
+			m_playcontrol[PA_FIRE] = 0;
+		}*/
+	}
+	else
+	{
+		m_playcontrol[PA_FIRE]   = g_pInput->getHoldedCommand(m_index, IC_FIRE)   ? 1 : 0;
 	}
 }
 

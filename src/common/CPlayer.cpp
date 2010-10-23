@@ -725,28 +725,36 @@ void CPlayer::ProcessInput()
 		else
 			playcontrol[PA_JUMP] = 0;
 
-		playcontrol[PA_POGO]   = g_pInput->getHoldedCommand(m_index, IC_POGO)   ? 1 : 0;
 	}
+	else
+		playcontrol[PA_JUMP]   = g_pInput->getHoldedCommand(m_index, IC_JUMP)   ? 1 : 0;
 
-	playcontrol[PA_FIRE]   = g_pInput->getHoldedCommand(m_index, IC_FIRE)   ? 1 : 0;
+	playcontrol[PA_POGO]   = g_pInput->getHoldedCommand(m_index, IC_POGO)   ? 1 : 0;
 	playcontrol[PA_STATUS] = g_pInput->getHoldedCommand(m_index, IC_STATUS) ? 1 : 0;
 	
 	// The possibility to charge jumps. This is mainly used for the pogo.
 	if( playcontrol[PA_JUMP] > 50) playcontrol[PA_JUMP] = 50;
 	
+	// Two button firing process
 	if(g_pInput->getTwoButtonFiring(m_index))
 	{
-		if(playcontrol[PA_FIRE])
-		{
-			playcontrol[PA_FIRE] = 0;
-		}
-		else if(playcontrol[PA_JUMP] && playcontrol[PA_POGO])
+		bool jump=playcontrol[PA_JUMP];
+		bool pogo=playcontrol[PA_POGO];
+
+		if(playcontrol[PA_JUMP] && playcontrol[PA_POGO])
 		{
 			playcontrol[PA_FIRE] = 1;
 			playcontrol[PA_JUMP] = 0;
 			playcontrol[PA_POGO] = 0;
 		}
+		else if(playcontrol[PA_FIRE])
+		{
+			playcontrol[PA_FIRE] = 0;
+		}
+
 	}
+	else
+		playcontrol[PA_FIRE]   = g_pInput->getHoldedCommand(m_index, IC_FIRE)   ? 1 : 0;
 }
 
 /**
