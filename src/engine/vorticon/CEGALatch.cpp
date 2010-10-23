@@ -6,16 +6,16 @@
  */
 
 #include "CEGALatch.h"
-#include "../../fileio/ResourceMgmt.h"
-#include "../../fileio/lz.h"
-#include "../../graphics/CGfxEngine.h"
-#include "../../sdl/CVideoDriver.h"
-#include "../../fileio/TypeDefinitions.h"
-#include "../../common/CBehaviorEngine.h"
-#include "../../CLogFile.h"
-#include "../CPlanes.h"
-#include "../../keen.h"
-#include "../../FindFile.h"
+#include "fileio/ResourceMgmt.h"
+#include "fileio/lz.h"
+#include "graphics/CGfxEngine.h"
+#include "sdl/CVideoDriver.h"
+#include "fileio/TypeDefinitions.h"
+#include "common/CBehaviorEngine.h"
+#include "CLogFile.h"
+#include "engine/CPlanes.h"
+#include "keen.h"
+#include "FindFile.h"
 #include <SDL.h>
 #include <stdio.h>
 #include <string.h>
@@ -91,6 +91,15 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 	}
 	return true;
 }
+
+struct FileListAdder {
+    void operator()(std::set<std::string>& dirs, const std::string& path) {
+        std::string basepath = GetBaseFilename(path);
+        if(basepath != "" && basepath[0] != '.') {
+            dirs.insert(basepath);
+        }
+    }
+};
 
 bool CEGALatch::loadData( std::string &path, short episode, int version, unsigned char *data, bool compresseddata )
 {
@@ -267,7 +276,23 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	{
 		CBitmap &bitmap = g_pGfxEngine->getBitmap(b);
 		bitmap.optimizeSurface();
-		filename = getResourceFilename("gfx/bitmap" + itoa(b) + ".bmp", path, false);
+	}
+
+	std::set<std::string> filelist;
+	FileListAdder fileListAdder;
+	std::string gfxpath = JoinPaths(path, "gfx");
+	GetFileList(filelist, fileListAdder, gfxpath, false, FM_REG);
+	FilterFilelist(filelist, "bitmap");
+
+	std::set<std::string>::iterator it = filelist.begin();
+
+	for( ; it != filelist.end() ; it++ )
+	{
+		std::string filename=*it;
+		int num = getRessourceID(filename, "bitmap");
+
+		CBitmap &bitmap = g_pGfxEngine->getBitmap(num);
+		filename = getResourceFilename("gfx/" + filename, path, false);
 		bitmap.loadHQBitmap(filename);
 	}
 

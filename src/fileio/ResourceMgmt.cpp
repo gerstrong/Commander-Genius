@@ -9,11 +9,39 @@
  */
 
 #include "ResourceMgmt.h"
-#include "../FindFile.h"
-#include "../CLogFile.h"
-#include "../keen.h"
+#include "FindFile.h"
+#include "CLogFile.h"
+#include "keen.h"
 
 const std::string GLOBAL_DIR = "global";
+
+
+/**
+ * \brief Filters a given Filelist using a pattern give in the parameter namefilter
+ */
+void FilterFilelist(std::set<std::string>& filelist, const std::string& namefilter)
+{
+	std::set<std::string>::iterator it = filelist.begin();
+	for( ; it != filelist.end() ; it++ )
+	{
+		if(!strCaseStartsWith(*it,namefilter))
+			filelist.erase(it);
+	}
+}
+
+/**
+ * \brief retrieves Ressource ID from a file
+ */
+int getRessourceID(const std::string& filename, const std::string& namefilter)
+{
+	int value;
+	std::string text = filename.substr(namefilter.size());
+
+	text.erase(text.find("."));
+
+	value = atoi(text.c_str());
+	return value;
+}
 
 /**
  * \brief	This function will look for certain files used in the game. It looks on the local dir

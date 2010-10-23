@@ -401,7 +401,6 @@ void GetFileList(
 	FindFiles(adder, dir, absolutePath, modefilter, namefilter);
 }
 
-
 class Command;
 struct AutocompleteRequest;
 
