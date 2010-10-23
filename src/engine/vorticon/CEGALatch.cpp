@@ -92,14 +92,14 @@ bool CEGALatch::loadHead( char *data, short m_episode )
 	return true;
 }
 
-struct FileListAdder {
+/*struct FileListAdder {
     void operator()(std::set<std::string>& dirs, const std::string& path) {
         std::string basepath = GetBaseFilename(path);
         if(basepath != "" && basepath[0] != '.') {
             dirs.insert(basepath);
         }
     }
-};
+};*/
 
 bool CEGALatch::loadData( std::string &path, short episode, int version, unsigned char *data, bool compresseddata )
 {

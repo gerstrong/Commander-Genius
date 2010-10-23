@@ -10,6 +10,16 @@
 
 #include <string>
 #include <set>
+#include "StringUtils.h"
+
+struct FileListAdder {
+    void operator()(std::set<std::string>& dirs, const std::string& path) {
+        std::string basepath = GetBaseFilename(path);
+        if(basepath != "" && basepath[0] != '.') {
+            dirs.insert(basepath);
+        }
+    }
+};
 
 int getRessourceID(const std::string& filename, const std::string& namefilter);
 

@@ -21,11 +21,14 @@ const std::string GLOBAL_DIR = "global";
  */
 void FilterFilelist(std::set<std::string>& filelist, const std::string& namefilter)
 {
-	std::set<std::string>::iterator it = filelist.begin();
-	for( ; it != filelist.end() ; it++ )
+	std::set<std::string> oldfilelist = filelist;
+	filelist.clear();
+
+	std::set<std::string>::iterator it = oldfilelist.begin();
+	for( ; it != oldfilelist.end() ; it++ )
 	{
-		if(!strCaseStartsWith(*it,namefilter))
-			filelist.erase(it);
+		if(strCaseStartsWith(*it,namefilter))
+			filelist.insert(*it);
 	}
 }
 

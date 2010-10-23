@@ -192,16 +192,28 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	{
 		CSprite &Sprite = g_pGfxEngine->getSprite(s);
 		Sprite.optimizeSurface();
-
-		if(s < m_numsprites )
-		{
-			std::string filename;
-			filename = getResourceFilename("gfx/sprite" + itoa(s) + ".bmp", m_gamepath, false, true);
-			if(filename != "")
-				Sprite.loadHQSprite(filename);
-		}
-		Sprite.applyTransparency();
 	}
+
+	std::set<std::string> filelist;
+	FileListAdder fileListAdder;
+	std::string gfxpath = JoinPaths(m_gamepath, "gfx");
+	GetFileList(filelist, fileListAdder, gfxpath, false, FM_REG);
+	FilterFilelist(filelist, "sprite");
+	std::set<std::string>::iterator it = filelist.begin();
+	for( ; it != filelist.end() ; it++ )
+	{
+		std::string name=*it;
+		int num = getRessourceID(name, "sprite");
+		if(num < m_numsprites )
+		{
+			CSprite &Sprite = g_pGfxEngine->getSprite(num);
+			std::string filename = getResourceFilename("gfx/"+name, m_gamepath, false, true);
+			Sprite.loadHQSprite(filename);
+		}
+	}
+
+	for(Uint16 s=0 ; s<g_pGfxEngine->getSpriteVec().size() ; s++)
+		g_pGfxEngine->getSprite(s).applyTransparency();
 	
 	// Apply the sprites for player 2,3 and 4
 	DerivePlayerSprites( g_pGfxEngine->getSpriteVec() );
@@ -331,13 +343,27 @@ void CEGASprit::DerivePlayerSprites( std::vector<CSprite> &sprites )
 		sprites.at(s).optimizeSurface();
 	}
 
-	// Load special if there are any
-	for(size_t s=SECOND_PLAYER_BASEFRAME ; s<FOURTH_PLAYER_BASEFRAME+48 ; s++)
+	for(Uint16 s=0 ; s<g_pGfxEngine->getSpriteVec().size() ; s++)
 	{
-		std::string filename = getResourceFilename("gfx/sprite" + itoa(s) + ".bmp", m_gamepath, false, true);
-		if(filename != "")
+		CSprite &Sprite = g_pGfxEngine->getSprite(s);
+		Sprite.optimizeSurface();
+	}
+
+	// Try to load player sprites here!
+	std::set<std::string> filelist;
+	FileListAdder fileListAdder;
+	std::string gfxpath = JoinPaths(m_gamepath, "gfx");
+	GetFileList(filelist, fileListAdder, gfxpath, false, FM_REG);
+	FilterFilelist(filelist, "sprite");
+	std::set<std::string>::iterator it = filelist.begin();
+	for( ; it != filelist.end() ; it++ )
+	{
+		std::string name=*it;
+		int num = getRessourceID(name, "sprite");
+		if( num>=SECOND_PLAYER_BASEFRAME && num<FOURTH_PLAYER_BASEFRAME+48 )
 		{
-			CSprite &Sprite = sprites.at(s);
+			CSprite &Sprite = g_pGfxEngine->getSprite(num);
+			std::string filename = getResourceFilename("gfx/"+name, m_gamepath, false, true);
 			Sprite.loadHQSprite(filename);
 			Sprite.applyTransparency();
 		}
