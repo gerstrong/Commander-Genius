@@ -60,7 +60,6 @@ public:
 	char m_inputmode;
 	char m_curletter;
 	std::string m_name;
-	std::string m_name2;
 	std::vector<CDlgObject*> m_dlgobject;
 	
 private:

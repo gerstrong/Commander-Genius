@@ -220,20 +220,14 @@ void CDialog::processInput(int move)
 		}
 		else m_blinkctr++;
 		
+		std::string placeholder = m_name;
+		placeholder.erase( m_cursorpos, 1);
 		if(m_blink)
-		{
-			m_name2 = m_name;
-			m_name2.erase( m_cursorpos, 1);
-			m_name2.insert( m_cursorpos, " ");
-			setObjectText(m_selected_ID, m_name2);
-		}
+			placeholder.insert( m_cursorpos, " ");
 		else
-		{
-			m_name2 = m_name;
-			m_name2.erase( m_cursorpos, 1);
-			m_name2.insert( m_cursorpos, 1, m_curletter);
-			setObjectText(m_selected_ID, m_name2);
-		}
+			placeholder.insert( m_cursorpos, 1, m_curletter);
+		setObjectText(m_selected_ID, placeholder);
+
 #endif
 	}
 	else if( m_inputmode == INPUT_MODE_INTEGER )
