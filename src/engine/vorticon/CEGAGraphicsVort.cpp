@@ -7,16 +7,16 @@
 
 #include "CEGAGraphicsVort.h"
 
-#include "../../sdl/CVideoDriver.h"
-#include "../../fileio/CTileLoader.h"
+#include "sdl/CVideoDriver.h"
+#include "fileio/CTileLoader.h"
 
 #ifdef TARGET_WIN32
 #include <dir.h>
 #endif
 #include <fstream>
 #include <vector>
-#include "../../StringUtils.h"
-#include "../../FindFile.h"
+#include "StringUtils.h"
+#include "FindFile.h"
 
 namespace vorticon
 {
