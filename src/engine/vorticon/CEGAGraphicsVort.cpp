@@ -85,26 +85,25 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 	}
 	HeadFile.close();
 
-	char *data = new char[databuf.size()];
-	memcpy(data, &databuf[0], databuf.size());
+	std::vector<char> data(databuf);
 
 	// Now copy the data to the EGAHEAD Structure
-    memcpy(&LatchPlaneSize,data,4);
-    memcpy(&SpritePlaneSize,data+4,4);
-    memcpy(&BitmapTableStart,data+8,4);
-    memcpy(&SpriteStart,data+12,4);
+    memcpy(&LatchPlaneSize,&data[0],4);
+    memcpy(&SpritePlaneSize,&data[0]+4,4);
+    memcpy(&BitmapTableStart,&data[0]+8,4);
+    memcpy(&SpriteStart,&data[0]+12,4);
 
-    memcpy(&FontTiles,data+16,2);
-    memcpy(&FontLocation,data+18,4);
-    memcpy(&ScreenTiles,data+22,2);
-    memcpy(&ScreenLocation,data+24,4);
-    memcpy(&Num16Tiles,data+28,2);
-    memcpy(&Tiles16Location,data+30,4);
-    memcpy(&NumBitmaps,data+34,4);
-    memcpy(&BitmapLocation,data+36,4);
-    memcpy(&NumSprites,data+40,4);
-    memcpy(&SpriteLocation,data+42,4);
-    memcpy(&compressed,data+46,4);
+    memcpy(&FontTiles,&data[0]+16,2);
+    memcpy(&FontLocation,&data[0]+18,4);
+    memcpy(&ScreenTiles,&data[0]+22,2);
+    memcpy(&ScreenLocation,&data[0]+24,4);
+    memcpy(&Num16Tiles,&data[0]+28,2);
+    memcpy(&Tiles16Location,&data[0]+30,4);
+    memcpy(&NumBitmaps,&data[0]+34,4);
+    memcpy(&BitmapLocation,&data[0]+36,4);
+    memcpy(&NumSprites,&data[0]+40,4);
+    memcpy(&SpriteLocation,&data[0]+42,4);
+    memcpy(&compressed,&data[0]+46,4);
 
 	// First, retrieve the Tile properties so the tilemap gets properly formatted
 	// Important especially for masks, and later in the game for the behaviours
@@ -125,7 +124,7 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 							NumBitmaps,
 							BitmapLocation);
 
-    m_Latch->loadHead( data, m_episode );
+    m_Latch->loadHead( &data[0], m_episode );
 
     m_Latch->loadData( m_path, m_episode, version, p_exedata, (compressed>>1) ); // The second bit tells, if latch is compressed.
 
@@ -135,7 +134,7 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 							NumSprites,
 							SpriteLocation,
 							m_path, m_episode);
-    m_Sprit->loadHead(data);
+    m_Sprit->loadHead(&data[0]);
 
     if(m_path == "")
 		buf = "egasprit.ck" + itoa(m_episode);
@@ -157,8 +156,6 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 	};
     g_pResourceLoader->setStyle(PROGRESS_STYLE_BITMAP);
 	g_pResourceLoader->RunLoadAction(new SpriteLoad(m_Sprit, buf, (compressed>>1)), "Loading Sprites", 500, 900);
-
-    delete[] data;
 
     return true;
 }
