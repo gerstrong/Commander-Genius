@@ -33,6 +33,7 @@
 #include "CLogFile.h"
 #include "CGame.h"
 #include "FindFile.h"
+#include "ThreadPool.h"
 
 /**
  * \brief  This is the function where CG beings
@@ -62,6 +63,7 @@ int main(int argc, char *argv[])
 	}
 	binary_dir = GetAbsolutePath(binary_dir);
 
+	InitThreadPool();
 	InitSearchPaths();
 
 	g_pLogFile->CreateLogfile("CGLog.html");
@@ -86,6 +88,7 @@ int main(int argc, char *argv[])
 	g_pLogFile->Del();
 
 	printf("Thank you very much for playing this wonderful game!");
-	
+
+	UnInitThreadPool();
 	return 0;
 }
