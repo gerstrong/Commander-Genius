@@ -43,7 +43,6 @@ private:
 	int m_max_permil;
 
 	ProgressStyle m_style;
-	ThreadPool m_ThreadPool;
 	SmartPointer<ThreadPoolItem> mp_Thread;
 };
 

@@ -17,8 +17,7 @@ m_threadrunning(false),
 m_permil(0),
 m_min_permil(0),
 m_max_permil(1000),
-m_style(PROGRESS_STYLE_TEXT),
-m_ThreadPool(1)
+m_style(PROGRESS_STYLE_TEXT)
 {}
 
 /**
@@ -38,7 +37,7 @@ int CResourceLoader::RunLoadAction(Action* act, const std::string &threadname, i
 	m_max_permil = max_permil;
 	m_min_permil = min_permil;
 	m_permil = m_min_permil;
-	mp_Thread = m_ThreadPool.start(act, threadname, true);
+	mp_Thread = threadPool.start(act, threadname, true);
 	process();
 	return mp_Thread->ret;
 }
@@ -49,8 +48,9 @@ bool CResourceLoader::process()
 
 	if(!mp_Thread.get())
 		return false;
+	
 	// Do rendering here and the cycle
-	while(!m_ThreadPool.finished(mp_Thread.get()))
+	while(!threadPool.finished(mp_Thread.get()))
 	{
 		g_pTimer->TimeToLogic();
 
@@ -65,7 +65,6 @@ bool CResourceLoader::process()
 		g_pTimer->TimeToDelay();
 	}
 
-	m_ThreadPool.waitAll();
 	m_permil = m_max_permil;
 
 	return true;
