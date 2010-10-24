@@ -190,23 +190,21 @@ void CEGAGraphicsGalaxy::extractPicture(SDL_Surface *sfc,
 		// Decode the bitmap data
 		for(size_t p = 0; p < 4; p++)
 		{
-			unsigned char *pointer;
 			Uint8* pixel = (Uint8*) sfc->pixels;
 
 			// get location of plane p
 			if(masked)
 			{
-				pointer = &(data[0]) + (p+1) * Width * Height;
+				Uint8* pointer = &data[0] + (p+1) * Width * Height;
 
 				// now try to extract the bits and pass it to the SDL-Surface
 				for(size_t y = 0; y < Height; y++)
 				{
 					for(size_t x = 0; x < Width; x++)
 					{
-						Uint8 bit,b;
-						for(b=0 ; b<8 ; b++)
+						for(Uint8 b=0 ; b<8 ; b++)
 						{
-							bit = getBit(*pointer, 7-b);
+							Uint8 bit = getBit(*pointer, 7-b);
 							*pixel |= (bit<<p);
 							pixel++;
 						}
@@ -216,17 +214,16 @@ void CEGAGraphicsGalaxy::extractPicture(SDL_Surface *sfc,
 			}
 			else
 			{
-				pointer = &(data[0]) + p * Width * Height;
+				Uint8* pointer = &data[0] + p * Width * Height;
 
 				// now try to extract the bits and pass it to the SDL-Surface
 				for(size_t y = 0; y < Height; y++)
 				{
 					for(size_t x = 0; x < Width; x++)
 					{
-						Uint8 bit,b;
-						for(b=0 ; b<8 ; b++)
+						for(Uint8 b=0 ; b<8 ; b++)
 						{
-							bit = getBit(*pointer, 7-b);
+							Uint8 bit = getBit(*pointer, 7-b);
 							*pixel |= (bit<<p);
 							pixel++;
 						}
@@ -239,7 +236,7 @@ void CEGAGraphicsGalaxy::extractPicture(SDL_Surface *sfc,
 		if(masked)
 		{
 			// This stuff is for reading the mask and apply it to the pixel map
-			unsigned char *pointer = &(data[0]);
+			Uint8 *pointer = &data[0];
 			Uint8* pixel = (Uint8*) sfc->pixels;
 
 			// now try to extract the bits and pass it to the SDL-Surface
@@ -247,10 +244,9 @@ void CEGAGraphicsGalaxy::extractPicture(SDL_Surface *sfc,
 			{
 				for(size_t x = 0; x < Width; x++)
 				{
-					Uint8 bit,b;
-					for(b=0 ; b<8 ; b++)
+					for(Uint8 b=0 ; b<8 ; b++)
 					{
-						bit = getBit(*pointer, 7-b);
+						Uint8 bit = getBit(*pointer, 7-b);
 						if(bit == 1)
 							*pixel = 16;
 
