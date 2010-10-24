@@ -141,7 +141,22 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 		buf = "egasprit.ck" + itoa(m_episode);
 	else
 		buf = m_path + "/egasprit.ck" + itoa(m_episode);
-    m_Sprit->loadData(buf,(compressed>>1));
+
+    struct SpriteLoad: public Action
+	{
+    	const std::string& buf;
+    	short compressed;
+    	CEGASprit *m_Sprit;
+		SpriteLoad(CEGASprit *Sprit, const std::string& buf, short compressed):
+			buf(buf), compressed(compressed), m_Sprit(Sprit) {};
+		int handle()
+		{
+			m_Sprit->loadData(buf,(compressed>>1));
+			return 1;
+		}
+	};
+    g_pResourceLoader->setStyle(PROGRESS_STYLE_BITMAP);
+	g_pResourceLoader->RunLoadAction(new SpriteLoad(m_Sprit, buf, compressed), "Loading Sprites", 500, 900);
 
     delete[] data;
 

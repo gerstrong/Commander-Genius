@@ -52,27 +52,16 @@ mp_vec_Player(p_PlayerVect)
 	m_NessieAlreadySpawned = false;
 }
 
-// Loads the map into the memory
-bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool loadNewMusic, bool stategame )
+bool CMapLoader::_load( Uint8 episode, Uint8 level, const std::string& path, bool loadNewMusic, bool stategame )
 {
-	int t;
-	Uint32 c=0;
-	int numruns = 0;
-	int resetcnt, resetpt;
-	unsigned int planesize = 0;
-	unsigned int curmapx=0, curmapy=0;
-	
 	std::string levelname = "level";
 	if(level < 10) levelname += "0";
 	levelname += itoa(level) + ".ck" + itoa(episode);
-	
-	std::ifstream MapFile;
-	bool fileopen = OpenGameFileR(MapFile, getResourceFilename(levelname,path,true,false), std::ios::binary);
-	
+
 	mp_map->resetScrolls();
 	mp_map->m_gamepath = path;
 	mp_map->m_worldmap = (level == 80);
-	
+
 	// HQ Music. Load Music for a level if you have HQP
 	if(loadNewMusic)
 	{
@@ -80,20 +69,21 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 		g_pMusicPlayer->LoadfromMusicTable(path, levelname);
 	}
 
+	// decompress map RLEW data
+	std::ifstream MapFile;
+	bool fileopen = OpenGameFileR(MapFile, getResourceFilename(levelname,path,true,false), std::ios::binary);
+
 	if (!fileopen)
 	{
 		// only record this error message on build platforms that log errors
 		// to a file and not to the screen.
 		g_pLogFile->ftextOut("MapLoader: unable to open file %s<br>", levelname.c_str());
-		return false;
+		return 0;
 	}
 	g_pLogFile->ftextOut("MapLoader: file %s opened. Loading...<br>", levelname.c_str());
-	
-    // decompress map RLEW data
-	std::vector<Uint16> planeitems;
 
 	MapFile.seekg (0, std::ios::beg);
-	
+
 	// load the compressed data into the memory
 	std::vector<Uint8>	compdata;
 	while( !MapFile.eof() )
@@ -104,25 +94,30 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	MapFile.close();
 
 	CRLE RLE;
+	std::vector<Uint16> planeitems;
 	RLE.expandSwapped(planeitems,compdata, 0xFEFE);
-	
+
 	mp_map->m_width = planeitems.at(1);
 	mp_map->m_height = planeitems.at(2);
-	
+
 	size_t mapsize = ((mp_map->m_width+32)*(mp_map->m_height+32));
 
 	// Here goes the memory allocation function
 	mp_map->createEmptyDataPlane(1, mapsize);
-	
+
+	int t;
+	unsigned int planesize = 0;
+	unsigned int curmapx=0, curmapy=0;
 	planesize = planeitems.at(8);
 	planesize /= 2; // Size of two planes, but we only need one
-	
+
+	Uint32 c;
 	for( c=17 ; c<planesize+17 ; c++ ) // Check against Tilesize
 	{
 		t = planeitems.at(c);
-		
+
 		addTile(t, curmapx, curmapy);
-		
+
 		curmapx++;
 		if (curmapx >= mp_map->m_width)
 		{
@@ -130,16 +125,17 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 			curmapy++;
 			if (curmapy >= mp_map->m_height) break;
 		}
-		
+
 		if(t > 255)
 			t=0; // If there are some invalid values in the file
 	}
-	
+
 	// now do the sprites
 	// get sprite data
-	curmapx = curmapy = numruns = 0;
-    resetcnt = resetpt = 0;
-	
+	int resetcnt, resetpt;
+	curmapx = curmapy = 0;
+	resetcnt = resetpt = 0;
+
 	if(mp_objvect && stategame == false)
 	{
 		std::vector<CObject*>::iterator obj = mp_objvect->begin();
@@ -149,7 +145,7 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 			mp_objvect->pop_back();
 		}
 
-	    mp_objvect->reserve(20000);
+		mp_objvect->reserve(20000);
 
 		for( c=planesize+17 ; c<2*planesize+16 ; c++ )
 		{
@@ -157,7 +153,7 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 			if(planeitems.size() <= c) break;
 
 			t = planeitems.at(c);
-			
+
 			if (mp_map->m_worldmap) addWorldMapObject(t, curmapx, curmapy,  episode );
 			else addEnemyObject(t, curmapx, curmapy, episode, level);
 
@@ -168,22 +164,54 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 				curmapy++;
 				if (curmapy >= mp_map->m_height) break;
 			}
-			
+
 			if (++resetcnt==resetpt) curmapx = curmapy = 0;
 		}
 	}
-    planeitems.clear();
-	
-    // Do some post calculations
-    // Limit the scroll screens so the blocking (blue in EP1) tiles are3 never seen
-    SDL_Rect gamerect = g_pVideoDriver->getGameResolution();
-    mp_map->m_maxscrollx = (mp_map->m_width<<4) - gamerect.w - 32;
-    mp_map->m_maxscrolly = (mp_map->m_height<<4) - gamerect.h - 32;
+	planeitems.clear();
 
-    // Set Scrollbuffer
-    g_pVideoDriver->setScrollBuffer(&mp_map->m_scrollx_buf, &mp_map->m_scrolly_buf);
-	
-    return true;
+	// Do some post calculations
+	// Limit the scroll screens so the blocking (blue in EP1) tiles are3 never seen
+	SDL_Rect gamerect = g_pVideoDriver->getGameResolution();
+	mp_map->m_maxscrollx = (mp_map->m_width<<4) - gamerect.w - 32;
+	mp_map->m_maxscrolly = (mp_map->m_height<<4) - gamerect.h - 32;
+
+	// Set Scrollbuffer
+	g_pVideoDriver->setScrollBuffer(&mp_map->m_scrollx_buf, &mp_map->m_scrolly_buf);
+
+	return true;
+}
+
+// Loads the map into the memory
+bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool loadNewMusic, bool stategame )
+{
+    struct MapLoad: public Action
+	{
+    	CMapLoader *m_Maploader;
+    	Uint8 m_episode;
+    	Uint8 m_level;
+    	const std::string& m_path;
+    	bool m_loadNewMusic;
+    	bool m_stategame;
+
+    	MapLoad(CMapLoader *Maploader, Uint8 episode,
+				Uint8 level, const std::string& path,
+				bool loadNewMusic, bool stategame ):
+			    m_Maploader(Maploader),
+			    m_episode(episode),
+			    m_level(level),
+			    m_path(path),
+			    m_loadNewMusic(loadNewMusic),
+			    m_stategame(stategame)
+				{};
+
+		int handle()
+		{
+			return m_Maploader->_load(m_episode, m_level, m_path, m_loadNewMusic, m_stategame);
+		}
+	};
+    g_pResourceLoader->setStyle(PROGRESS_STYLE_BITMAP);
+    return g_pResourceLoader->RunLoadAction(new MapLoad(this, episode, level, path, loadNewMusic, stategame), "Loading Map");
 }
 
 void CMapLoader::addTile( Uint16 t, Uint16 x, Uint16 y )

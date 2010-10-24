@@ -15,6 +15,8 @@
 CResourceLoader::CResourceLoader() :
 m_threadrunning(false),
 m_permil(0),
+m_min_permil(0),
+m_max_permil(1000),
 m_style(PROGRESS_STYLE_TEXT),
 m_ThreadPool(1)
 {}
@@ -31,8 +33,11 @@ void CResourceLoader::setStyle(ProgressStyle style)
  * This will start up the thread for the load display and process the display of loading
  * and then return
  */
-int CResourceLoader::RunLoadAction(Action* act, const std::string &threadname)
+int CResourceLoader::RunLoadAction(Action* act, const std::string &threadname, int min_permil, int max_permil)
 {
+	m_max_permil = max_permil;
+	m_min_permil = min_permil;
+	m_permil = m_min_permil;
 	mp_Thread = m_ThreadPool.start(act, threadname, true);
 	process();
 	return mp_Thread->ret;
@@ -40,10 +45,11 @@ int CResourceLoader::RunLoadAction(Action* act, const std::string &threadname)
 
 bool CResourceLoader::process()
 {
+	SDL_FillRect(g_pVideoDriver->getBlitSurface(), NULL, 0x0);
+
 	if(!mp_Thread.get())
 		return false;
 	// Do rendering here and the cycle
-	m_permil = 0;
 	while(!m_ThreadPool.finished(mp_Thread.get()))
 	{
 		g_pTimer->TimeToLogic();
@@ -60,6 +66,7 @@ bool CResourceLoader::process()
 	}
 
 	m_ThreadPool.waitAll();
+	m_permil = m_max_permil;
 
 	return true;
 }
@@ -70,10 +77,10 @@ bool CResourceLoader::process()
  */
 void CResourceLoader::setPermilage(int permil)
 {
-	if(permil<1000 && permil>0)
+	if(permil<m_max_permil && permil>m_min_permil)
 		m_permil = permil;
 	else
-		m_permil = 1000;
+		m_permil = m_max_permil;
 }
 
 /**
@@ -87,9 +94,7 @@ void CResourceLoader::renderLoadingGraphic()
 		CFont &Font = g_pGfxEngine->getFont(0);
 		int percent = m_permil/10;
 		int rest = m_permil%10;
-		std::string text = "Loading ...         ";
-		Font.drawFont(g_pVideoDriver->getBlitSurface(), text , 80, 100);
-		text = "Loading ... " + itoa(percent)+"."+ itoa(rest)+" \%";
+		std::string text = "Loading ... " + itoa(percent)+"."+ itoa(rest)+" \%";
 		Font.drawFont(g_pVideoDriver->getBlitSurface(), text , 80, 100);
 	}
 	else if(m_style == PROGRESS_STYLE_BITMAP)
