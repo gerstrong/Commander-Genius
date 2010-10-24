@@ -261,6 +261,8 @@
 		23E2A7101217525E00F0CD34 /* CProfilesMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E2A70D1217525E00F0CD34 /* CProfilesMenu.cpp */; };
 		23E2A7111217525E00F0CD34 /* CProfilesMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E2A70D1217525E00F0CD34 /* CProfilesMenu.cpp */; };
 		63AB8C2F107C62D0001EE22F /* cglogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63AB8C2E107C62D0001EE22F /* cglogo.icns */; };
+		63C72AC71274284A00E9A293 /* ThreadPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63C72AC61274284A00E9A293 /* ThreadPool.cpp */; };
+		63C72AC81274284A00E9A293 /* ThreadPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63C72AC61274284A00E9A293 /* ThreadPool.cpp */; };
 		63CD120311CFF5FC00F60BC8 /* arguments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10A511CFF5FB00F60BC8 /* arguments.cpp */; };
 		63CD120411CFF5FC00F60BC8 /* CGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10A711CFF5FB00F60BC8 /* CGame.cpp */; };
 		63CD120511CFF5FC00F60BC8 /* CGameControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10A911CFF5FB00F60BC8 /* CGameControl.cpp */; };
@@ -590,6 +592,8 @@
 		638890BE1162A490009810AC /* extratiles.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = extratiles.bmp; sourceTree = "<group>"; };
 		63999E3910D151BA00EDB6CD /* fonts.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = fonts.bmp; sourceTree = "<group>"; };
 		63AB8C2E107C62D0001EE22F /* cglogo.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = cglogo.icns; sourceTree = "<group>"; };
+		63C72AC51274284A00E9A293 /* ReadWriteLock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadWriteLock.h; sourceTree = "<group>"; };
+		63C72AC61274284A00E9A293 /* ThreadPool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ThreadPool.cpp; sourceTree = "<group>"; };
 		63CB71F511D339BC0069EAC6 /* CK1PATCH.EXE */ = {isa = PBXFileReference; lastKnownFileType = file; path = CK1PATCH.EXE; sourceTree = "<group>"; };
 		63CB71F611D339BC0069EAC6 /* EGAHEAD.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = EGAHEAD.CK1; sourceTree = "<group>"; };
 		63CB71F711D339BC0069EAC6 /* EGALATCH.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = EGALATCH.CK1; sourceTree = "<group>"; };
@@ -1325,6 +1329,7 @@
 				63CD11CD11CFF5FB00F60BC8 /* misc.cpp */,
 				63CD11CE11CFF5FB00F60BC8 /* misc.h */,
 				63CD11CF11CFF5FB00F60BC8 /* Mutex.h */,
+				63C72AC51274284A00E9A293 /* ReadWriteLock.h */,
 				63CD11D011CFF5FB00F60BC8 /* Ref.h */,
 				63CD11D111CFF5FB00F60BC8 /* RefCounter.h */,
 				63CD11D211CFF5FB00F60BC8 /* scale2x */,
@@ -1335,6 +1340,7 @@
 				63CD11F811CFF5FB00F60BC8 /* StringBuf.h */,
 				63CD11F911CFF5FB00F60BC8 /* StringUtils.cpp */,
 				63CD11FA11CFF5FB00F60BC8 /* StringUtils.h */,
+				63C72AC61274284A00E9A293 /* ThreadPool.cpp */,
 				63CD11FB11CFF5FB00F60BC8 /* ThreadPool.h */,
 				63CD11FC11CFF5FC00F60BC8 /* Unicode.cpp */,
 				63CD11FD11CFF5FC00F60BC8 /* Unicode.h */,
@@ -2250,6 +2256,7 @@
 				23325AA212117FCB00915252 /* SmartPointer.cpp in Sources */,
 				23E2A7101217525E00F0CD34 /* CProfilesMenu.cpp in Sources */,
 				63F4C9881273600000CA4C79 /* CResourceLoader.cpp in Sources */,
+				63C72AC71274284A00E9A293 /* ThreadPool.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2442,6 +2449,7 @@
 				23325AA312117FCB00915252 /* SmartPointer.cpp in Sources */,
 				23E2A7111217525E00F0CD34 /* CProfilesMenu.cpp in Sources */,
 				63F4C9891273600000CA4C79 /* CResourceLoader.cpp in Sources */,
+				63C72AC81274284A00E9A293 /* ThreadPool.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
