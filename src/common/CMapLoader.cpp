@@ -190,7 +190,7 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
     	CMapLoader *m_Maploader;
     	Uint8 m_episode;
     	Uint8 m_level;
-    	const std::string& m_path;
+    	std::string m_path;
     	bool m_loadNewMusic;
     	bool m_stategame;
 
