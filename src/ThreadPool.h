@@ -61,7 +61,6 @@ public:
 	bool wait(ThreadPoolItem* thread, int* status = NULL);
 	bool waitAll();
 	void dumpState(CmdLineIntf& cli) const;
-	bool finished(ThreadPoolItem* thread);
 };
 
 extern ThreadPool* threadPool;

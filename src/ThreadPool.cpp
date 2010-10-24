@@ -148,11 +148,6 @@ ThreadPoolItem* ThreadPool::start(ThreadFunc fct, void* param, const std::string
 	return NULL;
 }
 
-bool ThreadPool::finished(ThreadPoolItem* thread)
-{
-	return thread->finished;
-}
-
 bool ThreadPool::wait(ThreadPoolItem* thread, int* status) {
 	if(!thread) return false;
 	SDL_mutexP(mutex);
