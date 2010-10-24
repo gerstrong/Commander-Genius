@@ -30,7 +30,8 @@ CPlayGame(ExeFile, level, numplayers, difficulty, p_option),
 mp_ObjectAI(NULL),
 m_SavedGame(SavedGame),
 mp_HighScores(NULL),
-mp_HUD(NULL)
+mp_HUD(NULL),
+mp_KeenLeftSfc(NULL)
 {
 	mp_Menu = NULL;
 	mp_Finale = NULL;

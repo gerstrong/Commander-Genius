@@ -853,13 +853,20 @@ void CObject::processFalling()
 		if(yinertia<0 && !blockedu)
 		{
 			moveUp(-yinertia);
+
 			yinertia += Physics.fallspeed_increase;
+
 			if(yinertia > 0) yinertia = 0;
 		}
 		else if(yinertia>=0 && !blockedd )
 		{
 			moveDown(yinertia);
-			yinertia += Physics.fallspeed_increase;
+
+			// gradually increase the fall speed up to maximum rate
+			if (yinertia>Physics.max_fallspeed)
+				yinertia = Physics.max_fallspeed;
+			else if (yinertia<Physics.max_fallspeed)
+				yinertia += Physics.fallspeed_increase;
 		}
 
 		// hit floor or ceiling? set inertia to zero
