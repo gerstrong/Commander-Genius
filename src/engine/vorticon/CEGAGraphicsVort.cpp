@@ -145,18 +145,18 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
     struct SpriteLoad: public Action
 	{
     	std::string buf;
-    	short compressed;
+    	bool compressed;
     	CEGASprit *m_Sprit;
-		SpriteLoad(CEGASprit *Sprit, const std::string& _buf, short compressed):
-			buf(_buf), compressed(compressed), m_Sprit(Sprit) {};
+		SpriteLoad(CEGASprit *Sprit, const std::string& _buf, bool _compressed):
+			buf(_buf), compressed(_compressed), m_Sprit(Sprit) {};
 		int handle()
 		{
-			m_Sprit->loadData(buf,(compressed>>1));
+			m_Sprit->loadData(buf,compressed);
 			return 1;
 		}
 	};
     g_pResourceLoader->setStyle(PROGRESS_STYLE_BITMAP);
-	g_pResourceLoader->RunLoadAction(new SpriteLoad(m_Sprit, buf, compressed), "Loading Sprites", 500, 900);
+	g_pResourceLoader->RunLoadAction(new SpriteLoad(m_Sprit, buf, (compressed>>1)), "Loading Sprites", 500, 900);
 
     delete[] data;
 
