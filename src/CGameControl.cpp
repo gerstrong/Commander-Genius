@@ -127,10 +127,10 @@ bool CGameControl::init(char mode)
 			}
 		};
 
-		const std::string threadname = "Scanning Game-Directory";
 		// He we start the thread for cycling the loading screen
 		g_pResourceLoader->setStyle(PROGRESS_STYLE_TEXT);
-		return (g_pResourceLoader->RunLoadAction(new GamesScan(mp_GameLauncher), threadname) == 1);
+		g_pResourceLoader->RunLoadAction(new GamesScan(mp_GameLauncher), "Scanning Game-Directory");
+		return true;
 	}
 	else if(m_mode == PASSIVE)
 	{

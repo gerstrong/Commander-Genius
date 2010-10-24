@@ -32,14 +32,13 @@ void CResourceLoader::setStyle(ProgressStyle style)
  * This will start up the thread for the load display and process the display of loading
  * and then return
  */
-int CResourceLoader::RunLoadAction(Action* act, const std::string &threadname, int min_permil, int max_permil)
+void CResourceLoader::RunLoadAction(Action* act, const std::string &threadname, int min_permil, int max_permil)
 {
 	m_max_permil = max_permil;
 	m_min_permil = min_permil;
 	m_permil = m_min_permil;
 	mp_Thread = threadPool.start(act, threadname, true);
 	process();
-	return mp_Thread->ret;
 }
 
 bool CResourceLoader::process()
