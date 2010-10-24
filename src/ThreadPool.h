@@ -58,6 +58,7 @@ public:
 	ThreadPoolItem* start(ThreadFunc fct, void* param = NULL, const std::string& name = "unknown worker");
 	// WARNING: if you set headless, you cannot use wait() and you should not save the returned ThreadPoolItem*
 	ThreadPoolItem* start(Action* act, const std::string& name = "unknown worker", bool headless = false); // ThreadPool will own and free the Action
+	bool finalizeIfReady(ThreadPoolItem* thread, int* status = NULL);
 	bool wait(ThreadPoolItem* thread, int* status = NULL);
 	bool waitAll();
 	void dumpState(CmdLineIntf& cli) const;

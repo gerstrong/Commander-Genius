@@ -165,6 +165,31 @@ bool ThreadPool::wait(ThreadPoolItem* thread, int* status) {
 	return true;
 }
 
+
+bool ThreadPool::finalizeIfReady(ThreadPoolItem* thread, int* status) {
+	if(!thread) return false;
+	SDL_mutexP(mutex);
+	
+	if(!thread->working) {
+		warnings << "given thread " << thread->name << " is not working anymore" << endl;
+		SDL_mutexV(mutex);
+		return false;
+	}
+
+	if(thread->finished) {
+		if(status) *status = thread->ret;
+		thread->working = false;
+		SDL_mutexV(mutex);
+		
+		SDL_CondSignal(thread->readyForNewWork);
+		return true;
+	}
+	
+	SDL_mutexV(mutex);
+	return false;
+}
+
+
 bool ThreadPool::waitAll() {
 	SDL_mutexP(mutex);
 	while(usedThreads.size() > 0) {		
