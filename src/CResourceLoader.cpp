@@ -108,7 +108,7 @@ void CResourceLoader::renderLoadingGraphic()
 		rect.x = (320-width)/2;
 		rect.w = (width*m_permil)/1000;
 		rect.y = (200+height)/2;
-		rect.h = 2;
+		rect.h = 4;
 
 		// RGB - Fade from red to blue
 		Uint32 color = 0xFF0000-(((0xFF*m_permil)/1000)<<16);
