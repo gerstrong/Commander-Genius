@@ -88,7 +88,7 @@ int ThreadPool::threadWrapper(void* param) {
 		SDL_mutexV(data->pool->mutex);
 		
 		SDL_CondSignal(data->pool->threadStartedWork);
-		g_pLogFile->textOut("Running Thread: " + data->name + " ... ");
+		g_pLogFile->textOut("Running Thread: " + data->name);
 		data->ret = act->handle();
 		delete act;
 		g_pLogFile->textOut( data->name + " [finished]" );
