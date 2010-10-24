@@ -29,7 +29,7 @@ public:
 
 	void setStyle(ProgressStyle style);
 
-    int RunLoadAction(Action* act, const std::string &threadname, int min_permil=0, int max_permil=1000);
+    void RunLoadAction(Action* act, const std::string &threadname, int min_permil=0, int max_permil=1000);
     bool process();
 
 	void setPermilage(int permil);
@@ -37,14 +37,12 @@ public:
 private:
 	void renderLoadingGraphic();
 
-	bool m_threadrunning;
 	int m_permil;
 	int m_min_permil;
 	int m_max_permil;
 
 	ProgressStyle m_style;
-	ThreadPool m_ThreadPool;
-	SmartPointer<ThreadPoolItem> mp_Thread;
+	ThreadPoolItem* mp_Thread;
 };
 
 #endif /* CRESOURCELOADER_H_ */

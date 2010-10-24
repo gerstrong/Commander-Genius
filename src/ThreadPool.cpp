@@ -148,11 +148,6 @@ ThreadPoolItem* ThreadPool::start(ThreadFunc fct, void* param, const std::string
 	return NULL;
 }
 
-bool ThreadPool::finished(ThreadPoolItem* thread)
-{
-	return thread->finished;
-}
-
 bool ThreadPool::wait(ThreadPoolItem* thread, int* status) {
 	if(!thread) return false;
 	SDL_mutexP(mutex);
@@ -169,6 +164,31 @@ bool ThreadPool::wait(ThreadPoolItem* thread, int* status) {
 	SDL_CondSignal(thread->readyForNewWork);
 	return true;
 }
+
+
+bool ThreadPool::finalizeIfReady(ThreadPoolItem* thread, int* status) {
+	if(!thread) return false;
+	SDL_mutexP(mutex);
+	
+	if(!thread->working) {
+		warnings << "given thread " << thread->name << " is not working anymore" << endl;
+		SDL_mutexV(mutex);
+		return false;
+	}
+
+	if(thread->finished) {
+		if(status) *status = thread->ret;
+		thread->working = false;
+		SDL_mutexV(mutex);
+		
+		SDL_CondSignal(thread->readyForNewWork);
+		return true;
+	}
+	
+	SDL_mutexV(mutex);
+	return false;
+}
+
 
 bool ThreadPool::waitAll() {
 	SDL_mutexP(mutex);

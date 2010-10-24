@@ -10,15 +10,15 @@
 #include "sdl/CVideoDriver.h"
 #include "sdl/CTimer.h"
 #include "StringUtils.h"
+#include <cassert>
 
 
 CResourceLoader::CResourceLoader() :
-m_threadrunning(false),
 m_permil(0),
 m_min_permil(0),
 m_max_permil(1000),
 m_style(PROGRESS_STYLE_TEXT),
-m_ThreadPool(1)
+mp_Thread(NULL)
 {}
 
 /**
@@ -33,24 +33,25 @@ void CResourceLoader::setStyle(ProgressStyle style)
  * This will start up the thread for the load display and process the display of loading
  * and then return
  */
-int CResourceLoader::RunLoadAction(Action* act, const std::string &threadname, int min_permil, int max_permil)
+void CResourceLoader::RunLoadAction(Action* act, const std::string &threadname, int min_permil, int max_permil)
 {
+	assert(mp_Thread == 0);
 	m_max_permil = max_permil;
 	m_min_permil = min_permil;
 	m_permil = m_min_permil;
-	mp_Thread = m_ThreadPool.start(act, threadname, true);
+	mp_Thread = threadPool->start(act, threadname);
 	process();
-	return mp_Thread->ret;
 }
 
 bool CResourceLoader::process()
 {
 	SDL_FillRect(g_pVideoDriver->getBlitSurface(), NULL, 0x0);
 
-	if(!mp_Thread.get())
+	if(!mp_Thread)
 		return false;
+	
 	// Do rendering here and the cycle
-	while(!m_ThreadPool.finished(mp_Thread.get()))
+	while(!threadPool->finalizeIfReady(mp_Thread))
 	{
 		g_pTimer->TimeToLogic();
 
@@ -65,7 +66,8 @@ bool CResourceLoader::process()
 		g_pTimer->TimeToDelay();
 	}
 
-	m_ThreadPool.waitAll();
+	mp_Thread = NULL;
+	
 	m_permil = m_max_permil;
 
 	return true;
