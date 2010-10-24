@@ -211,8 +211,7 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 		}
 	};
     g_pResourceLoader->setStyle(PROGRESS_STYLE_BITMAP);
-	g_pResourceLoader->RunLoadAction(new MapLoad(this, episode, level, path, loadNewMusic, stategame), "Loading Map");
-	return true;
+    return g_pResourceLoader->RunLoadAction(new MapLoad(this, episode, level, path, loadNewMusic, stategame), "Loading Map");
 }
 
 void CMapLoader::addTile( Uint16 t, Uint16 x, Uint16 y )

@@ -29,7 +29,7 @@ public:
 
 	void setStyle(ProgressStyle style);
 
-    void RunLoadAction(Action* act, const std::string &threadname, int min_permil=0, int max_permil=1000);
+    int RunLoadAction(Action* act, const std::string &threadname, int min_permil=0, int max_permil=1000);
     bool process();
 
 	void setPermilage(int permil);
