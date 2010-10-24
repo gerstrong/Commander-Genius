@@ -66,7 +66,7 @@ public:
 
 extern ThreadPool* threadPool;
 
-void InitThreadPool(unsigned int size = 40);
+void InitThreadPool(unsigned int size = 5);
 void UnInitThreadPool();
 
 

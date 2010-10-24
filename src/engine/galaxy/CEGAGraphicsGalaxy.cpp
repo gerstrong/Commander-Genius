@@ -13,16 +13,16 @@
  */
 
 #include "CEGAGraphicsGalaxy.h"
-#include "../../graphics/CGfxEngine.h"
-#include "../../FindFile.h"
-#include "../../fileio/compression/CHuffman.h"
-#include "../../CLogFile.h"
-#include "../../StringUtils.h"
-#include "../../graphics/CGfxEngine.h"
-#include "../../sdl/CVideoDriver.h"
-#include "../../fileio/CTileLoader.h"
-#include "../../common/CObject.h"
-#include "../CPlanes.h"
+#include "graphics/CGfxEngine.h"
+#include "FindFile.h"
+#include "fileio/compression/CHuffman.h"
+#include "CLogFile.h"
+#include "StringUtils.h"
+#include "graphics/CGfxEngine.h"
+#include "sdl/CVideoDriver.h"
+#include "fileio/CTileLoader.h"
+#include "common/CObject.h"
+#include "engine/CPlanes.h"
 #include <fstream>
 #include <cstring>
 #include <SDL.h>
@@ -611,8 +611,8 @@ bool CEGAGraphicsGalaxy::readBitmaps()
 {
 	int ep = m_episode - 4;
 	// ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
-	BitmapHeadStruct BmpHeadData, *BmpHead = &BmpHeadData;
-	memcpy( BmpHead, &(m_egagraph.at(0).data.at(0)), sizeof(BitmapHeadStruct));
+	BitmapHeadStruct BmpHead[EpisodeInfo[ep].NumBitmaps];
+	memcpy( BmpHead, &(m_egagraph.at(0).data.at(0)), EpisodeInfo[ep].NumBitmaps*sizeof(BitmapHeadStruct));
 	SDL_Color *Palette = g_pGfxEngine->Palette.m_Palette;
 
 	g_pGfxEngine->createEmptyBitmaps(EpisodeInfo[ep].NumBitmaps);
@@ -638,8 +638,8 @@ bool CEGAGraphicsGalaxy::readMaskedBitmaps()
 {
 	int ep = m_episode - 4;
 	// ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
-	BitmapHeadStruct BmpMaskedHeadData, *BmpMaskedHead = &BmpMaskedHeadData;
-	memcpy( BmpMaskedHead, &(m_egagraph.at(1).data.at(0)), sizeof(BitmapHeadStruct) );
+	BitmapHeadStruct BmpMaskedHead[EpisodeInfo[ep].NumMaskedBitmaps];
+	memcpy( BmpMaskedHead, &(m_egagraph.at(1).data.at(0)), EpisodeInfo[ep].NumMaskedBitmaps*sizeof(BitmapHeadStruct) );
 	SDL_Color *Palette = g_pGfxEngine->Palette.m_Palette;
 
 	g_pGfxEngine->createEmptyMaskedBitmaps(EpisodeInfo[ep].NumMaskedBitmaps);
@@ -703,8 +703,8 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 	g_pGfxEngine->createEmptySprites(NumSprites);
 
 	// ARM processor requires all ints and structs to be 4-byte aligned, so we're just using memcpy()
-	SpriteHeadStruct SprHeadData, *SprHead = &SprHeadData;
-	memcpy( SprHead, &(m_egagraph.at(2).data.at(0)), sizeof(SpriteHeadStruct) );
+	SpriteHeadStruct SprHead[NumSprites];
+	memcpy( SprHead, &(m_egagraph.at(2).data.at(0)), NumSprites*sizeof(SpriteHeadStruct) );
 
 	for(size_t i = 0; i < NumSprites; i++)
 	{
@@ -778,10 +778,6 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 		SDL_UnlockSurface(sfc);
 	}
 	return true;
-}
-
-CEGAGraphicsGalaxy::~CEGAGraphicsGalaxy()
-{
 }
 
 }
