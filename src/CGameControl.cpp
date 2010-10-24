@@ -109,11 +109,11 @@ bool CGameControl::init(char mode)
 
 		if(!loadMenuResources())	return false;
 
-		struct WaitThread: public Action
+		struct GamesScan: public Action
 		{
 			CGameLauncher*& mp_GameLauncher;
 
-			WaitThread(CGameLauncher*& p_GameLauncher) : mp_GameLauncher(p_GameLauncher) {};
+			GamesScan(CGameLauncher*& p_GameLauncher) : mp_GameLauncher(p_GameLauncher) {};
 			int handle()
 			{
 				mp_GameLauncher = new CGameLauncher();
@@ -127,8 +127,9 @@ bool CGameControl::init(char mode)
 			}
 		};
 
+		const std::string threadname = "Scanning Game-Directory";
 		// He we start the thread for cycling the loading screen
-		return (g_pResourceLoader->RunLoadAction(new WaitThread(mp_GameLauncher), "Scanning Game-Directory") == 1);
+		return (g_pResourceLoader->RunLoadAction(new GamesScan(mp_GameLauncher), threadname) == 1);
 	}
 	else if(m_mode == PASSIVE)
 	{
