@@ -60,7 +60,6 @@ short CEGAGraphicsVort::getNumTiles()
 
 bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 {
-	std::string buf;
 	std::vector<char> data;
 
 	// assure that the last used resources are freed
@@ -68,11 +67,8 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 	// Set the palette, so the proper colours are loaded
 	g_pGfxEngine->Palette.setupColorPalettes(p_exedata, m_episode);
 
-	if(m_path == "")
-		buf = "egahead.ck" + itoa(m_episode);
-	else
-		buf = m_path + "/egahead.ck" + itoa(m_episode);
-	std::ifstream HeadFile; OpenGameFileR(HeadFile, buf, std::ios::binary);
+	std::ifstream HeadFile;
+	OpenGameFileR(HeadFile, ((m_path != "") ? m_path + "/" : "") + "egahead.ck" + itoa(m_episode), std::ios::binary);
 
 	if(!HeadFile)
 		return false;
@@ -134,11 +130,6 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 							m_path, m_episode);
     m_Sprit->loadHead(&data[0]);
 
-    if(m_path == "")
-		buf = "egasprit.ck" + itoa(m_episode);
-	else
-		buf = m_path + "/egasprit.ck" + itoa(m_episode);
-
     struct SpriteLoad: public Action
 	{
     	std::string buf;
@@ -153,7 +144,11 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 		}
 	};
     g_pResourceLoader->setStyle(PROGRESS_STYLE_BITMAP);
-	g_pResourceLoader->RunLoadAction(new SpriteLoad(m_Sprit, buf, (compressed>>1)), "Loading Sprites", 500, 900);
+	g_pResourceLoader->RunLoadAction(
+									 new SpriteLoad(m_Sprit,
+													((m_path != "") ? m_path + "/" : "") + "egasprit.ck" + itoa(m_episode),
+													(compressed>>1)),
+									 "Loading Sprites", 500, 900);
 
     return true;
 }
