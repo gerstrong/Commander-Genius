@@ -11,18 +11,15 @@ CPlane::CPlane() :
 mp_data(NULL),
 m_width(0),
 m_height(0)
-{
-	// TODO Auto-generated constructor stub
+{}
 
-}
-
-void CPlane::createDataMap(size_t blocksize, Uint16 width, Uint16 height)
+void CPlane::createDataMap(Uint16 width, Uint16 height)
 {
 	if(mp_data) delete [] mp_data;
 
 	m_width = width;
 	m_height = height;
-	mp_data = new word[blocksize];
+	mp_data = new word[m_width*m_height];
 }
 
 word *CPlane::getMapDataPtr()
@@ -32,7 +29,8 @@ word *CPlane::getMapDataPtr()
 
 word CPlane::getMapDataAt(Uint16 x, Uint16 y)
 {
-	return mp_data[y*m_width+x];
+	if( x < m_width && y < m_height )
+		return mp_data[y*m_width+x];
 }
 
 void CPlane::setMapDataAt(Uint16 t, Uint16 x, Uint16 y)

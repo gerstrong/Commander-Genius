@@ -206,11 +206,9 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 				g_pLogFile->textOut("Decompressing the Map...<br>" );
 
 				// Start with the Background
-				Map.m_width = Width;
-				Map.m_height = Height;
-				Map.createEmptyDataPlane(0, Width*Height);
-				Map.createEmptyDataPlane(1, Width*Height);
-				Map.createEmptyDataPlane(2, Width*Height);
+				Map.createEmptyDataPlane(0, Width, Height);
+				Map.createEmptyDataPlane(1, Width, Height);
+				Map.createEmptyDataPlane(2, Width, Height);
 
 				unpackPlaneData(MapFile, Map, 0, Plane_Offset[0], Plane_Length[0], magic_word);
 				unpackPlaneData(MapFile, Map, 1, Plane_Offset[1], Plane_Length[1], magic_word);

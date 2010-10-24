@@ -35,7 +35,7 @@ public:
 	void setLevel(Uint16 Level);
 	Uint16 getLevel();
 
-	bool createEmptyDataPlane(size_t plane, size_t blocksize);
+	bool createEmptyDataPlane(size_t plane, Uint32 width, Uint32 height);
 
 	bool gotoPos( int x, int y );
 	void resetScrolls();

@@ -97,13 +97,8 @@ bool CMapLoader::_load( Uint8 episode, Uint8 level, const std::string& path, boo
 	std::vector<Uint16> planeitems;
 	RLE.expandSwapped(planeitems,compdata, 0xFEFE);
 
-	mp_map->m_width = planeitems.at(1);
-	mp_map->m_height = planeitems.at(2);
-
-	size_t mapsize = ((mp_map->m_width+32)*(mp_map->m_height+32));
-
 	// Here goes the memory allocation function
-	mp_map->createEmptyDataPlane(1, mapsize);
+	mp_map->createEmptyDataPlane(1, planeitems.at(1), planeitems.at(2));
 
 	int t;
 	unsigned int planesize = 0;
@@ -145,7 +140,7 @@ bool CMapLoader::_load( Uint8 episode, Uint8 level, const std::string& path, boo
 			mp_objvect->pop_back();
 		}
 
-		mp_objvect->reserve(20000);
+		mp_objvect->reserve(2000);
 
 		for( c=planesize+17 ; c<2*planesize+16 ; c++ )
 		{
@@ -185,33 +180,7 @@ bool CMapLoader::_load( Uint8 episode, Uint8 level, const std::string& path, boo
 // Loads the map into the memory
 bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool loadNewMusic, bool stategame )
 {
-    struct MapLoad: public Action
-	{
-    	CMapLoader *m_Maploader;
-    	Uint8 m_episode;
-    	Uint8 m_level;
-    	const std::string& m_path;
-    	bool m_loadNewMusic;
-    	bool m_stategame;
-
-    	MapLoad(CMapLoader *Maploader, Uint8 episode,
-				Uint8 level, const std::string& path,
-				bool loadNewMusic, bool stategame ):
-			    m_Maploader(Maploader),
-			    m_episode(episode),
-			    m_level(level),
-			    m_path(path),
-			    m_loadNewMusic(loadNewMusic),
-			    m_stategame(stategame)
-				{};
-
-		int handle()
-		{
-			return m_Maploader->_load(m_episode, m_level, m_path, m_loadNewMusic, m_stategame);
-		}
-	};
-    g_pResourceLoader->setStyle(PROGRESS_STYLE_BITMAP);
-    return g_pResourceLoader->RunLoadAction(new MapLoad(this, episode, level, path, loadNewMusic, stategame), "Loading Map");
+	return _load(episode, level, path, loadNewMusic, stategame);
 }
 
 void CMapLoader::addTile( Uint16 t, Uint16 x, Uint16 y )

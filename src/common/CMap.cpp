@@ -51,11 +51,11 @@ Uint16 CMap::getLevel()
  * \brief	Create an empty data plane used for the map data
  * \param	blocksize	size in bytes of the datablock that has to be created
  */
-bool CMap::createEmptyDataPlane(size_t plane, size_t blocksize)
+bool CMap::createEmptyDataPlane(size_t plane, Uint32 width, Uint32 height)
 {
-	if(!blocksize) return false;
-
-	m_Plane[plane].createDataMap(blocksize, m_width, m_height);
+	m_width = width;
+	m_height = height;
+	m_Plane[plane].createDataMap(m_width, m_height);
 	m_Background = (m_Plane[0].getMapDataPtr() != NULL);
 
 	return true;
