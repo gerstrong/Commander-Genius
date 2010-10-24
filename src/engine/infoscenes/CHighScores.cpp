@@ -260,12 +260,12 @@ void CHighScores::processWriting()
 	else m_blinkctr++;
 	
 	std::string placeholder = m_Name[m_Place];
-		placeholder.erase( m_CursorPosition, 1);
-		if(m_blink)
-			placeholder.insert( m_CursorPosition, " ");
-		else
-			placeholder.insert( m_CursorPosition, 1, m_CurrentLetter);
-		setObjectText(m_selected_ID, placeholder);
+	placeholder.erase( m_CursorPosition, 1);
+	if(m_blink)
+		placeholder.insert( m_CursorPosition, " ");
+	else
+		placeholder.insert( m_CursorPosition, 1, m_CurrentLetter);
+	m_Name[m_Place] = placeholder;
 #endif
 }
 
