@@ -11,11 +11,12 @@
 #include "sdl/CTimer.h"
 #include "StringUtils.h"
 
+
 CResourceLoader::CResourceLoader() :
 m_threadrunning(false),
 m_permil(0),
-mp_thread(NULL),
-m_style(PROGRESS_STYLE_TEXT)
+m_style(PROGRESS_STYLE_TEXT),
+m_ThreadPool(1)
 {}
 
 /**
@@ -26,37 +27,24 @@ void CResourceLoader::setStyle(ProgressStyle style)
 	m_style = style;
 }
 
-int _processThread(void *data)
+/**
+ * This will start up the thread for the load display and process the display of loading
+ * and then return
+ */
+int CResourceLoader::RunLoadAction(Action* act, const std::string &threadname)
 {
-	g_pResourceLoader->processThread();
-	return 0;
+	mp_Thread = m_ThreadPool.start(act, threadname, true);
+	process();
+	return mp_Thread->ret;
 }
 
-/**
- * This will start up the thread for the load display
- */
-void CResourceLoader::startLoadingSequence()
+bool CResourceLoader::process()
 {
-    //Create and run the thread
-	if(mp_thread)
-		finishLoadingSequence();
-
-	mp_thread = SDL_CreateThread( _processThread, NULL );
-	m_threadrunning = true;
-}
-
-/**
- * This is the cycle performed while resources are being loaded.
- */
-void CResourceLoader::processThread()
-{
+	if(!mp_Thread.get())
+		return false;
+	// Do rendering here and the cycle
 	m_permil = 0;
-	renderLoadingGraphic();
-	// Render the screen
-	// When enabled, it also will apply Filters
-	g_pVideoDriver->updateScreen();
-
-	while(m_threadrunning)
+	while(!m_ThreadPool.finished(mp_Thread.get()))
 	{
 		g_pTimer->TimeToLogic();
 
@@ -70,7 +58,12 @@ void CResourceLoader::processThread()
 		// delay time remaining in current loop
 		g_pTimer->TimeToDelay();
 	}
+
+	m_ThreadPool.waitAll();
+
+	return true;
 }
+
 
 /**
  * Set the percentage of progress
@@ -117,24 +110,4 @@ void CResourceLoader::renderLoadingGraphic()
 		color += ((0x0000FF*m_permil)/1000);
 		SDL_FillRect(sfc, &rect, color);
 	}
-}
-
-/**
- * This is called when the program finished loading the requested resources
- */
-void CResourceLoader::finishLoadingSequence()
-{
-	int dummy;
-	m_permil = 1000;
-	m_threadrunning = false;
-	SDL_WaitThread(mp_thread, &dummy);
-	mp_thread = NULL;
-
-	renderLoadingGraphic();
-	g_pVideoDriver->updateScreen();
-}
-
-CResourceLoader::~CResourceLoader() {
-	if(mp_thread != NULL)
-		SDL_KillThread(mp_thread);
 }

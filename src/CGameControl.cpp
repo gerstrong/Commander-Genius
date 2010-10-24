@@ -89,6 +89,7 @@ bool CGameControl::init(int argc, char *argv[])
 	return ok;
 }
 
+
 bool CGameControl::init(char mode)
 {
 	m_mode = mode;
@@ -108,24 +109,29 @@ bool CGameControl::init(char mode)
 
 		if(!loadMenuResources())	return false;
 
+		struct WaitThread: public Action
+		{
+			CGameLauncher*& mp_GameLauncher;
+
+			WaitThread(CGameLauncher*& p_GameLauncher) : mp_GameLauncher(p_GameLauncher) {};
+			int handle()
+			{
+				mp_GameLauncher = new CGameLauncher();
+				if(!mp_GameLauncher->init())
+				{
+					g_pLogFile->textOut(RED,"The game cannot start, because you are missing game data files.<br>");
+					return 0;
+				}
+
+				return 1;
+			}
+		};
+
 		// He we start the thread for cycling the loading screen
-		g_pResourceLoader->startLoadingSequence();
-
-		mp_GameLauncher = new CGameLauncher();
-        if(!mp_GameLauncher->init())
-        {
-            g_pLogFile->textOut(RED,"The game cannot start, because you are missing game data files.<br>");
-            return false;
-        }
-
-        g_pResourceLoader->finishLoadingSequence();
-
-		return true;
+		return (g_pResourceLoader->RunLoadAction(new WaitThread(mp_GameLauncher), "Scanning Game-Directory") == 1);
 	}
 	else if(m_mode == PASSIVE)
 	{
-		g_pResourceLoader->startLoadingSequence();
-		g_pResourceLoader->setStyle(PROGRESS_STYLE_BITMAP);
 		// Create mp_PassiveMode object used for the screens while Player is not playing
 		if(m_Episode >= 4)
 			mp_PassiveMode = new galaxy::CPassiveGalaxy( ExeFile, m_SavedGame, mp_option );
@@ -142,7 +148,6 @@ bool CGameControl::init(char mode)
 		{
 			if( mp_PassiveMode->init() ) return true;
 		}
-		g_pResourceLoader->finishLoadingSequence();
 	}
 	else if(m_mode == PLAYGAME)
 	{
@@ -224,7 +229,6 @@ bool CGameControl::loadResources(Uint8 flags)
 
 	if(p_exeheader == NULL) {
 		g_pLogFile->textOut(RED, "CGameControl::loadResources: Could not load data from the EXE File<br>");
-		g_pResourceLoader->finishLoadingSequence();
 		return false;
 	}
 
@@ -253,18 +257,12 @@ bool CGameControl::loadResources(Uint8 flags)
 			m_EGAGraphics->loadData( version, p_exedata );
 		}
 
-		g_pResourceLoader->startLoadingSequence();
-		g_pResourceLoader->setStyle(PROGRESS_STYLE_BITMAP);
-		g_pResourceLoader->setPermilage(300);
-
 		if( (flags & LOADSTR) == LOADSTR )
 		{
 			// load the strings.
 			CMessages Messages(p_exedata, m_Episode, version);
 			Messages.extractGlobalStrings();
 		}
-
-		g_pResourceLoader->setPermilage(400);
 
 		if( (flags & LOADSND) == LOADSND )
 		{
@@ -273,11 +271,8 @@ bool CGameControl::loadResources(Uint8 flags)
 			g_pSound->loadSoundData(ExeFile);
 		}
 
-		g_pResourceLoader->setPermilage(800);
-
 		g_pBehaviorEngine->getPhysicsSettings().loadGameConstants(m_Episode, p_exedata);
 
-		g_pResourceLoader->finishLoadingSequence();
 		return true;
 	}
 	else if( m_Episode == 4 || m_Episode == 5 || m_Episode == 6 ) // Galaxy resources
@@ -367,7 +362,6 @@ void CGameControl::process()
 							savedgames.setGameDirectory(m_DataDirectory);
 							savedgames.setEpisode(m_Episode);
 							savedgames.convertAllOldFormats();
-							g_pResourceLoader->finishLoadingSequence();
 
 							if(m_startLevel == 0) // Starts normally
 							{

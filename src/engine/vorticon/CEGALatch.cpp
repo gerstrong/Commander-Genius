@@ -100,14 +100,10 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
     Uint16 width, height;
     SDL_Surface *sfc;
 
-	g_pResourceLoader->startLoadingSequence();
-	g_pResourceLoader->setStyle(PROGRESS_STYLE_TEXT);
 
 	filename = getResourceFilename("egalatch.ck" + itoa(episode), path);
 
 	FILE* latchfile = OpenGameFile(filename,"rb");
-
-	g_pResourceLoader->setPermilage(200);
 
 	if(!latchfile)
 		return false;
@@ -118,7 +114,6 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
     {
 		if (lz_decompress(latchfile, (unsigned char*) RawData))
 		{
-			g_pResourceLoader->finishLoadingSequence();
 			return 1;
 		}
     }
@@ -129,8 +124,6 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
     }
 
     fclose(latchfile);
-
-	g_pResourceLoader->setPermilage(400);
 
 	// these are the offsets of the different video planes as
 	// relative to each other--that is if a pixel in plane1
@@ -151,8 +144,6 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	// Load these graphics into the CFont Class of CGfxEngine
 	// The original vorticon engine only uses one fontmap, but we use another for
 	// extra icons. For example sliders are in that map
-
-	g_pResourceLoader->finishLoadingSequence();
 
 	g_pGfxEngine->freeFonts();
 	g_pGfxEngine->createEmptyFontmaps(2);
@@ -185,17 +176,11 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	CCursor *pCursor = g_pGfxEngine->getCursor();
 	pCursor->generateTwirls(Font);
 
-	g_pResourceLoader->startLoadingSequence();
-	g_pResourceLoader->setStyle(PROGRESS_STYLE_TEXT);
-	g_pResourceLoader->setPermilage(500);
-
 	// The second fontmap of the extra tilemap code goes here! (for example Sliders)
 	CFont &Font2 = g_pGfxEngine->getFont(1);
 	Font2.destroySurface();
 	Font2.CreateSurface( g_pGfxEngine->Palette.m_Palette, SDL_SWSURFACE );
 	Font2.optimizeSurface();
-
-	g_pResourceLoader->setPermilage(600);
 
 	filename = getResourceFilename("gfx/extratiles.bmp", path, true, true);
 
@@ -216,8 +201,6 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 					 plane4 + m_tiles16location,
 					 0);
 
-	g_pResourceLoader->setPermilage(700);
-
 	g_pGfxEngine->freeTilemap();
 	g_pGfxEngine->createEmptyTilemap(2);
 	CTilemap &Tilemap = g_pGfxEngine->getTileMap(1);
@@ -232,8 +215,6 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 
 	if(SDL_MUSTLOCK(sfc))	SDL_UnlockSurface(sfc);
 
-	g_pResourceLoader->setPermilage(800);
-
 	// Load Hi-Colour, VGA, SVGA Tiles into the tilemap
 	filename = getResourceFilename("gfx/ck" + itoa(episode) + "tiles.bmp", path, false);
 	if(Tilemap.loadHiresTile(filename))
@@ -244,7 +225,6 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 
 	// make masked tiles according to it's surfaces
 	applyMasks();
-	g_pResourceLoader->setPermilage(900);
 
 	////////////////////
 	/// Load Bitmaps ///
@@ -296,8 +276,6 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 		bitmap.optimizeSurface();
 	}
 
-	g_pResourceLoader->setPermilage(950);
-
 	std::set<std::string> filelist;
 	FileListAdder fileListAdder;
 	std::string gfxpath = JoinPaths(path, "gfx");
@@ -316,8 +294,6 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 	}
 
 	if(RawData){ delete[] RawData; RawData = NULL;}
-
-	g_pResourceLoader->finishLoadingSequence();
 
 	return true;
 }

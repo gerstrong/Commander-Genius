@@ -23,10 +23,6 @@ CGameLauncher::CGameLauncher() {
     m_ep1slot       = -1;	
 }
 
-CGameLauncher::~CGameLauncher() {
-    // TODO Auto-generated destructor stub
-}
-
 ////
 // Initialization Routine
 ////

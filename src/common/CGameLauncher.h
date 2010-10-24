@@ -38,7 +38,6 @@ struct GameEntry {
 class CGameLauncher {
 public:
 	CGameLauncher();
-	virtual ~CGameLauncher();
 
 	typedef std::vector<std::string> DirList;
 

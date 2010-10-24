@@ -52,7 +52,7 @@ private:
 	static int threadWrapper(void* param);
 	SDL_mutex* startMutex;
 public:
-	ThreadPool();
+	ThreadPool(unsigned int size = 5);
 	~ThreadPool();
 	
 	ThreadPoolItem* start(ThreadFunc fct, void* param = NULL, const std::string& name = "unknown worker");
@@ -61,11 +61,12 @@ public:
 	bool wait(ThreadPoolItem* thread, int* status = NULL);
 	bool waitAll();
 	void dumpState(CmdLineIntf& cli) const;
+	bool finished(ThreadPoolItem* thread);
 };
 
 extern ThreadPool* threadPool;
 
-void InitThreadPool();
+void InitThreadPool(unsigned int size = 40);
 void UnInitThreadPool();
 
 
@@ -74,15 +75,15 @@ template<typename _T>
 struct _ThreadFuncWrapper {
 	typedef int (_T::* FuncPointer)();
 	template< FuncPointer _func >
-	struct Wrapper {
-		static int wrapper(void* obj) {
-			return (((_T*)obj) ->* _func)();
-		}
-		
-		static ThreadPoolItem* startThread(_T* const obj, const std::string& name) {
-			return threadPool->start((ThreadFunc)&wrapper, (void*)obj, name);
-		}
-	};
+		struct Wrapper {
+			static int wrapper(void* obj) {
+				return (((_T*)obj) ->* _func)();
+			}
+			
+			static ThreadPoolItem* startThread(_T* const obj, const std::string& name) {
+				return threadPool->start((ThreadFunc)&wrapper, (void*)obj, name);
+			}
+		};
 };
 
 #define StartMemberFuncInThread(T, memberfunc, name) \

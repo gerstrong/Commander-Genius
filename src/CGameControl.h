@@ -38,6 +38,7 @@ public:
 	CGameControl(bool &firsttime);
 	
 	bool init(int argc, char *argv[]);
+
 	bool init(char mode=GAMELAUNCHER);
 	bool loadResources(Uint8 flags=LOADALL);
 	bool loadMenuResources();

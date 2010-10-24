@@ -13,7 +13,8 @@
 #define CRESOURCELOADER_H_
 
 #include "CSingleton.h"
-#include <SDL_thread.h>
+#include "ThreadPool.h"
+#include "SmartPointer.h"
 #define g_pResourceLoader CResourceLoader::Get()
 
 enum ProgressStyle
@@ -28,21 +29,19 @@ public:
 
 	void setStyle(ProgressStyle style);
 
-	void startLoadingSequence();
-	void processThread();
-    void finishLoadingSequence();
+    int RunLoadAction(Action* act, const std::string &threadname);
+    bool process();
 
 	void setPermilage(int permil);
-
-	virtual ~CResourceLoader();
 
 private:
 	void renderLoadingGraphic();
 
 	bool m_threadrunning;
 	int m_permil;
-	SDL_Thread *mp_thread;
 	ProgressStyle m_style;
+	ThreadPool m_ThreadPool;
+	SmartPointer<ThreadPoolItem> mp_Thread;
 };
 
 #endif /* CRESOURCELOADER_H_ */
