@@ -19,7 +19,6 @@ class CMapLoader {
 public:
 	CMapLoader(CMap* p_map, std::vector<CPlayer> *p_PlayerVect = NULL);
 	
-	bool _load( Uint8 episode, Uint8 level, const std::string& path, bool loadNewMusic, bool stategame );
 	bool load( Uint8 episode, Uint8 level, const std::string& path, bool loadNewMusic=true, bool stategame=false );
 	
 	void addTile( Uint16 t, Uint16 x, Uint16 y );

@@ -16,7 +16,7 @@ class CPlane
 public:
 	CPlane();
 
-	void createDataMap(size_t blocksize, Uint16 width, Uint16 height);
+	void createDataMap(Uint16 width, Uint16 height);
 	word *getMapDataPtr();
 	word getMapDataAt(Uint16 x, Uint16 y);
 	void setMapDataAt(Uint16 t, Uint16 x, Uint16 y);

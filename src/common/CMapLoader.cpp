@@ -52,7 +52,8 @@ mp_vec_Player(p_PlayerVect)
 	m_NessieAlreadySpawned = false;
 }
 
-bool CMapLoader::_load( Uint8 episode, Uint8 level, const std::string& path, bool loadNewMusic, bool stategame )
+// Loads the map into the memory
+bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool loadNewMusic, bool stategame )
 {
 	std::string levelname = "level";
 	if(level < 10) levelname += "0";
@@ -175,47 +176,6 @@ bool CMapLoader::_load( Uint8 episode, Uint8 level, const std::string& path, boo
 	g_pVideoDriver->setScrollBuffer(&mp_map->m_scrollx_buf, &mp_map->m_scrolly_buf);
 
 	return true;
-}
-
-// Loads the map into the memory
-bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool loadNewMusic, bool stategame )
-{
-<<<<<<< HEAD
-	return _load(episode, level, path, loadNewMusic, stategame);
-=======
-    struct MapLoad: public Action
-	{
-    	CMapLoader *m_Maploader;
-    	Uint8 m_episode;
-    	Uint8 m_level;
-    	std::string m_path;
-    	bool m_loadNewMusic;
-    	bool m_stategame;
-
-    	MapLoad(CMapLoader *Maploader, Uint8 episode,
-				Uint8 level, const std::string& path,
-				bool loadNewMusic, bool stategame ):
-			    m_Maploader(Maploader),
-			    m_episode(episode),
-			    m_level(level),
-			    m_path(path),
-			    m_loadNewMusic(loadNewMusic),
-			    m_stategame(stategame)
-				{};
-
-		int handle()
-		{
-			return m_Maploader->_load(m_episode, m_level, m_path, m_loadNewMusic, m_stategame);
-		}
-	};
-    g_pResourceLoader->setStyle(PROGRESS_STYLE_BITMAP);
-<<<<<<< HEAD
-	g_pResourceLoader->RunLoadAction(new MapLoad(this, episode, level, path, loadNewMusic, stategame), "Loading Map");
-	return true;
->>>>>>> 1034409d5162e9a04a8ebe29f2e60a100126830d
-=======
-    return g_pResourceLoader->RunLoadAction(new MapLoad(this, episode, level, path, loadNewMusic, stategame), "Loading Map");
->>>>>>> 0e4993b8f364dcfe62f9ed83f50141d050cb8429
 }
 
 void CMapLoader::addTile( Uint16 t, Uint16 x, Uint16 y )
