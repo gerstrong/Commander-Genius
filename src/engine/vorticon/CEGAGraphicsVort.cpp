@@ -144,11 +144,11 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 
     struct SpriteLoad: public Action
 	{
-    	const std::string& buf;
+    	std::string buf;
     	short compressed;
     	CEGASprit *m_Sprit;
-		SpriteLoad(CEGASprit *Sprit, const std::string& buf, short compressed):
-			buf(buf), compressed(compressed), m_Sprit(Sprit) {};
+		SpriteLoad(CEGASprit *Sprit, const std::string& _buf, short compressed):
+			buf(_buf), compressed(compressed), m_Sprit(Sprit) {};
 		int handle()
 		{
 			m_Sprit->loadData(buf,(compressed>>1));
