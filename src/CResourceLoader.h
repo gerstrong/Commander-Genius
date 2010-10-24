@@ -43,7 +43,7 @@ private:
 	int m_max_permil;
 
 	ProgressStyle m_style;
-	SmartPointer<ThreadPoolItem> mp_Thread;
+	ThreadPoolItem* mp_Thread;
 };
 
 #endif /* CRESOURCELOADER_H_ */
