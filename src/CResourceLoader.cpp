@@ -39,7 +39,7 @@ void CResourceLoader::RunLoadAction(Action* act, const std::string &threadname, 
 	m_max_permil = max_permil;
 	m_min_permil = min_permil;
 	m_permil = m_min_permil;
-	mp_Thread = threadPool->start(act, threadname, true);
+	mp_Thread = threadPool->start(act, threadname);
 	process();
 }
 
