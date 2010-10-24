@@ -61,7 +61,7 @@ short CEGAGraphicsVort::getNumTiles()
 bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 {
 	std::string buf;
-	std::vector<char> databuf;
+	std::vector<char> data;
 
 	// assure that the last used resources are freed
 
@@ -81,11 +81,9 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 	while(!HeadFile.eof())
 	{
 		HeadFile.read(&byte,1);
-		databuf.push_back(byte);
+		data.push_back(byte);
 	}
 	HeadFile.close();
-
-	std::vector<char> data(databuf);
 
 	// Now copy the data to the EGAHEAD Structure
     memcpy(&LatchPlaneSize,&data[0],4);
