@@ -37,7 +37,6 @@ public:
 private:
 	void renderLoadingGraphic();
 
-	bool m_threadrunning;
 	int m_permil;
 	int m_min_permil;
 	int m_max_permil;

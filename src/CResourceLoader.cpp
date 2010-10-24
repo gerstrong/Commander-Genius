@@ -14,7 +14,6 @@
 
 
 CResourceLoader::CResourceLoader() :
-m_threadrunning(false),
 m_permil(0),
 m_min_permil(0),
 m_max_permil(1000),
