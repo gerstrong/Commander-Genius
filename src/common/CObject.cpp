@@ -46,6 +46,7 @@ m_invincible(false)
 	
     yinertia = 0;
 	xinertia = 0;
+	onslope = false;
 
 	scrx = scry = 0;
 	dead = false;

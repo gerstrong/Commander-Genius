@@ -328,9 +328,9 @@ void CSprite::drawBlinkingSprite( SDL_Surface *dst, Uint16 x, Uint16 y )
 void CSprite::freeSurfaces()
 {
 	if(m_surface) SDL_FreeSurface(m_surface);
-	m_surface = NULL;
 	if(m_masksurface) SDL_FreeSurface(m_masksurface);
 	m_masksurface = NULL;
+	m_surface = NULL;
 }
 
 CSprite::~CSprite() {

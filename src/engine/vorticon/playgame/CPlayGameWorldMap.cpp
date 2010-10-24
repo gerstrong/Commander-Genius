@@ -222,6 +222,7 @@ void CPlayGameVorticon::showKeensLeft()
 		{
 			m_showKeensLeft = false;
 			SDL_FreeSurface(mp_KeenLeftSfc);
+			mp_KeenLeftSfc = NULL;
 		}
 	}
 

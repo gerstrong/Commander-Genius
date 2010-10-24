@@ -70,6 +70,8 @@ mp_HUD(NULL)
 void CPlayGameVorticon::setupPlayers()
 {
 	m_showKeensLeft=false;
+	if(mp_KeenLeftSfc)
+		SDL_FreeSurface(mp_KeenLeftSfc);
 	mp_KeenLeftSfc = NULL;
 	std::vector<CPlayer>::iterator it_player = m_Player.begin();
 	for( ; it_player!=m_Player.end() ; it_player++ )

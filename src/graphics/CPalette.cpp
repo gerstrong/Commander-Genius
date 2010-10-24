@@ -18,10 +18,7 @@ CPalette::CPalette() {
 	m_fadespeed = 1;
 	m_dark = false;
 	m_darkness = FADE_DARKNESS;
-}
-
-CPalette::~CPalette() {
-	// TODO Auto-generated destructor stub
+	m_fade_in_progess = false;
 }
 
 /**

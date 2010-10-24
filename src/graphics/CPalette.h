@@ -27,7 +27,6 @@
 class CPalette {
 public:
 	CPalette();
-	virtual ~CPalette();
 
 	void fadeto(Uint8 alpha, Uint8 fadespeed);
 	void applyFade();
