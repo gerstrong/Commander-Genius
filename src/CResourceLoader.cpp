@@ -40,11 +40,12 @@ int CResourceLoader::RunLoadAction(Action* act, const std::string &threadname, i
 	m_min_permil = min_permil;
 	m_permil = m_min_permil;
 	mp_Thread = threadPool->start(act, threadname);
-	process();
-	return mp_Thread->ret;
+	int ret = 0;
+	process(&ret);
+	return ret;
 }
 
-bool CResourceLoader::process()
+bool CResourceLoader::process(int* ret)
 {
 	SDL_FillRect(g_pVideoDriver->getBlitSurface(), NULL, 0x0);
 
@@ -52,7 +53,7 @@ bool CResourceLoader::process()
 		return false;
 	
 	// Do rendering here and the cycle
-	while(!threadPool->finalizeIfReady(mp_Thread))
+	while(!threadPool->finalizeIfReady(mp_Thread, ret))
 	{
 		g_pTimer->TimeToLogic();
 
