@@ -257,6 +257,8 @@ void CEGAGraphicsGalaxy::extractPicture(SDL_Surface *sfc,
 			}
 		}
 	}
+
+	if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
 }
 
 /**
