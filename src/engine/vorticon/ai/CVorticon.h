@@ -68,7 +68,7 @@ public:
 
 protected:
 	int m_Level;
-	char m_Difficulty;
+	Uint8& m_Difficulty;
 	bool &m_Dark;
 
 	enum {

@@ -17,7 +17,7 @@ class CPassiveVort : public CPassive
 {
 public:
 	CPassiveVort(CExeFile &ExeFile,
-			 CSavedGame &SavedGame, stOption *p_Option);
+			 CSavedGame &SavedGame, stOption *p_Option, Uint8& difficulty);
 
 	bool init(char mode = INTRO);
 

@@ -23,7 +23,7 @@
 // Creation Routine
 ////
 CPlayGameVorticon::CPlayGameVorticon( CExeFile &ExeFile, char level,
-		  char numplayers, char difficulty,
+		  char numplayers, Uint8& difficulty,
 		  stOption *p_option,
 		  bool finale, CSavedGame &SavedGame) :
 CPlayGame(ExeFile, level, numplayers, difficulty, p_option),
@@ -40,7 +40,7 @@ mp_KeenLeftSfc(NULL)
 	if(!m_Player.empty())
 		m_Player.clear();
 
-	m_Player.assign(m_NumPlayers, CPlayer(m_Episode, m_Level, m_Difficulty,
+	m_Player.assign(m_NumPlayers, CPlayer(m_Episode, m_Level,
 			mp_level_completed, mp_option,
 			m_Object, m_Map));
 

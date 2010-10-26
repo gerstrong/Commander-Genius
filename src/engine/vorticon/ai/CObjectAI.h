@@ -8,20 +8,20 @@
 #ifndef COBJECTAI_H_
 #define COBJECTAI_H_
 
-#include "../../../keen.h"
-#include "../../../common/CMap.h"
-#include "../../../common/CObject.h"
-#include "../../../common/options.h"
-#include "../../../common/CPlayer.h"
-#include "../../../common/CBehaviorEngine.h"
-#include "../../../graphics/CGfxEngine.h"
+#include "keen.h"
+#include "common/CMap.h"
+#include "common/CObject.h"
+#include "common/options.h"
+#include "common/CPlayer.h"
+#include "common/CBehaviorEngine.h"
+#include "graphics/CGfxEngine.h"
 #include <vector>
 
 class CObjectAI {
 public:
 	CObjectAI(CMap *p_map, std::vector<CObject*> &objvect, std::vector<CPlayer> &Player,
 			 stOption *p_options, int NumPlayers, int episode, int level,
-			 char difficulty, bool &dark);
+			 Uint8& difficulty, bool &dark);
 
 	// main functions
 	void process();
@@ -113,7 +113,7 @@ private:
 	stOption *mp_Options;
 	int m_Level;
 	int m_Episode;
-	char m_difficulty;
+	Uint8& m_difficulty;
 	int m_gunfiretimer;
 	bool &m_dark;
 	unsigned int m_bgtile; // Used as holder for bridges

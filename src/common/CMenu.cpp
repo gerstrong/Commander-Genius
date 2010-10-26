@@ -34,7 +34,7 @@ m_selection(NO_SELECTION),
 m_lastselect(-1),
 m_menu_type(MAIN),
 m_NumPlayers(0),
-m_Difficulty(NO_SELECTION),
+m_Difficulty(0),
 m_saveslot(0),
 m_restartVideo(restartVideo)
 {}
@@ -63,7 +63,7 @@ void CMenu::init( menutypes menu_type )
 		diff_list.push_back("Hard");
 
 		m_SubMenus.push_back(new CSelectionMenu<Uint8>( m_NumPlayers, players_list, m_dlg_theme) );
-		m_SubMenus.push_back(new CSelectionMenu<Sint8>( m_Difficulty, diff_list, m_dlg_theme, 1 ) );
+		m_SubMenus.push_back(new CSelectionMenu<Uint8>( m_Difficulty, diff_list, m_dlg_theme, 1 ) );
 	}
 	break;
 	case CONFIGURE:

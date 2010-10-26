@@ -17,7 +17,7 @@ namespace galaxy
 {
 
 CPlayGameGalaxy::CPlayGameGalaxy(CExeFile &ExeFile, char level,
-		 char numplayers, char difficulty,
+		 char numplayers, Uint8& difficulty,
 		 stOption *p_option, CSavedGame &SavedGame) :
 CPlayGame(ExeFile, level, numplayers, difficulty, p_option),
 m_WorldMap(ExeFile),

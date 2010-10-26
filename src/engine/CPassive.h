@@ -30,8 +30,8 @@ public:
 		INTRO, TITLE, DEMO, STARTGAME, SHUTDOWN
 	};
 	
-	CPassive(CExeFile &Exefile,
-			 CSavedGame &SavedGame, stOption *p_Option);
+	CPassive(CExeFile &Exefile, CSavedGame &SavedGame,
+			stOption *p_Option, Uint8& difficulty);
 	
 	virtual bool init(char mode = INTRO) {return false;};
 	
@@ -56,7 +56,7 @@ public:
 protected:
 	char m_Episode;
 	char m_NumPlayers;
-	char m_Difficulty;
+	Uint8& m_Difficulty;
 	bool m_modeg;
 	std::string m_DataDirectory;
 

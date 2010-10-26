@@ -21,10 +21,9 @@ const int WORLD_MAP_LEVEL=80;
 class CPlayGame{
 public:
 	CPlayGame(CExeFile &ExeFile, char level,
-			 char numplayers, char difficulty,
+			 char numplayers, Uint8& difficulty,
 			 stOption *p_option);
 
-	// TODO: These are virtual functions which later will be forced to be used by its child classes
 	virtual bool loadGameState() = 0;
 	virtual void process() = 0;
 	virtual bool init() = 0;
@@ -46,7 +45,7 @@ protected:
 	short m_Level;
 	bool m_startgame;
 	bool m_exitgame;
-	char m_Difficulty;
+	Uint8& m_Difficulty;
 
 	Uint32  m_NumSprites;
 

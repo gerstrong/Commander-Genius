@@ -8,8 +8,8 @@
 #ifndef CGARG_H_
 #define CGARG_H_
 
-#include "../../../common/CObject.h"
-#include "../../../common/CPlayer.h"
+#include "common/CObject.h"
+#include "common/CPlayer.h"
 #include <vector>
 
 #define GARG_MINTRAVELDIST          100

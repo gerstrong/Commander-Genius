@@ -17,9 +17,9 @@
 namespace vorticon
 {
 
-CPassiveVort::CPassiveVort( CExeFile &ExeFile,
-		 CSavedGame &SavedGame, stOption *p_Option) :
-CPassive(ExeFile, SavedGame,p_Option),
+CPassiveVort::CPassiveVort( CExeFile &ExeFile, CSavedGame &SavedGame,
+		stOption *p_Option, Uint8& difficulty) :
+CPassive(ExeFile, SavedGame, p_Option, difficulty),
 m_ExeFile(ExeFile),
 mp_Map(NULL),
 mp_Option(p_Option),

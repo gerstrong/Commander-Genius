@@ -7,19 +7,19 @@
 
 #include "CPassive.h"
 
-#include "../../graphics/CGfxEngine.h"
-#include "../../graphics/effects/CPixelate.h"
-#include "../../graphics/effects/CColorMerge.h"
-#include "../../sdl/CVideoDriver.h"
-#include "../../sdl/CInput.h"
+#include "graphics/CGfxEngine.h"
+#include "graphics/effects/CPixelate.h"
+#include "graphics/effects/CColorMerge.h"
+#include "sdl/CVideoDriver.h"
+#include "sdl/CInput.h"
 
 
 namespace galaxy
 {
 
 CPassiveGalaxy::CPassiveGalaxy(CExeFile &Exefile,
-		CSavedGame &SavedGame, stOption *p_Option) :
-CPassive(Exefile, SavedGame, p_Option),
+		CSavedGame &SavedGame, stOption *p_Option, Uint8& difficulty) :
+CPassive(Exefile, SavedGame, p_Option, difficulty),
 processMode(&CPassiveGalaxy::processIntro),
 m_BackgroundBitmap(*g_pGfxEngine->getBitmap("TITLE")),
 mp_Menu(new CMenuGalaxy(PASSIVE, Exefile, SavedGame, p_Option, m_restartVideo))

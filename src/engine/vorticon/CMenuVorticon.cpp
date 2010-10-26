@@ -3,7 +3,7 @@
 
 #include "CMenuVorticon.h"
 
-#include "../../engine/CPassive.h"
+#include "engine/CPassive.h"
 #include "CHelpMenuVorticon.h"
 
 #include "StringUtils.h"

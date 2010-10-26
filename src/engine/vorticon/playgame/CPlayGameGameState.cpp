@@ -50,7 +50,7 @@ bool CPlayGameVorticon::loadGameState()
 		if(!m_Player.empty())
 			m_Player.clear();
 
-		m_Player.assign(m_NumPlayers, CPlayer(m_Episode, m_Level, m_Difficulty,
+		m_Player.assign(m_NumPlayers, CPlayer(m_Episode, m_Level,
 				 mp_level_completed, mp_option, m_Object, m_Map) );
 		for( size_t i=0 ; i < m_Player.size() ; i++ )
 		{

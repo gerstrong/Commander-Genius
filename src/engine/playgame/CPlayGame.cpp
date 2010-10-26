@@ -6,10 +6,10 @@
  */
 
 #include "CPlayGame.h"
-#include "../../graphics/CGfxEngine.h"
+#include "graphics/CGfxEngine.h"
 
 CPlayGame::CPlayGame(CExeFile &ExeFile, char level,
-		 char numplayers, char difficulty,
+		 char numplayers, Uint8& difficulty,
 		 stOption *p_option) :
 m_NumPlayers(numplayers),
 m_endgame(false),

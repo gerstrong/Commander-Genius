@@ -26,13 +26,12 @@ size_t CPlayer::m_playerID = 0;
 ///
 // Initialization Part
 ///
-CPlayer::CPlayer(const char &Episode, short &Level, char &Difficulty,
+CPlayer::CPlayer(const char &Episode, short &Level,
 				 bool *mp_level_completed, stOption *mp_option,
 				 std::vector<CObject*> &m_Object, CMap &map) :
 CObject(&map, 0, 0, OBJ_PLAYER),
 m_episode(Episode),
 m_level(Level),
-m_difficulty(Difficulty),
 pjumpupspeed_decrease(g_pBehaviorEngine->getPhysicsSettings().player.defaultjumpupdecreasespeed),
 mp_levels_completed(mp_level_completed),
 mp_option(mp_option),

@@ -22,7 +22,7 @@ class CPlayGameGalaxy : public CPlayGame
 {
 public:
 	CPlayGameGalaxy(CExeFile &ExeFile, char level,
-			 char numplayers, char difficulty,
+			 char numplayers, Uint8& difficulty,
 			 stOption *p_option, CSavedGame &SavedGame);
 
 	bool loadGameState();
