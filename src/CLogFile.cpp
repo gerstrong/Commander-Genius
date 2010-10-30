@@ -9,6 +9,7 @@
 #include <iostream>
 #include <string.h>
 #include <fstream>
+#include "../version.h"
 #include "CLogFile.h"
 #include "FindFile.h"
 #include "Debug.h"
@@ -25,8 +26,15 @@ void CLogFile::CreateLogfile(const char *LogName)
 	textOut("<html><head><title>LogFile</title></head>");
 	textOut("<body><font face='courier new'>");
 	WriteTopic("Logfile", 3);
-	textOut(BLUE,REVISION);
 	
+	std::string versionstring = CGVERSION;
+
+	int len = versionstring.size();
+	for(int c=0 ; c<len-1 ; c++)
+		versionstring.insert(2*c+1, ".");
+
+	textOut(BLUE, PROGRAMM_NAME + " v" + versionstring);
+
 	// Mark the Build and Platform
 #ifdef DEBUG
 	textOut("BUILD: DEBUG<br>");

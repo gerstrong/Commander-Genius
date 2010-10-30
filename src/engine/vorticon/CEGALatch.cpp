@@ -12,7 +12,6 @@
 #include "sdl/CVideoDriver.h"
 #include "fileio/TypeDefinitions.h"
 #include "common/CBehaviorEngine.h"
-#include "CResourceLoader.h"
 #include "CLogFile.h"
 #include "engine/CPlanes.h"
 #include "keen.h"

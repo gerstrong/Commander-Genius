@@ -10,14 +10,15 @@
  */
 
 #include "CEGASprit.h"
-#include "../CPlanes.h"
-#include "../../FindFile.h"
-#include "../../sdl/CVideoDriver.h"
-#include "../../engine/spritedefines.h"
-#include "../../fileio/lz.h"
-#include "../../fileio/ResourceMgmt.h"
-#include "../../common/CBehaviorEngine.h"
-#include "../../common/CObject.h"
+#include "engine/CPlanes.h"
+#include "FindFile.h"
+#include "sdl/CVideoDriver.h"
+#include "engine/spritedefines.h"
+#include "fileio/lz.h"
+#include "fileio/ResourceMgmt.h"
+#include "common/CBehaviorEngine.h"
+#include "common/CObject.h"
+#include "CResourceLoader.h"
 #include <SDL.h>
 #include <stdio.h>
 #include <string.h>
@@ -89,12 +90,15 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	byte *RawData;
     SDL_Surface *sfc;
     Uint8* pixel;
+    Uint32 percent = 0;
 	
 	FILE* latchfile = OpenGameFile(filename.c_str(),"rb");
 	
 	if(!latchfile)
 		return false;
 	
+	g_pResourceLoader->setPermilage(100);
+
 	RawData = new byte[m_planesize * 5];
     // get the data out of the file into the memory, decompressing it if necessary.
     if (compresseddata)
@@ -109,6 +113,8 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
     }
 	
     fclose(latchfile);
+
+	g_pResourceLoader->setPermilage(200);
 	
     // TODO: Try to blit the Font map here!
 	// these are the offsets of the different video planes as
@@ -138,7 +144,12 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 				(EGASpriteModell[i].hitbox_b << STC) );
 		Sprite.createSurface( g_pVideoDriver->BlitSurface->flags,
 				g_pGfxEngine->Palette.m_Palette );
+
+		percent = (i*100)/m_numsprites;
+		g_pResourceLoader->setPermilage(200+percent);
 	}
+
+	g_pResourceLoader->setPermilage(300);
 
 	for(int p=0 ; p<4 ; p++)
 	{
@@ -151,8 +162,13 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 			Planes.readPlane(p, pixel, sfc->w, sfc->h);
 
 			if(SDL_MUSTLOCK(sfc)) SDL_UnlockSurface(sfc);
+
+			percent = (s*100)/m_numsprites;
+			g_pResourceLoader->setPermilage(300+percent);
 		}
 	}
+
+	g_pResourceLoader->setPermilage(400);
 
 	// now load the 5th plane, which contains the sprite masks.
 	// note that we invert the mask because our graphics functions
@@ -180,7 +196,12 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 		}
 		if(SDL_MUSTLOCK(masksfc)) SDL_UnlockSurface(masksfc);
 		if(SDL_MUSTLOCK(pixsfc)) SDL_UnlockSurface(pixsfc);
+
+		percent = (s*100)/m_numsprites;
+		g_pResourceLoader->setPermilage(400+percent);
 	}
+
+	g_pResourceLoader->setPermilage(500);
 
 	
 	if(RawData){ delete[] RawData; RawData = NULL;}
@@ -192,15 +213,23 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	{
 		CSprite &Sprite = g_pGfxEngine->getSprite(s);
 		Sprite.optimizeSurface();
+
+		percent = (s*300)/m_numsprites;
+		g_pResourceLoader->setPermilage(500+percent);
 	}
+
+	g_pResourceLoader->setPermilage(800);
+
 
 	std::set<std::string> filelist;
 	FileListAdder fileListAdder;
 	std::string gfxpath = JoinPaths(m_gamepath, "gfx");
 	GetFileList(filelist, fileListAdder, gfxpath, false, FM_REG);
 	FilterFilelist(filelist, "sprite");
+
 	std::set<std::string>::iterator it = filelist.begin();
-	for( ; it != filelist.end() ; it++ )
+	int listsize = filelist.size();
+	for( int c=0 ; it != filelist.end() ; it++, c++ )
 	{
 		std::string name=*it;
 		int num = getRessourceID(name, "sprite");
@@ -210,7 +239,12 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 			std::string filename = getResourceFilename("gfx/"+name, m_gamepath, false, true);
 			Sprite.loadHQSprite(filename);
 		}
+
+		percent = (c*150)/listsize;
+		g_pResourceLoader->setPermilage(800+percent);
 	}
+
+	g_pResourceLoader->setPermilage(950);
 
 	for(Uint16 s=0 ; s<g_pGfxEngine->getSpriteVec().size() ; s++)
 		g_pGfxEngine->getSprite(s).applyTransparency();
@@ -224,6 +258,8 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	// Here special Effects are applied, only when the option is enabled for it
 	if(g_pVideoDriver->getSpecialFXConfig())
 		ApplySpecialFX();
+
+	g_pResourceLoader->setPermilage(1000);
 
 	return true;
 }
