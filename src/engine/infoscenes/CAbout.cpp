@@ -160,7 +160,7 @@ void CAbout::process()
 	for(std::size_t i=0 ; i<m_lines.size() ; i++)
 		g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->FGLayerSurface, m_lines.at(i), 24, 72+i*8, true);
 	
-	if(g_pInput->getPressedAnyKey())
+	if(g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand())
 		m_destroy_me=true;
 }
 
