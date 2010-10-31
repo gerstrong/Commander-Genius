@@ -426,7 +426,7 @@ bool CVideoDriver::applyMode()
 	screenrect.y = (m_Resolution.height-screenrect.h)/2;
 
 	// And leave the rest to SDL!
-	screen = SDL_SetVideoMode(m_Resolution.width,m_Resolution.height,m_Resolution.depth,Mode);
+	screen = SDL_SetVideoMode( m_Resolution.width, m_Resolution.height, m_Resolution.depth, Mode );
 
 	if(!screen)
 	{
