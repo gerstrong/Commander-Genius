@@ -11,7 +11,7 @@
 *    (c)2009-2010            DaVince         *
 *           Released under GNU/GPL           *
 *                                            *
-*            Release v0.3.2.1                *
+*            Release v0.3.2.4                *
 *                                            *
 **********************************************
 
@@ -47,7 +47,7 @@ although there are also a number of improvements like:
 - Better graphical Effects
 - Multiplayer Support
 - High Quality Packs which make the game look better
-- In-Game Menu
+- Ingame Menu
 - Named Save Slots
 - Unrestricted Joystick Support
 - and more!
@@ -155,8 +155,10 @@ be enabled with -cheat or through the options->game menu. C+T+SPACE and G+O+D wi
 always work.
 
 KEY        	ACTION             DESCRIPTION
-G+O+D	   	godmode			   In god mode you are invincible!
+G+O+D	   	godmode		   In god mode you are invincible!
 C+T+SPACE  	All Items          Gives all items, similar to the original.
+F+I+X		Restore		   Restores the settings as they were in the first time. Use this if
+				   CG doesn't display anything
 
 - SAVE/LOAD GAME -
 The game can be saved by pressing F5 at any point during the game or using the menu.
@@ -196,6 +198,7 @@ Many thanks to people who has helped me so far in this project with their
 suggestions:
 
 Sciz CT
+Lemm
 DSL (Nice icon contribution)
 Motorfingers
 Chrisfischtopher
