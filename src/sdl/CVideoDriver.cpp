@@ -395,8 +395,6 @@ bool CVideoDriver::applyMode()
 		SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 	#if SDL_VERSION_ATLEAST(1, 3, 0)
 	#else
-		// TODO: unknown in SDL 1.3. important?
-		// TODO: Yeah, it is in SDL 1.2 for some systems!!!
 		SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 1);
 	#endif
 
