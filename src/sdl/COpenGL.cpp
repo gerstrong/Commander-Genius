@@ -8,7 +8,7 @@
 
 #include "COpenGL.h"
 #include "CVideoDriver.h"
-#include "../CLogFile.h"
+#include "CLogFile.h"
 #include "CInput.h" // for CInput::renderOverlay
 
 /**
@@ -281,8 +281,6 @@ void COpenGL::render()
 	loadSurface(m_texture, mp_blitsurface);
 	renderTexture(m_texture);
 
-	g_pInput->renderOverlay();
-
 	if(mp_fgsurface)
 	{
 		reloadFG(mp_fgsurface);
@@ -295,6 +293,8 @@ void COpenGL::render()
 		renderTexture(m_texFG, true);
 	}
 	
+	g_pInput->renderOverlay();
+
 	SDL_GL_SwapBuffers();
 
 }

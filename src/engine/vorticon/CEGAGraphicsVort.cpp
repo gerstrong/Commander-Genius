@@ -148,7 +148,7 @@ bool CEGAGraphicsVort::loadData( int version, unsigned char *p_exedata )
 									 new SpriteLoad(m_Sprit,
 													((m_path != "") ? m_path + "/" : "") + "egasprit.ck" + itoa(m_episode),
 													(compressed>>1)),
-									 "Loading Sprites", 500, 900);
+									 "Loading Sprites", 0, 1000);
 
     return true;
 }

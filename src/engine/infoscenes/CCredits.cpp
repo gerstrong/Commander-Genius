@@ -103,7 +103,7 @@ void CCredits::process()
 			g_pGfxEngine->getFont(0).drawFont( g_pVideoDriver->FGLayerSurface, m_scrolltext[j], m_mid[j], m_scrolly+(j<<3), true);
 	}
 	
-	if( g_pInput->getPressedAnyKey() )
+	if( g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand() )
 		m_destroy_me = true;
 }
 

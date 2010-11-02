@@ -82,7 +82,7 @@ void CPassiveVort::process()
 			mp_PressAnyBox->enableBorders(true);
 		}
 
-		if (g_pInput->getPressedAnyKey())
+		if ( g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand() )
 		{
 			// Close the "Press Any Key" box
 			if(g_pGfxEngine->Effect()) // some effect is running? Close it!

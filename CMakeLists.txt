@@ -20,7 +20,7 @@ IF( NOT APPLE )
 	  set( HAVE_64_BIT 0 )
 	ENDIF( CMAKE_SIZEOF_VOID_P MATCHES 4 )
 ENDIF( NOT APPLE )
-set( HAVE_64_BIT 1 )
+#set( HAVE_64_BIT 0 )
 
 OPTION(DEBUG "enable debug build" Yes)
 OPTION(SDL "SDL support (will not work without)" Yes)

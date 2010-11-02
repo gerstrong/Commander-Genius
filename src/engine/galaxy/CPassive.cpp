@@ -56,7 +56,7 @@ void CPassiveGalaxy::processTitle()
 	// draw the title bitmap here!
 	m_BackgroundBitmap.draw(g_pVideoDriver->BlitSurface, 0, 0);
 	
-	if ( g_pInput->getPressedAnyKey() )
+	if ( g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand() )
 	{
 		if(g_pGfxEngine->applyingEffects())
 			g_pGfxEngine->killEffect();
@@ -79,7 +79,7 @@ void CPassiveGalaxy::processMenu()
 
 	mp_Menu->process();
 
-	if ( g_pInput->getPressedAnyKey() )
+	if ( g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand() )
 	{
 		if(g_pGfxEngine->applyingEffects())
 			g_pGfxEngine->killEffect();

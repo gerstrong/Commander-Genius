@@ -12,7 +12,6 @@
 #include "sdl/CVideoDriver.h"
 #include "fileio/TypeDefinitions.h"
 #include "common/CBehaviorEngine.h"
-#include "CResourceLoader.h"
 #include "CLogFile.h"
 #include "engine/CPlanes.h"
 #include "keen.h"
@@ -301,19 +300,11 @@ bool CEGALatch::loadData( std::string &path, short episode, int version, unsigne
 // Convert the normal tiles to masked tiles
 void CEGALatch::applyMasks()
 {
-	SDL_Surface *sfc;
-	Uint32 u_colour = 0;
-	SDL_Rect rect;
-	Uint8 bpp;
-	Uint8 r,g,b,alpha;
-	Uint8 *u_offset;
-
-	sfc = g_pGfxEngine->getTileMap(1).getSDLSurface();
+	SDL_Surface *sfc = g_pGfxEngine->getTileMap(1).getSDLSurface();
 
 	if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
 
-	bpp = sfc->format->BytesPerPixel;
-	rect.w = rect.h = 1;
+	Uint8 bpp = sfc->format->BytesPerPixel;
 
 	for( Uint16 t=0 ; t<m_num16tiles ; t++ )
 	{
@@ -323,24 +314,28 @@ void CEGALatch::applyMasks()
 			{
 				for( Uint16 y=0 ; y<16 ; y++ )
 				{
-					u_offset = (Uint8*)sfc->pixels + bpp*((y+16*((t+1)/13))*13*16 + 16*((t+1)%13) + x);
-					memcpy( &u_colour, u_offset, bpp);
-					SDL_GetRGB( u_colour, sfc->format, &r, &g, &b);
+					Uint32 u_colour = 0;
+					Uint8 r,g,b;
+					Uint8 *u_offset = (Uint8*)sfc->pixels + bpp*((y+16*((t+1)/13))*13*16 + 16*((t+1)%13) + x);
+					memcpy( &u_colour, u_offset, bpp );
+					SDL_GetRGB( u_colour, sfc->format, &r, &g, &b );
 
+					SDL_Rect rect;
+					rect.w = rect.h = 1;
 					rect.x = 16*((t+1)%13) + x;
 					rect.y = y+16*((t+1)/13);
 
 					if( r>=250 && g>=250 && b>=250 ) // In this case set it to zero
 					{
-						SDL_FillRect(sfc, &rect, SDL_MapRGBA(sfc->format, 0, 0, 0, 0));
+						SDL_FillRect( sfc, &rect, SDL_MapRGBA(sfc->format, 0, 0, 0, 0) );
 					}
 					else // Get the pixel of the previous tile. If the mask has colour, use alpha channel, black is opaque
 					{
-						alpha = 255 - (r+g+b)/3;
+						Uint8 alpha = 255 - (r+g+b)/3;
 						u_offset = (Uint8*)sfc->pixels + bpp*((y+16*(t/13))*13*16 + 16*(t%13) + x);
 						memcpy( &u_colour, u_offset, bpp);
 						SDL_GetRGB( u_colour, sfc->format, &r, &g, &b);
-						SDL_FillRect(sfc, &rect, SDL_MapRGBA(sfc->format,r,g,b,alpha));
+						SDL_FillRect( sfc, &rect, SDL_MapRGBA(sfc->format,r,g,b,alpha) );
 					}
 				}
 			}

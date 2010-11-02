@@ -65,7 +65,8 @@ void CSaveMenu::processSpecific()
 				}
 
 			}
-			else if ( mp_Dialog->getInputMode(INPUT_MODE_TEXT) && g_pInput->getPressedKey(KENTER) )
+			else if ( mp_Dialog->getInputMode(INPUT_MODE_TEXT) &&
+					(g_pInput->getPressedKey(KENTER) || g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_STATUS) ) )
 			{
 #ifndef NOKEYBOARD
 				if(mp_Dialog->m_name == "")
