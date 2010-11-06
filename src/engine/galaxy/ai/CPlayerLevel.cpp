@@ -233,6 +233,9 @@ void CPlayerLevel::processMoving()
 			if( hitdetectWithTileProperty(1, l_x, l_y) ) // 1 -> stands for pole Property
 			{
 				// Hit pole!
+
+				// calc the proper coord of that tile
+				l_x = (l_x>>CSF)<<CSF;
 				if( !m_climbing && m_playcontrol[PA_Y] != 0 )
 				{
 					m_climbing = true;
@@ -241,7 +244,6 @@ void CPlayerLevel::processMoving()
 
 					// Set also the proper X Coordinates, so kenn really grabs it!
 					Uint16 x_pole = l_x;
-
 					if(m_direction == RIGHT)
 						x_pole -= 6<<STC;
 

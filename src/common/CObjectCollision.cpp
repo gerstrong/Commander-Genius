@@ -340,7 +340,7 @@ bool CObject::hitdetect(CObject &hitobject)
  * \param Property The Tile Property we are looking
  * \return true if detection worked with that tile having the property, else false
  */
-bool CObject::hitdetectWithTileProperty(Uint16 Property, Uint16 &x, Uint16 &y)
+bool CObject::hitdetectWithTileProperty(Uint16 Property, Uint16 x, Uint16 y)
 {
 	char behavior;
 
@@ -348,12 +348,7 @@ bool CObject::hitdetectWithTileProperty(Uint16 Property, Uint16 &x, Uint16 &y)
 
 	behavior = Tile[mp_Map->getPlaneDataAt(1, x, y)].behaviour;
 	if(behavior == Property || behavior == Property-128 ) // +128 for foreground properties
-	{
-		// calc the proper coord of that tile
-		x = (x>>CSF)<<CSF;
-		y = (y>>CSF)<<CSF;
 		return true;
-	}
 
 	return false;
 }
