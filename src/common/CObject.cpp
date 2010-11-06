@@ -59,6 +59,7 @@ m_invincible(false)
 	m_direction = NONE;
 	m_ActionTicker = 0;
 	m_canturnaround = false;
+	m_climbing = false;
 
 	if(m_type != OBJ_NONE )
 	{

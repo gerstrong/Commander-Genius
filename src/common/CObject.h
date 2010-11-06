@@ -97,6 +97,7 @@ public:
 	uint16_t m_ActionTicker;
 	uint16_t m_ActionNumber;
 	size_t m_ActionBaseOffset;
+	bool m_climbing;
 
 	void setupObjectType(int Episode);
 	void calcBouncingBoxes(bool firsttime=false);

@@ -342,21 +342,12 @@ bool CObject::hitdetect(CObject &hitobject)
  */
 bool CObject::hitdetectWithTileProperty(Uint16 Property, Uint16 &x, Uint16 &y)
 {
-	unsigned int rectx1, recty1, rectx2, recty2;
-	Uint16 behavior;
-
-	// get the bounding rectangle of the first object
-	rectx1 = this->x + bboxX1;
-	recty1 = this->y + bboxY1;
-	rectx2 = this->x + bboxX2;
-	recty2 = this->y + bboxY2;
+	char behavior;
 
 	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
-	x = (rectx2+rectx1)/2;
-	y = (recty2+recty1)/2;
 
 	behavior = Tile[mp_Map->getPlaneDataAt(1, x, y)].behaviour;
-	if(behavior == Property)
+	if(behavior == Property || behavior == Property-128 ) // +128 for foreground properties
 	{
 		// calc the proper coord of that tile
 		x = (x>>CSF)<<CSF;
@@ -469,15 +460,29 @@ bool CObject::checkSolidU(int x1, int x2, int y1)
 	if(!vorticon && solid)
 	{
 		char blocked;
+
+		if(m_climbing)
+		{
+			x1 += 4*COLISION_RES;
+			x2 -= 4*COLISION_RES;
+		}
+
 		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
 		{
 			blocked = TileProperty[mp_Map->at(c>>CSF, y1>>CSF)].bdown;
+
+			if(blocked == 17 && m_climbing)
+				return false;
+
 			if( blocked >= 2 && blocked <= 7 && checkslopedU(c, y1, blocked))
 				return true;
 		}
 		blocked = TileProperty[mp_Map->at((x2-(1<<STC))>>CSF, y1>>CSF)].bdown;
 		if( blocked >= 2 && blocked <= 7 && checkslopedU(x2-(1<<STC), y1, blocked ))
 			return true;
+
+		if(blocked == 17 && m_climbing)
+			return false;
 	}
 
 	if( ((y1+COLISION_RES)>>STC) != (((y1+COLISION_RES)>>CSF)<<TILE_S)  )
@@ -506,8 +511,6 @@ bool CObject::checkSolidU(int x1, int x2, int y1)
 	return false;
 }
 
-// TODO: Collision-TAG Move that function into another file
-
 bool CObject::checkSolidD( int x1, int x2, int y2 )
 {
 	bool vorticon = (g_pBehaviorEngine->getEpisode() <= 3);
@@ -520,15 +523,30 @@ bool CObject::checkSolidD( int x1, int x2, int y2 )
 	{
 		char blocked;
 
+		if(m_climbing)
+		{
+			x1 += 4*COLISION_RES;
+			x2 -= 4*COLISION_RES;
+		}
+
 		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
 		{
 			blocked = TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bup;
-			if( blocked >= 2 && blocked <= 7 && checkslopedD(c, y2, blocked))
+
+			if(blocked == 17 && m_climbing)
+				return false;
+
+			if( blocked >= 2 && blocked <= 7 && checkslopedD(c, y2, blocked) )
 			//if( blocked )
 				return true;
 		}
+
 		blocked = TileProperty[mp_Map->at((x2)>>CSF, y2>>CSF)].bup;
-		if( blocked >= 2 && blocked <= 7 && checkslopedD(x2, y2, blocked ))
+
+		if(blocked == 17 && m_climbing)
+			return false;
+
+		if( blocked >= 2 && blocked <= 7 && checkslopedD(x2, y2, blocked) )
 		//if( blocked )
 			return true;
 	}

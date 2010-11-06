@@ -25,8 +25,7 @@ CObject(pmap, x, y, OBJ_NONE),
 m_animation(0),
 m_animation_time(1),
 m_animation_ticker(0),
-m_ObjectPtrs(ObjectPtrs),
-m_climbing(false)
+m_ObjectPtrs(ObjectPtrs)
 {
 	m_index = 0;
 	m_direction = facedir;
@@ -190,13 +189,16 @@ void CPlayerLevel::processMoving()
 	if(m_climbing)
 	{
 		// The climbing section for Keen
-		if(m_playcontrol[PA_Y] < 0)
+		Uint16 l_x = ( getXLeftPos() + getXRightPos() ) / 2;
+		Uint16 l_y_up = getYUpPos();
+		Uint16 l_y_down = getYDownPos();
+		if(m_playcontrol[PA_Y] < 0 && hitdetectWithTileProperty(1, l_x, l_y_up) )
 		{
 			if(!getActionNumber(A_KEEN_POLE_CLIMB))
 				setAction(A_KEEN_POLE_CLIMB);
 			yinertia = -32;
 		}
-		else if(m_playcontrol[PA_Y] > 0)
+		else if(m_playcontrol[PA_Y] > 0 && hitdetectWithTileProperty(1, l_x, l_y_down) )
 		{
 			if(!getActionNumber(A_KEEN_POLE_SLIDE))
 				setAction(A_KEEN_POLE_SLIDE);
@@ -208,15 +210,6 @@ void CPlayerLevel::processMoving()
 				setAction(A_KEEN_POLE);
 			yinertia = 0;
 		}
-
-		Uint16 l_x, l_y;
-		// Now check if Player is touching the pole
-		/*if( !hitdetectWithTileProperty(1, l_x, l_y) ) // 1 -> stands for pole Property
-		{
-			if( m_climbing )
-				m_climbing = false;
-		}*/
-
 	}
 	else
 	{
@@ -234,7 +227,8 @@ void CPlayerLevel::processMoving()
 				m_direction = RIGHT;
 			}
 
-			Uint16 l_x, l_y;
+			Uint16 l_x = ( getXLeftPos() + getXRightPos() ) / 2;
+			Uint16 l_y = ( getYUpPos() + getYDownPos() ) / 2;
 			// Now check if Player has the chance to climb a pole or something similar
 			if( hitdetectWithTileProperty(1, l_x, l_y) ) // 1 -> stands for pole Property
 			{
