@@ -36,9 +36,9 @@ enum direction_t{
 };
 
 // structures for each AI module's data
-#include "../engine/vorticon/ai/enemydata.h"
-#include "../common/CMap.h"
-#include "../graphics/CGfxEngine.h"
+#include "engine/vorticon/ai/enemydata.h"
+#include "common/CMap.h"
+#include "graphics/CGfxEngine.h"
 #include "options.h"
 
 // Enumerations are here
@@ -126,7 +126,7 @@ public:
 	virtual void process() { }
 	
 	bool hitdetect(CObject &hitobject);
-	bool hitdetectWithTileProperty(Uint16 Property);
+	bool hitdetectWithTileProperty(Uint16 Property, Uint16 &x, Uint16 &y);
 	virtual void kill();
 	void blink(Uint16 frametime);
 

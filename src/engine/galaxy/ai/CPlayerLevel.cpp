@@ -41,6 +41,7 @@ m_climbing(false)
 	processActionRoutine();
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 	moveUp(rSprite.m_bboxY2-rSprite.m_bboxY1+(1<<CSF));
+	calcBouncingBoxes();
 	performCollisions();
 }
 
@@ -58,6 +59,9 @@ void CPlayerLevel::process()
 
 	performCollisionsSameBox();
 
+	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+	TileProperty[mp_Map->at(getXMidPos()>>CSF, getYMidPos()>>CSF)].bdown;
+
 	processMoving();
 
 	processJumping();
@@ -73,6 +77,10 @@ void CPlayerLevel::process()
 
 	moveXDir(xinertia);
 	xinertia = 0;
+
+	if(m_climbing)
+		moveYDir(yinertia);
+
 
 	processActionRoutine();
 }
@@ -131,6 +139,9 @@ void CPlayerLevel::processInput()
 
 void CPlayerLevel::processFiring()
 {
+	if(m_climbing)
+		return;
+
 	bool inair = getActionNumber(A_KEEN_JUMP) || getActionNumber(A_KEEN_JUMP+1) ||
 			getActionNumber(A_KEEN_FALL) || falling;
 
@@ -176,97 +187,133 @@ void CPlayerLevel::processMoving()
 {
 	size_t movespeed = 50;
 
-	// Normal moving
-	if(!m_playcontrol[PA_FIRE])
+	if(m_climbing)
 	{
-		if( m_playcontrol[PA_X]<0 && !blockedl)
+		// The climbing section for Keen
+		if(m_playcontrol[PA_Y] < 0)
 		{
-			xinertia = -movespeed;
-			m_direction = LEFT;
+			if(!getActionNumber(A_KEEN_POLE_CLIMB))
+				setAction(A_KEEN_POLE_CLIMB);
+			yinertia = -32;
 		}
-		else if( m_playcontrol[PA_X]>0 && !blockedr)
+		else if(m_playcontrol[PA_Y] > 0)
 		{
-			xinertia = movespeed;
-			m_direction = RIGHT;
+			if(!getActionNumber(A_KEEN_POLE_SLIDE))
+				setAction(A_KEEN_POLE_SLIDE);
+			yinertia = 64;
+		}
+		else // == 0
+		{
+			if(!getActionNumber(A_KEEN_POLE))
+				setAction(A_KEEN_POLE);
+			yinertia = 0;
 		}
 
-		// Now check if Player has the chance to climb a pole or something similar
-		if(hitdetectWithTileProperty(1)) // 1 -> stands for pole Property
+		Uint16 l_x, l_y;
+		// Now check if Player is touching the pole
+		/*if( !hitdetectWithTileProperty(1, l_x, l_y) ) // 1 -> stands for pole Property
 		{
-			// Hit pole!
-			// TODO: This code does not work yet correctly for some reason
-			if( !m_climbing && m_playcontrol[PA_Y] != 0 )
-			{
-				m_climbing = true;
-			}
-			else if(m_climbing)
-			{
-				if(m_playcontrol[PA_Y] < 0)
-				{
-					if(!getActionNumber(A_KEEN_POLE_CLIMB))
-						setAction(A_KEEN_POLE_CLIMB);
-					//yinertia = -1;
-				}
-				else if(m_playcontrol[PA_Y] > 0)
-				{
-					//setAction(A_KEEN_POLE_SLIDE);
-					//yinertia = 1;
-				}
-			}
-		}
-		else
-		{
-			m_climbing = false;
-		}
+			if( m_climbing )
+				m_climbing = false;
+		}*/
 
 	}
-
-	if( blockedd )
+	else
 	{
-		if(xinertia != 0)
-			setAction(A_KEEN_RUN);
-		else if(m_playcontrol[PA_Y] == 0)
-			setAction(A_KEEN_STAND);
+		// Normal moving
+		if(!m_playcontrol[PA_FIRE])
+		{
+			if( m_playcontrol[PA_X]<0 && !blockedl)
+			{
+				xinertia = -movespeed;
+				m_direction = LEFT;
+			}
+			else if( m_playcontrol[PA_X]>0 && !blockedr)
+			{
+				xinertia = movespeed;
+				m_direction = RIGHT;
+			}
+
+			Uint16 l_x, l_y;
+			// Now check if Player has the chance to climb a pole or something similar
+			if( hitdetectWithTileProperty(1, l_x, l_y) ) // 1 -> stands for pole Property
+			{
+				// Hit pole!
+				if( !m_climbing && m_playcontrol[PA_Y] != 0 )
+				{
+					m_climbing = true;
+					// Set Keen in climb mode
+					setAction(A_KEEN_POLE);
+
+					// Set also the proper X Coordinates, so kenn really grabs it!
+					Uint16 x_pole = l_x;
+
+					if(m_direction == RIGHT)
+						x_pole -= 6<<STC;
+
+					moveTo(x_pole, getYPosition());
+					xinertia = 0;
+				}
+			}
+		}
+
+		if( blockedd )
+		{
+			if(xinertia != 0)
+				setAction(A_KEEN_RUN);
+			else if(m_playcontrol[PA_Y] == 0)
+				setAction(A_KEEN_STAND);
+		}
 	}
 }
 
 // Processes the jumping of the player
 void CPlayerLevel::processJumping()
 {
-	if(!getActionNumber(A_KEEN_JUMP))
+	/*if(m_climbing)
 	{
-		if(blockedd)
-			m_jumpheight = 0;
-
-		// Not jumping? Let's see if we can prepare the player to do so
-		if(m_playcontrol[PA_JUMP] && (getActionNumber(A_KEEN_STAND) or getActionNumber(A_KEEN_RUN)) )
-		{
-			yinertia = -136;
-			setAction(A_KEEN_JUMP);
-			m_climbing = false;
-		}
 	}
 	else
-	{
-		// while button is pressed, make the player jump higher
-		if(m_playcontrol[PA_JUMP] || m_jumpheight <= MIN_JUMPHEIGHT)
-			m_jumpheight++;
-		else
-			m_jumpheight = 0;
-
-		// Set another jump animation if Keen is near yinertia == 0
-		if( yinertia > -10 )
-			setAction(A_KEEN_JUMP+1);
-
-		// If the max. height is reached or the player cancels the jump by release the button
-		// make keen fall
-		if( m_jumpheight == 0 || m_jumpheight >= MAX_JUMPHEIGHT )
+	{*/
+		if(!getActionNumber(A_KEEN_JUMP))
 		{
-			yinertia = 0;
-			m_jumpheight = 0;
-		}
+			if(blockedd)
+				m_jumpheight = 0;
 
-	}
+			// Not jumping? Let's see if we can prepare the player to do so
+			if(m_playcontrol[PA_JUMP] and
+					(getActionNumber(A_KEEN_STAND) or
+					getActionNumber(A_KEEN_RUN) or
+					getActionNumber(A_KEEN_POLE) or
+					getActionNumber(A_KEEN_POLE_CLIMB) or
+					getActionNumber(A_KEEN_POLE_SLIDE)) )
+			{
+				yinertia = -136;
+				setAction(A_KEEN_JUMP);
+				m_climbing = false;
+			}
+		}
+		else
+		{
+			// while button is pressed, make the player jump higher
+			if(m_playcontrol[PA_JUMP] || m_jumpheight <= MIN_JUMPHEIGHT)
+				m_jumpheight++;
+			else
+				m_jumpheight = 0;
+
+			// Set another jump animation if Keen is near yinertia == 0
+			if( yinertia > -10 )
+				setAction(A_KEEN_JUMP+1);
+
+			// If the max. height is reached or the player cancels the jump by release the button
+			// make keen fall
+			if( m_jumpheight == 0 || m_jumpheight >= MAX_JUMPHEIGHT )
+			{
+				yinertia = 0;
+				m_jumpheight = 0;
+			}
+		}
+	//}
 }
 
 // This is for processing the looking routine.
@@ -288,6 +335,9 @@ void CPlayerLevel::processLooking()
 // Processes the exiting of the player. Here all cases are held
 void CPlayerLevel::processExiting()
 {
+	if(m_climbing)
+		return;
+
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
 	Uint32 x = getXMidPos();

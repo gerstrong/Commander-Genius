@@ -1,6 +1,10 @@
 Commander Genius Release :
 ==========================
 
+v0.3.2.5:
+---------
+
+
 v0.3.2.4:
 ---------
 - Less loading time

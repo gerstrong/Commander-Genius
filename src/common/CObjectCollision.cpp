@@ -340,30 +340,29 @@ bool CObject::hitdetect(CObject &hitobject)
  * \param Property The Tile Property we are looking
  * \return true if detection worked with that tile having the property, else false
  */
-bool CObject::hitdetectWithTileProperty(Uint16 Property)
+bool CObject::hitdetectWithTileProperty(Uint16 Property, Uint16 &x, Uint16 &y)
 {
-	unsigned int rect1x1, rect1y1, rect1x2, rect1y2;
+	unsigned int rectx1, recty1, rectx2, recty2;
 	Uint16 behavior;
 
 	// get the bounding rectangle of the first object
-	rect1x1 = x + bboxX1;
-	rect1y1 = y + bboxY1;
-	rect1x2 = x + bboxX2;
-	rect1y2 = y + bboxY2;
+	rectx1 = this->x + bboxX1;
+	recty1 = this->y + bboxY1;
+	rectx2 = this->x + bboxX2;
+	recty2 = this->y + bboxY2;
 
 	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
+	x = (rectx2+rectx1)/2;
+	y = (recty2+recty1)/2;
 
-	behavior = Tile[mp_Map->getPlaneDataAt(1, rect1x1, rect1y1)].behaviour;
-	if(behavior == Property)	return true;
-
-	behavior = Tile[mp_Map->getPlaneDataAt(1, rect1x2, rect1y1)].behaviour;
-	if(behavior == Property)	return true;
-
-	behavior = Tile[mp_Map->getPlaneDataAt(1, rect1x1, rect1y2)].behaviour;
-	if(behavior == Property)	return true;
-
-	behavior = Tile[mp_Map->getPlaneDataAt(1, rect1x2, rect1y2)].behaviour;
-	if(behavior == Property)	return true;
+	behavior = Tile[mp_Map->getPlaneDataAt(1, x, y)].behaviour;
+	if(behavior == Property)
+	{
+		// calc the proper coord of that tile
+		x = (x>>CSF)<<CSF;
+		y = (y>>CSF)<<CSF;
+		return true;
+	}
 
 	return false;
 }
@@ -458,8 +457,6 @@ bool CObject::checkSolidL( int x1, int x2, int y1, int y2)
 
 	return false;
 }
-
-// TODO: Collision-TAG Move that function into another file
 
 bool CObject::checkSolidU(int x1, int x2, int y1)
 {
