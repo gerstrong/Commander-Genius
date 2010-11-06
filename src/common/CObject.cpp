@@ -203,13 +203,18 @@ bool CObject::checkforScenario()
 
 // Used in some setup mode, like putting the player to
 // the current map position
-void CObject::moveToForce(int new_x, int new_y)
+void CObject::moveToForce(const VectorD2<int> &dir)
 {
 	bool laststate = solid;
 
 	solid = false;
-	moveTo(new_x, new_y);
+	moveTo(dir);
 	solid = laststate;
+}
+
+void CObject::moveToForce(int new_x, int new_y)
+{
+	moveToForce(VectorD2<int>(new_x, new_y));
 }
 
 // For the vector functions
@@ -221,23 +226,22 @@ void CObject::moveDir(const VectorD2<int> &dir)
 
 void CObject::moveTo(const VectorD2<Uint32> &new_loc)
 {
-	moveTo(new_loc.x, new_loc.y);
+	VectorD2<int> amount = new_loc - m_Pos;
+
+	if(amount.x < 0) // move left
+		moveLeft(-amount.x);
+	else if(amount.x > 0) // move right
+		moveRight(amount.x);
+
+	if(amount.y < 0) // means up
+		moveUp(-amount.y);
+	else if(amount.y > 0) // means down
+		moveDown(amount.y);
 }
 
 void CObject::moveTo(int new_x, int new_y)
 {
-	int amount_x = new_x-m_Pos.x;
-	int amount_y = new_y-m_Pos.y;
-
-	if(amount_x < 0) // move left
-		moveLeft(-amount_x);
-	else if(amount_x > 0) // move right
-		moveRight(amount_x);
-
-	if(amount_y < 0) // means up
-		moveUp(-amount_y);
-	else if(amount_y > 0) // means down
-		moveDown(amount_y);
+	moveTo(VectorD2<Uint32>(new_x, new_y));
 }
 
 void CObject::moveXDir(int amount, bool force)

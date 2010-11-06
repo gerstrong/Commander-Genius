@@ -110,6 +110,7 @@ public:
 	bool checkforScenario();
 	
 	// Moving parts
+	void moveToForce(const VectorD2<int> &dir);
 	void moveToForce(int new_x, int new_y);
 	void moveDir(const VectorD2<int> &dir);
 	void moveTo(const VectorD2<Uint32> &new_loc);

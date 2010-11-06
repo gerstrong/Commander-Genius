@@ -52,7 +52,7 @@ void CEndingEp3::HonorScene()
 		MapLoader.load(3, 81, path);
 
 		m_Player[0].hideplayer = false;
-		m_Player[0].moveTo(244<<STC, 104<<STC);
+		m_Player[0].moveTo(VectorD2<int>(244<<STC, 104<<STC));
 		m_Player[0].sprite = 0;
 
 		m_Map.gotoPos(32, 32);
@@ -112,7 +112,7 @@ void CEndingEp3::PaparazziScene()
 		m_step++;
 		m_mustsetup = true;
 		m_Player[0].hideplayer = true;
-		m_Player[0].moveToForce(330<<STC, 104<<STC);
+		m_Player[0].moveToForce(VectorD2<int>(330<<STC, 104<<STC));
 		m_Player[0].sprite = 0;
 	}
 }

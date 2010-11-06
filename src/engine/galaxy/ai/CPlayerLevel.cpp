@@ -263,7 +263,7 @@ void CPlayerLevel::processMoving()
 					if(m_direction == RIGHT)
 						x_pole -= 6<<STC;
 
-					moveTo(x_pole, getYPosition());
+					moveTo(VectorD2<int>(x_pole, getYPosition()));
 					xinertia = 0;
 				}
 			}
