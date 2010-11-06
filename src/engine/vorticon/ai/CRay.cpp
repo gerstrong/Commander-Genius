@@ -25,9 +25,6 @@ m_speed(speed)
 	else if(Episode == 2) sprite = OBJ_RAY_DEFSPRITE_EP2;
 	else if(Episode == 3) sprite = OBJ_RAY_DEFSPRITE_EP3;
 
-	this->x=x;
-	this->y=y;
-
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 	bboxX1 = rSprite.m_bboxX1;		bboxX2 = rSprite.m_bboxX2;
 	bboxY1 = rSprite.m_bboxY1;		bboxY2 = rSprite.m_bboxY2;
@@ -113,9 +110,9 @@ void CRay::moveinAir()
 	{
 		// don't go through bonklethal tiles, even if they're not solid
 		// (for the arms on mortimer's machine)
-		if (TileProperties.at(mp_Map->at(((x>>(CSF-4))+raysprite.getWidth())>>4, (y>>CSF)+1)).behaviour == 1)
+		if (TileProperties.at(mp_Map->at(((getXPosition()>>(CSF-4))+raysprite.getWidth())>>4, (getYPosition()>>CSF)+1)).behaviour == 1)
 			hitlethal = true;
-		else if (TileProperties.at(mp_Map->at(((x>>(CSF-4))+raysprite.getWidth())>>4, ((y>>(CSF-4))+(raysprite.getHeight()-1))>>(CSF-4))).behaviour == 1)
+		else if (TileProperties.at(mp_Map->at(((getXPosition()>>(CSF-4))+raysprite.getWidth())>>4, ((getYPosition()>>(CSF-4))+(raysprite.getHeight()-1))>>(CSF-4))).behaviour == 1)
 			hitlethal = true;
 		else
 			hitlethal = false;
@@ -131,9 +128,9 @@ void CRay::moveinAir()
 	}
 	else if (m_Direction == LEFT)
 	{
-		if (TileProperties.at(mp_Map->at((x-1)>>CSF, (y+1)>>CSF)).behaviour == 1)
+		if (TileProperties.at(mp_Map->at((getXPosition()-1)>>CSF, (getYPosition()+1)>>CSF)).behaviour == 1)
 			hitlethal = true;
-		else if (TileProperties.at(mp_Map->at((x-1)>>CSF, ((y>>(CSF-4))+(raysprite.getHeight()-1))>>(CSF-4))).behaviour == 1)
+		else if (TileProperties.at(mp_Map->at((getXPosition()-1)>>CSF, ((getYPosition()>>(CSF-4))+(raysprite.getHeight()-1))>>(CSF-4))).behaviour == 1)
 			hitlethal = true;
 		else
 			hitlethal = false;

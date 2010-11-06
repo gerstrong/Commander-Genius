@@ -135,6 +135,7 @@ void CBallJack::getShotByRay()
 		{
 		case DUPRIGHT: m_Direction = DUPLEFT; break;
 		case DDOWNRIGHT: m_Direction = DDOWNLEFT; break;
+		default : break;
 		}
 	}
 	else
@@ -143,6 +144,7 @@ void CBallJack::getShotByRay()
 		{
 		case DUPLEFT: m_Direction = DUPRIGHT; break;
 		case DDOWNLEFT: m_Direction = DDOWNRIGHT; break;
+		default : break;
 		}
 	}
 }

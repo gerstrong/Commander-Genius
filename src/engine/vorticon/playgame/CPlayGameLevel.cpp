@@ -6,10 +6,10 @@
  */
 
 #include "CPlayGameVorticon.h"
-#include "../ai/CSectorEffector.h"
-#include "../../../common/objenums.h"
-#include "../../../sdl/sound/CSound.h"
-#include "../finale/CTantalusRay.h"
+#include "engine/vorticon/ai/CSectorEffector.h"
+#include "common/objenums.h"
+#include "sdl/sound/CSound.h"
+#include "engine/vorticon/finale/CTantalusRay.h"
 
 void CPlayGameVorticon::processInLevel()
 {

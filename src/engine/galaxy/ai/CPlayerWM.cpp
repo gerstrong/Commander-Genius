@@ -155,7 +155,7 @@ void CPlayerWM::finishLevel(Uint16 object)
 	if(mp_Map->findTile(flag_dest, &x, &y, 2))
 	{
 		// spawn the flag
-		VectorD2<Uint32> src(this->x, this->y);
+		VectorD2<Uint32> src(getXPosition(), getYPosition());
 		VectorD2<Uint32> dst((x<<CSF), (y<<CSF));
 
 		CFlag *pFlag = new CFlag(mp_Map, src, dst);

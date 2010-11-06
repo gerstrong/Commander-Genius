@@ -24,7 +24,8 @@ sprite(BLANKSPRITE),
 mp_object(NULL),
 mp_Map(pmap),
 m_blinktime(0),
-m_invincible(false)
+m_invincible(false),
+m_Pos(x,y)
 {
 	bboxX1 = 0;
 	bboxX2 = 0;
@@ -36,8 +37,6 @@ m_invincible(false)
 	solid = true;
 	inhibitfall = false;
 
-	this->x = x;
-	this->y = y;
 	canbezapped = false;
 	onscreen = false;
 
@@ -160,7 +159,7 @@ bool CObject::calcVisibility()
 							(mp_Map->m_scrolly<<STC)-(visibility<<CSF);
 	Uint32 down = ((mp_Map->m_scrolly+gameres.h)<<STC)+(visibility<<CSF);
 
-	bool inscreen = ( right > x && left < x && down > y && up < y );
+	bool inscreen = ( right > m_Pos.x && left < m_Pos.x && down > m_Pos.y && up < m_Pos.y );
 
 	// Bullets should disappear when offscreen
 	if(m_type == OBJ_SNDWAVE || m_type == OBJ_RAY || m_type == OBJ_FIREBALL)
@@ -227,8 +226,8 @@ void CObject::moveTo(const VectorD2<Uint32> &new_loc)
 
 void CObject::moveTo(int new_x, int new_y)
 {
-	int amount_x = new_x-x;
-	int amount_y = new_y-y;
+	int amount_x = new_x-m_Pos.x;
+	int amount_y = new_y-m_Pos.y;
 
 	if(amount_x < 0) // move left
 		moveLeft(-amount_x);
@@ -261,17 +260,17 @@ void CObject::moveLeft(int amount, bool force)
 	if(amount <= 0)
 		return;
 
-	int y1 = y + bboxY1;
-	int y2 = y + bboxY2;
+	int y1 = m_Pos.y + bboxY1;
+	int y2 = m_Pos.y + bboxY2;
 
 	blockedr = false;
 	// If it is forced don't check for collision
 	if(force) {
-		x -= amount;
+		m_Pos.x -= amount;
 		return;
 	}
 
-	if( y-amount < 0 )
+	if( m_Pos.y-amount < 0 )
 		return;
 
 	// If object isn't solid it won't be stopped anyway
@@ -279,7 +278,7 @@ void CObject::moveLeft(int amount, bool force)
 	{
 		blockedr = blockedl = false;
 		blockedu = blockedd = false;
-		x -= amount;
+		m_Pos.x -= amount;
 		return;
 	}
 
@@ -290,13 +289,13 @@ void CObject::moveLeft(int amount, bool force)
 		{
 			if(amount > (1<<STC))
 			{
-				x -= (1<<STC);
+				m_Pos.x -= (1<<STC);
 				moveSlopedTiles(getXMidPos()-64, y1, y2, -(1<<STC));
 				amount -= (1<<STC);
 			}
 			else
 			{
-				x -= amount;
+				m_Pos.x -= amount;
 				moveSlopedTiles(getXMidPos()-64, y1, y2, -amount);
 				amount = 0;
 			}
@@ -310,12 +309,12 @@ void CObject::moveRight(int amount, bool force)
 	if(amount <= 0)
 		return;
 
-	int y1 = y + bboxY1;
-	int y2 = y + bboxY2;
+	int y1 = m_Pos.y + bboxY1;
+	int y2 = m_Pos.y + bboxY2;
 
 	blockedl = false;
 	if(force) {
-		x += amount;
+		m_Pos.x += amount;
 		return;
 	}
 
@@ -323,7 +322,7 @@ void CObject::moveRight(int amount, bool force)
 	{
 		blockedr = blockedl = false;
 		blockedu = blockedd = false;
-		x += amount;
+		m_Pos.x += amount;
 		return;
 	}
 
@@ -335,13 +334,13 @@ void CObject::moveRight(int amount, bool force)
 		{
 			if(amount > (1<<STC))
 			{
-				x += (1<<STC);
+				m_Pos.x += (1<<STC);
 				moveSlopedTiles(getXMidPos()+64, y1, y2, (1<<STC));
 				amount -= (1<<STC);
 			}
 			else
 			{
-				x += amount;
+				m_Pos.x += amount;
 				moveSlopedTiles(getXMidPos()+64, y1, y2, amount);
 				amount = 0;
 			}
@@ -355,7 +354,7 @@ void CObject::moveUp(int amount)
 	if(amount <= 0)
 		return;
 
-	int y1 = y + bboxY1;
+	int y1 = m_Pos.y + bboxY1;
 
 	if( y1-amount < 0 )
 		return;
@@ -364,7 +363,7 @@ void CObject::moveUp(int amount)
 	{
 		blockedr = blockedl = false;
 		blockedu = blockedd = false;
-		y -= amount;
+		m_Pos.y -= amount;
 		return;
 	}
 
@@ -375,12 +374,12 @@ void CObject::moveUp(int amount)
 		{
 			if(amount > (1<<STC))
 			{
-				y -= (1<<STC);
+				m_Pos.y -= (1<<STC);
 				amount -= (1<<STC);
 			}
 			else
 			{
-				y -= amount;
+				m_Pos.y -= amount;
 				amount = 0;
 			}
 		}
@@ -399,7 +398,7 @@ void CObject::moveDown(int amount)
 	{
 		blockedr = blockedl = false;
 		blockedu = blockedd = false;
-		y += amount;
+		m_Pos.y += amount;
 		return;
 	}
 
@@ -410,12 +409,12 @@ void CObject::moveDown(int amount)
 		{
 			if(amount > (1<<STC))
 			{
-				y += (1<<STC);
+				m_Pos.y += (1<<STC);
 				amount -= (1<<STC);
 			}
 			else
 			{
-				y += amount;
+				m_Pos.y += amount;
 				amount = 0;
 			}
 		}
@@ -458,21 +457,21 @@ void CObject::InertiaAndFriction_X()
 }
 
 unsigned int CObject::getXPosition()
-{ return x; }
+{ return m_Pos.x; }
 unsigned int CObject::getYPosition()
-{ return y; }
+{ return m_Pos.y; }
 unsigned int CObject::getXLeftPos()
-{ return x+bboxX1; }
+{ return m_Pos.x+bboxX1; }
 unsigned int CObject::getXRightPos()
-{ return x+bboxX2; }
+{ return m_Pos.x+bboxX2; }
 unsigned int CObject::getXMidPos()
-{ return x+(bboxX2-bboxX1)/2; }
+{ return m_Pos.x+(bboxX2-bboxX1)/2; }
 unsigned int CObject::getYUpPos()
-{ return y+bboxY1; }
+{ return m_Pos.y+bboxY1; }
 unsigned int CObject::getYDownPos()
-{ return y+bboxY2; }
+{ return m_Pos.y+bboxY2; }
 unsigned int CObject::getYMidPos()
-{ return y+(bboxY2-bboxY1)/2; }
+{ return m_Pos.y+(bboxY2-bboxY1)/2; }
 
 
 /**
@@ -637,8 +636,8 @@ void CObject::draw()
 	CSprite &Sprite = g_pGfxEngine->getSprite(sprite);
     SDL_Surface *sfc = g_pVideoDriver->getBlitSurface();
 
-	scrx = (x>>STC)-mp_Map->m_scrollx;
-	scry = (y>>STC)-mp_Map->m_scrolly;
+	scrx = (m_Pos.x>>STC)-mp_Map->m_scrollx;
+	scry = (m_Pos.y>>STC)-mp_Map->m_scrolly;
 
 	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
 

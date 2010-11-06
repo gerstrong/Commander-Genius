@@ -17,12 +17,12 @@
 void CObject::performCollisionsSameBox()
 {
 	// Left/Right borders
-	blockedl = checkSolidL(x+bboxX1, x+bboxX2, y+bboxY1, y+bboxY2);
-	blockedr = checkSolidR(x+bboxX1, x+bboxX2, y+bboxY1, y+bboxY2);
+	blockedl = checkSolidL(m_Pos.x+bboxX1, m_Pos.x+bboxX2, m_Pos.y+bboxY1, m_Pos.y+bboxY2);
+	blockedr = checkSolidR(m_Pos.x+bboxX1, m_Pos.x+bboxX2, m_Pos.y+bboxY1, m_Pos.y+bboxY2);
 
 	// Upper/Lower borders
-	blockedu = checkSolidU(x+bboxX1, x+bboxX2, y+bboxY1);
-	blockedd = checkSolidD(x+bboxX1, x+bboxX2, y+bboxY2);
+	blockedu = checkSolidU(m_Pos.x+bboxX1, m_Pos.x+bboxX2, m_Pos.y+bboxY1);
+	blockedd = checkSolidD(m_Pos.x+bboxX1, m_Pos.x+bboxX2, m_Pos.y+bboxY2);
 
 	if(g_pBehaviorEngine->getEpisode() > 3)
 	{ // now check for the sloped tiles
@@ -56,9 +56,9 @@ const int COLISION_RES = (1<<STC);
 void CObject::performCollisionOnSlopedTiles()
 {
 	const Uint32 halftile = ((1<<CSF)/2);
-	const Uint32 x1 = x + bboxX1;
-	const Uint32 x2 = x + bboxX2;
-	const Uint32 y2 = y + bboxY2;
+	const Uint32 x1 = m_Pos.x + bboxX1;
+	const Uint32 x2 = m_Pos.x + bboxX2;
+	const Uint32 y2 = m_Pos.y + bboxY2;
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 	onslope = false;
 
@@ -133,8 +133,8 @@ void CObject::pushOutofSolidTiles()
 {
 	if(onslope)
 	{
-		const int px= (x+(bboxX1+bboxX2)/2);
-		const int py= (y+bboxY2+1);
+		const int px= (m_Pos.x+(bboxX1+bboxX2)/2);
+		const int py= (m_Pos.y+bboxY2+1);
 		std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 		const char slope = TileProperty[mp_Map->at(px>>CSF, py>>CSF)].bup;
 
@@ -147,7 +147,7 @@ void CObject::pushOutofSolidTiles()
 			const int yh = yb1 + dy;
 
 			if( py%512 > yh )
-				y -= ((py%512) - yh);
+				m_Pos.y -= ((py%512) - yh);
 		}
 	}
 }
@@ -222,14 +222,14 @@ bool CObject::moveSlopedTileDown( int x, int y, int xspeed )
 			if( x_r >= 480 && ( yb1>yb2 ) ) // At Tile edge
 			{
 				new_y = (new_y>>CSF)<<CSF;
-				dy = this->y - (new_y+yb2);
+				dy = m_Pos.y - (new_y+yb2);
 				moveUp( dy );
 				moveRight( dy );
 
 			}
 			else // In the Tile itself or walking into...
 			{
-				moveYDir( new_y - this->y );
+				moveYDir( new_y - m_Pos.y );
 			}
 		}
 		else if(xspeed < 0) // Going left
@@ -238,13 +238,13 @@ bool CObject::moveSlopedTileDown( int x, int y, int xspeed )
 			if( x_r <= 32 && ( yb1<yb2 ) ) // At Tile edge
 			{
 				new_y = (new_y>>CSF)<<CSF;
-				dy = (new_y+yb1) - this->y;
+				dy = (new_y+yb1) - m_Pos.y;
 				moveYDir( dy );
 				moveLeft( dy );
 			}
 			else // In the Tile itself or walking into...
 			{
-				moveYDir( new_y - this->y );
+				moveYDir( new_y - m_Pos.y );
 			}
 		}
 		return true;
@@ -305,7 +305,7 @@ void CObject::moveSlopedTileUp( int x, int y, int xspeed )
 
 	// get new position
 	const Uint32 new_y = y_pos - bboxY1 + (1<<STC);
-	moveYDir( new_y - this->y );
+	moveYDir( new_y - m_Pos.y );
 }
 
 // returns nonzero if object1 overlaps object2
@@ -315,16 +315,16 @@ bool CObject::hitdetect(CObject &hitobject)
 	unsigned int rect2x1, rect2y1, rect2x2, rect2y2;
 
 	// get the bounding rectangle of the first object
-	rect1x1 = x + bboxX1;
-	rect1y1 = y + bboxY1;
-	rect1x2 = x + bboxX2;
-	rect1y2 = y + bboxY2;
+	rect1x1 = m_Pos.x + bboxX1;
+	rect1y1 = m_Pos.y + bboxY1;
+	rect1x2 = m_Pos.x + bboxX2;
+	rect1y2 = m_Pos.y + bboxY2;
 
 	// get the bounding rectangle of the second object
-	rect2x1 = hitobject.x + hitobject.bboxX1;
-	rect2y1 = hitobject.y + hitobject.bboxY1;
-	rect2x2 = hitobject.x + hitobject.bboxX2;
-	rect2y2 = hitobject.y + hitobject.bboxY2;
+	rect2x1 = hitobject.getXPosition() + hitobject.bboxX1;
+	rect2y1 = hitobject.getYPosition() + hitobject.bboxY1;
+	rect2x2 = hitobject.getXPosition() + hitobject.bboxX2;
+	rect2y2 = hitobject.getYPosition() + hitobject.bboxY2;
 
 	// find out if the rectangles overlap
 	if ((rect1x1 <= rect2x1) && (rect1x2 <= rect2x1)) return false;

@@ -72,15 +72,15 @@ void CCamera::process()
 	}
 	else
 	{
-		if(mp_AttachedObject->getXPosition() > x)
-			moveRight(mp_AttachedObject->getXPosition() - x );
-		else if(mp_AttachedObject->getXPosition() < x)
-			moveLeft(x - mp_AttachedObject->getXPosition());
+		if(mp_AttachedObject->getXPosition() > getXPosition())
+			moveRight(mp_AttachedObject->getXPosition() - getXPosition() );
+		else if(mp_AttachedObject->getXPosition() < getXPosition())
+			moveLeft(getXPosition() - mp_AttachedObject->getXPosition());
 
-		if(mp_AttachedObject->getYPosition() > y)
-			moveDown(mp_AttachedObject->getYPosition() - y);
-		else if(mp_AttachedObject->getYPosition() < y)
-			moveUp(y - mp_AttachedObject->getYPosition());
+		if(mp_AttachedObject->getYPosition() > getYPosition())
+			moveDown(mp_AttachedObject->getYPosition() - getYPosition());
+		else if(mp_AttachedObject->getYPosition() < getYPosition())
+			moveUp(getYPosition() - mp_AttachedObject->getYPosition());
 
 	}
 

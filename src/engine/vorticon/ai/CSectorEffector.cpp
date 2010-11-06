@@ -282,7 +282,7 @@ void CSectorEffector::se_mortimer_spark()
 		{
 			set_mortimer_surprised(true);
 			g_pGfxEngine->pushEffectPtr(new CVibrate(200));
-			mp_Map->redrawAt(this->x>>CSF, this->y>>CSF);
+			mp_Map->redrawAt(getXPosition()>>CSF, getYPosition()>>CSF);
 
 			// if there are any sparks left, destroy the spark,
 			// else destroy mortimer's arms

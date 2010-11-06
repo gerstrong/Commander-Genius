@@ -76,7 +76,7 @@ void CMessie::process()
 	{
 		if (mounted[it_player->m_index])
 		{
-			it_player->moveTo(x, y);
+			it_player->moveTo(m_Pos);
 			isMounted = true;
 		}
 	}
@@ -96,17 +96,17 @@ void CMessie::process()
 	{
 	case NESSIE_SWIMNORMAL:
 		// arrived at destination?
-		if ( x > (destx-NESSIE_SPEED/2)  &&
-				x < (destx+NESSIE_SPEED/2) )
+		if ( getXPosition() > (destx-NESSIE_SPEED/2)  &&
+				getXPosition() < (destx+NESSIE_SPEED/2) )
 		{
-			if ( y > (desty-NESSIE_SPEED/2)  &&
-					y < (desty+NESSIE_SPEED/2) )
+			if ( getYPosition() > (desty-NESSIE_SPEED/2)  &&
+					getYPosition() < (desty+NESSIE_SPEED/2) )
 			{
 				nessie_find_next_checkpoint();
 
 				// set up/down and left/right direction flags for frame selection
-				bool goleft = (destx < x);
-				bool godown = (desty > y);
+				bool goleft = (destx < getXPosition());
+				bool godown = (desty > getYPosition());
 
 				if(goleft && !godown)
 					m_direction = LEFTUP;
@@ -147,14 +147,14 @@ void CMessie::move_nessie()
 		baseframe = NESSIE_UPRIGHT_FRAME;
 
 	// head to destination
-	if (x < destx)
+	if (getXPosition() < destx)
 		moveRight(NESSIE_SPEED);
-	else if (x > destx)
+	else if (getXPosition() > destx)
 		moveLeft(NESSIE_SPEED);
 
-	if (y < desty)
+	if (getYPosition() < desty)
 		moveDown(NESSIE_SPEED);
-	else if (y > desty)
+	else if (getYPosition() > desty)
 		moveUp(NESSIE_SPEED);
 }
 

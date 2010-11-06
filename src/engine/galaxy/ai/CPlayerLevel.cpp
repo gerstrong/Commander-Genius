@@ -25,7 +25,8 @@ CObject(pmap, x, y, OBJ_NONE),
 m_animation(0),
 m_animation_time(1),
 m_animation_ticker(0),
-m_ObjectPtrs(ObjectPtrs)
+m_ObjectPtrs(ObjectPtrs),
+m_cliff_hanging(false)
 {
 	m_index = 0;
 	m_direction = facedir;
@@ -216,15 +217,30 @@ void CPlayerLevel::processMoving()
 		// Normal moving
 		if(!m_playcontrol[PA_FIRE])
 		{
-			if( m_playcontrol[PA_X]<0 && !blockedl)
+			if( m_playcontrol[PA_X]<0 )
 			{
-				xinertia = -movespeed;
-				m_direction = LEFT;
+				if(!blockedl)
+				{
+					// make him walk
+					xinertia = -movespeed;
+					m_direction = LEFT;
+				}
+				else
+				{
+					// TODO: check if keen can hang on the cliff
+				}
 			}
-			else if( m_playcontrol[PA_X]>0 && !blockedr)
+			else if( m_playcontrol[PA_X]>0)
 			{
-				xinertia = movespeed;
-				m_direction = RIGHT;
+				if(!blockedr)
+				{
+					xinertia = movespeed;
+					m_direction = RIGHT;
+				}
+				else
+				{
+					// TODO: check if keen can hang on the cliff
+				}
 			}
 
 			Uint16 l_x = ( getXLeftPos() + getXRightPos() ) / 2;
