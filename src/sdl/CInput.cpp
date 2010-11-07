@@ -696,8 +696,9 @@ void CInput::processKeys(int keydown)
 	}
 }
 
+#ifdef MOUSEWRAPPER
 static bool checkMousewrapperKey(int& key);
-
+#endif
 /**
  * \brief	returns if certain key is being held
  * \param	key the key to be held
@@ -865,7 +866,7 @@ bool CInput::getPressedIsNumKey(void)
 
 bool CInput::getPressedAnyKey(void)
 {
-	for(int key=0 ; key<KEYTABLE_SIZE ; key++)
+	for(unsigned int key=0 ; key<KEYTABLE_SIZE ; key++)
 	{
 		if(firsttime_immediate_keytable[key])
 		{
@@ -1001,6 +1002,7 @@ static const int w = 320, h = 200;
 
 #define KSHOWHIDECTRLS	(-10)
 
+#if defined(MOUSEWRAPPER)
 static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_COMMANDS]) {
 	static const int middlex = w / 2;
 	static const int middley = h / 2;
@@ -1024,15 +1026,13 @@ static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_
 	return phoneButtons;
 }
 
-#if defined(MOUSEWRAPPER)
+
 
 static const int phoneButtonN = 11;
 typedef std::set<int> MouseIndexSet;
 
 static Uint32 phoneButtonLasttime[phoneButtonN] = {0,0,0,0,0,0,0,0,0,0,0};
 static MouseIndexSet phoneButton_MouseIndex[phoneButtonN];
-
-#endif
 
 
 static TouchButton* getPhoneButton(int x, int y, TouchButton phoneButtons[]) {
@@ -1165,7 +1165,7 @@ static void drawButton(TouchButton& button, bool down) {
 }
 #endif
 
-
+#endif
 
 void CInput::renderOverlay() {
 #ifdef USE_OPENGL // only ogl supported yet (and probably worth)
