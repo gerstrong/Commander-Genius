@@ -16,6 +16,16 @@
 #include "objenums.h"
 #include "CVec.h"
 
+// structures for each AI module's data
+#include "engine/vorticon/ai/enemydata.h"
+#include "common/CMap.h"
+#include "graphics/CGfxEngine.h"
+#include "options.h"
+
+// Enumerations are here
+#include "objenums.h"
+
+
 #define SAFE_DELETE_ARRAY(x) if(x) { delete [] x; x = NULL; }
 #define SAFE_DELETE(x) if(x) { delete x; x = NULL; }
 
@@ -34,15 +44,6 @@ enum direction_t{
 	UP,
 	DOWN
 };
-
-// structures for each AI module's data
-#include "engine/vorticon/ai/enemydata.h"
-#include "common/CMap.h"
-#include "graphics/CGfxEngine.h"
-#include "options.h"
-
-// Enumerations are here
-#include "objenums.h"
 
 class CObject {
 public:

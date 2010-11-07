@@ -20,6 +20,7 @@ m_masksurface(NULL)
 	m_xsize = m_ysize = 0;
 	m_bboxX1 = m_bboxY1 = 0;
 	m_bboxX2 = m_bboxY2 = 0;
+	m_xoffset = m_yoffset = 0;
 }
 
 /////////////////////////////

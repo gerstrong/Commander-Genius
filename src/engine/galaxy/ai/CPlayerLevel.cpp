@@ -81,7 +81,6 @@ void CPlayerLevel::process()
 	if(m_climbing)
 		moveYDir(yinertia);
 
-
 	processActionRoutine();
 }
 
@@ -168,8 +167,6 @@ void CPlayerLevel::processFiring()
 		}
 	}
 
-
-
 }
 
 void CPlayerLevel::processFalling()
@@ -191,8 +188,8 @@ void CPlayerLevel::processMoving()
 	{
 		// The climbing section for Keen
 		Uint16 l_x = ( getXLeftPos() + getXRightPos() ) / 2;
-		Uint16 l_y_up = getYUpPos();
-		Uint16 l_y_down = getYDownPos();
+		Uint16 l_y_up = getYUpPos()-(7<<STC);
+		Uint16 l_y_down = getYDownPos()-(7<<STC);
 		if(m_playcontrol[PA_Y] < 0 && hitdetectWithTileProperty(1, l_x, l_y_up) )
 		{
 			if(!getActionNumber(A_KEEN_POLE_CLIMB))
@@ -258,12 +255,8 @@ void CPlayerLevel::processMoving()
 					// Set Keen in climb mode
 					setAction(A_KEEN_POLE);
 
-					// Set also the proper X Coordinates, so kenn really grabs it!
-					Uint16 x_pole = l_x;
-					if(m_direction == RIGHT)
-						x_pole -= 6<<STC;
-
-					moveTo(VectorD2<int>(x_pole, getYPosition()));
+					// Move to the proper X Coordinates, so Keen really grabs it!
+					moveTo(VectorD2<int>(l_x - (7<<STC), getYPosition()));
 					xinertia = 0;
 				}
 			}

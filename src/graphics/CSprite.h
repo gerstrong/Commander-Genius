@@ -28,6 +28,7 @@ public:
 	bool loadHQSprite( const std::string& filename );
 	
 	void setSize(Uint8 w, Uint8 h) { m_xsize = w; m_ysize = h; }
+	void setOffset(Uint16 x, Uint16 y) { m_xoffset = x; m_yoffset = y; }
 	void setBouncingBoxCoordinates( Uint16 bboxx1, Uint16 bboxy1, Uint16 bboxx2, Uint16 bboxy2 );
 	SDL_Surface *getSDLSurface() { return m_surface; }
 	SDL_Surface *getSDLMaskSurface() { return m_masksurface; }
@@ -35,6 +36,8 @@ public:
 	void drawSprite( SDL_Surface *dst, Uint16 x, Uint16 y );
 	void drawBlinkingSprite( SDL_Surface *dst, Uint16 x, Uint16 y );
 
+	Uint16 getXOffset() { return m_xoffset; }
+	Uint16 getYOffset() { return m_yoffset; }
 	Uint8 getWidth() { return m_xsize; };
 	Uint8 getHeight() { return m_ysize; };
 	void setWidth(Uint8 w) { m_xsize=w; };
@@ -53,6 +56,7 @@ private:
 	SDL_Surface* m_masksurface;
 
 	Uint8 m_xsize, m_ysize;
+	Uint16 m_xoffset, m_yoffset;
 };
 
 #endif /* CSPRITE_H_ */

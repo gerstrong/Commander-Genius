@@ -608,7 +608,6 @@ void CObject::setAction(size_t ActionNumber)
 // This new function will setup the sprite based on the Action format
 void CObject::processActionRoutine()
 {
-
 	if(m_direction == LEFT)
 		sprite = m_Action.Left_sprite-124;
 	else if(m_direction == RIGHT)
@@ -619,11 +618,19 @@ void CObject::processActionRoutine()
 	if( m_ActionTicker > m_Action.Delay )
 	{
 		if( m_Action.Delay != 0 && m_Action.Next_action != 0 )
+		{
 			m_Action.setNextActionFormat();
+			/*printf("h=%d ; v=%d\n", m_Action.Change_h, m_Action.Change_v);
+			printf("h_move=%d ; v_move=%d\n", m_Action.H_anim_move_amount, m_Action.V_anim_move_amount);
+			if(m_Action.Change_h)
+				moveXDir( m_Action.H_anim_move_amount );
+			if(m_Action.Change_v)
+				moveYDir( m_Action.V_anim_move_amount );*/
+		}
 		m_ActionTicker = 0;
 	}
 	else
-		m_ActionTicker+=2;
+		m_ActionTicker += 2;
 }
 
 ////
@@ -647,13 +654,15 @@ void CObject::draw()
 
 	if(scry < gameres.w && scry < gameres.h && exists)
 	{
+		Uint16 showX = scrx+Sprite.getXOffset();
+		Uint16 showY = scry+Sprite.getYOffset();
 		if(m_blinktime > 0)
 		{
-			Sprite.drawBlinkingSprite( sfc, scrx, scry );
+			Sprite.drawBlinkingSprite( sfc, showX, showY );
 			m_blinktime--;
 		}
 		else
-			Sprite.drawSprite( sfc, scrx, scry );
+			Sprite.drawSprite( sfc, showX, showY );
 		hasbeenonscreen = true;
 	}
 }
