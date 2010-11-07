@@ -260,6 +260,8 @@
 		23CE972011FCD8860033FDFF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23CE971F11FCD8860033FDFF /* Foundation.framework */; };
 		23E2A7101217525E00F0CD34 /* CProfilesMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E2A70D1217525E00F0CD34 /* CProfilesMenu.cpp */; };
 		23E2A7111217525E00F0CD34 /* CProfilesMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E2A70D1217525E00F0CD34 /* CProfilesMenu.cpp */; };
+		23F2165412871F9500A8842A /* CObjectCollision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23F2165312871F9500A8842A /* CObjectCollision.cpp */; };
+		23F2165512871F9500A8842A /* CObjectCollision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23F2165312871F9500A8842A /* CObjectCollision.cpp */; };
 		63AB8C2F107C62D0001EE22F /* cglogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63AB8C2E107C62D0001EE22F /* cglogo.icns */; };
 		63C72AC71274284A00E9A293 /* ThreadPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63C72AC61274284A00E9A293 /* ThreadPool.cpp */; };
 		63C72AC81274284A00E9A293 /* ThreadPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63C72AC61274284A00E9A293 /* ThreadPool.cpp */; };
@@ -548,6 +550,7 @@
 		23E2A70D1217525E00F0CD34 /* CProfilesMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CProfilesMenu.cpp; sourceTree = "<group>"; };
 		23E2A70E1217525E00F0CD34 /* CProfilesMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CProfilesMenu.h; sourceTree = "<group>"; };
 		23E2A70F1217525E00F0CD34 /* CSelectionMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSelectionMenu.h; sourceTree = "<group>"; };
+		23F2165312871F9500A8842A /* CObjectCollision.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CObjectCollision.cpp; sourceTree = "<group>"; };
 		5048396D09E3307300765E4B /* CommanderGeniusProj.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = CommanderGeniusProj.xcconfig; sourceTree = "<group>"; };
 		5048396E09E3307300765E4B /* CommanderGeniusTarget.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = CommanderGeniusTarget.xcconfig; sourceTree = "<group>"; };
 		6304FC3F10E3EAD800307EAC /* CGLogo.bmp */ = {isa = PBXFileReference; explicitFileType = image.bmp; path = CGLogo.bmp; sourceTree = "<group>"; };
@@ -1354,6 +1357,7 @@
 		63CD10B011CFF5FB00F60BC8 /* common */ = {
 			isa = PBXGroup;
 			children = (
+				23F2165312871F9500A8842A /* CObjectCollision.cpp */,
 				23E2A70C1217524300F0CD34 /* ActionFormat.h */,
 				63CD10B111CFF5FB00F60BC8 /* CBehaviorEngine.cpp */,
 				63CD10B211CFF5FB00F60BC8 /* CBehaviorEngine.h */,
@@ -2257,6 +2261,7 @@
 				23E2A7101217525E00F0CD34 /* CProfilesMenu.cpp in Sources */,
 				63F4C9881273600000CA4C79 /* CResourceLoader.cpp in Sources */,
 				63C72AC71274284A00E9A293 /* ThreadPool.cpp in Sources */,
+				23F2165512871F9500A8842A /* CObjectCollision.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2450,6 +2455,7 @@
 				23E2A7111217525E00F0CD34 /* CProfilesMenu.cpp in Sources */,
 				63F4C9891273600000CA4C79 /* CResourceLoader.cpp in Sources */,
 				63C72AC81274284A00E9A293 /* ThreadPool.cpp in Sources */,
+				23F2165412871F9500A8842A /* CObjectCollision.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2568,6 +2574,7 @@
 					"-DBUILD_SDL",
 					"-DUSE_OPENGL",
 					"-D__DARWIN_64_BIT_INO_T=1",
+					"-DMOUSEWRAPPER",
 				);
 				PRODUCT_NAME = "Commander Genius";
 				SDKROOT = iphoneos3.2;
@@ -2605,6 +2612,7 @@
 					"-DBUILD_SDL",
 					"-DUSE_OPENGL",
 					"-D__DARWIN_64_BIT_INO_T=1",
+					"-DMOUSEWRAPPER",
 				);
 				PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES;
 				PRODUCT_NAME = "Commander Genius";
