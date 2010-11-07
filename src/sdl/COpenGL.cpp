@@ -216,10 +216,9 @@ static void renderTexture(GLuint texture, bool withAlpha = false) {
 
 	glEnable(GL_BLEND);
 	if(withAlpha)
-		//glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA /*GL_SRC_COLOR*/);
 		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 	else
-		glBlendFunc(GL_ONE, GL_ZERO /*GL_SRC_COLOR*/);
+		glBlendFunc(GL_ONE, GL_ZERO );
 
 	glBindTexture (GL_TEXTURE_2D, texture);
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
@@ -292,7 +291,7 @@ void COpenGL::render()
 		reloadFX(mp_fgsurface);
 		renderTexture(m_texFG, true);
 	}
-	
+
 	g_pInput->renderOverlay();
 
 	SDL_GL_SwapBuffers();

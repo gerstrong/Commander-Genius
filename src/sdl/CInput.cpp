@@ -1024,13 +1024,15 @@ static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_
 	return phoneButtons;
 }
 
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+#if defined(MOUSEWRAPPER)
 
 static const int phoneButtonN = 11;
 typedef std::set<int> MouseIndexSet;
 
 static Uint32 phoneButtonLasttime[phoneButtonN] = {0,0,0,0,0,0,0,0,0,0,0};
 static MouseIndexSet phoneButton_MouseIndex[phoneButtonN];
+
+#endif
 
 
 static TouchButton* getPhoneButton(int x, int y, TouchButton phoneButtons[]) {
@@ -1076,12 +1078,15 @@ void CInput::processMouse() {
 }
 
 void CInput::processMouse(SDL_Event& ev) {
+
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	SDL_Rect screenRect;
 	if(SDL_GetDisplayBounds(0, &screenRect) == 0) {
 		// transform mouse coordinates
 		// WARNING: I don't really understand that. It's probably somehow iPhoneRotateScreen + SDL stuff.
 		ev.button.y -= screenRect.h - 200;
 	}
+#endif // iPhone
 	
 	// NOTE: The ev.button.which / the multitouch support was removed in SDL 1.3 trunk
 	// with changeset 4465:3e69e077cb95 on May09. It is planned to add a real multitouch API
@@ -1124,6 +1129,8 @@ void CInput::processMouse(int x, int y, bool down, int mouseindex) {
 static void drawButton(TouchButton& button, bool down) {
 	// similar mysterious constant as in renderTexture/initGL
 	//glViewport(0,255,w,h);
+
+
 	float w = 512.0f, h = 256.0f;
 	
 	int crop = 2;
@@ -1139,8 +1146,7 @@ static void drawButton(TouchButton& button, bool down) {
 		x2, y2,
 		x1, y2,
 	};
-	
-	
+
 	//Render the vertices by pointing to the arrays.
     glEnableClientState(GL_VERTEX_ARRAY);
 	glVertexPointer(2, GL_FLOAT, 0, vertices);
@@ -1155,11 +1161,11 @@ static void drawButton(TouchButton& button, bool down) {
 	
 	//Finally draw the arrays.
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-	glDisableClientState(GL_VERTEX_ARRAY);	
+	glDisableClientState(GL_VERTEX_ARRAY);
 }
 #endif
 
-#endif // iPhone
+
 
 void CInput::renderOverlay() {
 #ifdef USE_OPENGL // only ogl supported yet (and probably worth)
