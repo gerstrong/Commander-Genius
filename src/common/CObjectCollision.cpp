@@ -37,15 +37,10 @@ void CObject::calcBouncingBoxes(bool firsttime)
 {
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 
-	const int diff_y =  bboxY2==0 ? 0 :(int)bboxY2-(int)rSprite.m_bboxY2;
-
 	bboxX1 = rSprite.m_bboxX1;
 	bboxX2 = rSprite.m_bboxX2;
 	bboxY1 = rSprite.m_bboxY1;
 	bboxY2 = rSprite.m_bboxY2;
-
-	if(!firsttime && g_pBehaviorEngine->getEpisode() > 3)
-		moveYDir(diff_y);
 }
 
 /*

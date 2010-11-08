@@ -613,8 +613,6 @@ void CObject::processActionRoutine()
 	else if(m_direction == RIGHT)
 		sprite = m_Action.Right_sprite-124;
 
-	calcBouncingBoxes();
-
 	if( m_ActionTicker > m_Action.Delay )
 	{
 		if( m_Action.Delay != 0 && m_Action.Next_action != 0 )
