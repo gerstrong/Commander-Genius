@@ -33,7 +33,7 @@ void CObject::performCollisionsSameBox()
 /*
  * \brief Calculate Bouncing Boxes
  */
-void CObject::calcBouncingBoxes(bool firsttime)
+void CObject::calcBouncingBoxes()
 {
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 
@@ -151,14 +151,14 @@ void CObject::pushOutofSolidTiles()
  * \brief This checks the collision. Very simple pixel based algorithm
  * 		  The collision is per pixel-based
  */
-void CObject::performCollisions(bool firsttime)
+void CObject::performCollisions()
 {
 	blockedr = blockedl = false;
 	blockedu = blockedd = false;
 
 	if ( sprite != BLANKSPRITE )
 	{
-		calcBouncingBoxes(firsttime);
+		calcBouncingBoxes();
 		performCollisionsSameBox();
 	}
 }

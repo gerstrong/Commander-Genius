@@ -41,7 +41,6 @@ m_cliff_hanging(false)
 	processActionRoutine();
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 	moveUp(rSprite.m_bboxY2-rSprite.m_bboxY1+(1<<CSF));
-	calcBouncingBoxes();
 	performCollisions();
 }
 
@@ -132,40 +131,51 @@ void CPlayerLevel::processInput()
 	}
 	else
 	{
-		m_playcontrol[PA_FIRE]   = g_pInput->getHoldedCommand(m_index, IC_FIRE)   ? 1 : 0;
+		m_playcontrol[PA_FIRE] = g_pInput->getHoldedCommand(m_index, IC_FIRE)   ? 1 : 0;
 	}
 }
 
 void CPlayerLevel::processFiring()
 {
-	if(m_climbing)
-		return;
+		bool inair = getActionNumber(A_KEEN_JUMP) || getActionNumber(A_KEEN_JUMP+1) ||
+				getActionNumber(A_KEEN_FALL) || falling;
 
-	bool inair = getActionNumber(A_KEEN_JUMP) || getActionNumber(A_KEEN_JUMP+1) ||
-			getActionNumber(A_KEEN_FALL) || falling;
+		bool shooting =  getActionNumber(A_KEEN_JUMP_SHOOT) || getActionNumber(A_KEEN_JUMP_SHOOTDOWN) ||
+				getActionNumber(A_KEEN_JUMP_SHOOTUP) || getActionNumber(A_KEEN_SHOOT+2) ||
+				getActionNumber(A_KEEN_POLE_SHOOTUP) || getActionNumber(A_KEEN_POLE_SHOOTDOWN) ||
+				getActionNumber(A_KEEN_POLE_SHOOT);
 
-	bool shooting =  getActionNumber(A_KEEN_JUMP_SHOOT) || getActionNumber(A_KEEN_JUMP_SHOOTDOWN) ||
-			getActionNumber(A_KEEN_JUMP_SHOOTUP) || getActionNumber(A_KEEN_SHOOT+2);
+		if( m_playcontrol[PA_FIRE] && m_climbing )
+			yinertia = 0;
 
-	if( m_playcontrol[PA_FIRE] && !shooting )
-	{
-		if( inair )
+		if( m_playcontrol[PA_FIRE] && !shooting )
 		{
-			if(m_playcontrol[PA_Y] < 0)
-				setAction(A_KEEN_JUMP_SHOOTUP);
-			else if(m_playcontrol[PA_Y] > 0)
-				setAction(A_KEEN_JUMP_SHOOTDOWN);
+			if(m_climbing)
+			{
+				if(m_playcontrol[PA_Y] < 0 && !getActionNumber(A_KEEN_POLE_SHOOTUP))
+					setAction(A_KEEN_POLE_SHOOTUP);
+				else if(m_playcontrol[PA_Y] > 0 && !getActionNumber(A_KEEN_POLE_SHOOTDOWN))
+					setAction(A_KEEN_POLE_SHOOTDOWN);
+				else if(!getActionNumber(A_KEEN_POLE_SHOOT))
+					setAction(A_KEEN_POLE_SHOOT);
+			}
+			else if( inair )
+			{
+				if(m_playcontrol[PA_Y] < 0 && !getActionNumber(A_KEEN_JUMP_SHOOTUP))
+					setAction(A_KEEN_JUMP_SHOOTUP);
+				else if(m_playcontrol[PA_Y] > 0 && !getActionNumber(A_KEEN_JUMP_SHOOTDOWN))
+					setAction(A_KEEN_JUMP_SHOOTDOWN);
+				else if(!getActionNumber(A_KEEN_JUMP_SHOOT))
+					setAction(A_KEEN_JUMP_SHOOT);
+			}
 			else
-				setAction(A_KEEN_JUMP_SHOOT);
+			{
+				if(m_playcontrol[PA_Y] < 0)
+					setAction(A_KEEN_SHOOT+2);
+				else
+					setAction(A_KEEN_SHOOT);
+			}
 		}
-		else
-		{
-			if(m_playcontrol[PA_Y] < 0)
-				setAction(A_KEEN_SHOOT+2);
-			else
-				setAction(A_KEEN_SHOOT);
-		}
-	}
 
 }
 
@@ -270,55 +280,50 @@ void CPlayerLevel::processMoving()
 				setAction(A_KEEN_STAND);
 		}
 	}
+
 }
 
 // Processes the jumping of the player
 void CPlayerLevel::processJumping()
 {
-	/*if(m_climbing)
+	if(!getActionNumber(A_KEEN_JUMP))
 	{
+		if(blockedd)
+			m_jumpheight = 0;
+
+		// Not jumping? Let's see if we can prepare the player to do so
+		if(m_playcontrol[PA_JUMP] and
+				(getActionNumber(A_KEEN_STAND) or
+						getActionNumber(A_KEEN_RUN) or
+						getActionNumber(A_KEEN_POLE) or
+						getActionNumber(A_KEEN_POLE_CLIMB) or
+						getActionNumber(A_KEEN_POLE_SLIDE)) )
+		{
+			yinertia = -136;
+			setAction(A_KEEN_JUMP);
+			m_climbing = false;
+		}
 	}
 	else
-	{*/
-		if(!getActionNumber(A_KEEN_JUMP))
-		{
-			if(blockedd)
-				m_jumpheight = 0;
-
-			// Not jumping? Let's see if we can prepare the player to do so
-			if(m_playcontrol[PA_JUMP] and
-					(getActionNumber(A_KEEN_STAND) or
-					getActionNumber(A_KEEN_RUN) or
-					getActionNumber(A_KEEN_POLE) or
-					getActionNumber(A_KEEN_POLE_CLIMB) or
-					getActionNumber(A_KEEN_POLE_SLIDE)) )
-			{
-				yinertia = -136;
-				setAction(A_KEEN_JUMP);
-				m_climbing = false;
-			}
-		}
+	{
+		// while button is pressed, make the player jump higher
+		if(m_playcontrol[PA_JUMP] || m_jumpheight <= MIN_JUMPHEIGHT)
+			m_jumpheight++;
 		else
+			m_jumpheight = 0;
+
+		// Set another jump animation if Keen is near yinertia == 0
+		if( yinertia > -10 )
+			setAction(A_KEEN_JUMP+1);
+
+		// If the max. height is reached or the player cancels the jump by release the button
+		// make keen fall
+		if( m_jumpheight == 0 || m_jumpheight >= MAX_JUMPHEIGHT )
 		{
-			// while button is pressed, make the player jump higher
-			if(m_playcontrol[PA_JUMP] || m_jumpheight <= MIN_JUMPHEIGHT)
-				m_jumpheight++;
-			else
-				m_jumpheight = 0;
-
-			// Set another jump animation if Keen is near yinertia == 0
-			if( yinertia > -10 )
-				setAction(A_KEEN_JUMP+1);
-
-			// If the max. height is reached or the player cancels the jump by release the button
-			// make keen fall
-			if( m_jumpheight == 0 || m_jumpheight >= MAX_JUMPHEIGHT )
-			{
-				yinertia = 0;
-				m_jumpheight = 0;
-			}
+			yinertia = 0;
+			m_jumpheight = 0;
 		}
-	//}
+	}
 }
 
 // This is for processing the looking routine.

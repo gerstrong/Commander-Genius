@@ -63,8 +63,7 @@ m_Pos(x,y)
 	if(m_type != OBJ_NONE )
 	{
 		setupObjectType(g_pBehaviorEngine->getEpisode());
-
-		performCollisions(true);
+		performCollisions();
 	}
 }
 

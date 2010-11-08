@@ -101,11 +101,11 @@ public:
 	bool m_climbing;
 
 	void setupObjectType(int Episode);
-	void calcBouncingBoxes(bool firsttime=false);
+	void calcBouncingBoxes();
 	void performCollisionsSameBox();
 	void performCollisionOnSlopedTiles();
 	void pushOutofSolidTiles();
-	void performCollisions(bool firsttime=false);
+	void performCollisions();
 	void setScrPos( int px, int py );
 	bool calcVisibility();
 	bool checkforScenario();
