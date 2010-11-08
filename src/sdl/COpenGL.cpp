@@ -189,48 +189,21 @@ void COpenGL::reloadFG(SDL_Surface* surf) {
 
 static void renderTexture(GLuint texture, bool withAlpha = false) {
 	
-	// Set up an array of values to use as the sprite vertices.
-	GLfloat vertices[] =
-	{
-		0, 0,
-		1, 0,
-		1, 1,
-		0, 1,
-	};
-
-	// Set up an array of values for the texture coordinates.
-	GLfloat texcoords[] =
-	{
-		0, 0,
-		1, 0,
-		1, 1,
-		0, 1,
-	};
-
-	//Render the vertices by pointing to the arrays.
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
-	glVertexPointer(2, GL_FLOAT, 0, vertices);
-	glTexCoordPointer(2, GL_FLOAT, 0, texcoords);
-
-	glEnable(GL_BLEND);
 	if(withAlpha)
+	{
+		glColor4f(1.0f, 1.0f, 1.0f, 0.8f);
 		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+		//glBlendFunc(GL_ONE, GL_ONE);
+	}
 	else
-		glBlendFunc(GL_ONE, GL_ZERO );
+	{
+		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+		glBlendFunc(GL_ONE, GL_ZERO);
+	}
 
-	glBindTexture (GL_TEXTURE_2D, texture);
-	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	
-	// Set the texture parameters to use a linear filter when minifying.
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	
-	//Finally draw the arrays.
+	//Finally draw the arrays of the surface.
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-	glDisableClientState(GL_VERTEX_ARRAY);
-    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisable(GL_BLEND);
 }
 
 void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
@@ -275,7 +248,33 @@ void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
 
 void COpenGL::render()
 {
-	//glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glEnable(GL_TEXTURE_2D);
+	// Set up an array of values to use as the sprite vertices.
+	GLfloat vertices[] =
+	{
+		0, 0,
+		1, 0,
+		1, 1,
+		0, 1,
+	};
+
+	// Set up an array of values for the texture coordinates.
+	GLfloat texcoords[] =
+	{
+		0, 0,
+		1, 0,
+		1, 1,
+		0, 1,
+	};
+
+	//Render the vertices by pointing to the arrays.
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	glVertexPointer(2, GL_FLOAT, 0, vertices);
+	glTexCoordPointer(2, GL_FLOAT, 0, texcoords);
+
+	glEnable(GL_BLEND);
 
 	loadSurface(m_texture, mp_blitsurface);
 	renderTexture(m_texture);
@@ -291,6 +290,11 @@ void COpenGL::render()
 		reloadFX(mp_fgsurface);
 		renderTexture(m_texFG, true);
 	}
+
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glDisable(GL_BLEND);
+	glDisable(GL_TEXTURE_2D);
 
 	g_pInput->renderOverlay();
 

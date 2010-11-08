@@ -1079,14 +1079,15 @@ void CInput::processMouse() {
 
 void CInput::processMouse(SDL_Event& ev) {
 
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+#if SDL_VERSION_ATLEAST(1, 3, 0)
 	SDL_Rect screenRect;
+
 	if(SDL_GetDisplayBounds(0, &screenRect) == 0) {
 		// transform mouse coordinates
 		// WARNING: I don't really understand that. It's probably somehow iPhoneRotateScreen + SDL stuff.
 		ev.button.y -= screenRect.h - 200;
 	}
-#endif // iPhone
+#endif
 	
 	// NOTE: The ev.button.which / the multitouch support was removed in SDL 1.3 trunk
 	// with changeset 4465:3e69e077cb95 on May09. It is planned to add a real multitouch API
@@ -1130,7 +1131,6 @@ static void drawButton(TouchButton& button, bool down) {
 	// similar mysterious constant as in renderTexture/initGL
 	//glViewport(0,255,w,h);
 
-
 	float w = 512.0f, h = 256.0f;
 	
 	int crop = 2;
@@ -1149,19 +1149,23 @@ static void drawButton(TouchButton& button, bool down) {
 
 	//Render the vertices by pointing to the arrays.
     glEnableClientState(GL_VERTEX_ARRAY);
+
 	glVertexPointer(2, GL_FLOAT, 0, vertices);
 	
+	glEnable(GL_BLEND);
 	if(down)
 		glColor4f(0,0,0, 0.5);
 	else
 		glColor4f(0,0,0, 0.2);
 
-	glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-	
+	//glBlendFunc(GL_ONE, GL_ZERO);
+
 	//Finally draw the arrays.
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisable(GL_BLEND);
+
 }
 #endif
 
