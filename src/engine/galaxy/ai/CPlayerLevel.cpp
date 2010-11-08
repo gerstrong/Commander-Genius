@@ -137,51 +137,51 @@ void CPlayerLevel::processInput()
 
 void CPlayerLevel::processFiring()
 {
-		bool inair = getActionNumber(A_KEEN_JUMP) || getActionNumber(A_KEEN_JUMP+1) ||
-				getActionNumber(A_KEEN_FALL) || falling;
+	if(m_cliff_hanging)
+		return;
 
-		bool shooting =  getActionNumber(A_KEEN_JUMP_SHOOT) || getActionNumber(A_KEEN_JUMP_SHOOTDOWN) ||
-				getActionNumber(A_KEEN_JUMP_SHOOTUP) || getActionNumber(A_KEEN_SHOOT+2) ||
-				getActionNumber(A_KEEN_POLE_SHOOTUP) || getActionNumber(A_KEEN_POLE_SHOOTDOWN) ||
-				getActionNumber(A_KEEN_POLE_SHOOT);
+	bool shooting =  getActionNumber(A_KEEN_JUMP_SHOOT) || getActionNumber(A_KEEN_JUMP_SHOOTDOWN) ||
+			getActionNumber(A_KEEN_JUMP_SHOOTUP) || getActionNumber(A_KEEN_SHOOT+2) ||
+			getActionNumber(A_KEEN_POLE_SHOOTUP) || getActionNumber(A_KEEN_POLE_SHOOTDOWN) ||
+			getActionNumber(A_KEEN_POLE_SHOOT);
 
-		if( m_playcontrol[PA_FIRE] && m_climbing )
-			yinertia = 0;
+	if( m_playcontrol[PA_FIRE] && m_climbing )
+		yinertia = 0;
 
-		if( m_playcontrol[PA_FIRE] && !shooting )
+	if( m_playcontrol[PA_FIRE] && !shooting )
+	{
+		if(m_climbing)
 		{
-			if(m_climbing)
-			{
-				if(m_playcontrol[PA_Y] < 0 && !getActionNumber(A_KEEN_POLE_SHOOTUP))
-					setAction(A_KEEN_POLE_SHOOTUP);
-				else if(m_playcontrol[PA_Y] > 0 && !getActionNumber(A_KEEN_POLE_SHOOTDOWN))
-					setAction(A_KEEN_POLE_SHOOTDOWN);
-				else if(!getActionNumber(A_KEEN_POLE_SHOOT))
-					setAction(A_KEEN_POLE_SHOOT);
-			}
-			else if( inair )
-			{
-				if(m_playcontrol[PA_Y] < 0 && !getActionNumber(A_KEEN_JUMP_SHOOTUP))
-					setAction(A_KEEN_JUMP_SHOOTUP);
-				else if(m_playcontrol[PA_Y] > 0 && !getActionNumber(A_KEEN_JUMP_SHOOTDOWN))
-					setAction(A_KEEN_JUMP_SHOOTDOWN);
-				else if(!getActionNumber(A_KEEN_JUMP_SHOOT))
-					setAction(A_KEEN_JUMP_SHOOT);
-			}
-			else
-			{
-				if(m_playcontrol[PA_Y] < 0)
-					setAction(A_KEEN_SHOOT+2);
-				else
-					setAction(A_KEEN_SHOOT);
-			}
+			if(m_playcontrol[PA_Y] < 0 && !getActionNumber(A_KEEN_POLE_SHOOTUP))
+				setAction(A_KEEN_POLE_SHOOTUP);
+			else if(m_playcontrol[PA_Y] > 0 && !getActionNumber(A_KEEN_POLE_SHOOTDOWN))
+				setAction(A_KEEN_POLE_SHOOTDOWN);
+			else if(!getActionNumber(A_KEEN_POLE_SHOOT))
+				setAction(A_KEEN_POLE_SHOOT);
 		}
+		else if( m_inair )
+		{
+			if(m_playcontrol[PA_Y] < 0 && !getActionNumber(A_KEEN_JUMP_SHOOTUP))
+				setAction(A_KEEN_JUMP_SHOOTUP);
+			else if(m_playcontrol[PA_Y] > 0 && !getActionNumber(A_KEEN_JUMP_SHOOTDOWN))
+				setAction(A_KEEN_JUMP_SHOOTDOWN);
+			else if(!getActionNumber(A_KEEN_JUMP_SHOOT))
+				setAction(A_KEEN_JUMP_SHOOT);
+		}
+		else
+		{
+			if(m_playcontrol[PA_Y] < 0)
+				setAction(A_KEEN_SHOOT+2);
+			else
+				setAction(A_KEEN_SHOOT);
+		}
+	}
 
 }
 
 void CPlayerLevel::processFalling()
 {
-	if(m_climbing) return;
+	if(m_climbing || m_cliff_hanging) return;
 
 	CObject::processFalling();
 
@@ -193,99 +193,147 @@ void CPlayerLevel::processFalling()
 void CPlayerLevel::processMoving()
 {
 	size_t movespeed = 50;
+	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 
-	if(m_climbing)
+	if(m_cliff_hanging)
 	{
-		// The climbing section for Keen
-		Uint16 l_x = ( getXLeftPos() + getXRightPos() ) / 2;
-		Uint16 l_y_up = getYUpPos()-(7<<STC);
-		Uint16 l_y_down = getYDownPos()-(7<<STC);
-		if(m_playcontrol[PA_Y] < 0 && hitdetectWithTileProperty(1, l_x, l_y_up) )
+		if(m_playcontrol[PA_Y] < 0)
 		{
-			if(!getActionNumber(A_KEEN_POLE_CLIMB))
-				setAction(A_KEEN_POLE_CLIMB);
-			yinertia = -32;
+			//m_cliff_hanging = false;
+			if(!getActionNumber(A_KEEN_CLIMB))
+				setAction(A_KEEN_CLIMB);
 		}
-		else if(m_playcontrol[PA_Y] > 0 && hitdetectWithTileProperty(1, l_x, l_y_down) )
+		else if(m_playcontrol[PA_Y] > 0)
 		{
-			if(!getActionNumber(A_KEEN_POLE_SLIDE))
-				setAction(A_KEEN_POLE_SLIDE);
-			yinertia = 64;
+			m_cliff_hanging = false;
+			if(!getActionNumber(A_KEEN_FALL))
+				setAction(A_KEEN_FALL);
 		}
-		else // == 0
-		{
-			if(!getActionNumber(A_KEEN_POLE))
-				setAction(A_KEEN_POLE);
-			yinertia = 0;
-		}
+		yinertia = 0;
 	}
 	else
 	{
-		// Normal moving
-		if(!m_playcontrol[PA_FIRE])
+
+		if(m_climbing)
 		{
-			if( m_playcontrol[PA_X]<0 )
-			{
-				if(!blockedl)
-				{
-					// make him walk
-					xinertia = -movespeed;
-					m_direction = LEFT;
-				}
-				else
-				{
-					// TODO: check if keen can hang on the cliff
-				}
-			}
-			else if( m_playcontrol[PA_X]>0)
-			{
-				if(!blockedr)
-				{
-					xinertia = movespeed;
-					m_direction = RIGHT;
-				}
-				else
-				{
-					// TODO: check if keen can hang on the cliff
-				}
-			}
-
+			// The climbing section for Keen
 			Uint16 l_x = ( getXLeftPos() + getXRightPos() ) / 2;
-			Uint16 l_y = ( getYUpPos() + getYDownPos() ) / 2;
-			// Now check if Player has the chance to climb a pole or something similar
-			if( hitdetectWithTileProperty(1, l_x, l_y) ) // 1 -> stands for pole Property
+			Uint16 l_y_up = getYUpPos()-(7<<STC);
+			Uint16 l_y_down = getYDownPos()-(7<<STC);
+			if(m_playcontrol[PA_Y] < 0 && hitdetectWithTileProperty(1, l_x, l_y_up) )
 			{
-				// Hit pole!
-
-				// calc the proper coord of that tile
-				l_x = (l_x>>CSF)<<CSF;
-				if( !m_climbing && m_playcontrol[PA_Y] != 0 )
-				{
-					m_climbing = true;
-					// Set Keen in climb mode
+				if(!getActionNumber(A_KEEN_POLE_CLIMB))
+					setAction(A_KEEN_POLE_CLIMB);
+				yinertia = -32;
+			}
+			else if(m_playcontrol[PA_Y] > 0 && hitdetectWithTileProperty(1, l_x, l_y_down) )
+			{
+				if(!getActionNumber(A_KEEN_POLE_SLIDE))
+					setAction(A_KEEN_POLE_SLIDE);
+				yinertia = 64;
+			}
+			else // == 0
+			{
+				if(!getActionNumber(A_KEEN_POLE))
 					setAction(A_KEEN_POLE);
-
-					// Move to the proper X Coordinates, so Keen really grabs it!
-					moveTo(VectorD2<int>(l_x - (7<<STC), getYPosition()));
-					xinertia = 0;
-				}
+				yinertia = 0;
 			}
 		}
-
-		if( blockedd )
+		else
 		{
-			if(xinertia != 0)
-				setAction(A_KEEN_RUN);
-			else if(m_playcontrol[PA_Y] == 0)
-				setAction(A_KEEN_STAND);
+			// Normal moving
+			if(!m_playcontrol[PA_FIRE])
+			{
+				if( m_playcontrol[PA_X]<0 )
+				{
+					if(!blockedl)
+					{
+						// make him walk
+						xinertia = -movespeed;
+						m_direction = LEFT;
+					}
+					else
+					{
+						bool check_block = TileProperty[mp_Map->at((getXLeftPos()>>CSF)-1, getYUpPos()>>CSF)].bright;
+						bool check_block_lower = TileProperty[mp_Map->at((getXLeftPos()>>CSF)-1, (getYUpPos()>>CSF)+1)].bright;
+						if(!check_block && check_block_lower && m_inair)
+						{
+							if(!getActionNumber(A_KEEN_HANG))
+								setAction(A_KEEN_HANG);
+
+							Uint32 x = (getXPosition()>>CSF)<<CSF;
+							Uint32 y = ((getYPosition()>>CSF)+1)<<CSF;
+							moveTo(x,y);
+							m_cliff_hanging = true;
+						}
+					}
+				}
+				else if( m_playcontrol[PA_X]>0)
+				{
+					if(!blockedr)
+					{
+						xinertia = movespeed;
+						m_direction = RIGHT;
+					}
+					else
+					{
+						bool check_block = TileProperty[mp_Map->at((getXRightPos()>>CSF)+1, getYUpPos()>>CSF)].bleft;
+						bool check_block_lower = TileProperty[mp_Map->at((getXRightPos()>>CSF)+1, (getYUpPos()>>CSF)+1)].bleft;
+						if(!check_block && check_block_lower && m_inair)
+						{
+							if(!getActionNumber(A_KEEN_HANG))
+								setAction(A_KEEN_HANG);
+
+							Uint32 x = ((getXPosition()>>CSF)+1)<<CSF;
+							Uint32 y = ((getYPosition()>>CSF)+1)<<CSF;
+							moveTo(x,y);
+							m_cliff_hanging = true;
+						}
+					}
+				}
+
+				Uint16 l_x = ( getXLeftPos() + getXRightPos() ) / 2;
+				Uint16 l_y = ( getYUpPos() + getYDownPos() ) / 2;
+				// Now check if Player has the chance to climb a pole or something similar
+				if( hitdetectWithTileProperty(1, l_x, l_y) ) // 1 -> stands for pole Property
+				{
+					// Hit pole!
+
+					// calc the proper coord of that tile
+					l_x = (l_x>>CSF)<<CSF;
+					if( !m_climbing && m_playcontrol[PA_Y] != 0 )
+					{
+						m_climbing = true;
+						// Set Keen in climb mode
+						setAction(A_KEEN_POLE);
+
+						// Move to the proper X Coordinates, so Keen really grabs it!
+						moveTo(VectorD2<int>(l_x - (7<<STC), getYPosition()));
+						xinertia = 0;
+					}
+				}
+			}
+
+			if( blockedd )
+			{
+				if(xinertia != 0)
+					setAction(A_KEEN_RUN);
+				else if(m_playcontrol[PA_Y] == 0)
+					setAction(A_KEEN_STAND);
+			}
 		}
 	}
-
 }
 
 // Processes the jumping of the player
 void CPlayerLevel::processJumping()
 {
+	if(m_cliff_hanging)
+		return;
+
+	m_inair = getActionNumber(A_KEEN_JUMP) || getActionNumber(A_KEEN_JUMP+1) ||
+			getActionNumber(A_KEEN_FALL) || falling;
+
 	if(!getActionNumber(A_KEEN_JUMP))
 	{
 		if(blockedd)
@@ -329,6 +377,9 @@ void CPlayerLevel::processJumping()
 // This is for processing the looking routine.
 void CPlayerLevel::processLooking()
 {
+	if(m_cliff_hanging)
+		return;
+
 	// Looking Up and Down Routine
 	//bool notshooting = ;
 	if(blockedd && xinertia == 0 /*&& notshooting*/)
@@ -345,7 +396,7 @@ void CPlayerLevel::processLooking()
 // Processes the exiting of the player. Here all cases are held
 void CPlayerLevel::processExiting()
 {
-	if(m_climbing)
+	if(m_climbing || m_cliff_hanging)
 		return;
 
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;

@@ -79,6 +79,7 @@ private:
 	bool m_pfiring;
 	int m_jumpheight;
 	bool m_cliff_hanging;
+	bool m_inair;
 };
 
 }
