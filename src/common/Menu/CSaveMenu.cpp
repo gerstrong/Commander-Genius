@@ -55,6 +55,7 @@ void CSaveMenu::processSpecific()
 				}
 				else
 				{
+					// TODO: better default slot name (more intelligent describing name)
 					mp_Dialog->m_name = "Slot" + itoa(m_selection);
 					mp_Dialog->m_length = 15;
 #ifndef NOKEYBOARD
