@@ -57,13 +57,19 @@ void CSaveMenu::processSpecific()
 				{
 					mp_Dialog->m_name = "Slot" + itoa(m_selection);
 					mp_Dialog->m_length = 15;
+#ifndef NOKEYBOARD
 					mp_Dialog->setInputMode(INPUT_MODE_TEXT);
+#else
+					// save right away
+					goto saveSelection;
+#endif
 				}
 
 			}
 			else if ( mp_Dialog->getInputMode(INPUT_MODE_TEXT) &&
 					(g_pInput->getPressedKey(KENTER) || g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_STATUS) ) )
 			{
+			saveSelection:
 				mp_Dialog->setObjectText(m_selection, mp_Dialog->m_name);
 
 				m_SavedGame.prepareSaveGame(m_selection+1, mp_Dialog->m_name);
