@@ -55,11 +55,7 @@ void CSaveMenu::processSpecific()
 				}
 				else
 				{
-#ifndef NOKEYBOARD
 					mp_Dialog->m_name = "";
-#else
-					mp_Dialog->m_name = "               ";
-#endif
 					mp_Dialog->m_length = 15;
 					mp_Dialog->setInputMode(INPUT_MODE_TEXT);
 				}
@@ -68,11 +64,7 @@ void CSaveMenu::processSpecific()
 			else if ( mp_Dialog->getInputMode(INPUT_MODE_TEXT) &&
 					(g_pInput->getPressedKey(KENTER) || g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_STATUS) ) )
 			{
-#ifndef NOKEYBOARD
 				if(mp_Dialog->m_name == "")
-#else
-				if(mp_Dialog->m_name == "               ")
-#endif
 					mp_Dialog->m_name = "Slot" + itoa(m_selection);
 				mp_Dialog->setObjectText(m_selection, mp_Dialog->m_name);
 
