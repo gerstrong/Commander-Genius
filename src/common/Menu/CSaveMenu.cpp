@@ -55,7 +55,7 @@ void CSaveMenu::processSpecific()
 				}
 				else
 				{
-					mp_Dialog->m_name = "";
+					mp_Dialog->m_name = "Slot" + itoa(m_selection);
 					mp_Dialog->m_length = 15;
 					mp_Dialog->setInputMode(INPUT_MODE_TEXT);
 				}
@@ -64,8 +64,6 @@ void CSaveMenu::processSpecific()
 			else if ( mp_Dialog->getInputMode(INPUT_MODE_TEXT) &&
 					(g_pInput->getPressedKey(KENTER) || g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_STATUS) ) )
 			{
-				if(mp_Dialog->m_name == "")
-					mp_Dialog->m_name = "Slot" + itoa(m_selection);
 				mp_Dialog->setObjectText(m_selection, mp_Dialog->m_name);
 
 				m_SavedGame.prepareSaveGame(m_selection+1, mp_Dialog->m_name);
