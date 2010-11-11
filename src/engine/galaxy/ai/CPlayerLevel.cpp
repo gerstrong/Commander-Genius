@@ -33,7 +33,7 @@ m_cliff_hanging(false)
 	m_ActionBaseOffset = 0x98C;
 	setActionForce(A_KEEN_STAND);
 
-	memset(m_playcontrol, 0,PA_MAX_ACTIONS);
+	memset(m_playcontrol, 0, PA_MAX_ACTIONS);
 
 	m_pfiring = false;
 	m_jumpheight = 0;
