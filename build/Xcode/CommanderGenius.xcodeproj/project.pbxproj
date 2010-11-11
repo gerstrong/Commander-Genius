@@ -2575,6 +2575,7 @@
 					"-DUSE_OPENGL",
 					"-D__DARWIN_64_BIT_INO_T=1",
 					"-DMOUSEWRAPPER",
+					"-DNOKEYBOARD",
 				);
 				PRODUCT_NAME = "Commander Genius";
 				SDKROOT = iphoneos3.2;
@@ -2613,6 +2614,7 @@
 					"-DUSE_OPENGL",
 					"-D__DARWIN_64_BIT_INO_T=1",
 					"-DMOUSEWRAPPER",
+					"-DNOKEYBOARD",
 				);
 				PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES;
 				PRODUCT_NAME = "Commander Genius";
