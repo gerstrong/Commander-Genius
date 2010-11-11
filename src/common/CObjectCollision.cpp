@@ -91,8 +91,6 @@ void CObject::performCollisionOnSlopedTiles()
 	if(onslope)
 	{
 		blockedr = blockedl = false;
-
-		pushOutofSolidTiles();
 	}
 }
 /**
@@ -122,29 +120,6 @@ void getSlopePointsLowerTile(char slope, int &yb1, int &yb2)
 		yb1 = 512,	yb2 = 0;
 	else
 		yb1 = 0, yb2 = 0;
-}
-
-void CObject::pushOutofSolidTiles()
-{
-	if(onslope)
-	{
-		const int px= (m_Pos.x+(bboxX1+bboxX2)/2);
-		const int py= (m_Pos.y+bboxY2+1);
-		std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
-		const char slope = TileProperty[mp_Map->at(px>>CSF, py>>CSF)].bup;
-
-		// Now, if Keen is standing in a sloped tile, try to push him out
-		if(slope)
-		{
-			int yb1, yb2;
-			getSlopePointsLowerTile(slope, yb1, yb2);
-			const int dy = ((yb2-yb1)*(px%512))/512;
-			const int yh = yb1 + dy;
-
-			if( py%512 > yh )
-				m_Pos.y -= ((py%512) - yh);
-		}
-	}
 }
 
 /*
@@ -210,17 +185,24 @@ bool CObject::moveSlopedTileDown( int x, int y, int xspeed )
 		Uint32 new_y;
 
 		// Now we have to see all the cases for sloped tiles of an object
-		// when going right...
-		if(xspeed > 0)
+		if(xspeed > 0) // when going right...
 		{
 			new_y = y_pos - bboxY2;
-			if( x_r >= 480 && ( yb1>yb2 ) ) // At Tile edge
+			if( x_r >= 480 ) // At Tile edge
 			{
-				new_y = (new_y>>CSF)<<CSF;
-				dy = m_Pos.y - (new_y+yb2);
-				moveUp( dy );
-				moveRight( dy );
-
+				if( yb1>yb2 )
+				{
+					new_y = (new_y>>CSF)<<CSF;
+					dy = m_Pos.y - (new_y+yb2);
+					moveUp( dy );
+					moveRight( dy );
+				}
+				else if( yb1<yb2 )
+				{
+					new_y = (new_y>>CSF)<<CSF;
+					dy = m_Pos.y - (new_y+yb2);
+					moveDown( -dy );
+				}
 			}
 			else // In the Tile itself or walking into...
 			{
@@ -230,12 +212,21 @@ bool CObject::moveSlopedTileDown( int x, int y, int xspeed )
 		else if(xspeed < 0) // Going left
 		{
 			new_y = y_pos - bboxY2;
-			if( x_r <= 32 && ( yb1<yb2 ) ) // At Tile edge
+			if( x_r <= 32 ) // At Tile edge
 			{
-				new_y = (new_y>>CSF)<<CSF;
-				dy = (new_y+yb1) - m_Pos.y;
-				moveYDir( dy );
-				moveLeft( dy );
+				if( yb1<yb2 )
+				{
+					new_y = (new_y>>CSF)<<CSF;
+					dy = (new_y+yb1) - m_Pos.y;
+					moveYDir( dy );
+					moveLeft( dy );
+				}
+				else if( yb1>yb2 )
+				{
+					new_y = (new_y>>CSF)<<CSF;
+					dy = (new_y+yb1) - m_Pos.y;
+					moveDown( -dy );
+				}
 			}
 			else // In the Tile itself or walking into...
 			{
@@ -391,8 +382,6 @@ bool CObject::checkSolidR( int x1, int x2, int y1, int y2)
 
 	return false;
 }
-
-// TODO: Collision-TAG Move that function into another file
 
 bool CObject::checkSolidL( int x1, int x2, int y1, int y2)
 {

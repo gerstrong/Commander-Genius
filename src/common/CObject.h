@@ -104,7 +104,6 @@ public:
 	void calcBouncingBoxes();
 	void performCollisionsSameBox();
 	void performCollisionOnSlopedTiles();
-	void pushOutofSolidTiles();
 	void performCollisions();
 	void setScrPos( int px, int py );
 	bool calcVisibility();

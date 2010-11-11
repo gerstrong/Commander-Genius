@@ -263,9 +263,6 @@ void CObject::moveLeft(int amount, bool force)
 	if(amount <= 0)
 		return;
 
-	int y1 = m_Pos.y + bboxY1;
-	int y2 = m_Pos.y + bboxY2;
-
 	blockedr = false;
 	// If it is forced don't check for collision
 	if(force) {
@@ -290,6 +287,9 @@ void CObject::moveLeft(int amount, bool force)
 		performCollisionsSameBox();
 		if(!blockedl)
 		{
+			int y1 = m_Pos.y + bboxY1;
+			int y2 = m_Pos.y + bboxY2;
+
 			if(amount > (1<<STC))
 			{
 				m_Pos.x -= (1<<STC);
