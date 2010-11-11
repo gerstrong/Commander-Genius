@@ -21,9 +21,9 @@ void nessie_find_next_checkpoint(int o);
 CMessie::CMessie(CMap *p_map, Uint32 x, Uint32 y,
 		std::vector<CPlayer>& Player) :
 CObject(p_map, x, y, OBJ_MESSIE),
-m_direction(LEFTDOWN),
 m_Player(Player)
 {
+	m_hDir = LEFTDOWN;
 	onscreen = true;
 	solid = false;
 
@@ -109,13 +109,13 @@ void CMessie::process()
 				bool godown = (desty > getYPosition());
 
 				if(goleft && !godown)
-					m_direction = LEFTUP;
+					m_hDir = LEFTUP;
 				else if(goleft && godown)
-					m_direction = LEFTDOWN;
+					m_hDir = LEFTDOWN;
 				else if(!goleft && !godown)
-					m_direction = RIGHTUP;
+					m_hDir = RIGHTUP;
 				else if(!goleft && godown)
-					m_direction = RIGHTDOWN;
+					m_hDir = RIGHTDOWN;
 			}
 		}
 		move_nessie();
@@ -137,13 +137,13 @@ void CMessie::process()
 void CMessie::move_nessie()
 {
 	// select proper frame based on up/down and left/right direction flags
-	if (m_direction == LEFTDOWN)
+	if (m_hDir == LEFTDOWN)
 		baseframe = NESSIE_DOWNLEFT_FRAME;
-	else if (m_direction == RIGHTDOWN)
+	else if (m_hDir == RIGHTDOWN)
 		baseframe = NESSIE_DOWNRIGHT_FRAME;
-	else if (m_direction == LEFTUP)
+	else if (m_hDir == LEFTUP)
 		baseframe = NESSIE_UPLEFT_FRAME;
-	else if (m_direction == RIGHTUP)
+	else if (m_hDir == RIGHTUP)
 		baseframe = NESSIE_UPRIGHT_FRAME;
 
 	// head to destination

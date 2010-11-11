@@ -55,7 +55,7 @@ m_Pos(x,y)
 	cansupportplayer = false;
 	dying = false;
 	m_ActionBaseOffset = 0x0;
-	m_direction = NONE;
+	m_vDir = m_hDir = NONE;
 	m_ActionTicker = 0;
 	m_canturnaround = false;
 	m_climbing = false;
@@ -198,7 +198,6 @@ bool CObject::checkforScenario()
 
    	return false;
 }
-
 
 // Used in some setup mode, like putting the player to
 // the current map position
@@ -485,7 +484,7 @@ void CObject::processFalling()
 	if(m_type == OBJ_MESSIE) return;
 
 	// So it reaches the maximum of fallspeed
-	if(!inhibitfall)
+	if(!inhibitfall && !m_climbing)
 	{
 		CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
 
@@ -607,22 +606,30 @@ void CObject::setAction(size_t ActionNumber)
 // This new function will setup the sprite based on the Action format
 void CObject::processActionRoutine()
 {
-	if(m_direction == LEFT)
+	if(m_hDir == LEFT)
 		sprite = m_Action.Left_sprite-124;
-	else if(m_direction == RIGHT)
+	else if(m_hDir == RIGHT)
 		sprite = m_Action.Right_sprite-124;
+
+	//printf("h=%d ; v=%d no=%d\n", m_Action.Change_h, m_Action.Change_v);
+	//printf("h_move=%d ; v_move=%d\n", m_Action.H_anim_move_amount, m_Action.V_anim_move_amount);
+
+		if(m_hDir == LEFT)
+			moveLeft( m_Action.H_anim_move_amount<<1 );
+		else if(m_hDir == RIGHT)
+			moveRight( m_Action.H_anim_move_amount<<1 );
+
+		if(m_vDir == UP)
+			moveUp( m_Action.V_anim_move_amount<<1 );
+		else if(m_vDir == DOWN)
+			moveDown( m_Action.V_anim_move_amount<<1 );
+
 
 	if( m_ActionTicker > m_Action.Delay )
 	{
 		if( m_Action.Delay != 0 && m_Action.Next_action != 0 )
 		{
 			m_Action.setNextActionFormat();
-			/*printf("h=%d ; v=%d\n", m_Action.Change_h, m_Action.Change_v);
-			printf("h_move=%d ; v_move=%d\n", m_Action.H_anim_move_amount, m_Action.V_anim_move_amount);
-			if(m_Action.Change_h)
-				moveXDir( m_Action.H_anim_move_amount );
-			if(m_Action.Change_v)
-				moveYDir( m_Action.V_anim_move_amount );*/
 		}
 		m_ActionTicker = 0;
 	}

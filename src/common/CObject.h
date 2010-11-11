@@ -55,8 +55,10 @@ public:
 	bool exists;
 	bool onscreen;    				// true=(scrx,scry) position is visible onscreen
 	bool hasbeenonscreen;
-	unsigned int sprite;      			// which sprite should this object be drawn with
-	direction_t m_direction;			// the direction to where the object is looking/heading to
+	unsigned int sprite;      		// which sprite should this object be drawn with
+	direction_t m_hDir;				// the direction to where the object is looking/heading to
+	direction_t m_vDir;				// same for vertical
+
 	int scrx, scry;           		// x,y pixel position on screen
 	
 	// Bouncing Boxes
@@ -108,7 +110,7 @@ public:
 	void setScrPos( int px, int py );
 	bool calcVisibility();
 	bool checkforScenario();
-	
+
 	// Moving parts
 	void moveToForce(const VectorD2<int> &dir);
 	void moveToForce(int new_x, int new_y);
@@ -137,7 +139,6 @@ public:
 	bool checkSolidL( int x1, int x2, int y1, int y2);
 	bool checkSolidU( int x1, int x2, int y1);
 	bool checkSolidD( int x1, int x2, int y2);
-
 
 	// special functions for sloped tiles
 	bool checkslopedU( int c, int y1, char blocked);

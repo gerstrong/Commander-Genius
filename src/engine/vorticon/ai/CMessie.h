@@ -8,8 +8,8 @@
 #ifndef CMESSIE_H_
 #define CMESSIE_H_
 
-#include "../../../common/CObject.h"
-#include "../../../common/CPlayer.h"
+#include "common/CObject.h"
+#include "common/CPlayer.h"
 
 #define NESSIETRAILLEN   5
 
@@ -24,7 +24,6 @@ public:
 //private:
 
 	char state;
-	direction_t m_direction;
 
 	unsigned int baseframe;
 
