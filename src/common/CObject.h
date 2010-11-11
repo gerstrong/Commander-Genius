@@ -36,11 +36,7 @@
 enum direction_t{
 	NONE,
 	RIGHT,
-	RIGHTUP,
-	RIGHTDOWN,
 	LEFT,
-	LEFTUP,
-	LEFTDOWN,
 	UP,
 	DOWN
 };

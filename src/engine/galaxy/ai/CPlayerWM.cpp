@@ -69,38 +69,32 @@ void CPlayerWM::processWalking()
 	{
 		moveLeft(movespeed);
 		walking = true;
-		m_looking_dir = LEFT;
+		m_hDir = LEFT;
 	}
 	else if(g_pInput->getHoldedCommand(IC_RIGHT))
 	{
 		moveRight(movespeed);
 		walking = true;
-		m_looking_dir = RIGHT;
+		m_hDir = RIGHT;
 	}
 
 	if(g_pInput->getHoldedCommand(IC_UP))
 	{
+		if(!walking)
+			m_hDir = NONE;
+
 		moveUp(movespeed);
 		walking = true;
-
-		if(m_looking_dir == LEFT)
-			m_looking_dir = LEFTUP;
-		else if(m_looking_dir == RIGHT)
-			m_looking_dir = RIGHTUP;
-		else
-			m_looking_dir = UP;
+		m_vDir = UP;
 	}
 	else if(g_pInput->getHoldedCommand(IC_DOWN))
 	{
+		if(!walking)
+			m_hDir = NONE;
+
 		moveDown(movespeed);
 		walking = true;
-
-		if(m_looking_dir == LEFT)
-			m_looking_dir = LEFTDOWN;
-		else if(m_looking_dir == RIGHT)
-			m_looking_dir = RIGHTDOWN;
-		else
-			m_looking_dir = DOWN;
+		m_vDir = DOWN;
 	}
 
 	if(g_pInput->getHoldedCommand(IC_STATUS))
@@ -213,22 +207,22 @@ void CPlayerWM::checkforSwimming()
  */
 void CPlayerWM::performWalkingAnimation(bool walking)
 {
-	if(m_looking_dir == LEFT)
-		sprite = m_basesprite;
-	else if(m_looking_dir == RIGHT)
+	if(m_hDir == RIGHT && m_vDir == NONE)
 		sprite = m_basesprite + 3;
-	else if(m_looking_dir == UP)
+	else if(m_hDir == NONE && m_vDir == UP)
 		sprite = m_basesprite + 6;
-	else if(m_looking_dir == DOWN)
+	else if(m_hDir == NONE && m_vDir == DOWN)
 		sprite = m_basesprite + 9;
-	else if(m_looking_dir == RIGHTDOWN)
+	else if(m_hDir == RIGHT && m_vDir == DOWN)
 		sprite = m_basesprite + 12;
-	else if(m_looking_dir == LEFTDOWN)
+	else if(m_hDir == LEFT && m_vDir == DOWN)
 		sprite = m_basesprite + 15;
-	else if(m_looking_dir == LEFTUP)
+	else if(m_hDir == LEFT && m_vDir == UP)
 		sprite = m_basesprite + 18;
-	else if(m_looking_dir == RIGHTUP)
+	else if(m_hDir == RIGHT && m_vDir == UP)
 		sprite = m_basesprite + 21;
+	else
+		sprite = m_basesprite;
 
 	if(walking)
 	{
@@ -241,22 +235,22 @@ void CPlayerWM::performWalkingAnimation(bool walking)
 
 void CPlayerWM::performSwimmingAnimation()
 {
-	if(m_looking_dir == UP)
-		sprite = m_basesprite;
-	else if(m_looking_dir == RIGHT)
+	if(m_hDir == RIGHT && m_vDir == NONE)
 		sprite = m_basesprite + 2;
-	else if(m_looking_dir == DOWN)
+	else if(m_hDir == NONE && m_vDir == DOWN)
 		sprite = m_basesprite + 4;
-	else if(m_looking_dir == LEFT)
+	else if(m_hDir == LEFT && m_vDir == NONE)
 		sprite = m_basesprite + 6;
-	else if(m_looking_dir == RIGHTUP)
+	else if(m_hDir == RIGHT && m_vDir == UP)
 		sprite = m_basesprite + 8;
-	else if(m_looking_dir == RIGHTDOWN)
+	else if(m_hDir == RIGHT && m_vDir == DOWN)
 		sprite = m_basesprite + 10;
-	else if(m_looking_dir == LEFTDOWN)
+	else if(m_hDir == LEFT && m_vDir == DOWN)
 		sprite = m_basesprite + 12;
-	else if(m_looking_dir == LEFTUP)
+	else if(m_hDir == LEFT && m_vDir == UP)
 		sprite = m_basesprite + 14;
+	else
+		sprite = m_basesprite;
 
 	m_animation_time = 5;
 	sprite +=  m_animation%2;
