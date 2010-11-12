@@ -328,11 +328,7 @@ void CHighScores::writeHighScoreCommon(int score)
 	else
 		m_Score[m_Place] = "*MAX*";
 	
-#ifndef NOKEYBOARD
 	m_Name[m_Place] = "";
-#else
-	m_Name[m_Place] = "             ";
-#endif
 }
 
 bool CHighScores::loadHighScoreTable()

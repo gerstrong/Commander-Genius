@@ -31,6 +31,7 @@ word CPlane::getMapDataAt(Uint16 x, Uint16 y)
 {
 	if( x < m_width && y < m_height )
 		return mp_data[y*m_width+x];
+	return 0;
 }
 
 void CPlane::setMapDataAt(Uint16 t, Uint16 x, Uint16 y)

@@ -6,9 +6,9 @@
 #define RAY_AUTO_SPEED		120
 #define RAY_ZAPZOT_TIME    	10
 
-#include "../../../common/CObject.h"
-#include "../../../common/CPlayer.h"
-#include "../../../common/objenums.h"
+#include "common/CObject.h"
+#include "common/CPlayer.h"
+#include "common/objenums.h"
 #include <vector>
 
 // reference to ../misc.cpp

@@ -68,7 +68,6 @@ void CPlayer::setDatatoZero()
 	performCollisions();
 
 	m_type = OBJ_PLAYER;
-	moveTo(0,0);
 	ankhtime = 0;
     exists = true;
 	onscreen = true;

@@ -16,6 +16,16 @@
 #include "objenums.h"
 #include "CVec.h"
 
+// structures for each AI module's data
+#include "engine/vorticon/ai/enemydata.h"
+#include "common/CMap.h"
+#include "graphics/CGfxEngine.h"
+#include "options.h"
+
+// Enumerations are here
+#include "objenums.h"
+
+
 #define SAFE_DELETE_ARRAY(x) if(x) { delete [] x; x = NULL; }
 #define SAFE_DELETE(x) if(x) { delete x; x = NULL; }
 
@@ -26,23 +36,10 @@
 enum direction_t{
 	NONE,
 	RIGHT,
-	RIGHTUP,
-	RIGHTDOWN,
 	LEFT,
-	LEFTUP,
-	LEFTDOWN,
 	UP,
 	DOWN
 };
-
-// structures for each AI module's data
-#include "../engine/vorticon/ai/enemydata.h"
-#include "../common/CMap.h"
-#include "../graphics/CGfxEngine.h"
-#include "options.h"
-
-// Enumerations are here
-#include "objenums.h"
 
 class CObject {
 public:
@@ -54,8 +51,10 @@ public:
 	bool exists;
 	bool onscreen;    				// true=(scrx,scry) position is visible onscreen
 	bool hasbeenonscreen;
-	unsigned int sprite;      			// which sprite should this object be drawn with
-	direction_t m_direction;			// the direction to where the object is looking/heading to
+	unsigned int sprite;      		// which sprite should this object be drawn with
+	direction_t m_hDir;				// the direction to where the object is looking/heading to
+	direction_t m_vDir;				// same for vertical
+
 	int scrx, scry;           		// x,y pixel position on screen
 	
 	// Bouncing Boxes
@@ -97,18 +96,19 @@ public:
 	uint16_t m_ActionTicker;
 	uint16_t m_ActionNumber;
 	size_t m_ActionBaseOffset;
+	bool m_climbing;
 
 	void setupObjectType(int Episode);
-	void calcBouncingBoxes(bool firsttime=false);
+	void calcBouncingBoxes();
 	void performCollisionsSameBox();
 	void performCollisionOnSlopedTiles();
-	void pushOutofSolidTiles();
-	void performCollisions(bool firsttime=false);
+	void performCollisions();
 	void setScrPos( int px, int py );
 	bool calcVisibility();
 	bool checkforScenario();
-	
+
 	// Moving parts
+	void moveToForce(const VectorD2<int> &dir);
 	void moveToForce(int new_x, int new_y);
 	void moveDir(const VectorD2<int> &dir);
 	void moveTo(const VectorD2<Uint32> &new_loc);
@@ -126,7 +126,7 @@ public:
 	virtual void process() { }
 	
 	bool hitdetect(CObject &hitobject);
-	bool hitdetectWithTileProperty(Uint16 Property);
+	bool hitdetectWithTileProperty(Uint16 Property, Uint16 x, Uint16 y);
 	virtual void kill();
 	void blink(Uint16 frametime);
 
@@ -135,7 +135,6 @@ public:
 	bool checkSolidL( int x1, int x2, int y1, int y2);
 	bool checkSolidU( int x1, int x2, int y1);
 	bool checkSolidD( int x1, int x2, int y2);
-
 
 	// special functions for sloped tiles
 	bool checkslopedU( int c, int y1, char blocked);
@@ -161,9 +160,11 @@ public:
 	CMap *getMapPtr() { return mp_Map; }
 
 	bool getActionNumber(int16_t ActionNumber);
+	bool getActionStatus(int16_t ActionNumber);
 	int16_t getActionNumber();
 	void setActionForce(size_t ActionNumber);
 	void setAction(size_t ActionNumber);
+	void setActionSprite();
 	void processActionRoutine();
 
 	void draw();
@@ -175,7 +176,7 @@ protected:
 
 	Uint16 m_blinktime;
 	bool m_invincible;
-	unsigned int x, y;        			// x,y location in map coords, CSFed
+	VectorD2<Uint32> m_Pos; 	// x,y location in map coords, CSFed, represent as 2D Vector
 
 	static int m_number_of_objects;
 

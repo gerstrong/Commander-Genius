@@ -67,7 +67,6 @@ private:
 	stDims m_GamePOTVideoDim;
 
 	GLuint	m_texture;
-
 	GLuint	m_texFX, m_texFG;
 };
 

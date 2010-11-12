@@ -198,6 +198,8 @@ void CDialog::processInput(int move)
 			m_cursorpos += 1;
 			if(m_cursorpos > m_length)
 				m_cursorpos = 0;
+			if(m_cursorpos >= m_name.length())
+				m_name.resize(m_cursorpos + 1, ' ');
 			m_curletter = m_name.at(m_cursorpos);
 		}
 		else if(g_pInput->getPressedKey(KLEFT))

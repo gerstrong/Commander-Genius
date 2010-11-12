@@ -90,7 +90,7 @@ void CShipFlySys::process()
 		 x = m_player.getXPosition();
 		 y = m_player.getYPosition();
 
-		 mp_mark->moveTo(x + (1<<CSF), y - (1<<CSF));
+		 mp_mark->moveTo(VectorD2<int>(x + (1<<CSF), y - (1<<CSF)));
 	 break;
 	 case CMD_SPAWNSPR:
 		 mp_mark->sprite = m_shipqueue[m_ShipQueuePtr].flag1;

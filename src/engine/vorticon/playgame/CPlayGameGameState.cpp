@@ -78,7 +78,7 @@ bool CPlayGameVorticon::loadGameState()
 			player->setupforLevelPlay();
 			m_SavedGame.decodeData(x);
 			m_SavedGame.decodeData(y);
-			player->moveToForce(x,y-(4<<STC));
+			player->moveToForce(VectorD2<int>(x,y-(4<<STC)));
 			m_SavedGame.decodeData(player->blockedd);
 			m_SavedGame.decodeData(player->blockedu);
 			m_SavedGame.decodeData(player->blockedl);
@@ -105,7 +105,7 @@ bool CPlayGameVorticon::loadGameState()
 			m_SavedGame.decodeData(object->m_type);
 			m_SavedGame.decodeData(x);
 			m_SavedGame.decodeData(y);
-			object->moveToForce(x,y);
+			object->moveToForce(VectorD2<int>(x,y));
 			m_SavedGame.decodeData(object->dead);
 			m_SavedGame.decodeData(object->onscreen);
 			m_SavedGame.decodeData(object->hasbeenonscreen);

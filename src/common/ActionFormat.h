@@ -38,10 +38,9 @@ struct ActionFormatType {
 	int16_t Next_action;         // [Valid actions only]
 
 	/**
-	 * \brief	get Action Format of the sprite
+	 * \brief	set Action Format of the sprite
 	 * \param	sprite_offset	Offset of the sprite. This is per sprite(object) just one and the same
 	 * 							direction
-	 * \param	action_number	This is the number of action of the sprite.
 	 */
 	void setActionFormat( size_t sprite_offset )
 	{
@@ -56,6 +55,18 @@ struct ActionFormatType {
 	void setNextActionFormat()
 	{
 		setActionFormat(Next_action);
+	}
+
+	/**
+	 * \brief	get Action Format of the sprite
+	 * \param	sprite_offset	Offset of the sprite. This is per sprite(object) just one and the same
+	 * 							direction
+	 */
+	bool getActionFormat( size_t sprite_offset )
+	{
+		byte *ptr = g_pBehaviorEngine->m_ExeFile.getDSegPtr();
+		ptr += sprite_offset;
+		return (memcmp( this, ptr, 15*sizeof(int16_t) ) == 0);
 	}
 };
 

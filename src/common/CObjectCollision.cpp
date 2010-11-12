@@ -17,12 +17,12 @@
 void CObject::performCollisionsSameBox()
 {
 	// Left/Right borders
-	blockedl = checkSolidL(x+bboxX1, x+bboxX2, y+bboxY1, y+bboxY2);
-	blockedr = checkSolidR(x+bboxX1, x+bboxX2, y+bboxY1, y+bboxY2);
+	blockedl = checkSolidL(m_Pos.x+bboxX1, m_Pos.x+bboxX2, m_Pos.y+bboxY1, m_Pos.y+bboxY2);
+	blockedr = checkSolidR(m_Pos.x+bboxX1, m_Pos.x+bboxX2, m_Pos.y+bboxY1, m_Pos.y+bboxY2);
 
 	// Upper/Lower borders
-	blockedu = checkSolidU(x+bboxX1, x+bboxX2, y+bboxY1);
-	blockedd = checkSolidD(x+bboxX1, x+bboxX2, y+bboxY2);
+	blockedu = checkSolidU(m_Pos.x+bboxX1, m_Pos.x+bboxX2, m_Pos.y+bboxY1);
+	blockedd = checkSolidD(m_Pos.x+bboxX1, m_Pos.x+bboxX2, m_Pos.y+bboxY2);
 
 	if(g_pBehaviorEngine->getEpisode() > 3)
 	{ // now check for the sloped tiles
@@ -33,19 +33,14 @@ void CObject::performCollisionsSameBox()
 /*
  * \brief Calculate Bouncing Boxes
  */
-void CObject::calcBouncingBoxes(bool firsttime)
+void CObject::calcBouncingBoxes()
 {
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
-
-	const int diff_y =  bboxY2==0 ? 0 :(int)bboxY2-(int)rSprite.m_bboxY2;
 
 	bboxX1 = rSprite.m_bboxX1;
 	bboxX2 = rSprite.m_bboxX2;
 	bboxY1 = rSprite.m_bboxY1;
 	bboxY2 = rSprite.m_bboxY2;
-
-	if(!firsttime && g_pBehaviorEngine->getEpisode() > 3)
-		moveYDir(diff_y);
 }
 
 /*
@@ -56,9 +51,9 @@ const int COLISION_RES = (1<<STC);
 void CObject::performCollisionOnSlopedTiles()
 {
 	const Uint32 halftile = ((1<<CSF)/2);
-	const Uint32 x1 = x + bboxX1;
-	const Uint32 x2 = x + bboxX2;
-	const Uint32 y2 = y + bboxY2;
+	const Uint32 x1 = m_Pos.x + bboxX1;
+	const Uint32 x2 = m_Pos.x + bboxX2;
+	const Uint32 y2 = m_Pos.y + bboxY2;
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 	onslope = false;
 
@@ -96,8 +91,6 @@ void CObject::performCollisionOnSlopedTiles()
 	if(onslope)
 	{
 		blockedr = blockedl = false;
-
-		pushOutofSolidTiles();
 	}
 }
 /**
@@ -129,41 +122,18 @@ void getSlopePointsLowerTile(char slope, int &yb1, int &yb2)
 		yb1 = 0, yb2 = 0;
 }
 
-void CObject::pushOutofSolidTiles()
-{
-	if(onslope)
-	{
-		const int px= (x+(bboxX1+bboxX2)/2);
-		const int py= (y+bboxY2+1);
-		std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
-		const char slope = TileProperty[mp_Map->at(px>>CSF, py>>CSF)].bup;
-
-		// Now, if Keen is standing in a sloped tile, try to push him out
-		if(slope)
-		{
-			int yb1, yb2;
-			getSlopePointsLowerTile(slope, yb1, yb2);
-			const int dy = ((yb2-yb1)*(px%512))/512;
-			const int yh = yb1 + dy;
-
-			if( py%512 > yh )
-				y -= ((py%512) - yh);
-		}
-	}
-}
-
 /*
  * \brief This checks the collision. Very simple pixel based algorithm
  * 		  The collision is per pixel-based
  */
-void CObject::performCollisions(bool firsttime)
+void CObject::performCollisions()
 {
 	blockedr = blockedl = false;
 	blockedu = blockedd = false;
 
 	if ( sprite != BLANKSPRITE )
 	{
-		calcBouncingBoxes(firsttime);
+		calcBouncingBoxes();
 		performCollisionsSameBox();
 	}
 }
@@ -215,36 +185,52 @@ bool CObject::moveSlopedTileDown( int x, int y, int xspeed )
 		Uint32 new_y;
 
 		// Now we have to see all the cases for sloped tiles of an object
-		// when going right...
-		if(xspeed > 0)
+		if(xspeed > 0) // when going right...
 		{
 			new_y = y_pos - bboxY2;
-			if( x_r >= 480 && ( yb1>yb2 ) ) // At Tile edge
+			if( x_r >= 480 ) // At Tile edge
 			{
-				new_y = (new_y>>CSF)<<CSF;
-				dy = this->y - (new_y+yb2);
-				moveUp( dy );
-				moveRight( dy );
-
+				if( yb1>yb2 )
+				{
+					new_y = (new_y>>CSF)<<CSF;
+					dy = m_Pos.y - (new_y+yb2);
+					moveUp( dy );
+					moveRight( dy );
+				}
+				else if( yb1<yb2 )
+				{
+					new_y = (new_y>>CSF)<<CSF;
+					dy = m_Pos.y - (new_y+yb2);
+					moveDown( -dy );
+				}
 			}
 			else // In the Tile itself or walking into...
 			{
-				moveYDir( new_y - this->y );
+				moveYDir( new_y - m_Pos.y );
 			}
 		}
 		else if(xspeed < 0) // Going left
 		{
 			new_y = y_pos - bboxY2;
-			if( x_r <= 32 && ( yb1<yb2 ) ) // At Tile edge
+			if( x_r <= 32 ) // At Tile edge
 			{
-				new_y = (new_y>>CSF)<<CSF;
-				dy = (new_y+yb1) - this->y;
-				moveYDir( dy );
-				moveLeft( dy );
+				if( yb1<yb2 )
+				{
+					new_y = (new_y>>CSF)<<CSF;
+					dy = (new_y+yb1) - m_Pos.y;
+					moveYDir( dy );
+					moveLeft( dy );
+				}
+				else if( yb1>yb2 )
+				{
+					new_y = (new_y>>CSF)<<CSF;
+					dy = (new_y+yb1) - m_Pos.y;
+					moveDown( -dy );
+				}
 			}
 			else // In the Tile itself or walking into...
 			{
-				moveYDir( new_y - this->y );
+				moveYDir( new_y - m_Pos.y );
 			}
 		}
 		return true;
@@ -305,7 +291,7 @@ void CObject::moveSlopedTileUp( int x, int y, int xspeed )
 
 	// get new position
 	const Uint32 new_y = y_pos - bboxY1 + (1<<STC);
-	moveYDir( new_y - this->y );
+	moveYDir( new_y - m_Pos.y );
 }
 
 // returns nonzero if object1 overlaps object2
@@ -315,16 +301,16 @@ bool CObject::hitdetect(CObject &hitobject)
 	unsigned int rect2x1, rect2y1, rect2x2, rect2y2;
 
 	// get the bounding rectangle of the first object
-	rect1x1 = x + bboxX1;
-	rect1y1 = y + bboxY1;
-	rect1x2 = x + bboxX2;
-	rect1y2 = y + bboxY2;
+	rect1x1 = m_Pos.x + bboxX1;
+	rect1y1 = m_Pos.y + bboxY1;
+	rect1x2 = m_Pos.x + bboxX2;
+	rect1y2 = m_Pos.y + bboxY2;
 
 	// get the bounding rectangle of the second object
-	rect2x1 = hitobject.x + hitobject.bboxX1;
-	rect2y1 = hitobject.y + hitobject.bboxY1;
-	rect2x2 = hitobject.x + hitobject.bboxX2;
-	rect2y2 = hitobject.y + hitobject.bboxY2;
+	rect2x1 = hitobject.getXPosition() + hitobject.bboxX1;
+	rect2y1 = hitobject.getYPosition() + hitobject.bboxY1;
+	rect2x2 = hitobject.getXPosition() + hitobject.bboxX2;
+	rect2y2 = hitobject.getYPosition() + hitobject.bboxY2;
 
 	// find out if the rectangles overlap
 	if ((rect1x1 <= rect2x1) && (rect1x2 <= rect2x1)) return false;
@@ -340,30 +326,15 @@ bool CObject::hitdetect(CObject &hitobject)
  * \param Property The Tile Property we are looking
  * \return true if detection worked with that tile having the property, else false
  */
-bool CObject::hitdetectWithTileProperty(Uint16 Property)
+bool CObject::hitdetectWithTileProperty(Uint16 Property, Uint16 x, Uint16 y)
 {
-	unsigned int rect1x1, rect1y1, rect1x2, rect1y2;
-	Uint16 behavior;
-
-	// get the bounding rectangle of the first object
-	rect1x1 = x + bboxX1;
-	rect1y1 = y + bboxY1;
-	rect1x2 = x + bboxX2;
-	rect1y2 = y + bboxY2;
+	char behavior;
 
 	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
 
-	behavior = Tile[mp_Map->getPlaneDataAt(1, rect1x1, rect1y1)].behaviour;
-	if(behavior == Property)	return true;
-
-	behavior = Tile[mp_Map->getPlaneDataAt(1, rect1x2, rect1y1)].behaviour;
-	if(behavior == Property)	return true;
-
-	behavior = Tile[mp_Map->getPlaneDataAt(1, rect1x1, rect1y2)].behaviour;
-	if(behavior == Property)	return true;
-
-	behavior = Tile[mp_Map->getPlaneDataAt(1, rect1x2, rect1y2)].behaviour;
-	if(behavior == Property)	return true;
+	behavior = Tile[mp_Map->getPlaneDataAt(1, x, y)].behaviour;
+	if(behavior == Property || behavior == Property-128 ) // +128 for foreground properties
+		return true;
 
 	return false;
 }
@@ -412,8 +383,6 @@ bool CObject::checkSolidR( int x1, int x2, int y1, int y2)
 	return false;
 }
 
-// TODO: Collision-TAG Move that function into another file
-
 bool CObject::checkSolidL( int x1, int x2, int y1, int y2)
 {
 	bool vorticon = (g_pBehaviorEngine->getEpisode() <= 3);
@@ -459,8 +428,6 @@ bool CObject::checkSolidL( int x1, int x2, int y1, int y2)
 	return false;
 }
 
-// TODO: Collision-TAG Move that function into another file
-
 bool CObject::checkSolidU(int x1, int x2, int y1)
 {
 	bool vorticon = (g_pBehaviorEngine->getEpisode() <= 3);
@@ -472,15 +439,29 @@ bool CObject::checkSolidU(int x1, int x2, int y1)
 	if(!vorticon && solid)
 	{
 		char blocked;
+
+		if(m_climbing)
+		{
+			x1 += 4*COLISION_RES;
+			x2 -= 4*COLISION_RES;
+		}
+
 		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
 		{
 			blocked = TileProperty[mp_Map->at(c>>CSF, y1>>CSF)].bdown;
+
+			if(blocked == 17 && m_climbing)
+				return false;
+
 			if( blocked >= 2 && blocked <= 7 && checkslopedU(c, y1, blocked))
 				return true;
 		}
 		blocked = TileProperty[mp_Map->at((x2-(1<<STC))>>CSF, y1>>CSF)].bdown;
 		if( blocked >= 2 && blocked <= 7 && checkslopedU(x2-(1<<STC), y1, blocked ))
 			return true;
+
+		if(blocked == 17 && m_climbing)
+			return false;
 	}
 
 	if( ((y1+COLISION_RES)>>STC) != (((y1+COLISION_RES)>>CSF)<<TILE_S)  )
@@ -509,8 +490,6 @@ bool CObject::checkSolidU(int x1, int x2, int y1)
 	return false;
 }
 
-// TODO: Collision-TAG Move that function into another file
-
 bool CObject::checkSolidD( int x1, int x2, int y2 )
 {
 	bool vorticon = (g_pBehaviorEngine->getEpisode() <= 3);
@@ -523,15 +502,30 @@ bool CObject::checkSolidD( int x1, int x2, int y2 )
 	{
 		char blocked;
 
+		if(m_climbing)
+		{
+			x1 += 4*COLISION_RES;
+			x2 -= 4*COLISION_RES;
+		}
+
 		for(int c=x1 ; c<=x2 ; c += COLISION_RES)
 		{
 			blocked = TileProperty[mp_Map->at(c>>CSF, y2>>CSF)].bup;
-			if( blocked >= 2 && blocked <= 7 && checkslopedD(c, y2, blocked))
+
+			if(blocked == 17 && m_climbing)
+				return false;
+
+			if( blocked >= 2 && blocked <= 7 && checkslopedD(c, y2, blocked) )
 			//if( blocked )
 				return true;
 		}
+
 		blocked = TileProperty[mp_Map->at((x2)>>CSF, y2>>CSF)].bup;
-		if( blocked >= 2 && blocked <= 7 && checkslopedD(x2, y2, blocked ))
+
+		if(blocked == 17 && m_climbing)
+			return false;
+
+		if( blocked >= 2 && blocked <= 7 && checkslopedD(x2, y2, blocked) )
 		//if( blocked )
 			return true;
 	}

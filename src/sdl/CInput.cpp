@@ -696,8 +696,9 @@ void CInput::processKeys(int keydown)
 	}
 }
 
+#ifdef MOUSEWRAPPER
 static bool checkMousewrapperKey(int& key);
-
+#endif
 /**
  * \brief	returns if certain key is being held
  * \param	key the key to be held
@@ -865,7 +866,7 @@ bool CInput::getPressedIsNumKey(void)
 
 bool CInput::getPressedAnyKey(void)
 {
-	for(int key=0 ; key<KEYTABLE_SIZE ; key++)
+	for(unsigned int key=0 ; key<KEYTABLE_SIZE ; key++)
 	{
 		if(firsttime_immediate_keytable[key])
 		{
@@ -1001,6 +1002,7 @@ static const int w = 320, h = 200;
 
 #define KSHOWHIDECTRLS	(-10)
 
+#if defined(MOUSEWRAPPER)
 static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_COMMANDS]) {
 	static const int middlex = w / 2;
 	static const int middley = h / 2;
@@ -1018,13 +1020,13 @@ static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_
 		{ &InputCommand[0][IC_STATUS],	KENTER,	0, 0, w/2, h/4},
 		{ &InputCommand[0][IC_QUIT],	KQUIT,	5*w/6, 0, w/6, h/6},
 		{ NULL,							KSHOWHIDECTRLS,	4*w/6, 0, w/6, h/6},
-		{ NULL,							KF3 /* save dialog, see gamedo_HandleFKeys */, 3*w/6, 0, w/6, h/6},
-	};	
+	//	{ NULL,							KF3 /* save dialog, see gamedo_HandleFKeys */, 3*w/6, 0, w/6, h/6},
+	};
 	
 	return phoneButtons;
 }
 
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+
 
 static const int phoneButtonN = 11;
 typedef std::set<int> MouseIndexSet;
@@ -1076,12 +1078,16 @@ void CInput::processMouse() {
 }
 
 void CInput::processMouse(SDL_Event& ev) {
+
+#if SDL_VERSION_ATLEAST(1, 3, 0)
 	SDL_Rect screenRect;
+
 	if(SDL_GetDisplayBounds(0, &screenRect) == 0) {
 		// transform mouse coordinates
 		// WARNING: I don't really understand that. It's probably somehow iPhoneRotateScreen + SDL stuff.
 		ev.button.y -= screenRect.h - 200;
 	}
+#endif
 	
 	// NOTE: The ev.button.which / the multitouch support was removed in SDL 1.3 trunk
 	// with changeset 4465:3e69e077cb95 on May09. It is planned to add a real multitouch API
@@ -1124,6 +1130,7 @@ void CInput::processMouse(int x, int y, bool down, int mouseindex) {
 static void drawButton(TouchButton& button, bool down) {
 	// similar mysterious constant as in renderTexture/initGL
 	//glViewport(0,255,w,h);
+
 	float w = 512.0f, h = 256.0f;
 	
 	int crop = 2;
@@ -1139,27 +1146,30 @@ static void drawButton(TouchButton& button, bool down) {
 		x2, y2,
 		x1, y2,
 	};
-	
-	
+
 	//Render the vertices by pointing to the arrays.
     glEnableClientState(GL_VERTEX_ARRAY);
+
 	glVertexPointer(2, GL_FLOAT, 0, vertices);
 	
+	glEnable(GL_BLEND);
 	if(down)
 		glColor4f(0,0,0, 0.5);
 	else
 		glColor4f(0,0,0, 0.2);
 
-	glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-	
+	//glBlendFunc(GL_ONE, GL_ZERO);
+
 	//Finally draw the arrays.
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-	glDisableClientState(GL_VERTEX_ARRAY);	
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisable(GL_BLEND);
+
 }
 #endif
 
-#endif // iPhone
+#endif
 
 void CInput::renderOverlay() {
 #ifdef USE_OPENGL // only ogl supported yet (and probably worth)

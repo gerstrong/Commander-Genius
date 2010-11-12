@@ -711,15 +711,15 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 
 		CSprite &Sprite = g_pGfxEngine->getSprite(i);
 		Sprite.setSize( Head.Width*8, Head.Height );
+		Sprite.setOffset( Head.OrgX>>(TILE_S), Head.OrgY>>(TILE_S) );
 
 		// Setup the collision information
-		Uint16 boxX1 = ((Head.Rx1 - Head.OrgX) << (STC-Head.Shifts));
-		Uint16 boxY1 = ((Head.Ry1 - Head.OrgY) << (STC-Head.Shifts));
-		Uint16 boxX2 = ((Head.Rx2 - Head.OrgX) << (STC-Head.Shifts));
-		Uint16 boxY2 = ((Head.Ry2 - Head.OrgY) << (STC-Head.Shifts));
+		Uint16 boxX1 = ((Head.Rx1 - Head.OrgX) << (STC-TILE_S));
+		Uint16 boxY1 = ((Head.Ry1 - Head.OrgY) << (STC-TILE_S));
+		Uint16 boxX2 = ((Head.Rx2 - Head.OrgX) << (STC-TILE_S));
+		Uint16 boxY2 = ((Head.Ry2 - Head.OrgY) << (STC-TILE_S));
 
 		Sprite.setBouncingBoxCoordinates( boxX1, boxY1, boxX2, boxY2 );
-
 
 		Sprite.createSurface( g_pVideoDriver->BlitSurface->flags,
 				g_pGfxEngine->Palette.m_Palette );

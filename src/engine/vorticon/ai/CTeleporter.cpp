@@ -105,7 +105,7 @@ void CTeleporter::process()
 			// In this part the player must be invisible and go to the new position, then get teleported out.
 			x = destx<<CSF;
 			y = desty<<CSF;
-			moveTo(x, y);
+			moveTo(VectorD2<int>(x, y));
 			m_Player[player].pdir = DOWN;
 			m_Player[player].beingteleported = true;
 			m_Player[player].solid = false;
@@ -133,7 +133,7 @@ void CTeleporter::process()
 
 			if(!m_Player[player].scrollTriggers() && diff_x<=TELEPORTATION_SPEED && diff_y<=TELEPORTATION_SPEED)
 			{
-				m_Player[player].moveTo(x, y);
+				m_Player[player].moveTo(VectorD2<int>(x, y));
 				direction = TELEPORTING_OUT;
 
 				idleframe = mp_Map->at(x>>CSF, y>>CSF);
