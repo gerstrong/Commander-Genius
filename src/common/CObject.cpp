@@ -587,6 +587,9 @@ void CObject::blink(Uint16 frametime)
 bool CObject::getActionNumber(int16_t ActionNumber)
 {	return (m_ActionNumber==ActionNumber);	}
 
+bool CObject::getActionStatus(int16_t ActionNumber)
+{	return (m_Action.getActionFormat(m_ActionBaseOffset + 30*ActionNumber));	}
+
 int16_t CObject::getActionNumber()
 {	return m_ActionNumber;	}
 
@@ -603,13 +606,19 @@ void CObject::setAction(size_t ActionNumber)
 	setActionForce(ActionNumber);
 }
 
-// This new function will setup the sprite based on the Action format
-void CObject::processActionRoutine()
+// Sets the proper sprite of action format to the local object
+void CObject::setActionSprite()
 {
 	if(m_hDir == LEFT)
 		sprite = m_Action.Left_sprite-124;
 	else if(m_hDir == RIGHT)
 		sprite = m_Action.Right_sprite-124;
+}
+
+// This new function will setup the sprite based on the Action format
+void CObject::processActionRoutine()
+{
+	setActionSprite();
 
 	//printf("h=%d ; v=%d no=%d\n", m_Action.Change_h, m_Action.Change_v);
 	//printf("h_move=%d ; v_move=%d\n", m_Action.H_anim_move_amount, m_Action.V_anim_move_amount);

@@ -183,16 +183,36 @@ void CPlayerLevel::processMoving()
 
 	if(m_cliff_hanging)
 	{
-		if(m_playcontrol[PA_Y] < 0)
+		if(getActionNumber(A_KEEN_CLIMB))
 		{
-			setAction(A_KEEN_CLIMB);
+			int dy = 32;
+			int dx = dy/2;
+			moveUp(dy);
+			moveXDir( (m_hDir == LEFT) ? -dx : dx, true);
+			if(getActionStatus(A_KEEN_STAND))
+			{
+				m_cliff_hanging = false;
+				setAction(A_KEEN_STAND);
+				setActionSprite();
+				calcBouncingBoxes();
+				moveDown(16*dy);
+			}
 		}
-		else if(m_playcontrol[PA_Y] > 0)
+		else
 		{
-			m_cliff_hanging = false;
-			setAction(A_KEEN_FALL);
+			if(m_playcontrol[PA_Y] < 0)
+			{
+				setAction(A_KEEN_CLIMB);
+			}
+			else if(m_playcontrol[PA_Y] > 0)
+			{
+				m_cliff_hanging = false;
+				setAction(A_KEEN_FALL);
+				setActionSprite();
+				calcBouncingBoxes();
+			}
+			yinertia = 0;
 		}
-		yinertia = 0;
 	}
 	else
 	{
@@ -236,9 +256,9 @@ void CPlayerLevel::processMoving()
 						bool check_block_lower = TileProperty[mp_Map->at((getXLeftPos()>>CSF)-1, (getYUpPos()>>CSF)+1)].bright;
 						if(!check_block && check_block_lower && m_inair)
 						{
-							if(!getActionNumber(A_KEEN_HANG))
-								setAction(A_KEEN_HANG);
-
+							setAction(A_KEEN_HANG);
+							setActionSprite();
+							calcBouncingBoxes();
 							Uint32 x = (getXPosition()>>CSF)<<CSF;
 							Uint32 y = ((getYPosition()>>CSF)+1)<<CSF;
 							moveTo(x,y);
@@ -259,9 +279,9 @@ void CPlayerLevel::processMoving()
 						bool check_block_lower = TileProperty[mp_Map->at((getXRightPos()>>CSF)+1, (getYUpPos()>>CSF)+1)].bleft;
 						if(!check_block && check_block_lower && m_inair)
 						{
-							if(!getActionNumber(A_KEEN_HANG))
-								setAction(A_KEEN_HANG);
-
+							setAction(A_KEEN_HANG);
+							setActionSprite();
+							calcBouncingBoxes();
 							Uint32 x = ((getXPosition()>>CSF)+1)<<CSF;
 							Uint32 y = ((getYPosition()>>CSF)+1)<<CSF;
 							moveTo(x,y);
@@ -292,7 +312,7 @@ void CPlayerLevel::processMoving()
 				}
 			}
 
-			if( blockedd )
+			if( blockedd && !m_cliff_hanging )
 			{
 				if(moving != NONE)
 					setAction(A_KEEN_RUN);
