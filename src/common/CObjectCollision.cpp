@@ -321,6 +321,34 @@ bool CObject::hitdetect(CObject &hitobject)
 	return true;
 }
 
+
+/**
+ * \brief this new type of hit detection only checks if the foe touches something that has that property tile
+ * \param Property The Tile Property we are looking
+ * \param from x
+ * \return true if detection worked with that tile having the property, else false
+ */
+bool CObject::hitdetectWithTilePropertyRect(const Uint16 Property, SDL_Rect &rect, const int res)
+{
+	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
+
+	for( Uint16 i=0 ; i<rect.w ; i+=res )
+	{
+		for( Uint16 j=0 ; j<rect.h ; j+=res )
+		{
+			const char behavior = Tile[mp_Map->getPlaneDataAt(1, rect.x+i, rect.y+j)].behaviour;
+			if(behavior == Property || behavior == Property-128 ) // -128 for foreground properties
+			{
+				rect.x = rect.x+i;
+				rect.y = rect.y+j;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
 /**
  * \brief this new type of hit detection only checks if the foe touches something that has that property
  * \param Property The Tile Property we are looking
@@ -328,15 +356,12 @@ bool CObject::hitdetect(CObject &hitobject)
  */
 bool CObject::hitdetectWithTileProperty(Uint16 Property, Uint16 x, Uint16 y)
 {
-	char behavior;
-
 	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
-
-	behavior = Tile[mp_Map->getPlaneDataAt(1, x, y)].behaviour;
+	const char behavior = Tile[mp_Map->getPlaneDataAt(1, x, y)].behaviour;
 	if(behavior == Property || behavior == Property-128 ) // +128 for foreground properties
 		return true;
-
-	return false;
+	else
+		return false;
 }
 
 bool CObject::checkSolidR( int x1, int x2, int y1, int y2)

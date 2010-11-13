@@ -67,6 +67,7 @@ public:
 	void processJumping();
 	void processLooking();
 	void processExiting();
+	void processItemCollection();
 
 private:
 	Uint8 m_animation;

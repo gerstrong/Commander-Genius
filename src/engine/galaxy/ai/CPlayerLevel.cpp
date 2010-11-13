@@ -74,6 +74,8 @@ void CPlayerLevel::process()
 
 	processExiting();
 
+	processItemCollection();
+
 	processActionRoutine();
 
 	moveXDir(xinertia);
@@ -418,6 +420,29 @@ void CPlayerLevel::processExiting()
 	if( ((mp_Map->m_width-2)<<CSF) < x || (2<<CSF) > x )
 	{
 		EventContainer.add( new EventExitLevel(mp_Map->getLevel()) );
+	}
+}
+
+// Process the item collecting
+void CPlayerLevel::processItemCollection()
+{
+	// TODO: Here it a lot we have to do still.
+	// Item which are taken must go into a data structure
+	// animation should also be triggered
+
+	// All the collectable items go from 21 to 28
+	for( Uint16 i=4 ; i<=28 ; i++ )
+	{
+		SDL_Rect rect;
+		rect.x = getXLeftPos();
+		rect.y = getYUpPos();
+		rect.w = getXRightPos() - getXLeftPos();
+		rect.h = getYDownPos() - getYUpPos();
+
+		if(hitdetectWithTilePropertyRect(i, rect, 1<<STC))
+		{
+			mp_Map->setTile(rect.x>>CSF, rect.y>>CSF, 0, true, 1);
+		}
 	}
 }
 
