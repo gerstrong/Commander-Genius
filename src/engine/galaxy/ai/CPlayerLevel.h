@@ -65,6 +65,7 @@ public:
 	void processFalling();
 	void processMoving();
 	void processJumping();
+	void processPogo();
 	void processLooking();
 	void processExiting();
 	void processItemCollection();

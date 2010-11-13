@@ -19,6 +19,13 @@ namespace galaxy {
 const Uint16 MAX_JUMPHEIGHT = 30;
 const Uint16 MIN_JUMPHEIGHT = 10;
 
+const Uint16 MAX_POGOHEIGHT = 20;
+const Uint16 MIN_POGOHEIGHT = 5;
+
+const int POGO_START_INERTIA = -100;
+const int POGO_START_INERTIA_MAX = -170;
+const int POGO_START_INERTIA_IMPOSSIBLE = -200;
+
 CPlayerLevel::CPlayerLevel(CMap *pmap, Uint32 x, Uint32 y,
 						std::vector<CObject*>& ObjectPtrs, direction_t facedir) :
 CObject(pmap, x, y, OBJ_NONE),
@@ -63,16 +70,19 @@ void CPlayerLevel::process()
 
 	processMoving();
 
-	processJumping();
+	if(!m_cliff_hanging)
+	{
+		processJumping();
+		processPogo();
+		processFiring();
 
-	if(!m_climbing)
-		processLooking();
-
-	processFiring();
-
-	processFalling();
-
-	processExiting();
+		if(!m_climbing)
+		{
+			processFalling();
+			processLooking();
+			processExiting();
+		}
+	}
 
 	processItemCollection();
 
@@ -101,11 +111,19 @@ void CPlayerLevel::processInput()
 	{
 		if(g_pInput->getHoldedCommand(m_index, IC_JUMP))
 		{
-			m_playcontrol[PA_JUMP]++;
-			if(m_jumpheight >= (MAX_JUMPHEIGHT-2))
+			if(!getActionNumber(A_KEEN_POGO))
 			{
-				m_playcontrol[PA_JUMP] = 0;
-				g_pInput->flushCommand(m_index, IC_JUMP);
+				m_playcontrol[PA_JUMP]++;
+
+				if(m_jumpheight >= (MAX_JUMPHEIGHT-2))
+				{
+					m_playcontrol[PA_JUMP] = 0;
+					g_pInput->flushCommand(m_index, IC_JUMP);
+				}
+			}
+			else
+			{
+				m_playcontrol[PA_JUMP] = 1;
 			}
 		}
 		else
@@ -136,9 +154,6 @@ void CPlayerLevel::processInput()
 
 void CPlayerLevel::processFiring()
 {
-	if(m_cliff_hanging)
-		return;
-
 	bool shooting =  getActionNumber(A_KEEN_JUMP_SHOOT) || getActionNumber(A_KEEN_JUMP_SHOOTDOWN) ||
 			getActionNumber(A_KEEN_JUMP_SHOOTUP) || getActionNumber(A_KEEN_SHOOT+2) ||
 			getActionNumber(A_KEEN_POLE_SHOOTUP) || getActionNumber(A_KEEN_POLE_SHOOTDOWN) ||
@@ -314,12 +329,16 @@ void CPlayerLevel::processMoving()
 				}
 			}
 
+			// Check if Keen hits the floor
 			if( blockedd && !m_cliff_hanging )
 			{
-				if(moving != NONE)
-					setAction(A_KEEN_RUN);
-				else if(m_playcontrol[PA_Y] == 0)
-					setAction(A_KEEN_STAND);
+				if(!getActionNumber(A_KEEN_POGO))
+				{
+					if(moving != NONE)
+						setAction(A_KEEN_RUN);
+					else if(m_playcontrol[PA_Y] == 0)
+						setAction(A_KEEN_STAND);
+				}
 			}
 		}
 	}
@@ -328,9 +347,6 @@ void CPlayerLevel::processMoving()
 // Processes the jumping of the player
 void CPlayerLevel::processJumping()
 {
-	if(m_cliff_hanging)
-		return;
-
 	m_inair = getActionNumber(A_KEEN_JUMP) || getActionNumber(A_KEEN_JUMP+1) ||
 			getActionNumber(A_KEEN_FALL) || falling;
 
@@ -376,15 +392,73 @@ void CPlayerLevel::processJumping()
 	}
 }
 
+// Here all the pogo code is processed
+void CPlayerLevel::processPogo()
+{
+	if(!getActionNumber(A_KEEN_POGO))
+	{
+		if(blockedd)
+			m_jumpheight = 0;
+
+		// Not pogoing? Let's see if we can prepare the player to do so
+		if( g_pInput->getPressedCommand(IC_POGO) )
+		{
+			if( getActionNumber(A_KEEN_STAND) or getActionNumber(A_KEEN_RUN) )
+			{
+				if(g_pInput->getHoldedCommand(IC_JUMP))
+					yinertia = POGO_START_INERTIA_IMPOSSIBLE;
+				else
+					yinertia = POGO_START_INERTIA;
+
+				m_jumpheight = 0;
+				setAction(A_KEEN_POGO);
+			}
+			else if( getActionNumber(A_KEEN_FALL) or getActionNumber(A_KEEN_JUMP) )
+			{
+				m_jumpheight = MAX_POGOHEIGHT;
+				setAction(A_KEEN_POGO);
+			}
+		}
+	}
+	else
+	{
+		// while button is pressed, make the player jump higher
+		if( (g_pInput->getHoldedCommand(IC_JUMP) and m_jumpheight <= MAX_POGOHEIGHT) or
+				m_jumpheight <= MIN_POGOHEIGHT )
+		{
+			m_jumpheight++;
+		}
+
+		// pressed again will make keen fall until hitting the ground
+		if(g_pInput->getPressedCommand(IC_POGO))
+		{
+			m_jumpheight = 0;
+			setAction(A_KEEN_FALL);
+		}
+
+		// When keen hits the floor, start the same pogoinertia again!
+		if(blockedd)
+		{
+			if(g_pInput->getHoldedCommand(IC_JUMP))
+				yinertia = POGO_START_INERTIA_MAX;
+			else
+				yinertia = POGO_START_INERTIA;
+			m_jumpheight = 0;
+		}
+
+		xinertia += (m_playcontrol[PA_X]>>1);
+	}
+}
+
 // Falling code
 void CPlayerLevel::processFalling()
 {
-	if(m_climbing || m_cliff_hanging) return;
-
 	CObject::processFalling();
 
 	if( falling && !getActionNumber(A_KEEN_JUMP_SHOOT)
-			&& !getActionNumber(A_KEEN_JUMP_SHOOTUP) && !getActionNumber(A_KEEN_JUMP_SHOOTDOWN) )
+			&& !getActionNumber(A_KEEN_JUMP_SHOOTUP)
+			&& !getActionNumber(A_KEEN_JUMP_SHOOTDOWN)
+			&& !getActionNumber(A_KEEN_POGO) )
 		setAction(A_KEEN_FALL);
 
 	if(getActionNumber(A_KEEN_FALL))
@@ -395,9 +469,6 @@ void CPlayerLevel::processFalling()
 // This is for processing the looking routine.
 void CPlayerLevel::processLooking()
 {
-	if(m_cliff_hanging)
-		return;
-
 	// Looking Up and Down Routine
 	if(blockedd && xinertia == 0 )
 	{
@@ -411,9 +482,6 @@ void CPlayerLevel::processLooking()
 // Processes the exiting of the player. Here all cases are held
 void CPlayerLevel::processExiting()
 {
-	if(m_climbing || m_cliff_hanging)
-		return;
-
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
 	Uint32 x = getXMidPos();
