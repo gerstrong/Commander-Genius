@@ -68,7 +68,7 @@ void CPlayerLevel::process()
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 	TileProperty[mp_Map->at(getXMidPos()>>CSF, getYMidPos()>>CSF)].bdown;
 
-	if(!getActionNumber(A_KEEN_ENTER_DOOR))
+	if(!getActionNumber(A_KEEN_ENTER_DOOR) )
 		processMoving();
 
 	if(!m_cliff_hanging)
@@ -340,12 +340,14 @@ void CPlayerLevel::processMoving()
 					processPressUp();
 				}
 
+
+
 			}
 
 			// Check if Keen hits the floor
 			if( blockedd && !m_cliff_hanging )
 			{
-				if(!getActionNumber(A_KEEN_POGO))
+				if(!getActionNumber(A_KEEN_POGO) )
 				{
 					if(moving != NONE)
 						setAction(A_KEEN_RUN);
@@ -353,6 +355,7 @@ void CPlayerLevel::processMoving()
 						setAction(A_KEEN_STAND);
 				}
 			}
+
 		}
 	}
 }
