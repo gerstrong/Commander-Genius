@@ -379,6 +379,7 @@ void CPlayerLevel::processJumping()
 			yinertia = -136;
 			setAction(A_KEEN_JUMP);
 			m_climbing = false;
+			m_vDir = NONE;
 		}
 	}
 	else
@@ -482,6 +483,9 @@ void CPlayerLevel::processFalling()
 // This is for processing the looking routine.
 void CPlayerLevel::processLooking()
 {
+	if(getActionNumber(A_KEEN_SHOOT+2))
+		return;
+
 	// Looking Up and Down Routine
 	if(blockedd && xinertia == 0 )
 	{
@@ -612,8 +616,6 @@ void CPlayerLevel::processEnterDoor()
 
 	moveToForce(xpos, ypos);
 
-
-
 	//o->ypos = TILE2MU(*t%256 - 1) + 15;
 	//o->xpos = (*t >> 8 << 8);
 	//o->int16 = 1;
@@ -635,7 +637,6 @@ void CPlayerLevel::processItemCollection()
 	// All the collectable items go from 21 to 28
 	for( Uint16 i=4 ; i<=28 ; i++ )
 	{
-		SDL_Rect rect;
 		int l_x = getXLeftPos();
 		int l_y = getYUpPos();
 		int l_w = getXRightPos() - getXLeftPos();
