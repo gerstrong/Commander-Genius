@@ -67,8 +67,10 @@ public:
 	void processJumping();
 	void processPogo();
 	void processLooking();
+	int processPressUp();
 	void processExiting();
 	void processItemCollection();
+	void processEnterDoor();
 
 private:
 	Uint8 m_animation;

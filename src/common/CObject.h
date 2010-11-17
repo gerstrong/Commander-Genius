@@ -100,6 +100,7 @@ public:
 
 	void setupObjectType(int Episode);
 	void calcBouncingBoxes();
+	void calcBouncingBoxeswithPlacement();
 	void performCollisionsSameBox();
 	void performCollisionOnSlopedTiles();
 	void performCollisions();
@@ -126,7 +127,7 @@ public:
 	virtual void process() { }
 	
 	bool hitdetect(CObject &hitobject);
-	bool hitdetectWithTilePropertyRect(const Uint16 Property, SDL_Rect &rect, const int res);
+	bool hitdetectWithTilePropertyRect(const Uint16 Property, int &lx, int &ly, int &lw, int &lh, const int res);
 	bool hitdetectWithTileProperty(Uint16 Property, Uint16 x, Uint16 y);
 	virtual void kill();
 	void blink(Uint16 frametime);

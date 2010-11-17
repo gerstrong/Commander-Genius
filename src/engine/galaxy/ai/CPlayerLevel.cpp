@@ -68,7 +68,8 @@ void CPlayerLevel::process()
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
 	TileProperty[mp_Map->at(getXMidPos()>>CSF, getYMidPos()>>CSF)].bdown;
 
-	processMoving();
+	if(!getActionNumber(A_KEEN_ENTER_DOOR))
+		processMoving();
 
 	if(!m_cliff_hanging)
 	{
@@ -78,9 +79,14 @@ void CPlayerLevel::process()
 
 		if(!m_climbing)
 		{
-			processFalling();
-			processLooking();
-			processExiting();
+			if(!getActionNumber(A_KEEN_ENTER_DOOR))
+			{
+				processFalling();
+				processLooking();
+				processExiting();
+			}
+			else
+				processEnterDoor();
 		}
 	}
 
@@ -283,7 +289,7 @@ void CPlayerLevel::processMoving()
 						}
 					}
 				}
-				else if( m_playcontrol[PA_X]>0)
+				else if( m_playcontrol[PA_X]>0 )
 				{
 					if(!blockedr)
 					{
@@ -327,6 +333,13 @@ void CPlayerLevel::processMoving()
 						xinertia = 0;
 					}
 				}
+
+				if( m_playcontrol[PA_Y]<0 )
+				{
+					// player pressed up
+					processPressUp();
+				}
+
 			}
 
 			// Check if Keen hits the floor
@@ -491,6 +504,127 @@ void CPlayerLevel::processExiting()
 	}
 }
 
+#define		MISCFLAG_SWITCHPLATON 5
+#define 	MISCFLAG_SWITCHPLATOFF 6
+#define		MISCFLAG_SWITCHBRIDGE 15
+#define		MISCFLAG_DOOR		2
+#define		MISCFLAG_KEYCARDDOOR		32
+
+int CPlayerLevel::processPressUp() {
+
+	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
+	const int x_left = getXLeftPos();
+	const int x_right = getXRightPos();
+	const int up_y = getYUpPos();
+
+	int flag = Tile[mp_Map->getPlaneDataAt(1, x_left, up_y)].behaviour;
+
+	/* pressing a switch */
+	/*if (flag==MISCFLAG_SWITCHPLATON||flag==MISCFLAG_SWITCHPLATOFF||
+	 flag == MISCFLAG_SWITCHBRIDGE) {
+		var2 = o->boxTXmid*256-64;
+		if (o->xpos == var2) {
+			o->action = ACTION_KEENENTERSLIDE;
+		} else {
+			o->time = var2;
+			o->action = ACTION_KEENPRESSSWITCH;
+		}
+		EnterDoorAttempt = 1;
+		return 1;
+	} */
+
+	// entering a door
+	if (flag == MISCFLAG_DOOR || flag == MISCFLAG_KEYCARDDOOR) {
+		//int var2 = mid_x * 256+96;
+		flag = Tile[mp_Map->getPlaneDataAt(1, x_right, up_y)].behaviour;
+		//if (flag2 == MISCFLAG_DOOR || flag2 == MISCFLAG_KEYCARDDOOR) var2-=256;
+		//if (getXPosition() == var2) {
+		if(flag == MISCFLAG_DOOR || flag == MISCFLAG_KEYCARDDOOR) {
+			/*if (flag == MISCFLAG_KEYCARDDOOR) {
+				if (security_card) {
+					security_card = 0;
+					SD_PlaySound(SOUND_OPENSECURITYDOOR);
+					GetNewObj(0);
+					new_object->xpos = o->boxTXmid-2;
+					new_object->ypos = o->boxTY2-4;
+					new_object->active = 2;
+					new_object->clipping = 0;
+					new_object->type = 1;
+					new_object->action = ACTION_SECURITYDOOROPEN;
+					check_ground(new_object, ACTION_SECURITYDOOROPEN);
+					o->action = ACTION_KEENENTERDOOR0;
+					o->int16 = 0;
+					return 1;
+				} else {
+					SD_PlaySound(SOUND_NOOPENSECURITYDOOR);
+					o->action = ACTION_KEENSTAND;
+					EnterDoorAttempt = 1;
+					return 0;
+				}
+			} else {*/
+				setAction(A_KEEN_ENTER_DOOR);
+				//PlayLoopTimer = 110;
+				//o->action = ACTION_KEENENTERDOOR1
+				//o->int16 = 0;
+				//if (*MAPSPOT(o->boxTXmid, o->boxTY1, INFOPLANE) == 0) sub_1FE94();
+			//}
+		}// else {
+			//o->time = var2;
+			//o->action = ACTION_KEENENTERSLIDE;
+		//}
+		//EnterDoorAttempt = 1;
+		return 1;
+	}
+	return 0;
+}
+
+void CPlayerLevel::processEnterDoor()
+{
+	moveUp(16);
+
+	if(!getActionStatus(A_KEEN_STAND))
+		return;
+
+	setAction(A_KEEN_STAND);
+
+	int xmid = getXMidPos();
+	int y1 = getYMidPos();
+
+	Uint16 t = mp_Map->getPlaneDataAt(2, xmid, y1);
+	if (t == 0) {
+		//level_state = 13;
+		//o->action = ACTION_KEENENTEREDDOOR;
+		// TODO: Figure out what this does
+		return;
+	}
+
+	if (t == 0xB1B1) {
+		//level_state = 2;
+		//o->action = ACTION_KEENENTEREDDOOR;
+		// TODO: Figure out what this does
+		return;
+	}
+
+	//int xpos = ((t%256 - 1)>>CSF) + 15;
+	int ypos = ((t%256 - 1))<<CSF;
+	//int ypos = (t >> 8 << 8);
+	int xpos = (t >> 8)<<CSF;
+
+	moveToForce(xpos, ypos);
+
+
+
+	//o->ypos = TILE2MU(*t%256 - 1) + 15;
+	//o->xpos = (*t >> 8 << 8);
+	//o->int16 = 1;
+	//o->clipping = 0;
+	//set_sprite_action(o, (o->action)->next);
+	//o->clipping = 1;
+	//sub_183F1(o);
+	return;
+
+}
+
 // Process the item collecting
 void CPlayerLevel::processItemCollection()
 {
@@ -502,14 +636,14 @@ void CPlayerLevel::processItemCollection()
 	for( Uint16 i=4 ; i<=28 ; i++ )
 	{
 		SDL_Rect rect;
-		rect.x = getXLeftPos();
-		rect.y = getYUpPos();
-		rect.w = getXRightPos() - getXLeftPos();
-		rect.h = getYDownPos() - getYUpPos();
+		int l_x = getXLeftPos();
+		int l_y = getYUpPos();
+		int l_w = getXRightPos() - getXLeftPos();
+		int l_h = getYDownPos() - getYUpPos();
 
-		if(hitdetectWithTilePropertyRect(i, rect, 1<<STC))
+		if(hitdetectWithTilePropertyRect(i, l_x, l_y, l_w, l_h, 1<<STC))
 		{
-			mp_Map->setTile(rect.x>>CSF, rect.y>>CSF, 0, true, 1);
+			mp_Map->setTile(l_x>>CSF, l_y>>CSF, 0, true, 1);
 		}
 	}
 }

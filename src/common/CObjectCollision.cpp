@@ -31,17 +31,32 @@ void CObject::performCollisionsSameBox()
 }
 
 /*
+ * \brief Calculate Bouncing Boxes with extra placement.
+ */
+void CObject::calcBouncingBoxeswithPlacement()
+{
+	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+
+    const int diff_y =  bboxY2==0 ? 0 :(int)bboxY2-(int)rSprite.m_bboxY2;
+
+    calcBouncingBoxes();
+
+    moveYDir(diff_y);
+}
+
+/*
  * \brief Calculate Bouncing Boxes
  */
 void CObject::calcBouncingBoxes()
 {
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 
-	bboxX1 = rSprite.m_bboxX1;
-	bboxX2 = rSprite.m_bboxX2;
-	bboxY1 = rSprite.m_bboxY1;
-	bboxY2 = rSprite.m_bboxY2;
+  	bboxX1 = rSprite.m_bboxX1;
+   	bboxX2 = rSprite.m_bboxX2;
+   	bboxY1 = rSprite.m_bboxY1;
+   	bboxY2 = rSprite.m_bboxY2;
 }
+
 
 /*
  * This function determines if the object is touching a sloped tile
@@ -328,19 +343,19 @@ bool CObject::hitdetect(CObject &hitobject)
  * \param from x
  * \return true if detection worked with that tile having the property, else false
  */
-bool CObject::hitdetectWithTilePropertyRect(const Uint16 Property, SDL_Rect &rect, const int res)
+bool CObject::hitdetectWithTilePropertyRect(const Uint16 Property, int &lx, int &ly, int &lw, int &lh, const int res)
 {
 	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
 
-	for( Uint16 i=0 ; i<rect.w ; i+=res )
+	for( Uint16 i=0 ; i<lw ; i+=res )
 	{
-		for( Uint16 j=0 ; j<rect.h ; j+=res )
+		for( Uint16 j=0 ; j<lh ; j+=res )
 		{
-			const char behavior = Tile[mp_Map->getPlaneDataAt(1, rect.x+i, rect.y+j)].behaviour;
+			const char behavior = Tile[mp_Map->getPlaneDataAt(1, lx+i, ly+j)].behaviour;
 			if(behavior == Property || behavior == Property-128 ) // -128 for foreground properties
 			{
-				rect.x = rect.x+i;
-				rect.y = rect.y+j;
+				lx = lx+i;
+				ly = ly+j;
 				return true;
 			}
 		}
