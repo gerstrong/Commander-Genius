@@ -36,6 +36,7 @@ m_ObjectPtrs(ObjectPtrs),
 m_cliff_hanging(false)
 {
 	m_index = 0;
+	m_timer = 0;
 	m_hDir = facedir;
 	m_ActionBaseOffset = 0x98C;
 	setActionForce(A_KEEN_STAND);
@@ -65,32 +66,41 @@ void CPlayerLevel::process()
 
 	performCollisionsSameBox();
 
-	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
-	TileProperty[mp_Map->at(getXMidPos()>>CSF, getYMidPos()>>CSF)].bdown;
-
-	if(!getActionNumber(A_KEEN_ENTER_DOOR) )
-		processMoving();
-
-	if(!m_cliff_hanging)
+	if(getActionNumber(A_KEEN_SLIDE))
 	{
-		processJumping();
-		processPogo();
-		processFiring();
-
-		if(!m_climbing)
-		{
-			if(!getActionNumber(A_KEEN_ENTER_DOOR))
-			{
-				processFalling();
-				processLooking();
-				processExiting();
-			}
-			else
-				processEnterDoor();
-		}
+		processPlaceGem();
 	}
+	else
+	{
+		std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+		TileProperty[mp_Map->at(getXMidPos()>>CSF, getYMidPos()>>CSF)].bdown;
 
-	processItemCollection();
+		if(!getActionNumber(A_KEEN_ENTER_DOOR) )
+			processMoving();
+
+		if(!m_cliff_hanging)
+		{
+			processJumping();
+			processPogo();
+			processFiring();
+
+			if(!m_climbing)
+			{
+				if(getActionNumber(A_KEEN_ENTER_DOOR))
+				{
+					processEnterDoor();
+				}
+				else
+				{
+					processFalling();
+					processLooking();
+					processExiting();
+				}
+			}
+		}
+
+		processLevelMiscFlagsCheck();
+	}
 
 	processActionRoutine();
 
@@ -322,7 +332,7 @@ void CPlayerLevel::processMoving()
 
 					// calc the proper coord of that tile
 					l_x = (l_x>>CSF)<<CSF;
-					if( !m_climbing && m_playcontrol[PA_Y] < 0 ||
+					if( (!m_climbing && m_playcontrol[PA_Y] < 0) ||
 							( getActionNumber(A_KEEN_STAND) && m_playcontrol[PA_Y] > 0 ) )
 					{
 						m_climbing = true;
@@ -340,9 +350,6 @@ void CPlayerLevel::processMoving()
 					// player pressed up
 					processPressUp();
 				}
-
-
-
 			}
 
 			// Check if Keen hits the floor
@@ -632,14 +639,29 @@ void CPlayerLevel::processEnterDoor()
 }
 
 // Process the item collecting
-void CPlayerLevel::processItemCollection()
+void CPlayerLevel::processLevelMiscFlagsCheck()
 {
 	// TODO: Here it a lot we have to do still.
 	// Item which are taken must go into a data structure
 	// animation should also be triggered
 
+	// This will change the gemholder to a holder with gem
+	if( getActionNumber(A_KEEN_STAND) || getActionNumber(A_KEEN_RUN) )
+	{
+		for( Uint16 i=7 ; i<=10 ; i++ )
+		{
+			int l_x = getXMidPos();
+			int l_y = getYDownPos()-(3<<STC);
+
+			if( hitdetectWithTileProperty(i, l_x, l_y) )
+			{
+				setAction(A_KEEN_SLIDE);
+			}
+		}
+	}
+
 	// All the collectable items go from 21 to 28
-	for( Uint16 i=4 ; i<=28 ; i++ )
+	for( Uint16 i=21 ; i<=28 ; i++ )
 	{
 		int l_x = getXLeftPos();
 		int l_y = getYUpPos();
@@ -652,5 +674,87 @@ void CPlayerLevel::processItemCollection()
 		}
 	}
 }
+
+void CPlayerLevel::openDoorsTile()
+{
+	int lx = getXMidPos();
+	int ly = getYDownPos()-(3<<STC);
+	Uint16 targetXY = mp_Map->getPlaneDataAt(2, lx, ly);
+
+	Uint16 newX = targetXY >> 8;
+	Uint16 newY = targetXY & 0xFF;
+	Uint16 tileno, next_tileno;
+
+	do
+	{
+		tileno = mp_Map->getPlaneDataAt(1, newX<<CSF, newY<<CSF);
+		mp_Map->setTile(newX, newY, tileno+1, true, 1);
+		newY++;
+		next_tileno = mp_Map->getPlaneDataAt(1, newX<<CSF, newY<<CSF);
+	}while(next_tileno == tileno || next_tileno == tileno+18 || next_tileno == tileno+2*18);
+}
+
+void CPlayerLevel::processPlaceGem()
+{
+	if(m_timer == 0 || m_timer == 5 || m_timer == 8)
+	{
+		openDoorsTile();
+
+		//tile = MAPSPOTNP(o->boxTXmid, o->boxTY2)
+
+		//{
+
+		//new_fg_tile = *MK_FP(mapsegs[FGPLANE],tile+18);
+		//targetXY = *MK_FP(mapsegs[INFOPLANE], tile);
+
+
+		/*RF_11(&new_fg_tile, 1, o->boxTXmid, o->boxTY2, 1, 1);
+		SD_PlaySound(SOUND_OPENGEMDOOR);
+		GetNewObj(0);
+
+		new_object->xpos = newX;
+		new_object->ypos = newY;
+
+		if (newX > map_width_T || newX < 2 ||
+		 newY > map_heightT || newY < 2) {
+			Quit("Keyholder points to a bad spot!");
+		//}
+
+		tile_pointer = MAPSPOT(newX, newY, FGPLANE);
+		foreground_tile = *tile_pointer;
+
+		height = 1;
+		tile_pointer += map_width_T;
+
+		while(*tile_pointer == foreground_tile) {
+			height++;
+			tile_pointer += map_width_T;
+		};
+
+		new_object->time = height;
+		new_object->active = 2;
+		new_object->clipping = 0;
+		new_objective->type = 1;
+		CheckGround(new_object, ACTION_DOOROPEN);
+		return;*/
+	}
+
+	if(m_timer < 10)
+	{
+		m_timer++;
+		return;
+	}
+
+	m_timer = 0;
+
+	setAction(A_KEEN_STAND);
+
+	int lx = getXMidPos();
+	int ly = getYDownPos()-(3<<STC);
+
+	Uint16 tileno = mp_Map->getPlaneDataAt(1, lx, ly);
+	mp_Map->setTile(lx>>CSF, ly>>CSF, tileno+18, true, 1);
+}
+
 
 }

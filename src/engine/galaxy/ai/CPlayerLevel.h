@@ -36,7 +36,7 @@ PA_MAX_ACTIONS
 #define A_KEEN_DIE				29
 #define A_KEEN_SHOOT			33
 #define A_KEEN_ACTION_4			37
-#define A_KEEN_ACTION_5			40
+#define A_KEEN_SLIDE			40
 #define A_KEEN_ENTER_DOOR		41
 #define A_KEEN_POLE				46
 #define A_KEEN_POLE_CLIMB		47
@@ -69,8 +69,11 @@ public:
 	void processLooking();
 	int processPressUp();
 	void processExiting();
-	void processItemCollection();
 	void processEnterDoor();
+	void processLevelMiscFlagsCheck();
+
+	void openDoorsTile();
+	void processPlaceGem();
 
 private:
 	Uint8 m_animation;
@@ -84,6 +87,8 @@ private:
 	int m_jumpheight;
 	bool m_cliff_hanging;
 	bool m_inair;
+
+	int m_timer;
 };
 
 }
