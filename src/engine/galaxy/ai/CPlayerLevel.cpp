@@ -322,7 +322,8 @@ void CPlayerLevel::processMoving()
 
 					// calc the proper coord of that tile
 					l_x = (l_x>>CSF)<<CSF;
-					if( !m_climbing && m_playcontrol[PA_Y] != 0 )
+					if( !m_climbing && m_playcontrol[PA_Y] < 0 ||
+							( getActionNumber(A_KEEN_STAND) && m_playcontrol[PA_Y] > 0 ) )
 					{
 						m_climbing = true;
 						// Set Keen in climb mode
