@@ -26,7 +26,7 @@ const Uint16 MIN_POGOHEIGHT = 5;
 const int POGO_START_INERTIA = -100;
 const int POGO_START_INERTIA_MAX = -170;
 const int POGO_X_MAX_INERTIA = 55;
-const int POGO_X_BOOST = 3;
+const int POGO_X_BOOST = 4;
 const int POGO_START_INERTIA_IMPOSSIBLE = -200;
 
 CPlayerLevel::CPlayerLevel(CMap *pmap, Uint32 x, Uint32 y,
@@ -680,14 +680,22 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
 		}
 	}
 
+	int l_x = getXLeftPos();
+	int l_y = getYUpPos();
+	int l_w = getXRightPos() - getXLeftPos();
+	int l_h = getYDownPos() - getYUpPos();
+	// Check for the items
+	if(hitdetectWithTilePropertyRect(4, l_x, l_y, l_w, l_h, 1<<STC))
+	{
+		const int lc_x = l_x>>CSF;
+		const int lc_y = l_y>>CSF;
+		mp_Map->setTile( lc_x, lc_y, 0, true, 1 );
+		m_ObjectPtrs.push_back(new CItemEffect(mp_Map, lc_x<<CSF, lc_y<<CSF, 215, ANIMATE));
+	}
+
 	// All the collectable items go from 21 to 28
 	for( Uint16 i=21 ; i<=28 ; i++ )
 	{
-		int l_x = getXLeftPos();
-		int l_y = getYUpPos();
-		int l_w = getXRightPos() - getXLeftPos();
-		int l_h = getYDownPos() - getYUpPos();
-
 		if(hitdetectWithTilePropertyRect(i, l_x, l_y, l_w, l_h, 1<<STC))
 		{
 			const int lc_x = l_x>>CSF;

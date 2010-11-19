@@ -27,13 +27,20 @@ const int got_sprite_item_pics[] = {
 	225,	226						// 1Up and got raygun sprites
 };
 
+enum item_effect_type
+{
+	FLOAT,
+	ANIMATE
+};
+
 class CItemEffect : public CObject {
 public:
-	CItemEffect(CMap *pmap, Uint32 x, Uint32 y, Uint16 l_sprite);
+	CItemEffect(CMap *pmap, Uint32 x, Uint32 y, Uint16 l_sprite, item_effect_type ieffect = FLOAT);
 	void process();
 
 private:
 	int m_timer;
+	item_effect_type m_ieffect;
 };
 
 }
