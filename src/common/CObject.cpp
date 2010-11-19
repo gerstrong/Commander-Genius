@@ -624,9 +624,9 @@ void CObject::processActionRoutine()
 	//printf("h_move=%d ; v_move=%d\n", m_Action.H_anim_move_amount, m_Action.V_anim_move_amount);
 
 		if(m_hDir == LEFT)
-			moveLeft( m_Action.H_anim_move_amount<<1 );
+			moveLeft(m_Action.H_anim_move_amount<<1);
 		else if(m_hDir == RIGHT)
-			moveRight( m_Action.H_anim_move_amount<<1 );
+			moveRight(m_Action.H_anim_move_amount<<1);
 
 		if(m_vDir == UP)
 			moveUp( m_Action.V_anim_move_amount<<1 );

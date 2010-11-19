@@ -6,6 +6,7 @@
  */
 
 #include "CPlayerLevel.h"
+#include "CItemEffect.h"
 #include "common/CBehaviorEngine.h"
 #include "sdl/CInput.h"
 #include "CVec.h"
@@ -24,6 +25,8 @@ const Uint16 MIN_POGOHEIGHT = 5;
 
 const int POGO_START_INERTIA = -100;
 const int POGO_START_INERTIA_MAX = -170;
+const int POGO_X_MAX_INERTIA = 55;
+const int POGO_X_BOOST = 3;
 const int POGO_START_INERTIA_IMPOSSIBLE = -200;
 
 CPlayerLevel::CPlayerLevel(CMap *pmap, Uint32 x, Uint32 y,
@@ -105,7 +108,9 @@ void CPlayerLevel::process()
 	processActionRoutine();
 
 	moveXDir(xinertia);
-	xinertia = 0;
+
+	if( !getActionNumber(A_KEEN_POGO) )
+		xinertia = 0;
 }
 
 void CPlayerLevel::processInput()
@@ -471,7 +476,22 @@ void CPlayerLevel::processPogo()
 			m_jumpheight = 0;
 		}
 
-		xinertia += (m_playcontrol[PA_X]>>1);
+		if(m_playcontrol[PA_X] > 0)
+		{
+			if(xinertia <= POGO_X_MAX_INERTIA)
+				xinertia += POGO_X_BOOST;
+		}
+		else if(m_playcontrol[PA_X] < 0)
+		{
+			if(xinertia >= -POGO_X_MAX_INERTIA)
+				xinertia -= POGO_X_BOOST;
+		}
+
+		if( blockedr && xinertia > 0 )
+			xinertia -= POGO_X_BOOST;
+		else if( blockedl && xinertia < 0 )
+			xinertia += POGO_X_BOOST;
+
 	}
 }
 
@@ -670,7 +690,10 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
 
 		if(hitdetectWithTilePropertyRect(i, l_x, l_y, l_w, l_h, 1<<STC))
 		{
-			mp_Map->setTile(l_x>>CSF, l_y>>CSF, 0, true, 1);
+			const int lc_x = l_x>>CSF;
+			const int lc_y = l_y>>CSF;
+			mp_Map->setTile( lc_x, lc_y, 0, true, 1 );
+			m_ObjectPtrs.push_back(new CItemEffect(mp_Map, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[4+i-21]));
 		}
 	}
 }

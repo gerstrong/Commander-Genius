@@ -44,7 +44,8 @@ void CLevelPlay::process()
 	{
 		CObject* p_Object = m_ObjectPtr[i];
 
-		p_Object->process();
+		if(p_Object->exists)
+			p_Object->process();
 	}
 
 	g_pVideoDriver->blitScrollSurface();
@@ -52,11 +53,20 @@ void CLevelPlay::process()
 	for( std::vector<CObject*>::iterator obj=m_ObjectPtr.begin() ;
 			obj!=m_ObjectPtr.end() ; obj++ )
 	{
-		(*obj)->draw();
+		if((*obj)->honorPriority)
+			(*obj)->draw();
 	}
 
 	// Draw masked tiles here!
 	m_Map.drawForegroundTiles();
+
+	for( std::vector<CObject*>::iterator obj=m_ObjectPtr.begin() ;
+			obj!=m_ObjectPtr.end() ; obj++ )
+	{
+		if(!(*obj)->honorPriority)
+			(*obj)->draw();
+	}
+
 }
 
 }
