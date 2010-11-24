@@ -488,6 +488,7 @@ void CObject::processFalling()
 	{
 		CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
 
+		//if( yinertia>40 && !onslope )
 		if( yinertia>0 && !onslope )
 			falling = true;
 		else

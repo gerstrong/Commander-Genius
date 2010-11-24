@@ -277,6 +277,8 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 		m_ObjectPtr.pop_back();
 	}
 
+	//std::ofstream File("objlayer.txt");
+
 	// he we go to the adding objects
 	data_ptr = start_data;
 	for(size_t y=0 ; y<height ; y++)
@@ -285,8 +287,12 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 		{
 			addFoe(Map, *data_ptr, x, y);
 			data_ptr++;
+			//File << *data_ptr << " ";
 		}
+		//File << std::endl;
 	}
+
+	//File.close();
 }
 
 /**
