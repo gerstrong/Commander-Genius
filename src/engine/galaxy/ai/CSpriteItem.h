@@ -19,6 +19,9 @@ public:
 	CSpriteItem(CMap *pmap, Uint32 x, Uint32 y);
 	void process();
 	virtual ~CSpriteItem();
+
+private:
+	int m_timer;
 };
 
 #endif /* CSPRITEITEM_H_ */
