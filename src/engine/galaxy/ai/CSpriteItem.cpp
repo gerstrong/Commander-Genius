@@ -7,6 +7,7 @@
 
 #include "CSpriteItem.h"
 #include "CItemEffect.h"
+#include "CPlayerLevel.h"
 
 namespace galaxy {
 
@@ -47,6 +48,9 @@ void CSpriteItem::getTouchedBy(CObject &theObject)
 	{
 		exists = false;
 
+		//CPlayerLevel &Player = dynamic_cast<CPlayerLevel&>(theObject);
+		CPlayerLevel *pPlayer = (CPlayerLevel*)(&theObject);
+
 		Uint32 newanimsprite = got_sprite_item_pics[0];
 		/// Calculate the right animation.
 		// Point items
@@ -58,6 +62,27 @@ void CSpriteItem::getTouchedBy(CObject &theObject)
 			newanimsprite = got_sprite_item_pics[11];
 
 		m_ObjectPtrs.push_back(new CItemEffect(mp_Map, getXPosition(), getYPosition(), newanimsprite));
+
+
+		// Now add the stuff to the inventory
+
+		switch(m_basesprite)
+		{
+		case 118:
+			pPlayer->m_Inventory.m_gem.red++;
+			break;
+		case 120:
+			pPlayer->m_Inventory.m_gem.yellow++;
+			break;
+		case 122:
+			pPlayer->m_Inventory.m_gem.blue++;
+			break;
+		case 124:
+			pPlayer->m_Inventory.m_gem.green++;
+			break;
+		default:
+			break;
+		}
 	}
 }
 

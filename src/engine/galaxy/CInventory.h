@@ -17,7 +17,6 @@ public:
 
 	void reset();
 
-private:
 	int m_lifes;
 	int m_points;
 	int m_lifeAt;

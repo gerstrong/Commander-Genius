@@ -76,6 +76,8 @@ public:
 	void openDoorsTile();
 	void processPlaceGem();
 
+	CInventory &m_Inventory;
+
 private:
 	Uint8 m_animation;
 	Uint8 m_animation_time;
@@ -90,8 +92,6 @@ private:
 	bool m_inair;
 
 	int m_timer;
-
-	CInventory &m_Inventory;
 
 };
 

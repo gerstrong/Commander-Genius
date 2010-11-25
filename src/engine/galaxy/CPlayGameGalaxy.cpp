@@ -125,7 +125,6 @@ void CPlayGameGalaxy::processInput()
 		mp_Menu = new CMenuGalaxy(ACTIVE, m_ExeFile, m_SavedGame, mp_option, m_restartVideo);
 		m_BackgroundBitmap = *g_pGfxEngine->getBitmap("KEENSWATCH");
 	}
-
 }
 
 /*

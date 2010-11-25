@@ -40,7 +40,7 @@ void CWorldMap::init()
 	CMapLoaderGalaxy MapLoader(m_ExeFile, m_ObjectPtr, m_Inventory);
 
 	m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
-	MapLoader.loadMap(m_Map, 0); // Map Level?
+	MapLoader.loadMap(m_Map, 0); // Is it a Map Level?
 
 	m_Map.drawAll();
 }

@@ -50,6 +50,8 @@ m_Inventory(l_Inventory)
 
 	m_pfiring = false;
 	m_jumpheight = 0;
+	m_climbing = false;
+	m_inair = false;
 
 	processActionRoutine();
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
@@ -677,6 +679,17 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
 
 			if( hitdetectWithTileProperty(i, l_x, l_y) )
 			{
+				if(i == 7 && m_Inventory.m_gem.red > 0)
+					m_Inventory.m_gem.red--;
+				else if(i == 8 && m_Inventory.m_gem.yellow > 0)
+					m_Inventory.m_gem.yellow--;
+				else if(i == 9 && m_Inventory.m_gem.blue > 0)
+					m_Inventory.m_gem.blue--;
+				else if(i == 10 && m_Inventory.m_gem.green > 0)
+					m_Inventory.m_gem.green--;
+				else
+					break;
+
 				setAction(A_KEEN_SLIDE);
 			}
 		}
