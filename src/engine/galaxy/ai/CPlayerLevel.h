@@ -10,6 +10,7 @@
 
 #include "common/CObject.h"
 #include "engine/CEvent.h"
+#include "engine/galaxy/CInventory.h"
 
 namespace galaxy {
 
@@ -57,7 +58,7 @@ PA_MAX_ACTIONS
 class CPlayerLevel : public CObject {
 public:
 	CPlayerLevel(CMap *pmap, Uint32 x, Uint32 y,
-			std::vector<CObject*>& ObjectPtrs, direction_t facedir);
+			std::vector<CObject*>& ObjectPtrs, direction_t facedir, CInventory &l_Inventory);
 
 	void process();
 	void processInput();
@@ -89,6 +90,9 @@ private:
 	bool m_inair;
 
 	int m_timer;
+
+	CInventory &m_Inventory;
+
 };
 
 }

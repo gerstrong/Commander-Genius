@@ -7,15 +7,16 @@
 
 #include "CWorldMap.h"
 #include "CMapLoaderGalaxy.h"
-#include "../../sdl/CInput.h"
-#include "../../sdl/CVideoDriver.h"
-#include "../../StringUtils.h"
+#include "sdl/CInput.h"
+#include "sdl/CVideoDriver.h"
+#include "StringUtils.h"
 
 namespace galaxy {
 
-CWorldMap::CWorldMap(CExeFile &ExeFile):
+CWorldMap::CWorldMap(CExeFile &ExeFile, CInventory &Inventory):
 m_active(false),
-m_ExeFile(ExeFile)
+m_ExeFile(ExeFile),
+m_Inventory(Inventory)
 {}
 
 bool CWorldMap::isActive()
@@ -36,7 +37,7 @@ void CWorldMap::setActive(bool value)
 void CWorldMap::init()
 {
 	// Load the World map level.
-	CMapLoaderGalaxy MapLoader(m_ExeFile, m_ObjectPtr);
+	CMapLoaderGalaxy MapLoader(m_ExeFile, m_ObjectPtr, m_Inventory);
 
 	m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
 	MapLoader.loadMap(m_Map, 0); // Map Level?

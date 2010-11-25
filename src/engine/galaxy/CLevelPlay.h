@@ -12,6 +12,7 @@
 
 #include "common/CObject.h"
 #include "fileio/CExeFile.h"
+#include "engine/galaxy/CInventory.h"
 #include <vector>
 
 namespace galaxy {
@@ -22,7 +23,7 @@ public:
 	bool isActive();
 	void setActive(bool value);
 
-	bool loadLevel(Uint16 level);
+	bool loadLevel(Uint16 level, CInventory &Inventory);
 
 	void process();
 

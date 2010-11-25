@@ -23,10 +23,10 @@ bool CLevelPlay::isActive()
 void CLevelPlay::setActive(bool value)
 {	m_active = value;	}
 
-bool CLevelPlay::loadLevel(Uint16 level)
+bool CLevelPlay::loadLevel(Uint16 level, CInventory &Inventory)
 {
 	// Load the World map level.
-	CMapLoaderGalaxy MapLoader(m_ExeFile, m_ObjectPtr);
+	CMapLoaderGalaxy MapLoader(m_ExeFile, m_ObjectPtr, Inventory);
 
 	m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
 	MapLoader.loadMap(m_Map, level);

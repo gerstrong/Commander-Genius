@@ -30,13 +30,15 @@ const int POGO_X_BOOST = 4;
 const int POGO_START_INERTIA_IMPOSSIBLE = -200;
 
 CPlayerLevel::CPlayerLevel(CMap *pmap, Uint32 x, Uint32 y,
-						std::vector<CObject*>& ObjectPtrs, direction_t facedir) :
+						std::vector<CObject*>& ObjectPtrs, direction_t facedir,
+						CInventory &l_Inventory) :
 CObject(pmap, x, y, OBJ_NONE),
 m_animation(0),
 m_animation_time(1),
 m_animation_ticker(0),
 m_ObjectPtrs(ObjectPtrs),
-m_cliff_hanging(false)
+m_cliff_hanging(false),
+m_Inventory(l_Inventory)
 {
 	m_index = 0;
 	m_timer = 0;
