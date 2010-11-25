@@ -45,7 +45,19 @@ void CLevelPlay::process()
 		CObject* p_Object = m_ObjectPtr[i];
 
 		if(p_Object->exists)
+		{
 			p_Object->process();
+
+			// Check collision between objects
+			/*for( std::vector<CObject*>::iterator theOtherObj=m_ObjectPtr.begin() ;
+					theOtherObj != m_ObjectPtr.end() ; theOtherObj++ )*/
+			for(size_t j=0 ; j<m_ObjectPtr.size() ; j++)
+			{
+				CObject *theOtherObj = m_ObjectPtr[j];
+				if( theOtherObj != p_Object )
+					p_Object->getTouchedBy(*theOtherObj);
+			}
+		}
 	}
 
 	g_pVideoDriver->blitScrollSurface();
@@ -66,7 +78,6 @@ void CLevelPlay::process()
 		if(!(*obj)->honorPriority)
 			(*obj)->draw();
 	}
-
 }
 
 }

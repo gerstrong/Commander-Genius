@@ -693,6 +693,7 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
 		m_ObjectPtrs.push_back(new CItemEffect(mp_Map, lc_x<<CSF, lc_y<<CSF, 215, ANIMATE));
 	}
 
+	/// Tile Items (Sprite are handled in the CSpriteItem Class)
 	// All the collectable items go from 21 to 28
 	for( Uint16 i=21 ; i<=28 ; i++ )
 	{

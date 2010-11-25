@@ -14,14 +14,22 @@
 
 #include "common/CObject.h"
 
+namespace galaxy {
+
+
 class CSpriteItem : public CObject{
 public:
-	CSpriteItem(CMap *pmap, Uint32 x, Uint32 y);
+	CSpriteItem(CMap *pmap, Uint32 x, Uint32 y,
+			std::vector<CObject*>& ObjectPtrs, Uint32 sprite);
 	void process();
-	virtual ~CSpriteItem();
+	void getTouchedBy(CObject &theObject);
 
 private:
 	int m_timer;
+	Uint32 m_basesprite;
+	std::vector<CObject*>& m_ObjectPtrs;
 };
+
+}
 
 #endif /* CSPRITEITEM_H_ */

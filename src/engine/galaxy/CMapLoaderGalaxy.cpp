@@ -21,6 +21,7 @@
 #include "engine/galaxy/ai/CMiragia.h"
 #include "engine/galaxy/ai/CPlayerWM.h"
 #include "engine/galaxy/ai/CPlayerLevel.h"
+#include "engine/galaxy/ai/CSpriteItem.h"
 
 #include <fstream>
 
@@ -306,6 +307,29 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 	CObject *p_newfoe = NULL;
 	CCamera *camera = NULL;
 	VectorD2<Uint32> Location(x,y);
+
+	// Point Item Sprites (Candies, etc...)
+	for( Uint32 i=61 ; i<=67 ; i++ )
+	{
+		if( foe == i )
+		{
+			const Uint32 newsprite = 103+2*(i-61);
+			p_newfoe = new galaxy::CSpriteItem(&Map, x, y, m_ObjectPtr, newsprite);
+		}
+	}
+
+	if( foe == 68 )
+		p_newfoe = new galaxy::CSpriteItem(&Map, x, y, m_ObjectPtr, 127);
+
+	for( Uint32 i=57 ; i<=60 ; i++ )
+	{
+		if( foe == i )
+		{
+			const Uint32 newsprite = 118+2*(i-57);
+			p_newfoe = new galaxy::CSpriteItem(&Map, x, y, m_ObjectPtr, newsprite);
+		}
+	}
+
 
 	switch(foe)
 	{
