@@ -115,7 +115,10 @@ void CHUD::CreateBackground()
  */
 void CHUD::CreateBackgroundGalaxy()
 {
+	// Draw the HUD Box Galaxy. In Episode 4 it's Sprite 129
+	CSprite &HUDBox = g_pGfxEngine->getSprite(129);
 
+	HUDBox.drawSprite(mp_Background, 0, 0);
 }
 
 // Draw a circle on the surface
@@ -125,9 +128,7 @@ void CHUD::DrawCircle(int x, int y, int width)
 
 	Uint8 r,g,b;
 	CFont &Font = g_pGfxEngine->getFont(0);
-	//Uint32 bgcolor = Font.getBGColour(false);
 	Font.getBGColour(false, &r, &g, &b);
-	//SDL_GetRGB(bgcolor, mp_Background->format, &r, &g, &b);
 
 	outline.x = x+4;
 	outline.y = y;
@@ -167,9 +168,25 @@ void CHUD::DrawCircle(int x, int y, int width)
 }
 
 /**
- * \brief This part of the code will render the entire HUD
+ * \brief This part of the code will render the entire HUD. Galaxy Version
  */
-void CHUD::render()
+void CHUD::renderGalaxy()
+{
+	// Compute the score that really will be seen
+	int score, lives, charges;
+	score = (m_score<999999999) ? m_score : 999999999;
+	lives = (m_lives<99) ? m_lives : 99;
+	charges = (m_charges<99) ? m_charges : 99;
+
+	SDL_Surface *blitsurface = g_pVideoDriver->getBlitSurface();
+
+	// Draw the background
+	SDL_BlitSurface( mp_Background, NULL, blitsurface, &m_Rect);
+}
+/**
+ * \brief This part of the code will render the entire HUD. Vorticon version
+ */
+void CHUD::renderVorticon()
 {
 	// Compute the score that really will be seen
 	int score, lives, charges;
@@ -194,6 +211,19 @@ void CHUD::render()
 	Font.drawFont(blitsurface, getRightAligned(itoa(charges),2), 62+m_Rect.x, 17+m_Rect.y);
 
 	Font.setFGColour(blitsurface->format, 0x0);
+}
+
+/**
+ * \brief This part of the code will render the entire HUD
+ */
+void CHUD::render()
+{
+	size_t Episode = g_pBehaviorEngine->getEpisode();
+
+	if( Episode>=1 && Episode<=3 )
+		renderVorticon();
+	else if( Episode>=4 && Episode<=6 )
+		renderGalaxy();
 }
 
 

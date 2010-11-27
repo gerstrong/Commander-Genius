@@ -17,8 +17,8 @@
 class CInventory {
 public:
 	CInventory();
-
 	void reset();
+	void drawHUD();
 
 	signed char m_lifes;
 	unsigned long  m_points;
@@ -49,7 +49,7 @@ public:
 		}ep6;
 	}m_special;
 
-	CHUD mp_HUD;
+	CHUD m_HUD;
 };
 
 
