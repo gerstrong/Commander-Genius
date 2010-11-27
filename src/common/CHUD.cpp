@@ -27,8 +27,6 @@ mp_Background(NULL)
 
 	if( Episode>=1 && Episode<=3 )
 		CreateBackground();
-	else if( Episode>=4 && Episode<=6 )
-		CreateBackgroundGalaxy();
 }
 
 std::string getRightAligned(std::string text, size_t size)
@@ -109,18 +107,6 @@ void CHUD::CreateBackground()
 	DrawCircle(58, 15, 22);
 }
 
-/**
- * \brief This function prepares the Background, so in process it can be rendered.
- * This function should only be called once! This is the galaxy version.
- */
-void CHUD::CreateBackgroundGalaxy()
-{
-	// Draw the HUD Box Galaxy. In Episode 4 it's Sprite 129
-	CSprite &HUDBox = g_pGfxEngine->getSprite(129);
-
-	HUDBox.drawSprite(mp_Background, 0, 0);
-}
-
 // Draw a circle on the surface
 void CHUD::DrawCircle(int x, int y, int width)
 {
@@ -172,6 +158,11 @@ void CHUD::DrawCircle(int x, int y, int width)
  */
 void CHUD::renderGalaxy()
 {
+	m_Rect.x = 4;
+	m_Rect.y = 2;
+	m_Rect.w = 80;
+	m_Rect.h = 29;
+
 	// Compute the score that really will be seen
 	int score, lives, charges;
 	score = (m_score<999999999) ? m_score : 999999999;
@@ -181,7 +172,14 @@ void CHUD::renderGalaxy()
 	SDL_Surface *blitsurface = g_pVideoDriver->getBlitSurface();
 
 	// Draw the background
-	SDL_BlitSurface( mp_Background, NULL, blitsurface, &m_Rect);
+	CSprite &HUDBox = g_pGfxEngine->getSprite(129);
+
+	HUDBox.drawSprite(blitsurface, m_Rect.x, m_Rect.y);
+
+	CTilemap &Tilemap = g_pGfxEngine->getTileMap(2);
+	//Font.drawFont(blitsurface, getRightAligned(itoa(lives),9), 5+m_Rect.x, 2+m_Rect.y);
+	Tilemap.drawTile(blitsurface, 5+m_Rect.x, 2+m_Rect.y, 43);
+
 }
 /**
  * \brief This part of the code will render the entire HUD. Vorticon version

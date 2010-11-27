@@ -12,9 +12,10 @@
 
 namespace galaxy {
 
-CLevelPlay::CLevelPlay(CExeFile &ExeFile) :
+CLevelPlay::CLevelPlay(CExeFile &ExeFile, CInventory &Inventory) :
 m_active(false),
-m_ExeFile(ExeFile)
+m_ExeFile(ExeFile),
+m_Inventory(Inventory)
 { }
 
 bool CLevelPlay::isActive()
@@ -23,10 +24,10 @@ bool CLevelPlay::isActive()
 void CLevelPlay::setActive(bool value)
 {	m_active = value;	}
 
-bool CLevelPlay::loadLevel(Uint16 level, CInventory &Inventory)
+bool CLevelPlay::loadLevel(Uint16 level)
 {
 	// Load the World map level.
-	CMapLoaderGalaxy MapLoader(m_ExeFile, m_ObjectPtr, Inventory);
+	CMapLoaderGalaxy MapLoader(m_ExeFile, m_ObjectPtr, m_Inventory);
 
 	m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
 	MapLoader.loadMap(m_Map, level);
@@ -78,6 +79,8 @@ void CLevelPlay::process()
 		if(!(*obj)->honorPriority)
 			(*obj)->draw();
 	}
+
+	m_Inventory.drawHUD();
 }
 
 }

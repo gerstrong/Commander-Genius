@@ -19,11 +19,11 @@ namespace galaxy {
 
 class CLevelPlay {
 public:
-	CLevelPlay(CExeFile &ExeFile);
+	CLevelPlay(CExeFile &ExeFile, CInventory &Inventory);
 	bool isActive();
 	void setActive(bool value);
 
-	bool loadLevel(Uint16 level, CInventory &Inventory);
+	bool loadLevel(Uint16 level);
 
 	void process();
 
@@ -33,6 +33,7 @@ private:
 
 	CMap m_Map;
 	CExeFile &m_ExeFile;
+	CInventory &m_Inventory;
 };
 
 }

@@ -21,7 +21,7 @@ CPlayGameGalaxy::CPlayGameGalaxy(CExeFile &ExeFile, char level,
 		 stOption *p_option, CSavedGame &SavedGame) :
 CPlayGame(ExeFile, level, numplayers, difficulty, p_option),
 m_WorldMap(ExeFile, m_Inventory),
-m_LevelPlay(ExeFile),
+m_LevelPlay(ExeFile, m_Inventory),
 mp_Menu(NULL),
 m_SavedGame(SavedGame)
 {
@@ -42,7 +42,7 @@ bool CPlayGameGalaxy::init()
 	else
 	{
 		// manually a level has been loaded
-		m_LevelPlay.loadLevel(m_Level, m_Inventory);
+		m_LevelPlay.loadLevel(m_Level);
 		m_LevelPlay.setActive(true);
 		return true;
 	}
@@ -103,7 +103,7 @@ void CPlayGameGalaxy::process()
 		if(ev->data > 0xC000)
 		{
 			m_WorldMap.setActive(false);
-			m_LevelPlay.loadLevel(ev->data - 0xC000, m_Inventory);
+			m_LevelPlay.loadLevel(ev->data - 0xC000);
 			m_LevelPlay.setActive(true);
 		}
 		EventContainer.pop_Event();

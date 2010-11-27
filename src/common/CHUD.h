@@ -27,7 +27,6 @@ public:
 private:
 
 	void CreateBackground();
-	void CreateBackgroundGalaxy();
 	void renderGalaxy();
 	void renderVorticon();
 	void DrawCircle(int x, int y, int width);
