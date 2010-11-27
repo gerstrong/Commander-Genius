@@ -154,6 +154,17 @@ void CHUD::DrawCircle(int x, int y, int width)
 }
 
 /**
+ * Draws some digits using galaxy style
+ */
+void CHUD::drawDigits(const std::string text, Uint16 x, Uint16 y)
+{
+	SDL_Surface *blitsurface = g_pVideoDriver->getBlitSurface();
+
+	CTilemap &Tilemap = g_pGfxEngine->getTileMap(2);
+	Tilemap.drawTile(blitsurface, 5+m_Rect.x, 2+m_Rect.y, 43);
+}
+
+/**
  * \brief This part of the code will render the entire HUD. Galaxy Version
  */
 void CHUD::renderGalaxy()
@@ -176,10 +187,7 @@ void CHUD::renderGalaxy()
 
 	HUDBox.drawSprite(blitsurface, m_Rect.x, m_Rect.y);
 
-	CTilemap &Tilemap = g_pGfxEngine->getTileMap(2);
-	//Font.drawFont(blitsurface, getRightAligned(itoa(lives),9), 5+m_Rect.x, 2+m_Rect.y);
-	Tilemap.drawTile(blitsurface, 5+m_Rect.x, 2+m_Rect.y, 43);
-
+	drawDigits(getRightAligned(itoa(lives),9), 5+m_Rect.x, 2+m_Rect.y);
 }
 /**
  * \brief This part of the code will render the entire HUD. Vorticon version
