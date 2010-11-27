@@ -17,9 +17,9 @@
 #ifndef OLDSAVEGAMESTRUCTS_H_
 #define OLDSAVEGAMESTRUCTS_H_
 
-#include "../keen.h"
-#include "../common/Playerdefines.h"
-#include "../common/inventory.h"
+#include "keen.h"
+#include "common/Playerdefines.h"
+#include "common/inventory.h"
 
 struct OldSaveGameFormatV5
 {

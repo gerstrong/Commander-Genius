@@ -7,9 +7,9 @@
 
 #include "CMenuGalaxy.h"
 
-#include "../../graphics/CGfxEngine.h"
-#include "../../sdl/CVideoDriver.h"
-#include "../../sdl/CInput.h"
+#include "graphics/CGfxEngine.h"
+#include "sdl/CVideoDriver.h"
+#include "sdl/CInput.h"
 
 namespace galaxy
 {

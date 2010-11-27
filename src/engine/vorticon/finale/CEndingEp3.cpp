@@ -6,13 +6,13 @@
  */
 
 #include "CEndingEp3.h"
-#include "../../../StringUtils.h"
-#include "../../../sdl/CInput.h"
-#include "../../../sdl/CVideoDriver.h"
-#include "../../../graphics/effects/CFlash.h"
-#include "../../../graphics/CGfxEngine.h"
-#include "../../../common/CMapLoader.h"
-#include "../../../common/Playerdefines.h"
+#include "StringUtils.h"
+#include "sdl/CInput.h"
+#include "sdl/CVideoDriver.h"
+#include "graphics/effects/CFlash.h"
+#include "graphics/CGfxEngine.h"
+#include "common/CMapLoader.h"
+#include "common/Playerdefines.h"
 
 CEndingEp3::CEndingEp3(CMap &map, std::vector<CPlayer> &Player) :
 CFinale(map),

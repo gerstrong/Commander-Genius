@@ -9,18 +9,11 @@
 #define CPLAYERLEVEL_H_
 
 #include "common/CObject.h"
+#include "common/Playerdefines.h"
 #include "engine/CEvent.h"
 #include "engine/galaxy/CInventory.h"
 
 namespace galaxy {
-
-enum player_actions{
-PA_X = 0,
-PA_Y,
-PA_JUMP, PA_POGO,
-PA_FIRE, PA_STATUS,
-PA_MAX_ACTIONS
-};
 
 #define A_KEEN_STAND			0
 #define A_KEEN_BORED			1

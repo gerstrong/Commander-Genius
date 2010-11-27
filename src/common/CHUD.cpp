@@ -22,7 +22,13 @@ mp_Background(NULL)
 	m_Rect.y = 2;
 	m_Rect.w = 80;
 	m_Rect.h = 29;
-	CreateBackground();
+
+	size_t Episode = g_pBehaviorEngine->getEpisode();
+
+	if( Episode>=1 && Episode<=3 )
+		CreateBackground();
+	else if( Episode>=4 && Episode<=6 )
+		CreateBackgroundGalaxy();
 }
 
 std::string getRightAligned(std::string text, size_t size)
@@ -103,6 +109,16 @@ void CHUD::CreateBackground()
 	DrawCircle(58, 15, 22);
 }
 
+/**
+ * \brief This function prepares the Background, so in process it can be rendered.
+ * This function should only be called once! This is the galaxy version.
+ */
+void CHUD::CreateBackgroundGalaxy()
+{
+
+}
+
+// Draw a circle on the surface
 void CHUD::DrawCircle(int x, int y, int width)
 {
 	SDL_Rect text, outline;

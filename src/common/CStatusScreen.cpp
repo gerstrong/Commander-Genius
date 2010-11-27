@@ -10,13 +10,13 @@
  */
 
 #include "CStatusScreen.h"
-#include "../graphics/CGfxEngine.h"
-#include "../sdl/CVideoDriver.h"
-#include "../StringUtils.h"
-#include "../common/Playerdefines.h"
-#include "../common/CBehaviorEngine.h"
-#include "../graphics/effects/CColorMerge.h"
-#include "../engine/vorticon/ai/CAnkhShield.h"
+#include "graphics/CGfxEngine.h"
+#include "sdl/CVideoDriver.h"
+#include "StringUtils.h"
+#include "common/Playerdefines.h"
+#include "common/CBehaviorEngine.h"
+#include "graphics/effects/CColorMerge.h"
+#include "engine/vorticon/ai/CAnkhShield.h"
 
 #define FADE_SPEED	10
 

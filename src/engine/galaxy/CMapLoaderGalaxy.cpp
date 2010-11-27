@@ -25,6 +25,9 @@
 
 #include <fstream>
 
+namespace galaxy
+{
+
 CMapLoaderGalaxy::CMapLoaderGalaxy(CExeFile &ExeFile, std::vector<CObject*>& ObjectPtr, CInventory &Inventory):
 m_ExeFile(ExeFile),
 m_ObjectPtr(ObjectPtr),
@@ -366,4 +369,6 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 
 	if(p_newfoe)
 		m_ObjectPtr.push_back(p_newfoe);
+}
+
 }

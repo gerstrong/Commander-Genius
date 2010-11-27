@@ -9,11 +9,12 @@
 #define PLAYERDEFINES_H_
 
 enum player_actions{
-PA_X, PA_Y,
+PA_X = 0,
+PA_Y,
 PA_JUMP, PA_POGO,
-PA_FIRE, PA_STATUS
+PA_FIRE, PA_STATUS,
+PA_MAX_ACTIONS
 };
-#define	PA_MAX_ACTIONS 6
 
 // upon starting to walk, keen will quickly increase to
 // PFASTINCMAXSPEED. keen can, at a slower rate,

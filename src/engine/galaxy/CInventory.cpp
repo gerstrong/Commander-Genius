@@ -7,7 +7,9 @@
 
 #include "CInventory.h"
 
-CInventory::CInventory()
+
+CInventory::CInventory() :
+mp_HUD(m_points, m_lifes, m_bullets)
 {
 	reset();
 }
@@ -29,3 +31,5 @@ void CInventory::reset()
 	m_special.ep4.elders = 0;
 	m_special.ep4.swimsuit = 0;
 }
+
+

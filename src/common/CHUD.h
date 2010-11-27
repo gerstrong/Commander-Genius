@@ -9,12 +9,12 @@
  *  or even another game can use it.
  */
 
-#ifndef CHUD_H_
-#define CHUD_H_
-
 #include <SDL.h>
 #include "Playerdefines.h"
-#include "../engine/spritedefines.h"
+#include "engine/spritedefines.h"
+
+#ifndef CHUD_H_
+#define CHUD_H_
 
 class CHUD {
 public:
@@ -27,6 +27,7 @@ public:
 private:
 
 	void CreateBackground();
+	void CreateBackgroundGalaxy();
 	void DrawCircle(int x, int y, int width);
 
 	SDL_Rect m_Rect;

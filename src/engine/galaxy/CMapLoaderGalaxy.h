@@ -18,6 +18,9 @@
 #include <string>
 #include <SDL.h>
 
+namespace galaxy
+{
+
 class CMapLoaderGalaxy
 {
 public:
@@ -38,5 +41,7 @@ private:
 	std::vector<CObject*>& m_ObjectPtr;
 	CInventory &m_Inventory;
 };
+
+}
 
 #endif /* CMAPLOADERGALAXY_H_ */

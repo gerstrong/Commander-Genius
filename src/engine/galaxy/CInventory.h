@@ -8,8 +8,11 @@
  *  the one for vorticon is memory fixed for savegames.
  */
 
+
 #ifndef CINVENTORY_H_
 #define CINVENTORY_H_
+
+#include "common/CHUD.h"
 
 class CInventory {
 public:
@@ -17,11 +20,11 @@ public:
 
 	void reset();
 
-	int m_lifes;
-	int m_points;
+	signed char m_lifes;
+	unsigned long  m_points;
 	int m_lifeAt;
 	int m_drops;
-	int m_bullets;
+	unsigned int m_bullets;
 	struct {
 		int red;
 		int blue;
@@ -45,6 +48,9 @@ public:
 			bool rocketKeycard;
 		}ep6;
 	}m_special;
+
+	CHUD mp_HUD;
 };
+
 
 #endif /* CINVENTORY_H_ */
