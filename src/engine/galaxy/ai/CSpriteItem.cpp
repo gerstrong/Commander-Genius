@@ -48,18 +48,35 @@ void CSpriteItem::getTouchedBy(CObject &theObject)
 	{
 		exists = false;
 
-		//CPlayerLevel &Player = dynamic_cast<CPlayerLevel&>(theObject);
+		if(theObject.m_type != OBJ_PLAYER)
+			return;
+
 		CPlayerLevel *pPlayer = (CPlayerLevel*)(&theObject);
 
-		Uint32 newanimsprite = got_sprite_item_pics[0];
 		/// Calculate the right animation.
 		// Point items
+		Uint32 newanimsprite = got_sprite_item_pics[0];
 		if( m_basesprite >= 103 && m_basesprite <= 116 )
+		{
 			newanimsprite = got_sprite_item_pics[4+(m_basesprite-103)/2];
+			switch(m_basesprite)
+			{
+			case 103: pPlayer->m_Inventory.m_points += 100;	break;
+			case 105: pPlayer->m_Inventory.m_points += 200;	break;
+			case 107: pPlayer->m_Inventory.m_points += 500;	break;
+			case 109: pPlayer->m_Inventory.m_points += 1000;	break;
+			case 111: pPlayer->m_Inventory.m_points += 2000;	break;
+			case 113: pPlayer->m_Inventory.m_points += 5000;	break;
+			default: break;
+			}
+		}
 
 		// raygun
 		if( m_basesprite >= 127 && m_basesprite <= 128 )
+		{
+			pPlayer->m_Inventory.m_bullets += 5;
 			newanimsprite = got_sprite_item_pics[11];
+		}
 
 		m_ObjectPtrs.push_back(new CItemEffect(mp_Map, getXPosition(), getYPosition(), newanimsprite));
 

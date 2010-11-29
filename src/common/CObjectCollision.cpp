@@ -382,6 +382,7 @@ bool CObject::hitdetectWithTileProperty(Uint16 Property, Uint16 x, Uint16 y)
 bool CObject::checkSolidR( int x1, int x2, int y1, int y2)
 {
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+	bool vorticon = (g_pBehaviorEngine->getEpisode() <= 3);
 
 	x2 += COLISION_RES;
 
@@ -403,7 +404,15 @@ bool CObject::checkSolidR( int x1, int x2, int y1, int y2)
 
 	if( m_type == OBJ_PLAYER && solid )
 	{
-		if( x2 >= (int)((mp_Map->m_width-2)<<CSF) ) return true;
+		if(vorticon)
+		{
+			if( x2 >= (int)((mp_Map->m_width-2)<<CSF) ) return true;
+		}
+		else
+		{
+			if( x2 >= (int)((mp_Map->m_width-1)<<CSF) ) return true;
+		}
+
 	}
 	else
 	{
@@ -448,7 +457,14 @@ bool CObject::checkSolidL( int x1, int x2, int y1, int y2)
 
 	if( m_type == OBJ_PLAYER && solid )
 	{
-		if( x1 <= (2<<CSF) ) return true;
+		if(vorticon)
+		{
+			if( x1 <= (2<<CSF) ) return true;
+		}
+		else
+		{
+			if( x1 <= (1<<CSF) ) return true;
+		}
 	}
 	else
 	{

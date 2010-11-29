@@ -11,10 +11,6 @@
 #include "sdl/CInput.h"
 #include "CVec.h"
 
-// TODO: Needs recoding. This was just for testing, but now we need something much more
-// serious. I want to create a diagram to represent all actions that keen can do and code them
-// here according to that diagram. Something like UML or Petri. This Code got a bit out of control
-
 namespace galaxy {
 
 const Uint16 MAX_JUMPHEIGHT = 30;
@@ -32,7 +28,7 @@ const int POGO_START_INERTIA_IMPOSSIBLE = -200;
 CPlayerLevel::CPlayerLevel(CMap *pmap, Uint32 x, Uint32 y,
 						std::vector<CObject*>& ObjectPtrs, direction_t facedir,
 						CInventory &l_Inventory) :
-CObject(pmap, x, y, OBJ_NONE),
+CObject(pmap, x, y, OBJ_PLAYER),
 m_Inventory(l_Inventory),
 m_animation(0),
 m_animation_time(1),
@@ -718,6 +714,19 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
 			const int lc_y = l_y>>CSF;
 			mp_Map->setTile( lc_x, lc_y, 0, true, 1 );
 			m_ObjectPtrs.push_back(new CItemEffect(mp_Map, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[4+i-21]));
+
+			switch(i)
+			{
+			case 21: m_Inventory.m_points += 100;	break;
+			case 22: m_Inventory.m_points += 200;	break;
+			case 23: m_Inventory.m_points += 500;	break;
+			case 24: m_Inventory.m_points += 1000;	break;
+			case 25: m_Inventory.m_points += 2000;	break;
+			case 26: m_Inventory.m_points += 5000;	break;
+			case 27: m_Inventory.m_lifes++;	break;
+			case 28: m_Inventory.m_bullets += 5;	break;
+			default: break;
+			}
 		}
 	}
 }
