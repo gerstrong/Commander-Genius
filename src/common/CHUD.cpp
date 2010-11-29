@@ -156,12 +156,19 @@ void CHUD::DrawCircle(int x, int y, int width)
 /**
  * Draws some digits using galaxy style
  */
-void CHUD::drawDigits(const std::string text, Uint16 x, Uint16 y)
+void CHUD::drawDigits(const std::string& text, Uint16 x, Uint16 y)
 {
 	SDL_Surface *blitsurface = g_pVideoDriver->getBlitSurface();
 
 	CTilemap &Tilemap = g_pGfxEngine->getTileMap(2);
-	Tilemap.drawTile(blitsurface, 5+m_Rect.x, 2+m_Rect.y, 43);
+
+	for(Uint16 i=0 ; i<text.size() ; i++)
+	{
+		char c = text[i];
+
+		if(c != ' ')
+			Tilemap.drawTile(blitsurface, x+i*8, y, 43+c-'1');
+	}
 }
 
 /**
@@ -187,7 +194,9 @@ void CHUD::renderGalaxy()
 
 	HUDBox.drawSprite(blitsurface, m_Rect.x, m_Rect.y);
 
-	drawDigits(getRightAligned(itoa(lives),9), 5+m_Rect.x, 2+m_Rect.y);
+	drawDigits(getRightAligned(itoa(score),9), m_Rect.x+8, m_Rect.y+4);
+	drawDigits(getRightAligned(itoa(charges),2), m_Rect.x+64, m_Rect.y+20);
+	drawDigits(getRightAligned(itoa(lives),2), m_Rect.x+24, m_Rect.y+20);
 }
 /**
  * \brief This part of the code will render the entire HUD. Vorticon version

@@ -12,6 +12,7 @@
 #include <SDL.h>
 #include "Playerdefines.h"
 #include "engine/spritedefines.h"
+#include <string>
 
 #ifndef CHUD_H_
 #define CHUD_H_
@@ -27,6 +28,7 @@ public:
 private:
 
 	void CreateBackground();
+	void drawDigits(const std::string& text, Uint16 x, Uint16 y);
 	void renderGalaxy();
 	void renderVorticon();
 	void DrawCircle(int x, int y, int width);
