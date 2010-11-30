@@ -1,17 +1,17 @@
 #!/bin/sh
 
 # Windows Version
-cmake . -DBUILD_TYPE=WIN32 -DDEBUG=OFF -DOGG=yes -DTREMOR=NO -D64BIT=
+cmake . -DBUILD_TYPE=WIN32 -DDEBUG=OFF -DOGG=yes -DTREMOR=NO -DHAVE_64_BIT=1
 make
 rm CMakeFiles -R
 
 # Linux 64-bit Version
-cmake . -DBUILD_TYPE=LINUX64 -DDEBUG=OFF -DOGG=yes -DTREMOR=NO
+cmake . -DBUILD_TYPE=LINUX64 -DDEBUG=OFF -DOGG=yes -DTREMOR=NO -DHAVE_64_BIT=1
 make
 rm CMakeFiles -R
 
 # Linux 32-bit Version
-cmake . -DBUILD_TYPE=LINUX32 -DDEBUG=OFF -DOGG=yes -DTREMOR=NO
+cmake . -DBUILD_TYPE=LINUX32 -DDEBUG=OFF -DOGG=yes -DTREMOR=NO -DHAVE_64_BIT=1
 make
 rm CMakeFiles -R
 
