@@ -8,8 +8,8 @@
 #ifndef CBALLJACK_H_
 #define CBALLJACK_H_
 
-#include "../../../common/CObject.h"
-#include "../../../common/CPlayer.h"
+#include "common/CObject.h"
+#include "common/CPlayer.h"
 #include <vector>
 
 class CBallJack : public CObject
@@ -19,7 +19,7 @@ public:
 			std::vector<CPlayer> &PlayerVect, object_t type);
 	void process();
 
-	void getShotByRay();
+	void getShotByRay(object_t &obj_type);
 
 private:
 	enum {

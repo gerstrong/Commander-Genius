@@ -157,7 +157,7 @@ public:
 	
 	void processFalling();
 	virtual void getTouchedBy(CObject &theObject) {};
-	virtual void getShotByRay();
+	virtual void getShotByRay(object_t &obj_type);
 	void kill_intersecting_tile(int mpx, int mpy, CObject &theObject);
 	CMap *getMapPtr() { return mp_Map; }
 

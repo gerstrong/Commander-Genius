@@ -25,7 +25,7 @@ public:
 	void setOwner(object_t type, unsigned int index);
 	void setSpeed(size_t speed);
 	void getTouchedBy(CObject &theObject);
-	void getShotByRay();
+	void getShotByRay(object_t &obj_type);
 	bool isFlying();
 	void setZapped();
 	void gotZapped();

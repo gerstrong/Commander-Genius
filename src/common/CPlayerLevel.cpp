@@ -919,7 +919,7 @@ int CPlayer::pollLevelTrigger()
 	return trigger;
 }
 
-void CPlayer::getShotByRay()
+void CPlayer::getShotByRay(object_t &obj_type)
 {
 	if (pfrozentime)
 	{

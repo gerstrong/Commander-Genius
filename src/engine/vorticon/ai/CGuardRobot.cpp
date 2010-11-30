@@ -1,5 +1,6 @@
-#include "../../../sdl/sound/CSound.h"
-#include "../../spritedefines.h"
+#include "sdl/sound/CSound.h"
+#include "sdl/CVideoDriver.h"
+#include "engine/spritedefines.h"
 
 #include "CGuardRobot.h"
 #include "CRay.h"
@@ -35,7 +36,7 @@ CGuardRobot::CGuardRobot(CMap *p_map, Uint32 x, Uint32 y,
 CObject(p_map, x, y, OBJ_GUARDROBOT),
 m_ObjectVect(Object)
 {
-	//first time initilization
+	//first time initialization
 	state = TANK_WALK;
 	movedir = RIGHT;
 	fireafterlook = 0;
@@ -208,3 +209,14 @@ void CGuardRobot::tank2_fire()
 	timetillcanfire = (rnd()%(MAX_TIME_TILL_CAN_FIRE-MIN_TIME_TILL_CAN_FIRE))+MIN_TIME_TILL_CAN_FIRE;
 	pausetime = FIRE_PAUSE_TIME;
 }
+
+void CGuardRobot::getShotByRay(object_t &obj_type)
+{
+	if( !m_invincible && HealthPoints>0 && obj_type != OBJ_VORTELITE)
+	{
+		if(HealthPoints>1 && g_pVideoDriver->getSpecialFXConfig())
+			blink(10);
+		HealthPoints--;
+	}
+}
+

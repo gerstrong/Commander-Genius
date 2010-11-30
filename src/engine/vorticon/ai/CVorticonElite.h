@@ -27,6 +27,8 @@ public:
 			Uint32 x, Uint32 y );
 	void process();
 	void initiatejump();
+	void getShotByRay(object_t &obj_type);
+
 private:
 	vortelite_actions state;
 

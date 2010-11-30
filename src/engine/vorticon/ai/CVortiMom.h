@@ -46,7 +46,7 @@ public:
 			std::vector<CPlayer>& Player,
 			std::vector<CObject*>& Object);
 	void process();
-	void getShotByRay();
+	void getShotByRay(object_t &obj_type);
 
 private:
 	vortimom_actions state;

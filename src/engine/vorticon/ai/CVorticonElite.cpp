@@ -1,7 +1,8 @@
-#include "../../../misc.h"
-#include "../../../sdl/sound/CSound.h"
-#include "../../../graphics/CGfxEngine.h"
-#include "../../spritedefines.h"
+#include "misc.h"
+#include "sdl/sound/CSound.h"
+#include "sdl/CVideoDriver.h"
+#include "graphics/CGfxEngine.h"
+#include "engine/spritedefines.h"
 
 #include "CVorticonElite.h"
 #include "CRay.h"
@@ -290,4 +291,15 @@ void CVorticonElite::initiatejump()
 
 	state = VORTELITE_JUMP;
 }
+
+void CVorticonElite::getShotByRay(object_t &obj_type)
+{
+	if( !m_invincible && HealthPoints>0 && obj_type != OBJ_GUARDROBOT)
+	{
+		if(HealthPoints>1 && g_pVideoDriver->getSpecialFXConfig())
+			blink(10);
+		HealthPoints--;
+	}
+}
+
 

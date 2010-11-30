@@ -527,7 +527,7 @@ void CObject::processFalling()
 	// In order to avoid, that they can't get out, pull them out of there!
 }
 
-void CObject::getShotByRay()
+void CObject::getShotByRay(object_t &obj_type)
 {
 	if( !m_invincible && HealthPoints>0)
 	{

@@ -48,7 +48,7 @@ void CRope::process()
 	}
 }
 
-void CRope::getShotByRay()
+void CRope::getShotByRay(object_t &obj_type)
 {
 	if(state == ROPE_IDLE)
 	{

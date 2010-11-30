@@ -21,6 +21,8 @@ public:
 			 std::vector<CObject*>& Object);
 	void process();
 	void tank2_fire();
+	void getShotByRay(object_t &obj_type);
+
 private:
 
 	std::vector<CObject*>& m_ObjectVect;
