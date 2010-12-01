@@ -20,8 +20,8 @@ CPlayGameGalaxy::CPlayGameGalaxy(CExeFile &ExeFile, char level,
 		 char numplayers, Uint8& difficulty,
 		 stOption *p_option, CSavedGame &SavedGame) :
 CPlayGame(ExeFile, level, numplayers, difficulty, p_option),
-m_WorldMap(ExeFile),
-m_LevelPlay(ExeFile),
+m_WorldMap(ExeFile, m_Inventory),
+m_LevelPlay(ExeFile, m_Inventory),
 mp_Menu(NULL),
 m_SavedGame(SavedGame)
 {
@@ -125,7 +125,6 @@ void CPlayGameGalaxy::processInput()
 		mp_Menu = new CMenuGalaxy(ACTIVE, m_ExeFile, m_SavedGame, mp_option, m_restartVideo);
 		m_BackgroundBitmap = *g_pGfxEngine->getBitmap("KEENSWATCH");
 	}
-
 }
 
 /*

@@ -12,13 +12,14 @@
 
 #include "common/CObject.h"
 #include "fileio/CExeFile.h"
+#include "engine/galaxy/CInventory.h"
 #include <vector>
 
 namespace galaxy {
 
 class CLevelPlay {
 public:
-	CLevelPlay(CExeFile &ExeFile);
+	CLevelPlay(CExeFile &ExeFile, CInventory &Inventory);
 	bool isActive();
 	void setActive(bool value);
 
@@ -32,6 +33,7 @@ private:
 
 	CMap m_Map;
 	CExeFile &m_ExeFile;
+	CInventory &m_Inventory;
 };
 
 }

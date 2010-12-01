@@ -9,6 +9,7 @@
 #define CPLAYGAMEGALAXY_H_
 
 #include "engine/playgame/CPlayGame.h"
+#include "engine/galaxy/CInventory.h"
 #include "common/CMap.h"
 #include "CWorldMap.h"
 #include "CLevelPlay.h"
@@ -43,6 +44,7 @@ private:
 	CMenuGalaxy *mp_Menu;
 	CSavedGame &m_SavedGame;
 	CBitmap m_BackgroundBitmap;
+	CInventory m_Inventory;
 };
 
 }

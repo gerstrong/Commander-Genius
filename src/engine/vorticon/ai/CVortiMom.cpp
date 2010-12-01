@@ -139,7 +139,7 @@ void CVortiMom::process()
 	}
 }
 
-void CVortiMom::getShotByRay()
+void CVortiMom::getShotByRay(object_t &obj_type)
 {
 	if( state != MOTHER_HURT && HealthPoints>0 )
 	{

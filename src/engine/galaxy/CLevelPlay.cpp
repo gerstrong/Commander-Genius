@@ -12,9 +12,10 @@
 
 namespace galaxy {
 
-CLevelPlay::CLevelPlay(CExeFile &ExeFile) :
+CLevelPlay::CLevelPlay(CExeFile &ExeFile, CInventory &Inventory) :
 m_active(false),
-m_ExeFile(ExeFile)
+m_ExeFile(ExeFile),
+m_Inventory(Inventory)
 { }
 
 bool CLevelPlay::isActive()
@@ -26,7 +27,7 @@ void CLevelPlay::setActive(bool value)
 bool CLevelPlay::loadLevel(Uint16 level)
 {
 	// Load the World map level.
-	CMapLoaderGalaxy MapLoader(m_ExeFile, m_ObjectPtr);
+	CMapLoaderGalaxy MapLoader(m_ExeFile, m_ObjectPtr, m_Inventory);
 
 	m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
 	MapLoader.loadMap(m_Map, level);
@@ -44,7 +45,20 @@ void CLevelPlay::process()
 	{
 		CObject* p_Object = m_ObjectPtr[i];
 
-		p_Object->process();
+		if(p_Object->exists)
+		{
+			p_Object->process();
+
+			// Check collision between objects
+			/*for( std::vector<CObject*>::iterator theOtherObj=m_ObjectPtr.begin() ;
+					theOtherObj != m_ObjectPtr.end() ; theOtherObj++ )*/
+			for(size_t j=0 ; j<m_ObjectPtr.size() ; j++)
+			{
+				CObject *theOtherObj = m_ObjectPtr[j];
+				if( theOtherObj != p_Object )
+					p_Object->getTouchedBy(*theOtherObj);
+			}
+		}
 	}
 
 	g_pVideoDriver->blitScrollSurface();
@@ -52,11 +66,21 @@ void CLevelPlay::process()
 	for( std::vector<CObject*>::iterator obj=m_ObjectPtr.begin() ;
 			obj!=m_ObjectPtr.end() ; obj++ )
 	{
-		(*obj)->draw();
+		if((*obj)->honorPriority)
+			(*obj)->draw();
 	}
 
 	// Draw masked tiles here!
 	m_Map.drawForegroundTiles();
+
+	for( std::vector<CObject*>::iterator obj=m_ObjectPtr.begin() ;
+			obj!=m_ObjectPtr.end() ; obj++ )
+	{
+		if(!(*obj)->honorPriority)
+			(*obj)->draw();
+	}
+
+	m_Inventory.drawHUD();
 }
 
 }

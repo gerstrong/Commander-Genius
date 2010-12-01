@@ -22,7 +22,11 @@ mp_Background(NULL)
 	m_Rect.y = 2;
 	m_Rect.w = 80;
 	m_Rect.h = 29;
-	CreateBackground();
+
+	size_t Episode = g_pBehaviorEngine->getEpisode();
+
+	if( Episode>=1 && Episode<=3 )
+		CreateBackground();
 }
 
 std::string getRightAligned(std::string text, size_t size)
@@ -103,15 +107,14 @@ void CHUD::CreateBackground()
 	DrawCircle(58, 15, 22);
 }
 
+// Draw a circle on the surface
 void CHUD::DrawCircle(int x, int y, int width)
 {
 	SDL_Rect text, outline;
 
 	Uint8 r,g,b;
 	CFont &Font = g_pGfxEngine->getFont(0);
-	//Uint32 bgcolor = Font.getBGColour(false);
 	Font.getBGColour(false, &r, &g, &b);
-	//SDL_GetRGB(bgcolor, mp_Background->format, &r, &g, &b);
 
 	outline.x = x+4;
 	outline.y = y;
@@ -151,9 +154,54 @@ void CHUD::DrawCircle(int x, int y, int width)
 }
 
 /**
- * \brief This part of the code will render the entire HUD
+ * Draws some digits using galaxy style
  */
-void CHUD::render()
+void CHUD::drawDigits(const std::string& text, Uint16 x, Uint16 y)
+{
+	SDL_Surface *blitsurface = g_pVideoDriver->getBlitSurface();
+
+	CTilemap &Tilemap = g_pGfxEngine->getTileMap(2);
+
+	for(Uint16 i=0 ; i<text.size() ; i++)
+	{
+		char c = text[i];
+
+		if(c != ' ')
+			Tilemap.drawTile(blitsurface, x+i*8, y, 43+c-'1');
+	}
+}
+
+/**
+ * \brief This part of the code will render the entire HUD. Galaxy Version
+ */
+void CHUD::renderGalaxy()
+{
+	m_Rect.x = 4;
+	m_Rect.y = 2;
+	m_Rect.w = 80;
+	m_Rect.h = 29;
+
+	// Compute the score that really will be seen
+	int score, lives, charges;
+	score = (m_score<999999999) ? m_score : 999999999;
+	lives = (m_lives<99) ? m_lives : 99;
+	charges = (m_charges<99) ? m_charges : 99;
+
+	SDL_Surface *blitsurface = g_pVideoDriver->getBlitSurface();
+
+	// Draw the background
+	CSprite &HUDBox = g_pGfxEngine->getSprite(129);
+
+	HUDBox.drawSprite(blitsurface, m_Rect.x, m_Rect.y);
+
+	drawDigits(getRightAligned(itoa(score),9), m_Rect.x+8, m_Rect.y+4);
+	drawDigits(getRightAligned(itoa(charges),2), m_Rect.x+64, m_Rect.y+20);
+	drawDigits(getRightAligned(itoa(lives),2), m_Rect.x+24, m_Rect.y+20);
+}
+/**
+ * \brief This part of the code will render the entire HUD. Vorticon version
+ */
+void CHUD::renderVorticon()
 {
 	// Compute the score that really will be seen
 	int score, lives, charges;
@@ -178,6 +226,19 @@ void CHUD::render()
 	Font.drawFont(blitsurface, getRightAligned(itoa(charges),2), 62+m_Rect.x, 17+m_Rect.y);
 
 	Font.setFGColour(blitsurface->format, 0x0);
+}
+
+/**
+ * \brief This part of the code will render the entire HUD
+ */
+void CHUD::render()
+{
+	size_t Episode = g_pBehaviorEngine->getEpisode();
+
+	if( Episode>=1 && Episode<=3 )
+		renderVorticon();
+	else if( Episode>=4 && Episode<=6 )
+		renderGalaxy();
 }
 
 

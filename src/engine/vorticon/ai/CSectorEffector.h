@@ -40,7 +40,7 @@ public:
 	void set_mortimer_surprised(bool yes);
 
 	void getTouchedBy(CObject &theObject);
-	void getShotByRay(){};
+	void getShotByRay(object_t &obj_type){};
 
 //private:
 	unsigned int setype;

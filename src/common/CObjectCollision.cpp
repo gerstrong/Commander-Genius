@@ -31,17 +31,32 @@ void CObject::performCollisionsSameBox()
 }
 
 /*
+ * \brief Calculate Bouncing Boxes with extra placement.
+ */
+void CObject::calcBouncingBoxeswithPlacement()
+{
+	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
+
+    const int diff_y =  bboxY2==0 ? 0 :(int)bboxY2-(int)rSprite.m_bboxY2;
+
+    calcBouncingBoxes();
+
+    moveYDir(diff_y);
+}
+
+/*
  * \brief Calculate Bouncing Boxes
  */
 void CObject::calcBouncingBoxes()
 {
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
 
-	bboxX1 = rSprite.m_bboxX1;
-	bboxX2 = rSprite.m_bboxX2;
-	bboxY1 = rSprite.m_bboxY1;
-	bboxY2 = rSprite.m_bboxY2;
+  	bboxX1 = rSprite.m_bboxX1;
+   	bboxX2 = rSprite.m_bboxX2;
+   	bboxY1 = rSprite.m_bboxY1;
+   	bboxY2 = rSprite.m_bboxY2;
 }
+
 
 /*
  * This function determines if the object is touching a sloped tile
@@ -321,6 +336,34 @@ bool CObject::hitdetect(CObject &hitobject)
 	return true;
 }
 
+
+/**
+ * \brief this new type of hit detection only checks if the foe touches something that has that property tile
+ * \param Property The Tile Property we are looking
+ * \param from x
+ * \return true if detection worked with that tile having the property, else false
+ */
+bool CObject::hitdetectWithTilePropertyRect(const Uint16 Property, int &lx, int &ly, int &lw, int &lh, const int res)
+{
+	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
+
+	for( Uint16 i=0 ; i<lw ; i+=res )
+	{
+		for( Uint16 j=0 ; j<lh ; j+=res )
+		{
+			const char behavior = Tile[mp_Map->getPlaneDataAt(1, lx+i, ly+j)].behaviour;
+			if(behavior == Property || behavior == Property-128 ) // -128 for foreground properties
+			{
+				lx = lx+i;
+				ly = ly+j;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
 /**
  * \brief this new type of hit detection only checks if the foe touches something that has that property
  * \param Property The Tile Property we are looking
@@ -328,20 +371,18 @@ bool CObject::hitdetect(CObject &hitobject)
  */
 bool CObject::hitdetectWithTileProperty(Uint16 Property, Uint16 x, Uint16 y)
 {
-	char behavior;
-
 	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
-
-	behavior = Tile[mp_Map->getPlaneDataAt(1, x, y)].behaviour;
+	const char behavior = Tile[mp_Map->getPlaneDataAt(1, x, y)].behaviour;
 	if(behavior == Property || behavior == Property-128 ) // +128 for foreground properties
 		return true;
-
-	return false;
+	else
+		return false;
 }
 
 bool CObject::checkSolidR( int x1, int x2, int y1, int y2)
 {
 	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+	bool vorticon = (g_pBehaviorEngine->getEpisode() <= 3);
 
 	x2 += COLISION_RES;
 
@@ -363,7 +404,15 @@ bool CObject::checkSolidR( int x1, int x2, int y1, int y2)
 
 	if( m_type == OBJ_PLAYER && solid )
 	{
-		if( x2 >= (int)((mp_Map->m_width-2)<<CSF) ) return true;
+		if(vorticon)
+		{
+			if( x2 >= (int)((mp_Map->m_width-2)<<CSF) ) return true;
+		}
+		else
+		{
+			if( x2 >= (int)((mp_Map->m_width-1)<<CSF) ) return true;
+		}
+
 	}
 	else
 	{
@@ -408,7 +457,14 @@ bool CObject::checkSolidL( int x1, int x2, int y1, int y2)
 
 	if( m_type == OBJ_PLAYER && solid )
 	{
-		if( x1 <= (2<<CSF) ) return true;
+		if(vorticon)
+		{
+			if( x1 <= (2<<CSF) ) return true;
+		}
+		else
+		{
+			if( x1 <= (1<<CSF) ) return true;
+		}
 	}
 	else
 	{

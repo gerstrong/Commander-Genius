@@ -126,7 +126,7 @@ void CBallJack::process()
 	}
 }
 
-void CBallJack::getShotByRay()
+void CBallJack::getShotByRay(object_t &obj_type)
 {
 	// have ball change direction when zapped
 	if (zapd==LEFT)

@@ -166,13 +166,13 @@ void CRay::getTouchedBy(CObject &theObject)
 			{
 				state = RAY_STATE_SETZAPZOT;
 				canbezapped = false;
-				theObject.getShotByRay();
+				theObject.getShotByRay(owner.obj_type);
 			}
 		}
 	}
 }
 
-void CRay::getShotByRay()
+void CRay::getShotByRay(object_t &obj_type)
 {
 	state = RAY_STATE_SETZAPZOT;
 	canbezapped = false;

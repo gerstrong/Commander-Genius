@@ -12,13 +12,14 @@
 
 #include "common/CObject.h"
 #include "fileio/CExeFile.h"
+#include "engine/galaxy/CInventory.h"
 #include <vector>
 
 namespace galaxy {
 
 class CWorldMap {
 public:
-	CWorldMap(CExeFile &ExeFile);
+	CWorldMap(CExeFile &ExeFile, CInventory &Inventory);
 	bool isActive();
 	void setActive(bool value);
 
@@ -33,6 +34,7 @@ private:
 
 	CMap m_Map;
 	CExeFile &m_ExeFile;
+	CInventory &m_Inventory;
 };
 
 }

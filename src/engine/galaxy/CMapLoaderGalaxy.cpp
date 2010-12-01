@@ -21,12 +21,17 @@
 #include "engine/galaxy/ai/CMiragia.h"
 #include "engine/galaxy/ai/CPlayerWM.h"
 #include "engine/galaxy/ai/CPlayerLevel.h"
+#include "engine/galaxy/ai/CSpriteItem.h"
 
 #include <fstream>
 
-CMapLoaderGalaxy::CMapLoaderGalaxy(CExeFile &ExeFile, std::vector<CObject*>& ObjectPtr):
+namespace galaxy
+{
+
+CMapLoaderGalaxy::CMapLoaderGalaxy(CExeFile &ExeFile, std::vector<CObject*>& ObjectPtr, CInventory &Inventory):
 m_ExeFile(ExeFile),
-m_ObjectPtr(ObjectPtr)
+m_ObjectPtr(ObjectPtr),
+m_Inventory(Inventory)
 {}
 
 // Gets returns the address of the datablock of the exe file, in where the
@@ -277,6 +282,8 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 		m_ObjectPtr.pop_back();
 	}
 
+	//std::ofstream File("objlayer.txt");
+
 	// he we go to the adding objects
 	data_ptr = start_data;
 	for(size_t y=0 ; y<height ; y++)
@@ -285,8 +292,12 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 		{
 			addFoe(Map, *data_ptr, x, y);
 			data_ptr++;
+			//File << *data_ptr << " ";
 		}
+		//File << std::endl;
 	}
+
+	//File.close();
 }
 
 /**
@@ -301,12 +312,35 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 	CCamera *camera = NULL;
 	VectorD2<Uint32> Location(x,y);
 
+	// Point Item Sprites (Candies, etc...)
+	for( Uint32 i=61 ; i<=67 ; i++ )
+	{
+		if( foe == i )
+		{
+			const Uint32 newsprite = 103+2*(i-61);
+			p_newfoe = new galaxy::CSpriteItem(&Map, x, y, m_ObjectPtr, newsprite);
+		}
+	}
+
+	if( foe == 68 )
+		p_newfoe = new galaxy::CSpriteItem(&Map, x, y, m_ObjectPtr, 127);
+
+	for( Uint32 i=57 ; i<=60 ; i++ )
+	{
+		if( foe == i )
+		{
+			const Uint32 newsprite = 118+2*(i-57);
+			p_newfoe = new galaxy::CSpriteItem(&Map, x, y, m_ObjectPtr, newsprite);
+		}
+	}
+
+
 	switch(foe)
 	{
 	case 1:
 	case 2:
 		// This is the player on map
-		p_newfoe = new galaxy::CPlayerLevel(&Map, x, y, m_ObjectPtr, (foe==1) ? RIGHT : LEFT );
+		p_newfoe = new galaxy::CPlayerLevel(&Map, x, y, m_ObjectPtr, (foe==1) ? RIGHT : LEFT, m_Inventory);
 
 		// Add the Camera into the game scene and attach it to this player
 		camera = new CCamera(&Map,x,y);
@@ -337,7 +371,4 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 		m_ObjectPtr.push_back(p_newfoe);
 }
 
-CMapLoaderGalaxy::~CMapLoaderGalaxy()
-{
-	// TODO Auto-generated destructor stub
 }

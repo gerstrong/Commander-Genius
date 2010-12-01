@@ -9,17 +9,11 @@
 #define CPLAYERLEVEL_H_
 
 #include "common/CObject.h"
+#include "common/Playerdefines.h"
 #include "engine/CEvent.h"
+#include "engine/galaxy/CInventory.h"
 
 namespace galaxy {
-
-enum player_actions{
-PA_X = 0,
-PA_Y,
-PA_JUMP, PA_POGO,
-PA_FIRE, PA_STATUS,
-PA_MAX_ACTIONS
-};
 
 #define A_KEEN_STAND			0
 #define A_KEEN_BORED			1
@@ -36,7 +30,7 @@ PA_MAX_ACTIONS
 #define A_KEEN_DIE				29
 #define A_KEEN_SHOOT			33
 #define A_KEEN_ACTION_4			37
-#define A_KEEN_ACTION_5			40
+#define A_KEEN_SLIDE			40
 #define A_KEEN_ENTER_DOOR		41
 #define A_KEEN_POLE				46
 #define A_KEEN_POLE_CLIMB		47
@@ -57,7 +51,7 @@ PA_MAX_ACTIONS
 class CPlayerLevel : public CObject {
 public:
 	CPlayerLevel(CMap *pmap, Uint32 x, Uint32 y,
-			std::vector<CObject*>& ObjectPtrs, direction_t facedir);
+			std::vector<CObject*>& ObjectPtrs, direction_t facedir, CInventory &l_Inventory);
 
 	void process();
 	void processInput();
@@ -65,8 +59,17 @@ public:
 	void processFalling();
 	void processMoving();
 	void processJumping();
+	void processPogo();
 	void processLooking();
+	int processPressUp();
 	void processExiting();
+	void processEnterDoor();
+	void processLevelMiscFlagsCheck();
+
+	void openDoorsTile();
+	void processPlaceGem();
+
+	CInventory &m_Inventory;
 
 private:
 	Uint8 m_animation;
@@ -80,6 +83,9 @@ private:
 	int m_jumpheight;
 	bool m_cliff_hanging;
 	bool m_inair;
+
+	int m_timer;
+
 };
 
 }

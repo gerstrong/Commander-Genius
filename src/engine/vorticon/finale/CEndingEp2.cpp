@@ -6,13 +6,13 @@
  */
 
 #include "CEndingEp2.h"
-#include "../../../StringUtils.h"
-#include "../../../sdl/CTimer.h"
-#include "../../../sdl/CInput.h"
-#include "../../../sdl/CVideoDriver.h"
-#include "../../../graphics/CGfxEngine.h"
-#include "../../../common/CMapLoader.h"
-#include "../../../common/Playerdefines.h"
+#include "StringUtils.h"
+#include "sdl/CTimer.h"
+#include "sdl/CInput.h"
+#include "sdl/CVideoDriver.h"
+#include "graphics/CGfxEngine.h"
+#include "common/CMapLoader.h"
+#include "common/Playerdefines.h"
 
 const int LIMPSHOME_X = 0;
 const int LIMPSHOME_Y = 300;

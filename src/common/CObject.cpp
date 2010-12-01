@@ -488,6 +488,7 @@ void CObject::processFalling()
 	{
 		CPhysicsSettings &Physics = g_pBehaviorEngine->getPhysicsSettings();
 
+		//if( yinertia>40 && !onslope )
 		if( yinertia>0 && !onslope )
 			falling = true;
 		else
@@ -526,7 +527,7 @@ void CObject::processFalling()
 	// In order to avoid, that they can't get out, pull them out of there!
 }
 
-void CObject::getShotByRay()
+void CObject::getShotByRay(object_t &obj_type)
 {
 	if( !m_invincible && HealthPoints>0)
 	{
@@ -624,9 +625,9 @@ void CObject::processActionRoutine()
 	//printf("h_move=%d ; v_move=%d\n", m_Action.H_anim_move_amount, m_Action.V_anim_move_amount);
 
 		if(m_hDir == LEFT)
-			moveLeft( m_Action.H_anim_move_amount<<1 );
+			moveLeft(m_Action.H_anim_move_amount<<1);
 		else if(m_hDir == RIGHT)
-			moveRight( m_Action.H_anim_move_amount<<1 );
+			moveRight(m_Action.H_anim_move_amount<<1);
 
 		if(m_vDir == UP)
 			moveUp( m_Action.V_anim_move_amount<<1 );

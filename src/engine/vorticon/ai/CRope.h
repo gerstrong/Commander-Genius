@@ -19,7 +19,7 @@ class CRope : public CObject
 public:
 	CRope(CMap *p_map, Uint32 x, Uint32 y);
 	void process();
-	void getShotByRay();
+	void getShotByRay(object_t &obj_type);
 	void rope_movestone();
 	void getTouchedBy(CObject &theObject);
 
