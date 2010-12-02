@@ -33,23 +33,6 @@ void CBullets::process()
 	if( blockedd || blockedu || blockedl || blockedr )
 	{
 		setAction(A_KEENSHOT_IMPACT);
-
-		//if(getActionStatus(A_KEENSHOT_IMPACT+1))
-	}
-	else
-	{
-	// go into the current status
-		/*if(m_hDir == LEFT)
-			moveLeft(speed);
-		else if(m_hDir == RIGHT)
-			moveRight(speed);
-
-		if(m_vDir == UP)
-			moveUp(speed);
-		else if(m_vDir == DOWN)
-			moveDown(speed);*/
-
-		//moveLeft(speed);
 	}
 
 	processActionRoutine();

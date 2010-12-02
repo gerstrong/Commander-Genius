@@ -633,9 +633,12 @@ void CObject::processActionRoutine()
 
 	if( m_ActionTicker > m_Action.Delay )
 	{
-		if( m_Action.Delay != 0 && m_Action.Next_action != 0 )
+		if( m_Action.Delay != 0 )
 		{
-			m_Action.setNextActionFormat();
+			if(m_Action.Next_action != 0)
+				m_Action.setNextActionFormat();
+			else
+				exists = false;
 		}
 		m_ActionTicker = 0;
 	}
