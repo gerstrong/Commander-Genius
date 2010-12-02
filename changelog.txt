@@ -5,6 +5,8 @@ v0.3.2.5:
 ---------
 - Keen now can climb poles (Galaxy)
 - Keen now can hang on cliff and climb then up (Galaxy)
+- Some bug fixes.
+- Many new features in Galaxy. Keen can do a lot of things now...
 - improved some galaxy physics
 
 v0.3.2.4:

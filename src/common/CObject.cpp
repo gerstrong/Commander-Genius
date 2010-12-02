@@ -610,7 +610,7 @@ void CObject::setAction(size_t ActionNumber)
 // Sets the proper sprite of action format to the local object
 void CObject::setActionSprite()
 {
-	if(m_hDir == LEFT)
+	if(m_hDir == LEFT || m_hDir == NONE)
 		sprite = m_Action.Left_sprite-124;
 	else if(m_hDir == RIGHT)
 		sprite = m_Action.Right_sprite-124;
@@ -621,19 +621,15 @@ void CObject::processActionRoutine()
 {
 	setActionSprite();
 
-	//printf("h=%d ; v=%d no=%d\n", m_Action.Change_h, m_Action.Change_v);
-	//printf("h_move=%d ; v_move=%d\n", m_Action.H_anim_move_amount, m_Action.V_anim_move_amount);
+	if(m_hDir == LEFT)
+		moveLeft(m_Action.H_anim_move_amount<<1);
+	else if(m_hDir == RIGHT)
+		moveRight(m_Action.H_anim_move_amount<<1);
 
-		if(m_hDir == LEFT)
-			moveLeft(m_Action.H_anim_move_amount<<1);
-		else if(m_hDir == RIGHT)
-			moveRight(m_Action.H_anim_move_amount<<1);
-
-		if(m_vDir == UP)
-			moveUp( m_Action.V_anim_move_amount<<1 );
-		else if(m_vDir == DOWN)
-			moveDown( m_Action.V_anim_move_amount<<1 );
-
+	if(m_vDir == UP)
+		moveUp( m_Action.V_anim_move_amount<<1 );
+	else if(m_vDir == DOWN)
+		moveDown( m_Action.V_anim_move_amount<<1 );
 
 	if( m_ActionTicker > m_Action.Delay )
 	{

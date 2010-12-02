@@ -85,7 +85,6 @@ private:
 	bool m_inair;
 
 	int m_timer;
-
 };
 
 }

@@ -6,6 +6,7 @@
  */
 
 #include "CPlayerLevel.h"
+#include "CBullets.h"
 #include "CItemEffect.h"
 #include "common/CBehaviorEngine.h"
 #include "sdl/CInput.h"
@@ -175,42 +176,87 @@ void CPlayerLevel::processInput()
 
 void CPlayerLevel::processFiring()
 {
-	bool shooting =  getActionNumber(A_KEEN_JUMP_SHOOT) || getActionNumber(A_KEEN_JUMP_SHOOTDOWN) ||
-			getActionNumber(A_KEEN_JUMP_SHOOTUP) || getActionNumber(A_KEEN_SHOOT+2) ||
-			getActionNumber(A_KEEN_POLE_SHOOTUP) || getActionNumber(A_KEEN_POLE_SHOOTDOWN) ||
-			getActionNumber(A_KEEN_POLE_SHOOT);
-
 	if( m_playcontrol[PA_FIRE] && m_climbing )
 		yinertia = 0;
 
-	if( m_playcontrol[PA_FIRE] && !shooting )
+	if( m_playcontrol[PA_FIRE] && !m_pfiring )
 	{
 		if(m_climbing)
 		{
 			if(m_playcontrol[PA_Y] < 0 && !getActionNumber(A_KEEN_POLE_SHOOTUP))
+			{
 				setAction(A_KEEN_POLE_SHOOTUP);
+				const int newx = getXMidPos()-(3<<STC);
+				const int newy = getYUpPos()-(16<<STC);
+				m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, UP));
+			}
 			else if(m_playcontrol[PA_Y] > 0 && !getActionNumber(A_KEEN_POLE_SHOOTDOWN))
+			{
 				setAction(A_KEEN_POLE_SHOOTDOWN);
+				const int newx = getXMidPos()-(3<<STC);
+				const int newy = getYDownPos();
+				m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, DOWN));
+			}
 			else if(!getActionNumber(A_KEEN_POLE_SHOOT))
+			{
 				setAction(A_KEEN_POLE_SHOOT);
+				const int newx = getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC));
+				const int newy = getYPosition()+(4<<STC);
+				m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, m_hDir));
+			}
+			m_pfiring = true;
 		}
 		else if( m_inair )
 		{
 			if(m_playcontrol[PA_Y] < 0 && !getActionNumber(A_KEEN_JUMP_SHOOTUP))
+			{
 				setAction(A_KEEN_JUMP_SHOOTUP);
+				const int newx = getXMidPos()-(3<<STC);
+				const int newy = getYUpPos()-(16<<STC);
+				m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, UP));
+
+			}
 			else if(m_playcontrol[PA_Y] > 0 && !getActionNumber(A_KEEN_JUMP_SHOOTDOWN))
+			{
 				setAction(A_KEEN_JUMP_SHOOTDOWN);
+				const int newx = getXMidPos()-(3<<STC);
+				const int newy = getYDownPos();
+				m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, DOWN));
+
+			}
 			else if(!getActionNumber(A_KEEN_JUMP_SHOOT))
+			{
 				setAction(A_KEEN_JUMP_SHOOT);
+				const int newx = getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC));
+				const int newy = getYPosition()+(4<<STC);
+				m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, m_hDir));
+			}
+			m_pfiring = true;
 		}
 		else
 		{
 			if(m_playcontrol[PA_Y] < 0)
-				setAction(A_KEEN_SHOOT+2);
+			{
+				setActionForce(A_KEEN_SHOOT+2);
+				const int newx = getXMidPos()-(3<<STC);
+				const int newy = getYUpPos()-(16<<STC);
+				m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, UP));
+
+				m_pfiring = true;
+			}
 			else
+			{
 				setAction(A_KEEN_SHOOT);
+				const int newx = getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC));
+				const int newy = getYPosition()+(4<<STC);
+				m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, m_hDir));
+				m_pfiring = true;
+			}
 		}
 	}
+
+	if( m_playcontrol[PA_FIRE] == 0 )
+		m_pfiring = false;
 
 }
 
@@ -279,7 +325,7 @@ void CPlayerLevel::processMoving()
 		else
 		{
 			// Normal moving
-			if(!m_playcontrol[PA_FIRE])
+			if(!m_pfiring)
 			{
 				if( m_playcontrol[PA_X]<0 )
 				{
@@ -355,7 +401,7 @@ void CPlayerLevel::processMoving()
 					// player pressed up
 					processPressUp();
 				}
-			}
+			//}
 
 			// Check if Keen hits the floor
 			if( blockedd && !m_cliff_hanging )
@@ -367,6 +413,8 @@ void CPlayerLevel::processMoving()
 					else if(m_playcontrol[PA_Y] == 0)
 						setAction(A_KEEN_STAND);
 				}
+			}
+
 			}
 
 		}
