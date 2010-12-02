@@ -19,7 +19,7 @@ namespace galaxy {
 
 class CWorldMap {
 public:
-	CWorldMap(CExeFile &ExeFile, CInventory &Inventory);
+	CWorldMap(CExeFile &ExeFile, CInventory &Inventory, stOption *p_option);
 	bool isActive();
 	void setActive(bool value);
 
@@ -35,6 +35,7 @@ private:
 	CMap m_Map;
 	CExeFile &m_ExeFile;
 	CInventory &m_Inventory;
+	stOption *mp_option;
 };
 
 }

@@ -12,10 +12,12 @@
 
 namespace galaxy {
 
-CLevelPlay::CLevelPlay(CExeFile &ExeFile, CInventory &Inventory) :
+CLevelPlay::CLevelPlay(CExeFile &ExeFile,
+		CInventory &Inventory, stOption *p_option) :
 m_active(false),
 m_ExeFile(ExeFile),
-m_Inventory(Inventory)
+m_Inventory(Inventory),
+mp_option(p_option)
 { }
 
 bool CLevelPlay::isActive()
@@ -80,7 +82,8 @@ void CLevelPlay::process()
 			(*obj)->draw();
 	}
 
-	m_Inventory.drawHUD();
+	if(mp_option[OPT_HUD].value )
+		m_Inventory.drawHUD();
 }
 
 }

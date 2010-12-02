@@ -10,13 +10,14 @@
 
 #include "common/CObject.h"
 #include "engine/CEvent.h"
+#include "engine/galaxy/CInventory.h"
 
 namespace galaxy {
 
 class CPlayerWM : public CObject {
 public:
 	CPlayerWM(CMap *pmap, Uint32 x, Uint32 y,
-			std::vector<CObject*>& ObjectPtrs);
+			std::vector<CObject*>& ObjectPtrs, CInventory &l_Inventory);
 	void process();
 	void processWalking();
 
@@ -28,6 +29,9 @@ public:
 	void performSwimmingAnimation();
 
 	virtual ~CPlayerWM();
+
+	CInventory &m_Inventory;
+
 private:
 	Uint16 m_basesprite;
 	direction_t m_looking_dir;
