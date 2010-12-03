@@ -732,6 +732,10 @@ void CPlayer::raygun()
 			if (inventory.charges)
 			{  // we have enough charges
 				int xdir, ydir;
+
+				// In case the player hasn't any direction assignedyet, because he can only shoot in those two directions
+				if(pdir != LEFT) pdir = RIGHT;
+
 				inventory.charges--;
 				pshowdir = pdir;
 				
