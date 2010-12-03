@@ -814,7 +814,7 @@ void CPlayer::SelectFrame()
     }
 }
 
-const int bumpamount = 180;
+const int bumpamount = 160;
 
 // yorp/scrub etc "bump".
 // if solid = false, player can possibly force his way through.
@@ -829,7 +829,8 @@ void CPlayer::bump( CObject &theObject, direction_t direction )
 	if(!pfiring)
 		pshowdir = pdir = direction;
 
-	xinertia += (direction==RIGHT) ? bumpamount : -bumpamount;
+	xinertia = (direction==RIGHT) ? bumpamount : -bumpamount;
+
 	pwalking = true;
 }
 
