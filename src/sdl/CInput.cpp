@@ -337,6 +337,8 @@ void CInput::setupInputCommand( stInputCommand *pInput, int action, const std::s
  */
 bool CInput::readNewEvent(Uint8 device, int command)
 {
+	stInputCommand &lokalInput = InputCommand[device][command];
+
 	// This function is used to configure new input keys.
 	// For iPhone, we have emulation via touchpad and we don't want to have custom keys.
 	// We should fix the menu for iPhone so that this function doesn't get called.
@@ -345,6 +347,8 @@ bool CInput::readNewEvent(Uint8 device, int command)
 	return true;
 #endif
 	
+	memset(&lokalInput, 0, sizeof(stInputCommand));
+
 	while( SDL_PollEvent( &Event ) )
 	{
 		switch ( Event.type )
@@ -357,8 +361,8 @@ bool CInput::readNewEvent(Uint8 device, int command)
 #endif
 				break;
 			case SDL_KEYDOWN:
-				InputCommand[device][command].joyeventtype = ETYPE_KEYBOARD;
-				InputCommand[device][command].keysym = Event.key.keysym.sym;
+				lokalInput.joyeventtype = ETYPE_KEYBOARD;
+				lokalInput.keysym = Event.key.keysym.sym;
 				return true;
 				break;
 			case SDL_JOYBUTTONDOWN:
@@ -366,17 +370,17 @@ bool CInput::readNewEvent(Uint8 device, int command)
 				WIZ_EmuKeyboard( Event.jbutton.button, 1 );
 				return false;
 #else
-				InputCommand[device][command].joyeventtype = ETYPE_JOYBUTTON;
-				InputCommand[device][command].joybutton = Event.jbutton.button;
-				InputCommand[device][command].which = Event.jbutton.which;
+				lokalInput.joyeventtype = ETYPE_JOYBUTTON;
+				lokalInput.joybutton = Event.jbutton.button;
+				lokalInput.which = Event.jbutton.which;
 				return true;
 #endif
 				break;
 			case SDL_JOYAXISMOTION:
-				InputCommand[device][command].joyeventtype = ETYPE_JOYAXIS;
-				InputCommand[device][command].joyaxis = Event.jaxis.axis;
-				InputCommand[device][command].which = Event.jaxis.which;
-				InputCommand[device][command].joyvalue = (Event.jaxis.value>0) ? 32767 : -32767;
+				lokalInput.joyeventtype = ETYPE_JOYAXIS;
+				lokalInput.joyaxis = Event.jaxis.axis;
+				lokalInput.which = Event.jaxis.which;
+				lokalInput.joyvalue = (Event.jaxis.value>0) ? 32767 : -32767;
 				return true;
 				break;
 		}
