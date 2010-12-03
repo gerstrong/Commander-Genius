@@ -21,8 +21,6 @@
 #include "engine/spritedefines.h"
 #include <stdlib.h>
 
-size_t CPlayer::m_playerID = 0;
-
 ///
 // Initialization Part
 ///
@@ -37,7 +35,6 @@ mp_levels_completed(mp_level_completed),
 mp_option(mp_option),
 mp_StatusScr(NULL)
 {
-	m_playerID++;
 	mp_object = &m_Object;
 	canbezapped = true;
 	m_index = 0;
@@ -228,18 +225,13 @@ void CPlayer::Walking()
 {
 	int cur_pfastincrate;
 
-    if (inhibitwalking && !psliding)
-    {
-		if (!pfrozentime||m_episode!=1)
-			if (!pjumping && !pfalling)
-				xinertia = 0;
+	if(pfiring)
 		return;
-    }
-	
+
     // this prevents a "slipping" effect if you jump, say, right, then
     // start walking left just as you hit the ground
-    if (pjustjumped && ((xinertia > 0 && pdir==LEFT) ||\
-                        (xinertia < 0 && pdir==RIGHT)))\
+    if (pjustjumped && ((xinertia > 0 && pdir==LEFT) ||
+                        (xinertia < 0 && pdir==RIGHT)))
     {
     	if(!ppogostick)
     		xinertia = 0;
@@ -351,7 +343,6 @@ void CPlayer::Walking()
 		if (pwalkincreasetimer>=cur_pfastincrate)
 		{
 			if(pfalling) xinertia+=(1<<2);
-			//else xinertia+=(1<<4);
 			else xinertia+=(1<<3);
 			pwalkincreasetimer=0;
 		}
@@ -367,7 +358,7 @@ void CPlayer::Walking()
 		// increase up to max speed every time frame is changed
 		if (!pwalkanimtimer && xinertia < pmaxspeed)	xinertia+=(1<<4);
 	}
-	else if (playcontrol[PA_X] < 0 && !ppogostick )
+	else if (playcontrol[PA_X] < 0 && !ppogostick)
 	{ 	// LEFT key down
 		// quickly reach PFASTINCMAXSPEED
 		if (pwalkincreasetimer>=cur_pfastincrate)
@@ -550,7 +541,7 @@ void CPlayer::InertiaAndFriction_X()
 	CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
 
 	// Calculate Threshold of your analog device for walking animation speed!
-	if(!pfrozentime)
+	if(!pfrozentime && !pfiring)
 	{
 		treshold = playcontrol[PA_X];
 
@@ -598,8 +589,7 @@ void CPlayer::InertiaAndFriction_X()
 	// if we stopped walking (i.e. left or right not held down) apply friction
 	// there's no friction if we're semisliding
 
-	if (!(playcontrol[PA_X] < 0) && !(playcontrol[PA_X] > 0) &&
-		!psemisliding)
+	if ( ( playcontrol[PA_X] == 0 || pfiring ) && !psemisliding)
 	{
 		// determine friction rate--different rates for on ground and in air
 		if (m_playingmode == WORLDMAP)
@@ -608,14 +598,7 @@ void CPlayer::InertiaAndFriction_X()
 		}
 		else
 		{
-	        if (!pfalling && !pjumping)
-	        {
-				friction_rate = PFRICTION_RATE_ONGROUND;
-	        }
-	        else
-	        {
-				friction_rate = PFRICTION_RATE_INAIR;
-	        }
+			friction_rate = (!pfalling && !pjumping) ? PFRICTION_RATE_ONGROUND : friction_rate = PFRICTION_RATE_INAIR;
 		}
 		
 		// and apply friction to xinertia
@@ -898,12 +881,4 @@ bool CPlayer::drawStatusScreen()
 		return false;
 	}
 	else return true;
-}
-
-
-///
-// Cleanup Part
-///
-CPlayer::~CPlayer() {
-	m_playerID--;
 }

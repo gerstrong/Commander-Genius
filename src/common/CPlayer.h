@@ -93,8 +93,6 @@ public:
 	bool showGameHint(int mpx, int mpy);
 	std::string pollHintMessage();
 
-	virtual ~CPlayer();
-
 	///
 	// variables
 	// these coordinates are CSFed
@@ -196,9 +194,6 @@ private:
 	int level_done_timer;
 
 	level_triggers m_Level_Trigger;
-
-	static size_t m_playerID;
-
 };
 
 #endif /* CPLAYER_H_ */

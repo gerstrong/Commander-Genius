@@ -180,7 +180,6 @@ void CPlayer::dieanim() // Bad word for that. It's the entire die code
 		{
 			pdie = 0;
 			kill();
-			// TODO: Not sure, what must go here! Check out!
 		}
 		else return;
 	}
@@ -576,11 +575,6 @@ void CPlayer::JumpAndPogo()
 	}
 	else if(pfalling)
 	{
-		/*if(!ppogostick) {
-			if(xinertia<0) xinertia+=2;
-			if(xinertia>0) xinertia-=2;
-		}*/
-
 		if (playcontrol[PA_X] < 0)
 			xinertia-=3;
 		if (playcontrol[PA_X] > 0)
@@ -590,8 +584,6 @@ void CPlayer::JumpAndPogo()
     // If we are in Godmode, use the Pogo, and pressing the jump button, make the player fly
     if( godmode && ppogostick )
     {
-    	//if(playcontrol[PA_X] < 0) xinertia-=4;
-    	//if(playcontrol[PA_X] > 0) xinertia+=4;
     	if(playcontrol[PA_X] < 0) xinertia-=3;
     	if(playcontrol[PA_X] > 0) xinertia+=3;
     	if(playcontrol[PA_JUMP] && !blockedu)
@@ -822,8 +814,7 @@ void CPlayer::SelectFrame()
     }
 }
 
-
-const int bumpamount = 40;
+const int bumpamount = 180;
 
 // yorp/scrub etc "bump".
 // if solid = false, player can possibly force his way through.
@@ -835,7 +826,9 @@ void CPlayer::bump( CObject &theObject, direction_t direction )
 
 	g_pSound->playStereofromCoord(SOUND_YORP_BUMP, PLAY_NORESTART, scrx);
 
-	pshowdir = pdir = direction;
+	if(!pfiring)
+		pshowdir = pdir = direction;
+
 	xinertia += (direction==RIGHT) ? bumpamount : -bumpamount;
 	pwalking = true;
 }
