@@ -91,7 +91,7 @@ void CPlayerLevel::process()
 
 			if(!m_climbing)
 			{
-				if(getActionNumber(A_KEEN_ENTER_DOOR))
+				if( getActionNumber(A_KEEN_ENTER_DOOR) && !getActionNumber(A_KEEN_POGO) )
 				{
 					processEnterDoor();
 				}
@@ -373,7 +373,7 @@ void CPlayerLevel::processMoving()
 					{
 						bool check_block = TileProperty[mp_Map->at((getXLeftPos()>>CSF)-1, getYUpPos()>>CSF)].bright;
 						bool check_block_lower = TileProperty[mp_Map->at((getXLeftPos()>>CSF)-1, (getYUpPos()>>CSF)+1)].bright;
-						if(!check_block && check_block_lower && m_inair)
+						if(!check_block && check_block_lower && m_inair && !getActionNumber(A_KEEN_POGO))
 						{
 							setAction(A_KEEN_HANG);
 							setActionSprite();
@@ -396,7 +396,7 @@ void CPlayerLevel::processMoving()
 					{
 						bool check_block = TileProperty[mp_Map->at((getXRightPos()>>CSF)+1, getYUpPos()>>CSF)].bleft;
 						bool check_block_lower = TileProperty[mp_Map->at((getXRightPos()>>CSF)+1, (getYUpPos()>>CSF)+1)].bleft;
-						if(!check_block && check_block_lower && m_inair)
+						if(!check_block && check_block_lower && m_inair && !getActionNumber(A_KEEN_POGO) )
 						{
 							setAction(A_KEEN_HANG);
 							setActionSprite();
@@ -583,7 +583,6 @@ void CPlayerLevel::processPogo()
 			xinertia -= POGO_X_BOOST;
 		else if( blockedl && xinertia < 0 )
 			xinertia += POGO_X_BOOST;
-
 	}
 }
 
