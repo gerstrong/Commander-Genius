@@ -35,6 +35,7 @@ mp_levels_completed(mp_level_completed),
 mp_option(mp_option),
 mp_StatusScr(NULL)
 {
+	mp_camera = new CCamera(&map, 0, 0);
 	mp_object = &m_Object;
 	canbezapped = true;
 	m_index = 0;
@@ -149,75 +150,6 @@ void CPlayer::setupforLevelPlay()
     inhibitfall = false;
   	m_Level_Trigger = LVLTRIG_NONE;
   	checkObjSolid();
-}
-
-bool CPlayer::scrollTriggers()
-{
-	int px, py, left, up, right, down, speed;
-	bool scrollchanged=false;
-
-	Uint16& scroll_x = mp_Map->m_scrollx;
-	Uint16& scroll_y = mp_Map->m_scrolly;
-	
-	if (pdie) return scrollchanged;
-
-	px = (getXPosition()>>STC)-scroll_x;
-	py = (getYPosition()>>STC)-scroll_y;
-	
-	st_camera_bounds CameraBounds = g_pVideoDriver->getCameraBounds();
-	left = CameraBounds.left;
-	up = CameraBounds.up;
-	right = CameraBounds.right;
-	down = CameraBounds.down;
-	speed = CameraBounds.speed;
-
-	// left-right scrolling
-	if(px > right && scroll_x < mp_Map->m_maxscrollx)
-	{
-		do{
-			px = (getXPosition()>>STC)-scroll_x;
-			mp_Map->scrollRight();
-		}while(px > right+speed && scroll_x < mp_Map->m_maxscrollx);
-		scrollchanged = true;
-	}
-	else if(px < left && scroll_x > 32)
-	{
-		do{
-			px = (getXPosition()>>STC)-scroll_x;
-			mp_Map->scrollLeft();
-		}while(px < left-speed && scroll_x > 32);
-		scrollchanged = true;
-	}
-
-	// up-down scrolling
-	if (py > down && scroll_y < mp_Map->m_maxscrolly)
-	{
-		do{
-			py = (getYPosition()>>STC)-scroll_y;
-			mp_Map->scrollDown();
-		}while(py > down+speed && scroll_y < mp_Map->m_maxscrolly);
-		scrollchanged = true;
-	}
-	else if ( py < up && scroll_y > 32  )
-	{
-		do{
-			py = (getYPosition()>>STC)-scroll_y;
-			mp_Map->scrollUp();
-		}while(py < up-speed && scroll_y > 32);
-		scrollchanged = true;
-	}
-
-	// This will always snap correctly to the edge
-	while(scroll_x < 32)
-		mp_Map->scrollRight();
-	while(scroll_x > mp_Map->m_maxscrollx)
-		mp_Map->scrollLeft();
-	while(scroll_y < 32)
-		mp_Map->scrollDown();
-	while(scroll_y > mp_Map->m_maxscrolly)
-		mp_Map->scrollUp();
-
-	return scrollchanged;
 }
 
 // handles walking. the walking animation is handled by gamepdo_walkinganim()
@@ -530,6 +462,14 @@ void CPlayer::WalkingAnimation()
 			pwalkframe = pwalkframea;
         }
     }
+}
+
+/*
+ * This function calls the camera object of the player
+ */
+void CPlayer::processCamera()
+{
+	mp_camera->process();
 }
 
 // handles inertia and friction for the X direction

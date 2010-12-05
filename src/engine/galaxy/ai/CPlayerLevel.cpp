@@ -36,7 +36,7 @@ m_animation_time(1),
 m_animation_ticker(0),
 m_ObjectPtrs(ObjectPtrs),
 m_cliff_hanging(false),
-m_camera(pmap,x,y,*this)
+m_camera(pmap,x,y,this)
 {
 	m_index = 0;
 	m_timer = 0;

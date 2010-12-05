@@ -20,20 +20,16 @@
 class CCamera : public CObject
 {
 public:
-	CCamera(CMap *pmap, Uint32 x, Uint32 y, CObject &attacher);
+	CCamera(CMap *pmap, Uint32 x, Uint32 y, CObject *p_attacher=NULL);
 
-	void attachToObject(CObject &attacher);
-	bool detach();
-
+	void attachObject(CObject *p_attacher);
 	void process();
-
-	virtual ~CCamera();
 	
 	bool m_attached;
 	bool m_freeze;
 
 private:
-	CObject &m_AttachedObject;
+	CObject *mp_AttachedObject;
 };
 
 #endif /* CCAMERA_H_ */

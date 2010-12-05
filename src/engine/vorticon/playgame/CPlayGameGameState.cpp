@@ -10,6 +10,7 @@
 #include "graphics/effects/CColorMerge.h"
 #include "sdl/CVideoDriver.h"
 #include "common/CMapLoader.h"
+#include "SmartPointer.h"
 
 #define SAFE_DELETE_ARRAY(x) if(x) { delete [] x; x = NULL; }
 
@@ -144,7 +145,6 @@ bool CPlayGameVorticon::loadGameState()
 		m_SavedGame.readDataBlock( (byte*)(mp_level_completed));
 
 		m_Player[0].setMapData(&m_Map);
-		while(m_Player[0].scrollTriggers()); // Scroll to the right position on the map
 
 		m_Map.drawAll();
 

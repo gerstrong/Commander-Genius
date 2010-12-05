@@ -9,21 +9,25 @@
  *  This class will be another object that will following the player
  */
 
-
 #include "CCamera.h"
 #include "CLogFile.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/CInput.h"
 #include "spritedefines.h"
 
-CCamera::CCamera(CMap *pmap, Uint32 x, Uint32 y, CObject &attacher) :
+CCamera::CCamera(CMap *pmap, Uint32 x, Uint32 y, CObject *p_attacher) :
 CObject(pmap, x, y, OBJ_NONE),
-m_AttachedObject(attacher)
+mp_AttachedObject(p_attacher)
 {
 	sprite = BLANKSPRITE;
 	solid = false;
 	m_attached = true;
 	m_freeze = false;
+}
+
+void CCamera::attachObject(CObject *p_attacher)
+{
+	mp_AttachedObject = p_attacher;
 }
 
 /**
@@ -51,15 +55,18 @@ void CCamera::process()
 	}
 	else
 	{
-		if(m_AttachedObject.getXPosition() > getXPosition())
-			moveRight(m_AttachedObject.getXPosition() - getXPosition() );
-		else if(m_AttachedObject.getXPosition() < getXPosition())
-			moveLeft(getXPosition() - m_AttachedObject.getXPosition());
+		if(mp_AttachedObject == NULL)
+			return;
 
-		if(m_AttachedObject.getYPosition() > getYPosition())
-			moveDown(m_AttachedObject.getYPosition() - getYPosition());
-		else if(m_AttachedObject.getYPosition() < getYPosition())
-			moveUp(getYPosition() - m_AttachedObject.getYPosition());
+		if(mp_AttachedObject->getXPosition() > getXPosition())
+			moveRight(mp_AttachedObject->getXPosition() - getXPosition());
+		else if(mp_AttachedObject->getXPosition() < getXPosition())
+			moveLeft(getXPosition() - mp_AttachedObject->getXPosition());
+
+		if(mp_AttachedObject->getYPosition() > getYPosition())
+			moveDown(mp_AttachedObject->getYPosition() - getYPosition());
+		else if(mp_AttachedObject->getYPosition() < getYPosition())
+			moveUp(getYPosition() - mp_AttachedObject->getYPosition());
 
 	}
 
@@ -119,9 +126,4 @@ void CCamera::process()
 		mp_Map->scrollDown();
 	while(scroll_y > mp_Map->m_maxscrolly)
 		mp_Map->scrollUp();
-}
-
-CCamera::~CCamera()
-{
-	// TODO Auto-generated destructor stub
 }

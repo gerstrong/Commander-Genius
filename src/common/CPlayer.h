@@ -15,6 +15,7 @@
 #include "CStatusScreen.h"
 #include "Playerdefines.h"
 #include "options.h"
+#include "engine/CCamera.h"
 #include <vector>
 #include <string>
 
@@ -76,6 +77,7 @@ public:
 	void getShotByRay(object_t &obj_type);
 
 	// Used for both situations
+	void processCamera();
 	void InertiaAndFriction_X();
 	void Walking();
 	void WalkingAnimation();
@@ -86,7 +88,6 @@ public:
 	bool checkObjSolid();
 
 	bool drawStatusScreen();
-	bool scrollTriggers();
 	void give_keycard(int doortile);
 	void take_keycard(int doortile);
 	void freeze();
@@ -173,6 +174,8 @@ public:
 	bool hintused;
 
 	stOption *mp_option;
+
+	SmartPointer<CCamera> mp_camera;
 
 private:
 	// defined under CPlayerItems.cpp
