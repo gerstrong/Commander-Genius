@@ -26,7 +26,8 @@ m_looking_dir(LEFT),
 m_animation(0),
 m_animation_time(1),
 m_animation_ticker(0),
-m_ObjectPtrs(ObjectPtrs)
+m_ObjectPtrs(ObjectPtrs),
+m_camera(pmap,x,y,*this)
 {
 	sprite = m_basesprite;
 	performCollisions();
@@ -54,6 +55,8 @@ void CPlayerWM::process()
 		finishLevel(ev->levelObject);
 		EventContainer.pop_Event();
 	}
+
+	m_camera.process();
 }
 
 /*

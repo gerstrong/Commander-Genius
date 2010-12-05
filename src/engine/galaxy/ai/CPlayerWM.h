@@ -9,6 +9,7 @@
 #define CPLAYERWM_H_
 
 #include "common/CObject.h"
+#include "engine/CCamera.h"
 #include "engine/CEvent.h"
 #include "engine/galaxy/CInventory.h"
 
@@ -40,7 +41,7 @@ private:
 	Uint8 m_animation_time;
 	Uint8 m_animation_ticker;
 	std::vector<CObject*>& m_ObjectPtrs;
-
+	CCamera m_camera;
 };
 
 }

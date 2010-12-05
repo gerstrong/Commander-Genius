@@ -35,7 +35,8 @@ m_animation(0),
 m_animation_time(1),
 m_animation_ticker(0),
 m_ObjectPtrs(ObjectPtrs),
-m_cliff_hanging(false)
+m_cliff_hanging(false),
+m_camera(pmap,x,y,*this)
 {
 	m_index = 0;
 	m_timer = 0;
@@ -113,6 +114,8 @@ void CPlayerLevel::process()
 
 	if( !getActionNumber(A_KEEN_POGO) )
 		xinertia = 0;
+
+	m_camera.process();
 }
 
 void CPlayerLevel::processInput()
@@ -286,9 +289,7 @@ void CPlayerLevel::processFiring()
 			if(m_Inventory.m_bullets > 0)
 				m_Inventory.m_bullets--;
 		}
-
 	}
-
 
 	if( m_playcontrol[PA_FIRE] == 0 )
 		m_pfiring = false;
@@ -312,6 +313,7 @@ void CPlayerLevel::processMoving()
 			{
 				m_cliff_hanging = false;
 				setAction(A_KEEN_STAND);
+				m_camera.m_freeze = false;
 				setActionSprite();
 				calcBouncingBoxes();
 				moveDown(16*dy);
@@ -322,6 +324,7 @@ void CPlayerLevel::processMoving()
 			if(m_playcontrol[PA_Y] < 0)
 			{
 				setAction(A_KEEN_CLIMB);
+				m_camera.m_freeze = true;
 			}
 			else if(m_playcontrol[PA_Y] > 0)
 			{

@@ -341,21 +341,12 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 	case 2:
 		// This is the player on map
 		p_newfoe = new galaxy::CPlayerLevel(&Map, x, y, m_ObjectPtr, (foe==1) ? RIGHT : LEFT, m_Inventory);
-
-		// Add the Camera into the game scene and attach it to this player
-		camera = new CCamera(&Map,x,y);
-		camera->attachToObject(*p_newfoe);
-		m_ObjectPtr.push_back(camera);
 		break;
 
 	case 3:
 		// This is the player on map
-		p_newfoe = new galaxy::CPlayerWM(&Map, x, y, m_ObjectPtr, m_Inventory);
-
 		// Add the Camera into the game scene and attach it to this player
-		camera = new CCamera(&Map,x,y);
-		camera->attachToObject(*p_newfoe);
-		m_ObjectPtr.push_back(camera);
+		p_newfoe = new galaxy::CPlayerWM(&Map, x, y, m_ObjectPtr, m_Inventory);
 		break;
 
 	case 33:

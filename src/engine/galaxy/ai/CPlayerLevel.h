@@ -11,6 +11,7 @@
 #include "common/CObject.h"
 #include "common/Playerdefines.h"
 #include "engine/CEvent.h"
+#include "engine/CCamera.h"
 #include "engine/galaxy/CInventory.h"
 
 namespace galaxy {
@@ -86,6 +87,7 @@ private:
 
 	int m_timer;
 	bool m_pogotoggle;
+	CCamera m_camera;
 };
 
 }
