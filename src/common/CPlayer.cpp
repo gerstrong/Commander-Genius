@@ -609,14 +609,26 @@ void CPlayer::ProcessInput()
 	playcontrol[PA_Y] = 0;
 	
 	if(g_pInput->getHoldedCommand(m_index, IC_LEFT))
-		playcontrol[PA_X] -= 100;
+	{
+		const int newal = mp_option[OPT_ANALOGJOYSTICK] ? g_pInput->getJoyValue(m_index, IC_LEFT) : 100;
+		playcontrol[PA_X] -= newval;
+	}
 	else if(g_pInput->getHoldedCommand(m_index, IC_RIGHT))
-		playcontrol[PA_X] += 100;
+	{
+		const int newal = mp_option[OPT_ANALOGJOYSTICK] ? g_pInput->getJoyValue(m_index, IC_RIGHT) : 100;
+		playcontrol[PA_X] += newval;
+	}
 	
 	if(g_pInput->getHoldedCommand(m_index, IC_DOWN))
-		playcontrol[PA_Y] += 100;
+	{
+		const int newal = mp_option[OPT_ANALOGJOYSTICK] ? g_pInput->getJoyValue(m_index, IC_DOWN) : 100;
+		playcontrol[PA_Y] += newval;
+	}
 	else if(g_pInput->getHoldedCommand(m_index, IC_UP))
-		playcontrol[PA_Y] -= 100;
+	{
+		const int newal = mp_option[OPT_ANALOGJOYSTICK] ? g_pInput->getJoyValue(m_index, IC_UP) : 100;
+		playcontrol[PA_Y] -= newval;
+	}
 
 	if(g_pInput->getHoldedCommand(m_index, IC_UPPERLEFT))
 	{

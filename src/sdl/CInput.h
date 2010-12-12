@@ -155,7 +155,8 @@ typedef struct stInputCommand
 	int which;
 	int joyaxis;
 	unsigned short joybutton;
-	int joyvalue;
+	int joyvalue;	// in which direction the axis needs to be moved
+	int joymotion;	// in which direction the axis is really moved
 }stInputCommand;
 
 class CInput : public CSingleton<CInput>
@@ -179,6 +180,7 @@ public:
 	bool getPulsedCommand(int command, int msec);
 	bool getPulsedCommand(int player, int command, int msec);
 	bool getHoldedCommand(int player, int command);
+	int getJoyValue(int player, int command);
 	bool getHoldedCommand(int command);
 	bool getPressedCommand(int command);
 	bool getPressedCommand(int player, int command);

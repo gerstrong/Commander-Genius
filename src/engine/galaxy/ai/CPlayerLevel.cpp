@@ -40,6 +40,7 @@ m_camera(pmap,x,y,this)
 {
 	m_index = 0;
 	m_timer = 0;
+	m_dying = false;
 	m_hDir = facedir;
 	m_ActionBaseOffset = 0x98C;
 	setActionForce(A_KEEN_STAND);
@@ -67,6 +68,12 @@ void CPlayerLevel::process()
 		m_animation_ticker = 0;
 	}
 	else m_animation_ticker++;
+
+	if(m_dying)
+	{
+		processDying();
+		return;
+	}
 
 	processInput();
 
@@ -906,5 +913,15 @@ void CPlayerLevel::processPlaceGem()
 	mp_Map->setTile(lx>>CSF, ly>>CSF, tileno+18, true, 1);
 }
 
+void CPlayerLevel::processDying()
+{
+	// TODO: Here Keen must be falling out the screen, die effect of Keen Galaxy
+}
+
+void CPlayerLevel::kill()
+{
+	// TODO: Here were prepare Keen to die, setting that action
+	m_dying = true;
+}
 
 }

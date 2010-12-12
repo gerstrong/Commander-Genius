@@ -70,6 +70,9 @@ public:
 	void openDoorsTile();
 	void processPlaceGem();
 
+	void processDying();
+	void kill();
+
 	CInventory &m_Inventory;
 
 private:
@@ -88,6 +91,8 @@ private:
 	int m_timer;
 	bool m_pogotoggle;
 	CCamera m_camera;
+
+	bool m_dying;
 };
 
 }
