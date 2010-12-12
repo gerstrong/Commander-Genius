@@ -640,7 +640,7 @@ void CInput::processKeys(int keydown)
 		case SDLK_F4:immediate_keytable[KF4]	= keydown;  break;
 		case SDLK_F5:immediate_keytable[KF5]	= keydown;  break;
 		case SDLK_F6:immediate_keytable[KF6]	= keydown;  break;
-		case SDLK_F7:immediate_keytable[KF7]	InputCommand= keydown;  break;
+		case SDLK_F7:immediate_keytable[KF7]	= keydown;  break;
 		case SDLK_F8:immediate_keytable[KF8]	= keydown;  break;
 		case SDLK_F9:immediate_keytable[KF9]	= keydown;  break;
 		case SDLK_F10:immediate_keytable[KF10]	= keydown;  break;
