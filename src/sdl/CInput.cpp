@@ -60,7 +60,7 @@ void CInput::resetControls(int player) {
 
 	m_exit = false;
 	m_cmdpulse = 0;
-	m_joydeadzone = 16384;
+	m_joydeadzone = 1024;
 
 	memset(immediate_keytable,false,KEYTABLE_SIZE);
 	memset(last_immediate_keytable,false,KEYTABLE_SIZE);

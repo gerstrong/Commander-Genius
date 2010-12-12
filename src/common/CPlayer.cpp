@@ -176,36 +176,16 @@ void CPlayer::Walking()
     	pjustjumped = false;
 		// on left/right press clear pjustjumped
 		if ( (playcontrol[PA_X] < 0) || (playcontrol[PA_X] > 0) )
-		{
 			pjustfell = 0;
-		}
 		
 		// if we fall onto a semislide tile with no inertia
 		// don't move!.
 		if (pjustfell && psemisliding)
 		{
 			if (pdir==RIGHT)
-			{
-				if (blockedr)
-				{
-					pjustfell = 0;
-				}
-				else
-				{
-					pshowdir = pdir;
-				}
-			}
+				pjustfell = blockedr ? 0 : pdir;
 			else
-			{
-				if (blockedl)
-				{
-					pjustfell = 0;
-				}
-				else
-				{
-					pshowdir = pdir;
-				}
-			}
+				pjustfell = blockedl ? 0 : pdir;
 		}
     }
 	
