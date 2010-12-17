@@ -1,6 +1,6 @@
 #!/bin/sh
 NAME=cgenius
-VERSION=0324
+VERSION=0325
 
 #!/bin/sh
 

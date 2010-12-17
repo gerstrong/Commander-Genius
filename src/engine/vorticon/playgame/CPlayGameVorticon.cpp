@@ -50,6 +50,7 @@ mp_KeenLeftSfc(NULL)
 		CPlayer &thisPlayer = m_Player.at(i);
 		thisPlayer.m_index = i;
 		thisPlayer.setDatatoZero();
+		thisPlayer.mp_camera->attachObject(&thisPlayer);
 	}
 
 	// Create completed level list
@@ -228,8 +229,6 @@ void CPlayGameVorticon::process()
 					SDL_Rect gamerect = g_pVideoDriver->getGameResolution();
 					m_Map.m_maxscrollx = (m_Map.m_width<<4) - gamerect.w - 36;
 					m_Map.m_maxscrolly = (m_Map.m_height<<4) - gamerect.h - 36;
-					//for( int i=0 ; i<m_NumPlayers ; i++ )
-						/*while(*/m_Player[0].scrollTriggers()/*)*/;
 					m_Map.drawAll();
 					m_restartVideo = false;
 				}
@@ -250,13 +249,9 @@ void CPlayGameVorticon::process()
 
 				/// The following functions must be worldmap dependent
 				if( m_Level == WORLD_MAP_LEVEL )
-				{
 					processOnWorldMap();
-				}
 				else
-				{
 					processInLevel();
-				}
 
 				// Does one of the players need to pause the game?
 				for( int i=0 ; i<m_NumPlayers ; i++ )
@@ -265,8 +260,8 @@ void CPlayGameVorticon::process()
 					if(m_Player[i].m_showStatusScreen)
 						m_paused = true; // this is processed in processPauseDialogs!
 
-					// Handle the Scrolling here!
-					m_Player[0].scrollTriggers();
+					if(!m_Player[0].pdie)
+						m_Player[0].processCamera();
 				}
 			}
 			else // In this case the Game has been finished, goto to the cutscenes

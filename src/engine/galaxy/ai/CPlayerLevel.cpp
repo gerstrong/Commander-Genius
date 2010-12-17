@@ -6,6 +6,7 @@
  */
 
 #include "CPlayerLevel.h"
+#include "CBullets.h"
 #include "CItemEffect.h"
 #include "common/CBehaviorEngine.h"
 #include "sdl/CInput.h"
@@ -34,10 +35,12 @@ m_animation(0),
 m_animation_time(1),
 m_animation_ticker(0),
 m_ObjectPtrs(ObjectPtrs),
-m_cliff_hanging(false)
+m_cliff_hanging(false),
+m_camera(pmap,x,y,this)
 {
 	m_index = 0;
 	m_timer = 0;
+	m_dying = false;
 	m_hDir = facedir;
 	m_ActionBaseOffset = 0x98C;
 	setActionForce(A_KEEN_STAND);
@@ -48,6 +51,7 @@ m_cliff_hanging(false)
 	m_jumpheight = 0;
 	m_climbing = false;
 	m_inair = false;
+	m_pogotoggle = false;
 
 	processActionRoutine();
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
@@ -64,6 +68,12 @@ void CPlayerLevel::process()
 		m_animation_ticker = 0;
 	}
 	else m_animation_ticker++;
+
+	if(m_dying)
+	{
+		processDying();
+		return;
+	}
 
 	processInput();
 
@@ -89,7 +99,7 @@ void CPlayerLevel::process()
 
 			if(!m_climbing)
 			{
-				if(getActionNumber(A_KEEN_ENTER_DOOR))
+				if( getActionNumber(A_KEEN_ENTER_DOOR) && !getActionNumber(A_KEEN_POGO) )
 				{
 					processEnterDoor();
 				}
@@ -111,49 +121,64 @@ void CPlayerLevel::process()
 
 	if( !getActionNumber(A_KEEN_POGO) )
 		xinertia = 0;
+
+	m_camera.process();
 }
 
 void CPlayerLevel::processInput()
 {
+	// Entry for every player
 	m_playcontrol[PA_X] = 0;
 	m_playcontrol[PA_Y] = 0;
 
 	if(g_pInput->getHoldedCommand(m_index, IC_LEFT))
 		m_playcontrol[PA_X] -= 100;
-	if(g_pInput->getHoldedCommand(m_index, IC_RIGHT))
+	else if(g_pInput->getHoldedCommand(m_index, IC_RIGHT))
 		m_playcontrol[PA_X] += 100;
 
-	if(g_pInput->getHoldedCommand(m_index, IC_UP))
-		m_playcontrol[PA_Y] -= 100;
 	if(g_pInput->getHoldedCommand(m_index, IC_DOWN))
 		m_playcontrol[PA_Y] += 100;
+	else if(g_pInput->getHoldedCommand(m_index, IC_UP))
+		m_playcontrol[PA_Y] -= 100;
+
+	if(g_pInput->getHoldedCommand(m_index, IC_UPPERLEFT))
+	{
+		m_playcontrol[PA_X] -= 100;
+		m_playcontrol[PA_Y] -= 100;
+	}
+	else if(g_pInput->getHoldedCommand(m_index, IC_UPPERRIGHT))
+	{
+		m_playcontrol[PA_X] += 100;
+		m_playcontrol[PA_Y] -= 100;
+	}
+	else if(g_pInput->getHoldedCommand(m_index, IC_LOWERLEFT))
+	{
+		m_playcontrol[PA_X] -= 100;
+		m_playcontrol[PA_Y] += 100;
+	}
+	else if(g_pInput->getHoldedCommand(m_index, IC_LOWERRIGHT))
+	{
+		m_playcontrol[PA_X] += 100;
+		m_playcontrol[PA_Y] += 100;
+	}
 
 	if(!m_pfiring)
 	{
 		if(g_pInput->getHoldedCommand(m_index, IC_JUMP))
-		{
-			if(!getActionNumber(A_KEEN_POGO))
-			{
-				m_playcontrol[PA_JUMP]++;
-
-				if(m_jumpheight >= (MAX_JUMPHEIGHT-2))
-				{
-					m_playcontrol[PA_JUMP] = 0;
-					g_pInput->flushCommand(m_index, IC_JUMP);
-				}
-			}
-			else
-			{
-				m_playcontrol[PA_JUMP] = 1;
-			}
-		}
+			m_playcontrol[PA_JUMP]++;
 		else
 			m_playcontrol[PA_JUMP] = 0;
 
-		m_playcontrol[PA_POGO]   = g_pInput->getHoldedCommand(m_index, IC_POGO) ? 1 : 0;
 	}
+	else
+		m_playcontrol[PA_JUMP]   = g_pInput->getHoldedCommand(m_index, IC_JUMP)   ? 1 : 0;
 
+	m_playcontrol[PA_POGO]   = g_pInput->getHoldedCommand(m_index, IC_POGO)   ? 1 : 0;
 
+	// The possibility to charge jumps. This is mainly used for the pogo.
+	if( m_playcontrol[PA_JUMP] > 50) m_playcontrol[PA_JUMP] = 50;
+
+	// Two button firing process
 	if(g_pInput->getTwoButtonFiring(m_index))
 	{
 		if(m_playcontrol[PA_JUMP] && m_playcontrol[PA_POGO])
@@ -162,55 +187,119 @@ void CPlayerLevel::processInput()
 			m_playcontrol[PA_JUMP] = 0;
 			m_playcontrol[PA_POGO] = 0;
 		}
-		/*else if(!m_playcontrol[PA_JUMP] || !m_playcontrol[PA_POGO])
+		else if(m_playcontrol[PA_FIRE])
 		{
 			m_playcontrol[PA_FIRE] = 0;
-		}*/
+			m_playcontrol[PA_JUMP] = 0;
+			m_playcontrol[PA_POGO] = 0;
+			g_pInput->flushCommand(IC_JUMP);
+			g_pInput->flushCommand(IC_FIRE);
+			g_pInput->flushCommand(IC_POGO);
+		}
+
 	}
 	else
-	{
-		m_playcontrol[PA_FIRE] = g_pInput->getHoldedCommand(m_index, IC_FIRE)   ? 1 : 0;
-	}
+		m_playcontrol[PA_FIRE]   = g_pInput->getHoldedCommand(m_index, IC_FIRE)   ? 1 : 0;
 }
 
 void CPlayerLevel::processFiring()
 {
-	bool shooting =  getActionNumber(A_KEEN_JUMP_SHOOT) || getActionNumber(A_KEEN_JUMP_SHOOTDOWN) ||
-			getActionNumber(A_KEEN_JUMP_SHOOTUP) || getActionNumber(A_KEEN_SHOOT+2) ||
-			getActionNumber(A_KEEN_POLE_SHOOTUP) || getActionNumber(A_KEEN_POLE_SHOOTDOWN) ||
-			getActionNumber(A_KEEN_POLE_SHOOT);
-
 	if( m_playcontrol[PA_FIRE] && m_climbing )
 		yinertia = 0;
 
-	if( m_playcontrol[PA_FIRE] && !shooting )
+	if( m_playcontrol[PA_FIRE] && !m_pfiring )
 	{
 		if(m_climbing)
 		{
 			if(m_playcontrol[PA_Y] < 0 && !getActionNumber(A_KEEN_POLE_SHOOTUP))
+			{
 				setAction(A_KEEN_POLE_SHOOTUP);
+				const int newx = getXMidPos()-(3<<STC);
+				const int newy = getYUpPos()-(16<<STC);
+				if(m_Inventory.m_bullets > 0)
+					m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, UP));
+			}
 			else if(m_playcontrol[PA_Y] > 0 && !getActionNumber(A_KEEN_POLE_SHOOTDOWN))
+			{
 				setAction(A_KEEN_POLE_SHOOTDOWN);
+				const int newx = getXMidPos()-(3<<STC);
+				const int newy = getYDownPos();
+				if(m_Inventory.m_bullets > 0)
+					m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, DOWN));
+			}
 			else if(!getActionNumber(A_KEEN_POLE_SHOOT))
+			{
 				setAction(A_KEEN_POLE_SHOOT);
+				const int newx = getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC));
+				const int newy = getYPosition()+(4<<STC);
+				if(m_Inventory.m_bullets > 0)
+					m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, m_hDir));
+			}
+			m_pfiring = true;
 		}
 		else if( m_inair )
 		{
 			if(m_playcontrol[PA_Y] < 0 && !getActionNumber(A_KEEN_JUMP_SHOOTUP))
+			{
 				setAction(A_KEEN_JUMP_SHOOTUP);
+				const int newx = getXMidPos()-(3<<STC);
+				const int newy = getYUpPos()-(16<<STC);
+				if(m_Inventory.m_bullets > 0)
+					m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, UP));
+
+			}
 			else if(m_playcontrol[PA_Y] > 0 && !getActionNumber(A_KEEN_JUMP_SHOOTDOWN))
+			{
 				setAction(A_KEEN_JUMP_SHOOTDOWN);
+				const int newx = getXMidPos()-(3<<STC);
+				const int newy = getYDownPos();
+				if(m_Inventory.m_bullets > 0)
+					m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, DOWN));
+
+			}
 			else if(!getActionNumber(A_KEEN_JUMP_SHOOT))
+			{
 				setAction(A_KEEN_JUMP_SHOOT);
+				const int newx = getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC));
+				const int newy = getYPosition()+(4<<STC);
+				if(m_Inventory.m_bullets > 0)
+					m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, m_hDir));
+			}
+			m_pfiring = true;
 		}
 		else
 		{
 			if(m_playcontrol[PA_Y] < 0)
-				setAction(A_KEEN_SHOOT+2);
-			else
+			{
+				setActionForce(A_KEEN_SHOOT+2);
+				const int newx = getXMidPos()-(3<<STC);
+				const int newy = getYUpPos()-(16<<STC);
+				if(m_Inventory.m_bullets > 0)
+					m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, UP));
+
+				m_pfiring = true;
+			}
+			else if(!getActionNumber(A_KEEN_LOOKDOWN))
+			{
 				setAction(A_KEEN_SHOOT);
+				const int newx = getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC));
+				const int newy = getYPosition()+(4<<STC);
+				if(m_Inventory.m_bullets > 0)
+					m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, m_hDir));
+				m_pfiring = true;
+			}
+		}
+
+		// One shot less in the inventory when Keens shoots
+		if(m_pfiring)
+		{
+			if(m_Inventory.m_bullets > 0)
+				m_Inventory.m_bullets--;
 		}
 	}
+
+	if( m_playcontrol[PA_FIRE] == 0 )
+		m_pfiring = false;
 
 }
 
@@ -231,6 +320,7 @@ void CPlayerLevel::processMoving()
 			{
 				m_cliff_hanging = false;
 				setAction(A_KEEN_STAND);
+				m_camera.m_freeze = false;
 				setActionSprite();
 				calcBouncingBoxes();
 				moveDown(16*dy);
@@ -241,6 +331,7 @@ void CPlayerLevel::processMoving()
 			if(m_playcontrol[PA_Y] < 0)
 			{
 				setAction(A_KEEN_CLIMB);
+				m_camera.m_freeze = true;
 			}
 			else if(m_playcontrol[PA_Y] > 0)
 			{
@@ -279,7 +370,7 @@ void CPlayerLevel::processMoving()
 		else
 		{
 			// Normal moving
-			if(!m_playcontrol[PA_FIRE])
+			if(!m_pfiring)
 			{
 				if( m_playcontrol[PA_X]<0 )
 				{
@@ -292,7 +383,7 @@ void CPlayerLevel::processMoving()
 					{
 						bool check_block = TileProperty[mp_Map->at((getXLeftPos()>>CSF)-1, getYUpPos()>>CSF)].bright;
 						bool check_block_lower = TileProperty[mp_Map->at((getXLeftPos()>>CSF)-1, (getYUpPos()>>CSF)+1)].bright;
-						if(!check_block && check_block_lower && m_inair)
+						if(!check_block && check_block_lower && m_inair && !getActionNumber(A_KEEN_POGO))
 						{
 							setAction(A_KEEN_HANG);
 							setActionSprite();
@@ -315,7 +406,7 @@ void CPlayerLevel::processMoving()
 					{
 						bool check_block = TileProperty[mp_Map->at((getXRightPos()>>CSF)+1, getYUpPos()>>CSF)].bleft;
 						bool check_block_lower = TileProperty[mp_Map->at((getXRightPos()>>CSF)+1, (getYUpPos()>>CSF)+1)].bleft;
-						if(!check_block && check_block_lower && m_inair)
+						if(!check_block && check_block_lower && m_inair && !getActionNumber(A_KEEN_POGO) )
 						{
 							setAction(A_KEEN_HANG);
 							setActionSprite();
@@ -355,7 +446,7 @@ void CPlayerLevel::processMoving()
 					// player pressed up
 					processPressUp();
 				}
-			}
+			//}
 
 			// Check if Keen hits the floor
 			if( blockedd && !m_cliff_hanging )
@@ -367,6 +458,8 @@ void CPlayerLevel::processMoving()
 					else if(m_playcontrol[PA_Y] == 0)
 						setAction(A_KEEN_STAND);
 				}
+			}
+
 			}
 
 		}
@@ -425,51 +518,60 @@ void CPlayerLevel::processJumping()
 // Here all the pogo code is processed
 void CPlayerLevel::processPogo()
 {
-	if(!getActionNumber(A_KEEN_POGO))
+	if(m_pfiring)
+		return;
+
+	if(!m_playcontrol[PA_POGO])
+		m_pogotoggle = false;
+
+	if(!getActionNumber(A_KEEN_POGO) && !m_pogotoggle)
 	{
 		if(blockedd)
 			m_jumpheight = 0;
 
 		// Not pogoing? Let's see if we can prepare the player to do so
-		if( g_pInput->getPressedCommand(IC_POGO) )
+		if( m_playcontrol[PA_POGO] )
 		{
 			if( getActionNumber(A_KEEN_STAND) or getActionNumber(A_KEEN_RUN) )
 			{
-				if(g_pInput->getHoldedCommand(IC_JUMP))
+				if(m_playcontrol[PA_JUMP])
 					yinertia = POGO_START_INERTIA_IMPOSSIBLE;
 				else
 					yinertia = POGO_START_INERTIA;
 
 				m_jumpheight = 0;
 				setAction(A_KEEN_POGO);
+				m_pogotoggle = true;
 			}
 			else if( getActionNumber(A_KEEN_FALL) or getActionNumber(A_KEEN_JUMP) )
 			{
 				m_jumpheight = MAX_POGOHEIGHT;
 				setAction(A_KEEN_POGO);
+				m_pogotoggle = true;
 			}
 		}
 	}
 	else
 	{
 		// while button is pressed, make the player jump higher
-		if( (g_pInput->getHoldedCommand(IC_JUMP) and m_jumpheight <= MAX_POGOHEIGHT) or
+		if( (m_playcontrol[PA_JUMP] and m_jumpheight <= MAX_POGOHEIGHT) or
 				m_jumpheight <= MIN_POGOHEIGHT )
 		{
 			m_jumpheight++;
 		}
 
 		// pressed again will make keen fall until hitting the ground
-		if(g_pInput->getPressedCommand(IC_POGO))
+		if(m_playcontrol[PA_POGO] && !m_pogotoggle)
 		{
 			m_jumpheight = 0;
 			setAction(A_KEEN_FALL);
+			m_pogotoggle = true;
 		}
 
 		// When keen hits the floor, start the same pogoinertia again!
 		if(blockedd)
 		{
-			if(g_pInput->getHoldedCommand(IC_JUMP))
+			if(m_playcontrol[PA_JUMP])
 				yinertia = POGO_START_INERTIA_MAX;
 			else
 				yinertia = POGO_START_INERTIA;
@@ -491,7 +593,6 @@ void CPlayerLevel::processPogo()
 			xinertia -= POGO_X_BOOST;
 		else if( blockedl && xinertia < 0 )
 			xinertia += POGO_X_BOOST;
-
 	}
 }
 
@@ -812,5 +913,15 @@ void CPlayerLevel::processPlaceGem()
 	mp_Map->setTile(lx>>CSF, ly>>CSF, tileno+18, true, 1);
 }
 
+void CPlayerLevel::processDying()
+{
+	// TODO: Here Keen must be falling out the screen, die effect of Keen Galaxy
+}
+
+void CPlayerLevel::kill()
+{
+	// TODO: Here were prepare Keen to die, setting that action
+	m_dying = true;
+}
 
 }

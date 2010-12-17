@@ -57,8 +57,7 @@ void CEndingEp1::ReturnsToShip()
 		m_Player[0].solid = false;
 		m_Player[0].moveTo(VectorD2<int>(6636, 19968));
 		m_Player[0].sprite = PMAPLEFTFRAME;
-
-		while(m_Player[0].scrollTriggers()); // Scroll the map to players position
+		m_Player[0].processCamera();
 
 		mp_Textbox = new CMessageBox(g_pBehaviorEngine->getString("EP1_ESEQ_PART1"), true);
 
@@ -229,8 +228,4 @@ void CEndingEp1::ShipFlyEarthToMShip()
 		m_step++;
 		m_mustsetup = true;
 	}
-}
-
-CEndingEp1::~CEndingEp1() {
-	// TODO Auto-generated destructor stub
 }

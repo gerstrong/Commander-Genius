@@ -21,8 +21,6 @@
 #include "engine/spritedefines.h"
 #include <stdlib.h>
 
-size_t CPlayer::m_playerID = 0;
-
 ///
 // Initialization Part
 ///
@@ -37,7 +35,7 @@ mp_levels_completed(mp_level_completed),
 mp_option(mp_option),
 mp_StatusScr(NULL)
 {
-	m_playerID++;
+	mp_camera = new CCamera(&map, 0, 0);
 	mp_object = &m_Object;
 	canbezapped = true;
 	m_index = 0;
@@ -154,92 +152,18 @@ void CPlayer::setupforLevelPlay()
   	checkObjSolid();
 }
 
-bool CPlayer::scrollTriggers()
-{
-	int px, py, left, up, right, down, speed;
-	bool scrollchanged=false;
-
-	Uint16& scroll_x = mp_Map->m_scrollx;
-	Uint16& scroll_y = mp_Map->m_scrolly;
-	
-	if (pdie) return scrollchanged;
-
-	px = (getXPosition()>>STC)-scroll_x;
-	py = (getYPosition()>>STC)-scroll_y;
-	
-	st_camera_bounds CameraBounds = g_pVideoDriver->getCameraBounds();
-	left = CameraBounds.left;
-	up = CameraBounds.up;
-	right = CameraBounds.right;
-	down = CameraBounds.down;
-	speed = CameraBounds.speed;
-
-	// left-right scrolling
-	if(px > right && scroll_x < mp_Map->m_maxscrollx)
-	{
-		do{
-			px = (getXPosition()>>STC)-scroll_x;
-			mp_Map->scrollRight();
-		}while(px > right+speed && scroll_x < mp_Map->m_maxscrollx);
-		scrollchanged = true;
-	}
-	else if(px < left && scroll_x > 32)
-	{
-		do{
-			px = (getXPosition()>>STC)-scroll_x;
-			mp_Map->scrollLeft();
-		}while(px < left-speed && scroll_x > 32);
-		scrollchanged = true;
-	}
-
-	// up-down scrolling
-	if (py > down && scroll_y < mp_Map->m_maxscrolly)
-	{
-		do{
-			py = (getYPosition()>>STC)-scroll_y;
-			mp_Map->scrollDown();
-		}while(py > down+speed && scroll_y < mp_Map->m_maxscrolly);
-		scrollchanged = true;
-	}
-	else if ( py < up && scroll_y > 32  )
-	{
-		do{
-			py = (getYPosition()>>STC)-scroll_y;
-			mp_Map->scrollUp();
-		}while(py < up-speed && scroll_y > 32);
-		scrollchanged = true;
-	}
-
-	// This will always snap correctly to the edge
-	while(scroll_x < 32)
-		mp_Map->scrollRight();
-	while(scroll_x > mp_Map->m_maxscrollx)
-		mp_Map->scrollLeft();
-	while(scroll_y < 32)
-		mp_Map->scrollDown();
-	while(scroll_y > mp_Map->m_maxscrolly)
-		mp_Map->scrollUp();
-
-	return scrollchanged;
-}
-
 // handles walking. the walking animation is handled by gamepdo_walkinganim()
 void CPlayer::Walking()
 {
 	int cur_pfastincrate;
 
-    if (inhibitwalking && !psliding)
-    {
-		if (!pfrozentime||m_episode!=1)
-			if (!pjumping && !pfalling)
-				xinertia = 0;
+	if(pfiring)
 		return;
-    }
-	
+
     // this prevents a "slipping" effect if you jump, say, right, then
     // start walking left just as you hit the ground
-    if (pjustjumped && ((xinertia > 0 && pdir==LEFT) ||\
-                        (xinertia < 0 && pdir==RIGHT)))\
+    if (pjustjumped && ((xinertia > 0 && pdir==LEFT) ||
+                        (xinertia < 0 && pdir==RIGHT)))
     {
     	if(!ppogostick)
     		xinertia = 0;
@@ -252,36 +176,16 @@ void CPlayer::Walking()
     	pjustjumped = false;
 		// on left/right press clear pjustjumped
 		if ( (playcontrol[PA_X] < 0) || (playcontrol[PA_X] > 0) )
-		{
 			pjustfell = 0;
-		}
 		
 		// if we fall onto a semislide tile with no inertia
 		// don't move!.
 		if (pjustfell && psemisliding)
 		{
 			if (pdir==RIGHT)
-			{
-				if (blockedr)
-				{
-					pjustfell = 0;
-				}
-				else
-				{
-					pshowdir = pdir;
-				}
-			}
+				pjustfell = blockedr ? 0 : pdir;
 			else
-			{
-				if (blockedl)
-				{
-					pjustfell = 0;
-				}
-				else
-				{
-					pshowdir = pdir;
-				}
-			}
+				pjustfell = blockedl ? 0 : pdir;
 		}
     }
 	
@@ -351,7 +255,6 @@ void CPlayer::Walking()
 		if (pwalkincreasetimer>=cur_pfastincrate)
 		{
 			if(pfalling) xinertia+=(1<<2);
-			//else xinertia+=(1<<4);
 			else xinertia+=(1<<3);
 			pwalkincreasetimer=0;
 		}
@@ -367,7 +270,7 @@ void CPlayer::Walking()
 		// increase up to max speed every time frame is changed
 		if (!pwalkanimtimer && xinertia < pmaxspeed)	xinertia+=(1<<4);
 	}
-	else if (playcontrol[PA_X] < 0 && !ppogostick )
+	else if (playcontrol[PA_X] < 0 && !ppogostick)
 	{ 	// LEFT key down
 		// quickly reach PFASTINCMAXSPEED
 		if (pwalkincreasetimer>=cur_pfastincrate)
@@ -541,6 +444,14 @@ void CPlayer::WalkingAnimation()
     }
 }
 
+/*
+ * This function calls the camera object of the player
+ */
+void CPlayer::processCamera()
+{
+	mp_camera->process();
+}
+
 // handles inertia and friction for the X direction
 // (this is where the xinertia is actually applied to playx)
 void CPlayer::InertiaAndFriction_X()
@@ -550,7 +461,7 @@ void CPlayer::InertiaAndFriction_X()
 	CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
 
 	// Calculate Threshold of your analog device for walking animation speed!
-	if(!pfrozentime)
+	if(!pfrozentime && !pfiring)
 	{
 		treshold = playcontrol[PA_X];
 
@@ -598,8 +509,7 @@ void CPlayer::InertiaAndFriction_X()
 	// if we stopped walking (i.e. left or right not held down) apply friction
 	// there's no friction if we're semisliding
 
-	if (!(playcontrol[PA_X] < 0) && !(playcontrol[PA_X] > 0) &&
-		!psemisliding)
+	if ( ( playcontrol[PA_X] == 0 || pfiring ) && !psemisliding)
 	{
 		// determine friction rate--different rates for on ground and in air
 		if (m_playingmode == WORLDMAP)
@@ -608,14 +518,7 @@ void CPlayer::InertiaAndFriction_X()
 		}
 		else
 		{
-	        if (!pfalling && !pjumping)
-	        {
-				friction_rate = PFRICTION_RATE_ONGROUND;
-	        }
-	        else
-	        {
-				friction_rate = PFRICTION_RATE_INAIR;
-	        }
+			friction_rate = (!pfalling && !pjumping) ? PFRICTION_RATE_ONGROUND : friction_rate = PFRICTION_RATE_INAIR;
 		}
 		
 		// and apply friction to xinertia
@@ -686,14 +589,26 @@ void CPlayer::ProcessInput()
 	playcontrol[PA_Y] = 0;
 	
 	if(g_pInput->getHoldedCommand(m_index, IC_LEFT))
-		playcontrol[PA_X] -= 100;
+	{
+		const int newval = mp_option[OPT_ANALOGJOYSTICK].value ? -g_pInput->getJoyValue(m_index, IC_LEFT) : 100;
+		playcontrol[PA_X] -= newval;
+	}
 	else if(g_pInput->getHoldedCommand(m_index, IC_RIGHT))
-		playcontrol[PA_X] += 100;
+	{
+		const int newval = mp_option[OPT_ANALOGJOYSTICK].value ? g_pInput->getJoyValue(m_index, IC_RIGHT) : 100;
+		playcontrol[PA_X] += newval;
+	}
 	
 	if(g_pInput->getHoldedCommand(m_index, IC_DOWN))
-		playcontrol[PA_Y] += 100;
+	{
+		const int newval = mp_option[OPT_ANALOGJOYSTICK].value ? g_pInput->getJoyValue(m_index, IC_DOWN) : 100;
+		playcontrol[PA_Y] += newval;
+	}
 	else if(g_pInput->getHoldedCommand(m_index, IC_UP))
-		playcontrol[PA_Y] -= 100;
+	{
+		const int newval = mp_option[OPT_ANALOGJOYSTICK].value ? -g_pInput->getJoyValue(m_index, IC_UP) : 100;
+		playcontrol[PA_Y] -= newval;
+	}
 
 	if(g_pInput->getHoldedCommand(m_index, IC_UPPERLEFT))
 	{
@@ -898,12 +813,4 @@ bool CPlayer::drawStatusScreen()
 		return false;
 	}
 	else return true;
-}
-
-
-///
-// Cleanup Part
-///
-CPlayer::~CPlayer() {
-	m_playerID--;
 }

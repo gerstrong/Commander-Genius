@@ -85,7 +85,6 @@ void CShipFlySys::process()
 			 m_player.sprite = m_playsprite_left;
 			 break;
 		 }
-		 m_player.scrollTriggers();
 
 		 x = m_player.getXPosition();
 		 y = m_player.getYPosition();
@@ -120,6 +119,8 @@ void CShipFlySys::process()
 	 {
 		 m_ShipQueuePtr++;
 	 }
+
+	 m_player.processCamera();
 }
 
 

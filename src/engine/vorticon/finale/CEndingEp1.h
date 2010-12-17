@@ -25,8 +25,6 @@ public:
 	void BackAtHome();
 	void ShipFlyEarthToMShip();
 
-	virtual ~CEndingEp1();
-
 private:
 	bool m_mustsetup;
 	Uint32 m_starttime;

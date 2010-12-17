@@ -131,7 +131,7 @@ void CTeleporter::process()
 			diff_x = (diff_x<0) ? -diff_x : diff_x;
 			diff_y = (diff_y<0) ? -diff_y : diff_y;
 
-			if(!m_Player[player].scrollTriggers() && diff_x<=TELEPORTATION_SPEED && diff_y<=TELEPORTATION_SPEED)
+			if(diff_x<=TELEPORTATION_SPEED && diff_y<=TELEPORTATION_SPEED)
 			{
 				m_Player[player].moveTo(VectorD2<int>(x, y));
 				direction = TELEPORTING_OUT;

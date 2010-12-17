@@ -17,18 +17,19 @@ const Uint16 SWIMBASEFRAME = 156;
 namespace galaxy {
 
 CPlayerWM::CPlayerWM(CMap *pmap, Uint32 x, Uint32 y,
-					std::vector<CObject*>& ObjectPtrs):
+					std::vector<CObject*>& ObjectPtrs,
+					CInventory &l_Inventory):
 CObject(pmap, x, y, OBJ_PLAYER),
+m_Inventory(l_Inventory),
 m_basesprite(WALKBASEFRAME),
 m_looking_dir(LEFT),
 m_animation(0),
 m_animation_time(1),
 m_animation_ticker(0),
-m_ObjectPtrs(ObjectPtrs)
+m_ObjectPtrs(ObjectPtrs),
+m_camera(pmap,x,y,this)
 {
-	// TODO Auto-generated constructor stub
 	sprite = m_basesprite;
-
 	performCollisions();
 }
 
@@ -54,6 +55,8 @@ void CPlayerWM::process()
 		finishLevel(ev->levelObject);
 		EventContainer.pop_Event();
 	}
+
+	m_camera.process();
 }
 
 /*
@@ -77,6 +80,8 @@ void CPlayerWM::processWalking()
 		walking = true;
 		m_hDir = RIGHT;
 	}
+	else
+		m_hDir = NONE;
 
 	if(g_pInput->getHoldedCommand(IC_UP))
 	{
@@ -96,6 +101,9 @@ void CPlayerWM::processWalking()
 		walking = true;
 		m_vDir = DOWN;
 	}
+	else
+		m_vDir = NONE;
+
 
 	if(g_pInput->getHoldedCommand(IC_STATUS))
 		solid = !solid;

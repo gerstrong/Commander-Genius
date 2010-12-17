@@ -45,6 +45,7 @@ struct ActionFormatType {
 	void setActionFormat( size_t sprite_offset )
 	{
 		byte *ptr = g_pBehaviorEngine->m_ExeFile.getDSegPtr();
+
 		ptr += sprite_offset;
 		memcpy( this, ptr, 15*sizeof(int16_t) );
 	}

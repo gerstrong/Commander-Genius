@@ -6,10 +6,10 @@
  */
 
 #include "CPlayer.h"
-#include "../engine/vorticon/ai/CMessie.h"
-#include "../graphics/CGfxEngine.h"
-#include "../sdl/CInput.h"
-#include "../keen.h"
+#include "engine/vorticon/ai/CMessie.h"
+#include "graphics/CGfxEngine.h"
+#include "sdl/CInput.h"
+#include "keen.h"
 
 ///
 // Process Part

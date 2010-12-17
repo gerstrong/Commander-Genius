@@ -11,6 +11,7 @@
 #include "common/CObject.h"
 #include "common/Playerdefines.h"
 #include "engine/CEvent.h"
+#include "engine/CCamera.h"
 #include "engine/galaxy/CInventory.h"
 
 namespace galaxy {
@@ -69,6 +70,9 @@ public:
 	void openDoorsTile();
 	void processPlaceGem();
 
+	void processDying();
+	void kill();
+
 	CInventory &m_Inventory;
 
 private:
@@ -85,7 +89,10 @@ private:
 	bool m_inair;
 
 	int m_timer;
+	bool m_pogotoggle;
+	CCamera m_camera;
 
+	bool m_dying;
 };
 
 }

@@ -13,10 +13,12 @@
 
 namespace galaxy {
 
-CWorldMap::CWorldMap(CExeFile &ExeFile, CInventory &Inventory):
+CWorldMap::CWorldMap(CExeFile &ExeFile,
+		CInventory &Inventory, stOption *p_option):
 m_active(false),
 m_ExeFile(ExeFile),
-m_Inventory(Inventory)
+m_Inventory(Inventory),
+mp_option(p_option)
 {}
 
 bool CWorldMap::isActive()
@@ -67,6 +69,10 @@ void CWorldMap::process()
 
 	// Draw masked tiles here!
 	m_Map.drawForegroundTiles();
+
+	// Draw the inventory
+	if(mp_option[OPT_HUD].value)
+		m_Inventory.drawHUD();
 }
 
 
