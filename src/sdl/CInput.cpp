@@ -1043,10 +1043,10 @@ static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_
 
 
 
-static const int phoneButtonN = 11;
+static const int phoneButtonN = 10;
 typedef std::set<int> MouseIndexSet;
 
-static Uint32 phoneButtonLasttime[phoneButtonN] = {0,0,0,0,0,0,0,0,0,0,0};
+static Uint32 phoneButtonLasttime[phoneButtonN] = {0,0,0,0,0,0,0,0,0,0};
 static MouseIndexSet phoneButton_MouseIndex[phoneButtonN];
 
 
