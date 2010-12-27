@@ -22,7 +22,7 @@ ENDIF (${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION} GREATER 2.4)
 #ENDIF( NOT APPLE )
 #set( HAVE_64_BIT 0 )
 
-OPTION(DEBUG "enable debug build" Yes)
+OPTION(DEBUG "enable debug build" No)
 OPTION(SDL "SDL support (will not work without)" Yes)
 OPTION(OPENGL "OpenGL support" Yes)
 OPTION(OGG "Ogg/Vorbis support" Yes)
@@ -41,6 +41,7 @@ ENDIF (DEBUG)
 # Compilation Flags and executables
 IF (BUILD_TYPE STREQUAL GP2X OR
     BUILD_TYPE STREQUAL WIZ OR
+    BUILD_TYPE STREQUAL CAANOO OR
     BUILD_TYPE STREQUAL DINGOO OR
     BUILD_TYPE STREQUAL PANDORA OR
     BUILD_TYPE STREQUAL NANONOTE)
@@ -50,7 +51,7 @@ IF (BUILD_TYPE STREQUAL GP2X OR
 		SET(CMAKE_CXX_COMPILER ${PREFIX}/bin/arm-open2x-linux-g++)
 		ADD_DEFINITIONS(-DGP2X)
 		ADD_DEFINITIONS(-DNOKEYBOARD)
-		SET(OGG No)
+		SET(OGG Yes)
 	ELSEIF(BUILD_TYPE STREQUAL WIZ)
 		SET(PREFIX /mythtv/media/devel/toolchains/openwiz/arm-openwiz-linux-gnu)
 		SET(CMAKE_C_COMPILER ${PREFIX}/bin/arm-openwiz-linux-gnu-gcc)
@@ -58,6 +59,19 @@ IF (BUILD_TYPE STREQUAL GP2X OR
 		ADD_DEFINITIONS(-DWIZ)
                 ADD_DEFINITIONS(-DNOKEYBOARD)
 		SET(OGG Yes)
+        ELSEIF(BUILD_TYPE STREQUAL CAANOO)
+                SET(PREFIX /mythtv/media/devel/toolchains/caanoo/GPH_SDK)
+                SET(CMAKE_C_COMPILER ${PREFIX}/tools/gcc-4.2.4-glibc-2.7-eabi/bin/arm-gph-linux-gnueabi-gcc)
+                SET(CMAKE_CXX_COMPILER ${PREFIX}/tools/gcc-4.2.4-glibc-2.7-eabi/bin/arm-gph-linux-gnueabi-g++)
+                ADD_DEFINITIONS(-DCAANOO)
+                SET(OGG Yes)
+
+                include_directories(${PREFIX}/DGE/include)
+                include_directories(${PREFIX}/DGE/include/vorbis)
+                link_directories(${PREFIX}/DGE/lib/target)
+                ADD_DEFINITIONS(-DCAANOO)
+                ADD_DEFINITIONS(-DNOKEYBOARD)
+                SET(OGG Yes)
 	ELSEIF(BUILD_TYPE STREQUAL DINGOO)
 		SET(PREFIX /opt/mipsel-linux-uclibc/usr)
 		SET(CMAKE_C_COMPILER ${PREFIX}/bin/mipsel-linux-uclibc-gcc)
@@ -96,10 +110,14 @@ IF (BUILD_TYPE STREQUAL GP2X OR
 	ADD_DEFINITIONS(-fsigned-char)
 	ADD_DEFINITIONS(-ffast-math)
 	ADD_DEFINITIONS(-fomit-frame-pointer)
-	include_directories(${PREFIX}/include)
-	link_directories(${PREFIX}/lib)
+        IF (NOT BUILD_TYPE STREQUAL CAANOO)
+                include_directories(${PREFIX}/include)
+                include_directories(${PREFIX}/include/vorbis)
+                link_directories(${PREFIX}/lib)
+        ENDIF (NOT BUILD_TYPE STREQUAL CAANOO)
 ENDIF (BUILD_TYPE STREQUAL GP2X OR
     BUILD_TYPE STREQUAL WIZ OR
+    BUILD_TYPE STREQUAL CAANOO OR
     BUILD_TYPE STREQUAL DINGOO OR
     BUILD_TYPE STREQUAL PANDORA OR
     BUILD_TYPE STREQUAL NANONOTE)
@@ -195,7 +213,7 @@ ENDIF(UNIX)
 
 # Extra Flags for the compilation
 IF (OGG)
-	INCLUDE_DIRECTORIES(/usr/include/vorbis)
+	INCLUDE_DIRECTORIES(${PREFIX}/include/vorbis)
 	ADD_DEFINITIONS(-DOGG)
 	SET(ALL_SRCS ${ALL_SRCS} ${VORBIS_S})
 ENDIF (OGG)
@@ -298,7 +316,7 @@ ENDIF(BUILD_TYPE STREQUAL WIN32)
 IF(NOT DEFINED BUILD_TYPE)
 	SET(BUILD_TYPE LINUX32)
 	MESSAGE( "WARNING: You did not specify the build type with the -DBUILD_TYPE= Parameter. LINUX32 has been choosen" )
-	MESSAGE( "Available Builds are: WIN32, LINUX32, LINUX64, GP2X. WIZ, DINGOO, NANONOTE For 64-bit Linux use 'cmake . -DBUILD_TYPE=LINUX64'" )
+	MESSAGE( "Available Builds are: WIN32, LINUX32, LINUX64, GP2X. WIZ, CAANOO, DINGOO, NANONOTE For 64-bit Linux use 'cmake . -DBUILD_TYPE=LINUX64'" )
 ENDIF(NOT DEFINED BUILD_TYPE)
 
 

@@ -234,10 +234,6 @@ private:
 	void processMouse();
 	void processMouse(SDL_Event& ev);
 	void processMouse(int x, int y, bool down, int index);
-#ifdef WIZ
-	void WIZ_EmuKeyboard( int button, int value );
-	void WIZ_AdjustVolume( int direction );
-#endif
 };
 
 #endif /* CINPUT_H_ */

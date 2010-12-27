@@ -15,7 +15,7 @@
 #include "StringUtils.h"
 #include "fileio/CConfiguration.h"
 
-#if defined(WIZ) || defined(GP2X)
+#if defined(CAANOO) || defined(WIZ) || defined(GP2X)
 #include "sys/wizgp2x.h"
 #endif
 
@@ -366,7 +366,7 @@ bool CInput::readNewEvent(Uint8 device, int command)
 				return true;
 				break;
 			case SDL_JOYBUTTONDOWN:
-#if defined(WIZ) || defined(GP2X)
+#if defined(CAANOO) || defined(WIZ) || defined(GP2X)
 				WIZ_EmuKeyboard( Event.jbutton.button, 1 );
 				return false;
 #else
@@ -528,7 +528,7 @@ void CInput::processJoystickAxis(void)
  */
 void CInput::processJoystickButton(int value)
 {
-#if defined(WIZ) || defined(GP2X)
+#if defined(CAANOO) || defined(WIZ) || defined(GP2X)
 	WIZ_EmuKeyboard( Event.jbutton.button, value );
 #else
 	for(int j=0 ; j<NUM_INPUTS ; j++)
@@ -1208,38 +1208,6 @@ void CInput::renderOverlay() {
 #endif
 #endif
 }
-
-
-/*#ifdef WIZ
-void CInput::WIZ_EmuKeyboard( int button, int value )
-{
-	SDL_Event fakeevent1, fakeevent2;
-
-	//printf( "Button %d Value %d\n", button, value );
-
-	if( value == 1 ) {
-	      fakeevent1.type			= SDL_KEYDOWN;
-	      fakeevent1.key.state		= SDL_PRESSED;
-	      fakeevent1.key.type		= SDL_KEYDOWN;
-	      fakeevent1.key.keysym.mod		= KMOD_NONE;
-
-	      fakeevent2.type			= SDL_KEYDOWN;
-	      fakeevent2.key.state		= SDL_PRESSED;
-	      fakeevent2.key.type		= SDL_KEYDOWN;
-	      fakeevent2.key.keysym.mod		= KMOD_NONE;
-	}
-	else {
-	      fakeevent1.type			= SDL_KEYUP;
-	      fakeevent1.key.state		= SDL_RELEASED;
-	      fakeevent1.key.type		= SDL_KEYUP;
-	      fakeevent1.key.keysym.mod		= KMOD_NONE;
-
-	      fakeevent2.type			= SDL_KEYUP;
-	      fakeevent2.key.state		= SDL_RELEASED;
-	      fakeevent2.key.type		= SDL_KEYUP;
-	      fakeevent2.key.keysym.mod		= KMOD_NONE;
-	}
-}*/
 
 /**
  * \brief	flushes both key and commands queue
