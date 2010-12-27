@@ -67,6 +67,7 @@ IF (BUILD_TYPE STREQUAL GP2X OR
                 SET(OGG Yes)
 
                 include_directories(${PREFIX}/DGE/include)
+                include_directories(${PREFIX}/DGE/include/SDL)
                 include_directories(${PREFIX}/DGE/include/vorbis)
                 link_directories(${PREFIX}/DGE/lib/target)
                 ADD_DEFINITIONS(-DCAANOO)
@@ -235,7 +236,7 @@ IF (SDL)
 	IF(BUILD_TYPE STREQUAL WIN32)
 		INCLUDE_DIRECTORIES(/usr/i586-mingw32msvc/include/SDL)
 	ELSE(BUILD_TYPE STREQUAL WIN32)
-		INCLUDE_DIRECTORIES(/usr/include/SDL)
+		INCLUDE_DIRECTORIES(${PREFIX}/include/SDL)
 	ENDIF(BUILD_TYPE STREQUAL WIN32)
 ENDIF (SDL)
 
