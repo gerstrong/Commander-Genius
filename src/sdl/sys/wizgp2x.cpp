@@ -1,20 +1,23 @@
-#if defined(WIZ) || defined(GP2X)
+#if defined(CAANOO) || defined(WIZ) || defined(GP2X)
 
 #include "wizgp2x.h"
 
+#if defined(WIZ) || defined(GP2X)
 int volume;
 int volume_direction;
-int joy_but_pressed[20] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 int memfd;
 volatile uint32_t* memregs32;
+#endif
+int joy_but_pressed[20] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 void WIZ_EmuKeyboard( int button, int value )
 {
 	SDL_Event fakeevent1;
 
 	//printf( "Button %d Value %d\n", button, value );
-
+#if defined(WIZ) || defined(GP2X)
 	volume_direction = VOLUME_NOCHG;
+#endif
 
 	joy_but_pressed[button] = value;
 	if( value == 1 ) {
@@ -33,6 +36,7 @@ void WIZ_EmuKeyboard( int button, int value )
 	//printf( "Button %d %d\n", button, value );
 	fakeevent1.key.keysym.sym = SDLK_UNKNOWN;
 
+#if defined(WIZ) || defined(GP2X)
 	if( button == GP2X_BUTTON_RIGHT )
 	{
 		fakeevent1.key.keysym.unicode = fakeevent1.key.keysym.sym = SDLK_RIGHT;
@@ -48,46 +52,6 @@ void WIZ_EmuKeyboard( int button, int value )
 	if( button == GP2X_BUTTON_DOWN )
 	{
 		fakeevent1.key.keysym.unicode = fakeevent1.key.keysym.sym = SDLK_DOWN;
-	}	
-#if 0
-	// Right press
-	if( (button == GP2X_BUTTON_RIGHT || button == GP2X_BUTTON_UPRIGHT || button == GP2X_BUTTON_DOWNRIGHT) &&
-	    ((value == 1 &&
-	    (joy_but_pressed[GP2X_BUTTON_RIGHT] ||  joy_but_pressed[GP2X_BUTTON_UPRIGHT] ||  joy_but_pressed[GP2X_BUTTON_DOWNRIGHT])) ||
-	    (value == 0 &&
-	    (!joy_but_pressed[GP2X_BUTTON_RIGHT] && !joy_but_pressed[GP2X_BUTTON_UPRIGHT] && !joy_but_pressed[GP2X_BUTTON_DOWNRIGHT])))    )
-	{
-	    fakeevent1.key.keysym.unicode = fakeevent1.key.keysym.sym = SDLK_RIGHT;
-	}
-
-	// Left press
-	if( (button == GP2X_BUTTON_LEFT || button == GP2X_BUTTON_UPLEFT || button == GP2X_BUTTON_DOWNLEFT) &&
-	    ((value == 1 &&
-	    (joy_but_pressed[GP2X_BUTTON_LEFT] ||  joy_but_pressed[GP2X_BUTTON_UPLEFT] ||  joy_but_pressed[GP2X_BUTTON_DOWNLEFT])) ||
-	    (value == 0 &&
-	    (!joy_but_pressed[GP2X_BUTTON_LEFT] && !joy_but_pressed[GP2X_BUTTON_UPLEFT] &&  !joy_but_pressed[GP2X_BUTTON_DOWNLEFT])))    )
-	{
-	    fakeevent1.key.keysym.unicode = fakeevent1.key.keysym.sym = SDLK_LEFT;
-	}
-
-	// Up press
-	if( (button == GP2X_BUTTON_UP || button == GP2X_BUTTON_UPLEFT || button == GP2X_BUTTON_UPRIGHT) &&
-	    ((value == 1 &&
-	    (joy_but_pressed[GP2X_BUTTON_UP] ||  joy_but_pressed[GP2X_BUTTON_UPLEFT] ||  joy_but_pressed[GP2X_BUTTON_UPRIGHT])) ||
-	    (value == 0 &&
-	    (!joy_but_pressed[GP2X_BUTTON_UP] && !joy_but_pressed[GP2X_BUTTON_UPLEFT] && !joy_but_pressed[GP2X_BUTTON_UPRIGHT])))    )
-	{
-	    fakeevent1.key.keysym.unicode = fakeevent1.key.keysym.sym = SDLK_UP;
-	}
-
-	// Down press
-	if( (button == GP2X_BUTTON_DOWN || button == GP2X_BUTTON_DOWNLEFT || button == GP2X_BUTTON_DOWNRIGHT) &&
-	    ((value == 1 &&
-	    (joy_but_pressed[GP2X_BUTTON_DOWN] ||  joy_but_pressed[GP2X_BUTTON_DOWNLEFT] ||  joy_but_pressed[GP2X_BUTTON_DOWNRIGHT])) ||
-	    (value == 0 &&
-	    (!joy_but_pressed[GP2X_BUTTON_DOWN] && !joy_but_pressed[GP2X_BUTTON_DOWNLEFT] && !joy_but_pressed[GP2X_BUTTON_DOWNRIGHT])))    )
-	{
-	    fakeevent1.key.keysym.unicode = fakeevent1.key.keysym.sym = SDLK_DOWN;
 	}
 #endif
 
@@ -111,6 +75,7 @@ void WIZ_EmuKeyboard( int button, int value )
 		case GP2X_BUTTON_Y:
 			fakeevent1.key.keysym.sym = SDLK_F3;
 			break;
+#if defined(WIZ) || defined(GP2X)
 		case GP2X_BUTTON_VOLUP:
 			if( value == 1)
 				volume_direction = VOLUME_UP;
@@ -119,6 +84,7 @@ void WIZ_EmuKeyboard( int button, int value )
 			if( value == 1)
 				volume_direction = VOLUME_DOWN;
 			break;
+#endif
 	}
 
 	if( fakeevent1.key.keysym.sym != SDLK_UNKNOWN )
@@ -127,6 +93,7 @@ void WIZ_EmuKeyboard( int button, int value )
 	}
 }
 
+#if defined(WIZ) || defined(GP2X)
 void WIZ_AdjustVolume( int direction )
 {
 	if( direction != VOLUME_NOCHG )
@@ -159,7 +126,7 @@ void WIZ_AdjustVolume( int direction )
 
 #endif
 
-#ifdef WIZ
+#if defined(WIZ)
 
 #define TIMER_BASE3 0x1980
 #define TIMER_REG(x) memregs32[(TIMER_BASE3 + x) >> 2]
@@ -217,4 +184,6 @@ void WIZ_ptimer_cleanup(void)
 
 	printf( "Wiz hardware timer stoped\n" );
 }
+#endif
+
 #endif

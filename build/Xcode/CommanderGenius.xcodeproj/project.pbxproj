@@ -257,6 +257,8 @@
 		23A1442412A5380E00E894CF /* CSpriteItem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A1442112A5380E00E894CF /* CSpriteItem.cpp */; };
 		23A1442512A5380E00E894CF /* CItemEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A1441F12A5380E00E894CF /* CItemEffect.cpp */; };
 		23A1442612A5380E00E894CF /* CSpriteItem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A1442112A5380E00E894CF /* CSpriteItem.cpp */; };
+		23BC5B1D12C501CF00ACF229 /* CBullets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23BC5B1B12C501CF00ACF229 /* CBullets.cpp */; };
+		23BC5B1E12C501CF00ACF229 /* CBullets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23BC5B1B12C501CF00ACF229 /* CBullets.cpp */; };
 		23C64A7D11F31D6F0053CA36 /* CWorldMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C64A7B11F31D6F0053CA36 /* CWorldMap.cpp */; };
 		23C64A8111F31D8A0053CA36 /* CPlayerWM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C64A7F11F31D8A0053CA36 /* CPlayerWM.cpp */; };
 		23C64A8411F31D9C0053CA36 /* CAnkhShield.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C64A8211F31D9C0053CA36 /* CAnkhShield.cpp */; };
@@ -544,6 +546,8 @@
 		23A1442012A5380E00E894CF /* CItemEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CItemEffect.h; sourceTree = "<group>"; };
 		23A1442112A5380E00E894CF /* CSpriteItem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSpriteItem.cpp; sourceTree = "<group>"; };
 		23A1442212A5380E00E894CF /* CSpriteItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSpriteItem.h; sourceTree = "<group>"; };
+		23BC5B1B12C501CF00ACF229 /* CBullets.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBullets.cpp; sourceTree = "<group>"; };
+		23BC5B1C12C501CF00ACF229 /* CBullets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBullets.h; sourceTree = "<group>"; };
 		23C64A7B11F31D6F0053CA36 /* CWorldMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CWorldMap.cpp; sourceTree = "<group>"; };
 		23C64A7C11F31D6F0053CA36 /* CWorldMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CWorldMap.h; sourceTree = "<group>"; };
 		23C64A7F11F31D8A0053CA36 /* CPlayerWM.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlayerWM.cpp; sourceTree = "<group>"; };
@@ -1106,6 +1110,8 @@
 		23C64A7E11F31D8A0053CA36 /* ai */ = {
 			isa = PBXGroup;
 			children = (
+				23BC5B1B12C501CF00ACF229 /* CBullets.cpp */,
+				23BC5B1C12C501CF00ACF229 /* CBullets.h */,
 				23A1441F12A5380E00E894CF /* CItemEffect.cpp */,
 				23A1442012A5380E00E894CF /* CItemEffect.h */,
 				23A1442112A5380E00E894CF /* CSpriteItem.cpp */,
@@ -2283,6 +2289,7 @@
 				23A1441E12A5380100E894CF /* CInventory.cpp in Sources */,
 				23A1442512A5380E00E894CF /* CItemEffect.cpp in Sources */,
 				23A1442612A5380E00E894CF /* CSpriteItem.cpp in Sources */,
+				23BC5B1E12C501CF00ACF229 /* CBullets.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2480,6 +2487,7 @@
 				23A1441D12A5380100E894CF /* CInventory.cpp in Sources */,
 				23A1442312A5380E00E894CF /* CItemEffect.cpp in Sources */,
 				23A1442412A5380E00E894CF /* CSpriteItem.cpp in Sources */,
+				23BC5B1D12C501CF00ACF229 /* CBullets.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

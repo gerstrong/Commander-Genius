@@ -724,7 +724,7 @@ bool FileListIncludesExact(const searchpathlist* l, const std::string& f) {
 
 std::string GetHomeDir() {
 #ifndef WIN32
-#if defined(WIZ) || defined(GP2X) || defined(DINGOO) || defined(PANDORA)
+#if defined(CAANOO) || defined(WIZ) || defined(GP2X) || defined(DINGOO) || defined(PANDORA)
 	char* home = getenv("PWD");
 #else
 	char* home = getenv("HOME");

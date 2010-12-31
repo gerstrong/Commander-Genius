@@ -46,7 +46,7 @@ void CVideoDriver::resetSettings() {
 	m_maxwidth = 0;
 	showfps=true;
 	Mode=0;
-#if defined(WIZ) || defined(GP2X) || defined(DINGOO) || defined(NANONOTE)
+#if defined(CAANOO) || defined(WIZ) || defined(GP2X) || defined(DINGOO) || defined(NANONOTE)
 	m_Resolution.width=320;
 	m_Resolution.height=240;
 #if defined(GP2X) || defined(NANONOTE)
@@ -67,7 +67,7 @@ void CVideoDriver::resetSettings() {
 	m_ScaleXFilter=1;
 	Zoom=1;
 	m_targetfps = 60;	// Enable automatic frameskipping by default at 30
-	
+
 #ifdef USE_OPENGL
 	m_opengl_filter = GL_NEAREST;
 	mp_OpenGL = NULL;
@@ -168,7 +168,7 @@ void CVideoDriver::initResolutionList()
 			int e = 1;
 			resolution.width = 320;
 			resolution.height = 200;
-#ifdef WIZ
+#if defined(WIZ)
 			resolution.depth = 16;
 #else
 			resolution.depth = 32;
@@ -186,7 +186,7 @@ void CVideoDriver::initResolutionList()
 			}
 		}
 	}
-#endif	
+#endif
 
 	if(m_Resolutionlist.empty()) {
 		resolution.width = 320;
@@ -219,13 +219,13 @@ void CVideoDriver::checkResolution( st_resolution& resolution, int flags )
 #endif
 				resolution.value = m_value;
 				m_Resolutionlist.push_back(resolution);
-				m_value++; 
+				m_value++;
 			}
 		}
 }
 
 st_resolution CVideoDriver::setResolution(int value)
-{	
+{
 	std::list<st_resolution> :: iterator i;
 			for( i = g_pVideoDriver->m_Resolutionlist.begin() ; i != g_pVideoDriver->m_Resolutionlist.end() ; i++ )
 			{
@@ -306,7 +306,7 @@ extern "C" void iPhoneRotateScreen();
 #endif
 
 bool CVideoDriver::start(void)
-{	
+{
 	bool retval = false;
 
 	std::string caption = "Commander Genius (CKP)";
@@ -327,7 +327,7 @@ bool CVideoDriver::start(void)
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	iPhoneRotateScreen();
 #endif
-	
+
 	return retval;
 }
 
@@ -364,7 +364,7 @@ bool CVideoDriver::applyMode()
 	// either not work, will crash or will just be totally screwed up.
 	resetSettings();
 #endif
-	
+
 	// Check if some zoom/filter modes are illogical
 	// TODO: Make this call better to understand
 	// It must be able to change the resolution, and if it fails, roll back.
@@ -379,7 +379,7 @@ bool CVideoDriver::applyMode()
 	m_Resolution = *m_Resolution_pos;
 
 	// Setup mode depends on some systems.
-#if defined(WIZ) || defined(DINGOO) || defined(NANONOTE) || defined(ANDROID)
+#if defined(CAANOO) || defined(WIZ) || defined(DINGOO) || defined(NANONOTE) || defined(ANDROID)
     Mode = SDL_SWSURFACE;
 #elif defined(GP2X)
     Mode = SDL_DOUBLEBUF | SDL_HWSURFACE;
@@ -826,12 +826,6 @@ void CVideoDriver::updateScreen()
 			UnlockSurface(screen);
 			UnlockSurface(BlitSurface);
 		}
-
-#if defined(GP2X) || defined(WIZ)
-		// Clear the lower 40 lines to black
-		SDL_Rect lower = { 0, 200, 320, 40 };
-		SDL_FillRect(screen, &lower, SDL_MapRGB(screen->format, 0, 0, 0) );
-#endif
 
 		SDL_Flip(screen);
 

@@ -13,7 +13,7 @@
 #include "CSingleton.h"
 #define g_pTimer	CTimer::Get()
 
-#ifdef WIZ
+#if defined(WIZ)
 #include "sys/wizgp2x.h"
 #define timerTicks WIZ_ptimer_get_ticks_ms
 #define timerDelay WIZ_ptimer_delay_ms

@@ -51,7 +51,7 @@ CTimer::CTimer()
     m_Ticks = 0;
 
     setFrameRate(DEFAULT_LPS, DEFAULT_FPS, DEFAULT_SYNC);
-#ifdef WIZ
+#if defined(WIZ)
     WIZ_ptimer_init();
 #endif
     m_SyncStartTime = m_LoopStartTime = timerTicks();
@@ -257,7 +257,7 @@ bool CTimer::HasTimeElapsed(int msecs)
 
 CTimer::~CTimer()
 {
-#ifdef WIZ
+#if defined(WIZ)
     WIZ_ptimer_cleanup();
 #endif
 }
