@@ -124,6 +124,14 @@ void CInput::resetControls(int player) {
 	InputCommand[i][IC_QUIT].joyeventtype = ETYPE_KEYBOARD;
 	InputCommand[i][IC_QUIT].joybutton = 5;
 	InputCommand[i][IC_QUIT].which = 0;
+
+	#ifdef ANDROID
+	InputCommand[i][IC_LEFT].joyeventtype = ETYPE_JOYAXIS;
+	InputCommand[i][IC_RIGHT].joyeventtype = ETYPE_JOYAXIS;
+	InputCommand[i][IC_UP].joyeventtype = ETYPE_JOYAXIS;
+	InputCommand[i][IC_DOWN].joyeventtype = ETYPE_JOYAXIS;
+	#endif
+
 	setTwoButtonFiring(i, false);
 }
 
@@ -900,7 +908,11 @@ bool CInput::getHoldedCommand(int player, int command)
 int CInput::getJoyValue(int player, int command)
 {
 	int newval = InputCommand[player][command].joymotion;
-	newval = (newval*100)>>15;
+	newval = (newval*101)>>15;
+	if( newval > 100 )
+		newval = 100;
+	if( newval < -100 )
+		newval = -100;
 	return newval;
 }
 
