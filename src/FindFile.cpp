@@ -460,7 +460,7 @@ void InitBaseSearchPaths() {
 	AddToFileList(&basesearchpaths, "${HOME}/Library/Application Support/Commander Genius");
 	AddToFileList(&basesearchpaths, ".");
 	AddToFileList(&basesearchpaths, "${BIN}");
-	AddToFileList(&basesearchpaths, SYSTEM_DATA_DIR"/commandergenius");	
+	AddToFileList(&basesearchpaths, SYSTEM_DATA_DIR"/commandergenius");
 #elif defined(__APPLE__)
 	AddToFileList(&basesearchpaths, "${HOME}/Library/Application Support/Commander Genius");
 	AddToFileList(&basesearchpaths, ".");
