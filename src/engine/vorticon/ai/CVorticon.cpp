@@ -22,6 +22,11 @@ CVorticon::CVorticon(CMap *p_map, std::vector<CPlayer> &m_vec_Player, Uint32 x,
 	HealthPoints = hp;
 	canbezapped = true;
 
+	if(mp_Map->m_Difficulty > 2)
+		HealthPoints++;
+	else if(mp_Map->m_Difficulty < 2)
+		HealthPoints--;
+
 	short Episode = g_pBehaviorEngine->getEpisode();
 	// copy in animation frame indexes for the current ep
 	if (Episode == 1) {

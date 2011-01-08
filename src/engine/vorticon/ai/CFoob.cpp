@@ -14,6 +14,9 @@ m_Player(Player)
 	blockedr = 0;
 	canbezapped = 1;
 	dead = 0;
+
+	if(mp_Map->m_Difficulty > 2)
+		HealthPoints++;
 }
 
 void CFoob::process()

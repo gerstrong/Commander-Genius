@@ -25,6 +25,10 @@ m_Player(Player)
 {
 	canbezapped = true;
 	HealthPoints = 4;
+	if(mp_Map->m_Difficulty > 2)
+		HealthPoints++;
+	else if(mp_Map->m_Difficulty < 2)
+		HealthPoints--;
 	init();
 }
 

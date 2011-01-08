@@ -236,7 +236,7 @@ bool CGameControl::loadResources(Uint8 flags)
 	}
 
 	// Patch the EXE-File-Data directly in the memory.
-	CPatcher Patcher(ExeFile);
+	CPatcher Patcher(ExeFile, g_pBehaviorEngine->m_is_a_mod);
 	Patcher.patchMemory();
 
 	g_pBehaviorEngine->setEpisode(m_Episode);

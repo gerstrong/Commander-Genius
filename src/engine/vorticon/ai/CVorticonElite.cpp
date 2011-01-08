@@ -61,6 +61,11 @@ m_Object(mp_vec_Obj)
 	dist_traveled = VORTELITE_TRAPPED_DIST+1;
 	canbezapped = true;
 	m_speed = 0;
+
+	if(mp_Map->m_Difficulty > 2)
+		HealthPoints++;
+	else if(mp_Map->m_Difficulty < 2)
+		HealthPoints--;
 }
 
 void CVorticonElite::process()

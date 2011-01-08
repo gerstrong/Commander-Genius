@@ -54,6 +54,7 @@ public:
 
 	CEventContainer m_EventList;
 	CExeFile m_ExeFile;
+	bool m_is_a_mod;
 
 private:
 	std::vector<CTileProperties> m_TileProperties[2];

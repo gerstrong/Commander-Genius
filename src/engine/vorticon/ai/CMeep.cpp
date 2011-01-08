@@ -42,6 +42,9 @@ m_Object(Object)
 	blockedr = blockedl = false;
 	animframe = 0;
 	animtimer = 0;
+
+	if(mp_Map->m_Difficulty > 2)
+		HealthPoints++;
 }
 
 void CMeep::process()

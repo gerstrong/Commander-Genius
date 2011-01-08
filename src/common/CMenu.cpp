@@ -63,7 +63,10 @@ void CMenu::init( menutypes menu_type )
 		diff_list.push_back("Hard");
 
 		m_SubMenus.push_back(new CSelectionMenu<Uint8>( m_NumPlayers, players_list, m_dlg_theme) );
-		m_SubMenus.push_back(new CSelectionMenu<Uint8>( m_Difficulty, diff_list, m_dlg_theme, 1 ) );
+		if(!g_pBehaviorEngine->m_is_a_mod)
+			m_SubMenus.push_back(new CSelectionMenu<Uint8>( m_Difficulty, diff_list, m_dlg_theme, 1 ) );
+		else
+			m_Difficulty = 2;
 	}
 	break;
 	case CONFIGURE:

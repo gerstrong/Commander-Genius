@@ -21,6 +21,8 @@ m_Player(m_vec_Player),
 m_hardmode(p_map->m_Difficulty>2)
 {
 	canbezapped = true;
+	if(mp_Map->m_Difficulty > 2)
+		HealthPoints++;
 }
 
 void CGarg::process()

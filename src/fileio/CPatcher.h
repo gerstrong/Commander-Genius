@@ -15,7 +15,7 @@
 
 class CPatcher {
 public:
-	CPatcher(CExeFile &ExeFile);
+	CPatcher(CExeFile &ExeFile, bool &is_a_mod);
 	virtual ~CPatcher();
 	
 	void patchMemory();
@@ -43,6 +43,7 @@ private:
 	unsigned char *m_data;
 	std::string m_datadirectory;
 	size_t m_datasize;
+	bool &m_is_a_mod;
 	
 	std::list<std::string> m_TextList;
 };

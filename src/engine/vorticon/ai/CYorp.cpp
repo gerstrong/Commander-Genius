@@ -29,6 +29,11 @@ movedir(LEFT)
 	m_type = OBJ_YORP;
 	sprite = OBJ_YORP_DEFSPRITE;
 	canbezapped = true;
+
+	if(mp_Map->m_Difficulty > 2)
+		HealthPoints++;
+	else if(mp_Map->m_Difficulty < 2)
+		HealthPoints--;
 }
 
 void CYorp::process()

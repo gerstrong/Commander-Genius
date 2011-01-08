@@ -9,16 +9,19 @@
 #include <string.h>
 #include <fstream>
 #include <iostream>
-#include "../FindFile.h"
-#include "../StringUtils.h"
-#include "../CLogFile.h"
+#include "FindFile.h"
+#include "StringUtils.h"
+#include "CLogFile.h"
 
-CPatcher::CPatcher(CExeFile &ExeFile) {
+CPatcher::CPatcher(CExeFile &ExeFile, bool &is_a_mod) :
+m_is_a_mod(is_a_mod)
+{
 	m_episode = ExeFile.getEpisode();
 	m_version = ExeFile.getEXEVersion();
 	m_data = ExeFile.getRawData();
 	m_datadirectory = ExeFile.getDataDirectory();
 	m_datasize = ExeFile.getExeDataSize();
+	m_is_a_mod = false;
 }
 
 void CPatcher::patchMemory()
@@ -30,6 +33,7 @@ void CPatcher::patchMemory()
 	// Exe-file data m_data
 	
 	g_pLogFile->textOut("Trying to load and apply the patch it found...<br>");
+	m_is_a_mod = true;
 	
 	filterPatches();
 
@@ -91,6 +95,13 @@ void CPatcher::patchMemory()
 					else if(readPatchString(textline, patchtext))
 					{
 						size_t textsize = patchtext.size();
+
+						if(offset + textsize > m_datasize)
+						{
+							g_pLogFile->textOut("Patch addresses exceed the file size<br>");
+							break;
+						}
+
 						memcpy( m_data+offset, patchtext.c_str(), textsize);
 						offset += textsize;
 					}
@@ -138,7 +149,7 @@ void CPatcher::patchMemory()
 		PatchItem.keyword.clear();
 		PatchItem.value.clear();
 	}
-	// If we want a dump, make it happen!!
+	// If we want a dump, make it happen here!!
 }
 
 struct PatchListFiller {
