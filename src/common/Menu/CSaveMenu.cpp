@@ -8,7 +8,9 @@
 #include "CSaveMenu.h"
 #include "CBaseMenu.h"
 #include "CConfirmMenu.h"
-#include "../../sdl/CInput.h"
+#include "sdl/CInput.h"
+
+#include <ctime>
 
 #define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
 
@@ -19,7 +21,7 @@ m_SavedGame(SavedGame),
 m_overwrite(false)
 {
 	std::string text;
-	mp_Dialog = new CDialog(22, 22, INPUT_MODE_UP_DOWN, m_dlg_theme);
+	mp_Dialog = new CDialog(MENU_WIDTH, 22, INPUT_MODE_UP_DOWN, m_dlg_theme);
 	m_selection = NO_SELECTION;
 
 	// Load the state-file list
@@ -27,7 +29,7 @@ m_overwrite(false)
 
 	for(Uint32 i=1;i<=20;i++)
 	{
-		text = EMPTY_STRING;
+		text = m_SavedGame.getEmptyString();
 		if(i <= StateFileList.size())
 		{
 			text = StateFileList.at(i-1);
@@ -48,34 +50,33 @@ void CSaveMenu::processSpecific()
 				if( m_SavedGame.getSlotList().size() > m_selection )
 					mp_Dialog->m_name = m_SavedGame.getSlotList().at(m_selection);
 
-				if( m_SavedGame.getSlotList().size() > m_selection && mp_Dialog->m_name != EMPTY_STRING )
+				if( m_SavedGame.getSlotList().size() > m_selection && mp_Dialog->m_name != m_SavedGame.getEmptyString() )
 				{
 					mp_OverwriteMenu = new CConfirmMenu("Overwrite?", m_overwrite, m_dlg_theme);
 					m_suspended = true;
 				}
 				else
 				{
-					// TODO: better default slot name (more intelligent describing name)
-					mp_Dialog->m_name = "Slot" + itoa(m_selection);
-					mp_Dialog->m_length = 15;
 #ifndef NOKEYBOARD
+					mp_Dialog->m_name = "Slot" + itoa(m_selection);
+					mp_Dialog->m_length = TEXT_WIDTH;
 					mp_Dialog->setInputMode(INPUT_MODE_TEXT);
 #else
+
+					mp_Dialog->m_name = m_SavedGame.getUnnamedSlotName();
+					mp_Dialog->m_length = TEXT_WIDTH;
+
 					// save right away
-					goto saveSelection;
+					saveSelection();
 #endif
+					return;
 				}
 
 			}
 			else if ( mp_Dialog->getInputMode(INPUT_MODE_TEXT) &&
 					(g_pInput->getPressedKey(KENTER) || g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_STATUS) ) )
 			{
-			saveSelection:
-				mp_Dialog->setObjectText(m_selection, mp_Dialog->m_name);
-
-				m_SavedGame.prepareSaveGame(m_selection+1, mp_Dialog->m_name);
-				m_selection = NO_SELECTION;
-				mp_Dialog->setInputMode(INPUT_MODE_UP_DOWN);
+				saveSelection();
 			}
 		}
 	}
@@ -89,11 +90,18 @@ void CSaveMenu::processSpecific()
 		{
 			SAFE_DELETE(mp_OverwriteMenu);
 			m_suspended = false;
-			mp_Dialog->m_length = 15;
+			mp_Dialog->m_length = TEXT_WIDTH;
 
 			if(m_overwrite)
 			{
+#ifndef NOKEYBOARD
 				mp_Dialog->setInputMode(INPUT_MODE_TEXT);
+#else
+				mp_Dialog->m_name = m_SavedGame.getUnnamedSlotName();
+				mp_Dialog->m_length = TEXT_WIDTH;
+				saveSelection();
+#endif
+
 			}
 			else
 			{
@@ -103,6 +111,15 @@ void CSaveMenu::processSpecific()
 
 		}
 	}
+}
+
+void CSaveMenu::saveSelection()
+{
+	mp_Dialog->setObjectText(m_selection, mp_Dialog->m_name);
+
+	m_SavedGame.prepareSaveGame(m_selection+1, mp_Dialog->m_name);
+	m_selection = NO_SELECTION;
+	mp_Dialog->setInputMode(INPUT_MODE_UP_DOWN);
 }
 
 CSaveMenu::~CSaveMenu()

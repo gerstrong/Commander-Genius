@@ -16,6 +16,7 @@ class CSaveMenu : public CBaseMenu
 public:
 	CSaveMenu(Uint8 dlg_theme, CSavedGame &SavedGame);
 	void processSpecific();
+	void saveSelection();
 	virtual ~CSaveMenu();
 
 private:

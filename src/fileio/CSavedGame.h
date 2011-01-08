@@ -26,7 +26,9 @@
 #define OLDSAVEGAMEVERSION5		'5'
 #define OLDSAVEGAMEVERSION4		'4'
 
-const std::string EMPTY_STRING = "     EMPTY       ";
+// Savegame/Loadgame Menu common stuff
+const int MENU_WIDTH = 40;
+const int TEXT_WIDTH = 40-4;
 
 class CSavedGame {
 public:
@@ -40,6 +42,7 @@ public:
 	// Setters
 	void setGameDirectory(const std::string& game_directory);
 	void setEpisode(char Episode);
+	void setLevel(int Level);
 
 	// Getters
 	std::vector<std::string> getSlotList();
@@ -74,9 +77,8 @@ public:
 	bool alreadyExits();
 	
 	char getCommand() { return m_Command; }
-
-	// shutdown
-	virtual ~CSavedGame();
+	std::string getEmptyString();
+	std::string getUnnamedSlotName();
 
 private:
 
@@ -91,8 +93,10 @@ private:
 	std::string m_statefilename;
 	std::string m_statename;
 	char m_Episode;
+	int m_Level;
 	char m_Command;
 	Uint32 m_offset;
+	std::string m_emptyString;
 
 	std::vector<byte> m_datablock;
 };

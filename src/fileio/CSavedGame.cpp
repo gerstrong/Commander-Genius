@@ -7,9 +7,9 @@
  *  Routines for handling save&load of savegames
  */
 
-#include "../FindFile.h"
-
+#include "FindFile.h"
 #include "CSavedGame.h"
+#include <ctime>
 
 void sgrle_initdecompression(void);
 void sgrle_compress(FILE *fp, unsigned char *ptr, unsigned long nbytes);
@@ -20,6 +20,14 @@ void sgrle_decompressV1(FILE *fp, unsigned char *ptr, unsigned long nbytes);
 CSavedGame::CSavedGame() {
 	m_Command = NONE;
 	m_offset = 0;
+
+	int spacelen = ((TEXT_WIDTH-6)/2);
+
+	for(int c=0 ; c<spacelen ; c++)
+		m_emptyString += " ";
+	m_emptyString += "EMPTY";
+	for(int c=0 ; c<spacelen ; c++)
+		m_emptyString += " ";
 }
 
 void CSavedGame::setGameDirectory(const std::string& game_directory)
@@ -27,9 +35,11 @@ void CSavedGame::setGameDirectory(const std::string& game_directory)
 	m_savedir = "save/" + game_directory;
 }
 
-void CSavedGame::setEpisode(char Episode){
-	m_Episode = Episode;
-}
+void CSavedGame::setEpisode(char Episode)
+{	m_Episode = Episode;	}
+
+void CSavedGame::setLevel(int Level)
+{	m_Level = Level;	}
 
 // Retrieves the data size of the next block
 Uint32 CSavedGame::getDataSize(std::ifstream &StateFile) {
@@ -38,6 +48,28 @@ Uint32 CSavedGame::getDataSize(std::ifstream &StateFile) {
 		size += StateFile.get() << (i*8);
 	}
 	return size;
+}
+
+// Return a string that just says empty
+std::string CSavedGame::getEmptyString()
+{	return m_emptyString;	}
+
+std::string CSavedGame::getUnnamedSlotName()
+{
+	std::string text;
+	time_t rawtime;
+  	struct tm * timeinfo;
+
+   	time ( &rawtime );
+	timeinfo = localtime ( &rawtime );
+
+	if(m_Level == 80)
+		text = "MAP";
+	else
+		text = "L" + itoa(m_Level);
+	text += "-";
+	text += asctime (timeinfo);
+	return text;
 }
 
 // Read the data of size and stores it in the buffer
@@ -85,7 +117,7 @@ std::vector<std::string> CSavedGame::getSlotList()
 			buf = getSlotName(*i);
 
 			if(pos+1 > filelist.size())
-				filelist.resize(pos+1, EMPTY_STRING);
+				filelist.resize(pos+1, m_emptyString);
 
 			filelist.at(pos) = buf;
 		}
@@ -641,8 +673,4 @@ void CSavedGame::readDataBlock(byte *data) {
 
 	memcpy(data, &m_datablock[m_offset], datasize);
 	m_offset += datasize;
-}
-
-CSavedGame::~CSavedGame() {
-	// TODO Auto-generated destructor stub
 }

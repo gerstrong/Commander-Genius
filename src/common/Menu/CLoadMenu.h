@@ -9,7 +9,7 @@
 #define CLOADMENU_H_
 
 #include "CBaseMenu.h"
-#include "../../fileio/CSavedGame.h"
+#include "fileio/CSavedGame.h"
 
 class CLoadMenu : public CBaseMenu
 {
