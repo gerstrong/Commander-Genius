@@ -145,6 +145,10 @@ bool CPlayGameVorticon::loadGameState()
 		m_SavedGame.readDataBlock( (byte*)(mp_level_completed));
 
 		m_Player[0].setMapData(&m_Map);
+		m_Player[0].mp_camera->attachObject(&m_Player[0]);
+
+		while(m_Player[0].mp_camera->m_moving)
+			m_Player[0].mp_camera->process();
 
 		m_Map.drawAll();
 

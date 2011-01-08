@@ -23,6 +23,7 @@ mp_AttachedObject(p_attacher)
 	solid = false;
 	m_attached = true;
 	m_freeze = false;
+	m_moving = true;
 }
 
 void CCamera::attachObject(CObject *p_attacher)
@@ -58,16 +59,29 @@ void CCamera::process()
 		if(mp_AttachedObject == NULL)
 			return;
 
+		m_moving = false;
+
 		if(mp_AttachedObject->getXPosition() > getXPosition())
+		{
 			moveRight(mp_AttachedObject->getXPosition() - getXPosition());
+			m_moving |= true;
+		}
 		else if(mp_AttachedObject->getXPosition() < getXPosition())
+		{
 			moveLeft(getXPosition() - mp_AttachedObject->getXPosition());
+			m_moving |= true;
+		}
 
 		if(mp_AttachedObject->getYPosition() > getYPosition())
+		{
 			moveDown(mp_AttachedObject->getYPosition() - getYPosition());
+			m_moving |= true;
+		}
 		else if(mp_AttachedObject->getYPosition() < getYPosition())
+		{
 			moveUp(getYPosition() - mp_AttachedObject->getYPosition());
-
+			m_moving |= true;
+		}
 	}
 
 	int px, py, left, up, right, down, speed;

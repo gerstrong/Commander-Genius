@@ -27,6 +27,7 @@ public:
 	
 	bool m_attached;
 	bool m_freeze;
+	bool m_moving;
 
 private:
 	CObject *mp_AttachedObject;
