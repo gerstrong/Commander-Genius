@@ -86,6 +86,9 @@ IF (BUILD_TYPE STREQUAL GP2X OR
 		SET(CMAKE_C_COMPILER ${PREFIX}/bin/arm-none-linux-gnueabi-gcc)
 		SET(CMAKE_CXX_COMPILER ${PREFIX}/bin/arm-none-linux-gnueabi-g++)
 		ADD_DEFINITIONS(-DPANDORA)
+                ADD_DEFINITIONS(-mcpu=cortex-a8 -mtune=cortex-a8 -march=armv7-a)
+                ADD_DEFINITIONS(-mfloat-abi=softfp -mfpu=neon -ftree-vectorize -fno-strict-aliasing -fsingle-precision-constant)
+
 		SET(OGG Yes)
 	ELSEIF(BUILD_TYPE STREQUAL NANONOTE)
 		SET(PREFIX /usr/local/jlime/mipsel-toolchain/usr)

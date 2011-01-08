@@ -19,7 +19,7 @@
 #include "sys/wizgp2x.h"
 #endif
 
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)	
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 #define MOUSEWRAPPER 1
 #endif
 
@@ -202,6 +202,16 @@ void CInput::loadControlconfig(void)
 			setupInputCommand( InputCommand[i], IC_RIGHT, value );
 			Configuration.ReadString( section, "Down", value, "Key 274 (down)");
 			setupInputCommand( InputCommand[i], IC_DOWN, value );
+
+			Configuration.ReadString( section, "Lower-Left", value, "Key 279 (end)");
+			setupInputCommand( InputCommand[i], IC_LOWERLEFT, value );
+			Configuration.ReadString( section, "Lower-Right", value, "Key 281 (page down)");
+			setupInputCommand( InputCommand[i], IC_LOWERRIGHT, value );
+			Configuration.ReadString( section, "Upper-Left", value, "Key 278 (home)");
+			setupInputCommand( InputCommand[i], IC_UPPERLEFT, value );
+			Configuration.ReadString( section, "Upper-Right", value, "Key 280 (page up)");
+			setupInputCommand( InputCommand[i], IC_UPPERRIGHT, value );
+
 			Configuration.ReadString( section, "Jump", value, "Key 306 (left ctrl)");
 			setupInputCommand( InputCommand[i], IC_JUMP, value );
 			Configuration.ReadString( section, "Pogo", value, "Key 308 (left alt)");
@@ -354,7 +364,7 @@ bool CInput::readNewEvent(Uint8 device, int command)
 	printf("WARNING: called readNewEvent on iphone\n");
 	return true;
 #endif
-	
+
 	memset(&lokalInput, 0, sizeof(stInputCommand));
 
 	while( SDL_PollEvent( &Event ) )
@@ -438,7 +448,7 @@ void CInput::pollEvents()
 		case SDL_JOYBUTTONUP:
 			processJoystickButton(0);
 			break;
-#ifdef MOUSEWRAPPER			  
+#ifdef MOUSEWRAPPER
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_MOUSEBUTTONUP:
 		case SDL_MOUSEMOTION:
@@ -455,12 +465,12 @@ void CInput::pollEvents()
 	for(unsigned int i = 0; i < KEYTABLE_SIZE; ++i)
 		firsttime_immediate_keytable[i]
 		= !last_immediate_keytable[i] && immediate_keytable[i];
-	
+
 	for(int i=0 ; i<MAX_COMMANDS ; i++)
 		for(int j=0 ; j<NUM_INPUTS ; j++)
 			InputCommand[j][i].firsttimeactive
 			= !InputCommand[j][i].lastactive && InputCommand[j][i].active;
-	
+
 #ifndef MOUSEWRAPPER
 
 	// TODO: I'm not sure, if that should go here...
@@ -722,7 +732,7 @@ bool CInput::getHoldedKey(int key)
 {
 #ifdef MOUSEWRAPPER
 	if(!checkMousewrapperKey(key)) return true;
-#endif	
+#endif
 	if(immediate_keytable[key])
 		return true;
 
@@ -737,7 +747,7 @@ bool CInput::getPressedKey(int key)
 {
 #ifdef MOUSEWRAPPER
 	if(!checkMousewrapperKey(key)) return true;
-#endif	
+#endif
 	if(firsttime_immediate_keytable[key])
 	{
 		firsttime_immediate_keytable[key] = false;
@@ -1017,7 +1027,7 @@ struct TouchButton {
 	stInputCommand* cmd;
 	int immediateIndex;
 	int x, y, w, h;
-	
+
 	bool isInside(int _x, int _y) const {
 		return
 		x <= _x && _x < x + w &&
@@ -1033,23 +1043,23 @@ static const int w = 320, h = 200;
 static TouchButton* getPhoneButtons(stInputCommand InputCommand[NUM_INPUTS][MAX_COMMANDS]) {
 	static const int middlex = w / 2;
 	static const int middley = h / 2;
-	
+
 	static TouchButton phoneButtons[] = {
 		{ &InputCommand[0][IC_LEFT],	KLEFT,	0, middley, w / 6, h / 2},
 		{ &InputCommand[0][IC_UP],		KUP,	w / 6, middley, w / 6, h / 4},
 		{ &InputCommand[0][IC_RIGHT],	KRIGHT,	w / 3, middley, w / 6, h / 2},
 		{ &InputCommand[0][IC_DOWN],	KDOWN,	w / 6, middley + h / 4, w / 6, h / 4},
-		
+
 		{ &InputCommand[0][IC_JUMP],	-1,		middlex, middley, w / 6, h / 2},
 		{ &InputCommand[0][IC_POGO],	-1,		middlex + w / 6, middley, w / 6, h / 2},
 		{ &InputCommand[0][IC_FIRE],	KSPACE,	middlex + w / 3, middley, w / 6, h / 2},
-		
+
 		{ &InputCommand[0][IC_STATUS],	KENTER,	0, 0, w/2, h/4},
 		{ &InputCommand[0][IC_QUIT],	KQUIT,	5*w/6, 0, w/6, h/6},
 		{ NULL,							KSHOWHIDECTRLS,	4*w/6, 0, w/6, h/6},
 	//	{ NULL,							KF3 /* save dialog, see gamedo_HandleFKeys */, 3*w/6, 0, w/6, h/6},
 	};
-	
+
 	return phoneButtons;
 }
 
@@ -1077,7 +1087,7 @@ static bool checkMousewrapperKey(int& key) {
 		case KENTER: case KSPACE: case KQUIT: case KF3:
 			return true;
 	}
-	
+
 	if(key == KY) { key = KENTER; return true; }
 	if(key == KN) { key = KQUIT; return true; }
 
@@ -1089,15 +1099,15 @@ static bool checkMousewrapperKey(int& key) {
 
 void CInput::processMouse() {
 	TouchButton* phoneButtons = getPhoneButtons(InputCommand);
-	
+
 	for(int i = 0; i < phoneButtonN; ++i) {
 		bool down = phoneButton_MouseIndex[i].size() > 0;
-		
+
 		TouchButton& b = phoneButtons[i];
-		
+
 		if(b.cmd)
 			b.cmd->active = down;
-			
+
 		// handle immediate keys
 		if(b.immediateIndex >= 0)
 			immediate_keytable[b.immediateIndex] = down;
@@ -1115,23 +1125,23 @@ void CInput::processMouse(SDL_Event& ev) {
 		ev.button.y -= screenRect.h - 200;
 	}
 #endif
-	
+
 	// NOTE: The ev.button.which / the multitouch support was removed in SDL 1.3 trunk
 	// with changeset 4465:3e69e077cb95 on May09. It is planned to add a real multitouch API
 	// at some later time (maybe Aug2010).
 	// As long as we don't have that, we must use the old SDL 1.3 revision 4464.
-	
+
 	switch(ev.type) {
 		case SDL_MOUSEBUTTONDOWN:
 			processMouse(ev.button.x, ev.button.y, true, ev.button.which);
 			break;
-			
+
 		case SDL_MOUSEBUTTONUP:
 			processMouse(ev.button.x, ev.button.y, false, ev.button.which);
 			break;
-			
+
 		case SDL_MOUSEMOTION:
-			processMouse(ev.motion.x - ev.motion.xrel, ev.motion.y - ev.motion.yrel, false, ev.motion.which);			
+			processMouse(ev.motion.x - ev.motion.xrel, ev.motion.y - ev.motion.yrel, false, ev.motion.which);
 			processMouse(ev.motion.x, ev.motion.y, true, ev.motion.which);
 			break;
 	}
@@ -1159,7 +1169,7 @@ static void drawButton(TouchButton& button, bool down) {
 	//glViewport(0,255,w,h);
 
 	float w = 512.0f, h = 256.0f;
-	
+
 	int crop = 2;
 	float x1 = float(button.x + crop) / w;
 	float x2 = float(button.x+button.w - crop) / w;
@@ -1178,7 +1188,7 @@ static void drawButton(TouchButton& button, bool down) {
     glEnableClientState(GL_VERTEX_ARRAY);
 
 	glVertexPointer(2, GL_FLOAT, 0, vertices);
-	
+
 	glEnable(GL_BLEND);
 	if(down)
 		glColor4f(0,0,0, 0.5);
@@ -1203,14 +1213,14 @@ void CInput::renderOverlay() {
 #if defined(MOUSEWRAPPER)
 	static bool showControls = true;
 	static bool buttonShowHideCtrlWasDown = false;
-	
+
 	TouchButton* phoneButtons = getPhoneButtons(InputCommand);
-	
+
 	for(int i = phoneButtonN - 1; i >= 0; --i) {
 		TouchButton& b = phoneButtons[i];
 		bool down = phoneButton_MouseIndex[i].size() > 0;
 		if(showControls) drawButton(b, down);
-		
+
 		if(b.immediateIndex == KSHOWHIDECTRLS) {
 			if(buttonShowHideCtrlWasDown && !down)
 				showControls = !showControls;
