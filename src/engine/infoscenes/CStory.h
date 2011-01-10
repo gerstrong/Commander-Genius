@@ -9,9 +9,9 @@
 #define CSTORY_H_
 
 #include "CInfoScene.h"
-#include "../../common/CMap.h"
-#include "../../dialog/CTextViewer.h"
-#include "../../fileio/CExeFile.h"
+#include "common/CMap.h"
+#include "dialog/CTextViewer.h"
+#include "fileio/CExeFile.h"
 #include <string.h>
 
 class CStory : public CInfoScene {

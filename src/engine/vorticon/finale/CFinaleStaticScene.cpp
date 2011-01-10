@@ -6,10 +6,10 @@
  */
 
 #include "CFinaleStaticScene.h"
-#include "../../../sdl/CVideoDriver.h"
-#include "../../../sdl/CTimer.h"
-#include "../../../sdl/sound/CSound.h"
-#include "../../../graphics/CGfxEngine.h"
+#include "sdl/CVideoDriver.h"
+#include "sdl/CTimer.h"
+#include "sdl/sound/CSound.h"
+#include "graphics/CGfxEngine.h"
 
 CFinaleStaticScene::CFinaleStaticScene(const std::string &game_path, const std::string &scene_file):
 	mp_current_tb(NULL), m_mustclose(false), m_count(0)

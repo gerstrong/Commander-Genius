@@ -8,8 +8,8 @@
 #ifndef CFINALE_H_
 #define CFINALE_H_
 
-#include "../../../dialog/CTextViewer.h"
-#include "../../../common/CMap.h"
+#include "dialog/CTextViewer.h"
+#include "common/CMap.h"
 #include "CShipFlySys.h"
 #include "CFinaleStaticScene.h"
 #include <string>

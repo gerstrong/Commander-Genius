@@ -10,12 +10,12 @@
 #include <fstream>
 
 #include "CStory.h"
-#include "../../common/CMapLoader.h"
-#include "../../fileio/CExeFile.h"
-#include "../../graphics/CGfxEngine.h"
-#include "../../sdl/CVideoDriver.h"
-#include "../../sdl/CInput.h"
-#include "../../FindFile.h"
+#include "common/CMapLoader.h"
+#include "fileio/CExeFile.h"
+#include "graphics/CGfxEngine.h"
+#include "sdl/CVideoDriver.h"
+#include "sdl/CInput.h"
+#include "FindFile.h"
 
 CStory::CStory(CExeFile &ExeFile)
 {
