@@ -20,7 +20,8 @@ public:
 	void renderBox();
 	void process();
 
-	void loadText(const std::string &text);
+	void formatText(const std::string &text);
+	bool loadTextfromFile(const std::string &filename);
 	bool hasClosed() { return m_mustclose; }
 
 	void setNextPos();

@@ -5,13 +5,16 @@
  *      Author: gerstrong
  */
 
-#include "../keen.h"
+#include "keen.h"
 
 #include <fstream>
 
-#include "../sdl/CInput.h"
+#include "sdl/CInput.h"
 #include "CTextViewer.h"
-#include "../graphics/CGfxEngine.h"
+#include "graphics/CGfxEngine.h"
+
+#include "FindFile.h"
+#include "CLogFile.h"
 
 CTextViewer::CTextViewer(SDL_Surface *TextVSfc, int x, int y, int w, int h) :
 m_timer(0)
@@ -67,7 +70,12 @@ void CTextViewer::setPosition(int pos)
 {	if( pos>=0 && pos < (int) m_textline.size() - (m_h/m_8x8tileheight-1) )
 	m_linepos = pos;	}
 
-void CTextViewer::loadText(const std::string &text)
+/**
+ * \brief 	This function formats the text the way it's correctly shown in the
+ * \param	text	The text that already has been read but is not yet correctly formated
+ * 					This happen, because the Keen text files are a bit different...
+ */
+void CTextViewer::formatText(const std::string &text)
 {
 	mp_text = text;
 	
@@ -140,6 +148,35 @@ void CTextViewer::loadText(const std::string &text)
 				it->push_back(' ' + 128);
 		}
 	}
+}
+/**
+ * \brief This will load for you a text from a file into memory and of course automatically format it for you :-)
+ * \parm	filename	filename to open
+ */
+bool CTextViewer::loadTextfromFile(const std::string &filename)
+{
+	std::string text;
+    std::ifstream endfile;
+
+    OpenGameFileR(endfile, filename);
+    if (endfile.is_open())
+    {
+        while(!endfile.eof())
+        {
+        	text.push_back(endfile.get());
+        }
+        endfile.close();
+        text.push_back('\0');
+    }
+    else
+    {
+    	g_pLogFile->textOut("Error reading \"" + filename + "\". Check if this file is in your directory!");
+    	return false;
+    }
+
+    formatText(text);
+
+    return true;
 }
 
 unsigned char CTextViewer::getnextwordlength(const std::string nextword)

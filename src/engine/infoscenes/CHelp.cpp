@@ -89,7 +89,7 @@ mp_TextViewer(NULL)
 
 	// Create the Text ViewerBox and stores the text there!
 	mp_TextViewer = new CTextViewer(g_pVideoDriver->FGLayerSurface, 0, 8, 320, 160);
-	mp_TextViewer->loadText(Text);
+	mp_TextViewer->formatText(Text);
 }
 
 void CHelp::process() {

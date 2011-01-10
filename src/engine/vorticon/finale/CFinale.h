@@ -19,7 +19,6 @@ public:
 	CFinale(CMap &map);
 
 	void showEndingText();
-	void initEpilogue(std::string &text);
 
 	virtual void process() {}
 	bool getHasFinished() { return m_mustfinishgame; }

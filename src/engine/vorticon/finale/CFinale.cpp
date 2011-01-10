@@ -22,9 +22,8 @@ void CFinale::showEndingText()
 	if(!mp_TextViewer)
 	{
 		std::string text;
-		initEpilogue(text);
 		mp_TextViewer = new CTextViewer(g_pVideoDriver->FGLayerSurface, 0, 0, 320, 120);
-		mp_TextViewer->loadText(text);
+		mp_TextViewer->loadTextfromFile(m_Map.m_gamepath + "endtext.ck" + itoa(m_Episode));
 	}
 
 	mp_TextViewer->process();
@@ -35,29 +34,6 @@ void CFinale::showEndingText()
 		mp_TextViewer = NULL;
 		m_step++;
 	}
-}
-
-void CFinale::initEpilogue(std::string &text)
-{
-    std::ifstream endfile;
-
-    std::string filename =  m_Map.m_gamepath + "endtext.ck" + itoa(m_Episode);
-
-    OpenGameFileR(endfile, filename);
-    if (endfile.is_open())
-    {
-        while(!endfile.eof())
-        {
-        	text.push_back(endfile.get());
-        }
-        endfile.close();
-        text.push_back('\0');
-    }
-    else
-    {
-    	g_pLogFile->textOut("Error reading \"" + filename + "\". Check if this file is in your directory!");
-    }
-
 }
 
 CFinale::~CFinale() {
