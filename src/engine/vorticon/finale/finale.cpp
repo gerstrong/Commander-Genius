@@ -4,9 +4,9 @@
  the decompression algorithm.
  */
 
-#include "../../../fileio.h"
-#include "../../../fileio/ResourceMgmt.h"
-#include "../../../FindFile.h"
+#include "fileio.h"
+#include "fileio/ResourceMgmt.h"
+#include "FindFile.h"
 
 #include <fstream>
 
@@ -82,7 +82,7 @@ void finale_plot( SDL_Surface *sfc, int pix )
 }
 
 // draws a filename file into the SDL_Surface we are using
-void finale_draw( SDL_Surface *sfc, const std::string& filename, const std::string& path)
+bool finale_draw( SDL_Surface *sfc, const std::string& filename, const std::string& path)
 {
 	int cmdbyte;
 	int bytecount;
@@ -91,7 +91,7 @@ void finale_draw( SDL_Surface *sfc, const std::string& filename, const std::stri
 	
 	std::ifstream file;
 	if (!OpenGameFileR(file, getResourceFilename(filename, path, true, false), std::ios::binary))
-		return;
+		return false;
 	
 	finale_plane_length = fgetl(file)*2;   //length of a plane when decompressed
 	finale_planecol = 1;
@@ -105,7 +105,7 @@ void finale_draw( SDL_Surface *sfc, const std::string& filename, const std::stri
 		cmdbyte = file.get();
 		if (cmdbyte<0)
 		{  // EOF
-			return;
+			return false;
 		}
 		
 		if (cmdbyte & 0x80)
@@ -131,5 +131,7 @@ void finale_draw( SDL_Surface *sfc, const std::string& filename, const std::stri
 	} while(!finale_done);
 	
 	file.close();
+
+	return true;
 }
 

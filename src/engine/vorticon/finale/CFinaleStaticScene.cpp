@@ -12,13 +12,14 @@
 #include "graphics/CGfxEngine.h"
 
 CFinaleStaticScene::CFinaleStaticScene(const std::string &game_path, const std::string &scene_file):
-	mp_current_tb(NULL), m_mustclose(false), m_count(0)
+	mp_current_tb(NULL), m_mustclose(false), m_count(0), m_timer(0)
 {
 	mp_SceneSurface = SDL_CreateRGBSurface( g_pVideoDriver->getBlitSurface()->flags, 320, 200, 8, 0, 0, 0, 0);
 	SDL_SetColors( mp_SceneSurface, g_pGfxEngine->Palette.m_Palette, 0, 255);
-	finale_draw( mp_SceneSurface, scene_file, game_path);
-
-	SDL_BlitSurface( mp_SceneSurface, NULL, g_pVideoDriver->ScrollSurface, NULL );
+	if(finale_draw( mp_SceneSurface, scene_file, game_path))
+		SDL_BlitSurface( mp_SceneSurface, NULL, g_pVideoDriver->ScrollSurface, NULL );
+	else
+		m_mustclose = true;
 }
 
 void CFinaleStaticScene::push_string(const std::string &text, Uint32 delay)
@@ -45,43 +46,47 @@ void CFinaleStaticScene::showBitmapAt(const std::string &bitmapname, Uint16 from
 
 void CFinaleStaticScene::process()
 {
-	if( mp_textbox_list.empty() ) { m_mustclose = true; return; }
-
-	mp_current_tb = mp_textbox_list.front();
-
-	// If time up, or user pressed any key goto next text
-	if( mp_current_tb->isFinished() )
+	if(m_timer)
 	{
-		delete mp_current_tb;
-		m_count++;
-
-		for( std::vector<bitmap_structure>::iterator i=m_BitmapVector.begin() ;
-			 i!=m_BitmapVector.end() ; i++ )
-		{
-			if( m_count == i->from_count) g_pSound->playSound(SOUND_SWITCH_TOGGLE, PLAY_NOW);
-		}
-
-		mp_textbox_list.pop_front();
-		if(!mp_textbox_list.empty())
-		{
-			mp_current_tb = mp_textbox_list.front();
-			//mp_current_tb->resetTimer();
-		}
+		m_timer--;
 	}
 	else
 	{
-		// Draw any requested Bitmap
-		for( std::vector<bitmap_structure>::iterator i=m_BitmapVector.begin() ;
-			 i!=m_BitmapVector.end() ; i++ )
-		{
-			if( m_count >= i->from_count && m_count <= i->to_count ) // It is in the interval?
-			{ // show it!
-				i->p_bitmap->draw(g_pVideoDriver->ScrollSurface, i->dest_rect.x, i->dest_rect.y);
-			}
-		}
+		if( mp_textbox_list.empty() ) { m_mustclose = true; return; }
 
-		// Draw Frame and the text like type writing
-		mp_current_tb->process();
+		mp_current_tb = mp_textbox_list.front();
+
+		// If time up, or user pressed any key goto next text
+		if( mp_current_tb->isFinished() )
+		{
+			delete mp_current_tb;
+			m_count++;
+
+			for( std::vector<bitmap_structure>::iterator i=m_BitmapVector.begin() ;
+					i!=m_BitmapVector.end() ; i++ )
+			{
+				if( m_count == i->from_count) g_pSound->playSound(SOUND_SWITCH_TOGGLE, PLAY_NOW);
+			}
+
+			mp_textbox_list.pop_front();
+			if(!mp_textbox_list.empty())
+				mp_current_tb = mp_textbox_list.front();
+		}
+		else
+		{
+			// Draw any requested Bitmap
+			for( std::vector<bitmap_structure>::iterator i=m_BitmapVector.begin() ;
+					i!=m_BitmapVector.end() ; i++ )
+			{
+				if( m_count >= i->from_count && m_count <= i->to_count ) // It is in the interval?
+				{ // show it!
+					i->p_bitmap->draw(g_pVideoDriver->ScrollSurface, i->dest_rect.x, i->dest_rect.y);
+				}
+			}
+
+			// Draw Frame and the text like type writing
+			mp_current_tb->process();
+		}
 	}
 }
 
