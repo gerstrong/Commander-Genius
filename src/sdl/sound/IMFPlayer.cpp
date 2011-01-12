@@ -168,7 +168,12 @@ openIMFFile(const std::string& filename, const SDL_AudioSpec& AudioSpec)
     if(fp == NULL)
     	return false;
 
-    fread(&size,sizeof(Uint16),1,fp);
+    if(!fread(&size,sizeof(Uint16),1,fp))
+    {
+       	fclose(fp);
+       	return false;
+    }
+
     if (size == 0) // Is the IMF file of Type-0?
     {
         fseek(fp, 0L, SEEK_END);
@@ -178,7 +183,13 @@ openIMFFile(const std::string& filename, const SDL_AudioSpec& AudioSpec)
 
     byte* IMFBuffer = (byte*) malloc(size);
 
-    fread(IMFBuffer,sizeof(byte),size,fp);
+    bool ok = true;
+
+    if(!fread(IMFBuffer, sizeof(byte),size,fp))
+    {
+    	fclose(fp);
+    	return false;
+    }
 
     fclose(fp);
 

@@ -107,12 +107,16 @@ void CMusic::play(void)
 
 void CMusic::stop(void)
 {
-	SD_Shutdown();
+	if( m_open)
+	{
+		if(  m_MusicFormat == MF_IMF )
+			SD_Shutdown();
 
 #if defined(OGG) || defined(TREMOR)
-	if( m_open )
-		cleanupOGG(m_oggStream);
+		if(  m_MusicFormat == MF_OGG )
+			cleanupOGG(m_oggStream);
 #endif
+	}
 
 	if(	m_Audio_cvt.buf )
 		delete [] m_Audio_cvt.buf;
