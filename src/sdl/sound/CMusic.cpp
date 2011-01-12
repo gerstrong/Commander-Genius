@@ -7,11 +7,12 @@
 
 #include "sdl/sound/CSound.h"
 #include "sdl/sound/hq_sound.h"
+#include "sdl/sound/Sampling.h"
+#include "sdl/sound/IMFPlayer.h"
 #include "CMusic.h"
 #include "CLogFile.h"
 #include "FindFile.h"
 #include "fileio/ResourceMgmt.h"
-#include "sdl/sound/Sampling.h"
 #include <fstream>
 
 CMusic::CMusic() :
@@ -29,35 +30,61 @@ bool CMusic::load(const std::string &musicfile)
 
 	m_AudioSpec = g_pSound->getAudioSpec();
 	m_open = false;
+	m_MusicFormat = MF_NONE;
 
 	if(m_AudioSpec.format != 0)
 	{
-		
-#if defined(OGG) || defined(TREMOR)
+		std::string extension = GetFileExtension(musicfile);
 
-		if(!openOGGStream(musicfile.c_str(), &m_AudioFileSpec, m_oggStream))
+		/*if(extension == "imf")
 		{
-			g_pLogFile->textOut(PURPLE,"Music Driver(): OGG file could not be opened: \"%s\". File is damaged or something is wrong with your soundcard!<br>", musicfile.c_str());
-			return false;
+			if(!openIMFFile(musicfile.c_str()))
+			{
+				g_pLogFile->textOut(PURPLE,"Music Driver(): IMF file could not be opened: \"%s\". File is damaged or something is wrong with your soundcard!<br>", musicfile.c_str());
+				return false;
+			}
+
+			m_MusicFormat = MF_IMF;
+
+			g_pLogFile->ftextOut("Music Driver(): File \"%s\" opened successfully!<br>", musicfile.c_str());
+			usedMusicFile = musicfile;
+			m_open = true;
+
+			if(	m_Audio_cvt.buf )
+				delete [] m_Audio_cvt.buf;
+
+			return true;
 		}
-		
-		g_pLogFile->ftextOut("Music Driver(): File \"%s\" opened successfully!<br>", musicfile.c_str());
-		usedMusicFile = musicfile;
-		m_open = true;
-		int ret = SDL_BuildAudioCVT(&m_Audio_cvt,
-								m_AudioFileSpec.format, m_AudioFileSpec.channels, m_AudioFileSpec.freq,
-								m_AudioSpec.format, m_AudioSpec.channels, m_AudioSpec.freq);
-		if(ret == -1)
-			return false;
+		else*/ if(extension == "ogg")
+		{
+#if defined(OGG) || defined(TREMOR)
+			if(!openOGGStream(musicfile.c_str(), &m_AudioFileSpec, m_oggStream))
+			{
+				g_pLogFile->textOut(PURPLE,"Music Driver(): OGG file could not be opened: \"%s\". File is damaged or something is wrong with your soundcard!<br>", musicfile.c_str());
+				return false;
+			}
 
-		if(	m_Audio_cvt.buf )
-			delete [] m_Audio_cvt.buf;
-		const size_t &length = g_pSound->getAudioSpec().size;
-		m_Audio_cvt.len = (length*m_Audio_cvt.len_mult)/m_Audio_cvt.len_ratio;
-		m_Audio_cvt.buf = new Uint8[m_Audio_cvt.len];
+			m_MusicFormat = MF_OGG;
+			g_pLogFile->ftextOut("Music Driver(): File \"%s\" opened successfully!<br>", musicfile.c_str());
+			usedMusicFile = musicfile;
+			m_open = true;
+			int ret = SDL_BuildAudioCVT(&m_Audio_cvt,
+					m_AudioFileSpec.format, m_AudioFileSpec.channels, m_AudioFileSpec.freq,
+					m_AudioSpec.format, m_AudioSpec.channels, m_AudioSpec.freq);
+			if(ret == -1)
+				return false;
 
-		return true;
+			if(	m_Audio_cvt.buf )
+				delete [] m_Audio_cvt.buf;
+			const size_t &length = g_pSound->getAudioSpec().size;
+			m_Audio_cvt.len = (length*m_Audio_cvt.len_mult)/m_Audio_cvt.len_ratio;
+			m_Audio_cvt.buf = new Uint8[m_Audio_cvt.len];
+
+			return true;
+#else
+			g_pLogFile->ftextOut("Music Driver(): OGG or TREMOR-Support is disabled! Please use another build<br>");
 #endif
+		}
 	}
 	else
 		g_pLogFile->textOut(PURPLE,"Music Driver(): I would like to open the music for you. But your Soundcard is disabled!!<br>");

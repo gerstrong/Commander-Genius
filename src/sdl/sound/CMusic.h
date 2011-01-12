@@ -10,6 +10,13 @@
 
 #include "vorbis/oggsupport.h"
 
+enum musicformat
+{
+	MF_NONE,
+	MF_OGG,
+	MF_IMF
+};
+
 enum playstatus{
 	PLAY_MODE_STOP,
 	PLAY_MODE_PAUSE,
@@ -41,6 +48,7 @@ public:
 
 private:
 	int playmode;
+	musicformat m_MusicFormat;
 	std::string usedMusicFile;
 #if defined(OGG) || defined(TREMOR)
 	OggVorbis_File  m_oggStream;
