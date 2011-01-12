@@ -43,8 +43,6 @@ m_Player(mp_vec_Player)
 
 	if(mp_Map->m_Difficulty > 2)
 		HealthPoints++;
-	else if(mp_Map->m_Difficulty < 2)
-		HealthPoints--;
 }
 
 void CVortikid::process()

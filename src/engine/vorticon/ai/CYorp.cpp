@@ -32,8 +32,6 @@ movedir(LEFT)
 
 	if(mp_Map->m_Difficulty > 2)
 		HealthPoints++;
-	else if(mp_Map->m_Difficulty < 2)
-		HealthPoints--;
 }
 
 void CYorp::process()

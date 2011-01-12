@@ -17,6 +17,7 @@
 
 CMusic::CMusic() :
 playmode(PLAY_MODE_STOP),
+m_MusicFormat(MF_NONE),
 usedMusicFile(""),
 m_open(false)
 {
@@ -36,9 +37,9 @@ bool CMusic::load(const std::string &musicfile)
 	{
 		std::string extension = GetFileExtension(musicfile);
 
-		/*if(extension == "imf")
+		if(extension == "imf")
 		{
-			if(!openIMFFile(musicfile.c_str()))
+			if(!openIMFFile(musicfile, m_AudioSpec))
 			{
 				g_pLogFile->textOut(PURPLE,"Music Driver(): IMF file could not be opened: \"%s\". File is damaged or something is wrong with your soundcard!<br>", musicfile.c_str());
 				return false;
@@ -55,7 +56,7 @@ bool CMusic::load(const std::string &musicfile)
 
 			return true;
 		}
-		else*/ if(extension == "ogg")
+		else if(extension == "ogg")
 		{
 #if defined(OGG) || defined(TREMOR)
 			if(!openOGGStream(musicfile.c_str(), &m_AudioFileSpec, m_oggStream))
@@ -106,53 +107,69 @@ void CMusic::play(void)
 
 void CMusic::stop(void)
 {
+	SD_Shutdown();
+
 #if defined(OGG) || defined(TREMOR)
 	if( m_open )
 		cleanupOGG(m_oggStream);
 #endif
+
+	if(	m_Audio_cvt.buf )
+		delete [] m_Audio_cvt.buf;
+
+	m_Audio_cvt.buf = NULL;
+
 	playmode = PLAY_MODE_STOP;
 	m_open = false;
 }
 
 void CMusic::readBuffer(Uint8* buffer, size_t length) // length only refers to the part(buffer) that has to be played
 {
-#if defined(OGG) || defined(TREMOR)
-	bool rewind = false;
-
-	// read the ogg stream
-	if( m_AudioSpec.freq == 48000 )
+	if(m_MusicFormat == MF_IMF)
 	{
-		size_t insize = (m_Audio_cvt.len*441)/480;
-		size_t mult = m_AudioFileSpec.channels;
+		SDL_IMFMusicPlayer(buffer, length);
+	}
+	else if(m_MusicFormat == MF_OGG)
+	{
+#if defined(OGG) || defined(TREMOR)
+		bool rewind = false;
 
-		if(m_AudioFileSpec.format == AUDIO_S16)
+		// read the ogg stream
+		if( m_AudioSpec.freq == 48000 )
+		{
+			size_t insize = (m_Audio_cvt.len*441)/480;
+			size_t mult = m_AudioFileSpec.channels;
+
+			if(m_AudioFileSpec.format == AUDIO_S16)
 				mult <<= 1;
 
-		insize /= mult;
-		insize++;
-		insize *= mult;
+			insize /= mult;
+			insize++;
+			insize *= mult;
 
-		rewind = readOGGStreamAndResample(m_oggStream, (char*)m_Audio_cvt.buf, m_Audio_cvt.len, insize, m_AudioFileSpec);
-	}
-	else
-	{
-		rewind = readOGGStream(m_oggStream, (char*)m_Audio_cvt.buf, m_Audio_cvt.len, m_AudioFileSpec);
-	}
+			rewind = readOGGStreamAndResample(m_oggStream, (char*)m_Audio_cvt.buf, m_Audio_cvt.len, insize, m_AudioFileSpec);
+		}
+		else
+		{
+			rewind = readOGGStream(m_oggStream, (char*)m_Audio_cvt.buf, m_Audio_cvt.len, m_AudioFileSpec);
+		}
 
-	// then convert it into SDL Audio buffer
-	// Conversion to SDL Format
-	SDL_ConvertAudio(&m_Audio_cvt);
+		// then convert it into SDL Audio buffer
+		// Conversion to SDL Format
+		SDL_ConvertAudio(&m_Audio_cvt);
 
-	memcpy(buffer, m_Audio_cvt.buf, length);
+		memcpy(buffer, m_Audio_cvt.buf, length);
 
-	if(rewind)
-	{
-		reload();
-		play();
-	}
+		if(rewind)
+		{
+			reload();
+			play();
+		}
 #else
-	return;
+		return;
 #endif
+	}
+
 }
 
 bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &levelfilename)
@@ -199,6 +216,7 @@ void CMusic::unload(void)
 {
 	usedMusicFile = "";
 	playmode = PLAY_MODE_STOP;
+	m_Audio_cvt.buf = NULL;
 }
 
 

@@ -200,13 +200,11 @@ int maxval = 0;
 
 void CSound::callback(void *unused, Uint8 *stream, int len)
 {
-#if defined(OGG) || defined(TREMOR)
     if (g_pMusicPlayer->playing() == PLAY_MODE_PLAY)
     {
     	g_pMusicPlayer->readBuffer(m_MixedForm, len);
     	mixAudio(stream, m_MixedForm, len, m_MusicVolume, AudioSpec.format);
     }
-#endif
 
 	std::vector<CSoundChannel>::iterator snd_chnl = m_soundchannel.begin();
 	for( ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
