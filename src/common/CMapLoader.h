@@ -11,7 +11,7 @@
 #include "CMap.h"
 #include "CPlayer.h"
 #include "CObject.h"
-#include "hqp/CMusic.h"
+#include "sdl/sound/CMusic.h"
 #include <string>
 #include <vector>
 

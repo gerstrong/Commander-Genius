@@ -5,7 +5,6 @@
  *      Author: gerstrong
  */
 #include <SDL.h>
-#include "hqp/hq_sound.h"
 #include "keen.h"
 #include "sdl/CVideoDriver.h"
 #include "vorbis/oggsupport.h"
@@ -13,6 +12,7 @@
 #include "FindFile.h"
 #include "fileio/ResourceMgmt.h"
 #include "sdl/sound/Sampling.h"
+#include "sdl/sound/CMusic.h"
 
 #include <vector>
 

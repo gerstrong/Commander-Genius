@@ -14,8 +14,8 @@
 #include "keen.h"
 #include "sdl/sound/CSound.h"
 #include "sdl/CInput.h"
+#include "sdl/sound/CMusic.h"
 #include "graphics/CGfxEngine.h"
-#include "hqp/CMusic.h"
 #include "CPhysicsSettings.h"
 
 #define PDIEFRAME             22

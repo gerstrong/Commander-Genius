@@ -28,7 +28,7 @@
 
 #if defined(OGG) || defined(TREMOR)
 
-#include "hqp/hq_sound.h"
+#include "sdl/sound/hq_sound.h"
 #include "sdl/CVideoDriver.h"
 #include "CLogFile.h"
 

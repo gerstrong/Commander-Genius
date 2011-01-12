@@ -8,7 +8,7 @@
 #ifndef CSOUNDSLOT_H_
 #define CSOUNDSLOT_H_
 
-#include "../../hqp/hq_sound.h"
+#include "sdl/sound/hq_sound.h"
 #include <string>
 
 class CSoundSlot {

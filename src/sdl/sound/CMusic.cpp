@@ -6,8 +6,8 @@
  */
 
 #include "sdl/sound/CSound.h"
+#include "sdl/sound/hq_sound.h"
 #include "CMusic.h"
-#include "hqp/hq_sound.h"
 #include "CLogFile.h"
 #include "FindFile.h"
 #include "fileio/ResourceMgmt.h"
