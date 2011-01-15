@@ -21,7 +21,7 @@ const Uint16 MAX_POGOHEIGHT = 20;
 const Uint16 MIN_POGOHEIGHT = 5;
 
 const int POGO_START_INERTIA = -100;
-const int POGO_START_INERTIA_MAX = -170;
+const int POGO_START_INERTIA_MAX = -173;
 const int POGO_X_MAX_INERTIA = 55;
 const int POGO_X_BOOST = 4;
 const int POGO_START_INERTIA_IMPOSSIBLE = -200;
@@ -485,7 +485,7 @@ void CPlayerLevel::processJumping()
 						getActionNumber(A_KEEN_POLE_CLIMB) or
 						getActionNumber(A_KEEN_POLE_SLIDE)) )
 		{
-			yinertia = -136;
+			yinertia = -140;
 			setAction(A_KEEN_JUMP);
 			m_climbing = false;
 			m_vDir = NONE;
