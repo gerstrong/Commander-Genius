@@ -18,7 +18,7 @@ void CPlayGameVorticon::processInLevel()
 		// Perform player Objects...
 		for( int i=0 ; i<m_NumPlayers ; i++ )
 		{
-			// check if someone has lifes
+			// check if someone has lives
 			if(m_Player[i].inventory.lives==0 && m_Player[i].pdie==PDIE_DEAD)
 				continue;
 
@@ -67,7 +67,7 @@ void CPlayGameVorticon::processInLevel()
 			for( int i=0 ; i<m_NumPlayers ; i++ )
 				m_gameover &= ( m_Player[i].inventory.lives < 0 );
 
-			if(!m_gameover) // Check if no player has lifes left and must go in game over mode.
+			if(!m_gameover) // Check if no player has lives left and must go in game over mode.
 				goBacktoMap();
 		}
 	}

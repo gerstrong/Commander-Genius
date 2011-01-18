@@ -36,7 +36,7 @@ mp_KeenLeftSfc(NULL)
 	mp_Menu = NULL;
 	mp_Finale = NULL;
 	mp_gameoverbmp = NULL;
-	
+
 	if(!m_Player.empty())
 		m_Player.clear();
 
@@ -92,7 +92,7 @@ void CPlayGameVorticon::setupPlayers()
 			it_player->solid=true;
 		}
 		it_player->pdie = PDIE_NODIE;
-		
+
 		// Calibrate Player to the right position, so it won't fall when level starts
 		CSprite &sprite = g_pGfxEngine->getSprite(PSTANDFRAME);
 		it_player->w = sprite.getWidth()<<STC;
@@ -100,7 +100,7 @@ void CPlayGameVorticon::setupPlayers()
 		it_player->m_level = m_Level;
 		m_Map.m_Dark = false;
 		g_pGfxEngine->Palette.setdark(m_Map.m_Dark);
-		
+
 		// Set the pointers to the map and object data
 		it_player->setMapData(&m_Map);
 		it_player->exists = true;
@@ -141,7 +141,7 @@ bool CPlayGameVorticon::init()
 	g_pTimer->ResetSecondsTimer();
 
 	g_pInput->flushAll();
-	
+
 	// Initialize the AI
 	mp_ObjectAI = new CObjectAI(&m_Map, m_Object, m_Player, mp_option,
 								m_NumPlayers, m_Episode, m_Level,
@@ -335,9 +335,11 @@ void CPlayGameVorticon::process()
 		}
 
 		// Open the Main Menu if ESC Key pressed and mp_Menu not opened
-		if(!mp_Menu && !mp_Finale && g_pInput->getPressedCommand(IC_QUIT))
+		if(!mp_Menu && !mp_Finale && g_pInput->getPressedCommand(IC_QUIT) )
 		{	// Open the menu
-			mp_Menu = new CMenuVorticon( ACTIVE, m_ExeFile, m_Map, m_SavedGame, mp_option, m_restartVideo, m_hideobjects );
+			if( m_Player[0].solid ){
+				mp_Menu = new CMenuVorticon( ACTIVE, m_ExeFile, m_Map, m_SavedGame, mp_option, m_restartVideo, m_hideobjects );
+			}
 		}
 	}
 }
@@ -346,7 +348,7 @@ void CPlayGameVorticon::process()
 void CPlayGameVorticon::handleFKeys()
 {
 	int i;
-	
+
 	// CTSpace Cheat
     if (g_pInput->getHoldedKey(KC) &&
 		g_pInput->getHoldedKey(KT) &&
@@ -374,20 +376,20 @@ void CPlayGameVorticon::handleFKeys()
 					m_Player[i].take_keycard(DOOR_GREEN);
 					m_Player[i].take_keycard(DOOR_BLUE);
 				}
-				
+
 				m_Player[i].inventory.charges = Phy.misc.ctspace_ammo;
 				m_Player[i].inventory.HasPogo = true;
 				m_Player[i].inventory.lives += 5;
 
 				std::string Text = g_pBehaviorEngine->getString("CTSPACECHEAT");
-				 
+
 				m_MessageBoxes.push_back(new CMessageBox(Text));
 				m_paused = true;
 			}
 		}
 		g_pVideoDriver->AddConsoleMsg("All items cheat");
 	}
-	
+
     // GOD cheat -- toggle god mode
     if ( g_pInput->getHoldedKey(KG) && g_pInput->getHoldedKey(KO) && g_pInput->getHoldedKey(KD) )
     {
@@ -446,7 +448,7 @@ void CPlayGameVorticon::handleFKeys()
 		//mp_Menu = new CHelpMenuVorticon(DLG_THEME_VORTICON);
 		//mp_Menu->init(F1);
 	}
-	
+
 	/*if(g_pInput->getPressedKey(KF2))
 	{
 		// Debug Menu
@@ -594,7 +596,7 @@ void CPlayGameVorticon::drawObjects()
 	if(m_hideobjects) return;
 
 	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
-	
+
 	std::vector<CObject*>::iterator it_obj = m_Object.begin();
 	for(; it_obj!=m_Object.end() ; it_obj++)
 	{
