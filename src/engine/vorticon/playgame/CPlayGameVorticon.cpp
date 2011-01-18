@@ -335,11 +335,9 @@ void CPlayGameVorticon::process()
 		}
 
 		// Open the Main Menu if ESC Key pressed and mp_Menu not opened
-		if( !mp_Menu && !mp_Finale && g_pInput->getPressedCommand(IC_QUIT) )
+		if( !mp_Menu && !mp_Finale && g_pInput->getPressedCommand(IC_QUIT) && m_Player[0].solid )
 		{	// Open the menu
-			if( m_Player[0].solid ){
 				mp_Menu = new CMenuVorticon( ACTIVE, m_ExeFile, m_Map, m_SavedGame, mp_option, m_restartVideo, m_hideobjects );
-			}
 		}
 	}
 }
@@ -457,28 +455,31 @@ void CPlayGameVorticon::handleFKeys()
 		mp_Menu->init(DEBUG);
 	}*/
 
-    // F2 - Sound Menu
-    if (g_pInput->getPressedKey(KF2) && m_Player[0].solid )
-    {
-		mp_Menu = new CMenuVorticon( ACTIVE, m_ExeFile, m_Map,
-									m_SavedGame, mp_option, m_restartVideo, m_hideobjects );
-		mp_Menu->init(AUDIO);
-    }
-    // F3 - Controls Menu
-    else if (g_pInput->getPressedKey(KF3) && m_Player[0].solid )
-    {
-		mp_Menu = new CMenuVorticon( ACTIVE, m_ExeFile, m_Map,
-									m_SavedGame, mp_option, m_restartVideo, m_hideobjects );
-		mp_Menu->init(CONTROLS);
-    }
-    // F5 - save game
-    else if ( g_pInput->getPressedKey(KF5) && m_Player[0].solid )
-    {
-		mp_Menu = new CMenuVorticon( ACTIVE, m_ExeFile, m_Map,
-									m_SavedGame, mp_option, m_restartVideo, m_hideobjects );
-		mp_Menu->init(SAVE);
-    }
-
+	// Menus will only open, if Keen isn't solid. This means neither dying nor teleporting
+	if(m_Player[0].solid)
+	{
+		// F2 - Sound Menu
+		if ( g_pInput->getPressedKey(KF2) )
+		{
+			mp_Menu = new CMenuVorticon( ACTIVE, m_ExeFile, m_Map,
+					m_SavedGame, mp_option, m_restartVideo, m_hideobjects );
+			mp_Menu->init(AUDIO);
+		}
+		// F3 - Controls Menu
+		else if ( g_pInput->getPressedKey(KF3) )
+		{
+			mp_Menu = new CMenuVorticon( ACTIVE, m_ExeFile, m_Map,
+					m_SavedGame, mp_option, m_restartVideo, m_hideobjects );
+			mp_Menu->init(CONTROLS);
+		}
+		// F5 - save game
+		else if ( g_pInput->getPressedKey(KF5) )
+		{
+			mp_Menu = new CMenuVorticon( ACTIVE, m_ExeFile, m_Map,
+					m_SavedGame, mp_option, m_restartVideo, m_hideobjects );
+			mp_Menu->init(SAVE);
+		}
+	}
 }
 
 // The Ending and mortimer cutscenes for example
