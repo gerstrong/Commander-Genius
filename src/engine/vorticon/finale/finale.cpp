@@ -34,25 +34,23 @@ void finale_plot( SDL_Surface *sfc, int pix )
 		{
 			if (finale_planecol==1)
 			{
-				//g_pGraphics->sb_setpixel(finale_x, finale_y, finale_planecol);
-				if( (finale_y*320 + finale_x) < 320*200 )
-					pixel[finale_y*320 + finale_x] = finale_planecol;
+				if( (finale_y*sfc->w + finale_x) < sfc->w*sfc->h )
+					pixel[finale_y*sfc->w + finale_x] = finale_planecol;
 			}
 			else
 			{  // merge with previous planes
-				if( finale_y*finale_x < 320*200 )
-					pixel[finale_y*320 + finale_x] |= finale_planecol;
+				if( finale_y*finale_x < sfc->w*sfc->h )
+					pixel[finale_y*sfc->w + finale_x] |= finale_planecol;
 			}
 		}
 		else if (finale_planecol==1)
 		{
-			//g_pGraphics->sb_setpixel(finale_x, finale_y, 0);
-			if( (finale_y*320 + finale_x) < 320*200 )
-				pixel[finale_y*320 + finale_x] = 0;
+			if( (finale_y*sfc->w + finale_x) < sfc->w*sfc->h )
+				pixel[finale_y*sfc->w + finale_x] = 0;
 		}
 		
 		finale_x++;
-		if (finale_x > 319)
+		if (finale_x > sfc->w-1)
 		{
 			finale_x = 0;
 			finale_y++;

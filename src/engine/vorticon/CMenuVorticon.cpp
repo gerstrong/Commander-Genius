@@ -4,7 +4,6 @@
 #include "CMenuVorticon.h"
 
 #include "engine/CPassive.h"
-#include "CHelpMenuVorticon.h"
 
 #include "StringUtils.h"
 #include "CGameControl.h"
@@ -13,6 +12,9 @@
 #include "sdl/CSettings.h"
 #include "sdl/sound/CSound.h"
 #include "sdl/CVideoDriver.h"
+#include "common/Menu/CHelpMenu.h"
+
+#include "engine/infoscenes/CHighScores.h"
 
 #define SELMOVE_SPD         3
 

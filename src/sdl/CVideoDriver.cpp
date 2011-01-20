@@ -602,7 +602,7 @@ void CVideoDriver::blitScrollSurface() // This is only for tiles
 
 	dstrect.x = 0; dstrect.y = 0;
 
-	srcrect.x = sbufferx = *mp_sbufferx;
+	srcrect.x =	sbufferx = *mp_sbufferx;
 	srcrect.y = sbuffery = *mp_sbuffery;
 
 	dstrect.w = game_resolution_rect.w-sbufferx;

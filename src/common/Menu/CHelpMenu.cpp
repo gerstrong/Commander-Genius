@@ -7,6 +7,14 @@
 
 #include "CHelpMenu.h"
 
+#include "engine/infoscenes/CHighScores.h"
+#include "engine/infoscenes/CStory.h"
+#include "engine/infoscenes/CCredits.h"
+#include "engine/infoscenes/COrderingInfo.h"
+#include "engine/infoscenes/CAbout.h"
+#include "engine/infoscenes/CHelp.h"
+#include "engine/infoscenes/CPreviews.h"
+
 #define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
 
 CHelpMenu::CHelpMenu(CInfoScene *&p_InfoScene, Uint8 dlg_theme,
@@ -19,7 +27,7 @@ m_Episode(ExeFile.getEpisode()),
 m_GamePath(ExeFile.getDataDirectory()),
 m_hideobjects(hideobjects)
 {
-	mp_Dialog = new CDialog(18, 9, INPUT_MODE_UP_DOWN,m_dlg_theme);
+	mp_Dialog = new CDialog(18, 10, INPUT_MODE_UP_DOWN,m_dlg_theme);
 
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "The Menu");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "The Game");
@@ -28,6 +36,7 @@ m_hideobjects(hideobjects)
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "About ID");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, "About CG");
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "Credits");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "Previews!");
 }
 
 void CHelpMenu::processSpecific()
@@ -59,6 +68,8 @@ void CHelpMenu::processSpecific()
 		case 6:
 			mp_InfoScene = new CCredits(m_ExeFile.getDataDirectory(),
 										m_ExeFile.getEpisode());
+		case 7:
+			mp_InfoScene = new CPreviews(m_ExeFile);
 			break;
 		}
 		m_hideobjects = true;

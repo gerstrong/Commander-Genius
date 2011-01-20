@@ -10,34 +10,43 @@
 #include "common/CBehaviorEngine.h"
 #include "FindFile.h"
 #include "sdl/CVideoDriver.h"
+#include "sdl/CInput.h"
 #include "StringUtils.h"
+#include "common/CMapLoader.h"
 
-CPreviews::CPreviews(int episode) :
-m_episode(episode),
-mp_StaticScene(NULL),
-mp_TextViewer(NULL)
+CPreviews::CPreviews(CExeFile &ExeFile)
 {
-	// For some reason, the files start at 2
-	m_scene_number = 2;
+	m_episode = ExeFile.getEpisode();
+	std::string DataDirectory = ExeFile.getDataDirectory();
+	mp_Scrollsurface = g_pVideoDriver->ScrollSurface;
+	mp_Map = new CMap();
+	mp_Map->setScrollSurface(mp_Scrollsurface);
+
+	CMapLoader Maploader(mp_Map);
+	Maploader.load(m_episode, 90, DataDirectory);
+
+	mp_Map->gotoPos( 0, 0 );
+
+	// draw level map
+	mp_Map->drawAll();
+
+	m_scene_number = 1;
 	openNextScene();
 }
 
 CPreviews::~CPreviews()
 {
-	if(mp_TextViewer)
-		delete mp_TextViewer;
-
-	if(mp_StaticScene)
-		delete mp_StaticScene;
+	delete mp_Map;
 }
 
 int CPreviews::openNextScene()
 {
-	// TODO: Here we set the function pointer for the cycle and load stuff for it...
+	// Here we set the function pointer for the cycle and load stuff for it...
+	m_scene_number++;
 	std::string filename = "preview";
 	filename += itoa(m_scene_number);
 	filename += ".ck";
-	filename += itoa(g_pBehaviorEngine->getEpisode());
+	filename += itoa(m_episode);
 
 	// If the we have scene to load, load it, else open the text which ends the preview
 	if(openScene(filename)) // else If there is no scene to show left, open the Text.
@@ -48,9 +57,6 @@ int CPreviews::openNextScene()
 	{
 		std::string filename = JoinPaths(g_pBehaviorEngine->m_ExeFile.getDataDirectory(), "previews.ck");
 		filename += itoa(g_pBehaviorEngine->getEpisode());
-
-		if(mp_TextViewer)
-			m_destroy_me = true;
 
 		mp_TextViewer = new CTextViewer(g_pVideoDriver->FGLayerSurface, 0, 8, 320, 160);
 
@@ -79,19 +85,25 @@ void CPreviews::drawPreviewScene()
 {
 	// This will show a scene of the preview scenes
 	mp_StaticScene->process();
+
+	if( mp_StaticScene->mustclose() || g_pInput->getPressedAnyCommand() )
+		openNextScene();
 }
 
 void CPreviews::showText()
 {
 	// This is called after the preview screens were shown
 	mp_TextViewer->process();
+
+	if( mp_TextViewer->hasClosed() || g_pInput->getPressedCommand(IC_QUIT) )
+	{
+		m_destroy_me = true;
+	}
 }
 
 void CPreviews::process()
 {
-	// This process will be the update/draw/refresh one.
-
-	// TODO: Here only the variable for the scene function should be called. Use a pointer to function for that...
+	// Here only the variable for the scene function should be called. Use a pointer to function for that...
 	(*this.*process_ptr)();
 }
 

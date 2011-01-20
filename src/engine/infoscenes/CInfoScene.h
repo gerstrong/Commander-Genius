@@ -13,6 +13,7 @@
 class CInfoScene {
 public:
 	CInfoScene();
+	virtual ~CInfoScene() {}
 
 	virtual void process() = 0;
 

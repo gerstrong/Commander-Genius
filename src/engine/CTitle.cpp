@@ -73,6 +73,10 @@ void CTitle::process()
 ////
 CTitle::~CTitle() {
 	while( !m_objects.empty() )
+	{
+		if(m_objects.back())
+			delete m_objects.back();
 		m_objects.pop_back();
+	}
 }
 

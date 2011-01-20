@@ -14,7 +14,7 @@
 #ifndef CEXEFILE_H_
 #define CEXEFILE_H_
 
-#include "../fileio/crc.h"
+#include "fileio/crc.h"
 
 #include <vector>
 #include <string>

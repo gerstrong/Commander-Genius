@@ -9,13 +9,8 @@
 #define CHELPMENU_H_
 
 #include "CBaseMenu.h"
-
-#include "engine/infoscenes/CHighScores.h"
-#include "engine/infoscenes/CStory.h"
-#include "engine/infoscenes/CCredits.h"
-#include "engine/infoscenes/COrderingInfo.h"
-#include "engine/infoscenes/CAbout.h"
-#include "engine/infoscenes/CHelp.h"
+#include "engine/infoscenes/CInfoScene.h"
+#include "fileio/CExeFile.h"
 
 class CHelpMenu : public CBaseMenu
 {
