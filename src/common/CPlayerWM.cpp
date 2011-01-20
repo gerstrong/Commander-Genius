@@ -28,14 +28,18 @@ void CPlayer::processWorldMap()
    	setWorldMapdir();
 	
     if(!hideplayer && !beingteleported)	Walking();
-   	WalkingAnimation();
 
-   	InertiaAndFriction_X();
-   	InertiaAndFriction_Y();
+    if(!beingteleported)
+    {
+    	WalkingAnimation();
 
-   	performCollisions();
-	
-   	selectFrameOnWorldMap();
+    	InertiaAndFriction_X();
+    	InertiaAndFriction_Y();
+
+    	performCollisions();
+
+    	selectFrameOnWorldMap();
+    }
 }
 
 // select proper player direction
