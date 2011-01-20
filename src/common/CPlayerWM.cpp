@@ -24,7 +24,7 @@ void CPlayer::processWorldMap()
 	
     StatusBox();
 	
-   	if(!hideplayer) ProcessInput();
+   	if(!hideplayer && !beingteleported) ProcessInput();
    	setWorldMapdir();
 	
     if(!hideplayer && !beingteleported)	Walking();
