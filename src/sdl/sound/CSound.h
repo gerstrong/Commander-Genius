@@ -25,6 +25,12 @@ class CSound : public CSingleton<CSound>
 public:
 	CSound();
 
+	/*CSound(const CSound& orig)
+	{
+		*this = orig;
+		//this->m_soundchannel = orig.m_soundchannel;
+	}*/
+
 	bool init(void);
 	void stop(void);
 
@@ -54,12 +60,14 @@ public:
 
 	void setGameData(CExeFile &ExeFile);
 	virtual bool loadSoundData(CExeFile &ExeFile);
+	virtual void unloadSound() {};
 
-protected:
-	std::vector<CSoundChannel>	m_soundchannel;
-	std::map<int, CSoundSlot>	m_soundslot;
+//protected:
 
 	static const int MAX_SOUNDS = 50;
+
+	std::vector<CSoundChannel>	m_soundchannel;
+	CSoundSlot	m_soundslot[MAX_SOUNDS];
 
 	SDL_AudioSpec AudioSpec;
 

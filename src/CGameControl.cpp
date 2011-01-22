@@ -417,6 +417,7 @@ void CGameControl::process()
 		if(mp_PassiveMode->getchooseGame())
 		{
 			// TODO: Some of game resources are still not cleaned up here!
+			g_pSound->unloadSound();
 			init( GAMELAUNCHER );
 			return;
 		}

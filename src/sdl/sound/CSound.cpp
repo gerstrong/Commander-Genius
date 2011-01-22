@@ -137,9 +137,6 @@ void CSound::destroy(void)
 	if(!m_soundchannel.empty())
 		m_soundchannel.clear();
 
-	if(!m_soundslot.empty())
-		m_soundslot.clear();
-
 	g_pLogFile->ftextOut("SoundDrv_Stop(): shut down.<br>");
 }
 

@@ -72,9 +72,6 @@ bool CAudioVorticon::loadSoundData(CExeFile &ExeFile)
 	bool ok = true;
 	const std::string soundfile = "sounds.ck" + itoa(m_Episode);
 
-	if(!m_soundslot.empty())
-		m_soundslot.clear();
-
 	for(int i=0 ; i<MAX_SOUNDS ; i++)
 	{
 		m_soundslot[i].setpAudioSpec(&AudioSpec);
@@ -144,4 +141,10 @@ bool CAudioVorticon::loadSoundData(CExeFile &ExeFile)
 		delete [] buffer;
 
 	return ok;
+}
+
+void CAudioVorticon::unloadSound()
+{
+	for(int slot=0 ; slot<MAX_SOUNDS ; slot++ )
+		m_soundslot[slot].unload();
 }

@@ -12,8 +12,12 @@
 
 class CAudioVorticon : public CSound {
 public:
+
+	CAudioVorticon() {};
+
 	void setGameData(CExeFile &ExeFile);
 	bool loadSoundData(CExeFile &ExeFile);
+	void unloadSound();
 
 	Uint8* loadSoundStream(Uint32 &buffer_size, Uint8* exedata);
 };

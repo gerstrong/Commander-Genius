@@ -62,7 +62,7 @@ public:
 					bool sound_forced,
 					Uint16 format);
 
-	void setSoundSlotPtr(std::map<int, CSoundSlot> &pSoundSlot) { m_pSoundSlot = &pSoundSlot;}
+	void setSoundSlotPtr(CSoundSlot *pSoundSlot) { m_pSoundSlot = pSoundSlot;}
 
 private:
     bool m_sound_playing;           	// true = a sound is currently playing
@@ -85,7 +85,7 @@ private:
     Sint32 m_wavein;
     Sint32 m_volume;
 
-    std::map<int, CSoundSlot>	*m_pSoundSlot;			// Pointer to the Soundslots of CSound
+    CSoundSlot	*m_pSoundSlot;			// Pointer to the Soundslots of CSound
 };
 
 #endif /* CSOUNDCHANNEL_H_ */

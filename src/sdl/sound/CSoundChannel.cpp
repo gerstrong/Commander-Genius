@@ -121,7 +121,7 @@ void CSoundChannel::generateWaveform(T *waveform, unsigned int len, int frequenc
 	// setup so we process a new byte of the sound first time through
 	bool firsttime = true;
 	
-	CSoundSlot& currentSound = (*m_pSoundSlot)[m_current_sound];
+	CSoundSlot& currentSound = m_pSoundSlot[m_current_sound];
 	
 	for(unsigned int index=0 ; index<len ; index++)
 	{
@@ -273,7 +273,7 @@ void CSoundChannel::readWaveform(Uint8* waveform, int len, Uint8 channels, int f
      	}
      	else
      	{
-     		stHQSound& hqsound = *(*m_pSoundSlot)[m_current_sound].getHQSoundPtr();
+     		stHQSound& hqsound = *(m_pSoundSlot[m_current_sound].getHQSoundPtr());
 
          	if ((m_sound_ptr + (Uint32)len) >= hqsound.sound_len)
          	{

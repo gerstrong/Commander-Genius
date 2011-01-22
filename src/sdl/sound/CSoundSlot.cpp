@@ -19,7 +19,11 @@ CSoundSlot::CSoundSlot() :
 m_sounddata(NULL),
 m_soundlength(0),
 m_pAudioSpec(NULL)
-{ }
+{
+	m_sounddata = NULL;
+	m_soundlength = 0;
+	m_pAudioSpec = NULL;
+}
 
 // loads sound searchname from file fname, into sounds[] entry loadnum
 // return value is false on failure
@@ -87,11 +91,16 @@ bool CSoundSlot::loadSound(Uint8 *buffer, const Uint32 buf_size, const std::stri
 	}
 }
 
-CSoundSlot::~CSoundSlot() {
+void CSoundSlot::unload()
+{
 	HQSndDrv_Unload(&m_hqsound);
 	if(m_sounddata){ delete[] m_sounddata; }
 	m_sounddata = NULL;
 	m_hqsound.enabled = false;
+}
+
+CSoundSlot::~CSoundSlot() {
+	unload();
 }
 
 

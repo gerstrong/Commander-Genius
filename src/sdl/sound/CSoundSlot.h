@@ -19,6 +19,7 @@ public:
 	CSoundSlot();
 	
 	bool loadSound(Uint8 *buffer, const Uint32 buf_size, const std::string& path, const std::string& searchname, unsigned int loadnum);
+	void unload();
 	
 	void setpAudioSpec(SDL_AudioSpec *pAudioSpec){ m_pAudioSpec = pAudioSpec; }
 	
@@ -27,7 +28,7 @@ public:
 	unsigned int getSoundlength(void) { return m_soundlength; }
 	stHQSound	*getHQSoundPtr(void) { return &m_hqsound; }
 	
-	virtual ~CSoundSlot();
+	~CSoundSlot();
 
 private:
 	unsigned int *m_sounddata;
