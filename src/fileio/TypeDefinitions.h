@@ -20,18 +20,30 @@ typedef void * memptr;
 
 static inline word READWORD(byte *&ptr)
 {
-    word val = ptr[0] | ptr[1] << 8;
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+	word val = ptr[0]<<8 | ptr[1];
+#else
+	word val = ptr[0] | ptr[1] << 8;
+#endif
     ptr += 2;
     return val;
 }
 
 static inline word GETWORD(byte *ptr){
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+	return (ptr[0]<<8 | ptr[1]);
+#else
 	return (ptr[0] | ptr[1] << 8);
+#endif
 }
 
 static inline longword READLONGWORD(byte *&ptr)
 {
-    longword val = ptr[0] | ptr[1] << 8 | ptr[2] << 16 | ptr[3] << 24;
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+	longword val = ptr[0]<<24 | ptr[1] << 16 | ptr[2] << 8 | ptr[3];
+#else
+	longword val = ptr[0] | ptr[1] << 8 | ptr[2] << 16 | ptr[3] << 24;
+#endif
     ptr += 4;
     return val;
 }
