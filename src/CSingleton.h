@@ -3,6 +3,10 @@
  *
  *  Created on: 19.04.2009
  *      Author: gerstrong
+ *
+ *  Modified on: 22.01.2011
+ *  	Now we can reload that class and overload it
+ *  	with derived class. For the CSound class it will be used the first time.
  */
 
 #ifndef CSINGLETON_H_
@@ -27,8 +31,23 @@ public:
 		return (m_pSingleton);
 	}
 	
+	template <typename C>
+	static void Derive()
+	{
+		if(m_pSingleton)
+		{
+			T *pOldSingleton = m_pSingleton;
+			m_pSingleton = new C;
+			*m_pSingleton = *pOldSingleton;
+			delete pOldSingleton;
+		}
+		else
+			m_pSingleton = new C;
+	}
+
 	static void Del()
 	{
+
 		if(m_pSingleton)
 		{
 			delete (m_pSingleton);
