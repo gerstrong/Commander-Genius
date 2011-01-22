@@ -15,17 +15,19 @@
 #include "fileio/TypeDefinitions.h"
 #include "FindFile.h"
 
-CSoundSlot::CSoundSlot() {
-	m_sounddata = NULL;
-	m_soundlength = 0;
-}
+CSoundSlot::CSoundSlot() :
+m_sounddata(NULL),
+m_soundlength(0),
+m_pAudioSpec(NULL)
+{ }
 
 // loads sound searchname from file fname, into sounds[] entry loadnum
 // return value is false on failure
-bool CSoundSlot::loadSound(const std::string& fname, const std::string& path, const std::string& searchname, unsigned int loadnum)
+bool CSoundSlot::loadSound(Uint8 *buffer, const Uint32 buf_size, const std::string& path, const std::string& searchname, unsigned int loadnum)
 {
 	// Unload the sound if any was previously loaded
-	if(m_sounddata){ delete[] m_sounddata; m_sounddata = NULL; }
+	if(m_sounddata){ delete[] m_sounddata; }
+	m_sounddata = NULL;
 	
 	// If a high quality sound file is available, try to open it.
 	// Otherwise open the classic sounds from the original data files
@@ -40,31 +42,11 @@ bool CSoundSlot::loadSound(const std::string& fname, const std::string& path, co
 		char name[12];
 		
 		memset(name,0,12);
-		
-		FILE *fp;
-		if (! (fp = OpenGameFile(getResourceFilename(fname, path, true, true), "rb")) )
-		{
-			g_pLogFile->ftextOut("loadSound : Sounds file '%s' unopenable attempting load of '%s'<br>", fname.c_str(), searchname.c_str());
-			return false;
-		}
-		
-		/// Wrapper for loading sounds
-
-		fseek(fp, 0x0, SEEK_END);
-		Uint32 size = ftell(fp);
-		fseek(fp, 0x0, SEEK_SET
-				);
-		Uint8 buffer[size];
-		fread( buffer, sizeof(Uint8), size, fp );
-		fclose(fp);
-
-		///
-
 		Uint8 *buf_ptr = buffer+0x6;
 
 		nr_of_sounds = READWORD(buf_ptr);
 
-		for(int j=0; j<nr_of_sounds || (buf_ptr-buffer < size) ; j++)
+		for(int j=0; j<nr_of_sounds || (buf_ptr-buffer < buf_size) ; j++)
 		{
 			buf_ptr = buffer+curheader;
 			offset = READWORD(buf_ptr);
@@ -98,9 +80,8 @@ bool CSoundSlot::loadSound(const std::string& fname, const std::string& path, co
 			}
 			curheader += 0x10;
 		}
-
 		// sound could not be found
-		g_pLogFile->ftextOut("loadSound : sound \"%s\" could not be found in %s.<br>", searchname.c_str(), fname.c_str());
+		g_pLogFile->ftextOut("loadSound : sound \"%s\" could not be found.<br>", searchname.c_str());
 
 		return false;
 	}
@@ -108,7 +89,8 @@ bool CSoundSlot::loadSound(const std::string& fname, const std::string& path, co
 
 CSoundSlot::~CSoundSlot() {
 	HQSndDrv_Unload(&m_hqsound);
-	if(m_sounddata){ delete[] m_sounddata; m_sounddata = NULL; }
+	if(m_sounddata){ delete[] m_sounddata; }
+	m_sounddata = NULL;
 	m_hqsound.enabled = false;
 }
 

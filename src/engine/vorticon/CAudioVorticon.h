@@ -15,7 +15,7 @@ public:
 	void setGameData(CExeFile &ExeFile);
 	bool loadSoundData(CExeFile &ExeFile);
 
-	char extractOfExeFile(CExeFile &ExeFile);
+	Uint8* loadSoundStream(Uint32 &buffer_size, Uint8* exedata);
 };
 
 #endif /* CAUDIOVORTICON_H_ */
