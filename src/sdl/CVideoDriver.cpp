@@ -881,7 +881,7 @@ void CVideoDriver::scale3xnofilter(char *dest, char *src, short bbp)
 void CVideoDriver::scale4xnofilter(char *dest, char *src, short bbp)
 {
 	// workaround for copying correctly stuff to the screen, so the screen is scaled normally
-    // to 2x (without filter). This applies to 16 and 32-bit colour depth.
+    // to 4x (without filter). This applies to 16 and 32-bit colour depth.
 	// use bit shifting method for faster blit!
 	bbp >>= 1;
 

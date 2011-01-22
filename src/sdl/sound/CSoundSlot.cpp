@@ -9,10 +9,10 @@
 #include <vector>
 #include <fstream>
 #include "CSoundSlot.h"
-#include "../../CLogFile.h"
-#include "../../fileio.h"
-#include "../../fileio/ResourceMgmt.h"
-#include "../../FindFile.h"
+#include "CLogFile.h"
+#include "fileio.h"
+#include "fileio/ResourceMgmt.h"
+#include "FindFile.h"
 
 CSoundSlot::CSoundSlot() {
 	m_sounddata = NULL;
