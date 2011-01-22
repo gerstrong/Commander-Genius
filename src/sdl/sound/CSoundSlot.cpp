@@ -12,6 +12,7 @@
 #include "CLogFile.h"
 #include "fileio.h"
 #include "fileio/ResourceMgmt.h"
+#include "fileio/TypeDefinitions.h"
 #include "FindFile.h"
 
 CSoundSlot::CSoundSlot() {
@@ -47,49 +48,70 @@ bool CSoundSlot::loadSound(const std::string& fname, const std::string& path, co
 			return false;
 		}
 		
-		fseek(fp, 0x6, SEEK_SET);
-		nr_of_sounds = fgeti(fp);
-		
-		for(int j=0; j<nr_of_sounds || feof(fp) ; j++)
+		/// Wrapper for loading sounds
+
+		fseek(fp, 0x0, SEEK_END);
+		Uint32 size = ftell(fp);
+		fseek(fp, 0x0, SEEK_SET
+				);
+		Uint8 buffer[size];
+		fread( buffer, sizeof(Uint8), size, fp );
+		fclose(fp);
+
+		///
+
+		Uint8 *buf_ptr = buffer+0x6;
+		//fseek(fp, 0x6, SEEK_SET);
+
+		nr_of_sounds = READWORD(buf_ptr);
+
+		for(int j=0; j<nr_of_sounds || (buf_ptr-buffer < size) ; j++)
 		{
-			fseek(fp, curheader, SEEK_SET);
-			offset = fgeti(fp);
-			priority = fgetc(fp);
-			garbage = fgetc(fp);
-			
-			for(int i=0;i<12;i++) name[i] = fgetc(fp);
+			buf_ptr = buffer+curheader;
+			//fseek(fp, curheader, SEEK_SET);
+			offset = READWORD(buf_ptr);
+			//offset = fgeti(fp);
+			priority = *buf_ptr++;
+			//priority = fgetc(fp);
+			garbage = *buf_ptr++;
+			//garbage = fgetc(fp);
+
+			//for(int i=0;i<12;i++) name[i] = fgetc(fp);
+			for(int i=0;i<12;i++) name[i] = *buf_ptr++;
 			if (name == searchname)
 			{
-				fseek(fp, offset, SEEK_SET);
-				
+				//fseek(fp, offset, SEEK_SET);
+				buf_ptr = buffer+offset;
+
 				signed int sample;
 				// Read the file and convert it into waveform
 				std::vector<unsigned int> waveform;
 				do
 				{
-					sample = fgeti(fp);
+					sample = READWORD(buf_ptr);
+					//sample = fgeti(fp);
 					waveform.push_back( (sample != 0x0000 && sample != 0xFFFF) ? (0x1234DD/sample) : sample );
 				}while (sample != 0xffff);
-				
+
 				m_soundlength = waveform.size();
-				
+
 				// copy the data to the real m_sounddata block and reduce fragmentation!
 				m_sounddata = new unsigned int[m_soundlength];
-				
+
 				memcpy(m_sounddata, &waveform[0], waveform.size()*sizeof(unsigned int));
-				
+
 				g_pLogFile->ftextOut("loadSound : loaded sound %s of %d bytes.<br>", searchname.c_str(), m_soundlength);
 				m_hqsound.enabled = false;
-				
-				fclose(fp);
+
 				return true;
 			}
-			
+
 			curheader += 0x10;
 		}
+
 		// sound could not be found
-		g_pLogFile->ftextOut("loadSound : sound %s could not be found in %s.<br>", searchname.c_str(), fname.c_str());
-		fclose(fp);
+		g_pLogFile->ftextOut("loadSound : sound \"%s\" could not be found in %s.<br>", searchname.c_str(), fname.c_str());
+
 		return false;
 	}
 }
