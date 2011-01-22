@@ -84,7 +84,6 @@ bool CGame::loadCKPDrivers()
 	// The graphics are very important, if the other subsystems fail, warn but continue
 	if (!g_pVideoDriver->start()) return false;
 	
-	g_pLogFile->ftextOut("Starting sound driver...<br>");
 	g_pSound->init();
 	
 	// g_pInput is started automatically when needed!
@@ -153,7 +152,7 @@ void CGame::cleanup()
 	m_Engine.cleanupAll();
 	
     g_pInput->Del();
-    g_pSound->Del();
+    g_pSound->destroy();
     g_pVideoDriver->Del();
     g_pTimer->Del();
 }

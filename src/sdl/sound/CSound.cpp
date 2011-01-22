@@ -26,10 +26,15 @@ void CCallback(void *unused, Uint8 *stream, int len)
     g_pSound->callback(unused, stream, len);
 }
 
-CSound::CSound() {
-	m_active = false;
-	m_mixing_channels = 0;
-	m_MixedForm = NULL;
+CSound::CSound() :
+m_active(false),
+m_Episode(0),
+m_DataDirectory(""),
+m_mixing_channels(0),
+m_MusicVolume(SDL_MIX_MAXVOLUME),
+m_SoundVolume(SDL_MIX_MAXVOLUME),
+m_pMixedForm(NULL)		// Mainly used by the callback function. Declared once and allocated
+{
 	AudioSpec.channels = 2; // Stereo Sound
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X) || defined(DINGOO) || defined(ANDROID)
 	AudioSpec.format = AUDIO_S16; // 16-bit sound
@@ -37,13 +42,11 @@ CSound::CSound() {
 	AudioSpec.format = AUDIO_U8; // 8-bit sound
 #endif
 	AudioSpec.freq = 44100; // high quality
-
-	m_MusicVolume = SDL_MIX_MAXVOLUME;
-	m_SoundVolume = SDL_MIX_MAXVOLUME;
 }
 
 bool CSound::init(void)
 {
+	g_pLogFile->ftextOut("Starting sound driver...<br>");
 	char name[256];
 	SDL_AudioSpec *desired, *obtained;
 
@@ -77,7 +80,7 @@ bool CSound::init(void)
 	memcpy(&AudioSpec,obtained,sizeof(SDL_AudioSpec));
 	delete obtained;
 
-	m_MixedForm = (Uint8 *) malloc(AudioSpec.size); // To make sure it's 4-byte aligned use malloc() instead of new()
+	m_pMixedForm = (Uint8 *) malloc(AudioSpec.size); // To make sure it's 4-byte aligned use malloc() instead of new()
 
 	g_pLogFile->ftextOut("SDL_AudioSpec:<br>");
 	g_pLogFile->ftextOut("  freq: %d<br>", AudioSpec.freq);
@@ -127,9 +130,9 @@ void CSound::destroy(void)
 		m_active = false;
 		m_mixing_channels = 0;
 	}
-	if(m_MixedForm)
-		free(m_MixedForm);
-	m_MixedForm = NULL;
+	if(m_pMixedForm)
+		free(m_pMixedForm);
+	m_pMixedForm = NULL;
 
 	if(!m_soundchannel.empty())
 		m_soundchannel.clear();
@@ -141,7 +144,7 @@ void CSound::destroy(void)
 }
 
 // stops all currently playing sounds
-void CSound::stopAllSounds(void)
+void CSound::stopAllSounds()
 {
 	std::vector<CSoundChannel>::iterator snd_chnl = m_soundchannel.begin();
 	for( ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
@@ -202,15 +205,15 @@ void CSound::callback(void *unused, Uint8 *stream, int len)
 {
     if (g_pMusicPlayer->playing() == PLAY_MODE_PLAY)
     {
-    	g_pMusicPlayer->readBuffer(m_MixedForm, len);
-    	mixAudio(stream, m_MixedForm, len, m_MusicVolume, AudioSpec.format);
+    	g_pMusicPlayer->readBuffer(m_pMixedForm, len);
+    	mixAudio(stream, m_pMixedForm, len, m_MusicVolume, AudioSpec.format);
     }
 
 	std::vector<CSoundChannel>::iterator snd_chnl = m_soundchannel.begin();
 	for( ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
    	{
-		snd_chnl->readWaveform(m_MixedForm, len, AudioSpec.channels, AudioSpec.freq);
-   		mixAudio(stream, m_MixedForm, len, m_SoundVolume, AudioSpec.format);
+		snd_chnl->readWaveform(m_pMixedForm, len, AudioSpec.channels, AudioSpec.freq);
+   		mixAudio(stream, m_pMixedForm, len, m_SoundVolume, AudioSpec.format);
     }
 }
 
@@ -280,90 +283,13 @@ void CSound::setGameData(CExeFile &ExeFile)
 	m_DataDirectory = ExeFile.getDataDirectory();
 }
 
+
 bool CSound::loadSoundData(CExeFile &ExeFile)
 {
-	if(!m_active) return false;
-
-	bool ok = true;
-	const std::string soundfile = "sounds.ck" + itoa(m_Episode);
-
-	if(!m_soundslot.empty())
-		m_soundslot.clear();
-
-	for(int i=0 ; i<MAX_SOUNDS ; i++)
-	{
-		m_soundslot[i].setpAudioSpec(&AudioSpec);
-		m_soundslot[i].m_gamepath = m_DataDirectory;
-	}
-
-	g_pLogFile->ftextOut("sound_load_all(): loading all sounds...<br>");
-
-	std::ifstream file;
-	if(!OpenGameFileR(file, getResourceFilename(soundfile,m_DataDirectory,false,true), std::ios::binary))
-	{
-		std::string exename = "keen" + itoa(m_Episode) + ".exe";
-		g_pLogFile->textOut("sound_load_all(): \"" + soundfile + "\" was not found in the data directory. Looking for \""+ exename +"\" in \"" + m_DataDirectory + "\" and trying to extract this file<br>");
-		extractOfExeFile(ExeFile);
-	}
-	else
-		file.close();
-
-	ok  = m_soundslot[SOUND_KEEN_WALK].loadSound(soundfile, m_DataDirectory, "KEENWALKSND", SOUND_KEEN_WALK);
-	ok &= m_soundslot[SOUND_KEEN_WALK2].loadSound(soundfile, m_DataDirectory, "KEENWLK2SND", SOUND_KEEN_WALK2);
-	ok &= m_soundslot[SOUND_KEEN_JUMP].loadSound(soundfile, m_DataDirectory, "KEENJUMPSND", SOUND_KEEN_JUMP);
-	ok &= m_soundslot[SOUND_KEEN_POGO].loadSound(soundfile, m_DataDirectory, "KEENPOGOSND", SOUND_KEEN_POGO);
-	ok &= m_soundslot[SOUND_KEEN_LAND].loadSound(soundfile, m_DataDirectory, "KEENLANDSND", SOUND_KEEN_LAND);
-	ok &= m_soundslot[SOUND_KEEN_BLOK].loadSound(soundfile, m_DataDirectory, "KEENBLOKSND", SOUND_KEEN_BLOK);
-	ok &= m_soundslot[SOUND_KEEN_DIE].loadSound(soundfile, m_DataDirectory, "KEENDIESND", SOUND_KEEN_DIE);
-	ok &= m_soundslot[SOUND_KEEN_FALL].loadSound(soundfile, m_DataDirectory, "PLUMMETSND", SOUND_KEEN_FALL);
-	ok &= m_soundslot[SOUND_KEEN_BUMPHEAD].loadSound(soundfile, m_DataDirectory, "BUMPHEADSND", SOUND_KEEN_BUMPHEAD);
-	ok &= m_soundslot[SOUND_ENTER_LEVEL].loadSound(soundfile, m_DataDirectory, "WLDENTERSND", SOUND_ENTER_LEVEL);
-	ok &= m_soundslot[SOUND_KEENSLEFT].loadSound(soundfile, m_DataDirectory, "keensleft", SOUND_KEENSLEFT);
-
-	ok &= m_soundslot[SOUND_KEEN_FIRE].loadSound(soundfile, m_DataDirectory, "KEENFIRESND", SOUND_KEEN_FIRE);
-	ok &= m_soundslot[SOUND_GUN_CLICK].loadSound(soundfile, m_DataDirectory, "GUNCLICK", SOUND_GUN_CLICK);
-	ok &= m_soundslot[SOUND_SHOT_HIT].loadSound(soundfile, m_DataDirectory, "SHOTHIT", SOUND_SHOT_HIT);
-
-	ok &= m_soundslot[SOUND_GET_ITEM].loadSound(soundfile, m_DataDirectory, "GOTITEMSND", SOUND_GET_ITEM);
-	ok &= m_soundslot[SOUND_GET_BONUS].loadSound(soundfile, m_DataDirectory, "GOTBONUSSND", SOUND_GET_BONUS);
-	ok &= m_soundslot[SOUND_GET_PART].loadSound(soundfile, m_DataDirectory, "GOTPARTSND", SOUND_GET_PART);
-	ok &= m_soundslot[SOUND_LEVEL_DONE].loadSound(soundfile, m_DataDirectory, "LVLDONESND", SOUND_LEVEL_DONE);
-	ok &= m_soundslot[SOUND_GAME_OVER].loadSound(soundfile, m_DataDirectory, "GAMEOVERSND", SOUND_GAME_OVER);
-	ok &= m_soundslot[SOUND_TELEPORT].loadSound(soundfile, m_DataDirectory, "TELEPORTSND", SOUND_TELEPORT);
-	ok &= m_soundslot[SOUND_EXTRA_LIFE].loadSound(soundfile, m_DataDirectory, "EXTRAMANSND", SOUND_EXTRA_LIFE);
-	ok &= m_soundslot[SOUND_CANNONFIRE].loadSound(soundfile, m_DataDirectory, "CANNONFIRE", SOUND_CANNONFIRE);
-	ok &= m_soundslot[SOUND_CHUNKSMASH].loadSound(soundfile, m_DataDirectory, "CHUNKSMASH", SOUND_CHUNKSMASH);
-	ok &= m_soundslot[SOUND_GOINDOOR].loadSound(soundfile, m_DataDirectory, "GOINDOORSND", SOUND_GOINDOOR);
-	ok &= m_soundslot[SOUND_GET_CARD].loadSound(soundfile, m_DataDirectory, "GETCARDSND", SOUND_GET_CARD);
-	ok &= m_soundslot[SOUND_USE_KEY].loadSound(soundfile, m_DataDirectory, "USEKEYSND", SOUND_USE_KEY);
-	ok &= m_soundslot[SOUND_SWITCH_TOGGLE].loadSound(soundfile, m_DataDirectory, "CLICKSND", SOUND_SWITCH_TOGGLE);
-	ok &= m_soundslot[SOUND_DOOR_OPEN].loadSound(soundfile, m_DataDirectory, "DOOROPENSND", SOUND_DOOR_OPEN);
-
-	ok &= m_soundslot[SOUND_YORP_BUMP].loadSound(soundfile, m_DataDirectory, "YORPBUMPSND", SOUND_YORP_BUMP);
-	ok &= m_soundslot[SOUND_YORP_STUN].loadSound(soundfile, m_DataDirectory, "YORPBOPSND", SOUND_YORP_STUN);
-	ok &= m_soundslot[SOUND_YORP_DIE].loadSound(soundfile, m_DataDirectory, "YORPSCREAM", SOUND_YORP_DIE);
-	ok &= m_soundslot[SOUND_GARG_DIE].loadSound(soundfile, m_DataDirectory, "GARGSCREAM", SOUND_GARG_DIE);
-	ok &= m_soundslot[SOUND_VORT_DIE].loadSound(soundfile, m_DataDirectory, "vortscream", SOUND_VORT_DIE);
-	ok &= m_soundslot[SOUND_TANK_FIRE].loadSound(soundfile, m_DataDirectory, "TANKFIRE", SOUND_TANK_FIRE);
-
-	if (m_Episode == 2)
-	{
-		ok &= m_soundslot[SOUND_KEEN_BLOK].loadSound(soundfile, m_DataDirectory, "EARTHPOW", SOUND_EARTHPOW);
-	}
-	else if (m_Episode == 3)
-	{
-		ok &= m_soundslot[SOUND_MEEP].loadSound(soundfile, m_DataDirectory, "MEEP", SOUND_MEEP);
-		ok &= m_soundslot[SOUND_ANKH].loadSound(soundfile, m_DataDirectory, "ANKH", SOUND_ANKH);
-		ok &= m_soundslot[SOUND_MORTIMER].loadSound(soundfile, m_DataDirectory, "MORTIMER", SOUND_MORTIMER);
-		ok &= m_soundslot[SOUND_FOOTSLAM].loadSound(soundfile, m_DataDirectory, "FOOTSLAM", SOUND_FOOTSLAM);
-	}
-
-	std::vector<CSoundChannel>::iterator snd_chnl = m_soundchannel.begin();
-	for( ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
-		snd_chnl->setSoundSlotPtr(m_soundslot);
-
-	return ok;
+	g_pLogFile->textOut("Error! This function shouldn't be called here. It seems that no episode is loaded!");
+	return false;
 }
+
 
 /*  char extractOfExeFile(const std::string& inputpath, int episode)
 
@@ -448,12 +374,3 @@ void CSound::setSoundmode(int freq, bool stereo, Uint16 format)
 			AudioSpec.freq = 44100;
 	}
 }
-
-CSound::~CSound() {
-	destroy();
-	if (!m_soundslot.empty())
-		m_soundslot.clear();
-	if (!m_soundchannel.empty())
-		m_soundchannel.clear();
-}
-

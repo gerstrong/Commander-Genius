@@ -14,6 +14,7 @@
 #include "sdl/sound/CSound.h"
 #include "graphics/effects/CColorMerge.h"
 #include "engine/vorticon/CEGAGraphicsVort.h"
+#include "engine/vorticon/CAudioVorticon.h"
 #include "engine/vorticon/CPassiveVort.h"
 #include "engine/vorticon/playgame/CPlayGameVorticon.h"
 
@@ -269,6 +270,7 @@ bool CGameControl::loadResources(Uint8 flags)
 		if( (flags & LOADSND) == LOADSND )
 		{
 			// Load the sound data
+			g_pSound->Derive<CAudioVorticon>();
 			g_pSound->setGameData(ExeFile);
 			g_pSound->loadSoundData(ExeFile);
 		}
@@ -287,9 +289,7 @@ bool CGameControl::loadResources(Uint8 flags)
 
 			m_EGAGraphics = new galaxy::CEGAGraphicsGalaxy(ExeFile); // Path is relative to the data directory
 			if(!m_EGAGraphics)
-			{
 				return false;
-			}
 
 			m_EGAGraphics->loadData();
 		}

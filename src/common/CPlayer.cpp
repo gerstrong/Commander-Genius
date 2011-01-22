@@ -518,7 +518,7 @@ void CPlayer::InertiaAndFriction_X()
 		}
 		else
 		{
-			friction_rate = (!pfalling && !pjumping) ? PFRICTION_RATE_ONGROUND : friction_rate = PFRICTION_RATE_INAIR;
+			friction_rate = (!pfalling && !pjumping) ? PFRICTION_RATE_ONGROUND : PFRICTION_RATE_INAIR;
 		}
 		
 		// and apply friction to xinertia

@@ -8,7 +8,7 @@
 #ifndef CSOUND_H_
 #define CSOUND_H_
 
-#include "../../CSingleton.h"
+#include "CSingleton.h"
 #define g_pSound CSound::Get()
 
 #include <string>
@@ -24,14 +24,11 @@ class CSound : public CSingleton<CSound>
 {
 public:
 	CSound();
-	virtual ~CSound();
 
 	bool init(void);
 	void stop(void);
-	void setGameData(CExeFile &ExeFile);
-	bool loadSoundData(CExeFile &ExeFile);
-	void stopAllSounds(void);
 
+	void stopAllSounds();
 	bool forcedisPlaying(void);
 	char sound_load_all(const std::string& path);
 	void transform_into_logaritmic_sound(int *pcmstream, int len);
@@ -55,9 +52,12 @@ public:
 
 	void setSoundmode(int freq, bool stereo, Uint16 format);
 
+	void setGameData(CExeFile &ExeFile);
+	virtual bool loadSoundData(CExeFile &ExeFile);
+
 	char extractOfExeFile(CExeFile &ExeFile);
 
-private:
+protected:
 	std::vector<CSoundChannel>	m_soundchannel;
 	std::map<int, CSoundSlot>	m_soundslot;
 
@@ -66,14 +66,16 @@ private:
 	SDL_AudioSpec AudioSpec;
 
 	bool m_active;
+    unsigned short m_Episode;
+    std::string m_DataDirectory;
+
+private:
 	unsigned short m_mixing_channels;
 	Uint8 m_MusicVolume;
 	Uint8 m_SoundVolume;
 
-    Uint8 *m_MixedForm;			// Mainly used by the callback function. Declared once and allocated
+    Uint8 *m_pMixedForm;			// Mainly used by the callback function. Declared once and allocated
 
-    unsigned short m_Episode;
-    std::string m_DataDirectory;
 };
 
 #endif /* CSOUND_H_ */
