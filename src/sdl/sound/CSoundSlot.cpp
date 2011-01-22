@@ -61,35 +61,26 @@ bool CSoundSlot::loadSound(const std::string& fname, const std::string& path, co
 		///
 
 		Uint8 *buf_ptr = buffer+0x6;
-		//fseek(fp, 0x6, SEEK_SET);
 
 		nr_of_sounds = READWORD(buf_ptr);
 
 		for(int j=0; j<nr_of_sounds || (buf_ptr-buffer < size) ; j++)
 		{
 			buf_ptr = buffer+curheader;
-			//fseek(fp, curheader, SEEK_SET);
 			offset = READWORD(buf_ptr);
-			//offset = fgeti(fp);
 			priority = *buf_ptr++;
-			//priority = fgetc(fp);
 			garbage = *buf_ptr++;
-			//garbage = fgetc(fp);
 
-			//for(int i=0;i<12;i++) name[i] = fgetc(fp);
 			for(int i=0;i<12;i++) name[i] = *buf_ptr++;
 			if (name == searchname)
 			{
-				//fseek(fp, offset, SEEK_SET);
 				buf_ptr = buffer+offset;
 
 				signed int sample;
-				// Read the file and convert it into waveform
 				std::vector<unsigned int> waveform;
 				do
 				{
 					sample = READWORD(buf_ptr);
-					//sample = fgeti(fp);
 					waveform.push_back( (sample != 0x0000 && sample != 0xFFFF) ? (0x1234DD/sample) : sample );
 				}while (sample != 0xffff);
 
@@ -105,7 +96,6 @@ bool CSoundSlot::loadSound(const std::string& fname, const std::string& path, co
 
 				return true;
 			}
-
 			curheader += 0x10;
 		}
 
