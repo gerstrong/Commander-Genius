@@ -24,7 +24,14 @@ mp_option(p_option),
 m_restartVideo(restartVideo),
 m_profileselection(0)
 {
-	CSettingsMenu::CSettingsMenu( dlgtheme, ExeFile, p_option, restartVideo );
+	mp_Dialog = new CDialog(13, 7, INPUT_MODE_UP_DOWN,m_dlg_theme);
+
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Graphics");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, "Audio");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, "Options");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Controls");
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "Profile");
+
 	m_selection = selection;
 }
 
