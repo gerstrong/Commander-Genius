@@ -55,8 +55,6 @@ public:
 	void setGameData(CExeFile &ExeFile);
 	virtual bool loadSoundData(CExeFile &ExeFile);
 
-	char extractOfExeFile(CExeFile &ExeFile);
-
 protected:
 	std::vector<CSoundChannel>	m_soundchannel;
 	std::map<int, CSoundSlot>	m_soundslot;

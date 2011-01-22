@@ -14,6 +14,8 @@ class CAudioVorticon : public CSound {
 public:
 	void setGameData(CExeFile &ExeFile);
 	bool loadSoundData(CExeFile &ExeFile);
+
+	char extractOfExeFile(CExeFile &ExeFile);
 };
 
 #endif /* CAUDIOVORTICON_H_ */
