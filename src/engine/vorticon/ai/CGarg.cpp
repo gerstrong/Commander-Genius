@@ -18,7 +18,7 @@ movedir(0),
 detectedPlayer(0),
 detectedPlayerIndex(0),
 m_Player(m_vec_Player),
-m_hardmode(p_map->m_Difficulty>2)
+m_hardmode(p_map->m_Difficulty > 2)
 {
 	canbezapped = true;
 	if(mp_Map->m_Difficulty > 2)
@@ -56,7 +56,7 @@ void CGarg::process()
 			movedir = LEFT;
 
 		// Compute the speed
-		xinertia = (m_hardmode) ? GARG_WALK_SPEED : GARG_WALK_SPEED_FAST;
+		xinertia = (m_hardmode) ? GARG_WALK_SPEED_FAST : GARG_WALK_SPEED;
 
 		// Set the correct speed according to direction
 		if(movedir == LEFT)
