@@ -8,16 +8,40 @@
 #include "CHuffman.h"
 #include <cstring>
 
-CHuffman::CHuffman()
-{
-	// TODO Auto-generated constructor stub
+#define DICT_SIG_BYTES  6
+const uint8_t DICTSIG[DICT_SIG_BYTES] = { 0xFD, 0x01, 0x00, 0x00, 0x00, 0x00 };
 
+bool CHuffman::readDictionaryNumber( const CExeFile& ExeFile, const int dictnum )
+{
+	uint8_t dictnumleft = dictnum;
+    uint8_t *data_ptr = ExeFile.getRawData();
+    uint8_t *data_ptr_head = ExeFile.getHeaderData();
+
+    for( Uint32 i=0; i<ExeFile.getExeDataSize() ; i++ )
+    {
+        if( memcmp(data_ptr,DICTSIG, DICT_SIG_BYTES) == 0 )
+        {
+        	if(dictnumleft == 0)
+        	{
+        		uint8_t *dictdata = data_ptr-(DICT_SIZE*sizeof(nodestruct))+DICT_SIG_BYTES;
+        		const Uint32 size = DICT_SIZE*sizeof(nodestruct);
+        		memcpy(m_nodes, dictdata, size);
+        		return true;
+        	}
+        	dictnumleft--;
+        }
+        data_ptr++;
+    }
+    return false;
 }
 
-void CHuffman::readDictionary( byte *p_exedata, unsigned long offset)
+
+void CHuffman::readDictionaryAt( byte *p_exedata, unsigned long offset)
 {
 	p_exedata += offset;
-	memcpy(m_nodes, p_exedata,255*sizeof(nodestruct));
+	//const Uint32 size = 255*sizeof(nodestruct);
+	const Uint32 size = DICT_SIZE*sizeof(nodestruct);
+	memcpy(m_nodes, p_exedata, size);
 }
 
 /* Expand huffman-compressed input file into output buffer */
@@ -63,9 +87,4 @@ void CHuffman::expand(byte *pin, byte *pout, unsigned long inlen, unsigned long 
 
 	}
 	while(incnt < inlen && outcnt < outlen);
-}
-
-CHuffman::~CHuffman()
-{
-	// TODO Auto-generated destructor stub
 }

@@ -12,7 +12,10 @@
 #ifndef CHUFFMAN_H_
 #define CHUFFMAN_H_
 
-#include "../TypeDefinitions.h"
+#include "fileio/TypeDefinitions.h"
+#include "fileio/CExeFile.h"
+
+#define DICT_SIZE       256
 
 struct nodestruct{
 	unsigned short bit0;
@@ -26,17 +29,14 @@ struct compstruct{
 class CHuffman
 {
 public:
-	CHuffman();
-
-	void readDictionary( byte *p_exedata, unsigned long offset);
+	bool readDictionaryNumber( const CExeFile& ExeFile, const int dictnum );
+	void readDictionaryAt( byte *p_exedata, unsigned long offset);
 	void expand(byte *pin, byte *pout, unsigned long inlen, unsigned long outlen);
-
-	virtual ~CHuffman();
 
 private:
 
-	nodestruct m_nodes[255];
-	compstruct m_comptable[256];
+	nodestruct m_nodes[256];
+	//compstruct m_comptable[256];
 };
 
 #endif /* CHUFFMAN_H_ */

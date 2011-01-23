@@ -22,12 +22,12 @@ m_ExeFile(ExeFile)
 bool CAudioGalaxy::loadSoundData()
 {
 	// Read the embedded AUDIODICT
-	const int episode = m_ExeFile.getEpisode();
-	const std::string datadir = m_ExeFile.getDataDirectory();
+	//const int episode = m_ExeFile.getEpisode();
+	//const std::string datadir = m_ExeFile.getDataDirectory();
 
-	Uint8* AudioDict_Ptr = NULL;
-	Uint8* AudioHed_Ptr = NULL;
-	Uint8* AudioData_Ptr = NULL;
+	//Uint8* AudioDict_Ptr = NULL;
+	//Uint8* AudioHed_Ptr = NULL;
+	//Uint8* AudioData_Ptr = NULL;
 
 /*	if( episode == 4 )
 	{

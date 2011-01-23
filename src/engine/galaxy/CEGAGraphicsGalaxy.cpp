@@ -183,7 +183,7 @@ void CEGAGraphicsGalaxy::extractPicture(SDL_Surface *sfc,
 		bool masked)
 {
 	if(SDL_MUSTLOCK(sfc)) SDL_LockSurface(sfc);
-	SDL_FillRect(sfc, NULL, 0x00);
+	SDL_FillRect(sfc, NULL, 0x0);
 
 	if(!data.empty())
 	{
@@ -378,7 +378,8 @@ bool CEGAGraphicsGalaxy::begin()
 		return false;
 
 	// We need the EGADICT. Read it to our structure of Huffman, he needs it!
-	Huffman.readDictionary(p_data, exeheaderlen + EpisodeInfo[ep].OffEgaDict);
+	//Huffman.readDictionaryAt(p_data, exeheaderlen + EpisodeInfo[ep].OffEgaDict);
+	Huffman.readDictionaryNumber( m_Exefile, 0 );
 
 	// Now we go to EGAHEAD
 	// TODO: Implement a structure which will look for the files first and take them if possible

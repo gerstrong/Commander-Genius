@@ -9,6 +9,7 @@
 #define CMUSIC_H_
 
 #include "vorbis/oggsupport.h"
+#include "fileio/CExeFile.h"
 
 enum musicformat
 {
@@ -43,6 +44,7 @@ public:
 	void stop(void);
 	void readBuffer(Uint8* buffer, size_t length); // Reads the next chunk of the ogg stream
 	bool LoadfromMusicTable(const std::string &gamepath, const std::string &levelfilename);
+	bool LoadfromMusicTable(const CExeFile& Exefile, const int level);
 
 	int playing(void){return playmode;}
 

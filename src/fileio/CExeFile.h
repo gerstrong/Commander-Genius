@@ -26,12 +26,12 @@ public:
 	char getEpisode() const;
 	std::string getDataDirectory() const;
 	std::string getFileName() { return m_filename; }
-	size_t getExeDataSize();
+	size_t getExeDataSize() const;
 
 	bool readData(const char episode, const std::string& datadirectory);
 	int getEXEVersion();
 	int getEXECrc();
-	bool readExeImageSize(unsigned char *p_data_start, unsigned long *imglen, unsigned long *headerlen);
+	bool readExeImageSize(unsigned char *p_data_start, unsigned long *imglen, unsigned long *headerlen) const;
 	
 	unsigned char* getRawData() const;
 	unsigned char* getHeaderData() const;

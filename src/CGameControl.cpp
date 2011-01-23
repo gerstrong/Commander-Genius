@@ -301,7 +301,7 @@ bool CGameControl::loadResources(Uint8 flags)
 		if( (flags & LOADSND) == LOADSND )
 		{
 			// Load the sound data
-			// TODO:
+			g_pSound->loadSoundData(ExeFile);
 		}
 	}
 	return true;
