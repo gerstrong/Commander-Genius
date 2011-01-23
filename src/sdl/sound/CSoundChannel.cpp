@@ -216,7 +216,7 @@ void CSoundChannel::transintoStereoChannels(T* waveform, const Uint32 len)
 		// balance the left channel.
 		for( Uint32 index = 0 ; index < length ; )
 		{
-			// balance here!
+			/// balance here!
 			// first the left channel
 			Pulse32 = waveform[index] - Silence;
 			Pulse32 *= (129 - balance);

@@ -10,8 +10,18 @@
 
 #include <SDL.h>
 #include <map>
-#include "CSoundSlot.h"
-#include "sounds.h"
+#include "common/CAudioResources.h"
+
+// sound play modes
+// start playing sound now, unless a higher priority sound is playing
+enum SoundPlayMode{
+PLAY_NOW,
+// will not restart the sound if it is already playing.
+PLAY_NORESTART,
+// plays the sound regardless of priority, and does not allow any other
+// sounds to play until it completes.
+PLAY_FORCE
+};
 
 // 8 bit sound
 #define WAVEFORM_VOLUME_8	5

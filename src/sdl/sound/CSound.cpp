@@ -21,10 +21,10 @@
 #define SAFE_DELETE_ARRAY(x) if(x) delete[] x; x=NULL;
 
 // define a callback function we can work with
-void CCallback(void *unused, Uint8 *stream, int len)
+inline static void CCallback(void *unused, Uint8 *stream, int len)
 {
     // let it call a method on my (singleton) sound object
-    g_pSound->callback(unused, stream, len);
+    CSound::GetNoPtrChk()->callback(unused, stream, len);
 }
 
 CSound::CSound() :
@@ -70,7 +70,7 @@ bool CSound::init(void)
 	AudioSpec.callback = CCallback;
 	AudioSpec.userdata = NULL;
 
-	/* Initialize variables */
+	// Initialize variables
 	if( SDL_OpenAudio(desired, obtained) < 0 )
 	{
 		g_pLogFile->ftextOut("SoundDrv_Start(): Couldn't open audio: %s<br>", SDL_GetError());

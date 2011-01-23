@@ -4,9 +4,8 @@
  *  Created on: 19.04.2009
  *      Author: gerstrong
  *
- *  Modified on: 22.01.2011
- *  	Now we can reload that class and overload it
- *  	with derived class. For the CSound class it will be used the first time.
+ *  Modified on: 23.01.2011
+ *  	GetNoPtrChk get. Only use that function in extreme cases.
  */
 
 #ifndef CSINGLETON_H_
@@ -23,6 +22,12 @@ protected:
 	
 public:
 	//CSingleton();
+
+	inline static T* GetNoPtrChk()
+	{
+		return (m_pSingleton);
+	}
+
 	inline static T* Get()
 	{
 		if(!m_pSingleton)
