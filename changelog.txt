@@ -1,6 +1,17 @@
 Commander Genius Release :
 ==========================
 
+v0.3.3:
+-------
+- New audio system/manager
+- Vorticon can also open and play IMF Files for music
+- Fixes a whole bunch of bugs
+- Savegame system should work better
+- On embedded systems the save state is written automatically putting date and level number
+- more space for name in the save/load game section
+- Small performance improvements
+- Better Stereo Sound!
+
 v0.3.2.5:
 ---------
 - Keen now can climb poles (Galaxy)

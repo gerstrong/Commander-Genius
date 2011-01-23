@@ -13,15 +13,14 @@
 
 class CAudioVorticon : public CAudioResources {
 public:
-
 	CAudioVorticon(const CExeFile &ExeFile, const SDL_AudioSpec &AudioSpec);
 
 	bool loadSoundData();
 	void unloadSound();
 
+private:
 	Uint8* loadSoundStream(Uint32 &buffer_size, Uint8* exedata);
 
-private:
 	const CExeFile &m_ExeFile;
 };
 

@@ -14,17 +14,19 @@
 #include "FindFile.h"
 #include "sdl/sound/CMusic.h"
 #include "sdl/sound/Mixer.h"
+
 #include "engine/vorticon/CAudioVorticon.h"
+#include "engine/galaxy/CAudioGalaxy.h"
 
 #include <fstream>
 
 #define SAFE_DELETE_ARRAY(x) if(x) delete[] x; x=NULL;
 
 // define a callback function we can work with
-void CCallback(void *unused, Uint8 *stream, int len)
+inline static void CCallback(void *unused, Uint8 *stream, int len)
 {
     // let it call a method on my (singleton) sound object
-    g_pSound->callback(unused, stream, len);
+    CSound::GetNoPtrChk()->callback(unused, stream, len);
 }
 
 CSound::CSound() :
@@ -70,7 +72,7 @@ bool CSound::init(void)
 	AudioSpec.callback = CCallback;
 	AudioSpec.userdata = NULL;
 
-	/* Initialize variables */
+	// Initialize variables
 	if( SDL_OpenAudio(desired, obtained) < 0 )
 	{
 		g_pLogFile->ftextOut("SoundDrv_Start(): Couldn't open audio: %s<br>", SDL_GetError());
@@ -196,8 +198,6 @@ bool CSound::forcedisPlaying(void)
 	return false;
 }
 
-int maxval = 0;
-
 void CSound::callback(void *unused, Uint8 *stream, int len)
 {
     if (g_pMusicPlayer->playing() == PLAY_MODE_PLAY)
@@ -280,8 +280,11 @@ bool CSound::loadSoundData(const CExeFile &ExeFile)
 		m_pAudioRessources = new CAudioVorticon(ExeFile, AudioSpec);
 		return(m_pAudioRessources->loadSoundData());
 	}
-	//else if(ExeFile.getEpisode() >= 4 && ExeFile.getEpisode() <= 7) // Galaxy based Keengame
-	//{}
+	else if(ExeFile.getEpisode() >= 4 && ExeFile.getEpisode() <= 7) // Galaxy based Keengame
+	{
+		m_pAudioRessources = new CAudioGalaxy(ExeFile, AudioSpec);
+		return(m_pAudioRessources->loadSoundData());
+	}
 
 	return false;
 }

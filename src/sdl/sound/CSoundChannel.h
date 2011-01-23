@@ -10,8 +10,18 @@
 
 #include <SDL.h>
 #include <map>
-#include "CSoundSlot.h"
-#include "sounds.h"
+#include "common/CAudioResources.h"
+
+// sound play modes
+// start playing sound now, unless a higher priority sound is playing
+enum SoundPlayMode{
+PLAY_NOW,
+// will not restart the sound if it is already playing.
+PLAY_NORESTART,
+// plays the sound regardless of priority, and does not allow any other
+// sounds to play until it completes.
+PLAY_FORCE
+};
 
 // 8 bit sound
 #define WAVEFORM_VOLUME_8	5
@@ -47,7 +57,8 @@ public:
 	void readWaveform(CSoundSlot *pSndSlot, Uint8* waveform, int len, Uint8 channels, int frequency);
 	template <typename T>
 	void generateWaveform(T *waveform, CSoundSlot &SndSlot, unsigned int len, int frequency, bool stereo );
-	void transintoStereoChannels(Uint8* waveform, unsigned int len);
+	template <typename T>
+	void transintoStereoChannels(T* waveform, const Uint32 len);
 
 	short getBalance() { return m_balance; }
 	void setBalance(short value) { m_balance = value; }
