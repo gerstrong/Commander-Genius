@@ -14,9 +14,7 @@
 CAudioVorticon::CAudioVorticon(const CExeFile &ExeFile, const SDL_AudioSpec &AudioSpec) :
 CAudioResources(AudioSpec),
 m_ExeFile(ExeFile)
-{
-
-}
+{}
 
 /**
 	\brief This will load the Audio into the buffer from vorticon based keen games

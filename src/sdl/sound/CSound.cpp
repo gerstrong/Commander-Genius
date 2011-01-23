@@ -14,7 +14,9 @@
 #include "FindFile.h"
 #include "sdl/sound/CMusic.h"
 #include "sdl/sound/Mixer.h"
+
 #include "engine/vorticon/CAudioVorticon.h"
+#include "engine/galaxy/CAudioGalaxy.h"
 
 #include <fstream>
 
@@ -196,8 +198,6 @@ bool CSound::forcedisPlaying(void)
 	return false;
 }
 
-int maxval = 0;
-
 void CSound::callback(void *unused, Uint8 *stream, int len)
 {
     if (g_pMusicPlayer->playing() == PLAY_MODE_PLAY)
@@ -280,8 +280,11 @@ bool CSound::loadSoundData(const CExeFile &ExeFile)
 		m_pAudioRessources = new CAudioVorticon(ExeFile, AudioSpec);
 		return(m_pAudioRessources->loadSoundData());
 	}
-	//else if(ExeFile.getEpisode() >= 4 && ExeFile.getEpisode() <= 7) // Galaxy based Keengame
-	//{}
+	else if(ExeFile.getEpisode() >= 4 && ExeFile.getEpisode() <= 7) // Galaxy based Keengame
+	{
+		m_pAudioRessources = new CAudioGalaxy(ExeFile, AudioSpec);
+		return(m_pAudioRessources->loadSoundData());
+	}
 
 	return false;
 }
