@@ -47,7 +47,8 @@ public:
 	void readWaveform(CSoundSlot *pSndSlot, Uint8* waveform, int len, Uint8 channels, int frequency);
 	template <typename T>
 	void generateWaveform(T *waveform, CSoundSlot &SndSlot, unsigned int len, int frequency, bool stereo );
-	void transintoStereoChannels(Uint8* waveform, unsigned int len);
+	template <typename T>
+	void transintoStereoChannels(T* waveform, const Uint32 len);
 
 	short getBalance() { return m_balance; }
 	void setBalance(short value) { m_balance = value; }

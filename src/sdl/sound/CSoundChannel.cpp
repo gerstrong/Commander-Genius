@@ -198,34 +198,36 @@ void CSoundChannel::generateWaveform(T *waveform, CSoundSlot &SndSlot, unsigned 
 	memcpy(waveform, &WaveBuffer[0],len*sizeof(T));
 }
 
-// This program reads the balance information and balances the stereo sound
-void CSoundChannel::transintoStereoChannels(Uint8* waveform, unsigned int len)
+/** \brief This program reads the balance information and balances the stereo sound
+ * 	\param waveform	pass it as 8-bit or 16-bit Waveform pointer depeding on what depth you have
+ *  \param len 		length in bytes of the waveform
+ */
+template <typename T>
+void CSoundChannel::transintoStereoChannels(T* waveform, const Uint32 len)
 {
 	if(m_balance != 0) // Because, if it is not zero, there is no balance, and waves must be adapted
 	{
 		// -127 is only for the left speaker, while 127 is for the right speaker. 0 Is center
-		
-		unsigned int index;
-		float f_value; // Needed for better calculation when mixing the stereo channels
+		Sint32 Pulse32;
+		const Sint32 Silence = m_AudioSpec.silence;
+		const Sint32 balance = m_balance;
+		const Uint32 length = len/sizeof(T);
 		
 		// balance the left channel.
-		for( index = 0 ; index < len-1 ; index += 2 )
+		for( Uint32 index = 0 ; index < length ; )
 		{
 			// balance here!
-			f_value = (127 - (m_balance)) * ( waveform[index] - m_AudioSpec.silence );
-			f_value /= 127 ;
-			if(m_AudioSpec.silence + f_value < 255)
-				waveform[index] = m_AudioSpec.silence + f_value;
-		}
+			// first the left channel
+			Pulse32 = waveform[index] - Silence;
+			Pulse32 *= (129 - balance);
+			Pulse32 >>= 8;
+			waveform[index++] = Pulse32 + Silence;
 
-		// balance the right channel.
-		for( index = 1 ; index < len; index += 2 )
-		{
-			// balance here!
-			f_value = (127 + (m_balance)) * ( waveform[index] - m_AudioSpec.silence );
-			f_value /= 127 ;
-			if(m_AudioSpec.silence + f_value < 255)
-				waveform[index] = m_AudioSpec.silence + f_value;
+			// then the right channel
+			Pulse32 = waveform[index] - Silence;
+			Pulse32 *= (129 + balance);
+			Pulse32 >>= 8;
+			waveform[index++] = Pulse32 + Silence;
 		}
 	}
 }
@@ -256,18 +258,18 @@ void CSoundChannel::readWaveform(CSoundSlot *pSndSlot, Uint8* waveform, int len,
      	else
      	{
 			if ( m_AudioSpec.format == AUDIO_U16 || m_AudioSpec.format == AUDIO_S16 )
-			{
 				generateWaveform( (Sint16*) (void *) waveform, SndSlot,  len, frequency, (channels==2) ? true : false );
-			}
 			else
-			{
 				generateWaveform( (Uint8*) waveform, SndSlot, len, frequency, (channels==2) ? true : false );
-			}
      	}
 		
-    	// TODO: Why only the AUDIO_U8 Format? Check!!!
-    	if(channels == 2 && m_AudioSpec.format == AUDIO_U8)
-			transintoStereoChannels(waveform, len);
+    	if(channels == 2)
+    	{
+    		if(m_AudioSpec.format == AUDIO_U16 || m_AudioSpec.format == AUDIO_S16)
+    			transintoStereoChannels((Sint16*) (void *) waveform, len);
+    		else
+    			transintoStereoChannels(waveform, len);
+    	}
 
     }
 	else
