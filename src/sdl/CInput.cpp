@@ -910,6 +910,11 @@ bool CInput::getHoldedCommand(int command)
 	return retval;
 }
 
+bool CInput::isJoystickAssgmnt(const int player, const int command)
+{
+	return (InputCommand[player][command].joyeventtype == ETYPE_JOYAXIS);
+}
+
 bool CInput::getHoldedCommand(int player, int command)
 {
 	return InputCommand[player][command].active;

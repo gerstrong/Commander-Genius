@@ -15,7 +15,6 @@ bool CHuffman::readDictionaryNumber( const CExeFile& ExeFile, const int dictnum 
 {
 	uint8_t dictnumleft = dictnum;
     uint8_t *data_ptr = ExeFile.getRawData();
-    uint8_t *data_ptr_head = ExeFile.getHeaderData();
 
     for( Uint32 i=0; i<ExeFile.getExeDataSize() ; i++ )
     {
@@ -39,7 +38,6 @@ bool CHuffman::readDictionaryNumber( const CExeFile& ExeFile, const int dictnum 
 void CHuffman::readDictionaryAt( byte *p_exedata, unsigned long offset)
 {
 	p_exedata += offset;
-	//const Uint32 size = 255*sizeof(nodestruct);
 	const Uint32 size = DICT_SIZE*sizeof(nodestruct);
 	memcpy(m_nodes, p_exedata, size);
 }
