@@ -149,8 +149,6 @@
 		2374234711FC849A000EEA5B /* CFlash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11BE11CFF5FB00F60BC8 /* CFlash.cpp */; };
 		2374234811FC849A000EEA5B /* CPixelate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11C011CFF5FB00F60BC8 /* CPixelate.cpp */; };
 		2374234911FC849A000EEA5B /* CVibrate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11C211CFF5FB00F60BC8 /* CVibrate.cpp */; };
-		2374234A11FC849A000EEA5B /* CMusic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11C511CFF5FB00F60BC8 /* CMusic.cpp */; };
-		2374234B11FC849A000EEA5B /* hq_sound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11C711CFF5FB00F60BC8 /* hq_sound.cpp */; };
 		2374234C11FC849A000EEA5B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11CB11CFF5FB00F60BC8 /* main.cpp */; };
 		2374234D11FC849A000EEA5B /* misc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11CD11CFF5FB00F60BC8 /* misc.cpp */; };
 		2374234E11FC849A000EEA5B /* getopt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11D311CFF5FB00F60BC8 /* getopt.cpp */; };
@@ -257,8 +255,6 @@
 		23A1442412A5380E00E894CF /* CSpriteItem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A1442112A5380E00E894CF /* CSpriteItem.cpp */; };
 		23A1442512A5380E00E894CF /* CItemEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A1441F12A5380E00E894CF /* CItemEffect.cpp */; };
 		23A1442612A5380E00E894CF /* CSpriteItem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23A1442112A5380E00E894CF /* CSpriteItem.cpp */; };
-		23BC5B1D12C501CF00ACF229 /* CBullets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23BC5B1B12C501CF00ACF229 /* CBullets.cpp */; };
-		23BC5B1E12C501CF00ACF229 /* CBullets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23BC5B1B12C501CF00ACF229 /* CBullets.cpp */; };
 		23C64A7D11F31D6F0053CA36 /* CWorldMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C64A7B11F31D6F0053CA36 /* CWorldMap.cpp */; };
 		23C64A8111F31D8A0053CA36 /* CPlayerWM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C64A7F11F31D8A0053CA36 /* CPlayerWM.cpp */; };
 		23C64A8411F31D9C0053CA36 /* CAnkhShield.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23C64A8211F31D9C0053CA36 /* CAnkhShield.cpp */; };
@@ -270,7 +266,25 @@
 		23E2A7111217525E00F0CD34 /* CProfilesMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E2A70D1217525E00F0CD34 /* CProfilesMenu.cpp */; };
 		23F2165412871F9500A8842A /* CObjectCollision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23F2165312871F9500A8842A /* CObjectCollision.cpp */; };
 		23F2165512871F9500A8842A /* CObjectCollision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23F2165312871F9500A8842A /* CObjectCollision.cpp */; };
+		63243C7C12ECDB5E00FE8192 /* CAudioResources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63243C7A12ECDB5E00FE8192 /* CAudioResources.cpp */; };
+		63243C7D12ECDB5E00FE8192 /* CAudioResources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63243C7A12ECDB5E00FE8192 /* CAudioResources.cpp */; };
+		63243C8012ECDB6C00FE8192 /* CAudioGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63243C7E12ECDB6C00FE8192 /* CAudioGalaxy.cpp */; };
+		63243C8112ECDB6C00FE8192 /* CAudioGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63243C7E12ECDB6C00FE8192 /* CAudioGalaxy.cpp */; };
+		6329039E12EB8DF500963705 /* dbopl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6329039C12EB8DF500963705 /* dbopl.cpp */; };
+		6329039F12EB8DF500963705 /* dbopl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6329039C12EB8DF500963705 /* dbopl.cpp */; };
+		632903A612EB8E2600963705 /* CBullets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632903A412EB8E2600963705 /* CBullets.cpp */; };
+		632903A712EB8E2600963705 /* CBullets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632903A412EB8E2600963705 /* CBullets.cpp */; };
+		632903AE12EB8E3900963705 /* CMusic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632903A812EB8E3900963705 /* CMusic.cpp */; };
+		632903AF12EB8E3900963705 /* hq_sound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632903AA12EB8E3900963705 /* hq_sound.cpp */; };
+		632903B012EB8E3900963705 /* IMFPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632903AC12EB8E3900963705 /* IMFPlayer.cpp */; };
+		632903B112EB8E3900963705 /* CMusic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632903A812EB8E3900963705 /* CMusic.cpp */; };
+		632903B212EB8E3900963705 /* hq_sound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632903AA12EB8E3900963705 /* hq_sound.cpp */; };
+		632903B312EB8E3900963705 /* IMFPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632903AC12EB8E3900963705 /* IMFPlayer.cpp */; };
+		632903C412EB8F3600963705 /* CPreviews.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632903C212EB8F3600963705 /* CPreviews.cpp */; };
+		632903C512EB8F3600963705 /* CPreviews.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632903C212EB8F3600963705 /* CPreviews.cpp */; };
 		63AB8C2F107C62D0001EE22F /* cglogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63AB8C2E107C62D0001EE22F /* cglogo.icns */; };
+		63B29E7012EB9A09004A8B7C /* CAudioVorticon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63B29E6E12EB9A09004A8B7C /* CAudioVorticon.cpp */; };
+		63B29E7112EB9A09004A8B7C /* CAudioVorticon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63B29E6E12EB9A09004A8B7C /* CAudioVorticon.cpp */; };
 		63C72AC71274284A00E9A293 /* ThreadPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63C72AC61274284A00E9A293 /* ThreadPool.cpp */; };
 		63C72AC81274284A00E9A293 /* ThreadPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63C72AC61274284A00E9A293 /* ThreadPool.cpp */; };
 		63CD120311CFF5FC00F60BC8 /* arguments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10A511CFF5FB00F60BC8 /* arguments.cpp */; };
@@ -384,8 +398,6 @@
 		63CD129111CFF5FC00F60BC8 /* CFlash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11BE11CFF5FB00F60BC8 /* CFlash.cpp */; };
 		63CD129211CFF5FC00F60BC8 /* CPixelate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11C011CFF5FB00F60BC8 /* CPixelate.cpp */; };
 		63CD129311CFF5FC00F60BC8 /* CVibrate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11C211CFF5FB00F60BC8 /* CVibrate.cpp */; };
-		63CD129411CFF5FC00F60BC8 /* CMusic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11C511CFF5FB00F60BC8 /* CMusic.cpp */; };
-		63CD129511CFF5FC00F60BC8 /* hq_sound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11C711CFF5FB00F60BC8 /* hq_sound.cpp */; };
 		63CD129611CFF5FC00F60BC8 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11CB11CFF5FB00F60BC8 /* main.cpp */; };
 		63CD129711CFF5FC00F60BC8 /* misc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11CD11CFF5FB00F60BC8 /* misc.cpp */; };
 		63CD129811CFF5FC00F60BC8 /* getopt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD11D311CFF5FB00F60BC8 /* getopt.cpp */; };
@@ -546,8 +558,6 @@
 		23A1442012A5380E00E894CF /* CItemEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CItemEffect.h; sourceTree = "<group>"; };
 		23A1442112A5380E00E894CF /* CSpriteItem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CSpriteItem.cpp; sourceTree = "<group>"; };
 		23A1442212A5380E00E894CF /* CSpriteItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSpriteItem.h; sourceTree = "<group>"; };
-		23BC5B1B12C501CF00ACF229 /* CBullets.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBullets.cpp; sourceTree = "<group>"; };
-		23BC5B1C12C501CF00ACF229 /* CBullets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBullets.h; sourceTree = "<group>"; };
 		23C64A7B11F31D6F0053CA36 /* CWorldMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CWorldMap.cpp; sourceTree = "<group>"; };
 		23C64A7C11F31D6F0053CA36 /* CWorldMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CWorldMap.h; sourceTree = "<group>"; };
 		23C64A7F11F31D8A0053CA36 /* CPlayerWM.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPlayerWM.cpp; sourceTree = "<group>"; };
@@ -571,6 +581,22 @@
 		5048396E09E3307300765E4B /* CommanderGeniusTarget.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = CommanderGeniusTarget.xcconfig; sourceTree = "<group>"; };
 		6304FC3F10E3EAD800307EAC /* CGLogo.bmp */ = {isa = PBXFileReference; explicitFileType = image.bmp; path = CGLogo.bmp; sourceTree = "<group>"; };
 		6304FE8810E429D000307EAC /* HELPTEXT.CKP */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HELPTEXT.CKP; sourceTree = "<group>"; };
+		63243C7A12ECDB5E00FE8192 /* CAudioResources.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAudioResources.cpp; sourceTree = "<group>"; };
+		63243C7B12ECDB5E00FE8192 /* CAudioResources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAudioResources.h; sourceTree = "<group>"; };
+		63243C7E12ECDB6C00FE8192 /* CAudioGalaxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAudioGalaxy.cpp; sourceTree = "<group>"; };
+		63243C7F12ECDB6C00FE8192 /* CAudioGalaxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAudioGalaxy.h; sourceTree = "<group>"; };
+		6329039C12EB8DF500963705 /* dbopl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dbopl.cpp; sourceTree = "<group>"; };
+		6329039D12EB8DF500963705 /* dbopl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dbopl.h; sourceTree = "<group>"; };
+		632903A412EB8E2600963705 /* CBullets.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBullets.cpp; sourceTree = "<group>"; };
+		632903A512EB8E2600963705 /* CBullets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBullets.h; sourceTree = "<group>"; };
+		632903A812EB8E3900963705 /* CMusic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMusic.cpp; sourceTree = "<group>"; };
+		632903A912EB8E3900963705 /* CMusic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMusic.h; sourceTree = "<group>"; };
+		632903AA12EB8E3900963705 /* hq_sound.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hq_sound.cpp; sourceTree = "<group>"; };
+		632903AB12EB8E3900963705 /* hq_sound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hq_sound.h; sourceTree = "<group>"; };
+		632903AC12EB8E3900963705 /* IMFPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IMFPlayer.cpp; sourceTree = "<group>"; };
+		632903AD12EB8E3900963705 /* IMFPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMFPlayer.h; sourceTree = "<group>"; };
+		632903C212EB8F3600963705 /* CPreviews.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPreviews.cpp; sourceTree = "<group>"; };
+		632903C312EB8F3600963705 /* CPreviews.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPreviews.h; sourceTree = "<group>"; };
 		6350F7A51044797300A992D5 /* EGAHEAD.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = EGAHEAD.CK1; sourceTree = "<group>"; };
 		6350F7A61044797300A992D5 /* EGALATCH.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = EGALATCH.CK1; sourceTree = "<group>"; };
 		6350F7A71044797300A992D5 /* EGASPRIT.CK1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = EGASPRIT.CK1; sourceTree = "<group>"; };
@@ -611,6 +637,8 @@
 		638890BE1162A490009810AC /* extratiles.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = extratiles.bmp; sourceTree = "<group>"; };
 		63999E3910D151BA00EDB6CD /* fonts.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = fonts.bmp; sourceTree = "<group>"; };
 		63AB8C2E107C62D0001EE22F /* cglogo.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = cglogo.icns; sourceTree = "<group>"; };
+		63B29E6E12EB9A09004A8B7C /* CAudioVorticon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAudioVorticon.cpp; sourceTree = "<group>"; };
+		63B29E6F12EB9A09004A8B7C /* CAudioVorticon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAudioVorticon.h; sourceTree = "<group>"; };
 		63C72AC51274284A00E9A293 /* ReadWriteLock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadWriteLock.h; sourceTree = "<group>"; };
 		63C72AC61274284A00E9A293 /* ThreadPool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ThreadPool.cpp; sourceTree = "<group>"; };
 		63CB71F511D339BC0069EAC6 /* CK1PATCH.EXE */ = {isa = PBXFileReference; lastKnownFileType = file; path = CK1PATCH.EXE; sourceTree = "<group>"; };
@@ -915,10 +943,6 @@
 		63CD11C111CFF5FB00F60BC8 /* CPixelate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPixelate.h; sourceTree = "<group>"; };
 		63CD11C211CFF5FB00F60BC8 /* CVibrate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CVibrate.cpp; sourceTree = "<group>"; };
 		63CD11C311CFF5FB00F60BC8 /* CVibrate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVibrate.h; sourceTree = "<group>"; };
-		63CD11C511CFF5FB00F60BC8 /* CMusic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMusic.cpp; sourceTree = "<group>"; };
-		63CD11C611CFF5FB00F60BC8 /* CMusic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMusic.h; sourceTree = "<group>"; };
-		63CD11C711CFF5FB00F60BC8 /* hq_sound.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hq_sound.cpp; sourceTree = "<group>"; };
-		63CD11C811CFF5FB00F60BC8 /* hq_sound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hq_sound.h; sourceTree = "<group>"; };
 		63CD11C911CFF5FB00F60BC8 /* Iterator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Iterator.h; sourceTree = "<group>"; };
 		63CD11CA11CFF5FB00F60BC8 /* keen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = keen.h; sourceTree = "<group>"; };
 		63CD11CB11CFF5FB00F60BC8 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
@@ -1110,8 +1134,8 @@
 		23C64A7E11F31D8A0053CA36 /* ai */ = {
 			isa = PBXGroup;
 			children = (
-				23BC5B1B12C501CF00ACF229 /* CBullets.cpp */,
-				23BC5B1C12C501CF00ACF229 /* CBullets.h */,
+				632903A412EB8E2600963705 /* CBullets.cpp */,
+				632903A512EB8E2600963705 /* CBullets.h */,
 				23A1441F12A5380E00E894CF /* CItemEffect.cpp */,
 				23A1442012A5380E00E894CF /* CItemEffect.h */,
 				23A1442112A5380E00E894CF /* CSpriteItem.cpp */,
@@ -1155,6 +1179,15 @@
 				5048396E09E3307300765E4B /* CommanderGeniusTarget.xcconfig */,
 			);
 			name = "Configuration Files";
+			sourceTree = "<group>";
+		};
+		6329039B12EB8DF500963705 /* hardware */ = {
+			isa = PBXGroup;
+			children = (
+				6329039C12EB8DF500963705 /* dbopl.cpp */,
+				6329039D12EB8DF500963705 /* dbopl.h */,
+			);
+			path = hardware;
 			sourceTree = "<group>";
 		};
 		6350F7A11044797300A992D5 /* vfsroot */ = {
@@ -1345,7 +1378,7 @@
 				63CD11A811CFF5FB00F60BC8 /* FindFile.h */,
 				63CD11A911CFF5FB00F60BC8 /* Functors.h */,
 				63CD11AA11CFF5FB00F60BC8 /* graphics */,
-				63CD11C411CFF5FB00F60BC8 /* hqp */,
+				6329039B12EB8DF500963705 /* hardware */,
 				63CD11C911CFF5FB00F60BC8 /* Iterator.h */,
 				63CD11CA11CFF5FB00F60BC8 /* keen.h */,
 				63CD12AB11CFF64A00F60BC8 /* MacMain.m */,
@@ -1379,6 +1412,8 @@
 		63CD10B011CFF5FB00F60BC8 /* common */ = {
 			isa = PBXGroup;
 			children = (
+				63243C7A12ECDB5E00FE8192 /* CAudioResources.cpp */,
+				63243C7B12ECDB5E00FE8192 /* CAudioResources.h */,
 				23F2165312871F9500A8842A /* CObjectCollision.cpp */,
 				23E2A70C1217524300F0CD34 /* ActionFormat.h */,
 				63CD10B111CFF5FB00F60BC8 /* CBehaviorEngine.cpp */,
@@ -1507,11 +1542,13 @@
 		63CD111311CFF5FB00F60BC8 /* galaxy */ = {
 			isa = PBXGroup;
 			children = (
-				23A1441B12A5380100E894CF /* CInventory.cpp */,
-				23A1441C12A5380100E894CF /* CInventory.h */,
+				63243C7E12ECDB6C00FE8192 /* CAudioGalaxy.cpp */,
+				63243C7F12ECDB6C00FE8192 /* CAudioGalaxy.h */,
 				23C64A7E11F31D8A0053CA36 /* ai */,
 				63CD111411CFF5FB00F60BC8 /* CEGAGraphicsGalaxy.cpp */,
 				63CD111511CFF5FB00F60BC8 /* CEGAGraphicsGalaxy.h */,
+				23A1441B12A5380100E894CF /* CInventory.cpp */,
+				23A1441C12A5380100E894CF /* CInventory.h */,
 				2332378E120EBBF600915252 /* CLevelPlay.cpp */,
 				2332378F120EBBF600915252 /* CLevelPlay.h */,
 				63CD111611CFF5FB00F60BC8 /* CMapLoaderGalaxy.cpp */,
@@ -1541,6 +1578,8 @@
 		63CD112111CFF5FB00F60BC8 /* infoscenes */ = {
 			isa = PBXGroup;
 			children = (
+				632903C212EB8F3600963705 /* CPreviews.cpp */,
+				632903C312EB8F3600963705 /* CPreviews.h */,
 				63CD112211CFF5FB00F60BC8 /* CAbout.cpp */,
 				63CD112311CFF5FB00F60BC8 /* CAbout.h */,
 				63CD112411CFF5FB00F60BC8 /* CCredits.cpp */,
@@ -1571,6 +1610,8 @@
 		63CD113411CFF5FB00F60BC8 /* vorticon */ = {
 			isa = PBXGroup;
 			children = (
+				63B29E6E12EB9A09004A8B7C /* CAudioVorticon.cpp */,
+				63B29E6F12EB9A09004A8B7C /* CAudioVorticon.h */,
 				63CD113511CFF5FB00F60BC8 /* ai */,
 				63CD115D11CFF5FB00F60BC8 /* CEGAGraphicsVort.cpp */,
 				63CD115E11CFF5FB00F60BC8 /* CEGAGraphicsVort.h */,
@@ -1790,17 +1831,6 @@
 			path = effects;
 			sourceTree = "<group>";
 		};
-		63CD11C411CFF5FB00F60BC8 /* hqp */ = {
-			isa = PBXGroup;
-			children = (
-				63CD11C511CFF5FB00F60BC8 /* CMusic.cpp */,
-				63CD11C611CFF5FB00F60BC8 /* CMusic.h */,
-				63CD11C711CFF5FB00F60BC8 /* hq_sound.cpp */,
-				63CD11C811CFF5FB00F60BC8 /* hq_sound.h */,
-			);
-			path = hqp;
-			sourceTree = "<group>";
-		};
 		63CD11D211CFF5FB00F60BC8 /* scale2x */ = {
 			isa = PBXGroup;
 			children = (
@@ -1842,12 +1872,18 @@
 		63CD11E811CFF5FB00F60BC8 /* sound */ = {
 			isa = PBXGroup;
 			children = (
+				632903A812EB8E3900963705 /* CMusic.cpp */,
+				632903A912EB8E3900963705 /* CMusic.h */,
 				63CD11E911CFF5FB00F60BC8 /* CSound.cpp */,
 				63CD11EA11CFF5FB00F60BC8 /* CSound.h */,
 				63CD11EB11CFF5FB00F60BC8 /* CSoundChannel.cpp */,
 				63CD11EC11CFF5FB00F60BC8 /* CSoundChannel.h */,
 				63CD11ED11CFF5FB00F60BC8 /* CSoundSlot.cpp */,
 				63CD11EE11CFF5FB00F60BC8 /* CSoundSlot.h */,
+				632903AA12EB8E3900963705 /* hq_sound.cpp */,
+				632903AB12EB8E3900963705 /* hq_sound.h */,
+				632903AC12EB8E3900963705 /* IMFPlayer.cpp */,
+				632903AD12EB8E3900963705 /* IMFPlayer.h */,
 				2332377E120EBBCF00915252 /* Mixer.cpp */,
 				2332377F120EBBCF00915252 /* Mixer.h */,
 				23323780120EBBCF00915252 /* Sampling.cpp */,
@@ -2211,8 +2247,6 @@
 				63CD129111CFF5FC00F60BC8 /* CFlash.cpp in Sources */,
 				63CD129211CFF5FC00F60BC8 /* CPixelate.cpp in Sources */,
 				63CD129311CFF5FC00F60BC8 /* CVibrate.cpp in Sources */,
-				63CD129411CFF5FC00F60BC8 /* CMusic.cpp in Sources */,
-				63CD129511CFF5FC00F60BC8 /* hq_sound.cpp in Sources */,
 				63CD129611CFF5FC00F60BC8 /* main.cpp in Sources */,
 				63CD129711CFF5FC00F60BC8 /* misc.cpp in Sources */,
 				63CD129811CFF5FC00F60BC8 /* getopt.cpp in Sources */,
@@ -2289,7 +2323,15 @@
 				23A1441E12A5380100E894CF /* CInventory.cpp in Sources */,
 				23A1442512A5380E00E894CF /* CItemEffect.cpp in Sources */,
 				23A1442612A5380E00E894CF /* CSpriteItem.cpp in Sources */,
-				23BC5B1E12C501CF00ACF229 /* CBullets.cpp in Sources */,
+				6329039E12EB8DF500963705 /* dbopl.cpp in Sources */,
+				632903A612EB8E2600963705 /* CBullets.cpp in Sources */,
+				632903AE12EB8E3900963705 /* CMusic.cpp in Sources */,
+				632903AF12EB8E3900963705 /* hq_sound.cpp in Sources */,
+				632903B012EB8E3900963705 /* IMFPlayer.cpp in Sources */,
+				632903C412EB8F3600963705 /* CPreviews.cpp in Sources */,
+				63B29E7012EB9A09004A8B7C /* CAudioVorticon.cpp in Sources */,
+				63243C7C12ECDB5E00FE8192 /* CAudioResources.cpp in Sources */,
+				63243C8012ECDB6C00FE8192 /* CAudioGalaxy.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2408,8 +2450,6 @@
 				2374234711FC849A000EEA5B /* CFlash.cpp in Sources */,
 				2374234811FC849A000EEA5B /* CPixelate.cpp in Sources */,
 				2374234911FC849A000EEA5B /* CVibrate.cpp in Sources */,
-				2374234A11FC849A000EEA5B /* CMusic.cpp in Sources */,
-				2374234B11FC849A000EEA5B /* hq_sound.cpp in Sources */,
 				2374234C11FC849A000EEA5B /* main.cpp in Sources */,
 				2374234D11FC849A000EEA5B /* misc.cpp in Sources */,
 				2374234E11FC849A000EEA5B /* getopt.cpp in Sources */,
@@ -2487,7 +2527,15 @@
 				23A1441D12A5380100E894CF /* CInventory.cpp in Sources */,
 				23A1442312A5380E00E894CF /* CItemEffect.cpp in Sources */,
 				23A1442412A5380E00E894CF /* CSpriteItem.cpp in Sources */,
-				23BC5B1D12C501CF00ACF229 /* CBullets.cpp in Sources */,
+				6329039F12EB8DF500963705 /* dbopl.cpp in Sources */,
+				632903A712EB8E2600963705 /* CBullets.cpp in Sources */,
+				632903B112EB8E3900963705 /* CMusic.cpp in Sources */,
+				632903B212EB8E3900963705 /* hq_sound.cpp in Sources */,
+				632903B312EB8E3900963705 /* IMFPlayer.cpp in Sources */,
+				632903C512EB8F3600963705 /* CPreviews.cpp in Sources */,
+				63B29E7112EB9A09004A8B7C /* CAudioVorticon.cpp in Sources */,
+				63243C7D12ECDB5E00FE8192 /* CAudioResources.cpp in Sources */,
+				63243C8112ECDB6C00FE8192 /* CAudioGalaxy.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
