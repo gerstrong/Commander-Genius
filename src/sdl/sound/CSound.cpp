@@ -14,6 +14,7 @@
 #include "FindFile.h"
 #include "sdl/sound/CMusic.h"
 #include "sdl/sound/Mixer.h"
+#include "engine/vorticon/CAudioVorticon.h"
 
 #include <fstream>
 
@@ -27,9 +28,7 @@ void CCallback(void *unused, Uint8 *stream, int len)
 }
 
 CSound::CSound() :
-m_active(false),
-m_Episode(0),
-m_DataDirectory(""),
+m_pAudioRessources(NULL),
 m_mixing_channels(0),
 m_MusicVolume(SDL_MIX_MAXVOLUME),
 m_SoundVolume(SDL_MIX_MAXVOLUME),
@@ -44,9 +43,15 @@ m_pMixedForm(NULL)		// Mainly used by the callback function. Declared once and a
 	AudioSpec.freq = 44100; // high quality
 }
 
+CSound::~CSound()
+{
+	if(m_pAudioRessources)
+		delete m_pAudioRessources;
+}
+
 bool CSound::init(void)
 {
-	g_pLogFile->ftextOut("Starting sound driver...<br>");
+	g_pLogFile->ftextOut("Starting the sound driver...<br>");
 	char name[256];
 	SDL_AudioSpec *desired, *obtained;
 
@@ -73,7 +78,6 @@ bool CSound::init(void)
 		AudioSpec.channels = 0;
 		AudioSpec.format = 0;
 		AudioSpec.freq = 0;
-		m_active = false;
 		return false;
 	}
 
@@ -114,7 +118,6 @@ bool CSound::init(void)
 	SDL_PauseAudio(0);
 
 	g_pLogFile->ftextOut("Sound System: SDL sound system initialized.<br>");
-	m_active = true;
 
 	return true;
 }
@@ -123,13 +126,10 @@ void CSound::destroy(void)
 {
 	stopAllSounds();
 
-	if (m_active)
-	{
-		SDL_PauseAudio(1);
-		SDL_CloseAudio();
-		m_active = false;
-		m_mixing_channels = 0;
-	}
+	SDL_PauseAudio(1);
+	SDL_CloseAudio();
+	m_mixing_channels = 0;
+
 	if(m_pMixedForm)
 		free(m_pMixedForm);
 	m_pMixedForm = NULL;
@@ -151,13 +151,13 @@ void CSound::stopAllSounds()
 // pauses any currently playing sounds
 void CSound::pauseSound(void)
 {
-	if (m_active) SDL_PauseAudio(1);
+	SDL_PauseAudio(1);
 }
 
 // resumes playing a previously paused sound
 void CSound::resumeSounds(void)
 {
-	if (m_active) SDL_PauseAudio(0);
+	SDL_PauseAudio(0);
 }
 
 // returns true if sound snd is currently playing
@@ -209,7 +209,7 @@ void CSound::callback(void *unused, Uint8 *stream, int len)
 	std::vector<CSoundChannel>::iterator snd_chnl = m_soundchannel.begin();
 	for( ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
    	{
-		snd_chnl->readWaveform(m_pMixedForm, len, AudioSpec.channels, AudioSpec.freq);
+		snd_chnl->readWaveform( m_pAudioRessources->getSlotPtr(), m_pMixedForm, len, AudioSpec.channels, AudioSpec.freq);
    		mixAudio(stream, m_pMixedForm, len, m_SoundVolume, AudioSpec.format);
     }
 }
@@ -242,7 +242,7 @@ void CSound::playStereofromCoord(GameSound snd, char mode, unsigned int xcoordin
 
 void CSound::playStereosound(GameSound snd, char mode, short balance)
 {
-	if(!(m_mixing_channels && m_active)) return;
+	if( m_mixing_channels == 0 ) return;
 
 	std::vector<CSoundChannel>::iterator snd_chnl;
 
@@ -267,24 +267,30 @@ void CSound::playStereosound(GameSound snd, char mode, short balance)
 			if(AudioSpec.channels == 2)
 				snd_chnl->setBalance(balance);
 
-			snd_chnl->enableHighQuality(m_soundslot[snd].isHighQuality());
 			snd_chnl->setupSound( snd, 0, true, 0, (mode==PLAY_FORCE) ? true : false, AudioSpec.format );
 			break;
 		}
 	}
 }
 
-void CSound::setGameData(CExeFile &ExeFile)
+bool CSound::loadSoundData(const CExeFile &ExeFile)
 {
-	m_Episode = ExeFile.getEpisode();
-	m_DataDirectory = ExeFile.getDataDirectory();
+	if(ExeFile.getEpisode() >= 1 && ExeFile.getEpisode() <= 3) // Vorticon based Keengame
+	{
+		m_pAudioRessources = new CAudioVorticon(ExeFile, AudioSpec);
+		return(m_pAudioRessources->loadSoundData());
+	}
+	//else if(ExeFile.getEpisode() >= 4 && ExeFile.getEpisode() <= 7) // Galaxy based Keengame
+	//{}
+
+	return false;
 }
 
-
-bool CSound::loadSoundData(CExeFile &ExeFile)
+void CSound::unloadSoundData()
 {
-	g_pLogFile->textOut("Error! This function shouldn't be called here. It seems that no episode is loaded!");
-	return false;
+	if(m_pAudioRessources)
+		delete m_pAudioRessources;
+	m_pAudioRessources = NULL;
 }
 
 void CSound::setSoundmode(int freq, bool stereo, Uint16 format)

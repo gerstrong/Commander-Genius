@@ -270,8 +270,6 @@ bool CGameControl::loadResources(Uint8 flags)
 		if( (flags & LOADSND) == LOADSND )
 		{
 			// Load the sound data
-			g_pSound->Derive<CAudioVorticon>();
-			g_pSound->setGameData(ExeFile);
 			g_pSound->loadSoundData(ExeFile);
 		}
 
@@ -417,7 +415,9 @@ void CGameControl::process()
 		if(mp_PassiveMode->getchooseGame())
 		{
 			// TODO: Some of game resources are still not cleaned up here!
-			g_pSound->unloadSound();
+			g_pSound->unloadSoundData();
+			SAFE_DELETE(m_EGAGraphics);
+
 			init( GAMELAUNCHER );
 			return;
 		}
@@ -513,7 +513,6 @@ void CGameControl::cleanupAll()
 		delete mp_PlayGame;	mp_PlayGame = NULL;
 	}
 }
-
 
 CGameControl::~CGameControl() {
 	cleanupAll();

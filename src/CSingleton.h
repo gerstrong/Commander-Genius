@@ -31,20 +31,6 @@ public:
 		return (m_pSingleton);
 	}
 	
-	template <typename C>
-	static void Derive()
-	{
-		if(m_pSingleton)
-		{
-			T *pOldSingleton = m_pSingleton;
-			m_pSingleton = new C;
-			*m_pSingleton = *pOldSingleton;
-			delete pOldSingleton;
-		}
-		else
-			m_pSingleton = new C;
-	}
-
 	static void Del()
 	{
 

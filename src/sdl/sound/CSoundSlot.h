@@ -21,9 +21,9 @@ public:
 	bool loadSound(Uint8 *buffer, const Uint32 buf_size, const std::string& path, const std::string& searchname, unsigned int loadnum);
 	void unload();
 	
-	void setpAudioSpec(SDL_AudioSpec *pAudioSpec){ m_pAudioSpec = pAudioSpec; }
+	void setpAudioSpec(const SDL_AudioSpec *pAudioSpec){ m_pAudioSpec = const_cast<SDL_AudioSpec*>(pAudioSpec); }
 	
-	bool isHighQuality(void){ return m_hqsound.enabled; }
+	bool isHighQuality(){ return m_hqsound.enabled; }
 	unsigned int *getSoundData(void){ return m_sounddata; }
 	unsigned int getSoundlength(void) { return m_soundlength; }
 	stHQSound	*getHQSoundPtr(void) { return &m_hqsound; }

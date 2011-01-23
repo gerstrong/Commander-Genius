@@ -16,11 +16,8 @@ m_AudioSpec(AudioSpec)
 	m_sound_timer = 0;
 	m_sound_playing = false;
 	m_waveState = 0;
-	m_hq = false;
 	m_sound_paused = true;
 	m_sound_forced = false;
-	m_pSoundSlot = NULL;
-	
 	m_desiredfreq = 0;     	// current desired frequency in hz
 	m_changerate = 0;      	// frequency in samples (calculated)
 	m_freqtimer = 0;       	// time when to change waveform state
@@ -105,7 +102,7 @@ void CSoundChannel::setupSound(GameSound current_sound,
 
 // generates len bytes of waveform for the channel.
 template <typename T>
-void CSoundChannel::generateWaveform(T *waveform, unsigned int len, int frequency, bool stereo )
+void CSoundChannel::generateWaveform(T *waveform, CSoundSlot &SndSlot, unsigned int len, int frequency, bool stereo )
 { 
 	len /= sizeof(T);	
 	std::vector<T> WaveBuffer(len);
@@ -121,16 +118,14 @@ void CSoundChannel::generateWaveform(T *waveform, unsigned int len, int frequenc
 	// setup so we process a new byte of the sound first time through
 	bool firsttime = true;
 	
-	CSoundSlot& currentSound = m_pSoundSlot[m_current_sound];
-	
 	for(unsigned int index=0 ; index<len ; index++)
 	{
 		if (!m_sound_timer || firsttime)
 		{
 			// get new frequency and compute how fast we have to
 			// change the wave data
-			if(m_sound_ptr < currentSound.getSoundlength())
-				m_desiredfreq = currentSound.getSoundData()[m_sound_ptr];
+			if(m_sound_ptr < SndSlot.getSoundlength())
+				m_desiredfreq = SndSlot.getSoundData()[m_sound_ptr];
 			else
 				m_desiredfreq = 0xffff;
 			
@@ -211,75 +206,44 @@ void CSoundChannel::transintoStereoChannels(Uint8* waveform, unsigned int len)
 		// -127 is only for the left speaker, while 127 is for the right speaker. 0 Is center
 		
 		unsigned int index;
-		float f_value; // Needed for better calculation of mixing the stereo channels
+		float f_value; // Needed for better calculation when mixing the stereo channels
 		
-		if(m_hq)
+		// balance the left channel.
+		for( index = 0 ; index < len-1 ; index += 2 )
 		{
-			// balance the left channel.
-			for( index = 0 ; index < len-1 ; index += 2 )
-			{
-				// balance here!
-				f_value = (127 - (m_balance)) * ( waveform[index] - m_AudioSpec.silence );
-				f_value /= 127 ;
-				if(m_AudioSpec.silence + f_value < 255)
-					waveform[index] = m_AudioSpec.silence + f_value;
-			}
-			
-			// balance the right channel.
-			for( index = 1 ; index < len; index += 2 )
-			{
-				// balance here!
-				f_value = (127 + (m_balance)) * ( waveform[index] - m_AudioSpec.silence );
-				f_value /= 127 ;
-				if(m_AudioSpec.silence + f_value < 255)
-					waveform[index] = m_AudioSpec.silence + f_value;
-			}
+			// balance here!
+			f_value = (127 - (m_balance)) * ( waveform[index] - m_AudioSpec.silence );
+			f_value /= 127 ;
+			if(m_AudioSpec.silence + f_value < 255)
+				waveform[index] = m_AudioSpec.silence + f_value;
 		}
-		else
+
+		// balance the right channel.
+		for( index = 1 ; index < len; index += 2 )
 		{
-			// balance the left channel.
-			for( index = 0 ; index < len-1 ; index += 2 )
-			{
-				// balance here!
-				f_value = ( (127 - (m_balance)) * ( waveform[index] - m_AudioSpec.silence ) ) / 127 ;
+			// balance here!
+			f_value = (127 + (m_balance)) * ( waveform[index] - m_AudioSpec.silence );
+			f_value /= 127 ;
+			if(m_AudioSpec.silence + f_value < 255)
 				waveform[index] = m_AudioSpec.silence + f_value;
-			}
-			
-			// balance the right channel.
-			for( index = 1 ; index < len; index += 2 )
-			{
-				// balance here!
-				f_value = ( (127 + (m_balance)) * ( waveform[index] - m_AudioSpec.silence ) ) / 127 ;
-				waveform[index] = m_AudioSpec.silence + f_value;
-			}
 		}
 	}
 }
 
-void CSoundChannel::readWaveform(Uint8* waveform, int len, Uint8 channels, int frequency)
+void CSoundChannel::readWaveform(CSoundSlot *pSndSlot, Uint8* waveform, int len, Uint8 channels, int frequency)
 {
     if (m_sound_playing)
     {
-    	if(!m_hq) // There is no HQ sound in the buffer
+    	CSoundSlot &SndSlot = pSndSlot[m_current_sound];
+
+    	if(SndSlot.isHighQuality()) // There is no HQ sound in the buffer
      	{
-			if ( m_AudioSpec.format == AUDIO_U16 || m_AudioSpec.format == AUDIO_S16 )
-			{
-				generateWaveform( (Sint16*) (void *) waveform, len, frequency, (channels==2) ? true : false );
-			}
-			else
-			{
-				generateWaveform( (Uint8*) waveform, len, frequency, (channels==2) ? true : false );
-			}
-     	}
-     	else
-     	{
-     		stHQSound& hqsound = *(m_pSoundSlot[m_current_sound].getHQSoundPtr());
+     		stHQSound& hqsound = *(SndSlot.getHQSoundPtr());
 
          	if ((m_sound_ptr + (Uint32)len) >= hqsound.sound_len)
          	{
          		// Fill the rest with silence
          		memset(waveform, m_AudioSpec.silence, len );
-
          		m_sound_ptr = 0;
          		m_sound_playing = false;
          	}
@@ -288,12 +252,23 @@ void CSoundChannel::readWaveform(Uint8* waveform, int len, Uint8 channels, int f
          		memcpy(waveform, hqsound.sound_buffer + m_sound_ptr, len);
              	m_sound_ptr += len;
          	}
+       	}
+     	else
+     	{
+			if ( m_AudioSpec.format == AUDIO_U16 || m_AudioSpec.format == AUDIO_S16 )
+			{
+				generateWaveform( (Sint16*) (void *) waveform, SndSlot,  len, frequency, (channels==2) ? true : false );
+			}
+			else
+			{
+				generateWaveform( (Uint8*) waveform, SndSlot, len, frequency, (channels==2) ? true : false );
+			}
      	}
 		
+    	// TODO: Why only the AUDIO_U8 Format? Check!!!
     	if(channels == 2 && m_AudioSpec.format == AUDIO_U8)
-		{
 			transintoStereoChannels(waveform, len);
-		}
+
     }
 	else
 		memset(waveform, m_AudioSpec.silence, len);

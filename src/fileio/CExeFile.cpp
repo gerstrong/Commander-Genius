@@ -28,10 +28,10 @@ m_rawdata(NULL),
 m_datadirectory("")
 {}
 
-char CExeFile::getEpisode()
+char CExeFile::getEpisode() const
 { return m_episode;	}
 
-std::string CExeFile::getDataDirectory()
+std::string CExeFile::getDataDirectory() const
 { return m_datadirectory;	}
 
 size_t CExeFile::getExeDataSize()
@@ -272,13 +272,13 @@ bool CExeFile::readExeImageSize(unsigned char *p_data_start, unsigned long *imgl
 	return false;
 }
 
-unsigned char* CExeFile::getRawData()
+unsigned char* CExeFile::getRawData() const
 {	return m_rawdata;	}
 
-unsigned char* CExeFile::getHeaderData()
+unsigned char* CExeFile::getHeaderData() const
 {	return m_headerdata;	}
 
-unsigned char* CExeFile::getDSegPtr()
+unsigned char* CExeFile::getDSegPtr() const
 {	return m_data_segment; }
 
 CExeFile::~CExeFile() {

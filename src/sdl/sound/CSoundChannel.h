@@ -44,15 +44,14 @@ public:
 	bool isPlaying() { return m_sound_playing; }
 	bool isForcedPlaying() { return (m_sound_playing && m_sound_forced); }
 	GameSound getCurrentsound() { return m_current_sound; }
-	void readWaveform(Uint8* waveform, int len, Uint8 channels, int frequency);
+	void readWaveform(CSoundSlot *pSndSlot, Uint8* waveform, int len, Uint8 channels, int frequency);
 	template <typename T>
-	void generateWaveform(T *waveform, unsigned int len, int frequency, bool stereo );
+	void generateWaveform(T *waveform, CSoundSlot &SndSlot, unsigned int len, int frequency, bool stereo );
 	void transintoStereoChannels(Uint8* waveform, unsigned int len);
 
 	short getBalance() { return m_balance; }
 	void setBalance(short value) { m_balance = value; }
 	void setFrequencyCorrection(int freq);
-	void enableHighQuality(bool value) { m_hq = value; }
 
 	void setFormat( Uint16 format );
 	void setupSound(GameSound current_sound,
@@ -62,11 +61,8 @@ public:
 					bool sound_forced,
 					Uint16 format);
 
-	void setSoundSlotPtr(CSoundSlot *pSoundSlot) { m_pSoundSlot = pSoundSlot;}
-
 private:
     bool m_sound_playing;           	// true = a sound is currently playing
-    bool m_hq;					   		// true = the sound is high quality
     GameSound m_current_sound;   	    // # of the sound that is currently playing
     Uint32 m_sound_ptr;               	// position within sound that we're at
     unsigned int m_sound_timer;     	// used to slow down the rate of playback
@@ -85,7 +81,6 @@ private:
     Sint32 m_wavein;
     Sint32 m_volume;
 
-    CSoundSlot	*m_pSoundSlot;			// Pointer to the Soundslots of CSound
 };
 
 #endif /* CSOUNDCHANNEL_H_ */
