@@ -379,7 +379,7 @@ bool CEGAGraphicsGalaxy::begin()
 
 	// We need the EGADICT. Read it to our structure of Huffman, he needs it!
 	//Huffman.readDictionaryAt(p_data, exeheaderlen + EpisodeInfo[ep].OffEgaDict);
-	Huffman.readDictionaryNumber( m_Exefile, 0 );
+	Huffman.readDictionaryNumber( m_Exefile, 1 );
 
 	// Now we go to EGAHEAD
 	// TODO: Implement a structure which will look for the files first and take them if possible
