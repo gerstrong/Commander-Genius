@@ -207,10 +207,7 @@ openIMFFile(const std::string& filename, const SDL_AudioSpec& AudioSpec)
     fread( imfdata, sizeof(byte), binsize, fp );
     fclose(fp);
 
-
-    ////////////////////////////////////////////////////////
-
-    readIMFData( imfdata, binsize, AudioSpec );
+    return readIMFData( imfdata, binsize, AudioSpec );
 }
 
 ///////////////////////////////////////////////////////////////////////////

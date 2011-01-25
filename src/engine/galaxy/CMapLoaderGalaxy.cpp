@@ -14,6 +14,7 @@
 #include "fileio/compression/CRLE.h"
 #include "fileio.h"
 #include "sdl/CVideoDriver.h"
+#include "sdl/sound/CMusic.h"
 #include "CLogFile.h"
 #include "engine/CCamera.h"
 
@@ -247,10 +248,11 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
     // Set Scrollbuffer
     g_pVideoDriver->setScrollBuffer(&Map.m_scrollx_buf, &Map.m_scrolly_buf);
 
-    // TODO: Load the Background Music
-    //g_pM
-
-    // TODO: And Play it!
+    // Load the Background Music
+    if(!g_pMusicPlayer->LoadFromAudioCK(m_ExeFile, level))
+    	g_pLogFile->textOut("Warning: The music cannot be played. Check that all the files have been correctly copied!");
+    else
+    	g_pMusicPlayer->play();
 
     return true;
 }

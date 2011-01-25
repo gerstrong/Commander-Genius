@@ -37,6 +37,7 @@ public:
 	CMusic();
 	virtual ~CMusic();
 
+	bool LoadFromAudioCK(const CExeFile& ExeFile, const int level);
 	bool load(const std::string &musicfile);
 	void reload();
 	void unload(void);
@@ -52,6 +53,7 @@ private:
 	int playmode;
 	musicformat m_MusicFormat;
 	std::string usedMusicFile;
+
 #if defined(OGG) || defined(TREMOR)
 	OggVorbis_File  m_oggStream;
 #endif
