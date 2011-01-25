@@ -456,7 +456,7 @@ void CPlayGameVorticon::handleFKeys()
 	}*/
 
 	// Menus will only open, if Keen isn't solid. This means neither dying nor teleporting
-	if(m_Player[0].solid)
+	if( m_Player[0].solid || m_Player[i].m_playingmode )
 	{
 		// F2 - Sound Menu
 		if ( g_pInput->getPressedKey(KF2) )
