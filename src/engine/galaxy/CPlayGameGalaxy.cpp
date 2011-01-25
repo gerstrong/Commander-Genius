@@ -11,6 +11,7 @@
 #include "graphics/CGfxEngine.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/CInput.h"
+#include "sdl/sound/CMusic.h"
 #include "StringUtils.h"
 
 namespace galaxy
@@ -37,6 +38,7 @@ bool CPlayGameGalaxy::init()
 	if(m_Level == 0)
 	{
 		m_WorldMap.setActive(true);
+		m_WorldMap.loadAndPlayMusic();
 		return false;
 	}
 	else
@@ -60,6 +62,7 @@ void CPlayGameGalaxy::process()
 
 		if(mp_Menu->mustClose())
 		{
+			g_pMusicPlayer->play();
 			delete mp_Menu;
 			mp_Menu = NULL;
 		}
@@ -102,6 +105,7 @@ void CPlayGameGalaxy::process()
 		// Start a new level!
 		if(ev->data > 0xC000)
 		{
+			g_pMusicPlayer->stop();
 			m_WorldMap.setActive(false);
 			m_LevelPlay.loadLevel(ev->data - 0xC000);
 			m_LevelPlay.setActive(true);
@@ -110,6 +114,7 @@ void CPlayGameGalaxy::process()
 	}
 	else if( EventContainer.occurredEvent<EventExitLevel>() )
 	{
+		g_pMusicPlayer->stop();
 		m_LevelPlay.setActive(false);
 		m_WorldMap.setActive(true);
 	}
@@ -124,6 +129,7 @@ void CPlayGameGalaxy::processInput()
 	{
 		mp_Menu = new CMenuGalaxy(ACTIVE, m_ExeFile, m_SavedGame, mp_option, m_restartVideo);
 		m_BackgroundBitmap = *g_pGfxEngine->getBitmap("KEENSWATCH");
+		g_pMusicPlayer->stop();
 	}
 }
 

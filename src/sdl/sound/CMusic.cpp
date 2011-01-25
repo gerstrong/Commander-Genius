@@ -34,8 +34,10 @@ m_open(false)
 	m_Audio_cvt.buf = NULL;
 }
 
-/*
- *	This loads the song from a galaxy-format
+/**
+ * \brief 	This function will load music using other dictionaries which are embedded in the Exe File.
+ * 			Only galaxy supports that feature, and the original games will read two files form the EXE-file
+ * 			AUDIOHED and AUDIODICT to get the right tune for the music player.
  */
 bool CMusic::LoadFromAudioCK(const CExeFile& ExeFile, const int level)
 {
@@ -353,67 +355,6 @@ bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &
     	Tablefile.close();
     }
 	return false;
-}
-
-/**
- * \brief 	This function will load music using other dictionaries which are embedded in the Exe File.
- * 			Only galaxy supports that feature, and the original games will read two files form the EXE-file
- * 			AUDIOHED and AUDIODICT to get the right tune for the music player.
- */
-bool CMusic::LoadfromMusicTable(const CExeFile& Exefile, const int level)
-{
-	// Read the embedded AUDIODICT
-	const int episode = Exefile.getEpisode();
-	const std::string datadir = Exefile.getDataDirectory();
-
-	Uint8* AudioDict_Ptr = NULL;
-	Uint32* AudioHed_Ptr = NULL;
-	Uint32* AudioHed_Ptr1 = NULL;
-	Uint32* AudioHed_Ptr2 = NULL;
-	//Uint8* AudioData_Ptr = NULL;
-
-	// The stuff is Huffman compressed. Use an instance for that
-	unsigned long exeheaderlen = 0;
-	unsigned long exeimglen = 0;
-
-	unsigned char *p_data = Exefile.getHeaderData();
-
-	//if(m_episode == 7) exeheaderlen = HEADERLEN_KDREAMS;
-	if(!Exefile.readExeImageSize( p_data, &exeimglen, &exeheaderlen))
-		return false;
-
-	if( episode == 4 )
-	{
-		AudioHed_Ptr = (Uint32*)p_data + exeheaderlen+0x20DF0;	// Audio header
-		AudioHed_Ptr1 = (Uint32*)p_data + exeheaderlen+0x20DF0-0x200;	// Audio header
-		AudioHed_Ptr2 = (Uint32*)p_data + exeheaderlen+0x20DF0+0x200;	// Audio header
-		AudioDict_Ptr = Exefile.getRawData()+0x354F6;	// Audio dictionary
-	}
-	else if ( episode == 5 )
-	{
-		AudioHed_Ptr = (Uint32*)Exefile.getRawData()+0x21C80; 	// Audio header
-		AudioDict_Ptr = Exefile.getRawData()+0x35EC4; 	// Audio dictionary
-	}
-	else if ( episode == 6 )
-	{
-		AudioHed_Ptr = (Uint32*)Exefile.getRawData()+0x20C50; 	// Audio header
-		AudioDict_Ptr = Exefile.getRawData()+0x36EEE; 	// Audio dictionary
-	}
-	else
-	{
-		g_pLogFile->textOut("CAudioGalaxy::loadSoundData(): The function cannot read Audio of that game");
-		return false;
-	}
-
-	// TODO: Read the AUDIOHED
-	g_pLogFile->textOut("CAudioGalaxy::loadSoundData(): Looking for the music file");
-
-	// TODO: Open the Audio File and read the data for it into the sound-slots
-
-	// TODO: Free allocated Stuff
-
-	return false;
-
 }
 
 void CMusic::unload(void)

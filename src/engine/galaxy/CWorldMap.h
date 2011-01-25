@@ -24,6 +24,7 @@ public:
 	void setActive(bool value);
 
 	void init();
+	void loadAndPlayMusic();
 	void process();
 
 	virtual ~CWorldMap();

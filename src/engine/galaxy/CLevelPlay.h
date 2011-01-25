@@ -23,7 +23,7 @@ public:
 	bool isActive();
 	void setActive(bool value);
 
-	bool loadLevel(Uint16 level);
+	bool loadLevel(const Uint16 level);
 
 	void process();
 

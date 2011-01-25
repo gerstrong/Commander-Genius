@@ -9,6 +9,7 @@
 #include "CMapLoaderGalaxy.h"
 #include "sdl/CInput.h"
 #include "sdl/CVideoDriver.h"
+#include "sdl/sound/CMusic.h"
 
 namespace galaxy {
 
@@ -26,7 +27,7 @@ bool CLevelPlay::isActive()
 void CLevelPlay::setActive(bool value)
 {	m_active = value;	}
 
-bool CLevelPlay::loadLevel(Uint16 level)
+bool CLevelPlay::loadLevel(const Uint16 level)
 {
 	// Load the World map level.
 	CMapLoaderGalaxy MapLoader(m_ExeFile, m_ObjectPtr, m_Inventory);

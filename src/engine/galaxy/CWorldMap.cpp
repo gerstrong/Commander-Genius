@@ -9,6 +9,7 @@
 #include "CMapLoaderGalaxy.h"
 #include "sdl/CInput.h"
 #include "sdl/CVideoDriver.h"
+#include "sdl/sound/CMusic.h"
 #include "StringUtils.h"
 
 namespace galaxy {
@@ -46,6 +47,17 @@ void CWorldMap::init()
 
 	m_Map.drawAll();
 }
+
+/**
+ * The map is not loaded again after the game started. But we have to reload its song.
+ */
+void CWorldMap::loadAndPlayMusic()
+{
+	g_pMusicPlayer->stop();
+	if(g_pMusicPlayer->LoadFromAudioCK(m_ExeFile, 0));
+		g_pMusicPlayer->play();
+}
+
 
 void CWorldMap::process()
 {
