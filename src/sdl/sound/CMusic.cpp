@@ -16,6 +16,8 @@
 #include "fileio/compression/CHuffman.h"
 #include <fstream>
 
+static	bool m_busy = false;
+
 
 const Uint32 GalaxySongAssignments[] =
 {
@@ -43,7 +45,6 @@ bool CMusic::LoadFromAudioCK(const CExeFile& ExeFile, const int level)
 {
 	const int episode = ExeFile.getEpisode();
 	m_AudioSpec = g_pSound->getAudioSpec();
-	m_open = false;
 	m_MusicFormat = MF_NONE;
 
 	if(m_AudioSpec.format != 0)
@@ -255,14 +256,28 @@ void CMusic::pause()
 
 void CMusic::stop(void)
 {
-	if( m_open)
+	// wait until the last chunk has been played!
+
+	while(m_busy) ;
+
+	playmode = PLAY_MODE_STOP;
+
+	if( m_open )
 	{
+		m_open = false;
+
 		if(  m_MusicFormat == MF_IMF )
+		{
+			m_MusicFormat == MF_NONE;
 			SD_Shutdown();
+		}
 
 #if defined(OGG) || defined(TREMOR)
 		if(  m_MusicFormat == MF_OGG )
+		{
+			m_MusicFormat == MF_NONE;
 			cleanupOGG(m_oggStream);
+		}
 #endif
 	}
 
@@ -271,14 +286,14 @@ void CMusic::stop(void)
 
 	m_Audio_cvt.buf = NULL;
 
-	playmode = PLAY_MODE_STOP;
-	m_open = false;
 }
 
 void CMusic::readBuffer(Uint8* buffer, size_t length) // length only refers to the part(buffer) that has to be played
 {
-	if(playmode != PLAY_MODE_PLAY)
+	if( playmode != PLAY_MODE_PLAY || !m_open )
 		return;
+
+	m_busy = true;
 
 	if(m_MusicFormat == MF_IMF)
 	{
@@ -325,6 +340,7 @@ void CMusic::readBuffer(Uint8* buffer, size_t length) // length only refers to t
 #endif
 	}
 
+	m_busy = false;
 }
 
 bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &levelfilename)

@@ -35,6 +35,14 @@ bool CLevelPlay::loadLevel(const Uint16 level)
 	m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
 	MapLoader.loadMap(m_Map, level);
 
+    // Load the Background Music
+	g_pMusicPlayer->stop();
+
+    if(!g_pMusicPlayer->LoadFromAudioCK(m_ExeFile, level))
+    	g_pLogFile->textOut("Warning: The music cannot be played. Check that all the files have been correctly copied!");
+    else
+    	g_pMusicPlayer->play();
+
 	m_Map.drawAll();
 	return true;
 }
