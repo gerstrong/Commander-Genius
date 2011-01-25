@@ -9,6 +9,7 @@
 #define __ID_SD__
 
 #include <string>
+#include "fileio/TypeDefinitions.h"
 #include <SDL.h>
 
 //      Register addresses
@@ -31,8 +32,9 @@
 void    SD_Startup(int imf_clock_rate, int mixer_rate, int opl_rate),
         SD_Shutdown(void);
 
-void SDL_IMFMusicPlayer(Uint8 *stream, int len);
+void SDL_IMFMusicPlayer( Uint8 *stream, int len );
 
-bool    openIMFFile(const std::string& filename, const SDL_AudioSpec& AudioSpec);
+bool    openIMFFile( const std::string& filename, const SDL_AudioSpec& AudioSpec );
+bool	readIMFData( byte *imfdata, const uint32_t binsize, const SDL_AudioSpec& AudioSpec );
 
 #endif

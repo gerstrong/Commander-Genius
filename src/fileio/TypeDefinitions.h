@@ -25,7 +25,7 @@ static inline word READWORD(byte *&ptr)
 #else
 	word val = ptr[0] | ptr[1] << 8;
 #endif
-    ptr += 2;
+    ptr += sizeof(word);
     return val;
 }
 

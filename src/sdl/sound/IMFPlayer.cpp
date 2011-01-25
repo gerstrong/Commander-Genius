@@ -1,6 +1,7 @@
 #include "IMFPlayer.h"
 #include "hardware/dbopl.h"
 #include "FindFile.h"
+#include "fileio/TypeDefinitions.h"
 #include <SDL.h>
 #include <string>
 
@@ -150,48 +151,28 @@ SD_Startup(int imf_clock_rate, int mixer_rate, int opl_rate)
     alTimeCount = 0;
 }
 
-///////////////////////////////////////////////////////////////////////////
-//
-//      SD_StartMusic() - starts playing the music pointed to
-//
-///////////////////////////////////////////////////////////////////////////
+/**
+ * \brief Reads the IMF data block and loads it into the emulators memory
+ */
 bool
-openIMFFile(const std::string& filename, const SDL_AudioSpec& AudioSpec)
+readIMFData( byte *imfdata, const uint32_t binsize, const SDL_AudioSpec& AudioSpec )
 {
+    byte* imf_data_ptr = imfdata;
+
 	SD_Startup (560, AudioSpec.freq, AudioSpec.freq);
 
-	Uint16 size;
+	Uint16 size = 0;
 
-    // Load the IMF File here!
-	FILE *fp = OpenGameFile(filename, "rb");
-
-    if(fp == NULL)
-    	return false;
-
-    if(!fread(&size,sizeof(Uint16),1,fp))
-    {
-       	fclose(fp);
-       	return false;
-    }
+	memcpy( &size, imf_data_ptr, sizeof(Uint16) );
 
     if (size == 0) // Is the IMF file of Type-0?
-    {
-        fseek(fp, 0L, SEEK_END);
-        size = ftell(fp);
-        fseek(fp, 0L, SEEK_SET);
-    }
+    	size = binsize;
+    else
+    	imf_data_ptr += sizeof(Uint16);
 
     byte* IMFBuffer = (byte*) malloc(size);
 
-    bool ok = true;
-
-    if(!fread(IMFBuffer, sizeof(byte),size,fp))
-    {
-    	fclose(fp);
-    	return false;
-    }
-
-    fclose(fp);
+    memcpy(IMFBuffer, imf_data_ptr,size*sizeof(byte));
 
     sqHack = (word *)(void *) IMFBuffer;
 
@@ -203,6 +184,33 @@ openIMFFile(const std::string& filename, const SDL_AudioSpec& AudioSpec)
     sqActive = true;
 
     return true;
+}
+
+/**
+ * \brief Opens an external IMF File and calls readIMFData to pass the data of the file to the OPL Emulator
+ */
+bool
+openIMFFile(const std::string& filename, const SDL_AudioSpec& AudioSpec)
+{
+    // Load the IMF File here!
+	FILE *fp;
+
+	if( ( fp = OpenGameFile(filename, "rb") ) == NULL )
+    	return false;
+
+    // Read the whole binary file into the memory
+    fseek(fp, 0, SEEK_END);
+    const uint32_t binsize = ftell(fp);
+    fseek(fp, 0, SEEK_SET);
+
+    byte imfdata[binsize];
+    fread( imfdata, sizeof(byte), binsize, fp );
+    fclose(fp);
+
+
+    ////////////////////////////////////////////////////////
+
+    readIMFData( imfdata, binsize, AudioSpec );
 }
 
 ///////////////////////////////////////////////////////////////////////////

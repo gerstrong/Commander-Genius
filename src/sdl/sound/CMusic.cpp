@@ -231,7 +231,7 @@ bool CMusic::LoadfromMusicTable(const CExeFile& Exefile, const int level)
 	Uint32* AudioHed_Ptr = NULL;
 	Uint32* AudioHed_Ptr1 = NULL;
 	Uint32* AudioHed_Ptr2 = NULL;
-	Uint8* AudioData_Ptr = NULL;
+	//Uint8* AudioData_Ptr = NULL;
 
 	// The stuff is Huffman compressed. Use an instance for that
 	unsigned long exeheaderlen = 0;

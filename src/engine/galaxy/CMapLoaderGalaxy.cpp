@@ -247,6 +247,11 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
     // Set Scrollbuffer
     g_pVideoDriver->setScrollBuffer(&Map.m_scrollx_buf, &Map.m_scrolly_buf);
 
+    // TODO: Load the Background Music
+    //g_pM
+
+    // TODO: And Play it!
+
     return true;
 }
 
@@ -309,7 +314,6 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 	y <<= CSF;
 
 	CObject *p_newfoe = NULL;
-	CCamera *camera = NULL;
 	VectorD2<Uint32> Location(x,y);
 
 	// Point Item Sprites (Candies, etc...)
