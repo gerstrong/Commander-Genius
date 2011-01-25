@@ -117,6 +117,7 @@ void CPlayGameGalaxy::process()
 		g_pMusicPlayer->stop();
 		m_LevelPlay.setActive(false);
 		m_WorldMap.setActive(true);
+		m_WorldMap.loadAndPlayMusic();
 	}
 
 
@@ -129,7 +130,7 @@ void CPlayGameGalaxy::processInput()
 	{
 		mp_Menu = new CMenuGalaxy(ACTIVE, m_ExeFile, m_SavedGame, mp_option, m_restartVideo);
 		m_BackgroundBitmap = *g_pGfxEngine->getBitmap("KEENSWATCH");
-		g_pMusicPlayer->stop();
+		g_pMusicPlayer->pause();
 	}
 }
 

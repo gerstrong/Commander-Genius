@@ -126,8 +126,6 @@ void SDL_IMFMusicPlayer(Uint8 *stream, int len)
         }
         numreadysamples = samplesPerMusicTick;
     }
-
-    SDL_MixAudio(stream, 0, len, SDL_MIX_MAXVOLUME);
 }
 
 ///////////////////////////////////////////////////////////////////////////

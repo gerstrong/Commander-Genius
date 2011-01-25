@@ -240,11 +240,18 @@ void CMusic::reload()
 	load(usedMusicFile);
 }
 
-void CMusic::play(void)
+void CMusic::play()
 {
 	if(usedMusicFile != "")
 		playmode = PLAY_MODE_PLAY;
 }
+
+void CMusic::pause()
+{
+	if(usedMusicFile != "")
+		playmode = PLAY_MODE_PAUSE;
+}
+
 
 void CMusic::stop(void)
 {
@@ -270,6 +277,9 @@ void CMusic::stop(void)
 
 void CMusic::readBuffer(Uint8* buffer, size_t length) // length only refers to the part(buffer) that has to be played
 {
+	if(playmode != PLAY_MODE_PLAY)
+		return;
+
 	if(m_MusicFormat == MF_IMF)
 	{
 		SDL_IMFMusicPlayer(buffer, length);

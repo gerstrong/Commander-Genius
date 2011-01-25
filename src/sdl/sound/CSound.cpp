@@ -283,7 +283,6 @@ bool CSound::loadSoundData(const CExeFile &ExeFile)
 	else if(ExeFile.getEpisode() >= 4 && ExeFile.getEpisode() <= 7) // Galaxy based Keengame
 	{
 		m_pAudioRessources = new CAudioGalaxy(ExeFile, AudioSpec);
-		g_pMusicPlayer->LoadfromMusicTable(ExeFile, 0);
 		return(m_pAudioRessources->loadSoundData());
 	}
 
