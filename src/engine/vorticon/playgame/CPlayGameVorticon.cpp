@@ -334,8 +334,8 @@ void CPlayGameVorticon::process()
 
 		}
 
-		// Open the Main Menu if ESC Key pressed and mp_Menu not opened
-		if( !mp_Menu && !mp_Finale && g_pInput->getPressedCommand(IC_QUIT) && m_Player[0].solid )
+		// Open the Main Menu if ESC Key pressed and mp_Menu not opened.  Prevent the menu if the player is not solid.
+		if( !mp_Menu && !mp_Finale && g_pInput->getPressedCommand(IC_QUIT) && ( m_Player[0].solid || m_Player[0].godmode ) )
 		{	// Open the menu
 				mp_Menu = new CMenuVorticon( ACTIVE, m_ExeFile, m_Map, m_SavedGame, mp_option, m_restartVideo, m_hideobjects );
 		}
@@ -455,8 +455,8 @@ void CPlayGameVorticon::handleFKeys()
 		mp_Menu->init(DEBUG);
 	}*/
 
-	// Menus will only open, if Keen isn't solid. This means neither dying nor teleporting
-	if( m_Player[0].solid || m_Player[i].m_playingmode )
+	// Menus will only open if Keen is solid or in god mode. This means neither dying nor teleporting
+	if( m_Player[0].solid || ( m_Player[0].godmode && !m_Player[0].dying ) )
 	{
 		// F2 - Sound Menu
 		if ( g_pInput->getPressedKey(KF2) )
