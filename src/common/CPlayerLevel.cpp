@@ -504,7 +504,7 @@ void CPlayer::JumpAndPogo()
         			g_pSound->playStereofromCoord(SOUND_KEEN_BUMPHEAD, PLAY_NOW, scrx);
             		bumped = true;
         		}
-        		pjumpupspeed = 0;
+        		pjumpupspeed /= 2;
         	}
 
 			if (!pjumptime)
@@ -600,9 +600,9 @@ void CPlayer::JumpAndPogo()
 
 void CPlayer::Playerfalling()
 {
-char behaviour;
-std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
-CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
+	char behaviour;
+	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+	CPhysicsSettings &PhysicsSettings = g_pBehaviorEngine->getPhysicsSettings();
 
 	if (pfalling)
 	{

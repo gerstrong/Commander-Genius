@@ -5,12 +5,14 @@ v0.3.3:
 -------
 - New audio system/manager
 - Vorticon can also open and play IMF Files for music
-- Fixes a whole bunch of bugs
+- Fixes of a whole bunch of bugs
 - Savegame system should work better
 - On embedded systems the save state is written automatically putting date and level number
 - more space for name in the save/load game section
-- Small performance improvements
-- Better Stereo Sound!
+- Small performance improvements, especially when loading Vorticon Keen games
+- Better stereo Sound!
+- Physics improvements
+- Galaxy Keen now plays ingame music, finally!!!
 
 v0.3.2.5:
 ---------
@@ -22,7 +24,7 @@ v0.3.2.5:
 
 v0.3.2.4:
 ---------
-- Less loading time
+- Less load time
 - Added nice Loading Screen
 - Diagonal Keys are now supported
 - Improved the hq sound quality

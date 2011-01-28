@@ -24,7 +24,7 @@
  CloneKeen          2003-2005   Caitlin Shaw
  CloneKeenPlus      2008-2011   Gerstrong
  Commander Genius   2009-2011   Tulip, Pickle, DaVince, Albert and Pizza2004
- Commander Genius   2010-2011   Lemm, Commander Spleen, Zear and Pelya
+ Commander Genius   2010-2011   Lemm, Commander Spleen, Zear, Pelya and FCTW
  */
 
 #ifdef ANDROID
