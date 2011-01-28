@@ -31,7 +31,14 @@ m_speed(speed)
 
 	state = RAY_STATE_FLY;
 	inhibitfall = true;
-	performCollisions();
+
+	std::vector<CTileProperties> &TileProperty = g_pBehaviorEngine->getTileProperties();
+
+	blockedl = TileProperty[mp_Map->at((m_Pos.x + bboxX1)>>CSF, (m_Pos.y + (bboxY1+bboxY2)/2)>>CSF)].bright;
+	blockedr = TileProperty[mp_Map->at((m_Pos.x + bboxX2)>>CSF, (m_Pos.y + (bboxY1+bboxY2)/2)>>CSF)].bleft;
+
+	if( blockedd || blockedr )
+		getShotByRay(owner.obj_type);
 }
 
 void CRay::setOwner(object_t type, unsigned int index)

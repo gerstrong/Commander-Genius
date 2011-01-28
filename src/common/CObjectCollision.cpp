@@ -423,12 +423,6 @@ bool CObject::checkSolidR( int x1, int x2, int y1, int y2)
 		}
 	}
 
-	// This is a special case for foes which can turn around when they walk over an edge before they fall
-	/*if(m_canturnaround && TileProperty[mp_Map->at((x1-(1<<STC))>>CSF, (y2+(1<<STC))>>CSF)].bup)
-	{
-		return true;
-	}*/
-
 	return false;
 }
 
@@ -474,12 +468,6 @@ bool CObject::checkSolidL( int x1, int x2, int y1, int y2)
 			return true;
 		}
 	}
-
-	// This is a special case for foes which can turn around when they walk over an edge before they fall
-	/*if(m_canturnaround && TileProperty[mp_Map->at((x2+(1<<STC))>>CSF, (y2+(1<<STC))>>CSF)].bup)
-	{
-		return true;
-	}*/
 
 	return false;
 }
