@@ -361,6 +361,14 @@ void CPlayerLevel::processMoving()
 				setAction(A_KEEN_POLE_SLIDE);
 				m_vDir = DOWN;
 			}
+			else if(m_playcontrol[PA_Y] > 0 && !hitdetectWithTileProperty(1, l_x, l_y_down) )
+			{
+				m_climbing = false;
+			}
+			else if(m_playcontrol[PA_X] != 0)
+			{
+				m_climbing = false;
+			}
 			else // == 0
 			{
 				setAction(A_KEEN_POLE);
@@ -420,16 +428,17 @@ void CPlayerLevel::processMoving()
 				}
 
 				Uint16 l_x = ( getXLeftPos() + getXRightPos() ) / 2;
-				Uint16 l_y = ( getYUpPos() + getYDownPos() ) / 2;
+				Uint16 l_y_up = ( getYUpPos() );
+				Uint16 l_y_down = ( getYDownPos() );
 				// Now check if Player has the chance to climb a pole or something similar
-				if( hitdetectWithTileProperty(1, l_x, l_y) ) // 1 -> stands for pole Property
+				if( hitdetectWithTileProperty(1, l_x, l_y_up) || hitdetectWithTileProperty(1, l_x, l_y_down) ) // 1 -> stands for pole Property
 				{
 					// Hit pole!
 
 					// calc the proper coord of that tile
 					l_x = (l_x>>CSF)<<CSF;
-					if( (!m_climbing && m_playcontrol[PA_Y] < 0) ||
-							( getActionNumber(A_KEEN_STAND) && m_playcontrol[PA_Y] > 0 ) )
+					if( (!m_climbing && m_playcontrol[PA_Y] < 0 && hitdetectWithTileProperty(1, l_x, l_y_up)) ||
+							( getActionNumber(A_KEEN_STAND) && m_playcontrol[PA_Y] > 0 && hitdetectWithTileProperty(1, l_x, l_y_down)) )
 					{
 						m_climbing = true;
 						// Set Keen in climb mode
