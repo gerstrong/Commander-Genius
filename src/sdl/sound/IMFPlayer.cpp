@@ -202,10 +202,17 @@ openIMFFile(const std::string& filename, const SDL_AudioSpec& AudioSpec)
     fseek(fp, 0, SEEK_SET);
 
     byte imfdata[binsize];
-    fread( imfdata, sizeof(byte), binsize, fp );
-    fclose(fp);
 
-    return readIMFData( imfdata, binsize, AudioSpec );
+    if( binsize == fread( imfdata, sizeof(byte), binsize, fp ) )
+    {
+    	fclose(fp);
+    	return readIMFData( imfdata, binsize, AudioSpec );
+    }
+    else
+    {
+    	fclose(fp);
+    	return false;
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////

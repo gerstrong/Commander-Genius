@@ -9,6 +9,7 @@
 *    (c)2009-2010            Pickle          *
 *    (c)2009-2010            Tulip           *
 *    (c)2009-2010            DaVince         *
+*    (c)2010-2011            FCTW            *
 *           Released under GNU/GPL           *
 *                                            *
 *            Release v0.3.2.5                *
