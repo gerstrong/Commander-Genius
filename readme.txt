@@ -3,16 +3,16 @@
 *             Commander Genius               * 
 *              (CloneKeenPlus)               *
 *                                            *
-*    (c)2008-2010            Gerstrong       *
-*    (c)2009-2010            Albert          *
-*    (c)2009-2010            Pizza2004       *
-*    (c)2009-2010            Pickle          *
-*    (c)2009-2010            Tulip           *
-*    (c)2009-2010            DaVince         *
+*    (c)2008-2011            Gerstrong       *
+*    (c)2009-2011            Albert          *
+*    (c)2009-2011            Pizza2004       *
+*    (c)2009-2011            Pickle          *
+*    (c)2009-2011            Tulip           *
+*    (c)2009-2011            DaVince         *
 *    (c)2010-2011            FCTW            *
 *           Released under GNU/GPL           *
 *                                            *
-*            Release v0.3.2.5                *
+*            Release v0.3.3.0                *
 *                                            *
 **********************************************
 
@@ -31,7 +31,7 @@ Commander Keen, which allows you to play the
 original three games, and a majority of the mods
 made for it.  All of the original data files
 are required to do so, however, we convienently
-include Episode 1 for you enjoyment.
+include Episode 1 and 4 for your enjoyment.
 
 Commander Genius runs on Linux/X11, Windows,
 MacOS X, Wiz, GP2X and the iPhone, with plans
@@ -41,13 +41,16 @@ please send us a message and we will do our
 best to help you understand the code.
 
 The main goal of Commander Genius is to copy
-the original game play feeling as much as possible, 
-although there are also a number of improvements like:
+the original gameplay feeling as much as possible, 
+although there're also a number of improvements like:
 - MMX Support
+- Mod Support
 - OpenGL Acceleration
 - Better graphical Effects
 - Multiplayer Support
-- High Quality Packs which make the game look better
+- High Quality Packs which make the game look better and 
+  provide better sounds and even music you might never have heard
+  in this game before
 - Ingame Menu
 - Named Save Slots
 - Unrestricted Joystick Support
@@ -105,7 +108,8 @@ Howto compile it under Ubuntu (testet on Lucid):
  	- libgl1-mesa-dev
  * extract my source code into "CGenius".
  * cd into the source directory "CGenius"
- * Run "cmake -DBUILD_TYPE=LINUX32" or "cmake -DBUILD_TYPE=LINUX64"
+ * Run "cmake -DBUILD_TYPE=LINUX32" or "cmake -DBUILD_TYPE=LINUX64" depending on what 
+   system you have.
  * Run "make".
  * Then, you can run "CGenius". Copy the files, wherever you want them together 
    with the data directory. "make install" does not work though.
@@ -162,7 +166,7 @@ F+I+X		Restore		   Restores the settings as they were in the first time. Use thi
 				   CG doesn't display anything
 
 - SAVE/LOAD GAME -
-The game can be saved by pressing F5 at any point during the game or using the menu.
+The game can be saved by pressing F3 at any point during the game or using the menu.
 The game will be saved in the exact position it was left (unlike the original which only
 allowed save at the map).
 
@@ -175,7 +179,7 @@ A: You can decrease the fps under settings->video what is very
    recommended for any system. OpenGL may also help on some systems with ScaleX disabled. 
    Try to lower the resolution, a lower filter, or decrease some stuff in the sound section.
    Stereo sound requires additional calculations than mono sound. There are many things you can do, to speed up
-   the program.
+   the program. Also HQP requieres more resources take that into mind.
    
 Q: When can I play Keen 4, 5 and 6 on CG?
 A: That is a good question! We currently are working on the support and piece by piece more functionalities of those
