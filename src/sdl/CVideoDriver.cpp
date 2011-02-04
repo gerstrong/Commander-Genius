@@ -127,7 +127,7 @@ void CVideoDriver::initResolutionList()
 {
 	st_resolution resolution;
 	m_Resolutionlist.clear();
-	m_value = 1;
+//	m_value = 1;
 
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	m_Resolution.width = 320; //  320;
@@ -207,37 +207,23 @@ void CVideoDriver::checkResolution( st_resolution& resolution, int flags )
 			std::list<st_resolution> :: iterator i;
 			for( i = m_Resolutionlist.begin() ; i != m_Resolutionlist.end() ; i++ )
 			{
-				if(i->width  == resolution.width  &&
-				   i->height == resolution.height &&
-				   i->depth  == resolution.depth) break;
+				if(*i == resolution)
+					break;
 			}
 
 			if(i == m_Resolutionlist.end())
 			{
 #ifdef DEBUG
-				printf( "%ix%ix%i %X added\n", resolution.width, resolution.height, resolution.depth, flags );
+				g_pLogFile->ftextOut(BLUE, "Resolution %ix%ix%i %X added\n", resolution.width, resolution.height, resolution.depth);
 #endif
-				resolution.value = m_value;
+				//resolution.value = m_value;
 				m_Resolutionlist.push_back(resolution);
-				m_value++;
+				//m_value++;
 			}
 		}
 }
 
-st_resolution CVideoDriver::setResolution(int value)
-{
-	std::list<st_resolution> :: iterator i;
-			for( i = g_pVideoDriver->m_Resolutionlist.begin() ; i != g_pVideoDriver->m_Resolutionlist.end() ; i++ )
-			{
-				if(i->value  == value)
-				{
-					m_Resolution_pos = i;
-					break;
-				}
-			}
 
-	return *m_Resolution_pos;
-}
 
 // Sets the resolution. you can pass st_resolution-structure or the variables separated.
 void CVideoDriver::setMode(st_resolution Resolution)

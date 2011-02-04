@@ -12,7 +12,15 @@
 #define g_pVideoDriver CVideoDriver::Get()
 
 struct st_resolution
-{ int width,height,depth,value; };
+{
+	int width,height,depth;/*,value;*/
+	bool operator==(const st_resolution target)
+	{
+		return (target.depth == depth &&
+				target.height == height &&
+				target.width == width);
+	}
+};
 
 struct st_camera_bounds
 { int left, right, down, up, speed; };
@@ -103,7 +111,6 @@ public:
 #endif
 	void checkResolution( st_resolution& resolution, int flags );
 	st_resolution getResolution(){ return *m_Resolution_pos; }
-	st_resolution setResolution(int value);
 
 	void initResolutionList();
 
@@ -144,7 +151,7 @@ private:
 	unsigned int m_targetfps;	// Used for automatic frame skipping
 	bool m_opengl;
 	int m_maxwidth;
-	int m_value;
+	//int m_value;
 	bool m_aspect_correction;
 	bool m_special_fx;
 

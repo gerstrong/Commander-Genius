@@ -19,7 +19,6 @@ class CVideoSettings : public CBaseMenu {
 public:
 	CVideoSettings(Uint8 dlg_theme, bool &restartVideo);
 	void processSpecific();
-	void setValues(int item, int value);
 
 private:
 	int m_Zoom, m_ScaleXFilter, m_OGL_filter, m_Autoframeskip;

@@ -50,17 +50,6 @@ mp_CameraSettings(NULL)
 	
 	buf = "Resolution: " + itoa(m_Resolution.width) + "x" + itoa(m_Resolution.height) + "x" + itoa(m_Resolution.depth);
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, buf);
-	std::list<st_resolution> :: iterator i;
-			for( i = g_pVideoDriver->m_Resolutionlist.begin() ; i != g_pVideoDriver->m_Resolutionlist.end() ; i++ )
-			{
-				if(i->width  == m_Resolution.width  &&
-				   i->height == m_Resolution.height &&
-				   i->depth  == m_Resolution.depth)
-				{
-					mp_Dialog->m_dlgobject.at(0)->m_Option->m_value = i->value;
-					break;
-				}
-			}
 	
 	buf = m_FSmode ? "Fullscreen mode" : "Windowed mode";
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 2, buf);
@@ -156,16 +145,17 @@ void CVideoSettings::processSpecific(){
 			{
 				mp_Dialog->m_min = 1;
 				mp_Dialog->m_max = g_pVideoDriver->m_Resolutionlist.size();
-				setValues(0, mp_Dialog->m_dlgobject.at(0)->m_Option->m_value);
+				//setValues(0, mp_Dialog->m_dlgobject.at(0)->m_Option->m_value);
 				buf = "Resolution: " + itoa(m_Resolution.width) + "x" + itoa(m_Resolution.height) + "x" + itoa(m_Resolution.depth);
 				mp_Dialog->setObjectText(0,buf);
 			}
 			else if(m_current == 3)
 			{
 				if(!m_Opengl) {
-				mp_Dialog->m_min = 1;
-				mp_Dialog->m_max = 4;
-				setValues(3, mp_Dialog->m_dlgobject.at(3)->m_Option->m_value);
+					mp_Dialog->m_min = 1;
+					mp_Dialog->m_max = 4;
+					m_Zoom = mp_Dialog->m_dlgobject.at(3)->m_Option->m_value;
+
 					buf = "Zoom: ";
 					buf += (m_Zoom == 1) ? "None" : itoa(m_Zoom) + "x";
 				}
@@ -175,14 +165,15 @@ void CVideoSettings::processSpecific(){
 					buf = "GL Filter: ";
 					buf += (m_OGL_filter==1) ? "Linear" : "Nearest";
 				}
-				setValues(3, mp_Dialog->m_dlgobject.at(3)->m_Option->m_value);
+
+				m_Zoom = mp_Dialog->m_dlgobject.at(3)->m_Option->m_value;
 				mp_Dialog->setObjectText(3,buf);
 			}
 			else if(m_current == 4)
 			{
 				mp_Dialog->m_min = 1;
 				mp_Dialog->m_max = 4;
-				setValues(4, mp_Dialog->m_dlgobject.at(4)->m_Option->m_value);
+				m_ScaleXFilter = mp_Dialog->m_dlgobject.at(4)->m_Option->m_value;
 				buf = "Filter: ";
 				if(m_ScaleXFilter <= 4)
 					buf += (!m_ScaleXFilter) ? "None" : itoa(m_ScaleXFilter)+"x";
@@ -197,7 +188,7 @@ void CVideoSettings::processSpecific(){
 			{
 				mp_Dialog->m_min = 1;
 				mp_Dialog->m_max = 12;
-				setValues(5, mp_Dialog->m_dlgobject.at(5)->m_Option->m_value);
+				m_Autoframeskip = mp_Dialog->m_dlgobject.at(5)->m_Option->m_value;
 				buf = "Frameskip: " + itoa(m_Autoframeskip) + " fps";
 				mp_Dialog->setObjectText(5, buf);
 			}
@@ -209,8 +200,8 @@ void CVideoSettings::processSpecific(){
 			{
 				// Now the part of the resolution list
 				mp_Dialog->m_dlgobject.at(0)->m_Option->m_value++;
-					if(mp_Dialog->m_dlgobject.at(0)->m_Option->m_value>mp_Dialog->m_max) mp_Dialog->m_dlgobject.at(0)->m_Option->m_value = 1;
-					setValues(0,mp_Dialog->m_dlgobject.at(0)->m_Option->m_value);
+					if(mp_Dialog->m_dlgobject.at(0)->m_Option->m_value>mp_Dialog->m_max)
+						mp_Dialog->m_dlgobject.at(0)->m_Option->m_value = 1;
 			}
 			else if(m_selection == 1)
 			{
@@ -244,8 +235,9 @@ void CVideoSettings::processSpecific(){
 			{
 				if(!m_Opengl) {
 					mp_Dialog->m_dlgobject.at(3)->m_Option->m_value++;
-					if(mp_Dialog->m_dlgobject.at(3)->m_Option->m_value>4) mp_Dialog->m_dlgobject.at(3)->m_Option->m_value = 1;
-					setValues(3,mp_Dialog->m_dlgobject.at(3)->m_Option->m_value);
+					if(mp_Dialog->m_dlgobject.at(3)->m_Option->m_value>4)
+						mp_Dialog->m_dlgobject.at(3)->m_Option->m_value = 1;
+					m_Zoom = mp_Dialog->m_dlgobject.at(3)->m_Option->m_value;
 				}
 				else {
 					m_OGL_filter = !m_OGL_filter;
@@ -254,14 +246,15 @@ void CVideoSettings::processSpecific(){
 			else if(m_selection == 4)
 			{
 				mp_Dialog->m_dlgobject.at(4)->m_Option->m_value++;
-					if(mp_Dialog->m_dlgobject.at(4)->m_Option->m_value>4) mp_Dialog->m_dlgobject.at(4)->m_Option->m_value = 1;
-					setValues(4,mp_Dialog->m_dlgobject.at(4)->m_Option->m_value);
+					if(mp_Dialog->m_dlgobject.at(4)->m_Option->m_value>4)
+						mp_Dialog->m_dlgobject.at(4)->m_Option->m_value = 1;
+					m_ScaleXFilter = mp_Dialog->m_dlgobject.at(4)->m_Option->m_value;
 			}
 			else if(m_selection == 5)
 			{
 				mp_Dialog->m_dlgobject.at(5)->m_Option->m_value++;
 					if(mp_Dialog->m_dlgobject.at(5)->m_Option->m_value>12) mp_Dialog->m_dlgobject.at(5)->m_Option->m_value = 1;
-					setValues(5,mp_Dialog->m_dlgobject.at(5)->m_Option->m_value);
+					m_Autoframeskip = mp_Dialog->m_dlgobject.at(5)->m_Option->m_value;
 			}
 			else if(m_selection == 6)
 			{
@@ -303,52 +296,6 @@ void CVideoSettings::processSpecific(){
 		{
 			SAFE_DELETE(mp_CameraSettings);
 			m_suspended = false;
-		}
-	}
-}
-
-void CVideoSettings::setValues(int item, int value)
-{
-	if(item == 0)
-	{
-		m_Resolution = g_pVideoDriver->setResolution(value);
-	}
-	else if(item == 3)
-	{
-		switch(value)
-		{
-			case 1: m_Zoom = 1; break;
-			case 2: m_Zoom = 2; break;
-			case 3: m_Zoom = 3; break;
-			case 4: m_Zoom = 4; break;
-		}
-	}
-	else if(item == 4)
-	{
-		switch(value)
-		{
-			case 1: m_ScaleXFilter = 1; break;
-			case 2: m_ScaleXFilter = 2; break;
-			case 3: m_ScaleXFilter = 3; break;
-			case 4: m_ScaleXFilter = 4; break;
-		}
-	}
-	else if(item == 5)
-	{
-		switch(value)
-		{
-			case 1: m_Autoframeskip = 10; break;
-			case 2: m_Autoframeskip = 20; break;
-			case 3: m_Autoframeskip = 30; break;
-			case 4: m_Autoframeskip = 40; break;
-			case 5: m_Autoframeskip = 50; break;
-			case 6: m_Autoframeskip = 60; break;
-			case 7: m_Autoframeskip = 70; break;
-			case 8: m_Autoframeskip = 80; break;
-			case 9: m_Autoframeskip = 90; break;
-			case 10: m_Autoframeskip = 100; break;
-			case 11: m_Autoframeskip = 110; break;
-			case 12: m_Autoframeskip = 120; break;
 		}
 	}
 }

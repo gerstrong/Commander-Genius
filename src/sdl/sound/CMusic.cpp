@@ -18,7 +18,6 @@
 
 static	bool m_busy = false;
 
-
 const Uint32 GalaxySongAssignments[] =
 {
 	0x02F206,

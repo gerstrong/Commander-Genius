@@ -11,6 +11,13 @@
 #include "vorbis/oggsupport.h"
 #include "fileio/CExeFile.h"
 
+#include <SDL.h>
+#include <string>
+#include <vector>
+
+#include "CSingleton.h"
+#define g_pMusicPlayer CMusic::Get()
+
 enum musicformat
 {
 	MF_NONE,
@@ -23,13 +30,6 @@ enum playstatus{
 	PLAY_MODE_PAUSE,
 	PLAY_MODE_PLAY
 };
-
-#include <SDL.h>
-#include <string>
-#include <vector>
-
-#include "CSingleton.h"
-#define g_pMusicPlayer CMusic::Get()
 
 class CMusic : public CSingleton<CMusic>
 {
