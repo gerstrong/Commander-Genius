@@ -1,0 +1,16 @@
+IMFPlayer v2.1 (released 2011-02-04)
+ - Now we are able to play adlib sound too. This will be integrated into CG soon.
+
+IMFPlayer v2.0 (released 2011-01-12)
+ - Now it uses dbopl which should be much faster, have less license issues and hear better than the old emulator.
+
+IMFPlayer v1.1 (released 2011-01-07)
+ - Changes and improves thanks to NY00123
+
+
+IMFPlayer v1.01 (released 2011-01-07)
+ - Small division by zero in smaller samplerates fixed
+
+
+IMFPlayer v1.0 (released 2011-01-07)
+ - Initial release
