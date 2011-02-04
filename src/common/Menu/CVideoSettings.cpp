@@ -6,10 +6,10 @@
  */
 
 #include "CVideoSettings.h"
-#include "../../sdl/CInput.h"
-#include "../../sdl/CTimer.h"
-#include "../../sdl/CSettings.h"
-#include "../../StringUtils.h"
+#include "sdl/CInput.h"
+#include "sdl/CTimer.h"
+#include "sdl/CSettings.h"
+#include "StringUtils.h"
 
 #define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
 

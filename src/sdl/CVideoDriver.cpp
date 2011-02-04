@@ -43,7 +43,6 @@ m_blitsurface_alloc(false)
 
 void CVideoDriver::resetSettings() {
 	// Default values
-	m_maxwidth = 0;
 	showfps=true;
 	Mode=0;
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X) || defined(DINGOO) || defined(NANONOTE)
@@ -104,7 +103,6 @@ void CVideoDriver::resetSettings() {
 	else
 	{
 		g_pLogFile->textOut(GREEN,"SDL was successfully initialized!<br>");
-		m_maxwidth = SDL_GetVideoInfo()->current_w;
 	}
 
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
@@ -174,7 +172,9 @@ void CVideoDriver::initResolutionList()
 			resolution.depth = 32;
 #endif
 
-			while(resolution.width < m_maxwidth)
+			int maxwidth = SDL_GetVideoInfo()->current_w;
+
+			while(resolution.width < maxwidth)
 			{
 				resolution.width = 320 * e;
 				resolution.height = 200 * e;

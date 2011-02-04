@@ -150,8 +150,6 @@ private:
 	unsigned short Zoom;
 	unsigned int m_targetfps;	// Used for automatic frame skipping
 	bool m_opengl;
-	int m_maxwidth;
-	//int m_value;
 	bool m_aspect_correction;
 	bool m_special_fx;
 

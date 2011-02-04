@@ -10,8 +10,8 @@
 
 #include "CBaseMenu.h"
 #include "CCameraSettings.h"
-#include "../../sdl/CVideoDriver.h"
-#include "../../dialog/CDialog.h"
+#include "sdl/CVideoDriver.h"
+#include "dialog/CDialog.h"
 #include <SDL.h>
 #include <string>
 
