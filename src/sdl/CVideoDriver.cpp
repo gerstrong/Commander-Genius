@@ -125,7 +125,6 @@ void CVideoDriver::initResolutionList()
 {
 	st_resolution resolution;
 	m_Resolutionlist.clear();
-//	m_value = 1;
 
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	m_Resolution.width = 320; //  320;
@@ -181,7 +180,6 @@ void CVideoDriver::initResolutionList()
 
 				// Now check if it's possible to use this resolution
 				checkResolution( resolution, 0 );
-
 				e++;
 			}
 		}
@@ -216,9 +214,7 @@ void CVideoDriver::checkResolution( st_resolution& resolution, int flags )
 #ifdef DEBUG
 				g_pLogFile->ftextOut(BLUE, "Resolution %ix%ix%i %X added\n", resolution.width, resolution.height, resolution.depth);
 #endif
-				//resolution.value = m_value;
 				m_Resolutionlist.push_back(resolution);
-				//m_value++;
 			}
 		}
 }
@@ -1003,11 +999,11 @@ short CVideoDriver::getFiltermode(void)
 
 bool CVideoDriver::getFullscreen(void)
 {	return Fullscreen;	}
-unsigned int CVideoDriver::getWidth(void)
+unsigned int CVideoDriver::getWidth() const
 {	return m_Resolution.width;	}
-unsigned int CVideoDriver::getHeight(void)
+unsigned int CVideoDriver::getHeight() const
 {	return m_Resolution.height;	}
-unsigned short CVideoDriver::getDepth(void)
+unsigned short CVideoDriver::getDepth() const
 {	return m_Resolution.depth;	}
 SDL_Surface *CVideoDriver::getScrollSurface(void)
 {	return ScrollSurface; }

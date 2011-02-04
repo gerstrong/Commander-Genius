@@ -22,9 +22,7 @@ mp_CameraSettings(NULL)
 	m_current = -1;
 	m_changed = false;
 	
-	m_Resolution.width = g_pVideoDriver->getWidth();
-	m_Resolution.height = g_pVideoDriver->getHeight();
-	m_Resolution.depth = g_pVideoDriver->getDepth();
+	m_Resolution = g_pVideoDriver->getResolution();
 	m_FSmode =  g_pVideoDriver->getFullscreen();
 	g_pVideoDriver->initResolutionList();
 	

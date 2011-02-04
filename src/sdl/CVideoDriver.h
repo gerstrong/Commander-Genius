@@ -13,7 +13,7 @@
 
 struct st_resolution
 {
-	int width,height,depth;/*,value;*/
+	int width,height,depth;
 	bool operator==(const st_resolution target)
 	{
 		return (target.depth == depth &&
@@ -80,9 +80,9 @@ public:
 	bool getShowFPS(void);
 	short getFiltermode(void);
 	bool getFullscreen(void);
-	unsigned int getWidth(void);
-	unsigned int getHeight(void);
-	unsigned short getDepth(void);
+	unsigned int getWidth() const;
+	unsigned int getHeight() const;
+	unsigned short getDepth() const;
 	SDL_Rect getGameResolution() { return game_resolution_rect; }
 
 	SDL_Surface *getBlitSurface() { return BlitSurface; }
@@ -110,7 +110,7 @@ public:
 	void setOGLFilter(unsigned char value) { }
 #endif
 	void checkResolution( st_resolution& resolution, int flags );
-	st_resolution getResolution(){ return *m_Resolution_pos; }
+	st_resolution getResolution() const { return *m_Resolution_pos; }
 
 	void initResolutionList();
 
@@ -139,10 +139,11 @@ private:
 	COpenGL	*mp_OpenGL;
 	int m_opengl_filter;
 #endif
-	st_resolution m_Resolution;
 
 	std::list<st_resolution> m_Resolutionlistempty;
 	std::list<st_resolution> :: iterator m_Resolution_pos;
+
+	st_resolution m_Resolution;
 
 	unsigned int Mode;
 	bool Fullscreen;
