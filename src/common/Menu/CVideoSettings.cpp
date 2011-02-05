@@ -16,6 +16,7 @@
 CVideoSettings::CVideoSettings(Uint8 dlg_theme, bool &restartVideo) :
 CBaseMenu(dlg_theme),
 m_Vidconfig(g_pVideoDriver->getVidConfig()),
+m_Resolutionlist(g_pVideoDriver->m_Resolutionlist),
 m_restartVideo(restartVideo),
 mp_CameraSettings(NULL)
 {
@@ -24,6 +25,8 @@ mp_CameraSettings(NULL)
 	
 	g_pVideoDriver->initResolutionList();
 	
+	m_Resolution_pos = m_Resolutionlist.begin();
+
 	const unsigned short BUFFER_SIZE=256;
 	char Buffer[BUFFER_SIZE];
 	
@@ -124,10 +127,11 @@ void CVideoSettings::processSpecific(){
 		}
 		else if( m_current != NO_SELECTION)
 		{
-			if(m_current == 0) //This is the main reason I implemented this to begin with, as I find it much easier to find the resolution I want if I can navigate both directions.
+			if(m_current == 0)
 			{
 				mp_Dialog->m_min = 1;
 				mp_Dialog->m_max = g_pVideoDriver->m_Resolutionlist.size();
+
 				st_resolution &Res = m_Vidconfig.m_Resolution;
 				buf = "Resolution: " + itoa(Res.width) + "x" + itoa(Res.height) + "x" + itoa(Res.depth);
 				mp_Dialog->setObjectText(0,buf);
@@ -185,6 +189,11 @@ void CVideoSettings::processSpecific(){
 				mp_Dialog->m_dlgobject.at(0)->m_Option->m_value++;
 					if(mp_Dialog->m_dlgobject.at(0)->m_Option->m_value>mp_Dialog->m_max)
 						mp_Dialog->m_dlgobject.at(0)->m_Option->m_value = 1;
+
+				m_Resolution_pos = m_Resolutionlist.begin();
+				int value = mp_Dialog->m_dlgobject.at(0)->m_Option->m_value;
+				for( ; value>0 ; value-- )	m_Resolution_pos++;
+				m_Vidconfig.m_Resolution = *m_Resolution_pos;
 			}
 			else if(m_selection == 1)
 			{

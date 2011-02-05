@@ -23,6 +23,8 @@ public:
 private:
 
 	CVidConfig m_Vidconfig;
+	std::list<st_resolution> m_Resolutionlist;
+	std::list<st_resolution>::iterator m_Resolution_pos;
 	int m_current; //used to show what is currently selected without actually changing the value
 	bool m_changed;
 	std::string m_usedSoftwareVideoDriver;

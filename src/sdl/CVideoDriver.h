@@ -112,6 +112,7 @@ public:
 	SDL_Surface *FXSurface;
 
 	std::list<st_resolution> m_Resolutionlist;
+	std::list<st_resolution> :: iterator m_Resolution_pos;
 
 private:
 
@@ -122,9 +123,6 @@ private:
 #ifdef USE_OPENGL
 	COpenGL	*mp_OpenGL;
 #endif
-
-	std::list<st_resolution> m_Resolutionlistempty;
-	std::list<st_resolution> :: iterator m_Resolution_pos;
 
 	SDL_Rect screenrect;
 	SDL_Rect blitrect;
