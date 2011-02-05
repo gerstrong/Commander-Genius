@@ -49,6 +49,8 @@ void CVideoDriver::resetSettings() {
 	screenrect.y=0;
 	screenrect.h=0;
 	screenrect.w=0;
+	game_resolution_rect.x=0;
+	game_resolution_rect.y=0;
 
 	ScrollSurface=NULL;       // 512x512 scroll buffer
 	FGLayerSurface=NULL;       // Scroll buffer for Messages
@@ -174,6 +176,7 @@ void CVideoDriver::checkResolution( st_resolution& resolution, int flags )
 void CVideoDriver::setVidConfig(const CVidConfig& VidConf)
 {
 	m_VidConfig = VidConf;
+	setMode(m_VidConfig.m_Resolution);
 }
 
 void CVideoDriver::setSpecialFXMode(bool SpecialFX)
@@ -304,12 +307,11 @@ bool CVideoDriver::applyMode()
 	// TODO: Make this call better to understand
 	// It must be able to change the resolution, and if it fails, roll back.
 
-	// bool rollback=false;
-	//if(!checkMode())
-	// rollback = true;
-
 	if( (m_VidConfig.Zoom == 3 && m_VidConfig.m_ScaleXFilter == 1) && !m_VidConfig.m_opengl )
 		m_VidConfig.Zoom = 2;
+
+	if( m_VidConfig.Zoom == 0 )
+		m_VidConfig.Zoom = 1;
 
 	m_VidConfig.m_Resolution = *m_Resolution_pos;
 

@@ -181,7 +181,7 @@ void CVideoSettings::processSpecific(){
 			}
 		}
 		
-		if( m_selection != NO_SELECTION)  //I left this in so that people won't be confused and believe something is wrong
+		if( m_selection != NO_SELECTION)
 		{
 			if(m_selection == 0)
 			{

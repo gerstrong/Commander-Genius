@@ -98,12 +98,15 @@ bool CSettings::loadDrvCfg()
 			return false;
 		}
 
+		int value=0;
 		Configuration.ReadKeyword("Video", "fullscreen", &VidConf.Fullscreen, false);
 		Configuration.ReadKeyword("Video", "OGLfilter", &VidConf.m_opengl_filter, false);
-		Configuration.ReadInteger("Video", "scale", (int*) &VidConf.Zoom, 1);
+		Configuration.ReadInteger("Video", "scale", &value, 1);
+		VidConf.Zoom = value;
 		Configuration.ReadKeyword("Video", "specialfx", &VidConf.m_special_fx, true);
 		Configuration.ReadKeyword("Video", "showfps", &VidConf.showfps, false);
-		Configuration.ReadInteger("Video", "filter", (int*) &VidConf.m_ScaleXFilter, 1);
+		Configuration.ReadInteger("Video", "filter", &value, 1);
+		VidConf.m_ScaleXFilter = value;
 		Configuration.ReadKeyword("Video", "OpenGL", &VidConf.m_opengl, false);
 		
 		st_camera_bounds &CameraBounds = VidConf.m_CameraBounds;
