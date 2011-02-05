@@ -10,7 +10,7 @@
 
 #include "CBaseMenu.h"
 #include "CVolumeSettings.h"
-#include "../../fileio/CExeFile.h"
+#include "fileio/CExeFile.h"
 #include <SDL.h>
 #include <string>
 
@@ -18,7 +18,7 @@ class CAudioSettings : public CBaseMenu {
 public:
 	CAudioSettings(Uint8 dlg_theme, CExeFile &ExeFile);
 	void processSpecific();
-	void setValues(int item, int value);
+	void setFrequencyFromSlot(int value);
 	virtual ~CAudioSettings();
 
 private:

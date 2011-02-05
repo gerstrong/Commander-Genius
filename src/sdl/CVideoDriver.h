@@ -40,19 +40,16 @@ public:
 	void stop(void);
 	bool start(void);
 	void isFullscreen(bool value);
-	void drawConsoleMessages(void);
-
-	void pal_set(short colour, Uint8 red, Uint8 green, Uint8 blue);
-	void pal_apply(void);
+	void drawConsoleMessages();
 
 	void blitScrollSurface();
 	void setScrollBuffer(Sint16 *pbufx, Sint16 *pbufy);
-
-	void collectSurfaces();
-	void updateScreen();
 	void scale2xnofilter(char *dest, char *src, short bbp);
 	void scale3xnofilter(char *dest, char *src, short bbp);
 	void scale4xnofilter(char *dest, char *src, short bbp);
+
+	void collectSurfaces();
+	void updateScreen();
 
 	void DeleteConsoleMsgs(void);
 	void AddConsoleMsg(const char *the_msg);

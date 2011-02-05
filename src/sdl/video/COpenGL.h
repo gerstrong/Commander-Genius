@@ -21,7 +21,7 @@
 #include <SDL_opengl.h>
 #endif
 
-#include "../scale2x/scalebit.h"
+#include "scale2x/scalebit.h"
 
 // Structure used for dimensions
 struct stDims{

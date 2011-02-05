@@ -101,7 +101,7 @@ void CAudioSettings::processSpecific()
 			{
 				mp_Dialog->m_min = 1;
 				mp_Dialog->m_max = 4;
-				setValues(0, mp_Dialog->m_dlgobject.at(0)->m_Option->m_value);
+				setFrequencyFromSlot(mp_Dialog->m_dlgobject.at(0)->m_Option->m_value);
 				mp_Dialog->setObjectText(0, "Rate: " + itoa(m_Rate) + " kHz");
 			}
 		}
@@ -154,17 +154,14 @@ void CAudioSettings::processSpecific()
 	}
 }
 
-void CAudioSettings::setValues(int item, int value)
+void CAudioSettings::setFrequencyFromSlot(int value)
 {
-	if(item == 0)
+	switch(value)
 	{
-		switch(value)
-		{
-			case 1: m_Rate = 11025; break;
-			case 2: m_Rate = 22050; break;
-			case 3: m_Rate = 44100; break;
-			case 4: m_Rate = 48000; break;
-		}
+	case 1: m_Rate = 11025; break;
+	case 2: m_Rate = 22050; break;
+	case 3: m_Rate = 44100; break;
+	case 4: m_Rate = 48000; break;
 	}
 }
 

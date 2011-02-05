@@ -7,9 +7,9 @@
 #ifdef USE_OPENGL
 
 #include "COpenGL.h"
-#include "CVideoDriver.h"
+#include "sdl/CVideoDriver.h"
+#include "sdl/CInput.h" // for CInput::renderOverlay
 #include "CLogFile.h"
-#include "CInput.h" // for CInput::renderOverlay
 
 /**
  * This function calculates an equivalent value near by the power of two. That is needed so we support POT Textures
@@ -38,8 +38,7 @@ m_GamePOTBaseDim(getPowerOfTwo(gamestdrect.w),
 				getPowerOfTwo(gamestdrect.h)),
 m_GamePOTVideoDim(getPowerOfTwo(Width),
 				getPowerOfTwo(Height))
-{
-}
+{}
 
 static void createTexture(GLuint& tex, int oglfilter, GLsizei potwidth, GLsizei potheight, bool withAlpha = false) {
 	glGenTextures(1, &tex);
@@ -114,19 +113,6 @@ bool COpenGL::initGL(GLint oglfilter)
     glGetTexLevelParameterfv.*/
 
 	// Enable Texture loading for the blit screen
-	/*glEnable (m_texparam);
-	glBindTexture(m_texparam, 1);
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-	glTexParameteri(m_texparam, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri (m_texparam, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-
-	glTexParameteri (m_texparam, GL_TEXTURE_MAG_FILTER, oglfilter);
-	glTexParameteri (m_texparam, GL_TEXTURE_MIN_FILTER, oglfilter);
-
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);*/
-
 	glEnable(m_texparam);
 
 	createTexture(m_texture, oglfilter, m_GamePOTVideoDim.w, m_GamePOTVideoDim.h);
@@ -165,19 +151,6 @@ void COpenGL::setFGSurface(SDL_Surface *fgsurface)
 {	mp_fgsurface = fgsurface; }
 void COpenGL::setFXSurface(SDL_Surface *fxsurface)
 {	mp_fxsurface = fxsurface; }
-
-
-/*static void loadSurface(GLuint texture, SDL_Surface* surface) {
-	glBindTexture(GL_TEXTURE_2D, texture);
-	LockSurface(surface);
-	if(surface->format->BitsPerPixel == 24)
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 512, 256, 0, GL_RGB, GL_UNSIGNED_BYTE, surface->pixels);
-	else {
-		// we assume RGBA
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 512, 256, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->pixels);
-	}
-	UnlockSurface(surface);
-}*/
 
 void COpenGL::reloadFX(SDL_Surface* surf) {
 	loadSurface(m_texFX, surf);

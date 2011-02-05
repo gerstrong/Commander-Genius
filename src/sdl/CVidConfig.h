@@ -12,7 +12,7 @@
 #define CVIDCONFIG_H_
 
 #ifdef USE_OPENGL
-#include "COpenGL.h"
+#include "sdl/video/COpenGL.h"
 #endif
 
 
