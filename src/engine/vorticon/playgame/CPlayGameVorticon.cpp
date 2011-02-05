@@ -320,7 +320,7 @@ void CPlayGameVorticon::process()
 			handleFKeys();
 		}
 
-		if (g_pVideoDriver->showfps)
+		if (g_pVideoDriver->getVidConfig().showfps)
 		{
 			SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
 			std::string tempbuf;

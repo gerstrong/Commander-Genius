@@ -5,11 +5,11 @@
  *      Author: gerstrong
  */
 
-#include "../common/options.h"
-#include "../fileio/CConfiguration.h"
-#include "../CLogFile.h"
-#include "../FindFile.h"
-#include "../ConfigHandler.h"
+#include "common/options.h"
+#include "fileio/CConfiguration.h"
+#include "CLogFile.h"
+#include "FindFile.h"
+#include "ConfigHandler.h"
 #include "CSettings.h"
 #include "CVideoDriver.h"
 #include "CTimer.h"
@@ -42,20 +42,21 @@ bool CSettings::saveDrvCfg()
 	for(searchpathlist::const_iterator p = tSearchPaths.begin(); p != tSearchPaths.end(); p++, i++)
 		Configuration.WriteString("FileHandling", "SearchPath" + itoa(i), *p);
 	
-	Configuration.WriteInt("Video", "bpp",g_pVideoDriver->getDepth());
-	Configuration.SetKeyword("Video", "fullscreen", g_pVideoDriver->getFullscreen());
-	Configuration.SetKeyword("Video", "OpenGL", g_pVideoDriver->isOpenGL());
+	CVidConfig &VidConf = g_pVideoDriver->getVidConfig();
+	Configuration.WriteInt("Video", "bpp",VidConf.m_Resolution.depth);
+	Configuration.SetKeyword("Video", "fullscreen", VidConf.Fullscreen);
+	Configuration.SetKeyword("Video", "OpenGL", VidConf.m_opengl);
 
-	Configuration.WriteInt("Video", "width", g_pVideoDriver->getWidth());
-	Configuration.WriteInt("Video", "height", g_pVideoDriver->getHeight());
-	Configuration.WriteInt("Video", "scale", g_pVideoDriver->getZoomValue());
-	Configuration.WriteInt("Video", "OGLfilter", g_pVideoDriver->getOGLFilter());
-	Configuration.WriteInt("Video", "filter", g_pVideoDriver->getFiltermode());
-	Configuration.SetKeyword("Video", "specialfx", g_pVideoDriver->getSpecialFXConfig());
+	Configuration.WriteInt("Video", "width", VidConf.m_Resolution.width);
+	Configuration.WriteInt("Video", "height", VidConf.m_Resolution.height);
+	Configuration.WriteInt("Video", "scale", VidConf.Zoom);
+	Configuration.WriteInt("Video", "OGLfilter", VidConf.m_opengl_filter);
+	Configuration.WriteInt("Video", "filter", VidConf.m_ScaleXFilter);
+	Configuration.SetKeyword("Video", "specialfx", VidConf.m_special_fx);
 	Configuration.WriteInt("Video", "autoframeskip", g_pTimer->getFrameRate());
-	Configuration.WriteInt("Video", "showfps", g_pVideoDriver->showfps);
+	Configuration.WriteInt("Video", "showfps", VidConf.showfps);
 	
-	st_camera_bounds &CameraBounds = g_pVideoDriver->getCameraBounds();
+	st_camera_bounds &CameraBounds = VidConf.m_CameraBounds;
 	Configuration.WriteInt("Bound", "left", CameraBounds.left);
 	Configuration.WriteInt("Bound", "right", CameraBounds.right);
 	Configuration.WriteInt("Bound", "up", CameraBounds.up);
@@ -85,57 +86,38 @@ bool CSettings::loadDrvCfg()
 	if(!Configuration.Parse()) return false;
 	else
 	{
-		int width, height, depth;
-		Configuration.ReadInteger("Video", "bpp", &depth, 32);
-		Configuration.ReadInteger("Video", "width", &width, 320);
-		Configuration.ReadInteger("Video", "height", &height, 200);
+		CVidConfig VidConf;
+		st_resolution &res = VidConf.m_Resolution;
+		Configuration.ReadInteger("Video", "bpp", &res.depth, 32);
+		Configuration.ReadInteger("Video", "width", &res.width, 320);
+		Configuration.ReadInteger("Video", "height", &res.height, 200);
 		
-		if(depth*width*height <= 0)
+		if(res.depth*res.width*res.height <= 0)
 		{
 			g_pLogFile->ftextOut(RED,"Error reading the configuration file!<br>");
 			return false;
 		}
-		else
-			g_pVideoDriver->setMode(width,height,depth);
 
-		bool fullscreen;
-		Configuration.ReadKeyword("Video", "fullscreen", &fullscreen, false);
-		g_pVideoDriver->isFullscreen(fullscreen);
+		Configuration.ReadKeyword("Video", "fullscreen", &VidConf.Fullscreen, false);
+		Configuration.ReadKeyword("Video", "OGLfilter", &VidConf.m_opengl_filter, false);
+		Configuration.ReadInteger("Video", "scale", (int*) &VidConf.Zoom, 1);
+		Configuration.ReadKeyword("Video", "specialfx", &VidConf.m_special_fx, true);
+		Configuration.ReadKeyword("Video", "showfps", &VidConf.showfps, false);
+		Configuration.ReadInteger("Video", "filter", (int*) &VidConf.m_ScaleXFilter, 1);
+		Configuration.ReadKeyword("Video", "OpenGL", &VidConf.m_opengl, false);
 		
-		bool glfilter;
-		Configuration.ReadKeyword("Video", "OGLfilter", &glfilter, false);
-		g_pVideoDriver->setOGLFilter(glfilter);
-
-		int scale;
-		Configuration.ReadInteger("Video", "scale", &scale, 1);
-		g_pVideoDriver->setZoom(scale);
-
-		bool special_fx;
-		Configuration.ReadKeyword("Video", "specialfx", &special_fx, true);
-		g_pVideoDriver->setSpecialFXMode(special_fx);
-
-		Configuration.ReadKeyword("Video", "showfps", &g_pVideoDriver->showfps, false);
-
-		int framerate;
-		Configuration.ReadInteger("Video", "autoframeskip", &framerate, 60);
-		g_pTimer->setFrameRate(DEFAULT_LPS, framerate, DEFAULT_SYNC);
-
-		st_camera_bounds CameraBounds;
+		st_camera_bounds &CameraBounds = VidConf.m_CameraBounds;
 		Configuration.ReadInteger("Bound", "left", &CameraBounds.left, 152);
 		Configuration.ReadInteger("Bound", "right", &CameraBounds.right, 168);
 		Configuration.ReadInteger("Bound", "up", &CameraBounds.up, 92);
 		Configuration.ReadInteger("Bound", "down", &CameraBounds.down, 108);
 		Configuration.ReadInteger("Bound", "speed", &CameraBounds.speed, 20);
+		g_pVideoDriver->setVidConfig(VidConf);
 
-		g_pVideoDriver->saveCameraBounds(CameraBounds);
-		
-		int filter;
-		Configuration.ReadInteger("Video", "filter", &filter, 1);
-		g_pVideoDriver->setFilter(filter);
-		
-		bool opengl;
-		Configuration.ReadKeyword("Video", "OpenGL", &opengl, false);
-		g_pVideoDriver->enableOpenGL(opengl);
+		int framerate;
+		Configuration.ReadInteger("Video", "autoframeskip", &framerate, 60);
+		g_pTimer->setFrameRate(DEFAULT_LPS, framerate, DEFAULT_SYNC);
+
 
 		int audio_rate, audio_channels, audio_format;
 		Configuration.ReadInteger("Audio", "rate", &audio_rate, 44000);

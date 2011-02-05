@@ -9,25 +9,8 @@
 #define CVIDEODRIVER_H_
 
 #include "CSingleton.h"
+#include "CVidConfig.h"
 #define g_pVideoDriver CVideoDriver::Get()
-
-struct st_resolution
-{
-	int width,height,depth;
-	bool operator==(const st_resolution target)
-	{
-		return (target.depth == depth &&
-				target.height == height &&
-				target.width == width);
-	}
-};
-
-struct st_camera_bounds
-{ int left, right, down, up, speed; };
-
-#ifdef USE_OPENGL
-#include "COpenGL.h"
-#endif
 
 #include <SDL.h>
 #include <iostream>
@@ -74,8 +57,9 @@ public:
 	void DeleteConsoleMsgs(void);
 	void AddConsoleMsg(const char *the_msg);
 
-	void saveCameraBounds(const st_camera_bounds &CameraBounds);
+	void saveCameraBounds(st_camera_bounds &CameraBounds);
 
+	CVidConfig &getVidConfig();
 	short getZoomValue(void);
 	bool getShowFPS(void);
 	short getFiltermode(void);
@@ -87,26 +71,26 @@ public:
 
 	SDL_Surface *getBlitSurface() { return BlitSurface; }
 
-	bool isOpenGL(void) { return m_opengl; }
+	bool isOpenGL(void) { return m_VidConfig.m_opengl; }
 #ifdef USE_OPENGL
-	unsigned char getOGLFilter(void) { return (m_opengl_filter==GL_LINEAR); }
+	unsigned char getOGLFilter(void) { return (m_VidConfig.m_opengl_filter==GL_LINEAR); }
 #else
 	unsigned char getOGLFilter(void) { return 0; }
 #endif
 	SDL_Surface *getScrollSurface(void);
 
-	void setMode(st_resolution Resolution);
-
+	void setVidConfig(const CVidConfig& VidConf);
 	void setMode(int width, int height,int depth);
+	void setMode(st_resolution &res);
 	void setSpecialFXMode(bool SpecialFX);
 	void setFilter(short value);
 	void setZoom(short vale);
 	bool initOpenGL();
 #ifdef USE_OPENGL
-	void enableOpenGL(bool value) { m_opengl = value; }
-	void setOGLFilter(unsigned char value) { m_opengl_filter = (value==1) ? GL_LINEAR : GL_NEAREST ; }
+	void enableOpenGL(bool value) { m_VidConfig.m_opengl = value; }
+	void setOGLFilter(unsigned char value) { m_VidConfig.m_opengl_filter = (value==1) ? GL_LINEAR : GL_NEAREST ; }
 #else
-	void enableOpenGL(bool value) { m_opengl = false; }
+	void enableOpenGL(bool value) { m_VidConfig.m_opengl = false; }
 	void setOGLFilter(unsigned char value) { }
 #endif
 	void checkResolution( st_resolution& resolution, int flags );
@@ -114,9 +98,9 @@ public:
 
 	void initResolutionList();
 
-	void setAspectCorrection(bool value) { m_aspect_correction = value; }
-	bool getAspectCorrection(void) { return m_aspect_correction; }
-	bool getSpecialFXConfig(void) { return m_special_fx; }
+	void setAspectCorrection(bool value) { m_VidConfig.m_aspect_correction = value; }
+	bool getAspectCorrection(void) { return m_VidConfig.m_aspect_correction; }
+	bool getSpecialFXConfig(void) { return m_VidConfig.m_special_fx; }
 
 	st_camera_bounds &getCameraBounds();
 
@@ -129,36 +113,22 @@ public:
 
 	std::list<st_resolution> m_Resolutionlist;
 
-	bool showfps;
-
 private:
+
+	CVidConfig m_VidConfig;
 
 	bool createSurfaces();
 
 #ifdef USE_OPENGL
 	COpenGL	*mp_OpenGL;
-	int m_opengl_filter;
 #endif
 
 	std::list<st_resolution> m_Resolutionlistempty;
 	std::list<st_resolution> :: iterator m_Resolution_pos;
 
-	st_resolution m_Resolution;
-
-	unsigned int Mode;
-	bool Fullscreen;
-	short m_ScaleXFilter;
-	unsigned short Zoom;
-	unsigned int m_targetfps;	// Used for automatic frame skipping
-	bool m_opengl;
-	bool m_aspect_correction;
-	bool m_special_fx;
-
 	SDL_Rect screenrect;
 	SDL_Rect blitrect;
 	SDL_Rect game_resolution_rect;	// Also called Screenspace. Yet very limited.
-
-	st_camera_bounds m_CameraBounds;
 
 	Sint16 *mp_sbufferx, *mp_sbuffery;
 
