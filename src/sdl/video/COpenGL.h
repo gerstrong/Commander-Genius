@@ -22,6 +22,7 @@
 #endif
 
 #include "scale2x/scalebit.h"
+#include "CVideoEngine.h"
 
 // Structure used for dimensions
 struct stDims{
@@ -32,14 +33,13 @@ struct stDims{
 
 Uint16 getPowerOfTwo(Uint16 value);
 
-class COpenGL {
+class COpenGL : public CVideoEngine {
 public:
-	COpenGL(Uint16 Width, Uint16 Height, unsigned char Depth,
-			unsigned char scalex,SDL_Rect &gamestdrect);
+	COpenGL(const CVidConfig &VidConfig, SDL_Rect &gamestdrect);
 
 	void loadSurface(GLuint texture, SDL_Surface* surface);
 
-	void render();
+	void updateScreen();
 	bool initGL(GLint oglfilter);
 
 	void setBlitSurface(SDL_Surface *blitsurface);
@@ -52,13 +52,8 @@ public:
 	virtual ~COpenGL();
 
 private:
-	SDL_Surface	*mp_blitsurface;
-	SDL_Surface	*mp_fgsurface;
-	SDL_Surface	*mp_fxsurface;
 	char*		m_opengl_buffer;	// Used for internal ScaleX filtering
 
-	unsigned char	m_Depth;
-	unsigned char	m_ScaleX;
 	unsigned int	m_texparam;
 
 	float	m_aspectratio;

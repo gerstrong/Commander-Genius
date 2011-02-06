@@ -24,23 +24,18 @@ Uint16 getPowerOfTwo(Uint16 value)
 
 // gamerect is the base resolution for the game which is scaled with the filter
 // depending on what resolution has been chosen, it is mostly 320x200 or 320x240
-COpenGL::COpenGL(Uint16 Width, Uint16 Height, unsigned char Depth,
-				unsigned char scalex,SDL_Rect &gamestdrect) :
-mp_blitsurface(NULL),
-mp_fgsurface(NULL),
-mp_fxsurface(NULL),
+COpenGL::COpenGL(const CVidConfig &VidConfig, SDL_Rect &gamestdrect) :
+CVideoEngine(VidConfig),
 m_opengl_buffer(NULL),
-m_Depth(Depth),
-m_ScaleX(scalex),
 m_texparam(GL_TEXTURE_2D),
-m_aspectratio(Width/Height),
+m_aspectratio(m_VidConfig.m_Resolution.computeAspectRatio()),
 m_GamePOTBaseDim(getPowerOfTwo(gamestdrect.w),
 				getPowerOfTwo(gamestdrect.h)),
-m_GamePOTVideoDim(getPowerOfTwo(Width),
-				getPowerOfTwo(Height))
+m_GamePOTVideoDim(getPowerOfTwo(m_VidConfig.m_Resolution.width),
+				getPowerOfTwo(m_VidConfig.m_Resolution.height))
 {}
 
-static void createTexture(GLuint& tex, int oglfilter, GLsizei potwidth, GLsizei potheight, bool withAlpha = false) {
+static void createTexture(GLuint& tex, GLint oglfilter, GLsizei potwidth, GLsizei potheight, bool withAlpha = false) {
 	glGenTextures(1, &tex);
 	glBindTexture(GL_TEXTURE_2D, tex);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -61,7 +56,7 @@ static void createTexture(GLuint& tex, int oglfilter, GLsizei potwidth, GLsizei 
 
 bool COpenGL::initGL(GLint oglfilter)
 {
-	if(m_Depth != 32)
+	if(m_VidConfig.m_Resolution.depth != 32)
 	{
 		// TODO: I know, this is an issue, but I need to investigate, how pixels in SDL are stored when using
 		// 16 bit depth copy it correctly to the OGL Texture
@@ -117,9 +112,9 @@ bool COpenGL::initGL(GLint oglfilter)
 
 	createTexture(m_texture, oglfilter, m_GamePOTVideoDim.w, m_GamePOTVideoDim.h);
 	
-	if(m_ScaleX > 1)
+	if(m_VidConfig.m_ScaleXFilter > 1)
 	{
-		m_opengl_buffer = new char[m_GamePOTVideoDim.w*m_GamePOTVideoDim.h*m_ScaleX*m_Depth];
+		m_opengl_buffer = new char[m_GamePOTVideoDim.w*m_GamePOTVideoDim.h*m_VidConfig.m_ScaleXFilter*m_VidConfig.m_Resolution.depth];
 	}
 	else
 	{	// In that case we can do a texture based rendering
@@ -143,14 +138,6 @@ bool COpenGL::initGL(GLint oglfilter)
 	
 	return true;
 }
-
-void COpenGL::setBlitSurface(SDL_Surface *blitsurface)
-{	mp_blitsurface = blitsurface; }
-
-void COpenGL::setFGSurface(SDL_Surface *fgsurface)
-{	mp_fgsurface = fgsurface; }
-void COpenGL::setFXSurface(SDL_Surface *fxsurface)
-{	mp_fxsurface = fxsurface; }
 
 void COpenGL::reloadFX(SDL_Surface* surf) {
 	loadSurface(m_texFX, surf);
@@ -197,17 +184,17 @@ void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
 		externalFormat = GL_BGRA;
 	}
 
-	if(m_ScaleX > 1) //ScaleX
+	if(m_VidConfig.m_ScaleXFilter > 1) //ScaleX
 	{
-		unsigned m_src_slice = m_GamePOTBaseDim.w*surface->format->BytesPerPixel;
-		unsigned m_dst_slice = m_ScaleX*m_src_slice;
+		const unsigned src_slice = m_GamePOTBaseDim.w*surface->format->BytesPerPixel;
+		const unsigned dst_slice = m_VidConfig.m_ScaleXFilter*src_slice;
 
 
-		scale(m_ScaleX, m_opengl_buffer, m_dst_slice, surface->pixels,
-				m_src_slice, surface->format->BytesPerPixel,
+		scale(m_VidConfig.m_ScaleXFilter, m_opengl_buffer, dst_slice, surface->pixels,
+				src_slice, surface->format->BytesPerPixel,
 				m_GamePOTBaseDim.w, m_GamePOTBaseDim.h);
 
-			glTexImage2D(m_texparam, 0, internalFormat, m_GamePOTBaseDim.w*m_ScaleX, m_GamePOTBaseDim.h*m_ScaleX,
+			glTexImage2D(m_texparam, 0, internalFormat, m_GamePOTBaseDim.w*m_VidConfig.m_ScaleXFilter, m_GamePOTBaseDim.h*m_VidConfig.m_ScaleXFilter,
 														0, externalFormat, GL_UNSIGNED_BYTE, m_opengl_buffer);
 	}
 	else
@@ -219,7 +206,7 @@ void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
 	UnlockSurface(surface);
 }
 
-void COpenGL::render()
+void COpenGL::updateScreen()
 {
 	glEnable(GL_TEXTURE_2D);
 	// Set up an array of values to use as the sprite vertices.
@@ -249,18 +236,18 @@ void COpenGL::render()
 
 	glEnable(GL_BLEND);
 
-	loadSurface(m_texture, mp_blitsurface);
+	loadSurface(m_texture, BlitSurface);
 	renderTexture(m_texture);
 
-	if(mp_fgsurface)
+	if(FGLayerSurface)
 	{
-		reloadFG(mp_fgsurface);
+		reloadFG(FGLayerSurface);
 		renderTexture(m_texFG, true);
 	}
 
-	if(mp_fxsurface)
+	if(FXSurface)
 	{
-		reloadFX(mp_fgsurface);
+		reloadFX(FGLayerSurface);
 		renderTexture(m_texFG, true);
 	}
 
@@ -273,6 +260,11 @@ void COpenGL::render()
 
 	SDL_GL_SwapBuffers();
 
+	// Flush the FG-Layer
+	if(m_VidConfig.m_ScaleXFilter == 1)
+		SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGBA(FGLayerSurface->format, 0, 0, 0, 0));
+	else
+		SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE));
 }
 
 COpenGL::~COpenGL() {

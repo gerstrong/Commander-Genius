@@ -11,11 +11,6 @@
 #ifndef CVIDCONFIG_H_
 #define CVIDCONFIG_H_
 
-#ifdef USE_OPENGL
-#include "sdl/video/COpenGL.h"
-#endif
-
-
 struct st_resolution
 {
 	int width,height,depth;
@@ -29,6 +24,12 @@ struct st_resolution
 				target.height == height &&
 				target.width == width);
 	}
+
+	float computeAspectRatio()
+	{
+		return float(width)/float(height);
+	}
+
 };
 
 struct st_camera_bounds

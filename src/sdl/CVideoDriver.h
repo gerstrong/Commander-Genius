@@ -3,6 +3,10 @@
  *
  *  Created on: 17.03.2009
  *      Author: gerstrong
+ *
+ *  The driver is in charge of driving the card the card. This means it will do everthing
+ *  needed to get the stuff rendered properly. It will also do some checks wether it's possible to accomplish something
+ *  or not.
  */
 
 #ifndef CVIDEODRIVER_H_
@@ -10,6 +14,13 @@
 
 #include "CSingleton.h"
 #include "CVidConfig.h"
+#include "video/CVideoEngine.h"
+
+#ifdef USE_OPENGL
+	#include "sdl/video/COpenGL.h"
+#endif
+
+
 #define g_pVideoDriver CVideoDriver::Get()
 
 #include <SDL.h>
@@ -44,9 +55,6 @@ public:
 
 	void blitScrollSurface();
 	void setScrollBuffer(Sint16 *pbufx, Sint16 *pbufy);
-	void scale2xnofilter(char *dest, char *src, short bbp);
-	void scale3xnofilter(char *dest, char *src, short bbp);
-	void scale4xnofilter(char *dest, char *src, short bbp);
 
 	void collectSurfaces();
 	void updateScreen();
@@ -66,7 +74,7 @@ public:
 	unsigned short getDepth() const;
 	SDL_Rect getGameResolution() { return game_resolution_rect; }
 
-	SDL_Surface *getBlitSurface() { return BlitSurface; }
+	SDL_Surface *getBlitSurface() { return mp_VideoEngine->getBlitSurface(); }
 
 	bool isOpenGL(void) { return m_VidConfig.m_opengl; }
 #ifdef USE_OPENGL
@@ -82,7 +90,6 @@ public:
 	void setSpecialFXMode(bool SpecialFX);
 	void setFilter(short value);
 	void setZoom(short vale);
-	bool initOpenGL();
 #ifdef USE_OPENGL
 	void enableOpenGL(bool value) { m_VidConfig.m_opengl = value; }
 	void setOGLFilter(unsigned char value) { m_VidConfig.m_opengl_filter = (value==1) ? GL_LINEAR : GL_NEAREST ; }
@@ -103,10 +110,7 @@ public:
 
 	virtual ~CVideoDriver();
 
-	SDL_Surface *BlitSurface;
-	SDL_Surface *FGLayerSurface;       	// Scroll buffer for Messages
-	SDL_Surface *ScrollSurface;       	// 512x512 scroll buffer
-	SDL_Surface *FXSurface;
+	CVideoEngine *mp_VideoEngine;
 
 	std::list<st_resolution> m_Resolutionlist;
 	std::list<st_resolution> :: iterator m_Resolution_pos;
@@ -117,12 +121,7 @@ private:
 
 	bool createSurfaces();
 
-#ifdef USE_OPENGL
-	COpenGL	*mp_OpenGL;
-#endif
-
 	SDL_Rect screenrect;
-	SDL_Rect blitrect;
 	SDL_Rect game_resolution_rect;	// Also called Screenspace. Yet very limited.
 
 	Sint16 *mp_sbufferx, *mp_sbuffery;
@@ -131,7 +130,6 @@ private:
 
 	// Those variables are used for the rendering process, so they don't need to be recalculated
 	unsigned m_dst_slice, m_src_slice;
-	bool m_blitsurface_alloc;
 
 	// pointer to the line in VRAM to start blitting to when stretchblitting.
 	// this may not be the first line on the display as it is adjusted to

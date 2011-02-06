@@ -78,4 +78,3 @@ void CVidConfig::setResolution(const st_resolution& res)
 {
 	m_Resolution = res;
 }
-

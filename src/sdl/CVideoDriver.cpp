@@ -9,6 +9,9 @@
 #include "CInput.h"
 #include "CTimer.h"
 
+#include "video/CSDLVideo.h"
+#include "video/COpenGL.h"
+
 #include "keen.h"
 #include "graphics/CGfxEngine.h"
 #include "scale2x/scalebit.h"
@@ -35,8 +38,7 @@ int NumConsoleMessages = 0;
 int ConsoleExpireTimer = 0;
 
 
-CVideoDriver::CVideoDriver() :
-m_blitsurface_alloc(false)
+CVideoDriver::CVideoDriver()
 {
 	resetSettings();
 }
@@ -51,14 +53,6 @@ void CVideoDriver::resetSettings() {
 	screenrect.w=0;
 	game_resolution_rect.x=0;
 	game_resolution_rect.y=0;
-
-	ScrollSurface=NULL;       // 512x512 scroll buffer
-	FGLayerSurface=NULL;       // Scroll buffer for Messages
-	BlitSurface=NULL;
-#ifdef USE_OPENGL
-	mp_OpenGL = NULL;
-#endif
-
 
 	mp_sbufferx = mp_sbuffery = NULL;
 
@@ -205,94 +199,9 @@ void CVideoDriver::setMode(st_resolution &res)
 	}
 }
 
-void CVideoDriver::stop(void)
-{
-    if(m_blitsurface_alloc && BlitSurface)
-    {
-        SDL_FreeSurface(BlitSurface);
-        g_pLogFile->textOut("freed BlitSurface<br>");
-        BlitSurface=NULL;
-    }
-    if(FGLayerSurface)
-    {
-        SDL_FreeSurface(FGLayerSurface);
-        g_pLogFile->textOut("freed FGLayerSurface<br>");
-        FGLayerSurface=NULL;
-    }
-    if(ScrollSurface && (ScrollSurface->map != NULL))
-    {
-        SDL_FreeSurface(ScrollSurface);
-        g_pLogFile->textOut("freed ScrollSurface<br>");
-        ScrollSurface=NULL;
-    }
-    if(FXSurface)
-    {
-        SDL_FreeSurface(FXSurface);
-        g_pLogFile->textOut("freed FXSurface<br>");
-        FXSurface=NULL;
-    }
-#ifdef USE_OPENGL
-	if(mp_OpenGL) { delete mp_OpenGL; mp_OpenGL = NULL; }
-#endif
-	g_pLogFile->textOut(GREEN, "VideoDriver Stopped<br>\n");
-}
-
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 extern "C" void iPhoneRotateScreen();
 #endif
-
-bool CVideoDriver::start(void)
-{
-	bool retval = false;
-
-	std::string caption = "Commander Genius (CKP)";
-	SDL_WM_SetCaption(caption.c_str(), caption.c_str());
-	// When the program is through executing, call SDL_Quit
-	atexit(SDL_Quit);
-
-	if(!applyMode())
-	{
-		g_pLogFile->textOut(RED,"VideoDriver: Error applying mode! Your Videocard doesn't seem to work on CKP<br>");
-		g_pLogFile->textOut(RED,"Check, if you have the most recent drivers installed!<br>");
-		return false;
-	}
-
-	retval = createSurfaces();
-	initOpenGL();
-
-#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
-	iPhoneRotateScreen();
-#endif
-
-	return retval;
-}
-
-bool CVideoDriver::initOpenGL()
-{
-#ifdef USE_OPENGL
-	if(m_VidConfig.m_opengl) // If OpenGL could be set, initialize the matrices
-	{
-		mp_OpenGL = new COpenGL(m_VidConfig.m_Resolution.width,
-								m_VidConfig.m_Resolution.height,
-								m_VidConfig.m_Resolution.depth,
-								m_VidConfig.m_ScaleXFilter, game_resolution_rect);
-
-		if(!(mp_OpenGL->initGL(m_VidConfig.m_opengl_filter)))
-		{
-			delete mp_OpenGL;
-			mp_OpenGL = NULL;
-			m_VidConfig.m_opengl = false;
-			applyMode();
-		}
-		else
-		{
-			mp_OpenGL->setBlitSurface(BlitSurface);
-		}
-	}
-#endif
-
-	return m_VidConfig.m_opengl;
-}
 
 bool CVideoDriver::applyMode()
 {
@@ -355,10 +264,8 @@ bool CVideoDriver::applyMode()
 		m_VidConfig.Zoom--;
 
     // Center the screen!
-    blitrect.x = 0;
-    blitrect.y = 0;
-	screenrect.w = blitrect.w = game_resolution_rect.w*m_VidConfig.Zoom;
-	screenrect.h = blitrect.h = game_resolution_rect.h*m_VidConfig.Zoom;
+	screenrect.w = game_resolution_rect.w*m_VidConfig.Zoom;
+	screenrect.h = game_resolution_rect.h*m_VidConfig.Zoom;
 	screenrect.x = (m_VidConfig.m_Resolution.width-screenrect.w)/2;
 	screenrect.y = (m_VidConfig.m_Resolution.height-screenrect.h)/2;
 
@@ -386,6 +293,61 @@ bool CVideoDriver::applyMode()
 	return true;
 }
 
+bool CVideoDriver::start(void)
+{
+	bool retval = false;
+
+	std::string caption = "Commander Genius (CKP)";
+	SDL_WM_SetCaption(caption.c_str(), caption.c_str());
+	// When the program is through executing, call SDL_Quit
+	atexit(SDL_Quit);
+
+	if(!applyMode())
+	{
+		g_pLogFile->textOut(RED,"VideoDriver: Error applying mode! Your Videocard doesn't seem to work on CKP<br>");
+		g_pLogFile->textOut(RED,"Check, if you have the most recent drivers installed!<br>");
+		return false;
+	}
+
+#ifdef USE_OPENGL
+	if(m_VidConfig.m_opengl) // If OpenGL could be set, initialize the matrices
+	{
+		mp_VideoEngine = new COpenGL(m_VidConfig.m_Resolution.width,
+								m_VidConfig.m_Resolution.height,
+								m_VidConfig.m_Resolution.depth,
+								m_VidConfig.m_ScaleXFilter, game_resolution_rect,
+								m_VidConfig.m_opengl_filter,
+								);
+
+		if(!mp_VideoEngine->init())
+		{
+			delete mp_VideoEngine;
+			m_VidConfig.m_opengl = false;
+			applyMode();
+			mp_VideoEngine = new CSDLVideo(m_VidConfig);
+			mp_VideoEngine->init();
+		}
+	}
+	else
+	{
+#endif
+		mp_VideoEngine = new CSDLVideo(m_VidConfig);
+		mp_VideoEngine->init();
+
+#ifdef USE_OPENGL
+	}
+#endif
+
+	retval = createSurfaces();
+
+#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
+	iPhoneRotateScreen();
+#endif
+
+	return retval;
+}
+
+
 // This function adapts the gamescreenspace to the monitor format.
 // 16:9, 16:10, 4:3, everthing is supported as far it fits to the height!
 SDL_Rect CVideoDriver::adaptGameResolution()
@@ -404,122 +366,6 @@ void CVideoDriver::setFilter(short value) { m_VidConfig.m_ScaleXFilter = value; 
 
 void CVideoDriver::setZoom(short value) { m_VidConfig.Zoom = value; }
 
-bool CVideoDriver::createSurfaces()
-{
-	// This function creates the surfaces which are needed for the game.
-    ScrollSurface = createSurface( "ScrollSurface", true,
-								  512,
-								  512,
-								  m_VidConfig.m_Resolution.depth,
-								  m_VidConfig.Mode, screen->format );
-
-    if (m_VidConfig.m_Resolution.width == game_resolution_rect.w && !m_VidConfig.m_opengl)
-    {
-    	g_pLogFile->textOut("Blitsurface = Screen<br>");
-    	BlitSurface = screen;
-    	m_blitsurface_alloc = false;
-    }
-    else
-    {
-
-    	g_pLogFile->textOut("Blitsurface = creatergbsurfacefrom<br>");
-
-#ifdef USE_OPENGL
-    	if(m_VidConfig.m_opengl)
-    	{
-            BlitSurface = createSurface( "BlitSurface", true,
-            				getPowerOfTwo(game_resolution_rect.w),
-            				getPowerOfTwo(game_resolution_rect.h),
-            						m_VidConfig.m_Resolution.depth,
-            						m_VidConfig.Mode, screen->format );
-    	}
-    	else
-#endif
-    	{
-    		BlitSurface = createSurface( "BlitSurface", true,
-									game_resolution_rect.w,
-									game_resolution_rect.h,
-									m_VidConfig.m_Resolution.depth,
-									m_VidConfig.Mode, screen->format );
-    	}
-        m_blitsurface_alloc = true;
-    }
-    VRAMPtr = (unsigned char*)screen->pixels +
-	screenrect.y*screen->pitch + (screenrect.x*m_VidConfig.m_Resolution.depth>>3);
-
-    // Some surfaces could get 320x240 and the screenspace is extended.
-    // The video class must be changed for any further resolutions
-    game_resolution_rect.x = 0; game_resolution_rect.y = 0;
-
-#ifdef USE_OPENGL
-	if(m_VidConfig.m_opengl && m_VidConfig.m_ScaleXFilter == 1)
-	{
-		FGLayerSurface = createSurface( "FGLayerSurface", true,
-						getPowerOfTwo(game_resolution_rect.w),
-						getPowerOfTwo(game_resolution_rect.h),
-									m_VidConfig.m_Resolution.depth,
-									m_VidConfig.Mode, screen->format );
-	}
-	else
-#endif
-	{
-		FGLayerSurface = createSurface( "FGLayerSurface", false,
-								   game_resolution_rect.w,
-								   game_resolution_rect.h,
-								   m_VidConfig.m_Resolution.depth,
-								   m_VidConfig.Mode, screen->format );
-
-		SDL_SetColorKey( FGLayerSurface, SDL_SRCCOLORKEY,
-						SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE) );
-
-	}
-
-	//Set surface alpha
-	SDL_SetAlpha( FGLayerSurface, SDL_SRCALPHA, 225 );
-
-#ifdef USE_OPENGL
-	if(m_VidConfig.m_opengl && m_VidConfig.m_ScaleXFilter == 1)
-	{
-		FXSurface = createSurface( "FXSurface", true,
-				getPowerOfTwo(game_resolution_rect.w),
-				getPowerOfTwo(game_resolution_rect.h),
-						m_VidConfig.m_Resolution.depth,
-						m_VidConfig.Mode, screen->format );
-	}
-	else
-#endif
-	{
-	    FXSurface = createSurface( "FXSurface", false,
-	    						game_resolution_rect.w,
-	    						game_resolution_rect.h,
-	    						m_VidConfig.m_Resolution.depth,
-								m_VidConfig.Mode, screen->format );
-	}
-
-	g_pGfxEngine->Palette.setFXSurface( FXSurface );
-
-	return true;
-}
-
-SDL_Surface* CVideoDriver::createSurface( std::string name, bool alpha, int width, int height, int bpp, int mode, SDL_PixelFormat* format )
-{
-	SDL_Surface *temporary, *optimized;
-
-	temporary = SDL_CreateRGBSurface( mode, width, height, bpp, format->Rmask, format->Gmask, format->Bmask, format->Amask);
-	if (alpha && bpp==32) {
-		optimized = SDL_DisplayFormatAlpha( temporary );
-	} else {
-		optimized = SDL_DisplayFormat( temporary );
-	}
-	SDL_FreeSurface(temporary);
-	if (!optimized)
-	{
-		g_pLogFile->textOut(RED,"VideoDriver: Couldn't create surface:" + name +"<br>");
-		return NULL;
-	}
-	bpp = optimized->format->BitsPerPixel;
-	return optimized;
-}
 
 // defines the scroll-buffer that is used for blitScrollSurface(). It's normally passed by a CMap Object
 // It might have when a level-map is loaded.
@@ -530,327 +376,14 @@ void CVideoDriver::setScrollBuffer(Sint16 *pbufx, Sint16 *pbufy)
 }
 
 void CVideoDriver::blitScrollSurface() // This is only for tiles
-									   // The name should be changed
+									   // Therefore the name should be changed
 {
-	SDL_Rect srcrect;
-	SDL_Rect dstrect;
-	Sint16 sbufferx, sbuffery;
-	char wraphoz, wrapvrt;
-	int save_dstx, save_dstw, save_srcx, save_srcw;
-
-	dstrect.x = 0; dstrect.y = 0;
-
-	srcrect.x =	sbufferx = *mp_sbufferx;
-	srcrect.y = sbuffery = *mp_sbuffery;
-
-	dstrect.w = game_resolution_rect.w-sbufferx;
-	dstrect.h = game_resolution_rect.h-sbuffery;
-
-	if (sbufferx > (Uint16)(512-game_resolution_rect.w))
-	{ // need to wrap right side
-		srcrect.w = (512-sbufferx);
-		wraphoz = 1;
-	}
-	else
-	{ // single blit for whole horizontal copy
-		srcrect.w = game_resolution_rect.w;
-		wraphoz = 0;
-	}
-
-	if (sbuffery > (Uint16)(512-game_resolution_rect.h))
-	{ // need to wrap on bottom
-		srcrect.h = (512-sbuffery);
-		wrapvrt = 1;
-	}
-	else
-	{ // single blit for whole bottom copy
-		srcrect.h = game_resolution_rect.h;
-		wrapvrt = 0;
-	}
-
-	SDL_BlitSurface(ScrollSurface, &srcrect, BlitSurface, &dstrect);
-
-	if (wraphoz && wrapvrt)
-	{
-		// first do same thing we do for wraphoz
-		save_dstx = dstrect.x;
-		save_dstw = dstrect.w;
-		save_srcx = srcrect.x;
-		save_srcw = srcrect.w;
-		dstrect.x = srcrect.w;
-		dstrect.w = game_resolution_rect.w - dstrect.x;
-		srcrect.x = 0;
-		srcrect.w = (game_resolution_rect.w - srcrect.w);
-		SDL_BlitSurface(ScrollSurface, &srcrect, BlitSurface, &dstrect);
-
-		// now repeat for the bottom
-		// (lower-right square)
-		dstrect.y = srcrect.h;
-		dstrect.h = game_resolution_rect.h - dstrect.y;
-		srcrect.y = 0;
-		srcrect.h = (game_resolution_rect.h - srcrect.h);
-		SDL_BlitSurface(ScrollSurface, &srcrect, BlitSurface, &dstrect);
-		// (lower-left square)
-		dstrect.x = save_dstx;
-		dstrect.w = save_dstw;
-		srcrect.x = save_srcx;
-		srcrect.w = save_srcw;
-		SDL_BlitSurface(ScrollSurface, &srcrect, BlitSurface, &dstrect);
-	}
-	else if (wraphoz)
-	{
-		dstrect.x = srcrect.w;
-		dstrect.w = game_resolution_rect.w - dstrect.x;
-		srcrect.x = 0;
-		srcrect.w = game_resolution_rect.w - srcrect.w;
-		SDL_BlitSurface(ScrollSurface, &srcrect, BlitSurface, &dstrect);
-	}
-	else if (wrapvrt)
-	{
-		dstrect.y = srcrect.h;
-		dstrect.h = game_resolution_rect.h - dstrect.y;
-		srcrect.y = 0;
-		srcrect.h = (game_resolution_rect.h - srcrect.h);
-		SDL_BlitSurface(ScrollSurface, &srcrect, BlitSurface, &dstrect);
-	}
-
-	drawConsoleMessages();
-}
-
-void CVideoDriver::collectSurfaces()
-{
-#ifdef USE_OPENGL
-	if(m_VidConfig.m_opengl && m_VidConfig.m_ScaleXFilter == 1)
-	{
-		// TODO: Create a solid concept for rendering more textures instead of just one that is binded
-		// to BlitSurface. It's not that easy, because doing that and using scaleX will mean, that you
-		// to scaleX multiple times. So COpenGL must have separate cases. With or without ScaleX.
-		// It's might only be faster if scaleX is never used in that TODO-case
-
-		mp_OpenGL->setFGSurface(FGLayerSurface);
-
-		if(getPerSurfaceAlpha(FXSurface))
-			mp_OpenGL->setFXSurface(FXSurface);
-		else
-			mp_OpenGL->setFXSurface(NULL);
-	}
-	else
-#endif
-	{
-		SDL_BlitSurface(FGLayerSurface, NULL, BlitSurface, NULL);
-
-		if(getPerSurfaceAlpha(FXSurface))
-			SDL_BlitSurface(FXSurface, NULL, BlitSurface, NULL);
-	}
+	mp_VideoEngine->BlitSurface();
 }
 
 void CVideoDriver::updateScreen()
 {
-
-#ifdef USE_OPENGL
-	if(m_VidConfig.m_opengl)
-	{
-		mp_OpenGL->render();
-
-		// Flush the FG-Layer
-		if(m_VidConfig.m_ScaleXFilter == 1)
-			SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGBA(FGLayerSurface->format, 0, 0, 0, 0));
-		else
-			SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE));
-	}
-	else // No OpenGL but Software Rendering
-	{
-#endif
-		// if we're doing zoom then we have copied the scroll buffer into
-		// another offscreen buffer, and must now stretchblit it to the screen
-		if (m_VidConfig.Zoom == 1 && m_VidConfig.m_Resolution.width != game_resolution_rect.w )
-		{
-			LockSurface(BlitSurface);
-			LockSurface(screen);
-
-			if(m_VidConfig.m_ScaleXFilter == 1)
-			{
-				SDL_Rect scrrect, dstrect;
-				scrrect.y = 0;
-				scrrect.x = 0;
-				scrrect.h = game_resolution_rect.h;
-				scrrect.w = game_resolution_rect.w;
-				dstrect.x = (m_VidConfig.m_Resolution.width-game_resolution_rect.w)/2;
-				dstrect.y = (m_VidConfig.m_Resolution.height-game_resolution_rect.h)/2;
-				dstrect.w = game_resolution_rect.w;
-				dstrect.h = game_resolution_rect.h;
-
-				SDL_BlitSurface(BlitSurface, &scrrect, screen, &dstrect);
-			}
-			else
-			{
-				g_pLogFile->textOut(PURPLE,"Sorry, but this filter doesn't work at that zoom mode<br>");
-				g_pLogFile->textOut(PURPLE,"Try to use a higher zoom factor. Switching to no-filter<br>");
-				m_VidConfig.m_ScaleXFilter = 1;
-			}
-			UnlockSurface(screen);
-			UnlockSurface(BlitSurface);
-		}
-		if (m_VidConfig.Zoom == 2)
-		{
-			LockSurface(BlitSurface);
-			LockSurface(screen);
-
-			if(m_VidConfig.m_ScaleXFilter == 1)
-			{
-				scale2xnofilter((char*)VRAMPtr, (char*)BlitSurface->pixels, screen->format->BytesPerPixel);
-			}
-			else if(m_VidConfig.m_ScaleXFilter == 2)
-			{
-				scale(m_VidConfig.m_ScaleXFilter, VRAMPtr, m_dst_slice, BlitSurface->pixels,
-						m_src_slice, screen->format->BytesPerPixel,
-						game_resolution_rect.w, game_resolution_rect.h);
-			}
-			else
-			{
-				g_pLogFile->textOut(PURPLE,"Sorry, but this filter doesn't work at that zoom mode<br>");
-				g_pLogFile->textOut(PURPLE,"Try to use a higher zoom factor. Switching to no-filter<br>");
-				m_VidConfig.m_ScaleXFilter = 1;
-			}
-
-			UnlockSurface(screen);
-			UnlockSurface(BlitSurface);
-		}
-		else if (m_VidConfig.Zoom == 3)
-		{
-			LockSurface(BlitSurface);
-			LockSurface(screen);
-
-			if(m_VidConfig.m_ScaleXFilter == 1)
-			{
-				scale3xnofilter((char*)VRAMPtr, (char*)BlitSurface->pixels, screen->format->BytesPerPixel);
-			}
-			else if(m_VidConfig.m_ScaleXFilter == 2 || m_VidConfig.m_ScaleXFilter == 3)
-			{
-				scale(m_VidConfig.m_ScaleXFilter, VRAMPtr, m_dst_slice, BlitSurface->pixels,
-						m_src_slice, screen->format->BytesPerPixel,
-						game_resolution_rect.w, game_resolution_rect.h);
-			}
-			else
-			{
-				g_pLogFile->textOut(PURPLE,"Sorry, but this filter doesn't work at that zoom mode<br>");
-				g_pLogFile->textOut(PURPLE,"Try to use a higher zoom factor. Switching to no-filter<br>");
-				m_VidConfig.m_ScaleXFilter = 1;
-			}
-			UnlockSurface(screen);
-			UnlockSurface(BlitSurface);
-		}
-		else if (m_VidConfig.Zoom == 4)
-		{
-			LockSurface(BlitSurface);
-			LockSurface(screen);
-
-			if(m_VidConfig.m_ScaleXFilter == 1)
-			{
-				scale4xnofilter((char*)VRAMPtr, (char*)BlitSurface->pixels, screen->format->BytesPerPixel);
-			}
-			else if(m_VidConfig.m_ScaleXFilter >= 2 && m_VidConfig.m_ScaleXFilter <= 4 )
-			{
-				scale(m_VidConfig.m_ScaleXFilter, VRAMPtr, m_dst_slice, BlitSurface->pixels,
-						m_src_slice, screen->format->BytesPerPixel,
-						game_resolution_rect.w, game_resolution_rect.h);
-			}
-			else
-			{
-				g_pLogFile->textOut(PURPLE,"Sorry, but this filter doesn't work at that zoom mode<br>");
-				g_pLogFile->textOut(PURPLE,"Try to use a higher zoom factor. Switching to no-filter<br>");
-				m_VidConfig.m_ScaleXFilter = 1;
-			}
-			UnlockSurface(screen);
-			UnlockSurface(BlitSurface);
-		}
-
-		SDL_Flip(screen);
-
-		// Flush the FG-Layer
-		SDL_FillRect(FGLayerSurface, NULL, SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE));
-
-#ifdef USE_OPENGL
-	}
-#endif
-}
-
-void CVideoDriver::scale2xnofilter(char *dest, char *src, short bbp)
-{
-	// workaround for copying correctly stuff to the screen, so the screen is scaled normally
-    // to 2x (without filter). This applies to 16 and 32-bit colour depth.
-	// It uses bit shifting method for faster blit!
-	bbp >>= 1;
-	st_resolution &Res = m_VidConfig.m_Resolution;
-
-	int i,j;
-	for(i=0 ; i < game_resolution_rect.h ; i++)
-	{
-		for(j = 0; j < game_resolution_rect.w ; j++)
-		{
-			memcpy(dest+((j<<1)<<bbp)+(((i<<1)*Res.width)<<bbp),src+(j<<bbp)+((i*game_resolution_rect.w)<<bbp),bbp<<1);
-			memcpy(dest+(((j<<1)+1)<<bbp)+(((i<<1)*Res.width)<<bbp),src+(j<<bbp)+((i*game_resolution_rect.w)<<bbp),bbp<<1);
-		}
-		memcpy(dest+(((i<<1)+1)*(Res.width<<bbp)),(dest+(i<<1)*(Res.width<<bbp)),(bbp<<2)*game_resolution_rect.w);
-	}
-}
-
-void CVideoDriver::scale3xnofilter(char *dest, char *src, short bbp)
-{
-	// workaround for copying correctly stuff to the screen, so the screen is scaled normally
-    // to 2x (without filter). This applies to 16 and 32-bit colour depth.
-	// Optimization of using bit shifting
-	bbp >>= 1;
-	st_resolution &Res = m_VidConfig.m_Resolution;
-
-	int i,j;
-	for(i=0 ; i < game_resolution_rect.h ; i++)
-	{
-		for(j = 0; j < game_resolution_rect.w ; j++)
-		{
-			// j*3 = (j<<1) + j
-			memcpy(dest+(((j<<1)+j)<<bbp)+((((i<<1) + i)*Res.width)<<bbp),src+(j<<bbp)+((i*game_resolution_rect.w)<<bbp),bbp<<1);
-			memcpy(dest+(((j<<1)+j+1)<<bbp)+((((i<<1) + i)*Res.width)<<bbp),src+(j<<bbp)+((i*game_resolution_rect.w)<<bbp),bbp<<1);
-			memcpy(dest+(((j<<1)+j+2)<<bbp)+((((i<<1) + i)*Res.width)<<bbp),src+(j<<bbp)+((i*game_resolution_rect.w)<<bbp),bbp<<1);
-		}
-		memcpy(dest+((i<<1)+i+1)*(Res.width<<bbp),dest+((i<<1)+i)*(Res.width<<bbp),(3<<bbp)*game_resolution_rect.w);
-		memcpy(dest+((i<<1)+i+2)*(Res.width<<bbp),dest+((i<<1)+i)*(Res.width<<bbp),(3<<bbp)*game_resolution_rect.w);
-	}
-}
-
-void CVideoDriver::scale4xnofilter(char *dest, char *src, short bbp)
-{
-	// workaround for copying correctly stuff to the screen, so the screen is scaled normally
-    // to 4x (without filter). This applies to 16 and 32-bit colour depth.
-	// use bit shifting method for faster blit!
-	bbp >>= 1;
-	st_resolution &Res = m_VidConfig.m_Resolution;
-
-	char *srctemp;
-	char *desttemp;
-	int size;
-
-	int i,j;
-	for(i=0 ; i < game_resolution_rect.h ; i++)
-	{
-		for(j = 0; j < game_resolution_rect.w ; j++)
-		{
-			// j*4 = (j<<2)
-			srctemp = src+((j+(i*game_resolution_rect.w))<<bbp);
-			desttemp = dest+((4*(j+(i*Res.width)))<<bbp);
-			memcpy(desttemp,srctemp,bbp<<1);
-			memcpy(desttemp+(1<<bbp),srctemp,bbp<<1);
-			memcpy(desttemp+(2<<bbp),srctemp,bbp<<1);
-			memcpy(desttemp+(3<<bbp),srctemp,bbp<<1);
-		}
-		srctemp = dest+(((i<<2)*Res.width)<<bbp);
-		desttemp = dest+((((i<<2)+1)*Res.width)<<bbp);
-		size = game_resolution_rect.w*(bbp<<1<<2);
-
-		memcpy(desttemp,srctemp,size);
-		memcpy(desttemp+(Res.width<<bbp),srctemp,size);
-		memcpy(desttemp+((Res.width<<bbp)<<1),srctemp,size);
-	}
+	mp_VideoEngine->updateScreen();
 }
 
 // "Console" here refers to the capability to pop up in-game messages

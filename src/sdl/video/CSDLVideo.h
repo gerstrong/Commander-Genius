@@ -10,10 +10,13 @@
 #ifndef CSDLVIDEO_H_
 #define CSDLVIDEO_H_
 
-class CSDLVideo {
+#include "sdl/video/CVideoEngine.h"
+
+class CSDLVideo : public CVideoEngine {
 public:
-	CSDLVideo();
-	virtual ~CSDLVideo();
+	CSDLVideo(const CVidConfig& VidConfig);
+
+	void updateScreen();
 
 private:
 
