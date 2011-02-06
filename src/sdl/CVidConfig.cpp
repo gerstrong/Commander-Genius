@@ -61,7 +61,7 @@ void CVidConfig::reset()
 	m_Gamescreen.x = 0;
 	m_Gamescreen.y = 0;
 	m_Gamescreen.w = 320;
-	m_Gamescreen.w = 200;
+	m_Gamescreen.h = 200;
 
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	m_opengl = true;

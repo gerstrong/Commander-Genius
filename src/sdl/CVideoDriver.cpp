@@ -38,7 +38,8 @@ int NumConsoleMessages = 0;
 int ConsoleExpireTimer = 0;
 
 
-CVideoDriver::CVideoDriver()
+CVideoDriver::CVideoDriver() :
+mp_VideoEngine(NULL)
 {
 	resetSettings();
 }
@@ -221,30 +222,15 @@ bool CVideoDriver::applyMode()
 		m_VidConfig.Zoom = 1;
 
 	m_VidConfig.m_Resolution = *m_Resolution_pos;
-
-	bool value = mp_VideoEngine->init();
-
-	// Now SDL will tell if the bpp works or changes it, if not supported.
-	// this value is updated here!
-	m_VidConfig.m_Resolution.depth = mp_VideoEngine->getScreenSurface()->format->BitsPerPixel;
-	return value;
 }
 
 bool CVideoDriver::start(void)
 {
-	bool retval = false;
-
+	bool retval;
 	std::string caption = "Commander Genius (CKP)";
 	SDL_WM_SetCaption(caption.c_str(), caption.c_str());
 	// When the program is through executing, call SDL_Quit
 	atexit(SDL_Quit);
-
-	if(!applyMode())
-	{
-		g_pLogFile->textOut(RED,"VideoDriver: Error applying mode! Your Videocard doesn't seem to work on CKP<br>");
-		g_pLogFile->textOut(RED,"Check, if you have the most recent drivers installed!<br>");
-		return false;
-	}
 
 #ifdef USE_OPENGL
 	if(m_VidConfig.m_opengl) // If OpenGL could be set, initialize the matrices
@@ -257,24 +243,27 @@ bool CVideoDriver::start(void)
 			m_VidConfig.m_opengl = false;
 			applyMode();
 			mp_VideoEngine = new CSDLVideo(m_VidConfig);
-			mp_VideoEngine->init();
+			retval = mp_VideoEngine->init();
 		}
 	}
 	else
 	{
 #endif
 		mp_VideoEngine = new CSDLVideo(m_VidConfig);
-		mp_VideoEngine->init();
+		retval = mp_VideoEngine->init();
 
 #ifdef USE_OPENGL
 	}
 #endif
 
-	retval = mp_VideoEngine->createSurfaces();
-
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	iPhoneRotateScreen();
 #endif
+
+	// Now SDL will tell if the bpp works or changes it, if not supported.
+	// this value is updated here!
+	m_VidConfig.m_Resolution.depth = mp_VideoEngine->getScreenSurface()->format->BitsPerPixel;
+	retval &= mp_VideoEngine->createSurfaces();
 
 	return retval;
 }

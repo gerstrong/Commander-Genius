@@ -105,10 +105,11 @@ unsigned char *CVideoEngine::fetchStartScreenPixelPtr()
 {
 	const st_resolution &Res = m_VidConfig.m_Resolution;
 	const SDL_Rect &GameScreen = m_VidConfig.m_Gamescreen;
-	const int xpos = (Res.width-GameScreen.w)/2;
-	const int ypos = (Res.height-GameScreen.h)/2;
+	const int xpos = (Res.width-GameScreen.w*m_VidConfig.Zoom)/2;
+	const int ypos = (Res.height-GameScreen.h*m_VidConfig.Zoom)/2;
 	const int xoffset = xpos*(Res.depth>>3);
 	const int yoffset = ypos*screen->pitch;
+	//return (unsigned char*)screen->pixels;
 	return (unsigned char*)screen->pixels + yoffset + xoffset;
 }
 

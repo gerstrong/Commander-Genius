@@ -477,7 +477,7 @@ void CInput::pollEvents()
 	// Check, if LALT+ENTER was pressed
 	if((getHoldedKey(KALT)) && getPressedKey(KENTER))
 	{
-		bool value;
+		/*bool value;
 		value = g_pVideoDriver->getFullscreen();
 		value = !value;
 		g_pLogFile->textOut(GREEN,"Fullscreen mode triggered by user!<br>");
@@ -496,7 +496,7 @@ void CInput::pollEvents()
 
 
 		if(value) g_pVideoDriver->AddConsoleMsg("Fullscreen enabled");
-		else g_pVideoDriver->AddConsoleMsg("Fullscreen disabled");
+		else g_pVideoDriver->AddConsoleMsg("Fullscreen disabled");*/
 	}
 
 	// Check, if LALT+Q or LALT+F4 was pressed
