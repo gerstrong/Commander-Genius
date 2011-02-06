@@ -17,7 +17,7 @@ m_Alpha(0),
 m_FadeDir(FADE_IN),
 m_Style(FADE_PULSE),
 m_MaxAlpha(255),
-mp_FadeSurface(SDL_DisplayFormat(g_pVideoDriver->BlitSurface))
+mp_FadeSurface(SDL_DisplayFormat(g_pVideoDriver->getBlitSurface()))
 {
 	SDL_FillRect(mp_FadeSurface, NULL, m_Color);
 }
@@ -31,7 +31,7 @@ m_Alpha(0),
 m_FadeDir(FADE_IN),
 m_Style(FADE_NORMAL),
 m_MaxAlpha(m_maxalpha),
-mp_FadeSurface(SDL_DisplayFormat(g_pVideoDriver->BlitSurface))
+mp_FadeSurface(SDL_DisplayFormat(g_pVideoDriver->getBlitSurface()))
 {
 	SDL_FillRect(mp_FadeSurface, NULL, m_Color);
 }
@@ -45,7 +45,7 @@ void CFlash::process()
 	SDL_SetAlpha(mp_FadeSurface, SDL_SRCALPHA, m_Alpha);
 
 	// Blit it and free temp surface
-	SDL_BlitSurface(mp_FadeSurface, &gamerect, g_pVideoDriver->BlitSurface, &gamerect);
+	SDL_BlitSurface(mp_FadeSurface, &gamerect, g_pVideoDriver->getBlitSurface(), &gamerect);
 
 	if(m_FadeDir == FADE_IN)
 	{

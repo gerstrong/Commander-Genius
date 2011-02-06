@@ -165,7 +165,7 @@ void CPlayGameVorticon::showKeensLeft()
 
 	if(!mp_KeenLeftSfc)
 	{
-		SDL_Surface *p_blitSurface = g_pVideoDriver->FGLayerSurface;
+		SDL_Surface *p_blitSurface = g_pVideoDriver->mp_VideoEngine->getFGLayerSurface();
 		const Uint32 rmask = p_blitSurface->format->Rmask;
 		const Uint32 gmask = p_blitSurface->format->Gmask;
 		const Uint32 bmask = p_blitSurface->format->Bmask;
@@ -216,7 +216,7 @@ void CPlayGameVorticon::showKeensLeft()
 		local_rect.w = mp_KeenLeftSfc->w;
 		local_rect.h = mp_KeenLeftSfc->h;
 
-		SDL_BlitSurface(mp_KeenLeftSfc, NULL, g_pVideoDriver->FGLayerSurface, &local_rect);
+		SDL_BlitSurface(mp_KeenLeftSfc, NULL, g_pVideoDriver->mp_VideoEngine->getFGLayerSurface(), &local_rect);
 
 		if( g_pTimer->HasTimeElapsed(3000) || g_pInput->getPressedAnyCommand() )
 		{

@@ -13,7 +13,7 @@
 #include "../../common/CMapLoader.h"
 
 CCredits::CCredits(const std::string &datadirectory, const char &episode) {
-	mp_Scrollsurface = g_pVideoDriver->ScrollSurface;
+	mp_Scrollsurface = g_pVideoDriver->mp_VideoEngine->getScrollSurface();
 	mp_Map = new CMap;
 	mp_Map->setScrollSurface(mp_Scrollsurface);
 
@@ -100,7 +100,7 @@ void CCredits::process()
 	for(int j=0 ; j<54 ; j++)
 	{
 		if(m_scrolly+(j<<3) > -8 && m_scrolly+(j<<3) < g_pVideoDriver->getGameResolution().h)
-			g_pGfxEngine->getFont(0).drawFont( g_pVideoDriver->FGLayerSurface, m_scrolltext[j], m_mid[j], m_scrolly+(j<<3), true);
+			g_pGfxEngine->getFont(0).drawFont( g_pVideoDriver->mp_VideoEngine->getFGLayerSurface(), m_scrolltext[j], m_mid[j], m_scrolly+(j<<3), true);
 	}
 	
 	if( g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand() )

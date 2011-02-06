@@ -11,6 +11,12 @@
 #ifndef CVIDCONFIG_H_
 #define CVIDCONFIG_H_
 
+#include <SDL.h>
+
+#ifdef USE_OPENGL
+	#include <SDL_opengl.h>
+#endif
+
 struct st_resolution
 {
 	int width,height,depth;
@@ -25,7 +31,7 @@ struct st_resolution
 				target.width == width);
 	}
 
-	float computeAspectRatio()
+	float computeAspectRatio() const
 	{
 		return float(width)/float(height);
 	}
@@ -57,7 +63,7 @@ public:
 	void setResolution(const st_resolution& res);
 
 	st_resolution m_Resolution;
-	unsigned int Mode;
+	SDL_Rect m_Gamescreen;	// Also called Screenspace. Here the player will be able to choose a higher resolution for the gameplay.
 	bool Fullscreen;
 	short m_ScaleXFilter;
 	unsigned short Zoom;
@@ -68,7 +74,7 @@ public:
 	bool showfps;
 
 #ifdef USE_OPENGL
-	int m_opengl_filter;
+	GLint m_opengl_filter;
 #endif
 
 	st_camera_bounds m_CameraBounds;

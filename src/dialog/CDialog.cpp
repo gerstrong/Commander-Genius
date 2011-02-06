@@ -432,7 +432,7 @@ void CDialog::processInput(int move)
 
 void CDialog::draw()
 {
-	SDL_Surface *dst_sfc = g_pVideoDriver->FGLayerSurface;
+	SDL_Surface *dst_sfc = g_pVideoDriver->mp_VideoEngine->getFGLayerSurface();
 	
 	if(m_alpha < 230)
 	{
@@ -536,7 +536,7 @@ void CDialog::drawTwirl()
 		
 	}
 	
-	g_pGfxEngine->getCursor()->draw( g_pVideoDriver->FGLayerSurface, m_twirl.frame,
+	g_pGfxEngine->getCursor()->draw( g_pVideoDriver->mp_VideoEngine->getFGLayerSurface(), m_twirl.frame,
 									m_dlgobject[m_selected_ID]->m_x,
 									m_twirl.posy );
 }
@@ -553,7 +553,7 @@ CDialog::~CDialog(){
 		m_dlgobject.pop_back();
 	
 	m_alpha = 225;
-	SDL_SetAlpha(g_pVideoDriver->FGLayerSurface, SDL_SRCALPHA, m_alpha );
+	SDL_SetAlpha(g_pVideoDriver->mp_VideoEngine->getFGLayerSurface(), SDL_SRCALPHA, m_alpha );
 	
 	if(mp_Frame) delete mp_Frame;
 }

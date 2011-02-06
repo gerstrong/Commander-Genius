@@ -27,7 +27,6 @@ void CVidConfig::reset()
 {
 	// Default values
 	showfps=true;
-	Mode=0;
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X) || defined(DINGOO) || defined(NANONOTE)
 	m_Resolution.width=320;
 	m_Resolution.height=240;
@@ -58,6 +57,11 @@ void CVidConfig::reset()
 	m_aspect_correction = true;
 	m_CameraBounds.reset();
 	m_special_fx = true;
+
+	m_Gamescreen.x = 0;
+	m_Gamescreen.y = 0;
+	m_Gamescreen.w = 320;
+	m_Gamescreen.w = 200;
 
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	m_opengl = true;

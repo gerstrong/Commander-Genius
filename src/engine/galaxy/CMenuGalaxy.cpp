@@ -37,7 +37,7 @@ bool CMenuGalaxy::init( menutypes menu_type )
 	cleanup();
 
 	CFont &Font = g_pGfxEngine->getFont(1);
-	Font.setBGColour(g_pVideoDriver->BlitSurface->format, 0x545454);
+	Font.setBGColour(g_pVideoDriver->mp_VideoEngine->getBlitSurface()->format, 0x545454);
 
 	CMenu::init(menu_type);
 
@@ -75,16 +75,17 @@ void CMenuGalaxy::drawMenuBorder()
 	SDL_Rect rect;
 	rect.x = m_title_coord.x-2;	rect.w = 155;
 	rect.y = m_title_coord.y+7;	rect.h = 1;
+	SDL_Surface *blit = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
 
 	// This one draws a line behind the bitmap
-	SDL_FillRect(g_pVideoDriver->BlitSurface, &rect, 0x54fc54);
+	SDL_FillRect(blit, &rect, 0x54fc54);
 
 	// And this the bitmap itself
-	m_TitleBmp.draw(g_pVideoDriver->BlitSurface, m_title_coord.x, m_title_coord.y);
+	m_TitleBmp.draw(blit, m_title_coord.x, m_title_coord.y);
 
 	// This one draws a line at the down part
 	rect.y = m_title_coord.y+90;
-	SDL_FillRect(g_pVideoDriver->BlitSurface, &rect, 0x54fc54);
+	SDL_FillRect(blit, &rect, 0x54fc54);
 
 	// TODO: Missing the guide text here!
 }

@@ -18,7 +18,7 @@ CPreviews::CPreviews(CExeFile &ExeFile)
 {
 	m_episode = ExeFile.getEpisode();
 	std::string DataDirectory = ExeFile.getDataDirectory();
-	mp_Scrollsurface = g_pVideoDriver->ScrollSurface;
+	mp_Scrollsurface = g_pVideoDriver->mp_VideoEngine->getScrollSurface();
 	mp_Map = new CMap();
 	mp_Map->setScrollSurface(mp_Scrollsurface);
 
@@ -58,7 +58,7 @@ int CPreviews::openNextScene()
 		std::string filename = JoinPaths(g_pBehaviorEngine->m_ExeFile.getDataDirectory(), "previews.ck");
 		filename += itoa(g_pBehaviorEngine->getEpisode());
 
-		mp_TextViewer = new CTextViewer(g_pVideoDriver->FGLayerSurface, 0, 8, 320, 160);
+		mp_TextViewer = new CTextViewer(g_pVideoDriver->mp_VideoEngine->getFGLayerSurface(), 0, 8, 320, 160);
 
 		if(!mp_TextViewer->loadTextfromFile(filename))
 			m_destroy_me = true;

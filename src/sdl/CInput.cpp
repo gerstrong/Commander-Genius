@@ -489,10 +489,10 @@ void CInput::pollEvents()
 		{
 			value = !value;
 			g_pLogFile->ftextOut(PURPLE, "Couldn't change the resolution, Rolling back...<br>");
-			if(g_pVideoDriver->applyMode()) g_pVideoDriver->initOpenGL();
+			//if(g_pVideoDriver->applyMode()) g_pVideoDriver->initOpenGL();
 		}
-		else
-			g_pVideoDriver->initOpenGL();
+		//else
+			//g_pVideoDriver->initOpenGL();
 
 
 		if(value) g_pVideoDriver->AddConsoleMsg("Fullscreen enabled");

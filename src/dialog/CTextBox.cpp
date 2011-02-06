@@ -17,7 +17,7 @@ CTextBox::CTextBox(int y, int h, const std::string& message) :
 m_tw_waittime(0)
 {
 	setup(y, h, message);
-	m_surface = g_pVideoDriver->FGLayerSurface;
+	m_surface = g_pVideoDriver->mp_VideoEngine->getFGLayerSurface();
 }
 
 CTextBox::CTextBox(SDL_Surface *surface, int y, int h, const std::string& message) :

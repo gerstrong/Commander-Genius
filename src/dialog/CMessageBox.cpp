@@ -97,7 +97,7 @@ void CMessageBox::addTileAt(Uint16 tile, Uint16 x, Uint16 y)
 #define TWIRL_TIME	5
 void CMessageBox::process()
 {
-	SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
+	SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getFGLayerSurface();
 
 	// Look, if somebody pressed a button, and close this dialog!
 	if(g_pInput->getPressedAnyCommand()) {

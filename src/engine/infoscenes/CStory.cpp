@@ -21,7 +21,7 @@ CStory::CStory(CExeFile &ExeFile)
 {
 	char episode = ExeFile.getEpisode();
 	std::string DataDirectory = ExeFile.getDataDirectory();
-	mp_Scrollsurface = g_pVideoDriver->ScrollSurface;
+	mp_Scrollsurface = g_pVideoDriver->mp_VideoEngine->getScrollSurface();
 	mp_Map = new CMap;
 	mp_Map->setScrollSurface(mp_Scrollsurface);
 
@@ -75,7 +75,7 @@ CStory::CStory(CExeFile &ExeFile)
 	Maploader.load(episode, 90, DataDirectory);
 	
 	// Create the Text ViewerBox and stores the text there!
-	mp_TextViewer = new CTextViewer(g_pVideoDriver->FGLayerSurface, 0, 0, 320, 136);
+	mp_TextViewer = new CTextViewer(g_pVideoDriver->mp_VideoEngine->getFGLayerSurface(), 0, 0, 320, 136);
 	mp_TextViewer->formatText(Text);
 	
 	// Now Scroll to the position of the player and center him

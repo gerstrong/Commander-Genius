@@ -10,12 +10,12 @@
 #include <string>
 
 #include "CHighScores.h"
-#include "../../sdl/CInput.h"
-#include "../../graphics/CGfxEngine.h"
-#include "../../StringUtils.h"
-#include "../../FindFile.h"
-#include "../../sdl/CVideoDriver.h"
-#include "../../common/CMapLoader.h"
+#include "sdl/CInput.h"
+#include "graphics/CGfxEngine.h"
+#include "StringUtils.h"
+#include "FindFile.h"
+#include "sdl/CVideoDriver.h"
+#include "common/CMapLoader.h"
 
 const int HIGHSCORETABLE_X = 1344;
 const int HIGHSCORETABLE_Y = 32;
@@ -27,7 +27,7 @@ using namespace std;
 CHighScores::CHighScores(int Episode, const std::string &DataDirectory, bool saving_mode) :
 m_Place(0), m_blink(true), m_blinkctr(0)
 {
-	m_Map.setScrollSurface(g_pVideoDriver->ScrollSurface);
+	m_Map.setScrollSurface(g_pVideoDriver->mp_VideoEngine->getScrollSurface());
 	m_CursorPosition = 0;
 	m_CurrentLetter = 32;
 	
@@ -130,7 +130,7 @@ m_Place(0), m_blink(true), m_blinkctr(0)
 
 void CHighScores::process()
 {
-	SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
+	SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getFGLayerSurface();
 	
 	// draw the Bitmaps
 	std::vector<stBitmap>::iterator it_bmp = m_Bitmaps.begin();
@@ -169,7 +169,7 @@ void CHighScores::processShow()
 
 void CHighScores::processWriting()
 {
-	SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
+	SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getFGLayerSurface();
 	
 #ifndef NOKEYBOARD
 	// Get the input

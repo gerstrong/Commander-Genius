@@ -142,7 +142,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 				(EGASpriteModell[i].hitbox_u << STC),
 				(EGASpriteModell[i].hitbox_r << STC),
 				(EGASpriteModell[i].hitbox_b << STC) );
-		Sprite.createSurface( g_pVideoDriver->BlitSurface->flags,
+		Sprite.createSurface( g_pVideoDriver->mp_VideoEngine->getBlitSurface()->flags,
 				g_pGfxEngine->Palette.m_Palette );
 
 		percent = (i*100)/m_numsprites;
@@ -282,7 +282,7 @@ char CEGASprit::LoadTGASprite( const std::string &filename, CSprite &sprite )
 
 	base = image;
 	sprite.setSize(w, h);
-	sprite.createSurface( g_pVideoDriver->BlitSurface->flags, g_pGfxEngine->Palette.m_Palette );
+	sprite.createSurface( g_pVideoDriver->mp_VideoEngine->getBlitSurface()->flags, g_pGfxEngine->Palette.m_Palette );
 	
 	SDL_Surface *sfc = sprite.getSDLSurface();
 	SDL_Surface *msksfc = sprite.getSDLMaskSurface();
@@ -460,7 +460,7 @@ void CEGASprit::CreateYellowSpriteofTile( CTilemap &tilemap, Uint16 tile, CSprit
 	tile_rect.w = tile_rect.h= 16;
 	
 	sprite.setSize(tile_rect.w, tile_rect.h);
-	sprite.createSurface( g_pVideoDriver->BlitSurface->flags,
+	sprite.createSurface( g_pVideoDriver->mp_VideoEngine->getBlitSurface()->flags,
 						  g_pGfxEngine->Palette.m_Palette );
 	sprite.optimizeSurface();
 	

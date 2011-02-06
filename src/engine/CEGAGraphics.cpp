@@ -33,7 +33,7 @@ bool CEGAGraphics::loadData()
 	std::string filename = getResourceFilename("gfx/menufonts.bmp", "", true, true);
 
 	Font.loadHiColourFont(filename);
-	Font.setFGColour(g_pVideoDriver->FGLayerSurface->format, 0x0, true);
+	Font.setFGColour(g_pVideoDriver->mp_VideoEngine->getFGLayerSurface()->format, 0x0, true);
 
 	g_pGfxEngine->createEmptyCursorMap(Font.getSDLColouredSurface());
 	CCursor *pCursor = g_pGfxEngine->getCursor();

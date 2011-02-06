@@ -30,7 +30,7 @@ bool CTitle::init(int Episode)
 	CBitmap *pBitmap;
 	g_pTimer->ResetSecondsTimer();
 	m_time = 10; // show the title screen for 10 secs.
-	pSurface = g_pVideoDriver->BlitSurface;
+	pSurface = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
 	if(!g_pVideoDriver->getSpecialFXConfig())
 		g_pGfxEngine->pushEffectPtr(new CColorMerge(8));
 	else

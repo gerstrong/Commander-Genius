@@ -16,6 +16,8 @@ class CSDLVideo : public CVideoEngine {
 public:
 	CSDLVideo(const CVidConfig& VidConfig);
 
+	bool createSurfaces();
+	void collectSurfaces();
 	void updateScreen();
 
 private:

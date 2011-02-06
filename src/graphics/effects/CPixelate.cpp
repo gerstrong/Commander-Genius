@@ -38,7 +38,7 @@ m_speed(speed)
 void CPixelate::getSnapshot()
 {
 	g_pVideoDriver->collectSurfaces();
-	if(!mp_OldSurface) mp_OldSurface = SDL_DisplayFormat(g_pVideoDriver->BlitSurface);
+	if(!mp_OldSurface) mp_OldSurface = SDL_DisplayFormat(g_pVideoDriver->getBlitSurface());
 }
 
 // Effect cycle
@@ -53,7 +53,7 @@ void CPixelate::process()
 	if(mp_NewSurface == NULL)
 	{
 		// Get the a snapshot of the second surface which will be the destination.
-		mp_NewSurface = SDL_DisplayFormat(g_pVideoDriver->BlitSurface);
+		mp_NewSurface = SDL_DisplayFormat(g_pVideoDriver->getBlitSurface());
 	}
 
 	SDL_LockSurface(mp_NewSurface);
@@ -106,7 +106,7 @@ void CPixelate::process()
 		m_finished = true;
 	}
 
-	SDL_BlitSurface( mp_OldSurface, &gameres, g_pVideoDriver->BlitSurface, &gameres);
+	SDL_BlitSurface( mp_OldSurface, &gameres, g_pVideoDriver->getBlitSurface(), &gameres);
 }
 
 CPixelate::~CPixelate()

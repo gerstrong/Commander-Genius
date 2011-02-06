@@ -58,7 +58,7 @@ void CPlayGameGalaxy::process()
 	if(mp_Menu) // In case the menu is open
 	{
 		// draw the title bitmap here!
-		m_BackgroundBitmap.draw(g_pVideoDriver->BlitSurface, 0, 0);
+		m_BackgroundBitmap.draw(g_pVideoDriver->mp_VideoEngine->getBlitSurface(), 0, 0);
 
 		if(mp_Menu->mustClose())
 		{

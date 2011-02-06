@@ -12,7 +12,9 @@
 #define CVIDEOENGINE_H_
 
 #include <SDL.h>
+#include <string>
 
+#include "scale2x/scalebit.h"
 #include "sdl/CVidConfig.h"
 
 class CVideoEngine {
@@ -20,11 +22,23 @@ public:
 
 	CVideoEngine(const CVidConfig& VidConfig);
 
-	virtual void init() = 0;
+	virtual bool init();
 	virtual void updateScreen() = 0;
-	virtual void shutdown() = 0;
+	virtual void shutdown();
+
+	void setScrollBuffer(Sint16 *pbufx, Sint16 *pbufy);
+	SDL_Surface *createSurface( std::string name, bool alpha, int width, int height, int bpp, int mode, SDL_PixelFormat* format );
+	virtual bool createSurfaces() = 0;
+	unsigned char *fetchStartScreenPixelPtr();
+	virtual void collectSurfaces() = 0;
+	void blitScrollSurface();
+	void stop();
 
 	SDL_Surface *getBlitSurface() { return BlitSurface; }
+	SDL_Surface *getScreenSurface() { return screen; }
+	SDL_Surface *getFGLayerSurface() { return FGLayerSurface; }
+	SDL_Surface *getScrollSurface() { return ScrollSurface; }
+	SDL_Surface *getFXSurface() { return FXSurface; }
 
 protected:
 
@@ -39,7 +53,16 @@ protected:
 
 	bool m_blitsurface_alloc;
 
-	CVidConfig &m_VidConfig;
+	const CVidConfig &m_VidConfig;
+
+	Sint16 *mp_sbufferx, *mp_sbuffery;
+
+	SDL_Surface *screen;                // the actual video memory/window
+
+	// Those variables are used for the rendering process, so they don't need to be recalculated
+	unsigned m_dst_slice, m_src_slice;
+
+	unsigned int m_Mode;
 };
 
 #endif /* CVIDEOENGINE_H_ */

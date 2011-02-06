@@ -35,7 +35,7 @@ m_RestartVideo(false)
 
 bool CPassiveVort::init(char mode)
 {
-	mp_Scrollsurface = g_pVideoDriver->ScrollSurface;
+	mp_Scrollsurface = g_pVideoDriver->mp_VideoEngine->getScrollSurface();
 	m_mode = mode;
 	if( m_mode == INTRO )
 	{

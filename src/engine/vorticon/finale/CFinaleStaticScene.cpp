@@ -17,7 +17,7 @@ CFinaleStaticScene::CFinaleStaticScene(const std::string &game_path, const std::
 	mp_SceneSurface = SDL_CreateRGBSurface( g_pVideoDriver->getBlitSurface()->flags, g_pVideoDriver->getGameResolution().w, g_pVideoDriver->getGameResolution().h, 8, 0, 0, 0, 0);
 	SDL_SetColors( mp_SceneSurface, g_pGfxEngine->Palette.m_Palette, 0, 255);
 	if(finale_draw( mp_SceneSurface, scene_file, game_path))
-		SDL_BlitSurface( mp_SceneSurface, NULL, g_pVideoDriver->ScrollSurface, NULL );
+		SDL_BlitSurface( mp_SceneSurface, NULL, g_pVideoDriver->mp_VideoEngine->getScrollSurface(), NULL );
 	else
 		m_mustclose = true;
 }
@@ -80,7 +80,7 @@ void CFinaleStaticScene::process()
 			{
 				if( m_count >= i->from_count && m_count <= i->to_count ) // It is in the interval?
 				{ // show it!
-					i->p_bitmap->draw(g_pVideoDriver->ScrollSurface, i->dest_rect.x, i->dest_rect.y);
+					i->p_bitmap->draw(g_pVideoDriver->mp_VideoEngine->getScrollSurface(), i->dest_rect.x, i->dest_rect.y);
 				}
 			}
 

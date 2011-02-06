@@ -7,50 +7,102 @@
 
 #include "CSDLVideo.h"
 #include "CVideoEngine.h"
+#include "CLogFile.h"
+
+#include "graphics/CGfxEngine.h"
+#include "graphics/PerSurfaceAlpha.h"
 
 CSDLVideo::CSDLVideo(const CVidConfig& VidConfig) :
 CVideoEngine(VidConfig)
-{
-	// TODO Auto-generated constructor stub
+{}
 
+bool CSDLVideo::createSurfaces()
+{
+	// This function creates the surfaces which are needed for the game.
+	const SDL_Rect &gamerect = m_VidConfig.m_Gamescreen;
+	ScrollSurface = createSurface( "ScrollSurface", true,
+			512,
+			512,
+			m_VidConfig.m_Resolution.depth,
+			m_Mode, screen->format );
+
+	if (m_VidConfig.m_Resolution.width == gamerect.w )
+	{
+		g_pLogFile->textOut("Blitsurface = Screen<br>");
+		BlitSurface = screen;
+		m_blitsurface_alloc = false;
+	}
+	else
+	{
+		g_pLogFile->textOut("Blitsurface = creatergbsurfacefrom<br>");
+
+		BlitSurface = createSurface( "BlitSurface", true,
+				gamerect.w,
+				gamerect.h,
+				m_VidConfig.m_Resolution.depth,
+				m_Mode, screen->format );
+
+		m_blitsurface_alloc = true;
+	}
+
+	FGLayerSurface = createSurface( "FGLayerSurface", false,
+			gamerect.w,
+			gamerect.h,
+			m_VidConfig.m_Resolution.depth,
+			m_Mode, screen->format );
+
+	SDL_SetColorKey( FGLayerSurface, SDL_SRCCOLORKEY,
+			SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE) );
+
+	FXSurface = createSurface( "FXSurface", false,
+			gamerect.w,
+			gamerect.h,
+			m_VidConfig.m_Resolution.depth,
+			m_Mode, screen->format );
+
+	//Set surface alpha
+	SDL_SetAlpha( FGLayerSurface, SDL_SRCALPHA, 225 );
+	g_pGfxEngine->Palette.setFXSurface( FXSurface );
+
+	return true;
+}
+
+void CSDLVideo::collectSurfaces()
+{
+	SDL_BlitSurface(FGLayerSurface, NULL, BlitSurface, NULL);
+
+	if( getPerSurfaceAlpha(FXSurface) )
+		SDL_BlitSurface(FXSurface, NULL, BlitSurface, NULL);
 }
 
 void CSDLVideo::updateScreen()
 {
+	const SDL_Rect &gamerect = m_VidConfig.m_Gamescreen;
+	const st_resolution &Resrect = m_VidConfig.m_Resolution;
+
+	// pointer to the line in VRAM to start blitting to when stretchblitting.
+	// this may not be the first line on the display as it is adjusted to
+	// center the image on the screen when in fullscreen.
+	void *VRAMPtr = fetchStartScreenPixelPtr();
+
 	// if we're doing zoom then we have copied the scroll buffer into
 	// another offscreen buffer, and must now stretchblit it to the screen
-	if (m_VidConfig.Zoom == 1 && m_VidConfig.m_Resolution.width != game_resolution_rect.w )
+	if (m_VidConfig.Zoom == 1 && Resrect.width != gamerect.w )
 	{
-		//LockSurface(BlitSurface);
-		//LockSurface(screen);
+		SDL_Rect scrrect, dstrect;
+		scrrect.y = 0;
+		scrrect.x = 0;
+		dstrect.h = scrrect.h = gamerect.h;
+		dstrect.w = scrrect.w = gamerect.w;
+		dstrect.x = (m_VidConfig.m_Resolution.width-gamerect.w)/2;
+		dstrect.y = (m_VidConfig.m_Resolution.height-gamerect.h)/2;
 
-		if(m_VidConfig.m_ScaleXFilter == 1)
-		{
-			SDL_Rect scrrect, dstrect;
-			scrrect.y = 0;
-			scrrect.x = 0;
-			scrrect.h = game_resolution_rect.h;
-			scrrect.w = game_resolution_rect.w;
-			dstrect.x = (m_VidConfig.m_Resolution.width-game_resolution_rect.w)/2;
-			dstrect.y = (m_VidConfig.m_Resolution.height-game_resolution_rect.h)/2;
-			dstrect.w = game_resolution_rect.w;
-			dstrect.h = game_resolution_rect.h;
-
-			SDL_BlitSurface(BlitSurface, &scrrect, screen, &dstrect);
-		}
-		else
-		{
-			g_pLogFile->textOut(PURPLE,"Sorry, but this filter doesn't work at that zoom mode<br>");
-			g_pLogFile->textOut(PURPLE,"Try to use a higher zoom factor. Switching to no-filter<br>");
-			m_VidConfig.m_ScaleXFilter = 1;
-		}
-		//UnlockSurface(screen);
-		//UnlockSurface(BlitSurface);
+		SDL_BlitSurface(BlitSurface, &scrrect, screen, &dstrect);
 	}
 	if (m_VidConfig.Zoom == 2)
 	{
-		LockSurface(BlitSurface);
-		LockSurface(screen);
+		SDL_LockSurface(BlitSurface);
+		SDL_LockSurface(screen);
 
 		if(m_VidConfig.m_ScaleXFilter == 1)
 		{
@@ -60,22 +112,16 @@ void CSDLVideo::updateScreen()
 		{
 			scale(m_VidConfig.m_ScaleXFilter, VRAMPtr, m_dst_slice, BlitSurface->pixels,
 					m_src_slice, screen->format->BytesPerPixel,
-					game_resolution_rect.w, game_resolution_rect.h);
-		}
-		else
-		{
-			g_pLogFile->textOut(PURPLE,"Sorry, but this filter doesn't work at that zoom mode<br>");
-			g_pLogFile->textOut(PURPLE,"Try to use a higher zoom factor. Switching to no-filter<br>");
-			m_VidConfig.m_ScaleXFilter = 1;
+					gamerect.w, gamerect.h);
 		}
 
-		UnlockSurface(screen);
-		UnlockSurface(BlitSurface);
+		SDL_UnlockSurface(screen);
+		SDL_UnlockSurface(BlitSurface);
 	}
 	else if (m_VidConfig.Zoom == 3)
 	{
-		LockSurface(BlitSurface);
-		LockSurface(screen);
+		SDL_LockSurface(BlitSurface);
+		SDL_LockSurface(screen);
 
 		if(m_VidConfig.m_ScaleXFilter == 1)
 		{
@@ -85,21 +131,15 @@ void CSDLVideo::updateScreen()
 		{
 			scale(m_VidConfig.m_ScaleXFilter, VRAMPtr, m_dst_slice, BlitSurface->pixels,
 					m_src_slice, screen->format->BytesPerPixel,
-					game_resolution_rect.w, game_resolution_rect.h);
+					gamerect.w, gamerect.h);
 		}
-		else
-		{
-			g_pLogFile->textOut(PURPLE,"Sorry, but this filter doesn't work at that zoom mode<br>");
-			g_pLogFile->textOut(PURPLE,"Try to use a higher zoom factor. Switching to no-filter<br>");
-			m_VidConfig.m_ScaleXFilter = 1;
-		}
-		UnlockSurface(screen);
-		UnlockSurface(BlitSurface);
+		SDL_UnlockSurface(screen);
+		SDL_UnlockSurface(BlitSurface);
 	}
 	else if (m_VidConfig.Zoom == 4)
 	{
-		LockSurface(BlitSurface);
-		LockSurface(screen);
+		SDL_LockSurface(BlitSurface);
+		SDL_LockSurface(screen);
 
 		if(m_VidConfig.m_ScaleXFilter == 1)
 		{
@@ -109,16 +149,10 @@ void CSDLVideo::updateScreen()
 		{
 			scale(m_VidConfig.m_ScaleXFilter, VRAMPtr, m_dst_slice, BlitSurface->pixels,
 					m_src_slice, screen->format->BytesPerPixel,
-					game_resolution_rect.w, game_resolution_rect.h);
+					gamerect.w, gamerect.h);
 		}
-		else
-		{
-			g_pLogFile->textOut(PURPLE,"Sorry, but this filter doesn't work at that zoom mode<br>");
-			g_pLogFile->textOut(PURPLE,"Try to use a higher zoom factor. Switching to no-filter<br>");
-			m_VidConfig.m_ScaleXFilter = 1;
-		}
-		UnlockSurface(screen);
-		UnlockSurface(BlitSurface);
+		SDL_UnlockSurface(screen);
+		SDL_UnlockSurface(BlitSurface);
 	}
 
 	SDL_Flip(screen);

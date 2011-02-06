@@ -322,7 +322,7 @@ void CPlayGameVorticon::process()
 
 		if (g_pVideoDriver->getVidConfig().showfps)
 		{
-			SDL_Surface *sfc = g_pVideoDriver->FGLayerSurface;
+			SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getFGLayerSurface();
 			std::string tempbuf;
 #ifdef DEBUG
 			tempbuf = "FPS: " + itoa(g_pTimer->getFramesPerSec()) +

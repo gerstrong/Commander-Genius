@@ -9,6 +9,7 @@
 #include "COpenGL.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/CInput.h" // for CInput::renderOverlay
+#include "graphics/CGfxEngine.h"
 #include "CLogFile.h"
 
 /**
@@ -24,16 +25,86 @@ Uint16 getPowerOfTwo(Uint16 value)
 
 // gamerect is the base resolution for the game which is scaled with the filter
 // depending on what resolution has been chosen, it is mostly 320x200 or 320x240
-COpenGL::COpenGL(const CVidConfig &VidConfig, SDL_Rect &gamestdrect) :
+COpenGL::COpenGL(const CVidConfig &VidConfig) :
 CVideoEngine(VidConfig),
 m_opengl_buffer(NULL),
 m_texparam(GL_TEXTURE_2D),
 m_aspectratio(m_VidConfig.m_Resolution.computeAspectRatio()),
-m_GamePOTBaseDim(getPowerOfTwo(gamestdrect.w),
-				getPowerOfTwo(gamestdrect.h)),
+m_GamePOTBaseDim(getPowerOfTwo(m_VidConfig.m_Gamescreen.w),
+				getPowerOfTwo(m_VidConfig.m_Gamescreen.h)),
 m_GamePOTVideoDim(getPowerOfTwo(m_VidConfig.m_Resolution.width),
 				getPowerOfTwo(m_VidConfig.m_Resolution.height))
 {}
+
+bool COpenGL::createSurfaces()
+{
+	// This function creates the surfaces which are needed for the game.
+	const SDL_Rect &gamerect = m_VidConfig.m_Gamescreen;
+    ScrollSurface = createSurface( "ScrollSurface", true,
+								  512, 512,
+								  m_VidConfig.m_Resolution.depth,
+								  m_Mode, screen->format );
+
+    if (m_VidConfig.m_Resolution.width == gamerect.w && !m_VidConfig.m_opengl)
+    {
+    	g_pLogFile->textOut("Blitsurface = Screen<br>");
+    	BlitSurface = screen;
+    	m_blitsurface_alloc = false;
+    }
+    else
+    {
+
+    	g_pLogFile->textOut("Blitsurface = creatergbsurfacefrom<br>");
+
+        BlitSurface = createSurface( "BlitSurface", true,
+            						getPowerOfTwo(gamerect.w),
+            						getPowerOfTwo(gamerect.h),
+            						m_VidConfig.m_Resolution.depth,
+            						m_Mode, screen->format );
+        m_blitsurface_alloc = true;
+    }
+
+	if(m_VidConfig.m_ScaleXFilter == 1)
+	{
+		FGLayerSurface = createSurface( "FGLayerSurface", true,
+						getPowerOfTwo(gamerect.w),
+						getPowerOfTwo(gamerect.h),
+									m_VidConfig.m_Resolution.depth,
+									m_Mode, screen->format );
+	}
+
+	if(m_VidConfig.m_opengl && m_VidConfig.m_ScaleXFilter == 1)
+	{
+		FXSurface = createSurface( "FXSurface", true,
+				getPowerOfTwo(gamerect.w),
+				getPowerOfTwo(gamerect.h),
+						m_VidConfig.m_Resolution.depth,
+						m_Mode, screen->format );
+	}
+
+	//Set surface alpha
+	SDL_SetAlpha( FGLayerSurface, SDL_SRCALPHA, 225 );
+	g_pGfxEngine->Palette.setFXSurface( FXSurface );
+
+	return true;
+}
+
+void COpenGL::collectSurfaces()
+{
+	if(m_VidConfig.m_ScaleXFilter == 1)
+	{
+		// TODO: Create a solid concept for rendering more textures instead of just one that is binded
+		// to BlitSurface. It's not that easy, because doing that and using scaleX will mean, that you
+		// to scaleX multiple times. So COpenGL must have separate cases. With or without ScaleX.
+		// It's might only be faster if scaleX is never used in that TODO-case
+
+		// TODO: Check if we really need this...
+		//if(getPerSurfaceAlpha(FXSurface))
+			//mp_OpenGL->setFXSurface(FXSurface);
+		//else
+			//mp_OpenGL->setFXSurface(NULL);
+	}
+}
 
 static void createTexture(GLuint& tex, GLint oglfilter, GLsizei potwidth, GLsizei potheight, bool withAlpha = false) {
 	glGenTextures(1, &tex);
@@ -169,7 +240,7 @@ static void renderTexture(GLuint texture, bool withAlpha = false) {
 void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
 {
 	glBindTexture (m_texparam, texture);
-	LockSurface(surface);
+	SDL_LockSurface(surface);
 	GLint internalFormat, externalFormat;
 #if !defined(TARGET_OS_IPHONE) && !defined(TARGET_IPHONE_SIMULATOR) // iPhone always used 32 bits; also GL_BGR is not defined
 	if(surface->format->BitsPerPixel == 24)
@@ -203,7 +274,7 @@ void COpenGL::loadSurface(GLuint texture, SDL_Surface* surface)
 														0, externalFormat, GL_UNSIGNED_BYTE, surface->pixels);
 	}
 
-	UnlockSurface(surface);
+	SDL_UnlockSurface(surface);
 }
 
 void COpenGL::updateScreen()

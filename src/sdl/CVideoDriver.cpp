@@ -47,15 +47,6 @@ void CVideoDriver::resetSettings() {
 
 	m_VidConfig.reset();
 
-	screenrect.x=0;
-	screenrect.y=0;
-	screenrect.h=0;
-	screenrect.w=0;
-	game_resolution_rect.x=0;
-	game_resolution_rect.y=0;
-
-	mp_sbufferx = mp_sbuffery = NULL;
-
 	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO) < 0)
 		g_pLogFile->textOut(RED,"Could not initialize SDL: %s<br>", SDL_GetError());
 	else
@@ -205,6 +196,13 @@ extern "C" void iPhoneRotateScreen();
 
 bool CVideoDriver::applyMode()
 {
+	const st_resolution &Res = m_VidConfig.m_Resolution;
+	const SDL_Rect &GameRect = m_VidConfig.m_Gamescreen;
+
+	// Before the resolution is set, check, if the zoom factor is too high!
+	while(((Res.width/GameRect.w) < m_VidConfig.Zoom || (Res.height/GameRect.h) < m_VidConfig.Zoom) && (m_VidConfig.Zoom > 1))
+		m_VidConfig.Zoom--;
+
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR) || defined(ANDROID)
 	// Force the default settings on iPhone.
 	// There is no reason yet to play with it, most likely other settings will
@@ -224,73 +222,12 @@ bool CVideoDriver::applyMode()
 
 	m_VidConfig.m_Resolution = *m_Resolution_pos;
 
-	// Setup mode depends on some systems.
-#if defined(CAANOO) || defined(WIZ) || defined(DINGOO) || defined(NANONOTE) || defined(ANDROID)
-	m_VidConfig.Mode = SDL_SWSURFACE;
-#elif defined(GP2X)
-	m_VidConfig.Mode = SDL_DOUBLEBUF | SDL_HWSURFACE;
-#else
-	// Support for doublebuffering
-	m_VidConfig.Mode = SDL_DOUBLEBUF | SDL_HWPALETTE | SDL_HWSURFACE;
-#endif
-
-	// Enable OpenGL
-#ifdef USE_OPENGL
-	if(m_VidConfig.m_opengl)
-	{
-		SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
-	#if SDL_VERSION_ATLEAST(1, 3, 0)
-	#else
-		SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 1);
-	#endif
-
-		m_VidConfig.Mode |= SDL_OPENGL;
-	}
-#endif
-
-	// This is the default game resolution
-    game_resolution_rect.w = 320;
-	game_resolution_rect.h = 200;
-
-	// Here we check, if we can enhance the screen-resolution and do it if yes
-	game_resolution_rect = adaptGameResolution();
-
-	// Now we decide if it will be fullscreen or windowed mode.
-	if(m_VidConfig.Fullscreen)
-		m_VidConfig.Mode |= SDL_FULLSCREEN;
-
-	// Before the resolution is set, check, if the zoom factor is too high!
-	while(((m_VidConfig.m_Resolution.width/game_resolution_rect.w) < m_VidConfig.Zoom || (m_VidConfig.m_Resolution.height/game_resolution_rect.h) < m_VidConfig.Zoom) && (m_VidConfig.Zoom > 1))
-		m_VidConfig.Zoom--;
-
-    // Center the screen!
-	screenrect.w = game_resolution_rect.w*m_VidConfig.Zoom;
-	screenrect.h = game_resolution_rect.h*m_VidConfig.Zoom;
-	screenrect.x = (m_VidConfig.m_Resolution.width-screenrect.w)/2;
-	screenrect.y = (m_VidConfig.m_Resolution.height-screenrect.h)/2;
-
-	// And leave the rest to SDL!
-	st_resolution &res = m_VidConfig.m_Resolution;
-	screen = SDL_SetVideoMode( res.width, res.height, res.depth, m_VidConfig.Mode );
-
-	if(!screen)
-	{
-		g_pLogFile->textOut(RED,"VidDrv_Start(): Couldn't create a SDL surface: %s<br>", SDL_GetError());
-		return false;
-	}
+	bool value = mp_VideoEngine->init();
 
 	// Now SDL will tell if the bpp works or changes it, if not supported.
 	// this value is updated here!
-	res.depth = screen->format->BitsPerPixel;
-
-	// If Fullscreen hide the mouse cursor.
-	// Anyway, it just can point but does not interact yet
- 	SDL_ShowCursor(!m_VidConfig.Fullscreen);
-
- 	m_dst_slice = res.width*screen->format->BytesPerPixel;
- 	m_src_slice = game_resolution_rect.w*screen->format->BytesPerPixel;
-
-	return true;
+	m_VidConfig.m_Resolution.depth = mp_VideoEngine->getScreenSurface()->format->BitsPerPixel;
+	return value;
 }
 
 bool CVideoDriver::start(void)
@@ -312,12 +249,7 @@ bool CVideoDriver::start(void)
 #ifdef USE_OPENGL
 	if(m_VidConfig.m_opengl) // If OpenGL could be set, initialize the matrices
 	{
-		mp_VideoEngine = new COpenGL(m_VidConfig.m_Resolution.width,
-								m_VidConfig.m_Resolution.height,
-								m_VidConfig.m_Resolution.depth,
-								m_VidConfig.m_ScaleXFilter, game_resolution_rect,
-								m_VidConfig.m_opengl_filter,
-								);
+		mp_VideoEngine = new COpenGL(m_VidConfig);
 
 		if(!mp_VideoEngine->init())
 		{
@@ -338,28 +270,13 @@ bool CVideoDriver::start(void)
 	}
 #endif
 
-	retval = createSurfaces();
+	retval = mp_VideoEngine->createSurfaces();
 
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
 	iPhoneRotateScreen();
 #endif
 
 	return retval;
-}
-
-
-// This function adapts the gamescreenspace to the monitor format.
-// 16:9, 16:10, 4:3, everthing is supported as far it fits to the height!
-SDL_Rect CVideoDriver::adaptGameResolution()
-{
-	float scalefactor;
-	SDL_Rect Gamerect;
-
-	Gamerect = game_resolution_rect;
-	scalefactor = ((float)m_VidConfig.m_Resolution.width) / ((float)Gamerect.w);
-	Gamerect.h = (int)( ((float)m_VidConfig.m_Resolution.height) / scalefactor );
-
-	return Gamerect;
 }
 
 void CVideoDriver::setFilter(short value) { m_VidConfig.m_ScaleXFilter = value; } // 1 means no filter of course
@@ -371,14 +288,19 @@ void CVideoDriver::setZoom(short value) { m_VidConfig.Zoom = value; }
 // It might have when a level-map is loaded.
 void CVideoDriver::setScrollBuffer(Sint16 *pbufx, Sint16 *pbufy)
 {
-	mp_sbufferx = pbufx;
-	mp_sbuffery = pbufy;
+	mp_VideoEngine->setScrollBuffer(pbufx, pbufy);
 }
 
 void CVideoDriver::blitScrollSurface() // This is only for tiles
 									   // Therefore the name should be changed
 {
-	mp_VideoEngine->BlitSurface();
+	mp_VideoEngine->blitScrollSurface();
+	drawConsoleMessages();
+}
+
+void CVideoDriver::collectSurfaces()
+{
+	mp_VideoEngine->collectSurfaces();
 }
 
 void CVideoDriver::updateScreen()
@@ -405,7 +327,7 @@ void CVideoDriver::drawConsoleMessages(void)
 	y = CONSOLE_MESSAGE_Y;
 	for(i=0;i<NumConsoleMessages;i++)
 	{
-		g_pGfxEngine->getFont(0).drawFont( FGLayerSurface, cmsg[i].msg, CONSOLE_MESSAGE_X, y, true);
+		g_pGfxEngine->getFont(0).drawFont( mp_VideoEngine->getFGLayerSurface(), cmsg[i].msg, CONSOLE_MESSAGE_X, y, true);
 		y += CONSOLE_MESSAGE_SPACING;
 	}
 }
@@ -492,11 +414,19 @@ unsigned int CVideoDriver::getHeight() const
 unsigned short CVideoDriver::getDepth() const
 {	return m_VidConfig.m_Resolution.depth;	}
 SDL_Surface *CVideoDriver::getScrollSurface(void)
-{	return ScrollSurface; }
+{	return mp_VideoEngine->getScrollSurface(); }
 
 st_camera_bounds &CVideoDriver::getCameraBounds()
 { return m_VidConfig.m_CameraBounds; }
 
-CVideoDriver::~CVideoDriver() {
+void CVideoDriver::stop()
+{
+	if(mp_VideoEngine)
+		delete mp_VideoEngine;
+	mp_VideoEngine = NULL;
+}
+
+CVideoDriver::~CVideoDriver()
+{
  	stop();
 }

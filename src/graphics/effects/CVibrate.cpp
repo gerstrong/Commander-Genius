@@ -16,7 +16,7 @@ m_RunTime(msecs)
 // Spawns the vibration effect
 void CVibrate::process()
 {
-	SDL_Surface *sfc = g_pVideoDriver->BlitSurface;
+	SDL_Surface *sfc = g_pVideoDriver->getBlitSurface();
 	SDL_Rect gamerect = g_pVideoDriver->getGameResolution();
 	SDL_Rect newrect;
 

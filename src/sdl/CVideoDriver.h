@@ -27,17 +27,6 @@
 #include <iostream>
 #include <list>
 
-inline bool LockSurface(SDL_Surface * bmp)  {
-	if (SDL_MUSTLOCK(bmp))
-		return SDL_LockSurface(bmp) != -1;
-	return true;
-}
-
-inline void UnlockSurface(SDL_Surface * bmp)  {
-	if (SDL_MUSTLOCK(bmp))
-		SDL_UnlockSurface(bmp);
-}
-
 class CVideoDriver : public CSingleton<CVideoDriver>
 {
 public:
@@ -45,11 +34,10 @@ public:
 	void resetSettings();
 	
 	bool applyMode();
-	SDL_Rect adaptGameResolution();
 	SDL_Surface* createSurface( std::string name, bool alpha, int width, int height, int bpp, int mode, SDL_PixelFormat* format );
 
-	void stop(void);
-	bool start(void);
+	void stop();
+	bool start();
 	void isFullscreen(bool value);
 	void drawConsoleMessages();
 
@@ -72,7 +60,7 @@ public:
 	unsigned int getWidth() const;
 	unsigned int getHeight() const;
 	unsigned short getDepth() const;
-	SDL_Rect getGameResolution() { return game_resolution_rect; }
+	SDL_Rect getGameResolution() { return m_VidConfig.m_Gamescreen; }
 
 	SDL_Surface *getBlitSurface() { return mp_VideoEngine->getBlitSurface(); }
 
@@ -118,22 +106,5 @@ public:
 private:
 
 	CVidConfig m_VidConfig;
-
-	bool createSurfaces();
-
-	SDL_Rect screenrect;
-	SDL_Rect game_resolution_rect;	// Also called Screenspace. Yet very limited.
-
-	Sint16 *mp_sbufferx, *mp_sbuffery;
-
-	SDL_Surface *screen;                // the actual video memory/window
-
-	// Those variables are used for the rendering process, so they don't need to be recalculated
-	unsigned m_dst_slice, m_src_slice;
-
-	// pointer to the line in VRAM to start blitting to when stretchblitting.
-	// this may not be the first line on the display as it is adjusted to
-	// center the image on the screen when in fullscreen.
-	unsigned char *VRAMPtr;
 };
 #endif /* CVIDEODRIVER_H_ */

@@ -6,20 +6,20 @@
  */
 
 #include "CAbout.h"
-#include "../../FindFile.h"
-#include "../../sdl/CInput.h"
-#include "../../CLogFile.h"
-#include "../../fileio/CExeFile.h"
-#include "../../graphics/CGfxEngine.h"
-#include "../../sdl/CVideoDriver.h"
-#include "../../common/CMapLoader.h"
-#include "../../fileio/ResourceMgmt.h"
+#include "FindFile.h"
+#include "sdl/CInput.h"
+#include "CLogFile.h"
+#include "fileio/CExeFile.h"
+#include "graphics/CGfxEngine.h"
+#include "sdl/CVideoDriver.h"
+#include "common/CMapLoader.h"
+#include "fileio/ResourceMgmt.h"
 
 CAbout::CAbout(CExeFile &ExeFile, const std::string &type) :
 mp_LogoBMP(NULL),
 m_type(type)
 {
-	mp_Scrollsurface = g_pVideoDriver->ScrollSurface;
+	mp_Scrollsurface = g_pVideoDriver->mp_VideoEngine->getScrollSurface();
 	mp_Map = new CMap;
 	mp_Map->setScrollSurface(mp_Scrollsurface);
 	CMapLoader Maploader(mp_Map);
@@ -149,16 +149,16 @@ void CAbout::process()
 	
 	if(m_type == "ID")
 	{
-		mp_bmp->draw( g_pVideoDriver->FGLayerSurface, 160-mp_bmp->getWidth()/2, 22);
+		mp_bmp->draw( g_pVideoDriver->mp_VideoEngine->getFGLayerSurface(), 160-mp_bmp->getWidth()/2, 22);
 	}
 	else if(m_type == "CG")
 	{
 		if(mp_LogoBMP)
-			SDL_BlitSurface(mp_LogoBMP, NULL, g_pVideoDriver->FGLayerSurface, &m_logo_rect);
+			SDL_BlitSurface(mp_LogoBMP, NULL, g_pVideoDriver->mp_VideoEngine->getFGLayerSurface(), &m_logo_rect);
 	}
 
 	for(std::size_t i=0 ; i<m_lines.size() ; i++)
-		g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->FGLayerSurface, m_lines.at(i), 24, 72+i*8, true);
+		g_pGfxEngine->getFont(0).drawFont(g_pVideoDriver->mp_VideoEngine->getFGLayerSurface(), m_lines.at(i), 24, 72+i*8, true);
 	
 	if(g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand())
 		m_destroy_me=true;

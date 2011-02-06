@@ -54,7 +54,7 @@ void CPassiveGalaxy::processIntro()
 void CPassiveGalaxy::processTitle()
 {
 	// draw the title bitmap here!
-	m_BackgroundBitmap.draw(g_pVideoDriver->BlitSurface, 0, 0);
+	m_BackgroundBitmap.draw(g_pVideoDriver->mp_VideoEngine->getBlitSurface(), 0, 0);
 	
 	if ( g_pInput->getPressedAnyKey() || g_pInput->getPressedAnyCommand() )
 	{
@@ -75,7 +75,7 @@ void CPassiveGalaxy::processTitle()
 void CPassiveGalaxy::processMenu()
 {
 	// draw the background!
-	m_BackgroundBitmap.draw(g_pVideoDriver->BlitSurface, 0, 0);
+	m_BackgroundBitmap.draw(g_pVideoDriver->mp_VideoEngine->getBlitSurface(), 0, 0);
 
 	mp_Menu->process();
 

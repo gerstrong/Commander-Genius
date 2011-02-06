@@ -56,12 +56,12 @@ void CStatusScreen::draw()
 
 
 	if(!m_closed)
-		SDL_BlitSurface(mp_StatusSfc, NULL, g_pVideoDriver->FGLayerSurface, &m_StatusRect );
+		SDL_BlitSurface(mp_StatusSfc, NULL, g_pVideoDriver->mp_VideoEngine->getFGLayerSurface(), &m_StatusRect );
 }
 
 SDL_Surface* CStatusScreen::CreateStatusSfc()
 {
-	SDL_Surface *p_blitSurface = g_pVideoDriver->FGLayerSurface;
+	SDL_Surface *p_blitSurface = g_pVideoDriver->mp_VideoEngine->getFGLayerSurface();
 	const Uint32 rmask = p_blitSurface->format->Rmask;
 	const Uint32 gmask = p_blitSurface->format->Gmask;
 	const Uint32 bmask = p_blitSurface->format->Bmask;
