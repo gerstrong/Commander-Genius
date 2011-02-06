@@ -45,7 +45,7 @@ bool COpenGL::createSurfaces()
 								  m_VidConfig.m_Resolution.depth,
 								  m_Mode, screen->format );
 
-    if (m_VidConfig.m_Resolution.width == gamerect.w && !m_VidConfig.m_opengl)
+    if ( m_VidConfig.m_Resolution.width == gamerect.w )
     {
     	g_pLogFile->textOut("Blitsurface = Screen<br>");
     	BlitSurface = screen;
@@ -64,27 +64,26 @@ bool COpenGL::createSurfaces()
         m_blitsurface_alloc = true;
     }
 
-	if(m_VidConfig.m_ScaleXFilter == 1)
+	//if(m_VidConfig.m_ScaleXFilter == 1)
 	{
 		FGLayerSurface = createSurface( "FGLayerSurface", true,
 						getPowerOfTwo(gamerect.w),
 						getPowerOfTwo(gamerect.h),
 									m_VidConfig.m_Resolution.depth,
 									m_Mode, screen->format );
+		//Set surface alpha
+		SDL_SetAlpha( FGLayerSurface, SDL_SRCALPHA, 225 );
 	}
 
-	if(m_VidConfig.m_opengl && m_VidConfig.m_ScaleXFilter == 1)
+	//if(m_VidConfig.m_ScaleXFilter == 1)
 	{
 		FXSurface = createSurface( "FXSurface", true,
 				getPowerOfTwo(gamerect.w),
 				getPowerOfTwo(gamerect.h),
 						m_VidConfig.m_Resolution.depth,
 						m_Mode, screen->format );
+		g_pGfxEngine->Palette.setFXSurface( FXSurface );
 	}
-
-	//Set surface alpha
-	SDL_SetAlpha( FGLayerSurface, SDL_SRCALPHA, 225 );
-	g_pGfxEngine->Palette.setFXSurface( FXSurface );
 
 	return true;
 }
@@ -125,8 +124,10 @@ static void createTexture(GLuint& tex, GLint oglfilter, GLsizei potwidth, GLsize
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, potwidth, potheight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 }
 
-bool COpenGL::initGL(GLint oglfilter)
+bool COpenGL::init()
 {
+	CVideoEngine::init();
+	const GLint &oglfilter = m_VidConfig.m_opengl_filter;
 	if(m_VidConfig.m_Resolution.depth != 32)
 	{
 		// TODO: I know, this is an issue, but I need to investigate, how pixels in SDL are stored when using

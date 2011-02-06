@@ -1,6 +1,10 @@
 Commander Genius Release :
 ==========================
 
+v0.3.3.1:
+---------
+- Tied up the code!
+
 v0.3.3:
 -------
 - New audio system/manager

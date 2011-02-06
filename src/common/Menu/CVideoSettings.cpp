@@ -73,7 +73,7 @@ mp_CameraSettings(NULL)
 	m_Autoframeskip = g_pTimer->getFrameRate();
 	buf = "Frameskip: " + itoa(m_Autoframeskip) + " fps";
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 6, buf);
-	mp_Dialog->m_dlgobject.at(5)->m_Option->m_value = m_Autoframeskip/10;
+	mp_Dialog->m_dlgobject.at(5)->m_Option->m_value = m_Autoframeskip;
 	
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "");
 	buf = "Special FX ";
@@ -173,8 +173,8 @@ void CVideoSettings::processSpecific(){
 			}
 			else if(m_current == 5)
 			{
-				mp_Dialog->m_min = 1;
-				mp_Dialog->m_max = 12;
+				mp_Dialog->m_min = 10;
+				mp_Dialog->m_max = 120;
 				m_Autoframeskip = mp_Dialog->m_dlgobject.at(5)->m_Option->m_value;
 				buf = "Frameskip: " + itoa(m_Autoframeskip) + " fps";
 				mp_Dialog->setObjectText(5, buf);
@@ -244,8 +244,8 @@ void CVideoSettings::processSpecific(){
 			}
 			else if(m_selection == 5)
 			{
-				mp_Dialog->m_dlgobject.at(5)->m_Option->m_value++;
-					if(mp_Dialog->m_dlgobject.at(5)->m_Option->m_value>12) mp_Dialog->m_dlgobject.at(5)->m_Option->m_value = 1;
+				mp_Dialog->m_dlgobject.at(5)->m_Option->m_value+=10;
+					if(mp_Dialog->m_dlgobject.at(5)->m_Option->m_value>120) mp_Dialog->m_dlgobject.at(5)->m_Option->m_value = 10;
 					m_Autoframeskip = mp_Dialog->m_dlgobject.at(5)->m_Option->m_value;
 			}
 			else if(m_selection == 6)

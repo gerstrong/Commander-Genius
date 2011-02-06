@@ -236,8 +236,9 @@ bool CVideoDriver::start(void)
 	if(m_VidConfig.m_opengl) // If OpenGL could be set, initialize the matrices
 	{
 		mp_VideoEngine = new COpenGL(m_VidConfig);
+		retval = mp_VideoEngine->init();
 
-		if(!mp_VideoEngine->init())
+		if(!retval)
 		{
 			delete mp_VideoEngine;
 			m_VidConfig.m_opengl = false;

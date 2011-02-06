@@ -42,7 +42,7 @@ public:
 	void collectSurfaces();
 
 	void updateScreen();
-	bool initGL(GLint oglfilter);
+	bool init();
 
 	void setBlitSurface(SDL_Surface *blitsurface);
 	void setFGSurface(SDL_Surface *fgsurface);
