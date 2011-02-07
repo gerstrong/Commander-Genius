@@ -11,6 +11,7 @@
 #include "sdl/CInput.h" // for CInput::renderOverlay
 #include "graphics/CGfxEngine.h"
 #include "CLogFile.h"
+#include "graphics/PerSurfaceAlpha.h"
 
 /**
  * This function calculates an equivalent value near by the power of two. That is needed so we support POT Textures
@@ -64,7 +65,7 @@ bool COpenGL::createSurfaces()
         m_blitsurface_alloc = true;
     }
 
-	//if(m_VidConfig.m_ScaleXFilter == 1)
+	if(m_VidConfig.m_ScaleXFilter == 1)
 	{
 		FGLayerSurface = createSurface( "FGLayerSurface", true,
 						getPowerOfTwo(gamerect.w),
@@ -73,15 +74,33 @@ bool COpenGL::createSurfaces()
 									m_Mode, screen->format );
 		//Set surface alpha
 		SDL_SetAlpha( FGLayerSurface, SDL_SRCALPHA, 225 );
-	}
 
-	//if(m_VidConfig.m_ScaleXFilter == 1)
-	{
 		FXSurface = createSurface( "FXSurface", true,
 				getPowerOfTwo(gamerect.w),
 				getPowerOfTwo(gamerect.h),
 						m_VidConfig.m_Resolution.depth,
 						m_Mode, screen->format );
+		g_pGfxEngine->Palette.setFXSurface( FXSurface );
+	}
+	else
+	{
+		FGLayerSurface = createSurface( "FGLayerSurface", false,
+				gamerect.w,
+				gamerect.h,
+				m_VidConfig.m_Resolution.depth,
+				m_Mode, screen->format );
+
+		SDL_SetColorKey( FGLayerSurface, SDL_SRCCOLORKEY,
+				SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE) );
+
+		FXSurface = createSurface( "FXSurface", false,
+				gamerect.w,
+				gamerect.h,
+				m_VidConfig.m_Resolution.depth,
+				m_Mode, screen->format );
+
+		//Set surface alpha
+		SDL_SetAlpha( FGLayerSurface, SDL_SRCALPHA, 225 );
 		g_pGfxEngine->Palette.setFXSurface( FXSurface );
 	}
 
@@ -127,7 +146,7 @@ static void createTexture(GLuint& tex, GLint oglfilter, GLsizei potwidth, GLsize
 bool COpenGL::init()
 {
 	CVideoEngine::init();
-	const GLint &oglfilter = m_VidConfig.m_opengl_filter;
+	const GLint oglfilter = (m_VidConfig.m_opengl_filter==0) ? GL_LINEAR : GL_NEAREST ;
 	if(m_VidConfig.m_Resolution.depth != 32)
 	{
 		// TODO: I know, this is an issue, but I need to investigate, how pixels in SDL are stored when using
@@ -232,7 +251,6 @@ static void renderTexture(GLuint texture, bool withAlpha = false) {
 		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 		glBlendFunc(GL_ONE, GL_ZERO);
 	}
-
 	
 	//Finally draw the arrays of the surface.
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
@@ -308,19 +326,31 @@ void COpenGL::updateScreen()
 
 	glEnable(GL_BLEND);
 
+	if(m_VidConfig.m_ScaleXFilter > 1)
+	{
+		SDL_BlitSurface(FGLayerSurface, NULL, BlitSurface, NULL);
+
+		if(getPerSurfaceAlpha(FXSurface))
+			SDL_BlitSurface(FXSurface, NULL, BlitSurface, NULL);
+	}
+
 	loadSurface(m_texture, BlitSurface);
 	renderTexture(m_texture);
 
-	if(FGLayerSurface)
-	{
-		reloadFG(FGLayerSurface);
-		renderTexture(m_texFG, true);
-	}
 
-	if(FXSurface)
+	if(m_VidConfig.m_ScaleXFilter == 1)
 	{
-		reloadFX(FGLayerSurface);
-		renderTexture(m_texFG, true);
+		if(FGLayerSurface)
+		{
+			reloadFG(FGLayerSurface);
+			renderTexture(m_texFG, true);
+		}
+
+		if(FXSurface)
+		{
+			reloadFX(FXSurface);
+			renderTexture(m_texFX, true);
+		}
 	}
 
 	glDisableClientState(GL_VERTEX_ARRAY);
