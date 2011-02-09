@@ -44,10 +44,6 @@ public:
 	void updateScreen();
 	bool init();
 
-	void setBlitSurface(SDL_Surface *blitsurface);
-	void setFGSurface(SDL_Surface *fgsurface);
-	void setFXSurface(SDL_Surface *fxsurface);
-
 	void reloadFX(SDL_Surface* surf);
 	void reloadFG(SDL_Surface* surf);
 

@@ -138,25 +138,25 @@ void CVideoDriver::initResolutionList()
 
 void CVideoDriver::checkResolution( st_resolution& resolution, int flags )
 {
-		resolution.depth = SDL_VideoModeOK( resolution.width, resolution.height, resolution.depth, flags );
+	resolution.depth = SDL_VideoModeOK( resolution.width, resolution.height, resolution.depth, flags );
 
-		if(resolution.depth)
+	if(resolution.depth)
+	{
+		std::list<st_resolution> :: iterator i;
+		for( i = m_Resolutionlist.begin() ; i != m_Resolutionlist.end() ; i++ )
 		{
-			std::list<st_resolution> :: iterator i;
-			for( i = m_Resolutionlist.begin() ; i != m_Resolutionlist.end() ; i++ )
-			{
-				if(*i == resolution)
-					break;
-			}
-
-			if(i == m_Resolutionlist.end())
-			{
-#ifdef DEBUG
-				g_pLogFile->ftextOut(BLUE, "Resolution %ix%ix%i %X added\n", resolution.width, resolution.height, resolution.depth);
-#endif
-				m_Resolutionlist.push_back(resolution);
-			}
+			if(*i == resolution)
+				break;
 		}
+
+		if(i == m_Resolutionlist.end())
+		{
+#ifdef DEBUG
+			g_pLogFile->ftextOut(BLUE, "Resolution %ix%ix%i %X added\n", resolution.width, resolution.height, resolution.depth);
+#endif
+			m_Resolutionlist.push_back(resolution);
+		}
+	}
 }
 
 void CVideoDriver::setVidConfig(const CVidConfig& VidConf)

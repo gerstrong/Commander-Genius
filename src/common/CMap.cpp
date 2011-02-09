@@ -10,10 +10,10 @@
 #include <iostream>
 #include <fstream>
 #include "CBehaviorEngine.h"
-#include "../FindFile.h"
-#include "../CLogFile.h"
-#include "../sdl/CVideoDriver.h"
-#include "../graphics/CGfxEngine.h"
+#include "FindFile.h"
+#include "CLogFile.h"
+#include "sdl/CVideoDriver.h"
+#include "graphics/CGfxEngine.h"
 
 #define SAFE_DELETE_ARRAY(x)	if(x) { delete [] x; x = NULL; }
 
@@ -38,7 +38,10 @@ m_Background(false)
 // Initialization Routine //
 ////////////////////////////
 void CMap::setScrollSurface( SDL_Surface *surface )
-{  mp_scrollsurface = surface; }
+{
+	mp_scrollsurface = surface;
+	g_pVideoDriver->setScrollBuffer(&m_scrollx_buf, &m_scrolly_buf);
+}
 
 
 void CMap::setLevel(Uint16 Level)

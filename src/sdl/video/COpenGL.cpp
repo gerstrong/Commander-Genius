@@ -46,24 +46,14 @@ bool COpenGL::createSurfaces()
 								  m_VidConfig.m_Resolution.depth,
 								  m_Mode, screen->format );
 
-    if ( m_VidConfig.m_Resolution.width == gamerect.w )
-    {
-    	g_pLogFile->textOut("Blitsurface = Screen<br>");
-    	BlitSurface = screen;
-    	m_blitsurface_alloc = false;
-    }
-    else
-    {
+    g_pLogFile->textOut("Blitsurface = creatergbsurface<br>");
 
-    	g_pLogFile->textOut("Blitsurface = creatergbsurfacefrom<br>");
-
-        BlitSurface = createSurface( "BlitSurface", true,
-            						getPowerOfTwo(gamerect.w),
-            						getPowerOfTwo(gamerect.h),
-            						m_VidConfig.m_Resolution.depth,
-            						m_Mode, screen->format );
-        m_blitsurface_alloc = true;
-    }
+    BlitSurface = createSurface( "BlitSurface", true,
+    		getPowerOfTwo(gamerect.w),
+    		getPowerOfTwo(gamerect.h),
+    		m_VidConfig.m_Resolution.depth,
+    		m_Mode, screen->format );
+    m_blitsurface_alloc = true;
 
 	if(m_VidConfig.m_ScaleXFilter == 1)
 	{
@@ -72,15 +62,11 @@ bool COpenGL::createSurfaces()
 						getPowerOfTwo(gamerect.h),
 									m_VidConfig.m_Resolution.depth,
 									m_Mode, screen->format );
-		//Set surface alpha
-		SDL_SetAlpha( FGLayerSurface, SDL_SRCALPHA, 225 );
-
 		FXSurface = createSurface( "FXSurface", true,
 				getPowerOfTwo(gamerect.w),
 				getPowerOfTwo(gamerect.h),
 						m_VidConfig.m_Resolution.depth,
 						m_Mode, screen->format );
-		g_pGfxEngine->Palette.setFXSurface( FXSurface );
 	}
 	else
 	{
@@ -91,7 +77,7 @@ bool COpenGL::createSurfaces()
 				m_Mode, screen->format );
 
 		SDL_SetColorKey( FGLayerSurface, SDL_SRCCOLORKEY,
-				SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE) );
+		SDL_MapRGB(FGLayerSurface->format, 0, 0xFF, 0xFE) );
 
 		FXSurface = createSurface( "FXSurface", false,
 				gamerect.w,
@@ -100,28 +86,17 @@ bool COpenGL::createSurfaces()
 				m_Mode, screen->format );
 
 		//Set surface alpha
-		SDL_SetAlpha( FGLayerSurface, SDL_SRCALPHA, 225 );
-		g_pGfxEngine->Palette.setFXSurface( FXSurface );
 	}
+
+	SDL_SetAlpha( FGLayerSurface, SDL_SRCALPHA, 225 );
+	g_pGfxEngine->Palette.setFXSurface( FXSurface );
 
 	return true;
 }
 
 void COpenGL::collectSurfaces()
 {
-	if(m_VidConfig.m_ScaleXFilter == 1)
-	{
-		// TODO: Create a solid concept for rendering more textures instead of just one that is binded
-		// to BlitSurface. It's not that easy, because doing that and using scaleX will mean, that you
-		// to scaleX multiple times. So COpenGL must have separate cases. With or without ScaleX.
-		// It's might only be faster if scaleX is never used in that TODO-case
 
-		// TODO: Check if we really need this...
-		//if(getPerSurfaceAlpha(FXSurface))
-			//mp_OpenGL->setFXSurface(FXSurface);
-		//else
-			//mp_OpenGL->setFXSurface(NULL);
-	}
 }
 
 static void createTexture(GLuint& tex, GLint oglfilter, GLsizei potwidth, GLsizei potheight, bool withAlpha = false) {
@@ -146,7 +121,7 @@ static void createTexture(GLuint& tex, GLint oglfilter, GLsizei potwidth, GLsize
 bool COpenGL::init()
 {
 	CVideoEngine::init();
-	const GLint oglfilter = (m_VidConfig.m_opengl_filter==0) ? GL_LINEAR : GL_NEAREST ;
+	const GLint oglfilter = (m_VidConfig.m_opengl_filter==1) ? GL_LINEAR : GL_NEAREST ;
 	if(m_VidConfig.m_Resolution.depth != 32)
 	{
 		// TODO: I know, this is an issue, but I need to investigate, how pixels in SDL are stored when using
@@ -346,7 +321,7 @@ void COpenGL::updateScreen()
 			renderTexture(m_texFG, true);
 		}
 
-		if(FXSurface)
+		if(FXSurface && getPerSurfaceAlpha(FXSurface))
 		{
 			reloadFX(FXSurface);
 			renderTexture(m_texFX, true);
