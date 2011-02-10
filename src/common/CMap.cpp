@@ -5,7 +5,7 @@
  *      Author: gerstrong
  */
 
-#include "../keen.h"
+#include "keen.h"
 #include "CMap.h"
 #include <iostream>
 #include <fstream>

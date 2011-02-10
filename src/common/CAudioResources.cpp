@@ -7,7 +7,9 @@
 
 #include "CAudioResources.h"
 
-CAudioResources::CAudioResources(const SDL_AudioSpec &AudioSpec) {
+CAudioResources::CAudioResources(const SDL_AudioSpec &AudioSpec) :
+m_AudioSpec(AudioSpec)
+{
 	for(int i=0 ; i<MAX_SOUNDS ; i++)
 		m_soundslot[i].setpAudioSpec(&AudioSpec);
 }

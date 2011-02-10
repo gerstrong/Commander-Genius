@@ -257,10 +257,24 @@ void CSoundChannel::readWaveform(CSoundSlot *pSndSlot, Uint8* waveform, int len,
        	}
      	else
      	{
-			if ( m_AudioSpec.format == AUDIO_U16 || m_AudioSpec.format == AUDIO_S16 )
+			/*if ( m_AudioSpec.format == AUDIO_U16 || m_AudioSpec.format == AUDIO_S16 )
 				generateWaveform( (Sint16*) (void *) waveform, SndSlot,  len, frequency, (channels==2) ? true : false );
 			else
-				generateWaveform( (Uint8*) waveform, SndSlot, len, frequency, (channels==2) ? true : false );
+				generateWaveform( (Uint8*) waveform, SndSlot, len, frequency, (channels==2) ? true : false );*/
+     		byte *snddata = SndSlot.getSoundData();
+     		const Uint32 length = SndSlot.getSoundlength();
+         	if ((m_sound_ptr + (Uint32)len) >= length)
+         	{
+         		// Fill the rest with silence
+         		memset(waveform, m_AudioSpec.silence, len );
+         		m_sound_ptr = 0;
+         		m_sound_playing = false;
+         	}
+         	else
+         	{
+         		memcpy(waveform, snddata + m_sound_ptr, len);
+             	m_sound_ptr += len;
+         	}
      	}
 		
     	if(channels == 2)

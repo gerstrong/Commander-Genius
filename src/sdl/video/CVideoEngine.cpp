@@ -32,7 +32,7 @@ bool CVideoEngine::init()
 #elif defined(GP2X)
 	m_Mode = SDL_DOUBLEBUF | SDL_HWSURFACE;
 #else
-	// Support for doublebuffering
+	// Support for double-buffering
 	m_Mode = SDL_DOUBLEBUF | SDL_HWPALETTE | SDL_HWSURFACE;
 #endif
 

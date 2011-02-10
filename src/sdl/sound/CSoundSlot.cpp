@@ -6,7 +6,6 @@
  */
 #include <stdio.h>
 #include <string.h>
-#include <vector>
 #include <fstream>
 #include "CSoundSlot.h"
 #include "CLogFile.h"
@@ -23,6 +22,20 @@ m_pAudioSpec(NULL)
 	m_sounddata = NULL;
 	m_soundlength = 0;
 	m_pAudioSpec = NULL;
+}
+
+void CSoundSlot::setupWaveForm( Uint8 *buf, Uint32 len )
+{
+	m_soundlength = len;
+	m_sounddata = new Uint8[m_soundlength];
+	memcpy(m_sounddata, buf, m_soundlength);
+}
+
+void CSoundSlot::setupWaveForm( const std::vector<Uint8>& waveform )
+{
+	m_soundlength = waveform.size();
+	m_sounddata = new Uint8[m_soundlength];
+	memcpy(m_sounddata, &waveform[0], m_soundlength);
 }
 
 // loads sound searchname from file fname, into sounds[] entry loadnum
@@ -73,9 +86,9 @@ bool CSoundSlot::loadSound(Uint8 *buffer, const Uint32 buf_size, const std::stri
 				m_soundlength = waveform.size();
 
 				// copy the data to the real m_sounddata block and reduce fragmentation!
-				m_sounddata = new unsigned int[m_soundlength];
+				m_sounddata = new byte[m_soundlength];
 
-				memcpy(m_sounddata, &waveform[0], waveform.size()*sizeof(unsigned int));
+				memcpy(m_sounddata, &waveform[0], waveform.size()*sizeof(byte));
 
 				g_pLogFile->ftextOut("loadSound : loaded sound %s of %d bytes.<br>", searchname.c_str(), m_soundlength);
 				m_hqsound.enabled = false;

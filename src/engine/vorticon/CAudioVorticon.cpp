@@ -10,6 +10,7 @@
 #include "FindFile.h"
 #include "fileio/ResourceMgmt.h"
 #include <fstream>
+#include <math.h>
 
 CAudioVorticon::CAudioVorticon(const CExeFile &ExeFile, const SDL_AudioSpec &AudioSpec) :
 CAudioResources(AudioSpec),
@@ -74,6 +75,143 @@ Uint8* CAudioVorticon::loadSoundStream(Uint32 &buffer_size, Uint8* exedata)
 	}
 }
 
+template <typename T>
+void CAudioVorticon::generateWave(std::vector<T> &waveform, word sample, double &t, bool IsSigned)
+{
+    //  y = Huge_Amplitude * sin (omega * t) -> omega = 2*PI*frequency
+
+	const double dt = 1.0f/double(m_AudioSpec.freq);
+	const double freqdiv = double(0x1234DD);
+	const unsigned int wavetime = m_AudioSpec.freq/128;
+	T wave;
+	const int mask = IsSigned ? ((1<<(sizeof(T)*8))>>1)-1 : (1<<(sizeof(T)*8))-1 ;
+
+	for (unsigned int j=0; j<wavetime; j++)
+	{
+		double y =  (sample) ? 10000.0f * sin (2.0f*M_PI*freqdiv/(double)sample*t) : 0.0f ;
+
+		if (y>1) y=10000.0f;
+		if (y<1) y=-10000.0f;
+
+		t += dt;
+		wave = m_AudioSpec.silence+(int(y) & mask);
+		for(Uint8 chnl=0 ; chnl<m_AudioSpec.channels ; chnl++ )
+			waveform.push_back(wave);
+	}
+}
+
+/**
+ * Load the PC Speaker sound and pass it as waveform directly.
+ */
+template <typename T>
+bool CAudioVorticon::loadPCSpeakerSound(Uint8 *buffer, const Uint32 buf_size, std::vector<T> &waveform, const std::string& searchname, bool IsSigned)
+{
+	int curheader = 0x10;
+	word offset;
+	int priority, garbage, nr_of_sounds;
+	char name[12];
+
+	memset(name,0,12);
+	Uint8 *buf_ptr = buffer+0x6;
+
+	nr_of_sounds = READWORD(buf_ptr);
+
+	for(int j=0; j<nr_of_sounds || (buf_ptr-buffer < buf_size) ; j++)
+	{
+		buf_ptr = buffer+curheader;
+		offset = READWORD(buf_ptr);
+		priority = *buf_ptr++;
+		garbage = *buf_ptr++;
+
+		for(int i=0;i<12;i++) name[i] = *buf_ptr++;
+
+		if (name == searchname)
+		{
+			buf_ptr = buffer+offset;
+
+			word sample;
+			double t = 0.0f;
+			do
+			{
+				sample = READWORD(buf_ptr);
+
+				if(sample == 0xffff)
+					break;
+
+				generateWave(waveform, sample, t, IsSigned);
+
+			}while(1);
+			g_pLogFile->ftextOut("CAudioVorticon::loadSound : loaded sound %s into the waveform.<br>", searchname.c_str());
+
+			return true;
+		}
+		curheader += 0x10;
+	}
+	// sound could not be found
+	g_pLogFile->ftextOut("CAudioVorticon::loadSound : sound \"%s\" could not be found.<br>", searchname.c_str());
+
+	return false;
+}
+
+// loads sound searchname from file fname, into sounds[] entry loadnum
+// return value is false on failure
+bool CAudioVorticon::loadSound(Uint8 *buffer, const Uint32 buf_size, const std::string& path, const std::string& searchname, unsigned int loadnum)
+{
+	CSoundSlot &current_snd_slot = m_soundslot[loadnum];
+
+	current_snd_slot.unload();
+
+	// If a high quality sound file is available, try to open it.
+	// Otherwise open the classic sounds from the original data files
+	/*if(HQSndDrv_Load(m_pAudioSpec, &m_hqsound, m_gamepath, searchname) == 0)
+	{
+		return true;
+	}
+	else*/
+	{
+		Uint8* buf = NULL;
+		int buf_size = 0;
+		bool ok = false;
+
+		if( m_AudioSpec.format == AUDIO_S8 )
+		{
+			std::vector<Sint8> waveform;
+			ok = loadPCSpeakerSound(buffer, buf_size, waveform, searchname, false);
+			buf = (Uint8*)&waveform[0];
+			buf_size = waveform.size()*sizeof(Sint8);
+			current_snd_slot.setupWaveForm( buf, buf_size );
+		}
+		else if( m_AudioSpec.format == AUDIO_U8 )
+		{
+			std::vector<Uint8> waveform;
+			ok = loadPCSpeakerSound(buffer, buf_size, waveform, searchname, true);
+			buf = (Uint8*)&waveform[0];
+			buf_size = waveform.size()*sizeof(Uint8);
+			current_snd_slot.setupWaveForm( buf, buf_size );
+		}
+		else if( m_AudioSpec.format == AUDIO_U16 )
+		{
+			std::vector<Uint16> waveform;
+			ok = loadPCSpeakerSound(buffer, buf_size, waveform, searchname, false);
+			buf = (Uint8*)&waveform[0];
+			buf_size = waveform.size()*sizeof(Uint16);
+			current_snd_slot.setupWaveForm( buf, buf_size );
+		}
+		else if( m_AudioSpec.format == AUDIO_S16 )
+		{
+			std::vector<Sint16> waveform;
+			ok = loadPCSpeakerSound(buffer, buf_size, waveform, searchname, true);
+			buf = (Uint8*)&waveform[0];
+			buf_size = waveform.size()*sizeof(Sint16);
+			current_snd_slot.setupWaveForm( buf, buf_size );
+		}
+
+		return ok;
+	}
+
+	return false;
+}
+
 bool CAudioVorticon::loadSoundData()
 {
 	bool ok = true;
@@ -86,54 +224,54 @@ bool CAudioVorticon::loadSoundData()
 	Uint32 buffer_size;
 	Uint8 *buffer = loadSoundStream( buffer_size, m_ExeFile.getRawData() );
 
-	ok  = m_soundslot[SOUND_KEEN_WALK].loadSound(buffer, buffer_size, DataDirectory, "KEENWALKSND", SOUND_KEEN_WALK);
-	ok &= m_soundslot[SOUND_KEEN_WALK2].loadSound(buffer, buffer_size, DataDirectory, "KEENWLK2SND", SOUND_KEEN_WALK2);
-	ok &= m_soundslot[SOUND_KEEN_JUMP].loadSound(buffer, buffer_size, DataDirectory, "KEENJUMPSND", SOUND_KEEN_JUMP);
-	ok &= m_soundslot[SOUND_KEEN_POGO].loadSound(buffer, buffer_size, DataDirectory, "KEENPOGOSND", SOUND_KEEN_POGO);
-	ok &= m_soundslot[SOUND_KEEN_LAND].loadSound(buffer, buffer_size, DataDirectory, "KEENLANDSND", SOUND_KEEN_LAND);
-	ok &= m_soundslot[SOUND_KEEN_BLOK].loadSound(buffer, buffer_size, DataDirectory, "KEENBLOKSND", SOUND_KEEN_BLOK);
-	ok &= m_soundslot[SOUND_KEEN_DIE].loadSound(buffer, buffer_size, DataDirectory, "KEENDIESND", SOUND_KEEN_DIE);
-	ok &= m_soundslot[SOUND_KEEN_FALL].loadSound(buffer, buffer_size, DataDirectory, "PLUMMETSND", SOUND_KEEN_FALL);
-	ok &= m_soundslot[SOUND_KEEN_BUMPHEAD].loadSound(buffer, buffer_size, DataDirectory, "BUMPHEADSND", SOUND_KEEN_BUMPHEAD);
-	ok &= m_soundslot[SOUND_ENTER_LEVEL].loadSound(buffer, buffer_size, DataDirectory, "WLDENTERSND", SOUND_ENTER_LEVEL);
-	ok &= m_soundslot[SOUND_KEENSLEFT].loadSound(buffer, buffer_size, DataDirectory, "keensleft", SOUND_KEENSLEFT);
+	ok  = loadSound(buffer, buffer_size, DataDirectory, "KEENWALKSND", SOUND_KEEN_WALK);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "KEENWLK2SND", SOUND_KEEN_WALK2);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "KEENJUMPSND", SOUND_KEEN_JUMP);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "KEENPOGOSND", SOUND_KEEN_POGO);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "KEENLANDSND", SOUND_KEEN_LAND);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "KEENBLOKSND", SOUND_KEEN_BLOK);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "KEENDIESND", SOUND_KEEN_DIE);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "PLUMMETSND", SOUND_KEEN_FALL);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "BUMPHEADSND", SOUND_KEEN_BUMPHEAD);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "WLDENTERSND", SOUND_ENTER_LEVEL);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "keensleft", SOUND_KEENSLEFT);
 
-	ok &= m_soundslot[SOUND_KEEN_FIRE].loadSound(buffer, buffer_size, DataDirectory, "KEENFIRESND", SOUND_KEEN_FIRE);
-	ok &= m_soundslot[SOUND_GUN_CLICK].loadSound(buffer, buffer_size, DataDirectory, "GUNCLICK", SOUND_GUN_CLICK);
-	ok &= m_soundslot[SOUND_SHOT_HIT].loadSound(buffer, buffer_size, DataDirectory, "SHOTHIT", SOUND_SHOT_HIT);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "KEENFIRESND", SOUND_KEEN_FIRE);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "GUNCLICK", SOUND_GUN_CLICK);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "SHOTHIT", SOUND_SHOT_HIT);
 
-	ok &= m_soundslot[SOUND_GET_ITEM].loadSound(buffer, buffer_size, DataDirectory, "GOTITEMSND", SOUND_GET_ITEM);
-	ok &= m_soundslot[SOUND_GET_BONUS].loadSound(buffer, buffer_size, DataDirectory, "GOTBONUSSND", SOUND_GET_BONUS);
-	ok &= m_soundslot[SOUND_GET_PART].loadSound(buffer, buffer_size, DataDirectory, "GOTPARTSND", SOUND_GET_PART);
-	ok &= m_soundslot[SOUND_LEVEL_DONE].loadSound(buffer, buffer_size, DataDirectory, "LVLDONESND", SOUND_LEVEL_DONE);
-	ok &= m_soundslot[SOUND_GAME_OVER].loadSound(buffer, buffer_size, DataDirectory, "GAMEOVERSND", SOUND_GAME_OVER);
-	ok &= m_soundslot[SOUND_TELEPORT].loadSound(buffer, buffer_size, DataDirectory, "TELEPORTSND", SOUND_TELEPORT);
-	ok &= m_soundslot[SOUND_EXTRA_LIFE].loadSound(buffer, buffer_size, DataDirectory, "EXTRAMANSND", SOUND_EXTRA_LIFE);
-	ok &= m_soundslot[SOUND_CANNONFIRE].loadSound(buffer, buffer_size, DataDirectory, "CANNONFIRE", SOUND_CANNONFIRE);
-	ok &= m_soundslot[SOUND_CHUNKSMASH].loadSound(buffer, buffer_size, DataDirectory, "CHUNKSMASH", SOUND_CHUNKSMASH);
-	ok &= m_soundslot[SOUND_GOINDOOR].loadSound(buffer, buffer_size, DataDirectory, "GOINDOORSND", SOUND_GOINDOOR);
-	ok &= m_soundslot[SOUND_GET_CARD].loadSound(buffer, buffer_size, DataDirectory, "GETCARDSND", SOUND_GET_CARD);
-	ok &= m_soundslot[SOUND_USE_KEY].loadSound(buffer, buffer_size, DataDirectory, "USEKEYSND", SOUND_USE_KEY);
-	ok &= m_soundslot[SOUND_SWITCH_TOGGLE].loadSound(buffer, buffer_size, DataDirectory, "CLICKSND", SOUND_SWITCH_TOGGLE);
-	ok &= m_soundslot[SOUND_DOOR_OPEN].loadSound(buffer, buffer_size, DataDirectory, "DOOROPENSND", SOUND_DOOR_OPEN);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "GOTITEMSND", SOUND_GET_ITEM);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "GOTBONUSSND", SOUND_GET_BONUS);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "GOTPARTSND", SOUND_GET_PART);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "LVLDONESND", SOUND_LEVEL_DONE);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "GAMEOVERSND", SOUND_GAME_OVER);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "TELEPORTSND", SOUND_TELEPORT);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "EXTRAMANSND", SOUND_EXTRA_LIFE);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "CANNONFIRE", SOUND_CANNONFIRE);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "CHUNKSMASH", SOUND_CHUNKSMASH);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "GOINDOORSND", SOUND_GOINDOOR);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "GETCARDSND", SOUND_GET_CARD);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "USEKEYSND", SOUND_USE_KEY);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "CLICKSND", SOUND_SWITCH_TOGGLE);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "DOOROPENSND", SOUND_DOOR_OPEN);
 
-	ok &= m_soundslot[SOUND_YORP_BUMP].loadSound(buffer, buffer_size, DataDirectory, "YORPBUMPSND", SOUND_YORP_BUMP);
-	ok &= m_soundslot[SOUND_YORP_STUN].loadSound(buffer, buffer_size, DataDirectory, "YORPBOPSND", SOUND_YORP_STUN);
-	ok &= m_soundslot[SOUND_YORP_DIE].loadSound(buffer, buffer_size, DataDirectory, "YORPSCREAM", SOUND_YORP_DIE);
-	ok &= m_soundslot[SOUND_GARG_DIE].loadSound(buffer, buffer_size, DataDirectory, "GARGSCREAM", SOUND_GARG_DIE);
-	ok &= m_soundslot[SOUND_VORT_DIE].loadSound(buffer, buffer_size, DataDirectory, "vortscream", SOUND_VORT_DIE);
-	ok &= m_soundslot[SOUND_TANK_FIRE].loadSound(buffer, buffer_size, DataDirectory, "TANKFIRE", SOUND_TANK_FIRE);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "YORPBUMPSND", SOUND_YORP_BUMP);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "YORPBOPSND", SOUND_YORP_STUN);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "YORPSCREAM", SOUND_YORP_DIE);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "GARGSCREAM", SOUND_GARG_DIE);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "vortscream", SOUND_VORT_DIE);
+	ok &= loadSound(buffer, buffer_size, DataDirectory, "TANKFIRE", SOUND_TANK_FIRE);
 
 	if (episode == 2)
 	{
-		ok &= m_soundslot[SOUND_KEEN_BLOK].loadSound(buffer, buffer_size, DataDirectory, "EARTHPOW", SOUND_EARTHPOW);
+		ok &= loadSound(buffer, buffer_size, DataDirectory, "EARTHPOW", SOUND_EARTHPOW);
 	}
 	else if (episode == 3)
 	{
-		ok &= m_soundslot[SOUND_MEEP].loadSound(buffer, buffer_size, DataDirectory, "MEEP", SOUND_MEEP);
-		ok &= m_soundslot[SOUND_ANKH].loadSound(buffer, buffer_size, DataDirectory, "ANKH", SOUND_ANKH);
-		ok &= m_soundslot[SOUND_MORTIMER].loadSound(buffer, buffer_size, DataDirectory, "MORTIMER", SOUND_MORTIMER);
-		ok &= m_soundslot[SOUND_FOOTSLAM].loadSound(buffer, buffer_size, DataDirectory, "FOOTSLAM", SOUND_FOOTSLAM);
+		ok &= loadSound(buffer, buffer_size, DataDirectory, "MEEP", SOUND_MEEP);
+		ok &= loadSound(buffer, buffer_size, DataDirectory, "ANKH", SOUND_ANKH);
+		ok &= loadSound(buffer, buffer_size, DataDirectory, "MORTIMER", SOUND_MORTIMER);
+		ok &= loadSound(buffer, buffer_size, DataDirectory, "FOOTSLAM", SOUND_FOOTSLAM);
 	}
 
 	if(buffer)

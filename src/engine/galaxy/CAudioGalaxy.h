@@ -15,6 +15,7 @@ class CAudioGalaxy : public CAudioResources {
 public:
 	CAudioGalaxy(const CExeFile &ExeFile, const SDL_AudioSpec &AudioSpec);
 
+	bool LoadFromAudioCK(const CExeFile& ExeFile);
 	bool loadSoundData();
 	void unloadSound();
 

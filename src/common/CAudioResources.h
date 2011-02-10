@@ -64,9 +64,9 @@ public:
 	CSoundSlot *getSlotPtr() { return m_soundslot; }
 
 protected:
-    // TODO: use std::map for Soundslots.
 	static const int MAX_SOUNDS = 50;
 	CSoundSlot	m_soundslot[MAX_SOUNDS];
+	const SDL_AudioSpec &m_AudioSpec;
 };
 
 #endif /* CAUDIORESOURCES_H_ */
