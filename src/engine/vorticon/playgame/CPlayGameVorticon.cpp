@@ -96,7 +96,7 @@ void CPlayGameVorticon::setupPlayers()
 		// Calibrate Player to the right position, so it won't fall when level starts
 		CSprite &sprite = g_pGfxEngine->getSprite(PSTANDFRAME);
 		it_player->w = sprite.getWidth()<<STC;
-		it_player->h = sprite.getHeight()<<STC;
+		it_player->h = sprite.getHeight();//<<STC;
 		it_player->m_level = m_Level;
 		m_Map.m_Dark = false;
 		g_pGfxEngine->Palette.setdark(m_Map.m_Dark);
