@@ -177,11 +177,11 @@ bool CAudioVorticon::loadSound(Uint8 *buffer, const Uint32 buf_size, const std::
 
 	// If a high quality sound file is available, try to open it.
 	// Otherwise open the classic sounds from the original data files
-	/*if(HQSndDrv_Load(m_pAudioSpec, &m_hqsound, m_gamepath, searchname) == 0)
+	if(current_snd_slot.HQSndLoad(path, searchname))
 	{
 		return true;
 	}
-	else*/
+	else
 	{
 		Uint8* buf = NULL;
 		int buf_size = 0;

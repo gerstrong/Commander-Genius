@@ -12,18 +12,12 @@
 
 #if defined(OGG) || defined(TREMOR)
 
-short openOGGSound(const std::string& filename, SDL_AudioSpec *pspec, stHQSound *psound)
+Uint8 *openOGGSound(const std::string& filename, SDL_AudioSpec *pspec, Uint32 &SoundLen)
 {
-	// If Ogg detected, decode it into the stream psound->sound_buffer.
-	// It must fit into the Audio_cvt structure, so that it can be converted
-
     OggVorbis_File  oggStream;     // stream handle
+    Uint8 *SoundBuffer = NULL;
 
-    if(ov_fopen( (char *)GetFullFileName(filename).c_str(), &oggStream ) != 0)
-    {
-        return 1;
-    }
-    else
+    if(ov_fopen( (char *)GetFullFileName(filename).c_str(), &oggStream ) == 0)
     {
     	long bytes;
     	char array[BUFFER_SIZE];
@@ -34,13 +28,11 @@ short openOGGSound(const std::string& filename, SDL_AudioSpec *pspec, stHQSound 
     	int bitStream;
         vorbisInfo = ov_info(&oggStream, -1);
         vorbisComment = ov_comment(&oggStream, -1);
-
         pspec->format = AUDIO_S16LSB; // Ogg Audio seems to always use this format
-
         pspec->channels = vorbisInfo->channels;
         pspec->freq = vorbisInfo->rate;
+        SoundLen = 0;
 
-        psound->sound_len = 0;
         do {
 			// Read up to a buffer's worth of decoded sound data
 #if defined(OGG)
@@ -54,16 +46,11 @@ short openOGGSound(const std::string& filename, SDL_AudioSpec *pspec, stHQSound 
 
         ov_clear(&oggStream);
 
-        psound->sound_len = buffer.size();
-
-        psound->sound_buffer = (Uint8*) malloc( psound->sound_len );
-        for(Uint32 i=0; i<psound->sound_len ; i++ )
-        {
-        	memcpy( &(psound->sound_buffer[i]), &(buffer[i]), 1);
-        }
-
-		return 0;
+        SoundLen = buffer.size();
+        SoundBuffer = (Uint8*) malloc(SoundLen*sizeof(Uint8));
+        memcpy(SoundBuffer, &(buffer[0]), SoundLen);
     }
+    return SoundBuffer;
 }
 
 long pcm_size;

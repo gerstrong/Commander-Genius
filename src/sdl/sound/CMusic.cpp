@@ -6,7 +6,6 @@
  */
 
 #include "sdl/sound/CSound.h"
-#include "sdl/sound/hq_sound.h"
 #include "sdl/sound/Sampling.h"
 #include "sdl/sound/IMFPlayer.h"
 #include "CMusic.h"
@@ -267,14 +266,14 @@ void CMusic::stop(void)
 
 		if(  m_MusicFormat == MF_IMF )
 		{
-			m_MusicFormat == MF_NONE;
+			m_MusicFormat = MF_NONE;
 			SD_Shutdown();
 		}
 
 #if defined(OGG) || defined(TREMOR)
 		if(  m_MusicFormat == MF_OGG )
 		{
-			m_MusicFormat == MF_NONE;
+			m_MusicFormat = MF_NONE;
 			cleanupOGG(m_oggStream);
 		}
 #endif

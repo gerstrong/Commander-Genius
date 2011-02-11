@@ -82,41 +82,20 @@ void CSoundChannel::readWaveform(CSoundSlot *pSndSlot, Uint8* waveform, int len,
     {
     	CSoundSlot &SndSlot = pSndSlot[m_current_sound];
 
-    	if(SndSlot.isHighQuality()) // There is no HQ sound in the buffer
-     	{
-     		stHQSound& hqsound = *(SndSlot.getHQSoundPtr());
-
-         	if ((m_sound_ptr + (Uint32)len) >= hqsound.sound_len)
-         	{
-         		// Fill the rest with silence
-         		memset(waveform, m_AudioSpec.silence, len );
-         		m_sound_ptr = 0;
-         		m_sound_playing = false;
-         	}
-         	else
-         	{
-         		memcpy(waveform, hqsound.sound_buffer + m_sound_ptr, len);
-             	m_sound_ptr += len;
-         	}
-       	}
-     	else
-     	{
-
-     		byte *snddata = SndSlot.getSoundData();
-     		const Uint32 length = SndSlot.getSoundlength();
-         	if ((m_sound_ptr + (Uint32)len) >= length)
-         	{
-         		// Fill the rest with silence
-         		memset(waveform, m_AudioSpec.silence, len );
-         		m_sound_ptr = 0;
-         		m_sound_playing = false;
-         	}
-         	else
-         	{
-         		memcpy(waveform, snddata + m_sound_ptr, len);
-             	m_sound_ptr += len;
-         	}
-     	}
+    	byte *snddata = SndSlot.getSoundData();
+    	const Uint32 length = SndSlot.getSoundlength();
+    	if ((m_sound_ptr + (Uint32)len) >= length)
+    	{
+    		// Fill the rest with silence
+    		memset(waveform, m_AudioSpec.silence, len );
+    		m_sound_ptr = 0;
+    		m_sound_playing = false;
+    	}
+    	else
+    	{
+    		memcpy(waveform, snddata + m_sound_ptr, len);
+    		m_sound_ptr += len;
+    	}
 		
     	if(channels == 2)
     	{

@@ -56,7 +56,6 @@ SOUND_FOOTSLAM
 class CAudioResources {
 public:
 	CAudioResources(const SDL_AudioSpec &AudioSpec);
-	virtual ~CAudioResources();
 
 	virtual bool loadSoundData() = 0;
 	virtual void unloadSound() = 0;

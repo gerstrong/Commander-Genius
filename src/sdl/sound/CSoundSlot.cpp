@@ -12,6 +12,8 @@
 #include "fileio.h"
 #include "fileio/ResourceMgmt.h"
 #include "fileio/TypeDefinitions.h"
+#include "vorbis/oggsupport.h"
+#include "sdl/sound/Sampling.h"
 #include "FindFile.h"
 
 CSoundSlot::CSoundSlot() :
@@ -38,78 +40,106 @@ void CSoundSlot::setupWaveForm( const std::vector<Uint8>& waveform )
 	memcpy(m_sounddata, &waveform[0], m_soundlength);
 }
 
-// loads sound searchname from file fname, into sounds[] entry loadnum
-// return value is false on failure
-bool CSoundSlot::loadSound(Uint8 *buffer, const Uint32 buf_size, const std::string& path, const std::string& searchname, unsigned int loadnum)
+bool CSoundSlot::HQSndLoad(const std::string& gamepath, const std::string& soundname)
 {
-	// Unload the sound if any was previously loaded
-	if(m_sounddata){ delete[] m_sounddata; }
-	m_sounddata = NULL;
-	
-	// If a high quality sound file is available, try to open it.
-	// Otherwise open the classic sounds from the original data files
-	if(HQSndDrv_Load(m_pAudioSpec, &m_hqsound, m_gamepath, searchname) == 0)
+	SDL_AudioSpec AudioFileSpec;
+	SDL_AudioSpec &AudioSpec = *m_pAudioSpec;
+	SDL_AudioCVT  Audio_cvt;
+
+	std::string buf;
+
+	Uint32 length = 0;
+	Uint8 *snddata = NULL;
+
+#if defined(OGG) || defined(TREMOR)
+	buf = getResourceFilename("snd/" + soundname + ".OGG", gamepath, false, true); // Start with OGG
+
+	if(buf != "")
 	{
-		return true;
+		snddata = openOGGSound(buf, &AudioFileSpec, length);
+
+		if(snddata == NULL)
+			return false;
+#else
+		g_pLogFile->textOut(PURPLE,"NOTE: OGG-Support is disabled! Get another version or compile it yourself!<br>");
+#endif
+
+#if defined(OGG) || defined(TREMOR)
 	}
 	else
 	{
-		int curheader = 0x10;
-		int offset, priority, garbage, nr_of_sounds;
-		char name[12];
-		
-		memset(name,0,12);
-		Uint8 *buf_ptr = buffer+0x6;
+#endif
 
-		nr_of_sounds = READWORD(buf_ptr);
+		buf = getResourceFilename("snd/" + soundname + ".WAV", gamepath, false); // Start with OGG
 
-		for(int j=0; j<nr_of_sounds || (buf_ptr-buffer < buf_size) ; j++)
-		{
-			buf_ptr = buffer+curheader;
-			offset = READWORD(buf_ptr);
-			priority = *buf_ptr++;
-			garbage = *buf_ptr++;
+		if(buf == "")
+			return false;
 
-			for(int i=0;i<12;i++) name[i] = *buf_ptr++;
-			if (name == searchname)
-			{
-				buf_ptr = buffer+offset;
+		// Check, if it is a wav file or go back to classic sounds
+		if (SDL_LoadWAV (Utf8ToSystemNative(GetFullFileName(buf)).c_str(), &AudioFileSpec, &snddata, &length) == NULL)
+			return false;
 
-				signed int sample;
-				std::vector<unsigned int> waveform;
-				do
-				{
-					sample = READWORD(buf_ptr);
-					waveform.push_back( (sample != 0x0000 && sample != 0xFFFF) ? (0x1234DD/sample) : sample );
-				}while (sample != 0xffff);
+#if defined(OGG) || defined(TREMOR)
+	}
+#endif
+	// Build AudioCVT (This is needed for the conversion from one format to the one used in the game)
+	const int ret = SDL_BuildAudioCVT(&Audio_cvt,
+							AudioFileSpec.format, AudioFileSpec.channels, AudioFileSpec.freq,
+							AudioSpec.format, AudioSpec.channels, AudioSpec.freq);
 
-				m_soundlength = waveform.size();
-
-				// copy the data to the real m_sounddata block and reduce fragmentation!
-				m_sounddata = new byte[m_soundlength];
-
-				memcpy(m_sounddata, &waveform[0], waveform.size()*sizeof(byte));
-
-				g_pLogFile->ftextOut("loadSound : loaded sound %s of %d bytes.<br>", searchname.c_str(), m_soundlength);
-				m_hqsound.enabled = false;
-
-				return true;
-			}
-			curheader += 0x10;
-		}
-		// sound could not be found
-		g_pLogFile->ftextOut("loadSound : sound \"%s\" could not be found.<br>", searchname.c_str());
-
+	// Check that the convert was built
+	if(ret == -1)
+	{
+		g_pLogFile->textOut(PURPLE,"Couldn't convert the sound correctly!<br>");
+		SDL_FreeWAV(snddata);
 		return false;
 	}
+
+	// Setup for conversion, copy original data to new buffer
+	Audio_cvt.buf = (Uint8*) malloc(length * Audio_cvt.len_mult);
+	Audio_cvt.len = length;
+	memcpy(Audio_cvt.buf, snddata, length);
+
+	// We can delete to original WAV data now
+	SDL_FreeWAV(snddata);
+
+	// And now we're ready to convert
+	SDL_ConvertAudio(&Audio_cvt);
+
+	// copy the converted stuff to the original soundbuffer
+	if(AudioSpec.freq == 48000)
+	{
+		const float factor = float(AudioSpec.freq)/44100.0f;
+		length = Audio_cvt.len_cvt;
+		const unsigned long out_len = (float)length*factor;
+		snddata = (Uint8*) malloc(out_len);
+
+		resample(snddata, Audio_cvt.buf,
+				out_len, length, AudioSpec.format, AudioSpec.channels);
+		length = out_len;
+	}
+	else
+	{
+		length = Audio_cvt.len_cvt;
+		snddata = (Uint8*) malloc(length);
+		memcpy(snddata, Audio_cvt.buf, length);
+	}
+
+	setupWaveForm(snddata, length);
+
+	free(snddata);
+
+	// Structure Audio_cvt must be freed!
+	free(Audio_cvt.buf);
+
+	return true;
 }
+
 
 void CSoundSlot::unload()
 {
-	HQSndDrv_Unload(&m_hqsound);
 	if(m_sounddata){ delete[] m_sounddata; }
 	m_sounddata = NULL;
-	m_hqsound.enabled = false;
 }
 
 CSoundSlot::~CSoundSlot() {

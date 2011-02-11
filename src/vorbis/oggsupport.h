@@ -28,11 +28,10 @@
 
 #if defined(OGG) || defined(TREMOR)
 
-#include "sdl/sound/hq_sound.h"
 #include "sdl/CVideoDriver.h"
 #include "CLogFile.h"
 
-short openOGGSound(const std::string& filename, SDL_AudioSpec *pspec, stHQSound *psound);
+Uint8 *openOGGSound(const std::string& filename, SDL_AudioSpec *pspec, Uint32 &SoundLen);
 
 bool openOGGStream(const std::string& filename, SDL_AudioSpec *pspec, OggVorbis_File  &oggStream);
 
