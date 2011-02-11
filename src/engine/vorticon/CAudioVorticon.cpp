@@ -75,26 +75,37 @@ Uint8* CAudioVorticon::loadSoundStream(Uint32 &buffer_size, Uint8* exedata)
 	}
 }
 
-template <typename T>
-void CAudioVorticon::generateWave(std::vector<T> &waveform, word sample, double &t, bool IsSigned)
-{
-    //  y = Huge_Amplitude * sin (omega * t) -> omega = 2*PI*frequency
+const Uint64 PCSpeakerTime = 1288634;
+//const Uint64 PCSpeakerTime = 0x1234DD;
 
-	const double dt = 1.0f/double(m_AudioSpec.freq);
-	const double freqdiv = double(0x1234DD);
-	const unsigned int wavetime = m_AudioSpec.freq/128;
-	T wave;
-	const int mask = IsSigned ? ((1<<(sizeof(T)*8))>>1)-1 : (1<<(sizeof(T)*8))-1 ;
+template <typename T>
+void CAudioVorticon::generateWave(std::vector<T> &waveform, word sample, T &wave, Uint64 &freqtimer, bool IsSigned, const int& AMP)
+{
+	const unsigned int wavetime = m_AudioSpec.freq/136;
+	Uint64 changerate = (m_AudioSpec.freq>>1)*Uint64(sample);
 
 	for (unsigned int j=0; j<wavetime; j++)
 	{
-		double y =  (sample) ? 10000.0f * sin (2.0f*M_PI*freqdiv/(double)sample*t) : 0.0f ;
+		if(changerate == 0)
+		{
+			wave = m_AudioSpec.silence - AMP;
+			freqtimer = 0;
+		}
+		else
+		{
+			if (freqtimer > changerate)
+			{
+				freqtimer = 0;
 
-		if (y>1) y=10000.0f;
-		if (y<1) y=-10000.0f;
+				if (wave == m_AudioSpec.silence - AMP)
+					wave = m_AudioSpec.silence + AMP;
+				else
+					wave = m_AudioSpec.silence - AMP;
+			}
+			else
+				freqtimer += PCSpeakerTime;
+		}
 
-		t += dt;
-		wave = m_AudioSpec.silence+(int(y) & mask);
 		for(Uint8 chnl=0 ; chnl<m_AudioSpec.channels ; chnl++ )
 			waveform.push_back(wave);
 	}
@@ -130,7 +141,10 @@ bool CAudioVorticon::loadPCSpeakerSound(Uint8 *buffer, const Uint32 buf_size, st
 			buf_ptr = buffer+offset;
 
 			word sample;
-			double t = 0.0f;
+			const int AMP = IsSigned ? ((1<<(sizeof(T)*8))>>2)-1 : (1<<(sizeof(T)*8)>>1)-1;
+			T wave = AMP;
+			Uint64 freqtimer = 0;
+
 			do
 			{
 				sample = READWORD(buf_ptr);
@@ -138,7 +152,7 @@ bool CAudioVorticon::loadPCSpeakerSound(Uint8 *buffer, const Uint32 buf_size, st
 				if(sample == 0xffff)
 					break;
 
-				generateWave(waveform, sample, t, IsSigned);
+				generateWave(waveform, sample, wave, freqtimer, IsSigned, AMP);
 
 			}while(1);
 			g_pLogFile->ftextOut("CAudioVorticon::loadSound : loaded sound %s into the waveform.<br>", searchname.c_str());

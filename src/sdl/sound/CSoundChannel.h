@@ -56,15 +56,11 @@ public:
 	GameSound getCurrentsound() { return m_current_sound; }
 	void readWaveform(CSoundSlot *pSndSlot, Uint8* waveform, int len, Uint8 channels, int frequency);
 	template <typename T>
-	void generateWaveform(T *waveform, CSoundSlot &SndSlot, unsigned int len, int frequency, bool stereo );
-	template <typename T>
 	void transintoStereoChannels(T* waveform, const Uint32 len);
 
 	short getBalance() { return m_balance; }
 	void setBalance(short value) { m_balance = value; }
-	void setFrequencyCorrection(int freq);
 
-	void setFormat( Uint16 format );
 	void setupSound(GameSound current_sound,
 					unsigned int sound_timer,
 					bool playing,
@@ -76,21 +72,13 @@ private:
     bool m_sound_playing;           	// true = a sound is currently playing
     GameSound m_current_sound;   	    // # of the sound that is currently playing
     Uint32 m_sound_ptr;               	// position within sound that we're at
-    unsigned int m_sound_timer;     	// used to slow down the rate of playback
 	bool m_sound_paused;             	// true = pause playback
     bool m_sound_forced;
 
     unsigned int m_desiredfreq;     	// current desired frequency in hz
-    unsigned int m_changerate;      	// frequency in samples (calculated)
-    unsigned int m_freqtimer;       	// time when to change waveform state
-    Sint32 m_waveState;                	// current position of the output waveform
     short m_balance;					// This variable is used for stereo sound, and to calculate where the sound must be played!
-    unsigned int m_freq_corr;			// used for correcting PC-Speaker sampling for different frequencies
 
     SDL_AudioSpec m_AudioSpec;
-    Sint32 m_waveout;
-    Sint32 m_wavein;
-    Sint32 m_volume;
 
 };
 
