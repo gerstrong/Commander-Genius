@@ -182,7 +182,7 @@ void CMapLoader::addTile( Uint16 t, Uint16 x, Uint16 y )
 {
 	// Special cases. Those happen normally, when levels are replayed.
 	// For example if one player has battery, the level won't show that item
-	
+
 	// Now set this this tile at pos(curmapx, curmapy)
 	mp_map->setTile(x, y, t);
 }
@@ -292,7 +292,7 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 		{
 			if(x >= mp_map->m_width-2) // Edge bug. Keen would fall in some levels without this.
 				x = 4;
-			
+
 			if(y >= mp_map->m_height-2) // Edge bug. Keen would fall in some levels without this.
 				y = 4;
 
@@ -300,7 +300,7 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 			for(; it_player != mp_vec_Player->end() ; it_player++ )
 			{
 				it_player->exists = false;
-				it_player->moveToForce(x<<CSF, y<<CSF);
+				it_player->moveToForce(x<<CSF, (y<<CSF)+275);
 				it_player->setupforLevelPlay();
 			}
 		}
