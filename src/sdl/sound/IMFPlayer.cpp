@@ -55,9 +55,9 @@ void OPLUpdate(Sint16 *buffer, int length)
 
 void SDL_IMFMusicPlayer(Uint8 *stream, int len)
 {
-    int stereolen = len>>1;
+    const int stereolen = len>>1;
     int sampleslen = stereolen>>1;
-    Sint16 *stream16 = (Sint16 *) (void *) stream;    // expect correct alignment
+    Sint16 *stream16 = (Sint16 *) stream;    // expect correct alignment
 
     while(1)
     {
@@ -76,8 +76,10 @@ void SDL_IMFMusicPlayer(Uint8 *stream, int len)
                 return;
             }
         }
+
         soundTimeCounter--;
-        if(!soundTimeCounter)
+
+        if( soundTimeCounter==0 )
         {
             soundTimeCounter = 5;
             if(curAlSound != alSound)
@@ -124,6 +126,7 @@ void SDL_IMFMusicPlayer(Uint8 *stream, int len)
                 alTimeCount = 0;
             }
         }
+
         numreadysamples = samplesPerMusicTick;
     }
 }

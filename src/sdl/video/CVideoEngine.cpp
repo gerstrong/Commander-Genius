@@ -7,6 +7,7 @@
 
 #include "CVideoEngine.h"
 #include "CLogFile.h"
+#include "sys/param.h"
 
 CVideoEngine::CVideoEngine(const CVidConfig& VidConfig) :
 BlitSurface(NULL),
@@ -101,7 +102,8 @@ SDL_Surface* CVideoEngine::createSurface( std::string name, bool alpha, int widt
 	return optimized;
 }
 
-unsigned char *CVideoEngine::fetchStartScreenPixelPtr()
+void CVideoEngine::fetchStartScreenPixelPtrs(Uint8 *&ScreenPtr, Uint8 *&BlitPtr,
+										unsigned int &width, unsigned int &height)
 {
 	const st_resolution &Res = m_VidConfig.m_Resolution;
 	const SDL_Rect &GameScreen = m_VidConfig.m_Gamescreen;
@@ -109,11 +111,23 @@ unsigned char *CVideoEngine::fetchStartScreenPixelPtr()
 	const int ypos = (Res.height-GameScreen.h*m_VidConfig.Zoom)/2;
 	const int xoffset = xpos*(Res.depth>>3);
 	const int yoffset = ypos*screen->pitch;
-	//return (unsigned char*)screen->pixels;
-	return (unsigned char*)screen->pixels + yoffset + xoffset;
+	width = MIN(Res.width, GameScreen.w*m_VidConfig.Zoom);
+	height = MIN(Res.height, GameScreen.h*m_VidConfig.Zoom);
+	width /= m_VidConfig.Zoom;
+	height /= m_VidConfig.Zoom;
+
+	ScreenPtr = (Uint8*) screen->pixels;
+	BlitPtr = (Uint8*) BlitSurface->pixels;
+
+	if(xoffset>0)
+		ScreenPtr += xoffset;
+
+	if(yoffset>0)
+		ScreenPtr += yoffset;
 }
 
-void CVideoEngine::scale2xnofilter(char *dest, char *src, short bbp)
+//void CVideoEngine::scale2xnofilter(char* dest, char* src, short bbp)
+void CVideoEngine::scale2xnofilter(char* restrict dest, char* restrict src, short bbp)
 {
 	// workaround for copying correctly stuff to the screen, so the screen is scaled normally
     // to 2x (without filter). This applies to 16 and 32-bit colour depth.
@@ -133,7 +147,8 @@ void CVideoEngine::scale2xnofilter(char *dest, char *src, short bbp)
 	}
 }
 
-void CVideoEngine::scale3xnofilter(char *dest, char *src, short bbp)
+//void CVideoEngine::scale3xnofilter(char *dest, char *src, short bbp)
+void CVideoEngine::scale3xnofilter(char* restrict dest, char* restrict src, short bbp)
 {
 	// workaround for copying correctly stuff to the screen, so the screen is scaled normally
     // to 2x (without filter). This applies to 16 and 32-bit colour depth.
@@ -156,7 +171,8 @@ void CVideoEngine::scale3xnofilter(char *dest, char *src, short bbp)
 	}
 }
 
-void CVideoEngine::scale4xnofilter(char *dest, char *src, short bbp)
+//void CVideoEngine::scale4xnofilter(char *dest, char *src, short bbp)
+void CVideoEngine::scale4xnofilter(char* restrict dest, char* restrict src, short bbp)
 {
 	// workaround for copying correctly stuff to the screen, so the screen is scaled normally
     // to 4x (without filter). This applies to 16 and 32-bit colour depth.
@@ -165,8 +181,8 @@ void CVideoEngine::scale4xnofilter(char *dest, char *src, short bbp)
 	const st_resolution &Res = m_VidConfig.m_Resolution;
 	const SDL_Rect &GameRect = m_VidConfig.m_Gamescreen;
 
-	char *srctemp;
-	char *desttemp;
+	char* restrict srctemp;
+	char* restrict desttemp;
 	int size;
 
 	for( int i=0, j=0 ; i < GameRect.h ; i++ )

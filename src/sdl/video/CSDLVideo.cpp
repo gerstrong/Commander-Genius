@@ -83,7 +83,9 @@ void CSDLVideo::updateScreen()
 	// pointer to the line in VRAM to start blitting to when stretchblitting.
 	// this may not be the first line on the display as it is adjusted to
 	// center the image on the screen when in fullscreen.
-	void *VRAMPtr = fetchStartScreenPixelPtr();
+	Uint8 *ScreenPtr;
+	Uint8 *BlitPtr;
+	unsigned int width, height;
 
 	// if we're doing zoom then we have copied the scroll buffer into
 	// another offscreen buffer, and must now stretchblit it to the screen
@@ -99,6 +101,11 @@ void CSDLVideo::updateScreen()
 
 		SDL_BlitSurface(BlitSurface, &scrrect, screen, &dstrect);
 	}
+	else
+	{
+		fetchStartScreenPixelPtrs(ScreenPtr, BlitPtr, width, height);
+	}
+
 	if (m_VidConfig.Zoom == 2)
 	{
 		SDL_LockSurface(BlitSurface);
@@ -106,13 +113,13 @@ void CSDLVideo::updateScreen()
 
 		if(m_VidConfig.m_ScaleXFilter == 1)
 		{
-			scale2xnofilter((char*)VRAMPtr, (char*)BlitSurface->pixels, screen->format->BytesPerPixel);
+			scale2xnofilter((char*)ScreenPtr, (char*)BlitPtr, screen->format->BytesPerPixel);
 		}
 		else if(m_VidConfig.m_ScaleXFilter == 2)
 		{
-			scale(m_VidConfig.m_ScaleXFilter, VRAMPtr, m_dst_slice, BlitSurface->pixels,
+			scale(m_VidConfig.m_ScaleXFilter, ScreenPtr, m_dst_slice, BlitPtr,
 					m_src_slice, screen->format->BytesPerPixel,
-					gamerect.w, gamerect.h);
+					width, height);
 		}
 
 		SDL_UnlockSurface(screen);
@@ -125,13 +132,13 @@ void CSDLVideo::updateScreen()
 
 		if(m_VidConfig.m_ScaleXFilter == 1)
 		{
-			scale3xnofilter((char*)VRAMPtr, (char*)BlitSurface->pixels, screen->format->BytesPerPixel);
+			scale3xnofilter((char*)ScreenPtr, (char*)BlitPtr, screen->format->BytesPerPixel);
 		}
 		else if(m_VidConfig.m_ScaleXFilter == 2 || m_VidConfig.m_ScaleXFilter == 3)
 		{
-			scale(m_VidConfig.m_ScaleXFilter, VRAMPtr, m_dst_slice, BlitSurface->pixels,
+			scale(m_VidConfig.m_ScaleXFilter, ScreenPtr, m_dst_slice, BlitPtr,
 					m_src_slice, screen->format->BytesPerPixel,
-					gamerect.w, gamerect.h);
+					width, height);
 		}
 		SDL_UnlockSurface(screen);
 		SDL_UnlockSurface(BlitSurface);
@@ -143,13 +150,13 @@ void CSDLVideo::updateScreen()
 
 		if(m_VidConfig.m_ScaleXFilter == 1)
 		{
-			scale4xnofilter((char*)VRAMPtr, (char*)BlitSurface->pixels, screen->format->BytesPerPixel);
+			scale4xnofilter((char*)ScreenPtr, (char*)BlitPtr, screen->format->BytesPerPixel);
 		}
 		else if(m_VidConfig.m_ScaleXFilter >= 2 && m_VidConfig.m_ScaleXFilter <= 4 )
 		{
-			scale(m_VidConfig.m_ScaleXFilter, VRAMPtr, m_dst_slice, BlitSurface->pixels,
+			scale(m_VidConfig.m_ScaleXFilter, ScreenPtr, m_dst_slice, BlitPtr,
 					m_src_slice, screen->format->BytesPerPixel,
-					gamerect.w, gamerect.h);
+					width, height);
 		}
 		SDL_UnlockSurface(screen);
 		SDL_UnlockSurface(BlitSurface);

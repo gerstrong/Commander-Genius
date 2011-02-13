@@ -17,6 +17,8 @@
 #include "scale2x/scalebit.h"
 #include "sdl/CVidConfig.h"
 
+#define restrict
+
 class CVideoEngine {
 public:
 
@@ -29,7 +31,7 @@ public:
 	void setScrollBuffer(Sint16 *pbufx, Sint16 *pbufy);
 	SDL_Surface *createSurface( std::string name, bool alpha, int width, int height, int bpp, int mode, SDL_PixelFormat* format );
 	virtual bool createSurfaces() = 0;
-	unsigned char *fetchStartScreenPixelPtr();
+	void fetchStartScreenPixelPtrs(Uint8 *&ScreenPtr, Uint8 *&BlitPtr, unsigned int &width, unsigned int &height);
 	virtual void collectSurfaces() = 0;
 	void blitScrollSurface();
 	void stop();
@@ -42,9 +44,9 @@ public:
 
 protected:
 
-	void scale2xnofilter(char *dest, char *src, short bbp);
-	void scale3xnofilter(char *dest, char *src, short bbp);
-	void scale4xnofilter(char *dest, char *src, short bbp);
+	void scale2xnofilter(char* restrict dest, char* restrict src, short bbp);
+	void scale3xnofilter(char* restrict dest, char* restrict src, short bbp);
+	void scale4xnofilter(char* restrict dest, char* restrict src, short bbp);
 
 	SDL_Surface *BlitSurface;
 	SDL_Surface *FGLayerSurface;       	// Scroll buffer for Messages
