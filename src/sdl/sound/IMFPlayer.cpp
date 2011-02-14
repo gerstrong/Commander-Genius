@@ -23,10 +23,10 @@ static  longword                alTimeCount;
 
 //      Sequencer variables
 static  volatile bool        sqActive;
-static  word                   *sqHack;
-static  word                   *sqHackPtr;
-static  int                     sqHackLen;
-static  int                     sqHackSeqLen;
+static  word                   *sqStartPtr;
+static  word                   *sqCurPtr;
+static  int                     sqLen;
+static  int                     sqTotalLen;
 static  longword                sqHackTime;
 
 int numreadysamples = 0;
@@ -106,22 +106,30 @@ void SDL_IMFMusicPlayer(Uint8 *stream, int len)
                 }
             }
         }
+
+
         if(sqActive)
         {
+        	// This cylce takes the loaded data and writes the value to the Emulator
+        	// It's waveform is read back later...
             do
             {
                 if(sqHackTime > alTimeCount) break;
-                sqHackTime = alTimeCount + *(sqHackPtr+1);
-            	Chip__WriteReg(&opl_chip, *(byte *) sqHackPtr, *(((byte *) sqHackPtr)+1) );
-                sqHackPtr += 2;
-                sqHackLen -= 4;
+                sqHackTime = alTimeCount + *(sqCurPtr+1);
+                const Bit32u reg = *(byte *) sqCurPtr;
+                const Bit8u val = *(((byte *) sqCurPtr)+1);
+                Chip__WriteReg(&opl_chip, reg, val );
+            	sqCurPtr += 2;
+                sqLen -= 4;
             }
-            while(sqHackLen>0);
+            while(sqLen>0);
+
             alTimeCount++;
-            if(!sqHackLen)
+
+            if(!sqLen)
             {
-                sqHackPtr = sqHack;
-                sqHackLen = sqHackSeqLen;
+            	sqCurPtr = sqStartPtr;
+                sqLen = sqTotalLen;
                 sqHackTime = 0;
                 alTimeCount = 0;
             }
@@ -162,9 +170,9 @@ readIMFData( byte *imfdata, const uint32_t binsize, const SDL_AudioSpec& AudioSp
 
 	SD_Startup (560, AudioSpec.freq, AudioSpec.freq);
 
-	Uint16 size = 0;
+	word size = 0;
 
-	memcpy( &size, imf_data_ptr, sizeof(Uint16) );
+	memcpy( &size, imf_data_ptr, sizeof(word) );
 
     if (size == 0) // Is the IMF file of Type-0?
     	size = binsize;
@@ -175,10 +183,8 @@ readIMFData( byte *imfdata, const uint32_t binsize, const SDL_AudioSpec& AudioSp
 
     memcpy(IMFBuffer, imf_data_ptr,size*sizeof(byte));
 
-    sqHack = (word *)(void *) IMFBuffer;
-
-    sqHackLen = sqHackSeqLen = size;
-    sqHackPtr = sqHack;
+    sqLen = sqTotalLen = size;
+    sqCurPtr = sqStartPtr = (word *)(void *) IMFBuffer;
     sqHackTime = 0;
     alTimeCount = 0;
 
@@ -230,9 +236,9 @@ SD_Shutdown(void)
 	if(mix_buffer)
 		free(mix_buffer);
 
-	if(sqHack)
-		free(sqHack);
+	if(sqStartPtr)
+		free(sqStartPtr);
 
 	mix_buffer = NULL;
-	sqHack = NULL;
+	sqStartPtr = NULL;
 }
