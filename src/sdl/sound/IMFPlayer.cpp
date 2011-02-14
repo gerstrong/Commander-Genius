@@ -22,19 +22,19 @@ static  longword                alLengthLeft;
 static  longword                alTimeCount;
 
 //      Sequencer variables
-static  volatile bool        sqActive;
+static  volatile bool        	sqActive;
 static  word                   *sqStartPtr;
 static  word                   *sqCurPtr;
-static  int                     sqLen;
-static  int                     sqTotalLen;
+static  longword                sqLen;
+static  longword                sqTotalLen;
 static  longword                sqHackTime;
 
-int numreadysamples = 0;
-byte *curAlSound = 0;
-byte *curAlSoundPtr = 0;
+Uint32 numreadysamples = 0;
+byte *curAlSound = NULL;
+byte *curAlSoundPtr = NULL;
 longword curAlLengthLeft = 0;
-int soundTimeCounter = 5;
-int samplesPerMusicTick;
+Uint32 soundTimeCounter = 5;
+Uint32 samplesPerMusicTick;
 
 static Chip opl_chip;
 
@@ -56,7 +56,7 @@ void OPLUpdate(Sint16 *buffer, int length)
 void SDL_IMFMusicPlayer(Uint8 *stream, int len)
 {
     const int stereolen = len>>1;
-    int sampleslen = stereolen>>1;
+    Uint32 sampleslen = stereolen>>1;
     Sint16 *stream16 = (Sint16 *) stream;    // expect correct alignment
 
     while(1)
@@ -115,11 +115,12 @@ void SDL_IMFMusicPlayer(Uint8 *stream, int len)
             do
             {
                 if(sqHackTime > alTimeCount) break;
-                sqHackTime = alTimeCount + *(sqCurPtr+1);
                 const Bit32u reg = *(byte *) sqCurPtr;
                 const Bit8u val = *(((byte *) sqCurPtr)+1);
                 Chip__WriteReg(&opl_chip, reg, val );
-            	sqCurPtr += 2;
+                sqCurPtr++;
+                sqHackTime = alTimeCount + *sqCurPtr;
+                sqCurPtr++;
                 sqLen -= 4;
             }
             while(sqLen>0);
