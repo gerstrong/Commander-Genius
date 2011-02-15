@@ -331,10 +331,12 @@ void CMusic::readBuffer(Uint8* buffer, size_t length) // length only refers to t
 
 		if(rewind)
 		{
+			m_busy = false;
 			reload();
 			play();
 		}
 #else
+		m_busy = false;
 		return;
 #endif
 	}
