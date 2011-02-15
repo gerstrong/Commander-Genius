@@ -32,7 +32,7 @@
 void    SD_Startup(int imf_clock_rate, int mixer_rate, int opl_rate),
         SD_Shutdown(void);
 
-void SDL_IMFMusicPlayer( Uint8 *stream, int len );
+void PlayIMF(Uint8* buffer, unsigned int length);
 
 void PlayWaveform(Uint8 *stream, int len);
 

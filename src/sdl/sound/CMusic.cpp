@@ -295,7 +295,7 @@ void CMusic::readBuffer(Uint8* buffer, size_t length) // length only refers to t
 
 	if(m_MusicFormat == MF_IMF)
 	{
-		SDL_IMFMusicPlayer(buffer, length);
+		PlayIMF(buffer, length);
 		//PlayWaveform(buffer, length);
 	}
 	else if(m_MusicFormat == MF_OGG)

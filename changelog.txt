@@ -6,6 +6,7 @@ v0.3.3.1:
 - Tied up the code!
 - New Audio System!
 - New Graphics System!
+- Fixes in the IMF Player 
 
 v0.3.3:
 -------

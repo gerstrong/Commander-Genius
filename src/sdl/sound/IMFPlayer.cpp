@@ -45,15 +45,27 @@ byte *opl_waveform = NULL;
 byte *opl_waveform_ptr = NULL;
 Uint32 opl_waveform_size = 0;
 
-void OPLUpdate(Sint16 *buffer, int length)
+SDL_AudioSpec l_AudioSpec;
+
+template<typename T>
+void OPLUpdate(T *buffer, unsigned int length)
 {
 	Chip__GenerateBlock2(&opl_chip, length, mix_buffer );
 
     // Mix into the destination buffer, doubling up into stereo.
-    for (int i=0; i<length; ++i)
+
+    for (unsigned int i=0; i<length; ++i)
     {
-        buffer[i * 2] = (int16_t) mix_buffer[i];
-        buffer[i * 2 + 1] = (int16_t) mix_buffer[i];
+    	//int pulse = (T) mix_buffer[i];
+    	int pulse = (Sint16) mix_buffer[i];
+
+    	if(sizeof(T) != sizeof(Sint16))
+    		pulse = (pulse<<(sizeof(T)<<3))>>(sizeof(Sint16)<<3);
+
+    	pulse += l_AudioSpec.silence;
+
+    	for (unsigned int j=0; j<l_AudioSpec.channels; j++)
+    		buffer[i * l_AudioSpec.channels + j] = pulse;
     }
 }
 
@@ -62,10 +74,6 @@ void OPLUpdate(Sint16 *buffer, int length)
  */
 void PlayWaveform(Uint8 *stream, int len)
 {
-    //const int stereolen = len>>1;
-    //Uint32 sampleslen = stereolen>>1;
-    //Sint16 *stream16 = (Sint16 *) stream;    // expect correct alignment
-
     byte* opl_waveform_end = opl_waveform + opl_waveform_size*sizeof(Sint16);
 
     if(opl_waveform_end < opl_waveform_ptr + len)
@@ -175,12 +183,10 @@ void LoadWaveform()
 	opl_waveform_ptr = opl_waveform;
 }
 
-
-void SDL_IMFMusicPlayer(Uint8 *stream, int len)
+template<typename T>
+void SDL_IMFMusicPlayer(T *stream, unsigned int len)
 {
-    const int stereolen = len>>1;
-    Uint32 sampleslen = stereolen>>1;
-    Sint16 *stream16 = (Sint16 *) stream;    // expect correct alignment
+    Uint32 sampleslen = len/(l_AudioSpec.channels*sizeof(T));
 
     while(1)
     {
@@ -188,13 +194,13 @@ void SDL_IMFMusicPlayer(Uint8 *stream, int len)
         {
             if(numreadysamples<sampleslen)
             {
-            	OPLUpdate(stream16, numreadysamples);
-                stream16 += numreadysamples*2;
+            	OPLUpdate(stream, numreadysamples);
+                stream += numreadysamples*l_AudioSpec.channels;
                 sampleslen -= numreadysamples;
             }
             else
             {
-            	OPLUpdate(stream16, sampleslen);
+            	OPLUpdate(stream, sampleslen);
                 numreadysamples -= sampleslen;
                 return;
             }
@@ -233,7 +239,7 @@ void SDL_IMFMusicPlayer(Uint8 *stream, int len)
 
         if(sqActive)
         {
-        	// This cylce takes the loaded data and writes the value to the Emulator
+        	// This cycle takes the loaded data and writes the value to the Emulator
         	// It's waveform is read back later...
             do
             {
@@ -261,6 +267,18 @@ void SDL_IMFMusicPlayer(Uint8 *stream, int len)
 
         numreadysamples = samplesPerMusicTick;
     }
+}
+
+void PlayIMF(Uint8* buffer, unsigned int length)
+{
+	if(l_AudioSpec.format == AUDIO_S16)
+		SDL_IMFMusicPlayer((Sint16*) buffer, length);
+	else if(l_AudioSpec.format == AUDIO_U8)
+		SDL_IMFMusicPlayer((Uint8*) buffer, length);
+	else if(l_AudioSpec.format == AUDIO_S8)
+		SDL_IMFMusicPlayer((Sint8*) buffer, length);
+	else if(l_AudioSpec.format == AUDIO_U16)
+		SDL_IMFMusicPlayer((Uint16*) buffer, length);
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -291,6 +309,8 @@ bool
 readIMFData( byte *imfdata, const uint32_t binsize, const SDL_AudioSpec& AudioSpec )
 {
     byte* imf_data_ptr = imfdata;
+
+	l_AudioSpec = AudioSpec;
 
 	SD_Startup (560, AudioSpec.freq, AudioSpec.freq);
 
