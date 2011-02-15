@@ -34,6 +34,8 @@ void    SD_Startup(int imf_clock_rate, int mixer_rate, int opl_rate),
 
 void SDL_IMFMusicPlayer( Uint8 *stream, int len );
 
+void PlayWaveform(Uint8 *stream, int len);
+
 bool    openIMFFile( const std::string& filename, const SDL_AudioSpec& AudioSpec );
 bool	readIMFData( byte *imfdata, const uint32_t binsize, const SDL_AudioSpec& AudioSpec );
 

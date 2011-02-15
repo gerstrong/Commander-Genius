@@ -4,6 +4,7 @@
 #include "fileio/TypeDefinitions.h"
 #include <SDL.h>
 #include <string>
+#include <vector>
 
 typedef uint8_t byte;
 typedef uint16_t word;
@@ -38,7 +39,11 @@ Uint32 samplesPerMusicTick;
 
 static Chip opl_chip;
 
-static int32_t *mix_buffer = NULL;
+static Bit32s *mix_buffer = NULL;
+
+byte *opl_waveform = NULL;
+byte *opl_waveform_ptr = NULL;
+Uint32 opl_waveform_size = 0;
 
 void OPLUpdate(Sint16 *buffer, int length)
 {
@@ -50,6 +55,124 @@ void OPLUpdate(Sint16 *buffer, int length)
         buffer[i * 2] = (int16_t) mix_buffer[i];
         buffer[i * 2 + 1] = (int16_t) mix_buffer[i];
     }
+}
+
+/**
+ * Use PlayWaveform() and LoadWaveForm() only if you want to preload the IMF Songs
+ */
+void PlayWaveform(Uint8 *stream, int len)
+{
+    //const int stereolen = len>>1;
+    //Uint32 sampleslen = stereolen>>1;
+    //Sint16 *stream16 = (Sint16 *) stream;    // expect correct alignment
+
+    byte* opl_waveform_end = opl_waveform + opl_waveform_size*sizeof(Sint16);
+
+    if(opl_waveform_end < opl_waveform_ptr + len)
+    {
+    	const Uint32 part1len = opl_waveform_end-opl_waveform_ptr;
+    	const Uint32 part2len = len - part1len;
+    	memcpy(stream, opl_waveform_ptr, part1len);
+    	opl_waveform_ptr = opl_waveform;
+    	memcpy(stream, opl_waveform_ptr, part2len);
+    	opl_waveform_ptr += part2len;
+    }
+    else
+    {
+    	memcpy(stream, opl_waveform_ptr, len);
+    	opl_waveform_ptr += len;
+    }
+}
+
+void LoadWaveform()
+{
+    std::vector<Sint16> wavelist;
+
+    while(1)
+    {
+        if(numreadysamples)
+        {
+        	Sint16 sample[numreadysamples*sizeof(Sint16)];
+        	OPLUpdate(sample, numreadysamples);
+        	for(unsigned int ctr=0 ; ctr<numreadysamples*sizeof(Sint16) ; ctr++)
+        		wavelist.push_back(sample[ctr]);
+        }
+
+        soundTimeCounter--;
+
+        if( soundTimeCounter==0 )
+        {
+            soundTimeCounter = 5;
+            if(curAlSound != alSound)
+            {
+                curAlSound = curAlSoundPtr = alSound;
+                curAlLengthLeft = alLengthLeft;
+            }
+            if(curAlSound)
+            {
+                if(*curAlSoundPtr)
+                {
+                	Chip__WriteReg(&opl_chip, alFreqL, *curAlSoundPtr );
+                	Chip__WriteReg(&opl_chip, alFreqH, alBlock );
+                }
+                else Chip__WriteReg(&opl_chip, alFreqH, 0 );
+
+                curAlSoundPtr++;
+                curAlLengthLeft--;
+                if(!curAlLengthLeft)
+                {
+                    curAlSound = alSound = 0;
+                    SoundPriority = 0;
+                	Chip__WriteReg(&opl_chip, alFreqH, 0 );
+                }
+            }
+        }
+
+
+        if(sqActive)
+        {
+        	// This cylce takes the loaded data and writes the value to the Emulator
+        	// It's waveform is read back later...
+            do
+            {
+                if(sqHackTime > alTimeCount) break;
+                const Bit32u reg = *(byte *) sqCurPtr;
+                const Bit8u val = *(((byte *) sqCurPtr)+1);
+                Chip__WriteReg(&opl_chip, reg, val );
+                sqCurPtr++;
+                sqHackTime = alTimeCount + *sqCurPtr;
+                sqCurPtr++;
+                sqLen -= 4;
+            }
+            while(sqLen>0);
+
+            alTimeCount++;
+
+            if(!sqLen)
+            {
+            	sqCurPtr = sqStartPtr;
+                sqLen = sqTotalLen;
+                sqHackTime = 0;
+                alTimeCount = 0;
+            	break;
+            }
+        }
+
+        numreadysamples = samplesPerMusicTick;
+    }
+
+    opl_waveform_size = wavelist.size();
+    opl_waveform = new byte[opl_waveform_size*sizeof(Sint16)];
+
+    /*std::vector<Sint16>::iterator it = wavelist.begin();
+	for( ; it != wavelist.end() ; it++)
+	{
+		memcpy( opl_waveform, &(*it), sizeof(Sint16));
+    }*/
+
+    memcpy( opl_waveform, &wavelist[0], opl_waveform_size*sizeof(Sint16));
+
+	opl_waveform_ptr = opl_waveform;
 }
 
 
@@ -152,7 +275,7 @@ SD_Startup(int imf_clock_rate, int mixer_rate, int opl_rate)
     // Init music
     samplesPerMusicTick = mixer_rate / imf_clock_rate;    // SDL_t0FastAsmService played at imf_clock_rate Hz
 
-    mix_buffer = (int32_t *) malloc(mixer_rate * sizeof(uint32_t));
+    mix_buffer = (int32_t *) malloc (samplesPerMusicTick * sizeof(uint32_t));
 
     DBOPL_InitTables();
     Chip__Chip(&opl_chip);
@@ -216,7 +339,10 @@ openIMFFile(const std::string& filename, const SDL_AudioSpec& AudioSpec)
     if( binsize == fread( imfdata, sizeof(byte), binsize, fp ) )
     {
     	fclose(fp);
-    	return readIMFData( imfdata, binsize, AudioSpec );
+    	bool ok = readIMFData( imfdata, binsize, AudioSpec );
+    	//if(ok)
+    		//LoadWaveform();
+    	return ok;
     }
     else
     {
@@ -240,6 +366,10 @@ SD_Shutdown(void)
 	if(sqStartPtr)
 		free(sqStartPtr);
 
+	if(opl_waveform)
+		delete [] opl_waveform;
+
+	opl_waveform = NULL;
 	mix_buffer = NULL;
 	sqStartPtr = NULL;
 }
