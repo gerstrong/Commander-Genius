@@ -48,7 +48,6 @@ PLAY_FORCE
 class CSoundChannel {
 public:
 	CSoundChannel(SDL_AudioSpec AudioSpec);
-	virtual ~CSoundChannel();
 
 	void stopSound(void);
 	bool isPlaying() { return m_sound_playing; }

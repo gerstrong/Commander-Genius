@@ -10,6 +10,9 @@
 #include "FindFile.h"
 #include "fileio/ResourceMgmt.h"
 #include <fstream>
+#include "sdl/sound/CSound.h"
+#include "sdl/sound/IMFPlayer.h"
+#include "fileio/compression/CHuffman.h"
 
 CAudioGalaxy::CAudioGalaxy(const CExeFile &ExeFile, const SDL_AudioSpec &AudioSpec) :
 CAudioResources(AudioSpec),
@@ -24,9 +27,9 @@ m_ExeFile(ExeFile)
  */
 bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 {
-	/*const int episode = ExeFile.getEpisode();
-	m_AudioSpec = g_pSound->getAudioSpec();
-	m_MusicFormat = MF_NONE;
+	return false;
+
+	const int episode = ExeFile.getEpisode();
 
 	if(m_AudioSpec.format != 0)
 	{
@@ -86,10 +89,10 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 
 		// Find the start of the embedded IMF files
 		uint32_t outsize = 0;
-		byte *isfdata = NULL;
 		uint32_t al_snd_start = 0;
+		uint32_t slot = 0;
 
-		for( uint32_t slot = 0 ; slot<number_of_audiorecs ; slot++ )
+		for(  ; slot<number_of_audiorecs ; slot++ )
 		{
 			const uint32_t audio_start = audiohedptr[slot];
 			const uint32_t audio_end = audiohedptr[slot+1];
@@ -101,7 +104,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 			}
 		}
 
-		for(unsigned int snd=al_snd_start ; snd<slot ; snd++)
+		for(unsigned int snd=al_snd_start+2 ; snd<slot ; snd++)
 		{
 			/// Now we have all the data we need.
 			// decompress every file of AUDIO.CK? using huffman decompression algorithm
@@ -113,18 +116,19 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 				const uint32_t audio_comp_data_start = audio_start+sizeof(uint32_t);
 				const uint32_t *AudioCompFileData32 = (uint32_t*) (AudioCompFileData + audio_start);
 				outsize = *AudioCompFileData32;
-				imfdata = new byte[outsize];
+				byte *imfdata = new byte[outsize];
+				uint32_t wave_size = 0;
 
 				Huffman.expand( (byte*)(AudioCompFileData+audio_comp_data_start), imfdata, audio_end-audio_comp_data_start, outsize);
 
-				m_soundslot[snd-al_snd_start].readFromBuffer(readISFData( imfdata, outsize, m_AudioSpec ));
+				byte* waveform = readISFData( imfdata, outsize, m_AudioSpec, wave_size );
+				m_soundslot[snd-al_snd_start].setupWaveForm(waveform, wave_size);
+				freeISFData();
 				delete imfdata;
-
 			}
 		}
 	}
-	return false;*/
-	return true;
+	return false;
 }
 
 /**
@@ -132,32 +136,15 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
  */
 bool CAudioGalaxy::loadSoundData()
 {
-	// Read the embedded AUDIODICT
-	//const int episode = m_ExeFile.getEpisode();
-	//const std::string datadir = m_ExeFile.getDataDirectory();
+	const bool ok = LoadFromAudioCK(m_ExeFile);
 
-	//Uint8* AudioDict_Ptr = NULL;
-	//Uint8* AudioHed_Ptr = NULL;
-	//Uint8* AudioData_Ptr = NULL;
-
-/*	if( episode == 4 )
+	if(!ok)
 	{
-
-	}
-	else*/
-	{
-		g_pLogFile->textOut("CAudioGalaxy::loadSoundData(): The function cannot read Audio of that game");
+		g_pLogFile->textOut("CAudioGalaxy::loadSoundData(): The function cannot read audio of that game");
 		return false;
 	}
 
-
-	// TODO: Read the AUDIOHED
-
-	// TODO: Open the Audio File and read the data for it into the sound-slots
-
-	// TODO: Free allocated Stuff
-
-	return false;
+	return true;
 }
 
 /**

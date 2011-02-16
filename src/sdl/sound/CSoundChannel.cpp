@@ -20,9 +20,6 @@ m_AudioSpec(AudioSpec)
 	
 }
 
-CSoundChannel::~CSoundChannel() {
-}
-
 void CSoundChannel::stopSound(void)
 {
     m_sound_ptr = 0;

@@ -155,6 +155,7 @@ SDL_DetectAdLib(void)
 ///////////////////////////////////////////////////////////////////////////
 bool SD_PlaySound()
 {
+printf("Play the sound!\n");
     Instrument      *inst;
     byte            *data;
 
@@ -178,11 +179,6 @@ bool SD_PlaySound()
 
     return true;
 }
-
-/*void SDL_IMFSoundPlayer(void *udata, Uint8 *stream, int len)
-{
-
-}*/
 
 void SDL_IMFMusicPlayer(void *udata, Uint8 *stream, int len)
 {
@@ -320,6 +316,7 @@ SD_StartIMF(const std::string& filename, AudioType IMFAudioType)
 
     if(IMFAudioType == IMF_ADLIBSOUND)
     {
+	printf("Performing in Adlib Sound mode!\n");
     	SDL_DetectAdLib();
     	SDL_StartAL();
 

@@ -267,7 +267,7 @@ void CMusic::stop(void)
 		if(  m_MusicFormat == MF_IMF )
 		{
 			m_MusicFormat = MF_NONE;
-			SD_Shutdown();
+			OPL_Shutdown();
 		}
 
 #if defined(OGG) || defined(TREMOR)
