@@ -41,10 +41,6 @@ static Chip opl_chip;
 
 static Bit32s *mix_buffer = NULL;
 
-byte *opl_waveform = NULL;
-byte *opl_waveform_ptr = NULL;
-Uint32 opl_waveform_size = 0;
-
 SDL_AudioSpec l_AudioSpec;
 
 template<typename T>
@@ -67,120 +63,6 @@ void OPLUpdate(T *buffer, unsigned int length)
     	for (unsigned int j=0; j<l_AudioSpec.channels; j++)
     		buffer[i * l_AudioSpec.channels + j] = pulse;
     }
-}
-
-/**
- * Use PlayWaveform() and LoadWaveForm() only if you want to preload the IMF Songs
- */
-void PlayWaveform(Uint8 *stream, int len)
-{
-    byte* opl_waveform_end = opl_waveform + opl_waveform_size*sizeof(Sint16);
-
-    if(opl_waveform_end < opl_waveform_ptr + len)
-    {
-    	const Uint32 part1len = opl_waveform_end-opl_waveform_ptr;
-    	const Uint32 part2len = len - part1len;
-    	memcpy(stream, opl_waveform_ptr, part1len);
-    	opl_waveform_ptr = opl_waveform;
-    	memcpy(stream, opl_waveform_ptr, part2len);
-    	opl_waveform_ptr += part2len;
-    }
-    else
-    {
-    	memcpy(stream, opl_waveform_ptr, len);
-    	opl_waveform_ptr += len;
-    }
-}
-
-void LoadWaveform()
-{
-    std::vector<Sint16> wavelist;
-
-    while(1)
-    {
-        if(numreadysamples)
-        {
-        	Sint16 sample[numreadysamples*sizeof(Sint16)];
-        	OPLUpdate(sample, numreadysamples);
-        	for(unsigned int ctr=0 ; ctr<numreadysamples*sizeof(Sint16) ; ctr++)
-        		wavelist.push_back(sample[ctr]);
-        }
-
-        soundTimeCounter--;
-
-        if( soundTimeCounter==0 )
-        {
-            soundTimeCounter = 5;
-            if(curAlSound != alSound)
-            {
-                curAlSound = curAlSoundPtr = alSound;
-                curAlLengthLeft = alLengthLeft;
-            }
-            if(curAlSound)
-            {
-                if(*curAlSoundPtr)
-                {
-                	Chip__WriteReg(&opl_chip, alFreqL, *curAlSoundPtr );
-                	Chip__WriteReg(&opl_chip, alFreqH, alBlock );
-                }
-                else Chip__WriteReg(&opl_chip, alFreqH, 0 );
-
-                curAlSoundPtr++;
-                curAlLengthLeft--;
-                if(!curAlLengthLeft)
-                {
-                    curAlSound = alSound = 0;
-                    SoundPriority = 0;
-                	Chip__WriteReg(&opl_chip, alFreqH, 0 );
-                }
-            }
-        }
-
-
-        if(sqActive)
-        {
-        	// This cylce takes the loaded data and writes the value to the Emulator
-        	// It's waveform is read back later...
-            do
-            {
-                if(sqHackTime > alTimeCount) break;
-                const Bit32u reg = *(byte *) sqCurPtr;
-                const Bit8u val = *(((byte *) sqCurPtr)+1);
-                Chip__WriteReg(&opl_chip, reg, val );
-                sqCurPtr++;
-                sqHackTime = alTimeCount + *sqCurPtr;
-                sqCurPtr++;
-                sqLen -= 4;
-            }
-            while(sqLen>0);
-
-            alTimeCount++;
-
-            if(!sqLen)
-            {
-            	sqCurPtr = sqStartPtr;
-                sqLen = sqTotalLen;
-                sqHackTime = 0;
-                alTimeCount = 0;
-            	break;
-            }
-        }
-
-        numreadysamples = samplesPerMusicTick;
-    }
-
-    opl_waveform_size = wavelist.size();
-    opl_waveform = new byte[opl_waveform_size*sizeof(Sint16)];
-
-    /*std::vector<Sint16>::iterator it = wavelist.begin();
-	for( ; it != wavelist.end() ; it++)
-	{
-		memcpy( opl_waveform, &(*it), sizeof(Sint16));
-    }*/
-
-    memcpy( opl_waveform, &wavelist[0], opl_waveform_size*sizeof(Sint16));
-
-	opl_waveform_ptr = opl_waveform;
 }
 
 template<typename T>
@@ -359,10 +241,7 @@ openIMFFile(const std::string& filename, const SDL_AudioSpec& AudioSpec)
     if( binsize == fread( imfdata, sizeof(byte), binsize, fp ) )
     {
     	fclose(fp);
-    	bool ok = readIMFData( imfdata, binsize, AudioSpec );
-    	//if(ok)
-    		//LoadWaveform();
-    	return ok;
+    	return readIMFData( imfdata, binsize, AudioSpec );
     }
     else
     {
@@ -386,10 +265,6 @@ SD_Shutdown(void)
 	if(sqStartPtr)
 		free(sqStartPtr);
 
-	if(opl_waveform)
-		delete [] opl_waveform;
-
-	opl_waveform = NULL;
 	mix_buffer = NULL;
 	sqStartPtr = NULL;
 }

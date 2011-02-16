@@ -54,10 +54,14 @@ void CLogFile::CreateLogfile(const char *LogName)
 
 	// Ads
 	textOut("<br>");
-    textOut("by The CloneKeenPlus Team 2009<br>");
+	std::string datestring = __DATE__;
+	const std::string Teamyear = "by The Commander Genius Team " + datestring.substr(datestring.size()-4);
+	textOut("Built on: " + datestring);
+    textOut(Teamyear);
     textOut("<br>");
     textOut("BY FANS, FOR FANS. ALL \"COMMANDER KEEN\" GRAPHICS,<br>");
-    textOut("SOUND, AND LEVEL FILES ARE THE PROPERTY OF ID SOFTWARE.<br>");
+    textOut("SOUND, AND LEVEL FILES ARE THE PROPERTY OF ID SOFTWARE<br>");
+    textOut("EXCEPT THOSE WHICH WERE MADE BY FANS FOR EXTENSION.<br>");
     textOut("<br>");
 	
 	// Show my e-mail adress
