@@ -233,9 +233,9 @@ void CMusic::stop(void)
 {
 	if(!mp_player)
 		return;
-	// wait until the last chunk has been played!
 
-	while(m_busy) ;
+	// wait until the last chunk has been played, and only shutdown then.
+	while(m_busy);
 
 	mp_player->close();
 
