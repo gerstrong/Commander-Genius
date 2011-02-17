@@ -8,7 +8,6 @@
 #include "CAudioResources.h"
 
 #include "fileio/ResourceMgmt.h"
-#include "vorbis/oggsupport.h"
 #include "FindFile.h"
 #include "CLogFile.h"
 #include <SDL.h>

@@ -11,7 +11,6 @@
 #ifndef CMUSIC_H_
 #define CMUSIC_H_
 
-#include "vorbis/oggsupport.h"
 #include "fileio/CExeFile.h"
 #include "sdl/music/CMusicPlayer.h"
 

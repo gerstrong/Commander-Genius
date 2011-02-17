@@ -13,7 +13,6 @@
 #include "fileio.h"
 #include "fileio/ResourceMgmt.h"
 #include "fileio/TypeDefinitions.h"
-#include "vorbis/oggsupport.h"
 #include "sdl/sound/Sampling.h"
 #include "FindFile.h"
 
@@ -73,7 +72,6 @@ void CSoundSlot::openOGGSound(const std::string& filename, SDL_AudioSpec *pspec,
         SoundBuffer = (Uint8*) malloc(SoundLen*sizeof(Uint8));
         memcpy(SoundBuffer, &(buffer[0]), SoundLen);
     }
-    return SoundBuffer;
 }
 
 

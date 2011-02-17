@@ -10,7 +10,6 @@
 #include "COGGPlayer.h"
 
 #include "FindFile.h"
-#include "vorbis/oggsupport.h"
 #include "sdl/sound/Sampling.h"
 #include "CLogFile.h"
 
