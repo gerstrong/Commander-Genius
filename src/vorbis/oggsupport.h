@@ -8,23 +8,10 @@
 #ifndef __OGGSUPPORT__
 #define __OGGSUPPORT__
 
-#include <SDL.h>
+//#include <SDL.h>
 // vorbis headers
 
-#include <cstdio>
-#include <iostream>
-
-#define BUFFER_SIZE   32768     // 32 KB buffers
-
-#ifdef OGG
-#include <vorbisfile.h>
-#elif defined  TREMOR
-#if defined(DINGOO) || defined(ANDROID) // A temporary workaround. This should be changed.
-#include <tremor/ivorbisfile.h>
-#else
-#include <ivorbisfile.h>
-#endif
-#endif
+/*
 
 #if defined(OGG) || defined(TREMOR)
 
@@ -41,10 +28,8 @@ bool readOGGStreamAndResample( OggVorbis_File  &oggStream, char *buffer, const s
 
 void cleanupOGG(OggVorbis_File  &oggStream);
 
-#if defined(TREMOR)
-int ov_fopen(char *path,OggVorbis_File *vf);
-#endif
 
-#endif
+
+#endif*/
 
 #endif //__OGGSUPPORT__

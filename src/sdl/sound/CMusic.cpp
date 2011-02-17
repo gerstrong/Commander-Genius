@@ -13,9 +13,8 @@
 #include "FindFile.h"
 #include "fileio/ResourceMgmt.h"
 #include "fileio/compression/CHuffman.h"
+#include "sdl/music/COGGPlayer.h"
 #include <fstream>
-
-static	bool m_busy = false;
 
 const Uint32 GalaxySongAssignments[] =
 {
@@ -24,15 +23,10 @@ const Uint32 GalaxySongAssignments[] =
 	0x03103D,
 };
 
-
 CMusic::CMusic() :
-playmode(PLAY_MODE_STOP),
-m_MusicFormat(MF_NONE),
-usedMusicFile(""),
-m_open(false)
-{
-	m_Audio_cvt.buf = NULL;
-}
+mp_player(NULL),
+m_busy(false)
+{}
 
 /**
  * \brief 	This function will load music using other dictionaries which are embedded in the Exe File.
@@ -41,9 +35,8 @@ m_open(false)
  */
 bool CMusic::LoadFromAudioCK(const CExeFile& ExeFile, const int level)
 {
-	const int episode = ExeFile.getEpisode();
+	/*const int episode = ExeFile.getEpisode();
 	m_AudioSpec = g_pSound->getAudioSpec();
-	m_MusicFormat = MF_NONE;
 
 	if(m_AudioSpec.format != 0)
 	{
@@ -160,7 +153,7 @@ bool CMusic::LoadFromAudioCK(const CExeFile& ExeFile, const int level)
 		}
 		else
 			return false;
-	}
+	}*/
 	return false;
 }
 
@@ -170,14 +163,12 @@ bool CMusic::load(const std::string &musicfile)
 		return false;
 
 	m_AudioSpec = g_pSound->getAudioSpec();
-	m_open = false;
-	m_MusicFormat = MF_NONE;
 
 	if(m_AudioSpec.format != 0)
 	{
 		std::string extension = GetFileExtension(musicfile);
 
-		if(extension == "imf")
+		/*if(extension == "imf")
 		{
 			if(!openIMFFile(musicfile, m_AudioSpec))
 			{
@@ -196,30 +187,19 @@ bool CMusic::load(const std::string &musicfile)
 
 			return true;
 		}
-		else if(extension == "ogg")
+		else*/ if(extension == "ogg")
 		{
 #if defined(OGG) || defined(TREMOR)
-			if(!openOGGStream(musicfile.c_str(), &m_AudioFileSpec, m_oggStream))
+
+			mp_player = new COGGPlayer(musicfile, m_AudioSpec);
+
+			if(!mp_player->open())
 			{
 				g_pLogFile->textOut(PURPLE,"Music Driver(): OGG file could not be opened: \"%s\". File is damaged or something is wrong with your soundcard!<br>", musicfile.c_str());
+				delete mp_player;
+				mp_player = NULL;
 				return false;
 			}
-
-			m_MusicFormat = MF_OGG;
-			g_pLogFile->ftextOut("Music Driver(): File \"%s\" opened successfully!<br>", musicfile.c_str());
-			usedMusicFile = musicfile;
-			m_open = true;
-			int ret = SDL_BuildAudioCVT(&m_Audio_cvt,
-					m_AudioFileSpec.format, m_AudioFileSpec.channels, m_AudioFileSpec.freq,
-					m_AudioSpec.format, m_AudioSpec.channels, m_AudioSpec.freq);
-			if(ret == -1)
-				return false;
-
-			if(	m_Audio_cvt.buf )
-				delete [] m_Audio_cvt.buf;
-			const size_t &length = g_pSound->getAudioSpec().size;
-			m_Audio_cvt.len = (length*m_Audio_cvt.len_mult)/m_Audio_cvt.len_ratio;
-			m_Audio_cvt.buf = new Uint8[m_Audio_cvt.len];
 
 			return true;
 #else
@@ -228,37 +208,38 @@ bool CMusic::load(const std::string &musicfile)
 		}
 	}
 	else
-		g_pLogFile->textOut(PURPLE,"Music Driver(): I would like to open the music for you. But your Soundcard is disabled!!<br>");
+		g_pLogFile->textOut(PURPLE,"Music Driver(): I would like to open the music for you. But your Soundcard seems to be disabled!!<br>");
 	
 	return false;
 }
 
 void CMusic::reload()
 {
-	stop();
-	load(usedMusicFile);
+	mp_player->reload();
 }
 
 void CMusic::play()
 {
-	if(usedMusicFile != "")
-		playmode = PLAY_MODE_PLAY;
+	mp_player->play(true);
 }
 
 void CMusic::pause()
 {
-	if(usedMusicFile != "")
-		playmode = PLAY_MODE_PAUSE;
+	mp_player->play(false);
 }
 
 
 void CMusic::stop(void)
 {
+	if(!mp_player)
+		return;
 	// wait until the last chunk has been played!
 
 	while(m_busy) ;
 
-	playmode = PLAY_MODE_STOP;
+	mp_player->close();
+
+	/*playmode = PLAY_MODE_STOP;
 
 	if( m_open )
 	{
@@ -273,8 +254,6 @@ void CMusic::stop(void)
 #if defined(OGG) || defined(TREMOR)
 		if(  m_MusicFormat == MF_OGG )
 		{
-			m_MusicFormat = MF_NONE;
-			cleanupOGG(m_oggStream);
 		}
 #endif
 	}
@@ -282,64 +261,18 @@ void CMusic::stop(void)
 	if(	m_Audio_cvt.buf )
 		delete [] m_Audio_cvt.buf;
 
-	m_Audio_cvt.buf = NULL;
-
+	m_Audio_cvt.buf = NULL;*/
 }
 
-void CMusic::readBuffer(Uint8* buffer, size_t length) // length only refers to the part(buffer) that has to be played
+// length only refers to the part(buffer) that has to be played
+void CMusic::readBuffer(Uint8* buffer, size_t length)
 {
-	if( playmode != PLAY_MODE_PLAY || !m_open )
+	if( !mp_player )
 		return;
 
 	m_busy = true;
 
-	if(m_MusicFormat == MF_IMF)
-	{
-		PlayIMF(buffer, length);
-		//PlayWaveform(buffer, length);
-	}
-	else if(m_MusicFormat == MF_OGG)
-	{
-#if defined(OGG) || defined(TREMOR)
-		bool rewind = false;
-
-		// read the ogg stream
-		if( m_AudioSpec.freq == 48000 )
-		{
-			size_t insize = (m_Audio_cvt.len*441)/480;
-			size_t mult = m_AudioFileSpec.channels;
-
-			if(m_AudioFileSpec.format == AUDIO_S16)
-				mult <<= 1;
-
-			insize /= mult;
-			insize++;
-			insize *= mult;
-
-			rewind = readOGGStreamAndResample(m_oggStream, (char*)m_Audio_cvt.buf, m_Audio_cvt.len, insize, m_AudioFileSpec);
-		}
-		else
-		{
-			rewind = readOGGStream(m_oggStream, (char*)m_Audio_cvt.buf, m_Audio_cvt.len, m_AudioFileSpec);
-		}
-
-		// then convert it into SDL Audio buffer
-		// Conversion to SDL Format
-		SDL_ConvertAudio(&m_Audio_cvt);
-
-		memcpy(buffer, m_Audio_cvt.buf, length);
-
-		if(rewind)
-		{
-			m_busy = false;
-			reload();
-			play();
-		}
-#else
-		m_busy = false;
-		return;
-#endif
-	}
+	mp_player->readBuffer(buffer, length);
 
 	m_busy = false;
 }
@@ -384,19 +317,13 @@ bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &
 	return false;
 }
 
-void CMusic::unload(void)
+void CMusic::unload()
 {
-	usedMusicFile = "";
-	playmode = PLAY_MODE_STOP;
-	m_Audio_cvt.buf = NULL;
+	mp_player->close();
+	delete mp_player;
 }
 
-
 CMusic::~CMusic() {
-
-	if(	m_Audio_cvt.buf )
-		delete [] m_Audio_cvt.buf;
-
 	unload();
 }
 
