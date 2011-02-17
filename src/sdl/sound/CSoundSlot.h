@@ -19,6 +19,7 @@ public:
 
 	CSoundSlot();
 	
+	void openOGGSound(const std::string& filename, SDL_AudioSpec *pspec, Uint8 *&SoundBuffer, Uint32 &SoundLen);
 	void setupWaveForm( Uint8 *buf, Uint32 len );
 	void setupWaveForm( const std::vector<Uint8>& waveform );
 	bool HQSndLoad(const std::string& gamepath, const std::string& soundname);
