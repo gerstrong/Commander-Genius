@@ -39,7 +39,7 @@ bool CLevelPlay::loadLevel(const Uint16 level)
     // Load the Background Music
 	g_pMusicPlayer->stop();
 
-    if(!g_pMusicPlayer->LoadFromAudioCK(m_ExeFile, level))
+    if(!g_pMusicPlayer->load(m_ExeFile, level))
     	g_pLogFile->textOut("Warning: The music cannot be played. Check that all the files have been correctly copied!");
     else
     	g_pMusicPlayer->play();

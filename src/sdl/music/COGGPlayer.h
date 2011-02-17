@@ -15,16 +15,10 @@
 
 #include "sdl/music/CMusicPlayer.h"
 
-#define BUFFER_SIZE   32768     // 32 KB buffers
-
 #ifdef OGG
 #include <vorbisfile.h>
 #elif defined  TREMOR
-#if defined(DINGOO) || defined(ANDROID) // A temporary workaround. This should be changed.
-#include <tremor/ivorbisfile.h>
-#else
 #include <ivorbisfile.h>
-#endif
 #endif
 
 #include <SDL.h>

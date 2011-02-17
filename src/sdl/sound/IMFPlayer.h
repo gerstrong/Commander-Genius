@@ -61,7 +61,7 @@ typedef struct
 
 
 // Function prototypes
-void    OPL_Startup(int imf_clock_rate, int mixer_rate, int opl_rate),
+void    OPL_Startup(const SDL_AudioSpec &AudioSpec),
         OPL_Shutdown(void);
 
 void PlayIMF(Uint8* buffer, unsigned int length);

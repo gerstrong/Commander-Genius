@@ -170,6 +170,7 @@ void PlayIMF(Uint8* buffer, unsigned int length)
 		SDL_IMFMusicPlayer((Uint16*) buffer, length);
 }
 
+
 ///////////////////////////////////////////////////////////////////////////
 //
 //      SD_Startup() - starts up the Sound Mgr
@@ -177,11 +178,11 @@ void PlayIMF(Uint8* buffer, unsigned int length)
 //
 ///////////////////////////////////////////////////////////////////////////
 void
-//OPL_Startup(int imf_clock_rate, int mixer_rate, int opl_rate)
 OPL_Startup(const SDL_AudioSpec &AudioSpec)
 {
     // Init music
     samplesPerMusicTick = AudioSpec.freq / IMF_CLOCK_RATE;    // SDL_t0FastAsmService played at imf_clock_rate Hz
+    l_AudioSpec = AudioSpec;
 
     mix_buffer = (int32_t *) malloc (samplesPerMusicTick * sizeof(uint32_t));
 
@@ -192,7 +193,6 @@ OPL_Startup(const SDL_AudioSpec &AudioSpec)
     alTimeCount = 0;
 }
 
-
 /**
  * \brief Reads the IMF data block and loads it into the emulators memory
  */
@@ -202,8 +202,6 @@ readIMFData( byte *imfdata, const uint32_t binsize, const SDL_AudioSpec& AudioSp
     byte* imf_data_ptr = imfdata;
 
 	l_AudioSpec = AudioSpec;
-
-	OPL_Startup (AudioSpec);
 
 	word size = 0;
 
@@ -226,37 +224,6 @@ readIMFData( byte *imfdata, const uint32_t binsize, const SDL_AudioSpec& AudioSp
     sqActive = true;
 
     return true;
-}
-
-/**
- * \brief Opens an external IMF File and calls readIMFData to pass the data of the file to the OPL Emulator
- */
-bool
-openIMFFile(const std::string& filename, const SDL_AudioSpec& AudioSpec)
-{
-    // Load the IMF File here!
-	FILE *fp;
-
-	if( ( fp = OpenGameFile(filename, "rb") ) == NULL )
-    	return false;
-
-    // Read the whole binary file into the memory
-    fseek(fp, 0, SEEK_END);
-    const uint32_t binsize = ftell(fp);
-    fseek(fp, 0, SEEK_SET);
-
-    byte imfdata[binsize];
-
-    if( binsize == fread( imfdata, sizeof(byte), binsize, fp ) )
-    {
-    	fclose(fp);
-    	return readIMFData( imfdata, binsize, AudioSpec );
-    }
-    else
-    {
-    	fclose(fp);
-    	return false;
-    }
 }
 
 static void

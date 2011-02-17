@@ -56,7 +56,7 @@ bool CSoundSlot::HQSndLoad(const std::string& gamepath, const std::string& sound
 
 	if(buf != "")
 	{
-		//snddata = openOGGSound(buf, &AudioFileSpec, length);
+		snddata = openOGGSound(buf, &AudioFileSpec, length);
 
 		if(snddata == NULL)
 			return false;

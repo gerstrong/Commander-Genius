@@ -28,16 +28,14 @@ public:
 	CMusic();
 	virtual ~CMusic();
 
-	bool LoadFromAudioCK(const CExeFile& ExeFile, const int level);
+	bool load(const CExeFile& ExeFile, const int level);
 	bool load(const std::string &musicfile);
-	void unload();
 	void reload();
 	void play();
 	void pause();
 	void stop();
 	void readBuffer(Uint8* buffer, size_t length); // Reads the next chunk of the ogg stream
 	bool LoadfromMusicTable(const std::string &gamepath, const std::string &levelfilename);
-	bool LoadfromMusicTable(const CExeFile& Exefile, const int level);
 
 	bool playing()
 	{

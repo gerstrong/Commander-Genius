@@ -54,7 +54,7 @@ void CWorldMap::init()
 void CWorldMap::loadAndPlayMusic()
 {
 	g_pMusicPlayer->stop();
-	if(g_pMusicPlayer->LoadFromAudioCK(m_ExeFile, 0));
+	if(g_pMusicPlayer->load(m_ExeFile, 0));
 		g_pMusicPlayer->play();
 }
 
