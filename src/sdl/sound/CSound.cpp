@@ -12,7 +12,7 @@
 #include "CLogFile.h"
 #include "StringUtils.h"
 #include "FindFile.h"
-#include "sdl/sound/CMusic.h"
+#include "sdl/music/CMusic.h"
 #include "sdl/sound/Mixer.h"
 
 #include "engine/vorticon/CAudioVorticon.h"

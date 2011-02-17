@@ -9,7 +9,7 @@
 #include "CMapLoaderGalaxy.h"
 #include "sdl/CInput.h"
 #include "sdl/CVideoDriver.h"
-#include "sdl/sound/CMusic.h"
+#include "sdl/music/CMusic.h"
 #include "CLogFile.h"
 
 namespace galaxy {

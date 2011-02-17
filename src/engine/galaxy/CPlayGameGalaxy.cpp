@@ -11,7 +11,7 @@
 #include "graphics/CGfxEngine.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/CInput.h"
-#include "sdl/sound/CMusic.h"
+#include "sdl/music/CMusic.h"
 #include "StringUtils.h"
 
 namespace galaxy

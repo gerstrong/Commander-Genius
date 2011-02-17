@@ -25,7 +25,7 @@
 #include "engine/vorticon/finale/CEndingEp1.h"
 #include "engine/vorticon/finale/CEndingEp2.h"
 #include "engine/vorticon/finale/CEndingEp3.h"
-#include "sdl/sound/CMusic.h"
+#include "sdl/music/CMusic.h"
 #include "engine/infoscenes/CHighScores.h"
 #include "engine/playgame/CPlayGame.h"
 #include <SDL.h>

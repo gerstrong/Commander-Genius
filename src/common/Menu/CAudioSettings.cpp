@@ -10,7 +10,7 @@
 #include "sdl/CVideoDriver.h"
 #include "sdl/CSettings.h"
 #include "sdl/sound/CSound.h"
-#include "sdl/sound/CMusic.h"
+#include "sdl/music/CMusic.h"
 #include "StringUtils.h"
 
 #define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }

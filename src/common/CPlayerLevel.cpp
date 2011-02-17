@@ -14,7 +14,7 @@
 #include "keen.h"
 #include "sdl/sound/CSound.h"
 #include "sdl/CInput.h"
-#include "sdl/sound/CMusic.h"
+#include "sdl/music/CMusic.h"
 #include "graphics/CGfxEngine.h"
 #include "CPhysicsSettings.h"
 
