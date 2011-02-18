@@ -6,7 +6,6 @@
  */
 
 #include "CSoundChannel.h"
-#include <vector>
 
 CSoundChannel::CSoundChannel(SDL_AudioSpec AudioSpec) :
 m_AudioSpec(AudioSpec)
