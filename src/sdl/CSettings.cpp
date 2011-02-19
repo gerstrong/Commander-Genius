@@ -50,7 +50,9 @@ bool CSettings::saveDrvCfg()
 	Configuration.WriteInt("Video", "width", VidConf.m_Resolution.width);
 	Configuration.WriteInt("Video", "height", VidConf.m_Resolution.height);
 	Configuration.WriteInt("Video", "scale", VidConf.Zoom);
+#ifdef USE_OPENGL
 	Configuration.WriteInt("Video", "OGLfilter", VidConf.m_opengl_filter);
+#endif
 	Configuration.WriteInt("Video", "filter", VidConf.m_ScaleXFilter);
 	Configuration.SetKeyword("Video", "specialfx", VidConf.m_special_fx);
 	Configuration.WriteInt("Video", "autoframeskip", g_pTimer->getFrameRate());
@@ -100,7 +102,9 @@ bool CSettings::loadDrvCfg()
 
 		int value=0;
 		Configuration.ReadKeyword("Video", "fullscreen", &VidConf.Fullscreen, false);
+#ifdef USE_OPENGL
 		Configuration.ReadKeyword("Video", "OGLfilter", &VidConf.m_opengl_filter, false);
+#endif USE_OPENGL
 		Configuration.ReadInteger("Video", "scale", &value, 1);
 		VidConf.Zoom = value;
 		Configuration.ReadKeyword("Video", "specialfx", &VidConf.m_special_fx, true);

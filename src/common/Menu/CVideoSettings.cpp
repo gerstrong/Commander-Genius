@@ -51,14 +51,18 @@ mp_CameraSettings(NULL)
 	buf += (m_Vidconfig.m_opengl) ? "OpenGL" : m_usedSoftwareVideoDriver;
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, buf);
 	
-	if(!m_Vidconfig.m_opengl) {
-		buf = "Zoom: ";
-		buf += (m_Vidconfig.Zoom == 1) ? "None" : itoa(m_Vidconfig.Zoom) + "x";
-	}
-	else {
+#ifdef USE_OPENGL
+	if(m_Vidconfig.m_opengl) {
 		buf = "GL Filter: ";
 		buf += (m_Vidconfig.m_opengl_filter==1) ? "Linear" : "Nearest";
 	}
+	else
+#endif
+	{
+		buf = "Zoom: ";
+		buf += (m_Vidconfig.Zoom == 1) ? "None" : itoa(m_Vidconfig.Zoom) + "x";
+	}
+
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, buf);
 	mp_Dialog->m_dlgobject.at(3)->m_Option->m_value = m_Vidconfig.Zoom;
 	
@@ -138,19 +142,24 @@ void CVideoSettings::processSpecific(){
 			}
 			else if(m_current == 3)
 			{
+
+#ifdef USE_OPENGL
 				if(!m_Vidconfig.m_opengl) {
+					mp_Dialog->m_min = 1;
+					mp_Dialog->m_max = 1;
+						buf = "GL Filter: ";
+						buf += (m_Vidconfig.m_opengl_filter==1) ? "Linear" : "Nearest";
+				}
+				else
+#endif
+				{
+
 					mp_Dialog->m_min = 1;
 					mp_Dialog->m_max = 4;
 					m_Vidconfig.Zoom = mp_Dialog->m_dlgobject.at(3)->m_Option->m_value;
 
 					buf = "Zoom: ";
 					buf += (m_Vidconfig.Zoom == 1) ? "None" : itoa(m_Vidconfig.Zoom) + "x";
-				}
-				else {
-				mp_Dialog->m_min = 1;
-				mp_Dialog->m_max = 1;
-					buf = "GL Filter: ";
-					buf += (m_Vidconfig.m_opengl_filter==1) ? "Linear" : "Nearest";
 				}
 
 				m_Vidconfig.Zoom = mp_Dialog->m_dlgobject.at(3)->m_Option->m_value;
@@ -211,28 +220,40 @@ void CVideoSettings::processSpecific(){
 				buf += (m_Vidconfig.m_opengl) ? "OpenGL            " : m_usedSoftwareVideoDriver;
 				mp_Dialog->setObjectText(2,buf);
 				
-				if(!m_Vidconfig.m_opengl) {
-					buf = "Zoom: ";
-					buf += (m_Vidconfig.Zoom == 1) ? "None" : itoa(m_Vidconfig.Zoom) + "x";
-					mp_Dialog->setObjectType(3, DLG_OBJ_OPTION_TEXT);
-				}
-				else {
+
+#ifdef USE_OPENGL
+				if(m_Vidconfig.m_opengl) {
 					buf = "GL Filter: ";
 					buf += (m_Vidconfig.m_opengl_filter==1) ? "Linear" : "Nearest";
+					mp_Dialog->setObjectType(3, DLG_OBJ_OPTION_TEXT);
+
+				}
+				else
+#endif
+				{
+
+					buf = "Zoom: ";
+					buf += (m_Vidconfig.Zoom == 1) ? "None" : itoa(m_Vidconfig.Zoom) + "x";
 					mp_Dialog->setObjectType(3, DLG_OBJ_OPTION_TEXT);
 				}
 				mp_Dialog->setObjectText(3,buf);
 			}
 			else if(m_selection == 3)
 			{
-				if(!m_Vidconfig.m_opengl) {
+#ifdef USE_OPENGL
+				if(m_Vidconfig.m_opengl) {
+					m_Vidconfig.m_opengl_filter = !m_Vidconfig.m_opengl_filter;
+
+				}
+				else
+#endif
+				{
+
 					mp_Dialog->m_dlgobject.at(3)->m_Option->m_value++;
 					if(mp_Dialog->m_dlgobject.at(3)->m_Option->m_value>4)
 						mp_Dialog->m_dlgobject.at(3)->m_Option->m_value = 1;
 					m_Vidconfig.Zoom = mp_Dialog->m_dlgobject.at(3)->m_Option->m_value;
-				}
-				else {
-					m_Vidconfig.m_opengl_filter = !m_Vidconfig.m_opengl_filter;
+
 				}
 			}
 			else if(m_selection == 4)
