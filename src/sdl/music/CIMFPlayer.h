@@ -11,6 +11,7 @@
 #include "CMusicPlayer.h"
 #include "fileio/TypeDefinitions.h"
 #include "fileio/CExeFile.h"
+#include "sdl/sound/CSound.h"
 #include <SDL.h>
 #include <string>
 
@@ -26,8 +27,11 @@ public:
 
 private:
     byte *mp_imfdata;
-    Uint32 m_data_size;
+    byte *mp_imfdata_ptr;
+    byte *mp_imfdata_end;
+    word m_data_size;
     const SDL_AudioSpec& m_AudioSpec;
+    COPLEmulator &m_opl_emulator;
 };
 
 #endif /* CIMFPLAYER_H_ */

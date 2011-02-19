@@ -6,6 +6,7 @@
  */
 
 #include "CIMFPlayer.h"
+#include "sdl/sound/CSound.h"
 #include "sdl/sound/IMFPlayer.h"
 #include "fileio/ResourceMgmt.h"
 #include "fileio/compression/CHuffman.h"
@@ -22,8 +23,11 @@ const Uint32 GalaxySongAssignments[] =
 
 CIMFPlayer::CIMFPlayer(const std::string& filename, const SDL_AudioSpec& AudioSpec) :
 mp_imfdata(NULL),
+mp_imfdata_ptr(NULL),
+mp_imfdata_end(NULL),
 m_data_size(0),
-m_AudioSpec(AudioSpec)
+m_AudioSpec(AudioSpec),
+m_opl_emulator(*g_pSound->getOPLEmulatorPtr())
 {
     // Load the IMF File here!
 	FILE *fp;
@@ -31,12 +35,17 @@ m_AudioSpec(AudioSpec)
 	if( ( fp = OpenGameFile(filename, "rb") ) == NULL )
     	return;
 
-    // Read the whole binary file into the memory
-    fseek(fp, 0, SEEK_END);
-    m_data_size = ftell(fp);
-    fseek(fp, 0, SEEK_SET);
+	fread( &m_data_size, sizeof(word), 1, fp);
+    if (m_data_size == 0) // Is the IMF file of Type-0?
+    {
+        fseek(fp, 0, SEEK_END);
+        m_data_size = ftell(fp);
+        fseek(fp, 0, SEEK_SET);
+    }
 
     mp_imfdata = new byte[m_data_size];
+    mp_imfdata_ptr = mp_imfdata;
+	mp_imfdata_end = mp_imfdata+m_data_size;
 
     if( m_data_size == fread( mp_imfdata, sizeof(byte), m_data_size, fp ) )
     {
@@ -45,6 +54,30 @@ m_AudioSpec(AudioSpec)
     }
     else
     	fclose(fp);
+
+/*
+    byte* imf_data_ptr = imfdata;
+
+	l_AudioSpec = AudioSpec;
+
+	word size = 0;
+
+	memcpy( &size, imf_data_ptr, sizeof(word) );
+
+    if (size == 0) // Is the IMF file of Type-0?
+    	size = binsize;
+    else
+    	imf_data_ptr += sizeof(Uint16);
+
+    byte* IMFBuffer = (byte*) malloc(size);
+
+    memcpy(IMFBuffer, imf_data_ptr,size*sizeof(byte));
+
+    sqLen = sqTotalLen = size;
+    sqCurPtr = sqStartPtr = (word *)(void *) IMFBuffer;
+    sqHackTime = 0;
+    alTimeCount = 0;
+ * */
 }
 
 /**
@@ -55,7 +88,8 @@ m_AudioSpec(AudioSpec)
 CIMFPlayer::CIMFPlayer(const CExeFile& ExeFile, const int level, const SDL_AudioSpec &AudioSpec) :
 mp_imfdata(NULL),
 m_data_size(0),
-m_AudioSpec(AudioSpec)
+m_AudioSpec(AudioSpec),
+m_opl_emulator(*g_pSound->getOPLEmulatorPtr())
 {
 	const int episode = ExeFile.getEpisode();
 
@@ -150,6 +184,8 @@ m_AudioSpec(AudioSpec)
 			const uint32_t *AudioCompFileData32 = (uint32_t*) (AudioCompFileData + audio_start);
 			m_data_size = *AudioCompFileData32;
 			mp_imfdata = new byte[m_data_size];
+			mp_imfdata_ptr = mp_imfdata;
+			mp_imfdata_end = mp_imfdata+m_data_size;
 
 			Huffman.expand( (byte*)(AudioCompFileData+audio_comp_data_start), mp_imfdata, audio_end-audio_comp_data_start, m_data_size);
 		}
@@ -162,11 +198,7 @@ CIMFPlayer::~CIMFPlayer() {
 
 bool CIMFPlayer::open()
 {
-	if(!m_data_size)
-		return false;
-
-	OPL_Startup (m_AudioSpec);
-	return readIMFData( mp_imfdata, m_data_size, m_AudioSpec );
+	return (m_data_size>0);
 }
 
 void CIMFPlayer::readBuffer(Uint8* buffer, Uint32 length)
@@ -174,7 +206,12 @@ void CIMFPlayer::readBuffer(Uint8* buffer, Uint32 length)
 	if(!m_playing)
 		return;
 
-	PlayIMF(buffer, length);
+	Uint32 size = 0;
+
+	if(mp_imfdata_ptr < mp_imfdata_end)
+		size = m_opl_emulator.readBufferFromIMF(buffer, length, mp_imfdata_ptr);
+
+	mp_imfdata_ptr += size;
 }
 
 void CIMFPlayer::close()
@@ -184,5 +221,4 @@ void CIMFPlayer::close()
 	mp_imfdata = NULL;
 	m_data_size = 0;
 	m_playing = false;
-	OPL_Shutdown();
 }

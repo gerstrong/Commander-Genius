@@ -2,13 +2,14 @@
  * COPLEmulator.h
  *
  *  Created on: 17.02.2011
- *      Author: gerhard
+ *      Author: gerstrong
  */
 
 #ifndef COPLEMULATOR_H_
 #define COPLEMULATOR_H_
 
 #include "fileio/TypeDefinitions.h"
+#include "dbopl.h"
 #include <SDL.h>
 
 struct IMFChunkType
@@ -30,9 +31,15 @@ public:
 	void init();
 
 	/**
+	 * This will play the DB OPL Emulator pass it more channels if any.
+	 */
+	template<typename T>
+	void OPLUpdate(T *buffer, unsigned int length);
+
+	/**
 	 * This functions read a portion of the given imf input data and convert it to a waveform
 	 */
-	longword readBufferFromIMF(const byte *waveform, const longword wavesize, const byte *imfdata);
+	longword readBufferFromIMF(Uint8* buffer, const longword wavesize, const byte *imfdata);
 
 	/**
 	 * Shutdown the emulator. This should only the called whenever the audio settings need to be shutdown
@@ -53,6 +60,8 @@ private:
 	Uint32 m_soundTimeCounter;
 	Uint32 m_samplesPerMusicTick;
 	word m_Delay;
+	Chip m_opl_chip;
+	Bit32s *m_mix_buffer;
 };
 
 #endif /* COPLEMULATOR_H_ */

@@ -28,7 +28,7 @@
 
 int main (int argc, char *argv[])
 {
-	 AudioType IMFAudioType = IMF_ADLIBSOUND;		
+	 AudioType IMFAudioType = IMF_MUSIC;		
 
 	// Parameters messages!
 	if((argc != 2) && (argc != 3) && (argc != 5))

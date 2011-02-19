@@ -52,7 +52,7 @@ CSound::~CSound()
 		delete m_pAudioRessources;
 }
 
-bool CSound::init(void)
+bool CSound::init()
 {
 	g_pLogFile->ftextOut("Starting the sound driver...<br>");
 	char name[256];
