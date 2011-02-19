@@ -49,7 +49,6 @@
 								<option id="gnu.cpp.link.option.libs.650499560" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="vorbisfile"/>
 									<listOptionValue builtIn="false" value="SDL"/>
-									<listOptionValue builtIn="false" value="GL"/>
 								</option>
 								<option id="gnu.cpp.link.option.paths.982917586" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths"/>
 								<option id="gnu.cpp.link.option.flags.1653726517" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="" valueType="string"/>

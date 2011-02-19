@@ -243,7 +243,6 @@ void CVideoSettings::processSpecific(){
 #ifdef USE_OPENGL
 				if(m_Vidconfig.m_opengl) {
 					m_Vidconfig.m_opengl_filter = !m_Vidconfig.m_opengl_filter;
-
 				}
 				else
 #endif

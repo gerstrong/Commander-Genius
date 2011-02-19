@@ -12,6 +12,8 @@
 #ifndef __CG_COPENGL_H__
 #define __CG_COPENGL_H__
 
+#ifdef USE_OPENGL
+
 #include <SDL.h>
 
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
@@ -62,5 +64,7 @@ private:
 	GLuint	m_texture;
 	GLuint	m_texFX, m_texFG;
 };
+
+#endif
 
 #endif
