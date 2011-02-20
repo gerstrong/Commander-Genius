@@ -189,6 +189,9 @@ bool CIMFPlayer::open()
 
 void CIMFPlayer::close()
 {
+	if(m_numreadysamples)
+		m_opl_emulator.Chip__GenerateBlock2( m_numreadysamples, m_mix_buffer );
+
 	play(false);
 	m_IMF_Data.gotoStart();
 	return;
