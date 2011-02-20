@@ -248,7 +248,7 @@ void LoadWaveform()
         if(numreadysamples)
         {
         	Sint16 sample[numreadysamples*l_AudioSpec.channels];
-        	OPLUpdate(sample, numreadysamples);
+        	//OPLUpdate(sample, numreadysamples);
         	for(unsigned int ctr=0 ; ctr<numreadysamples*l_AudioSpec.channels ; ctr++)
         		wavelist.push_back(sample[ctr]);
         }

@@ -27,9 +27,10 @@ m_opl_emulator(*g_pSound->getOPLEmulatorPtr()),
 m_numreadysamples(0),
 m_soundTimeCounter(5),
 m_samplesPerMusicTick(m_AudioDevSpec.freq / m_opl_emulator.getIMFClockRate()),
-m_Delay(0)
+m_TimeCount(0),
+m_IMFReadTimeCount(0),
+m_mix_buffer(new Sint32[m_samplesPerMusicTick])
 {
-
     // Load the IMF File here!
 	FILE *fp;
 	word data_size;
@@ -51,8 +52,6 @@ m_Delay(0)
     const word imf_chunks = data_size/sizeof(IMFChunkType);
     m_IMF_Data.reserve(imf_chunks);
 
-    IMFChunkType *ptr = m_IMF_Data.getStartPtr();
-
     if( imf_chunks != fread( m_IMF_Data.getStartPtr(), sizeof(IMFChunkType), imf_chunks, fp ) )
     	// TODO: Warn here that the file is corrupt!
     	fclose(fp);
@@ -71,7 +70,9 @@ m_opl_emulator(*g_pSound->getOPLEmulatorPtr()),
 m_numreadysamples(0),
 m_soundTimeCounter(5),
 m_samplesPerMusicTick(m_AudioDevSpec.freq / m_opl_emulator.getIMFClockRate()),
-m_Delay(0)
+m_TimeCount(0),
+m_IMFReadTimeCount(0),
+m_mix_buffer(new Sint32[m_samplesPerMusicTick])
 {
 	const int episode = ExeFile.getEpisode();
 
@@ -175,6 +176,12 @@ m_Delay(0)
 	}
 }
 
+CIMFPlayer::~CIMFPlayer()
+{
+	if(m_mix_buffer)
+		delete [] m_mix_buffer;
+}
+
 bool CIMFPlayer::open()
 {
 	return (!m_IMF_Data.empty());
@@ -189,14 +196,13 @@ void CIMFPlayer::close()
 
 void CIMFPlayer::OPLUpdate(Sint16 *buffer, unsigned int length)
 {
-	Bit32s mix_buffer[length];
-	m_opl_emulator.Chip__GenerateBlock2( length, mix_buffer );
+	m_opl_emulator.Chip__GenerateBlock2( length, m_mix_buffer );
 
     // Mix into the destination buffer, doubling up into stereo.
     for (unsigned int i=0; i<length; ++i)
     {
     	for (unsigned int j=0; j<m_AudioDevSpec.channels; j++)
-    		buffer[i * m_AudioDevSpec.channels + j] = mix_buffer[i];
+    		buffer[i * m_AudioDevSpec.channels + j] = m_mix_buffer[i];
     }
 }
 

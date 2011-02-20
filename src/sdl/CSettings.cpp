@@ -104,7 +104,7 @@ bool CSettings::loadDrvCfg()
 		Configuration.ReadKeyword("Video", "fullscreen", &VidConf.Fullscreen, false);
 #ifdef USE_OPENGL
 		Configuration.ReadKeyword("Video", "OGLfilter", &VidConf.m_opengl_filter, false);
-#endif USE_OPENGL
+#endif
 		Configuration.ReadInteger("Video", "scale", &value, 1);
 		VidConf.Zoom = value;
 		Configuration.ReadKeyword("Video", "specialfx", &VidConf.m_special_fx, true);

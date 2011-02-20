@@ -28,6 +28,8 @@ public:
 	CIMFPlayer(const std::string& filename, const SDL_AudioSpec& AudioSpec);
 	CIMFPlayer(const CExeFile& ExeFile, const int level, const SDL_AudioSpec &AudioSpec);
 
+	~CIMFPlayer();
+
 	void OPLUpdate(Sint16 *buffer, unsigned int length);
 
 	bool open();
@@ -44,6 +46,7 @@ private:
 	const Uint32 m_samplesPerMusicTick;
 	unsigned int m_TimeCount;
 	unsigned int m_IMFReadTimeCount;
+	Sint32* m_mix_buffer;
 };
 
 #endif /* CIMFPLAYER_H_ */

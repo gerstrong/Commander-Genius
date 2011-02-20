@@ -515,7 +515,7 @@ void CObject::processFalling()
 		}
 
 		// hit floor or ceiling? set inertia to zero
-		if( blockedd && yinertia>0 || blockedu && yinertia<0 )
+		if( (blockedd && yinertia>0) || (blockedu && yinertia<0) )
 			yinertia = 0;
 	}
 	else

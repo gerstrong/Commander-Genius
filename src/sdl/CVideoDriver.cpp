@@ -222,6 +222,7 @@ bool CVideoDriver::applyMode()
 		m_VidConfig.Zoom = 1;
 
 	m_VidConfig.m_Resolution = *m_Resolution_pos;
+	return true;
 }
 
 bool CVideoDriver::start(void)
