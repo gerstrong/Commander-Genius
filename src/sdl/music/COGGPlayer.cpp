@@ -168,6 +168,7 @@ void COGGPlayer::close()
 	while(m_reading_stream);
 	m_music_pos = 0;
 	m_pcm_size = 0;
+	m_playing = false;
 	ov_clear(&m_oggStream);
 }
 
