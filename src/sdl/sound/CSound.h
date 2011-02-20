@@ -20,6 +20,7 @@
 #include "CSoundChannel.h"
 #include "fileio/CExeFile.h"
 #include "common/CAudioResources.h"
+#include "hardware/COPLEmulator.h"
 
 class CSound : public CSingleton<CSound>
 {
@@ -27,8 +28,8 @@ public:
 	CSound();
 	~CSound();
 
-	bool init(void);
-	void stop(void);
+	bool init();
+	void stop();
 
 	void stopAllSounds();
 	bool forcedisPlaying(void);
@@ -43,13 +44,14 @@ public:
 	void stopSound(GameSound snd);
 	void destroy(void);
 
-	void setSoundVolume(Uint8 volume) { m_SoundVolume = volume; }
-	void setMusicVolume(Uint8 volume) { m_MusicVolume = volume; }
+	void setSoundVolume(const Uint8 volume) { m_SoundVolume = volume; }
+	void setMusicVolume(const Uint8 volume) { m_MusicVolume = volume; }
 	Uint8 getSoundVolume() { return m_SoundVolume; }
 	Uint8 getMusicVolume() { return m_MusicVolume; }
 
-	SDL_AudioSpec	getAudioSpec(void) { return AudioSpec; }
-	unsigned short 	getMixingchannels(void) { return m_mixing_channels; }
+	SDL_AudioSpec	getAudioSpec() const  { return AudioSpec; }
+	unsigned short 	getMixingchannels() const { return m_mixing_channels; }
+	COPLEmulator *getOPLEmulatorPtr() { return &m_OPL_Player; }
 
 	void setSoundmode(int freq, bool stereo, Uint16 format);
 
@@ -63,7 +65,6 @@ protected:
 
 	SDL_AudioSpec AudioSpec;
 
-
 private:
 	unsigned short m_mixing_channels;
 	Uint8 m_MusicVolume;
@@ -71,6 +72,8 @@ private:
 
     Uint8 *m_pMixedForm;			// Mainly used by the callback function. Declared once and allocated
     								// for the whole program
+
+    COPLEmulator m_OPL_Player;
 };
 
 #endif /* CSOUND_H_ */

@@ -34,7 +34,8 @@ m_pAudioRessources(NULL),
 m_mixing_channels(0),
 m_MusicVolume(SDL_MIX_MAXVOLUME),
 m_SoundVolume(SDL_MIX_MAXVOLUME),
-m_pMixedForm(NULL)		// Mainly used by the callback function. Declared once and allocated
+m_pMixedForm(NULL),		// Mainly used by the callback function. Declared once and allocated
+m_OPL_Player(AudioSpec)
 {
 	AudioSpec.channels = 2; // Stereo Sound
 #if defined(CAANOO) || defined(WIZ) || defined(GP2X) || defined(DINGOO) || defined(ANDROID)
@@ -51,7 +52,7 @@ CSound::~CSound()
 		delete m_pAudioRessources;
 }
 
-bool CSound::init(void)
+bool CSound::init()
 {
 	g_pLogFile->ftextOut("Starting the sound driver...<br>");
 	char name[256];
@@ -121,6 +122,9 @@ bool CSound::init(void)
 
 	g_pLogFile->ftextOut("Sound System: SDL sound system initialized.<br>");
 
+	// Let's initialize the OPL Emulator here!
+	m_OPL_Player.init();
+
 	return true;
 }
 
@@ -139,7 +143,11 @@ void CSound::destroy(void)
 	if(!m_soundchannel.empty())
 		m_soundchannel.clear();
 
+	// Shutdown the OPL Emulator here!
+
 	g_pLogFile->ftextOut("SoundDrv_Stop(): shut down.<br>");
+
+	m_OPL_Player.shutdown();
 }
 
 // stops all currently playing sounds
