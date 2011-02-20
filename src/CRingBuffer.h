@@ -84,6 +84,19 @@ public:
 		return (m_size == 0 || mp_start == NULL);
 	}
 
+	/**
+	 * Just tell whether the buffer of the as at the initial pointer which must be the same as at the end, because
+	 * until this call, the pointer was rewound.
+	 */
+	bool atStart()
+	{	return (mp_cur == mp_start);	}
+
+	/**
+	 * Although a ring doesn't have a start, this function will set the pointer to first data chunk that on what it
+	 * was initialized
+	 */
+	void gotoStart()
+	{	mp_cur=mp_start;	}
 
 	/**
 	 * Just return the absolute start of the pointer.

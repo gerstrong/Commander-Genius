@@ -42,7 +42,8 @@ private:
 	Uint32 m_numreadysamples;
 	Uint32 m_soundTimeCounter;
 	const Uint32 m_samplesPerMusicTick;
-	word m_Delay;
+	unsigned int m_TimeCount;
+	unsigned int m_IMFReadTimeCount;
 };
 
 #endif /* CIMFPLAYER_H_ */

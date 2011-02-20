@@ -182,6 +182,8 @@ bool CIMFPlayer::open()
 
 void CIMFPlayer::close()
 {
+	play(false);
+	m_IMF_Data.gotoStart();
 	return;
 }
 
@@ -215,7 +217,7 @@ void CIMFPlayer::readBuffer(Uint8* buffer, Uint32 length)
             {
             	// Every time a tune has been played call this.
             	OPLUpdate( (Sint16*) buffer, m_numreadysamples);
-            	buffer += m_numreadysamples*m_AudioDevSpec.channels;
+            	buffer += m_numreadysamples*m_AudioDevSpec.channels*sizeof(Sint16);
                 sampleslen -= m_numreadysamples;
             }
             else
@@ -227,16 +229,17 @@ void CIMFPlayer::readBuffer(Uint8* buffer, Uint32 length)
             }
         }
 
-        // If m_Delay reached zero get the next tone pass it to the emulator and set a new delay
-        if(m_Delay == 0)
+        do
         {
+            if(m_IMFReadTimeCount > m_TimeCount) break;
+
         	// read the next instrument play to to the OPL Emulator and put a new delay
         	const IMFChunkType Chunk = m_IMF_Data.getNextElement();
+        	m_IMFReadTimeCount = m_TimeCount + Chunk.Delay;
         	m_opl_emulator.Chip__WriteReg( Chunk.al_reg, Chunk.al_dat );
-        	m_Delay = Chunk.Delay;
-        }
-        else
-        	m_Delay--;
+        }while(!m_IMF_Data.atStart());
+
+        m_TimeCount++;
 
         m_numreadysamples = m_samplesPerMusicTick;
     }
