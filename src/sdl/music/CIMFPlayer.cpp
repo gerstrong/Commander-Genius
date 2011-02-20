@@ -202,7 +202,10 @@ void CIMFPlayer::OPLUpdate(Sint16 *buffer, unsigned int length)
     for (unsigned int i=0; i<length; ++i)
     {
     	for (unsigned int j=0; j<m_AudioDevSpec.channels; j++)
-    		buffer[i * m_AudioDevSpec.channels + j] = m_mix_buffer[i];
+    	{
+    		*buffer = m_mix_buffer[i];
+    		buffer++;
+    	}
     }
 }
 
