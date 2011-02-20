@@ -9,14 +9,9 @@
 #define COPLEMULATOR_H_
 
 #include "fileio/TypeDefinitions.h"
+#include "hardware/dbopl.h"
 #include <SDL.h>
 
-struct IMFChunkType
-{
-	byte al_reg;
-	byte al_dat;
-	word Delay;
-};
 
 class COPLEmulator {
 public:
@@ -30,15 +25,23 @@ public:
 	void init();
 
 	/**
-	 * This will play the DB OPL Emulator pass it more channels if any.
+	 * Wrapper for the original C Emulator function Chip__GenerateBlock2(&m_opl_chip, length, mix_buffer )
 	 */
-	template<typename T>
-	void OPLUpdate(T *buffer, unsigned int length);
+	inline void Chip__GenerateBlock2(const Bitu total, Bit32s* output )
+	{
+		::Chip__GenerateBlock2( &m_opl_chip, total, output );
+	}
 
 	/**
-	 * This functions read a portion of the given imf input data and convert it to a waveform
+	 * Wrapper for the original C Emulator function Chip__WriteReg(Chip *self, Bit32u reg, Bit8u val )
 	 */
-	longword readBufferFromIMF(Uint8* buffer, const longword wavesize, const byte *imfdata);
+
+	inline void Chip__WriteReg( const Bit32u reg, const Bit8u val )
+	{
+		::Chip__WriteReg( &m_opl_chip, reg, val );
+	}
+
+	unsigned int getIMFClockRate();
 
 	/**
 	 * Shutdown the emulator. This should only the called whenever the audio settings need to be shutdown
@@ -47,20 +50,9 @@ public:
 	void shutdown();
 
 private:
-	/**
-	 * This is the templatized version of the readBufferFromIMF function.
-	 * This should only be called by readBufferFromIMF.
-	 */
-	template<typename T>
-	longword readBufferFromIMFTemplatized(T *stream, const longword wavesize, const byte *imfdata);
 
 	const SDL_AudioSpec &m_AudioDevSpec;
-	Uint32 m_numreadysamples;
-	Uint32 m_soundTimeCounter;
-	Uint32 m_samplesPerMusicTick;
-	word m_Delay;
 	Chip m_opl_chip;
-	Bit32s *m_mix_buffer;
 };
 
 #endif /* COPLEMULATOR_H_ */

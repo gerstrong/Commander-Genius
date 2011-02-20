@@ -22,66 +22,40 @@ const Uint32 GalaxySongAssignments[] =
 };
 
 CIMFPlayer::CIMFPlayer(const std::string& filename, const SDL_AudioSpec& AudioSpec) :
-mp_imfdata_start(NULL),
-mp_imfdata_ptr(NULL),
-mp_imfdata_end(NULL),
-m_data_size(0),
-m_AudioSpec(AudioSpec),
+m_AudioDevSpec(AudioSpec),
 m_opl_emulator(*g_pSound->getOPLEmulatorPtr()),
 m_numreadysamples(0),
 m_soundTimeCounter(5),
-m_mix_buffer(NULL)
+m_samplesPerMusicTick(m_AudioDevSpec.freq / m_opl_emulator.getIMFClockRate()),
+m_Delay(0)
 {
 
     // Load the IMF File here!
 	FILE *fp;
+	word data_size;
 
 	if( ( fp = OpenGameFile(filename, "rb") ) == NULL )
     	return;
 
-	fread( &m_data_size, sizeof(word), 1, fp);
-    if (m_data_size == 0) // Is the IMF file of Type-0?
+	fread( &data_size, sizeof(word), 1, fp);
+    if (data_size == 0) // Is the IMF file of Type-0?
     {
         fseek(fp, 0, SEEK_END);
-        m_data_size = ftell(fp);
+        data_size = ftell(fp);
         fseek(fp, 0, SEEK_SET);
     }
 
-    mp_imfdata_start = new byte[m_data_size];
-    mp_imfdata_ptr = mp_imfdata_start;
-	mp_imfdata_end = mp_imfdata_start+m_data_size;
 
-    if( m_data_size == fread( mp_imfdata, sizeof(byte), m_data_size, fp ) )
-    {
+	if(!m_IMF_Data.empty())
+		m_IMF_Data.clear();
+    const word imf_chunks = data_size/sizeof(IMFChunkType);
+    m_IMF_Data.reserve(imf_chunks);
+
+    if( imf_chunks == fread( m_IMF_Data.getStartPtr(), sizeof(IMFChunkType), imf_chunks, fp ) )
+    	// TODO: Warn here that the file is corrupt!
     	fclose(fp);
-    	OPL_Startup(AudioSpec);
-    }
     else
     	fclose(fp);
-
-/*
-    byte* imf_data_ptr = imfdata;
-
-	l_AudioSpec = AudioSpec;
-
-	word size = 0;
-
-	memcpy( &size, imf_data_ptr, sizeof(word) );
-
-    if (size == 0) // Is the IMF file of Type-0?
-    	size = binsize;
-    else
-    	imf_data_ptr += sizeof(Uint16);
-
-    byte* IMFBuffer = (byte*) malloc(size);
-
-    memcpy(IMFBuffer, imf_data_ptr,size*sizeof(byte));
-
-    sqLen = sqTotalLen = size;
-    sqCurPtr = sqStartPtr = (word *)(void *) IMFBuffer;
-    sqHackTime = 0;
-    alTimeCount = 0;
- * */
 }
 
 /**
@@ -90,17 +64,16 @@ m_mix_buffer(NULL)
  * 			AUDIOHED and AUDIODICT to get the right tune for the music player.
  */
 CIMFPlayer::CIMFPlayer(const CExeFile& ExeFile, const int level, const SDL_AudioSpec &AudioSpec) :
-mp_imfdata_start(NULL),
-m_data_size(0),
-m_AudioSpec(AudioSpec),
+m_AudioDevSpec(AudioSpec),
 m_opl_emulator(*g_pSound->getOPLEmulatorPtr()),
 m_numreadysamples(0),
 m_soundTimeCounter(5),
-m_mix_buffer(NULL)
+m_samplesPerMusicTick(m_AudioDevSpec.freq / m_opl_emulator.getIMFClockRate()),
+m_Delay(0)
 {
 	const int episode = ExeFile.getEpisode();
 
-	if(m_AudioSpec.format != 0)
+	if(m_AudioDevSpec.format != 0)
 	{
 		// Open the Huffman dictionary and get AUDIODICT
 		CHuffman Huffman;
@@ -128,7 +101,7 @@ m_mix_buffer(NULL)
 		AudioFile.read((char*)AudioCompFileData, audiofilecompsize);
 		AudioFile.close();
 
-		// Open the AUDIOHED so we know where to decompress
+		// Open the AUDIOHED so we know where tomp_IMF_Data decompress
 		uint32_t number_of_audiorecs = 0;
 		// That size must appear as integer in the ExeFile. Look for it!
 		uint32_t *audiohedptr = (uint32_t*) ExeFile.getHeaderData();
@@ -189,23 +162,38 @@ m_mix_buffer(NULL)
 		{
 			const uint32_t audio_comp_data_start = audio_start+sizeof(uint32_t);
 			const uint32_t *AudioCompFileData32 = (uint32_t*) (AudioCompFileData + audio_start);
-			m_data_size = *AudioCompFileData32;
-			mp_imfdata_start = new byte[m_data_size];
-			mp_imfdata_ptr = mp_imfdata_start;
-			mp_imfdata_end = mp_imfdata_start+m_data_size;
+			const uint32_t data_size = *AudioCompFileData32;
 
-			Huffman.expand( (byte*)(AudioCompFileData+audio_comp_data_start), mp_imfdata, audio_end-audio_comp_data_start, m_data_size);
+			if(!m_IMF_Data.empty())
+				m_IMF_Data.clear();
+		    const word imf_chunks = data_size/sizeof(IMFChunkType);
+			m_IMF_Data.reserve(imf_chunks);
+			Huffman.expand( (byte*)(AudioCompFileData+audio_comp_data_start), (byte*) m_IMF_Data.getStartPtr(), audio_end-audio_comp_data_start, data_size);
 		}
 	}
 }
 
-CIMFPlayer::~CIMFPlayer() {
-	close();
-}
-
 bool CIMFPlayer::open()
 {
-	return (m_data_size>0);
+	return (!m_IMF_Data.empty());
+}
+
+void CIMFPlayer::close()
+{
+	return;
+}
+
+void CIMFPlayer::OPLUpdate(Sint16 *buffer, unsigned int length)
+{
+	Bit32s mix_buffer[length];
+	m_opl_emulator.Chip__GenerateBlock2( length, mix_buffer );
+
+    // Mix into the destination buffer, doubling up into stereo.
+    for (unsigned int i=0; i<length; ++i)
+    {
+    	for (unsigned int j=0; j<m_AudioDevSpec.channels; j++)
+    		buffer[i * m_AudioDevSpec.channels + j] = mix_buffer[i];
+    }
 }
 
 void CIMFPlayer::readBuffer(Uint8* buffer, Uint32 length)
@@ -213,15 +201,8 @@ void CIMFPlayer::readBuffer(Uint8* buffer, Uint32 length)
 	if(!m_playing)
 		return;
 
-
-	/////////////////
-
-
-	longword imfdatawritten = 0;
-	IMFChunkType *imf_Chunk_ptr = (IMFChunkType*) imfdata;
-
 	/// if a delay of the instruments is pending, play it
-    Uint32 sampleslen = wavesize/(m_AudioDevSpec.channels*sizeof(T));
+    Uint32 sampleslen = length/(m_AudioDevSpec.channels*sizeof(Sint16));
 
     // while the waveform is not filled
     while(1)
@@ -230,15 +211,15 @@ void CIMFPlayer::readBuffer(Uint8* buffer, Uint32 length)
         {
             if(m_numreadysamples < sampleslen)
             {
-            	// Ever time a tune has been played call this.
-            	OPLUpdate(stream, m_numreadysamples);
-                stream += m_numreadysamples*m_AudioDevSpec.channels;
+            	// Every time a tune has been played call this.
+            	OPLUpdate( (Sint16*) buffer, m_numreadysamples);
+            	buffer += m_numreadysamples*m_AudioDevSpec.channels;
                 sampleslen -= m_numreadysamples;
             }
             else
             {
-            	// Read the last stuff left in the emulators buffer. At this point the stream in full
-            	OPLUpdate(stream, sampleslen);
+            	// Read the last stuff left in the emulators buffer. At this point the stream buffer is nearly full
+            	OPLUpdate( (Sint16*) buffer, sampleslen);
             	m_numreadysamples -= sampleslen;
                 break;
             }
@@ -248,29 +229,13 @@ void CIMFPlayer::readBuffer(Uint8* buffer, Uint32 length)
         if(m_Delay == 0)
         {
         	// read the next instrument play to to the OPL Emulator and put a new delay
-        	Chip__WriteReg(&m_opl_chip, imf_Chunk_ptr->al_reg, imf_Chunk_ptr->al_dat );
-        	m_Delay = imf_Chunk_ptr->Delay;
-        	imf_Chunk_ptr++;
-        	imfdatawritten += sizeof(IMFChunkType);
+        	const IMFChunkType Chunk = m_IMF_Data.getNextElement();
+        	m_opl_emulator.Chip__WriteReg( Chunk.al_reg, Chunk.al_dat );
+        	m_Delay = Chunk.Delay;
         }
         else
         	m_Delay--;
 
         m_numreadysamples = m_samplesPerMusicTick;
     }
-
-
-
-	/////////////////
-
-	mp_imfdata_ptr += size;
-}
-
-void CIMFPlayer::close()
-{
-	if(mp_imfdata)
-		delete [] mp_imfdata;
-	mp_imfdata = NULL;
-	m_data_size = 0;
-	m_playing = false;
 }
