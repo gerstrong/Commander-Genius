@@ -12,6 +12,7 @@
 #include "fileio/TypeDefinitions.h"
 #include "fileio/CExeFile.h"
 #include "sdl/sound/CSound.h"
+#include "hardware/dbopl.h"
 #include <SDL.h>
 #include <string>
 
@@ -26,12 +27,19 @@ public:
 	void close();
 
 private:
-    byte *mp_imfdata;
+    byte *mp_imfdata_start;
     byte *mp_imfdata_ptr;
     byte *mp_imfdata_end;
     word m_data_size;
     const SDL_AudioSpec& m_AudioSpec;
     COPLEmulator &m_opl_emulator;
+
+	Uint32 m_numreadysamples;
+	Uint32 m_soundTimeCounter;
+	Uint32 m_samplesPerMusicTick;
+	word m_Delay;
+	Chip m_opl_chip;
+	Bit32s *m_mix_buffer;
 };
 
 #endif /* CIMFPLAYER_H_ */

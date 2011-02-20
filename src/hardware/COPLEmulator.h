@@ -9,7 +9,6 @@
 #define COPLEMULATOR_H_
 
 #include "fileio/TypeDefinitions.h"
-#include "dbopl.h"
 #include <SDL.h>
 
 struct IMFChunkType
