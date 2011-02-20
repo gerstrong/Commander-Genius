@@ -99,11 +99,7 @@ public:
 	T getNextElement()
 	{
 		const T data = *mp_cur;
-		mp_cur++;
-		// hey we are a ring. End of the data? Go to the start!
 		this->operator ++();
-		if(mp_cur == mp_end )
-			mp_cur = mp_start;
 		return data;
 	}
 

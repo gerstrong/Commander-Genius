@@ -51,7 +51,9 @@ m_Delay(0)
     const word imf_chunks = data_size/sizeof(IMFChunkType);
     m_IMF_Data.reserve(imf_chunks);
 
-    if( imf_chunks == fread( m_IMF_Data.getStartPtr(), sizeof(IMFChunkType), imf_chunks, fp ) )
+    IMFChunkType *ptr = m_IMF_Data.getStartPtr();
+
+    if( imf_chunks != fread( m_IMF_Data.getStartPtr(), sizeof(IMFChunkType), imf_chunks, fp ) )
     	// TODO: Warn here that the file is corrupt!
     	fclose(fp);
     else
