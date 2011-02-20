@@ -9,7 +9,14 @@
 #define CAUDIORESOURCES_H_
 
 #include "sdl/sound/CSoundSlot.h"
+#include "hardware/COPLEmulator.h"
 #include <string>
+
+typedef struct
+{
+    Instrument      inst;
+    byte            block;
+} AdLibSound;
 
 // Game Sounds
 enum GameSound{
@@ -59,6 +66,8 @@ public:
 
 	virtual bool loadSoundData() = 0;
 	virtual void unloadSound() = 0;
+
+	bool readISFintoWaveForm( CSoundSlot &soundslot, const byte *imfdata, const unsigned int bytesize );
 
 	CSoundSlot *getSlotPtr() { return m_soundslot; }
 

@@ -38,7 +38,7 @@ public:
 
 private:
 	RingBuffer<IMFChunkType> m_IMF_Data;
-    const SDL_AudioSpec& m_AudioDevSpec;
+    const SDL_AudioSpec m_AudioDevSpec;
     COPLEmulator &m_opl_emulator;
 
 	Uint32 m_numreadysamples;

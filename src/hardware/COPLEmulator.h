@@ -13,6 +13,44 @@
 #include <SDL.h>
 
 
+//      Register addresses
+// Operator stuff
+#define alChar          0x20
+#define alScale         0x40
+#define alAttack        0x60
+#define alSus           0x80
+#define alWave          0xe0
+// Channel stuff
+#define alFreqL         0xa0
+#define alFreqH         0xb0
+#define alFeedCon       0xc0
+// Global stuff
+#define alEffects       0xbd
+
+
+typedef uint8_t byte;
+typedef uint16_t word;
+typedef int32_t fixed;
+typedef uint32_t longword;
+typedef int8_t boolean;
+typedef void * memptr;
+
+
+typedef struct
+{
+    byte    mChar,cChar,
+            mScale,cScale,
+            mAttack,cAttack,
+            mSus,cSus,
+            mWave,cWave,
+            nConn,
+
+            // These are only for Muse - these bytes are really unused
+            voice,
+            mode;
+    byte    unused[3];
+} Instrument;
+
 class COPLEmulator {
 public:
 	COPLEmulator(const SDL_AudioSpec &AudioSpec);
@@ -23,6 +61,15 @@ public:
 	 * It should be called whenever the Sound Device starts or restarts after changing audio settings
 	 */
 	void init();
+
+	void AlSetFXInst(Instrument &inst);
+
+	/**
+	 *
+	 *  StartOPLforAdlibSound() - Sets up the emulator for Adlib Sounds. Important in Keen Galaxy and later games.
+	 *
+	*/
+	void StartOPLforAdlibSound();
 
 	/**
 	 * Wrapper for the original C Emulator function Chip__GenerateBlock2(&m_opl_chip, length, mix_buffer )
@@ -44,6 +91,11 @@ public:
 	unsigned int getIMFClockRate();
 
 	/**
+	 * Stops the adlib sounds from playing
+	 */
+	void ALStopSound();
+
+	/**
 	 * Shutdown the emulator. This should only the called whenever the audio settings need to be shutdown
 	 * or restarted like when the user changes the audio settings in the configuration while playing
 	 */
@@ -53,6 +105,7 @@ private:
 
 	const SDL_AudioSpec &m_AudioDevSpec;
 	Chip m_opl_chip;
+	Instrument	m_alZeroInst;
 };
 
 #endif /* COPLEMULATOR_H_ */

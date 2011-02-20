@@ -20,7 +20,6 @@
 #include "CSoundChannel.h"
 #include "fileio/CExeFile.h"
 #include "common/CAudioResources.h"
-#include "hardware/COPLEmulator.h"
 
 class CSound : public CSingleton<CSound>
 {

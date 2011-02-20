@@ -117,14 +117,10 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 				const uint32_t *AudioCompFileData32 = (uint32_t*) (AudioCompFileData + audio_start);
 				outsize = *AudioCompFileData32;
 				byte *imfdata = new byte[outsize];
-				uint32_t wave_size = 0;
 
 				Huffman.expand( (byte*)(AudioCompFileData+audio_comp_data_start), imfdata, audio_end-audio_comp_data_start, outsize);
 
-				byte* waveform = readISFData( imfdata, outsize, m_AudioSpec, wave_size );
-				m_soundslot[snd-al_snd_start].setupWaveForm(waveform, wave_size);
-				freeISFData();
-				delete imfdata;
+				readISFintoWaveForm( m_soundslot[snd-al_snd_start], imfdata, outsize );
 			}
 		}
 	}

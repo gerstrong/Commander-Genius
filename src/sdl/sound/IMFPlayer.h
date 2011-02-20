@@ -35,30 +35,6 @@ typedef int8_t boolean;
 typedef void * memptr;
 
 
-typedef struct
-{
-    byte    mChar,cChar,
-            mScale,cScale,
-            mAttack,cAttack,
-            mSus,cSus,
-            mWave,cWave,
-            nConn,
-
-            // These are only for Muse - these bytes are really unused
-            voice,
-            mode;
-    byte    unused[3];
-} Instrument;
-
-#define ORIG_INSTRUMENT_SIZE 16
-
-typedef struct
-{
-    Instrument      inst;
-    byte            block;
-    byte            data[1];
-} AdLibSound;
-
 
 // Function prototypes
 void    OPL_Startup(const SDL_AudioSpec &AudioSpec),

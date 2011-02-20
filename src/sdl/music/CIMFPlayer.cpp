@@ -165,13 +165,31 @@ m_mix_buffer(new Sint32[m_samplesPerMusicTick])
 		{
 			const uint32_t audio_comp_data_start = audio_start+sizeof(uint32_t);
 			const uint32_t *AudioCompFileData32 = (uint32_t*) (AudioCompFileData + audio_start);
-			const uint32_t data_size = *AudioCompFileData32;
+			const uint32_t emb_file_data_size = *AudioCompFileData32;
+
+
+			byte imf_data[emb_file_data_size];
+			byte *imf_data_ptr = imf_data;
+			Huffman.expand( (byte*)(AudioCompFileData+audio_comp_data_start), imf_data, audio_end-audio_comp_data_start, emb_file_data_size);
+
+			word data_size;
+
+		    if (*imf_data_ptr == 0) // Is the IMF file of Type-0?
+		        data_size = emb_file_data_size;
+		    else
+		    {
+		    	data_size = *((word*)imf_data_ptr);
+		    	imf_data_ptr+=sizeof(word);
+		    }
+
 
 			if(!m_IMF_Data.empty())
 				m_IMF_Data.clear();
+
 		    const word imf_chunks = data_size/sizeof(IMFChunkType);
 			m_IMF_Data.reserve(imf_chunks);
-			Huffman.expand( (byte*)(AudioCompFileData+audio_comp_data_start), (byte*) m_IMF_Data.getStartPtr(), audio_end-audio_comp_data_start, data_size);
+			memcpy(m_IMF_Data.getStartPtr(), imf_data_ptr, data_size);
+			printf("wait!");
 		}
 	}
 }
