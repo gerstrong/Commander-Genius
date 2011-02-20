@@ -7,7 +7,6 @@
 
 #include "CIMFPlayer.h"
 #include "sdl/sound/CSound.h"
-#include "sdl/sound/IMFPlayer.h"
 #include "fileio/ResourceMgmt.h"
 #include "fileio/compression/CHuffman.h"
 #include "FindFile.h"

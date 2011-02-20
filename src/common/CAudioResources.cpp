@@ -33,7 +33,7 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
 	// It's time make it Adlib Sound structure and read it into the waveform
 	AdLibSound AL_Sound = *((AdLibSound*) imfdata_ptr);
 	imfdata_ptr += sizeof(AdLibSound);
-	const unsigned int data_size = size-sizeof(AdLibSound);
+	const unsigned int data_size = size;
 	const byte *AL_Sounddata_start = imfdata_ptr;
 	const byte *AL_Sounddata_end = AL_Sounddata_start+data_size;
 
@@ -47,7 +47,8 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
 	OPLEmulator.AlSetFXInst(AL_Sound.inst);
 
 	const unsigned int samplesPerMusicTick = m_AudioSpec.freq/OPLEmulator.getIMFClockRate();
-	const unsigned int wavesize = (data_size*5*samplesPerMusicTick*m_AudioSpec.channels*sizeof(Sint16));
+	const unsigned waittimes = 5;
+	const unsigned int wavesize = (data_size*waittimes*samplesPerMusicTick*m_AudioSpec.channels*sizeof(Sint16));
 	byte waveform[wavesize];
 	byte *waveform_ptr = waveform;
 	Bit32s mix_buffer[samplesPerMusicTick];
@@ -56,10 +57,14 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
 			  AL_Sounddata_ptr < AL_Sounddata_end ;
 			  AL_Sounddata_ptr++ )
 	{
-		OPLEmulator.Chip__WriteReg( alFreqL, *AL_Sounddata_ptr );
-		OPLEmulator.Chip__WriteReg( alFreqH, alBlock );
+		if(*AL_Sounddata_ptr)
+		{
+			OPLEmulator.Chip__WriteReg( alFreqL, *AL_Sounddata_ptr );
+			OPLEmulator.Chip__WriteReg( alFreqH, alBlock );
+		}
+		else OPLEmulator.Chip__WriteReg( alFreqH, 0 );
 
-       	for( unsigned int count=0 ; count<5 ; count++ )
+       	for( unsigned int count=0 ; count<waittimes ; count++ )
        	{
        		Sint16 *buffer = (Sint16*) waveform_ptr;
 
@@ -75,6 +80,9 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
        		waveform_ptr += samplesPerMusicTick*m_AudioSpec.channels*sizeof(Sint16);
        	}
 	}
+
+	//memset(waveform, 100, wavesize);
+
 	soundslot.setupWaveForm(waveform, wavesize);
 
 	return true;

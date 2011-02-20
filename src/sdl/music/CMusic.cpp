@@ -7,7 +7,6 @@
 
 #include "sdl/sound/CSound.h"
 #include "sdl/sound/Sampling.h"
-#include "sdl/sound/IMFPlayer.h"
 #include "CMusic.h"
 #include "CLogFile.h"
 #include "FindFile.h"

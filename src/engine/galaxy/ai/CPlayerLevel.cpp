@@ -10,6 +10,7 @@
 #include "CItemEffect.h"
 #include "common/CBehaviorEngine.h"
 #include "sdl/CInput.h"
+#include "sdl/sound/CSound.h"
 #include "CVec.h"
 
 namespace galaxy {
@@ -209,6 +210,8 @@ void CPlayerLevel::processFiring()
 
 	if( m_playcontrol[PA_FIRE] && !m_pfiring )
 	{
+		g_pSound->playSound( SOUND_ENTER_LEVEL, PLAY_FORCE);
+
 		if(m_climbing)
 		{
 			if(m_playcontrol[PA_Y] < 0 && !getActionNumber(A_KEEN_POLE_SHOOTUP))

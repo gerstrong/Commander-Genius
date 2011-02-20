@@ -11,7 +11,6 @@
 #include "fileio/ResourceMgmt.h"
 #include <fstream>
 #include "sdl/sound/CSound.h"
-#include "sdl/sound/IMFPlayer.h"
 #include "fileio/compression/CHuffman.h"
 
 CAudioGalaxy::CAudioGalaxy(const CExeFile &ExeFile, const SDL_AudioSpec &AudioSpec) :
@@ -27,8 +26,6 @@ m_ExeFile(ExeFile)
  */
 bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 {
-	return false;
-
 	const int episode = ExeFile.getEpisode();
 
 	if(m_AudioSpec.format != 0)
