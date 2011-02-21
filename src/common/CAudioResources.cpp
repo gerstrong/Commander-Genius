@@ -37,7 +37,8 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
 	const byte *AL_Sounddata_start = imfdata_ptr;
 	const byte *AL_Sounddata_end = AL_Sounddata_start+data_size;
 
-	OPLEmulator.ALStopSound();
+	//OPLEmulator.ALStopSound();
+	OPLEmulator.ShutAL();
 	Bit8u alBlock = ((AL_Sound.block & 7) << 2) | 0x20;
 	if (!(AL_Sound.inst.mSus | AL_Sound.inst.cSus))
 	{
@@ -52,6 +53,8 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
 	byte waveform[wavesize];
 	byte *waveform_ptr = waveform;
 	Bit32s mix_buffer[samplesPerMusicTick];
+
+	OPLEmulator.ALStopSound();
 
 	// TODO: This does not work correctly yet...
 
@@ -83,9 +86,8 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
        	}
 	}
 
-	//memset(waveform, 100, wavesize);
-
 	soundslot.setupWaveForm(waveform, wavesize);
+
 
 	return true;
 }

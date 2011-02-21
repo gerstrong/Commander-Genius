@@ -86,6 +86,18 @@ void COPLEmulator::ALStopSound()
     Chip__WriteReg( alFreqH + 0, 0);
 }
 
+///////////////////////////////////////////////////////////////////////////
+//
+//      ShutAL() - Shuts down the AdLib card for sound effects
+//
+///////////////////////////////////////////////////////////////////////////
+void COPLEmulator::ShutAL()
+{
+    Chip__WriteReg( alEffects,0);
+    Chip__WriteReg( alFreqH + 0,0);
+    AlSetFXInst(m_alZeroInst);
+}
+
 void COPLEmulator::shutdown()
 {
     int     i;

@@ -96,6 +96,11 @@ public:
 	void ALStopSound();
 
 	/**
+	 * Shuts down the AdLib card for sound effects
+	 */
+	void ShutAL();
+
+	/**
 	 * Shutdown the emulator. This should only the called whenever the audio settings need to be shutdown
 	 * or restarted like when the user changes the audio settings in the configuration while playing
 	 */
