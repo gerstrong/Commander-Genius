@@ -101,7 +101,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 			}
 		}
 
-		for(unsigned int snd=al_snd_start+2 ; snd<slot ; snd++)
+		for(unsigned int snd=al_snd_start ; snd<slot ; snd++)
 		{
 			/// Now we have all the data we need.
 			// decompress every file of AUDIO.CK? using huffman decompression algorithm

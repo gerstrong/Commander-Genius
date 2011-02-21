@@ -210,8 +210,6 @@ void CPlayerLevel::processFiring()
 
 	if( m_playcontrol[PA_FIRE] && !m_pfiring )
 	{
-		g_pSound->playSound( SOUND_ENTER_LEVEL, PLAY_FORCE);
-
 		if(m_climbing)
 		{
 			if(m_playcontrol[PA_Y] < 0 && !getActionNumber(A_KEEN_POLE_SHOOTUP))
@@ -501,6 +499,7 @@ void CPlayerLevel::processJumping()
 			setAction(A_KEEN_JUMP);
 			m_climbing = false;
 			m_vDir = NONE;
+			g_pSound->playSound( SOUND_KEEN_JUMP, PLAY_FORCE);
 		}
 	}
 	else

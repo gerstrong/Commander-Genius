@@ -53,6 +53,8 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
 	byte *waveform_ptr = waveform;
 	Bit32s mix_buffer[samplesPerMusicTick];
 
+	// TODO: This does not work correctly yet...
+
 	for(byte *AL_Sounddata_ptr = (byte*) AL_Sounddata_start ;
 			  AL_Sounddata_ptr < AL_Sounddata_end ;
 			  AL_Sounddata_ptr++ )
