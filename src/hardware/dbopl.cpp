@@ -111,7 +111,7 @@ static Channel* Channel__BlockTemplate(Channel *self, Chip* chip,
                                 Bit32u samples, Bit32s* output,
                                 SynthMode mode );
 #define BLOCK_TEMPLATE(mode) \
-    static Channel* Channel__BlockTemplate_ ## mode(Channel *self, Chip* chip, \
+    static inline Channel* Channel__BlockTemplate_ ## mode(Channel *self, Chip* chip, \
                                              Bit32u samples, Bit32s* output) \
     { \
        return Channel__BlockTemplate(self, chip, samples, output, mode); \
