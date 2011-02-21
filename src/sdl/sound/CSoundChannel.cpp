@@ -19,18 +19,18 @@ m_AudioSpec(AudioSpec)
 	
 }
 
-void CSoundChannel::stopSound(void)
+void CSoundChannel::stopSound()
 {
     m_sound_ptr = 0;
     m_sound_playing = false;
 }
 
-void CSoundChannel::setupSound(GameSound current_sound,
-							   unsigned int sound_timer,
-							   bool playing,
-							   unsigned int freqtimer,
-							   bool sound_forced,
-							   Uint16 format)
+void CSoundChannel::setupSound(const unsigned char current_sound,
+					const unsigned int sound_timer,
+					const bool playing,
+					const unsigned int freqtimer,
+					const bool sound_forced,
+					const Uint16 format)
 {
 	m_current_sound = current_sound;
 	m_sound_playing = playing;

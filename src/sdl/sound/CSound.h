@@ -39,8 +39,8 @@ public:
 	void playSound(GameSound snd, char mode);
 	void playStereofromCoord(GameSound snd, char mode, unsigned int xcoordinate);
 	void playStereosound(GameSound snd, char mode, short balance);
-	bool isPlaying(GameSound snd);
-	void stopSound(GameSound snd);
+	bool isPlaying(const GameSound snd);
+	void stopSound(const GameSound snd);
 	void destroy(void);
 
 	void setSoundVolume(const Uint8 volume) { m_SoundVolume = volume; }
@@ -71,6 +71,8 @@ private:
 
     Uint8 *m_pMixedForm;			// Mainly used by the callback function. Declared once and allocated
     								// for the whole program
+
+    unsigned char *mp_SndSlotMap;
 
     COPLEmulator m_OPL_Player;
 };

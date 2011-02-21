@@ -35,6 +35,7 @@ m_mixing_channels(0),
 m_MusicVolume(SDL_MIX_MAXVOLUME),
 m_SoundVolume(SDL_MIX_MAXVOLUME),
 m_pMixedForm(NULL),		// Mainly used by the callback function. Declared once and allocated
+mp_SndSlotMap(NULL),
 m_OPL_Player(AudioSpec)
 {
 	AudioSpec.channels = 2; // Stereo Sound
@@ -165,13 +166,13 @@ void CSound::pauseSound(void)
 }
 
 // resumes playing a previously paused sound
-void CSound::resumeSounds(void)
+void CSound::resumeSounds()
 {
 	SDL_PauseAudio(0);
 }
 
 // returns true if sound snd is currently playing
-bool CSound::isPlaying(GameSound snd)
+bool CSound::isPlaying(const GameSound snd)
 {
 	std::vector<CSoundChannel>::iterator snd_chnl = m_soundchannel.begin();
 	for( ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
@@ -184,7 +185,7 @@ bool CSound::isPlaying(GameSound snd)
 }
 
 // if sound snd is currently playing, stops it immediately
-void CSound::stopSound(GameSound snd)
+void CSound::stopSound(const GameSound snd)
 {
 	std::vector<CSoundChannel>::iterator snd_chnl = m_soundchannel.begin();
 	for( ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
@@ -253,6 +254,7 @@ void CSound::playStereosound(GameSound snd, char mode, short balance)
 	if( m_mixing_channels == 0 ) return;
 
 	std::vector<CSoundChannel>::iterator snd_chnl;
+	const unsigned char slotplay = mp_SndSlotMap[snd];
 
 	if (mode==PLAY_NORESTART)
 	{
@@ -275,7 +277,7 @@ void CSound::playStereosound(GameSound snd, char mode, short balance)
 			if(AudioSpec.channels == 2)
 				snd_chnl->setBalance(balance);
 
-			snd_chnl->setupSound( snd, 0, true, 0, (mode==PLAY_FORCE) ? true : false, AudioSpec.format );
+			snd_chnl->setupSound( slotplay, 0, true, 0, (mode==PLAY_FORCE) ? true : false, AudioSpec.format );
 			break;
 		}
 	}
@@ -286,11 +288,13 @@ bool CSound::loadSoundData(const CExeFile &ExeFile)
 	if(ExeFile.getEpisode() >= 1 && ExeFile.getEpisode() <= 3) // Vorticon based Keengame
 	{
 		m_pAudioRessources = new CAudioVorticon(ExeFile, AudioSpec);
+		mp_SndSlotMap = const_cast<unsigned char*>(SndSlotMapVort);
 		return(m_pAudioRessources->loadSoundData());
 	}
 	else if(ExeFile.getEpisode() >= 4 && ExeFile.getEpisode() <= 7) // Galaxy based Keengame
 	{
 		m_pAudioRessources = new CAudioGalaxy(ExeFile, AudioSpec);
+		mp_SndSlotMap = const_cast<unsigned char*>(SndSlotMapGalaxy);
 		return(m_pAudioRessources->loadSoundData());
 	}
 

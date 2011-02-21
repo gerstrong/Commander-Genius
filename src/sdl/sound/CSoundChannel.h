@@ -49,10 +49,10 @@ class CSoundChannel {
 public:
 	CSoundChannel(SDL_AudioSpec AudioSpec);
 
-	void stopSound(void);
+	void stopSound();
 	bool isPlaying() { return m_sound_playing; }
 	bool isForcedPlaying() { return (m_sound_playing && m_sound_forced); }
-	GameSound getCurrentsound() { return m_current_sound; }
+	unsigned char getCurrentsound() { return m_current_sound; }
 	void readWaveform(CSoundSlot *pSndSlot, Uint8* waveform, int len, Uint8 channels, int frequency);
 	template <typename T>
 	void transintoStereoChannels(T* waveform, const Uint32 len);
@@ -60,16 +60,16 @@ public:
 	short getBalance() { return m_balance; }
 	void setBalance(short value) { m_balance = value; }
 
-	void setupSound(GameSound current_sound,
-					unsigned int sound_timer,
-					bool playing,
-					unsigned int freqtimer,
-					bool sound_forced,
-					Uint16 format);
+	void setupSound(const unsigned char current_sound,
+					const unsigned int sound_timer,
+					const bool playing,
+					const unsigned int freqtimer,
+					const bool sound_forced,
+					const Uint16 format);
 
 private:
     bool m_sound_playing;           	// true = a sound is currently playing
-    GameSound m_current_sound;   	    // # of the sound that is currently playing
+    unsigned char m_current_sound;   	    // # of the sound that is currently playing
     Uint32 m_sound_ptr;               	// position within sound that we're at
 	bool m_sound_paused;             	// true = pause playback
     bool m_sound_forced;
