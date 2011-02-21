@@ -295,7 +295,10 @@ void CPlayerLevel::processFiring()
 		if(m_pfiring)
 		{
 			if(m_Inventory.m_bullets > 0)
+			{
+				g_pSound->playSound( SOUND_KEEN_FIRE );
 				m_Inventory.m_bullets--;
+			}
 		}
 	}
 
@@ -464,7 +467,10 @@ void CPlayerLevel::processMoving()
 				if(!getActionNumber(A_KEEN_POGO) )
 				{
 					if(moving != NONE)
+					{
 						setAction(A_KEEN_RUN);
+						g_pSound->playSound( SOUND_KEEN_WALK );
+					}
 					else if(m_playcontrol[PA_Y] == 0)
 						setAction(A_KEEN_STAND);
 				}
@@ -499,7 +505,7 @@ void CPlayerLevel::processJumping()
 			setAction(A_KEEN_JUMP);
 			m_climbing = false;
 			m_vDir = NONE;
-			g_pSound->playSound( SOUND_KEEN_JUMP, PLAY_FORCE);
+			g_pSound->playSound( SOUND_KEEN_JUMP );
 		}
 	}
 	else
@@ -587,6 +593,7 @@ void CPlayerLevel::processPogo()
 			else
 				yinertia = POGO_START_INERTIA;
 			m_jumpheight = 0;
+			g_pSound->playSound( SOUND_KEEN_POGO );
 		}
 
 		if(m_playcontrol[PA_X] > 0)
@@ -616,7 +623,10 @@ void CPlayerLevel::processFalling()
 			&& !getActionNumber(A_KEEN_JUMP_SHOOTUP)
 			&& !getActionNumber(A_KEEN_JUMP_SHOOTDOWN)
 			&& !getActionNumber(A_KEEN_POGO) )
+	{
 		setAction(A_KEEN_FALL);
+		g_pSound->playSound( SOUND_KEEN_FALL );
+	}
 
 	if(getActionNumber(A_KEEN_FALL))
 		xinertia += (m_playcontrol[PA_X]>>1);
@@ -647,6 +657,7 @@ void CPlayerLevel::processExiting()
 	Uint32 x = getXMidPos();
 	if( ((mp_Map->m_width-2)<<CSF) < x || (2<<CSF) > x )
 	{
+		g_pSound->playSound( SOUND_LEVEL_DONE );
 		EventContainer.add( new EventExitLevel(mp_Map->getLevel()) );
 	}
 }
@@ -829,14 +840,14 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
 
 			switch(i)
 			{
-			case 21: m_Inventory.m_points += 100;	break;
-			case 22: m_Inventory.m_points += 200;	break;
-			case 23: m_Inventory.m_points += 500;	break;
-			case 24: m_Inventory.m_points += 1000;	break;
-			case 25: m_Inventory.m_points += 2000;	break;
-			case 26: m_Inventory.m_points += 5000;	break;
-			case 27: m_Inventory.m_lifes++;	break;
-			case 28: m_Inventory.m_bullets += 5;	break;
+			case 21: m_Inventory.m_points += 100;	g_pSound->playSound( SOUND_GET_BONUS );	break;
+			case 22: m_Inventory.m_points += 200;	g_pSound->playSound( SOUND_GET_BONUS );	break;
+			case 23: m_Inventory.m_points += 500;	g_pSound->playSound( SOUND_GET_BONUS );	break;
+			case 24: m_Inventory.m_points += 1000;	g_pSound->playSound( SOUND_GET_BONUS );	break;
+			case 25: m_Inventory.m_points += 2000;	g_pSound->playSound( SOUND_GET_BONUS );	break;
+			case 26: m_Inventory.m_points += 5000;	g_pSound->playSound( SOUND_GET_BONUS );	break;
+			case 27: m_Inventory.m_lifes++;	g_pSound->playSound( SOUND_EXTRA_LIFE );	break;
+			case 28: m_Inventory.m_bullets += 5;	g_pSound->playSound( SOUND_GET_BONUS );	break;
 			default: break;
 			}
 		}
@@ -933,6 +944,7 @@ void CPlayerLevel::kill()
 {
 	// TODO: Here were prepare Keen to die, setting that action
 	m_dying = true;
+	g_pSound->playSound( SOUND_KEEN_DIE );
 }
 
 }

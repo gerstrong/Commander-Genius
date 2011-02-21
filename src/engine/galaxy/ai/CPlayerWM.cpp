@@ -9,6 +9,7 @@
 #include "engine/galaxy/ai/CFlag.h"
 #include "common/CBehaviorEngine.h"
 #include "sdl/CInput.h"
+#include "sdl/sound/CSound.h"
 #include "CVec.h"
 
 const Uint16 WALKBASEFRAME = 130;
@@ -115,6 +116,7 @@ void CPlayerWM::processWalking()
 		if(object)
 		{
 			startLevel(object);
+			g_pSound->playSound( SOUND_ENTER_LEVEL );
 			g_pInput->flushCommands();
 		}
 	}

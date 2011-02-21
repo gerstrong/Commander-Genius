@@ -36,7 +36,7 @@ public:
 	void callback(void *unused, Uint8 *stream, int len);
 	void pauseSound(void);
 	void resumeSounds(void);
-	void playSound(GameSound snd, char mode);
+	void playSound(GameSound snd, char mode=PLAY_NOW);
 	void playStereofromCoord(GameSound snd, char mode, unsigned int xcoordinate);
 	void playStereosound(GameSound snd, char mode, short balance);
 	bool isPlaying(const GameSound snd);
