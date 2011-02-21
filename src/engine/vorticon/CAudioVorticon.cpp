@@ -12,6 +12,14 @@
 #include <fstream>
 #include <math.h>
 
+/** This is the PC Speaker Volume it will set.
+  * When the PC Speaker Emulator generates the Sound slots
+  * it will do it with that volume.
+  * Remember, this is relative to the real Sound volume you can toggle in the Audio Settings
+  * Menu of CG
+  */
+const int PC_Speaker_Volume = 20; // in percent
+
 CAudioVorticon::CAudioVorticon(const CExeFile &ExeFile, const SDL_AudioSpec &AudioSpec) :
 CAudioResources(AudioSpec),
 m_ExeFile(ExeFile)
@@ -141,7 +149,7 @@ bool CAudioVorticon::loadPCSpeakerSound(Uint8 *buffer, const Uint32 buf_size, st
 			buf_ptr = buffer+offset;
 
 			word sample;
-			const int AMP = IsSigned ? ((1<<(sizeof(T)*8))>>2)-1 : (1<<(sizeof(T)*8)>>1)-1;
+			const int AMP = ((IsSigned ? ((1<<(sizeof(T)*8))>>2)-1 : (1<<(sizeof(T)*8)>>1)-1)*PC_Speaker_Volume)/100;
 			T wave = AMP;
 			Uint64 freqtimer = 0;
 
