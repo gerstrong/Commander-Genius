@@ -33,6 +33,8 @@ public:
 	
 	~CSoundSlot();
 
+	word priority;
+
 private:
 	byte *m_sounddata;
 	unsigned int m_soundlength;

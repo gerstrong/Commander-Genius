@@ -366,7 +366,7 @@ void CDialog::processInput(int move)
 				{
 					m_int++;
 					if(m_noise)
-						g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
+						g_pSound->playSound(SOUND_GUN_CLICK);
 				}
 				else
 					m_int = m_max;
@@ -377,7 +377,7 @@ void CDialog::processInput(int move)
 				{
 					m_int--;
 					if(m_noise)
-						g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
+						g_pSound->playSound(SOUND_GUN_CLICK);
 				}
 				else
 					m_int = m_min;

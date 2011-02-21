@@ -65,10 +65,9 @@ private:
 	Uint8* loadSoundStream(Uint32 &buffer_size, Uint8* exedata);
 
 	template <typename T>
-	void generateWave(std::vector<T> &waveform, word sample, T &wave, Uint64 &freqtimer, bool IsSigned, const int& AMP);
-
-	template <typename T>
-	bool loadPCSpeakerSound(Uint8 *buffer, const Uint32 buf_size, std::vector<T> &waveform, const std::string& searchname, bool IsSigned);
+	bool loadPCSpeakerSound(Uint8 *buffer, const Uint32 buf_size,
+			std::vector<T> &waveform, const std::string& searchname,
+			bool IsSigned, Uint16& Priority);
 
 	bool loadSound(Uint8 *buffer, const Uint32 buf_size, const std::string& path, const std::string& searchname, unsigned int loadnum);
 

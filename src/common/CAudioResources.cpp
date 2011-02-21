@@ -20,14 +20,13 @@ m_AudioSpec(AudioSpec)
 		m_soundslot[i].setpAudioSpec(&AudioSpec);
 }
 
-
 bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *imfdata, const unsigned int bytesize )
 {
 	// TODO:Support for priority is muy important :D
 
 	byte *imfdata_ptr = (byte*)imfdata;
 	const longword size = READLONGWORD(imfdata_ptr);
-	const word priority = READWORD(imfdata_ptr);
+	soundslot.priority = READWORD(imfdata_ptr);
 	COPLEmulator &OPLEmulator = *g_pSound->getOPLEmulatorPtr();
 
 	// It's time make it Adlib Sound structure and read it into the waveform

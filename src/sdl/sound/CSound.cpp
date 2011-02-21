@@ -254,7 +254,9 @@ void CSound::playStereosound(GameSound snd, char mode, short balance)
 	if( m_mixing_channels == 0 ) return;
 
 	std::vector<CSoundChannel>::iterator snd_chnl;
+	CSoundSlot *mp_Slots = m_pAudioRessources->getSlotPtr();
 	const unsigned char slotplay = mp_SndSlotMap[snd];
+	CSoundSlot &new_slot = mp_Slots[slotplay];
 
 	if (mode==PLAY_NORESTART)
 	{
@@ -272,7 +274,9 @@ void CSound::playStereosound(GameSound snd, char mode, short balance)
 	// first try to find an empty channel
 	for( snd_chnl = m_soundchannel.begin() ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
 	{
-		if (!snd_chnl->isPlaying())
+		CSoundSlot &current_slot = mp_Slots[snd_chnl->getCurrentsound()];
+
+		if ( !snd_chnl->isPlaying() || ( new_slot.priority >= current_slot.priority ) )
 		{
 			if(AudioSpec.channels == 2)
 				snd_chnl->setBalance(balance);

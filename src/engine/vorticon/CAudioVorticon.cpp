@@ -12,14 +12,6 @@
 #include <fstream>
 #include <math.h>
 
-/** This is the PC Speaker Volume it will set.
-  * When the PC Speaker Emulator generates the Sound slots
-  * it will do it with that volume.
-  * Remember, this is relative to the real Sound volume you can toggle in the Audio Settings
-  * Menu of CG
-  */
-const int PC_Speaker_Volume = 20; // in percent
-
 CAudioVorticon::CAudioVorticon(const CExeFile &ExeFile, const SDL_AudioSpec &AudioSpec) :
 CAudioResources(AudioSpec),
 m_ExeFile(ExeFile)
@@ -83,51 +75,17 @@ Uint8* CAudioVorticon::loadSoundStream(Uint32 &buffer_size, Uint8* exedata)
 	}
 }
 
-const Uint64 PCSpeakerTime = 1288634;
-//const Uint64 PCSpeakerTime = 0x1234DD;
-
-template <typename T>
-void CAudioVorticon::generateWave(std::vector<T> &waveform, word sample, T &wave, Uint64 &freqtimer, bool IsSigned, const int& AMP)
-{
-	const unsigned int wavetime = m_AudioSpec.freq/136;
-	Uint64 changerate = (m_AudioSpec.freq>>1)*Uint64(sample);
-
-	for (unsigned int j=0; j<wavetime; j++)
-	{
-		if(changerate == 0)
-		{
-			wave = m_AudioSpec.silence - AMP;
-			freqtimer = 0;
-		}
-		else
-		{
-			if (freqtimer > changerate)
-			{
-				freqtimer = 0;
-
-				if (wave == m_AudioSpec.silence - AMP)
-					wave = m_AudioSpec.silence + AMP;
-				else
-					wave = m_AudioSpec.silence - AMP;
-			}
-			else
-				freqtimer += PCSpeakerTime;
-		}
-
-		for(Uint8 chnl=0 ; chnl<m_AudioSpec.channels ; chnl++ )
-			waveform.push_back(wave);
-	}
-}
-
 /**
  * Load the PC Speaker sound and pass it as waveform directly.
  */
 template <typename T>
-bool CAudioVorticon::loadPCSpeakerSound(Uint8 *buffer, const Uint32 buf_size, std::vector<T> &waveform, const std::string& searchname, bool IsSigned)
+bool CAudioVorticon::loadPCSpeakerSound(Uint8 *buffer, const Uint32 buf_size,
+									std::vector<T> &waveform, const std::string& searchname,
+									bool IsSigned, Uint16& Priority)
 {
 	int curheader = 0x10;
 	word offset;
-	int priority, garbage, nr_of_sounds;
+	int garbage, nr_of_sounds;
 	char name[12];
 
 	memset(name,0,12);
@@ -139,7 +97,7 @@ bool CAudioVorticon::loadPCSpeakerSound(Uint8 *buffer, const Uint32 buf_size, st
 	{
 		buf_ptr = buffer+curheader;
 		offset = READWORD(buf_ptr);
-		priority = *buf_ptr++;
+		Priority = *buf_ptr++;
 		garbage = *buf_ptr++;
 
 		for(int i=0;i<12;i++) name[i] = *buf_ptr++;
@@ -198,7 +156,7 @@ bool CAudioVorticon::loadSound(Uint8 *buffer, const Uint32 buf_size, const std::
 		if( m_AudioSpec.format == AUDIO_S8 )
 		{
 			std::vector<Sint8> waveform;
-			ok = loadPCSpeakerSound(buffer, buf_size, waveform, searchname, false);
+			ok = loadPCSpeakerSound(buffer, buf_size, waveform, searchname, false, current_snd_slot.priority);
 			buf = (Uint8*)&waveform[0];
 			buf_size = waveform.size()*sizeof(Sint8);
 			current_snd_slot.setupWaveForm( buf, buf_size );
@@ -206,7 +164,7 @@ bool CAudioVorticon::loadSound(Uint8 *buffer, const Uint32 buf_size, const std::
 		else if( m_AudioSpec.format == AUDIO_U8 )
 		{
 			std::vector<Uint8> waveform;
-			ok = loadPCSpeakerSound(buffer, buf_size, waveform, searchname, true);
+			ok = loadPCSpeakerSound(buffer, buf_size, waveform, searchname, true, current_snd_slot.priority);
 			buf = (Uint8*)&waveform[0];
 			buf_size = waveform.size()*sizeof(Uint8);
 			current_snd_slot.setupWaveForm( buf, buf_size );
@@ -214,7 +172,7 @@ bool CAudioVorticon::loadSound(Uint8 *buffer, const Uint32 buf_size, const std::
 		else if( m_AudioSpec.format == AUDIO_U16 )
 		{
 			std::vector<Uint16> waveform;
-			ok = loadPCSpeakerSound(buffer, buf_size, waveform, searchname, false);
+			ok = loadPCSpeakerSound(buffer, buf_size, waveform, searchname, false, current_snd_slot.priority);
 			buf = (Uint8*)&waveform[0];
 			buf_size = waveform.size()*sizeof(Uint16);
 			current_snd_slot.setupWaveForm( buf, buf_size );
@@ -222,7 +180,7 @@ bool CAudioVorticon::loadSound(Uint8 *buffer, const Uint32 buf_size, const std::
 		else if( m_AudioSpec.format == AUDIO_S16 )
 		{
 			std::vector<Sint16> waveform;
-			ok = loadPCSpeakerSound(buffer, buf_size, waveform, searchname, true);
+			ok = loadPCSpeakerSound(buffer, buf_size, waveform, searchname, true, current_snd_slot.priority);
 			buf = (Uint8*)&waveform[0];
 			buf_size = waveform.size()*sizeof(Sint16);
 			current_snd_slot.setupWaveForm( buf, buf_size );
