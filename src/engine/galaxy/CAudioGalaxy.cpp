@@ -116,24 +116,24 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 		// Find the start of the embedded IMF files
 		uint32_t outsize = 0;
 		uint32_t al_snd_start = 0;
-		uint32_t slot = 0;
+		uint32_t number_of_total_sounds = 0;
 
-		CSoundSlot zeroslot;
-		m_soundslot.assign(number_of_audiorecs, zeroslot);
-
-		for(  ; slot<number_of_audiorecs ; slot++ )
+		for(  ; number_of_total_sounds<number_of_audiorecs ; number_of_total_sounds++ )
 		{
-			const uint32_t audio_start = audiohedptr[slot];
-			const uint32_t audio_end = audiohedptr[slot+1];
+			const uint32_t audio_start = audiohedptr[number_of_total_sounds];
+			const uint32_t audio_end = audiohedptr[number_of_total_sounds+1];
 
 			if(audio_start == audio_end)
 			{
-				al_snd_start = slot/2;
+				al_snd_start = number_of_total_sounds/2;
 				break;
 			}
 		}
 
-		for(unsigned int snd=0 ; snd<slot ; snd++)
+		CSoundSlot zeroslot;
+		m_soundslot.assign(number_of_total_sounds, zeroslot);
+
+		for(unsigned int snd=0 ; snd<number_of_total_sounds ; snd++)
 		{
 			/// Now we have all the data we need.
 			// decompress every file of AUDIO.CK? using huffman decompression algorithm

@@ -268,7 +268,10 @@ void CSound::playStereosound(GameSound snd, char mode, short balance)
 	unsigned char slotplay = mp_SndSlotMap[snd];
 	const unsigned int speaker_snds_end_off = m_pAudioRessources->getNumberofSounds()/2;
 
-	if(m_sound_blaster_mode && mp_Slots[slotplay].getSoundData())
+	if(slotplay >= speaker_snds_end_off)
+		return;
+
+	if(m_sound_blaster_mode && mp_Slots[slotplay+speaker_snds_end_off].getSoundData())
 		slotplay += speaker_snds_end_off;
 
 	CSoundSlot &new_slot = mp_Slots[slotplay];

@@ -93,6 +93,7 @@ bool CSoundSlot::HQSndLoad(const std::string& gamepath, const std::string& sound
 	SDL_AudioCVT  Audio_cvt;
 
 	std::string buf;
+	m_sounddata = NULL;
 
 	Uint32 length = 0;
 	Uint8 *snddata = NULL;

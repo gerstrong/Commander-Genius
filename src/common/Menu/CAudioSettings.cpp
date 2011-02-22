@@ -23,7 +23,7 @@ m_must_restart_sounddriver(false)
 {
 	m_current = -1;
 	
-	mp_Dialog = new CDialog(30, 6, INPUT_MODE_OPTION,m_dlg_theme);
+	mp_Dialog = new CDialog(30, 7, INPUT_MODE_OPTION,m_dlg_theme);
 	
 	m_Rate = g_pSound->getAudioSpec().freq;
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Rate: " + itoa(m_Rate) +" kHz");
@@ -48,10 +48,11 @@ m_must_restart_sounddriver(false)
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, buf);
 	mp_Dialog->m_dlgobject.at(2)->m_Option->m_value = g_pSound->getAudioSpec().channels;
 	
+	m_Soundblaster = g_pSound->getSoundBlasterMode();
 	buf = "Mode: ";
 	buf += m_Soundblaster ? "Soundblaster/Adlib" : "PC Speaker";
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, buf);
-	mp_Dialog->m_dlgobject.at(3)->m_Option->m_value = g_pSound->getSoundBlasterMode();
+	mp_Dialog->m_dlgobject.at(3)->m_Option->m_value = m_Soundblaster;
 
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "Adjust Volume");
 
@@ -148,7 +149,6 @@ void CAudioSettings::processSpecific()
 				buf = "Mode: ";
 				buf += m_Soundblaster ? "Soundblaster/Adlib" : "PC Speaker";
 				mp_Dialog->setObjectText(3, buf);
-				mp_Dialog->m_dlgobject.at(3)->m_Option->m_value = g_pSound->getSoundBlasterMode();
 			}
 			else if(m_selection == 4)
 			{
