@@ -15,10 +15,7 @@
 
 CAudioResources::CAudioResources(const SDL_AudioSpec &AudioSpec) :
 m_AudioSpec(AudioSpec)
-{
-	for(int i=0 ; i<MAX_SOUNDS ; i++)
-		m_soundslot[i].setpAudioSpec(&AudioSpec);
-}
+{}
 
 bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *imfdata, const unsigned int bytesize )
 {
@@ -27,6 +24,7 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
 	byte *imfdata_ptr = (byte*)imfdata;
 	const longword size = READLONGWORD(imfdata_ptr);
 	soundslot.priority = READWORD(imfdata_ptr);
+	soundslot.setupAudioSpec(&m_AudioSpec);
 	COPLEmulator &OPLEmulator = *g_pSound->getOPLEmulatorPtr();
 
 	// It's time make it Adlib Sound structure and read it into the waveform
@@ -75,7 +73,7 @@ bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *im
        		OPLEmulator.Chip__GenerateBlock2( samplesPerMusicTick, mix_buffer );
 
        		// Mix into the destination buffer, doubling up into stereo.
-       		for (int i=0; i<samplesPerMusicTick; ++i)
+       		for (unsigned int i=0; i<samplesPerMusicTick; ++i)
        		{
        			buffer[i * 2] = (int16_t) mix_buffer[i];
        			buffer[i * 2 + 1] = (int16_t) mix_buffer[i];

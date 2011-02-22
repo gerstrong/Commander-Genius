@@ -89,6 +89,8 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 		uint32_t al_snd_start = 0;
 		uint32_t slot = 0;
 
+		m_soundslot.reserve(number_of_audiorecs);
+
 		for(  ; slot<number_of_audiorecs ; slot++ )
 		{
 			const uint32_t audio_start = audiohedptr[slot];

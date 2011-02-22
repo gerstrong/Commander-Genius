@@ -11,6 +11,7 @@
 #include "sdl/sound/CSoundSlot.h"
 #include "hardware/COPLEmulator.h"
 #include <string>
+#include <vector>
 
 /** This is the PC Speaker Volume it will set.
   * When the PC Speaker Emulator generates the Sound slots
@@ -113,11 +114,12 @@ public:
 
 	bool readISFintoWaveForm( CSoundSlot &soundslot, const byte *imfdata, const unsigned int bytesize );
 
-	CSoundSlot *getSlotPtr() { return m_soundslot; }
+	CSoundSlot *getSlotPtr(){	return &m_soundslot[0];	}
 
 protected:
-	static const int MAX_SOUNDS = 200;
-	CSoundSlot	m_soundslot[MAX_SOUNDS];
+	//static const int MAX_SOUNDS = 200;
+
+	std::vector<CSoundSlot>m_soundslot;
 	const SDL_AudioSpec &m_AudioSpec;
 };
 

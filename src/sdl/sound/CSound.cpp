@@ -209,6 +209,9 @@ bool CSound::forcedisPlaying(void)
 
 void CSound::callback(void *unused, Uint8 *stream, int len)
 {
+	if(m_pAudioRessources == NULL)
+		return;
+
     if (g_pMusicPlayer->playing())
     {
     	g_pMusicPlayer->readBuffer(m_pMixedForm, len);

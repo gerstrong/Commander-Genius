@@ -28,10 +28,6 @@ Uint8* CAudioVorticon::loadSoundStream(Uint32 &buffer_size, Uint8* exedata)
 	Uint8 *buffer = NULL;
 	buffer_size = 0;
 	const std::string gamepath = m_ExeFile.getDataDirectory();
-
-	for(int i=0 ; i<MAX_SOUNDS ; i++)
-		m_soundslot[i].m_gamepath=gamepath;
-
 	const std::string soundfile = "sounds.ck" + itoa(m_ExeFile.getEpisode());
 	g_pLogFile->ftextOut("sound_load_all(): trying to open the game audio...<br>");
 
@@ -203,6 +199,7 @@ bool CAudioVorticon::loadSoundData()
 
 	Uint32 buffer_size;
 	Uint8 *buffer = loadSoundStream( buffer_size, m_ExeFile.getRawData() );
+	m_soundslot.reserve(40);
 
 	ok  = loadSound(buffer, buffer_size, DataDirectory, "KEENWALKSND", SOUND_KEEN_WALK);
 	ok &= loadSound(buffer, buffer_size, DataDirectory, "KEENWLK2SND", SOUND_KEEN_WALK2);
@@ -262,6 +259,10 @@ bool CAudioVorticon::loadSoundData()
 
 void CAudioVorticon::unloadSound()
 {
-	for(int slot=0 ; slot<MAX_SOUNDS ; slot++ )
-		m_soundslot[slot].unload();
+	if(m_soundslot.empty())
+		return;
+	std::vector<CSoundSlot>::iterator it = m_soundslot.begin();
+	for( ; it != m_soundslot.end() ; it++ )
+		it->unload();
+	m_soundslot.clear();
 }
