@@ -31,6 +31,7 @@ inline static void CCallback(void *unused, Uint8 *stream, int len)
 
 CSound::CSound() :
 m_pAudioRessources(NULL),
+m_callback_running(false),
 m_mixing_channels(0),
 m_MusicVolume(SDL_MIX_MAXVOLUME),
 m_SoundVolume(SDL_MIX_MAXVOLUME),
@@ -49,6 +50,8 @@ m_OPL_Player(AudioSpec)
 
 CSound::~CSound()
 {
+	while(m_callback_running);
+
 	if(m_pAudioRessources)
 		delete m_pAudioRessources;
 }
@@ -212,6 +215,8 @@ void CSound::callback(void *unused, Uint8 *stream, int len)
 	if(m_pAudioRessources == NULL)
 		return;
 
+	m_callback_running = true;
+
     if (g_pMusicPlayer->playing())
     {
     	g_pMusicPlayer->readBuffer(m_pMixedForm, len);
@@ -224,6 +229,8 @@ void CSound::callback(void *unused, Uint8 *stream, int len)
 		snd_chnl->readWaveform( m_pAudioRessources->getSlotPtr(), m_pMixedForm, len, AudioSpec.channels, AudioSpec.freq);
    		mixAudio(stream, m_pMixedForm, len, m_SoundVolume, AudioSpec.format);
     }
+
+	m_callback_running = false;
 }
 
 // if priorities allow, plays the sound "snd".
@@ -310,6 +317,9 @@ bool CSound::loadSoundData(const CExeFile &ExeFile)
 
 void CSound::unloadSoundData()
 {
+	while(m_callback_running);
+
+
 	if(m_pAudioRessources)
 		delete m_pAudioRessources;
 	m_pAudioRessources = NULL;

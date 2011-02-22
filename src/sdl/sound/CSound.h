@@ -59,9 +59,8 @@ public:
 
 protected:
 	std::vector<CSoundChannel>	m_soundchannel;
-
 	CAudioResources *m_pAudioRessources;
-
+	bool m_callback_running;
 	SDL_AudioSpec AudioSpec;
 
 private:

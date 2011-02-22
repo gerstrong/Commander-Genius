@@ -134,6 +134,7 @@ bool CAudioVorticon::loadPCSpeakerSound(Uint8 *buffer, const Uint32 buf_size,
 bool CAudioVorticon::loadSound(Uint8 *buffer, const Uint32 buf_size, const std::string& path, const std::string& searchname, unsigned int loadnum)
 {
 	CSoundSlot &current_snd_slot = m_soundslot[loadnum];
+	current_snd_slot.setupAudioSpec(&m_AudioSpec);
 
 	current_snd_slot.unload();
 
@@ -199,7 +200,8 @@ bool CAudioVorticon::loadSoundData()
 
 	Uint32 buffer_size;
 	Uint8 *buffer = loadSoundStream( buffer_size, m_ExeFile.getRawData() );
-	m_soundslot.reserve(40);
+	CSoundSlot zeroslot;
+	m_soundslot.assign(40, zeroslot);
 
 	ok  = loadSound(buffer, buffer_size, DataDirectory, "KEENWALKSND", SOUND_KEEN_WALK);
 	ok &= loadSound(buffer, buffer_size, DataDirectory, "KEENWLK2SND", SOUND_KEEN_WALK2);
