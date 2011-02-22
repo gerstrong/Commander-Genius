@@ -630,8 +630,11 @@ void CPlayerLevel::processFalling()
 			&& !getActionNumber(A_KEEN_JUMP_SHOOTDOWN)
 			&& !getActionNumber(A_KEEN_POGO) )
 	{
+		if ( !getActionNumber(A_KEEN_FALL) )
+		{
+			g_pSound->playSound( SOUND_KEEN_FALL );
+		}
 		setAction(A_KEEN_FALL);
-		g_pSound->playSound( SOUND_KEEN_FALL );
 	}
 
 	if(getActionNumber(A_KEEN_FALL))
