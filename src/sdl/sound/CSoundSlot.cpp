@@ -28,11 +28,7 @@ CSoundSlot::CSoundSlot() :
 m_sounddata(NULL),
 m_soundlength(0),
 m_pAudioSpec(NULL)
-{
-	m_sounddata = NULL;
-	m_soundlength = 0;
-	m_pAudioSpec = NULL;
-}
+{}
 
 void CSoundSlot::openOGGSound(const std::string& filename, SDL_AudioSpec *pspec, Uint8 *&SoundBuffer, Uint32 &SoundLen)
 {

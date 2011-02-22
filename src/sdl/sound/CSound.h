@@ -67,6 +67,7 @@ private:
 	unsigned short m_mixing_channels;
 	Uint8 m_MusicVolume;
 	Uint8 m_SoundVolume;
+	bool m_sound_blaster_mode;
 
     Uint8 *m_pMixedForm;			// Mainly used by the callback function. Declared once and allocated
     								// for the whole program

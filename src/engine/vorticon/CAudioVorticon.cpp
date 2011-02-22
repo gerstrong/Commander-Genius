@@ -12,6 +12,13 @@
 #include <fstream>
 #include <math.h>
 
+/**
+ * This variables describes the possible maximum number of sounds the vorticon keen can have
+ * As the mapping in vorticon is not as flexible we need that in order to be able to switch between hq sounds and
+ * pc speaker sounds.
+ */
+const unsigned int MAX_NUM_SOUNDS = 40;
+
 CAudioVorticon::CAudioVorticon(const CExeFile &ExeFile, const SDL_AudioSpec &AudioSpec) :
 CAudioResources(AudioSpec),
 m_ExeFile(ExeFile)
@@ -134,59 +141,51 @@ bool CAudioVorticon::loadPCSpeakerSound(Uint8 *buffer, const Uint32 buf_size,
 bool CAudioVorticon::loadSound(Uint8 *buffer, const Uint32 buf_size, const std::string& path, const std::string& searchname, unsigned int loadnum)
 {
 	CSoundSlot &current_snd_slot = m_soundslot[loadnum];
+	CSoundSlot &current_hq_snd_slot = m_soundslot[loadnum+MAX_NUM_SOUNDS];
 	current_snd_slot.setupAudioSpec(&m_AudioSpec);
+	current_hq_snd_slot.setupAudioSpec(&m_AudioSpec);
 
 	current_snd_slot.unload();
+	current_hq_snd_slot.unload();
 
 	// If a high quality sound file is available, try to open it.
 	// Otherwise open the classic sounds from the original data files
-	if(current_snd_slot.HQSndLoad(path, searchname))
+	Uint8* buf = NULL;
+	bool ok = false;
+
+	if( m_AudioSpec.format == AUDIO_S8 )
 	{
-		return true;
+		std::vector<Sint8> waveform;
+		ok = loadPCSpeakerSound(buffer, buf_size, waveform, searchname, false, current_snd_slot.priority);
+		buf = (Uint8*)&waveform[0];
+		current_snd_slot.setupWaveForm( buf, waveform.size()*sizeof(Sint8) );
 	}
-	else
+	else if( m_AudioSpec.format == AUDIO_U8 )
 	{
-		Uint8* buf = NULL;
-		int buf_size = 0;
-		bool ok = false;
-
-		if( m_AudioSpec.format == AUDIO_S8 )
-		{
-			std::vector<Sint8> waveform;
-			ok = loadPCSpeakerSound(buffer, buf_size, waveform, searchname, false, current_snd_slot.priority);
-			buf = (Uint8*)&waveform[0];
-			buf_size = waveform.size()*sizeof(Sint8);
-			current_snd_slot.setupWaveForm( buf, buf_size );
-		}
-		else if( m_AudioSpec.format == AUDIO_U8 )
-		{
-			std::vector<Uint8> waveform;
-			ok = loadPCSpeakerSound(buffer, buf_size, waveform, searchname, true, current_snd_slot.priority);
-			buf = (Uint8*)&waveform[0];
-			buf_size = waveform.size()*sizeof(Uint8);
-			current_snd_slot.setupWaveForm( buf, buf_size );
-		}
-		else if( m_AudioSpec.format == AUDIO_U16 )
-		{
-			std::vector<Uint16> waveform;
-			ok = loadPCSpeakerSound(buffer, buf_size, waveform, searchname, false, current_snd_slot.priority);
-			buf = (Uint8*)&waveform[0];
-			buf_size = waveform.size()*sizeof(Uint16);
-			current_snd_slot.setupWaveForm( buf, buf_size );
-		}
-		else if( m_AudioSpec.format == AUDIO_S16 )
-		{
-			std::vector<Sint16> waveform;
-			ok = loadPCSpeakerSound(buffer, buf_size, waveform, searchname, true, current_snd_slot.priority);
-			buf = (Uint8*)&waveform[0];
-			buf_size = waveform.size()*sizeof(Sint16);
-			current_snd_slot.setupWaveForm( buf, buf_size );
-		}
-
-		return ok;
+		std::vector<Uint8> waveform;
+		ok = loadPCSpeakerSound(buffer, buf_size, waveform, searchname, true, current_snd_slot.priority);
+		buf = (Uint8*)&waveform[0];
+		current_snd_slot.setupWaveForm( buf, waveform.size()*sizeof(Uint8) );
+	}
+	else if( m_AudioSpec.format == AUDIO_U16 )
+	{
+		std::vector<Uint16> waveform;
+		ok = loadPCSpeakerSound(buffer, buf_size, waveform, searchname, false, current_snd_slot.priority);
+		buf = (Uint8*)&waveform[0];
+		current_snd_slot.setupWaveForm( buf, waveform.size()*sizeof(Uint16) );
+	}
+	else if( m_AudioSpec.format == AUDIO_S16 )
+	{
+		std::vector<Sint16> waveform;
+		ok = loadPCSpeakerSound(buffer, buf_size, waveform, searchname, true, current_snd_slot.priority);
+		buf = (Uint8*)&waveform[0];
+		current_snd_slot.setupWaveForm( buf,  waveform.size()*sizeof(Sint16) );
 	}
 
-	return false;
+	current_hq_snd_slot.HQSndLoad(path, searchname);
+
+	return ok;
+
 }
 
 bool CAudioVorticon::loadSoundData()
@@ -201,7 +200,7 @@ bool CAudioVorticon::loadSoundData()
 	Uint32 buffer_size;
 	Uint8 *buffer = loadSoundStream( buffer_size, m_ExeFile.getRawData() );
 	CSoundSlot zeroslot;
-	m_soundslot.assign(40, zeroslot);
+	m_soundslot.assign(2*MAX_NUM_SOUNDS, zeroslot);
 
 	ok  = loadSound(buffer, buffer_size, DataDirectory, "KEENWALKSND", SOUND_KEEN_WALK);
 	ok &= loadSound(buffer, buffer_size, DataDirectory, "KEENWLK2SND", SOUND_KEEN_WALK2);

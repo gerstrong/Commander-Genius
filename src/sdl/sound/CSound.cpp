@@ -35,6 +35,7 @@ m_callback_running(false),
 m_mixing_channels(0),
 m_MusicVolume(SDL_MIX_MAXVOLUME),
 m_SoundVolume(SDL_MIX_MAXVOLUME),
+m_sound_blaster_mode(false),
 m_pMixedForm(NULL),		// Mainly used by the callback function. Declared once and allocated
 mp_SndSlotMap(NULL),
 m_OPL_Player(AudioSpec)
@@ -148,7 +149,6 @@ void CSound::destroy(void)
 		m_soundchannel.clear();
 
 	// Shutdown the OPL Emulator here!
-
 	g_pLogFile->ftextOut("SoundDrv_Stop(): shut down.<br>");
 
 	m_OPL_Player.shutdown();
@@ -265,14 +265,16 @@ void CSound::playStereosound(GameSound snd, char mode, short balance)
 
 	std::vector<CSoundChannel>::iterator snd_chnl;
 	CSoundSlot *mp_Slots = m_pAudioRessources->getSlotPtr();
-	const unsigned char slotplay = mp_SndSlotMap[snd];
+	unsigned char slotplay = mp_SndSlotMap[snd];
+	const unsigned int speaker_snds_end_off = m_pAudioRessources->getNumberofSounds()/2;
+
+	if(m_sound_blaster_mode && mp_Slots[slotplay].getSoundData())
+		slotplay += speaker_snds_end_off;
+
 	CSoundSlot &new_slot = mp_Slots[slotplay];
 
-	if (mode==PLAY_NORESTART)
-	{
-		if (isPlaying(snd))
-			return;
-	}
+	if (mode==PLAY_NORESTART && isPlaying(snd))
+		return;
 
 	// if a forced sound is playing then let it play
 	if (forcedisPlaying()) return;

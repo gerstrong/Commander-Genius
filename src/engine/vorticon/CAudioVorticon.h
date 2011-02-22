@@ -11,6 +11,7 @@
 #include "common/CAudioResources.h"
 #include "fileio/CExeFile.h"
 
+
 // Map for the vorticon sound slots
 const unsigned char SndSlotMapVort[]=
 {

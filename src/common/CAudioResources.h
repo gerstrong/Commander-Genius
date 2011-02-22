@@ -146,10 +146,9 @@ public:
 	bool readISFintoWaveForm( CSoundSlot &soundslot, const byte *imfdata, const unsigned int bytesize );
 
 	CSoundSlot *getSlotPtr(){	return &m_soundslot[0];	}
+	unsigned int getNumberofSounds() {	return m_soundslot.size();	}
 
 protected:
-	//static const int MAX_SOUNDS = 200;
-
 	std::vector<CSoundSlot>m_soundslot;
 	const SDL_AudioSpec &m_AudioSpec;
 };

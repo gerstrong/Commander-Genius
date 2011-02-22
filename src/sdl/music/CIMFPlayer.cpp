@@ -270,6 +270,9 @@ void CIMFPlayer::readBuffer(Uint8* buffer, Uint32 length)
         	m_opl_emulator.Chip__WriteReg( Chunk.al_reg, Chunk.al_dat );
         }while(!m_IMF_Data.atStart());
 
+        if(m_IMF_Data.atStart())
+        	m_IMFReadTimeCount = m_TimeCount = 0;
+
         m_TimeCount++;
 
         m_numreadysamples = m_samplesPerMusicTick;
