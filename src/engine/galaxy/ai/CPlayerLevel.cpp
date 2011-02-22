@@ -498,11 +498,11 @@ void CPlayerLevel::processJumping()
 			m_jumpheight = 0;
 
 		// Not jumping? Let's see if we can prepare the player to do so
-		if(m_playcontrol[PA_JUMP] and
-				(getActionNumber(A_KEEN_STAND) or
-						getActionNumber(A_KEEN_RUN) or
-						getActionNumber(A_KEEN_POLE) or
-						getActionNumber(A_KEEN_POLE_CLIMB) or
+		if(m_playcontrol[PA_JUMP] &&
+				(getActionNumber(A_KEEN_STAND) ||
+						getActionNumber(A_KEEN_RUN) ||
+						getActionNumber(A_KEEN_POLE) ||
+						getActionNumber(A_KEEN_POLE_CLIMB) ||
 						getActionNumber(A_KEEN_POLE_SLIDE)) )
 		{
 			yinertia = -140;
@@ -553,7 +553,7 @@ void CPlayerLevel::processPogo()
 		// Not pogoing? Let's see if we can prepare the player to do so
 		if( m_playcontrol[PA_POGO] )
 		{
-			if( getActionNumber(A_KEEN_STAND) or getActionNumber(A_KEEN_RUN) )
+			if( getActionNumber(A_KEEN_STAND) || getActionNumber(A_KEEN_RUN) )
 			{
 				if(m_playcontrol[PA_JUMP])
 					yinertia = POGO_START_INERTIA_IMPOSSIBLE;
@@ -565,7 +565,7 @@ void CPlayerLevel::processPogo()
 				g_pSound->playSound( SOUND_KEEN_POGO );
 				m_pogotoggle = true;
 			}
-			else if( getActionNumber(A_KEEN_FALL) or getActionNumber(A_KEEN_JUMP) )
+			else if( getActionNumber(A_KEEN_FALL) || getActionNumber(A_KEEN_JUMP) )
 			{
 				m_jumpheight = MAX_POGOHEIGHT;
 				setAction(A_KEEN_POGO);
@@ -576,7 +576,7 @@ void CPlayerLevel::processPogo()
 	else
 	{
 		// while button is pressed, make the player jump higher
-		if( (m_playcontrol[PA_JUMP] and m_jumpheight <= MAX_POGOHEIGHT) or
+		if( (m_playcontrol[PA_JUMP] && m_jumpheight <= MAX_POGOHEIGHT) ||
 				m_jumpheight <= MIN_POGOHEIGHT )
 		{
 			m_jumpheight++;
@@ -630,8 +630,12 @@ void CPlayerLevel::processFalling()
 			&& !getActionNumber(A_KEEN_JUMP_SHOOTDOWN)
 			&& !getActionNumber(A_KEEN_POGO) )
 	{
+		//This will need additional conditions to handle coming off of a pole.
+		if ( getActionNumber(A_KEEN_RUN) )
+		{
+			g_pSound->playSound( SOUND_KEEN_FALL );
+		}
 		setAction(A_KEEN_FALL);
-		g_pSound->playSound( SOUND_KEEN_FALL );
 	}
 
 	if(getActionNumber(A_KEEN_FALL))

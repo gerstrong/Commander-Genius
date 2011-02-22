@@ -70,6 +70,7 @@ void CSpriteItem::getTouchedBy(CObject &theObject)
 			case 113: pPlayer->m_Inventory.m_points += 5000;	break;
 			default: break;
 			}
+			g_pSound->playSound( SOUND_GET_BONUS );
 		}
 
 		// raygun
@@ -85,38 +86,32 @@ void CSpriteItem::getTouchedBy(CObject &theObject)
 
 		// Now add the stuff to the inventory
 
-		switch(m_basesprite)
+		if( m_basesprite >= 118 && m_basesprite <= 124 )
 		{
-		case 118:
-			pPlayer->m_Inventory.m_gem.red++;
-			break;
-		case 120:
-			pPlayer->m_Inventory.m_gem.yellow++;
-			break;
-		case 122:
-			pPlayer->m_Inventory.m_gem.blue++;
-			break;
-		case 124:
-			pPlayer->m_Inventory.m_gem.green++;
-			break;
-		default:
-			break;
-		}
-
-		switch ( m_basesprite )
-		{
-			case 103: case 105: case 107: case 109: case 111: case 113:
-				g_pSound->playSound( SOUND_GET_BONUS );
+			switch(m_basesprite)
+			{
+			case 118:
+				pPlayer->m_Inventory.m_gem.red++;
 				break;
-			case 115:
-				pPlayer->m_Inventory.m_lifes++;
-				g_pSound->playSound( SOUND_EXTRA_LIFE );
+			case 120:
+				pPlayer->m_Inventory.m_gem.yellow++;
 				break;
-			case 118: case 120: case 122: case 124:
-				g_pSound->playSound( SOUND_GET_GEM );
+			case 122:
+				pPlayer->m_Inventory.m_gem.blue++;
+				break;
+			case 124:
+				pPlayer->m_Inventory.m_gem.green++;
 				break;
 			default:
 				break;
+			}
+			g_pSound->playSound( SOUND_GET_GEM );
+		}
+
+		if ( m_basesprite == 115 )
+		{
+			pPlayer->m_Inventory.m_lifes++;
+			g_pSound->playSound( SOUND_EXTRA_LIFE );
 		}
 	}
 }
