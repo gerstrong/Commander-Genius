@@ -319,7 +319,6 @@ void CSound::unloadSoundData()
 {
 	while(m_callback_running);
 
-
 	if(m_pAudioRessources)
 		delete m_pAudioRessources;
 	m_pAudioRessources = NULL;
