@@ -23,7 +23,7 @@ m_must_restart_sounddriver(false)
 {
 	m_current = -1;
 	
-	mp_Dialog = new CDialog(20, 6, INPUT_MODE_OPTION,m_dlg_theme);
+	mp_Dialog = new CDialog(30, 6, INPUT_MODE_OPTION,m_dlg_theme);
 	
 	m_Rate = g_pSound->getAudioSpec().freq;
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 1, "Rate: " + itoa(m_Rate) +" kHz");
@@ -43,12 +43,18 @@ m_must_restart_sounddriver(false)
 	else if( m_Format == AUDIO_S16 ) mp_Dialog->m_dlgobject.at(1)->m_Option->m_value = 2;
 	
 	m_Mode = g_pSound->getAudioSpec().channels - 1;
-	buf = "Mode: ";
+	buf = "Channels: ";
 	buf += m_Mode ? "Stereo": "Mono";
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 3, buf);
 	mp_Dialog->m_dlgobject.at(2)->m_Option->m_value = g_pSound->getAudioSpec().channels;
-	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, "Adjust Volume");
 	
+	buf = "Mode: ";
+	buf += m_Soundblaster ? "Soundblaster/Adlib" : "PC Speaker";
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 4, buf);
+	mp_Dialog->m_dlgobject.at(3)->m_Option->m_value = g_pSound->getSoundBlasterMode();
+
+	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 5, "Adjust Volume");
+
 }
 
 void CAudioSettings::processSpecific()
@@ -63,7 +69,9 @@ void CAudioSettings::processSpecific()
 			bool wasPlaying = g_pMusicPlayer->playing();
 
 			// Check if the music is playing, stop it and restart it, if necessary
-			if(m_Rate != g_pSound->getAudioSpec().freq or m_Format != g_pSound->getAudioSpec().format or m_Mode != g_pSound->getAudioSpec().channels - 1 )
+			if(m_Rate != g_pSound->getAudioSpec().freq ||
+					m_Format != g_pSound->getAudioSpec().format ||
+					m_Mode != g_pSound->getAudioSpec().channels - 1 )
 			{
 				g_pMusicPlayer->stop();
 
@@ -72,6 +80,8 @@ void CAudioSettings::processSpecific()
 				g_pSound->setSoundmode(m_Rate, m_Mode ? true : false, m_Format);
 				m_must_restart_sounddriver |= true;
 			}
+
+			g_pSound->setSoundBlasterMode(m_Soundblaster);
 
 			Settings.saveDrvCfg();
 
@@ -133,6 +143,14 @@ void CAudioSettings::processSpecific()
 				m_must_restart_sounddriver |= true;
 			}
 			else if(m_selection == 3)
+			{
+				m_Soundblaster = !m_Soundblaster;
+				buf = "Mode: ";
+				buf += m_Soundblaster ? "Soundblaster/Adlib" : "PC Speaker";
+				mp_Dialog->setObjectText(3, buf);
+				mp_Dialog->m_dlgobject.at(3)->m_Option->m_value = g_pSound->getSoundBlasterMode();
+			}
+			else if(m_selection == 4)
 			{
 				mp_VolumeMenu = new CVolumeSettings(m_dlg_theme);
 				m_suspended = true;

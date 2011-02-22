@@ -19,6 +19,35 @@ m_ExeFile(ExeFile)
 {}
 
 /**
+ * Caution: This is Galaxy only and will be replaced
+ * This function loads the PC Speaker sounds to CG (Galaxy Version, similar to Vorticon Version but not equal.)
+ */
+
+bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const byte *pcsdata, const unsigned int bytesize)
+{
+	byte *pcsdata_ptr = (byte*)pcsdata;
+	const longword size = READLONGWORD(pcsdata_ptr);
+	soundslot.priority = READWORD(pcsdata_ptr);
+	soundslot.setupAudioSpec(&m_AudioSpec);
+
+	std::vector<Sint16> waveform;
+	Uint64 freqtimer = 0;
+	int AMP = 0x4000;
+	Sint16 wave = AMP;
+
+	for(unsigned pos=0 ; pos<size ; pos++ )
+	{
+		// I don't know why we have to shift 6 bytes, but it reproduces the right sound!
+		word sample = *(pcsdata_ptr++);
+		generateWave(waveform, sample<<6, wave, freqtimer, true, AMP);
+	}
+
+	soundslot.setupWaveForm((Uint8*)&waveform[0], waveform.size()*sizeof(Sint16));
+
+	return true;
+}
+
+/**
  * \brief 	This function will load teh sounds using other dictionaries which are embedded in the Exe File.
  * 			Only galaxy supports that feature, and the original games will read two files form the EXE-file
  * 			AUDIOHED and AUDIODICT to get the sounds.
@@ -104,7 +133,7 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 			}
 		}
 
-		for(unsigned int snd=al_snd_start ; snd<slot ; snd++)
+		for(unsigned int snd=0 ; snd<slot ; snd++)
 		{
 			/// Now we have all the data we need.
 			// decompress every file of AUDIO.CK? using huffman decompression algorithm
@@ -120,7 +149,10 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 
 				Huffman.expand( (byte*)(AudioCompFileData+audio_comp_data_start), imfdata, audio_end-audio_comp_data_start, outsize);
 
-				readISFintoWaveForm( m_soundslot[snd-al_snd_start], imfdata, outsize );
+				if(snd>=al_snd_start)
+					readISFintoWaveForm( m_soundslot[snd], imfdata, outsize );
+				else
+					readPCSpeakerSoundintoWaveForm( m_soundslot[snd], imfdata, outsize );
 			}
 		}
 	}

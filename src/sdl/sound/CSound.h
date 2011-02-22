@@ -50,9 +50,11 @@ public:
 
 	SDL_AudioSpec	getAudioSpec() const  { return AudioSpec; }
 	unsigned short 	getMixingchannels() const { return m_mixing_channels; }
+	bool getSoundBlasterMode() {	return m_sound_blaster_mode;	}
 	COPLEmulator *getOPLEmulatorPtr() { return &m_OPL_Player; }
 
 	void setSoundmode(int freq, bool stereo, Uint16 format);
+	void setSoundBlasterMode(const bool value) {	m_sound_blaster_mode = value;	}
 
 	bool loadSoundData(const CExeFile &ExeFile);
 	void unloadSoundData();

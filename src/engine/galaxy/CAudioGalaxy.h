@@ -88,6 +88,8 @@ class CAudioGalaxy : public CAudioResources {
 public:
 	CAudioGalaxy(const CExeFile &ExeFile, const SDL_AudioSpec &AudioSpec);
 
+	bool readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const byte *pcsdata, const unsigned int bytesize);
+
 	bool LoadFromAudioCK(const CExeFile& ExeFile);
 	bool loadSoundData();
 	void unloadSound();

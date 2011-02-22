@@ -28,6 +28,7 @@ private:
 	int m_current; //used to show what is currently selected without actually changing the value
 	Uint16 m_Format;
 	int m_Mode;
+	bool m_Soundblaster;
 	CVolumeSettings *mp_VolumeMenu;
 	bool m_must_restart_sounddriver;
 };

@@ -68,6 +68,7 @@ bool CSettings::saveDrvCfg()
 	Configuration.WriteInt("Audio", "channels", (g_pSound->getAudioSpec()).channels);
 	Configuration.WriteInt("Audio", "format", (g_pSound->getAudioSpec()).format);
 	Configuration.WriteInt("Audio", "rate", (g_pSound->getAudioSpec()).freq);
+	Configuration.SetKeyword("Audio", "sndblaster", g_pSound->getSoundBlasterMode());
 	Configuration.WriteInt("Audio", "mixerch", (g_pSound->getMixingchannels()));
 	Configuration.WriteInt("Audio", "musicvol", (g_pSound->getMusicVolume()/8));
 	Configuration.WriteInt("Audio", "soundvol", (g_pSound->getSoundVolume()/8));
@@ -127,10 +128,14 @@ bool CSettings::loadDrvCfg()
 
 
 		int audio_rate, audio_channels, audio_format;
+		bool audio_sndblaster;
 		Configuration.ReadInteger("Audio", "rate", &audio_rate, 44000);
 		Configuration.ReadInteger("Audio", "channels", &audio_channels, 2);
 		Configuration.ReadInteger("Audio", "format", &audio_format, AUDIO_U8);
+		Configuration.ReadKeyword("Audio", "sndblaster", &audio_sndblaster, false);
 		g_pSound->setSoundmode(audio_rate, audio_channels, audio_format);
+		g_pSound->setSoundBlasterMode(audio_sndblaster);
+
 
 		int sound_vol, music_vol;
 		Configuration.ReadInteger("Audio", "musicvol", &music_vol, SDL_MIX_MAXVOLUME);

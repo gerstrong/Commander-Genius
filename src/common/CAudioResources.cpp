@@ -19,8 +19,6 @@ m_AudioSpec(AudioSpec)
 
 bool CAudioResources::readISFintoWaveForm( CSoundSlot &soundslot, const byte *imfdata, const unsigned int bytesize )
 {
-	// TODO:Support for priority is muy important :D
-
 	byte *imfdata_ptr = (byte*)imfdata;
 	const longword size = READLONGWORD(imfdata_ptr);
 	soundslot.priority = READWORD(imfdata_ptr);
