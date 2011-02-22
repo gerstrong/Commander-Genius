@@ -164,6 +164,7 @@ void CPlayerWM::finishLevel(Uint16 object)
 
 		CFlag *pFlag = new CFlag(mp_Map, src, dst);
 		m_ObjectPtrs.push_back(pFlag);
+		g_pSound->playSound( SOUND_FLAG_APPEAR );
 
 		// Mark the tileinfo on the map as marked!!
 		mp_Map->setTile( x, y, 0, true, 2);

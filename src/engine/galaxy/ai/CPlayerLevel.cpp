@@ -299,6 +299,10 @@ void CPlayerLevel::processFiring()
 				g_pSound->playSound( SOUND_KEEN_FIRE );
 				m_Inventory.m_bullets--;
 			}
+			else
+			{
+				g_pSound->playSound( SOUND_GUN_CLICK );
+			}
 		}
 	}
 
@@ -558,6 +562,7 @@ void CPlayerLevel::processPogo()
 
 				m_jumpheight = 0;
 				setAction(A_KEEN_POGO);
+				g_pSound->playSound( SOUND_KEEN_POGO );
 				m_pogotoggle = true;
 			}
 			else if( getActionNumber(A_KEEN_FALL) or getActionNumber(A_KEEN_JUMP) )
@@ -592,6 +597,7 @@ void CPlayerLevel::processPogo()
 				yinertia = POGO_START_INERTIA_MAX;
 			else
 				yinertia = POGO_START_INERTIA;
+
 			m_jumpheight = 0;
 			g_pSound->playSound( SOUND_KEEN_POGO );
 		}
@@ -810,6 +816,7 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
 					break;
 
 				setAction(A_KEEN_SLIDE);
+				g_pSound->playSound( SOUND_DOOR_OPEN );
 			}
 		}
 	}
@@ -825,6 +832,8 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
 		const int lc_y = l_y>>CSF;
 		mp_Map->setTile( lc_x, lc_y, 0, true, 1 );
 		m_ObjectPtrs.push_back(new CItemEffect(mp_Map, lc_x<<CSF, lc_y<<CSF, 215, ANIMATE));
+		m_Inventory.m_drops += 1;
+		g_pSound->playSound( SOUND_GET_DROP );
 	}
 
 	/// Tile Items (Sprite are handled in the CSpriteItem Class)
@@ -847,7 +856,7 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
 			case 25: m_Inventory.m_points += 2000;	g_pSound->playSound( SOUND_GET_BONUS );	break;
 			case 26: m_Inventory.m_points += 5000;	g_pSound->playSound( SOUND_GET_BONUS );	break;
 			case 27: m_Inventory.m_lifes++;	g_pSound->playSound( SOUND_EXTRA_LIFE );	break;
-			case 28: m_Inventory.m_bullets += 5;	g_pSound->playSound( SOUND_GET_BONUS );	break;
+			case 28: m_Inventory.m_bullets += 5;	g_pSound->playSound( SOUND_GET_AMMO );	break;
 			default: break;
 			}
 		}

@@ -8,6 +8,7 @@
 #include "CSpriteItem.h"
 #include "CItemEffect.h"
 #include "CPlayerLevel.h"
+#include "sdl/sound/CSound.h"
 
 namespace galaxy {
 
@@ -76,6 +77,7 @@ void CSpriteItem::getTouchedBy(CObject &theObject)
 		{
 			pPlayer->m_Inventory.m_bullets += 5;
 			newanimsprite = got_sprite_item_pics[11];
+			g_pSound->playSound( SOUND_GET_AMMO );
 		}
 
 		m_ObjectPtrs.push_back(new CItemEffect(mp_Map, getXPosition(), getYPosition(), newanimsprite));
@@ -99,6 +101,22 @@ void CSpriteItem::getTouchedBy(CObject &theObject)
 			break;
 		default:
 			break;
+		}
+
+		switch ( m_basesprite )
+		{
+			case 103: case 105: case 107: case 109: case 111: case 113:
+				g_pSound->playSound( SOUND_GET_BONUS );
+				break;
+			case 115:
+				pPlayer->m_Inventory.m_lifes++;
+				g_pSound->playSound( SOUND_EXTRA_LIFE );
+				break;
+			case 118: case 120: case 122: case 124:
+				g_pSound->playSound( SOUND_GET_GEM );
+				break;
+			default:
+				break;
 		}
 	}
 }

@@ -300,7 +300,7 @@ void CEGAGraphicsGalaxy::extractTile(SDL_Surface *sfc, std::vector<unsigned char
 }
 
 /**
- * \brief 	This function extracts a tile from the galaxy graphics map, and converts it properly to a
+ * \brief 	This function extracts a masked tile from the galaxy graphics map, and converts it properly to a
  * 			SDL Surface
  */
 void CEGAGraphicsGalaxy::extractMaskedTile(SDL_Surface *sfc, std::vector<unsigned char> &data,
