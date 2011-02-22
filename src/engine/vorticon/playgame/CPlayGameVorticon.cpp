@@ -167,7 +167,7 @@ bool CPlayGameVorticon::init()
 		m_MessageBoxes.push_back(new CMessageBox(g_pBehaviorEngine->getString("EP3_MORTIMER4"),false, true));
 		m_MessageBoxes.push_back(new CMessageBox(g_pBehaviorEngine->getString("EP3_MORTIMER5"),false, true));
 		m_MessageBoxes.push_back(new CMessageBox(g_pBehaviorEngine->getString("EP3_MORTIMER6"),false, true));
-		g_pSound->playSound(SOUND_MORTIMER, PLAY_FORCE);
+		g_pSound->playSound(SOUND_MORTIMER);
 	}
 
 	return true;

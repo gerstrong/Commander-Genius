@@ -201,6 +201,8 @@ CIMFPlayer::~CIMFPlayer()
 
 bool CIMFPlayer::open()
 {
+	m_IMFReadTimeCount = m_TimeCount = 0;
+
 	return (!m_IMF_Data.empty());
 }
 
