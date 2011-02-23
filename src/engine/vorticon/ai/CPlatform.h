@@ -8,8 +8,8 @@
 #ifndef CPLATFORM_H_
 #define CPLATFORM_H_
 
-#include "../../../common/CObject.h"
-#include "../../../common/CPlayer.h"
+#include "common/CObject.h"
+#include "common/CPlayer.h"
 #include <vector>
 
 class CPlatform : public CObject
