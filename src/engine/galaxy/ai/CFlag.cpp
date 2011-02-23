@@ -6,6 +6,7 @@
  */
 
 #include "CFlag.h"
+#include "sdl/sound/CSound.h"
 
 namespace galaxy {
 
@@ -78,6 +79,7 @@ void CFlag::processFlying()
 	{
 		processState = &CFlag::processWaving;
 		m_baseframe = WAVING_BASEFRAME;
+		g_pSound->playSound( SOUND_FLAG_LAND );
 	}
 }
 
