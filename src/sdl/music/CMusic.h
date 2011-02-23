@@ -33,7 +33,7 @@ public:
 	void play();
 	void pause();
 	void stop();
-	void readBuffer(Uint8* buffer, size_t length); // Reads the next chunk of the ogg stream
+	void readWaveform(Uint8* buffer, size_t length); // Reads the next chunk of the ogg stream
 	bool LoadfromMusicTable(const std::string &gamepath, const std::string &levelfilename);
 
 	bool playing()

@@ -208,28 +208,43 @@ bool CIMFPlayer::open()
 
 void CIMFPlayer::close()
 {
-	if(m_numreadysamples)
-		m_opl_emulator.Chip__GenerateBlock2( m_numreadysamples, m_mix_buffer );
+	m_numreadysamples = 0;
+	m_opl_emulator.ShutAL();
 
 	play(false);
 	m_IMF_Data.gotoStart();
 	return;
 }
 
-template<typename T>
-void CIMFPlayer::OPLUpdate(T *buffer, const unsigned int length)
+void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
 {
 	m_opl_emulator.Chip__GenerateBlock2( length, m_mix_buffer );
 
     // Mix into the destination buffer, doubling up into stereo.
-    for (unsigned int i=0; i<length; ++i)
-    {
-    	for (unsigned int j=0; j<m_AudioDevSpec.channels; j++)
-    	{
-    		*buffer = m_mix_buffer[i] + m_AudioDevSpec.silence;
-    		buffer++;
-    	}
-    }
+
+	if(m_AudioDevSpec.format == AUDIO_S16)
+	{
+		Sint16 *buf16 = (Sint16*)buffer;
+		for (unsigned int i=0; i<length; ++i)
+		{
+			for (unsigned int j=0; j<m_AudioDevSpec.channels; j++)
+			{
+				*buf16 = m_mix_buffer[i] + m_AudioDevSpec.silence;
+				buf16++;
+			}
+		}
+	}
+	else if(m_AudioDevSpec.format == AUDIO_U8)
+	{
+		for (unsigned int i=0; i<length; ++i)
+		{
+			for (unsigned int j=0; j<m_AudioDevSpec.channels; j++)
+			{
+				*buffer = m_mix_buffer[i] + m_AudioDevSpec.silence;
+				buffer++;
+			}
+		}
+	}
 }
 
 void CIMFPlayer::readBuffer(Uint8* buffer, Uint32 length)
@@ -238,7 +253,8 @@ void CIMFPlayer::readBuffer(Uint8* buffer, Uint32 length)
 		return;
 
 	/// if a delay of the instruments is pending, play it
-    Uint32 sampleslen = length/(m_AudioDevSpec.channels*sizeof(Sint16));
+    //Uint32 sampleslen = length/(m_AudioDevSpec.channels*sizeof(Sint16));
+	Uint32 sampleslen = m_AudioDevSpec.samples;
 
     // while the waveform is not filled
     while(1)
@@ -248,14 +264,14 @@ void CIMFPlayer::readBuffer(Uint8* buffer, Uint32 length)
             if(m_numreadysamples < sampleslen)
             {
             	// Every time a tune has been played call this.
-            	OPLUpdate( (Sint16*) buffer, m_numreadysamples);
+            	OPLUpdate( buffer, m_numreadysamples);
             	buffer += m_numreadysamples*m_AudioDevSpec.channels*sizeof(Sint16);
                 sampleslen -= m_numreadysamples;
             }
             else
             {
             	// Read the last stuff left in the emulators buffer. At this point the stream buffer is nearly full
-            	OPLUpdate( (Sint16*) buffer, sampleslen);
+            	OPLUpdate( buffer, sampleslen);
             	m_numreadysamples -= sampleslen;
                 break;
             }

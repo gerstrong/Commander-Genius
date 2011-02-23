@@ -205,7 +205,7 @@ void CSound::callback(void *unused, Uint8 *stream, int len)
 
     if (g_pMusicPlayer->playing())
     {
-    	g_pMusicPlayer->readBuffer(m_pMixedForm.get(), len);
+    	g_pMusicPlayer->readWaveform(m_pMixedForm.get(), len);
     	mixAudio(stream, m_pMixedForm.get(), len, m_MusicVolume, AudioSpec.format);
     }
 
@@ -249,7 +249,6 @@ void CSound::playStereosound(GameSound snd, char mode, short balance)
 {
 	if( m_mixing_channels == 0 ) return;
 
-	std::vector<CSoundChannel>::iterator snd_chnl;
 	CSoundSlot *mp_Slots = m_pAudioRessources->getSlotPtr();
 	unsigned char slotplay = mp_SndSlotMap[snd];
 	const unsigned int speaker_snds_end_off = m_pAudioRessources->getNumberofSounds()/2;
@@ -273,6 +272,7 @@ void CSound::playStereosound(GameSound snd, char mode, short balance)
 		stopAllSounds();
 
 	// first try to find an empty channel
+	std::vector<CSoundChannel>::iterator snd_chnl;
 	for( snd_chnl = m_soundchannel.begin() ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
 	{
 		CSoundSlot &current_slot = mp_Slots[snd_chnl->getCurrentsound()];

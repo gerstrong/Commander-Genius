@@ -46,9 +46,7 @@ bool CMusic::load(const std::string &musicfile)
 		std::string extension = GetFileExtension(musicfile);
 
 		if(extension == "imf")
-		{
 			mp_player = new CIMFPlayer(musicfile, m_AudioSpec);
-		}
 		else if(extension == "ogg")
 		{
 #if defined(OGG) || defined(TREMOR)
@@ -112,7 +110,7 @@ void CMusic::stop()
 }
 
 // length only refers to the part(buffer) that has to be played
-void CMusic::readBuffer(Uint8* buffer, size_t length)
+void CMusic::readWaveform(Uint8* buffer, size_t length)
 {
 	if( !mp_player )
 		return;
@@ -129,7 +127,7 @@ bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &
 	bool fileloaded = false;
     std::ifstream Tablefile;
 
-    std::string musicpath = getResourceFilename("music/table.cfg", gamepath, false, true);
+    std::string musicpath = getResourceFilename(JoinPaths("music", "table.cfg"), gamepath, false, true);
 
     if(musicpath != "")
     	fileloaded = OpenGameFileR(Tablefile, musicpath);
@@ -150,7 +148,7 @@ bool CMusic::LoadfromMusicTable(const std::string &gamepath, const std::string &
     			Tablefile.get(c_buf, 256);
     			str_buf = c_buf;
     			TrimSpaces(str_buf);
-    			std::string filename = getResourceFilename("music/" + str_buf, gamepath, false, true);
+    			std::string filename = getResourceFilename(JoinPaths("music", str_buf), gamepath, false, true);
     			if( load(filename) )
     				play();
     			Tablefile.close();

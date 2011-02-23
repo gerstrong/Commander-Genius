@@ -30,8 +30,7 @@ public:
 
 	~CIMFPlayer();
 
-	template<typename T>
-	void OPLUpdate(T *buffer, const unsigned int length);
+	void OPLUpdate(byte *buffer, const unsigned int length);
 
 	bool open();
 	void close();
