@@ -23,6 +23,7 @@
 #include "engine/galaxy/ai/CPlayerWM.h"
 #include "engine/galaxy/ai/CPlayerLevel.h"
 #include "engine/galaxy/ai/CSpriteItem.h"
+#include "engine/galaxy/ai/CPlatform.h"
 
 #include <fstream>
 
@@ -283,7 +284,7 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 		m_ObjectPtr.pop_back();
 	}
 
-	//std::ofstream File("objlayer.txt");
+	std::ofstream File("objlayer.txt");
 
 	// he we go to the adding objects
 	data_ptr = start_data;
@@ -293,12 +294,12 @@ void CMapLoaderGalaxy::spawnFoes(CMap &Map)
 		{
 			addFoe(Map, *data_ptr, x, y);
 			data_ptr++;
-			//File << *data_ptr << " ";
+			File << *data_ptr << " ";
 		}
-		//File << std::endl;
+		File << std::endl;
 	}
 
-	//File.close();
+	File.close();
 }
 
 /**
@@ -343,14 +344,19 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 		p_newfoe = new galaxy::CPlayerLevel(&Map, x, y, m_ObjectPtr, (foe==1) ? RIGHT : LEFT, m_Inventory);
 		break;
 
+
 	case 3:
 		// This is the player on map
 		// Add the Camera into the game scene and attach it to this player
 		p_newfoe = new galaxy::CPlayerWM(&Map, x, y, m_ObjectPtr, m_Inventory);
 		break;
 
-	case 33:
+	case 30:
+		p_newfoe = new galaxy::CPlatform(&Map, x, y, NONE);
+		break;
 
+	case 33:
+		// Place Miragia in Episode 4 on the Map
 		p_newfoe = new galaxy::CMiragia(&Map, Location);
 		break;
 
