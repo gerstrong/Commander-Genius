@@ -78,16 +78,25 @@ bool CMusic::load(const std::string &musicfile)
 
 void CMusic::reload()
 {
+	if(!mp_player)
+		return;
+
 	mp_player->reload();
 }
 
 void CMusic::play()
 {
+	if(!mp_player)
+		return;
+
 	mp_player->play(true);
 }
 
 void CMusic::pause()
 {
+	if(!mp_player)
+		return;
+
 	mp_player->play(false);
 }
 
