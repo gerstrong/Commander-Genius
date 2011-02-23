@@ -143,7 +143,7 @@ public:
 		}
 	}
 
-	bool readISFintoWaveForm( CSoundSlot &soundslot, const byte *imfdata, const unsigned int bytesize );
+	bool readISFintoWaveForm( CSoundSlot &soundslot, const byte *imfdata, const unsigned int bytesize, const Uint8 formatsize );
 
 	CSoundSlot *getSlotPtr(){	return &m_soundslot[0];	}
 	unsigned int getNumberofSounds() {	return m_soundslot.size();	}

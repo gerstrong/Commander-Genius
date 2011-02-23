@@ -22,27 +22,40 @@ m_ExeFile(ExeFile)
  * Caution: This is Galaxy only and will be replaced
  * This function loads the PC Speaker sounds to CG (Galaxy Version, similar to Vorticon Version but not equal.)
  */
-
-bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const byte *pcsdata, const unsigned int bytesize)
+bool CAudioGalaxy::readPCSpeakerSoundintoWaveForm(CSoundSlot &soundslot, const byte *pcsdata, const unsigned int bytesize, const Uint8 formatsize)
 {
 	byte *pcsdata_ptr = (byte*)pcsdata;
 	const longword size = READLONGWORD(pcsdata_ptr);
 	soundslot.priority = READWORD(pcsdata_ptr);
 	soundslot.setupAudioSpec(&m_AudioSpec);
 
+
 	std::vector<Sint16> waveform;
 	Uint64 freqtimer = 0;
-	int AMP = 0x4000;
+	int AMP = (formatsize == 2) ? 0x4000 : 0x40;
 	Sint16 wave = AMP;
 
 	for(unsigned pos=0 ; pos<size ; pos++ )
 	{
 		// I don't know why we have to shift 6 bytes, but it reproduces the right sound!
 		word sample = *(pcsdata_ptr++);
-		generateWave(waveform, sample<<6, wave, freqtimer, true, AMP);
+		if(formatsize == 2)
+			generateWave(waveform, sample<<6, wave, freqtimer, true, AMP);
+		else
+			generateWave(waveform, sample, wave, freqtimer, true, AMP);
 	}
 
-	soundslot.setupWaveForm((Uint8*)&waveform[0], waveform.size()*sizeof(Sint16));
+	if(formatsize == 1)
+	{
+		std::vector<Uint8> wave8;
+		std::vector<Sint16>::iterator it = waveform.begin();
+		for( ; it != waveform.end(); it++ )
+			wave8.push_back((*it) + m_AudioSpec.silence);
+		soundslot.setupWaveForm((Uint8*)&wave8[0], wave8.size()*sizeof(Uint8));
+	}
+	else
+		soundslot.setupWaveForm((Uint8*)&waveform[0], waveform.size()*sizeof(Sint16));
+
 
 	return true;
 }
@@ -150,9 +163,9 @@ bool CAudioGalaxy::LoadFromAudioCK(const CExeFile& ExeFile)
 				Huffman.expand( (byte*)(AudioCompFileData+audio_comp_data_start), imfdata, audio_end-audio_comp_data_start, outsize);
 
 				if(snd>=al_snd_start)
-					readISFintoWaveForm( m_soundslot[snd], imfdata, outsize );
+					readISFintoWaveForm( m_soundslot[snd], imfdata, outsize, (m_AudioSpec.format == AUDIO_S16) ? 2 : 1 );
 				else
-					readPCSpeakerSoundintoWaveForm( m_soundslot[snd], imfdata, outsize );
+					readPCSpeakerSoundintoWaveForm( m_soundslot[snd], imfdata, outsize, (m_AudioSpec.format == AUDIO_S16) ? 2 : 1 );
 			}
 		}
 	}
