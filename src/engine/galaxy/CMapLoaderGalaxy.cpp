@@ -340,18 +340,20 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 	{
 	case 1:
 	case 2:
-		// This is the player on map
+		// This is the player on the map
 		p_newfoe = new galaxy::CPlayerLevel(&Map, x, y, m_ObjectPtr, (foe==1) ? RIGHT : LEFT, m_Inventory);
 		break;
 
 
 	case 3:
-		// This is the player on map
+		// This is the player on the world map
 		// Add the Camera into the game scene and attach it to this player
 		p_newfoe = new galaxy::CPlayerWM(&Map, x, y, m_ObjectPtr, m_Inventory);
 		break;
 
-	case 30:
+	case 27: case 28: case 29: case 32:
+		//27-29 & 32 seem to be the actual platforms
+		//30 & 31 seem to be the stoppers
 		p_newfoe = new galaxy::CPlatform(&Map, x, y, NONE);
 		break;
 
