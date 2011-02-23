@@ -665,9 +665,9 @@ void CPlayerLevel::processExiting()
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
 	Uint32 x = getXMidPos();
-	if( ((mp_Map->m_width-2)<<CSF) < x || (2<<CSF) > x )
+	if( ((mp_Map->m_width-2)<<CSF) < x || (2<<CSF) > x || m_dying )
 	{
-		g_pSound->playSound( SOUND_LEVEL_DONE );
+		//g_pSound->playSound( SOUND_LEVEL_DONE );
 		EventContainer.add( new EventExitLevel(mp_Map->getLevel()) );
 	}
 }
@@ -688,9 +688,11 @@ int CPlayerLevel::processPressUp() {
 	int flag = Tile[mp_Map->getPlaneDataAt(1, x_left, up_y)].behaviour;
 
 	/* pressing a switch */
-	/*if (flag==MISCFLAG_SWITCHPLATON||flag==MISCFLAG_SWITCHPLATOFF||
+	if (flag==MISCFLAG_SWITCHPLATON||flag==MISCFLAG_SWITCHPLATOFF||
 	 flag == MISCFLAG_SWITCHBRIDGE) {
-		var2 = o->boxTXmid*256-64;
+		g_pSound->playSound( SOUND_GUN_CLICK );
+	 }
+	/*	var2 = o->boxTXmid*256-64;
 		if (o->xpos == var2) {
 			o->action = ACTION_KEENENTERSLIDE;
 		} else {
@@ -830,13 +832,23 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
 	int l_w = getXRightPos() - getXLeftPos();
 	int l_h = getYDownPos() - getYUpPos();
 	// Check for the items
+	if(hitdetectWithTilePropertyRect(3, l_x, l_y, l_w, l_h, 1<<STC))
+	{
+		const int lc_x = l_x>>CSF;
+		const int lc_y = l_y>>CSF;
+		mp_Map->setTile( lc_x, lc_y, 0, true, 1 );
+		m_ObjectPtrs.push_back(new CItemEffect(mp_Map, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[4+3-21]));
+
+		kill();
+	}
+
 	if(hitdetectWithTilePropertyRect(4, l_x, l_y, l_w, l_h, 1<<STC))
 	{
 		const int lc_x = l_x>>CSF;
 		const int lc_y = l_y>>CSF;
 		mp_Map->setTile( lc_x, lc_y, 0, true, 1 );
 		m_ObjectPtrs.push_back(new CItemEffect(mp_Map, lc_x<<CSF, lc_y<<CSF, 215, ANIMATE));
-		m_Inventory.m_drops += 1;
+		m_Inventory.m_drops++;
 		g_pSound->playSound( SOUND_GET_DROP );
 	}
 
@@ -957,6 +969,8 @@ void CPlayerLevel::kill()
 {
 	// TODO: Here were prepare Keen to die, setting that action
 	m_dying = true;
+	m_Inventory.m_lifes--;
+	setActionForce(A_KEEN_DIE);
 	g_pSound->playSound( SOUND_KEEN_DIE );
 }
 

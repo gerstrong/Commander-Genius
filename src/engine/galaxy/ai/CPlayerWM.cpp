@@ -169,6 +169,7 @@ void CPlayerWM::finishLevel(Uint16 object)
 		// Mark the tileinfo on the map as marked!!
 		mp_Map->setTile( x, y, 0, true, 2);
 	}
+	g_pSound->playSound( SOUND_LEVEL_DONE );
 }
 /**
  * This is the function will switch between swim and walk mode
