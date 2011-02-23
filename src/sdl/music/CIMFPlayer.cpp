@@ -10,6 +10,7 @@
 #include "fileio/ResourceMgmt.h"
 #include "fileio/compression/CHuffman.h"
 #include "FindFile.h"
+#include "CLogFile.h"
 #include <fstream>
 #include <string>
 
@@ -52,8 +53,11 @@ m_mix_buffer(new Sint32[m_samplesPerMusicTick])
     m_IMF_Data.reserve(imf_chunks);
 
     if( imf_chunks != fread( m_IMF_Data.getStartPtr(), sizeof(IMFChunkType), imf_chunks, fp ) )
-    	// TODO: Warn here that the file is corrupt!
+    {
+    	g_pLogFile->textOut("The IMF-File seems to be corrupt.");
+    	//g_pLogFile << filename;
     	fclose(fp);
+    }
     else
     	fclose(fp);
 }

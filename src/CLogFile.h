@@ -33,7 +33,7 @@ public:
 	virtual ~CLogFile();
 	
 	void CreateLogfile	(const char *LogName);
-	void WriteTopic	(const char *Topic, int Size);
+	void WriteTopic		(const char *Topic, int Size);
 	void textOut		(const std::string& Text);
 	void textOut		(FONTCOLORS Color, const std::string& Text);
 	void textOut		(FONTCOLORS Color, bool List, const std::string& Text);
