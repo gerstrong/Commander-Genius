@@ -53,7 +53,7 @@ public:
 	bool isPlaying() { return m_sound_playing; }
 	bool isForcedPlaying() { return (m_sound_playing && m_sound_forced); }
 	unsigned char getCurrentsound() { return m_current_sound; }
-	void readWaveform(CSoundSlot *pSndSlot, Uint8* waveform, int len, Uint8 channels, int frequency);
+	void readWaveform(CSoundSlot *pSndSlot, Uint8* waveform, const Uint32 len);
 	template <typename T>
 	void transintoStereoChannels(T* waveform, const Uint32 len);
 
@@ -78,7 +78,6 @@ private:
     short m_balance;					// This variable is used for stereo sound, and to calculate where the sound must be played!
 
     SDL_AudioSpec m_AudioSpec;
-
 };
 
 #endif /* CSOUNDCHANNEL_H_ */

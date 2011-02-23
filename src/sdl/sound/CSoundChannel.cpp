@@ -72,7 +72,7 @@ void CSoundChannel::transintoStereoChannels(T* waveform, const Uint32 len)
 	}
 }
 
-void CSoundChannel::readWaveform(CSoundSlot *pSndSlot, Uint8* waveform, int len, Uint8 channels, int frequency)
+void CSoundChannel::readWaveform(CSoundSlot *pSndSlot, Uint8* waveform, const Uint32 len)
 {
     if (m_sound_playing)
     {
@@ -93,7 +93,7 @@ void CSoundChannel::readWaveform(CSoundSlot *pSndSlot, Uint8* waveform, int len,
     		m_sound_ptr += len;
     	}
 		
-    	if(channels == 2)
+    	if(m_AudioSpec.channels == 2)
     	{
     		if(m_AudioSpec.format == AUDIO_U16 || m_AudioSpec.format == AUDIO_S16)
     			transintoStereoChannels((Sint16*) (void *) waveform, len);

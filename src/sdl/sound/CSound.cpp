@@ -36,7 +36,6 @@ m_mixing_channels(0),
 m_MusicVolume(SDL_MIX_MAXVOLUME),
 m_SoundVolume(SDL_MIX_MAXVOLUME),
 m_sound_blaster_mode(false),
-m_pMixedForm(NULL),		// Mainly used by the callback function. Declared once and allocated
 mp_SndSlotMap(NULL),
 m_OPL_Player(AudioSpec)
 {
@@ -53,18 +52,14 @@ CSound::~CSound()
 {
 	while(m_callback_running);
 
-	if(m_pAudioRessources)
-		delete m_pAudioRessources;
+	m_pAudioRessources.tryDeleteData();
 }
 
 bool CSound::init()
 {
 	g_pLogFile->ftextOut("Starting the sound driver...<br>");
 	char name[256];
-	SDL_AudioSpec *desired, *obtained;
-
-	desired = &AudioSpec;
-	obtained = new SDL_AudioSpec;
+	SDL_AudioSpec obtained;
 
 	// now start up the SDL sound system
 	AudioSpec.silence = 0;
@@ -79,7 +74,7 @@ bool CSound::init()
 	AudioSpec.userdata = NULL;
 
 	// Initialize variables
-	if( SDL_OpenAudio(desired, obtained) < 0 )
+	if( SDL_OpenAudio(&AudioSpec, &obtained) < 0 )
 	{
 		g_pLogFile->ftextOut("SoundDrv_Start(): Couldn't open audio: %s<br>", SDL_GetError());
 		g_pLogFile->ftextOut("Sound will be disabled.<br>");
@@ -89,10 +84,9 @@ bool CSound::init()
 		return false;
 	}
 
-	memcpy(&AudioSpec,obtained,sizeof(SDL_AudioSpec));
-	delete obtained;
+	AudioSpec = obtained;
 
-	m_pMixedForm = (Uint8 *) malloc(AudioSpec.size); // To make sure it's 4-byte aligned use malloc() instead of new()
+	m_pMixedForm = new Uint8[AudioSpec.size]; // To make sure it's 4-byte aligned use malloc() instead of new()
 
 	g_pLogFile->ftextOut("SDL_AudioSpec:<br>");
 	g_pLogFile->ftextOut("  freq: %d<br>", AudioSpec.freq);
@@ -102,12 +96,6 @@ bool CSound::init()
 	{
 		case AUDIO_U8:
 			g_pLogFile->ftextOut("  format: AUDIO_U8<br>" );
-			break;
-		case AUDIO_S8:
-			g_pLogFile->ftextOut("  format: AUDIO_S8<br>" );
-			break;
-		case AUDIO_U16:
-			g_pLogFile->ftextOut("  format: AUDIO_U16<br>" );
 			break;
 		case AUDIO_S16:
 			g_pLogFile->ftextOut("  format: AUDIO_S16<br>" );
@@ -141,9 +129,7 @@ void CSound::destroy(void)
 	SDL_CloseAudio();
 	m_mixing_channels = 0;
 
-	if(m_pMixedForm)
-		free(m_pMixedForm);
-	m_pMixedForm = NULL;
+	m_pMixedForm.tryDeleteData();
 
 	if(!m_soundchannel.empty())
 		m_soundchannel.clear();
@@ -212,22 +198,22 @@ bool CSound::forcedisPlaying(void)
 
 void CSound::callback(void *unused, Uint8 *stream, int len)
 {
-	if(m_pAudioRessources == NULL)
+	if(m_pAudioRessources.get() == NULL)
 		return;
 
 	m_callback_running = true;
 
     if (g_pMusicPlayer->playing())
     {
-    	g_pMusicPlayer->readBuffer(m_pMixedForm, len);
-    	mixAudio(stream, m_pMixedForm, len, m_MusicVolume, AudioSpec.format);
+    	g_pMusicPlayer->readBuffer(m_pMixedForm.get(), len);
+    	mixAudio(stream, m_pMixedForm.get(), len, m_MusicVolume, AudioSpec.format);
     }
 
 	std::vector<CSoundChannel>::iterator snd_chnl = m_soundchannel.begin();
 	for( ; snd_chnl != m_soundchannel.end() ; snd_chnl++)
    	{
-		snd_chnl->readWaveform( m_pAudioRessources->getSlotPtr(), m_pMixedForm, len, AudioSpec.channels, AudioSpec.freq);
-   		mixAudio(stream, m_pMixedForm, len, m_SoundVolume, AudioSpec.format);
+		snd_chnl->readWaveform( m_pAudioRessources->getSlotPtr(), m_pMixedForm.get(), len);
+   		mixAudio(stream, m_pMixedForm.get(), len, m_SoundVolume, AudioSpec.format);
     }
 
 	m_callback_running = false;
@@ -324,9 +310,7 @@ void CSound::unloadSoundData()
 {
 	while(m_callback_running);
 
-	if(m_pAudioRessources)
-		delete m_pAudioRessources;
-	m_pAudioRessources = NULL;
+	m_pAudioRessources.tryDeleteData();
 }
 
 void CSound::setSoundmode(int freq, bool stereo, Uint16 format)

@@ -20,6 +20,7 @@
 #include "CSoundChannel.h"
 #include "fileio/CExeFile.h"
 #include "common/CAudioResources.h"
+#include "SmartPointer.h"
 
 class CSound : public CSingleton<CSound>
 {
@@ -61,7 +62,7 @@ public:
 
 protected:
 	std::vector<CSoundChannel>	m_soundchannel;
-	CAudioResources *m_pAudioRessources;
+	SmartPointer<CAudioResources> m_pAudioRessources;
 	bool m_callback_running;
 	SDL_AudioSpec AudioSpec;
 
@@ -71,8 +72,8 @@ private:
 	Uint8 m_SoundVolume;
 	bool m_sound_blaster_mode;
 
-    Uint8 *m_pMixedForm;			// Mainly used by the callback function. Declared once and allocated
-    								// for the whole program
+	SmartPointer<Uint8> m_pMixedForm;	// Mainly used by the callback function. Declared once and allocated
+    									// for the whole program
 
     unsigned char *mp_SndSlotMap;
 

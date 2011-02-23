@@ -216,7 +216,8 @@ void CIMFPlayer::close()
 	return;
 }
 
-void CIMFPlayer::OPLUpdate(Sint16 *buffer, unsigned int length)
+template<typename T>
+void CIMFPlayer::OPLUpdate(T *buffer, const unsigned int length)
 {
 	m_opl_emulator.Chip__GenerateBlock2( length, m_mix_buffer );
 
@@ -225,7 +226,7 @@ void CIMFPlayer::OPLUpdate(Sint16 *buffer, unsigned int length)
     {
     	for (unsigned int j=0; j<m_AudioDevSpec.channels; j++)
     	{
-    		*buffer = m_mix_buffer[i];
+    		*buffer = m_mix_buffer[i] + m_AudioDevSpec.silence;
     		buffer++;
     	}
     }
