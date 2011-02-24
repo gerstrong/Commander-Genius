@@ -10,6 +10,7 @@
 *    (c)2009-2011            Tulip           *
 *    (c)2009-2011            DaVince         *
 *    (c)2010-2011            FCTW            *
+*    (c)2010-2011            furan           *
 *           Released under GNU/GPL           *
 *                                            *
 *            Release v0.3.3.1                *
