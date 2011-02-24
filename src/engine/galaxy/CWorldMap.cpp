@@ -31,7 +31,6 @@ void CWorldMap::setActive(bool value)
 	if(m_active)
 	{
 		m_Map.drawAll();
-		m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
 	    // Set Scrollbuffer
 	    g_pVideoDriver->setScrollBuffer(&m_Map.m_scrollx_buf, &m_Map.m_scrolly_buf);
 	}
@@ -42,7 +41,6 @@ void CWorldMap::init()
 	// Load the World map level.
 	CMapLoaderGalaxy MapLoader(m_ExeFile, m_ObjectPtr, m_Inventory);
 
-	m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
 	MapLoader.loadMap(m_Map, 0); // Is it a Map Level?
 
 	m_Map.drawAll();

@@ -9,15 +9,15 @@
 #include "CLogFile.h"
 #include "sys/param.h"
 
-CVideoEngine::CVideoEngine(const CVidConfig& VidConfig) :
+CVideoEngine::CVideoEngine(const CVidConfig& VidConfig, Sint16 *&p_sbufferx, Sint16 *&p_sbuffery) :
 BlitSurface(NULL),
 FGLayerSurface(NULL),       // Scroll buffer for Messages
 ScrollSurface(NULL),       // 512x512 scroll buffer
 FXSurface(NULL),
 m_blitsurface_alloc(false),
 m_VidConfig(VidConfig),
-mp_sbufferx(NULL),
-mp_sbuffery(NULL),
+mp_sbufferx(p_sbufferx),
+mp_sbuffery(p_sbuffery),
 screen(NULL),
 m_Mode(0)
 {}
@@ -72,12 +72,6 @@ bool CVideoEngine::init()
  	m_src_slice = GameRect.w*screen->format->BytesPerPixel;
 
 	return true;
-}
-
-void CVideoEngine::setScrollBuffer(Sint16 *pbufx, Sint16 *pbufy)
-{
-	mp_sbufferx = pbufx;
-	mp_sbuffery = pbufy;
 }
 
 SDL_Surface* CVideoEngine::createSurface( std::string name, bool alpha, int width, int height, int bpp, int mode, SDL_PixelFormat* format )
@@ -222,8 +216,8 @@ void CVideoEngine::blitScrollSurface() // This is only for tiles
 	srcrect.x =	sbufferx = *mp_sbufferx;
 	srcrect.y = sbuffery = *mp_sbuffery;
 
-	dstrect.w = Gamerect.w-sbufferx;
-	dstrect.h = Gamerect.h-sbuffery;
+	dstrect.w = (Gamerect.w>sbufferx) ? Gamerect.w-sbufferx : Gamerect.w ;
+	dstrect.h = (Gamerect.h>sbuffery) ? Gamerect.h-sbuffery : Gamerect.h ;
 
 	if (sbufferx > (Uint16)(512-Gamerect.w))
 	{ // need to wrap right side

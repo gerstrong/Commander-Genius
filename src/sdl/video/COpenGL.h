@@ -37,7 +37,7 @@ Uint16 getPowerOfTwo(Uint16 value);
 
 class COpenGL : public CVideoEngine {
 public:
-	COpenGL(const CVidConfig &VidConfig);
+	COpenGL(const CVidConfig &VidConfig, Sint16 *&p_sbufferx, Sint16 *&p_sbuffery);
 
 	void loadSurface(GLuint texture, SDL_Surface* surface);
 	bool createSurfaces();

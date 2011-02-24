@@ -106,5 +106,8 @@ public:
 private:
 
 	CVidConfig m_VidConfig;
+
+	Sint16 *mp_sbufferx;
+	Sint16 *mp_sbuffery;
 };
 #endif /* CVIDEODRIVER_H_ */

@@ -21,7 +21,6 @@ m_type(type)
 {
 	mp_Scrollsurface = g_pVideoDriver->mp_VideoEngine->getScrollSurface();
 	mp_Map = new CMap;
-	mp_Map->setScrollSurface(mp_Scrollsurface);
 	CMapLoader Maploader(mp_Map);
 	
 	Maploader.load(ExeFile.getEpisode(), 90, ExeFile.getDataDirectory());

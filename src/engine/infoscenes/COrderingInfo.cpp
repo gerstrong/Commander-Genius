@@ -19,7 +19,6 @@ COrderingInfo::COrderingInfo( CExeFile &ExeFile ) {
 	char episode = ExeFile.getEpisode();
 
 	mp_Scrollsurface = g_pVideoDriver->mp_VideoEngine->getScrollSurface();
-	m_Map.setScrollSurface(mp_Scrollsurface);
 
 	CMapLoader Maploader(&m_Map);
 	

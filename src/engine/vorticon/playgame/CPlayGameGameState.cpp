@@ -66,8 +66,6 @@ bool CPlayGameVorticon::loadGameState()
 		if(!Maploader.load(m_Episode, m_Level, m_Gamepath, loadmusic, false))
 			return false;
 
-		m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
-
 		m_checkpoint_x = checkx;
 		m_checkpoint_y = checky;
 

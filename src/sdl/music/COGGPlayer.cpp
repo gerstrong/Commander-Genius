@@ -156,6 +156,7 @@ void COGGPlayer::readBuffer(Uint8* buffer, Uint32 length)
 	{
 		close();
 		open();
+		play(true);
 	}
 }
 

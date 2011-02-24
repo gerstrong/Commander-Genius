@@ -33,7 +33,6 @@ bool CLevelPlay::loadLevel(const Uint16 level)
 	// Load the World map level.
 	CMapLoaderGalaxy MapLoader(m_ExeFile, m_ObjectPtr, m_Inventory);
 
-	m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
 	MapLoader.loadMap(m_Map, level);
 
     // Load the Background Music

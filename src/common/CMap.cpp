@@ -7,13 +7,13 @@
 
 #include "keen.h"
 #include "CMap.h"
-#include <iostream>
-#include <fstream>
 #include "CBehaviorEngine.h"
 #include "FindFile.h"
 #include "CLogFile.h"
 #include "sdl/CVideoDriver.h"
 #include "graphics/CGfxEngine.h"
+#include <iostream>
+#include <fstream>
 
 #define SAFE_DELETE_ARRAY(x)	if(x) { delete [] x; x = NULL; }
 
@@ -24,7 +24,6 @@ m_animation_enabled(true),
 m_Dark(false),
 m_Difficulty(1),
 m_PlatExtending(false),
-mp_scrollsurface(NULL),
 m_Tilemaps(g_pGfxEngine->getTileMaps()),
 m_animtiletimer(0),
 m_Background(false)
@@ -37,12 +36,6 @@ m_Background(false)
 ////////////////////////////
 // Initialization Routine //
 ////////////////////////////
-void CMap::setScrollSurface( SDL_Surface *surface )
-{
-	mp_scrollsurface = surface;
-	g_pVideoDriver->setScrollBuffer(&m_scrollx_buf, &m_scrolly_buf);
-}
-
 
 void CMap::setLevel(Uint16 Level)
 {	m_Level = Level;	}
@@ -191,7 +184,7 @@ bool CMap::changeTile(Uint16 x, Uint16 y, Uint16 t)
 {
 	if( setTile( x, y, t ) )
 	{
-		m_Tilemaps.at(1).drawTile(mp_scrollsurface, (x<<4)&511, (y<<4)&511, t);
+		m_Tilemaps.at(1).drawTile(g_pVideoDriver->getScrollSurface(), (x<<4)&511, (y<<4)&511, t);
 		return true;
 	}
 	return false;
@@ -343,9 +336,10 @@ void CMap::scrollUp(void)
 // are changed. In Vorticons this might be the case. In Galaxy it's different!
 void CMap::redrawAt(int mx, int my)
 {
+	SDL_Surface *ScrollSurface = g_pVideoDriver->getScrollSurface();
 	// Go throught the list and just draw all the tiles that need to be animated
-	const Uint32 num_h_tiles = mp_scrollsurface->h/16;
-	const Uint32 num_v_tiles = mp_scrollsurface->w/16;
+	const Uint32 num_h_tiles = ScrollSurface->h/16;
+	const Uint32 num_v_tiles = ScrollSurface->w/16;
 
 	if(  mx >= m_mapx && my >= m_mapy &&
 			mx < m_mapx + num_v_tiles && my < m_mapy + num_h_tiles  	)
@@ -359,14 +353,14 @@ void CMap::redrawAt(int mx, int my)
 			size_t fg = m_Plane[1].getMapDataAt(mx, my);
 
 
-			m_Tilemaps.at(0).drawTile(mp_scrollsurface, loc_x, loc_y, bg);
+			m_Tilemaps.at(0).drawTile(ScrollSurface, loc_x, loc_y, bg);
 			if(fg)
-				m_Tilemaps.at(1).drawTile(mp_scrollsurface, loc_x, loc_y, fg);
+				m_Tilemaps.at(1).drawTile(ScrollSurface, loc_x, loc_y, fg);
 		}
 		else
 		{
 			size_t fg = m_Plane[1].getMapDataAt(mx, my);
-			m_Tilemaps.at(1).drawTile(mp_scrollsurface, loc_x, loc_y, fg);
+			m_Tilemaps.at(1).drawTile(ScrollSurface, loc_x, loc_y, fg);
 		}
 	}
 }
@@ -376,8 +370,10 @@ void CMap::redrawAt(int mx, int my)
 // for the correct and fast update of tiles or
 void CMap::drawAll()
 {
-	Uint32 num_h_tiles = mp_scrollsurface->h/16;
-	Uint32 num_v_tiles = mp_scrollsurface->w/16;
+	SDL_Surface *ScrollSurface = g_pVideoDriver->getScrollSurface();
+
+	Uint32 num_h_tiles = ScrollSurface->h/16;
+	Uint32 num_v_tiles = ScrollSurface->w/16;
 
 	if(num_v_tiles+m_mapx >= m_width)
 		num_v_tiles = m_width-m_mapx;
@@ -394,9 +390,9 @@ void CMap::drawAll()
 				Uint32 bg = m_Plane[0].getMapDataAt(x+m_mapx, y+m_mapy);
 				Uint32 fg = m_Plane[1].getMapDataAt(x+m_mapx, y+m_mapy);
 
-				m_Tilemaps.at(0).drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511,((y<<4)+m_mapystripepos)&511, bg);
+				m_Tilemaps.at(0).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&511,((y<<4)+m_mapystripepos)&511, bg);
 				if(fg)
-					m_Tilemaps.at(1).drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511,((y<<4)+m_mapystripepos)&511, fg);
+					m_Tilemaps.at(1).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&511,((y<<4)+m_mapystripepos)&511, fg);
 			}
 		}
 	}
@@ -407,7 +403,7 @@ void CMap::drawAll()
 			for(Uint32 x=0;x<num_v_tiles;x++)
 			{
 				Uint32 fg = m_Plane[1].getMapDataAt(x+m_mapx, y+m_mapy);
-				m_Tilemaps.at(1).drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511,((y<<4)+m_mapystripepos)&511, fg);
+				m_Tilemaps.at(1).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&511,((y<<4)+m_mapystripepos)&511, fg);
 			}
 		}
 	}
@@ -417,7 +413,8 @@ void CMap::drawAll()
 void CMap::drawHstripe(unsigned int y, unsigned int mpy)
 {
 	if(mpy >= m_height) return;
-	Uint32 num_v_tiles= mp_scrollsurface->w/16;
+	SDL_Surface *ScrollSurface = g_pVideoDriver->getScrollSurface();
+	Uint32 num_v_tiles= ScrollSurface->w/16;
 	
 	if( num_v_tiles+m_mapx >= m_width )
 		num_v_tiles = m_width-m_mapx;
@@ -429,9 +426,9 @@ void CMap::drawHstripe(unsigned int y, unsigned int mpy)
 			Uint32 bg = m_Plane[0].getMapDataAt(x+m_mapx, mpy);
 			Uint32 fg = m_Plane[1].getMapDataAt(x+m_mapx, mpy);
 
-			m_Tilemaps.at(0).drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511, y, bg);
+			m_Tilemaps.at(0).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&511, y, bg);
 			if(fg)
-				m_Tilemaps.at(1).drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511, y, fg);
+				m_Tilemaps.at(1).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&511, y, fg);
 		}
 	}
 	else
@@ -439,7 +436,7 @@ void CMap::drawHstripe(unsigned int y, unsigned int mpy)
 		for(Uint32 x=0;x<num_v_tiles;x++)
 		{
 			Uint32 fg = m_Plane[1].getMapDataAt(x+m_mapx, mpy);
-			m_Tilemaps.at(1).drawTile(mp_scrollsurface, ((x<<4)+m_mapxstripepos)&511, y, fg);
+			m_Tilemaps.at(1).drawTile(ScrollSurface, ((x<<4)+m_mapxstripepos)&511, y, fg);
 		}
 	}
 }
@@ -447,9 +444,11 @@ void CMap::drawHstripe(unsigned int y, unsigned int mpy)
 // draws a vertical stripe from map position mapx to scrollbuffer position x
 void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 {
+	SDL_Surface *ScrollSurface = g_pVideoDriver->getScrollSurface();
+
 	if(mpx >= m_width) return;
 
-	Uint32 num_h_tiles= mp_scrollsurface->h/16;
+	Uint32 num_h_tiles= ScrollSurface->h/16;
 
 	if( num_h_tiles+m_mapy >= m_height )
 		num_h_tiles = m_height-m_mapy;
@@ -461,9 +460,9 @@ void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 			Uint32 bg = m_Plane[0].getMapDataAt(mpx, y+m_mapy);
 			Uint32 fg = m_Plane[1].getMapDataAt(mpx, y+m_mapy);
 
-			m_Tilemaps.at(0).drawTile(mp_scrollsurface, x, ((y<<4)+m_mapystripepos)&511, bg);
+			m_Tilemaps.at(0).drawTile(ScrollSurface, x, ((y<<4)+m_mapystripepos)&511, bg);
 			if(fg)
-				m_Tilemaps.at(1).drawTile(mp_scrollsurface, x, ((y<<4)+m_mapystripepos)&511, fg);
+				m_Tilemaps.at(1).drawTile(ScrollSurface, x, ((y<<4)+m_mapystripepos)&511, fg);
 		}
 	}
 	else
@@ -471,7 +470,7 @@ void CMap::drawVstripe(unsigned int x, unsigned int mpx)
 		for(Uint32 y=0;y<num_h_tiles;y++)
 		{
 			Uint32 fg = m_Plane[1].getMapDataAt(mpx, y+m_mapy);
-			m_Tilemaps.at(1).drawTile(mp_scrollsurface, x, ((y<<4)+m_mapystripepos)&511, fg);
+			m_Tilemaps.at(1).drawTile(ScrollSurface, x, ((y<<4)+m_mapystripepos)&511, fg);
 		}
 	}
 }
@@ -536,12 +535,14 @@ void CMap::animateAllTiles()
 	if(!m_animation_enabled)
 		return;
 
+	SDL_Surface *ScrollSurface = g_pVideoDriver->getScrollSurface();
+
 	// Let the animation timer tick!!
 	m_animtiletimer++;
 
 	// Go throught the list and just draw all the tiles that need to be animated
-	Uint32 num_h_tiles = mp_scrollsurface->h/16;
-	Uint32 num_v_tiles = mp_scrollsurface->w/16;
+	Uint32 num_h_tiles = ScrollSurface->h/16;
+	Uint32 num_v_tiles = ScrollSurface->w/16;
 
 	if(num_v_tiles+m_mapx >= m_width)
 		num_v_tiles = m_width-m_mapx;
@@ -588,9 +589,9 @@ void CMap::animateAllTiles()
 					Uint16 fg = m_Plane[1].getMapDataAt(x,y);
 					const Uint16 loc_x = (((x-m_mapx)<<4)+m_mapxstripepos)&511;
 					const Uint16 loc_y = (((y-m_mapy)<<4)+m_mapystripepos)&511;
-					m_Tilemaps.at(0).drawTile(mp_scrollsurface, loc_x, loc_y, bg);
+					m_Tilemaps.at(0).drawTile(ScrollSurface, loc_x, loc_y, bg);
 					if(fg)
-						m_Tilemaps.at(1).drawTile(mp_scrollsurface, loc_x, loc_y, fg);
+						m_Tilemaps.at(1).drawTile(ScrollSurface, loc_x, loc_y, fg);
 				}
 			}
 		}
@@ -617,7 +618,7 @@ void CMap::animateAllTiles()
 					Uint16 fg = m_Plane[1].getMapDataAt(x,y);
 					const Uint16 loc_x = (((x-m_mapx)<<4)+m_mapxstripepos)&511;
 					const Uint16 loc_y = (((y-m_mapy)<<4)+m_mapystripepos)&511;
-					m_Tilemaps.at(1).drawTile(mp_scrollsurface, loc_x, loc_y, fg);
+					m_Tilemaps.at(1).drawTile(ScrollSurface, loc_x, loc_y, fg);
 				}
 			}
 		}

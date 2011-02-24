@@ -30,7 +30,6 @@ public:
 	CMap();
 
 	void setTileMap( CTilemap &Tilemap );
-	void setScrollSurface( SDL_Surface *surface );
 
 	void setLevel(Uint16 Level);
 	Uint16 getLevel();
@@ -107,7 +106,6 @@ private:
 	Uint16 m_mapy;         	// map Y location shown at scrollbuffer column 0
 	Uint16 m_mapystripepos;  	// Y pixel position of next stripe column
 
-	SDL_Surface *mp_scrollsurface;
 	std::vector<CTilemap> &m_Tilemaps;
 
 	Uint8 m_animtiletimer;

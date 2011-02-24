@@ -26,8 +26,8 @@ Uint16 getPowerOfTwo(Uint16 value)
 
 // gamerect is the base resolution for the game which is scaled with the filter
 // depending on what resolution has been chosen, it is mostly 320x200 or 320x240
-COpenGL::COpenGL(const CVidConfig &VidConfig) :
-CVideoEngine(VidConfig),
+COpenGL::COpenGL(const CVidConfig &VidConfig, Sint16 *&p_sbufferx, Sint16 *&p_sbuffery) :
+CVideoEngine(VidConfig, p_sbufferx, p_sbuffery),
 m_opengl_buffer(NULL),
 m_texparam(GL_TEXTURE_2D),
 m_aspectratio(m_VidConfig.m_Resolution.computeAspectRatio()),

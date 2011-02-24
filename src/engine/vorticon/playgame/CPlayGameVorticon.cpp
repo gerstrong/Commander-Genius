@@ -115,9 +115,6 @@ void CPlayGameVorticon::setupPlayers()
 
 bool CPlayGameVorticon::init()
 {
-	// Create an empty map
-	m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
-
 	CMapLoader MapLoader( &m_Map, &m_Player );
 	MapLoader.m_checkpointset = m_checkpointset;
 	MapLoader.mp_objvect = &m_Object;
@@ -226,7 +223,6 @@ void CPlayGameVorticon::process()
 				{
 					mp_Menu->cleanup();
 					SAFE_DELETE(mp_Menu);
-					m_Map.setScrollSurface(g_pVideoDriver->getScrollSurface());
 					SDL_Rect gamerect = g_pVideoDriver->getGameResolution();
 					m_Map.m_maxscrollx = (m_Map.m_width<<4) - gamerect.w - 36;
 					m_Map.m_maxscrolly = (m_Map.m_height<<4) - gamerect.h - 36;

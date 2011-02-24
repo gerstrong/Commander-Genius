@@ -27,7 +27,6 @@ using namespace std;
 CHighScores::CHighScores(int Episode, const std::string &DataDirectory, bool saving_mode) :
 m_Place(0), m_blink(true), m_blinkctr(0)
 {
-	m_Map.setScrollSurface(g_pVideoDriver->mp_VideoEngine->getScrollSurface());
 	m_CursorPosition = 0;
 	m_CurrentLetter = 32;
 	

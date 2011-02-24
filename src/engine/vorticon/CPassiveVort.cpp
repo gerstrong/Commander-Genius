@@ -41,7 +41,6 @@ bool CPassiveVort::init(char mode)
 	{
 		mp_IntroScreen = new CIntro();
 		mp_Map = new CMap;
-		mp_Map->setScrollSurface(mp_Scrollsurface);
 		CMapLoader MapLoader( mp_Map );
 		MapLoader.load( m_Episode, 90, m_DataDirectory);
 		mp_Map->gotoPos( 64+5*320, 32); // Coordinates of star sky
@@ -52,7 +51,6 @@ bool CPassiveVort::init(char mode)
 	else if( m_mode == TITLE )
 	{
 		mp_Map = new CMap;
-		mp_Map->setScrollSurface(mp_Scrollsurface);
 		CMapLoader MapLoader( mp_Map );
 		MapLoader.load( m_Episode, 90, m_DataDirectory);
 		mp_Map->gotoPos( 32, 32 ); // Coordinates of title screen

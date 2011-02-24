@@ -39,7 +39,9 @@ int ConsoleExpireTimer = 0;
 
 
 CVideoDriver::CVideoDriver() :
-mp_VideoEngine(NULL)
+mp_VideoEngine(NULL),
+mp_sbufferx(NULL),
+mp_sbuffery(NULL)
 {
 	resetSettings();
 }
@@ -85,7 +87,7 @@ void CVideoDriver::initResolutionList()
 	if(!ResolutionFile)
 	{
 		g_pLogFile->textOut(PURPLE,"Warning: resolutions.cfg could not be read! Maybe your files weren't extracted correctly!<br>");
-		g_pLogFile->textOut(PURPLE,"Using default resolution<br>");
+		g_pLogFile->textOut(PURPLE,"Using default resolution...<br>");
 	}
 	else
 	{
@@ -225,7 +227,7 @@ bool CVideoDriver::applyMode()
 	return true;
 }
 
-bool CVideoDriver::start(void)
+bool CVideoDriver::start()
 {
 	bool retval;
 	std::string caption = "Commander Genius (CKP)";
@@ -236,7 +238,7 @@ bool CVideoDriver::start(void)
 #ifdef USE_OPENGL
 	if(m_VidConfig.m_opengl) // If OpenGL could be set, initialize the matrices
 	{
-		mp_VideoEngine = new COpenGL(m_VidConfig);
+		mp_VideoEngine = new COpenGL(m_VidConfig, mp_sbufferx, mp_sbuffery);
 		retval = mp_VideoEngine->init();
 
 		if(!retval)
@@ -244,14 +246,14 @@ bool CVideoDriver::start(void)
 			delete mp_VideoEngine;
 			m_VidConfig.m_opengl = false;
 			applyMode();
-			mp_VideoEngine = new CSDLVideo(m_VidConfig);
+			mp_VideoEngine = new CSDLVideo(m_VidConfig, mp_sbufferx, mp_sbuffery);
 			retval = mp_VideoEngine->init();
 		}
 	}
 	else
 	{
 #endif
-		mp_VideoEngine = new CSDLVideo(m_VidConfig);
+		mp_VideoEngine = new CSDLVideo(m_VidConfig, mp_sbufferx, mp_sbuffery);
 		retval = mp_VideoEngine->init();
 
 #ifdef USE_OPENGL
@@ -279,9 +281,9 @@ void CVideoDriver::setZoom(short value) { m_VidConfig.Zoom = value; }
 // It might have when a level-map is loaded.
 void CVideoDriver::setScrollBuffer(Sint16 *pbufx, Sint16 *pbufy)
 {
-	mp_VideoEngine->setScrollBuffer(pbufx, pbufy);
+	mp_sbufferx = pbufx;
+	mp_sbuffery = pbufy;
 }
-
 void CVideoDriver::blitScrollSurface() // This is only for tiles
 									   // Therefore the name should be changed
 {

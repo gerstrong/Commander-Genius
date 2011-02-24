@@ -12,8 +12,8 @@
 #include "graphics/CGfxEngine.h"
 #include "graphics/PerSurfaceAlpha.h"
 
-CSDLVideo::CSDLVideo(const CVidConfig& VidConfig) :
-CVideoEngine(VidConfig)
+CSDLVideo::CSDLVideo(const CVidConfig& VidConfig, Sint16 *&p_sbufferx, Sint16 *&p_sbuffery) :
+CVideoEngine(VidConfig, p_sbufferx, p_sbuffery)
 {}
 
 bool CSDLVideo::createSurfaces()

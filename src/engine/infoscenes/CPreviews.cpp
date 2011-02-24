@@ -20,7 +20,6 @@ CPreviews::CPreviews(CExeFile &ExeFile)
 	std::string DataDirectory = ExeFile.getDataDirectory();
 	mp_Scrollsurface = g_pVideoDriver->mp_VideoEngine->getScrollSurface();
 	mp_Map = new CMap();
-	mp_Map->setScrollSurface(mp_Scrollsurface);
 
 	CMapLoader Maploader(mp_Map);
 	Maploader.load(m_episode, 90, DataDirectory);

@@ -22,13 +22,12 @@
 class CVideoEngine {
 public:
 
-	CVideoEngine(const CVidConfig& VidConfig);
+	CVideoEngine(const CVidConfig& VidConfig, Sint16 *&p_sbufferx, Sint16 *&p_sbuffery);
 
 	virtual bool init();
 	virtual void updateScreen() = 0;
 	virtual void shutdown();
 
-	void setScrollBuffer(Sint16 *pbufx, Sint16 *pbufy);
 	SDL_Surface *createSurface( std::string name, bool alpha, int width, int height, int bpp, int mode, SDL_PixelFormat* format );
 	virtual bool createSurfaces() = 0;
 	void fetchStartScreenPixelPtrs(Uint8 *&ScreenPtr, Uint8 *&BlitPtr, unsigned int &width, unsigned int &height);
@@ -57,7 +56,8 @@ protected:
 
 	const CVidConfig &m_VidConfig;
 
-	Sint16 *mp_sbufferx, *mp_sbuffery;
+	Sint16 *&mp_sbufferx;
+	Sint16 *&mp_sbuffery;
 
 	SDL_Surface *screen;                // the actual video memory/window
 

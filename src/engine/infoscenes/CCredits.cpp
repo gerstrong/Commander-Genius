@@ -15,7 +15,6 @@
 CCredits::CCredits(const std::string &datadirectory, const char &episode) {
 	mp_Scrollsurface = g_pVideoDriver->mp_VideoEngine->getScrollSurface();
 	mp_Map = new CMap;
-	mp_Map->setScrollSurface(mp_Scrollsurface);
 
 	CMapLoader Maploader(mp_Map);
 	
