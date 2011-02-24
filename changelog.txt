@@ -7,6 +7,9 @@ v0.3.3.1:
 - New Audio System!
 - New Graphics System!
 - Fixes in the IMF Player 
+- Audio changes now Keen Galaxy has sounds (also thanks to FCTW for his help!)
+- Keen 5 Support initial support. (Thanks to furan for his help and cleaning up some code is it!)
+- Council members, slugs and platforms are in. They don't work properly yet (Also many thanks to FCTW!)
 
 v0.3.3:
 -------
