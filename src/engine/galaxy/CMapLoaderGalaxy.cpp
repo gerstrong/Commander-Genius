@@ -24,6 +24,7 @@
 #include "engine/galaxy/ai/CPlayerLevel.h"
 #include "engine/galaxy/ai/CSpriteItem.h"
 #include "engine/galaxy/ai/CPlatform.h"
+#include "engine/galaxy/ai/CSlug.h"
 
 #include <fstream>
 
@@ -324,7 +325,9 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 	}
 
 	if( foe == 68 )
+	{
 		p_newfoe = new galaxy::CSpriteItem(&Map, x, y, m_ObjectPtr, 127);
+	}
 
 	for( Uint32 i=57 ; i<=60 ; i++ )
 	{
@@ -349,6 +352,11 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 		// This is the player on the world map
 		// Add the Camera into the game scene and attach it to this player
 		p_newfoe = new galaxy::CPlayerWM(&Map, x, y, m_ObjectPtr, m_Inventory);
+		break;
+
+	case 22:
+		//slugs
+		p_newfoe = new galaxy::CSlug(&Map, x, (y-250));
 		break;
 
 	case 27: case 28: case 29: case 32:
