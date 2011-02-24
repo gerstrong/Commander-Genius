@@ -17,7 +17,7 @@ namespace galaxy {
 #define A_PLATFORM_MOVE	0	/* Ordinary moving platform */
 #define A_PLATFORM_SIT	1	/* Dropping platform waiting for passenger */
 #define A_PLATFORM_DROP	2	/* Dropping platform dropping */
-#define A_PLATFORM_RISE	3	/* Dropping platform dropping */
+#define A_PLATFORM_RISE	3	/* Dropping platform rising */
 
 class CPlatform : public CObject {
 public:

@@ -1,5 +1,5 @@
 #include "CGarg.h"
-#include "../../../sdl/sound/CSound.h"
+#include "sdl/sound/CSound.h"
 
 #include <vector>
 
