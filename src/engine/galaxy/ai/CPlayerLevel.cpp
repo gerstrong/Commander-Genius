@@ -492,6 +492,9 @@ void CPlayerLevel::processJumping()
 	m_inair = getActionNumber(A_KEEN_JUMP) || getActionNumber(A_KEEN_JUMP+1) ||
 			getActionNumber(A_KEEN_FALL) || falling;
 
+	if(blockedu)
+		g_pSound->playSound( SOUND_KEEN_BUMPHEAD );
+
 	if(!getActionNumber(A_KEEN_JUMP))
 	{
 		if(blockedd)
@@ -544,6 +547,9 @@ void CPlayerLevel::processPogo()
 
 	if(!m_playcontrol[PA_POGO])
 		m_pogotoggle = false;
+
+	if(blockedu)
+		g_pSound->playSound( SOUND_KEEN_BUMPHEAD );
 
 	if(!getActionNumber(A_KEEN_POGO) && !m_pogotoggle)
 	{
@@ -665,9 +671,8 @@ void CPlayerLevel::processExiting()
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 
 	Uint32 x = getXMidPos();
-	if( ((mp_Map->m_width-2)<<CSF) < x || (2<<CSF) > x || m_dying )
+	if( ((mp_Map->m_width-2)<<CSF) < x || (2<<CSF) > x )
 	{
-		//g_pSound->playSound( SOUND_LEVEL_DONE );
 		EventContainer.add( new EventExitLevel(mp_Map->getLevel()) );
 	}
 }
