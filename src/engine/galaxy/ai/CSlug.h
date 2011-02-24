@@ -14,7 +14,9 @@
 
 namespace galaxy {
 
-#define A_SLUG_MOVE	0	/* Ordinary slug */
+#define A_SLUG_MOVE			0	/* Ordinary slug_move action */
+#define A_SLUG_POOHING		2
+#define A_SLUG_STUNNED		3
 
 class CSlug : public CObject {
 public:

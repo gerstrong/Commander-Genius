@@ -34,11 +34,12 @@ m_mix_buffer(new Sint32[m_samplesPerMusicTick])
     // Load the IMF File here!
 	FILE *fp;
 	word data_size;
+	int read_first;
 
 	if( ( fp = OpenGameFile(filename, "rb") ) == NULL )
     	return;
 
-	fread( &data_size, sizeof(word), 1, fp);
+	read_first = fread( &data_size, sizeof(word), 1, fp);
     if (data_size == 0) // Is the IMF file of Type-0?
     {
         fseek(fp, 0, SEEK_END);
