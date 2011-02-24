@@ -356,18 +356,18 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 		break;
 
 	case 4:
-		//This should be a council member.  We'll find out.
+		//This is a council member.
 		p_newfoe = new galaxy::CCouncilMember(&Map, x, y-750);
 		break;
 
 	case 22:
-		//slugs
+		//This is a Poison Slug.
 		p_newfoe = new galaxy::CSlug(&Map, x, y-250);
 		break;
 
-	case 27: case 28: case 29: case 32:
-		//27-29 & 32 seem to be the actual platforms
-		//30 & 31 seem to be the stoppers
+	case 27: case 28: case 29: case 30: case 32:
+		//27-30 & 32 seem to be the actual platforms.  There may be more of numbers lower than 27.
+		//31 seems to be the stoppers.
 		p_newfoe = new galaxy::CPlatform(&Map, x, y, NONE);
 		break;
 
