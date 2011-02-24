@@ -25,6 +25,7 @@
 #include "engine/galaxy/ai/CSpriteItem.h"
 #include "engine/galaxy/ai/CPlatform.h"
 #include "engine/galaxy/ai/CSlug.h"
+#include "engine/galaxy/ai/CCouncilMember.h"
 
 #include <fstream>
 
@@ -354,9 +355,14 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 		p_newfoe = new galaxy::CPlayerWM(&Map, x, y, m_ObjectPtr, m_Inventory);
 		break;
 
+	case 4:
+		//This should be a council member.  We'll find out.
+		p_newfoe = new galaxy::CCouncilMember(&Map, x, y-750);
+		break;
+
 	case 22:
 		//slugs
-		p_newfoe = new galaxy::CSlug(&Map, x, (y-250));
+		p_newfoe = new galaxy::CSlug(&Map, x, y-250);
 		break;
 
 	case 27: case 28: case 29: case 32:
