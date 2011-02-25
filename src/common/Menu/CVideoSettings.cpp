@@ -144,7 +144,7 @@ void CVideoSettings::processSpecific(){
 			{
 
 #ifdef USE_OPENGL
-				if(!m_Vidconfig.m_opengl) {
+				if(m_Vidconfig.m_opengl) {
 					mp_Dialog->m_min = 1;
 					mp_Dialog->m_max = 1;
 						buf = "GL Filter: ";
