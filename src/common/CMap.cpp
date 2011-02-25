@@ -535,6 +535,13 @@ void CMap::animateAllTiles()
 	if(!m_animation_enabled)
 		return;
 
+	if(g_pVideoDriver->getRefreshSignal())
+	{
+		drawAll();
+		g_pVideoDriver->setRefreshSignal(false);
+	}
+
+
 	SDL_Surface *ScrollSurface = g_pVideoDriver->getScrollSurface();
 
 	// Let the animation timer tick!!

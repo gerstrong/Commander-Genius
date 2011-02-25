@@ -93,6 +93,8 @@ public:
 	void setAspectCorrection(bool value) { m_VidConfig.m_aspect_correction = value; }
 	bool getAspectCorrection(void) { return m_VidConfig.m_aspect_correction; }
 	bool getSpecialFXConfig(void) { return m_VidConfig.m_special_fx; }
+	bool getRefreshSignal() { return m_mustrefresh; }
+	void setRefreshSignal(const bool value) { m_mustrefresh = value;  }
 
 	st_camera_bounds &getCameraBounds();
 
@@ -106,6 +108,7 @@ public:
 private:
 
 	CVidConfig m_VidConfig;
+	bool m_mustrefresh;
 
 	Sint16 *mp_sbufferx;
 	Sint16 *mp_sbuffery;

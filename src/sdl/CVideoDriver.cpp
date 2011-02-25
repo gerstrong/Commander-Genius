@@ -40,6 +40,7 @@ int ConsoleExpireTimer = 0;
 
 CVideoDriver::CVideoDriver() :
 mp_VideoEngine(NULL),
+m_mustrefresh(false),
 mp_sbufferx(NULL),
 mp_sbuffery(NULL)
 {
@@ -268,6 +269,7 @@ bool CVideoDriver::start()
 	// this value is updated here!
 	m_VidConfig.m_Resolution.depth = mp_VideoEngine->getScreenSurface()->format->BitsPerPixel;
 	retval &= mp_VideoEngine->createSurfaces();
+	m_mustrefresh = true;
 
 	return retval;
 }
