@@ -15,9 +15,10 @@
 class CStatusScreen {
 public:
 	CStatusScreen
-	(char episode, stInventory *p_inventory, bool *p_level_completed, int ankhtime, int baseframe);
+	(char episode, stInventory *p_inventory, bool *p_level_completed, int ankhtime, int baseframe, const Uint8& difficulty );
 
 	void draw();
+	std::string fetchDifficultyText();
 	void createInventorySfcEp1();
 	void createInventorySfcEp2();
 	void createInventorySfcEp3();
@@ -41,6 +42,7 @@ private:
 
 	SDL_Surface* mp_StatusSfc;
 	SDL_Rect m_StatusRect;
+	const Uint8 &m_difficulty;
 };
 
 #endif /* CSTATUSSCREEN_H_ */

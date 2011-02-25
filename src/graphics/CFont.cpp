@@ -226,6 +226,12 @@ void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uin
 	}
 }
 
+void CFont::drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 width, Uint16 yoff, bool highlight)
+{
+	const Uint16 xmidpos = (width-(text.size()*8))/2;
+	drawFont(dst, text, xmidpos, yoff, highlight);
+}
+
 void CFont::drawMap(SDL_Surface* dst)
 {
 	SDL_BlitSurface(m_FontSurface,NULL,dst,NULL);

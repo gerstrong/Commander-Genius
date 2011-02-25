@@ -21,12 +21,13 @@
 #define FADE_SPEED	10
 
 CStatusScreen::CStatusScreen
-(char episode, stInventory *p_inventory, bool *p_level_completed, int ankhtime, int baseframe) :
+(char episode, stInventory *p_inventory, bool *p_level_completed, int ankhtime, int baseframe, const Uint8& difficulty ) :
  mp_level_completed(p_level_completed),
  m_ankhtime(ankhtime),
  m_closing(false),
  m_closed(false),
- mp_StatusSfc(NULL)
+ mp_StatusSfc(NULL),
+ m_difficulty(difficulty)
 {
 	m_episode = episode;
 	mp_inventory = p_inventory;
@@ -69,6 +70,20 @@ SDL_Surface* CStatusScreen::CreateStatusSfc()
 	const Uint8 bpp = p_blitSurface->format->BitsPerPixel;
 
 	return SDL_CreateRGBSurface(p_blitSurface->flags, m_StatusRect.w, m_StatusRect.h, bpp, rmask, gmask, bmask, amask);
+}
+
+std::string CStatusScreen::fetchDifficultyText()
+{
+	std::string out;
+	if(m_difficulty == 1)
+		out = "Easy-";
+	else if(m_difficulty == 2)
+		out = "Normal-";
+	else if(m_difficulty == 3)
+		out = "Hard-";
+	out += "Mode";
+
+	return out;
 }
 
 void CStatusScreen::createInventorySfcEp1()
@@ -193,6 +208,9 @@ void CStatusScreen::createInventorySfcEp1()
 		x += Sprite.getWidth();
 	}
 
+	// Now draw the difficulty at the bottom
+	Font.drawFontCentered( p_surface, fetchDifficultyText(), dlgW<<3, (dlgH-2)<<3, true);
+
 	mp_StatusSfc = SDL_DisplayFormat(p_surface);
 	SDL_FreeSurface(p_surface);
 }
@@ -310,6 +328,9 @@ void CStatusScreen::createInventorySfcEp2()
 	if (mp_level_completed[15]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL15_TargetName"), (0+1)<<3, (0+11)<<3);
 	if (mp_level_completed[16]) Font.drawFont( p_surface, g_pBehaviorEngine->getString("EP2_LVL16_TargetName"), (0+8)<<3, (0+11)<<3);
 
+	// Now draw the difficulty at the bottom
+	Font.drawFontCentered( p_surface, fetchDifficultyText(), dlgW<<3, (dlgH-2)<<3, true);
+
 	mp_StatusSfc = SDL_DisplayFormat(p_surface);
 	SDL_FreeSurface(p_surface);
 }
@@ -423,6 +444,9 @@ void CStatusScreen::createInventorySfcEp3()
 		Sprite.drawSprite(  p_surface, x, (0+4)<<3);
 		x += Sprite.getWidth();
 	}
+
+	// Now draw the difficulty at the bottom
+	Font.drawFontCentered( p_surface, fetchDifficultyText(), dlgW<<3, (dlgH-2)<<3, true);
 
 	mp_StatusSfc = SDL_DisplayFormat(p_surface);
 	SDL_FreeSurface(p_surface);

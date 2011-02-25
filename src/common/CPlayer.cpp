@@ -795,7 +795,7 @@ bool CPlayer::drawStatusScreen()
 	if(m_showStatusScreen)
 	{
 		if(mp_StatusScr == NULL)
-			mp_StatusScr = new CStatusScreen(m_episode, &inventory, mp_levels_completed, ankhtime, playerbaseframe);
+			mp_StatusScr = new CStatusScreen(m_episode, &inventory, mp_levels_completed, ankhtime, playerbaseframe, mp_Map->m_Difficulty);
 		
 		mp_StatusScr->draw();
 		
