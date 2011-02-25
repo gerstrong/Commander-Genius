@@ -79,6 +79,8 @@ void CMusic::reload()
 	if(!mp_player)
 		return;
 
+	m_AudioSpec = g_pSound->getAudioSpec();
+
 	mp_player->reload();
 }
 

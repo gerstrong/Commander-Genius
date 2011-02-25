@@ -207,6 +207,7 @@ CIMFPlayer::~CIMFPlayer()
 bool CIMFPlayer::open()
 {
 	m_IMFReadTimeCount = m_TimeCount = 0;
+	m_samplesPerMusicTick = m_AudioDevSpec.freq / m_opl_emulator.getIMFClockRate();
 
 	return (!m_IMF_Data.empty());
 }
@@ -245,7 +246,7 @@ void CIMFPlayer::OPLUpdate(byte *buffer, const unsigned int length)
 		{
 			for (unsigned int j=0; j<m_AudioDevSpec.channels; j++)
 			{
-				*buffer = m_mix_buffer[i] + m_AudioDevSpec.silence;
+				*buffer = (m_mix_buffer[i]>>8) + m_AudioDevSpec.silence;
 				buffer++;
 			}
 		}
@@ -258,8 +259,9 @@ void CIMFPlayer::readBuffer(Uint8* buffer, Uint32 length)
 		return;
 
 	/// if a delay of the instruments is pending, play it
-    //Uint32 sampleslen = length/(m_AudioDevSpec.channels*sizeof(Sint16));
 	Uint32 sampleslen = m_AudioDevSpec.samples;
+	Uint32 sample_mult = m_AudioDevSpec.channels;
+	sample_mult = (m_AudioDevSpec.format == AUDIO_S16) ? sample_mult*sizeof(Sint16) : sample_mult*sizeof(Uint8) ;
 
     // while the waveform is not filled
     while(1)
@@ -270,7 +272,7 @@ void CIMFPlayer::readBuffer(Uint8* buffer, Uint32 length)
             {
             	// Every time a tune has been played call this.
             	OPLUpdate( buffer, m_numreadysamples);
-            	buffer += m_numreadysamples*m_AudioDevSpec.channels*sizeof(Sint16);
+            	buffer += m_numreadysamples*sample_mult;
                 sampleslen -= m_numreadysamples;
             }
             else
