@@ -1,20 +1,19 @@
-**********************************************
-*                                            *
-*             Commander Genius               * 
-*              (CloneKeenPlus)               *
-*                                            *
-*    (c)2008-2011            Gerstrong       *
-*    (c)2009-2011            Albert          *
-*    (c)2009-2011            Pizza2004       *
-*    (c)2009-2011            Pickle          *
-*    (c)2009-2011            Tulip           *
-*    (c)2009-2011            DaVince         *
-*    (c)2010-2011            FCTW            *
-*    (c)2010-2011            furan           *
-*           Released under GNU/GPL           *
-*                                            *
-*            Release v0.3.3.1                *
-*                                            *
+**********************************************                                   
+             Commander Genius                
+              (CloneKeenPlus)               
+                                            
+    (c)2008-2011            Gerstrong       
+    (c)2009-2011            Albert          
+    (c)2009-2011            Pizza2004       
+    (c)2009-2011            Pickle          
+    (c)2009-2011            Tulip           
+    (c)2009-2011            DaVince         
+    (c)2010-2011            FCTW            
+    (c)2010-2011            furan           
+           Released under GNU/GPL           
+                                            
+           Release v${CG_VERSION} 
+           Build: ${BUILD_TYPE}                                       
 **********************************************
 
 NOTE: Updaters since 0.3.1.3!

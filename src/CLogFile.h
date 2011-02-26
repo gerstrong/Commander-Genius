@@ -11,7 +11,7 @@
 #include "CSingleton.h"
 #include <string>
 
-const std::string PROGRAMM_NAME = "Commander Genius";
+const std::string APP_NAME = "Commander Genius";
 
 #define g_pLogFile	CLogFile::Get()
 #define MAX_BUFFER 1024

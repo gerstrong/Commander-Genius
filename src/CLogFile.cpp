@@ -28,12 +28,7 @@ void CLogFile::CreateLogfile(const char *LogName)
 	WriteTopic("Logfile", 3);
 	
 	std::string versionstring = CGVERSION;
-
-	int len = versionstring.size();
-	for(int c=0 ; c<len-1 ; c++)
-		versionstring.insert(2*c+1, ".");
-
-	textOut(BLUE, PROGRAMM_NAME + " v" + versionstring);
+	textOut(BLUE, APP_NAME + " v" + versionstring);
 
 	// Mark the Build and Platform
 #ifdef DEBUG
