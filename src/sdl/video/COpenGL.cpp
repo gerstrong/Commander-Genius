@@ -154,8 +154,8 @@ bool COpenGL::init()
 	glLoadIdentity();
 
 	#if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)	// TODO: dont check for iphone but for opengles
-#define glOrtho glOrthof
-#endif
+	#define glOrtho glOrthof
+	#endif
 	glOrtho( 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f );
 
 	// Now Initialize modelview matrix

@@ -70,17 +70,17 @@ void CVideoDriver::initResolutionList()
 	m_Resolutionlist.clear();
 
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_IPHONE_SIMULATOR)
-	m_Resolution.width = 320; //  320;
-	m_Resolution.height = 200; //  480;
-	m_Resolution.depth = 32;
+	resolution.width = 320; //  320;
+	resolution.height = 200; //  480;
+	resolution.depth = 32;
 	m_Resolutionlist.clear();
-	m_Resolutionlist.push_back(m_Resolution);
+	m_Resolutionlist.push_back(resolution);
 #elif defined(ANDROID)
-	m_Resolution.width = 320;
-	m_Resolution.height = 200;
-	m_Resolution.depth = 16;
+	resolution.width = 320;
+	resolution.height = 200;
+	resolution.depth = 16;
 	m_Resolutionlist.clear();
-	m_Resolutionlist.push_back(m_Resolution);
+	m_Resolutionlist.push_back(resolution);
 #else
 	char buf[256];
 
