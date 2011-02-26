@@ -7,7 +7,9 @@
 
 #include "CVideoEngine.h"
 #include "CLogFile.h"
-#include "sys/param.h"
+
+#define	MIN(a,b) (((a)<(b))?(a):(b))
+#define	MAX(a,b) (((a)>(b))?(a):(b))
 
 CVideoEngine::CVideoEngine(const CVidConfig& VidConfig, Sint16 *&p_sbufferx, Sint16 *&p_sbuffery) :
 BlitSurface(NULL),
