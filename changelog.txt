@@ -10,6 +10,7 @@ v0.3.3.1:
 - Audio changes now Keen Galaxy has sounds (also thanks to FCTW for his help!)
 - Keen 5 Support initial support. (Thanks to furan for his help and cleaning up some code is it!)
 - Council members, slugs and platforms are in. They don't work properly yet (Also many thanks to FCTW!)
+- New Packages are available. Now Windows Installer is shipped and the Deb Packages are updated!
 
 v0.3.3:
 -------

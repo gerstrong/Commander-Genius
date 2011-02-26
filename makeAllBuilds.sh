@@ -2,17 +2,17 @@
 
 # Windows Version
 cmake . -DBUILD_TYPE=WIN32 -DDEBUG=OFF -DOGG=yes -DTREMOR=NO -DHAVE_64_BIT=1
-make
+make package
 rm CMakeFiles -R
 
 # Linux 64-bit Version
-cmake . -DBUILD_TYPE=LINUX64 -DDEBUG=OFF -DOGG=yes -DTREMOR=NO -DHAVE_64_BIT=1
-make
+cmake . -DBUILD_TYPE=LINUX64 -DDEBUG=OFF -DOGG=yes -DTREMOR=NO -DHAVE_64_BIT=1 -DCREATE_DEBS
+make package
 rm CMakeFiles -R
 
 # Linux 32-bit Version
-cmake . -DBUILD_TYPE=LINUX32 -DDEBUG=OFF -DOGG=yes -DTREMOR=NO -DHAVE_64_BIT=1
-make
+cmake . -DBUILD_TYPE=LINUX32 -DDEBUG=OFF -DOGG=yes -DTREMOR=NO -DHAVE_64_BIT=1 -DCREATE_DEBS
+make package
 rm CMakeFiles -R
 
 # upload the packages
