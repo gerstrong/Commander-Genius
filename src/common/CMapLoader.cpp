@@ -112,6 +112,24 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	{
 		t = planeitems.at(c);
 
+		//Fix erroneous tiles
+		if( episode == 1 && level == 14 )
+		{
+			if( (curmapx == 14 && curmapy == 10) || (curmapx == 13 && curmapy == 13) )
+			{
+				t = 143;
+			}
+			else if( (curmapx == 14 && curmapy == 11) || (curmapx == 13 && curmapy == 14) )
+			{
+				t = 331;
+			}
+		}
+/*		else if( episode == 1 && level == 14 && curmapx == 12 && curmapy == 10 )
+		{
+			std::cout << "\nTile number is:  " << t << "\n";
+			addTile(t, curmapx, curmapy);
+		}*/
+
 		addTile(t, curmapx, curmapy);
 
 		curmapx++;
