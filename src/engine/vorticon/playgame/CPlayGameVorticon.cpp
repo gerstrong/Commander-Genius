@@ -115,7 +115,7 @@ void CPlayGameVorticon::setupPlayers()
 
 bool CPlayGameVorticon::init()
 {
-	CMapLoader MapLoader( &m_Map, &m_Player );
+	CMapLoader MapLoader( &m_Map, &m_Player, mp_option );
 	MapLoader.m_checkpointset = m_checkpointset;
 	MapLoader.mp_objvect = &m_Object;
 

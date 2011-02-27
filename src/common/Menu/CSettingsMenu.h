@@ -9,8 +9,8 @@
 #define CSETTINGSMENU_H_
 
 #include "CBaseMenu.h"
-#include "../options.h"
-#include "../../fileio/CExeFile.h"
+#include "common/options.h"
+#include "fileio/CExeFile.h"
 
 class CSettingsMenu : public CBaseMenu
 {

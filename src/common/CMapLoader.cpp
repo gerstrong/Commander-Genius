@@ -18,6 +18,7 @@
 #include "graphics/CGfxEngine.h"
 #include "sdl/CVideoDriver.h"
 #include "CResourceLoader.h"
+#include <stdlib.h>
 
 #include "engine/vorticon/ai/CYorp.h"
 #include "engine/vorticon/ai/CGarg.h"
@@ -43,7 +44,8 @@
 #include "engine/vorticon/ai/CIceCannon.h"
 #include "engine/vorticon/ai/CSpark.h"
 
-CMapLoader::CMapLoader(CMap* p_map, std::vector<CPlayer> *p_PlayerVect) :
+CMapLoader::CMapLoader(CMap* p_map, std::vector<CPlayer> *p_PlayerVect, stOption *mp_option) :
+mp_option(mp_option),
 mp_vec_Player(p_PlayerVect)
 {
 	mp_objvect = NULL;
@@ -112,8 +114,8 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	{
 		t = planeitems.at(c);
 
-		//Fix erroneous tiles
-		if( episode == 1 && level == 14 )
+		//Fix erroneous tiles in K1
+		if( episode == 1 && level == 14 && mp_option[OPT_FIXLEVELERRORS].value )
 		{
 			if( (curmapx == 14 && curmapy == 10) || (curmapx == 13 && curmapy == 13) )
 			{
@@ -124,11 +126,15 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 				t = 331;
 			}
 		}
-/*		else if( episode == 1 && level == 14 && curmapx == 12 && curmapy == 10 )
+		//Fix erroneous tiles in K3
+		else if( episode == 3 && level == 8 && mp_option[OPT_FIXLEVELERRORS].value )
 		{
-			std::cout << "\nTile number is:  " << t << "\n";
-			addTile(t, curmapx, curmapy);
-		}*/
+			if( ( curmapx == 77 && curmapy == 52 ) || 
+				( ( curmapx == 94 || curmapx == 95 || curmapx == 96 ) && curmapy == 15 ) )
+			{
+				t = 169;
+			}
+		}
 
 		addTile(t, curmapx, curmapy);
 

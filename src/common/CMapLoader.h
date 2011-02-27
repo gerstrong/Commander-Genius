@@ -8,16 +8,19 @@
 #ifndef CMAPLOADER_H_
 #define CMAPLOADER_H_
 
+#include <SDL.h>
 #include "CMap.h"
 #include "CPlayer.h"
 #include "CObject.h"
+#include "Playerdefines.h"
+#include "options.h"
 #include "sdl/music/CMusic.h"
 #include <string>
 #include <vector>
 
 class CMapLoader {
 public:
-	CMapLoader(CMap* p_map, std::vector<CPlayer> *p_PlayerVect = NULL);
+	CMapLoader(CMap* p_map, std::vector<CPlayer> *p_PlayerVect = NULL, stOption *mp_option = NULL);
 	
 	bool load( Uint8 episode, Uint8 level, const std::string& path, bool loadNewMusic=true, bool stategame=false );
 	
@@ -28,6 +31,8 @@ public:
 	bool m_checkpointset;
 	bool m_NessieAlreadySpawned;
 	std::vector<CObject*> *mp_objvect;
+
+	stOption *mp_option;
 
 private:
 	CMap *mp_map;

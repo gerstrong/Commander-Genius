@@ -9,7 +9,7 @@
 #define COPTIONS_H_
 
 #include "CBaseMenu.h"
-#include "../options.h"
+#include "common/options.h"
 
 class COptions : public CBaseMenu {
 public:

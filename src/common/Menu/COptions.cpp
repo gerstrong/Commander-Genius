@@ -6,9 +6,9 @@
  */
 
 #include "COptions.h"
-#include "../../sdl/CInput.h"
-#include "../../sdl/CVideoDriver.h"
-#include "../../sdl/CSettings.h"
+#include "sdl/CInput.h"
+#include "sdl/CVideoDriver.h"
+#include "sdl/CSettings.h"
 
 COptions::COptions(Uint8 dlg_theme, stOption *p_option) :
 CBaseMenu(dlg_theme),

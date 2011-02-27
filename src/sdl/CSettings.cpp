@@ -196,14 +196,15 @@ void CSettings::loadDefaultGameCfg()
 	setOption( OPT_FULLYAUTOMATIC,	"Machine Gun      ", "autogun", 0 );
 	setOption( OPT_SUPERPOGO,		"Super Pogo Stick ", "superpogo", 0 );
 	setOption( OPT_ALLOWPKING,		"Friendly Fire    ", "pking", 1 );
-	setOption( OPT_KEYSTACK,		"Keystacking      ", "keystack", 0 );
+	setOption( OPT_KEYSTACK,			"Keystacking      ", "keystack", 0 );
 	setOption( OPT_ANALOGJOYSTICK,	"Analog Joystick  ", "analog_joystick", 1 );
-	setOption( OPT_LVLREPLAYABILITY,"Replay Levels    ", "level_replayability", 0 );
+	setOption( OPT_LVLREPLAYABILITY,	"Replay Levels    ", "level_replayability", 0 );
 	setOption( OPT_RISEBONUS,		"Rising Bonus     ", "rise_bonus", 1 );
-	setOption( OPT_SWITCHSCORES,	"Score Fix (EP3)  ", "switch_scores", 0 );
+	setOption( OPT_SWITCHSCORES,		"Score Fix (EP3)  ", "switch_scores", 0 );
 	setOption( OPT_IMPPOGO,			"Impossible Pogo  ", "impossible_pogo", 0 );
 	setOption( OPT_HUD,				"HUD Display      ", "hud", 1 );
 	setOption( OPT_FLASHEFFECT,		"Flash Effects    ", "flashfx", 1 );
+	setOption( OPT_FIXLEVELERRORS,	"Fix Level Errors ", "fix_level", 1 );
 }
 
 /**
