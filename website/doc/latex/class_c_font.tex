@@ -1,0 +1,95 @@
+\hypertarget{class_c_font}{
+\section{CFont Class Reference}
+\label{class_c_font}\index{CFont@{CFont}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_font_a5a98f868be9c5a4bc3bbba005436962b}{
+bool {\bfseries CreateSurface} (SDL\_\-Color $\ast$Palette, Uint32 Flags, Uint8 bpp=8, Uint16 width=128, Uint16 height=128)}
+\label{class_c_font_a5a98f868be9c5a4bc3bbba005436962b}
+
+\item 
+\hypertarget{class_c_font_ae8d517335b1019d12190794f92020dd5}{
+bool {\bfseries optimizeSurface} ()}
+\label{class_c_font_ae8d517335b1019d12190794f92020dd5}
+
+\item 
+\hypertarget{class_c_font_a1994c24c13e669195a84e3f340ae421c}{
+SDL\_\-Surface $\ast$ {\bfseries getSDLSurface} ()}
+\label{class_c_font_a1994c24c13e669195a84e3f340ae421c}
+
+\item 
+\hypertarget{class_c_font_a29820152e89e38c3daa7f398c5688b4d}{
+SDL\_\-Surface $\ast$ {\bfseries getSDLColouredSurface} ()}
+\label{class_c_font_a29820152e89e38c3daa7f398c5688b4d}
+
+\item 
+\hypertarget{class_c_font_a99be114ae59565c47a22591b47652a6d}{
+bool {\bfseries loadHiColourFont} (const std::string \&filename)}
+\label{class_c_font_a99be114ae59565c47a22591b47652a6d}
+
+\item 
+\hypertarget{class_c_font_a7d5dce0433c09fd02a825aa04bbd9895}{
+void {\bfseries setWidthToCharacter} (Uint8 width, Uint16 letter)}
+\label{class_c_font_a7d5dce0433c09fd02a825aa04bbd9895}
+
+\item 
+void \hyperlink{class_c_font_a016ae0598f2cc8d985790c0204b31663}{setMonochrome} (bool value)
+\begin{DoxyCompactList}\small\item\em This function defines, that we have a monochrome fontmap Vorticon engine uses a 8x8 tilemap for printing the fonts. As it has other characters, it can never be monochrome The Galaxy engine uses monochrome because it derives the other colours by tricking around with palette in our case... \item\end{DoxyCompactList}\item 
+\hypertarget{class_c_font_a0eb491d728e89b282181b0f12b578b93}{
+void {\bfseries setFGColour} (SDL\_\-PixelFormat $\ast$p\_\-pixelformat, Uint32 fgcolour, bool force=false)}
+\label{class_c_font_a0eb491d728e89b282181b0f12b578b93}
+
+\item 
+\hypertarget{class_c_font_a598307d0cf3ca498cbc527a7bde901e8}{
+void {\bfseries setBGColour} (SDL\_\-PixelFormat $\ast$p\_\-pixelformat, Uint32 bgcolour, bool force=false)}
+\label{class_c_font_a598307d0cf3ca498cbc527a7bde901e8}
+
+\item 
+\hypertarget{class_c_font_a134501e38622dac5a2c9d09c540bcbbc}{
+Uint32 {\bfseries getColour} ()}
+\label{class_c_font_a134501e38622dac5a2c9d09c540bcbbc}
+
+\item 
+\hypertarget{class_c_font_aeab44df5be9e33b2dcacc646be9774ce}{
+void {\bfseries drawCharacter} (SDL\_\-Surface $\ast$dst, Uint16 character, Uint16 xoff, Uint16 yoff)}
+\label{class_c_font_aeab44df5be9e33b2dcacc646be9774ce}
+
+\item 
+\hypertarget{class_c_font_aff05654d3722c3d0a6939b5317109437}{
+void {\bfseries drawFont} (SDL\_\-Surface $\ast$dst, const std::string \&text, Uint16 xoff, Uint16 yoff, bool highlight=false)}
+\label{class_c_font_aff05654d3722c3d0a6939b5317109437}
+
+\item 
+\hypertarget{class_c_font_a5e95e0bf3be87e7803aa2cad7bf3bb0b}{
+void {\bfseries drawMap} (SDL\_\-Surface $\ast$dst)}
+\label{class_c_font_a5e95e0bf3be87e7803aa2cad7bf3bb0b}
+
+\item 
+\hypertarget{class_c_font_a7a3376a3ad0c38935ac8c59e4cc9054d}{
+void {\bfseries destroySurface} ()}
+\label{class_c_font_a7a3376a3ad0c38935ac8c59e4cc9054d}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_c_font_a016ae0598f2cc8d985790c0204b31663}{
+\index{CFont@{CFont}!setMonochrome@{setMonochrome}}
+\index{setMonochrome@{setMonochrome}!CFont@{CFont}}
+\subsubsection[{setMonochrome}]{\setlength{\rightskip}{0pt plus 5cm}void CFont::setMonochrome (bool {\em value})}}
+\label{class_c_font_a016ae0598f2cc8d985790c0204b31663}
+
+
+This function defines, that we have a monochrome fontmap Vorticon engine uses a 8x8 tilemap for printing the fonts. As it has other characters, it can never be monochrome The Galaxy engine uses monochrome because it derives the other colours by tricking around with palette in our case... 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em value}]set true if the fontmap is monochrome, else false \end{DoxyParams}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gerstrong/projects/CommanderGenius/src/graphics/CFont.h\item 
+/home/gerstrong/projects/CommanderGenius/src/graphics/CFont.cpp\end{DoxyCompactItemize}

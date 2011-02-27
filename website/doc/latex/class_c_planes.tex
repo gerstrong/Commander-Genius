@@ -1,0 +1,66 @@
+\hypertarget{class_c_planes}{
+\section{CPlanes Class Reference}
+\label{class_c_planes}\index{CPlanes@{CPlanes}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_c_planes_a553dda7df33570d8c29ed6d5818a5d79}{CPlanes} (byte $\ast$dataptr)
+\begin{DoxyCompactList}\small\item\em Constructor initializes the positions,getbit will retrieve data from. \item\end{DoxyCompactList}\item 
+\hypertarget{class_c_planes_a01732fdeb580897fe1504b88e72ca962}{
+unsigned char {\bfseries getbit} (unsigned char plane)}
+\label{class_c_planes_a01732fdeb580897fe1504b88e72ca962}
+
+\item 
+void \hyperlink{class_c_planes_aa1713e4cec9409fc7aa5363d798da3d3}{setOffsets} (unsigned long p1, unsigned long p2, unsigned long p3, unsigned long p4, unsigned long p5=0)
+\begin{DoxyCompactList}\small\item\em THis function is used for setting the offsets, so the bits can be read. \item\end{DoxyCompactList}\item 
+void \hyperlink{class_c_planes_a87f413375d2b1197590983a7f48c7e97}{readPlane} (size\_\-t p, Uint8 $\ast$pixels, Uint16 width, Uint16 height)
+\item 
+void \hyperlink{class_c_planes_ab3470959e52a76f407078df080aa5838}{readPlaneofTiles} (size\_\-t p, Uint8 $\ast$pixels, Uint16 columns, Uint16 tilesize, Uint16 numtiles)
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_c_planes_a553dda7df33570d8c29ed6d5818a5d79}{
+\index{CPlanes@{CPlanes}!CPlanes@{CPlanes}}
+\index{CPlanes@{CPlanes}!CPlanes@{CPlanes}}
+\subsubsection[{CPlanes}]{\setlength{\rightskip}{0pt plus 5cm}CPlanes::CPlanes (byte $\ast$ {\em dataptr})}}
+\label{class_c_planes_a553dda7df33570d8c29ed6d5818a5d79}
+
+
+Constructor initializes the positions,getbit will retrieve data from. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em dataptr}]Pointer to the data where the bit plane will be read. \end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_c_planes_a87f413375d2b1197590983a7f48c7e97}{
+\index{CPlanes@{CPlanes}!readPlane@{readPlane}}
+\index{readPlane@{readPlane}!CPlanes@{CPlanes}}
+\subsubsection[{readPlane}]{\setlength{\rightskip}{0pt plus 5cm}void CPlanes::readPlane (size\_\-t {\em p}, \/  Uint8 $\ast$ {\em pixels}, \/  Uint16 {\em width}, \/  Uint16 {\em height})}}
+\label{class_c_planes_a87f413375d2b1197590983a7f48c7e97}
+This functions read one plane of graphics to a designated pointer which is derived by a SDL-\/Surface normally \hypertarget{class_c_planes_ab3470959e52a76f407078df080aa5838}{
+\index{CPlanes@{CPlanes}!readPlaneofTiles@{readPlaneofTiles}}
+\index{readPlaneofTiles@{readPlaneofTiles}!CPlanes@{CPlanes}}
+\subsubsection[{readPlaneofTiles}]{\setlength{\rightskip}{0pt plus 5cm}void CPlanes::readPlaneofTiles (size\_\-t {\em p}, \/  Uint8 $\ast$ {\em pixels}, \/  Uint16 {\em columns}, \/  Uint16 {\em tilesize}, \/  Uint16 {\em numtiles})}}
+\label{class_c_planes_ab3470959e52a76f407078df080aa5838}
+This functions read one plane of graphics to a designated pointer which is derived by a SDL-\/Surface normally. This function is used for tilemaps, which need to be read differently from the gamedata of Keen \hypertarget{class_c_planes_aa1713e4cec9409fc7aa5363d798da3d3}{
+\index{CPlanes@{CPlanes}!setOffsets@{setOffsets}}
+\index{setOffsets@{setOffsets}!CPlanes@{CPlanes}}
+\subsubsection[{setOffsets}]{\setlength{\rightskip}{0pt plus 5cm}void CPlanes::setOffsets (unsigned long {\em p1}, \/  unsigned long {\em p2}, \/  unsigned long {\em p3}, \/  unsigned long {\em p4}, \/  unsigned long {\em p5} = {\ttfamily 0})}}
+\label{class_c_planes_aa1713e4cec9409fc7aa5363d798da3d3}
+
+
+THis function is used for setting the offsets, so the bits can be read. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em p1,p2,p3,p4,p5}]The offsets of the planes where the bits are going to be read \end{DoxyParams}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gerstrong/projects/CommanderGenius/src/engine/CPlanes.h\item 
+/home/gerstrong/projects/CommanderGenius/src/engine/CPlanes.cpp\end{DoxyCompactItemize}

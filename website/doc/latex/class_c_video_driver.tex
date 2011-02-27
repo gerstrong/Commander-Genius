@@ -1,0 +1,282 @@
+\hypertarget{class_c_video_driver}{
+\section{CVideoDriver Class Reference}
+\label{class_c_video_driver}\index{CVideoDriver@{CVideoDriver}}
+}
+Inheritance diagram for CVideoDriver:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2cm]{class_c_video_driver}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_video_driver_af2cc37904b48c749e9bb1506ff056fc8}{
+bool {\bfseries applyMode} ()}
+\label{class_c_video_driver_af2cc37904b48c749e9bb1506ff056fc8}
+
+\item 
+\hypertarget{class_c_video_driver_af144c1c539b6e667a3294385676b2ce3}{
+SDL\_\-Rect {\bfseries adaptGameResolution} ()}
+\label{class_c_video_driver_af144c1c539b6e667a3294385676b2ce3}
+
+\item 
+\hypertarget{class_c_video_driver_ab32c370b1701e568277e504487143694}{
+SDL\_\-Surface $\ast$ {\bfseries createSurface} (std::string name, bool alpha, int width, int height, int bpp, int mode, SDL\_\-PixelFormat $\ast$format)}
+\label{class_c_video_driver_ab32c370b1701e568277e504487143694}
+
+\item 
+\hypertarget{class_c_video_driver_a8bd1c89b80562024ab35a1797e0f6572}{
+void {\bfseries stop} (void)}
+\label{class_c_video_driver_a8bd1c89b80562024ab35a1797e0f6572}
+
+\item 
+\hypertarget{class_c_video_driver_ac562ae698f197fec6aac4aa3002ca4bf}{
+bool {\bfseries start} (void)}
+\label{class_c_video_driver_ac562ae698f197fec6aac4aa3002ca4bf}
+
+\item 
+\hypertarget{class_c_video_driver_ae46630dc78182bcc8a2a86a563bbfb6b}{
+void {\bfseries isFullscreen} (bool value)}
+\label{class_c_video_driver_ae46630dc78182bcc8a2a86a563bbfb6b}
+
+\item 
+\hypertarget{class_c_video_driver_af71c275500840a0914de0722df010423}{
+void {\bfseries drawConsoleMessages} (void)}
+\label{class_c_video_driver_af71c275500840a0914de0722df010423}
+
+\item 
+\hypertarget{class_c_video_driver_a1d20b56e18196140d4839a97e4c561f5}{
+void {\bfseries pal\_\-set} (short colour, Uint8 red, Uint8 green, Uint8 blue)}
+\label{class_c_video_driver_a1d20b56e18196140d4839a97e4c561f5}
+
+\item 
+\hypertarget{class_c_video_driver_aca5e8f66b2268eee7f9afffb876fb361}{
+void {\bfseries pal\_\-apply} (void)}
+\label{class_c_video_driver_aca5e8f66b2268eee7f9afffb876fb361}
+
+\item 
+\hypertarget{class_c_video_driver_a6ee22345cc64c5946f81fa53b6897abe}{
+void {\bfseries blitScrollSurface} ()}
+\label{class_c_video_driver_a6ee22345cc64c5946f81fa53b6897abe}
+
+\item 
+\hypertarget{class_c_video_driver_a375642525b025af9b8e5cc65bbae5051}{
+void {\bfseries setScrollBuffer} (Sint16 $\ast$pbufx, Sint16 $\ast$pbufy)}
+\label{class_c_video_driver_a375642525b025af9b8e5cc65bbae5051}
+
+\item 
+\hypertarget{class_c_video_driver_a5b24f52b657007464a2a876d671ebd61}{
+void {\bfseries collectSurfaces} ()}
+\label{class_c_video_driver_a5b24f52b657007464a2a876d671ebd61}
+
+\item 
+\hypertarget{class_c_video_driver_a878ab474c90f8536e53907d60b774b63}{
+void {\bfseries updateScreen} ()}
+\label{class_c_video_driver_a878ab474c90f8536e53907d60b774b63}
+
+\item 
+\hypertarget{class_c_video_driver_aaaacaf49b39bcec86bf93251fde4f0d6}{
+void {\bfseries scale2xnofilter} (char $\ast$dest, char $\ast$src, short bbp)}
+\label{class_c_video_driver_aaaacaf49b39bcec86bf93251fde4f0d6}
+
+\item 
+\hypertarget{class_c_video_driver_a5c99a6c68bda2f52b3e519de1d12fe3c}{
+void {\bfseries scale3xnofilter} (char $\ast$dest, char $\ast$src, short bbp)}
+\label{class_c_video_driver_a5c99a6c68bda2f52b3e519de1d12fe3c}
+
+\item 
+\hypertarget{class_c_video_driver_a40b6518b475cfe9253ba66b4c5be466d}{
+void {\bfseries scale4xnofilter} (char $\ast$dest, char $\ast$src, short bbp)}
+\label{class_c_video_driver_a40b6518b475cfe9253ba66b4c5be466d}
+
+\item 
+\hypertarget{class_c_video_driver_a1a2931ed20e177689f9a0e39dfeed57f}{
+void {\bfseries DeleteConsoleMsgs} (void)}
+\label{class_c_video_driver_a1a2931ed20e177689f9a0e39dfeed57f}
+
+\item 
+\hypertarget{class_c_video_driver_a35b25c4d12b314ef78dc18bfa8cd1206}{
+void {\bfseries AddConsoleMsg} (const char $\ast$the\_\-msg)}
+\label{class_c_video_driver_a35b25c4d12b314ef78dc18bfa8cd1206}
+
+\item 
+\hypertarget{class_c_video_driver_a184c4112d53617f0dbfd965eb3036a20}{
+short {\bfseries getZoomValue} (void)}
+\label{class_c_video_driver_a184c4112d53617f0dbfd965eb3036a20}
+
+\item 
+\hypertarget{class_c_video_driver_af4681e784ec9a0bf2e5418e78ad2c974}{
+bool {\bfseries getShowFPS} (void)}
+\label{class_c_video_driver_af4681e784ec9a0bf2e5418e78ad2c974}
+
+\item 
+\hypertarget{class_c_video_driver_aecea8bcc77b89c06d1397a079168b89f}{
+short {\bfseries getFiltermode} (void)}
+\label{class_c_video_driver_aecea8bcc77b89c06d1397a079168b89f}
+
+\item 
+\hypertarget{class_c_video_driver_ad42ba963534001881a20935f985890cb}{
+bool {\bfseries getFullscreen} (void)}
+\label{class_c_video_driver_ad42ba963534001881a20935f985890cb}
+
+\item 
+\hypertarget{class_c_video_driver_a789cc386a38fe7ef950672c385acc408}{
+unsigned int {\bfseries getWidth} (void)}
+\label{class_c_video_driver_a789cc386a38fe7ef950672c385acc408}
+
+\item 
+\hypertarget{class_c_video_driver_a10b82c83087537420a111279b94c5972}{
+unsigned int {\bfseries getHeight} (void)}
+\label{class_c_video_driver_a10b82c83087537420a111279b94c5972}
+
+\item 
+\hypertarget{class_c_video_driver_ad3537f9d4e38ac980cb581800c4175d9}{
+unsigned short {\bfseries getDepth} (void)}
+\label{class_c_video_driver_ad3537f9d4e38ac980cb581800c4175d9}
+
+\item 
+\hypertarget{class_c_video_driver_a96edb0d0cc2860d0595b60687636ea51}{
+SDL\_\-Rect {\bfseries getGameResolution} ()}
+\label{class_c_video_driver_a96edb0d0cc2860d0595b60687636ea51}
+
+\item 
+\hypertarget{class_c_video_driver_af2f6e6f9642c887e67bcdf110617d79c}{
+SDL\_\-Surface $\ast$ {\bfseries getBlitSurface} ()}
+\label{class_c_video_driver_af2f6e6f9642c887e67bcdf110617d79c}
+
+\item 
+\hypertarget{class_c_video_driver_ab643087ee15dff24df6874e4b5360699}{
+bool {\bfseries isOpenGL} (void)}
+\label{class_c_video_driver_ab643087ee15dff24df6874e4b5360699}
+
+\item 
+\hypertarget{class_c_video_driver_a87d6078cffc6087432dd15fdfda7bde5}{
+unsigned char {\bfseries getOGLFilter} (void)}
+\label{class_c_video_driver_a87d6078cffc6087432dd15fdfda7bde5}
+
+\item 
+\hypertarget{class_c_video_driver_aa9d3223e7cf5145e499e9ee781bae61e}{
+SDL\_\-Surface $\ast$ {\bfseries getScrollSurface} (void)}
+\label{class_c_video_driver_aa9d3223e7cf5145e499e9ee781bae61e}
+
+\item 
+\hypertarget{class_c_video_driver_a8bf0ab27ab4410fe61aa1769706d4a1b}{
+void {\bfseries setMode} (\hyperlink{structst__resolution}{st\_\-resolution} Resolution)}
+\label{class_c_video_driver_a8bf0ab27ab4410fe61aa1769706d4a1b}
+
+\item 
+\hypertarget{class_c_video_driver_a3c62d186d857ef698e62276a3bafde85}{
+void {\bfseries setMode} (int width, int height, int depth)}
+\label{class_c_video_driver_a3c62d186d857ef698e62276a3bafde85}
+
+\item 
+\hypertarget{class_c_video_driver_aab2d3266a7c83440fc0604b6fbcc5458}{
+void {\bfseries setSpecialFXMode} (bool SpecialFX)}
+\label{class_c_video_driver_aab2d3266a7c83440fc0604b6fbcc5458}
+
+\item 
+\hypertarget{class_c_video_driver_af4aacfa48d355ac28f74f219680423be}{
+void {\bfseries setFilter} (short value)}
+\label{class_c_video_driver_af4aacfa48d355ac28f74f219680423be}
+
+\item 
+\hypertarget{class_c_video_driver_a91f427f464a5a6f116aa8dc421ae965a}{
+void {\bfseries setZoom} (short vale)}
+\label{class_c_video_driver_a91f427f464a5a6f116aa8dc421ae965a}
+
+\item 
+\hypertarget{class_c_video_driver_ae23e209b099a340c56bf34ec94266ac7}{
+bool {\bfseries initOpenGL} ()}
+\label{class_c_video_driver_ae23e209b099a340c56bf34ec94266ac7}
+
+\item 
+\hypertarget{class_c_video_driver_ace8ae4fafb62e9aa88cfcbb3d3250d67}{
+void {\bfseries enableOpenGL} (bool value)}
+\label{class_c_video_driver_ace8ae4fafb62e9aa88cfcbb3d3250d67}
+
+\item 
+\hypertarget{class_c_video_driver_a867607d76a2f6d0532ef5ec819b23e9f}{
+void {\bfseries setOGLFilter} (unsigned char value)}
+\label{class_c_video_driver_a867607d76a2f6d0532ef5ec819b23e9f}
+
+\item 
+\hypertarget{class_c_video_driver_afd8316fa582586a3ce735f540c1a00cd}{
+void {\bfseries checkResolution} (\hyperlink{structst__resolution}{st\_\-resolution} \&resolution, int flags)}
+\label{class_c_video_driver_afd8316fa582586a3ce735f540c1a00cd}
+
+\item 
+\hypertarget{class_c_video_driver_ac2b9a3982ae912a7e12531050246c629}{
+\hyperlink{structst__resolution}{st\_\-resolution} {\bfseries getResolution} ()}
+\label{class_c_video_driver_ac2b9a3982ae912a7e12531050246c629}
+
+\item 
+\hypertarget{class_c_video_driver_a4349cec86b6d335a7d0b7d390d12cc22}{
+\hyperlink{structst__resolution}{st\_\-resolution} {\bfseries getNextResolution} ()}
+\label{class_c_video_driver_a4349cec86b6d335a7d0b7d390d12cc22}
+
+\item 
+\hypertarget{class_c_video_driver_a5ae8defe929c7dcc346dad24001c2b71}{
+void {\bfseries showFPS} (bool value)}
+\label{class_c_video_driver_a5ae8defe929c7dcc346dad24001c2b71}
+
+\item 
+\hypertarget{class_c_video_driver_a8cb7e0384b8b247ca9df5cb1d522f330}{
+void {\bfseries initResolutionList} ()}
+\label{class_c_video_driver_a8cb7e0384b8b247ca9df5cb1d522f330}
+
+\item 
+\hypertarget{class_c_video_driver_af6ae724ee13e4242172e0229558e2046}{
+void {\bfseries setAspectCorrection} (bool value)}
+\label{class_c_video_driver_af6ae724ee13e4242172e0229558e2046}
+
+\item 
+\hypertarget{class_c_video_driver_a2d978f90620af742c616ae15bee3b54e}{
+bool {\bfseries getAspectCorrection} (void)}
+\label{class_c_video_driver_a2d978f90620af742c616ae15bee3b54e}
+
+\item 
+\hypertarget{class_c_video_driver_ad24c5e8eb2f3b4f51bf175d33b9ba595}{
+bool {\bfseries getSpecialFXConfig} (void)}
+\label{class_c_video_driver_ad24c5e8eb2f3b4f51bf175d33b9ba595}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_video_driver_a6639f0222ea7e3e6fcfa9e301e354de8}{
+SDL\_\-Surface $\ast$ {\bfseries BlitSurface}}
+\label{class_c_video_driver_a6639f0222ea7e3e6fcfa9e301e354de8}
+
+\item 
+\hypertarget{class_c_video_driver_ade32fa2d4d0bd4d693325af54c53bbb2}{
+SDL\_\-Surface $\ast$ {\bfseries FGLayerSurface}}
+\label{class_c_video_driver_ade32fa2d4d0bd4d693325af54c53bbb2}
+
+\item 
+\hypertarget{class_c_video_driver_a24b144f36644e88e2bb2cac0da5f9e71}{
+SDL\_\-Surface $\ast$ {\bfseries ScrollSurface}}
+\label{class_c_video_driver_a24b144f36644e88e2bb2cac0da5f9e71}
+
+\item 
+\hypertarget{class_c_video_driver_aca5f8145ea65160b3ec3d6ed7ae54898}{
+SDL\_\-Surface $\ast$ {\bfseries FXSurface}}
+\label{class_c_video_driver_aca5f8145ea65160b3ec3d6ed7ae54898}
+
+\item 
+\hypertarget{class_c_video_driver_a8177a2c9d835dca14f6597a9689d032f}{
+std::list$<$ \hyperlink{structst__resolution}{st\_\-resolution} $>$ {\bfseries m\_\-Resolutionlist}}
+\label{class_c_video_driver_a8177a2c9d835dca14f6597a9689d032f}
+
+\item 
+\hypertarget{class_c_video_driver_a51e2be14cae5e32f5ef497d04b7ab78a}{
+bool {\bfseries showfps}}
+\label{class_c_video_driver_a51e2be14cae5e32f5ef497d04b7ab78a}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gerstrong/projects/CommanderGenius/src/sdl/CVideoDriver.h\item 
+/home/gerstrong/projects/CommanderGenius/src/sdl/CVideoDriver.cpp\end{DoxyCompactItemize}

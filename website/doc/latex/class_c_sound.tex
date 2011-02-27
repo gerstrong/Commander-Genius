@@ -1,0 +1,144 @@
+\hypertarget{class_c_sound}{
+\section{CSound Class Reference}
+\label{class_c_sound}\index{CSound@{CSound}}
+}
+Inheritance diagram for CSound:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2cm]{class_c_sound}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_sound_a369857e8cf384e176162fa31aa8e9bca}{
+bool {\bfseries init} (void)}
+\label{class_c_sound_a369857e8cf384e176162fa31aa8e9bca}
+
+\item 
+\hypertarget{class_c_sound_aed9247519d02d450fb96bf4e79b4dcc3}{
+void {\bfseries stop} (void)}
+\label{class_c_sound_aed9247519d02d450fb96bf4e79b4dcc3}
+
+\item 
+\hypertarget{class_c_sound_aa3cd2eaef3688d9ebc891db8075fbcc4}{
+void {\bfseries setGameData} (\hyperlink{class_c_exe_file}{CExeFile} \&ExeFile)}
+\label{class_c_sound_aa3cd2eaef3688d9ebc891db8075fbcc4}
+
+\item 
+\hypertarget{class_c_sound_a84130ee3c53309db4393845b75182708}{
+bool {\bfseries loadSoundData} (\hyperlink{class_c_exe_file}{CExeFile} \&ExeFile)}
+\label{class_c_sound_a84130ee3c53309db4393845b75182708}
+
+\item 
+\hypertarget{class_c_sound_a8ddf763f8ebfd19e2a95e2994a269e77}{
+void {\bfseries stopAllSounds} (void)}
+\label{class_c_sound_a8ddf763f8ebfd19e2a95e2994a269e77}
+
+\item 
+\hypertarget{class_c_sound_ab522837d2ed51dda2c0f23b5b6edab5d}{
+bool {\bfseries forcedisPlaying} (void)}
+\label{class_c_sound_ab522837d2ed51dda2c0f23b5b6edab5d}
+
+\item 
+\hypertarget{class_c_sound_a0b64e84be2c23f0a55e731fbb3cfd18d}{
+char {\bfseries sound\_\-load\_\-all} (const std::string \&path)}
+\label{class_c_sound_a0b64e84be2c23f0a55e731fbb3cfd18d}
+
+\item 
+\hypertarget{class_c_sound_a6a6877889d97341e408706f0af25f7e3}{
+void {\bfseries transform\_\-into\_\-logaritmic\_\-sound} (int $\ast$pcmstream, int len)}
+\label{class_c_sound_a6a6877889d97341e408706f0af25f7e3}
+
+\item 
+\hypertarget{class_c_sound_a88e03b84610908e12a5ce2ffbc86f83f}{
+void {\bfseries callback} (void $\ast$unused, Uint8 $\ast$stream, int len)}
+\label{class_c_sound_a88e03b84610908e12a5ce2ffbc86f83f}
+
+\item 
+\hypertarget{class_c_sound_a88be6f6109b1a40e114ed730bc43b8a9}{
+void {\bfseries pauseSound} (void)}
+\label{class_c_sound_a88be6f6109b1a40e114ed730bc43b8a9}
+
+\item 
+\hypertarget{class_c_sound_a6c10211cf8e32c9179bfb0653e734a71}{
+void {\bfseries resumeSounds} (void)}
+\label{class_c_sound_a6c10211cf8e32c9179bfb0653e734a71}
+
+\item 
+\hypertarget{class_c_sound_af503bfebf0c38222d4835a9c83573974}{
+void {\bfseries playSound} (int snd, char mode)}
+\label{class_c_sound_af503bfebf0c38222d4835a9c83573974}
+
+\item 
+\hypertarget{class_c_sound_aca16209f8b3990b5223fe6333964b4d4}{
+void {\bfseries playStereofromCoord} (int snd, char mode, unsigned int xcoordinate)}
+\label{class_c_sound_aca16209f8b3990b5223fe6333964b4d4}
+
+\item 
+\hypertarget{class_c_sound_a4ffc21001359c3c172338c55c27fed86}{
+void {\bfseries playStereosound} (int snd, char mode, short balance)}
+\label{class_c_sound_a4ffc21001359c3c172338c55c27fed86}
+
+\item 
+\hypertarget{class_c_sound_a01eb39ae630a6f028e3e0d17451bf4ef}{
+bool {\bfseries isPlaying} (int snd)}
+\label{class_c_sound_a01eb39ae630a6f028e3e0d17451bf4ef}
+
+\item 
+\hypertarget{class_c_sound_acf15160e04abc57b144a46c575cac5c9}{
+void {\bfseries stopSound} (int snd)}
+\label{class_c_sound_acf15160e04abc57b144a46c575cac5c9}
+
+\item 
+\hypertarget{class_c_sound_a1bb1bd9d8a44722a059c45931dd0a5b4}{
+void {\bfseries destroy} (void)}
+\label{class_c_sound_a1bb1bd9d8a44722a059c45931dd0a5b4}
+
+\item 
+\hypertarget{class_c_sound_ad636cc881553ca84f0f87499567238eb}{
+void {\bfseries setSoundVolume} (Uint8 volume)}
+\label{class_c_sound_ad636cc881553ca84f0f87499567238eb}
+
+\item 
+\hypertarget{class_c_sound_a79cbe0e6ec849422eba616d728874ef9}{
+void {\bfseries setMusicVolume} (Uint8 volume)}
+\label{class_c_sound_a79cbe0e6ec849422eba616d728874ef9}
+
+\item 
+\hypertarget{class_c_sound_ae699d7e2246c2068994cb439a67897f3}{
+Uint8 {\bfseries getSoundVolume} ()}
+\label{class_c_sound_ae699d7e2246c2068994cb439a67897f3}
+
+\item 
+\hypertarget{class_c_sound_afbe5979570cd9dc894d106d65854a991}{
+Uint8 {\bfseries getMusicVolume} ()}
+\label{class_c_sound_afbe5979570cd9dc894d106d65854a991}
+
+\item 
+\hypertarget{class_c_sound_a991ce315830cf8dc516c4d5975536d6e}{
+SDL\_\-AudioSpec {\bfseries getAudioSpec} (void)}
+\label{class_c_sound_a991ce315830cf8dc516c4d5975536d6e}
+
+\item 
+\hypertarget{class_c_sound_a1478366294f6e4e4b12df06030b8087d}{
+unsigned short {\bfseries getMixingchannels} (void)}
+\label{class_c_sound_a1478366294f6e4e4b12df06030b8087d}
+
+\item 
+\hypertarget{class_c_sound_a912611fbdb6d714d0953d56528c9b5af}{
+void {\bfseries setSoundmode} (int freq, bool stereo, Uint16 format)}
+\label{class_c_sound_a912611fbdb6d714d0953d56528c9b5af}
+
+\item 
+\hypertarget{class_c_sound_a31f0aad9d9defae5e324a7855d29defc}{
+char {\bfseries extractOfExeFile} (\hyperlink{class_c_exe_file}{CExeFile} \&ExeFile)}
+\label{class_c_sound_a31f0aad9d9defae5e324a7855d29defc}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gerstrong/projects/CommanderGenius/src/sdl/sound/CSound.h\item 
+/home/gerstrong/projects/CommanderGenius/src/sdl/sound/CSound.cpp\end{DoxyCompactItemize}

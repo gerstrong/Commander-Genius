@@ -1,0 +1,107 @@
+\hypertarget{class_file_list_cache_intf}{
+\section{FileListCacheIntf Class Reference}
+\label{class_file_list_cache_intf}\index{FileListCacheIntf@{FileListCacheIntf}}
+}
+Inheritance diagram for FileListCacheIntf:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2cm]{class_file_list_cache_intf}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_file_list_cache_intf_1_1_iterator}{Iterator}
+\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_file_list_cache_intf_afaeb64e9d3dea8eefb7397b1bd1cbca6}{
+typedef std::string {\bfseries Filename}}
+\label{class_file_list_cache_intf_afaeb64e9d3dea8eefb7397b1bd1cbca6}
+
+\item 
+\hypertarget{class_file_list_cache_intf_a5e72270ab7eaf448ab46ed076737172d}{
+typedef std::string {\bfseries ObjectName}}
+\label{class_file_list_cache_intf_a5e72270ab7eaf448ab46ed076737172d}
+
+\item 
+\hypertarget{class_file_list_cache_intf_ab7d0ac0d0c44f04a638dd530b8229294}{
+typedef std::map$<$ Filename, ObjectName, \hyperlink{structstringcaseless}{stringcaseless} $>$ {\bfseries FileList}}
+\label{class_file_list_cache_intf_ab7d0ac0d0c44f04a638dd530b8229294}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_file_list_cache_intf_a91f696c9217198b78dbd3044e97527dc}{
+{\bfseries FileListCacheIntf} (const std::string \&n)}
+\label{class_file_list_cache_intf_a91f696c9217198b78dbd3044e97527dc}
+
+\item 
+\hypertarget{class_file_list_cache_intf_a329b1e6f876e5848cf5d08a66df5198f}{
+Iterator::Ref {\bfseries begin} ()}
+\label{class_file_list_cache_intf_a329b1e6f876e5848cf5d08a66df5198f}
+
+\item 
+\hypertarget{class_file_list_cache_intf_ade52d0e4118ead7a83d50e4e5a1992f4}{
+void {\bfseries add} (const FileList::value\_\-type \&o)}
+\label{class_file_list_cache_intf_ade52d0e4118ead7a83d50e4e5a1992f4}
+
+\item 
+\hypertarget{class_file_list_cache_intf_a0326779659d430cb90e7eb73a6e02361}{
+bool {\bfseries includes} (const Filename \&fn)}
+\label{class_file_list_cache_intf_a0326779659d430cb90e7eb73a6e02361}
+
+\item 
+\hypertarget{class_file_list_cache_intf_aa5bf3efa0841219072a4f1103583047c}{
+bool {\bfseries autoComplete} (AutocompleteRequest \&request)}
+\label{class_file_list_cache_intf_aa5bf3efa0841219072a4f1103583047c}
+
+\item 
+\hypertarget{class_file_list_cache_intf_a6564f447dbe5426574ca540a851d8fab}{
+bool {\bfseries ready} ()}
+\label{class_file_list_cache_intf_a6564f447dbe5426574ca540a851d8fab}
+
+\item 
+\hypertarget{class_file_list_cache_intf_a2604fdeb58068663900315b8727504f6}{
+virtual void {\bfseries update} ()=0}
+\label{class_file_list_cache_intf_a2604fdeb58068663900315b8727504f6}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_file_list_cache_intf_adf37d944ff4e3ba6fed6eb0a80279999}{
+const std::string {\bfseries name}}
+\label{class_file_list_cache_intf_adf37d944ff4e3ba6fed6eb0a80279999}
+
+\item 
+\hypertarget{class_file_list_cache_intf_aefccb87cd54d7d42ca910f7fde8f9aa5}{
+\hyperlink{class_event}{Event} {\bfseries OnUpdateFinished}}
+\label{class_file_list_cache_intf_aefccb87cd54d7d42ca910f7fde8f9aa5}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_file_list_cache_intf_a22965974380a061930cbe188afb2ef7b}{
+\hyperlink{class_mutex}{Mutex} {\bfseries mutex}}
+\label{class_file_list_cache_intf_a22965974380a061930cbe188afb2ef7b}
+
+\item 
+\hypertarget{class_file_list_cache_intf_aec8d6c0d88d81aba5d532c9d2010ee29}{
+FileList {\bfseries filelist}}
+\label{class_file_list_cache_intf_aec8d6c0d88d81aba5d532c9d2010ee29}
+
+\item 
+\hypertarget{class_file_list_cache_intf_aab5e5986402d329b86e9b1618c2e1fa7}{
+bool {\bfseries isReady}}
+\label{class_file_list_cache_intf_aab5e5986402d329b86e9b1618c2e1fa7}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file:\begin{DoxyCompactItemize}
+\item 
+/home/gerstrong/projects/CommanderGenius/src/FindFile.h\end{DoxyCompactItemize}

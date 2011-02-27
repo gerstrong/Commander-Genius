@@ -1,0 +1,96 @@
+\hypertarget{struct_logger}{
+\section{Logger Struct Reference}
+\label{struct_logger}\index{Logger@{Logger}}
+}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct_logger_1_1_locked_stream_wrapper}{LockedStreamWrapper}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{struct_logger_a4d8a70b4d0b32ec23a38ad0d24363f5c}{
+{\bfseries Logger} (int o, int ingame, int callst, const std::string \&p)}
+\label{struct_logger_a4d8a70b4d0b32ec23a38ad0d24363f5c}
+
+\item 
+\hypertarget{struct_logger_ad9ba90f0c8ee8e73ff2f6d7217cc08d2}{
+void {\bfseries lock} ()}
+\label{struct_logger_ad9ba90f0c8ee8e73ff2f6d7217cc08d2}
+
+\item 
+\hypertarget{struct_logger_a28f2a5b3ccfaa9b233675bec5d7cd61d}{
+void {\bfseries unlock} ()}
+\label{struct_logger_a28f2a5b3ccfaa9b233675bec5d7cd61d}
+
+\item 
+\hypertarget{struct_logger_ab652d4155e7043ba0bcc73b5ea3fbef1}{
+\hyperlink{struct_logger_1_1_locked_stream_wrapper}{LockedStreamWrapper} {\bfseries operator$<$$<$} (const std::string \&msg)}
+\label{struct_logger_ab652d4155e7043ba0bcc73b5ea3fbef1}
+
+\item 
+\hypertarget{struct_logger_a7bf3d7f0eb8a85d4e30ff3607b221d61}{
+\hyperlink{struct_logger}{Logger} \& {\bfseries operator$<$$<$} (\hyperlink{struct_logger}{Logger} \&($\ast$\_\-\_\-pf)(\hyperlink{struct_logger}{Logger} \&))}
+\label{struct_logger_a7bf3d7f0eb8a85d4e30ff3607b221d61}
+
+\item 
+\hypertarget{struct_logger_a0508b32c716f42bde09294a1625f2a8d}{
+{\footnotesize template$<$typename \_\-T $>$ }\\\hyperlink{struct_logger_1_1_locked_stream_wrapper}{LockedStreamWrapper} {\bfseries operator$<$$<$} (\_\-T v)}
+\label{struct_logger_a0508b32c716f42bde09294a1625f2a8d}
+
+\item 
+\hypertarget{struct_logger_ab612d80bcb6c7455412c090514fae5f4}{
+\hyperlink{struct_logger}{Logger} \& {\bfseries flush} ()}
+\label{struct_logger_ab612d80bcb6c7455412c090514fae5f4}
+
+\item 
+\hypertarget{struct_logger_ac1babc0918db32b5f899ee5a00490321}{
+void {\bfseries operator()} (const std::string \&str)}
+\label{struct_logger_ac1babc0918db32b5f899ee5a00490321}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{struct_logger_a95610d70ef0244c7395e1cf1c0d3347b}{
+int {\bfseries minCoutVerb}}
+\label{struct_logger_a95610d70ef0244c7395e1cf1c0d3347b}
+
+\item 
+\hypertarget{struct_logger_aac8ecc289e8d56946a38d8036e8bcb2f}{
+int {\bfseries minIngameConVerb}}
+\label{struct_logger_aac8ecc289e8d56946a38d8036e8bcb2f}
+
+\item 
+\hypertarget{struct_logger_af9b735b97e3b548dd2f51248e5306da8}{
+int {\bfseries minCallstackVerb}}
+\label{struct_logger_af9b735b97e3b548dd2f51248e5306da8}
+
+\item 
+\hypertarget{struct_logger_a1ece42ce29de189ccbf0ad0034bc8339}{
+std::string {\bfseries prefix}}
+\label{struct_logger_a1ece42ce29de189ccbf0ad0034bc8339}
+
+\item 
+\hypertarget{struct_logger_ac43d3a965767987a82bbabca45729aa9}{
+std::string {\bfseries buffer}}
+\label{struct_logger_ac43d3a965767987a82bbabca45729aa9}
+
+\item 
+\hypertarget{struct_logger_abffac11bd28572312dbeaba610b76158}{
+bool {\bfseries lastWasNewline}}
+\label{struct_logger_abffac11bd28572312dbeaba610b76158}
+
+\item 
+\hypertarget{struct_logger_a3b138e0abdc7f640f624ee01fe14102d}{
+SDL\_\-mutex $\ast$ {\bfseries mutex}}
+\label{struct_logger_a3b138e0abdc7f640f624ee01fe14102d}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gerstrong/projects/CommanderGenius/src/Debug.h\item 
+/home/gerstrong/projects/CommanderGenius/src/Debug.cpp\end{DoxyCompactItemize}

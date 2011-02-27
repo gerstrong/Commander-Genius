@@ -1,0 +1,73 @@
+\hypertarget{classgalaxy_1_1_c_menu_galaxy}{
+\section{galaxy::CMenuGalaxy Class Reference}
+\label{classgalaxy_1_1_c_menu_galaxy}\index{galaxy::CMenuGalaxy@{galaxy::CMenuGalaxy}}
+}
+Inheritance diagram for galaxy::CMenuGalaxy:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3cm]{classgalaxy_1_1_c_menu_galaxy}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classgalaxy_1_1_c_menu_galaxy_a8566b7034caea2dbd9576b04fa86e3bd}{
+\hyperlink{classgalaxy_1_1_c_menu_galaxy_a8566b7034caea2dbd9576b04fa86e3bd}{CMenuGalaxy} (char menu\_\-mode, \hyperlink{class_c_exe_file}{CExeFile} \&ExeFile, \hyperlink{class_c_saved_game}{CSavedGame} \&SavedGame, \hyperlink{structst_option}{stOption} $\ast$pOption, bool \&restartVideo)}
+\label{classgalaxy_1_1_c_menu_galaxy_a8566b7034caea2dbd9576b04fa86e3bd}
+
+\begin{DoxyCompactList}\small\item\em sets the menu up when it's opened (initialization) \item\end{DoxyCompactList}\item 
+\hypertarget{classgalaxy_1_1_c_menu_galaxy_a494139ffeac4ed53cd4e84a8a3b03f92}{
+bool {\bfseries init} (menutypes menu\_\-type=MAIN)}
+\label{classgalaxy_1_1_c_menu_galaxy_a494139ffeac4ed53cd4e84a8a3b03f92}
+
+\item 
+\hypertarget{classgalaxy_1_1_c_menu_galaxy_a94c20151a9e1b1e0e809190dca8b7908}{
+void \hyperlink{classgalaxy_1_1_c_menu_galaxy_a94c20151a9e1b1e0e809190dca8b7908}{drawMenuBorder} ()}
+\label{classgalaxy_1_1_c_menu_galaxy_a94c20151a9e1b1e0e809190dca8b7908}
+
+\begin{DoxyCompactList}\small\item\em This draws the upper part of the galaxy menu border. \item\end{DoxyCompactList}\item 
+\hypertarget{classgalaxy_1_1_c_menu_galaxy_a71ea1a3f7151e49d503122336abfcd00}{
+void \hyperlink{classgalaxy_1_1_c_menu_galaxy_a71ea1a3f7151e49d503122336abfcd00}{process} ()}
+\label{classgalaxy_1_1_c_menu_galaxy_a71ea1a3f7151e49d503122336abfcd00}
+
+\begin{DoxyCompactList}\small\item\em This cycle is processed every LPS. It's the menu core process. \item\end{DoxyCompactList}\item 
+\hypertarget{classgalaxy_1_1_c_menu_galaxy_a5d2b237c2728d28737223cb5c1f06652}{
+void \hyperlink{classgalaxy_1_1_c_menu_galaxy_a5d2b237c2728d28737223cb5c1f06652}{processMainMenu} ()}
+\label{classgalaxy_1_1_c_menu_galaxy_a5d2b237c2728d28737223cb5c1f06652}
+
+\begin{DoxyCompactList}\small\item\em This is the child process only for the main menu itself. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classgalaxy_1_1_c_menu_galaxy_a9d27c67d7001c2582b215fd65db5124b}{
+void(CMenuGalaxy::$\ast$ {\bfseries processPtr} )()}
+\label{classgalaxy_1_1_c_menu_galaxy_a9d27c67d7001c2582b215fd65db5124b}
+
+\item 
+\hypertarget{classgalaxy_1_1_c_menu_galaxy_a1786a313b77ea1ebca1a9b5444e52d6a}{
+\hyperlink{class_c_bitmap}{CBitmap} {\bfseries m\_\-TitleBmp}}
+\label{classgalaxy_1_1_c_menu_galaxy_a1786a313b77ea1ebca1a9b5444e52d6a}
+
+\item 
+\hypertarget{classgalaxy_1_1_c_menu_galaxy_adb3f169ee9f21638dd71ee2072652d06}{
+\hyperlink{class_c_dialog}{CDialog} $\ast$ {\bfseries mp\_\-Dialog}}
+\label{classgalaxy_1_1_c_menu_galaxy_adb3f169ee9f21638dd71ee2072652d06}
+
+\item 
+\hypertarget{classgalaxy_1_1_c_menu_galaxy_ac31e5df07da01a1326dd6efe60dad1c5}{
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>int {\bfseries x}\\
+\>int {\bfseries y}\\
+\} {\bfseries m\_title\_coord}}
+\label{classgalaxy_1_1_c_menu_galaxy_ac31e5df07da01a1326dd6efe60dad1c5}
+\\
+
+\end{tabbing}\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gerstrong/projects/CommanderGenius/src/engine/galaxy/CMenuGalaxy.h\item 
+/home/gerstrong/projects/CommanderGenius/src/engine/galaxy/CMenuGalaxy.cpp\end{DoxyCompactItemize}

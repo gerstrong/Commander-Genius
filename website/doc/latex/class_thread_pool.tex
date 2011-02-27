@@ -1,0 +1,37 @@
+\hypertarget{class_thread_pool}{
+\section{ThreadPool Class Reference}
+\label{class_thread_pool}\index{ThreadPool@{ThreadPool}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_thread_pool_a08b13e066e0a8d00b5004df235a4111a}{
+\hyperlink{struct_thread_pool_item}{ThreadPoolItem} $\ast$ {\bfseries start} (ThreadFunc fct, void $\ast$param=NULL, const std::string \&name=\char`\"{}unknown worker\char`\"{})}
+\label{class_thread_pool_a08b13e066e0a8d00b5004df235a4111a}
+
+\item 
+\hypertarget{class_thread_pool_ae216465b38bfe1a20921cd716cc25874}{
+\hyperlink{struct_thread_pool_item}{ThreadPoolItem} $\ast$ {\bfseries start} (\hyperlink{struct_action}{Action} $\ast$act, const std::string \&name=\char`\"{}unknown worker\char`\"{}, bool headless=false)}
+\label{class_thread_pool_ae216465b38bfe1a20921cd716cc25874}
+
+\item 
+\hypertarget{class_thread_pool_ac3f0426c0e2f8242367d066c8081b8f9}{
+bool {\bfseries wait} (\hyperlink{struct_thread_pool_item}{ThreadPoolItem} $\ast$thread, int $\ast$status=NULL)}
+\label{class_thread_pool_ac3f0426c0e2f8242367d066c8081b8f9}
+
+\item 
+\hypertarget{class_thread_pool_ad8005dd7ae5b4ec3299da2ea8545e159}{
+bool {\bfseries waitAll} ()}
+\label{class_thread_pool_ad8005dd7ae5b4ec3299da2ea8545e159}
+
+\item 
+\hypertarget{class_thread_pool_ad6c00cec5cb35931d8c27c1aef9cada2}{
+void {\bfseries dumpState} (CmdLineIntf \&cli) const }
+\label{class_thread_pool_ad6c00cec5cb35931d8c27c1aef9cada2}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file:\begin{DoxyCompactItemize}
+\item 
+/home/gerstrong/projects/CommanderGenius/src/ThreadPool.h\end{DoxyCompactItemize}

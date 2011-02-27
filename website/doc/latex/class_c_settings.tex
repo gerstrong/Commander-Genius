@@ -1,0 +1,99 @@
+\hypertarget{class_c_settings}{
+\section{CSettings Class Reference}
+\label{class_c_settings}\index{CSettings@{CSettings}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_c_settings_a5865e8e8e7e1caa507b2fc0c6118f3e3}{CSettings} (\hyperlink{structst_option}{stOption} $\ast$p\_\-option=NULL)
+\begin{DoxyCompactList}\small\item\em The \hyperlink{class_c_settings}{CSettings} class handles the saving and loading of all the settings that are saved in the game. Those are, video, audio, options and input. \item\end{DoxyCompactList}\item 
+bool \hyperlink{class_c_settings_a1719f6bb6c031a3b55ea67cd394c5b66}{saveDrvCfg} ()
+\begin{DoxyCompactList}\small\item\em Write the whole configuration of the settings. Note: See also \hyperlink{class_c_configuration}{CConfiguration} to understand better the concept of saving... \item\end{DoxyCompactList}\item 
+bool \hyperlink{class_c_settings_a6430e6cc3f4b46b028a95510d70a510d}{loadDrvCfg} ()
+\begin{DoxyCompactList}\small\item\em It loads the whole configuration from the settings file. NOTE: Also take a look at \hyperlink{class_c_configuration}{CConfiguration}. \item\end{DoxyCompactList}\item 
+bool \hyperlink{class_c_settings_ab74fc80043caf8db7b36e903d54dd9ae}{loadGameCfg} ()
+\begin{DoxyCompactList}\small\item\em This loads the options of the settings. \item\end{DoxyCompactList}\item 
+\hypertarget{class_c_settings_aa6ae00594b388c294f0cb235ec5b2f8a}{
+bool \hyperlink{class_c_settings_aa6ae00594b388c294f0cb235ec5b2f8a}{saveGameCfg} ()}
+\label{class_c_settings_aa6ae00594b388c294f0cb235ec5b2f8a}
+
+\begin{DoxyCompactList}\small\item\em Saves the options in the settings. \item\end{DoxyCompactList}\item 
+\hypertarget{class_c_settings_a789f42c0ed0113cdedac8f5d97317431}{
+void \hyperlink{class_c_settings_a789f42c0ed0113cdedac8f5d97317431}{loadDefaultGameCfg} ()}
+\label{class_c_settings_a789f42c0ed0113cdedac8f5d97317431}
+
+\begin{DoxyCompactList}\small\item\em This is normally processed when the game is started. It sets the default options. \item\end{DoxyCompactList}\item 
+void \hyperlink{class_c_settings_ab6d30212b51e791ddca78aeb735e45b4}{setOption} (e\_\-OptionKeyword opt, const std::string \&menuname, const std::string \&name, char value)
+\begin{DoxyCompactList}\small\item\em Sets the option data to the option array. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_c_settings_a5865e8e8e7e1caa507b2fc0c6118f3e3}{
+\index{CSettings@{CSettings}!CSettings@{CSettings}}
+\index{CSettings@{CSettings}!CSettings@{CSettings}}
+\subsubsection[{CSettings}]{\setlength{\rightskip}{0pt plus 5cm}CSettings::CSettings ({\bf stOption} $\ast$ {\em p\_\-option} = {\ttfamily NULL})}}
+\label{class_c_settings_a5865e8e8e7e1caa507b2fc0c6118f3e3}
+
+
+The \hyperlink{class_c_settings}{CSettings} class handles the saving and loading of all the settings that are saved in the game. Those are, video, audio, options and input. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em p\_\-option}]pointer to an array that stores the options settings of the game \end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_c_settings_a6430e6cc3f4b46b028a95510d70a510d}{
+\index{CSettings@{CSettings}!loadDrvCfg@{loadDrvCfg}}
+\index{loadDrvCfg@{loadDrvCfg}!CSettings@{CSettings}}
+\subsubsection[{loadDrvCfg}]{\setlength{\rightskip}{0pt plus 5cm}bool CSettings::loadDrvCfg ()}}
+\label{class_c_settings_a6430e6cc3f4b46b028a95510d70a510d}
+
+
+It loads the whole configuration from the settings file. NOTE: Also take a look at \hyperlink{class_c_configuration}{CConfiguration}. 
+
+\begin{DoxyReturn}{Returns}
+true if successful, false if not. 
+\end{DoxyReturn}
+\hypertarget{class_c_settings_ab74fc80043caf8db7b36e903d54dd9ae}{
+\index{CSettings@{CSettings}!loadGameCfg@{loadGameCfg}}
+\index{loadGameCfg@{loadGameCfg}!CSettings@{CSettings}}
+\subsubsection[{loadGameCfg}]{\setlength{\rightskip}{0pt plus 5cm}bool CSettings::loadGameCfg ()}}
+\label{class_c_settings_ab74fc80043caf8db7b36e903d54dd9ae}
+
+
+This loads the options of the settings. 
+
+\begin{DoxyReturn}{Returns}
+true if options could be loaded, else false 
+\end{DoxyReturn}
+\hypertarget{class_c_settings_a1719f6bb6c031a3b55ea67cd394c5b66}{
+\index{CSettings@{CSettings}!saveDrvCfg@{saveDrvCfg}}
+\index{saveDrvCfg@{saveDrvCfg}!CSettings@{CSettings}}
+\subsubsection[{saveDrvCfg}]{\setlength{\rightskip}{0pt plus 5cm}bool CSettings::saveDrvCfg ()}}
+\label{class_c_settings_a1719f6bb6c031a3b55ea67cd394c5b66}
+
+
+Write the whole configuration of the settings. Note: See also \hyperlink{class_c_configuration}{CConfiguration} to understand better the concept of saving... 
+
+\begin{DoxyReturn}{Returns}
+If the configuration has been saved successfully, it return true, else it's false. 
+\end{DoxyReturn}
+\hypertarget{class_c_settings_ab6d30212b51e791ddca78aeb735e45b4}{
+\index{CSettings@{CSettings}!setOption@{setOption}}
+\index{setOption@{setOption}!CSettings@{CSettings}}
+\subsubsection[{setOption}]{\setlength{\rightskip}{0pt plus 5cm}void CSettings::setOption (e\_\-OptionKeyword {\em opt}, \/  const std::string \& {\em menuname}, \/  const std::string \& {\em name}, \/  char {\em value})}}
+\label{class_c_settings_ab6d30212b51e791ddca78aeb735e45b4}
+
+
+Sets the option data to the option array. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em opt}]option ID \item[{\em menuname}]Name of the option shown in the options menu NOTE: This name may change, depending on what value is set \item[{\em name}]Name of the option itself NOTE: This string should be changed, since it names the topic of the applied option \item[{\em value}]Value that has to be set. \end{DoxyParams}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gerstrong/projects/CommanderGenius/src/sdl/CSettings.h\item 
+/home/gerstrong/projects/CommanderGenius/src/sdl/CSettings.cpp\end{DoxyCompactItemize}

@@ -1,0 +1,132 @@
+\hypertarget{class_c_passive}{
+\section{CPassive Class Reference}
+\label{class_c_passive}\index{CPassive@{CPassive}}
+}
+Inheritance diagram for CPassive:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2cm]{class_c_passive}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum {\bfseries Modes} \{ \par
+{\bfseries INTRO}, 
+{\bfseries TITLE}, 
+{\bfseries DEMO}, 
+{\bfseries STARTGAME}, 
+\par
+{\bfseries SHUTDOWN}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_passive_a14363f4ee27414935e97fd5c0162a243}{
+{\bfseries CPassive} (\hyperlink{class_c_exe_file}{CExeFile} \&Exefile, \hyperlink{class_c_saved_game}{CSavedGame} \&SavedGame, \hyperlink{structst_option}{stOption} $\ast$p\_\-Option)}
+\label{class_c_passive_a14363f4ee27414935e97fd5c0162a243}
+
+\item 
+\hypertarget{class_c_passive_a30b197ea62cda3901637b2fa6ae7fabd}{
+virtual bool {\bfseries init} (char mode=INTRO)}
+\label{class_c_passive_a30b197ea62cda3901637b2fa6ae7fabd}
+
+\item 
+\hypertarget{class_c_passive_aa4a01bfda44f0e94befe1c5625f12571}{
+virtual void {\bfseries process} ()}
+\label{class_c_passive_aa4a01bfda44f0e94befe1c5625f12571}
+
+\item 
+\hypertarget{class_c_passive_a9358ec29a162cda49dc544f9c7435372}{
+char {\bfseries getEpisode} ()}
+\label{class_c_passive_a9358ec29a162cda49dc544f9c7435372}
+
+\item 
+\hypertarget{class_c_passive_a01956d8ff661e301f1e4391dbe364f63}{
+char {\bfseries getNumPlayers} ()}
+\label{class_c_passive_a01956d8ff661e301f1e4391dbe364f63}
+
+\item 
+\hypertarget{class_c_passive_a0ddc3bfddebcc50cbd52e3a63c3e4748}{
+char {\bfseries getDifficulty} ()}
+\label{class_c_passive_a0ddc3bfddebcc50cbd52e3a63c3e4748}
+
+\item 
+\hypertarget{class_c_passive_a792100dd36413f63357ba6fca7175837}{
+std::string {\bfseries getGamePath} ()}
+\label{class_c_passive_a792100dd36413f63357ba6fca7175837}
+
+\item 
+\hypertarget{class_c_passive_a39be6728d76e111fafe154d2c7201a53}{
+bool {\bfseries getchooseGame} ()}
+\label{class_c_passive_a39be6728d76e111fafe154d2c7201a53}
+
+\item 
+\hypertarget{class_c_passive_af13392a5105573b07d5ec46bf595de85}{
+bool {\bfseries mustStartGame} ()}
+\label{class_c_passive_af13392a5105573b07d5ec46bf595de85}
+
+\item 
+\hypertarget{class_c_passive_a1d66d676e22441365c957b9013661c2c}{
+bool {\bfseries getExitEvent} ()}
+\label{class_c_passive_a1d66d676e22441365c957b9013661c2c}
+
+\item 
+\hypertarget{class_c_passive_a8d564bd1afbdee39e542efc4ae831e6a}{
+virtual void {\bfseries cleanup} ()}
+\label{class_c_passive_a8d564bd1afbdee39e542efc4ae831e6a}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_passive_a5a2012bf164a7828ded95f3c0156dfb0}{
+char {\bfseries m\_\-mode}}
+\label{class_c_passive_a5a2012bf164a7828ded95f3c0156dfb0}
+
+\item 
+\hypertarget{class_c_passive_a1a403c43d16225fb5d9aa30b54d736ab}{
+\hyperlink{class_c_menu_vorticon}{CMenuVorticon} $\ast$ {\bfseries mp\_\-Menu}}
+\label{class_c_passive_a1a403c43d16225fb5d9aa30b54d736ab}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_passive_ac34fa09a7da33166d725924dbe6f867c}{
+char {\bfseries m\_\-Episode}}
+\label{class_c_passive_ac34fa09a7da33166d725924dbe6f867c}
+
+\item 
+\hypertarget{class_c_passive_af3d21feb911a94cead8faac6e4b159e9}{
+char {\bfseries m\_\-NumPlayers}}
+\label{class_c_passive_af3d21feb911a94cead8faac6e4b159e9}
+
+\item 
+\hypertarget{class_c_passive_a3c6e74921746446f6a4a6871ac79b712}{
+char {\bfseries m\_\-Difficulty}}
+\label{class_c_passive_a3c6e74921746446f6a4a6871ac79b712}
+
+\item 
+\hypertarget{class_c_passive_a1058c056080f8ee0057a5002cc26f153}{
+bool {\bfseries m\_\-modeg}}
+\label{class_c_passive_a1058c056080f8ee0057a5002cc26f153}
+
+\item 
+\hypertarget{class_c_passive_a508bf888a06f09c113b4b70b2497f837}{
+std::string {\bfseries m\_\-DataDirectory}}
+\label{class_c_passive_a508bf888a06f09c113b4b70b2497f837}
+
+\item 
+\hypertarget{class_c_passive_a8077515910c8d60347bf5decdfaf4acb}{
+\hyperlink{class_c_saved_game}{CSavedGame} \& {\bfseries m\_\-SavedGame}}
+\label{class_c_passive_a8077515910c8d60347bf5decdfaf4acb}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gerstrong/projects/CommanderGenius/src/engine/CPassive.h\item 
+/home/gerstrong/projects/CommanderGenius/src/engine/CPassive.cpp\end{DoxyCompactItemize}

@@ -1,0 +1,146 @@
+\hypertarget{class_c_saved_game}{
+\section{CSavedGame Class Reference}
+\label{class_c_saved_game}\index{CSavedGame@{CSavedGame}}
+}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum {\bfseries SavedGameCommands} \{ {\bfseries NONE}, 
+{\bfseries SAVE}, 
+{\bfseries LOAD}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_saved_game_a55c6d0b01da494434d4ed4990117904d}{
+void {\bfseries setGameDirectory} (const std::string \&game\_\-directory)}
+\label{class_c_saved_game_a55c6d0b01da494434d4ed4990117904d}
+
+\item 
+\hypertarget{class_c_saved_game_a992a6f09c03da1515d316f4aabfbd166}{
+void {\bfseries setEpisode} (char Episode)}
+\label{class_c_saved_game_a992a6f09c03da1515d316f4aabfbd166}
+
+\item 
+\hypertarget{class_c_saved_game_a4b4af8c4da4b30052dd48db65648ad31}{
+std::vector$<$ std::string $>$ {\bfseries getSlotList} ()}
+\label{class_c_saved_game_a4b4af8c4da4b30052dd48db65648ad31}
+
+\item 
+\hypertarget{class_c_saved_game_a1c7fd2f7997b10b868251d4840fc1dd3}{
+void {\bfseries convertAllOldFormats} ()}
+\label{class_c_saved_game_a1c7fd2f7997b10b868251d4840fc1dd3}
+
+\item 
+bool \hyperlink{class_c_saved_game_aad40f2904291eb28ff7bb516b1bf272d}{convertOldFormat} (size\_\-t slot)
+\item 
+\hypertarget{class_c_saved_game_ab88eccf9bf9121dc7f68d972e548004f}{
+char {\bfseries IsOldButValidSaveGame} (std::string fname)}
+\label{class_c_saved_game_ab88eccf9bf9121dc7f68d972e548004f}
+
+\item 
+\hypertarget{class_c_saved_game_ad05baee5bbc600aba95072496d47d340}{
+void {\bfseries readOldHeader} (FILE $\ast$fp, byte $\ast$episode, byte $\ast$level, byte $\ast$lives, byte $\ast$num\_\-players)}
+\label{class_c_saved_game_ad05baee5bbc600aba95072496d47d340}
+
+\item 
+\hypertarget{class_c_saved_game_a6e2b0f733a191da41a0344b5c8f56bb4}{
+Uint32 {\bfseries getSlotNumber} (const std::string \&filename)}
+\label{class_c_saved_game_a6e2b0f733a191da41a0344b5c8f56bb4}
+
+\item 
+\hypertarget{class_c_saved_game_afe950c724bf9ba24ff1f7615302f6658}{
+std::string {\bfseries getSlotName} (const std::string \&filename)}
+\label{class_c_saved_game_afe950c724bf9ba24ff1f7615302f6658}
+
+\item 
+\hypertarget{class_c_saved_game_af2bcc79fa5dc296219776053965c9696}{
+Uint32 {\bfseries getDataSize} (std::ifstream \&StateFile)}
+\label{class_c_saved_game_af2bcc79fa5dc296219776053965c9696}
+
+\item 
+\hypertarget{class_c_saved_game_acd4c2fff042efebaedfdaf6057df5c38}{
+void {\bfseries readData} (char $\ast$buffer, Uint32 size, std::ifstream \&StateFile)}
+\label{class_c_saved_game_acd4c2fff042efebaedfdaf6057df5c38}
+
+\item 
+\hypertarget{class_c_saved_game_a9c16440c0d3c920793ac42b135b58c28}{
+bool {\bfseries prepareSaveGame} (int SaveSlot, const std::string \&Name)}
+\label{class_c_saved_game_a9c16440c0d3c920793ac42b135b58c28}
+
+\item 
+\hypertarget{class_c_saved_game_a2490fac79756b1be3231d3d20697520f}{
+bool {\bfseries prepareLoadGame} (int SaveSlot)}
+\label{class_c_saved_game_a2490fac79756b1be3231d3d20697520f}
+
+\item 
+\hypertarget{class_c_saved_game_a27ab918bf8a80f121e7b8312c2340478}{
+{\footnotesize template$<$class T $>$ }\\void {\bfseries encodeVariable} (T value)}
+\label{class_c_saved_game_a27ab918bf8a80f121e7b8312c2340478}
+
+\item 
+\hypertarget{class_c_saved_game_a808979e8f826b0a21dc0246da2aa27f2}{
+{\footnotesize template$<$class S $>$ }\\void {\bfseries encodeData} (S structure)}
+\label{class_c_saved_game_a808979e8f826b0a21dc0246da2aa27f2}
+
+\item 
+\hypertarget{class_c_saved_game_a91ff6b8b71c6e7850c495d6a2c7380ba}{
+{\footnotesize template$<$class T $>$ }\\void {\bfseries decodeVariable} (T \&variable)}
+\label{class_c_saved_game_a91ff6b8b71c6e7850c495d6a2c7380ba}
+
+\item 
+\hypertarget{class_c_saved_game_a212af03347c78af55121b9ab790632f4}{
+{\footnotesize template$<$class S $>$ }\\void {\bfseries decodeData} (S \&structure)}
+\label{class_c_saved_game_a212af03347c78af55121b9ab790632f4}
+
+\item 
+\hypertarget{class_c_saved_game_a5969dc4363d61ef8d0148fc214c7c86c}{
+void {\bfseries addData} (byte $\ast$data, Uint32 size)}
+\label{class_c_saved_game_a5969dc4363d61ef8d0148fc214c7c86c}
+
+\item 
+\hypertarget{class_c_saved_game_aba21a789d413711bd1f82e2780b0b5e5}{
+void {\bfseries readDataBlock} (byte $\ast$data)}
+\label{class_c_saved_game_aba21a789d413711bd1f82e2780b0b5e5}
+
+\item 
+\hypertarget{class_c_saved_game_ae74f388107259ff2880103eae01b011d}{
+bool {\bfseries save} ()}
+\label{class_c_saved_game_ae74f388107259ff2880103eae01b011d}
+
+\item 
+\hypertarget{class_c_saved_game_a7f6ca98df48b1d7f5ad540ca60c01e5a}{
+bool {\bfseries load} ()}
+\label{class_c_saved_game_a7f6ca98df48b1d7f5ad540ca60c01e5a}
+
+\item 
+\hypertarget{class_c_saved_game_aa42cd4902814b218578a2fb3503ba139}{
+bool {\bfseries alreadyExits} ()}
+\label{class_c_saved_game_aa42cd4902814b218578a2fb3503ba139}
+
+\item 
+\hypertarget{class_c_saved_game_a8b8e1f122544cf799339854bdbc0e20d}{
+char {\bfseries getCommand} ()}
+\label{class_c_saved_game_a8b8e1f122544cf799339854bdbc0e20d}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_c_saved_game_aad40f2904291eb28ff7bb516b1bf272d}{
+\index{CSavedGame@{CSavedGame}!convertOldFormat@{convertOldFormat}}
+\index{convertOldFormat@{convertOldFormat}!CSavedGame@{CSavedGame}}
+\subsubsection[{convertOldFormat}]{\setlength{\rightskip}{0pt plus 5cm}bool CSavedGame::convertOldFormat (size\_\-t {\em slot})}}
+\label{class_c_saved_game_aad40f2904291eb28ff7bb516b1bf272d}
+
+
+Save the Game in the \hyperlink{class_c_saved_game}{CSavedGame} object 
+
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gerstrong/projects/CommanderGenius/src/fileio/CSavedGame.h\item 
+/home/gerstrong/projects/CommanderGenius/src/fileio/CSavedGame.cpp\item 
+/home/gerstrong/projects/CommanderGenius/src/fileio/CSavedGameCoder.h\end{DoxyCompactItemize}

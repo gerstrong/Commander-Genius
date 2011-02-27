@@ -1,0 +1,76 @@
+\hypertarget{class_event}{
+\section{Event$<$ \_\-Data $>$ Class Template Reference}
+\label{class_event}\index{Event@{Event}}
+}
+Inheritance diagram for Event$<$ \_\-Data $>$:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2cm]{class_event}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_event_1_1_handler}{Handler}
+\item 
+class \hyperlink{class_event_1_1_handler_accessor}{HandlerAccessor}
+\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_event_aba9bdd3be90bde920610ff33b45395a8}{
+typedef std::list$<$ \hyperlink{class_ref}{Ref}$<$ \hyperlink{class_event_1_1_handler}{Handler} $>$ $>$ {\bfseries HandlerList}}
+\label{class_event_aba9bdd3be90bde920610ff33b45395a8}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_event_accc31537f1b88619af8b35954ea3d5c9}{
+{\bfseries Event} (const \hyperlink{class_event}{Event} \&e)}
+\label{class_event_accc31537f1b88619af8b35954ea3d5c9}
+
+\item 
+\hypertarget{class_event_a51ba6ecf54d0c3be2c8b66ad9a3ee428}{
+\hyperlink{class_event}{Event} \& {\bfseries operator=} (const \hyperlink{class_event}{Event} \&e)}
+\label{class_event_a51ba6ecf54d0c3be2c8b66ad9a3ee428}
+
+\item 
+\hypertarget{class_event_af6e9119db3fba94b5da6ee7fa1f00883}{
+\hyperlink{class_event_1_1_handler_accessor}{HandlerAccessor} {\bfseries handler} ()}
+\label{class_event_af6e9119db3fba94b5da6ee7fa1f00883}
+
+\item 
+\hypertarget{class_event_aa34e9bc14af7ec9f1b73dbbfdc5efbdf}{
+void {\bfseries pushToMainQueue} (\_\-Data data)}
+\label{class_event_aa34e9bc14af7ec9f1b73dbbfdc5efbdf}
+
+\item 
+\hypertarget{class_event_a843da2e83c68446c2087b1853a4ee00f}{
+void {\bfseries occurred} (\_\-Data data)}
+\label{class_event_a843da2e83c68446c2087b1853a4ee00f}
+
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_event_a1d4c343cfe3fa7e7507836b1f9a47f0f}{
+static void {\bfseries callHandlers} (HandlerList \&handlers, \_\-Data data)}
+\label{class_event_a1d4c343cfe3fa7e7507836b1f9a47f0f}
+
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_event_a6d0e79cf1d265bda2125228d1c7bb4f8}{
+class {\bfseries HandlerAccessor}}
+\label{class_event_a6d0e79cf1d265bda2125228d1c7bb4f8}
+
+\end{DoxyCompactItemize}
+\subsubsection*{template$<$typename \_\-Data = EventData$>$ class Event$<$ \_\-Data $>$}
+
+
+
+The documentation for this class was generated from the following file:\begin{DoxyCompactItemize}
+\item 
+/home/gerstrong/projects/CommanderGenius/src/Event.h\end{DoxyCompactItemize}

@@ -1,0 +1,176 @@
+\hypertarget{class_c_dialog}{
+\section{CDialog Class Reference}
+\label{class_c_dialog}\index{CDialog@{CDialog}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_dialog_ac33fc3fc712e87dd8dc94172ae0dc4c9}{
+{\bfseries CDialog} (Uint16 w, Uint16 h, char inputmode, Uint8 theme)}
+\label{class_c_dialog_ac33fc3fc712e87dd8dc94172ae0dc4c9}
+
+\item 
+void \hyperlink{class_c_dialog_aba01d15c9428333b2252298a82560e2e}{setSelection} (const Uint8 selection)
+\begin{DoxyCompactList}\small\item\em setter for the actual selected item in the dialog object \item\end{DoxyCompactList}\item 
+void \hyperlink{class_c_dialog_a494de44c4883f77a6bd0f56aeafa3d5d}{setInputMode} (const char inputmode)
+\begin{DoxyCompactList}\small\item\em setter for the input mode the dialog needs to be \item\end{DoxyCompactList}\item 
+\hypertarget{class_c_dialog_a1e3208727c5217f0e8dd4d705dee6094}{
+void {\bfseries addObject} (Uint8 type, Uint16 x, Uint16 y, const std::string text=\char`\"{}\char`\"{})}
+\label{class_c_dialog_a1e3208727c5217f0e8dd4d705dee6094}
+
+\item 
+\hypertarget{class_c_dialog_a8e67267c4540a4fd3da0400c9b00d9e8}{
+void {\bfseries setObjectText} (Uint8 ID, const std::string \&text)}
+\label{class_c_dialog_a8e67267c4540a4fd3da0400c9b00d9e8}
+
+\item 
+\hypertarget{class_c_dialog_aa062b836b9525cc2ef935e418d3de1c2}{
+void {\bfseries setObjectType} (Uint8 ID, Uint8 type)}
+\label{class_c_dialog_aa062b836b9525cc2ef935e418d3de1c2}
+
+\item 
+\hypertarget{class_c_dialog_a054b890ff5770b51f0fac0ff59911b06}{
+void {\bfseries setFontID} (Uint8 value)}
+\label{class_c_dialog_a054b890ff5770b51f0fac0ff59911b06}
+
+\item 
+\hypertarget{class_c_dialog_a76f20f826b445af94225052c40e1f1d0}{
+void {\bfseries setSwitch} (bool value)}
+\label{class_c_dialog_a76f20f826b445af94225052c40e1f1d0}
+
+\item 
+\hypertarget{class_c_dialog_aeb933db8dc1d29d30f84d861b79b9ef4}{
+bool {\bfseries getInputMode} (const char inputmode)}
+\label{class_c_dialog_aeb933db8dc1d29d30f84d861b79b9ef4}
+
+\item 
+\hypertarget{class_c_dialog_a6ad3a7930a5f71b162cb2380a67771ae}{
+bool {\bfseries getSwitch} ()}
+\label{class_c_dialog_a6ad3a7930a5f71b162cb2380a67771ae}
+
+\item 
+\hypertarget{class_c_dialog_a8b09e5131ab965d991324d81b3794399}{
+int {\bfseries getSelection} ()}
+\label{class_c_dialog_a8b09e5131ab965d991324d81b3794399}
+
+\item 
+void \hyperlink{class_c_dialog_a62748353c0cbd01c5ef6514bb045d4e6}{processInput} (int move=0)
+\begin{DoxyCompactList}\small\item\em This one processes the input of the dialogs. Depending on what type of dialog and controls we have, the input mode is set. For example, if the dialog has sliders, you might set input mode to INPUT\_\-MODE\_\-SLIDER. \item\end{DoxyCompactList}\item 
+\hypertarget{class_c_dialog_a815b6f01634482e15eb91d2b09552077}{
+void {\bfseries draw} ()}
+\label{class_c_dialog_a815b6f01634482e15eb91d2b09552077}
+
+\item 
+\hypertarget{class_c_dialog_a048282abf1147e3c6a51e52d31b010e5}{
+void {\bfseries drawTwirl} ()}
+\label{class_c_dialog_a048282abf1147e3c6a51e52d31b010e5}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_dialog_a811eaf8e763a3be6c29f1cc02e5e2a7e}{
+bool {\bfseries m\_\-noise}}
+\label{class_c_dialog_a811eaf8e763a3be6c29f1cc02e5e2a7e}
+
+\item 
+\hypertarget{class_c_dialog_a9784abe731765b766f9bae4b50b1bc18}{
+bool {\bfseries m\_\-opt}}
+\label{class_c_dialog_a9784abe731765b766f9bae4b50b1bc18}
+
+\item 
+\hypertarget{class_c_dialog_a1a517718d60c1e68375b2274b283ff9f}{
+int {\bfseries m\_\-int}}
+\label{class_c_dialog_a1a517718d60c1e68375b2274b283ff9f}
+
+\item 
+\hypertarget{class_c_dialog_a2c25f871d18d12e6a78fecff2f188b47}{
+int {\bfseries m\_\-min}}
+\label{class_c_dialog_a2c25f871d18d12e6a78fecff2f188b47}
+
+\item 
+\hypertarget{class_c_dialog_acd666cc1e85fcaddb2b34509c1036d99}{
+int {\bfseries m\_\-max}}
+\label{class_c_dialog_acd666cc1e85fcaddb2b34509c1036d99}
+
+\item 
+\hypertarget{class_c_dialog_a63319f5a20aab9e1827f5a763672fcb0}{
+size\_\-t {\bfseries m\_\-length}}
+\label{class_c_dialog_a63319f5a20aab9e1827f5a763672fcb0}
+
+\item 
+\hypertarget{class_c_dialog_a9cf201e091d60493cd70617179f24809}{
+char {\bfseries m\_\-inputmode}}
+\label{class_c_dialog_a9cf201e091d60493cd70617179f24809}
+
+\item 
+\hypertarget{class_c_dialog_a0eb6a344d9b7e3e5230336d0702e638d}{
+std::string {\bfseries m\_\-name}}
+\label{class_c_dialog_a0eb6a344d9b7e3e5230336d0702e638d}
+
+\item 
+\hypertarget{class_c_dialog_ae51af5ce9628a5181323107e6fac0350}{
+std::vector$<$ \hyperlink{class_c_dlg_object}{CDlgObject} $\ast$ $>$ {\bfseries m\_\-dlgobject}}
+\label{class_c_dialog_ae51af5ce9628a5181323107e6fac0350}
+
+\item 
+\hypertarget{class_c_dialog_ac2c405e91b64b2936e0eb9aab8a6e70f}{
+Uint8 {\bfseries frame}}
+\label{class_c_dialog_ac2c405e91b64b2936e0eb9aab8a6e70f}
+
+\item 
+\hypertarget{class_c_dialog_a8d0722dcf9c26986f9d1e6a57962fca4}{
+Uint8 {\bfseries timer}}
+\label{class_c_dialog_a8d0722dcf9c26986f9d1e6a57962fca4}
+
+\item 
+\hypertarget{class_c_dialog_a804ec2ae17033ec5c963e06e24dcd26e}{
+Uint16 {\bfseries posy}}
+\label{class_c_dialog_a804ec2ae17033ec5c963e06e24dcd26e}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_c_dialog_a62748353c0cbd01c5ef6514bb045d4e6}{
+\index{CDialog@{CDialog}!processInput@{processInput}}
+\index{processInput@{processInput}!CDialog@{CDialog}}
+\subsubsection[{processInput}]{\setlength{\rightskip}{0pt plus 5cm}void CDialog::processInput (int {\em move} = {\ttfamily 0})}}
+\label{class_c_dialog_a62748353c0cbd01c5ef6514bb045d4e6}
+
+
+This one processes the input of the dialogs. Depending on what type of dialog and controls we have, the input mode is set. For example, if the dialog has sliders, you might set input mode to INPUT\_\-MODE\_\-SLIDER. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em move}]This can be used to set the selection of the item when the dialog is loaded \end{DoxyParams}
+\hypertarget{class_c_dialog_a494de44c4883f77a6bd0f56aeafa3d5d}{
+\index{CDialog@{CDialog}!setInputMode@{setInputMode}}
+\index{setInputMode@{setInputMode}!CDialog@{CDialog}}
+\subsubsection[{setInputMode}]{\setlength{\rightskip}{0pt plus 5cm}void CDialog::setInputMode (const char {\em inputmode})}}
+\label{class_c_dialog_a494de44c4883f77a6bd0f56aeafa3d5d}
+
+
+setter for the input mode the dialog needs to be 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em selection}]The inputmode that needs to be set. \end{DoxyParams}
+\hypertarget{class_c_dialog_aba01d15c9428333b2252298a82560e2e}{
+\index{CDialog@{CDialog}!setSelection@{setSelection}}
+\index{setSelection@{setSelection}!CDialog@{CDialog}}
+\subsubsection[{setSelection}]{\setlength{\rightskip}{0pt plus 5cm}void CDialog::setSelection (const Uint8 {\em selection})}}
+\label{class_c_dialog_aba01d15c9428333b2252298a82560e2e}
+
+
+setter for the actual selected item in the dialog object 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em selection}]The selection that needs to be set. \end{DoxyParams}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gerstrong/projects/CommanderGenius/src/dialog/CDialog.h\item 
+/home/gerstrong/projects/CommanderGenius/src/dialog/CDialog.cpp\end{DoxyCompactItemize}

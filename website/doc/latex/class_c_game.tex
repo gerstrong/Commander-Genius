@@ -1,0 +1,74 @@
+\hypertarget{class_c_game}{
+\section{CGame Class Reference}
+\label{class_c_game}\index{CGame@{CGame}}
+}
+
+
+{\ttfamily \#include $<$CGame.h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{class_c_game_a653ccde97dffc8d499991e14d1f46e8d}{init} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em This is the function where CG beings. \item\end{DoxyCompactList}\item 
+bool \hyperlink{class_c_game_ab95983de4443a6c459c4fe013ec50059}{loadCKPDrivers} ()
+\begin{DoxyCompactList}\small\item\em This function will try to load the hardware resources, which are the video driver and the sound. Input stuff is only loaded, when CG needs it, what mostly happens, when it has started. \item\end{DoxyCompactList}\item 
+\hypertarget{class_c_game_a90df46f93a7fb0092c8829b2bbf88ef2}{
+void \hyperlink{class_c_game_a90df46f93a7fb0092c8829b2bbf88ef2}{run} ()}
+\label{class_c_game_a90df46f93a7fb0092c8829b2bbf88ef2}
+
+\begin{DoxyCompactList}\small\item\em This is the main run cycle of the game, no matter what happens in the game logic or which engine is chosen, it always get to this point Mainly timer and logic processes are performed here. \item\end{DoxyCompactList}\item 
+\hypertarget{class_c_game_af8baee2b9f5105f2051e39b074ddaab5}{
+void \hyperlink{class_c_game_af8baee2b9f5105f2051e39b074ddaab5}{cleanup} ()}
+\label{class_c_game_af8baee2b9f5105f2051e39b074ddaab5}
+
+\begin{DoxyCompactList}\small\item\em This function cleans up all the used engines and the singleton classes that were used during the program. This can happen at the end of the program or when an engine may be changed. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_game_ae4bea6060321250358d0f1cd663aeba4}{
+\hyperlink{structst_option}{stOption} {\bfseries m\_\-option} \mbox{[}NUM\_\-OPTIONS\mbox{]}}
+\label{class_c_game_ae4bea6060321250358d0f1cd663aeba4}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\hyperlink{_c_game_8h_source}{CGame.h}
+
+Created on: 01.05.2009 Author: gerstrong 
+
+\subsection{Member Function Documentation}
+\hypertarget{class_c_game_a653ccde97dffc8d499991e14d1f46e8d}{
+\index{CGame@{CGame}!init@{init}}
+\index{init@{init}!CGame@{CGame}}
+\subsubsection[{init}]{\setlength{\rightskip}{0pt plus 5cm}bool CGame::init (int {\em argc}, \/  char $\ast$ {\em argv}\mbox{[}$\,$\mbox{]})}}
+\label{class_c_game_a653ccde97dffc8d499991e14d1f46e8d}
+
+
+This is the function where CG beings. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em argc}]number of arguments \item[{\em argv}]pointer to char arrays where where the passed arguments are stored in the process \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+If the function could setup the game, it will return true, else it will be false. 
+\end{DoxyReturn}
+\hypertarget{class_c_game_ab95983de4443a6c459c4fe013ec50059}{
+\index{CGame@{CGame}!loadCKPDrivers@{loadCKPDrivers}}
+\index{loadCKPDrivers@{loadCKPDrivers}!CGame@{CGame}}
+\subsubsection[{loadCKPDrivers}]{\setlength{\rightskip}{0pt plus 5cm}bool CGame::loadCKPDrivers ()}}
+\label{class_c_game_ab95983de4443a6c459c4fe013ec50059}
+
+
+This function will try to load the hardware resources, which are the video driver and the sound. Input stuff is only loaded, when CG needs it, what mostly happens, when it has started. 
+
+\begin{DoxyReturn}{Returns}
+If the function could load the drivers, it will return true, else it will be false. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gerstrong/projects/CommanderGenius/src/CGame.h\item 
+/home/gerstrong/projects/CommanderGenius/src/CGame.cpp\end{DoxyCompactItemize}

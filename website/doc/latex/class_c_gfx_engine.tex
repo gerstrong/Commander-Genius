@@ -1,0 +1,167 @@
+\hypertarget{class_c_gfx_engine}{
+\section{CGfxEngine Class Reference}
+\label{class_c_gfx_engine}\index{CGfxEngine@{CGfxEngine}}
+}
+Inheritance diagram for CGfxEngine:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2cm]{class_c_gfx_engine}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_gfx_engine_a82cb8ea694ade8075d62bad3194dd8ef}{
+void {\bfseries createEmptySprites} (Uint16 num\_\-sprites)}
+\label{class_c_gfx_engine_a82cb8ea694ade8075d62bad3194dd8ef}
+
+\item 
+\hypertarget{class_c_gfx_engine_a0433792435cf1db077c3a65f3c94a13f}{
+void {\bfseries createEmptyBitmaps} (Uint16 num\_\-bmps)}
+\label{class_c_gfx_engine_a0433792435cf1db077c3a65f3c94a13f}
+
+\item 
+\hypertarget{class_c_gfx_engine_a0a1f98e03caffe65a5b8f6fe5616b786}{
+void {\bfseries createEmptyMaskedBitmaps} (Uint16 num\_\-bmps)}
+\label{class_c_gfx_engine_a0a1f98e03caffe65a5b8f6fe5616b786}
+
+\item 
+\hypertarget{class_c_gfx_engine_a6e21c0e1142e65c59a48a9ac03b5e256}{
+void {\bfseries createEmptyFontmaps} (Uint8 num\_\-fonts)}
+\label{class_c_gfx_engine_a6e21c0e1142e65c59a48a9ac03b5e256}
+
+\item 
+\hypertarget{class_c_gfx_engine_a00d146cc58388217173de06f26f6824d}{
+void {\bfseries createEmptyTilemap} (size\_\-t num)}
+\label{class_c_gfx_engine_a00d146cc58388217173de06f26f6824d}
+
+\item 
+\hypertarget{class_c_gfx_engine_a3b7f7a2ec2e3a26f71c755f99ad6664e}{
+void {\bfseries createEmptyCursorMap} (SDL\_\-Surface $\ast$surface)}
+\label{class_c_gfx_engine_a3b7f7a2ec2e3a26f71c755f99ad6664e}
+
+\item 
+\hypertarget{class_c_gfx_engine_a56ee497d63db8c860695202ba0441415}{
+void {\bfseries pushEffectPtr} (\hyperlink{class_c_effects}{CEffects} $\ast$pEffect)}
+\label{class_c_gfx_engine_a56ee497d63db8c860695202ba0441415}
+
+\item 
+\hypertarget{class_c_gfx_engine_a0e7d1e27c94788edbab856def46e4d4e}{
+void {\bfseries freeBitmaps} (std::vector$<$ \hyperlink{class_c_bitmap}{CBitmap} $>$ \&Bitmap)}
+\label{class_c_gfx_engine_a0e7d1e27c94788edbab856def46e4d4e}
+
+\item 
+\hypertarget{class_c_gfx_engine_a5163091bcbae991556ecddb10f270666}{
+void {\bfseries freeSprites} ()}
+\label{class_c_gfx_engine_a5163091bcbae991556ecddb10f270666}
+
+\item 
+\hypertarget{class_c_gfx_engine_ad1eec0b248f229d01d208c2e74a62cea}{
+void {\bfseries freeTilemap} ()}
+\label{class_c_gfx_engine_ad1eec0b248f229d01d208c2e74a62cea}
+
+\item 
+\hypertarget{class_c_gfx_engine_a0639424538cc46322160af86a1c3db7f}{
+void {\bfseries freeFonts} ()}
+\label{class_c_gfx_engine_a0639424538cc46322160af86a1c3db7f}
+
+\item 
+\hypertarget{class_c_gfx_engine_a07c0654c7a76d57d1b4e6dac3fa1f5ef}{
+void {\bfseries freeCursor} ()}
+\label{class_c_gfx_engine_a07c0654c7a76d57d1b4e6dac3fa1f5ef}
+
+\item 
+\hypertarget{class_c_gfx_engine_a74bdf51ea227c59815fea7d9a6910821}{
+void {\bfseries copyTileToSprite} (Uint16 t, Uint16 s, Uint16 ntilestocopy)}
+\label{class_c_gfx_engine_a74bdf51ea227c59815fea7d9a6910821}
+
+\item 
+\hypertarget{class_c_gfx_engine_a06d9ce9b8384aba26608dd7d4e0143dd}{
+void {\bfseries drawDialogBox} (SDL\_\-Surface $\ast$DialogSurface, int x1, int y1, int w, int h, Uint32 colour=0xFFFFFF)}
+\label{class_c_gfx_engine_a06d9ce9b8384aba26608dd7d4e0143dd}
+
+\item 
+\hypertarget{class_c_gfx_engine_a83287c1e00ecaa065da179b34483599b}{
+int {\bfseries getNumSprites} ()}
+\label{class_c_gfx_engine_a83287c1e00ecaa065da179b34483599b}
+
+\item 
+\hypertarget{class_c_gfx_engine_aded18ea84816faff1738fda1e26706b4}{
+\hyperlink{class_c_tilemap}{CTilemap} \& {\bfseries getTileMap} (size\_\-t tilemap)}
+\label{class_c_gfx_engine_aded18ea84816faff1738fda1e26706b4}
+
+\item 
+\hypertarget{class_c_gfx_engine_a90e89e34650d89985747fbcbb6b5149e}{
+\hyperlink{class_c_bitmap}{CBitmap} \& {\bfseries getBitmap} (Uint16 slot)}
+\label{class_c_gfx_engine_a90e89e34650d89985747fbcbb6b5149e}
+
+\item 
+\hypertarget{class_c_gfx_engine_a297250e8461190b21a02d91c8a7a7561}{
+\hyperlink{class_c_bitmap}{CBitmap} \& {\bfseries getMaskedBitmap} (Uint16 slot)}
+\label{class_c_gfx_engine_a297250e8461190b21a02d91c8a7a7561}
+
+\item 
+\hypertarget{class_c_gfx_engine_a11beb70ffb01a4d8a7d9ede6ce043868}{
+\hyperlink{class_c_bitmap}{CBitmap} $\ast$ {\bfseries getBitmap} (const std::string \&name)}
+\label{class_c_gfx_engine_a11beb70ffb01a4d8a7d9ede6ce043868}
+
+\item 
+\hypertarget{class_c_gfx_engine_a5b7159f66dde37cb25a8ca5fdc641a50}{
+\hyperlink{class_c_effects}{CEffects} $\ast$ {\bfseries Effect} ()}
+\label{class_c_gfx_engine_a5b7159f66dde37cb25a8ca5fdc641a50}
+
+\item 
+\hypertarget{class_c_gfx_engine_aae8ae18fda247a448383bbe0fbfe9b2b}{
+bool {\bfseries applyingEffects} ()}
+\label{class_c_gfx_engine_aae8ae18fda247a448383bbe0fbfe9b2b}
+
+\item 
+\hypertarget{class_c_gfx_engine_acde55ace71144fcb095f5218d5bcc331}{
+\hyperlink{class_c_sprite}{CSprite} \& {\bfseries getSprite} (Uint16 slot)}
+\label{class_c_gfx_engine_acde55ace71144fcb095f5218d5bcc331}
+
+\item 
+\hypertarget{class_c_gfx_engine_afef19fdcf0bfab3fc2b5bad44726be5d}{
+std::vector$<$ \hyperlink{class_c_sprite}{CSprite} $>$ \& {\bfseries getSpriteVec} ()}
+\label{class_c_gfx_engine_afef19fdcf0bfab3fc2b5bad44726be5d}
+
+\item 
+\hypertarget{class_c_gfx_engine_a71fbc005e8abe61afcc63e3e82f31087}{
+\hyperlink{class_c_font}{CFont} \& {\bfseries getFont} (Uint8 index)}
+\label{class_c_gfx_engine_a71fbc005e8abe61afcc63e3e82f31087}
+
+\item 
+\hypertarget{class_c_gfx_engine_afa0ae7592fceef64d770ef67a9dc5923}{
+\hyperlink{class_c_cursor}{CCursor} $\ast$ {\bfseries getCursor} ()}
+\label{class_c_gfx_engine_afa0ae7592fceef64d770ef67a9dc5923}
+
+\item 
+\hypertarget{class_c_gfx_engine_a402c0753039f45a2b9736fcb0f72092f}{
+bool {\bfseries runningEffect} ()}
+\label{class_c_gfx_engine_a402c0753039f45a2b9736fcb0f72092f}
+
+\item 
+\hypertarget{class_c_gfx_engine_a26467cad4e7da0af376e2191e975e91e}{
+void {\bfseries process} ()}
+\label{class_c_gfx_engine_a26467cad4e7da0af376e2191e975e91e}
+
+\item 
+\hypertarget{class_c_gfx_engine_a01073c22a7bc7731743a789b5000fb2f}{
+void {\bfseries killEffect} ()}
+\label{class_c_gfx_engine_a01073c22a7bc7731743a789b5000fb2f}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_gfx_engine_a3cf619835303580d4ac64ec12fbbd83c}{
+\hyperlink{class_c_palette}{CPalette} {\bfseries Palette}}
+\label{class_c_gfx_engine_a3cf619835303580d4ac64ec12fbbd83c}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gerstrong/projects/CommanderGenius/src/graphics/CGfxEngine.h\item 
+/home/gerstrong/projects/CommanderGenius/src/graphics/CGfxEngine.cpp\end{DoxyCompactItemize}

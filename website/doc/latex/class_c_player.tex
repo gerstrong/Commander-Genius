@@ -1,0 +1,668 @@
+\hypertarget{class_c_player}{
+\section{CPlayer Class Reference}
+\label{class_c_player}\index{CPlayer@{CPlayer}}
+}
+Inheritance diagram for CPlayer:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2cm]{class_c_player}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum {\bfseries e\_\-playingmodes} \{ {\bfseries NONE}, 
+{\bfseries WORLDMAP}, 
+{\bfseries LEVELPLAY}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_player_a46a05e9b944769472304057354098c70}{
+{\bfseries CPlayer} (const char \&Episode, short \&Level, char \&Difficulty, short player\_\-index, bool $\ast$mp\_\-level\_\-completed, \hyperlink{structst_option}{stOption} $\ast$mp\_\-option, std::vector$<$ \hyperlink{class_c_object}{CObject} $>$ \&m\_\-Object, \hyperlink{class_c_map}{CMap} \&map)}
+\label{class_c_player_a46a05e9b944769472304057354098c70}
+
+\item 
+\hypertarget{class_c_player_a24cfbde1f3794d23ecb479e2d2debde8}{
+void {\bfseries setDatatoZero} ()}
+\label{class_c_player_a24cfbde1f3794d23ecb479e2d2debde8}
+
+\item 
+\hypertarget{class_c_player_a52e4c23f66ddd08974361bcb559d72c9}{
+void {\bfseries setDefaultStartValues} ()}
+\label{class_c_player_a52e4c23f66ddd08974361bcb559d72c9}
+
+\item 
+\hypertarget{class_c_player_af0c8cb4f012bdb62095655e2376c726a}{
+void {\bfseries setMapData} (\hyperlink{class_c_map}{CMap} $\ast$p\_\-map)}
+\label{class_c_player_af0c8cb4f012bdb62095655e2376c726a}
+
+\item 
+\hypertarget{class_c_player_aca8a838f6fbb08a86bddbe5b62ad5ffc}{
+void {\bfseries setupforLevelPlay} ()}
+\label{class_c_player_aca8a838f6fbb08a86bddbe5b62ad5ffc}
+
+\item 
+\hypertarget{class_c_player_a2e93978c93f52fa9be3017b909c2bd4b}{
+bool {\bfseries getLevelTrigger} ()}
+\label{class_c_player_a2e93978c93f52fa9be3017b909c2bd4b}
+
+\item 
+\hypertarget{class_c_player_a535d99ebf53a925526c1cf42c3407cde}{
+void {\bfseries processWorldMap} ()}
+\label{class_c_player_a535d99ebf53a925526c1cf42c3407cde}
+
+\item 
+\hypertarget{class_c_player_a345db97e55058f9ecdb356e31d71c889}{
+void {\bfseries setWorldMapdir} ()}
+\label{class_c_player_a345db97e55058f9ecdb356e31d71c889}
+
+\item 
+\hypertarget{class_c_player_a1a1de7b27fef066e05c375e901b67f91}{
+void {\bfseries selectFrameOnWorldMap} ()}
+\label{class_c_player_a1a1de7b27fef066e05c375e901b67f91}
+
+\item 
+\hypertarget{class_c_player_afa3904a6a725f6c51f8122fa9ed4aa3b}{
+void {\bfseries AllowEnterLevelonWM} ()}
+\label{class_c_player_afa3904a6a725f6c51f8122fa9ed4aa3b}
+
+\item 
+\hypertarget{class_c_player_aa5b20113dcd666097a184ca30efe4d77}{
+void {\bfseries verifySolidLevels} ()}
+\label{class_c_player_aa5b20113dcd666097a184ca30efe4d77}
+
+\item 
+\hypertarget{class_c_player_a2abc457e2110abe546b44e44ebb2f6f6}{
+bool {\bfseries isWMSolid} (int xb, int yb)}
+\label{class_c_player_a2abc457e2110abe546b44e44ebb2f6f6}
+
+\item 
+\hypertarget{class_c_player_a8886c2cd449662d48679cf5e72626d58}{
+void {\bfseries InertiaAndFriction\_\-Y} ()}
+\label{class_c_player_a8886c2cd449662d48679cf5e72626d58}
+
+\item 
+\hypertarget{class_c_player_a8957fd89b557620e39fe4bb132fc862d}{
+void {\bfseries MountNessieIfAvailable} ()}
+\label{class_c_player_a8957fd89b557620e39fe4bb132fc862d}
+
+\item 
+\hypertarget{class_c_player_a53ca45acaf1dec5a3da4597b02f9f9ab}{
+void {\bfseries UnmountNessie} ()}
+\label{class_c_player_a53ca45acaf1dec5a3da4597b02f9f9ab}
+
+\item 
+\hypertarget{class_c_player_a78da931f0c5b5a5d3d211fa00b6f0293}{
+int {\bfseries getNewObject} ()}
+\label{class_c_player_a78da931f0c5b5a5d3d211fa00b6f0293}
+
+\item 
+\hypertarget{class_c_player_adcb23f96f44c519e5196dbece6628945}{
+void {\bfseries processInLevel} (const bool \&platextending)}
+\label{class_c_player_adcb23f96f44c519e5196dbece6628945}
+
+\item 
+\hypertarget{class_c_player_a2beacf2c5fb26fb98e34cbea7ab6fc91}{
+void {\bfseries touchedExit} ()}
+\label{class_c_player_a2beacf2c5fb26fb98e34cbea7ab6fc91}
+
+\item 
+\hypertarget{class_c_player_a009772e04f47412c3b58fc152f00bd99}{
+void {\bfseries walkbehindexitdoor} ()}
+\label{class_c_player_a009772e04f47412c3b58fc152f00bd99}
+
+\item 
+\hypertarget{class_c_player_ac09b8e8d07dd0d7be3a795997a203037}{
+void {\bfseries kill} (bool force=false)}
+\label{class_c_player_ac09b8e8d07dd0d7be3a795997a203037}
+
+\item 
+\hypertarget{class_c_player_a85d0d2cc4ba73fe90a901f9a5d374f1f}{
+void {\bfseries dieanim} ()}
+\label{class_c_player_a85d0d2cc4ba73fe90a901f9a5d374f1f}
+
+\item 
+\hypertarget{class_c_player_aeaef04bd2f8b3e7b8a5f571a5618eac3}{
+void {\bfseries setDir} ()}
+\label{class_c_player_aeaef04bd2f8b3e7b8a5f571a5618eac3}
+
+\item 
+\hypertarget{class_c_player_a477e894b2918510df75ff7427b5fd040}{
+void {\bfseries getgoodies} ()}
+\label{class_c_player_a477e894b2918510df75ff7427b5fd040}
+
+\item 
+\hypertarget{class_c_player_aa20c66bd8ed8c7c333ffce102d874b8b}{
+void {\bfseries playpushed} ()}
+\label{class_c_player_aa20c66bd8ed8c7c333ffce102d874b8b}
+
+\item 
+\hypertarget{class_c_player_a93057ba412df98acc4788b1a53bf986d}{
+void {\bfseries keencicle} ()}
+\label{class_c_player_a93057ba412df98acc4788b1a53bf986d}
+
+\item 
+\hypertarget{class_c_player_a669bf0377e778d75d1b9cbbea9bfc335}{
+void {\bfseries TogglePogo\_\-and\_\-Switches} (const bool \&platextending)}
+\label{class_c_player_a669bf0377e778d75d1b9cbbea9bfc335}
+
+\item 
+\hypertarget{class_c_player_a7d594f65d174124c63b72f87de498021}{
+void {\bfseries JumpAndPogo} ()}
+\label{class_c_player_a7d594f65d174124c63b72f87de498021}
+
+\item 
+\hypertarget{class_c_player_afa5123f09f2e453b6fdb909ab3f2a505}{
+void {\bfseries Playerfalling} ()}
+\label{class_c_player_afa5123f09f2e453b6fdb909ab3f2a505}
+
+\item 
+\hypertarget{class_c_player_abf7712de9354f9b9772e57bee924d08e}{
+void {\bfseries raygun} ()}
+\label{class_c_player_abf7712de9354f9b9772e57bee924d08e}
+
+\item 
+\hypertarget{class_c_player_a81a9b01bc323e7dd105322a7425e91aa}{
+void {\bfseries ankh} ()}
+\label{class_c_player_a81a9b01bc323e7dd105322a7425e91aa}
+
+\item 
+\hypertarget{class_c_player_a2a2dcda7bf070bc60fdae5d126054dcf}{
+void {\bfseries bump} (int pushamt, bool solid)}
+\label{class_c_player_a2a2dcda7bf070bc60fdae5d126054dcf}
+
+\item 
+\hypertarget{class_c_player_aaf29ec91431dddfa0072db4d9fad8549}{
+void {\bfseries checkSolidDoors} ()}
+\label{class_c_player_aaf29ec91431dddfa0072db4d9fad8549}
+
+\item 
+\hypertarget{class_c_player_a40f4e2426228714201723bb45352aff1}{
+void {\bfseries SelectFrame} ()}
+\label{class_c_player_a40f4e2426228714201723bb45352aff1}
+
+\item 
+\hypertarget{class_c_player_a2b7a24347e98d918ae5a59109007005c}{
+int {\bfseries pollLevelTrigger} ()}
+\label{class_c_player_a2b7a24347e98d918ae5a59109007005c}
+
+\item 
+\hypertarget{class_c_player_a8821b02169febd68fc95e06e8a9934b3}{
+void {\bfseries InertiaAndFriction\_\-X} ()}
+\label{class_c_player_a8821b02169febd68fc95e06e8a9934b3}
+
+\item 
+\hypertarget{class_c_player_a2d0bf01a95ea52400563440ba4b2acd7}{
+void {\bfseries Walking} ()}
+\label{class_c_player_a2d0bf01a95ea52400563440ba4b2acd7}
+
+\item 
+\hypertarget{class_c_player_a7f0c07ed93210b00c317b610ef8d0b35}{
+void {\bfseries WalkingAnimation} ()}
+\label{class_c_player_a7f0c07ed93210b00c317b610ef8d0b35}
+
+\item 
+\hypertarget{class_c_player_a0ba24f0822723cef4643d4c6ea9957bf}{
+void {\bfseries StatusBox} ()}
+\label{class_c_player_a0ba24f0822723cef4643d4c6ea9957bf}
+
+\item 
+\hypertarget{class_c_player_ac43ad1f02ccac8b7991754e82ad49e4d}{
+void \hyperlink{class_c_player_ac43ad1f02ccac8b7991754e82ad49e4d}{ProcessInput} ()}
+\label{class_c_player_ac43ad1f02ccac8b7991754e82ad49e4d}
+
+\begin{DoxyCompactList}\small\item\em Everything the player controls is processed here! \item\end{DoxyCompactList}\item 
+\hypertarget{class_c_player_a02eff7ded41c1c4f089b4f26a1d91b4d}{
+void \hyperlink{class_c_player_a02eff7ded41c1c4f089b4f26a1d91b4d}{ProcessExitLevel} ()}
+\label{class_c_player_a02eff7ded41c1c4f089b4f26a1d91b4d}
+
+\begin{DoxyCompactList}\small\item\em This function is processed while Keen is walking through the exit-\/door. \item\end{DoxyCompactList}\item 
+\hypertarget{class_c_player_a374e42a20d7274d3f9804507bd2ea3b0}{
+bool {\bfseries checkObjSolid} ()}
+\label{class_c_player_a374e42a20d7274d3f9804507bd2ea3b0}
+
+\item 
+\hypertarget{class_c_player_a68adc8ce8cfa82511f6207541e6c6fd4}{
+void {\bfseries draw} ()}
+\label{class_c_player_a68adc8ce8cfa82511f6207541e6c6fd4}
+
+\item 
+\hypertarget{class_c_player_a8bc182302765b043b5c65ca930384e18}{
+bool {\bfseries drawStatusScreen} ()}
+\label{class_c_player_a8bc182302765b043b5c65ca930384e18}
+
+\item 
+\hypertarget{class_c_player_a6acafaba5c89fc93990e8d3de3b8face}{
+bool {\bfseries scrollTriggers} ()}
+\label{class_c_player_a6acafaba5c89fc93990e8d3de3b8face}
+
+\item 
+\hypertarget{class_c_player_a08c9ce809bf0f07ca14401fbc008f63a}{
+void {\bfseries give\_\-keycard} (int doortile)}
+\label{class_c_player_a08c9ce809bf0f07ca14401fbc008f63a}
+
+\item 
+\hypertarget{class_c_player_ab78141ee23d09eb4b5b2f6707405d3f2}{
+void {\bfseries take\_\-keycard} (int doortile)}
+\label{class_c_player_ab78141ee23d09eb4b5b2f6707405d3f2}
+
+\item 
+\hypertarget{class_c_player_a2e010b87884052189b3feab5c571f3c5}{
+void {\bfseries freeze} ()}
+\label{class_c_player_a2e010b87884052189b3feab5c571f3c5}
+
+\item 
+\hypertarget{class_c_player_acb051c6c30eb3927d3c7b92f66aba170}{
+bool {\bfseries showGameHint} (int mpx, int mpy)}
+\label{class_c_player_acb051c6c30eb3927d3c7b92f66aba170}
+
+\item 
+\hypertarget{class_c_player_a4a71bf139f359edd62b60d5dadf9c684}{
+std::string {\bfseries pollHintMessage} ()}
+\label{class_c_player_a4a71bf139f359edd62b60d5dadf9c684}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_player_a8759275f882b21927e755c65ca6db3ec}{
+int {\bfseries playerbaseframe}}
+\label{class_c_player_a8759275f882b21927e755c65ca6db3ec}
+
+\item 
+\hypertarget{class_c_player_a1dd77374c98c7d9e630ce08f3f45e878}{
+unsigned int {\bfseries w}}
+\label{class_c_player_a1dd77374c98c7d9e630ce08f3f45e878}
+
+\item 
+\hypertarget{class_c_player_a611d2436ed2a404bce575b9856258eec}{
+unsigned int {\bfseries h}}
+\label{class_c_player_a611d2436ed2a404bce575b9856258eec}
+
+\item 
+\hypertarget{class_c_player_a6415d0608faeef02846585cfc7aae11d}{
+e\_\-playingmodes {\bfseries m\_\-playingmode}}
+\label{class_c_player_a6415d0608faeef02846585cfc7aae11d}
+
+\item 
+\hypertarget{class_c_player_a3d74bfe7b61f1be3ac20276b68392994}{
+char {\bfseries m\_\-episode}}
+\label{class_c_player_a3d74bfe7b61f1be3ac20276b68392994}
+
+\item 
+\hypertarget{class_c_player_a7b0e0a436137083d71581eed735f7d8c}{
+char {\bfseries m\_\-level}}
+\label{class_c_player_a7b0e0a436137083d71581eed735f7d8c}
+
+\item 
+\hypertarget{class_c_player_ab7c3fb1c43ace787446a9a48aa0314d6}{
+int {\bfseries m\_\-difficulty}}
+\label{class_c_player_ab7c3fb1c43ace787446a9a48aa0314d6}
+
+\item 
+\hypertarget{class_c_player_a247484d5f94a47af43415a07a9b0daaa}{
+char {\bfseries godmode}}
+\label{class_c_player_a247484d5f94a47af43415a07a9b0daaa}
+
+\item 
+\hypertarget{class_c_player_a757e166c076003be980f884a8b0f7a85}{
+bool {\bfseries hideplayer}}
+\label{class_c_player_a757e166c076003be980f884a8b0f7a85}
+
+\item 
+\hypertarget{class_c_player_a149c69f575190f63ff0fd6e68a257616}{
+bool {\bfseries mounted}}
+\label{class_c_player_a149c69f575190f63ff0fd6e68a257616}
+
+\item 
+\hypertarget{class_c_player_a9ffd569813f87fc342df57a61531896e}{
+short {\bfseries treshold}}
+\label{class_c_player_a9ffd569813f87fc342df57a61531896e}
+
+\item 
+\hypertarget{class_c_player_a19687d7784b9e2a774e31507b7e59158}{
+signed int {\bfseries pinertia\_\-y}}
+\label{class_c_player_a19687d7784b9e2a774e31507b7e59158}
+
+\item 
+\hypertarget{class_c_player_a005d003c694d6af36743f243088b8f12}{
+unsigned long {\bfseries mapplayx}}
+\label{class_c_player_a005d003c694d6af36743f243088b8f12}
+
+\item 
+\hypertarget{class_c_player_acbf688ef560ca858aec55f64a9890a14}{
+signed int {\bfseries mapplayy}}
+\label{class_c_player_acbf688ef560ca858aec55f64a9890a14}
+
+\item 
+\hypertarget{class_c_player_a857722261b5512d74156ce5c0b845c39}{
+unsigned char {\bfseries pfalling}}
+\label{class_c_player_a857722261b5512d74156ce5c0b845c39}
+
+\item 
+\hypertarget{class_c_player_ad5cbe70718b8b367e29f31761b899404}{
+unsigned char {\bfseries plastfalling}}
+\label{class_c_player_ad5cbe70718b8b367e29f31761b899404}
+
+\item 
+\hypertarget{class_c_player_a2734826588dd7538fcb5cb7e4a679f98}{
+unsigned char {\bfseries pfallspeed}}
+\label{class_c_player_a2734826588dd7538fcb5cb7e4a679f98}
+
+\item 
+\hypertarget{class_c_player_a23698cc7791435067d9f31a94593a7a9}{
+unsigned char {\bfseries pwalking}}
+\label{class_c_player_a23698cc7791435067d9f31a94593a7a9}
+
+\item 
+\hypertarget{class_c_player_aee7f6180352c1bfd756ab2f8854fa50c}{
+unsigned char {\bfseries playspeed}}
+\label{class_c_player_aee7f6180352c1bfd756ab2f8854fa50c}
+
+\item 
+\hypertarget{class_c_player_ad767ca576068fc393f3f3c29c2a41a57}{
+unsigned char {\bfseries pslowingdown}}
+\label{class_c_player_ad767ca576068fc393f3f3c29c2a41a57}
+
+\item 
+\hypertarget{class_c_player_a28a8edf8d94f58a580e89d0b8e5e036d}{
+unsigned char {\bfseries pwalkframe}}
+\label{class_c_player_a28a8edf8d94f58a580e89d0b8e5e036d}
+
+\item 
+\hypertarget{class_c_player_acc029032cb1b9fbefa057ffb409d380c}{
+unsigned char {\bfseries pwalkframea}}
+\label{class_c_player_acc029032cb1b9fbefa057ffb409d380c}
+
+\item 
+\hypertarget{class_c_player_a0fe9eebff654e8d675b76837fe318404}{
+int {\bfseries pwalkanimtimer}}
+\label{class_c_player_a0fe9eebff654e8d675b76837fe318404}
+
+\item 
+\hypertarget{class_c_player_ada9fdd9722534bb41c77b6ee978a9810}{
+unsigned char {\bfseries pwalkincreasetimer}}
+\label{class_c_player_ada9fdd9722534bb41c77b6ee978a9810}
+
+\item 
+\hypertarget{class_c_player_a7d31b0edcba6885234bf654d95f1f798}{
+unsigned char {\bfseries pfriction\_\-timer\_\-y}}
+\label{class_c_player_a7d31b0edcba6885234bf654d95f1f798}
+
+\item 
+\hypertarget{class_c_player_a4c5d719a52172c4535ea461c437ff1e7}{
+signed int {\bfseries playpushed\_\-x}}
+\label{class_c_player_a4c5d719a52172c4535ea461c437ff1e7}
+
+\item 
+\hypertarget{class_c_player_ae1d06948eace0ef1271f2a8bb6a25bdf}{
+unsigned char {\bfseries playpushed\_\-decreasetimer}}
+\label{class_c_player_ae1d06948eace0ef1271f2a8bb6a25bdf}
+
+\item 
+\hypertarget{class_c_player_a2d53b3f230aa0f787f8c78169df60f78}{
+unsigned char {\bfseries pjumping}}
+\label{class_c_player_a2d53b3f230aa0f787f8c78169df60f78}
+
+\item 
+\hypertarget{class_c_player_af6094769a42090c66c8e84105795906e}{
+unsigned char {\bfseries pjumptime}}
+\label{class_c_player_af6094769a42090c66c8e84105795906e}
+
+\item 
+\hypertarget{class_c_player_ae49ab510990062c0647affdfb7d31f6b}{
+unsigned char {\bfseries pjumpupspeed\_\-decrease}}
+\label{class_c_player_ae49ab510990062c0647affdfb7d31f6b}
+
+\item 
+\hypertarget{class_c_player_a65ed7321fba5e0e489b67d3114d5c976}{
+unsigned char {\bfseries pjumpdir}}
+\label{class_c_player_a65ed7321fba5e0e489b67d3114d5c976}
+
+\item 
+\hypertarget{class_c_player_a8d62a808029003f59039e75da832dbc2}{
+unsigned char {\bfseries pjumpframe}}
+\label{class_c_player_a8d62a808029003f59039e75da832dbc2}
+
+\item 
+\hypertarget{class_c_player_acb226be7133f934e62da5602f016e3a4}{
+unsigned char {\bfseries pjumpanimtimer}}
+\label{class_c_player_acb226be7133f934e62da5602f016e3a4}
+
+\item 
+\hypertarget{class_c_player_a5f173cfc52f92b86236f39b7ab9d277a}{
+int {\bfseries pjumpupspeed}}
+\label{class_c_player_a5f173cfc52f92b86236f39b7ab9d277a}
+
+\item 
+\hypertarget{class_c_player_a2020dcd5ac0bb9d9426c82849be8b743}{
+unsigned char {\bfseries pjumpnormaltime}}
+\label{class_c_player_a2020dcd5ac0bb9d9426c82849be8b743}
+
+\item 
+\hypertarget{class_c_player_a4fc3bbe16ed72fce4519802e4e73221b}{
+unsigned char {\bfseries pjumpupdecreaserate}}
+\label{class_c_player_a4fc3bbe16ed72fce4519802e4e73221b}
+
+\item 
+\hypertarget{class_c_player_aaf552915990c3b7c279841dab6eb50cd}{
+unsigned char {\bfseries pjustjumped}}
+\label{class_c_player_aaf552915990c3b7c279841dab6eb50cd}
+
+\item 
+\hypertarget{class_c_player_a23f423fd1cde235499cf9a51673a25ce}{
+unsigned char {\bfseries pjustfell}}
+\label{class_c_player_a23f423fd1cde235499cf9a51673a25ce}
+
+\item 
+\hypertarget{class_c_player_aeafc45f8dce94ee02238bdc1559f94bd}{
+unsigned char {\bfseries pjumpfloattimer}}
+\label{class_c_player_aeafc45f8dce94ee02238bdc1559f94bd}
+
+\item 
+\hypertarget{class_c_player_af77d3635079fe9fc00b285b654917114}{
+direction\_\-t {\bfseries pdir}}
+\label{class_c_player_af77d3635079fe9fc00b285b654917114}
+
+\item 
+\hypertarget{class_c_player_a00ecb22b7b76f27f6b5d4df30e68d94a}{
+direction\_\-t {\bfseries pshowdir}}
+\label{class_c_player_a00ecb22b7b76f27f6b5d4df30e68d94a}
+
+\item 
+\hypertarget{class_c_player_afaed3381a62ce9525b9f3f43a8795556}{
+direction\_\-t {\bfseries lastpdir}}
+\label{class_c_player_afaed3381a62ce9525b9f3f43a8795556}
+
+\item 
+\hypertarget{class_c_player_a76e8ce8223ff31d61e473d9619ab51c8}{
+char {\bfseries pfireframetimer}}
+\label{class_c_player_a76e8ce8223ff31d61e473d9619ab51c8}
+
+\item 
+\hypertarget{class_c_player_af5f2ac12f4861ac2548a0be7ce78e873}{
+bool {\bfseries inhibitwalking}}
+\label{class_c_player_af5f2ac12f4861ac2548a0be7ce78e873}
+
+\item 
+\hypertarget{class_c_player_ab248350e80b228b4031a2bb06f5d4c48}{
+int {\bfseries ctrltimer}}
+\label{class_c_player_ab248350e80b228b4031a2bb06f5d4c48}
+
+\item 
+\hypertarget{class_c_player_a937a0c19826480b012064588c2c3c1de}{
+int {\bfseries alttimer}}
+\label{class_c_player_a937a0c19826480b012064588c2c3c1de}
+
+\item 
+\hypertarget{class_c_player_a1d4bd4191fc2db078690e3191453041c}{
+char {\bfseries keyprocstate}}
+\label{class_c_player_a1d4bd4191fc2db078690e3191453041c}
+
+\item 
+\hypertarget{class_c_player_a0ba28f8e208bdd67e00dcf4f22212e9f}{
+char {\bfseries wm\_\-lastenterstate}}
+\label{class_c_player_a0ba28f8e208bdd67e00dcf4f22212e9f}
+
+\item 
+\hypertarget{class_c_player_af54ccadc128e0f32cf37137129ed1099}{
+char {\bfseries pdie}}
+\label{class_c_player_af54ccadc128e0f32cf37137129ed1099}
+
+\item 
+\hypertarget{class_c_player_ae335b6aa6ebaa05acd00a55c3e128c73}{
+char {\bfseries pdieframe}}
+\label{class_c_player_ae335b6aa6ebaa05acd00a55c3e128c73}
+
+\item 
+\hypertarget{class_c_player_ae2a96768e85405fe542758dc70a830da}{
+char {\bfseries pdietimer}}
+\label{class_c_player_ae2a96768e85405fe542758dc70a830da}
+
+\item 
+\hypertarget{class_c_player_ae62eebb1ca75ddd8c489599eaaf6352d}{
+int {\bfseries pdietillfly}}
+\label{class_c_player_ae62eebb1ca75ddd8c489599eaaf6352d}
+
+\item 
+\hypertarget{class_c_player_a4f580051242070109d3ae12485fb2c4d}{
+signed int {\bfseries pdie\_\-xvect}}
+\label{class_c_player_a4f580051242070109d3ae12485fb2c4d}
+
+\item 
+\hypertarget{class_c_player_a4dc3dfaa8b296bdf448b257d20055557}{
+bool {\bfseries psliding}}
+\label{class_c_player_a4dc3dfaa8b296bdf448b257d20055557}
+
+\item 
+\hypertarget{class_c_player_aff7e771973f97115662d91088f3a52f4}{
+bool {\bfseries psemisliding}}
+\label{class_c_player_aff7e771973f97115662d91088f3a52f4}
+
+\item 
+\hypertarget{class_c_player_a180ebfeede5a5dd94724c29b6f63e720}{
+bool {\bfseries ppogostick}}
+\label{class_c_player_a180ebfeede5a5dd94724c29b6f63e720}
+
+\item 
+\hypertarget{class_c_player_adea05680a34d1c6984dc6f4848d025ec}{
+bool {\bfseries pogofirsttime}}
+\label{class_c_player_adea05680a34d1c6984dc6f4848d025ec}
+
+\item 
+\hypertarget{class_c_player_a3e4b0a93f0ad594c092ff0e7e08176e3}{
+int {\bfseries pfrozentime}}
+\label{class_c_player_a3e4b0a93f0ad594c092ff0e7e08176e3}
+
+\item 
+\hypertarget{class_c_player_aceef755ed2c8054efca6d910651712dc}{
+int {\bfseries pfrozenframe}}
+\label{class_c_player_aceef755ed2c8054efca6d910651712dc}
+
+\item 
+\hypertarget{class_c_player_a960f9fd018071a56fed87b62d7c6340b}{
+int {\bfseries pfrozenanimtimer}}
+\label{class_c_player_a960f9fd018071a56fed87b62d7c6340b}
+
+\item 
+\hypertarget{class_c_player_aa2cae2198b29944729bd100636d7d210}{
+bool {\bfseries pfiring}}
+\label{class_c_player_aa2cae2198b29944729bd100636d7d210}
+
+\item 
+\hypertarget{class_c_player_a8d3fcbbbd46efc5a1a1506f1b92c9479}{
+bool {\bfseries plastfire}}
+\label{class_c_player_a8d3fcbbbd46efc5a1a1506f1b92c9479}
+
+\item 
+\hypertarget{class_c_player_abc3172c28758d41edd09a5aa514cf588}{
+char {\bfseries playcontrol} \mbox{[}PA\_\-MAX\_\-ACTIONS\mbox{]}}
+\label{class_c_player_abc3172c28758d41edd09a5aa514cf588}
+
+\item 
+\hypertarget{class_c_player_aa10aff3767b92c7feed52895e3a27b38}{
+bool {\bfseries object\_\-chosen}}
+\label{class_c_player_aa10aff3767b92c7feed52895e3a27b38}
+
+\item 
+\hypertarget{class_c_player_a14cdc686726c4894362e14cd6ac620bd}{
+unsigned char {\bfseries dpadcount}}
+\label{class_c_player_a14cdc686726c4894362e14cd6ac620bd}
+
+\item 
+\hypertarget{class_c_player_a144a7146d7102bc149ac5ad29cfa248c}{
+unsigned char {\bfseries dpadlastcount}}
+\label{class_c_player_a144a7146d7102bc149ac5ad29cfa248c}
+
+\item 
+\hypertarget{class_c_player_abc791dd3180c2171207248b140091227}{
+unsigned int {\bfseries ankhtime}}
+\label{class_c_player_abc791dd3180c2171207248b140091227}
+
+\item 
+\hypertarget{class_c_player_ab132ce210bc374a4aaddfb22fa195e48}{
+\hyperlink{class_c_object}{CObject} {\bfseries m\_\-Ankhshield}}
+\label{class_c_player_ab132ce210bc374a4aaddfb22fa195e48}
+
+\item 
+\hypertarget{class_c_player_afaa7a04721eb95311523057f77c24cb5}{
+\hyperlink{structst_inventory}{stInventory} {\bfseries inventory}}
+\label{class_c_player_afaa7a04721eb95311523057f77c24cb5}
+
+\item 
+\hypertarget{class_c_player_a4a373cbac38a86f792accb9aee87c553}{
+bool {\bfseries m\_\-cheats\_\-enabled}}
+\label{class_c_player_a4a373cbac38a86f792accb9aee87c553}
+
+\item 
+\hypertarget{class_c_player_a140a68c14223c515b4867032ce1e8cde}{
+bool $\ast$ {\bfseries mp\_\-levels\_\-completed}}
+\label{class_c_player_a140a68c14223c515b4867032ce1e8cde}
+
+\item 
+\hypertarget{class_c_player_ac6f66c7e983b51e49e1c4e22a08448d1}{
+bool {\bfseries m\_\-showStatusScreen}}
+\label{class_c_player_ac6f66c7e983b51e49e1c4e22a08448d1}
+
+\item 
+\hypertarget{class_c_player_ae614e17611409f52aabde71402031881}{
+char {\bfseries level\_\-done}}
+\label{class_c_player_ae614e17611409f52aabde71402031881}
+
+\item 
+\hypertarget{class_c_player_aae6bcf8a9d9dcb3c3433d45f602f8839}{
+bool {\bfseries beingteleported}}
+\label{class_c_player_aae6bcf8a9d9dcb3c3433d45f602f8839}
+
+\item 
+\hypertarget{class_c_player_a6c15a6ec7be4bde1b65b23fc5bd8d607}{
+std::string {\bfseries hintstring}}
+\label{class_c_player_a6c15a6ec7be4bde1b65b23fc5bd8d607}
+
+\item 
+\hypertarget{class_c_player_a88b548e14dd22774963f6206aec1dadf}{
+bool {\bfseries hintused}}
+\label{class_c_player_a88b548e14dd22774963f6206aec1dadf}
+
+\item 
+\hypertarget{class_c_player_a640d55cddc3c45d791b8c8597a193f27}{
+\hyperlink{class_c_map}{CMap} $\ast$ {\bfseries mp\_\-map}}
+\label{class_c_player_a640d55cddc3c45d791b8c8597a193f27}
+
+\item 
+\hypertarget{class_c_player_a686a7cdb50db87be9ee4e6d350684a9f}{
+\hyperlink{structst_option}{stOption} $\ast$ {\bfseries mp\_\-option}}
+\label{class_c_player_a686a7cdb50db87be9ee4e6d350684a9f}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gerstrong/projects/CommanderGenius/src/common/CPlayer.h\item 
+/home/gerstrong/projects/CommanderGenius/src/common/CPlayer.cpp\item 
+/home/gerstrong/projects/CommanderGenius/src/common/CPlayerItems.cpp\item 
+/home/gerstrong/projects/CommanderGenius/src/common/CPlayerLevel.cpp\item 
+/home/gerstrong/projects/CommanderGenius/src/common/CPlayerWM.cpp\end{DoxyCompactItemize}

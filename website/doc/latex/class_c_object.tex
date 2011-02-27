@@ -1,0 +1,412 @@
+\hypertarget{class_c_object}{
+\section{CObject Class Reference}
+\label{class_c_object}\index{CObject@{CObject}}
+}
+Inheritance diagram for CObject:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2cm]{class_c_object}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+union \hyperlink{union_c_object_1_1ai}{ai}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_object_a15f0090059dd92fa00912c9ac8892e9d}{
+{\bfseries CObject} (\hyperlink{class_c_map}{CMap} $\ast$pmap=NULL, int index=0)}
+\label{class_c_object_a15f0090059dd92fa00912c9ac8892e9d}
+
+\item 
+\hypertarget{class_c_object_a10eb6357b1f315b1a0c5977a236e40ba}{
+void {\bfseries setupObjectType} (int Episode)}
+\label{class_c_object_a10eb6357b1f315b1a0c5977a236e40ba}
+
+\item 
+\hypertarget{class_c_object_a2a6253d87797af86a998b154cca26f61}{
+void {\bfseries checkinitialCollisions} ()}
+\label{class_c_object_a2a6253d87797af86a998b154cca26f61}
+
+\item 
+\hypertarget{class_c_object_a6bd60b74aaf22bc4edb3d1c6f8f0cb83}{
+void {\bfseries setScrPos} (int px, int py)}
+\label{class_c_object_a6bd60b74aaf22bc4edb3d1c6f8f0cb83}
+
+\item 
+\hypertarget{class_c_object_a0f21eb205cafa8da9d5c5e31f5687835}{
+bool {\bfseries calcVisibility} (int player\_\-x, int player\_\-y)}
+\label{class_c_object_a0f21eb205cafa8da9d5c5e31f5687835}
+
+\item 
+\hypertarget{class_c_object_af308a9aa2dea8af7dbd91e67522902eb}{
+bool {\bfseries spawn} (int x0, int y0, int otype, int Episode, direction\_\-t dirof=RIGHT)}
+\label{class_c_object_af308a9aa2dea8af7dbd91e67522902eb}
+
+\item 
+\hypertarget{class_c_object_abdcf59fded95298dd7f26d305041f22c}{
+void {\bfseries setIndex} (int index)}
+\label{class_c_object_abdcf59fded95298dd7f26d305041f22c}
+
+\item 
+\hypertarget{class_c_object_ab8de9b925dc8fcee77acff072b179025}{
+void {\bfseries moveToForce} (int new\_\-x, int new\_\-y)}
+\label{class_c_object_ab8de9b925dc8fcee77acff072b179025}
+
+\item 
+\hypertarget{class_c_object_af0ccb726d662fa48961414cd033d0ab9}{
+void {\bfseries moveTo} (int x, int y)}
+\label{class_c_object_af0ccb726d662fa48961414cd033d0ab9}
+
+\item 
+\hypertarget{class_c_object_a3478f733c17527d21d111a8599c46e81}{
+void {\bfseries moveXDir} (int amount, bool force=false)}
+\label{class_c_object_a3478f733c17527d21d111a8599c46e81}
+
+\item 
+\hypertarget{class_c_object_afba8c879743f3e5cb702039c7ac53795}{
+void {\bfseries moveYDir} (int amount)}
+\label{class_c_object_afba8c879743f3e5cb702039c7ac53795}
+
+\item 
+\hypertarget{class_c_object_ab0e5f5e228db363e4a6b2d34e1e98e30}{
+void {\bfseries moveLeft} (int amount, bool force=false)}
+\label{class_c_object_ab0e5f5e228db363e4a6b2d34e1e98e30}
+
+\item 
+\hypertarget{class_c_object_a26345c0b5906e18897f875c5723d258d}{
+void {\bfseries moveRight} (int amount, bool force=false)}
+\label{class_c_object_a26345c0b5906e18897f875c5723d258d}
+
+\item 
+\hypertarget{class_c_object_ad48c611da8ece5ff2d6139eb18a0f524}{
+void {\bfseries moveUp} (int amount)}
+\label{class_c_object_ad48c611da8ece5ff2d6139eb18a0f524}
+
+\item 
+\hypertarget{class_c_object_a2d65f7141c0e1375f599fac8e5ce6a64}{
+void {\bfseries moveDown} (int amount)}
+\label{class_c_object_a2d65f7141c0e1375f599fac8e5ce6a64}
+
+\item 
+\hypertarget{class_c_object_a8ef336dab6432a614615b2c0023a3d0f}{
+void {\bfseries decreaseXInertia} (int value)}
+\label{class_c_object_a8ef336dab6432a614615b2c0023a3d0f}
+
+\item 
+\hypertarget{class_c_object_acf6f3841b93b218c02a981386a92d08a}{
+virtual void {\bfseries process} ()}
+\label{class_c_object_acf6f3841b93b218c02a981386a92d08a}
+
+\item 
+\hypertarget{class_c_object_a84a03c359cc72b09f4733c91887abd1c}{
+bool {\bfseries hitdetect} (\hyperlink{class_c_object}{CObject} \&hitobject)}
+\label{class_c_object_a84a03c359cc72b09f4733c91887abd1c}
+
+\item 
+\hypertarget{class_c_object_ab4383599072fcc856b7c7685a6f58221}{
+void {\bfseries kill} ()}
+\label{class_c_object_ab4383599072fcc856b7c7685a6f58221}
+
+\item 
+\hypertarget{class_c_object_a53a229d7fb40f446605e18bc8c6c891f}{
+bool {\bfseries checkSolidR} (int x2, int y1, int y2)}
+\label{class_c_object_a53a229d7fb40f446605e18bc8c6c891f}
+
+\item 
+\hypertarget{class_c_object_adb606f665759d229411b317bea7fbea5}{
+bool {\bfseries checkSolidL} (int x1, int y1, int y2)}
+\label{class_c_object_adb606f665759d229411b317bea7fbea5}
+
+\item 
+\hypertarget{class_c_object_af1a25cf3a28e715155288b99bf913b49}{
+bool {\bfseries checkSolidU} (int x1, int x2, int y1)}
+\label{class_c_object_af1a25cf3a28e715155288b99bf913b49}
+
+\item 
+\hypertarget{class_c_object_a0876adaf3d6773ca8c4bc2128c9eea0c}{
+bool {\bfseries checkSolidD} (int x1, int x2, int y2)}
+\label{class_c_object_a0876adaf3d6773ca8c4bc2128c9eea0c}
+
+\item 
+\hypertarget{class_c_object_a3e912da62271e8adb5f5fb02ceeadcad}{
+unsigned int {\bfseries getXPosition} ()}
+\label{class_c_object_a3e912da62271e8adb5f5fb02ceeadcad}
+
+\item 
+\hypertarget{class_c_object_aa3b577b26e2eb1af8dd0d4b34daadcc0}{
+unsigned int {\bfseries getYPosition} ()}
+\label{class_c_object_aa3b577b26e2eb1af8dd0d4b34daadcc0}
+
+\item 
+\hypertarget{class_c_object_a9ea81634a2d857f1b5c67ac20ff11f84}{
+unsigned int {\bfseries getXLeftPos} ()}
+\label{class_c_object_a9ea81634a2d857f1b5c67ac20ff11f84}
+
+\item 
+\hypertarget{class_c_object_aec3bf08b20eb23ff24c32dba204b2c14}{
+unsigned int {\bfseries getXRightPos} ()}
+\label{class_c_object_aec3bf08b20eb23ff24c32dba204b2c14}
+
+\item 
+\hypertarget{class_c_object_a220623a5c6fc95f9b521354626fd103b}{
+unsigned int {\bfseries getXMidPos} ()}
+\label{class_c_object_a220623a5c6fc95f9b521354626fd103b}
+
+\item 
+\hypertarget{class_c_object_a6f87d58e8b79fc1fabae98d37704b9ef}{
+unsigned int {\bfseries getYUpPos} ()}
+\label{class_c_object_a6f87d58e8b79fc1fabae98d37704b9ef}
+
+\item 
+\hypertarget{class_c_object_a85924a8b318cf450228dea2df9b0faea}{
+unsigned int {\bfseries getYDownPos} ()}
+\label{class_c_object_a85924a8b318cf450228dea2df9b0faea}
+
+\item 
+\hypertarget{class_c_object_a5c319955a22f1cc9d2b07df7e5c5b279}{
+unsigned int {\bfseries getYMidPos} ()}
+\label{class_c_object_a5c319955a22f1cc9d2b07df7e5c5b279}
+
+\item 
+\hypertarget{class_c_object_a7731ccfa9a7b19a23a16d318eddcb524}{
+void {\bfseries processFalling} ()}
+\label{class_c_object_a7731ccfa9a7b19a23a16d318eddcb524}
+
+\item 
+\hypertarget{class_c_object_ada3a757db19644b3df85fbdf04b899fb}{
+void {\bfseries draw} ()}
+\label{class_c_object_ada3a757db19644b3df85fbdf04b899fb}
+
+\item 
+\hypertarget{class_c_object_a97105dde922077fd9dd0b6b046f3fbc1}{
+void {\bfseries drawMask} (SDL\_\-Surface $\ast$dst, \hyperlink{class_c_sprite}{CSprite} \&Sprite, int mx, int my)}
+\label{class_c_object_a97105dde922077fd9dd0b6b046f3fbc1}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_object_a46c46e3a846640a71674926989f72fa6}{
+unsigned int {\bfseries m\_\-type}}
+\label{class_c_object_a46c46e3a846640a71674926989f72fa6}
+
+\item 
+\hypertarget{class_c_object_a99dbb57e0c5491a4cd7cbcd7804d7a4d}{
+unsigned int {\bfseries m\_\-index}}
+\label{class_c_object_a99dbb57e0c5491a4cd7cbcd7804d7a4d}
+
+\item 
+\hypertarget{class_c_object_a2265fd3307ba880ecc0af1ddc9c77e08}{
+bool {\bfseries exists}}
+\label{class_c_object_a2265fd3307ba880ecc0af1ddc9c77e08}
+
+\item 
+\hypertarget{class_c_object_a9db8034c6e6199da599a18e3e28eca8d}{
+bool {\bfseries onscreen}}
+\label{class_c_object_a9db8034c6e6199da599a18e3e28eca8d}
+
+\item 
+\hypertarget{class_c_object_a26c7ed64f890f44ca8b77b49c88d8618}{
+bool {\bfseries hasbeenonscreen}}
+\label{class_c_object_a26c7ed64f890f44ca8b77b49c88d8618}
+
+\item 
+\hypertarget{class_c_object_ab41035e6fdfea0e59d7da0c9cb08b3d5}{
+unsigned int {\bfseries sprite}}
+\label{class_c_object_ab41035e6fdfea0e59d7da0c9cb08b3d5}
+
+\item 
+\hypertarget{class_c_object_a26909e4b82be0d3f27d9d74c5f452113}{
+int {\bfseries scrx}}
+\label{class_c_object_a26909e4b82be0d3f27d9d74c5f452113}
+
+\item 
+\hypertarget{class_c_object_af8c293c5135df5ac78d30f514d174326}{
+int {\bfseries scry}}
+\label{class_c_object_af8c293c5135df5ac78d30f514d174326}
+
+\item 
+\hypertarget{class_c_object_a3db3929b1e5917e57206498f0eba6bfc}{
+Uint32 {\bfseries bboxX1}}
+\label{class_c_object_a3db3929b1e5917e57206498f0eba6bfc}
+
+\item 
+\hypertarget{class_c_object_a261838405d965940f69ba5fbf3e3d55a}{
+Uint32 {\bfseries bboxX2}}
+\label{class_c_object_a261838405d965940f69ba5fbf3e3d55a}
+
+\item 
+\hypertarget{class_c_object_af87770186f10af5a14480df3fb3db551}{
+Uint32 {\bfseries bboxY1}}
+\label{class_c_object_af87770186f10af5a14480df3fb3db551}
+
+\item 
+\hypertarget{class_c_object_a7d50f6143718688e5ab6d7620aab1e3b}{
+Uint32 {\bfseries bboxY2}}
+\label{class_c_object_a7d50f6143718688e5ab6d7620aab1e3b}
+
+\item 
+\hypertarget{class_c_object_a54c3c6cb1a4d82a73bd4e1303d4e5e64}{
+int {\bfseries AssociatedWithPlayer}}
+\label{class_c_object_a54c3c6cb1a4d82a73bd4e1303d4e5e64}
+
+\item 
+\hypertarget{class_c_object_a7ad6d1722db96b5f6e7143ec4c90fb37}{
+bool {\bfseries honorPriority}}
+\label{class_c_object_a7ad6d1722db96b5f6e7143ec4c90fb37}
+
+\item 
+\hypertarget{class_c_object_aedaca80d3a4520c90c55d599aa424a99}{
+bool {\bfseries solid}}
+\label{class_c_object_aedaca80d3a4520c90c55d599aa424a99}
+
+\item 
+\hypertarget{class_c_object_a5907744c3e4e010bfc8a60fe10bbc147}{
+bool {\bfseries canbezapped}}
+\label{class_c_object_a5907744c3e4e010bfc8a60fe10bbc147}
+
+\item 
+\hypertarget{class_c_object_a96420cb6cd8716d17851be6838de3f76}{
+int {\bfseries zapped}}
+\label{class_c_object_a96420cb6cd8716d17851be6838de3f76}
+
+\item 
+\hypertarget{class_c_object_ae21176ca5e5840507e6b2d752d11c0d5}{
+int {\bfseries zapx}}
+\label{class_c_object_ae21176ca5e5840507e6b2d752d11c0d5}
+
+\item 
+\hypertarget{class_c_object_aa2e67566b63f9df3c9d47a55624d407d}{
+int {\bfseries zapy}}
+\label{class_c_object_aa2e67566b63f9df3c9d47a55624d407d}
+
+\item 
+\hypertarget{class_c_object_a73a56ca617260a6b4e1356fc44eb800a}{
+int {\bfseries zapd}}
+\label{class_c_object_a73a56ca617260a6b4e1356fc44eb800a}
+
+\item 
+\hypertarget{class_c_object_a963ba0d1a6f7129ef494c491c85d6a21}{
+char {\bfseries zappedbyenemy}}
+\label{class_c_object_a963ba0d1a6f7129ef494c491c85d6a21}
+
+\item 
+\hypertarget{class_c_object_a5cf73fd87b749d2e179cb9569ba1644b}{
+bool {\bfseries inhibitfall}}
+\label{class_c_object_a5cf73fd87b749d2e179cb9569ba1644b}
+
+\item 
+\hypertarget{class_c_object_add99e4999dd8a5092b32b1d0cd8cb745}{
+bool {\bfseries bumped}}
+\label{class_c_object_add99e4999dd8a5092b32b1d0cd8cb745}
+
+\item 
+\hypertarget{class_c_object_a71516ce5c6874ae2a544ed5db0e8a4af}{
+bool {\bfseries cansupportplayer}}
+\label{class_c_object_a71516ce5c6874ae2a544ed5db0e8a4af}
+
+\item 
+\hypertarget{class_c_object_a9d7a8e98d2bd4e30739ca891f911df2d}{
+std::vector$<$ \hyperlink{class_c_object}{CObject} $>$ $\ast$ {\bfseries mp\_\-object}}
+\label{class_c_object_a9d7a8e98d2bd4e30739ca891f911df2d}
+
+\item 
+\hypertarget{class_c_object_a209a56c334686ea06483bc273265d6b0}{
+bool {\bfseries blockedl}}
+\label{class_c_object_a209a56c334686ea06483bc273265d6b0}
+
+\item 
+\hypertarget{class_c_object_a58ab54154ef2be948f46bd6805a89342}{
+bool {\bfseries blockedr}}
+\label{class_c_object_a58ab54154ef2be948f46bd6805a89342}
+
+\item 
+\hypertarget{class_c_object_a7e58dd5e2cf000b7a9b8243e7ef29198}{
+bool {\bfseries blockedu}}
+\label{class_c_object_a7e58dd5e2cf000b7a9b8243e7ef29198}
+
+\item 
+\hypertarget{class_c_object_aabe99422e580c20ea1d3efb462b1a081}{
+bool {\bfseries blockedd}}
+\label{class_c_object_aabe99422e580c20ea1d3efb462b1a081}
+
+\item 
+\hypertarget{class_c_object_a313b683341a0d1872e0f7cba17a0d94b}{
+signed int {\bfseries xinertia}}
+\label{class_c_object_a313b683341a0d1872e0f7cba17a0d94b}
+
+\item 
+\hypertarget{class_c_object_a6cdd9527d2199e2f77dfaea36984b5c6}{
+signed int {\bfseries yinertia}}
+\label{class_c_object_a6cdd9527d2199e2f77dfaea36984b5c6}
+
+\item 
+\hypertarget{class_c_object_afe19e18d99788809a9f7b6a5d084ba56}{
+unsigned char {\bfseries xinertiatimer}}
+\label{class_c_object_afe19e18d99788809a9f7b6a5d084ba56}
+
+\item 
+\hypertarget{class_c_object_ac468c47bd83a6b20c8c5419a8eff7266}{
+unsigned int {\bfseries psupportingobject}}
+\label{class_c_object_ac468c47bd83a6b20c8c5419a8eff7266}
+
+\item 
+\hypertarget{class_c_object_a1cb90cf351c0c94b383d0eac69300bb8}{
+unsigned int {\bfseries lastsupportingobject}}
+\label{class_c_object_a1cb90cf351c0c94b383d0eac69300bb8}
+
+\item 
+\hypertarget{class_c_object_ad853de77663b9dabe9746f54b29e3e99}{
+bool {\bfseries supportedbyobject}}
+\label{class_c_object_ad853de77663b9dabe9746f54b29e3e99}
+
+\item 
+\hypertarget{class_c_object_ada4337bd235f886a2750a42e8a3d23e3}{
+unsigned char {\bfseries touchPlayer}}
+\label{class_c_object_ada4337bd235f886a2750a42e8a3d23e3}
+
+\item 
+\hypertarget{class_c_object_a2c659f241e2c25a5dc8380a34e9bf077}{
+unsigned char {\bfseries touchedBy}}
+\label{class_c_object_a2c659f241e2c25a5dc8380a34e9bf077}
+
+\item 
+\hypertarget{class_c_object_a724963c226ced413249d0bc1f911a117}{
+unsigned char {\bfseries hity}}
+\label{class_c_object_a724963c226ced413249d0bc1f911a117}
+
+\item 
+\hypertarget{class_c_object_a4aa1a1c350c14a8cc1d8b7f844a1a33f}{
+bool {\bfseries needinit}}
+\label{class_c_object_a4aa1a1c350c14a8cc1d8b7f844a1a33f}
+
+\item 
+\hypertarget{class_c_object_ac3af9e59095d1bfd0be1c28a3193052c}{
+bool {\bfseries dead}}
+\label{class_c_object_ac3af9e59095d1bfd0be1c28a3193052c}
+
+\item 
+\hypertarget{class_c_object_a4c1bbd84232d380c1320ea1c0995d64b}{
+union \hyperlink{union_c_object_1_1ai}{CObject::ai} {\bfseries ai}}
+\label{class_c_object_a4c1bbd84232d380c1320ea1c0995d64b}
+
+\item 
+\hypertarget{class_c_object_ad9e2f1fb1c2f791a89f4b908e99de89f}{
+unsigned int {\bfseries x}}
+\label{class_c_object_ad9e2f1fb1c2f791a89f4b908e99de89f}
+
+\item 
+\hypertarget{class_c_object_a115e0dbc3a44b48295dd803badace73b}{
+unsigned int {\bfseries y}}
+\label{class_c_object_a115e0dbc3a44b48295dd803badace73b}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gerstrong/projects/CommanderGenius/src/common/CObject.h\item 
+/home/gerstrong/projects/CommanderGenius/src/common/CObject.cpp\end{DoxyCompactItemize}

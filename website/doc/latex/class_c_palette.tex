@@ -1,0 +1,111 @@
+\hypertarget{class_c_palette}{
+\section{CPalette Class Reference}
+\label{class_c_palette}\index{CPalette@{CPalette}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_palette_a4777b4fc68d29ffaf1ddf8f9aeeabc4e}{
+void {\bfseries fadeto} (Uint8 alpha, Uint8 fadespeed)}
+\label{class_c_palette_a4777b4fc68d29ffaf1ddf8f9aeeabc4e}
+
+\item 
+\hypertarget{class_c_palette_a986860f447d35cdd2bfb087e99c40e1b}{
+void {\bfseries applyFade} ()}
+\label{class_c_palette_a986860f447d35cdd2bfb087e99c40e1b}
+
+\item 
+\hypertarget{class_c_palette_af641f129799f59867796649775d0731b}{
+void {\bfseries setupColorPalettes} ()}
+\label{class_c_palette_af641f129799f59867796649775d0731b}
+
+\item 
+\hypertarget{class_c_palette_aa48934dcfc7e3609109c596fa487387b}{
+void {\bfseries setPaletteColour} (Uint8 c, Uint8 r, Uint8 g, Uint8 b)}
+\label{class_c_palette_aa48934dcfc7e3609109c596fa487387b}
+
+\item 
+\hypertarget{class_c_palette_aebf8fe9e0d1b6097cedf7f9604cbf7b7}{
+void {\bfseries setFXSurface} (SDL\_\-Surface $\ast$fxsurface)}
+\label{class_c_palette_aebf8fe9e0d1b6097cedf7f9604cbf7b7}
+
+\item 
+\hypertarget{class_c_palette_a3019dfec6002bdc9fc999cd71161a0b1}{
+void {\bfseries setFadeColour} (Uint32 colour)}
+\label{class_c_palette_a3019dfec6002bdc9fc999cd71161a0b1}
+
+\item 
+\hypertarget{class_c_palette_a9dfc0d124c1950b79d4bcdf0590360e4}{
+void {\bfseries setdark} (bool dark)}
+\label{class_c_palette_a9dfc0d124c1950b79d4bcdf0590360e4}
+
+\item 
+\hypertarget{class_c_palette_abcc68358a6fa829029e789ad75ee5234}{
+void {\bfseries setdarkness} (Uint8 darkness)}
+\label{class_c_palette_abcc68358a6fa829029e789ad75ee5234}
+
+\item 
+\hypertarget{class_c_palette_a66da092ee92f36e72a01c56ef7a91243}{
+char {\bfseries addcolor} (unsigned char r, unsigned char g, unsigned char b)}
+\label{class_c_palette_a66da092ee92f36e72a01c56ef7a91243}
+
+\item 
+\hypertarget{class_c_palette_a3cc05dfe6dad87b7faa50ef8dccfb0fa}{
+int {\bfseries getcolor} (unsigned char r, unsigned char g, unsigned char b)}
+\label{class_c_palette_a3cc05dfe6dad87b7faa50ef8dccfb0fa}
+
+\item 
+\hypertarget{class_c_palette_a1c7628de24124f5641e53d3b0aa63e31}{
+bool {\bfseries in\_\-progress} (void)}
+\label{class_c_palette_a1c7628de24124f5641e53d3b0aa63e31}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_palette_a20d9361c4a6174b06a5a3d97ed5b6196}{
+SDL\_\-Color {\bfseries m\_\-Palette} \mbox{[}256\mbox{]}}
+\label{class_c_palette_a20d9361c4a6174b06a5a3d97ed5b6196}
+
+\item 
+\hypertarget{class_c_palette_a2d5a98bfed4b671501b4dde2f52798d6}{
+Uint8 {\bfseries m\_\-alpha}}
+\label{class_c_palette_a2d5a98bfed4b671501b4dde2f52798d6}
+
+\item 
+\hypertarget{class_c_palette_acbae0caa161a97255fa5f8ec77bb3e21}{
+Uint8 {\bfseries m\_\-numcolors}}
+\label{class_c_palette_acbae0caa161a97255fa5f8ec77bb3e21}
+
+\item 
+\hypertarget{class_c_palette_a5b3f13cb969ec5b05ffca28ae3b43a0b}{
+Uint8 {\bfseries m\_\-fadespeed}}
+\label{class_c_palette_a5b3f13cb969ec5b05ffca28ae3b43a0b}
+
+\item 
+\hypertarget{class_c_palette_abdeffeb65d69aabaa6da7dd3a430d699}{
+Uint8 {\bfseries m\_\-darkness}}
+\label{class_c_palette_abdeffeb65d69aabaa6da7dd3a430d699}
+
+\item 
+\hypertarget{class_c_palette_ab79904dc3554e0884b1d32b1a124e2b2}{
+SDL\_\-Surface $\ast$ {\bfseries m\_\-fxsurface}}
+\label{class_c_palette_ab79904dc3554e0884b1d32b1a124e2b2}
+
+\item 
+\hypertarget{class_c_palette_a576b055b248db90c7e57a7ecc443adb2}{
+bool {\bfseries m\_\-fade\_\-in\_\-progess}}
+\label{class_c_palette_a576b055b248db90c7e57a7ecc443adb2}
+
+\item 
+\hypertarget{class_c_palette_a5ed8a91d045c934e40fadc9f4af0fd3e}{
+bool {\bfseries m\_\-dark}}
+\label{class_c_palette_a5ed8a91d045c934e40fadc9f4af0fd3e}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gerstrong/projects/CommanderGenius/src/graphics/CPalette.h\item 
+/home/gerstrong/projects/CommanderGenius/src/graphics/CPalette.cpp\end{DoxyCompactItemize}

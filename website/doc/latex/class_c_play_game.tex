@@ -1,0 +1,196 @@
+\hypertarget{class_c_play_game}{
+\section{CPlayGame Class Reference}
+\label{class_c_play_game}\index{CPlayGame@{CPlayGame}}
+}
+Inheritance diagram for CPlayGame:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2cm]{class_c_play_game}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_play_game_a1f1c29018a8ac5a9a2def9c1b1bf9d90}{
+{\bfseries CPlayGame} (\hyperlink{class_c_exe_file}{CExeFile} \&ExeFile, char level, char numplayers, char difficulty, \hyperlink{structst_option}{stOption} $\ast$p\_\-option)}
+\label{class_c_play_game_a1f1c29018a8ac5a9a2def9c1b1bf9d90}
+
+\item 
+\hypertarget{class_c_play_game_a9fa74295f4edc3a23016a17803f1a85f}{
+virtual bool {\bfseries loadGameState} ()=0}
+\label{class_c_play_game_a9fa74295f4edc3a23016a17803f1a85f}
+
+\item 
+\hypertarget{class_c_play_game_a6a8c425d3740c304cb434081ac5a25dc}{
+virtual void {\bfseries process} ()=0}
+\label{class_c_play_game_a6a8c425d3740c304cb434081ac5a25dc}
+
+\item 
+\hypertarget{class_c_play_game_a347324229b036265215fe4e8e8cba45d}{
+virtual bool {\bfseries init} ()=0}
+\label{class_c_play_game_a347324229b036265215fe4e8e8cba45d}
+
+\item 
+\hypertarget{class_c_play_game_a5804d7fa9f495227f6df68cc146bdeb3}{
+virtual void {\bfseries cleanup} ()=0}
+\label{class_c_play_game_a5804d7fa9f495227f6df68cc146bdeb3}
+
+\item 
+\hypertarget{class_c_play_game_a411b6a3fe11ed2d9b36b28415f2cd69f}{
+bool {\bfseries isFinished} ()}
+\label{class_c_play_game_a411b6a3fe11ed2d9b36b28415f2cd69f}
+
+\item 
+\hypertarget{class_c_play_game_a2a0e5174301a8d2cac27b9db757c8222}{
+bool {\bfseries getEndGame} ()}
+\label{class_c_play_game_a2a0e5174301a8d2cac27b9db757c8222}
+
+\item 
+\hypertarget{class_c_play_game_aa061193d44d3ae7ce27207227938df71}{
+bool {\bfseries getStartGame} ()}
+\label{class_c_play_game_aa061193d44d3ae7ce27207227938df71}
+
+\item 
+\hypertarget{class_c_play_game_adbab13480eab77f8b35202c5a91a544b}{
+bool {\bfseries getExitEvent} ()}
+\label{class_c_play_game_adbab13480eab77f8b35202c5a91a544b}
+
+\item 
+\hypertarget{class_c_play_game_a5588fd88f3cca59578997a56971bd5a2}{
+char {\bfseries getEpisode} ()}
+\label{class_c_play_game_a5588fd88f3cca59578997a56971bd5a2}
+
+\item 
+\hypertarget{class_c_play_game_a65a73f42cc82ff801ce88a2078619459}{
+char {\bfseries getNumPlayers} ()}
+\label{class_c_play_game_a65a73f42cc82ff801ce88a2078619459}
+
+\item 
+\hypertarget{class_c_play_game_a1ffeee9b3a6b9b6f3afaf1a239e2e544}{
+char {\bfseries getDifficulty} ()}
+\label{class_c_play_game_a1ffeee9b3a6b9b6f3afaf1a239e2e544}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \{ {\bfseries NONE}, 
+{\bfseries GOTO\_\-WORLD\_\-MAP}, 
+{\bfseries START\_\-LEVEL}, 
+{\bfseries GOTO\_\-FINALE}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_play_game_af62054c40937d41cd7ca5fd4b216d713}{
+char {\bfseries m\_\-NumPlayers}}
+\label{class_c_play_game_af62054c40937d41cd7ca5fd4b216d713}
+
+\item 
+\hypertarget{class_c_play_game_af93f0edb0df59ffdb783d941b34fe7e4}{
+bool {\bfseries m\_\-endgame}}
+\label{class_c_play_game_af93f0edb0df59ffdb783d941b34fe7e4}
+
+\item 
+\hypertarget{class_c_play_game_a0cc795965d43afc9dcdce97129eb5e9c}{
+\hyperlink{class_c_exe_file}{CExeFile} \& {\bfseries m\_\-ExeFile}}
+\label{class_c_play_game_a0cc795965d43afc9dcdce97129eb5e9c}
+
+\item 
+\hypertarget{class_c_play_game_a12970651bf91247a5f251376404351ca}{
+char {\bfseries m\_\-Episode}}
+\label{class_c_play_game_a12970651bf91247a5f251376404351ca}
+
+\item 
+\hypertarget{class_c_play_game_ab7a2148bf5264a428151d31881849aef}{
+short {\bfseries m\_\-Level}}
+\label{class_c_play_game_ab7a2148bf5264a428151d31881849aef}
+
+\item 
+\hypertarget{class_c_play_game_ac3869c5537eafa5de6e4e4ce78144adf}{
+bool {\bfseries m\_\-startgame}}
+\label{class_c_play_game_ac3869c5537eafa5de6e4e4ce78144adf}
+
+\item 
+\hypertarget{class_c_play_game_a0f1024fe6fcee7ef734f5e35057a6ec2}{
+bool {\bfseries m\_\-exitgame}}
+\label{class_c_play_game_a0f1024fe6fcee7ef734f5e35057a6ec2}
+
+\item 
+\hypertarget{class_c_play_game_a0491f05398333af04ca4324d224e6d43}{
+char {\bfseries m\_\-Difficulty}}
+\label{class_c_play_game_a0491f05398333af04ca4324d224e6d43}
+
+\item 
+\hypertarget{class_c_play_game_aca6294627653deef3cdbceec5a9cf0ed}{
+Uint32 {\bfseries m\_\-NumSprites}}
+\label{class_c_play_game_aca6294627653deef3cdbceec5a9cf0ed}
+
+\item 
+\hypertarget{class_c_play_game_ae9de98e62478d1136f27c1980257aa16}{
+enum CPlayGame:: \{ ... \}  {\bfseries m\_\-level\_\-command}}
+\label{class_c_play_game_ae9de98e62478d1136f27c1980257aa16}
+
+\item 
+\hypertarget{class_c_play_game_ad67032692ee7a7352be712aec07e5d63}{
+bool {\bfseries m\_\-paused}}
+\label{class_c_play_game_ad67032692ee7a7352be712aec07e5d63}
+
+\item 
+\hypertarget{class_c_play_game_a577e4896e07367f0c0e71561f7a8ba09}{
+bool {\bfseries m\_\-gameover}}
+\label{class_c_play_game_a577e4896e07367f0c0e71561f7a8ba09}
+
+\item 
+\hypertarget{class_c_play_game_ac096d06c6dcde1966094ad221d751443}{
+bool {\bfseries m\_\-alldead}}
+\label{class_c_play_game_ac096d06c6dcde1966094ad221d751443}
+
+\item 
+\hypertarget{class_c_play_game_a999fb76004f04e34da058df5aab18a28}{
+bool {\bfseries m\_\-showPauseDialog}}
+\label{class_c_play_game_a999fb76004f04e34da058df5aab18a28}
+
+\item 
+\hypertarget{class_c_play_game_a32f2950c1f92ed11438070c77d24c33e}{
+bool {\bfseries m\_\-hideobjects}}
+\label{class_c_play_game_a32f2950c1f92ed11438070c77d24c33e}
+
+\item 
+\hypertarget{class_c_play_game_a95bbdfea178eccbe626fede9049ce397}{
+std::string {\bfseries m\_\-Gamepath}}
+\label{class_c_play_game_a95bbdfea178eccbe626fede9049ce397}
+
+\item 
+\hypertarget{class_c_play_game_acd559b42768809bd92ce84e50bac25e9}{
+int {\bfseries m\_\-checkpoint\_\-x}}
+\label{class_c_play_game_acd559b42768809bd92ce84e50bac25e9}
+
+\item 
+\hypertarget{class_c_play_game_a70c9c0d61aec3890927f9184f35a37f6}{
+int {\bfseries m\_\-checkpoint\_\-y}}
+\label{class_c_play_game_a70c9c0d61aec3890927f9184f35a37f6}
+
+\item 
+\hypertarget{class_c_play_game_a8d2086d85b2cb045a76d65ecea8dee9f}{
+bool {\bfseries m\_\-checkpointset}}
+\label{class_c_play_game_a8d2086d85b2cb045a76d65ecea8dee9f}
+
+\item 
+\hypertarget{class_c_play_game_a35895e10b42e8de9e3a4917d4b952c7f}{
+bool {\bfseries m\_\-restartVideo}}
+\label{class_c_play_game_a35895e10b42e8de9e3a4917d4b952c7f}
+
+\item 
+\hypertarget{class_c_play_game_a4749e2bc0a3dcfeb4ff2431dd34b3e94}{
+\hyperlink{structst_option}{stOption} $\ast$ {\bfseries mp\_\-option}}
+\label{class_c_play_game_a4749e2bc0a3dcfeb4ff2431dd34b3e94}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gerstrong/projects/CommanderGenius/src/engine/playgame/CPlayGame.h\item 
+/home/gerstrong/projects/CommanderGenius/src/engine/playgame/CPlayGame.cpp\end{DoxyCompactItemize}

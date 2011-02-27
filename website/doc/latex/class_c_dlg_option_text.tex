@@ -1,0 +1,79 @@
+\hypertarget{class_c_dlg_option_text}{
+\section{CDlgOptionText Class Reference}
+\label{class_c_dlg_option_text}\index{CDlgOptionText@{CDlgOptionText}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_c_dlg_option_text_a6aa84e8218734348752d23b0d75a9da4}{CDlgOptionText} (const std::string \&text, unsigned int delimit, Uint8 fontmapID=0)
+\begin{DoxyCompactList}\small\item\em Constructor of the class. It represents a text which can be selected in the menu. As it is an option text, it is there all the time, it can be selected, truncated, and even have another fontmap, like the extra tile ones which can be assigned at any time. Those are used for the sliders as an example... \item\end{DoxyCompactList}\item 
+void \hyperlink{class_c_dlg_option_text_aaa35c07e33b5555aa99b1d24ef9bb629}{setText} (const std::string \&text, unsigned int delimit)
+\begin{DoxyCompactList}\small\item\em technically it does the same as the contructor, because the constructor calls that function. if you call it anyway, it will apply the changes you are putting into... \item\end{DoxyCompactList}\item 
+void \hyperlink{class_c_dlg_option_text_a098be3cab83afc259f05590bd894368a}{draw} (SDL\_\-Surface $\ast$Textsurface, Uint16 x, Uint16 y, bool highlight, Uint32 colour=0x0)
+\begin{DoxyCompactList}\small\item\em This normally is part of a routine cycle and draws the text on the SDL-\/Surface. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_dlg_option_text_a895a7e133c2c557d9226edd933429756}{
+int {\bfseries m\_\-value}}
+\label{class_c_dlg_option_text_a895a7e133c2c557d9226edd933429756}
+
+\item 
+\hypertarget{class_c_dlg_option_text_a3293e363f35e80755409ab947ff7275f}{
+Uint8 {\bfseries m\_\-FontMapID}}
+\label{class_c_dlg_option_text_a3293e363f35e80755409ab947ff7275f}
+
+\item 
+\hypertarget{class_c_dlg_option_text_aec3744634f1ab50bbec48cb42f81ad37}{
+std::string {\bfseries m\_\-text}}
+\label{class_c_dlg_option_text_aec3744634f1ab50bbec48cb42f81ad37}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_c_dlg_option_text_a6aa84e8218734348752d23b0d75a9da4}{
+\index{CDlgOptionText@{CDlgOptionText}!CDlgOptionText@{CDlgOptionText}}
+\index{CDlgOptionText@{CDlgOptionText}!CDlgOptionText@{CDlgOptionText}}
+\subsubsection[{CDlgOptionText}]{\setlength{\rightskip}{0pt plus 5cm}CDlgOptionText::CDlgOptionText (const std::string \& {\em text}, \/  unsigned int {\em delimit}, \/  Uint8 {\em fontmapID} = {\ttfamily 0})}}
+\label{class_c_dlg_option_text_a6aa84e8218734348752d23b0d75a9da4}
+
+
+Constructor of the class. It represents a text which can be selected in the menu. As it is an option text, it is there all the time, it can be selected, truncated, and even have another fontmap, like the extra tile ones which can be assigned at any time. Those are used for the sliders as an example... 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em text}]The text that will be written in that option item \item[{\em delimtier}]Usually the width-\/2 of the menu box, as this will automatically truncate the text making it fit into the box \item[{\em fontmapID}]This is the ID to the fontmap which can be changed, so for example the extra tiles in vorticons engine (for sliders) can be used \end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_c_dlg_option_text_a098be3cab83afc259f05590bd894368a}{
+\index{CDlgOptionText@{CDlgOptionText}!draw@{draw}}
+\index{draw@{draw}!CDlgOptionText@{CDlgOptionText}}
+\subsubsection[{draw}]{\setlength{\rightskip}{0pt plus 5cm}void CDlgOptionText::draw (SDL\_\-Surface $\ast$ {\em Textsurface}, \/  Uint16 {\em x}, \/  Uint16 {\em y}, \/  bool {\em highlight}, \/  Uint32 {\em colour} = {\ttfamily 0x0})}}
+\label{class_c_dlg_option_text_a098be3cab83afc259f05590bd894368a}
+
+
+This normally is part of a routine cycle and draws the text on the SDL-\/Surface. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em Textsurface}]Pointer to the SDL-\/Surface where Text has to be drawn. Normally it's a blit surface \item[{\em x}]X-\/Coordinate where to draw the text \item[{\em y}]Y-\/Coordinate where to draw the text automatically truncate the text making it fit into the box \item[{\em highlight}]The vorticon engine especially has the black text and the red-\/grayed-\/one in the same fontmap. To enable that red-\/grayed text, just put this parameter to true. (normally false) \item[{\em colour}]Not given it will put it into black. Since the new GFX-\/Engine Update you can use any text colour you want, the fontmap will be tinted temporary to get it printed using the colour of your wish. Caution: Changing the colour too many times in a cycle may cause the system to slow down. If you want to write something where every letter has a different colour, please don't use this... \end{DoxyParams}
+\hypertarget{class_c_dlg_option_text_aaa35c07e33b5555aa99b1d24ef9bb629}{
+\index{CDlgOptionText@{CDlgOptionText}!setText@{setText}}
+\index{setText@{setText}!CDlgOptionText@{CDlgOptionText}}
+\subsubsection[{setText}]{\setlength{\rightskip}{0pt plus 5cm}void CDlgOptionText::setText (const std::string \& {\em text}, \/  unsigned int {\em delimit})}}
+\label{class_c_dlg_option_text_aaa35c07e33b5555aa99b1d24ef9bb629}
+
+
+technically it does the same as the contructor, because the constructor calls that function. if you call it anyway, it will apply the changes you are putting into... 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em text}]The text that will be written in that option item \item[{\em delimtier}]Usually the width-\/2 of the menu box, as this will automatically truncate the text making it fit into the box \item[{\em fontmapID}]This is the ID to the fontmap which can be changed, so for example the extra tiles in vorticons engine (for sliders) can be used \end{DoxyParams}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gerstrong/projects/CommanderGenius/src/dialog/CDlgOptionText.h\item 
+/home/gerstrong/projects/CommanderGenius/src/dialog/CDlgOptionText.cpp\end{DoxyCompactItemize}

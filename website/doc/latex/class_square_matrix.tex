@@ -1,0 +1,100 @@
+\hypertarget{class_square_matrix}{
+\section{SquareMatrix$<$ \_\-T $>$ Class Template Reference}
+\label{class_square_matrix}\index{SquareMatrix@{SquareMatrix}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_square_matrix_aefea0c37b4f54b4f054480f898ed9f70}{
+{\bfseries SquareMatrix} (\hyperlink{struct_vector_d2}{VectorD2}$<$ \_\-T $>$ \_\-v1=\hyperlink{struct_vector_d2}{VectorD2}$<$ \_\-T $>$(0, 0), \hyperlink{struct_vector_d2}{VectorD2}$<$ \_\-T $>$ \_\-v2=\hyperlink{struct_vector_d2}{VectorD2}$<$ \_\-T $>$(0, 0))}
+\label{class_square_matrix_aefea0c37b4f54b4f054480f898ed9f70}
+
+\item 
+\hypertarget{class_square_matrix_a7368047d088ed55e3e6e266ea5fb29b0}{
+\hyperlink{struct_vector_d2}{CVec} {\bfseries operator()} (const \hyperlink{struct_vector_d2}{VectorD2}$<$ \_\-T $>$ \&v) const }
+\label{class_square_matrix_a7368047d088ed55e3e6e266ea5fb29b0}
+
+\item 
+\hypertarget{class_square_matrix_aef172ac49e0415176c7beeec616e4512}{
+\hyperlink{class_square_matrix}{SquareMatrix} {\bfseries operator$\ast$} (const \hyperlink{class_square_matrix}{SquareMatrix} \&m) const }
+\label{class_square_matrix_aef172ac49e0415176c7beeec616e4512}
+
+\item 
+\hypertarget{class_square_matrix_ac17de276b304090c0e626055cd8b6c54}{
+\hyperlink{class_square_matrix}{SquareMatrix} {\bfseries operator$\ast$} (const float m) const }
+\label{class_square_matrix_ac17de276b304090c0e626055cd8b6c54}
+
+\item 
+\hypertarget{class_square_matrix_a375aca11962889e595220955f1b6f251}{
+\hyperlink{class_square_matrix}{SquareMatrix} {\bfseries operator$\ast$} (const int m) const }
+\label{class_square_matrix_a375aca11962889e595220955f1b6f251}
+
+\item 
+\hypertarget{class_square_matrix_a28129d72b678e08172b28b716a3d846f}{
+\hyperlink{class_square_matrix}{SquareMatrix} {\bfseries operator/} (const float m) const }
+\label{class_square_matrix_a28129d72b678e08172b28b716a3d846f}
+
+\item 
+\hypertarget{class_square_matrix_ac73060d81ecfd50833721fc7019d3ab6}{
+\hyperlink{class_square_matrix}{SquareMatrix} {\bfseries operator/} (const int m) const }
+\label{class_square_matrix_ac73060d81ecfd50833721fc7019d3ab6}
+
+\item 
+\hypertarget{class_square_matrix_ab9c523e15796ce413ff625bcb819f0f6}{
+\_\-T {\bfseries det} () const }
+\label{class_square_matrix_ab9c523e15796ce413ff625bcb819f0f6}
+
+\item 
+\hypertarget{class_square_matrix_a42efa03b08c2f239e04b14a7ed3dea0f}{
+\hyperlink{class_square_matrix}{SquareMatrix} {\bfseries inverse} () const }
+\label{class_square_matrix_a42efa03b08c2f239e04b14a7ed3dea0f}
+
+\item 
+\hypertarget{class_square_matrix_a0dc910e08b19d8c571293f3bb4ebd36c}{
+bool {\bfseries isInDefinedArea} (const \hyperlink{struct_vector_d2}{VectorD2}$<$ \_\-T $>$ \&p) const }
+\label{class_square_matrix_a0dc910e08b19d8c571293f3bb4ebd36c}
+
+\item 
+\hypertarget{class_square_matrix_ac66eecb2e4887b66838b8cd4006fe13a}{
+\hyperlink{struct_vector_d2}{VectorD2}$<$ \_\-T $>$ {\bfseries getCenter} () const }
+\label{class_square_matrix_ac66eecb2e4887b66838b8cd4006fe13a}
+
+\item 
+\hypertarget{class_square_matrix_a60ff1f3c3fc03ba2006de5fd2eb992ca}{
+\hyperlink{class_square_matrix}{SquareMatrix} {\bfseries getInsersectionWithArea} (const \hyperlink{class_square_matrix}{SquareMatrix} \&a) const }
+\label{class_square_matrix_a60ff1f3c3fc03ba2006de5fd2eb992ca}
+
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_square_matrix_a6f298dc040eb3c2090137064f86650d9}{
+static \hyperlink{class_square_matrix}{SquareMatrix} {\bfseries Identity} ()}
+\label{class_square_matrix_a6f298dc040eb3c2090137064f86650d9}
+
+\item 
+\hypertarget{class_square_matrix_aa1ea9ad82b563eec3829cce18117c764}{
+static \hyperlink{class_square_matrix}{SquareMatrix} {\bfseries RotateMatrix} (float angle)}
+\label{class_square_matrix_aa1ea9ad82b563eec3829cce18117c764}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_square_matrix_aff8dfe048dbc6354860bbac8712464d8}{
+\hyperlink{struct_vector_d2}{VectorD2}$<$ \_\-T $>$ {\bfseries v1}}
+\label{class_square_matrix_aff8dfe048dbc6354860bbac8712464d8}
+
+\item 
+\hypertarget{class_square_matrix_ab9c2d5657c767cf4e0e8863355f0366a}{
+\hyperlink{struct_vector_d2}{VectorD2}$<$ \_\-T $>$ {\bfseries v2}}
+\label{class_square_matrix_ab9c2d5657c767cf4e0e8863355f0366a}
+
+\end{DoxyCompactItemize}
+\subsubsection*{template$<$typename \_\-T$>$ class SquareMatrix$<$ \_\-T $>$}
+
+
+
+The documentation for this class was generated from the following file:\begin{DoxyCompactItemize}
+\item 
+/home/gerstrong/projects/CommanderGenius/src/MathLib.h\end{DoxyCompactItemize}

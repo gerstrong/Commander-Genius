@@ -1,0 +1,146 @@
+\hypertarget{classgalaxy_1_1_c_e_g_a_graphics_galaxy}{
+\section{galaxy::CEGAGraphicsGalaxy Class Reference}
+\label{classgalaxy_1_1_c_e_g_a_graphics_galaxy}\index{galaxy::CEGAGraphicsGalaxy@{galaxy::CEGAGraphicsGalaxy}}
+}
+Inheritance diagram for galaxy::CEGAGraphicsGalaxy:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2cm]{classgalaxy_1_1_c_e_g_a_graphics_galaxy}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classgalaxy_1_1_c_e_g_a_graphics_galaxy_a76b6bfdad3e6a79bd32a8d588b138bde}{CEGAGraphicsGalaxy} (\hyperlink{class_c_exe_file}{CExeFile} \&ExeFile)
+\begin{DoxyCompactList}\small\item\em This creates the class for reading the graphical. \item\end{DoxyCompactList}\item 
+\hypertarget{classgalaxy_1_1_c_e_g_a_graphics_galaxy_a81f1beb7b177d2251f9ed48672e2a161}{
+int {\bfseries getNumSprites} ()}
+\label{classgalaxy_1_1_c_e_g_a_graphics_galaxy_a81f1beb7b177d2251f9ed48672e2a161}
+
+\item 
+\hypertarget{classgalaxy_1_1_c_e_g_a_graphics_galaxy_afb2635ebaf2e95319b118c25bca4e175}{
+short {\bfseries getNumTiles} ()}
+\label{classgalaxy_1_1_c_e_g_a_graphics_galaxy_afb2635ebaf2e95319b118c25bca4e175}
+
+\item 
+bool \hyperlink{classgalaxy_1_1_c_e_g_a_graphics_galaxy_ae104cc22b636a84daca1a205277e441f}{loadData} ()
+\begin{DoxyCompactList}\small\item\em load the data into the structure \item\end{DoxyCompactList}\item 
+\hypertarget{classgalaxy_1_1_c_e_g_a_graphics_galaxy_a4e82fa36e3542e5b3c8db3818a74d22b}{
+void \hyperlink{classgalaxy_1_1_c_e_g_a_graphics_galaxy_a4e82fa36e3542e5b3c8db3818a74d22b}{extractPicture} (SDL\_\-Surface $\ast$sfc, std::vector$<$ unsigned char $>$ \&data, size\_\-t Width, size\_\-t Height, bool masked=false)}
+\label{classgalaxy_1_1_c_e_g_a_graphics_galaxy_a4e82fa36e3542e5b3c8db3818a74d22b}
+
+\begin{DoxyCompactList}\small\item\em This function extracts a picture from the galaxy graphics map, and converts it properly to a SDL Surface. \item\end{DoxyCompactList}\item 
+\hypertarget{classgalaxy_1_1_c_e_g_a_graphics_galaxy_a0c02cd675034a87b620c0b1d5c59073c}{
+void \hyperlink{classgalaxy_1_1_c_e_g_a_graphics_galaxy_a0c02cd675034a87b620c0b1d5c59073c}{extractTile} (SDL\_\-Surface $\ast$sfc, std::vector$<$ unsigned char $>$ \&data, Uint16 size, Uint16 columns, size\_\-t tile)}
+\label{classgalaxy_1_1_c_e_g_a_graphics_galaxy_a0c02cd675034a87b620c0b1d5c59073c}
+
+\begin{DoxyCompactList}\small\item\em This function extracts a tile from the galaxy graphics map, and converts it properly to a SDL Surface. \item\end{DoxyCompactList}\item 
+bool \hyperlink{classgalaxy_1_1_c_e_g_a_graphics_galaxy_a11844830e253d16d1cee988786314f9b}{begin} ()
+\begin{DoxyCompactList}\small\item\em prepares to load the data. Does a bit of extraction \item\end{DoxyCompactList}\item 
+Uint8 \hyperlink{classgalaxy_1_1_c_e_g_a_graphics_galaxy_a1f7e385c838fc18ab44d9fb4e2897892}{getBit} (unsigned char data, Uint8 leftshift)
+\begin{DoxyCompactList}\small\item\em This function gets the bit of an unsigned char variable at certain position. \item\end{DoxyCompactList}\item 
+bool \hyperlink{classgalaxy_1_1_c_e_g_a_graphics_galaxy_a059bab49e5e4999f959a407084efe023}{readfonts} ()
+\begin{DoxyCompactList}\small\item\em Read the fonts to the Gfx-\/Engine. \item\end{DoxyCompactList}\item 
+bool \hyperlink{classgalaxy_1_1_c_e_g_a_graphics_galaxy_abbc3e13228b0c108739ce838e2be4385}{readBitmaps} ()
+\begin{DoxyCompactList}\small\item\em This one extracts the bitmaps used in Keen 4-\/6 (Maybe Dreams in future). \item\end{DoxyCompactList}\item 
+\hypertarget{classgalaxy_1_1_c_e_g_a_graphics_galaxy_ae85cb4454c18fd220e343db31a8c4bce}{
+bool {\bfseries readMaskedBitmaps} ()}
+\label{classgalaxy_1_1_c_e_g_a_graphics_galaxy_ae85cb4454c18fd220e343db31a8c4bce}
+
+\item 
+\hypertarget{classgalaxy_1_1_c_e_g_a_graphics_galaxy_a56903485696f2c0da4192a09f781926e}{
+bool {\bfseries readTilemaps} ()}
+\label{classgalaxy_1_1_c_e_g_a_graphics_galaxy_a56903485696f2c0da4192a09f781926e}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classgalaxy_1_1_c_e_g_a_graphics_galaxy_a76b6bfdad3e6a79bd32a8d588b138bde}{
+\index{galaxy::CEGAGraphicsGalaxy@{galaxy::CEGAGraphicsGalaxy}!CEGAGraphicsGalaxy@{CEGAGraphicsGalaxy}}
+\index{CEGAGraphicsGalaxy@{CEGAGraphicsGalaxy}!galaxy::CEGAGraphicsGalaxy@{galaxy::CEGAGraphicsGalaxy}}
+\subsubsection[{CEGAGraphicsGalaxy}]{\setlength{\rightskip}{0pt plus 5cm}galaxy::CEGAGraphicsGalaxy::CEGAGraphicsGalaxy ({\bf CExeFile} \& {\em ExeFile})}}
+\label{classgalaxy_1_1_c_e_g_a_graphics_galaxy_a76b6bfdad3e6a79bd32a8d588b138bde}
+
+
+This creates the class for reading the graphical. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em episode}]Episode of the chosen game \item[{\em path}]Path to where the game is found on the media \item[{\em ExeFile}]Object to ExeFile in which the \end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classgalaxy_1_1_c_e_g_a_graphics_galaxy_a11844830e253d16d1cee988786314f9b}{
+\index{galaxy::CEGAGraphicsGalaxy@{galaxy::CEGAGraphicsGalaxy}!begin@{begin}}
+\index{begin@{begin}!galaxy::CEGAGraphicsGalaxy@{galaxy::CEGAGraphicsGalaxy}}
+\subsubsection[{begin}]{\setlength{\rightskip}{0pt plus 5cm}bool galaxy::CEGAGraphicsGalaxy::begin ()}}
+\label{classgalaxy_1_1_c_e_g_a_graphics_galaxy_a11844830e253d16d1cee988786314f9b}
+
+
+prepares to load the data. Does a bit of extraction 
+
+\begin{DoxyReturn}{Returns}
+returns true, if loading was successful 
+\end{DoxyReturn}
+\hypertarget{classgalaxy_1_1_c_e_g_a_graphics_galaxy_a1f7e385c838fc18ab44d9fb4e2897892}{
+\index{galaxy::CEGAGraphicsGalaxy@{galaxy::CEGAGraphicsGalaxy}!getBit@{getBit}}
+\index{getBit@{getBit}!galaxy::CEGAGraphicsGalaxy@{galaxy::CEGAGraphicsGalaxy}}
+\subsubsection[{getBit}]{\setlength{\rightskip}{0pt plus 5cm}Uint8 galaxy::CEGAGraphicsGalaxy::getBit (unsigned char {\em data}, \/  Uint8 {\em leftshift})}}
+\label{classgalaxy_1_1_c_e_g_a_graphics_galaxy_a1f7e385c838fc18ab44d9fb4e2897892}
+
+
+This function gets the bit of an unsigned char variable at certain position. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em data}]variable where the bit is to be sent. \item[{\em leftshift}]sets the position of the bit the function has to retrieve \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+returns 1, if the bit at position is one, else 0 
+\end{DoxyReturn}
+\hypertarget{classgalaxy_1_1_c_e_g_a_graphics_galaxy_ae104cc22b636a84daca1a205277e441f}{
+\index{galaxy::CEGAGraphicsGalaxy@{galaxy::CEGAGraphicsGalaxy}!loadData@{loadData}}
+\index{loadData@{loadData}!galaxy::CEGAGraphicsGalaxy@{galaxy::CEGAGraphicsGalaxy}}
+\subsubsection[{loadData}]{\setlength{\rightskip}{0pt plus 5cm}bool galaxy::CEGAGraphicsGalaxy::loadData ()\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classgalaxy_1_1_c_e_g_a_graphics_galaxy_ae104cc22b636a84daca1a205277e441f}
+
+
+load the data into the structure 
+
+\begin{DoxyReturn}{Returns}
+returns true, if loading was successful 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{class_c_e_g_a_graphics}{CEGAGraphics}.
+
+\hypertarget{classgalaxy_1_1_c_e_g_a_graphics_galaxy_abbc3e13228b0c108739ce838e2be4385}{
+\index{galaxy::CEGAGraphicsGalaxy@{galaxy::CEGAGraphicsGalaxy}!readBitmaps@{readBitmaps}}
+\index{readBitmaps@{readBitmaps}!galaxy::CEGAGraphicsGalaxy@{galaxy::CEGAGraphicsGalaxy}}
+\subsubsection[{readBitmaps}]{\setlength{\rightskip}{0pt plus 5cm}bool galaxy::CEGAGraphicsGalaxy::readBitmaps ()}}
+\label{classgalaxy_1_1_c_e_g_a_graphics_galaxy_abbc3e13228b0c108739ce838e2be4385}
+
+
+This one extracts the bitmaps used in Keen 4-\/6 (Maybe Dreams in future). 
+
+\begin{DoxyReturn}{Returns}
+returns true, if the fonts were read successfully, else false 
+\end{DoxyReturn}
+\hypertarget{classgalaxy_1_1_c_e_g_a_graphics_galaxy_a059bab49e5e4999f959a407084efe023}{
+\index{galaxy::CEGAGraphicsGalaxy@{galaxy::CEGAGraphicsGalaxy}!readfonts@{readfonts}}
+\index{readfonts@{readfonts}!galaxy::CEGAGraphicsGalaxy@{galaxy::CEGAGraphicsGalaxy}}
+\subsubsection[{readfonts}]{\setlength{\rightskip}{0pt plus 5cm}bool galaxy::CEGAGraphicsGalaxy::readfonts ()}}
+\label{classgalaxy_1_1_c_e_g_a_graphics_galaxy_a059bab49e5e4999f959a407084efe023}
+
+
+Read the fonts to the Gfx-\/Engine. 
+
+\begin{DoxyReturn}{Returns}
+returns true, if the fonts were read successfully, else false 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gerstrong/projects/CommanderGenius/src/engine/galaxy/CEGAGraphicsGalaxy.h\item 
+/home/gerstrong/projects/CommanderGenius/src/engine/galaxy/CEGAGraphicsGalaxy.cpp\end{DoxyCompactItemize}

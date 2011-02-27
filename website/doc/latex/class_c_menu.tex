@@ -1,0 +1,205 @@
+\hypertarget{class_c_menu}{
+\section{CMenu Class Reference}
+\label{class_c_menu}\index{CMenu@{CMenu}}
+}
+Inheritance diagram for CMenu:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3cm]{class_c_menu}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_menu_adb00653806cbf130f5f05aa9bd194d6a}{
+{\bfseries CMenu} (char menu\_\-mode, \hyperlink{class_c_exe_file}{CExeFile} \&ExeFile, \hyperlink{class_c_saved_game}{CSavedGame} \&SavedGame, \hyperlink{structst_option}{stOption} $\ast$pOption, Uint8 DlgTheme, bool \&restartVideo)}
+\label{class_c_menu_adb00653806cbf130f5f05aa9bd194d6a}
+
+\item 
+\hypertarget{class_c_menu_a215f18a0f89fd6b71ea93909f90adc24}{
+bool {\bfseries getChooseGame} ()}
+\label{class_c_menu_a215f18a0f89fd6b71ea93909f90adc24}
+
+\item 
+\hypertarget{class_c_menu_a65a9c0de5256679ec487bdcfe71d9749}{
+bool {\bfseries getExitEvent} ()}
+\label{class_c_menu_a65a9c0de5256679ec487bdcfe71d9749}
+
+\item 
+\hypertarget{class_c_menu_abe800ae3677bf1771f7815aa6993f812}{
+char {\bfseries getNumPlayers} ()}
+\label{class_c_menu_abe800ae3677bf1771f7815aa6993f812}
+
+\item 
+\hypertarget{class_c_menu_ae50aa1e3c8dff7353665adae06a0ca86}{
+char {\bfseries getDifficulty} ()}
+\label{class_c_menu_ae50aa1e3c8dff7353665adae06a0ca86}
+
+\item 
+\hypertarget{class_c_menu_a998f9338500c1c7f08a8ad9cfd70bfdc}{
+bool {\bfseries mustEndGame} ()}
+\label{class_c_menu_a998f9338500c1c7f08a8ad9cfd70bfdc}
+
+\item 
+\hypertarget{class_c_menu_ac605e6afd566fd77d71c0a3baa7af150}{
+bool {\bfseries mustStartGame} ()}
+\label{class_c_menu_ac605e6afd566fd77d71c0a3baa7af150}
+
+\item 
+\hypertarget{class_c_menu_a9fb65b8075dce3a501b708d748792508}{
+bool {\bfseries getShowStory} ()}
+\label{class_c_menu_a9fb65b8075dce3a501b708d748792508}
+
+\item 
+\hypertarget{class_c_menu_a46375ad01be94e3a2b8faf10b664958e}{
+bool {\bfseries mustBeClosed} ()}
+\label{class_c_menu_a46375ad01be94e3a2b8faf10b664958e}
+
+\item 
+\hypertarget{class_c_menu_ab2f04963ce897d2f229d3e9a2819eeb8}{
+bool {\bfseries getBacktoDemo} ()}
+\label{class_c_menu_ab2f04963ce897d2f229d3e9a2819eeb8}
+
+\item 
+\hypertarget{class_c_menu_a13f892349f76a38420317eb8ebe4bc77}{
+void {\bfseries init} (menutypes menu\_\-type)}
+\label{class_c_menu_a13f892349f76a38420317eb8ebe4bc77}
+
+\item 
+\hypertarget{class_c_menu_a1fca90f9c202d29ba21d3a925f3dc7e1}{
+void {\bfseries initMainMenu} ()}
+\label{class_c_menu_a1fca90f9c202d29ba21d3a925f3dc7e1}
+
+\item 
+\hypertarget{class_c_menu_a3824e00f9a2be0e964e93a9fed8db267}{
+void {\bfseries initF1Menu} ()}
+\label{class_c_menu_a3824e00f9a2be0e964e93a9fed8db267}
+
+\item 
+\hypertarget{class_c_menu_a678f9499c437fb02cbd2a49a88d583c2}{
+void {\bfseries process} ()}
+\label{class_c_menu_a678f9499c437fb02cbd2a49a88d583c2}
+
+\item 
+\hypertarget{class_c_menu_a819ae8a74eefb2b1c6a50b1bfd86fbba}{
+void {\bfseries processMainMenu} ()}
+\label{class_c_menu_a819ae8a74eefb2b1c6a50b1bfd86fbba}
+
+\item 
+\hypertarget{class_c_menu_a5f2d525873d26b870987d841087b0d68}{
+void {\bfseries cleanup} ()}
+\label{class_c_menu_a5f2d525873d26b870987d841087b0d68}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_menu_a509d9a7b6c9674179dc07574ba046675}{
+bool {\bfseries m\_\-demoback}}
+\label{class_c_menu_a509d9a7b6c9674179dc07574ba046675}
+
+\item 
+\hypertarget{class_c_menu_a205bd04439302fce179ce16141cd298d}{
+\hyperlink{class_c_dialog}{CDialog} $\ast$ {\bfseries mp\_\-Dialog}}
+\label{class_c_menu_a205bd04439302fce179ce16141cd298d}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_menu_a95a8cabde2bf8bc8adb40b6eaffff9df}{
+char {\bfseries m\_\-Episode}}
+\label{class_c_menu_a95a8cabde2bf8bc8adb40b6eaffff9df}
+
+\item 
+\hypertarget{class_c_menu_af937c69762d85d85d58d75b73f845fb0}{
+\hyperlink{class_c_exe_file}{CExeFile} \& {\bfseries m\_\-ExeFile}}
+\label{class_c_menu_af937c69762d85d85d58d75b73f845fb0}
+
+\item 
+\hypertarget{class_c_menu_a584b1af0698857818902c3422bb73567}{
+std::string {\bfseries m\_\-GamePath}}
+\label{class_c_menu_a584b1af0698857818902c3422bb73567}
+
+\item 
+\hypertarget{class_c_menu_a6971ec95d5bc9f6ff48d8098f21a94a4}{
+\hyperlink{class_c_saved_game}{CSavedGame} \& {\bfseries m\_\-SavedGame}}
+\label{class_c_menu_a6971ec95d5bc9f6ff48d8098f21a94a4}
+
+\item 
+\hypertarget{class_c_menu_a18c91d4e5fb8ddf33c916c74a635c4a8}{
+\hyperlink{structst_option}{stOption} $\ast$ {\bfseries mp\_\-option}}
+\label{class_c_menu_a18c91d4e5fb8ddf33c916c74a635c4a8}
+
+\item 
+\hypertarget{class_c_menu_adce511af972c35325e1e3a340cd796d5}{
+char {\bfseries m\_\-menu\_\-mode}}
+\label{class_c_menu_adce511af972c35325e1e3a340cd796d5}
+
+\item 
+\hypertarget{class_c_menu_a86e2fb66ba2b4b10e3562bed35fd6226}{
+bool {\bfseries m\_\-choosegame}}
+\label{class_c_menu_a86e2fb66ba2b4b10e3562bed35fd6226}
+
+\item 
+\hypertarget{class_c_menu_aeaf53f1a44d41287c617493b39b2e04e}{
+bool {\bfseries m\_\-overwrite}}
+\label{class_c_menu_aeaf53f1a44d41287c617493b39b2e04e}
+
+\item 
+\hypertarget{class_c_menu_a59f3d4022bb1d3e14d648b3b14490a54}{
+bool {\bfseries m\_\-Endgame}}
+\label{class_c_menu_a59f3d4022bb1d3e14d648b3b14490a54}
+
+\item 
+\hypertarget{class_c_menu_a4459ec865ef91e11614824bdccab7c8f}{
+bool {\bfseries m\_\-quit}}
+\label{class_c_menu_a4459ec865ef91e11614824bdccab7c8f}
+
+\item 
+\hypertarget{class_c_menu_a6199a9a192d5d37378fa9cece7c7e501}{
+int {\bfseries m\_\-selection}}
+\label{class_c_menu_a6199a9a192d5d37378fa9cece7c7e501}
+
+\item 
+\hypertarget{class_c_menu_a0195ae5b6b509cd26a6bd03439a7ed8a}{
+char {\bfseries m\_\-lastselect}}
+\label{class_c_menu_a0195ae5b6b509cd26a6bd03439a7ed8a}
+
+\item 
+\hypertarget{class_c_menu_aa46337289db1e3f646059d96def20b40}{
+menutypes {\bfseries m\_\-menu\_\-type}}
+\label{class_c_menu_aa46337289db1e3f646059d96def20b40}
+
+\item 
+\hypertarget{class_c_menu_ace05a07a9eac47fb8d991b77ff6c69b5}{
+Uint8 {\bfseries m\_\-NumPlayers}}
+\label{class_c_menu_ace05a07a9eac47fb8d991b77ff6c69b5}
+
+\item 
+\hypertarget{class_c_menu_a1f10077af3d0317d2027959c1c989e4d}{
+Sint8 {\bfseries m\_\-Difficulty}}
+\label{class_c_menu_a1f10077af3d0317d2027959c1c989e4d}
+
+\item 
+\hypertarget{class_c_menu_a8cbba55a089ec14b3f11797a21073b26}{
+int {\bfseries m\_\-saveslot}}
+\label{class_c_menu_a8cbba55a089ec14b3f11797a21073b26}
+
+\item 
+\hypertarget{class_c_menu_a46386cae97719fe962c59e2f4c545edc}{
+bool \& {\bfseries m\_\-restartVideo}}
+\label{class_c_menu_a46386cae97719fe962c59e2f4c545edc}
+
+\item 
+\hypertarget{class_c_menu_ac7bf577bfa137801907f2d9c94d27143}{
+\hyperlink{class_c_base_menu}{CBaseMenu} $\ast$ {\bfseries mp\_\-SubMenu}}
+\label{class_c_menu_ac7bf577bfa137801907f2d9c94d27143}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gerstrong/projects/CommanderGenius/src/common/CMenu.h\item 
+/home/gerstrong/projects/CommanderGenius/src/common/CMenu.cpp\end{DoxyCompactItemize}

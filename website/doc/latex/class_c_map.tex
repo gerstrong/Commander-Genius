@@ -1,0 +1,253 @@
+\hypertarget{class_c_map}{
+\section{CMap Class Reference}
+\label{class_c_map}\index{CMap@{CMap}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_map_ac2147afb2017c418b3478db4f2830b62}{
+void {\bfseries setTileMap} (\hyperlink{class_c_tilemap}{CTilemap} \&Tilemap)}
+\label{class_c_map_ac2147afb2017c418b3478db4f2830b62}
+
+\item 
+\hypertarget{class_c_map_ad05e7a51c2c032150c80f0c1fa816b1b}{
+void {\bfseries setScrollSurface} (SDL\_\-Surface $\ast$surface)}
+\label{class_c_map_ad05e7a51c2c032150c80f0c1fa816b1b}
+
+\item 
+bool \hyperlink{class_c_map_a5f80960c9d557322ac0c887dd3d39a6c}{createEmptyDataPlanes} (size\_\-t blocksize)
+\begin{DoxyCompactList}\small\item\em Create an empty data plane used for the map data. \item\end{DoxyCompactList}\item 
+\hypertarget{class_c_map_a2dcc49bc7503f6d81c783c67aa01cf5c}{
+bool {\bfseries gotoPos} (int x, int y)}
+\label{class_c_map_a2dcc49bc7503f6d81c783c67aa01cf5c}
+
+\item 
+\hypertarget{class_c_map_ac3af64e4e3c4f208be224c70cfe43658}{
+void {\bfseries resetScrolls} ()}
+\label{class_c_map_ac3af64e4e3c4f208be224c70cfe43658}
+
+\item 
+\hypertarget{class_c_map_ac9b4909fcdd38a3907ada18bfcebfb42}{
+void {\bfseries scrollLeft} (void)}
+\label{class_c_map_ac9b4909fcdd38a3907ada18bfcebfb42}
+
+\item 
+\hypertarget{class_c_map_a854acc4e55436eac9d05183f2104a6ce}{
+void {\bfseries scrollRight} (void)}
+\label{class_c_map_a854acc4e55436eac9d05183f2104a6ce}
+
+\item 
+\hypertarget{class_c_map_a45cfc36dbe800477a28754ae9e4ce6b3}{
+void {\bfseries scrollUp} (void)}
+\label{class_c_map_a45cfc36dbe800477a28754ae9e4ce6b3}
+
+\item 
+\hypertarget{class_c_map_a2077b6931da29f4123b5fd1877868eee}{
+void {\bfseries scrollDown} (void)}
+\label{class_c_map_a2077b6931da29f4123b5fd1877868eee}
+
+\item 
+\hypertarget{class_c_map_a42ff54e6e128200c6fe2908c4d519a6d}{
+void {\bfseries redrawAt} (int mx, int my)}
+\label{class_c_map_a42ff54e6e128200c6fe2908c4d519a6d}
+
+\item 
+\hypertarget{class_c_map_a2bc34efd10d8f848e8e12712b90c3481}{
+void {\bfseries drawAll} ()}
+\label{class_c_map_a2bc34efd10d8f848e8e12712b90c3481}
+
+\item 
+\hypertarget{class_c_map_aa02b9ffcb28336055e41d8623b2e1e07}{
+void {\bfseries drawHstripe} (unsigned int y, unsigned int mpy)}
+\label{class_c_map_aa02b9ffcb28336055e41d8623b2e1e07}
+
+\item 
+\hypertarget{class_c_map_a15d78c23a982209173757a21746321fa}{
+void {\bfseries drawVstripe} (unsigned int x, unsigned int mpx)}
+\label{class_c_map_a15d78c23a982209173757a21746321fa}
+
+\item 
+\hypertarget{class_c_map_a68f6d23097878684a981d34e0a193026}{
+Uint16 {\bfseries at} (Uint16 x, Uint16 y, Uint16 t=1)}
+\label{class_c_map_a68f6d23097878684a981d34e0a193026}
+
+\item 
+\hypertarget{class_c_map_a0e82bb53c0e60f3d020a691ed7af8d4d}{
+Uint16 {\bfseries getObjectat} (Uint16 x, Uint16 y)}
+\label{class_c_map_a0e82bb53c0e60f3d020a691ed7af8d4d}
+
+\item 
+\hypertarget{class_c_map_abbddc71617625acec0c60e5d907589fb}{
+bool {\bfseries findObject} (unsigned int obj, int $\ast$xout, int $\ast$yout)}
+\label{class_c_map_abbddc71617625acec0c60e5d907589fb}
+
+\item 
+\hypertarget{class_c_map_a35a18bcb5cddb51ef44a71dfb8e13992}{
+bool {\bfseries findTile} (unsigned int tile, int $\ast$xout, int $\ast$yout)}
+\label{class_c_map_a35a18bcb5cddb51ef44a71dfb8e13992}
+
+\item 
+\hypertarget{class_c_map_ae1bfe189abd33a04106862cda6fde819}{
+bool {\bfseries setTile} (Uint16 x, Uint16 y, Uint16 t)}
+\label{class_c_map_ae1bfe189abd33a04106862cda6fde819}
+
+\item 
+\hypertarget{class_c_map_aa8266737568a4d4fd04baf34aff8fcf6}{
+bool {\bfseries setTile} (Uint16 x, Uint16 y, Uint16 t, bool update)}
+\label{class_c_map_aa8266737568a4d4fd04baf34aff8fcf6}
+
+\item 
+\hypertarget{class_c_map_a642baffa60bb9ed901462bd7b6a3de16}{
+bool {\bfseries changeTile} (Uint16 x, Uint16 y, Uint16 t)}
+\label{class_c_map_a642baffa60bb9ed901462bd7b6a3de16}
+
+\item 
+\hypertarget{class_c_map_a2b1898413ae1f58cfacb89d9db231ad3}{
+void {\bfseries deAnimate} (int x, int y)}
+\label{class_c_map_a2b1898413ae1f58cfacb89d9db231ad3}
+
+\item 
+\hypertarget{class_c_map_a7f6cbfcb33cc1411eb044b65e9e36bd7}{
+void {\bfseries drawAnimatedTile} (SDL\_\-Surface $\ast$dst, Uint16 mx, Uint16 my, Uint16 tile)}
+\label{class_c_map_a7f6cbfcb33cc1411eb044b65e9e36bd7}
+
+\item 
+\hypertarget{class_c_map_a77541c5c500571846519c86305c43954}{
+void {\bfseries animateAllTiles} ()}
+\label{class_c_map_a77541c5c500571846519c86305c43954}
+
+\item 
+\hypertarget{class_c_map_a4401d23b0b0c2ee2316fb79350c0233e}{
+void {\bfseries unregisterAnimtiles} (int tile)}
+\label{class_c_map_a4401d23b0b0c2ee2316fb79350c0233e}
+
+\item 
+\hypertarget{class_c_map_aea0165a6fe2a202b81dbe7876a36b261}{
+void {\bfseries registerAnimation} (Uint32 x, Uint32 y, int c)}
+\label{class_c_map_aea0165a6fe2a202b81dbe7876a36b261}
+
+\item 
+\hypertarget{class_c_map_a56c898e8d20b0eaf467517d65ed16b8c}{
+unsigned int {\bfseries getlevelat} (unsigned int x, unsigned int y)}
+\label{class_c_map_a56c898e8d20b0eaf467517d65ed16b8c}
+
+\item 
+\hypertarget{class_c_map_a5b95f7aa02b48513e1866c850f192798}{
+word $\ast$ {\bfseries getForegroundData} ()}
+\label{class_c_map_a5b95f7aa02b48513e1866c850f192798}
+
+\item 
+\hypertarget{class_c_map_a8eaaa63b4a54e80cfc5eb333fb5dea73}{
+word $\ast$ {\bfseries getBackgroundData} ()}
+\label{class_c_map_a8eaaa63b4a54e80cfc5eb333fb5dea73}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_map_ac04f23075a442a20953f04d84ce7faa5}{
+Sint16 {\bfseries m\_\-scrollx\_\-buf}}
+\label{class_c_map_ac04f23075a442a20953f04d84ce7faa5}
+
+\item 
+\hypertarget{class_c_map_a4c13a8b7f1d34af4c2c6ab15d8368602}{
+Sint16 {\bfseries m\_\-scrolly\_\-buf}}
+\label{class_c_map_a4c13a8b7f1d34af4c2c6ab15d8368602}
+
+\item 
+\hypertarget{class_c_map_a8e1e73012be84e7a1d99c6bb27e44d3b}{
+Uint16 {\bfseries m\_\-scrollx}}
+\label{class_c_map_a8e1e73012be84e7a1d99c6bb27e44d3b}
+
+\item 
+\hypertarget{class_c_map_a82a879179180648c4466d4811dcde0d8}{
+Uint16 {\bfseries m\_\-scrolly}}
+\label{class_c_map_a82a879179180648c4466d4811dcde0d8}
+
+\item 
+\hypertarget{class_c_map_a103bc009069478f76de9e58530b7b8fd}{
+Uint16 {\bfseries m\_\-objectlayer} \mbox{[}256\mbox{]}\mbox{[}256\mbox{]}}
+\label{class_c_map_a103bc009069478f76de9e58530b7b8fd}
+
+\item 
+\hypertarget{class_c_map_ab41c87f8f7b5542c30a51efae0ee88ac}{
+Uint32 {\bfseries m\_\-width}}
+\label{class_c_map_ab41c87f8f7b5542c30a51efae0ee88ac}
+
+\item 
+\hypertarget{class_c_map_af1c79858c90e57b259741c946a03a9ec}{
+Uint32 {\bfseries m\_\-height}}
+\label{class_c_map_af1c79858c90e57b259741c946a03a9ec}
+
+\item 
+\hypertarget{class_c_map_ada3c5b0e48ed3b72891cb02545ca8d26}{
+bool {\bfseries m\_\-worldmap}}
+\label{class_c_map_ada3c5b0e48ed3b72891cb02545ca8d26}
+
+\item 
+\hypertarget{class_c_map_a924108770dbc199df7be4e3dd1f7b607}{
+unsigned int {\bfseries m\_\-maxscrollx}}
+\label{class_c_map_a924108770dbc199df7be4e3dd1f7b607}
+
+\item 
+\hypertarget{class_c_map_aeed8c6aee8ba7aab85ef8b0c51b025b1}{
+unsigned int {\bfseries m\_\-maxscrolly}}
+\label{class_c_map_aeed8c6aee8ba7aab85ef8b0c51b025b1}
+
+\item 
+\hypertarget{class_c_map_acb7543bdb51b223376765a1d998d3621}{
+std::string {\bfseries m\_\-gamepath}}
+\label{class_c_map_acb7543bdb51b223376765a1d998d3621}
+
+\item 
+\hypertarget{class_c_map_a1ca6d8a1118cb2c6106f810072660dcf}{
+bool {\bfseries m\_\-animation\_\-enabled}}
+\label{class_c_map_a1ca6d8a1118cb2c6106f810072660dcf}
+
+\item 
+\hypertarget{class_c_map_ac283e0e14ee775ce37dc5c887d39afe7}{
+bool {\bfseries slotinuse}}
+\label{class_c_map_ac283e0e14ee775ce37dc5c887d39afe7}
+
+\item 
+\hypertarget{class_c_map_aee4779620cdba5847de27a4b5f6aca7d}{
+int {\bfseries x}}
+\label{class_c_map_aee4779620cdba5847de27a4b5f6aca7d}
+
+\item 
+\hypertarget{class_c_map_a9afb7451cc380b7c9e64a29ea9b5d126}{
+int {\bfseries y}}
+\label{class_c_map_a9afb7451cc380b7c9e64a29ea9b5d126}
+
+\item 
+\hypertarget{class_c_map_aa7b9a9a016b41ad3da7fdb23276ac8d0}{
+int {\bfseries baseframe}}
+\label{class_c_map_aa7b9a9a016b41ad3da7fdb23276ac8d0}
+
+\item 
+\hypertarget{class_c_map_af13098fa11f0357686674196eab93964}{
+int {\bfseries offset}}
+\label{class_c_map_af13098fa11f0357686674196eab93964}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_c_map_a5f80960c9d557322ac0c887dd3d39a6c}{
+\index{CMap@{CMap}!createEmptyDataPlanes@{createEmptyDataPlanes}}
+\index{createEmptyDataPlanes@{createEmptyDataPlanes}!CMap@{CMap}}
+\subsubsection[{createEmptyDataPlanes}]{\setlength{\rightskip}{0pt plus 5cm}bool CMap::createEmptyDataPlanes (size\_\-t {\em blocksize})}}
+\label{class_c_map_a5f80960c9d557322ac0c887dd3d39a6c}
+
+
+Create an empty data plane used for the map data. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em blocksize}]size in bytes of the datablock that has to be created \end{DoxyParams}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gerstrong/projects/CommanderGenius/src/common/CMap.h\item 
+/home/gerstrong/projects/CommanderGenius/src/common/CMap.cpp\end{DoxyCompactItemize}

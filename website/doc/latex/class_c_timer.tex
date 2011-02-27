@@ -1,0 +1,106 @@
+\hypertarget{class_c_timer}{
+\section{CTimer Class Reference}
+\label{class_c_timer}\index{CTimer@{CTimer}}
+}
+Inheritance diagram for CTimer:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2cm]{class_c_timer}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_c_timer_a93e4d770fd09f5e1b984768620cc52bf}{CTimer} ()
+\item 
+\hypertarget{class_c_timer_a060d0fe9aa76f1fbbe64dac348fdf23c}{
+void {\bfseries CalculateIntervals} (void)}
+\label{class_c_timer_a060d0fe9aa76f1fbbe64dac348fdf23c}
+
+\item 
+\hypertarget{class_c_timer_a07cc434c081d25e3338edade3456d5ca}{
+bool {\bfseries TimeToLogic} ()}
+\label{class_c_timer_a07cc434c081d25e3338edade3456d5ca}
+
+\item 
+\hypertarget{class_c_timer_acaf28358697c42d276eb668cc17bafff}{
+bool {\bfseries TimeToRender} ()}
+\label{class_c_timer_acaf28358697c42d276eb668cc17bafff}
+
+\item 
+\hypertarget{class_c_timer_a3450944c4d0c83f0b98abcc0b60c8908}{
+void {\bfseries TimeToDelay} ()}
+\label{class_c_timer_a3450944c4d0c83f0b98abcc0b60c8908}
+
+\item 
+\hypertarget{class_c_timer_a93dc21e68ba0195ee405e5f4cf7c762f}{
+void {\bfseries ResetSecondsTimer} ()}
+\label{class_c_timer_a93dc21e68ba0195ee405e5f4cf7c762f}
+
+\item 
+\hypertarget{class_c_timer_aa7216fa600d38753e85257249d2578cb}{
+bool {\bfseries HasSecElapsed} ()}
+\label{class_c_timer_aa7216fa600d38753e85257249d2578cb}
+
+\item 
+\hypertarget{class_c_timer_a61a79d4f2492329be5d6d17a742b01ad}{
+bool {\bfseries HasTimeElapsed} (int msecs)}
+\label{class_c_timer_a61a79d4f2492329be5d6d17a742b01ad}
+
+\item 
+\hypertarget{class_c_timer_a54c7c0855a24f3cd71182ffb077c5885}{
+int {\bfseries getLogicRate} ()}
+\label{class_c_timer_a54c7c0855a24f3cd71182ffb077c5885}
+
+\item 
+\hypertarget{class_c_timer_aadde0e18f6e4dd3bdf5ebc7d45b6d3ed}{
+int {\bfseries getFrameRate} ()}
+\label{class_c_timer_aadde0e18f6e4dd3bdf5ebc7d45b6d3ed}
+
+\item 
+\hypertarget{class_c_timer_afbb5557712d14fe6aed04e74721932f8}{
+void {\bfseries setFrameRate} (int logicrate, int framerate, int syncrate)}
+\label{class_c_timer_afbb5557712d14fe6aed04e74721932f8}
+
+\item 
+\hypertarget{class_c_timer_a8fbd0175afde779b4d4b7649a77100c2}{
+int {\bfseries getLogicPerSec} (void)}
+\label{class_c_timer_a8fbd0175afde779b4d4b7649a77100c2}
+
+\item 
+\hypertarget{class_c_timer_a466c1bd2b0c2768c84881f6092fadebe}{
+int {\bfseries getFramesPerSec} (void)}
+\label{class_c_timer_a466c1bd2b0c2768c84881f6092fadebe}
+
+\item 
+\hypertarget{class_c_timer_a68fc0aa8157ab8bd7d6bbde7f3bdbb46}{
+Uint32 {\bfseries getTicks} ()}
+\label{class_c_timer_a68fc0aa8157ab8bd7d6bbde7f3bdbb46}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{class_c_timer_a93e4d770fd09f5e1b984768620cc52bf}{
+\index{CTimer@{CTimer}!CTimer@{CTimer}}
+\index{CTimer@{CTimer}!CTimer@{CTimer}}
+\subsubsection[{CTimer}]{\setlength{\rightskip}{0pt plus 5cm}CTimer::CTimer ()}}
+\label{class_c_timer_a93e4d770fd09f5e1b984768620cc52bf}
+The timer (speed throttler) driver for SDL. This timer calculates a common factor between the desired rates for logic and render. By having this common rate all of the time during one second can be divided into a measurement scale where both other rates can be triggered. A sync rate is used to sync a group of frames exactly to the desired frame rate.
+
+Examples: NORMAL RATES Frame Rate = 60 Logic Rate = 60
+
+Loops Needed = 60 Normal duration: 16.66 ms Sync of 3 duration: 50 ms
+
+LOW RATES Frame Rate = 20 (interval of 3) Logic Rate = 60
+
+Loops Needed = 60 Normal duration: 16.66 ms Sync of 3 duration: 50 ms
+
+HIGH RATES Frame Rate = 120 Logic Rate = 60 (interval of 2)
+
+Loops Needed = 120 Normal duration: 8.33 ms Sync of 3 duration: 25 ms 
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gerstrong/projects/CommanderGenius/src/sdl/CTimer.h\item 
+/home/gerstrong/projects/CommanderGenius/src/sdl/CTimer.cpp\end{DoxyCompactItemize}

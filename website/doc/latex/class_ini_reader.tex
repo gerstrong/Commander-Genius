@@ -1,0 +1,146 @@
+\hypertarget{class_ini_reader}{
+\section{IniReader Class Reference}
+\label{class_ini_reader}\index{IniReader@{IniReader}}
+}
+Inheritance diagram for IniReader:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2cm]{class_ini_reader}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_ini_reader_afabde1f4105b0d5b0c131d29131add37}{
+typedef std::map$<$ std::string, int, \hyperlink{structstringcaseless}{stringcaseless} $>$ {\bfseries KeywordList}}
+\label{class_ini_reader_afabde1f4105b0d5b0c131d29131add37}
+
+\item 
+\hypertarget{class_ini_reader_aae1efaf11228bffb3fdbbe6df4141c63}{
+typedef std::map$<$ std::string, std::string $>$ {\bfseries Section}}
+\label{class_ini_reader_aae1efaf11228bffb3fdbbe6df4141c63}
+
+\item 
+\hypertarget{class_ini_reader_a68b3659daa175cd1b5f7dd0dd026a871}{
+typedef std::map$<$ std::string, Section $>$ {\bfseries SectionMap}}
+\label{class_ini_reader_a68b3659daa175cd1b5f7dd0dd026a871}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_ini_reader_a82efab9f45a3ef170308c01e7d688704}{
+{\bfseries IniReader} (const std::string \&filename, KeywordList \&keywords=IniReader::DefaultKeywords)}
+\label{class_ini_reader_a82efab9f45a3ef170308c01e7d688704}
+
+\item 
+\hypertarget{class_ini_reader_a1bd6e9ece9c0d3c46d5bbd0025ae805a}{
+bool {\bfseries Parse} ()}
+\label{class_ini_reader_a1bd6e9ece9c0d3c46d5bbd0025ae805a}
+
+\item 
+\hypertarget{class_ini_reader_a8dcfb46e96024bd5e72f04f34400c705}{
+virtual bool {\bfseries OnNewSection} (const std::string \&section)}
+\label{class_ini_reader_a8dcfb46e96024bd5e72f04f34400c705}
+
+\item 
+\hypertarget{class_ini_reader_aea5cb71d20f2fa4dbebc4d6c5132fb13}{
+virtual bool {\bfseries OnEntry} (const std::string \&section, const std::string \&propname, const std::string \&value)}
+\label{class_ini_reader_aea5cb71d20f2fa4dbebc4d6c5132fb13}
+
+\item 
+\hypertarget{class_ini_reader_a13cd3f255268971c34cc1f71eaa35567}{
+bool {\bfseries ReadString} (const std::string \&section, const std::string \&key, std::string \&value, std::string defaultv) const }
+\label{class_ini_reader_a13cd3f255268971c34cc1f71eaa35567}
+
+\item 
+\hypertarget{class_ini_reader_aaaa75e9a2e701551fa4ae457a97186d4}{
+bool {\bfseries ReadInteger} (const std::string \&section, const std::string \&key, int $\ast$value, int defaultv) const }
+\label{class_ini_reader_aaaa75e9a2e701551fa4ae457a97186d4}
+
+\item 
+\hypertarget{class_ini_reader_a31ec351fdee3043fd582b3d6794e4234}{
+bool {\bfseries ReadFloat} (const std::string \&section, const std::string \&key, float $\ast$value, float defaultv) const }
+\label{class_ini_reader_a31ec351fdee3043fd582b3d6794e4234}
+
+\item 
+\hypertarget{class_ini_reader_a2684e1b63bce954e0ea7f7c794abae16}{
+bool {\bfseries ReadIntArray} (const std::string \&section, const std::string \&key, int $\ast$array, int num\_\-items) const }
+\label{class_ini_reader_a2684e1b63bce954e0ea7f7c794abae16}
+
+\item 
+\hypertarget{class_ini_reader_a9168412eb79af04b8b35887ecb7263f7}{
+bool {\bfseries ReadColour} (const std::string \&section, const std::string \&key, \hyperlink{struct_color}{Color} \&value, const \hyperlink{struct_color}{Color} \&defaultv) const }
+\label{class_ini_reader_a9168412eb79af04b8b35887ecb7263f7}
+
+\item 
+\hypertarget{class_ini_reader_a4f3e9abd3653813e4fa1999f4f2e8aeb}{
+bool {\bfseries ReadKeyword} (const std::string \&section, const std::string \&key, int $\ast$value, int defaultv) const }
+\label{class_ini_reader_a4f3e9abd3653813e4fa1999f4f2e8aeb}
+
+\item 
+\hypertarget{class_ini_reader_a681ce57bf33180f4833825c01dff61b2}{
+bool {\bfseries ReadKeyword} (const std::string \&section, const std::string \&key, bool $\ast$value, bool defaultv) const }
+\label{class_ini_reader_a681ce57bf33180f4833825c01dff61b2}
+
+\item 
+\hypertarget{class_ini_reader_aee2c2acc94cd8884068842fc216c12e2}{
+bool {\bfseries ReadKeywordList} (const std::string \&section, const std::string \&key, int $\ast$value, int defaultv) const }
+\label{class_ini_reader_aee2c2acc94cd8884068842fc216c12e2}
+
+\item 
+\hypertarget{class_ini_reader_ab73b336e62b169d7b6357943322e19ad}{
+{\footnotesize template$<$typename T $>$ }\\bool {\bfseries ReadArray} (const std::string \&section, const std::string \&key, T $\ast$data, size\_\-t num) const }
+\label{class_ini_reader_ab73b336e62b169d7b6357943322e19ad}
+
+\item 
+\hypertarget{class_ini_reader_a48929f4d114bffd6cbb5b8a14c8f18ee}{
+{\footnotesize template$<$typename T $>$ }\\bool {\bfseries ReadVectorD2} (const std::string \&section, const std::string \&key, \hyperlink{struct_vector_d2}{VectorD2}$<$ T $>$ \&v, \hyperlink{struct_vector_d2}{VectorD2}$<$ T $>$ defv=\hyperlink{struct_vector_d2}{VectorD2}$<$ T $>$(), bool acceptSimple=true) const }
+\label{class_ini_reader_a48929f4d114bffd6cbb5b8a14c8f18ee}
+
+\item 
+\hypertarget{class_ini_reader_a0e1049af706d4d905bb4c42b10d1ec14}{
+{\footnotesize template$<$typename T $>$ }\\bool {\bfseries ReadMatrixD2} (const std::string \&section, const std::string \&key, \hyperlink{struct_matrix_d2}{MatrixD2}$<$ T $>$ \&v, \hyperlink{struct_matrix_d2}{MatrixD2}$<$ T $>$ defv=\hyperlink{struct_matrix_d2}{MatrixD2}$<$ T $>$(), bool acceptSimple=true) const }
+\label{class_ini_reader_a0e1049af706d4d905bb4c42b10d1ec14}
+
+\item 
+\hypertarget{class_ini_reader_aa1f50a5608d6b0422692dd048d7e2b76}{
+std::string {\bfseries getFileName} () const }
+\label{class_ini_reader_aa1f50a5608d6b0422692dd048d7e2b76}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_ini_reader_a584bac3f1cd98bbe786c746b6624bc18}{
+SectionMap {\bfseries m\_\-sections}}
+\label{class_ini_reader_a584bac3f1cd98bbe786c746b6624bc18}
+
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_ini_reader_a90407192f7ae925b1c36e099352f5142}{
+static KeywordList {\bfseries DefaultKeywords}}
+\label{class_ini_reader_a90407192f7ae925b1c36e099352f5142}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_ini_reader_aacee78ea5801e3ec3379bed91a92b07b}{
+std::string {\bfseries m\_\-filename}}
+\label{class_ini_reader_aacee78ea5801e3ec3379bed91a92b07b}
+
+\item 
+\hypertarget{class_ini_reader_ac177c92e1a10681857932d6a0661af1e}{
+KeywordList \& {\bfseries m\_\-keywords}}
+\label{class_ini_reader_ac177c92e1a10681857932d6a0661af1e}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gerstrong/projects/CommanderGenius/src/fileio/IniReader.h\item 
+/home/gerstrong/projects/CommanderGenius/src/fileio/IniReader.cpp\end{DoxyCompactItemize}

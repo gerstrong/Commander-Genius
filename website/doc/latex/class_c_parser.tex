@@ -1,0 +1,116 @@
+\hypertarget{class_c_parser}{
+\section{CParser Class Reference}
+\label{class_c_parser}\index{CParser@{CParser}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_parser_aa6372ef4dbf7d11dc4c51f4f4abd1750}{
+\hyperlink{class_c_parser_aa6372ef4dbf7d11dc4c51f4f4abd1750}{CParser} ()}
+\label{class_c_parser_aa6372ef4dbf7d11dc4c51f4f4abd1750}
+
+\begin{DoxyCompactList}\small\item\em The constructor sets the class. It just sets the initial variables. \item\end{DoxyCompactList}\item 
+bool \hyperlink{class_c_parser_a0b7c44198349162fd944a285d164a57c}{loadParseFile} ()
+\begin{DoxyCompactList}\small\item\em Opens the text which can be parsed. This will read all the stuff in to the memory. \item\end{DoxyCompactList}\item 
+bool \hyperlink{class_c_parser_af67215748daabe83cd0682a443e2fe36}{saveParseFile} ()
+\begin{DoxyCompactList}\small\item\em Close the text which was parsed. This will also write all stuff from the memory to the file. \item\end{DoxyCompactList}\item 
+int \hyperlink{class_c_parser_a702bc37d242fade03f3b797417872514}{getIntValue} (const std::string \&keyword, const std::string \&category, int def=-\/1)
+\begin{DoxyCompactList}\small\item\em gets the value \item\end{DoxyCompactList}\item 
+void \hyperlink{class_c_parser_a55aa335048e89a9758b87e8ed8be14ce}{saveIntValue} (const std::string \&keyword, const std::string \&category, int value)
+\begin{DoxyCompactList}\small\item\em saves one value in the configuration file \item\end{DoxyCompactList}\item 
+std::string \hyperlink{class_c_parser_a6f35de18dba3a8f5bf0aa45ca1692161}{getValue} (const std::string \&keyword, const std::string \&category)
+\begin{DoxyCompactList}\small\item\em read the value of the to be seeked keyword and returns the entry. \item\end{DoxyCompactList}\item 
+void \hyperlink{class_c_parser_ad6f32a86fd00603ffb347587ffbcb76b}{saveValue} (const std::string \&keyword, const std::string \&category, const std::string \&value)
+\begin{DoxyCompactList}\small\item\em This function saves the value of a keyword. If the value already exists in the file it will be overwritten. \item\end{DoxyCompactList}\item 
+\hypertarget{class_c_parser_aac949490f55c12ab996ee28b7dc4b648}{
+bool {\bfseries isOpen} ()}
+\label{class_c_parser_aac949490f55c12ab996ee28b7dc4b648}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_c_parser_a702bc37d242fade03f3b797417872514}{
+\index{CParser@{CParser}!getIntValue@{getIntValue}}
+\index{getIntValue@{getIntValue}!CParser@{CParser}}
+\subsubsection[{getIntValue}]{\setlength{\rightskip}{0pt plus 5cm}int CParser::getIntValue (const std::string \& {\em keyword}, \/  const std::string \& {\em category}, \/  int {\em def} = {\ttfamily -\/1})}}
+\label{class_c_parser_a702bc37d242fade03f3b797417872514}
+
+
+gets the value 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em keyword}]keyword that is search in the Parser \item[{\em category}]category in which that keyword that is searched. \item[{\em def}]I still don't why this is used. (normally -\/1) \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+returns the found entry as an int value 
+\end{DoxyReturn}
+\hypertarget{class_c_parser_a6f35de18dba3a8f5bf0aa45ca1692161}{
+\index{CParser@{CParser}!getValue@{getValue}}
+\index{getValue@{getValue}!CParser@{CParser}}
+\subsubsection[{getValue}]{\setlength{\rightskip}{0pt plus 5cm}std::string CParser::getValue (const std::string \& {\em keyword}, \/  const std::string \& {\em category})}}
+\label{class_c_parser_a6f35de18dba3a8f5bf0aa45ca1692161}
+
+
+read the value of the to be seeked keyword and returns the entry. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em keyword}]keyword that is search in the Parser \item[{\em category}]category in which that keyword that is searched. \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+returns the found entry as an string or \char`\"{}\char`\"{} if nothing has been found. 
+\end{DoxyReturn}
+\hypertarget{class_c_parser_a0b7c44198349162fd944a285d164a57c}{
+\index{CParser@{CParser}!loadParseFile@{loadParseFile}}
+\index{loadParseFile@{loadParseFile}!CParser@{CParser}}
+\subsubsection[{loadParseFile}]{\setlength{\rightskip}{0pt plus 5cm}bool CParser::loadParseFile ()}}
+\label{class_c_parser_a0b7c44198349162fd944a285d164a57c}
+
+
+Opens the text which can be parsed. This will read all the stuff in to the memory. 
+
+\begin{DoxyReturn}{Returns}
+true if the file was correctly loaded, else false. 
+\end{DoxyReturn}
+\hypertarget{class_c_parser_a55aa335048e89a9758b87e8ed8be14ce}{
+\index{CParser@{CParser}!saveIntValue@{saveIntValue}}
+\index{saveIntValue@{saveIntValue}!CParser@{CParser}}
+\subsubsection[{saveIntValue}]{\setlength{\rightskip}{0pt plus 5cm}void CParser::saveIntValue (const std::string \& {\em keyword}, \/  const std::string \& {\em category}, \/  int {\em value})}}
+\label{class_c_parser_a55aa335048e89a9758b87e8ed8be14ce}
+
+
+saves one value in the configuration file 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em keyword}]keyword that is search in the Parser \item[{\em category}]category in which that keyword that is searched. \item[{\em value}]the value that has to be saved as an int value \end{DoxyParams}
+\hypertarget{class_c_parser_af67215748daabe83cd0682a443e2fe36}{
+\index{CParser@{CParser}!saveParseFile@{saveParseFile}}
+\index{saveParseFile@{saveParseFile}!CParser@{CParser}}
+\subsubsection[{saveParseFile}]{\setlength{\rightskip}{0pt plus 5cm}bool CParser::saveParseFile ()}}
+\label{class_c_parser_af67215748daabe83cd0682a443e2fe36}
+
+
+Close the text which was parsed. This will also write all stuff from the memory to the file. 
+
+\begin{DoxyReturn}{Returns}
+true if the file was correctly saved, else false. 
+\end{DoxyReturn}
+\hypertarget{class_c_parser_ad6f32a86fd00603ffb347587ffbcb76b}{
+\index{CParser@{CParser}!saveValue@{saveValue}}
+\index{saveValue@{saveValue}!CParser@{CParser}}
+\subsubsection[{saveValue}]{\setlength{\rightskip}{0pt plus 5cm}void CParser::saveValue (const std::string \& {\em keyword}, \/  const std::string \& {\em category}, \/  const std::string \& {\em value})}}
+\label{class_c_parser_ad6f32a86fd00603ffb347587ffbcb76b}
+
+
+This function saves the value of a keyword. If the value already exists in the file it will be overwritten. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em keyword}]keyword that is search in the Parser \item[{\em category}]category in which that keyword that is searched. \item[{\em value}]the value that has to be set as std::string. \end{DoxyParams}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gerstrong/projects/CommanderGenius/src/fileio/CParser.h\item 
+/home/gerstrong/projects/CommanderGenius/src/fileio/CParser.cpp\end{DoxyCompactItemize}

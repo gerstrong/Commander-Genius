@@ -1,0 +1,283 @@
+\hypertarget{class_c_input}{
+\section{CInput Class Reference}
+\label{class_c_input}\index{CInput@{CInput}}
+}
+Inheritance diagram for CInput:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2cm]{class_c_input}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_c_input_abbbdee718149717901aa21607d580c42}{
+void \hyperlink{class_c_input_abbbdee718149717901aa21607d580c42}{pollEvents} ()}
+\label{class_c_input_abbbdee718149717901aa21607d580c42}
+
+\begin{DoxyCompactList}\small\item\em Called every logic cycle. This triggers the events that occur and process them trough various functions. \item\end{DoxyCompactList}\item 
+bool \hyperlink{class_c_input_a34acaa475dda28d428b1ab0032d41014}{getHoldedKey} (int key)
+\begin{DoxyCompactList}\small\item\em returns if certain key is being held \item\end{DoxyCompactList}\item 
+bool \hyperlink{class_c_input_a4eef81156f58990d5c911cb2b1c7af1b}{getPressedKey} (int key)
+\begin{DoxyCompactList}\small\item\em returns if certain key is being pressed \item\end{DoxyCompactList}\item 
+bool \hyperlink{class_c_input_a5bd7ad2f5a50cdcc159d3dae929a563e}{getPulsedKey} (int key, int msec)
+\begin{DoxyCompactList}\small\item\em returns if certain key is being held for msecs \item\end{DoxyCompactList}\item 
+bool \hyperlink{class_c_input_a359ea2759f63f0b1e6dcae057467e5de}{getPressedIsTypingKey} (void)
+\begin{DoxyCompactList}\small\item\em tells if the pressed key was for typing \item\end{DoxyCompactList}\item 
+\hypertarget{class_c_input_a1ef2e445c30b86cf5c14117057912d76}{
+bool {\bfseries getPressedIsNumKey} (void)}
+\label{class_c_input_a1ef2e445c30b86cf5c14117057912d76}
+
+\item 
+std::string \hyperlink{class_c_input_abf9c66d7c259956419d89921fcda458d}{getPressedTypingKey} (void)
+\begin{DoxyCompactList}\small\item\em normally called, when a save game or high score entry is being made. It will return a charakter that was typed. \item\end{DoxyCompactList}\item 
+std::string \hyperlink{class_c_input_a6c6b514e6ace12a26f232c6d87af6b65}{getPressedNumKey} (void)
+\begin{DoxyCompactList}\small\item\em returns if a numerical key was pressed \item\end{DoxyCompactList}\item 
+\hypertarget{class_c_input_acf611d20d7c5f3c2bdc0737804b315b4}{
+bool {\bfseries getPressedAnyKey} (void)}
+\label{class_c_input_acf611d20d7c5f3c2bdc0737804b315b4}
+
+\item 
+\hypertarget{class_c_input_a3fc1c132a71d9b6edb410852c44af3f0}{
+void {\bfseries sendKey} (int key)}
+\label{class_c_input_a3fc1c132a71d9b6edb410852c44af3f0}
+
+\item 
+\hypertarget{class_c_input_a12c9198267f2bb50cf04b5850765949d}{
+bool {\bfseries getPressedAnyCommand} ()}
+\label{class_c_input_a12c9198267f2bb50cf04b5850765949d}
+
+\item 
+\hypertarget{class_c_input_aecf90a6feda73995fc067fe4f4228b78}{
+bool {\bfseries getPulsedCommand} (int command, int msec)}
+\label{class_c_input_aecf90a6feda73995fc067fe4f4228b78}
+
+\item 
+\hypertarget{class_c_input_a915996d26718ca0d0703dee2c89bf0a5}{
+bool {\bfseries getPulsedCommand} (int player, int command, int msec)}
+\label{class_c_input_a915996d26718ca0d0703dee2c89bf0a5}
+
+\item 
+\hypertarget{class_c_input_ab1f4cdd2a5d08632f6edfac49141f718}{
+bool {\bfseries getHoldedCommand} (int player, int command)}
+\label{class_c_input_ab1f4cdd2a5d08632f6edfac49141f718}
+
+\item 
+\hypertarget{class_c_input_a376d9cff6c4d0e4e22f4766e78e3e75c}{
+bool {\bfseries getHoldedCommand} (int command)}
+\label{class_c_input_a376d9cff6c4d0e4e22f4766e78e3e75c}
+
+\item 
+\hypertarget{class_c_input_ae1219c4d90e4ad66ba4ccd4dff5603d9}{
+bool {\bfseries getPressedCommand} (int command)}
+\label{class_c_input_ae1219c4d90e4ad66ba4ccd4dff5603d9}
+
+\item 
+\hypertarget{class_c_input_a9385d389edb4aa02f6095f4afbb7ef67}{
+bool {\bfseries getPressedCommand} (int player, int command)}
+\label{class_c_input_a9385d389edb4aa02f6095f4afbb7ef67}
+
+\item 
+\hypertarget{class_c_input_abb73d486fd0e8245942be72c521f191c}{
+bool {\bfseries getPressedAnyCommand} (int player)}
+\label{class_c_input_abb73d486fd0e8245942be72c521f191c}
+
+\item 
+\hypertarget{class_c_input_a1a7b3e20613a6c104b7897df528f624b}{
+bool {\bfseries getExitEvent} (void)}
+\label{class_c_input_a1a7b3e20613a6c104b7897df528f624b}
+
+\item 
+\hypertarget{class_c_input_a9f6b3efb6f88d0f9787e775b0d77d881}{
+bool {\bfseries getTwoButtonFiring} (int player)}
+\label{class_c_input_a9f6b3efb6f88d0f9787e775b0d77d881}
+
+\item 
+\hypertarget{class_c_input_a1872fc12e86be8dd9bb4f2fbaa90b633}{
+void {\bfseries setTwoButtonFiring} (int player, bool value)}
+\label{class_c_input_a1872fc12e86be8dd9bb4f2fbaa90b633}
+
+\item 
+\hypertarget{class_c_input_ad2f17691e8b7e0c977ac20a0ef4ebdda}{
+void {\bfseries cancelExitEvent} (void)}
+\label{class_c_input_ad2f17691e8b7e0c977ac20a0ef4ebdda}
+
+\item 
+std::string \hyperlink{class_c_input_a9ec7be50e43345a0c70b9379fe092c16}{getEventName} (int position, unsigned char input)
+\begin{DoxyCompactList}\small\item\em This checks what event has been assigned to the chosen command and builds a string calling it a standardized way. \item\end{DoxyCompactList}\item 
+bool \hyperlink{class_c_input_a277812473d6522fdb00b7a584440c0a7}{readNewEvent} (Uint8 device, int position)
+\begin{DoxyCompactList}\small\item\em This checks if some event was triggered to get the new input command. \item\end{DoxyCompactList}\item 
+\hypertarget{class_c_input_af6e2e781b78d4258ba8b1206087f54fa}{
+void {\bfseries setupInputCommand} (\hyperlink{structst_input_command}{stInputCommand} $\ast$pInput, int action, const std::string \&string)}
+\label{class_c_input_af6e2e781b78d4258ba8b1206087f54fa}
+
+\item 
+\hypertarget{class_c_input_aecadd65cf7fa6a5928b6b5f0c86b0b5e}{
+void \hyperlink{class_c_input_aecadd65cf7fa6a5928b6b5f0c86b0b5e}{loadControlconfig} ()}
+\label{class_c_input_aecadd65cf7fa6a5928b6b5f0c86b0b5e}
+
+\begin{DoxyCompactList}\small\item\em This will load input settings that were saved previously by the user at past session. \item\end{DoxyCompactList}\item 
+void \hyperlink{class_c_input_a459565c75153405d01e521da2084cd74}{resetControls} (int player)
+\begin{DoxyCompactList}\small\item\em This will reset the player controls how they saved before. The Default controls are going to be restored when this function is executed. \item\end{DoxyCompactList}\item 
+bool \hyperlink{class_c_input_a5f76503ef7e49c5d6d1ab4eb2a2480e9}{startJoyDriver} ()
+\begin{DoxyCompactList}\small\item\em This will start the joystick driver and search for all the controls attached to your computer. \item\end{DoxyCompactList}\item 
+\hypertarget{class_c_input_a112be13b91ce115e40c5da66bf590433}{
+void \hyperlink{class_c_input_a112be13b91ce115e40c5da66bf590433}{saveControlconfig} ()}
+\label{class_c_input_a112be13b91ce115e40c5da66bf590433}
+
+\begin{DoxyCompactList}\small\item\em This will save input settings according to how the user did map the buttons, axes or keys to the commands. \item\end{DoxyCompactList}\item 
+\hypertarget{class_c_input_a58d6a8e7cbddae1faffed25e97956d6f}{
+void \hyperlink{class_c_input_a58d6a8e7cbddae1faffed25e97956d6f}{flushKeys} (void)}
+\label{class_c_input_a58d6a8e7cbddae1faffed25e97956d6f}
+
+\begin{DoxyCompactList}\small\item\em this will forget every key that was typed before \item\end{DoxyCompactList}\item 
+\hypertarget{class_c_input_a6716fd1d3fd6f391fd51f05408e40e31}{
+void \hyperlink{class_c_input_a6716fd1d3fd6f391fd51f05408e40e31}{flushCommands} (void)}
+\label{class_c_input_a6716fd1d3fd6f391fd51f05408e40e31}
+
+\begin{DoxyCompactList}\small\item\em This will forget every command that was triggered. \item\end{DoxyCompactList}\item 
+\hypertarget{class_c_input_a6bfd922a639a22b9fc17c87cdf675303}{
+void \hyperlink{class_c_input_a6bfd922a639a22b9fc17c87cdf675303}{flushAll} (void)}
+\label{class_c_input_a6bfd922a639a22b9fc17c87cdf675303}
+
+\begin{DoxyCompactList}\small\item\em flushes both key and commands queue \item\end{DoxyCompactList}\item 
+\hypertarget{class_c_input_a282370813c9dfe52799b1a1ec49e497e}{
+virtual \hyperlink{class_c_input_a282370813c9dfe52799b1a1ec49e497e}{$\sim$CInput} ()}
+\label{class_c_input_a282370813c9dfe52799b1a1ec49e497e}
+
+\begin{DoxyCompactList}\small\item\em shuts down the input driver. \item\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_c_input_a9ec7be50e43345a0c70b9379fe092c16}{
+\index{CInput@{CInput}!getEventName@{getEventName}}
+\index{getEventName@{getEventName}!CInput@{CInput}}
+\subsubsection[{getEventName}]{\setlength{\rightskip}{0pt plus 5cm}std::string CInput::getEventName (int {\em command}, \/  unsigned char {\em input})}}
+\label{class_c_input_a9ec7be50e43345a0c70b9379fe092c16}
+
+
+This checks what event has been assigned to the chosen command and builds a string calling it a standardized way. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em command}]command where you are looking for the event \item[{\em input}]number of input chosen. it's normal the number of the player \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+returns the assigned event as a std::string 
+\end{DoxyReturn}
+\hypertarget{class_c_input_a34acaa475dda28d428b1ab0032d41014}{
+\index{CInput@{CInput}!getHoldedKey@{getHoldedKey}}
+\index{getHoldedKey@{getHoldedKey}!CInput@{CInput}}
+\subsubsection[{getHoldedKey}]{\setlength{\rightskip}{0pt plus 5cm}bool CInput::getHoldedKey (int {\em key})}}
+\label{class_c_input_a34acaa475dda28d428b1ab0032d41014}
+
+
+returns if certain key is being held 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em key}]the key to be held \end{DoxyParams}
+\hypertarget{class_c_input_a359ea2759f63f0b1e6dcae057467e5de}{
+\index{CInput@{CInput}!getPressedIsTypingKey@{getPressedIsTypingKey}}
+\index{getPressedIsTypingKey@{getPressedIsTypingKey}!CInput@{CInput}}
+\subsubsection[{getPressedIsTypingKey}]{\setlength{\rightskip}{0pt plus 5cm}bool CInput::getPressedIsTypingKey (void)}}
+\label{class_c_input_a359ea2759f63f0b1e6dcae057467e5de}
+
+
+tells if the pressed key was for typing 
+
+\begin{DoxyReturn}{Returns}
+true if yes, and false for no. 
+\end{DoxyReturn}
+\hypertarget{class_c_input_a4eef81156f58990d5c911cb2b1c7af1b}{
+\index{CInput@{CInput}!getPressedKey@{getPressedKey}}
+\index{getPressedKey@{getPressedKey}!CInput@{CInput}}
+\subsubsection[{getPressedKey}]{\setlength{\rightskip}{0pt plus 5cm}bool CInput::getPressedKey (int {\em key})}}
+\label{class_c_input_a4eef81156f58990d5c911cb2b1c7af1b}
+
+
+returns if certain key is being pressed 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em key}]the key to be pressed \end{DoxyParams}
+\hypertarget{class_c_input_a6c6b514e6ace12a26f232c6d87af6b65}{
+\index{CInput@{CInput}!getPressedNumKey@{getPressedNumKey}}
+\index{getPressedNumKey@{getPressedNumKey}!CInput@{CInput}}
+\subsubsection[{getPressedNumKey}]{\setlength{\rightskip}{0pt plus 5cm}std::string CInput::getPressedNumKey (void)}}
+\label{class_c_input_a6c6b514e6ace12a26f232c6d87af6b65}
+
+
+returns if a numerical key was pressed 
+
+\begin{DoxyReturn}{Returns}
+number as std::string, which was entered 
+\end{DoxyReturn}
+\hypertarget{class_c_input_abf9c66d7c259956419d89921fcda458d}{
+\index{CInput@{CInput}!getPressedTypingKey@{getPressedTypingKey}}
+\index{getPressedTypingKey@{getPressedTypingKey}!CInput@{CInput}}
+\subsubsection[{getPressedTypingKey}]{\setlength{\rightskip}{0pt plus 5cm}std::string CInput::getPressedTypingKey (void)}}
+\label{class_c_input_abf9c66d7c259956419d89921fcda458d}
+
+
+normally called, when a save game or high score entry is being made. It will return a charakter that was typed. 
+
+\begin{DoxyReturn}{Returns}
+character as std::string, which was entered 
+\end{DoxyReturn}
+\hypertarget{class_c_input_a5bd7ad2f5a50cdcc159d3dae929a563e}{
+\index{CInput@{CInput}!getPulsedKey@{getPulsedKey}}
+\index{getPulsedKey@{getPulsedKey}!CInput@{CInput}}
+\subsubsection[{getPulsedKey}]{\setlength{\rightskip}{0pt plus 5cm}bool CInput::getPulsedKey (int {\em key}, \/  int {\em msec})}}
+\label{class_c_input_a5bd7ad2f5a50cdcc159d3dae929a563e}
+
+
+returns if certain key is being held for msecs 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em key}]the key to be pressed \item[{\em msec}]Milliseconds the key can be held before it is a pulse \end{DoxyParams}
+\hypertarget{class_c_input_a277812473d6522fdb00b7a584440c0a7}{
+\index{CInput@{CInput}!readNewEvent@{readNewEvent}}
+\index{readNewEvent@{readNewEvent}!CInput@{CInput}}
+\subsubsection[{readNewEvent}]{\setlength{\rightskip}{0pt plus 5cm}bool CInput::readNewEvent (Uint8 {\em device}, \/  int {\em command})}}
+\label{class_c_input_a277812473d6522fdb00b7a584440c0a7}
+
+
+This checks if some event was triggered to get the new input command. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em device}]input of which we are trying to read the event \item[{\em command}]command for which we want to assign the event \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+returns true, if an event was triggered, or false if not. 
+\end{DoxyReturn}
+\hypertarget{class_c_input_a459565c75153405d01e521da2084cd74}{
+\index{CInput@{CInput}!resetControls@{resetControls}}
+\index{resetControls@{resetControls}!CInput@{CInput}}
+\subsubsection[{resetControls}]{\setlength{\rightskip}{0pt plus 5cm}void CInput::resetControls (int {\em player})}}
+\label{class_c_input_a459565c75153405d01e521da2084cd74}
+
+
+This will reset the player controls how they saved before. The Default controls are going to be restored when this function is executed. 
+
+
+\begin{DoxyParams}{Parameters}
+\item[{\em player}]Number of player of which the controls will be reset (1-\/4) \end{DoxyParams}
+\hypertarget{class_c_input_a5f76503ef7e49c5d6d1ab4eb2a2480e9}{
+\index{CInput@{CInput}!startJoyDriver@{startJoyDriver}}
+\index{startJoyDriver@{startJoyDriver}!CInput@{CInput}}
+\subsubsection[{startJoyDriver}]{\setlength{\rightskip}{0pt plus 5cm}bool CInput::startJoyDriver ()}}
+\label{class_c_input_a5f76503ef7e49c5d6d1ab4eb2a2480e9}
+
+
+This will start the joystick driver and search for all the controls attached to your computer. 
+
+\begin{DoxyReturn}{Returns}
+false, if the driver couldn't be started, else true 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+/home/gerstrong/projects/CommanderGenius/src/sdl/CInput.h\item 
+/home/gerstrong/projects/CommanderGenius/src/sdl/CInput.cpp\end{DoxyCompactItemize}
