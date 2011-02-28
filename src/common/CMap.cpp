@@ -7,7 +7,7 @@
 
 #include "keen.h"
 #include "CMap.h"
-#include "CBehaviorEngine.h"
+#include "common/CBehaviorEngine.h"
 #include "FindFile.h"
 #include "CLogFile.h"
 #include "sdl/CVideoDriver.h"

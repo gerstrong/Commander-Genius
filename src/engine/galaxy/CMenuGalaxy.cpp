@@ -21,8 +21,8 @@ namespace galaxy
  * \brief sets the menu up when it's opened (initialization)
  */
 CMenuGalaxy::CMenuGalaxy( char menu_mode, CExeFile &ExeFile, CSavedGame &SavedGame,
-		 stOption *pOption, bool &restartVideo ) :
-CMenu( menu_mode, ExeFile, SavedGame, pOption, DLG_THEME_GALAXY, restartVideo),
+		  bool &restartVideo ) :
+CMenu( menu_mode, ExeFile, SavedGame, DLG_THEME_GALAXY, restartVideo),
 processPtr(&CMenuGalaxy::processMainMenu),
 m_TitleBmp(*g_pGfxEngine->getBitmap("MAINMENULABEL"))
 {

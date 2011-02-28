@@ -13,6 +13,7 @@
 
 #include "fileio/CExeFile.h"
 #include "common/options.h"
+#include "common/CBehaviorEngine.h"
 #include <string>
 #include <SDL.h>
 
@@ -21,8 +22,7 @@ const int WORLD_MAP_LEVEL=80;
 class CPlayGame{
 public:
 	CPlayGame(CExeFile &ExeFile, char level,
-			 char numplayers, Uint8& difficulty,
-			 stOption *p_option);
+			 char numplayers, Uint8& difficulty);
 
 	virtual bool loadGameState() = 0;
 	virtual void process() = 0;

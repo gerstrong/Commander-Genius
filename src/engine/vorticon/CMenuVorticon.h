@@ -37,7 +37,7 @@ class CMenuVorticon : public CMenu {
 public:
 
 	CMenuVorticon( char menu_mode, CExeFile &ExeFile, CMap &Map, CSavedGame &SavedGame,
-			 stOption *pOption, bool &restartVideo, bool &hideobjects );
+			 bool &restartVideo, bool &hideobjects );
 
 	void processSpecific();
 	void processF1Menu();

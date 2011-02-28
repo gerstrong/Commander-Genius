@@ -13,17 +13,17 @@
 #include "options.h"
 #include "CObject.h"
 #include "Menu/CBaseMenu.h"
-
-#include "../sdl/CInput.h"
-#include "../fileio/CSavedGame.h"
-#include "../fileio/CExeFile.h"
+#include "sdl/CInput.h"
+#include "fileio/CSavedGame.h"
+#include "fileio/CExeFile.h"
+#include "common/CBehaviorEngine.h"
 
 class CMenu : public CBaseMenu
 {
 public:
 	CMenu(char menu_mode, CExeFile &ExeFile,
 			 CSavedGame &SavedGame,
-			 stOption *pOption, Uint8 DlgTheme,
+			 Uint8 DlgTheme,
 			 bool &restartVideo );
 
 	// Getters
@@ -60,7 +60,6 @@ protected:
 	CExeFile &m_ExeFile;
 	std::string m_GamePath;
 	CSavedGame &m_SavedGame;
-	stOption *mp_option;
 	char m_menu_mode;
 
 	bool m_choosegame;

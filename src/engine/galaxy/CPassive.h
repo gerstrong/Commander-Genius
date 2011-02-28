@@ -18,7 +18,7 @@ class CPassiveGalaxy : public CPassive
 {
 public:
 	CPassiveGalaxy(CExeFile &Exefile, CSavedGame &SavedGame,
-			stOption *p_Option, Uint8& difficulty);
+			Uint8& difficulty);
 
 	bool init(char mode);
 	void process();

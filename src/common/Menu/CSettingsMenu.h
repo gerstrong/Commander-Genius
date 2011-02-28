@@ -11,12 +11,13 @@
 #include "CBaseMenu.h"
 #include "common/options.h"
 #include "fileio/CExeFile.h"
+#include "common/CBehaviorEngine.h"
 
 class CSettingsMenu : public CBaseMenu
 {
 public:
-	CSettingsMenu( Uint8 dlgtheme, CExeFile &ExeFile, stOption *p_option, bool &restartVideo, int selection );
-	CSettingsMenu( Uint8 dlgtheme, CExeFile &ExeFile, stOption *p_option, bool &restartVideo );
+	CSettingsMenu( Uint8 dlgtheme, CExeFile &ExeFile, bool &restartVideo, int selection );
+	CSettingsMenu( Uint8 dlgtheme, CExeFile &ExeFile, bool &restartVideo );
 	void processSpecific();
 
 private:

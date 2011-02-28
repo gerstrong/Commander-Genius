@@ -6,7 +6,7 @@
  */
 
 #include "CHUD.h"
-#include "CBehaviorEngine.h"
+#include "common/CBehaviorEngine.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/video/colourconvert.h"
 #include "graphics/CGfxEngine.h"

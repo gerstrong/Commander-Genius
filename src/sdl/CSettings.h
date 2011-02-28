@@ -18,7 +18,7 @@ public:
 	// NOTE: If no option structure is passed, you must be no means use
 	// 	loadGameCfg(), saveGameCfg(), loadDefaultGameCfg(); setOption(..);
 	// Those depend on that structure.
-	CSettings(stOption *p_option=NULL);
+	CSettings();
 	bool saveDrvCfg();
 	bool loadDrvCfg();
 	void loadDefaultGraphicsCfg();
@@ -27,11 +27,6 @@ public:
 	void loadDefaultGameCfg();
 	void setOption( e_OptionKeyword opt, const std::string &menuname, const std::string &name, char value);
 	virtual ~CSettings();
-	
-private:
-	stOption *mp_option;
-
-	bool checkOptionPtr();
 };
 
 #endif /* CSETTINGS_H_ */

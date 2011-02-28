@@ -9,8 +9,7 @@
 #include "graphics/CGfxEngine.h"
 
 CPlayGame::CPlayGame(CExeFile &ExeFile, char level,
-		 char numplayers, Uint8& difficulty,
-		 stOption *p_option) :
+		 char numplayers, Uint8& difficulty) :
 m_NumPlayers(numplayers),
 m_endgame(false),
 m_ExeFile(ExeFile),
@@ -22,7 +21,7 @@ m_Difficulty(difficulty),
 m_paused(false),
 m_gameover(false),
 m_restartVideo(false),
-mp_option(p_option)
+mp_option(g_pBehaviorEngine->m_option)
 {
 	m_level_command = (level==WORLD_MAP_LEVEL) ? GOTO_WORLD_MAP : START_LEVEL;
 	m_NumSprites = g_pGfxEngine->getNumSprites();

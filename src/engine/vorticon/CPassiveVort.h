@@ -8,7 +8,8 @@
 #ifndef CPASSIVEVORT_H_
 #define CPASSIVEVORT_H_
 
-#include "../CPassive.h"
+#include "engine/CPassive.h"
+#include "common/CBehaviorEngine.h"
 
 namespace vorticon
 {
@@ -17,7 +18,7 @@ class CPassiveVort : public CPassive
 {
 public:
 	CPassiveVort(CExeFile &ExeFile,
-			 CSavedGame &SavedGame, stOption *p_Option, Uint8& difficulty);
+			 CSavedGame &SavedGame, Uint8& difficulty);
 
 	bool init(char mode = INTRO);
 

@@ -10,7 +10,7 @@
 
 
 CPassive::CPassive(CExeFile &Exefile,
-					CSavedGame &SavedGame, stOption *p_Option, Uint8& difficulty) :
+					CSavedGame &SavedGame, Uint8& difficulty) :
 	m_Difficulty(difficulty),
 	m_SavedGame(SavedGame)
 {

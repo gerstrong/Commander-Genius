@@ -52,7 +52,6 @@ public:
 	bool mustShutdown(){ return (m_mode==SHUTDOWN); }
 	
 	char m_mode;
-	stOption *mp_option;
 	
 	virtual ~CGameControl();
 

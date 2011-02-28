@@ -22,7 +22,7 @@ class CMenuGalaxy : public CMenu
 public:
 	CMenuGalaxy( char menu_mode, CExeFile &ExeFile,
 			 CSavedGame &SavedGame,
-			 stOption *pOption, bool &restartVideo );
+			 bool &restartVideo );
 	bool init( menutypes menu_type = MAIN );
 
 	void drawMenuBorder();

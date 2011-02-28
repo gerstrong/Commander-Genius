@@ -9,7 +9,6 @@
 #define CGAME_H_
 
 #include "CGameControl.h"
-#include "common/options.h"
 #include "sdl/CSettings.h"
 
 class CGame {
@@ -21,9 +20,7 @@ public:
 	
 	void run();
 	void cleanup();
-	
-	stOption m_option[NUM_OPTIONS];
-	
+
 private:
 	bool m_firsttime;
 	CGameControl m_Engine;

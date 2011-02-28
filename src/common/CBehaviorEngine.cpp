@@ -14,7 +14,7 @@
  *  belong to this class
  */
 
-#include "CBehaviorEngine.h"
+#include "common/CBehaviorEngine.h"
 #include "CLogFile.h"
 
 void CBehaviorEngine::addMessage(const std::string &name,

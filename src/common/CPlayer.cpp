@@ -25,14 +25,14 @@
 // Initialization Part
 ///
 CPlayer::CPlayer(const char &Episode, short &Level,
-				 bool *mp_level_completed, stOption *mp_option,
+				 bool *mp_level_completed,
 				 std::vector<CObject*> &m_Object, CMap &map) :
 CObject(&map, 0, 0, OBJ_PLAYER),
 m_episode(Episode),
 m_level(Level),
 pjumpupspeed_decrease(g_pBehaviorEngine->getPhysicsSettings().player.defaultjumpupdecreasespeed),
 mp_levels_completed(mp_level_completed),
-mp_option(mp_option),
+mp_option(g_pBehaviorEngine->m_option),
 mp_StatusScr(NULL)
 {
 	mp_camera = new CCamera(&map, 0, 0);

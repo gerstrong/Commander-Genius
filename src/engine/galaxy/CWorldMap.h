@@ -13,13 +13,14 @@
 #include "common/CObject.h"
 #include "fileio/CExeFile.h"
 #include "engine/galaxy/CInventory.h"
+#include "common/CBehaviorEngine.h"
 #include <vector>
 
 namespace galaxy {
 
 class CWorldMap {
 public:
-	CWorldMap(CExeFile &ExeFile, CInventory &Inventory, stOption *p_option);
+	CWorldMap(CExeFile &ExeFile, CInventory &Inventory);
 	bool isActive();
 	void setActive(bool value);
 

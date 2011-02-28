@@ -43,8 +43,7 @@
 #include "engine/vorticon/ai/CIceCannon.h"
 #include "engine/vorticon/ai/CSpark.h"
 
-CMapLoader::CMapLoader(CMap* p_map, std::vector<CPlayer> *p_PlayerVect, stOption *mp_option) :
-mp_option(mp_option),
+CMapLoader::CMapLoader(CMap* p_map, std::vector<CPlayer> *p_PlayerVect) :
 mp_vec_Player(p_PlayerVect)
 {
 	mp_objvect = NULL;
@@ -108,12 +107,16 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	planesize = planeitems.at(8);
 	planesize /= 2; // Size of two planes, but we only need one
 
+
+	const char &fixlevel_error = g_pBehaviorEngine->m_option[OPT_FIXLEVELERRORS].value;
+
 	Uint32 c;
 	for( c=17 ; c<planesize+17 ; c++ ) // Check against Tilesize
 	{
 		t = planeitems.at(c);
 
-		t = fixLevelTiles(t, curmapx, curmapy, episode, level);
+		if( fixlevel_error )
+			fixLevelTiles(t, curmapx, curmapy, episode, level);
 
 		addTile(t, curmapx, curmapy);
 
@@ -480,34 +483,31 @@ void CMapLoader::addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode,
 	}
 }
 
-int CMapLoader::fixLevelTiles(int currentTile, Uint16 curmapX, Uint16 curmapY, int episode, int level)
+/**
+ * \brief As the original Commander Keen games have bugs, this function will fix them. it only will trigger.
+ * \param currentTile	Number of the tile that will be modified to get the bug fixed.
+ * \param curmapX		X-Coordinate of the map not CSFed
+ * \param curmapY		Y-Coordinate of the map not CSFed
+ * \param episode		Episode of the game
+ */
+void CMapLoader::fixLevelTiles(int &currentTile, const Uint16 curmapX, const Uint16 curmapY, const int episode, const int level)
 {
-	//Fix erroneous tiles in K1 & K3 if enabled
-	//for some reason if  mp_option[OPT_FIXLEVELERRORS].value is added as a primary
-	//if statement to these if statements games won't launch and SegFault instead
-	if( episode == 1 && level == 14 && mp_option[OPT_FIXLEVELERRORS].value )
+	if( episode == 1 && level == 14 )
 	{
 		if( (curmapX == 14 && curmapY == 10) || (curmapX == 13 && curmapY == 13) )
 			currentTile = 143;
 		else if( (curmapX == 14 && curmapY == 11) || (curmapX == 13 && curmapY == 14) )
 			currentTile = 331;
 	}
-	else if( episode == 3 && level == 8 && mp_option[OPT_FIXLEVELERRORS].value )
+	else if( episode == 3 && level == 8 )
 	{
-		if( ( curmapX == 77 && curmapY == 52 ) || 
-			( ( curmapX == 94 || curmapX == 95 || curmapX == 96 ) && curmapY == 15 ) )
+		if( ( curmapX == 77 && curmapY == 52 ) ||
+				( ( curmapX == 94 || curmapX == 95 || curmapX == 96 ) && curmapY == 15 ) )
 			currentTile = 169;
 	}
-	else if( episode == 3 && level == 15 && mp_option[OPT_FIXLEVELERRORS].value )
+	else if( episode == 3 && level == 15 )
 	{
 		if( ( curmapX == 32 || curmapX == 33 ) && curmapY == 113 )
 			currentTile = 482;
 	}
-
-/*	if( episode == 3 && level == 15 && curmapX == 31 && curmapY == 113 )
-	{
-		std::cout << "\nTile at " << curmapX << "x" << curmapY << " is:  " << currentTile << "\n";
-	}*/
-
-	return currentTile;
 }

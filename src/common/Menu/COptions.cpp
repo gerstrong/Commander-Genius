@@ -12,7 +12,7 @@
 
 COptions::COptions(Uint8 dlg_theme, stOption *p_option) :
 CBaseMenu(dlg_theme),
-mp_option(p_option)
+mp_option(g_pBehaviorEngine->m_option)
 {
 	int i;
 	std::string buf;
@@ -38,7 +38,7 @@ void COptions::processSpecific()
 
 	if(m_mustclose) // If menu is about to close save the options
 	{
-		CSettings Settings(mp_option);
+		CSettings Settings;
 		Settings.saveGameCfg();
 	}
 

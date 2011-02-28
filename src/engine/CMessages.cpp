@@ -10,9 +10,9 @@
  */
 
 #include "CMessages.h"
-#include "../StringUtils.h"
-#include "../CLogFile.h"
-#include "../common/CBehaviorEngine.h"
+#include "StringUtils.h"
+#include "CLogFile.h"
+#include "common/CBehaviorEngine.h"
 
 CMessages::CMessages(unsigned char *p_exebuf, char episode, int version) :
 	mp_exe(p_exebuf)

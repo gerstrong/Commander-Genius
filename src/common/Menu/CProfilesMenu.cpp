@@ -10,6 +10,7 @@
 #include "sdl/CSettings.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/CTimer.h"
+#include "common/CBehaviorEngine.h"
 #include <list>
 #include <string>
 
@@ -53,8 +54,8 @@ void CProfilesMenu::processSpecific()
  */
 void CProfilesMenu::setDefaultClassic()
 {
-	stOption p_option[NUM_OPTIONS];
-	CSettings Settings(p_option);
+	stOption *p_option = g_pBehaviorEngine->m_option;
+	CSettings Settings;
 	Settings.loadDrvCfg();
 	g_pVideoDriver->setSpecialFXMode(false);
 	st_camera_bounds &CameraBounds = g_pVideoDriver->getCameraBounds();
@@ -80,8 +81,8 @@ void CProfilesMenu::setDefaultClassic()
  */
 void CProfilesMenu::setDefaultEnhanced()
 {
-	stOption p_option[NUM_OPTIONS];
-	CSettings Settings(p_option);
+	stOption *p_option = g_pBehaviorEngine->m_option;
+	CSettings Settings;
 	Settings.loadDrvCfg();
 	g_pVideoDriver->setSpecialFXMode(true);
 	st_camera_bounds &CameraBounds = g_pVideoDriver->getCameraBounds();

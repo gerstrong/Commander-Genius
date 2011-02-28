@@ -20,7 +20,7 @@
 class CObjectAI {
 public:
 	CObjectAI(CMap *p_map, std::vector<CObject*> &objvect, std::vector<CPlayer> &Player,
-			 stOption *p_options, int NumPlayers, int episode, int level,
+			 int NumPlayers, int episode, int level,
 			 Uint8& difficulty, bool &dark);
 
 	// main functions

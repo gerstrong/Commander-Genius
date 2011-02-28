@@ -52,7 +52,7 @@ bool CPlayGameVorticon::loadGameState()
 			m_Player.clear();
 
 		m_Player.assign(m_NumPlayers, CPlayer(m_Episode, m_Level,
-				 mp_level_completed, mp_option, m_Object, m_Map) );
+				 mp_level_completed, m_Object, m_Map) );
 		for( size_t i=0 ; i < m_Player.size() ; i++ )
 		{
 			m_Player.at(i).m_index = i;
@@ -154,7 +154,7 @@ bool CPlayGameVorticon::loadGameState()
 		g_pGfxEngine->pushEffectPtr(pColorMergeFX);
 
 
-		mp_ObjectAI = new CObjectAI(&m_Map, m_Object, m_Player, mp_option,
+		mp_ObjectAI = new CObjectAI(&m_Map, m_Object, m_Player,
 									m_NumPlayers, m_Episode, m_Level,
 									m_Difficulty, m_Map.m_Dark);
 		setupPlayers();

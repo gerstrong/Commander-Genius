@@ -17,9 +17,9 @@
 #include "CIntro.h"
 #include "CTitle.h"
 #include "vorticon/CMenuVorticon.h"
-#include "../dialog/CTextBox.h"
-#include "../common/CMap.h"
-#include "../common/CObject.h"
+#include "dialog/CTextBox.h"
+#include "common/CMap.h"
+#include "common/CObject.h"
 #include <string>
 #include <vector>
 
@@ -31,7 +31,7 @@ public:
 	};
 	
 	CPassive(CExeFile &Exefile, CSavedGame &SavedGame,
-			stOption *p_Option, Uint8& difficulty);
+			 Uint8& difficulty);
 	
 	virtual bool init(char mode = INTRO) {return false;};
 	

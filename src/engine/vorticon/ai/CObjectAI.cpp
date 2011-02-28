@@ -10,7 +10,7 @@
 #include "CLogFile.h"
 
 CObjectAI::CObjectAI(CMap *p_map, std::vector<CObject*> &objvect, std::vector<CPlayer> &Player,
-					 stOption *p_options, int NumPlayers, int episode, int level,
+					 int NumPlayers, int episode, int level,
 					 Uint8& difficulty, bool &dark) :
 m_Objvect(objvect),
 m_Player(Player),
@@ -18,7 +18,7 @@ m_difficulty(difficulty),
 m_dark(dark)
 {
 	mp_Map = p_map;
-	mp_Options = p_options;
+	mp_Options = g_pBehaviorEngine->m_option;
 	m_Level = level;
 	m_Episode = episode;
 	m_gunfiretimer = 0;

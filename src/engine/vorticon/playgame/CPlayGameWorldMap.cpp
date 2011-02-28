@@ -6,14 +6,14 @@
  */
 
 #include "CPlayGameVorticon.h"
-#include "../../../sdl/CTimer.h"
-#include "../../../sdl/CInput.h"
-#include "../../../sdl/sound/CSound.h"
-#include "../../../sdl/CVideoDriver.h"
-#include "../../../graphics/CGfxEngine.h"
-#include "../../../graphics/effects/CColorMerge.h"
-#include "../../../sdl/sound/CSound.h"
-#include "../ai/CTeleporter.h"
+#include "sdl/CTimer.h"
+#include "sdl/CInput.h"
+#include "sdl/sound/CSound.h"
+#include "sdl/CVideoDriver.h"
+#include "graphics/CGfxEngine.h"
+#include "graphics/effects/CColorMerge.h"
+#include "sdl/sound/CSound.h"
+#include "engine/vorticon/ai/CTeleporter.h"
 
 void CPlayGameVorticon::processOnWorldMap()
 {

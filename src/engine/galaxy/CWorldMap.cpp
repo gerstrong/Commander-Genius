@@ -15,11 +15,11 @@
 namespace galaxy {
 
 CWorldMap::CWorldMap(CExeFile &ExeFile,
-		CInventory &Inventory, stOption *p_option):
+		CInventory &Inventory):
 m_active(false),
 m_ExeFile(ExeFile),
 m_Inventory(Inventory),
-mp_option(p_option)
+mp_option(g_pBehaviorEngine->m_option)
 {}
 
 bool CWorldMap::isActive()

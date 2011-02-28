@@ -38,8 +38,7 @@ m_Engine(m_firsttime)
  */
 bool CGame::init(int argc, char *argv[])
 {
-	CSettings Settings(m_option);
-	m_Engine.mp_option = m_option;
+	CSettings Settings;
 	
 	// Check if there are settings on the PC, otherwise use defaults.
 	if(!Settings.loadDrvCfg())
@@ -102,7 +101,7 @@ bool CGame::loadCKPDrivers()
  */
 void CGame::run()
 {
-	CSettings Settings(m_option);
+	CSettings Settings;
 	do
 	{
         // Perform game logic

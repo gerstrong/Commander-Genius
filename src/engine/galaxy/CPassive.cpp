@@ -18,11 +18,11 @@ namespace galaxy
 {
 
 CPassiveGalaxy::CPassiveGalaxy(CExeFile &Exefile,
-		CSavedGame &SavedGame, stOption *p_Option, Uint8& difficulty) :
-CPassive(Exefile, SavedGame, p_Option, difficulty),
+		CSavedGame &SavedGame, Uint8& difficulty) :
+CPassive(Exefile, SavedGame,  difficulty),
 processMode(&CPassiveGalaxy::processIntro),
 m_BackgroundBitmap(*g_pGfxEngine->getBitmap("TITLE")),
-mp_Menu(new CMenuGalaxy(PASSIVE, Exefile, SavedGame, p_Option, m_restartVideo))
+mp_Menu(new CMenuGalaxy(PASSIVE, Exefile, SavedGame, m_restartVideo))
 { }
 
 bool CPassiveGalaxy::init(char mode)

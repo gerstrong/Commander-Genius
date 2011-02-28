@@ -24,9 +24,8 @@
 ////
 CPlayGameVorticon::CPlayGameVorticon( CExeFile &ExeFile, char level,
 		  char numplayers, Uint8& difficulty,
-		  stOption *p_option,
 		  bool finale, CSavedGame &SavedGame) :
-CPlayGame(ExeFile, level, numplayers, difficulty, p_option),
+CPlayGame(ExeFile, level, numplayers, difficulty),
 mp_ObjectAI(NULL),
 m_SavedGame(SavedGame),
 mp_HighScores(NULL),
@@ -41,7 +40,7 @@ mp_KeenLeftSfc(NULL)
 		m_Player.clear();
 
 	m_Player.assign(m_NumPlayers, CPlayer(m_Episode, m_Level,
-			mp_level_completed, mp_option,
+			mp_level_completed,
 			m_Object, m_Map));
 
 	for(int i=0 ; i<m_NumPlayers ; i++)
@@ -115,7 +114,7 @@ void CPlayGameVorticon::setupPlayers()
 
 bool CPlayGameVorticon::init()
 {
-	CMapLoader MapLoader( &m_Map, &m_Player, mp_option );
+	CMapLoader MapLoader( &m_Map, &m_Player );
 	MapLoader.m_checkpointset = m_checkpointset;
 	MapLoader.mp_objvect = &m_Object;
 
@@ -140,7 +139,7 @@ bool CPlayGameVorticon::init()
 	g_pInput->flushAll();
 
 	// Initialize the AI
-	mp_ObjectAI = new CObjectAI(&m_Map, m_Object, m_Player, mp_option,
+	mp_ObjectAI = new CObjectAI(&m_Map, m_Object, m_Player,
 								m_NumPlayers, m_Episode, m_Level,
 								m_Difficulty, m_Map.m_Dark);
 
@@ -333,7 +332,7 @@ void CPlayGameVorticon::process()
 		// Open the Main Menu if ESC Key pressed and mp_Menu not opened.  Prevent the menu if the player is not solid.
 		if( !mp_Menu && !mp_Finale && g_pInput->getPressedCommand(IC_QUIT) && ( m_Player[0].solid || m_Player[0].godmode ) )
 		{	// Open the menu
-				mp_Menu = new CMenuVorticon( ACTIVE, m_ExeFile, m_Map, m_SavedGame, mp_option, m_restartVideo, m_hideobjects );
+				mp_Menu = new CMenuVorticon( ACTIVE, m_ExeFile, m_Map, m_SavedGame, m_restartVideo, m_hideobjects );
 		}
 	}
 }
@@ -437,7 +436,7 @@ void CPlayGameVorticon::handleFKeys()
 	{
 		// Show the typical F1 Help
 		// Open the menu
-		//mp_Menu = new CMenuVorticon( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame, mp_option );
+		//mp_Menu = new CMenuVorticon( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame  );
 		//SAFE_DELETE(mp_Menu);
 		//mp_Menu = new CHelpMenuVorticon(DLG_THEME_VORTICON);
 		//mp_Menu->init(F1);
@@ -447,7 +446,7 @@ void CPlayGameVorticon::handleFKeys()
 	{
 		// Debug Menu
 		// Open the menu
-		mp_Menu = new CMenuVorticon( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame, mp_option );
+		mp_Menu = new CMenuVorticon( ACTIVE, m_Gamepath, m_Episode, m_Map, m_SavedGame  );
 		mp_Menu->init(DEBUG);
 	}*/
 
@@ -458,21 +457,21 @@ void CPlayGameVorticon::handleFKeys()
 		if ( g_pInput->getPressedKey(KF2) )
 		{
 			mp_Menu = new CMenuVorticon( ACTIVE, m_ExeFile, m_Map,
-					m_SavedGame, mp_option, m_restartVideo, m_hideobjects );
+					m_SavedGame,  m_restartVideo, m_hideobjects );
 			mp_Menu->init(AUDIO);
 		}
 		// F3 - Controls Menu
 		else if ( g_pInput->getPressedKey(KF3) )
 		{
 			mp_Menu = new CMenuVorticon( ACTIVE, m_ExeFile, m_Map,
-					m_SavedGame, mp_option, m_restartVideo, m_hideobjects );
+					m_SavedGame,  m_restartVideo, m_hideobjects );
 			mp_Menu->init(CONTROLS);
 		}
 		// F5 - save game
 		else if ( g_pInput->getPressedKey(KF5) )
 		{
 			mp_Menu = new CMenuVorticon( ACTIVE, m_ExeFile, m_Map,
-					m_SavedGame, mp_option, m_restartVideo, m_hideobjects );
+					m_SavedGame,  m_restartVideo, m_hideobjects );
 			mp_Menu->init(SAVE);
 		}
 	}

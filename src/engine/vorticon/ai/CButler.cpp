@@ -1,8 +1,8 @@
 #include "CButler.h"
-#include "../../../keen.h"
-#include "../../../sdl/sound/CSound.h"
-#include "../../../graphics/CGfxEngine.h"
-#include "../../../common/CBehaviorEngine.h"
+#include "keen.h"
+#include "sdl/sound/CSound.h"
+#include "graphics/CGfxEngine.h"
+#include "common/CBehaviorEngine.h"
 
 CButler::CButler(CMap *pmap, Uint32 x, Uint32 y,
 		std::vector<CPlayer> &PlayerVect) :

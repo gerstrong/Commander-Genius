@@ -11,7 +11,7 @@
 #ifndef COBJECT_H_
 #define COBJECT_H_
 
-#include "CBehaviorEngine.h"
+#include "common/CBehaviorEngine.h"
 #include "ActionFormat.h"
 #include "objenums.h"
 #include "CVec.h"

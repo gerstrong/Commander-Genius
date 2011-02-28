@@ -23,6 +23,7 @@
 #include "CPhysicsSettings.h"
 #include "fileio/TypeDefinitions.h"
 #include "engine/CEventContainer.h"
+#include "common/options.h"
 
 #include "CSingleton.h"
 #define g_pBehaviorEngine CBehaviorEngine::Get()
@@ -55,6 +56,7 @@ public:
 	CEventContainer m_EventList;
 	CExeFile m_ExeFile;
 	bool m_is_a_mod;
+	stOption m_option[NUM_OPTIONS];
 
 private:
 	std::vector<CTileProperties> m_TileProperties[2];

@@ -14,6 +14,7 @@
 #include "CVideoDriver.h"
 #include "CTimer.h"
 #include "sound/CSound.h"
+#include "common/CBehaviorEngine.h"
 
 /**
  * \brief	The CSettings class handles the saving and loading of all the settings that are saved in
@@ -21,10 +22,9 @@
  *
  * \param	p_option	pointer to an array that stores the options settings of the game
  */
-CSettings::CSettings(stOption *p_option) {
+CSettings::CSettings() {
 	notes << "Reading game options from " << GetFullFileName(CONFIGFILENAME) << endl;
 	notes << "Will write game options to " << GetWriteFullFileName(CONFIGFILENAME, true) << endl;
-	mp_option = p_option;
 }
 
 /**
@@ -159,17 +159,6 @@ void CSettings::loadDefaultGraphicsCfg() //Loads default graphics
 }
 
 /**
- * \brief	checks if the pointer to the options array is set.
- *
- * \return			true, if pointer is properly set, false if not.
- */
-bool CSettings::checkOptionPtr() {
-	if(mp_option) return true;
-	g_pLogFile->textOut("ERROR in Code implementation! There is an error in the source code. Pointer mp_option cannot be used here!\n");
-	return false;
-}
-
-/**
  * \brief	Sets the option data to the option array.
  *
  * \param	opt			option ID
@@ -182,17 +171,16 @@ bool CSettings::checkOptionPtr() {
  */
 void CSettings::setOption( e_OptionKeyword opt, const std::string &menuname, const std::string &name, char value)
 {
-	if(!checkOptionPtr()) return;
-	mp_option[opt].menuname = menuname;
-	mp_option[opt].name = name;
-	mp_option[opt].value = value;
+	stOption &option = g_pBehaviorEngine->m_option[opt];
+	option.menuname = menuname;
+	option.name = name;
+	option.value = value;
 }
 /**
  * \brief  This is normally processed when the game is started. It sets the default options.
  */
 void CSettings::loadDefaultGameCfg()
 {
-	if(!checkOptionPtr()) return;
 	setOption( OPT_FULLYAUTOMATIC,	"Machine Gun      ", "autogun", 0 );
 	setOption( OPT_SUPERPOGO,		"Super Pogo Stick ", "superpogo", 0 );
 	setOption( OPT_ALLOWPKING,		"Friendly Fire    ", "pking", 1 );
@@ -219,15 +207,14 @@ bool CSettings::loadGameCfg()
 
 	if(!Configuration.Parse()) return false;
 
-	if(!checkOptionPtr()) return false;
-
 	loadDefaultGameCfg();
 
+	stOption *p_option = g_pBehaviorEngine->m_option;
 	for (i = 0; i < NUM_OPTIONS; i++)
 	{
 		bool newvalue;
-		Configuration.ReadKeyword("Game", mp_option[i].name, &newvalue, false);
-		mp_option[i].value = (newvalue) ? 1 : 0;
+		Configuration.ReadKeyword("Game", p_option[i].name, &newvalue, false);
+		p_option[i].value = (newvalue) ? 1 : 0;
 	}
 	
 	g_pLogFile->ftextOut("<br>Your personal settings were loaded successfully...<br>");
@@ -243,10 +230,9 @@ bool CSettings::saveGameCfg()
 
 	if(!Configuration.Parse()) return false;
 	
-	if(!checkOptionPtr()) return false;
-
+	stOption *p_option = g_pBehaviorEngine->m_option;
 	for (int i = 0; i < NUM_OPTIONS; i++)
-		Configuration.SetKeyword("Game", mp_option[i].name, mp_option[i].value);
+		Configuration.SetKeyword("Game", p_option[i].name, p_option[i].value);
 	
 	Configuration.saveCfgFile();
 	return true;

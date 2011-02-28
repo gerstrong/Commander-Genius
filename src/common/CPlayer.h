@@ -18,6 +18,7 @@
 #include "engine/CCamera.h"
 #include <vector>
 #include <string>
+#include "common/CBehaviorEngine.h"
 
 enum level_triggers{
 	LVLTRIG_NONE, LVLTRIG_TANTALUS_RAY, LVLTRIG_BRIDGE, LVLTRIG_LIGHT
@@ -35,7 +36,7 @@ public:
 	};
 
 	CPlayer(const char &Episode, short &Level,
-			 bool *mp_level_completed, stOption *mp_option,
+			 bool *mp_level_completed,
 			 std::vector<CObject*> &m_Object, CMap &map);
 	void setDatatoZero();
 	void setDefaultStartValues();
