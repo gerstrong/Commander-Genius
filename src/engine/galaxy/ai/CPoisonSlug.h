@@ -1,7 +1,7 @@
 /*
- * CPlatform.h
+ * CPoisonSlug.h
  *
- *  Created on: 23.02.2011
+ *  Created on: 23FEB2011
  *      Author: FCTW
  *
  *  This handles the Poison Slugs in Galaxy

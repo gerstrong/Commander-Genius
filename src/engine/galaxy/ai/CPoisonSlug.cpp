@@ -16,7 +16,7 @@ CObject(pmap, x, y, OBJ_NONE)
 	setActionForce(A_SLUG_MOVE);
 }
 
-void CSlug::process()
+void CPoisonSlug::process()
 {
 	processActionRoutine();
 }

@@ -362,7 +362,7 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 
 	case 22:
 		//This is a Poison Slug.
-		p_newfoe = new galaxy::CSlug(&Map, x, y-250);
+		p_newfoe = new galaxy::CPoisonSlug(&Map, x, y-250);
 		break;
 
 	case 27: case 28: case 29: case 30: case 32:
