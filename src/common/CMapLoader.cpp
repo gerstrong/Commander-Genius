@@ -499,6 +499,11 @@ void CMapLoader::fixLevelTiles(int &currentTile, const Uint16 curmapX, const Uin
 		else if( (curmapX == 14 && curmapY == 11) || (curmapX == 13 && curmapY == 14) )
 			currentTile = 331;
 	}
+	else if( episode == 2 && level == 15 )
+	{
+		if( curmapX == 50 && curmapY == 18 )
+			currentTile = 187;
+	}
 	else if( episode == 3 && level == 8 )
 	{
 		if( ( curmapX == 77 && curmapY == 52 ) ||
