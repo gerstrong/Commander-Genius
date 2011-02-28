@@ -42,7 +42,7 @@ m_Pos(x,y)
 
 	cansupportplayer = false;
 	
-    yinertia = 0;
+	yinertia = 0;
 	xinertia = 0;
 	onslope = false;
 

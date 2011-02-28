@@ -11,14 +11,13 @@
 #ifndef COBJECT_H_
 #define COBJECT_H_
 
-#include "common/CBehaviorEngine.h"
+#include "CBehaviorEngine.h"
 #include "ActionFormat.h"
-#include "objenums.h"
 #include "CVec.h"
 
 // structures for each AI module's data
 #include "engine/vorticon/ai/enemydata.h"
-#include "common/CMap.h"
+#include "CMap.h"
 #include "graphics/CGfxEngine.h"
 #include "options.h"
 
