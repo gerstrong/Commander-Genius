@@ -25,6 +25,7 @@ public:
 	void addTile( Uint16 t, Uint16 x, Uint16 y );
 	void addWorldMapObject(unsigned int t, Uint16 x, Uint16 y, int episode);
 	void addEnemyObject(unsigned int t, Uint16 x, Uint16 y, int episode, int level);
+	int fixLevelTiles(int currentTile, Uint16 curmapX, Uint16 curmapY, int episode, int level);
 	
 	bool m_checkpointset;
 	bool m_NessieAlreadySpawned;
