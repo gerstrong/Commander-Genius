@@ -114,26 +114,31 @@ bool CMapLoader::load( Uint8 episode, Uint8 level, const std::string& path, bool
 	{
 		t = planeitems.at(c);
 
-		//Fix erroneous tiles in K1
+		//Fix erroneous tiles in K1 & K3 if enabled
+		//for some reason if  mp_option[OPT_FIXLEVELERRORS].value is added as a primary
+		//if statement to these if statements games won't launch and SegFault instead
 		if( episode == 1 && level == 14 && mp_option[OPT_FIXLEVELERRORS].value )
 		{
 			if( (curmapx == 14 && curmapy == 10) || (curmapx == 13 && curmapy == 13) )
-			{
 				t = 143;
-			}
 			else if( (curmapx == 14 && curmapy == 11) || (curmapx == 13 && curmapy == 14) )
-			{
 				t = 331;
-			}
 		}
-		//Fix erroneous tiles in K3
 		else if( episode == 3 && level == 8 && mp_option[OPT_FIXLEVELERRORS].value )
 		{
 			if( ( curmapx == 77 && curmapy == 52 ) || 
 				( ( curmapx == 94 || curmapx == 95 || curmapx == 96 ) && curmapy == 15 ) )
-			{
 				t = 169;
-			}
+		}
+		else if( episode == 3 && level == 15 && mp_option[OPT_FIXLEVELERRORS].value )
+		{
+			if( ( curmapx == 32 || curmapx == 33 ) && curmapy == 113 )
+				t = 482;
+		}
+
+		if( episode == 3 && level == 15 && curmapx == 31 && curmapy == 113 )
+		{
+			std::cout << "\nTile at " << curmapx << "x" << curmapy << " is:  " << t << "\n";
 		}
 
 		addTile(t, curmapx, curmapy);

@@ -8,11 +8,9 @@
 #ifndef CMAPLOADER_H_
 #define CMAPLOADER_H_
 
-#include <SDL.h>
 #include "CMap.h"
 #include "CPlayer.h"
 #include "CObject.h"
-#include "Playerdefines.h"
 #include "options.h"
 #include "sdl/music/CMusic.h"
 #include <string>
