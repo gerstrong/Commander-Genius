@@ -7,8 +7,8 @@
  *  This handles the Poison Slugs in Galaxy
  */
  
-#ifndef CSLUG_H_
-#define CSLUG_H_
+#ifndef CPOISONSLUG_H_
+#define CPOISONSLUG_H_
 
 #include "common/CObject.h"
 
@@ -18,9 +18,9 @@ namespace galaxy {
 #define A_SLUG_POOHING		2
 #define A_SLUG_STUNNED		3
 
-class CSlug : public CObject {
+class CPoisonSlug : public CObject {
 public:
-	CSlug(CMap *pmap, Uint32 x, Uint32 y);
+	CPoisonSlug(CMap *pmap, Uint32 x, Uint32 y);
 	void process();
 };
 

@@ -1,15 +1,15 @@
 /*
- * CSlug.cpp
+ * CPoisonSlug.cpp
  *
- *  Created on: 23.02.2011
+ *  Created on: 23FEB2011
  *      Author: FCTW
  */
 
-#include "CSlug.h"
+#include "CPoisonSlug.h"
 
 namespace galaxy {
 
-CSlug::CSlug(CMap *pmap, Uint32 x, Uint32 y) :
+CPoisonSlug::CPoisonSlug(CMap *pmap, Uint32 x, Uint32 y) :
 CObject(pmap, x, y, OBJ_NONE)
 {
 	m_ActionBaseOffset = 0x2012;

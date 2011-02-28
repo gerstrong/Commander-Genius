@@ -24,7 +24,7 @@
 #include "engine/galaxy/ai/CPlayerLevel.h"
 #include "engine/galaxy/ai/CSpriteItem.h"
 #include "engine/galaxy/ai/CPlatform.h"
-#include "engine/galaxy/ai/CSlug.h"
+#include "engine/galaxy/ai/CPoisonSlug.h"
 #include "engine/galaxy/ai/CCouncilMember.h"
 
 #include <fstream>
