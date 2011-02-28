@@ -368,7 +368,7 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 	case 27: case 28: case 29: case 30: case 32:
 		//27-30 & 32 seem to be the actual platforms.  There may be more of numbers lower than 27.
 		//31 seems to be the stoppers.
-		p_newfoe = new galaxy::CPlatform(&Map, x, y, NONE);
+		p_newfoe = new galaxy::CPlatform(&Map, x, y, NONE, m_ObjectPtr);
 		break;
 
 	case 33:

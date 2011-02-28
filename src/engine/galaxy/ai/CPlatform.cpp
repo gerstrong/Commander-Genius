@@ -6,10 +6,13 @@
  */
 
 #include "CPlatform.h"
+#include "CPlayerLevel.h"
+#include <iostream>
 
 namespace galaxy {
 
-CPlatform::CPlatform(CMap *pmap, Uint32 x, Uint32 y, direction_t dir) :
+CPlatform::CPlatform(CMap *pmap, Uint32 x, Uint32 y, direction_t dir,
+		std::vector<CObject*>& ObjectPtrs) :
 CObject(pmap, x, y, OBJ_PLATFORM)
 {
 	m_hDir = NONE;
@@ -17,11 +20,25 @@ CObject(pmap, x, y, OBJ_PLATFORM)
 
 	m_ActionBaseOffset = 0x316A;
 	setActionForce(A_PLATFORM_MOVE);
+	calcBouncingBoxes();
 }
 
 void CPlatform::process()
 {
 	processActionRoutine();
+}
+
+void CPlatform::getTouchedBy(CObject &theObject)
+{
+	if(hitdetect(theObject))
+	{
+		if(theObject.m_type != OBJ_PLAYER)
+			return;
+
+		CPlayerLevel *pPlayer = (CPlayerLevel*)(&theObject);
+
+		std::cout << "\nWHOA!  Stay off my platformz, yo.\n";
+	}
 }
 
 }
