@@ -20,6 +20,7 @@ CObject(pmap, x, y, OBJ_PLATFORM)
 
 	m_ActionBaseOffset = 0x316A;
 	setActionForce(A_PLATFORM_MOVE);
+	setActionSprite();
 	calcBouncingBoxes();
 }
 
