@@ -39,6 +39,8 @@ void CPlatform::getTouchedBy(CObject &theObject)
 		CPlayerLevel *pPlayer = (CPlayerLevel*)(&theObject);
 
 		std::cout << "\nWHOA!  Stay off my platformz, yo.\n";
+
+		pPlayer->supportedbyobject = true;
 	}
 }
 

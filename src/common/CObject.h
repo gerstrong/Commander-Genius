@@ -24,7 +24,6 @@
 // Enumerations are here
 #include "objenums.h"
 
-
 #define SAFE_DELETE_ARRAY(x) if(x) { delete [] x; x = NULL; }
 #define SAFE_DELETE(x) if(x) { delete x; x = NULL; }
 
@@ -46,7 +45,7 @@ public:
 	
 	object_t m_type;        		// yorp, vorticon, etc.
 	unsigned int m_index;        	// Like an ID for some objects that need this implementation
-	char HealthPoints;                		// episode 1 style four-shots-to-kill
+	char HealthPoints;              // episode 1 style four-shots-to-kill
 	bool exists;
 	bool onscreen;    				// true=(scrx,scry) position is visible onscreen
 	bool hasbeenonscreen;

@@ -74,17 +74,29 @@ void CLevelPlay::process()
 
 	g_pVideoDriver->blitScrollSurface();
 
-	for( std::vector<CObject*>::iterator obj=m_ObjectPtr.begin() ;
+	std::vector<CObject*>::iterator obj;
+
+	// Draw all the sprites but no player
+	for( obj=m_ObjectPtr.begin() ;
 			obj!=m_ObjectPtr.end() ; obj++ )
 	{
-		if((*obj)->honorPriority)
+		if((*obj)->honorPriority != (*obj)->m_type != OBJ_PLAYER)
 			(*obj)->draw();
 	}
+
+	// Now only draw the player sprite. So everything expect maked tiles are below his layer
+	for( obj=m_ObjectPtr.begin() ;
+			obj!=m_ObjectPtr.end() ; obj++ )
+	{
+		if((*obj)->m_type == OBJ_PLAYER)
+			(*obj)->draw();
+	}
+
 
 	// Draw masked tiles here!
 	m_Map.drawForegroundTiles();
 
-	for( std::vector<CObject*>::iterator obj=m_ObjectPtr.begin() ;
+	for( obj=m_ObjectPtr.begin() ;
 			obj!=m_ObjectPtr.end() ; obj++ )
 	{
 		if(!(*obj)->honorPriority)

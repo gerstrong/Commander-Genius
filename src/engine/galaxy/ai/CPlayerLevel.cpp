@@ -80,6 +80,9 @@ void CPlayerLevel::process()
 
 	performCollisionsSameBox();
 
+	if(supportedbyobject)
+		blockedd = true;
+
 	if(getActionNumber(A_KEEN_SLIDE))
 	{
 		processPlaceGem();
@@ -124,6 +127,8 @@ void CPlayerLevel::process()
 		xinertia = 0;
 
 	m_camera.process();
+
+	supportedbyobject = false;
 }
 
 void CPlayerLevel::processInput()
@@ -636,7 +641,7 @@ void CPlayerLevel::processFalling()
 			&& !getActionNumber(A_KEEN_JUMP_SHOOTDOWN)
 			&& !getActionNumber(A_KEEN_POGO) )
 	{
-		//This will need additional conditions to handle coming off of a pole.
+		// TODO: This will need additional conditions to handle coming off of a pole.
 		if ( getActionNumber(A_KEEN_RUN) )
 		{
 			g_pSound->playSound( SOUND_KEEN_FALL );

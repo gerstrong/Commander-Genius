@@ -45,9 +45,9 @@ bool CMusic::load(const std::string &musicfile)
 	{
 		std::string extension = GetFileExtension(musicfile);
 
-		if(extension == "imf")
+		if(strcasecmp(extension.c_str(),"imf") == 0)
 			mp_player = new CIMFPlayer(musicfile, m_AudioSpec);
-		else if(extension == "ogg")
+		else if(strcasecmp(extension.c_str(),"ogg") == 0)
 		{
 #if defined(OGG) || defined(TREMOR)
 
