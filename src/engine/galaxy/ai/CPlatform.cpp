@@ -9,13 +9,15 @@
 #include "CPlayerLevel.h"
 #include <iostream>
 
+const int MOVE_HORIZ_SPEED = 20;
+
 namespace galaxy {
 
 CPlatform::CPlatform(CMap *pmap, Uint32 x, Uint32 y, direction_t dir,
 		std::vector<CObject*>& ObjectPtrs) :
 CObject(pmap, x, y, OBJ_PLATFORM)
 {
-	m_hDir = NONE;
+	m_hDir = RIGHT;
 	m_vDir = NONE;
 
 	m_ActionBaseOffset = 0x316A;
@@ -26,6 +28,17 @@ CObject(pmap, x, y, OBJ_PLATFORM)
 
 void CPlatform::process()
 {
+	Uint16 object = mp_Map->getPlaneDataAt(2, getXMidPos(), getYMidPos());
+	if(object == 31)
+	{
+		m_hDir = (m_hDir == RIGHT) ? LEFT : RIGHT;
+	}
+
+	if(m_hDir == RIGHT)
+		moveRight(MOVE_HORIZ_SPEED);
+	else
+		moveLeft(MOVE_HORIZ_SPEED);
+
 	processActionRoutine();
 }
 
