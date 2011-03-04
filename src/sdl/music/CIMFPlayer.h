@@ -42,7 +42,6 @@ private:
     COPLEmulator &m_opl_emulator;
 
 	Uint32 m_numreadysamples;
-	Uint32 m_soundTimeCounter;
 	Uint32 m_samplesPerMusicTick;
 	unsigned int m_TimeCount;
 	unsigned int m_IMFReadTimeCount;
