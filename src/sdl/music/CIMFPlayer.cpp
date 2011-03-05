@@ -6,7 +6,6 @@
  */
 
 #include "CIMFPlayer.h"
-#include "sdl/sound/CSound.h"
 #include "fileio/ResourceMgmt.h"
 #include "fileio/compression/CHuffman.h"
 #include "FindFile.h"
@@ -21,9 +20,9 @@ const Uint32 GalaxySongAssignments[] =
 	0x03103D,
 };
 
-CIMFPlayer::CIMFPlayer(const std::string& filename, const SDL_AudioSpec& AudioSpec) :
+CIMFPlayer::CIMFPlayer(const std::string& filename, const SDL_AudioSpec& AudioSpec, COPLEmulator& opl_emulator ) :
 m_AudioDevSpec(AudioSpec),
-m_opl_emulator(*g_pSound->getOPLEmulatorPtr()),
+m_opl_emulator(opl_emulator),
 m_numreadysamples(0),
 m_samplesPerMusicTick(m_AudioDevSpec.freq / m_opl_emulator.getIMFClockRate()),
 m_TimeCount(0),
@@ -67,9 +66,9 @@ m_mix_buffer(new Sint32[m_samplesPerMusicTick])
  * 			Only galaxy supports that feature, and the original games will read two files form the EXE-file
  * 			AUDIOHED and AUDIODICT to get the right tune for the music player.
  */
-CIMFPlayer::CIMFPlayer(const CExeFile& ExeFile, const int level, const SDL_AudioSpec &AudioSpec) :
+CIMFPlayer::CIMFPlayer(const CExeFile& ExeFile, const int level, const SDL_AudioSpec &AudioSpec, COPLEmulator& opl_emulator ) :
 m_AudioDevSpec(AudioSpec),
-m_opl_emulator(*g_pSound->getOPLEmulatorPtr()),
+m_opl_emulator(opl_emulator),
 m_numreadysamples(0),
 m_samplesPerMusicTick(m_AudioDevSpec.freq / m_opl_emulator.getIMFClockRate()),
 m_TimeCount(0),

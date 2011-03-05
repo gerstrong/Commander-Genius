@@ -6,10 +6,10 @@
  */
 
 #include "CMessageBox.h"
-#include "../sdl/CVideoDriver.h"
-#include "../sdl/CInput.h"
-#include "../graphics/CGfxEngine.h"
-#include "../StringUtils.h"
+#include "sdl/CVideoDriver.h"
+#include "sdl/CInput.h"
+#include "graphics/CGfxEngine.h"
+#include "StringUtils.h"
 
 CMessageBox::CMessageBox(const std::string& Text, bool lower, bool keymsg, bool leftbound) :
 m_mustclose(false),

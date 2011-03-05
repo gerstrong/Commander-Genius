@@ -1,3 +1,6 @@
+IMFPlayer v2.3 (released 2011-03-05)
+ - Code improvements and class integration by NY00123
+
 IMFPlayer v2.1 (released 2011-02-04)
  - Now we are able to play adlib sound too. This will be integrated into CG soon.
 

@@ -1,6 +1,6 @@
-----------------------------
-IMF Player by Gerstrong v2.0
-----------------------------
+----------------------------------------
+IMF Player by NY00123 and Gerstrong v2.3
+----------------------------------------
 
 This IMF Player was built for Commander Genius to support that format.
 

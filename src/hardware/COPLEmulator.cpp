@@ -12,10 +12,11 @@
 
 #include "COPLEmulator.h"
 
-const int IMF_CLOCK_RATE = 560;
+const int KEEN_IMF_CLOCK_RATE = 560;
 
 COPLEmulator::COPLEmulator(const SDL_AudioSpec &AudioSpec) :
-m_AudioDevSpec(AudioSpec)
+m_AudioDevSpec(AudioSpec),
+m_imf_clock_rate(KEEN_IMF_CLOCK_RATE)
 {}
 
 COPLEmulator::~COPLEmulator() {
@@ -72,8 +73,10 @@ void COPLEmulator::init()
 }
 
 unsigned int COPLEmulator::getIMFClockRate()
-{	return IMF_CLOCK_RATE;	}
+{	return m_imf_clock_rate;	}
 
+void COPLEmulator::setIMFClockrate(const unsigned int clock_rate)
+{	m_imf_clock_rate = clock_rate;	}
 
 ///////////////////////////////////////////////////////////////////////////
 //

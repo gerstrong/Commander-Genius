@@ -25,8 +25,8 @@ struct IMFChunkType
 
 class CIMFPlayer : public CMusicPlayer {
 public:
-	CIMFPlayer(const std::string& filename, const SDL_AudioSpec& AudioSpec);
-	CIMFPlayer(const CExeFile& ExeFile, const int level, const SDL_AudioSpec &AudioSpec);
+	CIMFPlayer(const std::string& filename, const SDL_AudioSpec& AudioSpec, COPLEmulator& opl_emulator = *g_pSound->getOPLEmulatorPtr());
+	CIMFPlayer(const CExeFile& ExeFile, const int level, const SDL_AudioSpec &AudioSpec, COPLEmulator& opl_emulator = *g_pSound->getOPLEmulatorPtr());
 
 	~CIMFPlayer();
 

@@ -6,7 +6,6 @@
 
 CIMFPlayer *g_imfplayer;
 SDL_AudioSpec *actual_audiospec;
-COPLEmulator* p_opl_emulator;
 
 void SDL_IMFMusicPlayer(void *udata, Uint8 *stream, int len)
 {
@@ -45,8 +44,6 @@ SD_Startup(int mixer_rate)
 
     // desired spec is no longer needed
     free(desired);
-
-    p_opl_emulator = new COPLEmulator(*actual_audiospec);
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -58,10 +55,7 @@ void
 SD_StartIMF(const std::string& filename, int imf_clock_rate, int opl_rate)
 {
 	actual_audiospec->freq=opl_rate; // Yeah, a little "cheating"...
-
-	p_opl_emulator->setIMFClockrate(imf_clock_rate);
-
-	g_imfplayer = new CIMFPlayer(filename, *actual_audiospec, *p_opl_emulator);
+	g_imfplayer = new CIMFPlayer(filename, *actual_audiospec, imf_clock_rate);
 	SDL_PauseAudio(0);
 }
 
@@ -78,7 +72,4 @@ SD_Shutdown(void)
 		free(g_imfplayer);
 	if (actual_audiospec)
 		free(actual_audiospec);
-
-	if(p_opl_emulator)
-		delete p_opl_emulator;
 }

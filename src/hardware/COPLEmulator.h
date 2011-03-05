@@ -88,6 +88,7 @@ public:
 	}
 
 	unsigned int getIMFClockRate();
+	void setIMFClockrate(const unsigned int clock_rate);
 
 	/**
 	 * Stops the adlib sounds from playing
@@ -110,6 +111,7 @@ private:
 	const SDL_AudioSpec &m_AudioDevSpec;
 	Chip m_opl_chip;
 	Instrument	m_alZeroInst;
+	unsigned int m_imf_clock_rate;
 };
 
 #endif /* COPLEMULATOR_H_ */

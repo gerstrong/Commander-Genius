@@ -54,10 +54,15 @@ PROJECT(imfplayer)
 # main includes
 INCLUDE_DIRECTORIES(optional-includes/generated)
 INCLUDE_DIRECTORIES(src)
+#INCLUDE_DIRECTORIES(src/fileio)
+#INCLUDE_DIRECTORIES(src/hardware)
+#INCLUDE_DIRECTORIES(src/sdl/music)
 
 AUX_SOURCE_DIRECTORY(src ROOT_S)
+AUX_SOURCE_DIRECTORY(src/hardware HARDWARE_S)
+AUX_SOURCE_DIRECTORY(src/sdl/music SDLMUSIC_S)
 
-SET(ALL_SRCS ${ROOT_S})
+SET(ALL_SRCS ${ROOT_S} ${HARDWARE_S} ${SDLMUSIC_S})
 
 IF(UNIX)
 # Compilation under Linux
