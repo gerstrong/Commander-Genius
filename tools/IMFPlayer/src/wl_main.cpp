@@ -28,8 +28,6 @@
 
 int main (int argc, char *argv[])
 {
-	 AudioType IMFAudioType = IMF_MUSIC;		
-
 	// Parameters messages!
 	if((argc != 2) && (argc != 3) && (argc != 5))
 	{
@@ -62,14 +60,17 @@ int main (int argc, char *argv[])
     }
     atexit(SDL_Quit);
 
-    if (argc == 2)
-        SD_Startup (560, 49716, 49716);
-    else if (argc == 3)
-        SD_Startup (atoi(argv[2]), 49716, 49716);
+    if (argc <= 3)
+        SD_Startup (49716);
     else
-        SD_Startup (atoi(argv[2]), atoi(argv[3]), atoi(argv[4]));
+        SD_Startup (atoi(argv[3]));
 
-   	SD_StartIMF(argv[1], IMFAudioType);
+    if (argc == 2)
+   	SD_StartIMF(argv[1], 560, 49716);
+    else if (argc == 3)
+   	SD_StartIMF(argv[1], atoi(argv[2]), 49716);
+    else
+   	SD_StartIMF(argv[1], atoi(argv[2]), atoi(argv[4]));
 
     printf("Playing the file %s\n", argv[1]);
 

@@ -9,8 +9,8 @@
 #define __ID_SD__
 
 #include <string>
-#include <SDL.h>
 
+/*
 //      Register addresses
 // Operator stuff
 #define alChar          0x20
@@ -31,7 +31,6 @@ typedef int32_t fixed;
 typedef uint32_t longword;
 typedef int8_t boolean;
 typedef void * memptr;
-
 
 enum AudioType
 {
@@ -63,18 +62,18 @@ typedef struct
     byte            data[1];
 } AdLibSound;
 
+
 #define ORIG_ADLIBSOUND_SIZE (ORIG_SOUNDCOMMON_SIZE + ORIG_INSTRUMENT_SIZE + 2)
-
+*/
 // Function prototypes
-bool SD_PlaySound();
 
-extern  void    SD_Startup(int imf_clock_rate, int mixer_rate, int opl_rate),
+extern  void    SD_Startup(int mixer_rate),
                 SD_Shutdown(void);
 
 
-extern  void    SD_StartIMF(const std::string& filename, AudioType IMFAudioType);
-extern  void    SD_ContinueMusic(int chunk, int startoffs);
+extern  void    SD_StartIMF(const std::string& filename, int imf_clock_rate, int opl_rate);
+/*extern  void    SD_ContinueMusic(int chunk, int startoffs);
 extern  void    SD_MusicOn(void);
-extern  int     SD_MusicOff(void);
+extern  int     SD_MusicOff(void);*/
 
 #endif
