@@ -53,7 +53,8 @@ void CPlayerWM::process()
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 	if( EventExitLevel* ev = EventContainer.occurredEvent<EventExitLevel>() )
 	{
-		finishLevel(ev->levelObject);
+		if(ev->sucess)
+			finishLevel(ev->levelObject);
 		EventContainer.pop_Event();
 	}
 

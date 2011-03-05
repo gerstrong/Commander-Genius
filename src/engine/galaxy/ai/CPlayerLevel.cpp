@@ -673,12 +673,11 @@ void CPlayerLevel::processLooking()
 // Processes the exiting of the player. Here all cases are held
 void CPlayerLevel::processExiting()
 {
-	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-
 	Uint32 x = getXMidPos();
 	if( ((mp_Map->m_width-2)<<CSF) < x || (2<<CSF) > x )
 	{
-		EventContainer.add( new EventExitLevel(mp_Map->getLevel()) );
+		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+		EventContainer.add( new EventExitLevel(mp_Map->getLevel(), true) );
 	}
 }
 
@@ -803,7 +802,7 @@ void CPlayerLevel::processEnterDoor()
 
 }
 
-// Process the item collecting
+// Process the touching of certain tile, like items and hazards...
 void CPlayerLevel::processLevelMiscFlagsCheck()
 {
 	// TODO: Here it a lot we have to do still.
@@ -815,8 +814,8 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
 	{
 		for( Uint16 i=7 ; i<=10 ; i++ )
 		{
-			int l_x = getXMidPos();
-			int l_y = getYDownPos()-(3<<STC);
+			const int l_x = getXMidPos();
+			const int l_y = getYDownPos()-(3<<STC);
 
 			if( hitdetectWithTileProperty(i, l_x, l_y) )
 			{
@@ -841,16 +840,10 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
 	int l_y = getYUpPos();
 	int l_w = getXRightPos() - getXLeftPos();
 	int l_h = getYDownPos() - getYUpPos();
-	// Check for the items
-	if(hitdetectWithTilePropertyRect(3, l_x, l_y, l_w, l_h, 1<<STC))
-	{
-		const int lc_x = l_x>>CSF;
-		const int lc_y = l_y>>CSF;
-		mp_Map->setTile( lc_x, lc_y, 0, true, 1 );
-		m_ObjectPtrs.push_back(new CItemEffect(mp_Map, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[4+3-21]));
 
+	// Deadly hazards! Here Keen dying routine will be triggered
+	if(hitdetectWithTilePropertyRect(3, l_x, l_y, l_w, l_h, 1<<STC))
 		kill();
-	}
 
 	if(hitdetectWithTilePropertyRect(4, l_x, l_y, l_w, l_h, 1<<STC))
 	{
@@ -982,6 +975,9 @@ void CPlayerLevel::kill()
 	m_Inventory.m_lifes--;
 	setActionForce(A_KEEN_DIE);
 	g_pSound->playSound( SOUND_KEEN_DIE );
+
+	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+	EventContainer.add( new EventExitLevel(mp_Map->getLevel(), false) );
 }
 
 }

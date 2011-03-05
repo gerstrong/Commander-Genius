@@ -22,7 +22,8 @@ struct EventEnterLevel : CEvent {
 
 struct EventExitLevel : CEvent {
 	uint16_t levelObject;
-	EventExitLevel(uint16_t l) : levelObject(l) {}
+	bool sucess;
+	EventExitLevel(uint16_t l, const bool s) : levelObject(l), sucess(s){}
 };
 
 
