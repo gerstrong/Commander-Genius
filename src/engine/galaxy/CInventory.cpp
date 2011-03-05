@@ -6,6 +6,7 @@
  */
 
 #include "CInventory.h"
+#include "CStatusScreenGalaxy.h"
 
 
 CInventory::CInventory() :
@@ -35,6 +36,11 @@ void CInventory::reset()
 void CInventory::drawHUD()
 {
 	m_HUD.render();
+}
+
+void CInventory::drawStatus()
+{
+	m_StatusScreen.draw();
 }
 
 

@@ -41,7 +41,6 @@ CStatusScreen::CStatusScreen
 		createInventorySfcEp2();
 	else if (m_episode==3)
 		createInventorySfcEp3();
-
 }
 
 void CStatusScreen::draw()

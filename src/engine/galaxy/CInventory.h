@@ -13,12 +13,26 @@
 #define CINVENTORY_H_
 
 #include "common/CHUD.h"
+#include "CStatusScreenGalaxy.h"
 
 class CInventory {
 public:
 	CInventory();
 	void reset();
+
+	// This function draws the HUD on the Screen
 	void drawHUD();
+
+	// This one draw the Status screen whenever it's called
+	void drawStatus();
+
+	// return if the status screen has to be drawn
+	bool showStatus()
+	{	return m_StatusScreen.m_showstatus;	}
+
+	// make the status get opened or closed
+	void toggleStatusScreen()
+	{	m_StatusScreen.m_showstatus = !m_StatusScreen.m_showstatus;	}
 
 	signed char m_lifes;
 	unsigned long  m_points;
@@ -50,6 +64,7 @@ public:
 	}m_special;
 
 	CHUD m_HUD;
+	CStatusScreenGalaxy m_StatusScreen;
 };
 
 

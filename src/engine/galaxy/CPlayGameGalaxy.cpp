@@ -77,21 +77,30 @@ void CPlayGameGalaxy::process()
 	{
 		processInput();
 
-		// process World Map if active. At the start it's enabled
-		if(m_WorldMap.isActive())
+		if(g_pInput->getPressedCommand(IC_STATUS))
 		{
-			m_WorldMap.process();
-		}
-
-		// process World Map if active. At the start it's enabled
-		if(m_LevelPlay.isActive())
-		{
-			m_LevelPlay.process();
+			m_Inventory.toggleStatusScreen();
 		}
 
 		// process Page if one is open. Could be one of the finale scenes
 		//if(m_Page.isActive())
 		//m_Page.process();
+
+		// We have to show the status screen, do so...
+		if( m_Inventory.showStatus() )
+		{
+			m_Inventory.drawStatus();
+		}
+		else
+		{
+			// process World Map if active. At the start it's enabled
+			if(m_WorldMap.isActive())
+				m_WorldMap.process();
+
+			// process World Map if active. At the start it's enabled
+			if(m_LevelPlay.isActive())
+				m_LevelPlay.process();
+		}
 
 		processRendering();
 	}

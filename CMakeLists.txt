@@ -4,7 +4,7 @@
 cmake_minimum_required(VERSION 2.6)
 
 MESSAGE( "Preparing the Build-System for Commander Genius" )
-SET(CG_VERSION "0.3.3.1")
+SET(CG_VERSION "0.3.3.2")
 
 INCLUDE(build.cmake)
 
