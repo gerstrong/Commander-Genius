@@ -107,8 +107,8 @@ public:
 	/**
 	 * Just return the absolute end of the pointer.
 	 */
-	T *getEndPtr()
-	{	return mp_end;	}
+	T *getLastElem()
+	{	return mp_end-1;	}
 
 
 	/**

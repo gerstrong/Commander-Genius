@@ -26,7 +26,7 @@ m_opl_emulator(opl_emulator),
 m_numreadysamples(0),
 m_samplesPerMusicTick(m_AudioDevSpec.freq / m_opl_emulator.getIMFClockRate()),
 m_IMFDelay(0),
-m_mix_buffer(new Sint32[m_samplesPerMusicTick])
+m_mix_buffer(new Sint32[m_AudioDevSpec.samples])
 {
     // Load the IMF File here!
 	FILE *fp;
@@ -58,7 +58,7 @@ m_mix_buffer(new Sint32[m_samplesPerMusicTick])
     else
     {
     	// Put a zero delay to that data structure so it will be rewound correctly!
-		m_IMF_Data.getEndPtr()->Delay=0;
+		m_IMF_Data.getLastElem()->Delay=0;
     	fclose(fp);
     }
 }
@@ -192,7 +192,7 @@ m_mix_buffer(new Sint32[m_AudioDevSpec.samples])
 			m_IMF_Data.reserve(imf_chunks);
 			memcpy(m_IMF_Data.getStartPtr(), imf_data_ptr, data_size);
 	    	// Put a zero delay to that data structure so it will be rewound correctly!
-			m_IMF_Data.getEndPtr()->Delay=0;
+			m_IMF_Data.getLastElem()->Delay=0;
 		}
 	}
 }
@@ -205,7 +205,7 @@ CIMFPlayer::~CIMFPlayer()
 
 bool CIMFPlayer::open()
 {
-	m_IMFDelay = 0;
+	m_numreadysamples = m_IMFDelay = 0;
 	m_samplesPerMusicTick = m_AudioDevSpec.freq / m_opl_emulator.getIMFClockRate();
 
 	return (!m_IMF_Data.empty());
@@ -213,7 +213,7 @@ bool CIMFPlayer::open()
 
 void CIMFPlayer::close()
 {
-	m_numreadysamples = 0;
+	m_numreadysamples = m_IMFDelay = 0;
 	m_opl_emulator.ShutAL();
 
 	play(false);
