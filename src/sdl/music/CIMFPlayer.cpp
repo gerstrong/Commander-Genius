@@ -25,8 +25,7 @@ m_AudioDevSpec(AudioSpec),
 m_opl_emulator(opl_emulator),
 m_numreadysamples(0),
 m_samplesPerMusicTick(m_AudioDevSpec.freq / m_opl_emulator.getIMFClockRate()),
-m_TimeCount(0),
-m_IMFReadTimeCount(0),
+m_IMFDelay(0),
 m_mix_buffer(new Sint32[m_samplesPerMusicTick])
 {
     // Load the IMF File here!
@@ -54,11 +53,14 @@ m_mix_buffer(new Sint32[m_samplesPerMusicTick])
     if( imf_chunks != fread( m_IMF_Data.getStartPtr(), sizeof(IMFChunkType), imf_chunks, fp ) )
     {
     	g_pLogFile->textOut("The IMF-File seems to be corrupt.");
-    	//g_pLogFile << filename;
     	fclose(fp);
     }
     else
+    {
+    	// Put a zero delay to that data structure so it will be rewound correctly!
+		m_IMF_Data.getEndPtr()->Delay=0;
     	fclose(fp);
+    }
 }
 
 /**
@@ -71,9 +73,8 @@ m_AudioDevSpec(AudioSpec),
 m_opl_emulator(opl_emulator),
 m_numreadysamples(0),
 m_samplesPerMusicTick(m_AudioDevSpec.freq / m_opl_emulator.getIMFClockRate()),
-m_TimeCount(0),
-m_IMFReadTimeCount(0),
-m_mix_buffer(new Sint32[m_samplesPerMusicTick])
+m_IMFDelay(0),
+m_mix_buffer(new Sint32[m_AudioDevSpec.samples])
 {
 	const int episode = ExeFile.getEpisode();
 
@@ -190,7 +191,8 @@ m_mix_buffer(new Sint32[m_samplesPerMusicTick])
 		    const word imf_chunks = data_size/sizeof(IMFChunkType);
 			m_IMF_Data.reserve(imf_chunks);
 			memcpy(m_IMF_Data.getStartPtr(), imf_data_ptr, data_size);
-			printf("wait!");
+	    	// Put a zero delay to that data structure so it will be rewound correctly!
+			m_IMF_Data.getEndPtr()->Delay=0;
 		}
 	}
 }
@@ -203,7 +205,7 @@ CIMFPlayer::~CIMFPlayer()
 
 bool CIMFPlayer::open()
 {
-	m_IMFReadTimeCount = m_TimeCount = 0;
+	m_IMFDelay = 0;
 	m_samplesPerMusicTick = m_AudioDevSpec.freq / m_opl_emulator.getIMFClockRate();
 
 	return (!m_IMF_Data.empty());
@@ -261,41 +263,34 @@ void CIMFPlayer::readBuffer(Uint8* buffer, Uint32 length)
 	sample_mult = (m_AudioDevSpec.format == AUDIO_S16) ? sample_mult*sizeof(Sint16) : sample_mult*sizeof(Uint8) ;
 
     // while the waveform is not filled
-    while(1)
-    {
-        if(m_numreadysamples)
+	while(1)
+	{
+		while( m_IMFDelay == 0 )
+		{
+			//read next IMF event
+			const IMFChunkType Chunk = m_IMF_Data.getNextElement();
+			m_IMFDelay = Chunk.Delay;
+
+			//write reg+val to opl chip
+			m_opl_emulator.Chip__WriteReg( Chunk.al_reg, Chunk.al_dat );
+			m_numreadysamples = m_samplesPerMusicTick*m_IMFDelay;
+		}
+
+	    //generate <delay> ticks of audio
+        if(m_numreadysamples < sampleslen)
         {
-            if(m_numreadysamples < sampleslen)
-            {
-            	// Every time a tune has been played call this.
-            	OPLUpdate( buffer, m_numreadysamples);
-            	buffer += m_numreadysamples*sample_mult;
-                sampleslen -= m_numreadysamples;
-            }
-            else
-            {
-            	// Read the last stuff left in the emulators buffer. At this point the stream buffer is nearly full
-            	OPLUpdate( buffer, sampleslen);
-            	m_numreadysamples -= sampleslen;
-                break;
-            }
+        	// Every time a tune has been played call this.
+        	OPLUpdate( buffer, m_numreadysamples );
+        	buffer += m_numreadysamples*sample_mult;
+            sampleslen -= m_numreadysamples;
+            m_IMFDelay = 0;
         }
-
-        do
+        else
         {
-            if(m_IMFReadTimeCount > m_TimeCount) break;
-
-        	// read the next instrument play to to the OPL Emulator and put a new delay
-        	const IMFChunkType Chunk = m_IMF_Data.getNextElement();
-        	m_IMFReadTimeCount = m_TimeCount + Chunk.Delay;
-        	m_opl_emulator.Chip__WriteReg( Chunk.al_reg, Chunk.al_dat );
-        }while(!m_IMF_Data.atStart());
-
-        if(m_IMF_Data.atStart())
-        	m_IMFReadTimeCount = m_TimeCount = 0;
-
-        m_TimeCount++;
-
-        m_numreadysamples = m_samplesPerMusicTick;
-    }
+        	// Read the last stuff left in the emulators buffer. At this point the stream buffer is nearly full
+        	OPLUpdate( buffer, sampleslen );
+        	m_numreadysamples -= sampleslen;
+            break;
+        }
+	}
 }

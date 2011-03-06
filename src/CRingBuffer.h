@@ -105,6 +105,13 @@ public:
 	{	return mp_start;	}
 
 	/**
+	 * Just return the absolute end of the pointer.
+	 */
+	T *getEndPtr()
+	{	return mp_end;	}
+
+
+	/**
 	 * This will get the next Element in the ring. Similar to the front function of std::list, but it's a ring.
 	 * This will copy the data to the data type variable you are using, so please don't use too big datastructures for this
 	 * if you need fast code.

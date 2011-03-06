@@ -6,12 +6,20 @@
  */
 
 #include "CStatusScreenGalaxy.h"
+#include "graphics/CGfxEngine.h"
 
 CStatusScreenGalaxy::CStatusScreenGalaxy() :
 m_showstatus(false)
 {
 	// TODO Auto-generated constructor stub
+	//if()
+	//generateStatusEP4();
 }
+
+/*void CStatusScreenGalaxy::generateStatusEP4()
+{
+
+}*/
 
 void CStatusScreenGalaxy::draw()
 {
