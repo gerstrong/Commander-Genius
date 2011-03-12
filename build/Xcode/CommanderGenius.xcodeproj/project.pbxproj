@@ -2047,7 +2047,11 @@
 			};
 			buildConfigurationList = C0E91AC908A95435008D54AB /* Build configuration list for PBXProject "CommanderGenius" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
 			mainGroup = 20286C29FDCF999611CA2CEA /* CommanderGenius */;
 			projectDirPath = "";
 			projectRoot = ../../..;
@@ -2588,7 +2592,7 @@
 					"-DOGG",
 				);
 				PRODUCT_NAME = "Commander Genius";
-				SDKROOT = macosx10.5;
+				SDKROOT = "";
 			};
 			name = Debug;
 		};
