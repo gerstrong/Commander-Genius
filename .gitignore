@@ -1,11 +1,10 @@
 *.mode1v3
 *.mode2v3
 *.pbxuser
+xcuserdata
 build/Xcode/build
 *.log
 Makefile
 .settings
 .svn
-
-
 *.dmg
