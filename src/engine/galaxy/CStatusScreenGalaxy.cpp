@@ -137,12 +137,13 @@ void CStatusScreenGalaxy::generateStatusEP4()
 	SDL_FillRect(mp_StatusSurface, &TempRect, 0xFFFFFFFF);
 
 	// Score Rect
-	TempRect.x=EditRect.x+8;
-	TempRect.y=EditRect.y+48;
-	TempRect.w=64; TempRect.h=10;
-
-	SDL_FillRect(mp_StatusSurface, &TempRect, 0x0);
-	Font.drawFontCentered(mp_StatusSurface, "SCORE            EXTRA", EditRect.x+4, EditRect.w, EditRect.y+4, false);
+	TempRect.x = EditRect.x+8;
+	TempRect.y = EditRect.y+40;
+	TempRect.w = EditRect.w/2; TempRect.h = 10;
+	Font.drawFontCentered(mp_StatusSurface, "SCORE            EXTRA", TempRect.x, EditRect.w, TempRect.y, false);
+	TempRect.w = (EditRect.w/2)-16; TempRect.h = 10;
+	TempRect.y = EditRect.y+50;
+	SDL_FillRect(mp_StatusSurface, &TempRect, 0xFF000000);
 
 }
 
