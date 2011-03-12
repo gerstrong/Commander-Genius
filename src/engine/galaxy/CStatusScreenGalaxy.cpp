@@ -55,6 +55,7 @@ void CStatusScreenGalaxy::generateStatusEP4()
 	SDL_Rect CableRect = Cables_Bitmap.getRect();
 	temp = SDL_ConvertSurface( Cables_Bitmap.getSDLSurface(), mp_StatusSurface->format, flags );
 	BlitSurfaceMerge( temp, &CableRect, mp_StatusSurface, &Dest );
+	//SDL_BlitSurface( temp, &CableRect, mp_StatusSurface, &Dest );
 }
 
 void CStatusScreenGalaxy::draw()
