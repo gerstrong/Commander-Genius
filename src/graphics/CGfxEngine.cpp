@@ -69,6 +69,22 @@ void CGfxEngine::pushEffectPtr(CEffects *pEffect) {
 	mp_Effects = pEffect;
 }
 
+/**
+ * Draws some digits using galaxy style
+ */
+void CGfxEngine::drawDigits(const std::string& text, Uint16 x, Uint16 y, SDL_Surface *blitsurface)
+{
+	CTilemap &Tilemap = getTileMap(2);
+
+	for(Uint16 i=0 ; i<text.size() ; i++)
+	{
+		char c = text[i];
+
+		if(c != ' ')
+			Tilemap.drawTile(blitsurface, x+i*8, y, 43+c-'1');
+	}
+}
+
 ///
 // Destructors
 ///

@@ -42,6 +42,8 @@ public:
 	
 	void pushEffectPtr(CEffects *pEffect);
 
+	void drawDigits(const std::string& text, Uint16 x, Uint16 y, SDL_Surface *blitsurface);
+
 	void freeBitmaps(std::vector<CBitmap> &Bitmap);
 	void freeSprites();
 	void freeTilemap();

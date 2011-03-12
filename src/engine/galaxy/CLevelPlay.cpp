@@ -80,7 +80,7 @@ void CLevelPlay::process()
 	for( obj=m_ObjectPtr.begin() ;
 			obj!=m_ObjectPtr.end() ; obj++ )
 	{
-		if((*obj)->honorPriority != (*obj)->m_type != OBJ_PLAYER)
+		if((*obj)->honorPriority && (*obj)->m_type != OBJ_PLAYER)
 			(*obj)->draw();
 	}
 

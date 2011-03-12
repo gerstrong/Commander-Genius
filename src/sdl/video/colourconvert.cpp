@@ -102,6 +102,8 @@ void BlitSurfaceMerge( SDL_Surface *src, SDL_Rect *p_src_rect, SDL_Surface *dst,
 	else
 		dst_rect = *p_dst_rect;
 
+	dst_rect.h = src_rect.h;
+	dst_rect.w = src_rect.w;
 
 	// trim clipping rects
 	if( dst->h < dst_rect.y+dst_rect.h  )

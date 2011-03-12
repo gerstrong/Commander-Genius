@@ -228,9 +228,15 @@ void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uin
 
 void CFont::drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 width, Uint16 yoff, bool highlight)
 {
-	const Uint16 xmidpos = (width-(text.size()*8))/2;
+	drawFontCentered(dst, text, 0, width, yoff, highlight);
+}
+
+void CFont::drawFontCentered(SDL_Surface* dst, const std::string& text, Uint16 x, Uint16 width, Uint16 yoff, bool highlight)
+{
+	const Uint16 xmidpos = (width-(text.size()*8))/2+x;
 	drawFont(dst, text, xmidpos, yoff, highlight);
 }
+
 
 void CFont::drawMap(SDL_Surface* dst)
 {
