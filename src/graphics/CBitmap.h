@@ -21,21 +21,20 @@ public:
 	bool loadHQBitmap( const std::string& filename );
 
 	SDL_Surface *getSDLSurface();
-	void setDimensions(Uint16 w, Uint16 h);
+	void setDimensions(const Uint16 w, const Uint16 h);
 	void setName(const std::string &name);
 	void setColorPalette(SDL_Color *Palette);
-	Uint16 getWidth() { return m_width; }
-	Uint16 getHeight() { return m_height; }
+	Uint16 getWidth() { return m_ImageRect.w; }
+	Uint16 getHeight() { return m_ImageRect.h; }
+	SDL_Rect getRect() {	return m_ImageRect;	}
 	std::string getName() { return m_name; }
 
 	void draw(SDL_Surface *dst, Uint16 x, Uint16 y);
 
 	void destroySurface();
-	virtual ~CBitmap();
 
 private:
-	Uint16 m_width;
-	Uint16 m_height;
+	SDL_Rect m_ImageRect;
 	std::string m_name;
 	SDL_Surface *m_BitmapSurface;
 };

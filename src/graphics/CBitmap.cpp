@@ -21,7 +21,7 @@ bool CBitmap::createSurface(Uint32 flags, SDL_Color *Palette)
 {
 	if(m_BitmapSurface) SDL_FreeSurface(m_BitmapSurface);
 	
-	m_BitmapSurface = SDL_CreateRGBSurface(flags, m_width, m_height, 8, 0, 0, 0, 0);
+	m_BitmapSurface = SDL_CreateRGBSurface(flags, m_ImageRect.w, m_ImageRect.h, 8, 0, 0, 0, 0);
 	SDL_SetColors(m_BitmapSurface, Palette, 0, 255);
 	SDL_SetColorKey(m_BitmapSurface, SDL_SRCCOLORKEY, COLORKEY);
 	return (m_BitmapSurface != NULL);
@@ -69,9 +69,10 @@ SDL_Surface *CBitmap::getSDLSurface()
 	return m_BitmapSurface;
 }
 
-void CBitmap::setDimensions(Uint16 w, Uint16 h)
+void CBitmap::setDimensions(const Uint16 w, const Uint16 h)
 {
-	m_width = w;	m_height = h;
+	m_ImageRect.w = w;
+	m_ImageRect.h = h;
 }
 
 void CBitmap::setName(const std::string &name)
@@ -86,8 +87,8 @@ void CBitmap::draw(SDL_Surface *dst, Uint16 x, Uint16 y)
 {
 	SDL_Rect dst_rect;
 	dst_rect.x = x;	dst_rect.y = y;
-	dst_rect.w = m_width;
-	dst_rect.h = m_height;
+	dst_rect.w = m_ImageRect.w;
+	dst_rect.h = m_ImageRect.h;
 	
 	if( dst_rect.w>0 && dst_rect.h>0 )
 		SDL_BlitSurface(m_BitmapSurface, NULL, dst, &dst_rect);
@@ -100,7 +101,4 @@ void CBitmap::draw(SDL_Surface *dst, Uint16 x, Uint16 y)
 void CBitmap::destroySurface() {
 	if(m_BitmapSurface) SDL_FreeSurface(m_BitmapSurface);
 	m_BitmapSurface = NULL;
-}
-
-CBitmap::~CBitmap() {
 }
