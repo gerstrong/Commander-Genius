@@ -4,7 +4,8 @@
 cmake_minimum_required(VERSION 2.6)
 
 MESSAGE( "Preparing the Build-System for Commander Genius" )
-SET(CG_VERSION "0.3.3.2")
+EXEC_PROGRAM(sh ARGS ${CMAKE_CURRENT_SOURCE_DIR}/get_version.sh OUTPUT_VARIABLE CG_VERSION)
+string(REGEX REPLACE "[\r\n]" "" CG_VERSION "${CG_VERSION}")
 
 INCLUDE(build.cmake)
 
