@@ -21,6 +21,21 @@
 #include <sstream>
 #include <iomanip>
 
+/**
+ * Formats a string they way it looks like it's right aligned
+ */
+std::string getRightAlignedString(std::string text, size_t size)
+{
+	if(text.size() > size)
+		return text;
+
+	std::string output;
+	for(size_t i=0 ; i<(size-text.size()) ; i++)
+		output += ' ';
+	output += text;
+	return output;
+}
+
 ///////////////////
 // Tells whether the given string is a end of line or not.
 bool endofText(const std::string& Text)

@@ -80,8 +80,7 @@ void CGfxEngine::drawDigits(const std::string& text, Uint16 x, Uint16 y, SDL_Sur
 	{
 		char c = text[i];
 
-		if(c != ' ')
-			Tilemap.drawTile(blitsurface, x+i*8, y, 43+c-'1');
+		Tilemap.drawTile(blitsurface, x+i*8, y, (c != ' ') ? 43+c-'1' : 41);
 	}
 }
 

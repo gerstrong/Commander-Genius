@@ -6,32 +6,42 @@
  */
 
 #include "CInventory.h"
-#include "CStatusScreenGalaxy.h"
+#include "common/CBehaviorEngine.h"
+#include "CStatusScreenGalaxyEp4.h"
+//#include "CStatusScreenGalaxyEp5.h"
+//#include "CStatusScreenGalaxyEp6.h"
 
 
 CInventory::CInventory() :
-m_HUD(m_points, m_lifes, m_bullets)
+m_HUD(Item.m_points, Item.m_lifes, Item.m_bullets),
+mp_StatusScreen(NULL)
 {
 	reset();
+
+	int Episode = g_pBehaviorEngine->getEpisode();
+
+	if(Episode == 4)
+		mp_StatusScreen = new CStatusScreenGalaxyEp4(Item);
+//	else if(Episode == 5)
+//		mp_StatusScreen = new CStatusScreenGalaxyEp5(Item);
+//	else if(Episode == 6)
+//		mp_StatusScreen = new CStatusScreenGalaxyEp6(Item);
+	mp_StatusScreen->GenerateStatus();
 }
 
 void CInventory::reset()
 {
-	m_lifes = 3;
-	m_points = 0;
-	m_lifeAt = 20000;
-	m_drops = 0;
-	m_bullets = 0;
-	m_gem.red = 0;
-	m_gem.blue = 0;
-	m_gem.green = 0;
-	m_gem.yellow = 0;
-
-	m_keycards = 0;
-
-	m_special.ep4.elders = 0;
-	m_special.ep4.swimsuit = 0;
+	Item.reset();
 }
+
+void CInventory::toggleStatusScreen()
+{
+	mp_StatusScreen->m_showstatus = !mp_StatusScreen->m_showstatus;
+
+	if(mp_StatusScreen->m_showstatus)
+		mp_StatusScreen->GenerateStatus();
+}
+
 
 void CInventory::drawHUD()
 {
@@ -40,7 +50,7 @@ void CInventory::drawHUD()
 
 void CInventory::drawStatus()
 {
-	m_StatusScreen.draw();
+	mp_StatusScreen->draw();
 }
 
 

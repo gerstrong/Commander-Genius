@@ -213,6 +213,8 @@ void CPlayerLevel::processFiring()
 	if( m_playcontrol[PA_FIRE] && m_climbing )
 		yinertia = 0;
 
+	stItemGalaxy &m_Item = m_Inventory.Item;
+
 	if( m_playcontrol[PA_FIRE] && !m_pfiring )
 	{
 		if(m_climbing)
@@ -222,7 +224,7 @@ void CPlayerLevel::processFiring()
 				setAction(A_KEEN_POLE_SHOOTUP);
 				const int newx = getXMidPos()-(3<<STC);
 				const int newy = getYUpPos()-(16<<STC);
-				if(m_Inventory.m_bullets > 0)
+				if(m_Item.m_bullets > 0)
 					m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, UP));
 			}
 			else if(m_playcontrol[PA_Y] > 0 && !getActionNumber(A_KEEN_POLE_SHOOTDOWN))
@@ -230,7 +232,7 @@ void CPlayerLevel::processFiring()
 				setAction(A_KEEN_POLE_SHOOTDOWN);
 				const int newx = getXMidPos()-(3<<STC);
 				const int newy = getYDownPos();
-				if(m_Inventory.m_bullets > 0)
+				if(m_Item.m_bullets > 0)
 					m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, DOWN));
 			}
 			else if(!getActionNumber(A_KEEN_POLE_SHOOT))
@@ -238,7 +240,7 @@ void CPlayerLevel::processFiring()
 				setAction(A_KEEN_POLE_SHOOT);
 				const int newx = getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC));
 				const int newy = getYPosition()+(4<<STC);
-				if(m_Inventory.m_bullets > 0)
+				if(m_Item.m_bullets > 0)
 					m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, m_hDir));
 			}
 			m_pfiring = true;
@@ -250,7 +252,7 @@ void CPlayerLevel::processFiring()
 				setAction(A_KEEN_JUMP_SHOOTUP);
 				const int newx = getXMidPos()-(3<<STC);
 				const int newy = getYUpPos()-(16<<STC);
-				if(m_Inventory.m_bullets > 0)
+				if(m_Item.m_bullets > 0)
 					m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, UP));
 
 			}
@@ -259,7 +261,7 @@ void CPlayerLevel::processFiring()
 				setAction(A_KEEN_JUMP_SHOOTDOWN);
 				const int newx = getXMidPos()-(3<<STC);
 				const int newy = getYDownPos();
-				if(m_Inventory.m_bullets > 0)
+				if(m_Item.m_bullets > 0)
 					m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, DOWN));
 
 			}
@@ -268,7 +270,7 @@ void CPlayerLevel::processFiring()
 				setAction(A_KEEN_JUMP_SHOOT);
 				const int newx = getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC));
 				const int newy = getYPosition()+(4<<STC);
-				if(m_Inventory.m_bullets > 0)
+				if(m_Item.m_bullets > 0)
 					m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, m_hDir));
 			}
 			m_pfiring = true;
@@ -280,7 +282,7 @@ void CPlayerLevel::processFiring()
 				setActionForce(A_KEEN_SHOOT+2);
 				const int newx = getXMidPos()-(3<<STC);
 				const int newy = getYUpPos()-(16<<STC);
-				if(m_Inventory.m_bullets > 0)
+				if(m_Item.m_bullets > 0)
 					m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, UP));
 
 				m_pfiring = true;
@@ -290,7 +292,7 @@ void CPlayerLevel::processFiring()
 				setAction(A_KEEN_SHOOT);
 				const int newx = getXPosition() + ((m_hDir == LEFT) ? -(16<<STC) : (16<<STC));
 				const int newy = getYPosition()+(4<<STC);
-				if(m_Inventory.m_bullets > 0)
+				if(m_Item.m_bullets > 0)
 					m_ObjectPtrs.push_back(new CBullets(mp_Map, newx, newy, m_hDir));
 				m_pfiring = true;
 			}
@@ -299,10 +301,10 @@ void CPlayerLevel::processFiring()
 		// One shot less in the inventory when Keens shoots
 		if(m_pfiring)
 		{
-			if(m_Inventory.m_bullets > 0)
+			if(m_Item.m_bullets > 0)
 			{
 				g_pSound->playSound( SOUND_KEEN_FIRE );
-				m_Inventory.m_bullets--;
+				m_Item.m_bullets--;
 			}
 			else
 			{
@@ -809,6 +811,8 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
 	// Item which are taken must go into a data structure
 	// animation should also be triggered
 
+	stItemGalaxy &m_Item = m_Inventory.Item;
+
 	// This will change the gemholder to a holder with gem
 	if( getActionNumber(A_KEEN_STAND) || getActionNumber(A_KEEN_RUN) )
 	{
@@ -819,14 +823,14 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
 
 			if( hitdetectWithTileProperty(i, l_x, l_y) )
 			{
-				if(i == 7 && m_Inventory.m_gem.red > 0)
-					m_Inventory.m_gem.red--;
-				else if(i == 8 && m_Inventory.m_gem.yellow > 0)
-					m_Inventory.m_gem.yellow--;
-				else if(i == 9 && m_Inventory.m_gem.blue > 0)
-					m_Inventory.m_gem.blue--;
-				else if(i == 10 && m_Inventory.m_gem.green > 0)
-					m_Inventory.m_gem.green--;
+				if(i == 7 && m_Item.m_gem.red > 0)
+					m_Item.m_gem.red--;
+				else if(i == 8 && m_Item.m_gem.yellow > 0)
+					m_Item.m_gem.yellow--;
+				else if(i == 9 && m_Item.m_gem.blue > 0)
+					m_Item.m_gem.blue--;
+				else if(i == 10 && m_Item.m_gem.green > 0)
+					m_Item.m_gem.green--;
 				else
 					break;
 
@@ -851,7 +855,7 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
 		const int lc_y = l_y>>CSF;
 		mp_Map->setTile( lc_x, lc_y, 0, true, 1 );
 		m_ObjectPtrs.push_back(new CItemEffect(mp_Map, lc_x<<CSF, lc_y<<CSF, 215, ANIMATE));
-		m_Inventory.m_drops++;
+		m_Item.m_drops++;
 		g_pSound->playSound( SOUND_GET_DROP );
 	}
 
@@ -868,14 +872,14 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
 
 			switch(i)
 			{
-			case 21: m_Inventory.m_points += 100;	g_pSound->playSound( SOUND_GET_BONUS );	break;
-			case 22: m_Inventory.m_points += 200;	g_pSound->playSound( SOUND_GET_BONUS );	break;
-			case 23: m_Inventory.m_points += 500;	g_pSound->playSound( SOUND_GET_BONUS );	break;
-			case 24: m_Inventory.m_points += 1000;	g_pSound->playSound( SOUND_GET_BONUS );	break;
-			case 25: m_Inventory.m_points += 2000;	g_pSound->playSound( SOUND_GET_BONUS );	break;
-			case 26: m_Inventory.m_points += 5000;	g_pSound->playSound( SOUND_GET_BONUS );	break;
-			case 27: m_Inventory.m_lifes++;	g_pSound->playSound( SOUND_EXTRA_LIFE );	break;
-			case 28: m_Inventory.m_bullets += 5;	g_pSound->playSound( SOUND_GET_AMMO );	break;
+			case 21: m_Item.m_points += 100;	g_pSound->playSound( SOUND_GET_BONUS );	break;
+			case 22: m_Item.m_points += 200;	g_pSound->playSound( SOUND_GET_BONUS );	break;
+			case 23: m_Item.m_points += 500;	g_pSound->playSound( SOUND_GET_BONUS );	break;
+			case 24: m_Item.m_points += 1000;	g_pSound->playSound( SOUND_GET_BONUS );	break;
+			case 25: m_Item.m_points += 2000;	g_pSound->playSound( SOUND_GET_BONUS );	break;
+			case 26: m_Item.m_points += 5000;	g_pSound->playSound( SOUND_GET_BONUS );	break;
+			case 27: m_Item.m_lifes++;	g_pSound->playSound( SOUND_EXTRA_LIFE );	break;
+			case 28: m_Item.m_bullets += 5;	g_pSound->playSound( SOUND_GET_AMMO );	break;
 			default: break;
 			}
 		}
@@ -972,7 +976,7 @@ void CPlayerLevel::kill()
 {
 	// TODO: Here were prepare Keen to die, setting that action
 	m_dying = true;
-	m_Inventory.m_lifes--;
+	m_Inventory.Item.m_lifes--;
 	setActionForce(A_KEEN_DIE);
 	g_pSound->playSound( SOUND_KEEN_DIE );
 
