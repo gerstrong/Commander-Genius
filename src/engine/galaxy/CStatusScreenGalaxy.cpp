@@ -11,10 +11,11 @@
 #include "sdl/video/colourconvert.h"
 #include "common/CBehaviorEngine.h"
 
-CStatusScreenGalaxy::CStatusScreenGalaxy(const stItemGalaxy& Item) :
+CStatusScreenGalaxy::CStatusScreenGalaxy(const stItemGalaxy& Item, const std::string &LevelName) :
 m_showstatus(false),
 mp_StatusSurface(NULL),
-m_Item(Item)
+m_Item(Item),
+m_LevelName(LevelName)
 {}
 
 void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)

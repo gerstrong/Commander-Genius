@@ -34,6 +34,9 @@ public:
 	void setLevel(Uint16 Level);
 	Uint16 getLevel();
 
+	void setLevelName( const std::string& name );
+	std::string getLevelName();
+
 	bool createEmptyDataPlane(size_t plane, Uint32 width, Uint32 height);
 
 	bool gotoPos( int x, int y );
@@ -113,6 +116,7 @@ private:
 	CPlane m_Plane[3];
 	bool m_Background; // This variable holds, whether we have a background to draw or not.
 	Uint16 m_Level;
+	std::string m_LevelName;
 };
 
 #endif /* CMAP_H_ */

@@ -26,6 +26,7 @@ public:
 
 	bool loadLevel(const Uint16 level);
 
+	std::string getLevelName();
 	void process();
 
 private:

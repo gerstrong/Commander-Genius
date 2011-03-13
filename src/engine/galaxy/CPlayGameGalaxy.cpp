@@ -21,7 +21,7 @@ CPlayGameGalaxy::CPlayGameGalaxy(CExeFile &ExeFile, char level,
 		 char numplayers, Uint8& difficulty,
 		  CSavedGame &SavedGame) :
 CPlayGame(ExeFile, level, numplayers, difficulty ),
-m_Inventory(difficulty),
+m_Inventory(difficulty, m_LevelName),
 m_WorldMap(ExeFile, m_Inventory),
 m_LevelPlay(ExeFile, m_Inventory),
 mp_Menu(NULL),
@@ -40,6 +40,7 @@ bool CPlayGameGalaxy::init()
 	{
 		m_WorldMap.setActive(true);
 		m_WorldMap.loadAndPlayMusic();
+		m_LevelName = m_WorldMap.getLevelName();
 		return false;
 	}
 	else
@@ -47,6 +48,7 @@ bool CPlayGameGalaxy::init()
 		// manually a level has been loaded
 		m_LevelPlay.loadLevel(m_Level);
 		m_LevelPlay.setActive(true);
+		m_LevelName = m_LevelPlay.getLevelName();
 		return true;
 	}
 }
@@ -77,6 +79,19 @@ void CPlayGameGalaxy::process()
 	else
 	{
 		processInput();
+
+		// Trigger the Status screen here
+		if(m_Inventory.showStatus())
+		{
+			if(g_pInput->getPressedAnyCommand())
+				m_Inventory.toggleStatusScreen();
+		}
+		else
+		{
+			if(g_pInput->getPressedCommand(IC_STATUS))
+				m_Inventory.toggleStatusScreen();
+		}
+
 
 		if(g_pInput->getPressedCommand(IC_STATUS))
 		{
@@ -118,6 +133,7 @@ void CPlayGameGalaxy::process()
 			g_pMusicPlayer->stop();
 			m_WorldMap.setActive(false);
 			m_LevelPlay.loadLevel(ev->data - 0xC000);
+			m_LevelName = m_LevelPlay.getLevelName();
 			m_LevelPlay.setActive(true);
 		}
 		EventContainer.pop_Event();
@@ -127,6 +143,7 @@ void CPlayGameGalaxy::process()
 		g_pMusicPlayer->stop();
 		m_LevelPlay.setActive(false);
 		m_WorldMap.setActive(true);
+		m_LevelName = m_WorldMap.getLevelName();
 		m_WorldMap.loadAndPlayMusic();
 	}
 

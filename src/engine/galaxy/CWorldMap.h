@@ -25,6 +25,7 @@ public:
 	void setActive(bool value);
 
 	void init();
+	std::string getLevelName();
 	void loadAndPlayMusic();
 	void process();
 

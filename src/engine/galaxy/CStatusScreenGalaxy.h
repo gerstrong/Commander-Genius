@@ -12,11 +12,11 @@
 
 #include <SDL.h>
 #include "ItemsGalaxy.h"
-
+#include <string>
 
 class CStatusScreenGalaxy {
 public:
-	CStatusScreenGalaxy(const stItemGalaxy& Item);
+	CStatusScreenGalaxy(const stItemGalaxy& Item, const std::string &LevelName);
 	~CStatusScreenGalaxy();
 
 	// This will generate the status screen. It must be derived by other classes, depending on the Episode
@@ -32,6 +32,7 @@ public:
 	bool m_showstatus;
 	SDL_Surface *mp_StatusSurface;
 	const stItemGalaxy& m_Item;
+	const std::string &m_LevelName;
 };
 
 

@@ -47,6 +47,14 @@ void CWorldMap::init()
 }
 
 /**
+ * return the name of the opened level
+ */
+std::string CWorldMap::getLevelName()
+{
+	return m_Map.getLevelName();
+}
+
+/**
  * The map is not loaded again after the game started. But we have to reload its song.
  */
 void CWorldMap::loadAndPlayMusic()

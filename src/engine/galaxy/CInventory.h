@@ -16,10 +16,11 @@
 #include "ItemsGalaxy.h"
 #include "CStatusScreenGalaxy.h"
 #include "SmartPointer.h"
+#include <string>
 
 class CInventory {
 public:
-	CInventory(Uint8& difficulty);
+	CInventory(Uint8& difficulty, const std::string& levelname);
 	void reset();
 
 	// This function draws the HUD on the Screen
@@ -39,6 +40,7 @@ public:
 
 	CHUD m_HUD;
 	SmartPointer<CStatusScreenGalaxy> mp_StatusScreen;
+	const std::string &m_LevelName;
 };
 
 

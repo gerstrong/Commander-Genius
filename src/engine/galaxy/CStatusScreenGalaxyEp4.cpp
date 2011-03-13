@@ -10,8 +10,8 @@
 #include "common/CBehaviorEngine.h"
 #include "StringUtils.h"
 
-CStatusScreenGalaxyEp4::CStatusScreenGalaxyEp4(const stItemGalaxy& Item) :
-CStatusScreenGalaxy(Item)
+CStatusScreenGalaxyEp4::CStatusScreenGalaxyEp4(const stItemGalaxy& Item, const std::string &LevelName) :
+CStatusScreenGalaxy(Item, LevelName)
 {}
 
 
@@ -37,7 +37,13 @@ void CStatusScreenGalaxyEp4::GenerateStatus()
 	TempRect.w = EditRect.w;
 	TempRect.h = 20;
 
+	Font.setBGColour(pixelformat, 0xFFFFFF);
+	Font.setFGColour(pixelformat, 0x0);
 	SDL_FillRect(mp_StatusSurface, &TempRect, 0xFFFFFFFF);
+	Font.drawFontCentered(mp_StatusSurface, m_LevelName, TempRect.x, TempRect.w, TempRect.y+6, false);
+	Font.setBGColour(pixelformat, 0xAAAAAA);
+	Font.setFGColour(pixelformat, 0x555555);
+
 
 	/// SCORE and EXTRA Rect
 	TempRect.x = EditRect.x;
@@ -83,7 +89,7 @@ void CStatusScreenGalaxyEp4::GenerateStatus()
 		difftext = "Hard";
 	else
 		difftext = "???";
-	Font.drawFontCentered(mp_StatusSurface, difftext, TempRect.x+4, TempRect.w, TempRect.y+1, false);
+	Font.drawFontCentered(mp_StatusSurface, difftext, TempRect.x, TempRect.w, TempRect.y+1, false);
 	Font.setBGColour(pixelformat, 0xAAAAAA);
 	Font.setFGColour(pixelformat, 0x555555);
 

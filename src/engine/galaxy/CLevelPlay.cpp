@@ -47,6 +47,15 @@ bool CLevelPlay::loadLevel(const Uint16 level)
 	return true;
 }
 
+/**
+ * return the name of the opened level
+ */
+std::string CLevelPlay::getLevelName()
+{
+	return m_Map.getLevelName();
+}
+
+
 void CLevelPlay::process()
 {
 	// Animate the tiles of the map
