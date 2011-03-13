@@ -17,6 +17,7 @@
 #include "CStatusScreenGalaxy.h"
 #include "SmartPointer.h"
 #include <string>
+#include <SDL.h>
 
 class CInventory {
 public:
@@ -40,6 +41,7 @@ public:
 
 	CHUD m_HUD;
 	SmartPointer<CStatusScreenGalaxy> mp_StatusScreen;
+	SDL_Surface *mp_StatusBgrnd;
 	const std::string &m_LevelName;
 };
 

@@ -11,6 +11,7 @@
 #include "graphics/CGfxEngine.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/CInput.h"
+#include "sdl/sound/CSound.h"
 #include "sdl/music/CMusic.h"
 #include "StringUtils.h"
 
@@ -84,12 +85,18 @@ void CPlayGameGalaxy::process()
 		if(m_Inventory.showStatus())
 		{
 			if(g_pInput->getPressedAnyCommand())
+			{
+				g_pSound->playSound(SOUND_STATUS_SLIDE_OUT);
 				m_Inventory.toggleStatusScreen();
+			}
 		}
 		else
 		{
 			if(g_pInput->getPressedCommand(IC_STATUS))
+			{
+				g_pSound->playSound(SOUND_STATUS_SLIDE_IN);
 				m_Inventory.toggleStatusScreen();
+			}
 		}
 
 
@@ -146,8 +153,6 @@ void CPlayGameGalaxy::process()
 		m_LevelName = m_WorldMap.getLevelName();
 		m_WorldMap.loadAndPlayMusic();
 	}
-
-
 }
 
 void CPlayGameGalaxy::processInput()
