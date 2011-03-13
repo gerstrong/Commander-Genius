@@ -39,12 +39,12 @@ public:
 	virtual ~CPlayGameGalaxy();
 
 private:
+	CInventory m_Inventory;
 	CWorldMap m_WorldMap;
 	CLevelPlay m_LevelPlay;
 	CMenuGalaxy *mp_Menu;
 	CSavedGame &m_SavedGame;
 	CBitmap m_BackgroundBitmap;
-	CInventory m_Inventory;
 };
 
 }

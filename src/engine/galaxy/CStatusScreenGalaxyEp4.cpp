@@ -7,6 +7,7 @@
 
 #include "CStatusScreenGalaxyEp4.h"
 #include "graphics/CGfxEngine.h"
+#include "common/CBehaviorEngine.h"
 #include "StringUtils.h"
 
 CStatusScreenGalaxyEp4::CStatusScreenGalaxyEp4(const stItemGalaxy& Item) :
@@ -71,16 +72,73 @@ void CStatusScreenGalaxyEp4::GenerateStatus()
 	// Level Box
 	TempRect.x = EditRect.x+96;
 	SDL_FillRect(mp_StatusSurface, &TempRect, 0xFFFFFFFF);
+	Font.setBGColour(pixelformat, 0xFFFFFF);
+	Font.setFGColour(pixelformat, 0x0);
+	std::string difftext;
+	if(m_Item.m_difficulty == 1)
+		difftext = "Easy";
+	else if(m_Item.m_difficulty == 2)
+		difftext = "Normal";
+	else if(m_Item.m_difficulty == 3)
+		difftext = "Hard";
+	else
+		difftext = "???";
+	Font.drawFontCentered(mp_StatusSurface, difftext, TempRect.x+4, TempRect.w, TempRect.y+1, false);
+	Font.setBGColour(pixelformat, 0xAAAAAA);
+	Font.setFGColour(pixelformat, 0x555555);
 
 	// Keys Box
+	TempRect.x = EditRect.x;
+	TempRect.y = EditRect.y+80;
+	Font.drawFont(mp_StatusSurface, "KEYS", TempRect.x, TempRect.y);
+	TempRect.w = 8*4; TempRect.h = 10;
+	TempRect.x = TempRect.x+8*5;
+	SDL_FillRect(mp_StatusSurface, &TempRect, 0xFF000000);
 
 	// Ammo Box
+	TempRect.x = EditRect.x+96;
+	TempRect.y = EditRect.y+80;
+	Font.drawFont(mp_StatusSurface, "AMMO", TempRect.x, TempRect.y);
+	TempRect.w = 8*3; TempRect.h = 10;
+	TempRect.x = TempRect.x+8*5;
+	SDL_FillRect(mp_StatusSurface, &TempRect, 0xFF000000);
+	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(m_Item.m_bullets), 3), TempRect.x, TempRect.y+1, mp_StatusSurface);
 
 	// Keens Box
+	TempRect.x = EditRect.x;
+	TempRect.y = EditRect.y+96;
+	Font.drawFont(mp_StatusSurface, "KEENS", TempRect.x, TempRect.y);
+	TempRect.w = 8*2; TempRect.h = 10;
+	TempRect.x = TempRect.x+8*5+8;
+	SDL_FillRect(mp_StatusSurface, &TempRect, 0xFF000000);
+	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(m_Item.m_lifes), 2), TempRect.x, TempRect.y+1, mp_StatusSurface);
 
 	// Drops Box
+	TempRect.x = EditRect.x+96;
+	TempRect.y = EditRect.y+96;
+	Font.drawFont(mp_StatusSurface, "DROPS", TempRect.x, TempRect.y);
+	TempRect.w = 8*2; TempRect.h = 10;
+	TempRect.x = TempRect.x+8*5+8;
+	SDL_FillRect(mp_StatusSurface, &TempRect, 0xFF000000);
+	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(m_Item.m_drops), 2), TempRect.x, TempRect.y+1, mp_StatusSurface);
 
 	// Swim Suit Box
+	TempRect.x = EditRect.x;
+	TempRect.y = EditRect.y+114;
+	TempRect.w = (EditRect.w/2)-16; TempRect.h = 11;
+	TempRect.x = TempRect.x;
+	SDL_FillRect(mp_StatusSurface, &TempRect, 0xFFFFFFFF);
+	Font.setBGColour(pixelformat, 0xFFFFFF);
+	Font.setFGColour(pixelformat, 0x0);
+	Font.drawFontCentered(mp_StatusSurface, m_Item.m_special.ep4.swimsuit ? "Swim Suit" : "???", TempRect.x, TempRect.w, TempRect.y+1, false);
 
 	// Press a Key Sign
+	CTilemap &Tilemap = g_pGfxEngine->getTileMap(2);
+	TempRect.x = EditRect.x+(EditRect.w/2);
+	TempRect.y = EditRect.y+110;
+	for( int c=0 ; c<10 ; c++ )
+		Tilemap.drawTile(mp_StatusSurface, TempRect.x+c*8, TempRect.y, 72+c);
+	TempRect.y += 8;
+	for( int c=0 ; c<10 ; c++ )
+		Tilemap.drawTile(mp_StatusSurface, TempRect.x+c*8, TempRect.y, 82+c);
 }

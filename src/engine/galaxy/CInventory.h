@@ -19,7 +19,7 @@
 
 class CInventory {
 public:
-	CInventory();
+	CInventory(Uint8& difficulty);
 	void reset();
 
 	// This function draws the HUD on the Screen
