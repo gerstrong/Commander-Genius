@@ -44,6 +44,7 @@ m_camera(pmap,x,y,this)
 	m_dying = false;
 	m_hDir = facedir;
 	m_ActionBaseOffset = 0x98C;
+	m_ptogglingswitch = false;
 	setActionForce(A_KEEN_STAND);
 
 	memset(m_playcontrol, 0, PA_MAX_ACTIONS);
@@ -468,8 +469,14 @@ void CPlayerLevel::processMoving()
 				if( m_playcontrol[PA_Y]<0 )
 				{
 					// player pressed up
-					processPressUp();
+					if( !m_ptogglingswitch)
+					{
+						processPressUp();
+						m_ptogglingswitch = true;
+					}
 				}
+				else
+					m_ptogglingswitch = false;
 			//}
 
 			// Check if Keen hits the floor
@@ -694,25 +701,33 @@ int CPlayerLevel::processPressUp() {
 	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
 	const int x_left = getXLeftPos();
 	const int x_right = getXRightPos();
-	const int up_y = getYUpPos();
+	const int x_mid = (x_left+x_right)/2;
+	const int up_y = getYUpPos()+(3<<STC);
 
-	int flag = Tile[mp_Map->getPlaneDataAt(1, x_left, up_y)].behaviour;
+	int flag = Tile[mp_Map->getPlaneDataAt(1, x_mid, up_y)].behaviour;
 
 	/* pressing a switch */
 	if (flag==MISCFLAG_SWITCHPLATON||flag==MISCFLAG_SWITCHPLATOFF||
 	 flag == MISCFLAG_SWITCHBRIDGE) {
 		g_pSound->playSound( SOUND_GUN_CLICK );
+		//setAction(ACTION_KEENENTERSLIDE);
+		setAction(A_KEEN_SLIDE);
+		PressSwitch();
 	 }
-	/*	var2 = o->boxTXmid*256-64;
+/*		var2 = o->boxTXmid*256-64;
 		if (o->xpos == var2) {
-			o->action = ACTION_KEENENTERSLIDE;
+			setAction(ACTION_KEENENTERSLIDE);
+			setAction(A_KEEN_SLIDE);
 		} else {
 			o->time = var2;
-			o->action = ACTION_KEENPRESSSWITCH;
+			//setAction(ACTION_KEENPRESSSWITCH);
+			setAction(ACTION_KEENENTERSLIDE);
 		}
 		EnterDoorAttempt = 1;
 		return 1;
 	} */
+
+	flag = Tile[mp_Map->getPlaneDataAt(1, x_left, up_y)].behaviour;
 
 	// entering a door
 	if (flag == MISCFLAG_DOOR || flag == MISCFLAG_KEYCARDDOOR) {
@@ -884,6 +899,86 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
 			}
 		}
 	}
+}
+
+/**
+ * This function checks whether a bridge must be opened or closed and does this kind of work
+ * I'm not really happy with that part of the code and I know that it works for Keen 4. Not sure about the
+ * other episodes, but it's well though and should...
+ */
+void CPlayerLevel::PressSwitch()
+{
+	/*int *t_0; //tile
+	int fg, fg_next_anim //fg tile, next animation*/
+
+	int lx = getXMidPos();
+	int ly = getYUpPos()+(3<<STC);
+	Uint16 targetXY = mp_Map->getPlaneDataAt(2, lx, ly);
+
+	Uint16 newX = targetXY >> 8;
+	Uint16 newY = targetXY & 0xFF;
+
+	const Uint16 start_tile = mp_Map->getPlaneDataAt(1, newX<<CSF, newY<<CSF)-1;
+	const Uint16 end_tile = start_tile+3;
+
+	/// We found the start of the row, that need to be changed.
+	/// Let apply it to the rest of the bridge
+	// Apply to the borders
+
+	// bridge opened or closed?
+	const bool b_opened = (start_tile%8 < 4) ?true : false;
+
+	int x = newX;
+	for(int t = start_tile ;  ; x++ )
+	{
+		// Now decide whether the tile is a piece or borders of the bridge
+		const Uint16 type = t%18;
+
+		if(type < 16)
+		{
+			if(b_opened)
+				t += 4;
+			else
+				t -= 4;
+		}
+		else
+		{
+			// It is just a normal piece remove
+			t = (t/18)*18;
+			if(b_opened)
+				t+=18;
+			else
+				t+=17;
+		}
+		const Uint16 NewTile = t;
+		t = mp_Map->getPlaneDataAt(1, x<<CSF, newY<<CSF);
+
+		mp_Map->setTile(x-1, newY, NewTile, true, 1);
+		mp_Map->setTile(x-1, newY+1, NewTile+18, true, 1);
+
+		if(t == end_tile)
+		{
+			if(t%8 < 4)
+				// This bridge is opened, close it!
+				t += 4;
+			else
+				// This bridge is closed, open it!
+				t -= 4;
+
+			Uint16 new_lasttile = end_tile;
+			if(b_opened)
+				new_lasttile += 4;
+			else
+				new_lasttile -= 4;
+
+			mp_Map->setTile(x-1, newY+1, new_lasttile+17, true, 1);
+			mp_Map->setTile(x, newY, new_lasttile, true, 1);
+			mp_Map->setTile(x, newY+1, new_lasttile+18, true, 1);
+			break;
+		}
+	}
+
+	return;
 }
 
 void CPlayerLevel::openDoorsTile()
