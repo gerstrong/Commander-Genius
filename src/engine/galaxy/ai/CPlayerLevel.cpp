@@ -704,26 +704,30 @@ int CPlayerLevel::processPressUp() {
 	const int x_mid = (x_left+x_right)/2;
 	const int up_y = getYUpPos()+(3<<STC);
 
-	int flag = Tile[mp_Map->getPlaneDataAt(1, x_mid, up_y)].behaviour;
+	const Uint16 tile_no = mp_Map->getPlaneDataAt(1, x_mid, up_y);
+	int flag = Tile[tile_no].behaviour;
 
 	/* pressing a switch */
 	if (flag==MISCFLAG_SWITCHPLATON || flag == MISCFLAG_SWITCHPLATOFF ||
 		flag == MISCFLAG_SWITCHBRIDGE)
 	{
 		g_pSound->playSound( SOUND_GUN_CLICK );
-		//setAction(ACTION_KEENENTERSLIDE);
 		setAction(A_KEEN_SLIDE);
 		if(flag == MISCFLAG_SWITCHBRIDGE)
 		{
-			g_pBehaviorEngine->getTilewithBehavior(MISCFLAG_SWITCHBRIDGE, 1)
-			//const Uint16 newtile = (flag == MISCFLAG_SWITCHBRIDGE) ? MISCFLAG_SWITCHBRIDGE+1 : MISCFLAG_SWITCHBRIDGE;
-			//mp_Map->setTile( x_mid>>CSF, up_y>>CSF, newtile, true, 1); // Wrong tiles, those are for the info plane
+			Uint16 newtile;
+			if(Tile[tile_no+1].behaviour == MISCFLAG_SWITCHBRIDGE)
+				newtile = tile_no+1;
+			else
+				newtile = tile_no-1;
+
+			mp_Map->setTile( x_mid>>CSF, up_y>>CSF, newtile, true, 1); // Wrong tiles, those are for the info plane
 			PressBridgeSwitch();
 		}
 		else
 		{
-			//const Uint16 newtile = (flag == MISCFLAG_SWITCHPLATON) ? MISCFLAG_SWITCHPLATOFF : MISCFLAG_SWITCHPLATON;
-			//mp_Map->setTile( x_mid>>CSF, up_y>>CSF, newtile, true, 1); // Wrong tiles, those are for the info plane
+			const Uint16 newtile = (flag == MISCFLAG_SWITCHPLATON) ? tile_no+1 : tile_no-1 ;
+			mp_Map->setTile( x_mid>>CSF, up_y>>CSF, newtile, true, 1); // Wrong tiles, those are for the info plane
 			PressPlatformSwitch();
 		}
 	 }
