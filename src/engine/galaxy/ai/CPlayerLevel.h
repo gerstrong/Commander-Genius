@@ -67,7 +67,8 @@ public:
 	void processEnterDoor();
 	void processLevelMiscFlagsCheck();
 
-	void PressSwitch();
+	void PressBridgeSwitch();
+	void PressPlatformSwitch();
 	void openDoorsTile();
 	void processPlaceGem();
 

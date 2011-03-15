@@ -707,12 +707,25 @@ int CPlayerLevel::processPressUp() {
 	int flag = Tile[mp_Map->getPlaneDataAt(1, x_mid, up_y)].behaviour;
 
 	/* pressing a switch */
-	if (flag==MISCFLAG_SWITCHPLATON||flag==MISCFLAG_SWITCHPLATOFF||
-	 flag == MISCFLAG_SWITCHBRIDGE) {
+	if (flag==MISCFLAG_SWITCHPLATON || flag == MISCFLAG_SWITCHPLATOFF ||
+		flag == MISCFLAG_SWITCHBRIDGE)
+	{
 		g_pSound->playSound( SOUND_GUN_CLICK );
 		//setAction(ACTION_KEENENTERSLIDE);
 		setAction(A_KEEN_SLIDE);
-		PressSwitch();
+		if(flag == MISCFLAG_SWITCHBRIDGE)
+		{
+			g_pBehaviorEngine->getTilewithBehavior(MISCFLAG_SWITCHBRIDGE, 1)
+			//const Uint16 newtile = (flag == MISCFLAG_SWITCHBRIDGE) ? MISCFLAG_SWITCHBRIDGE+1 : MISCFLAG_SWITCHBRIDGE;
+			//mp_Map->setTile( x_mid>>CSF, up_y>>CSF, newtile, true, 1); // Wrong tiles, those are for the info plane
+			PressBridgeSwitch();
+		}
+		else
+		{
+			//const Uint16 newtile = (flag == MISCFLAG_SWITCHPLATON) ? MISCFLAG_SWITCHPLATOFF : MISCFLAG_SWITCHPLATON;
+			//mp_Map->setTile( x_mid>>CSF, up_y>>CSF, newtile, true, 1); // Wrong tiles, those are for the info plane
+			PressPlatformSwitch();
+		}
 	 }
 /*		var2 = o->boxTXmid*256-64;
 		if (o->xpos == var2) {
@@ -906,7 +919,7 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
  * I'm not really happy with that part of the code and I know that it works for Keen 4. Not sure about the
  * other episodes, but it's well though and should...
  */
-void CPlayerLevel::PressSwitch()
+void CPlayerLevel::PressBridgeSwitch()
 {
 	/*int *t_0; //tile
 	int fg, fg_next_anim //fg tile, next animation*/
@@ -977,6 +990,87 @@ void CPlayerLevel::PressSwitch()
 			break;
 		}
 	}
+
+	return;
+}
+
+void CPlayerLevel::PressPlatformSwitch()
+{
+	/*int *t_0; //tile
+	int fg, fg_next_anim //fg tile, next animation*/
+
+	int lx = getXMidPos();
+	int ly = getYUpPos()+(3<<STC);
+	Uint16 targetXY = mp_Map->getPlaneDataAt(2, lx, ly);
+
+	Uint16 newX = targetXY >> 8;
+	Uint16 newY = targetXY & 0xFF;
+
+	if(mp_Map->getPlaneDataAt(2, newX<<CSF, newY<<CSF) == 31)
+		mp_Map->setTile(newX, newY, 0, true, 2);
+	else
+		mp_Map->setTile(newX, newY, 31, true, 2);
+
+
+	//const Uint16 start_tile = mp_Map->getPlaneDataAt(1, newX<<CSF, newY<<CSF);
+	//const Uint16 end_tile = start_tile+3;
+
+	/// We found the start of the row, that need to be changed.
+	/// Let apply it to the rest of the bridge
+	// Apply to the borders
+
+	// bridge opened or closed?
+	/*const bool b_opened = (start_tile%8 < 4) ?true : false;
+
+	int x = newX;
+	for(int t = start_tile ;  ; x++ )
+	{
+		// Now decide whether the tile is a piece or borders of the bridge
+		const Uint16 type = t%18;
+
+		if(type < 16)
+		{
+			if(b_opened)
+				t += 4;
+			else
+				t -= 4;
+		}
+		else
+		{
+			// It is just a normal piece remove
+			t = (t/18)*18;
+			if(b_opened)
+				t+=18;
+			else
+				t+=17;
+		}
+		const Uint16 NewTile = t;
+		t = mp_Map->getPlaneDataAt(1, x<<CSF, newY<<CSF);
+
+		mp_Map->setTile(x-1, newY, NewTile, true, 1);
+		mp_Map->setTile(x-1, newY+1, NewTile+18, true, 1);
+
+		if(t == end_tile)
+		{
+			if(t%8 < 4)
+				// This bridge is opened, close it!
+				t += 4;
+			else
+				// This bridge is closed, open it!
+				t -= 4;
+
+			Uint16 new_lasttile = end_tile;
+			if(b_opened)
+				new_lasttile += 4;
+			else
+				new_lasttile -= 4;
+
+			mp_Map->setTile(x-1, newY+1, new_lasttile+17, true, 1);
+			mp_Map->setTile(x, newY, new_lasttile, true, 1);
+			mp_Map->setTile(x, newY+1, new_lasttile+18, true, 1);
+			break;
+		}
+	}*/
 
 	return;
 }
