@@ -923,6 +923,10 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
  * I'm not really happy with that part of the code and I know that it works for Keen 4. Not sure about the
  * other episodes, but it's well though and should...
  */
+
+/**
+ * This function will open/close bridges in Keen Galaxy
+ */
 void CPlayerLevel::PressBridgeSwitch()
 {
 	/*int *t_0; //tile
@@ -998,11 +1002,11 @@ void CPlayerLevel::PressBridgeSwitch()
 	return;
 }
 
+/**
+ * This function will put/release the blockers of some platforms used in Keen Galaxy
+ */
 void CPlayerLevel::PressPlatformSwitch()
 {
-	/*int *t_0; //tile
-	int fg, fg_next_anim //fg tile, next animation*/
-
 	int lx = getXMidPos();
 	int ly = getYUpPos()+(3<<STC);
 	Uint16 targetXY = mp_Map->getPlaneDataAt(2, lx, ly);
@@ -1014,67 +1018,6 @@ void CPlayerLevel::PressPlatformSwitch()
 		mp_Map->setTile(newX, newY, 0, true, 2);
 	else
 		mp_Map->setTile(newX, newY, 31, true, 2);
-
-
-	//const Uint16 start_tile = mp_Map->getPlaneDataAt(1, newX<<CSF, newY<<CSF);
-	//const Uint16 end_tile = start_tile+3;
-
-	/// We found the start of the row, that need to be changed.
-	/// Let apply it to the rest of the bridge
-	// Apply to the borders
-
-	// bridge opened or closed?
-	/*const bool b_opened = (start_tile%8 < 4) ?true : false;
-
-	int x = newX;
-	for(int t = start_tile ;  ; x++ )
-	{
-		// Now decide whether the tile is a piece or borders of the bridge
-		const Uint16 type = t%18;
-
-		if(type < 16)
-		{
-			if(b_opened)
-				t += 4;
-			else
-				t -= 4;
-		}
-		else
-		{
-			// It is just a normal piece remove
-			t = (t/18)*18;
-			if(b_opened)
-				t+=18;
-			else
-				t+=17;
-		}
-		const Uint16 NewTile = t;
-		t = mp_Map->getPlaneDataAt(1, x<<CSF, newY<<CSF);
-
-		mp_Map->setTile(x-1, newY, NewTile, true, 1);
-		mp_Map->setTile(x-1, newY+1, NewTile+18, true, 1);
-
-		if(t == end_tile)
-		{
-			if(t%8 < 4)
-				// This bridge is opened, close it!
-				t += 4;
-			else
-				// This bridge is closed, open it!
-				t -= 4;
-
-			Uint16 new_lasttile = end_tile;
-			if(b_opened)
-				new_lasttile += 4;
-			else
-				new_lasttile -= 4;
-
-			mp_Map->setTile(x-1, newY+1, new_lasttile+17, true, 1);
-			mp_Map->setTile(x, newY, new_lasttile, true, 1);
-			mp_Map->setTile(x, newY+1, new_lasttile+18, true, 1);
-			break;
-		}
-	}*/
 
 	return;
 }
@@ -1103,44 +1046,6 @@ void CPlayerLevel::processPlaceGem()
 	if(m_timer == 0 || m_timer == 5 || m_timer == 8)
 	{
 		openDoorsTile();
-
-		//tile = MAPSPOTNP(o->boxTXmid, o->boxTY2)
-
-		//{
-
-		//new_fg_tile = *MK_FP(mapsegs[FGPLANE],tile+18);
-		//targetXY = *MK_FP(mapsegs[INFOPLANE], tile);
-
-
-		/*RF_11(&new_fg_tile, 1, o->boxTXmid, o->boxTY2, 1, 1);
-		SD_PlaySound(SOUND_OPENGEMDOOR);
-		GetNewObj(0);
-
-		new_object->xpos = newX;
-		new_object->ypos = newY;
-
-		if (newX > map_width_T || newX < 2 ||
-		 newY > map_heightT || newY < 2) {
-			Quit("Keyholder points to a bad spot!");
-		//}
-
-		tile_pointer = MAPSPOT(newX, newY, FGPLANE);
-		foreground_tile = *tile_pointer;
-
-		height = 1;
-		tile_pointer += map_width_T;
-
-		while(*tile_pointer == foreground_tile) {
-			height++;
-			tile_pointer += map_width_T;
-		};
-
-		new_object->time = height;
-		new_object->active = 2;
-		new_object->clipping = 0;
-		new_objective->type = 1;
-		CheckGround(new_object, ACTION_DOOROPEN);
-		return;*/
 	}
 
 	if(m_timer < 10)

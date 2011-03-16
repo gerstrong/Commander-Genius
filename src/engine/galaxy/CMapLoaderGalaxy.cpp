@@ -209,7 +209,7 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 				name[16] = '\0';
 
 				// Get and check the signature
-				g_pLogFile->textOut("Loading the Level \"" + static_cast<std::string>(name) + "\"<br>" );
+				g_pLogFile->textOut("Loading the Level \"" + static_cast<std::string>(name) + "\" (Level No. "+ itoa(level) + ")<br>" );
 				Map.setLevelName(name);
 
 				// Then decompress the level data using rlew and carmack
