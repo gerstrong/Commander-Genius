@@ -2,7 +2,7 @@
  * CPlatform.cpp
  *
  *  Created on: 23.02.2011
- *      Author: gerhard
+ *      Author: Gerstrong and FCTW
  */
 
 #include "CPlatform.h"
