@@ -722,13 +722,13 @@ int CPlayerLevel::processPressUp() {
 				newtile = tile_no-1;
 
 			mp_Map->setTile( x_mid>>CSF, up_y>>CSF, newtile, true, 1); // Wrong tiles, those are for the info plane
-			PressBridgeSwitch();
+			PressBridgeSwitch(x_mid, up_y);
 		}
 		else
 		{
 			const Uint16 newtile = (flag == MISCFLAG_SWITCHPLATON) ? tile_no+1 : tile_no-1 ;
 			mp_Map->setTile( x_mid>>CSF, up_y>>CSF, newtile, true, 1); // Wrong tiles, those are for the info plane
-			PressPlatformSwitch();
+			PressPlatformSwitch(x_mid, up_y);
 		}
 	 }
 /*		var2 = o->boxTXmid*256-64;
@@ -926,14 +926,10 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
 
 /**
  * This function will open/close bridges in Keen Galaxy
+ * \param lx CSFed Coordinate where the switch has been triggered
  */
-void CPlayerLevel::PressBridgeSwitch()
+void CPlayerLevel::PressBridgeSwitch(const Uint16 lx, const Uint16 ly)
 {
-	/*int *t_0; //tile
-	int fg, fg_next_anim //fg tile, next animation*/
-
-	int lx = getXMidPos();
-	int ly = getYUpPos()+(3<<STC);
 	Uint16 targetXY = mp_Map->getPlaneDataAt(2, lx, ly);
 
 	Uint16 newX = targetXY >> 8;
@@ -1005,10 +1001,8 @@ void CPlayerLevel::PressBridgeSwitch()
 /**
  * This function will put/release the blockers of some platforms used in Keen Galaxy
  */
-void CPlayerLevel::PressPlatformSwitch()
+void CPlayerLevel::PressPlatformSwitch(const Uint16 lx, const Uint16 ly)
 {
-	int lx = getXMidPos();
-	int ly = getYUpPos()+(3<<STC);
 	Uint16 targetXY = mp_Map->getPlaneDataAt(2, lx, ly);
 
 	Uint16 newX = targetXY >> 8;
