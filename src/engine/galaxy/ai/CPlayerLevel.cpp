@@ -967,7 +967,7 @@ void CPlayerLevel::PressBridgeSwitch()
 			// It is just a normal piece remove
 			t = (t/18)*18;
 			if(b_opened)
-				t+=18;
+				t+=16;
 			else
 				t+=17;
 		}
