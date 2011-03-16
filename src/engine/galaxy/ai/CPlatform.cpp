@@ -29,10 +29,16 @@ CObject(pmap, x, y, OBJ_PLATFORM)
 void CPlatform::process()
 {
 	Uint16 object = mp_Map->getPlaneDataAt(2, getXMidPos(), getYMidPos());
-	/*if( object == 31 )
+	if( object == 31 )
 	{
 		m_hDir = (m_hDir == RIGHT) ? LEFT : RIGHT;
-	}*/
+	}
+
+	if(m_hDir == RIGHT && blockedr)
+		m_hDir = LEFT;
+
+	if(m_hDir == LEFT && blockedl)
+		m_hDir = RIGHT;
 
 	if(m_hDir == RIGHT)
 		moveRight(MOVE_HORIZ_SPEED);
