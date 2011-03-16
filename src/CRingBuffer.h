@@ -166,12 +166,12 @@ public:
 	 * increment pointer by one element or go the start if cur == end ptr
 	 */
 	void operator++()
-				{
-		if(mp_cur == mp_end )
+	{
+		mp_cur++;
+
+		if( mp_cur == mp_end )
 			mp_cur = mp_start;
-		else
-			mp_cur++;
-				}
+	}
 
 
 private:

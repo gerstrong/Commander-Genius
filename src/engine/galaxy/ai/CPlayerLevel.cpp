@@ -98,6 +98,16 @@ void CPlayerLevel::process()
 
 		if(!m_cliff_hanging)
 		{
+			// Check whether we should bump the head
+			if(!blockedd && blockedu && !m_BumpHead)
+			{
+				g_pSound->playSound( SOUND_KEEN_BUMPHEAD );
+				m_BumpHead = true;
+			}
+
+			if(!blockedu)
+				m_BumpHead = false;
+
 			processJumping();
 			processPogo();
 			processFiring();
@@ -506,9 +516,6 @@ void CPlayerLevel::processJumping()
 	m_inair = getActionNumber(A_KEEN_JUMP) || getActionNumber(A_KEEN_JUMP+1) ||
 			getActionNumber(A_KEEN_FALL) || falling;
 
-	if(blockedu)
-		g_pSound->playSound( SOUND_KEEN_BUMPHEAD );
-
 	if(!getActionNumber(A_KEEN_JUMP))
 	{
 		if(blockedd)
@@ -561,9 +568,6 @@ void CPlayerLevel::processPogo()
 
 	if(!m_playcontrol[PA_POGO])
 		m_pogotoggle = false;
-
-	if(blockedu)
-		g_pSound->playSound( SOUND_KEEN_BUMPHEAD );
 
 	if(!getActionNumber(A_KEEN_POGO) && !m_pogotoggle)
 	{
