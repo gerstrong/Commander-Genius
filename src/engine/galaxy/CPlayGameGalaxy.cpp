@@ -141,6 +141,7 @@ void CPlayGameGalaxy::process()
 			m_WorldMap.setActive(false);
 			m_LevelPlay.loadLevel(ev->data - 0xC000);
 			m_LevelName = m_LevelPlay.getLevelName();
+			g_pSound->playSound( SOUND_ENTER_LEVEL );
 			m_LevelPlay.setActive(true);
 		}
 		EventContainer.pop_Event();

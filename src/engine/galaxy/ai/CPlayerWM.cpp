@@ -117,7 +117,6 @@ void CPlayerWM::processWalking()
 		if(object)
 		{
 			startLevel(object);
-			g_pSound->playSound( SOUND_ENTER_LEVEL );
 			g_pInput->flushCommands();
 		}
 	}

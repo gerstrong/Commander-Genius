@@ -347,9 +347,9 @@ bool CObject::hitdetectWithTilePropertyRect(const Uint16 Property, int &lx, int 
 {
 	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
 
-	for( Uint16 i=0 ; i<lw ; i+=res )
+	for( int i=0 ; i<lw ; i+=res )
 	{
-		for( Uint16 j=0 ; j<lh ; j+=res )
+		for( int j=0 ; j<lh ; j+=res )
 		{
 			const char behavior = Tile[mp_Map->getPlaneDataAt(1, lx+i, ly+j)].behaviour;
 			if(behavior == Property || behavior == Property-128 ) // -128 for foreground properties
@@ -369,7 +369,7 @@ bool CObject::hitdetectWithTilePropertyRect(const Uint16 Property, int &lx, int 
  * \param Property The Tile Property we are looking
  * \return true if detection worked with that tile having the property, else false
  */
-bool CObject::hitdetectWithTileProperty(Uint16 Property, Uint16 x, Uint16 y)
+bool CObject::hitdetectWithTileProperty(const int& Property, const int& x, const int& y)
 {
 	std::vector<CTileProperties> &Tile = g_pBehaviorEngine->getTileProperties(1);
 	const char behavior = Tile[mp_Map->getPlaneDataAt(1, x, y)].behaviour;

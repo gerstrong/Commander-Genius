@@ -870,6 +870,7 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
 				else
 					break;
 
+				moveToHorizontal((l_x>>CSF)<<CSF);
 				setAction(A_KEEN_SLIDE);
 				g_pSound->playSound( SOUND_DOOR_OPEN );
 			}
@@ -892,6 +893,15 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
 		mp_Map->setTile( lc_x, lc_y, 0, true, 1 );
 		m_ObjectPtrs.push_back(new CItemEffect(mp_Map, lc_x<<CSF, lc_y<<CSF, 215, ANIMATE));
 		m_Item.m_drops++;
+
+		if(m_Item.m_drops==100)
+		{
+			m_Item.m_drops = 0;
+			m_Item.m_lifes++;
+			g_pSound->playSound( SOUND_EXTRA_LIFE );
+			m_ObjectPtrs.push_back(new CItemEffect(mp_Map, lc_x<<CSF, lc_y<<CSF, got_sprite_item_pics[10]));
+
+		}
 		g_pSound->playSound( SOUND_GET_DROP );
 	}
 
@@ -1066,18 +1076,19 @@ void CPlayerLevel::processPlaceGem()
 void CPlayerLevel::processDying()
 {
 	// TODO: Here Keen must be falling out the screen, die effect of Keen Galaxy
-}
 
-void CPlayerLevel::kill()
-{
-	// TODO: Here were prepare Keen to die, setting that action
-	m_dying = true;
 	m_Inventory.Item.m_lifes--;
 	setActionForce(A_KEEN_DIE);
 	g_pSound->playSound( SOUND_KEEN_DIE );
 
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 	EventContainer.add( new EventExitLevel(mp_Map->getLevel(), false) );
+}
+
+void CPlayerLevel::kill()
+{
+	// TODO: Here were prepare Keen to die, setting that action
+	m_dying = true;
 }
 
 }

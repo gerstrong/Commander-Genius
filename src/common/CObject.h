@@ -108,25 +108,27 @@ public:
 
 	// Moving parts
 	void moveToForce(const VectorD2<int> &dir);
-	void moveToForce(int new_x, int new_y);
+	void moveToForce(const int& new_x, const int& new_y);
 	void moveDir(const VectorD2<int> &dir);
+	void moveToHorizontal(const int& new_x);
+	void moveToVertical(const int& new_y);
 	void moveTo(const VectorD2<Uint32> &new_loc);
-	void moveTo(int x, int y);
-	void moveXDir(int amount, bool force = false);
-	void moveYDir(int amount);
-	void moveLeft(int amount, bool force = false);
-	void moveRight(int amount, bool force = false);
-	void moveUp(int amount);
-	void moveDown(int amount);
+	void moveTo(const int &new_x, const int &new_y);
+	void moveXDir(const int& amount, const bool& force = false);
+	void moveYDir(const int& amount);
+	void moveLeft(const int& amnt, const bool& force = false);
+	void moveRight(const int& amnt, const bool& force = false);
+	void moveUp(const int& amnt);
+	void moveDown(const int& amnt);
 
-	void decreaseXInertia(int value);
+	void decreaseXInertia(const int& value);
 	void InertiaAndFriction_X();
 
 	virtual void process() { }
 	
 	bool hitdetect(CObject &hitobject);
 	bool hitdetectWithTilePropertyRect(const Uint16 Property, int &lx, int &ly, int &lw, int &lh, const int res);
-	bool hitdetectWithTileProperty(Uint16 Property, Uint16 x, Uint16 y);
+	bool hitdetectWithTileProperty(const int& Property, const int& x, const int& y);
 	virtual void kill();
 	void blink(Uint16 frametime);
 
