@@ -74,6 +74,8 @@ void CStatusScreenGalaxyEp4::GenerateStatus()
 	// Rescued Box
 	TempRect.w = 8*8;
 	SDL_FillRect(mp_StatusSurface, &TempRect, 0xFF000000);
+	for( int count=0 ; count<m_Item.m_special.ep4.elders ; count++ )
+		g_pGfxEngine->drawDigit(40, TempRect.x+8*count, TempRect.y+1, mp_StatusSurface);
 
 	// Level Box
 	TempRect.x = EditRect.x+96;
@@ -100,6 +102,14 @@ void CStatusScreenGalaxyEp4::GenerateStatus()
 	TempRect.w = 8*4; TempRect.h = 10;
 	TempRect.x = TempRect.x+8*5;
 	SDL_FillRect(mp_StatusSurface, &TempRect, 0xFF000000);
+	if(m_Item.m_gem.red)
+		g_pGfxEngine->drawDigit(36, TempRect.x, TempRect.y+1, mp_StatusSurface);
+	if(m_Item.m_gem.yellow)
+		g_pGfxEngine->drawDigit(37, TempRect.x+8, TempRect.y+1, mp_StatusSurface);
+	if(m_Item.m_gem.blue)
+		g_pGfxEngine->drawDigit(38, TempRect.x+16, TempRect.y+1, mp_StatusSurface);
+	if(m_Item.m_gem.green)
+		g_pGfxEngine->drawDigit(39, TempRect.x+24, TempRect.y+1, mp_StatusSurface);
 
 	// Ammo Box
 	TempRect.x = EditRect.x+96;
