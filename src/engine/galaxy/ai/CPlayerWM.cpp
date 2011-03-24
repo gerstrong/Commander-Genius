@@ -1,8 +1,10 @@
 /*
- * CPlayer.cpp
+ * CPlayerWM.cpp
  *
  *  Created on: 14.07.2010
  *      Author: gerstrong
+ *
+ *  The code for the player when he is shown on the map...
  */
 
 #include "CPlayerWM.h"
@@ -47,7 +49,7 @@ void CPlayerWM::process()
 	}
 	else m_animation_ticker++;
 
-	processWalking();
+	processMoving();
 
 	// Events for the Player are processed here.
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
@@ -64,30 +66,42 @@ void CPlayerWM::process()
 /*
  * Processes the walking of the player on map here
  */
-void CPlayerWM::processWalking()
+void CPlayerWM::processMoving()
 {
-	size_t movespeed = m_basesprite == WALKBASEFRAME ? 50 : 25;
+	// Check if the player is swimming or walking and setup the proper speed
+	int movespeed;
+	if(m_basesprite == SWIMBASEFRAME)
+		movespeed = 25;
+	else if(m_basesprite == WALKBASEFRAME)
+		movespeed = 50;
+	else
+		movespeed = 0;
+
 	bool walking=false;
 
 	// Normal walking
 	if(g_pInput->getHoldedCommand(IC_LEFT))
 	{
+		if(!g_pInput->getHoldedCommand(IC_UP) && !g_pInput->getHoldedCommand(IC_DOWN))
+			m_vDir = NONE;
+
 		moveLeft(movespeed);
 		walking = true;
 		m_hDir = LEFT;
 	}
 	else if(g_pInput->getHoldedCommand(IC_RIGHT))
 	{
+		if(!g_pInput->getHoldedCommand(IC_UP) && !g_pInput->getHoldedCommand(IC_DOWN))
+			m_vDir = NONE;
+
 		moveRight(movespeed);
 		walking = true;
 		m_hDir = RIGHT;
 	}
-	else
-		m_hDir = NONE;
 
 	if(g_pInput->getHoldedCommand(IC_UP))
 	{
-		if(!walking)
+		if(!g_pInput->getHoldedCommand(IC_LEFT) && !g_pInput->getHoldedCommand(IC_RIGHT))
 			m_hDir = NONE;
 
 		moveUp(movespeed);
@@ -96,32 +110,35 @@ void CPlayerWM::processWalking()
 	}
 	else if(g_pInput->getHoldedCommand(IC_DOWN))
 	{
-		if(!walking)
+		if(!g_pInput->getHoldedCommand(IC_LEFT) && !g_pInput->getHoldedCommand(IC_RIGHT))
 			m_hDir = NONE;
 
 		moveDown(movespeed);
 		walking = true;
 		m_vDir = DOWN;
 	}
-	else
-		m_vDir = NONE;
 
 
+#ifdef DEBUG
+	// TODO: This is Debug Purposes only and must be removed as soon as we have the no clipping cheat in
 	if(g_pInput->getHoldedCommand(IC_STATUS))
 		solid = !solid;
+#endif
 
-	// perform actions depending if the action button was pressed
+	// perform actions depending on if the jump button was pressed
 	if(g_pInput->getPressedCommand(IC_JUMP))
 	{
+		// Get the object
 		Uint16 object = mp_Map->getPlaneDataAt(2, getXMidPos(), getYMidPos());
-		if(object)
+		if(object) // if we found an object
 		{
+			// start the level
 			startLevel(object);
 			g_pInput->flushCommands();
 		}
 	}
 
-	// this means if keen is just walking on the map or swimming in the sea
+	// If keen is just walking on the map or swimming in the sea. Do the proper animation for it.
 	if(m_basesprite == WALKBASEFRAME)
 		performWalkingAnimation(walking);
 	else if(m_basesprite == SWIMBASEFRAME)
@@ -171,6 +188,7 @@ void CPlayerWM::finishLevel(Uint16 object)
 	}
 	g_pSound->playSound( SOUND_LEVEL_DONE );
 }
+
 /**
  * This is the function will switch between swim and walk mode
  * Those are the tileproperties to check for
@@ -245,6 +263,9 @@ void CPlayerWM::performWalkingAnimation(bool walking)
 		sprite +=  2;
 }
 
+/**
+ * This performs the animation when player is swimming in water on the map
+ */
 void CPlayerWM::performSwimmingAnimation()
 {
 	if(m_hDir == RIGHT && m_vDir == NONE)
@@ -266,10 +287,6 @@ void CPlayerWM::performSwimmingAnimation()
 
 	m_animation_time = 5;
 	sprite +=  m_animation%2;
-}
-
-CPlayerWM::~CPlayerWM() {
-	// TODO Auto-generated destructor stub
 }
 
 }

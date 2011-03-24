@@ -20,7 +20,7 @@ public:
 	CPlayerWM(CMap *pmap, Uint32 x, Uint32 y,
 			std::vector<CObject*>& ObjectPtrs, CInventory &l_Inventory);
 	void process();
-	void processWalking();
+	void processMoving();
 
 	void startLevel(Uint16 object);
 	void finishLevel(Uint16 object);
@@ -28,8 +28,6 @@ public:
 
 	void performWalkingAnimation(bool walking);
 	void performSwimmingAnimation();
-
-	virtual ~CPlayerWM();
 
 	CInventory &m_Inventory;
 
