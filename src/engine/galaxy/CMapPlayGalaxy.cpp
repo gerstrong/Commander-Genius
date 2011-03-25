@@ -17,9 +17,6 @@ mp_option(g_pBehaviorEngine->m_option)
 bool CMapPlayGalaxy::isActive()
 {	return m_active;	}
 
-/*void CMapPlayGalaxy::setActive(const bool value)
-{	m_active = value;	}*/
-
 void CMapPlayGalaxy::setActive(bool value)
 {
 	m_active = value;
@@ -43,24 +40,26 @@ std::string CMapPlayGalaxy::getLevelName()
 void CMapPlayGalaxy::process()
 {
 	// Animate the tiles of the map
+	m_Map.m_animation_enabled = !m_Inventory.showStatus();
 	m_Map.animateAllTiles();
 
-	for(size_t i=0 ; i<m_ObjectPtr.size() ; i++)
+	if(!m_Inventory.showStatus())
 	{
-		CObject* p_Object = m_ObjectPtr[i];
-
-		if(p_Object->exists)
+		for(size_t i=0 ; i<m_ObjectPtr.size() ; i++)
 		{
-			p_Object->process();
+			CObject* p_Object = m_ObjectPtr[i];
 
-			// Check collision between objects
-			/*for( std::vector<CObject*>::iterator theOtherObj=m_ObjectPtr.begin() ;
-					theOtherObj != m_ObjectPtr.end() ; theOtherObj++ )*/
-			for(size_t j=0 ; j<m_ObjectPtr.size() ; j++)
+			if(p_Object->exists)
 			{
-				CObject *theOtherObj = m_ObjectPtr[j];
-				if( theOtherObj != p_Object )
-					p_Object->getTouchedBy(*theOtherObj);
+				p_Object->process();
+
+				// Check collision between objects
+				for(size_t j=0 ; j<m_ObjectPtr.size() ; j++)
+				{
+					CObject *theOtherObj = m_ObjectPtr[j];
+					if( theOtherObj != p_Object )
+						p_Object->getTouchedBy(*theOtherObj);
+				}
 			}
 		}
 	}
