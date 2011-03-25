@@ -15,11 +15,11 @@
 
 namespace galaxy {
 
-const Uint16 MAX_JUMPHEIGHT = 30;
-const Uint16 MIN_JUMPHEIGHT = 10;
+const Uint32 MAX_JUMPHEIGHT = 30;
+const Uint32 MIN_JUMPHEIGHT = 10;
 
-const Uint16 MAX_POGOHEIGHT = 20;
-const Uint16 MIN_POGOHEIGHT = 5;
+const Uint32 MAX_POGOHEIGHT = 20;
+const Uint32 MIN_POGOHEIGHT = 5;
 
 const int POGO_START_INERTIA = -100;
 const int POGO_START_INERTIA_MAX = -173;
@@ -708,7 +708,7 @@ int CPlayerLevel::processPressUp() {
 	const int x_mid = (x_left+x_right)/2;
 	const int up_y = getYUpPos()+(3<<STC);
 
-	const Uint16 tile_no = mp_Map->getPlaneDataAt(1, x_mid, up_y);
+	const Uint32 tile_no = mp_Map->getPlaneDataAt(1, x_mid, up_y);
 	int flag = Tile[tile_no].behaviour;
 
 	/* pressing a switch */
@@ -719,7 +719,7 @@ int CPlayerLevel::processPressUp() {
 		setAction(A_KEEN_SLIDE);
 		if(flag == MISCFLAG_SWITCHBRIDGE)
 		{
-			Uint16 newtile;
+			Uint32 newtile;
 			if(Tile[tile_no+1].behaviour == MISCFLAG_SWITCHBRIDGE)
 				newtile = tile_no+1;
 			else
@@ -730,7 +730,7 @@ int CPlayerLevel::processPressUp() {
 		}
 		else
 		{
-			const Uint16 newtile = (flag == MISCFLAG_SWITCHPLATON) ? tile_no+1 : tile_no-1 ;
+			const Uint32 newtile = (flag == MISCFLAG_SWITCHPLATON) ? tile_no+1 : tile_no-1 ;
 			mp_Map->setTile( x_mid>>CSF, up_y>>CSF, newtile, true, 1); // Wrong tiles, those are for the info plane
 			PressPlatformSwitch(x_mid, up_y);
 		}
@@ -807,7 +807,7 @@ void CPlayerLevel::processEnterDoor()
 	int xmid = getXMidPos();
 	int y1 = getYMidPos();
 
-	Uint16 t = mp_Map->getPlaneDataAt(2, xmid, y1);
+	Uint32 t = mp_Map->getPlaneDataAt(2, xmid, y1);
 	if (t == 0) {
 		//level_state = 13;
 		//o->action = ACTION_KEENENTEREDDOOR;
@@ -852,7 +852,7 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
 	// This will change the gemholder to a holder with gem
 	if( getActionNumber(A_KEEN_STAND) || getActionNumber(A_KEEN_RUN) )
 	{
-		for( Uint16 i=7 ; i<=10 ; i++ )
+		for( Uint32 i=7 ; i<=10 ; i++ )
 		{
 			const int l_x = getXMidPos();
 			const int l_y = getYDownPos()-(3<<STC);
@@ -905,9 +905,9 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
 		g_pSound->playSound( SOUND_GET_DROP );
 	}
 
-	/// Tile Items (Sprite are handled in the CSpriteItem Class)
+	/// Tile Items (Sprite-Items are handled in the CSpriteItem Class)
 	// All the collectable items go from 21 to 28
-	for( Uint16 i=21 ; i<=28 ; i++ )
+	for( Uint32 i=21 ; i<=28 ; i++ )
 	{
 		if(hitdetectWithTilePropertyRect(i, l_x, l_y, l_w, l_h, 1<<STC))
 		{
@@ -942,15 +942,15 @@ void CPlayerLevel::processLevelMiscFlagsCheck()
  * This function will open/close bridges in Keen Galaxy
  * \param lx CSFed Coordinate where the switch has been triggered
  */
-void CPlayerLevel::PressBridgeSwitch(const Uint16 lx, const Uint16 ly)
+void CPlayerLevel::PressBridgeSwitch(const Uint32 lx, const Uint32 ly)
 {
-	Uint16 targetXY = mp_Map->getPlaneDataAt(2, lx, ly);
+	Uint32 targetXY = mp_Map->getPlaneDataAt(2, lx, ly);
 
-	Uint16 newX = targetXY >> 8;
-	Uint16 newY = targetXY & 0xFF;
+	Uint32 newX = targetXY >> 8;
+	Uint32 newY = targetXY & 0xFF;
 
-	const Uint16 start_tile = mp_Map->getPlaneDataAt(1, newX<<CSF, newY<<CSF)-1;
-	const Uint16 end_tile = start_tile+3;
+	const Uint32 start_tile = mp_Map->getPlaneDataAt(1, newX<<CSF, newY<<CSF)-1;
+	const Uint32 end_tile = start_tile+3;
 
 	/// We found the start of the row, that need to be changed.
 	/// Let apply it to the rest of the bridge
@@ -963,7 +963,7 @@ void CPlayerLevel::PressBridgeSwitch(const Uint16 lx, const Uint16 ly)
 	for(int t = start_tile ;  ; x++ )
 	{
 		// Now decide whether the tile is a piece or borders of the bridge
-		const Uint16 type = t%18;
+		const Uint32 type = t%18;
 
 		if(type < 16)
 		{
@@ -981,7 +981,7 @@ void CPlayerLevel::PressBridgeSwitch(const Uint16 lx, const Uint16 ly)
 			else
 				t+=17;
 		}
-		const Uint16 NewTile = t;
+		const Uint32 NewTile = t;
 		t = mp_Map->getPlaneDataAt(1, x<<CSF, newY<<CSF);
 
 		mp_Map->setTile(x-1, newY, NewTile, true, 1);
@@ -996,7 +996,7 @@ void CPlayerLevel::PressBridgeSwitch(const Uint16 lx, const Uint16 ly)
 				// This bridge is closed, open it!
 				t -= 4;
 
-			Uint16 new_lasttile = end_tile;
+			Uint32 new_lasttile = end_tile;
 			if(b_opened)
 				new_lasttile += 4;
 			else
@@ -1015,12 +1015,12 @@ void CPlayerLevel::PressBridgeSwitch(const Uint16 lx, const Uint16 ly)
 /**
  * This function will put/release the blockers of some platforms used in Keen Galaxy
  */
-void CPlayerLevel::PressPlatformSwitch(const Uint16 lx, const Uint16 ly)
+void CPlayerLevel::PressPlatformSwitch(const Uint32 lx, const Uint32 ly)
 {
-	Uint16 targetXY = mp_Map->getPlaneDataAt(2, lx, ly);
+	Uint32 targetXY = mp_Map->getPlaneDataAt(2, lx, ly);
 
-	Uint16 newX = targetXY >> 8;
-	Uint16 newY = targetXY & 0xFF;
+	Uint32 newX = targetXY >> 8;
+	Uint32 newY = targetXY & 0xFF;
 
 	if(mp_Map->getPlaneDataAt(2, newX<<CSF, newY<<CSF) == 31)
 		mp_Map->setTile(newX, newY, 0, true, 2);
@@ -1034,11 +1034,11 @@ void CPlayerLevel::openDoorsTile()
 {
 	int lx = getXMidPos();
 	int ly = getYDownPos()-(3<<STC);
-	Uint16 targetXY = mp_Map->getPlaneDataAt(2, lx, ly);
+	Uint32 targetXY = mp_Map->getPlaneDataAt(2, lx, ly);
 
-	Uint16 newX = targetXY >> 8;
-	Uint16 newY = targetXY & 0xFF;
-	Uint16 tileno, next_tileno;
+	Uint32 newX = targetXY >> 8;
+	Uint32 newY = targetXY & 0xFF;
+	Uint32 tileno, next_tileno;
 
 	do
 	{
@@ -1069,7 +1069,7 @@ void CPlayerLevel::processPlaceGem()
 	int lx = getXMidPos();
 	int ly = getYDownPos()-(3<<STC);
 
-	Uint16 tileno = mp_Map->getPlaneDataAt(1, lx, ly);
+	Uint32 tileno = mp_Map->getPlaneDataAt(1, lx, ly);
 	mp_Map->setTile(lx>>CSF, ly>>CSF, tileno+18, true, 1);
 }
 

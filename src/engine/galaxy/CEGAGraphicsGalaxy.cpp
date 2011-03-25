@@ -715,10 +715,21 @@ bool CEGAGraphicsGalaxy::readSprites( size_t NumSprites, size_t IndexSprite )
 		Sprite.setOffset( Head.OrgX>>(TILE_S), Head.OrgY>>(TILE_S) );
 
 		// Setup the collision information
-		Uint16 boxX1 = ((Head.Rx1 - Head.OrgX) << (STC-TILE_S));
-		Uint16 boxY1 = ((Head.Ry1 - Head.OrgY) << (STC-TILE_S));
-		Uint16 boxX2 = ((Head.Rx2 - Head.OrgX) << (STC-TILE_S));
-		Uint16 boxY2 = ((Head.Ry2 - Head.OrgY) << (STC-TILE_S));
+		int boxX1 = ((Head.Rx1 - Head.OrgX) << (STC-TILE_S));
+		int boxY1 = ((Head.Ry1 - Head.OrgY) << (STC-TILE_S));
+		int boxX2 = ((Head.Rx2 - Head.OrgX) << (STC-TILE_S));
+		int boxY2 = ((Head.Ry2 - Head.OrgY) << (STC-TILE_S));
+
+		// If some boxes give negative values, set them to zero.
+		// I don't why some sprites get negative values. They should be zero.
+		if(boxX1 < 0)
+			boxX1 = 0;
+		if(boxX2 < 0)
+			boxX2 = 0;
+		if(boxY1 < 0)
+			boxY1 = 0;
+		if(boxY2 < 0)
+			boxY2 = 0;
 
 		Sprite.setBouncingBoxCoordinates( boxX1, boxY1, boxX2, boxY2 );
 
