@@ -146,14 +146,14 @@ public:
 	void moveSlopedTileUp( int x, int y, int xspeed );
 
 	// getters for positions
-	unsigned int getXPosition();
-	unsigned int getYPosition();
-	unsigned int getXLeftPos();
-	unsigned int getXRightPos();
-	unsigned int getXMidPos();
-	unsigned int getYUpPos();
-	unsigned int getYDownPos();
-	unsigned int getYMidPos();
+	Uint32 getXPosition();
+	Uint32 getYPosition();
+	Uint32 getXLeftPos();
+	Uint32 getXRightPos();
+	Uint32 getXMidPos();
+	Uint32 getYUpPos();
+	Uint32 getYDownPos();
+	Uint32 getYMidPos();
 	
 	void processFalling();
 	virtual void getTouchedBy(CObject &theObject) {};

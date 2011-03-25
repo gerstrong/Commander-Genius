@@ -470,21 +470,21 @@ void CObject::InertiaAndFriction_X()
 	decreaseXInertia(friction_rate);
 }
 
-unsigned int CObject::getXPosition()
+Uint32 CObject::getXPosition()
 { return m_Pos.x; }
-unsigned int CObject::getYPosition()
+Uint32 CObject::getYPosition()
 { return m_Pos.y; }
-unsigned int CObject::getXLeftPos()
+Uint32 CObject::getXLeftPos()
 { return m_Pos.x+bboxX1; }
-unsigned int CObject::getXRightPos()
+Uint32 CObject::getXRightPos()
 { return m_Pos.x+bboxX2; }
-unsigned int CObject::getXMidPos()
+Uint32 CObject::getXMidPos()
 { return m_Pos.x+(bboxX2-bboxX1)/2; }
-unsigned int CObject::getYUpPos()
+Uint32 CObject::getYUpPos()
 { return m_Pos.y+bboxY1; }
-unsigned int CObject::getYDownPos()
+Uint32 CObject::getYDownPos()
 { return m_Pos.y+bboxY2; }
-unsigned int CObject::getYMidPos()
+Uint32 CObject::getYMidPos()
 { return m_Pos.y+(bboxY2-bboxY1)/2; }
 
 
