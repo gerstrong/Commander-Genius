@@ -109,21 +109,20 @@ void CPlayGameGalaxy::process()
 		//if(m_Page.isActive())
 		//m_Page.process();
 
+		// process World Map if active. At the start it's enabled
+		if(m_WorldMap.isActive())
+			m_WorldMap.process();
+
+		// process World Map if active. At the start it's enabled
+		if(m_LevelPlay.isActive())
+			m_LevelPlay.process();
+
 		// We have to show the status screen, do so...
 		if( m_Inventory.showStatus() )
 		{
 			m_Inventory.drawStatus();
 		}
-		else
-		{
-			// process World Map if active. At the start it's enabled
-			if(m_WorldMap.isActive())
-				m_WorldMap.process();
 
-			// process World Map if active. At the start it's enabled
-			if(m_LevelPlay.isActive())
-				m_LevelPlay.process();
-		}
 
 		processRendering();
 	}

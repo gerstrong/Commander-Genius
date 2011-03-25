@@ -29,7 +29,7 @@ void CScrollEffect::process()
 	src.y = mp_ScrollSurface->h-m_ScrollPos;
 	dest.h = m_ScrollPos;
 
-	SDL_BlitSurface( mp_OldSurface, &gameres, g_pVideoDriver->getBlitSurface(), &gameres);
+	//SDL_BlitSurface( mp_OldSurface, &gameres, g_pVideoDriver->getBlitSurface(), &gameres);
 	SDL_BlitSurface( mp_ScrollSurface, &src, g_pVideoDriver->getBlitSurface(), &dest);
 
 
@@ -53,7 +53,7 @@ CScrollEffect::~CScrollEffect() {
 	SDL_Rect gameres = g_pVideoDriver->getGameResolution();
 
 	// So the final image is loaded correctly
-	SDL_BlitSurface( mp_OldSurface, &gameres, g_pVideoDriver->getBlitSurface(), &gameres);
+	//SDL_BlitSurface( mp_OldSurface, &gameres, g_pVideoDriver->getBlitSurface(), &gameres);
 	if(m_Speed > 0)
 		SDL_BlitSurface( mp_ScrollSurface, &gameres, g_pVideoDriver->getBlitSurface(), &gameres);
 

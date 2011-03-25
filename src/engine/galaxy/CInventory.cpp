@@ -67,6 +67,9 @@ void CInventory::drawHUD()
 
 void CInventory::drawStatus()
 {
+	if(g_pGfxEngine->applyingEffects())
+		return;
+
 	mp_StatusScreen->draw();
 }
 
