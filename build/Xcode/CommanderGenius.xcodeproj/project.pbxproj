@@ -2744,7 +2744,7 @@
 					"-DNOKEYBOARD",
 				);
 				PRODUCT_NAME = "Commander Genius";
-				SDKROOT = iphoneos3.2;
+				SDKROOT = iphoneos;
 				SDLDIR = "/Users/az/Programmierung/SDL-1.3-trunk";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2784,7 +2784,7 @@
 				);
 				PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES;
 				PRODUCT_NAME = "Commander Genius";
-				SDKROOT = iphoneos3.2;
+				SDKROOT = iphoneos;
 				SDLDIR = "/Users/az/Programmierung/SDL-1.3-trunk";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
