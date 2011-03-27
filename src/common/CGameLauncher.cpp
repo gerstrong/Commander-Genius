@@ -17,8 +17,7 @@
 
 CGameLauncher::CGameLauncher() {
     m_mustquit      = false;
-    m_hasbeenchosen = false;
-    m_chosenGame    = 0;
+    m_chosenGame    = -1;
     mp_LaunchMenu   = NULL;
     m_ep1slot       = -1;	
 }
@@ -166,7 +165,6 @@ void CGameLauncher::process()
         }
         else
         {
-            m_hasbeenchosen = true;
             m_chosenGame = selection;
         }
     }

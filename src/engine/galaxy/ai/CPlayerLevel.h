@@ -67,6 +67,8 @@ public:
 	void processEnterDoor();
 	void processLevelMiscFlagsCheck();
 
+	void PressBridgeSwitch(const Uint32 lx, const Uint32 ly);
+	void PressPlatformSwitch(const Uint32 lx, const Uint32 ly);
 	void openDoorsTile();
 	void processPlaceGem();
 
@@ -84,9 +86,11 @@ private:
 	char m_playcontrol[PA_MAX_ACTIONS];
 
 	bool m_pfiring;
+	bool m_ptogglingswitch;
 	int m_jumpheight;
 	bool m_cliff_hanging;
 	bool m_inair;
+	bool m_BumpHead;
 
 	int m_timer;
 	bool m_pogotoggle;

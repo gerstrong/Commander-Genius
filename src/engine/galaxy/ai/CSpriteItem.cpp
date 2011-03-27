@@ -53,6 +53,7 @@ void CSpriteItem::getTouchedBy(CObject &theObject)
 			return;
 
 		CPlayerLevel *pPlayer = (CPlayerLevel*)(&theObject);
+		stItemGalaxy &Item = pPlayer->m_Inventory.Item;
 
 		/// Calculate the right animation.
 		// Point items
@@ -62,12 +63,12 @@ void CSpriteItem::getTouchedBy(CObject &theObject)
 			newanimsprite = got_sprite_item_pics[4+(m_basesprite-103)/2];
 			switch(m_basesprite)
 			{
-			case 103: pPlayer->m_Inventory.m_points += 100;	break;
-			case 105: pPlayer->m_Inventory.m_points += 200;	break;
-			case 107: pPlayer->m_Inventory.m_points += 500;	break;
-			case 109: pPlayer->m_Inventory.m_points += 1000;	break;
-			case 111: pPlayer->m_Inventory.m_points += 2000;	break;
-			case 113: pPlayer->m_Inventory.m_points += 5000;	break;
+			case 103: Item.m_points += 100;	break;
+			case 105: Item.m_points += 200;	break;
+			case 107: Item.m_points += 500;	break;
+			case 109: Item.m_points += 1000;	break;
+			case 111: Item.m_points += 2000;	break;
+			case 113: Item.m_points += 5000;	break;
 			default: break;
 			}
 			g_pSound->playSound( SOUND_GET_BONUS );
@@ -76,7 +77,7 @@ void CSpriteItem::getTouchedBy(CObject &theObject)
 		// raygun
 		if( m_basesprite >= 127 && m_basesprite <= 128 )
 		{
-			pPlayer->m_Inventory.m_bullets += 5;
+			Item.m_bullets += 5;
 			newanimsprite = got_sprite_item_pics[11];
 			g_pSound->playSound( SOUND_GET_AMMO );
 		}
@@ -91,16 +92,16 @@ void CSpriteItem::getTouchedBy(CObject &theObject)
 			switch(m_basesprite)
 			{
 			case 118:
-				pPlayer->m_Inventory.m_gem.red++;
+				Item.m_gem.red++;
 				break;
 			case 120:
-				pPlayer->m_Inventory.m_gem.yellow++;
+				Item.m_gem.yellow++;
 				break;
 			case 122:
-				pPlayer->m_Inventory.m_gem.blue++;
+				Item.m_gem.blue++;
 				break;
 			case 124:
-				pPlayer->m_Inventory.m_gem.green++;
+				Item.m_gem.green++;
 				break;
 			default:
 				break;
@@ -110,7 +111,7 @@ void CSpriteItem::getTouchedBy(CObject &theObject)
 
 		if ( m_basesprite == 115 )
 		{
-			pPlayer->m_Inventory.m_lifes++;
+			Item.m_lifes++;
 			g_pSound->playSound( SOUND_EXTRA_LIFE );
 		}
 	}

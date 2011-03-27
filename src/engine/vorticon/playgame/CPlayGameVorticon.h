@@ -33,6 +33,8 @@
 #include <vector>
 #include <list>
 
+const int WORLD_MAP_LEVEL_VORTICON=80;
+
 enum door_colours{
 DOOR_YELLOW = 2,
 DOOR_RED = 3,

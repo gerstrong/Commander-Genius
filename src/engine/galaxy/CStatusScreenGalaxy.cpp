@@ -11,18 +11,12 @@
 #include "sdl/video/colourconvert.h"
 #include "common/CBehaviorEngine.h"
 
-CStatusScreenGalaxy::CStatusScreenGalaxy() :
+CStatusScreenGalaxy::CStatusScreenGalaxy(const stItemGalaxy& Item, const std::string &LevelName) :
 m_showstatus(false),
-mp_StatusSurface(NULL)
-{
-	const int episode = g_pBehaviorEngine->getEpisode();
-
-	// TODO Auto-generated constructor stub
-	if(episode == 4)
-		generateStatusEP4();
-	//else if(episode == 5)
-	//else if(episode == 6)
-}
+mp_StatusSurface(NULL),
+m_Item(Item),
+m_LevelName(LevelName)
+{}
 
 void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 {
@@ -106,44 +100,10 @@ void CStatusScreenGalaxy::drawBase(SDL_Rect &EditRect)
 	// Lower Right Part
 	Tilemap.drawTile(mp_StatusSurface, BackRect.x+BackRect.w-8, BackRect.y+BackRect.h-8, 62);
 
-	EditRect.x = BackRect.x+8;
-	EditRect.y = BackRect.y+8;
-	EditRect.w = BackRect.w-16;
-	EditRect.h = BackRect.h-16;
-}
-
-void CStatusScreenGalaxy::generateStatusEP4()
-{
-	SDL_Rect EditRect;
-	drawBase(EditRect);
-
-	SDL_PixelFormat *pixelformat = mp_StatusSurface->format;
-
-	CFont &Font = g_pGfxEngine->getFont(0);
-	Font.setBGColour(pixelformat, 0xAAAAAA);
-	Font.setFGColour(pixelformat, 0x555555);
-
-	Font.drawFontCentered(mp_StatusSurface, "LOCATION", EditRect.x+4, EditRect.w, EditRect.y+4, false);
-
-	// Temporary Rect for drawing some stuff like background for scores and so...
-	SDL_Rect TempRect;
-
-	// Location Rect
-	TempRect.x=EditRect.x+8;
-	TempRect.y=EditRect.y+16;
-	TempRect.w=EditRect.w-16;
-	TempRect.h=20;
-
-	SDL_FillRect(mp_StatusSurface, &TempRect, 0xFFFFFFFF);
-
-	// Score Rect
-	TempRect.x=EditRect.x+8;
-	TempRect.y=EditRect.y+48;
-	TempRect.w=64; TempRect.h=10;
-
-	SDL_FillRect(mp_StatusSurface, &TempRect, 0x0);
-	Font.drawFontCentered(mp_StatusSurface, "SCORE            EXTRA", EditRect.x+4, EditRect.w, EditRect.y+4, false);
-
+	EditRect.x = BackRect.x+16;
+	EditRect.y = BackRect.y+12;
+	EditRect.w = BackRect.w-32;
+	EditRect.h = BackRect.h-32;
 }
 
 void CStatusScreenGalaxy::draw()

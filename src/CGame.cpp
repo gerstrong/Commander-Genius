@@ -118,7 +118,9 @@ void CGame::run()
 				g_pVideoDriver->start();
 			}
             // Process Game Control
-            m_Engine.process();
+
+
+			m_Engine.process();
         }
 		
         // Render the Screen
@@ -148,8 +150,6 @@ void CGame::run()
  */
 void CGame::cleanup()
 {
-	m_Engine.cleanupAll();
-	
     g_pInput->Del();
     g_pSound->destroy();
     g_pVideoDriver->Del();

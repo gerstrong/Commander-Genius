@@ -2,7 +2,9 @@
  * CIMFPlayer.cpp
  *
  *  Created on: 17.02.2011
- *      Author: gerhard
+ *      Author: gerstrong
+ *
+ *  Player which reproduces the IMF Data
  */
 
 #include "CIMFPlayer.h"
@@ -47,7 +49,7 @@ m_mix_buffer(new Sint32[m_AudioDevSpec.samples])
 
 	if(!m_IMF_Data.empty())
 		m_IMF_Data.clear();
-    const word imf_chunks = data_size/sizeof(IMFChunkType);
+    const word imf_chunks = (data_size/sizeof(IMFChunkType));
     m_IMF_Data.reserve(imf_chunks);
 
     if( imf_chunks != fread( m_IMF_Data.getStartPtr(), sizeof(IMFChunkType), imf_chunks, fp ) )
@@ -58,7 +60,6 @@ m_mix_buffer(new Sint32[m_AudioDevSpec.samples])
     else
     {
     	// Put a zero delay to that data structure so it will be rewound correctly!
-		m_IMF_Data.getLastElem()->Delay=0;
     	fclose(fp);
     }
 }
@@ -191,8 +192,6 @@ m_mix_buffer(new Sint32[m_AudioDevSpec.samples])
 		    const word imf_chunks = data_size/sizeof(IMFChunkType);
 			m_IMF_Data.reserve(imf_chunks);
 			memcpy(m_IMF_Data.getStartPtr(), imf_data_ptr, data_size);
-	    	// Put a zero delay to that data structure so it will be rewound correctly!
-			m_IMF_Data.getLastElem()->Delay=0;
 		}
 	}
 }

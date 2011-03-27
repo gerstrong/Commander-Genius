@@ -78,12 +78,20 @@ void CGfxEngine::drawDigits(const std::string& text, Uint16 x, Uint16 y, SDL_Sur
 
 	for(Uint16 i=0 ; i<text.size() ; i++)
 	{
-		char c = text[i];
-
-		if(c != ' ')
-			Tilemap.drawTile(blitsurface, x+i*8, y, 43+c-'1');
+		const char c = text[i];
+		Tilemap.drawTile(blitsurface, x+i*8, y, (c != ' ') ? 43+c-'1' : 41);
 	}
 }
+
+/**
+ * Draw one digits using galaxy style
+ */
+void CGfxEngine::drawDigit(const char c, const Uint16 x, const Uint16 y, SDL_Surface *blitsurface)
+{
+	CTilemap &Tilemap = getTileMap(2);
+	Tilemap.drawTile(blitsurface, x, y, c);
+}
+
 
 ///
 // Destructors

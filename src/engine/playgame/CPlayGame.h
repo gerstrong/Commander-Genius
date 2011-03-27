@@ -17,8 +17,6 @@
 #include <string>
 #include <SDL.h>
 
-const int WORLD_MAP_LEVEL=80;
-
 class CPlayGame{
 public:
 	CPlayGame(CExeFile &ExeFile, char level,

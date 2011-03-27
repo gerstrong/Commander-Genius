@@ -47,10 +47,10 @@ public:
 	void process();
 	Uint8 retrievetEpisode(short chosengame);
 
-	unsigned char getChosengame(){ return m_chosenGame; }
-	bool setChosenGame(unsigned char chosengame) { m_chosenGame = chosengame; return (m_hasbeenchosen=true); }
-	bool waschosen(){ return m_hasbeenchosen; }
-	void letchooseagain() { m_hasbeenchosen=false; }
+	char getChosengame(){ return m_chosenGame; }
+	bool setChosenGame(unsigned char chosengame) { m_chosenGame = chosengame; return waschosen();  }
+	bool waschosen(){ return (m_chosenGame>=0); }
+	void letchooseagain() { m_chosenGame=-1; }
 
 	bool getQuit(){ return m_mustquit; }
 	std::string getDirectory(Uint8 slot) { return m_Entries.at(slot).path; }
@@ -61,7 +61,6 @@ private:
 
 	bool m_mustquit;
 	short m_chosenGame;
-	bool m_hasbeenchosen;
 	Uint8 m_episode;
 	DirList m_DirList;
 	Sint8 m_ep1slot;

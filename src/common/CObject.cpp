@@ -210,7 +210,7 @@ void CObject::moveToForce(const VectorD2<int> &dir)
 	solid = laststate;
 }
 
-void CObject::moveToForce(int new_x, int new_y)
+void CObject::moveToForce(const int& new_x, const int& new_y)
 {
 	moveToForce(VectorD2<int>(new_x, new_y));
 }
@@ -222,34 +222,39 @@ void CObject::moveDir(const VectorD2<int> &dir)
 	moveYDir(dir.y);
 }
 
+void CObject::moveToHorizontal(const int& new_x)
+{
+	const int pos_x = new_x - m_Pos.x;
+	moveXDir(pos_x);
+}
+
+void CObject::moveToVertical(const int& new_y)
+{
+	const int pos_y = new_y - m_Pos.y;
+	moveYDir(pos_y);
+}
+
 void CObject::moveTo(const VectorD2<Uint32> &new_loc)
 {
 	VectorD2<int> amount = new_loc - m_Pos;
 
-	if(amount.x < 0) // move left
-		moveLeft(-amount.x);
-	else if(amount.x > 0) // move right
-		moveRight(amount.x);
-
-	if(amount.y < 0) // means up
-		moveUp(-amount.y);
-	else if(amount.y > 0) // means down
-		moveDown(amount.y);
+	moveXDir(amount.x);
+	moveYDir(amount.y);
 }
 
-void CObject::moveTo(int new_x, int new_y)
+void CObject::moveTo(const int &new_x, const int &new_y)
 {
 	moveTo(VectorD2<Uint32>(new_x, new_y));
 }
 
-void CObject::moveXDir(int amount, bool force)
+void CObject::moveXDir(const int& amount, const bool& force)
 {
 	if(amount<0)
 		moveLeft(-amount, force);
 	else if(amount>0)
 		moveRight(amount, force);
 }
-void CObject::moveYDir(int amount)
+void CObject::moveYDir(const int& amount)
 {
 	if(amount<0)
 		moveUp(-amount);
@@ -257,10 +262,12 @@ void CObject::moveYDir(int amount)
 		moveDown(amount);
 }
 
-void CObject::moveLeft(int amount, bool force)
+void CObject::moveLeft(const int& amnt, const bool& force)
 {
-	if(amount <= 0)
+	if(amnt <= 0)
 		return;
+
+	int amount = amnt;
 
 	blockedr = false;
 	// If it is forced don't check for collision
@@ -306,10 +313,12 @@ void CObject::moveLeft(int amount, bool force)
 	} while( amount > 0 );
 }
 
-void CObject::moveRight(int amount, bool force)
+void CObject::moveRight(const int& amnt, const bool& force)
 {
-	if(amount <= 0)
+	if(amnt <= 0)
 		return;
+
+	int amount = amnt;
 
 	int y1 = m_Pos.y + bboxY1;
 	int y2 = m_Pos.y + bboxY2;
@@ -351,10 +360,12 @@ void CObject::moveRight(int amount, bool force)
 	} while( amount > 0 );
 }
 
-void CObject::moveUp(int amount)
+void CObject::moveUp(const int& amnt)
 {
-	if(amount <= 0)
+	if(amnt <= 0)
 		return;
+
+	int amount = amnt;
 
 	int y1 = m_Pos.y + bboxY1;
 
@@ -389,12 +400,13 @@ void CObject::moveUp(int amount)
 	} while( amount > 0 );
 }
 
-void CObject::moveDown(int amount)
+void CObject::moveDown(const int& amnt)
 {
-	if(amount <= 0)
+	if(amnt <= 0)
 		return;
 
 	blockedu = false;
+	int amount = amnt;
 
 	if(!solid)
 	{
@@ -427,7 +439,7 @@ void CObject::moveDown(int amount)
 // This decreases the inertia we have of the object in X-direction.
 // It should be used for objects, where it must be assured, that the inertia can get
 // zero and not pass that limit
-void CObject::decreaseXInertia(int value)
+void CObject::decreaseXInertia(const int& value)
 {
 	if(xinertia < 0) {
 		if(xinertia+value > 0) xinertia = 0;
@@ -458,21 +470,21 @@ void CObject::InertiaAndFriction_X()
 	decreaseXInertia(friction_rate);
 }
 
-unsigned int CObject::getXPosition()
+Uint32 CObject::getXPosition()
 { return m_Pos.x; }
-unsigned int CObject::getYPosition()
+Uint32 CObject::getYPosition()
 { return m_Pos.y; }
-unsigned int CObject::getXLeftPos()
+Uint32 CObject::getXLeftPos()
 { return m_Pos.x+bboxX1; }
-unsigned int CObject::getXRightPos()
+Uint32 CObject::getXRightPos()
 { return m_Pos.x+bboxX2; }
-unsigned int CObject::getXMidPos()
+Uint32 CObject::getXMidPos()
 { return m_Pos.x+(bboxX2-bboxX1)/2; }
-unsigned int CObject::getYUpPos()
+Uint32 CObject::getYUpPos()
 { return m_Pos.y+bboxY1; }
-unsigned int CObject::getYDownPos()
+Uint32 CObject::getYDownPos()
 { return m_Pos.y+bboxY2; }
-unsigned int CObject::getYMidPos()
+Uint32 CObject::getYMidPos()
 { return m_Pos.y+(bboxY2-bboxY1)/2; }
 
 

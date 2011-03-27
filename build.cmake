@@ -129,9 +129,6 @@ EXEC_PROGRAM(mkdir ARGS -p ${CMAKE_CURRENT_SOURCE_DIR}/build/Xcode OUTPUT_VARIAB
 
 PROJECT(commandergenius)
 
-# Create the version.h file so the correct version will be shown in the App:
-configure_file(version.h.in version.h)
-
 # Generate the readme.txt file
 configure_file(readme.txt.in readme.txt)
 
@@ -222,8 +219,6 @@ ENDIF (TREMOR)
 
 
 IF (SDL)
-	ADD_DEFINITIONS(-DSDL)
-
 	IF(BUILD_TYPE STREQUAL WIN32)
 		INCLUDE_DIRECTORIES(/usr/i586-mingw32msvc/include/SDL)
 	ELSE(BUILD_TYPE STREQUAL WIN32)

@@ -11,6 +11,7 @@
 #include "graphics/CGfxEngine.h"
 #include "sdl/CVideoDriver.h"
 #include "sdl/CInput.h"
+#include "sdl/sound/CSound.h"
 #include "sdl/music/CMusic.h"
 #include "StringUtils.h"
 
@@ -21,6 +22,7 @@ CPlayGameGalaxy::CPlayGameGalaxy(CExeFile &ExeFile, char level,
 		 char numplayers, Uint8& difficulty,
 		  CSavedGame &SavedGame) :
 CPlayGame(ExeFile, level, numplayers, difficulty ),
+m_Inventory(difficulty, m_LevelName),
 m_WorldMap(ExeFile, m_Inventory),
 m_LevelPlay(ExeFile, m_Inventory),
 mp_Menu(NULL),
@@ -39,15 +41,17 @@ bool CPlayGameGalaxy::init()
 	{
 		m_WorldMap.setActive(true);
 		m_WorldMap.loadAndPlayMusic();
-		return false;
+		m_LevelName = m_WorldMap.getLevelName();
 	}
 	else
 	{
 		// manually a level has been loaded
 		m_LevelPlay.loadLevel(m_Level);
 		m_LevelPlay.setActive(true);
-		return true;
+		m_LevelName = m_LevelPlay.getLevelName();
 	}
+
+	return true;
 }
 
 /**
@@ -77,6 +81,25 @@ void CPlayGameGalaxy::process()
 	{
 		processInput();
 
+		// Trigger the Status screen here
+		if(m_Inventory.showStatus())
+		{
+			if(g_pInput->getPressedAnyCommand())
+			{
+				g_pSound->playSound(SOUND_STATUS_SLIDE_OUT);
+				m_Inventory.toggleStatusScreen();
+			}
+		}
+		else
+		{
+			if(g_pInput->getPressedCommand(IC_STATUS))
+			{
+				g_pSound->playSound(SOUND_STATUS_SLIDE_IN);
+				m_Inventory.toggleStatusScreen();
+			}
+		}
+
+
 		if(g_pInput->getPressedCommand(IC_STATUS))
 		{
 			m_Inventory.toggleStatusScreen();
@@ -86,21 +109,20 @@ void CPlayGameGalaxy::process()
 		//if(m_Page.isActive())
 		//m_Page.process();
 
+		// process World Map if active. At the start it's enabled
+		if(m_WorldMap.isActive())
+			m_WorldMap.process();
+
+		// process World Map if active. At the start it's enabled
+		if(m_LevelPlay.isActive())
+			m_LevelPlay.process();
+
 		// We have to show the status screen, do so...
 		if( m_Inventory.showStatus() )
 		{
 			m_Inventory.drawStatus();
 		}
-		else
-		{
-			// process World Map if active. At the start it's enabled
-			if(m_WorldMap.isActive())
-				m_WorldMap.process();
 
-			// process World Map if active. At the start it's enabled
-			if(m_LevelPlay.isActive())
-				m_LevelPlay.process();
-		}
 
 		processRendering();
 	}
@@ -117,6 +139,8 @@ void CPlayGameGalaxy::process()
 			g_pMusicPlayer->stop();
 			m_WorldMap.setActive(false);
 			m_LevelPlay.loadLevel(ev->data - 0xC000);
+			m_LevelName = m_LevelPlay.getLevelName();
+			g_pSound->playSound( SOUND_ENTER_LEVEL );
 			m_LevelPlay.setActive(true);
 		}
 		EventContainer.pop_Event();
@@ -126,10 +150,9 @@ void CPlayGameGalaxy::process()
 		g_pMusicPlayer->stop();
 		m_LevelPlay.setActive(false);
 		m_WorldMap.setActive(true);
+		m_LevelName = m_WorldMap.getLevelName();
 		m_WorldMap.loadAndPlayMusic();
 	}
-
-
 }
 
 void CPlayGameGalaxy::processInput()

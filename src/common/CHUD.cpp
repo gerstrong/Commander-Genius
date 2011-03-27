@@ -29,18 +29,6 @@ mp_Background(NULL)
 		CreateBackground();
 }
 
-std::string getRightAligned(std::string text, size_t size)
-{
-	if(text.size() > size)
-		return text;
-
-	std::string output;
-	for(size_t i=0 ; i<(size-text.size()) ; i++)
-		output += ' ';
-	output += text;
-	return output;
-}
-
 /**
  * \brief This function prepares the Background, so in process it can be rendered.
  * This function should only be called once!
@@ -177,9 +165,9 @@ void CHUD::renderGalaxy()
 	HUDBox.drawSprite(blitsurface, m_Rect.x, m_Rect.y);
 
 	SDL_Surface* blitsfc = g_pVideoDriver->getBlitSurface();
-	g_pGfxEngine->drawDigits(getRightAligned(itoa(score),9), m_Rect.x+8, m_Rect.y+4, blitsfc );
-	g_pGfxEngine->drawDigits(getRightAligned(itoa(charges),2), m_Rect.x+64, m_Rect.y+20, blitsfc );
-	g_pGfxEngine->drawDigits(getRightAligned(itoa(lives),2), m_Rect.x+24, m_Rect.y+20, blitsfc );
+	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(score),9), m_Rect.x+8, m_Rect.y+4, blitsfc );
+	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(charges),2), m_Rect.x+64, m_Rect.y+20, blitsfc );
+	g_pGfxEngine->drawDigits(getRightAlignedString(itoa(lives),2), m_Rect.x+24, m_Rect.y+20, blitsfc );
 }
 /**
  * \brief This part of the code will render the entire HUD. Vorticon version
@@ -200,13 +188,13 @@ void CHUD::renderVorticon()
 	CFont &Font = g_pGfxEngine->getFont(0);
 	Font.setFGColour(blitsurface->format, 0x000000);
 	// Draw the score
-	Font.drawFont(blitsurface, getRightAligned(itoa(score),9), 5+m_Rect.x, 2+m_Rect.y);
+	Font.drawFont(blitsurface, getRightAlignedString(itoa(score),9), 5+m_Rect.x, 2+m_Rect.y);
 
 	// Draw the lives
-	Font.drawFont(blitsurface, getRightAligned(itoa(lives),2), 21+m_Rect.x, 17+m_Rect.y);
+	Font.drawFont(blitsurface, getRightAlignedString(itoa(lives),2), 21+m_Rect.x, 17+m_Rect.y);
 
 	// Draw the charges
-	Font.drawFont(blitsurface, getRightAligned(itoa(charges),2), 62+m_Rect.x, 17+m_Rect.y);
+	Font.drawFont(blitsurface, getRightAlignedString(itoa(charges),2), 62+m_Rect.x, 17+m_Rect.y);
 
 	Font.setFGColour(blitsurface->format, 0x0);
 }

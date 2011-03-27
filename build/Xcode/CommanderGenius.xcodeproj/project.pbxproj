@@ -302,6 +302,10 @@
 		632903C412EB8F3600963705 /* CPreviews.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632903C212EB8F3600963705 /* CPreviews.cpp */; };
 		632903C512EB8F3600963705 /* CPreviews.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 632903C212EB8F3600963705 /* CPreviews.cpp */; };
 		63AB8C2F107C62D0001EE22F /* cglogo.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63AB8C2E107C62D0001EE22F /* cglogo.icns */; };
+		63AEA5BC132D4A16000344F1 /* CStatusScreenGalaxyEp4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63AEA5B9132D4A16000344F1 /* CStatusScreenGalaxyEp4.cpp */; };
+		63AEA5BD132D4A16000344F1 /* CStatusScreenGalaxyEp4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63AEA5B9132D4A16000344F1 /* CStatusScreenGalaxyEp4.cpp */; };
+		63AEA5C0132D4B6A000344F1 /* CScrollEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63AEA5BE132D4B6A000344F1 /* CScrollEffect.cpp */; };
+		63AEA5C1132D4B6A000344F1 /* CScrollEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63AEA5BE132D4B6A000344F1 /* CScrollEffect.cpp */; };
 		63B29E7012EB9A09004A8B7C /* CAudioVorticon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63B29E6E12EB9A09004A8B7C /* CAudioVorticon.cpp */; };
 		63B29E7112EB9A09004A8B7C /* CAudioVorticon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63B29E6E12EB9A09004A8B7C /* CAudioVorticon.cpp */; };
 		63C72AC71274284A00E9A293 /* ThreadPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63C72AC61274284A00E9A293 /* ThreadPool.cpp */; };
@@ -676,6 +680,11 @@
 		638890BE1162A490009810AC /* extratiles.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = extratiles.bmp; sourceTree = "<group>"; };
 		63999E3910D151BA00EDB6CD /* fonts.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = fonts.bmp; sourceTree = "<group>"; };
 		63AB8C2E107C62D0001EE22F /* cglogo.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = cglogo.icns; sourceTree = "<group>"; };
+		63AEA5B9132D4A16000344F1 /* CStatusScreenGalaxyEp4.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CStatusScreenGalaxyEp4.cpp; sourceTree = "<group>"; };
+		63AEA5BA132D4A16000344F1 /* CStatusScreenGalaxyEp4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CStatusScreenGalaxyEp4.h; sourceTree = "<group>"; };
+		63AEA5BB132D4A16000344F1 /* ItemsGalaxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemsGalaxy.h; sourceTree = "<group>"; };
+		63AEA5BE132D4B6A000344F1 /* CScrollEffect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CScrollEffect.cpp; sourceTree = "<group>"; };
+		63AEA5BF132D4B6A000344F1 /* CScrollEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CScrollEffect.h; sourceTree = "<group>"; };
 		63B29E6E12EB9A09004A8B7C /* CAudioVorticon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAudioVorticon.cpp; sourceTree = "<group>"; };
 		63B29E6F12EB9A09004A8B7C /* CAudioVorticon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAudioVorticon.h; sourceTree = "<group>"; };
 		63C72AC51274284A00E9A293 /* ReadWriteLock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadWriteLock.h; sourceTree = "<group>"; };
@@ -1599,6 +1608,9 @@
 		63CD111311CFF5FB00F60BC8 /* galaxy */ = {
 			isa = PBXGroup;
 			children = (
+				63AEA5B9132D4A16000344F1 /* CStatusScreenGalaxyEp4.cpp */,
+				63AEA5BA132D4A16000344F1 /* CStatusScreenGalaxyEp4.h */,
+				63AEA5BB132D4A16000344F1 /* ItemsGalaxy.h */,
 				23D4C493132C274C00B06391 /* CStatusScreenGalaxy.cpp */,
 				23D4C494132C274C00B06391 /* CStatusScreenGalaxy.h */,
 				63243C7E12ECDB6C00FE8192 /* CAudioGalaxy.cpp */,
@@ -1874,6 +1886,8 @@
 		63CD11B911CFF5FB00F60BC8 /* effects */ = {
 			isa = PBXGroup;
 			children = (
+				63AEA5BE132D4B6A000344F1 /* CScrollEffect.cpp */,
+				63AEA5BF132D4B6A000344F1 /* CScrollEffect.h */,
 				63CD11BA11CFF5FB00F60BC8 /* CColorMerge.cpp */,
 				63CD11BB11CFF5FB00F60BC8 /* CColorMerge.h */,
 				63CD11BC11CFF5FB00F60BC8 /* CEffects.cpp */,
@@ -2392,6 +2406,8 @@
 				23D4C4C2132C283A00B06391 /* COpenGL.cpp in Sources */,
 				23D4C4C4132C283A00B06391 /* CSDLVideo.cpp in Sources */,
 				23D4C4C6132C283A00B06391 /* CVideoEngine.cpp in Sources */,
+				63AEA5BC132D4A16000344F1 /* CStatusScreenGalaxyEp4.cpp in Sources */,
+				63AEA5C0132D4B6A000344F1 /* CScrollEffect.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2604,6 +2620,8 @@
 				23D4C4C3132C283A00B06391 /* COpenGL.cpp in Sources */,
 				23D4C4C5132C283A00B06391 /* CSDLVideo.cpp in Sources */,
 				23D4C4C7132C283A00B06391 /* CVideoEngine.cpp in Sources */,
+				63AEA5BD132D4A16000344F1 /* CStatusScreenGalaxyEp4.cpp in Sources */,
+				63AEA5C1132D4B6A000344F1 /* CScrollEffect.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2634,7 +2652,7 @@
 			baseConfigurationReference = 5048396E09E3307300765E4B /* CommanderGeniusTarget.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = i386;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2656,7 +2674,7 @@
 					"-DOGG",
 				);
 				PRODUCT_NAME = "Commander Genius";
-				SDKROOT = "";
+				SDKROOT = macosx10.6;
 			};
 			name = Debug;
 		};
@@ -2690,7 +2708,7 @@
 				);
 				PRESERVE_DEAD_CODE_INITS_AND_TERMS = YES;
 				PRODUCT_NAME = "Commander Genius";
-				SDKROOT = macosx10.5;
+				SDKROOT = macosx10.6;
 			};
 			name = Release;
 		};
@@ -2780,6 +2798,7 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				MACOSX_DEPLOYMENT_TARGET = 10.3;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "Commander Genius";
 				SDKROOT = macosx10.5;

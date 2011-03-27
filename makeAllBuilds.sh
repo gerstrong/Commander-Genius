@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Windows Version
-cmake . -DBUILD_TYPE=WIN32 -DDEBUG=OFF -DOGG=yes -DTREMOR=NO -DHAVE_64_BIT=1
+cmake . -DBUILD_TYPE=WIN32 -DDEBUG=OFF -DOGG=yes -DTREMOR=NO -DHAVE_64_BIT=1 -DCREATE_DEBS=0
 make package
 rm CMakeFiles -R
 

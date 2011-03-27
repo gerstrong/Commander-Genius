@@ -209,7 +209,8 @@ bool CMapLoaderGalaxy::loadMap(CMap &Map, Uint8 level)
 				name[16] = '\0';
 
 				// Get and check the signature
-				g_pLogFile->textOut("Loading the Level \"" + static_cast<std::string>(name) + "\"<br>" );
+				g_pLogFile->textOut("Loading the Level \"" + static_cast<std::string>(name) + "\" (Level No. "+ itoa(level) + ")<br>" );
+				Map.setLevelName(name);
 
 				// Then decompress the level data using rlew and carmack
 				g_pLogFile->textOut("Decompressing the Map...<br>" );
@@ -344,10 +345,9 @@ void CMapLoaderGalaxy::addFoe(CMap &Map, word foe, size_t x, size_t y)
 	{
 	case 1:
 	case 2:
-		// This is the player on the map
+		// This is the player on the map in one level
 		p_newfoe = new galaxy::CPlayerLevel(&Map, x, y, m_ObjectPtr, (foe==1) ? RIGHT : LEFT, m_Inventory);
 		break;
-
 
 	case 3:
 		// This is the player on the world map

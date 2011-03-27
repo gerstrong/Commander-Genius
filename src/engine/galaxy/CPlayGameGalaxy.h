@@ -15,6 +15,9 @@
 #include "CLevelPlay.h"
 #include "CMenuGalaxy.h"
 #include <vector>
+#include <string>
+
+const int WORLD_MAP_LEVEL_GALAXY=0;
 
 namespace galaxy
 {
@@ -39,12 +42,13 @@ public:
 	virtual ~CPlayGameGalaxy();
 
 private:
+	std::string m_LevelName;
+	CInventory m_Inventory;
 	CWorldMap m_WorldMap;
 	CLevelPlay m_LevelPlay;
 	CMenuGalaxy *mp_Menu;
 	CSavedGame &m_SavedGame;
 	CBitmap m_BackgroundBitmap;
-	CInventory m_Inventory;
 };
 
 }
