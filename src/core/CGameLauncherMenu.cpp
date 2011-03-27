@@ -174,7 +174,7 @@ bool CGameLauncherMenu::loadResources(const Uint8 flags)
 		if( (flags & LOADSTR) == LOADSTR )
 		{
 			// load the strings.
-			// TODO:
+			// TODO: ...
 		}
 
 		if( (flags & LOADSND) == LOADSND )

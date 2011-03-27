@@ -17,10 +17,13 @@
 #include "engine/playgame/CPlayGame.h"
 #include "engine/CEGAGraphics.h"
 
+// CG Core Modi
 enum GameMode{
 	GM_GAMELAUNCHER, GM_PASSIVE, GM_PLAYGAME, GM_QUIT
 };
 
+// There is only one event that is triggered called ChangeMode.
+// It is passed with the Mode which tells to what mode to change...
 struct ChangeMode : CEvent {
 	const GameMode Mode;
 	ChangeMode(const GameMode &l_Mode) : Mode(l_Mode){}

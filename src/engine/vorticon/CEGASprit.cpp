@@ -97,7 +97,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	if(!latchfile)
 		return false;
 	
-	g_pResourceLoader->setPermilage(100);
+	g_pResourceLoader->setPermilage(10);
 
 	RawData = new byte[m_planesize * 5];
     // get the data out of the file into the memory, decompressing it if necessary.
@@ -114,7 +114,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 	
     fclose(latchfile);
 
-	g_pResourceLoader->setPermilage(200);
+	g_pResourceLoader->setPermilage(50);
 	
     // TODO: Try to blit the Font map here!
 	// these are the offsets of the different video planes as
@@ -149,7 +149,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 		g_pResourceLoader->setPermilage(200+percent);
 	}
 
-	g_pResourceLoader->setPermilage(300);
+	g_pResourceLoader->setPermilage(100);
 
 	for(int p=0 ; p<4 ; p++)
 	{
@@ -168,7 +168,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 		}
 	}
 
-	g_pResourceLoader->setPermilage(400);
+	g_pResourceLoader->setPermilage(200);
 
 	// now load the 5th plane, which contains the sprite masks.
 	// note that we invert the mask because our graphics functions
@@ -199,9 +199,9 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 
 		percent = (s*100)/m_numsprites;
 		g_pResourceLoader->setPermilage(400+percent);
-	}
+	}200
 
-	g_pResourceLoader->setPermilage(500);
+	g_pResourceLoader->setPermilage(300);
 
 	
 	if(RawData){ delete[] RawData; RawData = NULL;}
@@ -218,7 +218,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 		g_pResourceLoader->setPermilage(500+percent);
 	}
 
-	g_pResourceLoader->setPermilage(800);
+	g_pResourceLoader->setPermilage(400);
 
 
 	std::set<std::string> filelist;
@@ -244,7 +244,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 		g_pResourceLoader->setPermilage(800+percent);
 	}
 
-	g_pResourceLoader->setPermilage(950);
+	g_pResourceLoader->setPermilage(500);
 
 	for(Uint16 s=0 ; s<g_pGfxEngine->getSpriteVec().size() ; s++)
 		g_pGfxEngine->getSprite(s).applyTransparency();
