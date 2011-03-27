@@ -8,7 +8,7 @@
 #ifndef CGAME_H_
 #define CGAME_H_
 
-#include "CGameControl.h"
+#include "core/CGameControl.h"
 #include "sdl/CSettings.h"
 
 class CGame {

@@ -32,6 +32,7 @@ mp_HighScores(NULL),
 mp_HUD(NULL),
 mp_KeenLeftSfc(NULL)
 {
+	m_level_command = (level==WORLD_MAP_LEVEL_VORTICON) ? GOTO_WORLD_MAP : START_LEVEL;
 	mp_Menu = NULL;
 	mp_Finale = NULL;
 	mp_gameoverbmp = NULL;
@@ -78,7 +79,7 @@ void CPlayGameVorticon::setupPlayers()
 	for( ; it_player!=m_Player.end() ; it_player++ )
 	for (int i=0 ; i<m_NumPlayers ; i++)
 	{
-		if( m_Level == WORLD_MAP_LEVEL )
+		if( m_Level == WORLD_MAP_LEVEL_VORTICON )
 		{
 			it_player->m_playingmode = CPlayer::WORLDMAP;
 			m_showKeensLeft |= ( it_player->pdie == PDIE_DEAD );
@@ -244,7 +245,7 @@ void CPlayGameVorticon::process()
 				mp_ObjectAI->process();
 
 				/// The following functions must be worldmap dependent
-				if( m_Level == WORLD_MAP_LEVEL )
+				if( m_Level == WORLD_MAP_LEVEL_VORTICON )
 					processOnWorldMap();
 				else
 					processInLevel();
@@ -602,7 +603,7 @@ void CPlayGameVorticon::drawObjects()
 
 	// We draw the Player as last, because we want to see him in front of the other objects
 	std::vector<CPlayer>::iterator it_player = m_Player.begin();
-	std::vector<CPlayer>::iterator it_end = ( m_Level!=WORLD_MAP_LEVEL) ? m_Player.end() : m_Player.begin()+1;
+	std::vector<CPlayer>::iterator it_end = ( m_Level!=WORLD_MAP_LEVEL_VORTICON) ? m_Player.end() : m_Player.begin()+1;
 	for (; it_player != it_end ; it_player++)
 	{
 		if(!it_player->beingteleported)

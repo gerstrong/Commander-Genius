@@ -17,6 +17,8 @@
 #include <vector>
 #include <string>
 
+const int WORLD_MAP_LEVEL_GALAXY=0;
+
 namespace galaxy
 {
 

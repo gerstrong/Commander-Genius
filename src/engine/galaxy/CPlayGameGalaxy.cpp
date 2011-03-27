@@ -42,7 +42,6 @@ bool CPlayGameGalaxy::init()
 		m_WorldMap.setActive(true);
 		m_WorldMap.loadAndPlayMusic();
 		m_LevelName = m_WorldMap.getLevelName();
-		return false;
 	}
 	else
 	{
@@ -50,8 +49,9 @@ bool CPlayGameGalaxy::init()
 		m_LevelPlay.loadLevel(m_Level);
 		m_LevelPlay.setActive(true);
 		m_LevelName = m_LevelPlay.getLevelName();
-		return true;
 	}
+
+	return true;
 }
 
 /**

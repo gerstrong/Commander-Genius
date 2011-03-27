@@ -6,7 +6,7 @@
 #include "engine/CPassive.h"
 
 #include "StringUtils.h"
-#include "CGameControl.h"
+#include "core/CGameControl.h"
 #include "CLogFile.h"
 #include "sdl/CTimer.h"
 #include "sdl/CSettings.h"
