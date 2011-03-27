@@ -21,6 +21,8 @@
 
 CGameControl::CGameControl(bool &firsttime) :
 m_firsttime(firsttime),
+m_startGame_no(-1),
+m_startLevel(-1),
 m_show_finale(false)
 {}
 
@@ -30,33 +32,42 @@ m_show_finale(false)
 bool CGameControl::init(int argc, char *argv[])
 {
 	bool ok = true;
+	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 	std::string argument;
 	argument = getArgument( argc, argv, "-game" );
 
-	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-	EventContainer.add( new GMSwitchToGameLauncher() );
-
 	// Check if some arguments were given.
-	/*if(argument != "")
+	if(argument != "")
 	{
 		// Get the game number according to the created menu list.
-		int chosengame = 0;
 		std::string buf = argument.substr(strlen("-game"));
-		chosengame = atoi(buf)-1;
+		int chosengame = atoi(buf)-1;
 
 		if(chosengame >= 0)
 		{
-			// Tell the
-			mp_GameMode->mp_GameLauncher->setChosenGame(chosengame);
+			// Tell CG to pass the chosen number of game
+			m_startGame_no = chosengame;
 
 			// Now check, if a level was also passed as parameter
 			argument = getArgument( argc, argv, "-level" );
-			buf = argument.substr(strlen("-level"));
-
-			//m_startLevel = atoi(buf);
-			//m_Numplayers = 1;
+			if(argument != "")
+			{
+				buf = argument.substr(strlen("-level"));
+				m_startLevel = atoi(buf);
+			}
 		}
-	}*/
+	}
+
+	// Check if finale cutscenes must be shown
+	if(getBooleanArgument( argc, argv, "-finale" ))
+	{
+		argument = getArgument( argc, argv, "-finale" );
+		m_startGame_no = atoi(argument.c_str()+strlen("-finale"))-1;
+		m_startLevel = WM_MAP_NUM;
+		m_show_finale = true;
+	}
+
+	EventContainer.add( new GMSwitchToGameLauncher(m_startGame_no, m_startLevel) );
 
 	return ok;
 }
@@ -86,7 +97,7 @@ void CGameControl::process()
 	{
 		mp_GameMode = new CGamePlayMode( p_PlayGame->m_Episode, p_PlayGame->m_Numplayers,
 										p_PlayGame->m_Difficulty, p_PlayGame->m_DataDirectory,
-										p_PlayGame->m_SavedGame);
+										p_PlayGame->m_SavedGame, m_show_finale, p_PlayGame->m_startlevel);
 		mp_GameMode->init();
 		EventContainer.pop_Event();
 	}

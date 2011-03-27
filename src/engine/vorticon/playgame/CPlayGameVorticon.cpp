@@ -24,7 +24,7 @@
 ////
 CPlayGameVorticon::CPlayGameVorticon( CExeFile &ExeFile, char level,
 		  char numplayers, Uint8& difficulty,
-		  bool finale, CSavedGame &SavedGame) :
+		  const bool finale, CSavedGame &SavedGame) :
 CPlayGame(ExeFile, level, numplayers, difficulty),
 mp_ObjectAI(NULL),
 m_SavedGame(SavedGame),

@@ -11,9 +11,10 @@
 #include "graphics/effects/CColorMerge.h"
 
 CGamePlayMode::CGamePlayMode(const int Episode, const int Numplayers,
-		const int Difficulty, const std::string& DataDirectory, CSavedGame& SavedGame) :
-m_startLevel(0),
-m_show_finale(false),
+		const int Difficulty, const std::string& DataDirectory, CSavedGame& SavedGame, bool& show_finale,
+		const int startLevel) :
+m_startLevel(startLevel),
+m_show_finale(show_finale),
 m_Episode(Episode),
 m_Numplayers(Numplayers),
 m_Difficulty(Difficulty),
@@ -24,6 +25,10 @@ m_SavedGame(SavedGame)
 void CGamePlayMode::init()
 {
 	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
+
+	// If no level has been set or is out of bound, set it to map.
+	if(m_startLevel > 100 || m_startLevel < 0 )
+		m_startLevel = WORLD_MAP_LEVEL_VORTICON;
 
 	bool ok = true;
 

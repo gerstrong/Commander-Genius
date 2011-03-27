@@ -42,14 +42,16 @@ struct GMSwitchToPlayGameMode : CEvent {
 	const int m_Difficulty;
 	const std::string m_DataDirectory;
 	CSavedGame m_SavedGame;
+	const int m_startlevel;
 
 	GMSwitchToPlayGameMode( const int Episode, const int Numplayers,
-			const int Difficulty, const std::string& DataDirectory, CSavedGame& SavedGame ) :
+			const int Difficulty, const std::string& DataDirectory, CSavedGame& SavedGame, const int startlevel = -1 ) :
 				m_Episode(Episode),
 				m_Numplayers(Numplayers),
 				m_Difficulty(Difficulty),
 				m_DataDirectory(DataDirectory),
-				m_SavedGame(SavedGame){}
+				m_SavedGame(SavedGame),
+				m_startlevel(startlevel){}
 };
 
 // It's a simple quit event which will force CG to close the App

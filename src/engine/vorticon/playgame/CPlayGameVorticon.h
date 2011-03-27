@@ -47,7 +47,7 @@ public:
 
 	CPlayGameVorticon(CExeFile &ExeFile, char level,
 			  char numplayers, Uint8& difficulty,
-			  bool finale, CSavedGame &SavedGame);
+			  const bool finale, CSavedGame &SavedGame);
 
 	void setupPlayers();
 	bool init();

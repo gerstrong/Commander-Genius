@@ -6,12 +6,12 @@
  */
 
 #include "CGameLauncher.h"
-#include "../CLogFile.h"
-#include "../sdl/CVideoDriver.h"
-#include "../sdl/CInput.h"
-#include "../graphics/CGfxEngine.h"
-#include "../StringUtils.h"
-#include "../FindFile.h"
+#include "CLogFile.h"
+#include "sdl/CVideoDriver.h"
+#include "sdl/CInput.h"
+#include "graphics/CGfxEngine.h"
+#include "StringUtils.h"
+#include "FindFile.h"
 #include <iostream>
 #include <fstream>
 

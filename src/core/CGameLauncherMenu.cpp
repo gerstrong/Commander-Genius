@@ -80,9 +80,9 @@ void CGameLauncherMenu::init()
 	// He we start the thread for cycling the loading screen
 	g_pResourceLoader->setStyle(PROGRESS_STYLE_TEXT);
 	if(g_pResourceLoader->RunLoadAction(new GamesScan(mp_GameLauncher), threadname) == 0)
-	{
 		EventContainer.add( new GMQuit() );
-	}
+	else
+		mp_GameLauncher->setChosenGame(m_start_game_no);
 
 	return;
 }
@@ -230,7 +230,7 @@ void CGameLauncherMenu::process()
 						if(m_start_level == -1) // Starts normally
 							EventContainer.add( new GMSwitchToPassiveMode(DataDirectory, Episode) );
 						else // This happens, when a level was passed as argument when launching CG
-							EventContainer.add( new GMSwitchToPlayGameMode(Episode, 1, 1, DataDirectory, savedgames) );
+							EventContainer.add( new GMSwitchToPlayGameMode(Episode, 1, 1, DataDirectory, savedgames, m_start_level) );
 					}
 				}
 			}

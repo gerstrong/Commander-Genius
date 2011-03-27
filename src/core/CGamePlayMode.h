@@ -17,14 +17,15 @@
 class CGamePlayMode : public CGameMode {
 public:
 	CGamePlayMode( const int Episode, const int Numplayers,
-			const int Difficulty, const std::string& DataDirectory, CSavedGame& SavedGame);
+			const int Difficulty, const std::string& DataDirectory, CSavedGame& SavedGame, bool& show_finale,
+			const int startLevel = -1);
 
 	void init();
 	void process();
 
 private:
 	int m_startLevel;
-	bool m_show_finale;
+	bool &m_show_finale;
 	int m_Episode;
 	Uint8 m_Numplayers;
 	Uint8 m_Difficulty;
