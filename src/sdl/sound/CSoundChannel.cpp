@@ -79,17 +79,19 @@ void CSoundChannel::readWaveform(CSoundSlot *pSndSlot, Uint8* waveform, const Ui
     	CSoundSlot &SndSlot = pSndSlot[m_current_sound];
 
     	byte *snddata = SndSlot.getSoundData();
-    	const Uint32 length = SndSlot.getSoundlength();
-    	if ((m_sound_ptr + (Uint32)len) >= length)
+    	const Uint32 sndlength = SndSlot.getSoundlength();
+    	if ((m_sound_ptr + (Uint32)len) >= sndlength)
     	{
-    		// Fill the rest with silence
-    		memset(waveform, m_AudioSpec.silence, len );
+    		// Fill up the buffer and the rest with silence
+    		const Uint32 len_left = sndlength-m_sound_ptr;
+    		memcpy(waveform, snddata + m_sound_ptr, len_left );
+    		memset(waveform+len_left, m_AudioSpec.silence, len-len_left );
     		m_sound_ptr = 0;
     		m_sound_playing = false;
     	}
     	else
     	{
-    		memcpy(waveform, snddata + m_sound_ptr, len);
+    		memcpy(waveform, snddata + m_sound_ptr, len );
     		m_sound_ptr += len;
     	}
 		

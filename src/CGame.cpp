@@ -119,7 +119,6 @@ void CGame::run()
 			}
             // Process Game Control
 
-
 			m_Engine.process();
         }
 		

@@ -27,8 +27,6 @@ PA_MAX_ACTIONS
 //#define PFRICTION_RATE_ONGROUND   7
 #define PFRICTION_RATE_ONGROUND   14
 #define PFRICTION_RATE_WM         32
-// rate at which player walking animation is shown
-#define PWALKANIMRATE             8
 
 // at STOPWALKING time after starting the exit door animation,
 // keen stops walking and we go to LEVEL_DONE_WAIT.

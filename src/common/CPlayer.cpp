@@ -358,6 +358,9 @@ void CPlayer::Walking()
 	}
 }
 
+// rate at which player walking animation is shown
+#define PWALKANIMRATE             8
+
 // animation for walking
 void CPlayer::WalkingAnimation()
 {
@@ -393,26 +396,32 @@ void CPlayer::WalkingAnimation()
 			{
 				if (!pfrozentime && pwalking)
 				{
-					if (pwalkframea&1)
-						g_pSound->playStereofromCoord(SOUND_KEEN_WALK, PLAY_NOW, scrx);
-					else
-						g_pSound->playStereofromCoord(SOUND_KEEN_WALK2, PLAY_NOW, scrx);
+					g_pSound->playStereofromCoord( (m_playingmode == WORLDMAP) ? SOUND_KEEN_WALK : SOUND_KEEN_WALK2 , PLAY_NOW, scrx);
 					
-					if( m_playingmode != WORLDMAP && (blockedr || blockedl) )
+					if( m_playingmode != WORLDMAP )
 					{
-						g_pSound->playStereofromCoord(SOUND_KEEN_BUMPHEAD, PLAY_NOW, scrx);
-						// It is not bumping a head, but walking in some direction and being blocked
+						// Play walking sound in level.
+						// It sounds very similar to the one of the map, only similar
+						g_pSound->playStereofromCoord( SOUND_KEEN_WALK2 , PLAY_NOW, scrx);
+
+						// It is not bumping a head, but walking in some direction and being blocked.
+						// The same sound for that is played
+						if(blockedr || blockedl)
+							g_pSound->playStereofromCoord(SOUND_KEEN_BUMPHEAD, PLAY_NOW, scrx);
 					}
-					else if ( m_playingmode == WORLDMAP )
+					else
 					{
-						// Same on world map!
-						bool play=false;
-						play |= (blockedu && pdir == UP);
-						play |= (blockedd && pdir == DOWN);
-						play |= (blockedl && pdir == LEFT);
-						play |= (blockedr && pdir == RIGHT);
+						// Play walking sound on map
+						g_pSound->playStereofromCoord( SOUND_KEEN_WALK , PLAY_NOW, scrx);
+
+						// Check if the player walking against walls (solid tiles)
+						bool obs=false;
+						obs |= (blockedu && pdir == UP);
+						obs |= (blockedd && pdir == DOWN);
+						obs |= (blockedl && pdir == LEFT);
+						obs |= (blockedr && pdir == RIGHT);
 						
-						if (play)
+						if (obs)
 							g_pSound->playStereofromCoord(SOUND_KEEN_BUMPHEAD, PLAY_NOW, scrx);
 					}
 					
