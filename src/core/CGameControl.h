@@ -19,7 +19,7 @@
 #include "engine/playgame/CPlayGame.h"
 #include "core/CGameControl.h"
 #include "core/CGameMode.h"
-
+#include "SmartPointer.h"
 
 #include <string>
 
@@ -30,20 +30,14 @@ public:
 	
 	bool init(int argc, char *argv[]);
 
-	//bool init();
-	
 	void process();
 	
-	void cleanup();
-	
 	// getters and setters
-	bool mustShutdown(){ return (mp_GameMode==NULL); }
+	bool mustShutdown(){ return (mp_GameMode.get()==NULL); }
 	
-	virtual ~CGameControl();
-
 protected:
 
-	CGameMode *mp_GameMode;
+	SmartPointer<CGameMode> mp_GameMode;
 
 	bool &m_firsttime;
 

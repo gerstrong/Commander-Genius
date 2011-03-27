@@ -19,8 +19,6 @@
 
 #include "arguments.h"
 
-#define SAFE_DELETE(x)	if(x) { delete x; x = NULL; }
-
 CGameControl::CGameControl(bool &firsttime) :
 m_firsttime(firsttime),
 m_show_finale(false),
@@ -74,7 +72,7 @@ void CGameControl::process()
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
 	if( ChangeMode* p_mode = EventContainer.occurredEvent<ChangeMode>() )
 	{
-		delete mp_GameMode;
+		mp_GameMode.tryDeleteData();
 
 		if(p_mode->Mode == GM_GAMELAUNCHER)
 		{
@@ -101,14 +99,3 @@ void CGameControl::process()
 	// Process the game control object
 	mp_GameMode->process();
 }
-
-void CGameControl::cleanup()
-{
-	delete mp_GameMode;
-	mp_GameMode = NULL;
-}
-
-CGameControl::~CGameControl() {
-	cleanup();
-}
-

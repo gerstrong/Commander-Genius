@@ -150,8 +150,6 @@ void CGame::run()
  */
 void CGame::cleanup()
 {
-	m_Engine.cleanup();
-	
     g_pInput->Del();
     g_pSound->destroy();
     g_pVideoDriver->Del();
