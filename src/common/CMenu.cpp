@@ -13,16 +13,16 @@
 #include "Menu/CLoadMenu.h"
 #include "Menu/CSelectionMenu.h"
 
-CMenu::CMenu(char menu_mode, CExeFile &ExeFile,
+CMenu::CMenu(char menu_mode,
 		 CSavedGame &SavedGame,
 		 Uint8 DlgTheme,
 		 bool &restartVideo) :
 CBaseMenu(DlgTheme),
 m_demoback(false),
 mp_Dialog(NULL),
-m_Episode(ExeFile.getEpisode()),
-m_ExeFile(ExeFile),
-m_GamePath(ExeFile.getDataDirectory()),
+m_ExeFile(g_pBehaviorEngine->m_ExeFile),
+m_Episode(m_ExeFile.getEpisode()),
+m_GamePath(m_ExeFile.getDataDirectory()),
 m_SavedGame(SavedGame),
 m_menu_mode(menu_mode),
 m_choosegame(false),

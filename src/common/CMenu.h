@@ -21,7 +21,7 @@
 class CMenu : public CBaseMenu
 {
 public:
-	CMenu(char menu_mode, CExeFile &ExeFile,
+	CMenu(char menu_mode,
 			 CSavedGame &SavedGame,
 			 Uint8 DlgTheme,
 			 bool &restartVideo );
@@ -56,8 +56,8 @@ public:
 	CDialog *mp_Dialog;
 
 protected:
-	char m_Episode;
 	CExeFile &m_ExeFile;
+	char m_Episode;
 	std::string m_GamePath;
 	CSavedGame &m_SavedGame;
 	char m_menu_mode;

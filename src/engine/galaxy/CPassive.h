@@ -17,19 +17,15 @@ namespace galaxy
 class CPassiveGalaxy : public CPassive
 {
 public:
-	CPassiveGalaxy(CExeFile &Exefile, CSavedGame &SavedGame,
-			Uint8& difficulty);
+	CPassiveGalaxy();
 
 	bool init(char mode);
 	void process();
 	void processIntro();
 	void processTitle();
 	void processMenu();
-	void cleanup();
 
 	void (CPassiveGalaxy::*processMode)();
-
-	virtual ~CPassiveGalaxy();
 
 	CBitmap m_BackgroundBitmap;
 	CMenuGalaxy *mp_Menu;

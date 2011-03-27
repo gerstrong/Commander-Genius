@@ -10,19 +10,23 @@
 
 #include "CGameMode.h"
 #include "engine/CPassive.h"
-
+#include "SmartPointer.h"
 
 class CGamePassiveMode : public CGameMode {
 public:
-	CGamePassiveMode(Uint8& episode, Uint8& Numplayers,
-					Uint8& Difficulty, std::string& DataDirectory);
+	CGamePassiveMode(const std::string& DataDirectory, const int& Episode);
 
-	bool init();
+	void init();
 	void process();
 
 private:
-	CPassive *mp_PassiveMode;
+	SmartPointer<CPassive> mp_Passive;
 
+	const std::string m_DataDirectory;
+	const int m_Episode;
+	bool m_Endgame;
+	CSavedGame m_SavedGame;
+	int m_Difficulty;
 };
 
 #endif /* CGAMEPASSIVEMODE_H_ */

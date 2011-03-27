@@ -40,12 +40,7 @@ protected:
 	SmartPointer<CGameMode> mp_GameMode;
 
 	bool &m_firsttime;
-
 	bool m_show_finale;
-	Uint8 m_episode;
-	Uint8 m_Numplayers;
-	Uint8 m_Difficulty;
-	std::string m_DataDirectory;
 };
 
 #endif /* CGAMECONTROL_H_ */

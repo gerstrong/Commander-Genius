@@ -333,7 +333,7 @@ void CPlayGameVorticon::process()
 		// Open the Main Menu if ESC Key pressed and mp_Menu not opened.  Prevent the menu if the player is not solid.
 		if( !mp_Menu && !mp_Finale && g_pInput->getPressedCommand(IC_QUIT) && ( m_Player[0].solid || m_Player[0].godmode ) )
 		{	// Open the menu
-				mp_Menu = new CMenuVorticon( ACTIVE, m_ExeFile, m_Map, m_SavedGame, m_restartVideo, m_hideobjects );
+				mp_Menu = new CMenuVorticon( ACTIVE, m_Map, m_SavedGame, m_restartVideo, m_hideobjects );
 		}
 	}
 }
@@ -457,21 +457,21 @@ void CPlayGameVorticon::handleFKeys()
 		// F2 - Sound Menu
 		if ( g_pInput->getPressedKey(KF2) )
 		{
-			mp_Menu = new CMenuVorticon( ACTIVE, m_ExeFile, m_Map,
+			mp_Menu = new CMenuVorticon( ACTIVE, m_Map,
 					m_SavedGame,  m_restartVideo, m_hideobjects );
 			mp_Menu->init(AUDIO);
 		}
 		// F3 - Controls Menu
 		else if ( g_pInput->getPressedKey(KF3) )
 		{
-			mp_Menu = new CMenuVorticon( ACTIVE, m_ExeFile, m_Map,
+			mp_Menu = new CMenuVorticon( ACTIVE, m_Map,
 					m_SavedGame,  m_restartVideo, m_hideobjects );
 			mp_Menu->init(CONTROLS);
 		}
 		// F5 - save game
 		else if ( g_pInput->getPressedKey(KF5) )
 		{
-			mp_Menu = new CMenuVorticon( ACTIVE, m_ExeFile, m_Map,
+			mp_Menu = new CMenuVorticon( ACTIVE, m_Map,
 					m_SavedGame,  m_restartVideo, m_hideobjects );
 			mp_Menu->init(SAVE);
 		}

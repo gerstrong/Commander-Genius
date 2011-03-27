@@ -18,9 +18,9 @@
 
 #define SELMOVE_SPD         3
 
-CMenuVorticon::CMenuVorticon( char menu_mode, CExeFile &ExeFile, CMap &Map, CSavedGame &SavedGame,
+CMenuVorticon::CMenuVorticon( char menu_mode, CMap &Map, CSavedGame &SavedGame,
 			 bool &restartVideo, bool &hideobjects ) :
-CMenu(menu_mode, ExeFile, SavedGame,
+CMenu(menu_mode, SavedGame,
 	DLG_THEME_VORTICON, restartVideo),
 m_Map(Map),
 mp_InfoScene(NULL),

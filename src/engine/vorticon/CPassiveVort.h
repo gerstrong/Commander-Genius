@@ -17,8 +17,7 @@ namespace vorticon
 class CPassiveVort : public CPassive
 {
 public:
-	CPassiveVort(CExeFile &ExeFile,
-			 CSavedGame &SavedGame, Uint8& difficulty);
+	CPassiveVort();
 
 	bool init(char mode = INTRO);
 
@@ -31,7 +30,6 @@ private:
 	CTitle *mp_TitleScreen;
 	CTextBox *mp_PressAnyBox;
 	CTilemap *mp_Tilemap;
-	CExeFile &m_ExeFile;
 	CMap *mp_Map;
 	stOption *mp_Option;
 

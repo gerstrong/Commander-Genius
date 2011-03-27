@@ -10,15 +10,18 @@
 #include "engine/vorticon/playgame/CPlayGameVorticon.h"
 #include "graphics/effects/CColorMerge.h"
 
-CGamePlayMode::CGamePlayMode(bool& show_finale, Uint8& episode,
-		Uint8& Numplayers, Uint8& Difficulty,
-		std::string& DataDirectory) :
-CGameMode(episode, Numplayers, Difficulty, DataDirectory),
+CGamePlayMode::CGamePlayMode(const int Episode, const int Numplayers,
+		const int Difficulty, const std::string& DataDirectory, CSavedGame& SavedGame) :
 m_startLevel(0),
-m_show_finale(show_finale)
+m_show_finale(false),
+m_Episode(Episode),
+m_Numplayers(Numplayers),
+m_Difficulty(Difficulty),
+m_DataDirectory(DataDirectory),
+m_SavedGame(SavedGame)
 {}
 
-bool CGamePlayMode::init()
+void CGamePlayMode::init()
 {
 	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
 
@@ -59,10 +62,8 @@ bool CGamePlayMode::init()
 	if(!ok)
 	{
 		CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-		EventContainer.add( new ChangeMode(GM_PASSIVE));
+		EventContainer.add( new GMSwitchToPassiveMode(m_DataDirectory, m_Episode));
 	}
-
-	return ok;
 }
 
 void CGamePlayMode::process()
@@ -75,22 +76,18 @@ void CGamePlayMode::process()
 	if( mp_PlayGame->getEndGame() )
 	{
 		m_startLevel = 0;
-		m_endgame = true;
-		EventContainer.add( new ChangeMode(GM_PASSIVE) );
+		EventContainer.add( new GMSwitchToPassiveMode(m_DataDirectory, m_Episode) );
 	}
-	/*else if( mp_PlayGame->getStartGame() )
+	else if( mp_PlayGame->getStartGame() )
 	{ // Start another new game
 		m_Numplayers = mp_PlayGame->getNumPlayers();
 		m_Difficulty = mp_PlayGame->getDifficulty();
+		m_SavedGame = mp_PlayGame->getSavedGameBlock();
 
-		EventContainer.add( new ChangeMode(GM_PLAYGAME) );
-	}*/
+		EventContainer.add( new GMSwitchToPlayGameMode(m_Episode, m_Numplayers, m_Difficulty, m_DataDirectory, m_SavedGame) );
+	}
 	else if( mp_PlayGame->getExitEvent() )
 	{
-		EventContainer.add( new ChangeMode(GM_QUIT) );
+		EventContainer.add( new GMQuit() );
 	}
-}
-
-CGamePlayMode::~CGamePlayMode() {
-	// TODO Auto-generated destructor stub
 }

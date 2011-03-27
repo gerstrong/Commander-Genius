@@ -21,8 +21,7 @@
 
 CGameControl::CGameControl(bool &firsttime) :
 m_firsttime(firsttime),
-m_show_finale(false),
-m_episode(0)
+m_show_finale(false)
 {}
 
 ////
@@ -30,12 +29,12 @@ m_episode(0)
 ////
 bool CGameControl::init(int argc, char *argv[])
 {
-	bool ok;
+	bool ok = true;
 	std::string argument;
 	argument = getArgument( argc, argv, "-game" );
 
-	mp_GameMode = new CGameLauncherMenu(m_firsttime, m_episode, m_Numplayers, m_Difficulty, m_DataDirectory);
-	ok = mp_GameMode->init();
+	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
+	EventContainer.add( new GMSwitchToGameLauncher() );
 
 	// Check if some arguments were given.
 	/*if(argument != "")
@@ -70,30 +69,32 @@ void CGameControl::process()
 {
 	// process any triggered Game Control related event
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-	if( ChangeMode* p_mode = EventContainer.occurredEvent<ChangeMode>() )
+
+	if( GMSwitchToGameLauncher* p_Launcher = EventContainer.occurredEvent<GMSwitchToGameLauncher>() )
 	{
-		mp_GameMode.tryDeleteData();
-
-		if(p_mode->Mode == GM_GAMELAUNCHER)
-		{
-			mp_GameMode = new CGameLauncherMenu(m_firsttime, m_episode, m_Numplayers, m_Difficulty, m_DataDirectory);
-		}
-		else if(p_mode->Mode == GM_PASSIVE)
-		{
-			mp_GameMode = new CGamePassiveMode(m_episode, m_Numplayers, m_Difficulty, m_DataDirectory);
-		}
-		else if(p_mode->Mode == GM_PLAYGAME)
-		{
-			mp_GameMode = new CGamePlayMode(m_show_finale, m_episode, m_Numplayers, m_Difficulty, m_DataDirectory);
-		}
-		else if(p_mode->Mode == GM_QUIT)
-		{
-			mp_GameMode = NULL;
-			return;
-		}
-
+		mp_GameMode = new CGameLauncherMenu( m_firsttime, p_Launcher->m_ChosenGame, p_Launcher->m_StartLevel );
 		mp_GameMode->init();
 		EventContainer.pop_Event();
+	}
+	else if( GMSwitchToPassiveMode* p_Passive = EventContainer.occurredEvent<GMSwitchToPassiveMode>() )
+	{
+		mp_GameMode = new CGamePassiveMode( p_Passive->m_DataDirectory, p_Passive->m_Episode );
+		mp_GameMode->init();
+		EventContainer.pop_Event();
+	}
+	else if( GMSwitchToPlayGameMode* p_PlayGame = EventContainer.occurredEvent<GMSwitchToPlayGameMode>() )
+	{
+		mp_GameMode = new CGamePlayMode( p_PlayGame->m_Episode, p_PlayGame->m_Numplayers,
+										p_PlayGame->m_Difficulty, p_PlayGame->m_DataDirectory,
+										p_PlayGame->m_SavedGame);
+		mp_GameMode->init();
+		EventContainer.pop_Event();
+	}
+	else if( EventContainer.occurredEvent<GMQuit>() )
+	{
+		mp_GameMode.tryDeleteData();
+		EventContainer.pop_Event();
+		return;
 	}
 
 	// Process the game control object

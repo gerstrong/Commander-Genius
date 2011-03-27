@@ -9,6 +9,7 @@
 
 #include "FindFile.h"
 #include "CSavedGame.h"
+#include "common/CBehaviorEngine.h"
 #include <ctime>
 
 void sgrle_initdecompression(void);
@@ -28,11 +29,14 @@ CSavedGame::CSavedGame() {
 	m_emptyString += "EMPTY";
 	for(int c=0 ; c<spacelen ; c++)
 		m_emptyString += " ";
+
+	setGameDirectory(g_pBehaviorEngine->m_ExeFile.getDataDirectory());
+	setEpisode(g_pBehaviorEngine->getEpisode());
 }
 
 void CSavedGame::setGameDirectory(const std::string& game_directory)
 {
-	m_savedir = "save/" + game_directory;
+	m_savedir = JoinPaths("save", game_directory);
 }
 
 void CSavedGame::setEpisode(char Episode)
@@ -523,7 +527,6 @@ bool CSavedGame::prepareSaveGame( int SaveSlot, const std::string &Name)
 
 	// This will make the CPlayGame instance call save
 	m_Command = SAVE;
-
 	m_offset = 0;
 
 	return true;
@@ -533,7 +536,8 @@ bool CSavedGame::prepareSaveGame( int SaveSlot, const std::string &Name)
 // PlayGame instance will call load() and get the right data.
 bool CSavedGame::prepareLoadGame(int SaveSlot)
 {
-	m_statefilename = m_savedir + "/cksave"+itoa(SaveSlot)+".ck"+itoa(m_Episode);
+	const std::string savefile = "cksave" + itoa(SaveSlot) + ".ck"+itoa(m_Episode);
+	m_statefilename = JoinPaths(m_savedir, savefile);
     m_datablock.clear();
 
 	// This will make the CPlayGame instance call save

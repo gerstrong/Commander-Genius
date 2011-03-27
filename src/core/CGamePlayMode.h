@@ -9,20 +9,28 @@
 #define CGAMEPLAYMODE_H_
 
 #include "CGameMode.h"
+#include "engine/playgame/CPlayGame.h"
+#include "fileio/CSavedGame.h"
+#include "SmartPointer.h"
+#include <string>
 
 class CGamePlayMode : public CGameMode {
 public:
-	CGamePlayMode(bool& show_finale, Uint8& episode,
-			Uint8& Numplayers, Uint8& Difficulty,
-			std::string& DataDirectory);
-	virtual ~CGamePlayMode();
+	CGamePlayMode( const int Episode, const int Numplayers,
+			const int Difficulty, const std::string& DataDirectory, CSavedGame& SavedGame);
 
-	bool init();
+	void init();
 	void process();
 
 private:
 	int m_startLevel;
-	bool& m_show_finale;
+	bool m_show_finale;
+	int m_Episode;
+	Uint8 m_Numplayers;
+	Uint8 m_Difficulty;
+	std::string m_DataDirectory;
+	CSavedGame m_SavedGame;
+	SmartPointer<CPlayGame> mp_PlayGame;
 };
 
 #endif /* CGAMEPLAYMODE_H_ */

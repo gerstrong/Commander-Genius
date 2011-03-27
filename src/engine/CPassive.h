@@ -30,8 +30,7 @@ public:
 		INTRO, TITLE, DEMO, STARTGAME, SHUTDOWN
 	};
 	
-	CPassive(CExeFile &Exefile, CSavedGame &SavedGame,
-			 Uint8& difficulty);
+	CPassive();
 	
 	virtual bool init(char mode = INTRO) {return false;};
 	
@@ -41,6 +40,7 @@ public:
 	char getEpisode() { return m_Episode; }
 	char getNumPlayers() { return m_NumPlayers; }
 	char getDifficulty() { return m_Difficulty; }
+	CSavedGame getSavedGameBlock() { return m_SavedGame; }
 	std::string getGamePath() { return m_DataDirectory; }
 	
 	bool getchooseGame() { return m_modeg; }
@@ -56,10 +56,9 @@ public:
 protected:
 	char m_Episode;
 	char m_NumPlayers;
-	Uint8& m_Difficulty;
+	char m_Difficulty;
 	bool m_modeg;
 	std::string m_DataDirectory;
-
-	CSavedGame &m_SavedGame;
+	CSavedGame m_SavedGame;
 };
 #endif /* CPASSIVE_H_ */

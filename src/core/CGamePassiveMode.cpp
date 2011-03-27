@@ -10,78 +10,67 @@
 #include "engine/vorticon/CPassiveVort.h"
 #include "engine/galaxy/CPassive.h"
 
-CGamePassiveMode::CGamePassiveMode(Uint8& episode, Uint8& Numplayers,
-		Uint8& Difficulty, std::string& DataDirectory) :
-CGameMode(episode, Numplayers, Difficulty, DataDirectory),
-mp_PassiveMode(NULL)
+CGamePassiveMode::CGamePassiveMode(const std::string& DataDirectory, const int& Episode) :
+m_DataDirectory(DataDirectory),
+m_Episode(Episode),
+m_Endgame(false),
+m_Difficulty(0)
 {}
 
-bool CGamePassiveMode::init()
+void CGamePassiveMode::init()
 {
-	CExeFile &ExeFile = g_pBehaviorEngine->m_ExeFile;
-
 	// Create mp_PassiveMode object used for the screens while Player is not playing
 	if(m_Episode >= 4)
-		mp_PassiveMode = new galaxy::CPassiveGalaxy( ExeFile, m_SavedGame, m_Difficulty );
+		mp_Passive = new galaxy::CPassiveGalaxy();
 	else
-		mp_PassiveMode = new vorticon::CPassiveVort( ExeFile, m_SavedGame, m_Difficulty );
+		mp_Passive = new vorticon::CPassiveVort();
 
-	if( m_endgame == true )
+	if( m_Endgame == true )
 	{
-		m_endgame = false;
+		m_Endgame = false;
 		// TODO: Overload this function for galaxy
-		if( mp_PassiveMode->init(mp_PassiveMode->TITLE) ) return true;
+		if( mp_Passive->init(mp_Passive->TITLE) ) return;
 	}
 	else
 	{
-		if( mp_PassiveMode->init() ) return true;
+		if( mp_Passive->init() ) return;
 	}
 
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-	EventContainer.add( new ChangeMode(GM_GAMELAUNCHER) );
-
-	return false;
+	EventContainer.add( new GMSwitchToGameLauncher(-1, -1) );
 }
 
 void CGamePassiveMode::process()
 {
 	CEventContainer& EventContainer = g_pBehaviorEngine->m_EventList;
-	if(mp_PlayGame != NULL)
-	{
-		if( mp_PlayGame->getEndGame() )
-		{
-			EventContainer.add( new ChangeMode(GM_PLAYGAME) );
-		}
-	}
-	mp_PassiveMode->process();
+	mp_Passive->process();
 
 	// check here what the player chose from the menu over the passive mode.
 	// NOTE: Demo is not part of playgame anymore!!
-	if(mp_PassiveMode->getchooseGame())
+	if(mp_Passive->getchooseGame())
 	{
 		// TODO: Some of game resources are still not cleaned up here!
 		g_pSound->unloadSoundData();
-
-		EventContainer.add( new ChangeMode(GM_GAMELAUNCHER) );
-
+		EventContainer.add( new GMSwitchToGameLauncher(-1, -1) );
 		return;
 	}
 
-	if(mp_PassiveMode->mustStartGame())
+	if(mp_Passive->mustStartGame())
 	{
-		m_Episode = mp_PassiveMode->getEpisode();
-		m_Numplayers = mp_PassiveMode->getNumPlayers();
-		m_Difficulty = mp_PassiveMode->getDifficulty();
-		m_DataDirectory = mp_PassiveMode->getGamePath();
+		const int Episode = mp_Passive->getEpisode();
+		const int Numplayers = mp_Passive->getNumPlayers();
+		const int Difficulty = mp_Passive->getDifficulty();
+		std::string DataDirectory = mp_Passive->getGamePath();
+		CSavedGame SavedGame = mp_Passive->getSavedGameBlock();
 
-		EventContainer.add( new ChangeMode(GM_PLAYGAME) );
+		EventContainer.add( new GMSwitchToPlayGameMode( Episode, Numplayers, Difficulty, DataDirectory, SavedGame ) );
 		return;
 	}
 
 	// User wants to exit. Called from the PassiveMode
-	if(mp_PassiveMode->getExitEvent())
+	if(mp_Passive->getExitEvent())
 	{
-		EventContainer.add( new ChangeMode(GM_QUIT) );
+		EventContainer.add( new GMQuit() );
 	}
 
 }

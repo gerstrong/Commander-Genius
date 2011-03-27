@@ -11,43 +11,59 @@
 #define CGAMEMODE_H_
 
 #include "engine/CEvent.h"
-
-#include "engine/playgame/CPlayGame.h"
-#include "engine/CEGAGraphics.h"
 #include "fileio/CSavedGame.h"
+#include <string>
 
-// CG Core Modi
-enum GameMode{
-	GM_GAMELAUNCHER, GM_PASSIVE, GM_PLAYGAME, GM_QUIT
+///////////////////////
+// Events Structure  //
+///////////////////////
+// This event switches to the GameLauncher
+struct GMSwitchToGameLauncher : CEvent {
+	const int m_ChosenGame;
+	const int m_StartLevel;
+	GMSwitchToGameLauncher(	const int ChosenGame=-1, const int StartLevel=-1 ) :
+		m_ChosenGame(ChosenGame),
+		m_StartLevel(StartLevel){}
 };
 
-// There is only one event that is triggered called ChangeMode.
-// It is passed with the Mode which tells to what mode to change...
-struct ChangeMode : CEvent {
-	const GameMode Mode;
-	ChangeMode(const GameMode &l_Mode) : Mode(l_Mode){}
+// This event switches to the PassiveMode
+struct GMSwitchToPassiveMode : CEvent {
+	const std::string m_DataDirectory;
+	const int m_Episode;
+	GMSwitchToPassiveMode( const std::string& DataDirectory, const int& Episode ) :
+		m_DataDirectory(DataDirectory),
+		m_Episode(Episode){}
 };
 
-class CGameMode {
-public:
-	CGameMode(Uint8& Episode, Uint8& Numplayers,
-			Uint8& Difficulty, std::string& DataDirectory);
-	virtual ~CGameMode();
-
-	virtual void process() = 0;
-	virtual bool init() = 0;
-
-	CPlayGame *mp_PlayGame;
-
+// This event switches to the PlayGameMode
+struct GMSwitchToPlayGameMode : CEvent {
+	const int m_Episode;
+	const int m_Numplayers;
+	const int m_Difficulty;
+	const std::string m_DataDirectory;
 	CSavedGame m_SavedGame;
 
-	bool m_endgame;
+	GMSwitchToPlayGameMode( const int Episode, const int Numplayers,
+			const int Difficulty, const std::string& DataDirectory, CSavedGame& SavedGame ) :
+				m_Episode(Episode),
+				m_Numplayers(Numplayers),
+				m_Difficulty(Difficulty),
+				m_DataDirectory(DataDirectory),
+				m_SavedGame(SavedGame){}
+};
 
-	Uint8& m_Episode;
-	Uint8& m_Numplayers;
-	Uint8& m_Difficulty;
-	std::string& m_DataDirectory;
-	int current_demo;
+// It's a simple quit event which will force CG to close the App
+struct GMQuit : CEvent {};
+
+///////
+// Base Class for the modes
+//////
+class CGameMode {
+public:
+	CGameMode();
+
+	virtual void process() = 0;
+	virtual void init() = 0;
 };
 
 #endif /* CGAMEMODE_H_ */

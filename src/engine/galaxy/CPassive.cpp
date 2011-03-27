@@ -17,12 +17,10 @@
 namespace galaxy
 {
 
-CPassiveGalaxy::CPassiveGalaxy(CExeFile &Exefile,
-		CSavedGame &SavedGame, Uint8& difficulty) :
-CPassive(Exefile, SavedGame,  difficulty),
+CPassiveGalaxy::CPassiveGalaxy() :
 processMode(&CPassiveGalaxy::processIntro),
 m_BackgroundBitmap(*g_pGfxEngine->getBitmap("TITLE")),
-mp_Menu(new CMenuGalaxy(PASSIVE, Exefile, SavedGame, m_restartVideo))
+mp_Menu(new CMenuGalaxy(PASSIVE, m_SavedGame, m_restartVideo))
 { }
 
 bool CPassiveGalaxy::init(char mode)
@@ -98,7 +96,6 @@ void CPassiveGalaxy::processMenu()
 	}
 	else if(m_restartVideo) // When some video settings has been changed
 	{
-		cleanup();
 		m_restartVideo = false;
 	}
 	else if(mp_Menu->mustStartGame() || m_SavedGame.getCommand() == CSavedGame::LOAD) // Start a normal game
@@ -106,21 +103,9 @@ void CPassiveGalaxy::processMenu()
 		m_NumPlayers = mp_Menu->getNumPlayers();
 		m_Difficulty = mp_Menu->getDifficulty();
 		SAFE_DELETE(mp_Menu);
-		cleanup();
 		m_mode = STARTGAME;
 	}
 
-}
-
-// The cleanup function just make sure the resources are freed, when a mode is switched or the game closed
-void CPassiveGalaxy::cleanup()
-{
-
-}
-
-CPassiveGalaxy::~CPassiveGalaxy()
-{
-	// TODO Auto-generated destructor stub
 }
 
 }

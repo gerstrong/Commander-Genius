@@ -17,18 +17,7 @@
 #include "engine/galaxy/CPlayGameGalaxy.h"
 
 
-CGameMode::CGameMode(Uint8& Episode, Uint8& Numplayers,
-		Uint8& Difficulty, std::string& DataDirectory):
-mp_PlayGame(NULL),
-m_Episode(Episode),
-m_Numplayers(Numplayers),
-m_Difficulty(Difficulty),
-m_DataDirectory(DataDirectory)
+CGameMode::CGameMode()
 {
-	// TODO Auto-generated constructor stub
-	m_endgame = false;
-}
 
-CGameMode::~CGameMode() {
-	// TODO Auto-generated destructor stub
 }

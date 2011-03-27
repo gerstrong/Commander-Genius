@@ -11,6 +11,7 @@
 #include "CGameMode.h"
 #include "common/CGameLauncher.h"
 #include "common/Menu/CProfilesMenu.h"
+#include "engine/CEGAGraphics.h"
 #include "SmartPointer.h"
 
 enum load_states{
@@ -22,13 +23,11 @@ LOADALL=0xFF
 
 class CGameLauncherMenu : public CGameMode {
 public:
-	CGameLauncherMenu(bool &firsttime, Uint8& Episode, Uint8& Numplayers,
-			Uint8& Difficulty, std::string& DataDirectory,
-			const int start_game_no = -1, const int start_level = -1);
+	CGameLauncherMenu(bool& first_time, const int start_game_no = -1, const int start_level = -1);
 
 	bool loadMenuResources();
-	bool init();
-	bool loadResources(const Uint8 flags = LOADALL);
+	bool loadResources( const std::string& DataDirectory, const int& Episode, const Uint8 flags = LOADALL);
+	void init();
 	void process();
 
 private:
