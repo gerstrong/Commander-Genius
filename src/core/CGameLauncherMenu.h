@@ -9,6 +9,7 @@
 #define CGAMELAUNCHERMENU_H_
 
 #include "CGameMode.h"
+#include "common/CGameLauncher.h"
 #include "common/Menu/CProfilesMenu.h"
 #include "SmartPointer.h"
 
@@ -31,8 +32,9 @@ public:
 	void process();
 
 private:
+	SmartPointer<CGameLauncher> mp_GameLauncher;
 	bool &m_firsttime;
-	CProfilesMenu *mp_FirstTimeMenu;
+	SmartPointer<CProfilesMenu> mp_FirstTimeMenu;
 	int m_start_game_no;
 	int m_start_level;
 

@@ -9,6 +9,8 @@
 #define CGAMEPASSIVEMODE_H_
 
 #include "CGameMode.h"
+#include "engine/CPassive.h"
+
 
 class CGamePassiveMode : public CGameMode {
 public:
@@ -17,6 +19,10 @@ public:
 
 	bool init();
 	void process();
+
+private:
+	CPassive *mp_PassiveMode;
+
 };
 
 #endif /* CGAMEPASSIVEMODE_H_ */

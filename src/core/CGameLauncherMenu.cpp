@@ -13,13 +13,14 @@
 #include "engine/galaxy/CEGAGraphicsGalaxy.h"
 #include "engine/CMessages.h"
 #include "sdl/sound/CSound.h"
+#include "SmartPointer.h"
 
 CGameLauncherMenu::CGameLauncherMenu(bool &firsttime, Uint8& Episode, Uint8& Numplayers,
 		Uint8& Difficulty, std::string& DataDirectory,
 		const int start_game_no, const int start_level) :
 CGameMode(Episode, Numplayers, Difficulty, DataDirectory),
+mp_GameLauncher(NULL),
 m_firsttime(firsttime),
-mp_FirstTimeMenu(NULL),
 m_start_game_no(start_game_no),
 m_start_level(start_level)
 {}
@@ -59,9 +60,9 @@ bool CGameLauncherMenu::init()
 
 	struct GamesScan: public Action
 	{
-		CGameLauncher*& mp_GameLauncher;
+		SmartPointer<CGameLauncher>& mp_GameLauncher;
 
-		GamesScan(CGameLauncher*& p_GameLauncher) : mp_GameLauncher(p_GameLauncher) {};
+		GamesScan(SmartPointer<CGameLauncher>& p_GameLauncher) : mp_GameLauncher(p_GameLauncher) {};
 		int handle()
 		{
 			mp_GameLauncher = new CGameLauncher();
@@ -190,14 +191,14 @@ bool CGameLauncherMenu::loadResources(const Uint8 flags)
 void CGameLauncherMenu::process()
 {
 	// If the firsttime menu is open, process it
-	if(mp_FirstTimeMenu)
+	if(!mp_FirstTimeMenu.empty())
 	{
 		mp_FirstTimeMenu->processCommon();
 		mp_FirstTimeMenu->processSpecific();
 		mp_FirstTimeMenu->postProcess();
 
 		if(mp_FirstTimeMenu->mustClose())
-			SAFE_DELETE(mp_FirstTimeMenu);
+			mp_FirstTimeMenu.tryDeleteData();
 	}
 	else
 	{
@@ -220,8 +221,6 @@ void CGameLauncherMenu::process()
 				if(!g_pBehaviorEngine->m_ExeFile.readData(m_Episode, m_DataDirectory))
 				{
 					mp_GameLauncher->letchooseagain();
-					delete mp_PassiveMode;
-					mp_PassiveMode = NULL;
 				}
 				else
 				{

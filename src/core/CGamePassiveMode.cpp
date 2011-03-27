@@ -12,7 +12,8 @@
 
 CGamePassiveMode::CGamePassiveMode(Uint8& episode, Uint8& Numplayers,
 		Uint8& Difficulty, std::string& DataDirectory) :
-CGameMode(episode, Numplayers, Difficulty, DataDirectory)
+CGameMode(episode, Numplayers, Difficulty, DataDirectory),
+mp_PassiveMode(NULL)
 {}
 
 bool CGamePassiveMode::init()

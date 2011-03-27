@@ -7,6 +7,10 @@ v0.3.3.2:
 - Now switches for platform and bridges work
 - Big IMF Bug I discovered has been fixed which produced crashes on some systems
 - Better Platform code
+- Some PC-Speaker sound improvements
+- New CG Core which has a bit less code, is easier to understand, 
+  uses more smartpointers and also seems to be a bit faster.
+  
 
 v0.3.3.1:
 ---------

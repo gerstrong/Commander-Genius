@@ -199,7 +199,7 @@ bool CEGASprit::loadData(const std::string& filename, bool compresseddata)
 
 		percent = (s*100)/m_numsprites;
 		g_pResourceLoader->setPermilage(400+percent);
-	}200
+	}
 
 	g_pResourceLoader->setPermilage(300);
 

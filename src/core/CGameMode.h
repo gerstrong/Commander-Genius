@@ -12,10 +12,9 @@
 
 #include "engine/CEvent.h"
 
-#include "common/CGameLauncher.h"
-#include "engine/CPassive.h"
 #include "engine/playgame/CPlayGame.h"
 #include "engine/CEGAGraphics.h"
+#include "fileio/CSavedGame.h"
 
 // CG Core Modi
 enum GameMode{
@@ -38,8 +37,6 @@ public:
 	virtual void process() = 0;
 	virtual bool init() = 0;
 
-	CGameLauncher *mp_GameLauncher;
-	CPassive *mp_PassiveMode;
 	CPlayGame *mp_PlayGame;
 
 	CSavedGame m_SavedGame;

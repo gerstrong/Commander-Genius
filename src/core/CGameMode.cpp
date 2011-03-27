@@ -19,8 +19,6 @@
 
 CGameMode::CGameMode(Uint8& Episode, Uint8& Numplayers,
 		Uint8& Difficulty, std::string& DataDirectory):
-mp_GameLauncher(NULL),
-mp_PassiveMode(NULL),
 mp_PlayGame(NULL),
 m_Episode(Episode),
 m_Numplayers(Numplayers),

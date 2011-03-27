@@ -197,7 +197,7 @@ public:
 		return *this;
 	}
 	
-	// WARNING: Be carefull, don't assing a pointer to different SmartPointer objects,
+	// WARNING: Be careful, don't assign a pointer to different SmartPointer objects,
 	// else they will get freed twice in the end. Always copy the SmartPointer itself.
 	// In short: SmartPointer ptr(SomeObj); SmartPointer ptr1( ptr.get() ); // It's wrong, don't do that.
 	SmartPointer(_Type* pt): obj(NULL), refCount(NULL), mutex(NULL) { operator=(pt); }
@@ -209,7 +209,15 @@ public:
 		return *this;
 	}
 	
-	_Type* get() const { return obj; }	// The smartpointer itself won't change when returning address of obj, so it's const.
+	// Will return the pointer to the data that was allocated or NULL if it's empty
+	// The smartpointer itself won't change when returning address of obj, so it's const.
+	_Type* get() const { return obj; }
+
+	// This will show if the SmartPointer actually has some allocated or is empty as the function name says
+	// This has the same effect as (get() == NULL) but makes the code more explanatory
+	// when this Smartpointer Template class used.
+	bool empty() const { return (obj==NULL); }
+
 	
 	// HINT: no convenient cast functions in this class to avoid error-prone automatic casts
 	// (which would lead to collisions!)
