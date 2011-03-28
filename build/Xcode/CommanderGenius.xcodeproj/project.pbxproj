@@ -40,7 +40,6 @@
 		237421EA11FB8554000EEA5B /* GraphicsIDs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 237421E911FB8554000EEA5B /* GraphicsIDs.cpp */; };
 		237422D911FC849A000EEA5B /* arguments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10A511CFF5FB00F60BC8 /* arguments.cpp */; };
 		237422DA11FC849A000EEA5B /* CGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10A711CFF5FB00F60BC8 /* CGame.cpp */; };
-		237422DB11FC849A000EEA5B /* CGameControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10A911CFF5FB00F60BC8 /* CGameControl.cpp */; };
 		237422DC11FC849A000EEA5B /* CLogFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10AD11CFF5FB00F60BC8 /* CLogFile.cpp */; };
 		237422DD11FC849A000EEA5B /* CBehaviorEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10B111CFF5FB00F60BC8 /* CBehaviorEngine.cpp */; };
 		237422DE11FC849A000EEA5B /* CGameLauncher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10B311CFF5FB00F60BC8 /* CGameLauncher.cpp */; };
@@ -291,6 +290,13 @@
 		23E2A7111217525E00F0CD34 /* CProfilesMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23E2A70D1217525E00F0CD34 /* CProfilesMenu.cpp */; };
 		23F2165412871F9500A8842A /* CObjectCollision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23F2165312871F9500A8842A /* CObjectCollision.cpp */; };
 		23F2165512871F9500A8842A /* CObjectCollision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23F2165312871F9500A8842A /* CObjectCollision.cpp */; };
+		63010C0813400D4A00F212CA /* CGameControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010BFE13400D4A00F212CA /* CGameControl.cpp */; };
+		63010C0913400D4A00F212CA /* CGameLauncherMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010C0013400D4A00F212CA /* CGameLauncherMenu.cpp */; };
+		63010C0A13400D4A00F212CA /* CGameMode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010C0213400D4A00F212CA /* CGameMode.cpp */; };
+		63010C0B13400D4A00F212CA /* CGamePassiveMode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010C0413400D4A00F212CA /* CGamePassiveMode.cpp */; };
+		63010C0C13400D4A00F212CA /* CGamePlayMode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010C0613400D4A00F212CA /* CGamePlayMode.cpp */; };
+		63010C0F13400D9300F212CA /* CMapPlayGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010C0D13400D9300F212CA /* CMapPlayGalaxy.cpp */; };
+		63010C1013400D9300F212CA /* CMapPlayGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63010C0D13400D9300F212CA /* CMapPlayGalaxy.cpp */; };
 		63243C7C12ECDB5E00FE8192 /* CAudioResources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63243C7A12ECDB5E00FE8192 /* CAudioResources.cpp */; };
 		63243C7D12ECDB5E00FE8192 /* CAudioResources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63243C7A12ECDB5E00FE8192 /* CAudioResources.cpp */; };
 		63243C8012ECDB6C00FE8192 /* CAudioGalaxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63243C7E12ECDB6C00FE8192 /* CAudioGalaxy.cpp */; };
@@ -312,7 +318,6 @@
 		63C72AC81274284A00E9A293 /* ThreadPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63C72AC61274284A00E9A293 /* ThreadPool.cpp */; };
 		63CD120311CFF5FC00F60BC8 /* arguments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10A511CFF5FB00F60BC8 /* arguments.cpp */; };
 		63CD120411CFF5FC00F60BC8 /* CGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10A711CFF5FB00F60BC8 /* CGame.cpp */; };
-		63CD120511CFF5FC00F60BC8 /* CGameControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10A911CFF5FB00F60BC8 /* CGameControl.cpp */; };
 		63CD120811CFF5FC00F60BC8 /* CLogFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10AD11CFF5FB00F60BC8 /* CLogFile.cpp */; };
 		63CD120911CFF5FC00F60BC8 /* CBehaviorEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10B111CFF5FB00F60BC8 /* CBehaviorEngine.cpp */; };
 		63CD120A11CFF5FC00F60BC8 /* CGameLauncher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 63CD10B311CFF5FB00F60BC8 /* CGameLauncher.cpp */; };
@@ -628,6 +633,18 @@
 		23F2165312871F9500A8842A /* CObjectCollision.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CObjectCollision.cpp; sourceTree = "<group>"; };
 		5048396D09E3307300765E4B /* CommanderGeniusProj.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = CommanderGeniusProj.xcconfig; sourceTree = "<group>"; };
 		5048396E09E3307300765E4B /* CommanderGeniusTarget.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = CommanderGeniusTarget.xcconfig; sourceTree = "<group>"; };
+		63010BFE13400D4A00F212CA /* CGameControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGameControl.cpp; sourceTree = "<group>"; };
+		63010BFF13400D4A00F212CA /* CGameControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameControl.h; sourceTree = "<group>"; };
+		63010C0013400D4A00F212CA /* CGameLauncherMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGameLauncherMenu.cpp; sourceTree = "<group>"; };
+		63010C0113400D4A00F212CA /* CGameLauncherMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameLauncherMenu.h; sourceTree = "<group>"; };
+		63010C0213400D4A00F212CA /* CGameMode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGameMode.cpp; sourceTree = "<group>"; };
+		63010C0313400D4A00F212CA /* CGameMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameMode.h; sourceTree = "<group>"; };
+		63010C0413400D4A00F212CA /* CGamePassiveMode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGamePassiveMode.cpp; sourceTree = "<group>"; };
+		63010C0513400D4A00F212CA /* CGamePassiveMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGamePassiveMode.h; sourceTree = "<group>"; };
+		63010C0613400D4A00F212CA /* CGamePlayMode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGamePlayMode.cpp; sourceTree = "<group>"; };
+		63010C0713400D4A00F212CA /* CGamePlayMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGamePlayMode.h; sourceTree = "<group>"; };
+		63010C0D13400D9300F212CA /* CMapPlayGalaxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CMapPlayGalaxy.cpp; sourceTree = "<group>"; };
+		63010C0E13400D9300F212CA /* CMapPlayGalaxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMapPlayGalaxy.h; sourceTree = "<group>"; };
 		6304FC3F10E3EAD800307EAC /* CGLogo.bmp */ = {isa = PBXFileReference; explicitFileType = image.bmp; path = CGLogo.bmp; sourceTree = "<group>"; };
 		6304FE8810E429D000307EAC /* HELPTEXT.CKP */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HELPTEXT.CKP; sourceTree = "<group>"; };
 		63243C7A12ECDB5E00FE8192 /* CAudioResources.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAudioResources.cpp; sourceTree = "<group>"; };
@@ -767,8 +784,6 @@
 		63CD10A611CFF5FB00F60BC8 /* arguments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = arguments.h; sourceTree = "<group>"; };
 		63CD10A711CFF5FB00F60BC8 /* CGame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGame.cpp; sourceTree = "<group>"; };
 		63CD10A811CFF5FB00F60BC8 /* CGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGame.h; sourceTree = "<group>"; };
-		63CD10A911CFF5FB00F60BC8 /* CGameControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGameControl.cpp; sourceTree = "<group>"; };
-		63CD10AA11CFF5FB00F60BC8 /* CGameControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGameControl.h; sourceTree = "<group>"; };
 		63CD10AD11CFF5FB00F60BC8 /* CLogFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CLogFile.cpp; sourceTree = "<group>"; };
 		63CD10AE11CFF5FB00F60BC8 /* CLogFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLogFile.h; sourceTree = "<group>"; };
 		63CD10AF11CFF5FB00F60BC8 /* Color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
@@ -1243,6 +1258,23 @@
 			name = "Configuration Files";
 			sourceTree = "<group>";
 		};
+		63010BFD13400D4A00F212CA /* core */ = {
+			isa = PBXGroup;
+			children = (
+				63010BFE13400D4A00F212CA /* CGameControl.cpp */,
+				63010BFF13400D4A00F212CA /* CGameControl.h */,
+				63010C0013400D4A00F212CA /* CGameLauncherMenu.cpp */,
+				63010C0113400D4A00F212CA /* CGameLauncherMenu.h */,
+				63010C0213400D4A00F212CA /* CGameMode.cpp */,
+				63010C0313400D4A00F212CA /* CGameMode.h */,
+				63010C0413400D4A00F212CA /* CGamePassiveMode.cpp */,
+				63010C0513400D4A00F212CA /* CGamePassiveMode.h */,
+				63010C0613400D4A00F212CA /* CGamePlayMode.cpp */,
+				63010C0713400D4A00F212CA /* CGamePlayMode.h */,
+			);
+			path = core;
+			sourceTree = "<group>";
+		};
 		6329039B12EB8DF500963705 /* hardware */ = {
 			isa = PBXGroup;
 			children = (
@@ -1411,13 +1443,12 @@
 		63CD10A211CFF5FB00F60BC8 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				63010BFD13400D4A00F212CA /* core */,
 				23D4C48E132C244700B06391 /* CRingBuffer.h */,
 				63CD10A511CFF5FB00F60BC8 /* arguments.cpp */,
 				63CD10A611CFF5FB00F60BC8 /* arguments.h */,
 				63CD10A711CFF5FB00F60BC8 /* CGame.cpp */,
 				63CD10A811CFF5FB00F60BC8 /* CGame.h */,
-				63CD10A911CFF5FB00F60BC8 /* CGameControl.cpp */,
-				63CD10AA11CFF5FB00F60BC8 /* CGameControl.h */,
 				63CD10AD11CFF5FB00F60BC8 /* CLogFile.cpp */,
 				63CD10AE11CFF5FB00F60BC8 /* CLogFile.h */,
 				63CD10AF11CFF5FB00F60BC8 /* Color.h */,
@@ -1608,6 +1639,8 @@
 		63CD111311CFF5FB00F60BC8 /* galaxy */ = {
 			isa = PBXGroup;
 			children = (
+				63010C0D13400D9300F212CA /* CMapPlayGalaxy.cpp */,
+				63010C0E13400D9300F212CA /* CMapPlayGalaxy.h */,
 				63AEA5B9132D4A16000344F1 /* CStatusScreenGalaxyEp4.cpp */,
 				63AEA5BA132D4A16000344F1 /* CStatusScreenGalaxyEp4.h */,
 				63AEA5BB132D4A16000344F1 /* ItemsGalaxy.h */,
@@ -2204,7 +2237,6 @@
 			files = (
 				63CD120311CFF5FC00F60BC8 /* arguments.cpp in Sources */,
 				63CD120411CFF5FC00F60BC8 /* CGame.cpp in Sources */,
-				63CD120511CFF5FC00F60BC8 /* CGameControl.cpp in Sources */,
 				63CD120811CFF5FC00F60BC8 /* CLogFile.cpp in Sources */,
 				63CD120911CFF5FC00F60BC8 /* CBehaviorEngine.cpp in Sources */,
 				63CD120A11CFF5FC00F60BC8 /* CGameLauncher.cpp in Sources */,
@@ -2408,6 +2440,12 @@
 				23D4C4C6132C283A00B06391 /* CVideoEngine.cpp in Sources */,
 				63AEA5BC132D4A16000344F1 /* CStatusScreenGalaxyEp4.cpp in Sources */,
 				63AEA5C0132D4B6A000344F1 /* CScrollEffect.cpp in Sources */,
+				63010C0813400D4A00F212CA /* CGameControl.cpp in Sources */,
+				63010C0913400D4A00F212CA /* CGameLauncherMenu.cpp in Sources */,
+				63010C0A13400D4A00F212CA /* CGameMode.cpp in Sources */,
+				63010C0B13400D4A00F212CA /* CGamePassiveMode.cpp in Sources */,
+				63010C0C13400D4A00F212CA /* CGamePlayMode.cpp in Sources */,
+				63010C0F13400D9300F212CA /* CMapPlayGalaxy.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2417,7 +2455,6 @@
 			files = (
 				237422D911FC849A000EEA5B /* arguments.cpp in Sources */,
 				237422DA11FC849A000EEA5B /* CGame.cpp in Sources */,
-				237422DB11FC849A000EEA5B /* CGameControl.cpp in Sources */,
 				237422DC11FC849A000EEA5B /* CLogFile.cpp in Sources */,
 				237422DD11FC849A000EEA5B /* CBehaviorEngine.cpp in Sources */,
 				237422DE11FC849A000EEA5B /* CGameLauncher.cpp in Sources */,
@@ -2622,6 +2659,7 @@
 				23D4C4C7132C283A00B06391 /* CVideoEngine.cpp in Sources */,
 				63AEA5BD132D4A16000344F1 /* CStatusScreenGalaxyEp4.cpp in Sources */,
 				63AEA5C1132D4B6A000344F1 /* CScrollEffect.cpp in Sources */,
+				63010C1013400D9300F212CA /* CMapPlayGalaxy.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
