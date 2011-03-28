@@ -432,7 +432,7 @@ void CDialog::processInput(int move)
 
 void CDialog::draw()
 {
-	SDL_Surface *dst_sfc = g_pVideoDriver->mp_VideoEngine->getFGLayerSurface();
+	SDL_Surface *dst_sfc = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
 	
 	if(m_alpha < 230)
 	{

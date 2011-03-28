@@ -194,50 +194,7 @@ void CPlayGameVorticon::process()
 	}
 	else // No, we are in the middle of the game
 	{
-		// If the menu is open process it!
-		if(mp_Menu)
-		{
-			if( mp_Menu->mustClose() || mp_Menu->getExitEvent() ||
-					mp_Menu->mustEndGame() || mp_Menu->mustStartGame()	)
-			{
-				if( mp_Menu->getExitEvent() )
-					m_exitgame = true;
-				else if( mp_Menu->mustEndGame() )
-					m_endgame = true;
-				else if( mp_Menu->mustStartGame() )
-				{
-					m_NumPlayers = mp_Menu->getNumPlayers();
-					m_Difficulty = mp_Menu->getDifficulty();
-					m_startgame = true;
-				}
-
-				mp_Menu->cleanup();
-				SAFE_DELETE(mp_Menu);
-				m_hideobjects = false;
-			}
-			else
-			{
-				mp_Menu->processSpecific();
-
-				if(m_restartVideo) // Happens when in Game resolution was changed!
-				{
-					mp_Menu->cleanup();
-					SAFE_DELETE(mp_Menu);
-					SDL_Rect gamerect = g_pVideoDriver->getGameResolution();
-					m_Map.m_maxscrollx = (m_Map.m_width<<4) - gamerect.w - 36;
-					m_Map.m_maxscrolly = (m_Map.m_height<<4) - gamerect.h - 36;
-					m_Map.drawAll();
-					m_restartVideo = false;
-				}
-
-				// Does the player want to load/save a game?
-				if(m_SavedGame.getCommand() == CSavedGame::SAVE)
-					saveGameState();
-				else if(m_SavedGame.getCommand() == CSavedGame::LOAD)
-					loadGameState();
-			}
-		}
-		else if(!m_paused && m_MessageBoxes.empty()) // Game is not paused
+		if(!m_paused && m_MessageBoxes.empty()) // Game is not paused
 		{
 			if (!mp_Finale) // Hasn't the game yet been finished?
 			{
@@ -316,6 +273,60 @@ void CPlayGameVorticon::process()
 			handleFKeys();
 		}
 
+		//////////////////////////////////////////
+		//// Menu Code... processed if opened
+		//////////////////////////////////////////
+
+		// If the menu is open process it!
+		if(mp_Menu)
+		{
+			if( mp_Menu->mustClose() || mp_Menu->getExitEvent() ||
+					mp_Menu->mustEndGame() || mp_Menu->mustStartGame()	)
+			{
+				if( mp_Menu->getExitEvent() )
+					m_exitgame = true;
+				else if( mp_Menu->mustEndGame() )
+					m_endgame = true;
+				else if( mp_Menu->mustStartGame() )
+				{
+					m_NumPlayers = mp_Menu->getNumPlayers();
+					m_Difficulty = mp_Menu->getDifficulty();
+					m_startgame = true;
+				}
+
+				mp_Menu->cleanup();
+				SAFE_DELETE(mp_Menu);
+				m_hideobjects = false;
+			}
+			else
+			{
+				mp_Menu->processSpecific();
+
+				if(m_restartVideo) // Happens when in Game resolution was changed!
+				{
+					mp_Menu->cleanup();
+					SAFE_DELETE(mp_Menu);
+					SDL_Rect gamerect = g_pVideoDriver->getGameResolution();
+					m_Map.m_maxscrollx = (m_Map.m_width<<4) - gamerect.w - 36;
+					m_Map.m_maxscrolly = (m_Map.m_height<<4) - gamerect.h - 36;
+					m_Map.drawAll();
+					m_restartVideo = false;
+				}
+
+				// Does the player want to load/save a game?
+				if(m_SavedGame.getCommand() == CSavedGame::SAVE)
+					saveGameState();
+				else if(m_SavedGame.getCommand() == CSavedGame::LOAD)
+					loadGameState();
+			}
+		}
+		// Open the Main Menu if ESC Key pressed and mp_Menu not opened.  Prevent the menu if the player is not solid.
+		else if( !mp_Finale && g_pInput->getPressedCommand(IC_QUIT) && ( m_Player[0].solid || m_Player[0].godmode ) )
+		{	// Open the menu
+			mp_Menu = new CMenuVorticon( ACTIVE, m_Map, m_SavedGame, m_restartVideo, m_hideobjects );
+		}
+
+
 		if (g_pVideoDriver->getVidConfig().showfps)
 		{
 			SDL_Surface *sfc = g_pVideoDriver->mp_VideoEngine->getFGLayerSurface();
@@ -330,11 +341,6 @@ void CPlayGameVorticon::process()
 
 		}
 
-		// Open the Main Menu if ESC Key pressed and mp_Menu not opened.  Prevent the menu if the player is not solid.
-		if( !mp_Menu && !mp_Finale && g_pInput->getPressedCommand(IC_QUIT) && ( m_Player[0].solid || m_Player[0].godmode ) )
-		{	// Open the menu
-				mp_Menu = new CMenuVorticon( ACTIVE, m_Map, m_SavedGame, m_restartVideo, m_hideobjects );
-		}
 	}
 }
 

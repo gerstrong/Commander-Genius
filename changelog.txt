@@ -10,6 +10,7 @@ v0.3.3.2:
 - Some PC-Speaker sound improvements
 - New CG Core which has a bit less code, is easier to understand, 
   uses more smartpointers and also seems to be a bit faster.
+- Less graphic glitches in OpenGL Mode
   
 
 v0.3.3.1:
