@@ -3,12 +3,14 @@
  *
  *  Created on: 19.05.2010
  *      Author: gerstrong
+ *
+ *  This Menu opens up and controls the Volume Menu.
  */
 
 #include "CBaseMenu.h"
 #include "CVolumeSettings.h"
-#include "../../sdl/sound/CSound.h"
-#include "../../sdl/CInput.h"
+#include "sdl/sound/CSound.h"
+#include "sdl/CInput.h"
 
 CVolumeSettings::CVolumeSettings(Uint8 dlg_theme) :
 CBaseMenu(dlg_theme)

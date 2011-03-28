@@ -35,14 +35,17 @@ m_Font_ID((theme==DLG_THEME_GALAXY) ? 1 : 0)
 	if(m_theme==DLG_THEME_GALAXY)
 	{
 		m_y -= 5;
-		if(m_x < 58)
-			m_x = 58;
+		if(m_x < 59)
+			m_x = 59;
 		if(m_y < 58)
 			m_y = 58;
-		if(m_w > 100)
-			m_w = 100;
-		if(m_h > 50)
-			m_h = 50;
+		//if(m_w > 100)
+			//m_w = 100;
+		if(m_w > 32)
+			m_w = 32;
+		if(m_h > 11)
+			m_h = 11;
+
 	}
 	else
 	{
@@ -87,6 +90,8 @@ void CDialog::setInputMode( const char inputmode )
 void CDialog::addObject(Uint8 type, Uint16 x, Uint16 y,const std::string text)
 {
 	CDlgObject *DlgObject = new CDlgObject();
+	if( m_theme == DLG_THEME_GALAXY && type == DLG_OBJ_TEXT )
+		type = DLG_OBJ_DISABLED;
 	DlgObject->create( type, m_dlgobject.size(),
 					  m_x+(x*8), m_y+(y*8),
 					  text, m_w-((x-m_x)/8)-5,
@@ -394,24 +399,44 @@ void CDialog::processInput(int move)
 				m_dlgobject.at(m_selected_ID)->m_Option->m_FontMapID = 1;
 				
 				std::string asciislider;
-				
-				asciislider += 1;
-				
-				// Why does it go from 0 to 16. If we have a resolution of 16 steps
-				// It might have to go from 0 to 15
-				for(Uint16 i=0 ; i<m_int ; i++)
-					asciislider += 4;
-				asciislider += 5;
-				for(Uint16 i=m_int+1 ; i<=16 ; i++)
-					asciislider += 6;
-				asciislider += 7;
-				
-				setObjectText(m_selected_ID, asciislider);
+
+				// Draw the slider graphic
+				if(m_theme == DLG_THEME_GALAXY)
+				{
+					asciislider += '(';
+
+					for(Uint16 i=0 ; i<m_int ; i++)
+						asciislider += '-';
+
+					asciislider += '|';
+
+					for(Uint16 i=m_int+1 ; i<=16 ; i++)
+						asciislider += '-';
+
+					asciislider += ')';
+
+					setObjectText(m_selected_ID, asciislider);
+				}
+				else
+				{
+					asciislider += 1;
+
+					for(Uint16 i=0 ; i<m_int ; i++)
+						asciislider += 4;
+					asciislider += 5;
+
+					for(Uint16 i=m_int+1 ; i<=16 ; i++)
+						asciislider += 6;
+
+					asciislider += 7;
+
+					setObjectText(m_selected_ID, asciislider);
+				}
 			}
 		}
 		if(m_inputmode == INPUT_MODE_OPTION)
 		{
-			//This one is basically the counter for non number entries.  It allows for easier scrolling through lists back and forth ie resolutions.
+			//This one is basically the counter for non number entries.  It allows for easier scrolling through lists back and forth, ie resolutions.
 				m_int = m_dlgobject.at(m_selected_ID)->m_Option->m_value;
 			
 			if(g_pInput->getPressedCommand(IC_RIGHT))

@@ -80,20 +80,12 @@ mp_CameraSettings(NULL)
 	mp_Dialog->m_dlgobject.at(5)->m_Option->m_value = m_Autoframeskip;
 	
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 7, "");
-	buf = "Special FX ";
-	buf += (m_Vidconfig.m_special_fx) ? 28 : 20; //This adds in the switch seen in the options menu, which I think is fitting for any on/off option
-	buf += (m_Vidconfig.m_special_fx) ? 29 : 21;
-	buf += (m_Vidconfig.m_special_fx) ? 30 : 22;
-	buf += (m_Vidconfig.m_special_fx) ? 31 : 23;
+	buf = "Special FX " + getSwitchString(m_Vidconfig.m_special_fx);
 	mp_Dialog->m_dlgobject.at(6)->m_Option->m_FontMapID = 1;
 	mp_Dialog->setObjectText(6, buf);
 	
 	mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, 8, "");
-	buf = "Show FPS ";
-	buf += (m_Vidconfig.showfps) ? 28 : 20; //This adds in the switch seen in the options menu, which I think is fitting for any on/off option
-	buf += (m_Vidconfig.showfps) ? 29 : 21;
-	buf += (m_Vidconfig.showfps) ? 30 : 22;
-	buf += (m_Vidconfig.showfps) ? 31 : 23;
+	buf = "Show FPS " + getSwitchString(m_Vidconfig.showfps);
 	mp_Dialog->m_dlgobject.at(7)->m_Option->m_FontMapID = 1;
 	mp_Dialog->setObjectText(7, buf);
 
@@ -272,22 +264,14 @@ void CVideoSettings::processSpecific(){
 			{
 				bool &fx = m_Vidconfig.m_special_fx;
 				fx = !fx;
-				buf = "Special FX ";
-				buf += (fx) ? 28 : 20;
-				buf += (fx) ? 29 : 21;
-				buf += (fx) ? 30 : 22;
-				buf += (fx) ? 31 : 23;
+				buf = "Special FX " + getSwitchString(fx);
 				mp_Dialog->m_dlgobject.at(6)->m_Option->m_FontMapID = 1;
 				mp_Dialog->setObjectText(6, buf);
 			}
 			else if(m_selection == 7)
 			{
 				m_Vidconfig.showfps = !m_Vidconfig.showfps;
-				buf = "Show FPS ";
-				buf += (m_Vidconfig.showfps) ? 28 : 20;
-				buf += (m_Vidconfig.showfps) ? 29 : 21;
-				buf += (m_Vidconfig.showfps) ? 30 : 22;
-				buf += (m_Vidconfig.showfps) ? 31 : 23;
+				buf = "Show FPS " + getSwitchString(m_Vidconfig.showfps);
 				mp_Dialog->m_dlgobject.at(7)->m_Option->m_FontMapID = 1;
 				mp_Dialog->setObjectText(7, buf);
 			}

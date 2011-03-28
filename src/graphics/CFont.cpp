@@ -211,7 +211,7 @@ void CFont::drawFont(SDL_Surface* dst, const std::string& text, Uint16 xoff, Uin
 
 			if ( !endofText( text.substr(i) ) )
 			{
-				if(highlight) c |= 128;
+				if(highlight && !m_monochrome) c |= 128;
 
 				drawCharacter(dst, c, x, y);
 

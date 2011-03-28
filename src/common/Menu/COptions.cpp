@@ -22,11 +22,7 @@ mp_option(g_pBehaviorEngine->m_option)
 	for( i = 0 ; i < NUM_OPTIONS ; i++ )
 	{
 		mp_Dialog->addObject(DLG_OBJ_OPTION_TEXT, 1, i+1, "");
-		buf = mp_option[i].menuname + " ";
-		buf += (mp_option[i].value) ? 28 : 20;
-		buf += (mp_option[i].value) ? 29 : 21;
-		buf += (mp_option[i].value) ? 30 : 22;
-		buf += (mp_option[i].value) ? 31 : 23;
+		buf = mp_option[i].menuname + " " + getSwitchString(mp_option[i].value);
 		mp_Dialog->m_dlgobject.at(i)->m_Option->m_FontMapID = 1;
 		mp_Dialog->setObjectText(i, buf);
 	}
@@ -44,12 +40,9 @@ void COptions::processSpecific()
 
 	if( m_selection != NO_SELECTION)
 	{
+		//
 		mp_option[m_selection].value = !mp_option[m_selection].value;
-		buf = mp_option[m_selection].menuname + " ";
-		buf += (mp_option[m_selection].value) ? 28 : 20;
-		buf += (mp_option[m_selection].value) ? 29 : 21;
-		buf += (mp_option[m_selection].value) ? 30 : 22;
-		buf += (mp_option[m_selection].value) ? 31 : 23;
+		buf = mp_option[m_selection].menuname + " " + getSwitchString(mp_option[m_selection].value);
 
 		mp_Dialog->setObjectText(m_selection, buf);
 		m_selection = NO_SELECTION;

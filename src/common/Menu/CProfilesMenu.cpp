@@ -18,8 +18,8 @@ CProfilesMenu::CProfilesMenu(Uint8 dlg_theme) :
 CBaseMenu(dlg_theme)
 {
 	std::list<std::string> profile_list;
-	profile_list.push_back("Classic mode (like DOS)");
-	profile_list.push_back("Enhanced mode (more stuff)");
+	profile_list.push_back("Classic mode");
+	profile_list.push_back("Enhanced mode");
 
 	mp_SubMenu = new CSelectionMenu<int>( m_selection, profile_list, m_dlg_theme );
 }

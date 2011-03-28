@@ -5,7 +5,7 @@
  *      Author: gerstrong
  */
 
-#include "../../sdl/CInput.h"
+#include "sdl/CInput.h"
 #include "CBaseMenu.h"
 
 CBaseMenu::CBaseMenu(Uint8 dlg_theme) :
@@ -17,6 +17,22 @@ CBaseMenu::CBaseMenu(Uint8 dlg_theme) :
 	m_noenter(false)
 {}
 
+std::string CBaseMenu::getSwitchString(const bool value)
+{
+	std::string text;
+	if(m_dlg_theme == DLG_THEME_GALAXY)
+	{
+		text = (value==true) ? "on" : "off";
+	}
+	else
+	{
+		const int start_off = (value==true) ? 28 : 20;
+		for(int c=start_off ; c<start_off+4 ; c++)
+			text += c;
+	}
+	return text;
+}
+
 void CBaseMenu::processCommon()
 {
 	if(!m_suspended)
@@ -26,6 +42,7 @@ void CBaseMenu::processCommon()
 		{
 			if( g_pInput->getPressedCommand(IC_JUMP) || g_pInput->getPressedCommand(IC_STATUS) )
 			{
+				// This also handles the on/off switches
 				m_selection = mp_Dialog->getSelection();
 			}
 		}

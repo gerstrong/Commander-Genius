@@ -39,6 +39,14 @@ class CBaseMenu {
 public:
 	CBaseMenu(Uint8 dlg_theme);
 
+	/*
+	 *  \brief
+	 * This function returns a string of character why will show whether the switch is on or off
+	 * We use a function for that because sometimes when using special fontmaps it is not so clear
+	 * how the string is formed
+	 */
+	std::string getSwitchString(const bool value);
+
 	// Processes the stuff that the menus have in common
 	virtual void processCommon();
 	// Processes the stuff that are specific for the derived menu

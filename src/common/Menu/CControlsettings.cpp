@@ -70,11 +70,7 @@ void CControlsettings::setControlsText()
 		mp_Dialog->setObjectText(i, buf);
 	}
 	
-	buf = "Two Button Firing ";
-	buf += g_pInput->getTwoButtonFiring(m_chosenPlayer-1) ? 28 : 20;
-	buf += g_pInput->getTwoButtonFiring(m_chosenPlayer-1) ? 29 : 21;
-	buf += g_pInput->getTwoButtonFiring(m_chosenPlayer-1) ? 30 : 22;
-	buf += g_pInput->getTwoButtonFiring(m_chosenPlayer-1) ? 31 : 23;
+	buf = "Two Button Firing " + getSwitchString(g_pInput->getTwoButtonFiring(m_chosenPlayer-1));
 	mp_Dialog->m_dlgobject.at(MAX_COMMANDS)->m_Option->m_FontMapID = 1;
 	mp_Dialog->setObjectText(MAX_COMMANDS, buf);
 }
@@ -157,11 +153,7 @@ void CControlsettings::processSelection()
 				bool twb = g_pInput->getTwoButtonFiring(m_chosenPlayer-1);
 				twb = !twb;
 				g_pInput->setTwoButtonFiring(m_chosenPlayer-1, twb);
-				buf = "Two Button Firing ";
-				buf += g_pInput->getTwoButtonFiring(m_chosenPlayer-1) ? 28 : 20;
-				buf += g_pInput->getTwoButtonFiring(m_chosenPlayer-1) ? 29 : 21;
-				buf += g_pInput->getTwoButtonFiring(m_chosenPlayer-1) ? 30 : 22;
-				buf += g_pInput->getTwoButtonFiring(m_chosenPlayer-1) ? 31 : 23;
+				buf = "Two Button Firing " + getSwitchString(g_pInput->getTwoButtonFiring(m_chosenPlayer-1));
 				mp_Dialog->setObjectText(m_selection, buf);
 				m_selection = -1;
 			}
