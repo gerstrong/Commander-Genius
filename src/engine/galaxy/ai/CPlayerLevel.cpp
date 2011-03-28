@@ -54,6 +54,7 @@ m_camera(pmap,x,y,this)
 	m_climbing = false;
 	m_inair = false;
 	m_pogotoggle = false;
+	m_jumped = false;
 
 	processActionRoutine();
 	CSprite &rSprite = g_pGfxEngine->getSprite(sprite);
@@ -516,13 +517,16 @@ void CPlayerLevel::processJumping()
 	m_inair = getActionNumber(A_KEEN_JUMP) || getActionNumber(A_KEEN_JUMP+1) ||
 			getActionNumber(A_KEEN_FALL) || falling;
 
+	if( !m_inair && !m_playcontrol[PA_JUMP] )
+		m_jumped = false;
+
 	if(!getActionNumber(A_KEEN_JUMP))
 	{
 		if(blockedd)
 			m_jumpheight = 0;
 
 		// Not jumping? Let's see if we can prepare the player to do so
-		if(m_playcontrol[PA_JUMP] &&
+		if(m_playcontrol[PA_JUMP] && !m_jumped &&
 				(getActionNumber(A_KEEN_STAND) ||
 						getActionNumber(A_KEEN_RUN) ||
 						getActionNumber(A_KEEN_POLE) ||
@@ -531,6 +535,7 @@ void CPlayerLevel::processJumping()
 		{
 			yinertia = -140;
 			setAction(A_KEEN_JUMP);
+			m_jumped = true;
 			m_climbing = false;
 			m_vDir = NONE;
 			g_pSound->playSound( SOUND_KEEN_JUMP );

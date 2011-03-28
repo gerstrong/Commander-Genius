@@ -95,6 +95,7 @@ public:
 	uint16_t m_ActionNumber;
 	size_t m_ActionBaseOffset;
 	bool m_climbing;
+	bool m_jumped;
 
 	void setupObjectType(int Episode);
 	void calcBouncingBoxes();
