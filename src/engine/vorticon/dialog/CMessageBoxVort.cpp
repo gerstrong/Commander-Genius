@@ -15,8 +15,46 @@ CMessageBox(Text, lower, keymsg, leftbound),
 m_twirltimer(0),
 m_twirlframe(0)
 {
-	// TODO Auto-generated constructor stub
+	std::string buf;
+	if(m_keymsg)
+	{
+		m_Lines.push_back("");
+		buf = "Press any KEY/BUTTON  ";
+		if( m_text_width<buf.size() )
+			m_text_width=buf.size();
+		else
+		{
+			size_t trail = m_text_width-buf.size();
+			buf.insert((size_t)0,trail,' ');
+		}
+		m_Lines.push_back(buf);
+	}
 
+	// try to center that dialog box
+	m_gamerect = g_pVideoDriver->getGameResolution();
+
+	int h = m_gamerect.h;
+	m_gamerect.x = m_gamerect.w/2;
+	m_gamerect.y = m_gamerect.h/2;
+
+	m_gamerect.h = (m_Lines.size()+2);
+	m_gamerect.w = (m_text_width+2)*8;
+
+	m_gamerect.x -= m_gamerect.w/2;
+
+	if(!lower)
+		m_gamerect.y -= m_gamerect.h/2;
+	else
+		m_gamerect.y = h-m_gamerect.h;
+
+	if(leftbound) m_gamerect.x = 0;
+
+
+	m_gamerect.h /= 8;
+	m_gamerect.w /= 8;
+
+	mp_DlgFrame = new CDlgFrame(m_gamerect.x, m_gamerect.y,
+								m_gamerect.w, m_gamerect.h, DLG_THEME_VORTICON);
 }
 
 // This function is used in your Ship need those parts.

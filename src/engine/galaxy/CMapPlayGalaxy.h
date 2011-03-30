@@ -15,6 +15,7 @@
 #include "common/CObject.h"
 #include "fileio/CExeFile.h"
 #include "engine/galaxy/CInventory.h"
+#include "engine/galaxy/dialog/CMessageBoxGalaxy.h"
 #include "common/CBehaviorEngine.h"
 #include "CMapLoaderGalaxy.h"
 #include "sdl/CInput.h"
@@ -22,7 +23,7 @@
 #include "sdl/music/CMusic.h"
 #include "StringUtils.h"
 #include <vector>
-
+#include <list>
 
 class CMapPlayGalaxy {
 public:
@@ -38,6 +39,7 @@ public:
 
 protected:
 	std::vector<CObject*> m_ObjectPtr;
+	std::list<CMessageBoxGalaxy*> m_MessageBoxes;
 	bool m_active;
 
 	CMap m_Map;

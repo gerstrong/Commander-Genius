@@ -20,6 +20,7 @@ bool CMapPlayGalaxy::isActive()
 void CMapPlayGalaxy::setActive(bool value)
 {
 	m_active = value;
+
 	if(m_active)
 	{
 		m_Map.drawAll();
@@ -85,6 +86,8 @@ void CMapPlayGalaxy::process()
 	}
 
 
+
+
 	// Draw masked tiles here!
 	m_Map.drawForegroundTiles();
 
@@ -98,6 +101,22 @@ void CMapPlayGalaxy::process()
 	if(mp_option[OPT_HUD].value )
 		m_Inventory.drawHUD();
 
+	// Draw some Textboxes with Messages only if one of those is open and needs to be drawn
+	if(!m_MessageBoxes.empty())
+	{
+		CMessageBoxGalaxy *pMB = m_MessageBoxes.front();
+		pMB->process();
+
+		if(pMB->isFinished())
+		{
+			delete(pMB);
+			pMB = NULL;
+			m_MessageBoxes.pop_front();
+			//if(m_MessageBoxes.empty())
+				//m_paused = false;
+		}
+		return;
+	}
 }
 
 CMapPlayGalaxy::~CMapPlayGalaxy()

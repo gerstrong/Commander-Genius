@@ -26,6 +26,7 @@ m_Font_ID((theme==DLG_THEME_GALAXY) ? 1 : 0)
 	m_max=0;
 	m_cursorpos = 0;
 	m_curletter = 32;
+	mp_Frame = NULL;
 
 	m_theme = theme;
 	
@@ -53,6 +54,8 @@ m_Font_ID((theme==DLG_THEME_GALAXY) ? 1 : 0)
 			m_w = 320-m_x;
 		if(m_y + m_h > 200)
 			m_h = 200-m_y;
+
+		mp_Frame = new CDlgFrame(m_x, m_y, m_w, m_h, theme);
 	}
 	
 	m_twirl.posy = m_y;
@@ -66,7 +69,6 @@ m_Font_ID((theme==DLG_THEME_GALAXY) ? 1 : 0)
 	m_length = 15;
 	m_switch = 0;
 	m_scroll = 0;
-	mp_Frame = new CDlgFrame(m_x, m_y, m_w, m_h, theme);
 	m_alpha = 128;
 }
 
@@ -459,29 +461,35 @@ void CDialog::draw()
 {
 	SDL_Surface *dst_sfc = g_pVideoDriver->mp_VideoEngine->getBlitSurface();
 	
+	// This will make the font shading effect
 	if(m_alpha < 230)
 	{
 		SDL_SetAlpha(dst_sfc, SDL_SRCALPHA, m_alpha );
 		m_alpha+=20;
 	}
 	
-	// Render the empty Dialog frame if any
-	if(mp_Frame) mp_Frame->draw(dst_sfc);
-	
+	// Get the font which is proper for the dialog
 	CFont &Font = g_pGfxEngine->getFont(m_Font_ID);
-	// Draw the to icon up or down accordingly
-	if( m_scroll>0 ) // Up Arrow
+
+	// Render the empty Dialog frame if any
+	if(mp_Frame)
 	{
-		Font.drawCharacter(dst_sfc, 15,
-						   mp_Frame->m_x+mp_Frame->m_w-16,
-						   mp_Frame->m_y+8);
-	}
-	if( ( m_h-2 < (Uint8) m_dlgobject.size() )  &&
-	   ( m_scroll+m_h-2 != m_dlgobject.size() )) // Down Arrow
-	{
-		Font.drawCharacter(dst_sfc , 19,
-						   mp_Frame->m_x+mp_Frame->m_w-16,
-						   mp_Frame->m_y+mp_Frame->m_h-16);
+		mp_Frame->draw(dst_sfc);
+
+		// Draw the to icon up or down accordingly
+		if( m_scroll>0 ) // Up Arrow
+		{
+			Font.drawCharacter(dst_sfc, 15,
+					mp_Frame->m_x+mp_Frame->m_w-16,
+					mp_Frame->m_y+8);
+		}
+		if( ( m_h-2 < (Uint8) m_dlgobject.size() )  &&
+				( m_scroll+m_h-2 != m_dlgobject.size() )) // Down Arrow
+		{
+			Font.drawCharacter(dst_sfc , 19,
+					mp_Frame->m_x+mp_Frame->m_w-16,
+					mp_Frame->m_y+mp_Frame->m_h-16);
+		}
 	}
 	
 	Uint8 max;

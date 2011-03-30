@@ -37,6 +37,7 @@ private:
 	Uint8 m_theme;
 
 	void drawOldSchoolFrame(SDL_Surface *dst);
+	void drawGalaxyFrame(SDL_Surface *dst);
 	void drawRedFrame(SDL_Surface *dst);
 };
 

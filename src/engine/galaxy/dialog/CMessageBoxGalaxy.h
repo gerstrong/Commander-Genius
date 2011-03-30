@@ -8,10 +8,13 @@
 #ifndef CMESSAGEBOXGALAXY_H_
 #define CMESSAGEBOXGALAXY_H_
 
-class CMessageBoxGalaxy {
+#include "dialog/CMessageBox.h"
+
+class CMessageBoxGalaxy : public CMessageBox {
 public:
-	CMessageBoxGalaxy();
-	virtual ~CMessageBoxGalaxy();
+	CMessageBoxGalaxy(const std::string& Text);
+
+	void process();
 };
 
 #endif /* CMESSAGEBOXGALAXY_H_ */

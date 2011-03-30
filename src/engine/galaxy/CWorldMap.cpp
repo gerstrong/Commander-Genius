@@ -20,6 +20,7 @@ void CWorldMap::init()
 	CMapLoaderGalaxy MapLoader(m_ExeFile, m_ObjectPtr, m_Inventory);
 
 	MapLoader.loadMap(m_Map, 0); // Is it a Map Level?
+	m_MessageBoxes.push_back(new CMessageBoxGalaxy("Keen entered the world map:\n " + m_Map.getLevelName()));
 
 	m_Map.drawAll();
 }

@@ -28,6 +28,7 @@ bool CLevelPlay::loadLevel(const Uint16 level)
 	CMapLoaderGalaxy MapLoader(m_ExeFile, m_ObjectPtr, m_Inventory);
 
 	MapLoader.loadMap(m_Map, level);
+	m_MessageBoxes.push_back(new CMessageBoxGalaxy("Keen entered the level:\n " + m_Map.getLevelName()));
 
     // Load the Background Music
 	g_pMusicPlayer->stop();
