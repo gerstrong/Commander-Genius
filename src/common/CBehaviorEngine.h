@@ -28,6 +28,16 @@
 #include "CSingleton.h"
 #define g_pBehaviorEngine CBehaviorEngine::Get()
 
+/*
+ * This enumerator will hold and tell what engine we are using.
+ * As some Vorticon and Galaxy classes are shared together, that variable is used to get them created correctly.
+ */
+enum EngineType
+{
+	ENGINE_VORTICON,
+	ENGINE_GALAXY
+};
+
 typedef struct{
 	Uint8 objectnumber1; // Andy (Adurdin) calls that sprite, not all his numbers seem to be right
 	Uint8 objectnumber2; // Alternate number
@@ -45,6 +55,9 @@ public:
 	std::vector<CTileProperties> &getTileProperties(size_t tmnum = 1);
 	CPhysicsSettings &getPhysicsSettings();
 	std::string getString(const std::string& name);
+
+	// This function evaluates if the used engine is galaxy or vorticon
+	EngineType getEngine();
 	size_t getEpisode();
 	stTeleporterTable& getTeleporterTableAt(size_t num)
 	{ return m_TeleporterTable[num]; }

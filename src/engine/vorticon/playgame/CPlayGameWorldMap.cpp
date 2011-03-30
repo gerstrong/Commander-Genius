@@ -129,6 +129,7 @@ void CPlayGameVorticon::goBacktoMap()
 
 void CPlayGameVorticon::YourShipNeedsTheseParts()
 {
+	//CMessageBoxVort *MessageBox = new CMessageBoxVort(g_pBehaviorEngine->getString("EP1_SHIP"));
 	CMessageBox *MessageBox = new CMessageBox(g_pBehaviorEngine->getString("EP1_SHIP"));
 
 	bool joy, bat, vac, wis;

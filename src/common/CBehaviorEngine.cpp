@@ -94,6 +94,14 @@ std::string CBehaviorEngine::getString(const std::string& name)
 size_t CBehaviorEngine::getEpisode()
 {	return m_Episode;}
 
+EngineType CBehaviorEngine::getEngine()
+{
+	if( m_Episode >= 4 && m_Episode <= 6 )
+		return ENGINE_GALAXY;
+	else
+		return ENGINE_VORTICON;
+}
+
 void CBehaviorEngine::setEpisode(size_t Episode)
 {	m_Episode = Episode;}
 
