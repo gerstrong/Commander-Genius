@@ -488,25 +488,22 @@ void CPlayerLevel::processMoving()
 				}
 				else
 					m_ptogglingswitch = false;
-			//}
 
-			// Check if Keen hits the floor
-			if( blockedd && !m_cliff_hanging )
-			{
-				if(!getActionNumber(A_KEEN_POGO) )
+				// Check if Keen hits the floor
+				if( blockedd && !m_cliff_hanging )
 				{
-					if(moving != NONE)
+					if(!getActionNumber(A_KEEN_POGO) )
 					{
-						setAction(A_KEEN_RUN);
-						g_pSound->playSound( SOUND_KEEN_WALK );
+						if(moving != NONE)
+						{
+							setAction(A_KEEN_RUN);
+							g_pSound->playSound( SOUND_KEEN_WALK );
+						}
+						else if(m_playcontrol[PA_Y] == 0)
+							setAction(A_KEEN_STAND);
 					}
-					else if(m_playcontrol[PA_Y] == 0)
-						setAction(A_KEEN_STAND);
 				}
 			}
-
-			}
-
 		}
 	}
 }

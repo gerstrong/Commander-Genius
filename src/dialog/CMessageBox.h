@@ -15,6 +15,7 @@
 #include "common/CBehaviorEngine.h"
 #include <string>
 #include <vector>
+#include "SmartPointer.h"
 
 // Holder for some tile that have to be drawn
 struct TileHolder{
@@ -35,14 +36,11 @@ public:
 	// Getters
 	bool isFinished();
 
-	// destructors
-	virtual ~CMessageBox();
-
 private:
 	bool m_mustclose;
 	bool m_keymsg;
 	std::vector<std::string> m_Lines;
-	CDlgFrame *mp_DlgFrame;
+	SmartPointer<CDlgFrame> mp_DlgFrame;
 	SDL_Rect m_gamerect;
 
 	std::vector<TileHolder> m_Tiles;

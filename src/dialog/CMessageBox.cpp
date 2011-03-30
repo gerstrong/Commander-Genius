@@ -140,7 +140,3 @@ void CMessageBox::process()
 
 bool CMessageBox::isFinished()
 { return m_mustclose; }
-
-CMessageBox::~CMessageBox() {
-	delete mp_DlgFrame;
-}
