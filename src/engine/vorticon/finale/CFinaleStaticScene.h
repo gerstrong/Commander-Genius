@@ -8,8 +8,8 @@
 #ifndef CFINALESTATICSCENE_H_
 #define CFINALESTATICSCENE_H_
 
-#include "../../../dialog/CMessageBox.h"
-#include "../../../graphics/CBitmap.h"
+#include "engine/vorticon/dialog/CMessageBoxVort.h"
+#include "graphics/CBitmap.h"
 #include <SDL.h>
 #include <string>
 #include <list>
@@ -38,10 +38,10 @@ public:
 
 private:
 
-	std::list<CMessageBox*> mp_textbox_list;
+	std::list<CMessageBoxVort*> mp_textbox_list;
 	std::vector<bitmap_structure> m_BitmapVector;
 	SDL_Surface *mp_SceneSurface;
-	CMessageBox *mp_current_tb;
+	CMessageBoxVort *mp_current_tb;
 	bool m_mustclose;
 	Uint8 m_count;
 	Uint16 m_timer; // Only used, if no Text to display is set. Example is the preview section

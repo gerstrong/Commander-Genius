@@ -20,7 +20,7 @@ void CPlayGameVorticon::processPauseDialogs()
 	
 	if(!m_MessageBoxes.empty())
 	{
-		CMessageBox *pMB = m_MessageBoxes.front();
+		CMessageBoxVort *pMB = m_MessageBoxes.front();
 		pMB->process();
 
 		if(pMB->isFinished())

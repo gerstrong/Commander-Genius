@@ -12,7 +12,6 @@
 
 #include "graphics/CGfxEngine.h"
 #include "fileio/CSavedGame.h"
-#include "dialog/CMessageBox.h"
 #include "common/CPlayer.h"
 #include "common/CTileProperties.h"
 #include "common/CObject.h"
@@ -25,6 +24,7 @@
 #include "engine/vorticon/finale/CEndingEp1.h"
 #include "engine/vorticon/finale/CEndingEp2.h"
 #include "engine/vorticon/finale/CEndingEp3.h"
+#include "engine/vorticon/dialog/CMessageBoxVort.h"
 #include "sdl/music/CMusic.h"
 #include "engine/infoscenes/CHighScores.h"
 #include "engine/playgame/CPlayGame.h"
@@ -33,7 +33,7 @@
 #include <vector>
 #include <list>
 
-const int WORLD_MAP_LEVEL_VORTICON=80;
+const int WORLD_MAP_LEVEL_VORTICON = 80;
 
 enum door_colours{
 DOOR_YELLOW = 2,
@@ -106,7 +106,7 @@ private:
 	CFinale *mp_Finale;
 	CEGABitmap *mp_gameoverbmp;
 	CSavedGame &m_SavedGame;
-	std::list<CMessageBox*> m_MessageBoxes;
+	std::list<CMessageBoxVort*> m_MessageBoxes;
 	bool m_showKeensLeft;
 	std::vector<CObject*> m_Object;
 	CHighScores *mp_HighScores;

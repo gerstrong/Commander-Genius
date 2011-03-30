@@ -24,7 +24,7 @@ CFinaleStaticScene::CFinaleStaticScene(const std::string &game_path, const std::
 
 void CFinaleStaticScene::push_string(const std::string &text, Uint32 delay)
 {
-	CMessageBox *p_Textbox = new CMessageBox(g_pBehaviorEngine->getString(text), true, false, true);
+	CMessageBoxVort *p_Textbox = new CMessageBoxVort(g_pBehaviorEngine->getString(text), true, false, true);
 
 	mp_textbox_list.push_back(p_Textbox);
 
@@ -91,7 +91,7 @@ void CFinaleStaticScene::process()
 }
 
 CFinaleStaticScene::~CFinaleStaticScene() {
-	CMessageBox *p_textbox;
+	CMessageBoxVort *p_textbox;
 	while(!mp_textbox_list.empty())
 	{
 		p_textbox = &*mp_textbox_list.front();

@@ -28,7 +28,7 @@ void CPlayGameVorticon::processInLevel()
 			// If the player touched a hint trigger in which we have to show a Message, do it so
 			std::string hinttext;
 			if( (hinttext=m_Player[i].pollHintMessage()) != "")
-				m_MessageBoxes.push_back(new CMessageBox(g_pBehaviorEngine->getString(hinttext), false, true) );
+				m_MessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString(hinttext), false, true) );
 
 			// Check if the first player is dead, and if the others also are...
 			if(i==0) m_alldead = (m_Player[i].pdie == PDIE_DEAD);

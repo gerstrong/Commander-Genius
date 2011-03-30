@@ -31,7 +31,7 @@ CTantalusRay::CTantalusRay(CMap &Map, std::vector<CObject*> &vect_obj, CObjectAI
 CFinale(Map),
 m_mustsetup(true),
 m_alternate_sprite(0),
-mp_MessageBox(new CMessageBox("Uh-Oh")),
+mp_MessageBox(new CMessageBoxVort("Uh-Oh")),
 m_vect_obj(vect_obj),
 m_objectai(objectai),
 m_timer(0),

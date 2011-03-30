@@ -27,26 +27,26 @@ struct TileHolder{
 class CMessageBox {
 public:
 	// Init functions
-	CMessageBox(const std::string& Text, bool lower = false, bool keymsg = false, bool leftbound = false);
-	void addTileAt(Uint16 tile, Uint16 x, Uint16 y);
+	CMessageBox(const std::string& Text, bool lower, bool keymsg, bool leftbound);
 
-	// Processing
-	void process();
+	/** Processing
+	 * There are dialog boxes in both engines. They have are different and must be overloaded with this function.
+	 */
+	virtual void process() = 0;
 
-	// Getters
+	/// Getters
+	/*
+	 * \brief Indicates whether Dialog is ready to be closed
+	 * \return true means yes, it is ready
+	 */
 	bool isFinished();
 
-private:
+protected:
 	bool m_mustclose;
 	bool m_keymsg;
 	std::vector<std::string> m_Lines;
 	SmartPointer<CDlgFrame> mp_DlgFrame;
 	SDL_Rect m_gamerect;
-
-	std::vector<TileHolder> m_Tiles;
-
-	Uint8 m_twirltimer;
-	Uint8 m_twirlframe;
 };
 
 #endif /* CMESSAGEBOX_H_ */

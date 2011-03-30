@@ -158,12 +158,12 @@ bool CPlayGameVorticon::init()
 	// In the case that we are in Episode 3 last Level, show Mortimer Messages
 	if( m_Episode == 3 && m_Level == 16 )
 	{
-		m_MessageBoxes.push_back(new CMessageBox(g_pBehaviorEngine->getString("EP3_MORTIMER"),false, true));
-		m_MessageBoxes.push_back(new CMessageBox(g_pBehaviorEngine->getString("EP3_MORTIMER2"),false, true));
-		m_MessageBoxes.push_back(new CMessageBox(g_pBehaviorEngine->getString("EP3_MORTIMER3"),false, true));
-		m_MessageBoxes.push_back(new CMessageBox(g_pBehaviorEngine->getString("EP3_MORTIMER4"),false, true));
-		m_MessageBoxes.push_back(new CMessageBox(g_pBehaviorEngine->getString("EP3_MORTIMER5"),false, true));
-		m_MessageBoxes.push_back(new CMessageBox(g_pBehaviorEngine->getString("EP3_MORTIMER6"),false, true));
+		m_MessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER"),false, true));
+		m_MessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER2"),false, true));
+		m_MessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER3"),false, true));
+		m_MessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER4"),false, true));
+		m_MessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER5"),false, true));
+		m_MessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_MORTIMER6"),false, true));
 		g_pSound->playSound(SOUND_MORTIMER);
 	}
 
@@ -383,7 +383,7 @@ void CPlayGameVorticon::handleFKeys()
 
 				std::string Text = g_pBehaviorEngine->getString("CTSPACECHEAT");
 
-				m_MessageBoxes.push_back(new CMessageBox(Text));
+				m_MessageBoxes.push_back(new CMessageBoxVort(Text));
 				m_paused = true;
 			}
 		}
@@ -412,7 +412,7 @@ void CPlayGameVorticon::handleFKeys()
     	g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
 
     	// Show a message like in the original game
-		m_MessageBoxes.push_back(new CMessageBox(m_Player[0].godmode ? g_pBehaviorEngine->getString("GODMODEON") : g_pBehaviorEngine->getString("GODMODEOFF")));
+		m_MessageBoxes.push_back(new CMessageBoxVort(m_Player[0].godmode ? g_pBehaviorEngine->getString("GODMODEON") : g_pBehaviorEngine->getString("GODMODEOFF")));
     	m_paused = true;
     	g_pInput->flushKeys();
     }
@@ -436,7 +436,7 @@ void CPlayGameVorticon::handleFKeys()
 	if(g_pInput->getPressedKey(KP) && m_MessageBoxes.empty())
 	{
 		g_pSound->playSound(SOUND_GUN_CLICK, PLAY_FORCE);
-		m_MessageBoxes.push_back(new CMessageBox("Game Paused"));
+		m_MessageBoxes.push_back(new CMessageBoxVort("Game Paused"));
 	}
 
 	if(g_pInput->getPressedKey(KF1))

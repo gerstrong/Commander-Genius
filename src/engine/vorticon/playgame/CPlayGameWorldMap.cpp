@@ -129,8 +129,7 @@ void CPlayGameVorticon::goBacktoMap()
 
 void CPlayGameVorticon::YourShipNeedsTheseParts()
 {
-	//CMessageBoxVort *MessageBox = new CMessageBoxVort(g_pBehaviorEngine->getString("EP1_SHIP"));
-	CMessageBox *MessageBox = new CMessageBox(g_pBehaviorEngine->getString("EP1_SHIP"));
+	CMessageBoxVort *MessageBox = new CMessageBoxVort(g_pBehaviorEngine->getString("EP1_SHIP"));
 
 	bool joy, bat, vac, wis;
 	joy = bat = vac = wis = false;
@@ -156,7 +155,7 @@ void CPlayGameVorticon::ShipEp3()
 {
 	// get one of four random strings and display it!!
 	std::string strname = "EP3_SHIP"+ itoa((rand()%4)+1);
-	m_MessageBoxes.push_back(new CMessageBox(g_pBehaviorEngine->getString(strname)));
+	m_MessageBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString(strname)));
 }
 
 void CPlayGameVorticon::showKeensLeft()

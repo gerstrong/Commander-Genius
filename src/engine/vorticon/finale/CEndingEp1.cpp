@@ -59,7 +59,7 @@ void CEndingEp1::ReturnsToShip()
 		m_Player[0].sprite = PMAPLEFTFRAME;
 		m_Player[0].processCamera();
 
-		mp_Textbox = new CMessageBox(g_pBehaviorEngine->getString("EP1_ESEQ_PART1"), true);
+		mp_Textbox = new CMessageBoxVort(g_pBehaviorEngine->getString("EP1_ESEQ_PART1"), true);
 
 		m_mustsetup = false;
 	}

@@ -58,10 +58,10 @@ void CEndingEp3::HonorScene()
 		m_Map.gotoPos(32, 32);
 		m_Map.drawAll();
 
-		m_TextBoxes.push_back(new CMessageBox(g_pBehaviorEngine->getString("EP3_ESEQ_PAGE1"), true));
-		m_TextBoxes.push_back(new CMessageBox(g_pBehaviorEngine->getString("EP3_ESEQ_PAGE2"), true));
-		m_TextBoxes.push_back(new CMessageBox(g_pBehaviorEngine->getString("EP3_ESEQ_PAGE3"), true));
-		m_TextBoxes.push_back(new CMessageBox(g_pBehaviorEngine->getString("EP3_ESEQ_PAGE4"), true));
+		m_TextBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_ESEQ_PAGE1"), true));
+		m_TextBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_ESEQ_PAGE2"), true));
+		m_TextBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_ESEQ_PAGE3"), true));
+		m_TextBoxes.push_back(new CMessageBoxVort(g_pBehaviorEngine->getString("EP3_ESEQ_PAGE4"), true));
 
 		int newtile = m_Map.at(2,12);
 		for(int x=0 ; x<22 ; x++) // This changes to the Oh No! Tiles to normal Stone-Tiles
@@ -75,7 +75,7 @@ void CEndingEp3::HonorScene()
 
 	if(!m_TextBoxes.empty())
 	{
-		CMessageBox *pMB = m_TextBoxes.front();
+		CMessageBoxVort *pMB = m_TextBoxes.front();
 
 		pMB->process();
 

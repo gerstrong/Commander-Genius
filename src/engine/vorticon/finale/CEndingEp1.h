@@ -9,9 +9,9 @@
 #define CENDINGEP1_H_
 
 #include "CFinale.h"
-#include "../../../common/CMap.h"
-#include "../../../common/CPlayer.h"
-#include "../../../dialog/CMessageBox.h"
+#include "common/CMap.h"
+#include "common/CPlayer.h"
+#include "engine/vorticon/dialog/CMessageBoxVort.h"
 #include <vector>
 #include <SDL.h>
 
@@ -33,7 +33,7 @@ private:
 	std::vector<CPlayer> &m_Player;
 	CShipFlySys *mp_ShipFlySys;
 	CFinaleStaticScene *mp_FinaleStaticScene;
-	CMessageBox *mp_Textbox;
+	CMessageBoxVort *mp_Textbox;
 
 	bool &m_hideobjects;
 };
