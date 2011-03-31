@@ -8,10 +8,10 @@
 #include "CDlgFrame.h"
 #include "graphics/CGfxEngine.h"
 
-CDlgFrame::CDlgFrame(int x, int y, int w, int h, Uint8 theme) {
+CDlgFrame::CDlgFrame(int x, int y, int w, int h, Uint8 theme, int tilewidth, int tileheight) {
 	
-	m_8x8tileheight = 8;
-	m_8x8tilewidth = 8;
+	m_8x8tileheight = tilewidth;
+	m_8x8tilewidth = tileheight;
 	
 	m_x = x;
 	m_y = y;

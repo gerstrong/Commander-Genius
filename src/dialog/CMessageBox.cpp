@@ -13,7 +13,8 @@
 
 CMessageBox::CMessageBox(const std::string& Text, bool lower, bool keymsg, bool leftbound) :
 m_mustclose(false),
-m_keymsg(keymsg)
+m_keymsg(keymsg),
+m_text_width(0)
 {
 	// Split up the text in lines, so can calculate the textbox dimensions
 	std::string buf = "";
@@ -35,6 +36,7 @@ m_keymsg(keymsg)
 		while( (pos = buf.find('\n')) != std::string::npos )
 			buf.erase(pos,1);
 	m_Lines.push_back(buf);
+
 	if( m_text_width<buf.size() )
 		m_text_width=buf.size();
 }

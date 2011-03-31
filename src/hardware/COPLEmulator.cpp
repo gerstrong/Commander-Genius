@@ -96,16 +96,14 @@ void COPLEmulator::ALStopSound()
 ///////////////////////////////////////////////////////////////////////////
 void COPLEmulator::ShutAL()
 {
-    Chip__WriteReg( alEffects,0);
+    Chip__WriteReg( alEffects, 0);
     Chip__WriteReg( alFreqH + 0,0);
     AlSetFXInst(m_alZeroInst);
 }
 
 void COPLEmulator::shutdown()
 {
-    int     i;
-
     Chip__WriteReg( alEffects,0);
-    for (i = 1; i < 0xf5; i++)
+    for (int i = 1; i < 0xf5; i++)
     	Chip__WriteReg( i, 0);
 }

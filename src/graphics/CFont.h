@@ -35,7 +35,31 @@ public:
 	void setFGColour(SDL_PixelFormat* p_pixelformat, Uint32 fgcolour, bool force=false);
 	void setBGColour(SDL_PixelFormat* p_pixelformat, Uint32 bgcolour, bool force=false);
 	Uint32 getColour();
+
+	/**
+	 * \brief Retrieves the background colour of the font map
+	 * \param highlighted The fontmap has two background colours.
+	 * 		  			  One is highlighted (default gray)
+	 * 					  The other is not (default white)
+	 * 					  Those colours normally differ in mods.
+	 */
 	Uint32 getBGColour(bool highlighted);
+
+	/*
+	 * \brief This will retrieve the total width in pixels of the Font.
+	 * 		  In Galaxy it's more difficult to calculate that since every character has it own with
+	 * \param text Text which will be analyzed to get the full width
+	 * \return the width in pixel units
+	 */
+	unsigned int getPixelTextWidth( const std::string& text );
+
+	/*
+	 * \brief This will help to get the right height of some Dialog Boxes
+	 * \return height of the text height in pixel units.
+	 */
+	unsigned int getPixelTextHeight();
+
+
 	void getBGColour(bool highlighted, Uint8 *r, Uint8 *g, Uint8 *b);
 
 	void drawCharacter(SDL_Surface* dst, Uint16 character, Uint16 xoff, Uint16 yoff);

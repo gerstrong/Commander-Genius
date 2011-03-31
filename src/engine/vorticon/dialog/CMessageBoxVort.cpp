@@ -37,7 +37,7 @@ m_twirlframe(0)
 	m_gamerect.x = m_gamerect.w/2;
 	m_gamerect.y = m_gamerect.h/2;
 
-	m_gamerect.h = (m_Lines.size()+2);
+	m_gamerect.h = (m_Lines.size()+2)*8;
 	m_gamerect.w = (m_text_width+2)*8;
 
 	m_gamerect.x -= m_gamerect.w/2;

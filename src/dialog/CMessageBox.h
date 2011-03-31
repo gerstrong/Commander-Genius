@@ -45,6 +45,7 @@ protected:
 	bool m_mustclose;
 	bool m_keymsg;
 	int m_text_width;
+	int m_text_height;
 	std::vector<std::string> m_Lines;
 	SmartPointer<CDlgFrame> mp_DlgFrame;
 	SDL_Rect m_gamerect;

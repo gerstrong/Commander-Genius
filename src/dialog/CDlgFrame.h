@@ -19,7 +19,7 @@ enum themes{
 
 class CDlgFrame {
 public:
-	CDlgFrame(int x, int y, int w, int h, Uint8 theme = DLG_THEME_VORTICON);
+	CDlgFrame(int x, int y, int w, int h, Uint8 theme = DLG_THEME_VORTICON, int tilewidth = 8, int tileheight = 8);
 	virtual ~CDlgFrame();
 
 	void draw(SDL_Surface *dst);

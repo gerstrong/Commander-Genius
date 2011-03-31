@@ -214,6 +214,7 @@ void CIMFPlayer::close()
 {
 	m_numreadysamples = m_IMFDelay = 0;
 	m_opl_emulator.ShutAL();
+	m_opl_emulator.shutdown();
 
 	play(false);
 	m_IMF_Data.gotoStart();

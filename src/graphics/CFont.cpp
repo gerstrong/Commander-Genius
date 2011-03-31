@@ -147,13 +147,21 @@ Uint32 CFont::getColour()
 	return m_fgcolour;
 }
 
-/**
- * \brief Retrieves the background colour of the font map
- * \param highlighted The fontmap has two background colours.
- * 		  			  One is highlighted (default gray)
- * 					  The other is not (default white)
- * 					  Those colours normally differ in mods.
- */
+unsigned int CFont::getPixelTextWidth( const std::string& text )
+{
+	unsigned int c = 0, width = 0;
+	for( ; c<text.size() ; c++)
+	{
+		const int e = text[c];
+		width += (m_widthtable[e]+1);
+	}
+	return width;
+}
+
+unsigned int CFont::getPixelTextHeight()
+{
+	return m_ColouredSurface->h/16;
+}
 
 Uint32 CFont::getBGColour(bool highlighted)
 {
