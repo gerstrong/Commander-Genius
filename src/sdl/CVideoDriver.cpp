@@ -4,6 +4,9 @@
  *
  *  Created on: 17.03.2009
  *      Author: gerstrong
+ *
+ *  Driver which will handle the Video Functions. This Driver handle the window mode and resolution mgmt.
+ *  The Rendering itself is performed under COpenGL or CSDLVideo Class depending on what is enabled.
  */
 #include "CVideoDriver.h"
 #include "CInput.h"
@@ -11,6 +14,7 @@
 
 #include "video/CSDLVideo.h"
 #include "video/COpenGL.h"
+#include "resolutionlist.h"
 
 #include "keen.h"
 #include "graphics/CGfxEngine.h"
@@ -84,47 +88,36 @@ void CVideoDriver::initResolutionList()
 #else
 	char buf[256];
 
-	std::ifstream ResolutionFile; OpenGameFileR(ResolutionFile, "resolutions.cfg");
-	if(!ResolutionFile)
+	for( unsigned int c=0 ; c<NUM_MAIN_RESOLUTIONS ; c++ )
 	{
-		g_pLogFile->textOut(PURPLE,"Warning: resolutions.cfg could not be read! Maybe your files weren't extracted correctly!<br>");
-		g_pLogFile->textOut(PURPLE,"Using default resolution...<br>");
-	}
-	else
-	{
-		while(!ResolutionFile.eof())
-		{
-			ResolutionFile.getline(buf,256);
+		strcpy(buf, ResolutionsList[c]);
 
-			if(sscanf(buf,"%ix%ix%i", &resolution.width, &resolution.height, &resolution.depth) >= 2)
-
+		if(sscanf(buf,"%ix%ix%i", &resolution.width, &resolution.height, &resolution.depth) >= 2)
 			// Now check if it's possible to use this resolution
 			checkResolution( resolution, SDL_FULLSCREEN );
-		}
-		ResolutionFile.close();
+	}
 
-		if(!m_VidConfig.Fullscreen)
-		{
-			int e = 1;
-			resolution.width = 320;
-			resolution.height = 200;
+	if(!m_VidConfig.Fullscreen)
+	{
+		int e = 1;
+		resolution.width = 320;
+		resolution.height = 200;
 #if defined(WIZ)
-			resolution.depth = 16;
+		resolution.depth = 16;
 #else
-			resolution.depth = 32;
+		resolution.depth = 32;
 #endif
 
-			int maxwidth = SDL_GetVideoInfo()->current_w;
+		int maxwidth = SDL_GetVideoInfo()->current_w;
 
-			while(resolution.width < maxwidth)
-			{
-				resolution.width = 320 * e;
-				resolution.height = 200 * e;
+		while(resolution.width < maxwidth)
+		{
+			resolution.width = 320 * e;
+			resolution.height = 200 * e;
 
-				// Now check if it's possible to use this resolution
-				checkResolution( resolution, 0 );
-				e++;
-			}
+			// Now check if it's possible to use this resolution
+			checkResolution( resolution, 0 );
+			e++;
 		}
 	}
 #endif

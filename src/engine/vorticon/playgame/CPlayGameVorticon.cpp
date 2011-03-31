@@ -194,7 +194,7 @@ void CPlayGameVorticon::process()
 	}
 	else // No, we are in the middle of the game
 	{
-		if(!m_paused && m_MessageBoxes.empty()) // Game is not paused
+		if(!m_paused && m_MessageBoxes.empty() && !mp_Menu) // Game is not paused, no messages have to be shown and no menu is open
 		{
 			if (!mp_Finale) // Hasn't the game yet been finished?
 			{
@@ -340,7 +340,6 @@ void CPlayGameVorticon::process()
 			g_pGfxEngine->getFont(0).drawFont(sfc,tempbuf,320-(tempbuf.size()<<3)-1, true);
 
 		}
-
 	}
 }
 
