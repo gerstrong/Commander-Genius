@@ -85,7 +85,18 @@ public:
 	void enableOpenGL(bool value) { m_VidConfig.m_opengl = false; }
 	void setOGLFilter(unsigned char value) { }
 #endif
-	void checkResolution( st_resolution& resolution, int flags );
+
+	/*
+	 * \brief Check whether this resolution is okay to be used or needs some adjustments if possible.
+	 * 		  It could be that, the screen dim can be used but instead of 32bpp 16bpp. This function
+	 * 		  will check and adapt it to the resolution your supports
+	 * \param resolution The resolution structure of the mode it is desired to be used
+	 * \param SDL uses some flags like Fullscreen or HW Acceleration, those need to be passed in order to verify
+	 *        the mode properly.
+	 * \return nothing. It does not return because it always adapts the resolution to some working mode.
+	 *         If video cannot be opened at all, another function of LibSDL will find that out.
+	 */
+	void verifyResolution( st_resolution& resolution, const int flags );
 	st_resolution getResolution() const { return *m_Resolution_pos; }
 
 	void initResolutionList();

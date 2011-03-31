@@ -94,7 +94,7 @@ void CVideoDriver::initResolutionList()
 
 		if(sscanf(buf,"%ix%ix%i", &resolution.width, &resolution.height, &resolution.depth) >= 2)
 			// Now check if it's possible to use this resolution
-			checkResolution( resolution, SDL_FULLSCREEN );
+			verifyResolution( resolution, SDL_FULLSCREEN );
 	}
 
 	if(!m_VidConfig.Fullscreen)
@@ -116,7 +116,7 @@ void CVideoDriver::initResolutionList()
 			resolution.height = 200 * e;
 
 			// Now check if it's possible to use this resolution
-			checkResolution( resolution, 0 );
+			verifyResolution( resolution, 0 );
 			e++;
 		}
 	}
@@ -132,7 +132,7 @@ void CVideoDriver::initResolutionList()
 	m_Resolution_pos = m_Resolutionlist.begin();
 }
 
-void CVideoDriver::checkResolution( st_resolution& resolution, int flags )
+void CVideoDriver::verifyResolution( st_resolution& resolution, const int flags )
 {
 	resolution.depth = SDL_VideoModeOK( resolution.width, resolution.height, resolution.depth, flags );
 
